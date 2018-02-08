@@ -764,21 +764,20 @@ abstract class EVF_Form_Fields {
 			EVF()->process->errors[ $form_data['id'] ][ $field_id ] = apply_filters( 'everest_forms_required_label', get_option( 'evf_required_validation', __( 'This field is required.', 'everest-forms' ) ) );
 			update_option( 'evf_validation_error', 'yes');
 		}
-
 		// Type validations.
 		switch ( $field_type ) {
 			case 'url':
-				if( filter_var( $field_submit, FILTER_VALIDATE_URL ) === FALSE ){
+				if( ! empty( $_POST['everest_forms']['form_fields'][ $field_id ] ) && filter_var( $field_submit, FILTER_VALIDATE_URL ) === FALSE ){
 					$validation_text = get_option( 'evf_' . $field_type . '_validation', __( 'Please enter a valid url', 'everest-forms' ) );
 				}
 				break;
 			case 'email':
-			 	if ( ! is_email( $field_submit ) ) {
+			 	if ( ! empty( $_POST['everest_forms']['form_fields'][ $field_id ] ) && ! is_email( $field_submit ) ) {
 					$validation_text = get_option( 'evf_' . $field_type . '_validation', __( 'Please enter a valid email address', 'everest-forms' ) );
 				}
 				break;
 			case 'number':
-				if ( is_numeric( $field_submit ) ){
+				if ( ! empty( $_POST['everest_forms']['form_fields'][ $field_id ] ) && ! is_numeric( $field_submit ) ){
 					$validation_text = get_option( 'evf_' . $field_type . '_validation', __( 'Please enter a valid number', 'everest-forms' ) );
 				}
 				break;
