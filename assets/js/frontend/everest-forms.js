@@ -11,9 +11,7 @@ jQuery( function ( $ ) {
 		$everest_form: $( 'form.everest-form' ),
 		init: function() {
 			this.init_datepicker();
-
-			// Prevent HTML5 validation which can conflict.
-			this.$everest_form.attr( 'novalidate', 'novalidate' );
+			this.load_validation();
 
 			// Inline validation
 			this.$everest_form.on( 'input validate change', '.input-text, select, input:checkbox', this.validate_field );
@@ -27,6 +25,11 @@ jQuery( function ( $ ) {
 				numberOfMonths: 1,
 				minDate: '-15Y',
 				maxDate: '+15Y'
+			});
+		},
+		load_validation: function() {
+			this.$everest_form.each( function() {
+				$( this ).validate();
 			});
 		},
 		validate_field: function ( e ) {
