@@ -275,9 +275,9 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	    	$query = 'SELECT form_id, evf_entry_id, created_at, meta_key, meta_value FROM wp_evf_entries INNER JOIN wp_evf_entrymeta WHERE form_id = '. $form_id .' AND wp_evf_entries.id = wp_evf_entrymeta.evf_entry_id AND status = "publish" ';
 	    }
 
-	    // if( isset( $_GET['status'] ) && $_GET['status'] =='trash' ) {
-	    // 	$query = 'SELECT form_id, evf_entry_id, created_at, meta_key, meta_value FROM wp_evf_entries INNER JOIN wp_evf_entrymeta WHERE form_id = '. $form_id .' AND wp_evf_entries.id = wp_evf_entrymeta.evf_entry_id AND status = "publish" ';	    	
-	    // }
+	    if( ( isset( $_GET['status'] ) && $_GET['status'] == 'trash') ) {
+	    	$query = 'SELECT form_id, evf_entry_id, created_at, meta_key, meta_value FROM wp_evf_entries INNER JOIN wp_evf_entrymeta WHERE wp_evf_entries.id = wp_evf_entrymeta.evf_entry_id AND status = "trash" ';
+	    }
 
 	   	$results = $wpdb->get_results( $query );
 	   
