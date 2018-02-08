@@ -1,0 +1,138 @@
+@import "scss/colors";
+@import "scss/clearings";
+
+.everest-forms_page_evf-settings {
+	#wpcontent {
+		padding-left: 0;
+	}
+}
+
+*{
+	box-sizing: border-box;
+}
+.everest-forms {
+	margin: 0;
+	background-color: $color-whitesmoke;
+
+	.evf-nav-tab-wrapper {
+		padding: 0;
+		margin: 0;
+		list-style: none;
+		display: flex;
+		border-bottom:  none transparent;
+		background-color: $color-brand-secondary;
+
+		a.nav-tab {
+			border: none transparent;
+			background-color: transparent;
+			margin-left: 0;
+			font-size: 12px;
+			line-height: 24px;
+			color: $color-white;
+			padding: 10px 30px;
+			display: block;
+			cursor: pointer;
+			transition: 0.5s background-color ease-in-out;
+
+			.dashicons,
+			.dashicons-before:before {
+				display: block;
+				font-size: 32px;
+				width: auto;
+				height: auto;
+			}
+			&.nav-tab-active {
+				background-color: $color-whitesmoke;
+				color: $color-gray-darker;
+			}
+			&:focus {
+				box-shadow:0 0 0 0 transparent;
+			}
+		}
+	}
+
+	.nav-tab.nav-tab-active:focus {
+		box-shadow: none;
+	}
+
+
+	p.submit {
+		padding-left: 30px;
+		padding-right: 30px;
+
+		.everest-forms-save-button {
+			padding: 10px 20px;
+			height: auto;
+			border-radius: 0;
+			border: 0 transparent;
+			text-shadow: 0 0 0 transparent;
+			box-shadow: 0 0 0 0 transparent;
+			background: $submit-color;
+			transition: 0.5s background ease-in-out;
+
+			&:hover {
+				background: $color-brand-secondary;
+			}
+		}
+	}
+	.evf-setting-tab-content {
+		display: none;
+		padding: 30px;
+
+		h2 {
+			margin-top: 0;
+			color: $color-gray-more-darken;
+		}
+
+		.form-table {
+			margin-top: 0;
+			border-top: 1px solid $color-white-darken;
+		}
+
+		&.active {
+			display: block;
+		}
+
+		label {
+			font-size: 12px;
+			color:$color-gray-darker;
+		}
+
+		textarea  {
+			height: 100px;
+		}
+
+		.forminp:not(.forminp-tinymce) {
+			input,
+			select,
+			textarea {
+				border-color: $border-color;
+				padding:10px;
+				box-shadow: 0 0 0 0 transparent;
+				color: #555;
+				height:45px;
+				border-radius:3px;
+				width: 100%;
+				min-width: 100% !important;
+			}
+		}
+	}
+}
+
+@media screen and (max-width: 782px) {
+	.everest-forms .evf-setting-tab-content .form-table th {
+		padding-top: 15px;
+		padding-bottom: 15px;
+	}
+}
+
+@media screen and (max-width: 480px) {
+	.everest-forms .evf-nav-tab-wrapper a.nav-tab {
+		padding: 10px;
+
+		.dashicons,
+		.dashicons-before:before {
+			display: none;
+		}
+	}
+}

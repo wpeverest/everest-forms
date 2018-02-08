@@ -1,0 +1,74 @@
+@font-face {
+    font-family: 'evf-icon';
+    src:  url('../fonts/evf-icon.eot?5fwmb3');
+    src:  url('../fonts/evf-icon.eot?5fwmb3#iefix') format('embedded-opentype'),
+    url('../fonts/evf-icon.ttf?5fwmb3') format('truetype'),
+    url('../fonts/evf-icon.woff?5fwmb3') format('woff'),
+    url('../fonts/evf-icon.svg?5fwmb3#evf-icon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class^="evf-icon-"], [class*=" evf-icon-"] {
+    /* use !important to prevent issues with browser extensions that change ../fonts */
+    font-family: 'evf-icon' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.evf-icon-last-name:before {
+    content: "\e900";
+}
+.evf-icon-first-name:before {
+    content: "\e901";
+}
+.evf-icon-checkbox:before {
+    content: "\e902";
+}
+.evf-icon-radio:before {
+    content: "\e903";
+}
+.evf-icon-file-upload:before {
+    content: "\e904";
+}
+.evf-icon-hidden-field:before {
+    content: "\e90a";
+}
+.evf-icon-address:before {
+    content: "\e911";
+}
+.evf-icon-phone:before {
+    content: "\e912";
+}
+.evf-icon-website:before {
+    content: "\e913";
+}
+.evf-icon-number:before {
+    content: "\e914";
+}
+.evf-icon-dropdown:before {
+    content: "\e915";
+}
+.evf-icon-paragraph:before {
+    content: "\e916";
+}
+.evf-icon-multiple-choices:before {
+    content: "\e917";
+}
+.evf-icon-date-time:before {
+    content: "\e918";
+}
+.evf-icon-email:before {
+    content: "\e919";
+}
+.evf-icon-text:before {
+    content: "\e91a";
+}

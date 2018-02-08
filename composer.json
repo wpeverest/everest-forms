@@ -1,0 +1,46 @@
+{
+  "name": "wpeverest/everest-forms",
+  "description": "Easily allows to create form.",
+  "homepage": "https://wpeverest.com/plugins/everest-forms/",
+  "type": "wordpress-plugin",
+  "license": "GPL-2.0+",
+  "require": {
+    "composer/installers": "~1.2"
+  },
+  "require-dev": {
+    "squizlabs/php_codesniffer": "*",
+    "wp-coding-standards/wpcs": "^0.14",
+    "phpunit/phpunit": "6.2.3",
+    "wpeverest/wpeverest-git-hooks": "*",
+    "wpeverest/wpeverest-sniffs": "*",
+    "wimg/php-compatibility": "^8.0",
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.4.3"
+  },
+  "scripts": {
+    "pre-update-cmd": [
+      "WPEverest\\GitHooks\\Hooks::preHooks"
+    ],
+    "pre-install-cmd": [
+      "WPEverest\\GitHooks\\Hooks::preHooks"
+    ],
+    "post-install-cmd": [
+      "WPEverest\\GitHooks\\Hooks::postHooks"
+    ],
+    "post-update-cmd": [
+      "WPEverest\\GitHooks\\Hooks::postHooks"
+    ],
+    "phpcs": [
+      "phpcs -s -p"
+    ],
+    "phpcbf": [
+      "phpcbf -p"
+    ]
+  },
+  "extra": {
+    "scripts-description": {
+      "test": "Run unit tests",
+      "phpcs": "Analyze code against the WordPress coding standard with PHP_CodeSniffer",
+      "phpcbf": "Fix coding standards warnings/errors automattically with PHP Code Beautifier"
+    }
+  }
+}
