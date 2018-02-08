@@ -64,6 +64,7 @@ class EVF_Form_Entry_Manager {
     }
 
     public function all_actions() {
+
         global $wpdb;
 
         if( isset( $_POST['action'] ) && $_POST['action'] == 'trash' ) {
@@ -113,7 +114,15 @@ class EVF_Form_Entry_Manager {
             wp_redirect( admin_url('admin.php?page=display-evf-entries') ); 
         }
 
-
+        if( isset( $_GET['status'] ) && $_GET['status'] == 'trash' && isset( $_GET['empty_trash'] ) && $_GET['empty_trash'] == 1 ) {
+            $query = 'DELETE FROM wp_evf_entries';
+            $wpdb->get_results( $query ); 
+            
+            $query = 'DELETE FROM wp_evf_entrymeta';
+            $wpdb->get_results( $query ); 
+                
+            wp_redirect( admin_url('admin.php?page=display-evf-entries') ); 
+        }
     }
 
     public function get_single_entry( $id ) {
