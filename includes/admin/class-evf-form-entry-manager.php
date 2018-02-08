@@ -74,11 +74,46 @@ class EVF_Form_Entry_Manager {
                 wp_redirect( admin_url('admin.php?page=display-evf-entries') ); 
             }
         }
-        if( isset( $_GET['action'] ) && $_GET['action'] == 'delete' ) {
+
+        if( isset($_POST['action'] ) && $_POST['action'] == 'untrash' ){
+            $entries = isset( $_POST['everest_form'] ) ? $_POST['everest_form'] : array();
+            foreach( $entries as $entry ) {
+                $query = 'UPDATE `wp_evf_entries` SET status = "publish" WHERE id = '. $entry .'' ;
+                $wpdb->get_results( $query ); 
+                wp_redirect( admin_url('admin.php?page=display-evf-entries') ); 
+            }
+        }
+
+        if( isset( $_POST['action'] ) && $_POST['action'] == 'delete' ){
+            $entries = isset( $_POST['everest_form'] ) ? $_POST['everest_form'] : array();
+            foreach( $entries as $entry ) {
+                $query = 'DELETE FROM wp_evf_entries WHERE id = '. $entry .'' ;
+                $wpdb->get_results( $query ); 
+                $query = 'DELETE FROM wp_evf_entrymeta WHERE evf_entry_id = '. $entry .'';
+                $wpdb->get_results( $query ); 
+                wp_redirect( admin_url('admin.php?page=display-evf-entries') ); 
+            }
+        }
+
+        if( isset( $_GET['action'] ) && $_GET['action'] == 'trash' ) {
             $query = 'UPDATE `wp_evf_entries` SET status = "trash" WHERE id = '. $_GET['id'] .'' ;
             $wpdb->get_results( $query ); 
             wp_redirect( admin_url('admin.php?page=display-evf-entries') ); 
         }
+
+        if( isset( $_GET['action'] ) && $_GET['action'] == 'delete' ) {
+            $query = 'DELETE FROM wp_evf_entries WHERE id = '. $_GET['id'] .'';
+            $wpdb->get_results( $query ); 
+            wp_redirect( admin_url('admin.php?page=display-evf-entries') ); 
+        }
+
+        if( isset( $_GET['action'] ) && $_GET['action'] == 'untrash' ) {
+            $query = 'UPDATE `wp_evf_entries` SET status = "publish" WHERE id = '. $_GET['id'] .'' ;
+            $wpdb->get_results( $query ); 
+            wp_redirect( admin_url('admin.php?page=display-evf-entries') ); 
+        }
+
+
     }
 
     public function get_single_entry( $id ) {

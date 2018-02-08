@@ -74,8 +74,16 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		
 		$actions = array(
             'view'      => sprintf( '<a href="?page=%s&action=%s&id=%s">View</a>', $_REQUEST['page'], 'view', $items->evf_entry_id ),
-            'delete'    => sprintf( '<a href="?page=%s&action=%s&id=%s">Delete</a>', $_REQUEST['page'],'delete', $items->evf_entry_id ),
+            'trash'    => sprintf( '<a href="?page=%s&action=%s&id=%s">Trash</a>', $_REQUEST['page'],'trash', $items->evf_entry_id ),
         );
+
+        if( isset( $_GET['status'] ) && $_GET['status'] == 'trash' ) {
+        	$actions = array(
+            	'view'      => sprintf( '<a href="?page=%s&action=%s&id=%s">View</a>', $_REQUEST['page'], 'view', $items->evf_entry_id ),
+   	            'delete'    => sprintf( '<a href="?page=%s&action=%s&id=%s">Delete</a>', $_REQUEST['page'],'delete', $items->evf_entry_id ),
+ 	            'untrash'    => sprintf( '<a href="?page=%s&action=%s&id=%s">Restore</a>', $_REQUEST['page'],'untrash', $items->evf_entry_id ),
+    	    );
+        }
 
   		return sprintf('%1$s %2$s', $items->evf_entry_id, $this->row_actions($actions) );
 	}
@@ -225,7 +233,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		
 		if ( 'top' == $which && isset( $_GET['status'] ) && 'trash' == $_GET['status'] && current_user_can( 'delete_posts' ) ) {
 
-			echo '<div class="alignleft actions"><a id="delete_all" class="button apply" href="' . esc_url( wp_nonce_url( admin_url( 'admin.php?page=everest-forms&status=trash&empty_trash=1' ), 'empty_trash' ) ) . '">' . __( 'Empty trash', 'everest-forms' ) . '</a></div>';
+			echo '<div class="alignleft actions"><a id="delete_all" class="button apply" href="' . esc_url( wp_nonce_url( admin_url( 'admin.php?page=display-evf-entries&status=trash&empty_trash=1' ), 'empty_trash' ) ) . '">' . __( 'Empty trash', 'everest-forms' ) . '</a></div>';
 		}
 	}
 
@@ -267,8 +275,12 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	    	$query = 'SELECT form_id, evf_entry_id, created_at, meta_key, meta_value FROM wp_evf_entries INNER JOIN wp_evf_entrymeta WHERE form_id = '. $form_id .' AND wp_evf_entries.id = wp_evf_entrymeta.evf_entry_id AND status = "publish" ';
 	    }
 
+	    // if( isset( $_GET['status'] ) && $_GET['status'] =='trash' ) {
+	    // 	$query = 'SELECT form_id, evf_entry_id, created_at, meta_key, meta_value FROM wp_evf_entries INNER JOIN wp_evf_entrymeta WHERE form_id = '. $form_id .' AND wp_evf_entries.id = wp_evf_entrymeta.evf_entry_id AND status = "publish" ';	    	
+	    // }
+
 	   	$results = $wpdb->get_results( $query );
-	   	
+	   
 	   	$array = [];
 
 		foreach( $results as $val ) {
