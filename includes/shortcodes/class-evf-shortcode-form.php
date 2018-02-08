@@ -244,34 +244,6 @@ class EVF_Shortcode_Form {
 		    echo self::process_recaptcha( $form_data );
 		}
 
-		// Loop through all the fields we have.
-		/*foreach ( $form_data['form_fields'] as $field ) {
-
-			$field = apply_filters( 'evf_field_data', $field, $form_data );
-
-			if ( empty( $field ) ) {
-				continue;
-			}
-
-
-			$attributes = self::get_field_attributes( $field, $form_data );
-
-			// Get field properties.
-			$properties = self::get_field_properties( $field, $form_data, $attributes );
-
-			// Add properties to the field so it's available everywhere.
-			$field['properties'] = $properties;
-
-			do_action( 'evf_display_field_before', $field, $form_data );
-
-
-			do_action( "evf_display_field_{$field['type']}", $field, $attributes, $form_data );
-
-
-			do_action( 'evf_display_field_after', $field, $form_data );
-
-		}*/ // End foreach().
-
 		do_action( 'evf_display_fields_after', $form_data );
 
 		echo '</div>';

@@ -182,7 +182,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 		}
 
 		// Primary select field.
-		printf( '<select name="everest_forms[form_fields][%d]" id="%s" class="%s" %s %s>',
+		printf( '<select name="everest_forms[form_fields][%s]" id="%s" class="%s" %s %s>',
 			$field['id'],
 			$field_id,
 			$field_class,
