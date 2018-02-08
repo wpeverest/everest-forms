@@ -80,7 +80,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
         if( isset( $_GET['status'] ) && $_GET['status'] == 'trash' ) {
         	$actions = array(
             	'view'      => sprintf( '<a href="?page=%s&action=%s&id=%s">View</a>', $_REQUEST['page'], 'view', $items->evf_entry_id ),
-   	            'delete'    => sprintf( '<a href="?page=%s&action=%s&id=%s">Delete</a>', $_REQUEST['page'],'delete', $items->evf_entry_id ),
+   	            'delete'    => sprintf( '<a href="?page=%s&action=%s&id=%s">Delete Permanently</a>', $_REQUEST['page'],'delete', $items->evf_entry_id ),
  	            'untrash'    => sprintf( '<a href="?page=%s&action=%s&id=%s">Restore</a>', $_REQUEST['page'],'untrash', $items->evf_entry_id ),
     	    );
         }
