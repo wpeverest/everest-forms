@@ -133,14 +133,25 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	}
 
 	protected function get_views() {
-
+		global $wpdb;
 		$status_links = array();
-		$total_items  = count( $this->items );
+		
+		$query = 'SELECT id FROM wp_evf_entries WHERE status = "publish"';
+		
+	   	$results = $wpdb->get_results( $query );
+
+	   	$total_items = count($results);
+		
+		$query = 'SELECT id FROM wp_evf_entries WHERE status = "trash"';
+
+	   	$results = $wpdb->get_results( $query );
+
+	   	$total_trash_items = count($results);
 		
 		/* translators: %s: count */
 		$status_links['all'] = "<a href='admin.php?page=display-evf-entries&status=all'>" . sprintf( _nx( 'All <span class="count">(%s)</span>', 'All <span class="count">(%s)</span>', $total_items, 'entries', 'everest-forms' ), number_format_i18n( $total_items ) ) . '</a>';
 
-		$status_links['trash'] = "<a href='admin.php?page=display-evf-entries&status=trash'>" . sprintf( _nx( 'Trash <span class="count">(%s)</span>', 'Trash <span class="count">(%s)</span>', $total_items, 'entries', 'everest-forms' ), number_format_i18n( $total_items ) ) . '</a>';
+		$status_links['trash'] = "<a href='admin.php?page=display-evf-entries&status=trash'>" . sprintf( _nx( 'Trash <span class="count">(%s)</span>', 'Trash <span class="count">(%s)</span>', $total_trash_items, 'entries', 'everest-forms' ), number_format_i18n( $total_trash_items ) ) . '</a>';
 
 		return $status_links;
 	}
@@ -293,7 +304,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		$array = json_decode( json_encode( array_values( $array ) ) );
 		
 		$this->items = $array;	 
-				
+
 		$total_items = count( $this->items );
 
 		$this->set_pagination_args( array(
