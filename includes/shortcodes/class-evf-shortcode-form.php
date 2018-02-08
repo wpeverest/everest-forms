@@ -62,7 +62,7 @@ class EVF_Shortcode_Form {
 		);
 
 		do_action( 'evf_display_submit_after', $form_data );
-
+	
 		echo '</div>';
 	}
 
@@ -232,8 +232,8 @@ class EVF_Shortcode_Form {
 					do_action( 'evf_display_field_before', $field, $form_data );
 
 					do_action( "evf_display_field_{$field['type']}", $field, $attributes, $form_data );
-
 					do_action( 'evf_display_field_after', $field, $form_data );
+
 				}
 
 				echo '</div>';
@@ -570,6 +570,7 @@ class EVF_Shortcode_Form {
 		echo '</div>';
 
 		do_action( 'evf_frontend_output_after', $form_data, $form );
+
 	}
 
 }

@@ -21,8 +21,8 @@ class EVF_Admin_Form_List {
 	 * Handles output of the reports page in admin.
 	 */
 	public static function output() {
+		global $evf_form_list;
 
-		$evf_form_list = new EVF_Admin_Form_Table_List();
 		$evf_form_list->prepare_items();
 		include_once( dirname( __FILE__ ) . '/views/html-admin-page-forms.php' );
 

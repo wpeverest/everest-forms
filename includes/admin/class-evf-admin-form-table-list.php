@@ -335,15 +335,6 @@ class EVF_Admin_Form_Table_List extends WP_List_Table {
 	}
 
 	/**
-	 * Get a list of hidden columns.
-	 *
-	 * @return array
-	 */
-	protected function get_hidden_columns() {
-		return get_hidden_columns( $this->screen );
-	}
-
-	/**
 	 * Prepare table list items.
 	 *
 	 * @global wpdb $wpdb
@@ -400,5 +391,14 @@ class EVF_Admin_Form_Table_List extends WP_List_Table {
 			array(),
 			$this->get_sortable_columns(),
 		);
+	}
+
+	/**
+	 * Get a list of hidden columns.
+	 *
+	 * @return array
+	 */
+	protected function get_hidden_columns() {
+		return get_hidden_columns( $this->screen );
 	}
 }

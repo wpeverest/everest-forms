@@ -286,50 +286,76 @@ class EVF_Install {
 	 * Set up the database tables which the plugin needs to function.
 	 */
 	private static function create_tables() {
+		/**
+		 * Get Table schema.
+		 *
+		 * https://github.com/everest-forms/everest-forms/wiki/Database-Description/
+		 *
+		 * A note on indexes; Indexes have a maximum size of 767 bytes. Historically, we haven't need to be concerned about that.
+		 * As of WordPress 4.2, however, we moved to utf8mb4, which uses 4 bytes per character. This means that an index which
+		 * used to have room for floor(767/3) = 255 characters, now only has room for floor(767/4) = 191 characters.
+		 *
+		 * Changing indexes may cause duplicate index notices in logs due to https://core.trac.wordpress.org/ticket/34870 but dropping
+		 * indexes first causes too much load on some servers/larger DB.
+		 *
+		 * @return string
+		 */
+
 		global $wpdb;
 
 		$wpdb->hide_errors();
+       	
+       	$collate = '';
+
+        if ( $wpdb->has_cap( 'collation' ) ) {
+            if ( ! empty($wpdb->charset ) ) {
+                $collate .= "DEFAULT CHARACTER SET $wpdb->charset";
+            }
+
+            if ( ! empty($wpdb->collate ) ) {
+                $collate .= " COLLATE $wpdb->collate";
+            }
+        }
+
+        $tables = array(
+            "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}evf_entries` (
+                `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+                `form_id` bigint(20) unsigned DEFAULT NULL,
+                `user_id` bigint(20) unsigned DEFAULT NULL,
+                `user_device` varchar(50) DEFAULT NULL,
+                `referer` varchar(255) DEFAULT NULL,
+                `status` varchar(10) DEFAULT 'publish',
+                `created_at` datetime DEFAULT NULL,
+                PRIMARY KEY (`id`),
+                KEY `form_id` (`form_id`)
+            ) $collate;",
+
+            "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}evf_entrymeta` (
+                `meta_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+                `evf_entry_id` bigint(20) unsigned DEFAULT NULL,
+                `meta_key` varchar(255) DEFAULT NULL,
+                `meta_value` longtext,
+                PRIMARY KEY (`meta_id`),
+                KEY `meta_key` (`meta_key`),
+                KEY `entry_id` (`evf_entry_id`)
+            ) $collate;",
+
+             "CREATE TABLE {$wpdb->prefix}evf_sessions (
+				  session_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+				  session_key char(32) NOT NULL,
+				  session_value longtext NOT NULL,
+				  session_expiry BIGINT UNSIGNED NOT NULL,
+				  PRIMARY KEY  (session_key),
+				  UNIQUE KEY session_id (session_id)
+				) $collate;
+			"
+        );
 
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
-		dbDelta( self::get_schema() );
-	}
-
-	/**
-	 * Get Table schema.
-	 *
-	 * https://github.com/everest-forms/everest-forms/wiki/Database-Description/
-	 *
-	 * A note on indexes; Indexes have a maximum size of 767 bytes. Historically, we haven't need to be concerned about that.
-	 * As of WordPress 4.2, however, we moved to utf8mb4, which uses 4 bytes per character. This means that an index which
-	 * used to have room for floor(767/3) = 255 characters, now only has room for floor(767/4) = 191 characters.
-	 *
-	 * Changing indexes may cause duplicate index notices in logs due to https://core.trac.wordpress.org/ticket/34870 but dropping
-	 * indexes first causes too much load on some servers/larger DB.
-	 *
-	 * @return string
-	 */
-	private static function get_schema() {
-		global $wpdb;
-
-		$collate = '';
-
-		if ( $wpdb->has_cap( 'collation' ) ) {
-			$collate = $wpdb->get_charset_collate();
-		}
-
-		$tables = "
-CREATE TABLE {$wpdb->prefix}evf_sessions (
-  session_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  session_key char(32) NOT NULL,
-  session_value longtext NOT NULL,
-  session_expiry BIGINT UNSIGNED NOT NULL,
-  PRIMARY KEY  (session_key),
-  UNIQUE KEY session_id (session_id)
-) $collate;
-		";
-
-		return $tables;
+		foreach ( $tables as $table ) {
+            dbDelta( $table );
+        }
 	}
 
 	/**
