@@ -67,5 +67,13 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 11. Advance Form
 
 == Changelog ==
+
+= 1.0.1 - 09/02/2018 =
+* Feature - JS validation on submit.
+* Fix - Select field option display.
+* Fix - Checkbox validation styling.
+* Fix - Create default form on first install.
+
 = 1.0.0 - 02/02/2018 =
+
 * Initial Release
