@@ -284,19 +284,19 @@ class EVF_Shortcode_Form {
 			) );
 		}
 
-		$recaptcha_node =   '<div id="evf-recaptcha-node" style="width:100px;max-width: 100px; float:left">
+		$recaptcha_node =   '<div id="evf-recaptcha-node" class="evf-recaptcha-row" style="float:left">
 								<div id="evf_node_recaptcha" class="g-recaptcha" style="margin-left:11px;transform:scale(0.77);-webkit-transform:scale(0.77);transform-origin:0 0;-webkit-transform-origin:0 0;">
 								</div>
 							</div>';
 
 		if ( 'no' === $recaptcha_enable ) {
 
-			$recaptcha_node = '<div id="evf-recaptcha-node" style="width:100px;max-width: 100px; float:left"></div>';
+			$recaptcha_node = '<div id="evf-recaptcha-node" style="float:left"></div>';
 
 		}
 		if ( 'yes' === $recaptcha_enable && - 1 !== $recaptcha_site_key && - 1 !== $recaptcha_site_secret ) {
 
-			$recaptcha_node =  '<div id="evf-recaptcha-node" style="width:100px;max-width: 100px; float:left">
+			$recaptcha_node =  '<div id="evf-recaptcha-node" class="evf-recaptcha-row" style="width:100px;max-width: 100px; float:left">
 									<div id="evf_node_recaptcha" class="g-recaptcha" style="margin-left:11px;transform:scale(0.77);-webkit-transform:scale(0.77);transform-origin:0 0;-webkit-transform-origin:0 0;">
 									</div>
 								</div>';
