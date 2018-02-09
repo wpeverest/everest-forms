@@ -90,8 +90,14 @@ jQuery( function ( $ ) {
 
 						$parent.removeClass( 'evf-has-error' );
 					},
-					submitHandler: function( form ) {
-						form.submit();
+					submitHandler: function( errorClass, form ) {
+						if ( grecaptcha.getResponse() == '' ) {
+							$( '#evf_node_recaptcha' ).after('<label class="evf-error">' + everest_forms_params.i18n_messages_recaptcha + '</div>');
+
+
+	              		} else {
+                  			form.submit();
+                  		}
 					}
 				});
 			});
