@@ -256,18 +256,22 @@ class EVF_Frontend_Scripts {
 	 * @return array|bool
 	 */
 	private static function get_script_data( $handle ) {
-		global $wp;
-
 		switch ( $handle ) {
 			case 'everest-forms' :
-				return array(
-					'ajax_url'    => EVF()->ajax_url(),
+				$params = array(
+					'ajax_url'                => EVF()->ajax_url(),
 					'everest_forms_data_save' => wp_create_nonce( 'everest_forms_data_save_nonce' ),
+ 					'i18n_messages_required'  => get_option( 'evf_required_validation' ),
+ 					'i18n_messages_url'       => get_option( 'evf_url_validation' ),
+ 					'i18n_messages_email'     => get_option( 'evf_email_validation' ),
+ 					'i18n_messages_number'    => get_option( 'evf_number_validation' ),
  				);
-				break;
+			break;
+			default:
+				$params = false;
 		}
 
-		return false;
+		return apply_filters( 'everest_forms_get_script_data', $params, $handle );
 	}
 
 	/**

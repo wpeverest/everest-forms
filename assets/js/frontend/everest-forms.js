@@ -14,7 +14,7 @@ jQuery( function ( $ ) {
 			this.load_validation();
 
 			// Inline validation
-			// this.$everest_form.on( 'input validate change', '.input-text, select, input:checkbox', this.validate_field );
+			this.$everest_form.on( 'input validate change', '.input-text, select, input:checkbox', this.validate_field );
 		},
 		init_datepicker: function () {
 			$( '.date-picker-field, .date-picker' ).datepicker({
@@ -32,6 +32,14 @@ jQuery( function ( $ ) {
 				return false;
 			}
 
+			// Validator messages.
+			$.extend( $.validator.messages, {
+				required: everest_forms_params.i18n_messages_required,
+				url: everest_forms_params.i18n_messages_url,
+				email: everest_forms_params.i18n_messages_email,
+				number: everest_forms_params.i18n_messages_number
+			});
+
 			// Validate email addresses.
 			$.validator.methods.email = function( value, element ) {
 				/* https://stackoverflow.com/questions/2855865/jquery-validate-e-mail-address-regex */
@@ -43,20 +51,6 @@ jQuery( function ( $ ) {
 				var $this = $( this );
 
 				$this.validate({
-					rules: {
-						name: "required",
-						email: {
-							required: true,
-							email: true
-						}
-					},
-					messages: {
-						name: "Please specify your name",
-						email: {
-							required: "We need your email address to contact you",
-							email: "Your email address must be in the format of name@domain.com"
-						}
-					},
 					errorClass: 'evf-error',
 					validClass: 'evf-valid',
 					errorPlacement: function( error, element ) {
