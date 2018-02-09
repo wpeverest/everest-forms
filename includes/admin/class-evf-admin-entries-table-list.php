@@ -136,15 +136,27 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		global $wpdb;
 		$status_links = array();
 		
-		$query = 'SELECT id FROM wp_evf_entries WHERE status = "publish"';
+		$selected_form = get_option( 'evf_selected_form_in_entries', 'All forms');
+	    
+	    $selected_form = (int) $selected_form;
+
+		$form_id = ( isset( $_POST['select-form'] ) && isset( $_POST['form_id'] ) ) ? $_POST['form_id'] : $selected_form;
+
+	    if( ( isset( $form_id )  ) && is_numeric( $form_id )  && $form_id !== 0) {
+	    
+			$query = 'SELECT id FROM wp_evf_entries WHERE form_id = '. $form_id .' AND status = "publish" ';
+			$query_1 = 'SELECT id FROM wp_evf_entries WHERE form_id = '. $form_id .' AND status = "trash" ';
+			
+		} else {
+			$query = 'SELECT id FROM wp_evf_entries WHERE status = "publish" ';
+			$query_1 = 'SELECT id FROM wp_evf_entries WHERE status = "trash" ';		
+		}
 		
 	   	$results = $wpdb->get_results( $query );
 
 	   	$total_items = count($results);
-		
-		$query = 'SELECT id FROM wp_evf_entries WHERE status = "trash"';
 
-	   	$results = $wpdb->get_results( $query );
+	   	$results = $wpdb->get_results( $query_1 );
 
 	   	$total_trash_items = count($results);
 		
