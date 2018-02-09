@@ -323,7 +323,7 @@ class EVF_Shortcode_Form {
 			'description_class' => array( 'evf-field-description' ),
 			'description_id'    => array(),
 			'input_id'          => array( sprintf( 'evf-%d-field_%s', $form_id, $field_id ) ),
-			'input_class'       => array( 'input-text' ),
+			'input_class'       => array(),
 			'input_data'        => array(),
 		);
 
@@ -332,10 +332,16 @@ class EVF_Shortcode_Form {
 			$attributes['field_class'] = array_merge( $attributes['field_class'], evf_sanitize_classes( $field['css'], true ) );
 		}
 
+		// Input class.
+		if ( ! in_array( $field['type'], array( 'checkbox', 'radio' ) ) ) {
+			$attributes['input_class'][] = 'input-text';
+		}
+
 		// Check label visibility.
 		if ( ! empty( $field['label_hide'] ) ) {
 			$attributes['label_class'][] = 'evf-label-hide';
 		}
+
 		// Check size.
 		if ( ! empty( $field['size'] ) ) {
 			$attributes['input_class'][] = 'evf-field-' . sanitize_html_class( $field['size'] );
@@ -349,11 +355,6 @@ class EVF_Shortcode_Form {
 		if ( in_array( $field['type'], array( 'email', 'phone' ) ) ) {
 			$attributes['field_class'][] = 'validate-' . esc_attr( $field['type'] );
 		}
-
-		// Check if there are errors.
-		// if ( ! empty( EVF()->process->errors[ $form_id ][ $field_id ] ) ) {
-		// 	$attributes['input_class'][] = 'evf-error';
-		// }
 
 		// This filter is deprecated, filter the properties (below) instead.
 		$attributes = apply_filters( 'evf_field_atts', $attributes, $field, $form_data );
@@ -483,7 +484,7 @@ class EVF_Shortcode_Form {
 
 		// Grab the form data, if not found then we bail.
 		$form = EVF()->form->get( (int) $id );
-		
+
 		if ( empty( $form ) || $form->post_status !== 'publish' ) {
 			return;
 		}

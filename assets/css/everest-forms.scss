@@ -43,7 +43,7 @@
                     list-style: none;
 
                     li {
-                        display: inline-block;
+                        display: block;
                         margin-right: 20px;
 
                         label,
@@ -51,7 +51,6 @@
                             display: inline-block;
                             vertical-align: middle;
                             margin-bottom: 0;
-
                         }
 
                         input[type="checkbox"],
@@ -60,8 +59,8 @@
                         }
 
                         label {
-
                             font-weight: 500;
+                            color: $color-gray-darker !important;
                         }
                     }
                 }
