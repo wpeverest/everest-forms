@@ -244,34 +244,6 @@ class EVF_Shortcode_Form {
 		    echo self::process_recaptcha( $form_data );
 		}
 
-		// Loop through all the fields we have.
-		/*foreach ( $form_data['form_fields'] as $field ) {
-
-			$field = apply_filters( 'evf_field_data', $field, $form_data );
-
-			if ( empty( $field ) ) {
-				continue;
-			}
-
-
-			$attributes = self::get_field_attributes( $field, $form_data );
-
-			// Get field properties.
-			$properties = self::get_field_properties( $field, $form_data, $attributes );
-
-			// Add properties to the field so it's available everywhere.
-			$field['properties'] = $properties;
-
-			do_action( 'evf_display_field_before', $field, $form_data );
-
-
-			do_action( "evf_display_field_{$field['type']}", $field, $attributes, $form_data );
-
-
-			do_action( 'evf_display_field_after', $field, $form_data );
-
-		}*/ // End foreach().
-
 		do_action( 'evf_display_fields_after', $form_data );
 
 		echo '</div>';
@@ -312,19 +284,19 @@ class EVF_Shortcode_Form {
 			) );
 		}
 
-		$recaptcha_node =   '<div id="evf-recaptcha-node" style="width:100px;max-width: 100px; float:left">
+		$recaptcha_node =   '<div id="evf-recaptcha-node" class="evf-recaptcha-row" style="float:left">
 								<div id="evf_node_recaptcha" class="g-recaptcha" style="margin-left:11px;transform:scale(0.77);-webkit-transform:scale(0.77);transform-origin:0 0;-webkit-transform-origin:0 0;">
 								</div>
 							</div>';
 
 		if ( 'no' === $recaptcha_enable ) {
 
-			$recaptcha_node = '<div id="evf-recaptcha-node" style="width:100px;max-width: 100px; float:left"></div>';
+			$recaptcha_node = '<div id="evf-recaptcha-node" style="float:left"></div>';
 
 		}
 		if ( 'yes' === $recaptcha_enable && - 1 !== $recaptcha_site_key && - 1 !== $recaptcha_site_secret ) {
 
-			$recaptcha_node =  '<div id="evf-recaptcha-node" style="width:100px;max-width: 100px; float:left">
+			$recaptcha_node =  '<div id="evf-recaptcha-node" class="evf-recaptcha-row" style="width:100px;max-width: 100px; float:left">
 									<div id="evf_node_recaptcha" class="g-recaptcha" style="margin-left:11px;transform:scale(0.77);-webkit-transform:scale(0.77);transform-origin:0 0;-webkit-transform-origin:0 0;">
 									</div>
 								</div>';
@@ -351,7 +323,7 @@ class EVF_Shortcode_Form {
 			'description_class' => array( 'evf-field-description' ),
 			'description_id'    => array(),
 			'input_id'          => array( sprintf( 'evf-%d-field_%s', $form_id, $field_id ) ),
-			'input_class'       => array( 'input-text' ),
+			'input_class'       => array(),
 			'input_data'        => array(),
 		);
 
@@ -360,10 +332,16 @@ class EVF_Shortcode_Form {
 			$attributes['field_class'] = array_merge( $attributes['field_class'], evf_sanitize_classes( $field['css'], true ) );
 		}
 
+		// Input class.
+		if ( ! in_array( $field['type'], array( 'checkbox', 'radio' ) ) ) {
+			$attributes['input_class'][] = 'input-text';
+		}
+
 		// Check label visibility.
 		if ( ! empty( $field['label_hide'] ) ) {
 			$attributes['label_class'][] = 'evf-label-hide';
 		}
+
 		// Check size.
 		if ( ! empty( $field['size'] ) ) {
 			$attributes['input_class'][] = 'evf-field-' . sanitize_html_class( $field['size'] );
@@ -377,11 +355,6 @@ class EVF_Shortcode_Form {
 		if ( in_array( $field['type'], array( 'email', 'phone' ) ) ) {
 			$attributes['field_class'][] = 'validate-' . esc_attr( $field['type'] );
 		}
-
-		// Check if there are errors.
-		// if ( ! empty( EVF()->process->errors[ $form_id ][ $field_id ] ) ) {
-		// 	$attributes['input_class'][] = 'evf-error';
-		// }
 
 		// This filter is deprecated, filter the properties (below) instead.
 		$attributes = apply_filters( 'evf_field_atts', $attributes, $field, $form_data );
@@ -511,7 +484,7 @@ class EVF_Shortcode_Form {
 
 		// Grab the form data, if not found then we bail.
 		$form = EVF()->form->get( (int) $id );
-		
+
 		if ( empty( $form ) || $form->post_status !== 'publish' ) {
 			return;
 		}

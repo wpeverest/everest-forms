@@ -2,15 +2,11 @@
 /**
  * EverestForms setup
  *
- * @author   WPEverest
- * @category Classes
- * @package  EverestForms
- * @since      1.0.0
+ * @package EverestForms
+ * @since   1.0.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Main EverestForms Class.
@@ -325,8 +321,7 @@ final class EverestForms {
 	 *      - WP_LANG_DIR/everest-forms/everest-forms-LOCALE.mo
 	 *      - WP_LANG_DIR/plugins/everest-forms-LOCALE.mo
 	 */
-	public
-	function load_plugin_textdomain() {
+	public function load_plugin_textdomain() {
 		$locale = is_admin() && function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
 		$locale = apply_filters( 'plugin_locale', $locale, 'everest_forms' );
 
@@ -340,8 +335,7 @@ final class EverestForms {
 	 *
 	 * @return string
 	 */
-	public
-	function plugin_url() {
+	public function plugin_url() {
 		return untrailingslashit( plugins_url( '/', EVF_PLUGIN_FILE ) );
 	}
 
@@ -350,8 +344,7 @@ final class EverestForms {
 	 *
 	 * @return string
 	 */
-	public
-	function plugin_path() {
+	public function plugin_path() {
 		return untrailingslashit( plugin_dir_path( EVF_PLUGIN_FILE ) );
 	}
 
@@ -360,8 +353,7 @@ final class EverestForms {
 	 *
 	 * @return string
 	 */
-	public
-	function template_path() {
+	public function template_path() {
 		return apply_filters( 'everest_forms_template_path', 'everest-forms/' );
 	}
 
@@ -370,8 +362,7 @@ final class EverestForms {
 	 *
 	 * @return string
 	 */
-	public
-	function ajax_url() {
+	public function ajax_url() {
 		return admin_url( 'admin-ajax.php', 'relative' );
 	}
 }

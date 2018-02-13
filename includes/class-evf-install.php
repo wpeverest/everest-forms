@@ -452,13 +452,27 @@ class EVF_Install {
 	 * Create default contact form.
 	 */
 	public static function create_forms() {
-		include_once dirname( __FILE__ ) . '/class-evf-form-handler.php';
+		$form_count = wp_count_posts( 'everest_form' );
 
-		$has_posts = get_posts( 'post_type=everest_form' );
+		if ( empty( $form_count->publish ) ) {
+			include_once dirname( __FILE__ ) . '/templates/contact.php';
 
-		if ( 0 === count( $has_posts ) ) {
-			$default_form_id = EVF_Form_Handler::create( __( 'Contact Form', 'everest-forms' ), 'contact' );
-			update_option( 'evf_default_form_page_id', $default_form_id );
+			// Create a form.
+			$form_id = wp_insert_post( array(
+				'post_title'   => esc_html( 'Contact Form', 'everest-forms' ),
+				'post_status'  => 'publish',
+				'post_type'    => 'everest_form',
+				'post_content' => '{}',
+			) );
+
+			if ( $form_id ) {
+				wp_update_post( array(
+					'ID'           => $form_id,
+					'post_content' => evf_encode( array_merge( array( 'id' => $form_id ), $form_template['contact'] ) ),
+				) );
+			}
+
+			update_option( 'evf_default_form_page_id', $form_id );
 		}
 	}
 
