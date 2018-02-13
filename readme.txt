@@ -3,7 +3,7 @@ Contributors: WPEverest
 Tags: form, form builder, easy form, clean form, login form, contact, contact form
 Requires at least: 4.0
 Tested up to: 4.9
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
