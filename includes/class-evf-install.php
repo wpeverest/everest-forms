@@ -51,7 +51,7 @@ class EVF_Install {
 	 * Init background updates
 	 */
 	public static function init_background_updater() {
-		include_once( dirname( __FILE__ ) . '/class-evf-background-updater.php' );
+		include_once dirname( __FILE__ ) . '/class-evf-background-updater.php';
 		self::$background_updater = new EVF_Background_Updater();
 	}
 
@@ -61,7 +61,7 @@ class EVF_Install {
 	 * This check is done on all requests and runs if the versions do not match.
 	 */
 	public static function check_version() {
-		if ( ! defined( 'IFRAME_REQUEST' ) && get_option( 'everest_forms_version' ) !== EVF()->version ) {
+		if ( ! defined( 'IFRAME_REQUEST' ) && version_compare( get_option( 'everest_forms_version' ), EVF()->version, '<' ) ) {
 			self::install();
 			do_action( 'everest_forms_updated' );
 		}
@@ -122,7 +122,7 @@ class EVF_Install {
 	 * Reset any notices added to admin.
 	 */
 	private static function remove_admin_notices() {
-		include_once( dirname( __FILE__ ) . '/admin/class-evf-admin-notices.php' );
+		include_once dirname( __FILE__ ) . '/admin/class-evf-admin-notices.php';
 		EVF_Admin_Notices::remove_all_notices();
 	}
 
@@ -243,7 +243,6 @@ class EVF_Install {
 			'interval' => 2635200,
 			'display'  => __( 'Monthly', 'everest-forms' ),
 		);
-
 		return $schedules;
 	}
 
@@ -261,8 +260,8 @@ class EVF_Install {
 	 * Sets up the default options used on the settings page.
 	 */
 	private static function create_options() {
-		// Include settings so that we can run through defaults.l
-		include_once( dirname( __FILE__ ) . '/admin/class-evf-admin-settings.php' );
+		// Include settings so that we can run through defaults.
+		include_once dirname( __FILE__ ) . '/admin/class-evf-admin-settings.php';
 
 		$settings = EVF_Admin_Settings::get_settings_pages();
 
@@ -299,27 +298,40 @@ class EVF_Install {
 	/**
 	 * Get Table schema.
 	 *
-	 * https://github.com/everest-forms/everest-forms/wiki/Database-Description/
-	 *
-	 * A note on indexes; Indexes have a maximum size of 767 bytes. Historically, we haven't need to be concerned about that.
-	 * As of WordPress 4.2, however, we moved to utf8mb4, which uses 4 bytes per character. This means that an index which
-	 * used to have room for floor(767/3) = 255 characters, now only has room for floor(767/4) = 191 characters.
-	 *
-	 * Changing indexes may cause duplicate index notices in logs due to https://core.trac.wordpress.org/ticket/34870 but dropping
-	 * indexes first causes too much load on some servers/larger DB.
+	 * When adding or removing a table, make sure to update the list of tables in EVF_Install::get_tables().
 	 *
 	 * @return string
 	 */
 	private static function get_schema() {
 		global $wpdb;
 
-		$collate = '';
+		$charset_collate = '';
 
 		if ( $wpdb->has_cap( 'collation' ) ) {
-			$collate = $wpdb->get_charset_collate();
+			$charset_collate = $wpdb->get_charset_collate();
 		}
 
 		$tables = "
+CREATE TABLE {$wpdb->prefix}evf_entries (
+  entry_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  form_id BIGINT UNSIGNED NOT NULL,
+  user_id BIGINT UNSIGNED NOT NULL,
+  user_device varchar(60) NOT NULL,
+  referer BIGINT UNSIGNED NOT NULL,
+  status varchar(20) NOT NULL,
+  date_created datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY  (entry_id),
+  KEY form_id (form_id)
+) $charset_collate;
+CREATE TABLE {$wpdb->prefix}evf_entrymeta (
+  meta_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  entry_id BIGINT UNSIGNED NOT NULL,
+  meta_key varchar(255) default NULL,
+  meta_value longtext NULL,
+  PRIMARY KEY  (meta_id),
+  KEY entry_id (entry_id),
+  KEY meta_key (meta_key(32))
+) $charset_collate;
 CREATE TABLE {$wpdb->prefix}evf_sessions (
   session_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   session_key char(32) NOT NULL,
@@ -327,10 +339,51 @@ CREATE TABLE {$wpdb->prefix}evf_sessions (
   session_expiry BIGINT UNSIGNED NOT NULL,
   PRIMARY KEY  (session_key),
   UNIQUE KEY session_id (session_id)
-) $collate;
+) $charset_collate;
 		";
 
 		return $tables;
+	}
+
+	/**
+	 * Return a list of UsageMonitor tables. Used to make sure all UM tables are dropped when uninstalling the plugin
+	 * in a single site or multi site environment.
+	 *
+	 * @return array UM tables.
+	 */
+	public static function get_tables() {
+		global $wpdb;
+
+		$tables = array(
+			"{$wpdb->prefix}evf_entries",
+			"{$wpdb->prefix}evf_entrymeta",
+			"{$wpdb->prefix}evf_sessions",
+		);
+
+		return $tables;
+	}
+
+	/**
+	 * Drop UsageMonitor tables.
+	 */
+	public static function drop_tables() {
+		global $wpdb;
+
+		$tables = self::get_tables();
+
+		foreach ( $tables as $table ) {
+			$wpdb->query( "DROP TABLE IF EXISTS {$table}" ); // WPCS: unprepared SQL ok.
+		}
+	}
+
+	/**
+	 * Uninstall tables when MU blog is deleted.
+	 *
+	 * @param  array $tables List of tables that will be deleted by WP.
+	 * @return string[]
+	 */
+	public static function wpmu_drop_tables( $tables ) {
+		return array_merge( $tables, self::get_tables() );
 	}
 
 	/**
@@ -365,15 +418,14 @@ CREATE TABLE {$wpdb->prefix}evf_sessions (
 		$capabilities = array();
 
 		$capabilities['core'] = array(
-			'manage_everest_forms'
+			'manage_everest_forms',
 		);
 
 		$capability_types = array( 'everest_form' );
 
 		foreach ( $capability_types as $capability_type ) {
-
 			$capabilities[ $capability_type ] = array(
-				// Post type
+				// Post type.
 				"edit_{$capability_type}",
 				"duplicate_{$capability_type}",
 				"read_{$capability_type}",
@@ -389,7 +441,7 @@ CREATE TABLE {$wpdb->prefix}evf_sessions (
 				"edit_private_{$capability_type}s",
 				"edit_published_{$capability_type}s",
 
-				// Terms
+				// Terms.
 				"manage_{$capability_type}_terms",
 				"edit_{$capability_type}_terms",
 				"delete_{$capability_type}_terms",
@@ -476,27 +528,13 @@ CREATE TABLE {$wpdb->prefix}evf_sessions (
 		if ( EVF_PLUGIN_BASENAME == $plugin_file ) {
 			$new_plugin_meta = array(
 				'docs'    => '<a href="' . esc_url( apply_filters( 'everest_forms_docs_url', 'https://docs.wpeverest.com/documentation/plugins/everest-forms/' ) ) . '" aria-label="' . esc_attr__( 'View Everest Forms documentation', 'everest-forms' ) . '">' . esc_html__( 'Docs', 'everest-forms' ) . '</a>',
-				'support' => '<a href="' . esc_url( apply_filters( 'everest_forms_support_url', 'https://wpeverest.com/support-forum/' ) ) . '" aria-label="' . esc_attr__( 'Visit premium customer support', 'everest-forms' ) . '">' . esc_html__( 'Premium support', 'everest-forms' ) . '</a>',
+				'support' => '<a href="' . esc_url( apply_filters( 'everest_forms_support_url', 'https://wpeverest.com/support-forum/' ) ) . '" aria-label="' . esc_attr__( 'Visit free customer support', 'everest-forms' ) . '">' . esc_html__( 'Free support', 'everest-forms' ) . '</a>',
 			);
 
 			return array_merge( $plugin_meta, $new_plugin_meta );
 		}
 
 		return (array) $plugin_meta;
-	}
-
-	/**
-	 * Uninstall tables when MU blog is deleted.
-	 *
-	 * @param  array $tables List of tables that will be deleted by WP.
-	 * @return string[]
-	 */
-	public static function wpmu_drop_tables( $tables ) {
-		global $wpdb;
-
-		$tables[] = $wpdb->prefix . 'evf_sessions';
-
-		return $tables;
 	}
 }
 

@@ -20,15 +20,16 @@ wp_clear_scheduled_hook( 'everest_forms_cleanup_sessions' );
  * and to ensure only the site owner can perform this action.
  */
 if ( defined( 'EVF_REMOVE_ALL_DATA' ) && true === EVF_REMOVE_ALL_DATA ) {
-	// Roles + caps.
 	include_once( dirname( __FILE__ ) . '/includes/class-evf-install.php' );
+
+	// Roles + caps.
 	EVF_Install::remove_roles();
+
+	// Tables.
+	EVF_Install::drop_tables();
 
 	// Pages.
 	wp_trash_post( get_option( 'evf_default_form_page_id' ) );
-
-	// Tables.
-	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}evf_sessions" );
 
 	// Delete options.
 	$wpdb->query( "DELETE FROM $wpdb->options WHERE option_name LIKE 'evf\_%';" );
