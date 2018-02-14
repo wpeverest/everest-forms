@@ -133,12 +133,12 @@ class EVF_Admin_Menus {
 	 * Everest forms admin actions.
 	 */
 	public function actions() {
-
 		if ( isset( $_GET['page'] ) && 'everest-forms' === $_GET['page'] ) {
 			// Bulk actions
-			if ( isset( $_REQUEST['action'] ) && isset( $_REQUEST['everest_form'] ) ) {
+			if ( isset( $_REQUEST['action'] ) && isset( $_REQUEST['form'] ) ) {
 				$this->bulk_actions();
 			}
+
 			// Empty trash
 			if ( isset( $_GET['empty_trash'] ) ) {
 				$this->empty_trash();
@@ -347,7 +347,7 @@ class EVF_Admin_Menus {
 			wp_die( __( 'You do not have permissions to edit forms!', 'everest-forms' ) );
 		}
 
-		$forms = array_map( 'absint', (array) $_REQUEST['everest_form'] );
+		$forms = array_map( 'absint', (array) $_REQUEST['form'] );
 
 		switch ( $_REQUEST['action'] ) {
 			case 'trash' :
