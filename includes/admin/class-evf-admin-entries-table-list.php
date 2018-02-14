@@ -2,37 +2,34 @@
 /**
  * EverestForms Entries Table List
  *
- * @author   WPEverest
- * @category Admin
- * @package  EverestForms/Admin
- * @version  1.0.0
+ * @package EverestForms\Admin
+ * @version 1.0.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 if ( ! class_exists( 'WP_List_Table' ) ) {
-	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
+	require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 }
 
 class EVF_Admin_Entries_Table_List extends WP_List_Table {
 
-	public $post_type_config = array(
-		'singular' => 'everest_form',
-		'plural'   => 'everest_forms',
-		'type'     => 'everest_form'
-	);
-	
 	/**
 	 * Initialize the log table list.
 	 */
 	public function __construct() {
 		parent::__construct( array(
-			'singular' => $this->post_type_config['singular'],
-			'plural'   => $this->post_type_config['plural'],
+			'singular' => 'entry',
+			'plural'   => 'entries',
 			'ajax'     => false,
 		) );
+	}
+
+	/**
+	 * No items found text.
+	 */
+	public function no_items() {
+		esc_html_e( 'No Entries found.', 'everest-forms' );
 	}
 
 	/**
@@ -42,12 +39,22 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 */
 	public function get_columns() {
 		return array(
-			'cb'        => '<input type="checkbox" />',
-			'id'     => __( 'ID', 'everest-forms' ),
-			'name' => __( 'Name', 'everest-forms' ),
-			'email_address'    => __( 'Email Address', 'everest-forms' ),
-			'date'      => __( 'Entry Date', 'everest-forms' ),
-			'actions'      => __( 'Action', 'everest-forms' ),				
+			'cb'      => '<input type="checkbox" />',
+			'name'    => __( 'Entry', 'everest-forms' ),
+			'email'   => __( 'Email', 'everest-forms' ),
+			'date'    => __( 'Entry Date', 'everest-forms' ),
+			'actions' => __( 'Action', 'everest-forms' ),
+		);
+	}
+
+	/**
+	 * Get a list of sortable columns.
+	 *
+	 * @return array
+	 */
+	protected function get_sortable_columns() {
+		return array(
+			'date' => array( 'date', false ),
 		);
 	}
 
@@ -62,7 +69,6 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		return sprintf( '<input type="checkbox" name="%1$s[]" value="%2$s" />', $this->_args['singular'], $items->evf_entry_id );
 	}
 
-
 	/**
 	 * Return id column.
 	 *
@@ -71,7 +77,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 * @return string
 	 */
 	public function column_id( $items ) {
-		
+
 		$actions = array(
             'view'      => sprintf( '<a href="?page=%s&action=%s&id=%s">View</a>', $_REQUEST['page'], 'view', $items->evf_entry_id ),
             'trash'    => sprintf( '<a href="?page=%s&action=%s&id=%s">Trash</a>', $_REQUEST['page'],'trash', $items->evf_entry_id ),
@@ -135,23 +141,23 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	protected function get_views() {
 		global $wpdb;
 		$status_links = array();
-		
+
 		$selected_form = get_option( 'evf_selected_form_in_entries', 'All forms');
-	    
+
 	    $selected_form = (int) $selected_form;
 
 		$form_id = ( isset( $_POST['select-form'] ) && isset( $_POST['form_id'] ) ) ? $_POST['form_id'] : $selected_form;
 
 	    if( ( isset( $form_id )  ) && is_numeric( $form_id )  && $form_id !== 0) {
-	    
+
 			$query = 'SELECT id FROM wp_evf_entries WHERE form_id = '. $form_id .' AND status = "publish" ';
 			$query_1 = 'SELECT id FROM wp_evf_entries WHERE form_id = '. $form_id .' AND status = "trash" ';
-			
+
 		} else {
 			$query = 'SELECT id FROM wp_evf_entries WHERE status = "publish" ';
-			$query_1 = 'SELECT id FROM wp_evf_entries WHERE status = "trash" ';		
+			$query_1 = 'SELECT id FROM wp_evf_entries WHERE status = "trash" ';
 		}
-		
+
 	   	$results = $wpdb->get_results( $query );
 
 	   	$total_items = count($results);
@@ -159,11 +165,11 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	   	$results = $wpdb->get_results( $query_1 );
 
 	   	$total_trash_items = count($results);
-		
-		/* translators: %s: count */
-		$status_links['all'] = "<a href='admin.php?page=display-evf-entries&status=all'>" . sprintf( _nx( 'All <span class="count">(%s)</span>', 'All <span class="count">(%s)</span>', $total_items, 'entries', 'everest-forms' ), number_format_i18n( $total_items ) ) . '</a>';
 
-		$status_links['trash'] = "<a href='admin.php?page=display-evf-entries&status=trash'>" . sprintf( _nx( 'Trash <span class="count">(%s)</span>', 'Trash <span class="count">(%s)</span>', $total_trash_items, 'entries', 'everest-forms' ), number_format_i18n( $total_trash_items ) ) . '</a>';
+		/* translators: %s: count */
+		$status_links['all'] = "<a href='admin.php?page=evf-entries&status=all'>" . sprintf( _nx( 'All <span class="count">(%s)</span>', 'All <span class="count">(%s)</span>', $total_items, 'entries', 'everest-forms' ), number_format_i18n( $total_items ) ) . '</a>';
+
+		$status_links['trash'] = "<a href='admin.php?page=evf-entries&status=trash'>" . sprintf( _nx( 'Trash <span class="count">(%s)</span>', 'Trash <span class="count">(%s)</span>', $total_trash_items, 'entries', 'everest-forms' ), number_format_i18n( $total_trash_items ) ) . '</a>';
 
 		return $status_links;
 	}
@@ -215,22 +221,6 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	}
 
 	/**
-	 * Get a list of sortable columns.
-	 *
-	 * @return array
-	 */
-	protected function get_sortable_columns() {
-		return array(
-			'id'  => array( 'id', false ),
-			'form_id' => array('form_id', false ),
-			'name' => array( 'name', false ),
-			'email_address'   => array( 'email_address', false ),
-			'date'   => array( 'date', false ),
-			'actions' => array( 'actions', false ),
-		);
-	}
-
-	/**
 	 * Get bulk actions.
 	 *
 	 * @return array
@@ -252,21 +242,10 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 *
 	 * @param string $which
 	 */
-	protected function extra_tablenav( $which ) { 				        
-		
+	protected function extra_tablenav( $which ) {
 		if ( 'top' == $which && isset( $_GET['status'] ) && 'trash' == $_GET['status'] && current_user_can( 'delete_posts' ) ) {
-
 			echo '<div class="alignleft actions"><a id="delete_all" class="button apply" href="' . esc_url( wp_nonce_url( admin_url( 'admin.php?page=display-evf-entries&status=trash&empty_trash=1' ), 'empty_trash' ) ) . '">' . __( 'Empty trash', 'everest-forms' ) . '</a></div>';
 		}
-	}
-
-	/**
-	 * Get a list of hidden columns.
-	 *
-	 * @return array
-	 */
-	protected function get_hidden_columns() {
-		return get_hidden_columns( $this->screen );
 	}
 
 	/**
@@ -277,19 +256,13 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	public function prepare_items( $args = array() ) {
 		global $wpdb;
 
-		$per_page = $this->get_items_per_page( 'form_entries_per_page', 20 );
-		$columns = $this->get_columns();
-		$hidden   = $this->get_hidden_columns();
-		$sortable = $this->get_sortable_columns();
-
-		$this->_column_headers = array($columns, $hidden, $sortable);
-
+		$per_page     = $this->get_items_per_page( 'evf_forms_per_page' );
 		$current_page = $this->get_pagenum();
 
-	    $query = 'SELECT form_id, evf_entry_id, created_at, meta_key, meta_value FROM wp_evf_entries INNER JOIN wp_evf_entrymeta WHERE wp_evf_entries.id = wp_evf_entrymeta.evf_entry_id AND status = "publish" ';
-	    
+	    $query = 'SELECT form_id, entry_id, date_created, meta_key, meta_value FROM wp_evf_entries INNER JOIN wp_evf_entrymeta WHERE wp_evf_entries.id = wp_evf_entrymeta.evf_entry_id AND status = "publish" ';
+
 	    $selected_form = get_option( 'evf_selected_form_in_entries', 'All forms');
-	    
+
 	    $selected_form = (int) $selected_form;
 
 	    $form_id = ( isset( $_POST['select-form'] ) && isset( $_POST['form_id'] ) ) ? $_POST['form_id'] : $selected_form;
@@ -303,7 +276,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	    }
 
 	   	$results = $wpdb->get_results( $query );
-	   
+
 	   	$array = [];
 
 		foreach( $results as $val ) {
@@ -314,30 +287,18 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		}
 
 		$array = json_decode( json_encode( array_values( $array ) ) );
-		
-		$this->items = $array;	 
+
+		$this->items = $array;
 
 		$total_items = count( $this->items );
- 		
+
  		$current_page = $this->get_pagenum();
-		
+
 		$this->items = array_slice( $this->items,( ( $current_page-1 ) * $per_page ),$per_page );
 
 		$this->set_pagination_args( array(
-    		'total_items' => $total_items,                 
-    		'per_page'    => $per_page                     
+    		'total_items' => $total_items,
+    		'per_page'    => $per_page
  		) );
-    	
-	}
-
-	/**
-	 * Set _column_headers property for table list
-	 */
-	protected function prepare_column_headers() {
-		$this->_column_headers = array(
-			$this->get_columns(),
-			array(),
-			$this->get_sortable_columns(),
-		);
 	}
 }

@@ -430,7 +430,7 @@ class EVF_Admin_Menus {
 	 * Init the entries page.
 	 */
 	public function entries_page() {
-		EVF_Form_Entry_Manager::page_output();
+		EVF_Admin_Entries::page_output();
 	}
 
 	/**
