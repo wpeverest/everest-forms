@@ -8,9 +8,7 @@
  * @version  1.0.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 if ( class_exists( 'EVF_Admin_Menus', false ) ) {
 	return new EVF_Admin_Menus();
