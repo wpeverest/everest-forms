@@ -82,7 +82,7 @@ class EVF_Admin_Menus {
 		global $forms_table_list;
 
 		if ( ! isset( $_GET['edit-evf-form'] ) ) { // WPCS: input var okay, CSRF ok.
-			$forms_table_list = new EVF_Admin_Form_Table_List();
+			$forms_table_list = new EVF_Admin_Forms_Table_List();
 
 			// Add screen option.
 			add_screen_option( 'per_page', array(
@@ -414,7 +414,7 @@ class EVF_Admin_Menus {
 	 * Init the settings page.
 	 */
 	public function everest_forms_page() {
-		EVF_Admin_Form_List::output();
+		EVF_Admin_Forms_List::output();
 	}
 
 	/**
