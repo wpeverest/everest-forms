@@ -1,16 +1,19 @@
+
 @import "scss/backbone";
 @import "scss/colors";
-/**
-add form tempalte page CSS
-**/
-*{
-	box-sizing: border-box;
-}
 
+/**
+ * Styling begins
+ */
 .everest-forms_page_edit-evf-form {
+	* {
+		box-sizing: border-box;
+	}
+
 	#wpcontent {
 		padding-left: 0;
 	}
+
 	.everest-forms {
 		width: 600px;
 		margin: 100px auto 50px;
