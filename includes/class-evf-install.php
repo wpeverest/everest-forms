@@ -45,15 +45,13 @@ class EVF_Install {
 		add_filter( 'plugin_row_meta', array( __CLASS__, 'plugin_row_meta' ), 10, 2 );
 		add_filter( 'wpmu_drop_tables', array( __CLASS__, 'wpmu_drop_tables' ) );
 		add_filter( 'cron_schedules', array( __CLASS__, 'cron_schedules' ) );
-		add_action( 'everest_forms_plugin_background_installer', array( __CLASS__, 'background_installer' ), 10, 2 );
-		add_action( 'everest_forms_theme_background_installer', array( __CLASS__, 'background_installer' ), 10, 2 );
 	}
 
 	/**
 	 * Init background updates
 	 */
 	public static function init_background_updater() {
-		include_once( dirname( __FILE__ ) . '/class-evf-background-updater.php' );
+		include_once dirname( __FILE__ ) . '/class-evf-background-updater.php';
 		self::$background_updater = new EVF_Background_Updater();
 	}
 
@@ -63,7 +61,7 @@ class EVF_Install {
 	 * This check is done on all requests and runs if the versions do not match.
 	 */
 	public static function check_version() {
-		if ( ! defined( 'IFRAME_REQUEST' ) && get_option( 'everest_forms_version' ) !== EVF()->version ) {
+		if ( ! defined( 'IFRAME_REQUEST' ) && version_compare( get_option( 'everest_forms_version' ), EVF()->version, '<' ) ) {
 			self::install();
 			do_action( 'everest_forms_updated' );
 		}
@@ -124,7 +122,7 @@ class EVF_Install {
 	 * Reset any notices added to admin.
 	 */
 	private static function remove_admin_notices() {
-		include_once( dirname( __FILE__ ) . '/admin/class-evf-admin-notices.php' );
+		include_once dirname( __FILE__ ) . '/admin/class-evf-admin-notices.php';
 		EVF_Admin_Notices::remove_all_notices();
 	}
 
@@ -245,7 +243,6 @@ class EVF_Install {
 			'interval' => 2635200,
 			'display'  => __( 'Monthly', 'everest-forms' ),
 		);
-
 		return $schedules;
 	}
 
@@ -263,8 +260,8 @@ class EVF_Install {
 	 * Sets up the default options used on the settings page.
 	 */
 	private static function create_options() {
-		// Include settings so that we can run through defaults.l
-		include_once( dirname( __FILE__ ) . '/admin/class-evf-admin-settings.php' );
+		// Include settings so that we can run through defaults.
+		include_once dirname( __FILE__ ) . '/admin/class-evf-admin-settings.php';
 
 		$settings = EVF_Admin_Settings::get_settings_pages();
 
@@ -289,76 +286,104 @@ class EVF_Install {
 	 * Set up the database tables which the plugin needs to function.
 	 */
 	private static function create_tables() {
-		/**
-		 * Get Table schema.
-		 *
-		 * https://github.com/everest-forms/everest-forms/wiki/Database-Description/
-		 *
-		 * A note on indexes; Indexes have a maximum size of 767 bytes. Historically, we haven't need to be concerned about that.
-		 * As of WordPress 4.2, however, we moved to utf8mb4, which uses 4 bytes per character. This means that an index which
-		 * used to have room for floor(767/3) = 255 characters, now only has room for floor(767/4) = 191 characters.
-		 *
-		 * Changing indexes may cause duplicate index notices in logs due to https://core.trac.wordpress.org/ticket/34870 but dropping
-		 * indexes first causes too much load on some servers/larger DB.
-		 *
-		 * @return string
-		 */
-
 		global $wpdb;
 
 		$wpdb->hide_errors();
-       	
-       	$collate = '';
-
-        if ( $wpdb->has_cap( 'collation' ) ) {
-            if ( ! empty($wpdb->charset ) ) {
-                $collate .= "DEFAULT CHARACTER SET $wpdb->charset";
-            }
-
-            if ( ! empty($wpdb->collate ) ) {
-                $collate .= " COLLATE $wpdb->collate";
-            }
-        }
-
-        $tables = array(
-            "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}evf_entries` (
-                `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-                `form_id` bigint(20) unsigned DEFAULT NULL,
-                `user_id` bigint(20) unsigned DEFAULT NULL,
-                `user_device` varchar(50) DEFAULT NULL,
-                `referer` varchar(255) DEFAULT NULL,
-                `status` varchar(10) DEFAULT 'publish',
-                `created_at` datetime DEFAULT NULL,
-                PRIMARY KEY (`id`),
-                KEY `form_id` (`form_id`)
-            ) $collate;",
-
-            "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}evf_entrymeta` (
-                `meta_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-                `evf_entry_id` bigint(20) unsigned DEFAULT NULL,
-                `meta_key` varchar(255) DEFAULT NULL,
-                `meta_value` longtext,
-                PRIMARY KEY (`meta_id`),
-                KEY `meta_key` (`meta_key`),
-                KEY `entry_id` (`evf_entry_id`)
-            ) $collate;",
-
-             "CREATE TABLE {$wpdb->prefix}evf_sessions (
-				  session_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-				  session_key char(32) NOT NULL,
-				  session_value longtext NOT NULL,
-				  session_expiry BIGINT UNSIGNED NOT NULL,
-				  PRIMARY KEY  (session_key),
-				  UNIQUE KEY session_id (session_id)
-				) $collate;
-			"
-        );
 
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
+		dbDelta( self::get_schema() );
+	}
+
+	/**
+	 * Get Table schema.
+	 *
+	 * When adding or removing a table, make sure to update the list of tables in EVF_Install::get_tables().
+	 *
+	 * @return string
+	 */
+	private static function get_schema() {
+		global $wpdb;
+
+		$charset_collate = '';
+
+		if ( $wpdb->has_cap( 'collation' ) ) {
+			$charset_collate = $wpdb->get_charset_collate();
+		}
+
+		$tables = "
+CREATE TABLE {$wpdb->prefix}evf_entries (
+  entry_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  form_id BIGINT UNSIGNED NOT NULL,
+  user_id BIGINT UNSIGNED NOT NULL,
+  user_device varchar(60) NOT NULL,
+  referer BIGINT UNSIGNED NOT NULL,
+  status varchar(20) NOT NULL,
+  date_created datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY  (entry_id),
+  KEY form_id (form_id)
+) $charset_collate;
+CREATE TABLE {$wpdb->prefix}evf_entrymeta (
+  meta_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  entry_id BIGINT UNSIGNED NOT NULL,
+  meta_key varchar(255) default NULL,
+  meta_value longtext NULL,
+  PRIMARY KEY  (meta_id),
+  KEY entry_id (entry_id),
+  KEY meta_key (meta_key(32))
+) $charset_collate;
+CREATE TABLE {$wpdb->prefix}evf_sessions (
+  session_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  session_key char(32) NOT NULL,
+  session_value longtext NOT NULL,
+  session_expiry BIGINT UNSIGNED NOT NULL,
+  PRIMARY KEY  (session_key),
+  UNIQUE KEY session_id (session_id)
+) $charset_collate;
+		";
+
+		return $tables;
+	}
+
+	/**
+	 * Return a list of UsageMonitor tables. Used to make sure all UM tables are dropped when uninstalling the plugin
+	 * in a single site or multi site environment.
+	 *
+	 * @return array UM tables.
+	 */
+	public static function get_tables() {
+		global $wpdb;
+
+		$tables = array(
+			"{$wpdb->prefix}evf_entries",
+			"{$wpdb->prefix}evf_entrymeta",
+			"{$wpdb->prefix}evf_sessions",
+		);
+
+		return $tables;
+	}
+
+	/**
+	 * Drop UsageMonitor tables.
+	 */
+	public static function drop_tables() {
+		global $wpdb;
+
+		$tables = self::get_tables();
+
 		foreach ( $tables as $table ) {
-            dbDelta( $table );
-        }
+			$wpdb->query( "DROP TABLE IF EXISTS {$table}" ); // WPCS: unprepared SQL ok.
+		}
+	}
+
+	/**
+	 * Uninstall tables when MU blog is deleted.
+	 *
+	 * @param  array $tables List of tables that will be deleted by WP.
+	 * @return string[]
+	 */
+	public static function wpmu_drop_tables( $tables ) {
+		return array_merge( $tables, self::get_tables() );
 	}
 
 	/**
@@ -393,15 +418,14 @@ class EVF_Install {
 		$capabilities = array();
 
 		$capabilities['core'] = array(
-			'manage_everest_forms'
+			'manage_everest_forms',
 		);
 
 		$capability_types = array( 'everest_form' );
 
 		foreach ( $capability_types as $capability_type ) {
-
 			$capabilities[ $capability_type ] = array(
-				// Post type
+				// Post type.
 				"edit_{$capability_type}",
 				"duplicate_{$capability_type}",
 				"read_{$capability_type}",
@@ -417,7 +441,7 @@ class EVF_Install {
 				"edit_private_{$capability_type}s",
 				"edit_published_{$capability_type}s",
 
-				// Terms
+				// Terms.
 				"manage_{$capability_type}_terms",
 				"edit_{$capability_type}_terms",
 				"delete_{$capability_type}_terms",
@@ -504,242 +528,13 @@ class EVF_Install {
 		if ( EVF_PLUGIN_BASENAME == $plugin_file ) {
 			$new_plugin_meta = array(
 				'docs'    => '<a href="' . esc_url( apply_filters( 'everest_forms_docs_url', 'https://docs.wpeverest.com/documentation/plugins/everest-forms/' ) ) . '" aria-label="' . esc_attr__( 'View Everest Forms documentation', 'everest-forms' ) . '">' . esc_html__( 'Docs', 'everest-forms' ) . '</a>',
-				'support' => '<a href="' . esc_url( apply_filters( 'everest_forms_support_url', 'https://wpeverest.com/support-forum/' ) ) . '" aria-label="' . esc_attr__( 'Visit premium customer support', 'everest-forms' ) . '">' . esc_html__( 'Premium support', 'everest-forms' ) . '</a>',
+				'support' => '<a href="' . esc_url( apply_filters( 'everest_forms_support_url', 'https://wpeverest.com/support-forum/' ) ) . '" aria-label="' . esc_attr__( 'Visit free customer support', 'everest-forms' ) . '">' . esc_html__( 'Free support', 'everest-forms' ) . '</a>',
 			);
 
 			return array_merge( $plugin_meta, $new_plugin_meta );
 		}
 
 		return (array) $plugin_meta;
-	}
-
-	/**
-	 * Uninstall tables when MU blog is deleted.
-	 *
-	 * @param  array $tables List of tables that will be deleted by WP.
-	 * @return string[]
-	 */
-	public static function wpmu_drop_tables( $tables ) {
-		global $wpdb;
-
-		$tables[] = $wpdb->prefix . 'evf_sessions';
-
-		return $tables;
-	}
-
-	/**
-	 * Get slug from path
-	 *
-	 * @param  string $key Plugin relative path. Example: woocommerce/woocommerce.php.
-	 * @return string
-	 */
-	private static function format_plugin_slug( $key ) {
-		$slug = explode( '/', $key );
-		$slug = explode( '.', end( $slug ) );
-		return $slug[0];
-	}
-
-	/**
-	 * Install a plugin from .org in the background via a cron job (used by
-	 * installer - opt in).
-	 *
-	 * @param  string $plugin_to_install_id Plugin ID.
-	 * @param  array  $plugin_to_install Plugin information.
-	 * @throws Exception If unable to proceed with plugin installation.
-	 */
-	public static function background_installer( $plugin_to_install_id, $plugin_to_install ) {
-		// Explicitly clear the event.
-		wp_clear_scheduled_hook( 'everest_forms_plugin_background_installer', func_get_args() );
-
-		if ( ! empty( $plugin_to_install['repo-slug'] ) ) {
-			require_once ABSPATH . 'wp-admin/includes/file.php';
-			require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
-			require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
-			require_once ABSPATH . 'wp-admin/includes/plugin.php';
-
-			WP_Filesystem();
-
-			$skin              = new Automatic_Upgrader_Skin();
-			$upgrader          = new WP_Upgrader( $skin );
-			$installed_plugins = array_map( array( __CLASS__, 'format_plugin_slug' ), array_keys( get_plugins() ) );
-			$plugin_slug       = $plugin_to_install['repo-slug'];
-			$plugin            = $plugin_slug . '/' . $plugin_slug . '.php';
-			$installed         = false;
-			$activate          = false;
-
-			// See if the plugin is installed already.
-			if ( in_array( $plugin_to_install['repo-slug'], $installed_plugins ) ) {
-				$installed = true;
-				$activate  = ! is_plugin_active( $plugin );
-			}
-
-			// Install this thing!
-			if ( ! $installed ) {
-				// Suppress feedback.
-				ob_start();
-
-				try {
-					$plugin_information = plugins_api(
-						'plugin_information',
-						array(
-							'slug'   => $plugin_to_install['repo-slug'],
-							'fields' => array(
-								'short_description' => false,
-								'sections'          => false,
-								'requires'          => false,
-								'rating'            => false,
-								'ratings'           => false,
-								'downloaded'        => false,
-								'last_updated'      => false,
-								'added'             => false,
-								'tags'              => false,
-								'homepage'          => false,
-								'donate_link'       => false,
-								'author_profile'    => false,
-								'author'            => false,
-							),
-						)
-					);
-
-					if ( is_wp_error( $plugin_information ) ) {
-						throw new Exception( $plugin_information->get_error_message() );
-					}
-
-					$package  = $plugin_information->download_link;
-					$download = $upgrader->download_package( $package );
-
-					if ( is_wp_error( $download ) ) {
-						throw new Exception( $download->get_error_message() );
-					}
-
-					$working_dir = $upgrader->unpack_package( $download, true );
-
-					if ( is_wp_error( $working_dir ) ) {
-						throw new Exception( $working_dir->get_error_message() );
-					}
-
-					$result = $upgrader->install_package(
-						array(
-							'source'                      => $working_dir,
-							'destination'                 => WP_PLUGIN_DIR,
-							'clear_destination'           => false,
-							'abort_if_destination_exists' => false,
-							'clear_working'               => true,
-							'hook_extra'                  => array(
-								'type'   => 'plugin',
-								'action' => 'install',
-							),
-						)
-					);
-
-					if ( is_wp_error( $result ) ) {
-						throw new Exception( $result->get_error_message() );
-					}
-
-					$activate = true;
-
-				} catch ( Exception $e ) {
-					EVF_Admin_Notices::add_custom_notice(
-						$plugin_to_install_id . '_install_error',
-						sprintf(
-							// translators: 1: plugin name, 2: error message, 3: URL to install plugin manually.
-							__( '%1$s could not be installed (%2$s). <a href="%3$s">Please install it manually by clicking here.</a>', 'everest-forms' ),
-							$plugin_to_install['name'],
-							$e->getMessage(),
-							esc_url( admin_url( 'index.php?wc-install-plugin-redirect=' . $plugin_to_install['repo-slug'] ) )
-						)
-					);
-				}
-
-				// Discard feedback.
-				ob_end_clean();
-			}
-
-			wp_clean_plugins_cache();
-
-			// Activate this thing.
-			if ( $activate ) {
-				try {
-					$result = activate_plugin( $plugin );
-
-					if ( is_wp_error( $result ) ) {
-						throw new Exception( $result->get_error_message() );
-					}
-				} catch ( Exception $e ) {
-					EVF_Admin_Notices::add_custom_notice(
-						$plugin_to_install_id . '_install_error',
-						sprintf(
-							// translators: 1: plugin name, 2: URL to WP plugin page.
-							__( '%1$s was installed but could not be activated. <a href="%2$s">Please activate it manually by clicking here.</a>', 'everest-forms' ),
-							$plugin_to_install['name'],
-							admin_url( 'plugins.php' )
-						)
-					);
-				}
-			}
-		}
-	}
-
-	/**
-	 * Install a theme from .org in the background via a cron job (used by installer - opt in).
-	 *
-	 * @param  string $theme_slug Theme slug.
-	 * @throws Exception If unable to proceed with theme installation.
-	 */
-	public static function theme_background_installer( $theme_slug ) {
-		// Explicitly clear the event.
-		wp_clear_scheduled_hook( 'everest_forms_theme_background_installer', func_get_args() );
-
-		if ( ! empty( $theme_slug ) ) {
-			// Suppress feedback.
-			ob_start();
-
-			try {
-				$theme = wp_get_theme( $theme_slug );
-
-				if ( ! $theme->exists() ) {
-					require_once ABSPATH . 'wp-admin/includes/file.php';
-					include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
-					include_once ABSPATH . 'wp-admin/includes/theme.php';
-
-					WP_Filesystem();
-
-					$skin     = new Automatic_Upgrader_Skin();
-					$upgrader = new Theme_Upgrader( $skin );
-					$api      = themes_api(
-						'theme_information', array(
-							'slug'   => $theme_slug,
-							'fields' => array( 'sections' => false ),
-						)
-					);
-					$result   = $upgrader->install( $api->download_link );
-
-					if ( is_wp_error( $result ) ) {
-						throw new Exception( $result->get_error_message() );
-					} elseif ( is_wp_error( $skin->result ) ) {
-						throw new Exception( $skin->result->get_error_message() );
-					} elseif ( is_null( $result ) ) {
-						throw new Exception( 'Unable to connect to the filesystem. Please confirm your credentials.' );
-					}
-				}
-
-				switch_theme( $theme_slug );
-			} catch ( Exception $e ) {
-				EVF_Admin_Notices::add_custom_notice(
-					$theme_slug . '_install_error',
-					sprintf(
-						// translators: 1: theme slug, 2: error message, 3: URL to install theme manually.
-						__( '%1$s could not be installed (%2$s). <a href="%3$s">Please install it manually by clicking here.</a>', 'everest-forms' ),
-						$theme_slug,
-						$e->getMessage(),
-						esc_url( admin_url( 'update.php?action=install-theme&theme=' . $theme_slug . '&_wpnonce=' . wp_create_nonce( 'install-theme_' . $theme_slug ) ) )
-					)
-				);
-			}
-
-			// Discard feedback.
-			ob_end_clean();
-		}
 	}
 }
 
