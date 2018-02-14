@@ -9,9 +9,9 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * EVF_Admin_Forms_List Class.
+ * EVF_Admin_Forms Class.
  */
-class EVF_Admin_Forms_List {
+class EVF_Admin_Forms {
 
 	/**
 	 * Handles output of the reports page in admin.

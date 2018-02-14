@@ -414,7 +414,7 @@ class EVF_Admin_Menus {
 	 * Init the settings page.
 	 */
 	public function everest_forms_page() {
-		EVF_Admin_Forms_List::output();
+		EVF_Admin_Forms::output();
 	}
 
 	/**
