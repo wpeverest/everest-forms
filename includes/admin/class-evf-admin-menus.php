@@ -388,16 +388,16 @@ class EVF_Admin_Menus {
 
 		// Save settings if data has been posted.
 		if ( apply_filters( '' !== $current_section ? "everest_forms_save_settings_{$current_tab}_{$current_section}" : "everest_forms_save_settings_{$current_tab}", ! empty( $_POST ) ) ) { // WPCS: input var okay, CSRF ok.
-			UM_Admin_Settings::save();
+			EVF_Admin_Settings::save();
 		}
 
 		// Add any posted messages.
 		if ( ! empty( $_GET['evf_error'] ) ) { // WPCS: input var okay, CSRF ok.
-			UM_Admin_Settings::add_error( wp_kses_post( wp_unslash( $_GET['um_error'] ) ) ); // WPCS: input var okay, CSRF ok.
+			EVF_Admin_Settings::add_error( wp_kses_post( wp_unslash( $_GET['um_error'] ) ) ); // WPCS: input var okay, CSRF ok.
 		}
 
 		if ( ! empty( $_GET['evf_message'] ) ) { // WPCS: input var okay, CSRF ok.
-			UM_Admin_Settings::add_message( wp_kses_post( wp_unslash( $_GET['um_message'] ) ) ); // WPCS: input var okay, CSRF ok.
+			EVF_Admin_Settings::add_message( wp_kses_post( wp_unslash( $_GET['um_message'] ) ) ); // WPCS: input var okay, CSRF ok.
 		}
 
 		do_action( 'everest_forms_settings_page_init' );

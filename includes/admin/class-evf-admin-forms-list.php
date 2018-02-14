@@ -30,7 +30,7 @@ class EVF_Admin_Forms_List {
 				<input type="hidden" name="page" value="everest-forms"/>
 				<?php
 					$forms_table_list->views();
-					$forms_table_list->search_box( __( 'Search Form', 'everest-forms' ), 'everest-forms' );
+					$forms_table_list->search_box( __( 'Search Forms', 'everest-forms' ), 'everest-forms' );
 					$forms_table_list->display();
 
 					wp_nonce_field( 'save', 'everest-forms_nonce' );
