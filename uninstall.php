@@ -38,6 +38,11 @@ if ( defined( 'EVF_REMOVE_ALL_DATA' ) && true === EVF_REMOVE_ALL_DATA ) {
 	$wpdb->query( "DELETE FROM {$wpdb->posts} WHERE post_type IN ( 'everest_form' );" );
 	$wpdb->query( "DELETE meta FROM {$wpdb->postmeta} meta LEFT JOIN {$wpdb->posts} posts ON posts.ID = meta.post_id WHERE posts.ID IS NULL;" );
 
+	// Delete user meta data.
+	foreach ( array( 'evf_forms_per_page' ) as $meta_key ) {
+		delete_metadata( 'user', 0, $meta_key, '', true );
+	}
+
 	// Clear any cached data that has been removed.
 	wp_cache_flush();
 }
