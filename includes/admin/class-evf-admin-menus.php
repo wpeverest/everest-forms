@@ -31,11 +31,11 @@ class EVF_Admin_Menus {
 		add_action( 'admin_menu', array( $this, 'admin_menu' ), 9 );
 		add_action( 'admin_menu', array( $this, 'forms_menu' ), 20 );
 		add_action( 'admin_menu', array( $this, 'add_new_form' ), 30 );
+		add_action( 'admin_menu', array( $this, 'entries_menu' ), 40 );
 		add_action( 'admin_menu', array( $this, 'settings_menu' ), 50 );
-		add_action( 'admin_menu', array( $this, 'entries' ), 55 );
 		add_action( 'admin_menu', array( $this, 'status_menu' ), 60 );
-		add_filter( 'set-screen-option', array( $this, 'set_screen_option' ), 11, 3 );
 		add_filter( 'admin_footer', array( $this, 'admin_footer' ), 1 );
+		add_filter( 'set-screen-option', array( $this, 'set_screen_option' ), 11, 3 );
 
 		// Admin bar menus.
 		if ( apply_filters( 'everest_forms_show_admin_bar', true ) ) {
@@ -63,16 +63,35 @@ class EVF_Admin_Menus {
 	 * Add menu items.
 	 */
 	public function admin_menu() {
-		$form_page = add_menu_page( __( 'Everest Forms', 'everest-forms' ), __( 'Everest Forms', 'everest-forms' ), 'manage_everest_forms', 'everest-forms', null, $this->get_icon_svg(), '55.5' );
-
-		add_action( 'load-' . $form_page, array( $this, 'everest_forms_page_init' ) );
+		add_menu_page( __( 'Everest Forms', 'everest-forms' ), __( 'Everest Forms', 'everest-forms' ), 'manage_everest_forms', 'everest-forms', null, $this->get_icon_svg(), '55.5' );
 	}
 
 	/**
 	 * Add menu items.
 	 */
 	public function forms_menu() {
-		add_submenu_page( 'everest-forms', __( 'All Forms', 'everest-forms' ), __( 'All Forms', 'everest-forms' ), 'manage_everest_forms', 'everest-forms', array( $this, 'everest_forms_page' ) );
+		$forms_page = add_submenu_page( 'everest-forms', __( 'All Forms', 'everest-forms' ), __( 'All Forms', 'everest-forms' ), 'manage_everest_forms', 'everest-forms', array( $this, 'everest_forms_page' ) );
+
+		add_action( 'load-' . $forms_page, array( $this, 'forms_page_init' ) );
+	}
+
+	/**
+	 * Loads forms into memory.
+	 */
+	public function forms_page_init() {
+		global $forms_table_list;
+
+		if ( ! isset( $_GET['edit-evf-form'] ) ) { // WPCS: input var okay, CSRF ok.
+			$forms_table_list = new EVF_Admin_Form_Table_List();
+
+			// Add screen option.
+			add_screen_option( 'per_page', array(
+				'default' => 20,
+				'option'  => 'evf_forms_per_page'
+			) );
+		}
+
+		do_action( 'everest_forms_page_init' );
 	}
 
 	/**
@@ -83,24 +102,31 @@ class EVF_Admin_Menus {
 	}
 
 	/**
-	 * Display entries.
+	 * Add menu item.
 	 */
-	public function entries() {
-		$entries_page = add_submenu_page( 'everest-forms', __( 'Entries', 'everest-forms' ), __( 'Entries', 'everest-forms' ), 'manage_everest_forms', 'display-evf-entries', array( $this, 'display_entries' ) );
-		
+	public function entries_menu() {
+		$entries_page = add_submenu_page( 'everest-forms', __( 'Entries', 'everest-forms' ), __( 'Entries', 'everest-forms' ), 'manage_everest_forms', 'evf-entries', array( $this, 'entries_page' ) );
+
 		add_action( 'load-' . $entries_page, array( $this, 'entries_page_init' ) );
 	}
 
+	/**
+	 * Loads entries into memory.
+	 */
 	public function entries_page_init() {
 		global $entries_table_list;
 
-        $entries_table_list = new EVF_Admin_Entries_Table_List();
+		if ( ! isset( $_GET['view-entry'] ) ) { // WPCS: input var okay, CSRF ok.
+			$entries_table_list = new EVF_Admin_Entries_Table_List();
 
-		// Add screen option.
-		add_screen_option( 'per_page', array(
-			'default' => 20,
-			'option'  => 'form_entries_per_page'
-		) );
+			// Add screen option.
+			add_screen_option( 'per_page', array(
+				'default' => 20,
+				'option'  => 'evf_entries_per_page'
+			) );
+		}
+
+		do_action( 'everest_forms_entries_page_init' );
 	}
 
 	/**
@@ -339,87 +365,56 @@ class EVF_Admin_Menus {
 	}
 
 	/**
-	 * Init the settings page.
-	 */
-	public function everest_forms_page() {
-		EVF_Admin_Form_List::output();
-	}
-
-	/**
-	 * Loads screen options into memory.
-	 */
-	public function everest_forms_page_init() {
-		global $evf_form_list;
-
-		$evf_form_list = new EVF_Admin_Form_Table_List();
-
-		// Add screen option.
-		add_screen_option( 'per_page', array(
-			'default' => 20,
-			'option'  => 'everest_forms_per_page_list'
-		) );
-	}
-
-	/**
-	 * Validate screen options on update.
-	 */
-	public function set_screen_option( $status, $option, $value ) {
-		if ( in_array( $option, array( 'everest_forms_per_page_list', 'form_entries_per_page' ), true ) ) {
-			return $value;
-		}
-
-		return $status;
-	}
-
-	/**
 	 * Add menu item.
 	 */
 	public function settings_menu() {
-		$settings_page = add_submenu_page( 'everest-forms', __( 'Everest Forms settings', 'everest-forms' ), __( 'Settings', 'everest-forms' ), 'manage_everest_forms', 'evf-settings', array(
-			$this,
-			'settings_page'
-		) );
+		$settings_page = add_submenu_page( 'everest-forms', __( 'Everest Forms settings', 'everest-forms' ), __( 'Settings', 'everest-forms' ), 'manage_everest_forms', 'evf-settings', array( $this, 'settings_page' ) );
 
 		add_action( 'load-' . $settings_page, array( $this, 'settings_page_init' ) );
 	}
 
 	/**
-	 * Loads gateways and shipping methods into memory for use within settings.
+	 * Loads settings page.
 	 */
 	public function settings_page_init() {
 		global $current_tab, $current_section;
 
-		// Include settings pages
+		// Include settings pages.
 		EVF_Admin_Settings::get_settings_pages();
 
-		// Get current tab/section
-		$current_tab     = empty( $_GET['tab'] ) ? 'general' : sanitize_title( $_GET['tab'] );
-		$current_section = empty( $_REQUEST['section'] ) ? '' : sanitize_title( $_REQUEST['section'] );
+		// Get current tab/section.
+		$current_tab     = empty( $_GET['tab'] ) ? 'general' : sanitize_title( wp_unslash( $_GET['tab'] ) ); // WPCS: input var okay, CSRF ok.
+		$current_section = empty( $_REQUEST['section'] ) ? '' : sanitize_title( wp_unslash( $_REQUEST['section'] ) ); // WPCS: input var okay, CSRF ok.
 
-
-		// Save settings if data has been posted
-		if ( ! empty( $_POST ) ) {
-			EVF_Admin_Settings::save();
+		// Save settings if data has been posted.
+		if ( apply_filters( '' !== $current_section ? "everest_forms_save_settings_{$current_tab}_{$current_section}" : "everest_forms_save_settings_{$current_tab}", ! empty( $_POST ) ) ) { // WPCS: input var okay, CSRF ok.
+			UM_Admin_Settings::save();
 		}
 
-		// Add any posted messages
-		if ( ! empty( $_GET['evf_error'] ) ) {
-			EVF_Admin_Settings::add_error( stripslashes( $_GET['evf_error'] ) );
+		// Add any posted messages.
+		if ( ! empty( $_GET['evf_error'] ) ) { // WPCS: input var okay, CSRF ok.
+			UM_Admin_Settings::add_error( wp_kses_post( wp_unslash( $_GET['um_error'] ) ) ); // WPCS: input var okay, CSRF ok.
 		}
 
-		if ( ! empty( $_GET['evf_message'] ) ) {
-			EVF_Admin_Settings::add_message( stripslashes( $_GET['evf_message'] ) );
+		if ( ! empty( $_GET['evf_message'] ) ) { // WPCS: input var okay, CSRF ok.
+			UM_Admin_Settings::add_message( wp_kses_post( wp_unslash( $_GET['um_message'] ) ) ); // WPCS: input var okay, CSRF ok.
 		}
+
+		do_action( 'everest_forms_settings_page_init' );
 	}
 
 	/**
 	 * Add menu item.
 	 */
 	public function status_menu() {
-		add_submenu_page( 'everest-forms', __( 'Everest Forms status', 'everest-forms' ), __( 'Status', 'everest-forms' ), 'manage_everest_forms', 'evf-status', array(
-			$this,
-			'status_page'
-		) );
+		add_submenu_page( 'everest-forms', __( 'Everest Forms status', 'everest-forms' ), __( 'Status', 'everest-forms' ), 'manage_everest_forms', 'evf-status', array( $this, 'status_page' ) );
+	}
+
+	/**
+	 * Init the settings page.
+	 */
+	public function everest_forms_page() {
+		EVF_Admin_Form_List::output();
 	}
 
 	/**
@@ -434,18 +429,12 @@ class EVF_Admin_Menus {
 	}
 
 	/**
-	 * Init the select template page.
-	 */
-	public function everest_forms_template() {
-		do_action( 'everest_form_admin_form_template_page' );
-	}
-	
-	/**
 	 * Init the entries page.
 	 */
-	public function display_entries() {
-		do_action( 'everest_form_display_entries' );
+	public function entries_page() {
+		EVF_Form_Entry_Manager::page_output();
 	}
+
 	/**
 	 * Init the settings page.
 	 */
@@ -464,6 +453,17 @@ class EVF_Admin_Menus {
 		$screen = get_current_screen();
 
 		do_action( 'everest_form_list_admin_footer', $screen->id );
+	}
+
+	/**
+	 * Validate screen options on update.
+	 */
+	public function set_screen_option( $status, $option, $value ) {
+		if ( in_array( $option, array( 'evf_forms_per_page', 'evf_entries_per_page' ), true ) ) {
+			return $value;
+		}
+
+		return $status;
 	}
 
 	/**

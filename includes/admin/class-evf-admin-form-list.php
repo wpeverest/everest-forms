@@ -21,9 +21,9 @@ class EVF_Admin_Form_List {
 	 * Handles output of the reports page in admin.
 	 */
 	public static function output() {
-		global $evf_form_list;
+		global $forms_table_list;
 
-		$evf_form_list->prepare_items();
+		$forms_table_list->prepare_items();
 		include_once( dirname( __FILE__ ) . '/views/html-admin-page-forms.php' );
 
 		add_action( 'everest_form_list_admin_footer', array( __CLASS__, 'everest_form_list_admin_footer' ), 10, 1 );

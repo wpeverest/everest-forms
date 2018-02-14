@@ -7,28 +7,24 @@
  */
 class EVF_Form_Entry_Manager {
 
-    /**
-     * The constructor
-     *
-     */
-
+	/**
+	 * Initialize the entries admin actions.
+	 */
     function __construct() {
-        add_action( 'everest_form_display_entries', array( $this, 'page_output' ) );
+		add_action( 'admin_init', array( $this, 'actions' ) );
     }
 
-    public function page_output() { 
+    public static function page_output() {
         global $entries_table_list;
 
         $entries_table_list->prepare_items();
-        
-        $this->all_actions();
 
-        ?>        
+        ?>
         <div class="wrap">
             <h2 class="wp-heading-inline"><?php esc_html_e( 'Entries', 'everest-forms' ); ?><h2>
             <hr class="wp-header-end">
-           
-            <?php    
+
+            <?php
                 $all_forms = evf_get_all_forms();
                 $selected = isset( $_POST['form_id'] ) ? $_POST['form_id'] : get_option( 'evf_selected_form_in_entries', 'All forms' );
                 $selected_form = update_option( 'evf_selected_form_in_entries', $selected );
@@ -37,7 +33,7 @@ class EVF_Form_Entry_Manager {
                 <form id="entries-select" method="POST">
                     <select id = "form-select" name ="form_id">
                         <option>All Forms</option>
-                        <?php 
+                        <?php
                             foreach( $all_forms as $key => $form ) {
                                 echo '<option value="'. $key .'" '. selected( $selected, $key ) .'>'. $form .'</option>';
                             }
@@ -49,7 +45,7 @@ class EVF_Form_Entry_Manager {
 
             <form id="entries-filter" method="post">
                 <input type="hidden" name="page" value="display-evf-entries">
-                
+
                 <?php
                     $entries_table_list->views();
                     $entries_table_list->display();
@@ -63,7 +59,7 @@ class EVF_Form_Entry_Manager {
         do_action( 'everest_forms_get_all_entries' );
     }
 
-    public function all_actions() {
+    public function actions() {
 
         global $wpdb;
 
@@ -71,8 +67,8 @@ class EVF_Form_Entry_Manager {
             $entries = isset( $_POST['everest_form'] ) ? $_POST['everest_form'] : array();
             foreach( $entries as $entry ) {
                 $query = 'UPDATE `wp_evf_entries` SET status = "trash" WHERE id = '. $entry .'' ;
-                $wpdb->get_results( $query ); 
-                wp_redirect( admin_url('admin.php?page=display-evf-entries') ); 
+                $wpdb->get_results( $query );
+                wp_redirect( admin_url('admin.php?page=display-evf-entries') );
             }
         }
 
@@ -80,8 +76,8 @@ class EVF_Form_Entry_Manager {
             $entries = isset( $_POST['everest_form'] ) ? $_POST['everest_form'] : array();
             foreach( $entries as $entry ) {
                 $query = 'UPDATE `wp_evf_entries` SET status = "publish" WHERE id = '. $entry .'' ;
-                $wpdb->get_results( $query ); 
-                wp_redirect( admin_url('admin.php?page=display-evf-entries') ); 
+                $wpdb->get_results( $query );
+                wp_redirect( admin_url('admin.php?page=display-evf-entries') );
             }
         }
 
@@ -89,39 +85,39 @@ class EVF_Form_Entry_Manager {
             $entries = isset( $_POST['everest_form'] ) ? $_POST['everest_form'] : array();
             foreach( $entries as $entry ) {
                 $query = 'DELETE FROM wp_evf_entries WHERE id = '. $entry .'' ;
-                $wpdb->get_results( $query ); 
+                $wpdb->get_results( $query );
                 $query = 'DELETE FROM wp_evf_entrymeta WHERE evf_entry_id = '. $entry .'';
-                $wpdb->get_results( $query ); 
-                wp_redirect( admin_url('admin.php?page=display-evf-entries') ); 
+                $wpdb->get_results( $query );
+                wp_redirect( admin_url('admin.php?page=display-evf-entries') );
             }
         }
 
         if( isset( $_GET['action'] ) && $_GET['action'] == 'trash' ) {
             $query = 'UPDATE `wp_evf_entries` SET status = "trash" WHERE id = '. $_GET['id'] .'' ;
-            $wpdb->get_results( $query ); 
-            wp_redirect( admin_url('admin.php?page=display-evf-entries') ); 
+            $wpdb->get_results( $query );
+            wp_redirect( admin_url('admin.php?page=display-evf-entries') );
         }
 
         if( isset( $_GET['action'] ) && $_GET['action'] == 'delete' ) {
             $query = 'DELETE FROM wp_evf_entries WHERE id = '. $_GET['id'] .'';
-            $wpdb->get_results( $query ); 
-            wp_redirect( admin_url('admin.php?page=display-evf-entries') ); 
+            $wpdb->get_results( $query );
+            wp_redirect( admin_url('admin.php?page=display-evf-entries') );
         }
 
         if( isset( $_GET['action'] ) && $_GET['action'] == 'untrash' ) {
             $query = 'UPDATE `wp_evf_entries` SET status = "publish" WHERE id = '. $_GET['id'] .'' ;
-            $wpdb->get_results( $query ); 
-            wp_redirect( admin_url('admin.php?page=display-evf-entries') ); 
+            $wpdb->get_results( $query );
+            wp_redirect( admin_url('admin.php?page=display-evf-entries') );
         }
 
         if( isset( $_GET['status'] ) && $_GET['status'] == 'trash' && isset( $_GET['empty_trash'] ) && $_GET['empty_trash'] == 1 ) {
             $query = 'DELETE FROM wp_evf_entries';
-            $wpdb->get_results( $query ); 
-            
+            $wpdb->get_results( $query );
+
             $query = 'DELETE FROM wp_evf_entrymeta';
-            $wpdb->get_results( $query ); 
-                
-            wp_redirect( admin_url('admin.php?page=display-evf-entries') ); 
+            $wpdb->get_results( $query );
+
+            wp_redirect( admin_url('admin.php?page=display-evf-entries') );
         }
     }
 
