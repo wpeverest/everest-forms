@@ -68,12 +68,15 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 
 == Changelog ==
 
-= 1.0.1 - 09/02/2018 =
+= 1.0.2 - 15/02/2018 =
+* Fix - Box-sizing issue with list tables.
+* Fix - Undefined title resulting Header already sent error on plugin activation.
+
+= 1.0.1 - 13/02/2018 =
 * Feature - JS validation on submit.
 * Fix - Select field option display.
 * Fix - Checkbox validation styling.
 * Fix - Create default form on first install.
 
 = 1.0.0 - 02/02/2018 =
-
 * Initial Release
