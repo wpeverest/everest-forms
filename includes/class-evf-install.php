@@ -312,6 +312,26 @@ class EVF_Install {
 		}
 
 		$tables = "
+CREATE TABLE {$wpdb->prefix}evf_entries (
+  entry_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  form_id BIGINT UNSIGNED NOT NULL,
+  user_id BIGINT UNSIGNED NOT NULL,
+  user_device varchar(60) NOT NULL,
+  referer BIGINT UNSIGNED NOT NULL,
+  status varchar(20) NOT NULL,
+  date_created datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY  (entry_id),
+  KEY form_id (form_id)
+) $charset_collate;
+CREATE TABLE {$wpdb->prefix}evf_entrymeta (
+  meta_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  entry_id BIGINT UNSIGNED NOT NULL,
+  meta_key varchar(255) default NULL,
+  meta_value longtext NULL,
+  PRIMARY KEY  (meta_id),
+  KEY entry_id (entry_id),
+  KEY meta_key (meta_key(32))
+) $charset_collate;
 CREATE TABLE {$wpdb->prefix}evf_sessions (
   session_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   session_key char(32) NOT NULL,
