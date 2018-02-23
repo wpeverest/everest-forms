@@ -63,7 +63,7 @@ $form_template['contact'] = array(
 		'email' => array(
 			'evf_to_email'      => get_option( 'evf_to_email', get_option( 'admin_email' ) ),
 			'evf_from_name'     => get_option( 'evf_from_name', evf_sender_name() ),
-			'evf_from_email'    => get_option( 'evf_from_name', evf_sender_address() ),
+			'evf_from_email'    => get_option( 'evf_from_address', evf_sender_address() ),
 			'evf_email_subject' => get_option( 'evf_email_subject', __( 'New Form Entry', 'everest-forms' ) ),
 			'evf_email_message' => get_option( 'evf_email_message', '{all_fields}' ),
 		),

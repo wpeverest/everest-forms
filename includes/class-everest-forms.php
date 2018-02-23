@@ -21,7 +21,7 @@ final class EverestForms {
 	 *
 	 * @var string
 	 */
-	public $version = '1.0.2';
+	public $version = '1.0.3';
 
 	/**
 	 * The form data handler instance.

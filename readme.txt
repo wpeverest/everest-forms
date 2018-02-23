@@ -3,7 +3,7 @@ Contributors: WPEverest
 Tags: form, form builder, easy form, clean form, login form, contact, contact form
 Requires at least: 4.0
 Tested up to: 4.9
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -67,6 +67,9 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 11. Advance Form
 
 == Changelog ==
+
+= 1.0.3 - 23-02-2018 =
+* Fix - From email issue fix for default form
 
 = 1.0.2 - 15-02-2018 =
 * Fix - Box-sizing issue with list tables.
