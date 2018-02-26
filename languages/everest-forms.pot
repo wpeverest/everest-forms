@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Everest Forms package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Everest Forms 1.0.0\n"
+"Project-Id-Version: Everest Forms 1.0.2\n"
 "Report-Msgid-Bugs-To: https://github.com/wpeverest/everest-forms/issues\n"
-"POT-Creation-Date: 2018-02-09 11:45:15+00:00\n"
+"POT-Creation-Date: 2018-02-15 09:03:22+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -126,10 +126,10 @@ msgid "Delete Field"
 msgstr ""
 
 #: includes/abstracts/abstract-evf-form-fields.php:655
-#: includes/admin/class-evf-admin-menus.php:371
+#: includes/admin/class-evf-admin-menus.php:340
 #: includes/admin/form-panels/class-evf-fields-panel.php:200
 #: includes/admin/form-panels/class-evf-settings-panel.php:29
-#: includes/class-evf-install.php:461
+#: includes/class-evf-install.php:494
 msgid "Settings"
 msgstr ""
 
@@ -205,7 +205,7 @@ msgid "Are you sure want to delete this row?"
 msgstr ""
 
 #: includes/admin/class-evf-admin-assets.php:91
-#: includes/admin/class-evf-admin-menus.php:234
+#: includes/admin/class-evf-admin-menus.php:249
 msgid "Copy of "
 msgstr ""
 
@@ -244,6 +244,7 @@ msgid "Blank Form"
 msgstr ""
 
 #: includes/admin/class-evf-admin-form-builder.php:177
+#: includes/templates/contact.php:12
 msgid "Contact Form"
 msgstr ""
 
@@ -266,147 +267,147 @@ msgid ""
 "listed below:"
 msgstr ""
 
-#: includes/admin/class-evf-admin-form-table-list.php:47
-#: includes/admin/class-evf-admin-menus.php:359
+#: includes/admin/class-evf-admin-forms-table-list.php:35
+msgid "No Forms found."
+msgstr ""
+
+#: includes/admin/class-evf-admin-forms-table-list.php:46
 msgid "Title"
 msgstr ""
 
-#: includes/admin/class-evf-admin-form-table-list.php:48
-#: includes/admin/class-evf-admin-menus.php:360
+#: includes/admin/class-evf-admin-forms-table-list.php:47
 msgid "Shortcode"
 msgstr ""
 
-#: includes/admin/class-evf-admin-form-table-list.php:49
-#: includes/admin/class-evf-admin-menus.php:361
+#: includes/admin/class-evf-admin-forms-table-list.php:48
 msgid "Author"
 msgstr ""
 
-#: includes/admin/class-evf-admin-form-table-list.php:50
-#: includes/admin/class-evf-admin-menus.php:362
+#: includes/admin/class-evf-admin-forms-table-list.php:49
 #: includes/form-fields/class-evf-field-date-time.php:23
 msgid "Date"
 msgstr ""
 
-#: includes/admin/class-evf-admin-form-table-list.php:108
-msgid "Y/m/d g:i:s A"
-msgstr ""
-
-#: includes/admin/class-evf-admin-form-table-list.php:118
-msgid "%s ago"
-msgstr ""
-
-#: includes/admin/class-evf-admin-form-table-list.php:120
-msgid "Y/m/d"
-msgstr ""
-
-#: includes/admin/class-evf-admin-form-table-list.php:150
+#: includes/admin/class-evf-admin-forms-table-list.php:101
 #: includes/admin/form-panels/class-evf-fields-panel.php:228
 #: includes/class-evf-post-types.php:51
 msgid "Edit"
 msgstr ""
 
-#: includes/admin/class-evf-admin-form-table-list.php:155
+#: includes/admin/class-evf-admin-forms-table-list.php:106
 msgid "Restore this item from the Trash"
 msgstr ""
 
-#: includes/admin/class-evf-admin-form-table-list.php:155
-#: includes/admin/class-evf-admin-form-table-list.php:315
+#: includes/admin/class-evf-admin-forms-table-list.php:106
+#: includes/admin/class-evf-admin-forms-table-list.php:317
 msgid "Restore"
 msgstr ""
 
-#: includes/admin/class-evf-admin-form-table-list.php:157
+#: includes/admin/class-evf-admin-forms-table-list.php:108
 msgid "Move this item to the Trash"
 msgstr ""
 
-#: includes/admin/class-evf-admin-form-table-list.php:157
+#: includes/admin/class-evf-admin-forms-table-list.php:108
 msgid "Trash"
 msgstr ""
 
-#: includes/admin/class-evf-admin-form-table-list.php:160
+#: includes/admin/class-evf-admin-forms-table-list.php:111
 msgid "Delete this item permanently"
 msgstr ""
 
-#: includes/admin/class-evf-admin-form-table-list.php:160
-#: includes/admin/class-evf-admin-form-table-list.php:316
+#: includes/admin/class-evf-admin-forms-table-list.php:111
+#: includes/admin/class-evf-admin-forms-table-list.php:318
 msgid "Delete permanently"
 msgstr ""
 
-#: includes/admin/class-evf-admin-form-table-list.php:167
+#: includes/admin/class-evf-admin-forms-table-list.php:118
 msgid "Duplicate"
 msgstr ""
 
-#: includes/admin/class-evf-admin-form-table-list.php:250
-#: includes/admin/class-evf-admin-form-table-list.php:251
+#: includes/admin/class-evf-admin-forms-table-list.php:184
+msgid "Y/m/d g:i:s A"
+msgstr ""
+
+#: includes/admin/class-evf-admin-forms-table-list.php:194
+msgid "%s ago"
+msgstr ""
+
+#: includes/admin/class-evf-admin-forms-table-list.php:196
+msgid "Y/m/d"
+msgstr ""
+
+#: includes/admin/class-evf-admin-forms-table-list.php:215
+#: includes/admin/class-evf-admin-forms-table-list.php:216
 #. translators: %s: count
 msgid "Published <span class=\"count\">(%s)</span>"
 msgstr ""
 
-#: includes/admin/class-evf-admin-form-table-list.php:259
-#: includes/admin/class-evf-admin-form-table-list.php:260
+#: includes/admin/class-evf-admin-forms-table-list.php:224
+#: includes/admin/class-evf-admin-forms-table-list.php:225
 #. translators: %s: count
 msgid "Draft <span class=\"count\">(%s)</span>"
 msgstr ""
 
-#: includes/admin/class-evf-admin-form-table-list.php:268
-#: includes/admin/class-evf-admin-form-table-list.php:269
+#: includes/admin/class-evf-admin-forms-table-list.php:233
+#: includes/admin/class-evf-admin-forms-table-list.php:234
 #. translators: %s: count
 msgid "Pending <span class=\"count\">(%s)</span>"
 msgstr ""
 
-#: includes/admin/class-evf-admin-form-table-list.php:321
+#: includes/admin/class-evf-admin-forms-table-list.php:323
 msgid "Move to trash"
 msgstr ""
 
-#: includes/admin/class-evf-admin-form-table-list.php:333
+#: includes/admin/class-evf-admin-forms-table-list.php:334
 msgid "Empty trash"
+msgstr ""
+
+#: includes/admin/class-evf-admin-forms.php:26
+#: includes/admin/class-evf-admin-menus.php:70
+#: includes/class-evf-post-types.php:47
+msgid "All Forms"
+msgstr ""
+
+#: includes/admin/class-evf-admin-forms.php:27
+#: includes/admin/class-evf-admin-menus.php:98
+#: includes/class-evf-post-types.php:49
+msgid "Add New"
+msgstr ""
+
+#: includes/admin/class-evf-admin-forms.php:33
+msgid "Search Forms"
 msgstr ""
 
 #. Plugin Name of the plugin/theme
 msgid "Everest Forms"
 msgstr ""
 
-#: includes/admin/class-evf-admin-menus.php:76
-#: includes/admin/views/html-admin-page-forms.php:11
-#: includes/class-evf-post-types.php:47
-msgid "All Forms"
-msgstr ""
-
-#: includes/admin/class-evf-admin-menus.php:83
-#: includes/admin/views/html-admin-page-forms.php:13
-#: includes/class-evf-post-types.php:49
-msgid "Add New"
-msgstr ""
-
-#: includes/admin/class-evf-admin-menus.php:169
-#: includes/admin/class-evf-admin-menus.php:201
+#: includes/admin/class-evf-admin-menus.php:184
+#: includes/admin/class-evf-admin-menus.php:216
 #: includes/admin/class-evf-admin-notices.php:107
 #: includes/admin/class-evf-admin-settings.php:71
 #: includes/admin/class-evf-admin-status.php:168
 msgid "Action failed. Please refresh the page and retry."
 msgstr ""
 
-#: includes/admin/class-evf-admin-menus.php:173
-#: includes/admin/class-evf-admin-menus.php:205
+#: includes/admin/class-evf-admin-menus.php:188
+#: includes/admin/class-evf-admin-menus.php:220
 msgid "You do not have permissions to delete forms!"
 msgstr ""
 
-#: includes/admin/class-evf-admin-menus.php:301
+#: includes/admin/class-evf-admin-menus.php:316
 msgid "You do not have permissions to edit forms!"
 msgstr ""
 
-#: includes/admin/class-evf-admin-menus.php:333
-msgid "Forms per page"
-msgstr ""
-
-#: includes/admin/class-evf-admin-menus.php:371
+#: includes/admin/class-evf-admin-menus.php:340
 msgid "Everest Forms settings"
 msgstr ""
 
-#: includes/admin/class-evf-admin-menus.php:412
+#: includes/admin/class-evf-admin-menus.php:379
 msgid "Everest Forms status"
 msgstr ""
 
-#: includes/admin/class-evf-admin-menus.php:412
+#: includes/admin/class-evf-admin-menus.php:379
 msgid "Status"
 msgstr ""
 
@@ -545,7 +546,7 @@ msgstr ""
 #: includes/admin/form-panels/class-evf-settings-panel.php:174
 #: includes/admin/settings/class-evf-settings-general.php:56
 #: includes/shortcodes/class-evf-shortcode-form.php:39
-#: includes/templates/contact.php:61
+#: includes/templates/contact.php:62
 msgid "Submit"
 msgstr ""
 
@@ -572,7 +573,7 @@ msgid "Email Subject"
 msgstr ""
 
 #: includes/admin/form-panels/class-evf-settings-panel.php:225
-#: includes/templates/contact.php:66
+#: includes/templates/contact.php:67
 msgid "New Form Entry"
 msgstr ""
 
@@ -625,7 +626,7 @@ msgstr ""
 #: includes/admin/settings/class-evf-settings-general.php:65
 #: includes/class-evf-form-task.php:184
 #: includes/shortcodes/class-evf-shortcode-form.php:142
-#: includes/templates/contact.php:55
+#: includes/templates/contact.php:56
 msgid "Thanks for contacting us! We will be in touch with you shortly."
 msgstr ""
 
@@ -721,10 +722,6 @@ msgstr ""
 
 #: includes/admin/views/html-admin-form-modal.php:29
 msgid "Create"
-msgstr ""
-
-#: includes/admin/views/html-admin-page-forms.php:18
-msgid "Search Form"
 msgstr ""
 
 #: includes/admin/views/html-admin-page-status-logs.php:17
@@ -866,45 +863,28 @@ msgstr ""
 msgid "Payments"
 msgstr ""
 
-#: includes/class-evf-install.php:243
+#: includes/class-evf-install.php:244
 msgid "Monthly"
 msgstr ""
 
-#: includes/class-evf-install.php:461
+#: includes/class-evf-install.php:494
 msgid "View Everest Forms Settings"
 msgstr ""
 
-#: includes/class-evf-install.php:477
+#: includes/class-evf-install.php:510
 msgid "View Everest Forms documentation"
 msgstr ""
 
-#: includes/class-evf-install.php:477
+#: includes/class-evf-install.php:510
 msgid "Docs"
 msgstr ""
 
-#: includes/class-evf-install.php:478
-msgid "Visit premium customer support"
+#: includes/class-evf-install.php:511
+msgid "Visit free customer support"
 msgstr ""
 
-#: includes/class-evf-install.php:478
-msgid "Premium support"
-msgstr ""
-
-#: includes/class-evf-install.php:617 includes/class-evf-install.php:703
-#. translators: 1: plugin name, 2: error message, 3: URL to install plugin
-#. manually.
-#. translators: 1: theme slug, 2: error message, 3: URL to install theme
-#. manually.
-msgid ""
-"%1$s could not be installed (%2$s). <a href=\"%3$s\">Please install it "
-"manually by clicking here.</a>"
-msgstr ""
-
-#: includes/class-evf-install.php:644
-#. translators: 1: plugin name, 2: URL to WP plugin page.
-msgid ""
-"%1$s was installed but could not be activated. <a href=\"%2$s\">Please "
-"activate it manually by clicking here.</a>"
+#: includes/class-evf-install.php:511
+msgid "Free support"
 msgstr ""
 
 #: includes/class-evf-logger.php:58
@@ -1120,7 +1100,7 @@ msgctxt "Template name"
 msgid "Create a %s"
 msgstr ""
 
-#: includes/admin/class-evf-admin-form-table-list.php:198
+#: includes/admin/class-evf-admin-forms-table-list.php:270
 #. translators: %s: count
 msgctxt "posts"
 msgid "All <span class=\"count\">(%s)</span>"
