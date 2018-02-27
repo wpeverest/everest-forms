@@ -1006,12 +1006,12 @@ function evf_sender_name() {
 }
 
 function evf_sender_address() {
-	$sitename = strtolower( $_SERVER['SERVER_NAME'] );
-        if ( substr( $sitename, 0, 4 ) == 'www.' ) {
-            $sitename = substr( $sitename, 4 );
-        }
+	$sitename = isset( $_SERVER['SERVER_NAME'] ) ? strtolower( $_SERVER['SERVER_NAME'] ) : '';
+	if ( substr( $sitename, 0, 4 ) == 'www.' ) {
+		$sitename = substr( $sitename, 4 );
+	}
 
-    $from_email = 'wordpress@' . $sitename;
+	$from_email = 'wordpress@' . $sitename;
 	$sender_email = get_option( 'evf_forms_email_from_address', $from_email );
 
 	return $sender_email;
