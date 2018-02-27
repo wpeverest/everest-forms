@@ -3,7 +3,7 @@
  * EverestForms Entries Table List
  *
  * @package EverestForms\Admin
- * @version 1.0.0
+ * @since   1.1.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -12,6 +12,9 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 	require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 }
 
+/**
+ * Entries table list class.
+ */
 class EVF_Admin_Entries_Table_List extends WP_List_Table {
 
 	/**

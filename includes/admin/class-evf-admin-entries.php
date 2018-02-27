@@ -1,24 +1,55 @@
 <?php
+/**
+ * EverestForms Admin Entries Class
+ *
+ * @package EverestForms\Admin
+ * @since   1.1.0
+ */
+
+defined( 'ABSPATH' ) || exit;
 
 /**
- * The Entry Manager Class
- *
- * @since 1.1.0
+ * EVF_Admin_Entries class.
  */
 class EVF_Admin_Entries {
 
 	/**
 	 * Initialize the entries admin actions.
 	 */
-	function __construct() {
+	public function __construct() {
 		add_action( 'admin_init', array( $this, 'actions' ) );
 	}
 
+	/**
+	 * Check if is usages page.
+	 *
+	 * @return bool
+	 */
+	private function is_entries_page() {
+		return isset( $_GET['page'] ) && 'evf-entries' === $_GET['page']; // WPCS: input var okay, CSRF ok.
+	}
+
+	/**
+	 * Page output.
+	 */
 	public static function page_output() {
+		if ( isset( $_GET['view-entry'] ) ) {
+			$entry_id = isset( $_GET['view-entry'] ) ? absint( $_GET['view-entry'] ) : 0; // WPCS: input var okay, CSRF ok.
+			$entry    = self::get_entry_data( $entry_id );
+
+			include 'views/html-admin-page-entries-view.php';
+		} else {
+			self::table_list_output();
+		}
+	}
+
+	/**
+	 * Table list output.
+	 */
+	private static function table_list_output() {
 		global $entries_table_list;
 
 		$entries_table_list->prepare_items();
-
 		?>
 		<div class="wrap">
 			<h1 class="wp-heading-inline"><?php esc_html_e( 'Entries', 'everest-forms' ); ?></h1>
@@ -34,12 +65,14 @@ class EVF_Admin_Entries {
 			</form>
 		</div>
 		<?php
-
-		do_action( 'everest_forms_get_all_entries' );
 	}
 
-    public function actions() {
-        global $wpdb;
+	public function actions() {
+		global $wpdb;
+
+		if ( ! $this->is_entries_page() ) {
+			return;
+		}
 
         if ( isset( $_POST['action'] ) && $_POST['action'] == 'trash' ) {
             $entries = isset( $_POST['entry'] ) ? $_POST['entry'] : array();
@@ -102,6 +135,6 @@ class EVF_Admin_Entries {
     public function get_single_entry( $id ) {
 
     }
-
 }
+
 new EVF_Admin_Entries();
