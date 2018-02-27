@@ -64,12 +64,11 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	/**
 	 * Column cb.
 	 *
-	 * @param  array $item
-	 *
+	 * @param  object $entry Entry object.
 	 * @return string
 	 */
-	public function column_cb( $items ) {
-		return sprintf( '<input type="checkbox" name="%1$s[]" value="%2$s" />', $this->_args['singular'], $items->evf_entry_id );
+	public function column_cb( $entry ) {
+		return sprintf( '<input type="checkbox" name="%1$s[]" value="%2$s" />', $this->_args['singular'], $entry->entry_id );
 	}
 
 	/**
