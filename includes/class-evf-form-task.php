@@ -100,7 +100,7 @@ class EVF_Form_Task {
 				$field_submit = isset( $entry['form_fields'][ $field_id ] ) ? $entry['form_fields'][ $field_id ] : '';
 				do_action( "everest_forms_process_validate_{$field_type}", $field_id, $field_type, $field_submit, $form_data );
 			}
-	
+
 			// Recaptcha Validation
 			if( isset( $form_data['settings']['recaptcha_support'] ) && 1 == $form_data['settings']['recaptcha_support'] && empty( $_POST['g-recaptcha-response'] ) ){
 				evf_add_notice( get_option('evf_recaptcha_validation', __('Invalid recaptcha code.', 'everest-forms') ),'error');
@@ -224,7 +224,7 @@ class EVF_Form_Task {
 	 * @param string       $hash
 	 */
 	public function entry_confirmation_redirect( $form_data = '', $hash = '' ) {
-		
+
 		$_POST = array(); //clear fields after successful form submission
 
 		if ( ! empty( $hash ) ) {
@@ -240,7 +240,7 @@ class EVF_Form_Task {
 				'content_only' => true,
 			) );
 		}
-		$settings = $form_data['settings']; 
+		$settings = $form_data['settings'];
 		if( isset( $settings['redirect_to'] ) && '1' == $settings['redirect_to'] ) {
 			?>
 				<script>
@@ -325,7 +325,7 @@ class EVF_Form_Task {
 				$field_value = isset( $entry['form_fields'][ $field_key ] ) ? $entry['form_fields'][ $field_key ] : '';
 
 				if( $field_type == 'email' ){
-					$user_email = $field_value; 
+					$user_email = $field_value;
 				}
 				if ( ! empty( $field_type ) ) {
 
@@ -377,7 +377,7 @@ class EVF_Form_Task {
 
 	}
 
-	
+
 	/**
 	 * Saves entry to database.
 	 *
@@ -391,49 +391,49 @@ class EVF_Form_Task {
 	 * @return int
 	 */
 	public function entry_save( $fields, $entry, $form_id, $form_data = '' ) {
-
-
 		global $wpdb;
 
 		do_action( 'everest_forms_process_entry_save', $fields, $entry, $form_id, $form_data );
-	    
-	    $defaults = array(
-	        'form_id'     => $form_id,
-	        'user_id'     => get_current_user_id(),
-	        'user_device' => '',
-	        'referer'     => $_SERVER['HTTP_REFERER'],
-	        'created_at'  => current_time( 'mysql' )
-	    );
-	    
-	    if ( ! $defaults['form_id'] ) {
-	        return new WP_Error( 'no-form-id', __( 'No form ID was found.', 'weforms' ) );
-	    }
 
-        $success = $wpdb->insert( 'wp_evf_entries', $defaults );
-		if ( is_wp_error( $success ) || ! $success ) {
-		        return new WP_Error( 'could-not-create', __( 'Could not create an entry', 'weforms' ) );
+		$entry_data = array(
+			'form_id'      => $form_id,
+			'user_id'      => get_current_user_id(),
+			'user_device'  => '',
+			'status'       => 'publish',
+			'referer'      => $_SERVER['HTTP_REFERER'],
+			'date_created' => current_time( 'mysql' )
+		);
+
+		if ( ! $entry_data['form_id'] ) {
+			return new WP_Error( 'no-form-id', __( 'No form ID was found.', 'everest-forms' ) );
 		}
 
-	    $entry_id = $wpdb->insert_id;
-	   
+		$success = $wpdb->insert( $wpdb->prefix . 'evf_entries', $entry_data );
+
+		if ( is_wp_error( $success ) || ! $success ) {
+			return new WP_Error( 'could-not-create', __( 'Could not create an entry', 'everest-forms' ) );
+		}
+
+		$entry_id = $wpdb->insert_id;
+
 		$form_fields = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
-		foreach ( $form_fields as $field_key => $field )
-		{
-			$label = isset( $field['label'] ) ? $field['label'] : '';
-			$field_value = isset( $entry['form_fields'][ $field_key ] ) ? $entry['form_fields'][ $field_key ] : '';	
-			
+
+		foreach ( $form_fields as $field_key => $field ) {
+			$label       = isset( $field['label'] ) ? $field['label'] : '';
+			$field_value = isset( $entry['form_fields'][ $field_key ] ) ? $entry['form_fields'][ $field_key ] : '';
+
 			if ( is_array( $field_value ) ) {
 				$field_value = implode( ',', $field_value );
 			}
-			
-			$defaults = array(
-				'evf_entry_id' => $entry_id,
-				'meta_key'   =>$label,
-				'meta_value' => $field_value			
+
+			$entry_metadata = array(
+				'entry_id'   => $entry_id,
+				'meta_key'   => $label,
+				'meta_value' => $field_value,
 			);
-			$wpdb->insert( 'wp_evf_entrymeta', $defaults );		
+			$wpdb->insert( $wpdb->prefix . 'evf_entrymeta', $entry_metadata );
 		}
-		
+
 		do_action( 'everest_forms_complete_entry_save', $fields, $entry, $form_id, $form_data);
 	}
 }
