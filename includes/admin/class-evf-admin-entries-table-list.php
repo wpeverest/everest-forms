@@ -78,33 +78,21 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 *
 	 * @return string
 	 */
-	public function column_id( $items ) {
-
-		$actions = array(
-            'view'      => sprintf( '<a href="?page=%s&action=%s&id=%s">View</a>', $_REQUEST['page'], 'view', $items->evf_entry_id ),
-            'trash'    => sprintf( '<a href="?page=%s&action=%s&id=%s">Trash</a>', $_REQUEST['page'],'trash', $items->evf_entry_id ),
-        );
-
-        if( isset( $_GET['status'] ) && $_GET['status'] == 'trash' ) {
-        	$actions = array(
-            	'view'      => sprintf( '<a href="?page=%s&action=%s&id=%s">View</a>', $_REQUEST['page'], 'view', $items->evf_entry_id ),
-   	            'delete'    => sprintf( '<a href="?page=%s&action=%s&id=%s">Delete Permanently</a>', $_REQUEST['page'],'delete', $items->evf_entry_id ),
- 	            'untrash'    => sprintf( '<a href="?page=%s&action=%s&id=%s">Restore</a>', $_REQUEST['page'],'untrash', $items->evf_entry_id ),
-    	    );
-        }
-
-  		return sprintf('%1$s %2$s', $items->evf_entry_id, $this->row_actions($actions) );
-	}
-
-	/**
-	 * Return name column.
-	 *
-	 * @param  object $posts
-	 *
-	 * @return string
-	 */
 	public function column_name( $items ) {
-		return isset( $items->Name ) ? $items->Name : '' ;
+		$actions = array(
+			'view'      => sprintf( '<a href="?page=%s&action=%s&id=%s">View</a>', $_REQUEST['page'], 'view', $items->entry_id ),
+			'trash'    => sprintf( '<a href="?page=%s&action=%s&id=%s">Trash</a>', $_REQUEST['page'],'trash', $items->entry_id ),
+		);
+
+		if( isset( $_GET['status'] ) && $_GET['status'] == 'trash' ) {
+			$actions = array(
+				'view'      => sprintf( '<a href="?page=%s&action=%s&id=%s">View</a>', $_REQUEST['page'], 'view', $items->entry_id ),
+				'delete'    => sprintf( '<a href="?page=%s&action=%s&id=%s">Delete Permanently</a>', $_REQUEST['page'],'delete', $items->entry_id ),
+				'untrash'    => sprintf( '<a href="?page=%s&action=%s&id=%s">Restore</a>', $_REQUEST['page'],'untrash', $items->entry_id ),
+			);
+		}
+
+		return sprintf('%1$s %2$s', $items->entry_id, $this->row_actions($actions) );
 	}
 
 	/**
@@ -126,7 +114,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 * @return string
 	 */
 	public function column_date( $items ) {
-		return isset( $items->created_at ) ? $items->created_at : '';
+		return isset( $items->date_created ) ? $items->date_created : '';
 	}
 
 	/**
@@ -137,7 +125,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 * @return string
 	 */
 	public function column_actions( $items ) {
-		return '<a href=" '. admin_url('admin.php?page=display-evf-entries&action=edit&id='. $items->evf_entry_id .' ') .'">Details</a>';
+		return '<a href=" '. admin_url('admin.php?page=display-evf-entries&action=edit&id='. $items->entry_id .' ') .'">Details</a>';
 	}
 
 	protected function get_views() {
@@ -146,27 +134,27 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 
 		$selected_form = get_option( 'evf_selected_form_in_entries', 'All forms');
 
-	    $selected_form = (int) $selected_form;
+		$selected_form = (int) $selected_form;
 
 		$form_id = ( isset( $_POST['select-form'] ) && isset( $_POST['form_id'] ) ) ? $_POST['form_id'] : $selected_form;
 
-	    if( ( isset( $form_id )  ) && is_numeric( $form_id )  && $form_id !== 0) {
+		if( ( isset( $form_id )  ) && is_numeric( $form_id )  && $form_id !== 0) {
 
-			$query = 'SELECT id FROM wp_evf_entries WHERE form_id = '. $form_id .' AND status = "publish" ';
-			$query_1 = 'SELECT id FROM wp_evf_entries WHERE form_id = '. $form_id .' AND status = "trash" ';
+			$query = 'SELECT entry_id FROM wp_evf_entries WHERE form_id = '. $form_id .' AND status = "publish" ';
+			$query_1 = 'SELECT entry_id FROM wp_evf_entries WHERE form_id = '. $form_id .' AND status = "trash" ';
 
 		} else {
-			$query = 'SELECT id FROM wp_evf_entries WHERE status = "publish" ';
-			$query_1 = 'SELECT id FROM wp_evf_entries WHERE status = "trash" ';
+			$query = 'SELECT entry_id FROM wp_evf_entries WHERE status = "publish" ';
+			$query_1 = 'SELECT entry_id FROM wp_evf_entries WHERE status = "trash" ';
 		}
 
-	   	$results = $wpdb->get_results( $query );
+		$results = $wpdb->get_results( $query );
 
-	   	$total_items = count($results);
+		$total_items = count($results);
 
-	   	$results = $wpdb->get_results( $query_1 );
+		$results = $wpdb->get_results( $query_1 );
 
-	   	$total_trash_items = count($results);
+		$total_trash_items = count($results);
 
 		/* translators: %s: count */
 		$status_links['all'] = "<a href='admin.php?page=evf-entries&status=all'>" . sprintf( _nx( 'All <span class="count">(%s)</span>', 'All <span class="count">(%s)</span>', $total_items, 'entries', 'everest-forms' ), number_format_i18n( $total_items ) ) . '</a>';
@@ -187,36 +175,36 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	private function get_status_label( $status_name, $status ) {
 		switch ( $status_name ) {
 			case 'publish' :
-				/* translators: %s: count */
-				$label = array(
-					'singular' => __( 'Published <span class="count">(%s)</span>', 'everest-forms' ),
-					'plural'   => __( 'Published <span class="count">(%s)</span>', 'everest-forms' ),
-					'context'  => '',
-					'domain'   => 'everest-forms',
-				);
-				break;
+			/* translators: %s: count */
+			$label = array(
+				'singular' => __( 'Published <span class="count">(%s)</span>', 'everest-forms' ),
+				'plural'   => __( 'Published <span class="count">(%s)</span>', 'everest-forms' ),
+				'context'  => '',
+				'domain'   => 'everest-forms',
+			);
+			break;
 			case 'draft' :
-				/* translators: %s: count */
-				$label = array(
-					'singular' => __( 'Draft <span class="count">(%s)</span>', 'everest-forms' ),
-					'plural'   => __( 'Draft <span class="count">(%s)</span>', 'everest-forms' ),
-					'context'  => '',
-					'domain'   => 'everest-forms',
-				);
-				break;
+			/* translators: %s: count */
+			$label = array(
+				'singular' => __( 'Draft <span class="count">(%s)</span>', 'everest-forms' ),
+				'plural'   => __( 'Draft <span class="count">(%s)</span>', 'everest-forms' ),
+				'context'  => '',
+				'domain'   => 'everest-forms',
+			);
+			break;
 			case 'pending' :
-				/* translators: %s: count */
-				$label = array(
-					'singular' => __( 'Pending <span class="count">(%s)</span>', 'everest-forms' ),
-					'plural'   => __( 'Pending <span class="count">(%s)</span>', 'everest-forms' ),
-					'context'  => '',
-					'domain'   => 'everest-forms',
-				);
-				break;
+			/* translators: %s: count */
+			$label = array(
+				'singular' => __( 'Pending <span class="count">(%s)</span>', 'everest-forms' ),
+				'plural'   => __( 'Pending <span class="count">(%s)</span>', 'everest-forms' ),
+				'context'  => '',
+				'domain'   => 'everest-forms',
+			);
+			break;
 
 			default:
-				$label = $status->label_count;
-				break;
+			$label = $status->label_count;
+			break;
 		}
 
 		return $label;
@@ -261,31 +249,30 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		$per_page     = $this->get_items_per_page( 'evf_forms_per_page' );
 		$current_page = $this->get_pagenum();
 
-	    $query = 'SELECT form_id, entry_id, date_created, meta_key, meta_value FROM wp_evf_entries INNER JOIN wp_evf_entrymeta WHERE wp_evf_entries.id = wp_evf_entrymeta.evf_entry_id AND status = "publish" ';
+		$query = 'SELECT wp_evf_entries.entry_id, wp_evf_entrymeta.entry_id, form_id, date_created, meta_key, meta_value FROM wp_evf_entries INNER JOIN wp_evf_entrymeta WHERE wp_evf_entries.entry_id = wp_evf_entrymeta.entry_id AND status = "publish" ';
 
-	    $selected_form = get_option( 'evf_selected_form_in_entries', 'All forms');
+		$selected_form = get_option( 'evf_selected_form_in_entries', 'All forms');
 
-	    $selected_form = (int) $selected_form;
+		$selected_form = (int) $selected_form;
 
-	    $form_id = ( isset( $_POST['select-form'] ) && isset( $_POST['form_id'] ) ) ? $_POST['form_id'] : $selected_form;
+		$form_id = ( isset( $_POST['select-form'] ) && isset( $_POST['form_id'] ) ) ? $_POST['form_id'] : $selected_form;
 
-	    if( ( isset( $form_id )  ) && is_numeric( $form_id )  && $form_id !== 0) {
-	    	$query = 'SELECT form_id, evf_entry_id, created_at, meta_key, meta_value FROM wp_evf_entries INNER JOIN wp_evf_entrymeta WHERE form_id = '. $form_id .' AND wp_evf_entries.id = wp_evf_entrymeta.evf_entry_id AND status = "publish" ';
-	    }
+		if( ( isset( $form_id )  ) && is_numeric( $form_id )  && $form_id !== 0) {
+			$query = 'SELECT form_id, entry_id, date_created, meta_key, meta_value FROM wp_evf_entries INNER JOIN wp_evf_entrymeta WHERE form_id = '. $form_id .' AND wp_evf_entries.entry_id = wp_evf_entrymeta.entry_id AND status = "publish" ';
+		}
 
-	    if( ( isset( $_GET['status'] ) && $_GET['status'] == 'trash') ) {
-	    	$query = 'SELECT form_id, evf_entry_id, created_at, meta_key, meta_value FROM wp_evf_entries INNER JOIN wp_evf_entrymeta WHERE wp_evf_entries.id = wp_evf_entrymeta.evf_entry_id AND status = "trash" ';
-	    }
+		if( ( isset( $_GET['status'] ) && $_GET['status'] == 'trash') ) {
+			$query = 'SELECT form_id, entry_id, date_created, meta_key, meta_value FROM wp_evf_entries INNER JOIN wp_evf_entrymeta WHERE wp_evf_entries.entry_id = wp_evf_entrymeta.entry_id AND status = "trash" ';
+		}
 
-	   	$results = $wpdb->get_results( $query );
-
-	   	$array = [];
+		$results = $wpdb->get_results( $query );
+		$array = [];
 
 		foreach( $results as $val ) {
-		    $array[ $val->evf_entry_id ]['evf_entry_id'] = ( ! isset( $array[ $val->evf_entry_id ]['evf_entry_id'] ) ) ? $val->evf_entry_id : $array[ $val->evf_entry_id ]['evf_entry_id'];
-		    $array[ $val->evf_entry_id ]['created_at'] = (! isset( $array[ $val->evf_entry_id ]['created_at'] ) ) ? $val->created_at : $array[ $val->evf_entry_id ]['created_at'];
-		    $array[ $val->evf_entry_id ]['form_id'] = (! isset( $array[ $val->evf_entry_id ]['form_id'] ) ) ? $val->form_id : $array[ $val->evf_entry_id ]['form_id'];
-		    $array[ $val->evf_entry_id ][ $val->meta_key ] =  $val->meta_value;
+			$array[ $val->entry_id ]['entry_id'] = ( ! isset( $array[ $val->entry_id ]['entry_id'] ) ) ? $val->entry_id : $array[ $val->entry_id ]['entry_id'];
+			$array[ $val->entry_id ]['date_created'] = (! isset( $array[ $val->entry_id ]['date_created'] ) ) ? $val->date_created : $array[ $val->entry_id ]['date_created'];
+			$array[ $val->entry_id ]['form_id'] = (! isset( $array[ $val->entry_id ]['form_id'] ) ) ? $val->form_id : $array[ $val->entry_id ]['form_id'];
+			$array[ $val->entry_id ][ $val->meta_key ] =  $val->meta_value;
 		}
 
 		$array = json_decode( json_encode( array_values( $array ) ) );
@@ -294,13 +281,13 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 
 		$total_items = count( $this->items );
 
- 		$current_page = $this->get_pagenum();
+		$current_page = $this->get_pagenum();
 
 		$this->items = array_slice( $this->items,( ( $current_page-1 ) * $per_page ),$per_page );
 
 		$this->set_pagination_args( array(
-    		'total_items' => $total_items,
-    		'per_page'    => $per_page
- 		) );
+			'total_items' => $total_items,
+			'per_page'    => $per_page
+		) );
 	}
 }
