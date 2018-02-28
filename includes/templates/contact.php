@@ -13,8 +13,8 @@ $form_title               = isset( $title ) ? sanitize_text_field( $title ) : es
 $form_template['contact'] = array(
 	'form_field_id' => '1',
 	'form_fields' => array(
-		'lVizlNhYus-1' => array(
-			'id'          => 'lVizlNhYus-1',
+		'name' => array(
+			'id'          => 'name',
 			'type'        => 'text',
 			'label'       => 'Name',
 			'description' => '',
@@ -22,17 +22,8 @@ $form_template['contact'] = array(
 			'placeholder' => '',
 			'css'         => '',
 		),
-		'xJivsqAS2c-2' => array(
-			'id'          => 'xJivsqAS2c-2',
-			'type'        => 'text',
-			'label'       => 'Subject',
-			'description' => '',
-			'required'    => '1',
-			'placeholder' => '',
-			'css'         => '',
-		),
-		'XYnMdkQDKM-3' => array(
-			'id'            => 'XYnMdkQDKM-3',
+		'email' => array(
+			'id'            => 'email',
 			'type'          => 'email',
 			'label'         => 'Email',
 			'description'   => '',
@@ -41,8 +32,17 @@ $form_template['contact'] = array(
 			'default_value' => '',
 			'css'           => '',
 		),
-		'YalaPcQ0DO-4' => array(
-			'id'          => 'YalaPcQ0DO-4',
+		'subject' => array(
+			'id'          => 'subject',
+			'type'        => 'text',
+			'label'       => 'Subject',
+			'description' => '',
+			'required'    => '1',
+			'placeholder' => '',
+			'css'         => '',
+		),
+		'message' => array(
+			'id'          => 'message',
 			'type'        => 'textarea',
 			'label'       => 'Message',
 			'description' => '',
@@ -71,10 +71,10 @@ $form_template['contact'] = array(
 	'structure' => array(
 		'row_1' => array(
 			'grid_1' => array(
-				'lVizlNhYus-1',
-				'XYnMdkQDKM-3',
-				'xJivsqAS2c-2',
-				'YalaPcQ0DO-4',
+				'name',
+				'email',
+				'subject',
+				'message',
 			),
 		),
 	),
