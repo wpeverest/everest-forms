@@ -47,6 +47,9 @@ class EVF_Field_First_Name extends EVF_Form_Fields {
 		// Label.
 		$this->field_option( 'label', $field );
 
+		// Meta.
+		$this->field_option( 'meta', $field );
+
 		// Description.
 		$this->field_option( 'description', $field );
 

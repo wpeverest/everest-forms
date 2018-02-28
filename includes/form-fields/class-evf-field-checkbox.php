@@ -66,6 +66,9 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 		// Label
 		$this->field_option( 'label', $field );
 
+		// Meta.
+		$this->field_option( 'meta', $field );
+		
 		// Choices
 		$this->field_option( 'choices', $field );
 
