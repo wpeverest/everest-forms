@@ -317,7 +317,7 @@ CREATE TABLE {$wpdb->prefix}evf_entries (
   form_id BIGINT UNSIGNED NOT NULL,
   user_id BIGINT UNSIGNED NOT NULL,
   user_device varchar(60) NOT NULL,
-  referer BIGINT UNSIGNED NOT NULL,
+  referer text NOT NULL,
   status varchar(20) NOT NULL,
   date_created datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY  (entry_id),
