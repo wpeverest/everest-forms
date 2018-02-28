@@ -419,16 +419,18 @@ class EVF_Form_Task {
 		$form_fields = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
 
 		foreach ( $form_fields as $field_key => $field ) {
-			$label       = isset( $field['label'] ) ? $field['label'] : '';
+
+			$meta_key  = isset( $field['type'] ) ? $field['type'] .'_'. $field['id']  : '';
+
 			$field_value = isset( $entry['form_fields'][ $field_key ] ) ? $entry['form_fields'][ $field_key ] : '';
 
 			if ( is_array( $field_value ) ) {
-				$field_value = implode( ',', $field_value );
+				$field_value = serialize( $field_value );
 			}
 
 			$entry_metadata = array(
 				'entry_id'   => $entry_id,
-				'meta_key'   => $label,
+				'meta_key'   => $meta_key,
 				'meta_value' => $field_value,
 			);
 			$wpdb->insert( $wpdb->prefix . 'evf_entrymeta', $entry_metadata );
