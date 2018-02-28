@@ -1033,3 +1033,105 @@ function evf_get_all_forms() {
 
 	return $all_forms;
 }
+
+/**
+ * Get current user IP Address.
+ *
+ * @return string
+ */
+function evf_get_ip_address() {
+	if ( isset( $_SERVER['HTTP_X_REAL_IP'] ) ) { // WPCS: input var ok, CSRF ok.
+		return sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_REAL_IP'] ) );  // WPCS: input var ok, CSRF ok.
+	} elseif ( isset( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) { // WPCS: input var ok, CSRF ok.
+		// Proxy servers can send through this header like this: X-Forwarded-For: client1, proxy1, proxy2
+		// Make sure we always only send through the first IP in the list which should always be the client IP.
+		return (string) rest_is_ip_address( trim( current( preg_split( '/[,:]/', sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) ) ) ) ); // WPCS: input var ok, CSRF ok.
+	} elseif ( isset( $_SERVER['REMOTE_ADDR'] ) ) { // @codingStandardsIgnoreLine
+		return sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ); // @codingStandardsIgnoreLine
+	}
+	return '';
+}
+
+/**
+ * Get User Agent browser and OS type
+ *
+ * @since  1.1.0
+ * @return array
+ */
+function evf_get_browser() {
+    $u_agent  = $_SERVER['HTTP_USER_AGENT'];
+    $bname    = 'Unknown';
+    $platform = 'Unknown';
+    $version  = '';
+
+    // First get the platform.
+    if ( preg_match( '/linux/i', $u_agent ) ) {
+        $platform = 'Linux';
+    } elseif ( preg_match( '/macintosh|mac os x/i', $u_agent ) ) {
+        $platform = 'MAC OS';
+    } elseif ( preg_match( '/windows|win32/i', $u_agent ) ) {
+        $platform = 'Windows';
+    }
+
+    // Next get the name of the useragent yes seperately and for good reason.
+    if ( preg_match( '/MSIE/i',$u_agent ) && ! preg_match( '/Opera/i',$u_agent ) ) {
+        $bname = 'Internet Explorer';
+        $ub    = 'MSIE';
+    } elseif ( preg_match( '/Trident/i',$u_agent ) ) {
+        // this condition is for IE11
+        $bname = 'Internet Explorer';
+        $ub = 'rv';
+    } elseif ( preg_match( '/Firefox/i',$u_agent ) ) {
+        $bname = 'Mozilla Firefox';
+        $ub = 'Firefox';
+    } elseif ( preg_match( '/Chrome/i',$u_agent ) ) {
+        $bname = 'Google Chrome';
+        $ub = 'Chrome';
+    } elseif ( preg_match( '/Safari/i',$u_agent ) ) {
+        $bname = 'Apple Safari';
+        $ub = 'Safari';
+    } elseif ( preg_match( '/Opera/i',$u_agent ) ) {
+        $bname = 'Opera';
+        $ub = 'Opera';
+    } elseif ( preg_match( '/Netscape/i',$u_agent ) ) {
+        $bname = 'Netscape';
+        $ub = 'Netscape';
+    }
+
+    // Finally get the correct version number.
+    // Added "|:"
+    $known = array( 'Version', $ub, 'other' );
+    $pattern = '#(?<browser>' . join( '|', $known ) .
+     ')[/|: ]+(?<version>[0-9.|a-zA-Z.]*)#';
+    if ( ! preg_match_all( $pattern, $u_agent, $matches ) ) {
+        // We have no matching number just continue.
+    }
+
+    // See how many we have.
+    $i = count( $matches['browser'] );
+
+    if ( $i != 1 ) {
+        // we will have two since we are not using 'other' argument yet.
+        // see if version is before or after the name.
+        if ( strripos( $u_agent,'Version' ) < strripos( $u_agent,$ub ) ) {
+            $version = $matches['version'][0];
+        } else {
+            $version = $matches['version'][1];
+        }
+    } else {
+        $version = $matches['version'][0];
+    }
+
+    // Check if we have a number.
+    if ( $version == null || $version == '' ) {
+        $version = '';
+    }
+
+    return array(
+        'userAgent' => $u_agent,
+        'name'      => $bname,
+        'version'   => $version,
+        'platform'  => $platform,
+        'pattern'   => $pattern
+    );
+}
