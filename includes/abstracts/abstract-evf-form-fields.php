@@ -341,11 +341,11 @@ abstract class EVF_Form_Fields {
 					'tooltip' => $tooltip
 				), false );
 				$output  .= $this->field_element( 'text', $field, array(
-					'slug'  => 'label',
+					'slug'  => 'meta-key',
 					'value' => $value
 				), false );
 				$output  = $this->field_element( 'row', $field, array(
-					'slug'    => 'label',
+					'slug'    => 'meta-key',
 					'content' => $output
 				), false );
 				break;
