@@ -423,7 +423,7 @@ class EVF_Form_Task {
 			$field_value = isset( $entry['form_fields'][ $field_key ] ) ? $entry['form_fields'][ $field_key ] : '';
 
 			if ( is_array( $field_value ) ) {
-				$field_value = implode( ',', $field_value );
+				$field_value = serialize( $field_value );
 			}
 
 			$entry_metadata = array(
