@@ -333,7 +333,7 @@ abstract class EVF_Form_Fields {
 
 			// EVF meta fields
 			case 'meta':
-				$value   = ! empty( $field['id'] ) ? esc_attr( $field['id'] ) : '';
+				$value   =  ! empty( $field['meta-key'] ) ? esc_attr( $field['meta-key'] ) : evf_get_meta_key_field_option( $field );
 				$tooltip = __( 'Enter meta key to be stored in database.', 'everest-forms' );
 				$output  = $this->field_element( 'label', $field, array(
 					'slug'    => 'meta-key',
