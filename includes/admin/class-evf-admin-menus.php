@@ -478,7 +478,7 @@ class EVF_Admin_Menus {
 		$args = array(
 			'id'     => 'everest_forms',
 			'title'  => 'Everest Forms',
-			'href'   => admin_url( 'admin.php?page=everest-forms-builder' ),
+			'href'   => admin_url( 'admin.php?page=edit-evf-form' ),
 			'parent' => 'new-content',
 		);
 		$wp_admin_bar->add_node( $args );

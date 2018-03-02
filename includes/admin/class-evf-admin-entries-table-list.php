@@ -43,7 +43,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	public function get_columns() {
 		return array(
 			'cb'      => '<input type="checkbox" />',
-			'name'    => __( 'Entry', 'everest-forms' ),
+			'name'    => __( 'Name', 'everest-forms' ),
 			'email'   => __( 'Email', 'everest-forms' ),
 			'date'    => __( 'Entry Date', 'everest-forms' ),
 			'actions' => __( 'Action', 'everest-forms' ),
@@ -79,20 +79,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 * @return string
 	 */
 	public function column_name( $items ) {
-		$actions = array(
-			'view'      => sprintf( '<a href="?page=%s&action=%s&id=%s">View</a>', $_REQUEST['page'], 'view', $items->entry_id ),
-			'trash'    => sprintf( '<a href="?page=%s&action=%s&id=%s">Trash</a>', $_REQUEST['page'],'trash', $items->entry_id ),
-		);
-
-		if( isset( $_GET['status'] ) && $_GET['status'] == 'trash' ) {
-			$actions = array(
-				'view'      => sprintf( '<a href="?page=%s&action=%s&id=%s">View</a>', $_REQUEST['page'], 'view', $items->entry_id ),
-				'delete'    => sprintf( '<a href="?page=%s&action=%s&id=%s">Delete Permanently</a>', $_REQUEST['page'],'delete', $items->entry_id ),
-				'untrash'    => sprintf( '<a href="?page=%s&action=%s&id=%s">Restore</a>', $_REQUEST['page'],'untrash', $items->entry_id ),
-			);
-		}
-
-		return sprintf('%1$s %2$s', $items->entry_id, $this->row_actions($actions) );
+		return isset( $items->name ) ? $items->text_name : '';
 	}
 
 	/**
@@ -103,7 +90,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 * @return string
 	 */
 	public function column_email_address( $items ) {
-		return isset( $items->Email ) ? $items->Email : '';
+		return isset( $items->email ) ? $items->email : '';
 	}
 
 	/**
