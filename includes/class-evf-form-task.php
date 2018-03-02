@@ -420,7 +420,7 @@ class EVF_Form_Task {
 
 		foreach ( $form_fields as $field_key => $field ) {
 
-			$meta_key  = isset( $field['type'] ) ? $field['type'] .'_'. $field['id']  : '';
+			$meta_key  = isset( $field['meta-key'] ) ? $field['meta-key'] : '';
 
 			$field_value = isset( $entry['form_fields'][ $field_key ] ) ? $entry['form_fields'][ $field_key ] : '';
 
