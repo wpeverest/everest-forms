@@ -393,15 +393,18 @@ class EVF_Form_Task {
 	public function entry_save( $fields, $entry, $form_id, $form_data = '' ) {
 		global $wpdb;
 
+		$browser = evf_get_browser();
+
 		do_action( 'everest_forms_process_entry_save', $fields, $entry, $form_id, $form_data );
 
 		$entry_data = array(
-			'form_id'      => $form_id,
-			'user_id'      => get_current_user_id(),
-			'user_device'  => '',
-			'status'       => 'publish',
-			'referer'      => $_SERVER['HTTP_REFERER'],
-			'date_created' => current_time( 'mysql' )
+			'form_id'         => $form_id,
+			'user_id'         => get_current_user_id(),
+			'user_device'     => $browser['name'] . '/' . $browser['platform'],
+			'user_ip_address' => evf_get_ip_address(),
+			'status'          => 'publish',
+			'referer'         => $_SERVER['HTTP_REFERER'],
+			'date_created'    => current_time( 'mysql' )
 		);
 
 		if ( ! $entry_data['form_id'] ) {

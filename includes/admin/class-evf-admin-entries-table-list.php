@@ -32,7 +32,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 * No items found text.
 	 */
 	public function no_items() {
-		esc_html_e( 'No Entries found.', 'everest-forms' );
+		esc_html_e( 'Whoops, it appears you do not have any form entries yet.', 'everest-forms' );
 	}
 
 	/**
