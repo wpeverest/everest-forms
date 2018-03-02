@@ -57,7 +57,7 @@ class EVF_Admin_Entries {
 			<form id="entries-list" method="post">
 				<?php
 					$entries_table_list->views();
-					$entries_table_list->search_box( __( 'Search Forms', 'everest-forms' ), 'everest-forms' );
+					$entries_table_list->search_box( __( 'Search Entries', 'everest-forms' ), 'everest-forms' );
 					$entries_table_list->display();
 
 					wp_nonce_field( 'save', 'everest-forms_nonce' );

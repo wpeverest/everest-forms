@@ -18,9 +18,47 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 class EVF_Admin_Entries_Table_List extends WP_List_Table {
 
 	/**
+	 * Form ID.
+	 *
+	 * @var int
+	 */
+	public $form_id;
+
+	/**
+	 * Forms object.
+	 *
+	 * @var EVF_Form_Handler
+	 */
+	public $form;
+
+	/**
+	 * Forms object.
+	 *
+	 * @var EVF_Form_Handler[]
+	 */
+	public $forms;
+
+	/**
+	 * Form data as an array.
+	 *
+	 * @var array
+	 */
+	public $form_data;
+
+	/**
 	 * Initialize the log table list.
 	 */
 	public function __construct() {
+		// Fetch all forms.
+		$this->forms = EVF()->form->get();
+
+		// Check that the user has created at least one form.
+		if ( ! empty( $this->forms ) ) {
+			$this->form_id = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : apply_filters( 'everest_forms_entry_list_default_form_id', absint( $this->forms[0]->ID ) );
+			$this->form    = EVF()->form->get( $this->form_id );
+			$this->form_data = ! empty( $this->form->post_content ) ? evf_decode( $this->form->post_content ) : '';
+		}
+
 		parent::__construct( array(
 			'singular' => 'entry',
 			'plural'   => 'entries',
@@ -41,13 +79,14 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 * @return array
 	 */
 	public function get_columns() {
-		return array(
-			'cb'      => '<input type="checkbox" />',
-			'name'    => __( 'Name', 'everest-forms' ),
-			'email'   => __( 'Email', 'everest-forms' ),
-			'date'    => __( 'Entry Date', 'everest-forms' ),
-			'actions' => __( 'Action', 'everest-forms' ),
-		);
+		$columns               = array();
+		$columns['cb']         = '<input type="checkbox" />';
+		// $columns['indicators'] = '';
+		$columns               = $this->get_columns_form_fields( $columns );
+		$columns['date']       = esc_html__( 'Date', 'everest-forms' );
+		$columns['actions']    = esc_html__( 'Actions', 'everest-forms' );
+
+		return apply_filters( 'everest_forms_entries_table_columns', $columns, $this->form_data );
 	}
 
 	/**
@@ -57,8 +96,51 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 */
 	protected function get_sortable_columns() {
 		return array(
+			'id'   => array( 'title', false ),
 			'date' => array( 'date', false ),
 		);
+	}
+
+	/**
+	 * Get the list of fields, that are disallowed to be displayed as column in a table.
+	 *
+	 * @return array
+	 */
+	public static function get_columns_form_disallowed_fields() {
+		return (array) apply_filters( 'everest_forms_entries_table_fields_disallow', array( 'divider', 'html', 'pagebreak', 'captcha' ) );
+	}
+
+	/**
+	 * Logic to determine which fields are displayed in the table columns.
+	 *
+	 * @param array $columns
+	 * @param int   $display
+	 *
+	 * @return array
+	 */
+	public function get_columns_form_fields( $columns = array(), $display = 3 ) {
+		$entry_columns = EVF()->form->get_meta( $this->form_id, 'entry_columns' );
+
+		if ( ! $entry_columns && ! empty( $this->form_data['form_fields'] ) ) {
+			$x = 0;
+			foreach ( $this->form_data['form_fields'] as $id => $field ) {
+				if ( ! in_array( $field['type'], self::get_columns_form_disallowed_fields(), true ) && $x < $display ) {
+					$columns[ 'evf_field_' . $id ] = ! empty( $field['label'] ) ? wp_strip_all_tags( $field['label'] ) : esc_html__( 'Field', 'everest-forms' );
+					$x ++;
+				}
+			}
+		} else {
+			foreach ( $entry_columns as $id ) {
+				// Check to make sure the field as not been removed.
+				if ( empty( $this->form_data['form_fields'][ $id ] ) ) {
+					continue;
+				}
+
+				$columns[ 'evf_field_' . $id ] = ! empty( $this->form_data['form_fields'][ $id ]['label'] ) ? wp_strip_all_tags( $this->form_data['form_fields'][ $id ]['label'] ) : esc_html__( 'Field', 'everest-forms' );
+			}
+		}
+
+		return $columns;
 	}
 
 	/**
