@@ -34,6 +34,7 @@ class EVF_Admin_Entries {
 	 */
 	public static function page_output() {
 		if ( isset( $_GET['view-entry'] ) ) {
+			$form_id  = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0; // WPCS: input var okay, CSRF ok.
 			$entry_id = isset( $_GET['view-entry'] ) ? absint( $_GET['view-entry'] ) : 0; // WPCS: input var okay, CSRF ok.
 			$entry    = self::get_entry_data( $entry_id );
 
@@ -65,6 +66,33 @@ class EVF_Admin_Entries {
 			</form>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Get entry data.
+	 *
+	 * @param  int $entry_id Entry ID.
+	 * @return array
+	 */
+	public static function get_entry_data( $entry_id ) {
+		global $wpdb;
+
+		$empty = array(
+			'entry_id' => 0,
+			'user_id'  => '',
+		);
+
+		if ( 0 === $entry_id ) {
+			return $empty;
+		}
+
+		$entry = $wpdb->get_results( $wpdb->prepare( "SELECT meta_key,meta_value FROM {$wpdb->prefix}evf_entrymeta WHERE entry_id = %d", $entry_id ), ARRAY_A );
+
+		if ( is_null( $entry ) ) {
+			return $empty;
+		}
+
+		return $entry;
 	}
 
 	/**

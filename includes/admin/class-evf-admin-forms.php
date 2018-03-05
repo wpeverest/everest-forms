@@ -24,7 +24,7 @@ class EVF_Admin_Forms {
 		?>
 		<div class="wrap">
 			<h1 class="wp-heading-inline"><?php esc_html_e( 'All Forms', 'everest-forms' ); ?></h1>
-			<a href="<?php echo esc_url( admin_url( 'admin.php?&page=edit-evf-form' ) ); ?>" class="page-title-action"><?php esc_html_e( 'Add New', 'everest-forms' ); ?></a>
+			<a href="<?php echo esc_url( admin_url( 'admin.php?page=edit-evf-form' ) ); ?>" class="page-title-action"><?php esc_html_e( 'Add New', 'everest-forms' ); ?></a>
 			<hr class="wp-header-end">
 			<form id="form-list" method="post">
 				<input type="hidden" name="page" value="everest-forms"/>
