@@ -81,7 +81,6 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	public function get_columns() {
 		$columns               = array();
 		$columns['cb']         = '<input type="checkbox" />';
-		// $columns['indicators'] = '';
 		$columns               = $this->get_columns_form_fields( $columns );
 		$columns['date']       = esc_html__( 'Date', 'everest-forms' );
 		$columns['actions']    = esc_html__( 'Actions', 'everest-forms' );
@@ -126,7 +125,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 			foreach ( $this->form_data['form_fields'] as $id => $field ) {
 				if ( ! in_array( $field['type'], self::get_columns_form_disallowed_fields(), true ) && $x < $display ) {
 					$columns[ 'evf_field_' . $id ] = ! empty( $field['label'] ) ? wp_strip_all_tags( $field['label'] ) : esc_html__( 'Field', 'everest-forms' );
-					$x ++;
+					$x++;
 				}
 			}
 		} else {
@@ -154,48 +153,112 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	}
 
 	/**
-	 * Return id column.
+	 * Show specific form fields.
 	 *
-	 * @param  object $item
-	 *
+	 * @param  object $entry
+	 * @param  string $column_name
 	 * @return string
 	 */
-	public function column_name( $items ) {
-		return isset( $items->name ) ? $items->text_name : '';
+	public function column_form_field( $entry, $column_name ) {
+		$field_id     = str_replace( 'evf_field_', '', $column_name );
+		$entry_fields = evf_decode( $entry->fields );
+
+		if ( ! empty( $entry_fields[ $field_id ] ) && ! empty( $entry_fields[ $field_id ]['value'] ) ) {
+			$value = $entry_fields[ $field_id ]['value'];
+
+			// Limit to 5 lines.
+			$lines = explode( "\n", $value );
+			$value = array_slice( $lines, 0, 4 );
+			$value = implode( "\n", $value );
+
+			if ( count( $lines ) > 5 ) {
+				$value .= '&hellip;';
+			} elseif ( strlen( $value ) > 75 ) {
+				$value = substr( $value, 0, 75 ) . '&hellip;';
+			}
+
+			$value = nl2br( wp_strip_all_tags( trim( $value ) ) );
+
+			return apply_filters( 'everest_forms_html_field_value', $value, $entry_fields[ $field_id ], $this->form_data, 'entry-table' );
+
+		} else {
+			return '-';
+		}
 	}
 
 	/**
-	 * Return email column.
+	 * Renders the columns.
 	 *
-	 * @param  object $posts
-	 *
+	 * @param  object $entry
+	 * @param  string $column_name
 	 * @return string
 	 */
-	public function column_email_address( $items ) {
-		return isset( $items->email ) ? $items->email : '';
+	public function column_default( $entry, $column_name ) {
+		switch ( $column_name ) {
+			case 'id':
+				$value = absint( $entry->entry_id );
+				break;
+
+			case 'date':
+				$value = date_i18n( get_option( 'date_format' ), strtotime( $entry->date_created ) + ( get_option( 'gmt_offset' ) * 3600 ) );
+				break;
+
+			default:
+				if ( false !== strpos( $column_name, 'evf_field_' ) ) {
+					$value = $this->column_form_field( $entry, $column_name );
+				} else {
+					$value = '';
+				}
+		}
+
+		return apply_filters( 'everest_forms_entry_table_column_value', $value, $entry, $column_name );
 	}
 
 	/**
-	 * Return date column.
+	 * Render the actions column.
 	 *
-	 * @param  object $posts
-	 *
+	 * @param  object $entry
 	 * @return string
 	 */
-	public function column_date( $items ) {
-		return isset( $items->date_created ) ? $items->date_created : '';
+	public function column_actions( $entry ) {
+		$actions = array();
+
+		// View.
+		$actions[] = sprintf(
+			'<a href="%s" title="%s" class="view">%s</a>',
+			add_query_arg(
+				array(
+					'view'     => 'details',
+					'entry_id' => $entry->entry_id,
+				),
+				admin_url( 'admin.php?page=evf-entries'
+				)
+			),
+			esc_html__( 'View Form Entry', 'everest-forms' ),
+			esc_html__( 'View', 'everest-forms' )
+		);
+
+		// Delete.
+		$actions[] = sprintf(
+			'<a href="%s" title="%s" class="delete">%s</a>',
+			wp_nonce_url(
+				add_query_arg(
+					array(
+						'view'     => 'list',
+						'action'   => 'delete',
+						'form_id'  => $this->form_id,
+						'entry_id' => $entry->entry_id,
+					)
+				),
+				'bulk-entries'
+			),
+			esc_html__( 'Delete Form Entry', 'everest-forms' ),
+			esc_html__( 'Delete', 'everest-forms' )
+		);
+
+		return implode( ' <span class="sep">|</span> ', apply_filters( 'everest_forms_entry_table_actions', $actions, $entry ) );
 	}
 
-	/**
-	 * Return action column.
-	 *
-	 * @param  object $posts
-	 *
-	 * @return string
-	 */
-	public function column_actions( $items ) {
-		return '<a href=" '. admin_url('admin.php?page=display-evf-entries&action=edit&id='. $items->entry_id .' ') .'">Details</a>';
-	}
 
 	protected function get_views() {
 		global $wpdb;
@@ -341,7 +404,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 			$array[ $val->entry_id ]['entry_id'] = ( ! isset( $array[ $val->entry_id ]['entry_id'] ) ) ? $val->entry_id : $array[ $val->entry_id ]['entry_id'];
 			$array[ $val->entry_id ]['date_created'] = (! isset( $array[ $val->entry_id ]['date_created'] ) ) ? $val->date_created : $array[ $val->entry_id ]['date_created'];
 			$array[ $val->entry_id ]['form_id'] = (! isset( $array[ $val->entry_id ]['form_id'] ) ) ? $val->form_id : $array[ $val->entry_id ]['form_id'];
-			$array[ $val->entry_id ][ $val->meta_key ] =  $val->meta_value;
+			$array[ $val->entry_id ]['fields'][ $val->meta_key ] =  $val->meta_value;
 		}
 
 		$array = json_decode( json_encode( array_values( $array ) ) );
