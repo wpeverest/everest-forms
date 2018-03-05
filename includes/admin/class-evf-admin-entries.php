@@ -34,9 +34,10 @@ class EVF_Admin_Entries {
 	 */
 	public static function page_output() {
 		if ( isset( $_GET['view-entry'] ) ) {
-			$form_id  = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0; // WPCS: input var okay, CSRF ok.
-			$entry_id = isset( $_GET['view-entry'] ) ? absint( $_GET['view-entry'] ) : 0; // WPCS: input var okay, CSRF ok.
-			$entry    = self::get_entry_data( $entry_id );
+			$form_id   = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0; // WPCS: input var okay, CSRF ok.
+			$entry_id  = isset( $_GET['view-entry'] ) ? absint( $_GET['view-entry'] ) : 0; // WPCS: input var okay, CSRF ok.
+			$entry     = self::get_entry_data( $entry_id );
+			$entrymeta = self::get_entry_meta( $entry_id );
 
 			include 'views/html-admin-page-entries-view.php';
 		} else {
@@ -75,6 +76,39 @@ class EVF_Admin_Entries {
 	 * @return array
 	 */
 	public static function get_entry_data( $entry_id ) {
+		global $wpdb;
+
+		$empty = array(
+			'entry_id'        => 0,
+			'form_id'         => '',
+			'user_id'         => '',
+			'user_device'     => '',
+			'user_ip_address' => '',
+			'referer'         => '',
+			'status'          => '',
+			'date_created'    => '',
+		);
+
+		if ( 0 === $entry_id ) {
+			return $empty;
+		}
+
+		$entry = $wpdb->get_row( $wpdb->prepare( "SELECT entry_id, form_id, user_id, user_device, user_ip_address, referer, status, date_created FROM {$wpdb->prefix}evf_entries WHERE entry_id = %d", $entry_id ) );
+
+		if ( is_null( $entry ) ) {
+			return $empty;
+		}
+
+		return $entry;
+	}
+
+	/**
+	 * Get entry meta.
+	 *
+	 * @param  int $entry_id Entry ID.
+	 * @return array
+	 */
+	public static function get_entry_meta( $entry_id ) {
 		global $wpdb;
 
 		$empty = array(

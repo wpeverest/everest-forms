@@ -433,8 +433,6 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 
 		$total_items = count( $this->items );
 
-		$current_page = $this->get_pagenum();
-
 		$this->items = array_slice( $this->items,( ( $current_page-1 ) * $per_page ),$per_page );
 
 		$this->set_pagination_args( array(
