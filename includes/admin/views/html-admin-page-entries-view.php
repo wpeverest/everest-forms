@@ -47,7 +47,7 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 												// Field name.
 												echo '<tr class="field-name"><th><strong>';
 													/* translators: %d - field ID. */
-													echo ! empty( $field['name'] ) ? wp_strip_all_tags( $field['name'] ) : sprintf( esc_html__( 'Field ID #%d', 'everest-forms' ), absint( $key ) );
+													echo ! empty( $field['meta_key'] ) ? get_form_data_by_meta_key( $form_id, $field['meta_key'] ) : sprintf( esc_html__( 'Field ID #%d', 'everest-forms' ), absint( $key ) );
 												echo '</strong></th></tr>';
 
 												// Field value.
