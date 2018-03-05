@@ -145,6 +145,8 @@ final class EverestForms {
 		add_action( 'init', array( $this, 'init' ), 0 );
 		add_action( 'init', array( 'EVF_Shortcodes', 'init' ) );
 		add_action( 'init', array( 'EVF_Template_Loader', 'init' ) );
+		add_action( 'init', array( $this, 'wpdb_table_fix' ), 0 );
+		add_action( 'switch_blog', array( $this, 'wpdb_table_fix' ), 0 );
 	}
 
 	/**
@@ -364,5 +366,14 @@ final class EverestForms {
 	 */
 	public function ajax_url() {
 		return admin_url( 'admin-ajax.php', 'relative' );
+	}
+
+	/**
+	 * Everest Forms Entry Meta - set table names.
+	 */
+	public function wpdb_table_fix() {
+		global $wpdb;
+		$wpdb->form_entrymeta    = $wpdb->prefix . 'wp_evf_entrymeta';
+		$wpdb->tables[]          = 'wp_evf_entrymeta';
 	}
 }
