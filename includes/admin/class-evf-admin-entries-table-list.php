@@ -424,7 +424,6 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 
 		if ( ! empty( $_GET['status'] ) ) {
 			$data_args['status'] = sanitize_text_field( $_GET['status'] );
-			$total_items         = $this->counts['abandoned'];
 		}
 
 
