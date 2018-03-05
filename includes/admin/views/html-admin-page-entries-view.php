@@ -35,18 +35,19 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 									// Whoops, no fields! This shouldn't happen under normal use cases.
 									echo '<p class="no-fields">' . esc_html__( 'This entry does not have any fields.', 'everest-forms' ) . '</p>';
 								} else {
+
 									// Display the fields and their values
 									foreach ( $entry as $key => $field ) {
+									
 										$field_value = apply_filters( 'everest_forms_html_field_value', wp_strip_all_tags( $field['meta_value'] ) );
+										$field_key = apply_filters( 'everest_forms_html_field_key', wp_strip_all_tags( $field['meta_key'] ) );
 										$field_class = empty( $field_value ) ? ' empty' : '';
 										$field_style = $hide_empty && empty( $field_value ) ? 'display:none;' : '';
 
 										echo '<div class="everest-forms-entry-field ' . $field_class . '" style="' . $field_style . '">';
-
 											// Field name
 											echo '<p class="everest-forms-entry-field-name">';
-												/* translators: %d - field ID. */
-												echo ! empty( $field['name'] ) ? wp_strip_all_tags( $field['name'] ) : sprintf( esc_html__( 'Field ID #%d', 'everest-forms' ), absint( $key ) );
+												echo esc_html( get_form_data_by_meta_key( $form_id, $field_key ) );
 											echo '</p>';
 
 											// Field value
