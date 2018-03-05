@@ -1041,7 +1041,7 @@ function evf_get_meta_key_field_option( $field ) {
 	$random_number = rand( pow(10, $digits-1 ), pow( 10, $digits )-1 );
 	$meta_key = strtolower( str_replace( " ", "_", $field['label'] ) ).'_'.$random_number;
 	return $meta_key;
-}                      
+}
 
 /**
  * Get current user IP Address.
@@ -1143,4 +1143,37 @@ function evf_get_browser() {
         'platform'  => $platform,
         'pattern'   => $pattern
     );
+}
+
+/**
+ * Get the certain date of a specified day in a specified format.
+ *
+ * @since 1.4.4
+ *
+ * @param string $period Supported values: start, end.
+ * @param string $timestamp Default is the current timestamp, if left empty.
+ * @param string $format Default is a MySQL format.
+ *
+ * @return string
+ */
+function evf_get_day_period_date( $period, $timestamp = '', $format = 'Y-m-d H:i:s' ) {
+
+	$date = '';
+
+	if ( empty( $timestamp ) ) {
+		$timestamp = time();
+	}
+
+	switch ( $period ) {
+		case 'start_of_day':
+			$date = date( $format, strtotime( 'today', $timestamp ) );
+			break;
+
+		case 'end_of_day':
+			$date = date( $format, strtotime( 'tomorrow', $timestamp ) - 1 );
+			break;
+
+	}
+
+	return $date;
 }

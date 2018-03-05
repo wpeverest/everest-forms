@@ -35,11 +35,20 @@ final class EverestForms {
 	/**
 	 * The entry data handler instance.
 	 *
-	 * @since      1.0.0
+	 * @since 1.1.0
 	 *
-	 * @var object everest_forms_Entry_Handler
+	 * @var EVF_Entry_Handler
 	 */
 	public $entry;
+
+	/**
+	 * The entry meta data handler instance.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @var EVF_Entry_Meta_Handler
+	 */
+	public $entry_meta;
 
 	/*
 	 * Number of grid in form
@@ -306,6 +315,7 @@ final class EverestForms {
 
 		// Global objects.
 		$this->form = new EVF_Form_Handler;
+
 		//$this->frontend   = new EVF_Forms_Frontend;
 		$this->task = new EVF_Form_Task;
 		//$this->smart_tags = new EVF_Forms_Smart_Tags;
