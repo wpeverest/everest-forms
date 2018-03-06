@@ -7,29 +7,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === $_COOKIE['everest_forms_entry_hide_empty'] ;
+$hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === $_COOKIE['everest_forms_entry_hide_empty'];
 
-?><script>
-	jQuery( document ).on( 'click', '#everest-forms-entry-fields .everest-forms-empty-field-toggle', function( event ) {
-				event.preventDefault();
-
-				// Handle cookie.
-				if ( wpCookies.get( 'everest_forms_entry_hide_empty' ) === 'true') {
-
-					// User was hiding empty fields, so now display them.
-					wpCookies.remove('everest_forms_entry_hide_empty');
-					jQuery( this ).text( 'Hide Empty Fields' );
-				} else {
-
-					// User was seeing empty fields, so now hide them.
-					wpCookies.set( 'everest_forms_entry_hide_empty', 'true', 2592000 ); // 1month.
-					jQuery( this ).text( 'Show Empty Fields' );
-				}
-
-				jQuery( '.wpforms-entry-field.empty' ).toggle();
-			});
-</script>
-<?php
 ?>
 <div class="wrap everest-forms">
 	<h1 class="wp-heading-inline"><?php esc_html_e( 'View Entry', 'everest-forms' ); ?></h1>
@@ -155,3 +134,24 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 		</div>
 	</div>
 </div>
+<!--  Toggle displaying empty fields. -->
+<script type="text/javascript">
+	jQuery( document ).on( 'click', '#everest-forms-entry-fields .everest-forms-empty-field-toggle', function( event ) {
+		event.preventDefault();
+
+		// Handle cookie.
+		if ( wpCookies.get( 'everest_forms_entry_hide_empty' ) === 'true' ) {
+
+			// User was hiding empty fields, so now display them.
+			wpCookies.remove( 'everest_forms_entry_hide_empty' );
+			jQuery( this ).text( 'Hide Empty Fields' );
+		} else {
+
+			// User was seeing empty fields, so now hide them.
+			wpCookies.set( 'everest_forms_entry_hide_empty', 'true', 2592000 ); // 1month.
+			jQuery( this ).text( 'Show Empty Fields' );
+		}
+
+		jQuery( '.everest-forms-entry-field.empty' ).toggle();
+	});
+</script>
