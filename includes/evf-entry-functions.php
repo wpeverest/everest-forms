@@ -73,7 +73,7 @@ function evf_search_entries( $args ) {
 	$offset        = 0 < $args['offset'] ? sprintf( 'OFFSET %d', $args['offset'] ) : '';
 	$status        = ! empty( $args['status'] ) ? "AND `status` = '" . sanitize_key( $args['status'] ) . "'" : '';
 	$search        = ! empty( $args['search'] ) ? "AND `name` LIKE '%" . $wpdb->esc_like( sanitize_text_field( $args['search'] ) ) . "%'" : '';
-	$include       = '';
+	$include       = ! empty( $args['form_id'] ) ? "AND `form_id` = '" . absint( $args['form_id'] ) . "'" : '';
 	$exclude       = '';
 	$date_created  = '';
 	$date_modified = '';
@@ -121,14 +121,15 @@ function evf_search_entries( $args ) {
  *
  * @return array
  */
-function evf_get_count_entries_by_status() {
+function evf_get_count_entries_by_status( $form_id ) {
 	$statuses = array_keys( evf_get_entry_statuses() );
 	$counts   = array();
 
 	foreach ( $statuses as $status ) {
 		$count = count( evf_search_entries( array(
-			'limit'  => -1,
-			'status' => $status,
+			'limit'   => -1,
+			'status'  => $status,
+			'form_id' => $form_id,
 		) ) );
 
 		$counts[ $status ] = $count;

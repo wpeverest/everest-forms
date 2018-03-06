@@ -275,13 +275,13 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 */
 	protected function get_views() {
 		$status_links  = array();
-		$num_entries   = evf_get_count_entries_by_status();
+		$num_entries   = evf_get_count_entries_by_status( $this->form_id );
 		$total_entries = array_sum( (array) $num_entries );
 		$statuses      = array_keys( evf_get_entry_statuses() );
 		$class         = empty( $_REQUEST['status'] ) ? ' class="current"' : ''; // WPCS: input var okay. CSRF ok.
 
 		/* translators: %s: count */
-		$status_links['all'] = "<a href='admin.php?page=evf-entries'$class>" . sprintf( _nx( 'All <span class="count">(%s)</span>', 'All <span class="count">(%s)</span>', $total_entries, 'entries', 'everest-forms' ), number_format_i18n( $total_entries ) ) . '</a>';
+		$status_links['all'] = "<a href='admin.php?page=evf-entries&amp;form_id=$this->form_id'$class>" . sprintf( _nx( 'All <span class="count">(%s)</span>', 'All <span class="count">(%s)</span>', $total_entries, 'entries', 'everest-forms' ), number_format_i18n( $total_entries ) ) . '</a>';
 
 		foreach ( $statuses as $status_name ) {
 			$class = '';
@@ -296,7 +296,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 
 			$label = $this->get_status_label( $status_name, $num_entries[ $status_name ] );
 
-			$status_links[ $status_name ] = "<a href='admin.php?page=evf-entries&amp;status=$status_name'$class>" . sprintf( translate_nooped_plural( $label, $num_entries[ $status_name ] ), number_format_i18n( $num_entries[ $status_name ] ) ) . '</a>';
+			$status_links[ $status_name ] = "<a href='admin.php?page=evf-entries&amp;form_id=$this->form_id&amp;status=$status_name'$class>" . sprintf( translate_nooped_plural( $label, $num_entries[ $status_name ] ), number_format_i18n( $num_entries[ $status_name ] ) ) . '</a>';
 		}
 
 		return $status_links;
@@ -344,9 +344,10 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 
 		// Query args.
 		$args = array(
-			'status' => 'publish',
-			'limit'  => $per_page,
-			'offset' => $per_page * ( $current_page - 1 ),
+			'status'  => 'publish',
+			'form_id' => $this->form_id,
+			'limit'   => $per_page,
+			'offset'  => $per_page * ( $current_page - 1 ),
 		);
 
 		// Handle the status query.

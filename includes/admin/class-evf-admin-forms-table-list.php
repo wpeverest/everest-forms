@@ -210,7 +210,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 	public function column_entries( $posts ) {
 		global $wpdb;
 
-		$entries = $wpdb->get_results( $wpdb->prepare( "SELECT form_id FROM {$wpdb->prefix}evf_entries WHERE form_id = %d", $posts->ID ) ); // WPCS: cache ok, DB call ok.
+		$entries = $wpdb->get_results( $wpdb->prepare( "SELECT form_id FROM {$wpdb->prefix}evf_entries WHERE `status` != 'trash' AND form_id = %d", $posts->ID ) ); // WPCS: cache ok, DB call ok.
 
 		return '<a href="' . esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $posts->ID ) ) . '">' . count( $entries ) . '</a>';
 	}
