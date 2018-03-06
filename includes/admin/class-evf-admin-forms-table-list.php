@@ -47,6 +47,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 			'shortcode' => __( 'Shortcode', 'everest-forms' ),
 			'author'    => __( 'Author', 'everest-forms' ),
 			'date'      => __( 'Date', 'everest-forms' ),
+			'entries'   => __( 'Entries', 'everest-forms' ),
 		);
 	}
 
@@ -101,6 +102,8 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 			$actions['edit'] = '<a href="' . esc_url( $edit_link ) . '">' . __( 'Edit', 'everest-forms' ) . '</a>';
 		}
 
+		$actions['entries'] = '<a href="' . esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $posts->ID ) ) . '">' . __( 'Entries', 'everest-forms' ) . '</a>';
+
 		if ( current_user_can( $post_type_object->cap->delete_post, $posts->ID ) ) {
 			if ( 'trash' == $post_status ) {
 				$actions['untrash'] = '<a aria-label="' . esc_attr__( 'Restore this item from the Trash', 'everest-forms' ) . '" href="' . wp_nonce_url( admin_url( sprintf( $post_type_object->_edit_link . '&amp;action=untrash', $posts->ID ) ), 'untrash-post_' . $posts->ID ) . '">' . esc_html__( 'Restore', 'everest-forms' ) . '</a>';
@@ -133,7 +136,6 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 	 * Return shortcode column.
 	 *
 	 * @param  object $posts
-	 *
 	 * @return string
 	 */
 	function column_shortcode( $posts ) {
@@ -197,6 +199,20 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 		}
 
 		return '<abbr title="' . $t_time . '">' . $h_time . '</abbr>';
+	}
+
+	/**
+	 * Return shortcode entries.
+	 *
+	 * @param  object $posts
+	 * @return string
+	 */
+	public function column_entries( $posts ) {
+		global $wpdb;
+
+		$entries = $wpdb->get_results( $wpdb->prepare( "SELECT form_id FROM {$wpdb->prefix}evf_entries WHERE form_id = %d", $posts->ID ) ); // WPCS: cache ok, DB call ok.
+
+		return '<a href="' . esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $posts->ID ) ) . '">' . count( $entries ) . '</a>';
 	}
 
 	/**

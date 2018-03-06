@@ -1,6 +1,12 @@
 /**
  * admin-entries.scss
  */
+.wp-list-table.forms {
+	.column-entries {
+		width: 75px;
+	}
+}
+
 .wp-list-table.entries {
 	.column-actions {
 		width: 175px;
