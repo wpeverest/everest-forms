@@ -42,20 +42,16 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 											$field_class = empty( $field_value ) ? ' empty' : '';
 											$field_style = $hide_empty && empty( $field_value ) ? 'display:none;' : '';
 
-											echo '<div class="everest-forms-entry-field ' . $field_class . '" style="' . $field_style . '">';
+											// Field name.
+											echo '<tr class="everest-forms-entry-field field-name' . $field_class . '" style="' . $field_style . '"><th><strong>';
+												/* translators: %d - field ID. */
+												echo ! empty( $meta_key ) ? get_form_data_by_meta_key( $form_id, $meta_key ) : esc_html__( 'Field ID', 'everest-forms' );
+											echo '</strong></th></tr>';
 
-												// Field name.
-												echo '<tr class="field-name"><th><strong>';
-													/* translators: %d - field ID. */
-													echo ! empty( $meta_key ) ? get_form_data_by_meta_key( $form_id, $meta_key ) : esc_html__( 'Field ID', 'everest-forms' );
-												echo '</strong></th></tr>';
-
-												// Field value.
-												echo '<tr class="field-value"><td>';
-													echo ! empty( $field_value ) ? nl2br( make_clickable( $field_value ) ) : esc_html__( 'Empty', 'everest-forms' );
-												echo '</td></tr>';
-
-											echo '</div>';
+											// Field value.
+											echo '<tr class="everest-forms-entry-field field-value' . $field_class . '" style="' . $field_style . '"><td>';
+												echo ! empty( $field_value ) ? nl2br( make_clickable( $field_value ) ) : esc_html__( 'Empty', 'everest-forms' );
+											echo '</td></tr>';
 										}
 									}
 								?>
