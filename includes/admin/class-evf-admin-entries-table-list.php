@@ -368,6 +368,24 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 * @param string $which
 	 */
 	protected function extra_tablenav( $which ) {
+		if ( $which === 'bottom' ) {
+			return;
+		}
+
+		$all_forms = evf_get_all_forms();
+		$selected = isset( $_POST['form_id'] ) ? $_POST['form_id'] : get_option( 'evf_selected_form_in_entries', key( $all_forms ) );
+        $selected_form = update_option( 'evf_selected_form_in_entries', $selected );
+
+		?><select id = "form-select" name ="form_id">
+                        <?php 
+                            foreach( $all_forms as $key => $form ) {
+                                echo '<option value="'. $key .'" '. selected( $selected, $key ) .'>'. $form .'</option>';
+                            }
+                        ?>
+
+        </select>
+        <button type="submit" class="button button-primary" name="select-form">Filter</button>
+        <?php
 		if ( 'top' == $which && isset( $_GET['status'] ) && 'trash' == $_GET['status'] && current_user_can( 'delete_posts' ) ) {
 			echo '<div class="alignleft actions"><a id="delete_all" class="button apply" href="' . esc_url( wp_nonce_url( admin_url( 'admin.php?page=display-evf-entries&status=trash&empty_trash=1' ), 'empty_trash' ) ) . '">' . __( 'Empty trash', 'everest-forms' ) . '</a></div>';
 		}
@@ -400,21 +418,18 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 			$data_args['status'] = sanitize_text_field( $_GET['status'] );
 		}
 
-
-		$query = 'SELECT wp_evf_entries.entry_id, wp_evf_entrymeta.entry_id, form_id, date_created, meta_key, meta_value FROM wp_evf_entries INNER JOIN wp_evf_entrymeta WHERE wp_evf_entries.entry_id = wp_evf_entrymeta.entry_id AND status = "publish" ';
-
-		$selected_form = get_option( 'evf_selected_form_in_entries', 'All forms');
+		$selected_form = get_option( 'evf_selected_form_in_entries', key( evf_get_all_forms() ) );
 
 		$selected_form = (int) $selected_form;
 
 		$form_id = ( isset( $_POST['select-form'] ) && isset( $_POST['form_id'] ) ) ? $_POST['form_id'] : $selected_form;
 
 		if( ( isset( $form_id )  ) && is_numeric( $form_id )  && $form_id !== 0) {
-			$query = 'SELECT form_id, entry_id, date_created, meta_key, meta_value FROM wp_evf_entries INNER JOIN wp_evf_entrymeta WHERE form_id = '. $form_id .' AND wp_evf_entries.entry_id = wp_evf_entrymeta.entry_id AND status = "publish" ';
+			$query = $wpdb->prepare( "SELECT {$wpdb->prefix}evf_entries.entry_id, {$wpdb->prefix}evf_entrymeta.entry_id, form_id, date_created, meta_key, meta_value FROM {$wpdb->prefix}evf_entries INNER JOIN {$wpdb->prefix}evf_entrymeta WHERE form_id = %d AND {$wpdb->prefix}evf_entries.entry_id = {$wpdb->prefix}evf_entrymeta.entry_id AND status = %s ", $form_id, "publish" );
 		}
 
 		if( ( isset( $_GET['status'] ) && $_GET['status'] == 'trash') ) {
-			$query = 'SELECT form_id, entry_id, date_created, meta_key, meta_value FROM wp_evf_entries INNER JOIN wp_evf_entrymeta WHERE wp_evf_entries.entry_id = wp_evf_entrymeta.entry_id AND status = "trash" ';
+			$query = $wpdb->prepare( "SELECT form_id, {$wpdb->prefix}evf_entries.entry_id, {$wpdb->prefix}evf_entrymeta.entry_id, date_created, meta_key, meta_value FROM {$wpdb->prefix}evf_entries INNER JOIN {$wpdb->prefix}evf_entrymeta WHERE {$wpdb->prefix}evf_entries.entry_id = {$wpdb->prefix}evf_entrymeta.entry_id AND status = %s ","trash");
 		}
 
 		$results = $wpdb->get_results( $query );
