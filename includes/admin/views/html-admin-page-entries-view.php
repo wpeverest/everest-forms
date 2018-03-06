@@ -21,7 +21,7 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 				<div id="post-body-content" style="position: relative;">
 					<div id="everest-forms-entry-fields" class="postbox">
 						<h2 class="hndle">
-							<span><?php printf( __( '%s : Entry # %s', 'everest-forms' ), esc_html( _draft_or_post_title( $form_id ) ), absint( $entry_id ) ); ?></span>
+							<span><?php printf( __( '%s : Entry #%s', 'everest-forms' ), esc_html( _draft_or_post_title( $form_id ) ), absint( $entry_id ) ); ?></span>
 							<a href="#" class="everest-forms-empty-field-toggle">
 								<?php echo $hide_empty ? esc_html__( 'Show Empty Fields', 'everest-forms' ) : esc_html__( 'Hide Empty Fields', 'everest-forms' ); ?>
 							</a>
