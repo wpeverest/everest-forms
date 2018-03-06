@@ -276,7 +276,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	protected function get_views() {
 		$status_links  = array();
 		$num_entries   = evf_get_count_entries_by_status( $this->form_id );
-		$total_entries = array_sum( (array) $num_entries );
+		$total_entries = array_sum( (array) $num_entries ) - $num_entries['trash'];
 		$statuses      = array_keys( evf_get_entry_statuses() );
 		$class         = empty( $_REQUEST['status'] ) ? ' class="current"' : ''; // WPCS: input var okay. CSRF ok.
 
@@ -286,7 +286,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		foreach ( $statuses as $status_name ) {
 			$class = '';
 
-			if ( empty( $num_entries[ $status_name ] ) ) {
+			if ( empty( $num_entries[ $status_name ] ) || 'publish' === $status_name ) {
 				continue;
 			}
 
