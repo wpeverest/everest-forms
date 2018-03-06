@@ -3,7 +3,10 @@
  */
 .wp-list-table.entries {
 	.column-actions {
-		width: 150px;
+		width: 175px;
+	}
+	.submitdelete:hover {
+		color: #a00;
 	}
 }
 
