@@ -53,7 +53,7 @@ function evf_get_entry_statuses() {
 }
 
 /**
- * Search trackers.
+ * Search entries.
  *
  * @param  array $args Search arguments.
  * @return array

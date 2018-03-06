@@ -383,7 +383,7 @@ final class EverestForms {
 	 */
 	public function wpdb_table_fix() {
 		global $wpdb;
-		$wpdb->form_entrymeta    = $wpdb->prefix . 'evf_entrymeta';
-		$wpdb->tables[]          = 'evf_entrymeta';
+		$wpdb->form_entrymeta = $wpdb->prefix . 'evf_entrymeta';
+		$wpdb->tables[]       = 'evf_entrymeta';
 	}
 }

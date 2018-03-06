@@ -1,6 +1,6 @@
 <?php
 /**
- * Admin View: Edit trackers
+ * Admin View: Entries
  *
  * @package EverestForms/Admin/Entries/Views
  */

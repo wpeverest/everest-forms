@@ -1035,13 +1035,10 @@ function evf_get_all_forms() {
 	return $all_forms;
 }
 
-
 function evf_get_meta_key_field_option( $field ) {
-
 	$digits = 4;
 	$random_number = rand( pow(10, $digits-1 ), pow( 10, $digits )-1 );
-	$meta_key = strtolower( str_replace( " ", "_", $field['label'] ) ).'_'.$random_number;
-	return $meta_key;
+	return strtolower( str_replace( " ", "_", $field['label'] ) ) . '_' . $random_number;
 }
 
 /**
@@ -1158,7 +1155,6 @@ function evf_get_browser() {
  * @return string
  */
 function evf_get_day_period_date( $period, $timestamp = '', $format = 'Y-m-d H:i:s' ) {
-
 	$date = '';
 
 	if ( empty( $timestamp ) ) {
