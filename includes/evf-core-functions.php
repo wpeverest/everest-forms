@@ -16,6 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 include EVF_ABSPATH . 'includes/evf-user-functions.php';
 require EVF_ABSPATH . 'includes/evf-deprecated-functions.php';
 include EVF_ABSPATH . 'includes/evf-formatting-functions.php';
+include EVF_ABSPATH . 'includes/evf-entry-functions.php';
 
 /**
  * Define a constant if it is not already defined.
@@ -1148,7 +1149,7 @@ function evf_get_browser() {
 /**
  * Get the certain date of a specified day in a specified format.
  *
- * @since 1.4.4
+ * @since 1.1.0
  *
  * @param string $period Supported values: start, end.
  * @param string $timestamp Default is the current timestamp, if left empty.
@@ -1179,12 +1180,12 @@ function evf_get_day_period_date( $period, $timestamp = '', $format = 'Y-m-d H:i
 }
 
 function get_form_data_by_meta_key( $form_id, $meta_key ) {
-	$get_post = get_post( $form_id );
+	$get_post     = get_post( $form_id );
 	$post_content = json_decode( $get_post->post_content, true ) ;
-	$form_fields = $post_content['form_fields'];
+	$form_fields  = $post_content['form_fields'];
 
 	foreach( $form_fields as $field ) {
-		if( $field['meta-key'] == $meta_key ) {
+		if ( $meta_key == $field['meta-key'] ) {
 			return $field['label'];
 		}
 	}

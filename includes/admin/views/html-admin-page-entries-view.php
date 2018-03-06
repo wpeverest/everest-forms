@@ -30,15 +30,15 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 							<table class="wp-list-table widefat fixed striped posts">
 								<tbody>
 								<?php
-									$entrymeta = apply_filters( 'everest_forms_entry_single_data', $entrymeta );
+									$entry_meta = apply_filters( 'everest_forms_entry_single_data', $entry->meta );
 
-									if ( empty( $entry ) ) {
+									if ( empty( $entry_meta ) ) {
 										// Whoops, no fields! This shouldn't happen under normal use cases.
 										echo '<p class="no-fields">' . esc_html__( 'This entry does not have any fields.', 'everest-forms' ) . '</p>';
 									} else {
 										// Display the fields and their values.
-										foreach ( $entrymeta as $key => $field ) {
-											$field_value = apply_filters( 'everest_forms_html_field_value', wp_strip_all_tags( $field['meta_value'] ) );
+										foreach ( $entry_meta as $meta_key => $meta_value ) {
+											$field_value = apply_filters( 'everest_forms_html_field_value', wp_strip_all_tags( $meta_value ) );
 											$field_class = empty( $field_value ) ? ' empty' : '';
 											$field_style = $hide_empty && empty( $field_value ) ? 'display:none;' : '';
 
@@ -47,7 +47,7 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 												// Field name.
 												echo '<tr class="field-name"><th><strong>';
 													/* translators: %d - field ID. */
-													echo ! empty( $field['meta_key'] ) ? get_form_data_by_meta_key( $form_id, $field['meta_key'] ) : sprintf( esc_html__( 'Field ID #%d', 'everest-forms' ), absint( $key ) );
+													echo ! empty( $meta_key ) ? get_form_data_by_meta_key( $form_id, $meta_key ) : esc_html__( 'Field ID', 'everest-forms' );
 												echo '</strong></th></tr>';
 
 												// Field value.
@@ -120,7 +120,7 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 									</p>
 								<?php endif; ?>
 
-								<?php do_action( 'everest_forms_entry_details_sidebar_details', $entry, $entrymeta ); ?>
+								<?php do_action( 'everest_forms_entry_details_sidebar_details', $entry, $entry_meta ); ?>
 							</div>
 
 							<div id="major-publishing-actions">

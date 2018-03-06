@@ -1,6 +1,12 @@
 /**
  * admin-entries.scss
  */
+.wp-list-table.entries {
+	.column-actions {
+		width: 150px;
+	}
+}
+
 #everest-forms-entry-fields {
 
 	table {
