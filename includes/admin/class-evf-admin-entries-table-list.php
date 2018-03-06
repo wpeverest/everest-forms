@@ -128,7 +128,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 					$x++;
 				}
 			}
-		} else {
+		} elseif ( ! empty( $entry_columns ) ) {
 			foreach ( $entry_columns as $id ) {
 				// Check to make sure the field as not been removed.
 				if ( empty( $this->form_data['form_fields'][ $id ] ) ) {
