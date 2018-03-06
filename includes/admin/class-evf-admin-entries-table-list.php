@@ -371,7 +371,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		if ( $which === 'bottom' ) {
 			return;
 		}
-		
+
 		$all_forms = evf_get_all_forms();
 		$selected = isset( $_POST['form_id'] ) ? $_POST['form_id'] : get_option( 'evf_selected_form_in_entries', key( $all_forms ) );
         $selected_form = update_option( 'evf_selected_form_in_entries', $selected );
@@ -417,9 +417,6 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		if ( ! empty( $_GET['status'] ) ) {
 			$data_args['status'] = sanitize_text_field( $_GET['status'] );
 		}
-
-
-		$query = 'SELECT wp_evf_entries.entry_id, wp_evf_entrymeta.entry_id, form_id, date_created, meta_key, meta_value FROM wp_evf_entries INNER JOIN wp_evf_entrymeta WHERE wp_evf_entries.entry_id = wp_evf_entrymeta.entry_id AND status = "publish" ';
 
 		$selected_form = get_option( 'evf_selected_form_in_entries', key( evf_get_all_forms() ) );
 
