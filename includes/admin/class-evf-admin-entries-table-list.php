@@ -425,11 +425,11 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		$form_id = ( isset( $_POST['select-form'] ) && isset( $_POST['form_id'] ) ) ? $_POST['form_id'] : $selected_form;
 
 		if( ( isset( $form_id )  ) && is_numeric( $form_id )  && $form_id !== 0) {
-			$query = 'SELECT wp_evf_entries.entry_id, wp_evf_entrymeta.entry_id, form_id, date_created, meta_key, meta_value FROM wp_evf_entries INNER JOIN wp_evf_entrymeta WHERE form_id = '. $form_id .' AND wp_evf_entries.entry_id = wp_evf_entrymeta.entry_id AND status = "publish" ';
+			$query = $wpdb->prepare( "SELECT {$wpdb->prefix}evf_entries.entry_id, {$wpdb->prefix}evf_entrymeta.entry_id, form_id, date_created, meta_key, meta_value FROM {$wpdb->prefix}evf_entries INNER JOIN {$wpdb->prefix}evf_entrymeta WHERE form_id = %d AND {$wpdb->prefix}evf_entries.entry_id = {$wpdb->prefix}evf_entrymeta.entry_id AND status = %s ", $form_id, "publish" );
 		}
 
 		if( ( isset( $_GET['status'] ) && $_GET['status'] == 'trash') ) {
-			$query = 'SELECT form_id, wp_evf_entries.entry_id, wp_evf_entrymeta.entry_id, date_created, meta_key, meta_value FROM wp_evf_entries INNER JOIN wp_evf_entrymeta WHERE wp_evf_entries.entry_id = wp_evf_entrymeta.entry_id AND status = "trash" ';
+			$query = $wpdb->prepare( "SELECT form_id, {$wpdb->prefix}evf_entries.entry_id, {$wpdb->prefix}evf_entrymeta.entry_id, date_created, meta_key, meta_value FROM {$wpdb->prefix}evf_entries INNER JOIN {$wpdb->prefix}evf_entrymeta WHERE {$wpdb->prefix}evf_entries.entry_id = {$wpdb->prefix}evf_entrymeta.entry_id AND status = %s ","trash");
 		}
 
 		$results = $wpdb->get_results( $query );
