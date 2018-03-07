@@ -107,6 +107,8 @@ class EVF_Admin_Entries {
 	private function trash_entry() {
 		check_admin_referer( 'trash-entry' );
 
+		$form_id = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : '';
+
 		if ( isset( $_GET['trash'] ) ) { // WPCS: input var okay, CSRF ok.
 			$entry_id = absint( $_GET['trash'] ); // WPCS: input var okay, CSRF ok.
 
@@ -114,6 +116,9 @@ class EVF_Admin_Entries {
 				$this->update_status( $entry_id, 'trash' );
 			}
 		}
+
+		wp_redirect( esc_url_raw( add_query_arg( array( 'form_id' => $form_id, 'trashed' => 1 ), admin_url( 'admin.php?page=evf-entries' ) ) ) );
+		exit();
 	}
 
 	/**
@@ -122,6 +127,8 @@ class EVF_Admin_Entries {
 	private function untrash_entry() {
 		check_admin_referer( 'untrash-entry' );
 
+		$form_id = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : '';
+
 		if ( isset( $_GET['untrash'] ) ) { // WPCS: input var okay, CSRF ok.
 			$entry_id = absint( $_GET['untrash'] ); // WPCS: input var okay, CSRF ok.
 
@@ -129,6 +136,9 @@ class EVF_Admin_Entries {
 				$this->update_status( $entry_id, 'publish' );
 			}
 		}
+
+		wp_redirect( esc_url_raw( add_query_arg( array( 'form_id' => $form_id, 'untrashed' => 1 ), admin_url( 'admin.php?page=evf-entries' ) ) ) );
+		exit();
 	}
 
 	/**
@@ -137,6 +147,8 @@ class EVF_Admin_Entries {
 	private function delete_entry() {
 		check_admin_referer( 'delete-entry' );
 
+		$form_id = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : '';
+
 		if ( isset( $_GET['delete'] ) ) { // WPCS: input var okay, CSRF ok.
 			$entry_id = absint( $_GET['delete'] ); // WPCS: input var okay, CSRF ok.
 
@@ -144,6 +156,9 @@ class EVF_Admin_Entries {
 				$this->remove_entry( $entry_id );
 			}
 		}
+
+		wp_redirect( esc_url_raw( add_query_arg( array( 'form_id' => $form_id, 'deleted' => 1 ), admin_url( 'admin.php?page=evf-entries' ) ) ) );
+		exit();
 	}
 
 	/**
@@ -168,6 +183,9 @@ class EVF_Admin_Entries {
 				}
 			}
 		}
+
+		wp_redirect( esc_url_raw( add_query_arg( array( 'form_id' => $form_id, 'untrashed' => 1 ), admin_url( 'admin.php?page=evf-entries' ) ) ) );
+		exit();
 	}
 
 	/**
