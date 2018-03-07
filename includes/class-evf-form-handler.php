@@ -12,13 +12,6 @@
 class EVF_Form_Handler {
 
 	/**
-	 * Constructor.
-	 */
-	public function __construct() {
-
-	}
-
-	/**
 	 * Fetches forms
 	 *
 	 * @since  1.0.0
@@ -41,14 +34,14 @@ class EVF_Form_Handler {
 			$forms = get_post( absint( $id ) );
 
 			if ( ! empty( $args['content_only'] ) && ! empty( $forms ) && 'everest_form' === $forms->post_type ) {
-
 				$forms = evf_decode( $forms->post_content );
 			}
 		} else {
 
+
 			// No ID provided, get multiple forms
 			$defaults = array(
-				'post_type'     => 'everest-forms',
+				'post_type'     => 'everest_form',
 				'orderby'       => 'id',
 				'order'         => 'ASC',
 				'no_found_rows' => true,
@@ -57,7 +50,7 @@ class EVF_Form_Handler {
 
 			$args = wp_parse_args( $args, $defaults );
 
-			$args['post_type'] = 'everest-forms';
+			$args['post_type'] = 'everest_form';
 
 			$forms = get_posts( $args );
 		}
@@ -290,6 +283,37 @@ class EVF_Form_Handler {
 	}
 
 	/**
+	 * Get private meta information for a form.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param string $form_id
+	 * @param string $field
+	 *
+	 * @return bool
+	 */
+	public function get_meta( $form_id, $field = '' ) {
+
+		if ( empty( $form_id ) ) {
+			return false;
+		}
+
+		$data = $this->get( $form_id, array(
+			'content_only' => true,
+		) );
+
+		if ( isset( $data['meta'] ) ) {
+			if ( empty( $field ) ) {
+				return $data['meta'];
+			} elseif ( isset( $data['meta'][ $field ] ) ) {
+				return $data['meta'][ $field ];
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * Get the next available field ID and increment by one.
 	 *
 	 * @since  1.0.0
@@ -345,5 +369,25 @@ class EVF_Form_Handler {
 		) );
 
 		return isset( $data['form_fields'][ $field_id ] ) ? $data['form_fields'][ $field_id ] : false;
+	}
+
+	/**
+	 * Get private meta information for a form field.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $form_id
+	 * @param string $field
+	 *
+	 * @return bool
+	 */
+	public function get_field_meta( $form_id, $field = '' ) {
+
+		$field = $this->get_field( $form_id, $field );
+		if ( ! $field ) {
+			return false;
+		}
+
+		return isset( $field['meta'] ) ? $field['meta'] : false;
 	}
 }

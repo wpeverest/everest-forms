@@ -331,6 +331,25 @@ abstract class EVF_Form_Fields {
 				), false );
 				break;
 
+			// EVF meta fields
+			case 'meta':
+				$value   =  ! empty( $field['meta-key'] ) ? esc_attr( $field['meta-key'] ) : evf_get_meta_key_field_option( $field );
+				$tooltip = __( 'Enter meta key to be stored in database.', 'everest-forms' );
+				$output  = $this->field_element( 'label', $field, array(
+					'slug'    => 'meta-key',
+					'value'   => __( 'Meta Key', 'everest-forms' ),
+					'tooltip' => $tooltip
+				), false );
+				$output  .= $this->field_element( 'text', $field, array(
+					'slug'  => 'meta-key',
+					'value' => $value
+				), false );
+				$output  = $this->field_element( 'row', $field, array(
+					'slug'    => 'meta-key',
+					'content' => $output
+				), false );
+				break;
+
 			// Field Description. ---------------------------------------------//
 
 			case 'description':
@@ -368,12 +387,6 @@ abstract class EVF_Form_Fields {
 				), false );
 				break;
 
-			// EVF meta fields
-			case 'meta':
-				$output = sprintf( '<label>%s</label>', 'Type' );
-				$output .= sprintf( '<p class="meta">%s <span class="id">(ID #%s)</span></p>', $this->name, $field['id'] );
-				$output = $this->field_element( 'row', $field, array( 'slug' => 'meta', 'content' => $output ), false );
-				break;
 			case 'choices':
 				$tooltip = __( 'Add choices for the form field.', 'everest-forms' );
 				$toggle  = '';

@@ -123,26 +123,27 @@ if ( ! class_exists( 'EVF_Admin_Assets', false ) ) :
 
 			$jquery_version = isset( $wp_scripts->registered['jquery-ui-core']->ver ) ? $wp_scripts->registered['jquery-ui-core']->ver : '1.11.4';
 
-			// Register admin styles
+			// Sitewide menu CSS
 			wp_register_style( 'everest_forms_admin_menu_styles', EVF()->plugin_url() . '/assets/css/menu.css', array(), EVF_VERSION );
 
 			wp_register_style ( 'evf_add_form_css', EVF()->plugin_url() . '/assets/css/evf-add-form.css', array(), EVF_VERSION );
 			wp_enqueue_style('evf_add_form_css');
 
-			// JQuery confirm registration
 			// Add RTL support for admin styles
 			wp_style_add_data( 'everest_forms_admin_menu_styles', 'rtl', 'replace' );
 
-			// Sitewide menu CSS
-
+			// Register admin styles
+			wp_register_style( 'evf-admin-entries-style', EVF()->plugin_url() . '/assets/css/admin-entries.css', array(), EVF_VERSION );
 			wp_register_style( 'evf-admin-setting-style', EVF()->plugin_url() . '/assets/css/admin-settings.css', array(), EVF_VERSION );
+
+			if ( in_array( $screen_id, array( 'toplevel_page_everest-forms', 'everest-forms_page_evf-entries' ), true ) ) {
+				wp_enqueue_style( 'evf-admin-entries-style' );
+			}
 
 			if ( $screen_id === 'everest-forms_page_evf-settings' ) {
 				wp_enqueue_style( 'evf-admin-setting-style' );
 			}
-
 		}
-
 
 		/**
 		 * Enqueue scripts.

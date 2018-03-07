@@ -29,6 +29,7 @@ class EVF_Admin_Menus {
 		add_action( 'admin_menu', array( $this, 'admin_menu' ), 9 );
 		add_action( 'admin_menu', array( $this, 'forms_menu' ), 20 );
 		add_action( 'admin_menu', array( $this, 'add_new_form' ), 30 );
+		add_action( 'admin_menu', array( $this, 'entries_menu' ), 40 );
 		add_action( 'admin_menu', array( $this, 'settings_menu' ), 50 );
 		add_action( 'admin_menu', array( $this, 'status_menu' ), 60 );
 		add_filter( 'admin_footer', array( $this, 'admin_footer' ), 1 );
@@ -96,6 +97,34 @@ class EVF_Admin_Menus {
 	 */
 	public function add_new_form() {
 		add_submenu_page( 'everest-forms', __( 'Add New', 'everest-forms' ), __( 'Add New', 'everest-forms' ), 'manage_everest_forms', 'edit-evf-form', array( $this, 'add_everest_forms' ) );
+	}
+
+	/**
+	 * Add menu item.
+	 */
+	public function entries_menu() {
+		$entries_page = add_submenu_page( 'everest-forms', __( 'Entries', 'everest-forms' ), __( 'Entries', 'everest-forms' ), 'manage_everest_forms', 'evf-entries', array( $this, 'entries_page' ) );
+
+		add_action( 'load-' . $entries_page, array( $this, 'entries_page_init' ) );
+	}
+
+	/**
+	 * Loads entries into memory.
+	 */
+	public function entries_page_init() {
+		global $entries_table_list;
+
+		if ( ! isset( $_GET['view-entry'] ) ) { // WPCS: input var okay, CSRF ok.
+			$entries_table_list = new EVF_Admin_Entries_Table_List();
+
+			// Add screen option.
+			add_screen_option( 'per_page', array(
+				'default' => 20,
+				'option'  => 'evf_entries_per_page'
+			) );
+		}
+
+		do_action( 'everest_forms_entries_page_init' );
 	}
 
 	/**
@@ -398,6 +427,13 @@ class EVF_Admin_Menus {
 	}
 
 	/**
+	 * Init the entries page.
+	 */
+	public function entries_page() {
+		EVF_Admin_Entries::page_output();
+	}
+
+	/**
 	 * Init the settings page.
 	 */
 	public function settings_page() {
@@ -421,7 +457,7 @@ class EVF_Admin_Menus {
 	 * Validate screen options on update.
 	 */
 	public function set_screen_option( $status, $option, $value ) {
-		if ( in_array( $option, array( 'evf_forms_per_page' ), true ) ) {
+		if ( in_array( $option, array( 'evf_forms_per_page', 'evf_entries_per_page' ), true ) ) {
 			return $value;
 		}
 
@@ -442,7 +478,7 @@ class EVF_Admin_Menus {
 		$args = array(
 			'id'     => 'everest_forms',
 			'title'  => 'Everest Forms',
-			'href'   => admin_url( 'admin.php?page=everest-forms-builder' ),
+			'href'   => admin_url( 'admin.php?page=edit-evf-form' ),
 			'parent' => 'new-content',
 		);
 		$wp_admin_bar->add_node( $args );

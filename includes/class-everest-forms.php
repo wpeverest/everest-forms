@@ -35,11 +35,20 @@ final class EverestForms {
 	/**
 	 * The entry data handler instance.
 	 *
-	 * @since      1.0.0
+	 * @since 1.1.0
 	 *
-	 * @var object everest_forms_Entry_Handler
+	 * @var EVF_Entry_Handler
 	 */
 	public $entry;
+
+	/**
+	 * The entry meta data handler instance.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @var EVF_Entry_Meta_Handler
+	 */
+	public $entry_meta;
 
 	/*
 	 * Number of grid in form
@@ -145,6 +154,8 @@ final class EverestForms {
 		add_action( 'init', array( $this, 'init' ), 0 );
 		add_action( 'init', array( 'EVF_Shortcodes', 'init' ) );
 		add_action( 'init', array( 'EVF_Template_Loader', 'init' ) );
+		add_action( 'init', array( $this, 'wpdb_table_fix' ), 0 );
+		add_action( 'switch_blog', array( $this, 'wpdb_table_fix' ), 0 );
 	}
 
 	/**
@@ -304,6 +315,7 @@ final class EverestForms {
 
 		// Global objects.
 		$this->form = new EVF_Form_Handler;
+
 		//$this->frontend   = new EVF_Forms_Frontend;
 		$this->task = new EVF_Form_Task;
 		//$this->smart_tags = new EVF_Forms_Smart_Tags;
@@ -364,5 +376,14 @@ final class EverestForms {
 	 */
 	public function ajax_url() {
 		return admin_url( 'admin-ajax.php', 'relative' );
+	}
+
+	/**
+	 * Everest Forms Entry Meta - set table names.
+	 */
+	public function wpdb_table_fix() {
+		global $wpdb;
+		$wpdb->form_entrymeta = $wpdb->prefix . 'evf_entrymeta';
+		$wpdb->tables[]       = 'evf_entrymeta';
 	}
 }
