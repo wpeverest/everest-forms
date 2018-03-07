@@ -33,13 +33,14 @@ class EVF_Admin {
 	 * Include any classes we need within admin.
 	 */
 	public function includes() {
-		include_once( dirname( __FILE__ ) . '/evf-admin-functions.php' );
-		include_once( dirname( __FILE__ ) . '/class-evf-admin-post-types.php' );
-		include_once( dirname( __FILE__ ) . '/class-evf-admin-menus.php' );
-		include_once( dirname( __FILE__ ) . '/class-evf-admin-notices.php' );
-		include_once( dirname( __FILE__ ) . '/class-evf-admin-assets.php' );
-		include_once( dirname( __FILE__ ) . '/class-evf-admin-form-builder.php' );
-		include_once( dirname( __FILE__ ) . '/class-evf-add-form.php' );
+		include_once dirname( __FILE__ ) . '/evf-admin-functions.php';
+		include_once dirname( __FILE__ ) . '/class-evf-admin-post-types.php';
+		include_once dirname( __FILE__ ) . '/class-evf-admin-menus.php';
+		include_once dirname( __FILE__ ) . '/class-evf-admin-notices.php';
+		include_once dirname( __FILE__ ) . '/class-evf-admin-assets.php';
+		include_once dirname( __FILE__ ) . '/class-evf-admin-form-builder.php';
+		include_once dirname( __FILE__ ) . '/class-evf-add-form.php';
+		include_once dirname( __FILE__ ) . '/class-evf-admin-entries.php';
 	}
 
 	/**

@@ -17,7 +17,7 @@ class EVF_Admin_Entries {
 	 * Initialize the entries admin actions.
 	 */
 	public function __construct() {
-		$this->actions();
+		add_action( 'admin_init', array( $this, 'actions' ) );
 	}
 
 	/**
