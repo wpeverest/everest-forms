@@ -111,7 +111,7 @@ function evf_search_entries( $args ) {
 	" );
 
 	$results = $wpdb->get_results( $query ); // WPCS: cache ok, DB call ok, unprepared SQL ok.
-	
+
 	$ids = wp_list_pluck( $results, 'entry_id' );
 
 	return $ids;
