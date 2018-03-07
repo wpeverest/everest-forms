@@ -121,9 +121,9 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 
 							<div id="major-publishing-actions">
 								<div id="delete-action">
-									<a class="submitdelete" aria-label="<?php echo esc_attr__( 'Delete form entry', 'everest-forms' ); ?>" href="<?php echo esc_url( wp_nonce_url( add_query_arg( array(
-										'delete' => $entry_id,
-									), admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $form_id ) ), 'delete-entry' ) ); ?>"><?php esc_html_e( 'Delete Entry', 'everest-forms' ); ?></a>
+									<a class="submitdelete" aria-label="<?php echo esc_attr__( 'Move to trash', 'everest-forms' ); ?>" href="<?php echo esc_url( wp_nonce_url( add_query_arg( array(
+										'trash' => $entry_id,
+									), admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $form_id ) ), 'trash-entry' ) ); ?>"><?php esc_html_e( 'Move to trash', 'everest-forms' ); ?></a>
 								</div>
 								<div class="clear"></div>
 							</div>

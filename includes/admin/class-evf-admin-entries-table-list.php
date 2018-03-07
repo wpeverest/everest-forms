@@ -222,19 +222,23 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	public function column_actions( $entry ) {
 		if ( 'trash' !== $entry->status ) {
 			$actions = array(
-				'view'   => '<a href="' . esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $entry->form_id . '&amp;view-entry=' . $entry->entry_id ) ) . '">' . esc_html__( 'View', 'everest-forms' ) . '</a>',
+				'view'  => '<a href="' . esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $entry->form_id . '&amp;view-entry=' . $entry->entry_id ) ) . '">' . esc_html__( 'View', 'everest-forms' ) . '</a>',
 				/* translators: %s: entry name */
-				'delete' => '<a class="submitdelete" aria-label="' . esc_attr__( 'Delete form entry', 'everest-forms' ) . '" href="' . esc_url( wp_nonce_url( add_query_arg( array(
-					'delete' => $entry->entry_id,
-				), admin_url( 'admin.php?page=evf-entries' ) ), 'delete-entry' ) ) . '">' . esc_html__( 'Delete', 'everest-forms' ) . '</a>',
+				'trash' => '<a class="submitdelete" aria-label="' . esc_attr__( 'Trash form entry', 'everest-forms' ) . '" href="' . esc_url( wp_nonce_url( add_query_arg( array(
+					'trash'   => $entry->entry_id,
+					'form_id' => $this->form_id,
+				), admin_url( 'admin.php?page=evf-entries' ) ), 'trash-entry' ) ) . '">' . esc_html__( 'Trash', 'everest-forms' ) . '</a>',
 			);
 		} else {
 			$actions = array(
-				'untrash'            => '<a href="' . esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $entry->form_id . '&amp;delete-entry=' . $entry->entry_id ) ) . '">' . esc_html__( 'Restore', 'everest-forms' ) . '</a>',
-				/* translators: %s: entry name */
-				'delete_permanently' => '<a class="submitdelete" aria-label="' . esc_attr__( 'Delete form entry permanently', 'everest-forms' ) . '" href="' . esc_url( wp_nonce_url( add_query_arg( array(
-					'delete' => $entry->entry_id,
-				), admin_url( 'admin.php?page=evf-entries' ) ), 'delete-entry-permanently' ) ) . '">' . esc_html__( 'Delete Permanently', 'everest-forms' ) . '</a>',
+				'untrash' => '<a aria-label="' . esc_attr__( 'Restore form entry from trash', 'everest-forms' ) . '" href="' . esc_url( wp_nonce_url( add_query_arg( array(
+					'untrash' => $entry->entry_id,
+					'form_id' => $this->form_id,
+				), admin_url( 'admin.php?page=evf-entries' ) ), 'untrash-entry' ) ) . '">' . esc_html__( 'Restore', 'everest-forms' ) . '</a>',
+				'delete'  => '<a class="submitdelete" aria-label="' . esc_attr__( 'Delete form entry permanently', 'everest-forms' ) . '" href="' . esc_url( wp_nonce_url( add_query_arg( array(
+					'delete'  => $entry->entry_id,
+					'form_id' => $this->form_id,
+				), admin_url( 'admin.php?page=evf-entries' ) ), 'delete-entry' ) ) . '">' . esc_html__( 'Delete Permanently', 'everest-forms' ) . '</a>',
 			);
 		}
 
@@ -327,7 +331,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 */
 	protected function extra_tablenav( $which ) {
 		if ( 'top' == $which && isset( $_GET['status'] ) && 'trash' == $_GET['status'] && current_user_can( 'delete_posts' ) ) {
-			echo '<div class="alignleft actions"><a id="delete_all" class="button apply" href="' . esc_url( wp_nonce_url( admin_url( 'admin.php?page=evf-entries&status=trash&empty_trash=1' ), 'empty_trash' ) ) . '">' . __( 'Empty Trash', 'everest-forms' ) . '</a></div>';
+			echo '<div class="alignleft actions"><a id="delete_all" class="button apply" href="' . esc_url( wp_nonce_url( admin_url( 'admin.php?page=evf-entries&form_id=' . $this->form_id . '&status=trash&empty_trash=1' ), 'empty_trash' ) ) . '">' . __( 'Empty Trash', 'everest-forms' ) . '</a></div>';
 		}
 	}
 
