@@ -43,7 +43,7 @@ class EVF_Form_Handler {
 			$defaults = array(
 				'post_type'     => 'everest_form',
 				'orderby'       => 'id',
-				'order'         => 'ASC',
+				'order'         => 'DESC',
 				'no_found_rows' => true,
 				'nopaging'      => true,
 			);
