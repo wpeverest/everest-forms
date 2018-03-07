@@ -72,7 +72,7 @@ function evf_search_entries( $args ) {
 	$limit         = -1 < $args['limit'] ? sprintf( 'LIMIT %d', $args['limit'] ) : '';
 	$offset        = 0 < $args['offset'] ? sprintf( 'OFFSET %d', $args['offset'] ) : '';
 	$status        = ! empty( $args['status'] ) ? "AND `status` = '" . sanitize_key( $args['status'] ) . "'" : '';
-	$search        = ! empty( $args['search'] ) ? "AND `name` LIKE '%" . $wpdb->esc_like( sanitize_text_field( $args['search'] ) ) . "%'" : '';
+	$search        = ! empty( $args['search'] ) ? "AND `meta_value` LIKE '%" . $wpdb->esc_like( sanitize_text_field( $args['search'] ) ) . "%'" : '';
 	$include       = ! empty( $args['form_id'] ) ? "AND `form_id` = '" . absint( $args['form_id'] ) . "'" : '';
 	$exclude       = '';
 	$date_created  = '';
@@ -95,9 +95,10 @@ function evf_search_entries( $args ) {
 	$order = "ORDER BY {$orderby} " . strtoupper( sanitize_key( $args['order'] ) );
 
 	$query = trim( "
-		SELECT entry_id
+		SELECT DISTINCT {$wpdb->prefix}evf_entries.entry_id
 		FROM {$wpdb->prefix}evf_entries
-		WHERE 1=1
+		INNER JOIN {$wpdb->prefix}evf_entrymeta
+		WHERE {$wpdb->prefix}evf_entries.entry_id = {$wpdb->prefix}evf_entrymeta.entry_id
 		{$status}
 		{$search}
 		{$include}
@@ -110,10 +111,11 @@ function evf_search_entries( $args ) {
 	" );
 
 	$results = $wpdb->get_results( $query ); // WPCS: cache ok, DB call ok, unprepared SQL ok.
-
+	
+	//$ids = wp_list_pluck( $results, 'entry_id' );
 	$ids = wp_list_pluck( $results, 'entry_id' );
 
-	return $ids;
+	return isset( $ids ) ? $ids : '';
 }
 
 /**
