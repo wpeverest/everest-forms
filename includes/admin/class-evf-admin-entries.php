@@ -244,9 +244,8 @@ class EVF_Admin_Entries {
 	private function remove_entry( $entry_id ) {
 		global $wpdb;
 
-		$delete = $wpdb->delete( $wpdb->prefix . 'evf_entries', array( 'entry_id' => $entry_id ), array( '%d' ) );
-
-		return $delete;
+		$wpdb->delete( $wpdb->prefix . 'evf_entries', array( 'entry_id' => $entry_id ), array( '%d' ) );
+		$wpdb->delete( $wpdb->prefix . 'evf_entrymeta', array( 'entry_id' => $entry_id ), array( '%d' ) );
 	}
 
 	/**
