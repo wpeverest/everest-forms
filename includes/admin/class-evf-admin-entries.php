@@ -55,7 +55,7 @@ class EVF_Admin_Entries {
 		<div class="wrap">
 			<h1 class="wp-heading-inline"><?php esc_html_e( 'Entries', 'everest-forms' ); ?></h1>
 			<hr class="wp-header-end">
-			<form id="entries-list" method="get">
+			<form id="entries-list" method="post">
 				<input type="hidden" name="page" value="evf-entries" />
 				<?php
 					$entries_table_list->views();
