@@ -119,14 +119,13 @@ class EVF_Admin_Entries {
 				$this->delete_entry();
 			}
 
-			// Empty trash.
-			if ( isset( $_GET['empty_trash'] ) ) {
-				$this->empty_trash();
-			}
-
 			// Bulk actions.
 			if ( isset( $_REQUEST['action'] ) && isset( $_REQUEST['entry'] ) ) { // WPCS: input var okay, CSRF ok.
 				$this->bulk_actions();
+			}
+
+			if ( isset( $_REQUEST['delete_all'] ) || isset( $_REQUEST['delete_all2'] ) ) { // WPCS: input var okay, CSRF ok.
+				$this->empty_trash();
 			}
 		}
 	}

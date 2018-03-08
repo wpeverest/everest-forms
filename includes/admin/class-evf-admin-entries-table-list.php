@@ -330,22 +330,43 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 * @param string $which
 	 */
 	protected function extra_tablenav( $which ) {
-		if ( ! empty( $this->forms ) && 'top' == $which ) {
-			$all_forms     = evf_get_all_forms();
-			$selected_form = isset( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : $this->form_id;
-			?>
-			<select id="filter-by-form-id" name="form_id">
-				<?php foreach( $all_forms as $key => $form ) : ?>
-					<option value="<?php echo esc_attr( $key ); ?>" <?php selected( $selected_form, $key ); ?>><?php esc_html_e( $form ); ?></option>
-				<?php endforeach; ?>
-			</select>
-			<input type="submit" name="filter_action" id="post-query-submit" class="button" value="<?php echo esc_attr( 'Filter', 'everest-forms' ); ?>">
-			<?php
-		}
+		?>
+		<div class="alignleft actions">
+		<?php
+			if ( ! empty( $this->forms ) && 'top' == $which ) {
+				ob_start();
+				$this->forms_dropdown();
+				$output = ob_get_clean();
 
-		if ( 'top' == $which && isset( $_GET['status'] ) && 'trash' == $_GET['status'] && current_user_can( 'delete_posts' ) ) {
-			echo '<div class="alignleft actions"><a id="delete_all" class="button apply" href="' . esc_url( wp_nonce_url( admin_url( 'admin.php?page=evf-entries&form_id=' . $this->form_id . '&status=trash&empty_trash=1' ), 'empty_trash' ) ) . '">' . __( 'Empty Trash', 'everest-forms' ) . '</a></div>';
-		}
+				if ( ! empty( $output ) ) {
+					echo $output;
+					submit_button( __( 'Filter', 'everest-forms' ), '', 'filter_action', false, array( 'id' => 'post-query-submit' ) );
+				}
+			}
+
+			if ( isset( $_GET['status'] ) && 'trash' == $_GET['status'] && current_user_can( 'manage_everest_forms' ) ) {
+				submit_button( __( 'Empty Trash', 'everest-forms' ), 'apply', 'delete_all', false );
+			}
+		?>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Display a form dropdown for filtering entries.
+	 */
+	private function forms_dropdown() {
+		$forms   = evf_get_all_forms();
+		$form_id = isset( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : $this->form_id;
+
+		?>
+		<label for="filter-by-form" class="screen-reader-text"><?php esc_html_e( 'Filter by form', 'everest-forms' ); ?></label>
+		<select name="form_id" id="filter-by-form">
+			<?php foreach( $forms as $id => $form ) : ?>
+				<option value="<?php echo esc_attr( $id ); ?>" <?php selected( $form_id, $id ); ?>><?php esc_html_e( $form ); ?></option>
+			<?php endforeach; ?>
+		</select>
+		<?php
 	}
 
 	/**
