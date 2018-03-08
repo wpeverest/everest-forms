@@ -65,8 +65,6 @@ class EVF_Admin_Entries {
 						$entries_table_list->views();
 						$entries_table_list->search_box( __( 'Search Entries', 'everest-forms' ), 'everest-forms' );
 						$entries_table_list->display();
-
-						wp_nonce_field( 'everest-forms-entries' );
 					?>
 				</form>
 			<?php else : ?>
@@ -218,7 +216,7 @@ class EVF_Admin_Entries {
 	 * Bulk actions.
 	 */
 	private function bulk_actions() {
-		check_admin_referer( 'everest-forms-entries' );
+		check_admin_referer( 'bulk-entries' );
 
 		if ( ! current_user_can( 'manage_everest_forms' ) ) {
 			wp_die( esc_html__( 'You do not have permission to edit Entries', 'everest-forms' ) );
