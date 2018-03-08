@@ -355,7 +355,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	/**
 	 * Display a form dropdown for filtering entries.
 	 */
-	private function forms_dropdown() {
+	public function forms_dropdown() {
 		$forms   = evf_get_all_forms();
 		$form_id = isset( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : $this->form_id;
 
