@@ -225,8 +225,8 @@ class EVF_Admin_Menus {
 			'fields'              => 'ids',
 		) );
 
-		foreach ( $registration as $webhook_id ) {
-			wp_delete_post( $webhook_id, true );
+		foreach ( $registration as $registration_id ) {
+			wp_delete_post( $registration_id, true );
 		}
 
 		$qty = count( $registration );
