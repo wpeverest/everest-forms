@@ -330,7 +330,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 * @param string $which
 	 */
 	protected function extra_tablenav( $which ) {
-		if ( 'top' == $which ) {
+		if ( ! empty( $this->forms ) && 'top' == $which ) {
 			$all_forms     = evf_get_all_forms();
 			$selected_form = isset( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : $this->form_id;
 			?>
@@ -341,9 +341,10 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 			</select>
 			<input type="submit" name="filter_action" id="post-query-submit" class="button" value="<?php echo esc_attr( 'Filter', 'everest-forms' ); ?>">
 			<?php
-			if ( isset( $_GET['status'] ) && 'trash' == $_GET['status'] && current_user_can( 'delete_posts' ) ) {
-				echo '<div class="alignleft actions"><a id="delete_all" class="button apply" href="' . esc_url( wp_nonce_url( admin_url( 'admin.php?page=evf-entries&form_id=' . $this->form_id . '&status=trash&empty_trash=1' ), 'empty_trash' ) ) . '">' . __( 'Empty Trash', 'everest-forms' ) . '</a></div>';
-			}
+		}
+
+		if ( 'top' == $which && isset( $_GET['status'] ) && 'trash' == $_GET['status'] && current_user_can( 'delete_posts' ) ) {
+			echo '<div class="alignleft actions"><a id="delete_all" class="button apply" href="' . esc_url( wp_nonce_url( admin_url( 'admin.php?page=evf-entries&form_id=' . $this->form_id . '&status=trash&empty_trash=1' ), 'empty_trash' ) ) . '">' . __( 'Empty Trash', 'everest-forms' ) . '</a></div>';
 		}
 	}
 

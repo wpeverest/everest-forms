@@ -210,7 +210,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 	public function column_entries( $posts ) {
 		global $wpdb;
 
-		$entries = $wpdb->get_results( $wpdb->prepare( "SELECT form_id FROM {$wpdb->prefix}evf_entries WHERE `status` != 'trash' AND form_id = %d", $posts->ID ) ); // WPCS: cache ok, DB call ok.
+		$entries = isset( $_GET['status'] ) && 'trash' === $_GET['status'] ? array() : $wpdb->get_results( $wpdb->prepare( "SELECT form_id FROM {$wpdb->prefix}evf_entries WHERE `status` != 'trash' AND form_id = %d", $posts->ID ) ); // WPCS: cache ok, DB call ok.
 
 		return '<a href="' . esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $posts->ID ) ) . '">' . count( $entries ) . '</a>';
 	}
@@ -276,7 +276,6 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 		// Subtract post types that are not included in the admin all list.
 		$post_stati = get_post_stati( array( 'show_in_admin_all_list' => false ) );
 		foreach ( $post_stati as $state ) {
-
 			$total_posts -= isset( $num_posts->$state ) ? $num_posts->$state : 0;
 		}
 

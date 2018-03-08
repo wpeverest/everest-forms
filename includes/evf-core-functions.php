@@ -1019,16 +1019,13 @@ function evf_sender_address() {
 }
 
 function evf_get_all_forms() {
-
-	$args        = array(
+	$all_forms   = array();
+	$posts_array = get_posts( array(
 		'post_type' => 'everest_form',
 		'status'    => 'publish',
-	);
-
-	$posts_array = get_posts( $args );
+	) );
 
 	foreach ( $posts_array as $post ) {
-
 		$all_forms[ $post->ID ] = $post->post_title;
 	}
 

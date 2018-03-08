@@ -68,6 +68,11 @@ function evf_search_entries( $args ) {
 		'orderby' => 'entry_id',
 	) );
 
+	// Check if form ID is valid for entries.
+	if ( ! array_key_exists( $args['form_id'], evf_get_all_forms() ) ) {
+		return array();
+	}
+
 	$orderby       = isset( $args['orderby'] ) ? $args['orderby'] : 'entry_id';
 	$limit         = -1 < $args['limit'] ? sprintf( 'LIMIT %d', $args['limit'] ) : '';
 	$offset        = 0 < $args['offset'] ? sprintf( 'OFFSET %d', $args['offset'] ) : '';
