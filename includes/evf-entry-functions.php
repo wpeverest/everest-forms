@@ -30,12 +30,13 @@ function evf_get_entry( $id, $meta = true ) {
 /**
  * Get all entries IDs.
  *
+ * @param  int $id Form ID.
  * @return int[]
  */
-function evf_get_entries_ids() {
+function evf_get_entries_ids( $id ) {
 	global $wpdb;
 
-	$results = $wpdb->get_results( "SELECT entry_id FROM {$wpdb->prefix}evf_entries" ); // WPCS: cache ok, DB call ok.
+	$results = $wpdb->get_results( $wpdb->prepare( "SELECT entry_id FROM {$wpdb->prefix}evf_entries WHERE form_id = %d", $id ) ); // WPCS: cache ok, DB call ok.
 
 	return array_map( 'intval', wp_list_pluck( $results, 'entry_id' ) );
 }
