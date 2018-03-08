@@ -53,3 +53,30 @@
 		padding: 0;
 	}
 }
+
+.everest-forms-BlankState {
+	text-align: center;
+	padding: 5em 0 0;
+
+	.everest-forms-BlankState-icon {
+		fill: #ddd;
+		width: 128px;
+		height: 128px;
+		margin: 0 0 .875em;
+	}
+
+	.everest-forms-BlankState-message {
+		color: #aaa;
+		margin: 0 auto 1.5em;
+		line-height: 1.5em;
+		font-size: 1.2em;
+		max-width: 500px;
+	}
+
+	.everest-forms-BlankState-cta {
+		font-size: 1.2em;
+		padding: 0.75em 1.5em;
+		height: auto;
+		display: inline-block !important;
+	}
+}
