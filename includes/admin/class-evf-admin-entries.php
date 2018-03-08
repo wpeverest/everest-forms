@@ -181,10 +181,12 @@ class EVF_Admin_Entries {
 				foreach ( $entries as $entry_id ) {
 					$this->remove_entry( $entry_id );
 				}
+
+				$qty = count( $entries );
 			}
 		}
 
-		wp_redirect( esc_url_raw( add_query_arg( array( 'form_id' => $form_id, 'untrashed' => 1 ), admin_url( 'admin.php?page=evf-entries' ) ) ) );
+		wp_redirect( esc_url_raw( add_query_arg( array( 'form_id' => $form_id, 'deleted' => $qty ), admin_url( 'admin.php?page=evf-entries' ) ) ) );
 		exit();
 	}
 
