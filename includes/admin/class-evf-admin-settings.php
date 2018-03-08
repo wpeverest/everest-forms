@@ -592,6 +592,7 @@ class EVF_Admin_Settings {
 	 * @return array The description and tip as a 2 element array
 	 */
 	public static function get_field_description( $value ) {
+
 		$description  = '';
 		$tooltip_html = '';
 

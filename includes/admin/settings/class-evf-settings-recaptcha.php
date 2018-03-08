@@ -43,13 +43,13 @@ if ( ! class_exists( 'EVF_Settings_reCAPTCHA', false ) ) :
 					array(
 						'title' => __( 'Google reCaptcha Integation', 'everest-forms' ),
 						'type'  => 'title',
-						'desc'  => '',
+						'desc'  => sprintf( __('Get site key and secret key from google %1$s reCaptcha %2$s.', 'everest-forms' ), '<a href="https://www.google.com/recaptcha" target="_blank">', '</a>' ),
 						'id'    => 'integration_options',
 					),
-
 					array(
 						'title'    => __( 'Site Key', 'everest-forms' ),
-						'desc'     => sprintf( __('Get site key from google %1$s reCaptcha %2$s.', 'everest-forms' ), '<a href="https://www.google.com/recaptcha" target="_blank">', '</a>' ),						'id'       => 'evf_recaptcha_site_key',
+						'desc'     => sprintf( __('Get site key from google %1$s reCaptcha %2$s.', 'everest-forms' ), '<a href="https://www.google.com/recaptcha" target="_blank">', '</a>' ),
+						'id'       => 'evf_recaptcha_site_key',
 						'default'  => '',
 						'type'     => 'text',
 						'class'    => '',
