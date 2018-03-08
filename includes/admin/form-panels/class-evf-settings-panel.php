@@ -164,6 +164,20 @@ class EVF_Settings_Panel extends EVF_Admin_Form_Panel {
 				'default' => isset( $this->form->form_class ) ? $this->form->form_class : '',
 			)
 		);
+
+		$disable = get_option( 'everest_forms_disable_form_entries' );
+		$disable = $disable === 'yes' ? 1 : 0;
+
+		everest_forms_panel_field(
+			'checkbox',
+			'settings',
+			'disable_entries',
+			$this->form_data,
+			__( 'Disable Form Entries', 'everest-forms' ),
+			array(
+				'default' => $disable,
+			)
+		);
 		everest_forms_panel_field(
 			'text',
 			'settings',
