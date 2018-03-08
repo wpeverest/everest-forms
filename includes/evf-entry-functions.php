@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || exit;
  * @param  int|EVF_Entry $id Entry ID or object.
  * @return EVF_Entry|null
  */
-function evf_get_entry( $id, $meta = true ) {
+function evf_get_entry( $id ) {
 	global $wpdb;
 
 	$entry = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}evf_entries WHERE entry_id = %d LIMIT 1;", $id ) ); // WPCS: cache ok, DB call ok.
@@ -30,13 +30,13 @@ function evf_get_entry( $id, $meta = true ) {
 /**
  * Get all entries IDs.
  *
- * @param  int $id Form ID.
+ * @param  int $form_id Form ID.
  * @return int[]
  */
-function evf_get_entries_ids( $id ) {
+function evf_get_entries_ids( $form_id ) {
 	global $wpdb;
 
-	$results = $wpdb->get_results( $wpdb->prepare( "SELECT entry_id FROM {$wpdb->prefix}evf_entries WHERE form_id = %d", $id ) ); // WPCS: cache ok, DB call ok.
+	$results = $wpdb->get_results( $wpdb->prepare( "SELECT entry_id FROM {$wpdb->prefix}evf_entries WHERE form_id = %d", $form_id ) ); // WPCS: cache ok, DB call ok.
 
 	return array_map( 'intval', wp_list_pluck( $results, 'entry_id' ) );
 }
@@ -126,6 +126,7 @@ function evf_search_entries( $args ) {
 /**
  * Get total entries counts by status.
  *
+ * @param  int $form_id Form ID.
  * @return array
  */
 function evf_get_count_entries_by_status( $form_id ) {
