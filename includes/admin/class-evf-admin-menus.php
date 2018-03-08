@@ -142,22 +142,22 @@ class EVF_Admin_Menus {
 				$this->empty_trash();
 			}
 
-			$action = isset( $_GET['action'] ) ? sanitize_text_field( $_GET['action'] ) : '';
-
-			$nonce = isset( $_GET['_wpnonce'] ) ? sanitize_text_field( $_GET['_wpnonce'] ) : '';
-
+			$action  = isset( $_GET['action'] ) ? sanitize_text_field( $_GET['action'] ) : '';
+			$nonce   = isset( $_GET['_wpnonce'] ) ? sanitize_text_field( $_GET['_wpnonce'] ) : '';
 			$form_id = isset( $_GET['form'] ) && is_numeric( $_GET['form'] ) ? $_GET['form'] : '';
 
-			if ( ! empty( $action ) && ! empty( $nonce ) && ! empty( $form_id ) ) {
+			// Delete entries.
+			if ( 'delete' === $action ) {
+				echo '<pre>' . print_r( $action, true ) . '</pre>';
+			}
 
+			if ( ! empty( $action ) && ! empty( $nonce ) && ! empty( $form_id ) ) {
 				$flag = wp_verify_nonce( $nonce, 'everest_forms_form_duplicate' . $form_id );
 
 				if ( $flag == true && ! is_wp_error( $flag ) ) {
 
 					if ( 'duplicate' === $action ) {
-
 						$this->duplicate( $form_id );
-
 					}
 				}
 			}
