@@ -50,11 +50,11 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 */
 	public function __construct() {
 		// Fetch all forms.
-		$this->forms = EVF()->form->get();
+		$this->forms = evf_get_all_forms( true );
 
 		// Check that the user has created at least one form.
 		if ( ! empty( $this->forms ) ) {
-			$this->form_id = ! empty( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : apply_filters( 'everest_forms_entry_list_default_form_id', absint( $this->forms[0]->ID ) );
+			$this->form_id = ! empty( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : apply_filters( 'everest_forms_entry_list_default_form_id', key( $this->forms ) );
 			$this->form    = EVF()->form->get( $this->form_id );
 			$this->form_data = ! empty( $this->form->post_content ) ? evf_decode( $this->form->post_content ) : '';
 		}
