@@ -1018,7 +1018,7 @@ function evf_sender_address() {
 	return $sender_email;
 }
 
-function evf_get_all_forms() {
+function evf_get_all_forms( $skip_disabled_entries = false ) {
 	$all_forms   = array();
 	$posts_array = get_posts( array(
 		'post_type' => 'everest_form',
@@ -1026,6 +1026,13 @@ function evf_get_all_forms() {
 	) );
 
 	foreach ( $posts_array as $post ) {
+		$form_obj  = EVF()->form->get( $post->ID );
+		$form_data = ! empty( $form_obj->post_content ) ? evf_decode( $form_obj->post_content ) : '';
+
+		if ( $skip_disabled_entries && '1' === $form_data['settings']['disable_entries'] ) {
+			continue;
+		}
+
 		$all_forms[ $post->ID ] = $post->post_title;
 	}
 

@@ -368,21 +368,13 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 * Display a form dropdown for filtering entries.
 	 */
 	public function forms_dropdown() {
-		$forms   = evf_get_all_forms();
+		$forms   = evf_get_all_forms( true );
 		$form_id = isset( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : $this->form_id;
 
 		?>
 		<label for="filter-by-form" class="screen-reader-text"><?php esc_html_e( 'Filter by form', 'everest-forms' ); ?></label>
 		<select name="form_id" id="filter-by-form">
 			<?php foreach( $forms as $id => $form ) : ?>
-				<?php
-					$form_obj  = EVF()->form->get( $id );
-					$form_data = ! empty( $form_obj->post_content ) ? evf_decode( $form_obj->post_content ) : '';
-
-					if ( '1' === $form_data['settings']['disable_entries'] ) {
-						continue;
-					}
-				?>
 				<option value="<?php echo esc_attr( $id ); ?>" <?php selected( $form_id, $id ); ?>><?php echo esc_html( $form ); ?></option>
 			<?php endforeach; ?>
 		</select>
