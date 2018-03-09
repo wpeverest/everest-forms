@@ -262,13 +262,19 @@ class EVF_Admin_Entries {
 	/**
 	 * Remove entry.
 	 *
-	 * @param int $entry_id Entry ID.
+	 * @param  int $entry_id Entry ID.
+	 * @return bool
 	 */
 	private function remove_entry( $entry_id ) {
 		global $wpdb;
 
-		$wpdb->delete( $wpdb->prefix . 'evf_entries', array( 'entry_id' => $entry_id ), array( '%d' ) );
-		$wpdb->delete( $wpdb->prefix . 'evf_entrymeta', array( 'entry_id' => $entry_id ), array( '%d' ) );
+		$delete = $wpdb->delete( $wpdb->prefix . 'evf_entries', array( 'entry_id' => $entry_id ), array( '%d' ) );
+
+		if ( apply_filters( 'everest_forms_delete_entrymeta', true ) ) {
+			$wpdb->delete( $wpdb->prefix . 'evf_entrymeta', array( 'entry_id' => $entry_id ), array( '%d' ) );
+		}
+
+		return $delete;
 	}
 
 	/**
