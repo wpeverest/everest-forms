@@ -179,6 +179,17 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 
 			$value = nl2br( wp_strip_all_tags( trim( $value ) ) );
 
+			if ( is_serialized( $value ) ) {
+				$field_html  = array();
+				$field_value = maybe_unserialize( $value );
+
+				foreach ( $field_value as $field => $meta_val ) {
+					$field_html[] = $meta_val;
+				}
+
+				$value = implode( ' | ', $field_html );
+			}
+
 			return apply_filters( 'everest_forms_html_field_value', $value, $entry->meta[ $meta_value ], $this->form_data, 'entry-table' );
 		} else {
 			return '<span class="na">&mdash;</span>';
