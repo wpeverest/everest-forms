@@ -278,6 +278,15 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 		case 'checkbox':
 			$checked  = checked( '1', $value, false );
 			$checkbox = sprintf(
+				'<input type="hidden" id="everest-forms-panel-field-%s-%s" name="%s" value="0" class="%s" %s %s>',
+				sanitize_html_class( $panel_id ),
+				sanitize_html_class( $field ),
+				$field_name,
+				$input_class,
+				$checked,
+				$data_attr
+			);
+			$checkbox .= sprintf(
 				'<input type="checkbox" id="everest-forms-panel-field-%s-%s" name="%s" value="1" class="%s" %s %s>',
 				sanitize_html_class( $panel_id ),
 				sanitize_html_class( $field ),
