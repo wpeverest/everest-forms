@@ -169,11 +169,11 @@ class EVF_Admin_Menus {
 		$entries = evf_get_entries_ids( $postid );
 
 		// Delete entry.
-		$wpdb->delete( $wpdb->prefix . 'evf_entries', array( 'form_id' => $postid ), array( '%d' ) );
-
-		// Delete entrymeta.
 		if ( ! empty( $entries ) ) {
-			EVF_Admin_Entries::bulk_delete_entry( $entries );
+			foreach ( $entries as $entry_id ) {
+				$wpdb->delete( $wpdb->prefix . 'evf_entries', array( 'entry_id' => $entry_id ), array( '%d' ) );
+				$wpdb->delete( $wpdb->prefix . 'evf_entrymeta', array( 'entry_id' => $entry_id ), array( '%d' ) );
+			}
 		}
 	}
 
