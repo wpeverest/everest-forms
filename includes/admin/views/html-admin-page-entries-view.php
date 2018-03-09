@@ -89,7 +89,7 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 								<p class="everest-forms-entry-date">
 									<span class="dashicons dashicons-calendar"></span>
 									<?php esc_html_e( 'Submitted:', 'everest-forms' ); ?>
-									<strong><?php echo date_i18n( esc_html__( 'M j, Y @ g:ia' ), strtotime( $entry->date_created ) + ( get_option( 'gmt_offset' ) * 3600 ) ); ?> </strong>
+									<strong><?php echo date_i18n( esc_html__( 'M j, Y @ g:ia', 'everest-forms' ), strtotime( $entry->date_created ) + ( get_option( 'gmt_offset' ) * 3600 ) ); ?> </strong>
 								</p>
 
 								<?php if ( ! empty( $entry->user_id ) && 0 !== $entry->user_id ) : ?>

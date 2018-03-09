@@ -25,6 +25,15 @@ class EVF_Install {
 		'1.0.1' => array(
 			'evf_update_101_db_version',
 		),
+		'1.0.2' => array(
+			'evf_update_102_db_version',
+		),
+		'1.0.3' => array(
+			'evf_update_103_db_version',
+		),
+		'1.1.0' => array(
+			'evf_update_110_db_version',
+		),
 	);
 
 	/**

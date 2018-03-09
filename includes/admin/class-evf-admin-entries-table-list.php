@@ -363,7 +363,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		<label for="filter-by-form" class="screen-reader-text"><?php esc_html_e( 'Filter by form', 'everest-forms' ); ?></label>
 		<select name="form_id" id="filter-by-form">
 			<?php foreach( $forms as $id => $form ) : ?>
-				<option value="<?php echo esc_attr( $id ); ?>" <?php selected( $form_id, $id ); ?>><?php esc_html_e( $form ); ?></option>
+				<option value="<?php echo esc_attr( $id ); ?>" <?php selected( $form_id, $id ); ?>><?php echo esc_html( $form ); ?></option>
 			<?php endforeach; ?>
 		</select>
 		<?php

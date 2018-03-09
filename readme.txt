@@ -3,7 +3,7 @@ Contributors: WPEverest
 Tags: form, form builder, easy form, clean form, login form, contact, contact form
 Requires at least: 4.0
 Tested up to: 4.9
-Stable tag: 1.0.3
+Stable tag: 1.1.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -68,19 +68,7 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 
 == Changelog ==
 
-= 1.0.3 - 23-02-2018 =
-* Fix - From email issue fix for default form
+= 1.1.0 - XX-03-2018 =
+* Feature - Entries panel to save form in database.
 
-= 1.0.2 - 15-02-2018 =
-* Fix - Box-sizing issue with list tables.
-* Fix - Header already sent error on plugin activation.
-* Tweak - Refactor list tables and menu related hooks placement.
-
-= 1.0.1 - 13-02-2018 =
-* Feature - JS validation on submit.
-* Fix - Select field option display.
-* Fix - Checkbox validation styling.
-* Fix - Create default form on first install.
-
-= 1.0.0 - 02-02-2018 =
-* Initial Release
+[See changelog for all versions](https://github.com/wpeverest/everest-forms/raw/master/CHANGELOG.txt).
