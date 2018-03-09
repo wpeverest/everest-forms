@@ -1029,7 +1029,7 @@ function evf_get_all_forms( $skip_disabled_entries = false ) {
 		$form_obj  = EVF()->form->get( $post->ID );
 		$form_data = ! empty( $form_obj->post_content ) ? evf_decode( $form_obj->post_content ) : '';
 
-		if ( $skip_disabled_entries && '1' === $form_data['settings']['disable_entries'] ) {
+		if ( $skip_disabled_entries && ( isset( $form_data['settings']['disable_entries'] ) && '1' === $form_data['settings']['disable_entries'] ) ) {
 			continue;
 		}
 
