@@ -171,11 +171,11 @@ class EVF_Settings_Panel extends EVF_Admin_Form_Panel {
 		everest_forms_panel_field(
 			'checkbox',
 			'settings',
-			'disable_entries',
+			'disabled_entries',
 			$this->form_data,
 			__( 'Disable Form Entries', 'everest-forms' ),
 			array(
-				'default' => isset( $this->form_setting['disable_entries'] ) ? $this->form_setting['disable_entries'] : $disable,
+				'default' => isset( $this->form_setting['disabled_entries'] ) ? $this->form_setting['disabled_entries'] : $disable,
 			)
 		);
 		everest_forms_panel_field(

@@ -1029,7 +1029,7 @@ function evf_get_all_forms( $skip_disabled_entries = false ) {
 		$form_obj  = EVF()->form->get( $post->ID );
 		$form_data = ! empty( $form_obj->post_content ) ? evf_decode( $form_obj->post_content ) : '';
 
-		if ( $skip_disabled_entries && ( isset( $form_data['settings']['disable_entries'] ) && '1' === $form_data['settings']['disable_entries'] ) ) {
+		if ( $skip_disabled_entries && ( isset( $form_data['settings']['disabled_entries'] ) && '1' === $form_data['settings']['disabled_entries'] ) ) {
 			continue;
 		}
 
@@ -1040,8 +1040,8 @@ function evf_get_all_forms( $skip_disabled_entries = false ) {
 }
 
 function evf_get_meta_key_field_option( $field ) {
-	$digits = 4;
-	$random_number = rand( pow(10, $digits-1 ), pow( 10, $digits )-1 );
+
+	$random_number = rand( pow(10, 3 ), pow( 10, 4 ) -1 );
 	return strtolower( str_replace( " ", "_", $field['label'] ) ) . '_' . $random_number;
 }
 
