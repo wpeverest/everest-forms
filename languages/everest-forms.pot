@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Everest Forms 1.1.0\n"
 "Report-Msgid-Bugs-To: https://github.com/wpeverest/everest-forms/issues\n"
-"POT-Creation-Date: 2018-03-09 09:22:37+00:00\n"
+"POT-Creation-Date: 2018-03-09 11:48:28+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -137,7 +137,7 @@ msgstr ""
 #: includes/admin/class-evf-admin-menus.php:382
 #: includes/admin/form-panels/class-evf-fields-panel.php:200
 #: includes/admin/form-panels/class-evf-settings-panel.php:29
-#: includes/class-evf-install.php:524
+#: includes/class-evf-install.php:525
 msgid "Settings"
 msgstr ""
 
@@ -258,56 +258,56 @@ msgstr ""
 msgid "Field"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:226
+#: includes/admin/class-evf-admin-entries-table-list.php:237
 #: includes/admin/views/html-admin-page-status-logs.php:28
 msgid "View"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:228
+#: includes/admin/class-evf-admin-entries-table-list.php:239
 #. translators: %s: entry name
 msgid "Trash form entry"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:231
+#: includes/admin/class-evf-admin-entries-table-list.php:242
 #: includes/admin/class-evf-admin-forms-table-list.php:111
 #: includes/evf-entry-functions.php:52
 msgid "Trash"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:235
+#: includes/admin/class-evf-admin-entries-table-list.php:246
 msgid "Restore form entry from trash"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:238
-#: includes/admin/class-evf-admin-entries-table-list.php:318
+#: includes/admin/class-evf-admin-entries-table-list.php:249
+#: includes/admin/class-evf-admin-entries-table-list.php:329
 #: includes/admin/class-evf-admin-forms-table-list.php:109
 #: includes/admin/class-evf-admin-forms-table-list.php:332
 msgid "Restore"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:239
+#: includes/admin/class-evf-admin-entries-table-list.php:250
 msgid "Delete form entry permanently"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:242
-#: includes/admin/class-evf-admin-entries-table-list.php:319
+#: includes/admin/class-evf-admin-entries-table-list.php:253
+#: includes/admin/class-evf-admin-entries-table-list.php:330
 msgid "Delete Permanently"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:324
+#: includes/admin/class-evf-admin-entries-table-list.php:335
 msgid "Move to Trash"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:344
+#: includes/admin/class-evf-admin-entries-table-list.php:355
 #: includes/admin/class-evf-admin-entries.php:82
 msgid "Filter"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:349
+#: includes/admin/class-evf-admin-entries-table-list.php:360
 msgid "Empty Trash"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:364
+#: includes/admin/class-evf-admin-entries-table-list.php:375
 msgid "Filter by form"
 msgstr ""
 
@@ -1037,27 +1037,27 @@ msgstr ""
 msgid "Payments"
 msgstr ""
 
-#: includes/class-evf-install.php:253
+#: includes/class-evf-install.php:254
 msgid "Monthly"
 msgstr ""
 
-#: includes/class-evf-install.php:524
+#: includes/class-evf-install.php:525
 msgid "View Everest Forms Settings"
 msgstr ""
 
-#: includes/class-evf-install.php:540
+#: includes/class-evf-install.php:541
 msgid "View Everest Forms documentation"
 msgstr ""
 
-#: includes/class-evf-install.php:540
+#: includes/class-evf-install.php:541
 msgid "Docs"
 msgstr ""
 
-#: includes/class-evf-install.php:541
+#: includes/class-evf-install.php:542
 msgid "Visit free customer support"
 msgstr ""
 
-#: includes/class-evf-install.php:541
+#: includes/class-evf-install.php:542
 msgid "Free support"
 msgstr ""
 
@@ -1268,7 +1268,7 @@ msgstr ""
 msgid "https://wpeverest.com"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:289
+#: includes/admin/class-evf-admin-entries-table-list.php:300
 #. translators: %s: count
 msgctxt "entries"
 msgid "All <span class=\"count\">(%s)</span>"
