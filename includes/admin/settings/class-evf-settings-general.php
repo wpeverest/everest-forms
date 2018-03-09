@@ -56,6 +56,14 @@ if ( ! class_exists( 'EVF_Settings_General', false ) ) :
 						'default'  => __('Submit','everest-forms'),
 					),
 					array(
+						'title'    => __( 'Disable Form Entries', 'everest-forms' ),
+						'desc'     => '',
+						'id'       => 'everest_forms_disable_form_entries',
+						'type'     => 'checkbox',
+						'desc_tip' => true,		
+						'default'  => 'no',				
+					),
+					array(
 						'title'    => __( 'Successful Form Submission Message', 'everest-forms' ),
 						'desc'     => __( 'Enter the text message after successful form submission.', 'everest-forms' ),
 						'id'       => 'everest_forms_successful_form_submission_message',

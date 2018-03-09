@@ -392,7 +392,10 @@ class EVF_Form_Task {
 	 */
 	public function entry_save( $fields, $entry, $form_id, $form_data = '' ) {
 		global $wpdb;
-
+		
+		if( isset( $form_data['settings']['disable_entries'] ) && $form_data['settings']['disable_entries'] === '1' ) {
+			return;
+		}
 		$browser = evf_get_browser();
 
 		do_action( 'everest_forms_process_entry_save', $fields, $entry, $form_id, $form_data );
