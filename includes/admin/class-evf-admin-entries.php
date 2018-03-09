@@ -241,7 +241,7 @@ class EVF_Admin_Entries {
 	 *
 	 * @param array $entries Entries.
 	 */
-	public function bulk_delete_entry( $entries ) {
+	private function bulk_delete_entry( $entries ) {
 		foreach ( $entries as $entry_id ) {
 			$this->remove_entry( $entry_id );
 		}
@@ -262,8 +262,7 @@ class EVF_Admin_Entries {
 	/**
 	 * Remove entry.
 	 *
-	 * @param  int $entry_id Entry ID.
-	 * @return bool
+	 * @param int $entry_id Entry ID.
 	 */
 	private function remove_entry( $entry_id ) {
 		global $wpdb;
@@ -277,7 +276,6 @@ class EVF_Admin_Entries {
 	 *
 	 * @param  int    $entry_id Entry ID.
 	 * @param  string $status   Entry status.
-	 * @return bool
 	 */
 	private function update_status( $entry_id, $status = 'publish' ) {
 		global $wpdb;
