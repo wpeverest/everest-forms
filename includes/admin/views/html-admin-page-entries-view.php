@@ -50,7 +50,19 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 
 											// Field value.
 											echo '<tr class="everest-forms-entry-field field-value' . $field_class . '" style="' . $field_style . '"><td>';
-												echo ! empty( $field_value ) ? nl2br( make_clickable( $field_value ) ) : esc_html__( 'Empty', 'everest-forms' );
+												if ( ! empty( $field_value ) ) {
+													if ( is_serialized( $field_value ) ) {
+														$field_value = maybe_unserialize( $field_value );
+
+														foreach ( $field_value as $field => $value ) {
+															echo '<span class="list">' . $value . '</span>';
+														}
+													} else {
+														echo nl2br( make_clickable( $field_value ) );
+													}
+												} else {
+													esc_html_e( 'Empty', 'everest-forms' );
+												}
 											echo '</td></tr>';
 										}
 									}

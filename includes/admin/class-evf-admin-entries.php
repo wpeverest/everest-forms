@@ -50,21 +50,44 @@ class EVF_Admin_Entries {
 	private static function table_list_output() {
 		global $entries_table_list;
 
+		// Get the entries count.
+		$count = count( evf_get_entries_ids( $entries_table_list->form_id ) );
+
 		$entries_table_list->prepare_items();
 		?>
 		<div class="wrap">
 			<h1 class="wp-heading-inline"><?php esc_html_e( 'Entries', 'everest-forms' ); ?></h1>
 			<hr class="wp-header-end">
-			<form id="entries-list" method="post">
-				<input type="hidden" name="page" value="evf-entries" />
-				<?php
-					$entries_table_list->views();
-					$entries_table_list->search_box( __( 'Search Entries', 'everest-forms' ), 'everest-forms' );
-					$entries_table_list->display();
+			<?php if ( 0 < $count ) : ?>
+				<form id="entries-list" method="post">
+					<input type="hidden" name="page" value="evf-entries" />
+					<?php
+						$entries_table_list->views();
+						$entries_table_list->search_box( __( 'Search Entries', 'everest-forms' ), 'everest-forms' );
+						$entries_table_list->display();
+					?>
+				</form>
+			<?php else : ?>
+				<div class="everest-forms-BlankState">
+					<svg aria-hidden="true" class="octicon octicon-graph everest-forms-BlankState-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M16 14v1H0V0h1v14h15zM5 13H3V8h2v5zm4 0H7V3h2v10zm4 0h-2V6h2v7z"/></svg>
+					<h2 class="everest-forms-BlankState-message"><?php esc_html_e( 'Whoops, it appears you do not have any form entries yet.', 'everest-forms' ); ?></h2>
+					<form id="entries-list" method="post">
+					<?php
+						if ( ! empty( $entries_table_list->forms ) ) {
+							ob_start();
+							$entries_table_list->forms_dropdown();
+							$output = ob_get_clean();
 
-					wp_nonce_field( 'everest-forms-entries' );
-				?>
-			</form>
+							if ( ! empty( $output ) ) {
+								echo $output;
+								submit_button( __( 'Filter', 'everest-forms' ), '', 'filter_action', false, array( 'id' => 'post-query-submit' ) );
+							}
+						}
+					?>
+					</form>
+					<style type="text/css">#posts-filter .wp-list-table, #posts-filter .tablenav.top, .tablenav.bottom .actions, .wrap .subsubsub { display: none; }</style>
+				</div>
+			<?php endif; ?>
 		</div>
 		<?php
 	}
@@ -89,14 +112,13 @@ class EVF_Admin_Entries {
 				$this->delete_entry();
 			}
 
-			// Empty trash.
-			if ( isset( $_GET['empty_trash'] ) ) {
-				$this->empty_trash();
-			}
-
 			// Bulk actions.
 			if ( isset( $_REQUEST['action'] ) && isset( $_REQUEST['entry'] ) ) { // WPCS: input var okay, CSRF ok.
 				$this->bulk_actions();
+			}
+
+			if ( isset( $_REQUEST['delete_all'] ) || isset( $_REQUEST['delete_all2'] ) ) { // WPCS: input var okay, CSRF ok.
+				$this->empty_trash();
 			}
 		}
 	}
@@ -194,7 +216,7 @@ class EVF_Admin_Entries {
 	 * Bulk actions.
 	 */
 	private function bulk_actions() {
-		check_admin_referer( 'everest-forms-entries' );
+		check_admin_referer( 'bulk-entries' );
 
 		if ( ! current_user_can( 'manage_everest_forms' ) ) {
 			wp_die( esc_html__( 'You do not have permission to edit Entries', 'everest-forms' ) );
