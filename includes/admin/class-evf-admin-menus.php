@@ -24,6 +24,7 @@ class EVF_Admin_Menus {
 	 */
 	public function __construct() {
 		add_action( 'admin_init', array( $this, 'actions' ) );
+		add_action( 'deleted_post', array( $this, 'delete_entries' ) );
 
 		// Add menus.
 		add_action( 'admin_menu', array( $this, 'admin_menu' ), 9 );
@@ -146,11 +147,6 @@ class EVF_Admin_Menus {
 			$nonce   = isset( $_GET['_wpnonce'] ) ? sanitize_text_field( $_GET['_wpnonce'] ) : '';
 			$form_id = isset( $_GET['form'] ) && is_numeric( $_GET['form'] ) ? $_GET['form'] : '';
 
-			// Delete entries.
-			if ( 'delete' === $action ) {
-				echo '<pre>' . print_r( $action, true ) . '</pre>';
-			}
-
 			if ( ! empty( $action ) && ! empty( $nonce ) && ! empty( $form_id ) ) {
 				$flag = wp_verify_nonce( $nonce, 'everest_forms_form_duplicate' . $form_id );
 
@@ -161,6 +157,23 @@ class EVF_Admin_Menus {
 					}
 				}
 			}
+		}
+	}
+
+	/**
+	 * Remove entry and its associated meta.
+	 */
+	public function delete_entries( $postid ) {
+		global $wpdb;
+
+		$entries = evf_get_entries_ids( $postid );
+
+		// Delete entry.
+		$wpdb->delete( $wpdb->prefix . 'evf_entries', array( 'form_id' => $postid ), array( '%d' ) );
+
+		// Delete entrymeta.
+		if ( ! empty( $entries ) ) {
+			EVF_Admin_Entries::bulk_delete_entry( $entries );
 		}
 	}
 

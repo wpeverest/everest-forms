@@ -241,7 +241,7 @@ class EVF_Admin_Entries {
 	 *
 	 * @param array $entries Entries.
 	 */
-	private function bulk_delete_entry( $entries ) {
+	public function bulk_delete_entry( $entries ) {
 		foreach ( $entries as $entry_id ) {
 			$this->remove_entry( $entry_id );
 		}
