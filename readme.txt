@@ -29,6 +29,7 @@ Check [documentation](http://docs.wpeverest.com/docs/everest-forms/)
 * 100% responsive form template
 * Supports multiple column layout
 * Shortcode support
+* View Form entries from your dashboard
 * Provides two different form template design
 * Google Recaptcha Supported
 * Editable successful form submission message
@@ -69,7 +70,7 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 
 == Changelog ==
 
-= 1.1.0 - XX-03-2018 =
+= 1.1.0 - 12-03-2018 =
 * Feature - Entries panel to save form in database.
 
 [See changelog for all versions](https://github.com/wpeverest/everest-forms/raw/master/CHANGELOG.txt).
