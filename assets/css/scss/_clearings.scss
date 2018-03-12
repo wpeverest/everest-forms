@@ -4,15 +4,15 @@
 .container::after,
 .container-fluid::before,
 .container-fluid::after,
-.tg-row::before,
-.tg-row::after {
+.evf-row::before,
+.evf-row::after {
 	display: table;
 	content: "";
 }
 .clearfix::after,
 .container::after,
 .container-fluid::after,
-.tg-row::after {
+.evf-row::after {
 	clear: both;
 }
 
