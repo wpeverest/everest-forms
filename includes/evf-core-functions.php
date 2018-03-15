@@ -687,6 +687,24 @@ function evf_get_var( &$var, $default = null ) {
 }
 
 /**
+ * Read in EverestForms headers when reading plugin headers.
+ *
+ * @since  1.2.0
+ * @param  array $headers Headers.
+ * @return array
+ */
+function evf_enable_evf_plugin_headers( $headers ) {
+	if ( ! class_exists( 'EVF_Plugin_Updates' ) ) {
+		include_once dirname( __FILE__ ) . '/admin/plugin-updates/class-evf-plugin-updates.php';
+	}
+
+	$headers['EVFRequires'] = EVF_Plugin_Updates::VERSION_REQUIRED_HEADER;
+	$headers['EVFTested']   = EVF_Plugin_Updates::VERSION_TESTED_HEADER;
+	return $headers;
+}
+add_filter( 'extra_plugin_headers', 'evf_enable_evf_plugin_headers' );
+
+/**
  * Delete expired transients.
  *
  * Deletes all expired transients. The multi-table delete syntax is used.
