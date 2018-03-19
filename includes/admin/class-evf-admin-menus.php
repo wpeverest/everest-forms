@@ -430,7 +430,7 @@ class EVF_Admin_Menus {
 	 * Addons menu item.
 	 */
 	public function addons_menu() {
-		add_submenu_page( 'everest-forms', __( 'Everest Forms addons', 'everest-forms' ),  __( 'Addons', 'everest-forms' ) , 'manage_everest_forms', 'evf-addons', array( $this, 'addons_page' ) );
+		add_submenu_page( 'everest-forms', __( 'Everest Forms Add-ons', 'everest-forms' ), __( 'Add-ons', 'everest-forms' ), 'manage_everest_forms', 'evf-addons', array( $this, 'addons_page' ) );
 	}
 
 	/**
@@ -476,7 +476,7 @@ class EVF_Admin_Menus {
 	 * Init the addons page.
 	 */
 	public function addons_page() {
-		// EVF_Admin_Addons::output();
+		EVF_Admin_Addons::output();
 	}
 
 	public function admin_footer() {
