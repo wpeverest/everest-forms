@@ -39,7 +39,7 @@ class EVF_Admin {
 		include_once dirname( __FILE__ ) . '/class-evf-admin-notices.php';
 		include_once dirname( __FILE__ ) . '/class-evf-admin-assets.php';
 		include_once dirname( __FILE__ ) . '/class-evf-admin-form-builder.php';
-		include_once dirname( __FILE__ ) . '/class-evf-add-form.php';
+		include_once dirname( __FILE__ ) . '/class-evf-admin-add-form.php';
 		include_once dirname( __FILE__ ) . '/class-evf-admin-entries.php';
 	}
 

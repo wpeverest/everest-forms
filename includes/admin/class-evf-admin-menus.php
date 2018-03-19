@@ -34,8 +34,8 @@ class EVF_Admin_Menus {
 		add_action( 'admin_menu', array( $this, 'settings_menu' ), 50 );
 		add_action( 'admin_menu', array( $this, 'status_menu' ), 60 );
 
-		if ( apply_filters( 'everest_forms_show_extensions_page', true ) ) {
-			add_action( 'admin_menu', array( $this, 'extensions_menu' ), 70 );
+		if ( apply_filters( 'everest_forms_show_addons_page', true ) ) {
+			add_action( 'admin_menu', array( $this, 'addons_menu' ), 70 );
 		}
 
 		add_filter( 'admin_footer', array( $this, 'admin_footer' ), 1 );
@@ -427,10 +427,10 @@ class EVF_Admin_Menus {
 	}
 
 	/**
-	 * Extensions menu item.
+	 * Addons menu item.
 	 */
-	public function extensions_menu() {
-		add_submenu_page( 'everest-forms', __( 'Everest Forms extensions', 'everest-forms' ),  __( 'Extensions', 'everest-forms' ) , 'manage_everest_forms', 'evf-extensions', array( $this, 'extensions_page' ) );
+	public function addons_menu() {
+		add_submenu_page( 'everest-forms', __( 'Everest Forms addons', 'everest-forms' ),  __( 'Addons', 'everest-forms' ) , 'manage_everest_forms', 'evf-addons', array( $this, 'addons_page' ) );
 	}
 
 	/**
@@ -473,10 +473,10 @@ class EVF_Admin_Menus {
 	}
 
 	/**
-	 * Init the extensions page.
+	 * Init the addons page.
 	 */
-	public function extensions_page() {
-		EVF_Admin_Extensions::output();
+	public function addons_page() {
+		// EVF_Admin_Addons::output();
 	}
 
 	public function admin_footer() {
