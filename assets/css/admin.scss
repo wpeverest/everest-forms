@@ -1,0 +1,54 @@
+/**
+ * admin.scss
+ * General EverestForms admin styles. Settings, entries, etc.
+ */
+
+/**
+ * Styling begins
+ */
+.clear {
+	clear: both;
+}
+
+.evf_addons_wrap {
+
+	h1.search-form-title {
+		clear: left;
+		padding: 0;
+	}
+
+	form.search-form {
+		clear: both;
+		display: block;
+		position: relative;
+		margin-top: 1em;
+		margin-bottom: 1em;
+
+		input {
+			border: 1px solid #ddd;
+			box-shadow: none;
+			height: 53px;
+			padding-left: 50px;
+			width: 100%;
+			margin: 0;
+		}
+
+		button {
+			background: none;
+			border: none;
+			cursor: pointer;
+			height: 53px;
+			position: absolute;
+			width: 53px;
+		}
+	}
+
+	.page-title-action {
+		.dashicons {
+			width: 14px;
+			height: 14px;
+			font-size: 14px;
+			vertical-align: text-bottom;
+		}
+	}
+}

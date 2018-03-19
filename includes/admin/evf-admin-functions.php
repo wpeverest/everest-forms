@@ -16,7 +16,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return array
  */
 function evf_get_screen_ids() {
-
 	$evf_screen_id = sanitize_title( __( 'Everest Forms', 'everest-forms' ) );
 	$screen_ids    = array(
 		'toplevel_page_' . $evf_screen_id,

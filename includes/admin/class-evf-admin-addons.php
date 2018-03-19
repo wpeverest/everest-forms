@@ -14,13 +14,15 @@ defined( 'ABSPATH' ) || exit;
 class EVF_Admin_Addons {
 
 	/**
-	 * Get sections for the extensions screen
+	 * Get sections for the addons screen.
 	 *
 	 * @return array of objects
 	 */
 	public static function get_sections() {
-		if ( false === ( $sections = get_transient( 'evf_extensions_sections' ) ) ) {
-			$raw_sections = wp_safe_remote_get( 'https://raw.githubusercontent.com/wpeverest/extensions-json/master/everest-forms/addons-section.json', array( 'user-agent' => 'EverestForms Addons Page' ) );
+		$addon_sections = get_transient( 'evf_addons_sections' );
+
+		if ( false === $addon_sections ) {
+			$raw_sections = wp_safe_remote_get( 'https://raw.githubusercontent.com/wpeverest/extensions-json/master/everest-forms/addon-sections.json' );
 			if ( ! is_wp_error( $raw_sections ) ) {
 				$sections = json_decode( wp_remote_retrieve_body( $raw_sections ) );
 
@@ -30,20 +32,7 @@ class EVF_Admin_Addons {
 			}
 		}
 
-		$extension_sections = array();
-
-		if ( $sections ) {
-			foreach ( $sections as $sections_id => $section ) {
-				if ( empty( $sections_id ) ) {
-					continue;
-				}
-				$extension_sections[ $sections_id ]           = new stdClass;
-				$extension_sections[ $sections_id ]->title    = rp_clean( $section->title );
-				$extension_sections[ $sections_id ]->endpoint = rp_clean( $section->endpoint );
-			}
-		}
-
-		return apply_filters( 'everest_forms_extensions_sections', $extension_sections );
+		return apply_filters( 'everest_forms_extensions_sections', $sections );
 	}
 
 	/**
@@ -93,16 +82,22 @@ class EVF_Admin_Addons {
 	public static function output() {
 		$addons          = array();
 		$sections        = self::get_sections();
-		$theme           = wp_get_theme();
-		$section_key     = array_keys( $sections );
-		$current_section = isset( $_GET['section'] ) ? sanitize_text_field( $_GET['section'] ) : current( $section_key );
+		$refresh_url     = add_query_arg(
+			array(
+				'page'              => 'evf-addons',
+				'evf-addons-refresh' => 1,
+				'evf-addons-nonce'   => wp_create_nonce( 'refresh' ),
+			), admin_url( 'admin.php' )
+		);
+		$section_keys     = array_keys( $sections );
+		$current_section = isset( $_GET['section'] ) ? sanitize_text_field( $_GET['section'] ) : current( $section_keys );
 
 		/**
 		 * Addon page view.
 		 *
 		 * @uses $addons
 		 * @uses $sections
-		 * @uses $theme
+		 * @uses $refresh_url
 		 * @uses $section_key
 		 * @uses $current_section
 		 */
