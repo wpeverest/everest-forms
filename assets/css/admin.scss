@@ -12,9 +12,12 @@
 
 .evf_addons_wrap {
 
-	h1.search-form-title {
-		clear: left;
+	h2.search-form-title {
+		margin: 0;
 		padding: 0;
+		clear: left;
+		color: #555d66;
+		font-weight: 400;
 	}
 
 	form.search-form {
@@ -36,6 +39,7 @@
 		button {
 			background: none;
 			border: none;
+			outline: none;
 			cursor: pointer;
 			height: 53px;
 			position: absolute;
@@ -50,5 +54,17 @@
 			font-size: 14px;
 			vertical-align: text-bottom;
 		}
+	}
+
+	ul.subsubsub {
+		margin: 8px 0;
+	}
+
+	.subsubsub li::after {
+		content: '|';
+	}
+
+	.subsubsub li:last-child::after {
+		content: '';
 	}
 }
