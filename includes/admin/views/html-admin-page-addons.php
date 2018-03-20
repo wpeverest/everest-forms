@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 	<h1 class="wp-heading-inline"><?php _e( 'Everest Forms Add-ons', 'everest-forms' ); ?></h1>
 
 	<?php if ( apply_filters( 'everest_forms_refresh_addons', true ) ) : ?>
-		<a href="<?php echo esc_url( $refresh_url ); ?>" class="page-title-action"><span class="dashicons dashicons-image-rotate"></span> <?php esc_html_e( 'Refresh Add-ons', 'everest-forms' ); ?></a>
+		<a href="<?php echo esc_url( $refresh_url ); ?>" class="page-title-action"><?php esc_html_e( 'Refresh Add-ons', 'everest-forms' ); ?></a>
 	<?php endif; ?>
 
 	<hr class="wp-header-end">
