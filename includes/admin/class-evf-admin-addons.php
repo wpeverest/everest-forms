@@ -92,6 +92,12 @@ class EVF_Admin_Addons {
 		$section_keys    = wp_list_pluck( $sections, 'slug' );
 		$current_section = isset( $_GET['section'] ) ? sanitize_text_field( $_GET['section'] ) : current( $section_keys );
 
+		if ( '_featured' !== $current_section ) {
+			$category = isset( $_GET['section'] ) ? $_GET['section'] : null;
+			$term     = isset( $_GET['search'] ) ? $_GET['search'] : null;
+			// $addons   = self::get_extension_data( $category, $term );
+		}
+
 		/**
 		 * Addon page view.
 		 *

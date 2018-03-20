@@ -12,6 +12,10 @@
 
 .evf_addons_wrap {
 
+	ul.subsubsub {
+		margin: 8px 0;
+	}
+
 	h2.search-form-title {
 		margin: 0;
 		padding: 0;
@@ -45,9 +49,5 @@
 			position: absolute;
 			width: 53px;
 		}
-	}
-
-	ul.subsubsub {
-		margin: 8px 0;
 	}
 }

@@ -33,7 +33,7 @@ defined( 'ABSPATH' ) || exit;
 			<h2 class="search-form-title" ><?php printf( __( 'Showing search results for: %s', 'everest-forms' ), '<strong>' . esc_html( $_GET['search'] ) . '</strong>' ); ?></h2>
 		<?php endif; ?>
 
-		<form class="search-form" method="GET">
+		<form class="search-form hidden" method="GET">
 			<button type="submit">
 				<span class="dashicons dashicons-search"></span>
 			</button>
@@ -42,6 +42,15 @@ defined( 'ABSPATH' ) || exit;
 			<input type="hidden" name="section" value="<?php echo esc_attr( $page_section ); ?>">
 			<input type="text" name="search" value="<?php echo esc_attr( isset( $_GET['search'] ) ? $_GET['search'] : '' ); ?>" placeholder="<?php _e( 'Enter a search term and press enter', 'everest-forms' ); ?>">
 		</form>
+		<?php if ( '_featured' !== $current_section && $addons ) : ?>
+			<ul class="products">
+			<?php foreach ( $addons as $addon ) : ?>
+				<li class="product">
+
+				</li>
+			<?php endforeach; ?>
+			</ul>
+		<?php endif; ?>
 	<?php else : ?>
 		<p><?php printf( __( 'Our catalog of Everest Forms Add-ons/Extensions can be found on WPEverest.com here: <a href="%s">Everest Forms Extensions Catalog</a>', 'everest-forms' ), 'https://wpeverest.com/wordpress-plugins/everest-forms/' ); ?></p>
 	<?php endif; ?>
