@@ -23,9 +23,8 @@ defined( 'ABSPATH' ) || exit;
 		<ul class="subsubsub">
 			<?php foreach ( $sections as $section ) : ?>
 				<li class="<?php echo esc_attr( $section->slug ); ?>">
-					<a <?php echo $current_section === $section->slug ? 'class="current"' : ''; ?> href="<?php echo admin_url( 'admin.php?page=evf-addons&section=' . esc_attr( $section->slug ) ); ?>">
-						<?php echo esc_html( $section->label ); ?>
-					</a>
+					<a href="<?php echo admin_url( 'admin.php?page=evf-addons&section=' . esc_attr( $section->slug ) ); ?>"<?php echo $current_section === $section->slug ? ' class="current" aria-current="page"' : ''; ?>><?php echo esc_html( $section->label ); ?></a>
+					<?php echo ( end( $section_keys ) !== $section->slug ) ? ' |' : ''; ?>
 				</li>
 			<?php endforeach; ?>
 		</ul>

@@ -24,15 +24,15 @@ class EVF_Admin_Addons {
 		if ( false === $addon_sections ) {
 			$raw_sections = wp_safe_remote_get( 'https://raw.githubusercontent.com/wpeverest/extensions-json/master/everest-forms/addon-sections.json' );
 			if ( ! is_wp_error( $raw_sections ) ) {
-				$sections = json_decode( wp_remote_retrieve_body( $raw_sections ) );
+				$addon_sections = json_decode( wp_remote_retrieve_body( $raw_sections ) );
 
-				if ( $sections ) {
-					set_transient( 'evf_extensions_sections', $sections, WEEK_IN_SECONDS );
+				if ( $addon_sections ) {
+					set_transient( 'evf_addons_sections', $addon_sections, WEEK_IN_SECONDS );
 				}
 			}
 		}
 
-		return apply_filters( 'everest_forms_extensions_sections', $sections );
+		return apply_filters( 'everest_forms_extensions_sections', $addon_sections );
 	}
 
 	/**
@@ -89,7 +89,7 @@ class EVF_Admin_Addons {
 				'evf-addons-nonce'   => wp_create_nonce( 'refresh' ),
 			), admin_url( 'admin.php' )
 		);
-		$section_keys     = array_keys( $sections );
+		$section_keys    = wp_list_pluck( $sections, 'slug' );
 		$current_section = isset( $_GET['section'] ) ? sanitize_text_field( $_GET['section'] ) : current( $section_keys );
 
 		/**
@@ -98,7 +98,7 @@ class EVF_Admin_Addons {
 		 * @uses $addons
 		 * @uses $sections
 		 * @uses $refresh_url
-		 * @uses $section_key
+		 * @uses $section_keys
 		 * @uses $current_section
 		 */
 		include_once dirname( __FILE__ ) . '/views/html-admin-page-addons.php';

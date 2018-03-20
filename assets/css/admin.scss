@@ -50,12 +50,4 @@
 	ul.subsubsub {
 		margin: 8px 0;
 	}
-
-	.subsubsub li::after {
-		content: '|';
-	}
-
-	.subsubsub li:last-child::after {
-		content: '';
-	}
 }
