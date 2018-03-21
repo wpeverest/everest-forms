@@ -23,6 +23,7 @@ class EVF_Admin_Addons {
 
 		if ( false === $addon_sections ) {
 			$raw_sections = wp_safe_remote_get( 'https://raw.githubusercontent.com/wpeverest/extensions-json/master/everest-forms/addon-sections.json' );
+
 			if ( ! is_wp_error( $raw_sections ) ) {
 				$addon_sections = json_decode( wp_remote_retrieve_body( $raw_sections ) );
 
@@ -36,44 +37,28 @@ class EVF_Admin_Addons {
 	}
 
 	/**
-	 * Get section for the extensions screen.
-	 *
-	 * @param  string $section_id
-	 * @return object|bool
-	 */
-	public static function get_section( $section_id ) {
-		$sections = self::get_sections();
-		if ( isset( $sections[ $section_id ] ) ) {
-			return $sections[ $section_id ];
-		}
-		return false;
-	}
-
-	/**
 	 * Get section content for the extensions screen.
 	 *
-	 * @param  string $section_id
+	 * @param  string $category
+	 * @param  string $term
 	 * @return array
 	 */
-	public static function get_section_data( $section_id ) {
-		$section      = self::get_section( $section_id );
-		$section_data = '';
+	public static function get_extension_data( $category ) {
+		$extension_data = get_transient( 'evf_extensions_section_' . $category );
 
-		if ( ! empty( $section->endpoint ) ) {
-			if ( false === ( $section_data = get_transient( 'evf_extensions_section_' . $section_id ) ) ) {
-				$raw_section = wp_safe_remote_get( esc_url_raw( $section->endpoint ), array( 'user-agent' => 'RestaurantPress Extensions Page' ) );
+		if ( false === $extension_data ) {
+			$raw_extensions = wp_safe_remote_get( 'https://raw.githubusercontent.com/wpeverest/extensions-json/master/everest-forms/sections/all_extensions.json' );
 
-				if ( ! is_wp_error( $raw_section ) ) {
-					$section_data = json_decode( wp_remote_retrieve_body( $raw_section ) );
+			if ( ! is_wp_error( $raw_extensions ) ) {
+				$extension_data = json_decode( wp_remote_retrieve_body( $raw_extensions ) );
 
-					if ( ! empty( $section_data->products ) ) {
-						set_transient( 'evf_extensions_section_' . $section_id, $section_data, WEEK_IN_SECONDS );
-					}
+				if ( ! empty( $extension_data->products ) ) {
+					set_transient( 'evf_extensions_section_' . $category, $extension_data, WEEK_IN_SECONDS );
 				}
 			}
 		}
 
-		return apply_filters( 'everest_forms_extensions_section_data', $section_data->products, $section_id );
+		return apply_filters( 'everest_forms_extensions_section_data', $extension_data->products, $category );
 	}
 
 	/**
@@ -94,8 +79,7 @@ class EVF_Admin_Addons {
 
 		if ( '_featured' !== $current_section ) {
 			$category = isset( $_GET['section'] ) ? $_GET['section'] : null;
-			$term     = isset( $_GET['search'] ) ? $_GET['search'] : null;
-			// $addons   = self::get_extension_data( $category, $term );
+			$addons   = self::get_extension_data( $category );
 		}
 
 		/**

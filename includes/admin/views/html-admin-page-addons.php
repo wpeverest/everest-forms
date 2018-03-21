@@ -43,13 +43,18 @@ defined( 'ABSPATH' ) || exit;
 			<input type="text" name="search" value="<?php echo esc_attr( isset( $_GET['search'] ) ? $_GET['search'] : '' ); ?>" placeholder="<?php _e( 'Enter a search term and press enter', 'everest-forms' ); ?>">
 		</form>
 		<?php if ( '_featured' !== $current_section && $addons ) : ?>
-			<ul class="products">
+			<div class="addons-list">
 			<?php foreach ( $addons as $addon ) : ?>
-				<li class="product">
-
-				</li>
+				<div class="addon-container">
+					<div class="details">
+						<img src="<?php echo esc_url( $addon->image ); ?>">
+						<h5 class="addon-name"><?php echo esc_html( $addon->title ); ?></h5>
+						<p class="addon-desc"><?php echo esc_html( $addon->excerpt ); ?></p>
+					</div>
+					<div class="actions"></div>
+				</div>
 			<?php endforeach; ?>
-			</ul>
+			</div>
 		<?php endif; ?>
 	<?php else : ?>
 		<p><?php printf( __( 'Our catalog of Everest Forms Add-ons/Extensions can be found on WPEverest.com here: <a href="%s">Everest Forms Extensions Catalog</a>', 'everest-forms' ), 'https://wpeverest.com/wordpress-plugins/everest-forms/' ); ?></p>
