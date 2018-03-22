@@ -35,7 +35,7 @@ defined( 'ABSPATH' ) || exit;
 			<h2 class="search-form-title" ><?php printf( esc_html__( 'Showing search results for: %s', 'everest-forms' ), '<strong>' . esc_html( $_GET['search'] ) . '</strong>' ); ?></h2>
 		<?php endif; ?>
 
-		<form class="search-form hidden" method="GET">
+		<form class="search-form" method="GET">
 			<button type="submit">
 				<span class="dashicons dashicons-search"></span>
 			</button>
