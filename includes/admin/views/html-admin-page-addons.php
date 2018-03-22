@@ -51,7 +51,7 @@ defined( 'ABSPATH' ) || exit;
 					<div class="addon-item">
 						<div class="details">
 							<img src="<?php echo esc_url( $addon->image ); ?>">
-							<h5 class="addon-name"><?php echo esc_html( $addon->title ); ?></h5>
+							<h3 class="addon-name"><?php echo esc_html( $addon->title ); ?></h3>
 							<p class="addon-desc"><?php echo esc_html( $addon->excerpt ); ?></p>
 						</div>
 						<div class="actions">
