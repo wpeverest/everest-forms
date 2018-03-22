@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
 	<?php endif; ?>
 
 	<hr class="wp-header-end">
-	<h2 class="screen-reader-text"><?php esc_html_e( 'Filter Everest Forms Extensions', 'everest-forms' ); ?></h1>
+	<h2 class="screen-reader-text"><?php esc_html_e( 'Filter add-ons list', 'everest-forms' ); ?></h1>
 
 	<?php if ( $sections ) : ?>
 		<ul class="subsubsub">
@@ -45,27 +45,35 @@ defined( 'ABSPATH' ) || exit;
 			<input type="text" name="search" value="<?php echo esc_attr( isset( $_GET['search'] ) ? $_GET['search'] : '' ); ?>" placeholder="<?php _e( 'Enter a search term and press enter', 'everest-forms' ); ?>">
 		</form>
 		<?php if ( '_featured' !== $current_section && $addons ) : ?>
-			<div class="addons-container">
-			<?php foreach ( $addons as $addon ) : ?>
-				<div class="addon-container">
-					<div class="addon-item">
-						<div class="details">
-							<img src="<?php echo esc_url( $addon->image ); ?>">
-							<h3 class="addon-name"><?php echo esc_html( $addon->title ); ?></h3>
-							<p class="addon-desc"><?php echo esc_html( $addon->excerpt ); ?></p>
-						</div>
-						<div class="actions">
-							<div class="status">
-								<strong>Status:</strong>
-								<span class="status-label status-download">Not Installed</span>
+			<div class="addons-container widefat">
+				<h2 class="screen-reader-text"><?php esc_html_e( 'Add-ons list', 'everest-forms' ); ?></h1>
+
+				<div class="the-list">
+					<?php foreach ( $addons as $addon ) : ?>
+						<div class="plugin-card plugin-card-<?php echo esc_attr( $addon->slug ); ?>">
+							<div class="addon-card-top">
+								<div class="name column-name">
+									<h3 class="addon-name">
+										<?php echo esc_html( $addon->title ); ?>
+										<img src="<?php echo esc_url( $addon->image ); ?>" class="addon-icon" />
+									</h3>
+								</div>
+								<div class="desc column-description">
+									<p class="addon-desc"><?php echo esc_html( $addon->excerpt ); ?></p>
+								</div>
 							</div>
-							<div class="action-button">
-								<button class="button button-secondary install-now">Install Addon</button>
+							<div class="addon-card-bottom">
+								<div class="status column-status">
+									<strong>Status:</strong>
+									<span class="status-label status-download">Not Installed</span>
+								</div>
+								<div class="action-buttons">
+									<button class="button button-secondary install-now">Install Addon</button>
+								</div>
 							</div>
 						</div>
-					</div>
+					<?php endforeach; ?>
 				</div>
-			<?php endforeach; ?>
 			</div>
 		<?php endif; ?>
 	<?php else : ?>

@@ -16,9 +16,6 @@
 }
 
 .evf_addons_wrap {
-	* {
-		box-sizing: border-box;
-	}
 
 	ul.subsubsub {
 		margin: 8px 0;
@@ -59,71 +56,53 @@
 		}
 	}
 
-	.addons-container {
-		margin-left: -20px;
-		margin-right: -20px;
+	.plugin-card {
+		.name,
+		.desc {
+			margin-left: 148px;
+			margin-right: 0;
+		}
+		.addon-card-top {
+			padding: 20px;
+			min-height: 135px;
+			position: relative;
+		}
+		.addon-card-bottom {
+			clear: both;
+			padding: 12px 20px;
+			background-color: #fafafa;
+			border-top: 1px solid #ddd;
+			overflow: hidden;
 
-		.addon-container {
-			float: left;
-			padding: 0 20px;
-			width: 33.333333%;
+			.status {
+				float: left;
+				padding-top: 5px;
 
-			.addon-item {
-				background-color: #fff;
-				border: 1px solid #ddd;
-				border-radius: 3px;
-				margin: 0 0 40px 0;
-
-				.details {
-					height: 164px;
-					min-height: 164px;
-					padding: 30px 20px;
-
-					img {
-						float: left;
-						max-width: 75px;
-						border: 1px solid #eee;
-					}
-
-					h3 {
-						font-size: 16px;
-						margin: 0 0 10px 100px;
-					}
-
-					p {
-						margin: 0 0 0 100px;
-					}
+				.status-active {
+					color: #2a9b39;
 				}
 
-				.actions {
-					background-color: #f7f7f7;
-					border-top: 1px solid #ddd;
-					padding: 20px;
-					position: relative;
-					@include clearfix();
+				.status-inactive {
+					color: #a00;
+				}
 
-					.status {
-						float: left;
-						padding-top: 5px;
-
-						.status-active {
-							color: #2a9b39;
-						}
-
-						.status-inactive {
-							color: #a00;
-						}
-
-						.status-download {
-							color: #666;
-						}
-					}
-
-					.action-button {
-						float: right;
-					}
+				.status-download {
+					color: #666;
 				}
 			}
+
+			.action-buttons {
+				float: right;
+			}
+		}
+		.addon-icon {
+			position: absolute;
+			top: 20px;
+			left: 20px;
+			width: 128px;
+			height: 128px;
+			margin: 0 20px 20px 0;
+			border: 1px solid #eee;
 		}
 	}
 }
