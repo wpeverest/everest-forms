@@ -4,6 +4,11 @@
  */
 
 /**
+ * Imports
+ */
+@import 'mixins';
+
+/**
  * Styling begins
  */
 .clear {
@@ -11,6 +16,9 @@
 }
 
 .evf_addons_wrap {
+	* {
+		box-sizing: border-box;
+	}
 
 	ul.subsubsub {
 		margin: 8px 0;
@@ -48,6 +56,74 @@
 			height: 53px;
 			position: absolute;
 			width: 53px;
+		}
+	}
+
+	.addons-container {
+		margin-left: -20px;
+		margin-right: -20px;
+
+		.addon-container {
+			float: left;
+			padding: 0 20px;
+			width: 33.333333%;
+
+			.addon-item {
+				background-color: #fff;
+				border: 1px solid #ddd;
+				border-radius: 3px;
+				margin: 0 0 40px 0;
+
+				.details {
+					height: 164px;
+					min-height: 164px;
+					padding: 30px 20px;
+
+					img {
+						float: left;
+						max-width: 75px;
+						border: 1px solid #eee;
+					}
+
+					h5 {
+						font-size: 16px;
+						margin: 0 0 10px 100px;
+					}
+
+					p {
+						margin: 0 0 0 100px;
+					}
+				}
+
+				.actions {
+					background-color: #f7f7f7;
+					border-top: 1px solid #ddd;
+					padding: 20px;
+					position: relative;
+					@include clearfix();
+
+					.status {
+						float: left;
+						padding-top: 5px;
+
+						.status-active {
+							color: #2a9b39;
+						}
+
+						.status-inactive {
+							color: #a00;
+						}
+
+						.status-download {
+							color: #666;
+						}
+					}
+
+					.action-button {
+						float: right;
+					}
+				}
+			}
 		}
 	}
 }
