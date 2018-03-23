@@ -36,7 +36,7 @@ class EVF_Admin_Assets {
 		$screen_id = $screen ? $screen->id : '';
 
 		// Register admin styles.
-		wp_register_style( 'everest-forms-admin', EVF()->plugin_url() . '/assets/css/admin.css', array( 'list-tables' ), EVF_VERSION );
+		wp_register_style( 'everest-forms-admin', EVF()->plugin_url() . '/assets/css/admin.css', array(), EVF_VERSION );
 		// wp_register_style( 'everest-forms-admin-menu', EVF()->plugin_url() . '/assets/css/menu.css', array(), EVF_VERSION );
 		wp_register_style( 'jquery-ui-style', EVF()->plugin_url() . '/assets/css/jquery-ui.min.css', array(), EVF_VERSION );
 		wp_register_style( 'evf_add_form_css', EVF()->plugin_url() . '/assets/css/evf-add-form.css', array(), EVF_VERSION );

@@ -59,24 +59,33 @@
 	.plugin-card {
 		.name,
 		.desc {
-			margin-left: 148px;
 			margin-right: 0;
 		}
-		.addon-card-top {
+		.plugin-card-top {
 			padding: 20px;
-			min-height: 135px;
-			position: relative;
+			min-height: 130px;
+
+			.plugin-desc {
+				overflow: hidden;
+				display: -webkit-box;
+				-webkit-line-clamp: 4;
+				-webkit-box-orient: vertical;
+			}
+
+			.plugin-icon {
+				border: 1px solid #eee;
+			}
 		}
-		.addon-card-bottom {
-			clear: both;
-			padding: 12px 20px;
-			background-color: #fafafa;
-			border-top: 1px solid #ddd;
-			overflow: hidden;
+		.plugin-card-bottom {
+			padding: 17px 20px;
 
 			.status {
 				float: left;
 				padding-top: 5px;
+
+				.install-now {
+					color: #666;
+				}
 
 				.status-active {
 					color: #2a9b39;
@@ -85,24 +94,11 @@
 				.status-inactive {
 					color: #a00;
 				}
-
-				.status-download {
-					color: #666;
-				}
 			}
 
 			.action-buttons {
 				float: right;
 			}
-		}
-		.addon-icon {
-			position: absolute;
-			top: 20px;
-			left: 20px;
-			width: 128px;
-			height: 128px;
-			margin: 0 20px 20px 0;
-			border: 1px solid #eee;
 		}
 	}
 }
