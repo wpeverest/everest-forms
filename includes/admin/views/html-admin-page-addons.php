@@ -76,9 +76,25 @@ defined( 'ABSPATH' ) || exit;
 									</div>
 									<div class="action-buttons">
 										<?php if ( is_plugin_active( $addon->slug . '/' . $addon->slug . '.php' ) ) : ?>
-											<a class="button button-secondary deactivate-now" href=""><?php esc_html_e( 'Deativate', 'everest-forms' ); ?></a>
+											<?php
+												$plugin_file = $addon->slug . '/' . $addon->slug . '.php';
+												$url = wp_nonce_url( add_query_arg( array(
+													'page'   => 'evf-addons',
+													'action' => 'deactivate',
+													'plugin' => $plugin_file,
+												), admin_url( 'admin.php' ) ), 'deactivate-plugin_' . $plugin_file );
+											?>
+											<a class="button button-secondary deactivate-now" href="<?php echo esc_url( $url ); ?>" aria-label="<?php esc_attr_e( sprintf( __( 'Deactivate %s now', 'everest-forms' ), $addon->title ) ); ?>"><?php esc_html_e( 'Deactivate', 'everest-forms' ); ?></a>
 										<?php elseif ( file_exists( WP_PLUGIN_DIR . '/' . $addon->slug . '/' . $addon->slug . '.php' ) ): ?>
-											<a class="button button-primary activate-now" href=""><?php esc_html_e( 'Activate', 'everest-forms' ); ?></a>
+											<?php
+												$plugin_file = $addon->slug . '/' . $addon->slug . '.php';
+												$url = wp_nonce_url( add_query_arg( array(
+													'page'   => 'evf-addons',
+													'action' => 'activate',
+													'plugin' => $plugin_file,
+												), admin_url( 'admin.php' ) ), 'activate-plugin_' . $plugin_file );
+											?>
+											<a class="button button-primary activate-now" href="<?php echo esc_url( $url ); ?>" aria-label="<?php esc_attr_e( sprintf( __( 'Activate %s now', 'everest-forms' ), $addon->title ) ); ?>"><?php esc_html_e( 'Activate', 'everest-forms' ); ?></a>
 										<?php else: ?>
 											<button class="button button-secondary install-now"><?php esc_html_e( 'Install Addon', 'everest-forms'); ?></button>
 										<?php endif; ?>
