@@ -1208,3 +1208,29 @@ function get_form_data_by_meta_key( $form_id, $meta_key ) {
 		}
 	}
 }
+
+/**
+ * Get a PRO license plan.
+ *
+ * @access private
+ * @return bool|string Plan on success, false on failure.
+ */
+function _evf_get_license_plan( $license_key ) {
+	if ( $license_key && is_plugin_active( 'everest-forms-pro/everest-forms-pro.php' ) ) {
+		$license_data = get_transient( 'evf_pro_license_plan' );
+
+		if ( false === $license_data ) {
+			$license_data = json_decode( EVF_Updater_Key_API::check( array(
+				'license' => $license_key,
+			) ) );
+
+			if ( ! empty( $license_data->item_plan ) ) {
+				set_transient( 'evf_pro_license_plan', $license_data, WEEK_IN_SECONDS );
+			}
+		}
+
+		return $license_data->item_plan;
+	}
+
+	return false;
+}

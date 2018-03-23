@@ -10,10 +10,6 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$action_links = array(
-	'shiv' => '<button class="button button-secondary install-now">Install Addon</button>'
-);
-
 ?>
 <div class="wrap everest-forms evf_addons_wrap">
 	<h1 class="wp-heading-inline"><?php esc_html_e( 'Everest Forms Add-ons', 'everest-forms' ); ?></h1>
@@ -67,17 +63,25 @@ $action_links = array(
 								</div>
 							</div>
 							<div class="plugin-card-bottom">
-								<div class="status column-status">
-									<strong><?php esc_html_e( 'Status:', 'everest-forms' ); ?></strong>
-									<?php if ( is_plugin_active( $addon->slug . '/' . $addon->slug . '.php' ) ) : ?>
-										<span class="status-label status-active"><?php esc_html_e( 'Active', 'everest-forms' ); ?></span>
-									<?php else: ?>
-										<span class="status-label install-now"><?php esc_html_e( 'Not Installed', 'everest-forms' ); ?></span>
-									<?php endif; ?>
-								</div>
-								<div class="action-buttons">
-									<button class="button button-secondary install-now">Install Addon</button>
-								</div>
+								<?php if ( $license_plan ) : ?>
+									<div class="status column-status">
+										<strong><?php esc_html_e( 'Status:', 'everest-forms' ); ?></strong>
+										<?php if ( is_plugin_active( $addon->slug . '/' . $addon->slug . '.php' ) ) : ?>
+											<span class="status-label status-active"><?php esc_html_e( 'Active', 'everest-forms' ); ?></span>
+										<?php elseif ( file_exists( WP_PLUGIN_DIR . '/' . $addon->slug . '/' . $addon->slug . '.php' ) ): ?>
+											<span class="status-label status-inactive"><?php esc_html_e( 'Inactive', 'everest-forms' ); ?></span>
+										<?php else: ?>
+											<span class="status-label install-now"><?php esc_html_e( 'Not Installed', 'everest-forms' ); ?></span>
+										<?php endif; ?>
+									</div>
+									<div class="action-buttons">
+										<button class="button button-secondary install-now">Install Addon</button>
+									</div>
+								<?php else: ?>
+									<div class="action-buttons upgrade-plan">
+										<a class="button button-hero upgrade-now" href="https://wpeverest.com/upgrade-plan"><?php esc_html_e( 'Upgrade Plan', 'everest-forms' ); ?></a>
+									</div>
+								<?php endif; ?>
 							</div>
 						</div>
 					<?php endforeach; ?>

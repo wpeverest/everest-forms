@@ -74,7 +74,8 @@ class EVF_Admin_Addons {
 				'evf-addons-nonce'   => wp_create_nonce( 'refresh' ),
 			), admin_url( 'admin.php' )
 		);
-		$action_links    = array();
+		$license_key     = get_option( 'everest-forms-pro_license_key' );
+		$license_plan    = _evf_get_license_plan( $license_key );
 		$section_keys    = wp_list_pluck( $sections, 'slug' );
 		$current_section = isset( $_GET['section'] ) ? sanitize_text_field( $_GET['section'] ) : current( $section_keys );
 

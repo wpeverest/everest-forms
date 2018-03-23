@@ -95,6 +95,10 @@
 				float: right;
 				clear: right;
 				max-width: 180px;
+
+				&.upgrade-plan {
+					margin: 0 auto;
+				}
 			}
 		}
 	}
