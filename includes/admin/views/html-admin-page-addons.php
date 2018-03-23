@@ -75,7 +75,13 @@ defined( 'ABSPATH' ) || exit;
 										<?php endif; ?>
 									</div>
 									<div class="action-buttons">
-										<button class="button button-secondary install-now">Install Addon</button>
+										<?php if ( is_plugin_active( $addon->slug . '/' . $addon->slug . '.php' ) ) : ?>
+											<a class="button button-secondary deactivate-now" href=""><?php esc_html_e( 'Deativate', 'everest-forms' ); ?></a>
+										<?php elseif ( file_exists( WP_PLUGIN_DIR . '/' . $addon->slug . '/' . $addon->slug . '.php' ) ): ?>
+											<a class="button button-primary activate-now" href=""><?php esc_html_e( 'Activate', 'everest-forms' ); ?></a>
+										<?php else: ?>
+											<button class="button button-secondary install-now"><?php esc_html_e( 'Install Addon', 'everest-forms'); ?></button>
+										<?php endif; ?>
 									</div>
 								<?php else: ?>
 									<div class="action-buttons upgrade-plan">
