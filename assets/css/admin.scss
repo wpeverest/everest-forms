@@ -81,11 +81,11 @@
 				span.status-label {
 					color: #666;
 
-					.status-active {
+					&.status-active {
 						color: #2a9b39;
 					}
 
-					.status-inactive {
+					&.status-inactive {
 						color: #a00;
 					}
 				}

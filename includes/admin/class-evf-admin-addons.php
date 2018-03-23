@@ -74,6 +74,7 @@ class EVF_Admin_Addons {
 				'evf-addons-nonce'   => wp_create_nonce( 'refresh' ),
 			), admin_url( 'admin.php' )
 		);
+		$action_links    = array();
 		$section_keys    = wp_list_pluck( $sections, 'slug' );
 		$current_section = isset( $_GET['section'] ) ? sanitize_text_field( $_GET['section'] ) : current( $section_keys );
 

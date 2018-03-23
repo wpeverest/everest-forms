@@ -10,6 +10,10 @@
 
 defined( 'ABSPATH' ) || exit;
 
+$action_links = array(
+	'shiv' => '<button class="button button-secondary install-now">Install Addon</button>'
+);
+
 ?>
 <div class="wrap everest-forms evf_addons_wrap">
 	<h1 class="wp-heading-inline"><?php esc_html_e( 'Everest Forms Add-ons', 'everest-forms' ); ?></h1>
@@ -55,7 +59,7 @@ defined( 'ABSPATH' ) || exit;
 								<div class="name column-name">
 									<h3 class="plugin-name">
 										<?php echo esc_html( $addon->title ); ?>
-										<img src="<?php echo esc_url( $addon->image ); ?>" class="plugin-icon" />
+										<img src="<?php echo esc_url( $addon->image ); ?>" class="plugin-icon" alt="" />
 									</h3>
 								</div>
 								<div class="desc column-description">
@@ -65,7 +69,11 @@ defined( 'ABSPATH' ) || exit;
 							<div class="plugin-card-bottom">
 								<div class="status column-status">
 									<strong><?php esc_html_e( 'Status:', 'everest-forms' ); ?></strong>
-									<span class="status-label install-now"><?php esc_html_e( 'Not Installed', 'everest-forms' ); ?></span>
+									<?php if ( is_plugin_active( $addon->slug . '/' . $addon->slug . '.php' ) ) : ?>
+										<span class="status-label status-active"><?php esc_html_e( 'Active', 'everest-forms' ); ?></span>
+									<?php else: ?>
+										<span class="status-label install-now"><?php esc_html_e( 'Not Installed', 'everest-forms' ); ?></span>
+									<?php endif; ?>
 								</div>
 								<div class="action-buttons">
 									<button class="button button-secondary install-now">Install Addon</button>
