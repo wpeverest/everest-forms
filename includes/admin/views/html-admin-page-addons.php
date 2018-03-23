@@ -64,8 +64,8 @@ defined( 'ABSPATH' ) || exit;
 							</div>
 							<div class="plugin-card-bottom">
 								<div class="status column-status">
-									<strong>Status:</strong>
-									<span class="status-label status-download">Not Installed</span>
+									<strong><?php esc_html_e( 'Status:', 'everest-forms' ); ?></strong>
+									<span class="status-label install-now"><?php esc_html_e( 'Not Installed', 'everest-forms' ); ?></span>
 								</div>
 								<div class="action-buttons">
 									<button class="button button-secondary install-now">Install Addon</button>

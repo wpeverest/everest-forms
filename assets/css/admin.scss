@@ -4,17 +4,8 @@
  */
 
 /**
- * Imports
- */
-@import 'mixins';
-
-/**
  * Styling begins
  */
-.clear {
-	clear: both;
-}
-
 .evf_addons_wrap {
 
 	ul.subsubsub {
@@ -80,24 +71,30 @@
 			padding: 17px 20px;
 
 			.status {
+				text-align: left;
 				float: left;
+				clear: left;
+				width: 65%;
 				padding-top: 5px;
+				width: calc(100% - 180px);
 
-				.install-now {
+				span.status-label {
 					color: #666;
-				}
 
-				.status-active {
-					color: #2a9b39;
-				}
+					.status-active {
+						color: #2a9b39;
+					}
 
-				.status-inactive {
-					color: #a00;
+					.status-inactive {
+						color: #a00;
+					}
 				}
 			}
 
 			.action-buttons {
 				float: right;
+				clear: right;
+				max-width: 180px;
 			}
 		}
 	}
