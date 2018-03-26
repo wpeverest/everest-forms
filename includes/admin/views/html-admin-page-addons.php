@@ -77,8 +77,8 @@ defined( 'ABSPATH' ) || exit;
 									<div class="action-buttons">
 										<?php if ( is_plugin_active( $addon->slug . '/' . $addon->slug . '.php' ) ) : ?>
 											<?php
-												$plugin_file = $addon->slug . '/' . $addon->slug . '.php';
-												$url = wp_nonce_url( add_query_arg( array(
+												$plugin_file = plugin_basename( $addon->slug . '/' . $addon->slug . '.php' );
+												$url         = wp_nonce_url( add_query_arg( array(
 													'page'   => 'evf-addons',
 													'action' => 'deactivate',
 													'plugin' => $plugin_file,
@@ -87,8 +87,8 @@ defined( 'ABSPATH' ) || exit;
 											<a class="button button-secondary deactivate-now" href="<?php echo esc_url( $url ); ?>" aria-label="<?php esc_attr_e( sprintf( __( 'Deactivate %s now', 'everest-forms' ), $addon->title ) ); ?>"><?php esc_html_e( 'Deactivate', 'everest-forms' ); ?></a>
 										<?php elseif ( file_exists( WP_PLUGIN_DIR . '/' . $addon->slug . '/' . $addon->slug . '.php' ) ): ?>
 											<?php
-												$plugin_file = $addon->slug . '/' . $addon->slug . '.php';
-												$url = wp_nonce_url( add_query_arg( array(
+												$plugin_file = plugin_basename( $addon->slug . '/' . $addon->slug . '.php' );
+												$url         = wp_nonce_url( add_query_arg( array(
 													'page'   => 'evf-addons',
 													'action' => 'activate',
 													'plugin' => $plugin_file,
@@ -96,7 +96,14 @@ defined( 'ABSPATH' ) || exit;
 											?>
 											<a class="button button-primary activate-now" href="<?php echo esc_url( $url ); ?>" aria-label="<?php esc_attr_e( sprintf( __( 'Activate %s now', 'everest-forms' ), $addon->title ) ); ?>"><?php esc_html_e( 'Activate', 'everest-forms' ); ?></a>
 										<?php else: ?>
-											<button class="button button-secondary install-now"><?php esc_html_e( 'Install Addon', 'everest-forms'); ?></button>
+											<?php
+												$download_link = evf_get_addon_download_link( $addon->name );
+												$url           = wp_nonce_url( add_query_arg( array(
+													'action' => 'install-plugin',
+													'plugin' => $addon->slug,
+												), admin_url( 'update.php' ) ), 'install-plugin_' . $addon->slug );
+											?>
+											<a class="button button-secondary install-now" data-slug="<?php echo esc_url( $addon->slug ); ?>" href="<?php echo esc_url( $url ); ?>" aria-label="<?php esc_attr_e( sprintf( __( 'Install %s now', 'everest-forms' ), $addon->title ) ); ?>" data-plugin="<?php echo esc_url( $download_link ); ?>"><?php esc_html_e( 'Install Addon', 'everest-forms'); ?></a>
 										<?php endif; ?>
 									</div>
 								<?php else: ?>
