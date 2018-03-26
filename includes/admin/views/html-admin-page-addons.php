@@ -63,7 +63,7 @@ defined( 'ABSPATH' ) || exit;
 								</div>
 							</div>
 							<div class="plugin-card-bottom">
-								<?php if ( $license_plan ) : ?>
+								<?php if ( in_array( $license_plan, $addon->plan, true ) ) : ?>
 									<div class="status column-status">
 										<strong><?php esc_html_e( 'Status:', 'everest-forms' ); ?></strong>
 										<?php if ( is_plugin_active( $addon->slug . '/' . $addon->slug . '.php' ) ) : ?>
@@ -101,7 +101,7 @@ defined( 'ABSPATH' ) || exit;
 									</div>
 								<?php else: ?>
 									<div class="action-buttons upgrade-plan">
-										<a class="button button-hero upgrade-now" href="https://wpeverest.com/upgrade-plan"><?php esc_html_e( 'Upgrade Plan', 'everest-forms' ); ?></a>
+										<a class="button upgrade-now" href="https://wpeverest.com/upgrade-plan"><?php esc_html_e( 'Upgrade Plan', 'everest-forms' ); ?></a>
 									</div>
 								<?php endif; ?>
 							</div>
