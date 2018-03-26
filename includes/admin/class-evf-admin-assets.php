@@ -37,7 +37,6 @@ class EVF_Admin_Assets {
 
 		// Register admin styles.
 		wp_register_style( 'everest-forms-admin', EVF()->plugin_url() . '/assets/css/admin.css', array(), EVF_VERSION );
-		// wp_register_style( 'everest-forms-admin-menu', EVF()->plugin_url() . '/assets/css/menu.css', array(), EVF_VERSION );
 		wp_register_style( 'jquery-ui-style', EVF()->plugin_url() . '/assets/css/jquery-ui.min.css', array(), EVF_VERSION );
 		wp_register_style( 'evf_add_form_css', EVF()->plugin_url() . '/assets/css/evf-add-form.css', array(), EVF_VERSION );
 		wp_register_style( 'evf-admin-entries-style', EVF()->plugin_url() . '/assets/css/admin-entries.css', array(), EVF_VERSION );
@@ -45,10 +44,8 @@ class EVF_Admin_Assets {
 
 		// Add RTL support for admin styles.
 		wp_style_add_data( 'everest-forms-admin', 'rtl', 'replace' );
-		// wp_style_add_data( 'everest-forms-admin-menu', 'rtl', 'replace' );
 
 		// Sitewide menu styles.
-		// wp_enqueue_style( 'everest-forms-admin-menu' );
 		wp_enqueue_style( 'evf_add_form_css' );
 
 		// Admin styles for EVF pages only.

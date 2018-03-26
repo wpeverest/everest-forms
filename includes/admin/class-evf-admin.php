@@ -80,6 +80,7 @@ class EVF_Admin {
 	public function addon_actions() {
 		if ( isset( $_GET['page'], $_REQUEST['action'] ) && 'evf-addons' === $_GET['page'] ) {  // WPCS: input var okay, CSRF ok.
 			$action = sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ); // WPCS: input var okay, CSRF ok.
+			$plugin = isset( $_REQUEST['plugin'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['plugin'] ) ) : false; // WPCS: input var okay, CSRF ok.
 
 			if ( 'evf-addons-refresh' === $action ) {
 				if ( empty( $_GET['evf-addons-nonce'] ) || ! wp_verify_nonce( $_GET['evf-addons-nonce'], 'refresh' ) ) {
@@ -91,20 +92,69 @@ class EVF_Admin {
 				}
 			}
 
-			if ( in_array( $action, array( 'activate', 'deactivate' ), true ) ) {
-				$plugin = isset( $_REQUEST['plugin'] ) ? $_REQUEST['plugin'] : false;
+			if ( $plugin && in_array( $action, array( 'install', 'activate', 'deactivate' ), true ) ) {
+				if ( 'install' === $action ) {
+					if ( ! current_user_can( 'install_plugins' ) ) {
+						wp_die( esc_html__( 'Sorry, you are not allowed to install plugins for this site.', 'everest-forms' ) );
+					}
 
-				if ( $plugin && 'activate' === $action ) {
+					check_admin_referer( 'install-plugin_' . $plugin );
+
+					if ( ! empty( $_REQUEST['name'] ) ) {
+						require_once ABSPATH . 'wp-admin/includes/file.php';
+						require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+						require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+						require_once ABSPATH . 'wp-admin/includes/plugin.php';
+
+						WP_Filesystem();
+
+						$skin        = new Automatic_Upgrader_Skin();
+						$upgrader    = new WP_Upgrader( $skin );
+						$plugin_name = sanitize_text_field( wp_unslash( $_REQUEST['name'] ) ); // WPCS: input var okay, CSRF ok.
+
+						// Install this thing!
+						$package  = evf_get_addon_download_link( $plugin_name, $plugin, true );
+						$download = $upgrader->download_package( $package );
+
+						if ( is_wp_error( $download ) ) {
+							wp_die( esc_html__( 'Sorry, you are not allowed to download plugins for this site.', 'everest-forms' ) );
+						}
+
+						$working_dir = $upgrader->unpack_package( $download, true );
+
+						if ( is_wp_error( $working_dir ) ) {
+							wp_die( esc_html__( 'Sorry, you are not allowed to download plugins for this site.', 'everest-forms' ) );
+						}
+
+						$result = $upgrader->install_package(
+							array(
+								'source'                      => $working_dir,
+								'destination'                 => WP_PLUGIN_DIR,
+								'clear_destination'           => false,
+								'abort_if_destination_exists' => false,
+								'clear_working'               => true,
+								'hook_extra'                  => array(
+									'type'   => 'plugin',
+									'action' => 'install',
+								),
+							)
+						);
+
+						if ( is_wp_error( $result ) ) {
+							wp_die( esc_html__( 'Sorry, you are not allowed to download plugins for this site.', 'everest-forms' ) );
+						}
+					}
+				} elseif ( 'activate' === $action ) {
 					if ( ! current_user_can( 'activate_plugin', $plugin ) ) {
-						wp_die( esc_html_e( 'Sorry, you are not allowed to deactivate this plugin.', 'everest-forms' ) );
+						wp_die( esc_html__( 'Sorry, you are not allowed to activate this plugin.', 'everest-forms' ) );
 					}
 
 					check_admin_referer( 'activate-plugin_' . $plugin );
 
 					activate_plugin( $plugin );
-				} elseif ( $plugin && 'deactivate' === $action ) {
+				} elseif ( 'deactivate' === $action ) {
 					if ( ! current_user_can( 'deactivate_plugins' ) ) {
-						wp_die( esc_html_e( 'Sorry, you are not allowed to activate plugins for this site.', 'everest-forms' ) );
+						wp_die( esc_html__( 'Sorry, you are not allowed to deactivate plugins for this site.', 'everest-forms' ) );
 					}
 
 					check_admin_referer( 'deactivate-plugin_' . $plugin );
