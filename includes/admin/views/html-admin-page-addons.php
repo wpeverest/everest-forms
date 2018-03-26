@@ -74,7 +74,7 @@ defined( 'ABSPATH' ) || exit;
 										<?php elseif ( file_exists( WP_PLUGIN_DIR . '/' . $addon->slug . '/' . $addon->slug . '.php' ) ): ?>
 											<span class="status-label status-inactive"><?php esc_html_e( 'Inactive', 'everest-forms' ); ?></span>
 										<?php else: ?>
-											<span class="status-label install-now"><?php esc_html_e( 'Not Installed', 'everest-forms' ); ?></span>
+											<span class="status-label status-install-now"><?php esc_html_e( 'Not Installed', 'everest-forms' ); ?></span>
 										<?php endif; ?>
 									</div>
 									<div class="action-buttons">
@@ -108,7 +108,7 @@ defined( 'ABSPATH' ) || exit;
 													'plugin' => $addon->slug,
 												), admin_url( 'admin.php' ) ), 'install-plugin_' . $addon->slug );
 											?>
-											<a class="button button-secondary install-now" data-slug="<?php echo esc_url( $addon->slug ); ?>" href="<?php echo esc_url( $url ); ?>" aria-label="<?php esc_attr_e( sprintf( __( 'Install %s now', 'everest-forms' ), $addon->title ) ); ?>" data-plugin="<?php echo esc_url( $package ); ?>"><?php esc_html_e( 'Install Addon', 'everest-forms'); ?></a>
+											<a class="button button-secondary install-now" data-slug="<?php echo esc_attr( $addon->slug ); ?>" href="<?php echo esc_url( $url ); ?>" aria-label="<?php esc_attr_e( sprintf( __( 'Install %s now', 'everest-forms' ), $addon->title ) ); ?>" data-plugin="<?php echo esc_url( $package ); ?>" data-name="<?php echo esc_attr( $addon->name ); ?>"><?php esc_html_e( 'Install Addon', 'everest-forms'); ?></a>
 										<?php endif; ?>
 									</div>
 								<?php else: ?>
