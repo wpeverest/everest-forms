@@ -22,28 +22,31 @@ defined( 'ABSPATH' ) || exit;
 	<h2 class="screen-reader-text"><?php esc_html_e( 'Filter add-ons list', 'everest-forms' ); ?></h1>
 
 	<?php if ( $sections ) : ?>
-		<ul class="subsubsub">
-			<?php foreach ( $sections as $section ) : ?>
-				<li class="<?php echo esc_attr( $section->slug ); ?>">
-					<a href="<?php echo esc_url( admin_url( 'admin.php?page=evf-addons&section=' . esc_attr( $section->slug ) ) ); ?>"<?php echo $current_section === $section->slug ? ' class="current" aria-current="page"' : ''; ?>><?php echo esc_html( $section->label ); ?></a>
-					<?php echo ( end( $section_keys ) !== $section->slug ) ? ' |' : ''; ?>
-				</li>
-			<?php endforeach; ?>
-		</ul>
+		<div class="wp-filter">
+			<ul class="filter-links">
+				<?php foreach ( $sections as $section ) : ?>
+					<li class="<?php echo esc_attr( $section->slug ); ?>">
+						<a href="<?php echo esc_url( admin_url( 'admin.php?page=evf-addons&section=' . esc_attr( $section->slug ) ) ); ?>"<?php echo $current_section === $section->slug ? ' class="current" aria-current="page"' : ''; ?>><?php echo esc_html( $section->label ); ?></a>
+					</li>
+				<?php endforeach; ?>
+			</ul>
+			<form class="search-form search-plugins hidden" method="get">
+				<input type="hidden" name="page" value="evf-addons">
+				<?php $page_section = ( isset( $_GET['section'] ) && '_featured' !== $_GET['section'] ) ? $_GET['section'] : '_all'; ?>
+				<input type="hidden" name="section" value="<?php echo esc_attr( $page_section ); ?>">
+				<label>
+					<span class="screen-reader-text"><?php esc_html_e( 'Search Add-ons' ); ?></span>
+					<input type="search" name="s" value="" class="wp-filter-search hidden" placeholder="<?php esc_attr_e( 'Search Add-ons...' ); ?>" aria-describedby="live-search-desc">
+				</label>
+				<input type="submit" id="search-submit" class="button hide-if-js" value="<?php esc_attr_e( 'Search Add-ons' ); ?>">
+			</form>
+		</div>
 
-		<?php if ( ! empty( $_GET['search'] ) ) : ?>
-			<h2 class="search-form-title" ><?php printf( esc_html__( 'Showing search results for: %s', 'everest-forms' ), '<strong>' . esc_html( $_GET['search'] ) . '</strong>' ); ?></h2>
-		<?php endif; ?>
+		<br class="clear">
+		<p class="refresh">
+			<?php printf( esc_html__( 'Improve your forms with our premium add-ons. Missing an addon that you think you should be able to see? Click the %1$sRefresh Add-ons%2$s button above.', 'everest-forms' ), '<a href="' . esc_url( $refresh_url ) . '">', '</a>' ); ?>
+		</p>
 
-		<form class="search-form" method="GET">
-			<button type="submit">
-				<span class="dashicons dashicons-search"></span>
-			</button>
-			<input type="hidden" name="page" value="evf-addons">
-			<?php $page_section = ( isset( $_GET['section'] ) && '_featured' !== $_GET['section'] ) ? $_GET['section'] : '_all'; ?>
-			<input type="hidden" name="section" value="<?php echo esc_attr( $page_section ); ?>">
-			<input type="text" name="search" value="<?php echo esc_attr( isset( $_GET['search'] ) ? $_GET['search'] : '' ); ?>" placeholder="<?php _e( 'Enter a search term and press enter', 'everest-forms' ); ?>">
-		</form>
 		<?php if ( '_featured' !== $current_section && $addons ) : ?>
 			<div class="wp-list-table widefat plugin-install">
 				<h2 class="screen-reader-text"><?php esc_html_e( 'Add-ons list', 'everest-forms' ); ?></h1>

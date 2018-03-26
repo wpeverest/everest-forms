@@ -8,43 +8,8 @@
  */
 .evf_addons_wrap {
 
-	ul.subsubsub {
-		margin: 8px 0;
-	}
-
-	h2.search-form-title {
-		margin: 0;
-		padding: 0;
-		clear: left;
-		color: #555d66;
-		font-weight: 400;
-	}
-
-	form.search-form {
-		clear: both;
-		display: block;
-		position: relative;
-		margin-top: 1em;
-		margin-bottom: 1em;
-
-		input {
-			border: 1px solid #ddd;
-			box-shadow: none;
-			height: 53px;
-			padding-left: 50px;
-			width: 100%;
-			margin: 0;
-		}
-
-		button {
-			background: none;
-			border: none;
-			outline: none;
-			cursor: pointer;
-			height: 53px;
-			position: absolute;
-			width: 53px;
-		}
+	p.refresh {
+		margin: 0 0 2em;
 	}
 
 	.plugin-card {

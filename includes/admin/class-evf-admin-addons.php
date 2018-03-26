@@ -75,8 +75,7 @@ class EVF_Admin_Addons {
 			), admin_url( 'admin.php' )
 		);
 		$license_plan    = evf_get_license_plan();
-		$section_keys    = wp_list_pluck( $sections, 'slug' );
-		$current_section = isset( $_GET['section'] ) ? sanitize_text_field( $_GET['section'] ) : current( $section_keys );
+		$current_section = isset( $_GET['section'] ) ? sanitize_text_field( $_GET['section'] ) : '_all';
 
 		if ( '_featured' !== $current_section ) {
 			$category = isset( $_GET['section'] ) ? $_GET['section'] : null;
@@ -89,7 +88,6 @@ class EVF_Admin_Addons {
 		 * @uses $addons
 		 * @uses $sections
 		 * @uses $refresh_url
-		 * @uses $section_keys
 		 * @uses $current_section
 		 */
 		include_once dirname( __FILE__ ) . '/views/html-admin-page-addons.php';
