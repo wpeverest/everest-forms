@@ -19,7 +19,7 @@
 			$message = $card.find( '.install-now' );
 
 		args = _.extend( {
-			success: wp.updates.installExtensionSuccess,
+			success: wp.updates.installPluginSuccess,
 			error: wp.updates.installPluginError
 		}, args );
 
@@ -37,47 +37,9 @@
 		// Remove previous error messages, if any.
 		$card.removeClass( 'plugin-card-install-failed' ).find( '.notice.notice-error' ).remove();
 
-		$document.trigger( 'wp-plugin-installing', args );
+		$document.trigger( 'wp-extension-installing', args );
 
 		return wp.updates.ajax( 'everest_forms_install_extension', args );
-	};
-
-	/**
-	 * Updates the UI appropriately after a successful plugin install.
-	 *
-	 * @since 4.6.0
-	 *
-	 * @typedef {object} installPluginSuccess
-	 * @param {object} response             Response from the server.
-	 * @param {string} response.slug        Slug of the installed plugin.
-	 * @param {string} response.pluginName  Name of the installed plugin.
-	 * @param {string} response.activateUrl URL to activate the just installed plugin.
-	 */
-	wp.updates.installExtensionSuccess = function( response ) {
-		var $message = $( '.plugin-card-' + response.slug ).find( '.install-now' );
-		var $status  = $( '.plugin-card-' + response.slug ).find( '.status-label' );
-
-		$message
-			.removeClass( 'updating-message' )
-			.addClass( 'updated-message installed button-disabled' )
-			.attr( 'aria-label', wp.updates.l10n.pluginInstalledLabel.replace( '%s', response.pluginName ) )
-			.text( wp.updates.l10n.pluginInstalled );
-
-		wp.a11y.speak( wp.updates.l10n.installedMsg, 'polite' );
-
-		$document.trigger( 'wp-extension-install-success', response );
-
-		if ( response.activateUrl ) {
-			setTimeout( function() {
-				$status.removeClass( 'status-install-now' ).addClass( 'status-active' ).text( wp.updates.l10n.pluginInstalled );
-
-				// Transform the 'Install' button into an 'Activate' button.
-				$message.removeClass( 'install-now installed button-disabled updated-message' ).addClass( 'activate-now button-primary' )
-					.attr( 'href', response.activateUrl )
-					.attr( 'aria-label', wp.updates.l10n.activatePluginLabel.replace( '%s', response.pluginName ) )
-					.text( wp.updates.l10n.activatePlugin );
-			}, 1000 );
-		}
 	};
 
 	$( function() {
@@ -116,9 +78,18 @@
 				slug: $button.data( 'slug' ),
 				name: $button.data( 'name' ),
 				pagenow: pagenow,
-				success: wp.updates.installExtensionSuccess,
+				success: wp.updates.installPluginSuccess,
 				error:   wp.updates.installPluginError
 			} );
+		} );
+
+		// Change the status text label after install success.
+		$document.on( 'wp-plugin-install-success', function( event, response ) {
+			var $status  = $( '.plugin-card-' + response.slug ).find( '.status-label' );
+
+			if ( response.activateUrl ) {
+				$status.removeClass( 'status-install-now' ).addClass( 'status-active' ).text( wp.updates.l10n.pluginInstalled );
+			}
 		} );
 	} );
 })( jQuery, window.wp );
