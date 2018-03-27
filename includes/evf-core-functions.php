@@ -1237,37 +1237,6 @@ function evf_get_license_plan() {
 }
 
 /**
- * Get a add-on download link.
- *
- * @param  string $name Add-on name.
- * @param  string $slug Add-on slug.
- * @param  bool   $refresh Force refresh download link.
- * @return bool|string Download Link on success, false on failure.
- */
-function evf_get_addon_download_link( $name, $slug, $refresh = false ) {
-	$license_key = get_option( 'everest-forms-pro_license_key' );
-
-	if ( $license_key && is_plugin_active( 'everest-forms-pro/everest-forms-pro.php' ) ) {
-		$addon_data = get_transient( 'evf_pro_addon_download_link_' . $slug );
-
-		if ( $refresh || false === $addon_data ) {
-			$addon_data = json_decode( EVF_Updater_Key_API::version( array(
-				'license'   => $license_key,
-				'item_name' => $name,
-			) ) );
-
-			if ( ! empty( $addon_data->download_link ) ) {
-				set_transient( 'evf_pro_addon_download_link' . $slug, $addon_data, WEEK_IN_SECONDS );
-			}
-		}
-
-		return $addon_data->download_link;
-	}
-
-	return false;
-}
-
-/**
  * Ajax handler for installing a plugin.
  *
  * @since 4.6.0

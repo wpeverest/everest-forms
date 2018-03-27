@@ -99,16 +99,7 @@ defined( 'ABSPATH' ) || exit;
 											?>
 											<a class="button button-primary activate-now" href="<?php echo esc_url( $url ); ?>" aria-label="<?php esc_attr_e( sprintf( __( 'Activate %s now', 'everest-forms' ), $addon->title ) ); ?>"><?php esc_html_e( 'Activate', 'everest-forms' ); ?></a>
 										<?php else: ?>
-											<?php
-												$package = evf_get_addon_download_link( $addon->name, $addon->slug, true );
-												$url     = wp_nonce_url( add_query_arg( array(
-													'page'   => 'evf-addons',
-													'action' => 'install',
-													'name'   => $addon->name,
-													'plugin' => $addon->slug,
-												), admin_url( 'admin.php' ) ), 'install-plugin_' . $addon->slug );
-											?>
-											<a class="button button-secondary install-now" data-slug="<?php echo esc_attr( $addon->slug ); ?>" href="<?php echo esc_url( $url ); ?>" aria-label="<?php esc_attr_e( sprintf( __( 'Install %s now', 'everest-forms' ), $addon->title ) ); ?>" data-plugin="<?php echo esc_url( $package ); ?>" data-name="<?php echo esc_attr( $addon->name ); ?>"><?php esc_html_e( 'Install Addon', 'everest-forms'); ?></a>
+											<button class="button install-now" data-slug="<?php echo esc_attr( $addon->slug ); ?>" aria-label="<?php esc_attr_e( sprintf( __( 'Install %s now', 'everest-forms' ), $addon->title ) ); ?>" data-name="<?php echo esc_attr( $addon->name ); ?>"><?php esc_html_e( 'Install Addon', 'everest-forms'); ?></button>
 										<?php endif; ?>
 									</div>
 								<?php else: ?>
