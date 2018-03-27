@@ -48,7 +48,7 @@ defined( 'ABSPATH' ) || exit;
 		</p>
 
 		<?php if ( '_featured' !== $current_section && $addons ) : ?>
-			<div class="wp-list-table widefat plugin-install">
+			<div class="wp-list-table widefat extension-install">
 				<h2 class="screen-reader-text"><?php esc_html_e( 'Add-ons list', 'everest-forms' ); ?></h1>
 
 				<div class="the-list">
@@ -117,3 +117,6 @@ defined( 'ABSPATH' ) || exit;
 		<p><?php printf( __( 'Our catalog of Everest Forms Add-ons/Extensions can be found on WPEverest.com here: <a href="%s">Everest Forms Extensions Catalog</a>', 'everest-forms' ), 'https://wpeverest.com/wordpress-plugins/everest-forms/' ); ?></p>
 	<?php endif; ?>
 </div>
+<?php
+wp_print_request_filesystem_credentials_modal();
+wp_print_admin_notice_templates();

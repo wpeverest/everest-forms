@@ -76,7 +76,7 @@
 		 *
 		 * @param {Event} event Event interface.
 		 */
-		$document.on( 'click', '.plugin-install .install-now', function( event ) {
+		$document.on( 'click', '.extension-install .install-now', function( event ) {
 			var $button = $( event.target ),
 				pluginName = $( this ).data( 'name' );
 
@@ -95,7 +95,7 @@
 					$message
 						.removeClass( 'updating-message' )
 						.text( wp.updates.l10n.installNow )
-						.attr( 'aria-label', wp.updates.l10n.installNowLabel.replace( '%s', pluginName ) );
+						.attr( 'aria-label', wp.updates.l10n.pluginInstallNowLabel.replace( '%s', pluginName ) );
 
 					wp.a11y.speak( wp.updates.l10n.updateCancel, 'polite' );
 				} );
@@ -104,7 +104,6 @@
 			wp.updates.installExtension( {
 				slug: $button.data( 'slug' ),
 				name: $button.data( 'name' ),
-				pagenow: pagenow,
 				success: wp.updates.installPluginSuccess,
 				error:   wp.updates.installPluginError
 			} );
