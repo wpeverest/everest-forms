@@ -55,7 +55,7 @@
 	 */
 	wp.updates.installExtensionSuccess = function( response ) {
 		var $message = $( '.plugin-card-' + response.slug ).find( '.install-now' );
-		var $status  = $( '.plugin-card-' + response.slug ).find( '.status.column-status span' );
+		var $status  = $( '.plugin-card-' + response.slug ).find( '.status-label' );
 
 		$message
 			.removeClass( 'updating-message' )

@@ -33,7 +33,7 @@
 			}
 		}
 		.plugin-card-bottom {
-			padding: 17px 20px;
+			// padding: 17px 20px;
 
 			.status {
 				text-align: left;
@@ -64,6 +64,23 @@
 				&.upgrade-plan {
 					margin: 0 auto;
 				}
+			}
+		}
+
+		.notice-error p {
+			margin: 14px 0;
+		}
+
+		.notice-dismiss {
+			padding: 14px 9px;
+		}
+
+		@media screen and (max-width: 782px) {
+			.notice p {
+				margin: 13px 0;
+			}
+			.notice-dismiss {
+				padding: 20px 13px;
 			}
 		}
 	}
