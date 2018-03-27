@@ -234,7 +234,7 @@ class EVF_AJAX {
 			wp_send_json_error( array(
 				'slug'         => '',
 				'errorCode'    => 'no_plugin_specified',
-				'errorMessage' => __( 'No plugin specified.' ),
+				'errorMessage' => __( 'No plugin specified.', 'everest-forms' ),
 			) );
 		}
 

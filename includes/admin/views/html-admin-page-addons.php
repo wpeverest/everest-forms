@@ -35,10 +35,10 @@ defined( 'ABSPATH' ) || exit;
 				<?php $page_section = ( isset( $_GET['section'] ) && '_featured' !== $_GET['section'] ) ? $_GET['section'] : '_all'; ?>
 				<input type="hidden" name="section" value="<?php echo esc_attr( $page_section ); ?>">
 				<label>
-					<span class="screen-reader-text"><?php esc_html_e( 'Search Add-ons' ); ?></span>
-					<input type="search" name="s" value="" class="wp-filter-search hidden" placeholder="<?php esc_attr_e( 'Search Add-ons...' ); ?>" aria-describedby="live-search-desc">
+					<span class="screen-reader-text"><?php esc_html_e( 'Search Add-ons', 'everest-forms' ); ?></span>
+					<input type="search" name="s" value="" class="wp-filter-search hidden" placeholder="<?php esc_attr_e( 'Search Add-ons...', 'everest-forms' ); ?>" aria-describedby="live-search-desc" />
 				</label>
-				<input type="submit" id="search-submit" class="button hide-if-js" value="<?php esc_attr_e( 'Search Add-ons' ); ?>">
+				<input type="submit" id="search-submit" class="button hide-if-js" value="<?php esc_attr_e( 'Search Add-ons', 'everest-forms' ); ?>">
 			</form>
 		</div>
 
