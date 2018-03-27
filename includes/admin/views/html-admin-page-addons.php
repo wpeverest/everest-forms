@@ -70,7 +70,7 @@ defined( 'ABSPATH' ) || exit;
 									<div class="status column-status">
 										<strong><?php esc_html_e( 'Status:', 'everest-forms' ); ?></strong>
 										<?php if ( is_plugin_active( $addon->slug . '/' . $addon->slug . '.php' ) ) : ?>
-											<span class="status-label status-active"><?php esc_html_e( 'Active', 'everest-forms' ); ?></span>
+											<span class="status-label status-active"><?php esc_html_e( 'Activated', 'everest-forms' ); ?></span>
 										<?php elseif ( file_exists( WP_PLUGIN_DIR . '/' . $addon->slug . '/' . $addon->slug . '.php' ) ): ?>
 											<span class="status-label status-inactive"><?php esc_html_e( 'Inactive', 'everest-forms' ); ?></span>
 										<?php else: ?>
@@ -99,7 +99,7 @@ defined( 'ABSPATH' ) || exit;
 											?>
 											<a class="button button-primary activate-now" href="<?php echo esc_url( $url ); ?>" aria-label="<?php esc_attr_e( sprintf( __( 'Activate %s now', 'everest-forms' ), $addon->title ) ); ?>"><?php esc_html_e( 'Activate', 'everest-forms' ); ?></a>
 										<?php else: ?>
-											<button class="button install-now" data-slug="<?php echo esc_attr( $addon->slug ); ?>" aria-label="<?php esc_attr_e( sprintf( __( 'Install %s now', 'everest-forms' ), $addon->title ) ); ?>" data-name="<?php echo esc_attr( $addon->name ); ?>"><?php esc_html_e( 'Install Addon', 'everest-forms'); ?></button>
+											<a href="#" class="button install-now" data-slug="<?php echo esc_attr( $addon->slug ); ?>" data-name="<?php echo esc_attr( $addon->name ); ?>" aria-label="<?php esc_attr_e( sprintf( __( 'Install %s now', 'everest-forms' ), $addon->title ) ); ?>"><?php esc_html_e( 'Install Addon', 'everest-forms'); ?></a>
 										<?php endif; ?>
 									</div>
 								<?php else: ?>

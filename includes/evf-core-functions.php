@@ -1237,9 +1237,9 @@ function evf_get_license_plan() {
 }
 
 /**
- * Ajax handler for installing a plugin.
+ * Ajax handler for installing a extension.
  *
- * @since 4.6.0
+ * @since 1.2.0
  *
  * @see Plugin_Upgrader
  *
@@ -1260,7 +1260,6 @@ function evf_ajax_install_extension() {
 		'install' => 'plugin',
 		'slug'    => sanitize_key( wp_unslash( $_POST['slug'] ) ),
 		'name'    => wp_unslash( $_POST['name'] ),
-		'plugin'  => wp_unslash( $_POST['plugin'] ),
 	);
 
 	if ( ! current_user_can( 'install_plugins' ) ) {
@@ -1307,7 +1306,7 @@ function evf_ajax_install_extension() {
 		global $wp_filesystem;
 
 		$status['errorCode']    = 'unable_to_connect_to_filesystem';
-		$status['errorMessage'] = __( 'Unable to connect to the filesystem. Please confirm your credentials.' );
+		$status['errorMessage'] = __( 'Unable to connect to the filesystem. Please confirm your credentials.', 'everest-forms' );
 
 		// Pass through the error from WP_Filesystem if one was raised.
 		if ( $wp_filesystem instanceof WP_Filesystem_Base && is_wp_error( $wp_filesystem->errors ) && $wp_filesystem->errors->get_error_code() ) {

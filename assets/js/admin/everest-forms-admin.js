@@ -65,7 +65,7 @@
 
 		wp.a11y.speak( wp.updates.l10n.installedMsg, 'polite' );
 
-		$document.trigger( 'wp-plugin-install-success', response );
+		$document.trigger( 'wp-extension-install-success', response );
 
 		if ( response.activateUrl ) {
 			setTimeout( function() {
@@ -115,7 +115,6 @@
 			wp.updates.installExtension( {
 				slug: $button.data( 'slug' ),
 				name: $button.data( 'name' ),
-				plugin: $button.data( 'plugin' ),
 				pagenow: pagenow,
 				success: wp.updates.installExtensionSuccess,
 				error:   wp.updates.installPluginError
