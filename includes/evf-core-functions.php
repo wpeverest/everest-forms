@@ -1349,21 +1349,13 @@ function evf_ajax_install_extension() {
 	}
 
 	$install_status = install_plugin_install_status( $api );
-	$pagenow = isset( $_POST['pagenow'] ) ? sanitize_key( $_POST['pagenow'] ) : '';
-
-	// If installation request is coming from import page, do not return network activation link.
-	$plugins_url = ( 'import' === $pagenow ) ? admin_url( 'plugins.php' ) : network_admin_url( 'plugins.php' );
 
 	if ( current_user_can( 'activate_plugin', $install_status['file'] ) && is_plugin_inactive( $install_status['file'] ) ) {
 		$status['activateUrl'] = add_query_arg( array(
-			'_wpnonce' => wp_create_nonce( 'activate-plugin_' . $install_status['file'] ),
 			'action'   => 'activate',
 			'plugin'   => $install_status['file'],
-		), $plugins_url );
-	}
-
-	if ( is_multisite() && current_user_can( 'manage_network_plugins' ) && 'import' !== $pagenow ) {
-		$status['activateUrl'] = add_query_arg( array( 'networkwide' => 1 ), $status['activateUrl'] );
+			'_wpnonce' => wp_create_nonce( 'activate-plugin_' . $install_status['file'] ),
+		), admin_url( 'admin.php?page=evf-addons' ) );
 	}
 
 	wp_send_json_success( $status );
