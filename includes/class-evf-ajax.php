@@ -245,7 +245,7 @@ class EVF_AJAX {
 		);
 
 		if ( ! current_user_can( 'install_plugins' ) ) {
-			$status['errorMessage'] = __( 'Sorry, you are not allowed to install plugins on this site.' );
+			$status['errorMessage'] = __( 'Sorry, you are not allowed to install plugins on this site.', 'everest-forms' );
 			wp_send_json_error( $status );
 		}
 

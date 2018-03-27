@@ -1,16 +1,15 @@
-/* global pagenow */
 ( function( $, wp ) {
 	var $document = $( document );
 
 	/**
-	 * Sends an Ajax request to the server to install a plugin.
+	 * Sends an Ajax request to the server to install a extension.
 	 *
 	 * @since 4.6.0
 	 *
-	 * @param {object}                args         Arguments.
-	 * @param {string}                args.slug    Plugin identifier in the WordPress.org Plugin repository.
-	 * @param {installPluginSuccess=} args.success Optional. Success callback. Default: wp.updates.installPluginSuccess
-	 * @param {installPluginError=}   args.error   Optional. Error callback. Default: wp.updates.installPluginError
+	 * @param {object}                   args         Arguments.
+	 * @param {string}                   args.slug    Plugin identifier in the WordPress.org Plugin repository.
+	 * @param {installExtensionSuccess=} args.success Optional. Success callback. Default: wp.updates.installPluginSuccess
+	 * @param {installExtensionError=}   args.error   Optional. Error callback. Default: wp.updates.installPluginError
 	 * @return {$.promise} A jQuery promise that represents the request,
 	 *                     decorated with an abort() method.
 	 */
@@ -19,8 +18,8 @@
 			$message = $card.find( '.install-now' );
 
 		args = _.extend( {
-			success: wp.updates.installPluginSuccess,
-			error: wp.updates.installPluginError
+			success: wp.updates.installExtensionSuccess,
+			error: wp.updates.installExtensionError
 		}, args );
 
 		if ( $message.html() !== wp.updates.l10n.installing ) {
@@ -40,6 +39,95 @@
 		$document.trigger( 'wp-extension-installing', args );
 
 		return wp.updates.ajax( 'everest_forms_install_extension', args );
+	};
+
+	/**
+	 * Updates the UI appropriately after a successful extension install.
+	 *
+	 * @since 4.6.0
+	 *
+	 * @typedef {object} installPluginSuccess
+	 * @param {object} response             Response from the server.
+	 * @param {string} response.slug        Slug of the installed plugin.
+	 * @param {string} response.pluginName  Name of the installed plugin.
+	 * @param {string} response.activateUrl URL to activate the just installed plugin.
+	 */
+	wp.updates.installExtensionSuccess = function( response ) {
+		var $message = $( '.plugin-card-' + response.slug ).find( '.install-now' ),
+			$status = $( '.plugin-card-' + response.slug ).find( '.status-label' );
+
+		$message
+			.removeClass( 'updating-message' )
+			.addClass( 'updated-message installed button-disabled' )
+			.attr( 'aria-label', wp.updates.l10n.pluginInstalledLabel.replace( '%s', response.pluginName ) )
+			.text( wp.updates.l10n.pluginInstalled );
+
+		wp.a11y.speak( wp.updates.l10n.installedMsg, 'polite' );
+
+		$document.trigger( 'wp-plugin-install-success', response );
+
+		if ( response.activateUrl ) {
+			setTimeout( function() {
+				$status.removeClass( 'status-install-now' ).addClass( 'status-active' ).text( wp.updates.l10n.pluginInstalled );
+
+				// Transform the 'Install' button into an 'Activate' button.
+				$message.removeClass( 'install-now installed button-disabled updated-message' ).addClass( 'activate-now button-primary' )
+					.attr( 'href', response.activateUrl )
+					.attr( 'aria-label', wp.updates.l10n.activatePluginLabel.replace( '%s', response.pluginName ) )
+					.text( wp.updates.l10n.activatePlugin );
+			}, 1000 );
+		}
+	};
+
+	/**
+	 * Updates the UI appropriately after a failed extension install.
+	 *
+	 * @since 4.6.0
+	 *
+	 * @typedef {object} installExtensionError
+	 * @param {object}  response              Response from the server.
+	 * @param {string}  response.slug         Slug of the plugin to be installed.
+	 * @param {string=} response.pluginName   Optional. Name of the plugin to be installed.
+	 * @param {string}  response.errorCode    Error code for the error that occurred.
+	 * @param {string}  response.errorMessage The error that occurred.
+	 */
+	wp.updates.installExtensionError = function( response ) {
+		var $card   = $( '.plugin-card-' + response.slug ),
+			$button = $card.find( '.install-now' ),
+			errorMessage;
+
+		if ( ! wp.updates.isValidResponse( response, 'install' ) ) {
+			return;
+		}
+
+		if ( wp.updates.maybeHandleCredentialError( response, 'everest_forms_install_extension' ) ) {
+			return;
+		}
+
+		errorMessage = wp.updates.l10n.installFailed.replace( '%s', response.errorMessage );
+
+		$card
+			.addClass( 'plugin-card-update-failed' )
+			.append( '<div class="notice notice-error notice-alt is-dismissible"><p>' + errorMessage + '</p></div>' );
+
+		$card.on( 'click', '.notice.is-dismissible .notice-dismiss', function() {
+
+			// Use same delay as the total duration of the notice fadeTo + slideUp animation.
+			setTimeout( function() {
+				$card
+					.removeClass( 'plugin-card-update-failed' )
+					.find( '.column-name a' ).focus();
+			}, 200 );
+		} );
+
+		$button
+			.removeClass( 'updating-message' ).addClass( 'button-disabled' )
+			.attr( 'aria-label', wp.updates.l10n.pluginInstallFailedLabel.replace( '%s', $button.data( 'name' ) ) )
+			.text( wp.updates.l10n.installFailedShort );
+
+		wp.a11y.speak( errorMessage, 'assertive' );
+
+		$document.trigger( 'wp-plugin-install-error', response );
 	};
 
 	/**
@@ -70,13 +158,14 @@
 	};
 
 	$( function() {
+		var $pluginFilter = $( '#extension-filter' );
 
 		/**
-		 * Click handler for extension installations.
+		 * Click handler for extension installs.
 		 *
 		 * @param {Event} event Event interface.
 		 */
-		$document.on( 'click', '.extension-install .install-now', function( event ) {
+		$pluginFilter.on( 'click', '.extension-install .install-now', function( event ) {
 			var $button = $( event.target ),
 				pluginName = $( this ).data( 'name' );
 
@@ -102,20 +191,9 @@
 			}
 
 			wp.updates.installExtension( {
-				slug: $button.data( 'slug' ),
-				name: $button.data( 'name' ),
-				success: wp.updates.installPluginSuccess,
-				error:   wp.updates.installPluginError
+				name: pluginName,
+				slug: $button.data( 'slug' )
 			} );
-		} );
-
-		// Change the status label text after install success.
-		$document.on( 'wp-plugin-install-success', function( event, response ) {
-			var $status  = $( '.plugin-card-' + response.slug ).find( '.status-label' );
-
-			if ( response.activateUrl ) {
-				$status.removeClass( 'status-install-now' ).addClass( 'status-active' ).text( wp.updates.l10n.pluginInstalled );
-			}
 		} );
 	} );
 })( jQuery, window.wp );

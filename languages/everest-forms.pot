@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Everest Forms package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Everest Forms 1.1.0\n"
+"Project-Id-Version: Everest Forms 1.1.1\n"
 "Report-Msgid-Bugs-To: https://github.com/wpeverest/everest-forms/issues\n"
-"POT-Creation-Date: 2018-03-09 11:48:28+00:00\n"
+"POT-Creation-Date: 2018-03-27 11:28:39+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -134,7 +134,7 @@ msgid "Delete Field"
 msgstr ""
 
 #: includes/abstracts/abstract-evf-form-fields.php:668
-#: includes/admin/class-evf-admin-menus.php:382
+#: includes/admin/class-evf-admin-menus.php:387
 #: includes/admin/form-panels/class-evf-fields-panel.php:200
 #: includes/admin/form-panels/class-evf-settings-panel.php:29
 #: includes/class-evf-install.php:525
@@ -158,84 +158,80 @@ msgstr ""
 msgid "Please enter a valid number"
 msgstr ""
 
-#: includes/admin/class-evf-add-form.php:50
+#: includes/admin/class-evf-admin-add-form.php:50
 msgid "Add Everest Form"
 msgstr ""
 
-#: includes/admin/class-evf-add-form.php:52
-#: includes/admin/class-evf-add-form.php:95
+#: includes/admin/class-evf-admin-add-form.php:52
+#: includes/admin/class-evf-admin-add-form.php:95
 msgid "Add Form"
 msgstr ""
 
-#: includes/admin/class-evf-add-form.php:65
+#: includes/admin/class-evf-admin-add-form.php:65
 msgid "Insert Form"
 msgstr ""
 
-#: includes/admin/class-evf-add-form.php:66
+#: includes/admin/class-evf-admin-add-form.php:66
 msgid "Close"
 msgstr ""
 
-#: includes/admin/class-evf-add-form.php:74
+#: includes/admin/class-evf-admin-add-form.php:74
 msgid "Select a form below to insert"
 msgstr ""
 
-#: includes/admin/class-evf-add-form.php:91
-#: includes/admin/class-evf-admin-assets.php:86
+#: includes/admin/class-evf-admin-add-form.php:91
+#: includes/admin/class-evf-admin-assets.php:133
 msgid "Cancel"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:83
+#: includes/admin/class-evf-admin-assets.php:130
 msgid "Are you sure want to delete this"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:84
+#: includes/admin/class-evf-admin-assets.php:131
 msgid "field"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:85
+#: includes/admin/class-evf-admin-assets.php:132
 msgid "Confirm"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:87
+#: includes/admin/class-evf-admin-assets.php:134
 msgid "Delete Confirmation"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:88
+#: includes/admin/class-evf-admin-assets.php:135
 msgid "Duplicate Confirmation"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:89
+#: includes/admin/class-evf-admin-assets.php:136
 msgid "Are you sure want to duplicate this"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:90
+#: includes/admin/class-evf-admin-assets.php:137
 msgid "Are you sure want to delete this row?"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:91
-#: includes/admin/class-evf-admin-menus.php:291
+#: includes/admin/class-evf-admin-assets.php:138
+#: includes/admin/class-evf-admin-menus.php:296
 msgid "Copy of "
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:92
+#: includes/admin/class-evf-admin-assets.php:139
 msgid "Ok"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:93
+#: includes/admin/class-evf-admin-assets.php:140
 msgid "Could not delete"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:94
+#: includes/admin/class-evf-admin-assets.php:141
 msgid "Could not delete single row."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:95
-#: includes/admin/class-evf-admin-assets.php:96
+#: includes/admin/class-evf-admin-assets.php:142
+#: includes/admin/class-evf-admin-assets.php:143
 msgid "Could not delete single choice."
-msgstr ""
-
-#: includes/admin/class-evf-admin-assets.php:156
-msgid "EverestForms"
 msgstr ""
 
 #: includes/admin/class-evf-admin-entries-table-list.php:73
@@ -314,7 +310,7 @@ msgstr ""
 #: includes/admin/class-evf-admin-entries.php:59
 #: includes/admin/class-evf-admin-forms-table-list.php:50
 #: includes/admin/class-evf-admin-forms-table-list.php:105
-#: includes/admin/class-evf-admin-menus.php:107
+#: includes/admin/class-evf-admin-menus.php:112
 msgid "Entries"
 msgstr ""
 
@@ -347,7 +343,7 @@ msgid "Save"
 msgstr ""
 
 #: includes/admin/class-evf-admin-form-builder.php:173
-#: includes/class-evf-ajax.php:132
+#: includes/class-evf-ajax.php:133
 msgid "Blank Form"
 msgstr ""
 
@@ -459,13 +455,13 @@ msgid "Empty trash"
 msgstr ""
 
 #: includes/admin/class-evf-admin-forms.php:26
-#: includes/admin/class-evf-admin-menus.php:72
+#: includes/admin/class-evf-admin-menus.php:77
 #: includes/class-evf-post-types.php:47
 msgid "All Forms"
 msgstr ""
 
 #: includes/admin/class-evf-admin-forms.php:27
-#: includes/admin/class-evf-admin-menus.php:100
+#: includes/admin/class-evf-admin-menus.php:105
 #: includes/class-evf-post-types.php:49
 msgid "Add New"
 msgstr ""
@@ -478,33 +474,42 @@ msgstr ""
 msgid "Everest Forms"
 msgstr ""
 
-#: includes/admin/class-evf-admin-menus.php:226
-#: includes/admin/class-evf-admin-menus.php:258
+#: includes/admin/class-evf-admin-menus.php:231
+#: includes/admin/class-evf-admin-menus.php:263
 #: includes/admin/class-evf-admin-notices.php:107
 #: includes/admin/class-evf-admin-settings.php:71
 #: includes/admin/class-evf-admin-status.php:168
 msgid "Action failed. Please refresh the page and retry."
 msgstr ""
 
-#: includes/admin/class-evf-admin-menus.php:230
-#: includes/admin/class-evf-admin-menus.php:262
+#: includes/admin/class-evf-admin-menus.php:235
+#: includes/admin/class-evf-admin-menus.php:267
 msgid "You do not have permissions to delete forms!"
 msgstr ""
 
-#: includes/admin/class-evf-admin-menus.php:358
+#: includes/admin/class-evf-admin-menus.php:363
 msgid "You do not have permissions to edit forms!"
 msgstr ""
 
-#: includes/admin/class-evf-admin-menus.php:382
+#: includes/admin/class-evf-admin-menus.php:387
 msgid "Everest Forms settings"
 msgstr ""
 
-#: includes/admin/class-evf-admin-menus.php:421
+#: includes/admin/class-evf-admin-menus.php:426
 msgid "Everest Forms status"
 msgstr ""
 
-#: includes/admin/class-evf-admin-menus.php:421
+#: includes/admin/class-evf-admin-menus.php:426
 msgid "Status"
+msgstr ""
+
+#: includes/admin/class-evf-admin-menus.php:433
+#: includes/admin/views/html-admin-page-addons.php:15
+msgid "Everest Forms Add-ons"
+msgstr ""
+
+#: includes/admin/class-evf-admin-menus.php:433
+msgid "Add-ons"
 msgstr ""
 
 #: includes/admin/class-evf-admin-notices.php:111
@@ -534,20 +539,32 @@ msgstr ""
 msgid "Select a page&hellip;"
 msgstr ""
 
-#: includes/admin/class-evf-admin.php:129
+#: includes/admin/class-evf-admin.php:87
+msgid "Could not verify nonce"
+msgstr ""
+
+#: includes/admin/class-evf-admin.php:99
+msgid "Sorry, you are not allowed to activate this plugin."
+msgstr ""
+
+#: includes/admin/class-evf-admin.php:107
+msgid "Sorry, you are not allowed to deactivate plugins for this site."
+msgstr ""
+
+#: includes/admin/class-evf-admin.php:175
 #. translators: 1: EverestForms 2:: five stars
 msgid "If you like %1$s please leave us a %2$s rating. A huge thanks in advance!"
 msgstr ""
 
-#: includes/admin/class-evf-admin.php:131
+#: includes/admin/class-evf-admin.php:177
 msgid "Thanks :)"
 msgstr ""
 
-#: includes/admin/class-evf-admin.php:140
+#: includes/admin/class-evf-admin.php:186
 msgid "Thank you for selling with EverestForms."
 msgstr ""
 
-#: includes/admin/evf-admin-functions.php:357
+#: includes/admin/evf-admin-functions.php:356
 msgid "Field #"
 msgstr ""
 
@@ -829,6 +846,73 @@ msgstr ""
 msgid "Create"
 msgstr ""
 
+#: includes/admin/views/html-admin-page-addons.php:18
+msgid "Refresh Add-ons"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-addons.php:22
+msgid "Filter add-ons list"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-addons.php:38
+#: includes/admin/views/html-admin-page-addons.php:41
+msgid "Search Add-ons"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-addons.php:39
+msgid "Search Add-ons..."
+msgstr ""
+
+#: includes/admin/views/html-admin-page-addons.php:47
+msgid ""
+"Improve your forms with our premium add-ons. Missing an addon that you "
+"think you should be able to see? Click the %1$sRefresh Add-ons%2$s button "
+"above."
+msgstr ""
+
+#: includes/admin/views/html-admin-page-addons.php:53
+msgid "Add-ons list"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-addons.php:72
+#: includes/admin/views/html-admin-page-entries-view.php:126
+msgid "Status:"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-addons.php:74
+msgid "Activated"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-addons.php:76
+msgid "Inactive"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-addons.php:78
+msgid "Not Installed"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-addons.php:91
+msgid "Deactivate"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-addons.php:101
+msgid "Activate"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-addons.php:103
+msgid "Install Addon"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-addons.php:108
+msgid "Upgrade Plan"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-addons.php:119
+msgid ""
+"Our catalog of Everest Forms Add-ons/Extensions can be found on "
+"WPEverest.com here: <a href=\"%s\">Everest Forms Extensions Catalog</a>"
+msgstr ""
+
 #: includes/admin/views/html-admin-page-entries-view.php:14
 msgid "View Entry"
 msgstr ""
@@ -884,10 +968,6 @@ msgstr ""
 
 #: includes/admin/views/html-admin-page-entries-view.php:118
 msgid "User IP:"
-msgstr ""
-
-#: includes/admin/views/html-admin-page-entries-view.php:126
-msgid "Status:"
 msgstr ""
 
 #: includes/admin/views/html-admin-page-entries-view.php:127
@@ -948,24 +1028,36 @@ msgstr ""
 msgid "Taking a while? Click here to run it now."
 msgstr ""
 
-#: includes/class-evf-ajax.php:103
+#: includes/class-evf-ajax.php:104
 msgid "Invalid form"
 msgstr ""
 
-#: includes/class-evf-ajax.php:153
+#: includes/class-evf-ajax.php:154
 msgid "Something went wrong, please try again later"
 msgstr ""
 
-#: includes/class-evf-ajax.php:163
+#: includes/class-evf-ajax.php:164
 msgid "You do not have permission."
 msgstr ""
 
-#: includes/class-evf-ajax.php:168
+#: includes/class-evf-ajax.php:169
 msgid "No data provided"
 msgstr ""
 
-#: includes/class-evf-ajax.php:209
+#: includes/class-evf-ajax.php:210
 msgid "An error occurred and the form could not be saved"
+msgstr ""
+
+#: includes/class-evf-ajax.php:237
+msgid "No plugin specified."
+msgstr ""
+
+#: includes/class-evf-ajax.php:248
+msgid "Sorry, you are not allowed to install plugins on this site."
+msgstr ""
+
+#: includes/class-evf-ajax.php:291
+msgid "Unable to connect to the filesystem. Please confirm your credentials."
 msgstr ""
 
 #: includes/class-evf-cache-helper.php:80
@@ -1012,11 +1104,11 @@ msgstr ""
 msgid "Form has not been submitted, please see the errors below."
 msgstr ""
 
-#: includes/class-evf-form-task.php:415
+#: includes/class-evf-form-task.php:416
 msgid "No form ID was found."
 msgstr ""
 
-#: includes/class-evf-form-task.php:421
+#: includes/class-evf-form-task.php:422
 msgid "Could not create an entry"
 msgstr ""
 
