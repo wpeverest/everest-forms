@@ -1212,6 +1212,7 @@ function get_form_data_by_meta_key( $form_id, $meta_key ) {
 /**
  * Get a PRO license plan.
  *
+ * @since  1.2.0
  * @return bool|string Plan on success, false on failure.
  */
 function evf_get_license_plan() {
