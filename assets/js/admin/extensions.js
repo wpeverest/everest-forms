@@ -42,10 +42,37 @@
 		return wp.updates.ajax( 'everest_forms_install_extension', args );
 	};
 
+	/**
+	 * Pulls available jobs from the queue and runs them.
+	 * @see https://core.trac.wordpress.org/ticket/39364
+	 */
+	wp.updates.queueChecker = function() {
+		var job;
+
+		if ( wp.updates.ajaxLocked || ! wp.updates.queue.length ) {
+			return;
+		}
+
+		job = wp.updates.queue.shift();
+
+		// Handle a queue job.
+		switch ( job.action ) {
+			case 'everest_forms_install_extension':
+				wp.updates.installExtension( job.data );
+				break;
+
+			default:
+				break;
+		}
+
+		// Handle a queue job.
+		$document.trigger( 'wp-updates-queue-job', job );
+	};
+
 	$( function() {
 
 		/**
-		 * Click handler for importer plugins installs in the Demo Importer screen.
+		 * Click handler for extension installations.
 		 *
 		 * @param {Event} event Event interface.
 		 */
@@ -83,7 +110,7 @@
 			} );
 		} );
 
-		// Change the status text label after install success.
+		// Change the status label text after install success.
 		$document.on( 'wp-plugin-install-success', function( event, response ) {
 			var $status  = $( '.plugin-card-' + response.slug ).find( '.status-label' );
 
