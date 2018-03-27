@@ -39,7 +39,7 @@
 
 		$document.trigger( 'wp-plugin-installing', args );
 
-		return wp.updates.ajax( 'install-extension', args );
+		return wp.updates.ajax( 'everest_forms_install_extension', args );
 	};
 
 	/**
