@@ -33,8 +33,6 @@
 			}
 		}
 		.plugin-card-bottom {
-			// padding: 17px 20px;
-
 			.status {
 				text-align: left;
 				float: left;
@@ -66,21 +64,43 @@
 				}
 			}
 		}
+	}
 
-		.notice-error p {
-			margin: 14px 0;
-		}
+	.plugin-card-update-failed {
+		.notice-error {
+			padding: 9px 16px 8px;
 
-		.notice-dismiss {
-			padding: 14px 9px;
-		}
-
-		@media screen and (max-width: 782px) {
-			.notice p {
-				margin: 13px 0;
-			}
 			.notice-dismiss {
-				padding: 20px 13px;
+				padding: 17px;
+			}
+		}
+	}
+
+	@media screen and (max-width: 782px) {
+		.plugin-card {
+			.plugin-card-bottom {
+				.status {
+					padding-top: 9px;
+				}
+
+				.action-buttons {
+					.button.updating-message {
+						&:before,
+						&:after {
+							margin-top: -1px;
+						}
+					}
+				}
+			}
+		}
+
+		.plugin-card-update-failed {
+			.notice-error {
+				padding: 13px 20px;
+
+				.notice-dismiss {
+					padding: 21px;
+				}
 			}
 		}
 	}
