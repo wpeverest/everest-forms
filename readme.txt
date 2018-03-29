@@ -4,7 +4,7 @@ Tags: form, form builder, easy form, clean form, login form, contact, contact fo
 Requires at least: 4.0
 Tested up to: 4.9
 Requires PHP: 5.4
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -70,8 +70,11 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 
 == Changelog ==
 
+= 1.1.2 - 29-03-2018 =
+* Fix - Exclude CPT data from search.
+
 = 1.1.1 - 23-03-2018 =
-* Fix - Custom email message issue
+* Fix - Custom email message issue.
 
 = 1.1.0 - 12-03-2018 =
 * Feature - Entries panel to save form in database.
