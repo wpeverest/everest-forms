@@ -38,14 +38,19 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 									} else {
 										// Display the fields and their values.
 										foreach ( $entry_meta as $meta_key => $meta_value ) {
-											$field_value = apply_filters( 'everest_forms_html_field_value', wp_strip_all_tags( $meta_value ) );
+											$field_value = apply_filters( 'everest_forms_html_field_value', wp_strip_all_tags( $meta_value ), $meta_key, $entry_meta, 'entry-single' );
 											$field_class = empty( $field_value ) ? ' empty' : '';
 											$field_style = $hide_empty && empty( $field_value ) ? 'display:none;' : '';
 
 											// Field name.
 											echo '<tr class="everest-forms-entry-field field-name' . $field_class . '" style="' . $field_style . '"><th><strong>';
-												/* translators: %d - field ID. */
-												echo ! empty( $meta_key ) ? get_form_data_by_meta_key( $form_id, $meta_key ) : esc_html__( 'Field ID', 'everest-forms' );
+												$value = get_form_data_by_meta_key( $form_id, $meta_key );
+
+												if ( $value ) {
+													echo esc_html( $value );
+												} else {
+													esc_html_e( 'Field ID', 'everest-forms' );
+												}
 											echo '</strong></th></tr>';
 
 											// Field value.
