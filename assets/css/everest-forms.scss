@@ -314,9 +314,11 @@
     .everest-forms {
         .evf-frontend-row {
             flex-direction: column;
+            margin: 0;
 
             .evf-frontend-grid {
                 margin-bottom: 30px;
+                padding: 0;
 
                 &:last-child {
                     margin-bottom: 0;
