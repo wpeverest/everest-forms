@@ -70,8 +70,11 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 
 == Changelog ==
 
+= 1.1.2 - 29-03-2018 =
+* Fix - Exclude CPT data from search.
+
 = 1.1.1 - 23-03-2018 =
-* Fix - Custom email message issue
+* Fix - Custom email message issue.
 
 = 1.1.0 - 12-03-2018 =
 * Feature - Entries panel to save form in database.
