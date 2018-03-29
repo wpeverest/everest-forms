@@ -1210,6 +1210,80 @@ function get_form_data_by_meta_key( $form_id, $meta_key ) {
 }
 
 /**
+ * Convert a file size provided, such as "2M", to bytes.
+ *
+ * @since 1.2.0
+ * @link http://stackoverflow.com/a/22500394
+ *
+ * @param string $size
+ *
+ * @return int
+ */
+function evf_size_to_bytes( $size ) {
+
+	if ( is_numeric( $size ) ) {
+		return $size;
+	}
+
+	$suffix = substr( $size, - 1 );
+	$value  = substr( $size, 0, - 1 );
+
+	switch ( strtoupper( $suffix ) ) {
+		case 'P':
+			$value *= 1024;
+		case 'T':
+			$value *= 1024;
+		case 'G':
+			$value *= 1024;
+		case 'M':
+			$value *= 1024;
+		case 'K':
+			$value *= 1024;
+			break;
+	}
+
+	return $value;
+}
+
+/**
+ * Convert bytes to megabytes (or in some cases KB).
+ *
+ * @since 1.2.0
+ *
+ * @param int $bytes
+ *
+ * @return string
+ */
+function evf_size_to_megabytes( $bytes ) {
+
+	if ( $bytes < 1048676 ) {
+		return number_format( $bytes / 1024, 1 ) . ' KB';
+	} else {
+		return round( number_format( $bytes / 1048576, 1 ) ) . ' MB';
+	}
+}
+
+/**
+ * Convert a file size provided, such as "2M", to bytes.
+ *
+ * @since 1.2.0
+ * @link http://stackoverflow.com/a/22500394
+ *
+ * @param bool $bytes
+ *
+ * @return mixed
+ */
+function evf_max_upload( $bytes = false ) {
+
+	$max = wp_max_upload_size();
+	if ( $bytes ) {
+		return $max;
+	} else {
+		return evf_size_to_megabytes( $max );
+	}
+}
+
+/**
  * Get a PRO license plan.
  *
  * @since  1.2.0
