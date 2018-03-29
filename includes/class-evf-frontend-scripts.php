@@ -267,7 +267,7 @@ class EVF_Frontend_Scripts {
  					'i18n_messages_url'       => get_option( 'evf_url_validation' ),
  					'i18n_messages_email'     => get_option( 'evf_email_validation' ),
  					'i18n_messages_number'    => get_option( 'evf_number_validation' ),
- 					'i18n_messages_recaptcha' => get_option( 'evf_recaptcha_validation' )
+					'i18n_messages_recaptcha' => get_option( 'evf_recaptcha_validation' ),
  				);
 			break;
 			default:

@@ -1,4 +1,4 @@
-/* global everest_forms_params */
+/* global everest_forms_params, grecaptcha */
 jQuery( function ( $ ) {
 	'use strict';
 
@@ -75,7 +75,7 @@ jQuery( function ( $ ) {
 							$element.addClass( errorClass ).removeClass( validClass );
 						}
 
-						$parent.addClass( 'evf-has-error' );
+						$parent.removeClass( 'everest-forms-validated' ).addClass( 'everest-forms-invalid evf-has-error' );
 					},
 					unhighlight: function( element, errorClass, validClass ) {
 						var $element  = $( element ),
@@ -91,10 +91,8 @@ jQuery( function ( $ ) {
 						$parent.removeClass( 'evf-has-error' );
 					},
 					submitHandler: function( errorClass, form ) {
-						if ( grecaptcha.getResponse() == '' ) {
+						if ( grecaptcha.getResponse() === '' ) {
 							$( '#evf_node_recaptcha' ).after('<label class="evf-error">' + everest_forms_params.i18n_messages_recaptcha + '</div>');
-
-
 	              		} else {
                   			form.submit();
                   		}
