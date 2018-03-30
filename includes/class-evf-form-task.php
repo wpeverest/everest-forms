@@ -102,12 +102,12 @@ class EVF_Form_Task {
 			}
 
 			// Recaptcha Validation
-			if( isset( $form_data['settings']['recaptcha_support'] ) && 1 == $form_data['settings']['recaptcha_support'] && empty( $_POST['g-recaptcha-response'] ) ){
+			if ( isset( $form_data['settings']['recaptcha_support'] ) && 1 == $form_data['settings']['recaptcha_support'] && empty( $_POST['g-recaptcha-response'] ) ){
 				evf_add_notice( get_option('evf_recaptcha_validation', __('Invalid recaptcha code.', 'everest-forms') ),'error');
 				update_option( 'evf_validation_error', 'yes');
 			}
 
-			if( get_option( 'evf_validation_error' ) === 'yes' ){
+			if ( get_option( 'evf_validation_error' ) === 'yes' ){
 				delete_option( 'evf_validation_error' );
 				return;
 			}
@@ -431,9 +431,7 @@ class EVF_Form_Task {
 		$form_fields = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
 
 		foreach ( $form_fields as $field_key => $field ) {
-
-			$meta_key  = isset( $field['meta-key'] ) ? $field['meta-key'] : '';
-
+			$meta_key    = isset( $field['meta-key'] ) ? $field['meta-key'] : '';
 			$field_value = isset( $entry['form_fields'][ $field_key ] ) ? $entry['form_fields'][ $field_key ] : '';
 
 			if ( is_array( $field_value ) ) {
