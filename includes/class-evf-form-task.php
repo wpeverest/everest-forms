@@ -404,6 +404,7 @@ class EVF_Form_Task {
 
 		do_action( 'everest_forms_process_entry_save', $fields, $entry, $form_id, $form_data );
 
+		$fields     = apply_filters( 'everest_forms_entry_save_data', $fields, $entry, $form_data );
 		$browser    = evf_get_browser();
 		$entry_data = array(
 			'form_id'         => $form_id,
