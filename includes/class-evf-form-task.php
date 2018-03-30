@@ -396,10 +396,9 @@ class EVF_Form_Task {
 			return;
 		}
 
-		$browser = evf_get_browser();
-
 		do_action( 'everest_forms_process_entry_save', $fields, $entry, $form_id, $form_data );
 
+		$browser    = evf_get_browser();
 		$entry_data = array(
 			'form_id'         => $form_id,
 			'user_id'         => get_current_user_id(),
