@@ -62,7 +62,7 @@ class EVF_Shortcode_Form {
 		);
 
 		do_action( 'evf_display_submit_after', $form_data );
-	
+
 		echo '</div>';
 	}
 
@@ -426,7 +426,7 @@ class EVF_Shortcode_Form {
 				'class' => array( 'evf-error' ),
 				'data'  => array(),
 				'id'    => '',
-				'value' => ! empty( EVF()->process->errors[ $form_id ][ $field_id ] ) ? EVF()->process->errors[ $form_id ][ $field_id ] : '',
+				'value' => ! empty( EVF()->task->errors[ $form_id ][ $field_id ] ) ? EVF()->task->errors[ $form_id ][ $field_id ] : '',
 			),
 			'description' => array(
 				'attr'     => array(),

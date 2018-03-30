@@ -775,7 +775,7 @@ abstract class EVF_Form_Fields {
 
 		// Basic required check - If field is marked as required, check for entry data.
 		if ( false !== $required_field && ( empty( $field_submit ) && '0' !== $field_submit ) ) {
-			EVF()->process->errors[ $form_data['id'] ][ $field_id ] = evf_get_required_label();
+			EVF()->task->errors[ $form_data['id'] ][ $field_id ] = evf_get_required_label();
 			update_option( 'evf_validation_error', 'yes' );
 		}
 
@@ -799,7 +799,7 @@ abstract class EVF_Form_Fields {
 		}
 
 		if ( isset( $validation_text ) ) {
-			EVF()->process->errors[ $form_data['id'] ][ $field_id ] = apply_filters( 'everest_forms_type_validation', $validation_text );
+			EVF()->task->errors[ $form_data['id'] ][ $field_id ] = apply_filters( 'everest_forms_type_validation', $validation_text );
 			update_option( 'evf_validation_error', 'yes' );
 		}
 	}
@@ -825,7 +825,7 @@ abstract class EVF_Form_Fields {
 		// Sanitize but keep line breaks.
 		$value = everest_forms_sanitize_textarea_field( $field_submit );
 
-		EVF()->process->fields[ $field_id ] = array(
+		EVF()->task->form_fields[ $field_id ] = array(
 			'name'  => $name,
 			'value' => $value,
 			'id'    => absint( $field_id ),
