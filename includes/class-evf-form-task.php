@@ -392,7 +392,13 @@ class EVF_Form_Task {
 	public function entry_save( $fields, $entry, $form_id, $form_data = '' ) {
 		global $wpdb;
 
+		// Check if form has entries disabled.
 		if ( isset( $form_data['settings']['disabled_entries'] ) && '1' === $form_data['settings']['disabled_entries'] ) {
+			return;
+		}
+
+		// Provide the opportunity to override via a filter.
+		if ( ! apply_filters( 'everest_forms_entry_save', true, $fields, $entry, $form_data ) ) {
 			return;
 		}
 
