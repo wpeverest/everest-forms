@@ -1286,6 +1286,16 @@ function evf_max_upload( $bytes = false ) {
 }
 
 /**
+ * Get the required label text, with a filter.
+ *
+ * @since  1.2.0
+ * @return string
+ */
+function evf_get_required_label() {
+	return apply_filters( 'everest_forms_required_label', esc_html__( 'This field is required.', 'everest-forms' ) );
+}
+
+/**
  * Get a PRO license plan.
  *
  * @since  1.2.0

@@ -98,7 +98,7 @@ class EVF_Form_Task {
 				$field_id     = $field['id'];
 				$field_type   = $field['type'];
 				$field_submit = isset( $entry['form_fields'][ $field_id ] ) ? $entry['form_fields'][ $field_id ] : '';
-				do_action( "everest_forms_process_validate_{$field_type}", $field_id, $field_type, $field_submit, $form_data );
+				do_action( "everest_forms_process_validate_{$field_type}", $field_id, $field_submit, $form_data, $field_type );
 			}
 
 			// Recaptcha Validation
