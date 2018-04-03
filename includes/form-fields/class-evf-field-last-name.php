@@ -1,14 +1,15 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+/**
+ * Last name field.
+ *
+ * @package EverestForms\Fields
+ * @since   1.0.0
+ */
+
+defined( 'ABSPATH' ) || exit;
 
 /**
- * First name field.
- *
- * @package    EverestForms
- * @author     WPEverest
- * @since      1.0.0
+ * EVF_Field_Last_Name class.
  */
 class EVF_Field_Last_Name extends EVF_Form_Fields {
 

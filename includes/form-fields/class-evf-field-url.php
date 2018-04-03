@@ -1,14 +1,15 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
-
 /**
  * URL field.
  *
- * @package    EverestForms
- * @author     WPEverest
- * @since      1.0.0
+ * @package EverestForms\Fields
+ * @since   1.0.0
+ */
+
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * EVF_Field_URL class.
  */
 class EVF_Field_URL extends EVF_Form_Fields {
 
@@ -50,7 +51,7 @@ class EVF_Field_URL extends EVF_Form_Fields {
 
 		// Meta.
 		$this->field_option( 'meta', $field );
-		
+
 		// Description.
 		$this->field_option( 'description', $field );
 
@@ -135,4 +136,4 @@ class EVF_Field_URL extends EVF_Form_Fields {
 	}
 }
 
-new EVF_Field_URL;
+new EVF_Field_URL();
