@@ -113,7 +113,7 @@ abstract class EVF_Form_Fields {
 		add_action( "everest_forms_process_validate_{$this->type}", array( $this, 'validate' ), 10, 3 );
 
 		// Format.
-		add_action( "everest_forms_process_format_{$this->type}", array( $this, 'format' ), 10, 3 );
+		add_action( "everest_forms_process_format_{$this->type}", array( $this, 'format' ), 10, 4 );
 	}
 
 	/**
@@ -807,14 +807,12 @@ abstract class EVF_Form_Fields {
 	/**
 	 * Formats and sanitizes field.
 	 *
-	 * $since 1.0.0
-	 *
-	 * @param int   $field_id
-	 * @param array $field_submit
-	 * @param array $form_data
+	 * @param int    $field_id
+	 * @param array  $field_submit
+	 * @param array  $form_data
+	 * @param string $meta_key
 	 */
-	public function format( $field_id, $field_submit, $form_data ) {
-
+	public function format( $field_id, $field_submit, $form_data, $meta_key ) {
 		if ( is_array( $field_submit ) ) {
 			$field_submit = array_filter( $field_submit );
 			$field_submit = implode( "\r\n", $field_submit );
@@ -826,10 +824,11 @@ abstract class EVF_Form_Fields {
 		$value = everest_forms_sanitize_textarea_field( $field_submit );
 
 		EVF()->task->form_fields[ $field_id ] = array(
-			'name'  => $name,
-			'value' => $value,
-			'id'    => absint( $field_id ),
-			'type'  => $this->type,
+			'name'     => $name,
+			'value'    => $value,
+			'id'       => absint( $field_id ),
+			'type'     => $this->type,
+			'meta_key' => $meta_key,
 		);
 	}
 }

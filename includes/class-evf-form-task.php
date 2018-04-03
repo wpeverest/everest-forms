@@ -98,6 +98,7 @@ class EVF_Form_Task {
 				$field_id     = $field['id'];
 				$field_type   = $field['type'];
 				$field_submit = isset( $entry['form_fields'][ $field_id ] ) ? $entry['form_fields'][ $field_id ] : '';
+
 				do_action( "everest_forms_process_validate_{$field_type}", $field_id, $field_submit, $form_data, $field_type );
 			}
 
@@ -112,6 +113,7 @@ class EVF_Form_Task {
 				return;
 			}
 
+			// Initial error check.
 			$errors = apply_filters( 'everest_forms_process_initial_errors', $this->errors, $form_data );
 
 			if ( ! empty( $errors[ $form_id ] ) ) {
@@ -129,14 +131,14 @@ class EVF_Form_Task {
 				// Pass the form created date into the form data.
 				$form_data['created'] = $form->post_date;
 
-				// Format fields
+				// Format fields.
 				foreach ( (array) $form_data['form_fields'] as $field ) {
-
 					$field_id     = $field['id'];
+					$field_key    = $field['meta-key'];
 					$field_type   = $field['type'];
-					$field_submit = isset( $entry['fields'][ $field_id ] ) ? $entry['fields'][ $field_id ] : '';
+					$field_submit = isset( $entry['form_fields'][ $field_id ] ) ? $entry['form_fields'][ $field_id ] : '';
 
-					do_action( "everest_forms_process_format_{$field_type}", $field_id, $field_submit, $form_data );
+					do_action( "everest_forms_process_format_{$field_type}", $field_id, $field_submit, $form_data, $field_key );
 				}
 
 				// This hook is for internal purposes and should not be leveraged.
@@ -420,6 +422,7 @@ class EVF_Form_Task {
 			return new WP_Error( 'no-form-id', __( 'No form ID was found.', 'everest-forms' ) );
 		}
 
+		// Create entry.
 		$success = $wpdb->insert( $wpdb->prefix . 'evf_entries', $entry_data );
 
 		if ( is_wp_error( $success ) || ! $success ) {
@@ -428,22 +431,23 @@ class EVF_Form_Task {
 
 		$entry_id = $wpdb->insert_id;
 
-		$form_fields = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
+		// Create meta data.
+		if ( $entry_id ) {
+			foreach ( $fields as $field ) {
+				$field = apply_filters( 'everest_forms_entry_save_fields', $field, $form_data, $entry_id );
 
-		foreach ( $form_fields as $field_key => $field ) {
-			$meta_key    = isset( $field['meta-key'] ) ? $field['meta-key'] : '';
-			$field_value = isset( $entry['form_fields'][ $field_key ] ) ? $entry['form_fields'][ $field_key ] : '';
+				if ( isset( $field['value'], $field['meta_key'] ) && '' !== $field['value'] ) {
+					$field_value    = is_array( $field['value'] ) ? serialize( $field['value'] ) : $field['value'];
+					$entry_metadata = array(
+						'entry_id'   => $entry_id,
+						'meta_key'   => $field['meta_key'],
+						'meta_value' => $field_value,
+					);
 
-			if ( is_array( $field_value ) ) {
-				$field_value = serialize( $field_value );
+					// Insert entry meta.
+					$wpdb->insert( $wpdb->prefix . 'evf_entrymeta', $entry_metadata );
+				}
 			}
-
-			$entry_metadata = array(
-				'entry_id'   => $entry_id,
-				'meta_key'   => $meta_key,
-				'meta_value' => $field_value,
-			);
-			$wpdb->insert( $wpdb->prefix . 'evf_entrymeta', $entry_metadata );
 		}
 
 		do_action( 'everest_forms_complete_entry_save', $fields, $entry, $form_id, $form_data);
