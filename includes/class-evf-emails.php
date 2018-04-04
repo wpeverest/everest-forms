@@ -260,7 +260,7 @@ class EVF_Emails {
 
 		$body    = ob_get_clean();
 		$message = str_replace( '{email}', $message, $body );
-		$message = str_replace( '{all_fields}', $this->wpforms_html_field_value( true ), $message );
+		$message = str_replace( '{all_fields}', $this->everest_forms_html_field_value( true ), $message );
 		$message = make_clickable( $message );
 
 		return apply_filters( 'everest_forms_email_message', $message, $this );

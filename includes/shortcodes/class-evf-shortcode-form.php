@@ -509,7 +509,6 @@ class EVF_Shortcode_Form {
 			return;
 		}
 
-
 		$success = isset( $_POST['evf_success'] ) && $_POST['evf_success'] ? true : false;
 		if ( $success && ! empty( $form_data ) ) {
 			do_action( 'evf_frontend_output_success', $form_data );
