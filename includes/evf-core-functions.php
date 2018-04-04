@@ -1322,3 +1322,19 @@ function evf_get_license_plan() {
 
 	return false;
 }
+
+/**
+ * Decode special characters, both alpha- (<) and numeric-based (').
+ *
+ * @since  1.2.0
+ * @param  string $string
+ * @return string
+ */
+function evf_decode_string( $string ) {
+	if ( ! is_string( $string) ) {
+		return $string;
+	}
+
+	return wp_kses_decode_entities( html_entity_decode( $string, ENT_QUOTES ) );
+}
+add_filter( 'everest_forms_email_message', 'evf_decode_string' );

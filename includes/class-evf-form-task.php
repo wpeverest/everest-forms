@@ -291,8 +291,6 @@ class EVF_Form_Task {
 	/**
 	 * Sends entry email notifications.
 	 *
-	 * @since      1.0.0
-	 *
 	 * @param array  $fields
 	 * @param array  $entry
 	 * @param array  $form_data
@@ -301,20 +299,57 @@ class EVF_Form_Task {
 	 */
 	public function entry_email( $fields, $entry, $form_data, $entry_id, $context = '' ) {
 
-		// Provide the opportunity to override via a filter
-		if ( ! apply_filters( 'everest_forms_entry_email', true, $fields, $entry, $form_data ) ) {
-			return;
-		}
-
-		$fields = apply_filters( 'everest_forms_entry_email_data', $fields, $entry, $form_data );
-
+		// Check that the form was configured for email notifications.
 		$email_notifications = isset( $form_data['settings']['email'] ) ? $form_data['settings']['email'] : array();
 
 		if ( empty( $email_notifications['evf_to_email'] ) ) {
 			return;
 		}
 
+		// Provide the opportunity to override via a filter.
+		if ( ! apply_filters( 'everest_forms_entry_email', true, $fields, $entry, $form_data ) ) {
+			return;
+		}
+
+		$fields = apply_filters( 'everest_forms_entry_email_data', $fields, $entry, $form_data );
+
 		$form_fields = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
+
+		if ( $entry_id ) {
+			$data_html = '';
+
+			foreach ( $fields as $field ) {
+				$name  = isset( $field['name'] ) ? $field['name'] : '';
+				$type  = isset( $field['type'] ) ? $field['type'] : '';
+				$value = isset( $field['value'] ) ? $field['value'] : '';
+
+				// Set reply too.
+				if ( 'email' === $type ) {
+					$user_email = $value;
+				}
+
+				if ( ! empty( $type ) ) {
+					$process_field_email = apply_filters( 'everest_forms_entry_email_' . $type, true );
+
+					if ( $process_field_email ) {
+						if ( is_array( $value ) ) {
+							$value = implode( ', ', $value );
+						}
+
+						$data_html .= $name . ' : ' . $value . PHP_EOL;
+					}
+				}
+			}
+		}
+
+		echo '<pre>' . print_r( $data_html, true ) . '</pre>';
+
+
+		die();
+
+
+		// TODO
+		// $form_fields = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
 
 		$data_html = '';
 
@@ -329,6 +364,7 @@ class EVF_Form_Task {
 			if( $field_type == 'email' ){
 				$user_email = $field_value;
 			}
+
 			if ( ! empty( $field_type ) ) {
 
 				$process_field_email = apply_filters( 'everest_forms_entry_email_' . $field_type, true );
@@ -382,16 +418,13 @@ class EVF_Form_Task {
 	/**
 	 * Saves entry to database.
 	 *
-	 * @since      1.0.0
-	 *
-	 * @param array        $fields
-	 * @param array        $entry
-	 * @param int          $form_id
-	 * @param array|string $form_data
-	 *
+	 * @param  array $fields
+	 * @param  array $entry
+	 * @param  int   $form_id
+	 * @param  array $form_data
 	 * @return int
 	 */
-	public function entry_save( $fields, $entry, $form_id, $form_data = '' ) {
+	public function entry_save( $fields, $entry, $form_id, $form_data = array() ) {
 		global $wpdb;
 
 		// Check if form has entries disabled.
@@ -451,5 +484,7 @@ class EVF_Form_Task {
 		}
 
 		do_action( 'everest_forms_complete_entry_save', $fields, $entry, $form_id, $form_data);
+
+		return $entry_id;
 	}
 }
