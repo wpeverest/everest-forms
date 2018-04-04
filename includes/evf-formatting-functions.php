@@ -145,7 +145,7 @@ function evf_sanitize_array_combine( $array ) {
 		return $array;
 	}
 
-	return implode( "\n", array_map( 'sanitize_text_field', $array ) );
+	return array_map( 'sanitize_text_field', $array );
 }
 
 /**
