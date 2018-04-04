@@ -36,8 +36,6 @@ class EVF_Post_Types {
 
 		do_action( 'everest_forms_register_post_type' );
 
-		$supports = array( 'title', 'editor', 'excerpt', 'thumbnail', 'custom-fields', 'publicize', 'wpcom-markdown' );
-
 		register_post_type( 'everest_form',
 			apply_filters( 'everest_forms_register_post_type_product',
 				array(
@@ -71,8 +69,8 @@ class EVF_Post_Types {
 					'description'         => __( 'This is where you can add new forms.', 'everest-forms' ),
 					'capability_type'     => 'everest_form',
 					'map_meta_cap'        => true,
-					'publicly_queryable'  => true,
-					'exclude_from_search' => false,
+					'publicly_queryable'  => false,
+					'exclude_from_search' => true,
 					'show_in_rest'        => true,
 					'show_in_menu'        => false,
 					'hierarchical'        => false,
@@ -86,7 +84,6 @@ class EVF_Post_Types {
 		);
 
 		do_action( 'everest_forms_after_register_post_type' );
-
 	}
 
 

@@ -354,7 +354,8 @@ class EVF_Form_Task {
 					$email['evf_email_message'] = $data_html;
 				}
 				else {
-					$email['evf_email_message'] = $email_notifications['evf_from_email'];
+					$message = str_replace( "{all_fields}", $data_html, $email_notifications['evf_email_message'] );
+					$email['evf_email_message'] = $message;
 				}
 			}
 

@@ -1206,4 +1206,6 @@ function get_form_data_by_meta_key( $form_id, $meta_key ) {
 			return $field['label'];
 		}
 	}
+
+	return false;
 }

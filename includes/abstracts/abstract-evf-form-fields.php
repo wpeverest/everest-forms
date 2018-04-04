@@ -818,7 +818,7 @@ abstract class EVF_Form_Fields {
 			$field_submit = implode( "\r\n", $field_submit );
 		}
 
-		$name = ! empty( $form_data['fields'][ $field_id ]['label'] ) ? sanitize_text_field( $form_data['fields'][ $field_id ]['label'] ) : '';
+		$name = ! empty( $form_data['form_fields'][ $field_id ]['label'] ) ? sanitize_text_field( $form_data['form_fields'][ $field_id ]['label'] ) : '';
 
 		// Sanitize but keep line breaks.
 		$value = everest_forms_sanitize_textarea_field( $field_submit );
