@@ -166,28 +166,30 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		if ( ! empty( $entry->meta[ $meta_key ] ) ) {
 			$value = $entry->meta[ $meta_key ];
 
-			// Limit to 5 lines.
-			$lines = explode( "\n", $value );
-			$value = array_slice( $lines, 0, 4 );
-			$value = implode( "\n", $value );
-
-			if ( count( $lines ) > 5 ) {
-				$value .= '&hellip;';
-			} elseif ( strlen( $value ) > 75 ) {
-				$value = substr( $value, 0, 75 ) . '&hellip;';
-			}
-
-			$value = nl2br( wp_strip_all_tags( trim( $value ) ) );
-
 			if ( is_serialized( $value ) ) {
 				$field_html  = array();
 				$field_value = maybe_unserialize( $value );
 
-				foreach ( $field_value as $field => $meta_val ) {
-					$field_html[] = $meta_val;
+				if ( ! empty( $field_value ) ) {
+					foreach ( $field_value as $meta_val ) {
+						$field_html[] = $meta_val;
+					}
 				}
 
 				$value = implode( ' | ', $field_html );
+			} else {
+				// Limit to 5 lines.
+				$lines = explode( "\n", $value );
+				$value = array_slice( $lines, 0, 4 );
+				$value = implode( "\n", $value );
+
+				if ( count( $lines ) > 5 ) {
+					$value .= '&hellip;';
+				} elseif ( strlen( $value ) > 75 ) {
+					$value = substr( $value, 0, 75 ) . '&hellip;';
+				}
+
+				$value = nl2br( wp_strip_all_tags( trim( $value ) ) );
 			}
 
 			return apply_filters( 'everest_forms_html_field_value', $value, $entry->meta[ $meta_key ], $this->form_data, 'entry-table' );

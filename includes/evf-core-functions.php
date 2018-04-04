@@ -813,7 +813,7 @@ function evf_get_form_fields( $form = false, $whitelist = array() ) {
 		);
 	}
 
-	if ( ! is_array( $form ) || empty( $form['fields'] ) ) {
+	if ( ! is_array( $form ) || empty( $form['form_fields'] ) ) {
 		return false;
 	}
 
@@ -842,7 +842,7 @@ function evf_get_form_fields( $form = false, $whitelist = array() ) {
 
 	$whitelist = ! empty( $whitelist ) ? $whitelist : $allowed_form_fields;
 
-	$form_fields = $form['fields'];
+	$form_fields = $form['form_fields'];
 
 	foreach ( $form_fields as $id => $form_field ) {
 		if ( ! in_array( $form_field['type'], $whitelist, true ) ) {
