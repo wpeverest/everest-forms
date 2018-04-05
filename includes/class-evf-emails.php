@@ -259,7 +259,7 @@ class EVF_Emails {
 		$message = nl2br( $message );
 
 		$body    = ob_get_clean();
-		$message = str_replace( '{email}', $message, $body );
+		// $message = str_replace( '{email}', $message, $body );
 		$message = str_replace( '{all_fields}', $this->everest_forms_html_field_value( true ), $message );
 		$message = make_clickable( $message );
 
@@ -404,6 +404,16 @@ class EVF_Emails {
 				$field_val  = empty( $field['value'] ) && '0' !== $field['value'] ? '<em>' . __( '(empty)', 'everest-forms' ) . '</em>' : $field['value'];
 				$field_name = $field['name'];
 
+				if ( is_array( $field_val ) ) {
+					$field_html = array();
+
+					foreach ( $field_val as $meta_val ) {
+						$field_html[] = $meta_val;
+					}
+
+					$field_val = implode( ' | ', $field_html );
+				}
+
 				if ( empty( $field_name ) ) {
 					$field_name = sprintf(
 						/* translators: %d - field ID. */
@@ -418,7 +428,7 @@ class EVF_Emails {
 				}
 
 				$field_item  = str_replace( '{field_name}', $field_name, $field_item );
-				$field_value = apply_filters( 'everest_forms_html_field_value', evf_decode_string( $field_val ), $field, $this->form_data, 'email-html' );
+				$field_value = apply_filters( 'everest_forms_html_field_value', evf_decode_string( $field_val ), $field['value'], $this->form_data, 'email-html' );
 				$field_item  = str_replace( '{field_value}', $field_value, $field_item );
 
 				$message .= wpautop( $field_item );
@@ -446,7 +456,7 @@ class EVF_Emails {
 
 				$message    .= '--- ' . evf_decode_string( $field_name ) . " ---\r\n\r\n";
 				$field_value = evf_decode_string( $field_val ) . "\r\n\r\n";
-				$message    .= apply_filters( 'everest_forms_plaintext_field_value', $field_value, $field, $this->form_data );
+				$message    .= apply_filters( 'everest_forms_plaintext_field_value', $field_value, $field['value'], $this->form_data, 'email-plain' );
 			}
 		}
 
@@ -475,6 +485,10 @@ class EVF_Emails {
 	 * @return string When filtering return 'none' to switch to text/plain email.
 	 */
 	public function get_template() {
+		if ( ! $this->template ) {
+			$this->template = 'default';
+		}
+
 		return apply_filters( 'everest_forms_email_template', $this->template );
 	}
 
@@ -551,12 +565,12 @@ class EVF_Emails {
 	 * @return array
 	 */
 	public function get_theme_template_paths() {
-		$template_dir = 'everest_forms-email';
+		$template_dir = 'everest-forms/email';
 
 		$file_paths = array(
 			1   => trailingslashit( get_stylesheet_directory() ) . $template_dir,
 			10  => trailingslashit( get_template_directory() ) . $template_dir,
-			100 => EVF_PLUGIN_FILE . 'includes/emails/templates',
+			100 => EVF()->plugin_path() . '/templates/emails',
 		);
 
 		$file_paths = apply_filters( 'everest_forms_email_template_paths', $file_paths );
