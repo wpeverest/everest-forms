@@ -240,17 +240,17 @@ class EVF_Emails {
 
 		ob_start();
 
-		$this->get_template_part( 'header', $this->get_template(), true );
+		evf_get_template( 'emails/header-' . $this->get_template() . '.php' );
 
 		// Hooks into the email header.
 		do_action( 'everest_forms_email_header', $this );
 
-		$this->get_template_part( 'body', $this->get_template(), true );
+		evf_get_template( 'emails/body-' . $this->get_template() . '.php' );
 
 		// Hooks into the email body.
 		do_action( 'everest_forms_email_body', $this );
 
-		$this->get_template_part( 'footer', $this->get_template(), true );
+		evf_get_template( 'emails/footer-' . $this->get_template() . '.php' );
 
 		// Hooks into the email footer.
 		do_action( 'everest_forms_email_footer', $this );
@@ -387,7 +387,7 @@ class EVF_Emails {
 			// Hooks into the email field.
 			do_action( 'everest_forms_email_field', $this );
 
-			$this->get_template_part( 'field', $this->get_template(), true );
+			evf_get_template( 'emails/field-' . $this->get_template() . '.php' );
 
 			$field_template = ob_get_clean();
 
@@ -490,94 +490,5 @@ class EVF_Emails {
 		}
 
 		return apply_filters( 'everest_forms_email_template', $this->template );
-	}
-
-	/**
-	 * Retrieves a template part. Taken from bbPress.
-	 *
-	 * @param  string $slug
-	 * @param  string $name Optional. Default null.
-	 * @param  bool   $load
-	 * @return string
-	 */
-	public function get_template_part( $slug, $name = null, $load = true ) {
-		// Setup possible parts.
-		$templates = array();
-		if ( isset( $name ) ) {
-			$templates[] = $slug . '-' . $name . '.php';
-		}
-		$templates[] = $slug . '.php';
-
-		// Return the part that is found.
-		return $this->locate_template( $templates, $load, false );
-	}
-
-	/**
-	 * Retrieve the name of the highest priority template file that exists.
-	 *
-	 * Searches in the STYLESHEETPATH before TEMPLATEPATH so that themes which
-	 * inherit from a parent theme can just overload one file. If the template is
-	 * not found in either of those, it looks in the theme-compat folder last.
-	 *
-	 * Taken from bbPress.
-	 *
-	 * @param string|array $template_names Template file(s) to search for, in order.
-	 * @param bool         $load           If true the template file will be loaded if it is found.
-	 * @param bool         $require_once   Whether to require_once or require. Default true.
-	 *                                     Has no effect if $load is false.
-	 *
-	 * @return string The template filename if one is located.
-	 */
-	public function locate_template( $template_names, $load = false, $require_once = true ) {
-		// No file found yet.
-		$located = false;
-
-		// Try to find a template file.
-		foreach ( (array) $template_names as $template_name ) {
-
-			// Continue if template is empty.
-			if ( empty( $template_name ) ) {
-				continue;
-			}
-
-			// Trim off any slashes from the template name.
-			$template_name = ltrim( $template_name, '/' );
-
-			// Try locating this template file by looping through the template paths.
-			foreach ( $this->get_theme_template_paths() as $template_path ) {
-				if ( file_exists( $template_path . $template_name ) ) {
-					$located = $template_path . $template_name;
-					break;
-				}
-			}
-		}
-
-		if ( ( true === $load ) && ! empty( $located ) ) {
-			load_template( $located, $require_once );
-		}
-
-		return $located;
-	}
-
-	/**
-	 * Returns a list of paths to check for template locations.
-	 *
-	 * @return array
-	 */
-	public function get_theme_template_paths() {
-		$template_dir = 'everest-forms/email';
-
-		$file_paths = array(
-			1   => trailingslashit( get_stylesheet_directory() ) . $template_dir,
-			10  => trailingslashit( get_template_directory() ) . $template_dir,
-			100 => EVF()->plugin_path() . '/templates/emails',
-		);
-
-		$file_paths = apply_filters( 'everest_forms_email_template_paths', $file_paths );
-
-		// Sort the file paths based on priority.
-		ksort( $file_paths, SORT_NUMERIC );
-
-		return array_map( 'trailingslashit', $file_paths );
 	}
 }
