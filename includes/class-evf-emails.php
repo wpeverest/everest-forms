@@ -411,7 +411,7 @@ class EVF_Emails {
 						$field_html[] = $meta_val;
 					}
 
-					$field_val = implode( ' | ', $field_html );
+					$field_val = implode( ', ', $field_html );
 				}
 
 				if ( empty( $field_name ) ) {
