@@ -52,7 +52,7 @@ if ( ! class_exists( 'EVF_Settings_Email', false ) ) :
 						'default' => 'default',
 						'options' => array(
 							'default' => esc_html__( 'HTML', 'everest-forms' ),
-							'plain'   => esc_html__( 'Plain', 'everest-forms' ),
+							'none'   => esc_html__( 'Plain', 'everest-forms' ),
 						),
 					),
 					array(
