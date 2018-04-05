@@ -259,7 +259,7 @@ class EVF_Emails {
 		$message = nl2br( $message );
 
 		$body    = ob_get_clean();
-		// $message = str_replace( '{email}', $message, $body );
+		$message = str_replace( '{email}', $message, $body );
 		$message = str_replace( '{all_fields}', $this->everest_forms_html_field_value( true ), $message );
 		$message = make_clickable( $message );
 
