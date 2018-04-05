@@ -71,6 +71,7 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 == Changelog ==
 
 = 1.1.3 - XX-04-2018 =
+* Fix - Per page entries in list table.
 * Fix - Empty field ID if meta key is renamed.
 * Tweak - Horizontal scroll bar issue on frontend.
 
