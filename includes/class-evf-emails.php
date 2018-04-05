@@ -446,6 +446,16 @@ class EVF_Emails {
 				$field_val  = empty( $field['value'] ) && '0' !== $field['value'] ? esc_html__( '(empty)', 'everest-forms' ) : $field['value'];
 				$field_name = $field['name'];
 
+				if ( is_array( $field_val ) ) {
+					$field_html = array();
+
+					foreach ( $field_val as $meta_val ) {
+						$field_html[] = $meta_val;
+					}
+
+					$field_val = implode( ', ', $field_html );
+				}
+
 				if ( empty( $field_name ) ) {
 					$field_name = sprintf(
 						/* translators: %d - field ID. */
@@ -486,7 +496,7 @@ class EVF_Emails {
 	 */
 	public function get_template() {
 		if ( ! $this->template ) {
-			$this->template = 'default';
+			$this->template = 'none';
 		}
 
 		return apply_filters( 'everest_forms_email_template', $this->template );
