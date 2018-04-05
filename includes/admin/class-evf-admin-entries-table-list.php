@@ -391,7 +391,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	public function prepare_items( $args = array() ) {
 		global $wpdb;
 
-		$per_page     = $this->get_items_per_page( 'evf_forms_per_page' );
+		$per_page     = $this->get_items_per_page( 'evf_entries_per_page' );
 		$current_page = $this->get_pagenum();
 
 		// Query args.
