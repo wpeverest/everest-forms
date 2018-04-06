@@ -1,3 +1,4 @@
+/* global jconfirm */
 (function ( $, evf_data ) {
 
 
@@ -18,6 +19,28 @@
 			$(window).on('load', EVFPanelBuilder.load);
 
 			EVFPanelBuilder.bindUI();
+		},
+
+		/**
+		 * Document ready.
+		 *
+		 * @since 1.3.9
+		 */
+		ready: function() {
+			// jquery-confirm defaults.
+			jconfirm.defaults = {
+				closeIcon: true,
+				backgroundDismiss: true,
+				escapeKey: true,
+				animationBounce: 1,
+				useBootstrap: false,
+				theme: 'modern',
+				boxWidth: '400px',
+				columnClass: 'evf-responsive-class'
+			};
+
+			// Action available for each binding.
+			$( document ).trigger( 'everest_forms_ready' );
 		},
 
 		load: function () {
@@ -84,35 +107,24 @@
 			$('body').on('click', '.evf-choices-list a.remove', function () {
 				var ul = $(this).closest('.evf-choices-list');
 				var field_id = ul.attr('data-field-id');
+
 				if ( ul.find('li').length < 2 ) {
+					$.confirm({
+						type: 'red',
+						title: false,
+						content: evf_data.could_not_delete_single_choice_content,
+						closeIcon: false,
+						backgroundDismiss: false,
+						icon: 'dashicons dashicons-warning',
+						buttons: {
+							ok: {
+								text: evf_data.ok,
+								btnClass: 'evf-ok-btn',
+								action: function () {
 
-					var type = '';
-					var title = evf_data.delete_confirm_title;
-					var content = evf_data.are_you_sure_want_to_delete_row;
-
-					var buttons = {
-						ok: {
-							text: evf_data.ok,
-							btnClass: 'evf-ok-btn',
-							action: function () {
-
+								}
 							}
 						}
-					};
-
-					type = 'red';
-					title = evf_data.could_not_delete_single_choice;
-					content = evf_data.could_not_delete_single_choice_content;
-
-					$.confirm({
-						columnClass: 'evf-responsive-class',
-						type: type,
-						typeAnimated: true,
-						boxWidth: '400px',
-						useBootstrap: false,
-						title: title,
-						content: content,
-						buttons: buttons
 					});
 					return;
 				}
@@ -192,7 +204,8 @@
 		},
 		bindRemoveRow: function () {
 			$('body').on('click', '.evf-delete-row', function () {
-				var row = $(this).closest('.evf-admin-row');
+				var row     = $( this ).closest( '.evf-admin-row' );
+				var content = evf_data.are_you_sure_want_to_delete_row;
 				var buttons = {
 					confirm: {
 						text: evf_data.confirm,
@@ -208,9 +221,7 @@
 						}
 					}
 				};
-				var type = '';
-				var title = evf_data.delete_confirm_title;
-				var content = evf_data.are_you_sure_want_to_delete_row;
+
 				if ( $('.evf-admin-row').length < 2 ) {
 					buttons = {
 						ok: {
@@ -222,21 +233,19 @@
 						}
 					};
 
-					type = 'red';
-					title = evf_data.could_not_delete_single_row_title;
 					content = evf_data.could_not_delete_single_row_content;
 				}
+
 				$.confirm({
-					columnClass: 'evf-responsive-class',
-					type: type,
-					typeAnimated: true,
-					boxWidth: '400px',
-					useBootstrap: false,
-					title: title,
+					title: false,
 					content: content,
-					buttons: buttons
+					buttons: buttons,
+					type: 'red',
+					closeIcon: false,
+					backgroundDismiss: false,
+					icon: 'dashicons dashicons-warning'
 				});
-			})
+			});
 		},
 		bindAddNewRow: function () {
 
@@ -307,13 +316,14 @@
 		bindCloneField: function () {
 			$('body').on('click', '.everest-forms-preview .everest-forms-field .everest-forms-field-duplicate', function () {
 				var field = $(this).closest('.everest-forms-field');
-				var label_title = field.find('.label-title span.text').text();
+
 				$.confirm({
-					columnClass: 'evf-responsive-class',
-					boxWidth: '400px',
-					useBootstrap: false,
-					title: evf_data.duplicate_confirm_title,
-					content: evf_data.are_you_sure_want_to_duplicate_this + ' <b>' + label_title + '</b> ' + evf_data.field + ' ?',
+					title: false,
+					content: evf_data.are_you_sure_want_to_duplicate_field,
+					type: 'orange',
+					closeIcon: false,
+					backgroundDismiss: false,
+					icon: 'dashicons dashicons-warning',
 					buttons: {
 						confirm: {
 							text: evf_data.confirm,
@@ -324,9 +334,7 @@
 						}, cancel: {
 							text: evf_data.cancel,
 							btnClass: 'evf-cancel-btn',
-							action: function () {
-
-							}
+							action: function () {}
 						}
 					}
 				});
@@ -418,20 +426,21 @@
 				var field = $(this).closest('.everest-forms-field');
 				var field_id = field.attr('data-field-id');
 				var option_field = $('#everest-forms-field-option-' + field_id);
-				var label_title = field.find('.label-title span.text').text();
+
 				$.confirm({
-					columnClass: 'evf-responsive-class',
-					boxWidth: '400px',
-					useBootstrap: false,
-					title: evf_data.delete_confirm_title,
-					content: evf_data.are_you_sure_want_to_delete_this + ' <b>' + label_title + '</b> ' + evf_data.field + ' ?',
+					title: false,
+					content: evf_data.are_you_sure_want_to_delete_field,
+					type: 'orange',
+					closeIcon: false,
+					backgroundDismiss: false,
+					icon: 'dashicons dashicons-warning',
 					buttons: {
 						confirm: {
 							text: evf_data.confirm,
 							btnClass: 'evf-confirm-btn',
 							action: function () {
-								$('.evf-panel-fields-button').trigger('click');
-								field.fadeOut("slow", function () {
+								$( '.evf-panel-fields-button' ).trigger( 'click' );
+								field.fadeOut( 'slow', function () {
 									field.remove();
 									option_field.remove();
 								});

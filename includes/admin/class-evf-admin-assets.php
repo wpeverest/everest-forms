@@ -73,42 +73,32 @@ if ( ! class_exists( 'EVF_Admin_Assets', false ) ) :
 
 			wp_enqueue_media();
 
-
 			$strings = array(
 				'ajax_url'                               => admin_url( 'admin-ajax.php' ),
 				'evf_field_drop_nonce'                   => wp_create_nonce( 'everest_forms_field_drop' ),
 				'evf_save_form'                          => wp_create_nonce( 'everest_forms_save_form' ),
 				'evf_get_next_id'                        => wp_create_nonce( 'everest_forms_get_next_id' ),
 				'form_id'                                => isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0,
-				'are_you_sure_want_to_delete_this'       => __( 'Are you sure want to delete this', 'everest-forms' ),
+				'are_you_sure_want_to_delete_field'      => __( 'Are you sure want to delete this field?', 'everest-forms' ),
 				'field'                                  => __( 'field', 'everest-forms' ),
 				'confirm'                                => __( 'Confirm', 'everest-forms' ),
 				'cancel'                                 => __( 'Cancel', 'everest-forms' ),
-				'delete_confirm_title'                   => __( 'Delete Confirmation', 'everest-forms' ),
-				'duplicate_confirm_title'                => __( 'Duplicate Confirmation', 'everest-forms' ),
-				'are_you_sure_want_to_duplicate_this'    => __( 'Are you sure want to duplicate this', 'everest-forms' ),
+				'are_you_sure_want_to_duplicate_field'   => __( 'Are you sure want to duplicate this field?', 'everest-forms' ),
 				'are_you_sure_want_to_delete_row'        => __( 'Are you sure want to delete this row?', 'everest-forms' ),
 				'copy_of'                                => __( 'Copy of ', 'everest-forms' ),
 				'ok'                                     => __( 'Ok', 'everest-forms' ),
-				'could_not_delete_single_row_title'      => __( 'Could not delete', 'everest-forms' ),
 				'could_not_delete_single_row_content'    => __( 'Could not delete single row.', 'everest-forms' ),
 				'could_not_delete_single_choice'         => __( 'Could not delete single choice.', 'everest-forms' ),
 				'could_not_delete_single_choice_content' => __( 'Could not delete single choice.', 'everest-forms' ),
-				'tab'                                    => isset( $_GET['tab'] ) ? $_GET['tab'] : ''
-
-
+				'tab'                                    => isset( $_GET['tab'] ) ? $_GET['tab'] : '',
 			);
 			$strings = apply_filters( 'everest_forms_builder_strings', $strings );
-
 
 			wp_localize_script(
 				'evf-panel-builder',
 				'evf_data',
 				$strings
 			);
-
-			// Hook
-
 		}
 
 		/**
