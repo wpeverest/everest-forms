@@ -105,30 +105,30 @@
 				EVFPanelBuilder.choiceChange(field_id);
 			});
 			$('body').on('click', '.evf-choices-list a.remove', function () {
-				var ul = $(this).closest('.evf-choices-list');
-				var field_id = ul.attr('data-field-id');
+				var ul = $( this ).closest( '.evf-choices-list' );
+				var field_id = ul.attr( 'data-field-id' );
 
-				if ( ul.find('li').length < 2 ) {
-					$.confirm({
+				if ( ul.find( 'li' ).length < 2 ) {
+					$.alert({
 						title: false,
-						content: evf_data.could_not_delete_single_choice,
+						content: evf_data.i18n_field_error_choice,
 						icon: 'dashicons dashicons-info',
 						type: 'blue',
 						buttons: {
 							ok: {
-								text: evf_data.ok,
-								btnClass: 'evf-ok-btn',
+								text: evf_data.i18n_ok,
+								btnClass: 'btn-confirm',
 								keys: [ 'enter' ]
 							}
 						}
 					});
-					return;
+				} else {
+					$( this ).closest( 'li' ).remove();
+					EVFPanelBuilder.choiceChange( field_id );
 				}
-				$(this).closest('li').remove();
-				EVFPanelBuilder.choiceChange(field_id);
 			});
-			var selector = '.evf-choices-list input';
 
+			var selector = '.evf-choices-list input';
 
 			$('body').on('keyup paste click', selector, function () {
 				var ul = $(this).closest('.evf-choices-list');
@@ -199,48 +199,46 @@
 			row.remove();
 		},
 		bindRemoveRow: function () {
-			$('body').on('click', '.evf-delete-row', function () {
-				var row     = $( this ).closest( '.evf-admin-row' );
-				var content = evf_data.are_you_sure_want_to_delete_row;
-				var buttons = {
-					confirm: {
-						text: evf_data.confirm,
-						btnClass: 'evf-confirm-btn',
-						action: function () {
-							EVFPanelBuilder.removeRow(row);
-						}
-					}, cancel: {
-						text: evf_data.cancel,
-						btnClass: 'evf-cancel-btn',
-						action: function () {
+			$( 'body' ).on('click', '.evf-delete-row', function () {
+				var row = $( this ).closest( '.evf-admin-row' );
 
-						}
-					}
-				};
-
-				if ( $('.evf-admin-row').length < 2 ) {
-					buttons = {
-						ok: {
-							text: evf_data.ok,
-							btnClass: 'evf-ok-btn',
-							action: function () {
-
+				if ( $( '.evf-admin-row' ).length < 2 ) {
+					$.alert({
+						title: evf_data.i18n_row_locked,
+						content: evf_data.i18n_row_locked_msg,
+						icon: 'dashicons dashicons-info',
+						type: 'blue',
+						buttons : {
+							confirm : {
+								text: evf_data.i18n_close,
+								btnClass: 'btn-confirm',
+								keys: ['enter']
 							}
 						}
-					};
-
-					content = evf_data.could_not_delete_single_row_content;
+					});
+				} else {
+					$.confirm({
+						title: false,
+						content: evf_data.i18n_delete_row_confirm,
+						type: 'red',
+						closeIcon: false,
+						backgroundDismiss: false,
+						icon: 'dashicons dashicons-warning',
+						buttons: {
+							confirm: {
+								text: evf_data.i18n_ok,
+								btnClass: 'btn-confirm',
+								keys: ['enter'],
+								action: function () {
+									EVFPanelBuilder.removeRow( row );
+								}
+							},
+							cancel: {
+								text: evf_data.i18n_cancel
+							}
+						}
+					} );
 				}
-
-				$.confirm({
-					title: false,
-					content: content,
-					buttons: buttons,
-					type: 'red',
-					closeIcon: false,
-					backgroundDismiss: false,
-					icon: 'dashicons dashicons-warning'
-				});
 			});
 		},
 		bindAddNewRow: function () {
@@ -310,32 +308,47 @@
 
 		},
 		bindCloneField: function () {
-			$('body').on('click', '.everest-forms-preview .everest-forms-field .everest-forms-field-duplicate', function () {
-				var field = $(this).closest('.everest-forms-field');
+			$( 'body' ).on( 'click', '.everest-forms-preview .everest-forms-field .everest-forms-field-duplicate', function() {
+				var $field = $( this ).closest( '.everest-forms-field' );
 
-				$.confirm({
-					title: false,
-					content: evf_data.are_you_sure_want_to_duplicate_field,
-					type: 'orange',
-					closeIcon: false,
-					backgroundDismiss: false,
-					icon: 'dashicons dashicons-warning',
-					buttons: {
-						confirm: {
-							text: evf_data.confirm,
-							btnClass: 'evf-confirm-btn',
-							action: function () {
-								EVFPanelBuilder.cloneFieldAction(field);
+				if ( $field.hasClass( 'no-duplicate' ) ) {
+					$.alert({
+						title: evf_data.i18n_field_locked,
+						content: evf_data.i18n_field_locked_msg,
+						icon: 'dashicons dashicons-info',
+						type: 'blue',
+						buttons : {
+							confirm : {
+								text: evf_data.i18n_close,
+								btnClass: 'btn-confirm',
+								keys: ['enter']
 							}
-						}, cancel: {
-							text: evf_data.cancel,
-							btnClass: 'evf-cancel-btn',
-							action: function () {}
 						}
-					}
-				});
-			});
-
+					});
+				} else {
+					$.confirm({
+						title: false,
+						content: evf_data.i18n_duplicate_field_confirm,
+						type: 'orange',
+						closeIcon: false,
+						backgroundDismiss: false,
+						icon: 'dashicons dashicons-warning',
+						buttons: {
+							confirm: {
+								text: evf_data.i18n_ok,
+								btnClass: 'btn-confirm',
+								keys: ['enter'],
+								action: function () {
+									EVFPanelBuilder.cloneFieldAction( $field );
+								}
+							},
+							cancel: {
+								text: evf_data.i18n_cancel
+							}
+						}
+					} );
+				}
+			} );
 		},
 		cloneFieldAction: function ( field ) {
 			var element_field_id = field.attr('data-field-id');
@@ -349,17 +362,13 @@
 				url: evf_data.ajax_url,
 				data: data,
 				type: 'POST',
-				beforeSend: function () {
-				},
+				beforeSend: function() {},
 				success: function ( response ) {
 					if ( typeof response.success === 'boolean' && response.success === true ) {
-
 						var field_id = response.data.field_id;
 						var field_key = response.data.field_key;
 						$('#everest-forms-field-id').val(field_id);
-
 						EVFPanelBuilder.render_node(field, element_field_id, field_key);
-
 					}
 				}
 			});
@@ -371,7 +380,7 @@
 				newOptionHtml = option.html(),
 				new_field_label = evf_data.copy_of + $('#everest-forms-field-option-' + old_key + '-label').val(),
 				newFieldCloned = field.clone();
-			var regex = new RegExp(old_key, "g");
+			var regex = new RegExp(old_key, 'g');
 			newOptionHtml = newOptionHtml.replace(regex, new_key);
 			var newOption = $('<div class="everest-forms-field-option everest-forms-field-option-' + field_type + '" id="everest-forms-field-option-' + new_key + '" data-field-id="' + new_key + '" />');
 			newOption.append(newOptionHtml);
@@ -403,7 +412,6 @@
 			});
 
 			$('.everest-forms-field-options').append(newOption);
-
 			$('#everest-forms-field-option-' + new_key + '-label').val(new_field_label);
 
 			// Field Clone
@@ -414,42 +422,54 @@
 			newFieldCloned.find('.label-title .text').text(new_field_label);
 			field.closest('.evf-admin-grid').append(newFieldCloned);
 			$(document).trigger('everest-form-cloned', [ new_key, type ]);
-
-
 		},
 		bindFieldDelete: function () {
-			$('body').on('click', '.everest-forms-preview .everest-forms-field .everest-forms-field-delete', function () {
-				var field = $(this).closest('.everest-forms-field');
-				var field_id = field.attr('data-field-id');
-				var option_field = $('#everest-forms-field-option-' + field_id);
+			$( 'body' ).on('click', '.everest-forms-preview .everest-forms-field .everest-forms-field-delete', function () {
+				var $field       = $( this ).closest( '.everest-forms-field' );
+				var field_id     = $field.attr('data-field-id');
+				var option_field = $( '#everest-forms-field-option-' + field_id );
 
-				$.confirm({
-					title: false,
-					content: evf_data.are_you_sure_want_to_delete_field,
-					type: 'orange',
-					closeIcon: false,
-					backgroundDismiss: false,
-					icon: 'dashicons dashicons-warning',
-					buttons: {
-						confirm: {
-							text: evf_data.confirm,
-							btnClass: 'evf-confirm-btn',
-							action: function () {
-								$( '.evf-panel-fields-button' ).trigger( 'click' );
-								field.fadeOut( 'slow', function () {
-									field.remove();
-									option_field.remove();
-								});
-							}
-						}, cancel: {
-							text: evf_data.cancel,
-							btnClass: 'evf-cancel-btn',
-							action: function () {
-
+				if ( $field.hasClass( 'no-delete' ) ) {
+					$.alert({
+						title: evf_data.i18n_field_locked,
+						content: evf_data.i18n_field_locked_msg,
+						icon: 'dashicons dashicons-info',
+						type: 'blue',
+						buttons : {
+							confirm : {
+								text: evf_data.i18n_close,
+								btnClass: 'btn-confirm',
+								keys: ['enter']
 							}
 						}
-					}
-				});
+					});
+				} else {
+					$.confirm({
+						title: false,
+						content: evf_data.i18n_delete_field_confirm,
+						type: 'orange',
+						closeIcon: false,
+						backgroundDismiss: false,
+						icon: 'dashicons dashicons-warning',
+						buttons: {
+							confirm: {
+								text: evf_data.i18n_ok,
+								btnClass: 'btn-confirm',
+								keys: ['enter'],
+								action: function () {
+									$( '.evf-panel-fields-button' ).trigger( 'click' );
+									$field.fadeOut( 'slow', function () {
+										$field.remove();
+										option_field.remove();
+									});
+								}
+							},
+							cancel: {
+								text: evf_data.i18n_cancel
+							}
+						}
+					} );
+				}
 			});
 		},
 		bindSaveOption: function () {

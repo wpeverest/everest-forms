@@ -35,8 +35,7 @@ if ( ! class_exists( 'EVF_Admin_Assets', false ) ) :
 		 */
 		public function everest_forms_builder_scripts() {
 
-			// Remove conflicting scripts
-
+			// Remove conflicting scripts.
 			do_action( 'everest_forms_builder_enqueues_before' );
 
 			wp_enqueue_style( 'everest_forms_admin_menu_styles', EVF()->plugin_url() . '/assets/css/everest-builder.css', array(), EVF_VERSION );
@@ -70,34 +69,33 @@ if ( ! class_exists( 'EVF_Admin_Assets', false ) ) :
 			);
 
 			// JS
-
 			wp_enqueue_media();
 
-			$strings = array(
-				'ajax_url'                             => admin_url( 'admin-ajax.php' ),
-				'evf_field_drop_nonce'                 => wp_create_nonce( 'everest_forms_field_drop' ),
-				'evf_save_form'                        => wp_create_nonce( 'everest_forms_save_form' ),
-				'evf_get_next_id'                      => wp_create_nonce( 'everest_forms_get_next_id' ),
-				'form_id'                              => isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0,
-				'are_you_sure_want_to_delete_field'    => __( 'Are you sure want to delete this field?', 'everest-forms' ),
-				'field'                                => __( 'field', 'everest-forms' ),
-				'confirm'                              => __( 'Confirm', 'everest-forms' ),
-				'cancel'                               => __( 'Cancel', 'everest-forms' ),
-				'are_you_sure_want_to_duplicate_field' => __( 'Are you sure want to duplicate this field?', 'everest-forms' ),
-				'are_you_sure_want_to_delete_row'      => __( 'Are you sure want to delete this row?', 'everest-forms' ),
-				'copy_of'                              => __( 'Copy of ', 'everest-forms' ),
-				'ok'                                   => __( 'Ok', 'everest-forms' ),
-				'could_not_delete_single_row_content'  => __( 'Could not delete single row.', 'everest-forms' ),
-				'could_not_delete_single_choice'       => __( 'This item must contain at least one choice.', 'everest-forms' ),
-				'tab'                                  => isset( $_GET['tab'] ) ? $_GET['tab'] : '',
+			$params = apply_filters(
+				'everest_forms_builder_strings', array(
+					'ajax_url'                     => admin_url( 'admin-ajax.php' ),
+					'tab'                          => isset( $_GET['tab'] ) ? $_GET['tab'] : '',
+					'evf_field_drop_nonce'         => wp_create_nonce( 'everest_forms_field_drop' ),
+					'evf_save_form'                => wp_create_nonce( 'everest_forms_save_form' ),
+					'evf_get_next_id'              => wp_create_nonce( 'everest_forms_get_next_id' ),
+					'form_id'                      => isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0,
+					'field'                        => esc_html__( 'field', 'everest-forms' ),
+					'copy_of'                      => esc_html__( 'Copy of ', 'everest-forms' ),
+					'i18n_ok'                      => esc_html__( 'OK', 'everest-forms' ),
+					'i18n_close'                   => esc_html__( 'Close', 'everest-forms' ),
+					'i18n_cancel'                  => esc_html__( 'Cancel', 'everest-forms' ),
+					'i18n_row_locked'              => esc_html__( 'Row Locked', 'everest-forms' ),
+					'i18n_row_locked_msg'          => esc_html__( 'Single row cannot be deleted.', 'everest-forms' ),
+					'i18n_field_locked'            => esc_html__( 'Field Locked', 'everest-forms' ),
+					'i18n_field_locked_msg'        => esc_html__( 'This field cannot be deleted or duplicated.', 'everest-forms' ),
+					'i18n_field_error_choice'      => esc_html__( 'This item must contain at least one choice.', 'everest-forms' ),
+					'i18n_delete_row_confirm'      => esc_html__( 'Are you sure you want to delete this row?', 'everest-forms' ),
+					'i18n_delete_field_confirm'    => esc_html__( 'Are you sure you want to delete this field?', 'everest-forms' ),
+					'i18n_duplicate_field_confirm' => esc_html__( 'Are you sure you want to duplicate this field?', 'everest-forms' ),
+				)
 			);
-			$strings = apply_filters( 'everest_forms_builder_strings', $strings );
 
-			wp_localize_script(
-				'evf-panel-builder',
-				'evf_data',
-				$strings
-			);
+			wp_localize_script( 'evf-panel-builder', 'evf_data', $params );
 		}
 
 		/**
