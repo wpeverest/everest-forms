@@ -110,19 +110,15 @@
 
 				if ( ul.find('li').length < 2 ) {
 					$.confirm({
-						type: 'red',
 						title: false,
-						content: evf_data.could_not_delete_single_choice_content,
-						closeIcon: false,
-						backgroundDismiss: false,
-						icon: 'dashicons dashicons-warning',
+						content: evf_data.could_not_delete_single_choice,
+						icon: 'dashicons dashicons-info',
+						type: 'blue',
 						buttons: {
 							ok: {
 								text: evf_data.ok,
 								btnClass: 'evf-ok-btn',
-								action: function () {
-
-								}
+								keys: [ 'enter' ]
 							}
 						}
 					});
