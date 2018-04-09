@@ -1,0 +1,51 @@
+div.jconfirm {
+
+    &.jconfirm-modern {
+
+        .jconfirm-box {
+            border-radius: 0;
+            box-shadow: 0 3px 10px transparentize( $color-gray-base, 0.9);
+
+            div.jconfirm-title-c {
+                margin-bottom: 0px;
+                
+                .jconfirm-icon-c {
+                    -webkit-transition: none !important;
+                    transition: none !important;
+                    -webkit-transform: none !important;
+                    -ms-transform: none !important;
+                    transform: none !important;
+                    font-size: 45px !important;
+                    margin-bottom: 0px;
+
+                    .dashicons {
+                        height: inherit;
+                        width: inherit;
+                        font-size: 60px;
+                    }
+                }
+            }
+
+            div.jconfirm-content-pane {
+
+                .jconfirm-content {
+                    overflow: initial;
+                }
+            }
+
+            button {
+                
+                &.evf-ok-btn,
+                &.evf-confirm-btn {
+                    background-color: $button-color;
+                    color: $color-white;
+                    outline: none;
+
+                    &:hover {
+                        background-color: transparentize( $button-color, 0.2 )
+                    }
+                }
+            }
+        }
+    }
+}
