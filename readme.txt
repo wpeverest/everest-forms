@@ -74,6 +74,7 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 * Fix - Per page entries in list table.
 * Fix - Empty field ID if meta key is renamed.
 * Tweak - Horizontal scroll bar issue on frontend.
+* Tweak - jQuery-confirm JS alert library styles.
 
 = 1.1.2 - 29-03-2018 =
 * Fix - Exclude CPT data from search.

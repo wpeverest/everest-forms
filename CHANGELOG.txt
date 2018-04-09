@@ -1,5 +1,20 @@
 == Changelog ==
 
+= 1.1.3 - XX-04-2018 =
+* Fix - Per page entries in list table.
+* Fix - Empty field ID if meta key is renamed.
+* Tweak - Horizontal scroll bar issue on frontend.
+* Tweak - jQuery-confirm JS alert library styles.
+
+= 1.1.2 - 29-03-2018 =
+* Fix - Exclude CPT data from search.
+
+= 1.1.1 - 23-03-2018 =
+* Fix - Custom email message issue.
+
+= 1.1.0 - 12-03-2018 =
+* Feature - Entries panel to save form in database.
+
 = 1.0.3 - 23-02-2018 =
 * Fix - From email issue fix for default form
 
