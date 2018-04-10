@@ -1,0 +1,99 @@
+/**
+ * _confirm.scss
+ * Styling applied to jQuery-confirm JS alert library.
+ */
+
+/**
+ * Styling begins
+ */
+div.jconfirm {
+
+	*,
+	*::before,
+	*::after {
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+	}
+
+	&.jconfirm-modern {
+
+		div.jconfirm-box-container div.jconfirm-box {
+			border-radius: 0;
+			box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+		}
+
+		.jconfirm-box {
+
+			div.jconfirm-content-pane {
+				margin-bottom: 20px;
+				display: block;
+
+				.jconfirm-content {
+					overflow: initial;
+				}
+			}
+
+			div.jconfirm-content {
+				font-size: 16px;
+				color: #555;
+				line-height: 1.5;
+
+				p {
+					margin: 0 0 16px;
+					font-size: 16px;
+				}
+			}
+
+			input[type=text] {
+				display: block;
+				width: 99%;
+				border: 1px solid #d6d6d6;
+				padding: 10px;
+				box-shadow: none;
+				margin: 20px auto 0 auto;
+			}
+
+			#evf-embed-shortcode {
+				margin: 20px 0;
+				text-align: center;
+				font-size: 24px;
+				padding: 8px 5px;
+			}
+
+			#evf-embed-shortcode:disabled {
+				color: #333;
+			}
+
+			button.btn-confirm {
+				background-color: $button-color;
+				color: $color-white;
+				outline: none;
+
+				&:hover {
+					background-color: transparentize( $button-color, 0.2 )
+				}
+			}
+
+			.error {
+				display: none;
+				color: red;
+			}
+
+			div.jconfirm-title-c .jconfirm-icon-c {
+				-webkit-transition: none !important;
+				transition: none !important;
+				-webkit-transform: none !important;
+				-ms-transform: none !important;
+				transform: none !important;
+				font-size: 45px !important;
+
+				.dashicons {
+					height: inherit;
+					width: inherit;
+					font-size: 60px;
+				}
+			}
+		}
+	}
+}
