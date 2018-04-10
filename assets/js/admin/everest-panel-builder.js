@@ -420,8 +420,8 @@
 			newFieldCloned.attr('data-field-id', new_key);
 			newFieldCloned.attr('data-field-type', field_type);
 			newFieldCloned.find('.label-title .text').text(new_field_label);
-			field.closest('.evf-admin-grid').append(newFieldCloned);
-			$(document).trigger('everest-form-cloned', [ new_key, type ]);
+			field.closest( '.evf-admin-grid' ).find( '[data-field-id="' + old_key + '"]' ).after( newFieldCloned );
+			$(document).trigger('everest-form-cloned', [ new_key, field_type ]);
 		},
 		bindFieldDelete: function () {
 			$( 'body' ).on('click', '.everest-forms-preview .everest-forms-field .everest-forms-field-delete', function () {
