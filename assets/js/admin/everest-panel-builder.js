@@ -773,18 +773,18 @@
 
 jQuery(function () {
 
-	
-	if ( jQuery('#everest-forms-panel-field-settingsemail-send_confirmation_email_to_user').attr("checked") != 'checked' )	{
-	  jQuery('#everest-forms-panel-field-settingsemail-send_confirmation_email_to_user-wrap').nextAll().hide();
+
+	if ( jQuery('#everest-forms-panel-field-settingsemail-evf_send_confirmation_email').attr("checked") != 'checked' )	{
+	  jQuery('#everest-forms-panel-field-settingsemail-evf_send_confirmation_email-wrap').nextAll().hide();
 	}
-	
-	jQuery( '#everest-forms-panel-field-settingsemail-send_confirmation_email_to_user' ).on( 'change', function () {
+
+	jQuery( '#everest-forms-panel-field-settingsemail-evf_send_confirmation_email' ).on( 'change', function () {
 
 		if( jQuery( this ).attr('checked') != 'checked') {
-			jQuery('#everest-forms-panel-field-settingsemail-send_confirmation_email_to_user-wrap').nextAll().hide();
+			jQuery('#everest-forms-panel-field-settingsemail-evf_send_confirmation_email-wrap').nextAll().hide();
 		}
 		else {
-			jQuery('#everest-forms-panel-field-settingsemail-send_confirmation_email_to_user-wrap').nextAll().show();
+			jQuery('#everest-forms-panel-field-settingsemail-evf_send_confirmation_email-wrap').nextAll().show();
 		}
 	});
 

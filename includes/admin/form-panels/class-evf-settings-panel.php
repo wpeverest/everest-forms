@@ -253,11 +253,11 @@ class EVF_Settings_Panel extends EVF_Admin_Form_Panel {
 		everest_forms_panel_field(
 			'checkbox',
 			'settings[email]',
-			'send_confirmation_email_to_user',
+			'evf_send_confirmation_email',
 			$this->form_data,
 			sprintf( __( 'Send Confirmation Email To User', 'everest-forms' )),
 			array(
-				'default' =>  isset( $this->form_setting['email']['send_confirmation_email_to_user'] ) ? $this->form_setting['email']['send_confirmation_email_to_user'] : 1,
+				'default' =>  isset( $this->form_setting['email']['evf_send_confirmation_email'] ) ? $this->form_setting['email']['evf_send_confirmation_email'] : 1,
 			)
 		);
 
@@ -267,11 +267,11 @@ class EVF_Settings_Panel extends EVF_Admin_Form_Panel {
 		everest_forms_panel_field(
 			'select',
 			'settings[email]',
-			'evf_to_user_email',
+			'evf_user_to_email',
 			$this->form_data,
 			__( 'Send Confirmation Email To', 'everest-forms' ),
 			array(
-				'default' => isset( $this->form_setting['email']['evf_to_user_email'] ) ? $this->form_setting['email']['evf_to_user_email'] : '',
+				'default' => isset( $this->form_setting['email']['evf_user_to_email'] ) ? $this->form_setting['email']['evf_user_to_email'] : '',
 				'options' => $user_emails
 			)
 		);

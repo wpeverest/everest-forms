@@ -310,7 +310,7 @@ class EVF_Form_Task {
 		// Check that the form was configured for email notifications.
 		$email_notifications = isset( $form_data['settings']['email'] ) ? $form_data['settings']['email'] : array();
 
-		if ( empty( $email_notifications['evf_to_email'] ) && '1' !== $email_notifications['send_confirmation_email_to_user'] ) {
+		if ( empty( $email_notifications['evf_to_email'] ) && '1' !== $email_notifications['evf_send_confirmation_email'] ) {
 			return;
 		}
 
@@ -326,9 +326,9 @@ class EVF_Form_Task {
 		$email['evf_email_message'] = ! empty( $email_notifications['evf_email_message'] ) ? $email_notifications['evf_email_message'] : '{all_fields}';
 
 		// Setup confirm email properties.
-		if ( '1' === $email_notifications['send_confirmation_email_to_user'] ) {
+		if ( '1' === $email_notifications['evf_send_confirmation_email'] ) {
 			$fields_meta = wp_list_pluck( $fields, 'value', 'meta_key' );
-			$field_email = ! empty( $email_notifications['evf_to_user_email'] ) ? $email_notifications['evf_to_user_email'] : false;
+			$field_email = ! empty( $email_notifications['evf_user_to_email'] ) ? $email_notifications['evf_user_to_email'] : '';
 
 			// Check if user email is setup.
 			if ( ! empty( $fields_meta[ $field_email ] ) ) {
