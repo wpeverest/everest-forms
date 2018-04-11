@@ -750,6 +750,11 @@ jQuery(function () {
 
 	var mySelect = jQuery('#everest-forms-panel-field-settings-redirect_to option:selected').val();
 
+	if ( jQuery('#everest-forms-panel-field-settingsemail-send_confirmation_email_to_user').attr("checked") != 'checked' )	{
+	  jQuery('#everest-forms-panel-field-settingsemail-send_confirmation_email_to_user-wrap').nextAll().hide();
+	}
+
+
 	if ( mySelect == '0' ) {
 		jQuery('#everest-forms-panel-field-settings-custom_page-wrap').hide();
 		jQuery('#everest-forms-panel-field-settings-external_url-wrap').hide();
