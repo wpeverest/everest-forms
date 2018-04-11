@@ -260,12 +260,17 @@ class EVF_Settings_Panel extends EVF_Admin_Form_Panel {
 				'default' =>  isset( $this->form_setting['email']['send_confirmation_email_to_user'] ) ? $this->form_setting['email']['send_confirmation_email_to_user'] : 1,
 			)
 		);
+		
+		$form_id = isset( $_GET['form_id'] ) ? $_GET['form_id'] : '';
+		$user_emails = $this->get_all_email_fields_by_form_id( $form_id );
+		echo "<pre>"; print_r($user_emails); echo "</pre>";
+
 		everest_forms_panel_field(
 			'select',
 			'settings[email]',
 			'evf_to_user_email',
 			$this->form_data,
-			__( 'Send To', 'everest-forms' ),
+			__( 'Send Email To', 'everest-forms' ),
 			array(
 				'default' => isset( $this->form_setting['email']['evf_to_user_email'] ) ? $this->form_setting['email']['evf_to_user_email'] : 0,
 				'options' => array(
@@ -280,7 +285,7 @@ class EVF_Settings_Panel extends EVF_Admin_Form_Panel {
 			'settings[email]',
 			'evf_user_email_subject',
 			$this->form_data,
-			__( 'Email Subject', 'everest-forms' ),
+			__( 'Confirmation Email Subject', 'everest-forms' ),
 			array(
 				'default' => isset( $this->form_setting['email']['evf_user_email_subject'] ) ? $this->form_setting['email']['evf_user_email_subject'] : '',
 			)
@@ -290,9 +295,9 @@ class EVF_Settings_Panel extends EVF_Admin_Form_Panel {
 			'settings[email]',
 			'evf_user_email_message',
 			$this->form_data,
-			__( 'Email Message', 'everest-forms' ),
+			__( 'Confirmation Email Message', 'everest-forms' ),
 			array(
-				'default' => isset( $this->form_setting['email']['evf_user_email_message'] ) ? $this->form_setting['email']['evf_user_email_message'] :  '',
+				'default' => isset( $this->form_setting['email']['evf_user_email_message'] ) ? $this->form_setting['email']['evf_user_email_message'] :  __('Thanks for contacting us! We will be in touch with you shortly','everest-forms'),
 			)
 		);
 		do_action( 'everest_forms_email_settings', $this );
@@ -300,6 +305,25 @@ class EVF_Settings_Panel extends EVF_Admin_Form_Panel {
 		echo '</div>';
 
 		do_action( 'everest_forms_settings_panel_content', $this );
+	}
+
+	public function get_all_email_fields_by_form_id( $form_id ) {
+		
+		$user_emails = array();
+
+		$form_obj  = EVF()->form->get( $form_id );
+
+		$form_data = ! empty( $form_obj->post_content ) ? evf_decode( $form_obj->post_content ) : '';
+
+		if ( ! empty( $form_data['form_fields'] ) ) {
+			foreach ( $form_data['form_fields'] as $form_fields ) {
+				if( $form_fields['type'] === 'email' ) {
+					$user_emails[$form_fields['meta-key']] = $form_fields['label'];
+				}
+			}
+		}
+		
+		return $user_emails;
 	}
 
 	public function evf_get_all_pages(){
