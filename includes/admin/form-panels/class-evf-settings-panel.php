@@ -101,7 +101,7 @@ class EVF_Settings_Panel extends EVF_Admin_Form_Panel {
 			$this->form_data,
 			__( 'Successful form submission message', 'everest-forms' ),
 			array(
-				'default' => isset( $this->form->successful_form_submission_message ) ? $this->form->successful_form_submission_message : get_option( 'everest_forms_successful_form_submission_message', __('Thanks for contacting us! We will be in touch with you shortly','everest-forms')),
+				'default' => isset( $this->form->successful_form_submission_message ) ? $this->form->successful_form_submission_message : get_option( 'everest_forms_successful_form_submission_message', __('Thanks for contacting us! We will be in touch with you shortly.','everest-forms')),
 			)
 		);
 		everest_forms_panel_field(
