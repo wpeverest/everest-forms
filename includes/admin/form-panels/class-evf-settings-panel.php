@@ -263,7 +263,6 @@ class EVF_Settings_Panel extends EVF_Admin_Form_Panel {
 		
 		$form_id = isset( $_GET['form_id'] ) ? $_GET['form_id'] : '';
 		$user_emails = $this->get_all_email_fields_by_form_id( $form_id );
-		echo "<pre>"; print_r($user_emails); echo "</pre>";
 
 		everest_forms_panel_field(
 			'select',
@@ -272,12 +271,8 @@ class EVF_Settings_Panel extends EVF_Admin_Form_Panel {
 			$this->form_data,
 			__( 'Send Email To', 'everest-forms' ),
 			array(
-				'default' => isset( $this->form_setting['email']['evf_to_user_email'] ) ? $this->form_setting['email']['evf_to_user_email'] : 0,
-				'options' => array(
-					'0' => __( 'Email 1', 'everest-forms' ),
-					'1' => __( 'Email 2', 'everest-forms' ),
-					'2' => __( 'Email 3', 'everest-forms' ),
-				),
+				'default' => isset( $this->form_setting['email']['evf_to_user_email'] ) ? $this->form_setting['email']['evf_to_user_email'] : '',
+				'options' => $user_emails
 			)
 		);
 		everest_forms_panel_field(
@@ -287,7 +282,7 @@ class EVF_Settings_Panel extends EVF_Admin_Form_Panel {
 			$this->form_data,
 			__( 'Confirmation Email Subject', 'everest-forms' ),
 			array(
-				'default' => isset( $this->form_setting['email']['evf_user_email_subject'] ) ? $this->form_setting['email']['evf_user_email_subject'] : '',
+				'default' => isset( $this->form_setting['email']['evf_user_email_subject'] ) ? $this->form_setting['email']['evf_user_email_subject'] : __( 'Thank You!', 'everest-forms' ),
 			)
 		);
 		everest_forms_panel_field(
@@ -322,7 +317,7 @@ class EVF_Settings_Panel extends EVF_Admin_Form_Panel {
 				}
 			}
 		}
-		
+
 		return $user_emails;
 	}
 
