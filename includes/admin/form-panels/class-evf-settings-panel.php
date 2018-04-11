@@ -249,6 +249,52 @@ class EVF_Settings_Panel extends EVF_Admin_Form_Panel {
 				'default' => isset( $this->form_setting['email']['evf_email_message'] ) ? $this->form_setting['email']['evf_email_message'] :  get_option( 'evf_email_message', __( '{all_fields}', 'everest-forms' ) ),
 			)
 		);
+
+		everest_forms_panel_field(
+			'checkbox',
+			'settings[email]',
+			'send_confirmation_email_to_user',
+			$this->form_data,
+			sprintf( __( 'Send Confirmation Email To User', 'everest-forms' )),
+			array(
+				'default' =>  isset( $this->form_setting['email']['send_confirmation_email_to_user'] ) ? $this->form_setting['email']['send_confirmation_email_to_user'] : 1,
+			)
+		);
+		everest_forms_panel_field(
+			'select',
+			'settings[email]',
+			'evf_to_user_email',
+			$this->form_data,
+			__( 'Send To', 'everest-forms' ),
+			array(
+				'default' => isset( $this->form_setting['email']['evf_to_user_email'] ) ? $this->form_setting['email']['evf_to_user_email'] : 0,
+				'options' => array(
+					'0' => __( 'Email 1', 'everest-forms' ),
+					'1' => __( 'Email 2', 'everest-forms' ),
+					'2' => __( 'Email 3', 'everest-forms' ),
+				),
+			)
+		);
+		everest_forms_panel_field(
+			'text',
+			'settings[email]',
+			'evf_user_email_subject',
+			$this->form_data,
+			__( 'Email Subject', 'everest-forms' ),
+			array(
+				'default' => isset( $this->form_setting['email']['evf_user_email_subject'] ) ? $this->form_setting['email']['evf_user_email_subject'] : '',
+			)
+		);
+		everest_forms_panel_field(
+			'tinymce',
+			'settings[email]',
+			'evf_user_email_message',
+			$this->form_data,
+			__( 'Email Message', 'everest-forms' ),
+			array(
+				'default' => isset( $this->form_setting['email']['evf_user_email_message'] ) ? $this->form_setting['email']['evf_user_email_message'] :  '',
+			)
+		);
 		do_action( 'everest_forms_email_settings', $this );
 
 		echo '</div>';
