@@ -7,6 +7,7 @@
 * Fix - Use wp_kses_post to save tinymce value.
 * Tweak - jQuery-confirm JS alert library styles.
 * Tweak - Horizontal scroll bar issue on frontend.
+* Dev - Introduced new `EVF_Background_Process` abstract class.
 
 = 1.1.2 - 29-03-2018 =
 * Fix - Exclude CPT data from search.
