@@ -4,7 +4,7 @@ Tags: form, form builder, easy form, clean form, login form, contact, contact fo
 Requires at least: 4.0
 Tested up to: 4.9
 Requires PHP: 5.4
-Stable tag: 1.1.2
+Stable tag: 1.1.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -70,7 +70,7 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 
 == Changelog ==
 
-= 1.1.3 - XX-04-2018 =
+= 1.1.3 - 12-04-2018 =
 * Fix - Per page entries in list table.
 * Fix - Clone field next to it not at last.
 * Fix - Empty field ID if meta key is renamed.
