@@ -167,6 +167,8 @@ class EVF_Form_Task {
 				// Success - send email notification.
 				$this->entry_email( $this->form_fields, $entry, $form_data, $entry_id, 'entry' );
 
+				$_POST['evf_success'] = true;
+
 				// Pass completed and formatted fields in POST.
 				$_POST['everest-forms']['complete'] = $this->form_fields;
 
@@ -308,76 +310,75 @@ class EVF_Form_Task {
 
 		$email_notifications = isset( $form_data['settings']['email'] ) ? $form_data['settings']['email'] : array();
 
-			if ( empty( $email_notifications['evf_to_email'] ) ) {
-				return;
+		if ( empty( $email_notifications['evf_to_email'] ) ) {
+			return;
+		}
+
+		$form_fields = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
+
+		$data_html = '';
+
+		foreach ( $form_fields as $field_key => $field ) {
+
+			$field_type = isset( $field['type'] ) ? $field['type'] : '';
+
+			$label = isset( $field['label'] ) ? $field['label'] : '';
+
+			$field_value = isset( $entry['form_fields'][ $field_key ] ) ? $entry['form_fields'][ $field_key ] : '';
+
+			if( $field_type == 'email' ){
+				$user_email = $field_value;
 			}
+			if ( ! empty( $field_type ) ) {
 
-			$form_fields = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
+				$process_field_email = apply_filters( 'everest_forms_entry_email_' . $field_type, true );
 
-			$data_html = '';
+				if ( $process_field_email ) {
 
-			foreach ( $form_fields as $field_key => $field ) {
-
-				$field_type = isset( $field['type'] ) ? $field['type'] : '';
-
-				$label = isset( $field['label'] ) ? $field['label'] : '';
-
-				$field_value = isset( $entry['form_fields'][ $field_key ] ) ? $entry['form_fields'][ $field_key ] : '';
-
-				if( $field_type == 'email' ){
-					$user_email = $field_value;
-				}
-				if ( ! empty( $field_type ) ) {
-
-					$process_field_email = apply_filters( 'everest_forms_entry_email_' . $field_type, true );
-
-					if ( $process_field_email ) {
-
-						if ( is_array( $field_value ) ) {
-							$field_value = implode( ',', $field_value );
-						}
-						$data_html .= $label . ' : ' . $field_value . PHP_EOL;
+					if ( is_array( $field_value ) ) {
+						$field_value = implode( ',', $field_value );
 					}
+					$data_html .= $label . ' : ' . $field_value . PHP_EOL;
 				}
 			}
+		}
 
-			$email = array();
+		$email = array();
 
-			$email['evf_email_subject']        = ! empty( $email_notifications['evf_email_subject'] ) ? $email_notifications['evf_email_subject'] : sprintf( _x( 'New %s Entry', 'Form name', 'everest-forms' ), $form_data['settings']['form_title'] );
-			$email['evf_from_email'] = ! empty( $email_notifications['evf_from_email'] ) ? $email_notifications['evf_from_email'] : evf_sender_address();
-			$email['evf_from_name']    = ! empty( $email_notifications['evf_from_name'] ) ? $email_notifications['evf_from_name'] : evf_sender_name();
-			$email['evf_to_email']        = ! empty( $email_notifications['evf_to_email'] ) ? $email_notifications['evf_to_email'] : false;
-			$email['evf_email_header']        = ! empty( $email_notifications['evf_email_header'] ) ? $email_notifications['evf_email_header'] : '';
+		$email['evf_from_email']    = ! empty( $email_notifications['evf_from_email'] ) ? $email_notifications['evf_from_email'] : evf_sender_address();
+		$email['evf_from_name']     = ! empty( $email_notifications['evf_from_name'] ) ? $email_notifications['evf_from_name'] : evf_sender_name();
+		$email['evf_email_header']  = ! empty( $email_notifications['evf_email_header'] ) ? $email_notifications['evf_email_header'] : '';
+		$email['evf_email_subject'] = ! empty( $email_notifications['evf_email_subject'] ) ? $email_notifications['evf_email_subject'] : sprintf( _x( 'New %s Entry', 'Form name', 'everest-forms' ), $form_data['settings']['form_title'] );
+		$email['evf_to_email']      = explode( ',', apply_filters( 'everest_forms_process_smart_tags', $email_notifications['evf_to_email'], $form_data, $fields, $this->entry_id ) );
+		$email['evf_to_email']      = array_map( 'sanitize_email', $email['evf_to_email'] );
 
-			if ( ! empty( $email_notifications['evf_email_message'] ) ) {
-				if ( trim( '{all_fields}' ) == $email_notifications['evf_email_message'] ){
-					$email['evf_email_message'] = $data_html;
-				}
-				else {
-					$message = str_replace( "{all_fields}", $data_html, $email_notifications['evf_email_message'] );
-					$email['evf_email_message'] = $message;
-				}
+		if ( ! empty( $email_notifications['evf_email_message'] ) ) {
+			if ( trim( '{all_fields}' ) == $email_notifications['evf_email_message'] ){
+				$email['evf_email_message'] = $data_html;
 			}
+			else {
+				$message = str_replace( "{all_fields}", $data_html, $email_notifications['evf_email_message'] );
+				$email['evf_email_message'] = $message;
+			}
+		}
 
-			// Create new email.
-			$emails = new EVF_Emails;
-			$emails->__set( 'form_data', $form_data );
-			$emails->__set( 'fields', $fields );
-			$emails->__set( 'entry_id', $this->entry_id );
-			$emails->__set( 'from_name', $email['evf_from_name'] );
-			$emails->__set( 'from_address', $email['evf_from_email'] );
-			$emails->__set( 'headers', $email['evf_email_header'] );
-			$emails->__set( 'reply_to', isset( $user_email ) ? $user_email : $email['evf_from_email'] );
+		// Create new email.
+		$emails = new EVF_Emails();
+		$emails->__set( 'form_data', $form_data );
+		$emails->__set( 'fields', $fields );
+		$emails->__set( 'entry_id', $this->entry_id );
+		$emails->__set( 'from_name', $email['evf_from_name'] );
+		$emails->__set( 'from_address', $email['evf_from_email'] );
+		$emails->__set( 'headers', $email['evf_email_header'] );
+		$emails->__set( 'reply_to', isset( $user_email ) ? $user_email : $email['evf_from_email'] );
 
-			// Go.
-			$status = $emails->send( trim( $email['evf_to_email'] ), $email['evf_email_subject'], $email['evf_email_message'] );
-
-			$_POST['evf_success'] = isset( $status ) ? true : false;
-
-			return $status;
-
+		// Go.
+		if ( ! empty( $email['evf_to_email'] ) ) {
+			foreach ( $email['evf_to_email'] as $address ) {
+				$emails->send( trim( $address ), $email['evf_email_subject'], $email['evf_email_message'] );
+			}
+		}
 	}
-
 
 	/**
 	 * Saves entry to database.

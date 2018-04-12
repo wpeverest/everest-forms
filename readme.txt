@@ -71,6 +71,7 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 == Changelog ==
 
 = 1.1.3 - 12-04-2018 =
+* Feature - Multiple email recipient.
 * Fix - Per page entries in list table.
 * Fix - Clone field next to it not at last.
 * Fix - Empty field ID if meta key is renamed.
