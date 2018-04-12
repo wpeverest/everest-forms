@@ -74,6 +74,7 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 * Fix - Per page entries in list table.
 * Fix - Clone field next to it not at last.
 * Fix - Empty field ID if meta key is renamed.
+* Fix - Use wp_kses_post to save tinymce value.
 * Tweak - jQuery-confirm JS alert library styles.
 * Tweak - Horizontal scroll bar issue on frontend.
 
