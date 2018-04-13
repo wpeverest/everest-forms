@@ -305,12 +305,11 @@ class EVF_Form_Task {
 			return;
 		}
 
-		$fields = apply_filters( 'everest_forms_entry_email_data', $fields, $entry, $form_data );
+		$fields       = apply_filters( 'everest_forms_entry_email_data', $fields, $entry, $form_data );
+		$notification = isset( $form_data['settings']['email'] ) ? $form_data['settings']['email'] : array();
 
 		// Check that the form was configured for email notifications.
-		$email_notifications = isset( $form_data['settings']['email'] ) ? $form_data['settings']['email'] : array();
-
-		if ( empty( $email_notifications['evf_to_email'] ) && '1' !== $email_notifications['evf_send_confirmation_email'] ) {
+		if ( empty( $notification['evf_to_email'] ) && '1' !== $notification['evf_send_confirmation_email'] ) {
 			return;
 		}
 
@@ -318,23 +317,23 @@ class EVF_Form_Task {
 
 		// Setup email properties.
 		/* translators: %s - form name. */
-		$email['evf_email_subject'] = ! empty( $email_notifications['evf_email_subject'] ) ? $email_notifications['evf_email_subject'] : sprintf( esc_html__( 'New %s Entry', 'everest-forms' ), $form_data['settings']['form_title'] );
-		$email['evf_from_email']    = ! empty( $email_notifications['evf_from_email'] ) ? $email_notifications['evf_from_email'] : evf_sender_address();
-		$email['evf_from_name']     = ! empty( $email_notifications['evf_from_name'] ) ? $email_notifications['evf_from_name'] : evf_sender_name();
-		$email['evf_to_email']      = ! empty( $email_notifications['evf_to_email'] ) ? $email_notifications['evf_to_email'] : false;
-		$email['evf_email_header']  = ! empty( $email_notifications['evf_email_header'] ) ? $email_notifications['evf_email_header'] : '';
-		$email['evf_email_message'] = ! empty( $email_notifications['evf_email_message'] ) ? $email_notifications['evf_email_message'] : '{all_fields}';
+		$email['subject']        = ! empty( $notification['evf_email_subject'] ) ? $notification['evf_email_subject'] : sprintf( esc_html__( 'New %s Entry', 'everest-forms' ), $form_data['settings']['form_title'] );
+		$email['address']        = explode( ',', apply_filters( 'everest_forms_process_smart_tags', $notification['evf_to_email'], $form_data, $fields, $this->entry_id ) );
+		$email['address']        = array_map( 'sanitize_email', $email['address'] );
+		$email['sender_name']    = ! empty( $notification['evf_from_name'] ) ? $notification['evf_from_name'] : get_bloginfo( 'name' );
+		$email['sender_address'] = ! empty( $notification['evf_from_email'] ) ? $notification['evf_from_email'] : get_option( 'admin_email' );
+		$email['message']        = ! empty( $notification['evf_email_message'] ) ? $notification['evf_email_message'] : '{all_fields}';
 
 		// Setup confirm email properties.
-		if ( '1' === $email_notifications['evf_send_confirmation_email'] ) {
+		if ( '1' === $notification['evf_send_confirmation_email'] ) {
 			$fields_meta = wp_list_pluck( $fields, 'value', 'meta_key' );
-			$field_email = ! empty( $email_notifications['evf_user_to_email'] ) ? $email_notifications['evf_user_to_email'] : '';
+			$field_email = ! empty( $notification['evf_user_to_email'] ) ? $notification['evf_user_to_email'] : '';
 
 			// Check if user email is setup.
 			if ( ! empty( $fields_meta[ $field_email ] ) ) {
-				$email['evf_user_to_email']      = $fields_meta[ $field_email ];
-				$email['evf_user_email_subject'] = ! empty( $email_notifications['evf_user_email_subject'] ) ? $email_notifications['evf_user_email_subject'] : esc_html__( 'Thank you!', 'everest-forms' );
-				$email['evf_user_email_message'] = ! empty( $email_notifications['evf_user_email_message'] ) ? $email_notifications['evf_user_email_message'] : esc_html__( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
+				$email['user_email']           = $fields_meta[ $field_email ];
+				$email['confirmation_subject'] = ! empty( $notification['evf_user_email_subject'] ) ? $notification['evf_user_email_subject'] : esc_html__( 'Thank you!', 'everest-forms' );
+				$email['confirmation_message'] = ! empty( $notification['evf_user_email_message'] ) ? $notification['evf_user_email_message'] : esc_html__( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
 			}
 		}
 
@@ -345,26 +344,25 @@ class EVF_Form_Task {
 		$emails->__set( 'form_data', $form_data );
 		$emails->__set( 'fields', $fields );
 		$emails->__set( 'entry_id', $this->entry_id );
-		$emails->__set( 'from_name', $email['evf_from_name'] );
-		$emails->__set( 'from_address', $email['evf_from_email'] );
-		$emails->__set( 'headers', $email['evf_email_header'] );
-		$emails->__set( 'reply_to', isset( $email['evf_user_to_email'] ) ? $email['evf_user_to_email'] : $email['evf_from_email'] );
+		$emails->__set( 'from_name', $email['sender_name'] );
+		$emails->__set( 'from_address', $email['sender_address'] );
+		$emails->__set( 'reply_to', isset( $email['user_email'] ) ? $email['user_email'] : $email['sender_address'] );
 
 		// Send entry email.
-		if ( ! empty( $email_notifications['evf_to_email'] ) ) {
-			$emails->send( trim( $email['evf_to_email'] ), $email['evf_email_subject'], $email['evf_email_message'] );
+		foreach ( $email['address'] as $address ) {
+			$emails->send( trim( $address ), $email['subject'], $email['message'] );
 		}
 
 		// Send confirmation email.
-		if ( ! empty( $email['evf_user_to_email'] ) ) {
+		if ( ! empty( $email['user_email'] ) ) {
 			$emails = new EVF_Emails();
 			$emails->__set( 'form_data', $form_data );
 			$emails->__set( 'fields', $fields );
 			$emails->__set( 'entry_id', $this->entry_id );
-			$emails->__set( 'from_name', $email['evf_from_name'] );
-			$emails->__set( 'from_address', $email['evf_from_email'] );
-			$emails->__set( 'reply_to', isset( $email['evf_from_email'] ) ? $email['evf_from_email'] : $email['evf_to_email'] );
-			$emails->send( trim( $email['evf_user_to_email'] ), $email['evf_user_email_subject'], $email['evf_user_email_message'] );
+			$emails->__set( 'from_name', $email['sender_name'] );
+			$emails->__set( 'from_address', $email['sender_address'] );
+			$emails->__set( 'reply_to', isset( $email['sender_address'] ) ? $email['sender_address'] : false );
+			$emails->send( trim( $email['user_email'] ), $email['confirmation_subject'], $email['confirmation_message'] );
 		}
 	}
 
