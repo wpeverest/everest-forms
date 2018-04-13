@@ -1209,3 +1209,16 @@ function get_form_data_by_meta_key( $form_id, $meta_key ) {
 
 	return false;
 }
+
+/**
+ * Checks whether the content passed contains a specific short code.
+ *
+ * @since  1.1.4
+ * @param  string $tag Shortcode tag to check.
+ * @return bool
+ */
+function evf_post_content_has_shortcode( $tag = '' ) {
+	global $post;
+
+	return is_singular() && is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, $tag );
+}
