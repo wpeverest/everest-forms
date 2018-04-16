@@ -2,27 +2,20 @@
 /**
  * Background Updater
  *
- * Uses https://github.com/A5hleyRich/wp-background-processing to handle DB
- * updates in the background.
- *
  * @package EverestForms\Classes
  * @since   1.0.0
  */
 
 defined( 'ABSPATH' ) || exit;
 
-if ( ! class_exists( 'WP_Async_Request', false ) ) {
-	include_once( dirname( __FILE__ ) . '/libraries/wp-async-request.php' );
-}
-
-if ( ! class_exists( 'WP_Background_Process', false ) ) {
-	include_once( dirname( __FILE__ ) . '/libraries/wp-background-process.php' );
+if ( ! class_exists( 'EVF_Background_Process', false ) ) {
+	include_once dirname( __FILE__ ) . '/abstracts/class-evf-background-process.php';
 }
 
 /**
  * EVF_Background_Updater Class.
  */
-class EVF_Background_Updater extends WP_Background_Process {
+class EVF_Background_Updater extends EVF_Background_Process {
 
 	/**
 	 * Initiate new background process.
@@ -107,7 +100,7 @@ class EVF_Background_Updater extends WP_Background_Process {
 
 		$logger = evf_get_logger();
 
-		include_once( dirname( __FILE__ ) . '/evf-update-functions.php' );
+		include_once dirname( __FILE__ ) . '/evf-update-functions.php';
 
 		if ( is_callable( $callback ) ) {
 			$logger->info( sprintf( 'Running %s callback', $callback ), array( 'source' => 'evf_db_updates' ) );
