@@ -114,7 +114,7 @@ class EVF_Admin_Entries {
 			}
 
 			// Bulk actions.
-			if ( isset( $_REQUEST['action'] ) && isset( $_REQUEST['entry'] ) ) { // WPCS: input var okay, CSRF ok.
+			if ( isset( $_REQUEST['action'], $_REQUEST['action2'] ) && isset( $_REQUEST['entry'] ) ) { // WPCS: input var okay, CSRF ok.
 				$this->bulk_actions();
 			}
 
@@ -223,15 +223,16 @@ class EVF_Admin_Entries {
 			wp_die( esc_html__( 'You do not have permission to edit Entries', 'everest-forms' ) );
 		}
 
-		if ( isset( $_REQUEST['action'] ) ) { // WPCS: input var okay, CSRF ok.
+		if ( isset( $_REQUEST['action'], $_REQUEST['action2'] ) ) { // WPCS: input var okay, CSRF ok.
 			$action  = sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ); // WPCS: input var okay, CSRF ok.
+			$action2 = sanitize_text_field( wp_unslash( $_REQUEST['action2'] ) ); // WPCS: input var okay, CSRF ok.
 			$entries = isset( $_REQUEST['entry'] ) ? array_map( 'absint', (array) $_REQUEST['entry'] ) : array(); // WPCS: input var okay, CSRF ok.
 
-			if ( 'delete' === $action ) {
+			if ( 'delete' === $action || 'delete' === $action2 ) {
 				$this->bulk_delete_entry( $entries );
-			} elseif ( 'trash' === $action ) {
+			} elseif ( 'trash' === $action || 'trash' === $action2 ) {
 				$this->bulk_update_status( $entries, 'trash' );
-			} elseif ( 'untrash' === $action ) {
+			} elseif ( 'untrash' === $action || 'untrash' === $action2 ) {
 				$this->bulk_update_status( $entries, 'publish' );
 			}
 		}
