@@ -76,6 +76,8 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 							</table>
 						</div>
 					</div>
+
+					<?php do_action( 'everest_forms_entry_details_content', $entry, $form_id ); ?>
 				</div>
 				<!-- Entry Details metabox -->
 				<div id="postbox-container-1" class="postbox-container">
