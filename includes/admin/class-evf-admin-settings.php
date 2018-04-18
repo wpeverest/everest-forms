@@ -545,12 +545,11 @@ class EVF_Admin_Settings {
 					</tr><?php
 					break;
 				case 'tinymce':
-
 					$settings = array(
-						'name' => esc_attr($value['id']),
+						'name' => esc_attr($value['id'] ),
 						'id' =>  esc_attr( $value['id'] ),
 						'style' => esc_attr( $value['css'] ),
-						'default' => esc_attr($value['default']),
+						'default' => esc_attr( $value['default'] ),
 						'media_buttons' => false,
 						'class'=> esc_attr( $value['class'] ),
 						'quicktags'     => array( 'buttons' => 'em,strong,link' ),
@@ -673,6 +672,7 @@ class EVF_Admin_Settings {
 				case 'checkbox' :
 					$value = '1' === $raw_value || 'yes' === $raw_value ? 'yes' : 'no';
 					break;
+				case 'tinymce' :
 				case 'textarea' :
 					$value = wp_kses_post( trim( $raw_value ) );
 					break;
@@ -701,9 +701,6 @@ class EVF_Admin_Settings {
 					$default = ( empty( $option['default'] ) ? $allowed_values[0] : $option['default'] );
 					$value   = in_array( $raw_value, $allowed_values ) ? $raw_value : $default;
 					break;
-				case 'tinymce':
-					$value = wpautop( $raw_value );
-				break;
 				default :
 					$value = evf_clean( $raw_value );
 					break;
