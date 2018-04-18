@@ -410,7 +410,7 @@ class EVF_Form_Task {
 			}
 		}
 
-		do_action( 'everest_forms_complete_entry_save', $fields, $entry, $form_id, $form_data);
+		do_action( 'everest_forms_complete_entry_save', $entry_id, $fields, $entry, $form_id, $form_data );
 
 		return $entry_id;
 	}
