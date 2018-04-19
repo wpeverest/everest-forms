@@ -71,6 +71,7 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 == Changelog ==
 
 = 1.1.4 - XX-04-2018 =
+* Fix - Entry ID value set for email.
 * Fix - Entries bulk actions with bottom selector.
 * Tweak - Loads scripts conditionally on forms page only.
 

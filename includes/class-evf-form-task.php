@@ -366,7 +366,7 @@ class EVF_Form_Task {
 		$emails = new EVF_Emails();
 		$emails->__set( 'form_data', $form_data );
 		$emails->__set( 'fields', $fields );
-		$emails->__set( 'entry_id', $this->entry_id );
+		$emails->__set( 'entry_id', $entry_id );
 		$emails->__set( 'from_name', $email['evf_from_name'] );
 		$emails->__set( 'from_address', $email['evf_from_email'] );
 		$emails->__set( 'headers', $email['evf_email_header'] );
