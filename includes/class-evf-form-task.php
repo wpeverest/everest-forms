@@ -343,7 +343,7 @@ class EVF_Form_Task {
 		$emails = new EVF_Emails();
 		$emails->__set( 'form_data', $form_data );
 		$emails->__set( 'fields', $fields );
-		$emails->__set( 'entry_id', $this->entry_id );
+		$emails->__set( 'entry_id', $entry_id );
 		$emails->__set( 'from_name', $email['sender_name'] );
 		$emails->__set( 'from_address', $email['sender_address'] );
 		$emails->__set( 'reply_to', isset( $email['user_email'] ) ? $email['user_email'] : $email['sender_address'] );
@@ -358,7 +358,7 @@ class EVF_Form_Task {
 			$emails = new EVF_Emails();
 			$emails->__set( 'form_data', $form_data );
 			$emails->__set( 'fields', $fields );
-			$emails->__set( 'entry_id', $this->entry_id );
+			$emails->__set( 'entry_id', $entry_id );
 			$emails->__set( 'from_name', $email['sender_name'] );
 			$emails->__set( 'from_address', $email['sender_address'] );
 			$emails->__set( 'reply_to', isset( $email['sender_address'] ) ? $email['sender_address'] : false );
