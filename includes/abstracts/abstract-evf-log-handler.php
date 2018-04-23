@@ -1,15 +1,18 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
-}
+/**
+ * Log handling functionality.
+ *
+ * @class   EVF_Log_Handler
+ * @package EverestForms/Abstracts
+ */
+
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Abstract EVF Log Handler Class
  *
- * @version        1.0.0
- * @package        EverestFroms/Abstracts
- * @category       Abstract Class
- * @author         WPEverest
+ * @version 1.0.0
+ * @package EverestFroms/Abstracts
  */
 abstract class EVF_Log_Handler implements EVF_Log_Handler_Interface {
 
@@ -17,7 +20,6 @@ abstract class EVF_Log_Handler implements EVF_Log_Handler_Interface {
 	 * Formats a timestamp for use in log messages.
 	 *
 	 * @param int $timestamp Log timestamp.
-	 *
 	 * @return string Formatted time for use in log entry.
 	 */
 	protected static function format_time( $timestamp ) {
@@ -27,11 +29,10 @@ abstract class EVF_Log_Handler implements EVF_Log_Handler_Interface {
 	/**
 	 * Builds a log entry text from level, timestamp and message.
 	 *
-	 * @param int    $timestamp Log timestamp.
-	 * @param string $level     emergency|alert|critical|error|warning|notice|info|debug
-	 * @param string $message   Log message.
-	 * @param array  $context   Additional information for log handlers.
-	 *
+	 * @param  int    $timestamp Log timestamp.
+	 * @param  string $level emergency|alert|critical|error|warning|notice|info|debug.
+	 * @param  string $message Log message.
+	 * @param  array  $context Additional information for log handlers.
 	 * @return string Formatted log entry.
 	 */
 	protected static function format_entry( $timestamp, $level, $message, $context ) {

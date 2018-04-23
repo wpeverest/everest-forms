@@ -2,15 +2,11 @@
 /**
  * Debug/Status page
  *
- * @author      WPEverest
- * @category    Admin
- * @package     EverestForms/Admin/System Status
- * @version     1.0.0
+ * @package EverestForms/Admin/System Status
+ * @version 1.0.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
  * EVF_Admin_Status Class.
@@ -24,21 +20,17 @@ class EVF_Admin_Status {
 		include_once( dirname( __FILE__ ) . '/views/html-admin-page-status.php' );
 	}
 
-
 	/**
 	 * Show the logs page.
 	 */
 	public static function status_logs() {
-
 		self::status_logs_file();
-
 	}
 
 	/**
 	 * Show the log page contents for file log handler.
 	 */
 	public static function status_logs_file() {
-
 		$logs = self::scan_log_files();
 
 		if ( ! empty( $_REQUEST['log_file'] ) && isset( $logs[ sanitize_title( $_REQUEST['log_file'] ) ] ) ) {
@@ -56,13 +48,11 @@ class EVF_Admin_Status {
 		include_once( 'views/html-admin-page-status-logs.php' );
 	}
 
-
 	/**
 	 * Retrieve metadata from a file. Based on WP Core's get_file_data function.
-	 * @since      1.0.0
 	 *
-	 * @param  string $file Path to the file
-	 *
+	 * @since  1.0.0
+	 * @param  string $file Path to the file.
 	 * @return string
 	 */
 	public static function get_file_version( $file ) {
@@ -96,7 +86,6 @@ class EVF_Admin_Status {
 	 * Return the log file handle.
 	 *
 	 * @param string $filename
-	 *
 	 * @return string
 	 */
 	public static function get_log_file_handle( $filename ) {
@@ -107,11 +96,9 @@ class EVF_Admin_Status {
 	 * Scan the template files.
 	 *
 	 * @param  string $template_path
-	 *
 	 * @return array
 	 */
 	public static function scan_template_files( $template_path ) {
-
 		$files  = @scandir( $template_path );
 		$result = array();
 
@@ -119,7 +106,7 @@ class EVF_Admin_Status {
 
 			foreach ( $files as $key => $value ) {
 
-				if ( ! in_array( $value, array( ".", ".." ) ) ) {
+				if ( ! in_array( $value, array( '.', '..' ) ) ) {
 
 					if ( is_dir( $template_path . DIRECTORY_SEPARATOR . $value ) ) {
 						$sub_files = self::scan_template_files( $template_path . DIRECTORY_SEPARATOR . $value );
@@ -132,12 +119,12 @@ class EVF_Admin_Status {
 				}
 			}
 		}
-
 		return $result;
 	}
 
 	/**
 	 * Scan the log files.
+	 *
 	 * @return array
 	 */
 	public static function scan_log_files() {
@@ -158,7 +145,6 @@ class EVF_Admin_Status {
 
 		return $result;
 	}
-
 
 	/**
 	 * Remove/delete the chosen file.

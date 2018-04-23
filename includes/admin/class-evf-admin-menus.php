@@ -2,8 +2,6 @@
 /**
  * Setup menus in WP admin.
  *
- * @author   WPEverest
- * @category Admin
  * @package  EverestForms/Admin
  * @version  1.0.0
  */
