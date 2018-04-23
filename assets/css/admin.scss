@@ -48,6 +48,48 @@
 	}
 }
 
+.clear {
+	clear: both;
+}
+
+.wrap.everest-forms div.updated,
+.wrap.everest-forms div.error {
+	margin-top: 10px;
+}
+
+.wrap.everest-forms {
+
+	h2.evf-nav-tab-wrapper {
+		margin-bottom: 1em;
+	}
+
+	nav.evf-nav-tab-wrapper {
+		margin: 1.5em 0 1em;
+	}
+
+	.subsubsub {
+		margin: -8px 0 0;
+	}
+
+	#template div {
+		margin: 0;
+
+		p .button {
+			float: right;
+			margin-left: 10px;
+			margin-top: -4px;
+		}
+
+		.editor textarea {
+			margin-bottom: 8px;
+		}
+	}
+
+	textarea[disabled='disabled'] {
+		background: #dfdfdf !important;
+	}
+}
+
 /**
  * DB log viewer
  */
