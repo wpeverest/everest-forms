@@ -1,11 +1,11 @@
 <?php
 /**
  * Admin View: Page - Status
+ *
+ * @package EverestForms/Admin/Logs
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 $current_tab = ! empty( $_REQUEST['tab'] ) ? sanitize_title( $_REQUEST['tab'] ) : 'logs';
 $tabs        = array(
@@ -14,29 +14,30 @@ $tabs        = array(
 $tabs        = apply_filters( 'everest_forms_admin_status_tabs', $tabs );
 ?>
 <div class="wrap everest-forms">
-    <nav class="nav-tab-wrapper evf-nav-tab-wrapper">
+	<nav class="nav-tab-wrapper evf-nav-tab-wrapper">
 		<?php
-		foreach ( $tabs as $name => $label ) {
-			echo '<a href="' . admin_url( 'admin.php?page=evf-status&tab=' . $name ) . '" class="nav-tab ';
-			if ( $current_tab == $name ) {
-				echo 'nav-tab-active';
+			foreach ( $tabs as $name => $label ) {
+				echo '<a href="' . admin_url( 'admin.php?page=evf-status&tab=' . $name ) . '" class="nav-tab ';
+				if ( $current_tab == $name ) {
+					echo 'nav-tab-active';
+				}
+				echo '">' . $label . '</a>';
 			}
-			echo '">' . $label . '</a>';
-		}
 		?>
-    </nav>
-    <h1 class="screen-reader-text"><?php echo esc_html( $tabs[ $current_tab ] ); ?></h1>
+	</nav>
+	<h1 class="screen-reader-text"><?php echo esc_html( $tabs[ $current_tab ] ); ?></h1>
 	<?php
-	switch ( $current_tab ) {
-		case "tools" :
-			EVF_Admin_Status::status_logs();
+		switch ( $current_tab ) {
+			case "logs" :
+				EVF_Admin_Status::status_logs();
 			break;
-		case "logs" :
-			EVF_Admin_Status::status_logs();
+			default :
+					if ( array_key_exists( $current_tab, $tabs ) && has_action( 'everest_forms_admin_status_content_' . $current_tab ) ) {
+						do_action( 'everest_forms_admin_status_content_' . $current_tab );
+					} else {
+						EVF_Admin_Status::status_logs();
+					}
 			break;
-		default :
-			EVF_Admin_Status::status_logs();
-			break;
-	}
+		}
 	?>
 </div>

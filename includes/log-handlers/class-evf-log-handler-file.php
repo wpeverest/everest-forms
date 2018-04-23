@@ -1,16 +1,15 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
-}
-
 /**
  * Handles log entries by writing to a file.
  *
- * @class          EVF_Log_Handler_File
- * @version        1.0.0
- * @package        EverestForms/Classes/Log_Handlers
- * @category       Class
- * @author         WPEverest
+ * @package EverestForms/Classes/Log_Handlers
+ * @version 1.0.0
+ */
+
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * EVF_Log_Handler_File class.
  */
 class EVF_Log_Handler_File extends EVF_Log_Handler {
 
@@ -329,7 +328,6 @@ class EVF_Log_Handler_File extends EVF_Log_Handler {
 		} else {
 			return false;
 		}
-
 	}
 
 	/**
@@ -340,9 +338,25 @@ class EVF_Log_Handler_File extends EVF_Log_Handler {
 	 */
 	public static function get_log_file_path( $handle ) {
 		if ( function_exists( 'wp_hash' ) ) {
-			return trailingslashit( EVF_LOG_DIR ) . sanitize_file_name( $handle . '-' . wp_hash( $handle ) . '.log' );
+			return trailingslashit( EVF_LOG_DIR ) . self::get_log_file_name( $handle );
 		} else {
-			_doing_it_wrong( __METHOD__, __( 'This method should not be called before plugins_loaded.', 'everest-forms' ), '3.0' );
+			evf_doing_it_wrong( __METHOD__, __( 'This method should not be called before plugins_loaded.', 'everest-forms' ), '1.2' );
+			return false;
+		}
+	}
+
+	/**
+	 * Get a log file name.
+	 *
+	 * @since 3.3
+	 * @param string $handle Log name.
+	 * @return bool|string The log file name or false if cannot be determined.
+	 */
+	public static function get_log_file_name( $handle ) {
+		if ( function_exists( 'wp_hash' ) ) {
+			return sanitize_file_name( $handle . '-' . wp_hash( $handle ) . '.log' );
+		} else {
+			evf_doing_it_wrong( __METHOD__, __( 'This method should not be called before plugins_loaded.', 'everest-forms' ), '1.2' );
 			return false;
 		}
 	}
@@ -368,5 +382,4 @@ class EVF_Log_Handler_File extends EVF_Log_Handler {
 			$this->add( $log['entry'], $log['handle'] );
 		}
 	}
-
 }
