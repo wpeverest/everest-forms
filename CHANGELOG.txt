@@ -5,6 +5,7 @@
 * Fix - Entry ID value set for email.
 * Fix - Error highlights in extensions.
 * Fix - Correctly format the entry meta-key.
+* Fix - Unwanted margin on form submit notice.
 * Fix - Entries bulk actions with bottom selector.
 * Fix - Create logger directory on plugin install.
 * Tweak - Styles for logger, entries and jQuery UI.

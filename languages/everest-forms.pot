@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Everest Forms 1.2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/wpeverest/everest-forms/issues\n"
-"POT-Creation-Date: 2018-04-24 08:37:10+00:00\n"
+"POT-Creation-Date: 2018-04-24 10:38:48+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -445,8 +445,8 @@ msgid "Pending <span class=\"count\">(%s)</span>"
 msgstr ""
 
 #: includes/admin/class-evf-admin-forms-table-list.php:338
-#: includes/admin/views/html-admin-page-entries-view.php:147
-#: includes/admin/views/html-admin-page-entries-view.php:149
+#: includes/admin/views/html-admin-page-entries-view.php:148
+#: includes/admin/views/html-admin-page-entries-view.php:150
 msgid "Move to trash"
 msgstr ""
 
@@ -914,7 +914,7 @@ msgid "Add-ons list"
 msgstr ""
 
 #: includes/admin/views/html-admin-page-addons.php:72
-#: includes/admin/views/html-admin-page-entries-view.php:137
+#: includes/admin/views/html-admin-page-entries-view.php:138
 msgid "Status:"
 msgstr ""
 
@@ -984,31 +984,31 @@ msgstr ""
 msgid "Empty"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:90
+#: includes/admin/views/html-admin-page-entries-view.php:91
 msgid "Entry Details"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:96
+#: includes/admin/views/html-admin-page-entries-view.php:97
 msgid "Entry ID:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:102
+#: includes/admin/views/html-admin-page-entries-view.php:103
 msgid "Submitted:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:103
+#: includes/admin/views/html-admin-page-entries-view.php:104
 msgid "M j, Y @ g:ia"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:110
+#: includes/admin/views/html-admin-page-entries-view.php:111
 msgid "User:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:129
+#: includes/admin/views/html-admin-page-entries-view.php:130
 msgid "User IP:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:138
+#: includes/admin/views/html-admin-page-entries-view.php:139
 msgid "Completed"
 msgstr ""
 
