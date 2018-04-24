@@ -325,7 +325,7 @@ class EVF_Form_Task {
 		$email['message']        = ! empty( $notification['evf_email_message'] ) ? $notification['evf_email_message'] : '{all_fields}';
 
 		// Setup confirm email properties.
-		if ( '1' === $notification['evf_send_confirmation_email'] ) {
+		if ( isset( $notification['evf_send_confirmation_email'] ) && '1' === $notification['evf_send_confirmation_email'] ) {
 			$fields_meta = wp_list_pluck( $fields, 'value', 'meta_key' );
 			$field_email = ! empty( $notification['evf_user_to_email'] ) ? $notification['evf_user_to_email'] : '';
 
