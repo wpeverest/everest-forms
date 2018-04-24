@@ -117,6 +117,7 @@ class EVF_Install {
 		self::create_roles();
 		self::setup_environment();
 		self::create_cron_jobs();
+		self::create_files();
 		self::create_forms();
 		self::maybe_enable_setup_wizard();
 		self::update_evf_version();
@@ -511,6 +512,40 @@ CREATE TABLE {$wpdb->prefix}evf_sessions (
 			}
 
 			update_option( 'evf_default_form_page_id', $form_id );
+		}
+	}
+
+	/**
+	 * Create files/directories.
+	 */
+	private static function create_files() {
+		// Bypass if filesystem is read-only and/or non-standard upload system is used.
+		if ( apply_filters( 'everest_forms_install_skip_create_files', false ) ) {
+			return;
+		}
+
+		// Install files and folders for uploading files and prevent hotlinking.
+		$files = array(
+			array(
+				'base'    => EVF_LOG_DIR,
+				'file'    => '.htaccess',
+				'content' => 'deny from all',
+			),
+			array(
+				'base'    => EVF_LOG_DIR,
+				'file'    => 'index.html',
+				'content' => '',
+			),
+		);
+
+		foreach ( $files as $file ) {
+			if ( wp_mkdir_p( $file['base'] ) && ! file_exists( trailingslashit( $file['base'] ) . $file['file'] ) ) {
+				$file_handle = @fopen( trailingslashit( $file['base'] ) . $file['file'], 'w' );
+				if ( $file_handle ) {
+					fwrite( $file_handle, $file['content'] );
+					fclose( $file_handle );
+				}
+			}
 		}
 	}
 
