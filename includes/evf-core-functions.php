@@ -482,28 +482,31 @@ function evf_set_time_limit( $limit = 0 ) {
  */
 function evf_get_logger() {
 	static $logger = null;
-	if ( null === $logger ) {
-		$class      = apply_filters( 'everest_forms_logging_class', 'EVF_Logger' );
+
+	$class = apply_filters( 'everest_forms_logging_class', 'EVF_Logger' );
+
+	if ( null === $logger || ! is_a( $logger, $class ) ) {
 		$implements = class_implements( $class );
-		if ( is_array( $implements ) && in_array( 'EVF_Logger_Interface', $implements ) ) {
+
+		if ( is_array( $implements ) && in_array( 'EVF_Logger_Interface', $implements, true ) ) {
 			if ( is_object( $class ) ) {
 				$logger = $class;
 			} else {
-				$logger = new $class;
+				$logger = new $class();
 			}
 		} else {
-			_doing_it_wrong(
+			evf_doing_it_wrong(
 				__FUNCTION__,
 				sprintf(
-				/* translators: 1: class name 2: everest_forms_logging_class 3: EVF_Logger_Interface */
+					/* translators: 1: class name 2: woocommerce_logging_class 3: EVF_Logger_Interface */
 					__( 'The class %1$s provided by %2$s filter must implement %3$s.', 'everest-forms' ),
 					'<code>' . esc_html( is_object( $class ) ? get_class( $class ) : $class ) . '</code>',
 					'<code>everest_forms_logging_class</code>',
 					'<code>EVF_Logger_Interface</code>'
 				),
-				'1.0.0'
+				'1.2'
 			);
-			$logger = new EVF_Logger();
+			$logger = is_a( $logger, 'EVF_Logger' ) ? $logger : new EVF_Logger();
 		}
 	}
 
