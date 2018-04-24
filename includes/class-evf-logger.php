@@ -59,7 +59,7 @@ class EVF_Logger implements EVF_Logger_Interface {
 							'<code>' . esc_html( is_object( $handler ) ? get_class( $handler ) : $handler ) . '</code>',
 							'<code>EVF_Log_Handler_Interface</code>'
 						),
-						'3.0'
+						'1.0'
 					);
 				}
 			}
