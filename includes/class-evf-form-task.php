@@ -446,6 +446,6 @@ class EVF_Form_Task {
 			$wpdb->insert( $wpdb->prefix . 'evf_entrymeta', $entry_metadata );
 		}
 
-		do_action( 'everest_forms_complete_entry_save', $fields, $entry, $form_id, $form_data);
+		do_action( 'everest_forms_complete_entry_save', $entry_id, $fields, $entry, $form_id, $form_data );
 	}
 }
