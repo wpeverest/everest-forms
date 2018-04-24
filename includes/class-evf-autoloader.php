@@ -9,7 +9,7 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * EVF_Autoloader Class.
+ * Autoloader Class.
  */
 class EVF_Autoloader {
 
@@ -46,8 +46,8 @@ class EVF_Autoloader {
 	/**
 	 * Include a class file.
 	 *
-	 * @param  string $path The path to file.
-	 * @return bool successful or not
+	 * @param  string $path File path.
+	 * @return bool Successful or not.
 	 */
 	private function load_file( $path ) {
 		if ( $path && is_readable( $path ) ) {
@@ -74,8 +74,6 @@ class EVF_Autoloader {
 
 		if ( 0 === strpos( $class, 'evf_shortcode_' ) ) {
 			$path = $this->include_path . 'shortcodes/';
-		} elseif ( 0 === strpos( $class, 'evf_meta_box' ) ) {
-			$path = $this->include_path . 'admin/meta-boxes/';
 		} elseif ( 0 === strpos( $class, 'evf_admin' ) ) {
 			$path = $this->include_path . 'admin/';
 		} elseif ( 0 === strpos( $class, 'evf_log_handler_' ) ) {
