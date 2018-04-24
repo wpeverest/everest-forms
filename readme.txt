@@ -29,6 +29,7 @@ Check [documentation](http://docs.wpeverest.com/docs/everest-forms/)
 * 100% responsive form template
 * Supports multiple column layout
 * Shortcode support
+* Multiple email recipient
 * View Form entries from your dashboard
 * Provides two different form template design
 * Google Recaptcha Supported
@@ -37,6 +38,14 @@ Check [documentation](http://docs.wpeverest.com/docs/everest-forms/)
 * Editable Email Settings
 * Editable form validation message
 * Translation ready
+
+### What's Next
+
+Checkout out our other projects for WordPress
+
+[ThemeGrill](https://themegrill.com/wordpress-themes/free/) - Beautiful Free WordPress Themes
+
+[BeautifulThemes](https://beautifulthemes.com) - Collection of WordPress Themes by Well Renowned Authors.
 
 == Installation ==
 
