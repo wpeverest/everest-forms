@@ -72,7 +72,11 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 
 = 1.1.4 - XX-04-2018 =
 * Fix - Entry ID value set for email.
+* Fix - Error highlights in extensions.
+* Fix - Correctly format the entry meta-key.
 * Fix - Entries bulk actions with bottom selector.
+* Fix - Create logger directory on plugin install.
+* Tweaks - Styles for logger, entries and jQuery UI.
 * Tweak - Loads scripts conditionally on forms page only.
 
 = 1.1.3 - 12-04-2018 =
