@@ -4,7 +4,7 @@ Tags: form, form builder, easy form, clean form, login form, contact, contact fo
 Requires at least: 4.0
 Tested up to: 4.9
 Requires PHP: 5.4
-Stable tag: 1.1.3
+Stable tag: 1.1.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -70,14 +70,16 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 
 == Changelog ==
 
-= 1.1.4 - XX-04-2018 =
+= 1.1.4 - 24-04-2018 =
+* Fix - Log handler class for addons.
 * Fix - Entry ID value set for email.
 * Fix - Error highlights in extensions.
 * Fix - Correctly format the entry meta-key.
 * Fix - Entries bulk actions with bottom selector.
 * Fix - Create logger directory on plugin install.
-* Tweaks - Styles for logger, entries and jQuery UI.
+* Tweak - Styles for logger, entries and jQuery UI.
 * Tweak - Loads scripts conditionally on forms page only.
+* Tweak - Allow meta-key for `everest_forms_process_format_*` hook.
 
 = 1.1.3 - 12-04-2018 =
 * Feature - Multiple email recipient.

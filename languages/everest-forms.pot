@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Everest Forms package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Everest Forms 1.1.2\n"
+"Project-Id-Version: Everest Forms 1.1.4\n"
 "Report-Msgid-Bugs-To: https://github.com/wpeverest/everest-forms/issues\n"
-"POT-Creation-Date: 2018-04-12 07:20:28+00:00\n"
+"POT-Creation-Date: 2018-04-24 08:32:12+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -134,10 +134,10 @@ msgid "Delete Field"
 msgstr ""
 
 #: includes/abstracts/abstract-evf-form-fields.php:668
-#: includes/admin/class-evf-admin-menus.php:382
+#: includes/admin/class-evf-admin-menus.php:380
 #: includes/admin/form-panels/class-evf-fields-panel.php:200
 #: includes/admin/form-panels/class-evf-settings-panel.php:29
-#: includes/class-evf-install.php:525
+#: includes/class-evf-install.php:560
 msgid "Settings"
 msgstr ""
 
@@ -195,7 +195,7 @@ msgid "field"
 msgstr ""
 
 #: includes/admin/class-evf-admin-assets.php:83
-#: includes/admin/class-evf-admin-menus.php:291
+#: includes/admin/class-evf-admin-menus.php:289
 msgid "Copy of "
 msgstr ""
 
@@ -235,7 +235,7 @@ msgstr ""
 msgid "Are you sure you want to duplicate this field?"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:143
+#: includes/admin/class-evf-admin-assets.php:149
 msgid "EverestForms"
 msgstr ""
 
@@ -260,7 +260,7 @@ msgid "Field"
 msgstr ""
 
 #: includes/admin/class-evf-admin-entries-table-list.php:237
-#: includes/admin/views/html-admin-page-status-logs.php:28
+#: includes/admin/views/html-admin-page-status-logs.php:33
 msgid "View"
 msgstr ""
 
@@ -315,7 +315,7 @@ msgstr ""
 #: includes/admin/class-evf-admin-entries.php:59
 #: includes/admin/class-evf-admin-forms-table-list.php:50
 #: includes/admin/class-evf-admin-forms-table-list.php:105
-#: includes/admin/class-evf-admin-menus.php:107
+#: includes/admin/class-evf-admin-menus.php:105
 msgid "Entries"
 msgstr ""
 
@@ -450,8 +450,8 @@ msgid "Pending <span class=\"count\">(%s)</span>"
 msgstr ""
 
 #: includes/admin/class-evf-admin-forms-table-list.php:338
-#: includes/admin/views/html-admin-page-entries-view.php:141
 #: includes/admin/views/html-admin-page-entries-view.php:143
+#: includes/admin/views/html-admin-page-entries-view.php:145
 msgid "Move to trash"
 msgstr ""
 
@@ -460,13 +460,13 @@ msgid "Empty trash"
 msgstr ""
 
 #: includes/admin/class-evf-admin-forms.php:26
-#: includes/admin/class-evf-admin-menus.php:72
+#: includes/admin/class-evf-admin-menus.php:70
 #: includes/class-evf-post-types.php:45
 msgid "All Forms"
 msgstr ""
 
 #: includes/admin/class-evf-admin-forms.php:27
-#: includes/admin/class-evf-admin-menus.php:100
+#: includes/admin/class-evf-admin-menus.php:98
 #: includes/class-evf-post-types.php:47
 msgid "Add New"
 msgstr ""
@@ -479,32 +479,32 @@ msgstr ""
 msgid "Everest Forms"
 msgstr ""
 
-#: includes/admin/class-evf-admin-menus.php:226
-#: includes/admin/class-evf-admin-menus.php:258
+#: includes/admin/class-evf-admin-menus.php:224
+#: includes/admin/class-evf-admin-menus.php:256
 #: includes/admin/class-evf-admin-notices.php:107
 #: includes/admin/class-evf-admin-settings.php:71
-#: includes/admin/class-evf-admin-status.php:168
+#: includes/admin/class-evf-admin-status.php:154
 msgid "Action failed. Please refresh the page and retry."
 msgstr ""
 
-#: includes/admin/class-evf-admin-menus.php:230
-#: includes/admin/class-evf-admin-menus.php:262
+#: includes/admin/class-evf-admin-menus.php:228
+#: includes/admin/class-evf-admin-menus.php:260
 msgid "You do not have permissions to delete forms!"
 msgstr ""
 
-#: includes/admin/class-evf-admin-menus.php:358
+#: includes/admin/class-evf-admin-menus.php:356
 msgid "You do not have permissions to edit forms!"
 msgstr ""
 
-#: includes/admin/class-evf-admin-menus.php:382
+#: includes/admin/class-evf-admin-menus.php:380
 msgid "Everest Forms settings"
 msgstr ""
 
-#: includes/admin/class-evf-admin-menus.php:421
+#: includes/admin/class-evf-admin-menus.php:419
 msgid "Everest Forms status"
 msgstr ""
 
-#: includes/admin/class-evf-admin-menus.php:421
+#: includes/admin/class-evf-admin-menus.php:419
 msgid "Status"
 msgstr ""
 
@@ -726,7 +726,7 @@ msgid "Enter the text message after successful form submission."
 msgstr ""
 
 #: includes/admin/settings/class-evf-settings-general.php:73
-#: includes/class-evf-form-task.php:184
+#: includes/class-evf-form-task.php:187
 #: includes/shortcodes/class-evf-shortcode-form.php:142
 #: includes/templates/contact.php:60
 msgid "Thanks for contacting us! We will be in touch with you shortly."
@@ -814,19 +814,19 @@ msgstr ""
 msgid "Invalid reCaptcha Code."
 msgstr ""
 
-#: includes/admin/views/html-admin-form-modal.php:13
+#: includes/admin/views/html-admin-form-modal.php:14
 msgid "Create new form"
 msgstr ""
 
-#: includes/admin/views/html-admin-form-modal.php:16
+#: includes/admin/views/html-admin-form-modal.php:17
 msgid "Close modal panel"
 msgstr ""
 
-#: includes/admin/views/html-admin-form-modal.php:22
+#: includes/admin/views/html-admin-form-modal.php:23
 msgid "Form Title"
 msgstr ""
 
-#: includes/admin/views/html-admin-form-modal.php:29
+#: includes/admin/views/html-admin-form-modal.php:30
 msgid "Create"
 msgstr ""
 
@@ -862,35 +862,35 @@ msgstr ""
 msgid "Empty"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:84
+#: includes/admin/views/html-admin-page-entries-view.php:86
 msgid "Entry Details"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:90
+#: includes/admin/views/html-admin-page-entries-view.php:92
 msgid "Entry ID:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:96
+#: includes/admin/views/html-admin-page-entries-view.php:98
 msgid "Submitted:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:97
+#: includes/admin/views/html-admin-page-entries-view.php:99
 msgid "M j, Y @ g:ia"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:104
+#: includes/admin/views/html-admin-page-entries-view.php:106
 msgid "User:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:123
+#: includes/admin/views/html-admin-page-entries-view.php:125
 msgid "User IP:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:131
+#: includes/admin/views/html-admin-page-entries-view.php:133
 msgid "Status:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:132
+#: includes/admin/views/html-admin-page-entries-view.php:134
 msgid "Completed"
 msgstr ""
 
@@ -898,7 +898,12 @@ msgstr ""
 msgid "Delete log"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-status-logs.php:37
+#: includes/admin/views/html-admin-page-status-logs.php:28
+#. translators: 1: last access date 2: last access time
+msgid "%1$s at %2$s"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-status-logs.php:42
 msgid "There are currently no logs to view."
 msgstr ""
 
@@ -1008,15 +1013,15 @@ msgstr ""
 msgid "Invalid recaptcha code."
 msgstr ""
 
-#: includes/class-evf-form-task.php:119 includes/class-evf-form-task.php:158
+#: includes/class-evf-form-task.php:119 includes/class-evf-form-task.php:159
 msgid "Form has not been submitted, please see the errors below."
 msgstr ""
 
-#: includes/class-evf-form-task.php:416
+#: includes/class-evf-form-task.php:418
 msgid "No form ID was found."
 msgstr ""
 
-#: includes/class-evf-form-task.php:422
+#: includes/class-evf-form-task.php:424
 msgid "Could not create an entry"
 msgstr ""
 
@@ -1037,27 +1042,27 @@ msgstr ""
 msgid "Payments"
 msgstr ""
 
-#: includes/class-evf-install.php:254
+#: includes/class-evf-install.php:255
 msgid "Monthly"
 msgstr ""
 
-#: includes/class-evf-install.php:525
+#: includes/class-evf-install.php:560
 msgid "View Everest Forms Settings"
 msgstr ""
 
-#: includes/class-evf-install.php:541
+#: includes/class-evf-install.php:576
 msgid "View Everest Forms documentation"
 msgstr ""
 
-#: includes/class-evf-install.php:541
+#: includes/class-evf-install.php:576
 msgid "Docs"
 msgstr ""
 
-#: includes/class-evf-install.php:542
+#: includes/class-evf-install.php:577
 msgid "Visit free customer support"
 msgstr ""
 
-#: includes/class-evf-install.php:542
+#: includes/class-evf-install.php:577
 msgid "Free support"
 msgstr ""
 
@@ -1066,7 +1071,7 @@ msgstr ""
 msgid "The provided handler %1$s does not implement %2$s."
 msgstr ""
 
-#: includes/class-evf-logger.php:132
+#: includes/class-evf-logger.php:130
 #. translators: 1: EVF_Logger::log 2: level
 msgid "%1$s was called with an invalid level \"%2$s\"."
 msgstr ""
@@ -1155,8 +1160,8 @@ msgstr ""
 msgid "%s does not exist."
 msgstr ""
 
-#: includes/evf-core-functions.php:499
-#. translators: 1: class name 2: everest_forms_logging_class 3:
+#: includes/evf-core-functions.php:502
+#. translators: 1: class name 2: woocommerce_logging_class 3:
 #. EVF_Logger_Interface
 msgid "The class %1$s provided by %2$s filter must implement %3$s."
 msgstr ""
@@ -1248,7 +1253,8 @@ msgstr ""
 msgid "Every %d Minutes"
 msgstr ""
 
-#: includes/log-handlers/class-evf-log-handler-file.php:345
+#: includes/log-handlers/class-evf-log-handler-file.php:343
+#: includes/log-handlers/class-evf-log-handler-file.php:359
 msgid "This method should not be called before plugins_loaded."
 msgstr ""
 
@@ -1294,7 +1300,7 @@ msgid_plural "All <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-evf-form-task.php:346
+#: includes/class-evf-form-task.php:352
 msgctxt "Form name"
 msgid "New %s Entry"
 msgstr ""

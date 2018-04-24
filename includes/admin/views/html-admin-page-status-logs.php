@@ -30,7 +30,7 @@ defined( 'ABSPATH' ) || exit;
 						<option value="<?php echo esc_attr( $log_key ); ?>" <?php selected( sanitize_title( $viewed_log ), $log_key ); ?>><?php echo esc_html( $log_file ); ?> (<?php echo esc_html( $date ); ?>)</option>
 					<?php endforeach; ?>
 				</select>
-				<button type="submit" class="button" value="<?php esc_attr_e( 'View', 'woocommerce' ); ?>"><?php esc_html_e( 'View', 'woocommerce' ); ?></button>
+				<button type="submit" class="button" value="<?php esc_attr_e( 'View', 'everest-forms' ); ?>"><?php esc_html_e( 'View', 'everest-forms' ); ?></button>
 			</form>
 		</div>
 		<div class="clear"></div>
