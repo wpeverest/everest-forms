@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Everest Forms 1.2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/wpeverest/everest-forms/issues\n"
-"POT-Creation-Date: 2018-04-12 11:20:10+00:00\n"
+"POT-Creation-Date: 2018-04-24 08:37:10+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -134,10 +134,10 @@ msgid "Delete Field"
 msgstr ""
 
 #: includes/abstracts/abstract-evf-form-fields.php:668
-#: includes/admin/class-evf-admin-menus.php:387
+#: includes/admin/class-evf-admin-menus.php:385
 #: includes/admin/form-panels/class-evf-fields-panel.php:200
 #: includes/admin/form-panels/class-evf-settings-panel.php:29
-#: includes/class-evf-install.php:525
+#: includes/class-evf-install.php:560
 msgid "Settings"
 msgstr ""
 
@@ -190,7 +190,7 @@ msgid "field"
 msgstr ""
 
 #: includes/admin/class-evf-admin-assets.php:83
-#: includes/admin/class-evf-admin-menus.php:296
+#: includes/admin/class-evf-admin-menus.php:294
 msgid "Copy of "
 msgstr ""
 
@@ -230,7 +230,7 @@ msgstr ""
 msgid "Are you sure you want to duplicate this field?"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:143
+#: includes/admin/class-evf-admin-assets.php:149
 msgid "EverestForms"
 msgstr ""
 
@@ -254,63 +254,63 @@ msgstr ""
 msgid "Field"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:239
-#: includes/admin/views/html-admin-page-status-logs.php:28
+#: includes/admin/class-evf-admin-entries-table-list.php:237
+#: includes/admin/views/html-admin-page-status-logs.php:33
 msgid "View"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:241
+#: includes/admin/class-evf-admin-entries-table-list.php:239
 #. translators: %s: entry name
 msgid "Trash form entry"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:244
+#: includes/admin/class-evf-admin-entries-table-list.php:242
 #: includes/admin/class-evf-admin-forms-table-list.php:111
 #: includes/evf-entry-functions.php:52
 msgid "Trash"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:248
+#: includes/admin/class-evf-admin-entries-table-list.php:246
 msgid "Restore form entry from trash"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:251
-#: includes/admin/class-evf-admin-entries-table-list.php:331
+#: includes/admin/class-evf-admin-entries-table-list.php:249
+#: includes/admin/class-evf-admin-entries-table-list.php:329
 #: includes/admin/class-evf-admin-forms-table-list.php:109
 #: includes/admin/class-evf-admin-forms-table-list.php:332
 msgid "Restore"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:252
+#: includes/admin/class-evf-admin-entries-table-list.php:250
 msgid "Delete form entry permanently"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:255
-#: includes/admin/class-evf-admin-entries-table-list.php:332
+#: includes/admin/class-evf-admin-entries-table-list.php:253
+#: includes/admin/class-evf-admin-entries-table-list.php:330
 msgid "Delete Permanently"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:337
+#: includes/admin/class-evf-admin-entries-table-list.php:335
 msgid "Move to Trash"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:357
+#: includes/admin/class-evf-admin-entries-table-list.php:355
 #: includes/admin/class-evf-admin-entries.php:82
 msgid "Filter"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:362
+#: includes/admin/class-evf-admin-entries-table-list.php:360
 msgid "Empty Trash"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:377
+#: includes/admin/class-evf-admin-entries-table-list.php:375
 msgid "Filter by form"
 msgstr ""
 
 #: includes/admin/class-evf-admin-entries.php:59
 #: includes/admin/class-evf-admin-forms-table-list.php:50
 #: includes/admin/class-evf-admin-forms-table-list.php:105
-#: includes/admin/class-evf-admin-menus.php:112
+#: includes/admin/class-evf-admin-menus.php:110
 msgid "Entries"
 msgstr ""
 
@@ -353,7 +353,7 @@ msgid "Contact Form"
 msgstr ""
 
 #: includes/admin/class-evf-admin-form-builder.php:184
-#: includes/admin/form-panels/class-evf-settings-panel.php:82
+#: includes/admin/form-panels/class-evf-settings-panel.php:84
 msgid "Form Name"
 msgstr ""
 
@@ -445,8 +445,8 @@ msgid "Pending <span class=\"count\">(%s)</span>"
 msgstr ""
 
 #: includes/admin/class-evf-admin-forms-table-list.php:338
-#: includes/admin/views/html-admin-page-entries-view.php:141
-#: includes/admin/views/html-admin-page-entries-view.php:143
+#: includes/admin/views/html-admin-page-entries-view.php:147
+#: includes/admin/views/html-admin-page-entries-view.php:149
 msgid "Move to trash"
 msgstr ""
 
@@ -455,13 +455,13 @@ msgid "Empty trash"
 msgstr ""
 
 #: includes/admin/class-evf-admin-forms.php:26
-#: includes/admin/class-evf-admin-menus.php:77
+#: includes/admin/class-evf-admin-menus.php:75
 #: includes/class-evf-post-types.php:45
 msgid "All Forms"
 msgstr ""
 
 #: includes/admin/class-evf-admin-forms.php:27
-#: includes/admin/class-evf-admin-menus.php:105
+#: includes/admin/class-evf-admin-menus.php:103
 #: includes/class-evf-post-types.php:47
 msgid "Add New"
 msgstr ""
@@ -474,45 +474,46 @@ msgstr ""
 msgid "Everest Forms"
 msgstr ""
 
-#: includes/admin/class-evf-admin-menus.php:231
-#: includes/admin/class-evf-admin-menus.php:263
+#: includes/admin/class-evf-admin-menus.php:229
+#: includes/admin/class-evf-admin-menus.php:261
 #: includes/admin/class-evf-admin-notices.php:107
 #: includes/admin/class-evf-admin-settings.php:71
-#: includes/admin/class-evf-admin-status.php:168
+#: includes/admin/class-evf-admin-status.php:154
 msgid "Action failed. Please refresh the page and retry."
 msgstr ""
 
-#: includes/admin/class-evf-admin-menus.php:235
-#: includes/admin/class-evf-admin-menus.php:267
+#: includes/admin/class-evf-admin-menus.php:233
+#: includes/admin/class-evf-admin-menus.php:265
 msgid "You do not have permissions to delete forms!"
 msgstr ""
 
-#: includes/admin/class-evf-admin-menus.php:363
+#: includes/admin/class-evf-admin-menus.php:361
 msgid "You do not have permissions to edit forms!"
 msgstr ""
 
-#: includes/admin/class-evf-admin-menus.php:387
+#: includes/admin/class-evf-admin-menus.php:385
 msgid "Everest Forms settings"
 msgstr ""
 
-#: includes/admin/class-evf-admin-menus.php:426
+#: includes/admin/class-evf-admin-menus.php:424
 msgid "Everest Forms status"
 msgstr ""
 
-#: includes/admin/class-evf-admin-menus.php:426
+#: includes/admin/class-evf-admin-menus.php:424
 msgid "Status"
 msgstr ""
 
-#: includes/admin/class-evf-admin-menus.php:433
+#: includes/admin/class-evf-admin-menus.php:431
 #: includes/admin/views/html-admin-page-addons.php:15
 msgid "Everest Forms Add-ons"
 msgstr ""
 
-#: includes/admin/class-evf-admin-menus.php:433
+#: includes/admin/class-evf-admin-menus.php:431
 msgid "Add-ons"
 msgstr ""
 
 #: includes/admin/class-evf-admin-notices.php:111
+#: includes/class-everest-forms.php:122 includes/class-everest-forms.php:131
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
@@ -592,140 +593,140 @@ msgid "Select the type of row"
 msgstr ""
 
 #: includes/admin/form-panels/class-evf-settings-panel.php:54
-#: includes/admin/form-panels/class-evf-settings-panel.php:75
+#: includes/admin/form-panels/class-evf-settings-panel.php:77
 #: includes/admin/settings/class-evf-settings-general.php:28
 msgid "General"
 msgstr ""
 
 #: includes/admin/form-panels/class-evf-settings-panel.php:55
-#: includes/admin/form-panels/class-evf-settings-panel.php:200
+#: includes/admin/form-panels/class-evf-settings-panel.php:202
 #: includes/admin/settings/class-evf-settings-email.php:28
 #: includes/admin/settings/class-evf-settings-validation.php:68
 #: includes/form-fields/class-evf-field-email.php:24
 msgid "Email"
 msgstr ""
 
-#: includes/admin/form-panels/class-evf-settings-panel.php:92
+#: includes/admin/form-panels/class-evf-settings-panel.php:94
 msgid "Enable %1$s %2$s reCaptcha %3$s support"
 msgstr ""
 
-#: includes/admin/form-panels/class-evf-settings-panel.php:102
+#: includes/admin/form-panels/class-evf-settings-panel.php:104
 msgid "Successful form submission message"
 msgstr ""
 
-#: includes/admin/form-panels/class-evf-settings-panel.php:104
-#: includes/admin/form-panels/class-evf-settings-panel.php:295
+#: includes/admin/form-panels/class-evf-settings-panel.php:106
+#: includes/admin/form-panels/class-evf-settings-panel.php:294
 #: includes/admin/settings/class-evf-settings-general.php:73
-#: includes/class-evf-form-task.php:188
+#: includes/class-evf-form-task.php:188 includes/class-evf-form-task.php:336
 #: includes/shortcodes/class-evf-shortcode-form.php:142
 #: includes/templates/contact.php:60
 msgid "Thanks for contacting us! We will be in touch with you shortly."
 msgstr ""
 
-#: includes/admin/form-panels/class-evf-settings-panel.php:112
+#: includes/admin/form-panels/class-evf-settings-panel.php:114
 msgid "Redirect To"
 msgstr ""
 
-#: includes/admin/form-panels/class-evf-settings-panel.php:116
+#: includes/admin/form-panels/class-evf-settings-panel.php:118
 msgid "Same Page"
 msgstr ""
 
-#: includes/admin/form-panels/class-evf-settings-panel.php:117
-#: includes/admin/form-panels/class-evf-settings-panel.php:127
+#: includes/admin/form-panels/class-evf-settings-panel.php:119
+#: includes/admin/form-panels/class-evf-settings-panel.php:129
 msgid "Custom Page"
 msgstr ""
 
-#: includes/admin/form-panels/class-evf-settings-panel.php:118
-#: includes/admin/form-panels/class-evf-settings-panel.php:138
+#: includes/admin/form-panels/class-evf-settings-panel.php:120
+#: includes/admin/form-panels/class-evf-settings-panel.php:140
 msgid "External URL"
 msgstr ""
 
-#: includes/admin/form-panels/class-evf-settings-panel.php:148
+#: includes/admin/form-panels/class-evf-settings-panel.php:150
 msgid "Layout Design"
 msgstr ""
 
-#: includes/admin/form-panels/class-evf-settings-panel.php:152
+#: includes/admin/form-panels/class-evf-settings-panel.php:154
 msgid "Default"
 msgstr ""
 
-#: includes/admin/form-panels/class-evf-settings-panel.php:153
+#: includes/admin/form-panels/class-evf-settings-panel.php:155
 msgid "Classic Layout"
 msgstr ""
 
-#: includes/admin/form-panels/class-evf-settings-panel.php:162
+#: includes/admin/form-panels/class-evf-settings-panel.php:164
 msgid "Form Class"
 msgstr ""
 
-#: includes/admin/form-panels/class-evf-settings-panel.php:176
+#: includes/admin/form-panels/class-evf-settings-panel.php:178
 #: includes/admin/settings/class-evf-settings-general.php:59
 msgid "Disable Form Entries"
 msgstr ""
 
-#: includes/admin/form-panels/class-evf-settings-panel.php:186
+#: includes/admin/form-panels/class-evf-settings-panel.php:188
 msgid "Submit button text"
 msgstr ""
 
-#: includes/admin/form-panels/class-evf-settings-panel.php:188
+#: includes/admin/form-panels/class-evf-settings-panel.php:190
 #: includes/admin/settings/class-evf-settings-general.php:56
 #: includes/shortcodes/class-evf-shortcode-form.php:39
 #: includes/templates/contact.php:66
 msgid "Submit"
 msgstr ""
 
-#: includes/admin/form-panels/class-evf-settings-panel.php:207
+#: includes/admin/form-panels/class-evf-settings-panel.php:209
 #: includes/admin/settings/class-evf-settings-email.php:69
 msgid "To Address"
 msgstr ""
 
-#: includes/admin/form-panels/class-evf-settings-panel.php:217
+#: includes/admin/form-panels/class-evf-settings-panel.php:219
 #: includes/admin/settings/class-evf-settings-email.php:78
 msgid "From Name"
 msgstr ""
 
-#: includes/admin/form-panels/class-evf-settings-panel.php:227
+#: includes/admin/form-panels/class-evf-settings-panel.php:229
 #: includes/admin/settings/class-evf-settings-email.php:87
 msgid "From Address"
 msgstr ""
 
-#: includes/admin/form-panels/class-evf-settings-panel.php:237
+#: includes/admin/form-panels/class-evf-settings-panel.php:239
 #: includes/admin/settings/class-evf-settings-email.php:96
 #: includes/admin/settings/class-evf-settings-email.php:97
 #: includes/class-evf-forms-feature.php:91
 msgid "Email Subject"
 msgstr ""
 
-#: includes/admin/form-panels/class-evf-settings-panel.php:239
+#: includes/admin/form-panels/class-evf-settings-panel.php:241
 #: includes/templates/contact.php:71
 msgid "New Form Entry"
 msgstr ""
 
-#: includes/admin/form-panels/class-evf-settings-panel.php:247
+#: includes/admin/form-panels/class-evf-settings-panel.php:249
 #: includes/admin/settings/class-evf-settings-email.php:105
 #: includes/admin/settings/class-evf-settings-email.php:106
 msgid "Email Message"
 msgstr ""
 
-#: includes/admin/form-panels/class-evf-settings-panel.php:249
+#: includes/admin/form-panels/class-evf-settings-panel.php:251
 msgid "{all_fields}"
 msgstr ""
 
-#: includes/admin/form-panels/class-evf-settings-panel.php:258
+#: includes/admin/form-panels/class-evf-settings-panel.php:261
 msgid "Send Confirmation Email To User"
 msgstr ""
 
-#: includes/admin/form-panels/class-evf-settings-panel.php:272
+#: includes/admin/form-panels/class-evf-settings-panel.php:271
 msgid "Send Confirmation Email To"
 msgstr ""
 
-#: includes/admin/form-panels/class-evf-settings-panel.php:283
+#: includes/admin/form-panels/class-evf-settings-panel.php:282
 msgid "Confirmation Email Subject"
 msgstr ""
 
-#: includes/admin/form-panels/class-evf-settings-panel.php:285
+#: includes/admin/form-panels/class-evf-settings-panel.php:284
 msgid "Thank You!"
 msgstr ""
 
-#: includes/admin/form-panels/class-evf-settings-panel.php:293
+#: includes/admin/form-panels/class-evf-settings-panel.php:292
 msgid "Confirmation Email Message"
 msgstr ""
 
@@ -823,7 +824,7 @@ msgid "Enter the message for the required form field"
 msgstr ""
 
 #: includes/admin/settings/class-evf-settings-validation.php:56
-#: includes/evf-core-functions.php:1295
+#: includes/evf-core-functions.php:1311
 msgid "This field is required."
 msgstr ""
 
@@ -868,19 +869,19 @@ msgstr ""
 msgid "Invalid reCaptcha Code."
 msgstr ""
 
-#: includes/admin/views/html-admin-form-modal.php:13
+#: includes/admin/views/html-admin-form-modal.php:14
 msgid "Create new form"
 msgstr ""
 
-#: includes/admin/views/html-admin-form-modal.php:16
+#: includes/admin/views/html-admin-form-modal.php:17
 msgid "Close modal panel"
 msgstr ""
 
-#: includes/admin/views/html-admin-form-modal.php:22
+#: includes/admin/views/html-admin-form-modal.php:23
 msgid "Form Title"
 msgstr ""
 
-#: includes/admin/views/html-admin-form-modal.php:29
+#: includes/admin/views/html-admin-form-modal.php:30
 msgid "Create"
 msgstr ""
 
@@ -913,7 +914,7 @@ msgid "Add-ons list"
 msgstr ""
 
 #: includes/admin/views/html-admin-page-addons.php:72
-#: includes/admin/views/html-admin-page-entries-view.php:131
+#: includes/admin/views/html-admin-page-entries-view.php:137
 msgid "Status:"
 msgstr ""
 
@@ -975,39 +976,39 @@ msgstr ""
 msgid "This entry does not have any fields."
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:52
+#: includes/admin/views/html-admin-page-entries-view.php:57
 msgid "Field ID"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:69
+#: includes/admin/views/html-admin-page-entries-view.php:74
 msgid "Empty"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:84
+#: includes/admin/views/html-admin-page-entries-view.php:90
 msgid "Entry Details"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:90
+#: includes/admin/views/html-admin-page-entries-view.php:96
 msgid "Entry ID:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:96
+#: includes/admin/views/html-admin-page-entries-view.php:102
 msgid "Submitted:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:97
+#: includes/admin/views/html-admin-page-entries-view.php:103
 msgid "M j, Y @ g:ia"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:104
+#: includes/admin/views/html-admin-page-entries-view.php:110
 msgid "User:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:123
+#: includes/admin/views/html-admin-page-entries-view.php:129
 msgid "User IP:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:132
+#: includes/admin/views/html-admin-page-entries-view.php:138
 msgid "Completed"
 msgstr ""
 
@@ -1015,7 +1016,12 @@ msgstr ""
 msgid "Delete log"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-status-logs.php:37
+#: includes/admin/views/html-admin-page-status-logs.php:28
+#. translators: 1: last access date 2: last access time
+msgid "%1$s at %2$s"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-status-logs.php:42
 msgid "There are currently no logs to view."
 msgstr ""
 
@@ -1142,8 +1148,21 @@ msgstr ""
 msgid "Form has not been submitted, please see the errors below."
 msgstr ""
 
-#: includes/class-evf-forms-feature.php:52
+#: includes/class-evf-form-task.php:320 includes/class-evf-forms-feature.php:52
+#. translators: %s - form name.
 msgid "New %s Entry"
+msgstr ""
+
+#: includes/class-evf-form-task.php:335
+msgid "Thank you!"
+msgstr ""
+
+#: includes/class-evf-form-task.php:406
+msgid "No form ID was found."
+msgstr ""
+
+#: includes/class-evf-form-task.php:413
+msgid "Could not create an entry"
 msgstr ""
 
 #: includes/class-evf-forms-feature.php:61
@@ -1159,27 +1178,27 @@ msgstr ""
 msgid "Payments"
 msgstr ""
 
-#: includes/class-evf-install.php:254
+#: includes/class-evf-install.php:255
 msgid "Monthly"
 msgstr ""
 
-#: includes/class-evf-install.php:525
+#: includes/class-evf-install.php:560
 msgid "View Everest Forms Settings"
 msgstr ""
 
-#: includes/class-evf-install.php:541
+#: includes/class-evf-install.php:576
 msgid "View Everest Forms documentation"
 msgstr ""
 
-#: includes/class-evf-install.php:541
+#: includes/class-evf-install.php:576
 msgid "Docs"
 msgstr ""
 
-#: includes/class-evf-install.php:542
+#: includes/class-evf-install.php:577
 msgid "Visit free customer support"
 msgstr ""
 
-#: includes/class-evf-install.php:542
+#: includes/class-evf-install.php:577
 msgid "Free support"
 msgstr ""
 
@@ -1188,7 +1207,7 @@ msgstr ""
 msgid "The provided handler %1$s does not implement %2$s."
 msgstr ""
 
-#: includes/class-evf-logger.php:132
+#: includes/class-evf-logger.php:130
 #. translators: 1: EVF_Logger::log 2: level
 msgid "%1$s was called with an invalid level \"%2$s\"."
 msgstr ""
@@ -1277,8 +1296,8 @@ msgstr ""
 msgid "%s does not exist."
 msgstr ""
 
-#: includes/evf-core-functions.php:499
-#. translators: 1: class name 2: everest_forms_logging_class 3:
+#: includes/evf-core-functions.php:502
+#. translators: 1: class name 2: woocommerce_logging_class 3:
 #. EVF_Logger_Interface
 msgid "The class %1$s provided by %2$s filter must implement %3$s."
 msgstr ""
@@ -1370,7 +1389,8 @@ msgstr ""
 msgid "Every %d Minutes"
 msgstr ""
 
-#: includes/log-handlers/class-evf-log-handler-file.php:345
+#: includes/log-handlers/class-evf-log-handler-file.php:343
+#: includes/log-handlers/class-evf-log-handler-file.php:359
 msgid "This method should not be called before plugins_loaded."
 msgstr ""
 
@@ -1395,7 +1415,7 @@ msgstr ""
 msgid "https://wpeverest.com"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:302
+#: includes/admin/class-evf-admin-entries-table-list.php:300
 #. translators: %s: count
 msgctxt "entries"
 msgid "All <span class=\"count\">(%s)</span>"
