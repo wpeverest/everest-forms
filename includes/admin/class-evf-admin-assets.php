@@ -109,7 +109,7 @@ if ( ! class_exists( 'EVF_Admin_Assets', false ) ) :
 
 			// Register admin styles.
 			wp_register_style( 'everest_forms_admin_styles', EVF()->plugin_url() . '/assets/css/admin.css', array(), EVF_VERSION );
-			wp_register_style( 'jquery-ui-style', EVF()->plugin_url() . '/assets/css/jquery-ui.min.css', array(), EVF_VERSION );
+			wp_register_style( 'jquery-ui-style', EVF()->plugin_url() . '/assets/css/jquery-ui/jquery-ui.min.css', array(), EVF_VERSION );
 			wp_register_style( 'evf_add_form_css', EVF()->plugin_url() . '/assets/css/evf-add-form.css', array(), EVF_VERSION );
 
 			// Add RTL support for admin styles.
