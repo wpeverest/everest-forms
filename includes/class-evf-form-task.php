@@ -133,10 +133,11 @@ class EVF_Form_Task {
 				foreach ( (array) $form_data['form_fields'] as $field ) {
 
 					$field_id     = $field['id'];
+					$field_key    = $field['meta-key'];
 					$field_type   = $field['type'];
-					$field_submit = isset( $entry['fields'][ $field_id ] ) ? $entry['fields'][ $field_id ] : '';
+					$field_submit = isset( $entry['form_fields'][ $field_id ] ) ? $entry['form_fields'][ $field_id ] : '';
 
-					do_action( "everest_forms_process_format_{$field_type}", $field_id, $field_submit, $form_data );
+					do_action( "everest_forms_process_format_{$field_type}", $field_id, $field_submit, $form_data, $field_key );
 				}
 
 				// This hook is for internal purposes and should not be leveraged.
