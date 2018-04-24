@@ -29,7 +29,7 @@ interface EVF_Logger_Interface {
 	 *
 	 * @return bool True if log was added, otherwise false.
 	 */
-	public function add( $handle, $message, $level = WC_Log_Levels::NOTICE );
+	public function add( $handle, $message, $level = EVF_Log_Levels::NOTICE );
 
 	/**
 	 * Add a log entry.
