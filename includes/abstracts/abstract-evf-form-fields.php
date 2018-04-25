@@ -110,10 +110,10 @@ abstract class EVF_Form_Fields {
 		add_action( "evf_display_field_{$this->type}", array( $this, 'field_display' ), 10, 3 );
 
 		// Validation on submit.
-		add_action( "everest_forms_process_validate_{$this->type}", array( $this, 'validate' ), 10, 4 );
+		add_action( "everest_forms_process_validate_{$this->type}", array( $this, 'validate' ), 10, 3 );
 
 		// Format.
-		add_action( "everest_forms_process_format_{$this->type}", array( $this, 'format' ), 10, 3 );
+		add_action( "everest_forms_process_format_{$this->type}", array( $this, 'format' ), 10, 4 );
 	}
 
 	/**
@@ -769,14 +769,16 @@ abstract class EVF_Form_Fields {
 	 * @param array $field_submit
 	 * @param array $form_data
 	 */
-	public function validate( $field_id, $field_type, $field_submit, $form_data ) {
+	public function validate( $field_id, $field_submit, $form_data ) {
+		$field_type     = isset( $form_data['form_fields'][ $field_id ]['type'] ) ? $form_data['form_fields'][ $field_id ]['type'] : '';
 		$required_field = isset( $form_data['form_fields'][ $field_id ]['required'] ) ? $form_data['form_fields'][ $field_id ]['required'] : false;
 
 		// Basic required check - If field is marked as required, check for entry data.
 		if ( false !== $required_field && ( empty( $field_submit ) && '0' !== $field_submit ) ) {
-			EVF()->process->errors[ $form_data['id'] ][ $field_id ] = apply_filters( 'everest_forms_required_label', get_option( 'evf_required_validation', __( 'This field is required.', 'everest-forms' ) ) );
-			update_option( 'evf_validation_error', 'yes');
+			EVF()->task->errors[ $form_data['id'] ][ $field_id ] = evf_get_required_label();
+			update_option( 'evf_validation_error', 'yes' );
 		}
+
 		// Type validations.
 		switch ( $field_type ) {
 			case 'url':
@@ -796,23 +798,21 @@ abstract class EVF_Form_Fields {
 				break;
 		}
 
-		if( isset( $validation_text ) ){
-			EVF()->process->errors[ $form_data['id'] ][ $field_id ] = apply_filters( 'everest_forms_type_validation', $validation_text );
-			update_option( 'evf_validation_error', 'yes');
+		if ( isset( $validation_text ) ) {
+			EVF()->task->errors[ $form_data['id'] ][ $field_id ] = apply_filters( 'everest_forms_type_validation', $validation_text );
+			update_option( 'evf_validation_error', 'yes' );
 		}
 	}
 
 	/**
 	 * Formats and sanitizes field.
 	 *
-	 * $since 1.0.0
-	 *
-	 * @param int   $field_id
-	 * @param array $field_submit
-	 * @param array $form_data
+	 * @param int    $field_id
+	 * @param array  $field_submit
+	 * @param array  $form_data
+	 * @param string $meta_key
 	 */
-	public function format( $field_id, $field_submit, $form_data ) {
-
+	public function format( $field_id, $field_submit, $form_data, $meta_key ) {
 		if ( is_array( $field_submit ) ) {
 			$field_submit = array_filter( $field_submit );
 			$field_submit = implode( "\r\n", $field_submit );
@@ -823,11 +823,12 @@ abstract class EVF_Form_Fields {
 		// Sanitize but keep line breaks.
 		$value = everest_forms_sanitize_textarea_field( $field_submit );
 
-		EVF()->process->fields[ $field_id ] = array(
-			'name'  => $name,
-			'value' => $value,
-			'id'    => absint( $field_id ),
-			'type'  => $this->type,
+		EVF()->task->form_fields[ $field_id ] = array(
+			'name'     => $name,
+			'value'    => $value,
+			'id'       => absint( $field_id ),
+			'type'     => $this->type,
+			'meta_key' => $meta_key,
 		);
 	}
 }

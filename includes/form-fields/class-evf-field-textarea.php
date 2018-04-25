@@ -1,14 +1,15 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+/**
+ * Textarea field.
+ *
+ * @package EverestForms\Fields
+ * @since   1.0.0
+ */
+
+defined( 'ABSPATH' ) || exit;
 
 /**
- * Paragraph text field.
- *
- * @package    EverestForms
- * @author     WPEVerest
- * @since      1.0.0
+ * EVF_Field_Textarea class.
  */
 class EVF_Field_Textarea extends EVF_Form_Fields {
 
@@ -47,10 +48,10 @@ class EVF_Field_Textarea extends EVF_Form_Fields {
 
 		// Label.
 		$this->field_option( 'label', $field );
-		
+
 		// Meta.
 		$this->field_option( 'meta', $field );
-		
+
 		// Description
 		$this->field_option( 'description', $field );
 
@@ -146,4 +147,4 @@ class EVF_Field_Textarea extends EVF_Form_Fields {
 	}
 }
 
-new EVF_Field_Textarea;
+new EVF_Field_Textarea();

@@ -98,20 +98,22 @@ class EVF_Form_Task {
 				$field_id     = $field['id'];
 				$field_type   = $field['type'];
 				$field_submit = isset( $entry['form_fields'][ $field_id ] ) ? $entry['form_fields'][ $field_id ] : '';
-				do_action( "everest_forms_process_validate_{$field_type}", $field_id, $field_type, $field_submit, $form_data );
+
+				do_action( "everest_forms_process_validate_{$field_type}", $field_id, $field_submit, $form_data, $field_type );
 			}
 
 			// Recaptcha Validation
-			if( isset( $form_data['settings']['recaptcha_support'] ) && 1 == $form_data['settings']['recaptcha_support'] && empty( $_POST['g-recaptcha-response'] ) ){
+			if ( isset( $form_data['settings']['recaptcha_support'] ) && 1 == $form_data['settings']['recaptcha_support'] && empty( $_POST['g-recaptcha-response'] ) ){
 				evf_add_notice( get_option('evf_recaptcha_validation', __('Invalid recaptcha code.', 'everest-forms') ),'error');
 				update_option( 'evf_validation_error', 'yes');
 			}
 
-			if( get_option( 'evf_validation_error' ) === 'yes' ){
+			if ( get_option( 'evf_validation_error' ) === 'yes' ){
 				delete_option( 'evf_validation_error' );
 				return;
 			}
 
+			// Initial error check.
 			$errors = apply_filters( 'everest_forms_process_initial_errors', $this->errors, $form_data );
 
 			if ( ! empty( $errors[ $form_id ] ) ) {
@@ -129,9 +131,8 @@ class EVF_Form_Task {
 				// Pass the form created date into the form data.
 				$form_data['created'] = $form->post_date;
 
-				// Format fields
+				// Format fields.
 				foreach ( (array) $form_data['form_fields'] as $field ) {
-
 					$field_id     = $field['id'];
 					$field_key    = $field['meta-key'];
 					$field_type   = $field['type'];
@@ -292,8 +293,6 @@ class EVF_Form_Task {
 	/**
 	 * Sends entry email notifications.
 	 *
-	 * @since      1.0.0
-	 *
 	 * @param array  $fields
 	 * @param array  $entry
 	 * @param array  $form_data
@@ -301,109 +300,98 @@ class EVF_Form_Task {
 	 * @param string $context
 	 */
 	public function entry_email( $fields, $entry, $form_data, $entry_id, $context = '' ) {
-
-		// Provide the opportunity to override via a filter
+		// Provide the opportunity to override via a filter.
 		if ( ! apply_filters( 'everest_forms_entry_email', true, $fields, $entry, $form_data ) ) {
 			return;
 		}
 
-		$fields = apply_filters( 'everest_forms_entry_email_data', $fields, $entry, $form_data );
+		$fields       = apply_filters( 'everest_forms_entry_email_data', $fields, $entry, $form_data );
+		$notification = isset( $form_data['settings']['email'] ) ? $form_data['settings']['email'] : array();
 
-		$email_notifications = isset( $form_data['settings']['email'] ) ? $form_data['settings']['email'] : array();
-
-		if ( empty( $email_notifications['evf_to_email'] ) ) {
+		// Check that the form was configured for email notifications.
+		if ( empty( $notification['evf_to_email'] ) && '1' !== $notification['evf_send_confirmation_email'] ) {
 			return;
-		}
-
-		$form_fields = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
-
-		$data_html = '';
-
-		foreach ( $form_fields as $field_key => $field ) {
-
-			$field_type = isset( $field['type'] ) ? $field['type'] : '';
-
-			$label = isset( $field['label'] ) ? $field['label'] : '';
-
-			$field_value = isset( $entry['form_fields'][ $field_key ] ) ? $entry['form_fields'][ $field_key ] : '';
-
-			if( $field_type == 'email' ){
-				$user_email = $field_value;
-			}
-			if ( ! empty( $field_type ) ) {
-
-				$process_field_email = apply_filters( 'everest_forms_entry_email_' . $field_type, true );
-
-				if ( $process_field_email ) {
-
-					if ( is_array( $field_value ) ) {
-						$field_value = implode( ',', $field_value );
-					}
-					$data_html .= $label . ' : ' . $field_value . PHP_EOL;
-				}
-			}
 		}
 
 		$email = array();
 
-		$email['evf_from_email']    = ! empty( $email_notifications['evf_from_email'] ) ? $email_notifications['evf_from_email'] : evf_sender_address();
-		$email['evf_from_name']     = ! empty( $email_notifications['evf_from_name'] ) ? $email_notifications['evf_from_name'] : evf_sender_name();
-		$email['evf_email_header']  = ! empty( $email_notifications['evf_email_header'] ) ? $email_notifications['evf_email_header'] : '';
-		$email['evf_email_subject'] = ! empty( $email_notifications['evf_email_subject'] ) ? $email_notifications['evf_email_subject'] : sprintf( _x( 'New %s Entry', 'Form name', 'everest-forms' ), $form_data['settings']['form_title'] );
-		$email['evf_to_email']      = explode( ',', apply_filters( 'everest_forms_process_smart_tags', $email_notifications['evf_to_email'], $form_data, $fields, $this->entry_id ) );
-		$email['evf_to_email']      = array_map( 'sanitize_email', $email['evf_to_email'] );
+		// Setup email properties.
+		/* translators: %s - form name. */
+		$email['subject']        = ! empty( $notification['evf_email_subject'] ) ? $notification['evf_email_subject'] : sprintf( esc_html__( 'New %s Entry', 'everest-forms' ), $form_data['settings']['form_title'] );
+		$email['address']        = explode( ',', apply_filters( 'everest_forms_process_smart_tags', $notification['evf_to_email'], $form_data, $fields, $this->entry_id ) );
+		$email['address']        = array_map( 'sanitize_email', $email['address'] );
+		$email['sender_name']    = ! empty( $notification['evf_from_name'] ) ? $notification['evf_from_name'] : get_bloginfo( 'name' );
+		$email['sender_address'] = ! empty( $notification['evf_from_email'] ) ? $notification['evf_from_email'] : get_option( 'admin_email' );
+		$email['message']        = ! empty( $notification['evf_email_message'] ) ? $notification['evf_email_message'] : '{all_fields}';
 
-		if ( ! empty( $email_notifications['evf_email_message'] ) ) {
-			if ( trim( '{all_fields}' ) == $email_notifications['evf_email_message'] ){
-				$email['evf_email_message'] = $data_html;
-			}
-			else {
-				$message = str_replace( "{all_fields}", $data_html, $email_notifications['evf_email_message'] );
-				$email['evf_email_message'] = $message;
+		// Setup confirm email properties.
+		if ( isset( $notification['evf_send_confirmation_email'] ) && '1' === $notification['evf_send_confirmation_email'] ) {
+			$fields_meta = wp_list_pluck( $fields, 'value', 'meta_key' );
+			$field_email = ! empty( $notification['evf_user_to_email'] ) ? $notification['evf_user_to_email'] : '';
+
+			// Check if user email is setup.
+			if ( ! empty( $fields_meta[ $field_email ] ) ) {
+				$email['user_email']           = $fields_meta[ $field_email ];
+				$email['confirmation_subject'] = ! empty( $notification['evf_user_email_subject'] ) ? $notification['evf_user_email_subject'] : esc_html__( 'Thank you!', 'everest-forms' );
+				$email['confirmation_message'] = ! empty( $notification['evf_user_email_message'] ) ? $notification['evf_user_email_message'] : esc_html__( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
 			}
 		}
+
+		$email = apply_filters( 'everest_forms_entry_email_atts', $email, $fields, $entry, $form_data );
 
 		// Create new email.
 		$emails = new EVF_Emails();
 		$emails->__set( 'form_data', $form_data );
 		$emails->__set( 'fields', $fields );
 		$emails->__set( 'entry_id', $entry_id );
-		$emails->__set( 'from_name', $email['evf_from_name'] );
-		$emails->__set( 'from_address', $email['evf_from_email'] );
-		$emails->__set( 'headers', $email['evf_email_header'] );
-		$emails->__set( 'reply_to', isset( $user_email ) ? $user_email : $email['evf_from_email'] );
+		$emails->__set( 'from_name', $email['sender_name'] );
+		$emails->__set( 'from_address', $email['sender_address'] );
+		$emails->__set( 'reply_to', isset( $email['user_email'] ) ? $email['user_email'] : $email['sender_address'] );
 
-		// Go.
-		if ( ! empty( $email['evf_to_email'] ) ) {
-			foreach ( $email['evf_to_email'] as $address ) {
-				$emails->send( trim( $address ), $email['evf_email_subject'], $email['evf_email_message'] );
-			}
+		// Send entry email.
+		foreach ( $email['address'] as $address ) {
+			$emails->send( trim( $address ), $email['subject'], $email['message'] );
+		}
+
+		// Send confirmation email.
+		if ( ! empty( $email['user_email'] ) ) {
+			$emails = new EVF_Emails();
+			$emails->__set( 'form_data', $form_data );
+			$emails->__set( 'fields', $fields );
+			$emails->__set( 'entry_id', $entry_id );
+			$emails->__set( 'from_name', $email['sender_name'] );
+			$emails->__set( 'from_address', $email['sender_address'] );
+			$emails->__set( 'reply_to', isset( $email['sender_address'] ) ? $email['sender_address'] : false );
+			$emails->send( trim( $email['user_email'] ), $email['confirmation_subject'], $email['confirmation_message'] );
 		}
 	}
 
 	/**
 	 * Saves entry to database.
 	 *
-	 * @since      1.0.0
-	 *
-	 * @param array        $fields
-	 * @param array        $entry
-	 * @param int          $form_id
-	 * @param array|string $form_data
-	 *
+	 * @param  array $fields
+	 * @param  array $entry
+	 * @param  int   $form_id
+	 * @param  array $form_data
 	 * @return int
 	 */
-	public function entry_save( $fields, $entry, $form_id, $form_data = '' ) {
+	public function entry_save( $fields, $entry, $form_id, $form_data = array() ) {
 		global $wpdb;
 
+		// Check if form has entries disabled.
 		if ( isset( $form_data['settings']['disabled_entries'] ) && '1' === $form_data['settings']['disabled_entries'] ) {
 			return;
 		}
 
-		$browser = evf_get_browser();
+		// Provide the opportunity to override via a filter.
+		if ( ! apply_filters( 'everest_forms_entry_save', true, $fields, $entry, $form_data ) ) {
+			return;
+		}
 
 		do_action( 'everest_forms_process_entry_save', $fields, $entry, $form_id, $form_data );
 
+		$fields     = apply_filters( 'everest_forms_entry_save_data', $fields, $entry, $form_data );
+		$browser    = evf_get_browser();
 		$entry_data = array(
 			'form_id'         => $form_id,
 			'user_id'         => get_current_user_id(),
@@ -418,6 +406,7 @@ class EVF_Form_Task {
 			return new WP_Error( 'no-form-id', __( 'No form ID was found.', 'everest-forms' ) );
 		}
 
+		// Create entry.
 		$success = $wpdb->insert( $wpdb->prefix . 'evf_entries', $entry_data );
 
 		if ( is_wp_error( $success ) || ! $success ) {
@@ -426,26 +415,27 @@ class EVF_Form_Task {
 
 		$entry_id = $wpdb->insert_id;
 
-		$form_fields = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
+		// Create meta data.
+		if ( $entry_id ) {
+			foreach ( $fields as $field ) {
+				$field = apply_filters( 'everest_forms_entry_save_fields', $field, $form_data, $entry_id );
 
-		foreach ( $form_fields as $field_key => $field ) {
+				if ( isset( $field['value'], $field['meta_key'] ) && '' !== $field['value'] ) {
+					$field_value    = is_array( $field['value'] ) ? serialize( $field['value'] ) : $field['value'];
+					$entry_metadata = array(
+						'entry_id'   => $entry_id,
+						'meta_key'   => $field['meta_key'],
+						'meta_value' => $field_value,
+					);
 
-			$meta_key  = isset( $field['meta-key'] ) ? $field['meta-key'] : '';
-
-			$field_value = isset( $entry['form_fields'][ $field_key ] ) ? $entry['form_fields'][ $field_key ] : '';
-
-			if ( is_array( $field_value ) ) {
-				$field_value = serialize( $field_value );
+					// Insert entry meta.
+					$wpdb->insert( $wpdb->prefix . 'evf_entrymeta', $entry_metadata );
+				}
 			}
-
-			$entry_metadata = array(
-				'entry_id'   => $entry_id,
-				'meta_key'   => $meta_key,
-				'meta_value' => $field_value,
-			);
-			$wpdb->insert( $wpdb->prefix . 'evf_entrymeta', $entry_metadata );
 		}
 
 		do_action( 'everest_forms_complete_entry_save', $entry_id, $fields, $entry, $form_id, $form_data );
+
+		return $entry_id;
 	}
 }

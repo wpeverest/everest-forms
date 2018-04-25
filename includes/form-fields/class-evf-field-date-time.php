@@ -1,14 +1,15 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
-
 /**
  * Date field.
  *
- * @package    EverestForms
- * @author     WPEverest
- * @since      1.0.0
+ * @package EverestForms\Fields
+ * @since   1.0.0
+ */
+
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * EVF_Field_Date class.
  */
 class EVF_Field_Date extends EVF_Form_Fields {
 
@@ -133,4 +134,4 @@ class EVF_Field_Date extends EVF_Form_Fields {
 	}
 }
 
-new EVF_Field_Date;
+new EVF_Field_Date();

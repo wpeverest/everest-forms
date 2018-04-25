@@ -815,6 +815,7 @@ function evf_get_form_fields( $form = false, $whitelist = array() ) {
 			)
 		);
 	}
+
 	if ( ! is_array( $form ) || empty( $form['form_fields'] ) ) {
 		return false;
 	}
@@ -1225,3 +1226,131 @@ function evf_post_content_has_shortcode( $tag = '' ) {
 
 	return is_singular() && is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, $tag );
 }
+
+/**
+ * Convert a file size provided, such as "2M", to bytes.
+ *
+ * @since 1.2.0
+ * @link http://stackoverflow.com/a/22500394
+ *
+ * @param string $size
+ *
+ * @return int
+ */
+function evf_size_to_bytes( $size ) {
+
+	if ( is_numeric( $size ) ) {
+		return $size;
+	}
+
+	$suffix = substr( $size, - 1 );
+	$value  = substr( $size, 0, - 1 );
+
+	switch ( strtoupper( $suffix ) ) {
+		case 'P':
+			$value *= 1024;
+		case 'T':
+			$value *= 1024;
+		case 'G':
+			$value *= 1024;
+		case 'M':
+			$value *= 1024;
+		case 'K':
+			$value *= 1024;
+			break;
+	}
+
+	return $value;
+}
+
+/**
+ * Convert bytes to megabytes (or in some cases KB).
+ *
+ * @since 1.2.0
+ *
+ * @param int $bytes
+ *
+ * @return string
+ */
+function evf_size_to_megabytes( $bytes ) {
+
+	if ( $bytes < 1048676 ) {
+		return number_format( $bytes / 1024, 1 ) . ' KB';
+	} else {
+		return round( number_format( $bytes / 1048576, 1 ) ) . ' MB';
+	}
+}
+
+/**
+ * Convert a file size provided, such as "2M", to bytes.
+ *
+ * @since 1.2.0
+ * @link http://stackoverflow.com/a/22500394
+ *
+ * @param bool $bytes
+ *
+ * @return mixed
+ */
+function evf_max_upload( $bytes = false ) {
+
+	$max = wp_max_upload_size();
+	if ( $bytes ) {
+		return $max;
+	} else {
+		return evf_size_to_megabytes( $max );
+	}
+}
+
+/**
+ * Get the required label text, with a filter.
+ *
+ * @since  1.2.0
+ * @return string
+ */
+function evf_get_required_label() {
+	return apply_filters( 'everest_forms_required_label', esc_html__( 'This field is required.', 'everest-forms' ) );
+}
+
+/**
+ * Get a PRO license plan.
+ *
+ * @since  1.2.0
+ * @return bool|string Plan on success, false on failure.
+ */
+function evf_get_license_plan() {
+	$license_key = get_option( 'everest-forms-pro_license_key' );
+
+	if ( $license_key && is_plugin_active( 'everest-forms-pro/everest-forms-pro.php' ) ) {
+		$license_data = get_transient( 'evf_pro_license_plan' );
+
+		if ( false === $license_data ) {
+			$license_data = json_decode( EVF_Updater_Key_API::check( array(
+				'license' => $license_key,
+			) ) );
+
+			if ( ! empty( $license_data->item_plan ) ) {
+				set_transient( 'evf_pro_license_plan', $license_data, WEEK_IN_SECONDS );
+			}
+		}
+
+		return $license_data->item_plan;
+	}
+
+	return false;
+}
+
+/**
+ * Decode special characters, both alpha- (<) and numeric-based (').
+ *
+ * @since  1.2.0
+ * @param  string $string
+ * @return string
+ */
+function evf_decode_string( $string ) {
+	if ( ! is_string( $string) ) {
+		return $string;
+	}
+
+	return wp_kses_decode_entities( html_entity_decode( $string, ENT_QUOTES ) );
+}
+add_filter( 'everest_forms_email_message', 'evf_decode_string' );

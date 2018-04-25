@@ -31,6 +31,11 @@ class EVF_Admin_Menus {
 		add_action( 'admin_menu', array( $this, 'entries_menu' ), 40 );
 		add_action( 'admin_menu', array( $this, 'settings_menu' ), 50 );
 		add_action( 'admin_menu', array( $this, 'status_menu' ), 60 );
+
+		if ( apply_filters( 'everest_forms_show_addons_page', true ) ) {
+			add_action( 'admin_menu', array( $this, 'addons_menu' ), 70 );
+		}
+
 		add_filter( 'admin_footer', array( $this, 'admin_footer' ), 1 );
 		add_filter( 'set-screen-option', array( $this, 'set_screen_option' ), 11, 3 );
 
@@ -420,6 +425,13 @@ class EVF_Admin_Menus {
 	}
 
 	/**
+	 * Addons menu item.
+	 */
+	public function addons_menu() {
+		add_submenu_page( 'everest-forms', __( 'Everest Forms Add-ons', 'everest-forms' ), __( 'Add-ons', 'everest-forms' ), 'manage_everest_forms', 'evf-addons', array( $this, 'addons_page' ) );
+	}
+
+	/**
 	 * Init the settings page.
 	 */
 	public function everest_forms_page() {
@@ -456,6 +468,13 @@ class EVF_Admin_Menus {
 	 */
 	public function status_page() {
 		EVF_Admin_Status::output();
+	}
+
+	/**
+	 * Init the addons page.
+	 */
+	public function addons_page() {
+		EVF_Admin_Addons::output();
 	}
 
 	public function admin_footer() {

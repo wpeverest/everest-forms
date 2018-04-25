@@ -1,14 +1,15 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+/**
+ * Text field.
+ *
+ * @package EverestForms\Fields
+ * @since   1.0.0
+ */
+
+defined( 'ABSPATH' ) || exit;
 
 /**
- * Single line text field.
- *
- * @package    EverestForms
- * @author     WPEverest
- * @since      1.0.0
+ * EVF_Field_Text class.
  */
 class EVF_Field_Text extends EVF_Form_Fields {
 
@@ -134,4 +135,4 @@ class EVF_Field_Text extends EVF_Form_Fields {
 	}
 }
 
-new EVF_Field_Text;
+new EVF_Field_Text();

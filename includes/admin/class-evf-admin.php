@@ -24,6 +24,7 @@ class EVF_Admin {
 	public function __construct() {
 		add_action( 'init', array( $this, 'includes' ) );
 		add_action( 'current_screen', array( $this, 'conditional_includes' ) );
+		add_action( 'admin_init', array( $this, 'addon_actions' ) );
 		add_action( 'admin_init', array( $this, 'admin_redirects' ) );
 		add_action( 'admin_footer', 'evf_print_js', 25 );
 		add_filter( 'admin_footer_text', array( $this, 'admin_footer_text' ), 1 );
@@ -39,7 +40,7 @@ class EVF_Admin {
 		include_once dirname( __FILE__ ) . '/class-evf-admin-notices.php';
 		include_once dirname( __FILE__ ) . '/class-evf-admin-assets.php';
 		include_once dirname( __FILE__ ) . '/class-evf-admin-form-builder.php';
-		include_once dirname( __FILE__ ) . '/class-evf-add-form.php';
+		include_once dirname( __FILE__ ) . '/class-evf-admin-add-form.php';
 		include_once dirname( __FILE__ ) . '/class-evf-admin-entries.php';
 	}
 
@@ -70,6 +71,51 @@ class EVF_Admin {
 			case 'user-edit' :
 				//include( 'class-evf-admin-profile.php' );
 				break;
+		}
+	}
+
+	/**
+	 * Handle redirects after addon activate/deactivate.
+	 */
+	public function addon_actions() {
+		if ( isset( $_GET['page'], $_REQUEST['action'] ) && 'evf-addons' === $_GET['page'] ) {  // WPCS: input var okay, CSRF ok.
+			$action = sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ); // WPCS: input var okay, CSRF ok.
+			$plugin = isset( $_REQUEST['plugin'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['plugin'] ) ) : false; // WPCS: input var okay, CSRF ok.
+
+			if ( 'evf-addons-refresh' === $action ) {
+				if ( empty( $_GET['evf-addons-nonce'] ) || ! wp_verify_nonce( $_GET['evf-addons-nonce'], 'refresh' ) ) {
+					wp_die( esc_html_e( 'Could not verify nonce', 'everest-forms' ) );
+				}
+
+				foreach ( array( 'evf_pro_license_plan', 'evf_addons_sections', 'evf_extensions_section' ) as $transient ) {
+					delete_transient( $transient );
+				}
+			}
+
+			if ( $plugin && in_array( $action, array( 'activate', 'deactivate' ), true ) ) {
+
+				if ( 'activate' === $action ) {
+					if ( ! current_user_can( 'activate_plugin', $plugin ) ) {
+						wp_die( esc_html__( 'Sorry, you are not allowed to activate this plugin.', 'everest-forms' ) );
+					}
+
+					check_admin_referer( 'activate-plugin_' . $plugin );
+
+					activate_plugin( $plugin );
+				} elseif ( 'deactivate' === $action ) {
+					if ( ! current_user_can( 'deactivate_plugins' ) ) {
+						wp_die( esc_html__( 'Sorry, you are not allowed to deactivate plugins for this site.', 'everest-forms' ) );
+					}
+
+					check_admin_referer( 'deactivate-plugin_' . $plugin );
+
+					deactivate_plugins( $plugin );
+				}
+			}
+
+			// Redirect to the add-ons page.
+			wp_safe_redirect( admin_url( 'admin.php?page=evf-addons' ) );
+			exit;
 		}
 	}
 
