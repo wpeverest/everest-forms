@@ -1,14 +1,15 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+/**
+ * Select field.
+ *
+ * @package EverestForms\Fields
+ * @since   1.0.0
+ */
+
+defined( 'ABSPATH' ) || exit;
 
 /**
- * Select
- *
- * @package    EverestForms
- * @author     WPEverest
- * @since      1.0.0
+ * EVF_Field_Select class.
  */
 class EVF_Field_Select extends EVF_Form_Fields {
 
@@ -59,10 +60,10 @@ class EVF_Field_Select extends EVF_Form_Fields {
 
 		// Label.
 		$this->field_option( 'label', $field );
-		
+
 		// Meta.
 		$this->field_option( 'meta', $field );
-		
+
 		// Choices.
 		$this->field_option( 'choices', $field );
 
@@ -212,14 +213,12 @@ class EVF_Field_Select extends EVF_Form_Fields {
 	/**
 	 * Formats and sanitizes field.
 	 *
-	 * @since      1.0.0
-	 *
 	 * @param int    $field_id
-	 * @param string $field_submit
+	 * @param array  $field_submit
 	 * @param array  $form_data
+	 * @param string $meta_key
 	 */
-	public function format( $field_id, $field_submit, $form_data ) {
-
+	public function format( $field_id, $field_submit, $form_data, $meta_key ) {
 		$field     = $form_data['form_fields'][ $field_id ];
 		$name      = sanitize_text_field( $field['label'] );
 		$value_raw = sanitize_text_field( $field_submit );
@@ -231,8 +230,8 @@ class EVF_Field_Select extends EVF_Form_Fields {
 			'value_raw' => $value_raw,
 			'id'        => absint( $field_id ),
 			'type'      => $this->type,
+			'meta_key'  => $meta_key,
 		);
-
 
 		// Normal processing, dynamic population is off.
 
@@ -252,7 +251,10 @@ class EVF_Field_Select extends EVF_Form_Fields {
 		} else {
 			$data['value'] = $value_raw;
 		}
+
+		// Push field details to be saved.
+		EVF()->task->form_fields[ $field_id ] = $data;
 	}
 }
 
-new EVF_Field_Select;
+new EVF_Field_Select();

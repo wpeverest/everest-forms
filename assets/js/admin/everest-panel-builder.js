@@ -773,6 +773,21 @@
 
 jQuery(function () {
 
+
+	if ( jQuery('#everest-forms-panel-field-settingsemail-evf_send_confirmation_email').attr("checked") != 'checked' )	{
+	  jQuery('#everest-forms-panel-field-settingsemail-evf_send_confirmation_email-wrap').nextAll().hide();
+	}
+
+	jQuery( '#everest-forms-panel-field-settingsemail-evf_send_confirmation_email' ).on( 'change', function () {
+
+		if( jQuery( this ).attr('checked') != 'checked') {
+			jQuery('#everest-forms-panel-field-settingsemail-evf_send_confirmation_email-wrap').nextAll().hide();
+		}
+		else {
+			jQuery('#everest-forms-panel-field-settingsemail-evf_send_confirmation_email-wrap').nextAll().show();
+		}
+	});
+
 	var mySelect = jQuery('#everest-forms-panel-field-settings-redirect_to option:selected').val();
 
 	if ( mySelect == '0' ) {

@@ -1,6 +1,18 @@
-//Plugin made by Umesh Ghimire
+/* global jconfirm */
 (function ( $ ) {
 	$(document).ready(function () {
+		// jquery-confirm defaults.
+		jconfirm.defaults = {
+			closeIcon: true,
+			backgroundDismiss: true,
+			escapeKey: true,
+			animationBounce: 1,
+			useBootstrap: false,
+			theme: 'modern',
+			boxWidth: '400px',
+			columnClass: 'evf-responsive-class'
+		};
+
 		$('body').on('click', '.evf-nav-tab-wrapper a.nav-tab', function ( event ) {
 			event.preventDefault();
 			var tab = $(this).attr('data-key');

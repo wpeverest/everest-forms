@@ -16,7 +16,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return array
  */
 function evf_get_screen_ids() {
-
 	$evf_screen_id = sanitize_title( __( 'Everest Forms', 'everest-forms' ) );
 	$screen_ids    = array(
 		'toplevel_page_' . $evf_screen_id,
@@ -278,9 +277,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 		case 'checkbox':
 			$checked  = checked( '1', $value, false );
 			$checkbox = sprintf(
-				'<input type="hidden" id="everest-forms-panel-field-%s-%s" name="%s" value="0" class="%s" %s %s>',
-				sanitize_html_class( $panel_id ),
-				sanitize_html_class( $field ),
+				'<input type="hidden" name="%s" value="0" class="%s" %s %s>',
 				$field_name,
 				$input_class,
 				$checked,

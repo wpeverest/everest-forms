@@ -62,7 +62,7 @@ class EVF_Shortcode_Form {
 		);
 
 		do_action( 'evf_display_submit_after', $form_data );
-	
+
 		echo '</div>';
 	}
 
@@ -426,7 +426,7 @@ class EVF_Shortcode_Form {
 				'class' => array( 'evf-error' ),
 				'data'  => array(),
 				'id'    => '',
-				'value' => ! empty( EVF()->process->errors[ $form_id ][ $field_id ] ) ? EVF()->process->errors[ $form_id ][ $field_id ] : '',
+				'value' => ! empty( EVF()->task->errors[ $form_id ][ $field_id ] ) ? EVF()->task->errors[ $form_id ][ $field_id ] : '',
 			),
 			'description' => array(
 				'attr'     => array(),
@@ -508,7 +508,6 @@ class EVF_Shortcode_Form {
 		if ( ! apply_filters( 'evf_frontend_load', true, $form_data, null ) ) {
 			return;
 		}
-
 
 		$success = isset( $_POST['evf_success'] ) && $_POST['evf_success'] ? true : false;
 		if ( $success && ! empty( $form_data ) ) {

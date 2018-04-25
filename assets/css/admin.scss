@@ -4,8 +4,114 @@
  */
 
 /**
+ * Import
+ */
+@import "scss/colors";
+@import "scss/confirm";
+
+/**
  * Styling begins
  */
+.evf_addons_wrap {
+
+	p.refresh {
+		margin: 0 0 2em;
+	}
+
+	.plugin-card {
+		.name,
+		.desc {
+			margin-right: 0;
+		}
+		.plugin-card-top {
+			padding: 20px;
+			min-height: 130px;
+
+			.plugin-desc {
+				overflow: hidden;
+				display: -webkit-box;
+				-webkit-line-clamp: 4;
+				-webkit-box-orient: vertical;
+			}
+
+			.plugin-icon {
+				border: 1px solid #eee;
+			}
+		}
+		.plugin-card-bottom {
+			.status {
+				text-align: left;
+				float: left;
+				clear: left;
+				width: 65%;
+				padding-top: 5px;
+				width: calc(100% - 180px);
+
+				span.status-label {
+					color: #666;
+
+					&.status-active {
+						color: #2a9b39;
+					}
+
+					&.status-inactive {
+						color: #a00;
+					}
+				}
+			}
+
+			.action-buttons {
+				float: right;
+				clear: right;
+				max-width: 180px;
+
+				&.upgrade-plan {
+					margin: 0 auto;
+				}
+			}
+		}
+	}
+
+	.plugin-card-update-failed {
+		.notice-error {
+			padding: 9px 16px 8px;
+
+			.notice-dismiss {
+				padding: 17px;
+			}
+		}
+	}
+
+	@media screen and (max-width: 782px) {
+		.plugin-card {
+			.plugin-card-bottom {
+				.status {
+					padding-top: 9px;
+				}
+
+				.action-buttons {
+					.button.updating-message {
+						&:before,
+						&:after {
+							margin-top: -1px;
+						}
+					}
+				}
+			}
+		}
+
+		.plugin-card-update-failed {
+			.notice-error {
+				padding: 13px 20px;
+
+				.notice-dismiss {
+					padding: 21px;
+				}
+			}
+		}
+	}
+}
+
 .clear {
 	clear: both;
 }

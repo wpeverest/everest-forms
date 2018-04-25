@@ -39,12 +39,31 @@ if ( ! class_exists( 'EVF_Settings_Email', false ) ) :
 
 			$settings = apply_filters(
 				'everest_forms_email_settings', array(
-
 					array(
-						'title' => __( 'Email Settings', 'everest-forms' ),
+						'title' => __( 'Template Settings', 'everest-forms' ),
 						'type'  => 'title',
 						'desc'  => '',
-						'id'    => 'email_options',
+						'id'    => 'email_template_options',
+					),
+					array(
+						'title' =>  __( 'Template', 'everest-forms' ),
+						'type'	=> 'radio',
+						'id'    => 'evf_email_template',
+						'default' => 'default',
+						'options' => array(
+							'default' => esc_html__( 'HTML', 'everest-forms' ),
+							'none'   => esc_html__( 'Plain', 'everest-forms' ),
+						),
+					),
+					array(
+						'type' => 'sectionend',
+						'id'   => 'email_template_options',
+					),
+					array(
+						'title' => __( 'Notification Settings', 'everest-forms' ),
+						'type'  => 'title',
+						'desc'  => '',
+						'id'    => 'email_notification_options',
 					),
 					array(
 						'title'    => __( 'To Address', 'everest-forms' ),
@@ -93,12 +112,10 @@ if ( ! class_exists( 'EVF_Settings_Email', false ) ) :
 					),
 					array(
 						'type' => 'sectionend',
-						'id'   => 'email_options',
+						'id'   => 'email_notification_options',
 					),
-
 				)
 			);
-
 
 			return apply_filters( 'everest_forms_get_settings_' . $this->id, $settings );
 		}
