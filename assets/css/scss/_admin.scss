@@ -96,20 +96,44 @@ body {
 		}
 	}
 
-	.evf_save_form_action_button {
+	.efv-tab-right {
 		float: right;
-		padding: 7px 22px;
-		background-color: $color-white;
-		color: $color-gray-base;
-		font-size: 12px;
-		text-transform: uppercase;
-		border: 0 none;
-		border-radius: 100px;
-		margin: 20px 45px 0 20px;
-		cursor: pointer;
+		margin: 21px 55px 19px 0;
 
-		&:focus {
-			outline: none;
+		.evf-shortcode-field {
+			float: left;
+
+			input {
+				line-height: 26px;
+				border-radius: 3px 0 0 3px;
+				padding: 3px 10px;
+			}
+
+			button {
+				border-radius: 0 3px 3px 0;
+				margin-left: -4px;
+				padding: 5px 10px;
+
+				.dashicons {
+					margin-top: 2px;
+				}
+			}
+		}
+		
+		.evf_save_form_action_button {
+			padding: 7px 22px;
+			background-color: $color-white;
+			color: $color-gray-base;
+			font-size: 12px;
+			text-transform: uppercase;
+			border: 0 none;
+			border-radius: 100px;
+			margin: 3px 0 3px 40px;
+			cursor: pointer;
+
+			&:focus {
+				outline: none;
+			}
 		}
 	}
 
@@ -576,6 +600,7 @@ body {
 			}
 
 			.everest-forms-field {
+				cursor: all-scroll;
 				margin-bottom: 30px;
 				padding: 15px;
 				position: relative;
