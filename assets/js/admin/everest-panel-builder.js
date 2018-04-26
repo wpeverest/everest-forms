@@ -61,6 +61,7 @@
 			EVFPanelBuilder.bindAddNewRow();
 			EVFPanelBuilder.bindRemoveRow();
 			EVFPanelBuilder.bindFormSettings();
+			EVFPanelBuilder.bindFormMarketing();
 			EVFPanelBuilder.choicesInit();
 			EVFPanelBuilder.choicesUpdate();
 
@@ -183,6 +184,20 @@
 				$('.evf-content-section').removeClass('active');
 				$(this).addClass('active');
 				$('.evf-content-' + data_setting_section + '-settings').addClass('active');
+				e.preventDefault();
+			});
+
+			$('.evf-setting-panel').eq(0).trigger('click');
+		},
+		bindFormMarketing: function () {
+
+			$('body').on('click', '.evf-marketing-panel', function ( e ) {
+				var data_setting_section = $(this).attr('data-section');
+				console.log('evf-panel-content-section' + data_setting_section );
+				$('.evf-marketing-panel').removeClass('active');
+				$('.evf-panel-content-section').removeClass('active');
+				$(this).addClass('active');
+				$('.evf-panel-content-section-' + data_setting_section ).addClass('active');
 				e.preventDefault();
 			});
 
