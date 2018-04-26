@@ -147,8 +147,8 @@ class EVF_Admin_Form_Builder {
 					<div class="efv-tab-right">
 						<div class="evf-shortcode-field">
 							<input type="text" class="large-text code" onfocus="this.select();" value="<?php printf( esc_html( '[everest_form id="%s"]' ), $_GET['form_id'] ) ?>" id="evf-form-shortcode" readonly="readonly" />
-							<button type="button" class="evf-btn" title="Copy Shortcode">
-								<span class="dashicons dashicons-admin-page"></span>
+							<button type="button" class="evf-btn dashicons dashicons-admin-page" title="Copy Shortcode">
+								
 							</button>
 						</div>
 						<button type="button" name="save_form" class="evf_save_form_action_button"><?php esc_html_e( 'Save', 'everest-forms' ); ?></button>
