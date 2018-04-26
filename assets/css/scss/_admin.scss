@@ -153,7 +153,7 @@ body {
 
 			.everest-forms-panel-sidebar {
 				background-color: $color-whitesmoke;
-				width: 30%;
+				width: 375px;
 				border-right: 1px solid $color-border-right;
 
 				.everest-forms-add-fields {
@@ -358,7 +358,7 @@ body {
 
 		.everest-forms-panel-content-wrap {
 			background-color: $color-white;
-			width: 70%;
+			width: calc(100% - 375px);
 			padding: 15px 20px;
 
 			.everest-forms-title-desc {
