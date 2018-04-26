@@ -473,8 +473,7 @@
 			});
 		},
 		bindSaveOption: function () {
-
-			$('body').on('click', '.evf_save_form_action_button', function () {
+			$( 'body' ).on('click', '.evf_save_form_action_button', function () {
 				var $this = $(this);
 				var form = $('form#everest-forms-builder-form');
 				var structure = EVFPanelBuilder.getStructure();
@@ -494,10 +493,20 @@
 					data: data,
 					type: 'POST',
 					beforeSend: function () {
-						evfHelper.startEvfOverLay($wrapper, $this);
+						var overlay = $( '<div class="evf-overlay"></div>' );
+
+						overlay.append( '<div class="loading"></div>' );
+						$this.find( '.spinner' ).remove();
+						$wrapper.find( '.evf-overlay' ).remove();
+						$wrapper.css({ 'position': 'relative' });
+						$wrapper.append( overlay );
+						$this.append( '<span style="margin-top:-1px;margin-right:0;" class="spinner is-active"></span>' );
 					},
 					success: function ( response ) {
-						evfHelper.endEvfOverLay($wrapper, $this);
+						$wrapper.find( '.evf-overlay' ).fadeOut();
+						$wrapper.find( '.evf-overlay' ).remove();
+						$wrapper.removeAttr( 'style' );
+						$this.find( '.spinner' ).remove();
 
 						if ( typeof response.success === 'boolean' && response.success === true ) {
 							// console.log(response.data);
@@ -581,19 +590,42 @@
 			if ( panel === 'fields' ) {
 				$('.everest-forms-field-options').hide();
 				$('.everest-forms-add-fields').show();
-
-
 			}
-			history.replaceState({}, null, evfHelper.updateQueryString('tab', panel));
+			history.replaceState({}, null, EVFPanelBuilder.updateQueryString( 'tab', panel ) );
 			EVFPanelBuilder.switchPanel(panel);
+		},
+		updateQueryString: function ( key, value, url ) {
+			if ( ! url ) url = window.location.href;
+			var re = new RegExp("([?&])" + key + "=.*?(&|#|$)(.*)", "gi"),
+				hash;
 
+			if ( re.test( url ) ) {
+				if ( typeof value !== 'undefined' && value !== null )
+					return url.replace(re, '$1' + key + "=" + value + '$2$3');
+				else {
+					hash = url.split('#');
+					url = hash[ 0 ].replace(re, '$1$3').replace(/(&|\?)$/, '');
+					if ( typeof hash[ 1 ] !== 'undefined' && hash[ 1 ] !== null )
+						url += '#' + hash[ 1 ];
+					return url;
+				}
+			} else {
+				if ( typeof value !== 'undefined' && value !== null ) {
+					var separator = url.indexOf('?') !== -1 ? '&' : '?';
+					hash = url.split('#');
+					url = hash[ 0 ] + separator + key + '=' + value;
+					if ( typeof hash[ 1 ] !== 'undefined' && hash[ 1 ] !== null )
+						url += '#' + hash[ 1 ];
+					return url;
+				}
+				else
+					return url;
+			}
 		},
 		switchPanel: function ( panel ) {
 			if ( panel === 'field-options' ) {
-
 				EVFPanelBuilder.switchToFieldOptionPanel();
 			}
-
 		},
 		switchToFieldOptionPanel: function ( field_id ) {
 			$('li.evf-panel-field-options-button.evf-disabled-tab').show();
@@ -687,7 +719,7 @@
 				if ( $(this).hasClass('active') ) {
 					return;
 				}
-				var grid_id = evfHelper.parseInt($(this).attr('data-evf-grid'));
+				var grid_id = parseInt( $( this ).attr( 'data-evf-grid' ), 10 );
 				if ( grid_id > max_number_of_grid ) {
 					return;
 				}
@@ -755,38 +787,19 @@
 			});
 		},
 		bindFieldSettings: function () {
-
 			$('body').on('click', '.everest-forms-preview .everest-forms-field, .everest-forms-preview .everest-forms-field .everest-forms-field-setting', function () {
 				var field_id = $(this).closest('.everest-forms-field').attr('data-field-id');
-
 				EVFPanelBuilder.switchToFieldOptionPanel(field_id);
 			});
-
 		}
 	};
 
 	$(function () {
 		EVFPanelBuilder.init();
 	});
-
 })(jQuery, window.evf_data);
 
 jQuery(function () {
-
-
-	if ( jQuery('#everest-forms-panel-field-settingsemail-evf_send_confirmation_email').attr("checked") != 'checked' )	{
-	  jQuery('#everest-forms-panel-field-settingsemail-evf_send_confirmation_email-wrap').nextAll().hide();
-	}
-
-	jQuery( '#everest-forms-panel-field-settingsemail-evf_send_confirmation_email' ).on( 'change', function () {
-
-		if( jQuery( this ).attr('checked') != 'checked') {
-			jQuery('#everest-forms-panel-field-settingsemail-evf_send_confirmation_email-wrap').nextAll().hide();
-		}
-		else {
-			jQuery('#everest-forms-panel-field-settingsemail-evf_send_confirmation_email-wrap').nextAll().show();
-		}
-	});
 
 	var mySelect = jQuery('#everest-forms-panel-field-settings-redirect_to option:selected').val();
 
