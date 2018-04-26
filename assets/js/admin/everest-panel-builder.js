@@ -193,7 +193,6 @@
 
 			$('body').on('click', '.evf-marketing-panel', function ( e ) {
 				var data_setting_section = $(this).attr('data-section');
-				console.log('evf-panel-content-section' + data_setting_section );
 				$('.evf-marketing-panel').removeClass('active');
 				$('.evf-panel-content-section').removeClass('active');
 				$(this).addClass('active');
