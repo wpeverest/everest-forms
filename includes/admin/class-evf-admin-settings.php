@@ -128,18 +128,19 @@ class EVF_Admin_Settings {
 
 		do_action( 'everest_forms_settings_start' );
 
-		wp_enqueue_script( 'everest_forms_settings', EVF()->plugin_url() . '/assets/js/admin/settings' . $suffix . '.js', array( 'jquery', 'jquery-ui-datepicker', 'jquery-ui-sortable', 'iris', 'selectWoo' ), EVF()->version, true );
+		wp_enqueue_script( 'everest_forms_settings', EVF()->plugin_url() . '/assets/js/admin/settings' . $suffix . '.js', array( 'jquery', 'jquery-confirm', 'jquery-ui-datepicker', 'jquery-ui-sortable', 'iris', 'selectWoo' ), EVF()->version, true );
 
 		wp_localize_script( 'everest_forms_settings', 'everest_forms_settings_params', array(
 			'i18n_nav_warning' => __( 'The changes you made will be lost if you navigate away from this page.', 'everest-forms' ),
 		) );
-		// Include settings pages
+
+		// Include settings pages.
 		self::get_settings_pages();
 
 		$current_tab     = empty( $_GET['tab'] ) ? 'general' : sanitize_title( $_GET['tab'] );
-
 		$current_section = empty( $_REQUEST['section'] ) ? '' : sanitize_title( $_REQUEST['section'] );
-		// Get tabs for the settings page
+
+		// Get tabs for the settings page.
 		$tabs = apply_filters( 'everest_forms_settings_tabs_array', array() );
 
 		include( dirname( __FILE__ ) . '/views/html-admin-settings.php' );
