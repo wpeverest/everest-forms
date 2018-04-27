@@ -103,7 +103,6 @@ class EVF_Emails {
 		}
 
 		// Hooks.
-		add_action( 'wp_mail_failed', array( $this, 'log_mail_errors' ) );
 		add_action( 'everest_forms_email_send_before', array( $this, 'send_before' ) );
 		add_action( 'everest_forms_email_send_after', array( $this, 'send_after' ) );
 	}
@@ -116,18 +115,6 @@ class EVF_Emails {
 	 */
 	public function __set( $key, $value ) {
 		$this->$key = $value;
-	}
-
-	public function log_mail_errors( $error_msg, $mail_error_data ) {
-		$logger = evf_get_logger();
-
-		// echo '<pre>' . print_r( $mail_error_data, true ) . '</pre>';
-
-		$logger->error(
-			evf_print_r( $mail_error_data, true ), array(
-				'source' => 'email-errors',
-			)
-		);
 	}
 
 	/**
