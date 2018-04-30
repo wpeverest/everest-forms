@@ -181,11 +181,13 @@ final class EverestForms {
 	 *
 	 * @since 1.1.5
 	 */
-	public function log_mail_errors( $error_msg ) {
-		if ( is_wp_error( $error_msg ) ) {
+	public function log_mail_errors( $wp_error ) {
+		$error = $wp_error->errors;
+		if ( is_wp_error( $wp_error ) ) {
 			$logger = evf_get_logger();
-			$logger->error(
-				evf_print_r( $error_msg, true ), array(
+			$logger->critical(
+				current( $error['wp_mail_failed'] ),
+				array(
 					'source' => 'email-errors',
 				)
 			);
