@@ -74,7 +74,7 @@ module.exports = function( grunt ){
 				files: {
 					'<%= dirs.js %>/jquery-blockui/jquery.jquery.blockUI.min.js': [ '<%= dirs.js %>/jquery-blockui/jquery.jquery.blockUI.js' ],
 					'<%= dirs.js %>/jquery-tiptip/jquery.tipTip.min.js': [ '<%= dirs.js %>/jquery-tiptip/jquery.tipTip.js' ],
-					'<%= dirs.js %>/selectWoo/selectWoo.min.js': ['<%= dirs.js %>/selectWoo/selectWoo.js']
+					'<%= dirs.js %>/zeroclipboard/jquery.zeroclipboard.min.js': ['<%= dirs.js %>/zeroclipboard/jquery.zeroclipboard.js']
 				}
 			}
 		},
