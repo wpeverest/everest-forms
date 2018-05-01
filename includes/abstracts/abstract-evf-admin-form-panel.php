@@ -159,7 +159,7 @@ abstract class EVF_Admin_Form_Panel {
 		$class .= $slug == 'default' ? ' default' : '';
 		$class .= ! empty( $icon ) ? ' icon' : '';
 
-		echo '<a href="#" class="evf-setting-panel everest-forms-panel-sidebar-section everest-forms-panel-sidebar-section-' . esc_attr( $slug ) . $class . '" data-section="' . esc_attr( $slug ) . '">';
+		echo '<a href="#" class="evf-panel-tab evf-setting-panel everest-forms-panel-sidebar-section everest-forms-panel-sidebar-section-' . esc_attr( $slug ) . $class . '" data-section="' . esc_attr( $slug ) . '">';
 
 		if ( ! empty( $icon ) ) {
 			echo '<img src="' . esc_url( $icon ) . '">';

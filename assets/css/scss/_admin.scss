@@ -325,7 +325,7 @@ body {
 					}
 				}
 
-				.evf-setting-panel {
+				.evf-panel-tab {
 					background-color: $accordion-content-bg;
 					padding: 15px 20px;
 					font-size: 14px;
@@ -942,6 +942,17 @@ body {
 	}
 
 	.evf-content-section.active {
+		display: block;
+	}
+}
+
+#everest-forms-panel-marketing {
+	.evf-panel-content-section {
+		display: none;
+
+	}
+
+	.evf-panel-content-section.active {
 		display: block;
 	}
 }

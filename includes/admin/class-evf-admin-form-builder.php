@@ -165,9 +165,7 @@ class EVF_Admin_Form_Builder {
 	}
 
 	public function output_template() {
-
 		wp_enqueue_script( 'everest_forms_builder' );
-		wp_enqueue_script( 'everest_forms_settings' );
 		wp_enqueue_script( 'everest_forms_admin' );
 
 		include_once( dirname( __FILE__ ) . '/views/html-admin-form-modal.php' );
