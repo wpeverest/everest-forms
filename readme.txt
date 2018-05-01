@@ -80,6 +80,7 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 == Changelog ==
 
 = 1.2.0 - XX-XX-2018 =
+* Feature - Copy shortcode inside form view page.
 * Fix - Prevent 404 in console for jQuery UI images.
 
 = 1.1.4 - 24-04-2018 =

@@ -34,5 +34,5 @@ function evfSetClipboard( data, $el ) {
  * Clear the user's clipboard.
  */
 function evfClearClipboard() {
-	wcSetClipboard( '' );
+	evfSetClipboard( '' );
 }

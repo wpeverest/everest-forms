@@ -1,31 +1,72 @@
-/* global jconfirm */
+/* global jconfirm, evfSetClipboard, evfClearClipboard */
 (function ( $, evf_data ) {
-
 
 	var EVFPanelBuilder = {
 
-
 		/**
 		 * Start the panel builder.
-		 *
-		 * @since 1.0.0
 		 */
 		init: function () {
-
-			$(document).ready(function($) {
-				if( ! $( 'evf-panel-marketing-button a' ).hasClass('active') ) {
+			$( document ).ready( function( $ ) {
+				if ( ! $( 'evf-panel-marketing-button a' ).hasClass('active') ) {
 					$('#everest-forms-panel-marketing').find('.everest-forms-panel-sidebar a').first().addClass('active');
 					$('.everest-forms-panel-content').find('.evf-panel-content-section').first().addClass('active');
 				}
 			});
 
-			// Document ready
-			$(document).ready(EVFPanelBuilder.ready);
+			$( document.body )
+				.on( 'click', 'a.help_tip, a.everets-forms-help-tip', this.preventTipTipClick )
+				.on( 'click', '#copy-shortcode', this.copyShortcode )
+				.on( 'aftercopy', '#copy-shortcode', this.copySuccess )
+				.on( 'aftercopyfailure', '#copy-shortcode', this.copyFail );
 
-			// Page load
-			$(window).on('load', EVFPanelBuilder.load);
+			// Document ready.
+			$( document ).ready( EVFPanelBuilder.ready );
+
+			// Page load.
+			$( window ).on( 'load', EVFPanelBuilder.load );
 
 			EVFPanelBuilder.bindUI();
+		},
+
+		/**
+		 * Prevent anchor behavior when click on TipTip.
+		 *
+		 * @return {Bool}
+		 */
+		preventTipTipClick: function() {
+			return false;
+		},
+
+		/**
+		 * Copy shortcode.
+		 *
+		 * @param {Object} evt Copy event.
+		 */
+		copyShortcode: function( evt ) {
+			evfClearClipboard();
+			evfSetClipboard( $( '.evf-shortcode-field' ).find( 'input' ).val(), $( this ) );
+			evt.preventDefault();
+		},
+
+		/**
+		 * Display a "Copied!" tip when success copying
+		 */
+		copySuccess: function() {
+			$( '#copy-shortcode' ).tipTip({
+				'attribute':  'data-tip',
+				'activation': 'focus',
+				'fadeIn':     50,
+				'fadeOut':    50,
+				'delay':      0
+			}).focus();
+		},
+
+		/**
+		 * Displays the copy error message when failure copying.
+		 */
+		copyFail: function() {
+			$( '.evf-shortcode-field' ).find( 'input' ).focus().select();
 		},
 
 		/**
