@@ -301,6 +301,16 @@
 	}
 }
 
+/* reCAPTCHA Area
+----------------------------------------------------------------------------- */
+
+.evf-field-container {
+	.evf-recaptcha-container {
+		padding: 10px 0 20px 0;
+		clear: both;
+	}
+}
+
 .evf-recaptcha-row {
 	float: left;
 
@@ -337,6 +347,10 @@
 					width: 100%;
 				}
 			}
+		}
+
+		.evf-recaptcha-row {
+			margin: 25px 0;
 		}
 	}
 }

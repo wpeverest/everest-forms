@@ -145,14 +145,3 @@ jQuery( function ( $ ) {
 
 	everest_forms.init();
 });
-
-/* jshint ignore:start */
-var google_recaptcha_everest_forms;
-var onloadEVFCallback = function () {
-	google_recaptcha_everest_forms = grecaptcha.render( 'evf-recaptcha-container', {
-		'sitekey': evf_google_recaptcha_code.site_key,
-		'theme': 'light',
-		'style': 'transform:scale(0.77);-webkit-transform:scale(0.77);transform-origin:0 0;-webkit-transform-origin:0 0;',
-	});
-};
-/* jshint ignore:end */
