@@ -237,11 +237,11 @@ class EVF_Shortcode_Form {
 				}
 
 				echo '</div>';
-
 			}
+
 			echo '</div>';
 
-		    echo self::process_recaptcha( $form_data );
+		    self::process_recaptcha( $form_data );
 		}
 
 		do_action( 'evf_display_fields_after', $form_data );
@@ -250,43 +250,21 @@ class EVF_Shortcode_Form {
 	}
 
 	public static function process_recaptcha( $form_data ){
-		$recaptcha_enable = 'no';
+		$recaptcha_site_key    = get_option( 'evf_recaptcha_site_key', '' );
+		$recaptcha_site_secret = get_option( 'evf_recaptcha_site_secret', '' );
 
-		if ( isset( $form_data['settings']['recaptcha_support'] ) && $form_data['settings']['recaptcha_support'] == 1 ){
-			$recaptcha_enable = 'yes';
-		}
-
-		$recaptcha_site_key    = get_option( 'evf_recaptcha_site_key', - 1 );
-		$recaptcha_site_secret = get_option( 'evf_recaptcha_site_secret', - 1 );
-
-		if ( empty( $recaptcha_site_key ) ) {
-			$recaptcha_site_key = - 1;
-		}
-
-		if ( empty( $recaptcha_site_secret ) ) {
-			$recaptcha_site_secret = - 1;
-		}
-
-		if ( 'yes' == $recaptcha_enable ) {
+		if ( isset( $form_data['settings']['recaptcha_support'] ) && '1' === $form_data['settings']['recaptcha_support'] ) {
 			wp_enqueue_script( 'evf-google-recaptcha' );
 			wp_localize_script( 'evf-google-recaptcha', 'evf_google_recaptcha_code', array(
 				'site_key'          => $recaptcha_site_key,
 				'site_secret'       => $recaptcha_site_secret,
 				'is_captcha_enable' => true,
 			) );
+
+			if ( ! empty( $recaptcha_site_key ) && ! empty( $recaptcha_site_secret ) ) {
+				echo '<div id="evf-recaptcha-container" class="evf-recaptcha-row g-recaptcha"></div>';
+			}
 		}
-
-		$recaptcha_node = '<div id="evf-recaptcha-node" class="evf-recaptcha-row" style="float:left"><div id="evf_node_recaptcha" class="g-recaptcha"></div></div>';
-
-		if ( 'no' === $recaptcha_enable ) {
-			$recaptcha_node = '<div id="evf-recaptcha-node" style="float:left"></div>';
-		}
-
-		if ( 'yes' === $recaptcha_enable && - 1 !== $recaptcha_site_key && - 1 !== $recaptcha_site_secret ) {
-			$recaptcha_node = '<div id="evf-recaptcha-node" class="evf-recaptcha-row" style="width:100px;max-width: 100px; float:left"><div id="evf_node_recaptcha" class="g-recaptcha"></div></div>';
-		}
-
-		return $recaptcha_node;
 	}
 
 	/**

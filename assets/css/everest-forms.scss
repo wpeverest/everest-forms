@@ -301,16 +301,20 @@
 	}
 }
 
-.evf-recaptcha-row .evf-error {
-	border: 1px solid $color-alert-danger;
-	background-color: lighten($color-alert-danger, 35%);
-	padding: 7px 10px;
-	color:darken($color-alert-danger, 10%);
-	display: inline-block;
-	margin-top: 15px;
-	margin-bottom: 0;
-	border-radius: 3px;
-	font-weight: 300;
+.evf-recaptcha-row {
+	float: left;
+
+	.evf-error {
+		border: 1px solid $color-alert-danger;
+		background-color: lighten($color-alert-danger, 35%);
+		padding: 7px 10px;
+		color:darken($color-alert-danger, 10%);
+		display: inline-block;
+		margin-top: 15px;
+		margin-bottom: 0;
+		border-radius: 3px;
+		font-weight: 300;
+	}
 }
 
 
