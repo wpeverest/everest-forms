@@ -250,19 +250,29 @@ class EVF_Shortcode_Form {
 	}
 
 	public static function process_recaptcha( $form_data ){
-		$recaptcha_site_key    = get_option( 'evf_recaptcha_site_key', '' );
-		$recaptcha_site_secret = get_option( 'evf_recaptcha_site_secret', '' );
+		$site_key   = get_option( 'evf_recaptcha_site_key', '' );
+		$secret_key = get_option( 'evf_recaptcha_site_secret', '' );
+		if ( ! $site_key || ! $secret_key ) {
+			return;
+		}
 
 		if ( isset( $form_data['settings']['recaptcha_support'] ) && '1' === $form_data['settings']['recaptcha_support'] ) {
-			wp_enqueue_script( 'evf-google-recaptcha' );
-			wp_localize_script( 'evf-google-recaptcha', 'evf_google_recaptcha_code', array(
-				'site_key'          => $recaptcha_site_key,
-				'site_secret'       => $recaptcha_site_secret,
-				'is_captcha_enable' => true,
-			) );
+			$data = apply_filters( 'everest_forms_frontend_recaptcha', array(
+				'sitekey' => trim( sanitize_text_field( $site_key ) ),
+			), $form_data );
 
-			if ( ! empty( $recaptcha_site_key ) && ! empty( $recaptcha_site_secret ) ) {
-				echo '<div id="evf-recaptcha-container" class="evf-recaptcha-row g-recaptcha"></div>';
+			if ( $site_key && $secret_key ) {
+				$recaptch_inline  = 'var EVFRecaptchaLoad = function(){jQuery(".g-recaptcha").each(function(index, el){grecaptcha.render(el,{callback:function(){EVFRecaptchaCallback(el);}},true);});};';
+				$recaptch_inline .= 'var EVFRecaptchaCallback = function(el){jQuery(el).parent().find(".evf-recaptcha-hidden").val("1").valid();};';
+
+				// Enqueue reCaptcha scripts.
+				wp_enqueue_script( 'evf-recaptcha' );
+				wp_add_inline_script( 'evf-recaptcha', $recaptch_inline );
+
+				// Output the reCapthcha container.
+				echo '<div id="evf-recaptcha-container" class="evf-recaptcha-row">';
+					echo '<div ' . evf_html_attributes( '', array( 'g-recaptcha' ), $data ) . ' style="transform: scale(1.08); margin-left: 14px;"></div>';
+				echo '</div>';
 			}
 		}
 	}
