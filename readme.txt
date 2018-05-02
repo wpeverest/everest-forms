@@ -80,6 +80,7 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 == Changelog ==
 
 = 1.1.5 - XX-XX-2018 =
+* Fix - Select2 styles conflict with WooCommerce.
 * Fix - Undefined jQuery vars in `admin-helper.js`
 * Fix - Prevent 404 in console for jQuery UI images.
 
