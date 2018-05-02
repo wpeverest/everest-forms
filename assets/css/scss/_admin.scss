@@ -627,21 +627,47 @@ body {
 					float: right;
 				}
 
+				&.active {
+					background: #f0f1f2;
+					border: 1px solid $border-color;
+
+					.evf-field-action {
+						visibility: visible;
+						opacity: 1;
+					}
+				}
 				.evf-field-action {
 					position: absolute;
-					top: 10px;
-					right: 5px;
+					top: 15px;
+					right: 15px;
 					visibility: hidden;
 					opacity: 0;
 					transition: 0.5s all;
 
 					a {
-						color: $color-brand-primary;
-						margin-left: 5px;
+						color: $color-white;
+						padding: 5px;
+						background: $color-gray-darker;
+
+						&:first-child {
+							border-radius: 3px 0 0 3px;
+							border-right: 1px solid $color-gray-dark;
+						}
+
+						&:last-child {
+							border-radius: 0 3px 3px 0;
+							border-left: 1px solid $color-gray-dark;
+						}
 
 						&.everest-forms-field-delete:hover {
 							color: $color-alert-danger;
 						}
+					}
+
+					.dashicons {
+						font-size: 15px;
+						height: auto;
+						width: auto;
 					}
 				}
 
