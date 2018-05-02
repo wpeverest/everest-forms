@@ -250,59 +250,43 @@ class EVF_Shortcode_Form {
 	}
 
 	public static function process_recaptcha( $form_data ){
-
 		$recaptcha_enable = 'no';
 
-		if( isset( $form_data['settings']['recaptcha_support'] ) && $form_data['settings']['recaptcha_support'] == 1 ){
+		if ( isset( $form_data['settings']['recaptcha_support'] ) && $form_data['settings']['recaptcha_support'] == 1 ){
 			$recaptcha_enable = 'yes';
 		}
 
-		$recaptcha_site_key = get_option( 'evf_recaptcha_site_key', - 1 );
-
+		$recaptcha_site_key    = get_option( 'evf_recaptcha_site_key', - 1 );
 		$recaptcha_site_secret = get_option( 'evf_recaptcha_site_secret', - 1 );
 
 		if ( empty( $recaptcha_site_key ) ) {
-
 			$recaptcha_site_key = - 1;
 		}
-		if ( empty( $recaptcha_site_secret ) ) {
 
+		if ( empty( $recaptcha_site_secret ) ) {
 			$recaptcha_site_secret = - 1;
 		}
+
 		if ( 'yes' == $recaptcha_enable ) {
-
 			wp_enqueue_script( 'evf-google-recaptcha' );
-
 			wp_localize_script( 'evf-google-recaptcha', 'evf_google_recaptcha_code', array(
-
-				'site_key' => $recaptcha_site_key,
-
-				'site_secret' => $recaptcha_site_secret,
-
+				'site_key'          => $recaptcha_site_key,
+				'site_secret'       => $recaptcha_site_secret,
 				'is_captcha_enable' => true,
-
 			) );
 		}
 
-		$recaptcha_node =   '<div id="evf-recaptcha-node" class="evf-recaptcha-row" style="float:left">
-								<div id="evf_node_recaptcha" class="g-recaptcha" style="margin-left:11px;transform:scale(0.77);-webkit-transform:scale(0.77);transform-origin:0 0;-webkit-transform-origin:0 0;">
-								</div>
-							</div>';
+		$recaptcha_node = '<div id="evf-recaptcha-node" class="evf-recaptcha-row" style="float:left"><div id="evf_node_recaptcha" class="g-recaptcha"></div></div>';
 
 		if ( 'no' === $recaptcha_enable ) {
-
 			$recaptcha_node = '<div id="evf-recaptcha-node" style="float:left"></div>';
-
 		}
+
 		if ( 'yes' === $recaptcha_enable && - 1 !== $recaptcha_site_key && - 1 !== $recaptcha_site_secret ) {
-
-			$recaptcha_node =  '<div id="evf-recaptcha-node" class="evf-recaptcha-row" style="width:100px;max-width: 100px; float:left">
-									<div id="evf_node_recaptcha" class="g-recaptcha" style="margin-left:11px;transform:scale(0.77);-webkit-transform:scale(0.77);transform-origin:0 0;-webkit-transform-origin:0 0;">
-									</div>
-								</div>';
+			$recaptcha_node = '<div id="evf-recaptcha-node" class="evf-recaptcha-row" style="width:100px;max-width: 100px; float:left"><div id="evf_node_recaptcha" class="g-recaptcha"></div></div>';
 		}
-		return $recaptcha_node;
 
+		return $recaptcha_node;
 	}
 
 	/**
