@@ -237,11 +237,11 @@ class EVF_Shortcode_Form {
 				}
 
 				echo '</div>';
-
 			}
+
 			echo '</div>';
 
-		    echo self::process_recaptcha( $form_data );
+		    self::process_recaptcha( $form_data );
 		}
 
 		do_action( 'evf_display_fields_after', $form_data );
@@ -250,59 +250,30 @@ class EVF_Shortcode_Form {
 	}
 
 	public static function process_recaptcha( $form_data ){
-
-		$recaptcha_enable = 'no';
-
-		if( isset( $form_data['settings']['recaptcha_support'] ) && $form_data['settings']['recaptcha_support'] == 1 ){
-			$recaptcha_enable = 'yes';
+		$site_key   = get_option( 'evf_recaptcha_site_key', '' );
+		$secret_key = get_option( 'evf_recaptcha_site_secret', '' );
+		if ( ! $site_key || ! $secret_key ) {
+			return;
 		}
 
-		$recaptcha_site_key = get_option( 'evf_recaptcha_site_key', - 1 );
+		if ( isset( $form_data['settings']['recaptcha_support'] ) && '1' === $form_data['settings']['recaptcha_support'] ) {
+			$data = apply_filters( 'everest_forms_frontend_recaptcha', array(
+				'sitekey' => trim( sanitize_text_field( $site_key ) ),
+			), $form_data );
 
-		$recaptcha_site_secret = get_option( 'evf_recaptcha_site_secret', - 1 );
+			if ( $site_key && $secret_key ) {
+				$recaptch_inline = 'var EVFRecaptchaLoad = function(){jQuery(".g-recaptcha").each(function(index, el){grecaptcha.render(el,{},true);});};';
 
-		if ( empty( $recaptcha_site_key ) ) {
+				// Enqueue reCaptcha scripts.
+				wp_enqueue_script( 'evf-recaptcha' );
+				wp_add_inline_script( 'evf-recaptcha', $recaptch_inline );
 
-			$recaptcha_site_key = - 1;
+				// Output the reCapthcha container.
+				echo '<div id="evf-recaptcha-container" class="evf-recaptcha-row">';
+					echo '<div ' . evf_html_attributes( '', array( 'g-recaptcha' ), $data ) . '"></div>';
+				echo '</div>';
+			}
 		}
-		if ( empty( $recaptcha_site_secret ) ) {
-
-			$recaptcha_site_secret = - 1;
-		}
-		if ( 'yes' == $recaptcha_enable ) {
-
-			wp_enqueue_script( 'evf-google-recaptcha' );
-
-			wp_localize_script( 'evf-google-recaptcha', 'evf_google_recaptcha_code', array(
-
-				'site_key' => $recaptcha_site_key,
-
-				'site_secret' => $recaptcha_site_secret,
-
-				'is_captcha_enable' => true,
-
-			) );
-		}
-
-		$recaptcha_node =   '<div id="evf-recaptcha-node" class="evf-recaptcha-row" style="float:left">
-								<div id="evf_node_recaptcha" class="g-recaptcha" style="margin-left:11px;transform:scale(0.77);-webkit-transform:scale(0.77);transform-origin:0 0;-webkit-transform-origin:0 0;">
-								</div>
-							</div>';
-
-		if ( 'no' === $recaptcha_enable ) {
-
-			$recaptcha_node = '<div id="evf-recaptcha-node" style="float:left"></div>';
-
-		}
-		if ( 'yes' === $recaptcha_enable && - 1 !== $recaptcha_site_key && - 1 !== $recaptcha_site_secret ) {
-
-			$recaptcha_node =  '<div id="evf-recaptcha-node" class="evf-recaptcha-row" style="width:100px;max-width: 100px; float:left">
-									<div id="evf_node_recaptcha" class="g-recaptcha" style="margin-left:11px;transform:scale(0.77);-webkit-transform:scale(0.77);transform-origin:0 0;-webkit-transform-origin:0 0;">
-									</div>
-								</div>';
-		}
-		return $recaptcha_node;
-
 	}
 
 	/**

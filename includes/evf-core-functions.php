@@ -1224,7 +1224,7 @@ function get_form_data_by_meta_key( $form_id, $meta_key ) {
 function evf_post_content_has_shortcode( $tag = '' ) {
 	global $post;
 
-	return is_singular() && is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, $tag );
+	return ( is_singular() || is_front_page() ) && is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, $tag );
 }
 
 /**

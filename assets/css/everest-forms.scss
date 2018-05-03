@@ -186,11 +186,6 @@
 		}
 	}
 
-	.evf-submit-container {
-		margin-top: 30px;
-		text-align: right;
-	}
-
 	.evf-submit  {
 		padding: 15px 30px;
 		font-size: 12px;
@@ -301,16 +296,30 @@
 	}
 }
 
-.evf-recaptcha-row .evf-error {
-	border: 1px solid $color-alert-danger;
-	background-color: lighten($color-alert-danger, 35%);
-	padding: 7px 10px;
-	color:darken($color-alert-danger, 10%);
-	display: inline-block;
-	margin-top: 15px;
-	margin-bottom: 0;
-	border-radius: 3px;
-	font-weight: 300;
+/* reCAPTCHA Area
+----------------------------------------------------------------------------- */
+
+.evf-field-container {
+	.evf-recaptcha-container {
+		padding: 10px 0 20px 0;
+		clear: both;
+	}
+}
+
+.evf-recaptcha-row {
+	margin-bottom: 30px;
+	
+	.evf-error {
+		border: 1px solid $color-alert-danger;
+		background-color: lighten($color-alert-danger, 35%);
+		padding: 7px 10px;
+		color:darken($color-alert-danger, 10%);
+		display: inline-block;
+		margin-top: 15px;
+		margin-bottom: 0;
+		border-radius: 3px;
+		font-weight: 300;
+	}
 }
 
 
@@ -333,6 +342,10 @@
 					width: 100%;
 				}
 			}
+		}
+
+		.evf-recaptcha-row {
+			margin: 25px 0;
 		}
 	}
 }
