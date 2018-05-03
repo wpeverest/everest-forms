@@ -262,8 +262,7 @@ class EVF_Shortcode_Form {
 			), $form_data );
 
 			if ( $site_key && $secret_key ) {
-				$recaptch_inline  = 'var EVFRecaptchaLoad = function(){jQuery(".g-recaptcha").each(function(index, el){grecaptcha.render(el,{callback:function(){EVFRecaptchaCallback(el);}},true);});};';
-				$recaptch_inline .= 'var EVFRecaptchaCallback = function(el){jQuery(el).parent().find(".evf-recaptcha-hidden").val("1").valid();};';
+				$recaptch_inline = 'var EVFRecaptchaLoad = function(){jQuery(".g-recaptcha").each(function(index, el){grecaptcha.render(el,{},true);});};';
 
 				// Enqueue reCaptcha scripts.
 				wp_enqueue_script( 'evf-recaptcha' );
