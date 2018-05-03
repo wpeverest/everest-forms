@@ -186,10 +186,6 @@
 		}
 	}
 
-	.evf-submit-container {
-		margin-top: 30px;
-	}
-
 	.evf-submit  {
 		padding: 15px 30px;
 		font-size: 12px;
@@ -311,7 +307,8 @@
 }
 
 .evf-recaptcha-row {
-
+	margin-bottom: 30px;
+	
 	.evf-error {
 		border: 1px solid $color-alert-danger;
 		background-color: lighten($color-alert-danger, 35%);
