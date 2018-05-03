@@ -84,6 +84,7 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 * Fix - Select2 styles conflict with WooCommerce.
 * Fix - Undefined jQuery vars in `admin-helper.js`
 * Fix - Prevent 404 in console for jQuery UI images.
+* Fix - Compatibility with Elementor and SiteOrigin page builder.
 
 = 1.1.4 - 24-04-2018 =
 * Fix - Log handler class for addons.
