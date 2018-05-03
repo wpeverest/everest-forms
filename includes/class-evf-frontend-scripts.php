@@ -214,12 +214,14 @@ class EVF_Frontend_Scripts {
 		self::register_scripts();
 		self::register_styles();
 
-		// Global frontend scripts.
+		// Enqueue dashicons.
 		wp_enqueue_style( 'dashicons' );
+
+		// Global frontend scripts.
+		self::enqueue_script( 'everest-forms' );
 
 		// Load scripts on form pages only if supported.
 		if ( evf_post_content_has_shortcode( 'everest_form' ) ) {
-			self::enqueue_script( 'everest-forms' );
 			self::enqueue_style( 'evf-jquery-ui-datepicker' );
 		}
 
