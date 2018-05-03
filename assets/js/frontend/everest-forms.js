@@ -91,7 +91,7 @@ jQuery( function ( $ ) {
 						$parent.removeClass( 'evf-has-error' );
 					},
 					submitHandler: function( form ) {
-						if ( '' === grecaptcha.getResponse() ) {
+						if ( typeof grecaptcha !== 'undefined' && '' === grecaptcha.getResponse() ) {
 							$( '.evf-recaptcha-row' ).append( '<label class="evf-error">' + everest_forms_params.i18n_messages_recaptcha + '</div>');
 						} else {
 							form.submit();
