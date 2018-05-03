@@ -271,7 +271,7 @@ class EVF_Shortcode_Form {
 
 				// Output the reCapthcha container.
 				echo '<div id="evf-recaptcha-container" class="evf-recaptcha-row">';
-					echo '<div ' . evf_html_attributes( '', array( 'g-recaptcha' ), $data ) . ' style="transform: scale(1.08); margin-left: 14px;"></div>';
+					echo '<div ' . evf_html_attributes( '', array( 'g-recaptcha' ), $data ) . '"></div>';
 				echo '</div>';
 			}
 		}
