@@ -240,9 +240,8 @@ class EVF_Shortcode_Form {
 			}
 
 			echo '</div>';
-
-		    self::process_recaptcha( $form_data );
 		}
+		self::process_recaptcha( $form_data );
 
 		do_action( 'evf_display_fields_after', $form_data );
 
