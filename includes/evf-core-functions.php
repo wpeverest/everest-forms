@@ -1061,9 +1061,8 @@ function evf_get_all_forms( $skip_disabled_entries = false ) {
 }
 
 function evf_get_meta_key_field_option( $field ) {
-
-	$random_number = rand( pow(10, 3 ), pow( 10, 4 ) -1 );
-	return strtolower( str_replace( " ", "_", $field['label'] ) ) . '_' . $random_number;
+	$random_number = rand( pow( 10, 3 ), pow( 10, 4 ) - 1 );
+	return strtolower( str_replace( array( ' ', '/_' ), array( '_', '' ), $field['label'] ) ) . '_' . $random_number;
 }
 
 /**
