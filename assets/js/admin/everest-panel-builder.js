@@ -649,18 +649,22 @@
 			$panelBtn.find('a').addClass('active');
 			$panel.closest('.evf-tab-content').find('.everest-forms-panel').removeClass('active');
 			$panel.addClass('active');
-			if ( panel === 'fields' ) {
-				$('.everest-forms-field-options').hide();
-				$('.everest-forms-add-fields').show();
+
+			if ( 'fields' === panel ) {
+				$( '.everest-forms-field-options' ).hide();
+				$( '.everest-forms-add-fields' ).show();
 			}
-			if( panel === 'marketing' ) {
-				if( ! $panel.find('.everest-forms-panel-sidebar a').hasClass('active') ) {
-					$panel.find('.everest-forms-panel-sidebar a').first().addClass('active');
+
+			if ( 'marketing' === panel ) {
+				if ( ! $panel.find( '.everest-forms-panel-sidebar a' ).hasClass( 'active' ) ) {
+					$panel.find( '.everest-forms-panel-sidebar a' ).first().addClass( 'active' );
 				}
-				if(! $('.everest-forms-panel-content').find('.evf-panel-content-section').hasClass('active') ){
-					$('.everest-forms-panel-content').find('.evf-panel-content-section').first().addClass('active');
+
+				if ( ! $( '.everest-forms-panel-content' ).find( '.evf-panel-content-section' ).hasClass( 'active' ) ){
+					$( '.everest-forms-panel-content' ).find( '.evf-panel-content-section' ).first().addClass( 'active' );
 				}
 			}
+
 			history.replaceState({}, null, EVFPanelBuilder.updateQueryString( 'tab', panel ) );
 			EVFPanelBuilder.switchPanel(panel);
 		},

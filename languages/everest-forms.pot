@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Everest Forms 1.2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/wpeverest/everest-forms/issues\n"
-"POT-Creation-Date: 2018-04-27 11:25:26+00:00\n"
+"POT-Creation-Date: 2018-05-08 06:14:27+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -338,34 +338,42 @@ msgstr ""
 msgid "Options"
 msgstr ""
 
-#: includes/admin/class-evf-admin-form-builder.php:147
+#: includes/admin/class-evf-admin-form-builder.php:150
+msgid "Copied!"
+msgstr ""
+
+#: includes/admin/class-evf-admin-form-builder.php:151
+msgid "Copy shortcode"
+msgstr ""
+
+#: includes/admin/class-evf-admin-form-builder.php:154
 msgid "Save"
 msgstr ""
 
-#: includes/admin/class-evf-admin-form-builder.php:171
+#: includes/admin/class-evf-admin-form-builder.php:179
 #: includes/class-evf-ajax.php:133
 msgid "Blank Form"
 msgstr ""
 
-#: includes/admin/class-evf-admin-form-builder.php:175
+#: includes/admin/class-evf-admin-form-builder.php:183
 #: includes/templates/contact.php:12
 msgid "Contact Form"
 msgstr ""
 
-#: includes/admin/class-evf-admin-form-builder.php:182
+#: includes/admin/class-evf-admin-form-builder.php:190
 #: includes/admin/form-panels/class-evf-settings-panel.php:84
 msgid "Form Name"
 msgstr ""
 
-#: includes/admin/class-evf-admin-form-builder.php:183
+#: includes/admin/class-evf-admin-form-builder.php:191
 msgid "Enter your form name here&hellip;"
 msgstr ""
 
-#: includes/admin/class-evf-admin-form-builder.php:186
+#: includes/admin/class-evf-admin-form-builder.php:194
 msgid "Select A Template"
 msgstr ""
 
-#: includes/admin/class-evf-admin-form-builder.php:188
+#: includes/admin/class-evf-admin-form-builder.php:196
 msgid ""
 "To speed up the process, you can select from one of our pre-made templates "
 "listed below:"
@@ -1423,12 +1431,12 @@ msgid_plural "All <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-evf-admin-form-builder.php:196
+#: includes/admin/class-evf-admin-form-builder.php:204
 msgctxt "Template name"
 msgid "%s template"
 msgstr ""
 
-#: includes/admin/class-evf-admin-form-builder.php:196
+#: includes/admin/class-evf-admin-form-builder.php:204
 msgctxt "Template name"
 msgid "Create a %s"
 msgstr ""

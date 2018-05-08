@@ -4,7 +4,7 @@ Tags: form, form builder, easy form, clean form, login form, contact, contact fo
 Requires at least: 4.0
 Tested up to: 4.9
 Requires PHP: 5.4
-Stable tag: 1.1.4
+Stable tag: 1.2.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -81,7 +81,16 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 
 = 1.2.0 - XX-XX-2018 =
 * Feature - Copy shortcode inside form view page.
+
+= 1.1.5.1 - 04-05-2018 =
+* Fix - reCaptcha displaying after every inserted row issue 
+
+= 1.1.5 - 03-05-2018 =
+* Fix - Google reCaptcha console errors.
+* Fix - Select2 styles conflict with WooCommerce.
+* Fix - Undefined jQuery vars in `admin-helper.js`
 * Fix - Prevent 404 in console for jQuery UI images.
+* Fix - Compatibility with Elementor and SiteOrigin page builder.
 
 = 1.1.4 - 24-04-2018 =
 * Fix - Log handler class for addons.
