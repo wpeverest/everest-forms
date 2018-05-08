@@ -2,6 +2,10 @@
 
 = 1.2.0 - XX-XX-2018 =
 * Feature - Copy shortcode inside form view page.
+* Tweak - Less spacing between icon and the label.
+* Tweak - Added moving cursor while dragging fields.
+* Tweak - Sidebar width so layout won't stretch much.
+* Tweak - Editing the field element now highlight it.
 
 = 1.1.5.1 - 04-05-2018 =
 * Fix - reCaptcha displaying after every inserted row issue 
@@ -31,7 +35,7 @@
 * Fix - Per page entries in list table.
 * Fix - Clone field next to it not at last.
 * Fix - Empty field ID if meta key is renamed.
-* Fix - Use wp_kses_post to save tinymce value.
+* Fix - Use `wp_kses_post` to save tinymce value.
 * Tweak - jQuery-confirm JS alert library styles.
 * Tweak - Horizontal scroll bar issue on frontend.
 * Dev - Introduced new `EVF_Background_Process` abstract class.
