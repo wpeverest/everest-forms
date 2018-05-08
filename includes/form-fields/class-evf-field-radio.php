@@ -21,11 +21,10 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 	public function init() {
 
 		// Define field type information
-		$this->name     = __( 'Radio', 'everest-forms' );
+		$this->name     = __( 'Multiple Choice', 'everest-forms' );
 		$this->type     = 'radio';
 		$this->icon     = 'evf-icon  evf-icon-radio';
-		$this->order    = 15;
-		$this->group = 'advanced';
+		$this->order    = 6;
 		$this->defaults = array(
 			1 => array(
 				'label'   => __( 'First Choice', 'everest-forms' ),
