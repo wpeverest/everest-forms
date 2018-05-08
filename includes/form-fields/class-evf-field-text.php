@@ -21,7 +21,7 @@ class EVF_Field_Text extends EVF_Form_Fields {
 	public function init() {
 
 		// Define field type information.
-		$this->name  = __( 'Text', 'everest-forms' );
+		$this->name  = __( 'Single Line Text', 'everest-forms' );
 		$this->type  = 'text';
 		$this->icon  = 'evf-icon evf-icon-text';
 		$this->order = 3;
