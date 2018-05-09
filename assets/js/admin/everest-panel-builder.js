@@ -761,22 +761,23 @@
 					$('.evf-admin-field-wrapper').removeClass('evf-hover');
 				}
 			});
-			$('.evf-registered-buttons button.evf-registered-item').draggable({
+
+			$( '.evf-registered-buttons button.evf-registered-item' ).not( '.upgrade-modal' ).draggable({
 				connectToSortable: '.evf-admin-grid',
 				containment: '#everest-forms-builder',
 				helper: 'clone',
 				revert: 'invalid',
 				cancel: false,
-				start: function ( event, ui ) {
-					$('.evf-admin-grid').addClass('evf-hover');
+				scroll: false,
+				delay: 200,
+				opacity: 0.75,
+				start: function() {
+					$( '.evf-admin-grid' ).addClass( 'evf-hover' );
 				},
-				stop: function ( event, ui ) {
-					$('.evf-admin-grid').removeClass('evf-hover');
-					var grid = ui.helper.closest('.evf-admin-grid');
+				stop: function( event, ui ) {
+					$( '.evf-admin-grid' ).removeClass( 'evf-hover' );
 					var helper = ui.helper;
-					EVFPanelBuilder.fieldDrop(helper);
-
-
+					EVFPanelBuilder.fieldDrop( helper );
 				}
 			}).disableSelection();
 		},

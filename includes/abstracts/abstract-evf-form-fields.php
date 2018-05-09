@@ -1,21 +1,21 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
-}
-
 /**
  * Abstract EVF_Form_Fields Class
  *
- * @version        1.0.0
- * @package        EverestFroms/Abstracts
- * @category       Abstract Class
- * @author         WPEverest
+ * @version 1.0.0
+ * @package EverestFroms/Abstracts
+ */
+
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Form fields class.
  */
 abstract class EVF_Form_Fields {
+
 	/**
 	 * Full name of the field type, eg "Paragraph Text".
 	 *
-	 * $since 1.0.0
 	 * @var string
 	 */
 	public $name;
@@ -23,15 +23,13 @@ abstract class EVF_Form_Fields {
 	/**
 	 * Type of the field, eg "textarea".
 	 *
-	 * $since 1.0.0
 	 * @var string
 	 */
 	public $type;
 
 	/**
-	 * Font Awesome Icon used for the editor button.
+	 * Font Awesome Icon used for the editor button, eg "fa-list".
 	 *
-	 * $since 1.0.0
 	 * @var mixed
 	 */
 	public $icon = false;
@@ -39,7 +37,6 @@ abstract class EVF_Form_Fields {
 	/**
 	 * Priority order the field button should show inside the "Add Fields" tab.
 	 *
-	 * $since 1.0.0
 	 * @var integer
 	 */
 	public $order = 20;
@@ -47,7 +44,6 @@ abstract class EVF_Form_Fields {
 	/**
 	 * Field group the field belongs to.
 	 *
-	 * $since 1.0.0
 	 * @var string
 	 */
 	public $group = 'general';
@@ -55,7 +51,6 @@ abstract class EVF_Form_Fields {
 	/**
 	 * Placeholder to hold default value(s) for some field types.
 	 *
-	 * $since 1.0.0
 	 * @var mixed
 	 */
 	public $defaults;
@@ -63,7 +58,6 @@ abstract class EVF_Form_Fields {
 	/**
 	 * Current form ID in the admin builder.
 	 *
-	 * $since 1.0.0
 	 * @var mixed, int or false
 	 */
 	public $form_id;
@@ -71,7 +65,6 @@ abstract class EVF_Form_Fields {
 	/**
 	 * Current form data in admin builder.
 	 *
-	 * $since 1.0.0
 	 * @var mixed, int or false
 	 */
 	public $form_data;
@@ -79,7 +72,7 @@ abstract class EVF_Form_Fields {
 	/**
 	 * Primary class constructor.
 	 *
-	 * $since 1.0.0
+	 * @since 1.0.0
 	 *
 	 * @param bool $init
 	 */
@@ -119,22 +112,18 @@ abstract class EVF_Form_Fields {
 	/**
 	 * All systems go. Used by subclasses.
 	 *
-	 * $since 1.0.0
+	 * @since 1.0.0
 	 */
-	public function init() {
-	}
+	public function init() {}
 
 	/**
 	 * Create the button for the 'Add Fields' tab, inside the form editor.
 	 *
-	 * $since 1.0.0
-	 *
-	 * @param array $fields
-	 *
+	 * @since  1.0.0
+	 * @param  array $fields
 	 * @return array
 	 */
 	public function field_button( $fields ) {
-
 		// Add field information to fields array.
 		$fields[ $this->group ]['fields'][] = array(
 			'order' => $this->order,
@@ -150,22 +139,18 @@ abstract class EVF_Form_Fields {
 	/**
 	 * Creates the field options panel. Used by subclasses.
 	 *
-	 * $since 1.0.0
-	 *
+	 * @since 1.0.0
 	 * @param array $field
 	 */
-	public function field_options( $field ) {
-	}
+	public function field_options( $field ) {}
 
 	/**
 	 * Creates the field preview. Used by subclasses.
 	 *
-	 * $since 1.0.0
-	 *
+	 * @since 1.0.0
 	 * @param array $field
 	 */
-	public function field_preview( $field ) {
-	}
+	public function field_preview( $field ) {}
 
 	/**
 	 * Helper function to create field option elements.
@@ -173,7 +158,7 @@ abstract class EVF_Form_Fields {
 	 * Field option elements are pieces that help create a field option.
 	 * They are used to quickly build field options.
 	 *
-	 * $since 1.0.0
+	 * @since 1.0.0
 	 *
 	 * @param string  $option
 	 * @param array   $field
@@ -278,7 +263,7 @@ abstract class EVF_Form_Fields {
 	/**
 	 * Helper function to create common field options that are used frequently.
 	 *
-	 * $since 1.0.0
+	 * @since 1.0.0
 	 *
 	 * @param string  $option
 	 * @param array   $field
@@ -575,7 +560,7 @@ abstract class EVF_Form_Fields {
 	 * Helper function to create common field options that are used frequently
 	 * in the field preview.
 	 *
-	 * $since 1.0.0
+	 * @since 1.0.0
 	 *
 	 * @param string  $option
 	 * @param array   $field
@@ -611,7 +596,7 @@ abstract class EVF_Form_Fields {
 	/**
 	 * Create a new field in the admin AJAX editor.
 	 *
-	 * $since 1.0.0
+	 * @since 1.0.0
 	 */
 	public function field_new() {
 
@@ -697,7 +682,7 @@ abstract class EVF_Form_Fields {
 	/**
 	 * Display the field input elements on the frontend.
 	 *
-	 * $since 1.0.0
+	 * @since 1.0.0
 	 *
 	 * @param array $field
 	 * @param array $field_atts
@@ -709,7 +694,7 @@ abstract class EVF_Form_Fields {
 	/**
 	 * Display field input errors if present.
 	 *
-	 * $since 1.0.0
+	 * @since 1.0.0
 	 *
 	 * @param string $key
 	 * @param array  $field
@@ -731,7 +716,7 @@ abstract class EVF_Form_Fields {
 	/**
 	 * Display field input sublabel if present.
 	 *
-	 * $since 1.0.0
+	 * @since 1.0.0
 	 *
 	 * @param string $key
 	 * @param string $position
@@ -763,7 +748,7 @@ abstract class EVF_Form_Fields {
 	/**
 	 * Validates field on form submit.
 	 *
-	 * $since 1.0.0
+	 * @since 1.0.0
 	 *
 	 * @param int   $field_id
 	 * @param array $field_submit

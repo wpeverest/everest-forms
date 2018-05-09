@@ -14,26 +14,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Main EverestForms Class.
- *
- * @class      EverestForms
- * @version    1.0.0
  */
 class EVF_Forms_Features {
 
 	/**
 	 * Primary class constructor.
 	 *
-	 * @since      1.0.0
+	 * @since 1.0.0
 	 */
 	public function __construct() {
-
 		add_action( 'everest_forms_form_settings_notifications', array( $this, 'form_settings_notifications' ), 8, 1 );
-		//add_filter( 'everest_forms_builder_fields_buttons', array( $this, 'form_fields' ), 20 );
+		add_filter( 'everest_forms_builder_fields_buttons', array( $this, 'form_fields' ), 20 );
 		//add_filter( 'everest_forms_builder_preview', array( $this, 'everest_forms_builder_preview' ), 20, 1 );
 		//add_action( 'everest_forms_builder_panel_buttons', array( $this, 'form_panels' ), 20 );
 	}
-
-
 
 	/**
 	 * Form notification settings, supports multiple notifications.
@@ -43,9 +37,7 @@ class EVF_Forms_Features {
 	 * @param object $settings
 	 */
 	public function form_settings_notifications( $settings ) {
-
-
-		// Fetch next ID and handle backwards compatibility
+		// Fetch next ID and handle backwards compatibility.
 		if ( empty( $settings->form_data['settings']['notifications'] ) ) {
 			$settings->form_data['settings']['notifications'][1]['email']          = ! empty( $settings->form_data['settings']['notification_email'] ) ? $settings->form_data['settings']['notification_email'] : '{
 				admin_email}';
@@ -101,23 +93,21 @@ class EVF_Forms_Features {
 		echo ' </div > ';
 	}
 
-
 	/**
 	 * Display/register additional fields available in the Pro version.
 	 *
-	 * @since      1.0.0
-	 *
-	 * @param array $fields
-	 *
+	 * @param  array $fields
 	 * @return array
 	 */
 	public function form_fields( $fields ) {
-		$fields['advance']['fields'][] = array(
-			'icon'  => 'dashicons dashicons-admin-links',
-			'name'  => 'Website / URL',
-			'type'  => 'url',
-			'order' => '1',
-			'class' => 'upgrade - modal',
+		$fields['advanced']['fields'] = array(
+			array(
+				'icon'  => 'evf-icon evf-icon-file-upload',
+				'name'  => 'File Upload',
+				'type'  => 'file-upload',
+				'order' => 12,
+				'class' => 'upgrade-modal',
+			),
 		);
 
 		return $fields;

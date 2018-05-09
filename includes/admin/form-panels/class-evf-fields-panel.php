@@ -66,7 +66,7 @@ class EVF_Fields_Panel extends EVF_Admin_Form_Panel {
 
 				<div class="everest-forms-title-desc">
 					<h2 class="everest-forms-form-name"><?php echo esc_html( $this->form->post_title ); echo ' (ID #'.$this->form->ID.')'; ?></h2>
-					
+
 				</div>
 
 				<div class="everest-forms-field-wrap">
@@ -87,12 +87,11 @@ class EVF_Fields_Panel extends EVF_Admin_Form_Panel {
 	/**
 	 * Builder field butttons.
 	 *
-	 * @since      1.0.0
+	 * @since 1.0.0
 	 */
 	public function fields() {
-
 		$fields = array(
-			'general' => array(
+			'general'  => array(
 				'group_name' => __( 'General Fields', 'everest-forms' ),
 				'fields'     => array(),
 			),
