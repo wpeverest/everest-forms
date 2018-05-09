@@ -210,6 +210,10 @@ body {
 							margin: 0 auto;
 						}
 
+						&.upgrade-modal {
+							opacity: 0.6;
+						}
+
 						&:hover {
 							color: $color-brand-primary;
 							border-color: $color-brand-primary;
