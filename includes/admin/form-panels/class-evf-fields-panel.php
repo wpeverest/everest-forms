@@ -224,8 +224,8 @@ class EVF_Fields_Panel extends EVF_Admin_Form_Panel {
 			$total_grid  = EVF()->form_grid;
 			$active_grid = $active_grid > $total_grid ? $total_grid : $active_grid;
 			echo '<div class="evf-toggle-row">';
-			echo '<div class="evf-delete-row"><span class="dashicons dashicons-trash"></span></div>';
-			echo '<span class="evf-show-grid">' . __( 'Edit', 'everest-forms' ) . '</span>';
+			echo '<div class="evf-delete-row"><span class="dashicons dashicons-trash" title="Delete"></span></div>';
+			echo '<div class="evf-show-grid"><span class="dashicons dashicons-edit" title="Edit"></span></div>';
 			echo '<div class="evf-toggle-row-content">';
 			echo '<span>' . __( 'Row Settings', 'everest-forms' ) . '</span>';
 			echo '<small>' . __( 'Select the type of row', 'everest-forms' ) . '</small>';

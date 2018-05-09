@@ -414,7 +414,6 @@ body {
 				}
 
 				.evf-toggle-row {
-					background-color: $submit-color;
 					color: #fff;
 					position: absolute;
 					right: 0;
@@ -423,7 +422,6 @@ body {
 					visibility: hidden;
 					opacity: 0;
 					transition: 0.7s all;
-					padding: 5px 10px;
 					cursor: pointer;
 
 					.evf-show-grid {
@@ -432,16 +430,56 @@ body {
 						letter-spacing: 1px;
 						font-weight: 600;
 						text-transform: uppercase;
+
+						span {
+
+							&.dashicons {
+								border-radius: 0 3px 3px 0;
+							}
+						}
+
+						&:hover {
+							
+							span {
+
+								&.dashicons {
+									background-color: $color-alert-success;
+								}
+							}
+						}
 					}
 
 					.evf-delete-row {
 						display: inline-block;
-						padding-right: 5px;
+
 						span {
+
+							&.dashicons {
+								border-radius: 3px 0 0 3px;
+								border-right: 1px solid $color-gray-dark;
+							}
+						}
+
+						&:hover {
+
+							span {
+
+								&.dashicons {
+									background-color: $color-alert-danger;
+								}
+							}
+						}
+					}
+
+					span {
+
+						&.dashicons {
+							background: $color-gray-darker;
 							font-size: 14px;
 							height: auto;
-							line-height: 1.2;
-							color: $color-alert-danger;
+							width: auto;
+							color: $color-white;
+							padding: 5px;
 						}
 					}
 
@@ -660,8 +698,11 @@ body {
 						}
 
 						&.everest-forms-field-delete:hover {
-							color: $color-alert-danger;
+							background-color: $color-alert-danger;
 						}
+						&:hover {
+							background-color: $button-color;
+						}		
 					}
 
 					.dashicons {
