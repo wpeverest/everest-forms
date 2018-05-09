@@ -141,7 +141,7 @@ if ( ! class_exists( 'EVF_Admin_Assets', false ) ) :
 
 			wp_enqueue_script( 'evf_add_form_js' );
 
-			// EverestForms admin pages
+			// EverestForms admin pages.
 			if ( in_array( $screen_id, evf_get_screen_ids() ) ) {
 				wp_enqueue_script( 'everest_forms_admin' );
 			}

@@ -95,7 +95,6 @@
 
 		},
 		bindUI: function () {
-
 			EVFPanelBuilder.bindDefaultTabs();
 			EVFPanelBuilder.checkEmptyGrid();
 			EVFPanelBuilder.bindFields();
@@ -115,9 +114,8 @@
 
 			var tab = evf_data.tab;
 			if ( tab === 'field-options' ) {
-				$('.evf-panel-field-options-button').trigger('click');
+				$( '.evf-panel-field-options-button' ).trigger( 'click' );
 			}
-
 		},
 		choicesInit: function () {
 			var choice_list = $(".evf-choices-list");
@@ -133,8 +131,6 @@
 			var option_container = choice_list.closest('.everest-forms-field-option');
 			var field_id = option_container.attr('data-field-id');
 			var field_container = $('#everest-forms-field-' + field_id);
-
-
 		},
 		choicesUpdate: function () {
 			var choice_list = $(".evf-choices-list");
