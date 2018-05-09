@@ -101,15 +101,15 @@ class EVF_Forms_Features {
 	 * @return array
 	 */
 	public function form_fields( $fields ) {
-		$fields['advanced']['fields'] = array(
-			array(
+		if ( ! defined( 'EFP_PLUGIN_FILE' ) ) {
+			$fields['advanced']['fields'][] = array(
 				'icon'  => 'evf-icon evf-icon-file-upload',
 				'name'  => 'File Upload',
 				'type'  => 'file-upload',
 				'order' => 12,
 				'class' => 'upgrade-modal',
-			),
-		);
+			);
+		}
 
 		return $fields;
 	}
