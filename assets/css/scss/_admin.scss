@@ -569,7 +569,6 @@ body {
 
 				.evf-admin-grid {
 					background: $color-white;
-					min-height: 200px;
 					margin: 15px;
 					padding: 5px;
 					border: 1px solid transparent;
@@ -646,7 +645,8 @@ body {
 				margin-bottom: 30px;
 				padding: 15px;
 				position: relative;
-				box-shadow: 0 0 15px rgba(0, 0, 0, 0);
+				border: 1px solid transparent;
+				border-radius: 5px;
 				transition: 0.5s box-shadow;
 
 				&:last-child {
@@ -713,7 +713,7 @@ body {
 				}
 
 				&:hover {
-					box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+					border: 1px solid $border-color;
 					.evf-field-action {
 						visibility: visible;
 						opacity: 1;
