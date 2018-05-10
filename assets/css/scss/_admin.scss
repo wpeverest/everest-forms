@@ -139,6 +139,15 @@ body {
 			&:focus {
 				outline: none;
 			}
+			
+			.evf-loading,
+			.spinner, {
+				background-size: 14px 14px;
+				width: 14px;
+				height: 14px;
+				margin-top: 5px;
+				margin-left: 5px;
+			}
 		}
 	}
 
@@ -435,7 +444,7 @@ body {
 						span {
 
 							&.dashicons {
-								border-radius: 0 3px 3px 0;
+								border-radius: 0 0 3px 0;
 							}
 						}
 
@@ -456,7 +465,7 @@ body {
 						span {
 
 							&.dashicons {
-								border-radius: 3px 0 0 3px;
+								border-radius: 0 0 0 3px;
 								border-right: 1px solid $color-gray-dark;
 							}
 						}
