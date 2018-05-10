@@ -273,7 +273,6 @@ abstract class EVF_Form_Fields {
 	 * @return mixed echo or return string
 	 */
 	public function field_option( $option, $field, $args = array(), $echo = true ) {
-
 		$output = '';
 
 		switch ( $option ) {
@@ -316,7 +315,7 @@ abstract class EVF_Form_Fields {
 				), false );
 				break;
 
-			// EVF meta fields
+			// Field Meta. ---------------------------------------------------//
 			case 'meta':
 				$value   =  ! empty( $field['meta-key'] ) ? esc_attr( $field['meta-key'] ) : evf_get_meta_key_field_option( $field );
 				$tooltip = __( 'Enter meta key to be stored in database.', 'everest-forms' );
@@ -355,6 +354,7 @@ abstract class EVF_Form_Fields {
 				), false );
 				break;
 
+			// Field Required toggle. -----------------------------------------//
 
 			case 'required':
 				$default = ! empty( $args['default'] ) ? $args['default'] : '0';
@@ -371,6 +371,18 @@ abstract class EVF_Form_Fields {
 					'content' => $output
 				), false );
 				break;
+
+			// Code Block. ----------------------------------------------------//
+
+			case 'code':
+				$value   = ! empty( $field['code'] ) ? esc_attr( $field['code'] ) : '';
+				$tooltip = esc_html__( 'Enter code for the form field.', 'everest-forms' );
+				$output  = $this->field_element( 'label',    $field, array( 'slug' => 'code', 'value' => esc_html__( 'Code', 'everest-forms' ), 'tooltip' => $tooltip ), false );
+				$output .= $this->field_element( 'textarea', $field, array( 'slug' => 'code', 'value' => $value ), false );
+				$output  = $this->field_element( 'row',      $field, array( 'slug' => 'code', 'content' => $output ), false );
+				break;
+
+			// Choices. ------------------------------------------------------//
 
 			case 'choices':
 				$tooltip = __( 'Add choices for the form field.', 'everest-forms' );
@@ -543,7 +555,15 @@ abstract class EVF_Form_Fields {
 					do_action( "everest_forms_field_options_before_{$option}", $field, $this );
 				}
 
+				if ( 'close' === $markup ) {
+					do_action( "everest_forms_field_options_bottom_{$option}", $field, $this );
+				}
+
 				echo $output; // WPCS: XSS ok.
+
+				if ( 'open' === $markup ) {
+					do_action( "everest_forms_field_options_top_{$option}", $field, $this );
+				}
 
 				if ( 'close' === $markup ) {
 					do_action( "everest_forms_field_options_after_{$option}", $field, $this );
