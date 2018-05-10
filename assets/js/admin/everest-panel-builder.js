@@ -558,7 +558,7 @@
 						$wrapper.find( '.evf-overlay' ).remove();
 						$wrapper.css({ 'position': 'relative' });
 						$wrapper.append( overlay );
-						$this.append( '<span style="margin-top:-1px;margin-right:0;" class="spinner is-active"></span>' );
+						$this.append( '<span style="margin:1px 0 0 5px" class="spinner is-active"></span>' );
 					},
 					success: function ( response ) {
 						$wrapper.find( '.evf-overlay' ).fadeOut();
