@@ -23,7 +23,7 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 		// Define field type information
 		$this->name     = __( 'Multiple Choice', 'everest-forms' );
 		$this->type     = 'radio';
-		$this->icon     = 'evf-icon  evf-icon-radio';
+		$this->icon     = 'evf-icon evf-icon-multiple-choices';
 		$this->order    = 6;
 		$this->defaults = array(
 			1 => array(
