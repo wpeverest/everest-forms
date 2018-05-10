@@ -112,6 +112,7 @@ body {
 			}
 
 			button {
+				background-color: $header-shade;
 				border-radius: 0 3px 3px 0;
 				margin-left: -4px;
 				padding: 0;
@@ -125,18 +126,27 @@ body {
 		}
 		
 		.evf_save_form_action_button {
-			padding: 7px 22px;
+			padding: 8px 22px;
 			background-color: $color-white;
 			color: $color-gray-base;
 			font-size: 12px;
 			text-transform: uppercase;
 			border: 0 none;
-			border-radius: 100px;
-			margin: 3px 0 3px 40px;
+			border-radius: 5px;
+			margin: 0 0 3px 20px;
 			cursor: pointer;
 
 			&:focus {
 				outline: none;
+			}
+			
+			.evf-loading,
+			.spinner, {
+				background-size: 14px 14px;
+				width: 14px;
+				height: 14px;
+				margin-top: 5px;
+				margin-left: 5px;
 			}
 		}
 	}
@@ -418,7 +428,6 @@ body {
 				}
 
 				.evf-toggle-row {
-					background-color: $submit-color;
 					color: #fff;
 					position: absolute;
 					right: 0;
@@ -427,7 +436,6 @@ body {
 					visibility: hidden;
 					opacity: 0;
 					transition: 0.7s all;
-					padding: 5px 10px;
 					cursor: pointer;
 
 					.evf-show-grid {
@@ -436,16 +444,56 @@ body {
 						letter-spacing: 1px;
 						font-weight: 600;
 						text-transform: uppercase;
+
+						span {
+
+							&.dashicons {
+								border-radius: 0 0 3px 0;
+							}
+						}
+
+						&:hover {
+							
+							span {
+
+								&.dashicons {
+									background-color: $color-alert-success;
+								}
+							}
+						}
 					}
 
 					.evf-delete-row {
 						display: inline-block;
-						padding-right: 5px;
+
 						span {
+
+							&.dashicons {
+								border-radius: 0 0 0 3px;
+								border-right: 1px solid $color-gray-dark;
+							}
+						}
+
+						&:hover {
+
+							span {
+
+								&.dashicons {
+									background-color: $color-alert-danger;
+								}
+							}
+						}
+					}
+
+					span {
+
+						&.dashicons {
+							background: $color-gray-darker;
 							font-size: 14px;
 							height: auto;
-							line-height: 1.2;
-							color: $color-alert-danger;
+							width: auto;
+							color: $color-white;
+							padding: 5px;
 						}
 					}
 
@@ -535,7 +583,6 @@ body {
 
 				.evf-admin-grid {
 					background: $color-white;
-					min-height: 200px;
 					margin: 15px;
 					padding: 5px;
 					border: 1px solid transparent;
@@ -612,7 +659,8 @@ body {
 				margin-bottom: 30px;
 				padding: 15px;
 				position: relative;
-				box-shadow: 0 0 15px rgba(0, 0, 0, 0);
+				border: 1px solid transparent;
+				border-radius: 5px;
 				transition: 0.5s box-shadow;
 
 				&:last-child {
@@ -664,8 +712,11 @@ body {
 						}
 
 						&.everest-forms-field-delete:hover {
-							color: $color-alert-danger;
+							background-color: $color-alert-danger;
 						}
+						&:hover {
+							background-color: $button-color;
+						}		
 					}
 
 					.dashicons {
@@ -676,7 +727,7 @@ body {
 				}
 
 				&:hover {
-					box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+					border: 1px solid $border-color;
 					.evf-field-action {
 						visibility: visible;
 						opacity: 1;
