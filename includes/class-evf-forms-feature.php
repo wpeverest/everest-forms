@@ -102,13 +102,38 @@ class EVF_Forms_Features {
 	 */
 	public function form_fields( $fields ) {
 		if ( ! defined( 'EFP_PLUGIN_FILE' ) ) {
-			$fields['advanced']['fields'][] = array(
-				'icon'  => 'evf-icon evf-icon-file-upload',
-				'name'  => 'File Upload',
-				'type'  => 'file-upload',
-				'order' => 12,
-				'class' => 'upgrade-modal',
+			$pro_advanced_fields = array(
+				array(
+					'icon'  => 'evf-icon evf-icon-file-upload',
+					'name'  => 'File Upload',
+					'type'  => 'file-upload',
+					'order' => 12,
+					'class' => 'upgrade-modal',
+				),
+				array(
+					'icon'  => 'evf-icon evf-icon-hidden-field',
+					'name'  => 'Hidden Field',
+					'type'  => 'hidden',
+					'order' => 13,
+					'class' => 'upgrade-modal',
+				),
+				array(
+					'icon'  => 'evf-icon evf-icon-address',
+					'name'  => 'Address',
+					'type'  => 'address',
+					'order' => 14,
+					'class' => 'upgrade-modal',
+				),
+				array(
+					'icon'  => 'evf-icon evf-icon-phone',
+					'name'  => 'Phone',
+					'type'  => 'phone',
+					'order' => 15,
+					'class' => 'upgrade-modal',
+				),
 			);
+
+			$fields['advanced']['fields'] = array_merge( $fields['advanced']['fields'], $pro_advanced_fields );
 		}
 
 		return $fields;
