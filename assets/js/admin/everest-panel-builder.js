@@ -6,7 +6,7 @@
 		/**
 		 * Start the panel builder.
 		 */
-		init: function () {
+		 init: function () {
 			$( document ).ready( function( $ ) {
 				if ( ! $( 'evf-panel-marketing-button a' ).hasClass('active') ) {
 					$('#everest-forms-panel-marketing').find('.everest-forms-panel-sidebar a').first().addClass('active');
@@ -15,10 +15,10 @@
 			});
 
 			$( document.body )
-				.on( 'click', 'a.help_tip, a.everets-forms-help-tip', this.preventTipTipClick )
-				.on( 'click', '#copy-shortcode', this.copyShortcode )
-				.on( 'aftercopy', '#copy-shortcode', this.copySuccess )
-				.on( 'aftercopyfailure', '#copy-shortcode', this.copyFail );
+			.on( 'click', 'a.help_tip, a.everets-forms-help-tip', this.preventTipTipClick )
+			.on( 'click', '#copy-shortcode', this.copyShortcode )
+			.on( 'aftercopy', '#copy-shortcode', this.copySuccess )
+			.on( 'aftercopyfailure', '#copy-shortcode', this.copyFail );
 
 			// Document ready.
 			$( document ).ready( EVFPanelBuilder.ready );
@@ -72,9 +72,9 @@
 		/**
 		 * Document ready.
 		 *
-		 * @since 1.3.9
+		 * @since 1.0.0
 		 */
-		ready: function() {
+		 ready: function() {
 			// jquery-confirm defaults.
 			jconfirm.defaults = {
 				closeIcon: true,
@@ -120,13 +120,13 @@
 		choicesInit: function () {
 			var choice_list = $(".evf-choices-list");
 			choice_list.sortable({
-					out: function ( event, ui ) {
+				out: function ( event, ui ) {
 
-						var field_id = $(event.target).attr('data-field-id');
-						EVFPanelBuilder.choiceChange(field_id);
+					var field_id = $(event.target).attr('data-field-id');
+					EVFPanelBuilder.choiceChange(field_id);
 
-					}
 				}
+			}
 			);
 			var option_container = choice_list.closest('.everest-forms-field-option');
 			var field_id = option_container.attr('data-field-id');
@@ -316,10 +316,10 @@
 		bindFieldOptionChange: function () {
 
 			var selector = '.everest-forms-field-option-row input[type="text"][name$="[label]"], ' +
-				'.everest-forms-field-option-row textarea[name$="[description]"], ' +
-				'.everest-forms-field-option-row input[type="checkbox"][name$="[required]"], ' +
-				'.everest-forms-field-option-row input[type="checkbox"][name$="[label_hide]"], ' +
-				'.everest-forms-field-option-row input[type="text"][name$="[placeholder]"]';
+			'.everest-forms-field-option-row textarea[name$="[description]"], ' +
+			'.everest-forms-field-option-row input[type="checkbox"][name$="[required]"], ' +
+			'.everest-forms-field-option-row input[type="checkbox"][name$="[label_hide]"], ' +
+			'.everest-forms-field-option-row input[type="text"][name$="[placeholder]"]';
 
 			$('body').on('keyup paste click', selector, function () {
 				EVFPanelBuilder.bindFormFieldChange($(this));
@@ -336,31 +336,31 @@
 			option_field_type = option_field_type.replace('everest-forms-field-option-' + field_id + '-', '');
 			switch ( option_field_type ) {
 				case 'label':
-					field.find('.label-title .text').text(option_field.val());
-					break;
+				field.find('.label-title .text').text(option_field.val());
+				break;
 				case 'description':
-					field.find('.description').text(option_field.val());
-					break;
+				field.find('.description').text(option_field.val());
+				break;
 				case 'required':
-					if ( option_field.is(":checked") ) {
-						field.find('.label-title .required').remove();
-						field.find('.label-title').append('<span class="required">*</span>');
+				if ( option_field.is(":checked") ) {
+					field.find('.label-title .required').remove();
+					field.find('.label-title').append('<span class="required">*</span>');
 
-					} else {
-						field.find('.label-title .required').remove();
-					}
-					break;
+				} else {
+					field.find('.label-title .required').remove();
+				}
+				break;
 				case 'label_hide':
-					if ( option_field.is(":checked") ) {
-						field.find('.label-title').hide();
+				if ( option_field.is(":checked") ) {
+					field.find('.label-title').hide();
 
-					} else {
-						field.find('.label-title').show();
-					}
-					break;
+				} else {
+					field.find('.label-title').show();
+				}
+				break;
 				case 'placeholder':
-					field.find('input').attr('placeholder', option_field.val());
-					break;
+				field.find('input').attr('placeholder', option_field.val());
+				break;
 
 			}
 
@@ -435,9 +435,9 @@
 
 			var option = $('.everest-forms-field-options #everest-forms-field-option-' + old_key);
 			var field_type = field.attr('data-field-type'),
-				newOptionHtml = option.html(),
-				new_field_label = evf_data.copy_of + $('#everest-forms-field-option-' + old_key + '-label').val(),
-				newFieldCloned = field.clone();
+			newOptionHtml = option.html(),
+			new_field_label = evf_data.copy_of + $('#everest-forms-field-option-' + old_key + '-label').val(),
+			newFieldCloned = field.clone();
 			var regex = new RegExp(old_key, 'g');
 			newOptionHtml = newOptionHtml.replace(regex, new_key);
 			var newOption = $('<div class="everest-forms-field-option everest-forms-field-option-' + field_type + '" id="everest-forms-field-option-' + new_key + '" data-field-id="' + new_key + '" />');
@@ -639,7 +639,7 @@
 		},
 		switchTab: function ( panel ) {
 			var $panel = $('#everest-forms-panel-' + panel),
-				$panelBtn = $('.evf-panel-' + panel + '-button');
+			$panelBtn = $('.evf-panel-' + panel + '-button');
 
 			$('#evf-builder-tabs').find('li a').removeClass('active');
 			$panelBtn.find('a').addClass('active');
@@ -667,7 +667,7 @@
 		updateQueryString: function ( key, value, url ) {
 			if ( ! url ) url = window.location.href;
 			var re = new RegExp("([?&])" + key + "=.*?(&|#|$)(.*)", "gi"),
-				hash;
+			hash;
 
 			if ( re.test( url ) ) {
 				if ( typeof value !== 'undefined' && value !== null )
@@ -901,18 +901,18 @@ jQuery(function () {
 	}
 
 	jQuery( '#everest-forms-panel-field-settings-redirect_to' ).on( 'change', function () {
-	    if ( this.value == '0' ) {
-	        jQuery('#everest-forms-panel-field-settings-custom_page-wrap').hide();
+		if ( this.value == '0' ) {
+			jQuery('#everest-forms-panel-field-settings-custom_page-wrap').hide();
 			jQuery('#everest-forms-panel-field-settings-external_url-wrap').hide();
-	    }
-	    else if ( this.value == '1') {
-	        jQuery('#everest-forms-panel-field-settings-custom_page-wrap').show();
-	        jQuery('#everest-forms-panel-field-settings-external_url-wrap').hide();
-	    }
-	    else if ( this.value == '2') {
-	    	jQuery('#everest-forms-panel-field-settings-custom_page-wrap').hide();
-	        jQuery('#everest-forms-panel-field-settings-external_url-wrap').show();
-	    }
+		}
+		else if ( this.value == '1') {
+			jQuery('#everest-forms-panel-field-settings-custom_page-wrap').show();
+			jQuery('#everest-forms-panel-field-settings-external_url-wrap').hide();
+		}
+		else if ( this.value == '2') {
+			jQuery('#everest-forms-panel-field-settings-custom_page-wrap').hide();
+			jQuery('#everest-forms-panel-field-settings-external_url-wrap').show();
+		}
 	});
 	jQuery( 'li.evf-panel-field-options-button.evf-disabled-tab' ).hide();
 
