@@ -402,7 +402,7 @@ body {
 					line-height: 30px;
 					padding: 5px;
 					color: $color-white;
-					background-color: $color-gray;
+					background-color: $color-gray-darker;
 					border-radius: 5px;
 					cursor: pointer;
 					transition: 0.5s ease-in-out background-color;
@@ -419,7 +419,7 @@ body {
 			.evf-admin-row {
 				background-color: transparent;
 				display: flex;
-				margin: 0 -15px 30px;
+				margin: 0 -15px 15px;
 				position: relative;
 				border: 1px solid transparent;
 				transition: 0.5s border, 0.5s background-color;
@@ -583,8 +583,8 @@ body {
 
 				.evf-admin-grid {
 					background: $color-white;
-					margin: 15px;
-					padding: 5px;
+					margin: 10px;
+					padding: 10px;
 					border: 1px solid transparent;
 					transition: 0.5s border, 0.5s background-color;
 					position: relative;
@@ -638,15 +638,14 @@ body {
 						position: relative;
 
 						&:before {
-							position: absolute;
-							margin: auto;
+							text-align: center;
+							margin: 0 auto;
 							content: "\f132";
 							font-size: 40px;
 							display: block;
 							font-family: dashicons;
-							transform: translate(-50%, -50%);
-							left: 50%;
-							top: 50%;
+							line-height: 1.2;
+							cursor: all-scroll;
 							color: $color-gray-lighter;
 
 						}
@@ -656,7 +655,7 @@ body {
 
 			.everest-forms-field {
 				cursor: all-scroll;
-				margin-bottom: 30px;
+				margin-bottom: 10px;
 				padding: 15px;
 				position: relative;
 				border: 1px solid transparent;
