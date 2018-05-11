@@ -758,7 +758,7 @@
 				}
 			});
 
-			$( '.evf-registered-buttons button.evf-registered-item' ).not( '.upgrade-modal' ).draggable({
+			$( '.evf-registered-buttons button.evf-registered-item' ).draggable({
 				connectToSortable: '.evf-admin-grid',
 				containment: '#everest-forms-builder',
 				helper: 'clone',

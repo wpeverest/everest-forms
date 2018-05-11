@@ -32,8 +32,8 @@
 		 */
 		 bindUIActions: function() {
 			// EVF upgrade field modal.
-			$( document ).on( 'click', '.evf-registered-item', function(e) {
-				if ( $( this ).hasClass( 'upgrade-modal' ) ){
+			$( document ).on( 'click dragstart', '.evf-registered-item', function(e) {
+				if ( $( this ).hasClass( 'upgrade-modal' ) ) {
 					e.preventDefault();
 					e.stopImmediatePropagation();
 					EVFBuilderUpgrade.upgradeModal( $(this).text()+ ' field' );
