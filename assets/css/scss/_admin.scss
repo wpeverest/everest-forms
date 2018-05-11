@@ -402,7 +402,7 @@ body {
 					line-height: 30px;
 					padding: 5px;
 					color: $color-white;
-					background-color: $color-gray;
+					background-color: $color-gray-darker;
 					border-radius: 5px;
 					cursor: pointer;
 					transition: 0.5s ease-in-out background-color;
@@ -419,7 +419,7 @@ body {
 			.evf-admin-row {
 				background-color: transparent;
 				display: flex;
-				margin: 0 -15px 30px;
+				margin: 0 -15px 15px;
 				position: relative;
 				border: 1px solid transparent;
 				transition: 0.5s border, 0.5s background-color;
@@ -655,7 +655,7 @@ body {
 
 			.everest-forms-field {
 				cursor: all-scroll;
-				margin-bottom: 30px;
+				margin-bottom: 10px;
 				padding: 15px;
 				position: relative;
 				border: 1px solid transparent;
