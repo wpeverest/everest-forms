@@ -725,6 +725,25 @@ body {
 					}
 				}
 
+				.everest-forms-confirm-enabled {
+
+					display: flex;
+
+					.everest-forms-confirm-primary,
+					.everest-forms-confirm-confirmation {
+						width: 50%;
+						flex-wrap: wrap;
+					}
+
+					.everest-forms-confirm-primary {
+						padding-right: 15px;
+					}
+
+					.everest-forms-confirm-confirmation {
+						padding-left: 15px;
+					}
+				}
+
 				&:hover {
 					border: 1px solid $border-color;
 					.evf-field-action {
