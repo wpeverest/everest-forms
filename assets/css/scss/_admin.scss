@@ -905,9 +905,16 @@ body {
 		}
 	
 		.everest-forms-field-divider {
+			padding-top: 20px;
 
 			label {
 				font-size: 18px;
+				margin-bottom: 0;
+			}
+
+			.description {
+				padding-top: 6px;
+    			font-size: 14px;
 			}
 		}
 
