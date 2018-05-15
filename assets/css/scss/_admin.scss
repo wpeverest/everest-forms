@@ -733,6 +733,12 @@ body {
 					.everest-forms-confirm-confirmation {
 						width: 50%;
 						flex-wrap: wrap;
+
+						.everest-forms-sub-label {
+							font-weight: 400;
+							color: $color-gray-dark;
+							margin-bottom: 0;
+						}
 					}
 
 					.everest-forms-confirm-primary {
@@ -741,6 +747,20 @@ body {
 
 					.everest-forms-confirm-confirmation {
 						padding-left: 15px;
+					}
+				}
+
+				.everest-forms-confirm-disabled {
+
+					.everest-forms-confirm-primary {
+
+						.everest-forms-sub-label {
+							display: none;
+						}
+					}
+
+					.everest-forms-confirm-confirmation {
+						display: none;
 					}
 				}
 
