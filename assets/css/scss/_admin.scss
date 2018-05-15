@@ -266,12 +266,14 @@ body {
 								}
 							}
 						}
+
 						&.ui-draggable-dragging {
 							margin: 0;
 							border: 1px solid $color-brand-primary;
 							width: 105px !important;
 							color: $color-brand-primary;
 							background-color: $color-white;
+							position: relative;
 
 							svg {
 
@@ -631,6 +633,14 @@ body {
 						padding: 20px;
 						font-size: 18px;
 						text-align: left;
+						position: relative;
+							
+						.spinner {
+							position: absolute;
+							top: 50%;
+							transform: translatey(-50%);
+							right: 20px;
+						}
 
 						.dashicons {
 							font-size: 22px;
