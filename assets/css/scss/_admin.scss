@@ -152,6 +152,7 @@ body {
 	}
 
 	.evf-tab-content {
+
 		.everest-forms-panel {
 			width: 100%;
 			display: none;
@@ -882,6 +883,13 @@ body {
 				border: 0 none;
 				background-color: $submit-color;
 				border-radius: 3px;
+			}
+		}
+	
+		.everest-forms-field-divider {
+
+			label {
+				font-size: 18px;
 			}
 		}
 
