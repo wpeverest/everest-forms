@@ -1023,6 +1023,7 @@ body {
 			input[type="checkbox"], input[type="radio"] {
 				float: left;
 				margin-top: 6px;
+				margin-right: 10px;
 			}
 			input[type="text"] {
 				height: 30px;
@@ -1036,11 +1037,15 @@ body {
 				display: inline-block;
 				float: right;
 			}
+			border-radius: 5px;
+			
+			border: 1px solid transparent;
 			clear: both;
-			padding: 5px 5px;
-			cursor:pointer;
+			padding: 8px 12px;
+			cursor: all-scroll;
 			&:hover {
-				background: #f9f9f9;
+				background: $color-white;
+				border: 1px solid $border-color;
 			}
 		}
 	}
