@@ -634,6 +634,10 @@ body {
 						font-size: 18px;
 						text-align: left;
 						position: relative;
+
+						&.ui-draggable {
+							margin-bottom: 10px;
+						}
 							
 						.spinner {
 							position: absolute;
