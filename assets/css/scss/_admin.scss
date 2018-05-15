@@ -152,6 +152,7 @@ body {
 	}
 
 	.evf-tab-content {
+
 		.everest-forms-panel {
 			width: 100%;
 			display: none;
@@ -733,6 +734,12 @@ body {
 					.everest-forms-confirm-confirmation {
 						width: 50%;
 						flex-wrap: wrap;
+
+						.everest-forms-sub-label {
+							font-weight: 400;
+							color: $color-gray-dark;
+							margin-bottom: 0;
+						}
 					}
 
 					.everest-forms-confirm-primary {
@@ -741,6 +748,20 @@ body {
 
 					.everest-forms-confirm-confirmation {
 						padding-left: 15px;
+					}
+				}
+
+				.everest-forms-confirm-disabled {
+
+					.everest-forms-confirm-primary {
+
+						.everest-forms-sub-label {
+							display: none;
+						}
+					}
+
+					.everest-forms-confirm-confirmation {
+						display: none;
 					}
 				}
 
@@ -862,6 +883,13 @@ body {
 				border: 0 none;
 				background-color: $submit-color;
 				border-radius: 3px;
+			}
+		}
+	
+		.everest-forms-field-divider {
+
+			label {
+				font-size: 18px;
 			}
 		}
 
@@ -995,6 +1023,7 @@ body {
 			input[type="checkbox"], input[type="radio"] {
 				float: left;
 				margin-top: 6px;
+				margin-right: 10px;
 			}
 			input[type="text"] {
 				height: 30px;
@@ -1008,11 +1037,15 @@ body {
 				display: inline-block;
 				float: right;
 			}
+			border-radius: 5px;
+			
+			border: 1px solid transparent;
 			clear: both;
-			padding: 5px 5px;
-			cursor:pointer;
+			padding: 8px 12px;
+			cursor: all-scroll;
 			&:hover {
-				background: #f9f9f9;
+				background: $color-white;
+				border: 1px solid $border-color;
 			}
 		}
 	}
