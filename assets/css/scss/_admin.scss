@@ -128,7 +128,7 @@ body {
 				}
 			}
 		}
-		
+
 		.evf_save_form_action_button {
 			padding: 8px 22px;
 			background-color: $color-white;
@@ -143,7 +143,7 @@ body {
 			&:focus {
 				outline: none;
 			}
-			
+
 			.evf-loading,
 			.spinner, {
 				background-size: 14px 14px;
@@ -381,11 +381,10 @@ body {
 			}
 
 			.everest-forms-field-option-address {
-
-				.placeholder,
-				.default {
-					float: left;
+				.default,
+				.placeholder {
 					width: 44%;
+					float: left;
 					margin-right: 2%;
 
 					label {
@@ -394,7 +393,6 @@ body {
 				}
 
 				.hide {
-					
 					input {
 						margin: 10px 0 0 0;
 					}
@@ -402,7 +400,6 @@ body {
 			}
 
 			.everest-forms-field-option-row {
-
 				input[type=text] {
 					width: 99%;
 				}
@@ -488,9 +485,7 @@ body {
 						}
 
 						&:hover {
-							
 							span {
-
 								&.dashicons {
 									background-color: $color-alert-success;
 								}
@@ -502,7 +497,6 @@ body {
 						display: inline-block;
 
 						span {
-
 							&.dashicons {
 								border-radius: 0 0 0 3px;
 								border-right: 1px solid $color-gray-dark;
@@ -510,9 +504,7 @@ body {
 						}
 
 						&:hover {
-
 							span {
-
 								&.dashicons {
 									background-color: $color-alert-danger;
 								}
@@ -666,7 +658,7 @@ body {
 						&.ui-draggable {
 							margin-bottom: 10px;
 						}
-							
+
 						.spinner {
 							position: absolute;
 							top: 50%;
@@ -762,7 +754,7 @@ body {
 						}
 						&:hover {
 							background-color: $button-color;
-						}		
+						}
 					}
 
 					.dashicons {
@@ -772,20 +764,25 @@ body {
 					}
 				}
 
-				.everest-forms-confirm-enabled {
+				.everest-forms-sub-label {
+					font-weight: 400;
+					margin-bottom: 0;
+					color: $color-gray-dark;
+				}
 
+				&.sublabel_hide {
+					.everest-forms-sub-label {
+						display: none;
+					}
+				}
+
+				.everest-forms-confirm-enabled {
 					display: flex;
 
 					.everest-forms-confirm-primary,
 					.everest-forms-confirm-confirmation {
 						width: 50%;
 						flex-wrap: wrap;
-
-						.everest-forms-sub-label {
-							font-weight: 400;
-							color: $color-gray-dark;
-							margin-bottom: 0;
-						}
 					}
 
 					.everest-forms-confirm-primary {
@@ -798,9 +795,7 @@ body {
 				}
 
 				.everest-forms-confirm-disabled {
-
 					.everest-forms-confirm-primary {
-
 						.everest-forms-sub-label {
 							display: none;
 						}
@@ -912,7 +907,6 @@ body {
 						transform: translateX(-50%);
 					}
 				}
-
 			}
 
 			.publishing-action {
@@ -931,7 +925,7 @@ body {
 				border-radius: 3px;
 			}
 		}
-	
+
 		.everest-forms-field-divider {
 			padding-top: 20px;
 
@@ -1091,7 +1085,7 @@ body {
 				float: right;
 			}
 			border-radius: 5px;
-			
+
 			border: 1px solid transparent;
 			clear: both;
 			padding: 8px 12px;
