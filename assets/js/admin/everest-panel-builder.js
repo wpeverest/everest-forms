@@ -145,12 +145,28 @@
 		 *
 		 * @since 1.2.0
 		 */
-		 bindUIActionsFields: function() {
+		bindUIActionsFields: function() {
 			// Real-time updates for "Confirmation" field option
 			$builder.on( 'change', '.everest-forms-field-option-row-confirmation input', function() {
 				var id = $( this ).parent().data( 'field-id' );
 				$( '#everest-forms-field-' + id ).find( '.everest-forms-confirm' ).toggleClass( 'everest-forms-confirm-enabled everest-forms-confirm-disabled' );
 				$( '#everest-forms-field-option-' + id ).toggleClass( 'everest-forms-confirm-enabled everest-forms-confirm-disabled' );
+			});
+
+			// Real-time updates specific for Address "Scheme" option
+			$builder.on('change', '.everest-forms-field-option-row-scheme select', function() {
+				var $this = $(this),
+					value = $this.val(),
+					id    = $this.parent().data( 'field-id' );
+
+				$( '#everest-forms-field-' + id ).find( '.everest-forms-address-scheme' ).addClass( 'hidden' );
+				$( '#everest-forms-field-' + id ).find( '.everest-forms-address-scheme-' + value ).removeClass( 'hidden' );
+
+				if ( $( '#everest-forms-field-' + id ).find( '.everest-forms-address-scheme-' + value + ' .everest-forms-country' ).children().length === 0 ) {
+					$( '#everest-forms-field-option-' + id ).find( '.everest-forms-field-option-row-country' ).addClass( 'hidden' );
+				} else {
+					$( '#everest-forms-field-option-' + id ).find( '.everest-forms-field-option-row-country' ).removeClass( 'hidden' );
+				}
 			});
 		},
 		choicesInit: function () {
