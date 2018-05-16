@@ -590,18 +590,17 @@ abstract class EVF_Form_Fields {
 	 * @return mixed echo or return string
 	 */
 	public function field_preview_option( $option, $field, $args = array(), $echo = true ) {
+		$class    = ! empty( $args['class'] ) ? evf_sanitize_classes( $args['class'] ) : '';
+		$required = isset( $field['required'] ) && $field['required'] ? '<span class="required">*</span>' : '';
 
-		$required_string = isset( $field['required'] ) && $field['required'] ? '<span class="required">*</span>' : '';
-		$hide_style      = isset( $field['label_hide'] ) && $field['label_hide'] ? 'display:none' : '';
 		switch ( $option ) {
-
 			case 'label':
 				$label  = isset( $field['label'] ) && ! empty( $field['label'] ) ? esc_html( $field['label'] ) : '';
-				$output = sprintf( '<label style="%s" class="label-title"><span class="text">%s</span>%s</label>', $hide_style, $label, $required_string );
+				$output = sprintf( '<label class="label-title %s"><span class="text">%s</span>%s</label>', $class, $label, $required );
 				break;
-
 			case 'description':
 				$description = isset( $field['description'] ) && ! empty( $field['description'] ) ? $field['description'] : '';
+				$description = strpos( $class, 'nl2br' ) !== false ? nl2br( $description ) : $description;
 				$output      = sprintf( '<div class="description">%s</div>', $description );
 				break;
 		}

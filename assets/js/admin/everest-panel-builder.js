@@ -146,6 +146,12 @@
 		 * @since 1.2.0
 		 */
 		bindUIActionsFields: function() {
+			// Real-time updates for "Hide Label" field option
+			$builder.on( 'change', '.everest-forms-field-option-row-label_hide input', function() {
+				var id = $(this).parent().data( 'field-id' );
+				$( '#everest-forms-field-' + id ).toggleClass( 'label_hide' );
+			});
+
 			// Real-time updates for Sub Label visbility field option
 			$builder.on( 'change', '.everest-forms-field-option-row-sublabel_hide input', function() {
 				var id = $( this ).parent().data( 'field-id' );
@@ -402,14 +408,6 @@
 
 		 		} else {
 		 			field.find('.label-title .required').remove();
-		 		}
-		 		break;
-		 		case 'label_hide':
-		 		if ( option_field.is(":checked") ) {
-		 			field.find('.label-title').hide();
-
-		 		} else {
-		 			field.find('.label-title').show();
 		 		}
 		 		break;
 		 		case 'placeholder':
