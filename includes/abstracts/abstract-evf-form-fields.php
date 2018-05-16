@@ -390,7 +390,7 @@ abstract class EVF_Form_Fields {
 				$dynamic = ! empty( $field['dynamic_choices'] ) ? esc_html( $field['dynamic_choices'] ) : '';
 				$values  = ! empty( $field['choices'] ) ? $field['choices'] : $this->defaults;
 				$class   = ! empty( $field['show_values'] ) && $field['show_values'] == '1' ? 'show-values' : '';
-				$class   .= ! empty( $dynamic ) ? ' evf-hidden' : '';
+				$class   .= ! empty( $dynamic ) ? ' hidden' : '';
 
 				// Field option label and type.
 				$option_label = $this->field_element(
