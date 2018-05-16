@@ -56,6 +56,10 @@ body {
 		}
 	}
 
+	.after-label-description {
+		float: right;
+	}
+
 	.evf-tab-lists {
 		padding: 0;
 		margin: 0;
@@ -124,7 +128,7 @@ body {
 				}
 			}
 		}
-		
+
 		.evf_save_form_action_button {
 			padding: 8px 22px;
 			background-color: $color-white;
@@ -139,7 +143,7 @@ body {
 			&:focus {
 				outline: none;
 			}
-			
+
 			.evf-loading,
 			.spinner, {
 				background-size: 14px 14px;
@@ -152,6 +156,7 @@ body {
 	}
 
 	.evf-tab-content {
+
 		.everest-forms-panel {
 			width: 100%;
 			display: none;
@@ -261,12 +266,14 @@ body {
 								}
 							}
 						}
+
 						&.ui-draggable-dragging {
 							margin: 0;
 							border: 1px solid $color-brand-primary;
 							width: 105px !important;
 							color: $color-brand-primary;
 							background-color: $color-white;
+							position: relative;
 
 							svg {
 
@@ -372,6 +379,31 @@ body {
 					}
 				}
 			}
+
+			.everest-forms-field-option-address {
+				.default,
+				.placeholder {
+					width: 44%;
+					float: left;
+					margin-right: 2%;
+
+					label {
+						font-weight: 400;
+					}
+				}
+
+				.hide {
+					input {
+						margin: 10px 0 0 0;
+					}
+				}
+			}
+
+			.everest-forms-field-option-row {
+				input[type=text] {
+					width: 99%;
+				}
+			}
 		}
 
 		.everest-forms-panel-content-wrap {
@@ -453,9 +485,7 @@ body {
 						}
 
 						&:hover {
-							
 							span {
-
 								&.dashicons {
 									background-color: $color-alert-success;
 								}
@@ -467,7 +497,6 @@ body {
 						display: inline-block;
 
 						span {
-
 							&.dashicons {
 								border-radius: 0 0 0 3px;
 								border-right: 1px solid $color-gray-dark;
@@ -475,9 +504,7 @@ body {
 						}
 
 						&:hover {
-
 							span {
-
 								&.dashicons {
 									background-color: $color-alert-danger;
 								}
@@ -626,6 +653,18 @@ body {
 						padding: 20px;
 						font-size: 18px;
 						text-align: left;
+						position: relative;
+
+						&.ui-draggable {
+							margin-bottom: 10px;
+						}
+
+						.spinner {
+							position: absolute;
+							top: 50%;
+							transform: translatey(-50%);
+							right: 20px;
+						}
 
 						.dashicons {
 							font-size: 22px;
@@ -715,13 +754,55 @@ body {
 						}
 						&:hover {
 							background-color: $button-color;
-						}		
+						}
 					}
 
 					.dashicons {
 						font-size: 15px;
 						height: auto;
 						width: auto;
+					}
+				}
+
+				.everest-forms-sub-label {
+					font-weight: 400;
+					margin-bottom: 0;
+					color: $color-gray-dark;
+				}
+
+				&.sublabel_hide {
+					.everest-forms-sub-label {
+						display: none;
+					}
+				}
+
+				.everest-forms-confirm-enabled {
+					display: flex;
+
+					.everest-forms-confirm-primary,
+					.everest-forms-confirm-confirmation {
+						width: 50%;
+						flex-wrap: wrap;
+					}
+
+					.everest-forms-confirm-primary {
+						padding-right: 15px;
+					}
+
+					.everest-forms-confirm-confirmation {
+						padding-left: 15px;
+					}
+				}
+
+				.everest-forms-confirm-disabled {
+					.everest-forms-confirm-primary {
+						.everest-forms-sub-label {
+							display: none;
+						}
+					}
+
+					.everest-forms-confirm-confirmation {
+						display: none;
 					}
 				}
 
@@ -826,7 +907,6 @@ body {
 						transform: translateX(-50%);
 					}
 				}
-
 			}
 
 			.publishing-action {
@@ -843,6 +923,20 @@ body {
 				border: 0 none;
 				background-color: $submit-color;
 				border-radius: 3px;
+			}
+		}
+
+		.everest-forms-field-divider {
+			padding-top: 20px;
+
+			label {
+				font-size: 18px;
+				margin-bottom: 0;
+			}
+
+			.description {
+				padding-top: 6px;
+    			font-size: 14px;
 			}
 		}
 
@@ -976,6 +1070,7 @@ body {
 			input[type="checkbox"], input[type="radio"] {
 				float: left;
 				margin-top: 6px;
+				margin-right: 10px;
 			}
 			input[type="text"] {
 				height: 30px;
@@ -989,11 +1084,15 @@ body {
 				display: inline-block;
 				float: right;
 			}
+			border-radius: 5px;
+
+			border: 1px solid transparent;
 			clear: both;
-			padding: 5px 5px;
-			cursor:pointer;
+			padding: 8px 12px;
+			cursor: all-scroll;
 			&:hover {
-				background: #f9f9f9;
+				background: $color-white;
+				border: 1px solid $border-color;
 			}
 		}
 	}

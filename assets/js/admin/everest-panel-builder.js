@@ -145,45 +145,90 @@
 		 *
 		 * @since 1.2.0
 		 */
-		 bindUIActionsFields: function() {
+		bindUIActionsFields: function() {
+			// Real-time updates for Sub Label visbility field option
+			$builder.on( 'change', '.everest-forms-field-option-row-sublabel_hide input', function() {
+				var id = $( this ).parent().data( 'field-id' );
+				$( '#everest-forms-field-' + id ).toggleClass( 'sublabel_hide' );
+			});
+
 			// Real-time updates for "Confirmation" field option
 			$builder.on( 'change', '.everest-forms-field-option-row-confirmation input', function() {
 				var id = $( this ).parent().data( 'field-id' );
 				$( '#everest-forms-field-' + id ).find( '.everest-forms-confirm' ).toggleClass( 'everest-forms-confirm-enabled everest-forms-confirm-disabled' );
 				$( '#everest-forms-field-option-' + id ).toggleClass( 'everest-forms-confirm-enabled everest-forms-confirm-disabled' );
 			});
+
+			// Real-time updates specific for Address "Scheme" option
+			$builder.on('change', '.everest-forms-field-option-row-scheme select', function() {
+				var $this = $(this),
+					value = $this.val(),
+					id    = $this.parent().data( 'field-id' );
+
+				$( '#everest-forms-field-' + id ).find( '.everest-forms-address-scheme' ).addClass( 'hidden' );
+				$( '#everest-forms-field-' + id ).find( '.everest-forms-address-scheme-' + value ).removeClass( 'hidden' );
+
+				if ( $( '#everest-forms-field-' + id ).find( '.everest-forms-address-scheme-' + value + ' .everest-forms-country' ).children().length === 0 ) {
+					$( '#everest-forms-field-option-' + id ).find( '.everest-forms-field-option-row-country' ).addClass( 'hidden' );
+				} else {
+					$( '#everest-forms-field-option-' + id ).find( '.everest-forms-field-option-row-country' ).removeClass( 'hidden' );
+				}
+			});
 		},
 		choicesInit: function () {
 			var choice_list = $(".evf-choices-list");
 			choice_list.sortable({
-				out: function ( event, ui ) {
-
-					var field_id = $(event.target).attr('data-field-id');
-					EVFPanelBuilder.choiceChange(field_id);
-
+				axis: 'y',
+				out: function ( event ) {
+					var field_id = $( event.target ).attr( 'data-field-id' );
+					EVFPanelBuilder.choiceChange( field_id );
 				}
-			}
-			);
-			var option_container = choice_list.closest('.everest-forms-field-option');
-			var field_id = option_container.attr('data-field-id');
-			var field_container = $('#everest-forms-field-' + field_id);
+			});
 		},
-		 choicesUpdate: function () {
-		 	var choice_list = $(".evf-choices-list");
+		choiceChange: function ( field_id ) {
+			var choices_wrapper = $('#everest-forms-field-option-row-' + field_id + '-choices');
+			var choices_field = $('#everest-forms-field-' + field_id);
+			var primary_field = choices_field.find('ul.primary-input');
+
+			var choice_type = choices_wrapper.find('ul.evf-choices-list').attr('data-field-type');
+			if ( choice_type === 'select' ) {
+				primary_field = choices_field.find('select.primary-input');
+			}
+			primary_field.html('');
+
+			$.each( choices_wrapper.find( 'ul.evf-choices-list').find( 'li' ), function () {
+				var type  = $( this ).find( '.default' ).attr( 'type' );
+				var field = type ? '<input type="' + type + '" disabled="">' : '';
+				var list = $('<li/>').append( field );
+
+				if ( choice_type === 'select' ) {
+					list = $( '<option/>' );
+					if ( $(this).find('.default').is( ':checked' ) ) {
+						list.attr('selected', 'selected');
+					}
+				}
+				list.append($(this).find('.label').val());
+				if ( $(this).find('.default').is(":checked") ) {
+					list.find('input').prop('checked', true);
+				}
+				primary_field.append(list);
+			});
+		},
+		choicesUpdate: function () {
 		 	$('body').on('click', '.evf-choices-list a.add', function () {
-		 		var clone = $(this).closest('li').clone();
-		 		clone.find('input[type="text"]').val('');
-		 		var ul = $(this).closest('.evf-choices-list');
-		 		var field_id = ul.attr('data-field-id');
-		 		var total_list = ul.find('li').length;
-		 		total_list++;
-		 		clone.find('input[type="checkbox"],input[type="radio"]').prop('checked', false);
-		 		clone.attr('data-key', total_list);
-		 		clone.find('.default').attr('name', 'form_fields[' + field_id + '][choices][' + total_list + '][default]');
-		 		clone.find('.label').attr('name', 'form_fields[' + field_id + '][choices][' + total_list + '][label]');
-		 		clone.find('.value').attr('name', 'form_fields[' + field_id + '][choices][' + total_list + '][value]');
-		 		$(this).closest('li').after(clone);
-		 		EVFPanelBuilder.choiceChange(field_id);
+				var clone = $(this).closest('li').clone();
+				clone.find('input[type="text"]').val('');
+				var ul = $(this).closest('.evf-choices-list');
+				var field_id = ul.attr('data-field-id');
+				var total_list = ul.find('li').length;
+				total_list++;
+				clone.find('input[type="checkbox"],input[type="radio"]').prop('checked', false);
+				clone.attr('data-key', total_list);
+				clone.find('.default').attr('name', 'form_fields[' + field_id + '][choices][' + total_list + '][default]');
+				clone.find('.label').attr('name', 'form_fields[' + field_id + '][choices][' + total_list + '][label]');
+				clone.find('.value').attr('name', 'form_fields[' + field_id + '][choices][' + total_list + '][value]');
+				$(this).closest('li').after(clone);
+				EVFPanelBuilder.choiceChange(field_id);
 		 	});
 		 	$('body').on('click', '.evf-choices-list a.remove', function () {
 		 		var ul = $( this ).closest( '.evf-choices-list' );
@@ -227,34 +272,7 @@
 		 	});
 
 		 },
-		 choiceChange: function ( field_id ) {
-		 	var choices_wrapper = $('#everest-forms-field-option-row-' + field_id + '-choices');
-		 	var choices_field = $('#everest-forms-field-' + field_id);
-		 	var primary_field = choices_field.find('ul.primary-input');
 
-		 	var choice_type = choices_wrapper.find('ul.evf-choices-list').attr('data-field-type');
-		 	if ( choice_type === 'select' ) {
-		 		primary_field = choices_field.find('select.primary-input');
-		 	}
-		 	primary_field.html('');
-
-		 	$.each(choices_wrapper.find('ul.evf-choices-list').find('li'), function () {
-		 		var type = $(this).find('.default').attr('type');
-		 		var list = $('<li/>').append('<input type="' + type + '" disabled="">');
-		 		if ( choice_type === 'select' ) {
-		 			list = $('<option/>');
-		 			if ( $(this).find('.default').is(":checked") ) {
-		 				list.attr('selected', 'selected');
-		 			}
-		 		}
-		 		list.append($(this).find('.label').val());
-		 		if ( $(this).find('.default').is(":checked") ) {
-		 			list.find('input').prop('checked', true);
-		 		}
-		 		primary_field.append(list);
-		 	});
-
-		 },
 		 bindFormSettings: function () {
 
 		 	$('body').on('click', '.evf-setting-panel', function ( e ) {

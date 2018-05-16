@@ -10,11 +10,17 @@ jQuery( function ( $ ) {
 	var everest_forms = {
 		$everest_form: $( 'form.everest-form' ),
 		init: function() {
+			this.init_inputMask();
 			this.init_datepicker();
 			this.load_validation();
 
 			// Inline validation
 			this.$everest_form.on( 'input validate change', '.input-text, select, input:checkbox', this.validate_field );
+		},
+		init_inputMask: function() {
+			if ( typeof $.fn.inputmask !== 'undefined' ) {
+				$( '.evf-masked-input' ).inputmask();
+			}
 		},
 		init_datepicker: function () {
 			$( '.date-picker-field, .date-picker' ).datepicker({

@@ -157,6 +157,11 @@ class EVF_Frontend_Scripts {
 	private static function register_scripts() {
 		$suffix           = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		$register_scripts = array(
+			'inputmask'       => array(
+				'src'     => self::get_asset_url( 'assets/js/inputmask/jquery.inputmask.bundle' . $suffix . '.js' ),
+				'deps'    => array( 'jquery' ),
+				'version' => '4.0.0-beta.58',
+			),
 			'jquery-validate' => array(
 				'src'     => self::get_asset_url( 'assets/js/jquery-validate/jquery.validate' . $suffix . '.js' ),
 				'deps'    => array( 'jquery' ),
@@ -169,7 +174,7 @@ class EVF_Frontend_Scripts {
 			),
 			'everest-forms'   => array(
 				'src'     => self::get_asset_url( 'assets/js/frontend/everest-forms' . $suffix . '.js' ),
-				'deps'    => array( 'jquery', 'jquery-ui-datepicker', 'jquery-validate' ),
+				'deps'    => array( 'jquery', 'jquery-ui-datepicker', 'jquery-validate', 'inputmask' ),
 				'version' => EVF_VERSION,
 			),
 		);
