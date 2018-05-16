@@ -175,33 +175,29 @@ class EVF_Fields_Panel extends EVF_Admin_Form_Panel {
 	 * @since      1.0.0
 	 */
 	public function preview() {
-
-
 		$this->everest_forms_builder_preview();
-
 	}
 
 	/**
 	 * @param $field
 	 */
 	public function field_preview( $field ) {
+		$css  = ! empty( $field['size'] ) ? 'size-' . esc_attr( $field['size'] ) : '';
+		$css .= ! empty( $field['label_hide'] ) && $field['label_hide'] == '1' ? ' label_hide' : '';
+		$css .= ! empty( $field['sublabel_hide'] ) && $field['sublabel_hide'] == '1' ? ' sublabel_hide' : '';
+		$css .= ! empty( $field['required'] ) && $field['required'] == '1' ? ' required' : '';
+		$css  = apply_filters( 'everest_forms_field_preview_class', $css, $field );
 
-		$field['required'] = isset( $field['required'] ) ? $field['required'] : 0;
-		$css               = ! empty( $field['size'] ) ? 'size-' . esc_attr( $field['size'] ) : '';
-		$css               .= ! empty( $field['label_hide'] ) && $field['label_hide'] == '1' ? ' label_hide' : '';
-		$css               .= ! empty( $field['sublabel_hide'] ) && $field['sublabel_hide'] == '1' ? ' sublabel_hide' : '';
-		$css               .= ! empty( $field['required'] ) && $field['required'] == '1' ? ' required' : '';
-		$css               = apply_filters( 'everest_forms_field_preview_class', $css, $field );
-		printf( '<div class="everest-forms-field everest-forms-field-%s %s %s" id="everest-forms-field-%s" data-field-id="%s" data-field-type="%s">', $field['type'], $field['required'], 'test', $field['id'], $field['id'], $field['type'] );
+		printf( '<div class="everest-forms-field everest-forms-field-%s %s" id="everest-forms-field-%s" data-field-id="%s" data-field-type="%s">', $field['type'], $css, $field['id'], $field['id'], $field['type'] );
 		printf( '<div class="evf-field-action">' );
-		printf( '<a href="#" class="everest-forms-field-duplicate" title="%s"><span class="dashicons dashicons-media-default"></span></a>', __( 'Duplicate Field', 'everest-forms' ) );
-		printf( '<a href="#" class="everest-forms-field-delete" title="%s"><span class="dashicons dashicons-trash"></span></a>', __( 'Delete Field', 'everest-forms' ) );
-		printf( '<a href="#" class="everest-forms-field-setting" title="%s"><span class="dashicons dashicons-admin-generic"></span></a>', __( 'Settings', 'everest-forms' ) );
+			printf( '<a href="#" class="everest-forms-field-duplicate" title="%s"><span class="dashicons dashicons-media-default"></span></a>', __( 'Duplicate Field', 'everest-forms' ) );
+			printf( '<a href="#" class="everest-forms-field-delete" title="%s"><span class="dashicons dashicons-trash"></span></a>', __( 'Delete Field', 'everest-forms' ) );
+			printf( '<a href="#" class="everest-forms-field-setting" title="%s"><span class="dashicons dashicons-admin-generic"></span></a>', __( 'Settings', 'everest-forms' ) );
 		printf( '</div>' );
+
 		do_action( "everest_forms_builder_fields_previews_{$field['type']}", $field );
 
 		echo '</div>';
-
 	}
 
 	/**
