@@ -394,7 +394,7 @@ body {
 				}
 
 				.hide {
-					
+
 					input {
 						margin: 10px 0 0 0;
 					}
@@ -696,6 +696,33 @@ body {
 							color: $color-gray-lighter;
 
 						}
+					}
+				}
+			}
+
+			.everest-forms-field-payment-single {
+
+				.format-selected-single {
+
+					.primary-input,
+					.item-price-hidden {
+						display: none;
+					}
+				}
+
+				.format-selected-user {
+
+					.item-price,
+					.item-price-hidden {
+						display: none;
+					}
+				}
+
+				.format-selected-hidden {
+
+					.item-price,
+					.primary-input {
+						display: none;
 					}
 				}
 			}
