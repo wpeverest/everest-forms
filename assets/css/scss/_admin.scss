@@ -660,18 +660,23 @@ body {
 					.evf-registered-item {
 						padding: 20px;
 						font-size: 18px;
-						text-align: left;
-						position: relative;
 
 						&.ui-draggable {
 							margin-bottom: 10px;
 						}
+
+						.evf-icon {
+							display: inline-block;
+							vertical-align: middle;
+							font-size: 24px;
+						}
 							
 						.spinner {
-							position: absolute;
-							top: 50%;
-							transform: translatey(-50%);
-							right: 20px;
+							background-size: 15px 15px;
+							float: none;
+							height: 15px;
+							width: 15px;
+							margin: 0 0 5px 3px !important;
 						}
 
 						.dashicons {
@@ -1080,8 +1085,8 @@ body {
 
 		.evf-icon {
 			color: inherit;
-			display: block !important;
-			font-size: 32px !important;
+			display: block;
+			font-size: 32px;
 			margin-bottom: 5px;
 		}
 
