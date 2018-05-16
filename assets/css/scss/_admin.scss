@@ -770,6 +770,12 @@ body {
 					color: $color-gray-dark;
 				}
 
+				&.label_hide {
+					.label-title {
+						display: none;
+					}
+				}
+
 				&.sublabel_hide {
 					.everest-forms-sub-label {
 						display: none;
