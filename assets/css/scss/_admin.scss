@@ -379,6 +379,27 @@ body {
 					}
 				}
 			}
+
+			.everest-forms-field-option-address {
+
+				.placeholder,
+				.default {
+					float: left;
+					width: 44%;
+					margin-right: 2%;
+
+					label {
+						font-weight: 400;
+					}
+				}
+			}
+
+			.everest-forms-field-option-row {
+
+				input[type=text] {
+					width: 99%;
+				}
+			}
 		}
 
 		.everest-forms-panel-content-wrap {
