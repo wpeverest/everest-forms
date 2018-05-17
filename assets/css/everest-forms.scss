@@ -15,6 +15,13 @@
 			content: "";
 			display: table;
 		}
+
+		&:last-child {
+
+			.everest-forms-field-sublabel {
+				margin-bottom: 0;
+			}
+		}
 	}
 
 	.evf-frontend-row {
@@ -27,6 +34,10 @@
 			float: left;
 			margin-left: 4%;
 			width: 48%;
+
+			&:first-child {
+				margin-left: 0;
+			}
 		}
 		
 		.everest-forms-first {
@@ -131,6 +142,11 @@
 			color: $color-gray-darker;
 			display: block;
 			font-weight: 600;
+
+			&.everest-forms-field-sublabel {
+				font-size: 12px;
+				font-weight: 400;
+			}
 
 			.required {
 				color: red;
