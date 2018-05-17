@@ -153,6 +153,7 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 							</div>
 						</div>
 					</div>
+					<?php do_action( 'everest_forms_after_entry_details', $entry, $entry_meta ); ?>
 				</div>
 			</div>
 		</div>
