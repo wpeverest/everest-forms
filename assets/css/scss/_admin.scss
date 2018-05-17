@@ -179,9 +179,10 @@ body {
 			.everest-forms-one-half {
 				float: left;
 				width: 49%;
+				margin-right: 2%;
 
-				&.last {
-					float: right;
+				&:nth-child(2) {
+					margin-right: 0;
 				}
 			}
 
