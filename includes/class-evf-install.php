@@ -358,7 +358,7 @@ CREATE TABLE {$wpdb->prefix}evf_sessions (
 	}
 
 	/**
-	 * Return a list of UsageMonitor tables. Used to make sure all UM tables are dropped when uninstalling the plugin
+	 * Return a list of EverestForms tables. Used to make sure all UM tables are dropped when uninstalling the plugin
 	 * in a single site or multi site environment.
 	 *
 	 * @return array UM tables.
@@ -376,7 +376,7 @@ CREATE TABLE {$wpdb->prefix}evf_sessions (
 	}
 
 	/**
-	 * Drop UsageMonitor tables.
+	 * Drop EverestForms tables.
 	 */
 	public static function drop_tables() {
 		global $wpdb;

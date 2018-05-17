@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 1.0.0
  * @param string $tag         The name of the action hook.
  * @param array  $args        Array of additional function arguments to be passed to do_action().
- * @param string $version     The version of UsageMonitor that deprecated the hook.
+ * @param string $version     The version of EverestForms that deprecated the hook.
  * @param string $replacement The hook that should have been used.
  * @param string $message     A message regarding the change.
  */
@@ -90,7 +90,7 @@ function evf_caught_exception( $exception_object, $function = '', $args = array(
 	$message  = $exception_object->getMessage();
 	$message .= '. Args: ' . print_r( $args, true ) . '.';
 
-	do_action( 'usagemonitor_caught_exception', $exception_object, $function, $args );
+	do_action( 'everest_forms_caught_exception', $exception_object, $function, $args );
 	error_log( "Exception caught in {$function}. {$message}." );
 	// @codingStandardsIgnoreEnd
 }
