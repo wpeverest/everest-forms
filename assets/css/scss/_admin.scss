@@ -170,6 +170,20 @@ body {
 				display: flex;
 			}
 
+			.everest-forms-one-half {
+				float: left;
+				width: 49%;
+
+				&.last {
+					float: right;
+				}
+			}
+
+			.everest-forms-field-row {
+				margin: 0 0 10px 0;
+				position: relative;
+			}
+
 			.everest-forms-panel-sidebar {
 				background-color: $color-whitesmoke;
 				width: 375px;

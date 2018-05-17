@@ -6,11 +6,32 @@
 }
 
 .everest-forms {
+
+	.everest-forms-field-row {
+
+		&:before,
+		&:after {
+			clear: both;
+			content: "";
+			display: table;
+		}
+	}
+
 	.evf-frontend-row {
 		margin-left: -20px;
 		margin-right: -20px;
 		display: flex;
 		flex-wrap: wrap;
+
+		.everest-forms-one-half {
+			float: left;
+			margin-left: 4%;
+			width: 48%;
+		}
+		
+		.everest-forms-first {
+			margin-left: 0;
+		}
 
 		.evf-frontend-grid {
 			padding-left: 20px;
