@@ -145,6 +145,7 @@ if ( ! class_exists( 'EVF_Admin_Assets', false ) ) :
 			if ( in_array( $screen_id, evf_get_screen_ids() ) ) {
 				wp_enqueue_script( 'everest_forms_admin' );
 			}
+			do_action( 'everest_forms_builder_enqueues' );
 		}
 	}
 
