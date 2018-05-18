@@ -339,6 +339,7 @@ class EVF_Form_Task {
 
 		$email = apply_filters( 'everest_forms_entry_email_atts', $email, $fields, $entry, $form_data );
 
+		$attachment = '';
 		// Create new email.
 		$emails = new EVF_Emails();
 		$emails->__set( 'form_data', $form_data );
@@ -347,7 +348,7 @@ class EVF_Form_Task {
 		$emails->__set( 'from_name', $email['sender_name'] );
 		$emails->__set( 'from_address', $email['sender_address'] );
 		$emails->__set( 'reply_to', isset( $email['user_email'] ) ? $email['user_email'] : $email['sender_address'] );
-		$emails->__set( 'attachments', apply_filters( 'everest_forms_entries_attachements', '', $entry, $form_data ) );
+		$emails->__set( 'attachments', apply_filters( 'everest_forms_email_attachments', $attachment, $entry, $form_data ) );
 
 		// Send entry email.
 		foreach ( $email['address'] as $address ) {

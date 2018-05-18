@@ -307,7 +307,7 @@ class EVF_Emails {
 		$subject     = evf_decode_string( $this->process_tag( $subject ) );
 
 		// Let's do this.
-		$sent = wp_mail( $to, $subject, $message, $this->get_headers(), $attachments );
+		$sent = wp_mail( $to, $subject, $message, $this->get_headers(), $this->attachments );
 
 		// Hooks after the email is sent.
 		do_action( 'everest_forms_email_send_after', $this );
