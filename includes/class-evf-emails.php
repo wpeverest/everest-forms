@@ -60,6 +60,13 @@ class EVF_Emails {
 	private $headers;
 
 	/**
+	 * Holds the email attachments.
+	 *
+	 * @var string
+	 */
+	public $attachments;
+
+	/**
 	 * Whether to send email in HTML.
 	 *
 	 * @var bool
@@ -296,7 +303,7 @@ class EVF_Emails {
 		do_action( 'everest_forms_email_send_before', $this );
 
 		$message     = $this->build_email( $message );
-		$attachments = apply_filters( 'everest_forms_email_attachments', $attachments, $this );
+		$this->$attachments = apply_filters( 'everest_forms_email_attachments', $this->$attachments, $this );
 		$subject     = evf_decode_string( $this->process_tag( $subject ) );
 
 		// Let's do this.
