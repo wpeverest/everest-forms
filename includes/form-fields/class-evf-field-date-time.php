@@ -20,7 +20,7 @@ class EVF_Field_Date extends EVF_Form_Fields {
 	 */
 	public function init() {
 		// Define field type information.
-		$this->name  = __( 'Date / Time', 'everest-forms' );
+		$this->name  = __( 'Date', 'everest-forms' );
 		$this->type  = 'date';
 		$this->icon  = 'evf-icon evf-icon-date-time';
 		$this->order = 11;
