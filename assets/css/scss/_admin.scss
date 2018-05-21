@@ -897,6 +897,11 @@ body {
 						}
 					}
 				}
+
+				label,
+				input {
+					cursor: all-scroll;
+				}
 			}
 
 			.file-uploader {
