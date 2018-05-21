@@ -1102,6 +1102,55 @@ body {
 		.everest-forms-panel-field {
 			margin-bottom: 20px;
 		}
+
+		.everest-forms-field-option-payment-multiple {
+			
+			.everest-forms-field-option-row {
+				
+				li {
+					margin-bottom: 10px;
+					
+					input[type=text] {
+						width: 46%;
+						margin-right: 8px;
+						vertical-align: middle;
+
+						&.value {
+							width: 25%;
+						}
+					}
+
+					a {
+						background: $color-white;
+						color: $color-gray-dark;
+						display: inline-block;
+						border-radius: 3px;
+						border: 1px solid $border-color;
+						text-align: center;
+						margin-right: 8px;
+						line-height: 1;
+						padding: 3px;
+						vertical-align: middle;
+
+						&:last-child {
+							margin-right: 0;
+						}
+
+						&:hover {
+							background: $button-color;
+							color: $color-white;
+							border: 1px solid $button-color;
+						}
+
+						.dashicons {
+							font-size: 16px;
+							height: 16px;
+							width: 16px;
+						}
+					}
+				}
+			}
+		}
 	}
 
 	.evf-registered-item {
