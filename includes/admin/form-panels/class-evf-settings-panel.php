@@ -190,7 +190,7 @@ class EVF_Settings_Panel extends EVF_Admin_Form_Panel {
 				'default' => isset( $this->form_setting['submit_button_text'] ) ? $this->form_setting['submit_button_text'] : get_option( 'everest_forms_form_submit_button_label', __( 'Submit', 'everest-forms' ) ),
 			)
 		);
-		do_action( 'everest_forms_general_settings', $this );
+		do_action( 'everest_forms_inline_general_settings', $this );
 
 		echo '</div>';
 
@@ -297,7 +297,7 @@ class EVF_Settings_Panel extends EVF_Admin_Form_Panel {
 		}
 
 
-		do_action( 'everest_forms_email_settings', $this );
+		do_action( 'everest_forms_inline_email_settings', $this );
 
 		echo '</div>';
 
