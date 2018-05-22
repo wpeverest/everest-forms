@@ -822,6 +822,8 @@ function evf_get_form_fields( $form = false, $whitelist = array() ) {
 
 	// White list of field types to allow
 	$allowed_form_fields = array(
+		'first-name',
+		'last-name',
 		'text',
 		'textarea',
 		'select',
