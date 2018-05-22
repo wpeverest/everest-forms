@@ -425,6 +425,25 @@ body {
 					width: 99%;
 				}
 			}
+
+
+			.evf-choices-list {
+
+				li {
+
+					input.value {
+						display: none;
+					}
+
+					input[type="text"] {
+						width: 74%;
+					}
+
+					border: 1px solid transparent;
+					clear: both;
+					cursor: all-scroll;
+				}
+			}
 		}
 
 		.everest-forms-panel-content-wrap {
@@ -1104,12 +1123,12 @@ body {
 		}
 
 		.everest-forms-field-option-payment-multiple {
-			
+
 			.everest-forms-field-option-row {
-				
+
 				li {
 					margin-bottom: 10px;
-					
+
 					input[type=text] {
 						width: 46%;
 						margin-right: 8px;
@@ -1117,35 +1136,6 @@ body {
 
 						&.value {
 							width: 25%;
-						}
-					}
-
-					a {
-						background: $color-white;
-						color: $color-gray-dark;
-						display: inline-block;
-						border-radius: 3px;
-						border: 1px solid $border-color;
-						text-align: center;
-						margin-right: 8px;
-						line-height: 1;
-						padding: 3px;
-						vertical-align: middle;
-
-						&:last-child {
-							margin-right: 0;
-						}
-
-						&:hover {
-							background: $button-color;
-							color: $color-white;
-							border: 1px solid $button-color;
-						}
-
-						.dashicons {
-							font-size: 16px;
-							height: 16px;
-							width: 16px;
 						}
 					}
 				}
@@ -1181,37 +1171,43 @@ body {
 		}
 	}
 
-	.evf-choices-list {
-		li {
-			input.value {
-				display: none;
-			}
-			input[type="checkbox"], input[type="radio"] {
-				float: left;
-				margin-top: 6px;
-				margin-right: 10px;
-			}
-			input[type="text"] {
-				height: 30px;
-				font-size: 12px;
-				width: 70%;
-				line-height: 12px;
-			}
-			a.add, a.remove {
-				margin-top: 5px;
-				margin-left: 2px;
-				display: inline-block;
-				float: right;
-			}
-			border-radius: 5px;
+	.everest-forms-field-option-row-choices {
 
-			border: 1px solid transparent;
-			clear: both;
-			padding: 8px 12px;
-			cursor: all-scroll;
-			&:hover {
+		li {
+			margin-bottom: 10px;
+
+			input[type=text] {
+				margin-right: 8px;
+				vertical-align: middle;
+			}
+
+			a {
 				background: $color-white;
+				color: $color-gray-dark;
+				display: inline-block;
+				border-radius: 3px;
 				border: 1px solid $border-color;
+				text-align: center;
+				margin-right: 8px;
+				line-height: 1;
+				padding: 3px;
+				vertical-align: middle;
+
+				&:last-child {
+					margin-right: 0;
+				}
+
+				&:hover {
+					background: $button-color;
+					color: $color-white;
+					border: 1px solid $button-color;
+				}
+
+				.dashicons {
+					font-size: 16px;
+					height: 16px;
+					width: 16px;
+				}
 			}
 		}
 	}
