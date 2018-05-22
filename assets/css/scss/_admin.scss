@@ -1099,8 +1099,73 @@ body {
 			line-height: 34px;
 			border-bottom: 1px solid $color-white-darken;
 		}
+
 		.everest-forms-panel-field {
 			margin-bottom: 20px;
+		}
+
+		.everest-forms-field-option-radio {
+		
+			.evf-choices-list {
+	
+				li {
+					clear: both;
+					cursor: all-scroll;
+	
+					input.value {
+						display: none;
+					}
+	
+					input[type="text"] {
+						width: 74%;
+					}
+	
+					a.add, a.remove {
+						display: inline-block;
+					}
+				}
+			}
+		}
+			
+		.everest-forms-field-option-row-choices {
+			
+			li {
+				margin-bottom: 10px;
+					
+				input[type=text] {
+					margin-right: 8px;
+					vertical-align: middle;
+				}
+
+				a {
+					background: $color-white;
+					color: $color-gray-dark;
+					display: inline-block;
+					border-radius: 3px;
+					border: 1px solid $border-color;
+					text-align: center;
+					margin-right: 8px;
+					line-height: 1;
+					padding: 3px;
+					vertical-align: middle;
+
+					&:last-child {
+						margin-right: 0;
+					}
+
+					&:hover {
+						background: $button-color;
+						color: $color-white;
+						border: 1px solid $button-color;
+					}
+
+					.dashicons {
+						font-size: 16px;
+						height: 16px;
+						width: 16px;
+					}
+				}
+			}
 		}
 
 		.everest-forms-field-option-payment-multiple {
@@ -1118,36 +1183,7 @@ body {
 						&.value {
 							width: 25%;
 						}
-					}
-
-					a {
-						background: $color-white;
-						color: $color-gray-dark;
-						display: inline-block;
-						border-radius: 3px;
-						border: 1px solid $border-color;
-						text-align: center;
-						margin-right: 8px;
-						line-height: 1;
-						padding: 3px;
-						vertical-align: middle;
-
-						&:last-child {
-							margin-right: 0;
-						}
-
-						&:hover {
-							background: $button-color;
-							color: $color-white;
-							border: 1px solid $button-color;
-						}
-
-						.dashicons {
-							font-size: 16px;
-							height: 16px;
-							width: 16px;
-						}
-					}
+					}	
 				}
 			}
 		}
@@ -1178,41 +1214,6 @@ body {
 			text-align: center !important;
 			font-size: 12px !important;
 			box-shadow: 0 0 32px rgba(0, 0, 0, 0.15);
-		}
-	}
-
-	.evf-choices-list {
-		li {
-			input.value {
-				display: none;
-			}
-			input[type="checkbox"], input[type="radio"] {
-				float: left;
-				margin-top: 6px;
-				margin-right: 10px;
-			}
-			input[type="text"] {
-				height: 30px;
-				font-size: 12px;
-				width: 70%;
-				line-height: 12px;
-			}
-			a.add, a.remove {
-				margin-top: 5px;
-				margin-left: 2px;
-				display: inline-block;
-				float: right;
-			}
-			border-radius: 5px;
-
-			border: 1px solid transparent;
-			clear: both;
-			padding: 8px 12px;
-			cursor: all-scroll;
-			&:hover {
-				background: $color-white;
-				border: 1px solid $border-color;
-			}
 		}
 	}
 

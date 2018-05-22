@@ -414,8 +414,8 @@ abstract class EVF_Form_Fields {
 					$option_choices .= sprintf( '<input type="%s" name="form_fields[%s][choices][%s][default]" class="default" value="1" %s>', $option_type, $field['id'], $key, checked( '1', $default, false ) );
 					$option_choices .= sprintf( '<input type="text" name="form_fields[%s][choices][%s][label]" value="%s" class="label">', $field['id'], $key, esc_attr( $value['label'] ) );
 					$option_choices .= sprintf( '<input type="text" name="form_fields[%s][choices][%s][value]" value="%s" class="value">', $field['id'], $key, esc_attr( $value['value'] ) );
-					$option_choices .= '<a class="remove" href="#"><i class="dashicons dashicons-dismiss"></i></a>';
-					$option_choices .= '<a class="add" href="#"><i class="dashicons dashicons-plus-alt"></i></a>';
+					$option_choices .= '<a class="add" href="#"><i class="dashicons dashicons-plus"></i></a>';
+					$option_choices .= '<a class="remove" href="#"><i class="dashicons dashicons-minus"></i></a>';
 
 					$option_choices .= '</li>';
 				}
