@@ -102,6 +102,11 @@
 			height: 100px;
 		}
 
+		input[type="text"],
+		select {
+			min-width: 350px;
+		}
+
 		.forminp:not(.forminp-tinymce) {
 			input,
 			select,
