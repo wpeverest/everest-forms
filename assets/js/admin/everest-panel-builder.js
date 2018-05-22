@@ -408,7 +408,7 @@
 		 		field.find('.label-title .text').text(option_field.val());
 		 		break;
 		 		case 'description':
-		 		field.find('.description').text(option_field.val());
+		 		field.find('.description').html(option_field.val());
 		 		break;
 		 		case 'required':
 		 		if ( option_field.is(":checked") ) {
