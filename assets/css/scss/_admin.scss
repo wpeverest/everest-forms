@@ -1118,8 +1118,73 @@ body {
 			line-height: 34px;
 			border-bottom: 1px solid $color-white-darken;
 		}
+
 		.everest-forms-panel-field {
 			margin-bottom: 20px;
+		}
+
+		.everest-forms-field-option-radio {
+
+			.evf-choices-list {
+
+				li {
+					clear: both;
+					cursor: all-scroll;
+
+					input.value {
+						display: none;
+					}
+
+					input[type="text"] {
+						width: 74%;
+					}
+
+					a.add, a.remove {
+						display: inline-block;
+					}
+				}
+			}
+		}
+
+		.everest-forms-field-option-row-choices {
+
+			li {
+				margin-bottom: 10px;
+
+				input[type=text] {
+					margin-right: 8px;
+					vertical-align: middle;
+				}
+
+				a {
+					background: $color-white;
+					color: $color-gray-dark;
+					display: inline-block;
+					border-radius: 3px;
+					border: 1px solid $border-color;
+					text-align: center;
+					margin-right: 8px;
+					line-height: 1;
+					padding: 3px;
+					vertical-align: middle;
+
+					&:last-child {
+						margin-right: 0;
+					}
+
+					&:hover {
+						background: $button-color;
+						color: $color-white;
+						border: 1px solid $button-color;
+					}
+
+					.dashicons {
+						font-size: 16px;
+						height: 16px;
+						width: 16px;
+					}
+				}
+			}
 		}
 
 		.everest-forms-field-option-payment-multiple {
