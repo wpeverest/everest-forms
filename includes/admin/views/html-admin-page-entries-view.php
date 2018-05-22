@@ -49,7 +49,7 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 
 											// Field name.
 											echo '<tr class="everest-forms-entry-field field-name' . $field_class . '" style="' . $field_style . '"><th><strong>';
-												$value = get_form_data_by_meta_key( $form_id, $meta_key );
+												$value = evf_get_form_data_by_meta_key( $form_id, $meta_key );
 
 												if ( $value ) {
 													echo esc_html( $value );

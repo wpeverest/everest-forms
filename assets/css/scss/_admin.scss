@@ -166,8 +166,29 @@ body {
 
 			}
 
+			.everest-forms-sub-label {
+				font-weight: 400;
+				color: $color-gray-dark;
+				margin-bottom: 0;
+			}
+
 			.everest-forms-panel-sidebar-content {
 				display: flex;
+			}
+
+			.everest-forms-one-half {
+				float: left;
+				width: 49%;
+				margin-right: 2%;
+
+				&:nth-child(2) {
+					margin-right: 0;
+				}
+			}
+
+			.everest-forms-field-row {
+				margin: 0 0 10px 0;
+				position: relative;
 			}
 
 			.everest-forms-panel-sidebar {
@@ -652,18 +673,23 @@ body {
 					.evf-registered-item {
 						padding: 20px;
 						font-size: 18px;
-						text-align: left;
-						position: relative;
 
 						&.ui-draggable {
 							margin-bottom: 10px;
 						}
 
+						.evf-icon {
+							display: inline-block;
+							vertical-align: middle;
+							font-size: 24px;
+						}
+
 						.spinner {
-							position: absolute;
-							top: 50%;
-							transform: translatey(-50%);
-							right: 20px;
+							background-size: 15px 15px;
+							float: none;
+							height: 15px;
+							width: 15px;
+							margin: 0 0 5px 3px !important;
 						}
 
 						.dashicons {
@@ -688,6 +714,33 @@ body {
 							color: $color-gray-lighter;
 
 						}
+					}
+				}
+			}
+
+			.everest-forms-field-payment-single {
+
+				.format-selected-single {
+
+					.primary-input,
+					.item-price-hidden {
+						display: none;
+					}
+				}
+
+				.format-selected-user {
+
+					.item-price,
+					.item-price-hidden {
+						display: none;
+					}
+				}
+
+				.format-selected-hidden {
+
+					.item-price,
+					.primary-input {
+						display: none;
 					}
 				}
 			}
@@ -844,6 +897,11 @@ body {
 						}
 					}
 				}
+
+				label,
+				input {
+					cursor: all-scroll;
+				}
 			}
 
 			.file-uploader {
@@ -946,6 +1004,12 @@ body {
 			}
 		}
 
+		.everest-forms-field-address {
+
+			.hidden {
+			}
+		}
+
 		label {
 			font-size: 12px;
 			margin-bottom: 15px;
@@ -1038,6 +1102,55 @@ body {
 		.everest-forms-panel-field {
 			margin-bottom: 20px;
 		}
+
+		.everest-forms-field-option-payment-multiple {
+			
+			.everest-forms-field-option-row {
+				
+				li {
+					margin-bottom: 10px;
+					
+					input[type=text] {
+						width: 46%;
+						margin-right: 8px;
+						vertical-align: middle;
+
+						&.value {
+							width: 25%;
+						}
+					}
+
+					a {
+						background: $color-white;
+						color: $color-gray-dark;
+						display: inline-block;
+						border-radius: 3px;
+						border: 1px solid $border-color;
+						text-align: center;
+						margin-right: 8px;
+						line-height: 1;
+						padding: 3px;
+						vertical-align: middle;
+
+						&:last-child {
+							margin-right: 0;
+						}
+
+						&:hover {
+							background: $button-color;
+							color: $color-white;
+							border: 1px solid $button-color;
+						}
+
+						.dashicons {
+							font-size: 16px;
+							height: 16px;
+							width: 16px;
+						}
+					}
+				}
+			}
+		}
 	}
 
 	.evf-registered-item {
@@ -1053,8 +1166,8 @@ body {
 
 		.evf-icon {
 			color: inherit;
-			display: block !important;
-			font-size: 32px !important;
+			display: block;
+			font-size: 32px;
 			margin-bottom: 5px;
 		}
 

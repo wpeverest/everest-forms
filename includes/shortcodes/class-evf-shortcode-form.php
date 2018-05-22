@@ -326,6 +326,11 @@ class EVF_Shortcode_Form {
 			$attributes['field_class'][] = 'validate-' . esc_attr( $field['type'] );
 		}
 
+		// Check if there are errors.
+		if ( ! empty( evf()->task->errors[ $form_id ][ $field_id ] ) ) {
+			$attributes['input_class'][] = 'evf-error';
+		}
+
 		// This filter is deprecated, filter the properties (below) instead.
 		$attributes = apply_filters( 'evf_field_atts', $attributes, $field, $form_data );
 

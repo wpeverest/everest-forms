@@ -1201,14 +1201,16 @@ function evf_get_day_period_date( $period, $timestamp = '', $format = 'Y-m-d H:i
 	return $date;
 }
 
-function get_form_data_by_meta_key( $form_id, $meta_key ) {
+function evf_get_form_data_by_meta_key( $form_id, $meta_key ) {
 	$get_post     = get_post( $form_id );
 	$post_content = json_decode( $get_post->post_content, true ) ;
-	$form_fields  = $post_content['form_fields'];
+	$form_fields  = isset( $post_content['form_fields'] ) ? $post_content['form_fields'] : array();
 
-	foreach( $form_fields as $field ) {
-		if ( $meta_key == $field['meta-key'] ) {
-			return $field['label'];
+	if ( ! empty( $form_fields ) ) {
+		foreach( $form_fields as $field ) {
+			if ( $meta_key == $field['meta-key'] ) {
+				return $field['label'];
+			}
 		}
 	}
 
