@@ -79,7 +79,7 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 
 == Changelog ==
 
-= 1.1.6 - 24-05-2018 =
+= 1.1.6 - 23-05-2018 =
 * Fix - Appending HTMl instead of text for preview description.
 * GDPR - If user details are disabled globally discard the IP address and User Agent.
 
