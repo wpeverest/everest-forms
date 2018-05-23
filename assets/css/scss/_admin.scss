@@ -1125,13 +1125,12 @@ body {
 		.everest-forms-field-option-row-choices {
 
 			li {
-				margin-bottom: 10px;
 				border: 1px solid transparent;
 				border-radius: 4px;
 				clear: both;
 				cursor: all-scroll;
-				padding: 10px;
-				transition: all 0.35s ease 0s;
+				margin-bottom: 2px;
+				padding: 5px 10px;
 
 				&:hover {
 					background: $color-white;
@@ -1180,7 +1179,6 @@ body {
 			.everest-forms-field-option-row {
 
 				li {
-					margin-bottom: 5px;
 
 					input[type=text] {
 						width: 46%;
@@ -1221,47 +1219,6 @@ body {
 			text-align: center !important;
 			font-size: 12px !important;
 			box-shadow: 0 0 32px rgba(0, 0, 0, 0.15);
-		}
-	}
-
-	.everest-forms-field-option-row-choices {
-
-		li {
-			margin-bottom: 10px;
-
-			input[type=text] {
-				margin-right: 8px;
-				vertical-align: middle;
-			}
-
-			a {
-				background: $color-white;
-				color: $color-gray-dark;
-				display: inline-block;
-				border-radius: 3px;
-				border: 1px solid $border-color;
-				text-align: center;
-				margin-right: 8px;
-				line-height: 1;
-				padding: 3px;
-				vertical-align: middle;
-
-				&:last-child {
-					margin-right: 0;
-				}
-
-				&:hover {
-					background: $button-color;
-					color: $color-white;
-					border: 1px solid $button-color;
-				}
-
-				.dashicons {
-					font-size: 16px;
-					height: 16px;
-					width: 16px;
-				}
-			}
 		}
 	}
 
