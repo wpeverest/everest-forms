@@ -56,14 +56,6 @@ if ( ! class_exists( 'EVF_Settings_General', false ) ) :
 						'default'  => __('Submit','everest-forms'),
 					),
 					array(
-						'title'    => __( 'Disable Form Entries', 'everest-forms' ),
-						'desc'     => '',
-						'id'       => 'everest_forms_disable_form_entries',
-						'type'     => 'checkbox',
-						'desc_tip' => true,
-						'default'  => 'no',
-					),
-					array(
 						'title'    => __( 'Successful Form Submission Message', 'everest-forms' ),
 						'desc'     => __( 'Enter the text message after successful form submission.', 'everest-forms' ),
 						'id'       => 'everest_forms_successful_form_submission_message',
@@ -72,12 +64,24 @@ if ( ! class_exists( 'EVF_Settings_General', false ) ) :
 						'css'      => 'min-width: 350px; min-height: 200px;',
 						'default'  => __('Thanks for contacting us! We will be in touch with you shortly.','everest-forms'),
 					),
-
+					array(
+						'title'    => __( 'Disable Form Entries', 'everest-forms' ),
+						'desc'     => __( 'Disable storing entry information in WordPress.', 'everest-forms' ),
+						'id'       => 'everest_forms_disable_form_entries',
+						'type'     => 'checkbox',
+						'default'  => 'no',
+					),
+					array(
+						'title'    => __( 'Disable User Details', 'everest-forms' ),
+						'desc'     => __( 'Disable storing the IP address and User Agent on all forms.', 'everest-forms' ),
+						'id'       => 'everest_forms_disable_user_details',
+						'default'  => 'no',
+						'type'     => 'checkbox',
+					),
 					array(
 						'type' => 'sectionend',
 						'id'   => 'general_options',
 					),
-
 				)
 			);
 			return apply_filters( 'everest_forms_get_settings_' . $this->id, $settings );
