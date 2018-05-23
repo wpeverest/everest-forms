@@ -419,11 +419,9 @@ body {
 					}
 				}
 			}
-
-			.everest-forms-field-option-row {
-				input[type=text] {
-					width: 99%;
-				}
+			
+			input[type=text] {
+				width: 99%;
 			}
 		}
 
@@ -1104,23 +1102,22 @@ body {
 			margin-bottom: 20px;
 		}
 
-		.everest-forms-field-option-radio {
+		
 
-			.evf-choices-list {
+		.evf-choices-list {
 
-				li {
+			li {
 
-					input.value {
-						display: none;
-					}
+				input.value {
+					display: none;
+				}
 
-					input[type="text"] {
-						width: 72%;
-					}
+				input[type="text"] {
+					width: 72%;
+				}
 
-					a.add, a.remove {
-						display: inline-block;
-					}
+				a.add, a.remove {
+					display: inline-block;
 				}
 			}
 		}
@@ -1177,7 +1174,7 @@ body {
 				}
 			}
 		}
-
+		
 		.everest-forms-field-option-payment-multiple {
 
 			.everest-forms-field-option-row {
