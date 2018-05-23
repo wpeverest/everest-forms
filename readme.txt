@@ -79,6 +79,9 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 
 == Changelog ==
 
+= 1.1.6 - 24-05-2018 =
+* Fix - Appending HTMl instead of text for preview description.
+
 = 1.1.5.1 - 04-05-2018 =
 * Fix - reCaptcha displaying after every inserted row issue 
 
