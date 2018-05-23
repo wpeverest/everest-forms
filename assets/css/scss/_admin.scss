@@ -425,25 +425,6 @@ body {
 					width: 99%;
 				}
 			}
-
-
-			.evf-choices-list {
-
-				li {
-
-					input.value {
-						display: none;
-					}
-
-					input[type="text"] {
-						width: 74%;
-					}
-
-					border: 1px solid transparent;
-					clear: both;
-					cursor: all-scroll;
-				}
-			}
 		}
 
 		.everest-forms-panel-content-wrap {
@@ -1128,15 +1109,13 @@ body {
 			.evf-choices-list {
 
 				li {
-					clear: both;
-					cursor: all-scroll;
 
 					input.value {
 						display: none;
 					}
 
 					input[type="text"] {
-						width: 74%;
+						width: 72%;
 					}
 
 					a.add, a.remove {
@@ -1150,8 +1129,20 @@ body {
 
 			li {
 				margin-bottom: 10px;
+				border: 1px solid transparent;
+				border-radius: 4px;
+				clear: both;
+				cursor: all-scroll;
+				padding: 10px;
+				transition: all 0.35s ease 0s;
+
+				&:hover {
+					background: $color-white;
+					border: 1px solid $border-color;
+				}
 
 				input[type=text] {
+					height: 30px;
 					margin-right: 8px;
 					vertical-align: middle;
 				}
@@ -1192,7 +1183,7 @@ body {
 			.everest-forms-field-option-row {
 
 				li {
-					margin-bottom: 10px;
+					margin-bottom: 5px;
 
 					input[type=text] {
 						width: 46%;
@@ -1200,7 +1191,7 @@ body {
 						vertical-align: middle;
 
 						&.value {
-							width: 25%;
+							width: 23%;
 						}
 					}
 				}
