@@ -60,8 +60,8 @@ if ( ! class_exists( 'EVF_Settings_General', false ) ) :
 						'desc'     => '',
 						'id'       => 'everest_forms_disable_form_entries',
 						'type'     => 'checkbox',
-						'desc_tip' => true,		
-						'default'  => 'no',				
+						'desc_tip' => true,
+						'default'  => 'no',
 					),
 					array(
 						'title'    => __( 'Successful Form Submission Message', 'everest-forms' ),

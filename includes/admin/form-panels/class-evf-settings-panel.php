@@ -85,16 +85,6 @@ class EVF_Settings_Panel extends EVF_Admin_Form_Panel {
 			)
 		);
 		everest_forms_panel_field(
-			'checkbox',
-			'settings',
-			'recaptcha_support',
-			$this->form_data,
-			sprintf( __( 'Enable %1$s %2$s reCaptcha %3$s support', 'everest-forms' ), '<a title="', 'Please make sure the site key and secret are not empty in setting page." href="' . admin_url() . 'admin.php?page=evf-settings&tab=recaptcha" target="_blank">', '</a>' ),
-			array(
-				'default' => '0',
-			)
-		);
-		everest_forms_panel_field(
 			'textarea',
 			'settings',
 			'successful_form_submission_message',
@@ -164,20 +154,6 @@ class EVF_Settings_Panel extends EVF_Admin_Form_Panel {
 				'default' => isset( $this->form->form_class ) ? $this->form->form_class : '',
 			)
 		);
-
-		$disable = get_option( 'everest_forms_disable_form_entries' );
-		$disable = $disable === 'yes' ? 1 : 0;
-
-		everest_forms_panel_field(
-			'checkbox',
-			'settings',
-			'disabled_entries',
-			$this->form_data,
-			__( 'Disable Form Entries', 'everest-forms' ),
-			array(
-				'default' => isset( $this->form_setting['disabled_entries'] ) ? $this->form_setting['disabled_entries'] : $disable,
-			)
-		);
 		everest_forms_panel_field(
 			'text',
 			'settings',
@@ -188,6 +164,30 @@ class EVF_Settings_Panel extends EVF_Admin_Form_Panel {
 				'default' => isset( $this->form_setting['submit_button_text'] ) ? $this->form_setting['submit_button_text'] : get_option( 'everest_forms_form_submit_button_label', __( 'Submit', 'everest-forms' ) ),
 			)
 		);
+
+		everest_forms_panel_field(
+			'checkbox',
+			'settings',
+			'recaptcha_support',
+			$this->form_data,
+			sprintf( __( 'Enable %1$s %2$s reCaptcha %3$s support', 'everest-forms' ), '<a title="', 'Please make sure the site key and secret are not empty in setting page." href="' . admin_url() . 'admin.php?page=evf-settings&tab=recaptcha" target="_blank">', '</a>' ),
+			array(
+				'default' => '0',
+			)
+		);
+
+		$disable = 'yes' === get_option( 'everest_forms_disable_form_entries' ) ? 1 : 0;
+		everest_forms_panel_field(
+			'checkbox',
+			'settings',
+			'disabled_entries',
+			$this->form_data,
+			__( 'Disable storing entry information', 'everest-forms' ),
+			array(
+				'default' => isset( $this->form_setting['disabled_entries'] ) ? $this->form_setting['disabled_entries'] : $disable,
+			)
+		);
+
 		do_action( 'everest_forms_general_settings', $this );
 
 		echo '</div>';
