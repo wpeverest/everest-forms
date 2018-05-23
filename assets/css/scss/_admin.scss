@@ -1165,6 +1165,14 @@ body {
 						border: 1px solid $button-color;
 					}
 
+					&.remove {
+
+						&:hover {
+							background: $color-alert-danger;
+							border: 1px solid $color-alert-danger;
+						}
+					}
+
 					.dashicons {
 						font-size: 16px;
 						height: 16px;
