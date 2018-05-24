@@ -164,7 +164,7 @@ class EVF_Emails {
 	 * @return string The email from address.
 	 */
 	public function get_from_address() {
-		$this->from_address = isset ( $this->from_address ) ? $this->from_address : get_option( 'from_email' );
+		$this->from_address = isset ( $this->from_address ) ? $this->from_address : get_option( 'admin_email' );
 		return apply_filters( 'everest_forms_email_from_address', $this->from_address, $this );
 	}
 
