@@ -15,6 +15,12 @@
 					$('.everest-forms-panel-content').find('.evf-panel-content-section').first().addClass('active');
 				}
 			});
+			$( document ).ready( function( $ ) {
+				if ( ! $( 'evf-panel-payment-button a' ).hasClass('active') ) {
+					$('#everest-forms-panel-payment').find('.everest-forms-panel-sidebar a').first().addClass('active');
+					$('.everest-forms-panel-content').find('.evf-panel-content-section').first().addClass('active');
+				}
+			});
 
 			$( document.body )
 				.on( 'click', 'a.help_tip, a.everets-forms-help-tip', this.preventTipTipClick )
@@ -124,6 +130,7 @@
 			EVFPanelBuilder.bindRemoveRow();
 			EVFPanelBuilder.bindFormSettings();
 			EVFPanelBuilder.bindFormMarketing();
+			EVFPanelBuilder.bindFormPayment();
 			EVFPanelBuilder.choicesInit();
 			EVFPanelBuilder.choicesUpdate();
 
@@ -314,6 +321,17 @@
 		 	});
 
 		 	$('.evf-setting-panel').eq(0).trigger('click');
+		 },
+		 bindFormPayment: function () {
+			$('body').on('click', '.evf-payment-panel', function ( e ) {
+				var data_setting_section = $(this).attr('data-section');
+				$('.evf-payment-panel').removeClass('active');
+				$('.evf-panel-content-section').removeClass('active');
+				$(this).addClass('active');
+				$('.evf-panel-content-section-' + data_setting_section ).addClass('active');
+				e.preventDefault();
+			});
+			$('.evf-setting-panel').eq(0).trigger('click');
 		 },
 		 removeRow: function ( row ) {
 		 	$.each(row.find('.everest-forms-field'), function () {
@@ -712,7 +730,7 @@
 				$( '.everest-forms-add-fields' ).show();
 			}
 
-			if ( 'marketing' === panel ) {
+			if ( 'marketing' === panel || 'payments' === panel  ) {
 				if ( ! $panel.find( '.everest-forms-panel-sidebar a' ).hasClass( 'active' ) ) {
 					$panel.find( '.everest-forms-panel-sidebar a' ).first().addClass( 'active' );
 				}
@@ -855,8 +873,16 @@
 				if ( grid_id > max_number_of_grid ) {
 					return;
 				}
-				var grid_node = $('<div class="evf-admin-grid evf-grid-' + grid_id + ' ui-sortable" />');
+
+				var grid_node = $('<div class="evf-admin-grid evf-grid-' + grid_id + ' ui-sortable evf-empty-grid" />');
 				var grids = $('<div/>');
+
+				if( $('.everest-forms-panel .evf-admin-grid').children().length > 0){
+					if($('.everest-forms-panel .evf-admin-grid').hasClass('evf-empty-grid') ){
+						setTimeout(function(){ $('.everest-forms-panel').find('.evf-admin-grid').removeClass('evf-empty-grid'); }, 10);
+
+					}
+				}
 
 
 				$.each($this_single_row.find('.evf-admin-grid'), function () {
