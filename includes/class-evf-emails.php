@@ -152,7 +152,7 @@ class EVF_Emails {
 	 * @return string The email from name
 	 */
 	public function get_from_name() {
-		$this->from_name = isset ( $this->from_name ) ? $this->from_name : evf_sender_name();
+		$this->from_name = isset ( $this->from_name ) ? $this->from_name : esc_attr( get_bloginfo( 'name', 'display' ) );
 		return apply_filters( 'everest_forms_email_from_name', wp_specialchars_decode( $this->from_name ), $this );
 	}
 
@@ -164,7 +164,7 @@ class EVF_Emails {
 	 * @return string The email from address.
 	 */
 	public function get_from_address() {
-		$this->from_address = isset ( $this->from_address ) ? $this->from_address : evf_sender_address();
+		$this->from_address = isset ( $this->from_address ) ? $this->from_address : get_option( 'from_email' );
 		return apply_filters( 'everest_forms_email_from_address', $this->from_address, $this );
 	}
 

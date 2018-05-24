@@ -66,8 +66,8 @@ $form_template['contact'] = array(
 		'submit_button_text'                 => get_option( 'everest_forms_form_submit_button_label', __( 'Submit', 'everest-forms' ) ),
 		'email' => array(
 			'evf_to_email'      => get_option( 'admin_email' ),
-			'evf_from_name'     => evf_sender_name(),
-			'evf_from_email'    => evf_sender_address(),
+			'evf_from_name'     => esc_attr( get_bloginfo( 'name', 'display' ) ),
+			'evf_from_email'    => get_option( 'admin_email' ),
 			'evf_email_subject' => __( 'New Form Entry', 'everest-forms' ),
 			'evf_email_message' => '{all_fields}',
 		),

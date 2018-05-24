@@ -213,7 +213,7 @@ class EVF_Settings_Panel extends EVF_Admin_Form_Panel {
 			$this->form_data,
 			__( 'From Name', 'everest-forms' ),
 			array(
-				'default' => isset( $this->form_setting['email']['evf_from_name'] ) ? $this->form_setting['email']['evf_from_name'] : evf_sender_name(),
+				'default' => isset( $this->form_setting['email']['evf_from_name'] ) ? $this->form_setting['email']['evf_from_name'] : esc_attr( get_bloginfo( 'name', 'display' ) ),
 			)
 		);
 		everest_forms_panel_field(
@@ -223,7 +223,7 @@ class EVF_Settings_Panel extends EVF_Admin_Form_Panel {
 			$this->form_data,
 			__( 'From Address', 'everest-forms' ),
 			array(
-				'default' => isset( $this->form_setting['email']['evf_from_email'] ) ? $this->form_setting['email']['evf_from_email'] : evf_sender_address(),
+				'default' => isset( $this->form_setting['email']['evf_from_email'] ) ? $this->form_setting['email']['evf_from_email'] : get_option( 'admin_email' ),
 			)
 		);
 		everest_forms_panel_field(
