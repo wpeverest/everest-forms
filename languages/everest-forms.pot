@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Everest Forms 1.1.6\n"
 "Report-Msgid-Bugs-To: https://github.com/wpeverest/everest-forms/issues\n"
-"POT-Creation-Date: 2018-05-23 11:16:32+00:00\n"
+"POT-Creation-Date: 2018-05-24 06:25:32+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -137,7 +137,7 @@ msgstr ""
 #: includes/admin/class-evf-admin-menus.php:380
 #: includes/admin/form-panels/class-evf-fields-panel.php:200
 #: includes/admin/form-panels/class-evf-settings-panel.php:29
-#: includes/class-evf-install.php:560
+#: includes/class-evf-install.php:564
 msgid "Settings"
 msgstr ""
 
@@ -482,7 +482,7 @@ msgstr ""
 #: includes/admin/class-evf-admin-menus.php:224
 #: includes/admin/class-evf-admin-menus.php:256
 #: includes/admin/class-evf-admin-notices.php:107
-#: includes/admin/class-evf-admin-settings.php:71
+#: includes/admin/class-evf-admin-settings.php:70
 #: includes/admin/class-evf-admin-status.php:154
 msgid "Action failed. Please refresh the page and retry."
 msgstr ""
@@ -513,25 +513,25 @@ msgstr ""
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:78
+#: includes/admin/class-evf-admin-settings.php:77
 msgid "Your settings have been saved."
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:134
+#: includes/admin/class-evf-admin-settings.php:133
 msgid "The changes you made will be lost if you navigate away from this page."
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:508
+#: includes/admin/class-evf-admin-settings.php:507
 msgid ""
 "The settings of this image size have been disabled because its values are "
 "being overwritten by a filter."
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:517
+#: includes/admin/class-evf-admin-settings.php:516
 msgid "Hard crop?"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:544
+#: includes/admin/class-evf-admin-settings.php:543
 msgid "Select a page&hellip;"
 msgstr ""
 
@@ -583,8 +583,7 @@ msgid "General"
 msgstr ""
 
 #: includes/admin/form-panels/class-evf-settings-panel.php:55
-#: includes/admin/form-panels/class-evf-settings-panel.php:200
-#: includes/admin/settings/class-evf-settings-email.php:28
+#: includes/admin/form-panels/class-evf-settings-panel.php:197
 #: includes/admin/settings/class-evf-settings-validation.php:68
 #: includes/form-fields/class-evf-field-email.php:24
 msgid "Email"
@@ -637,113 +636,58 @@ msgid "Submit button text"
 msgstr ""
 
 #: includes/admin/form-panels/class-evf-settings-panel.php:164
-#: includes/admin/settings/class-evf-settings-general.php:56
 #: includes/shortcodes/class-evf-shortcode-form.php:39
 #: includes/templates/contact.php:66
 msgid "Submit"
 msgstr ""
 
-#: includes/admin/form-panels/class-evf-settings-panel.php:173
+#: includes/admin/form-panels/class-evf-settings-panel.php:172
 msgid "Enable %1$s %2$s reCaptcha %3$s support"
 msgstr ""
 
-#: includes/admin/form-panels/class-evf-settings-panel.php:185
+#: includes/admin/form-panels/class-evf-settings-panel.php:182
 msgid "Disable storing entry information"
 msgstr ""
 
-#: includes/admin/form-panels/class-evf-settings-panel.php:207
-#: includes/admin/settings/class-evf-settings-email.php:50
+#: includes/admin/form-panels/class-evf-settings-panel.php:204
 msgid "To Address"
 msgstr ""
 
-#: includes/admin/form-panels/class-evf-settings-panel.php:217
-#: includes/admin/settings/class-evf-settings-email.php:59
+#: includes/admin/form-panels/class-evf-settings-panel.php:214
 msgid "From Name"
 msgstr ""
 
-#: includes/admin/form-panels/class-evf-settings-panel.php:227
-#: includes/admin/settings/class-evf-settings-email.php:68
+#: includes/admin/form-panels/class-evf-settings-panel.php:224
 msgid "From Address"
 msgstr ""
 
-#: includes/admin/form-panels/class-evf-settings-panel.php:237
-#: includes/admin/settings/class-evf-settings-email.php:77
-#: includes/admin/settings/class-evf-settings-email.php:78
+#: includes/admin/form-panels/class-evf-settings-panel.php:234
 #: includes/class-evf-forms-feature.php:91
 msgid "Email Subject"
 msgstr ""
 
-#: includes/admin/form-panels/class-evf-settings-panel.php:239
+#: includes/admin/form-panels/class-evf-settings-panel.php:236
 #: includes/templates/contact.php:71
 msgid "New Form Entry"
 msgstr ""
 
-#: includes/admin/form-panels/class-evf-settings-panel.php:247
-#: includes/admin/settings/class-evf-settings-email.php:86
-#: includes/admin/settings/class-evf-settings-email.php:87
+#: includes/admin/form-panels/class-evf-settings-panel.php:244
 msgid "Email Message"
 msgstr ""
 
-#: includes/admin/form-panels/class-evf-settings-panel.php:249
+#: includes/admin/form-panels/class-evf-settings-panel.php:246
 msgid "{all_fields}"
 msgstr ""
 
-#: includes/admin/settings/class-evf-settings-email.php:44
-msgid "Email Settings"
-msgstr ""
-
-#: includes/admin/settings/class-evf-settings-email.php:51
-msgid "Enter the email address to send email"
-msgstr ""
-
-#: includes/admin/settings/class-evf-settings-email.php:60
-msgid "Email senders name"
-msgstr ""
-
-#: includes/admin/settings/class-evf-settings-email.php:69
-msgid "Email senders address"
-msgstr ""
-
-#: includes/admin/settings/class-evf-settings-general.php:44
+#: includes/admin/settings/class-evf-settings-general.php:43
 msgid "General Options"
 msgstr ""
 
-#: includes/admin/settings/class-evf-settings-general.php:50
-msgid "Form Submit Button Label"
-msgstr ""
-
-#: includes/admin/settings/class-evf-settings-general.php:51
-msgid "Button label to register"
-msgstr ""
-
-#: includes/admin/settings/class-evf-settings-general.php:59
-msgid "Successful Form Submission Message"
-msgstr ""
-
-#: includes/admin/settings/class-evf-settings-general.php:60
-msgid "Enter the text message after successful form submission."
-msgstr ""
-
-#: includes/admin/settings/class-evf-settings-general.php:65
-#: includes/class-evf-form-task.php:187
-#: includes/shortcodes/class-evf-shortcode-form.php:142
-#: includes/templates/contact.php:60
-msgid "Thanks for contacting us! We will be in touch with you shortly."
-msgstr ""
-
-#: includes/admin/settings/class-evf-settings-general.php:68
-msgid "Disable Form Entries"
-msgstr ""
-
-#: includes/admin/settings/class-evf-settings-general.php:69
-msgid "Disable storing entry information in WordPress."
-msgstr ""
-
-#: includes/admin/settings/class-evf-settings-general.php:75
+#: includes/admin/settings/class-evf-settings-general.php:49
 msgid "Disable User Details"
 msgstr ""
 
-#: includes/admin/settings/class-evf-settings-general.php:76
+#: includes/admin/settings/class-evf-settings-general.php:50
 msgid "Disable storing the IP address and User Agent on all forms."
 msgstr ""
 
@@ -1032,6 +976,12 @@ msgstr ""
 msgid "Form has not been submitted, please see the errors below."
 msgstr ""
 
+#: includes/class-evf-form-task.php:187
+#: includes/shortcodes/class-evf-shortcode-form.php:142
+#: includes/templates/contact.php:60
+msgid "Thanks for contacting us! We will be in touch with you shortly."
+msgstr ""
+
 #: includes/class-evf-form-task.php:428
 msgid "No form ID was found."
 msgstr ""
@@ -1057,27 +1007,27 @@ msgstr ""
 msgid "Payments"
 msgstr ""
 
-#: includes/class-evf-install.php:255
+#: includes/class-evf-install.php:259
 msgid "Monthly"
 msgstr ""
 
-#: includes/class-evf-install.php:560
+#: includes/class-evf-install.php:564
 msgid "View Everest Forms Settings"
 msgstr ""
 
-#: includes/class-evf-install.php:576
+#: includes/class-evf-install.php:580
 msgid "View Everest Forms documentation"
 msgstr ""
 
-#: includes/class-evf-install.php:576
+#: includes/class-evf-install.php:580
 msgid "Docs"
 msgstr ""
 
-#: includes/class-evf-install.php:577
+#: includes/class-evf-install.php:581
 msgid "Visit free customer support"
 msgstr ""
 
-#: includes/class-evf-install.php:577
+#: includes/class-evf-install.php:581
 msgid "Free support"
 msgstr ""
 

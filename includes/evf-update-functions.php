@@ -88,7 +88,6 @@ function evf_update_116_delete_options() {
 	}
 }
 
-
 /**
  * Update DB Version.
  */
