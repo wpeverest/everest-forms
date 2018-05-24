@@ -35,6 +35,10 @@ class EVF_Install {
 			'evf_update_110_update_forms',
 			'evf_update_110_db_version',
 		),
+		'1.1.6' => array(
+			'evf_update_116_delete_options',
+			'evf_update_116_db_version',
+		),
 	);
 
 	/**
