@@ -111,7 +111,7 @@ body {
 				line-height: 26px;
 				border-radius: 3px 0 0 3px;
 				padding: 3px 10px;
-				width: calc(100% - 34px);
+				width: 200px;
 				margin: 0;
 			}
 
@@ -156,6 +156,12 @@ body {
 	}
 
 	.evf-tab-content {
+
+		h5 {
+			margin: 0 auto 20px auto;
+			font-size: 24px;
+			line-height: normal;
+		}
 
 		.everest-forms-panel {
 			width: 100%;
