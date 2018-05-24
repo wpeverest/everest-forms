@@ -409,7 +409,7 @@ class EVF_Form_Task {
 		$user_agent = $browser['name'] . '/' . $browser['platform'];
 
 		// GDPR enhancements - If user details are disabled globally discard the IP and UA.
-		if ( get_option( 'everest_forms_disable_user_details', false ) ) {
+		if ( 'yes' === get_option( 'everest_forms_disable_user_details' ) ) {
 			$user_agent = '';
 			$user_ip    = '';
 		}
