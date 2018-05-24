@@ -134,3 +134,17 @@ function evf_deprecated_argument( $argument, $version, $message = null ) {
 	}
 	// @codingStandardsIgnoreEnd
 }
+
+/**
+ * @deprecated 1.1.6
+ */
+function evf_sender_name() {
+	evf_deprecated_function( 'evf_sender_name', '1.1.6' );
+}
+
+/**
+ * @deprecated 1.1.6
+ */
+function evf_sender_address() {
+	evf_deprecated_function( 'evf_sender_address', '1.1.6' );
+}
