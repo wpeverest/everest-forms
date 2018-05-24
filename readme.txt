@@ -82,7 +82,7 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 = 1.1.6 - 24-05-2018 =
 * Fix - Appending HTMl instead of text for preview description.
 * GDPR - If user details are disabled globally discard the IP address and User Agent.
-* Deprecated - Unnecessary general and email from global settings.
+* Deprecated - Unnecessary general and email settings from global.
 
 = 1.1.5.1 - 04-05-2018 =
 * Fix - reCaptcha displaying after every inserted row issue 
