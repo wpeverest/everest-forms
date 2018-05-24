@@ -52,7 +52,6 @@ class EVF_Admin_Settings {
 
 			$settings[] = include( 'settings/class-evf-settings-general.php' );
 			$settings[] = include( 'settings/class-evf-settings-recaptcha.php' );
-			$settings[] = include( 'settings/class-evf-settings-email.php' );
 			$settings[] = include( 'settings/class-evf-settings-validation.php' );
 
 			self::$settings = apply_filters( 'everest_forms_get_settings_pages', $settings );

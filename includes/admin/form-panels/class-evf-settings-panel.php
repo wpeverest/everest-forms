@@ -206,7 +206,7 @@ class EVF_Settings_Panel extends EVF_Admin_Form_Panel {
 			$this->form_data,
 			__( 'To Address', 'everest-forms' ),
 			array(
-				'default' => isset( $this->form_setting['email']['evf_to_email'] ) ? $this->form_setting['email']['evf_to_email'] : get_option( 'evf_to_email', get_option( 'admin_email' ) ),
+				'default' => isset( $this->form_setting['email']['evf_to_email'] ) ? $this->form_setting['email']['evf_to_email'] : get_option( 'admin_email' ),
 			)
 		);
 		everest_forms_panel_field(
@@ -216,7 +216,7 @@ class EVF_Settings_Panel extends EVF_Admin_Form_Panel {
 			$this->form_data,
 			__( 'From Name', 'everest-forms' ),
 			array(
-				'default' => isset( $this->form_setting['email']['evf_from_name'] ) ? $this->form_setting['email']['evf_from_name'] : get_option( 'evf_from_name', evf_sender_name() ),
+				'default' => isset( $this->form_setting['email']['evf_from_name'] ) ? $this->form_setting['email']['evf_from_name'] : evf_sender_name(),
 			)
 		);
 		everest_forms_panel_field(
@@ -226,7 +226,7 @@ class EVF_Settings_Panel extends EVF_Admin_Form_Panel {
 			$this->form_data,
 			__( 'From Address', 'everest-forms' ),
 			array(
-				'default' => isset( $this->form_setting['email']['evf_from_email'] ) ? $this->form_setting['email']['evf_from_email'] : get_option( 'evf_from_address', evf_sender_address() ),
+				'default' => isset( $this->form_setting['email']['evf_from_email'] ) ? $this->form_setting['email']['evf_from_email'] : evf_sender_address(),
 			)
 		);
 		everest_forms_panel_field(
@@ -236,7 +236,7 @@ class EVF_Settings_Panel extends EVF_Admin_Form_Panel {
 			$this->form_data,
 			__( 'Email Subject', 'everest-forms' ),
 			array(
-				'default' => isset( $this->form_setting['email']['evf_email_subject'] ) ? $this->form_setting['email']['evf_email_subject'] : get_option( 'evf_email_subject',  __( 'New Form Entry', 'everest-forms' ) ),
+				'default' => isset( $this->form_setting['email']['evf_email_subject'] ) ? $this->form_setting['email']['evf_email_subject'] : __( 'New Form Entry', 'everest-forms' ),
 			)
 		);
 		everest_forms_panel_field(
@@ -246,7 +246,7 @@ class EVF_Settings_Panel extends EVF_Admin_Form_Panel {
 			$this->form_data,
 			__( 'Email Message', 'everest-forms' ),
 			array(
-				'default' => isset( $this->form_setting['email']['evf_email_message'] ) ? $this->form_setting['email']['evf_email_message'] :  get_option( 'evf_email_message', __( '{all_fields}', 'everest-forms' ) ),
+				'default' => isset( $this->form_setting['email']['evf_email_message'] ) ? $this->form_setting['email']['evf_email_message'] : __( '{all_fields}', 'everest-forms' ),
 			)
 		);
 		do_action( 'everest_forms_email_settings', $this );
