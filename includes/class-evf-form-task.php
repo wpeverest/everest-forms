@@ -347,7 +347,7 @@ class EVF_Form_Task {
 		$email = array();
 
 		$email['evf_from_email']    = ! empty( $email_notifications['evf_from_email'] ) ? $email_notifications['evf_from_email'] : get_option( 'admin_email' );
-		$email['evf_from_name']     = ! empty( $email_notifications['evf_from_name'] ) ? $email_notifications['evf_from_name'] : esc_attr( get_bloginfo( 'name', 'display' ) );
+		$email['evf_from_name']     = ! empty( $email_notifications['evf_from_name'] ) ? $email_notifications['evf_from_name'] : get_bloginfo( 'name', 'display' );
 		$email['evf_email_header']  = ! empty( $email_notifications['evf_email_header'] ) ? $email_notifications['evf_email_header'] : '';
 		$email['evf_email_subject'] = ! empty( $email_notifications['evf_email_subject'] ) ? $email_notifications['evf_email_subject'] : sprintf( _x( 'New %s Entry', 'Form name', 'everest-forms' ), $form_data['settings']['form_title'] );
 		$email['evf_to_email']      = explode( ',', apply_filters( 'everest_forms_process_smart_tags', $email_notifications['evf_to_email'], $form_data, $fields, $this->entry_id ) );

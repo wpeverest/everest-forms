@@ -152,7 +152,7 @@ class EVF_Emails {
 	 * @return string The email from name
 	 */
 	public function get_from_name() {
-		$this->from_name = isset ( $this->from_name ) ? $this->from_name : esc_attr( get_bloginfo( 'name', 'display' ) );
+		$this->from_name = isset ( $this->from_name ) ? $this->from_name : get_bloginfo( 'name', 'display' );
 		return apply_filters( 'everest_forms_email_from_name', wp_specialchars_decode( $this->from_name ), $this );
 	}
 
