@@ -39,7 +39,6 @@ if ( ! class_exists( 'EVF_Settings_General', false ) ) :
 
 			$settings = apply_filters(
 				'everest_forms_general_settings', array(
-
 					array(
 						'title' => __( 'General Options', 'everest-forms' ),
 						'type'  => 'title',
