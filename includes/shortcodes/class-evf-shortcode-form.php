@@ -248,6 +248,11 @@ class EVF_Shortcode_Form {
 		echo '</div>';
 	}
 
+	/**
+	 * Google reCAPTCHA output if configured.
+	 *
+	 * @param array $form_data
+	 */
 	public static function process_recaptcha( $form_data ){
 		$site_key   = get_option( 'evf_recaptcha_site_key', '' );
 		$secret_key = get_option( 'evf_recaptcha_site_secret', '' );
