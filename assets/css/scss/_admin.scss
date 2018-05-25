@@ -438,6 +438,10 @@ body {
 					float: left;
 					margin-right: 2%;
 
+					input {
+						width: 99%;
+					}
+
 					label {
 						font-weight: 400;
 					}
@@ -502,6 +506,10 @@ body {
 				transition: 0.5s border, 0.5s background-color;
 				&:last-child {
 					margin-bottom: 10px;
+				}
+
+				&.ui-sortable-handle {
+					cursor: all-scroll;
 				}
 
 				.evf-toggle-row {
