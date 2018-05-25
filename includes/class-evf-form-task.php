@@ -80,7 +80,7 @@ class EVF_Form_Task {
 
 			// Validate form is real and active (published).
 			if ( ! $form || 'publish' !== $form->post_status ) {
-				evf_add_notice( __('Invalid form. Please check again.', 'everest-forms') ,'error');
+				evf_add_notice( __( 'Invalid form. Please check again.', 'everest-forms' ), 'error' );
 				return;
 			}
 
@@ -115,7 +115,8 @@ class EVF_Form_Task {
 					$data  = wp_remote_get( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $_POST['g-recaptcha-response'] );
 					$data  = json_decode( wp_remote_retrieve_body( $data ) );
 					if ( empty( $data->success ) ) {
-						$this->errors[ $form_id ]['recaptcha'] = esc_html__( 'Incorrect reCAPTCHA, please try again.', 'everest-forms' );
+						evf_add_notice( et_option( 'evf_recaptcha_validation', __( 'Incorrect reCAPTCHA, please try again.', 'everest-forms' ) ), 'error' );
+						return;
 					}
 				} else {
 					$this->errors[ $form_id ]['recaptcha'] = esc_html__( 'reCAPTCHA is required.', 'everest-forms' );
