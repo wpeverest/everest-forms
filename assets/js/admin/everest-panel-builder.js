@@ -753,10 +753,10 @@
 			var field_type = field.attr('data-field-type');
 			field.css({
 				'width': '100%',
-				'left': '0',
+				'left': '0'
 			});
 
-			field.append('<i class="spinner is-active" style="margin: 0;padding: 0;"></i>');
+			field.append( '<i class="spinner is-active" style="margin: 0;padding: 0;"></i>' );
 
 			var data = {
 				action: 'everest_forms_new_field_' + field_type,
@@ -764,25 +764,26 @@
 				field_type: field_type,
 				form_id: evf_data.form_id
 			};
+
 			$.ajax({
 				url: evf_data.ajax_url,
 				data: data,
 				type: 'POST',
 				beforeSend: function () {
-
+					$( document.body ).trigger( 'init_fields_toogle' );
 				},
-				success: function ( response ) {
+				success: function( response ) {
 					var field_preview = response.data.preview;
 					var field_options = response.data.options;
 					var form_field_id = response.data.form_field_id;
-					$('#everest-forms-field-id').val(form_field_id);
-					$('.everest-forms-field-options').find('.no-fields').hide();
-					$('.everest-forms-field-options').append(field_options);
-					field.after(field_preview);
+					$( '#everest-forms-field-id' ).val( form_field_id );
+					$( '.everest-forms-field-options' ).find( '.no-fields' ).hide();
+					$( '.everest-forms-field-options' ).append( field_options );
+					field.after( field_preview );
 					field.remove();
 					EVFPanelBuilder.checkEmptyGrid();
-
-
+					$( document.body ).trigger( 'init_tooltips' );
+					$( document.body ).trigger( 'init_fields_toogle' );
 				}
 			});
 		},
@@ -851,19 +852,21 @@ jQuery( function ( $ ) {
 	});
 
 	// Fields Options - Open/close.
-	$( '.everest-forms-field-option' ).on( 'click', '.everest-forms-field-option-group > a', function( event ) {
-		event.preventDefault();
-		$( this ).parent( '.everest-forms-field-option-group' ).toggleClass( 'closed' ).toggleClass( 'open' );
-	});
-	$( '.everest-forms-field-option' ).on( 'click', '.everest-forms-field-option-group a', function( event ) {
-		// If the user clicks on some form input inside, the box should not be toggled.
-		if ( $( event.target ).filter( ':input, option, .sort' ).length ) {
-			return;
-		}
+	$( document.body ).on( 'init_fields_toogle', function() {
+		$( '.everest-forms-field-option' ).on( 'click', '.everest-forms-field-option-group > a', function( event ) {
+			event.preventDefault();
+			$( this ).parent( '.everest-forms-field-option-group' ).toggleClass( 'closed' ).toggleClass( 'open' );
+		});
+		$( '.everest-forms-field-option' ).on( 'click', '.everest-forms-field-option-group a', function( event ) {
+			// If the user clicks on some form input inside, the box should not be toggled.
+			if ( $( event.target ).filter( ':input, option, .sort' ).length ) {
+				return;
+			}
 
-		$( this ).next( '.everest-forms-field-option-group-inner' ).stop().slideToggle();
-	});
-	$( '.everest-forms-field-option-group.closed' ).each( function() {
-		$( this ).find( '.everest-forms-field-option-group-inner' ).hide();
-	});
+			$( this ).next( '.everest-forms-field-option-group-inner' ).stop().slideToggle();
+		});
+		$( '.everest-forms-field-option-group.closed' ).each( function() {
+			$( this ).find( '.everest-forms-field-option-group-inner' ).hide();
+		});
+	} ).trigger( 'init_fields_toogle' );
 });
