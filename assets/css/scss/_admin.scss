@@ -682,6 +682,10 @@ body {
 								height: 15px;
 								background-color: $color-brand-primary;
 							}
+
+							&::before {
+								display: none;
+							}
 						}
 					}
 
