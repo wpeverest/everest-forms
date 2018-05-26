@@ -841,18 +841,28 @@
 				connectToSortable: '.evf-admin-grid',
 				containment: '#everest-forms-builder',
 				helper: 'clone',
-				revert: 'invalid',
 				cancel: false,
 				scroll: false,
 				delay: 200,
 				opacity: 0.75,
-				start: function() {
+				start: function( event, ui ) {
 					$( '.evf-admin-grid' ).addClass( 'evf-hover' );
+					$( this ).data( 'uihelper', ui.helper );
+				},
+				revert: function( value ){
+					var uiHelper = ( this ).data( 'uihelper' );
+					uiHelper.data( 'dropped', value !== false );
+					if( value === false ) {
+				 		return true;
+					}
+					return false;
 				},
 				stop: function( event, ui ) {
-					$( '.evf-admin-grid' ).removeClass( 'evf-hover' );
-					var helper = ui.helper;
-					EVFPanelBuilder.fieldDrop( helper );
+					if( ui.helper.data( 'dropped' ) === true ) {
+						$( '.evf-admin-grid' ).removeClass( 'evf-hover' );
+						var helper = ui.helper;
+						EVFPanelBuilder.fieldDrop( helper );
+					}
 				}
 			}).disableSelection();
 		},
@@ -922,7 +932,6 @@
 				field_type: field_type,
 				form_id: evf_data.form_id
 			};
-
 			$.ajax({
 				url: evf_data.ajax_url,
 				data: data,
