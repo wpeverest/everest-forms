@@ -614,11 +614,30 @@
 				var $this = $(this);
 				var form = $('form#everest-forms-builder-form');
 				var structure = EVFPanelBuilder.getStructure();
-
 				var form_data = form.serializeArray();
+				/* db unwanted data erase start */
+				var rfields_ids = [];
+				var rfields = $( ".everest-forms-field[data-field-id]" ).each( function() {
+					rfields_ids.push( $( this ).attr( 'data-field-id' ) );
+				});
 
+				var form_data_length = form_data.length;
+				while ( form_data_length-- ) {
+					if( form_data[form_data_length].name.startsWith( 'form_fields' ) ) {
+						var idflag = false;
+						rfields_ids.forEach( function( element ) {
+							if( form_data[form_data_length].name.startsWith( 'form_fields['+element+']' ) ) {
+								idflag = true;
+							}
+						});
+						if ( form_data_length > -1 && idflag === false )  {
+							form_data.splice( form_data_length, 1 );
+						}
+					}
+
+				};
+				/* fix end */
 				var new_form_data = form_data.concat(structure);
-
 				var data = {
 					action: 'everest_forms_save_form',
 					security: evf_data.evf_save_form,
