@@ -478,19 +478,39 @@
 			});
 		},
 		bindSaveOption: function () {
-			$( 'body' ).on('click', '.evf_save_form_action_button', function () {
+			$( 'body' ).on( 'click', '.evf_save_form_action_button', function () {
 				var $this = $(this);
 				var form = $('form#everest-forms-builder-form');
 				var structure = EVFPanelBuilder.getStructure();
-
 				var form_data = form.serializeArray();
 
-				var new_form_data = form_data.concat(structure);
+				/* db unwanted data erase start */
+				var rfields_ids = [];
+				$( '.everest-forms-field[data-field-id]' ).each( function() {
+					rfields_ids.push( $( this ).attr( 'data-field-id' ) );
+				});
 
+				var form_data_length = form_data.length;
+				while ( form_data_length-- ) {
+					if ( form_data[ form_data_length ].name.startsWith( 'form_fields' ) ) {
+						var idflag = false;
+						rfields_ids.forEach( function( element ) {
+							if ( form_data[ form_data_length ].name.startsWith( 'form_fields[' + element + ']' ) ) {
+								idflag = true;
+							}
+						});
+						if ( form_data_length > -1 && idflag === false )  {
+							form_data.splice( form_data_length, 1 );
+						}
+					}
+				}
+				/* fix end */
+
+				var new_form_data = form_data.concat(structure);
 				var data = {
 					action: 'everest_forms_save_form',
 					security: evf_data.evf_save_form,
-					form_data: JSON.stringify(new_form_data),
+					form_data: JSON.stringify( new_form_data )
 				};
 				var $wrapper = $('#everest-forms-builder');
 				$.ajax({
@@ -692,22 +712,33 @@
 					$('.evf-admin-field-wrapper').removeClass('evf-hover');
 				}
 			});
-			$('.evf-registered-buttons button.evf-registered-item').draggable({
+
+			$( '.evf-registered-buttons button.evf-registered-item' ).draggable({
 				connectToSortable: '.evf-admin-grid',
 				containment: '#everest-forms-builder',
 				helper: 'clone',
-				revert: 'invalid',
 				cancel: false,
-				start: function ( event, ui ) {
-					$('.evf-admin-grid').addClass('evf-hover');
+				scroll: false,
+				delay: 200,
+				opacity: 0.75,
+				start: function( event, ui ) {
+					$( '.evf-admin-grid' ).addClass( 'evf-hover' );
+					$( this ).data( 'uihelper', ui.helper );
 				},
-				stop: function ( event, ui ) {
-					$('.evf-admin-grid').removeClass('evf-hover');
-					var grid = ui.helper.closest('.evf-admin-grid');
-					var helper = ui.helper;
-					EVFPanelBuilder.fieldDrop(helper);
-
-
+				revert: function( value ){
+					var uiHelper = ( this ).data( 'uihelper' );
+					uiHelper.data( 'dropped', value !== false );
+					if( value === false ) {
+						return true;
+					}
+					return false;
+				},
+				stop: function( event, ui ) {
+					if( ui.helper.data( 'dropped' ) === true ) {
+						$( '.evf-admin-grid' ).removeClass( 'evf-hover' );
+						var helper = ui.helper;
+						EVFPanelBuilder.fieldDrop( helper );
+					}
 				}
 			}).disableSelection();
 		},
