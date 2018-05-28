@@ -115,7 +115,7 @@ class EVF_Form_Task {
 					$data  = wp_remote_get( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $_POST['g-recaptcha-response'] );
 					$data  = json_decode( wp_remote_retrieve_body( $data ) );
 					if ( empty( $data->success ) ) {
-						evf_add_notice( et_option( 'evf_recaptcha_validation', __( 'Incorrect reCAPTCHA, please try again.', 'everest-forms' ) ), 'error' );
+						evf_add_notice( get_option( 'evf_recaptcha_validation', __( 'Incorrect reCAPTCHA, please try again.', 'everest-forms' ) ), 'error' );
 						return;
 					}
 				} else {
