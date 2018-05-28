@@ -80,7 +80,7 @@ class EVF_Form_Task {
 
 			// Validate form is real and active (published).
 			if ( ! $form || 'publish' !== $form->post_status ) {
-				evf_add_notice( __('Invalid form. Please check again.', 'everest-forms') ,'error');
+				evf_add_notice( __( 'Invalid form. Please check again.', 'everest-forms' ), 'error' );
 				return;
 			}
 
@@ -101,17 +101,28 @@ class EVF_Form_Task {
 				do_action( "everest_forms_process_validate_{$field_type}", $field_id, $field_type, $field_submit, $form_data );
 			}
 
-			// Recaptcha Validation
-			if( isset( $form_data['settings']['recaptcha_support'] ) && 1 == $form_data['settings']['recaptcha_support'] && empty( $_POST['g-recaptcha-response'] ) ){
-				evf_add_notice( get_option('evf_recaptcha_validation', __('Invalid recaptcha code.', 'everest-forms') ),'error');
-				update_option( 'evf_validation_error', 'yes');
+			// reCAPTCHA check.
+			$site_key   = get_option( 'evf_recaptcha_site_key', '' );
+			$secret_key = get_option( 'evf_recaptcha_site_secret', '' );
+			if (
+				! empty( $site_key ) &&
+				! empty( $secret_key ) &&
+				isset( $form_data['settings']['recaptcha_support'] ) &&
+				'1' == $form_data['settings']['recaptcha_support']
+			) {
+				if ( ! empty( $_POST['g-recaptcha-response'] ) ) {
+					$data  = wp_remote_get( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $_POST['g-recaptcha-response'] );
+					$data  = json_decode( wp_remote_retrieve_body( $data ) );
+					if ( empty( $data->success ) ) {
+						evf_add_notice( get_option( 'evf_recaptcha_validation', __( 'Incorrect reCAPTCHA, please try again.', 'everest-forms' ) ), 'error' );
+						return;
+					}
+				} else {
+					$this->errors[ $form_id ]['recaptcha'] = esc_html__( 'reCAPTCHA is required.', 'everest-forms' );
+				}
 			}
 
-			if( get_option( 'evf_validation_error' ) === 'yes' ){
-				delete_option( 'evf_validation_error' );
-				return;
-			}
-
+			// Initial error check.
 			$errors = apply_filters( 'everest_forms_process_initial_errors', $this->errors, $form_data );
 
 			if ( ! empty( $errors[ $form_id ] ) ) {
