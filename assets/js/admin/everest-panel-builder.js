@@ -566,6 +566,7 @@
 				var $field       = $( this ).closest( '.everest-forms-field' );
 				var field_id     = $field.attr('data-field-id');
 				var option_field = $( '#everest-forms-field-option-' + field_id );
+				var grid 		 = $( this ).closest( '.evf-admin-grid' );
 
 				if ( $field.hasClass( 'no-delete' ) ) {
 					$.alert({
@@ -600,6 +601,9 @@
 										$field.remove();
 										option_field.remove();
 									});
+									if( grid.children().length === 1 ) {
+										grid.addClass( 'evf-empty-grid' );
+									}
 								}
 							},
 							cancel: {
