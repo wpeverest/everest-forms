@@ -82,6 +82,7 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 = 1.1.7 - 28-05-2018 =
 * Fix - Google reCaptcha check with its own server.
 * Fix - Switch to cloned field options after cloning.
+* Fix - Hidden row design on last form field deletion.
 * Fix - Toggle and tooltip initialize if the field is new one.
 
 = 1.1.6 - 24-05-2018 =
