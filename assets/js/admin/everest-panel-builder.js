@@ -422,6 +422,7 @@
 			newFieldCloned.find('.label-title .text').text(new_field_label);
 			field.closest( '.evf-admin-grid' ).find( '[data-field-id="' + old_key + '"]' ).after( newFieldCloned );
 			$(document).trigger('everest-form-cloned', [ new_key, field_type ]);
+			EVFPanelBuilder.switchToFieldOptionPanel(new_key);//switch to cloned field options
 		},
 		bindFieldDelete: function () {
 			$( 'body' ).on('click', '.everest-forms-preview .everest-forms-field .everest-forms-field-delete', function () {
