@@ -43,7 +43,16 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 												continue;
 											}
 
-											$field_value = apply_filters( 'everest_forms_html_field_value', wp_strip_all_tags( $meta_value ), $entry_meta[ $meta_key ], $entry_meta, 'entry-single' );
+											if ( is_serialized( $meta_value ) )
+                                            {
+                                                // don't strip the tags here
+												$field_value = apply_filters( 'everest_forms_html_field_value',  $meta_value, $entry_meta[ $meta_key ], $entry_meta, 'entry-single' );
+                                            }
+                                            else
+                                            {
+                                                $field_value = apply_filters( 'everest_forms_html_field_value', wp_strip_all_tags( $meta_value ), $entry_meta[ $meta_key ], $entry_meta, 'entry-single' );
+                                            }
+											
 											$field_class = empty( $field_value ) ? ' empty' : '';
 											$field_style = $hide_empty && empty( $field_value ) ? 'display:none;' : '';
 
@@ -65,7 +74,7 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 														$field_value = maybe_unserialize( $field_value );
 
 														foreach ( $field_value as $field => $value ) {
-															echo '<span class="list">' . $value . '</span>';
+															echo '<span class="list">' . wp_strip_all_tags( $value ) . '</span>';
 														}
 													} else {
 														echo nl2br( make_clickable( $field_value ) );
