@@ -878,7 +878,7 @@
 					var uiHelper = ( this ).data( 'uihelper' );
 					uiHelper.data( 'dropped', value !== false );
 					if( value === false ) {
-				 		return true;
+						return true;
 					}
 					return false;
 				},
