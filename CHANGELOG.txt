@@ -20,7 +20,7 @@
 * Deprecated - Unnecessary general and email settings from global.
 
 = 1.1.5.1 - 04-05-2018 =
-* Fix - reCaptcha displaying after every inserted row issue 
+* Fix - reCaptcha displaying after every inserted row issue.
 
 = 1.1.5 - 03-05-2018 =
 * Fix - Google reCaptcha console errors.

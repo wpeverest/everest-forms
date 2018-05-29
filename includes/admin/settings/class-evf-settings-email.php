@@ -59,61 +59,6 @@ if ( ! class_exists( 'EVF_Settings_Email', false ) ) :
 						'type' => 'sectionend',
 						'id'   => 'email_template_options',
 					),
-					array(
-						'title' => __( 'Notification Settings', 'everest-forms' ),
-						'type'  => 'title',
-						'desc'  => '',
-						'id'    => 'email_notification_options',
-					),
-					array(
-						'title'    => __( 'To Address', 'everest-forms' ),
-						'desc'     => __( 'Enter the email address to send email', 'everest-forms' ),
-						'id'       => 'evf_to_email',
-						'type'     => 'text',
-						'desc_tip' => true,
-						'css'      => 'min-width: 350px;',
-						'default'  => get_option('admin_email'),
-					),
-					array(
-						'title'    => __( 'From Name', 'everest-forms' ),
-						'desc'     => __( 'Email senders name', 'everest-forms' ),
-						'id'       => 'evf_from_name',
-						'type'     => 'text',
-						'desc_tip' => true,
-						'css'      => 'min-width: 350px;',
-						'default'  => evf_sender_name(),
-					),
-					array(
-						'title'    => __( 'From Address', 'everest-forms' ),
-						'desc'     => __( 'Email senders address', 'everest-forms' ),
-						'id'       => 'evf_from_address',
-						'type'     => 'text',
-						'desc_tip' => true,
-						'css'      => 'min-width: 350px;',
-						'default'  => evf_sender_address(),
-					),
-					array(
-						'title'    => __( 'Email Subject', 'everest-forms' ),
-						'desc'     => __( 'Email Subject', 'everest-forms' ),
-						'id'       => 'evf_email_subject',
-						'type'     => 'text',
-						'desc_tip' => true,
-						'css'      => 'min-width: 350px;',
-						'default'  => 'New Form Entry'
-					),
-					array(
-						'title'    => __( 'Email Message', 'everest-forms' ),
-						'desc'     => __( 'Email Message', 'everest-forms' ),
-						'id'       => 'evf_email_message',
-						'type'     => 'tinymce',
-						'desc_tip' => true,
-						'css'      => 'max-width: 350px;',
-						'default'  => '{all_fields}'
-					),
-					array(
-						'type' => 'sectionend',
-						'id'   => 'email_notification_options',
-					),
 				)
 			);
 
@@ -125,8 +70,6 @@ if ( ! class_exists( 'EVF_Settings_Email', false ) ) :
 		 */
 		public function save() {
 			$settings = $this->get_settings();
-
-
 			EVF_Admin_Settings::save_fields( $settings );
 		}
 	}

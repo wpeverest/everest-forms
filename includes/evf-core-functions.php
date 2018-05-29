@@ -1024,23 +1024,6 @@ function evf_get_random_string( $length = 10 ) {
 	return $string;
 }
 
-function evf_sender_name() {
-	$sender_name = get_option( 'evf_forms_email_from_name', esc_attr( get_bloginfo( 'name', 'display' ) ) );
-	return $sender_name;
-}
-
-function evf_sender_address() {
-	$sitename = isset( $_SERVER['SERVER_NAME'] ) ? strtolower( $_SERVER['SERVER_NAME'] ) : '';
-	if ( substr( $sitename, 0, 4 ) == 'www.' ) {
-		$sitename = substr( $sitename, 4 );
-	}
-
-	$from_email = 'wordpress@' . $sitename;
-	$sender_email = get_option( 'evf_forms_email_from_address', $from_email );
-
-	return $sender_email;
-}
-
 function evf_get_all_forms( $skip_disabled_entries = false ) {
 	$all_forms   = array();
 	$posts_array = get_posts( array(

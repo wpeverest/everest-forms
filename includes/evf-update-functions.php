@@ -67,3 +67,30 @@ function evf_update_110_update_forms() {
 function evf_update_110_db_version() {
 	EVF_Install::update_db_version( '1.1.0' );
 }
+
+/**
+ * Delete global email related options.
+ */
+function evf_update_116_delete_options() {
+	$delete_options = array(
+		'evf_to_email',
+		'evf_from_name',
+		'evf_from_address',
+		'evf_email_subject',
+		'evf_email_message',
+		'everest_forms_disable_form_entries',
+		'everest_forms_form_submit_button_label',
+		'everest_forms_successful_form_submission_message',
+	);
+
+	foreach ( $delete_options as $delete_option ) {
+		delete_option( $delete_option );
+	}
+}
+
+/**
+ * Update DB Version.
+ */
+function evf_update_116_db_version() {
+	EVF_Install::update_db_version( '1.1.6' );
+}

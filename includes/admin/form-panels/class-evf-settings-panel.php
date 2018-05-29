@@ -87,23 +87,13 @@ class EVF_Settings_Panel extends EVF_Admin_Form_Panel {
 			)
 		);
 		everest_forms_panel_field(
-			'checkbox',
-			'settings',
-			'recaptcha_support',
-			$this->form_data,
-			sprintf( __( 'Enable %1$s %2$s reCaptcha %3$s support', 'everest-forms' ), '<a title="', 'Please make sure the site key and secret are not empty in setting page." href="' . admin_url() . 'admin.php?page=evf-settings&tab=recaptcha" target="_blank">', '</a>' ),
-			array(
-				'default' => '0',
-			)
-		);
-		everest_forms_panel_field(
 			'textarea',
 			'settings',
 			'successful_form_submission_message',
 			$this->form_data,
 			__( 'Successful form submission message', 'everest-forms' ),
 			array(
-				'default' => isset( $this->form->successful_form_submission_message ) ? $this->form->successful_form_submission_message : get_option( 'everest_forms_successful_form_submission_message', __('Thanks for contacting us! We will be in touch with you shortly.','everest-forms')),
+				'default' => isset( $this->form->successful_form_submission_message ) ? $this->form->successful_form_submission_message : __( 'Thanks for contacting us! We will be in touch with you shortly', 'everest-forms' ),
 			)
 		);
 		everest_forms_panel_field(
@@ -166,20 +156,6 @@ class EVF_Settings_Panel extends EVF_Admin_Form_Panel {
 				'default' => isset( $this->form->form_class ) ? $this->form->form_class : '',
 			)
 		);
-
-		$disable = get_option( 'everest_forms_disable_form_entries' );
-		$disable = $disable === 'yes' ? 1 : 0;
-
-		everest_forms_panel_field(
-			'checkbox',
-			'settings',
-			'disabled_entries',
-			$this->form_data,
-			__( 'Disable Form Entries', 'everest-forms' ),
-			array(
-				'default' => isset( $this->form_setting['disabled_entries'] ) ? $this->form_setting['disabled_entries'] : $disable,
-			)
-		);
 		everest_forms_panel_field(
 			'text',
 			'settings',
@@ -187,10 +163,31 @@ class EVF_Settings_Panel extends EVF_Admin_Form_Panel {
 			$this->form_data,
 			__( 'Submit button text', 'everest-forms' ),
 			array(
-				'default' => isset( $this->form_setting['submit_button_text'] ) ? $this->form_setting['submit_button_text'] : get_option( 'everest_forms_form_submit_button_label', __( 'Submit', 'everest-forms' ) ),
+				'default' => isset( $this->form_setting['submit_button_text'] ) ? $this->form_setting['submit_button_text'] : __( 'Submit', 'everest-forms' ),
 			)
 		);
-		do_action( 'everest_forms_inline_general_settings', $this );
+		everest_forms_panel_field(
+			'checkbox',
+			'settings',
+			'recaptcha_support',
+			$this->form_data,
+			sprintf( __( 'Enable %1$s %2$s reCaptcha %3$s support', 'everest-forms' ), '<a title="', 'Please make sure the site key and secret are not empty in setting page." href="' . admin_url() . 'admin.php?page=evf-settings&tab=recaptcha" target="_blank">', '</a>' ),
+			array(
+				'default' => '0',
+			)
+		);
+		everest_forms_panel_field(
+			'checkbox',
+			'settings',
+			'disabled_entries',
+			$this->form_data,
+			__( 'Disable storing entry information', 'everest-forms' ),
+			array(
+				'default' => isset( $this->form_setting['disabled_entries'] ) ? $this->form_setting['disabled_entries'] : 0,
+			)
+		);
+
+		do_action( 'everest_forms_general_settings', $this );
 
 		echo '</div>';
 
@@ -208,7 +205,7 @@ class EVF_Settings_Panel extends EVF_Admin_Form_Panel {
 			$this->form_data,
 			__( 'To Address', 'everest-forms' ),
 			array(
-				'default' => isset( $this->form_setting['email']['evf_to_email'] ) ? $this->form_setting['email']['evf_to_email'] : get_option( 'evf_to_email', get_option( 'admin_email' ) ),
+				'default' => isset( $this->form_setting['email']['evf_to_email'] ) ? $this->form_setting['email']['evf_to_email'] : get_option( 'admin_email' ),
 			)
 		);
 		everest_forms_panel_field(
@@ -218,7 +215,7 @@ class EVF_Settings_Panel extends EVF_Admin_Form_Panel {
 			$this->form_data,
 			__( 'From Name', 'everest-forms' ),
 			array(
-				'default' => isset( $this->form_setting['email']['evf_from_name'] ) ? $this->form_setting['email']['evf_from_name'] : get_option( 'evf_from_name', evf_sender_name() ),
+				'default' => isset( $this->form_setting['email']['evf_from_name'] ) ? $this->form_setting['email']['evf_from_name'] : get_bloginfo( 'name', 'display' ),
 			)
 		);
 		everest_forms_panel_field(
@@ -228,7 +225,7 @@ class EVF_Settings_Panel extends EVF_Admin_Form_Panel {
 			$this->form_data,
 			__( 'From Address', 'everest-forms' ),
 			array(
-				'default' => isset( $this->form_setting['email']['evf_from_email'] ) ? $this->form_setting['email']['evf_from_email'] : get_option( 'evf_from_address', evf_sender_address() ),
+				'default' => isset( $this->form_setting['email']['evf_from_email'] ) ? $this->form_setting['email']['evf_from_email'] : get_option( 'admin_email' ),
 			)
 		);
 		everest_forms_panel_field(
@@ -238,7 +235,7 @@ class EVF_Settings_Panel extends EVF_Admin_Form_Panel {
 			$this->form_data,
 			__( 'Email Subject', 'everest-forms' ),
 			array(
-				'default' => isset( $this->form_setting['email']['evf_email_subject'] ) ? $this->form_setting['email']['evf_email_subject'] : get_option( 'evf_email_subject',  __( 'New Form Entry', 'everest-forms' ) ),
+				'default' => isset( $this->form_setting['email']['evf_email_subject'] ) ? $this->form_setting['email']['evf_email_subject'] : __( 'New Form Entry', 'everest-forms' ),
 			)
 		);
 		everest_forms_panel_field(
@@ -248,7 +245,7 @@ class EVF_Settings_Panel extends EVF_Admin_Form_Panel {
 			$this->form_data,
 			__( 'Email Message', 'everest-forms' ),
 			array(
-				'default' => isset( $this->form_setting['email']['evf_email_message'] ) ? $this->form_setting['email']['evf_email_message'] :  get_option( 'evf_email_message', __( '{all_fields}', 'everest-forms' ) ),
+				'default' => isset( $this->form_setting['email']['evf_email_message'] ) ? $this->form_setting['email']['evf_email_message'] : __( '{all_fields}', 'everest-forms' ),
 			)
 		);
 

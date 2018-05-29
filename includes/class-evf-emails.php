@@ -134,10 +134,10 @@ class EVF_Emails {
 		if ( ! empty( $this->from_name ) ) {
 			$this->from_name = $this->process_tag( $this->from_name );
 		} else {
-			$this->from_name = evf_sender_name();
+			$this->from_name = get_bloginfo( 'name' );
 		}
 
-		return apply_filters( 'everest_forms_email_from_name', evf_decode_string( $this->from_name ), $this );
+		return apply_filters( 'everest_forms_email_from_name', wp_specialchars_decode( $this->from_name ), $this );
 	}
 
 	/**
@@ -146,12 +146,10 @@ class EVF_Emails {
 	 * @return string The email from address.
 	 */
 	public function get_from_address() {
-		$this->from_address = isset ( $this->from_address ) ? $this->from_address : evf_sender_address();
-
 		if ( ! empty( $this->from_address ) ) {
 			$this->from_address = $this->process_tag( $this->from_address );
 		} else {
-			$this->from_address = evf_sender_address(); // Lookup why get_option( 'admin_email' ) is used :)
+			$this->from_address = get_option( 'admin_email' );
 		}
 
 		return apply_filters( 'everest_forms_email_from_address', $this->from_address, $this );

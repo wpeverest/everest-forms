@@ -404,11 +404,21 @@ class EVF_Form_Task {
 
 		$fields     = apply_filters( 'everest_forms_entry_save_data', $fields, $entry, $form_data );
 		$browser    = evf_get_browser();
+		$user_ip    = evf_get_ip_address();
+		$user_agent = $browser['name'] . '/' . $browser['platform'];
+		$entry_id   = false;
+
+		// GDPR enhancements - If user details are disabled globally discard the IP and UA.
+		if ( 'yes' === get_option( 'everest_forms_disable_user_details' ) ) {
+			$user_agent = '';
+			$user_ip    = '';
+		}
+
 		$entry_data = array(
 			'form_id'         => $form_id,
 			'user_id'         => get_current_user_id(),
-			'user_device'     => $browser['name'] . '/' . $browser['platform'],
-			'user_ip_address' => evf_get_ip_address(),
+			'user_device'     => sanitize_text_field( $user_agent ),
+			'user_ip_address' => sanitize_text_field( $user_ip ),
 			'status'          => 'publish',
 			'referer'         => $_SERVER['HTTP_REFERER'],
 			'date_created'    => current_time( 'mysql' )
