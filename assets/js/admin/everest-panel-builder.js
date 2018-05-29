@@ -10,8 +10,8 @@
 		 */
 		init: function () {
 			$( document ).ready( function( $ ) {
-				if ( ! $( 'evf-panel-marketing-button a' ).hasClass('active') ) {
-					$('#everest-forms-panel-marketing').find('.everest-forms-panel-sidebar a').first().addClass('active');
+				if ( ! $( 'evf-panel-integrations-button a' ).hasClass('active') ) {
+					$('#everest-forms-panel-integrations').find('.everest-forms-panel-sidebar a').first().addClass('active');
 					$('.everest-forms-panel-content').find('.evf-panel-content-section').first().addClass('active');
 				}
 			});
@@ -129,7 +129,7 @@
 			EVFPanelBuilder.bindAddNewRow();
 			EVFPanelBuilder.bindRemoveRow();
 			EVFPanelBuilder.bindFormSettings();
-			EVFPanelBuilder.bindFormMarketing();
+			EVFPanelBuilder.bindFormIntegrations();
 			EVFPanelBuilder.bindFormPayment();
 			EVFPanelBuilder.choicesInit();
 			EVFPanelBuilder.choicesUpdate();
@@ -309,11 +309,11 @@
 
 		 	$('.evf-setting-panel').eq(0).trigger('click');
 		 },
-		 bindFormMarketing: function () {
+		 bindFormIntegrations: function () {
 
-		 	$('body').on('click', '.evf-marketing-panel', function ( e ) {
+		 	$('body').on('click', '.evf-integrations-panel', function ( e ) {
 		 		var data_setting_section = $(this).attr('data-section');
-		 		$('.evf-marketing-panel').removeClass('active');
+		 		$('.evf-integrations-panel').removeClass('active');
 		 		$('.evf-panel-content-section').removeClass('active');
 		 		$(this).addClass('active');
 		 		$('.evf-panel-content-section-' + data_setting_section ).addClass('active');
@@ -755,7 +755,7 @@
 				$( '.everest-forms-add-fields' ).show();
 			}
 
-			if ( 'marketing' === panel || 'payments' === panel  ) {
+			if ( 'integrations' === panel || 'payments' === panel  ) {
 				if ( ! $panel.find( '.everest-forms-panel-sidebar a' ).hasClass( 'active' ) ) {
 					$panel.find( '.everest-forms-panel-sidebar a' ).first().addClass( 'active' );
 				}
