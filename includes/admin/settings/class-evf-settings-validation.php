@@ -43,7 +43,7 @@ if ( ! class_exists( 'EVF_Settings_Validation', false ) ) :
 					array(
 						'title' => __( 'Validation Messages', 'everest-forms' ),
 						'type'  => 'title',
-						'desc'  => 'These messages are displayed to the user as they fill out a form in real-time.',
+						'desc'  => 'Validation Messages for Form Fields',
 						'id'    => 'validation_options',
 					),
 					array(
