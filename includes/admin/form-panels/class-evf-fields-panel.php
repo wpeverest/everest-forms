@@ -92,11 +92,19 @@ class EVF_Fields_Panel extends EVF_Admin_Form_Panel {
 	public function fields() {
 		$fields = array(
 			'general'  => array(
-				'group_name' => __( 'General Fields', 'everest-forms' ),
+				'group_name' => esc_html__( 'General Fields', 'everest-forms' ),
 				'fields'     => array(),
 			),
 			'advanced' => array(
-				'group_name' => __( 'Advanced Fields', 'everest-forms' ),
+				'group_name' => esc_html__( 'Advanced Fields', 'everest-forms' ),
+				'fields'     => array(),
+			),
+			'address'  => array(
+				'group_name' => esc_html__( 'Address Fields', 'everest-forms' ),
+				'fields'     => array(),
+			),
+			'payment'  => array(
+				'group_name' => esc_html__( 'Payment Fields', 'everest-forms' ),
 				'fields'     => array(),
 			),
 		);
