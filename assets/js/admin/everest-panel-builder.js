@@ -559,12 +559,14 @@
 			newFieldCloned.find('.label-title .text').text(new_field_label);
 			field.closest( '.evf-admin-grid' ).find( '[data-field-id="' + old_key + '"]' ).after( newFieldCloned );
 			$(document).trigger('everest-form-cloned', [ new_key, field_type ]);
+			EVFPanelBuilder.switchToFieldOptionPanel(new_key);//switch to cloned field options
 		},
 		bindFieldDelete: function () {
 			$( 'body' ).on('click', '.everest-forms-preview .everest-forms-field .everest-forms-field-delete', function () {
 				var $field       = $( this ).closest( '.everest-forms-field' );
 				var field_id     = $field.attr('data-field-id');
 				var option_field = $( '#everest-forms-field-option-' + field_id );
+				var grid 		 = $( this ).closest( '.evf-admin-grid' );
 
 				if ( $field.hasClass( 'no-delete' ) ) {
 					$.alert({
@@ -599,6 +601,9 @@
 										$field.remove();
 										option_field.remove();
 									});
+									if( grid.children().length === 1 ) {
+										grid.addClass( 'evf-empty-grid' );
+									}
 								}
 							},
 							cancel: {
@@ -610,19 +615,39 @@
 			});
 		},
 		bindSaveOption: function () {
-			$( 'body' ).on('click', '.evf_save_form_action_button', function () {
+			$( 'body' ).on( 'click', '.evf_save_form_action_button', function () {
 				var $this = $(this);
 				var form = $('form#everest-forms-builder-form');
 				var structure = EVFPanelBuilder.getStructure();
-
 				var form_data = form.serializeArray();
 
-				var new_form_data = form_data.concat(structure);
+				/* db unwanted data erase start */
+				var rfields_ids = [];
+				$( '.everest-forms-field[data-field-id]' ).each( function() {
+					rfields_ids.push( $( this ).attr( 'data-field-id' ) );
+				});
 
+				var form_data_length = form_data.length;
+				while ( form_data_length-- ) {
+					if ( form_data[ form_data_length ].name.startsWith( 'form_fields' ) ) {
+						var idflag = false;
+						rfields_ids.forEach( function( element ) {
+							if ( form_data[ form_data_length ].name.startsWith( 'form_fields[' + element + ']' ) ) {
+								idflag = true;
+							}
+						});
+						if ( form_data_length > -1 && idflag === false )  {
+							form_data.splice( form_data_length, 1 );
+						}
+					}
+				}
+				/* fix end */
+
+				var new_form_data = form_data.concat(structure);
 				var data = {
 					action: 'everest_forms_save_form',
 					security: evf_data.evf_save_form,
-					form_data: JSON.stringify(new_form_data),
+					form_data: JSON.stringify( new_form_data )
 				};
 				var $wrapper = $('#everest-forms-builder');
 				$.ajax({
@@ -841,18 +866,28 @@
 				connectToSortable: '.evf-admin-grid',
 				containment: '#everest-forms-builder',
 				helper: 'clone',
-				revert: 'invalid',
 				cancel: false,
 				scroll: false,
 				delay: 200,
 				opacity: 0.75,
-				start: function() {
+				start: function( event, ui ) {
 					$( '.evf-admin-grid' ).addClass( 'evf-hover' );
+					$( this ).data( 'uihelper', ui.helper );
+				},
+				revert: function( value ){
+					var uiHelper = ( this ).data( 'uihelper' );
+					uiHelper.data( 'dropped', value !== false );
+					if( value === false ) {
+						return true;
+					}
+					return false;
 				},
 				stop: function( event, ui ) {
-					$( '.evf-admin-grid' ).removeClass( 'evf-hover' );
-					var helper = ui.helper;
-					EVFPanelBuilder.fieldDrop( helper );
+					if( ui.helper.data( 'dropped' ) === true ) {
+						$( '.evf-admin-grid' ).removeClass( 'evf-hover' );
+						var helper = ui.helper;
+						EVFPanelBuilder.fieldDrop( helper );
+					}
 				}
 			}).disableSelection();
 		},
@@ -911,10 +946,10 @@
 			var field_type = field.attr('data-field-type');
 			field.css({
 				'width': '100%',
-				'left': '0',
+				'left': '0'
 			});
 
-			field.append('<i class="spinner is-active" style="margin: 0;padding: 0;"></i>');
+			field.append( '<i class="spinner is-active" style="margin: 0;padding: 0;"></i>' );
 
 			var data = {
 				action: 'everest_forms_new_field_' + field_type,
@@ -926,20 +961,21 @@
 				url: evf_data.ajax_url,
 				data: data,
 				type: 'POST',
-				beforeSend: function () {
-
+				beforeSend: function() {
+					$( document.body ).trigger( 'init_fields_toogle' );
 				},
-				success: function ( response ) {
+				success: function( response ) {
 					var field_preview = response.data.preview;
 					var field_options = response.data.options;
 					var form_field_id = response.data.form_field_id;
-					$('#everest-forms-field-id').val(form_field_id);
-					$('.everest-forms-field-options').find('.no-fields').hide();
-					$('.everest-forms-field-options').append(field_options);
-					field.after(field_preview);
+					$( '#everest-forms-field-id' ).val( form_field_id );
+					$( '.everest-forms-field-options' ).find( '.no-fields' ).hide();
+					$( '.everest-forms-field-options' ).append( field_options );
+					field.after( field_preview );
 					field.remove();
 					EVFPanelBuilder.checkEmptyGrid();
 					$( document.body ).trigger( 'init_tooltips' );
+					$( document.body ).trigger( 'init_fields_toogle' );
 				}
 			});
 		},
@@ -1021,19 +1057,21 @@ jQuery( function ( $ ) {
 	});
 
 	// Fields Options - Open/close.
-	$( '.everest-forms-field-option' ).on( 'click', '.everest-forms-field-option-group > a', function( event ) {
-		event.preventDefault();
-		$( this ).parent( '.everest-forms-field-option-group' ).toggleClass( 'closed' ).toggleClass( 'open' );
-	});
-	$( '.everest-forms-field-option' ).on( 'click', '.everest-forms-field-option-group a', function( event ) {
-		// If the user clicks on some form input inside, the box should not be toggled.
-		if ( $( event.target ).filter( ':input, option, .sort' ).length ) {
-			return;
-		}
+	$( document.body ).on( 'init_fields_toogle', function() {
+		$( '.everest-forms-field-option' ).on( 'click', '.everest-forms-field-option-group > a', function( event ) {
+			event.preventDefault();
+			$( this ).parent( '.everest-forms-field-option-group' ).toggleClass( 'closed' ).toggleClass( 'open' );
+		});
+		$( '.everest-forms-field-option' ).on( 'click', '.everest-forms-field-option-group a', function( event ) {
+			// If the user clicks on some form input inside, the box should not be toggled.
+			if ( $( event.target ).filter( ':input, option, .sort' ).length ) {
+				return;
+			}
 
-		$( this ).next( '.everest-forms-field-option-group-inner' ).stop().slideToggle();
-	});
-	$( '.everest-forms-field-option-group.closed' ).each( function() {
-		$( this ).find( '.everest-forms-field-option-group-inner' ).hide();
-	});
+			$( this ).next( '.everest-forms-field-option-group-inner' ).stop().slideToggle();
+		});
+		$( '.everest-forms-field-option-group.closed' ).each( function() {
+			$( this ).find( '.everest-forms-field-option-group-inner' ).hide();
+		});
+	} ).trigger( 'init_fields_toogle' );
 });

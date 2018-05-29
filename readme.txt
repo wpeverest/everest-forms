@@ -82,6 +82,18 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 = 1.2.0 - XX-XX-2018 =
 * Feature - Copy shortcode inside form view page.
 
+= 1.1.7 - 28-05-2018 =
+* Fix - Google reCaptcha check with its own server.
+* Fix - Switch to cloned field options after cloning.
+* Fix - Hidden row design on last form field deletion.
+* Fix - Failed draggable fields being hidden in form builder.
+* Fix - Toggle and tooltip initialize if the field is new one.
+
+= 1.1.6 - 24-05-2018 =
+* Fix - Appending HTMl instead of text for preview description.
+* GDPR - If user details are disabled globally discard the IP address and User Agent.
+* Deprecated - Unnecessary general and email settings from global.
+
 = 1.1.5.1 - 04-05-2018 =
 * Fix - reCaptcha displaying after every inserted row issue 
 
