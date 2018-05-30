@@ -478,21 +478,37 @@ body {
 				text-align: center;
 
 				span {
-					width: 40px;
-					height: 40px;
-					line-height: 30px;
-					padding: 5px;
+					width: auto;
+					height: auto;
+					font-family: inherit;
 					color: $color-white;
-					background-color: $color-gray-darker;
+					background-color: $color-alert-success;
 					border-radius: 5px;
 					cursor: pointer;
 					transition: 0.5s ease-in-out background-color;
-					margin-bottom: 20px;
+					margin-bottom: 20px;font-size: 13px;
+					text-transform: uppercase;
+					padding: 5px 15px;
+					line-height: 35px;
+					transition: all 0.25s ease 0s;
 
 					&:hover,
 					&:focus,
 					&:active {
 						background-color: $color-brand-primary;
+					}
+
+					&.dashicons-plus-alt {
+
+						&::before {
+							font-family: dashicons;    font-size: 20px;
+							height: 20px;
+							width: 20px;
+							vertical-align: middle;
+							padding: 5px 15px 5px 0;
+							border-right: 1px solid transparentize($color-white, 0.7);
+							margin-right: 15px;
+						}
 					}
 				}
 			}
