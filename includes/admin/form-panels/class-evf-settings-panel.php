@@ -28,7 +28,7 @@ class EVF_Settings_Panel extends EVF_Admin_Form_Panel {
 		// Define panel information
 		$this->name    = __( 'Settings', 'everest-forms' );
 		$this->slug    = 'settings';
-		$this->icon    = 'dashicons dashicons-admin-tools';
+		$this->icon    = 'evf-icon evf-icon-setting';
 		$this->order   = 10;
 		$this->sidebar = true;
 	}

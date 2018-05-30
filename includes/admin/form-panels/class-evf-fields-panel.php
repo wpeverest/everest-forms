@@ -22,7 +22,7 @@ class EVF_Fields_Panel extends EVF_Admin_Form_Panel {
 		// Define panel information.
 		$this->name    = __( 'Fields', 'everest-forms' );
 		$this->slug    = 'fields';
-		$this->icon    = 'dashicons dashicons-archive';
+		$this->icon    = 'evf-icon evf-icon-fields';
 		$this->order   = 10;
 		$this->sidebar = true;
 
