@@ -22,7 +22,7 @@ class EVF_Fields_Panel extends EVF_Admin_Form_Panel {
 		// Define panel information.
 		$this->name    = __( 'Fields', 'everest-forms' );
 		$this->slug    = 'fields';
-		$this->icon    = 'dashicons dashicons-archive';
+		$this->icon    = 'evf-icon evf-icon-fields';
 		$this->order   = 10;
 		$this->sidebar = true;
 
@@ -277,7 +277,7 @@ class EVF_Fields_Panel extends EVF_Admin_Form_Panel {
 		}
 		echo '</div>';
 		echo '<div class="clear evf-clear"></div>';
-		echo '<div class="evf-add-row"><span class="evf-btn dashicons dashicons-plus-alt">ADD ROW</span></div>';
+		echo '<div class="evf-add-row"><span class="evf-btn dashicons dashicons-plus-alt">' . esc_html( 'Add Row', 'everest-forms' ) . '</span></div>';
 		echo '</div >';
 	}
 
