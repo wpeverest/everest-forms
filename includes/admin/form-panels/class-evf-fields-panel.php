@@ -277,7 +277,7 @@ class EVF_Fields_Panel extends EVF_Admin_Form_Panel {
 		}
 		echo '</div>';
 		echo '<div class="clear evf-clear"></div>';
-		echo '<div class="evf-add-row"><span class="dashicons dashicons-plus-alt"></span></div>';
+		echo '<div class="evf-add-row"><span class="evf-btn dashicons dashicons-plus-alt">ADD ROW</span></div>';
 		echo '</div >';
 	}
 
