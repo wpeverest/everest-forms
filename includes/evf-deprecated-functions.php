@@ -8,9 +8,7 @@
  * @version 1.0.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Runs a deprecated action with notice only if used.

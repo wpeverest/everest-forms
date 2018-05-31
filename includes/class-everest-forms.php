@@ -24,17 +24,29 @@ final class EverestForms {
 	public $version = '1.2.0';
 
 	/**
+	 * The single instance of the class.
+	 *
+	 * @var   EverestForms
+	 * @since 1.0.0
+	 */
+	protected static $_instance = null;
+
+	/**
+	 * Session instance.
+	 *
+	 * @var EVF_Session|EVF_Session_Handler
+	 */
+	public $session = null;
+
+	/**
 	 * The form data handler instance.
 	 *
-	 * @since 1.0.0
 	 * @var object everest_forms_Form_Handler
 	 */
 	public $form;
 
 	/**
 	 * The entry data handler instance.
-	 *
-	 * @since 1.1.0
 	 *
 	 * @var EVF_Entry_Handler
 	 */
@@ -49,74 +61,27 @@ final class EverestForms {
 	 */
 	public $entry_meta;
 
-	/*
-	 * Number of grid in form
-	 */
-	public $form_grid = 2;
-
-	/**
-	 * The front-end instance.
-	 *
-	 * @since      1.0.0
-	 *
-	 * @var object everest_forms_Frontend
-	 */
-	public $frontend;
-
-	/**
-	 * The process instance.
-	 *
-	 * @since      1.0.0
-	 *
-	 * @var object everest_forms_Process
-	 */
-	public $process;
-
-	/**
-	 * The smart tags instance.
-	 *
-	 * @since      1.0.0
-	 *
-	 * @var object everest_forms_Smart_Tags
-	 */
-	public $smart_tags;
-	/**
-	 * The single instance of the class.
-	 *
-	 * @var EverestForms
-	 * @since      1.0.0
-	 */
-	protected static $_instance = null;
-
-	/**
-	 * Session instance.
-	 *
-	 * @var EVF_Session|EVF_Session_Handler
-	 */
-	public $session = null;
-
 	/**
 	 * Main EverestForms Instance.
 	 *
 	 * Ensures only one instance of EverestForms is loaded or can be loaded.
 	 *
-	 * @since      1.0.0
+	 * @since  1.0.0
 	 * @static
-	 * @see   EVF()
+	 * @see    EVF()
 	 * @return EverestForms - Main instance.
 	 */
 	public static function instance() {
 		if ( is_null( self::$_instance ) ) {
 			self::$_instance = new self();
 		}
-
 		return self::$_instance;
 	}
 
 	/**
 	 * Cloning is forbidden.
 	 *
-	 * @since      1.0.0
+	 * @since 1.0.0
 	 */
 	public function __clone() {
 		evf_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'everest-forms' ), '1.0.0' );
@@ -125,7 +90,7 @@ final class EverestForms {
 	/**
 	 * Unserializing instances of this class is forbidden.
 	 *
-	 * @since      1.0.0
+	 * @since 1.0.0
 	 */
 	public function __wakeup() {
 		evf_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'everest-forms' ), '1.0.0' );
@@ -139,12 +104,14 @@ final class EverestForms {
 		$this->includes();
 		$this->init_hooks();
 		add_action( 'plugins_loaded', array( $this, 'objects' ), 10 );
+
+		do_action( 'everest_forms_loaded' );
 	}
 
 	/**
 	 * Hook into actions and filters.
 	 *
-	 * @since      1.0.0
+	 * @since 1.0.0
 	 */
 	private function init_hooks() {
 		register_activation_hook( EVF_PLUGIN_FILE, array( 'EVF_Install', 'install' ) );
@@ -180,6 +147,7 @@ final class EverestForms {
 	 */
 	private function define_constants() {
 		$upload_dir = wp_upload_dir( null, false );
+
 		$this->define( 'EVF_ABSPATH', dirname( EVF_PLUGIN_FILE ) . '/' );
 		$this->define( 'EVF_PLUGIN_BASENAME', plugin_basename( EVF_PLUGIN_FILE ) );
 		$this->define( 'EVF_VERSION', $this->version );
@@ -311,16 +279,9 @@ final class EverestForms {
 	 * @since      1.0.0
 	 */
 	public function objects() {
-
 		// Global objects.
-		$this->form = new EVF_Form_Handler;
-
-		//$this->frontend   = new EVF_Forms_Frontend;
-		$this->task = new EVF_Form_Task;
-		//$this->smart_tags = new EVF_Forms_Smart_Tags;
-
-		// Hook now that all of the EverestForms stuff is loaded.
-		do_action( 'everest_forms_loaded' );
+		$this->form = new EVF_Form_Handler();
+		$this->task = new EVF_Form_Task();
 	}
 
 	/**

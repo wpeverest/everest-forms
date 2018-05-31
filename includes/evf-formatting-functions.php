@@ -4,20 +4,16 @@
  *
  * Functions for formatting data.
  *
- * @author 		WPEverest
- * @category 	Core
- * @package 	WPEverest/Functions
- * @version     1.0.0
+ * @package WPEverest\Functions
+ * @version 1.0.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
- * Converts a string (e.g. yes or no) to a bool.
- * @since      1.0.0
- * @param string $string
+ * Converts a string (e.g. 'yes' or 'no') to a bool.
+ *
+ * @param string $string String to convert.
  * @return bool
  */
 function evf_string_to_bool( $string ) {
@@ -25,10 +21,10 @@ function evf_string_to_bool( $string ) {
 }
 
 /**
- * Converts a bool to a string.
- * @since      1.0.0
- * @param bool $bool
- * @return string yes or no
+ * Converts a bool to a 'yes' or 'no'.
+ *
+ * @param bool $bool String to convert.
+ * @return string
  */
 function evf_bool_to_string( $bool ) {
 	if ( ! is_bool( $bool ) ) {
@@ -39,9 +35,9 @@ function evf_bool_to_string( $bool ) {
 
 /**
  * Explode a string into an array by $delimiter and remove empty values.
- * @since      1.0.0
- * @param string $string
- * @param string $delimiter
+ *
+ * @param string $string    String to convert.
+ * @param string $delimiter Delimiter, defaults to ','.
  * @return array
  */
 function evf_string_to_array( $string, $delimiter = ',' ) {
@@ -50,10 +46,9 @@ function evf_string_to_array( $string, $delimiter = ',' ) {
 
 /**
  * Sanitize taxonomy names. Slug format (no spaces, lowercase).
+ * Urldecode is used to reverse munging of UTF8 characters.
  *
- * urldecode is used to reverse munging of UTF8 characters.
- *
- * @param mixed $taxonomy
+ * @param string $taxonomy Taxonomy name.
  * @return string
  */
 function evf_sanitize_taxonomy_name( $taxonomy ) {
@@ -65,8 +60,7 @@ function evf_sanitize_taxonomy_name( $taxonomy ) {
  *
  * Cannot use evf_clean because it sometimes strips % chars and breaks the user's setting.
  *
- * @since      1.0.0
- * @param  string $value
+ * @param  string $value Permalink.
  * @return string
  */
 function evf_sanitize_permalink( $value ) {
@@ -78,7 +72,7 @@ function evf_sanitize_permalink( $value ) {
 		$value = '';
 	}
 
-	$value = esc_url_raw( $value );
+	$value = esc_url_raw( trim( $value ) );
 	$value = str_replace( 'http://', '', $value );
 	return untrailingslashit( $value );
 }
@@ -86,11 +80,11 @@ function evf_sanitize_permalink( $value ) {
 /**
  * Gets the filename part of a download URL.
  *
- * @param string $file_url
+ * @param string $file_url File URL.
  * @return string
  */
 function evf_get_filename_from_url( $file_url ) {
-	$parts = parse_url( $file_url );
+	$parts = wp_parse_url( $file_url );
 	if ( isset( $parts['path'] ) ) {
 		return basename( $parts['path'] );
 	}
@@ -99,7 +93,8 @@ function evf_get_filename_from_url( $file_url ) {
 /**
  * Clean variables using sanitize_text_field. Arrays are cleaned recursively.
  * Non-scalar values are ignored.
- * @param string|array $var
+ *
+ * @param string|array $var Data to sanitize.
  * @return string|array
  */
 function evf_clean( $var ) {
@@ -112,8 +107,8 @@ function evf_clean( $var ) {
 
 /**
  * Run evf_clean over posted textarea but maintain line breaks.
- * @since      1.0.0
- * @param string $var
+ *
+ * @param  string $var Data to sanitize.
  * @return string
  */
 function evf_sanitize_textarea( $var ) {
@@ -123,36 +118,33 @@ function evf_sanitize_textarea( $var ) {
 /**
  * Sanitize a string destined to be a tooltip.
  *
- * @param string $var
+ * @since  1.0.0 Tooltips are encoded with htmlspecialchars to prevent XSS. Should not be used in conjunction with esc_attr()
+ * @param  string $var Data to sanitize.
  * @return string
  */
 function evf_sanitize_tooltip( $var ) {
-	return htmlspecialchars( wp_kses( html_entity_decode( $var ), array(
-		'br'     => array(),
-		'em'     => array(),
-		'strong' => array(),
-		'small'  => array(),
-		'span'   => array(),
-		'ul'     => array(),
-		'li'     => array(),
-		'ol'     => array(),
-		'p'      => array(),
-	) ) );
-}
-
-function evf_sanitize_array_combine( $array ) {
-	if ( empty( $array ) || ! is_array( $array ) ) {
-		return $array;
-	}
-
-	return array_map( 'sanitize_text_field', $array );
+	return htmlspecialchars(
+		wp_kses(
+			html_entity_decode( $var ), array(
+				'br'     => array(),
+				'em'     => array(),
+				'strong' => array(),
+				'small'  => array(),
+				'span'   => array(),
+				'ul'     => array(),
+				'li'     => array(),
+				'ol'     => array(),
+				'p'      => array(),
+			)
+		)
+	);
 }
 
 /**
  * Merge two arrays.
  *
- * @param array $a1
- * @param array $a2
+ * @param array $a1 First array to merge.
+ * @param array $a2 Second array to merge.
  * @return array
  */
 function evf_array_overlay( $a1, $a2 ) {
@@ -170,27 +162,48 @@ function evf_array_overlay( $a1, $a2 ) {
 }
 
 /**
- * let_to_num function.
+ * Array combine.
+ *
+ * @param  array $array Array of data.
+ * @return array
+ */
+function evf_sanitize_array_combine( $array ) {
+	if ( empty( $array ) || ! is_array( $array ) ) {
+		return $array;
+	}
+
+	return array_map( 'sanitize_text_field', $array );
+}
+
+/**
+ * Notation to numbers.
  *
  * This function transforms the php.ini notation for numbers (like '2M') to an integer.
  *
- * @param $size
+ * @param  string $size Size value.
  * @return int
  */
 function evf_let_to_num( $size ) {
-	$l   = substr( $size, -1 );
-	$ret = substr( $size, 0, -1 );
+	$l    = substr( $size, -1 );
+	$ret  = substr( $size, 0, -1 );
+	$byte = 1024;
+
 	switch ( strtoupper( $l ) ) {
 		case 'P':
 			$ret *= 1024;
+			// No break.
 		case 'T':
 			$ret *= 1024;
+			// No break.
 		case 'G':
 			$ret *= 1024;
+			// No break.
 		case 'M':
 			$ret *= 1024;
+			// No break.
 		case 'K':
 			$ret *= 1024;
+			// No break.
 	}
 	return $ret;
 }
@@ -216,11 +229,11 @@ function evf_time_format() {
 /**
  * Convert mysql datetime to PHP timestamp, forcing UTC. Wrapper for strtotime.
  *
- * @since      1.0.0
+ * Based on wcs_strtotime_dark_knight() from WC Subscriptions by Prospress.
  *
- * @param string $time_string
- * @param int|null $from_timestamp
- *
+ * @since  3.0.0
+ * @param  string   $time_string    Time string.
+ * @param  int|null $from_timestamp Timestamp to convert from.
  * @return int
  */
 function evf_string_to_timestamp( $time_string, $from_timestamp = null ) {
@@ -244,8 +257,7 @@ function evf_string_to_timestamp( $time_string, $from_timestamp = null ) {
 /**
  * Callback which can flatten post meta (gets the first value if it's an array).
  *
- * @since      1.0.0
- * @param  array $value
+ * @param  array $value Value to flatten.
  * @return mixed
  */
 function evf_flatten_meta_callback( $value ) {
@@ -255,15 +267,15 @@ function evf_flatten_meta_callback( $value ) {
 if ( ! function_exists( 'evf_rgb_from_hex' ) ) {
 
 	/**
-	 * Hex darker/lighter/contrast functions for colors.
+	 * Convert RGB to HEX.
 	 *
-	 * @param mixed $color
+	 * @param mixed $color Color.
 	 *
 	 * @return array
 	 */
 	function evf_rgb_from_hex( $color ) {
 		$color = str_replace( '#', '', $color );
-		// Convert shorthand colors to full format, e.g. "FFF" -> "FFFFFF"
+		// Convert shorthand colors to full format, e.g. "FFF" -> "FFFFFF".
 		$color = preg_replace( '~^(.)(.)(.)$~', '$1$1$2$2$3$3', $color );
 
 		$rgb      = array();
@@ -278,10 +290,11 @@ if ( ! function_exists( 'evf_rgb_from_hex' ) ) {
 if ( ! function_exists( 'evf_hex_darker' ) ) {
 
 	/**
-	 * Hex darker/lighter/contrast functions for colors.
+	 * Make HEX color darker.
 	 *
-	 * @param mixed $color
-	 * @param int $factor (default: 30)
+	 * @param mixed $color  Color.
+	 * @param int   $factor Darker factor.
+	 *                      Defaults to 30.
 	 * @return string
 	 */
 	function evf_hex_darker( $color, $factor = 30 ) {
@@ -295,7 +308,7 @@ if ( ! function_exists( 'evf_hex_darker' ) ) {
 
 			$new_hex_component = dechex( $new_decimal );
 			if ( strlen( $new_hex_component ) < 2 ) {
-				$new_hex_component = "0" . $new_hex_component;
+				$new_hex_component = '0' . $new_hex_component;
 			}
 			$color .= $new_hex_component;
 		}
@@ -307,10 +320,11 @@ if ( ! function_exists( 'evf_hex_darker' ) ) {
 if ( ! function_exists( 'evf_hex_lighter' ) ) {
 
 	/**
-	 * Hex darker/lighter/contrast functions for colors.
+	 * Make HEX color lighter.
 	 *
-	 * @param mixed $color
-	 * @param int $factor (default: 30)
+	 * @param mixed $color  Color.
+	 * @param int   $factor Lighter factor.
+	 *                      Defaults to 30.
 	 * @return string
 	 */
 	function evf_hex_lighter( $color, $factor = 30 ) {
@@ -325,7 +339,7 @@ if ( ! function_exists( 'evf_hex_lighter' ) ) {
 
 			$new_hex_component = dechex( $new_decimal );
 			if ( strlen( $new_hex_component ) < 2 ) {
-				$new_hex_component = "0" . $new_hex_component;
+				$new_hex_component = '0' . $new_hex_component;
 			}
 			$color .= $new_hex_component;
 		}
@@ -334,18 +348,15 @@ if ( ! function_exists( 'evf_hex_lighter' ) ) {
 	}
 }
 
-if ( ! function_exists( 'evf_light_or_dark' ) ) {
+if ( ! function_exists( 'evf_is_light' ) ) {
 
 	/**
-	 * Detect if we should use a light or dark color on a background color.
+	 * Determine whether a hex color is light.
 	 *
-	 * @param mixed $color
-	 * @param string $dark (default: '#000000')
-	 * @param string $light (default: '#FFFFFF')
-	 * @return string
+	 * @param mixed $color Color.
+	 * @return bool  True if a light color.
 	 */
-	function evf_light_or_dark( $color, $dark = '#000000', $light = '#FFFFFF' ) {
-
+	function evf_hex_is_light( $color ) {
 		$hex = str_replace( '#', '', $color );
 
 		$c_r = hexdec( substr( $hex, 0, 2 ) );
@@ -354,7 +365,24 @@ if ( ! function_exists( 'evf_light_or_dark' ) ) {
 
 		$brightness = ( ( $c_r * 299 ) + ( $c_g * 587 ) + ( $c_b * 114 ) ) / 1000;
 
-		return $brightness > 155 ? $dark : $light;
+		return $brightness > 155;
+	}
+}
+
+if ( ! function_exists( 'evf_light_or_dark' ) ) {
+
+	/**
+	 * Detect if we should use a light or dark color on a background color.
+	 *
+	 * @param mixed  $color Color.
+	 * @param string $dark  Darkest reference.
+	 *                      Defaults to '#000000'.
+	 * @param string $light Lightest reference.
+	 *                      Defaults to '#FFFFFF'.
+	 * @return string
+	 */
+	function evf_light_or_dark( $color, $dark = '#000000', $light = '#FFFFFF' ) {
+		return evf_hex_is_light( $color ) ? $dark : $light;
 	}
 }
 
@@ -363,14 +391,13 @@ if ( ! function_exists( 'evf_format_hex' ) ) {
 	/**
 	 * Format string as hex.
 	 *
-	 * @param string $hex
-	 * @return string
+	 * @param string $hex HEX color.
+	 * @return string|null
 	 */
 	function evf_format_hex( $hex ) {
-
 		$hex = trim( str_replace( '#', '', $hex ) );
 
-		if ( strlen( $hex ) == 3 ) {
+		if ( strlen( $hex ) === 3 ) {
 			$hex = $hex[0] . $hex[0] . $hex[1] . $hex[1] . $hex[2] . $hex[2];
 		}
 
@@ -391,8 +418,7 @@ function evf_format_phone_number( $phone ) {
 /**
  * Wrapper for mb_strtoupper which see's if supported first.
  *
- * @since      1.0.0
- * @param  string $string
+ * @param  string $string String to format.
  * @return string
  */
 function evf_strtoupper( $string ) {
@@ -403,8 +429,7 @@ function evf_strtoupper( $string ) {
  * Make a string lowercase.
  * Try to use mb_strtolower() when available.
  *
- * @since      1.0.0
- * @param  string $string
+ * @param  string $string String to format.
  * @return string
  */
 function evf_strtolower( $string ) {
@@ -413,9 +438,12 @@ function evf_strtolower( $string ) {
 
 /**
  * Trim a string and append a suffix.
- * @param  string  $string
- * @param  integer $chars
- * @param  string  $suffix
+ *
+ * @param  string  $string String to trim.
+ * @param  integer $chars  Amount of characters.
+ *                         Defaults to 200.
+ * @param  string  $suffix Suffix.
+ *                         Defaults to '...'.
  * @return string
  */
 function evf_trim_string( $string, $chars = 200, $suffix = '...' ) {
@@ -432,8 +460,7 @@ function evf_trim_string( $string, $chars = 200, $suffix = '...' ) {
 /**
  * Format content to display shortcodes.
  *
- * @since      1.0.0
- * @param  string $raw_string
+ * @param  string $raw_string Raw string.
  * @return string
  */
 function evf_format_content( $raw_string ) {
@@ -443,8 +470,7 @@ function evf_format_content( $raw_string ) {
 /**
  * Process oEmbeds.
  *
- * @since      1.0.0
- * @param string $content
+ * @param  string $content Content.
  * @return string
  */
 function evf_do_oembeds( $content ) {
@@ -460,7 +486,7 @@ function evf_do_oembeds( $content ) {
  *
  * Source:  https://gist.github.com/Nickology/f700e319cbafab5eaedc
  *
- * @since      1.0.0
+ * @since  1.0.0
  * @return array
  */
 function evf_array_merge_recursive_numeric() {
@@ -512,4 +538,48 @@ function evf_array_merge_recursive_numeric() {
 	}
 
 	return $final;
+}
+
+/**
+ * Implode and escape HTML attributes for output.
+ *
+ * @since 1.2.0
+ * @param array $raw_attributes Attribute name value pairs.
+ * @return string
+ */
+function evf_implode_html_attributes( $raw_attributes ) {
+	$attributes = array();
+	foreach ( $raw_attributes as $name => $value ) {
+		$attributes[] = esc_attr( $name ) . '="' . esc_attr( $value ) . '"';
+	}
+	return implode( ' ', $attributes );
+}
+
+/**
+ * Parse a relative date option from the settings API into a standard format.
+ *
+ * @since 1.2.0
+ * @param mixed $raw_value Value stored in DB.
+ * @return array Nicely formatted array with number and unit values.
+ */
+function evf_parse_relative_date_option( $raw_value ) {
+	$periods = array(
+		'days'   => __( 'Day(s)', 'everest-forms' ),
+		'weeks'  => __( 'Week(s)', 'everest-forms' ),
+		'months' => __( 'Month(s)', 'everest-forms' ),
+		'years'  => __( 'Year(s)', 'everest-forms' ),
+	);
+
+	$value = wp_parse_args( (array) $raw_value, array(
+		'number' => '',
+		'unit'   => 'days',
+	) );
+
+	$value['number'] = ! empty( $value['number'] ) ? absint( $value['number'] ) : '';
+
+	if ( ! in_array( $value['unit'], array_keys( $periods ), true ) ) {
+		$value['unit'] = 'days';
+	}
+
+	return $value;
 }

@@ -46,4 +46,7 @@
 			<property name="text_domain" type="array" value="everest-forms" />
 		</properties>
 	</rule>
+	<rule ref="PEAR.NamingConventions.ValidClassName">
+		<exclude-pattern>includes/admin/settings/class-evf-settings-recaptcha.php</exclude-pattern>
+	</rule>
 </ruleset>
