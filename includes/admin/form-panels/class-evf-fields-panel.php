@@ -212,10 +212,10 @@ class EVF_Fields_Panel extends EVF_Admin_Form_Panel {
 	 * @param $form
 	 */
 	public function everest_forms_builder_preview() {
-
 		$form_data = $this->form_data;
-
 		$fields    = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
+		$form_grid = apply_filters( 'everest_forms_default_form_grid', 2 );
+
 		echo '<div class="evf-admin-field-container">';
 		echo '<div class="evf-admin-field-wrapper">';
 		$number_of_rows = isset( $form_data['structure'] ) ? count( $form_data['structure'] ) : 1;
@@ -223,8 +223,8 @@ class EVF_Fields_Panel extends EVF_Admin_Form_Panel {
 		for ( $row = 1; $row <= $number_of_rows; $row ++ ) {
 			echo '<div class="evf-admin-row" data-row-id="' . $row . '">';
 			$row_grid    = isset( $form_data['structure'][ 'row_' . $row ] ) ? $form_data['structure'][ 'row_' . $row ] : array();
-			$active_grid = count( $row_grid ) > 0 ? count( $row_grid ) : EVF()->form_grid;
-			$total_grid  = EVF()->form_grid;
+			$active_grid = count( $row_grid ) > 0 ? count( $row_grid ) : $form_grid;
+			$total_grid  = $form_grid;
 			$active_grid = $active_grid > $total_grid ? $total_grid : $active_grid;
 			echo '<div class="evf-toggle-row">';
 			echo '<div class="evf-delete-row"><span class="dashicons dashicons-trash" title="Delete"></span></div>';
