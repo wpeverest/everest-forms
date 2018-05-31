@@ -6,6 +6,8 @@
 /**
  * Import
  */
+@import 'mixins';
+@import 'variables';
 @import "scss/colors";
 @import "scss/confirm";
 @import "scss/buttons";
@@ -122,37 +124,29 @@
 	margin-top: 10px;
 }
 
-.wrap.everest-forms {
+/**
+ * Help Tip
+ */
+.everest-forms-help-tip {
+	color: #666;
+	display: inline-block;
+	font-size: 1.1em;
+	font-style: normal;
+	height: 16px;
+	line-height: 16px;
+	position: relative;
+	vertical-align: middle;
+	width: 16px;
 
-	h2.evf-nav-tab-wrapper {
-		margin-bottom: 1em;
+	&::after {
+		@include icon_dashicons( '\f223' );
+		cursor: help;
 	}
+}
 
-	nav.evf-nav-tab-wrapper {
-		margin: 1.5em 0 1em;
-	}
-
-	.subsubsub {
-		margin: -8px 0 0;
-	}
-
-	#template div {
-		margin: 0;
-
-		p .button {
-			float: right;
-			margin-left: 10px;
-			margin-top: -4px;
-		}
-
-		.editor textarea {
-			margin-bottom: 8px;
-		}
-	}
-
-	textarea[disabled='disabled'] {
-		background: #dfdfdf !important;
-	}
+h2 .everest-forms-help-tip {
+	margin-top: -5px;
+	margin-left: 0.25em;
 }
 
 .clear {
@@ -164,14 +158,51 @@
 	margin-top: 10px;
 }
 
-.wrap.everest-forms {
-
-	h2.evf-nav-tab-wrapper {
-		margin-bottom: 1em;
-	}
+.everest-forms {
+	margin: 0;
+	background-color: $color-whitesmoke;
 
 	nav.evf-nav-tab-wrapper {
-		margin: 1.5em 0 1em;
+		padding: 0;
+		margin: 0 0 1em;
+		display: flex;
+		list-style: none;
+		border-bottom: none transparent;
+		background-color: $color-brand-secondary;
+
+		a.nav-tab {
+			border: none transparent;
+			background-color: transparent;
+			margin-left: 0;
+			font-size: 12px;
+			line-height: 24px;
+			color: $color-white;
+			padding: 10px 30px;
+			display: block;
+			cursor: pointer;
+			transition: 0.5s background-color ease-in-out;
+
+			.dashicons,
+			.dashicons-before:before {
+				display: block;
+				font-size: 32px;
+				width: auto;
+				height: auto;
+			}
+
+			&.nav-tab-active {
+				background-color: $color-whitesmoke;
+				color: $color-gray-darker;
+
+				&:focus {
+					box-shadow: none;
+				}
+			}
+
+			&:focus {
+				box-shadow:0 0 0 0 transparent;
+			}
+		}
 	}
 
 	.subsubsub {
@@ -194,6 +225,252 @@
 
 	textarea[disabled='disabled'] {
 		background: #dfdfdf !important;
+	}
+
+	table.form-table {
+		margin: 0;
+		position: relative;
+		table-layout: fixed;
+
+		.forminp-radio ul {
+			margin: 0;
+			li {
+				line-height: 1.4em;
+			}
+		}
+
+		input[type="text"],
+		input[type="number"],
+		input[type="email"] {
+			height: auto;
+		}
+
+		textarea.input-text {
+			height: 100%;
+			min-width: 150px;
+			display: block;
+		}
+
+		// Give regular settings inputs a standard width and padding.
+		textarea,
+		input[type="text"],
+		input[type="email"],
+		input[type="number"],
+		input.regular-input {
+			width: 400px;
+			margin: 0;
+			padding: 6px;
+			box-sizing: border-box;
+			vertical-align: top;
+		}
+
+		select {
+			width: 400px;
+			margin: 0;
+			box-sizing: border-box;
+			height: 32px;
+			line-height: 32px;
+			vertical-align: top;
+		}
+
+		input[size] {
+			width: auto !important;
+		}
+
+		// Ignore nested inputs.
+		table {
+			select,
+			textarea,
+			input[type="text"],
+			input[type="email"],
+			input[type="number"],
+			input.regular-input {
+				width: auto;
+			}
+		}
+
+		textarea.wide-input {
+			width: 100%;
+		}
+
+		img.help_tip,
+		.everest-forms-help-tip {
+			padding: 0;
+			margin: -4px 0 0 5px;
+			vertical-align: middle;
+			cursor: help;
+			line-height: 1;
+		}
+
+		span.help_tip {
+			cursor: help;
+			color: $blue;
+		}
+
+		th {
+			position: relative;
+			padding-right: 24px;
+		}
+
+		th label {
+			position: relative;
+			display: block;
+
+			img.help_tip,
+			.everest-forms-help-tip {
+				margin: -8px -24px 0 0;
+				position: absolute;
+				right: 0;
+				top: 50%;
+			}
+		}
+
+		th label + .everest-forms-help-tip {
+			margin: 0 0 0 0;
+			position: absolute;
+			right: 0;
+			top: 20px;
+		}
+
+		.select2-container {
+			vertical-align: top;
+			margin-bottom: 3px;
+		}
+
+		table.widefat th {
+			padding-right: inherit;
+		}
+
+		.wp-list-table .everest-forms-help-tip {
+			float: none;
+		}
+
+		fieldset {
+			margin-top: 4px;
+
+			img.help_tip,
+			.everest-forms-help-tip {
+				margin: -3px 0 0 5px;
+			}
+
+			p.description {
+				margin-bottom: 8px;
+			}
+
+			&:first-child {
+				margin-top: 0;
+			}
+		}
+
+		.iris-picker {
+			z-index: 100;
+			display: none;
+			position: absolute;
+			border: 1px solid #ccc;
+			border-radius: 3px;
+			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+
+			.ui-slider {
+				border: 0 !important;
+				margin: 0 !important;
+				width: auto !important;
+				height: auto !important;
+				background: none transparent !important;
+
+				.ui-slider-handle {
+					margin-bottom: 0 !important;
+				}
+			}
+		}
+
+		.iris-error {
+			background-color: #ffafaf;
+		}
+
+		.colorpickpreview {
+			padding: 7px 0;
+			line-height: 1em;
+			display: inline-block;
+			width: 26px;
+			border: 1px solid #ddd;
+			font-size: 14px;
+		}
+	}
+
+	.evf-setting-tab-content {
+		display: none;
+		padding: 30px;
+
+		h2 {
+			margin-top: 0;
+			color: $color-gray-more-darken;
+		}
+
+		.form-table {
+			margin-top: 0;
+			border-top: 1px solid $color-white-darken;
+		}
+
+		&.active {
+			display: block;
+		}
+
+		label {
+			color:$color-gray-darker;
+		}
+
+		textarea  {
+			height: 100px;
+		}
+
+		input[type="text"],
+		select {
+			min-width: 350px;
+		}
+
+		.forminp:not(.forminp-tinymce) {
+			input,
+			select,
+			textarea {
+				border-color: $border-color;
+				padding:10px;
+				box-shadow: 0 0 0 0 transparent;
+				color: #555;
+				height:45px;
+				border-radius:3px;
+			}
+
+			input[type="checkbox"],
+			input[type="radio"] {
+				height:16px;
+			}
+		}
+	}
+
+	p.submit {
+		padding-left: 30px;
+		padding-right: 30px;
+
+		.everest-forms-save-button {
+			padding: 10px 20px;
+			height: auto;
+			border-radius: 5px;
+			border: 0 transparent;
+			text-shadow: 0 0 0 transparent;
+			box-shadow: 0 0 0 0 transparent;
+			background: $submit-color;
+			transition: 0.5s background ease-in-out;
+
+			&:hover {
+				background: $color-brand-secondary;
+			}
+		}
+	}
+}
+
+.everest-forms_page_evf-settings {
+	#wpcontent {
+		padding-left: 0;
 	}
 }
 
@@ -402,5 +679,23 @@ img.tips {
 		top: -3px;
 		left: 50%;
 		margin: -1em 0 0 -3px;
+	}
+}
+
+@media screen and (max-width: 782px) {
+	.everest-forms .evf-setting-tab-content .form-table th {
+		padding-top: 15px;
+		padding-bottom: 15px;
+	}
+}
+
+@media screen and (max-width: 480px) {
+	.everest-forms .evf-nav-tab-wrapper a.nav-tab {
+		padding: 10px;
+
+		.dashicons,
+		.dashicons-before:before {
+			display: none;
+		}
 	}
 }

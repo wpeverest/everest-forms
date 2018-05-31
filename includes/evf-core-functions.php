@@ -453,7 +453,7 @@ function evf_help_tip( $tip, $allow_html = false ) {
 		$tip = esc_attr( $tip );
 	}
 
-	return '<span class="evf-help-tip" data-tip="' . $tip . '"></span>';
+	return '<span class="everest-forms-help-tip" data-tip="' . $tip . '"></span>';
 }
 
 /**

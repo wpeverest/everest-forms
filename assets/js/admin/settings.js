@@ -19,7 +19,7 @@
 			$( '.everest-forms .nav-tab' ).removeClass( 'nav-tab-active' );
 			$( this ).addClass( 'nav-tab-active' );
 			$( '.evf-setting-tab-content' ).removeClass( 'active' );
-			$( '.evf-setting-tab-content[data-conent-key="' + tab + '"]' ).addClass( 'active' );
+			$( '.evf-setting-tab-content[data-content-key="' + tab + '"]' ).addClass( 'active' );
 		});
 	});
 })( jQuery );
