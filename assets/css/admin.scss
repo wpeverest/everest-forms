@@ -175,15 +175,15 @@ h2 .everest-forms-help-tip {
 			background-color: $everestforms;
 
 			a.nav-tab {
-				border: none transparent;
-				background-color: transparent;
+				color: #fff;
 				margin-left: 0;
-				font-size: 12px;
-				line-height: 24px;
-				color: $color-white;
-				padding: 10px 30px;
 				display: block;
 				cursor: pointer;
+				font-size: 12px;
+				line-height: 24px;
+				padding: 10px 30px;
+				border: none transparent;
+				background-color: transparent;
 				transition: 0.5s background-color ease-in-out;
 
 				.dashicons,
@@ -195,7 +195,7 @@ h2 .everest-forms-help-tip {
 				}
 
 				&.nav-tab-active {
-					background-color: #f1f1f1; // $color-whitesmoke;
+					background-color: #f1f1f1;
 					color: $color-gray-darker;
 
 					&:focus {
@@ -212,6 +212,21 @@ h2 .everest-forms-help-tip {
 		.everest-forms-settings {
 			padding-left: 20px;
 			padding-right: 20px;
+
+			textarea,
+			input[type="text"],
+			input[type="email"],
+			input[type="number"],
+			select {
+				color: #555;
+				box-shadow: none;
+				border-radius: 3px;
+				border: 1px solid #ddd;
+
+				&:focus {
+					border-color: #bbb;
+				}
+			}
 		}
 	}
 }
@@ -293,7 +308,7 @@ h2 .everest-forms-help-tip {
 		}
 
 		select {
-			width: 400px;
+			width: 350px;
 			margin: 0;
 			box-sizing: border-box;
 			height: 32px;
@@ -351,6 +366,11 @@ h2 .everest-forms-help-tip {
 				right: 0;
 				top: 50%;
 			}
+		}
+
+		th label,
+		th.titledesc {
+			color: #444;
 		}
 
 		th label + .everest-forms-help-tip {
@@ -422,56 +442,6 @@ h2 .everest-forms-help-tip {
 			width: 26px;
 			border: 1px solid #ddd;
 			font-size: 14px;
-		}
-	}
-
-	.evf-setting-tab-content {
-		display: none;
-		padding: 30px;
-
-		h2 {
-			margin-top: 0;
-			color: $color-gray-more-darken;
-		}
-
-		.form-table {
-			margin-top: 0;
-			border-top: 1px solid $color-white-darken;
-		}
-
-		&.active {
-			display: block;
-		}
-
-		label {
-			color:$color-gray-darker;
-		}
-
-		textarea  {
-			height: 100px;
-		}
-
-		input[type="text"],
-		select {
-			min-width: 350px;
-		}
-
-		.forminp:not(.forminp-tinymce) {
-			input,
-			select,
-			textarea {
-				border-color: $border-color;
-				// padding:10px;
-				box-shadow: 0 0 0 0 transparent;
-				color: #555;
-				// height:45px;
-				border-radius:3px;
-			}
-
-			input[type="checkbox"],
-			input[type="radio"] {
-				height:16px;
-			}
 		}
 	}
 
