@@ -22,7 +22,7 @@ class EVF_Settings_Validation extends EVF_Settings_Page {
 	 */
 	public function __construct() {
 		$this->id    = 'validation';
-		$this->icon  = 'dashicons dashicons-warning';
+		$this->icon  = 'evf-icon  evf-icon-checkbox';
 		$this->label = __( 'Validations', 'everest-forms' );
 
 		parent::__construct();
