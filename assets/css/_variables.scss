@@ -2,8 +2,8 @@
  * EverestForms CSS Variables
  */
 
-$everestforms:   	#ff0033;
-$green:         	#7ad03a;
+$everestforms:   	#7f5aec;
+$green:         	#51cf66;
 $red:           	#a00;
 $orange:        	#ffba00;
 $blue:          	#2ea2cc;
@@ -13,9 +13,3 @@ $primarytext:       desaturate(lighten($primary, 52%), 18%);    // Text on prima
 
 $secondary:         desaturate(lighten($primary, 44%), 91%);    // Secondary buttons
 $secondarytext:     desaturate(darken($secondary, 64%), 91%);   // Text on secondary color bg
-
-$highlight:         adjust-hue($primary, 150deg);               // Prices, In stock labels, sales flash
-$highlightext:      desaturate(lighten($highlight, 50%), 18%);  // Text on highlight color bg
-
-$contentbg:         #fff;                                       // Content BG - Tabs (active state)
-$subtext:           #777;                                       // small, breadcrumbs etc

@@ -160,7 +160,7 @@ h2 .everest-forms-help-tip {
 
 .everest-forms {
 	margin: 0;
-	background-color: $color-whitesmoke;
+	// background-color: $color-whitesmoke;
 
 	nav.evf-nav-tab-wrapper {
 		padding: 0;
@@ -191,7 +191,7 @@ h2 .everest-forms-help-tip {
 			}
 
 			&.nav-tab-active {
-				background-color: $color-whitesmoke;
+				background-color: #f1f1f1; // $color-whitesmoke;
 				color: $color-gray-darker;
 
 				&:focus {
@@ -257,7 +257,7 @@ h2 .everest-forms-help-tip {
 		input[type="email"],
 		input[type="number"],
 		input.regular-input {
-			width: 400px;
+			width: 350px;
 			margin: 0;
 			padding: 6px;
 			box-sizing: border-box;
@@ -433,10 +433,10 @@ h2 .everest-forms-help-tip {
 			select,
 			textarea {
 				border-color: $border-color;
-				padding:10px;
+				// padding:10px;
 				box-shadow: 0 0 0 0 transparent;
 				color: #555;
-				height:45px;
+				// height:45px;
 				border-radius:3px;
 			}
 
@@ -452,13 +452,12 @@ h2 .everest-forms-help-tip {
 		padding-right: 30px;
 
 		.everest-forms-save-button {
-			padding: 10px 20px;
+			padding: 7px 14px;
 			height: auto;
-			border-radius: 5px;
-			border: 0 transparent;
-			text-shadow: 0 0 0 transparent;
-			box-shadow: 0 0 0 0 transparent;
-			background: $submit-color;
+			border: none;
+			box-shadow: none;
+			text-shadow: none;
+			background: $green;
 			transition: 0.5s background ease-in-out;
 
 			&:hover {
@@ -468,6 +467,7 @@ h2 .everest-forms-help-tip {
 	}
 }
 
+.everest-forms_page_evf-status,
 .everest-forms_page_evf-settings {
 	#wpcontent {
 		padding-left: 0;
