@@ -242,24 +242,23 @@ h2 .everest-forms-help-tip {
 			}
 
 			.form-table {
-				
 				tr {
-					border-top: 1px solid $color-gray-lighter;
+					border-bottom: 1px solid #e0e0e0;
+
+					&:first-child {
+						border-top: 1px solid #e0e0e0;
+					}
 				}
 
 				th {
-					padding: 40px 0;
+					padding: 35px 0;
 
-					label {
-						
-						.everest-forms-help-tip {
-							margin: 0;
-    						transform: translateY(-50%);
-						}
+					.everest-forms-help-tip {
+						margin: 0;
+						transform: translateY(-50%);
 					}
 				}
 			}
-			
 		}
 	}
 }
