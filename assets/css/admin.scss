@@ -249,14 +249,17 @@ h2 .everest-forms-help-tip {
 						border-top: 1px solid #e0e0e0;
 					}
 				}
-
 				th {
-					padding: 35px 0;
+					padding-top: 25px;
+    				vertical-align: middle;
 
 					.everest-forms-help-tip {
 						margin: 0;
 						transform: translateY(-50%);
 					}
+				}
+				td {
+					padding: 25px 0;
 				}
 			}
 		}
@@ -701,14 +704,42 @@ img.tips {
 	}
 }
 
+/**
+ * Small screen optimisation
+ */
+@media only screen and (max-width: 1280px) {}
+
+/**
+ * Optimisation for screens 900px and smaller
+ */
+@media only screen and (max-width: 900px) {}
+
+/**
+ * Optimisation for screens 782px and smaller
+ */
 @media screen and (max-width: 782px) {
-	.everest-forms .evf-setting-tab-content .form-table th {
-		padding-top: 15px;
-		padding-bottom: 15px;
+	.evf-nav-tab-wrapper {
+		overflow-x: auto;
+	}
+	.everest-forms_page_evf-settings {
+		.everest-forms {
+			.everest-forms-settings {
+				table {
+					&.form-table {
+						th {
+							padding: 15px 0 15px;
+						}
+					}
+				}
+			}
+		}
 	}
 }
 
-@media screen and (max-width: 480px) {
+/**
+ * Optimisation for screens 500px and smaller
+ */
+@media screen and (max-width: 500px) {
 	.everest-forms .evf-nav-tab-wrapper a.nav-tab {
 		padding: 10px;
 
