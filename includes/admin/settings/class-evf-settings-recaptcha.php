@@ -46,7 +46,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 				array(
 					'title'    => __( 'Site Key', 'everest-forms' ),
 					'desc'     => __( 'Get site key from google.', 'everest-forms' ),
-					'id'       => 'evf_recaptcha_site_key',
+					'id'       => 'everest_forms_recaptcha_site_key',
 					'default'  => '',
 					'type'     => 'text',
 					'class'    => '',

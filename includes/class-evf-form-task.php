@@ -103,8 +103,8 @@ class EVF_Form_Task {
 			}
 
 			// reCAPTCHA check.
-			$site_key   = get_option( 'evf_recaptcha_site_key', '' );
-			$secret_key = get_option( 'evf_recaptcha_site_secret', '' );
+			$site_key   = get_option( 'everest_forms_recaptcha_site_key', '' );
+			$secret_key = get_option( 'everest_forms_recaptcha_site_secret', '' );
 			if (
 				! empty( $site_key ) &&
 				! empty( $secret_key ) &&
