@@ -222,6 +222,10 @@ h2 .everest-forms-help-tip {
 			padding-left: 20px;
 			padding-right: 20px;
 
+			h2 {
+				font-size: 20px;
+			}
+
 			textarea,
 			input[type="text"],
 			input[type="email"],
@@ -236,6 +240,26 @@ h2 .everest-forms-help-tip {
 					border-color: #bbb;
 				}
 			}
+
+			.form-table {
+				
+				tr {
+					border-top: 1px solid $color-gray-lighter;
+				}
+
+				th {
+					padding: 40px 0;
+
+					label {
+						
+						.everest-forms-help-tip {
+							margin: 0;
+    						transform: translateY(-50%);
+						}
+					}
+				}
+			}
+			
 		}
 	}
 }
@@ -464,8 +488,8 @@ h2 .everest-forms-help-tip {
 		transition: 0.25s all ease-in-out;
 
 		&:hover {
-			background: $green-hov;
-			box-shadow: 2px 2px 10px 0px transparentize($color-gray-base, 0.75)
+			box-shadow: none;
+			background: desaturate(darken($green, 10%), 5%);
 		}
 	}
 }
