@@ -94,3 +94,10 @@ function evf_update_116_delete_options() {
 function evf_update_116_db_version() {
 	EVF_Install::update_db_version( '1.1.6' );
 }
+
+/**
+ * Update DB Version.
+ */
+function evf_update_120_db_version() {
+	EVF_Install::update_db_version( '1.2.0' );
+}
