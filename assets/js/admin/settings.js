@@ -68,7 +68,7 @@
 			}
 		});
 
-		$( '.submit button' ).click( function() {
+		$( '.submit :input' ).click( function() {
 			window.onbeforeunload = '';
 		});
 	});
