@@ -243,21 +243,23 @@ h2 .everest-forms-help-tip {
 
 			.form-table {
 				tr {
-					border-bottom: 1px solid #e0e0e0;
+					border-bottom: 1px solid #e00;
 
 					&:first-child {
-						border-top: 1px solid #e0e0e0;
+						border-top: 1px solid #e00;
 					}
 				}
+
 				th {
 					padding-top: 25px;
-    				vertical-align: middle;
+					vertical-align: middle;
 
 					.everest-forms-help-tip {
 						margin: 0;
 						transform: translateY(-50%);
 					}
 				}
+
 				td {
 					padding: 25px 0;
 				}
