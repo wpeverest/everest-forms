@@ -96,6 +96,25 @@ function evf_update_116_db_version() {
 }
 
 /**
+ * Update settings option to use new renamed option for 1.2.0.
+ */
+function evf_update_120_db_rename_options() {
+	$rename_options = array(
+		'evf_recaptcha_site_key'    => 'everest_forms_recaptcha_site_key',
+		'evf_recaptcha_site_secret' => 'everest_forms_recaptcha_site_secret',
+	);
+
+	foreach ( $rename_options as $old_option => $new_option ) {
+		$raw_old_option = get_option( $old_option );
+
+		if ( ! empty( $raw_old_option ) ) {
+			update_option( $new_option, $raw_old_option );
+			delete_option( $old_option );
+		}
+	}
+}
+
+/**
  * Update DB Version.
  */
 function evf_update_120_db_version() {

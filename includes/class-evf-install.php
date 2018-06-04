@@ -39,6 +39,10 @@ class EVF_Install {
 			'evf_update_116_delete_options',
 			'evf_update_116_db_version',
 		),
+		'1.2.0' => array(
+			'evf_update_120_db_rename_options',
+			'evf_update_120_db_version',
+		),
 	);
 
 	/**
