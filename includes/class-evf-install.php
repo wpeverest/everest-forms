@@ -515,7 +515,7 @@ CREATE TABLE {$wpdb->prefix}evf_sessions (
 				) );
 			}
 
-			update_option( 'evf_default_form_page_id', $form_id );
+			update_option( 'everest_forms_default_form_page_id', $form_id );
 		}
 	}
 

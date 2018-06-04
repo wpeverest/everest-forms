@@ -501,7 +501,7 @@ class EVF_Emails {
 	 */
 	public function get_template() {
 		if ( ! $this->template ) {
-			$this->template = get_option( 'evf_email_template', 'default' );
+			$this->template = get_option( 'everest_forms_email_template', 'default' );
 		}
 
 		return apply_filters( 'everest_forms_email_template', $this->template );

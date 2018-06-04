@@ -270,11 +270,11 @@ class EVF_Frontend_Scripts {
 				$params = array(
 					'ajax_url'                => EVF()->ajax_url(),
 					'everest_forms_data_save' => wp_create_nonce( 'everest_forms_data_save_nonce' ),
- 					'i18n_messages_required'  => get_option( 'evf_required_validation' ),
- 					'i18n_messages_url'       => get_option( 'evf_url_validation' ),
- 					'i18n_messages_email'     => get_option( 'evf_email_validation' ),
- 					'i18n_messages_number'    => get_option( 'evf_number_validation' ),
-					'i18n_messages_recaptcha' => get_option( 'evf_recaptcha_validation' ),
+ 					'i18n_messages_required'  => get_option( 'everest_forms_required_validation' ),
+ 					'i18n_messages_url'       => get_option( 'everest_forms_url_validation' ),
+ 					'i18n_messages_email'     => get_option( 'everest_forms_email_validation' ),
+ 					'i18n_messages_number'    => get_option( 'everest_forms_number_validation' ),
+					'i18n_messages_recaptcha' => get_option( 'everest_forms_recaptcha_validation' ),
  				);
 			break;
 			default:

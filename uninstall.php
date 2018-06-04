@@ -29,7 +29,7 @@ if ( defined( 'EVF_REMOVE_ALL_DATA' ) && true === EVF_REMOVE_ALL_DATA ) {
 	EVF_Install::drop_tables();
 
 	// Pages.
-	wp_trash_post( get_option( 'evf_default_form_page_id' ) );
+	wp_trash_post( get_option( 'everest_forms_default_form_page_id' ) );
 
 	// Delete options.
 	$wpdb->query( "DELETE FROM $wpdb->options WHERE option_name LIKE 'evf\_%';" );
