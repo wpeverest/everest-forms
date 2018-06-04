@@ -93,7 +93,7 @@ class EVF_Background_Updater extends EVF_Background_Process {
 	 * item from the queue.
 	 *
 	 * @param  string $callback Update callback function.
-	 * @return mixed
+	 * @return string|bool
 	 */
 	protected function task( $callback ) {
 		evf_maybe_define_constant( 'EVF_UPDATING', true );
@@ -102,15 +102,22 @@ class EVF_Background_Updater extends EVF_Background_Process {
 
 		include_once dirname( __FILE__ ) . '/evf-update-functions.php';
 
+		$result = false;
+
 		if ( is_callable( $callback ) ) {
 			$logger->info( sprintf( 'Running %s callback', $callback ), array( 'source' => 'evf_db_updates' ) );
-			call_user_func( $callback );
-			$logger->info( sprintf( 'Finished %s callback', $callback ), array( 'source' => 'evf_db_updates' ) );
+			$result = (bool) call_user_func( $callback );
+
+			if ( $result ) {
+				$logger->info( sprintf( '%s callback needs to run again', $callback ), array( 'source' => 'evf_db_updates' ) );
+			} else {
+				$logger->info( sprintf( 'Finished running %s callback', $callback ), array( 'source' => 'evf_db_updates' ) );
+			}
 		} else {
 			$logger->notice( sprintf( 'Could not find %s callback', $callback ), array( 'source' => 'evf_db_updates' ) );
 		}
 
-		return false;
+		return $result ? $callback : false;
 	}
 
 	/**
