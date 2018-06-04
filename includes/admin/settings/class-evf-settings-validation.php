@@ -22,7 +22,7 @@ class EVF_Settings_Validation extends EVF_Settings_Page {
 	 */
 	public function __construct() {
 		$this->id    = 'validation';
-		$this->icon  = 'evf-icon  evf-icon-checkbox';
+		$this->icon  = 'evf-icon evf-icon-checkbox';
 		$this->label = __( 'Validations', 'everest-forms' );
 
 		parent::__construct();
@@ -36,7 +36,6 @@ class EVF_Settings_Validation extends EVF_Settings_Page {
 	public function get_settings() {
 		$settings = apply_filters(
 			'everest_forms_validation_settings', array(
-
 				array(
 					'title' => __( 'Validation Messages', 'everest-forms' ),
 					'type'  => 'title',
