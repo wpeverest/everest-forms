@@ -222,6 +222,10 @@ h2 .everest-forms-help-tip {
 			padding-left: 20px;
 			padding-right: 20px;
 
+			h2 {
+				font-size: 20px;
+			}
+
 			textarea,
 			input[type="text"],
 			input[type="email"],
@@ -234,6 +238,30 @@ h2 .everest-forms-help-tip {
 
 				&:focus {
 					border-color: #bbb;
+				}
+			}
+
+			.form-table {
+				tr {
+					border-bottom: 1px solid #e4e4e4;
+
+					&:first-child {
+						border-top: 1px solid #e4e4e4;
+					}
+				}
+
+				th {
+					padding-top: 25px;
+					vertical-align: middle;
+
+					.everest-forms-help-tip {
+						margin: 0;
+						transform: translateY(-50%);
+					}
+				}
+
+				td {
+					padding: 25px 0;
 				}
 			}
 		}
@@ -455,16 +483,17 @@ h2 .everest-forms-help-tip {
 	}
 
 	.everest-forms-save-button {
-		padding: 7px 14px;
+		padding: 5px 15px;
 		height: auto;
 		border: none;
 		box-shadow: none;
 		text-shadow: none;
 		background: $green;
-		transition: 0.5s background ease-in-out;
+		transition: 0.25s all ease-in-out;
 
 		&:hover {
-			background: $color-brand-secondary;
+			box-shadow: none;
+			background: desaturate(darken($green, 10%), 5%);
 		}
 	}
 }
@@ -677,14 +706,42 @@ img.tips {
 	}
 }
 
+/**
+ * Small screen optimisation
+ */
+@media only screen and (max-width: 1280px) {}
+
+/**
+ * Optimisation for screens 900px and smaller
+ */
+@media only screen and (max-width: 900px) {}
+
+/**
+ * Optimisation for screens 782px and smaller
+ */
 @media screen and (max-width: 782px) {
-	.everest-forms .evf-setting-tab-content .form-table th {
-		padding-top: 15px;
-		padding-bottom: 15px;
+	.evf-nav-tab-wrapper {
+		overflow-x: auto;
+	}
+	.everest-forms_page_evf-settings {
+		.everest-forms {
+			.everest-forms-settings {
+				table {
+					&.form-table {
+						th {
+							padding: 15px 0 15px;
+						}
+					}
+				}
+			}
+		}
 	}
 }
 
-@media screen and (max-width: 480px) {
+/**
+ * Optimisation for screens 500px and smaller
+ */
+@media screen and (max-width: 500px) {
 	.everest-forms .evf-nav-tab-wrapper a.nav-tab {
 		padding: 10px;
 
