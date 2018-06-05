@@ -621,6 +621,14 @@
 				var structure = EVFPanelBuilder.getStructure();
 				var form_data = form.serializeArray();
 
+				$( '.everest-forms-panel-content-wrap' ).block({
+					message: null,
+					overlayCSS: {
+						background: '#fff',
+						opacity: 0.6
+					}
+				});
+
 				/* db unwanted data erase start */
 				var rfields_ids = [];
 				$( '.everest-forms-field[data-field-id]' ).each( function() {
@@ -670,14 +678,11 @@
 						$this.find( '.spinner' ).remove();
 
 						if ( typeof response.success === 'boolean' && response.success === true ) {
-							// console.log(response.data);
-							// window.location = response.data.redirect_url;
-							 window.location.reload();
+							$( '.everest-forms-panel-content-wrap' ).unblock();
 						}
 					}
 				});
-			})
-
+			});
 		},
 		getStructure: function () {
 
