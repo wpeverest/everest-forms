@@ -131,7 +131,7 @@ class EVF_Admin_Form_Builder {
 		$form_data['form_field_id'] = isset( $form_data['form_field_id'] ) ? $form_data['form_field_id'] : 0;
 
 		?>
-		<div id="everest-forms-builder">
+		<div id="everest-forms-builder" class="everest-forms">
 			<form name="everest-forms-builder" id="everest-forms-builder-form" method="post" data-id="<?php echo $form_id; ?>">
 				<input type="hidden" name="id" value="<?php echo $form_id; ?>">
 				<input type="hidden" value="<?php echo( $form_data['form_field_id'] ); ?>" name="form_field_id" id="everest-forms-field-id">

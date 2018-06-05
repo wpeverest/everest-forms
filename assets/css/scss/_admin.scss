@@ -1,22 +1,8 @@
 /**
 *Everest Forms Style
 */
-body {
-	margin: 0;
-}
-
-* {
-	box-sizing: border-box;
-}
-
-.everest-forms_page_edit-evf-form {
-	#wpcontent {
-		padding-left: 0;
-	}
-}
 
 // loader
-
 .evf-loading {
 	background: url('../images/evf-loader.svg');
     background-size: 20px 20px;
@@ -65,8 +51,6 @@ body {
 }
 
 #everest-forms-builder {
-	margin: 0;
-
 	.evf-builder-tabs {
 		background-color: $color-brand-secondary;
 	}

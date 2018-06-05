@@ -160,6 +160,7 @@ h2 .everest-forms-help-tip {
 	margin-top: 10px;
 }
 
+.everest-forms_page_edit-evf-form,
 .everest-forms_page_evf-settings {
 	#wpcontent {
 		padding-left: 0;
@@ -264,6 +265,17 @@ h2 .everest-forms-help-tip {
 					padding: 25px 0;
 				}
 			}
+		}
+	}
+}
+
+/**
+ * Form Builder styles
+ */
+.everest-forms_page_edit-evf-form {
+	#everest-forms-builder {
+		* {
+			box-sizing: border-box;
 		}
 	}
 }
