@@ -469,6 +469,16 @@ function evf_set_time_limit( $limit = 0 ) {
 }
 
 /**
+ * Wrapper for nocache_headers which also disables page caching.
+ *
+ * @since 1.2.0
+ */
+function evf_nocache_headers() {
+	EVF_Cache_Helper::set_nocache_constants();
+	nocache_headers();
+}
+
+/**
  * Get a shared logger instance.
  *
  * Use the everest_forms_logging_class filter to change the logging class. You may provide one of the following:

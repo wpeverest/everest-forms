@@ -2,16 +2,11 @@
 /**
  * EverestForms Admin
  *
- * @class    EVF_Admin
- * @author   WPEverest
- * @category Admin
  * @package  EverestForms/Admin
  * @version  1.0.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
  * EVF_Admin class.
@@ -23,11 +18,18 @@ class EVF_Admin {
 	 */
 	public function __construct() {
 		add_action( 'init', array( $this, 'includes' ) );
-		add_action( 'current_screen', array( $this, 'conditional_includes' ) );
+		add_action( 'admin_init', array( $this, 'buffer' ), 1 );
 		add_action( 'admin_init', array( $this, 'addon_actions' ) );
 		add_action( 'admin_init', array( $this, 'admin_redirects' ) );
 		add_action( 'admin_footer', 'evf_print_js', 25 );
 		add_filter( 'admin_footer_text', array( $this, 'admin_footer_text' ), 1 );
+	}
+
+	/**
+	 * Output buffering allows admin screens to make redirects later on.
+	 */
+	public function buffer() {
+		ob_start();
 	}
 
 	/**
@@ -42,36 +44,6 @@ class EVF_Admin {
 		include_once dirname( __FILE__ ) . '/class-evf-admin-form-builder.php';
 		include_once dirname( __FILE__ ) . '/class-evf-admin-add-form.php';
 		include_once dirname( __FILE__ ) . '/class-evf-admin-entries.php';
-	}
-
-	/**
-	 * Include admin files conditionally.
-	 */
-	public function conditional_includes() {
-		if ( ! $screen = get_current_screen() ) {
-			return;
-		}
-
-		switch ( $screen->id ) {
-			case 'dashboard' :
-				//include( 'class-evf-admin-dashboard.php' );
-				break;
-			case 'options-permalink' :
-				//include( 'class-evf-admin-permalink-settings.php' );
-				break;
-			case 'plugins' :
-				//include( 'plugin-updates/class-evf-plugins-screen-updates.php' );
-				break;
-			case 'update-core' :
-				//include( 'plugin-updates/class-evf-updates-screen-updates.php' );
-				break;
-			case 'users' :
-			case 'user' :
-			case 'profile' :
-			case 'user-edit' :
-				//include( 'class-evf-admin-profile.php' );
-				break;
-		}
 	}
 
 	/**
@@ -153,10 +125,8 @@ class EVF_Admin {
 	/**
 	 * Change the admin footer text on EverestForms admin pages.
 	 *
-	 * @since      1.0.0
-	 *
-	 * @param  string $footer_text
-	 *
+	 * @since  1.0.0
+	 * @param  string $footer_text Footer text.
 	 * @return string
 	 */
 	public function admin_footer_text( $footer_text ) {
@@ -183,26 +153,12 @@ class EVF_Admin {
 					});
 				" );
 			} else {
-				$footer_text = __( 'Thank you for selling with EverestForms.', 'everest-forms' );
+				$footer_text = __( 'Thank you for creating with EverestForms.', 'everest-forms' );
 			}
 		}
 
 		return $footer_text;
 	}
-
-	/**
-	 * Check on a Jetpack install queued by the Setup Wizard.
-	 *
-	 * See: EVF_Admin_Setup_Wizard::install_jetpack()
-	 */
-	public function setup_wizard_check_jetpack() {
-		$jetpack_active = class_exists( 'Jetpack' );
-
-		wp_send_json_success( array(
-			'is_active' => $jetpack_active ? 'yes' : 'no',
-		) );
-	}
-
 }
 
 return new EVF_Admin();
