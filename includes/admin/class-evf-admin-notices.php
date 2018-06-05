@@ -2,14 +2,11 @@
 /**
  * Display notices in admin
  *
- * @package EverestForms\Admin
+ * @package EverestForms/Admin
  * @version 1.0.0
- * @since   1.0.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
  * EVF_Admin_Notices Class.
@@ -43,6 +40,7 @@ class EVF_Admin_Notices {
 
 		if ( current_user_can( 'manage_everest_forms' ) ) {
 			add_action( 'admin_print_styles', array( __CLASS__, 'add_notices' ) );
+			add_action( 'admin_print_scripts', array( __CLASS__, 'hide_unrelated_notices' ) );
 		}
 	}
 
@@ -182,6 +180,71 @@ class EVF_Admin_Notices {
 			}
 		} else {
 			include 'views/html-notice-updated.php';
+		}
+	}
+
+	/**
+	 * Remove non-EverestForms notices from EverestForms pages.
+	 *
+	 * @since 1.2.0
+	 */
+	public function hide_unrelated_notices() {
+		global $wp_filter;
+
+		// Bail if we're not on a EverestForms screen or page.
+		if ( empty( $_REQUEST['page'] ) || false === strpos( $_REQUEST['page'], 'evf-' ) ) {
+			return;
+		}
+
+		if ( ! empty( $wp_filter['user_admin_notices']->callbacks ) && is_array( $wp_filter['user_admin_notices']->callbacks ) ) {
+			foreach ( $wp_filter['user_admin_notices']->callbacks as $priority => $hooks ) {
+				foreach ( $hooks as $name => $arr ) {
+					if ( is_object( $arr['function'] ) && $arr['function'] instanceof Closure ) {
+						unset( $wp_filter['user_admin_notices']->callbacks[ $priority ][ $name ] );
+						continue;
+					}
+					if ( ! empty( $arr['function'][0] ) && is_object( $arr['function'][0] ) && strpos( strtolower( get_class( $arr['function'][0] ) ), 'evf-' ) !== false ) {
+						continue;
+					}
+					if ( ! empty( $name ) && strpos( $name, 'evf-' ) === false ) {
+						unset( $wp_filter['user_admin_notices']->callbacks[ $priority ][ $name ] );
+					}
+				}
+			}
+		}
+
+		if ( ! empty( $wp_filter['admin_notices']->callbacks ) && is_array( $wp_filter['admin_notices']->callbacks ) ) {
+			foreach ( $wp_filter['admin_notices']->callbacks as $priority => $hooks ) {
+				foreach ( $hooks as $name => $arr ) {
+					if ( is_object( $arr['function'] ) && $arr['function'] instanceof Closure ) {
+						unset( $wp_filter['admin_notices']->callbacks[ $priority ][ $name ] );
+						continue;
+					}
+					if ( ! empty( $arr['function'][0] ) && is_object( $arr['function'][0] ) && strpos( strtolower( get_class( $arr['function'][0] ) ), 'evf-' ) !== false ) {
+						continue;
+					}
+					if ( ! empty( $name ) && strpos( $name, 'evf-' ) === false ) {
+						unset( $wp_filter['admin_notices']->callbacks[ $priority ][ $name ] );
+					}
+				}
+			}
+		}
+
+		if ( ! empty( $wp_filter['all_admin_notices']->callbacks ) && is_array( $wp_filter['all_admin_notices']->callbacks ) ) {
+			foreach ( $wp_filter['all_admin_notices']->callbacks as $priority => $hooks ) {
+				foreach ( $hooks as $name => $arr ) {
+					if ( is_object( $arr['function'] ) && $arr['function'] instanceof Closure ) {
+						unset( $wp_filter['all_admin_notices']->callbacks[ $priority ][ $name ] );
+						continue;
+					}
+					if ( ! empty( $arr['function'][0] ) && is_object( $arr['function'][0] ) && strpos( strtolower( get_class( $arr['function'][0] ) ), 'evf' ) !== false ) {
+						continue;
+					}
+					if ( ! empty( $name ) && strpos( $name, 'evf-' ) === false ) {
+						unset( $wp_filter['all_admin_notices']->callbacks[ $priority ][ $name ] );
+					}
+				}
+			}
 		}
 	}
 }
