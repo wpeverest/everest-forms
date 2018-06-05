@@ -96,13 +96,11 @@ abstract class EVF_Admin_Form_Panel {
 	 * @param string $view
 	 */
 	public function button( $form, $view ) {
-		$active = $view == $this->slug ? 'active' : '';
+		$active = $view == $this->slug ? 'nav-tab-active' : '';
 
-		printf( '<li class="evf-panel-%s-button" data-panel="%s">', $this->slug, $this->slug );
-		printf( '<a href="#" class="%s">', $active );
+		printf( '<a href="#" class="nav-tab %1$s" data-panel="%2$s">', $active, $this->slug );
 		printf( '<span class="%s"></span>', $this->icon );
 		printf( '%s</a>', $this->name );
-		echo '</li>';
 	}
 
 	/**

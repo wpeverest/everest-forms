@@ -285,6 +285,23 @@ h2 .everest-forms-help-tip {
 			box-sizing: border-box;
 		}
 
+		a {
+			text-decoration: none;
+
+			&:focus {
+				outline: none;
+				box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+			}
+		}
+
+		.after-label-description {
+			float: right;
+		}
+
+		nav.evf-nav-tab-wrapper {
+			margin: 0;
+		}
+
 		.everest-forms-panel-sidebar,
 		.everest-forms-panel-content-wrap {
 			height: calc(100vh - 150px);
