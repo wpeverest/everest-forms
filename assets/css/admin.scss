@@ -274,12 +274,53 @@ h2 .everest-forms-help-tip {
  */
 .everest-forms_page_edit-evf-form {
 	#everest-forms-builder {
+		position: fixed;
+		width: calc(100% - 160px);
+
 		* {
 			box-sizing: border-box;
+		}
+
+		.everest-forms-panel-sidebar,
+		.everest-forms-panel-content-wrap {
+			height: calc(100vh - 150px);
+			overflow-y: auto;
+			overflow-x: hidden;
+
+			&::-webkit-scrollbar {
+				width: 8px;
+			}
+
+			&::-webkit-scrollbar-thumb {
+				background-color: $input-color;
+			}
+
+			&::-webkit-scrollbar,
+			&::-webkit-scrollbar-track {
+				background-color: $color-border-right;
+			}
+
+			&::-webkit-scrollbar,
+			&::-webkit-scrollbar-track,
+			&::-webkit-scrollbar-thumb {
+				border-radius: 8px;
+				visibility: hidden;
+			}
+
+			&:hover {
+				&::-webkit-scrollbar,
+				&::-webkit-scrollbar-track,
+				&::-webkit-scrollbar-thumb {
+					visibility: visible;
+				}
+			}
 		}
 	}
 }
 
+/**
+ * Settings
+ */
 .everest-forms {
 
 	h2.evf-nav-tab-wrapper {
