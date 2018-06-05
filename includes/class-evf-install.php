@@ -39,6 +39,10 @@ class EVF_Install {
 			'evf_update_116_delete_options',
 			'evf_update_116_db_version',
 		),
+		'1.2.0' => array(
+			'evf_update_120_db_rename_options',
+			'evf_update_120_db_version',
+		),
 	);
 
 	/**
@@ -515,7 +519,7 @@ CREATE TABLE {$wpdb->prefix}evf_sessions (
 				) );
 			}
 
-			update_option( 'evf_default_form_page_id', $form_id );
+			update_option( 'everest_forms_default_form_page_id', $form_id );
 		}
 	}
 
