@@ -92,7 +92,6 @@ if ( ! class_exists( 'EVF_Admin_Assets', false ) ) :
 
 			// Register admin styles
 			wp_register_style( 'evf-admin-entries-style', EVF()->plugin_url() . '/assets/css/admin-entries.css', array(), EVF_VERSION );
-			wp_register_style( 'evf-admin-setting-style', EVF()->plugin_url() . '/assets/css/admin-settings.css', array(), EVF_VERSION );
 
 			// Sitewide menu CSS.
 			wp_enqueue_style( 'jquery-confirm' );
@@ -107,10 +106,6 @@ if ( ! class_exists( 'EVF_Admin_Assets', false ) ) :
 
 			if ( in_array( $screen_id, array( 'toplevel_page_everest-forms', 'everest-forms_page_evf-entries' ), true ) ) {
 				wp_enqueue_style( 'evf-admin-entries-style' );
-			}
-
-			if ( $screen_id === 'everest-forms_page_evf-settings' ) {
-				wp_enqueue_style( 'evf-admin-setting-style' );
 			}
 		}
 

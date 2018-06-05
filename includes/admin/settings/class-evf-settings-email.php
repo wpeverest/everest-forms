@@ -22,7 +22,7 @@ class EVF_Settings_Email extends EVF_Settings_Page {
 	 */
 	public function __construct() {
 		$this->id    = 'email';
-		$this->icon  = 'dashicons dashicons-email';
+		$this->icon  = 'evf-icon evf-icon-email-envelope';
 		$this->label = __( 'Email', 'everest-forms' );
 
 		parent::__construct();
@@ -45,7 +45,7 @@ class EVF_Settings_Email extends EVF_Settings_Page {
 				array(
 					'title'   => __( 'Template', 'everest-forms' ),
 					'type'    => 'radio',
-					'id'      => 'evf_email_template',
+					'id'      => 'everest_forms_email_template',
 					'default' => 'default',
 					'options' => array(
 						'default' => esc_html__( 'HTML', 'everest-forms' ),

@@ -72,7 +72,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 			self::add_message( __( 'Your settings have been saved.', 'everest-forms' ) );
 
 			// Clear any unwanted data and flush rules.
-			wp_schedule_single_event( time(), 'everest_forms_flush_rewrite_rules' );
+			update_option( 'everest_forms_queue_flush_rewrite_rules', 'yes' );
 
 			do_action( 'everest_forms_settings_saved' );
 		}
