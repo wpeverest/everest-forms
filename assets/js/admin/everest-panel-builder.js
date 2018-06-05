@@ -660,7 +660,6 @@
 						overlay.append( '<div class="loading"></div>' );
 						$this.find( '.spinner' ).remove();
 						$wrapper.find( '.evf-overlay' ).remove();
-						$wrapper.css({ 'position': 'relative' });
 						$wrapper.append( overlay );
 						$this.append( '<span style="margin:1px 0 0 5px" class="spinner is-active"></span>' );
 					},
@@ -673,7 +672,7 @@
 						if ( typeof response.success === 'boolean' && response.success === true ) {
 							// console.log(response.data);
 							// window.location = response.data.redirect_url;
-							window.location.reload();
+							 window.location.reload();
 						}
 					}
 				});
