@@ -17,6 +17,10 @@
 /**
  * Styling begins
  */
+.blockUI.blockOverlay {
+	@include loader();
+}
+
 .evf_addons_wrap {
 
 	p.refresh {
@@ -164,7 +168,6 @@ h2 .everest-forms-help-tip {
 .everest-forms_page_evf-settings {
 	#wpcontent {
 		padding-left: 0;
-		position: relative;
 	}
 
 	.everest-forms {
