@@ -408,10 +408,16 @@ h2 .everest-forms-help-tip {
 					text-align: center;
 					color: $color-gray-darken;
 					background: $accordion-content-bg;
+					border-top: 1px solid #e0e3e6;
+					border-bottom: 1px solid #e0e3e6;
 
 					&.active {
-						color: #ffffff;
-						background: $header-shade;
+						background: #F9FAFC;
+						border-bottom: none;
+					}
+
+					&:first-child {
+						border-right: 1px solid #e0e3e6;
 					}
 				}
 			}
