@@ -136,14 +136,14 @@ class EVF_Admin_Form_Builder {
 				<input type="hidden" name="id" value="<?php echo $form_id; ?>">
 				<input type="hidden" value="<?php echo( $form_data['form_field_id'] ); ?>" name="form_field_id" id="everest-forms-field-id">
 
-				<div class="everest-forms-nav-wrapper">
+				<div class="everest-forms-nav-wrapper clearfix">
 					<nav class="nav-tab-wrapper evf-nav-tab-wrapper">
 						<?php do_action( 'everest_forms_builder_panel_buttons', $this->form, $this->tab_view ); ?>
 						<a href="#" class="evf-panel-field-options-button evf-disabled-tab nav-tab">
 							<span class="dashicons dashicons-admin-settings"></span><?php esc_html_e( 'Options', 'everest-forms' ); ?>
 						</a>
 					</nav>
-					<div class="evf-forms-save evf-tab-right">
+					<div class="evf-forms-nav-right">
 						<div class="evf-shortcode-field">
 							<input type="text" class="large-text code" onfocus="this.select();" value="<?php printf( esc_html( '[everest_form id="%s"]' ), $_GET['form_id'] ) ?>" id="evf-form-shortcode" readonly="readonly" />
 							<button id="copy-shortcode" class="evf-btn dashicons dashicons-admin-page" href="#" data-tip="<?php esc_attr_e( 'Copied!', 'everest-forms' ); ?>">
