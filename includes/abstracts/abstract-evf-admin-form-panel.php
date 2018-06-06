@@ -119,15 +119,21 @@ abstract class EVF_Admin_Form_Panel {
 		printf( '<div class="%s">', $wrap );
 
 		if ( true == $this->sidebar ) {
+			echo '<div class="everest-forms-panel-sidebar-wrap">';
+				echo '<div class="everest-forms-fields-tab">';
+					printf( '<a href="#" class="active" id="add-fields">%s</a>', esc_html__( 'Add Fields', 'everest-forms' ) );
+					printf( '<a href="#" class="inactive" id="field-options">%s</a>', esc_html__( 'Field Options', 'everest-forms' ) );
+				echo '</div>';
 
-			echo '<div class="everest-forms-panel-sidebar">';
+				echo '<div class="everest-forms-panel-sidebar">';
 
-			do_action( 'everest_forms_builder_before_panel_sidebar', $this->form, $this->slug );
+				do_action( 'everest_forms_builder_before_panel_sidebar', $this->form, $this->slug );
 
-			$this->panel_sidebar();
+				$this->panel_sidebar();
 
-			do_action( 'everest_forms_builder_after_panel_sidebar', $this->form, $this->slug );
+				do_action( 'everest_forms_builder_after_panel_sidebar', $this->form, $this->slug );
 
+				echo '</div>';
 			echo '</div>';
 		}
 
