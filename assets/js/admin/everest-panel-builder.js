@@ -163,7 +163,7 @@
 			});
 
 			// Field sidebar tab toggle
-			$builder.on( 'click', '.inside-field-tab a', function(e) {
+			$builder.on( 'click', '.everest-forms-fields-tab a', function(e) {
 				e.preventDefault();
 				EVFPanelBuilder.fieldTabChoice( $(this).attr( 'id' ) );
 			});
@@ -812,8 +812,8 @@
 			$('.everest-forms-field-options').find('.no-fields').hide();
 			$('.evf-admin-field-wrapper .everest-forms-field').removeClass('active');
 			$('#everest-forms-panel-fields').addClass('active');
-			$('.inside-field-tab').find('a').removeClass('active');
-			$('.inside-field-tab').find('a').last().addClass('active');
+			$('.everest-forms-fields-tab').find('a').removeClass('active');
+			$('.everest-forms-fields-tab').find('a').last().addClass('active');
 			$('.everest-forms-add-fields').hide();
 			$('.everest-forms-field-options').show();
 			$('.everest-forms-field-options').find('.everest-forms-field-option').hide();
@@ -903,7 +903,7 @@
 		 * Toggle fields tabs (Add Fields, Field Options.
 		 */
 		fieldTabChoice: function( id ) {
-			$( '.inside-field-tab a' ).removeClass( 'active' );
+			$( '.everest-forms-fields-tab a' ).removeClass( 'active' );
 			$( '.everest-forms-field, .everest-forms-title-desc' ).removeClass( 'active' );
 
 			if ( 'add-fields' === id ) {
