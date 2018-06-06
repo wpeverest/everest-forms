@@ -162,6 +162,12 @@
 				$( '#everest-forms-field-' + id ).find( '.everest-forms-' + subfield ).toggleClass( 'hidden' );
 			});
 
+			// Field sidebar tab toggle
+			$builder.on('click', '.inside-field-tab a', function(e) {
+				e.preventDefault();
+				EVFPanelBuilder.fieldTabChoice($(this).attr('id'));
+			});
+
 			// Real-time updates for "Hide Label" field option
 			$builder.on( 'change', '.everest-forms-field-option-row-label_hide input', function() {
 				var id = $(this).parent().data( 'field-id' );
@@ -803,7 +809,6 @@
 			}
 		},
 		switchToFieldOptionPanel: function ( field_id ) {
-			$('.evf-panel-field-options-button.evf-disabled-tab').show();
 			$('.everest-forms-field-options').find('.no-fields').hide();
 			$('.evf-admin-field-wrapper .everest-forms-field').removeClass('active');
 			$('.everest-forms-panel').removeClass('active');
@@ -891,6 +896,33 @@
 					}
 				}
 			}).disableSelection();
+		},
+		/**
+		 * Toggle fields tabs (Add Fields, Field Options.
+		 *
+		 */
+		fieldTabChoice: function(id) {
+
+			$('.inside-field-tab a').removeClass('active');
+			$('.everest-forms-field, .everest-forms-title-desc').removeClass('active');
+
+			if (id === 'add-fields') {
+				$('#add-fields').find('a').addClass('active');
+				$('.everest-forms-field-options').hide();
+				$('.everest-forms-add-fields').show()
+			} else {
+				$('#field-options').find('a').addClass('active');
+				if (id === 'field-options') {
+					$('.everest-forms-field').first().addClass('active');
+					id = $('.everest-forms-field').first().data('field-id');
+				} else {
+					$('#everest-forms-field-'+id).addClass('active');
+				}
+				$('.everest-forms-field-option').hide();
+				$('#everest-forms-field-option-'+id).show();
+				$('.everest-forms-add-fields').hide();
+				$('.everest-forms-field-options').show();
+			}
 		},
 		bindFormPreview: function () {
 

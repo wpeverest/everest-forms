@@ -121,8 +121,7 @@ abstract class EVF_Admin_Form_Panel {
 		if ( true == $this->sidebar ) {
 
 			echo '<div class="everest-forms-panel-sidebar">';
-			echo '<a href="#">Fields</a>';
-			echo '<a href="#">Options</a>';
+
 			do_action( 'everest_forms_builder_before_panel_sidebar', $this->form, $this->slug );
 
 			$this->panel_sidebar();
