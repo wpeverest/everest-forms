@@ -163,9 +163,9 @@
 			});
 
 			// Field sidebar tab toggle
-			$builder.on('click', '.inside-field-tab a', function(e) {
+			$builder.on( 'click', '.inside-field-tab a', function(e) {
 				e.preventDefault();
-				EVFPanelBuilder.fieldTabChoice($(this).attr('id'));
+				EVFPanelBuilder.fieldTabChoice($(this).attr( 'id' ));
 			});
 
 			// Real-time updates for "Hide Label" field option
