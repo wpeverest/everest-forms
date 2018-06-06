@@ -139,7 +139,7 @@
 
 			var tab = evf_data.tab;
 			if ( tab === 'field-options' ) {
-				$( '.nav-tab' ).trigger( 'click' );
+				$( '.evf-panel-field-options-button' ).trigger( 'click' );
 			}
 		},
 
@@ -803,7 +803,7 @@
 			}
 		},
 		switchToFieldOptionPanel: function ( field_id ) {
-			$('li.evf-panel-field-options-button.evf-disabled-tab').show();
+			$('.evf-panel-field-options-button.evf-disabled-tab').show();
 			$('.everest-forms-field-options').find('.no-fields').hide();
 			$('.evf-admin-field-wrapper .everest-forms-field').removeClass('active');
 			$('.everest-forms-panel').removeClass('active');
@@ -1037,7 +1037,7 @@ jQuery(function () {
 			jQuery('#everest-forms-panel-field-settings-external_url-wrap').show();
 		}
 	});
-	jQuery( 'li.evf-panel-field-options-button.evf-disabled-tab' ).hide();
+	jQuery( '.evf-panel-field-options-button.evf-disabled-tab' ).hide();
 
 });
 

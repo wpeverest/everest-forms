@@ -139,7 +139,7 @@ class EVF_Admin_Form_Builder {
 				<div class="everest-forms-nav-wrapper">
 					<nav class="nav-tab-wrapper evf-nav-tab-wrapper">
 						<?php do_action( 'everest_forms_builder_panel_buttons', $this->form, $this->tab_view ); ?>
-						<a href="#" class="nav-tab">
+						<a href="#" class="evf-panel-field-options-button evf-disabled-tab nav-tab">
 							<span class="dashicons dashicons-admin-settings"></span><?php esc_html_e( 'Options', 'everest-forms' ); ?>
 						</a>
 					</nav>
