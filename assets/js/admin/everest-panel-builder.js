@@ -165,7 +165,7 @@
 			// Field sidebar tab toggle
 			$builder.on( 'click', '.inside-field-tab a', function(e) {
 				e.preventDefault();
-				EVFPanelBuilder.fieldTabChoice($(this).attr( 'id' ));
+				EVFPanelBuilder.fieldTabChoice( $(this).attr( 'id' ) );
 			});
 
 			// Real-time updates for "Hide Label" field option
@@ -898,31 +898,30 @@
 				}
 			}).disableSelection();
 		},
+
 		/**
 		 * Toggle fields tabs (Add Fields, Field Options.
-		 *
 		 */
-		fieldTabChoice: function(id) {
+		fieldTabChoice: function( id ) {
+			$( '.inside-field-tab a' ).removeClass( 'active' );
+			$( '.everest-forms-field, .everest-forms-title-desc' ).removeClass( 'active' );
 
-			$('.inside-field-tab a').removeClass('active');
-			$('.everest-forms-field, .everest-forms-title-desc').removeClass('active');
-
-			if (id === 'add-fields') {
-				$('#add-fields').addClass('active');
-				$('.everest-forms-field-options').hide();
-				$('.everest-forms-add-fields').show()
+			if ( 'add-fields' === id ) {
+				$( '#add-fields' ).addClass( 'active' );
+				$( '.everest-forms-add-fields' ).show();
+				$( '.everest-forms-field-options' ).hide();
 			} else {
-				$('#field-options').addClass('active');
-				if (id === 'field-options') {
-					$('.everest-forms-field').first().addClass('active');
-					id = $('.everest-forms-field').first().data('field-id');
+				$( '#field-options' ).addClass( 'active' );
+				if ( 'field-options' === id ) {
+					id = $( '.everest-forms-field' ).first().data( 'field-id' );
+					$( '.everest-forms-field' ).first().addClass( 'active' );
 				} else {
-					$('#everest-forms-field-'+id).addClass('active');
+					$( '#everest-forms-field-' + id ).addClass( 'active' );
 				}
-				$('.everest-forms-field-option').hide();
-				$('#everest-forms-field-option-'+id).show();
-				$('.everest-forms-add-fields').hide();
-				$('.everest-forms-field-options').show();
+				$( '.everest-forms-field-option' ).hide();
+				$( '#everest-forms-field-option-' + id ).show();
+				$( '.everest-forms-add-fields' ).hide();
+				$( '.everest-forms-field-options' ).show();
 			}
 		},
 		bindFormPreview: function () {
