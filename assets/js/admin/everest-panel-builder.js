@@ -907,11 +907,11 @@
 			$('.everest-forms-field, .everest-forms-title-desc').removeClass('active');
 
 			if (id === 'add-fields') {
-				$('#add-fields').find('a').addClass('active');
+				$('#add-fields').addClass('active');
 				$('.everest-forms-field-options').hide();
 				$('.everest-forms-add-fields').show()
 			} else {
-				$('#field-options').find('a').addClass('active');
+				$('#field-options').addClass('active');
 				if (id === 'field-options') {
 					$('.everest-forms-field').first().addClass('active');
 					id = $('.everest-forms-field').first().data('field-id');
