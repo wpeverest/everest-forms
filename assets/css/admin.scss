@@ -338,7 +338,6 @@ h2 .everest-forms-help-tip {
 
 				.everest-forms-save-button {
 					cursor: pointer;
-					font-weight: 600;
 					margin-left: 15px;
 					padding: 4px 22px;
 					display: inline-block;
@@ -396,30 +395,35 @@ h2 .everest-forms-help-tip {
 			}
 		}
 
-		.everest-forms-panel-sidebar {
-			.everest-forms-fields-tab {
-				display: flex;
-				flex-wrap: wrap;
+		.everest-forms-fields-tab {
+			display: flex;
+			flex-wrap: wrap;
 
-				a {
-					width: 50%;
-					display: block;
-					padding: 15px 0;
-					text-align: center;
-					color: $color-gray-darken;
-					background: $accordion-content-bg;
-					border-top: 1px solid #e0e3e6;
-					border-bottom: 1px solid #e0e3e6;
+			a {
+				width: 50%;
+				display: block;
+				padding: 15px 0;
+				text-align: center;
+				color: $color-gray-darken;
+				background: $accordion-content-bg;
+				border-top: 1px solid #e0e3e6;
+				border-bottom: 1px solid #e0e3e6;
 
-					&.active {
-						background: #F9FAFC;
-						border-bottom: none;
-					}
-
-					&:first-child {
-						border-right: 1px solid #e0e3e6;
-					}
+				&.active {
+					background: #F9FAFC;
+					border-bottom: 1px solid transparent;;
 				}
+
+				&:first-child {
+					border-right: 1px solid #e0e3e6;
+				}
+			}
+		}
+
+		.everest-forms-panel-sidebar {
+
+			.everest-forms-add-fields {
+				padding: 15px 12px 15px 20px;
 			}
 		}
 	}
