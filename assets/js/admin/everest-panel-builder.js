@@ -615,7 +615,7 @@
 			});
 		},
 		bindSaveOption: function () {
-			$( 'body' ).on( 'click', '.evf_save_form_action_button', function () {
+			$( 'body' ).on( 'click', '.everest-forms-save-button', function () {
 				var $this = $(this);
 				var form = $('form#everest-forms-builder-form');
 				var structure = EVFPanelBuilder.getStructure();

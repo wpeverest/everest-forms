@@ -150,7 +150,7 @@ class EVF_Admin_Form_Builder {
 								<span class="screen-reader-text"><?php esc_html_e( 'Copy shortcode', 'everest-forms' ); ?></span>
 							</button>
 						</div>
-						<button name="save_form" class="button-primary everest-forms-save-button evf_save_form_action_button" type="button" value="<?php esc_attr_e( 'Save', 'everest-forms' ); ?>"><?php esc_html_e( 'Save', 'everest-forms' ); ?></button>
+						<button name="save_form" class="button-primary everest-forms-save-button" type="button" value="<?php esc_attr_e( 'Save', 'everest-forms' ); ?>"><?php esc_html_e( 'Save', 'everest-forms' ); ?></button>
 					</div>
 				</div>
 				<div class="evf-tab-content">
