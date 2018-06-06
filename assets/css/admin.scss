@@ -311,23 +311,24 @@ h2 .everest-forms-help-tip {
 				margin: 21px 55px 19px 0;
 
 				.evf-shortcode-field {
-					float: left;
+					display: inline-block;
+					vertical-align: middle;
 
 					input {
+						margin: 0;
+						width: 225px;
+						padding: 3px 10px;
 						line-height: 26px;
 						border-radius: 3px 0 0 3px;
-						padding: 3px 10px;
-						width: 225px;
-						margin: 0;
 					}
 
 					button {
-						background-color: $header-shade;
-						border-radius: 0 3px 3px 0;
-						margin-left: -4px;
 						padding: 0;
-						height: 34px;
 						width: 34px;
+						height: 34px;
+						margin-left: -4px;
+						border-radius: 0 3px 3px 0;
+						background-color: $header-shade;
 
 						.dashicons {
 							margin-top: 2px;
@@ -335,28 +336,25 @@ h2 .everest-forms-help-tip {
 					}
 				}
 
-				.evf_save_form_action_button {
-					padding: 8px 22px;
-					background-color: $color-white;
-					color: $color-gray-base;
-					font-size: 12px;
-					text-transform: uppercase;
-					border: 0 none;
-					border-radius: 5px;
-					margin: 0 0 3px 20px;
+				.everest-forms-save-button {
 					cursor: pointer;
+					margin-left: 15px;
+					padding: 4px 22px;
+					display: inline-block;
+					vertical-align: middle;
+					text-transform: uppercase;
 
 					&:focus {
 						outline: none;
 					}
 
-					.evf-loading,
-					.spinner, {
-						background-size: 14px 14px;
+					.spinner,
+					.evf-loading {
 						width: 14px;
 						height: 14px;
-						margin-top: 5px;
-						margin-left: 5px;
+						margin-top: 5px !important;
+						margin-left: 5px !important;
+						background-size: 14px 14px;
 					}
 				}
 			}

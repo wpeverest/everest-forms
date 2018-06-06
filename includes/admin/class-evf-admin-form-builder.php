@@ -150,29 +150,9 @@ class EVF_Admin_Form_Builder {
 								<span class="screen-reader-text"><?php esc_html_e( 'Copy shortcode', 'everest-forms' ); ?></span>
 							</button>
 						</div>
-						<button type="button" name="save_form" class="evf_save_form_action_button"><?php esc_html_e( 'Save', 'everest-forms' ); ?></button>
+						<button name="save_form" class="button-primary everest-forms-save-button evf_save_form_action_button" type="button" value="<?php esc_attr_e( 'Save', 'everest-forms' ); ?>"><?php esc_html_e( 'Save', 'everest-forms' ); ?></button>
 					</div>
 				</div>
-
-				<!-- Panel toggle buttons -->
-				<div style="display:none;" class="evf-builder-tabs clearfix" id="evf-builder-tabs">
-					<ul class="evf-tab-lists">
-						<?php do_action( 'everest_forms_builder_panel_buttons', $this->form, $this->tab_view ); ?>
-						<li class="evf-panel-field-options-button evf-disabled-tab" data-panel="field-options">
-							<a href="#"><span class="dashicons dashicons-admin-settings"></span><?php esc_html_e( 'Options', 'everest-forms' ); ?></a>
-						</li>
-					</ul>
-					<div class="evf-tab-right">
-						<div class="evf-shortcode-field">
-							<input type="text" class="large-text code" onfocus="this.select();" value="<?php printf( esc_html( '[everest_form id="%s"]' ), $_GET['form_id'] ) ?>" id="evf-form-shortcode" readonly="readonly" />
-							<button id="copy-shortcode" class="evf-btn dashicons dashicons-admin-page" href="#" data-tip="<?php esc_attr_e( 'Copied!', 'everest-forms' ); ?>">
-								<span class="screen-reader-text"><?php esc_html_e( 'Copy shortcode', 'everest-forms' ); ?></span>
-							</button>
-						</div>
-						<button type="button" name="save_form" class="evf_save_form_action_button"><?php esc_html_e( 'Save', 'everest-forms' ); ?></button>
-					</div>
-				</div>
-
 				<div class="evf-tab-content">
 					<?php do_action( 'everest_forms_builder_panels', $this->form, $this->tab_view ); ?>
 					<div style="clear:both"></div>
