@@ -811,8 +811,9 @@
 		switchToFieldOptionPanel: function ( field_id ) {
 			$('.everest-forms-field-options').find('.no-fields').hide();
 			$('.evf-admin-field-wrapper .everest-forms-field').removeClass('active');
-			$('.everest-forms-panel').removeClass('active');
 			$('#everest-forms-panel-fields').addClass('active');
+			$('.inside-field-tab').find('a').removeClass('active');
+			$('.inside-field-tab').find('a').last().addClass('active');
 			$('.everest-forms-add-fields').hide();
 			$('.everest-forms-field-options').show();
 			$('.everest-forms-field-options').find('.everest-forms-field-option').hide();
