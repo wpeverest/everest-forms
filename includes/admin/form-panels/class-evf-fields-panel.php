@@ -44,6 +44,14 @@ class EVF_Fields_Panel extends EVF_Admin_Form_Panel {
 	 */
 	public function panel_sidebar() {
 		?>
+		<div class="everest-forms-fields-tab">
+			<a href="#" class="active" id="add-fields">
+				<?php esc_html_e( 'Add Fields', 'everest-forms' ); ?>
+			</a>
+			<a href="#" id="field-options">
+				<?php esc_html_e( 'Field Options', 'everest-forms' ); ?>
+			</a>
+		</div>
 		<div class="everest-forms-add-fields everest-forms-tab-content">
 			<?php do_action( 'everest_forms_builder_fields', $this->form ); ?>
 		</div>
