@@ -394,6 +394,28 @@ h2 .everest-forms-help-tip {
 				}
 			}
 		}
+
+		.everest-forms-panel-sidebar {
+
+			.inside-field-tab {
+				display: flex;
+				flex-wrap: wrap;
+
+				a {
+					width: 50%;
+					display: block;
+					padding: 15px 0;
+					text-align: center;
+					color: $color-gray-darken;
+					background: $accordion-content-bg;
+
+					&.active {
+						color: #ffffff;
+						background: $header-shade;
+					}
+				}
+			}
+		}
 	}
 }
 
