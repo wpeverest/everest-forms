@@ -606,6 +606,9 @@
 									$field.fadeOut( 'slow', function () {
 										$field.remove();
 										option_field.remove();
+										$( '.everest-forms-fields-tab' ).find( 'a' ).removeClass( 'active' );
+										$( '.everest-forms-fields-tab' ).find( 'a' ).first().addClass( 'active' );
+										$( '.everest-forms-add-fields' ).show();
 									});
 									if( grid.children().length === 1 ) {
 										grid.addClass( 'evf-empty-grid' );
