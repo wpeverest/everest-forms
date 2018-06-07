@@ -8,12 +8,10 @@
  * @version 1.0.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 // Include core functions (available in both admin and frontend).
-include EVF_ABSPATH . 'includes/evf-user-functions.php';
+include EVF_ABSPATH . 'includes/evf-conditional-functions.php';
 require EVF_ABSPATH . 'includes/evf-deprecated-functions.php';
 include EVF_ABSPATH . 'includes/evf-formatting-functions.php';
 include EVF_ABSPATH . 'includes/evf-entry-functions.php';
