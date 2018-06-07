@@ -758,6 +758,8 @@
 			$panel.addClass( 'active' );
 
 			if ( 'fields' === panel ) {
+				$( '.everest-forms-fields-tab' ).find( 'a' ).removeClass( 'active' );
+				$( '.everest-forms-fields-tab' ).find( 'a' ).first().addClass( 'active' );
 				$( '.everest-forms-field-options' ).hide();
 				$( '.everest-forms-add-fields' ).show();
 			}
