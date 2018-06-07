@@ -1,0 +1,14 @@
+/**
+ * _fonts.scss
+ * Custom EverestForms fonts.
+ */
+@font-face {
+  font-family: 'evf-icon';
+  src:  url('../fonts/evf-icon.eot?e4kopn');
+  src:  url('../fonts/evf-icon.eot?e4kopn#iefix') format('embedded-opentype'),
+    url('../fonts/evf-icon.ttf?e4kopn') format('truetype'),
+    url('../fonts/evf-icon.woff?e4kopn') format('woff'),
+    url('../fonts/evf-icon.svg?e4kopn#evf-icon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}

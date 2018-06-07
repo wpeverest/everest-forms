@@ -43,13 +43,14 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 												continue;
 											}
 
-											$field_value = apply_filters( 'everest_forms_html_field_value', wp_strip_all_tags( $meta_value ), $entry_meta[ $meta_key ], $entry_meta, 'entry-single' );
+											$meta_value  = is_serialized( $meta_value ) ? $meta_value : wp_strip_all_tags( $meta_value );
+											$field_value = apply_filters( 'everest_forms_html_field_value', $meta_value, $entry_meta[ $meta_key ], $entry_meta, 'entry-single' );
 											$field_class = empty( $field_value ) ? ' empty' : '';
 											$field_style = $hide_empty && empty( $field_value ) ? 'display:none;' : '';
 
 											// Field name.
 											echo '<tr class="everest-forms-entry-field field-name' . $field_class . '" style="' . $field_style . '"><th><strong>';
-												$value = get_form_data_by_meta_key( $form_id, $meta_key );
+												$value = evf_get_form_data_by_meta_key( $form_id, $meta_key );
 
 												if ( $value ) {
 													echo esc_html( $value );
@@ -65,7 +66,7 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 														$field_value = maybe_unserialize( $field_value );
 
 														foreach ( $field_value as $field => $value ) {
-															echo '<span class="list">' . $value . '</span>';
+															echo '<span class="list">' . wp_strip_all_tags( $value ) . '</span>';
 														}
 													} else {
 														echo nl2br( make_clickable( $field_value ) );
@@ -153,6 +154,7 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 							</div>
 						</div>
 					</div>
+					<?php do_action( 'everest_forms_after_entry_details', $entry, $entry_meta ); ?>
 				</div>
 			</div>
 		</div>

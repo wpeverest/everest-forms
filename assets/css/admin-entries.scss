@@ -11,6 +11,11 @@
 	.column-actions {
 		width: 175px;
 	}
+	.column-status img {
+	    height: 12px;
+	    margin-left: 5px;
+	    margin-bottom: -2px;
+	}
 	.submitdelete:hover {
 		color: #a00;
 	}
@@ -33,14 +38,14 @@
 	}
 }
 
-#everest-forms-entry-details {
+.postbox {
 	.submitdelete {
 		color: #a00;
 		padding: 1px 2px;
 		text-decoration: none;
 	}
 
-	.everest-forms-entry-details-meta {
+	.inside {
 		padding: 6px 0 0;
 
 		p {

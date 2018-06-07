@@ -6,11 +6,43 @@
 }
 
 .everest-forms {
+
+	.everest-forms-field-row {
+
+		&:before,
+		&:after {
+			clear: both;
+			content: "";
+			display: table;
+		}
+
+		&:last-child {
+
+			.everest-forms-field-sublabel {
+				margin-bottom: 0;
+			}
+		}
+	}
+
 	.evf-frontend-row {
 		margin-left: -20px;
 		margin-right: -20px;
 		display: flex;
 		flex-wrap: wrap;
+
+		.everest-forms-one-half {
+			float: left;
+			margin-left: 4%;
+			width: 48%;
+
+			&:first-child {
+				margin-left: 0;
+			}
+		}
+		
+		.everest-forms-first {
+			margin-left: 0;
+		}
 
 		.evf-frontend-grid {
 			padding-left: 20px;
@@ -111,6 +143,11 @@
 			display: block;
 			font-weight: 600;
 
+			&.everest-forms-field-sublabel {
+				font-size: 12px;
+				font-weight: 400;
+			}
+
 			.required {
 				color: red;
 				font-weight: 700;
@@ -184,11 +221,6 @@
 		textarea {
 			height: 100px;
 		}
-	}
-
-	.evf-submit-container {
-		margin-top: 30px;
-		text-align: right;
 	}
 
 	.evf-submit  {
@@ -301,16 +333,30 @@
 	}
 }
 
-.evf-recaptcha-row .evf-error {
-	border: 1px solid $color-alert-danger;
-	background-color: lighten($color-alert-danger, 35%);
-	padding: 7px 10px;
-	color:darken($color-alert-danger, 10%);
-	display: inline-block;
-	margin-top: 15px;
-	margin-bottom: 0;
-	border-radius: 3px;
-	font-weight: 300;
+/* reCAPTCHA Area
+----------------------------------------------------------------------------- */
+
+.evf-field-container {
+	.evf-recaptcha-container {
+		padding: 10px 0 20px 0;
+		clear: both;
+	}
+}
+
+.evf-recaptcha-row {
+	margin-bottom: 30px;
+	
+	.evf-error {
+		border: 1px solid $color-alert-danger;
+		background-color: lighten($color-alert-danger, 35%);
+		padding: 7px 10px;
+		color:darken($color-alert-danger, 10%);
+		display: inline-block;
+		margin-top: 15px;
+		margin-bottom: 0;
+		border-radius: 3px;
+		font-weight: 300;
+	}
 }
 
 
@@ -333,6 +379,10 @@
 					width: 100%;
 				}
 			}
+		}
+
+		.evf-recaptcha-row {
+			margin: 25px 0;
 		}
 	}
 }

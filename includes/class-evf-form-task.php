@@ -80,7 +80,7 @@ class EVF_Form_Task {
 
 			// Validate form is real and active (published).
 			if ( ! $form || 'publish' !== $form->post_status ) {
-				evf_add_notice( __('Invalid form. Please check again.', 'everest-forms') ,'error');
+				evf_add_notice( __( 'Invalid form. Please check again.', 'everest-forms' ), 'error' );
 				return;
 			}
 
@@ -102,15 +102,25 @@ class EVF_Form_Task {
 				do_action( "everest_forms_process_validate_{$field_type}", $field_id, $field_submit, $form_data, $field_type );
 			}
 
-			// Recaptcha Validation
-			if ( isset( $form_data['settings']['recaptcha_support'] ) && 1 == $form_data['settings']['recaptcha_support'] && empty( $_POST['g-recaptcha-response'] ) ){
-				evf_add_notice( get_option('evf_recaptcha_validation', __('Invalid recaptcha code.', 'everest-forms') ),'error');
-				update_option( 'evf_validation_error', 'yes');
-			}
-
-			if ( get_option( 'evf_validation_error' ) === 'yes' ){
-				delete_option( 'evf_validation_error' );
-				return;
+			// reCAPTCHA check.
+			$site_key   = get_option( 'everest_forms_recaptcha_site_key' );
+			$secret_key = get_option( 'everest_forms_recaptcha_site_secret' );
+			if (
+				! empty( $site_key ) &&
+				! empty( $secret_key ) &&
+				isset( $form_data['settings']['recaptcha_support'] ) &&
+				'1' === $form_data['settings']['recaptcha_support']
+			) {
+				if ( ! empty( $_POST['g-recaptcha-response'] ) ) {
+					$data  = wp_remote_get( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $_POST['g-recaptcha-response'] );
+					$data  = json_decode( wp_remote_retrieve_body( $data ) );
+					if ( empty( $data->success ) ) {
+						evf_add_notice( get_option( 'everest_forms_recaptcha_validation', __( 'Incorrect reCAPTCHA, please try again.', 'everest-forms' ) ), 'error' );
+						return;
+					}
+				} else {
+					$this->errors[ $form_id ]['recaptcha'] = esc_html__( 'reCAPTCHA is required.', 'everest-forms' );
+				}
 			}
 
 			// Initial error check.
@@ -339,6 +349,7 @@ class EVF_Form_Task {
 
 		$email = apply_filters( 'everest_forms_entry_email_atts', $email, $fields, $entry, $form_data );
 
+		$attachment = '';
 		// Create new email.
 		$emails = new EVF_Emails();
 		$emails->__set( 'form_data', $form_data );
@@ -347,6 +358,7 @@ class EVF_Form_Task {
 		$emails->__set( 'from_name', $email['sender_name'] );
 		$emails->__set( 'from_address', $email['sender_address'] );
 		$emails->__set( 'reply_to', isset( $email['user_email'] ) ? $email['user_email'] : $email['sender_address'] );
+		$emails->__set( 'attachments', apply_filters( 'everest_forms_email_file_attachments', $attachment, $entry, $form_data ) );
 
 		// Send entry email.
 		foreach ( $email['address'] as $address ) {
@@ -392,11 +404,21 @@ class EVF_Form_Task {
 
 		$fields     = apply_filters( 'everest_forms_entry_save_data', $fields, $entry, $form_data );
 		$browser    = evf_get_browser();
+		$user_ip    = evf_get_ip_address();
+		$user_agent = $browser['name'] . '/' . $browser['platform'];
+		$entry_id   = false;
+
+		// GDPR enhancements - If user details are disabled globally discard the IP and UA.
+		if ( 'yes' === get_option( 'everest_forms_disable_user_details' ) ) {
+			$user_agent = '';
+			$user_ip    = '';
+		}
+
 		$entry_data = array(
 			'form_id'         => $form_id,
 			'user_id'         => get_current_user_id(),
-			'user_device'     => $browser['name'] . '/' . $browser['platform'],
-			'user_ip_address' => evf_get_ip_address(),
+			'user_device'     => sanitize_text_field( $user_agent ),
+			'user_ip_address' => sanitize_text_field( $user_ip ),
 			'status'          => 'publish',
 			'referer'         => $_SERVER['HTTP_REFERER'],
 			'date_created'    => current_time( 'mysql' )

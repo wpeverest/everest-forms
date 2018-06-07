@@ -4,16 +4,14 @@
  *
  * Registers post types and taxonomies.
  *
- * @package EverestForms/Classes
+ * @package EverestForms\Classes
  * @version 1.0.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
- * EVF_Post_Types Class.
+ * Post types Class.
  */
 class EVF_Post_Types {
 
@@ -22,9 +20,9 @@ class EVF_Post_Types {
 	 */
 	public static function init() {
 		add_action( 'init', array( __CLASS__, 'register_post_types' ), 5 );
+		add_action( 'everest_forms_after_register_post_type', array( __CLASS__, 'maybe_flush_rewrite_rules' ) );
 		add_action( 'everest_forms_flush_rewrite_rules', array( __CLASS__, 'flush_rewrite_rules' ) );
 	}
-
 
 	/**
 	 * Register core post types.
@@ -86,6 +84,17 @@ class EVF_Post_Types {
 		do_action( 'everest_forms_after_register_post_type' );
 	}
 
+	/**
+	 * Flush rules if the event is queued.
+	 *
+	 * @since 1.2.0
+	 */
+	public static function maybe_flush_rewrite_rules() {
+		if ( 'yes' === get_option( 'everest_forms_queue_flush_rewrite_rules' ) ) {
+			update_option( 'everest_forms_queue_flush_rewrite_rules', 'no' );
+			self::flush_rewrite_rules();
+		}
+	}
 
 	/**
 	 * Flush rewrite rules.
@@ -93,8 +102,6 @@ class EVF_Post_Types {
 	public static function flush_rewrite_rules() {
 		flush_rewrite_rules();
 	}
-
-
 }
 
 EVF_Post_Types::init();

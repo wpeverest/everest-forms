@@ -22,7 +22,7 @@ class EVF_Fields_Panel extends EVF_Admin_Form_Panel {
 		// Define panel information.
 		$this->name    = __( 'Fields', 'everest-forms' );
 		$this->slug    = 'fields';
-		$this->icon    = 'dashicons dashicons-archive';
+		$this->icon    = 'evf-icon evf-icon-fields';
 		$this->order   = 10;
 		$this->sidebar = true;
 
@@ -66,7 +66,7 @@ class EVF_Fields_Panel extends EVF_Admin_Form_Panel {
 
 				<div class="everest-forms-title-desc">
 					<h2 class="everest-forms-form-name"><?php echo esc_html( $this->form->post_title ); echo ' (ID #'.$this->form->ID.')'; ?></h2>
-					
+
 				</div>
 
 				<div class="everest-forms-field-wrap">
@@ -87,17 +87,24 @@ class EVF_Fields_Panel extends EVF_Admin_Form_Panel {
 	/**
 	 * Builder field butttons.
 	 *
-	 * @since      1.0.0
+	 * @since 1.0.0
 	 */
 	public function fields() {
-
 		$fields = array(
-			'general' => array(
-				'group_name' => __( 'General Fields', 'everest-forms' ),
+			'general'  => array(
+				'group_name' => esc_html__( 'General Fields', 'everest-forms' ),
 				'fields'     => array(),
 			),
 			'advanced' => array(
-				'group_name' => __( 'Advanced Fields', 'everest-forms' ),
+				'group_name' => esc_html__( 'Advanced Fields', 'everest-forms' ),
+				'fields'     => array(),
+			),
+			'address'  => array(
+				'group_name' => esc_html__( 'Address Fields', 'everest-forms' ),
+				'fields'     => array(),
+			),
+			'payment'  => array(
+				'group_name' => esc_html__( 'Payment Fields', 'everest-forms' ),
 				'fields'     => array(),
 			),
 		);
@@ -176,43 +183,39 @@ class EVF_Fields_Panel extends EVF_Admin_Form_Panel {
 	 * @since      1.0.0
 	 */
 	public function preview() {
-
-
 		$this->everest_forms_builder_preview();
-
 	}
 
 	/**
 	 * @param $field
 	 */
 	public function field_preview( $field ) {
+		$css  = ! empty( $field['size'] ) ? 'size-' . esc_attr( $field['size'] ) : '';
+		$css .= ! empty( $field['label_hide'] ) && $field['label_hide'] == '1' ? ' label_hide' : '';
+		$css .= ! empty( $field['sublabel_hide'] ) && $field['sublabel_hide'] == '1' ? ' sublabel_hide' : '';
+		$css .= ! empty( $field['required'] ) && $field['required'] == '1' ? ' required' : '';
+		$css  = apply_filters( 'everest_forms_field_preview_class', $css, $field );
 
-		$field['required'] = isset( $field['required'] ) ? $field['required'] : 0;
-		$css               = ! empty( $field['size'] ) ? 'size-' . esc_attr( $field['size'] ) : '';
-		$css               .= ! empty( $field['label_hide'] ) && $field['label_hide'] == '1' ? ' label_hide' : '';
-		$css               .= ! empty( $field['sublabel_hide'] ) && $field['sublabel_hide'] == '1' ? ' sublabel_hide' : '';
-		$css               .= ! empty( $field['required'] ) && $field['required'] == '1' ? ' required' : '';
-		$css               = apply_filters( 'everest_forms_field_preview_class', $css, $field );
-		printf( '<div class="everest-forms-field everest-forms-field-%s %s %s" id="everest-forms-field-%s" data-field-id="%s" data-field-type="%s">', $field['type'], $field['required'], 'test', $field['id'], $field['id'], $field['type'] );
+		printf( '<div class="everest-forms-field everest-forms-field-%s %s" id="everest-forms-field-%s" data-field-id="%s" data-field-type="%s">', $field['type'], $css, $field['id'], $field['id'], $field['type'] );
 		printf( '<div class="evf-field-action">' );
-		printf( '<a href="#" class="everest-forms-field-duplicate" title="%s"><span class="dashicons dashicons-media-default"></span></a>', __( 'Duplicate Field', 'everest-forms' ) );
-		printf( '<a href="#" class="everest-forms-field-delete" title="%s"><span class="dashicons dashicons-trash"></span></a>', __( 'Delete Field', 'everest-forms' ) );
-		printf( '<a href="#" class="everest-forms-field-setting" title="%s"><span class="dashicons dashicons-admin-generic"></span></a>', __( 'Settings', 'everest-forms' ) );
+			printf( '<a href="#" class="everest-forms-field-duplicate" title="%s"><span class="dashicons dashicons-media-default"></span></a>', __( 'Duplicate Field', 'everest-forms' ) );
+			printf( '<a href="#" class="everest-forms-field-delete" title="%s"><span class="dashicons dashicons-trash"></span></a>', __( 'Delete Field', 'everest-forms' ) );
+			printf( '<a href="#" class="everest-forms-field-setting" title="%s"><span class="dashicons dashicons-admin-generic"></span></a>', __( 'Settings', 'everest-forms' ) );
 		printf( '</div>' );
+
 		do_action( "everest_forms_builder_fields_previews_{$field['type']}", $field );
 
 		echo '</div>';
-
 	}
 
 	/**
 	 * @param $form
 	 */
 	public function everest_forms_builder_preview() {
-
 		$form_data = $this->form_data;
-
 		$fields    = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
+		$form_grid = apply_filters( 'everest_forms_default_form_grid', 2 );
+
 		echo '<div class="evf-admin-field-container">';
 		echo '<div class="evf-admin-field-wrapper">';
 		$number_of_rows = isset( $form_data['structure'] ) ? count( $form_data['structure'] ) : 1;
@@ -220,12 +223,12 @@ class EVF_Fields_Panel extends EVF_Admin_Form_Panel {
 		for ( $row = 1; $row <= $number_of_rows; $row ++ ) {
 			echo '<div class="evf-admin-row" data-row-id="' . $row . '">';
 			$row_grid    = isset( $form_data['structure'][ 'row_' . $row ] ) ? $form_data['structure'][ 'row_' . $row ] : array();
-			$active_grid = count( $row_grid ) > 0 ? count( $row_grid ) : EVF()->form_grid;
-			$total_grid  = EVF()->form_grid;
+			$active_grid = count( $row_grid ) > 0 ? count( $row_grid ) : $form_grid;
+			$total_grid  = $form_grid;
 			$active_grid = $active_grid > $total_grid ? $total_grid : $active_grid;
 			echo '<div class="evf-toggle-row">';
-			echo '<div class="evf-delete-row"><span class="dashicons dashicons-trash"></span></div>';
-			echo '<span class="evf-show-grid">' . __( 'Edit', 'everest-forms' ) . '</span>';
+			echo '<div class="evf-delete-row"><span class="dashicons dashicons-trash" title="Delete"></span></div>';
+			echo '<div class="evf-show-grid"><span class="dashicons dashicons-edit" title="Edit"></span></div>';
 			echo '<div class="evf-toggle-row-content">';
 			echo '<span>' . __( 'Row Settings', 'everest-forms' ) . '</span>';
 			echo '<small>' . __( 'Select the type of row', 'everest-forms' ) . '</small>';
@@ -274,7 +277,7 @@ class EVF_Fields_Panel extends EVF_Admin_Form_Panel {
 		}
 		echo '</div>';
 		echo '<div class="clear evf-clear"></div>';
-		echo '<div class="evf-add-row"><span class="dashicons dashicons-plus-alt"></span></div>';
+		echo '<div class="evf-add-row"><span class="evf-btn dashicons dashicons-plus-alt">' . esc_html( 'Add Row', 'everest-forms' ) . '</span></div>';
 		echo '</div >';
 	}
 

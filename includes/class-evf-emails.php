@@ -60,6 +60,13 @@ class EVF_Emails {
 	private $headers;
 
 	/**
+	 * Holds the email attachments.
+	 *
+	 * @var string
+	 */
+	public $attachments = '';
+
+	/**
 	 * Whether to send email in HTML.
 	 *
 	 * @var bool
@@ -126,10 +133,10 @@ class EVF_Emails {
 		if ( ! empty( $this->from_name ) ) {
 			$this->from_name = $this->process_tag( $this->from_name );
 		} else {
-			$this->from_name = evf_sender_name();
+			$this->from_name = get_bloginfo( 'name' );
 		}
 
-		return apply_filters( 'everest_forms_email_from_name', evf_decode_string( $this->from_name ), $this );
+		return apply_filters( 'everest_forms_email_from_name', wp_specialchars_decode( $this->from_name ), $this );
 	}
 
 	/**
@@ -138,12 +145,10 @@ class EVF_Emails {
 	 * @return string The email from address.
 	 */
 	public function get_from_address() {
-		$this->from_address = isset ( $this->from_address ) ? $this->from_address : evf_sender_address();
-
 		if ( ! empty( $this->from_address ) ) {
 			$this->from_address = $this->process_tag( $this->from_address );
 		} else {
-			$this->from_address = evf_sender_address(); // Lookup why get_option( 'admin_email' ) is used :)
+			$this->from_address = get_option( 'admin_email' );
 		}
 
 		return apply_filters( 'everest_forms_email_from_address', $this->from_address, $this );
@@ -295,11 +300,11 @@ class EVF_Emails {
 		do_action( 'everest_forms_email_send_before', $this );
 
 		$message     = $this->build_email( $message );
-		$attachments = apply_filters( 'everest_forms_email_attachments', $attachments, $this );
+		$this->attachments = apply_filters( 'everest_forms_email_attachments', $this->attachments, $this );
 		$subject     = evf_decode_string( $this->process_tag( $subject ) );
 
 		// Let's do this.
-		$sent = wp_mail( $to, $subject, $message, $this->get_headers(), $attachments );
+		$sent = wp_mail( $to, $subject, $message, $this->get_headers(), $this->attachments );
 
 		// Hooks after the email is sent.
 		do_action( 'everest_forms_email_send_after', $this );
@@ -495,7 +500,7 @@ class EVF_Emails {
 	 */
 	public function get_template() {
 		if ( ! $this->template ) {
-			$this->template = get_option( 'evf_email_template', 'default' );
+			$this->template = get_option( 'everest_forms_email_template', 'default' );
 		}
 
 		return apply_filters( 'everest_forms_email_template', $this->template );

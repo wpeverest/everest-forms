@@ -24,8 +24,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 		$this->name  = __( 'Number', 'everest-forms' );
 		$this->type  = 'number';
 		$this->icon  = 'evf-icon  evf-icon-number';
-		$this->order = 9;
-		$this->group = 'advanced';
+		$this->order = 8;
 	}
 
 	/**

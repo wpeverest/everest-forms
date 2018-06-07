@@ -144,7 +144,15 @@ class EVF_Admin_Form_Builder {
 							<a href="#"><span class="dashicons dashicons-admin-settings"></span><?php esc_html_e( 'Options', 'everest-forms' ); ?></a>
 						</li>
 					</ul>
-					<button type="button" name="save_form" class="evf_save_form_action_button"><?php esc_html_e( 'Save', 'everest-forms' ); ?></button>
+					<div class="efv-tab-right">
+						<div class="evf-shortcode-field">
+							<input type="text" class="large-text code" onfocus="this.select();" value="<?php printf( esc_html( '[everest_form id="%s"]' ), $_GET['form_id'] ) ?>" id="evf-form-shortcode" readonly="readonly" />
+							<button id="copy-shortcode" class="evf-btn dashicons dashicons-admin-page" href="#" data-tip="<?php esc_attr_e( 'Copied!', 'everest-forms' ); ?>">
+								<span class="screen-reader-text"><?php esc_html_e( 'Copy shortcode', 'everest-forms' ); ?></span>
+							</button>
+						</div>
+						<button type="button" name="save_form" class="evf_save_form_action_button"><?php esc_html_e( 'Save', 'everest-forms' ); ?></button>
+					</div>
 				</div>
 
 				<div class="evf-tab-content">

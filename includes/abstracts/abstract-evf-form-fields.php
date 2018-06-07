@@ -1,21 +1,21 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
-}
-
 /**
  * Abstract EVF_Form_Fields Class
  *
- * @version        1.0.0
- * @package        EverestFroms/Abstracts
- * @category       Abstract Class
- * @author         WPEverest
+ * @version 1.0.0
+ * @package EverestFroms/Abstracts
+ */
+
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Form fields class.
  */
 abstract class EVF_Form_Fields {
+
 	/**
 	 * Full name of the field type, eg "Paragraph Text".
 	 *
-	 * $since 1.0.0
 	 * @var string
 	 */
 	public $name;
@@ -23,15 +23,13 @@ abstract class EVF_Form_Fields {
 	/**
 	 * Type of the field, eg "textarea".
 	 *
-	 * $since 1.0.0
 	 * @var string
 	 */
 	public $type;
 
 	/**
-	 * Font Awesome Icon used for the editor button.
+	 * Font Awesome Icon used for the editor button, eg "fa-list".
 	 *
-	 * $since 1.0.0
 	 * @var mixed
 	 */
 	public $icon = false;
@@ -39,7 +37,6 @@ abstract class EVF_Form_Fields {
 	/**
 	 * Priority order the field button should show inside the "Add Fields" tab.
 	 *
-	 * $since 1.0.0
 	 * @var integer
 	 */
 	public $order = 20;
@@ -47,7 +44,6 @@ abstract class EVF_Form_Fields {
 	/**
 	 * Field group the field belongs to.
 	 *
-	 * $since 1.0.0
 	 * @var string
 	 */
 	public $group = 'general';
@@ -55,7 +51,6 @@ abstract class EVF_Form_Fields {
 	/**
 	 * Placeholder to hold default value(s) for some field types.
 	 *
-	 * $since 1.0.0
 	 * @var mixed
 	 */
 	public $defaults;
@@ -63,7 +58,6 @@ abstract class EVF_Form_Fields {
 	/**
 	 * Current form ID in the admin builder.
 	 *
-	 * $since 1.0.0
 	 * @var mixed, int or false
 	 */
 	public $form_id;
@@ -71,7 +65,6 @@ abstract class EVF_Form_Fields {
 	/**
 	 * Current form data in admin builder.
 	 *
-	 * $since 1.0.0
 	 * @var mixed, int or false
 	 */
 	public $form_data;
@@ -79,7 +72,7 @@ abstract class EVF_Form_Fields {
 	/**
 	 * Primary class constructor.
 	 *
-	 * $since 1.0.0
+	 * @since 1.0.0
 	 *
 	 * @param bool $init
 	 */
@@ -119,22 +112,18 @@ abstract class EVF_Form_Fields {
 	/**
 	 * All systems go. Used by subclasses.
 	 *
-	 * $since 1.0.0
+	 * @since 1.0.0
 	 */
-	public function init() {
-	}
+	public function init() {}
 
 	/**
 	 * Create the button for the 'Add Fields' tab, inside the form editor.
 	 *
-	 * $since 1.0.0
-	 *
-	 * @param array $fields
-	 *
+	 * @since  1.0.0
+	 * @param  array $fields
 	 * @return array
 	 */
 	public function field_button( $fields ) {
-
 		// Add field information to fields array.
 		$fields[ $this->group ]['fields'][] = array(
 			'order' => $this->order,
@@ -150,22 +139,18 @@ abstract class EVF_Form_Fields {
 	/**
 	 * Creates the field options panel. Used by subclasses.
 	 *
-	 * $since 1.0.0
-	 *
+	 * @since 1.0.0
 	 * @param array $field
 	 */
-	public function field_options( $field ) {
-	}
+	public function field_options( $field ) {}
 
 	/**
 	 * Creates the field preview. Used by subclasses.
 	 *
-	 * $since 1.0.0
-	 *
+	 * @since 1.0.0
 	 * @param array $field
 	 */
-	public function field_preview( $field ) {
-	}
+	public function field_preview( $field ) {}
 
 	/**
 	 * Helper function to create field option elements.
@@ -173,7 +158,7 @@ abstract class EVF_Form_Fields {
 	 * Field option elements are pieces that help create a field option.
 	 * They are used to quickly build field options.
 	 *
-	 * $since 1.0.0
+	 * @since 1.0.0
 	 *
 	 * @param string  $option
 	 * @param array   $field
@@ -278,7 +263,7 @@ abstract class EVF_Form_Fields {
 	/**
 	 * Helper function to create common field options that are used frequently.
 	 *
-	 * $since 1.0.0
+	 * @since 1.0.0
 	 *
 	 * @param string  $option
 	 * @param array   $field
@@ -288,7 +273,6 @@ abstract class EVF_Form_Fields {
 	 * @return mixed echo or return string
 	 */
 	public function field_option( $option, $field, $args = array(), $echo = true ) {
-
 		$output = '';
 
 		switch ( $option ) {
@@ -331,7 +315,7 @@ abstract class EVF_Form_Fields {
 				), false );
 				break;
 
-			// EVF meta fields
+			// Field Meta. ---------------------------------------------------//
 			case 'meta':
 				$value   =  ! empty( $field['meta-key'] ) ? esc_attr( $field['meta-key'] ) : evf_get_meta_key_field_option( $field );
 				$tooltip = __( 'Enter meta key to be stored in database.', 'everest-forms' );
@@ -370,6 +354,7 @@ abstract class EVF_Form_Fields {
 				), false );
 				break;
 
+			// Field Required toggle. -----------------------------------------//
 
 			case 'required':
 				$default = ! empty( $args['default'] ) ? $args['default'] : '0';
@@ -387,13 +372,25 @@ abstract class EVF_Form_Fields {
 				), false );
 				break;
 
+			// Code Block. ----------------------------------------------------//
+
+			case 'code':
+				$value   = ! empty( $field['code'] ) ? esc_attr( $field['code'] ) : '';
+				$tooltip = esc_html__( 'Enter code for the form field.', 'everest-forms' );
+				$output  = $this->field_element( 'label',    $field, array( 'slug' => 'code', 'value' => esc_html__( 'Code', 'everest-forms' ), 'tooltip' => $tooltip ), false );
+				$output .= $this->field_element( 'textarea', $field, array( 'slug' => 'code', 'value' => $value ), false );
+				$output  = $this->field_element( 'row',      $field, array( 'slug' => 'code', 'content' => $output ), false );
+				break;
+
+			// Choices. ------------------------------------------------------//
+
 			case 'choices':
 				$tooltip = __( 'Add choices for the form field.', 'everest-forms' );
 				$toggle  = '';
 				$dynamic = ! empty( $field['dynamic_choices'] ) ? esc_html( $field['dynamic_choices'] ) : '';
 				$values  = ! empty( $field['choices'] ) ? $field['choices'] : $this->defaults;
 				$class   = ! empty( $field['show_values'] ) && $field['show_values'] == '1' ? 'show-values' : '';
-				$class   .= ! empty( $dynamic ) ? ' evf-hidden' : '';
+				$class   .= ! empty( $dynamic ) ? ' hidden' : '';
 
 				// Field option label and type.
 				$option_label = $this->field_element(
@@ -417,9 +414,8 @@ abstract class EVF_Form_Fields {
 					$option_choices .= sprintf( '<input type="%s" name="form_fields[%s][choices][%s][default]" class="default" value="1" %s>', $option_type, $field['id'], $key, checked( '1', $default, false ) );
 					$option_choices .= sprintf( '<input type="text" name="form_fields[%s][choices][%s][label]" value="%s" class="label">', $field['id'], $key, esc_attr( $value['label'] ) );
 					$option_choices .= sprintf( '<input type="text" name="form_fields[%s][choices][%s][value]" value="%s" class="value">', $field['id'], $key, esc_attr( $value['value'] ) );
-					$option_choices .= '<a class="remove" href="#"><i class="dashicons dashicons-dismiss"></i></a>';
-					$option_choices .= '<a class="add" href="#"><i class="dashicons dashicons-plus-alt"></i></a>';
-
+					$option_choices .= '<a class="add" href="#"><i class="dashicons dashicons-plus"></i></a>';
+					$option_choices .= '<a class="remove" href="#"><i class="dashicons dashicons-minus"></i></a>';
 					$option_choices .= '</li>';
 				}
 				$option_choices .= '</ul>';
@@ -558,7 +554,15 @@ abstract class EVF_Form_Fields {
 					do_action( "everest_forms_field_options_before_{$option}", $field, $this );
 				}
 
+				if ( 'close' === $markup ) {
+					do_action( "everest_forms_field_options_bottom_{$option}", $field, $this );
+				}
+
 				echo $output; // WPCS: XSS ok.
+
+				if ( 'open' === $markup ) {
+					do_action( "everest_forms_field_options_top_{$option}", $field, $this );
+				}
 
 				if ( 'close' === $markup ) {
 					do_action( "everest_forms_field_options_after_{$option}", $field, $this );
@@ -575,7 +579,7 @@ abstract class EVF_Form_Fields {
 	 * Helper function to create common field options that are used frequently
 	 * in the field preview.
 	 *
-	 * $since 1.0.0
+	 * @since 1.0.0
 	 *
 	 * @param string  $option
 	 * @param array   $field
@@ -585,18 +589,17 @@ abstract class EVF_Form_Fields {
 	 * @return mixed echo or return string
 	 */
 	public function field_preview_option( $option, $field, $args = array(), $echo = true ) {
+		$class    = ! empty( $args['class'] ) ? evf_sanitize_classes( $args['class'] ) : '';
+		$required = isset( $field['required'] ) && $field['required'] ? '<span class="required">*</span>' : '';
 
-		$required_string = isset( $field['required'] ) && $field['required'] ? '<span class="required">*</span>' : '';
-		$hide_style      = isset( $field['label_hide'] ) && $field['label_hide'] ? 'display:none' : '';
 		switch ( $option ) {
-
 			case 'label':
 				$label  = isset( $field['label'] ) && ! empty( $field['label'] ) ? esc_html( $field['label'] ) : '';
-				$output = sprintf( '<label style="%s" class="label-title"><span class="text">%s</span>%s</label>', $hide_style, $label, $required_string );
+				$output = sprintf( '<label class="label-title %s"><span class="text">%s</span>%s</label>', $class, $label, $required );
 				break;
-
 			case 'description':
 				$description = isset( $field['description'] ) && ! empty( $field['description'] ) ? $field['description'] : '';
+				$description = strpos( $class, 'nl2br' ) !== false ? nl2br( $description ) : $description;
 				$output      = sprintf( '<div class="description">%s</div>', $description );
 				break;
 		}
@@ -611,7 +614,7 @@ abstract class EVF_Form_Fields {
 	/**
 	 * Create a new field in the admin AJAX editor.
 	 *
-	 * $since 1.0.0
+	 * @since 1.0.0
 	 */
 	public function field_new() {
 
@@ -697,7 +700,7 @@ abstract class EVF_Form_Fields {
 	/**
 	 * Display the field input elements on the frontend.
 	 *
-	 * $since 1.0.0
+	 * @since 1.0.0
 	 *
 	 * @param array $field
 	 * @param array $field_atts
@@ -709,7 +712,7 @@ abstract class EVF_Form_Fields {
 	/**
 	 * Display field input errors if present.
 	 *
-	 * $since 1.0.0
+	 * @since 1.0.0
 	 *
 	 * @param string $key
 	 * @param array  $field
@@ -731,7 +734,7 @@ abstract class EVF_Form_Fields {
 	/**
 	 * Display field input sublabel if present.
 	 *
-	 * $since 1.0.0
+	 * @since 1.0.0
 	 *
 	 * @param string $key
 	 * @param string $position
@@ -763,7 +766,7 @@ abstract class EVF_Form_Fields {
 	/**
 	 * Validates field on form submit.
 	 *
-	 * $since 1.0.0
+	 * @since 1.0.0
 	 *
 	 * @param int   $field_id
 	 * @param array $field_submit

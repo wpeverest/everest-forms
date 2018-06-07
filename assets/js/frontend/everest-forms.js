@@ -10,11 +10,17 @@ jQuery( function ( $ ) {
 	var everest_forms = {
 		$everest_form: $( 'form.everest-form' ),
 		init: function() {
+			this.init_inputMask();
 			this.init_datepicker();
 			this.load_validation();
 
 			// Inline validation
 			this.$everest_form.on( 'input validate change', '.input-text, select, input:checkbox', this.validate_field );
+		},
+		init_inputMask: function() {
+			if ( typeof $.fn.inputmask !== 'undefined' ) {
+				$( '.evf-masked-input' ).inputmask();
+			}
 		},
 		init_datepicker: function () {
 			$( '.date-picker-field, .date-picker' ).datepicker({
@@ -90,12 +96,12 @@ jQuery( function ( $ ) {
 
 						$parent.removeClass( 'evf-has-error' );
 					},
-					submitHandler: function( errorClass, form ) {
-						if ( grecaptcha.getResponse() === '' ) {
-							$( '#evf_node_recaptcha' ).after('<label class="evf-error">' + everest_forms_params.i18n_messages_recaptcha + '</div>');
-	              		} else {
-                  			form.submit();
-                  		}
+					submitHandler: function( form ) {
+						if ( typeof grecaptcha !== 'undefined' && '' === grecaptcha.getResponse() ) {
+							$( '.evf-recaptcha-row' ).append( '<label class="evf-error">' + everest_forms_params.i18n_messages_recaptcha + '</div>');
+						} else {
+							form.submit();
+						}
 					}
 				});
 			});
@@ -145,14 +151,3 @@ jQuery( function ( $ ) {
 
 	everest_forms.init();
 });
-
-/* jshint ignore:start */
-var google_recaptcha_everest_forms;
-var onloadEVFCallback = function () {
-	google_recaptcha_everest_forms = grecaptcha.render( 'evf_node_recaptcha', {
-		'sitekey': evf_google_recaptcha_code.site_key,
-		'theme': 'light',
-		'style': 'transform:scale(0.77);-webkit-transform:scale(0.77);transform-origin:0 0;-webkit-transform-origin:0 0;',
-	});
-};
-/* jshint ignore:end */

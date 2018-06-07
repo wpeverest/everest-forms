@@ -2,15 +2,11 @@
 /**
  * EverestForms Settings Page/Tab
  *
- * @author      WPEverest
- * @category    Admin
- * @package     EverestForms/Admin
- * @version     1.0.0
+ * @package EverestForms\Admin
+ * @version 1.0.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
-}
+defined( 'ABSPATH' ) || exit;
 
 if ( ! class_exists( 'EVF_Settings_Page', false ) ) :
 
@@ -18,12 +14,20 @@ if ( ! class_exists( 'EVF_Settings_Page', false ) ) :
 	 * EVF_Settings_Page.
 	 */
 	abstract class EVF_Settings_Page {
+
 		/**
 		 * Setting page id.
 		 *
 		 * @var string
 		 */
 		protected $id = '';
+
+		/**
+		 * Setting page icon.
+		 *
+		 * @var string
+		 */
+		protected $icon = '';
 
 		/**
 		 * Setting page label.
@@ -35,21 +39,17 @@ if ( ! class_exists( 'EVF_Settings_Page', false ) ) :
 		/**
 		 * Constructor.
 		 */
-		protected $icon = '';
-
-		/**
-		 * EVF_Settings_Page constructor.
-		 */
 		public function __construct() {
 			add_filter( 'everest_forms_settings_tabs_array', array( $this, 'add_settings_page' ), 20 );
 			add_action( 'everest_forms_sections_' . $this->id, array( $this, 'output_sections' ) );
 			add_action( 'everest_forms_settings_' . $this->id, array( $this, 'output' ) );
-			add_action( 'everest_forms_settings_save', array( $this, 'save' ) );
+			add_action( 'everest_forms_settings_save_' . $this->id, array( $this, 'save' ) );
 		}
 
 		/**
 		 * Get settings page ID.
-		 * @since      1.0.0
+		 *
+		 * @since  1.0.0
 		 * @return string
 		 */
 		public function get_id() {
@@ -57,17 +57,9 @@ if ( ! class_exists( 'EVF_Settings_Page', false ) ) :
 		}
 
 		/**
-		 * Get settings page label.
-		 * @since      1.0.0
-		 * @return string
-		 */
-		public function get_label() {
-			return $this->label;
-		}
-
-		/**
-		 * Get settings page ICON.
-		 * @since      1.0.0
+		 * Get settings page icon.
+		 *
+		 * @since  1.0.0
 		 * @return string
 		 */
 		public function get_icon() {
@@ -75,10 +67,19 @@ if ( ! class_exists( 'EVF_Settings_Page', false ) ) :
 		}
 
 		/**
+		 * Get settings page label.
+		 *
+		 * @since  1.0.0
+		 * @return string
+		 */
+		public function get_label() {
+			return $this->label;
+		}
+
+		/**
 		 * Add this page to settings.
 		 *
-		 * @param array $pages
-		 *
+		 * @param  array $pages Setting pages.
 		 * @return mixed
 		 */
 		public function add_settings_page( $pages ) {
@@ -116,7 +117,7 @@ if ( ! class_exists( 'EVF_Settings_Page', false ) ) :
 
 			$sections = $this->get_sections();
 
-			if ( empty( $sections ) || 1 === sizeof( $sections ) ) {
+			if ( empty( $sections ) || 1 === count( $sections ) ) {
 				return;
 			}
 
@@ -125,7 +126,7 @@ if ( ! class_exists( 'EVF_Settings_Page', false ) ) :
 			$array_keys = array_keys( $sections );
 
 			foreach ( $sections as $id => $label ) {
-				echo '<li><a href="' . admin_url( 'admin.php?page=evf-settings&tab=' . $this->id . '&section=' . sanitize_title( $id ) ) . '" class="' . ( $current_section == $id ? 'current' : '' ) . '">' . $label . '</a> ' . ( end( $array_keys ) == $id ? '' : '|' ) . ' </li>';
+				echo '<li><a href="' . esc_url( admin_url( 'admin.php?page=evf-settings&tab=' . $this->id . '&section=' . sanitize_title( $id ) ) ) . '" class="' . ( $current_section === $id ? 'current' : '' ) . '">' . esc_html( $label ) . '</a> ' . ( end( $array_keys ) === $id ? '' : '|' ) . ' </li>';
 			}
 			echo '</ul><br class="clear" />';
 		}
@@ -134,7 +135,6 @@ if ( ! class_exists( 'EVF_Settings_Page', false ) ) :
 		 * Output the settings.
 		 */
 		public function output() {
-
 			$settings = $this->get_settings();
 
 			EVF_Admin_Settings::output_fields( $settings );

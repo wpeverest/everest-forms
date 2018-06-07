@@ -1,0 +1,34 @@
+.evf-btn {
+    border: none;
+    border-radius: 3px;
+    border-width: 2px;
+    color: $color-white;
+    font-weight: 500;
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: $color-gray-base;
+    line-height: 26px;
+    text-decoration: none;
+    transition: all 0.3s ease 0s;
+
+    &:hover {
+        color: $color-white;
+        box-shadow: 5px 5px 20px transparentize( $color-gray-base, 0.9 );
+    }
+
+    &:focus {
+        box-shadow: none;
+        color: $color-white;
+        outline: none;
+
+        &:hover {
+            box-shadow: 5px 5px 20px transparentize( $color-gray-base, 0.9 );
+        }
+    }
+}
+
+.evf-bordered-btn {
+    background: none;
+    color: $color-gray-base;
+    border: 1px solid $color-gray-base;
+}

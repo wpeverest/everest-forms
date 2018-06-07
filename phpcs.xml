@@ -19,7 +19,6 @@
 	<rule ref="WPEverest-Core" />
 	<rule ref="PHPCompatibility">
 		<exclude name="PHPCompatibility.PHP.NewKeywords.t_namespaceFound" />
-		<exclude-pattern>tests/</exclude-pattern>
 	</rule>
 
 	<rule ref="WordPress">
@@ -30,10 +29,11 @@
 		<exclude name="WordPress.VIP.RestrictedFunctions" />
 		<exclude name="WordPress.VIP.SlowDBQuery.slow_db_query_meta_query" />
 		<exclude name="WordPress.VIP.RestrictedVariables.user_meta__wpdb__usermeta" />
+		<exclude name="WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE" />
 	</rule>
 	<rule ref="WordPress.VIP.ValidatedSanitizedInput">
 		<properties>
-			<property name="customSanitizingFunctions" type="array" value="evf_clean,evf_sanitize_tooltip" />
+			<property name="customSanitizingFunctions" type="array" value="evf_clean,evf_sanitize_tooltip,evf_sanitize_textarea" />
 		</properties>
 	</rule>
 	<rule ref="WordPress.XSS.EscapeOutput">
@@ -41,9 +41,20 @@
 			<property name="customEscapingFunctions" type="array" value="evf_help_tip,evf_sanitize_tooltip" />
 		</properties>
 	</rule>
+	<rule ref="PEAR.NamingConventions.ValidClassName">
+        <exclude-pattern>includes/</exclude-pattern>
+    </rule>
+	<rule ref="WordPress.Files.FileName.InvalidClassFileName">
+		<exclude-pattern>includes/**/abstract-*.php</exclude-pattern>
+		<exclude-pattern>includes/class-everest-forms.php</exclude-pattern>
+	</rule>
 	<rule ref="WordPress.WP.I18n">
 		<properties>
 			<property name="text_domain" type="array" value="everest-forms" />
 		</properties>
+	</rule>
+	<rule ref="Squiz.Commenting">
+		<exclude name="Squiz.Commenting.LongConditionClosingComment" />
+		<exclude name="Squiz.Commenting.PostStatementComment" />
 	</rule>
 </ruleset>

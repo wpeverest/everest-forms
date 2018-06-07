@@ -24,7 +24,7 @@ class EVF_Field_Email extends EVF_Form_Fields {
 		$this->name  = __( 'Email', 'everest-forms' );
 		$this->type  = 'email';
 		$this->icon  = 'evf-icon evf-icon-email';
-		$this->order = 5;
+		$this->order = 9;
 
 	}
 

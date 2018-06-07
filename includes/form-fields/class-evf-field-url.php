@@ -19,12 +19,11 @@ class EVF_Field_URL extends EVF_Form_Fields {
 	 * @since      1.0.0
 	 */
 	public function init() {
-
 		// Define field type information.
-		$this->name  = __( 'Website', 'everest-forms' );
+		$this->name  = __( 'Website / URL', 'everest-forms' );
 		$this->type  = 'url';
 		$this->icon  = 'evf-icon evf-icon-website';
-		$this->order = 11;
+		$this->order = 10;
 		$this->group = 'advanced';
 	}
 

@@ -10,7 +10,6 @@
   "require-dev": {
     "squizlabs/php_codesniffer": "*",
     "wp-coding-standards/wpcs": "^0.14",
-    "phpunit/phpunit": "6.2.3",
     "wpeverest/wpeverest-git-hooks": "*",
     "wpeverest/wpeverest-sniffs": "*",
     "wimg/php-compatibility": "^8.0",
@@ -38,7 +37,6 @@
   },
   "extra": {
     "scripts-description": {
-      "test": "Run unit tests",
       "phpcs": "Analyze code against the WordPress coding standard with PHP_CodeSniffer",
       "phpcbf": "Fix coding standards warnings/errors automattically with PHP Code Beautifier"
     }

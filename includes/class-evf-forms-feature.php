@@ -14,26 +14,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Main EverestForms Class.
- *
- * @class      EverestForms
- * @version    1.0.0
  */
 class EVF_Forms_Features {
 
 	/**
 	 * Primary class constructor.
 	 *
-	 * @since      1.0.0
+	 * @since 1.0.0
 	 */
 	public function __construct() {
-
 		add_action( 'everest_forms_form_settings_notifications', array( $this, 'form_settings_notifications' ), 8, 1 );
-		//add_filter( 'everest_forms_builder_fields_buttons', array( $this, 'form_fields' ), 20 );
+		add_filter( 'everest_forms_builder_fields_buttons', array( $this, 'form_fields' ), 20 );
 		//add_filter( 'everest_forms_builder_preview', array( $this, 'everest_forms_builder_preview' ), 20, 1 );
 		//add_action( 'everest_forms_builder_panel_buttons', array( $this, 'form_panels' ), 20 );
+		add_action( 'everest_forms_builder_enqueues_before', array( $this, 'builder_enqueues' ) );
 	}
-
-
 
 	/**
 	 * Form notification settings, supports multiple notifications.
@@ -43,9 +38,7 @@ class EVF_Forms_Features {
 	 * @param object $settings
 	 */
 	public function form_settings_notifications( $settings ) {
-
-
-		// Fetch next ID and handle backwards compatibility
+		// Fetch next ID and handle backwards compatibility.
 		if ( empty( $settings->form_data['settings']['notifications'] ) ) {
 			$settings->form_data['settings']['notifications'][1]['email']          = ! empty( $settings->form_data['settings']['notification_email'] ) ? $settings->form_data['settings']['notification_email'] : '{
 				admin_email}';
@@ -101,24 +94,47 @@ class EVF_Forms_Features {
 		echo ' </div > ';
 	}
 
-
 	/**
 	 * Display/register additional fields available in the Pro version.
 	 *
-	 * @since      1.0.0
-	 *
-	 * @param array $fields
-	 *
+	 * @param  array $fields
 	 * @return array
 	 */
 	public function form_fields( $fields ) {
-		$fields['advance']['fields'][] = array(
-			'icon'  => 'dashicons dashicons-admin-links',
-			'name'  => 'Website / URL',
-			'type'  => 'url',
-			'order' => '1',
-			'class' => 'upgrade - modal',
-		);
+		if ( ! defined( 'EFP_PLUGIN_FILE' ) ) {
+			$pro_advanced_fields = array(
+				array(
+					'icon'  => 'evf-icon evf-icon-file-upload',
+					'name'  => 'File Upload',
+					'type'  => 'file-upload',
+					'order' => 12,
+					'class' => 'upgrade-modal',
+				),
+				array(
+					'icon'  => 'evf-icon evf-icon-hidden-field',
+					'name'  => 'Hidden Field',
+					'type'  => 'hidden',
+					'order' => 13,
+					'class' => 'upgrade-modal',
+				),
+				array(
+					'icon'  => 'evf-icon evf-icon-address',
+					'name'  => 'Address',
+					'type'  => 'address',
+					'order' => 14,
+					'class' => 'upgrade-modal',
+				),
+				array(
+					'icon'  => 'evf-icon evf-icon-phone',
+					'name'  => 'Phone',
+					'type'  => 'phone',
+					'order' => 15,
+					'class' => 'upgrade-modal',
+				),
+			);
+
+			$fields['advanced']['fields'] = array_merge( $fields['advanced']['fields'], $pro_advanced_fields );
+		}
 
 		return $fields;
 	}
@@ -126,7 +142,7 @@ class EVF_Forms_Features {
 	/**
 	 * Display/register additional panels available in the Pro version.
 	 *
-	 * @since      1.0.0
+	 * @since 1.0.0
 	 */
 	public function form_panels() {
 		?>
@@ -134,6 +150,26 @@ class EVF_Forms_Features {
 			<i class="fa fa-usd"></i><span><?php _e( 'Payments', 'everest-forms' ); ?></span>
 		</button>
 		<?php
+	}
+
+	/**
+	 * Load assets for free version with the upgrade message.
+	 *
+	 * @since 1.2.0
+	 */
+	public function builder_enqueues() {
+		wp_enqueue_script( 'everest-builder-upgrade', EVF()->plugin_url() . '/assets/js/admin/builder-upgrade.js', array( 'jquery', 'jquery-confirm' ), EVF_VERSION, false );
+
+		wp_localize_script(
+			'everest-builder-upgrade',
+			'everest_builder_upgrade',
+			array(
+				'upgrade_title'   => esc_html__( 'is a PRO Feature', 'everest-forms' ),
+				'upgrade_message' => esc_html__( 'We\'re sorry, %name% is not available on your plan.<br>Please upgrade to the PRO plan to unlock all these awesome features.', 'everest-forms' ),
+				'upgrade_button'  => esc_html__( 'Upgrade to PRO', 'everest-forms' ),
+				'upgrade_url'     => apply_filters( 'everest_forms_upgrade_url', 'https://wpeverest.com/wordpress-plugins/everest-forms/' ),
+			)
+		);
 	}
 }
 

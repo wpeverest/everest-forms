@@ -35,6 +35,14 @@ class EVF_Install {
 			'evf_update_110_update_forms',
 			'evf_update_110_db_version',
 		),
+		'1.1.6' => array(
+			'evf_update_116_delete_options',
+			'evf_update_116_db_version',
+		),
+		'1.2.0' => array(
+			'evf_update_120_db_rename_options',
+			'evf_update_120_db_version',
+		),
 	);
 
 	/**
@@ -358,7 +366,7 @@ CREATE TABLE {$wpdb->prefix}evf_sessions (
 	}
 
 	/**
-	 * Return a list of UsageMonitor tables. Used to make sure all UM tables are dropped when uninstalling the plugin
+	 * Return a list of EverestForms tables. Used to make sure all UM tables are dropped when uninstalling the plugin
 	 * in a single site or multi site environment.
 	 *
 	 * @return array UM tables.
@@ -376,7 +384,7 @@ CREATE TABLE {$wpdb->prefix}evf_sessions (
 	}
 
 	/**
-	 * Drop UsageMonitor tables.
+	 * Drop EverestForms tables.
 	 */
 	public static function drop_tables() {
 		global $wpdb;
@@ -511,7 +519,7 @@ CREATE TABLE {$wpdb->prefix}evf_sessions (
 				) );
 			}
 
-			update_option( 'evf_default_form_page_id', $form_id );
+			update_option( 'everest_forms_default_form_page_id', $form_id );
 		}
 	}
 
