@@ -22,7 +22,7 @@ class EVF_Settings_Validation extends EVF_Settings_Page {
 	 */
 	public function __construct() {
 		$this->id    = 'validation';
-		$this->icon  = 'evf-icon  evf-icon-checkbox';
+		$this->icon  = 'evf-icon evf-icon-checkbox';
 		$this->label = __( 'Validations', 'everest-forms' );
 
 		parent::__construct();
@@ -36,7 +36,6 @@ class EVF_Settings_Validation extends EVF_Settings_Page {
 	public function get_settings() {
 		$settings = apply_filters(
 			'everest_forms_validation_settings', array(
-
 				array(
 					'title' => __( 'Validation Messages', 'everest-forms' ),
 					'type'  => 'title',
@@ -46,7 +45,7 @@ class EVF_Settings_Validation extends EVF_Settings_Page {
 				array(
 					'title'    => __( 'Required', 'everest-forms' ),
 					'desc'     => __( 'Enter the message for the required form field', 'everest-forms' ),
-					'id'       => 'evf_required_validation',
+					'id'       => 'everest_forms_required_validation',
 					'type'     => 'text',
 					'desc_tip' => true,
 					'css'      => 'min-width: 350px;',
@@ -55,7 +54,7 @@ class EVF_Settings_Validation extends EVF_Settings_Page {
 				array(
 					'title'    => __( 'Website URL', 'everest-forms' ),
 					'desc'     => __( 'Enter the message for the valid website url', 'everest-forms' ),
-					'id'       => 'evf_url_validation',
+					'id'       => 'everest_forms_url_validation',
 					'type'     => 'text',
 					'desc_tip' => true,
 					'css'      => 'min-width: 350px;',
@@ -64,7 +63,7 @@ class EVF_Settings_Validation extends EVF_Settings_Page {
 				array(
 					'title'    => __( 'Email', 'everest-forms' ),
 					'desc'     => __( 'Enter the message for the valid email', 'everest-forms' ),
-					'id'       => 'evf_email_validation',
+					'id'       => 'everest_forms_email_validation',
 					'type'     => 'text',
 					'desc_tip' => true,
 					'css'      => 'min-width: 350px;',
@@ -73,7 +72,7 @@ class EVF_Settings_Validation extends EVF_Settings_Page {
 				array(
 					'title'    => __( 'Number', 'everest-forms' ),
 					'desc'     => __( 'Enter the message for the valid number', 'everest-forms' ),
-					'id'       => 'evf_number_validation',
+					'id'       => 'everest_forms_number_validation',
 					'type'     => 'text',
 					'desc_tip' => true,
 					'css'      => 'min-width: 350px;',
@@ -82,7 +81,7 @@ class EVF_Settings_Validation extends EVF_Settings_Page {
 				array(
 					'title'    => __( 'reCAPTCHA', 'everest-forms' ),
 					'desc'     => __( 'Enter the message for the valid recaptcha', 'everest-forms' ),
-					'id'       => 'evf_recaptcha_validation',
+					'id'       => 'everest_forms_recaptcha_validation',
 					'type'     => 'text',
 					'desc_tip' => true,
 					'css'      => 'min-width: 350px;',

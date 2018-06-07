@@ -26,8 +26,8 @@ if ( ! $tab_exists ) {
 			do_action( 'everest_forms_settings_tabs' );
 			?>
 		</nav>
-		<h1 class="screen-reader-text"><?php echo esc_html( $current_tab_label['label'] ); ?></h1>
 		<div class="everest-forms-settings">
+			<h1 class="screen-reader-text"><?php echo esc_html( $current_tab_label['label'] ); ?></h1>
 			<?php
 				do_action( 'everest_forms_sections_' . $current_tab );
 
