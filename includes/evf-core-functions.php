@@ -21,7 +21,7 @@ include EVF_ABSPATH . 'includes/evf-entry-functions.php';
  *
  * @since 1.0.0
  * @param string $name  Constant name.
- * @param string $value Value.
+ * @param mixed  $value Value.
  */
 function evf_maybe_define_constant( $name, $value ) {
 	if ( ! defined( $name ) ) {
