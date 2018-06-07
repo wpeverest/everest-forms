@@ -230,7 +230,6 @@
 				.everest-forms-field-options {
 					display: none;
 					background-color: $accordion-content-bg;
-					// height: 100%;
 
 					.everest-forms-field-option-group {
 						border-bottom: 1px solid $accordion-content-bg;
@@ -344,45 +343,6 @@
 
 				&.evf-hover {
 					background-color: $color-brand-primary-light;
-				}
-			}
-
-			.evf-add-row {
-				text-align: center;
-
-				span {
-					width: auto;
-					height: auto;
-					font-family: inherit;
-					color: $color-white;
-					background-color: $color-alert-success;
-					border-radius: 5px;
-					cursor: pointer;
-					transition: 0.5s ease-in-out background-color;
-					margin-bottom: 20px;font-size: 13px;
-					text-transform: uppercase;
-					padding: 5px 15px;
-					line-height: 35px;
-					transition: all 0.25s ease 0s;
-
-					&:hover,
-					&:focus,
-					&:active {
-						background-color: $color-brand-primary;
-					}
-
-					&.dashicons-plus-alt {
-
-						&::before {
-							font-family: dashicons;    font-size: 20px;
-							height: 20px;
-							width: 20px;
-							vertical-align: middle;
-							padding: 5px 15px 5px 0;
-							border-right: 1px solid transparentize($color-white, 0.7);
-							margin-right: 15px;
-						}
-					}
 				}
 			}
 
