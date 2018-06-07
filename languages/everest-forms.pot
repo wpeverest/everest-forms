@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Everest Forms package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Everest Forms 1.1.7\n"
+"Project-Id-Version: Everest Forms 1.1.8\n"
 "Report-Msgid-Bugs-To: https://github.com/wpeverest/everest-forms/issues\n"
-"POT-Creation-Date: 2018-05-28 10:09:19+00:00\n"
+"POT-Creation-Date: 2018-06-07 09:44:49+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -450,8 +450,8 @@ msgid "Pending <span class=\"count\">(%s)</span>"
 msgstr ""
 
 #: includes/admin/class-evf-admin-forms-table-list.php:338
-#: includes/admin/views/html-admin-page-entries-view.php:148
-#: includes/admin/views/html-admin-page-entries-view.php:150
+#: includes/admin/views/html-admin-page-entries-view.php:149
+#: includes/admin/views/html-admin-page-entries-view.php:151
 msgid "Move to trash"
 msgstr ""
 
@@ -813,43 +813,43 @@ msgstr ""
 msgid "This entry does not have any fields."
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:57
+#: includes/admin/views/html-admin-page-entries-view.php:58
 msgid "Field ID"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:74
+#: includes/admin/views/html-admin-page-entries-view.php:75
 msgid "Empty"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:91
+#: includes/admin/views/html-admin-page-entries-view.php:92
 msgid "Entry Details"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:97
+#: includes/admin/views/html-admin-page-entries-view.php:98
 msgid "Entry ID:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:103
+#: includes/admin/views/html-admin-page-entries-view.php:104
 msgid "Submitted:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:104
+#: includes/admin/views/html-admin-page-entries-view.php:105
 msgid "M j, Y @ g:ia"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:111
+#: includes/admin/views/html-admin-page-entries-view.php:112
 msgid "User:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:130
+#: includes/admin/views/html-admin-page-entries-view.php:131
 msgid "User IP:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:138
+#: includes/admin/views/html-admin-page-entries-view.php:139
 msgid "Status:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:139
+#: includes/admin/views/html-admin-page-entries-view.php:140
 msgid "Completed"
 msgstr ""
 

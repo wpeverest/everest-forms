@@ -4,7 +4,7 @@ Tags: form, form builder, easy form, clean form, login form, contact, contact fo
 Requires at least: 4.0
 Tested up to: 4.9
 Requires PHP: 5.4
-Stable tag: 1.1.7
+Stable tag: 1.1.8
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -78,6 +78,10 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 11. Advance Form
 
 == Changelog ==
+
+= 1.1.8 - 07-06-2018 =
+* Fix - Similar meta key exists while duplicating the field.
+* Fix - Entry field value error due to html tags in serialized data.
 
 = 1.1.7 - 28-05-2018 =
 * Fix - Google reCaptcha check with its own server.
