@@ -162,6 +162,12 @@
 				$( '#everest-forms-field-' + id ).find( '.everest-forms-' + subfield ).toggleClass( 'hidden' );
 			});
 
+			// Field sidebar tab toggle
+			$builder.on( 'click', '.everest-forms-fields-tab a', function(e) {
+				e.preventDefault();
+				EVFPanelBuilder.fieldTabChoice( $(this).attr( 'id' ) );
+			});
+
 			// Real-time updates for "Hide Label" field option
 			$builder.on( 'change', '.everest-forms-field-option-row-label_hide input', function() {
 				var id = $(this).parent().data( 'field-id' );
@@ -603,6 +609,9 @@
 									$field.fadeOut( 'slow', function () {
 										$field.remove();
 										option_field.remove();
+										$( '.everest-forms-fields-tab' ).find( 'a' ).removeClass( 'active' );
+										$( '.everest-forms-fields-tab' ).find( 'a' ).first().addClass( 'active' );
+										$( '.everest-forms-add-fields' ).show();
 									});
 									if( grid.children().length === 1 ) {
 										grid.addClass( 'evf-empty-grid' );
@@ -618,11 +627,19 @@
 			});
 		},
 		bindSaveOption: function () {
-			$( 'body' ).on( 'click', '.evf_save_form_action_button', function () {
+			$( 'body' ).on( 'click', '.everest-forms-save-button', function () {
 				var $this = $(this);
 				var form = $('form#everest-forms-builder-form');
 				var structure = EVFPanelBuilder.getStructure();
 				var form_data = form.serializeArray();
+
+				$( '.everest-forms-panel-content-wrap' ).block({
+					message: null,
+					overlayCSS: {
+						background: '#fff',
+						opacity: 0.6
+					}
+				});
 
 				/* db unwanted data erase start */
 				var rfields_ids = [];
@@ -658,30 +675,20 @@
 					data: data,
 					type: 'POST',
 					beforeSend: function () {
-						var overlay = $( '<div class="evf-overlay"></div>' );
-
-						overlay.append( '<div class="loading"></div>' );
-						$this.find( '.spinner' ).remove();
-						$wrapper.find( '.evf-overlay' ).remove();
-						$wrapper.css({ 'position': 'relative' });
-						$wrapper.append( overlay );
-						$this.append( '<span style="margin:1px 0 0 5px" class="spinner is-active"></span>' );
+						$this.addClass( 'processing' );
+						$this.find( '.loading-dot' ).remove();
+						$this.append( '<span class="loading-dot"></span>' );
 					},
 					success: function ( response ) {
-						$wrapper.find( '.evf-overlay' ).fadeOut();
-						$wrapper.find( '.evf-overlay' ).remove();
-						$wrapper.removeAttr( 'style' );
-						$this.find( '.spinner' ).remove();
+						$this.removeClass( 'processing' );
+						$this.find( '.loading-dot' ).remove();
 
 						if ( typeof response.success === 'boolean' && response.success === true ) {
-							// console.log(response.data);
-							// window.location = response.data.redirect_url;
-							window.location.reload();
+							$( '.everest-forms-panel-content-wrap' ).unblock();
 						}
 					}
 				});
-			})
-
+			});
 		},
 		getStructure: function () {
 
@@ -726,7 +733,6 @@
 		},
 
 		checkEmptyGrid: function () {
-
 			$.each($('.evf-admin-grid'), function () {
 				if ( $(this).find('.everest-forms-field').length < 1 ) {
 					$(this).addClass('evf-empty-grid');
@@ -735,28 +741,21 @@
 				}
 			});
 			EVFPanelBuilder.choicesInit();
-
 		},
 		bindDefaultTabs: function () {
-
-			$(document).on('click', '#evf-builder-tabs li', function ( e ) {
+			$( document ).on( 'click', '.evf-nav-tab-wrapper a', function ( e ) {
 				e.preventDefault();
-				EVFPanelBuilder.switchTab($(this).data('panel'));
+				EVFPanelBuilder.switchTab( $( this ).data( 'panel' ) );
 			});
 		},
-		switchTab: function ( panel ) {
-			var $panel = $('#everest-forms-panel-' + panel),
-			$panelBtn = $('.evf-panel-' + panel + '-button');
+		switchTab: function( panel ) {
+			var $panel    = $( '#everest-forms-panel-' + panel ),
+				$panelBtn = $( '.evf-panel-' + panel + '-button' );
 
-			$('#evf-builder-tabs').find('li a').removeClass('active');
-			$panelBtn.find('a').addClass('active');
-			$panel.closest('.evf-tab-content').find('.everest-forms-panel').removeClass('active');
-			$panel.addClass('active');
-
-			if ( 'fields' === panel ) {
-				$( '.everest-forms-field-options' ).hide();
-				$( '.everest-forms-add-fields' ).show();
-			}
+			$( '.evf-nav-tab-wrapper' ).find( 'a' ).removeClass( 'nav-tab-active' );
+			$panelBtn.addClass( 'nav-tab-active' );
+			$panel.closest( '.evf-tab-content' ).find( '.everest-forms-panel' ).removeClass( 'active' );
+			$panel.addClass( 'active' );
 
 			if ( 'integrations' === panel || 'payments' === panel  ) {
 				if ( ! $panel.find( '.everest-forms-panel-sidebar a' ).hasClass( 'active' ) ) {
@@ -794,9 +793,9 @@
 					if ( typeof hash[ 1 ] !== 'undefined' && hash[ 1 ] !== null )
 						url += '#' + hash[ 1 ];
 					return url;
-				}
-				else
+				} else {
 					return url;
+				}
 			}
 		},
 		switchPanel: function ( panel ) {
@@ -805,11 +804,11 @@
 			}
 		},
 		switchToFieldOptionPanel: function ( field_id ) {
-			$('li.evf-panel-field-options-button.evf-disabled-tab').show();
 			$('.everest-forms-field-options').find('.no-fields').hide();
 			$('.evf-admin-field-wrapper .everest-forms-field').removeClass('active');
-			$('.everest-forms-panel').removeClass('active');
 			$('#everest-forms-panel-fields').addClass('active');
+			$('.everest-forms-fields-tab').find('a').removeClass('active');
+			$('.everest-forms-fields-tab').find('a').last().addClass('active');
 			$('.everest-forms-add-fields').hide();
 			$('.everest-forms-field-options').show();
 			$('.everest-forms-field-options').find('.everest-forms-field-option').hide();
@@ -893,6 +892,32 @@
 					}
 				}
 			}).disableSelection();
+		},
+
+		/**
+		 * Toggle fields tabs (Add Fields, Field Options.
+		 */
+		fieldTabChoice: function( id ) {
+			$( '.everest-forms-fields-tab a' ).removeClass( 'active' );
+			$( '.everest-forms-field, .everest-forms-title-desc' ).removeClass( 'active' );
+
+			if ( 'add-fields' === id ) {
+				$( '#add-fields' ).addClass( 'active' );
+				$( '.everest-forms-add-fields' ).show();
+				$( '.everest-forms-field-options' ).hide();
+			} else {
+				$( '#field-options' ).addClass( 'active' );
+				if ( 'field-options' === id ) {
+					id = $( '.everest-forms-field' ).first().data( 'field-id' );
+					$( '.everest-forms-field' ).first().addClass( 'active' );
+				} else {
+					$( '#everest-forms-field-' + id ).addClass( 'active' );
+				}
+				$( '.everest-forms-field-option' ).hide();
+				$( '#everest-forms-field-option-' + id ).show();
+				$( '.everest-forms-add-fields' ).hide();
+				$( '.everest-forms-field-options' ).show();
+			}
 		},
 		bindFormPreview: function () {
 
@@ -983,7 +1008,8 @@
 			});
 		},
 		bindFieldSettings: function () {
-			$('body').on('click', '.everest-forms-preview .everest-forms-field, .everest-forms-preview .everest-forms-field .everest-forms-field-setting', function () {
+			$('body').on('click', '.everest-forms-preview .everest-forms-field, .everest-forms-preview .everest-forms-field .everest-forms-field-setting', function (e) {
+				e.preventDefault();
 				var field_id = $(this).closest('.everest-forms-field').attr('data-field-id');
 				EVFPanelBuilder.switchToFieldOptionPanel(field_id);
 			});
@@ -1039,7 +1065,7 @@ jQuery(function () {
 			jQuery('#everest-forms-panel-field-settings-external_url-wrap').show();
 		}
 	});
-	jQuery( 'li.evf-panel-field-options-button.evf-disabled-tab' ).hide();
+	jQuery( '.evf-panel-field-options-button.evf-disabled-tab' ).hide();
 
 });
 

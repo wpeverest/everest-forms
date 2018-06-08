@@ -1,18 +1,15 @@
 <?php
+/**
+ * EverestForms EVF_AJAX. AJAX Event Handlers.
+ *
+ * @class   EVF_AJAX
+ * @package EverestForms/Classes
+ */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
- * EverestForms EVF_AJAX.
- *
- * AJAX Event Handler.
- *
- * @class    EVF_AJAX
- * @package  EverestForms/Classes
- * @category Class
- * @author   WPEverest
+ * EVF_AJAX class.
  */
 class EVF_AJAX {
 
@@ -24,7 +21,6 @@ class EVF_AJAX {
 		add_action( 'template_redirect', array( __CLASS__, 'do_evf_ajax' ), 0 );
 		self::add_ajax_events();
 	}
-
 
 	/**
 	 * Set EVF AJAX constant and headers.
@@ -43,14 +39,14 @@ class EVF_AJAX {
 	/**
 	 * Send headers for EVF Ajax Requests.
 	 *
-	 * @since      1.0.0
+	 * @since 1.0.0
 	 */
 	private static function evf_ajax_headers() {
 		send_origin_headers();
 		@header( 'Content-Type: text/html; charset=' . get_option( 'blog_charset' ) );
 		@header( 'X-Robots-Tag: noindex' );
 		send_nosniff_header();
-		nocache_headers();
+		evf_nocache_headers();
 		status_header( 200 );
 	}
 
@@ -64,9 +60,12 @@ class EVF_AJAX {
 			$wp_query->set( 'evf-ajax', sanitize_text_field( $_GET['evf-ajax'] ) );
 		}
 
-		if ( $action = $wp_query->get( 'evf-ajax' ) ) {
+		$action = $wp_query->get( 'evf-ajax' );
+
+		if ( $action ) {
 			self::evf_ajax_headers();
-			do_action( 'evf_ajax_' . sanitize_text_field( $action ) );
+			$action = sanitize_text_field( $action );
+			do_action( 'evf_ajax_' . $action );
 			wp_die();
 		}
 	}
@@ -80,6 +79,7 @@ class EVF_AJAX {
 			'create_form'       => false,
 			'get_next_id'       => false,
 			'install_extension' => false,
+			'rated'             => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -309,6 +309,17 @@ class EVF_AJAX {
 		}
 
 		wp_send_json_success( $status );
+	}
+
+	/**
+	 * Triggered when clicking the rating footer.
+	 */
+	public static function rated() {
+		if ( ! current_user_can( 'manage_everest_forms' ) ) {
+			wp_die( -1 );
+		}
+		update_option( 'everest_forms_admin_footer_text_rated', 1 );
+		wp_die();
 	}
 }
 

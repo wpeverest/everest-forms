@@ -8,12 +8,10 @@
  * @version 1.0.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 // Include core functions (available in both admin and frontend).
-include EVF_ABSPATH . 'includes/evf-user-functions.php';
+include EVF_ABSPATH . 'includes/evf-conditional-functions.php';
 require EVF_ABSPATH . 'includes/evf-deprecated-functions.php';
 include EVF_ABSPATH . 'includes/evf-formatting-functions.php';
 include EVF_ABSPATH . 'includes/evf-entry-functions.php';
@@ -23,7 +21,7 @@ include EVF_ABSPATH . 'includes/evf-entry-functions.php';
  *
  * @since 1.0.0
  * @param string $name  Constant name.
- * @param string $value Value.
+ * @param mixed  $value Value.
  */
 function evf_maybe_define_constant( $name, $value ) {
 	if ( ! defined( $name ) ) {
@@ -466,6 +464,16 @@ function evf_set_time_limit( $limit = 0 ) {
 	if ( function_exists( 'set_time_limit' ) && false === strpos( ini_get( 'disable_functions' ), 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
 		@set_time_limit( $limit );
 	}
+}
+
+/**
+ * Wrapper for nocache_headers which also disables page caching.
+ *
+ * @since 1.2.0
+ */
+function evf_nocache_headers() {
+	EVF_Cache_Helper::set_nocache_constants();
+	nocache_headers();
 }
 
 /**

@@ -11,7 +11,6 @@
   "main": "Gruntfile.js",
   "devDependencies": {
     "autoprefixer": "~8.4.1",
-    "browser-sync": "^2.24.4",
     "grunt": "~1.0.2",
     "grunt-checktextdomain": "~1.0.1",
     "grunt-contrib-compress": "~1.4.3",
@@ -26,8 +25,6 @@
     "grunt-sass": "~2.1.0",
     "grunt-stylelint": "~0.10.0",
     "grunt-wp-i18n": "~1.0.2",
-    "gulp-4.0.build": "~4.0.0-build.a271520",
-    "gulp-sass": "^4.0.1",
     "stylelint": "~9.2.0"
   },
   "engines": {
