@@ -171,6 +171,17 @@ h2 .everest-forms-help-tip {
 		padding-left: 0;
 	}
 
+	.loading-dot {
+		background: url('../images/loading-dot.svg');
+		background-size: 25px 25px;
+		display: inline-block;
+		vertical-align: middle;
+		opacity: 0.7;
+		width: 20px;
+		height: 20px;
+		margin: 3px 0 0 5px;
+	}
+
 	.everest-forms {
 		margin: 0;
 
@@ -277,6 +288,10 @@ h2 .everest-forms-help-tip {
  * Form Builder styles
  */
 .everest-forms_page_edit-evf-form {
+	#wpfooter {
+		position: fixed;
+	}
+
 	#everest-forms-builder {
 		position: fixed;
 		width: calc(100% - 160px);

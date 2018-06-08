@@ -672,19 +672,13 @@
 					data: data,
 					type: 'POST',
 					beforeSend: function () {
-						var overlay = $( '<div class="evf-overlay"></div>' );
-
-						overlay.append( '<div class="loading"></div>' );
-						$this.find( '.spinner' ).remove();
-						$wrapper.find( '.evf-overlay' ).remove();
-						$wrapper.append( overlay );
-						$this.append( '<span style="margin:1px 0 0 5px" class="spinner is-active"></span>' );
+						$this.addClass( 'processing' );
+						$this.find( '.loading-dot' ).remove();
+						$this.append( '<span class="loading-dot"></span>' );
 					},
 					success: function ( response ) {
-						$wrapper.find( '.evf-overlay' ).fadeOut();
-						$wrapper.find( '.evf-overlay' ).remove();
-						$wrapper.removeAttr( 'style' );
-						$this.find( '.spinner' ).remove();
+						$this.removeClass( 'processing' );
+						$this.find( '.loading-dot' ).remove();
 
 						if ( typeof response.success === 'boolean' && response.success === true ) {
 							$( '.everest-forms-panel-content-wrap' ).unblock();
