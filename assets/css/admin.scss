@@ -215,6 +215,7 @@ h2 .everest-forms-help-tip {
 				}
 
 				&.nav-tab-active {
+					margin-bottom: 0;
 					background-color: #f1f1f1;
 					color: $color-gray-darker;
 
@@ -955,7 +956,39 @@ img.tips {
 /**
  * Small screen optimisation
  */
-@media only screen and (max-width: 1280px) {}
+@media only screen and (max-width: 1280px) {
+	.everest-forms_page_edit-evf-form {
+		#everest-forms-builder {
+			.everest-forms-nav-wrapper {
+				nav.evf-nav-tab-wrapper {
+					float: none;
+					border-bottom: 1px solid rgba(0,0,0,0.1);
+				}
+
+				.evf-forms-nav-right {
+					float: none;
+					margin: 20px 20px;
+					display: flex;
+					justify-content: space-between;
+				}
+			}
+
+			.evf-tab-content {
+				.everest-forms-panel {
+					.everest-forms-panel-sidebar {
+						width: 285px;
+					}
+
+					.everest-forms-panel-content-wrap {
+						background-color: #FFFFFF;
+						width: calc(100% - 285px);
+						padding: 15px 20px;
+					}
+				}
+			}
+		}
+	}
+}
 
 /**
  * Optimisation for screens 900px and smaller
