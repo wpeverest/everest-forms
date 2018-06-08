@@ -153,7 +153,7 @@ class EVF_Admin {
 					});
 				" );
 			} else {
-				$footer_text = __( 'Thank you for creating with EverestForms.', 'everest-forms' );
+				$footer_text = __( 'Thank you for creating with Everest Forms.', 'everest-forms' );
 			}
 		}
 

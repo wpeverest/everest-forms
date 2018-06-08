@@ -171,6 +171,16 @@ h2 .everest-forms-help-tip {
 		padding-left: 0;
 	}
 
+	.loading-dot {
+		background: url('../images/icons/three-dots.svg');
+		background-size: 25px 10px;
+		display: inline-block;
+		vertical-align: middle;
+		opacity: .7;
+		width: 25px;
+		height: 10px;
+	}
+
 	.everest-forms {
 		margin: 0;
 
@@ -277,6 +287,10 @@ h2 .everest-forms-help-tip {
  * Form Builder styles
  */
 .everest-forms_page_edit-evf-form {
+	#wpfooter {
+		position: fixed;
+	}
+
 	#everest-forms-builder {
 		position: fixed;
 		width: calc(100% - 160px);
@@ -337,15 +351,33 @@ h2 .everest-forms-help-tip {
 				}
 
 				.everest-forms-save-button {
+					width: 75px;
 					cursor: pointer;
 					margin-left: 15px;
 					padding: 4px 22px;
+					position: relative;
 					display: inline-block;
 					vertical-align: middle;
 					text-transform: uppercase;
+					transition: all 0.35s ease 0s;
+
+					&.processing {
+						font-size: 0;
+						width: 75px;
+						transition: all 0.35s ease 0s;
+					}
 
 					&:focus {
 						outline: none;
+					}
+
+					.loading-dot {
+						position: absolute;
+						top: 50%;
+						transform: translateY(-50%);
+						left: 0;
+						right: 0;
+						margin: 0 auto;
 					}
 
 					.spinner,
