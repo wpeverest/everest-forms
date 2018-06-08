@@ -959,6 +959,14 @@ img.tips {
 @media only screen and (max-width: 1280px) {
 	.everest-forms_page_edit-evf-form {
 		#everest-forms-builder {
+			.everest-forms-panel-content-wrap {
+				height: calc(100vh - 225px);
+			}
+
+			.everest-forms-tab-content {
+				height: calc(100vh - 275px);
+			}
+
 			.everest-forms-nav-wrapper {
 				nav.evf-nav-tab-wrapper {
 					float: none;
