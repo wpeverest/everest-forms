@@ -1008,7 +1008,8 @@
 			});
 		},
 		bindFieldSettings: function () {
-			$('body').on('click', '.everest-forms-preview .everest-forms-field, .everest-forms-preview .everest-forms-field .everest-forms-field-setting', function () {
+			$('body').on('click', '.everest-forms-preview .everest-forms-field, .everest-forms-preview .everest-forms-field .everest-forms-field-setting', function (e) {
+				e.preventDefault();
 				var field_id = $(this).closest('.everest-forms-field').attr('data-field-id');
 				EVFPanelBuilder.switchToFieldOptionPanel(field_id);
 			});
