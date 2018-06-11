@@ -210,4 +210,3 @@ class EVF_Field_Email extends EVF_Form_Fields {
 	}
 }
 
-new EVF_Field_Email();

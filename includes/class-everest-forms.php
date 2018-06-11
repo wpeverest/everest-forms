@@ -97,6 +97,18 @@ final class EverestForms {
 	}
 
 	/**
+	 * Auto-load in-accessible properties on demand.
+	 *
+	 * @param mixed $key Key name.
+	 * @return mixed
+	 */
+	public function __get( $key ) {
+		if ( in_array( $key, array( 'form_fields' ), true ) ) {
+			return $this->$key();
+		}
+	}
+
+	/**
 	 * EverestForms Constructor.
 	 */
 	public function __construct() {
@@ -207,6 +219,7 @@ final class EverestForms {
 		 */
 		include_once EVF_ABSPATH . 'includes/abstracts/abstract-evf-log-handler.php';
 		include_once EVF_ABSPATH . 'includes/abstracts/abstract-evf-session.php';
+		include_once EVF_ABSPATH . 'includes/abstracts/abstract-evf-form-fields.php';
 
 		/**
 		 * Core classes.
@@ -217,16 +230,11 @@ final class EverestForms {
 		include_once EVF_ABSPATH . 'includes/class-evf-ajax.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-emails.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-cache-helper.php';
-		include_once EVF_ABSPATH . 'includes/class-evf-field-item.php';
+		require_once EVF_ABSPATH . 'includes/class-evf-forms-feature.php';
 
 		if ( $this->is_request( 'admin' ) ) {
 			include_once EVF_ABSPATH . 'includes/admin/class-evf-admin.php';
 		}
-
-		/**
-		 * Forms feature.
-		 */
-		require_once EVF_ABSPATH . 'includes/class-evf-forms-feature.php';
 
 		if ( $this->is_request( 'frontend' ) ) {
 			$this->frontend_includes();
@@ -345,5 +353,14 @@ final class EverestForms {
 		global $wpdb;
 		$wpdb->form_entrymeta = $wpdb->prefix . 'evf_entrymeta';
 		$wpdb->tables[]       = 'evf_entrymeta';
+	}
+
+	/**
+	 * Get form fields Class.
+	 *
+	 * @return EVF_Form_Fields
+	 */
+	public function form_fields() {
+		return EVF_Fields::instance();
 	}
 }

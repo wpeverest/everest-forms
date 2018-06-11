@@ -1,6 +1,6 @@
 <?php
 /**
- * Textarea field.
+ * URL field.
  *
  * @package EverestForms\Fields
  * @since   1.0.0
@@ -9,9 +9,9 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * EVF_Field_Textarea class.
+ * EVF_Field_URL class.
  */
-class EVF_Field_Textarea extends EVF_Form_Fields {
+class EVF_Field_URL extends EVF_Form_Fields {
 
 	/**
 	 * Primary class constructor.
@@ -19,12 +19,12 @@ class EVF_Field_Textarea extends EVF_Form_Fields {
 	 * @since      1.0.0
 	 */
 	public function init() {
-
-		// Define field type information
-		$this->name  = __( 'Paragraph Text', 'everest-forms' );
-		$this->type  = 'textarea';
-		$this->icon  = 'evf-icon evf-icon-paragraph';
-		$this->order = 4;
+		// Define field type information.
+		$this->name  = __( 'Website / URL', 'everest-forms' );
+		$this->type  = 'url';
+		$this->icon  = 'evf-icon evf-icon-website';
+		$this->order = 10;
+		$this->group = 'advanced';
 	}
 
 	/**
@@ -40,8 +40,7 @@ class EVF_Field_Textarea extends EVF_Form_Fields {
 		// Basic field options.
 		// -------------------------------------------------------------------//
 
-		// Options open markup.
-		$args = array(
+  		$args = array(
 			'markup' => 'open',
 		);
 		$this->field_option( 'basic-options', $field, $args );
@@ -52,7 +51,7 @@ class EVF_Field_Textarea extends EVF_Form_Fields {
 		// Meta.
 		$this->field_option( 'meta', $field );
 
-		// Description
+		// Description.
 		$this->field_option( 'description', $field );
 
 		// Required toggle.
@@ -64,9 +63,9 @@ class EVF_Field_Textarea extends EVF_Form_Fields {
 		);
 		$this->field_option( 'basic-options', $field, $args );
 
-		// -------------------------------------------------------------------//
+		// --------------------------------------------------------------------//
 		// Advanced field options.
-		// -------------------------------------------------------------------//
+		// --------------------------------------------------------------------//
 
 		// Options open markup.
 		$args = array(
@@ -74,14 +73,14 @@ class EVF_Field_Textarea extends EVF_Form_Fields {
 		);
 		$this->field_option( 'advanced-options', $field, $args );
 
-		// Size.
-		$this->field_option( 'size', $field );
+
 
 		// Placeholder.
 		$this->field_option( 'placeholder', $field );
 
 		// Hide label.
 		$this->field_option( 'label_hide', $field );
+
 
 		// Custom CSS classes.
 		$this->field_option( 'css', $field );
@@ -109,7 +108,7 @@ class EVF_Field_Textarea extends EVF_Form_Fields {
 		$this->field_preview_option( 'label', $field );
 
 		// Primary input.
-		echo '<textarea placeholder="' . $placeholder . '" class="primary-input" disabled></textarea>';
+		echo '<input type="url" placeholder="' . $placeholder . '" class="primary-input" disabled>';
 
 		// Description.
 		$this->field_preview_option( 'description', $field );
@@ -126,25 +125,13 @@ class EVF_Field_Textarea extends EVF_Form_Fields {
 	 */
 	public function field_display( $field, $deprecated, $form_data ) {
 
-		// Define data.
+ 		// Define data.
 		$primary = $field['properties']['inputs']['primary'];
-		$value   = '';
-
-		if ( ! empty( $primary['attr']['value'] ) ) {
-			$value = $primary['attr']['value'];
-			unset( $primary['attr']['value'] );
-
-			$value = everest_forms_sanitize_textarea_field( $value );
-		}
-
 		// Primary field.
-		printf(
-			'<textarea %s %s>%s</textarea>',
+		printf( '<input type="url" %s %s>',
 			evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ),
-			$primary['required'],
-			$value
+			$primary['required']
 		);
 	}
 }
 
-new EVF_Field_Textarea();

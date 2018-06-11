@@ -132,5 +132,3 @@ class EVF_Field_Date extends EVF_Form_Fields {
 		);
 	}
 }
-
-new EVF_Field_Date();

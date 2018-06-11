@@ -135,4 +135,3 @@ class EVF_Field_Number extends EVF_Form_Fields {
 	}
 }
 
-new EVF_Field_Number();
