@@ -1,6 +1,6 @@
 <?php
 /**
- * URL field.
+ * Last name field.
  *
  * @package EverestForms\Fields
  * @since   1.0.0
@@ -9,9 +9,9 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * EVF_Field_URL class.
+ * EVF_Field_Last_Name class.
  */
-class EVF_Field_URL extends EVF_Form_Fields {
+class EVF_Field_Last_Name extends EVF_Form_Fields {
 
 	/**
 	 * Primary class constructor.
@@ -19,12 +19,12 @@ class EVF_Field_URL extends EVF_Form_Fields {
 	 * @since      1.0.0
 	 */
 	public function init() {
+
 		// Define field type information.
-		$this->name  = __( 'Website / URL', 'everest-forms' );
-		$this->type  = 'url';
-		$this->icon  = 'evf-icon evf-icon-website';
-		$this->order = 10;
-		$this->group = 'advanced';
+		$this->name  = __( 'Last Name', 'everest-forms' );
+		$this->type  = 'last-name';
+		$this->icon  = 'evf-icon evf-icon-last-name';
+		$this->order = 2;
 	}
 
 	/**
@@ -108,7 +108,7 @@ class EVF_Field_URL extends EVF_Form_Fields {
 		$this->field_preview_option( 'label', $field );
 
 		// Primary input.
-		echo '<input type="url" placeholder="' . $placeholder . '" class="primary-input" disabled>';
+		echo '<input type="text" placeholder="' . $placeholder . '" class="primary-input" disabled>';
 
 		// Description.
 		$this->field_preview_option( 'description', $field );
@@ -128,11 +128,10 @@ class EVF_Field_URL extends EVF_Form_Fields {
  		// Define data.
 		$primary = $field['properties']['inputs']['primary'];
 		// Primary field.
-		printf( '<input type="url" %s %s>',
+		printf( '<input type="text" %s %s>',
 			evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ),
 			$primary['required']
 		);
 	}
 }
 
-new EVF_Field_URL();

@@ -256,4 +256,3 @@ class EVF_Field_Select extends EVF_Form_Fields {
 	}
 }
 
-new EVF_Field_Select();

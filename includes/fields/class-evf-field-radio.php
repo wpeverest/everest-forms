@@ -322,4 +322,3 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 	}
 }
 
-new EVF_Field_Radio();
