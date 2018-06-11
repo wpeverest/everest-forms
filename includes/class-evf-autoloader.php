@@ -74,7 +74,7 @@ class EVF_Autoloader {
 
 		if ( 0 === strpos( $class, 'evf_field_' ) ) {
 			$path = $this->include_path . 'fields/';
-		}elseif ( 0 === strpos( $class, 'evf_shortcode_' ) ) {
+		} elseif ( 0 === strpos( $class, 'evf_shortcode_' ) ) {
 			$path = $this->include_path . 'shortcodes/';
 		} elseif ( 0 === strpos( $class, 'evf_admin' ) ) {
 			$path = $this->include_path . 'admin/';

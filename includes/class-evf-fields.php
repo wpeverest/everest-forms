@@ -94,14 +94,14 @@ class EVF_Fields {
 		foreach ( $load_fields as $field ) {
 			$load_field = is_string( $field ) ? new $field() : $field;
 
-			if ( isset( $ordering[ $load_field->id ] ) && is_numeric( $ordering[ $load_field->id ] ) ) {
-				// Add in position.
-				$this->form_fields[ $ordering[ $load_field->id ] ] = $load_field;
-			} else {
+			// if ( isset( $ordering[ $load_field->id ] ) && is_numeric( $ordering[ $load_field->id ] ) ) {
+			// 	// Add in position.
+			// 	$this->form_fields[ $ordering[ $load_field->id ] ] = $load_field;
+			// } else {
 				// Add to end of the array.
 				$this->form_fields[ $order_end ] = $load_field;
 				$order_end++;
-			}
+			//}
 		}
 
 		ksort( $this->form_fields );
