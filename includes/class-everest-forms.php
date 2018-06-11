@@ -62,6 +62,13 @@ final class EverestForms {
 	public $entry_meta;
 
 	/**
+	 * Array of deprecated hook handlers.
+	 *
+	 * @var array of EVF_Deprecated_Hooks
+	 */
+	public $deprecated_hook_handlers = array();
+
+	/**
 	 * Main EverestForms Instance.
 	 *
 	 * Ensures only one instance of EverestForms is loaded or can be loaded.
@@ -218,6 +225,7 @@ final class EverestForms {
 		 * Abstract classes.
 		 */
 		include_once EVF_ABSPATH . 'includes/abstracts/abstract-evf-log-handler.php';
+		include_once EVF_ABSPATH . 'includes/abstracts/abstract-evf-deprecated-hooks.php';
 		include_once EVF_ABSPATH . 'includes/abstracts/abstract-evf-session.php';
 		include_once EVF_ABSPATH . 'includes/abstracts/abstract-evf-form-fields.php';
 
@@ -230,6 +238,8 @@ final class EverestForms {
 		include_once EVF_ABSPATH . 'includes/class-evf-ajax.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-emails.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-cache-helper.php';
+		include_once EVF_ABSPATH . 'includes/class-evf-deprecated-action-hooks.php';
+		include_once EVF_ABSPATH . 'includes/class-evf-deprecated-filter-hooks.php';
 		require_once EVF_ABSPATH . 'includes/class-evf-forms-feature.php';
 
 		if ( $this->is_request( 'admin' ) ) {
@@ -268,6 +278,10 @@ final class EverestForms {
 
 		// Set up localisation.
 		$this->load_plugin_textdomain();
+
+		// Load class instances.
+		$this->deprecated_hook_handlers['actions'] = new EVF_Deprecated_Action_Hooks();
+		$this->deprecated_hook_handlers['filters'] = new EVF_Deprecated_Filter_Hooks();
 
 		// Classes/actions loaded for the frontend and for ajax requests.
 		if ( $this->is_request( 'frontend' ) ) {
