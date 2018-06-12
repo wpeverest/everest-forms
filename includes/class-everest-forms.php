@@ -379,4 +379,13 @@ final class EverestForms {
 	public function form_fields() {
 		return EVF_Fields::instance();
 	}
+
+	/**
+	 * Get form panels Class.
+	 *
+	 * @return EVF_Form_Panels
+	 */
+	public function form_panels() {
+		return EVF_Form_Panels::instance();
+	}
 }
