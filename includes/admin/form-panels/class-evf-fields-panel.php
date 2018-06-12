@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * EVF_Fields_Panel class.
  */
-class EVF_Fields_Panel extends EVF_Admin_Form_Panel {
+class EVF_Fields_Panel extends EVF_Form_Panel {
 
 	/**
 	 * All systems go.

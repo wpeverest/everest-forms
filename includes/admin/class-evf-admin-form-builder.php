@@ -99,10 +99,6 @@ class EVF_Admin_Form_Builder {
 	}
 
 	public function load_admin_panels() {
-
-		// Abstract class
-		require_once EVF_ABSPATH . 'includes/abstracts/abstract-evf-admin-form-panel.php';
-
 		$this->admin_form_panels = apply_filters( 'everest_forms_builder_panels', array(
 			'fields',
 			'settings',

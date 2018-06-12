@@ -2,8 +2,8 @@
 /**
  * EverestForms Admin
  *
- * @package  EverestForms/Admin
- * @version  1.0.0
+ * @package EverestForms/Admin
+ * @version 1.0.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -41,9 +41,9 @@ class EVF_Admin {
 		include_once dirname( __FILE__ ) . '/class-evf-admin-menus.php';
 		include_once dirname( __FILE__ ) . '/class-evf-admin-notices.php';
 		include_once dirname( __FILE__ ) . '/class-evf-admin-assets.php';
+		include_once dirname( __FILE__ ) . '/class-evf-admin-entries.php';
 		include_once dirname( __FILE__ ) . '/class-evf-admin-form-builder.php';
 		include_once dirname( __FILE__ ) . '/class-evf-admin-add-form.php';
-		include_once dirname( __FILE__ ) . '/class-evf-admin-entries.php';
 	}
 
 	/**

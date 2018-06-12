@@ -1,13 +1,18 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+/**
+ * Abstract form panel
+ *
+ * @package    EverestForms\Abstracts
+ * @deprecated 1.2.0
+ * @since      1.0.0
+ */
+
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Abstract EVF_Admin_Form_Panel Class
  *
- * @version 1.0.0
- * @author  WPEverest
+ * @deprecated 1.2.0
  */
 abstract class EVF_Admin_Form_Panel {
 
@@ -175,6 +180,5 @@ abstract class EVF_Admin_Form_Panel {
 	 *
 	 * @since      1.0.0
 	 */
-	public function panel_content() {
-	}
+	public function panel_content() {}
 }
