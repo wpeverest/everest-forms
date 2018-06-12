@@ -77,14 +77,21 @@ class EVF_Form_Panels {
 			'EVF_Panel_Settings',
 		) );
 
-		// Get sort order option.
+		// Get sort order.
 		$order_end = 999;
 
 		// Load form panels.
 		foreach ( $load_panels as $panel ) {
 			$load_panel = is_string( $panel ) ? new $panel() : $panel;
-			$this->form_panels[ $order_end ] = $load_panel;
-			$order_end++;
+
+			if ( isset( $load_panel->order ) && is_numeric( $load_panel->order ) ) {
+				// Add in position.
+				$this->form_panels[ $load_panel->order ] = $load_panel;
+			} else {
+				// Add to end of the array.
+				$this->form_panels[ $order_end ] = $load_panel;
+				$order_end++;
+			}
 		}
 
 		ksort( $this->form_panels );

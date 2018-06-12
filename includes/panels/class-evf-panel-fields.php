@@ -33,11 +33,6 @@ class EVF_Panel_Fields extends EVF_Form_Panel {
 	}
 
 	/**
-	 * Enqueue assets for the Fields panel.
-	 */
-	public function enqueues() {}
-
-	/**
 	 * Outputs the Field panel sidebar.
 	 */
 	public function panel_sidebar() {

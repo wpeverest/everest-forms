@@ -29,16 +29,6 @@ class EVF_Panel_Settings extends EVF_Form_Panel {
 	}
 
 	/**
-	 * Enqueue assets for the Setting panel.
-	 *
-	 * @since      1.0.0
-	 */
-	public function enqueues() {
-
-
-	}
-
-	/**
 	 * Outputs the Settings panel sidebar.
 	 *
 	 * @since      1.0.0
