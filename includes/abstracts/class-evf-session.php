@@ -1,4 +1,4 @@
-<?php // @codingStandardsIgnoreLine.
+<?php
 /**
  * Handle data for the current customers session
  *
@@ -6,9 +6,7 @@
  * @package EverestForms\Abstracts
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
  * EVF_Session

@@ -2,17 +2,14 @@
 /**
  * Log handling functionality.
  *
- * @class   EVF_Log_Handler
- * @package EverestForms/Abstracts
+ * @package EverestForms\Abstracts
+ * @since   1.0.0
  */
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Abstract EVF Log Handler Class
- *
- * @version 1.0.0
- * @package EverestFroms/Abstracts
  */
 abstract class EVF_Log_Handler implements EVF_Log_Handler_Interface {
 
