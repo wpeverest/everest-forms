@@ -187,7 +187,7 @@ class EVF_Admin_Form_Builder {
 				<div class="evf-setup-templates">
 					<?php foreach ( $core_templates as $template ) : ?>
 						<div class="evf-template" id="everest-forms-template-<?php echo esc_attr( $template['slug'] ); ?>">
-							<img src="<?php echo esc_url( EVF()->plugin_url(). "/assets/images/{$template['slug']}-form.jpg" ); ?>" />
+							<img src="<?php echo esc_url( EVF()->plugin_url(). "/assets/images/templates/{$template['slug']}-form.jpg" ); ?>" />
 							<div class="evf-template-overlay">
 								<a href="#" class="evf-button evf-button-rounded evf-template-select" data-template-name-raw="<?php echo esc_attr( $template['name'] ); ?>" data-template-name="<?php printf( _x( '%s template', 'Template name', 'everest-forms' ), esc_attr( $template['name'] ) ); ?>" data-template="<?php echo esc_attr( $template['slug'] ); ?>"><?php printf( _x( 'Create a %s', 'Template name', 'everest-forms' ), esc_html( $template['name'] ) ); ?></a>
 							</div>
