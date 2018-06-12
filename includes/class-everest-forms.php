@@ -225,7 +225,7 @@ final class EverestForms {
 		 * Abstract classes.
 		 */
 		include_once EVF_ABSPATH . 'includes/abstracts/abstract-evf-log-handler.php';
-		include_once EVF_ABSPATH . 'includes/abstracts/abstract-evf-deprecated-hooks.php';
+		include_once EVF_ABSPATH . 'includes/abstracts/class-evf-deprecated-hooks.php';
 		include_once EVF_ABSPATH . 'includes/abstracts/abstract-evf-session.php';
 		include_once EVF_ABSPATH . 'includes/abstracts/abstract-evf-form-fields.php';
 
