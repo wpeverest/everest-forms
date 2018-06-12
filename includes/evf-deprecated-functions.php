@@ -146,3 +146,11 @@ function evf_sender_name() {
 function evf_sender_address() {
 	evf_deprecated_function( 'evf_sender_address', '1.1.6' );
 }
+
+/**
+ * @deprecated 1.2.0
+ */
+function get_form_data_by_meta_key( $form_id, $meta_key ) {
+	evf_deprecated_function( 'get_form_data_by_meta_key', '1.2.0', 'evf_get_form_data_by_meta_key' );
+	return evf_get_form_data_by_meta_key( $form_id, $meta_key );
+}
