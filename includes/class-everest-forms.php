@@ -137,7 +137,7 @@ final class EverestForms {
 		register_shutdown_function( array( $this, 'log_errors' ) );
 		add_action( 'after_setup_theme', array( $this, 'include_template_functions' ), 11 );
 		add_action( 'init', array( $this, 'init' ), 0 );
-		add_action( 'init', array( 'EVF_Fields', 'init' ) );
+		add_action( 'init', array( $this, 'form_fields' ), 0 );
 		add_action( 'init', array( 'EVF_Shortcodes', 'init' ) );
 		add_action( 'init', array( 'EVF_Template_Loader', 'init' ) );
 		add_action( 'init', array( $this, 'wpdb_table_fix' ), 0 );
