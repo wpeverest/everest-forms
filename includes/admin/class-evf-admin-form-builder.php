@@ -78,27 +78,12 @@ class EVF_Admin_Form_Builder {
 
 			$this->tab_view = isset( $_GET['tab'] ) ? $_GET['tab'] : 'Fields';
 
-			// Default  for new field is the setup panel
-			$this->load_admin_panels();
-
 			add_action( 'everest_form_admin_form_builder_page', array( $this, 'output' ) );
 
 			// Provide hook for addons
 			do_action( 'everest_forms_builder_init', $this->tab_view );
 
 			do_action( 'everest_forms_builder_scripts' );
-		}
-	}
-
-	public function load_admin_panels() {
-		$form_panels = apply_filters( 'everest_forms_builder_panels', array(
-			'EVF_Panel_Fields',
-			'EVF_Panel_Settings',
-		) );
-
-		// Load form panels.
-		foreach ( $form_panels as $panel ) {
-			$load_panel = is_string( $panel ) ? new $panel() : $panel;
 		}
 	}
 
