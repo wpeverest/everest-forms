@@ -1,22 +1,17 @@
 <?php
 /**
- * EverestForms Admin
+ * Panel Settings.
  *
- * @class    EVF_Admin
- * @author   WPEverest
- * @category Admin
- * @package  EverestForms/Admin/FormPanel
- * @version  1.0.0
+ * @package EverestForms\Panels
+ * @since   1.2.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
- * EVF_Settings_Panel class.
+ * EVF_Panel_Settings class.
  */
-class EVF_Settings_Panel extends EVF_Admin_Form_Panel {
+class EVF_Panel_Settings extends EVF_Form_Panel {
 
 	/**
 	 * All systems go.
@@ -325,4 +320,4 @@ class EVF_Settings_Panel extends EVF_Admin_Form_Panel {
 	}
 }
 
-new EVF_Settings_Panel;
+new EVF_Panel_Settings();

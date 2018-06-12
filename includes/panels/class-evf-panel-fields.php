@@ -1,19 +1,17 @@
 <?php
 /**
- * EverestForms Admin
+ * Panel fields.
  *
- * @package EverestForms/Admin/FormPanel
- * @version 1.0.0
+ * @package EverestForms\Panels
+ * @since   1.2.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
- * EVF_Fields_Panel class.
+ * EVF_Panel_Fields class.
  */
-class EVF_Fields_Panel extends EVF_Form_Panel {
+class EVF_Panel_Fields extends EVF_Form_Panel {
 
 	/**
 	 * All systems go.
@@ -295,4 +293,4 @@ class EVF_Fields_Panel extends EVF_Form_Panel {
 	}
 }
 
-new EVF_Fields_Panel;
+new EVF_Panel_Fields();

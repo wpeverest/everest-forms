@@ -105,13 +105,10 @@ class EVF_Admin_Form_Builder {
 		) );
 
 		foreach ( $this->admin_form_panels as $panel ) {
+			$panel = 'class-evf-panel-' . $panel;
 
-			$panel = 'class-evf-' . $panel . '-panel';
-
-			if ( file_exists( EVF_ABSPATH . 'includes/admin/form-panels/' . $panel . '.php' ) ) {
-
-				require_once EVF_ABSPATH . 'includes/admin/form-panels/' . $panel . '.php';
-
+			if ( file_exists( EVF_ABSPATH . 'includes/panels/' . $panel . '.php' ) ) {
+				require_once EVF_ABSPATH . 'includes/panels/' . $panel . '.php';
 			}
 		}
 	}
