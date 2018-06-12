@@ -29,7 +29,6 @@ class EVF_Panel_Fields extends EVF_Form_Panel {
 			add_action( 'everest_forms_builder_fields_options', array( $this, 'fields_options' ) );
 			add_action( 'everest_forms_builder_preview', array( $this, 'preview' ) );
 		}
-		add_action( 'everest_forms_builder_fields', array( $this, 'fields' ) );
 	}
 
 	/**
