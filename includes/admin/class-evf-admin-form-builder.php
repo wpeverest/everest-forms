@@ -24,14 +24,6 @@ class EVF_Admin_Form_Builder {
 	public $tab_view;
 
 	/**
-	 * Available panels.
-	 *
-	 * @since      1.0.0
-	 * @var array
-	 */
-	public $admin_form_panels;
-
-	/**
 	 * Current form.
 	 *
 	 * @since      1.0.0
@@ -99,17 +91,14 @@ class EVF_Admin_Form_Builder {
 	}
 
 	public function load_admin_panels() {
-		$this->admin_form_panels = apply_filters( 'everest_forms_builder_panels', array(
-			'fields',
-			'settings',
+		$form_panels = apply_filters( 'everest_forms_builder_panels', array(
+			'EVF_Panel_Fields',
+			'EVF_Panel_Settings',
 		) );
 
-		foreach ( $this->admin_form_panels as $panel ) {
-			$panel = 'class-evf-panel-' . $panel;
-
-			if ( file_exists( EVF_ABSPATH . 'includes/panels/' . $panel . '.php' ) ) {
-				require_once EVF_ABSPATH . 'includes/panels/' . $panel . '.php';
-			}
+		// Load form panels.
+		foreach ( $form_panels as $panel ) {
+			$load_panel = is_string( $panel ) ? new $panel() : $panel;
 		}
 	}
 

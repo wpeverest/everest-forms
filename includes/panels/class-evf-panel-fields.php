@@ -292,5 +292,3 @@ class EVF_Panel_Fields extends EVF_Form_Panel {
 		return $a['order'] - $b['order'];
 	}
 }
-
-new EVF_Panel_Fields();

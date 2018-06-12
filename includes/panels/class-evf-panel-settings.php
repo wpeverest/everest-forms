@@ -319,5 +319,3 @@ class EVF_Panel_Settings extends EVF_Form_Panel {
 		return $pages;
 	}
 }
-
-new EVF_Panel_Settings();
