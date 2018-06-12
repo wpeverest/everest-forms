@@ -100,16 +100,7 @@ class EVF_Admin_Menus {
 	 * Add menu items.
 	 */
 	public function add_new_form() {
-		$builder_page = add_submenu_page( 'everest-forms', __( 'Add New', 'everest-forms' ), __( 'Add New', 'everest-forms' ), 'manage_everest_forms', 'edit-evf-form', array( $this, 'add_everest_forms' ) );
-
-		add_action( 'load-' . $builder_page, array( $this, 'builder_page_init' ) );
-	}
-
-	/**
-	 * Loads forms fields into memory.
-	 */
-	public function builder_page_init() {
-		evf()->form_fields();
+		add_submenu_page( 'everest-forms', __( 'Add New', 'everest-forms' ), __( 'Add New', 'everest-forms' ), 'manage_everest_forms', 'edit-evf-form', array( $this, 'add_everest_forms' ) );
 	}
 
 	/**
