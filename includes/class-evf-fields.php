@@ -72,7 +72,7 @@ class EVF_Fields {
 	 * Load fields and hook in functions.
 	 */
 	public function init() {
-		$load_fields = apply_filters( 'everest_forms_load_fields', array(
+		$load_fields = apply_filters( 'everest_forms_fields', array(
 			'EVF_Field_First_Name',
 			'EVF_Field_Last_Name',
 			'EVF_Field_Text',
@@ -95,13 +95,13 @@ class EVF_Fields {
 			$load_field = is_string( $field ) ? new $field() : $field;
 
 			// if ( isset( $ordering[ $load_field->id ] ) && is_numeric( $ordering[ $load_field->id ] ) ) {
-			// 	// Add in position.
-			// 	$this->form_fields[ $ordering[ $load_field->id ] ] = $load_field;
+				// Add in position.
+				// $this->form_fields[ $ordering[ $load_field->id ] ] = $load_field;
 			// } else {
 				// Add to end of the array.
 				$this->form_fields[ $order_end ] = $load_field;
 				$order_end++;
-			//}
+			// }
 		}
 
 		ksort( $this->form_fields );
