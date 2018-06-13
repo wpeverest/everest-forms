@@ -1,4 +1,3 @@
-//Plugin made by Umesh Ghimire
 (function ( $ ) {
 	$.fn.EverestBuilder = function ( options ) {
 

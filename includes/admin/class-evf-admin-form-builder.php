@@ -73,14 +73,6 @@ class EVF_Admin_Form_Builder {
 	 * Output new form template.
 	 */
 	public static function output_template() {
-		wp_enqueue_script( 'everest_forms_builder' );
-		wp_enqueue_script( 'everest_forms_admin' );
-
-		include_once( dirname( __FILE__ ) . '/views/html-admin-form-modal.php' );
-		wp_enqueue_style( 'evf-form-modal-style', EVF()->plugin_url() . '/assets/css/evf-form-modal.css', array(), EVF_VERSION );
-
-		wp_enqueue_script( 'evf-admin-form-modal', EVF()->plugin_url() . '/assets/js/admin/evf-form-modal.js', array( 'underscore', 'backbone', 'wp-util' ), EVF_VERSION );
-
 		$core_templates = apply_filters( 'everest_forms_templates_core', array(
 			'blank-form'   => array(
 				'slug' => 'blank',
@@ -91,6 +83,9 @@ class EVF_Admin_Form_Builder {
 				'name' => __( 'Contact Form', 'everest-forms' ),
 			),
 		) );
+
+		include_once( dirname( __FILE__ ) . '/views/html-admin-form-modal.php' );
+
 		?>
 		<div class ="wrap everest-forms">
 			<form id="everest-forms" class="everest-forms-setup" name="everest-forms-setup" method="post">
