@@ -27,7 +27,7 @@ class EVF_Forms_Features {
 		add_filter( 'everest_forms_builder_fields_buttons', array( $this, 'form_fields' ), 20 );
 		//add_filter( 'everest_forms_builder_preview', array( $this, 'everest_forms_builder_preview' ), 20, 1 );
 		//add_action( 'everest_forms_builder_panel_buttons', array( $this, 'form_panels' ), 20 );
-		add_action( 'everest_forms_builder_enqueues_before', array( $this, 'builder_enqueues' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'builder_enqueues' ) );
 	}
 
 	/**

@@ -106,10 +106,48 @@ class EVF_Admin_Menus {
 	}
 
 	/**
-	 * Load panels into memory.
+	 * Loads builder page.
 	 */
 	public function builder_page_init() {
+		global $current_tab;
+
 		evf()->form_panels();
+		evf()->form_fields();
+
+		// Get current tab/section.
+		$current_tab = empty( $_GET['tab'] ) ? 'fields' : sanitize_title( wp_unslash( $_GET['tab'] ) ); // WPCS: input var okay, CSRF ok.
+
+		do_action( 'everest_forms_builder_page_init' );
+	}
+
+	/**
+	 * Loads settings page.
+	 */
+	public function settings_page_init___s() {
+		global $current_tab, $current_section;
+
+		// Include settings pages.
+		EVF_Admin_Settings::get_settings_pages();
+
+		// Get current tab/section.
+		$current_tab     = empty( $_GET['tab'] ) ? 'general' : sanitize_title( wp_unslash( $_GET['tab'] ) ); // WPCS: input var okay, CSRF ok.
+		$current_section = empty( $_REQUEST['section'] ) ? '' : sanitize_title( wp_unslash( $_REQUEST['section'] ) ); // WPCS: input var okay, CSRF ok.
+
+		// Save settings if data has been posted.
+		if ( apply_filters( '' !== $current_section ? "everest_forms_save_settings_{$current_tab}_{$current_section}" : "everest_forms_save_settings_{$current_tab}", ! empty( $_POST ) ) ) { // WPCS: input var okay, CSRF ok.
+			EVF_Admin_Settings::save();
+		}
+
+		// Add any posted messages.
+		if ( ! empty( $_GET['evf_error'] ) ) { // WPCS: input var okay, CSRF ok.
+			EVF_Admin_Settings::add_error( wp_kses_post( wp_unslash( $_GET['um_error'] ) ) ); // WPCS: input var okay, CSRF ok.
+		}
+
+		if ( ! empty( $_GET['evf_message'] ) ) { // WPCS: input var okay, CSRF ok.
+			EVF_Admin_Settings::add_message( wp_kses_post( wp_unslash( $_GET['um_message'] ) ) ); // WPCS: input var okay, CSRF ok.
+		}
+
+		do_action( 'everest_forms_settings_page_init' );
 	}
 
 	/**
@@ -447,14 +485,10 @@ class EVF_Admin_Menus {
 	}
 
 	/**
-	 * Init the add registration page.
+	 * Init the add forms page.
 	 */
 	public function add_everest_forms() {
-		if ( isset( $_GET['tab'], $_GET['form_id'] ) ) {
-			do_action( 'everest_form_admin_form_builder_page' );
-		} else {
-			do_action( 'everest_form_admin_form_template_page' );
-		}
+		EVF_Admin_Form_Builder::output();
 	}
 
 	/**

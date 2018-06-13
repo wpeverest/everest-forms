@@ -18,14 +18,24 @@ class EVF_Deprecated_Action_Hooks extends EVF_Deprecated_Hooks {
 	 *
 	 * @var array
 	 */
-	protected $deprecated_hooks = array();
+	protected $deprecated_hooks = array(
+		'everest_forms_builder_page_init' => 'everest_forms_builder_init',
+		'admin_enqueue_scripts'           => array(
+			'everest_forms_builder_scripts',
+			'everest_forms_builder_enqueues_before',
+		),
+	);
 
 	/**
 	 * Array of versions on each hook has been deprecated.
 	 *
 	 * @var array
 	 */
-	protected $deprecated_version = array();
+	protected $deprecated_version = array(
+		'everest_forms_builder_init'            => '1.2.0',
+		'everest_forms_builder_scripts'         => '1.2.0',
+		'everest_forms_builder_enqueues_before' => '1.2.0',
+	);
 
 	/**
 	 * Hook into the new hook so we can handle deprecated hooks once fired.

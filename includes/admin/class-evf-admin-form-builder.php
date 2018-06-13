@@ -1,100 +1,43 @@
 <?php
 /**
- * EverestForms Admin
+ * EverestForms Admin Builder Class
  *
- * @package EverestForms/Admin
- * @version 1.0.0
+ * @package EverestForms\Form Builder
+ * @version 1.2.0
+ * @since   1.0.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
- * EVF_Admin_Form_Builder Class.
+ * Form builder class.
  */
 class EVF_Admin_Form_Builder {
 
 	/**
-	 * Current view (panel)
-	 *
-	 * @since      1.0.0
-	 * @var string
-	 */
-	public $tab_view;
-
-	/**
-	 * Current form.
-	 *
-	 * @since      1.0.0
-	 * @var object
-	 */
-	public $form;
-
-	/**
-	 * Current template information.
-	 *
-	 * @since      1.0.0
-	 * @var array
-	 */
-	public $template;
-
-	private $sec_post_id;
-
-	/**
-	 * Primary class constructor.
-	 *
-	 * @since      1.0.0
-	 */
-	public function __construct() {
-
-		// Maybe load form builder
-
-		$this->init();
-	}
-
-	/**
-	 * Determing if the user is viewing the builder, if so, party on.
-	 *
-	 * @since      1.0.0
-	 */
-	public function init() {
-
-		// Check what page we are on
-		$page = isset( $_GET['page'] ) ? $_GET['page'] : '';
-
-		if ( ! 'edit-evf-form' === $page ) {
-			return;
-		}
-
-		// Load conditionally.
-		if ( ! isset( $_GET['tab'], $_GET['form_id'] ) ) {
-			add_action( 'everest_form_admin_form_template_page', array( $this, 'output_template' ) );
-		} elseif ( isset( $_GET['tab'], $_GET['form_id'] ) ) {
-			// Load form if found
-			$form_id = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : false;
-
-			$this->form = EVF()->form->get( $form_id );
-
-			$this->tab_view = isset( $_GET['tab'] ) ? $_GET['tab'] : 'Fields';
-
-			add_action( 'everest_form_admin_form_builder_page', array( $this, 'output' ) );
-
-			// Provide hook for addons
-			do_action( 'everest_forms_builder_init', $this->tab_view );
-
-			do_action( 'everest_forms_builder_scripts' );
-		}
-	}
-
-	/**
 	 * Load the appropriate files to build the page.
-	 *
-	 * @since 1.0.0
 	 */
-	public function output() {
-		$form_id                    = $this->form ? absint( $this->form->ID ) : '';
-		$form_data                  = $this->form ? evf_decode( $this->form->post_content ) : false;
+	public static function output() {
+		global $current_tab;
+
+		$form_id = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : false;
+
+		if ( $form_id && 'fields' === $current_tab ) {
+			self::output_builder( $form_id, $current_tab );
+		} else {
+			self::output_template();
+		}
+	}
+
+	/**
+	 * Output builder page.
+	 *
+	 * @param id $form_id Form ID.
+	 */
+	public static function output_builder( $form_id, $current_tab ) {
+		$form                       = EVF()->form->get( $form_id );
+		$form_id                    = $form ? absint( $form->ID ) : $form_id;
+		$form_data                  = $form ? evf_decode( $form->post_content ) : false;
 		$form_data['form_field_id'] = isset( $form_data['form_field_id'] ) ? $form_data['form_field_id'] : 0;
 
 		?>
@@ -105,7 +48,7 @@ class EVF_Admin_Form_Builder {
 
 				<div class="everest-forms-nav-wrapper clearfix">
 					<nav class="nav-tab-wrapper evf-nav-tab-wrapper">
-						<?php do_action( 'everest_forms_builder_panel_buttons', $this->form, $this->tab_view ); ?>
+						<?php do_action( 'everest_forms_builder_panel_buttons', $form, $current_tab ); ?>
 					</nav>
 					<div class="evf-forms-nav-right">
 						<div class="evf-shortcode-field">
@@ -118,7 +61,7 @@ class EVF_Admin_Form_Builder {
 					</div>
 				</div>
 				<div class="evf-tab-content">
-					<?php do_action( 'everest_forms_builder_panels', $this->form, $this->tab_view ); ?>
+					<?php do_action( 'everest_forms_builder_panels', $form, $current_tab ); ?>
 					<div style="clear:both"></div>
 				</div>
 			</form>
@@ -126,7 +69,10 @@ class EVF_Admin_Form_Builder {
 		<?php
 	}
 
-	public function output_template() {
+	/**
+	 * Output new form template.
+	 */
+	public static function output_template() {
 		wp_enqueue_script( 'everest_forms_builder' );
 		wp_enqueue_script( 'everest_forms_admin' );
 
@@ -174,5 +120,3 @@ class EVF_Admin_Form_Builder {
 		<?php
 	}
 }
-
-new EVF_Admin_Form_Builder();
