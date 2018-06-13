@@ -221,6 +221,7 @@ final class EverestForms {
 		 */
 		include_once EVF_ABSPATH . 'includes/interfaces/class-evf-logger-interface.php';
 		include_once EVF_ABSPATH . 'includes/interfaces/class-evf-log-handler-interface.php';
+		include_once EVF_ABSPATH . 'includes/interfaces/class-evf-form-panel-interface.php';
 
 		/**
 		 * Abstract classes.

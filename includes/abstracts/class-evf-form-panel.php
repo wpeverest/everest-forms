@@ -15,7 +15,7 @@ if ( ! class_exists( 'EVF_Admin_Form_Panel', false ) ) {
 /**
  * Abstract EVF_Admin_Form_Panel Class
  */
-abstract class EVF_Form_Panel extends EVF_Admin_Form_Panel {
+abstract class EVF_Form_Panel extends EVF_Admin_Form_Panel implements EVF_Form_Panel_Interface {
 
 	/**
 	 * Panel ID.
@@ -25,16 +25,16 @@ abstract class EVF_Form_Panel extends EVF_Admin_Form_Panel {
 	public $id;
 
 	/**
-	 * Panel title.
-	 *
-	 * @var string
-	 */
-	public $title;
-
-	/**
 	 * Icon for the panel.
 	 *
 	 * @var string
 	 */
 	public $icon;
+
+	/**
+	 * Panel title.
+	 *
+	 * @var string
+	 */
+	public $title;
 }
