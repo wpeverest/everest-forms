@@ -125,7 +125,7 @@ class EVF_Fields_Panel extends EVF_Admin_Form_Panel {
 
 					echo esc_html( $group['group_name'] );
 
-					echo '<i class="handlediv hidden"></i>';
+					echo '<i class="handlediv"></i>';
 
 				echo '</a>';
 
