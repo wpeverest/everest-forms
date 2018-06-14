@@ -15,7 +15,7 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 	<a href="<?php echo esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $form_id ) ); ?>" class="page-title-action"><?php esc_html_e( 'Back to All Entries', 'everest-forms' ); ?></a>
 	<hr class="wp-header-end">
 	<div class="everest-forms-entry">
-		<div id="poststuff">
+		<div id="poststuff" class="everest-forms-entry">
 			<div id="post-body" class="metabox-holder columns-2">
 				<!-- Entry Fields metabox -->
 				<div id="post-body-content" style="position: relative;">
