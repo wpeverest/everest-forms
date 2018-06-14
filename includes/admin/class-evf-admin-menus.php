@@ -26,7 +26,7 @@ class EVF_Admin_Menus {
 
 		// Add menus.
 		add_action( 'admin_menu', array( $this, 'admin_menu' ), 9 );
-		add_action( 'admin_menu', array( $this, 'forms_menu' ), 20 );
+		add_action( 'admin_menu', array( $this, 'builder_menu' ), 20 );
 		add_action( 'admin_menu', array( $this, 'setup_menu' ), 30 );
 		add_action( 'admin_menu', array( $this, 'entries_menu' ), 40 );
 		add_action( 'admin_menu', array( $this, 'settings_menu' ), 50 );
@@ -37,6 +37,8 @@ class EVF_Admin_Menus {
 		}
 
 		add_filter( 'admin_footer', array( $this, 'admin_footer' ), 1 );
+		add_action( 'admin_head', array( $this, 'custom_menu_count' ) );
+		add_filter( 'custom_menu_order', array( $this, 'custom_menu_order' ) );
 		add_filter( 'set-screen-option', array( $this, 'set_screen_option' ), 11, 3 );
 
 		// Admin bar menus.
@@ -71,8 +73,8 @@ class EVF_Admin_Menus {
 	/**
 	 * Add menu items.
 	 */
-	public function forms_menu() {
-		$forms_page = add_submenu_page( 'everest-forms', __( 'All Forms', 'everest-forms' ), __( 'All Forms', 'everest-forms' ), 'manage_everest_forms', 'everest-forms', array( $this, 'everest_forms_page' ) );
+	public function builder_menu() {
+		$forms_page = add_submenu_page( 'everest-forms', __( 'Everest Builder', 'everest-forms' ), __( 'All Forms', 'everest-forms' ), 'manage_everest_forms', 'evf-builder', array( $this, 'everest_forms_page' ) );
 
 		add_action( 'load-' . $forms_page, array( $this, 'forms_page_init' ) );
 	}
@@ -81,7 +83,13 @@ class EVF_Admin_Menus {
 	 * Loads forms into memory.
 	 */
 	public function forms_page_init() {
-		global $forms_table_list;
+		global $current_tab, $forms_table_list;
+
+		evf()->form_panels();
+		evf()->form_fields();
+
+		// Get current tab/section.
+		$current_tab = empty( $_GET['tab'] ) ? 'fields' : sanitize_title( wp_unslash( $_GET['tab'] ) ); // WPCS: input var okay, CSRF ok.
 
 		if ( ! isset( $_GET['edit-evf-form'] ) ) { // WPCS: input var okay, CSRF ok.
 			$forms_table_list = new EVF_Admin_Forms_Table_List();
@@ -93,31 +101,14 @@ class EVF_Admin_Menus {
 			) );
 		}
 
-		do_action( 'everest_forms_page_init' );
+		do_action( 'everest_forms_builder_page_init' );
 	}
 
 	/**
 	 * Add menu items.
 	 */
 	public function setup_menu() {
-		$builder_page = add_submenu_page( 'everest-forms', __( 'Add New', 'everest-forms' ), __( 'Add New', 'everest-forms' ), 'manage_everest_forms', 'evf-setup', array( $this, 'setup_page' ) );
-
-		add_action( 'load-' . $builder_page, array( $this, 'builder_page_init' ) );
-	}
-
-	/**
-	 * Loads builder page.
-	 */
-	public function builder_page_init() {
-		global $current_tab;
-
-		evf()->form_panels();
-		evf()->form_fields();
-
-		// Get current tab/section.
-		$current_tab = empty( $_GET['tab'] ) ? 'fields' : sanitize_title( wp_unslash( $_GET['tab'] ) ); // WPCS: input var okay, CSRF ok.
-
-		do_action( 'everest_forms_builder_page_init' );
+		add_submenu_page( 'everest-forms', __( 'Add New', 'everest-forms' ), __( 'Add New', 'everest-forms' ), 'manage_everest_forms', 'evf-setup', array( $this, 'setup_page' ) );
 	}
 
 	/**
@@ -458,7 +449,7 @@ class EVF_Admin_Menus {
 	 * Init the add forms page.
 	 */
 	public function setup_page() {
-		EVF_Admin_Form_Builder::output();
+		EVF_Admin_Form_Builder::output_template();
 	}
 
 	/**
@@ -493,6 +484,31 @@ class EVF_Admin_Menus {
 		$screen = get_current_screen();
 
 		do_action( 'everest_form_list_admin_footer', $screen->id );
+	}
+
+	/**
+	 * Adds the custom count to the menu.
+	 */
+	public function custom_menu_count() {
+		global $submenu;
+
+		if ( isset( $submenu['everest-forms'] ) ) {
+			// Remove 'Everest Forms' sub menu item.
+			unset( $submenu['everest-forms'][0] );
+
+			// Add count if user has access.
+			if ( apply_filters( 'everest_forms_include_count_in_menu', true ) && current_user_can( 'manage_everest_forms' ) ) {
+				do_action( 'everest_forms_custom_menu_count', $submenu );
+			}
+		}
+	}
+	/**
+	 * Custom menu order.
+	 *
+	 * @return bool
+	 */
+	public function custom_menu_order() {
+		return current_user_can( 'manage_everest_forms' );
 	}
 
 	/**

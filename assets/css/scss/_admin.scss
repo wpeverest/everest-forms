@@ -1172,9 +1172,11 @@
 }
 
 @media screen and (max-width: 782px) {
-	.everest-forms_page_edit-evf-form.auto-fold {
-		#wpcontent {
-			padding-left: 0;
+	.everest-forms_page_evf-builder {
+		.auto-fold {
+			#wpcontent {
+				padding-left: 0;
+			}
 		}
 	}
 	#everest-forms-builder {
