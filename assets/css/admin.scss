@@ -957,6 +957,53 @@ table.wp-list-table {
 }
 
 /**
+ * Entry viewer.
+ */
+.everest-forms-entry {
+	.postbox {
+		.inside {
+			padding: 6px 0 0;
+
+			p {
+				margin: 0;
+				padding: 6px 10px 8px;
+			}
+		}
+
+		.submitdelete {
+			color: #a00;
+			padding: 1px 2px;
+			text-decoration: none;
+		}
+	}
+
+	#poststuff #everest-forms-entry-fields {
+		.hndle {
+			cursor: inherit;
+		}
+
+		.inside {
+			margin: 0;
+			padding: 0;
+
+			table {
+				border: none;
+			}
+
+			span.list {
+				display: block;
+			}
+		}
+
+		.everest-forms-empty-field-toggle {
+			float: right;
+			padding: 3px 0 0;
+			text-decoration: none;
+		}
+	}
+}
+
+/**
  * DB log viewer.
  */
 .wp-list-table.logs {
@@ -1041,53 +1088,6 @@ table.wp-list-table {
 		font-family: monospace;
 		white-space: pre-wrap;
 		word-wrap: break-word;
-	}
-}
-
-/**
- * Entries viewer.
- */
-.everest-forms-entry {
-	.postbox {
-		.inside {
-			padding: 6px 0 0;
-
-			p {
-				margin: 0;
-				padding: 6px 10px 8px;
-			}
-		}
-
-		.submitdelete {
-			color: #a00;
-			padding: 1px 2px;
-			text-decoration: none;
-		}
-	}
-
-	#poststuff #everest-forms-entry-fields {
-		.hndle {
-			cursor: inherit;
-		}
-
-		.inside {
-			margin: 0;
-			padding: 0;
-
-			table {
-				border: none;
-			}
-
-			span.list {
-				display: block;
-			}
-		}
-
-		.everest-forms-empty-field-toggle {
-			float: right;
-			padding: 3px 0 0;
-			text-decoration: none;
-		}
 	}
 }
 
