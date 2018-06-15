@@ -563,18 +563,6 @@
 				padding: 0;
 				border: 1px solid #f4f4f4;
 
-				&.ui-datepicker-today {
-					background-color: #f0f0c0;
-				}
-
-				&.ui-datepicker-current-day {
-					background: #bbdd88;
-				}
-
-				&.ui-datepicker-other-month {
-					border: transparent;
-				}
-
 				.ui-state-default {
 					color: #444;
 					width: auto;
@@ -593,9 +581,22 @@
 					}
 				}
 
+
+				&.ui-datepicker-today {
+					background-color: #f0f0c0;
+				}
+
 				&.ui-datepicker-closed {
 					border: 1px solid #f4f4f4;
 					background-color: #f4f4f4;
+				}
+
+				&.ui-datepicker-other-month {
+					border: transparent;
+				}
+
+				&.ui-datepicker-current-day {
+					background: #bbdd88;
 				}
 			}
 		}
