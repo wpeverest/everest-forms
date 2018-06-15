@@ -194,11 +194,11 @@ class EVF_Frontend_Scripts {
 				'version' => EVF_VERSION,
 				'has_rtl' => false,
 			),
-			'evf-jquery-ui-datepicker' => array(
-				'src'     => self::get_asset_url( 'assets/css/jquery-ui-datepicker/jquery-ui-datepicker.css' ),
+			'jquery-ui-style' => array(
+				'src'     => self::get_asset_url( 'assets/css/jquery-ui/jquery-ui.min.css' ),
 				'deps'    => array(),
 				'version' => EVF_VERSION,
-				'has_rtl' => true,
+				'has_rtl' => false,
 			),
 		);
 		foreach ( $register_styles as $name => $props ) {
@@ -227,7 +227,7 @@ class EVF_Frontend_Scripts {
 
 		// Load scripts on form pages only if supported.
 		if ( evf_post_content_has_shortcode( 'everest_form' ) ) {
-			self::enqueue_style( 'evf-jquery-ui-datepicker' );
+			self::enqueue_style( 'jquery-ui-style' );
 		}
 
 		// CSS Styles.
