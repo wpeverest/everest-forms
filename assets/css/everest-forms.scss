@@ -1,11 +1,55 @@
-@import "scss/colors";
-@import "scss/clearings";
+/**
+ * everest-forms.scss
+ * Governs the general look and feel of EverestForms sections of sites using themes that do not
+ * integrate with EverestForms specifically.
+ */
 
-*{
-	box-sizing: border-box;
+/**
+ * Imports
+ */
+@import 'mixins';
+@import 'variables';
+@import 'animation';
+@import 'fonts';
+@import 'scss/colors';
+@import 'scss/clearings';
+
+/**
+ * Global styles
+ */
+.screen-reader-text {
+	clip: rect(1px, 1px, 1px, 1px);
+    height: 1px;
+    overflow: hidden;
+    position: absolute !important;
+    width: 1px;
+    word-wrap: normal !important;
 }
 
+/**
+ * Utility classes
+ */
+.clear {
+	clear: both;
+}
+
+/**
+ * Main EverestForms styles
+ */
 .everest-forms {
+
+	* {
+		box-sizing: border-box;
+	}
+
+	.blockUI.blockOverlay {
+		position: relative;
+		@include loader();
+	}
+
+	.loader {
+		@include loader();
+	}
 
 	.everest-forms-field-row {
 
@@ -39,7 +83,7 @@
 				margin-left: 0;
 			}
 		}
-		
+
 		.everest-forms-first {
 			margin-left: 0;
 		}
@@ -345,7 +389,7 @@
 
 .evf-recaptcha-row {
 	margin-bottom: 30px;
-	
+
 	.evf-error {
 		border: 1px solid $color-alert-danger;
 		background-color: lighten($color-alert-danger, 35%);
@@ -383,6 +427,178 @@
 
 		.evf-recaptcha-row {
 			margin: 25px 0;
+		}
+	}
+}
+
+/**
+ * Datepicker.
+ */
+.everest-form-datepicker {
+	margin: 0;
+	padding: 0;
+	width: auto;
+	display: none;
+	border-radius: 0;
+	border-top: none;
+	background-color: #fff;
+	border: 1px solid #dfdfdf;
+	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.075);
+
+	* {
+		padding: 0;
+		border-radius: 0;
+	}
+
+	.ui-widget-header a {
+		color: $blue;
+	}
+
+	.ui-datepicker-header {
+		border: none;
+		background: none;
+		font-weight: normal;
+
+		.ui-datepicker-title {
+			margin: 0;
+			padding: 10px 0;
+			font-size: 14px;
+			line-height: 14px;
+			text-align: center;
+
+			select.ui-datepicker-month,
+			select.ui-datepicker-year {
+				width: 33%;
+				margin-right: 5px;
+			}
+		}
+
+		.ui-datepicker-prev,
+		.ui-datepicker-next {
+			position: relative;
+			top: 4px;
+			width: 34px;
+			height: 34px;
+
+			span {
+				display: none;
+			}
+
+			&::before {
+				font: normal 20px/34px 'dashicons';
+				padding-left: 7px;
+				speak: none;
+				width: 34px;
+				height: 34px;
+			}
+
+			&.ui-corner-all {
+				.ui-state-disabled {
+					opacity: 0.5;
+				}
+			}
+		}
+
+		.ui-datepicker-prev {
+			float: left;
+
+			&::before {
+				content: '\f341';
+			}
+		}
+
+		.ui-datepicker-next {
+			float: right;
+
+			&::before {
+				content: '\f345';
+			}
+		}
+
+		.ui-datepicker-prev,
+		.ui-datepicker-prev-hover {
+			left: 0;
+		}
+
+		.ui-datepicker-next,
+		.ui-datepicker-next-hover {
+			right: 0;
+		}
+
+		.ui-datepicker-prev-hover:before,
+		.ui-datepicker-next-hover:before {
+			opacity: 0.7;
+		}
+
+		.ui-state-hover {
+			cursor: pointer;
+			background: transparent;
+			border-color: transparent;
+
+			&.ui-datepicker-prev,
+			&.ui-datepicker-next {
+				border: none;
+			}
+		}
+	}
+
+	table.ui-datepicker-calendar {
+		margin: 0;
+		width: 100%;
+		border: none;
+		border-collapse: collapse;
+
+		thead {
+			font-weight: 600;
+
+			th {
+				padding: 10px;
+				border-width: 1px;
+				font-weight: normal;
+			}
+		}
+
+		tbody {
+			td {
+				padding: 0;
+				border: 1px solid #f4f4f4;
+
+				.ui-state-default {
+					color: #444;
+					width: auto;
+					border: none;
+					display: block;
+					padding: 5px 10px;
+					text-align: center;
+					font-weight: normal;
+					text-decoration: none;
+					background: transparent;
+				}
+
+				&.ui-state-disabled {
+					.ui-state-default {
+						opacity: 0.5;
+					}
+				}
+
+
+				&.ui-datepicker-today {
+					background-color: #f0f0c0;
+				}
+
+				&.ui-datepicker-closed {
+					border: 1px solid #f4f4f4;
+					background-color: #f4f4f4;
+				}
+
+				&.ui-datepicker-other-month {
+					border: transparent;
+				}
+
+				&.ui-datepicker-current-day {
+					background: #bbdd88;
+				}
+			}
 		}
 	}
 }

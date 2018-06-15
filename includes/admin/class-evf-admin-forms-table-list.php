@@ -83,7 +83,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 	 * @return string
 	 */
 	public function column_title( $posts ) {
-		$edit_link        = admin_url( 'admin.php?page=edit-evf-form&amp;tab=fields&amp;form_id=' . $posts->ID );
+		$edit_link        = admin_url( 'admin.php?page=evf-builder&amp;tab=fields&amp;form_id=' . $posts->ID );
 		$title            = _draft_or_post_title( $posts->ID );
 		$post_type_object = get_post_type_object( 'everest_form' );
 		$post_status      = $posts->post_status;
@@ -115,7 +115,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 			}
 		}
 		$duplicate_nonce = wp_create_nonce( 'everest_forms_form_duplicate' . $posts->ID );
-		$duplicate_link  = admin_url( 'admin.php?page=everest-forms&action=duplicate&_wpnonce=' . $duplicate_nonce . '&form=' . $posts->ID );
+		$duplicate_link  = admin_url( 'admin.php?page=evf-builder&action=duplicate&_wpnonce=' . $duplicate_nonce . '&form=' . $posts->ID );
 
 		if ( current_user_can( $post_type_object->cap->edit_post, $posts->ID ) && 'publish' === $post_status ) {
 			$actions['duplicate'] = '<a href="' . esc_url( $duplicate_link ) . '">' . __( 'Duplicate', 'everest-forms' ) . '</a>';
@@ -282,7 +282,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 
 		$class = empty( $class ) && empty( $_REQUEST['status'] ) ? ' class="current"' : '';
 		/* translators: %s: count */
-		$status_links['all'] = "<a href='admin.php?page=everest-forms'$class>" . sprintf( _nx( 'All <span class="count">(%s)</span>', 'All <span class="count">(%s)</span>', $total_posts, 'posts', 'everest-forms' ), number_format_i18n( $total_posts ) ) . '</a>';
+		$status_links['all'] = "<a href='admin.php?page=evf-builder'$class>" . sprintf( _nx( 'All <span class="count">(%s)</span>', 'All <span class="count">(%s)</span>', $total_posts, 'posts', 'everest-forms' ), number_format_i18n( $total_posts ) ) . '</a>';
 
 		foreach (
 			get_post_stati( array(
@@ -315,7 +315,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 
 			$label = $this->get_status_label( $status_name, $status );
 
-			$status_links[ $status_name ] = "<a href='admin.php?page=everest-forms&amp;status=$status_name'$class>" . sprintf( translate_nooped_plural( $label, $num_posts->$status_name ), number_format_i18n( $num_posts->$status_name ) ) . '</a>';
+			$status_links[ $status_name ] = "<a href='admin.php?page=evf-builder&amp;status=$status_name'$class>" . sprintf( translate_nooped_plural( $label, $num_posts->$status_name ), number_format_i18n( $num_posts->$status_name ) ) . '</a>';
 		}
 
 		return $status_links;
@@ -346,7 +346,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 	 */
 	protected function extra_tablenav( $which ) {
 		if ( 'top' == $which && isset( $_GET['status'] ) && 'trash' == $_GET['status'] && current_user_can( 'delete_posts' ) ) {
-			echo '<div class="alignleft actions"><a id="delete_all" class="button apply" href="' . esc_url( wp_nonce_url( admin_url( 'admin.php?page=everest-forms&status=trash&empty_trash=1' ), 'empty_trash' ) ) . '">' . __( 'Empty trash', 'everest-forms' ) . '</a></div>';
+			echo '<div class="alignleft actions"><a id="delete_all" class="button apply" href="' . esc_url( wp_nonce_url( admin_url( 'admin.php?page=evf-builder&status=trash&empty_trash=1' ), 'empty_trash' ) ) . '">' . __( 'Empty trash', 'everest-forms' ) . '</a></div>';
 		}
 	}
 

@@ -143,7 +143,7 @@ class EVF_AJAX {
 						'tab'     => 'fields',
 						'form_id' => $form_id,
 					),
-					admin_url( 'admin.php?page=edit-evf-form' )
+					admin_url( 'admin.php?page=evf-builder' )
 				),
 			);
 
@@ -212,7 +212,7 @@ class EVF_AJAX {
 			wp_send_json_success(
 				array(
 					'form_name'    => esc_html( $data['settings']['form_title'] ),
-					'redirect_url' => admin_url( 'admin.php?page=everest-forms' ),
+					'redirect_url' => admin_url( 'admin.php?page=evf-builder' ),
 				)
 			);
 		}

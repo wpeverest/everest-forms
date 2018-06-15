@@ -39,7 +39,7 @@
 	</rule>
 	<rule ref="WordPress.XSS.EscapeOutput">
 		<properties>
-			<property name="customEscapingFunctions" type="array" value="evf_help_tip,evf_sanitize_tooltip" />
+			<property name="customEscapingFunctions" type="array" value="evf_help_tip,evf_sanitize_tooltip,evf_selected" />
 		</properties>
 	</rule>
 	<rule ref="PEAR.NamingConventions.ValidClassName">
