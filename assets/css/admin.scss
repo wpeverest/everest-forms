@@ -290,6 +290,9 @@ h2 .everest-forms-help-tip {
 .everest-forms_page_edit-evf-form {
 	#wpfooter {
 		position: fixed;
+		padding: 11px 20px;
+		background: #F1F1F1;
+		border-top: 1px solid $color-gray-lighter;
 	}
 
 	#everest-forms-builder {
