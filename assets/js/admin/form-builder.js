@@ -1,4 +1,4 @@
-/* global jconfirm, evfSetClipboard, evfClearClipboard */
+/* global evf_data, jconfirm, evfSetClipboard, evfClearClipboard */
 (function ( $, evf_data ) {
 
 	var $builder;

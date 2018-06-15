@@ -22,7 +22,7 @@ class EVF_Admin_Builder {
 
 		$form_id = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : false;
 
-		if ( $form_id && 'fields' === $current_tab ) {
+		if ( $form_id && $current_tab ) {
 			self::output_builder( $form_id, $current_tab );
 		} else {
 			self::output_form();

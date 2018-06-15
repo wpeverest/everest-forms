@@ -70,14 +70,15 @@ class EVF_Admin_Assets {
 		$suffix        = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
 		// Register scripts.
-		wp_register_script( 'everest-forms-admin', EVF()->plugin_url() . '/assets/js/admin/everest-forms-admin' . $suffix . '.js', array( 'jquery', 'jquery-blockui', 'jquery-ui-sortable', 'jquery-ui-widget', 'jquery-ui-core', 'jquery-tiptip' ), EVF_VERSION );
+		wp_register_script( 'everest-forms-admin', EVF()->plugin_url() . '/assets/js/admin/admin' . $suffix . '.js', array( 'jquery', 'jquery-blockui', 'jquery-ui-sortable', 'jquery-ui-widget', 'jquery-ui-core', 'jquery-tiptip' ), EVF_VERSION );
 		wp_register_script( 'jquery-blockui', EVF()->plugin_url() . '/assets/js/jquery-blockui/jquery.blockUI' . $suffix . '.js', array( 'jquery' ), '2.70', true );
 		wp_register_script( 'jquery-confirm', EVF()->plugin_url() . '/assets/js/jquery-confirm/jquery-confirm' . $suffix . '.js', array( 'jquery' ), '3.3.0', true );
 		wp_register_script( 'jquery-tiptip', EVF()->plugin_url() . '/assets/js/jquery-tiptip/jquery.tipTip' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true );
 		wp_register_script( 'evf-clipboard', EVF()->plugin_url() . '/assets/js/admin/evf-clipboard' . $suffix . '.js', array( 'jquery' ), EVF_VERSION );
 		wp_register_script( 'selectWoo', EVF()->plugin_url() . '/assets/js/selectWoo/selectWoo.full' . $suffix . '.js', array( 'jquery' ), '1.0.4' );
-		wp_register_script( 'evf-panel-builder', EVF()->plugin_url() . '/assets/js/admin/everest-panel-builder' . $suffix . '.js', array( 'jquery', 'jquery-blockui', 'jquery-tiptip', 'jquery-ui-sortable', 'jquery-ui-widget', 'jquery-ui-core', 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-confirm', 'evf-clipboard' ), EVF_VERSION );
-		wp_localize_script( 'evf-panel-builder', 'evf_data', apply_filters(
+		wp_register_script( 'evf-form-modal', EVF()->plugin_url() . '/assets/js/admin/evf-form-modal' . $suffix . '.js', 'jquery' );
+		wp_register_script( 'evf-form-builder', EVF()->plugin_url() . '/assets/js/admin/form-builder' . $suffix . '.js', array( 'jquery', 'jquery-blockui', 'jquery-tiptip', 'jquery-ui-sortable', 'jquery-ui-widget', 'jquery-ui-core', 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-confirm', 'evf-clipboard' ), EVF_VERSION );
+		wp_localize_script( 'evf-form-builder', 'evf_data', apply_filters(
 			'everest_forms_builder_strings', array(
 				'post_id'                      => isset( $post->ID ) ? $post->ID : '',
 				'ajax_url'                     => admin_url( 'admin-ajax.php' ),
@@ -102,18 +103,21 @@ class EVF_Admin_Assets {
 			)
 		) );
 
-		wp_register_script( 'everest-add-form', EVF()->plugin_url() . '/assets/js/admin/evf-add-form' . $suffix . '.js', 'jquery' );
+		// Builder upgrade.
+		wp_register_script( 'evf-upgrade', EVF()->plugin_url() . '/assets/js/admin/upgrade.js', array( 'jquery', 'jquery-confirm' ), EVF_VERSION, false );
 		wp_localize_script(
-			'everest-add-form',
-			'everest_add_form_params',
+			'evf-upgrade',
+			'evf_upgrade',
 			array(
-				'ajax_url'          => admin_url( 'admin-ajax.php' ),
-				'create_form_nonce' => wp_create_nonce( 'everest_forms_create_form' ),
+				'upgrade_title'   => esc_html__( 'is a PRO Feature', 'everest-forms' ),
+				'upgrade_message' => esc_html__( 'We\'re sorry, %name% is not available on your plan.<br>Please upgrade to the PRO plan to unlock all these awesome features.', 'everest-forms' ),
+				'upgrade_button'  => esc_html__( 'Upgrade to PRO', 'everest-forms' ),
+				'upgrade_url'     => apply_filters( 'everest_forms_upgrade_url', 'https://wpeverest.com/wordpress-plugins/everest-forms/' ),
 			)
 		);
 
 		// Global JS.
-		wp_enqueue_script( 'everest-add-form' );
+		wp_enqueue_script( 'evf-form-modal' );
 
 		// EverestForms admin pages.
 		if ( in_array( $screen_id, evf_get_screen_ids() ) ) {
@@ -123,7 +127,22 @@ class EVF_Admin_Assets {
 		// EverestForms builder pages.
 		if ( in_array( $screen_id, array( 'everest-forms_page_evf-builder' ) ) ) {
 			wp_enqueue_media();
-			wp_enqueue_script( 'evf-panel-builder' );
+			wp_enqueue_script( 'evf-form-builder' );
+			wp_enqueue_script( 'evf-upgrade' );
+		}
+
+		// Form setup page.
+		if ( in_array( $screen_id, array( 'everest-forms_page_evf-setup' ) ) ) {
+			wp_register_script( 'evf-setup', EVF()->plugin_url() . '/assets/js/admin/evf-setup' . $suffix . '.js', array( 'jquery' ), EVF_VERSION );
+			wp_enqueue_script( 'evf-setup' );
+			wp_localize_script(
+				'evf-setup',
+				'evf_setup_params',
+				array(
+					'ajax_url'          => admin_url( 'admin-ajax.php' ),
+					'create_form_nonce' => wp_create_nonce( 'everest_forms_create_form' ),
+				)
+			);
 		}
 	}
 }
