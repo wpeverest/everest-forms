@@ -57,28 +57,6 @@ class EVF_Admin_Builder {
 	}
 
 	/**
-	 * Output form modal.
-	 */
-	public static function form_modal() {
-		$screen    = get_current_screen();
-		$screen_id = $screen ? $screen->id : '';
-
-		if ( $screen_id === 'evf-builder' ) {
-			include_once( dirname( __FILE__ ) . '/views/html-admin-form-modal.php' );
-
-			wp_enqueue_style( 'evf-form-modal-style', EVF()->plugin_url() . '/assets/css/evf-form-modal.css', array(), EVF_VERSION );
-			wp_enqueue_script( 'evf-admin-form-modal', EVF()->plugin_url() . '/assets/js/admin/evf-form-modal.js', array( 'underscore', 'backbone', 'wp-util' ), EVF_VERSION );
-
-			$strings = apply_filters( 'everest_forms_builder_modal_strings', array(
-				'ajax_url'           => admin_url( 'admin-ajax.php' ),
-				'evf_new_form_nonce' => wp_create_nonce( 'evf_new_form' ),
-			) );
-
-			wp_localize_script( 'evf-admin-form-modal', 'evf_form_modal_data', $strings );
-		}
-	}
-
-	/**
 	 * Output builder page.
 	 *
 	 * @param id $form_id     Form ID.
@@ -133,8 +111,6 @@ class EVF_Admin_Builder {
 				'name' => __( 'Contact Form', 'everest-forms' ),
 			),
 		) );
-
-		include_once( dirname( __FILE__ ) . '/views/html-admin-form-modal.php' );
 
 		?>
 		<div class ="wrap everest-forms">
