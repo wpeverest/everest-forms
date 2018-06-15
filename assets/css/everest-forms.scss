@@ -450,11 +450,8 @@
 		border-radius: 0;
 	}
 
-	table {
-		margin: 0;
-		width: 100%;
-		border: none;
-		border-collapse: collapse;
+	.ui-widget-header a {
+		color: $blue;
 	}
 
 	.ui-datepicker-header {
@@ -478,8 +475,8 @@
 
 		.ui-datepicker-prev,
 		.ui-datepicker-next {
-			position: absolute;
-			top: 7px;
+			position: relative;
+			top: 4px;
 			width: 34px;
 			height: 34px;
 
@@ -545,7 +542,12 @@
 		}
 	}
 
-	.ui-datepicker-calendar {
+	table.ui-datepicker-calendar {
+		margin: 0;
+		width: 100%;
+		border: none;
+		border-collapse: collapse;
+
 		thead {
 			font-weight: 600;
 
