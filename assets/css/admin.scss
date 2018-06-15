@@ -201,7 +201,7 @@ body.everest-forms-builder {
 }
 
 /**
- * Admin styling
+ * Branding.
  */
 .everest-forms_page_evf-builder,
 .everest-forms_page_evf-settings {
@@ -319,18 +319,18 @@ body.everest-forms-builder {
 }
 
 /**
- * Form Setup
+ * Form Setup.
  */
 .everest-forms_page_evf-setup {
-	* {
-		box-sizing: border-box;
-	}
-
 	.everest-forms {
 		width: 600px;
 		margin: 100px auto 50px;
 		background-color: $color-white;
 		border: 1px solid $color-gray-lighter;
+
+		* {
+			box-sizing: border-box;
+		}
 
 		span {
 			font-size: 12px;
@@ -493,7 +493,7 @@ body.everest-forms-builder {
 }
 
 /**
- * Form Builder
+ * Form Builder.
  */
 .everest-forms_page_evf-builder {
 	#everest-forms-builder {
@@ -706,7 +706,7 @@ body.everest-forms-builder {
 }
 
 /**
- * Settings
+ * Settings styling.
  */
 .everest-forms {
 
@@ -943,7 +943,7 @@ body.everest-forms-builder {
 }
 
 /**
- * List Table
+ * List Table.
  */
 table.wp-list-table {
 	span.na {
@@ -1357,7 +1357,7 @@ img.ui-datepicker-trigger {
 }
 
 /**
- * Small screen optimisation
+ * Small screen optimisation.
  */
 @media only screen and (max-width: 1280px) {
 	.everest-forms_page_evf-builder {
@@ -1406,7 +1406,7 @@ img.ui-datepicker-trigger {
 }
 
 /**
- * Optimisation for screens 960px and smaller
+ * Optimisation for screens 960px and smaller.
  */
 @media only screen and (max-width: 960px) {
 	.everest-forms_page_evf-builder {
@@ -1442,7 +1442,7 @@ img.ui-datepicker-trigger {
 }
 
 /**
- * Optimisation for screens 782px and smaller
+ * Optimisation for screens 782px and smaller.
  */
 @media screen and (max-width: 782px) {
 	.everest-forms_page_evf-builder {
@@ -1497,7 +1497,7 @@ img.ui-datepicker-trigger {
 }
 
 /**
- * Optimisation for screens 600px and smaller
+ * Optimisation for screens 600px and smaller.
  */
 @media screen and (max-width: 600px) {
 	.everest-forms .evf-nav-tab-wrapper a.nav-tab {
@@ -1553,6 +1553,6 @@ img.ui-datepicker-trigger {
 }
 
 /**
- * Optimisation for screens 400px and smaller
+ * Optimisation for screens 400px and smaller.
  */
  @media screen and (max-width: 400px) {}

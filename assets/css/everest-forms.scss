@@ -1,11 +1,42 @@
+/**
+ * everest-forms.scss
+ * Governs the general look and feel of EverestForms sections of sites using themes that do not
+ * integrate with EverestForms specifically.
+ */
+
+/**
+ * Imports
+ */
 @import "scss/colors";
 @import "scss/clearings";
 
-*{
-	box-sizing: border-box;
+/**
+ * Global styles
+ */
+.screen-reader-text {
+	clip: rect(1px, 1px, 1px, 1px);
+    height: 1px;
+    overflow: hidden;
+    position: absolute !important;
+    width: 1px;
+    word-wrap: normal !important;
 }
 
+/**
+ * Utility classes
+ */
+.clear {
+	clear: both;
+}
+
+/**
+ * Main EverestForms styles
+ */
 .everest-forms {
+
+	* {
+		box-sizing: border-box;
+	}
 
 	.everest-forms-field-row {
 
@@ -39,7 +70,7 @@
 				margin-left: 0;
 			}
 		}
-		
+
 		.everest-forms-first {
 			margin-left: 0;
 		}
@@ -345,7 +376,7 @@
 
 .evf-recaptcha-row {
 	margin-bottom: 30px;
-	
+
 	.evf-error {
 		border: 1px solid $color-alert-danger;
 		background-color: lighten($color-alert-danger, 35%);
