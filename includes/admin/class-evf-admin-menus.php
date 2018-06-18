@@ -74,7 +74,7 @@ class EVF_Admin_Menus {
 	 * Add menu items.
 	 */
 	public function builder_menu() {
-		$builder_page = add_submenu_page( 'everest-forms', __( 'Everest Builder', 'everest-forms' ), __( 'All Forms', 'everest-forms' ), 'manage_everest_forms', 'evf-builder', array( $this, 'builder_page' ) );
+		$builder_page = add_submenu_page( 'everest-forms', __( 'Everest Forms Builder', 'everest-forms' ), __( 'All Forms', 'everest-forms' ), 'manage_everest_forms', 'evf-builder', array( $this, 'builder_page' ) );
 
 		add_action( 'load-' . $builder_page, array( $this, 'builder_page_init' ) );
 	}
@@ -108,14 +108,14 @@ class EVF_Admin_Menus {
 	 * Add menu items.
 	 */
 	public function setup_menu() {
-		add_submenu_page( 'everest-forms', __( 'Add New', 'everest-forms' ), __( 'Add New', 'everest-forms' ), 'manage_everest_forms', 'evf-setup', array( $this, 'setup_page' ) );
+		add_submenu_page( 'everest-forms', __( 'Everest Forms Builder', 'everest-forms' ), __( 'Add New', 'everest-forms' ), 'manage_everest_forms', 'evf-setup', array( $this, 'setup_page' ) );
 	}
 
 	/**
 	 * Add menu item.
 	 */
 	public function entries_menu() {
-		$entries_page = add_submenu_page( 'everest-forms', __( 'Entries', 'everest-forms' ), __( 'Entries', 'everest-forms' ), 'manage_everest_forms', 'evf-entries', array( $this, 'entries_page' ) );
+		$entries_page = add_submenu_page( 'everest-forms', __( 'Everest Forms Entries', 'everest-forms' ), __( 'Entries', 'everest-forms' ), 'manage_everest_forms', 'evf-entries', array( $this, 'entries_page' ) );
 
 		add_action( 'load-' . $entries_page, array( $this, 'entries_page_init' ) );
 	}
