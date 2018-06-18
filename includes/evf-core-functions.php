@@ -1032,25 +1032,39 @@ function evf_get_random_string( $length = 10 ) {
 	return $string;
 }
 
+/**
+ * Get all forms.
+ *
+ * @param  bool $skip_disabled_entries True to skip disabled entries.
+ * @return array of form data.
+ */
 function evf_get_all_forms( $skip_disabled_entries = false ) {
-	$all_forms   = array();
-	$posts_array = get_posts( array(
-		'post_type' => 'everest_form',
-		'status'    => 'publish',
-	) );
+	$forms     = array();
+	$form_ids  = wp_parse_id_list(
+		get_posts(
+			array(
+				'post_type'   => 'everest_form',
+				'numberposts' => -1, // @codingStandardsIgnoreLine
+				'status'      => 'publish',
+				'fields'      => 'ids',
+			)
+		)
+	);
 
-	foreach ( $posts_array as $post ) {
-		$form_obj  = EVF()->form->get( $post->ID );
-		$form_data = ! empty( $form_obj->post_content ) ? evf_decode( $form_obj->post_content ) : '';
+	if ( ! empty( $form_ids ) ) {
+		foreach ( $form_ids as $form_id ) {
+			$form      = EVF()->form->get( $form_id );
+			$form_data = ! empty( $form->post_content ) ? evf_decode( $form->post_content ) : '';
 
-		if ( $skip_disabled_entries && ( isset( $form_data['settings']['disabled_entries'] ) && '1' === $form_data['settings']['disabled_entries'] ) ) {
-			continue;
+			if ( $skip_disabled_entries && ( isset( $form_data['settings']['disabled_entries'] ) && '1' === $form_data['settings']['disabled_entries'] ) ) {
+				continue;
+			}
+
+			$forms[ $form_id ] = $form->post_title;
 		}
-
-		$all_forms[ $post->ID ] = $post->post_title;
 	}
 
-	return $all_forms;
+	return $forms;
 }
 
 function evf_get_meta_key_field_option( $field ) {
