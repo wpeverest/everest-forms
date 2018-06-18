@@ -19,6 +19,7 @@ class EVF_AJAX {
 	public static function init() {
 		add_action( 'init', array( __CLASS__, 'define_ajax' ), 0 );
 		add_action( 'template_redirect', array( __CLASS__, 'do_evf_ajax' ), 0 );
+		add_action( 'wp_ajax_deactivation-notice', array( __CLASS__, 'deactivation_notice' ) );
 		self::add_ajax_events();
 	}
 
@@ -320,6 +321,20 @@ class EVF_AJAX {
 		}
 		update_option( 'everest_forms_admin_footer_text_rated', 1 );
 		wp_die();
+	}
+
+	/**
+	 * AJAX backend deactivation notice.
+	 */
+	public static function deactivation_notice() {
+		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'deactivation-notice' ) ) { // Input var okay.
+			wp_die( -1 );
+		}
+
+		ob_start();
+		include EVF_ABSPATH . '/includes/admin/views/html-notice-deactivation.php';
+		$content = ob_get_clean();
+		die( $content ); // WPCS: XSS OK.
 	}
 }
 
