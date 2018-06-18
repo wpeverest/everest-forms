@@ -34,17 +34,12 @@ class EVF_Admin_Menus {
 			add_action( 'admin_menu', array( $this, 'addons_menu' ), 70 );
 		}
 
-		add_action( 'admin_init', array( $this, 'actions' ) );
-		add_action( 'deleted_post', array( $this, 'delete_entries' ) );
-
 		add_action( 'admin_head', array( $this, 'custom_menu_count' ) );
 		add_filter( 'custom_menu_order', array( $this, 'custom_menu_order' ) );
 		add_filter( 'set-screen-option', array( $this, 'set_screen_option' ), 11, 3 );
 
-		// Admin bar menus.
-		if ( apply_filters( 'everest_forms_show_admin_bar', true ) ) {
-			add_action( 'admin_bar_menu', array( $this, 'admin_bar_menus' ), 99 );
-		}
+		add_action( 'admin_init', array( $this, 'actions' ) );
+		add_action( 'deleted_post', array( $this, 'delete_entries' ) );
 	}
 
 	/**
@@ -271,25 +266,7 @@ class EVF_Admin_Menus {
 		EVF_Admin_Addons::output();
 	}
 
-	/**
-	 * Add "Everest Forms" link in admin bar main menu.
-	 *
-	 * @since 1.0.0
-	 * @param WP_Admin_Bar $wp_admin_bar Admin bar instance.
-	 */
-	public function admin_bar_menus( $wp_admin_bar ) {
-		if ( ! is_admin_bar_showing() || ! current_user_can( apply_filters( 'everest_forms_manage_cap', 'manage_options' ) ) ) {
-			return;
-		}
 
-		$args = array(
-			'id'     => 'everest_forms',
-			'title'  => 'Everest Forms',
-			'href'   => admin_url( 'admin.php?page=evf-setup' ),
-			'parent' => 'new-content',
-		);
-		$wp_admin_bar->add_node( $args );
-	}
 
 	/**
 	 * Everest forms admin actions.
