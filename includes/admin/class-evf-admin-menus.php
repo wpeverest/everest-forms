@@ -108,7 +108,7 @@ class EVF_Admin_Menus {
 	 * Add menu items.
 	 */
 	public function setup_menu() {
-		add_submenu_page( 'everest-forms', __( 'Everest Forms Builder', 'everest-forms' ), __( 'Add New', 'everest-forms' ), 'manage_everest_forms', 'evf-setup', array( $this, 'setup_page' ) );
+		add_submenu_page( 'everest-forms', __( 'Everest Forms Setup', 'everest-forms' ), __( 'Add New', 'everest-forms' ), 'manage_everest_forms', 'evf-setup', array( $this, 'setup_page' ) );
 	}
 
 	/**
