@@ -98,9 +98,9 @@ class EVF_Admin_Builder {
 	}
 
 	/**
-	 * Output new form template.
+	 * Output new form setup template.
 	 */
-	public static function output_tmpl() {
+	public static function page_output() {
 		$core_templates = apply_filters( 'everest_forms_templates_core', array(
 			'blank-form'   => array(
 				'slug' => 'blank',

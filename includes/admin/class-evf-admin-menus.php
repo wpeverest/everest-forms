@@ -193,6 +193,43 @@ class EVF_Admin_Menus {
 	}
 
 	/**
+	 * Adds the custom count to the menu.
+	 */
+	public function custom_menu_count() {
+		global $submenu;
+
+		if ( isset( $submenu['everest-forms'] ) ) {
+			// Remove 'Everest Forms' sub menu item.
+			unset( $submenu['everest-forms'][0] );
+
+			// Add count if user has access.
+			if ( apply_filters( 'everest_forms_include_count_in_menu', true ) && current_user_can( 'manage_everest_forms' ) ) {
+				do_action( 'everest_forms_custom_menu_count', $submenu );
+			}
+		}
+	}
+
+	/**
+	 * Custom menu order.
+	 *
+	 * @return bool
+	 */
+	public function custom_menu_order() {
+		return current_user_can( 'manage_everest_forms' );
+	}
+
+	/**
+	 * Validate screen options on update.
+	 */
+	public function set_screen_option( $status, $option, $value ) {
+		if ( in_array( $option, array( 'evf_forms_per_page', 'evf_entries_per_page' ), true ) ) {
+			return $value;
+		}
+
+		return $status;
+	}
+
+	/**
 	 * Init the settings page.
 	 */
 	public function builder_page() {
@@ -200,10 +237,10 @@ class EVF_Admin_Menus {
 	}
 
 	/**
-	 * Init the add forms page.
+	 * Init the setup form page.
 	 */
 	public function setup_page() {
-		EVF_Admin_Builder::output_tmpl();
+		EVF_Admin_Builder::page_output();
 	}
 
 	/**
@@ -232,42 +269,6 @@ class EVF_Admin_Menus {
 	 */
 	public function addons_page() {
 		EVF_Admin_Addons::output();
-	}
-
-	/**
-	 * Adds the custom count to the menu.
-	 */
-	public function custom_menu_count() {
-		global $submenu;
-
-		if ( isset( $submenu['everest-forms'] ) ) {
-			// Remove 'Everest Forms' sub menu item.
-			unset( $submenu['everest-forms'][0] );
-
-			// Add count if user has access.
-			if ( apply_filters( 'everest_forms_include_count_in_menu', true ) && current_user_can( 'manage_everest_forms' ) ) {
-				do_action( 'everest_forms_custom_menu_count', $submenu );
-			}
-		}
-	}
-	/**
-	 * Custom menu order.
-	 *
-	 * @return bool
-	 */
-	public function custom_menu_order() {
-		return current_user_can( 'manage_everest_forms' );
-	}
-
-	/**
-	 * Validate screen options on update.
-	 */
-	public function set_screen_option( $status, $option, $value ) {
-		if ( in_array( $option, array( 'evf_forms_per_page', 'evf_entries_per_page' ), true ) ) {
-			return $value;
-		}
-
-		return $status;
 	}
 
 	/**
