@@ -39,7 +39,6 @@ class EVF_Admin_Menus {
 		add_filter( 'set-screen-option', array( $this, 'set_screen_option' ), 11, 3 );
 
 		add_action( 'admin_init', array( $this, 'actions' ) );
-		add_action( 'deleted_post', array( $this, 'delete_entries' ) );
 	}
 
 	/**
@@ -295,23 +294,6 @@ class EVF_Admin_Menus {
 						$this->duplicate( $form_id );
 					}
 				}
-			}
-		}
-	}
-
-	/**
-	 * Remove entry and its associated meta.
-	 */
-	public function delete_entries( $postid ) {
-		global $wpdb;
-
-		$entries = evf_get_entries_ids( $postid );
-
-		// Delete entry.
-		if ( ! empty( $entries ) ) {
-			foreach ( $entries as $entry_id ) {
-				$wpdb->delete( $wpdb->prefix . 'evf_entries', array( 'entry_id' => $entry_id ), array( '%d' ) );
-				$wpdb->delete( $wpdb->prefix . 'evf_entrymeta', array( 'entry_id' => $entry_id ), array( '%d' ) );
 			}
 		}
 	}
