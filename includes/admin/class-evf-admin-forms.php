@@ -43,7 +43,7 @@ class EVF_Admin_Forms {
 
 			include 'views/html-admin-page-builder.php';
 		} elseif ( isset( $_GET['create-form'] ) ) {
-			include 'views/html-admin-page-setup-tmpl.php';
+			include 'views/html-admin-page-builder-setup.php';
 		} else {
 			self::table_list_output();
 		}
