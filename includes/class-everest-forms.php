@@ -397,7 +397,7 @@ final class EverestForms {
 					'parent' => 'new-content',
 					'id'     => 'everest-forms',
 					'title'  => __( 'Everest Forms', 'everest-forms' ),
-					'href'   => admin_url( 'admin.php?page=evf-setup' ),
+					'href'   => admin_url( 'admin.php?page=evf-builder&create-form=1' ),
 				)
 			);
 		}
