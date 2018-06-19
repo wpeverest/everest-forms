@@ -81,7 +81,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 	 * @return string
 	 */
 	public function column_title( $posts ) {
-		$edit_link        = admin_url( 'admin.php?page=evf-builder&amp;tab=fields&amp;form_id=' . $posts->ID );
+		$edit_link        = admin_url( 'admin.php?page=evf-builder&tab=fields&form_id=' . $posts->ID );
 		$title            = _draft_or_post_title( $posts->ID );
 		$post_type_object = get_post_type_object( 'everest_form' );
 		$post_status      = $posts->post_status;
@@ -111,8 +111,8 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 				$actions['delete'] = '<a class="submitdelete" aria-label="' . esc_attr__( 'Delete this item permanently', 'everest-forms' ) . '" href="' . get_delete_post_link( $posts->ID, '', true ) . '">' . esc_html__( 'Delete permanently', 'everest-forms' ) . '</a>';
 			}
 		}
-		$duplicate_nonce = wp_create_nonce( 'everest_forms_form_duplicate' . $posts->ID );
-		$duplicate_link  = admin_url( 'admin.php?page=evf-builder&action=duplicate&_wpnonce=' . $duplicate_nonce . '&form=' . $posts->ID );
+
+		$duplicate_link = wp_nonce_url( admin_url( 'admin.php?page=evf-builder&action=duplicate_form&form_id=' . absint( $posts->ID ) ), 'everest-forms-duplicate-form_' . $posts->ID );
 
 		if ( current_user_can( $post_type_object->cap->edit_post, $posts->ID ) && 'publish' === $post_status ) {
 			$actions['duplicate'] = '<a href="' . esc_url( $duplicate_link ) . '">' . __( 'Duplicate', 'everest-forms' ) . '</a>';

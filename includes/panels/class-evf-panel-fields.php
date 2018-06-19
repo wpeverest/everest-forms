@@ -52,30 +52,19 @@ class EVF_Panel_Fields extends EVF_Form_Panel {
 	/**
 	 * Outputs the Field panel primary content.
 	 *
-	 * @since      1.0.0
+	 * @since 1.0.0
 	 */
 	public function panel_content() {
 		?>
 		<div class="everest-forms-preview-wrap">
-
 			<div class="everest-forms-preview">
-
 				<div class="everest-forms-title-desc">
-					<h2 class="everest-forms-form-name"><?php echo esc_html( $this->form->post_title ); echo ' (ID #'.$this->form->ID.')'; ?></h2>
-
+					<h2 class="everest-forms-form-name"><?php echo esc_html( $this->form->post_title ); ?></h2>
 				</div>
-
 				<div class="everest-forms-field-wrap">
 					<?php do_action( 'everest_forms_builder_preview', $this->form ); ?>
 				</div>
-
-				<?php
-				//$submit = ! empty( $this->form_data['settings']['submit_text'] ) ? esc_attr( $this->form_data['settings']['submit_text'] ) : __( 'Submit', 'everest-forms' );
-				//printf( '<p class="everest-forms-field-submit"><input type="submit" value="%s" class="everest-forms-field-submit-button"></p>', $submit );
-				?>
-
 			</div>
-
 		</div>
 		<?php
 	}

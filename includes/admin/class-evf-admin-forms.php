@@ -84,10 +84,14 @@ class EVF_Admin_Forms {
 	 */
 	public function actions() {
 		if ( $this->is_forms_page() ) {
-
 			// Empty trash.
 			if ( isset( $_REQUEST['delete_all'] ) || isset( $_REQUEST['delete_all2'] ) ) { // WPCS: input var okay, CSRF ok.
 				$this->empty_trash();
+			}
+
+			// Duplicate form.
+			if ( isset( $_REQUEST['action'] ) && 'duplicate_form' === $_REQUEST['action'] ) { // WPCS: input var okay, CSRF ok.
+				$this->duplicate_form();
 			}
 		}
 	}
@@ -125,6 +129,24 @@ class EVF_Admin_Forms {
 		);
 	}
 
+	/**
+	 * Duplicate form.
+	 */
+	private function duplicate_form() {
+		if ( empty( $_REQUEST['form_id'] ) ) {
+			wp_die( __( 'No form to duplicate has been supplied!', 'woocommerce' ) );
+		}
+
+		$form_id = isset( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : '';
+
+		check_admin_referer( 'everest-forms-duplicate-form_' . $form_id );
+
+		$duplicate_id = evf()->form->duplicate( $form_id );
+
+		// Redirect to the edit screen for the new form page.
+		wp_redirect( admin_url( 'admin.php?page=evf-builder&tab=fields&form_id=' . $duplicate_id ) );
+		exit;
+	}
 
 	/**
 	 * Remove entry and its associated meta.

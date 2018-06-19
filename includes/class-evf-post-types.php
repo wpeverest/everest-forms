@@ -20,6 +20,7 @@ class EVF_Post_Types {
 	 */
 	public static function init() {
 		add_action( 'init', array( __CLASS__, 'register_post_types' ), 5 );
+		add_action( 'admin_bar_menu', array( __CLASS__, 'admin_bar_menus' ), 100 );
 		add_action( 'everest_forms_after_register_post_type', array( __CLASS__, 'maybe_flush_rewrite_rules' ) );
 		add_action( 'everest_forms_flush_rewrite_rules', array( __CLASS__, 'flush_rewrite_rules' ) );
 	}
@@ -82,6 +83,35 @@ class EVF_Post_Types {
 		);
 
 		do_action( 'everest_forms_after_register_post_type' );
+	}
+
+	/**
+	 * Add "Everest Forms" link in admin bar main menu.
+	 *
+	 * @since 1.2.0
+	 * @param WP_Admin_Bar $wp_admin_bar Admin bar instance.
+	 */
+	public static function admin_bar_menus( $wp_admin_bar ) {
+		if ( ! is_admin_bar_showing() || ! current_user_can( 'manage_everest_forms' ) ) {
+			return;
+		}
+
+		// Show only when the user is a member of this site, or they're a super admin.
+		if ( ! is_user_member_of_blog() && ! is_super_admin() ) {
+			return;
+		}
+
+		// Add an option to create new form.
+		if ( apply_filters( 'everest_forms_show_admin_bar_menus', true ) ) {
+			$wp_admin_bar->add_node(
+				array(
+					'parent' => 'new-content',
+					'id'     => 'everest-forms',
+					'title'  => __( 'Everest Forms', 'everest-forms' ),
+					'href'   => admin_url( 'admin.php?page=evf-builder&create-form=1' ),
+				)
+			);
+		}
 	}
 
 	/**
