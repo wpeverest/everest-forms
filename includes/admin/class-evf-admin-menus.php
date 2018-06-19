@@ -25,8 +25,7 @@ class EVF_Admin_Menus {
 		// Add menus.
 		add_action( 'admin_menu', array( $this, 'admin_menu' ), 9 );
 		add_action( 'admin_menu', array( $this, 'builder_menu' ), 20 );
-		add_action( 'admin_menu', array( $this, 'setup_menu' ), 30 );
-		add_action( 'admin_menu', array( $this, 'entries_menu' ), 40 );
+		add_action( 'admin_menu', array( $this, 'entries_menu' ), 30 );
 		add_action( 'admin_menu', array( $this, 'settings_menu' ), 50 );
 		add_action( 'admin_menu', array( $this, 'status_menu' ), 60 );
 
@@ -34,6 +33,8 @@ class EVF_Admin_Menus {
 			add_action( 'admin_menu', array( $this, 'addons_menu' ), 70 );
 		}
 
+		// add_action( 'admin_head', array( $this, 'menu_highlight' ) );
+		add_filter( 'parent_file', array( $this, 'menu_highlight' ) );
 		add_action( 'admin_head', array( $this, 'custom_menu_count' ) );
 		add_filter( 'custom_menu_order', array( $this, 'custom_menu_order' ) );
 		add_filter( 'set-screen-option', array( $this, 'set_screen_option' ), 11, 3 );
@@ -70,6 +71,8 @@ class EVF_Admin_Menus {
 	public function builder_menu() {
 		$builder_page = add_submenu_page( 'everest-forms', __( 'Everest Forms Builder', 'everest-forms' ), __( 'All Forms', 'everest-forms' ), 'manage_everest_forms', 'evf-builder', array( $this, 'builder_page' ) );
 
+		add_submenu_page( 'everest-forms', __( 'Everest Forms Setup', 'everest-forms' ), __( 'Add New', 'everest-forms' ), 'manage_everest_forms', 'evf-builder&create-form=1', array( $this, 'builder_page' ) );
+
 		add_action( 'load-' . $builder_page, array( $this, 'builder_page_init' ) );
 	}
 
@@ -96,13 +99,6 @@ class EVF_Admin_Menus {
 		}
 
 		do_action( 'everest_forms_builder_page_init' );
-	}
-
-	/**
-	 * Add menu items.
-	 */
-	public function setup_menu() {
-		add_submenu_page( 'everest-forms', __( 'Everest Forms Setup', 'everest-forms' ), __( 'Add New', 'everest-forms' ), 'manage_everest_forms', 'evf-setup', array( $this, 'setup_page' ) );
 	}
 
 	/**
@@ -187,6 +183,22 @@ class EVF_Admin_Menus {
 	}
 
 	/**
+	 * Highlights the correct top level admin menu item.
+	 */
+	public function menu_highlight() {
+		global $parent_file, $submenu_file;
+
+		$screen    = get_current_screen();
+		$screen_id = $screen ? $screen->id : '';
+
+		// Check to make sure we're on a EverestForms builder setup page.
+		if ( isset( $_GET['create-form'] ) && in_array( $screen_id, array( 'everest-forms_page_evf-builder' ), true ) ) {
+			$parent_file  = 'everest-forms'; // WPCS: override ok.
+			$submenu_file = 'evf-builder&create-form=1'; // WPCS: override ok.
+		}
+	}
+
+	/**
 	 * Adds the custom count to the menu.
 	 */
 	public function custom_menu_count() {
@@ -227,14 +239,7 @@ class EVF_Admin_Menus {
 	 * Init the settings page.
 	 */
 	public function builder_page() {
-		EVF_Admin_Builder::output();
-	}
-
-	/**
-	 * Init the setup form page.
-	 */
-	public function setup_page() {
-		EVF_Admin_Builder::page_output();
+		EVF_Admin_Forms::page_output();
 	}
 
 	/**

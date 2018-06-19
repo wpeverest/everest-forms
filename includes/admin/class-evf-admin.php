@@ -2,7 +2,7 @@
 /**
  * EverestForms Admin
  *
- * @package EverestForms/Admin
+ * @package EverestForms\Admin
  * @version 1.0.0
  */
 
@@ -42,7 +42,6 @@ class EVF_Admin {
 		include_once dirname( __FILE__ ) . '/class-evf-admin-menus.php';
 		include_once dirname( __FILE__ ) . '/class-evf-admin-notices.php';
 		include_once dirname( __FILE__ ) . '/class-evf-admin-assets.php';
-		include_once dirname( __FILE__ ) . '/class-evf-admin-builder.php';
 		include_once dirname( __FILE__ ) . '/class-evf-admin-forms.php';
 		include_once dirname( __FILE__ ) . '/class-evf-admin-entries.php';
 		include_once dirname( __FILE__ ) . '/class-evf-admin-add-form.php';
@@ -173,8 +172,8 @@ class EVF_Admin {
 		$screen_id = $screen ? $screen->id : '';
 
 		// Check to make sure we're on a EverestForms builder page.
-		if ( isset( $_GET['form_id'] ) && in_array( $screen_id, array( 'everest-forms_page_evf-builder' ), true ) ) {
-			$classes = 'everest-forms-builder';
+		if ( ( isset( $_GET['form_id'] ) || isset( $_GET['create-form'] ) ) && in_array( $screen_id, array( 'everest-forms_page_evf-builder' ), true ) ) {
+			$classes = isset( $_GET['form_id'] ) ? 'everest-forms-builder' : 'everest-forms-builder-setup';
 		}
 
 		return $classes;
