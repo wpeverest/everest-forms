@@ -190,27 +190,31 @@ class EVF_Admin_Entries {
 	public function empty_trash() {
 		global $wpdb;
 
-		if ( ! current_user_can( 'manage_everest_forms' ) ) {
-			wp_die( __( 'You do not have permissions to delete Entries!', 'everest-forms' ) );
-		}
+		check_admin_referer( 'bulk-entries' );
 
 		if ( isset( $_GET['form_id'] ) ) { // WPCS: input var okay, CSRF ok.
 			$form_id = absint( $_GET['form_id'] ); // WPCS: input var okay, CSRF ok.
 
 			if ( $form_id ) {
-				$results = $wpdb->get_results( $wpdb->prepare( "SELECT entry_id FROM {$wpdb->prefix}evf_entries WHERE `status` = 'trash' AND form_id = %d", $form_id ) ); // WPCS: cache ok, DB call ok.
-				$entries = array_map( 'intval', wp_list_pluck( $results, 'entry_id' ) );
+				$count     = 0;
+				$results   = $wpdb->get_results( $wpdb->prepare( "SELECT entry_id FROM {$wpdb->prefix}evf_entries WHERE `status` = 'trash' AND form_id = %d", $form_id ) ); // WPCS: cache ok, DB call ok.
+				$entry_ids = array_map( 'intval', wp_list_pluck( $results, 'entry_id' ) );
 
-				foreach ( $entries as $entry_id ) {
-					self::remove_entry( $entry_id );
+				foreach ( $entry_ids as $entry_id ) {
+					if ( self::remove_entry( $entry_id ) ) {
+						$count ++;
+					}
 				}
 
-				$qty = count( $entries );
+				add_settings_error(
+					'empty_trash',
+					'empty_trash',
+					/* translators: %d: number of entries */
+					sprintf( _n( '%d entry permanently deleted.', '%d entries permanently deleted.', $count ), $count ),
+					'updated'
+				);
 			}
 		}
-
-		wp_redirect( esc_url_raw( add_query_arg( array( 'form_id' => $form_id, 'deleted' => $qty ), admin_url( 'admin.php?page=evf-entries' ) ) ) );
-		exit();
 	}
 
 	/**

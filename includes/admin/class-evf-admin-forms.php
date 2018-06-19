@@ -102,10 +102,7 @@ class EVF_Admin_Forms {
 	private function empty_trash() {
 		check_admin_referer( 'bulk-forms' );
 
-		if ( ! current_user_can( 'manage_everest_forms' ) ) {
-			wp_die( __( 'You do not have permissions to delete forms!', 'everest-forms' ) );
-		}
-
+		$count    = 0;
 		$form_ids = get_posts( array(
 			'post_type'           => 'everest_form',
 			'ignore_sticky_posts' => true,
