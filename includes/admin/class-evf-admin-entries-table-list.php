@@ -405,6 +405,8 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 * @param string $which
 	 */
 	protected function extra_tablenav( $which ) {
+		$num_entries = evf_get_count_entries_by_status( $this->form_id );
+
 		?>
 		<div class="alignleft actions">
 		<?php
@@ -419,7 +421,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 				}
 			}
 
-			if ( isset( $_GET['status'] ) && 'trash' == $_GET['status'] && current_user_can( 'manage_everest_forms' ) ) {
+			if ( $num_entries['trash'] && isset( $_GET['status'] ) && 'trash' == $_GET['status'] && current_user_can( 'manage_everest_forms' ) ) {
 				submit_button( __( 'Empty Trash', 'everest-forms' ), 'apply', 'delete_all', false );
 			}
 		?>

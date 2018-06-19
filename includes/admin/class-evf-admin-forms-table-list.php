@@ -158,8 +158,8 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 
 		if ( current_user_can( 'edit_user' ) ) {
 			return '<a href="' . esc_url( add_query_arg( array(
-					'user_id' => $user->ID,
-				), admin_url( 'user-edit.php' ) ) ) . '">' . esc_html( $user_name ) . '</a>';
+				'user_id' => $user->ID,
+			), admin_url( 'user-edit.php' ) ) ) . '">' . esc_html( $user_name ) . '</a>';
 		}
 
 		return esc_html( $user_name );
@@ -391,13 +391,14 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 	 * @param string $which
 	 */
 	protected function extra_tablenav( $which ) {
-		echo '<div class="alignleft actions">';
+		$num_posts = wp_count_posts( 'everest_form', 'readable' );
 
-		if ( isset( $_GET['status'] ) && 'trash' == $_GET['status'] && current_user_can( 'delete_posts' ) ) {
-			submit_button( __( 'Empty Trash', 'everest-forms' ), 'apply', 'delete_all', false );
+		if ( $num_posts->trash && isset( $_GET['status'] ) && 'trash' == $_GET['status'] && current_user_can( 'delete_posts' ) ) {
+			echo '<div class="alignleft actions">';
+				submit_button( __( 'Empty Trash', 'everest-forms' ), 'apply', 'delete_all', false );
+			echo '</div>';
 		}
 
-		echo '</div>';
 	}
 
 	/**
