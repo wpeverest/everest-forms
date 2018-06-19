@@ -85,39 +85,46 @@ class EVF_Admin_Forms {
 	public function actions() {
 		if ( $this->is_forms_page() ) {
 
+			// Empty trash.
+			if ( isset( $_REQUEST['delete_all'] ) || isset( $_REQUEST['delete_all2'] ) ) { // WPCS: input var okay, CSRF ok.
+				$this->empty_trash();
+			}
 		}
 	}
 
 	/**
-	 * Everest forms admin actions.
+	 * Empty Trash.
 	 */
-	public function actions__() {
-		if ( isset( $_GET['page'] ) && 'evf-builder' === $_GET['page'] ) {
-			// Bulk actions
-			if ( isset( $_REQUEST['action'] ) && isset( $_REQUEST['form'] ) ) {
-				$this->bulk_actions();
-			}
+	private function empty_trash() {
+		check_admin_referer( 'bulk-forms' );
 
-			// Empty trash
-			if ( isset( $_GET['empty_trash'] ) ) {
-				$this->empty_trash();
-			}
+		if ( ! current_user_can( 'manage_everest_forms' ) ) {
+			wp_die( __( 'You do not have permissions to delete forms!', 'everest-forms' ) );
+		}
 
-			$action  = isset( $_GET['action'] ) ? sanitize_text_field( $_GET['action'] ) : '';
-			$nonce   = isset( $_GET['_wpnonce'] ) ? sanitize_text_field( $_GET['_wpnonce'] ) : '';
-			$form_id = isset( $_GET['form'] ) && is_numeric( $_GET['form'] ) ? $_GET['form'] : '';
+		$form_ids = get_posts( array(
+			'post_type'           => 'everest_form',
+			'ignore_sticky_posts' => true,
+			'nopaging'            => true,
+			'post_status'         => 'trash',
+			'fields'              => 'ids',
+		) );
 
-			if ( ! empty( $action ) && ! empty( $nonce ) && ! empty( $form_id ) ) {
-				$flag = wp_verify_nonce( $nonce, 'everest_forms_form_duplicate' . $form_id );
-
-				if ( $flag == true && ! is_wp_error( $flag ) ) {
-					if ( 'duplicate' === $action ) {
-						$this->duplicate( $form_id );
-					}
-				}
+		foreach ( $form_ids as $form_id ) {
+			if ( wp_delete_post( $form_id, true ) ) {
+				$count ++;
 			}
 		}
+
+		add_settings_error(
+			'empty_trash',
+			'empty_trash',
+			/* translators: %d: number of forms */
+			sprintf( _n( '%d form permanently deleted.', '%d forms permanently deleted.', $count ), $count ),
+			'updated'
+		);
 	}
+
 
 	/**
 	 * Remove entry and its associated meta.

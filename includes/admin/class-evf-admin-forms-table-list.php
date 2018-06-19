@@ -98,9 +98,8 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 		// Get actions.
 		if ( current_user_can( $post_type_object->cap->edit_post, $posts->ID ) && 'trash' !== $post_status ) {
 			$actions['edit'] = '<a href="' . esc_url( $edit_link ) . '">' . __( 'Edit', 'everest-forms' ) . '</a>';
+			$actions['entries'] = '<a href="' . esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $posts->ID ) ) . '">' . __( 'Entries', 'everest-forms' ) . '</a>';
 		}
-
-		$actions['entries'] = '<a href="' . esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $posts->ID ) ) . '">' . __( 'Entries', 'everest-forms' ) . '</a>';
 
 		if ( current_user_can( $post_type_object->cap->delete_post, $posts->ID ) ) {
 			if ( 'trash' == $post_status ) {
@@ -206,9 +205,13 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 	public function column_entries( $posts ) {
 		global $wpdb;
 
-		$entries = isset( $_GET['status'] ) && 'trash' === $_GET['status'] ? array() : $wpdb->get_results( $wpdb->prepare( "SELECT form_id FROM {$wpdb->prefix}evf_entries WHERE `status` != 'trash' AND form_id = %d", $posts->ID ) ); // WPCS: cache ok, DB call ok.
+		$entries = count( $wpdb->get_results( $wpdb->prepare( "SELECT form_id FROM {$wpdb->prefix}evf_entries WHERE `status` != 'trash' AND form_id = %d", $posts->ID ) ) ); // WPCS: cache ok, DB call ok.
 
-		return '<a href="' . esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $posts->ID ) ) . '">' . count( $entries ) . '</a>';
+		if ( isset( $_GET['status'] ) && 'trash' === $_GET['status'] ) {
+			return '<strong>' . absint( $entries ) . '</strong>';
+		} else {
+			return '<a href="' . esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $posts->ID ) ) . '">' . absint( $entries ) . '</a>';
+		}
 	}
 
 	/**
@@ -388,11 +391,13 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 	 * @param string $which
 	 */
 	protected function extra_tablenav( $which ) {
-		if ( 'top' == $which && isset( $_GET['status'] ) && 'trash' == $_GET['status'] && current_user_can( 'delete_posts' ) ) {
-			echo '<div class="alignleft actions">';
-				submit_button( __( 'Empty Trash', 'everest-forms' ), 'apply', 'delete_all', false );
-			echo '</div>';
+		echo '<div class="alignleft actions">';
+
+		if ( isset( $_GET['status'] ) && 'trash' == $_GET['status'] && current_user_can( 'delete_posts' ) ) {
+			submit_button( __( 'Empty Trash', 'everest-forms' ), 'apply', 'delete_all', false );
 		}
+
+		echo '</div>';
 	}
 
 	/**

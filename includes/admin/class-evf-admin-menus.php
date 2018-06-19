@@ -33,8 +33,7 @@ class EVF_Admin_Menus {
 			add_action( 'admin_menu', array( $this, 'addons_menu' ), 70 );
 		}
 
-		// add_action( 'admin_head', array( $this, 'menu_highlight' ) );
-		add_filter( 'parent_file', array( $this, 'menu_highlight' ) );
+		add_action( 'admin_head', array( $this, 'menu_highlight' ) );
 		add_action( 'admin_head', array( $this, 'custom_menu_count' ) );
 		add_filter( 'custom_menu_order', array( $this, 'custom_menu_order' ) );
 		add_filter( 'set-screen-option', array( $this, 'set_screen_option' ), 11, 3 );
@@ -275,11 +274,6 @@ class EVF_Admin_Menus {
 	 */
 	public function actions() {
 		if ( isset( $_GET['page'] ) && 'evf-builder' === $_GET['page'] ) {
-			// Empty trash.
-			if ( isset( $_GET['empty_trash'] ) ) {
-				$this->empty_trash();
-			}
-
 			$action  = isset( $_GET['action'] ) ? sanitize_text_field( $_GET['action'] ) : '';
 			$nonce   = isset( $_GET['_wpnonce'] ) ? sanitize_text_field( $_GET['_wpnonce'] ) : '';
 			$form_id = isset( $_GET['form'] ) && is_numeric( $_GET['form'] ) ? $_GET['form'] : '';
@@ -294,37 +288,6 @@ class EVF_Admin_Menus {
 				}
 			}
 		}
-	}
-
-	/**
-	 * Empty Trash.
-	 */
-	private function empty_trash() {
-		if ( empty( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'empty_trash' ) ) {
-			wp_die( __( 'Action failed. Please refresh the page and retry.', 'everest-forms' ) );
-		}
-
-		if ( ! current_user_can( 'delete_everest_forms' ) ) {
-			wp_die( __( 'You do not have permissions to delete forms!', 'everest-forms' ) );
-		}
-
-		$registration = get_posts( array(
-			'post_type'           => 'everest_form',
-			'ignore_sticky_posts' => true,
-			'nopaging'            => true,
-			'post_status'         => 'trash',
-			'fields'              => 'ids',
-		) );
-
-		foreach ( $registration as $registration_id ) {
-			wp_delete_post( $registration_id, true );
-		}
-
-		$qty = count( $registration );
-
-		// Redirect to registrations page
-		wp_redirect( admin_url( 'admin.php?page=evf-builder&deleted=' . $qty ) );
-		exit();
 	}
 
 	/**

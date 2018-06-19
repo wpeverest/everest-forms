@@ -185,7 +185,7 @@ class EVF_Admin_Entries {
 	}
 
 	/**
-	 * Empty Trash
+	 * Empty Trash.
 	 */
 	public function empty_trash() {
 		global $wpdb;
