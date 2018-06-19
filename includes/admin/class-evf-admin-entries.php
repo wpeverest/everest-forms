@@ -53,11 +53,15 @@ class EVF_Admin_Entries {
 		// Get the entries count.
 		$count = count( evf_get_entries_ids( $entries_table_list->form_id ) );
 
+		$entries_table_list->process_bulk_action();
 		$entries_table_list->prepare_items();
 		?>
 		<div class="wrap">
 			<h1 class="wp-heading-inline"><?php esc_html_e( 'Entries', 'everest-forms' ); ?></h1>
 			<hr class="wp-header-end">
+
+			<?php settings_errors(); ?>
+
 			<?php if ( 0 < $count ) : ?>
 				<form id="entries-list" method="post">
 					<input type="hidden" name="page" value="evf-entries" />
@@ -113,11 +117,7 @@ class EVF_Admin_Entries {
 				$this->delete_entry();
 			}
 
-			// Bulk actions.
-			if ( isset( $_REQUEST['action'], $_REQUEST['action2'] ) && isset( $_REQUEST['entry'] ) ) { // WPCS: input var okay, CSRF ok.
-				$this->bulk_actions();
-			}
-
+			// Empty Trash.
 			if ( isset( $_REQUEST['delete_all'] ) || isset( $_REQUEST['delete_all2'] ) ) { // WPCS: input var okay, CSRF ok.
 				$this->empty_trash();
 			}
@@ -136,7 +136,7 @@ class EVF_Admin_Entries {
 			$entry_id = absint( $_GET['trash'] ); // WPCS: input var okay, CSRF ok.
 
 			if ( $entry_id ) {
-				$this->update_status( $entry_id, 'trash' );
+				self::update_status( $entry_id, 'trash' );
 			}
 		}
 
@@ -156,7 +156,7 @@ class EVF_Admin_Entries {
 			$entry_id = absint( $_GET['untrash'] ); // WPCS: input var okay, CSRF ok.
 
 			if ( $entry_id ) {
-				$this->update_status( $entry_id, 'publish' );
+				self::update_status( $entry_id, 'publish' );
 			}
 		}
 
@@ -176,7 +176,7 @@ class EVF_Admin_Entries {
 			$entry_id = absint( $_GET['delete'] ); // WPCS: input var okay, CSRF ok.
 
 			if ( $entry_id ) {
-				$this->remove_entry( $entry_id );
+				self::remove_entry( $entry_id );
 			}
 		}
 
@@ -202,7 +202,7 @@ class EVF_Admin_Entries {
 				$entries = array_map( 'intval', wp_list_pluck( $results, 'entry_id' ) );
 
 				foreach ( $entries as $entry_id ) {
-					$this->remove_entry( $entry_id );
+					self::remove_entry( $entry_id );
 				}
 
 				$qty = count( $entries );
@@ -214,60 +214,12 @@ class EVF_Admin_Entries {
 	}
 
 	/**
-	 * Bulk actions.
-	 */
-	private function bulk_actions() {
-		check_admin_referer( 'bulk-entries' );
-
-		if ( ! current_user_can( 'manage_everest_forms' ) ) {
-			wp_die( esc_html__( 'You do not have permission to edit Entries', 'everest-forms' ) );
-		}
-
-		if ( isset( $_REQUEST['action'], $_REQUEST['action2'] ) ) { // WPCS: input var okay, CSRF ok.
-			$action  = sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ); // WPCS: input var okay, CSRF ok.
-			$action2 = sanitize_text_field( wp_unslash( $_REQUEST['action2'] ) ); // WPCS: input var okay, CSRF ok.
-			$entries = isset( $_REQUEST['entry'] ) ? array_map( 'absint', (array) $_REQUEST['entry'] ) : array(); // WPCS: input var okay, CSRF ok.
-
-			if ( 'delete' === $action || 'delete' === $action2 ) {
-				$this->bulk_delete_entry( $entries );
-			} elseif ( 'trash' === $action || 'trash' === $action2 ) {
-				$this->bulk_update_status( $entries, 'trash' );
-			} elseif ( 'untrash' === $action || 'untrash' === $action2 ) {
-				$this->bulk_update_status( $entries, 'publish' );
-			}
-		}
-	}
-
-	/**
-	 * Bulk delete entry.
-	 *
-	 * @param array $entries Entries.
-	 */
-	private function bulk_delete_entry( $entries ) {
-		foreach ( $entries as $entry_id ) {
-			$this->remove_entry( $entry_id );
-		}
-	}
-
-	/**
-	 * Bulk update entry status.
-	 *
-	 * @param array  $entries Entries.
-	 * @param string $status  Entry status.
-	 */
-	private function bulk_update_status( $entries, $status = '' ) {
-		foreach ( $entries as $entry_id ) {
-			$this->update_status( $entry_id, $status );
-		}
-	}
-
-	/**
 	 * Remove entry.
 	 *
 	 * @param  int $entry_id Entry ID.
 	 * @return bool
 	 */
-	private function remove_entry( $entry_id ) {
+	public static function remove_entry( $entry_id ) {
 		global $wpdb;
 
 		$delete = $wpdb->delete( $wpdb->prefix . 'evf_entries', array( 'entry_id' => $entry_id ), array( '%d' ) );
@@ -282,19 +234,21 @@ class EVF_Admin_Entries {
 	/**
 	 * Set entry status.
 	 *
-	 * @param  int    $entry_id Entry ID.
-	 * @param  string $status   Entry status.
+	 * @param int    $entry_id Entry ID.
+	 * @param string $status   Entry status.
 	 */
-	private function update_status( $entry_id, $status = 'publish' ) {
+	public static function update_status( $entry_id, $status = 'publish' ) {
 		global $wpdb;
 
-		$wpdb->update(
+		$update = $wpdb->update(
 			$wpdb->prefix . 'evf_entries',
 			array( 'status' => $status ),
 			array( 'entry_id' => $entry_id ),
 			array( '%s' ),
 			array( '%d' )
 		);
+
+		return $update;
 	}
 }
 
