@@ -38,8 +38,6 @@ class EVF_Admin_Menus {
 		add_action( 'admin_head', array( $this, 'custom_menu_count' ) );
 		add_filter( 'custom_menu_order', array( $this, 'custom_menu_order' ) );
 		add_filter( 'set-screen-option', array( $this, 'set_screen_option' ), 11, 3 );
-
-		add_action( 'admin_init', array( $this, 'actions' ) );
 	}
 
 	/**
@@ -270,19 +268,14 @@ class EVF_Admin_Menus {
 		EVF_Admin_Addons::output();
 	}
 
-
+	// Need to purify below tasks.
 
 	/**
 	 * Everest forms admin actions.
 	 */
 	public function actions() {
 		if ( isset( $_GET['page'] ) && 'evf-builder' === $_GET['page'] ) {
-			// Bulk actions
-			if ( isset( $_REQUEST['action'] ) && isset( $_REQUEST['form'] ) ) {
-				$this->bulk_actions();
-			}
-
-			// Empty trash
+			// Empty trash.
 			if ( isset( $_GET['empty_trash'] ) ) {
 				$this->empty_trash();
 			}
@@ -301,47 +294,6 @@ class EVF_Admin_Menus {
 				}
 			}
 		}
-	}
-
-	/**
-	 * Bulk trash.
-	 *
-	 * @param array   $forms
-	 * @param boolean $delete
-	 */
-	private function bulk_trash( $forms, $delete = false ) {
-		foreach ( $forms as $form_id ) {
-			if ( $delete ) {
-				wp_delete_post( $form_id, true );
-			} else {
-				wp_trash_post( $form_id );
-			}
-		}
-
-		$type   = ! EMPTY_TRASH_DAYS || $delete ? 'deleted' : 'trashed';
-		$qty    = count( $forms );
-		$status = isset( $_GET['status'] ) ? '&status=' . sanitize_text_field( $_GET['status'] ) : '';
-
-		// Redirect to registrations page
-		wp_redirect( admin_url( 'admin.php?page=evf-builder' . $status . '&' . $type . '=' . $qty ) );
-		exit();
-	}
-
-	/**
-	 * Bulk untrash.
-	 *
-	 * @param array $forms
-	 */
-	private function bulk_untrash( $forms ) {
-		foreach ( $forms as $form_id ) {
-			wp_untrash_post( $form_id );
-		}
-
-		$qty = count( $forms );
-
-		// Redirect to registrations page
-		wp_redirect( admin_url( 'admin.php?page=evf-builder&status=trash&untrashed=' . $qty ) );
-		exit();
 	}
 
 	/**
@@ -472,31 +424,6 @@ class EVF_Admin_Menus {
 			 */
 			wp_redirect( admin_url( 'admin.php?page=evf-builder' ) );
 			exit;
-		}
-	}
-
-	/**
-	 * Bulk actions.
-	 */
-	private function bulk_actions() {
-		if ( ! current_user_can( 'edit_everest_forms' ) ) {
-			wp_die( __( 'You do not have permissions to edit forms!', 'everest-forms' ) );
-		}
-
-		$forms = array_map( 'absint', (array) $_REQUEST['form'] );
-
-		switch ( $_REQUEST['action'] ) {
-			case 'trash' :
-				$this->bulk_trash( $forms );
-				break;
-			case 'untrash' :
-				$this->bulk_untrash( $forms );
-				break;
-			case 'delete' :
-				$this->bulk_trash( $forms, true );
-				break;
-			default :
-				break;
 		}
 	}
 }

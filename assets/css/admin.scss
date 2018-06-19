@@ -945,6 +945,12 @@ body.everest-forms-builder-setup,
 /**
  * List Table.
  */
+.tablenav {
+	#delete_all {
+		margin: 1px;
+	}
+}
+
 table.wp-list-table {
 	span.na {
 		color: #999;

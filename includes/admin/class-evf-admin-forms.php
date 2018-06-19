@@ -14,14 +14,15 @@ defined( 'ABSPATH' ) || exit;
 class EVF_Admin_Forms {
 
 	/**
-	 * Initialize the entries admin actions.
+	 * Initialize the forms admin actions.
 	 */
 	public function __construct() {
+		add_action( 'admin_init', array( $this, 'actions' ) );
 		add_action( 'deleted_post', array( $this, 'delete_entries' ) );
 	}
 
 	/**
-	 * Check if is entries page.
+	 * Check if is forms page.
 	 *
 	 * @return bool
 	 */
@@ -54,13 +55,16 @@ class EVF_Admin_Forms {
 	public static function table_list_output() {
 		global $forms_table_list;
 
+		$forms_table_list->process_bulk_action();
 		$forms_table_list->prepare_items();
-
 		?>
 		<div class="wrap">
 			<h1 class="wp-heading-inline"><?php esc_html_e( 'All Forms', 'everest-forms' ); ?></h1>
 			<a href="<?php echo esc_url( admin_url( 'admin.php?page=evf-builder&create-form=1' ) ); ?>" class="page-title-action"><?php esc_html_e( 'Add New', 'everest-forms' ); ?></a>
 			<hr class="wp-header-end">
+
+			<?php settings_errors(); ?>
+
 			<form id="form-list" method="post">
 				<input type="hidden" name="page" value="everest-forms"/>
 				<?php
@@ -73,6 +77,46 @@ class EVF_Admin_Forms {
 			</form>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Forms admin actions.
+	 */
+	public function actions() {
+		if ( $this->is_forms_page() ) {
+
+		}
+	}
+
+	/**
+	 * Everest forms admin actions.
+	 */
+	public function actions__() {
+		if ( isset( $_GET['page'] ) && 'evf-builder' === $_GET['page'] ) {
+			// Bulk actions
+			if ( isset( $_REQUEST['action'] ) && isset( $_REQUEST['form'] ) ) {
+				$this->bulk_actions();
+			}
+
+			// Empty trash
+			if ( isset( $_GET['empty_trash'] ) ) {
+				$this->empty_trash();
+			}
+
+			$action  = isset( $_GET['action'] ) ? sanitize_text_field( $_GET['action'] ) : '';
+			$nonce   = isset( $_GET['_wpnonce'] ) ? sanitize_text_field( $_GET['_wpnonce'] ) : '';
+			$form_id = isset( $_GET['form'] ) && is_numeric( $_GET['form'] ) ? $_GET['form'] : '';
+
+			if ( ! empty( $action ) && ! empty( $nonce ) && ! empty( $form_id ) ) {
+				$flag = wp_verify_nonce( $nonce, 'everest_forms_form_duplicate' . $form_id );
+
+				if ( $flag == true && ! is_wp_error( $flag ) ) {
+					if ( 'duplicate' === $action ) {
+						$this->duplicate( $form_id );
+					}
+				}
+			}
+		}
 	}
 
 	/**

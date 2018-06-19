@@ -327,12 +327,12 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		if ( isset( $_GET['status'] ) && 'trash' == $_GET['status'] ) {
 			return array(
 				'untrash' => __( 'Restore', 'everest-forms' ),
-				'delete'  => __( 'Delete Permanently', 'everest-forms' )
+				'delete'  => __( 'Delete Permanently', 'everest-forms' ),
 			);
 		}
 
 		return array(
-			'trash' => __( 'Move to Trash', 'everest-forms' )
+			'trash' => __( 'Move to Trash', 'everest-forms' ),
 		);
 	}
 
