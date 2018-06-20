@@ -798,6 +798,23 @@ function evf_cleanup_session_data() {
 add_action( 'everest_forms_cleanup_sessions', 'evf_cleanup_session_data' );
 
 /**
+ * Return the html selected attribute if stringified $value is found in array of stringified $options
+ * or if stringified $value is the same as scalar stringified $options.
+ *
+ * @param string|int       $value   Value to find within options.
+ * @param string|int|array $options Options to go through when looking for value.
+ * @return string
+ */
+function evf_selected( $value, $options ) {
+	if ( is_array( $options ) ) {
+		$options = array_map( 'strval', $options );
+		return selected( in_array( (string) $value, $options, true ), true, false );
+	}
+
+	return selected( $value, $options, false );
+}
+
+/**
  * Retrieve actual fields from a form.
  *
  * Non-posting elements such as section divider, page break, and HTML are

@@ -8,6 +8,7 @@
 	<!-- Exclude paths -->
 	<exclude-pattern>includes/libraries/</exclude-pattern>
 	<exclude-pattern>includes/evf-deprecated-functions.php</exclude-pattern>
+	<exclude-pattern>includes/abstracts/legacy/</exclude-pattern>
 	<exclude-pattern>*/node_modules/*</exclude-pattern>
 	<exclude-pattern>*/vendor/*</exclude-pattern>
 
@@ -38,14 +39,13 @@
 	</rule>
 	<rule ref="WordPress.XSS.EscapeOutput">
 		<properties>
-			<property name="customEscapingFunctions" type="array" value="evf_help_tip,evf_sanitize_tooltip" />
+			<property name="customEscapingFunctions" type="array" value="evf_help_tip,evf_sanitize_tooltip,evf_selected" />
 		</properties>
 	</rule>
 	<rule ref="PEAR.NamingConventions.ValidClassName">
         <exclude-pattern>includes/</exclude-pattern>
     </rule>
 	<rule ref="WordPress.Files.FileName.InvalidClassFileName">
-		<exclude-pattern>includes/**/abstract-*.php</exclude-pattern>
 		<exclude-pattern>includes/class-everest-forms.php</exclude-pattern>
 	</rule>
 	<rule ref="WordPress.WP.I18n">

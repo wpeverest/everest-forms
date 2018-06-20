@@ -72,7 +72,11 @@ class EVF_Autoloader {
 		$file = $this->get_file_name_from_class( $class );
 		$path = '';
 
-		if ( 0 === strpos( $class, 'evf_shortcode_' ) ) {
+		if ( 0 === strpos( $class, 'evf_field_' ) ) {
+			$path = $this->include_path . 'fields/';
+		} elseif ( 0 === strpos( $class, 'evf_panel_' ) ) {
+			$path = $this->include_path . 'panels/';
+		} elseif ( 0 === strpos( $class, 'evf_shortcode_' ) ) {
 			$path = $this->include_path . 'shortcodes/';
 		} elseif ( 0 === strpos( $class, 'evf_admin' ) ) {
 			$path = $this->include_path . 'admin/';

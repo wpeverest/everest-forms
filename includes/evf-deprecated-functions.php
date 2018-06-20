@@ -154,3 +154,10 @@ function get_form_data_by_meta_key( $form_id, $meta_key ) {
 	evf_deprecated_function( 'get_form_data_by_meta_key', '1.2.0', 'evf_get_form_data_by_meta_key' );
 	return evf_get_form_data_by_meta_key( $form_id, $meta_key );
 }
+
+/**
+ * @deprecated 1.2.0
+ */
+function evf_query_string_form_fields( $values = null, $exclude = array(), $current_key = '', $return = false ) {
+	evf_deprecated_function( 'evf_sender_address', '1.2.0' );
+}

@@ -62,6 +62,13 @@ final class EverestForms {
 	public $entry_meta;
 
 	/**
+	 * Array of deprecated hook handlers.
+	 *
+	 * @var array of EVF_Deprecated_Hooks
+	 */
+	public $deprecated_hook_handlers = array();
+
+	/**
 	 * Main EverestForms Instance.
 	 *
 	 * Ensures only one instance of EverestForms is loaded or can be loaded.
@@ -97,6 +104,18 @@ final class EverestForms {
 	}
 
 	/**
+	 * Auto-load in-accessible properties on demand.
+	 *
+	 * @param mixed $key Key name.
+	 * @return mixed
+	 */
+	public function __get( $key ) {
+		if ( in_array( $key, array( 'form_fields' ), true ) ) {
+			return $this->$key();
+		}
+	}
+
+	/**
 	 * EverestForms Constructor.
 	 */
 	public function __construct() {
@@ -118,6 +137,7 @@ final class EverestForms {
 		register_shutdown_function( array( $this, 'log_errors' ) );
 		add_action( 'after_setup_theme', array( $this, 'include_template_functions' ), 11 );
 		add_action( 'init', array( $this, 'init' ), 0 );
+		add_action( 'init', array( $this, 'form_fields' ), 0 );
 		add_action( 'init', array( 'EVF_Shortcodes', 'init' ) );
 		add_action( 'init', array( 'EVF_Template_Loader', 'init' ) );
 		add_action( 'init', array( $this, 'wpdb_table_fix' ), 0 );
@@ -201,12 +221,16 @@ final class EverestForms {
 		 */
 		include_once EVF_ABSPATH . 'includes/interfaces/class-evf-logger-interface.php';
 		include_once EVF_ABSPATH . 'includes/interfaces/class-evf-log-handler-interface.php';
+		include_once EVF_ABSPATH . 'includes/interfaces/class-evf-form-panel-interface.php';
 
 		/**
 		 * Abstract classes.
 		 */
-		include_once EVF_ABSPATH . 'includes/abstracts/abstract-evf-log-handler.php';
-		include_once EVF_ABSPATH . 'includes/abstracts/abstract-evf-session.php';
+		include_once EVF_ABSPATH . 'includes/abstracts/class-evf-log-handler.php';
+		include_once EVF_ABSPATH . 'includes/abstracts/class-evf-deprecated-hooks.php';
+		include_once EVF_ABSPATH . 'includes/abstracts/class-evf-session.php';
+		include_once EVF_ABSPATH . 'includes/abstracts/class-evf-form-panel.php';
+		include_once EVF_ABSPATH . 'includes/abstracts/abstract-evf-form-fields.php';
 
 		/**
 		 * Core classes.
@@ -217,16 +241,13 @@ final class EverestForms {
 		include_once EVF_ABSPATH . 'includes/class-evf-ajax.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-emails.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-cache-helper.php';
-		include_once EVF_ABSPATH . 'includes/class-evf-field-item.php';
+		include_once EVF_ABSPATH . 'includes/class-evf-deprecated-action-hooks.php';
+		include_once EVF_ABSPATH . 'includes/class-evf-deprecated-filter-hooks.php';
+		require_once EVF_ABSPATH . 'includes/class-evf-forms-feature.php';
 
 		if ( $this->is_request( 'admin' ) ) {
 			include_once EVF_ABSPATH . 'includes/admin/class-evf-admin.php';
 		}
-
-		/**
-		 * Forms feature.
-		 */
-		require_once EVF_ABSPATH . 'includes/class-evf-forms-feature.php';
 
 		if ( $this->is_request( 'frontend' ) ) {
 			$this->frontend_includes();
@@ -238,6 +259,7 @@ final class EverestForms {
 	 */
 	public function frontend_includes() {
 		include_once EVF_ABSPATH . 'includes/evf-notice-functions.php';
+		include_once EVF_ABSPATH . 'includes/evf-template-hooks.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-template-loader.php';  // Template Loader.
 		include_once EVF_ABSPATH . 'includes/class-evf-frontend-scripts.php'; // Frontend Scripts.
 		include_once EVF_ABSPATH . 'includes/class-evf-shortcodes.php';       // Shortcodes class.
@@ -260,6 +282,10 @@ final class EverestForms {
 
 		// Set up localisation.
 		$this->load_plugin_textdomain();
+
+		// Load class instances.
+		$this->deprecated_hook_handlers['actions'] = new EVF_Deprecated_Action_Hooks();
+		$this->deprecated_hook_handlers['filters'] = new EVF_Deprecated_Filter_Hooks();
 
 		// Classes/actions loaded for the frontend and for ajax requests.
 		if ( $this->is_request( 'frontend' ) ) {
@@ -345,5 +371,23 @@ final class EverestForms {
 		global $wpdb;
 		$wpdb->form_entrymeta = $wpdb->prefix . 'evf_entrymeta';
 		$wpdb->tables[]       = 'evf_entrymeta';
+	}
+
+	/**
+	 * Get form fields Class.
+	 *
+	 * @return EVF_Form_Fields
+	 */
+	public function form_fields() {
+		return EVF_Fields::instance();
+	}
+
+	/**
+	 * Get form panels Class.
+	 *
+	 * @return EVF_Form_Panels
+	 */
+	public function form_panels() {
+		return EVF_Form_Panels::instance();
 	}
 }
