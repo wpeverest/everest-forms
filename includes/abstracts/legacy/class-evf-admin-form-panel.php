@@ -17,96 +17,41 @@ defined( 'ABSPATH' ) || exit;
 abstract class EVF_Admin_Form_Panel {
 
 	/**
-	 * Full name of the panel.
-	 *
-	 * @var string
-	 */
-	public $name;
-
-	/**
 	 * Slug.
 	 *
 	 * @var string
 	 */
-	public $slug;
-
-	/**
-	 * Font Awesome Icon used for the editor button.
-	 *
-	 * @var mixed
-	 */
-	public $icon = false;
+	public $slug; // $id
 
 	/**
 	 * Priority order the field button should show inside the "Add Fields" tab.
 	 *
 	 * @var integer
 	 */
-	public $order = 50;
+	public $order = 50; // $priority
 
 	/**
 	 * If panel contains a sidebar element or is full width.
 	 *
 	 * @var boolean
 	 */
-	public $sidebar = false;
+	public $sidebar = false; // $has_sidebar
 
 	/**
-	 * Contains form object if we have one.
-	 *
-	 * @var object
+	 * Constructor.
 	 */
-	public $form;
-
-	/**
-	 * Contains array of the form data (post_content).
-	 *
-	 * @var array
-	 */
-	public $form_data;
-
-	/**
-	 * Primary class constructor.
-	 */
-	public $form_setting;
-
 	public function __construct() {
-		// Load form if found.
-		$form_id            = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : false;
-		$this->form         = EVF()->form->get( $form_id );
-		$this->form_data    = $this->form ? evf_decode( $this->form->post_content ) : false;
 		$this->form_setting = isset( $this->form_data['settings'] ) ? $this->form_data['settings'] : array();
-		$this->init();
 
 		// Hooks.
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueues' ), 15 );
-		add_action( 'everest_forms_builder_panel_buttons', array( $this, 'button' ), $this->order, 2 );
-		add_action( 'everest_forms_builder_panels', array( $this, 'panel_output' ), $this->order, 2 );
+		add_action( 'everest_forms_builder_panel_buttons', array( $this, 'panel' ), $this->priority, 2 );
 	}
 
 	/**
-	 * Hook in tabs.
-	 */
-	public function init() {}
-
-	/**
-	 * Enqueue assets
+	 * Enqueue scripts.
 	 */
 	public function enqueues() {}
-
-	/**
-	 * Primary panel button in the left panel navigation.
-	 *
-	 * @param mixed  $form
-	 * @param string $view
-	 */
-	public function button( $form, $view ) {
-		$active = $view == $this->slug ? 'nav-tab-active' : '';
-
-		printf( '<a href="#" class="evf-panel-%1$s-button nav-tab %2$s" data-panel="%1$s">', $this->slug, $active );
-		printf( '<span class="%s"></span>', $this->icon );
-		printf( '%s</a>', $this->name );
-	}
 
 	/**
 	 * Outputs the contents of the panel.
