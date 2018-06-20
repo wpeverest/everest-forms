@@ -60,9 +60,6 @@ abstract class EVF_Form_Panel extends EVF_Admin_Form_Panel implements EVF_Form_P
 		$this->form      = evf()->form->get( $form_id );
 		$this->form_data = $this->form ? evf_decode( $this->form->post_content ) : false;
 
-		// Init.
-		$this->init_hooks();
-
 		// Hooks.
 		add_filter( 'everest_forms_builder_tabs_array', array( $this, 'add_builder_page' ), 20 );
 	}

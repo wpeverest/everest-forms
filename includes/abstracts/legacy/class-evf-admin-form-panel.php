@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || exit;
 abstract class EVF_Admin_Form_Panel {
 
 	/**
-	 * Name.
+	 * Full name of the panel.
 	 *
 	 * @var string
 	 */
@@ -28,31 +28,54 @@ abstract class EVF_Admin_Form_Panel {
 	 *
 	 * @var string
 	 */
-	public $slug; // $id
+	public $slug;
+
+	/**
+	 * Font Awesome Icon used for the editor button.
+	 *
+	 * @var mixed
+	 */
+	protected $icon = false;
 
 	/**
 	 * Priority order the field button should show inside the "Add Fields" tab.
 	 *
 	 * @var integer
 	 */
-	public $order = 50; // $priority
+	public $order = 50;
 
 	/**
 	 * If panel contains a sidebar element or is full width.
 	 *
 	 * @var boolean
 	 */
-	public $sidebar = false; // $has_sidebar
-
-	public $form_settings;
+	public $sidebar = false;
 
 	/**
-	 * Hook in tabs.
+	 * Contains form object if we have one.
+	 *
+	 * @var object
 	 */
-	public function init_hooks() {
-		$this->form_setting = isset( $this->form_data['settings'] ) ? $this->form_data['settings'] : array();
+	protected $form;
 
-		// Init.
+	/**
+	 * Contains array of the form data (post_content).
+	 *
+	 * @var array
+	 */
+	protected $form_data;
+
+	/**
+	 * Primary class constructor.
+	 */
+	public $form_setting;
+
+	public function __construct() {
+		// Load form if found.
+		$form_id            = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : false;
+		$this->form         = EVF()->form->get( $form_id );
+		$this->form_data    = $this->form ? evf_decode( $this->form->post_content ) : false;
+		$this->form_setting = isset( $this->form_data['settings'] ) ? $this->form_data['settings'] : array();
 		$this->init();
 
 		// Hooks.
@@ -62,27 +85,27 @@ abstract class EVF_Admin_Form_Panel {
 	}
 
 	/**
-	 * Enqueue scripts.
+	 * Hook in tabs.
 	 */
 	public function init() {}
 
 	/**
-	 * Enqueue scripts.
+	 * Enqueue assets
 	 */
 	public function enqueues() {}
 
 	/**
-	 * Primary panel tab navigation.
+	 * Primary panel button in the left panel navigation.
 	 *
 	 * @param mixed  $form
-	 * @param string $current_tab
+	 * @param string $view
 	 */
-	public function button( $form, $current_tab ) {
-		$active = $current_tab == $this->slug ? 'nav-tab-active' : '';
+	public function button( $form, $view ) {
+		$active = $view == $this->slug ? 'nav-tab-active' : '';
 
 		printf( '<a href="#" class="evf-panel-%1$s-button nav-tab %2$s" data-panel="%1$s">', $this->slug, $active );
 		printf( '<span class="%s"></span>', $this->icon );
-		printf( '%s</a>', $this->name ? $name : $label );
+		printf( '%s</a>', $this->name );
 	}
 
 	/**

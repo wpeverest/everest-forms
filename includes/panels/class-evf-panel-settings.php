@@ -11,12 +11,12 @@ defined( 'ABSPATH' ) || exit;
 /**
  * EVF_Panel_Settings class.
  */
-class EVF_Panel_Settings extends EVF_Form_Panel {
+class EVF_Panel_Settings extends EVF_Admin_Form_Panel {
 
 	/**
 	 * Constructor.
 	 */
-	public function __construct() {
+	public function __construct__() {
 		$this->id    = 'settings';
 		$this->icon  = 'evf-icon evf-icon-setting';
 		$this->label = __( 'Settings', 'everest-forms' );
@@ -29,7 +29,7 @@ class EVF_Panel_Settings extends EVF_Form_Panel {
 	 *
 	 * @since      1.0.0
 	 */
-	public function init_old() {
+	public function init() {
 
 		// Define panel information
 		$this->name    = __( 'Settings', 'everest-forms' );

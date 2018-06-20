@@ -16,7 +16,7 @@ class EVF_Panel_Fields extends EVF_Form_Panel {
 	/**
 	 * Constructor.
 	 */
-	public function __construct__() {
+	public function __construct() {
 		$this->id    = 'fields';
 		$this->icon  = 'evf-icon evf-icon-fields';
 		$this->label = __( 'Fields', 'everest-forms' );
@@ -27,7 +27,7 @@ class EVF_Panel_Fields extends EVF_Form_Panel {
 	/**
 	 * All systems go.
 	 */
-	public function init() {
+	public function init__old() {
 		// Define panel information.
 		$this->name    = __( 'Fields', 'everest-forms' );
 		$this->slug    = 'fields';
