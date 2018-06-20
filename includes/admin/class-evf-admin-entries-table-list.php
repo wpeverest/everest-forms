@@ -327,13 +327,76 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		if ( isset( $_GET['status'] ) && 'trash' == $_GET['status'] ) {
 			return array(
 				'untrash' => __( 'Restore', 'everest-forms' ),
-				'delete'  => __( 'Delete Permanently', 'everest-forms' )
+				'delete'  => __( 'Delete Permanently', 'everest-forms' ),
 			);
 		}
 
 		return array(
-			'trash' => __( 'Move to Trash', 'everest-forms' )
+			'trash' => __( 'Move to Trash', 'everest-forms' ),
 		);
+	}
+
+	/**
+	 * Process bulk actions.
+	 *
+	 * @since 1.2.0
+	 */
+	public function process_bulk_action() {
+		$action    = $this->current_action();
+		$entry_ids = isset( $_REQUEST['entry'] ) ? wp_parse_id_list( wp_unslash( $_REQUEST['entry'] ) ) : array(); // WPCS: input var ok, CSRF ok.
+		$count     = 0;
+
+		if ( $entry_ids ) {
+			check_admin_referer( 'bulk-entries' );
+		}
+
+		switch ( $action ) {
+			case 'trash':
+				foreach ( $entry_ids as $entry_id ) {
+					if ( EVF_Admin_Entries::update_status( $entry_id, 'trash' ) ) {
+						$count ++;
+					}
+				}
+
+				add_settings_error(
+					'bulk_action',
+					'bulk_action',
+					/* translators: %d: number of entries */
+					sprintf( _n( '%d entry moved to the Trash.', '%d entries moved to the Trash.', $count ), $count ),
+					'updated'
+				);
+				break;
+			case 'untrash':
+				foreach ( $entry_ids as $entry_id ) {
+					if ( EVF_Admin_Entries::update_status( $entry_id, 'publish' ) ) {
+						$count ++;
+					}
+				}
+
+				add_settings_error(
+					'bulk_action',
+					'bulk_action',
+					/* translators: %d: number of entries */
+					sprintf( _n( '%d entry restored from the Trash.', '%d entries restored from the Trash.', $count ), $count ),
+					'updated'
+				);
+				break;
+			case 'delete':
+				foreach ( $entry_ids as $entry_id ) {
+					if ( EVF_Admin_Entries::remove_entry( $entry_id ) ) {
+						$count ++;
+					}
+				}
+
+				add_settings_error(
+					'bulk_action',
+					'bulk_action',
+					/* translators: %d: number of entries */
+					sprintf( _n( '%d entry permanently deleted.', '%d entries permanently deleted.', $count ), $count ),
+					'updated'
+				);
+				break;
+		}
 	}
 
 	/**
@@ -342,6 +405,8 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 * @param string $which
 	 */
 	protected function extra_tablenav( $which ) {
+		$num_entries = evf_get_count_entries_by_status( $this->form_id );
+
 		?>
 		<div class="alignleft actions">
 		<?php
@@ -356,7 +421,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 				}
 			}
 
-			if ( isset( $_GET['status'] ) && 'trash' == $_GET['status'] && current_user_can( 'manage_everest_forms' ) ) {
+			if ( $num_entries['trash'] && isset( $_GET['status'] ) && 'trash' == $_GET['status'] && current_user_can( 'manage_everest_forms' ) ) {
 				submit_button( __( 'Empty Trash', 'everest-forms' ), 'apply', 'delete_all', false );
 			}
 		?>

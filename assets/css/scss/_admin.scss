@@ -1177,11 +1177,6 @@
 }
 
 @media screen and (max-width: 782px) {
-	.everest-forms_page_edit-evf-form.auto-fold {
-		#wpcontent {
-			padding-left: 0;
-		}
-	}
 	#everest-forms-builder {
 		.evf-tab-content {
 			.everest-forms-panel {
@@ -1260,17 +1255,4 @@
 	.jconfirm.jconfirm-light .jconfirm-box {
 		width: 90% !important;
 	}
-}
-
-.evf-overlay {
-	height: 100%;
-	width: 100%;
-	background: transparent;
-	position: absolute;
-	top: 0;
-	right: 0;
-	left: 0;
-	bottom: 0;
-	z-index: 1000;
-	padding: 20px;
 }

@@ -30,7 +30,12 @@ jQuery( function ( $ ) {
 				dateFormat: 'yy-mm-dd',
 				numberOfMonths: 1,
 				minDate: '-15Y',
-				maxDate: '+15Y'
+				maxDate: '+15Y',
+				beforeShow : function(){
+					if ( ! $('.everest-form-datepicker' ).length){
+				        $( '#ui-datepicker-div' ).addClass( 'everest-form-datepicker' );
+					}
+				}
 			});
 		},
 		load_validation: function() {

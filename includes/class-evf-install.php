@@ -447,7 +447,6 @@ CREATE TABLE {$wpdb->prefix}evf_sessions (
 			$capabilities[ $capability_type ] = array(
 				// Post type.
 				"edit_{$capability_type}",
-				"duplicate_{$capability_type}",
 				"read_{$capability_type}",
 				"delete_{$capability_type}",
 				"edit_{$capability_type}s",
