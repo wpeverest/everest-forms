@@ -1,41 +1,41 @@
 .evf-btn {
 	border: none;
-	display: inline-block;
-    border-radius: 3px;
-    border-width: 2px;
-    color: $color-white;
-    padding: 5px 15px;
     cursor: pointer;
-    background-color: $color-gray-base;
+	overflow: hidden;
+    border-width: 2px;
+    padding: 5px 15px;
     line-height: 26px;
+	position: relative;
+    border-radius: 3px;
+    color: $color-white;
+	display: inline-block;
     text-decoration: none;
 	transition: all 0.3s ease 0s;
-	position: relative;
+    background-color: $color-gray-base;
 	z-index: 1;
-	overflow: hidden;
 
 	&::before {
-		content: "";
-		display: block;
-		background: transparentize($color-white, 0.5);
-		box-shadow: 0px 0px 50px $color-white;
-		position: absolute;
-		padding-top: 300%;
-		padding-left: 350%;
-		margin-left: -20px;
-		margin-top: -120%;
-		border-radius: 100%;
-		transition: 0.3s cubic-bezier(0.4, 0, 1, 1);
-		z-index: -9;
 		opacity: 0;
+		content: "";
+		z-index: -9;
+		display: block;
+		margin-top: -120%;
+		margin-left: -20px;
+		padding-top: 300%;
+		position: absolute;
+		padding-left: 350%;
+		border-radius: 100%;
+		box-shadow: 0px 0px 50px $color-white;
+		background: transparentize($color-white, 0.5);
+		transition: 0.3s cubic-bezier(0.4, 0, 1, 1);
 	}
 
 	&:active {
 
 		&:before {
-			transform: translate(-90%, 32%);
 			opacity: 1;
 			transition: 0s;
+			transform: translate(-100%, 40%);
 		}
 	}
 
@@ -44,8 +44,8 @@
     }
 
     &:focus {
+        outline: none;
         box-shadow: none;
         color: $color-white;
-        outline: none;
     }
 }
