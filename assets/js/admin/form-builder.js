@@ -990,6 +990,7 @@
 				data: data,
 				type: 'POST',
 				beforeSend: function() {
+					$( document.body ).trigger( 'init_add_fields_toogle' );
 					$( document.body ).trigger( 'init_fields_toogle' );
 				},
 				success: function( response ) {
@@ -1085,6 +1086,14 @@ jQuery( function ( $ ) {
 		event.preventDefault();
 	});
 
+	// Add Fields - Open/close.
+	$( document.body ).on( 'init_add_fields_toogle', function() {
+		$( '.everest-forms-add-fields-group' ).on( 'click', function( event ) {
+			event.preventDefault();
+			$( this ).toggleClass( 'closed' ).toggleClass( 'open' );
+		});
+	} ).trigger( 'init_add_fields_toogle' );
+
 	// Fields Options - Open/close.
 	$( document.body ).on( 'init_fields_toogle', function() {
 		$( '.everest-forms-field-option' ).on( 'click', '.everest-forms-field-option-group > a', function( event ) {
@@ -1103,4 +1112,5 @@ jQuery( function ( $ ) {
 			$( this ).find( '.everest-forms-field-option-group-inner' ).hide();
 		});
 	} ).trigger( 'init_fields_toogle' );
+
 });
