@@ -14,6 +14,17 @@ defined( 'ABSPATH' ) || exit;
 class EVF_Panel_Fields extends EVF_Form_Panel {
 
 	/**
+	 * Constructor.
+	 */
+	public function __construct__() {
+		$this->id    = 'fields';
+		$this->icon  = 'evf-icon evf-icon-fields';
+		$this->label = __( 'Fields', 'everest-forms' );
+
+		parent::__construct();
+	}
+
+	/**
 	 * All systems go.
 	 */
 	public function init() {

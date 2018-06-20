@@ -9,6 +9,9 @@ defined( 'ABSPATH' ) || exit;
 
 $form_data['form_field_id'] = isset( $form_data['form_field_id'] ) ? $form_data['form_field_id'] : 0;
 
+// Get tabs for the builder panel.
+$tabs = apply_filters( 'everest_forms_builder_tabs_array', array() );
+
 ?>
 <div id="everest-forms-builder" class="everest-forms">
 	<form name="everest-forms-builder" id="everest-forms-builder-form" method="post" data-id="<?php echo $form_id; ?>">
@@ -17,7 +20,14 @@ $form_data['form_field_id'] = isset( $form_data['form_field_id'] ) ? $form_data[
 
 		<div class="everest-forms-nav-wrapper clearfix">
 			<nav class="nav-tab-wrapper evf-nav-tab-wrapper">
-				<?php do_action( 'everest_forms_builder_panel_buttons', $form, $current_tab ); ?>
+				<?php
+				foreach ( $tabs as $slug => $tab ) {
+					echo '<a href="#" class="evf-panel-' . esc_attr( $slug ) . '-button nav-tab ' . ( $current_tab === $slug ? 'nav-tab-active' : '' ) . '" data-panel="' . esc_attr( $slug ) . '"><span class="' . esc_attr( $tab['icon'] ) . '"></span>' . esc_html( $tab['label'] ) . '</a>';
+				}
+
+				do_action( 'everest_forms_builder_tabs' );
+				do_action( 'everest_forms_builder_panel_buttons', $form, $current_tab ); // @deprecated hook. @todo remove in 1.5.0.
+				?>
 			</nav>
 			<div class="evf-forms-nav-right">
 				<div class="evf-shortcode-field">

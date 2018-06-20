@@ -18,53 +18,39 @@ if ( ! class_exists( 'EVF_Admin_Form_Panel', false ) ) {
 abstract class EVF_Form_Panel extends EVF_Admin_Form_Panel implements EVF_Form_Panel_Interface {
 
 	/**
-	 * Panel ID.
-	 *
-	 * @var string
-	 */
-	public $id;
-
-	/**
-	 * Panel name.
-	 *
-	 * @var string
-	 */
-	public $name;
-
-	/**
-	 * Panel icon.
-	 *
-	 * @var string
-	 */
-	public $icon;
-
-	/**
 	 * Form object.
 	 *
 	 * @var object
 	 */
-	public $form;
+	protected $form;
+
+	/**
+	 * Builder page id.
+	 *
+	 * @var string
+	 */
+	protected $id = '';
+
+	/**
+	 * Builder page icon.
+	 *
+	 * @var string
+	 */
+	protected $icon = '';
+
+	/**
+	 * Builder page label.
+	 *
+	 * @var string
+	 */
+	protected $label = '';
 
 	/**
 	 * Array of form data.
 	 *
 	 * @var array
 	 */
-	public $form_data;
-
-	/**
-	 * Priority for hooks.
-	 *
-	 * @var int
-	 */
-	public $priority = 50;
-
-	/**
-	 * Is sidebar available?
-	 *
-	 * @var bool
-	 */
-	public $has_sidebar = true;
+	protected $form_data = array();
 
 	/**
 	 * Constructor.
@@ -75,29 +61,28 @@ abstract class EVF_Form_Panel extends EVF_Admin_Form_Panel implements EVF_Form_P
 		$this->form_data = $this->form ? evf_decode( $this->form->post_content ) : false;
 
 		// Init.
-		$this->init();
+		$this->init_hooks();
 
 		// Hooks.
-		add_action( 'everest_forms_builder_panels', array( $this, 'panel_output' ), $this->priority, 2 );
+		add_filter( 'everest_forms_builder_tabs_array', array( $this, 'add_builder_page' ), 20 );
 	}
 
 	/**
-	 * Hook in tabs.
-	 */
-	public function init() {}
-
-	/**
-	 * Primary panel tab navigation.
+	 * Add this page to builder.
 	 *
-	 * @param mixed  $form
-	 * @param string $current_tab
+	 * @param  array $pages Builder pages.
+	 * @return mixed
 	 */
-	public function button( $form, $current_tab ) {
-		$active = $current_tab == $this->slug ? 'nav-tab-active' : '';
+	public function add_builder_page( $pages ) {
+		$pages[ $this->id ] = array(
+			'icon'  => $this->icon,
+			'label' => $this->label,
+		);
 
-		printf( '<a href="#" class="evf-panel-%1$s-button nav-tab %2$s" data-panel="%1$s">', $this->slug, $active );
-		printf( '<span class="%s"></span>', $this->icon );
-		printf( '%s</a>', $this->name );
+		return $pages;
 	}
+
+
+
 
 }

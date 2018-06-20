@@ -18,11 +18,6 @@ defined( 'ABSPATH' ) || exit;
 interface EVF_Form_Panel_Interface {
 
 	/**
-	 * Initialize.
-	 */
-	public function init();
-
-	/**
 	 * Outputs the Field panel sidebar.
 	 */
 	public function panel_sidebar();

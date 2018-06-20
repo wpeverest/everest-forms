@@ -17,6 +17,13 @@ defined( 'ABSPATH' ) || exit;
 abstract class EVF_Admin_Form_Panel {
 
 	/**
+	 * Name.
+	 *
+	 * @var string
+	 */
+	public $name;
+
+	/**
 	 * Slug.
 	 *
 	 * @var string
@@ -37,21 +44,46 @@ abstract class EVF_Admin_Form_Panel {
 	 */
 	public $sidebar = false; // $has_sidebar
 
+	public $form_settings;
+
 	/**
-	 * Constructor.
+	 * Hook in tabs.
 	 */
-	public function __construct() {
+	public function init_hooks() {
 		$this->form_setting = isset( $this->form_data['settings'] ) ? $this->form_data['settings'] : array();
+
+		// Init.
+		$this->init();
 
 		// Hooks.
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueues' ), 15 );
-		add_action( 'everest_forms_builder_panel_buttons', array( $this, 'panel' ), $this->priority, 2 );
+		add_action( 'everest_forms_builder_panel_buttons', array( $this, 'button' ), $this->order, 2 );
+		add_action( 'everest_forms_builder_panels', array( $this, 'panel_output' ), $this->order, 2 );
 	}
 
 	/**
 	 * Enqueue scripts.
 	 */
+	public function init() {}
+
+	/**
+	 * Enqueue scripts.
+	 */
 	public function enqueues() {}
+
+	/**
+	 * Primary panel tab navigation.
+	 *
+	 * @param mixed  $form
+	 * @param string $current_tab
+	 */
+	public function button( $form, $current_tab ) {
+		$active = $current_tab == $this->slug ? 'nav-tab-active' : '';
+
+		printf( '<a href="#" class="evf-panel-%1$s-button nav-tab %2$s" data-panel="%1$s">', $this->slug, $active );
+		printf( '<span class="%s"></span>', $this->icon );
+		printf( '%s</a>', $this->name ? $name : $label );
+	}
 
 	/**
 	 * Outputs the contents of the panel.
