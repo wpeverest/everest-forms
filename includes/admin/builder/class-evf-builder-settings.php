@@ -320,3 +320,5 @@ class EVF_Panel_Settings extends EVF_Admin_Form_Panel {
 		return $pages;
 	}
 }
+
+return new EVF_Panel_Settings();

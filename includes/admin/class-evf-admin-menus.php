@@ -79,8 +79,10 @@ class EVF_Admin_Menus {
 	public function builder_page_init() {
 		global $current_tab, $forms_table_list;
 
-		evf()->form_panels();
 		evf()->form_fields();
+
+		// Include builder pages.
+		EVF_Admin_Builder::get_builder_pages();
 
 		// Get current tab/section.
 		$current_tab = empty( $_GET['tab'] ) ? 'fields' : sanitize_title( wp_unslash( $_GET['tab'] ) ); // WPCS: input var okay, CSRF ok.

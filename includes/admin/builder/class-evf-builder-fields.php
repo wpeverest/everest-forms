@@ -1,17 +1,21 @@
 <?php
 /**
- * Panel fields.
+ * EverestForms Builder Fields
  *
- * @package EverestForms\Panels
+ * @package EverestForms\Admin
  * @since   1.2.0
  */
 
 defined( 'ABSPATH' ) || exit;
 
+if ( class_exists( 'EVF_Builder_Fields', false ) ) {
+	return new EVF_Builder_Fields();
+}
+
 /**
- * EVF_Panel_Fields class.
+ * EVF_Builder_Fields class.
  */
-class EVF_Panel_Fields extends EVF_Form_Panel {
+class EVF_Builder_Fields extends EVF_Builder_Page {
 
 	/**
 	 * Constructor.
@@ -286,3 +290,5 @@ class EVF_Panel_Fields extends EVF_Form_Panel {
 		return $a['order'] - $b['order'];
 	}
 }
+
+return new EVF_Builder_Fields();
