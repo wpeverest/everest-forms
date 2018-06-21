@@ -43,7 +43,7 @@ class EVF_Deprecated_Action_Hooks extends EVF_Deprecated_Hooks {
 		'everest_forms_builder_init'            => '1.2.0',
 		'everest_forms_builder_scripts'         => '1.2.0',
 		'everest_forms_builder_enqueues_before' => '1.2.0',
-		// 'everest_forms_builder_panel_buttons'   => '1.2.0',
+		'everest_forms_builder_panel_buttons'   => '1.2.0',
 	);
 
 	/**

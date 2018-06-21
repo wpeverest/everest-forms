@@ -25,8 +25,6 @@ class EVF_Forms_Features {
 	public function __construct() {
 		add_action( 'everest_forms_form_settings_notifications', array( $this, 'form_settings_notifications' ), 8, 1 );
 		add_filter( 'everest_forms_builder_fields_buttons', array( $this, 'form_fields' ), 20 );
-		//add_filter( 'everest_forms_builder_preview', array( $this, 'everest_forms_builder_preview' ), 20, 1 );
-		//add_action( 'everest_forms_builder_panel_buttons', array( $this, 'form_panels' ), 20 );
 	}
 
 	/**
@@ -136,19 +134,6 @@ class EVF_Forms_Features {
 		}
 
 		return $fields;
-	}
-
-	/**
-	 * Display/register additional panels available in the Pro version.
-	 *
-	 * @since 1.0.0
-	 */
-	public function form_panels() {
-		?>
-		<button class="everest-forms-panel-tet-button upgrade-modal" data-panel="payments">
-			<i class="fa fa-usd"></i><span><?php _e( 'Payments', 'everest-forms' ); ?></span>
-		</button>
-		<?php
 	}
 }
 
