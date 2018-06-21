@@ -33,6 +33,17 @@
 
 			// Page load.
 			$( window ).on( 'load', EVFPanelBuilder.load );
+
+			// Adjust builder width.
+			$( document.body ).on( 'adjust_builder_width', function() {
+				var builderWidth = $( '#everest-forms-builder' ).width();
+				$( '#everest-forms-builder' ).width( builderWidth );
+			} ).trigger( 'adjust_builder_width' );
+
+			$( document.body ).on( 'click', '#collapse-button', function() {
+				$( '#everest-forms-builder' ).width( '' );
+				$( document.body ).trigger( 'adjust_builder_width' );
+			});
 		},
 
 		/**
