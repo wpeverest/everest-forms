@@ -80,7 +80,7 @@ abstract class EVF_Admin_Form_Panel {
 
 		// Hooks.
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueues' ), 15 );
-		add_action( 'everest_forms_builder_panel_buttons', array( $this, 'button' ), $this->order, 2 );
+		add_action( 'everest_forms_builder_tabs', array( $this, 'button' ), $this->order );
 		add_action( 'everest_forms_builder_panels', array( $this, 'panel_output' ), $this->order, 2 );
 	}
 
@@ -96,12 +96,11 @@ abstract class EVF_Admin_Form_Panel {
 
 	/**
 	 * Primary panel button in the left panel navigation.
-	 *
-	 * @param mixed  $form
-	 * @param string $view
 	 */
-	public function button( $form, $view ) {
-		$active = $view == $this->slug ? 'nav-tab-active' : '';
+	public function button() {
+		global $current_tab;
+
+		$active = $current_tab === $this->slug ? 'nav-tab-active' : '';
 
 		printf( '<a href="#" class="evf-panel-%1$s-button nav-tab %2$s" data-panel="%1$s">', $this->slug, $active );
 		printf( '<span class="%s"></span>', $this->icon );

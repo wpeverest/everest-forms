@@ -26,7 +26,6 @@ $tabs = apply_filters( 'everest_forms_builder_tabs_array', array() );
 				}
 
 				do_action( 'everest_forms_builder_tabs' );
-				do_action( 'everest_forms_builder_panel_buttons', $form, $current_tab ); // @deprecated hook. @todo remove in 1.5.0.
 				?>
 			</nav>
 			<div class="evf-forms-nav-right">
@@ -36,12 +35,11 @@ $tabs = apply_filters( 'everest_forms_builder_tabs_array', array() );
 						<span class="screen-reader-text"><?php esc_html_e( 'Copy shortcode', 'everest-forms' ); ?></span>
 					</button>
 				</div>
-				<button name="save_form" class="button-primary everest-forms-btn everest-forms-save-button" type="button" value="<?php esc_attr_e( 'Save', 'everest-forms' ); ?>"><?php esc_html_e( 'Save', 'everest-forms' ); ?></button>
+				<button name="save_form" class="everest-forms-btn everest-forms-save-button button-primary" type="button" value="<?php esc_attr_e( 'Save', 'everest-forms' ); ?>"><?php esc_html_e( 'Save', 'everest-forms' ); ?></button>
 			</div>
 		</div>
 		<div class="evf-tab-content">
 			<?php do_action( 'everest_forms_builder_panels', $form, $current_tab ); ?>
-			<div style="clear:both"></div>
 		</div>
 	</form>
 </div>
