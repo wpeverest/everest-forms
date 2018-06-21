@@ -1,22 +1,26 @@
 <?php
 /**
- * Panel Settings.
+ * EverestForms Builder Settings
  *
- * @package EverestForms\Panels
+ * @package EverestForms\Admin
  * @since   1.2.0
  */
 
 defined( 'ABSPATH' ) || exit;
 
+if ( class_exists( 'EVF_Builder_Settings', false ) ) {
+	return new EVF_Builder_Settings();
+}
+
 /**
- * EVF_Panel_Settings class.
+ * EVF_Builder_Settings class.
  */
-class EVF_Panel_Settings extends EVF_Admin_Form_Panel {
+class EVF_Builder_Settings extends EVF_Admin_Form_Panel {
 
 	/**
 	 * Constructor.
 	 */
-	public function __construct__() {
+	public function __construct() {
 		$this->id    = 'settings';
 		$this->icon  = 'evf-icon evf-icon-setting';
 		$this->label = __( 'Settings', 'everest-forms' );
