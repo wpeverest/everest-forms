@@ -990,7 +990,7 @@
 				data: data,
 				type: 'POST',
 				beforeSend: function() {
-					$( document.body ).trigger( 'init_fields_toogle' );
+					$( document.body ).trigger( 'init_field_options_toogle' );
 				},
 				success: function( response ) {
 					var field_preview = response.data.preview;
@@ -1003,7 +1003,7 @@
 					field.remove();
 					EVFPanelBuilder.checkEmptyGrid();
 					$( document.body ).trigger( 'init_tooltips' );
-					$( document.body ).trigger( 'init_fields_toogle' );
+					$( document.body ).trigger( 'init_field_options_toogle' );
 				}
 			});
 		},
@@ -1085,8 +1085,22 @@ jQuery( function ( $ ) {
 		event.preventDefault();
 	});
 
+	// Add Fields - Open/close.
+	$( document.body ).on( 'init_add_fields_toogle', function() {
+		$( '.everest-forms-add-fields' ).on( 'click', '.everest-forms-add-fields-group > a', function( event ) {
+			event.preventDefault();
+			$( this ).parent( '.everest-forms-add-fields-group' ).toggleClass( 'closed' ).toggleClass( 'open' );
+		});
+		$( '.everest-forms-add-fields' ).on( 'click', '.everest-forms-add-fields-group a', function() {
+			$( this ).next( '.evf-registered-buttons' ).stop().slideToggle();
+		});
+		$( '.everest-forms-add-fields-group.closed' ).each( function() {
+			$( this ).find( '.evf-registered-buttons' ).hide();
+		});
+	} ).trigger( 'init_add_fields_toogle' );
+
 	// Fields Options - Open/close.
-	$( document.body ).on( 'init_fields_toogle', function() {
+	$( document.body ).on( 'init_field_options_toogle', function() {
 		$( '.everest-forms-field-option' ).on( 'click', '.everest-forms-field-option-group > a', function( event ) {
 			event.preventDefault();
 			$( this ).parent( '.everest-forms-field-option-group' ).toggleClass( 'closed' ).toggleClass( 'open' );
@@ -1102,5 +1116,6 @@ jQuery( function ( $ ) {
 		$( '.everest-forms-field-option-group.closed' ).each( function() {
 			$( this ).find( '.everest-forms-field-option-group-inner' ).hide();
 		});
-	} ).trigger( 'init_fields_toogle' );
+	} ).trigger( 'init_field_options_toogle' );
+
 });
