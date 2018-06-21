@@ -22,7 +22,7 @@ $form_data['form_field_id'] = isset( $form_data['form_field_id'] ) ? $form_data[
 			<div class="evf-forms-nav-right">
 				<div class="evf-shortcode-field">
 					<input type="text" class="large-text code" onfocus="this.select();" value="<?php printf( esc_html( '[everest_form id="%s"]' ), $_GET['form_id'] ) ?>" id="evf-form-shortcode" readonly="readonly" />
-					<button id="copy-shortcode" class="help_tip dashicons dashicons-admin-page" href="#" data-tip="<?php esc_attr_e( 'Copy Shortcode!', 'everest-forms' ); ?>" data-copied="<?php esc_attr_e( 'Copied!', 'everest-forms' ); ?>">
+					<button id="copy-shortcode" class="everest-forms-btn help_tip dashicons dashicons-admin-page" href="#" data-tip="<?php esc_attr_e( 'Copy Shortcode!', 'everest-forms' ); ?>" data-copied="<?php esc_attr_e( 'Copied!', 'everest-forms' ); ?>">
 						<span class="screen-reader-text"><?php esc_html_e( 'Copy shortcode', 'everest-forms' ); ?></span>
 					</button>
 				</div>
