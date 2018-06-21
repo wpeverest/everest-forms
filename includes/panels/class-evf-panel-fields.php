@@ -262,7 +262,7 @@ class EVF_Panel_Fields extends EVF_Form_Panel {
 		}
 		echo '</div>';
 		echo '<div class="clear evf-clear"></div>';
-		echo '<div class="evf-add-row"><span class="evf-btn dashicons dashicons-plus-alt">' . esc_html( 'Add Row', 'everest-forms' ) . '</span></div>';
+		echo '<div class="evf-add-row"><span class="everest-forms-btn dashicons dashicons-plus-alt">' . esc_html( 'Add Row', 'everest-forms' ) . '</span></div>';
 		echo '</div >';
 	}
 
