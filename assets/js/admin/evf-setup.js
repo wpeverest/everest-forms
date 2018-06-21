@@ -37,6 +37,8 @@ jQuery( function( $ ) {
 			// Check that form title is provided.
 			if ( ! $formName.val() ) {
 				formName = templateName;
+				$( '.everest-forms-setup-name' ).addClass( 'everest-forms-required' ).focus();
+				return false;
 			} else {
 				formName = $formName.val();
 			}
@@ -63,6 +65,8 @@ jQuery( function( $ ) {
 		},
 		input_keypress: function ( e ) {
 			var button = e.keyCode || e.which;
+
+			$( this ).removeClass( 'everest-forms-required' );
 
 			// Enter key.
 			if ( 13 === button && e.target.tagName.toLowerCase() === 'input' ) {
