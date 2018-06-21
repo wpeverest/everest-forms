@@ -31,6 +31,9 @@ class EVF_Deprecated_Action_Hooks extends EVF_Deprecated_Hooks {
 		'everest_forms_builder_tabs'      => array(
 			'everest_forms_builder_panel_buttons',
 		),
+		'everest_forms_builder_output'    => array(
+			'everest_forms_builder_panels',
+		)
 	);
 
 	/**
@@ -44,6 +47,7 @@ class EVF_Deprecated_Action_Hooks extends EVF_Deprecated_Hooks {
 		'everest_forms_builder_scripts'         => '1.2.0',
 		'everest_forms_builder_enqueues_before' => '1.2.0',
 		'everest_forms_builder_panel_buttons'   => '1.2.0',
+		'everest_forms_builder_panels'          => '1.2.0',
 	);
 
 	/**

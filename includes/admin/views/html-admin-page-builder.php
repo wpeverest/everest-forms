@@ -39,7 +39,7 @@ $tabs = apply_filters( 'everest_forms_builder_tabs_array', array() );
 			</div>
 		</div>
 		<div class="evf-tab-content">
-			<?php do_action( 'everest_forms_builder_panels', $form, $current_tab ); ?>
+			<?php do_action( 'everest_forms_builder_output', $form, $current_tab ); ?>
 		</div>
 	</form>
 </div>
