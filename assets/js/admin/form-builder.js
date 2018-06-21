@@ -56,15 +56,15 @@
 		},
 
 		/**
-		 * Display a "Copied!" tip when success copying
+		 * Display a "Copied!" tip when success copying.
 		 */
 		copySuccess: function() {
 			$( '#copy-shortcode' ).tipTip({
-				'attribute':  'data-tip',
+				'attribute': 'data-copied',
 				'activation': 'focus',
-				'fadeIn':     50,
-				'fadeOut':    50,
-				'delay':      0
+				'fadeIn': 50,
+				'fadeOut': 50,
+				'delay': 0
 			}).focus();
 		},
 
