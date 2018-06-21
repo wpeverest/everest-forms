@@ -352,6 +352,11 @@ body.everest-forms-builder-setup,
 				padding: 10px;
 				height: 45px;
 				width: 400px;
+
+				&.everest-forms-required {
+					border-color: $red;
+					box-shadow: 0 0 2px rgba( 175, 0, 0, 0.8 );
+				}
 			}
 		}
 
