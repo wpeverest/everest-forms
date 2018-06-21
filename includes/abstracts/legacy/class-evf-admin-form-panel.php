@@ -81,7 +81,7 @@ abstract class EVF_Admin_Form_Panel {
 		// Hooks.
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueues' ), 15 );
 		add_action( 'everest_forms_builder_tabs', array( $this, 'button' ), $this->order );
-		add_action( 'everest_forms_builder_output', array( $this, 'panel_output' ), $this->order, 2 );
+		add_action( 'everest_forms_builder_output', array( $this, 'panel_output' ), $this->order );
 	}
 
 	/**
@@ -113,8 +113,10 @@ abstract class EVF_Admin_Form_Panel {
 	 * @param object $form
 	 * @param string $view
 	 */
-	public function panel_output( $form, $view ) {
-		$active = $view == $this->slug ? 'active' : '';
+	public function panel_output() {
+		global $current_tab;
+
+		$active = $current_tab == $this->slug ? 'active' : '';
 
 		$wrap = $this->sidebar ? 'everest-forms-panel-sidebar-content' : 'everest-forms-panel-full-content';
 
