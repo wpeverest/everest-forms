@@ -920,6 +920,8 @@
 		input:not(.ed_button),
 		textarea:not(.wp-editor-area),
 		select {
+			height: 32px;
+			padding: 5px 10px;
 			color: $color-gray-darker;
 
 			&::placeholder {
