@@ -103,7 +103,7 @@
 					font-size: 14px;
 					font-weight: 500;
 					margin-bottom: 15px;
-					padding-bottom: 10px;
+					padding-bottom: 15px;
 					color: $color-gray-darker;
 					border-bottom: 1px solid $color-white-darken;
 
@@ -256,7 +256,7 @@
 						background-color: $accordion-bg;
 						border-bottom: 1px solid #E0E3E6;
 						margin-bottom: 15px;
-    					padding-bottom: 10px;
+    					padding-bottom: 15px;
 						font-size: 14px;
 						font-weight: 600;
 						display: block;
@@ -905,7 +905,7 @@
 			font-weight: 600;
 
 			i {
-				color: $color-gray-light;
+				color: $color-gray;
 				font-size: 16px;
 				line-height: 1.2;
 			}
@@ -920,9 +920,8 @@
 		select {
 			border: 1px solid $border-color;
 			border-radius: 3px;
-			height: 45px;
 			width: 100%;
-			padding: 10px 15px;
+			padding: 5px 10px;
 			color: $color-gray-darker;
 			font-size: 14px;
 
@@ -937,13 +936,9 @@
 				border-radius: 10px;
 			}
 
+			&[type="checkbox"],
 			&[type="checkbox"]:checked {
-				background-color: $color-brand-primary;
-
-				&::before {
-					color: $color-white;
-					background-color: transparent;
-				}
+				border-radius: 0;
 			}
 
 			&[type="radio"]:checked {
