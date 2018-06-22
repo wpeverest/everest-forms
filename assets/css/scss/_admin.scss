@@ -920,10 +920,6 @@
 		select {
 			color: $color-gray-darker;
 
-			&:focus {
-				outline: none;
-			}
-
 			&::placeholder {
 				color: $input-color;
 			}
