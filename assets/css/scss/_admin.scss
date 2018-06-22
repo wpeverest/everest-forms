@@ -105,7 +105,7 @@
 					margin-bottom: 15px;
 					padding-bottom: 15px;
 					color: $color-gray-darker;
-					border-bottom: 1px solid $color-white-darken;
+					border-bottom: 1px solid #E0E3E6;
 
 					i {
 						float: right;
@@ -665,6 +665,13 @@
 						visibility: visible;
 						opacity: 1;
 					}
+				}
+
+				&.ui-sortable-placeholder {
+					background-color: transparentize( $orange, 0.95 );
+					border: 1px solid transparentize( $orange, 0.75 );
+					height: auto;
+					visibility: visible !important;
 				}
 				.evf-field-action {
 					position: absolute;
