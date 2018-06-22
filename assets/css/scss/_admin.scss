@@ -329,21 +329,24 @@
 		}
 
 		.everest-forms-panel-content-wrap {
-			background-color: $color-white;
 			width: calc(100% - 375px);
-			padding: 15px 20px;
 
-			.everest-forms-title-desc {
-				.everest-forms-form-name {
-					margin-top: 0;
+			.everest-forms-panel-content {
+				background-color: $color-white;
+				padding: 15px 20px;
+
+				.everest-forms-title-desc {
+					.everest-forms-form-name {
+						margin-top: 0;
+					}
 				}
-			}
 
-			.evf-admin-field-wrapper {
-				padding: 0 15px;
+				.evf-admin-field-wrapper {
+					padding: 0 15px;
 
-				&.evf-hover {
-					background-color: $color-brand-primary-light;
+					&.evf-hover {
+						background-color: $color-brand-primary-light;
+					}
 				}
 			}
 
