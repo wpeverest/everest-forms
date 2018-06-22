@@ -920,34 +920,12 @@
 		select {
 			color: $color-gray-darker;
 
-			&[type="checkbox"],
-			&[type="radio"] {
-				width: 16px;
-				height: 16px;
-				background-color: $color-white;
-
-			}
-			&[type="radio"] {
-				border-radius: 10px;
-			}
-
-			&[type="checkbox"],
-			&[type="checkbox"]:checked {
-				border-radius: 0;
-			}
-
-			&[type="radio"]:checked {
-				&::before {
-					background-color: $color-brand-primary;
-				}
+			&:focus {
+				outline: none;
 			}
 
 			&::placeholder {
 				color: $input-color;
-			}
-
-			&:focus {
-				outline: none;
 			}
 		}
 

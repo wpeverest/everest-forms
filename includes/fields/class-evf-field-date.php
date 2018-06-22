@@ -103,7 +103,7 @@ class EVF_Field_Date extends EVF_Form_Fields {
 		$this->field_preview_option( 'label', $field );
 
 		// Primary input.
-		echo '<input type="date" placeholder="' . $placeholder . '" class="primary-input" disabled>';
+		echo '<input type="date" placeholder="' . $placeholder . '" class="widefat" disabled>';
 
 		// Description.
 		$this->field_preview_option( 'description', $field );

@@ -108,7 +108,7 @@ class EVF_Field_URL extends EVF_Form_Fields {
 		$this->field_preview_option( 'label', $field );
 
 		// Primary input.
-		echo '<input type="url" placeholder="' . $placeholder . '" class="primary-input" disabled>';
+		echo '<input type="url" placeholder="' . $placeholder . '" class="widefat" disabled>';
 
 		// Description.
 		$this->field_preview_option( 'description', $field );

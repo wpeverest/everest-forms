@@ -108,7 +108,7 @@ class EVF_Field_First_Name extends EVF_Form_Fields {
 		$this->field_preview_option( 'label', $field );
 
 		// Primary input.
-		echo '<input type="text" placeholder="' . $placeholder . '" class="primary-input" disabled>';
+		echo '<input type="text" placeholder="' . $placeholder . '" class="widefat" disabled>';
 
 		// Description.
 		$this->field_preview_option( 'description', $field );
