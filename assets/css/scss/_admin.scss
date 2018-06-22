@@ -918,12 +918,7 @@
 		input:not(.ed_button),
 		textarea:not(.wp-editor-area),
 		select {
-			border: 1px solid $border-color;
-			border-radius: 3px;
-			width: 100%;
-			padding: 5px 10px;
 			color: $color-gray-darker;
-			font-size: 14px;
 
 			&[type="checkbox"],
 			&[type="radio"] {
