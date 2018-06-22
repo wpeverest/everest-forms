@@ -64,6 +64,7 @@ if ( ! class_exists( 'EVF_Builder_Page', false ) ) :
 
 			// Hooks.
 			add_filter( 'everest_forms_builder_tabs_array', array( $this, 'add_builder_page' ), 20 );
+			add_action( 'everest_forms_builder_output', array( $this, 'builder_output' ), $this->order );
 		}
 
 		/**
@@ -115,6 +116,16 @@ if ( ! class_exists( 'EVF_Builder_Page', false ) ) :
 			);
 
 			return $pages;
+		}
+
+		/**
+		 * Outputs the contents of the panel.
+		 *
+		 * @param object $form
+		 * @param string $view
+		 */
+		public function builder_output() {
+			global $current_tab;
 		}
 	}
 

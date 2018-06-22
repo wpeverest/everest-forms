@@ -31,10 +31,9 @@ class EVF_Builder_Settings extends EVF_Admin_Form_Panel {
 	/**
 	 * All systems go.
 	 *
-	 * @since      1.0.0
+	 * @since 1.0.0
 	 */
 	public function init() {
-
 		// Define panel information
 		$this->name    = __( 'Settings', 'everest-forms' );
 		$this->slug    = 'settings';

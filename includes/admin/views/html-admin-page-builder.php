@@ -39,7 +39,11 @@ $tabs = apply_filters( 'everest_forms_builder_tabs_array', array() );
 			</div>
 		</div>
 		<div class="evf-tab-content">
-			<?php do_action( 'everest_forms_builder_output' ); ?>
+			<?php foreach ( $tabs as $slug => $tab ) : ?>
+				<div id="everest-forms-panel-<?php echo esc_attr( $slug ); ?>" class="everest-forms-panel <?php echo $current_tab === $slug ? 'active' : ''; ?>">
+					<?php do_action( 'everest_forms_builder_output' ); ?>
+				</div>
+			<?php endforeach; ?>
 		</div>
 	</form>
 </div>
