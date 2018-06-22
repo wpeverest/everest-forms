@@ -288,7 +288,7 @@ abstract class EVF_Form_Fields {
 				$class  = ! empty( $args['class'] ) ? esc_html( $args['class'] ) : '';
 				if ( 'open' === $markup ) {
 					$output = sprintf( '<div class="everest-forms-field-option-group everest-forms-field-option-group-basic open" id="everest-forms-field-option-basic-%s">', $field['id'] );
-					$output .= sprintf( '<a href="#" class="everest-forms-field-option-group-toggle">%s<span>(ID #%s)</span> <i class="handlediv"></i></a>', $this->name, $field['id'] );
+					$output .= sprintf( '<a href="#" class="everest-forms-field-option-group-toggle">%s<span> (ID #%s)</span> <i class="handlediv"></i></a>', $this->name, $field['id'] );
 					$output .= sprintf( '<div class="everest-forms-field-option-group-inner %s">', $class );
 				} else {
 					$output = '</div></div>';
