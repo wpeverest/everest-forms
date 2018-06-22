@@ -929,6 +929,11 @@
 			}
 		}
 
+		input[type="checkbox"],
+		input[type="radio"] {
+			height: 16px;
+		}
+
 		textarea,
 		textarea:not(.wp-editor-area) {
 			height: 120px;
