@@ -133,7 +133,7 @@ class EVF_Admin {
 					), admin_url( 'admin.php?page=evf-builder' ) );
 				}
 			} else {
-				$redirect_url = admin_url( 'admin.php?page=evf-builder' );
+				$redirect_url = str_replace( $_GET['page'], 'evf-builder', wp_unslash( $_SERVER['REQUEST_URI'] ) );
 			}
 
 			wp_safe_redirect( $redirect_url );
