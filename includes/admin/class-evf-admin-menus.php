@@ -60,6 +60,25 @@ class EVF_Admin_Menus {
 	 */
 	public function admin_menu() {
 		add_menu_page( __( 'Everest Forms', 'everest-forms' ), __( 'Everest Forms', 'everest-forms' ), 'manage_everest_forms', 'everest-forms', null, $this->get_icon_svg(), '55.5' );
+
+		// Backward compatibility for builder page redirects.
+		if ( ! empty( $_GET['page'] ) && in_array( $_GET['page'], array( 'everest-forms', 'edit-evf-form' ), true ) ) {
+			if ( 'edit-evf-form' === $_GET['page'] ) {
+				$redirect_url = admin_url( 'admin.php?page=evf-builder&create-form=1' );
+
+				if ( isset( $_GET['tab'], $_GET['form_id'] ) ) {
+					$redirect_url = add_query_arg( array(
+						'tab'     => evf_clean( wp_unslash( $_GET['tab'] ) ),
+						'form_id' => absint( absint( wp_unslash( $_GET['form_id'] ) ) ),
+					), admin_url( 'admin.php?page=evf-builder' ) );
+				}
+			} else {
+				$redirect_url = str_replace( $_GET['page'], 'evf-builder', wp_unslash( $_SERVER['REQUEST_URI'] ) ); // WPCS: input var okay, CSRF ok.
+			}
+
+			wp_safe_redirect( $redirect_url );
+			exit;
+		}
 	}
 
 	/**
@@ -69,9 +88,6 @@ class EVF_Admin_Menus {
 		$builder_page = add_submenu_page( 'everest-forms', __( 'Everest Forms Builder', 'everest-forms' ), __( 'All Forms', 'everest-forms' ), 'manage_everest_forms', 'evf-builder', array( $this, 'builder_page' ) );
 
 		add_submenu_page( 'everest-forms', __( 'Everest Forms Setup', 'everest-forms' ), __( 'Add New', 'everest-forms' ), 'manage_everest_forms', 'evf-builder&create-form=1', array( $this, 'builder_page' ) );
-
-		// Backward compatibility.
-		add_submenu_page( null, __( 'Everest Forms Setup', 'everest-forms' ), __( 'Add New', 'everest-forms' ), 'manage_everest_forms', 'edit-evf-form', null );
 
 		add_action( 'load-' . $builder_page, array( $this, 'builder_page_init' ) );
 	}
@@ -96,7 +112,7 @@ class EVF_Admin_Menus {
 			// Add screen option.
 			add_screen_option( 'per_page', array(
 				'default' => 20,
-				'option'  => 'evf_forms_per_page'
+				'option'  => 'evf_forms_per_page',
 			) );
 		}
 
@@ -124,7 +140,7 @@ class EVF_Admin_Menus {
 			// Add screen option.
 			add_screen_option( 'per_page', array(
 				'default' => 20,
-				'option'  => 'evf_entries_per_page'
+				'option'  => 'evf_entries_per_page',
 			) );
 		}
 
@@ -228,6 +244,10 @@ class EVF_Admin_Menus {
 
 	/**
 	 * Validate screen options on update.
+	 *
+	 * @param bool|int $status Screen option value. Default false to skip.
+	 * @param string   $option The option name.
+	 * @param int      $value  The number of rows to use.
 	 */
 	public function set_screen_option( $status, $option, $value ) {
 		if ( in_array( $option, array( 'evf_forms_per_page', 'evf_entries_per_page' ), true ) ) {

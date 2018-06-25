@@ -120,25 +120,6 @@ class EVF_Admin {
 				exit;
 			}
 		}
-
-		// Backward Compatibility for EVF pages, send them to the builder page.
-		if ( ! empty( $_GET['page'] ) && in_array( $_GET['page'], array( 'everest-forms', 'edit-evf-form' ), true ) ) {
-			if ( 'edit-evf-form' === $_GET['page'] ) {
-				$redirect_url = admin_url( 'admin.php?page=evf-builder&create-form=1' );
-
-				if ( isset( $_GET['tab'], $_GET['form_id'] ) ) {
-					$redirect_url = add_query_arg( array(
-						'tab'     => evf_clean( wp_unslash( $_GET['tab'] ) ),
-						'form_id' => absint( absint( wp_unslash( $_GET['form_id'] ) ) ),
-					), admin_url( 'admin.php?page=evf-builder' ) );
-				}
-			} else {
-				$redirect_url = str_replace( $_GET['page'], 'evf-builder', wp_unslash( $_SERVER['REQUEST_URI'] ) );
-			}
-
-			wp_safe_redirect( $redirect_url );
-			exit;
-		}
 	}
 
 	/**
