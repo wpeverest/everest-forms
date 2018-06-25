@@ -675,7 +675,7 @@ body.everest-forms-builder-setup,
 
 		.everest-forms-tab-content,
 		.everest-forms-panel-content {
-			overflow-y: overlay;
+			overflow-y: scroll;
 			overflow-x: hidden;
 
 			&::-webkit-scrollbar {
