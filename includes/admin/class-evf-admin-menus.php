@@ -71,7 +71,7 @@ class EVF_Admin_Menus {
 		add_submenu_page( 'everest-forms', __( 'Everest Forms Setup', 'everest-forms' ), __( 'Add New', 'everest-forms' ), 'manage_everest_forms', 'evf-builder&create-form=1', array( $this, 'builder_page' ) );
 
 		// Backward compatibility.
-		add_submenu_page( 'everest-forms', __( 'Everest Forms Setup', 'everest-forms' ), __( 'Add New', 'everest-forms' ), 'manage_everest_forms', 'edit-evf-form', null );
+		add_submenu_page( null, __( 'Everest Forms Setup', 'everest-forms' ), __( 'Add New', 'everest-forms' ), 'manage_everest_forms', 'edit-evf-form', null );
 
 		add_action( 'load-' . $builder_page, array( $this, 'builder_page_init' ) );
 	}
