@@ -103,7 +103,7 @@
 					font-size: 14px;
 					font-weight: 500;
 					margin-bottom: 15px;
-					padding-bottom: 10px;
+					padding-bottom: 15px;
 					color: $color-gray-darker;
 					border-bottom: 1px solid $color-white-darken;
 
@@ -256,7 +256,7 @@
 						background-color: $accordion-bg;
 						border-bottom: 1px solid #E0E3E6;
 						margin-bottom: 15px;
-    					padding-bottom: 10px;
+    					padding-bottom: 15px;
 						font-size: 14px;
 						font-weight: 600;
 						display: block;
@@ -329,21 +329,24 @@
 		}
 
 		.everest-forms-panel-content-wrap {
-			background-color: $color-white;
 			width: calc(100% - 375px);
-			padding: 15px 20px;
 
-			.everest-forms-title-desc {
-				.everest-forms-form-name {
-					margin-top: 0;
+			.everest-forms-panel-content {
+				background-color: $color-white;
+				padding: 15px 20px;
+
+				.everest-forms-title-desc {
+					.everest-forms-form-name {
+						margin-top: 0;
+					}
 				}
-			}
 
-			.evf-admin-field-wrapper {
-				padding: 0 15px;
+				.evf-admin-field-wrapper {
+					padding: 0 15px;
 
-				&.evf-hover {
-					background-color: $color-brand-primary-light;
+					&.evf-hover {
+						background-color: $color-brand-primary-light;
+					}
 				}
 			}
 
@@ -382,9 +385,8 @@
 						vertical-align: top;
 
 						span {
-
 							&.dashicons {
-								border-radius: 0 0 3px 0;
+								border-radius: 0;
 							}
 						}
 
@@ -905,7 +907,7 @@
 			font-weight: 600;
 
 			i {
-				color: $color-gray-light;
+				color: $color-gray;
 				font-size: 16px;
 				line-height: 1.2;
 			}
@@ -918,47 +920,18 @@
 		input:not(.ed_button),
 		textarea:not(.wp-editor-area),
 		select {
-			border: 1px solid $border-color;
-			border-radius: 3px;
-			height: 45px;
-			width: 100%;
-			padding: 10px 15px;
+			height: 32px;
+			padding: 5px 10px;
 			color: $color-gray-darker;
-			font-size: 14px;
-
-			&[type="checkbox"],
-			&[type="radio"] {
-				width: 16px;
-				height: 16px;
-				background-color: $color-white;
-
-			}
-			&[type="radio"] {
-				border-radius: 10px;
-			}
-
-			&[type="checkbox"]:checked {
-				background-color: $color-brand-primary;
-
-				&::before {
-					color: $color-white;
-					background-color: transparent;
-				}
-			}
-
-			&[type="radio"]:checked {
-				&::before {
-					background-color: $color-brand-primary;
-				}
-			}
 
 			&::placeholder {
 				color: $input-color;
 			}
+		}
 
-			&:focus {
-				outline: none;
-			}
+		input[type="checkbox"],
+		input[type="radio"] {
+			height: 16px;
 		}
 
 		textarea,
