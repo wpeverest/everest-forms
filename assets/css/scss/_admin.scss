@@ -329,21 +329,24 @@
 		}
 
 		.everest-forms-panel-content-wrap {
-			background-color: $color-white;
 			width: calc(100% - 375px);
-			padding: 15px 20px;
 
-			.everest-forms-title-desc {
-				.everest-forms-form-name {
-					margin-top: 0;
+			.everest-forms-panel-content {
+				background-color: $color-white;
+				padding: 15px 20px;
+
+				.everest-forms-title-desc {
+					.everest-forms-form-name {
+						margin-top: 0;
+					}
 				}
-			}
 
-			.evf-admin-field-wrapper {
-				padding: 0 15px;
+				.evf-admin-field-wrapper {
+					padding: 0 15px;
 
-				&.evf-hover {
-					background-color: $color-brand-primary-light;
+					&.evf-hover {
+						background-color: $color-brand-primary-light;
+					}
 				}
 			}
 
@@ -382,9 +385,8 @@
 						vertical-align: top;
 
 						span {
-
 							&.dashicons {
-								border-radius: 0 0 3px 0;
+								border-radius: 0;
 							}
 						}
 
@@ -927,37 +929,18 @@
 		input:not(.ed_button),
 		textarea:not(.wp-editor-area),
 		select {
+			height: 32px;
+			padding: 5px 10px;
 			color: $color-gray-darker;
-
-			&[type="checkbox"],
-			&[type="radio"] {
-				width: 16px;
-				height: 16px;
-				background-color: $color-white;
-
-			}
-			&[type="radio"] {
-				border-radius: 10px;
-			}
-
-			&[type="checkbox"],
-			&[type="checkbox"]:checked {
-				border-radius: 0;
-			}
-
-			&[type="radio"]:checked {
-				&::before {
-					background-color: $color-brand-primary;
-				}
-			}
 
 			&::placeholder {
 				color: $input-color;
 			}
+		}
 
-			&:focus {
-				outline: none;
-			}
+		input[type="checkbox"],
+		input[type="radio"] {
+			height: 16px;
 		}
 
 		textarea,

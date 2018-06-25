@@ -111,7 +111,7 @@ class EVF_Field_Email extends EVF_Form_Fields {
 		<div class="everest-forms-confirm everest-forms-confirm-<?php echo $confirm; ?>">
 
 			<div class="everest-forms-confirm-primary">
-				<input type="email" placeholder="<?php echo $placeholder; ?>" class="primary-input" disabled>
+				<input type="email" placeholder="<?php echo $placeholder; ?>" class="widefat" disabled>
 			</div>
 
 		</div>
