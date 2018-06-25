@@ -667,6 +667,14 @@
 					}
 				}
 
+				&.ui-sortable-placeholder {
+					background-color: transparentize( $orange, 0.95 );
+					border: 1px solid transparentize( $orange, 0.75 );
+					height: auto;
+					visibility: visible !important;
+					width: 100%;
+				}
+
 				.evf-field-action {
 					position: absolute;
 					top: 15px;
@@ -790,14 +798,6 @@
 				input {
 					cursor: all-scroll;
 				}
-			}
-
-			.ui-sortable-placeholder {
-				background-color: transparentize( $orange, 0.95 );
-				border: 1px solid transparentize( $orange, 0.75 );
-				height: auto;
-				visibility: visible !important;
-				width: 100%;
 			}
 
 			.file-uploader {
