@@ -947,13 +947,12 @@
 		bindGridSwitcher: function () {
 			$('body').on('click', '.evf-show-grid', function (e) {
 				e.stopPropagation();
+				EVFPanelBuilder.checkEmptyGrid();
 				$(this).closest('.evf-toggle-row').find('.evf-toggle-row-content').stop(true).slideToggle(200);
 			});
 			$(document).click(function () {
+				EVFPanelBuilder.checkEmptyGrid();
 				$('.evf-show-grid').closest('.evf-toggle-row').find('.evf-toggle-row-content').stop(true).slideUp(200);
-			});
-			$('.evf-toggle-row-content').click(function (e) {
-				e.stopPropagation();
 			});
 			var max_number_of_grid = 2;
 			$('body').on('click', '.evf-grid-selector', function () {
