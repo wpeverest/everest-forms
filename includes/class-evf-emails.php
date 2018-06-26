@@ -361,7 +361,7 @@ class EVF_Emails {
 
 		if ( $sanitize ) {
 			if ( $linebreaks ) {
-				$tag = everest_forms_sanitize_textarea_field( $tag );
+				$tag = evf_sanitize_textarea_field( $tag );
 			} else {
 				$tag = sanitize_text_field( $tag );
 			}

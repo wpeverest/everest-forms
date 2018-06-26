@@ -824,7 +824,7 @@ abstract class EVF_Form_Fields {
 		$name = ! empty( $form_data['form_fields'][ $field_id ]['label'] ) ? sanitize_text_field( $form_data['form_fields'][ $field_id ]['label'] ) : '';
 
 		// Sanitize but keep line breaks.
-		$value = everest_forms_sanitize_textarea_field( $field_submit );
+		$value = evf_sanitize_textarea_field( $field_submit );
 
 		EVF()->task->form_fields[ $field_id ] = array(
 			'name'     => $name,

@@ -134,7 +134,7 @@ class EVF_Field_Textarea extends EVF_Form_Fields {
 			$value = $primary['attr']['value'];
 			unset( $primary['attr']['value'] );
 
-			$value = everest_forms_sanitize_textarea_field( $value );
+			$value = evf_sanitize_textarea_field( $value );
 		}
 
 		// Primary field.
