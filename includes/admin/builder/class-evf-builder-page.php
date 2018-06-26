@@ -157,6 +157,16 @@ if ( ! class_exists( 'EVF_Builder_Page', false ) ) :
 
 			do_action( 'everest_forms_builder_after_content', $this->form, $this->id );
 		}
+
+		/**
+		 * Outputs the builder sidebar.
+		 */
+		public function builder_sidebar() {}
+
+		/**
+		 * Outputs the builder content.
+		 */
+		public function builder_content() {}
 	}
 
 endif;
