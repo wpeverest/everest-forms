@@ -49,7 +49,7 @@ abstract class EVF_Admin_Form_Panel {
 	 *
 	 * @var boolean
 	 */
-	public $sidebar = false;
+	protected $sidebar = false;
 
 	/**
 	 * Contains form object if we have one.
@@ -120,7 +120,7 @@ abstract class EVF_Admin_Form_Panel {
 
 		$wrap = $this->sidebar ? 'everest-forms-panel-sidebar-content' : 'everest-forms-panel-full-content';
 
-		printf( '<div class="everest-forms-panel %s" id="everest-forms-panel-%s">', $active, $this->slug );
+		printf( '<div id="everest-forms-panel-%s" class="everest-forms-panel %s">', $this->slug, $active );
 
 		printf( '<div class="%s">', $wrap );
 

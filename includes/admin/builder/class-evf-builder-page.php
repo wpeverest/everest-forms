@@ -48,6 +48,13 @@ if ( ! class_exists( 'EVF_Builder_Page', false ) ) :
 		protected $label = '';
 
 		/**
+		 * Is sidebar available?
+		 *
+		 * @var boolean
+		 */
+		protected $sidebar = false;
+
+		/**
 		 * Array of form data.
 		 *
 		 * @var array
@@ -64,11 +71,12 @@ if ( ! class_exists( 'EVF_Builder_Page', false ) ) :
 
 			// Hooks.
 			add_filter( 'everest_forms_builder_tabs_array', array( $this, 'add_builder_page' ), 20 );
-			add_action( 'everest_forms_builder_output', array( $this, 'builder_output' ), $this->order );
+			add_action( 'everest_forms_builder_sidebar_' . $this->id, array( $this, 'output_sidebar' ) );
+			add_action( 'everest_forms_builder_content_' . $this->id, array( $this, 'output_content' ) );
 		}
 
 		/**
-		 * Get settings page ID.
+		 * Get builder page ID.
 		 *
 		 * @return string
 		 */
@@ -77,7 +85,7 @@ if ( ! class_exists( 'EVF_Builder_Page', false ) ) :
 		}
 
 		/**
-		 * Get settings page icon.
+		 * Get builder page icon.
 		 *
 		 * @return string
 		 */
@@ -86,12 +94,21 @@ if ( ! class_exists( 'EVF_Builder_Page', false ) ) :
 		}
 
 		/**
-		 * Get settings page label.
+		 * Get builder page label.
 		 *
 		 * @return string
 		 */
 		public function get_label() {
 			return $this->label;
+		}
+
+		/**
+		 * Get builder page sidebar.
+		 *
+		 * @return string
+		 */
+		public function get_sidebar() {
+			return $this->sidebar;
 		}
 
 		/**
@@ -111,21 +128,34 @@ if ( ! class_exists( 'EVF_Builder_Page', false ) ) :
 		 */
 		public function add_builder_page( $pages ) {
 			$pages[ $this->id ] = array(
-				'icon'  => $this->icon,
-				'label' => $this->label,
+				'icon'    => $this->icon,
+				'label'   => $this->label,
+				'sidebar' => $this->sidebar,
 			);
 
 			return $pages;
 		}
 
 		/**
-		 * Outputs the contents of the panel.
-		 *
-		 * @param object $form
-		 * @param string $view
+		 * Outputs the sidebar.
 		 */
-		public function builder_output() {
-			global $current_tab;
+		public function output_sidebar() {
+			do_action( 'everest_forms_builder_before_sidebar', $this->form, $this->id );
+
+			$this->builder_sidebar();
+
+			do_action( 'everest_forms_builder_after_sidebar', $this->form, $this->id );
+		}
+
+		/**
+		 * Output the content.
+		 */
+		public function output_content() {
+			do_action( 'everest_forms_builder_before_content', $this->form, $this->id );
+
+			$this->builder_content();
+
+			do_action( 'everest_forms_builder_after_content', $this->form, $this->id );
 		}
 	}
 

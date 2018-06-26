@@ -40,10 +40,22 @@ $tabs = apply_filters( 'everest_forms_builder_tabs_array', array() );
 		</div>
 		<div class="evf-tab-content">
 			<?php foreach ( $tabs as $slug => $tab ) : ?>
-				<div id="everest-forms-panel-<?php echo esc_attr( $slug ); ?>" class="everest-forms-panel <?php echo $current_tab === $slug ? 'active' : ''; ?>">
-					<?php do_action( 'everest_forms_builder_output' ); ?>
+				<div id="everest-forms-panel-<?php echo esc_attr( $slug ); ?>" class="everest-forms-panel<?php echo $current_tab === $slug ? ' active' : ''; ?>">
+					<div class="everest-form-panel-<?php echo $tab['sidebar'] ? 'sidebar-content' : 'full-content'; ?>">
+						<?php if ( $tab['sidebar'] ) : ?>
+							<div class="everest-forms-panel-sidebar">
+								<?php do_action( 'everest_forms_builder_sidebar_' . $slug ); ?>
+							</div>
+						<?php endif; ?>
+						<div class="everest-forms-panel-content-wrap">
+							<div class="everest-forms-panel-content">
+								<?php do_action( 'everest_forms_builder_content_' . $slug ); ?>
+							</div>
+						</div>
+					</div>
 				</div>
 			<?php endforeach; ?>
+			<?php do_action( 'everest_forms_builder_output' ); ?>
 		</div>
 	</form>
 </div>

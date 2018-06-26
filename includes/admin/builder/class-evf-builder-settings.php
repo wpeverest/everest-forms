@@ -21,9 +21,10 @@ class EVF_Builder_Settings extends EVF_Admin_Form_Panel {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->id    = 'settings';
-		$this->icon  = 'evf-icon evf-icon-setting';
-		$this->label = __( 'Settings', 'everest-forms' );
+		$this->id      = 'settings';
+		$this->icon    = 'evf-icon evf-icon-setting';
+		$this->label   = __( 'Settings', 'everest-forms' );
+		$this->sidebar = true;
 
 		parent::__construct();
 	}

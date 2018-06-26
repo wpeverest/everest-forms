@@ -21,23 +21,12 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->id    = 'fields';
-		$this->icon  = 'evf-icon evf-icon-fields';
-		$this->label = __( 'Fields', 'everest-forms' );
+		$this->id      = 'fields';
+		$this->icon    = 'evf-icon evf-icon-fields';
+		$this->label   = __( 'Fields', 'everest-forms' );
+		$this->sidebar = true;
 
 		parent::__construct();
-	}
-
-	/**
-	 * All systems go.
-	 */
-	public function init__old() {
-		// Define panel information.
-		$this->name    = __( 'Fields', 'everest-forms' );
-		$this->slug    = 'fields';
-		$this->icon    = 'evf-icon evf-icon-fields';
-		$this->order   = 10;
-		$this->sidebar = true;
 
 		if ( $this->form ) {
 			add_action( 'everest_forms_builder_fields', array( $this, 'fields' ) );
@@ -47,9 +36,9 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 	}
 
 	/**
-	 * Outputs the Field panel sidebar.
+	 * Outputs the builder content.
 	 */
-	public function panel_sidebar() {
+	public function builder_sidebar() {
 		?>
 		<div class="everest-forms-fields-tab">
 			<a href="#" id="add-fields" class="fields active"><?php esc_html_e( 'Add Fields', 'everest-forms' ); ?></a>
@@ -65,11 +54,9 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 	}
 
 	/**
-	 * Outputs the Field panel primary content.
-	 *
-	 * @since 1.0.0
+	 * Outputs the builder content.
 	 */
-	public function panel_content() {
+	public function builder_content() {
 		?>
 		<div class="everest-forms-preview-wrap">
 			<div class="everest-forms-preview">
@@ -86,8 +73,6 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 
 	/**
 	 * Builder field butttons.
-	 *
-	 * @since 1.0.0
 	 */
 	public function fields() {
 		$fields = array(
