@@ -888,8 +888,7 @@ function evf_get_form_fields( $form = false, $whitelist = array() ) {
  *
  * @return string
  */
-function everest_forms_sanitize_textarea_field( $string ) {
-
+function evf_sanitize_textarea_field( $string ) {
 	if ( empty( $string ) || ! is_string( $string ) ) {
 		return $string;
 	}
