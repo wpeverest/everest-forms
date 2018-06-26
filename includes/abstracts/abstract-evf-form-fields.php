@@ -829,7 +829,7 @@ abstract class EVF_Form_Fields {
 		EVF()->task->form_fields[ $field_id ] = array(
 			'name'     => $name,
 			'value'    => $value,
-			'id'       => absint( $field_id ),
+			'id'       => $field_id,
 			'type'     => $this->type,
 			'meta_key' => $meta_key,
 		);
