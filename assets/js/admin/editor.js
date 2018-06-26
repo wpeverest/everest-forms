@@ -1,4 +1,3 @@
-/* global everest_add_form_params */
 (function( $ ){
 	'use strict';
 
