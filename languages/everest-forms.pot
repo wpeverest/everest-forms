@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Everest Forms package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Everest Forms 1.1.8\n"
+"Project-Id-Version: Everest Forms 1.1.9\n"
 "Report-Msgid-Bugs-To: https://github.com/wpeverest/everest-forms/issues\n"
-"POT-Creation-Date: 2018-06-07 09:44:49+00:00\n"
+"POT-Creation-Date: 2018-06-26 05:42:18+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -986,11 +986,11 @@ msgstr ""
 msgid "Thanks for contacting us! We will be in touch with you shortly."
 msgstr ""
 
-#: includes/class-evf-form-task.php:439
+#: includes/class-evf-form-task.php:444
 msgid "No form ID was found."
 msgstr ""
 
-#: includes/class-evf-form-task.php:445
+#: includes/class-evf-form-task.php:451
 msgid "Could not create an entry"
 msgstr ""
 

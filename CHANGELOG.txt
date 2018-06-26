@@ -1,5 +1,11 @@
 == Changelog ==
 
+= 1.1.9 - 26-06-2018 =
+* Fix - Validation and sanitization for form fields.
+* Fix - Only five forms are listed in entries selection.
+* Tweak - Entries number alignment is changed to center.
+* Tweak - Entry save related data can be override via filter.
+
 = 1.1.8 - 07-06-2018 =
 * Fix - Similar meta key exists while duplicating the field.
 * Fix - Entry field value error due to html tags in serialized data.

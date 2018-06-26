@@ -4,7 +4,7 @@ Tags: form, form builder, easy form, clean form, login form, contact, contact fo
 Requires at least: 4.0
 Tested up to: 4.9
 Requires PHP: 5.4
-Stable tag: 1.1.8
+Stable tag: 1.1.9
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -78,6 +78,12 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 11. Advance Form
 
 == Changelog ==
+
+= 1.1.9 - 26-06-2018 =
+* Fix - Validation and sanitization for form fields.
+* Fix - Only five forms are listed in entries selection.
+* Tweak - Entries number alignment is changed to center.
+* Tweak - Entry save related data can be override via filter.
 
 = 1.1.8 - 07-06-2018 =
 * Fix - Similar meta key exists while duplicating the field.
