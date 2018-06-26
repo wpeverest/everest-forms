@@ -37,6 +37,7 @@
 			// Adjust builder width.
 			$( document.body ).on( 'adjust_builder_width', function() {
 				var builderWidth = $( '#everest-forms-builder' ).width();
+
 				$( '#everest-forms-builder' ).width( builderWidth );
 			} ).trigger( 'adjust_builder_width' );
 
@@ -44,6 +45,16 @@
 				$( '#everest-forms-builder' ).width( '' );
 				$( document.body ).trigger( 'adjust_builder_width' );
 			});
+
+			$( window ).on( 'resize orientationchange', function() {
+				var resizeTimer;
+
+				clearTimeout( resizeTimer );
+				resizeTimer = setTimeout( function() {
+					$( '#everest-forms-builder' ).width( '' );
+					$( document.body ).trigger( 'adjust_builder_width' );
+				}, 250 );
+			}).trigger( 'resize' );
 		},
 
 		/**
