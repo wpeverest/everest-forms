@@ -59,10 +59,10 @@ class EVF_Field_Select extends EVF_Form_Fields {
 
 		// Label.
 		$this->field_option( 'label', $field );
-		
+
 		// Meta.
 		$this->field_option( 'meta', $field );
-		
+
 		// Choices.
 		$this->field_option( 'choices', $field );
 
@@ -212,13 +212,12 @@ class EVF_Field_Select extends EVF_Form_Fields {
 	/**
 	 * Formats and sanitizes field.
 	 *
-	 * @since      1.0.0
-	 *
 	 * @param int    $field_id
-	 * @param string $field_submit
+	 * @param array  $field_submit
 	 * @param array  $form_data
+	 * @param string $meta_key
 	 */
-	public function format( $field_id, $field_submit, $form_data ) {
+	public function format( $field_id, $field_submit, $form_data, $meta_key ) {
 
 		$field     = $form_data['form_fields'][ $field_id ];
 		$name      = sanitize_text_field( $field['label'] );
@@ -229,8 +228,9 @@ class EVF_Field_Select extends EVF_Form_Fields {
 			'name'      => $name,
 			'value'     => '',
 			'value_raw' => $value_raw,
-			'id'        => absint( $field_id ),
+			'id'        => $field_id,
 			'type'      => $this->type,
+			'meta_key'  => $meta_key,
 		);
 
 
@@ -252,6 +252,9 @@ class EVF_Field_Select extends EVF_Form_Fields {
 		} else {
 			$data['value'] = $value_raw;
 		}
+
+		// Push field details to be saved.
+		EVF()->task->form_fields[ $field_id ] = $data;
 	}
 }
 

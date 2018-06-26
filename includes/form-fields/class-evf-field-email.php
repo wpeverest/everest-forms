@@ -183,13 +183,12 @@ class EVF_Field_Email extends EVF_Form_Fields {
 	/**
 	 * Formats and sanitizes field.
 	 *
-	 * @since      1.0.0
-	 *
-	 * @param int   $field_id
-	 * @param array $field_submit
-	 * @param array $form_data
+	 * @param int    $field_id
+	 * @param array  $field_submit
+	 * @param array  $form_data
+	 * @param string $meta_key
 	 */
-	public function format( $field_id, $field_submit, $form_data ) {
+	public function format( $field_id, $field_submit, $form_data, $meta_key ) {
 
 		// Define data.
 		if ( is_array( $field_submit ) ) {
@@ -198,11 +197,17 @@ class EVF_Field_Email extends EVF_Form_Fields {
 			$value = ! empty( $field_submit ) ? $field_submit : '';
 		}
 
-		$name = ! empty( $form_data['fields'][ $field_id ] ['label'] ) ? $form_data['fields'][ $field_id ]['label'] : '';
+		$name = ! empty( $form_data['form_fields'][ $field_id ] ['label'] ) ? $form_data['form_fields'][ $field_id ]['label'] : '';
 
+		// Set final field details.
+		EVF()->task->form_fields[ $field_id ] = array(
+			'name'     => sanitize_text_field( $name ),
+			'value'    => sanitize_text_field( $value ),
+			'id'       => $field_id,
+			'type'     => $this->type,
+			'meta_key' => $meta_key,
+		);
 	}
-
-
 }
 
 new EVF_Field_Email;
