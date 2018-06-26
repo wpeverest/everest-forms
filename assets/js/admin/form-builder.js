@@ -952,9 +952,6 @@
 			$(document).click(function () {
 				$('.evf-show-grid').closest('.evf-toggle-row').find('.evf-toggle-row-content').stop(true).slideUp(200);
 			});
-			$('.evf-toggle-row-content').click(function (e) {
-				e.stopPropagation();
-			});
 			var max_number_of_grid = 2;
 			$('body').on('click', '.evf-grid-selector', function () {
 				var $this_single_row = $(this).closest('.evf-admin-row');
