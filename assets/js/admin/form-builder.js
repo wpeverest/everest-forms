@@ -1109,10 +1109,6 @@ jQuery( function ( $ ) {
 		} );
 	} ).trigger( 'init_tooltips' );
 
-	$( '.everest-forms-tab-content' ).on( 'click', '.everest-forms-add-fields-group > a', function( event ) {
-		event.preventDefault();
-	});
-
 	// Add Fields - Open/close.
 	$( document.body ).on( 'init_add_fields_toogle', function() {
 		$( '.everest-forms-add-fields' ).on( 'click', '.everest-forms-add-fields-group > a', function( event ) {
