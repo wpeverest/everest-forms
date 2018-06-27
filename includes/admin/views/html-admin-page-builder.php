@@ -30,7 +30,7 @@ $tabs = apply_filters( 'everest_forms_builder_tabs_array', array() );
 			</nav>
 			<div class="evf-forms-nav-right">
 				<div class="evf-shortcode-field">
-					<input type="text" class="large-text code" onfocus="this.select();" value="<?php printf( esc_html( '[everest_form id="%s"]' ), $_GET['form_id'] ) ?>" id="evf-form-shortcode" readonly="readonly" />
+					<input type="text" class="large-text code" onfocus="this.select();" value="<?php printf( esc_html( '[everest_form id="%s"]' ), absint( wp_unslash( $_GET['form_id'] ) ) ); ?>" id="evf-form-shortcode" readonly="readonly" />
 					<button id="copy-shortcode" class="everest-forms-btn help_tip dashicons dashicons-admin-page" href="#" data-tip="<?php esc_attr_e( 'Copy Shortcode!', 'everest-forms' ); ?>" data-copied="<?php esc_attr_e( 'Copied!', 'everest-forms' ); ?>">
 						<span class="screen-reader-text"><?php esc_html_e( 'Copy shortcode', 'everest-forms' ); ?></span>
 					</button>
@@ -41,7 +41,7 @@ $tabs = apply_filters( 'everest_forms_builder_tabs_array', array() );
 		<div class="evf-tab-content">
 			<?php foreach ( $tabs as $slug => $tab ) : ?>
 				<div id="everest-forms-panel-<?php echo esc_attr( $slug ); ?>" class="everest-forms-panel<?php echo $current_tab === $slug ? ' active' : ''; ?>">
-					<div class="everest-form-panel-<?php echo $tab['sidebar'] ? 'sidebar-content' : 'full-content'; ?>">
+					<div class="everest-forms-panel-<?php echo $tab['sidebar'] ? 'sidebar-content' : 'full-content'; ?>">
 						<?php if ( $tab['sidebar'] ) : ?>
 							<div class="everest-forms-panel-sidebar">
 								<?php do_action( 'everest_forms_builder_sidebar_' . $slug ); ?>

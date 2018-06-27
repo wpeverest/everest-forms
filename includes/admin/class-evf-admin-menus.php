@@ -69,7 +69,7 @@ class EVF_Admin_Menus {
 				if ( isset( $_GET['tab'], $_GET['form_id'] ) ) {
 					$redirect_url = add_query_arg( array(
 						'tab'     => evf_clean( wp_unslash( $_GET['tab'] ) ),
-						'form_id' => absint( absint( wp_unslash( $_GET['form_id'] ) ) ),
+						'form_id' => absint( wp_unslash( $_GET['form_id'] ) ),
 					), admin_url( 'admin.php?page=evf-builder' ) );
 				}
 			} else {
