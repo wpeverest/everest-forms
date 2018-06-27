@@ -95,15 +95,16 @@ class EVF_Fields {
 
 			if ( isset( $load_field->order ) && is_numeric( $load_field->order ) ) {
 				// Add in position.
-				$this->form_fields[ $load_field->order ] = $load_field;
+				$this->form_fields[ $load_field->group ][ $load_field->order ] = $load_field;
 			} else {
 				// Add to end of the array.
-				$this->form_fields[ $order_end ] = $load_field;
+				$this->form_fields[ $load_field->group ][ $order_end ] = $load_field;
 				$order_end++;
 			}
+
+			ksort( $this->form_fields[ $load_field->group ] );
 		}
 
-		ksort( $this->form_fields );
 	}
 
 	/**
@@ -114,9 +115,13 @@ class EVF_Fields {
 	public function form_fields() {
 		$_available_fields = array();
 
+		echo '<pre>' . print_r( $this->form_fields, true ) . '</pre>';
+
+		die();
+
 		if ( count( $this->form_fields ) > 0 ) {
-			foreach ( $this->form_fields as $field ) {
-				$_available_fields[ $field->id ] = $field;
+			foreach ( $this->form_fields as $group => $field ) {
+				$_available_fields[ $group ][ $field->type ] = $field;
 			}
 		}
 
