@@ -106,10 +106,6 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		// Output fields group buttons.
 		if ( ! empty( $fields_groups ) ) {
 			foreach ( $fields_groups as $id => $fields_group ) {
-				usort( $fields_group['fields'], function( $a, $b ) {
-					return $a['order'] - $b['order'];
-				});
-
 				?>
 				<div class="everest-forms-add-fields-group open">
 					<a href="#" class="everest-forms-add-fields-heading" data-group="<?php echo esc_attr( $id ); ?>"><?php echo esc_html( $fields_group['title'] ); ?><i class="handlediv"></i></a>
