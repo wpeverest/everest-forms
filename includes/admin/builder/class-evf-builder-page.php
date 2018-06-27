@@ -137,36 +137,14 @@ if ( ! class_exists( 'EVF_Builder_Page', false ) ) :
 		}
 
 		/**
-		 * Outputs the sidebar.
-		 */
-		public function output_sidebar() {
-			do_action( 'everest_forms_builder_before_sidebar', $this->form, $this->id );
-
-			$this->builder_sidebar();
-
-			do_action( 'everest_forms_builder_after_sidebar', $this->form, $this->id );
-		}
-
-		/**
-		 * Output the content.
-		 */
-		public function output_content() {
-			do_action( 'everest_forms_builder_before_content', $this->form, $this->id );
-
-			$this->builder_content();
-
-			do_action( 'everest_forms_builder_after_content', $this->form, $this->id );
-		}
-
-		/**
 		 * Outputs the builder sidebar.
 		 */
-		public function builder_sidebar() {}
+		public function output_sidebar() {}
 
 		/**
 		 * Outputs the builder content.
 		 */
-		public function builder_content() {}
+		public function output_content() {}
 	}
 
 endif;

@@ -36,9 +36,9 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 	}
 
 	/**
-	 * Outputs the builder content.
+	 * Outputs the builder sidebar.
 	 */
-	public function builder_sidebar() {
+	public function output_sidebar() {
 		?>
 		<div class="everest-forms-fields-tab">
 			<a href="#" id="add-fields" class="fields active"><?php esc_html_e( 'Add Fields', 'everest-forms' ); ?></a>
@@ -56,7 +56,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 	/**
 	 * Outputs the builder content.
 	 */
-	public function builder_content() {
+	public function output_content() {
 		?>
 		<div class="everest-forms-preview-wrap">
 			<div class="everest-forms-preview">
