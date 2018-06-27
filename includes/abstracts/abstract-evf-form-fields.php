@@ -35,13 +35,6 @@ abstract class EVF_Form_Fields {
 	public $icon = false;
 
 	/**
-	 * Priority order the field button should show inside the "Add Fields" tab.
-	 *
-	 * @var integer
-	 */
-	public $order = 20;
-
-	/**
 	 * Field class name.
 	 *
 	 * @var string
@@ -133,7 +126,6 @@ abstract class EVF_Form_Fields {
 	public function field_button( $fields ) {
 		// Add field information to fields array.
 		$fields[ $this->group ]['fields'][] = array(
-			'order' => $this->order,
 			'name'  => $this->name,
 			'type'  => $this->type,
 			'icon'  => $this->icon,

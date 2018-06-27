@@ -86,22 +86,21 @@ class EVF_Fields {
 			'EVF_Field_Date',
 		) );
 
-		// Get sort order option.
-		$ordering  = (array) get_option( 'everest_forms_fields_order' );
+		// Get sort order.
 		$order_end = 999;
 
 		// Load form fields.
 		foreach ( $load_fields as $field ) {
 			$load_field = is_string( $field ) ? new $field() : $field;
 
-			// if ( isset( $ordering[ $load_field->id ] ) && is_numeric( $ordering[ $load_field->id ] ) ) {
+			if ( isset( $load_field->order ) && is_numeric( $load_field->order ) ) {
 				// Add in position.
-				// $this->form_fields[ $ordering[ $load_field->id ] ] = $load_field;
-			// } else {
+				$this->form_fields[ $load_field->order ] = $load_field;
+			} else {
 				// Add to end of the array.
 				$this->form_fields[ $order_end ] = $load_field;
 				$order_end++;
-			// }
+			}
 		}
 
 		ksort( $this->form_fields );
