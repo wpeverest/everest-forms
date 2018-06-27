@@ -27,7 +27,12 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		$this->sidebar = true;
 
 		parent::__construct();
+	}
 
+	/**
+	 * Hook in tabs.
+	 */
+	public function init_hooks() {
 		if ( $this->form ) {
 			add_action( 'everest_forms_builder_fields', array( $this, 'fields' ) );
 			add_action( 'everest_forms_builder_fields_options', array( $this, 'fields_options' ) );
@@ -44,11 +49,13 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			<a href="#" id="add-fields" class="fields active"><?php esc_html_e( 'Add Fields', 'everest-forms' ); ?></a>
 			<a href="#" id="field-options" class="options"><?php esc_html_e( 'Field Options', 'everest-forms' ); ?></a>
 		</div>
-		<div class="everest-forms-add-fields everest-forms-tab-content">
-			<?php do_action( 'everest_forms_builder_fields', $this->form ); ?>
-		</div>
-		<div class="everest-forms-field-options everest-forms-tab-content">
-			<?php do_action( 'everest_forms_builder_fields_options', $this->form ); ?>
+		<div class="everest-forms-tab-content-wrap">
+			<div class="everest-forms-add-fields everest-forms-tab-content">
+				<?php do_action( 'everest_forms_builder_fields', $this->form ); ?>
+			</div>
+			<div class="everest-forms-field-options everest-forms-tab-content">
+				<?php do_action( 'everest_forms_builder_fields_options', $this->form ); ?>
+			</div>
 		</div>
 		<?php
 	}

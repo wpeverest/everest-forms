@@ -69,6 +69,9 @@ if ( ! class_exists( 'EVF_Builder_Page', false ) ) :
 			$this->form      = evf()->form->get( $form_id );
 			$this->form_data = $this->form ? evf_decode( $this->form->post_content ) : false;
 
+			// Init hooks.
+			$this->init_hooks();
+
 			// Hooks.
 			add_filter( 'everest_forms_builder_tabs_array', array( $this, 'add_builder_page' ), 20 );
 			add_action( 'everest_forms_builder_sidebar_' . $this->id, array( $this, 'output_sidebar' ) );
@@ -135,6 +138,11 @@ if ( ! class_exists( 'EVF_Builder_Page', false ) ) :
 
 			return $pages;
 		}
+
+		/**
+		 * Hook in tabs.
+		 */
+		public function init_hooks() {}
 
 		/**
 		 * Outputs the builder sidebar.
