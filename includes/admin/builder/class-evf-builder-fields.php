@@ -34,7 +34,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 	 */
 	public function init_hooks() {
 		if ( $this->form ) {
-			add_action( 'everest_forms_builder_fields', array( $this, 'fields' ) );
+			add_action( 'everest_forms_builder_fields', array( $this, 'output_fields' ) );
 			add_action( 'everest_forms_builder_fields_options', array( $this, 'fields_options' ) );
 			add_action( 'everest_forms_builder_preview', array( $this, 'preview' ) );
 		}
@@ -79,61 +79,53 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 	}
 
 	/**
-	 * Builder field butttons.
+	 * Output fields group butttons.
 	 */
-	public function fields() {
-		$fields = array(
-			'general'  => array(
-				'group_name' => esc_html__( 'General Fields', 'everest-forms' ),
-				'fields'     => array(),
-			),
-			'advanced' => array(
-				'group_name' => esc_html__( 'Advanced Fields', 'everest-forms' ),
-				'fields'     => array(),
-			),
-			'address'  => array(
-				'group_name' => esc_html__( 'Address Fields', 'everest-forms' ),
-				'fields'     => array(),
-			),
-			'payment'  => array(
-				'group_name' => esc_html__( 'Payment Fields', 'everest-forms' ),
-				'fields'     => array(),
-			),
+	public function output_fields() {
+		$fields_groups = apply_filters(
+			'everest_forms_builder_fields_groups', array(
+				'general'  => array(
+					'title'  => esc_html__( 'General Fields', 'everest-forms' ),
+					'fields' => array(),
+				),
+				'advanced' => array(
+					'title'  => esc_html__( 'Advanced Fields', 'everest-forms' ),
+					'fields' => array(),
+				),
+				'address'  => array(
+					'title' => esc_html__( 'Address Fields', 'everest-forms' ),
+					'fields'     => array(),
+				),
+				'payment'  => array(
+					'title'  => esc_html__( 'Payment Fields', 'everest-forms' ),
+					'fields' => array(),
+				),
+			)
 		);
-		$fields = apply_filters( 'everest_forms_builder_fields_buttons', $fields );
 
-		// Output the buttons
-		foreach ( $fields as $id => $group ) {
+		// Output fields group buttons.
+		if ( ! empty( $fields_groups ) ) {
+			foreach ( $fields_groups as $id => $fields_group ) {
+				usort( $fields_group['fields'], function( $a, $b ) {
+					return $a['order'] - $b['order'];
+				});
 
-			usort( $group['fields'], array( $this, 'field_order' ) );
-
-			echo '<div class="everest-forms-add-fields-group open">';
-
-				echo '<a href="#" class="everest-forms-add-fields-heading" data-group="' . esc_attr( $id ) . '">';
-
-					echo esc_html( $group['group_name'] );
-
-					echo '<i class="handlediv"></i>';
-
-				echo '</a>';
-
-				echo '<div class="evf-registered-buttons">';
-
-					foreach ( $group['fields'] as $field ) {
-
-						$class = ! empty( $field['class'] ) ? sanitize_html_class( $field['class'] ) : '';
-
-						echo '<button type="button" class="evf-registered-item ' . $class . '" id="everest-forms-add-fields-' . esc_attr( $field['type'] ) . '" data-field-type="' . esc_attr( $field['type'] ) . '">';
-						if ( $field['icon'] ) {
-							echo '<i class="' . esc_attr( $field['icon'] ) . '"></i> ';
-						}
-						echo esc_html( $field['name'] );
-						echo '</button>';
-					}
-
-				echo '</div>';
-
-			echo '</div>';
+				?>
+				<div class="everest-forms-add-fields-group open">
+					<a href="#" class="everest-forms-add-fields-heading" data-group="<?php echo esc_attr( $id ); ?>"><?php echo esc_html( $fields_group['title'] ); ?><i class="handlediv"></i></a>
+					<div class="evf-registered-buttons">
+						<?php foreach ( $fields_group['fields'] as $field ) : ?>
+							<button type="button" id="everest-forms-add-fields-<?php echo esc_attr( $field['type'] ); ?>" class="evf-registered-item <?php echo sanitize_html_class( $field['class'] ); ?>" data-field-type="<?php esc_attr( $field['type'] ); ?>">
+								<?php if ( isset( $field['icon'] ) ) : ?>
+									<i class="<?php echo esc_attr( $field['icon'] ); ?>"></i>
+								<?php endif; ?>
+								<?php echo esc_html( $field['name'] ); ?>
+							</button>
+						<?php endforeach; ?>
+					</div>
+				</div>
+				<?php
+			}
 		}
 	}
 
@@ -271,15 +263,6 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		echo '<div class="clear evf-clear"></div>';
 		echo '<div class="evf-add-row"><span class="everest-forms-btn dashicons dashicons-plus-alt">' . esc_html( 'Add Row', 'everest-forms' ) . '</span></div>';
 		echo '</div >';
-	}
-
-	/**
-	 * Sort Add Field buttons by order provided.
-	 *
-	 * @since      1.0.0
-	 */
-	function field_order( $a, $b ) {
-		return $a['order'] - $b['order'];
 	}
 }
 

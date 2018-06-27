@@ -24,7 +24,7 @@ class EVF_Forms_Features {
 	 */
 	public function __construct() {
 		add_action( 'everest_forms_form_settings_notifications', array( $this, 'form_settings_notifications' ), 8, 1 );
-		add_filter( 'everest_forms_builder_fields_buttons', array( $this, 'form_fields' ), 20 );
+		add_filter( 'everest_forms_builder_fields_groups', array( $this, 'fields_groups' ), 20 );
 	}
 
 	/**
@@ -97,7 +97,7 @@ class EVF_Forms_Features {
 	 * @param  array $fields
 	 * @return array
 	 */
-	public function form_fields( $fields ) {
+	public function fields_groups( $fields ) {
 		if ( ! defined( 'EFP_PLUGIN_FILE' ) ) {
 			$pro_advanced_fields = array(
 				array(

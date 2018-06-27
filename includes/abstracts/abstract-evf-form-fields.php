@@ -42,6 +42,13 @@ abstract class EVF_Form_Fields {
 	public $order = 20;
 
 	/**
+	 * Field class name.
+	 *
+	 * @var string
+	 */
+	public $class = '';
+
+	/**
 	 * Field group the field belongs to.
 	 *
 	 * @var string
@@ -88,7 +95,7 @@ abstract class EVF_Form_Fields {
 		$this->init();
 
 		// Add fields tab.
-		add_filter( 'everest_forms_builder_fields_buttons', array( $this, 'field_button' ), 15 );
+		add_filter( 'everest_forms_builder_fields_groups', array( $this, 'field_button' ), 15 );
 
 		// Field options tab.
 		add_action( "everest_forms_builder_fields_options_{$this->type}", array( $this, 'field_options' ), 10 );
@@ -130,6 +137,7 @@ abstract class EVF_Form_Fields {
 			'name'  => $this->name,
 			'type'  => $this->type,
 			'icon'  => $this->icon,
+			'class' => $this->class,
 		);
 
 		// Wipe hands clean.
