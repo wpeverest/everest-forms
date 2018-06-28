@@ -660,8 +660,7 @@
 
 				&.ui-sortable-placeholder {
 					background-color: transparentize( $orange, 0.95 );
-					border: 2px dashed transparentize( $orange, 0.75 );
-					height: auto;
+					border: 1px dashed transparentize( $orange, 0.75 );
 					visibility: visible !important;
 					width: 100%;
 				}

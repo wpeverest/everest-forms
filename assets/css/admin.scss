@@ -1426,14 +1426,10 @@ img.ui-datepicker-trigger {
 
 			.evf-tab-content {
 				.everest-forms-panel {
-					.everest-forms-panel-sidebar {
-						width: 440px;
-					}
 
 					.everest-forms-panel-content-wrap {
 						.everest-forms-panel-content {
 							background-color: #FFFFFF;
-							width: calc(100% - 285px);
 							padding: 15px 20px;
 						}
 					}
@@ -1465,9 +1461,6 @@ img.ui-datepicker-trigger {
 								width: 47%;
 							}
 						}
-					}
-					.everest-forms-panel-content-wrap {
-						width: calc(100% - 280px);
 					}
 				}
 
