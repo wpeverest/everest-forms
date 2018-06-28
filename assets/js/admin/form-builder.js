@@ -617,7 +617,7 @@
 					$.confirm({
 						title: false,
 						content: evf_data.i18n_delete_field_confirm,
-						type: 'orange',
+						type: 'red',
 						closeIcon: false,
 						backgroundDismiss: false,
 						icon: 'dashicons dashicons-warning',
@@ -853,6 +853,19 @@
 			}
 		},
 		bindFields: function () {
+			$('.evf-admin-field-wrapper').sortable({
+				containment: '.evf-admin-field-wrapper',
+				tolerance: 'pointer',
+				revert: 'invalid',
+				placeholder: 'evf-admin-row',
+				forceHelperSize: true,
+				over: function () {
+					$( '.evf-admin-field-wrapper' ).addClass( 'evf-hover' );
+				},
+				out: function () {
+					$( '.evf-admin-field-wrapper' ).removeClass( 'evf-hover' );
+				}
+			});
 
 			$('.evf-admin-grid').sortable({
 				containment: '.evf-admin-field-wrapper',
@@ -872,19 +885,6 @@
 				connectWith: '.evf-admin-grid'
 			}).disableSelection();
 
-			$('.evf-admin-field-wrapper').sortable({
-				containment: '.evf-admin-field-wrapper',
-				tolerance: 'pointer',
-				revert: 'invalid',
-				placeholder: 'evf-admin-row',
-				forceHelperSize: true,
-				over: function () {
-					$('.evf-admin-field-wrapper').addClass('evf-hover');
-				},
-				out: function () {
-					$('.evf-admin-field-wrapper').removeClass('evf-hover');
-				}
-			});
 
 			$( '.evf-registered-buttons button.evf-registered-item' ).draggable({
 				connectToSortable: '.evf-admin-grid',
@@ -895,8 +895,9 @@
 				delay: 200,
 				opacity: 0.75,
 				start: function( event, ui ) {
-					$( '.evf-admin-grid' ).addClass( 'evf-hover' );
 					$( this ).data( 'uihelper', ui.helper );
+					$( '.evf-admin-grid' ).addClass( 'evf-hover' );
+					$( '.evf-show-grid' ).closest('.evf-toggle-row').find('.evf-toggle-row-content' ).stop(true).slideUp(200);
 				},
 				revert: function( value ){
 					var uiHelper = ( this ).data( 'uihelper' );
@@ -968,14 +969,6 @@
 				var grid_node = $('<div class="evf-admin-grid evf-grid-' + grid_id + ' ui-sortable evf-empty-grid" />');
 				var grids = $('<div/>');
 
-				if( $('.everest-forms-panel .evf-admin-grid').children().length > 0){
-					if($('.everest-forms-panel .evf-admin-grid').hasClass('evf-empty-grid') ){
-						setTimeout(function(){ $('.everest-forms-panel').find('.evf-admin-grid').removeClass('evf-empty-grid'); }, 10);
-
-					}
-				}
-
-
 				$.each($this_single_row.find('.evf-admin-grid'), function () {
 					$(this).children('*').each(function () {
 						grids.append($(this).clone());  // "this" is the current element in the loop
@@ -1001,11 +994,11 @@
 		fieldDrop: function ( field ) {
 			var field_type = field.attr('data-field-type');
 			field.css({
-				'width': '100%',
-				'left': '0'
+				'left': '0',
+				'width': '100%'
 			});
 
-			field.append( '<i class="spinner is-active" style="margin: 0;padding: 0;"></i>' );
+			field.append( '<i class="spinner is-active"></i>' );
 
 			var data = {
 				action: 'everest_forms_new_field_' + field_type,

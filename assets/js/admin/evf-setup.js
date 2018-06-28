@@ -57,6 +57,8 @@ jQuery( function( $ ) {
 					$this.parent().removeClass( 'loading' );
 					window.location.href = response.data.redirect;
 				} else {
+					$this.parent().removeClass( 'loading' );
+					$( '.everest-forms-setup-name' ).addClass( 'everest-forms-required' ).focus();
 					window.console.log( response );
 				}
 			}).fail( function( xhr ) {
