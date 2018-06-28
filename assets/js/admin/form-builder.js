@@ -969,14 +969,6 @@
 				var grid_node = $('<div class="evf-admin-grid evf-grid-' + grid_id + ' ui-sortable evf-empty-grid" />');
 				var grids = $('<div/>');
 
-				if( $('.everest-forms-panel .evf-admin-grid').children().length > 0){
-					if($('.everest-forms-panel .evf-admin-grid').hasClass('evf-empty-grid') ){
-						setTimeout(function(){ $('.everest-forms-panel').find('.evf-admin-grid').removeClass('evf-empty-grid'); }, 10);
-
-					}
-				}
-
-
 				$.each($this_single_row.find('.evf-admin-grid'), function () {
 					$(this).children('*').each(function () {
 						grids.append($(this).clone());  // "this" is the current element in the loop
