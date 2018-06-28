@@ -94,8 +94,8 @@
 			}
 
 			.everest-forms-panel-sidebar {
-				background-color: $color-whitesmoke;
 				width: 385px;
+				background-color: #f8f9fa;
 				border-right: 1px solid $color-border-right;
 
 				.everest-forms-add-fields-heading {
@@ -105,7 +105,7 @@
 					margin-bottom: 15px;
 					padding-bottom: 15px;
 					color: $color-gray-darker;
-					border-bottom: 1px solid $color-white-darken;
+					border-bottom: 1px solid #E0E3E6;
 
 					i {
 						float: right;
@@ -127,7 +127,7 @@
 						margin-left: 1.5%;
 						margin-right: 1.5%;
 						padding: 20px 8px;
-						border: 1px solid $color-border-right;
+						border: 1px solid #e0e3e6;
 						width: 30.3%;
 						z-index: 999;
 						margin-bottom: 10px;
@@ -527,18 +527,6 @@
 
 						&.evf-item-hover {
 							position: relative;
-							box-shadow: 0 0 5px rgba(0, 100, 251, 0.5);
-
-							&::after {
-								position: absolute;
-								content: "";
-								top: -1px;
-								left: -1px;
-								right: -1px;
-								width: auto;
-								height: 15px;
-								background-color: $color-brand-primary;
-							}
 
 							&::before {
 								display: none;
@@ -660,14 +648,22 @@
 				}
 
 				&.active {
-					background: #f0f1f2;
+					background: #fafafa;
 					border: 1px solid $border-color;
 
 					.evf-field-action {
-						visibility: visible;
 						opacity: 1;
+						visibility: visible;
 					}
 				}
+
+				&.ui-sortable-placeholder {
+					width: 100%;
+					visibility: visible !important;
+					background-color: transparentize( $blue, 0.95 );
+					border: 1px dashed transparentize( $blue, 0.75 );
+				}
+
 				.evf-field-action {
 					position: absolute;
 					top: 15px;
@@ -763,22 +759,11 @@
 				}
 
 				&.ui-sortable-helper {
-					box-shadow: 1px 5px 35px rgba(0, 0, 0, 0.2);
 					padding: 20px 30px;
 					height: auto !important;
 					left: -20px;
 					right: -20px;
 					background-color: $color-white;
-
-					&::before {
-						position: absolute;
-						left: 0;
-						top: 0;
-						width: 5px;
-						height: 100%;
-						background-color: $color-brand-secondary;
-						content: "";
-					}
 
 					&:hover {
 						.evf-field-action {
@@ -1083,12 +1068,9 @@
 		}
 
 		&.ui-draggable-dragging {
-			border: 1px solid $color-brand-primary;
 			width: 105px !important;
-			color: $color-brand-primary;
 			text-align: center !important;
 			font-size: 12px !important;
-			box-shadow: 0 0 32px rgba(0, 0, 0, 0.15);
 		}
 	}
 
