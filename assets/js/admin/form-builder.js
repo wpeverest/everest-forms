@@ -895,9 +895,9 @@
 				delay: 200,
 				opacity: 0.75,
 				start: function( event, ui ) {
-					$('.evf-show-grid').closest('.evf-toggle-row').find('.evf-toggle-row-content').stop(true).slideUp(200);
-					$( '.evf-admin-grid' ).addClass( 'evf-hover' );
 					$( this ).data( 'uihelper', ui.helper );
+					$( '.evf-admin-grid' ).addClass( 'evf-hover' );
+					$( '.evf-show-grid' ).closest('.evf-toggle-row').find('.evf-toggle-row-content' ).stop(true).slideUp(200);
 				},
 				revert: function( value ){
 					var uiHelper = ( this ).data( 'uihelper' );
