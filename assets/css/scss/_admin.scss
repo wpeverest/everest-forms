@@ -94,7 +94,7 @@
 			}
 
 			.everest-forms-panel-sidebar {
-				width: 440px;
+				width: 400px;
 				background-color: #f8f9fa;
 				border-right: 1px solid $color-border-right;
 
@@ -329,7 +329,7 @@
 		}
 
 		.everest-forms-panel-content-wrap {
-			width: calc(100% - 440px);
+			width: calc(100% - 400px);
 
 			.everest-forms-panel-content {
 				background-color: $color-white;
@@ -346,7 +346,8 @@
 					position: relative;
 
 					&.evf-hover {
-						background-color: $color-brand-primary-light;
+						background-color: transparentize( $blue, 0.95 );
+						border: 1px dashed transparentize( $blue, 0.75 );
 					}
 				}
 			}
