@@ -617,7 +617,7 @@
 					$.confirm({
 						title: false,
 						content: evf_data.i18n_delete_field_confirm,
-						type: 'orange',
+						type: 'red',
 						closeIcon: false,
 						backgroundDismiss: false,
 						icon: 'dashicons dashicons-warning',
