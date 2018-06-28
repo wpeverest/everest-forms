@@ -104,7 +104,6 @@ class EVF_Fields {
 
 			ksort( $this->form_fields[ $load_field->group ] );
 		}
-
 	}
 
 	/**
@@ -114,10 +113,6 @@ class EVF_Fields {
 	 */
 	public function form_fields() {
 		$_available_fields = array();
-
-		echo '<pre>' . print_r( $this->form_fields, true ) . '</pre>';
-
-		die();
 
 		if ( count( $this->form_fields ) > 0 ) {
 			foreach ( $this->form_fields as $group => $field ) {

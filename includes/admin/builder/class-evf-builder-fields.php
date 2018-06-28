@@ -82,7 +82,6 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 	 * Output fields group butttons.
 	 */
 	public function output_fields() {
-		// Load gateways so we can show any global options they may have.
 		$form_fields = EVF()->form_fields->form_fields();
 
 		echo '<pre>' . print_r( $form_fields, true ) . '</pre>';

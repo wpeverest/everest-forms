@@ -24,7 +24,7 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 		$this->name     = __( 'Checkboxes', 'everest-forms' );
 		$this->type     = 'checkbox';
 		$this->icon     = 'evf-icon  evf-icon-checkbox';
-		$this->order    = 0;
+		$this->order    = 7;
 		$this->defaults = array(
 			1 => array(
 				'label'   => __( 'First Choice', 'everest-forms' ),

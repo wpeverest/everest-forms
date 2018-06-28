@@ -1703,3 +1703,30 @@ function evf_get_countries() {
 
 	return apply_filters( 'everest_forms_countries', $countries );
 }
+
+/**
+ * Get builder fields groups.
+ *
+ * @return array
+ */
+function evf_get_fields_groups() {
+	return (array) apply_filters(
+		'everest_forms_builder_fields_groups', array(
+			'general'  => __( 'General Fields', 'everest-forms' ),
+			'advanced' => __( 'Advanced Fields', 'everest-forms' ),
+			'address'  => __( 'Address Fields', 'everest-forms' ),
+			'payment'  => __( 'Payment Fields', 'everest-forms' ),
+		)
+	);
+}
+
+/**
+ * Get a builder fields type's name.
+ *
+ * @param string $type Coupon type.
+ * @return string
+ */
+function evf_get_builder_fields_groups( $type = '' ) {
+	$types = evf_get_builder_fields_groups();
+	return isset( $types[ $type ] ) ? $types[ $type ] : '';
+}
