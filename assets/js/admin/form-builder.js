@@ -853,6 +853,19 @@
 			}
 		},
 		bindFields: function () {
+			$('.evf-admin-field-wrapper').sortable({
+				containment: '.evf-admin-field-wrapper',
+				tolerance: 'pointer',
+				revert: 'invalid',
+				placeholder: 'evf-admin-row',
+				forceHelperSize: true,
+				over: function () {
+					$( '.evf-admin-field-wrapper' ).addClass( 'evf-hover' );
+				},
+				out: function () {
+					$( '.evf-admin-field-wrapper' ).removeClass( 'evf-hover' );
+				}
+			});
 
 			$('.evf-admin-grid').sortable({
 				containment: '.evf-admin-field-wrapper',
@@ -872,19 +885,6 @@
 				connectWith: '.evf-admin-grid'
 			}).disableSelection();
 
-			$('.evf-admin-field-wrapper').sortable({
-				containment: '.evf-admin-field-wrapper',
-				tolerance: 'pointer',
-				revert: 'invalid',
-				placeholder: 'evf-admin-row',
-				forceHelperSize: true,
-				over: function () {
-					$('.evf-admin-field-wrapper').addClass('evf-hover');
-				},
-				out: function () {
-					$('.evf-admin-field-wrapper').removeClass('evf-hover');
-				}
-			});
 
 			$( '.evf-registered-buttons button.evf-registered-item' ).draggable({
 				connectToSortable: '.evf-admin-grid',
