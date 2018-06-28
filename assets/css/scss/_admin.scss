@@ -558,6 +558,14 @@
 							}
 						}
 
+						&.ui-draggable-dragging {
+							margin-bottom: 10px;
+
+							.evf-icon {
+								display: block;
+							}
+						}
+
 						.evf-icon {
 							font-size: 24px;
 							vertical-align: middle;
