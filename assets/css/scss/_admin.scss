@@ -544,7 +544,6 @@
 
 					&.evf-grid-3 {
 						width: 30%;
-
 					}
 
 					.evf-registered-item {
@@ -553,12 +552,15 @@
 
 						&.ui-draggable {
 							margin-bottom: 10px;
+
+							.evf-icon {
+								display: inline-block;
+							}
 						}
 
 						.evf-icon {
-							display: inline-block;
-							vertical-align: middle;
 							font-size: 24px;
+							vertical-align: middle;
 						}
 
 						.spinner {

@@ -1001,11 +1001,11 @@
 		fieldDrop: function ( field ) {
 			var field_type = field.attr('data-field-type');
 			field.css({
+				'left': '0',
 				'width': '100%',
-				'left': '0'
 			});
 
-			field.append( '<i class="spinner is-active" style="margin: 0;padding: 0;"></i>' );
+			field.append( '<i class="spinner is-active"></i>' );
 
 			var data = {
 				action: 'everest_forms_new_field_' + field_type,
