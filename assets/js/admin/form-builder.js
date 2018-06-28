@@ -1002,7 +1002,7 @@
 			var field_type = field.attr('data-field-type');
 			field.css({
 				'left': '0',
-				'width': '100%',
+				'width': '100%'
 			});
 
 			field.append( '<i class="spinner is-active"></i>' );

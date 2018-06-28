@@ -97,13 +97,13 @@ class EVF_Field_Date extends EVF_Form_Fields {
 	public function field_preview( $field ) {
 
 		// Define data.
-		$placeholder = ! empty( $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : '';
+		$placeholder = ! empty( $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : 'yy-mm-dd';
 
 		// Label.
 		$this->field_preview_option( 'label', $field );
 
 		// Primary input.
-		echo '<input type="date" placeholder="' . $placeholder . '" class="widefat" disabled>';
+		echo '<input type="text" placeholder="' . $placeholder . '" class="widefat" disabled>';
 
 		// Description.
 		$this->field_preview_option( 'description', $field );
