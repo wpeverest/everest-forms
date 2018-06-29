@@ -575,11 +575,15 @@ body.everest-forms-builder-setup,
 			nav.evf-nav-tab-wrapper {
 				margin: 0;
 				float: left;
+				padding-right: 30px;
+				width: calc(100% - 415px);
 			}
 
 			.evf-forms-nav-right {
 				float: right;
-				margin: 21px 30px 19px 0;
+				width: 415px;
+				text-align: right;
+				padding: 21px 30px 19px;
 
 				.evf-shortcode-field {
 					display: inline-block;
@@ -1432,24 +1436,6 @@ img.ui-datepicker-trigger {
 				height: calc(100vh - 225px);
 			}
 
-			.everest-forms-tab-content {
-				height: calc(100vh - 275px);
-			}
-
-			.everest-forms-nav-wrapper {
-				nav.evf-nav-tab-wrapper {
-					float: none;
-					border-bottom: 1px solid rgba(0,0,0,0.1);
-				}
-
-				.evf-forms-nav-right {
-					float: none;
-					margin: 20px 20px;
-					display: flex;
-					justify-content: space-between;
-				}
-			}
-
 			.evf-tab-content {
 				.everest-forms-panel {
 					.everest-forms-panel-content-wrap {
@@ -1515,6 +1501,24 @@ img.ui-datepicker-trigger {
 				padding-left: 0;
 			}
 		}
+		#everest-forms-builder {
+			.everest-forms-nav-wrapper {
+				nav.evf-nav-tab-wrapper {
+					width: calc(100% - 185px);
+				}
+				.evf-forms-nav-right {
+					width: 185px;
+					.evf-shortcode-field {
+						input{
+							display: none;
+						}
+						button {
+							border-radius : 3px;
+						}
+					}
+				}
+			}
+		}
 	}
 
 	.evf-nav-tab-wrapper {
@@ -1552,11 +1556,13 @@ img.ui-datepicker-trigger {
 			width: 100%;
 
 			.everest-forms-tab-content {
-				height: calc(100vh - 247px);
+				height: 100vh;
 			}
 
 			.everest-forms-panel-content-wrap {
-				height: calc(100vh - 197px);
+				.everest-forms-panel-content {
+					height: 100vh;
+				}
 			}
 		}
 	}
