@@ -73,9 +73,11 @@ class EVF_Field_Date extends EVF_Form_Fields {
 		);
 		$this->field_option( 'advanced-options', $field, $args );
 
+		// Placeholder.
+		$this->field_option( 'placeholder', $field );
+
 		// Hide label.
 		$this->field_option( 'label_hide', $field );
-
 
 		// Custom CSS classes.
 		$this->field_option( 'css', $field );
@@ -97,7 +99,7 @@ class EVF_Field_Date extends EVF_Form_Fields {
 	public function field_preview( $field ) {
 
 		// Define data.
-		$placeholder = ! empty( $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : 'yy-mm-dd';
+		$placeholder = ! empty( $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : '';
 
 		// Label.
 		$this->field_preview_option( 'label', $field );

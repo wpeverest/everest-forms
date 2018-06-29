@@ -73,8 +73,6 @@ class EVF_Field_Last_Name extends EVF_Form_Fields {
 		);
 		$this->field_option( 'advanced-options', $field, $args );
 
-
-
 		// Placeholder.
 		$this->field_option( 'placeholder', $field );
 
