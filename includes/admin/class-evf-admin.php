@@ -22,7 +22,6 @@ class EVF_Admin {
 		add_action( 'admin_init', array( $this, 'addon_actions' ) );
 		add_action( 'admin_init', array( $this, 'admin_redirects' ) );
 		add_action( 'admin_footer', 'evf_print_js', 25 );
-		add_action( 'admin_footer', array( $this, 'admin_redirects' ) );
 		add_filter( 'admin_body_class', array( $this, 'admin_body_class' ) );
 		add_filter( 'admin_footer_text', array( $this, 'admin_footer_text' ), 1 );
 	}
@@ -42,9 +41,9 @@ class EVF_Admin {
 		include_once dirname( __FILE__ ) . '/class-evf-admin-menus.php';
 		include_once dirname( __FILE__ ) . '/class-evf-admin-notices.php';
 		include_once dirname( __FILE__ ) . '/class-evf-admin-assets.php';
+		include_once dirname( __FILE__ ) . '/class-evf-admin-editor.php';
 		include_once dirname( __FILE__ ) . '/class-evf-admin-forms.php';
 		include_once dirname( __FILE__ ) . '/class-evf-admin-entries.php';
-		include_once dirname( __FILE__ ) . '/class-evf-admin-add-form.php';
 	}
 
 	/**

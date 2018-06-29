@@ -161,3 +161,12 @@ function get_form_data_by_meta_key( $form_id, $meta_key ) {
 function evf_query_string_form_fields( $values = null, $exclude = array(), $current_key = '', $return = false ) {
 	evf_deprecated_function( 'evf_sender_address', '1.2.0' );
 }
+
+/**
+ * @deprecated 1.2.0
+ */
+function everest_forms_sanitize_textarea_field( $string ) {
+	evf_deprecated_function( 'everest_forms_sanitize_textarea_field', '1.2.0', 'evf_sanitize_textarea_field' );
+	return evf_sanitize_textarea_field( $string );
+}
+

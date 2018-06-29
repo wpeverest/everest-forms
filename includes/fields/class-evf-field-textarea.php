@@ -109,7 +109,7 @@ class EVF_Field_Textarea extends EVF_Form_Fields {
 		$this->field_preview_option( 'label', $field );
 
 		// Primary input.
-		echo '<textarea placeholder="' . $placeholder . '" class="primary-input" disabled></textarea>';
+		echo '<textarea placeholder="' . $placeholder . '" class="widefat" disabled></textarea>';
 
 		// Description.
 		$this->field_preview_option( 'description', $field );
@@ -134,7 +134,7 @@ class EVF_Field_Textarea extends EVF_Form_Fields {
 			$value = $primary['attr']['value'];
 			unset( $primary['attr']['value'] );
 
-			$value = everest_forms_sanitize_textarea_field( $value );
+			$value = evf_sanitize_textarea_field( $value );
 		}
 
 		// Primary field.

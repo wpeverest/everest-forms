@@ -71,12 +71,12 @@ class EVF_Admin_Assets {
 
 		// Register scripts.
 		wp_register_script( 'everest-forms-admin', EVF()->plugin_url() . '/assets/js/admin/admin' . $suffix . '.js', array( 'jquery', 'jquery-blockui', 'jquery-ui-sortable', 'jquery-ui-widget', 'jquery-ui-core', 'jquery-tiptip' ), EVF_VERSION );
+		wp_register_script( 'everest-forms-editor', EVF()->plugin_url() . '/assets/js/admin/editor' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true );
 		wp_register_script( 'jquery-blockui', EVF()->plugin_url() . '/assets/js/jquery-blockui/jquery.blockUI' . $suffix . '.js', array( 'jquery' ), '2.70', true );
 		wp_register_script( 'jquery-confirm', EVF()->plugin_url() . '/assets/js/jquery-confirm/jquery-confirm' . $suffix . '.js', array( 'jquery' ), '3.3.0', true );
 		wp_register_script( 'jquery-tiptip', EVF()->plugin_url() . '/assets/js/jquery-tiptip/jquery.tipTip' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true );
 		wp_register_script( 'evf-clipboard', EVF()->plugin_url() . '/assets/js/admin/evf-clipboard' . $suffix . '.js', array( 'jquery' ), EVF_VERSION );
 		wp_register_script( 'selectWoo', EVF()->plugin_url() . '/assets/js/selectWoo/selectWoo.full' . $suffix . '.js', array( 'jquery' ), '1.0.4' );
-		wp_register_script( 'evf-form-modal', EVF()->plugin_url() . '/assets/js/admin/evf-form-modal' . $suffix . '.js', 'jquery' );
 		wp_register_script( 'evf-form-builder', EVF()->plugin_url() . '/assets/js/admin/form-builder' . $suffix . '.js', array( 'jquery', 'jquery-blockui', 'jquery-tiptip', 'jquery-ui-sortable', 'jquery-ui-widget', 'jquery-ui-core', 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-confirm', 'evf-clipboard' ), EVF_VERSION );
 		wp_localize_script( 'evf-form-builder', 'evf_data', apply_filters(
 			'everest_forms_builder_strings', array(
@@ -115,9 +115,6 @@ class EVF_Admin_Assets {
 				'upgrade_url'     => apply_filters( 'everest_forms_upgrade_url', 'https://wpeverest.com/wordpress-plugins/everest-forms/' ),
 			)
 		);
-
-		// Global JS.
-		wp_enqueue_script( 'evf-form-modal' );
 
 		// EverestForms admin pages.
 		if ( in_array( $screen_id, evf_get_screen_ids() ) ) {

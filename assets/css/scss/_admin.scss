@@ -76,7 +76,6 @@
 
 			.everest-forms-panel-sidebar-content {
 				display: flex;
-				border-bottom: 1px solid $color-gray-lighter;
 			}
 
 			.everest-forms-one-half {
@@ -95,8 +94,8 @@
 			}
 
 			.everest-forms-panel-sidebar {
-				background-color: $color-whitesmoke;
-				width: 385px;
+				width: 400px;
+				background-color: #f8f9fa;
 				border-right: 1px solid $color-border-right;
 
 				.everest-forms-add-fields-heading {
@@ -104,9 +103,9 @@
 					font-size: 14px;
 					font-weight: 500;
 					margin-bottom: 15px;
-					padding-bottom: 10px;
+					padding-bottom: 15px;
 					color: $color-gray-darker;
-					border-bottom: 1px solid $color-white-darken;
+					border-bottom: 1px solid #E0E3E6;
 
 					i {
 						float: right;
@@ -128,7 +127,7 @@
 						margin-left: 1.5%;
 						margin-right: 1.5%;
 						padding: 20px 8px;
-						border: 1px solid $color-border-right;
+						border: 1px solid #e0e3e6;
 						width: 30.3%;
 						z-index: 999;
 						margin-bottom: 10px;
@@ -225,11 +224,6 @@
 
 				.everest-forms-field-options {
 					display: none;
-					background-color: $accordion-content-bg;
-
-					.everest-forms-field-option-group {
-						border-bottom: 1px solid $accordion-content-bg;
-					}
 
 					.everest-forms-field-option-row {
 						margin-bottom: 15px;
@@ -250,9 +244,19 @@
 						display: none;
 					}
 
+					.everest-forms-field-option-group {
+						&:last-child {
+							.everest-forms-field-option-group-inner {
+								border-bottom: none;
+							}
+						}
+					}
+
 					.everest-forms-field-option-group-toggle {
 						background-color: $accordion-bg;
-						padding: 15px 20px;
+						border-bottom: 1px solid #E0E3E6;
+						margin-bottom: 15px;
+    					padding-bottom: 15px;
 						font-size: 14px;
 						font-weight: 600;
 						display: block;
@@ -260,8 +264,9 @@
 					}
 
 					.everest-forms-field-option-group-inner {
-						background-color: $accordion-content-bg;
-						padding: 15px 20px;
+						padding-bottom: 15px;
+						margin-bottom: 15px;
+						border-bottom: 1px solid #E0E3E6;
 					}
 				}
 
@@ -324,21 +329,26 @@
 		}
 
 		.everest-forms-panel-content-wrap {
-			background-color: $color-white;
-			width: calc(100% - 375px);
-			padding: 15px 20px;
+			width: calc(100% - 400px);
 
-			.everest-forms-title-desc {
-				.everest-forms-form-name {
-					margin-top: 0;
+			.everest-forms-panel-content {
+				background-color: $color-white;
+				padding: 15px 20px;
+
+				.everest-forms-title-desc {
+					.everest-forms-form-name {
+						margin-top: 0;
+					}
 				}
-			}
 
-			.evf-admin-field-wrapper {
-				padding: 0 15px;
+				.evf-admin-field-wrapper {
+					padding: 0 15px;
+					position: relative;
 
-				&.evf-hover {
-					background-color: $color-brand-primary-light;
+					&.evf-hover {
+						background-color: transparentize( $green, 0.95 );
+						border: 1px dashed transparentize( $green, 0.75 );
+					}
 				}
 			}
 
@@ -377,9 +387,8 @@
 						vertical-align: top;
 
 						span {
-
 							&.dashicons {
-								border-radius: 0 0 3px 0;
+								border-radius: 0;
 							}
 						}
 
@@ -520,18 +529,6 @@
 
 						&.evf-item-hover {
 							position: relative;
-							box-shadow: 0 0 5px rgba(0, 100, 251, 0.5);
-
-							&::after {
-								position: absolute;
-								content: "";
-								top: -1px;
-								left: -1px;
-								right: -1px;
-								width: auto;
-								height: 15px;
-								background-color: $color-brand-primary;
-							}
 
 							&::before {
 								display: none;
@@ -549,7 +546,6 @@
 
 					&.evf-grid-3 {
 						width: 30%;
-
 					}
 
 					.evf-registered-item {
@@ -558,12 +554,23 @@
 
 						&.ui-draggable {
 							margin-bottom: 10px;
+
+							.evf-icon {
+								display: inline-block;
+							}
+						}
+
+						&.ui-draggable-dragging {
+							margin-bottom: 10px;
+
+							.evf-icon {
+								display: block;
+							}
 						}
 
 						.evf-icon {
-							display: inline-block;
-							vertical-align: middle;
 							font-size: 24px;
+							vertical-align: middle;
 						}
 
 						.spinner {
@@ -594,7 +601,6 @@
 							line-height: 1.2;
 							cursor: all-scroll;
 							color: $color-gray-lighter;
-
 						}
 					}
 				}
@@ -653,14 +659,22 @@
 				}
 
 				&.active {
-					background: #f0f1f2;
+					background: #fafafa;
 					border: 1px solid $border-color;
 
 					.evf-field-action {
-						visibility: visible;
 						opacity: 1;
+						visibility: visible;
 					}
 				}
+
+				&.ui-sortable-placeholder {
+					width: 100%;
+					visibility: visible !important;
+					background-color: transparentize( $blue, 0.95 );
+					border: 1px dashed transparentize( $blue, 0.75 );
+				}
+
 				.evf-field-action {
 					position: absolute;
 					top: 15px;
@@ -756,22 +770,11 @@
 				}
 
 				&.ui-sortable-helper {
-					box-shadow: 1px 5px 35px rgba(0, 0, 0, 0.2);
 					padding: 20px 30px;
 					height: auto !important;
 					left: -20px;
 					right: -20px;
 					background-color: $color-white;
-
-					&::before {
-						position: absolute;
-						left: 0;
-						top: 0;
-						width: 5px;
-						height: 100%;
-						background-color: $color-brand-secondary;
-						content: "";
-					}
 
 					&:hover {
 						.evf-field-action {
@@ -900,7 +903,7 @@
 			font-weight: 600;
 
 			i {
-				color: $color-gray-light;
+				color: $color-gray;
 				font-size: 16px;
 				line-height: 1.2;
 			}
@@ -913,47 +916,18 @@
 		input:not(.ed_button),
 		textarea:not(.wp-editor-area),
 		select {
-			border: 1px solid $border-color;
-			border-radius: 3px;
-			height: 45px;
-			width: 100%;
-			padding: 10px 15px;
+			height: 32px;
+			padding: 5px 10px;
 			color: $color-gray-darker;
-			font-size: 14px;
-
-			&[type="checkbox"],
-			&[type="radio"] {
-				width: 16px;
-				height: 16px;
-				background-color: $color-white;
-
-			}
-			&[type="radio"] {
-				border-radius: 10px;
-			}
-
-			&[type="checkbox"]:checked {
-				background-color: $color-brand-primary;
-
-				&::before {
-					color: $color-white;
-					background-color: transparent;
-				}
-			}
-
-			&[type="radio"]:checked {
-				&::before {
-					background-color: $color-brand-primary;
-				}
-			}
 
 			&::placeholder {
 				color: $input-color;
 			}
+		}
 
-			&:focus {
-				outline: none;
-			}
+		input[type="checkbox"],
+		input[type="radio"] {
+			height: 16px;
 		}
 
 		textarea,
@@ -997,7 +971,7 @@
 				}
 
 				input[type="text"] {
-					width: 72%;
+					width: 73%;
 				}
 
 				a.add, a.remove {
@@ -1105,12 +1079,9 @@
 		}
 
 		&.ui-draggable-dragging {
-			border: 1px solid $color-brand-primary;
 			width: 105px !important;
-			color: $color-brand-primary;
 			text-align: center !important;
 			font-size: 12px !important;
-			box-shadow: 0 0 32px rgba(0, 0, 0, 0.15);
 		}
 	}
 

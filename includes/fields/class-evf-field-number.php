@@ -108,7 +108,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 		$this->field_preview_option( 'label', $field );
 
 		// Primary input.
-		echo '<input type="number" placeholder="' . $placeholder . '" class="primary-input" disabled>';
+		echo '<input type="number" placeholder="' . $placeholder . '" class="widefat" disabled>';
 
 		// Description.
 		$this->field_preview_option( 'description', $field );
@@ -131,6 +131,29 @@ class EVF_Field_Number extends EVF_Form_Fields {
 		printf( '<input type="number" %s %s>',
 			evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ),
 			$primary['required']
+		);
+	}
+
+	/**
+	 * Formats and sanitizes field.
+	 *
+	 * @param int    $field_id
+	 * @param array  $field_submit
+	 * @param array  $form_data
+	 * @param string $meta_key
+	 */
+	public function format( $field_id, $field_submit, $form_data, $meta_key ) {
+		// Define data.
+		$name  = ! empty( $form_data['form_fields'][ $field_id ]['label'] ) ? $form_data['form_fields'][ $field_id ]['label'] : '';
+		$value = preg_replace( '/[^0-9.]/', '', $field_submit );
+
+		// Set final field details.
+		EVF()->task->form_fields[ $field_id ] = array(
+			'name'     => sanitize_text_field( $name ),
+			'value'    => sanitize_text_field( $value ),
+			'id'       => $field_id,
+			'type'     => $this->type,
+			'meta_key' => $meta_key,
 		);
 	}
 }

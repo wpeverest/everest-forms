@@ -121,7 +121,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 		$this->field_preview_option( 'label', $field );
 
 		// Field select element.
-		echo '<select class="primary-input" disabled>';
+		echo '<select class="widefat primary-input" disabled>';
 
 		// Optional placeholder.
 		if ( ! empty( $placeholder ) ) {
@@ -227,7 +227,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 			'name'      => $name,
 			'value'     => '',
 			'value_raw' => $value_raw,
-			'id'        => absint( $field_id ),
+			'id'        => $field_id,
 			'type'      => $this->type,
 			'meta_key'  => $meta_key,
 		);

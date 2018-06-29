@@ -37,6 +37,8 @@ jQuery( function( $ ) {
 			// Check that form title is provided.
 			if ( ! $formName.val() ) {
 				formName = templateName;
+				$( '.everest-forms-setup-name' ).addClass( 'everest-forms-required' ).focus();
+				return false;
 			} else {
 				formName = $formName.val();
 			}
@@ -55,6 +57,8 @@ jQuery( function( $ ) {
 					$this.parent().removeClass( 'loading' );
 					window.location.href = response.data.redirect;
 				} else {
+					$this.parent().removeClass( 'loading' );
+					$( '.everest-forms-setup-name' ).addClass( 'everest-forms-required' ).focus();
 					window.console.log( response );
 				}
 			}).fail( function( xhr ) {
@@ -63,6 +67,8 @@ jQuery( function( $ ) {
 		},
 		input_keypress: function ( e ) {
 			var button = e.keyCode || e.which;
+
+			$( this ).removeClass( 'everest-forms-required' );
 
 			// Enter key.
 			if ( 13 === button && e.target.tagName.toLowerCase() === 'input' ) {
