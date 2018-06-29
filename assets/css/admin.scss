@@ -224,13 +224,39 @@ body.everest-forms-builder-setup,
 		margin: 0;
 
 		.loading-dot {
-			background: url('../images/icons/three-dots.svg');
+			background: url( '../images/icons/three-dots.svg' );
 			opacity: .7;
 			width: 25px;
 			height: 10px;
 			display: inline-block;
 			vertical-align: middle;
 			background-size: 25px 10px;
+		}
+
+		.everest-forms-overlay {
+			width: 100%;
+			z-index: 140005;
+			overflow: hidden;
+			background: #f1f1f1;
+			position: absolute;
+			top: 0;
+			bottom: 0;
+
+			.everest-forms-overlay-content {
+				width: 128px;
+				height: 128px;
+			    position: absolute;
+			    top: 50%;
+			    left: 50%;
+			    transform: translate(-50%, -50%);
+
+				span.loading {
+					display: block;
+					font-size: 20px;
+					text-align: center;
+					letter-spacing: 0.05em;
+				}
+			}
 		}
 
 		nav.evf-nav-tab-wrapper {
