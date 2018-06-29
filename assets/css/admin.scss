@@ -1599,6 +1599,23 @@ img.ui-datepicker-trigger {
 	.everest-forms_page_evf-builder {
 		#everest-forms-builder {
 			position: initial;
+			.everest-forms-nav-wrapper {
+				nav.evf-nav-tab-wrapper {
+					width: calc(100% - 115px);
+				}
+				.evf-forms-nav-right {
+					width: 115px;
+					padding: 9px 17px;
+
+					.evf-shortcode-field {
+						display: none;
+					}
+
+					.everest-forms-save-button {
+						margin: 12px 15px 0 5px;
+					}
+				}
+			}
 
 			.evf-tab-content {
 				.everest-forms-panel {
