@@ -53,6 +53,24 @@
 	width: 1em;
 }
 
+@mixin icon( $glyph: '\e91e' ) {
+	font-family: 'EverestForms';
+	speak: none;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	margin: 0;
+	text-indent: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	content: $glyph;
+}
+
 @mixin icon_dashicons( $glyph: '\f333' ) {
 	font-family: 'Dashicons';
 	speak: none;
@@ -69,6 +87,19 @@
 	height: 100%;
 	text-align: center;
 	content: $glyph;
+}
+
+@mixin iconbefore( $glyph: '\e91e' ) {
+	font-family: 'EverestForms';
+	speak: none;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+	margin-right: 0.618em;
+	content: $glyph;
+	text-decoration: none;
 }
 
 @mixin iconbeforedashicons( $glyph: '\f333' ) {
