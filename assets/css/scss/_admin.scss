@@ -633,6 +633,13 @@
 				}
 			}
 
+			.ui-sortable-placeholder {
+				width: 100%;
+				visibility: visible !important;
+				background-color: transparentize( $blue, 0.95 );
+				border: 1px dashed transparentize( $blue, 0.75 );
+			}
+
 			.everest-forms-field {
 				cursor: all-scroll;
 				margin-bottom: 10px;
@@ -669,9 +676,6 @@
 				}
 
 				&.ui-sortable-placeholder {
-					width: 100%;
-					visibility: visible !important;
-					background-color: transparentize( $blue, 0.95 );
 					border: 1px dashed transparentize( $blue, 0.75 );
 				}
 
@@ -1079,7 +1083,7 @@
 		}
 
 		&.ui-draggable-dragging {
-			width: 105px !important;
+			width: 100% !important;
 			text-align: center !important;
 			font-size: 12px !important;
 		}
