@@ -188,7 +188,7 @@ class EVF_Admin_Notices {
 	 *
 	 * @since 1.2.0
 	 */
-	public function hide_unrelated_notices() {
+	public static function hide_unrelated_notices() {
 		global $wp_filter;
 
 		// Bail if we're not on a EverestForms screen or page.
