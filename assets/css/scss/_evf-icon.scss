@@ -1,13 +1,13 @@
 @font-face {
 	font-family: 'EverestForms';
-	src:  url('fonts/EverestForms.eot?23kqml');
-	src:  url('fonts/EverestForms.eot?23kqml#iefix') format('embedded-opentype'),
-	  url('fonts/EverestForms.ttf?23kqml') format('truetype'),
-	  url('fonts/EverestForms.woff?23kqml') format('woff'),
-	  url('fonts/EverestForms.svg?23kqml#EverestForms') format('svg');
+	src:  url('fonts/EverestForms.eot?84nrxu');
+	src:  url('fonts/EverestForms.eot?84nrxu#iefix') format('embedded-opentype'),
+	  url('fonts/EverestForms.ttf?84nrxu') format('truetype'),
+	  url('fonts/EverestForms.woff?84nrxu') format('woff'),
+	  url('fonts/EverestForms.svg?84nrxu#EverestForms') format('svg');
 	font-weight: normal;
 	font-style: normal;
-}
+  }
 
   [class^="evf-icon"], [class*=" evf-icon"] {
 	/* use !important to prevent issues with browser extensions that change fonts */
@@ -24,6 +24,10 @@
 	-moz-osx-font-smoothing: grayscale;
   }
 
+
+  .evf-icon-copy-clip:before {
+	content: "\e91f";
+  }
   .evf-icon-copy:before {
 	content: "\e91e";
   }

@@ -601,6 +601,7 @@ body.everest-forms-builder-setup,
 						padding: 0;
 						width: 34px;
 						height: 34px;
+						font-size: 18px;
 						margin-left: -4px;
 						border-radius: 0 3px 3px 0;
 						background-color: $header-shade;
@@ -608,7 +609,7 @@ body.everest-forms-builder-setup,
 						&.copy-shortcode {
 
 							&::before {
-								@include iconbefore( '\e91e');
+								@include iconbefore( '\e91f');
 								margin-right: 0;
 							}
 						}
