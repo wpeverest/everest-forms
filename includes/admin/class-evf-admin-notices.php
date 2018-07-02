@@ -192,56 +192,24 @@ class EVF_Admin_Notices {
 		global $wp_filter;
 
 		// Bail if we're not on a EverestForms screen or page.
-		if ( empty( $_REQUEST['page'] ) || false === strpos( $_REQUEST['page'], 'evf-' ) ) {
+		if ( empty( $_REQUEST['page'] ) || false === strpos( sanitize_text_field( wp_unslash( $_REQUEST['page'] ) ), 'evf-' ) ) { // WPCS: input var okay, CSRF ok.
 			return;
 		}
 
-		if ( ! empty( $wp_filter['user_admin_notices']->callbacks ) && is_array( $wp_filter['user_admin_notices']->callbacks ) ) {
-			foreach ( $wp_filter['user_admin_notices']->callbacks as $priority => $hooks ) {
-				foreach ( $hooks as $name => $arr ) {
-					if ( is_object( $arr['function'] ) && $arr['function'] instanceof Closure ) {
-						unset( $wp_filter['user_admin_notices']->callbacks[ $priority ][ $name ] );
-						continue;
-					}
-					if ( ! empty( $arr['function'][0] ) && is_object( $arr['function'][0] ) && strpos( strtolower( get_class( $arr['function'][0] ) ), 'evf-' ) !== false ) {
-						continue;
-					}
-					if ( ! empty( $name ) && strpos( $name, 'evf-' ) === false ) {
-						unset( $wp_filter['user_admin_notices']->callbacks[ $priority ][ $name ] );
-					}
-				}
-			}
-		}
-
-		if ( ! empty( $wp_filter['admin_notices']->callbacks ) && is_array( $wp_filter['admin_notices']->callbacks ) ) {
-			foreach ( $wp_filter['admin_notices']->callbacks as $priority => $hooks ) {
-				foreach ( $hooks as $name => $arr ) {
-					if ( is_object( $arr['function'] ) && $arr['function'] instanceof Closure ) {
-						unset( $wp_filter['admin_notices']->callbacks[ $priority ][ $name ] );
-						continue;
-					}
-					if ( ! empty( $arr['function'][0] ) && is_object( $arr['function'][0] ) && strpos( strtolower( get_class( $arr['function'][0] ) ), 'evf-' ) !== false ) {
-						continue;
-					}
-					if ( ! empty( $name ) && strpos( $name, 'evf-' ) === false ) {
-						unset( $wp_filter['admin_notices']->callbacks[ $priority ][ $name ] );
-					}
-				}
-			}
-		}
-
-		if ( ! empty( $wp_filter['all_admin_notices']->callbacks ) && is_array( $wp_filter['all_admin_notices']->callbacks ) ) {
-			foreach ( $wp_filter['all_admin_notices']->callbacks as $priority => $hooks ) {
-				foreach ( $hooks as $name => $arr ) {
-					if ( is_object( $arr['function'] ) && $arr['function'] instanceof Closure ) {
-						unset( $wp_filter['all_admin_notices']->callbacks[ $priority ][ $name ] );
-						continue;
-					}
-					if ( ! empty( $arr['function'][0] ) && is_object( $arr['function'][0] ) && strpos( strtolower( get_class( $arr['function'][0] ) ), 'evf' ) !== false ) {
-						continue;
-					}
-					if ( ! empty( $name ) && strpos( $name, 'evf-' ) === false ) {
-						unset( $wp_filter['all_admin_notices']->callbacks[ $priority ][ $name ] );
+		foreach ( array( 'user_admin_notices', 'admin_notices', 'all_admin_notices' ) as $wp_notice ) {
+			if ( ! empty( $wp_filter[ $wp_notice ]->callbacks ) && is_array( $wp_filter[ $wp_notice ]->callbacks ) ) {
+				foreach ( $wp_filter[ $wp_notice ]->callbacks as $priority => $hooks ) {
+					foreach ( $hooks as $name => $arr ) {
+						if ( is_object( $arr['function'] ) && $arr['function'] instanceof Closure ) {
+							unset( $wp_filter[ $wp_notice ]->callbacks[ $priority ][ $name ] );
+							continue;
+						}
+						if ( ! empty( $arr['function'][0] ) && is_object( $arr['function'][0] ) && strpos( strtolower( get_class( $arr['function'][0] ) ), 'evf_' ) !== false ) {
+							continue;
+						}
+						if ( ! empty( $name ) && ( ( ( isset( $_GET['tab'], $_GET['form_id'] ) || isset( $_GET['create-form'] ) ) && 'evf-builder' === $_REQUEST['page'] ) || false === strpos( strtolower( $name ), 'evf_' ) ) ) {
+							unset( $wp_filter[ $wp_notice ]->callbacks[ $priority ][ $name ] );
+						}
 					}
 				}
 			}
