@@ -28,18 +28,15 @@ class EVF_Form_Handler {
 		}
 
 		if ( ! empty( $id ) ) {
-
-			// @todo add $id array support
-			// If ID is provided, we get a single form
+			// @todo add $id array support.
+			// If ID is provided, we get a single form.
 			$forms = get_post( absint( $id ) );
 
 			if ( ! empty( $args['content_only'] ) && ! empty( $forms ) && 'everest_form' === $forms->post_type ) {
 				$forms = evf_decode( $forms->post_content );
 			}
 		} else {
-
-
-			// No ID provided, get multiple forms
+			// No ID provided, get multiple forms.
 			$defaults = array(
 				'post_type'     => 'everest_form',
 				'orderby'       => 'id',
@@ -70,8 +67,7 @@ class EVF_Form_Handler {
 	 * @return boolean
 	 */
 	public function delete( $ids = array() ) {
-
-		// Check for permissions
+		// Check for permissions.
 		if ( ! current_user_can( apply_filters( 'everest_forms_manage_cap', 'manage_options' ) ) ) {
 			return false;
 		}
@@ -83,11 +79,10 @@ class EVF_Form_Handler {
 		$ids = array_map( 'absint', $ids );
 
 		foreach ( $ids as $id ) {
-
 			$form = wp_delete_post( $id, true );
 
 			if ( class_exists( 'EVF_Entry_Handler' ) ) {
-				/// Delete entry if exists
+				// Delete entry if exists.
 			}
 
 			if ( ! $form ) {
@@ -277,6 +272,8 @@ class EVF_Form_Handler {
 			if ( ! $new_form_id || is_wp_error( $new_form_id ) ) {
 				return false;
 			}
+
+			return $new_form_id;
 		}
 
 		return true;

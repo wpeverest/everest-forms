@@ -1,34 +1,29 @@
-.evf-btn {
-    border: none;
-    border-radius: 3px;
-    border-width: 2px;
-    color: $color-white;
-    font-weight: 500;
-    padding: 10px 20px;
+.everest-forms-btn,
+a.everest-forms-btn,
+button.everest-forms-btn {
+	border: none;
     cursor: pointer;
-    background-color: $color-gray-base;
+	overflow: hidden;
+    border-width: 2px;
+    padding: 5px 15px;
     line-height: 26px;
+	position: relative;
+    border-radius: 3px;
+    color: $color-white;
+	display: inline-block;
     text-decoration: none;
-    transition: all 0.3s ease 0s;
+	transition: all 0.3s ease 0s;
+    background-color: $color-gray-light;
+	z-index: 1;
 
     &:hover {
-        color: $color-white;
-        box-shadow: 5px 5px 20px transparentize( $color-gray-base, 0.9 );
+		color: $color-white;
+		background-color: desaturate(darken($color-gray-light, 10%), 5%);
     }
 
     &:focus {
+        outline: none;
         box-shadow: none;
         color: $color-white;
-        outline: none;
-
-        &:hover {
-            box-shadow: 5px 5px 20px transparentize( $color-gray-base, 0.9 );
-        }
     }
-}
-
-.evf-bordered-btn {
-    background: none;
-    color: $color-gray-base;
-    border: 1px solid $color-gray-base;
 }

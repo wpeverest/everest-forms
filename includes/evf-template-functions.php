@@ -10,20 +10,38 @@
  * @version  1.0.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Add body classes for EVF pages.
+ *
+ * @param  array $classes Body Classes.
+ * @return array
+ */
+function evf_body_class( $classes ) {
+	$classes = (array) $classes;
+
+	$classes[] = 'everest-forms-no-js';
+
+	add_action( 'wp_footer', 'evf_no_js' );
+
+	return array_unique( $classes );
 }
 
 /**
- * Handle redirects before content is output - hooked into template_redirect so is_page works.
+ * NO JS handling.
+ *
+ * @since 1.2.0
  */
-function evf_template_redirect() {
-	global $wp_query, $wp;
-
-
+function evf_no_js() {
+	?>
+	<script type="text/javascript">
+		var c = document.body.className;
+		c = c.replace( /everest-forms-no-js/, 'everest-forms-js' );
+		document.body.className = c;
+	</script>
+	<?php
 }
-
-add_action( 'template_redirect', 'evf_template_redirect' );
 
 /**
  * Output generator tag to aid debugging.
@@ -38,64 +56,12 @@ add_action( 'template_redirect', 'evf_template_redirect' );
 function evf_generator_tag( $gen, $type ) {
 	switch ( $type ) {
 		case 'html':
-			$gen .= "\n" . '<meta name="generator" content="EverestForms ' . esc_attr( EVF_VERSION ) . '">';
+			$gen .= "\n" . '<meta name="generator" content="Everest Forms ' . esc_attr( EVF_VERSION ) . '">';
 			break;
 		case 'xhtml':
-			$gen .= "\n" . '<meta name="generator" content="EverestForms ' . esc_attr( EVF_VERSION ) . '" />';
+			$gen .= "\n" . '<meta name="generator" content="Everest Forms ' . esc_attr( EVF_VERSION ) . '" />';
 			break;
 	}
 
 	return $gen;
-}
-
-/**
- * Add body classes for EVF pages.
- *
- * @param  array $classes
- *
- * @return array
- */
-function evf_body_class( $classes ) {
-	$classes = (array) $classes;
-
-	return array_unique( $classes );
-}
-
-
-/**
- * Outputs hidden form inputs for each query string variable.
- * @since      1.0.0
- *
- * @param array  $values      Name value pairs.
- * @param array  $exclude     Keys to exclude.
- * @param string $current_key Current key we are outputting.
- * @param bool   $return
- *
- * @return string
- */
-function evf_query_string_form_fields( $values = null, $exclude = array(), $current_key = '', $return = false ) {
-	if ( is_null( $values ) ) {
-		$values = $_GET;
-	}
-	$html = '';
-
-	foreach ( $values as $key => $value ) {
-		if ( in_array( $key, $exclude, true ) ) {
-			continue;
-		}
-		if ( $current_key ) {
-			$key = $current_key . '[' . $key . ']';
-		}
-		if ( is_array( $value ) ) {
-			$html .= evf_query_string_form_fields( $value, $exclude, $key, true );
-		} else {
-			$html .= '<input type="hidden" name="' . esc_attr( $key ) . '" value="' . esc_attr( $value ) . '" />';
-		}
-	}
-
-	if ( $return ) {
-		return $html;
-	} else {
-		echo $html;
-	}
 }

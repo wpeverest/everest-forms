@@ -19,7 +19,8 @@ function evf_get_screen_ids() {
 	$evf_screen_id = sanitize_title( __( 'Everest Forms', 'everest-forms' ) );
 	$screen_ids    = array(
 		'toplevel_page_' . $evf_screen_id,
-		$evf_screen_id . '_page_edit-evf-form',
+		$evf_screen_id . '_page_evf-builder',
+		$evf_screen_id . '_page_evf-entries',
 		$evf_screen_id . '_page_evf-settings',
 		$evf_screen_id . '_page_evf-status',
 		$evf_screen_id . '_page_evf-addons',
@@ -230,7 +231,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 
 			$type   = ! empty( $args['type'] ) ? esc_attr( $args['type'] ) : 'text';
 			$output = sprintf(
-				'<input type="%s" id="everest-forms-panel-field-%s-%s" name="%s" value="%s" placeholder="%s" class="%s" %s>',
+				'<input type="%s" id="everest-forms-panel-field-%s-%s" name="%s" value="%s" placeholder="%s" class="widefat %s" %s>',
 				$type,
 				sanitize_html_class( $panel_id ),
 				sanitize_html_class( $field ),
@@ -246,7 +247,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 		case 'textarea':
 			$rows   = ! empty( $args['rows'] ) ? (int) $args['rows'] : '3';
 			$output = sprintf(
-				'<textarea id="everest-forms-panel-field-%s-%s" name="%s" rows="%d" placeholder="%s" class="%s" %s>%s</textarea>',
+				'<textarea id="everest-forms-panel-field-%s-%s" name="%s" rows="%d" placeholder="%s" class="widefat %s" %s>%s</textarea>',
 				sanitize_html_class( $panel_id ),
 				sanitize_html_class( $field ),
 				$field_name,
@@ -277,7 +278,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 		case 'checkbox':
 			$checked  = checked( '1', $value, false );
 			$checkbox = sprintf(
-				'<input type="hidden" name="%s" value="0" class="%s" %s %s>',
+				'<input type="hidden" name="%s" value="0" class="widefat %s" %s %s>',
 				$field_name,
 				$input_class,
 				$checked,
@@ -315,7 +316,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 				}
 				$checked = checked( $key, $value, false );
 				$output  .= sprintf(
-					'<span class="row"><input type="radio" id="everest-forms-panel-field-%s-%s-%d" name="%s" value="%s" class="%s" %s %s>',
+					'<span class="row"><input type="radio" id="everest-forms-panel-field-%s-%s-%d" name="%s" value="%s" class="widefat %s" %s %s>',
 					sanitize_html_class( $panel_id ),
 					sanitize_html_class( $field ),
 					$x,
@@ -365,7 +366,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 			}
 
 			$output = sprintf(
-				'<select id="everest-forms-panel-field-%s-%s" name="%s" class="%s" %s>',
+				'<select id="everest-forms-panel-field-%s-%s" name="%s" class="widefat %s" %s>',
 				sanitize_html_class( $panel_id ),
 				sanitize_html_class( $field ),
 				$field_name,

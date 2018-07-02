@@ -82,6 +82,10 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 = 1.2.0 - XX-XX-2018 =
 * Feature - Copy shortcode inside form view page.
 
+= 1.1.8 - 07-06-2018 =
+* Fix - Similar meta key exists while duplicating the field.
+* Fix - Entry field value error due to html tags in serialized data.
+
 = 1.1.7 - 28-05-2018 =
 * Fix - Google reCaptcha check with its own server.
 * Fix - Switch to cloned field options after cloning.

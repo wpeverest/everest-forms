@@ -103,13 +103,13 @@ class EVF_Form_Task {
 			}
 
 			// reCAPTCHA check.
-			$site_key   = get_option( 'everest_forms_recaptcha_site_key', '' );
-			$secret_key = get_option( 'everest_forms_recaptcha_site_secret', '' );
+			$site_key   = get_option( 'everest_forms_recaptcha_site_key' );
+			$secret_key = get_option( 'everest_forms_recaptcha_site_secret' );
 			if (
 				! empty( $site_key ) &&
 				! empty( $secret_key ) &&
 				isset( $form_data['settings']['recaptcha_support'] ) &&
-				'1' == $form_data['settings']['recaptcha_support']
+				'1' === $form_data['settings']['recaptcha_support']
 			) {
 				if ( ! empty( $_POST['g-recaptcha-response'] ) ) {
 					$data  = wp_remote_get( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $_POST['g-recaptcha-response'] );

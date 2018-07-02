@@ -1,0 +1,194 @@
+/**
+ * menu.scss
+ * Styles applied to dashboard menu items added via EverestForms.
+ * Adds icons to top level menu items, etc.
+ */
+
+/**
+ * Imports
+ */
+@import 'mixins';
+@import 'variables';
+@import 'fonts';
+
+/**
+ * Styling begins.
+ */
+#evf-modal-wrap {
+	display: none;
+	background-color: #fff;
+	-webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+	width: 500px;
+	height: 250px;
+	overflow: hidden;
+	margin-left: -250px;
+	margin-top: -125px;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	z-index: 100105;
+	-webkit-transition: height 0.2s, margin-top 0.2s;
+	transition: height 0.2s, margin-top 0.2s;
+
+	#evf-modal {
+		height: 100%;
+		position: relative;
+
+		#evf-modal-title {
+			background: #fcfcfc;
+			border-bottom: 1px solid #dfdfdf;
+			height: 36px;
+			font-size: 18px;
+			font-weight: 600;
+			line-height: 36px;
+			padding: 0 36px 0 16px;
+			top: 0;
+			right: 0;
+			left: 0
+		}
+
+		#evf-modal-close {
+			color: #666;
+			padding: 0;
+			position: absolute;
+			top: 0;
+			right: 0;
+			width: 36px;
+			height: 36px;
+			text-align: center;
+			background: 0 0;
+			border: none;
+			cursor: pointer;
+
+			&:hover,
+			&:focus {
+				color: #2ea2cc;
+			}
+
+			&:focus {
+				outline: 0;
+				box-shadow: 0 0 0 1px #5b9dd9, 0 0 2px 1px rgba(30, 140, 190, .8)
+			}
+
+			&::before {
+				content: '\f158';
+				font: normal 20px/36px dashicons;
+				vertical-align: top;
+				speak: none;
+				width: 36px;
+				height: 36px;
+			}
+		}
+
+		#evf-modal-inner {
+			padding: 0 16px 50px;
+
+			#evf-modal-notice {
+				padding: 10px;
+				color: #31708f;
+				background-color: #d9edf7;
+				border: 1px solid #bce8f1;
+			}
+
+			#evf-modal-options {
+				padding: 8px 0 12px;
+
+				.evf-modal-inline {
+					margin: 0;
+					padding: 0 20px 0 0;
+					display: inline-block;
+				}
+
+				#evf-modal-select-form {
+					max-width: 100%;
+					margin-bottom: 1em;
+				}
+			}
+		}
+
+		.submitbox {
+			padding: 8px 16px;
+			background: #fcfcfc;
+			border-top: 1px solid #dfdfdf;
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			right: 0;
+
+			#evf-modal-cancel {
+				float: left;
+				line-height: 25px;
+			}
+
+			#evf-modal-update {
+				float: right;
+				line-height: 23px;
+
+				#evf-modal-submit {
+					float: right;
+					margin-bottom: 0;
+				}
+			}
+		}
+	}
+}
+
+#evf-modal-backdrop {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	min-height: 360px;
+	background: #000;
+	opacity: 0.7;
+	filter: alpha(opacity=70);
+	z-index: 100100;
+}
+
+@media screen and (max-width:782px) {
+	#evf-modal-wrap {
+		height: 280px;
+		margin-top: -140px;
+	}
+	#evf-modal-inner {
+		padding: 0 16px 60px;
+	}
+	#evf-modal-cancel {
+		line-height: 32px;
+	}
+}
+
+@media screen and (max-width:520px) {
+	#evf-modal-wrap {
+		width: auto;
+		margin-left: 0;
+		left: 10px;
+		right: 10px;
+		max-width: 500px;
+	}
+}
+
+@media screen and (max-height:520px) {
+	#evf-modal-wrap {
+		-webkit-transition: none;
+		transition: none;
+	}
+}
+
+@media screen and (max-height:290px) {
+	#evf-modal-wrap {
+		height: auto;
+		margin-top: 0;
+		top: 10px;
+		bottom: 10px;
+	}
+	#evf-modal-inner {
+		overflow: auto;
+		height: -webkit-calc(100% - 92px);
+		height: calc(100% - 92px);
+		padding-bottom: 2px;
+	}
+}
