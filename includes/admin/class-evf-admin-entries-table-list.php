@@ -95,8 +95,8 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 */
 	protected function get_sortable_columns() {
 		return array(
-			'id'   => array( 'title', false ),
-			'date' => array( 'date_created', false ),
+			'id' => array( 'title', false ),
+			// 'date' => array( 'date_created', false ),
 		);
 	}
 
