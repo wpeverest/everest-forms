@@ -135,6 +135,7 @@ final class EverestForms {
 	private function init_hooks() {
 		register_activation_hook( EVF_PLUGIN_FILE, array( 'EVF_Install', 'install' ) );
 		register_shutdown_function( array( $this, 'log_errors' ) );
+		add_action( 'wp_mail_failed', array( $this, 'log_mail_errors' ) );
 		add_action( 'after_setup_theme', array( $this, 'include_template_functions' ), 11 );
 		add_action( 'init', array( $this, 'init' ), 0 );
 		add_action( 'init', array( $this, 'form_fields' ), 0 );
@@ -157,6 +158,24 @@ final class EverestForms {
 				$error['message'] . PHP_EOL,
 				array(
 					'source' => 'fatal-errors',
+				)
+			);
+		}
+	}
+
+	/**
+	 * Ensures fatal errors are logged so they can be picked up in the status report.
+	 *
+	 * @since 1.1.5
+	 */
+	public function log_mail_errors( $wp_error ) {
+		$error = $wp_error->errors;
+		if ( is_wp_error( $wp_error ) ) {
+			$logger = evf_get_logger();
+			$logger->critical(
+				current( $error['wp_mail_failed'] ),
+				array(
+					'source' => 'email-errors',
 				)
 			);
 		}

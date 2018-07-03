@@ -112,7 +112,6 @@ class EVF_Emails {
 		// Hooks.
 		add_action( 'everest_forms_email_send_before', array( $this, 'send_before' ) );
 		add_action( 'everest_forms_email_send_after', array( $this, 'send_after' ) );
-
 	}
 
 	/**
