@@ -14,17 +14,13 @@ defined( 'ABSPATH' ) || exit;
 class EVF_Field_Textarea extends EVF_Form_Fields {
 
 	/**
-	 * Primary class constructor.
-	 *
-	 * @since      1.0.0
+	 * Constructor.
 	 */
 	public function init() {
-
-		// Define field type information
-		$this->name  = __( 'Paragraph Text', 'everest-forms' );
+		$this->name  = esc_html__( 'Paragraph Text', 'everest-forms' );
 		$this->type  = 'textarea';
 		$this->icon  = 'evf-icon evf-icon-paragraph';
-		$this->order = 4;
+		$this->order = 40;
 	}
 
 	/**

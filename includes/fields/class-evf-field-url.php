@@ -14,13 +14,10 @@ defined( 'ABSPATH' ) || exit;
 class EVF_Field_URL extends EVF_Form_Fields {
 
 	/**
-	 * Primary class constructor.
-	 *
-	 * @since      1.0.0
+	 * Constructor.
 	 */
 	public function init() {
-		// Define field type information.
-		$this->name  = __( 'Website / URL', 'everest-forms' );
+		$this->name  = esc_html__( 'Website / URL', 'everest-forms' );
 		$this->type  = 'url';
 		$this->icon  = 'evf-icon evf-icon-website';
 		$this->order = 10;

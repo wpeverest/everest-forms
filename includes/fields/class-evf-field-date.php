@@ -14,16 +14,13 @@ defined( 'ABSPATH' ) || exit;
 class EVF_Field_Date extends EVF_Form_Fields {
 
 	/**
-	 * Primary class constructor.
-	 *
-	 * @since      1.0.0
+	 * Constructor.
 	 */
 	public function init() {
-		// Define field type information.
-		$this->name  = __( 'Date', 'everest-forms' );
+		$this->name  = esc_html__( 'Date', 'everest-forms' );
 		$this->type  = 'date';
 		$this->icon  = 'evf-icon evf-icon-date-time';
-		$this->order = 11;
+		$this->order = 20;
 		$this->group = 'advanced';
 	}
 

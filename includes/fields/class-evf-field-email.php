@@ -1,31 +1,26 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+/**
+ * Email field.
+ *
+ * @package EverestForms\Fields
+ * @since   1.0.0
+ */
+
+defined( 'ABSPATH' ) || exit;
 
 /**
- * Email field
- *
- * @package    EverestForms
- * @author     WPEverest
- * @since      1.0.0
+ * EVF_Field_Number class.
  */
 class EVF_Field_Email extends EVF_Form_Fields {
 
-
 	/**
-	 * Primary class constructor.
-	 *
-	 * @since      1.0.0
+	 * Constructor.
 	 */
 	public function init() {
-
-		// Define field type information.
-		$this->name  = __( 'Email', 'everest-forms' );
+		$this->name  = esc_html__( 'Email', 'everest-forms' );
 		$this->type  = 'email';
 		$this->icon  = 'evf-icon evf-icon-email';
-		$this->order = 9;
-
+		$this->order = 90;
 	}
 
 	public function field_options( $field ) {

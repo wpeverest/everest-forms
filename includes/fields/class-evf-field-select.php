@@ -14,25 +14,21 @@ defined( 'ABSPATH' ) || exit;
 class EVF_Field_Select extends EVF_Form_Fields {
 
 	/**
-	 * Primary class constructor.
-	 *
-	 * @since      1.0.0
+	 * Constructor.
 	 */
 	public function init() {
-
-		// Define field type information
-		$this->name     = __( 'Dropdown', 'everest-forms' );
+		$this->name     = esc_html__( 'Dropdown', 'everest-forms' );
 		$this->type     = 'select';
 		$this->icon     = 'evf-icon evf-icon-dropdown';
-		$this->order    = 5;
+		$this->order    = 50;
 		$this->defaults = array(
 			1 => array(
-				'label'   => __( 'Option 1', 'everest-forms' ),
+				'label'   => esc_html__( 'Option 1', 'everest-forms' ),
 				'value'   => '',
 				'default' => '',
 			),
 			2 => array(
-				'label'   => __( 'Option 2', 'everest-forms' ),
+				'label'   => esc_html__( 'Option 2', 'everest-forms' ),
 				'value'   => '',
 				'default' => '',
 			),

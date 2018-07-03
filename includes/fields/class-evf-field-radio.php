@@ -14,30 +14,26 @@ defined( 'ABSPATH' ) || exit;
 class EVF_Field_Radio extends EVF_Form_Fields {
 
 	/**
-	 * Primary class constructor.
-	 *
-	 * @since      1.0.0
+	 * Constructor.
 	 */
 	public function init() {
-
-		// Define field type information
-		$this->name     = __( 'Multiple Choice', 'everest-forms' );
+		$this->name     = esc_html__( 'Multiple Choice', 'everest-forms' );
 		$this->type     = 'radio';
 		$this->icon     = 'evf-icon evf-icon-multiple-choices';
-		$this->order    = 6;
+		$this->order    = 60;
 		$this->defaults = array(
 			1 => array(
-				'label'   => __( 'First Choice', 'everest-forms' ),
+				'label'   => esc_html__( 'First Choice', 'everest-forms' ),
 				'value'   => '',
 				'default' => '',
 			),
 			2 => array(
-				'label'   => __( 'Second Choice', 'everest-forms' ),
+				'label'   => esc_html__( 'Second Choice', 'everest-forms' ),
 				'value'   => '',
 				'default' => '',
 			),
 			3 => array(
-				'label'   => __( 'Third Choice', 'everest-forms' ),
+				'label'   => esc_html__( 'Third Choice', 'everest-forms' ),
 				'value'   => '',
 				'default' => '',
 			),

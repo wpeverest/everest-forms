@@ -14,17 +14,13 @@ defined( 'ABSPATH' ) || exit;
 class EVF_Field_Last_Name extends EVF_Form_Fields {
 
 	/**
-	 * Primary class constructor.
-	 *
-	 * @since      1.0.0
+	 * Constructor.
 	 */
 	public function init() {
-
-		// Define field type information.
-		$this->name  = __( 'Last Name', 'everest-forms' );
+		$this->name  = esc_html__( 'Last Name', 'everest-forms' );
 		$this->type  = 'last-name';
 		$this->icon  = 'evf-icon evf-icon-last-name';
-		$this->order = 2;
+		$this->order = 20;
 	}
 
 	/**

@@ -14,30 +14,26 @@ defined( 'ABSPATH' ) || exit;
 class EVF_Field_Checkbox extends EVF_Form_Fields {
 
 	/**
-	 * Primary class constructor.
-	 *
-	 * @since      1.0.0
+	 * Constructor.
 	 */
 	public function init() {
-
-		// Define field type information
-		$this->name     = __( 'Checkboxes', 'everest-forms' );
+		$this->name     = esc_html__( 'Checkboxes', 'everest-forms' );
 		$this->type     = 'checkbox';
 		$this->icon     = 'evf-icon  evf-icon-checkbox';
-		$this->order    = 7;
+		$this->order    = 70;
 		$this->defaults = array(
 			1 => array(
-				'label'   => __( 'First Choice', 'everest-forms' ),
+				'label'   => esc_html__( 'First Choice', 'everest-forms' ),
 				'value'   => '',
 				'default' => '',
 			),
 			2 => array(
-				'label'   => __( 'Second Choice', 'everest-forms' ),
+				'label'   => esc_html__( 'Second Choice', 'everest-forms' ),
 				'value'   => '',
 				'default' => '',
 			),
 			3 => array(
-				'label'   => __( 'Third Choice', 'everest-forms' ),
+				'label'   => esc_html__( 'Third Choice', 'everest-forms' ),
 				'value'   => '',
 				'default' => '',
 			),

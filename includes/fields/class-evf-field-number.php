@@ -14,17 +14,13 @@ defined( 'ABSPATH' ) || exit;
 class EVF_Field_Number extends EVF_Form_Fields {
 
 	/**
-	 * Primary class constructor.
-	 *
-	 * @since      1.0.0
+	 * Constructor.
 	 */
 	public function init() {
-
-		// Define field type information.
-		$this->name  = __( 'Number', 'everest-forms' );
+		$this->name  = esc_html__( 'Number', 'everest-forms' );
 		$this->type  = 'number';
 		$this->icon  = 'evf-icon  evf-icon-number';
-		$this->order = 8;
+		$this->order = 80;
 	}
 
 	/**

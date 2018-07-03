@@ -17,12 +17,11 @@ class EVF_Field_City extends EVF_Form_Fields {
 	 * Constructor.
 	 */
 	public function init() {
-		// Define field type information.
-		$this->name  = esc_html__( 'City', 'everest-forms' );
-		$this->type  = 'city';
-		$this->icon  = 'evf-icon evf-icon-address';
-		$this->order = 16;
-		$this->group = 'address';
+		$this->name   = esc_html__( 'City', 'everest-forms' );
+		$this->type   = 'city';
+		$this->icon   = 'evf-icon evf-icon-address';
+		$this->order  = 20;
+		$this->group  = 'address';
 		$this->is_pro = true;
 	}
 }

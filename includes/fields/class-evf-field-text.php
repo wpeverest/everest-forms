@@ -14,17 +14,13 @@ defined( 'ABSPATH' ) || exit;
 class EVF_Field_Text extends EVF_Form_Fields {
 
 	/**
-	 * Primary class constructor.
-	 *
-	 * @since      1.0.0
+	 * Constructor.
 	 */
 	public function init() {
-
-		// Define field type information.
-		$this->name  = __( 'Single Line Text', 'everest-forms' );
+		$this->name  = esc_html__( 'Single Line Text', 'everest-forms' );
 		$this->type  = 'text';
 		$this->icon  = 'evf-icon evf-icon-text';
-		$this->order = 3;
+		$this->order = 30;
 
 		// Define additional field properties.
 		add_filter( 'evf_field_properties_text', array( $this, 'field_properties' ), 5, 3 );

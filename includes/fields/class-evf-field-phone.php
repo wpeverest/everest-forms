@@ -17,11 +17,10 @@ class EVF_Field_Phone extends EVF_Form_Fields {
 	 * Constructor.
 	 */
 	public function init() {
-		// Define field type information.
 		$this->name  = esc_html__( 'Phone', 'everest-forms' );
 		$this->type  = 'phone';
 		$this->icon  = 'evf-icon evf-icon-phone';
-		$this->order = 14;
+		$this->order = 50;
 		$this->group = 'advanced';
 		$this->is_pro = true;
 	}
