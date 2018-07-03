@@ -116,7 +116,7 @@ class EVF_Fields {
 
 		if ( count( $this->form_fields ) > 0 ) {
 			foreach ( $this->form_fields as $group => $field ) {
-				$_available_fields[ $group ][ $field->type ] = $field;
+				$_available_fields[ $group ] = $field;
 			}
 		}
 

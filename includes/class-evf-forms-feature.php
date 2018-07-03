@@ -24,7 +24,7 @@ class EVF_Forms_Features {
 	 */
 	public function __construct() {
 		add_action( 'everest_forms_form_settings_notifications', array( $this, 'form_settings_notifications' ), 8, 1 );
-		add_filter( 'everest_forms_builder_fields_groups', array( $this, 'fields_groups' ), 20 );
+		// add_filter( 'everest_forms_builder_fields_groups', array( $this, 'fields_groups' ), 20 );
 	}
 
 	/**

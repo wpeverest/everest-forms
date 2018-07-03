@@ -87,9 +87,6 @@ abstract class EVF_Form_Fields {
 		// Bootstrap.
 		$this->init();
 
-		// Add fields tab.
-		add_filter( 'everest_forms_builder_fields_groups', array( $this, 'field_button' ), 15 );
-
 		// Field options tab.
 		add_action( "everest_forms_builder_fields_options_{$this->type}", array( $this, 'field_options' ), 10 );
 
@@ -115,26 +112,6 @@ abstract class EVF_Form_Fields {
 	 * @since 1.0.0
 	 */
 	public function init() {}
-
-	/**
-	 * Create the button for the 'Add Fields' tab, inside the form editor.
-	 *
-	 * @since  1.0.0
-	 * @param  array $fields
-	 * @return array
-	 */
-	public function field_button( $fields ) {
-		// Add field information to fields array.
-		$fields[ $this->group ]['fields'][] = array(
-			'name'  => $this->name,
-			'type'  => $this->type,
-			'icon'  => $this->icon,
-			'class' => $this->class,
-		);
-
-		// Wipe hands clean.
-		return $fields;
-	}
 
 	/**
 	 * Creates the field options panel. Used by subclasses.

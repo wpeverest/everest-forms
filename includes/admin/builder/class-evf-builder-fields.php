@@ -84,44 +84,18 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 	public function output_fields() {
 		$form_fields = EVF()->form_fields->form_fields();
 
-		echo '<pre>' . print_r( $form_fields, true ) . '</pre>';
-
-		return false;
-
-		$fields_groups = apply_filters(
-			'everest_forms_builder_fields_groups', array(
-				'general'  => array(
-					'title'  => esc_html__( 'General Fields', 'everest-forms' ),
-					'fields' => array(),
-				),
-				'advanced' => array(
-					'title'  => esc_html__( 'Advanced Fields', 'everest-forms' ),
-					'fields' => array(),
-				),
-				'address'  => array(
-					'title' => esc_html__( 'Address Fields', 'everest-forms' ),
-					'fields'     => array(),
-				),
-				'payment'  => array(
-					'title'  => esc_html__( 'Payment Fields', 'everest-forms' ),
-					'fields' => array(),
-				),
-			)
-		);
-
-		// Output fields group buttons.
-		if ( ! empty( $fields_groups ) ) {
-			foreach ( $fields_groups as $id => $fields_group ) {
+		if ( ! empty( $form_fields ) ) {
+			foreach ( $form_fields as $group => $form_field ) {
 				?>
 				<div class="everest-forms-add-fields-group open">
-					<a href="#" class="everest-forms-add-fields-heading" data-group="<?php echo esc_attr( $id ); ?>"><?php echo esc_html( $fields_group['title'] ); ?><i class="handlediv"></i></a>
+					<a href="#" class="everest-forms-add-fields-heading" data-group="<?php echo esc_attr( $group ); ?>"><?php echo evf_get_fields_group( $group ); ?><i class="handlediv"></i></a>
 					<div class="evf-registered-buttons">
-						<?php foreach ( $fields_group['fields'] as $field ) : ?>
-							<button type="button" id="everest-forms-add-fields-<?php echo esc_attr( $field['type'] ); ?>" class="evf-registered-item <?php echo sanitize_html_class( $field['class'] ); ?>" data-field-type="<?php esc_attr( $field['type'] ); ?>">
-								<?php if ( isset( $field['icon'] ) ) : ?>
-									<i class="<?php echo esc_attr( $field['icon'] ); ?>"></i>
+						<?php foreach ( $form_field as $field ) : ?>
+							<button type="button" id="everest-forms-add-fields-<?php echo esc_attr( $field->type ); ?>" class="evf-registered-item <?php echo sanitize_html_class( $field->class ); ?>" data-field-type="<?php echo esc_attr( $field->type ); ?>">
+								<?php if ( isset( $field->icon ) ) : ?>
+									<i class="<?php echo esc_attr( $field->icon ); ?>"></i>
 								<?php endif; ?>
-								<?php echo esc_html( $field['name'] ); ?>
+								<?php echo esc_html( $field->name ); ?>
 							</button>
 						<?php endforeach; ?>
 					</div>

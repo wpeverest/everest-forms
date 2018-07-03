@@ -1726,7 +1726,7 @@ function evf_get_fields_groups() {
  * @param string $type Coupon type.
  * @return string
  */
-function evf_get_builder_fields_groups( $type = '' ) {
-	$types = evf_get_builder_fields_groups();
+function evf_get_fields_group( $type = '' ) {
+	$types = evf_get_fields_groups();
 	return isset( $types[ $type ] ) ? $types[ $type ] : '';
 }
