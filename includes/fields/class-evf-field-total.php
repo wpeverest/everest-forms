@@ -17,11 +17,11 @@ class EVF_Field_Total extends EVF_Form_Fields {
 	 * Constructor.
 	 */
 	public function init() {
-		$this->name  = esc_html__( 'Total', 'everest-forms-pro' );
-		$this->type  = 'payment-total';
-		$this->icon  = 'evf-icon evf-icon-total';
-		$this->order = 21;
-		$this->group = 'payment';
+		$this->name   = esc_html__( 'Total', 'everest-forms-pro' );
+		$this->type   = 'payment-total';
+		$this->icon   = 'evf-icon evf-icon-total';
+		$this->order  = 30;
+		$this->group  = 'payment';
 		$this->is_pro = true;
 	}
 }

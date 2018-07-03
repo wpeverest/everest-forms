@@ -17,11 +17,11 @@ class EVF_Field_Single_Item extends EVF_Form_Fields {
 	 * Constructor.
 	 */
 	public function init() {
-		$this->name  = esc_html__( 'Single Item', 'everest-forms-pro' );
-		$this->type  = 'payment-single';
-		$this->icon  = 'evf-icon evf-icon-single-item';
-		$this->order = 19;
-		$this->group = 'payment';
+		$this->name   = esc_html__( 'Single Item', 'everest-forms-pro' );
+		$this->type   = 'payment-single';
+		$this->icon   = 'evf-icon evf-icon-single-item';
+		$this->order  = 10;
+		$this->group  = 'payment';
 		$this->is_pro = true;
 	}
 }
