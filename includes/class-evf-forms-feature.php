@@ -25,6 +25,24 @@ class EVF_Forms_Features {
 	public function __construct() {
 		add_action( 'everest_forms_form_settings_notifications', array( $this, 'form_settings_notifications' ), 8, 1 );
 		// add_filter( 'everest_forms_builder_fields_groups', array( $this, 'fields_groups' ), 20 );
+
+		if ( ! defined( 'EFP_PLUGIN_FILE' ) ) {
+			add_filter( 'everest_forms_fields', array( $this, 'form_fields' ) );
+		}
+	}
+
+	/**
+	 * Load additional fields available in the Pro version.
+	 *
+	 * @param  array $fields Registered form fields.
+	 * @return array
+	 */
+	public function form_fields( $fields ) {
+		$pro_fields = array(
+			'EVF_Field_File_Upload'
+		);
+
+		return array_merge( $fields, $pro_fields );
 	}
 
 	/**
@@ -89,51 +107,6 @@ class EVF_Forms_Features {
 			)
 		);
 		echo ' </div > ';
-	}
-
-	/**
-	 * Display/register additional fields available in the Pro version.
-	 *
-	 * @param  array $fields
-	 * @return array
-	 */
-	public function fields_groups( $fields ) {
-		if ( ! defined( 'EFP_PLUGIN_FILE' ) ) {
-			$pro_advanced_fields = array(
-				array(
-					'icon'  => 'evf-icon evf-icon-file-upload',
-					'name'  => 'File Upload',
-					'type'  => 'file-upload',
-					'order' => 12,
-					'class' => 'upgrade-modal',
-				),
-				array(
-					'icon'  => 'evf-icon evf-icon-hidden-field',
-					'name'  => 'Hidden Field',
-					'type'  => 'hidden',
-					'order' => 13,
-					'class' => 'upgrade-modal',
-				),
-				array(
-					'icon'  => 'evf-icon evf-icon-address',
-					'name'  => 'Address',
-					'type'  => 'address',
-					'order' => 14,
-					'class' => 'upgrade-modal',
-				),
-				array(
-					'icon'  => 'evf-icon evf-icon-phone',
-					'name'  => 'Phone',
-					'type'  => 'phone',
-					'order' => 15,
-					'class' => 'upgrade-modal',
-				),
-			);
-
-			$fields['advanced']['fields'] = array_merge( $fields['advanced']['fields'], $pro_advanced_fields );
-		}
-
-		return $fields;
 	}
 }
 

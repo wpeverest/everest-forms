@@ -70,6 +70,13 @@ abstract class EVF_Form_Fields {
 	public $form_data;
 
 	/**
+	 * Is available in Pro?
+	 *
+	 * @var boolean
+	 */
+	protected $is_pro = false;
+
+	/**
 	 * Primary class constructor.
 	 *
 	 * @since 1.0.0
@@ -86,6 +93,11 @@ abstract class EVF_Form_Fields {
 
 		// Bootstrap.
 		$this->init();
+
+		// Is pro field?
+		if ( $this->is_pro ) {
+			$this->class = 'upgrade-modal';
+		}
 
 		// Field options tab.
 		add_action( "everest_forms_builder_fields_options_{$this->type}", array( $this, 'field_options' ), 10 );

@@ -103,14 +103,7 @@
 		 * @since 1.0.0
 		 */
 		load: function () {
-			var loadingTimer;
-
-			clearTimeout( loadingTimer );
-
-			// Remove Loading overlay.
-			loadingTimer = setTimeout( function() {
-				$( '.everest-forms-overlay' ).fadeOut();
-			}, 250 );
+			$( '.everest-forms-overlay' ).fadeOut();
 		},
 
 		/**
