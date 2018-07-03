@@ -210,7 +210,7 @@ class EVF_Admin_Entries {
 					'empty_trash',
 					'empty_trash',
 					/* translators: %d: number of entries */
-					sprintf( _n( '%d entry permanently deleted.', '%d entries permanently deleted.', $count ), $count ),
+					sprintf( _n( '%d entry permanently deleted.', '%d entries permanently deleted.', $count, 'everest-forms' ), $count ),
 					'updated'
 				);
 			}

@@ -506,7 +506,7 @@ function evf_get_logger() {
 			evf_doing_it_wrong(
 				__FUNCTION__,
 				sprintf(
-					/* translators: 1: class name 2: woocommerce_logging_class 3: EVF_Logger_Interface */
+					/* translators: 1: class name 2: everest_forms_logging_class 3: EVF_Logger_Interface */
 					__( 'The class %1$s provided by %2$s filter must implement %3$s.', 'everest-forms' ),
 					'<code>' . esc_html( is_object( $class ) ? get_class( $class ) : $class ) . '</code>',
 					'<code>everest_forms_logging_class</code>',
