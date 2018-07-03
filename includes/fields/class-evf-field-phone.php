@@ -1,6 +1,6 @@
 <?php
 /**
- * File upload field
+ * Phone field
  *
  * @package EverestForms\Fields
  * @since   1.2.0
