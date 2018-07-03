@@ -554,8 +554,8 @@
 		 	var old_field_label = $('#everest-forms-field-option-' + old_key + '-label').val();
 		 	var field_type = field.attr('data-field-type'),
 		 	newOptionHtml = option.html(),
-		 	new_field_label = old_field_label + evf_data.i18n_copy,
-		 	new_meta_key =  old_field_label.replace(" ","_").toLowerCase() + "_" + Math.floor(1000 + Math.random() * 9000),
+		 	new_field_label = old_field_label + ' ' + evf_data.i18n_copy,
+		 	new_meta_key =  old_field_label.split( ' ' ).join( '_' ).replace( /\(|\)/g, '' ).toLowerCase() + '_' + Math.floor( 1000 + Math.random() * 9000 ),
 		 	newFieldCloned = field.clone();
 		 	var regex = new RegExp(old_key, 'g');
 		 	newOptionHtml = newOptionHtml.replace(regex, new_key);
