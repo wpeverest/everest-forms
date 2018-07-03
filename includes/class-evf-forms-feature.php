@@ -42,7 +42,8 @@ class EVF_Forms_Features {
 			'EVF_Field_Hidden',
 			'EVF_Field_Phone',
 			'EVF_Field_Address',
-			'EVF_Field_City'
+			'EVF_Field_City',
+			'EVF_Field_Country'
 		);
 
 		return array_merge( $fields, $pro_fields );
