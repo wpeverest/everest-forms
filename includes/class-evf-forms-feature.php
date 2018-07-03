@@ -40,7 +40,8 @@ class EVF_Forms_Features {
 	public function form_fields( $fields ) {
 		$pro_fields = array(
 			'EVF_Field_File_Upload',
-			'EVF_Field_Hidden'
+			'EVF_Field_Hidden',
+			'EVF_Field_Phone'
 		);
 
 		return array_merge( $fields, $pro_fields );
