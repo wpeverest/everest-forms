@@ -96,7 +96,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	protected function get_sortable_columns() {
 		$sortable_columns = array();
 
-		if ( isset( $_REQUEST['form_id'] ) ) {
+		if ( isset( $_GET['form_id'] ) ) {
 			$sortable_columns = array(
 				'date' => array( 'date_created', false ),
 			);
