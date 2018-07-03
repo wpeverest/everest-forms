@@ -43,7 +43,11 @@ class EVF_Forms_Features {
 			'EVF_Field_Phone',
 			'EVF_Field_Address',
 			'EVF_Field_City',
-			'EVF_Field_Country'
+			'EVF_Field_Country',
+			'EVF_Field_Zip',
+			'EVF_Field_Single_Item',
+			'EVF_Field_Multiple_Item',
+			'EVF_Field_Total'
 		);
 
 		return array_merge( $fields, $pro_fields );
