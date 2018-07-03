@@ -96,7 +96,7 @@
 			.everest-forms-panel-sidebar {
 				width: 400px;
 				background-color: #f8f9fa;
-				border-right: 1px solid $color-border-right;
+				border-right: 1px solid #E0E3E6;
 
 				.everest-forms-add-fields-heading {
 					display: block;
@@ -562,10 +562,6 @@
 
 						&.ui-draggable-dragging {
 							margin-bottom: 10px;
-
-							.evf-icon {
-								display: block;
-							}
 						}
 
 						.evf-icon {
@@ -633,6 +629,13 @@
 				}
 			}
 
+			.ui-sortable-placeholder {
+				width: 100%;
+				visibility: visible !important;
+				background-color: transparentize( $blue, 0.95 );
+				border: 1px dashed transparentize( $blue, 0.75 );
+			}
+
 			.everest-forms-field {
 				cursor: all-scroll;
 				margin-bottom: 10px;
@@ -669,9 +672,6 @@
 				}
 
 				&.ui-sortable-placeholder {
-					width: 100%;
-					visibility: visible !important;
-					background-color: transparentize( $blue, 0.95 );
 					border: 1px dashed transparentize( $blue, 0.75 );
 				}
 
@@ -1079,7 +1079,7 @@
 		}
 
 		&.ui-draggable-dragging {
-			width: 105px !important;
+			width: 100% !important;
 			text-align: center !important;
 			font-size: 12px !important;
 		}
@@ -1198,10 +1198,6 @@
 			.dashicons {
 				font-size: 24px;
 			}
-		}
-
-		.everest-forms-save-button {
-			margin: 12px 15px 0 5px;
 		}
 
 		.evf-tab-content {

@@ -18,7 +18,7 @@ jQuery( function( $ ) {
 		title_focus: function() {
 			setTimeout( function (){
 				$( '#everest-forms-setup-name' ).focus();
-			}, 100);
+			}, 100 );
 		},
 		template_select: function( e ) {
 			e.preventDefault();

@@ -73,14 +73,11 @@ class EVF_Field_First_Name extends EVF_Form_Fields {
 		);
 		$this->field_option( 'advanced-options', $field, $args );
 
-
-
 		// Placeholder.
 		$this->field_option( 'placeholder', $field );
 
 		// Hide label.
 		$this->field_option( 'label_hide', $field );
-
 
 		// Custom CSS classes.
 		$this->field_option( 'css', $field );

@@ -256,7 +256,7 @@ class EVF_Shortcode_Form {
 	public static function process_recaptcha( $form_data ){
 		$site_key   = get_option( 'everest_forms_recaptcha_site_key' );
 		$secret_key = get_option( 'everest_forms_recaptcha_site_secret' );
-		if ( ! empty( $site_key ) || ! empty( $secret_key ) ) {
+		if ( ! $site_key || ! $secret_key ) {
 			return;
 		}
 

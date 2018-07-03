@@ -82,7 +82,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		$columns               = array();
 		$columns['cb']         = '<input type="checkbox" />';
 		$columns               = apply_filters( 'everest_forms_entries_table_form_fields_columns', $this->get_columns_form_fields( $columns ) );
-		$columns['date']       = esc_html__( 'Date', 'everest-forms' );
+		$columns['date']       = esc_html__( 'Date Created', 'everest-forms' );
 		$columns['actions']    = esc_html__( 'Actions', 'everest-forms' );
 
 		return apply_filters( 'everest_forms_entries_table_columns', $columns, $this->form_data );
@@ -94,10 +94,17 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 * @return array
 	 */
 	protected function get_sortable_columns() {
-		return array(
+		$sortable_columns = array();
+
+		if ( isset( $_GET['form_id'] ) ) {
+			$sortable_columns = array(
+				'date' => array( 'date_created', false ),
+			);
+		}
+
+		return array_merge( array(
 			'id'   => array( 'title', false ),
-			'date' => array( 'date_created', false ),
-		);
+		), $sortable_columns );
 	}
 
 	/**
@@ -362,7 +369,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 					'bulk_action',
 					'bulk_action',
 					/* translators: %d: number of entries */
-					sprintf( _n( '%d entry moved to the Trash.', '%d entries moved to the Trash.', $count ), $count ),
+					sprintf( _n( '%d entry moved to the Trash.', '%d entries moved to the Trash.', $count, 'everest-forms' ), $count ),
 					'updated'
 				);
 				break;
@@ -377,7 +384,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 					'bulk_action',
 					'bulk_action',
 					/* translators: %d: number of entries */
-					sprintf( _n( '%d entry restored from the Trash.', '%d entries restored from the Trash.', $count ), $count ),
+					sprintf( _n( '%d entry restored from the Trash.', '%d entries restored from the Trash.', $count, 'everest-forms' ), $count ),
 					'updated'
 				);
 				break;
@@ -392,7 +399,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 					'bulk_action',
 					'bulk_action',
 					/* translators: %d: number of entries */
-					sprintf( _n( '%d entry permanently deleted.', '%d entries permanently deleted.', $count ), $count ),
+					sprintf( _n( '%d entry permanently deleted.', '%d entries permanently deleted.', $count, 'everest-forms' ), $count ),
 					'updated'
 				);
 				break;
