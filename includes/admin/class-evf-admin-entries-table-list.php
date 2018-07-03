@@ -94,10 +94,17 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 * @return array
 	 */
 	protected function get_sortable_columns() {
-		return array(
-			'id' => array( 'title', false ),
-			// 'date' => array( 'date_created', false ),
-		);
+		$sortable_columns = array();
+
+		if ( isset( $_REQUEST['form_id'] ) ) {
+			$sortable_columns = array(
+				'date' => array( 'date_created', false ),
+			);
+		}
+
+		return array_merge( array(
+			'id'   => array( 'title', false ),
+		), $sortable_columns );
 	}
 
 	/**

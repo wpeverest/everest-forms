@@ -76,16 +76,19 @@ class EVF_Admin_Entries {
 					<svg aria-hidden="true" class="octicon octicon-graph everest-forms-BlankState-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M16 14v1H0V0h1v14h15zM5 13H3V8h2v5zm4 0H7V3h2v10zm4 0h-2V6h2v7z"/></svg>
 					<h2 class="everest-forms-BlankState-message"><?php esc_html_e( 'Whoops, it appears you do not have any form entries yet.', 'everest-forms' ); ?></h2>
 					<?php if ( ! empty( $entries_table_list->forms ) ) : ?>
-						<form id="entries-list" method="post"><?php
-							ob_start();
-							$entries_table_list->forms_dropdown();
-							$output = ob_get_clean();
+						<form id="entries-list" method="get">
+							<input type="hidden" name="page" value="evf-entries" />
+							<?php
+								ob_start();
+								$entries_table_list->forms_dropdown();
+								$output = ob_get_clean();
 
-							if ( ! empty( $output ) ) {
-								echo $output;
-								submit_button( __( 'Filter', 'everest-forms' ), '', 'filter_action', false, array( 'id' => 'post-query-submit' ) );
-							}
-						?></form>
+								if ( ! empty( $output ) ) {
+									echo $output;
+									submit_button( __( 'Filter', 'everest-forms' ), '', '', false, array( 'id' => 'post-query-submit' ) );
+								}
+							?>
+						</form>
 					<?php else : ?>
 						<a class="everest-forms-BlankState-cta button-primary button" target="_blank" href="https://docs.wpeverest.com/docs/everest-forms/entry-management/?utm_source=blankslate&utm_medium=entry&utm_content=entriesdoc&utm_campaign=everestformplugin"><?php esc_html_e( 'Learn more about entries', 'everest-forms' ); ?></a>
 						<a class="everest-forms-BlankState-cta button" href="<?php echo esc_url( admin_url( 'admin.php?page=evf-builder&create-form=1' ) ); ?>"><?php esc_html_e( 'Create your first form!', 'everest-forms' ); ?></a>
