@@ -12,8 +12,6 @@
 @import 'animation';
 @import 'scss/colors';
 @import 'scss/confirm';
-@import 'scss/buttons';
-@import 'scss/evf-icon';
 
 /**
  * Styling begins
@@ -170,6 +168,39 @@ img.help_tip {
 }
 
 /**
+ * Button styling.
+ */
+.everest-forms-btn,
+a.everest-forms-btn,
+button.everest-forms-btn {
+	border: none;
+	cursor: pointer;
+	overflow: hidden;
+	border-width: 2px;
+	padding: 5px 15px;
+	line-height: 26px;
+	position: relative;
+	border-radius: 3px;
+	color: $color-white;
+	display: inline-block;
+	text-decoration: none;
+	transition: all 0.3s ease 0s;
+	background-color: $color-gray-light;
+	z-index: 1;
+
+	&:hover {
+		color: $color-white;
+		background-color: desaturate(darken($color-gray-light, 10%), 5%);
+	}
+
+	&:focus {
+		outline: none;
+		box-shadow: none;
+		color: $color-white;
+	}
+}
+
+/**
  * Core styling.
  */
 body.everest-forms-builder {
@@ -279,14 +310,60 @@ body.everest-forms-builder-setup,
 				background-color: transparent;
 				transition: 0.5s background-color ease-in-out;
 
-				.evf-icon,
-				.dashicons,
-				.dashicons-before:before {
+				.evf-icon {
 					width: auto;
 					height: auto;
 					display: block;
 					font-size: 32px;
 					text-align: center;
+
+					&.evf-icon-general {
+						&::before {
+							content: "\e001";
+						}
+					}
+
+					&.evf-icon-setting {
+						&::before {
+							content: "\e002";
+						}
+					}
+
+					&.evf-icon-lock {
+						&::before {
+							content: "\e003";
+						}
+					}
+
+					&.evf-icon-email-envelope {
+						&::before {
+							content: "\e006";
+						}
+					}
+
+					&.evf-icon-checkbox {
+						&::before {
+							content: "\e014";
+						}
+					}
+
+					&.evf-icon-fields {
+						&::before {
+							content: "\e00b";
+						}
+					}
+
+					&.evf-icon-integration {
+						&::before {
+							content: "\e020";
+						}
+					}
+
+					&.evf-icon-payment {
+						&::before {
+							content: "\e01f";
+						}
+					}
 				}
 
 				&.nav-tab-active {
@@ -609,7 +686,7 @@ body.everest-forms-builder-setup,
 							font-size: 16px;
 
 							&::before {
-								@include iconbefore( '\e91f');
+								@include iconbefore( '\e00c');
 								line-height: 27px;
 								margin-right: 0;
 							}

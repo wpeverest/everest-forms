@@ -53,7 +53,7 @@
 	width: 1em;
 }
 
-@mixin icon( $glyph: '\e91e' ) {
+@mixin icon( $glyph: '\e001' ) {
 	font-family: 'EverestForms';
 	speak: none;
 	font-weight: normal;
@@ -89,7 +89,7 @@
 	content: $glyph;
 }
 
-@mixin iconbefore( $glyph: '\e91e' ) {
+@mixin iconbefore( $glyph: '\e001' ) {
 	font-family: 'EverestForms';
 	speak: none;
 	font-weight: normal;
