@@ -90,9 +90,6 @@ abstract class EVF_Form_Fields {
 		add_action( 'everest_forms_builder_fields_options_' . $this->type, array( $this, 'field_options' ) );
 		add_action( 'everest_forms_builder_fields_previews_' . $this->type, array( $this, 'field_preview' ) );
 
-		// Field options tab.
-		// add_action( "everest_forms_builder_fields_options_{$this->type}", array( $this, 'field_options' ), 10 );
-
 		// Preview fields.
 		// add_action( "everest_forms_builder_fields_previews_{$this->type}", array( $this, 'field_preview' ), 10 );
 
@@ -115,10 +112,9 @@ abstract class EVF_Form_Fields {
 	public function init_hooks() {}
 
 	/**
-	 * Creates the field options panel. Used by subclasses.
+	 * Field options tab content.
 	 *
-	 * @since 1.0.0
-	 * @param array $field
+	 * @param array $field Field data.
 	 */
 	public function field_options( $field ) {}
 

@@ -27,11 +27,37 @@ class EVF_Field_First_Name extends EVF_Form_Fields {
 	}
 
 	/**
-	 * Field options panel inside the builder.
+	 * Get field settings array.
 	 *
-	 * @since      1.0.0
+	 * @return array
+	 */
+	public function get_field_settings() {
+		$settings = array(
+			'basic-options' => array(
+				'fields' => array(
+					'label',
+					'meta_key',
+					'description',
+					'required',
+				),
+			),
+			'advanced-options' => array(
+				'title' => esc_html__( 'Advanced Options', 'everest-forms' ),
+				'fields' => array(
+					'placeholder',
+					'hide_label',
+					'css_classes',
+				),
+			),
+		);
+
+		return apply_filters( 'everest_forms_get_field_settings_' . $this->type, $settings );
+	}
+
+	/**
+	 * Field options tab content.
 	 *
-	 * @param array $field
+	 * @param array $field Field data.
 	 */
 	public function field_options( $field ) {
 

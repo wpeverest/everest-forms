@@ -79,7 +79,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 	}
 
 	/**
-	 * Output fields group butttons.
+	 * Output fields group buttons.
 	 */
 	public function output_fields() {
 		$form_fields = EVF()->form_fields->form_fields();
@@ -106,34 +106,23 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 	}
 
 	/**
-	 * Editor Field Options.
-	 *
-	 * @since      1.0.0
+	 * Output field setting options.
 	 */
 	public function fields_options() {
-
-		// Check to make sure the form actually has fields created already
-		if ( empty( $this->form_data['form_fields'] ) ) {
-			printf( '<p class="no-fields">%s</p>', __( "You don't have any fields yet.", 'everest-forms' ) );
-
-			return;
-		}
-
 		$fields = $this->form_data['form_fields'];
 
-		foreach ( $fields as $field ) {
-
-			$class = apply_filters( 'everest_forms_builder_field_option_class', '', $field );
-
-			printf( '<div class="everest-forms-field-option everest-forms-field-option-%s %s" id="everest-forms-field-option-%s" data-field-id="%s">', esc_attr( $field['type'] ), $class, $field['id'], $field['id'] );
-
-			printf( '<input type="hidden" name="form_fields[%s][id]" value="%s" class="everest-forms-field-option-hidden-id">', $field['id'], $field['id'] );
-
-			printf( '<input type="hidden" name="form_fields[%s][type]" value="%s" class="everest-forms-field-option-hidden-type">', $field['id'], esc_attr( $field['type'] ) );
-
-			do_action( "everest_forms_builder_fields_options_{$field['type']}", $field );
-
-			echo '</div>';
+		if ( ! empty( $fields ) ) {
+			foreach ( $fields as $field ) {
+				?>
+				<div class="everest-forms-field-option everest-forms-field-option-<?php echo esc_attr( $field['type'] ); ?>" id="everest-forms-field-option-<?php echo esc_attr( $field['id'] ); ?>" data-field-id="<?php echo esc_attr( $field['id'] ); ?>" >
+					<input type="hidden" name="form_fields[<?php echo esc_attr( $field['id'] ); ?>][id]" value="<?php echo esc_attr( $field['id'] ); ?>" class="everest-forms-field-option-hidden-id" />
+					<input type="hidden" name="form_fields[<?php echo esc_attr( $field['id'] ); ?>][type]" value="<?php echo esc_attr( $field['type'] ); ?>" class="everest-forms-field-option-hidden-type" />
+					<?php do_action( 'everest_forms_builder_fields_options_' . $field['type'], $field ); ?>
+				</div>
+				<?php
+			}
+		} else {
+			printf( '<p class="no-fields">%s</p>', esc_html__( 'You don\'t have any fields yet.', 'everest-forms' ) );
 		}
 	}
 
