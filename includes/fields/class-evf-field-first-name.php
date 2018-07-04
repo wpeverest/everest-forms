@@ -16,7 +16,7 @@ class EVF_Field_First_Name extends EVF_Form_Fields {
 	/**
 	 * Constructor.
 	 */
-	public function init() {
+	public function __construct() {
 		$this->name  = esc_html__( 'First Name', 'everest-forms' );
 		$this->type  = 'first-name';
 		$this->icon  = 'evf-icon evf-icon-first-name';
