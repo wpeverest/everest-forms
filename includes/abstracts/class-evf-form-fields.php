@@ -14,39 +14,46 @@ defined( 'ABSPATH' ) || exit;
 abstract class EVF_Form_Fields {
 
 	/**
-	 * Full name of the field type, eg "Paragraph Text".
+	 * Field title.
 	 *
 	 * @var string
 	 */
 	public $name;
 
 	/**
-	 * Type of the field, eg "textarea".
+	 * Field type.
 	 *
 	 * @var string
 	 */
 	public $type;
 
 	/**
-	 * Font Awesome Icon used for the editor button, eg "fa-list".
+	 * Field icon.
 	 *
 	 * @var mixed
 	 */
-	public $icon = false;
+	public $icon = '';
 
 	/**
-	 * Field class name.
+	 * Field class.
 	 *
 	 * @var string
 	 */
 	public $class = '';
 
 	/**
-	 * Field group the field belongs to.
+	 * Field group.
 	 *
 	 * @var string
 	 */
 	public $group = 'general';
+
+	/**
+	 * Is available in Pro?
+	 *
+	 * @var boolean
+	 */
+	protected $is_pro = false;
 
 	/**
 	 * Placeholder to hold default value(s) for some field types.
@@ -63,18 +70,11 @@ abstract class EVF_Form_Fields {
 	public $form_id;
 
 	/**
-	 * Current form data in admin builder.
+	 * Array of form data.
 	 *
-	 * @var mixed, int or false
+	 * @var array
 	 */
 	public $form_data;
-
-	/**
-	 * Is available in Pro?
-	 *
-	 * @var boolean
-	 */
-	protected $is_pro = false;
 
 	/**
 	 * Primary class constructor.
