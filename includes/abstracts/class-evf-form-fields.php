@@ -42,6 +42,13 @@ abstract class EVF_Form_Fields {
 	public $class = '';
 
 	/**
+	 * Form ID.
+	 *
+	 * @var int|mixed
+	 */
+	public $form_id;
+
+	/**
 	 * Field group.
 	 *
 	 * @var string
@@ -63,13 +70,6 @@ abstract class EVF_Form_Fields {
 	public $defaults;
 
 	/**
-	 * Current form ID in the admin builder.
-	 *
-	 * @var mixed, int or false
-	 */
-	public $form_id;
-
-	/**
 	 * Array of form data.
 	 *
 	 * @var array
@@ -77,33 +77,24 @@ abstract class EVF_Form_Fields {
 	public $form_data;
 
 	/**
-	 * Primary class constructor.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param bool $init
+	 * Constructor.
 	 */
-	public function __construct( $init = true ) {
-		if ( ! $init ) {
-			return;
-		}
-
-		// The form ID is to be accessed in the builder.
+	public function __construct() {
+		$this->class   = $this->is_pro ? 'upgrade-modal' : '';
 		$this->form_id = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : false;
 
-		// Bootstrap.
-		$this->init();
+		// Init hooks.
+		$this->init_hooks();
 
-		// Is pro field?
-		if ( $this->is_pro ) {
-			$this->class = 'upgrade-modal';
-		}
+		// Hooks.
+		add_action( 'everest_forms_builder_fields_options_' . $this->type, array( $this, 'field_options' ) );
+		add_action( 'everest_forms_builder_fields_previews_' . $this->type, array( $this, 'field_preview' ) );
 
 		// Field options tab.
-		add_action( "everest_forms_builder_fields_options_{$this->type}", array( $this, 'field_options' ), 10 );
+		// add_action( "everest_forms_builder_fields_options_{$this->type}", array( $this, 'field_options' ), 10 );
 
 		// Preview fields.
-		add_action( "everest_forms_builder_fields_previews_{$this->type}", array( $this, 'field_preview' ), 10 );
+		// add_action( "everest_forms_builder_fields_previews_{$this->type}", array( $this, 'field_preview' ), 10 );
 
 		// AJAX Add new field.
 		add_action( "wp_ajax_everest_forms_new_field_{$this->type}", array( $this, 'field_new' ) );
@@ -119,11 +110,9 @@ abstract class EVF_Form_Fields {
 	}
 
 	/**
-	 * All systems go. Used by subclasses.
-	 *
-	 * @since 1.0.0
+	 * Hook in tabs.
 	 */
-	public function init() {}
+	public function init_hooks() {}
 
 	/**
 	 * Creates the field options panel. Used by subclasses.
