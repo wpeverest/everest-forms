@@ -16,12 +16,14 @@ class EVF_Field_Date extends EVF_Form_Fields {
 	/**
 	 * Constructor.
 	 */
-	public function init() {
+	public function __construct() {
 		$this->name  = esc_html__( 'Date', 'everest-forms' );
 		$this->type  = 'date';
 		$this->icon  = 'evf-icon evf-icon-calendar';
 		$this->order = 20;
 		$this->group = 'advanced';
+
+		parent::__construct();
 	}
 
 	/**

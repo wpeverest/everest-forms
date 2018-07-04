@@ -16,11 +16,14 @@ class EVF_Field_Email extends EVF_Form_Fields {
 	/**
 	 * Constructor.
 	 */
-	public function init() {
+	public function __construct() {
 		$this->name  = esc_html__( 'Email', 'everest-forms' );
 		$this->type  = 'email';
 		$this->icon  = 'evf-icon evf-icon-email';
 		$this->order = 90;
+		$this->group = 'general';
+
+		parent::__construct();
 	}
 
 	public function field_options( $field ) {

@@ -21,6 +21,9 @@ class EVF_Field_First_Name extends EVF_Form_Fields {
 		$this->type  = 'first-name';
 		$this->icon  = 'evf-icon evf-icon-first-name';
 		$this->order = 10;
+		$this->group = 'general';
+
+		parent::__construct();
 	}
 
 	/**

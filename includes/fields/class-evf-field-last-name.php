@@ -16,11 +16,14 @@ class EVF_Field_Last_Name extends EVF_Form_Fields {
 	/**
 	 * Constructor.
 	 */
-	public function init() {
+	public function __construct() {
 		$this->name  = esc_html__( 'Last Name', 'everest-forms' );
 		$this->type  = 'last-name';
 		$this->icon  = 'evf-icon evf-icon-last-name';
 		$this->order = 20;
+		$this->group = 'general';
+
+		parent::__construct();
 	}
 
 	/**
