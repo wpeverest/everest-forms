@@ -16,11 +16,14 @@ class EVF_Field_Number extends EVF_Form_Fields {
 	/**
 	 * Constructor.
 	 */
-	public function init() {
+	public function __construct() {
 		$this->name  = esc_html__( 'Number', 'everest-forms' );
 		$this->type  = 'number';
 		$this->icon  = 'evf-icon  evf-icon-number';
 		$this->order = 80;
+		$this->group = 'general';
+
+		parent::__construct();
 	}
 
 	/**

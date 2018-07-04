@@ -16,12 +16,14 @@ class EVF_Field_Country extends EVF_Form_Fields {
 	/**
 	 * Constructor.
 	 */
-	public function init() {
+	public function __construct() {
 		$this->name   = esc_html__( 'Country', 'everest-forms' );
 		$this->type   = 'country';
 		$this->icon   = 'evf-icon evf-icon-address';
 		$this->order  = 20;
 		$this->group  = 'address';
 		$this->is_pro = true;
+
+		parent::__construct();
 	}
 }

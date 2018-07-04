@@ -16,11 +16,12 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 	/**
 	 * Constructor.
 	 */
-	public function init() {
+	public function __construct() {
 		$this->name     = esc_html__( 'Checkboxes', 'everest-forms' );
 		$this->type     = 'checkbox';
 		$this->icon     = 'evf-icon  evf-icon-checkbox';
 		$this->order    = 70;
+		$this->group    = 'general';
 		$this->defaults = array(
 			1 => array(
 				'label'   => esc_html__( 'First Choice', 'everest-forms' ),
@@ -38,6 +39,8 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 				'default' => '',
 			),
 		);
+
+		parent::__construct();
 	}
 
 	/**

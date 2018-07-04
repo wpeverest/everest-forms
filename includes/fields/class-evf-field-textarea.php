@@ -16,11 +16,14 @@ class EVF_Field_Textarea extends EVF_Form_Fields {
 	/**
 	 * Constructor.
 	 */
-	public function init() {
+	public function __construct() {
 		$this->name  = esc_html__( 'Paragraph Text', 'everest-forms' );
 		$this->type  = 'textarea';
 		$this->icon  = 'evf-icon evf-icon-paragraph';
 		$this->order = 40;
+		$this->group = 'general';
+
+		parent::__construct();
 	}
 
 	/**

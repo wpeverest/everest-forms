@@ -16,12 +16,14 @@ class EVF_Field_URL extends EVF_Form_Fields {
 	/**
 	 * Constructor.
 	 */
-	public function init() {
+	public function __construct() {
 		$this->name  = esc_html__( 'Website / URL', 'everest-forms' );
 		$this->type  = 'url';
 		$this->icon  = 'evf-icon evf-icon-website';
 		$this->order = 10;
 		$this->group = 'advanced';
+
+		parent::__construct();
 	}
 
 	/**

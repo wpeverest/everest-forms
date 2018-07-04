@@ -16,11 +16,12 @@ class EVF_Field_Select extends EVF_Form_Fields {
 	/**
 	 * Constructor.
 	 */
-	public function init() {
+	public function __construct() {
 		$this->name     = esc_html__( 'Dropdown', 'everest-forms' );
 		$this->type     = 'select';
 		$this->icon     = 'evf-icon evf-icon-dropdown';
 		$this->order    = 50;
+		$this->group    = 'general';
 		$this->defaults = array(
 			1 => array(
 				'label'   => esc_html__( 'Option 1', 'everest-forms' ),
@@ -33,6 +34,8 @@ class EVF_Field_Select extends EVF_Form_Fields {
 				'default' => '',
 			),
 		);
+
+		parent::__construct();
 	}
 
 	/**
