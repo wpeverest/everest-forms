@@ -39,6 +39,25 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 				'default' => '',
 			),
 		);
+		$this->settings = array(
+			'basic-options' => array(
+				'fields' => array(
+					'label',
+					'meta',
+					'choices',
+					'description',
+					'required',
+				),
+			),
+			'advanced-options' => array(
+				'fields' => array(
+					'size',
+					'placeholder',
+					'label_hide',
+					'css',
+				),
+			),
+		);
 
 		parent::__construct();
 	}
