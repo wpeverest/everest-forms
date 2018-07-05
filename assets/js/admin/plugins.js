@@ -8,7 +8,7 @@ jQuery( function ( $ ) {
                 security: EVF_AJAX.deactivation_nonce,
             };
 
-        jQuery.post( EVF_AJAX.ajax_url, data, function( response ) {
+        $.post( EVF_AJAX.ajax_url, data, function( response ) {
             var temp = '<tr class="plugin-update-tr active updated" data-slug="everest-forms" data-plugin="everest-forms/everest-forms.php">'+
                        '<td colspan ="3" class="plugin-update colspanchange">'+response+'</td>'+
                        '</tr>';

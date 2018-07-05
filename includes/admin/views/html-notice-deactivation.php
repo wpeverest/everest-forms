@@ -12,7 +12,7 @@
 
 global $status, $page, $s;
 
-$reason_deactivation_url = 'http://wcpdfinvoices.com/what-made-you-deactivate';
+$reason_deactivation_url = 'http://wpeverest.com/contact';
 $deactivate_url = wp_nonce_url( 'plugins.php?action=deactivate&amp;plugin=' . EVF_PLUGIN_BASENAME . '&amp;plugin_status=' . $status . '&amp;paged=' . $page . '&amp;s=' . $s, 'deactivate-plugin_' . EVF_PLUGIN_BASENAME );
 ?>
 <div class="notice inline notice-warning notice-alt">
