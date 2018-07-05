@@ -36,7 +36,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		if ( $this->form ) {
 			add_action( 'everest_forms_builder_fields', array( $this, 'output_fields' ) );
 			add_action( 'everest_forms_builder_fields_options', array( $this, 'output_fields_options' ) );
-			add_action( 'everest_forms_builder_preview', array( $this, 'output_preview' ) );
+			add_action( 'everest_forms_builder_fields_preview', array( $this, 'output_fields_preview' ) );
 		}
 	}
 
@@ -71,7 +71,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 					<h2 class="everest-forms-form-name"><?php echo esc_html( $this->form->post_title ); ?></h2>
 				</div>
 				<div class="everest-forms-field-wrap">
-					<?php do_action( 'everest_forms_builder_preview', $this->form ); ?>
+					<?php do_action( 'everest_forms_builder_fields_preview', $this->form ); ?>
 				</div>
 			</div>
 		</div>
@@ -129,7 +129,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 	/**
 	 * Outputs fields preview content.
 	 */
-	public function output_preview() {
+	public function output_fields_preview() {
 		$form_data = $this->form_data;
 		$fields    = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
 		$form_grid = apply_filters( 'everest_forms_default_form_grid', 2 );
