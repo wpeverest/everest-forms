@@ -76,6 +76,10 @@
 
 			.everest-forms-panel-sidebar-content {
 				display: flex;
+
+				.everest-forms-panel-content-wrap {
+					width: calc(100% - 400px);
+				}
 			}
 
 			.everest-forms-one-half {
@@ -329,7 +333,6 @@
 		}
 
 		.everest-forms-panel-content-wrap {
-			width: calc(100% - 400px);
 
 			.everest-forms-panel-content {
 				background-color: $color-white;
