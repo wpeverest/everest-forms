@@ -1,19 +1,19 @@
 /**
-* menu.scss
-* Styles applied to dashboard menu items added via EverestForms.
-* Adds icons to top level menu items, etc.
-*/
+ * menu.scss
+ * Styles applied to dashboard menu items added via EverestForms.
+ * Adds icons to top level menu items, etc.
+ */
 
 /**
-* Imports
-*/
+ * Imports
+ */
 @import 'mixins';
 @import 'variables';
 @import 'fonts';
 
 /**
-* Styling begins.
-*/
+ * Styling begins.
+ */
 #evf-modal-wrap {
 	display: none;
 	background-color: #fff;
@@ -194,8 +194,8 @@
 }
 
 /**
-* Fonts icons.
-*/
+ * Fonts icons.
+ */
 [class^="evf-icon-"], [class*=" evf-icon-"] {
 	/* use !important to prevent issues with browser extensions that change fonts */
 	font-family: 'EverestForms' !important;
@@ -220,9 +220,6 @@
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
-
-
-
 
 .evf-icon-password:before {
 	content: "\e004";
