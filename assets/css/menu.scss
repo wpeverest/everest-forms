@@ -196,7 +196,7 @@
 /**
  * Fonts icons.
  */
- [class^="evf-icon-"], [class*=" evf-icon-"] {
+[class^="evf-icon-"], [class*=" evf-icon-"] {
 	/* use !important to prevent issues with browser extensions that change fonts */
 	font-family: 'EverestForms' !important;
 	speak: none;
@@ -206,83 +206,114 @@
 	text-transform: none;
 	line-height: 1;
 
+	/* Enable Ligatures ================ */
+	letter-spacing: 0;
+	-webkit-font-feature-settings: "liga";
+	-moz-font-feature-settings: "liga=1";
+	-moz-font-feature-settings: "liga";
+	-ms-font-feature-settings: "liga" 1;
+	font-feature-settings: "liga";
+	-webkit-font-variant-ligatures: discretionary-ligatures;
+	font-variant-ligatures: discretionary-ligatures;
+
 	/* Better Font Rendering =========== */
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
 
-.evf-icon-password:before {
-	content: "\e004";
-}
-.evf-icon-email:before {
-	content: "\e005";
-}
-.evf-icon-map-marker:before {
-	content: "\e007";
-}
-.evf-icon-map-marker-city:before {
-	content: "\e008";
-}
-.evf-icon-zip-code:before {
-	content: "\e009";
-}
-.evf-icon-flag:before {
-	content: "\e00a";
-}
-.evf-icon-first-name:before {
-	content: "\e00d";
-}
-.evf-icon-last-name:before {
-	content: "\e00e";
-}
-.evf-icon-text:before {
-	content: "\e00f";
-}
-.evf-icon-paragraph:before {
-	content: "\e010";
-}
-.evf-icon-dropdown:before {
-	content: "\e011";
-}
-.evf-icon-multiple-choices:before {
-	content: "\e012";
-}
-.evf-icon-multiple-choices-radio:before {
-	content: "\e013";
+.evf-icon-calendar:before {
+	content: "\e001";
 }
 .evf-icon-checkbox:before {
+	content: "\e002";
+}
+.evf-icon-clip-copy:before {
+	content: "\e003";
+}
+.evf-icon-custom-html:before {
+	content: "\e004";
+}
+.evf-icon-dropdown:before {
+	content: "\e005";
+}
+.evf-icon-email:before {
+	content: "\e006";
+}
+.evf-icon-email-envelope:before {
+	content: "\e007";
+}
+.evf-icon-fields:before {
+	content: "\e008";
+}
+.evf-icon-file-upload:before {
+	content: "\e009";
+}
+.evf-icon-first-name:before {
+	content: "\e00a";
+}
+.evf-icon-flag:before {
+	content: "\e00b";
+}
+.evf-icon-general:before {
+	content: "\e00c";
+}
+.evf-icon-hidden:before {
+	content: "\e00d";
+}
+.evf-icon-integration:before {
+	content: "\e00e";
+}
+.evf-icon-last-name:before {
+	content: "\e00f";
+}
+.evf-icon-lock:before {
+	content: "\e010";
+}
+.evf-icon-map-marker:before {
+	content: "\e011";
+}
+.evf-icon-map-marker-city:before {
+	content: "\e012";
+}
+.evf-icon-multiple-choices:before {
+	content: "\e013";
+}
+.evf-icon-multiple-choices-radio:before {
 	content: "\e014";
 }
 .evf-icon-number:before {
 	content: "\e015";
 }
-.evf-icon-website:before {
+.evf-icon-paragraph:before {
 	content: "\e016";
 }
-.evf-icon-calendar:before {
+.evf-icon-password:before {
 	content: "\e017";
 }
-.evf-icon-custom-html:before {
+.evf-icon-payment:before {
 	content: "\e018";
 }
-.evf-icon-file-upload:before {
+.evf-icon-phone:before {
 	content: "\e019";
 }
-.evf-icon-hidden:before {
+.evf-icon-section-devider:before {
 	content: "\e01a";
 }
-.evf-icon-phone:before {
+.evf-icon-setting:before {
 	content: "\e01b";
 }
-.evf-icon-section-devider:before {
+.evf-icon-single-item:before {
 	content: "\e01c";
 }
-.evf-icon-single-item:before {
+.evf-icon-text:before {
 	content: "\e01d";
 }
 .evf-icon-total:before {
 	content: "\e01e";
 }
-.evf-icon-payment:before {
+.evf-icon-website:before {
 	content: "\e01f";
+}
+.evf-icon-zip-code:before {
+	content: "\e020";
 }
