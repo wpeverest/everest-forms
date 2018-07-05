@@ -98,7 +98,6 @@ function evf_get_template( $template_name, $args = array(), $template_path = '',
 	do_action( 'everest_forms_after_template_part', $template_name, $template_path, $located, $args );
 }
 
-
 /**
  * Like evf_get_template, but returns the HTML instead of outputting.
  *
@@ -1729,4 +1728,92 @@ function evf_get_fields_groups() {
 function evf_get_fields_group( $type = '' ) {
 	$types = evf_get_fields_groups();
 	return isset( $types[ $type ] ) ? $types[ $type ] : '';
+}
+
+/**
+ * Get all fields settings.
+ *
+ * @return array Settings data.
+ */
+function evf_get_all_fields_settings() {
+	$settings = array(
+		'label' => array(
+			'id'       => 'label',
+			'title'    => __( 'Label', 'everest-forms' ),
+			'desc'     => __( 'Enter text for the form field label.', 'everest-forms' ),
+			'default'  => '',
+			'type'     => 'text',
+			'desc_tip' => true,
+		),
+		'meta' => array(
+			'id'       => 'meta-key',
+			'title'    => __( 'Meta Key', 'everest-forms' ),
+			'desc'     => __( 'Enter meta key to be stored in database.', 'everest-forms' ),
+			'default'  => '',
+			'type'     => 'text',
+			'desc_tip' => true,
+		),
+		'description'     => array(
+			'id'          => 'description',
+			'title'       => __( 'Description', 'everest-forms' ),
+			'type'        => 'textarea',
+			'desc' => __( 'Enter text for the form field description.', 'everest-forms' ),
+			'default'     => '',
+			'desc_tip'    => true,
+		),
+		'required' => array(
+			'id'       => 'require',
+			'title'    => __( 'Required', 'everest-forms' ),
+			'type'     => 'checkbox',
+			'desc'     => __( 'Check this option to mark the field required.', 'everest-forms' ),
+			'default'  => 'no',
+			'desc_tip' => true,
+		),
+		'choices' => array(
+			'id'       => 'choices',
+			'title'    => __( 'Choices', 'everest-forms' ),
+			'desc'     => __( 'Add choices for the form field.', 'everest-forms' ),
+			'type'     => 'choices',
+			'desc_tip' => true,
+			'defaults' => array(
+				1 => __( 'First Choice', 'everest-forms' ),
+				2 => __( 'Second Choice', 'everest-forms' ),
+				3 => __( 'Third Choice', 'everest-forms' ),
+			),
+		),
+		'placeholder' => array(
+			'id'       => 'placeholder',
+			'title'    => __( 'Placeholder Text', 'everest-forms' ),
+			'desc'     => __( 'Enter text for the form field placeholder.', 'everest-forms' ),
+			'default'  => '',
+			'type'     => 'text',
+			'desc_tip' => true,
+		),
+		'css' => array(
+			'id'       => 'css',
+			'title'    => __( 'CSS Classes', 'everest-forms' ),
+			'desc'     => __( 'Enter CSS class for this field container. Class names should be separated with spaces.', 'everest-forms' ),
+			'default'  => '',
+			'type'     => 'text',
+			'desc_tip' => true,
+		),
+		'label_hide' => array(
+			'id'      => 'label_hide',
+			'title'   => __( 'Hide Label', 'everest-forms' ),
+			'type'    => 'checkbox',
+			'desc'    => __( 'Check this option to hide the form field label.', 'everest-forms' ),
+			'default' => 'no',
+			'desc_tip'    => true,
+		),
+		'sublabel_hide' => array(
+			'id'      => 'sublabel_hide',
+			'title'   => __( 'Hide Sub-Labels', 'everest-forms' ),
+			'type'    => 'checkbox',
+			'desc'    => __( 'Check this option to hide the form field sub-label.', 'everest-forms' ),
+			'default' => 'no',
+			'desc_tip'    => true,
+		),
+	);
+
+	return apply_filters( 'everest_form_all_fields_settings', $settings );
 }
