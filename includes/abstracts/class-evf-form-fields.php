@@ -109,11 +109,49 @@ abstract class EVF_Form_Fields {
 	public function init_hooks() {}
 
 	/**
+	 * Get the form fields after they are initialized.
+	 *
+	 * @return array of options
+	 */
+	public function get_field_settings() {
+		return apply_filters( 'everest_forms_get_field_settings_' . $this->type, $this->settings );
+	}
+
+	/**
+	 * Output form fields.
+	 *
+	 * Loops though the field options array and outputs each field.
+	 *
+	 * @param array[] $options Opens array to output.
+	 */
+	public function output_fields( $options, $field ) {
+		foreach ( $options as $option_key => $option ) {
+			$this->field_option( $option_key, $field, array(
+				'markup' => 'open',
+			) );
+
+			if ( ! empty( $option['fields'] ) ) {
+				foreach ( $option['fields'] as $field_name ) {
+					$this->field_option( $field_name, $field );
+				}
+			}
+
+			$this->field_option( $option_key, $field, array(
+				'markup' => 'close',
+			) );
+		}
+	}
+
+	/**
 	 * Field options tab content.
 	 *
 	 * @param array $field Field data.
 	 */
-	public function field_options( $field ) {}
+	public function field_options( $field ) {
+		$settings = $this->get_field_settings();
+
+		$this->output_fields( $settings, $field );
+	}
 
 	/**
 	 * Creates the field preview. Used by subclasses.
