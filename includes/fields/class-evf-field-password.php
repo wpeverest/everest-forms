@@ -17,11 +17,11 @@ class EVF_Field_Password extends EVF_Form_Fields {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->name  = esc_html__( 'Password', 'everest-forms' );
-		$this->type  = 'password';
-		$this->icon  = 'evf-icon evf-icon-password';
-		$this->order = 60;
-		$this->group = 'advanced';
+		$this->name   = esc_html__( 'Password', 'everest-forms' );
+		$this->type   = 'password';
+		$this->icon   = 'evf-icon evf-icon-password';
+		$this->order  = 60;
+		$this->group  = 'advanced';
 		$this->is_pro = true;
 
 		parent::__construct();
