@@ -109,7 +109,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 	 * Output fields setting options.
 	 */
 	public function output_fields_options() {
-		$fields = $this->form_data['form_fields'];
+		$fields = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
 
 		if ( ! empty( $fields ) ) {
 			foreach ( $fields as $field ) {
