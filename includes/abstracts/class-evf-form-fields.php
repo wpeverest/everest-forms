@@ -88,10 +88,7 @@ abstract class EVF_Form_Fields {
 
 		// Hooks.
 		add_action( 'everest_forms_builder_fields_options_' . $this->type, array( $this, 'field_options' ) );
-		add_action( 'everest_forms_builder_fields_previews_' . $this->type, array( $this, 'field_preview' ) );
-
-		// Preview fields.
-		// add_action( "everest_forms_builder_fields_previews_{$this->type}", array( $this, 'field_preview' ), 10 );
+		add_action( 'everest_forms_builder_fields_preview_' . $this->type, array( $this, 'field_preview' ) );
 
 		// AJAX Add new field.
 		add_action( "wp_ajax_everest_forms_new_field_{$this->type}", array( $this, 'field_new' ) );

@@ -213,7 +213,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			printf( '<a href="#" class="everest-forms-field-setting" title="%s"><span class="dashicons dashicons-admin-generic"></span></a>', __( 'Settings', 'everest-forms' ) );
 		printf( '</div>' );
 
-		do_action( 'everest_forms_builder_fields_previews_' . $field['type'], $field );
+		do_action( 'everest_forms_builder_fields_preview_' . $field['type'], $field );
 
 		echo '</div>';
 	}
