@@ -1,19 +1,19 @@
 /**
- * menu.scss
- * Styles applied to dashboard menu items added via EverestForms.
- * Adds icons to top level menu items, etc.
- */
+* menu.scss
+* Styles applied to dashboard menu items added via EverestForms.
+* Adds icons to top level menu items, etc.
+*/
 
 /**
- * Imports
- */
+* Imports
+*/
 @import 'mixins';
 @import 'variables';
 @import 'fonts';
 
 /**
- * Styling begins.
- */
+* Styling begins.
+*/
 #evf-modal-wrap {
 	display: none;
 	background-color: #fff;
@@ -194,8 +194,8 @@
 }
 
 /**
- * Fonts icons.
- */
+* Fonts icons.
+*/
 [class^="evf-icon-"], [class*=" evf-icon-"] {
 	/* use !important to prevent issues with browser extensions that change fonts */
 	font-family: 'EverestForms' !important;
@@ -221,58 +221,43 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
-.evf-icon-calendar:before {
-	content: "\e001";
-}
-.evf-icon-checkbox:before {
-	content: "\e002";
-}
-.evf-icon-clip-copy:before {
-	content: "\e003";
-}
-.evf-icon-custom-html:before {
+
+
+
+.evf-icon-password:before {
 	content: "\e004";
 }
-.evf-icon-dropdown:before {
+.evf-icon-email:before {
 	content: "\e005";
 }
-.evf-icon-email:before {
-	content: "\e006";
-}
-.evf-icon-email-envelope:before {
+.evf-icon-map-marker:before {
 	content: "\e007";
 }
-.evf-icon-fields:before {
+.evf-icon-map-marker-city:before {
 	content: "\e008";
 }
-.evf-icon-file-upload:before {
+.evf-icon-zip-code:before {
 	content: "\e009";
 }
-.evf-icon-first-name:before {
+.evf-icon-flag:before {
 	content: "\e00a";
 }
-.evf-icon-flag:before {
-	content: "\e00b";
-}
-.evf-icon-general:before {
-	content: "\e00c";
-}
-.evf-icon-hidden:before {
+.evf-icon-first-name:before {
 	content: "\e00d";
 }
-.evf-icon-integration:before {
+.evf-icon-last-name:before {
 	content: "\e00e";
 }
-.evf-icon-last-name:before {
+.evf-icon-text:before {
 	content: "\e00f";
 }
-.evf-icon-lock:before {
+.evf-icon-paragraph:before {
 	content: "\e010";
 }
-.evf-icon-map-marker:before {
+.evf-icon-dropdown:before {
 	content: "\e011";
 }
-.evf-icon-map-marker-city:before {
+.evf-icon-checkbox:before {
 	content: "\e012";
 }
 .evf-icon-multiple-choices:before {
@@ -284,36 +269,30 @@
 .evf-icon-number:before {
 	content: "\e015";
 }
-.evf-icon-paragraph:before {
+.evf-icon-website:before {
 	content: "\e016";
 }
-.evf-icon-password:before {
+.evf-icon-calendar:before {
 	content: "\e017";
 }
-.evf-icon-payment:before {
+.evf-icon-single-item:before {
 	content: "\e018";
 }
-.evf-icon-phone:before {
+.evf-icon-file-upload:before {
 	content: "\e019";
 }
-.evf-icon-section-devider:before {
+.evf-icon-hidden:before {
 	content: "\e01a";
 }
-.evf-icon-setting:before {
+.evf-icon-phone:before {
 	content: "\e01b";
 }
-.evf-icon-single-item:before {
+.evf-icon-custom-html:before {
 	content: "\e01c";
 }
-.evf-icon-text:before {
+.evf-icon-section-divider:before {
 	content: "\e01d";
 }
 .evf-icon-total:before {
-	content: "\e01e";
-}
-.evf-icon-website:before {
-	content: "\e01f";
-}
-.evf-icon-zip-code:before {
 	content: "\e020";
 }

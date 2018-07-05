@@ -316,49 +316,49 @@ body.everest-forms-builder-setup,
 
 					&.evf-icon-general {
 						&::before {
-							content: "\e00c";
+							content: "\e001";
 						}
 					}
 
 					&.evf-icon-setting {
 						&::before {
-							content: "\e01b";
+							content: "\e002";
 						}
 					}
 
 					&.evf-icon-lock {
 						&::before {
-							content: "\e010";
+							content: "\e003";
 						}
 					}
 
 					&.evf-icon-email-envelope {
 						&::before {
-							content: "\e007";
+							content: "\e006";
 						}
 					}
 
 					&.evf-icon-checkbox {
 						&::before {
-							content: "\e002";
+							content: "\e012";
 						}
 					}
 
 					&.evf-icon-fields {
 						&::before {
-							content: "\e008";
+							content: "\e00b";
 						}
 					}
 
 					&.evf-icon-integration {
 						&::before {
-							content: "\e00e";
+							content: "\e01e";
 						}
 					}
 
 					&.evf-icon-payment {
 						&::before {
-							content: "\e018";
+							content: "\e01f";
 						}
 					}
 				}
@@ -683,7 +683,7 @@ body.everest-forms-builder-setup,
 							font-size: 16px;
 
 							&::before {
-								@include iconbefore( '\e003');
+								@include iconbefore( '\e00c');
 								line-height: 27px;
 								margin-right: 0;
 							}
