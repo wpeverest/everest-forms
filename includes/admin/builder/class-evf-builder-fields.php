@@ -35,8 +35,8 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 	public function init_hooks() {
 		if ( $this->form ) {
 			add_action( 'everest_forms_builder_fields', array( $this, 'output_fields' ) );
-			add_action( 'everest_forms_builder_fields_options', array( $this, 'fields_options' ) );
-			add_action( 'everest_forms_builder_preview', array( $this, 'preview' ) );
+			add_action( 'everest_forms_builder_fields_options', array( $this, 'output_fields_options' ) );
+			add_action( 'everest_forms_builder_preview', array( $this, 'output_preview' ) );
 		}
 	}
 
@@ -106,9 +106,9 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 	}
 
 	/**
-	 * Output field setting options.
+	 * Output fields setting options.
 	 */
-	public function fields_options() {
+	public function output_fields_options() {
 		$fields = $this->form_data['form_fields'];
 
 		if ( ! empty( $fields ) ) {
@@ -127,40 +127,9 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 	}
 
 	/**
-	 *
-	 *
-	 * @since      1.0.0
+	 * Outputs fields preview content.
 	 */
-	public function preview() {
-		$this->everest_forms_builder_preview();
-	}
-
-	/**
-	 * @param $field
-	 */
-	public function field_preview( $field ) {
-		$css  = ! empty( $field['size'] ) ? 'size-' . esc_attr( $field['size'] ) : '';
-		$css .= ! empty( $field['label_hide'] ) && $field['label_hide'] == '1' ? ' label_hide' : '';
-		$css .= ! empty( $field['sublabel_hide'] ) && $field['sublabel_hide'] == '1' ? ' sublabel_hide' : '';
-		$css .= ! empty( $field['required'] ) && $field['required'] == '1' ? ' required' : '';
-		$css  = apply_filters( 'everest_forms_field_preview_class', $css, $field );
-
-		printf( '<div class="everest-forms-field everest-forms-field-%s %s" id="everest-forms-field-%s" data-field-id="%s" data-field-type="%s">', $field['type'], $css, $field['id'], $field['id'], $field['type'] );
-		printf( '<div class="evf-field-action">' );
-			printf( '<a href="#" class="everest-forms-field-duplicate" title="%s"><span class="dashicons dashicons-media-default"></span></a>', __( 'Duplicate Field', 'everest-forms' ) );
-			printf( '<a href="#" class="everest-forms-field-delete" title="%s"><span class="dashicons dashicons-trash"></span></a>', __( 'Delete Field', 'everest-forms' ) );
-			printf( '<a href="#" class="everest-forms-field-setting" title="%s"><span class="dashicons dashicons-admin-generic"></span></a>', __( 'Settings', 'everest-forms' ) );
-		printf( '</div>' );
-
-		do_action( "everest_forms_builder_fields_previews_{$field['type']}", $field );
-
-		echo '</div>';
-	}
-
-	/**
-	 * @param $form
-	 */
-	public function everest_forms_builder_preview() {
+	public function output_preview() {
 		$form_data = $this->form_data;
 		$fields    = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
 		$form_grid = apply_filters( 'everest_forms_default_form_grid', 2 );
@@ -204,7 +173,6 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 
 			$grid_class = 'evf-admin-grid evf-grid-' . ( $active_grid );
 			for ( $grid_start = 1; $grid_start <= $active_grid; $grid_start ++ ) {
-
 				echo '<div class="' . $grid_class . ' " data-grid-id="' . $grid_start . '">';
 
 				$grid_fields = isset( $row_grid[ 'grid_' . $grid_start ] ) && is_array( $row_grid[ 'grid_' . $grid_start ] ) ? $row_grid[ 'grid_' . $grid_start ] : array();
@@ -214,7 +182,6 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 					if ( isset( $fields[ $field_id ] ) ) {
 						$this->field_preview( $fields[ $field_id ] );
 					}
-
 				}
 
 				echo '</div>';
@@ -222,12 +189,33 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			}
 			echo '<div class="clear evf-clear"></div>';
 			echo '</div >';
-
 		}
 		echo '</div>';
 		echo '<div class="clear evf-clear"></div>';
 		echo '<div class="evf-add-row"><span class="everest-forms-btn dashicons dashicons-plus-alt">' . esc_html( 'Add Row', 'everest-forms' ) . '</span></div>';
 		echo '</div >';
+	}
+
+	/**
+	 * @param $field
+	 */
+	public function field_preview( $field ) {
+		$css  = ! empty( $field['size'] ) ? 'size-' . esc_attr( $field['size'] ) : '';
+		$css .= ! empty( $field['label_hide'] ) && $field['label_hide'] == '1' ? ' label_hide' : '';
+		$css .= ! empty( $field['sublabel_hide'] ) && $field['sublabel_hide'] == '1' ? ' sublabel_hide' : '';
+		$css .= ! empty( $field['required'] ) && $field['required'] == '1' ? ' required' : '';
+		$css  = apply_filters( 'everest_forms_field_preview_class', $css, $field );
+
+		printf( '<div class="everest-forms-field everest-forms-field-%s %s" id="everest-forms-field-%s" data-field-id="%s" data-field-type="%s">', $field['type'], $css, $field['id'], $field['id'], $field['type'] );
+		printf( '<div class="evf-field-action">' );
+			printf( '<a href="#" class="everest-forms-field-duplicate" title="%s"><span class="dashicons dashicons-media-default"></span></a>', __( 'Duplicate Field', 'everest-forms' ) );
+			printf( '<a href="#" class="everest-forms-field-delete" title="%s"><span class="dashicons dashicons-trash"></span></a>', __( 'Delete Field', 'everest-forms' ) );
+			printf( '<a href="#" class="everest-forms-field-setting" title="%s"><span class="dashicons dashicons-admin-generic"></span></a>', __( 'Settings', 'everest-forms' ) );
+		printf( '</div>' );
+
+		do_action( 'everest_forms_builder_fields_previews_' . $field['type'], $field );
+
+		echo '</div>';
 	}
 }
 
