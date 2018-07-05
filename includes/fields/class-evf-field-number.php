@@ -17,78 +17,30 @@ class EVF_Field_Number extends EVF_Form_Fields {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->name  = esc_html__( 'Number', 'everest-forms' );
-		$this->type  = 'number';
-		$this->icon  = 'evf-icon  evf-icon-number';
-		$this->order = 80;
-		$this->group = 'general';
+		$this->name     = esc_html__( 'Number', 'everest-forms' );
+		$this->type     = 'number';
+		$this->icon     = 'evf-icon  evf-icon-number';
+		$this->order    = 80;
+		$this->group    = 'general';
+		$this->settings = array(
+			'basic-options' => array(
+				'fields' => array(
+					'label',
+					'meta',
+					'description',
+					'required',
+				),
+			),
+			'advanced-options' => array(
+				'fields' => array(
+					'placeholder',
+					'label_hide',
+					'css',
+				),
+			),
+		);
 
 		parent::__construct();
-	}
-
-	/**
-	 * Field options panel inside the builder.
-	 *
-	 * @since      1.0.0
-	 *
-	 * @param array $field
-	 */
-	public function field_options( $field ) {
-
-		// -------------------------------------------------------------------//
-		// Basic field options.
-		// -------------------------------------------------------------------//
-
-  		$args = array(
-			'markup' => 'open',
-		);
-		$this->field_option( 'basic-options', $field, $args );
-
-		// Label.
-		$this->field_option( 'label', $field );
-
-		// Meta.
-		$this->field_option( 'meta', $field );
-
-		// Description.
-		$this->field_option( 'description', $field );
-
-		// Required toggle.
-		$this->field_option( 'required', $field );
-
-		// Options close markup.
-		$args = array(
-			'markup' => 'close',
-		);
-		$this->field_option( 'basic-options', $field, $args );
-
-		// --------------------------------------------------------------------//
-		// Advanced field options.
-		// --------------------------------------------------------------------//
-
-		// Options open markup.
-		$args = array(
-			'markup' => 'open',
-		);
-		$this->field_option( 'advanced-options', $field, $args );
-
-
-
-		// Placeholder.
-		$this->field_option( 'placeholder', $field );
-
-		// Hide label.
-		$this->field_option( 'label_hide', $field );
-
-
-		// Custom CSS classes.
-		$this->field_option( 'css', $field );
-
-		// Options close markup.
-		$args = array(
-			'markup' => 'close',
-		);
-		$this->field_option( 'advanced-options', $field, $args );
 	}
 
 	/**
