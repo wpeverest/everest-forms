@@ -47,7 +47,8 @@ class EVF_Forms_Features {
 			'EVF_Field_Zip',
 			'EVF_Field_Single_Item',
 			'EVF_Field_Multiple_Item',
-			'EVF_Field_Total'
+			'EVF_Field_Total',
+			'EVF_Field_Password'
 		);
 
 		return array_merge( $fields, $pro_fields );
