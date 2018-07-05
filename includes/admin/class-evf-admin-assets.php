@@ -145,7 +145,7 @@ class EVF_Admin_Assets {
 		// Plugins page.
 		wp_enqueue_script( 'everest_forms_builder_de', EVF()->plugin_url() . '/assets/js/admin/plugins' . $suffix . '.js', array( 'jquery' ), EVF_VERSION );
 		wp_localize_script( 'everest_forms_builder_de', 'EVF_AJAX', array(
-				'ajaxurl'            => admin_url( 'admin-ajax.php' ),
+				'ajax_url'            => admin_url( 'admin-ajax.php' ),
 				'deactivation_nonce' => wp_create_nonce( 'deactivation-notice' ),
 				'dismiss_nonce'      => wp_create_nonce( 'dismiss-notice' ),
 			)

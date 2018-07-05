@@ -327,13 +327,12 @@ class EVF_AJAX {
 	 * AJAX backend deactivation notice.
 	 */
 	public static function deactivation_notice() {
-		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'deactivation-notice' ) ) { // Input var okay.
-			wp_die( -1 );
-		}
+		check_ajax_referer( 'deactivation-notice','security' );
 
 		ob_start();
 		include EVF_ABSPATH . '/includes/admin/views/html-notice-deactivation.php';
 		$content = ob_get_clean();
+
 		die( $content ); // WPCS: XSS OK.
 	}
 }
