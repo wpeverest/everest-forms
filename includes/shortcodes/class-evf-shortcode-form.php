@@ -20,12 +20,12 @@ class EVF_Shortcode_Form {
 		add_action( 'evf_frontend_output_success', array( 'EVF_Shortcode_Form', 'confirmation' ), 10, 2 );
 		add_action( 'evf_frontend_output', array( 'EVF_Shortcode_Form', 'form_field' ), 10, 2 );
 		add_action( 'evf_frontend_output', array( 'EVF_Shortcode_Form', 'footer' ), 10, 2 );
-		add_action( 'evf_display_field_before', array( 'EVF_Shortcode_Form', 'wrapper_start' ), 5, 2 );
-		add_action( 'evf_display_field_before', array( 'EVF_Shortcode_Form', 'label' ), 15, 2 );
-		add_action( 'evf_display_field_before', array( 'EVF_Shortcode_Form', 'description' ), 20, 2 );
-		add_action( 'evf_display_field_after', array( 'EVF_Shortcode_Form', 'messages' ), 3, 2 );
-		add_action( 'evf_display_field_after', array( 'EVF_Shortcode_Form', 'description' ), 5, 2 );
-		add_action( 'evf_display_field_after', array( 'EVF_Shortcode_Form', 'wrapper_end' ), 15, 2 );
+		add_action( 'everest_forms_display_field_before', array( 'EVF_Shortcode_Form', 'wrapper_start' ), 5, 2 );
+		add_action( 'everest_forms_display_field_before', array( 'EVF_Shortcode_Form', 'label' ), 15, 2 );
+		add_action( 'everest_forms_display_field_before', array( 'EVF_Shortcode_Form', 'description' ), 20, 2 );
+		add_action( 'everest_forms_display_field_after', array( 'EVF_Shortcode_Form', 'messages' ), 3, 2 );
+		add_action( 'everest_forms_display_field_after', array( 'EVF_Shortcode_Form', 'description' ), 5, 2 );
+		add_action( 'everest_forms_display_field_after', array( 'EVF_Shortcode_Form', 'wrapper_end' ), 15, 2 );
 	}
 
 	/**
@@ -97,10 +97,10 @@ class EVF_Shortcode_Form {
 		}
 
 		// Determine positioning.
-		if ( 'evf_display_field_before' === $action && 'before' !== $description['position'] ) {
+		if ( 'everest_forms_display_field_before' === $action && 'before' !== $description['position'] ) {
 			return;
 		}
-		if ( 'evf_display_field_after' === $action && 'after' !== $description['position'] ) {
+		if ( 'everest_forms_display_field_after' === $action && 'after' !== $description['position'] ) {
 			return;
 		}
 
@@ -229,10 +229,12 @@ class EVF_Shortcode_Form {
 					// Add properties to the field so it's available everywhere.
 					$field['properties'] = $properties;
 
-					do_action( 'evf_display_field_before', $field, $form_data );
+					do_action( 'everest_forms_display_field_before', $field, $form_data );
 
 					do_action( "evf_display_field_{$field['type']}", $field, $attributes, $form_data );
-					do_action( 'evf_display_field_after', $field, $form_data );
+					do_action( "everest_forms_display_field_{$field['type']}", $field, $attributes, $form_data );
+
+					do_action( 'everest_forms_display_field_after', $field, $form_data );
 				}
 
 				echo '</div>';
