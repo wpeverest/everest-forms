@@ -19,7 +19,6 @@ class EVF_AJAX {
 	public static function init() {
 		add_action( 'init', array( __CLASS__, 'define_ajax' ), 0 );
 		add_action( 'template_redirect', array( __CLASS__, 'do_evf_ajax' ), 0 );
-		add_action( 'wp_ajax_deactivation-notice', array( __CLASS__, 'deactivation_notice' ) );
 		self::add_ajax_events();
 	}
 
@@ -76,11 +75,12 @@ class EVF_AJAX {
 	 */
 	public static function add_ajax_events() {
 		$ajax_events = array(
-			'save_form'         => false,
-			'create_form'       => false,
-			'get_next_id'       => false,
-			'install_extension' => false,
-			'rated'             => false,
+			'save_form'           => false,
+			'create_form'         => false,
+			'get_next_id'         => false,
+			'install_extension'   => false,
+			'deactivation_notice' => false,
+			'rated'               => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -313,17 +313,6 @@ class EVF_AJAX {
 	}
 
 	/**
-	 * Triggered when clicking the rating footer.
-	 */
-	public static function rated() {
-		if ( ! current_user_can( 'manage_everest_forms' ) ) {
-			wp_die( -1 );
-		}
-		update_option( 'everest_forms_admin_footer_text_rated', 1 );
-		wp_die();
-	}
-
-	/**
 	 * AJAX plugin deactivation notice.
 	 */
 	public static function deactivation_notice() {
@@ -352,6 +341,17 @@ class EVF_AJAX {
 				)
 			)
 		) );
+	}
+
+	/**
+	 * Triggered when clicking the rating footer.
+	 */
+	public static function rated() {
+		if ( ! current_user_can( 'manage_everest_forms' ) ) {
+			wp_die( -1 );
+		}
+		update_option( 'everest_forms_admin_footer_text_rated', 1 );
+		wp_die();
 	}
 }
 
