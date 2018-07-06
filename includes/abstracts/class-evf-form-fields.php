@@ -125,14 +125,16 @@ abstract class EVF_Form_Fields {
 	}
 
 	/**
-	 * Output form fields.
+	 * Output form fields options.
 	 *
 	 * Loops though the field options array and outputs each field.
 	 *
-	 * @param array[] $options Opens array to output.
+	 * @param array $field Field data.
 	 */
-	public function output_fields( $options, $field ) {
-		foreach ( $options as $option_key => $option ) {
+	public function field_options( $field ) {
+		$settings = $this->get_field_settings();
+
+		foreach ( $settings as $option_key => $option ) {
 			$this->field_option( $option_key, $field, array(
 				'markup' => 'open',
 			) );
@@ -147,17 +149,6 @@ abstract class EVF_Form_Fields {
 				'markup' => 'close',
 			) );
 		}
-	}
-
-	/**
-	 * Field options tab content.
-	 *
-	 * @param array $field Field data.
-	 */
-	public function field_options( $field ) {
-		$settings = $this->get_field_settings();
-
-		$this->output_fields( $settings, $field );
 	}
 
 	/**

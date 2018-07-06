@@ -40,7 +40,6 @@ class EVF_Field_Date extends EVF_Form_Fields {
 			),
 		);
 
-
 		parent::__construct();
 	}
 

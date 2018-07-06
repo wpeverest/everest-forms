@@ -39,59 +39,36 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 				'default' => '',
 			),
 		);
+		$this->settings = array(
+			'basic-options' => array(
+				'field_options' => array(
+					'label',
+					'meta',
+					'choices',
+					'description',
+					'required',
+				),
+			),
+			'advanced-options' => array(
+				'field_options' => array(
+					'show_values',
+					'input_columns',
+					'label_hide',
+					'css',
+				),
+			),
+		);
 
 		parent::__construct();
 	}
 
 	/**
-	 * Field options panel inside the builder.
-	 *
-	 * @since      1.0.0
+	 * Show values field option.
 	 *
 	 * @param array $field
 	 */
-	public function field_options( $field ) {
-
-		// --------------------------------------------------------------------//
-		// Basic field options
-		// --------------------------------------------------------------------//
-
-		// Options open markup
-		$this->field_option( 'basic-options', $field, array(
-			'markup' => 'open',
-		) );
-
-		// Label
-		$this->field_option( 'label', $field );
-
-		// Meta.
-		$this->field_option( 'meta', $field );
-
-		// Choices
-		$this->field_option( 'choices', $field );
-
-		// Description
-		$this->field_option( 'description', $field );
-
-		// Required toggle
-		$this->field_option( 'required', $field );
-
-		// Options close markup
-		$this->field_option( 'basic-options', $field, array(
-			'markup' => 'close',
-		) );
-
-		// --------------------------------------------------------------------//
-		// Advanced field options
-		// --------------------------------------------------------------------//
-
-		// Options open markup
-		$this->field_option( 'advanced-options', $field, array(
-			'markup' => 'open',
-		) );
-
-		// Show Values toggle option. This option will only show if already used
-		// or if manually enabled by a filter.
+	public function show_values( $field ) {
+		// Show Values toggle option. This option will only show if already used or if manually enabled by a filter.
 		if ( ! empty( $field['show_values'] ) || apply_filters( 'everest_forms_fields_show_options_setting', false ) ) {
 			$show_values = $this->field_element(
 				'checkbox',
@@ -109,20 +86,6 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 				'content' => $show_values,
 			) );
 		}
-
-		// Input columns
-		$this->field_option( 'input_columns', $field );
-
-		// Hide label
-		$this->field_option( 'label_hide', $field );
-
-		// Custom CSS classes
-		$this->field_option( 'css', $field );
-
-		// Options close markup
-		$this->field_option( 'advanced-options', $field, array(
-			'markup' => 'close',
-		) );
 	}
 
 	/**
