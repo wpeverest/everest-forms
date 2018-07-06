@@ -24,7 +24,7 @@ class EVF_Field_Email extends EVF_Form_Fields {
 		$this->group    = 'general';
 		$this->settings = array(
 			'basic-options' => array(
-				'fields' => array(
+				'fields_options' => array(
 					'label',
 					'meta',
 					'description',
@@ -32,7 +32,7 @@ class EVF_Field_Email extends EVF_Form_Fields {
 				),
 			),
 			'advanced-options' => array(
-				'fields' => array(
+				'fields_options' => array(
 					'size',
 					'placeholder',
 					'label_hide',
