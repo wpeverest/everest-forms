@@ -96,18 +96,10 @@ abstract class EVF_Form_Fields {
 		// Hooks.
 		add_action( 'everest_forms_builder_fields_options_' . $this->type, array( $this, 'field_options' ) );
 		add_action( 'everest_forms_builder_fields_preview_' . $this->type, array( $this, 'field_preview' ) );
-
-		// AJAX Add new field.
-		add_action( "wp_ajax_everest_forms_new_field_{$this->type}", array( $this, 'field_new' ) );
-
-		// Display field input elements on front-end.
-		add_action( "evf_display_field_{$this->type}", array( $this, 'field_display' ), 10, 3 );
-
-		// Validation on submit.
-		add_action( "everest_forms_process_validate_{$this->type}", array( $this, 'validate' ), 10, 3 );
-
-		// Format.
-		add_action( "everest_forms_process_format_{$this->type}", array( $this, 'format' ), 10, 4 );
+		add_action( 'wp_ajax_everest_forms_new_field_' . $this->type, array( $this, 'field_new' ) );
+		add_action( 'everest_forms_display_field_' . $this->type, array( $this, 'field_display' ), 10, 3 );
+		add_action( 'everest_forms_process_validate_' . $this->type, array( $this, 'validate' ), 10, 3 );
+		add_action( 'everest_forms_process_format_' . $this->type, array( $this, 'format' ), 10, 4 );
 	}
 
 	/**
