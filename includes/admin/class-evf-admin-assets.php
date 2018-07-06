@@ -141,6 +141,20 @@ class EVF_Admin_Assets {
 				);
 			}
 		}
+
+		// Plugins page.
+		if ( in_array( $screen_id, array( 'plugins' ) ) ) {
+			wp_register_script( 'evf-plugins', EVF()->plugin_url() . '/assets/js/admin/plugins' . $suffix . '.js', array( 'jquery' ), EVF_VERSION );
+			wp_enqueue_script( 'evf-plugins' );
+			wp_localize_script(
+				'evf-plugins',
+				'evf_plugins_params',
+				array(
+					'ajax_url'           => admin_url( 'admin-ajax.php' ),
+					'deactivation_nonce' => wp_create_nonce( 'deactivation-notice' ),
+				)
+			);
+		}
 	}
 }
 
