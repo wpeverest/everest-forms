@@ -41,7 +41,7 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 		);
 		$this->settings = array(
 			'basic-options' => array(
-				'fields' => array(
+				'fields_options' => array(
 					'label',
 					'meta',
 					'choices',
@@ -50,7 +50,7 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 				),
 			),
 			'advanced-options' => array(
-				'fields' => array(
+				'fields_options' => array(
 					'size',
 					'placeholder',
 					'label_hide',
