@@ -275,6 +275,7 @@
 				}
 
 				.evf-panel-tab {
+					background-color: $accordion-content-bg;
 					padding: 15px 20px;
 					font-size: 14px;
 					font-weight: 600;
@@ -288,10 +289,9 @@
 					}
 
 					&.active {
-						background-color: $green;
+						background-color: $color-white;
 						position: relative;
-						color: #ffffff;
-						border-color: $green;
+						color: $color-brand-secondary;
 
 						&::after {
 							position: absolute;
