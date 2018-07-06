@@ -13,8 +13,8 @@ $form_title               = isset( $title ) ? sanitize_text_field( $title ) : es
 $form_template['contact'] = array(
 	'form_field_id' => '1',
 	'form_fields' => array(
-		'name' => array(
-			'id'          => 'name',
+		'fullname' => array(
+			'id'          => 'fullname',
 			'type'        => 'text',
 			'label'       => 'Name',
 			'meta-key'    => 'name',
@@ -75,7 +75,7 @@ $form_template['contact'] = array(
 	'structure' => array(
 		'row_1' => array(
 			'grid_1' => array(
-				'name',
+				'fullname',
 				'email',
 				'subject',
 				'message',
