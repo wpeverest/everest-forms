@@ -140,6 +140,23 @@ if ( ! class_exists( 'EVF_Builder_Page', false ) ) :
 		}
 
 		/**
+		 * Add sidebar tab sections.
+		 *
+		 * @param string $name Name of the section.
+		 * @param string $slug Slug of the section.
+		 */
+		public function add_sidebar_tab( $name, $slug ) {
+			$class = '';
+			$class .= $slug == 'default' ? ' default' : '';
+			$class .= ! empty( $icon ) ? ' icon' : '';
+
+			echo '<a href="#" class="evf-panel-tab evf-setting-panel everest-forms-panel-sidebar-section everest-forms-panel-sidebar-section-' . esc_attr( $slug ) . $class . '" data-section="' . esc_attr( $slug ) . '">';
+				echo esc_html( $name );
+				echo '<i class="dashicons dashicons-arrow-right-alt2 everest-forms-toggle-arrow"></i>';
+			echo '</a>';
+		}
+
+		/**
 		 * Hook in tabs.
 		 */
 		public function init_hooks() {}

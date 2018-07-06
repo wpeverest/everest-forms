@@ -15,7 +15,7 @@ if ( class_exists( 'EVF_Builder_Settings', false ) ) {
 /**
  * EVF_Builder_Settings class.
  */
-class EVF_Builder_Settings extends EVF_Admin_Form_Panel {
+class EVF_Builder_Settings extends EVF_Builder_Page {
 
 	/**
 	 * Constructor.
@@ -30,42 +30,25 @@ class EVF_Builder_Settings extends EVF_Admin_Form_Panel {
 	}
 
 	/**
-	 * All systems go.
-	 *
-	 * @since 1.0.0
+	 * Outputs the builder sidebar.
 	 */
-	public function init() {
-		// Define panel information
-		$this->name    = __( 'Settings', 'everest-forms' );
-		$this->slug    = 'settings';
-		$this->icon    = 'evf-icon evf-icon-setting';
-		$this->order   = 10;
-		$this->sidebar = true;
-	}
-
-	/**
-	 * Outputs the Settings panel sidebar.
-	 *
-	 * @since      1.0.0
-	 */
-	public function panel_sidebar() {
-
-		$sections = array(
+	public function output_sidebar() {
+		$sections = apply_filters( 'everest_forms_builder_settings_section', array(
 			'general' => __( 'General', 'everest-forms' ),
 			'email'   => __( 'Email', 'everest-forms' ),
-		);
-		$sections = apply_filters( 'everest_forms_builder_settings_section', $sections, $this->form_data );
-		foreach ( $sections as $slug => $section ) {
-			$this->panel_sidebar_section( $section, $slug );
+		), $this->form_data );
+
+		if ( ! empty( $sections ) ) {
+			foreach ( $sections as $slug => $section ) {
+				$this->add_sidebar_tab( $section, $slug );
+			}
 		}
 	}
 
 	/**
-	 * Outputs the Settings panel primary content.
-	 *
-	 * @since      1.0.0
+	 * Outputs the builder content.
 	 */
-	public function panel_content() {
+	public function output_content() {
 		$form_id     = isset( $_GET['form_id'] ) ? $_GET['form_id'] : '';
 		$user_emails = $this->get_all_email_fields_by_form_id( $form_id );
 
@@ -321,6 +304,7 @@ class EVF_Builder_Settings extends EVF_Admin_Form_Panel {
 		foreach(get_pages() as $page){
 			$pages[$page->ID] = $page->post_title; ;
 		}
+
 		return $pages;
 	}
 }
