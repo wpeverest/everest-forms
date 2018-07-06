@@ -17,11 +17,30 @@ class EVF_Field_Text extends EVF_Form_Fields {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->name  = esc_html__( 'Single Line Text', 'everest-forms' );
-		$this->type  = 'text';
-		$this->icon  = 'evf-icon evf-icon-text';
-		$this->order = 30;
-		$this->group = 'general';
+		$this->name     = esc_html__( 'Single Line Text', 'everest-forms' );
+		$this->type     = 'text';
+		$this->icon     = 'evf-icon evf-icon-text';
+		$this->order    = 30;
+		$this->group    = 'general';
+		$this->settings = array(
+			'basic-options' => array(
+				'field_options' => array(
+					'label',
+					'meta',
+					'description',
+					'required',
+				),
+			),
+			'advanced-options' => array(
+				'field_options' => array(
+					'placeholder',
+					'label_hide',
+					'default_value',
+					'css',
+					'input_mask',
+				),
+			),
+		);
 
 		// Define additional field properties.
 		add_filter( 'evf_field_properties_text', array( $this, 'field_properties' ), 5, 3 );
@@ -30,95 +49,11 @@ class EVF_Field_Text extends EVF_Form_Fields {
 	}
 
 	/**
-	 * Define additional field properties.
-	 *
-	 * @param array $properties
-	 * @param array $field
-	 * @param array $form_data
-	 *
-	 * @return array
-	 */
-	public function field_properties( $properties, $field, $form_data ) {
-		// Input primary: Detect custom input mask.
-		if ( ! empty( $field['input_mask'] ) ) {
-
-			// Add class that will trigger custom mask.
-			$properties['inputs']['primary']['class'][] = 'evf-masked-input';
-
-			if ( false !== strpos( $field['input_mask'], 'alias:' ) ) {
-				$mask = str_replace( 'alias:', '', $field['input_mask'] );
-				$properties['inputs']['primary']['data']['inputmask-alias'] = $mask;
-			} elseif ( false !== strpos( $field['input_mask'], 'regex:' ) ) {
-				$mask = str_replace( 'regex:', '', $field['input_mask'] );
-				$properties['inputs']['primary']['data']['inputmask-regex'] = $mask;
-			} elseif ( false !== strpos( $field['input_mask'], 'date:' ) ) {
-				$mask = str_replace( 'date:', '', $field['input_mask'] );
-				$properties['inputs']['primary']['data']['inputmask-alias']       = 'datetime';
-				$properties['inputs']['primary']['data']['inputmask-inputformat'] = $mask;
-			} else {
-				$properties['inputs']['primary']['data']['inputmask-mask'] = $field['input_mask'];
-			}
-		}
-
-		return $properties;
-	}
-
-	/**
-	 * Field options panel inside the builder.
+	 * Input mask field option.
 	 *
 	 * @param array $field
 	 */
-	public function field_options( $field ) {
-
-		// -------------------------------------------------------------------//
-		// Basic field options.
-		// -------------------------------------------------------------------//
-
-  		$args = array(
-			'markup' => 'open',
-		);
-		$this->field_option( 'basic-options', $field, $args );
-
-		// Label.
-		$this->field_option( 'label', $field );
-
-		// Meta.
-		$this->field_option( 'meta', $field );
-
-		// Description.
-		$this->field_option( 'description', $field );
-
-		// Required toggle.
-		$this->field_option( 'required', $field );
-
-		// Options close markup.
-		$args = array(
-			'markup' => 'close',
-		);
-		$this->field_option( 'basic-options', $field, $args );
-
-		// --------------------------------------------------------------------//
-		// Advanced field options.
-		// --------------------------------------------------------------------//
-
-		// Options open markup.
-		$args = array(
-			'markup' => 'open',
-		);
-		$this->field_option( 'advanced-options', $field, $args );
-
-		// Placeholder.
-		$this->field_option( 'placeholder', $field );
-
-		// Hide label.
-		$this->field_option( 'label_hide', $field );
-
-		// Default value.
-		$this->field_option( 'default_value', $field );
-
-		// Custom CSS classes.
-		$this->field_option( 'css', $field );
-
+	public function input_mask( $field ) {
 		// Input Mask.
 		$lbl = $this->field_element(
 			'label',
@@ -144,12 +79,39 @@ class EVF_Field_Text extends EVF_Form_Fields {
 			'slug'    => 'input_mask',
 			'content' => $lbl . $fld,
 		) );
+	}
 
-		// Options close markup.
-		$args = array(
-			'markup' => 'close',
-		);
-		$this->field_option( 'advanced-options', $field, $args );
+	/**
+	 * Define additional field properties.
+	 *
+	 * @param array $properties
+	 * @param array $field
+	 * @param array $form_data
+	 *
+	 * @return array
+	 */
+	public function field_properties( $properties, $field, $form_data ) {
+		// Input primary: Detect custom input mask.
+		if ( ! empty( $field['input_mask'] ) ) {
+			// Add class that will trigger custom mask.
+			$properties['inputs']['primary']['class'][] = 'evf-masked-input';
+
+			if ( false !== strpos( $field['input_mask'], 'alias:' ) ) {
+				$mask = str_replace( 'alias:', '', $field['input_mask'] );
+				$properties['inputs']['primary']['data']['inputmask-alias'] = $mask;
+			} elseif ( false !== strpos( $field['input_mask'], 'regex:' ) ) {
+				$mask = str_replace( 'regex:', '', $field['input_mask'] );
+				$properties['inputs']['primary']['data']['inputmask-regex'] = $mask;
+			} elseif ( false !== strpos( $field['input_mask'], 'date:' ) ) {
+				$mask = str_replace( 'date:', '', $field['input_mask'] );
+				$properties['inputs']['primary']['data']['inputmask-alias']       = 'datetime';
+				$properties['inputs']['primary']['data']['inputmask-inputformat'] = $mask;
+			} else {
+				$properties['inputs']['primary']['data']['inputmask-mask'] = $field['input_mask'];
+			}
+		}
+
+		return $properties;
 	}
 
 	/**

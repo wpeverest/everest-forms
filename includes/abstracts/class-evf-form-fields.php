@@ -77,6 +77,13 @@ abstract class EVF_Form_Fields {
 	public $form_data;
 
 	/**
+	 * Array of field settings.
+	 *
+	 * @param array
+	 */
+	protected $settings = array();
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct() {
@@ -130,9 +137,9 @@ abstract class EVF_Form_Fields {
 				'markup' => 'open',
 			) );
 
-			if ( ! empty( $option['fields'] ) ) {
-				foreach ( $option['fields'] as $field_name ) {
-					$this->field_option( $field_name, $field );
+			if ( ! empty( $option['field_options'] ) ) {
+				foreach ( $option['field_options'] as $option_name ) {
+					$this->field_option( $option_name, $field );
 				}
 			}
 
@@ -551,6 +558,12 @@ abstract class EVF_Form_Fields {
 					'slug'    => 'sublabel_hide',
 					'content' => $output
 				), false );
+				break;
+
+			default:
+				if ( is_callable( array( $this, $option ) ) ) {
+					$this->{$option}( $field );
+				}
 				break;
 
 		} // End switch().
