@@ -36,7 +36,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 		);
 		$this->settings = array(
 			'basic-options' => array(
-				'fields_options' => array(
+				'field_options' => array(
 					'label',
 					'meta',
 					'choices',
@@ -45,7 +45,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 				),
 			),
 			'advanced-options' => array(
-				'fields_options' => array(
+				'field_options' => array(
 					'size',
 					'placeholder',
 					'label_hide',
