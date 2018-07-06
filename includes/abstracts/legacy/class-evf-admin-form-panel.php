@@ -35,7 +35,7 @@ abstract class EVF_Admin_Form_Panel {
 	 *
 	 * @var mixed
 	 */
-	public $icon = false;
+	protected $icon = false;
 
 	/**
 	 * Priority order the field button should show inside the "Add Fields" tab.
@@ -49,21 +49,21 @@ abstract class EVF_Admin_Form_Panel {
 	 *
 	 * @var boolean
 	 */
-	public $sidebar = false;
+	protected $sidebar = false;
 
 	/**
 	 * Contains form object if we have one.
 	 *
 	 * @var object
 	 */
-	public $form;
+	protected $form;
 
 	/**
 	 * Contains array of the form data (post_content).
 	 *
 	 * @var array
 	 */
-	public $form_data;
+	protected $form_data;
 
 	/**
 	 * Primary class constructor.
@@ -80,8 +80,8 @@ abstract class EVF_Admin_Form_Panel {
 
 		// Hooks.
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueues' ), 15 );
-		add_action( 'everest_forms_builder_panel_buttons', array( $this, 'button' ), $this->order, 2 );
-		add_action( 'everest_forms_builder_panels', array( $this, 'panel_output' ), $this->order, 2 );
+		add_action( 'everest_forms_builder_tabs', array( $this, 'button' ), $this->order );
+		add_action( 'everest_forms_builder_output', array( $this, 'panel_output' ), $this->order );
 	}
 
 	/**
@@ -96,12 +96,11 @@ abstract class EVF_Admin_Form_Panel {
 
 	/**
 	 * Primary panel button in the left panel navigation.
-	 *
-	 * @param mixed  $form
-	 * @param string $view
 	 */
-	public function button( $form, $view ) {
-		$active = $view == $this->slug ? 'nav-tab-active' : '';
+	public function button() {
+		global $current_tab;
+
+		$active = $current_tab === $this->slug ? 'nav-tab-active' : '';
 
 		printf( '<a href="#" class="evf-panel-%1$s-button nav-tab %2$s" data-panel="%1$s">', $this->slug, $active );
 		printf( '<span class="%s"></span>', $this->icon );
@@ -114,12 +113,14 @@ abstract class EVF_Admin_Form_Panel {
 	 * @param object $form
 	 * @param string $view
 	 */
-	public function panel_output( $form, $view ) {
-		$active = $view == $this->slug ? 'active' : '';
+	public function panel_output() {
+		global $current_tab;
+
+		$active = $current_tab == $this->slug ? 'active' : '';
 
 		$wrap = $this->sidebar ? 'everest-forms-panel-sidebar-content' : 'everest-forms-panel-full-content';
 
-		printf( '<div class="everest-forms-panel %s" id="everest-forms-panel-%s">', $active, $this->slug );
+		printf( '<div id="everest-forms-panel-%s" class="everest-forms-panel %s">', $this->slug, $active );
 
 		printf( '<div class="%s">', $wrap );
 

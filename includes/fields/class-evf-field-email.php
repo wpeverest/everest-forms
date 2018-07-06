@@ -1,93 +1,48 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+/**
+ * Email field.
+ *
+ * @package EverestForms\Fields
+ * @since   1.0.0
+ */
+
+defined( 'ABSPATH' ) || exit;
 
 /**
- * Email field
- *
- * @package    EverestForms
- * @author     WPEverest
- * @since      1.0.0
+ * EVF_Field_Number class.
  */
 class EVF_Field_Email extends EVF_Form_Fields {
 
-
 	/**
-	 * Primary class constructor.
-	 *
-	 * @since      1.0.0
+	 * Constructor.
 	 */
-	public function init() {
-
-		// Define field type information.
-		$this->name  = __( 'Email', 'everest-forms' );
-		$this->type  = 'email';
-		$this->icon  = 'evf-icon evf-icon-email';
-		$this->order = 9;
-
-	}
-
-	public function field_options( $field ) {
-
-		// -------------------------------------------------------------------//
-		// Basic field options.
-		// -------------------------------------------------------------------//
-
-		// Options open markup.
-		$args = array(
-			'markup' => 'open',
+	public function __construct() {
+		$this->name     = esc_html__( 'Email', 'everest-forms' );
+		$this->type     = 'email';
+		$this->icon     = 'evf-icon evf-icon-email';
+		$this->order    = 90;
+		$this->group    = 'general';
+		$this->settings = array(
+			'basic-options' => array(
+				'field_options' => array(
+					'label',
+					'meta',
+					'description',
+					'required',
+				),
+			),
+			'advanced-options' => array(
+				'field_options' => array(
+					'size',
+					'placeholder',
+					'label_hide',
+					'default_value',
+					'css',
+				),
+			),
 		);
-		$this->field_option( 'basic-options', $field, $args );
 
-		// Label.
-		$this->field_option( 'label', $field );
-
-		// Meta.
-		$this->field_option( 'meta', $field );
-
-		// Description.
-		$this->field_option( 'description', $field );
-
-		// Required toggle.
-		$this->field_option( 'required', $field );
-
-		// Options close markup.
-		$args = array(
-			'markup' => 'close',
-		);
-		$this->field_option( 'basic-options', $field, $args );
-
-		// -------------------------------------------------------------------//
-		// Advanced field options.
-		// -------------------------------------------------------------------//
-
-		// Options open markup.
-		$args = array(
-			'markup' => 'open',
-		);
-		$this->field_option( 'advanced-options', $field, $args );
-
-		// Size.
-		$this->field_option( 'size', $field );
-
-		// Placeholder.
-		$this->field_option( 'placeholder', $field );
-
-		// Hide Label.
-		$this->field_option( 'label_hide', $field );
-
-		// Default value.
-		$this->field_option( 'default_value', $field );
-
-		// Custom CSS classes.
-		$this->field_option( 'css', $field );
-
-		// Options close markup.
-		$args = array(
-			'markup' => 'close',
-		);
-		$this->field_option( 'advanced-options', $field, $args );
+		parent::__construct();
 	}
 
 	/**

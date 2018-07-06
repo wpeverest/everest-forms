@@ -2,14 +2,11 @@
 /**
  * Display notices in admin
  *
- * @package EverestForms\Admin
+ * @package EverestForms/Admin
  * @version 1.0.0
- * @since   1.0.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
  * EVF_Admin_Notices Class.
@@ -43,6 +40,7 @@ class EVF_Admin_Notices {
 
 		if ( current_user_can( 'manage_everest_forms' ) ) {
 			add_action( 'admin_print_styles', array( __CLASS__, 'add_notices' ) );
+			add_action( 'admin_print_scripts', array( __CLASS__, 'hide_unrelated_notices' ) );
 		}
 	}
 
@@ -182,6 +180,39 @@ class EVF_Admin_Notices {
 			}
 		} else {
 			include 'views/html-notice-updated.php';
+		}
+	}
+
+	/**
+	 * Remove non-EverestForms notices from EverestForms pages.
+	 *
+	 * @since 1.2.0
+	 */
+	public static function hide_unrelated_notices() {
+		global $wp_filter;
+
+		// Bail if we're not on a EverestForms screen or page.
+		if ( empty( $_REQUEST['page'] ) || false === strpos( sanitize_text_field( wp_unslash( $_REQUEST['page'] ) ), 'evf-' ) ) { // WPCS: input var okay, CSRF ok.
+			return;
+		}
+
+		foreach ( array( 'user_admin_notices', 'admin_notices', 'all_admin_notices' ) as $wp_notice ) {
+			if ( ! empty( $wp_filter[ $wp_notice ]->callbacks ) && is_array( $wp_filter[ $wp_notice ]->callbacks ) ) {
+				foreach ( $wp_filter[ $wp_notice ]->callbacks as $priority => $hooks ) {
+					foreach ( $hooks as $name => $arr ) {
+						if ( is_object( $arr['function'] ) && $arr['function'] instanceof Closure ) {
+							unset( $wp_filter[ $wp_notice ]->callbacks[ $priority ][ $name ] );
+							continue;
+						}
+						if ( ! empty( $arr['function'][0] ) && is_object( $arr['function'][0] ) && strpos( strtolower( get_class( $arr['function'][0] ) ), 'evf_' ) !== false ) {
+							continue;
+						}
+						if ( ! empty( $name ) && ( ( ( isset( $_GET['tab'], $_GET['form_id'] ) || isset( $_GET['create-form'] ) ) && 'evf-builder' === $_REQUEST['page'] ) || false === strpos( strtolower( $name ), 'evf_' ) ) ) {
+							unset( $wp_filter[ $wp_notice ]->callbacks[ $priority ][ $name ] );
+						}
+					}
+				}
+			}
 		}
 	}
 }

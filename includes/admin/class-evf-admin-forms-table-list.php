@@ -348,7 +348,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 					'bulk_action',
 					'bulk_action',
 					/* translators: %d: number of forms */
-					sprintf( _n( '%d form moved to the Trash.', '%d forms moved to the Trash.', $count ), $count ),
+					sprintf( _n( '%d form moved to the Trash.', '%d forms moved to the Trash.', $count, 'everest-forms' ), $count ),
 					'updated'
 				);
 				break;
@@ -363,7 +363,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 					'bulk_action',
 					'bulk_action',
 					/* translators: %d: number of forms */
-					sprintf( _n( '%d form restored from the Trash.', '%d forms restored from the Trash.', $count ), $count ),
+					sprintf( _n( '%d form restored from the Trash.', '%d forms restored from the Trash.', $count, 'everest-forms' ), $count ),
 					'updated'
 				);
 				break;
@@ -378,7 +378,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 					'bulk_action',
 					'bulk_action',
 					/* translators: %d: number of forms */
-					sprintf( _n( '%d form permanently deleted.', '%d forms permanently deleted.', $count ), $count ),
+					sprintf( _n( '%d form permanently deleted.', '%d forms permanently deleted.', $count, 'everest-forms' ), $count ),
 					'updated'
 				);
 				break;

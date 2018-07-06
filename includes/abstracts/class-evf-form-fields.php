@@ -14,39 +14,53 @@ defined( 'ABSPATH' ) || exit;
 abstract class EVF_Form_Fields {
 
 	/**
-	 * Full name of the field type, eg "Paragraph Text".
+	 * Field title.
 	 *
 	 * @var string
 	 */
 	public $name;
 
 	/**
-	 * Type of the field, eg "textarea".
+	 * Field type.
 	 *
 	 * @var string
 	 */
 	public $type;
 
 	/**
-	 * Font Awesome Icon used for the editor button, eg "fa-list".
+	 * Field icon.
 	 *
 	 * @var mixed
 	 */
-	public $icon = false;
+	public $icon = '';
 
 	/**
-	 * Priority order the field button should show inside the "Add Fields" tab.
+	 * Field class.
 	 *
-	 * @var integer
+	 * @var string
 	 */
-	public $order = 20;
+	public $class = '';
 
 	/**
-	 * Field group the field belongs to.
+	 * Form ID.
+	 *
+	 * @var int|mixed
+	 */
+	public $form_id;
+
+	/**
+	 * Field group.
 	 *
 	 * @var string
 	 */
 	public $group = 'general';
+
+	/**
+	 * Is available in Pro?
+	 *
+	 * @var boolean
+	 */
+	protected $is_pro = false;
 
 	/**
 	 * Placeholder to hold default value(s) for some field types.
@@ -56,45 +70,32 @@ abstract class EVF_Form_Fields {
 	public $defaults;
 
 	/**
-	 * Current form ID in the admin builder.
+	 * Array of form data.
 	 *
-	 * @var mixed, int or false
-	 */
-	public $form_id;
-
-	/**
-	 * Current form data in admin builder.
-	 *
-	 * @var mixed, int or false
+	 * @var array
 	 */
 	public $form_data;
 
 	/**
-	 * Primary class constructor.
+	 * Array of field settings.
 	 *
-	 * @since 1.0.0
-	 *
-	 * @param bool $init
+	 * @param array
 	 */
-	public function __construct( $init = true ) {
-		if ( ! $init ) {
-			return;
-		}
+	protected $settings = array();
 
-		// The form ID is to be accessed in the builder.
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		$this->class   = $this->is_pro ? 'upgrade-modal' : '';
 		$this->form_id = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : false;
 
-		// Bootstrap.
-		$this->init();
+		// Init hooks.
+		$this->init_hooks();
 
-		// Add fields tab.
-		add_filter( 'everest_forms_builder_fields_buttons', array( $this, 'field_button' ), 15 );
-
-		// Field options tab.
-		add_action( "everest_forms_builder_fields_options_{$this->type}", array( $this, 'field_options' ), 10 );
-
-		// Preview fields.
-		add_action( "everest_forms_builder_fields_previews_{$this->type}", array( $this, 'field_preview' ), 10 );
+		// Hooks.
+		add_action( 'everest_forms_builder_fields_options_' . $this->type, array( $this, 'field_options' ) );
+		add_action( 'everest_forms_builder_fields_preview_' . $this->type, array( $this, 'field_preview' ) );
 
 		// AJAX Add new field.
 		add_action( "wp_ajax_everest_forms_new_field_{$this->type}", array( $this, 'field_new' ) );
@@ -110,39 +111,45 @@ abstract class EVF_Form_Fields {
 	}
 
 	/**
-	 * All systems go. Used by subclasses.
-	 *
-	 * @since 1.0.0
+	 * Hook in tabs.
 	 */
-	public function init() {}
+	public function init_hooks() {}
 
 	/**
-	 * Create the button for the 'Add Fields' tab, inside the form editor.
+	 * Get the form fields after they are initialized.
 	 *
-	 * @since  1.0.0
-	 * @param  array $fields
-	 * @return array
+	 * @return array of options
 	 */
-	public function field_button( $fields ) {
-		// Add field information to fields array.
-		$fields[ $this->group ]['fields'][] = array(
-			'order' => $this->order,
-			'name'  => $this->name,
-			'type'  => $this->type,
-			'icon'  => $this->icon,
-		);
-
-		// Wipe hands clean.
-		return $fields;
+	public function get_field_settings() {
+		return apply_filters( 'everest_forms_get_field_settings_' . $this->type, $this->settings );
 	}
 
 	/**
-	 * Creates the field options panel. Used by subclasses.
+	 * Output form fields options.
 	 *
-	 * @since 1.0.0
-	 * @param array $field
+	 * Loops though the field options array and outputs each field.
+	 *
+	 * @param array $field Field data.
 	 */
-	public function field_options( $field ) {}
+	public function field_options( $field ) {
+		$settings = $this->get_field_settings();
+
+		foreach ( $settings as $option_key => $option ) {
+			$this->field_option( $option_key, $field, array(
+				'markup' => 'open',
+			) );
+
+			if ( ! empty( $option['field_options'] ) ) {
+				foreach ( $option['field_options'] as $option_name ) {
+					$this->field_option( $option_name, $field );
+				}
+			}
+
+			$this->field_option( $option_key, $field, array(
+				'markup' => 'close',
+			) );
+		}
+	}
 
 	/**
 	 * Creates the field preview. Used by subclasses.
@@ -542,6 +549,12 @@ abstract class EVF_Form_Fields {
 					'slug'    => 'sublabel_hide',
 					'content' => $output
 				), false );
+				break;
+
+			default:
+				if ( is_callable( array( $this, $option ) ) ) {
+					$this->{$option}( $field );
+				}
 				break;
 
 		} // End switch().

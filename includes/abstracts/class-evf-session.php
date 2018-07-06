@@ -9,7 +9,7 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * EVF_Session
+ * EVF_Session class.
  */
 abstract class EVF_Session {
 

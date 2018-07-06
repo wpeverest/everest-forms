@@ -28,6 +28,9 @@ class EVF_Deprecated_Action_Hooks extends EVF_Deprecated_Hooks {
 			'everest_forms_builder_scripts',
 			'everest_forms_builder_enqueues_before',
 		),
+		'everest_forms_builder_tabs'           => 'everest_forms_builder_panel_buttons',
+		'everest_forms_builder_output'         => 'everest_forms_builder_panels',
+		'everest_forms_builder_fields_preview' => 'everest_forms_builder_preview',
 	);
 
 	/**
@@ -40,6 +43,9 @@ class EVF_Deprecated_Action_Hooks extends EVF_Deprecated_Hooks {
 		'everest_forms_builder_init'            => '1.2.0',
 		'everest_forms_builder_scripts'         => '1.2.0',
 		'everest_forms_builder_enqueues_before' => '1.2.0',
+		'everest_forms_builder_panel_buttons'   => '1.2.0',
+		'everest_forms_builder_panels'          => '1.2.0',
+		'everest_forms_builder_preview'         => '1.2.0',
 	);
 
 	/**

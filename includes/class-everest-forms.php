@@ -221,7 +221,6 @@ final class EverestForms {
 		 */
 		include_once EVF_ABSPATH . 'includes/interfaces/class-evf-logger-interface.php';
 		include_once EVF_ABSPATH . 'includes/interfaces/class-evf-log-handler-interface.php';
-		include_once EVF_ABSPATH . 'includes/interfaces/class-evf-form-panel-interface.php';
 
 		/**
 		 * Abstract classes.
@@ -229,8 +228,7 @@ final class EverestForms {
 		include_once EVF_ABSPATH . 'includes/abstracts/class-evf-log-handler.php';
 		include_once EVF_ABSPATH . 'includes/abstracts/class-evf-deprecated-hooks.php';
 		include_once EVF_ABSPATH . 'includes/abstracts/class-evf-session.php';
-		include_once EVF_ABSPATH . 'includes/abstracts/class-evf-form-panel.php';
-		include_once EVF_ABSPATH . 'includes/abstracts/abstract-evf-form-fields.php';
+		include_once EVF_ABSPATH . 'includes/abstracts/class-evf-form-fields.php';
 
 		/**
 		 * Core classes.
@@ -380,14 +378,5 @@ final class EverestForms {
 	 */
 	public function form_fields() {
 		return EVF_Fields::instance();
-	}
-
-	/**
-	 * Get form panels Class.
-	 *
-	 * @return EVF_Form_Panels
-	 */
-	public function form_panels() {
-		return EVF_Form_Panels::instance();
 	}
 }

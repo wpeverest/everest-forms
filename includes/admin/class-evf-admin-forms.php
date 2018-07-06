@@ -121,7 +121,7 @@ class EVF_Admin_Forms {
 			'empty_trash',
 			'empty_trash',
 			/* translators: %d: number of forms */
-			sprintf( _n( '%d form permanently deleted.', '%d forms permanently deleted.', $count ), $count ),
+			sprintf( _n( '%d form permanently deleted.', '%d forms permanently deleted.', $count, 'everest-forms' ), $count ),
 			'updated'
 		);
 	}
@@ -131,7 +131,7 @@ class EVF_Admin_Forms {
 	 */
 	private function duplicate_form() {
 		if ( empty( $_REQUEST['form_id'] ) ) {
-			wp_die( __( 'No form to duplicate has been supplied!', 'woocommerce' ) );
+			wp_die( __( 'No form to duplicate has been supplied!', 'everest-forms' ) );
 		}
 
 		$form_id = isset( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : '';

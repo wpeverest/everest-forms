@@ -24,9 +24,36 @@ class EVF_Forms_Features {
 	 */
 	public function __construct() {
 		add_action( 'everest_forms_form_settings_notifications', array( $this, 'form_settings_notifications' ), 8, 1 );
-		add_filter( 'everest_forms_builder_fields_buttons', array( $this, 'form_fields' ), 20 );
-		//add_filter( 'everest_forms_builder_preview', array( $this, 'everest_forms_builder_preview' ), 20, 1 );
-		//add_action( 'everest_forms_builder_panel_buttons', array( $this, 'form_panels' ), 20 );
+
+		if ( ! defined( 'EFP_PLUGIN_FILE' ) ) {
+			add_filter( 'everest_forms_fields', array( $this, 'form_fields' ) );
+		}
+	}
+
+	/**
+	 * Load additional fields available in the Pro version.
+	 *
+	 * @param  array $fields Registered form fields.
+	 * @return array
+	 */
+	public function form_fields( $fields ) {
+		$pro_fields = array(
+			'EVF_Field_File_Upload',
+			'EVF_Field_Hidden',
+			'EVF_Field_Phone',
+			'EVF_Field_Password',
+			'EVF_Field_HTML',
+			'EVF_Field_Title',
+			'EVF_Field_Address',
+			'EVF_Field_Country',
+			'EVF_Field_City',
+			'EVF_Field_Zip',
+			'EVF_Field_Single_Item',
+			'EVF_Field_Multiple_Item',
+			'EVF_Field_Total',
+		);
+
+		return array_merge( $fields, $pro_fields );
 	}
 
 	/**
@@ -91,64 +118,6 @@ class EVF_Forms_Features {
 			)
 		);
 		echo ' </div > ';
-	}
-
-	/**
-	 * Display/register additional fields available in the Pro version.
-	 *
-	 * @param  array $fields
-	 * @return array
-	 */
-	public function form_fields( $fields ) {
-		if ( ! defined( 'EFP_PLUGIN_FILE' ) ) {
-			$pro_advanced_fields = array(
-				array(
-					'icon'  => 'evf-icon evf-icon-file-upload',
-					'name'  => 'File Upload',
-					'type'  => 'file-upload',
-					'order' => 12,
-					'class' => 'upgrade-modal',
-				),
-				array(
-					'icon'  => 'evf-icon evf-icon-hidden-field',
-					'name'  => 'Hidden Field',
-					'type'  => 'hidden',
-					'order' => 13,
-					'class' => 'upgrade-modal',
-				),
-				array(
-					'icon'  => 'evf-icon evf-icon-address',
-					'name'  => 'Address',
-					'type'  => 'address',
-					'order' => 14,
-					'class' => 'upgrade-modal',
-				),
-				array(
-					'icon'  => 'evf-icon evf-icon-phone',
-					'name'  => 'Phone',
-					'type'  => 'phone',
-					'order' => 15,
-					'class' => 'upgrade-modal',
-				),
-			);
-
-			$fields['advanced']['fields'] = array_merge( $fields['advanced']['fields'], $pro_advanced_fields );
-		}
-
-		return $fields;
-	}
-
-	/**
-	 * Display/register additional panels available in the Pro version.
-	 *
-	 * @since 1.0.0
-	 */
-	public function form_panels() {
-		?>
-		<button class="everest-forms-panel-tet-button upgrade-modal" data-panel="payments">
-			<i class="fa fa-usd"></i><span><?php _e( 'Payments', 'everest-forms' ); ?></span>
-		</button>
-		<?php
 	}
 }
 
