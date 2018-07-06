@@ -365,8 +365,9 @@ body.everest-forms-builder-setup,
 
 				&.nav-tab-active {
 					margin-bottom: 0;
-					background-color: #f1f1f1;
 					color: $color-gray-darker;
+					background-color: #f1f1f1;
+					border-bottom: 1px solid #e0e3e6;
 
 					&:focus {
 						box-shadow: none;
@@ -825,7 +826,6 @@ body.everest-forms-builder-setup,
 				text-align: center;
 				color: $color-gray-darken;
 				background: $accordion-content-bg;
-				border-top: 1px solid #e0e3e6;
 				border-bottom: 1px solid #e0e3e6;
 
 				&.active {
