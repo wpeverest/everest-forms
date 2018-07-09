@@ -79,7 +79,7 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 
 == Changelog ==
 
-= 1.2.0 - XX-XX-2018 =
+= 1.2.0 - 19-07-2018 =
 * Feature - Copy shortcode inside form view page.
 * Feature - Input Mask added in Text Advance Field.
 * Feature - Email html/plain template settings is added up.
@@ -119,7 +119,7 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 * Deprecated - Unnecessary general and email settings from global.
 
 = 1.1.5.1 - 04-05-2018 =
-* Fix - reCaptcha displaying after every inserted row issue 
+* Fix - reCaptcha displaying after every inserted row issue
 
 = 1.1.5 - 03-05-2018 =
 * Fix - Google reCaptcha console errors.
