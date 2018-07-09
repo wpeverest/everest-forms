@@ -3,5 +3,6 @@ CHANGELOG.txt export-ignore
 composer.* export-ignore
 Gruntfile.js export-ignore
 package.json export-ignore
-phpcs.ruleset.xml export-ignore
+package.json export-ignore
+phpcs.xml export-ignore
 README.md export-ignore
