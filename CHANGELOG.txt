@@ -1,11 +1,27 @@
 == Changelog ==
 
-= 1.2.0 - XX-XX-2018 =
+= 1.2.0 - 09-07-2018 =
 * Feature - Copy shortcode inside form view page.
+* Feature - Input Mask added in Text Advance Field.
+* Feature - Email html/plain template settings is added up.
+* Tweak - Revamped the form builder page UI.
+* Tweak - Placeholder added in Date form field.
+* Tweak - Added form bulk actions admin notices.
+* Tweak - Several label changed for form fields.
 * Tweak - Less spacing between icon and the label.
 * Tweak - Added moving cursor while dragging fields.
 * Tweak - Sidebar width so layout won't stretch much.
 * Tweak - Editing the field element now highlight it.
+* Tweak - Entries number alignment is changed to center.
+* Tweak - Empty Button is added only if item is in trash.
+* Tweak - Others admin notice are hidden in builder page.
+* Tweak - Form name is strictly required on new form creation.
+
+= 1.1.9 - 26-06-2018 =
+* Fix - Validation and sanitization for form fields.
+* Fix - Only five forms are listed in entries selection.
+* Tweak - Entries number alignment is changed to center.
+* Tweak - Entry save related data can be override via filter.
 
 = 1.1.8 - 07-06-2018 =
 * Fix - Similar meta key exists while duplicating the field.
