@@ -1,0 +1,50 @@
+<?php
+/**
+ * EverestForms features
+ *
+ * @package EverestForms\Admin
+ * @since   1.2.0
+ */
+
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Features Class.
+ */
+class EVF_Forms_Features {
+
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		// add_filter( 'everest_forms_fields', array( $this, 'form_fields' ) );
+	}
+
+	/**
+	 * Load additional fields available in the Pro version.
+	 *
+	 * @param  array $fields Registered form fields.
+	 * @return array
+	 */
+	public function form_fields( $fields ) {
+		$pro_fields = array(
+			'EVF_Field_File_Upload',
+			'EVF_Field_Hidden',
+			'EVF_Field_Phone',
+			'EVF_Field_Password',
+			'EVF_Field_HTML',
+			'EVF_Field_Title',
+			'EVF_Field_Address',
+			'EVF_Field_Country',
+			'EVF_Field_City',
+			'EVF_Field_Zip',
+			'EVF_Field_Single_Item',
+			'EVF_Field_Multiple_Item',
+			'EVF_Field_Total',
+		);
+
+		return array_merge( $fields, $pro_fields );
+	}
+}
+
+new EVF_Forms_Features();
