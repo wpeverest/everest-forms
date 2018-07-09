@@ -17,7 +17,7 @@ class EVF_Field_Multiple_Item extends EVF_Form_Fields {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->name   = esc_html__( 'Multiple Items', 'everest-forms-pro' );
+		$this->name   = esc_html__( 'Multiple Items', 'everest-forms' );
 		$this->type   = 'payment-multiple';
 		$this->icon   = 'evf-icon evf-icon-multiple-choices';
 		$this->order  = 20;

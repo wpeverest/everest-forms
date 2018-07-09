@@ -17,7 +17,7 @@ class EVF_Field_Single_Item extends EVF_Form_Fields {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->name   = esc_html__( 'Single Item', 'everest-forms-pro' );
+		$this->name   = esc_html__( 'Single Item', 'everest-forms' );
 		$this->type   = 'payment-single';
 		$this->icon   = 'evf-icon evf-icon-single-item';
 		$this->order  = 10;

@@ -17,7 +17,7 @@ class EVF_Field_Total extends EVF_Form_Fields {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->name   = esc_html__( 'Total', 'everest-forms-pro' );
+		$this->name   = esc_html__( 'Total', 'everest-forms' );
 		$this->type   = 'payment-total';
 		$this->icon   = 'evf-icon evf-icon-total';
 		$this->order  = 30;
