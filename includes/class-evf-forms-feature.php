@@ -2,32 +2,23 @@
 /**
  * EverestForms features
  *
- * @author   WPEverest
- * @category Classes
- * @package  EverestForms
- * @since      1.0.0
+ * @package EverestForms\Admin
+ * @since   1.2.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
- * Main EverestForms Class.
+ * Features Class.
  */
 class EVF_Forms_Features {
 
 	/**
-	 * Primary class constructor.
-	 *
-	 * @since 1.0.0
+	 * Constructor.
 	 */
 	public function __construct() {
+		add_filter( 'everest_forms_fields', array( $this, 'form_fields' ) );
 		add_action( 'everest_forms_form_settings_notifications', array( $this, 'form_settings_notifications' ), 8, 1 );
-
-		if ( ! defined( 'EFP_PLUGIN_FILE' ) ) {
-			add_filter( 'everest_forms_fields', array( $this, 'form_fields' ) );
-		}
 	}
 
 	/**
@@ -58,8 +49,6 @@ class EVF_Forms_Features {
 
 	/**
 	 * Form notification settings, supports multiple notifications.
-	 *
-	 * @since      1.0.0
 	 *
 	 * @param object $settings
 	 */
@@ -96,11 +85,9 @@ class EVF_Forms_Features {
 		);
 
 		echo ' < div class="everest-forms-notification" > ';
-
-		echo '<div class="everest-forms-notification-header" > ';
-		echo '<span > ' . __( 'Default Notification', 'everest-forms' ) . ' </span > ';
+			echo '<div class="everest-forms-notification-header" > ';
+			echo '<span> ' . __( 'Default Notification', 'everest-forms' ) . ' </span > ';
 		echo '</div > ';
-
 
 		everest_forms_panel_field(
 			'text',

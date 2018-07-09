@@ -29,7 +29,7 @@ class EVF_Admin_Menus {
 		add_action( 'admin_menu', array( $this, 'settings_menu' ), 50 );
 		add_action( 'admin_menu', array( $this, 'status_menu' ), 60 );
 
-		if ( apply_filters( 'everest_forms_show_addons_page', true ) ) {
+		if ( apply_filters( 'everest_forms_show_addons_page', false ) ) {
 			add_action( 'admin_menu', array( $this, 'addons_menu' ), 70 );
 		}
 
