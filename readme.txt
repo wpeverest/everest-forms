@@ -79,7 +79,7 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 
 == Changelog ==
 
-= 1.2.0 - 19-07-2018 =
+= 1.2.0 - 09-07-2018 =
 * Feature - Copy shortcode inside form view page.
 * Feature - Input Mask added in Text Advance Field.
 * Feature - Email html/plain template settings is added up.
