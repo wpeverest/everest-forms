@@ -241,10 +241,7 @@ final class EverestForms {
 		include_once EVF_ABSPATH . 'includes/class-evf-cache-helper.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-deprecated-action-hooks.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-deprecated-filter-hooks.php';
-
-		if ( ! defined( 'EFP_PLUGIN_FILE' ) ) {
-			include_once EVF_ABSPATH . 'includes/class-evf-forms-feature.php';
-		}
+		include_once EVF_ABSPATH . 'includes/class-evf-forms-feature.php';
 
 		if ( $this->is_request( 'admin' ) ) {
 			include_once EVF_ABSPATH . 'includes/admin/class-evf-admin.php';
