@@ -17,7 +17,7 @@ class EVF_Forms_Features {
 	 * Constructor.
 	 */
 	public function __construct() {
-		// add_filter( 'everest_forms_fields', array( $this, 'form_fields' ) );
+		add_filter( 'everest_forms_fields', array( $this, 'form_fields' ) );
 	}
 
 	/**

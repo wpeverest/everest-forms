@@ -29,7 +29,7 @@ class EVF_Admin_Menus {
 		add_action( 'admin_menu', array( $this, 'settings_menu' ), 50 );
 		add_action( 'admin_menu', array( $this, 'status_menu' ), 60 );
 
-		if ( apply_filters( 'everest_forms_show_addons_page', false ) ) {
+		if ( apply_filters( 'everest_forms_show_addons_page', true ) ) {
 			add_action( 'admin_menu', array( $this, 'addons_menu' ), 70 );
 		}
 
@@ -176,11 +176,11 @@ class EVF_Admin_Menus {
 
 		// Add any posted messages.
 		if ( ! empty( $_GET['evf_error'] ) ) { // WPCS: input var okay, CSRF ok.
-			EVF_Admin_Settings::add_error( wp_kses_post( wp_unslash( $_GET['um_error'] ) ) ); // WPCS: input var okay, CSRF ok.
+			EVF_Admin_Settings::add_error( wp_kses_post( wp_unslash( $_GET['evf_error'] ) ) ); // WPCS: input var okay, CSRF ok.
 		}
 
 		if ( ! empty( $_GET['evf_message'] ) ) { // WPCS: input var okay, CSRF ok.
-			EVF_Admin_Settings::add_message( wp_kses_post( wp_unslash( $_GET['um_message'] ) ) ); // WPCS: input var okay, CSRF ok.
+			EVF_Admin_Settings::add_message( wp_kses_post( wp_unslash( $_GET['evf_message'] ) ) ); // WPCS: input var okay, CSRF ok.
 		}
 
 		do_action( 'everest_forms_settings_page_init' );
