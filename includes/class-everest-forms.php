@@ -62,6 +62,13 @@ final class EverestForms {
 	public $entry_meta;
 
 	/**
+	 * Integrations instance.
+	 *
+	 * @var EVF_Integrations
+	 */
+	public $integrations = null;
+
+	/**
 	 * Array of deprecated hook handlers.
 	 *
 	 * @var array of EVF_Deprecated_Hooks
@@ -238,6 +245,7 @@ final class EverestForms {
 		include_once EVF_ABSPATH . 'includes/class-evf-install.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-ajax.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-emails.php';
+		include_once EVF_ABSPATH . 'includes/class-evf-integrations.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-cache-helper.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-deprecated-action-hooks.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-deprecated-filter-hooks.php';
@@ -282,6 +290,7 @@ final class EverestForms {
 		$this->load_plugin_textdomain();
 
 		// Load class instances.
+		$this->integrations                        = new EVF_Integrations();
 		$this->deprecated_hook_handlers['actions'] = new EVF_Deprecated_Action_Hooks();
 		$this->deprecated_hook_handlers['filters'] = new EVF_Deprecated_Filter_Hooks();
 
