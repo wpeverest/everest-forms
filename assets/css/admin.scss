@@ -1187,33 +1187,37 @@ body.everest-forms-builder-setup,
 						width: 44px;
 						position: relative;
 
-						&:before {
-							position: absolute;
-							content: "";
-							height: 18px;
-							width: 18px;
-							left: 2px;
-							bottom: 2px;
-							background-color: $color-white;
-							-webkit-transition: .4s;
-							transition: .4s;
-						}
-
 						&.inactive,
 						&.active {
 							border-radius: 34px;
 
 							&:before {
 								border-radius: 50%;
+								position: absolute;
+								content: "";
+								height: 18px;
+								width: 18px;
+								bottom: 2px;
+								background-color: $color-white;
+								-webkit-transition: .4s;
+								transition: .4s;
 							}
 						}
 
 						&.inactive {
 							background-color: #ced4da;
+
+							&:before {
+								left: 2px;
+							}
 						}
 
 						&.active {
 							background-color: $everestforms;
+
+							&:before {
+								right: 2px;
+							}
 						}
 					}
 				}
