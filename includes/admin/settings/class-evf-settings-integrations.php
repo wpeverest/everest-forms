@@ -70,34 +70,31 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 		<p>I am testing paragraph.</p>
 		<div class="everest-forms-integrations-connection">
 		<?php
-			foreach ( $integrations as $integration ) { ?>
-				<div class="everest-forms-integrations">
-					<div class="integration-header-info">
-						<div class="integration-status">
-							<span class="toggle-switch connected"></span>
-						</div>
-						<div class="integration-desc">
-							<figure class="logo">
-								<img src="<?php echo $integration->icon;  ?>" alt="<?php echo $integration->method_title;  ?>" />
-							</figure>
-							<div class="integration-info">
-								<a href="<?php echo admin_url( 'admin.php?page=evf-settings&tab=integration&section=' . $integration->id ); ?>">
-									<h3><?php echo $integration->method_title;  ?></h3>
-								</a>
-								<p><?php echo $integration->method_description; ?></p>
-							</div>
-						</div>
+		foreach ( $integrations as $integration ) { ?>
+			<div class="everest-forms-integrations">
+				<div class="integration-header-info">
+					<div class="integration-status">
+						<span class="toggle-switch"></span>
 					</div>
-					<div class="integartion-action">
-						<div class="toggle-button">
-							<span class="slide active"></span>
+					<div class="integration-desc">
+						<figure class="logo">
+							<img src="<?php echo $integration->icon;  ?>" alt="<?php echo $integration->method_title;  ?>" />
+						</figure>
+						<div class="integration-info">
+							<a href="<?php echo admin_url( 'admin.php?page=evf-settings&tab=integration&section=' . $integration->id ); ?>">
+								<h3><?php echo $integration->method_title;  ?></h3>
+							</a>
+							<p><?php echo $integration->method_description; ?></p>
 						</div>
-						<a class="integration-setup" href="#">
-							<span class="evf-icon evf-icon-setting-cog"></span>
-						</a>
 					</div>
 				</div>
-		<?php } ?>
+				<div class="integartion-action">
+					<a class="integration-setup" href="<?php echo admin_url( 'admin.php?page=evf-settings&tab=integration&section=' . $integration->id ); ?>">
+						<span class="evf-icon evf-icon-setting-cog"></span>
+					</a>
+				</div>
+			</div>
+	<?php } ?>
 </div>
 <?php
 		// $integrations = EVF()->integrations->get_integrations();
