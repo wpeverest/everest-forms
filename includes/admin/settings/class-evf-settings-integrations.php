@@ -35,7 +35,7 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 	 *
 	 * @return array
 	 */
-	public function get_sections() {
+	public function get_sectionss() {
 		global $current_section;
 
 		$sections = array();
@@ -64,11 +64,15 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 	public function output() {
 		global $current_section;
 
-		$integrations = EVF()->integrations->get_integrations();
+?>
 
-		if ( isset( $integrations[ $current_section ] ) ) {
-			$integrations[ $current_section ]->admin_options();
-		}
+<?php
+
+		// $integrations = EVF()->integrations->get_integrations();
+
+		// if ( isset( $integrations[ $current_section ] ) ) {
+			// $integrations[ $current_section ]->admin_options();
+		// }
 	}
 }
 
