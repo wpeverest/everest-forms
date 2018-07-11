@@ -24,6 +24,13 @@ abstract class EVF_Integration extends EVF_Settings_API {
 	public $enabled = 'yes';
 
 	/**
+	 * Integration icon.
+	 *
+	 * @var string
+	 */
+	public $icon = '';
+
+	/**
 	 * Integration title.
 	 *
 	 * @var string
