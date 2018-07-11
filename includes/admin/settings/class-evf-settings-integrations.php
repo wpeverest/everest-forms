@@ -74,21 +74,23 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 				<div class="everest-forms-integrations">
 					<div class="integration-header-info">
 						<div class="integration-status">
+							<span class="toggle-switch connected"></span>
 						</div>
 						<div class="integration-desc">
 							<figure class="logo">
 								<img src="<?php echo $integration->icon;  ?>" alt="<?php echo $integration->method_title;  ?>" />
 							</figure>
-							<a class="integration-info" href="<?php echo admin_url( 'admin.php?page=evf-settings&tab=integration&section=' . $integration->id ); ?>">
-								<h3><?php echo $integration->method_title;  ?></h3>
+							<div class="integration-info">
+								<a href="<?php echo admin_url( 'admin.php?page=evf-settings&tab=integration&section=' . $integration->id ); ?>">
+									<h3><?php echo $integration->method_title;  ?></h3>
+								</a>
 								<p><?php echo $integration->method_description; ?></p>
-							</a>
+							</div>
 						</div>
 					</div>
 					<div class="integartion-action">
 						<div class="toggle-button">
-							<input type="checkbox">
-							<span class="slide round"></span>
+							<span class="slide active"></span>
 						</div>
 						<a class="integration-setup" href="#">
 							<span class="evf-icon evf-icon-setting-cog"></span>
