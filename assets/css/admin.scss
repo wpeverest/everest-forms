@@ -1083,6 +1083,167 @@ body.everest-forms-builder-setup,
 			background: desaturate(darken($green, 10%), 5%);
 		}
 	}
+
+	.everest-forms-integrations-connection {
+
+		a {
+			text-decoration: none;
+		}
+
+		.everest-forms-integrations {
+			border-radius: 3px;
+			background: $color-white;
+			border: 1px solid #CED4DA;
+
+			padding: 10px 20px;
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			justify-content: space-between;
+			margin-bottom: 10px;
+
+			.integration-header-info {
+				display: flex;
+				flex-wrap: wrap;
+				align-items: center;
+
+				.integration-status {
+					position: relative;
+
+					.toggle-switch {
+						width: 20px;
+						height: 20px;
+						display: block;
+						margin-right: 20px;
+						position: relative;
+						border-radius: 3px;
+						border: 1px solid #ced4da;
+
+						&.connected {
+							border-color: $green;
+
+							&::before {
+								background-color: $green;
+							}
+						}
+
+						&::before {
+							left: 0;
+							top: 50%;
+							right: 0;
+							content: "";
+							width: 10px;
+							height: 10px;
+							display: block;
+							margin: 0 auto;
+							border-radius: 2px;
+							position: absolute;
+							background-color: #ced4da;
+							transform: translateY(-50%);
+						}
+					}
+				}
+
+				.integration-desc {
+					display: flex;
+    				align-items: center;
+
+					.logo {
+						padding: 10px;
+						margin: 0 20px 0 0;
+						border-radius: 3px;
+						border: 1px solid #ced4da;
+					}
+
+					.integration-info {
+						margin-right: 20px;
+
+						a {
+							display: inline-block;
+						}
+
+						h3,
+						p {
+							margin-top: 0;
+							margin-bottom: 10px;
+						}
+					}
+				}
+
+			}
+
+			.integartion-action {
+				flex-wrap: wrap;
+				display: flex;
+				align-items: center;
+
+				.toggle-button {
+					margin-right: 20px;
+
+					.slide{
+						display: block;
+						height: 22px;
+						cursor: pointer;
+						width: 44px;
+						position: relative;
+
+						&:before {
+							position: absolute;
+							content: "";
+							height: 18px;
+							width: 18px;
+							left: 2px;
+							bottom: 2px;
+							background-color: $color-white;
+							-webkit-transition: .4s;
+							transition: .4s;
+						}
+
+						&.inactive,
+						&.active {
+							border-radius: 34px;
+
+							&:before {
+								border-radius: 50%;
+							}
+						}
+
+						&.inactive {
+							background-color: #ced4da;
+						}
+
+						&.active {
+							background-color: $everestforms;
+						}
+					}
+				}
+				.integration-setup {
+					width: 35px;
+					height: 35px;
+					display: block;
+					font-size: 16px;
+					color: #78818A;
+					position: relative;
+					border-radius: 3px;
+					border: 1px solid #ced4da;
+					transition: all 0.25s;
+
+					.evf-icon-setting-cog {
+						position: absolute;
+						top: 50%;
+						transform: translateY(-50%);
+						width: 100%;
+						text-align: center;
+					}
+
+					&:hover {
+						color: $everestforms;
+						border-color: $everestforms;
+					}
+				}
+			}
+		}
+	}
 }
 
 /**

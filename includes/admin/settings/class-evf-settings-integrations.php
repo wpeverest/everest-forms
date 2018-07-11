@@ -71,21 +71,50 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 	<div class="everest-forms-integrations">
 		<div class="integration-header-info">
 			<div class="integration-status">
+				<span class="toggle-switch"></span>
 			</div>
 			<div class="integration-desc">
 				<figure class="logo">
 					<img src="<?php echo evf()->plugin_url() . '/assets/images/integrations/mailchimp.png' ?>" alt="test">
 				</figure>
-				<a class="integration-info" href="#">
-					<h3>Mailchimp</h3>
+				<div class="integration-info">
+					<a href="#">
+						<h3>Mailchimp</h3>
+					</a>
 					<p>Integrate Mailchimp with Everest Forms</p>
-				</a>
+				</div>
 			</div>
 		</div>
 		<div class="integartion-action">
 			<div class="toggle-button">
-				<input type="checkbox">
-				<span class="slide round"></span>
+				<span class="slide inactive"></span>
+			</div>
+			<a class="integration-setup" href="#">
+				<span class="evf-icon evf-icon-setting-cog"></span>
+			</a>
+		</div>
+	</div>
+	<!-- connected status -->
+	<div class="everest-forms-integrations">
+		<div class="integration-header-info">
+			<div class="integration-status">
+				<span class="toggle-switch connected"></span>
+			</div>
+			<div class="integration-desc">
+				<figure class="logo">
+					<img src="<?php echo evf()->plugin_url() . '/assets/images/integrations/mailchimp.png' ?>" alt="test">
+				</figure>
+				<div class="integration-info">
+					<a href="#">
+						<h3>Mailchimp</h3>
+					</a>
+					<p>Integrate Mailchimp with Everest Forms</p>
+				</div>
+			</div>
+		</div>
+		<div class="integartion-action">
+			<div class="toggle-button">
+				<span class="slide active"></span>
 			</div>
 			<a class="integration-setup" href="#">
 				<span class="evf-icon evf-icon-setting-cog"></span>
