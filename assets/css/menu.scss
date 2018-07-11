@@ -221,11 +221,23 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
+.evf-icon-general:before {
+	content: "\e001";
+}
+.evf-icon-setting:before {
+	content: "\e002";
+}
+.evf-icon-lock:before {
+	content: "\e003";
+}
 .evf-icon-password:before {
 	content: "\e004";
 }
 .evf-icon-email:before {
 	content: "\e005";
+}
+.evf-icon-email-envelope:before {
+	content: "\e006";
 }
 .evf-icon-map-marker:before {
 	content: "\e007";
@@ -238,6 +250,12 @@
 }
 .evf-icon-flag:before {
 	content: "\e00a";
+}
+.evf-icon-fields:before {
+	content: "\e00b";
+}
+.evf-icon-clip-copy:before {
+	content: "\e00c";
 }
 .evf-icon-first-name:before {
 	content: "\e00d";
@@ -287,9 +305,18 @@
 .evf-icon-custom-html:before {
 	content: "\e01c";
 }
-.evf-icon-section-divider:before {
+.evf-icon-section-devider:before {
 	content: "\e01d";
+}
+.evf-icon-integration:before {
+	content: "\e01e";
+}
+.evf-icon-payment:before {
+	content: "\e01f";
 }
 .evf-icon-total:before {
 	content: "\e020";
+}
+.evf-icon-setting-cog:before {
+	content: "\e900";
 }

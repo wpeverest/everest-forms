@@ -65,7 +65,34 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 		global $current_section;
 
 ?>
-
+<h2>Integrations</h2>
+<p>I am testing paragraph.</p>
+<div class="everest-forms-integrations-connection">
+	<div class="everest-forms-integrations">
+		<div class="integration-header-info">
+			<div class="integration-status">
+			</div>
+			<div class="integration-desc">
+				<figure class="logo">
+					<img src="<?php echo evf()->plugin_url() . '/assets/images/integrations/mailchimp.png' ?>" alt="test">
+				</figure>
+				<a class="integration-info" href="#">
+					<h3>Mailchimp</h3>
+					<p>Integrate Mailchimp with Everest Forms</p>
+				</a>
+			</div>
+		</div>
+		<div class="integartion-action">
+			<div class="toggle-button">
+				<input type="checkbox">
+				<span class="slide round"></span>
+			</div>
+			<a class="integration-setup" href="#">
+				<span class="evf-icon evf-icon-setting-cog"></span>
+			</a>
+		</div>
+	</div>
+</div>
 <?php
 
 		// $integrations = EVF()->integrations->get_integrations();
