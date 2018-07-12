@@ -22,7 +22,6 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 	 */
 	public function __construct() {
 		$this->id      = 'fields';
-		$this->icon    = 'evf-icon evf-icon-fields';
 		$this->label   = __( 'Fields', 'everest-forms' );
 		$this->sidebar = true;
 

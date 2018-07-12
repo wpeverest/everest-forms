@@ -22,7 +22,6 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 	 */
 	public function __construct() {
 		$this->id      = 'settings';
-		$this->icon    = 'evf-icon evf-icon-setting';
 		$this->label   = __( 'Settings', 'everest-forms' );
 		$this->sidebar = true;
 
@@ -51,6 +50,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 	public function output_content() {
 		$form_id     = isset( $_GET['form_id'] ) ? $_GET['form_id'] : '';
 		$user_emails = $this->get_all_email_fields_by_form_id( $form_id );
+		$settings    = isset( $this->form_data['settings'] ) ? $this->form_data['settings'] : array();
 
 		// --------------------------------------------------------------------//
 		// General
@@ -146,7 +146,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			$this->form_data,
 			__( 'Submit button text', 'everest-forms' ),
 			array(
-				'default' => isset( $this->form_setting['submit_button_text'] ) ? $this->form_setting['submit_button_text'] : __( 'Submit', 'everest-forms' ),
+				'default' => isset( $settings['submit_button_text'] ) ? $settings['submit_button_text'] : __( 'Submit', 'everest-forms' ),
 			)
 		);
 		everest_forms_panel_field(
@@ -166,7 +166,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			$this->form_data,
 			__( 'Disable storing entry information', 'everest-forms' ),
 			array(
-				'default' => isset( $this->form_setting['disabled_entries'] ) ? $this->form_setting['disabled_entries'] : 0,
+				'default' => isset( $settings['disabled_entries'] ) ? $settings['disabled_entries'] : 0,
 			)
 		);
 
@@ -188,7 +188,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			$this->form_data,
 			__( 'To Address', 'everest-forms' ),
 			array(
-				'default' => isset( $this->form_setting['email']['evf_to_email'] ) ? $this->form_setting['email']['evf_to_email'] : get_option( 'admin_email' ),
+				'default' => isset( $settings['email']['evf_to_email'] ) ? $settings['email']['evf_to_email'] : get_option( 'admin_email' ),
 			)
 		);
 		everest_forms_panel_field(
@@ -198,7 +198,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			$this->form_data,
 			__( 'From Name', 'everest-forms' ),
 			array(
-				'default' => isset( $this->form_setting['email']['evf_from_name'] ) ? $this->form_setting['email']['evf_from_name'] : get_bloginfo( 'name', 'display' ),
+				'default' => isset( $settings['email']['evf_from_name'] ) ? $settings['email']['evf_from_name'] : get_bloginfo( 'name', 'display' ),
 			)
 		);
 		everest_forms_panel_field(
@@ -208,7 +208,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			$this->form_data,
 			__( 'From Address', 'everest-forms' ),
 			array(
-				'default' => isset( $this->form_setting['email']['evf_from_email'] ) ? $this->form_setting['email']['evf_from_email'] : get_option( 'admin_email' ),
+				'default' => isset( $settings['email']['evf_from_email'] ) ? $settings['email']['evf_from_email'] : get_option( 'admin_email' ),
 			)
 		);
 		everest_forms_panel_field(
@@ -218,7 +218,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			$this->form_data,
 			__( 'Email Subject', 'everest-forms' ),
 			array(
-				'default' => isset( $this->form_setting['email']['evf_email_subject'] ) ? $this->form_setting['email']['evf_email_subject'] : __( 'New Form Entry', 'everest-forms' ),
+				'default' => isset( $settings['email']['evf_email_subject'] ) ? $settings['email']['evf_email_subject'] : __( 'New Form Entry', 'everest-forms' ),
 			)
 		);
 		everest_forms_panel_field(
@@ -228,7 +228,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			$this->form_data,
 			__( 'Email Message', 'everest-forms' ),
 			array(
-				'default' => isset( $this->form_setting['email']['evf_email_message'] ) ? $this->form_setting['email']['evf_email_message'] : __( '{all_fields}', 'everest-forms' ),
+				'default' => isset( $settings['email']['evf_email_message'] ) ? $settings['email']['evf_email_message'] : __( '{all_fields}', 'everest-forms' ),
 			)
 		);
 
@@ -240,7 +240,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				$this->form_data,
 				sprintf( __( 'Send Confirmation Email To User', 'everest-forms' )),
 				array(
-					'default' =>  isset( $this->form_setting['email']['evf_send_confirmation_email'] ) ? $this->form_setting['email']['evf_send_confirmation_email'] : 1,
+					'default' =>  isset( $settings['email']['evf_send_confirmation_email'] ) ? $settings['email']['evf_send_confirmation_email'] : 1,
 				)
 			);
 			everest_forms_panel_field(
@@ -250,7 +250,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				$this->form_data,
 				__( 'Send Confirmation Email To', 'everest-forms' ),
 				array(
-					'default' => isset( $this->form_setting['email']['evf_user_to_email'] ) ? $this->form_setting['email']['evf_user_to_email'] : '',
+					'default' => isset( $settings['email']['evf_user_to_email'] ) ? $settings['email']['evf_user_to_email'] : '',
 					'options' => $user_emails
 				)
 			);
@@ -261,7 +261,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				$this->form_data,
 				__( 'Confirmation Email Subject', 'everest-forms' ),
 				array(
-					'default' => isset( $this->form_setting['email']['evf_user_email_subject'] ) ? $this->form_setting['email']['evf_user_email_subject'] : __( 'Thank You!', 'everest-forms' ),
+					'default' => isset( $settings['email']['evf_user_email_subject'] ) ? $settings['email']['evf_user_email_subject'] : __( 'Thank You!', 'everest-forms' ),
 				)
 			);
 			everest_forms_panel_field(
@@ -271,7 +271,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				$this->form_data,
 				__( 'Confirmation Email Message', 'everest-forms' ),
 				array(
-					'default' => isset( $this->form_setting['email']['evf_user_email_message'] ) ? $this->form_setting['email']['evf_user_email_message'] :  __('Thanks for contacting us! We will be in touch with you shortly.','everest-forms'),
+					'default' => isset( $settings['email']['evf_user_email_message'] ) ? $settings['email']['evf_user_email_message'] :  __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' ),
 				)
 			);
 		}
