@@ -23,13 +23,6 @@ if ( ! class_exists( 'EVF_Settings_Page', false ) ) :
 		protected $id = '';
 
 		/**
-		 * Setting page icon.
-		 *
-		 * @var string
-		 */
-		protected $icon = '';
-
-		/**
 		 * Setting page label.
 		 *
 		 * @var string
@@ -49,7 +42,7 @@ if ( ! class_exists( 'EVF_Settings_Page', false ) ) :
 		/**
 		 * Get settings page ID.
 		 *
-		 * @since  1.0.0
+		 * @since  1.2.0
 		 * @return string
 		 */
 		public function get_id() {
@@ -57,19 +50,9 @@ if ( ! class_exists( 'EVF_Settings_Page', false ) ) :
 		}
 
 		/**
-		 * Get settings page icon.
-		 *
-		 * @since  1.0.0
-		 * @return string
-		 */
-		public function get_icon() {
-			return $this->icon;
-		}
-
-		/**
 		 * Get settings page label.
 		 *
-		 * @since  1.0.0
+		 * @since  1.2.0
 		 * @return string
 		 */
 		public function get_label() {
@@ -83,10 +66,7 @@ if ( ! class_exists( 'EVF_Settings_Page', false ) ) :
 		 * @return mixed
 		 */
 		public function add_settings_page( $pages ) {
-			$pages[ $this->id ] = array(
-				'icon'  => $this->icon,
-				'label' => $this->label,
-			);
+			$pages[ $this->id ] = $this->label;
 
 			return $pages;
 		}

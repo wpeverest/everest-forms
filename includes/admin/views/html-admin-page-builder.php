@@ -28,7 +28,7 @@ $tabs = apply_filters( 'everest_forms_builder_tabs_array', array() );
 			<nav class="nav-tab-wrapper evf-nav-tab-wrapper">
 				<?php
 				foreach ( $tabs as $slug => $tab ) {
-					echo '<a href="#" class="evf-panel-' . esc_attr( $slug ) . '-button nav-tab ' . ( $current_tab === $slug ? 'nav-tab-active' : '' ) . '" data-panel="' . esc_attr( $slug ) . '"><span class="' . esc_attr( $tab['icon'] ) . '"></span>' . esc_html( $tab['label'] ) . '</a>';
+					echo '<a href="#" class="evf-panel-' . esc_attr( $slug ) . '-button nav-tab ' . ( $current_tab === $slug ? 'nav-tab-active' : '' ) . '" data-panel="' . esc_attr( $slug ) . '"><span class="nav-icon ' . esc_attr( $slug ) . '"></span>' . esc_html( $tab['label'] ) . '</a>';
 				}
 
 				do_action( 'everest_forms_builder_tabs' );

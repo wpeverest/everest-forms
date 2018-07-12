@@ -22,7 +22,6 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 	 */
 	public function __construct() {
 		$this->id    = 'integration';
-		$this->icon  = 'evf-icon evf-icon-integration';
 		$this->label = __( 'Integration', 'everest-forms' );
 
 		if ( isset( EVF()->integrations ) && EVF()->integrations->get_integrations() ) {

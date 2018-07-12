@@ -34,13 +34,6 @@ if ( ! class_exists( 'EVF_Builder_Page', false ) ) :
 		protected $id = '';
 
 		/**
-		 * Builder page icon.
-		 *
-		 * @var string
-		 */
-		protected $icon = '';
-
-		/**
 		 * Builder page label.
 		 *
 		 * @var string
@@ -88,15 +81,6 @@ if ( ! class_exists( 'EVF_Builder_Page', false ) ) :
 		}
 
 		/**
-		 * Get builder page icon.
-		 *
-		 * @return string
-		 */
-		public function get_icon() {
-			return $this->icon;
-		}
-
-		/**
 		 * Get builder page label.
 		 *
 		 * @return string
@@ -131,7 +115,6 @@ if ( ! class_exists( 'EVF_Builder_Page', false ) ) :
 		 */
 		public function add_builder_page( $pages ) {
 			$pages[ $this->id ] = array(
-				'icon'    => $this->icon,
 				'label'   => $this->label,
 				'sidebar' => $this->sidebar,
 			);

@@ -22,7 +22,6 @@ class EVF_Settings_Email extends EVF_Settings_Page {
 	 */
 	public function __construct() {
 		$this->id    = 'email';
-		$this->icon  = 'evf-icon evf-icon-email-envelope';
 		$this->label = __( 'Email', 'everest-forms' );
 
 		parent::__construct();
