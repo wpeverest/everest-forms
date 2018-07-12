@@ -22,7 +22,6 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 	 */
 	public function __construct() {
 		$this->id    = 'recaptcha';
-		$this->icon  = 'evf-icon evf-icon-lock';
 		$this->label = __( 'reCAPTCHA', 'everest-forms' );
 
 		parent::__construct();

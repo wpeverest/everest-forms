@@ -22,7 +22,6 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 	 */
 	public function __construct() {
 		$this->id      = 'settings';
-		$this->icon    = 'evf-icon evf-icon-setting';
 		$this->label   = __( 'Settings', 'everest-forms' );
 		$this->sidebar = true;
 

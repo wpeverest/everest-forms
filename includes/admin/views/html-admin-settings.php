@@ -19,15 +19,15 @@ if ( ! $tab_exists ) {
 	<form method="<?php echo esc_attr( apply_filters( 'everest_forms_settings_form_method_tab_' . $current_tab, 'post' ) ); ?>" id="mainform" action="" enctype="multipart/form-data">
 		<nav class="nav-tab-wrapper evf-nav-tab-wrapper">
 			<?php
-			foreach ( $tabs as $slug => $tab ) {
-				echo '<a href="' . esc_html( admin_url( 'admin.php?page=evf-settings&tab=' . esc_attr( $slug ) ) ) . '" class="nav-tab ' . ( $current_tab === $slug ? 'nav-tab-active' : '' ) . '"><span class="' . esc_attr( $tab['icon'] ) . '"></span>' . esc_html( $tab['label'] ) . '</a>';
+			foreach ( $tabs as $slug => $label ) {
+				echo '<a href="' . esc_html( admin_url( 'admin.php?page=evf-settings&tab=' . esc_attr( $slug ) ) ) . '" class="nav-tab ' . ( $current_tab === $slug ? 'nav-tab-active' : '' ) . '"><span class="nav-icon ' . esc_attr( $slug ) . '"></span>' . esc_html( $label ) . '</a>';
 			}
 
 			do_action( 'everest_forms_settings_tabs' );
 			?>
 		</nav>
 		<div class="everest-forms-settings">
-			<h1 class="screen-reader-text"><?php echo esc_html( $current_tab_label['label'] ); ?></h1>
+			<h1 class="screen-reader-text"><?php echo esc_html( $current_tab_label ); ?></h1>
 			<?php
 				do_action( 'everest_forms_sections_' . $current_tab );
 

@@ -22,7 +22,6 @@ class EVF_Settings_General extends EVF_Settings_Page {
 	 */
 	public function __construct() {
 		$this->id    = 'general';
-		$this->icon  = 'evf-icon evf-icon-general';
 		$this->label = __( 'General', 'everest-forms' );
 
 		parent::__construct();
