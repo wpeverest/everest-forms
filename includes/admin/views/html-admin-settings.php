@@ -20,7 +20,7 @@ if ( ! $tab_exists ) {
 		<nav class="nav-tab-wrapper evf-nav-tab-wrapper">
 			<?php
 			foreach ( $tabs as $slug => $label ) {
-				echo '<a href="' . esc_html( admin_url( 'admin.php?page=evf-settings&tab=' . esc_attr( $slug ) ) ) . '" class="nav-tab ' . ( $current_tab === $slug ? 'nav-tab-active' : '' ) . '"><span class="nav-icon ' . esc_attr( $slug ) . '"></span>' . esc_html( $label ) . '</a>';
+				echo '<a href="' . esc_html( admin_url( 'admin.php?page=evf-settings&tab=' . esc_attr( $slug ) ) ) . '" class="nav-tab ' . ( $current_tab === $slug ? 'nav-tab-active' : '' ) . '"><span class="evf-nav-icon ' . esc_attr( $slug ) . '"></span>' . esc_html( $label ) . '</a>';
 			}
 
 			do_action( 'everest_forms_settings_tabs' );
