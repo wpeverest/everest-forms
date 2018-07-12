@@ -332,7 +332,7 @@ class EVF_AJAX {
 			), 'deactivate-plugin_' . EVF_PLUGIN_BASENAME
 		);
 
-		$deactivation_notice = sprintf( __( 'Before we deactivate Everest Forms, would you care to <a href="%1$s" target="_blank">let us know why</a> so we can improve it for you? <a href="%2$s">No, deactivate now</a>.', 'everest-forms' ), 'https://wpeverest.com/contact/', $deactivate_url );
+		$deactivation_notice = sprintf( __( 'Before we deactivate Everest Forms, would you care to <a href="%1$s" target="_blank">let us know why</a> so we can improve it for you? <a href="%2$s">No, deactivate now</a>.', 'everest-forms' ), 'https://wpeverest.com/deactivation/everest-forms/', $deactivate_url );
 
 		wp_send_json( array(
 			'fragments' => apply_filters(

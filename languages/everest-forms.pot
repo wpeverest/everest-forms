@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Everest Forms package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Everest Forms 1.2.0\n"
+"Project-Id-Version: Everest Forms 1.2.1\n"
 "Report-Msgid-Bugs-To: https://github.com/wpeverest/everest-forms/issues\n"
-"POT-Creation-Date: 2018-07-09 11:15:51+00:00\n"
+"POT-Creation-Date: 2018-07-12 06:46:44+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -207,134 +207,134 @@ msgid "Select the type of row"
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:37
-#: includes/admin/builder/class-evf-builder-settings.php:60
+#: includes/admin/builder/class-evf-builder-settings.php:61
 #: includes/admin/settings/class-evf-settings-general.php:26
 msgid "General"
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:38
-#: includes/admin/builder/class-evf-builder-settings.php:182
+#: includes/admin/builder/class-evf-builder-settings.php:183
 #: includes/admin/settings/class-evf-settings-email.php:26
 #: includes/admin/settings/class-evf-settings-validation.php:64
 #: includes/fields/class-evf-field-email.php:20
 msgid "Email"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:67
+#: includes/admin/builder/class-evf-builder-settings.php:68
 #: includes/admin/views/html-admin-page-builder-setup.php:25
 msgid "Form Name"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:77
+#: includes/admin/builder/class-evf-builder-settings.php:78
 msgid "Successful form submission message"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:79
+#: includes/admin/builder/class-evf-builder-settings.php:80
 msgid "Thanks for contacting us! We will be in touch with you shortly"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:87
+#: includes/admin/builder/class-evf-builder-settings.php:88
 msgid "Redirect To"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:91
+#: includes/admin/builder/class-evf-builder-settings.php:92
 msgid "Same Page"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:92
-#: includes/admin/builder/class-evf-builder-settings.php:102
+#: includes/admin/builder/class-evf-builder-settings.php:93
+#: includes/admin/builder/class-evf-builder-settings.php:103
 msgid "Custom Page"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:93
-#: includes/admin/builder/class-evf-builder-settings.php:113
+#: includes/admin/builder/class-evf-builder-settings.php:94
+#: includes/admin/builder/class-evf-builder-settings.php:114
 msgid "External URL"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:123
+#: includes/admin/builder/class-evf-builder-settings.php:124
 msgid "Layout Design"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:127
+#: includes/admin/builder/class-evf-builder-settings.php:128
 msgid "Default"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:128
+#: includes/admin/builder/class-evf-builder-settings.php:129
 msgid "Classic Layout"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:137
+#: includes/admin/builder/class-evf-builder-settings.php:138
 msgid "Form Class"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:147
+#: includes/admin/builder/class-evf-builder-settings.php:148
 msgid "Submit button text"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:149
+#: includes/admin/builder/class-evf-builder-settings.php:150
 #: includes/shortcodes/class-evf-shortcode-form.php:39
 #: includes/templates/contact.php:66
 msgid "Submit"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:157
+#: includes/admin/builder/class-evf-builder-settings.php:158
 msgid "Enable %1$s %2$s reCaptcha %3$s support"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:167
+#: includes/admin/builder/class-evf-builder-settings.php:168
 msgid "Disable storing entry information"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:189
+#: includes/admin/builder/class-evf-builder-settings.php:190
 msgid "To Address"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:199
+#: includes/admin/builder/class-evf-builder-settings.php:200
 msgid "From Name"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:209
+#: includes/admin/builder/class-evf-builder-settings.php:210
 msgid "From Address"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:219
+#: includes/admin/builder/class-evf-builder-settings.php:220
 msgid "Email Subject"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:221
+#: includes/admin/builder/class-evf-builder-settings.php:222
 #: includes/templates/contact.php:71
 msgid "New Form Entry"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:229
+#: includes/admin/builder/class-evf-builder-settings.php:230
 msgid "Email Message"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:231
+#: includes/admin/builder/class-evf-builder-settings.php:232
 msgid "{all_fields}"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:241
+#: includes/admin/builder/class-evf-builder-settings.php:242
 msgid "Send Confirmation Email To User"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:251
+#: includes/admin/builder/class-evf-builder-settings.php:252
 msgid "Send Confirmation Email To"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:262
+#: includes/admin/builder/class-evf-builder-settings.php:263
 msgid "Confirmation Email Subject"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:264
+#: includes/admin/builder/class-evf-builder-settings.php:265
 msgid "Thank You!"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:272
+#: includes/admin/builder/class-evf-builder-settings.php:273
 msgid "Confirmation Email Message"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:274
+#: includes/admin/builder/class-evf-builder-settings.php:275
 #: includes/class-evf-form-task.php:198 includes/class-evf-form-task.php:346
 #: includes/shortcodes/class-evf-shortcode-form.php:142
 #: includes/templates/contact.php:60
