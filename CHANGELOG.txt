@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 1.2.1 - 12-07-2018 =
+* Fix - Form setting output issue after save.
+
 = 1.2.0 - 09-07-2018 =
 * Feature - Copy shortcode inside form view page.
 * Feature - Input Mask added in Text Advance Field.
