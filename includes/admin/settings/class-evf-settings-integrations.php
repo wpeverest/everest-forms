@@ -30,34 +30,6 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 	}
 
 	/**
-	 * Get sections.
-	 *
-	 * @return array
-	 */
-	public function get_sectionss() {
-		global $current_section;
-
-		$sections = array();
-
-		if ( ! defined( 'EVF_INSTALLING' ) ) {
-			$integrations = EVF()->integrations->get_integrations();
-
-			if ( ! $current_section && ! empty( $integrations ) ) {
-				$current_section = current( $integrations )->id;
-			}
-
-			if ( sizeof( $integrations ) > 1 ) {
-				foreach ( $integrations as $integration ) {
-					$title                                      = empty( $integration->method_title ) ? ucfirst( $integration->id ) : $integration->method_title;
-					$sections[ strtolower( $integration->id ) ] = esc_html( $title );
-				}
-			}
-		}
-
-		return apply_filters( 'everest_forms_get_sections_' . $this->id, $sections );
-	}
-
-	/**
 	 * Output the settings.
 	 */
 	public function output() {
