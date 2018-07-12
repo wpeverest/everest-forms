@@ -35,11 +35,13 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 	public function output() {
 		global $current_section, $hide_save_button;
 
-		$hide_save_button = true;
-		$integrations     = EVF()->integrations->get_integrations();
+		// Hide the save button.
+		$GLOBALS['hide_save_button'] = true;
+
+		$integrations = EVF()->integrations->get_integrations();
 
 		if ( '' === $current_section ) {
-			$this->output_integrations();
+			$this->output_integrations( $integrations );
 		} else {
 			if ( isset( $integrations[ $current_section ] ) ) {
 				$integrations[ $current_section ]->admin_options();
@@ -49,9 +51,10 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 
 	/**
 	 * Handles output of the integrations page in admin.
+	 *
+	 * @param array $integrations Array of integrations.
 	 */
-	protected function output_integrations() {
-		$integrations = EVF()->integrations->get_integrations();
+	protected function output_integrations( $integrations ) {
 		?>
 		<h2>Integrations</h2>
 		<p>I am testing paragraph.</p>
