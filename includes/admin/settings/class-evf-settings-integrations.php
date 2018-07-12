@@ -61,46 +61,57 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 	 * Output the settings.
 	 */
 	public function output() {
-		global $current_section;
+		global $current_section, $hide_save_button;
+
+		$hide_save_button = true;
+		$integrations     = EVF()->integrations->get_integrations();
+
+		if ( '' === $current_section ) {
+			$this->output_integrations();
+		} else {
+			if ( isset( $integrations[ $current_section ] ) ) {
+				$integrations[ $current_section ]->admin_options();
+			}
+		}
+	}
+
+	/**
+	 * Handles output of the integrations page in admin.
+	 */
+	protected function output_integrations() {
 		$integrations = EVF()->integrations->get_integrations();
-		// echo '<pre>' . print_r( $integrations, true ) . '</pre>';
-	?>
+		?>
 		<h2>Integrations</h2>
 		<p>I am testing paragraph.</p>
 		<div class="everest-forms-integrations-connection">
-		<?php
-		foreach ( $integrations as $integration ) { ?>
-			<div class="everest-forms-integrations">
-				<div class="integration-header-info">
-					<div class="integration-status">
-						<span class="toggle-switch"></span>
-					</div>
-					<div class="integration-desc">
-						<figure class="logo">
-							<img src="<?php echo $integration->icon;  ?>" alt="<?php echo $integration->method_title;  ?>" />
-						</figure>
-						<div class="integration-info">
-							<a href="<?php echo admin_url( 'admin.php?page=evf-settings&tab=integration&section=' . $integration->id ); ?>">
-								<h3><?php echo $integration->method_title;  ?></h3>
-							</a>
-							<p><?php echo $integration->method_description; ?></p>
+			<?php
+			foreach ( $integrations as $integration ) { ?>
+				<div class="everest-forms-integrations">
+					<div class="integration-header-info">
+						<div class="integration-status">
+							<span class="toggle-switch"></span>
+						</div>
+						<div class="integration-desc">
+							<figure class="logo">
+								<img src="<?php echo $integration->icon;  ?>" alt="<?php echo $integration->method_title;  ?>" />
+							</figure>
+							<div class="integration-info">
+								<a href="<?php echo admin_url( 'admin.php?page=evf-settings&tab=integration&section=' . $integration->id ); ?>">
+									<h3><?php echo $integration->method_title;  ?></h3>
+								</a>
+								<p><?php echo $integration->method_description; ?></p>
+							</div>
 						</div>
 					</div>
+					<div class="integartion-action">
+						<a class="integration-setup" href="<?php echo admin_url( 'admin.php?page=evf-settings&tab=integration&section=' . $integration->id ); ?>">
+							<span class="evf-icon evf-icon-setting-cog"></span>
+						</a>
+					</div>
 				</div>
-				<div class="integartion-action">
-					<a class="integration-setup" href="<?php echo admin_url( 'admin.php?page=evf-settings&tab=integration&section=' . $integration->id ); ?>">
-						<span class="evf-icon evf-icon-setting-cog"></span>
-					</a>
-				</div>
-			</div>
-	<?php } ?>
-</div>
-<?php
-		// $integrations = EVF()->integrations->get_integrations();
-
-		// if ( isset( $integrations[ $current_section ] ) ) {
-			// $integrations[ $current_section ]->admin_options();
-		// }
+			<?php } ?>
+		</div>
+		<?php
 	}
 }
 
