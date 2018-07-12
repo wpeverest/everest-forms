@@ -82,6 +82,7 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 = 1.2.1 - 12-07-2018 =
 * Fix - Form setting output issue after save.
 * Tweak - Removed border shown on active nav tab.
+* Tweak - Navigation tab icon output logic improved.
 
 = 1.2.0 - 09-07-2018 =
 * Feature - Copy shortcode inside form view page.
