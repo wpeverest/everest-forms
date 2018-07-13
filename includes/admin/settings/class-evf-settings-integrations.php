@@ -44,7 +44,7 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 			$this->output_integrations( $integrations );
 		} else {
 			if ( isset( $integrations[ $current_section ] ) ) {
-				$integrations[ $current_section ]->admin_options();
+				$integrations[ $current_section ]->output_integration();
 			}
 		}
 	}
@@ -66,7 +66,7 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 						<div class="integration-status">
 							<span class="toggle-switch"></span>
 						</div>
-						<div class="integration-desc">
+						<div class="integration-detail">
 							<figure class="logo">
 								<img src="<?php echo $integration->icon;  ?>" alt="<?php echo $integration->method_title;  ?>" />
 							</figure>
