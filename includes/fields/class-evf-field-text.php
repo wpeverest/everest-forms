@@ -62,7 +62,7 @@ class EVF_Field_Text extends EVF_Form_Fields {
 				'slug'          => 'input_mask',
 				'value'         => esc_html__( 'Input Mask', 'everest-forms' ),
 				'tooltip'       => esc_html__( 'Enter your custom input mask.', 'everest-forms' ),
-				'after_tooltip' => '<a href="https://wpeverest.com/how-to-use-custom-input-masks/" class="after-label-description" target="_blank" rel="noopener noreferrer">' . esc_html__( 'See Examples & Docs', 'everest-forms' ) . '</a>',
+				'after_tooltip' => '<a href="https://docs.wpeverest.com/docs/everest-forms/how-to-use-custom-input-mask/" class="after-label-description" target="_blank" rel="noopener noreferrer">' . esc_html__( 'See Examples & Docs', 'everest-forms' ) . '</a>',
 			),
 			false
 		);
