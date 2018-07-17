@@ -79,6 +79,7 @@ class EVF_AJAX {
 			'create_form'         => false,
 			'get_next_id'         => false,
 			'install_extension'   => false,
+			'integration_connect' => false,
 			'deactivation_notice' => false,
 			'rated'               => false,
 		);
@@ -310,6 +311,29 @@ class EVF_AJAX {
 		}
 
 		wp_send_json_success( $status );
+	}
+
+	/**
+	 * AJAX Integration connect.
+	 */
+	public function integration_connect() {
+		check_ajax_referer( 'process-ajax-nonce', 'security' );
+
+		// Checking permission.
+		if ( ! current_user_can( 'manage_everest_forms' ) ) {
+			wp_die( -1 );
+		}
+
+		if ( empty( $_POST ) ) {
+			wp_send_json_error(
+				array(
+					'error' => esc_html__( 'Missing data', 'everest-forms' ),
+				)
+			);
+		}
+
+		do_action( 'everest_forms_integration_account_connect', $_POST );
+
 	}
 
 	/**
