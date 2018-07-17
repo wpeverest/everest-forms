@@ -12,8 +12,7 @@
     "wp-coding-standards/wpcs": "^0.14",
     "wpeverest/wpeverest-git-hooks": "*",
     "wpeverest/wpeverest-sniffs": "*",
-    "wimg/php-compatibility": "^8.0",
-    "dealerdirect/phpcodesniffer-composer-installer": "^0.4.3"
+    "wimg/php-compatibility": "^8.0"
   },
   "scripts": {
     "pre-update-cmd": [
