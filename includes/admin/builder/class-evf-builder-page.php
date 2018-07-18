@@ -127,13 +127,17 @@ if ( ! class_exists( 'EVF_Builder_Page', false ) ) :
 		 *
 		 * @param string $name Name of the section.
 		 * @param string $slug Slug of the section.
+		 * @param string $icon Icon of the section.
 		 */
-		public function add_sidebar_tab( $name, $slug ) {
+		public function add_sidebar_tab( $name, $slug, $icon = '' ) {
 			$class = '';
 			$class .= $slug == 'default' ? ' default' : '';
 			$class .= ! empty( $icon ) ? ' icon' : '';
 
 			echo '<a href="#" class="evf-panel-tab evf-setting-panel everest-forms-panel-sidebar-section everest-forms-panel-sidebar-section-' . esc_attr( $slug ) . $class . '" data-section="' . esc_attr( $slug ) . '">';
+				if ( ! empty( $icon ) ) {
+					echo '<img src="' . esc_url( $icon ) . '">';
+				}
 				echo esc_html( $name );
 				echo '<i class="dashicons dashicons-arrow-right-alt2 everest-forms-toggle-arrow"></i>';
 			echo '</a>';
