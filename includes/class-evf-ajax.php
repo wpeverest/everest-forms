@@ -379,7 +379,10 @@ class EVF_AJAX {
 	 * AJAX Integration disconnect.
 	 */
 	public function new_connection_add() {
-
+		$integrations = EVF()->integrations->get_integrations();
+		if ( isset( $integrations[ $_POST['source'] ] ) ) {
+			$integrations[ $_POST['source'] ]->output_form_content( $_POST );
+		}
 	 }
 
 	/**
