@@ -79,7 +79,7 @@ class EVF_Field_Date extends EVF_Form_Fields {
  		// Define data.
 		$primary = $field['properties']['inputs']['primary'];
 
-		$class = array_merge( array( 'date-picker-field' ), $primary['class'] );
+		$class = array_merge( array( 'flatpickr-field' ), $primary['class'] );
 
 		// Primary field.
 		printf( '<input type="text" %s %s>',
