@@ -75,14 +75,15 @@ class EVF_AJAX {
 	 */
 	public static function add_ajax_events() {
 		$ajax_events = array(
-			'save_form'           => false,
-			'create_form'         => false,
-			'get_next_id'         => false,
-			'install_extension'   => false,
-			'integration_connect' => false,
+			'save_form'              => false,
+			'create_form'            => false,
+			'get_next_id'            => false,
+			'install_extension'      => false,
+			'integration_connect'    => false,
 			'integration_disconnect' => false,
-			'deactivation_notice' => false,
-			'rated'               => false,
+			'new_connection_add'     => false,
+			'deactivation_notice'    => false,
+			'rated'                  => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -373,6 +374,13 @@ class EVF_AJAX {
 		}
 
 	}
+
+	/**
+	 * AJAX Integration disconnect.
+	 */
+	public function new_connection_add() {
+
+	 }
 
 	/**
 	 * AJAX plugin deactivation notice.
