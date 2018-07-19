@@ -309,4 +309,4 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 	}
 }
 
-return new EVF_Panel_Settings();
+return new EVF_Builder_Settings();
