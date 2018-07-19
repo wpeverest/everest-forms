@@ -79,6 +79,10 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 
 == Changelog ==
 
+= 1.2.3 - 19-07-2018 =
+* Fix - Load the flatpickr assets library correctly.
+* Fix - Plugin deactivation notice appearing multiple times.
+
 = 1.2.2 - 19-07-2018 =
 * Feature - Changed Datepicker library for year selection.
 * Fix - Fatal error thrown via unfound class `EVF_Panel_Settings`.
