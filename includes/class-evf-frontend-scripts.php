@@ -165,7 +165,7 @@ class EVF_Frontend_Scripts {
 			'flatpickr' => array(
 				'src'     => self::get_asset_url( 'assets/js/flatpickr/flatpickr' . $suffix . '.js' ),
 				'deps'    => array( 'jquery' ),
-				'version' => '1.17.0',
+				'version' => '4.5.1',
 			),
 			'jquery-validate' => array(
 				'src'     => self::get_asset_url( 'assets/js/jquery-validate/jquery.validate' . $suffix . '.js' ),
@@ -200,9 +200,9 @@ class EVF_Frontend_Scripts {
 				'has_rtl' => false,
 			),
 			'flatpickr' => array(
-				'src'     => self::get_asset_url( 'assets/css/flatpickr/flatpickr.min.css' ),
+				'src'     => self::get_asset_url( 'assets/css/flatpickr.css' ),
 				'deps'    => array(),
-				'version' => '4.5.1',
+				'version' => EVF_VERSION,
 				'has_rtl' => false,
 			),
 		);
