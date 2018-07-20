@@ -189,6 +189,10 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			__( 'To Address', 'everest-forms' ),
 			array(
 				'default' => isset( $settings['email']['evf_to_email'] ) ? $settings['email']['evf_to_email'] : get_option( 'admin_email' ),
+				'smarttags'  => array(
+					'type'   => 'fields',
+					'form-fields' => 'email',
+				),
 			)
 		);
 		everest_forms_panel_field(

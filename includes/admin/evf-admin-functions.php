@@ -408,6 +408,13 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 		if ( ! empty( $args['after_tooltip'] ) ) {
 			$field_label .= $args['after_tooltip'];
 		}
+		if ( ! empty( $args['smarttags'] ) ) {
+
+			$type   = ! empty( $args['smarttags']['type'] ) ? esc_attr( $args['smarttags']['type'] ) : 'form_fields';
+			$form_fields = ! empty( $args['smarttags']['form_fields'] ) ? esc_attr( $args['smarttags']['form_fields'] ) : '';
+
+			$field_label .= '<a href="#" class="evf-toggle-smart-tag-display" data-type="' . $type . '" data-fields="' . $form_fields . '"><span class="dashicons dashicons-tag"></span><span>' . esc_html__( 'Show Smart Tags', 'everest-forms' ) . '</span></a>';
+		}
 
 		$field_label .= '</label>';
 	} else {
