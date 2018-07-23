@@ -1130,4 +1130,23 @@ jQuery( function ( $ ) {
 			$( this ).find( '.everest-forms-field-option-group-inner' ).hide();
 		});
 	} ).trigger( 'init_field_options_toogle' );
+
+	// Toggle Smart Tags
+	$( document.body ).on('click', '.evf-toggle-smart-tag-display', function(e) {
+		e.preventDefault();
+
+		var $this = $ (this),
+			label = $this.closest( 'label' );
+
+			if ( $this.hasClass( 'evf-showing' ) ) {
+
+				var $list = $label.next( '.evf-smart-tags-list-display' );
+				$list.slideUp( 400, function () {
+					$list.remove();
+				} );
+				$this.find( 'span' ).text( 'Show Smart Tag' );
+			} else {
+				alert ('hello');
+			}
+	});
 });
