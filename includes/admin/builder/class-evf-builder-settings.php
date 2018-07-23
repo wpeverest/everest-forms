@@ -203,6 +203,10 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			__( 'From Name', 'everest-forms' ),
 			array(
 				'default' => isset( $settings['email']['evf_from_name'] ) ? $settings['email']['evf_from_name'] : get_bloginfo( 'name', 'display' ),
+				'smarttags'  => array(
+				'type'   => 'fields',
+				'form_fields' => 'email',
+				),
 			)
 		);
 		everest_forms_panel_field(

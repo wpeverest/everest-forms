@@ -413,6 +413,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 			$form_fields = ! empty( $args['smarttags']['form_fields'] ) ? esc_attr( $args['smarttags']['form_fields'] ) : '';
 
 			$smart_tag .= '<a href="#" class="evf-toggle-smart-tag-display" data-type="' . $type . '" data-fields="' . $form_fields . '"><span class="dashicons dashicons-editor-code"></span></a>';
+			$smart_tag .= '<div class="evf-smart-tag-lists" style="display: none"><p>Roshan</p></div>';
 		} else {
 			$smart_tag = '';
 		}

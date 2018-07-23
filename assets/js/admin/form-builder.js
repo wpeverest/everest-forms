@@ -1135,18 +1135,9 @@ jQuery( function ( $ ) {
 	$( document.body ).on('click', '.evf-toggle-smart-tag-display', function(e) {
 		e.preventDefault();
 
-		var $this = $ (this),
-			label = $this.closest( 'label' );
+		$( this ).parent().find('.evf-smart-tag-lists').toggle();
 
-			if ( $this.hasClass( 'evf-showing' ) ) {
 
-				var $list = $label.next( '.evf-smart-tags-list-display' );
-				$list.slideUp( 400, function () {
-					$list.remove();
-				} );
-				$this.find( 'span' ).text( 'Show Smart Tag' );
-			} else {
-				alert ('hello');
-			}
+
 	});
 });
