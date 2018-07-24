@@ -217,6 +217,10 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			__( 'From Address', 'everest-forms' ),
 			array(
 				'default' => isset( $settings['email']['evf_from_email'] ) ? $settings['email']['evf_from_email'] : get_option( 'admin_email' ),
+				'smarttags'  => array(
+					'type'   => 'fields',
+					'form_fields' => 'email',
+				),
 			)
 		);
 		everest_forms_panel_field(
@@ -227,16 +231,24 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			__( 'Email Subject', 'everest-forms' ),
 			array(
 				'default' => isset( $settings['email']['evf_email_subject'] ) ? $settings['email']['evf_email_subject'] : __( 'New Form Entry', 'everest-forms' ),
+				'smarttags'  => array(
+					'type'   => 'fields',
+					'form_fields' => 'all',
+				),
 			)
 		);
 		everest_forms_panel_field(
-			'tinymce',
+			'textarea',
 			'settings[email]',
 			'evf_email_message',
 			$this->form_data,
 			__( 'Email Message', 'everest-forms' ),
 			array(
 				'default' => isset( $settings['email']['evf_email_message'] ) ? $settings['email']['evf_email_message'] : __( '{all_fields}', 'everest-forms' ),
+				'smarttags'  => array(
+					'type'   => 'fields',
+					'form_fields' => 'all',
+				),
 			)
 		);
 
@@ -252,14 +264,17 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				)
 			);
 			everest_forms_panel_field(
-				'select',
+				'text',
 				'settings[email]',
 				'evf_user_to_email',
 				$this->form_data,
 				__( 'Send Confirmation Email To', 'everest-forms' ),
 				array(
 					'default' => isset( $settings['email']['evf_user_to_email'] ) ? $settings['email']['evf_user_to_email'] : '',
-					'options' => $user_emails
+					'smarttags'  => array(
+						'type'   => 'fields',
+						'form_fields' => 'email',
+					),
 				)
 			);
 			everest_forms_panel_field(
@@ -270,16 +285,24 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				__( 'Confirmation Email Subject', 'everest-forms' ),
 				array(
 					'default' => isset( $settings['email']['evf_user_email_subject'] ) ? $settings['email']['evf_user_email_subject'] : __( 'Thank You!', 'everest-forms' ),
+					'smarttags'  => array(
+						'type'   => 'fields',
+						'form_fields' => 'all',
+					),
 				)
 			);
 			everest_forms_panel_field(
-				'tinymce',
+				'textarea',
 				'settings[email]',
 				'evf_user_email_message',
 				$this->form_data,
 				__( 'Confirmation Email Message', 'everest-forms' ),
 				array(
 					'default' => isset( $settings['email']['evf_user_email_message'] ) ? $settings['email']['evf_user_email_message'] :  __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' ),
+					'smarttags'  => array(
+						'type'   => 'fields',
+						'form_fields' => 'all',
+					),
 				)
 			);
 		}
