@@ -1143,20 +1143,21 @@ jQuery( function ( $ ) {
 
 		if ( allowed_field === 'email' ) {
 			$.each( evf_data.email_fields , function( key, value ) {
-				$('.evf-smart-tag-lists ul').append('<li data-meta="'+key+'">'+value+'</li>');
+				$('.evf-smart-tag-lists ul').append('<li class = "smart-tag-field" data-meta="'+key+'">'+value+'</li>');
 			});
 		} else {
 			$.each( evf_data.all_fields , function( key, value ) {
-				$('.evf-smart-tag-lists ul').append('<li data-meta="'+key+'">'+value+'</li>');
+				$('.evf-smart-tag-lists ul').append('<li class = "smart-tag-field" data-meta="'+key+'">'+value+'</li>');
 			});
 		}
 
 	});
 
 	// Toggle Smart Tags
-	$( document.body ).on('click', '.evf-smart-tag-lists p', function(e) {
+	$( document.body ).on('click', '.smart-tag-field', function(e) {
+
 		var meta    = $( this ).data('meta'),
-			$parent = $ ( this ).parent().parent(),
+			$parent = $ ( this ).parent().parent().parent(),
 		    $input  = $parent.find('input[type=text]');
 
 		$input.val('{'+meta+'}');

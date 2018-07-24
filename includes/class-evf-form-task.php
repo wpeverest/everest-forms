@@ -144,7 +144,7 @@ class EVF_Form_Task {
 				// Format fields.
 				foreach ( (array) $form_data['form_fields'] as $field ) {
 					$field_id     = $field['id'];
-					$field_key    = $field['meta-key'];
+					$field_key    = isset( $field['meta-key'] ) ? $field['meta-key'] : '';
 					$field_type   = $field['type'];
 					$field_submit = isset( $entry['form_fields'][ $field_id ] ) ? $entry['form_fields'][ $field_id ] : '';
 
@@ -325,15 +325,37 @@ class EVF_Form_Task {
 
 		$email = array();
 
+
 		// Setup email properties.
 		/* translators: %s - form name. */
+
 		$email['subject']        = ! empty( $notification['evf_email_subject'] ) ? $notification['evf_email_subject'] : sprintf( esc_html__( 'New %s Entry', 'everest-forms' ), $form_data['settings']['form_title'] );
-		$email['address']        = explode( ',', apply_filters( 'everest_forms_process_smart_tags', $notification['evf_to_email'], $form_data, $fields, $this->entry_id ) );
-		$email['address']        = array_map( 'sanitize_email', $email['address'] );
+		$email['address']        = explode( ',', $notification['evf_to_email'] );
 		$email['sender_name']    = ! empty( $notification['evf_from_name'] ) ? $notification['evf_from_name'] : get_bloginfo( 'name' );
 		$email['sender_address'] = ! empty( $notification['evf_from_email'] ) ? $notification['evf_from_email'] : get_option( 'admin_email' );
 		$email['message']        = ! empty( $notification['evf_email_message'] ) ? $notification['evf_email_message'] : '{all_fields}';
 
+
+		foreach ( $email as $key => $value ) {
+				if( is_array( $email[ $key ] ) ){
+					foreach ( $email[ $key ] as $index => $value ){
+							$email[ $key ] = str_replace(array('{','}'), '', $email[ $key ] );
+							if( isset( $entry['form_fields'][$type] ) &&  $form_field['meta-key'] == $email[ $key ][$index] ){
+								$email[ $key ][$index] = $entry['form_fields'][$type];
+							}
+					}
+				}
+			foreach ($form_data['form_fields']  as $type => $form_field ){
+				if( isset( $form_field['meta-key'] ) && $form_field['meta-key'] == str_replace(array('{','}'), '', $email[ $key ] ) ) {
+					if( isset( $entry['form_fields'][$type] ) ){
+						$email[ $key ] = $entry['form_fields'][$type];
+					}
+				}
+			}
+		}
+
+		$email['address'] = array_map( 'sanitize_email', $email['address'] );
+		$email['sender_address'] = sanitize_email( $email['sender_address'] );
 		// Setup confirm email properties.
 		if ( isset( $notification['evf_send_confirmation_email'] ) && '1' === $notification['evf_send_confirmation_email'] ) {
 			$fields_meta = wp_list_pluck( $fields, 'value', 'meta_key' );
