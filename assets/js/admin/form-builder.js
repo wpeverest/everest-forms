@@ -1135,7 +1135,7 @@ jQuery( function ( $ ) {
 	$( document.body ).on('click', '.evf-toggle-smart-tag-display', function(e) {
 		e.preventDefault();
 
-		$('.evf-smart-tag-lists').empty();
+		$('.evf-smart-tag-lists ul').empty();
 
 		$( this ).parent().find('.evf-smart-tag-lists').toggle();
 
@@ -1143,11 +1143,11 @@ jQuery( function ( $ ) {
 
 		if ( allowed_field === 'email' ) {
 			$.each( evf_data.email_fields , function( key, value ) {
-				$('.evf-smart-tag-lists').append('<p data-meta="'+key+'">'+value+'</p>');
+				$('.evf-smart-tag-lists ul').append('<li data-meta="'+key+'">'+value+'</li>');
 			});
 		} else {
 			$.each( evf_data.all_fields , function( key, value ) {
-				$('.evf-smart-tag-lists').append('<p data-meta="'+key+'">'+value+'</p>');
+				$('.evf-smart-tag-lists ul').append('<li data-meta="'+key+'">'+value+'</li>');
 			});
 		}
 
