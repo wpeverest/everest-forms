@@ -64,6 +64,46 @@ function evf_get_template_part( $slug, $name = '' ) {
 		load_template( $template, false );
 	}
 }
+/**
+ * Get all the email fields of a Form.
+ *
+ * @param Integer $form_id
+ */
+function get_all_email_fields_by_form_id( $form_id ) {
+	$user_emails = array();
+	$form_obj    = EVF()->form->get( $form_id );
+	$form_data   = ! empty( $form_obj->post_content ) ? evf_decode( $form_obj->post_content ) : '';
+
+	if ( ! empty( $form_data['form_fields'] ) ) {
+		foreach ( $form_data['form_fields'] as $form_fields ) {
+			if ( 'email' === $form_fields['type'] ) {
+				$user_emails[ $form_fields['meta-key'] ] = $form_fields['label'];
+			}
+		}
+	}
+
+	return $user_emails;
+}
+/**
+ * Get all the fields of a Form.
+ *
+ * @param Integer $form_id
+ */
+function get_all_form_fields_by_form_id( $form_id ) {
+	$data = array();
+	$form_obj    = EVF()->form->get( $form_id );
+	$form_data   = ! empty( $form_obj->post_content ) ? evf_decode( $form_obj->post_content ) : '';
+
+	if ( ! empty( $form_data['form_fields'] ) ) {
+		foreach ( $form_data['form_fields'] as $form_fields ) {
+			if( ! empty( $form_fields['meta-key' ] ) ){
+				$data[ $form_fields['meta-key'] ] = $form_fields['label'];
+			}
+		}
+	}
+
+	return $data;
+}
 
 /**
  * Get other templates passing attributes and including the file.

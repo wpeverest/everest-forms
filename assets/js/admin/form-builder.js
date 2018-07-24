@@ -1135,9 +1135,33 @@ jQuery( function ( $ ) {
 	$( document.body ).on('click', '.evf-toggle-smart-tag-display', function(e) {
 		e.preventDefault();
 
+		$('.evf-smart-tag-lists').empty();
+
 		$( this ).parent().find('.evf-smart-tag-lists').toggle();
 
+		var allowed_field = $ ( this ).data( 'fields' );
+
+		if ( allowed_field === 'email' ) {
+			$.each( evf_data.email_fields , function( key, value ) {
+				$('.evf-smart-tag-lists').append('<p data-meta="'+key+'">'+value+'</p>');
+			});
+		} else {
+			$.each( evf_data.all_fields , function( key, value ) {
+				$('.evf-smart-tag-lists').append('<p data-meta="'+key+'">'+value+'</p>');
+			});
+		}
+
+	});
+
+	// Toggle Smart Tags
+	$( document.body ).on('click', '.evf-smart-tag-lists p', function(e) {
+		var meta    = $( this ).data('meta'),
+			$parent = $ ( this ).parent().parent(),
+		    $input  = $parent.find('input[type=text]');
+
+		$input.val('{'+meta+'}');
 
 
 	});
+
 });
