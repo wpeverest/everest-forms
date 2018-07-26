@@ -1160,7 +1160,7 @@
 		$parent = $ ( this ).parent().parent().parent(),
 		$input  = $parent.find('input[type=text]');
 
-		$input.val('{'+meta+'}');
+		$input.val( $input.val() + '{'+meta+'}' );
 
 
 	});
@@ -1170,40 +1170,34 @@
 		var email_field = [];
 		$('.evf-admin-row .evf-admin-grid .everest-forms-field').each( function(){
 			var field_type = $( this ).data('field-type');
+			var field_id = $( this ).data('field-id');
+
 			if( 'email' === field_type ){
 				var email_field_id = $( this ).data('field-id');
-			} else {
-				var field_id = $( this ).data('field-id');
 			}
-			$('.everest-forms-panel-sidebar .everest-forms-tab-content .everest-forms-field-options').each( function(){
-				if( allowed_field == field_type ){
+			$('.everest-forms-panel-sidebar .everest-forms-tab-content .everest-forms-field-options' ).each( function(){
+				if ( allowed_field === field_type ){
 					var e_field_label = $('#everest-forms-field-option-'+email_field_id+'-label').val();
 					var e_meta_key = $('#everest-forms-field-option-'+email_field_id+'-meta-key').val();
-					email_field[e_meta_key] = e_field_label;
+					email_field[ e_meta_key ] = e_field_label;
 				} else {
 					var field_label = $('#everest-forms-field-option-'+field_id+'-label').val();
 					var meta_key = $('#everest-forms-field-option-'+field_id+'-meta-key').val();
 					all_fields_without_email[ meta_key ] = field_label;
-
 				}
+
 			});
 
 		});
 
-console.log(email_field);
 		if ( allowed_field === 'email' ) {
-
-			$.each( email_field , function( i ) {
-				$.each( email_field[ i ] , function( key, value ) {
-					console.log('hello');
-					$(el).parent().find('.evf-smart-tag-lists ul').append('<li class = "smart-tag-field" data-meta="'+key+'">'+value+'</li>');
-				});
-		});
+			for (var key in email_field ) {
+				$(el).parent().find('.evf-smart-tag-lists ul').append('<li class = "smart-tag-field" data-meta="'+key+'">'+email_field[key]+'</li>');
+			}
 		} else {
-			$( all_fields_without_email ).each(function( key, value ) {
-				console.log('many');
-				$(el).parent().find('.evf-smart-tag-lists ul').append('<li class = "smart-tag-field" data-meta="'+key+'">'+value+'</li>');
-			});
+			for (var meta in all_fields_without_email ) {
+				$(el).parent().find('.evf-smart-tag-lists ul').append('<li class = "smart-tag-field" data-meta="'+meta+'">'+all_fields_without_email[meta]+'</li>');
+			}
 		}
 	}
 
