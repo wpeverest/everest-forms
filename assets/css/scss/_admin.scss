@@ -962,6 +962,16 @@
 		.everest-forms-panel-field {
 			position: relative;
 			margin-bottom: 20px;
+
+			&.everest-forms-panel-field-tinymce {
+				.evf-toggle-smart-tag-display {
+					top: 37px
+				}
+				.evf-smart-tag-lists {
+				    top: 70px;
+				}
+			}
+
 			.evf-toggle-smart-tag-display {
 				right: 10px;
 				margin-top: 5px;
@@ -971,7 +981,7 @@
 			.evf-smart-tag-lists {
 				right: 0;
 				z-index: 1;
-				max-height: 120px;
+				max-height: 123px;
 				margin-top: -1px;
 				width: 230px;
 				overflow-y: auto;

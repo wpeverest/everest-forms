@@ -1151,9 +1151,12 @@
 
 		var field_id    = $( this ).data('field_id'),
 		$parent = $ ( this ).parent().parent().parent(),
-		$input  = $parent.find('input[type=text]');
+		$input  = $parent.find('input[type=text]'),
+		$textarea  = $parent.find('textarea');
+
 
 		$input.val( $input.val() + '{field_id="'+field_id+'"}' );
+		$textarea.append( '{field_id="'+field_id+'"}' );
 	});
 
 	function get_all_available_field( allowed_field , el ) {
