@@ -1141,26 +1141,17 @@
 
 		var allowed_field = $ ( this ).data( 'fields' );
 		get_all_available_field( allowed_field, $( this ) );
-		// if ( allowed_field === 'email' ) {
-		// 	$.each( evf_data.email_fields , function( key, value ) {
-		// 		$('.evf-smart-tag-lists ul').append('<li class = "smart-tag-field" data-meta="'+key+'">'+value+'</li>');
-		// 	});
-		// } else {
-		// 	$.each( evf_data.all_fields , function( key, value ) {
-		// 		$('.evf-smart-tag-lists ul').append('<li class = "smart-tag-field" data-meta="'+key+'">'+value+'</li>');
-		// 	});
-		// }
 
 	});
 
 	// Toggle Smart Tags
 	$( document.body ).on('click', '.smart-tag-field', function(e) {
 
-		var meta    = $( this ).data('meta'),
+		var field_id    = $( this ).data('field_id'),
 		$parent = $ ( this ).parent().parent().parent(),
 		$input  = $parent.find('input[type=text]');
 
-		$input.val( $input.val() + '{'+meta+'}' );
+		$input.val( $input.val() + '{field_id="'+field_id+'"}' );
 
 
 	});
@@ -1171,32 +1162,23 @@
 		$('.evf-admin-row .evf-admin-grid .everest-forms-field').each( function(){
 			var field_type = $( this ).data('field-type');
 			var field_id = $( this ).data('field-id');
-
-			if( 'email' === field_type ){
-				var email_field_id = $( this ).data('field-id');
-			}
-			$('.everest-forms-panel-sidebar .everest-forms-tab-content .everest-forms-field-options' ).each( function(){
 				if ( allowed_field === field_type ){
-					var e_field_label = $('#everest-forms-field-option-'+email_field_id+'-label').val();
-					var e_meta_key = $('#everest-forms-field-option-'+email_field_id+'-meta-key').val();
-					email_field[ e_meta_key ] = e_field_label;
+					var e_field_label = $( this ).find('.label-title span').first().text();
+					var e_field_id = field_id;
+					email_field[ e_field_id ] = e_field_label;
 				} else {
-					var field_label = $('#everest-forms-field-option-'+field_id+'-label').val();
-					var meta_key = $('#everest-forms-field-option-'+field_id+'-meta-key').val();
-					all_fields_without_email[ meta_key ] = field_label;
+					var field_label = $( this ).find('.label-title span').first().text();
+					all_fields_without_email[ field_id ] = field_label;
 				}
-
-			});
-
 		});
 
 		if ( allowed_field === 'email' ) {
 			for (var key in email_field ) {
-				$(el).parent().find('.evf-smart-tag-lists ul').append('<li class = "smart-tag-field" data-meta="'+key+'">'+email_field[key]+'</li>');
+				$(el).parent().find('.evf-smart-tag-lists ul').append('<li class = "smart-tag-field" data-field_id="'+key+'">'+email_field[key]+'</li>');
 			}
 		} else {
 			for (var meta in all_fields_without_email ) {
-				$(el).parent().find('.evf-smart-tag-lists ul').append('<li class = "smart-tag-field" data-meta="'+meta+'">'+all_fields_without_email[meta]+'</li>');
+				$(el).parent().find('.evf-smart-tag-lists ul').append('<li class = "smart-tag-field" data-field_id="'+meta+'">'+all_fields_without_email[meta]+'</li>');
 			}
 		}
 	}

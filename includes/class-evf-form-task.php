@@ -325,73 +325,15 @@ class EVF_Form_Task {
 
 		$email = array();
 
-
 		// Setup email properties.
 		/* translators: %s - form name. */
-
 		$email['subject']        = ! empty( $notification['evf_email_subject'] ) ? $notification['evf_email_subject'] : sprintf( esc_html__( 'New %s Entry', 'everest-forms' ), $form_data['settings']['form_title'] );
-		$email['address']        = ! empty( $notification['evf_to_email'] ) ? $notification['evf_to_email'] : get_option( 'admin_email' );
+		$email['address']        = explode( ',', apply_filters( 'everest_forms_process_smart_tags', $notification['evf_to_email'], $form_data, $fields, $this->entry_id ) );
+		$email['address']        = array_map( 'sanitize_email', $email['address'] );
 		$email['sender_name']    = ! empty( $notification['evf_from_name'] ) ? $notification['evf_from_name'] : get_bloginfo( 'name' );
 		$email['sender_address'] = ! empty( $notification['evf_from_email'] ) ? $notification['evf_from_email'] : get_option( 'admin_email' );
 		$email['message']        = ! empty( $notification['evf_email_message'] ) ? $notification['evf_email_message'] : '{all_fields}';
 
-		$abc= array();
-		foreach( $email as $key => $email_value ) {
-			$email_value = str_replace( array( '{','}'), ',', $email_value );
-			$email_value = str_replace(',,', ',', $email_value );
-			$email_value = trim ( $email_value , ',' );
-			$email_value = explode( ',', $email_value );
-
-
-			$abc[ $key ] = $email_value;
-		}
-
-// echo '<pre>' . print_r( $abc, true ) . '</pre>';
-		$meta_keys = array();
-		foreach ( $form_data['form_fields']  as $type => $form_field ){
-
-				$meta_keys[] = $form_field[ 'meta-key' ];
-					// if ( isset( $form_field['meta-key'] ) && in_array( $form_field['meta-key'], $pqr  ) ) {
-					// 	if ( isset( $entry['form_fields'][$type] ) ){
-					// 		$email[ $xyz ][ $type ] = $entry['form_fields'][$type];
-					// 	}
-					// } else {
-					// 	$static_val = $entry['form_fields'][$type];
-					// }
-			}
-
-		$email = array();
-		$static_val = array();
-		foreach($abc as $xyz =>$pqr ) {
-			// $email[ $xyz ] = $pqr;
-			foreach ( $form_data['form_fields']  as $type => $form_field ){
-					if ( isset( $form_field['meta-key'] ) && in_array( $form_field['meta-key'], $pqr  ) ) {
-						if ( isset( $entry['form_fields'][$type] ) ){
-							$email[ $xyz ][] = $entry['form_fields'][$type];
-						}
-					}
-				}
-
-		}
-
-		foreach($abc as $cde =>$wxy ) {
-			foreach ($wxy as $key => $value ){
-				//echo '<pre>' . print_r( $value, true ) . '</pre>';
-				if ( in_array( $value, $meta_keys  ) ) {
-						//echo $value;
-					} else {
-						$email[ $cde ][] = $value;
-					}
-
-			}
-		}
-					// echo '<pre>' . print_r( $static_val, true ) . '</pre>';
-					echo '<pre>' . print_r( $email, true ) . '</pre>';
-
-		// echo '<pre>' . print_r($abc, true ) . '</pre>';
-
-		// $email['address'] = array_map( 'sanitize_email', $email['address'] );
-		// $email['sender_address'] = sanitize_email( $email['sender_address'] );
 		// Setup confirm email properties.
 		if ( isset( $notification['evf_send_confirmation_email'] ) && '1' === $notification['evf_send_confirmation_email'] ) {
 			$fields_meta = wp_list_pluck( $fields, 'value', 'meta_key' );
@@ -418,6 +360,7 @@ class EVF_Form_Task {
 		$emails->__set( 'reply_to', isset( $email['user_email'] ) ? $email['user_email'] : $email['sender_address'] );
 		$emails->__set( 'attachments', apply_filters( 'everest_forms_email_file_attachments', $attachment, $entry, $form_data ) );
 
+// echo '<pre>' . print_r( $emails, true ) . '</pre>';
 		// Send entry email.
 		foreach ( $email['address'] as $address ) {
 			$emails->send( trim( $address ), $email['subject'], $email['message'] );
