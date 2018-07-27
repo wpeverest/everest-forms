@@ -259,16 +259,16 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 
 		// TinyMCE
 		case 'tinymce':
-			$args                  = wp_parse_args( $tinymce, array(
+			$arguments = wp_parse_args( $tinymce, array(
 				'media_buttons' => false,
 				'tinymce'       => false,
 			) );
-			$args['textarea_name'] = $field_name;
-			$args['teeny']         = true;
+			$arguments['textarea_name'] = $field_name;
+			$arguments['teeny']         = true;
 			$id                    = 'everest-forms-panel-field-' . sanitize_html_class( $panel_id ) . '-' . sanitize_html_class( $field );
 			$id                    = str_replace( '-', '_', $id );
 			ob_start();
-			wp_editor( $value, $id, $args );
+			wp_editor( $value, $id, $arguments );
 			$output = ob_get_clean();
 			break;
 

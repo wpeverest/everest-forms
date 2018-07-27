@@ -342,8 +342,8 @@ class EVF_Form_Task {
 			// Check if user email is setup.
 			if ( ! empty( $fields_meta[ $field_email ] ) ) {
 				$email['user_email']           = $fields_meta[ $field_email ];
-				$email['confirmation_subject'] = ! empty( $notification['evf_user_email_subject'] ) ? $notification['evf_user_email_subject'] : esc_html__( 'Thank you!', 'everest-forms' );
-				$email['confirmation_message'] = ! empty( $notification['evf_user_email_message'] ) ? $notification['evf_user_email_message'] : esc_html__( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
+				$email['confirmation_subject'] = ! empty( $notification['evf_user_email_subject'] ) ? apply_filters( 'everest_forms_process_smart_tags', $notification['evf_user_email_subject'], $form_data, $fields, $this->entry_id ) : esc_html__( 'Thank you!', 'everest-forms' );
+				$email['confirmation_message'] = ! empty( $notification['evf_user_email_message'] ) ? apply_filters( 'everest_forms_process_smart_tags', $notification['evf_user_email_message'], $form_data, $fields, $this->entry_id ) : esc_html__( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
 			}
 		}
 

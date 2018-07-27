@@ -238,7 +238,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			)
 		);
 		everest_forms_panel_field(
-			'textarea',
+			'tinymce',
 			'settings[email]',
 			'evf_email_message',
 			$this->form_data,
@@ -264,17 +264,14 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				)
 			);
 			everest_forms_panel_field(
-				'text',
+				'select',
 				'settings[email]',
 				'evf_user_to_email',
 				$this->form_data,
 				__( 'Send Confirmation Email To', 'everest-forms' ),
 				array(
 					'default' => isset( $settings['email']['evf_user_to_email'] ) ? $settings['email']['evf_user_to_email'] : '',
-					'smarttags'  => array(
-						'type'   => 'fields',
-						'form_fields' => 'email',
-					),
+					'options' => $user_emails
 				)
 			);
 			everest_forms_panel_field(
@@ -292,7 +289,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				)
 			);
 			everest_forms_panel_field(
-				'textarea',
+				'tinymce',
 				'settings[email]',
 				'evf_user_email_message',
 				$this->form_data,

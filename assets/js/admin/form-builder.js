@@ -1131,12 +1131,15 @@
 		});
 	} ).trigger( 'init_field_options_toogle' );
 
+	$(document).click(function() {
+		$('.evf-smart-tag-lists').hide();
+	});
+
 	// Toggle Smart Tags
 	$( document.body ).on('click', '.evf-toggle-smart-tag-display', function(e) {
-		e.preventDefault();
-
+		e.stopPropagation();
+		$('.evf-smart-tag-lists').hide();
 		$('.evf-smart-tag-lists ul').empty();
-
 		$( this ).parent().find('.evf-smart-tag-lists').toggle();
 
 		var allowed_field = $ ( this ).data( 'fields' );
@@ -1144,7 +1147,6 @@
 
 	});
 
-	// Toggle Smart Tags
 	$( document.body ).on('click', '.smart-tag-field', function(e) {
 
 		var field_id    = $( this ).data('field_id'),
@@ -1152,8 +1154,6 @@
 		$input  = $parent.find('input[type=text]');
 
 		$input.val( $input.val() + '{field_id="'+field_id+'"}' );
-
-
 	});
 
 	function get_all_available_field( allowed_field , el ) {
