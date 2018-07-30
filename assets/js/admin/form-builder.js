@@ -1150,10 +1150,21 @@
 	$( document.body ).on('click', '.smart-tag-field', function(e) {
 
 		var field_id    = $( this ).data('field_id'),
-		$parent = $ ( this ).parent().parent().parent(),
-		$input  = $parent.find('input[type=text]'),
-		$textarea  = $parent.find('textarea');
+            field_label = $( this ).text(),
+			$parent = $ ( this ).parent().parent().parent(),
+			$input  = $parent.find('input[type=text]'),
+			$textarea  = $parent.find('textarea');
+		if( field_id !== 'fullname' && field_id !== 'email' && field_id !== 'subject' && field_id !== 'message' ){
+			field_label = field_label.split(/[\s,-_]+/)
 
+		    for(var i = 1 ; i < field_label.length ; i++){
+		        field_label[i] = field_label[i].charAt(0).toUpperCase() + field_label[i].substr(1);
+		    }
+			field_label = field_label.join('');
+			field_id = field_label+'_'+field_id;
+		} else {
+			field_id = field_id;
+		}
 
 		$input.val( $input.val() + '{field_id="'+field_id+'"}' );
 		$textarea.append( '{field_id="'+field_id+'"}' );
