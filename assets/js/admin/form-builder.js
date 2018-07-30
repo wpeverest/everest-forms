@@ -1170,7 +1170,8 @@
 		}
 
 		$input.val( $input.val() + '{field_id="'+field_id+'"}' );
-		$textarea.append( '{field_id="'+field_id+'"}' );
+		// $textarea.append( '{field_id="'+field_id+'"}' );
+		$textarea.val($textarea.val()+'{field_id="'+field_id+'"}' );
 	});
 
 	function get_all_available_field( allowed_field , el ) {
