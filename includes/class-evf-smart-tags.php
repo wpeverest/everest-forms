@@ -47,9 +47,13 @@ class EVF_Smart_Tags {
 
 				if( ! is_array($value) ){
 					$content = str_replace( '{field_id="' . $field_id . '"}', $value, $content );
+				} else {
+					$value = implode(" ",$value);
+					$content = str_replace( '{field_id="' . $field_id . '"}', $value, $content );
 				}
 			}
 		}
+
 		return $content;
 	}
 }
