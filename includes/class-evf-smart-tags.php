@@ -45,7 +45,9 @@ class EVF_Smart_Tags {
 					$value = ! empty( $fields[ $field_id ]['value'] ) ? evf_sanitize_textarea_field( $fields[ $field_id ]['value'] ) : '';
 				}
 
-				$content = str_replace( '{field_id="' . $field_id . '"}', $value, $content );
+				if( ! is_array($value) ){
+					$content = str_replace( '{field_id="' . $field_id . '"}', $value, $content );
+				}
 			}
 		}
 		return $content;
