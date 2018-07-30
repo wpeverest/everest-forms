@@ -30,6 +30,7 @@ Check [documentation](http://docs.wpeverest.com/docs/everest-forms/)
 * Supports multiple column layout
 * Shortcode support
 * Multiple email recipient
+* Smart Tags for dynamic email message, subject and more.
 * View Form entries from your dashboard
 * Provides two different form template design
 * Google Recaptcha Supported
