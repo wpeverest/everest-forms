@@ -1155,10 +1155,13 @@
 			$input  = $parent.find('input[type=text]'),
 			$textarea  = $parent.find('textarea');
 		if( field_id !== 'fullname' && field_id !== 'email' && field_id !== 'subject' && field_id !== 'message' ){
-			field_label = field_label.split(/[\s,-_]+/)
-
-		    for(var i = 1 ; i < field_label.length ; i++){
-		        field_label[i] = field_label[i].charAt(0).toUpperCase() + field_label[i].substr(1);
+			field_label = field_label.split(/[\s-_]/);
+		    for(var i = 0 ; i < field_label.length ; i++){
+		    	if ( i === 0 ) {
+		    		field_label[i] = field_label[i].charAt(0).toLowerCase() + field_label[i].substr(1);
+		    	} else {
+		        	field_label[i] = field_label[i].charAt(0).toUpperCase() + field_label[i].substr(1);
+		    	}
 		    }
 			field_label = field_label.join('');
 			field_id = field_label+'_'+field_id;
