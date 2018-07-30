@@ -31,7 +31,6 @@ class EVF_Smart_Tags {
 	 * @return string
 	 */
 	public function process( $content, $form_data, $fields = '', $entry_id = '' ) {
-
 		// Field smart tags (settings, etc).
 		preg_match_all( "/\{field_id=\"(.+?)\"\}/", $content, $ids );
 
@@ -40,8 +39,8 @@ class EVF_Smart_Tags {
 
 			foreach ( $ids[1] as $key => $field_id ) {
 				if( $field_id !== 'fullname' && $field_id !== 'email' && $field_id !== 'subject' && $field_id !== 'message' ) {
-					$field_id = explode( '_', $field_id );
-					$value = ! empty( $fields[ $field_id[1] ]['value'] ) ? evf_sanitize_textarea_field( $fields[ $field_id[1] ]['value'] ) : '';
+					$mixed_field_id = explode( '_', $field_id );
+					$value = ! empty( $fields[ $mixed_field_id[1] ]['value'] ) ? evf_sanitize_textarea_field( $fields[ $mixed_field_id[1] ]['value'] ) : '';
 				} else {
 					$value = ! empty( $fields[ $field_id ]['value'] ) ? evf_sanitize_textarea_field( $fields[ $field_id ]['value'] ) : '';
 				}
