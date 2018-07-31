@@ -48,8 +48,8 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 	 * Outputs the builder content.
 	 */
 	public function output_content() {
-		$form_id     = isset( $_GET['form_id'] ) ? $_GET['form_id'] : '';
-		$user_emails = $this->get_all_email_fields_by_form_id( $form_id );
+		$form_id     = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
+		$user_emails = get_all_email_fields_by_form_id( $form_id );
 		$settings    = isset( $this->form_data['settings'] ) ? $this->form_data['settings'] : array();
 
 		// --------------------------------------------------------------------//
@@ -189,6 +189,10 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			__( 'To Address', 'everest-forms' ),
 			array(
 				'default' => isset( $settings['email']['evf_to_email'] ) ? $settings['email']['evf_to_email'] : get_option( 'admin_email' ),
+				'smarttags'  => array(
+					'type'   => 'fields',
+					'form_fields' => 'email',
+				),
 			)
 		);
 		everest_forms_panel_field(
@@ -199,6 +203,10 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			__( 'From Name', 'everest-forms' ),
 			array(
 				'default' => isset( $settings['email']['evf_from_name'] ) ? $settings['email']['evf_from_name'] : get_bloginfo( 'name', 'display' ),
+				'smarttags'  => array(
+				'type'   => 'fields',
+				'form_fields' => 'all',
+				),
 			)
 		);
 		everest_forms_panel_field(
@@ -209,6 +217,10 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			__( 'From Address', 'everest-forms' ),
 			array(
 				'default' => isset( $settings['email']['evf_from_email'] ) ? $settings['email']['evf_from_email'] : get_option( 'admin_email' ),
+				'smarttags'  => array(
+					'type'   => 'fields',
+					'form_fields' => 'email',
+				),
 			)
 		);
 		everest_forms_panel_field(
@@ -219,6 +231,10 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			__( 'Email Subject', 'everest-forms' ),
 			array(
 				'default' => isset( $settings['email']['evf_email_subject'] ) ? $settings['email']['evf_email_subject'] : __( 'New Form Entry', 'everest-forms' ),
+				'smarttags'  => array(
+					'type'   => 'fields',
+					'form_fields' => 'all',
+				),
 			)
 		);
 		everest_forms_panel_field(
@@ -229,6 +245,10 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			__( 'Email Message', 'everest-forms' ),
 			array(
 				'default' => isset( $settings['email']['evf_email_message'] ) ? $settings['email']['evf_email_message'] : __( '{all_fields}', 'everest-forms' ),
+				'smarttags'  => array(
+					'type'   => 'fields',
+					'form_fields' => 'all',
+				),
 			)
 		);
 
@@ -262,6 +282,10 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				__( 'Confirmation Email Subject', 'everest-forms' ),
 				array(
 					'default' => isset( $settings['email']['evf_user_email_subject'] ) ? $settings['email']['evf_user_email_subject'] : __( 'Thank You!', 'everest-forms' ),
+					'smarttags'  => array(
+						'type'   => 'fields',
+						'form_fields' => 'all',
+					),
 				)
 			);
 			everest_forms_panel_field(
@@ -272,6 +296,10 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				__( 'Confirmation Email Message', 'everest-forms' ),
 				array(
 					'default' => isset( $settings['email']['evf_user_email_message'] ) ? $settings['email']['evf_user_email_message'] :  __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' ),
+					'smarttags'  => array(
+						'type'   => 'fields',
+						'form_fields' => 'all',
+					),
 				)
 			);
 		}
@@ -282,22 +310,6 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		echo '</div>';
 
 		do_action( 'everest_forms_settings_panel_content', $this );
-	}
-
-	public function get_all_email_fields_by_form_id( $form_id ) {
-		$user_emails = array();
-		$form_obj    = EVF()->form->get( $form_id );
-		$form_data   = ! empty( $form_obj->post_content ) ? evf_decode( $form_obj->post_content ) : '';
-
-		if ( ! empty( $form_data['form_fields'] ) ) {
-			foreach ( $form_data['form_fields'] as $form_fields ) {
-				if ( 'email' === $form_fields['type'] ) {
-					$user_emails[ $form_fields['meta-key'] ] = $form_fields['label'];
-				}
-			}
-		}
-
-		return $user_emails;
 	}
 
 	public function evf_get_all_pages(){

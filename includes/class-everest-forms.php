@@ -21,7 +21,7 @@ final class EverestForms {
 	 *
 	 * @var string
 	 */
-	public $version = '1.2.3';
+	public $version = '1.2.4';
 
 	/**
 	 * The single instance of the class.
@@ -306,6 +306,7 @@ final class EverestForms {
 		// Global objects.
 		$this->form = new EVF_Form_Handler();
 		$this->task = new EVF_Form_Task();
+		$this->smart_tags = new EVF_Smart_Tags();
 	}
 
 	/**

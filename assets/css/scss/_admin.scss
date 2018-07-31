@@ -953,14 +953,73 @@
 		.evf-content-section-title {
 			font-size: 24px;
 			font-weight: 500;
+			line-height: 34px;
 			margin-bottom: 20px;
 			padding-bottom: 20px;
-			line-height: 34px;
 			border-bottom: 1px solid $color-white-darken;
 		}
 
 		.everest-forms-panel-field {
+			position: relative;
 			margin-bottom: 20px;
+
+			&.everest-forms-panel-field-tinymce {
+				.evf-toggle-smart-tag-display {
+					top: 37px
+				}
+				.evf-smart-tag-lists {
+				    top: 70px;
+				}
+			}
+
+			.evf-toggle-smart-tag-display {
+				right: 10px;
+				margin-top: 5px;
+				color: #575757;
+				position: absolute;
+			}
+			.evf-smart-tag-lists {
+				right: 0;
+				z-index: 1;
+				max-height: 123px;
+				margin-top: -1px;
+				width: 230px;
+				overflow-y: auto;
+				position: absolute;
+				background: $color-white;
+				border: 1px solid #dddddd;
+				box-shadow: 0 2px 10px rgba(128, 128, 128, 0.20);
+
+				.smart-tag-title,
+				li {
+					padding: 7px 10px;
+				}
+
+				.smart-tag-title {
+					font-weight: 600;
+					background: #f0f1f2;
+					border-bottom: 1px solid #e0e3e6;
+				}
+
+				ul {
+					margin: 0;
+				}
+
+				li {
+					cursor: pointer;
+					margin-bottom: 0;
+
+					&:hover {
+						background: #f8f9fA;
+					}
+				}
+			}
+
+			&.everest-forms-panel-field-textarea {
+				.evf-smart-tag-lists {
+					top: 40%;
+				}
+			}
 		}
 
 
