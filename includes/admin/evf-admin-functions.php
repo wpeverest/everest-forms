@@ -164,8 +164,6 @@ function everest_forms_settings_get_option( $option_name, $default = '' ) {
 /**
  * Outputs fields to be used on panels (settings etc).
  *
- * @since      1.0.0
- *
  * @param string  $option
  * @param string  $panel
  * @param string  $field
@@ -261,16 +259,16 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 
 		// TinyMCE
 		case 'tinymce':
-			$args                  = wp_parse_args( $tinymce, array(
+			$arguments = wp_parse_args( $tinymce, array(
 				'media_buttons' => false,
 				'tinymce'       => false,
 			) );
-			$args['textarea_name'] = $field_name;
-			$args['teeny']         = true;
+			$arguments['textarea_name'] = $field_name;
+			$arguments['teeny']         = true;
 			$id                    = 'everest-forms-panel-field-' . sanitize_html_class( $panel_id ) . '-' . sanitize_html_class( $field );
 			$id                    = str_replace( '-', '_', $id );
 			ob_start();
-			wp_editor( $value, $id, $args );
+			wp_editor( $value, $id, $arguments );
 			$output = ob_get_clean();
 			break;
 
@@ -408,14 +406,26 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 		if ( ! empty( $args['after_tooltip'] ) ) {
 			$field_label .= $args['after_tooltip'];
 		}
+		if ( ! empty( $args['smarttags'] ) ) {
+			$smart_tag ='';
+
+			$type   = ! empty( $args['smarttags']['type'] ) ? esc_attr( $args['smarttags']['type'] ) : 'form_fields';
+			$form_fields = ! empty( $args['smarttags']['form_fields'] ) ? esc_attr( $args['smarttags']['form_fields'] ) : '';
+
+			$smart_tag .= '<a href="#" class="evf-toggle-smart-tag-display" data-type="' . $type . '" data-fields="' . $form_fields . '"><span class="dashicons dashicons-editor-code"></span></a>';
+			$smart_tag .= '<div class="evf-smart-tag-lists" style="display: none"><div class="smart-tag-title">Available Fields </div><ul></ul></div>';
+		} else {
+			$smart_tag = '';
+		}
 
 		$field_label .= '</label>';
 	} else {
 		$field_label = '';
+		$smart_tag   = '';
 	}
 	$field_close = ! empty( $args['after'] ) ? $args['after'] : '';
 	$field_close .= '</div>';
-	$output      = $field_open . $field_label . $output . $field_close;
+	$output      = $field_open . $field_label . $output . $smart_tag. $field_close;
 
 	// Wash our hands.
 	if ( $echo ) {
