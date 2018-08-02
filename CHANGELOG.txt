@@ -1,5 +1,14 @@
 == Changelog ==
 
+= 1.2.3 - 19-07-2018 =
+* Fix - Load the flatpickr assets library correctly.
+* Fix - Plugin deactivation notice appearing multiple times.
+
+= 1.2.2 - 19-07-2018 =
+* Feature - Changed Datepicker library for year selection.
+* Fix - Fatal error thrown via unfound class `EVF_Panel_Settings`.
+* Tweak - Change of input mask docs URL for Single line text field.
+
 = 1.2.1 - 12-07-2018 =
 * Fix - Form setting output issue after save.
 * Tweak - Removed border shown on active nav tab.

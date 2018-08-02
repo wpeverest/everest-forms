@@ -4,7 +4,7 @@ Tags: form, form builder, easy form, clean form, login form, contact, contact fo
 Requires at least: 4.0
 Tested up to: 4.9
 Requires PHP: 5.4
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -78,6 +78,15 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 11. Advance Form
 
 == Changelog ==
+
+= 1.2.3 - 19-07-2018 =
+* Fix - Load the flatpickr assets library correctly.
+* Fix - Plugin deactivation notice appearing multiple times.
+
+= 1.2.2 - 19-07-2018 =
+* Feature - Changed Datepicker library for year selection.
+* Fix - Fatal error thrown via unfound class `EVF_Panel_Settings`.
+* Tweak - Change of input mask docs URL for Single line text field.
 
 = 1.2.1 - 12-07-2018 =
 * Fix - Form setting output issue after save.

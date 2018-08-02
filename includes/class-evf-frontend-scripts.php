@@ -162,6 +162,11 @@ class EVF_Frontend_Scripts {
 				'deps'    => array( 'jquery' ),
 				'version' => '4.0.0-beta.58',
 			),
+			'flatpickr' => array(
+				'src'     => self::get_asset_url( 'assets/js/flatpickr/flatpickr' . $suffix . '.js' ),
+				'deps'    => array( 'jquery' ),
+				'version' => '4.5.1',
+			),
 			'jquery-validate' => array(
 				'src'     => self::get_asset_url( 'assets/js/jquery-validate/jquery.validate' . $suffix . '.js' ),
 				'deps'    => array( 'jquery' ),
@@ -174,7 +179,7 @@ class EVF_Frontend_Scripts {
 			),
 			'everest-forms'   => array(
 				'src'     => self::get_asset_url( 'assets/js/frontend/everest-forms' . $suffix . '.js' ),
-				'deps'    => array( 'jquery', 'jquery-ui-datepicker', 'jquery-validate', 'inputmask' ),
+				'deps'    => array( 'jquery', 'inputmask', 'flatpickr', 'jquery-validate' ),
 				'version' => EVF_VERSION,
 			),
 		);
@@ -194,8 +199,8 @@ class EVF_Frontend_Scripts {
 				'version' => EVF_VERSION,
 				'has_rtl' => false,
 			),
-			'jquery-ui-style' => array(
-				'src'     => self::get_asset_url( 'assets/css/jquery-ui/jquery-ui.min.css' ),
+			'flatpickr' => array(
+				'src'     => self::get_asset_url( 'assets/css/flatpickr.css' ),
 				'deps'    => array(),
 				'version' => EVF_VERSION,
 				'has_rtl' => false,
@@ -227,7 +232,7 @@ class EVF_Frontend_Scripts {
 
 		// Load scripts on form pages only if supported.
 		if ( evf_post_content_has_shortcode( 'everest_form' ) ) {
-			self::enqueue_style( 'jquery-ui-style' );
+			self::enqueue_style( 'flatpickr' );
 		}
 
 		// CSS Styles.

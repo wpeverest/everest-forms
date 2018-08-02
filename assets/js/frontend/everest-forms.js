@@ -23,20 +23,7 @@ jQuery( function ( $ ) {
 			}
 		},
 		init_datepicker: function () {
-			$( '.date-picker-field, .date-picker' ).datepicker({
-				changeMonth: true,
-				changeYear: true,
-				defaultDate: '',
-				dateFormat: 'yy-mm-dd',
-				numberOfMonths: 1,
-				minDate: '-15Y',
-				maxDate: '+15Y',
-				beforeShow : function(){
-					if ( ! $('.everest-form-datepicker' ).length){
-				        $( '#ui-datepicker-div' ).addClass( 'everest-form-datepicker' );
-					}
-				}
-			});
+			$( '.flatpickr-field' ).flatpickr();
 		},
 		load_validation: function() {
 			if ( typeof $.fn.validate === 'undefined' ) {
