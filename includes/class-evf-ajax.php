@@ -333,7 +333,6 @@ class EVF_AJAX {
 				)
 			);
 		}
-
 		do_action( 'everest_forms_integration_account_connect', $_POST );
 
 	}
@@ -379,10 +378,22 @@ class EVF_AJAX {
 	 * AJAX Integration disconnect.
 	 */
 	public function new_connection_add() {
+		check_ajax_referer( 'process-ajax-nonce', 'security' );
+
+		if ( ! current_user_can( 'manage_everest_forms' ) ) {
+			wp_die( -1 );
+		}
 		$integrations = EVF()->integrations->get_integrations();
 		if ( isset( $integrations[ $_POST['source'] ] ) ) {
-			$integrations[ $_POST['source'] ]->output_form_content( $_POST );
+			$connection = $integrations[ $_POST['source'] ]->output_form_content( '', array( 'connection_name' => $_POST['name'], ), $_POST['id'] );
+			wp_send_json_success(
+				array(
+					'html' => $connection[ 'html' ],
+					'connection_id' => $connection[ 'connection_id' ],
+				)
+			);
 		}
+
 	 }
 
 	/**
