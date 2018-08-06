@@ -236,10 +236,11 @@ class EVF_Admin_Menus {
 	/**
 	 * Custom menu order.
 	 *
+	 * @param  bool $enabled Whether custom menu ordering is already enabled.
 	 * @return bool
 	 */
-	public function custom_menu_order() {
-		return current_user_can( 'manage_everest_forms' );
+	public function custom_menu_order( $enabled ) {
+		return $enabled || current_user_can( 'manage_everest_forms' );
 	}
 
 	/**
