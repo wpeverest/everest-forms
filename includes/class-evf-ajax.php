@@ -82,6 +82,8 @@ class EVF_AJAX {
 			'integration_connect'    => false,
 			'integration_disconnect' => false,
 			'new_connection_add'     => false,
+			'account_select'         => false,
+			'account_list_select'    => false,
 			'deactivation_notice'    => false,
 			'rated'                  => false,
 		);
@@ -392,6 +394,81 @@ class EVF_AJAX {
 					'connection_id' => $connection[ 'connection_id' ],
 				)
 			);
+		}
+
+	 }
+
+	 public function account_select() {
+		check_ajax_referer( 'process-ajax-nonce', 'security' );
+
+		if ( ! current_user_can( 'manage_everest_forms' ) ) {
+			wp_die( -1 );
+		}
+		$integrations = EVF()->integrations->get_integrations();
+
+		if ( isset( $integrations[ $_POST['source'] ] ) ) {
+
+			$lists = $integrations[ $_POST['source'] ]->output_lists( $_POST['connection_id'], array( 'account_id' => $_POST['account_id'] ) );
+
+			if ( is_wp_error( $lists ) ) {
+
+				wp_send_json_error(
+					array(
+						'error' => $lists->get_error_message(),
+					)
+				);
+
+			} else {
+
+				wp_send_json_success(
+					array(
+						'html' => $lists,
+					)
+				);
+			}
+		}
+
+	 }
+
+	 public function account_list_select() {
+		check_ajax_referer( 'process-ajax-nonce', 'security' );
+
+		if ( ! current_user_can( 'manage_everest_forms' ) ) {
+			wp_die( -1 );
+		}
+		$integrations = EVF()->integrations->get_integrations();
+
+		if ( isset( $integrations[ $_POST['source'] ] ) ) {
+
+			$fields = $integrations[ $_POST['source'] ]->output_fields( $_POST['connection_id'], array(
+				'account_id' => $_POST['account_id'],
+				'list_id'    => $_POST['list_id'],
+			), $_POST['form_id'] );
+
+			if ( is_wp_error( $fields ) ) {
+
+				wp_send_json_error(
+					array(
+						'error' => $fields->get_error_message(),
+					)
+				);
+
+			} else {
+
+				$options = $integrations[ $_POST['source'] ]->output_options(
+					$_POST['connection_id'],
+					array(
+						'account_id' => $_POST['account_id'],
+						'list_id'    => $_POST['list_id'],
+					)
+				);
+
+				wp_send_json_success(
+					array(
+						'html' => $fields . $options,
+					)
+				);
+			}
 		}
 
 	 }
