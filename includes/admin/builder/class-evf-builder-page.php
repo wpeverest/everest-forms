@@ -128,13 +128,14 @@ if ( ! class_exists( 'EVF_Builder_Page', false ) ) :
 		 * @param string $name Name of the section.
 		 * @param string $slug Slug of the section.
 		 * @param string $icon Icon of the section.
+		 * @param string $container_name Name of that container.
 		 */
-		public function add_sidebar_tab( $name, $slug, $icon = '' ) {
+		public function add_sidebar_tab( $name, $slug, $icon = '', $container_name = 'setting' ) {
 			$class = '';
 			$class .= $slug == 'default' ? ' default' : '';
 			$class .= ! empty( $icon ) ? ' icon' : '';
 
-			echo '<a href="#" class="evf-panel-tab evf-setting-panel everest-forms-panel-sidebar-section everest-forms-panel-sidebar-section-' . esc_attr( $slug ) . $class . '" data-section="' . esc_attr( $slug ) . '">';
+			echo '<a href="#" class="evf-panel-tab evf-'.$container_name.'-panel everest-forms-panel-sidebar-section everest-forms-panel-sidebar-section-' . esc_attr( $slug ) . $class . '" data-section="' . esc_attr( $slug ) . '">';
 				if ( ! empty( $icon ) ) {
 					echo '<img src="' . esc_url( $icon ) . '">';
 				}

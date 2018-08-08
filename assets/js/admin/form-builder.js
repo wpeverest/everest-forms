@@ -347,6 +347,8 @@
 				$('.evf-integrations-panel').removeClass('active');
 				$('.evf-panel-content-section').removeClass('active');
 				$(this).addClass('active');
+				$(this).parent().find('.everest-forms-active-connections').removeClass('active');
+				$(this).parent().find('.everest-forms-active-connections').first().addClass('active');
 				$('.evf-panel-content-section-' + data_setting_section ).addClass('active');
 				e.preventDefault();
 			});
