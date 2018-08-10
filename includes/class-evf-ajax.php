@@ -406,7 +406,8 @@ class EVF_AJAX {
 			wp_die( -1 );
 		}
 
-		$auth = $integrations[ $_POST['source'] ]->api_auth( wp_parse_args( $_POST['data'], array() ), $_POST['id'] );
+		$integrations = EVF()->integrations->get_integrations();
+		$auth = $integrations[ $_POST['provider'] ]->api_auth( wp_parse_args( $_POST['data'], array() ), $_POST['id'] );
 
 		if ( is_wp_error( $auth ) ) {
 
@@ -418,12 +419,13 @@ class EVF_AJAX {
 
 		} else {
 
-			$accounts = integrations[ $_POST['source'] ]->output_accounts(
+			$accounts = $integrations[ $_POST['provider'] ]->output_accounts(
 				$_POST['connection_id'],
 				array(
 					'account_id' => $auth,
 				)
 			);
+
 			wp_send_json_success(
 				array(
 					'html' => $accounts,
