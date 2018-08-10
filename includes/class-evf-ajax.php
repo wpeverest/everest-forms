@@ -82,6 +82,7 @@ class EVF_AJAX {
 			'integration_connect'    => false,
 			'integration_disconnect' => false,
 			'new_connection_add'     => false,
+			'add_account_form'     => false,
 			'account_select'         => false,
 			'account_list_select'    => false,
 			'deactivation_notice'    => false,
@@ -396,6 +397,39 @@ class EVF_AJAX {
 			);
 		}
 
+	 }
+
+	 public function add_account_form() {
+		check_ajax_referer( 'process-ajax-nonce', 'security' );
+
+		if ( ! current_user_can( 'manage_everest_forms' ) ) {
+			wp_die( -1 );
+		}
+
+		$auth = $integrations[ $_POST['source'] ]->api_auth( wp_parse_args( $_POST['data'], array() ), $_POST['id'] );
+
+		if ( is_wp_error( $auth ) ) {
+
+			wp_send_json_error(
+				array(
+					'error' => $auth->get_error_message(),
+				)
+			);
+
+		} else {
+
+			$accounts = integrations[ $_POST['source'] ]->output_accounts(
+				$_POST['connection_id'],
+				array(
+					'account_id' => $auth,
+				)
+			);
+			wp_send_json_success(
+				array(
+					'html' => $accounts,
+				)
+			);
+		}
 	 }
 
 	 public function account_select() {
