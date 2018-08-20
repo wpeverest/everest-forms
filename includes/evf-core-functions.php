@@ -1261,6 +1261,12 @@ function evf_get_day_period_date( $period, $timestamp = '', $format = 'Y-m-d H:i
 	return $date;
 }
 
+/**
+ * Get field label by meta key
+ * @param  $form_id Form ID
+ * @param  $meta_key Field's meta key
+ * @return mixed
+ */
 function evf_get_form_data_by_meta_key( $form_id, $meta_key ) {
 	$get_post     = get_post( $form_id );
 	$post_content = json_decode( $get_post->post_content, true ) ;
