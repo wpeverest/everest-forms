@@ -125,7 +125,7 @@ class EVF_Admin_Entries {
 				$this->empty_trash();
 			}
 
-			// Export to CSV
+			// Export to CSV.
 			if( isset( $_REQUEST['export_action'] ) ) { // WPCS: input var okay, CSRF ok.
 				$this->export_to_csv();
 			}
@@ -268,6 +268,20 @@ class EVF_Admin_Entries {
 	 * @return void
 	 */
 	private static function export_to_csv() {
+		$form_id = isset( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : 0;
+
+		if( ! isset( $form_id ) ) {
+			return;
+		}
+
+		$export 	   = array();
+		$total_entries = evf_get_count_entries_by_status( $form_id );
+		$entry_ids     = evf_get_entries_ids( $form_id );
+
+		foreach( $entry_ids as $entry_id ) {
+			$export[ $entry_id ] = evf_get_entry( $entry_id );
+			evf_get_form_data_by_meta_key();
+		}
 	}
 }
 
