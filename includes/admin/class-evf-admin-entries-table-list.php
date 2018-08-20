@@ -425,6 +425,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 				if ( ! empty( $output ) ) {
 					echo $output;
 					submit_button( __( 'Filter', 'everest-forms' ), '', 'filter_action', false, array( 'id' => 'post-query-submit' ) );
+					submit_button( __( 'Export To CSV', 'everest-forms' ), '', 'export_action', false, array( 'id' => 'export-to-csv' ) );
 				}
 			}
 

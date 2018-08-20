@@ -124,6 +124,11 @@ class EVF_Admin_Entries {
 			if ( isset( $_REQUEST['delete_all'] ) || isset( $_REQUEST['delete_all2'] ) ) { // WPCS: input var okay, CSRF ok.
 				$this->empty_trash();
 			}
+
+			// Export to CSV
+			if( isset( $_REQUEST['export_action'] ) ) { // WPCS: input var okay, CSRF ok.
+				$this->export_to_csv();
+			}
 		}
 	}
 
@@ -256,6 +261,13 @@ class EVF_Admin_Entries {
 		);
 
 		return $update;
+	}
+
+	/**
+	 * Export entries in CSV format.
+	 * @return void
+	 */
+	private static function export_to_csv() {
 	}
 }
 
