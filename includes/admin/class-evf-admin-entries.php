@@ -310,6 +310,12 @@ class EVF_Admin_Entries {
 			$entry = ( array ) $entry;
 
 			foreach( $entry['meta'] as $key => $meta ) {
+
+				if( is_serialized( $meta ) ) {
+					$array_values = unserialize( $meta );
+					$meta 		  = implode( ',', $array_values );
+				}
+
 				$entry[ $key ] = $meta;
 				unset( $entry[ 'meta' ]);
 
