@@ -265,6 +265,7 @@ class EVF_Admin_Entries {
 
 	/**
 	 * Export entries in CSV format.
+	 * @link https://stackoverflow.com/a/13474770/9520912
 	 * @return void
 	 */
 	private static function export_to_csv() {
@@ -303,7 +304,7 @@ class EVF_Admin_Entries {
 			$entries[] = evf_get_entry( $entry_id );
 		}
 
-		$row = array();
+		$rows = array();
 
 		foreach( $entries as $entry ) {
 			$entry = ( array ) $entry;
@@ -317,8 +318,47 @@ class EVF_Admin_Entries {
 				}
 			}
 
-			$row[] = $entry;
+			$rows[] = $entry;
 		}
+
+		if ( ob_get_contents() ) {
+            ob_clean();
+        }
+
+        $blogname  = strtolower( str_replace( " ", "-", get_option( 'blogname' ) ) );
+        $file_name = $blogname . "-everest-forms-" . $form_id . '.csv';
+
+		// Disable caching.
+	    $now = gmdate("D, d M Y H:i:s");
+	    header("Expires: Tue, 03 Jul 2001 06:00:00 GMT");
+	    header("Cache-Control: max-age=0, no-cache, must-revalidate, proxy-revalidate");
+	    header("Last-Modified: {$now} GMT");
+
+        // Force download.
+        header("Content-Type: application/force-download");
+        header("Content-Type: application/octet-stream");
+        header("Content-Type: application/download");
+
+        // Disposition / Encoding on response body
+        header("Content-Disposition: attachment;filename={$file_name}");
+        header("Content-Transfer-Encoding: binary");
+
+        $handle = fopen("php://output", 'w');
+
+        // Handle UTF-8 chars conversion for CSV.
+        fprintf( $handle, chr(0xEF).chr(0xBB).chr(0xBF) );
+
+        // Put the column headers.
+        fputcsv( $handle, array_values( $columns ) );
+
+        // Put the entry values.
+        foreach ( $rows as $row ) {
+            fputcsv( $handle, $row );
+        }
+
+        fclose( $handle );
+
+        exit;
 	}
 }
 
