@@ -274,13 +274,50 @@ class EVF_Admin_Entries {
 			return;
 		}
 
-		$export 	   = array();
+		$entries	   = array();
 		$total_entries = evf_get_count_entries_by_status( $form_id );
 		$entry_ids     = evf_get_entries_ids( $form_id );
 
+		if( empty( $entry_ids ) ) {
+			return;
+		}
+
+		$default_columns = array(
+			'entry_id' 			=> __( 'Entry ID', 'everest-forms' ),
+			'user_device'		=> __( 'User Device', 'everest-forms' ),
+			'user_ip_address'	=> __( 'User IP Address', 'everest-forms' ),
+			'date_created'		=> __( 'Date Created', 'everest-forms' ),
+		);
+
+		$exclude_columns = array(
+			'form_id',
+			'user_id',
+			'status',
+			'referer',
+		);
+
+		$extra_columns = get_all_form_fields_by_form_id( $form_id );
+		$columns 	   = array_merge( $default_columns, $extra_columns );
+
 		foreach( $entry_ids as $entry_id ) {
-			$export[ $entry_id ] = evf_get_entry( $entry_id );
-			evf_get_form_data_by_meta_key();
+			$entries[] = evf_get_entry( $entry_id );
+		}
+
+		$row = array();
+
+		foreach( $entries as $entry ) {
+			$entry = ( array ) $entry;
+
+			foreach( $entry['meta'] as $key => $meta ) {
+				$entry[ $key ] = $meta;
+				unset( $entry[ 'meta' ]);
+
+				foreach( $exclude_columns as $exclude_column ) {
+					unset( $entry[ $exclude_column ]);
+				}
+			}
+
+			$row[] = $entry;
 		}
 	}
 }

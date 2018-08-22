@@ -64,6 +64,7 @@ function evf_get_template_part( $slug, $name = '' ) {
 		load_template( $template, false );
 	}
 }
+
 /**
  * Get all the email fields of a Form.
  *
@@ -84,10 +85,12 @@ function get_all_email_fields_by_form_id( $form_id ) {
 
 	return $user_emails;
 }
+
 /**
- * Get all the fields of a Form.
+ * Get all the field's meta-key label pair.
  *
  * @param Integer $form_id
+ * @return array
  */
 function get_all_form_fields_by_form_id( $form_id ) {
 	$data = array();
