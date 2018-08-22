@@ -135,7 +135,7 @@ if ( ! class_exists( 'EVF_Builder_Page', false ) ) :
 			$class .= $slug == 'default' ? ' default' : '';
 			$class .= ! empty( $icon ) ? ' icon' : '';
 
-			echo '<a href="#" class="evf-panel-tab evf-'.$container_name.'-panel everest-forms-panel-sidebar-section everest-forms-panel-sidebar-section-' . esc_attr( $slug ) . $class . '" data-section="' . esc_attr( $slug ) . '">';
+			echo '<a href="#" class="evf-panel-tab evf-' . esc_attr( $container_name ) . '-panel everest-forms-panel-sidebar-section everest-forms-panel-sidebar-section-' . esc_attr( $slug ) . $class . '" data-section="' . esc_attr( $slug ) . '">';
 				if ( ! empty( $icon ) ) {
 					echo '<img src="' . esc_url( $icon ) . '">';
 				}

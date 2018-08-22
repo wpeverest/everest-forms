@@ -855,10 +855,6 @@ body.everest-forms-builder-setup,
 		margin: 1.5em 0 1em;
 	}
 
-	a {
-		text-decoration: none;
-	}
-
 	.subsubsub {
 		margin: -8px 0 0;
 	}
@@ -1147,10 +1143,19 @@ body.everest-forms-builder-setup,
     				align-items: center;
 
 					.logo {
-						padding: 10px;
+					    width: 50px;
+						height: 50px;
+					    display: flex;
+						overflow: hidden;
 						margin: 0 20px 0 0;
-						border-radius: 3px;
+						border-radius: 4px;
+					    align-items: center;
 						border: 1px solid #ced4da;
+
+						img {
+							width: 100%;
+							display: block;
+						}
 					}
 
 					.integration-info {
@@ -1158,12 +1163,20 @@ body.everest-forms-builder-setup,
 
 						a {
 							display: inline-block;
+
+							&:hover h3 {
+								color: $everestforms;
+							}
+
+							&:focus {
+								box-shadow: none;
+							}
 						}
 
 						h3,
 						p {
 							margin-top: 0;
-							margin-bottom: 10px;
+							margin-bottom: 7px;
 						}
 					}
 				}
@@ -1236,6 +1249,10 @@ body.everest-forms-builder-setup,
 						transform: translateY(-50%);
 						width: 100%;
 						text-align: center;
+
+						&::before {
+							content: "\e900";
+						}
 					}
 
 					&:hover {
