@@ -82,7 +82,7 @@ class EVF_AJAX {
 			'integration_connect'    => false,
 			'integration_disconnect' => false,
 			'new_connection_add'     => false,
-			'add_account_form'     => false,
+			'add_account_form'       => false,
 			'account_select'         => false,
 			'account_list_select'    => false,
 			'deactivation_notice'    => false,
@@ -321,7 +321,7 @@ class EVF_AJAX {
 	/**
 	 * AJAX Integration connect.
 	 */
-	public function integration_connect() {
+	public static function integration_connect() {
 		check_ajax_referer( 'process-ajax-nonce', 'security' );
 
 		// Checking permission.
@@ -336,14 +336,14 @@ class EVF_AJAX {
 				)
 			);
 		}
-		do_action( 'everest_forms_integration_account_connect', $_POST );
 
+		do_action( 'everest_forms_integration_account_connect', $_POST );
 	}
 
 	/**
 	 * AJAX Integration disconnect.
 	 */
-	public function integration_disconnect() {
+	public static function integration_disconnect() {
 		check_ajax_referer( 'process-ajax-nonce', 'security' );
 
 		// Checking permission.
@@ -374,19 +374,20 @@ class EVF_AJAX {
 				)
 			);
 		}
-
 	}
 
 	/**
 	 * AJAX Integration disconnect.
 	 */
-	public function new_connection_add() {
+	public static function new_connection_add() {
 		check_ajax_referer( 'process-ajax-nonce', 'security' );
 
 		if ( ! current_user_can( 'manage_everest_forms' ) ) {
 			wp_die( -1 );
 		}
+
 		$integrations = EVF()->integrations->get_integrations();
+
 		if ( isset( $integrations[ $_POST['source'] ] ) ) {
 			$connection = $integrations[ $_POST['source'] ]->output_form_content( '', array( 'connection_name' => $_POST['name'], ), $_POST['id'] );
 			wp_send_json_success(
@@ -396,10 +397,9 @@ class EVF_AJAX {
 				)
 			);
 		}
+	}
 
-	 }
-
-	 public function add_account_form() {
+	public static function add_account_form() {
 		check_ajax_referer( 'process-ajax-nonce', 'security' );
 
 		if ( ! current_user_can( 'manage_everest_forms' ) ) {
@@ -432,14 +432,15 @@ class EVF_AJAX {
 				)
 			);
 		}
-	 }
+	}
 
-	 public function account_select() {
+	public static function account_select() {
 		check_ajax_referer( 'process-ajax-nonce', 'security' );
 
 		if ( ! current_user_can( 'manage_everest_forms' ) ) {
 			wp_die( -1 );
 		}
+
 		$integrations = EVF()->integrations->get_integrations();
 
 		if ( isset( $integrations[ $_POST['source'] ] ) ) {
@@ -463,15 +464,15 @@ class EVF_AJAX {
 				);
 			}
 		}
+	}
 
-	 }
-
-	 public function account_list_select() {
+	public static function account_list_select() {
 		check_ajax_referer( 'process-ajax-nonce', 'security' );
 
 		if ( ! current_user_can( 'manage_everest_forms' ) ) {
 			wp_die( -1 );
 		}
+
 		$integrations = EVF()->integrations->get_integrations();
 
 		if ( isset( $integrations[ $_POST['source'] ] ) ) {
@@ -506,8 +507,7 @@ class EVF_AJAX {
 				);
 			}
 		}
-
-	 }
+	}
 
 	/**
 	 * AJAX plugin deactivation notice.

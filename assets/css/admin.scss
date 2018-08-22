@@ -1279,10 +1279,16 @@ body.everest-forms-builder-setup,
 			}
 
 			.evf-integration-logo {
+				width: 60px;
+				height: 60px;
 				padding: 10px;
 				margin: 0 20px 0 0;
 				border-radius: 3px;
 				border: 1px solid #ced4da;
+
+				img {
+					width: 100%;
+				}
 			}
 
 			.integration-info {
