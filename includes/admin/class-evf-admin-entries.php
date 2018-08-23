@@ -325,7 +325,7 @@ class EVF_Admin_Entries {
 			}
 
 			// Order the row depending on columns meta key.
-			$ordered_rows = array_merge( array_flip ( array_keys( $columns ) ), $entry );
+			$ordered_rows = array_merge( array_fill_keys ( array_keys( $columns ), '' ), $entry );
 			$rows[]       = $ordered_rows;
 		}
 
