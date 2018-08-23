@@ -288,15 +288,15 @@ class EVF_Admin_Entries {
 		}
 
 		$default_columns = apply_filters( 'everest_forms_entries_default_columns', array(
-			'entry_id' 			=> __( 'Entry ID', 'everest-forms' ),
 			'user_device'		=> __( 'User Device', 'everest-forms' ),
 			'user_ip_address'	=> __( 'User IP Address', 'everest-forms' ),
 			'date_created'		=> __( 'Date Created', 'everest-forms' ),
 		) );
 
 		$exclude_columns = apply_filters( 'everest_froms_entries_exclude_columns', array( 'form_id', 'user_id', 'status', 'referer', ) );
-		$extra_columns   = get_all_form_fields_by_form_id( $form_id );
-		$columns         = array_merge( $default_columns, $extra_columns );
+		$entry_column    = array( 'entry_id' => __( 'Entry ID', 'everest-forms' ) );
+		$extra_columns   = array_merge( $entry_column, get_all_form_fields_by_form_id( $form_id ) );
+		$columns         = array_merge( $extra_columns, $default_columns );
 
 		foreach( $entry_ids as $entry_id ) {
 			$entries[] = evf_get_entry( $entry_id );
@@ -324,7 +324,9 @@ class EVF_Admin_Entries {
 				}
 			}
 
-			$rows[] = $entry;
+			// Order the row depending on columns meta key.
+			$ordered_rows = array_merge( array_flip ( array_keys( $columns ) ), $entry );
+			$rows[]       = $ordered_rows;
 		}
 
 		$form_name = strtolower( str_replace( " ", "-", get_the_title( $form_id ) ) );
