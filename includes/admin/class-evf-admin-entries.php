@@ -127,7 +127,7 @@ class EVF_Admin_Entries {
 
 			// Export to CSV.
 			if( isset( $_REQUEST['export_action'] ) ) { // WPCS: input var okay, CSRF ok.
-				$this->export_to_csv();
+				$this->export_csv();
 			}
 		}
 	}
@@ -268,37 +268,35 @@ class EVF_Admin_Entries {
 	 * @link https://stackoverflow.com/a/13474770/9520912
 	 * @return void
 	 */
-	private static function export_to_csv() {
+	private static function export_csv() {
+
+		if ( ! current_user_can( 'export' ) ) {
+			return;
+		}
+
 		$form_id = isset( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : 0;
 
-		if( ! isset( $form_id ) ) {
+		if ( ! isset( $form_id ) ) {
 			return;
 		}
 
 		$entries	   = array();
-		$total_entries = evf_get_count_entries_by_status( $form_id );
 		$entry_ids     = evf_get_entries_ids( $form_id );
 
-		if( empty( $entry_ids ) ) {
+		if ( empty( $entry_ids ) ) {
 			return;
 		}
 
-		$default_columns = array(
+		$default_columns = apply_filters( 'everest_forms_entries_default_columns', array(
 			'entry_id' 			=> __( 'Entry ID', 'everest-forms' ),
 			'user_device'		=> __( 'User Device', 'everest-forms' ),
 			'user_ip_address'	=> __( 'User IP Address', 'everest-forms' ),
 			'date_created'		=> __( 'Date Created', 'everest-forms' ),
-		);
+		) );
 
-		$exclude_columns = array(
-			'form_id',
-			'user_id',
-			'status',
-			'referer',
-		);
-
-		$extra_columns = get_all_form_fields_by_form_id( $form_id );
-		$columns 	   = array_merge( $default_columns, $extra_columns );
+		$exclude_columns = apply_filters( 'everest_froms_entries_exclude_columns', array( 'form_id', 'user_id', 'status', 'referer', ) );
+		$extra_columns   = get_all_form_fields_by_form_id( $form_id );
+		$columns         = array_merge( $default_columns, $extra_columns );
 
 		foreach( $entry_ids as $entry_id ) {
 			$entries[] = evf_get_entry( $entry_id );
@@ -307,11 +305,13 @@ class EVF_Admin_Entries {
 		$rows = array();
 
 		foreach( $entries as $entry ) {
-			$entry = ( array ) $entry;
+			$entry = (array) $entry;
+
+			$entry['meta'] = ! empty ( $entry['meta'] ) ? $entry['meta'] : array();
 
 			foreach( $entry['meta'] as $key => $meta ) {
 
-				if( is_serialized( $meta ) ) {
+				if ( is_serialized( $meta ) ) {
 					$array_values = unserialize( $meta );
 					$meta 		  = implode( ',', $array_values );
 				}
@@ -327,44 +327,44 @@ class EVF_Admin_Entries {
 			$rows[] = $entry;
 		}
 
-		if ( ob_get_contents() ) {
-            ob_clean();
-        }
+		$form_name = strtolower( str_replace( " ", "-", get_the_title( $form_id ) ) );
+		$file_name = $form_name . "-" . current_time( 'Y-m-d_H:i:s' ) . '.csv';
 
-        $blogname  = strtolower( str_replace( " ", "-", get_option( 'blogname' ) ) );
-        $file_name = $blogname . "-everest-forms-" . $form_id . '.csv';
+		// Disable aborting script execution.
+		ignore_user_abort( true );
+
+		// Limits the maximum execution time.
+		evf_set_time_limit( 0 );
 
 		// Disable caching.
-	    $now = gmdate("D, d M Y H:i:s");
-	    header("Expires: Tue, 03 Jul 2001 06:00:00 GMT");
-	    header("Cache-Control: max-age=0, no-cache, must-revalidate, proxy-revalidate");
-	    header("Last-Modified: {$now} GMT");
+		evf_nocache_headers();
 
-        // Force download.
-        header("Content-Type: application/force-download");
-        header("Content-Type: application/octet-stream");
-        header("Content-Type: application/download");
+		// Force download.
+		header( "Content-Type: application/force-download" );
+		header( "Content-Type: application/octet-stream" );
+		header( "Content-Type: application/download" );
 
-        // Disposition / Encoding on response body
-        header("Content-Disposition: attachment;filename={$file_name}");
-        header("Content-Transfer-Encoding: binary");
+		// Disposition / Encoding on response body
+		header( "Content-Type: text/csv; charset=utf-8" );
+		header( "Content-Disposition: attachment;filename={$file_name}" );
+		header( "Content-Transfer-Encoding: binary" );
 
-        $handle = fopen("php://output", 'w');
+		$handle = fopen( "php://output", 'w' );
 
-        // Handle UTF-8 chars conversion for CSV.
-        fprintf( $handle, chr(0xEF).chr(0xBB).chr(0xBF) );
+		// Handle UTF-8 chars conversion for CSV.
+		fprintf( $handle, chr(0xEF).chr(0xBB).chr(0xBF) );
 
-        // Put the column headers.
-        fputcsv( $handle, array_values( $columns ) );
+		// Put the column headers.
+		fputcsv( $handle, array_values( $columns ) );
 
-        // Put the entry values.
-        foreach ( $rows as $row ) {
-            fputcsv( $handle, $row );
-        }
+		// Put the entry values.
+		foreach ( $rows as $row ) {
+			fputcsv( $handle, $row );
+		}
 
-        fclose( $handle );
+		fclose( $handle );
 
-        exit;
+		exit;
 	}
 }
 
