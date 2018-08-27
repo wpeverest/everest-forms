@@ -1098,7 +1098,7 @@ body.everest-forms-builder-setup,
 
 			.integration-header-info {
 				display: flex;
-				flex-wrap: wrap;
+				flex: 1;
 				align-items: center;
 
 				.integration-status {
@@ -1159,6 +1159,7 @@ body.everest-forms-builder-setup,
 					}
 
 					.integration-info {
+						flex: 1;
 						margin-right: 20px;
 
 						a {
@@ -1180,7 +1181,6 @@ body.everest-forms-builder-setup,
 						}
 					}
 				}
-
 			}
 
 			.integartion-action {
@@ -1282,6 +1282,8 @@ body.everest-forms-builder-setup,
 				width: 60px;
 				height: 60px;
 				padding: 10px;
+				display: flex;
+				align-items: center;
 				margin: 0 20px 0 0;
 				border-radius: 3px;
 				border: 1px solid #ced4da;
@@ -1294,7 +1296,14 @@ body.everest-forms-builder-setup,
 			.integration-info {
 
 				h3 {
-					margin-bottom: 10px;
+					margin-bottom:20px;
+					display: inline-block;
+    				vertical-align: middle;
+				}
+
+				.integration-status {
+					display: inline-block;
+					vertical-align: middle;
 				}
 
 				.toggle-switch{
@@ -1391,16 +1400,17 @@ body.everest-forms-builder-setup,
 						}
 
 						&:last-child {
+
 							td {
 								border-bottom: none;
-
-}						}
+								}
+							}
+						}
 					}
 				}
 			}
 		}
 	}
-}
 
 /**
  * List Table.
@@ -1868,7 +1878,7 @@ img.ui-datepicker-trigger {
 			width: calc(100% - 36px);
 			.evf-tab-content {
 				.everest-forms-panel {
-					.everest-forms-panel-sidebar {
+					.everest-forms-panel-sidebar{
 						width: 280px;
 
 						.evf-registered-buttons {
@@ -1888,6 +1898,29 @@ img.ui-datepicker-trigger {
 					li {
 						input[type=text] {
 							width: 60.5%;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.everest-forms {
+		.everest-forms-integration-content {
+			.integration-addon-detail {
+				width: 280px;
+			}
+
+			.integration-connection-detail {
+				.evf-account-connect {
+					.evf-connection-form {
+						input {
+							width: 100%;
+							margin-bottom: 15px;
+
+							&:last-child {
+								margin-bottom: 0;
+							}
 						}
 					}
 				}
@@ -2038,6 +2071,54 @@ img.ui-datepicker-trigger {
 					li {
 						input[type=text] {
 							width: 84%;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.everest-forms {
+
+		.everest-forms-integration-content {
+			flex-wrap: wrap;
+
+			.integration-addon-detail {
+				width: 100%;
+				margin: 0 20px;
+				border-bottom: 1px solid #ced4da;
+				border-right: none;
+				padding-left: inherit;
+			}
+
+			.integration-connection-detail {
+				width: 100%;
+			}
+		}
+
+		.everest-forms-integrations-connection {
+
+			.everest-forms-integrations {
+
+				.integration-header-info {
+
+					.integration-detail {
+						flex-direction: column;
+						align-items: flex-start;
+					}
+				}
+
+				.integration-header-info {
+					align-items: flex-start;
+
+					.integration-status {
+						margin-top: 15px;
+					}
+
+					.integration-detail {
+
+						.logo {
+							margin-bottom: 15px;
 						}
 					}
 				}
