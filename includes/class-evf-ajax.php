@@ -386,11 +386,6 @@ class EVF_AJAX {
 
 		$integrations = EVF()->integrations->get_integrations();
 
-
-		$shiva = EVF_Email_Marketing::get_integrations();
-
-		echo '<pre>' . print_r( $shiva, true ) . '</pre>';
-
 		if ( isset( $integrations[ $_POST['source'] ] ) ) {
 			$connection = $integrations[ $_POST['source'] ]->output_form_content( '', array( 'connection_name' => $_POST['name'] ), $_POST['id'] );
 
@@ -406,7 +401,7 @@ class EVF_AJAX {
 	/**
 	 * AJAX Add account form.
 	 */
-	public function add_account_form() {
+	public static function add_account_form() {
 		check_ajax_referer( 'process-ajax-nonce', 'security' );
 
 		if ( ! current_user_can( 'manage_everest_forms' ) ) {
@@ -439,14 +434,15 @@ class EVF_AJAX {
 				)
 			);
 		}
-	 }
+	}
 
-	public function account_select() {
+	public static function account_select() {
 		check_ajax_referer( 'process-ajax-nonce', 'security' );
 
 		if ( ! current_user_can( 'manage_everest_forms' ) ) {
 			wp_die( -1 );
 		}
+
 		$integrations = EVF()->integrations->get_integrations();
 
 		if ( isset( $integrations[ $_POST['source'] ] ) ) {
@@ -470,15 +466,15 @@ class EVF_AJAX {
 				);
 			}
 		}
+	}
 
-	 }
-
-	public function account_list_select() {
+	public static function account_list_select() {
 		check_ajax_referer( 'process-ajax-nonce', 'security' );
 
 		if ( ! current_user_can( 'manage_everest_forms' ) ) {
 			wp_die( -1 );
 		}
+
 		$integrations = EVF()->integrations->get_integrations();
 
 		if ( isset( $integrations[ $_POST['source'] ] ) ) {
@@ -513,8 +509,7 @@ class EVF_AJAX {
 				);
 			}
 		}
-
-	 }
+	}
 
 	/**
 	 * AJAX plugin deactivation notice.
