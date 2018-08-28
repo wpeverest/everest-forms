@@ -6,7 +6,7 @@
  * by individual integrations to offer additional functionality.
  *
  * @package EverestForms\Abstracts
- * @since   1.2.1
+ * @since   1.3.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -77,6 +77,6 @@ abstract class EVF_Integration extends EVF_Settings_API {
 	 */
 	public function init_settings() {
 		parent::init_settings();
-		$this->enabled  = ! empty( $this->settings['enabled'] ) && 'yes' === $this->settings['enabled'] ? 'yes' : 'no';
+		$this->enabled = ! empty( $this->settings['enabled'] ) && 'yes' === $this->settings['enabled'] ? 'yes' : 'no';
 	}
 }
