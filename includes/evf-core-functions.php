@@ -1857,3 +1857,27 @@ function evf_get_all_fields_settings() {
 
 	return apply_filters( 'everest_form_all_fields_settings', $settings );
 }
+
+/**
+ * Sort field order
+ *
+ * @since  1.2.5
+ * @return array
+ */
+function evf_sort_field_order( $data ) {
+	$structure = evf_flatten_array( $data['structure'] );
+	$data['form_fields'] = array_merge( array_flip( $structure ), $data['form_fields']);
+	return $data;
+}
+
+/**
+ * Helper function to flatten mulidimensional array
+ *
+ * @since  1.2.5
+ * @return array
+ */
+function evf_flatten_array(array $array) {
+    $return = array();
+    array_walk_recursive($array, function($a) use (&$return) { $return[] = $a; });
+    return $return;
+}

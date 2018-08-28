@@ -203,6 +203,8 @@ class EVF_AJAX {
 			}
 		}
 
+		$data = evf_sort_field_order( $data );
+
 		$form_id = EVF()->form->update( $data['id'], $data );
 
 		do_action( 'everest_forms_save_form', $form_id, $data );
