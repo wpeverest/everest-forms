@@ -35,6 +35,7 @@ class EVF_Forms_Features {
 			'EVF_Field_HTML',
 			'EVF_Field_Title',
 			'EVF_Field_Address',
+			'EVF_Field_Country',
 			'EVF_Field_Single_Item',
 			'EVF_Field_Multiple_Item',
 			'EVF_Field_Total',

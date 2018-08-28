@@ -895,6 +895,7 @@ function evf_get_form_fields( $form = false, $whitelist = array() ) {
 		'checkbox',
 		'email',
 		'address',
+		'country',
 		'url',
 		'name',
 		'hidden',
