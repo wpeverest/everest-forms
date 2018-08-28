@@ -20,7 +20,7 @@ class EVF_Field_Title extends EVF_Form_Fields {
 		$this->name   = __( 'Section Title', 'everest-forms' );
 		$this->type   = 'title';
 		$this->icon   = 'evf-icon evf-icon-section-divider';
-		$this->order  = 80;
+		$this->order  = 90;
 		$this->group  = 'advanced';
 		$this->is_pro = true;
 

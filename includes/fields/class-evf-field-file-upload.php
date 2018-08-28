@@ -20,7 +20,7 @@ class EVF_Field_File_Upload extends EVF_Form_Fields {
 		$this->name   = __( 'File Upload', 'everest-forms' );
 		$this->type   = 'file-upload';
 		$this->icon   = 'evf-icon evf-icon-file-upload';
-		$this->order  = 30;
+		$this->order  = 40;
 		$this->group  = 'advanced';
 		$this->is_pro = true;
 

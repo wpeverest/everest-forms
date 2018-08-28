@@ -20,7 +20,7 @@ class EVF_Field_HTML extends EVF_Form_Fields {
 		$this->name   = esc_html__( 'Custom HTML', 'everest-forms' );
 		$this->type   = 'html';
 		$this->icon   = 'evf-icon evf-icon-custom-html';
-		$this->order  = 70;
+		$this->order  = 80;
 		$this->group  = 'advanced';
 		$this->is_pro = true;
 
