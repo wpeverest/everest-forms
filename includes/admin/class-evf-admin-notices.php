@@ -204,10 +204,14 @@ class EVF_Admin_Notices {
 							unset( $wp_filter[ $wp_notice ]->callbacks[ $priority ][ $name ] );
 							continue;
 						}
-						if ( ! empty( $arr['function'][0] ) && is_object( $arr['function'][0] ) && strpos( strtolower( get_class( $arr['function'][0] ) ), 'evf_' ) !== false ) {
+						if ( ( isset( $_GET['tab'], $_GET['form_id'] ) || isset( $_GET['create-form'] ) ) && 'evf-builder' === $_REQUEST['page'] ) {
+							unset( $wp_filter[ $wp_notice ]->callbacks[ $priority ][ $name ] );
 							continue;
 						}
-						if ( ! empty( $name ) && ( ( ( isset( $_GET['tab'], $_GET['form_id'] ) || isset( $_GET['create-form'] ) ) && 'evf-builder' === $_REQUEST['page'] ) || false === strpos( strtolower( $name ), 'evf_' ) ) ) {
+						if ( ! empty( $arr['function'][0] ) && is_object( $arr['function'][0] ) && false !== strpos( strtolower( get_class( $arr['function'][0] ) ), 'evf_' ) ) {
+							continue;
+						}
+						if ( ! empty( $name ) && false === strpos( strtolower( $name ), 'evf_' ) ) {
 							unset( $wp_filter[ $wp_notice ]->callbacks[ $priority ][ $name ] );
 						}
 					}
