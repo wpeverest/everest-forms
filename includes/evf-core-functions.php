@@ -1753,7 +1753,6 @@ function evf_get_fields_groups() {
 		'everest_forms_builder_fields_groups', array(
 			'general'  => __( 'General Fields', 'everest-forms' ),
 			'advanced' => __( 'Advanced Fields', 'everest-forms' ),
-			'address'  => __( 'Address Fields', 'everest-forms' ),
 			'payment'  => __( 'Payment Fields', 'everest-forms' ),
 		)
 	);
