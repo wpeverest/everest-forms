@@ -902,6 +902,7 @@ function evf_get_form_fields( $form = false, $whitelist = array() ) {
 		'phone',
 		'number',
 		'file-upload',
+		'image-upload',
 		'payment-single',
 		'payment-multiple',
 		'payment-select',
