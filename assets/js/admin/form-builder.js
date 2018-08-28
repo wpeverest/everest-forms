@@ -343,7 +343,6 @@
 		bindFormIntegrations: function () {
 
 			$('body').on('click', '.evf-integrations-panel', function ( e ) {
-				console.log($(this).parent());
 				var data_setting_section = $(this).attr('data-section');
 				$('.evf-integrations-panel').removeClass('active');
 				$('.evf-panel-content-section').removeClass('active');
