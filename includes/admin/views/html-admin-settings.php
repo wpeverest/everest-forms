@@ -7,9 +7,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$tab_exists          = isset( $tabs[ $current_tab ] ) || has_action( 'everest_forms_sections_' . $current_tab ) || has_action( 'everest_forms_settings_' . $current_tab );
-$current_tab_label   = isset( $tabs[ $current_tab ] ) ? $tabs[ $current_tab ] : '';
-$current_wrapper_tag = 'integration' !== $current_tab ? 'form' : 'div';
+$tab_exists        = isset( $tabs[ $current_tab ] ) || has_action( 'everest_forms_sections_' . $current_tab ) || has_action( 'everest_forms_settings_' . $current_tab );
+$current_tab_label = isset( $tabs[ $current_tab ] ) ? $tabs[ $current_tab ] : '';
 
 if ( ! $tab_exists ) {
 	wp_safe_redirect( admin_url( 'admin.php?page=evf-settings' ) );
@@ -17,7 +16,9 @@ if ( ! $tab_exists ) {
 }
 ?>
 <div class="wrap everest-forms">
-	<<?php echo $current_wrapper_tag; ?> method="<?php echo esc_attr( apply_filters( 'everest_forms_settings_form_method_tab_' . $current_tab, 'post' ) ); ?>" id="mainform" action="" enctype="multipart/form-data">
+	<?php if ( 'integration' !== $current_tab ) : ?>
+	<form method="<?php echo esc_attr( apply_filters( 'everest_forms_settings_form_method_tab_' . $current_tab, 'post' ) ); ?>" id="mainform" action="" enctype="multipart/form-data">
+	<?php endif; ?>
 		<nav class="nav-tab-wrapper evf-nav-tab-wrapper">
 			<?php
 			foreach ( $tabs as $slug => $label ) {
@@ -43,5 +44,7 @@ if ( ! $tab_exists ) {
 				<?php wp_nonce_field( 'everest-forms-settings' ); ?>
 			</p>
 		</div>
-	</<?php echo $current_wrapper_tag; ?>>
+	<?php if ( 'integration' !== $current_tab ) : ?>
+	</form>
+	<?php endif; ?>
 </div>
