@@ -1352,13 +1352,12 @@ function evf_size_to_megabytes( $bytes ) {
  * @since 1.2.0
  * @link http://stackoverflow.com/a/22500394
  *
- * @param bool $bytes
- *
+ * @param  bool $bytes
  * @return mixed
  */
 function evf_max_upload( $bytes = false ) {
-
 	$max = wp_max_upload_size();
+
 	if ( $bytes ) {
 		return $max;
 	} else {
