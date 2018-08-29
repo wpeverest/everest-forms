@@ -20,7 +20,7 @@ class EVF_Field_Password extends EVF_Form_Fields {
 		$this->name   = esc_html__( 'Password', 'everest-forms' );
 		$this->type   = 'password';
 		$this->icon   = 'evf-icon evf-icon-password';
-		$this->order  = 60;
+		$this->order  = 70;
 		$this->group  = 'advanced';
 		$this->is_pro = true;
 
