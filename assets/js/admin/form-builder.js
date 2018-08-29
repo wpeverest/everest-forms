@@ -12,6 +12,9 @@
 		 	$( document ).ready( function( $ ) {
 		 		if ( ! $( 'evf-panel-integrations-button a' ).hasClass('active') ) {
 		 			$('#everest-forms-panel-integrations').find('.everest-forms-panel-sidebar a').first().addClass('active');
+		 			if( $('#everest-forms-panel-integrations').find('.everest-forms-panel-sidebar a').hasClass('active') ){
+		 				$('#everest-forms-panel-integrations').find('.everest-forms-panel-sidebar a').next('.everest-forms-active-connections').addClass('active');
+		 			}
 		 			$('.everest-forms-panel-content').find('.evf-panel-content-section').first().addClass('active');
 		 		}
 		 	});
