@@ -335,11 +335,12 @@ body.everest-forms-builder-setup,
 						content: "\e006";
 					}
 
-					&.validations,
-					&.validation {
-						&::before {
-							content: "\e012";
-						}
+					&.validations::before {
+						content: "\e012";
+					}
+
+					&.pdf-submission::before {
+						content: "\e023";
 					}
 
 					&.fields::before {
@@ -357,12 +358,6 @@ body.everest-forms-builder-setup,
 					&.integrations {
 						&::before {
 							content: "\e01e";
-						}
-					}
-
-					&.pdf {
-						&::before {
-							content: "\e023";
 						}
 					}
 				}
