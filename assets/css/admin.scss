@@ -339,6 +339,10 @@ body.everest-forms-builder-setup,
 						content: "\e012";
 					}
 
+					&.pdf-submission::before {
+						content: "\e023";
+					}
+
 					&.fields::before {
 						content: "\e00b";
 					}
