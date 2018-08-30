@@ -594,17 +594,16 @@ abstract class EVF_Form_Fields {
 	 * @return mixed echo or return string
 	 */
 	public function field_preview_option( $option, $field, $args = array(), $echo = true ) {
-		$class    = ! empty( $args['class'] ) ? evf_sanitize_classes( $args['class'] ) : '';
-		$required = isset( $field['required'] ) && $field['required'] ? '<span class="required">*</span>' : '';
+		$class = ! empty( $args['class'] ) ? evf_sanitize_classes( $args['class'] ) : '';
 
 		switch ( $option ) {
 			case 'label':
 				$label  = isset( $field['label'] ) && ! empty( $field['label'] ) ? esc_html( $field['label'] ) : '';
-				$output = sprintf( '<label class="label-title %s"><span class="text">%s</span>%s</label>', $class, $label, $required );
+				$output = sprintf( '<label class="label-title %s"><span class="text">%s</span><span class="required">*</span></label>', $class, $label );
 				break;
 			case 'description':
 				$description = isset( $field['description'] ) && ! empty( $field['description'] ) ? $field['description'] : '';
-				$description = strpos( $class, 'nl2br' ) !== false ? nl2br( $description ) : $description;
+				$description = false !== strpos( $class, 'nl2br' ) ? nl2br( $description ) : $description;
 				$output      = sprintf( '<div class="description">%s</div>', $description );
 				break;
 		}
