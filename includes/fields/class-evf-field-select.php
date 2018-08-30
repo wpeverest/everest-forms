@@ -79,6 +79,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 		if ( ! empty( $placeholder ) ) {
 			printf( '<option value="" class="placeholder">%s</option>', $placeholder );
 		}
+
 		// Notify if currently empty.
 		if ( empty( $values ) ) {
 			$values = array(
@@ -149,6 +150,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 		if ( ! empty( $field_placeholder ) ) {
 			printf( '<option value="" class="placeholder" disabled %s>%s</option>', selected( false, $has_default, false ), $field_placeholder );
 		}
+
 		// Build the select options.
 		foreach ( $choices as $key => $choice ) {
 
