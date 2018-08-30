@@ -1,6 +1,6 @@
-=== Everest Forms - Easy Contact Form and Form Builder ===
+=== Everest Forms - Easy Contact Form and Form Builder for WordPress ===
 Contributors: WPEverest
-Tags: form, form builder, easy form, clean form, login form, contact, contact form
+Tags: contact form, form, form builder, contact, custom form
 Requires at least: 4.0
 Tested up to: 4.9
 Requires PHP: 5.4
@@ -11,14 +11,18 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Drag and Drop form builder to easily create contact forms and more.
 
 == Description ==
-Everest Forms plugin provides you with an easy way to create any kind of forms including contact forms. Drag and Drop fields make ordering and creating forms so easy that even a beginner to WordPress can create beautiful forms within minutes. The plugin is a lightweight, extendible and 100% mobile responsive.
+Everest Forms plugin provides you with an easy way to create any kind of forms including contact forms. Drag and Drop fields make ordering and creating forms so easy that even a beginner to WordPress can create beautiful forms within minutes. The plugin is lightweight, fast, extendible and 100% mobile responsive.
+
+Everest Forms is specially designed keeping the usability, simplicity in mind. The form settings, admin panels are highly intuitive with a clean design.
+
+Multiple column forms can be designed with a click. Pre-built templates and design layouts allow you to create forms that look different yet beautiful.
 
 
-View [All features](https://wpeverest.com/wordpress-plugins/everest-forms/)
+View [All features](https://wpeverest.com/wordpress-plugins/everest-forms/?utm_source=wporg&utm_medium=link&utm_campaign=readme)
 
 View [Demo](http://demo.wpeverest.com/everest-forms/)
 
-Get [free support](https://wpeverest.com/support-forum/)
+Get [free support](https://wpeverest.com/support-forum/?utm_source=wporg&utm_medium=link&utm_campaign=readme)
 
 Check [documentation](http://docs.wpeverest.com/docs/everest-forms/)
 
