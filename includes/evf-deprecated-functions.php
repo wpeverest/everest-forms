@@ -170,3 +170,9 @@ function everest_forms_sanitize_textarea_field( $string ) {
 	return evf_sanitize_textarea_field( $string );
 }
 
+/**
+ * @deprecated 1.3.0
+ */
+function evf_get_us_states() {
+	evf_deprecated_function( 'evf_get_us_states', '1.3.0' );
+}
