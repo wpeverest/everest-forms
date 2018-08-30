@@ -1741,7 +1741,7 @@ function evf_get_countries() {
 		'ZW' => esc_html__( 'Zimbabwe', 'everest-forms' ),
 	);
 
-	return apply_filters( 'everest_forms_countries', $countries );
+	return (array) apply_filters( 'everest_forms_countries', $countries );
 }
 
 /**

@@ -461,24 +461,25 @@
 				return;
 			}
 			option_field_type = option_field_type.replace('everest-forms-field-option-' + field_id + '-', '');
+
 			switch ( option_field_type ) {
 				case 'label':
-				field.find('.label-title .text').text(option_field.val());
+					field.find( '.label-title .text' ).text( option_field.val() );
 				break;
 				case 'description':
-				field.find('.description').html(option_field.val());
+					field.find( '.description' ).html( option_field.val() );
 				break;
 				case 'required':
-				if ( option_field.is(":checked") ) {
-					field.find('.label-title .required').remove();
-					field.find('.label-title').append('<span class="required">*</span>');
+					if ( option_field.is( ':checked' ) ) {
+						field.find( '.label-title .required' ).remove();
+						field.find( '.label-title' ).append( '<span class="required">*</span>' );
 
-				} else {
-					field.find('.label-title .required').remove();
-				}
+					} else {
+						field.find('.label-title .required').remove();
+					}
 				break;
 				case 'placeholder':
-				field.find('input').attr('placeholder', option_field.val());
+					field.find( 'input, textarea' ).attr( 'placeholder', option_field.val() );
 				break;
 			}
 		},

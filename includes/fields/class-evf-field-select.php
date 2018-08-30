@@ -33,6 +33,11 @@ class EVF_Field_Select extends EVF_Form_Fields {
 				'value'   => '',
 				'default' => '',
 			),
+			3 => array(
+				'label'   => esc_html__( 'Option 3', 'everest-forms' ),
+				'value'   => '',
+				'default' => '',
+			),
 		);
 		$this->settings = array(
 			'basic-options' => array(
@@ -60,14 +65,11 @@ class EVF_Field_Select extends EVF_Form_Fields {
 	/**
 	 * Field preview inside the builder.
 	 *
-	 * @since      1.0.0
-	 *
 	 * @param array $field
 	 */
 	public function field_preview( $field ) {
-
-		$placeholder = ! empty( $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : '';
 		$values      = ! empty( $field['choices'] ) ? $field['choices'] : $this->defaults;
+		$placeholder = ! empty( $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : '';
 
 		// Label.
 		$this->field_preview_option( 'label', $field );
@@ -75,25 +77,25 @@ class EVF_Field_Select extends EVF_Form_Fields {
 		// Field select element.
 		echo '<select class="widefat primary-input" disabled>';
 
-		// Optional placeholder.
-		if ( ! empty( $placeholder ) ) {
-			printf( '<option value="" class="placeholder">%s</option>', $placeholder );
-		}
-		// Notify if currently empty.
-		if ( empty( $values ) ) {
-			$values = array(
-				'label' => __( '(empty)', 'everest-forms' ),
-			);
-		}
+			// Optional placeholder.
+			if ( ! empty( $placeholder ) ) {
+				printf( '<option value="" class="placeholder">%s</option>', $placeholder );
+			}
 
-		// Build the select options (even though user can only see 1st option).
-		foreach ( $values as $key => $value ) {
+			// Notify if currently empty.
+			if ( empty( $values ) ) {
+				$values = array(
+					'label' => __( '(empty)', 'everest-forms' ),
+				);
+			}
 
-			$default  = isset( $value['default'] ) ? $value['default'] : '';
-			$selected = ! empty( $placeholder ) ? '' : selected( '1', $default, false );
+			// Build the select options (even though user can only see 1st option).
+			foreach ( $values as $key => $value ) {
+				$default  = isset( $value['default'] ) ? $value['default'] : '';
+				$selected = ! empty( $placeholder ) ? '' : selected( '1', $default, false );
 
-			printf( '<option %s>%s</option>', $selected, $value['label'] );
-		}
+				printf( '<option %s>%s</option>', $selected, $value['label'] );
+			}
 
 		echo '</select>';
 
@@ -103,8 +105,6 @@ class EVF_Field_Select extends EVF_Form_Fields {
 
 	/**
 	 * Field display on the form front-end.
-	 *
-	 * @since      1.0.0
 	 *
 	 * @param array $field
 	 * @param array $field_atts
@@ -149,9 +149,9 @@ class EVF_Field_Select extends EVF_Form_Fields {
 		if ( ! empty( $field_placeholder ) ) {
 			printf( '<option value="" class="placeholder" disabled %s>%s</option>', selected( false, $has_default, false ), $field_placeholder );
 		}
+
 		// Build the select options.
 		foreach ( $choices as $key => $choice ) {
-
 			$selected = isset( $choice['default'] ) && empty( $field_placeholder ) ? '1' : '0';
 			$val      = isset( $field['show_values'] ) ? esc_attr( $choice['value'] ) : esc_attr( $choice['label'] );
 
