@@ -18,11 +18,11 @@ Everest Forms is specially designed keeping the usability, simplicity in mind. T
 Multiple column forms can be designed with a click. Pre-built templates and design layouts allow you to create forms that look different yet beautiful.
 
 
-View [All features](https://wpeverest.com/wordpress-plugins/everest-forms/?utm_source=wporg&utm_medium=link&utm_campaign=readme)
+View [All features](https://wpeverest.com/wordpress-plugins/everest-forms/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme)
 
 View [Demo](http://demo.wpeverest.com/everest-forms/)
 
-Get [free support](https://wpeverest.com/support-forum/?utm_source=wporg&utm_medium=link&utm_campaign=readme)
+Get [free support](https://wpeverest.com/support-forum/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme)
 
 Check [documentation](http://docs.wpeverest.com/docs/everest-forms/)
 
