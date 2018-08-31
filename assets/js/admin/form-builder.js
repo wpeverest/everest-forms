@@ -185,7 +185,7 @@
 				EVFPanelBuilder.fieldTabChoice( $(this).attr( 'id' ) );
 			});
 
-			// Display toggle for Address field hidden option.
+			// Display toggle for "Address" field hidden option.
 			$builder.on( 'change', '.everest-forms-field-option-address input.hide', function() {
 				var $this = $(this),
 				id        = $this.parent().parent().data( 'field-id' ),
@@ -277,22 +277,6 @@
 			$builder.on( 'change', '.everest-forms-field-option-row-sublabel_hide input', function() {
 				var id = $( this ).parent().data( 'field-id' );
 				$( '#everest-forms-field-' + id ).toggleClass( 'sublabel_hide' );
-			});
-
-			// Real-time updates specific for Address "Scheme" option
-			$builder.on('change', '.everest-forms-field-option-row-scheme select', function() {
-				var $this = $(this),
-				value = $this.val(),
-				id    = $this.parent().data( 'field-id' );
-
-				$( '#everest-forms-field-' + id ).find( '.everest-forms-address-scheme' ).addClass( 'hidden' );
-				$( '#everest-forms-field-' + id ).find( '.everest-forms-address-scheme-' + value ).removeClass( 'hidden' );
-
-				if ( $( '#everest-forms-field-' + id ).find( '.everest-forms-address-scheme-' + value + ' .everest-forms-country' ).children().length === 0 ) {
-					$( '#everest-forms-field-option-' + id ).find( '.everest-forms-field-option-row-country' ).addClass( 'hidden' );
-				} else {
-					$( '#everest-forms-field-option-' + id ).find( '.everest-forms-field-option-row-country' ).removeClass( 'hidden' );
-				}
 			});
 		},
 		choicesInit: function () {
