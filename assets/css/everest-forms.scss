@@ -112,7 +112,9 @@
 				&:last-child {
 					margin-bottom: 0;
 				}
-				.evf-label-hide{
+
+				.evf-label-hide,
+				.everest-forms-sublabel-hide {
 					display:none;
 				}
 
@@ -182,7 +184,6 @@
 
 		label {
 			font-size: 14px;
-			margin-bottom: 20px;
 			color: $color-gray-darker;
 			display: block;
 			font-weight: 600;
@@ -264,6 +265,10 @@
 
 		textarea {
 			height: 100px;
+		}
+
+		.everest-forms-field-row {
+			margin-bottom: 30px;
 		}
 	}
 
