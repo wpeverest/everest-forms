@@ -1092,7 +1092,6 @@ body.everest-forms-builder-setup,
 			border-radius: 3px;
 			background: $color-white;
 			border: 1px solid #CED4DA;
-
 			padding: 10px 20px;
 			display: flex;
 			flex-wrap: wrap;
@@ -1280,6 +1279,7 @@ body.everest-forms-builder-setup,
 
 			.evf-integration-info-header {
 				display: flex;
+				align-items: center;
 			}
 
 			.evf-integration-logo {
@@ -1300,14 +1300,7 @@ body.everest-forms-builder-setup,
 			.integration-info {
 
 				h3 {
-					margin-bottom:20px;
-					display: inline-block;
-    				vertical-align: middle;
-				}
-
-				.integration-status {
-					display: inline-block;
-					vertical-align: middle;
+					margin-bottom:10px;
 				}
 
 				.toggle-switch{
