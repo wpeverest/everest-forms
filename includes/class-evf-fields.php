@@ -124,11 +124,23 @@ class EVF_Fields {
 	}
 
 	/**
-	 * Get array of registered field ids
+	 * Get array of registered "Pro" field types.
 	 *
 	 * @return array of strings
 	 */
-	public function get_form_field_ids() {
-		return wp_list_pluck( $this->form_fields, 'id' );
+	public function get_pro_form_field_type() {
+		$_available_fields = array();
+
+		if ( count( $this->form_fields ) > 0 ) {
+			foreach ( array_values( $this->form_fields ) as $form_field ) {
+				foreach ( $form_field as $field ) {
+					if ( $field->is_pro ) {
+						$_available_fields[] = $field->type;
+					}
+				}
+			}
+		}
+
+		return $_available_fields;
 	}
 }

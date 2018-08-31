@@ -112,6 +112,10 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 
 		if ( ! empty( $fields ) ) {
 			foreach ( $fields as $field ) {
+				if ( in_array( $field['type'], EVF()->form_fields->get_pro_form_field_type(), true ) ) {
+					continue;
+				}
+
 				?>
 				<div class="everest-forms-field-option everest-forms-field-option-<?php echo esc_attr( $field['type'] ); ?>" id="everest-forms-field-option-<?php echo esc_attr( $field['id'] ); ?>" data-field-id="<?php echo esc_attr( $field['id'] ); ?>" >
 					<input type="hidden" name="form_fields[<?php echo esc_attr( $field['id'] ); ?>][id]" value="<?php echo esc_attr( $field['id'] ); ?>" class="everest-forms-field-option-hidden-id" />
@@ -177,8 +181,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 				$grid_fields = isset( $row_grid[ 'grid_' . $grid_start ] ) && is_array( $row_grid[ 'grid_' . $grid_start ] ) ? $row_grid[ 'grid_' . $grid_start ] : array();
 
 				foreach ( $grid_fields as $field_id ) {
-
-					if ( isset( $fields[ $field_id ] ) ) {
+					if ( isset( $fields[ $field_id ] ) && ! in_array( $fields[ $field_id ]['type'], EVF()->form_fields->get_pro_form_field_type(), true ) ) {
 						$this->field_preview( $fields[ $field_id ] );
 					}
 				}
@@ -196,7 +199,9 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 	}
 
 	/**
-	 * @param $field
+	 * Single Field preview.
+	 *
+	 * @param array $field Field data.
 	 */
 	public function field_preview( $field ) {
 		$css  = ! empty( $field['size'] ) ? 'size-' . esc_attr( $field['size'] ) : '';

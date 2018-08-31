@@ -115,8 +115,6 @@ class EVF_Shortcode_Form {
 	}
 
 	public static function label( $field, $form_data ) {
-
-
 		$label = $field['properties']['label'];
 
 		// If the label is empty or disabled don't proceed.
@@ -212,12 +210,10 @@ class EVF_Shortcode_Form {
 				}
 
 				foreach ( $grid as $field_key ) {
-
 					$field = isset( $form_data['form_fields'][ $field_key ] ) ? $form_data['form_fields'][ $field_key ] : array();
-
 					$field = apply_filters( 'evf_field_data', $field, $form_data );
 
-					if ( empty( $field ) ) {
+					if ( empty( $field ) || in_array( $field['type'], EVF()->form_fields->get_pro_form_field_type(), true ) ) {
 						continue;
 					}
 

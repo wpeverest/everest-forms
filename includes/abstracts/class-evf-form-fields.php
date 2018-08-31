@@ -60,7 +60,7 @@ abstract class EVF_Form_Fields {
 	 *
 	 * @var boolean
 	 */
-	protected $is_pro = false;
+	public $is_pro = false;
 
 	/**
 	 * Placeholder to hold default value(s) for some field types.
