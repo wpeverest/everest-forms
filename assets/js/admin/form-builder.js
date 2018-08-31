@@ -718,6 +718,11 @@
 						$this.removeClass( 'processing' );
 						$this.find( '.loading-dot' ).remove();
 
+						// Real time update for meta-key changes.
+						$.each( response.data.meta_data, function ( key, value ) {
+							form.find( 'input[name="form_fields[' + key + '][meta-key]"]' ).val( value );
+						} );
+
 						if ( typeof response.success === 'boolean' && response.success === true ) {
 							$( '.everest-forms-panel-content-wrap' ).unblock();
 						}

@@ -982,7 +982,6 @@ function evf_sanitize_classes( $classes, $convert = false ) {
  * @return array|bool
  */
 function evf_decode( $data ) {
-
 	if ( ! $data || empty( $data ) ) {
 		return false;
 	}
@@ -1000,7 +999,6 @@ function evf_decode( $data ) {
  * @return string
  */
 function evf_encode( $data = false ) {
-
 	if ( empty( $data ) ) {
 		return false;
 	}
@@ -1084,6 +1082,12 @@ function evf_get_all_forms( $skip_disabled_entries = false ) {
 	return $forms;
 }
 
+/**
+ * Get random meta-key for field option.
+ *
+ * @param  array $field Field data array
+ * @return string
+ */
 function evf_get_meta_key_field_option( $field ) {
 	$random_number = rand( pow( 10, 3 ), pow( 10, 4 ) - 1 );
 	return strtolower( str_replace( array( ' ', '/_' ), array( '_', '' ), $field['label'] ) ) . '_' . $random_number;
