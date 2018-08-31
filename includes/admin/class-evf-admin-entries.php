@@ -125,8 +125,8 @@ class EVF_Admin_Entries {
 				$this->empty_trash();
 			}
 
-			// Export to CSV.
-			if( isset( $_REQUEST['export_action'] ) ) { // WPCS: input var okay, CSRF ok.
+			// Export CSV.
+			if ( isset( $_REQUEST['export_action'] ) ) { // WPCS: input var okay, CSRF ok.
 				$this->export_csv();
 			}
 		}
@@ -265,11 +265,10 @@ class EVF_Admin_Entries {
 
 	/**
 	 * Export entries in CSV format.
-	 * @link https://stackoverflow.com/a/13474770/9520912
-	 * @return void
+	 *
+	 * @since 1.2.5
 	 */
-	private static function export_csv() {
-
+	private function export_csv() {
 		if ( ! current_user_can( 'export' ) ) {
 			return;
 		}
@@ -280,17 +279,17 @@ class EVF_Admin_Entries {
 			return;
 		}
 
-		$entries	   = array();
-		$entry_ids     = evf_get_entries_ids( $form_id );
+		$entries   = array();
+		$entry_ids = evf_get_entries_ids( $form_id );
 
 		if ( empty( $entry_ids ) ) {
 			return;
 		}
 
 		$default_columns = apply_filters( 'everest_forms_entries_default_columns', array(
-			'user_device'		=> __( 'User Device', 'everest-forms' ),
-			'user_ip_address'	=> __( 'User IP Address', 'everest-forms' ),
-			'date_created'		=> __( 'Date Created', 'everest-forms' ),
+			'user_device'     => __( 'User Device', 'everest-forms' ),
+			'user_ip_address' => __( 'User IP Address', 'everest-forms' ),
+			'date_created'    => __( 'Date Created', 'everest-forms' ),
 		) );
 
 		$exclude_columns = apply_filters( 'everest_froms_entries_exclude_columns', array( 'form_id', 'user_id', 'status', 'referer', ) );
@@ -310,14 +309,13 @@ class EVF_Admin_Entries {
 			$entry['meta'] = ! empty ( $entry['meta'] ) ? $entry['meta'] : array();
 
 			foreach( $entry['meta'] as $key => $meta ) {
-
 				if ( is_serialized( $meta ) ) {
 					$array_values = unserialize( $meta );
 					$meta 		  = implode( ',', $array_values );
 				}
 
 				$entry[ $key ] = $meta;
-				unset( $entry[ 'meta' ]);
+				unset( $entry[ 'meta' ] );
 
 				foreach( $exclude_columns as $exclude_column ) {
 					unset( $entry[ $exclude_column ]);
@@ -332,24 +330,8 @@ class EVF_Admin_Entries {
 		$form_name = strtolower( str_replace( " ", "-", get_the_title( $form_id ) ) );
 		$file_name = $form_name . "-" . current_time( 'Y-m-d_H:i:s' ) . '.csv';
 
-		// Disable aborting script execution.
-		ignore_user_abort( true );
-
-		// Limits the maximum execution time.
-		evf_set_time_limit( 0 );
-
-		// Disable caching.
-		evf_nocache_headers();
-
-		// Force download.
-		header( "Content-Type: application/force-download" );
-		header( "Content-Type: application/octet-stream" );
-		header( "Content-Type: application/download" );
-
-		// Disposition / Encoding on response body
-		header( "Content-Type: text/csv; charset=utf-8" );
-		header( "Content-Disposition: attachment;filename={$file_name}" );
-		header( "Content-Transfer-Encoding: binary" );
+		// Set the CSV headers.
+		$this->send_headers( $file_name );
 
 		$handle = fopen( "php://output", 'w' );
 
@@ -365,8 +347,35 @@ class EVF_Admin_Entries {
 		}
 
 		fclose( $handle );
-
 		exit;
+	}
+
+	/**
+	 * Set the export headers.
+	 *
+	 * @since 1.2.5
+	 * @param string $file_name File name.
+	 */
+	private function send_headers( $file_name = '' ) {
+		if ( function_exists( 'gc_enable' ) ) {
+			gc_enable(); // phpcs:ignore PHPCompatibility.PHP.NewFunctions.gc_enableFound
+		}
+		if ( function_exists( 'apache_setenv' ) ) {
+			@apache_setenv( 'no-gzip', 1 ); // @codingStandardsIgnoreLine
+		}
+		@ini_set( 'zlib.output_compression', 'Off' ); // @codingStandardsIgnoreLine
+		@ini_set( 'output_buffering', 'Off' ); // @codingStandardsIgnoreLine
+		@ini_set( 'output_handler', '' ); // @codingStandardsIgnoreLine
+		ignore_user_abort( true );
+		evf_set_time_limit( 0 );
+		evf_nocache_headers();
+		header( "Content-Type: application/force-download" );
+		header( "Content-Type: application/octet-stream" );
+		header( "Content-Type: application/download" );
+		header( 'Content-Type: text/csv; charset=utf-8' );
+		header( 'Content-Disposition: attachment; filename=' . $file_name );
+		header( 'Pragma: no-cache' );
+		header( 'Expires: 0' );
 	}
 }
 
