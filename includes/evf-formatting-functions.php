@@ -583,3 +583,16 @@ function evf_parse_relative_date_option( $raw_value ) {
 
 	return $value;
 }
+
+/**
+ * Callback which can flatten structure data (gets the value if it's a multidimensional array).
+ *
+ * @since  1.3.0
+ * @param  array $value Value to flatten.
+ * @return array
+ */
+function evf_flatten_array( $array = array() ) {
+	$return = array();
+	array_walk_recursive( $array, function( $a ) use ( &$return ) { $return[] = $a; } );
+	return $return;
+}
