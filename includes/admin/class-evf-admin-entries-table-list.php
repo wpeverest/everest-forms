@@ -54,8 +54,8 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 
 		// Check that the user has created at least one form.
 		if ( ! empty( $this->forms ) ) {
-			$this->form_id = ! empty( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : apply_filters( 'everest_forms_entry_list_default_form_id', key( $this->forms ) );
-			$this->form    = EVF()->form->get( $this->form_id );
+			$this->form_id   = ! empty( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : apply_filters( 'everest_forms_entry_list_default_form_id', key( $this->forms ) );
+			$this->form      = EVF()->form->get( $this->form_id );
 			$this->form_data = ! empty( $this->form->post_content ) ? evf_decode( $this->form->post_content ) : '';
 		}
 
@@ -79,11 +79,11 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 * @return array
 	 */
 	public function get_columns() {
-		$columns               = array();
-		$columns['cb']         = '<input type="checkbox" />';
-		$columns               = apply_filters( 'everest_forms_entries_table_form_fields_columns', $this->get_columns_form_fields( $columns ) );
-		$columns['date']       = esc_html__( 'Date Created', 'everest-forms' );
-		$columns['actions']    = esc_html__( 'Actions', 'everest-forms' );
+		$columns            = array();
+		$columns['cb']      = '<input type="checkbox" />';
+		$columns            = apply_filters( 'everest_forms_entries_table_form_fields_columns', $this->get_columns_form_fields( $columns ) );
+		$columns['date']    = esc_html__( 'Date Created', 'everest-forms' );
+		$columns['actions'] = esc_html__( 'Actions', 'everest-forms' );
 
 		return apply_filters( 'everest_forms_entries_table_columns', $columns, $this->form_data );
 	}
@@ -427,6 +427,11 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 				if ( ! empty( $output ) ) {
 					echo $output;
 					submit_button( __( 'Filter', 'everest-forms' ), '', 'filter_action', false, array( 'id' => 'post-query-submit' ) );
+
+					// Export CSV submit button.
+					if ( apply_filters( 'everest_forms_enable_csv_export', true ) ) {
+						submit_button( __( 'Export CSV', 'everest-forms' ), '', 'export_action', false, array( 'id' => 'export-csv' ) );
+					}
 				}
 			}
 

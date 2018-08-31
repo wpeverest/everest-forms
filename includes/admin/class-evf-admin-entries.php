@@ -124,6 +124,11 @@ class EVF_Admin_Entries {
 			if ( isset( $_REQUEST['delete_all'] ) || isset( $_REQUEST['delete_all2'] ) ) { // WPCS: input var okay, CSRF ok.
 				$this->empty_trash();
 			}
+
+			// Export CSV.
+			if ( isset( $_REQUEST['export_action'] ) ) { // WPCS: input var okay, CSRF ok.
+				$this->export_csv();
+			}
 		}
 	}
 
@@ -256,6 +261,121 @@ class EVF_Admin_Entries {
 		);
 
 		return $update;
+	}
+
+	/**
+	 * Export entries in CSV format.
+	 *
+	 * @since 1.2.5
+	 */
+	private function export_csv() {
+		if ( ! current_user_can( 'export' ) ) {
+			return;
+		}
+
+		$form_id = isset( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : 0;
+
+		if ( ! isset( $form_id ) ) {
+			return;
+		}
+
+		$entries   = array();
+		$entry_ids = evf_get_entries_ids( $form_id );
+
+		if ( empty( $entry_ids ) ) {
+			return;
+		}
+
+		$default_columns = apply_filters( 'everest_forms_entries_default_columns', array(
+			'user_device'     => __( 'User Device', 'everest-forms' ),
+			'user_ip_address' => __( 'User IP Address', 'everest-forms' ),
+			'date_created'    => __( 'Date Created', 'everest-forms' ),
+		) );
+
+		$exclude_columns = apply_filters( 'everest_froms_entries_exclude_columns', array( 'form_id', 'user_id', 'status', 'referer', ) );
+		$entry_column    = array( 'entry_id' => __( 'Entry ID', 'everest-forms' ) );
+		$extra_columns   = array_merge( $entry_column, get_all_form_fields_by_form_id( $form_id ) );
+		$columns         = array_merge( $extra_columns, $default_columns );
+
+		foreach( $entry_ids as $entry_id ) {
+			$entries[] = evf_get_entry( $entry_id );
+		}
+
+		$rows = array();
+
+		foreach( $entries as $entry ) {
+			$entry = (array) $entry;
+
+			$entry['meta'] = ! empty ( $entry['meta'] ) ? $entry['meta'] : array();
+
+			foreach( $entry['meta'] as $key => $meta ) {
+				if ( is_serialized( $meta ) ) {
+					$array_values = unserialize( $meta );
+					$meta 		  = implode( ',', $array_values );
+				}
+
+				$entry[ $key ] = $meta;
+				unset( $entry[ 'meta' ] );
+
+				foreach( $exclude_columns as $exclude_column ) {
+					unset( $entry[ $exclude_column ]);
+				}
+			}
+
+			// Order the row depending on columns meta key.
+			$ordered_rows = array_merge( array_fill_keys ( array_keys( $columns ), '' ), $entry );
+			$rows[]       = $ordered_rows;
+		}
+
+		$form_name = strtolower( str_replace( " ", "-", get_the_title( $form_id ) ) );
+		$file_name = $form_name . "-" . current_time( 'Y-m-d_H:i:s' ) . '.csv';
+
+		// Set the CSV headers.
+		$this->send_headers( $file_name );
+
+		$handle = fopen( "php://output", 'w' );
+
+		// Handle UTF-8 chars conversion for CSV.
+		fprintf( $handle, chr(0xEF).chr(0xBB).chr(0xBF) );
+
+		// Put the column headers.
+		fputcsv( $handle, array_values( $columns ) );
+
+		// Put the entry values.
+		foreach ( $rows as $row ) {
+			fputcsv( $handle, $row );
+		}
+
+		fclose( $handle );
+		exit;
+	}
+
+	/**
+	 * Set the export headers.
+	 *
+	 * @since 1.2.5
+	 * @param string $file_name File name.
+	 */
+	private function send_headers( $file_name = '' ) {
+		if ( function_exists( 'gc_enable' ) ) {
+			gc_enable(); // phpcs:ignore PHPCompatibility.PHP.NewFunctions.gc_enableFound
+		}
+		if ( function_exists( 'apache_setenv' ) ) {
+			@apache_setenv( 'no-gzip', 1 ); // @codingStandardsIgnoreLine
+		}
+		@ini_set( 'zlib.output_compression', 'Off' ); // @codingStandardsIgnoreLine
+		@ini_set( 'output_buffering', 'Off' ); // @codingStandardsIgnoreLine
+		@ini_set( 'output_handler', '' ); // @codingStandardsIgnoreLine
+		ignore_user_abort( true );
+		evf_set_time_limit( 0 );
+		evf_nocache_headers();
+		header( "Content-Type: application/force-download" );
+		header( "Content-Type: application/octet-stream" );
+		header( "Content-Type: application/download" );
+		header( 'Content-Type: text/csv; charset=utf-8' );
+		header( 'Content-Disposition: attachment; filename=' . $file_name );
+		header( 'Pragma: no-cache' );
+		header( 'Expires: 0' );
 	}
 }
 

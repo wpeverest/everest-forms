@@ -64,10 +64,11 @@ function evf_get_template_part( $slug, $name = '' ) {
 		load_template( $template, false );
 	}
 }
+
 /**
  * Get all the email fields of a Form.
  *
- * @param Integer $form_id
+ * @param int $form_id
  */
 function get_all_email_fields_by_form_id( $form_id ) {
 	$user_emails = array();
@@ -84,15 +85,17 @@ function get_all_email_fields_by_form_id( $form_id ) {
 
 	return $user_emails;
 }
+
 /**
- * Get all the fields of a Form.
+ * Get all the field's meta-key label pair.
  *
- * @param Integer $form_id
+ * @param  int $form_id
+ * @return array
  */
 function get_all_form_fields_by_form_id( $form_id ) {
-	$data = array();
-	$form_obj    = EVF()->form->get( $form_id );
-	$form_data   = ! empty( $form_obj->post_content ) ? evf_decode( $form_obj->post_content ) : '';
+	$data      = array();
+	$form_obj  = EVF()->form->get( $form_id );
+	$form_data = ! empty( $form_obj->post_content ) ? evf_decode( $form_obj->post_content ) : '';
 
 	if ( ! empty( $form_data['form_fields'] ) ) {
 		foreach ( $form_data['form_fields'] as $form_fields ) {
@@ -1263,6 +1266,13 @@ function evf_get_day_period_date( $period, $timestamp = '', $format = 'Y-m-d H:i
 	return $date;
 }
 
+/**
+ * Get field label by meta key
+ *
+ * @param  $form_id  Form ID
+ * @param  $meta_key Field's meta key
+ * @return mixed
+ */
 function evf_get_form_data_by_meta_key( $form_id, $meta_key ) {
 	$get_post     = get_post( $form_id );
 	$post_content = json_decode( $get_post->post_content, true ) ;
