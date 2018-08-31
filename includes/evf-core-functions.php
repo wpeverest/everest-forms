@@ -899,7 +899,7 @@ function evf_get_form_fields( $form = false, $whitelist = array() ) {
 		'url',
 		'name',
 		'hidden',
-		'date-time',
+		'date',
 		'phone',
 		'number',
 		'file-upload',
