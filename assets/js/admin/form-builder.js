@@ -26,10 +26,10 @@
 		 	});
 
 		 	$( document.body )
-		 	.on( 'click', 'a.help_tip, a.everets-forms-help-tip', this.preventTipTipClick )
-		 	.on( 'click', '#copy-shortcode', this.copyShortcode )
-		 	.on( 'aftercopy', '#copy-shortcode', this.copySuccess )
-		 	.on( 'aftercopyfailure', '#copy-shortcode', this.copyFail );
+				.on( 'click', 'a.help_tip, a.everets-forms-help-tip', this.preventTipTipClick )
+				.on( 'click', '#copy-shortcode', this.copyShortcode )
+				.on( 'aftercopy', '#copy-shortcode', this.copySuccess )
+				.on( 'aftercopyfailure', '#copy-shortcode', this.copyFail );
 
 			// Document ready.
 			$( document ).ready( EVFPanelBuilder.ready );
@@ -250,7 +250,16 @@
 				}
 			});
 
-			// Real-time updates for "Confirmation Placeholder" field option
+			// Real-time updates for "Address Placeholder" field options.
+			$builder.on( 'input', '.everest-forms-field-option-address input.placeholder', function(e) {
+				var $this    = $(this),
+					value    = $this.val(),
+					id       = $this.parent().parent().data( 'field-id' ),
+					subfield = $this.parent().parent().data( 'subfield' );
+				$( '#everest-forms-field-' + id ).find( '.everest-forms-' + subfield + ' input' ).attr( 'placeholder', value );
+			});
+
+			// Real-time updates for "Confirmation Placeholder" field option.
 			$builder.on('input', '.everest-forms-field-option-row-confirmation_placeholder input', function() {
 				var $this   = $( this ),
 					value   = $this.val(),
@@ -258,13 +267,13 @@
 				$( '#everest-forms-field-' + id ).find( '.secondary-input' ).attr( 'placeholder', value );
 			});
 
-			// Real-time updates for "Hide Label" field option
+			// Real-time updates for "Hide Label" field option.
 			$builder.on( 'change', '.everest-forms-field-option-row-label_hide input', function() {
 				var id = $(this).parent().data( 'field-id' );
 				$( '#everest-forms-field-' + id ).toggleClass( 'label_hide' );
 			});
 
-			// Real-time updates for Sub Label visbility field option
+			// Real-time updates for Sub Label visbility field option.
 			$builder.on( 'change', '.everest-forms-field-option-row-sublabel_hide input', function() {
 				var id = $( this ).parent().data( 'field-id' );
 				$( '#everest-forms-field-' + id ).toggleClass( 'sublabel_hide' );
