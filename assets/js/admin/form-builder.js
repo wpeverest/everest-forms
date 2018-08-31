@@ -65,56 +65,56 @@
 		 *
 		 * @return {Bool}
 		 */
-		 preventTipTipClick: function() {
-		 	return false;
-		 },
+		preventTipTipClick: function() {
+			return false;
+		},
 
 		/**
 		 * Copy shortcode.
 		 *
 		 * @param {Object} evt Copy event.
 		 */
-		 copyShortcode: function( evt ) {
-		 	evfClearClipboard();
-		 	evfSetClipboard( $( '.evf-shortcode-field' ).find( 'input' ).val(), $( this ) );
-		 	evt.preventDefault();
-		 },
+		copyShortcode: function( evt ) {
+			evfClearClipboard();
+			evfSetClipboard( $( '.evf-shortcode-field' ).find( 'input' ).val(), $( this ) );
+			evt.preventDefault();
+		},
 
 		/**
 		 * Display a "Copied!" tip when success copying.
 		 */
-		 copySuccess: function() {
-		 	$( '#copy-shortcode' ).tipTip({
-		 		'attribute': 'data-copied',
-		 		'activation': 'focus',
-		 		'fadeIn': 50,
-		 		'fadeOut': 50,
-		 		'delay': 0
-		 	}).focus();
-		 },
+		copySuccess: function() {
+			$( '#copy-shortcode' ).tipTip({
+				'attribute': 'data-copied',
+				'activation': 'focus',
+				'fadeIn': 50,
+				'fadeOut': 50,
+				'delay': 0
+			}).focus();
+		},
 
 		/**
 		 * Displays the copy error message when failure copying.
 		 */
-		 copyFail: function() {
-		 	$( '.evf-shortcode-field' ).find( 'input' ).focus().select();
-		 },
+		copyFail: function() {
+			$( '.evf-shortcode-field' ).find( 'input' ).focus().select();
+		},
 
 		/**
 		 * Page load.
 		 *
 		 * @since 1.0.0
 		 */
-		 load: function () {
-		 	$( '.everest-forms-overlay' ).fadeOut();
-		 },
+		load: function () {
+			$( '.everest-forms-overlay' ).fadeOut();
+		},
 
 		/**
 		 * Document ready.
 		 *
 		 * @since 1.0.0
 		 */
-		 ready: function() {
+		ready: function() {
 			// Cache builder element.
 			$builder = $( '#everest-forms-builder' );
 
@@ -142,23 +142,23 @@
 		 *
 		 * @since 1.0.0
 		 */
-		 bindUIActions: function() {
-		 	EVFPanelBuilder.bindDefaultTabs();
-		 	EVFPanelBuilder.checkEmptyGrid();
-		 	EVFPanelBuilder.bindFields();
-		 	EVFPanelBuilder.bindFormPreview();
-		 	EVFPanelBuilder.bindGridSwitcher();
-		 	EVFPanelBuilder.bindFieldSettings();
-		 	EVFPanelBuilder.bindFieldDelete();
-		 	EVFPanelBuilder.bindCloneField();
-		 	EVFPanelBuilder.bindSaveOption();
-		 	EVFPanelBuilder.bindAddNewRow();
-		 	EVFPanelBuilder.bindRemoveRow();
-		 	EVFPanelBuilder.bindFormSettings();
-		 	EVFPanelBuilder.bindFormIntegrations();
-		 	EVFPanelBuilder.bindFormPayment();
-		 	EVFPanelBuilder.choicesInit();
-		 	EVFPanelBuilder.choicesUpdate();
+		bindUIActions: function() {
+			EVFPanelBuilder.bindDefaultTabs();
+			EVFPanelBuilder.checkEmptyGrid();
+			EVFPanelBuilder.bindFields();
+			EVFPanelBuilder.bindFormPreview();
+			EVFPanelBuilder.bindGridSwitcher();
+			EVFPanelBuilder.bindFieldSettings();
+			EVFPanelBuilder.bindFieldDelete();
+			EVFPanelBuilder.bindCloneField();
+			EVFPanelBuilder.bindSaveOption();
+			EVFPanelBuilder.bindAddNewRow();
+			EVFPanelBuilder.bindRemoveRow();
+			EVFPanelBuilder.bindFormSettings();
+			EVFPanelBuilder.bindFormIntegrations();
+			EVFPanelBuilder.bindFormPayment();
+			EVFPanelBuilder.choicesInit();
+			EVFPanelBuilder.choicesUpdate();
 
 			// Fields Panel
 			EVFPanelBuilder.bindUIActionsFields();
@@ -178,7 +178,7 @@
 		 *
 		 * @since 1.2.0
 		 */
-		 bindUIActionsFields: function() {
+		bindUIActionsFields: function() {
 			// Field sidebar tab toggle.
 			$builder.on( 'click', '.everest-forms-fields-tab a', function(e) {
 				e.preventDefault();
