@@ -49,7 +49,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 	 */
 	public function output_content() {
 		$form_id     = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
-		$user_emails = get_all_email_fields_by_form_id( $form_id );
+		$user_emails = evf_get_all_email_fields_by_form_id( $form_id );
 		$settings    = isset( $this->form_data['settings'] ) ? $this->form_data['settings'] : array();
 
 		// --------------------------------------------------------------------//
