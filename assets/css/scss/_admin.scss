@@ -674,6 +674,14 @@
 					}
 				}
 
+				&.required label {
+					.required {
+						font-weight: 300;
+						margin: 0 0 0 5px;
+						display: inline-block;
+					}
+				}
+
 				&.ui-sortable-placeholder {
 					border: 1px dashed transparentize( $blue, 0.75 );
 				}
@@ -893,9 +901,7 @@
 		}
 
 		.everest-forms-field-address {
-
-			.hidden {
-			}
+			.hidden {}
 		}
 
 		label {
@@ -912,7 +918,8 @@
 			}
 
 			.required {
-				margin-left: 5px;
+				color: red;
+				display: none;
 			}
 		}
 
@@ -1022,12 +1029,9 @@
 			}
 		}
 
-
-
 		.evf-choices-list {
 
 			li {
-
 				input.value {
 					display: none;
 				}

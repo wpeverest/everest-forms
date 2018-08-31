@@ -26,10 +26,10 @@
 		 	});
 
 		 	$( document.body )
-		 	.on( 'click', 'a.help_tip, a.everets-forms-help-tip', this.preventTipTipClick )
-		 	.on( 'click', '#copy-shortcode', this.copyShortcode )
-		 	.on( 'aftercopy', '#copy-shortcode', this.copySuccess )
-		 	.on( 'aftercopyfailure', '#copy-shortcode', this.copyFail );
+				.on( 'click', 'a.help_tip, a.everets-forms-help-tip', this.preventTipTipClick )
+				.on( 'click', '#copy-shortcode', this.copyShortcode )
+				.on( 'aftercopy', '#copy-shortcode', this.copySuccess )
+				.on( 'aftercopyfailure', '#copy-shortcode', this.copyFail );
 
 			// Document ready.
 			$( document ).ready( EVFPanelBuilder.ready );
@@ -152,7 +152,6 @@
 		 	EVFPanelBuilder.bindFieldDelete();
 		 	EVFPanelBuilder.bindCloneField();
 		 	EVFPanelBuilder.bindSaveOption();
-		 	EVFPanelBuilder.bindFieldOptionChange();
 		 	EVFPanelBuilder.bindAddNewRow();
 		 	EVFPanelBuilder.bindRemoveRow();
 		 	EVFPanelBuilder.bindFormSettings();
@@ -180,31 +179,46 @@
 		 * @since 1.2.0
 		 */
 		 bindUIActionsFields: function() {
-			// Display toggle for Address field hide address line 2 option
-			$builder.on( 'change', '.everest-forms-field-option-address input.hide', function() {
-				var $this    = $(this),
-				id       = $this.parent().parent().data( 'field-id' ),
-				subfield = $this.parent().parent().data( 'subfield' );
-
-				$( '#everest-forms-field-' + id ).find( '.everest-forms-' + subfield ).toggleClass( 'hidden' );
-			});
-
-			// Field sidebar tab toggle
+			// Field sidebar tab toggle.
 			$builder.on( 'click', '.everest-forms-fields-tab a', function(e) {
 				e.preventDefault();
 				EVFPanelBuilder.fieldTabChoice( $(this).attr( 'id' ) );
 			});
 
-			// Real-time updates for "Hide Label" field option
-			$builder.on( 'change', '.everest-forms-field-option-row-label_hide input', function() {
-				var id = $(this).parent().data( 'field-id' );
-				$( '#everest-forms-field-' + id ).toggleClass( 'label_hide' );
+			// Display toggle for Address field hidden option.
+			$builder.on( 'change', '.everest-forms-field-option-address input.hide', function() {
+				var $this = $(this),
+				id        = $this.parent().parent().data( 'field-id' ),
+				subfield  = $this.parent().parent().data( 'subfield' );
+				$( '#everest-forms-field-' + id ).find( '.everest-forms-' + subfield ).toggleClass( 'hidden' );
 			});
 
-			// Real-time updates for Sub Label visbility field option
-			$builder.on( 'change', '.everest-forms-field-option-row-sublabel_hide input', function() {
+			// Real-time updates for "Show Label" field option.
+			$builder.on( 'input', '.everest-forms-field-option-row-label input', function() {
+				var $this = $(this),
+					value = $this.val(),
+					id    = $this.parent().data( 'field-id' );
+				$( '#everest-forms-field-' + id ).find( '.label-title .text' ).text(value);
+			});
+
+			// Real-time updates for "Description" field option.
+			$builder.on( 'input', '.everest-forms-field-option-row-description textarea', function() {
+				var $this = $( this ),
+					value = $this.val(),
+					id    = $this.parent().data( 'field-id' ),
+					$desc = $( '#everest-forms-field-' + id ).find( '.description' );
+
+				if ( $desc.hasClass( 'nl2br' ) ) {
+					$desc.html( value.replace( /\n/g, '<br>') );
+				} else {
+					$desc.html( value );
+				}
+			});
+
+			// Real-time updates for "Required" field option.
+			$builder.on('change', '.everest-forms-field-option-row-required input', function(e) {
 				var id = $( this ).parent().data( 'field-id' );
-				$( '#everest-forms-field-' + id ).toggleClass( 'sublabel_hide' );
+				$( '#everest-forms-field-' + id ).toggleClass( 'required' );
 			});
 
 			// Real-time updates for "Confirmation" field option
@@ -212,6 +226,57 @@
 				var id = $( this ).parent().data( 'field-id' );
 				$( '#everest-forms-field-' + id ).find( '.everest-forms-confirm' ).toggleClass( 'everest-forms-confirm-enabled everest-forms-confirm-disabled' );
 				$( '#everest-forms-field-option-' + id ).toggleClass( 'everest-forms-confirm-enabled everest-forms-confirm-disabled' );
+			});
+
+			// Real-time updates for "Placeholder" field option
+			$builder.on( 'input', '.everest-forms-field-option-row-placeholder input', function(e) {
+				var $this   = $( this ),
+					value   = $this.val(),
+					id      = $this.parent().data( 'field-id' ),
+					$primary = $( '#everest-forms-field-' + id ).find( '.primary-input' );
+
+				if ( $primary.is( 'select' ) ) {
+					if ( ! value.length ) {
+						$primary.find( '.placeholder' ).remove();
+					} else {
+						if ( $primary.find( '.placeholder' ).length ) {
+							$primary.find( '.placeholder' ).text( value );
+						} else {
+							$primary.prepend( '<option class="placeholder" selected>' + value + '</option>' );
+						}
+					}
+				} else {
+					$primary.attr( 'placeholder', value );
+				}
+			});
+
+			// Real-time updates for "Address Placeholder" field options.
+			$builder.on( 'input', '.everest-forms-field-option-address input.placeholder', function(e) {
+				var $this    = $(this),
+					value    = $this.val(),
+					id       = $this.parent().parent().data( 'field-id' ),
+					subfield = $this.parent().parent().data( 'subfield' );
+				$( '#everest-forms-field-' + id ).find( '.everest-forms-' + subfield + ' input' ).attr( 'placeholder', value );
+			});
+
+			// Real-time updates for "Confirmation Placeholder" field option.
+			$builder.on('input', '.everest-forms-field-option-row-confirmation_placeholder input', function() {
+				var $this   = $( this ),
+					value   = $this.val(),
+					id      = $this.parent().data( 'field-id' );
+				$( '#everest-forms-field-' + id ).find( '.secondary-input' ).attr( 'placeholder', value );
+			});
+
+			// Real-time updates for "Hide Label" field option.
+			$builder.on( 'change', '.everest-forms-field-option-row-label_hide input', function() {
+				var id = $(this).parent().data( 'field-id' );
+				$( '#everest-forms-field-' + id ).toggleClass( 'label_hide' );
+			});
+
+			// Real-time updates for Sub Label visbility field option.
+			$builder.on( 'change', '.everest-forms-field-option-row-sublabel_hide input', function() {
+				var id = $( this ).parent().data( 'field-id' );
+				$( '#everest-forms-field-' + id ).toggleClass( 'sublabel_hide' );
 			});
 
 			// Real-time updates specific for Address "Scheme" option
@@ -229,7 +294,6 @@
 					$( '#everest-forms-field-option-' + id ).find( '.everest-forms-field-option-row-country' ).removeClass( 'hidden' );
 				}
 			});
-
 		},
 		choicesInit: function () {
 			var choice_list = $(".evf-choices-list");
@@ -427,61 +491,15 @@
 			});
 		},
 		bindAddNewRow: function () {
-
 			$('body').on('click', '.evf-add-row span', function () {
-
 				var row_clone = $('.evf-admin-row').eq(0).clone();
 				var number_of_rows = $('.evf-admin-row').length;
 				row_clone.find('.evf-admin-grid').html('');
 				row_clone.attr('data-row-id', (number_of_rows + 1));
 				$('.evf-admin-field-wrapper').append(row_clone);
 				EVFPanelBuilder.bindFields();
-
 				EVFPanelBuilder.checkEmptyGrid();
-			})
-		},
-		bindFieldOptionChange: function () {
-
-			var selector = '.everest-forms-field-option-row input[type="text"][name$="[label]"], ' +
-			'.everest-forms-field-option-row textarea[name$="[description]"], ' +
-			'.everest-forms-field-option-row input[type="checkbox"][name$="[required]"], ' +
-			'.everest-forms-field-option-row input[type="checkbox"][name$="[label_hide]"], ' +
-			'.everest-forms-field-option-row input[type="text"][name$="[placeholder]"]';
-
-			$('body').on('keyup paste click', selector, function () {
-				EVFPanelBuilder.bindFormFieldChange($(this));
 			});
-
-		},
-		bindFormFieldChange: function ( option_field ) {
-			var field_id = option_field.closest('.everest-forms-field-option-row').attr('data-field-id');
-			var field = $('.evf-admin-grid #everest-forms-field-' + field_id + '.active');
-			var option_field_type = option_field.attr('id');
-			if ( option_field_type === 'undefined' || option_field_type === undefined ) {
-				return;
-			}
-			option_field_type = option_field_type.replace('everest-forms-field-option-' + field_id + '-', '');
-
-			switch ( option_field_type ) {
-				case 'label':
-					field.find( '.label-title .text' ).text( option_field.val() );
-				break;
-				case 'description':
-					field.find( '.description' ).html( option_field.val() );
-				break;
-				case 'required':
-					if ( option_field.is( ':checked' ) ) {
-						field.find( '.label-title .required' ).remove();
-						field.find( '.label-title' ).append( '<span class="required">*</span>' );
-
-					} else {
-						field.find('.label-title .required').remove();
-					}
-				break;
-				case 'placeholder':
-					field.find( 'input, textarea' ).attr( 'placeholder', option_field.val() );
-				break;
-			}
 		},
 		bindCloneField: function () {
 			$( 'body' ).on( 'click', '.everest-forms-preview .everest-forms-field .everest-forms-field-duplicate', function() {
