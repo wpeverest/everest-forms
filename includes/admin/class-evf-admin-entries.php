@@ -294,7 +294,7 @@ class EVF_Admin_Entries {
 
 		$exclude_columns = apply_filters( 'everest_froms_entries_exclude_columns', array( 'form_id', 'user_id', 'status', 'referer', ) );
 		$entry_column    = array( 'entry_id' => __( 'Entry ID', 'everest-forms' ) );
-		$extra_columns   = array_merge( $entry_column, get_all_form_fields_by_form_id( $form_id ) );
+		$extra_columns   = array_merge( $entry_column, evf_get_all_form_fields_by_form_id( $form_id ) );
 		$columns         = array_merge( $extra_columns, $default_columns );
 
 		foreach( $entry_ids as $entry_id ) {

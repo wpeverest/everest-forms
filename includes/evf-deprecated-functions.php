@@ -171,6 +171,22 @@ function everest_forms_sanitize_textarea_field( $string ) {
 }
 
 /**
+ * @deprecated 1.2.5
+ */
+function get_all_email_fields_by_form_id( $form_id ) {
+	evf_deprecated_function( 'get_all_email_fields_by_form_id', '1.2.5', 'evf_get_all_email_fields_by_form_id' );
+	return evf_get_all_email_fields_by_form_id( $string );
+}
+
+/**
+ * @deprecated 1.2.5
+ */
+function get_all_form_fields_by_form_id( $form_id ) {
+	evf_deprecated_function( 'get_all_form_fields_by_form_id', '1.2.5', 'evf_get_all_form_fields_by_form_id' );
+	return evf_get_all_form_fields_by_form_id( $string );
+}
+
+/**
  * @deprecated 1.3.0
  */
 function evf_get_us_states() {

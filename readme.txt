@@ -84,6 +84,10 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 
 == Changelog ==
 
+= 1.x.x - XX-09-2018 =
+* Feature - CSV exporter for entries.
+* Fix - Sorting of forms fields order.
+
 = 1.2.4 - 30-07-2018 =
 * Feature - Smart Tags.
 
