@@ -587,7 +587,7 @@ function evf_parse_relative_date_option( $raw_value ) {
 /**
  * Callback which can flatten structure data (gets the value if it's a multidimensional array).
  *
- * @since  1.3.0
+ * @since  1.2.5
  * @param  array $value Value to flatten.
  * @return array
  */
