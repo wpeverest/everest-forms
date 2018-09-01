@@ -138,7 +138,7 @@ function evf_print_notices() {
 
 	evf_clear_notices();
 }
-add_action( 'evf_display_fields_before', 'evf_print_notices', 10 );
+add_action( 'everest_forms_display_fields_before', 'evf_print_notices', 10 );
 
 /**
  * Print a single notice immediately.

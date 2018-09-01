@@ -191,7 +191,7 @@ class EVF_Shortcode_Form {
 		// Form fields area.
 		echo '<div class="evf-field-container">';
 
-		do_action( 'evf_display_fields_before', $form_data );
+		do_action( 'everest_forms_display_fields_before', $form_data );
 
 		wp_nonce_field( 'everest-forms_process_submit' );
 
@@ -211,12 +211,13 @@ class EVF_Shortcode_Form {
 
 				foreach ( $grid as $field_key ) {
 					$field = isset( $form_data['form_fields'][ $field_key ] ) ? $form_data['form_fields'][ $field_key ] : array();
-					$field = apply_filters( 'evf_field_data', $field, $form_data );
+					$field = apply_filters( 'everest_forms_field_data', $field, $form_data );
 
 					if ( empty( $field ) || in_array( $field['type'], EVF()->form_fields->get_pro_form_field_type(), true ) ) {
 						continue;
 					}
 
+					// Get field attributes.
 					$attributes = self::get_field_attributes( $field, $form_data );
 
 					// Get field properties.
@@ -241,7 +242,7 @@ class EVF_Shortcode_Form {
 
 		self::process_recaptcha( $form_data );
 
-		do_action( 'evf_display_fields_after', $form_data );
+		do_action( 'everest_forms_display_fields_after', $form_data );
 
 		echo '</div>';
 	}
@@ -340,30 +341,26 @@ class EVF_Shortcode_Form {
 		return $attributes;
 	}
 
-
+	/**
+	 * Return base properties for a specific field.
+	 *
+	 * @param array $field
+	 * @param array $form_data
+	 * @param array $attributes
+	 *
+	 * @return array
+	 */
 	private static function get_field_properties( $field, $form_data, $attributes = array() ) {
 		// This filter is for backwards compatibility purposes.
-		$types = array(
-			'text',
-			'textarea',
-			'number',
-			'email',
-			'hidden',
-			'url',
-			'html',
-			'divider',
-			'password',
-			'phone',
-			'address'
-		);
+		$types = array( 'text', 'textarea', 'number', 'email', 'hidden', 'url', 'html', 'divider', 'password', 'phone', 'address', 'checkbox', 'radio' );
 		if ( in_array( $field['type'], $types, true ) ) {
-			$field = apply_filters( "evf_{$field['type']}_field_display", $field, $attributes, $form_data );
+			$field = apply_filters( "everest_forms_{$field['type']}_field_display", $field, $attributes, $form_data );
 		}
 
 		$form_id  = absint( $form_data['id'] );
-		$field_id = ( $field['id'] );
+		$field_id = sanitize_text_field( $field['id'] );
 
-		$properties = array(
+		$properties = apply_filters( 'everest_forms_field_properties_' . $field['type'], array(
 			'container'   => array(
 				'attr'  => array(
 					'style' => $attributes['field_style'],
@@ -414,19 +411,9 @@ class EVF_Shortcode_Form {
 				'position' => 'after',
 				'value'    => ! empty( $field['description'] ) ? $field['description'] : '',
 			),
-		);
+		), $field, $form_data );
 
-		// Dynamic value support.
-		if ( apply_filters( 'evf_frontend_dynamic_values', false ) ) {
-			if ( empty( $properties['inputs']['primary']['attr']['value'] ) && ! empty( $_GET["f$field_id}"] ) ) {
-				$properties['inputs']['primary']['attr']['value'] = sanitize_text_field( $_GET["f{$field_id}"] );
-			}
-		}
-
-		$properties = apply_filters( "evf_field_properties_{$field['type']}", $properties, $field, $form_data );
-		$properties = apply_filters( 'evf_field_properties', $properties, $field, $form_data );
-
-		return $properties;
+		return apply_filters( 'everest_forms_field_properties', $properties, $field, $form_data );
 	}
 
 	/**
@@ -446,7 +433,6 @@ class EVF_Shortcode_Form {
 		self::view( $atts['id'], $atts['title'] );
 
 		echo ob_get_clean();
-
 	}
 
 	/**

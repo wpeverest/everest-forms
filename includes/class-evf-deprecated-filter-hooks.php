@@ -23,6 +23,8 @@ class EVF_Deprecated_Filter_Hooks extends EVF_Deprecated_Hooks {
 		'everest_forms_show_media_button'     => 'evf_display_media_button',
 		'everest_forms_show_admin_bar_menus'  => 'everest_forms_show_admin_bar',
 		'everest_forms_builder_fields_groups' => 'everest_forms_builder_fields_buttons',
+		'everest_forms_field_data'            => 'evf_field_data',
+		'everest_forms_field_properties'      => 'evf_field_properties',
 	);
 
 	/**
@@ -35,6 +37,8 @@ class EVF_Deprecated_Filter_Hooks extends EVF_Deprecated_Hooks {
 		'evf_display_media_button'             => '1.2.0',
 		'everest_forms_show_admin_bar'         => '1.2.0',
 		'everest_forms_builder_fields_buttons' => '1.2.0',
+		'evf_field_data'                       => '1.3.0',
+		'evf_field_properties'                 => '1.3.0',
 	);
 
 	/**

@@ -710,8 +710,7 @@ abstract class EVF_Form_Fields {
 	 * @param array $field_atts
 	 * @param array $form_data
 	 */
-	public function field_display( $field, $field_atts, $form_data ) {
-	}
+	public function field_display( $field, $field_atts, $form_data ) {}
 
 	/**
 	 * Display field input errors if present.
