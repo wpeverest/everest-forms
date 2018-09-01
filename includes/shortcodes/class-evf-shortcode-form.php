@@ -228,7 +228,6 @@ class EVF_Shortcode_Form {
 
 					do_action( 'everest_forms_display_field_before', $field, $form_data );
 
-					do_action( "evf_display_field_{$field['type']}", $field, $attributes, $form_data );
 					do_action( "everest_forms_display_field_{$field['type']}", $field, $attributes, $form_data );
 
 					do_action( 'everest_forms_display_field_after', $field, $form_data );
