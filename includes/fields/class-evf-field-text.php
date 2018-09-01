@@ -42,10 +42,14 @@ class EVF_Field_Text extends EVF_Form_Fields {
 			),
 		);
 
-		// Define additional field properties.
-		add_filter( 'evf_field_properties_text', array( $this, 'field_properties' ), 5, 3 );
-
 		parent::__construct();
+	}
+
+	/**
+	 * Hook in tabs.
+	 */
+	public function init_hooks() {
+		add_filter( 'everest_forms_field_properties_' . $this->type, array( $this, 'field_properties' ), 5, 3 );
 	}
 
 	/**
