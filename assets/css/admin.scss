@@ -1454,6 +1454,10 @@ table.wp-list-table {
 	    margin-bottom: -2px;
 	}
 
+	img.attachment-thumbnail {
+		height: 40px;
+	}
+
 	.submitdelete {
 		&:hover {
 			color: #a00;
@@ -1497,6 +1501,10 @@ table.wp-list-table {
 
 			span.list {
 				display: block;
+			}
+
+			img.attachment-thumbnail {
+				height: 150px;
 			}
 		}
 
