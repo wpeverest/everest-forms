@@ -415,11 +415,12 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 */
 	protected function extra_tablenav( $which ) {
 		$num_entries = evf_get_count_entries_by_status( $this->form_id );
+		$show_export = isset( $_GET['status'] ) && 'trash' === $_GET['status'] ? false : true;
 
 		?>
 		<div class="alignleft actions">
 		<?php
-			if ( ! empty( $this->forms ) && 'top' == $which ) {
+			if ( ! empty( $this->forms ) && 'top' === $which ) {
 				ob_start();
 				$this->forms_dropdown();
 				$output = ob_get_clean();
@@ -429,13 +430,13 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 					submit_button( __( 'Filter', 'everest-forms' ), '', 'filter_action', false, array( 'id' => 'post-query-submit' ) );
 
 					// Export CSV submit button.
-					if ( apply_filters( 'everest_forms_enable_csv_export', true ) ) {
-						submit_button( __( 'Export CSV', 'everest-forms' ), '', 'export_action', false, array( 'id' => 'export-csv' ) );
+					if ( apply_filters( 'everest_forms_enable_csv_export', $show_export ) && current_user_can( 'export' ) ) {
+						submit_button( __( 'Export CSV', 'everest-forms' ), '', 'export_action', false, array( 'id' => 'post-query-submit' ) );
 					}
 				}
 			}
 
-			if ( $num_entries['trash'] && isset( $_GET['status'] ) && 'trash' == $_GET['status'] && current_user_can( 'manage_everest_forms' ) ) {
+			if ( $num_entries['trash'] && isset( $_GET['status'] ) && 'trash' === $_GET['status'] && current_user_can( 'manage_everest_forms' ) ) {
 				submit_button( __( 'Empty Trash', 'everest-forms' ), 'apply', 'delete_all', false );
 			}
 		?>
