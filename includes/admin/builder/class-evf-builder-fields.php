@@ -112,7 +112,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 
 		if ( ! empty( $fields ) ) {
 			foreach ( $fields as $field ) {
-				if ( in_array( $field['type'], EVF()->form_fields->get_pro_form_field_type(), true ) ) {
+				if ( in_array( $field['type'], EVF()->form_fields->get_pro_form_field_types(), true ) ) {
 					continue;
 				}
 
@@ -181,7 +181,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 				$grid_fields = isset( $row_grid[ 'grid_' . $grid_start ] ) && is_array( $row_grid[ 'grid_' . $grid_start ] ) ? $row_grid[ 'grid_' . $grid_start ] : array();
 
 				foreach ( $grid_fields as $field_id ) {
-					if ( isset( $fields[ $field_id ] ) && ! in_array( $fields[ $field_id ]['type'], EVF()->form_fields->get_pro_form_field_type(), true ) ) {
+					if ( isset( $fields[ $field_id ] ) && ! in_array( $fields[ $field_id ]['type'], EVF()->form_fields->get_pro_form_field_types(), true ) ) {
 						$this->field_preview( $fields[ $field_id ] );
 					}
 				}

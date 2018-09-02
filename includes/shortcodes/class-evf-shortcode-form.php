@@ -213,7 +213,7 @@ class EVF_Shortcode_Form {
 					$field = isset( $form_data['form_fields'][ $field_key ] ) ? $form_data['form_fields'][ $field_key ] : array();
 					$field = apply_filters( 'everest_forms_field_data', $field, $form_data );
 
-					if ( empty( $field ) || in_array( $field['type'], EVF()->form_fields->get_pro_form_field_type(), true ) ) {
+					if ( empty( $field ) || in_array( $field['type'], EVF()->form_fields->get_pro_form_field_types(), true ) ) {
 						continue;
 					}
 
@@ -351,7 +351,7 @@ class EVF_Shortcode_Form {
 	 */
 	private static function get_field_properties( $field, $form_data, $attributes = array() ) {
 		// This filter is for backwards compatibility purposes.
-		$types = array( 'text', 'textarea', 'number', 'email', 'hidden', 'url', 'html', 'divider', 'password', 'phone', 'address', 'checkbox', 'radio' );
+		$types = array( 'text', 'textarea', 'number', 'email', 'hidden', 'url', 'html', 'divider', 'password', 'phone', 'address', 'checkbox', 'radio', 'select' );
 		if ( in_array( $field['type'], $types, true ) ) {
 			$field = apply_filters( "everest_forms_{$field['type']}_field_display", $field, $attributes, $form_data );
 		}
