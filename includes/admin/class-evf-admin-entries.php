@@ -14,6 +14,13 @@ defined( 'ABSPATH' ) || exit;
 class EVF_Admin_Entries {
 
 	/**
+	 * Raw data to export.
+	 *
+	 * @var array
+	 */
+	protected $row_data = array();
+
+	/**
 	 * Initialize the entries admin actions.
 	 */
 	public function __construct() {
@@ -263,97 +270,257 @@ class EVF_Admin_Entries {
 		return $update;
 	}
 
+	/*
+	|--------------------------------------------------------------------------
+	| CSV Exporter
+	|--------------------------------------------------------------------------
+	|
+	| Methods for getting data from the entry object for CSV exporter.
+	*/
+
 	/**
-	 * Export entries in CSV format.
+	 * Return an array of supported column names and ids.
 	 *
-	 * @since 1.2.5
+	 * @return array
 	 */
-	private function export_csv() {
+	public function get_column_names() {
+		$columns      = array();
+		$form_id      = isset( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : 0;
+		$form_columns = evf_get_all_form_fields_by_form_id( $form_id );
+
+		// Set Entry ID at first.
+		$columns['entry_id'] = __( 'ID', 'everest-forms' );
+
+		if ( ! empty( $form_columns ) ) {
+			foreach ( $form_columns as $column_id => $column_name ) {
+				$columns[ $column_id ] = $column_name;
+			}
+		}
+
+		// Set the default columns.
+		$columns['date_created']    = __( 'Date Created', 'everest-forms' );
+		$columns['user_device' ]    = __( 'User Device', 'everest-forms' );
+		$columns['user_ip_address'] = __( 'User IP Address', 'everest-forms' );
+
+		return apply_filters( 'everest_forms_entry_export_column_names', $columns );
+	}
+
+	/**
+	 * Get a csv file name.
+	 *
+	 * File names consist of the handle, followed by the date, followed by a hash, .csv.
+	 *
+	 * @param string $handle File name.
+	 * @return bool|string The csv file name or false if cannot be determined.
+	 */
+	public static function get_csv_file_name( $handle ) {
+		if ( function_exists( 'wp_hash' ) ) {
+			$date_suffix = date( 'Y-m-d', current_time( 'timestamp', true ) );
+			$hash_suffix = wp_hash( $handle );
+			return sanitize_file_name( implode( '-', array( $handle, $date_suffix, $hash_suffix ) ) . '.csv' );
+		} else {
+			evf_doing_it_wrong( __METHOD__, __( 'This method should not be called before plugins_loaded.', 'everest-forms' ), '1.3.0' );
+			return false;
+		}
+	}
+
+	/**
+	 * Prepare data for export.
+	 *
+	 * @since 1.3.0
+	 */
+	public function prepare_data_to_export() {
+		$form_id   = isset( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : 0;
+		$entry_ids = evf_search_entries( array(
+			'limit'   => -1,
+			'status'  => 'publish',
+			'form_id' => $form_id,
+		) );
+
+		// Get the entries.
+		$entries        = array_map( 'evf_get_entry', $entry_ids );
+		$this->row_data = array();
+
+		foreach ( $entries as $entry ) {
+			$this->row_data[] = $this->generate_row_data( $entry );
+		}
+
+		return $this->row_data;
+	}
+
+	/**
+	 * Take a entry id and generate row data from it for export.
+	 *
+	 * @param  object $entry Entry object.
+	 * @return array
+	 */
+	protected function generate_row_data( $entry ) {
+		$columns = $this->get_column_names();
+		$row     = array();
+
+		foreach ( $columns as $column_id => $column_name ) {
+			$column_id  = strstr( $column_id, ':' ) ? current( explode( ':', $column_id ) ) : $column_id;
+			$value     = '';
+
+			if ( isset( $entry->meta[ $column_id] ) ) {
+				// Filter for entry meta data.
+				$value = $entry->meta[ $column_id ];
+
+			} elseif ( in_array( $column_id, array( 'entry_id', 'date_created', 'user_device', 'user_ip_address' ), true ) ) {
+				// Default and custom handling.
+				$value = $entry->{$column_id};
+
+			} elseif ( is_callable( array( $this, "get_column_value_{$column_id}" ) ) ) {
+				// Handle special columns which don't map 1:1 to entry data.
+				$value = $this->{"get_column_value_{$column_id}"}( $entry );
+			}
+
+			$row[ $column_id ] = $value;
+		}
+
+		return apply_filters( 'everest_forms_entry_export_row_data', $row );
+	}
+
+	/**
+	 * Do the entries export.
+	 *
+	 * @since 1.3.0
+	 */
+	public function export_csv() {
+		$form_id   = isset( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : 0;
+		$form_name = strtolower( str_replace( ' ', '-', get_the_title( $form_id ) ) );
+		$file_name = $this->get_csv_file_name( $form_name );
+
 		if ( ! current_user_can( 'export' ) ) {
 			return;
 		}
 
-		$form_id = isset( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : 0;
-
-		if ( ! isset( $form_id ) ) {
-			return;
-		}
-
-		$entries   = array();
-		$entry_ids = evf_get_entries_ids( $form_id );
-
-		if ( empty( $entry_ids ) ) {
-			return;
-		}
-
-		$default_columns = apply_filters( 'everest_forms_entries_default_columns', array(
-			'user_device'     => __( 'User Device', 'everest-forms' ),
-			'user_ip_address' => __( 'User IP Address', 'everest-forms' ),
-			'date_created'    => __( 'Date Created', 'everest-forms' ),
-		) );
-
-		$exclude_columns = apply_filters( 'everest_froms_entries_exclude_columns', array( 'form_id', 'user_id', 'status', 'referer', ) );
-		$entry_column    = array( 'entry_id' => __( 'Entry ID', 'everest-forms' ) );
-		$extra_columns   = array_merge( $entry_column, evf_get_all_form_fields_by_form_id( $form_id ) );
-		$columns         = array_merge( $extra_columns, $default_columns );
-
-		foreach( $entry_ids as $entry_id ) {
-			$entries[] = evf_get_entry( $entry_id );
-		}
-
-		$rows = array();
-
-		foreach( $entries as $entry ) {
-			$entry = (array) $entry;
-
-			$entry['meta'] = ! empty ( $entry['meta'] ) ? $entry['meta'] : array();
-
-			foreach( $entry['meta'] as $key => $meta ) {
-				if ( is_serialized( $meta ) ) {
-					$array_values = unserialize( $meta );
-					$meta 		  = implode( ',', $array_values );
-				}
-
-				$entry[ $key ] = $meta;
-				unset( $entry[ 'meta' ] );
-
-				foreach( $exclude_columns as $exclude_column ) {
-					unset( $entry[ $exclude_column ]);
-				}
-			}
-
-			// Order the row depending on columns meta key.
-			$ordered_rows = array_merge( array_fill_keys ( array_keys( $columns ), '' ), $entry );
-			$rows[]       = $ordered_rows;
-		}
-
-		$form_name = strtolower( str_replace( " ", "-", get_the_title( $form_id ) ) );
-		$file_name = $form_name . "-" . current_time( 'Y-m-d_H:i:s' ) . '.csv';
-
-		// Set the CSV headers.
+		$this->prepare_data_to_export();
 		$this->send_headers( $file_name );
+		$this->send_content( chr( 239 ) . chr( 187 ) . chr( 191 ) . $this->export_column_headers() . $this->export_rows() );
+		die();
+	}
 
-		$handle = fopen( "php://output", 'w' );
+	/**
+	 * Set the export content.
+	 *
+	 * @param string $csv_data All CSV content.
+	 */
+	public function send_content( $csv_data ) {
+		echo $csv_data; // @codingStandardsIgnoreLine
+	}
 
-		// Handle UTF-8 chars conversion for CSV.
-		fprintf( $handle, chr(0xEF).chr(0xBB).chr(0xBF) );
+	/**
+	 * Export column headers in CSV format.
+	 *
+	 * @return string
+	 */
+	protected function export_column_headers() {
+		$columns    = $this->get_column_names();
+		$export_row = array();
+		$buffer     = fopen( 'php://output', 'w' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fopen
+		ob_start();
 
-		// Put the column headers.
-		fputcsv( $handle, array_values( $columns ) );
-
-		// Put the entry values.
-		foreach ( $rows as $row ) {
-			fputcsv( $handle, $row );
+		foreach ( $columns as $column_id => $column_name ) {
+			$export_row[] = $this->format_data( $column_name );
 		}
 
-		fclose( $handle );
-		exit;
+		$this->fputcsv( $buffer, $export_row );
+
+		return ob_get_clean();
+	}
+
+	/**
+	 * Export rows in CSV format.
+	 *
+	 * @return string
+	 */
+	protected function export_rows() {
+		$data   = $this->row_data;
+		$buffer = fopen( 'php://output', 'w' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fopen
+		ob_start();
+
+		array_walk( $data, array( $this, 'export_row' ), $buffer );
+
+		return apply_filters( "everest_forms_entry_export_rows", ob_get_clean(), $this );
+	}
+
+	/**
+	 * Export rows to an array ready for the CSV.
+	 *
+	 * @since 3.1.0
+	 * @param array    $row_data Data to export.
+	 * @param string   $key Column being exported.
+	 * @param resource $buffer Output buffer.
+	 */
+	protected function export_row( $row_data, $key, $buffer ) {
+		$columns    = $this->get_column_names();
+		$export_row = array();
+
+		foreach ( $columns as $column_id => $column_name ) {
+			if ( isset( $row_data[ $column_id ] ) ) {
+				$export_row[] = $this->format_data( $row_data[ $column_id ] );
+			} else {
+				$export_row[] = '';
+			}
+		}
+
+		$this->fputcsv( $buffer, $export_row );
+	}
+
+	/**
+	 * Escape a string to be used in a CSV context
+	 *
+	 * Malicious input can inject formulas into CSV files, opening up the possibility
+	 * for phishing attacks and disclosure of sensitive information.
+	 *
+	 * Additionally, Excel exposes the ability to launch arbitrary commands through
+	 * the DDE protocol.
+	 *
+	 * @see http://www.contextis.com/resources/blog/comma-separated-vulnerabilities/
+	 * @see https://hackerone.com/reports/72785
+	 *
+	 * @param  string $data CSV field to escape.
+	 * @return string
+	 */
+	public function escape_data( $data ) {
+		$active_content_triggers = array( '=', '+', '-', '@' );
+
+		if ( in_array( mb_substr( $data, 0, 1 ), $active_content_triggers, true ) ) {
+			$data = "'" . $data . "'";
+		}
+
+		return $data;
+	}
+
+	/**
+	 * Format and escape data ready for the CSV file.
+	 *
+	 * @param  string $data Data to format.
+	 * @return string
+	 */
+	public function format_data( $data ) {
+		if ( ! is_scalar( $data ) ) {
+			$data = ''; // Not supported.
+		} elseif ( is_bool( $data ) ) {
+			$data = $data ? 1 : 0;
+		}
+
+		$use_mb = function_exists( 'mb_convert_encoding' );
+		$data   = (string) urldecode( $data );
+
+		if ( $use_mb ) {
+			$encoding = mb_detect_encoding( $data, 'UTF-8, ISO-8859-1', true );
+			$data     = 'UTF-8' === $encoding ? $data : utf8_encode( $data );
+		}
+
+		return $this->escape_data( $data );
 	}
 
 	/**
 	 * Set the export headers.
 	 *
-	 * @since 1.2.5
+	 * @since 1.3.0
 	 * @param string $file_name File name.
 	 */
 	private function send_headers( $file_name = '' ) {
@@ -376,6 +543,33 @@ class EVF_Admin_Entries {
 		header( 'Content-Disposition: attachment; filename=' . $file_name );
 		header( 'Pragma: no-cache' );
 		header( 'Expires: 0' );
+	}
+
+	/**
+	 * Write to the CSV file, ensuring escaping works across versions of PHP.
+	 *
+	 * PHP 5.5.4 uses '\' as the default escape character. This is not RFC-4180 compliant.
+	 * \0 disables the escape character.
+	 *
+	 * @see https://bugs.php.net/bug.php?id=43225
+	 * @see https://bugs.php.net/bug.php?id=50686
+	 * @see https://github.com/woocommerce/woocommerce/issues/19514
+	 * @since 1.3.0
+	 * @param resource $buffer Resource we are writing to.
+	 * @param array    $export_row Row to export.
+	 */
+	protected function fputcsv( $buffer, $export_row ) {
+		if ( version_compare( PHP_VERSION, '5.5.4', '<' ) ) {
+			ob_start();
+			$temp = fopen( 'php://output', 'w' ); // @codingStandardsIgnoreLine
+			fputcsv( $temp, $export_row, ",", '"' ); // @codingStandardsIgnoreLine
+			fclose( $temp ); // @codingStandardsIgnoreLine
+			$row = ob_get_clean();
+			$row = str_replace( '\\"', '\\""', $row );
+			fwrite( $buffer, $row ); // @codingStandardsIgnoreLine
+		} else {
+			fputcsv( $buffer, $export_row, ",", '"', "\0" ); // @codingStandardsIgnoreLine
+		}
 	}
 }
 
