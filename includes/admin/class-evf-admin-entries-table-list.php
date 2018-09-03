@@ -431,7 +431,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 
 					// Export CSV submit button.
 					if ( apply_filters( 'everest_forms_enable_csv_export', $show_export ) && current_user_can( 'export' ) ) {
-						submit_button( __( 'Export CSV', 'everest-forms' ), '', 'export_action', false, array( 'id' => 'post-query-submit' ) );
+						submit_button( __( 'Export CSV', 'everest-forms' ), '', 'export_action', false, array( 'id' => 'export-csv-submit' ) );
 					}
 				}
 			}
