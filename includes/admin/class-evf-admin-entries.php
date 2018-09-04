@@ -393,9 +393,6 @@ class EVF_Admin_Entries {
 						/* translators: 1: entry date 2: entry time */
 						$value = sprintf( __( '%1$s %2$s', 'everest-forms' ), date_i18n( evf_date_format(), strtotime( $value ) ), date_i18n( evf_time_format(), strtotime( $value ) ) );
 					break;
-					default:
-						$value = sanitize_text_field( $value );
-					break;
 				}
 
 			} elseif ( is_callable( array( $this, "get_column_value_{$column_id}" ) ) ) {
@@ -403,7 +400,7 @@ class EVF_Admin_Entries {
 				$value = $this->{"get_column_value_{$column_id}"}( $entry );
 			}
 
-			$row[ $column_id ] = $value;
+			$row[ $column_id ] = sanitize_text_field( $value );
 		}
 
 		return apply_filters( 'everest_forms_entry_export_row_data', $row, $entry );
