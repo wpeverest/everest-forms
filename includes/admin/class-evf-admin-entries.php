@@ -298,8 +298,9 @@ class EVF_Admin_Entries {
 		}
 
 		// Set the default columns.
-		$columns['status']          = __( 'Status', 'everest-forms' );
-		$columns['date_created']    = __( 'Date Created', 'everest-forms' );
+		$columns['status']           = __( 'Status', 'everest-forms' );
+		$columns['date_created']     = __( 'Date Created', 'everest-forms' );
+		$columns['date_created_gmt'] = __( 'Date Created GMT', 'everest-forms' );
 
 		// If user details are disabled globally discard the IP and UA.
 		if ( 'yes' !== get_option( 'everest_forms_disable_user_details' ) ) {
@@ -388,9 +389,12 @@ class EVF_Admin_Entries {
 						$value    = isset( $statuses[ $value ] ) ? $statuses[ $value ] : $value;
 					break;
 					case 'date_created':
-						$value = date_i18n( get_option( 'date_format' ), strtotime( $value ) + ( get_option( 'gmt_offset' ) * 3600 ) );
+						/* translators: 1: entry date 2: entry time */
+						$value = sprintf( __( '%1$s %2$s', 'everest-forms' ), date_i18n( evf_date_format(), strtotime( $value ) ), date_i18n( evf_time_format(), strtotime( $value ) ) );
 					break;
-					default :
+					default:
+						$value = sanitize_text_field( $value );
+					break;
 				}
 
 			} elseif ( is_callable( array( $this, "get_column_value_{$column_id}" ) ) ) {
@@ -402,6 +406,23 @@ class EVF_Admin_Entries {
 		}
 
 		return apply_filters( 'everest_forms_entry_export_row_data', $row, $entry );
+	}
+
+	/**
+	 * Get date in GMT format.
+	 *
+	 * @param  object $entry Entry being exported.
+	 * @return string
+	 */
+	protected function get_column_value_date_created_gmt( $entry ) {
+		$timestamp = false;
+
+		if ( isset( $entry->date_created ) ) {
+			$timestamp = strtotime( $entry->date_created ) + ( get_option( 'gmt_offset' ) * 3600 );
+		}
+
+		/* translators: 1: entry date 2: entry time */
+		return sprintf( __( '%1$s %2$s', 'everest-forms' ), date_i18n( evf_date_format(), $timestamp ), date_i18n( evf_time_format(), $timestamp ) );
 	}
 
 	/**
