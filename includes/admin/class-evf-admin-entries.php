@@ -263,51 +263,6 @@ class EVF_Admin_Entries {
 		return $update;
 	}
 
-	/*
-	|--------------------------------------------------------------------------
-	| CSV Exporter
-	|--------------------------------------------------------------------------
-	|
-	| Methods for getting data from the entry object for CSV exporter.
-	*/
-
-	/**
-	 * Return an array of supported column names and ids.
-	 *
-	 * @return array
-	 */
-	public function get_column_names() {
-		$columns   = array();
-		$form_id   = isset( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : 0;
-		$form_obj  = EVF()->form->get( $form_id );
-		$form_data = ! empty( $form_obj->post_content ) ? evf_decode( $form_obj->post_content ) : '';
-
-		// Set Entry ID at first.
-		$columns['entry_id'] = __( 'ID', 'everest-forms' );
-
-		// Add whitelisted fields to export columns.
-		if ( ! empty( $form_data['form_fields'] ) ) {
-			foreach ( $form_data['form_fields'] as $field ) {
-				if ( ! in_array( $field['type'], array( 'html', 'title' ), true ) ) {
-					$columns[ sanitize_key( $field['meta-key'] ) ] = evf_clean( $field['label'] );
-				}
-			}
-		}
-
-		// Set the default columns.
-		$columns['status']           = __( 'Status', 'everest-forms' );
-		$columns['date_created']     = __( 'Date Created', 'everest-forms' );
-		$columns['date_created_gmt'] = __( 'Date Created GMT', 'everest-forms' );
-
-		// If user details are disabled globally discard the IP and UA.
-		if ( 'yes' !== get_option( 'everest_forms_disable_user_details' ) ) {
-			$columns['user_device' ]    = __( 'User Device', 'everest-forms' );
-			$columns['user_ip_address'] = __( 'User IP Address', 'everest-forms' );
-		}
-
-		return apply_filters( 'everest_forms_entry_export_column_names', $columns );
-	}
-
 	/**
 	 * Do the entries export.
 	 *
