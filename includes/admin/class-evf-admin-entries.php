@@ -298,9 +298,14 @@ class EVF_Admin_Entries {
 		}
 
 		// Set the default columns.
+		$columns['status']          = __( 'Status', 'everest-forms' );
 		$columns['date_created']    = __( 'Date Created', 'everest-forms' );
-		$columns['user_device' ]    = __( 'User Device', 'everest-forms' );
-		$columns['user_ip_address'] = __( 'User IP Address', 'everest-forms' );
+
+		// If user details are disabled globally discard the IP and UA.
+		if ( 'yes' !== get_option( 'everest_forms_disable_user_details' ) ) {
+			$columns['user_device' ]    = __( 'User Device', 'everest-forms' );
+			$columns['user_ip_address'] = __( 'User IP Address', 'everest-forms' );
+		}
 
 		return apply_filters( 'everest_forms_entry_export_column_names', $columns );
 	}
@@ -333,7 +338,7 @@ class EVF_Admin_Entries {
 		$form_id   = isset( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : 0;
 		$entry_ids = evf_search_entries( array(
 			'limit'   => -1,
-			'status'  => 'publish',
+			'order'   => 'ASC',
 			'form_id' => $form_id,
 		) );
 
@@ -362,13 +367,31 @@ class EVF_Admin_Entries {
 			$column_id  = strstr( $column_id, ':' ) ? current( explode( ':', $column_id ) ) : $column_id;
 			$value     = '';
 
+			// Skip some columns if we're dynamically being selective.
+			if ( in_array( $column_id, array( 'title', 'html' ), true ) ) {
+				continue;
+			}
+
 			if ( isset( $entry->meta[ $column_id] ) ) {
 				// Filter for entry meta data.
-				$value = $entry->meta[ $column_id ];
+				$value = apply_filters( 'everest_forms_html_field_value', $entry->meta[ $column_id ], $entry->meta[ $column_id ], $entry, 'export-csv' );
 
-			} elseif ( in_array( $column_id, array( 'entry_id', 'date_created', 'user_device', 'user_ip_address' ), true ) ) {
+			} elseif ( in_array( $column_id, array( 'entry_id', 'status', 'date_created', 'user_device', 'user_ip_address' ), true ) ) {
 				// Default and custom handling.
 				$value = $entry->{$column_id};
+
+				switch ( $column_id ) {
+					case 'entry_id':
+						$value = absint( $value );
+					case 'status':
+						$statuses = evf_get_entry_statuses();
+						$value    = isset( $statuses[ $value ] ) ? $statuses[ $value ] : $value;
+					break;
+					case 'date_created':
+						$value = date_i18n( get_option( 'date_format' ), strtotime( $value ) + ( get_option( 'gmt_offset' ) * 3600 ) );
+					break;
+					default :
+				}
 
 			} elseif ( is_callable( array( $this, "get_column_value_{$column_id}" ) ) ) {
 				// Handle special columns which don't map 1:1 to entry data.
@@ -378,7 +401,7 @@ class EVF_Admin_Entries {
 			$row[ $column_id ] = $value;
 		}
 
-		return apply_filters( 'everest_forms_entry_export_row_data', $row );
+		return apply_filters( 'everest_forms_entry_export_row_data', $row, $entry );
 	}
 
 	/**
@@ -536,9 +559,6 @@ class EVF_Admin_Entries {
 		ignore_user_abort( true );
 		evf_set_time_limit( 0 );
 		evf_nocache_headers();
-		header( "Content-Type: application/force-download" );
-		header( "Content-Type: application/octet-stream" );
-		header( "Content-Type: application/download" );
 		header( 'Content-Type: text/csv; charset=utf-8' );
 		header( 'Content-Disposition: attachment; filename=' . $file_name );
 		header( 'Pragma: no-cache' );
