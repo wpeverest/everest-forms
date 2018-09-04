@@ -285,7 +285,8 @@ class EVF_Admin_Entries {
 	 */
 	public function get_column_names() {
 		$columns   = array();
-		$form_obj  = EVF()->form->get( absint( $_GET['form_id'] ) );
+		$form_id   = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : false;
+		$form_obj  = EVF()->form->get( $form_id );
 		$form_data = ! empty( $form_obj->post_content ) ? evf_decode( $form_obj->post_content ) : '';
 
 		// Set Entry ID at first.
