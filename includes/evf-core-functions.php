@@ -1280,7 +1280,7 @@ function evf_get_all_form_fields_by_form_id( $form_id ) {
 
 	if ( ! empty( $form_data['form_fields'] ) ) {
 		foreach ( $form_data['form_fields'] as $form_fields ) {
-			if( ! empty( $form_fields['meta-key' ] ) ){
+			if ( isset( $form_fields['meta-key'], $form_fields['label'] ) ) {
 				$data[ $form_fields['meta-key'] ] = $form_fields['label'];
 			}
 		}

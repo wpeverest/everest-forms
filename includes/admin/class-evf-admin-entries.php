@@ -284,16 +284,19 @@ class EVF_Admin_Entries {
 	 * @return array
 	 */
 	public function get_column_names() {
-		$columns      = array();
-		$form_id      = isset( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : 0;
-		$form_columns = evf_get_all_form_fields_by_form_id( $form_id );
+		$columns   = array();
+		$form_obj  = EVF()->form->get( absint( $_GET['form_id'] ) );
+		$form_data = ! empty( $form_obj->post_content ) ? evf_decode( $form_obj->post_content ) : '';
 
 		// Set Entry ID at first.
 		$columns['entry_id'] = __( 'ID', 'everest-forms' );
 
-		if ( ! empty( $form_columns ) ) {
-			foreach ( $form_columns as $column_id => $column_name ) {
-				$columns[ $column_id ] = $column_name;
+		// Add whitelisted fields to export columns.
+		if ( ! empty( $form_data['form_fields'] ) ) {
+			foreach ( $form_data['form_fields'] as $field ) {
+				if ( ! in_array( $field['type'], array( 'html', 'title' ), true ) ) {
+					$columns[ evf_clean( $field['meta-key'] ) ] = evf_clean( $field['label'] );
+				}
 			}
 		}
 
@@ -369,11 +372,6 @@ class EVF_Admin_Entries {
 		foreach ( $columns as $column_id => $column_name ) {
 			$column_id  = strstr( $column_id, ':' ) ? current( explode( ':', $column_id ) ) : $column_id;
 			$value     = '';
-
-			// Skip some columns if we're dynamically being selective.
-			if ( in_array( $column_id, array( 'title', 'html' ), true ) ) {
-				continue;
-			}
 
 			if ( isset( $entry->meta[ $column_id] ) ) {
 				// Filter for entry meta data.
