@@ -320,6 +320,8 @@ class EVF_Admin_Entries {
 	 * @return bool|string The csv file name or false if cannot be determined.
 	 */
 	public static function get_csv_file_name( $handle ) {
+		$handle = strtolower( 'evf-entry-export-' . str_replace( '.csv', '', $handle ) );
+
 		if ( function_exists( 'wp_hash' ) ) {
 			$date_suffix = date( 'Y-m-d', current_time( 'timestamp', true ) );
 			$hash_suffix = wp_hash( $handle );
@@ -432,8 +434,7 @@ class EVF_Admin_Entries {
 	 */
 	public function export_csv() {
 		$form_id   = isset( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : 0;
-		$form_name = strtolower( str_replace( ' ', '-', get_the_title( $form_id ) ) );
-		$file_name = $this->get_csv_file_name( $form_name );
+		$file_name = $this->get_csv_file_name( get_the_title( $form_id ) );
 
 		if ( ! current_user_can( 'export' ) ) {
 			return;
