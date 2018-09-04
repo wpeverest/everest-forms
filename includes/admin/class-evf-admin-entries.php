@@ -296,7 +296,7 @@ class EVF_Admin_Entries {
 		if ( ! empty( $form_data['form_fields'] ) ) {
 			foreach ( $form_data['form_fields'] as $field ) {
 				if ( ! in_array( $field['type'], array( 'html', 'title' ), true ) ) {
-					$columns[ evf_clean( $field['meta-key'] ) ] = evf_clean( $field['label'] );
+					$columns[ sanitize_key( $field['meta-key'] ) ] = evf_clean( $field['label'] );
 				}
 			}
 		}
@@ -376,7 +376,13 @@ class EVF_Admin_Entries {
 
 			if ( isset( $entry->meta[ $column_id] ) ) {
 				// Filter for entry meta data.
-				$value = apply_filters( 'everest_forms_html_field_value', $entry->meta[ $column_id ], $entry->meta[ $column_id ], $entry, 'export-csv' );
+				$value = $entry->meta[ $column_id ];
+
+				if ( is_serialized( $value ) ) {
+					$value = implode( ', ', maybe_unserialize( $value ) );
+				}
+
+				$value = apply_filters( 'everest_forms_html_field_value', $value, $entry->meta[ $column_id ], $entry, 'export-csv' );
 
 			} elseif ( in_array( $column_id, array( 'entry_id', 'status', 'date_created', 'user_device', 'user_ip_address' ), true ) ) {
 				// Default and custom handling.
