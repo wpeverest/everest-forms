@@ -277,16 +277,18 @@
 
 				.evf-panel-tab {
 					background-color: $accordion-content-bg;
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
 					padding: 15px 20px;
 					font-size: 14px;
 					font-weight: 600;
-					display: block;
 					color: $color-gray-darken;
 					border-bottom: 1px solid #e0e3e6;
 
 					.everest-forms-toggle-arrow {
-						float: right;
 						font-size: 14px;
+						margin-left: auto;
 					}
 
 					&.active {
