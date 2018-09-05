@@ -121,6 +121,14 @@ class EVF_Admin_Assets {
 		// EverestForms admin pages.
 		if ( in_array( $screen_id, evf_get_screen_ids() ) ) {
 			wp_enqueue_script( 'everest-forms-admin' );
+			wp_localize_script(
+				'everest-forms-admin',
+				'everest_forms_admin',
+				array(
+					'i18n_field_meta_key_error'  => esc_html__( 'Please enter in meta key with alphanumeric and underscores character.', 'everest-forms' ),
+					'i18n_field_css_class_error' => esc_html__( 'Please enter in classname with alphanumeric, underscores and hyphen character.', 'everest-forms' ),
+				)
+			);
 		}
 
 		// EverestForms builder pages.

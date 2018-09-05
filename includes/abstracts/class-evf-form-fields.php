@@ -325,6 +325,7 @@ abstract class EVF_Form_Fields {
 				), false );
 				$output  .= $this->field_element( 'text', $field, array(
 					'slug'  => 'meta-key',
+					'class' => 'evf-input-meta-key',
 					'value' => $value
 				), false );
 				$output  = $this->field_element( 'row', $field, array(
@@ -503,7 +504,7 @@ abstract class EVF_Form_Fields {
 					'tooltip'       => $tooltip,
 					'after_tooltip' => $toggle
 				), false );
-				$output .= $this->field_element( 'text', $field, array( 'slug' => 'css', 'value' => $value ), false );
+				$output .= $this->field_element( 'text', $field, array( 'slug' => 'css', 'class' => 'evf-input-css-class', 'value' => $value ), false );
 				$output = $this->field_element( 'row', $field, array( 'slug' => 'css', 'content' => $output ), false );
 				break;
 
@@ -630,7 +631,6 @@ abstract class EVF_Form_Fields {
 			die( esc_html__( 'You do no have permission.', 'everest-forms' ) );
 		}
 
-
 		// Check for form ID.
 		if ( ! isset( $_POST['form_id'] ) || empty( $_POST['form_id'] ) ) {
 			die( esc_html__( 'No form ID found', 'everest-forms' ) );
@@ -665,25 +665,23 @@ abstract class EVF_Form_Fields {
 
 		// Build Preview.
 		ob_start();
-
 		$this->field_preview( $field );
-		$prev    = ob_get_clean();
 		$preview = sprintf( '<div class="everest-forms-field everest-forms-field-%s %s %s" id="everest-forms-field-%s" data-field-id="%s" data-field-type="%s">', $field_type, $field_required, $field_class, $field['id'], $field['id'], $field_type );
-		$preview .= sprintf( '<div class="evf-field-action">' );
-		$preview .= sprintf( '<a href="#" class="everest-forms-field-duplicate" title="%s"><span class="dashicons dashicons-media-default"></span></a>', __( 'Duplicate Field', 'everest-forms' ) );
-		$preview .= sprintf( '<a href="#" class="everest-forms-field-delete" title="%s"><span class="dashicons dashicons-trash"></span></a>', __( 'Delete Field', 'everest-forms' ) );
-		$preview .= sprintf( '<a href="#" class="everest-forms-field-setting" title="%s"><span class="dashicons dashicons-admin-generic"></span></a>', __( 'Settings', 'everest-forms' ) );
-		$preview .= sprintf( '</div>' );
-		$preview .= $prev;
+			$preview .= sprintf( '<div class="evf-field-action">' );
+			$preview .= sprintf( '<a href="#" class="everest-forms-field-duplicate" title="%s"><span class="dashicons dashicons-media-default"></span></a>', __( 'Duplicate Field', 'everest-forms' ) );
+			$preview .= sprintf( '<a href="#" class="everest-forms-field-delete" title="%s"><span class="dashicons dashicons-trash"></span></a>', __( 'Delete Field', 'everest-forms' ) );
+			$preview .= sprintf( '<a href="#" class="everest-forms-field-setting" title="%s"><span class="dashicons dashicons-admin-generic"></span></a>', __( 'Settings', 'everest-forms' ) );
+			$preview .= sprintf( '</div>' );
+			$preview .= ob_get_clean();
 		$preview .= '</div>';
 
 		// Build Options.
 		$options = sprintf( '<div class="everest-forms-field-option everest-forms-field-option-%s" id="everest-forms-field-option-%s" data-field-id="%s">', esc_attr( $field['type'] ), $field['id'], $field['id'] );
-		$options .= sprintf( '<input type="hidden" name="form_fields[%s][id]" value="%s" class="everest-forms-field-option-hidden-id">', $field['id'], $field['id'] );
-		$options .= sprintf( '<input type="hidden" name="form_fields[%s][type]" value="%s" class="everest-forms-field-option-hidden-type">', $field['id'], esc_attr( $field['type'] ) );
-		ob_start();
-		$this->field_options( $field );
-		$options .= ob_get_clean();
+			$options .= sprintf( '<input type="hidden" name="form_fields[%s][id]" value="%s" class="everest-forms-field-option-hidden-id">', $field['id'], $field['id'] );
+			$options .= sprintf( '<input type="hidden" name="form_fields[%s][type]" value="%s" class="everest-forms-field-option-hidden-type">', $field['id'], esc_attr( $field['type'] ) );
+			ob_start();
+			$this->field_options( $field );
+			$options .= ob_get_clean();
 		$options .= '</div>';
 
 		$form_field_array = explode( '-', $field_id );
