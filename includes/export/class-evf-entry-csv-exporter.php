@@ -21,6 +21,13 @@ if ( ! class_exists( 'EVF_CSV_Exporter', false ) ) {
 class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 
 	/**
+	 * Form ID.
+	 *
+	 * @var int|mixed
+	 */
+	public $form_id;
+
+	/**
 	 * Type of export used in filter names.
 	 *
 	 * @var string
@@ -29,8 +36,11 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 
 	/**
 	 * Constructor.
+	 *
+	 * @param int $form_id Form ID.
 	 */
-	public function __construct() {
+	public function __construct( $form_id = '' ) {
+		$this->form_id      = absint( $form_id );
 		$this->column_names = $this->get_default_column_names();
 	}
 

@@ -14,13 +14,6 @@ defined( 'ABSPATH' ) || exit;
 abstract class EVF_CSV_Exporter {
 
 	/**
-	 * Form ID.
-	 *
-	 * @var int|mixed
-	 */
-	public $form_id;
-
-	/**
 	 * Type of export used in filter names.
 	 *
 	 * @var string
@@ -59,24 +52,6 @@ abstract class EVF_CSV_Exporter {
 	 * Prepare data that will be exported.
 	 */
 	abstract public function prepare_data_to_export();
-
-	/**
-	 * Set form ID.
-	 *
-	 * @param int $form_id Form ID.
-	 */
-	public function set_form_id( $form_id ) {
-		$this->form_id = absint( $form_id );
-	}
-
-	/**
-	 * Get form ID.
-	 *
-	 * @return int
-	 */
-	public function get_form_id() {
-		return $this->form_id;
-	}
 
 	/**
 	 * Return an array of supported column names and ids.

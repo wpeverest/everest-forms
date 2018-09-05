@@ -237,10 +237,9 @@ class EVF_Admin_Entries {
 			include_once EVF_ABSPATH . 'includes/export/class-evf-entry-csv-exporter.php';
 			$form_id   = absint( $_REQUEST['form_id'] ); // WPCS: input var okay, CSRF ok.
 			$form_name = strtolower( get_the_title( $form_id ) );
-			$exporter  = new EVF_Entry_CSV_Exporter();
 
 			if ( $form_name ) {
-				$exporter->set_form_id( $form_id );
+				$exporter = new EVF_Entry_CSV_Exporter( $form_id );
 				$exporter->set_filename( evf_get_csv_file_name( $form_name ) );
 			}
 
