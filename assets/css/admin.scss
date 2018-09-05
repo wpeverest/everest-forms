@@ -1107,7 +1107,7 @@ body.everest-forms-builder-setup,
 				.integration-status {
 					position: relative;
 
-					.toggle-switch {
+					.toggle-switch-outer {
 						width: 20px;
 						height: 20px;
 						display: block;
@@ -1288,6 +1288,7 @@ body.everest-forms-builder-setup,
 				padding: 10px;
 				display: flex;
 				align-items: center;
+				flex: 0 0 60px;
 				margin: 0 20px 0 0;
 				border-radius: 3px;
 				border: 1px solid #ced4da;
@@ -1298,17 +1299,10 @@ body.everest-forms-builder-setup,
 			}
 
 			.integration-info {
-				display: flex;
-				align-items: center;
-				flex: 1;
 
 				h3 {
-
-					margin-bottom:20px;
-				}
-
-				.integration-status {
-					margin-left: 5px;
+					margin-top: 0;
+					margin-bottom: 5px;
 				}
 
 				.toggle-switch{
@@ -2005,16 +1999,6 @@ img.ui-datepicker-trigger {
 	.everest-forms_page_evf-builder {
 		#everest-forms-builder {
 			width: 100%;
-
-			.everest-forms-tab-content {
-				height: 100vh;
-			}
-
-			.everest-forms-panel-content-wrap {
-				.everest-forms-panel-content {
-					height: 100vh;
-				}
-			}
 		}
 	}
 }

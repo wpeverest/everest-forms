@@ -62,7 +62,7 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 				<div class="everest-forms-integrations">
 					<div class="integration-header-info">
 						<div class="integration-status">
-							<span class="toggle-switch <?php echo esc_attr( $integration->account_status ); ?>"></span>
+							<span class="toggle-switch-outer <?php echo esc_attr( $integration->account_status ); ?>"></span>
 						</div>
 						<div class="integration-detail">
 							<figure class="logo">
