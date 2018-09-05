@@ -926,20 +926,13 @@
 		}
 
 		input:not(.ed_button),
-		textarea:not(.wp-editor-area),
-		select {
-			height: 32px;
+		textarea:not(.wp-editor-area) {
 			padding: 5px 10px;
 			color: $color-gray-darker;
 
 			&::placeholder {
 				color: $input-color;
 			}
-		}
-
-		input[type="checkbox"],
-		input[type="radio"] {
-			height: 16px;
 		}
 
 		textarea,
