@@ -206,19 +206,19 @@ class EVF_AJAX {
 		}
 
 		// Check for empty meta key.
-		$meta_data_changes = array();
+		$empty_meta_data = array();
 		if ( ! empty( $data['form_fields'] ) ) {
 			foreach ( $data['form_fields'] as $field_key => $form_field ) {
 				if ( empty( $form_field['meta-key'] ) ) {
-					$meta_data_changes[] = $form_field['label'];
+					$empty_meta_data[] = $form_field['label'];
 				}
 			}
 
-			if ( ! empty( $meta_data_changes ) ) {
+			if ( ! empty( $empty_meta_data ) ) {
 				wp_send_json_error(
 					array(
-						'meta_data'   => $meta_data_changes,
-						'errorMessage' => esc_html__( 'Form fields without meta key cannot be saved.', 'everest-forms' ),
+						'errorTitle'   => __( 'Meta Key missing', 'everest-forms' ),
+						'errorMessage' => sprintf( __( 'Please add Meta key for fields: %s', 'everest-forms' ), '<strong>' . implode( ', ', $empty_meta_data ) . '</strong>' ),
 					)
 				);
 			}

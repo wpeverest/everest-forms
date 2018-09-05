@@ -325,6 +325,7 @@ abstract class EVF_Form_Fields {
 				), false );
 				$output  .= $this->field_element( 'text', $field, array(
 					'slug'  => 'meta-key',
+					'class' => 'evf-input-meta-key',
 					'value' => $value
 				), false );
 				$output  = $this->field_element( 'row', $field, array(

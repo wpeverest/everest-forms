@@ -719,7 +719,19 @@
 						$this.find( '.loading-dot' ).remove();
 
 						if ( ! response.success ) {
-							window.alert( response.data.errorMessage );
+							$.alert({
+								title: response.data.errorTitle,
+								content: response.data.errorMessage,
+								icon: 'dashicons dashicons-warning',
+								type: 'red',
+								buttons: {
+									ok: {
+										text: evf_data.i18n_ok,
+										btnClass: 'btn-confirm',
+										keys: [ 'enter' ]
+									}
+								}
+							});
 						}
 
 						$( '.everest-forms-panel-content-wrap' ).unblock();
