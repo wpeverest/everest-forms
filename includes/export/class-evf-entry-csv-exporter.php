@@ -21,13 +21,6 @@ if ( ! class_exists( 'EVF_CSV_Exporter', false ) ) {
 class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 
 	/**
-	 * Form ID.
-	 *
-	 * @var int|mixed
-	 */
-	public $form_id;
-
-	/**
 	 * Type of export used in filter names.
 	 *
 	 * @var string
@@ -40,25 +33,6 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 	public function __construct() {
 		$this->form_id      = isset( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : 0;
 		$this->column_names = $this->get_default_column_names();
-	}
-
-	/**
-	 * Get a csv file name.
-	 *
-	 * File names consist of the handle, followed by the date, followed by a hash, .csv.
-	 *
-	 * @param string $handle File name.
-	 * @return bool|string The csv file name or false if cannot be determined.
-	 */
-	public function get_csv_file_name( $handle ) {
-		if ( function_exists( 'wp_hash' ) ) {
-			$date_suffix = date( 'Y-m-d', current_time( 'timestamp', true ) );
-			$hash_suffix = wp_hash( $handle );
-			return sanitize_file_name( implode( '-', array( 'evf-entry-export', strtolower( $handle ), $date_suffix, $hash_suffix ) ) . '.csv' );
-		} else {
-			evf_doing_it_wrong( __METHOD__, __( 'This method should not be called before plugins_loaded.', 'everest-forms' ), '1.3.0' );
-			return false;
-		}
 	}
 
 	/**

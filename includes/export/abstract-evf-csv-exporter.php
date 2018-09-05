@@ -14,6 +14,13 @@ defined( 'ABSPATH' ) || exit;
 abstract class EVF_CSV_Exporter {
 
 	/**
+	 * Form ID.
+	 *
+	 * @var int|mixed
+	 */
+	public $form_id;
+
+	/**
 	 * Type of export used in filter names.
 	 *
 	 * @var string

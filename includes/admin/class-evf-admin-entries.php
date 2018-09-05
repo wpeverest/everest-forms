@@ -120,14 +120,14 @@ class EVF_Admin_Entries {
 				$this->delete_entry();
 			}
 
-			// Empty Trash.
-			if ( isset( $_REQUEST['delete_all'] ) || isset( $_REQUEST['delete_all2'] ) ) { // WPCS: input var okay, CSRF ok.
-				$this->empty_trash();
-			}
-
 			// Export CSV.
 			if ( isset( $_REQUEST['export_action'] ) ) { // WPCS: input var okay, CSRF ok.
 				$this->export_csv();
+			}
+
+			// Empty Trash.
+			if ( isset( $_REQUEST['delete_all'] ) || isset( $_REQUEST['delete_all2'] ) ) { // WPCS: input var okay, CSRF ok.
+				$this->empty_trash();
 			}
 		}
 	}
@@ -226,6 +226,28 @@ class EVF_Admin_Entries {
 	}
 
 	/**
+	 * Do the entries export.
+	 *
+	 * @since 1.3.0
+	 */
+	public function export_csv() {
+		check_admin_referer( 'bulk-entries' );
+
+		if ( isset( $_REQUEST['form_id'] ) && current_user_can( 'export' ) ) { // WPCS: input var okay, CSRF ok.
+			include_once EVF_ABSPATH . 'includes/export/class-evf-entry-csv-exporter.php';
+			$form_id  = absint( $_REQUEST['form_id'] ); // WPCS: input var okay, CSRF ok.
+			$exporter = new EVF_Entry_CSV_Exporter();
+
+			if ( $form_id ) {
+				$form_name = strtolower( get_the_title( $form_id ) );
+				$exporter->set_filename( evf_get_csv_file_name( $form_name ) );
+			}
+
+			$exporter->export();
+		}
+	}
+
+	/**
 	 * Remove entry.
 	 *
 	 * @param  int $entry_id Entry ID.
@@ -261,24 +283,6 @@ class EVF_Admin_Entries {
 		);
 
 		return $update;
-	}
-
-	/**
-	 * Do the entries export.
-	 *
-	 * @since 1.3.0
-	 */
-	public function export_csv() {
-		if ( apply_filters( 'everest_forms_enable_csv_export', true ) && current_user_can( 'export' ) ) {
-			include_once EVF_ABSPATH . 'includes/export/class-evf-entry-csv-exporter.php';
-			$exporter = new EVF_Entry_CSV_Exporter();
-
-			if ( isset( $_REQUEST['form_id'] ) ) {
-				$exporter->set_filename( $exporter->get_csv_file_name( get_the_title( absint( $_REQUEST['form_id'] ) ) ) ); // WPCS: input var ok, sanitization ok.
-			}
-
-			$exporter->export();
-		}
 	}
 }
 
