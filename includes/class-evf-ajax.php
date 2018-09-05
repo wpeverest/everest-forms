@@ -229,8 +229,6 @@ class EVF_AJAX {
 		$data['form_fields'] = array_merge( array_flip( $structure ), $data['form_fields'] );
 		/* Fix for sorting field ordering end */
 
-		error_log( print_r( $data['form_fields'], true ) );
-
 		$form_id = EVF()->form->update( $data['id'], $data );
 
 		do_action( 'everest_forms_save_form', $form_id, $data );
