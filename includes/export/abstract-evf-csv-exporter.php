@@ -35,32 +35,11 @@ abstract class EVF_CSV_Exporter {
 	protected $filename = 'evf-export.csv';
 
 	/**
-	 * Batch limit.
-	 *
-	 * @var integer
-	 */
-	protected $limit = 50;
-
-	/**
-	 * Number exported.
-	 *
-	 * @var integer
-	 */
-	protected $exported_row_count = 0;
-
-	/**
 	 * Raw data to export.
 	 *
 	 * @var array
 	 */
 	protected $row_data = array();
-
-	/**
-	 * Total rows to export.
-	 *
-	 * @var integer
-	 */
-	protected $total_rows = 0;
 
 	/**
 	 * Columns ids and names.
@@ -80,6 +59,24 @@ abstract class EVF_CSV_Exporter {
 	 * Prepare data that will be exported.
 	 */
 	abstract public function prepare_data_to_export();
+
+	/**
+	 * Set form ID.
+	 *
+	 * @param int $form_id Form ID.
+	 */
+	public function set_form_id( $form_id ) {
+		$this->form_id = absint( $form_id );
+	}
+
+	/**
+	 * Get form ID.
+	 *
+	 * @return int
+	 */
+	public function get_form_id() {
+		return $this->form_id;
+	}
 
 	/**
 	 * Return an array of supported column names and ids.
@@ -294,35 +291,6 @@ abstract class EVF_CSV_Exporter {
 		}
 
 		$this->fputcsv( $buffer, $export_row );
-
-		++ $this->exported_row_count;
-	}
-
-	/**
-	 * Get batch limit.
-	 *
-	 * @return int
-	 */
-	public function get_limit() {
-		return apply_filters( "everest_forms_{$this->export_type}_export_batch_limit", $this->limit, $this );
-	}
-
-	/**
-	 * Set batch limit.
-	 *
-	 * @param int $limit Limit to export.
-	 */
-	public function set_limit( $limit ) {
-		$this->limit = absint( $limit );
-	}
-
-	/**
-	 * Get count of records exported.
-	 *
-	 * @return int
-	 */
-	public function get_total_exported() {
-		return $this->exported_row_count;
 	}
 
 	/**

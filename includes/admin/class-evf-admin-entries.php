@@ -235,11 +235,12 @@ class EVF_Admin_Entries {
 
 		if ( isset( $_REQUEST['form_id'] ) && current_user_can( 'export' ) ) { // WPCS: input var okay, CSRF ok.
 			include_once EVF_ABSPATH . 'includes/export/class-evf-entry-csv-exporter.php';
-			$form_id  = absint( $_REQUEST['form_id'] ); // WPCS: input var okay, CSRF ok.
-			$exporter = new EVF_Entry_CSV_Exporter();
+			$form_id   = absint( $_REQUEST['form_id'] ); // WPCS: input var okay, CSRF ok.
+			$form_name = strtolower( get_the_title( $form_id ) );
+			$exporter  = new EVF_Entry_CSV_Exporter();
 
-			if ( $form_id ) {
-				$form_name = strtolower( get_the_title( $form_id ) );
+			if ( $form_name ) {
+				$exporter->set_form_id( $form_id );
 				$exporter->set_filename( evf_get_csv_file_name( $form_name ) );
 			}
 

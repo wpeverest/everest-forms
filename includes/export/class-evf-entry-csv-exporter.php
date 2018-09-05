@@ -31,7 +31,6 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->form_id      = isset( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : 0;
 		$this->column_names = $this->get_default_column_names();
 	}
 
