@@ -698,13 +698,13 @@
 				}
 				/* fix end */
 
-				var new_form_data = form_data.concat(structure);
+				var new_form_data = form_data.concat( structure );
 				var data = {
 					action: 'everest_forms_save_form',
 					security: evf_data.evf_save_form,
 					form_data: JSON.stringify( new_form_data )
 				};
-				var $wrapper = $('#everest-forms-builder');
+
 				$.ajax({
 					url: evf_data.ajax_url,
 					data: data,
@@ -718,14 +718,11 @@
 						$this.removeClass( 'processing' );
 						$this.find( '.loading-dot' ).remove();
 
-						// Real time update for meta-key changes.
-						$.each( response.data.meta_data, function ( key, value ) {
-							form.find( 'input[name="form_fields[' + key + '][meta-key]"]' ).val( value );
-						} );
-
-						if ( typeof response.success === 'boolean' && response.success === true ) {
-							$( '.everest-forms-panel-content-wrap' ).unblock();
+						if ( ! response.success ) {
+							window.alert( response.data.errorMessage );
 						}
+
+						$( '.everest-forms-panel-content-wrap' ).unblock();
 					}
 				});
 			});

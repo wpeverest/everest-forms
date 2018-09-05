@@ -205,14 +205,22 @@ class EVF_AJAX {
 			}
 		}
 
-		// Set meta-key if empty value found.
+		// Check for empty meta key.
 		$meta_data_changes = array();
 		if ( ! empty( $data['form_fields'] ) ) {
-			foreach ( $data['form_fields'] as $field_key => &$form_field ) {
+			foreach ( $data['form_fields'] as $field_key => $form_field ) {
 				if ( empty( $form_field['meta-key'] ) ) {
-					$form_field['meta-key']          = evf_get_meta_key_field_option( $form_field );
-					$meta_data_changes[ $field_key ] = $form_field['meta-key'];
+					$meta_data_changes[] = $form_field['label'];
 				}
+			}
+
+			if ( ! empty( $meta_data_changes ) ) {
+				wp_send_json_error(
+					array(
+						'meta_data'   => $meta_data_changes,
+						'errorMessage' => esc_html__( 'Form fields without meta key cannot be saved.', 'everest-forms' ),
+					)
+				);
 			}
 		}
 
@@ -230,7 +238,6 @@ class EVF_AJAX {
 		} else {
 			wp_send_json_success(
 				array(
-					'meta_data'    => $meta_data_changes,
 					'form_name'    => esc_html( $data['settings']['form_title'] ),
 					'redirect_url' => admin_url( 'admin.php?page=evf-builder' ),
 				)
