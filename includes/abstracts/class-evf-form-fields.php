@@ -504,7 +504,7 @@ abstract class EVF_Form_Fields {
 					'tooltip'       => $tooltip,
 					'after_tooltip' => $toggle
 				), false );
-				$output .= $this->field_element( 'text', $field, array( 'slug' => 'css', 'value' => $value ), false );
+				$output .= $this->field_element( 'text', $field, array( 'slug' => 'css', 'class' => 'evf-input-css-class', 'value' => $value ), false );
 				$output = $this->field_element( 'row', $field, array( 'slug' => 'css', 'content' => $output ), false );
 				break;
 
