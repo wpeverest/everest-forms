@@ -141,7 +141,7 @@ module.exports = function( grunt ){
 					'<%= dirs.css %>/*.scss',
 					'<%= dirs.css %>/**/*.scss'
 				],
-				tasks: ['sass', 'rtlcss', 'cssmin']
+				tasks: ['sass', 'rtlcss', 'postcss', 'cssmin', 'concat']
 			},
 			js: {
 				files: [
