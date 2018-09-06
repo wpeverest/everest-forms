@@ -105,7 +105,7 @@ defined( 'ABSPATH' ) || exit;
 										</div>
 									<?php else: ?>
 										<div class="action-buttons upgrade-plan">
-											<a class="button upgrade-now" href="https://wpeverest.com/upgrade-plan"><?php esc_html_e( 'Upgrade Plan', 'everest-forms' ); ?></a>
+											<a class="button upgrade-now" href="https://wpeverest.com/wordpress-plugins/everest-forms/pricing/"><?php esc_html_e( 'Upgrade Plan', 'everest-forms' ); ?></a>
 										</div>
 									<?php endif; ?>
 								</div>
