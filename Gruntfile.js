@@ -300,7 +300,8 @@ module.exports = function( grunt ){
 		'sass',
 		'rtlcss',
 		'postcss',
-		'cssmin'
+		'cssmin',
+		'concat'
 	]);
 
 	// Only an alias to 'default' task.

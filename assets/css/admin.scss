@@ -390,21 +390,6 @@ body.everest-forms-builder-setup,
 				font-size: 20px;
 			}
 
-			textarea,
-			input[type="email"],
-			input[type="number"],
-			input:not(.select2-search__field)[type="text"],
-			select {
-				color: #555;
-				box-shadow: none;
-				border-radius: 3px;
-				border: 1px solid #ddd;
-
-				&:focus {
-					border-color: #bbb;
-				}
-			}
-
 			.form-table {
 				tr {
 					border-bottom: 1px solid #e4e4e4;
