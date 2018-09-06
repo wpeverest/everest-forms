@@ -340,7 +340,7 @@ class EVF_AJAX {
 			);
 		}
 
-		do_action( 'everest_forms_integration_account_connect', $_POST );
+		do_action( 'everest_forms_integration_account_connect_'.$_POST["source"], $_POST );
 	}
 
 	/**
