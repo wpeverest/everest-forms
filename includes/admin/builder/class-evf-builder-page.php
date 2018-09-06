@@ -52,7 +52,7 @@ if ( ! class_exists( 'EVF_Builder_Page', false ) ) :
 		 *
 		 * @var array
 		 */
-		protected $form_data = array();
+		public $form_data = array();
 
 		/**
 		 * Constructor.
