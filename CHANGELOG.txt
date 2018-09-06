@@ -2,6 +2,7 @@
 
 = 1.3.0 - 06-09-2018 =
 * Feature - CSV exporter for entries.
+* Feature - Introduced Addons page.
 * Fix - Sorting of forms fields order.
 * Fix - Place holder and default value for select.
 * Fix - Error tips during any changes on Meta Key.
