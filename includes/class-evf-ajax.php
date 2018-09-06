@@ -388,7 +388,7 @@ class EVF_AJAX {
 		} else {
 			wp_send_json_error(
 				array(
-					'error' => esc_html__( 'Connection missing', 'everest-forms-pro' ),
+					'error' => esc_html__( 'Connection missing', 'everest-forms' ),
 				)
 			);
 		}

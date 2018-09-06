@@ -391,9 +391,9 @@ body.everest-forms-builder-setup,
 			}
 
 			textarea,
-			input[type="text"],
 			input[type="email"],
 			input[type="number"],
+			input:not(.select2-search__field)[type="text"],
 			select {
 				color: #555;
 				box-shadow: none;

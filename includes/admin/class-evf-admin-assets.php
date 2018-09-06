@@ -77,6 +77,23 @@ class EVF_Admin_Assets {
 		wp_register_script( 'jquery-tiptip', EVF()->plugin_url() . '/assets/js/jquery-tiptip/jquery.tipTip' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true );
 		wp_register_script( 'evf-clipboard', EVF()->plugin_url() . '/assets/js/admin/evf-clipboard' . $suffix . '.js', array( 'jquery' ), EVF_VERSION );
 		wp_register_script( 'selectWoo', EVF()->plugin_url() . '/assets/js/selectWoo/selectWoo.full' . $suffix . '.js', array( 'jquery' ), '1.0.4' );
+		wp_register_script( 'evf-enhanced-select', EVF()->plugin_url() . '/assets/js/admin/evf-enhanced-select' . $suffix . '.js', array( 'jquery', 'selectWoo' ), EVF_VERSION );
+		wp_localize_script(
+			'evf-enhanced-select',
+			'evf_enhanced_select_params',
+			array(
+				'i18n_no_matches'           => _x( 'No matches found', 'enhanced select', 'everest-forms' ),
+				'i18n_ajax_error'           => _x( 'Loading failed', 'enhanced select', 'everest-forms' ),
+				'i18n_input_too_short_1'    => _x( 'Please enter 1 or more characters', 'enhanced select', 'everest-forms' ),
+				'i18n_input_too_short_n'    => _x( 'Please enter %qty% or more characters', 'enhanced select', 'everest-forms' ),
+				'i18n_input_too_long_1'     => _x( 'Please delete 1 character', 'enhanced select', 'everest-forms' ),
+				'i18n_input_too_long_n'     => _x( 'Please delete %qty% characters', 'enhanced select', 'everest-forms' ),
+				'i18n_selection_too_long_1' => _x( 'You can only select 1 item', 'enhanced select', 'everest-forms' ),
+				'i18n_selection_too_long_n' => _x( 'You can only select %qty% items', 'enhanced select', 'everest-forms' ),
+				'i18n_load_more'            => _x( 'Loading more results&hellip;', 'enhanced select', 'everest-forms' ),
+				'i18n_searching'            => _x( 'Searching&hellip;', 'enhanced select', 'everest-forms' ),
+			)
+		);
 		wp_register_script( 'evf-form-builder', EVF()->plugin_url() . '/assets/js/admin/form-builder' . $suffix . '.js', array( 'jquery', 'jquery-blockui', 'jquery-tiptip', 'jquery-ui-sortable', 'jquery-ui-widget', 'jquery-ui-core', 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-confirm', 'evf-clipboard' ), EVF_VERSION );
 		wp_localize_script( 'evf-form-builder', 'evf_data', apply_filters(
 			'everest_forms_builder_strings', array(
@@ -121,6 +138,10 @@ class EVF_Admin_Assets {
 		// EverestForms admin pages.
 		if ( in_array( $screen_id, evf_get_screen_ids() ) ) {
 			wp_enqueue_script( 'everest-forms-admin' );
+			wp_enqueue_script( 'evf-enhanced-select' );
+			wp_enqueue_script( 'jquery-ui-sortable' );
+			wp_enqueue_script( 'jquery-ui-autocomplete' );
+
 			wp_localize_script(
 				'everest-forms-admin',
 				'everest_forms_admin',
