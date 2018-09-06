@@ -39,7 +39,7 @@ class EVF_Forms_Features {
 			'EVF_Field_Country',
 			'EVF_Field_Single_Item',
 			'EVF_Field_Multiple_Item',
-			'EVF_Field_Total',
+			'EVF_Field_Payment_Total',
 		);
 
 		return array_merge( $fields, $pro_fields );
