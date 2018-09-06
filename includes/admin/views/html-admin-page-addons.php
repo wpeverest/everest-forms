@@ -44,7 +44,7 @@ defined( 'ABSPATH' ) || exit;
 
 		<br class="clear">
 		<p class="refresh">
-			<?php printf( esc_html__( 'Improve your forms with our premium add-ons. Missing an addon that you think you should be able to see? Click the %1$sRefresh Add-ons%2$s button above.', 'everest-forms' ), '<a href="' . esc_url( $refresh_url ) . '">', '</a>' ); ?>
+			<?php printf( esc_html__( 'Make your forms even more robust with our premium addons. Missing any addons? Click the %1$sRefresh Add-ons%2$s button above.', 'everest-forms' ), '<a href="' . esc_url( $refresh_url ) . '">', '</a>' ); ?>
 		</p>
 
 		<?php if ( '_featured' !== $current_section && $addons ) : ?>
