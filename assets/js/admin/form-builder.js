@@ -698,13 +698,13 @@
 				}
 				/* fix end */
 
-				var new_form_data = form_data.concat(structure);
+				var new_form_data = form_data.concat( structure );
 				var data = {
 					action: 'everest_forms_save_form',
 					security: evf_data.evf_save_form,
 					form_data: JSON.stringify( new_form_data )
 				};
-				var $wrapper = $('#everest-forms-builder');
+
 				$.ajax({
 					url: evf_data.ajax_url,
 					data: data,
@@ -718,9 +718,23 @@
 						$this.removeClass( 'processing' );
 						$this.find( '.loading-dot' ).remove();
 
-						if ( typeof response.success === 'boolean' && response.success === true ) {
-							$( '.everest-forms-panel-content-wrap' ).unblock();
+						if ( ! response.success ) {
+							$.alert({
+								title: response.data.errorTitle,
+								content: response.data.errorMessage,
+								icon: 'dashicons dashicons-warning',
+								type: 'red',
+								buttons: {
+									ok: {
+										text: evf_data.i18n_ok,
+										btnClass: 'btn-confirm',
+										keys: [ 'enter' ]
+									}
+								}
+							});
 						}
+
+						$( '.everest-forms-panel-content-wrap' ).unblock();
 					}
 				});
 			});

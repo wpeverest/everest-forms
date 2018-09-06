@@ -237,14 +237,34 @@ function evf_setcookie( $name, $value, $expire = 0, $secure = false ) {
 /**
  * Get a log file path.
  *
- * @since      1.0.0
+ * @since 1.0.0
  *
- * @param string $handle name.
- *
+ * @param  string $handle name.
  * @return string the log file path.
  */
 function evf_get_log_file_path( $handle ) {
 	return EVF_Log_Handler_File::get_log_file_path( $handle );
+}
+
+/**
+ * Get a csv file name.
+ *
+ * File names consist of the handle, followed by the date, followed by a hash, .csv.
+ *
+ * @since 1.3.0
+ *
+ * @param  string $handle Name.
+ * @return bool|string The csv file name or false if cannot be determined.
+ */
+function evf_get_csv_file_name( $handle ) {
+	if ( function_exists( 'wp_hash' ) ) {
+		$date_suffix = date( 'Y-m-d', current_time( 'timestamp', true ) );
+		$hash_suffix = wp_hash( $handle );
+		return sanitize_file_name( implode( '-', array( 'evf-entry-export', $handle, $date_suffix, $hash_suffix ) ) . '.csv' );
+	} else {
+		evf_doing_it_wrong( __METHOD__, __( 'This method should not be called before plugins_loaded.', 'everest-forms' ), '1.3.0' );
+		return false;
+	}
 }
 
 /**
@@ -982,7 +1002,6 @@ function evf_sanitize_classes( $classes, $convert = false ) {
  * @return array|bool
  */
 function evf_decode( $data ) {
-
 	if ( ! $data || empty( $data ) ) {
 		return false;
 	}
@@ -1000,7 +1019,6 @@ function evf_decode( $data ) {
  * @return string
  */
 function evf_encode( $data = false ) {
-
 	if ( empty( $data ) ) {
 		return false;
 	}
@@ -1084,6 +1102,12 @@ function evf_get_all_forms( $skip_disabled_entries = false ) {
 	return $forms;
 }
 
+/**
+ * Get random meta-key for field option.
+ *
+ * @param  array $field Field data array
+ * @return string
+ */
 function evf_get_meta_key_field_option( $field ) {
 	$random_number = rand( pow( 10, 3 ), pow( 10, 4 ) - 1 );
 	return strtolower( str_replace( array( ' ', '/_' ), array( '_', '' ), $field['label'] ) ) . '_' . $random_number;
@@ -1280,7 +1304,7 @@ function evf_get_all_form_fields_by_form_id( $form_id ) {
 
 	if ( ! empty( $form_data['form_fields'] ) ) {
 		foreach ( $form_data['form_fields'] as $form_fields ) {
-			if( ! empty( $form_fields['meta-key' ] ) && ! empty( $form_fields['label'] ) ) {
+			if ( isset( $form_fields['meta-key'], $form_fields['label'] ) ) {
 				$data[ $form_fields['meta-key'] ] = $form_fields['label'];
 			}
 		}

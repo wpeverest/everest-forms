@@ -189,7 +189,6 @@ class EVF_Form_Handler {
 
 		$data['form_field_id'] = ! empty( $data['form_field_id'] ) ? absint( $data['form_field_id'] ) : '0';
 
-
 		// Sanitize - don't allow tags for users who do not have appropriate cap
 		if ( ! current_user_can( 'unfiltered_html' ) ) {
 			array_walk_recursive( $data, 'wp_strip_all_tags' );

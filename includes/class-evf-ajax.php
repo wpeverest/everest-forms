@@ -205,12 +205,29 @@ class EVF_AJAX {
 			}
 		}
 
+		// Check for empty meta key.
+		$empty_meta_data = array();
+		if ( ! empty( $data['form_fields'] ) ) {
+			foreach ( $data['form_fields'] as $field_key => $form_field ) {
+				if ( empty( $form_field['meta-key'] ) ) {
+					$empty_meta_data[] = $form_field['label'];
+				}
+			}
+
+			if ( ! empty( $empty_meta_data ) ) {
+				wp_send_json_error(
+					array(
+						'errorTitle'   => __( 'Meta Key missing', 'everest-forms' ),
+						'errorMessage' => sprintf( __( 'Please add Meta key for fields: %s', 'everest-forms' ), '<strong>' . implode( ', ', $empty_meta_data ) . '</strong>' ),
+					)
+				);
+			}
+		}
+
 		/* Fix for sorting field ordering start */
 		$structure = evf_flatten_array( $data['structure'] );
 		$data['form_fields'] = array_merge( array_flip( $structure ), $data['form_fields'] );
 		/* Fix for sorting field ordering end */
-
-		error_log( print_r( $data['form_fields'], true ) );
 
 		$form_id = EVF()->form->update( $data['id'], $data );
 

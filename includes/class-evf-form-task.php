@@ -360,7 +360,6 @@ class EVF_Form_Task {
 		$emails->__set( 'reply_to', isset( $email['user_email'] ) ? $email['user_email'] : $email['sender_address'] );
 		$emails->__set( 'attachments', apply_filters( 'everest_forms_email_file_attachments', $attachment, $entry, $form_data ) );
 
-// echo '<pre>' . print_r( $emails, true ) . '</pre>';
 		// Send entry email.
 		foreach ( $email['address'] as $address ) {
 			$emails->send( trim( $address ), $email['subject'], $email['message'] );
