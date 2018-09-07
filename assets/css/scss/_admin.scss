@@ -1085,7 +1085,8 @@
 						border: 1px solid $button-color;
 					}
 
-					&.remove {
+					&.remove,
+					&.removePayment {
 
 						&:hover {
 							background: $color-alert-danger;
@@ -1102,7 +1103,8 @@
 			}
 		}
 
-		.everest-forms-field-option-payment-multiple {
+		.everest-forms-field-option-payment-multiple,
+		.everest-forms-field-option-payment-checkbox {
 
 			.everest-forms-field-option-row {
 

@@ -885,7 +885,7 @@ function evf_get_form_fields( $form = false, $whitelist = array() ) {
 		'file-upload',
 		'image-upload',
 		'payment-single',
-		'payment-radio',
+		'payment-multiple',
 		'payment-checkbox',
 		'payment-total',
 	);

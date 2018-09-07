@@ -18,7 +18,7 @@ class EVF_Field_Payment_Radio extends EVF_Form_Fields {
 	 */
 	public function __construct() {
 		$this->name   = esc_html__( 'Multiple Choice', 'everest-forms' );
-		$this->type   = 'payment-radio';
+		$this->type   = 'payment-multiple';
 		$this->icon   = 'evf-icon evf-icon-multiple-choices';
 		$this->order  = 20;
 		$this->group  = 'payment';
