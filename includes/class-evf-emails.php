@@ -281,7 +281,7 @@ class EVF_Emails {
 	 *
 	 * @return bool
 	 */
-	public function send( $to, $subject, $message, $attachments = array() ) {
+	public function send( $to, $subject, $message, $attachments = '' ) {
 		if ( ! did_action( 'init' ) && ! did_action( 'admin_init' ) ) {
 			evf_doing_it_wrong( __FUNCTION__, __( 'You cannot send emails with EVF_Emails until init/admin_init has been reached', 'everest-forms' ), null );
 			return false;
