@@ -4,7 +4,7 @@ Tags: contact form, form, form builder, contact, custom form
 Requires at least: 4.0
 Tested up to: 4.9
 Requires PHP: 5.4
-Stable tag: 1.2.4
+Stable tag: 1.3.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -84,9 +84,15 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 
 == Changelog ==
 
-= 1.x.x - XX-09-2018 =
+= 1.3.0 - 07-09-2018 =
 * Feature - CSV exporter for entries.
+* Feature - Introduced Addons page.
 * Fix - Sorting of forms fields order.
+* Fix - Place holder and default value for select.
+* Fix - Error tips during any changes on Meta Key.
+* Tweak - Meta key field required.
+* Dev - Integration pannel for Everest Forms Pro.
+* Dev - Everest Forms Pro fields registered.
 
 = 1.2.4 - 30-07-2018 =
 * Feature - Smart Tags.
