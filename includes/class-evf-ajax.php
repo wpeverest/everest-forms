@@ -224,10 +224,11 @@ class EVF_AJAX {
 			}
 		}
 
-		/* Fix for sorting field ordering start */
-		$structure = evf_flatten_array( $data['structure'] );
-		$data['form_fields'] = array_merge( array_flip( $structure ), $data['form_fields'] );
-		/* Fix for sorting field ordering end */
+		// Fix for sorting field ordering.
+		if ( isset( $data['structure'], $data['form_fields'] ) ) {
+			$structure = evf_flatten_array( $data['structure'] );
+			$data['form_fields'] = array_merge( array_flip( $structure ), $data['form_fields'] );
+		}
 
 		$form_id = EVF()->form->update( $data['id'], $data );
 
