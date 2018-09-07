@@ -1431,7 +1431,7 @@ function evf_get_license_plan() {
 			}
 		}
 
-		return $license_data->item_plan;
+		return isset( $license_data->item_plan ) ? $license_data->item_plan : false;
 	}
 
 	return false;
