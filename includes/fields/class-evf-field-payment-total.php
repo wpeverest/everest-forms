@@ -1,6 +1,6 @@
 <?php
 /**
- * Total field
+ * Payment Total field
  *
  * @package EverestForms\Fields
  * @since   1.2.0
@@ -9,9 +9,9 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * EVF_Field_Total Class.
+ * EVF_Field_Payment_Total Class.
  */
-class EVF_Field_Total extends EVF_Form_Fields {
+class EVF_Field_Payment_Total extends EVF_Form_Fields {
 
 	/**
 	 * Constructor.
@@ -20,7 +20,7 @@ class EVF_Field_Total extends EVF_Form_Fields {
 		$this->name   = esc_html__( 'Total', 'everest-forms' );
 		$this->type   = 'payment-total';
 		$this->icon   = 'evf-icon evf-icon-total';
-		$this->order  = 30;
+		$this->order  = 40;
 		$this->group  = 'payment';
 		$this->is_pro = true;
 

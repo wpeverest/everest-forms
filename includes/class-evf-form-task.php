@@ -347,13 +347,9 @@ class EVF_Form_Task {
 			}
 		}
 
-		$email      = apply_filters( 'everest_forms_entry_email_atts', $email, $fields, $entry, $form_data );
-		$attachment = apply_filters( 'everest_forms_email_file_attachments', array(), $entry, $form_data );
+		$email = apply_filters( 'everest_forms_entry_email_atts', $email, $fields, $entry, $form_data );
 
-		// User and admin attachment.
-		$user_attachement  = isset( $attachments['user'] ) ? $attachments['user'] : '';
-		$admin_attachement = isset( $attachments['admin'] ) ? $attachments['admin'] : '';
-
+		$attachment = '';
 		// Create new email.
 		$emails = new EVF_Emails();
 		$emails->__set( 'form_data', $form_data );
@@ -362,7 +358,7 @@ class EVF_Form_Task {
 		$emails->__set( 'from_name', $email['sender_name'] );
 		$emails->__set( 'from_address', $email['sender_address'] );
 		$emails->__set( 'reply_to', isset( $email['user_email'] ) ? $email['user_email'] : $email['sender_address'] );
-		$emails->__set( 'attachments', apply_filters( 'everest_forms_email_file_attachments', $admin_attachement, $entry, $form_data ) );
+		$emails->__set( 'attachments', apply_filters( 'everest_forms_email_file_attachments', $attachment, $entry, $form_data, 'entry-email' ) );
 
 		// Send entry email.
 		foreach ( $email['address'] as $address ) {
@@ -378,7 +374,7 @@ class EVF_Form_Task {
 			$emails->__set( 'from_name', $email['sender_name'] );
 			$emails->__set( 'from_address', $email['sender_address'] );
 			$emails->__set( 'reply_to', isset( $email['sender_address'] ) ? $email['sender_address'] : false );
-			$emails->__set( 'attachments', apply_filters( 'everest_forms_admin_email_file_attachment', $user_attachement, $entry, $form_data ) );
+			$emails->__set( 'attachments', apply_filters( 'everest_forms_email_file_attachments', $attachment, $entry, $form_data, 'confirmation-email' ) );
 			$emails->send( trim( $email['user_email'] ), $email['confirmation_subject'], $email['confirmation_message'] );
 		}
 	}

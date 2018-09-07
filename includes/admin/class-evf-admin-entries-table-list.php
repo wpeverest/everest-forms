@@ -81,7 +81,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	public function get_columns() {
 		$columns            = array();
 		$columns['cb']      = '<input type="checkbox" />';
-		$columns            = apply_filters( 'everest_forms_entries_table_form_fields_columns', $this->get_columns_form_fields( $columns ) );
+		$columns            = apply_filters( 'everest_forms_entries_table_form_fields_columns', $this->get_columns_form_fields( $columns ), $this->form_id, $this->form_data );
 		$columns['date']    = esc_html__( 'Date Created', 'everest-forms' );
 		$columns['actions'] = esc_html__( 'Actions', 'everest-forms' );
 
