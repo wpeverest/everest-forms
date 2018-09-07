@@ -885,8 +885,8 @@ function evf_get_form_fields( $form = false, $whitelist = array() ) {
 		'file-upload',
 		'image-upload',
 		'payment-single',
-		'payment-multiple',
-		'payment-select',
+		'payment-radio',
+		'payment-checkbox',
 		'payment-total',
 	);
 	$allowed_form_fields = apply_filters( 'everest_forms_allowed_form_fields', $allowed_form_fields );

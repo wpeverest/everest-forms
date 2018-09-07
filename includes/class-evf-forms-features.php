@@ -37,8 +37,9 @@ class EVF_Forms_Features {
 			'EVF_Field_Title',
 			'EVF_Field_Address',
 			'EVF_Field_Country',
-			'EVF_Field_Single_Item',
-			'EVF_Field_Multiple_Item',
+			'EVF_Field_Payment_Single',
+			'EVF_Field_Payment_Radio',
+			'EVF_Field_Payment_Checkbox',
 			'EVF_Field_Payment_Total',
 		);
 

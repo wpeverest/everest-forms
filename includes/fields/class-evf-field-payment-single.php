@@ -1,6 +1,6 @@
 <?php
 /**
- * Single Item field
+ * Payment Single Item field
  *
  * @package EverestForms\Fields
  * @since   1.2.0
@@ -9,9 +9,9 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * EVF_Field_Single_Item Class.
+ * EVF_Field_Payment_Single Class.
  */
-class EVF_Field_Single_Item extends EVF_Form_Fields {
+class EVF_Field_Payment_Single extends EVF_Form_Fields {
 
 	/**
 	 * Constructor.

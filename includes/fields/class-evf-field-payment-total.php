@@ -20,7 +20,7 @@ class EVF_Field_Payment_Total extends EVF_Form_Fields {
 		$this->name   = esc_html__( 'Total', 'everest-forms' );
 		$this->type   = 'payment-total';
 		$this->icon   = 'evf-icon evf-icon-total';
-		$this->order  = 30;
+		$this->order  = 40;
 		$this->group  = 'payment';
 		$this->is_pro = true;
 
