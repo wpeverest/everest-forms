@@ -36,6 +36,7 @@ Check [documentation](http://docs.wpeverest.com/docs/everest-forms/)
 * Multiple email recipient
 * Smart Tags for dynamic email message, subject and more.
 * View Form entries from your dashboard
+* CSV exporter for entries
 * Provides two different form template design
 * Google Recaptcha Supported
 * Editable successful form submission message
@@ -43,6 +44,19 @@ Check [documentation](http://docs.wpeverest.com/docs/everest-forms/)
 * Editable Email Settings
 * Editable form validation message
 * Translation ready
+
+### Premium Features and Addons
+* 9 Advanced fields (Image upload, file upload, Hidden Field, Phone, Password, Custom HTML, Section Title, Address, Country)
+
+* [MailChimp](https://wpeverest.com/wordpress-plugins/everest-forms/mailchimp/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows your users to subscribe to MailChimp via Everest Forms
+
+* [ConvertKit](https://wpeverest.com/wordpress-plugins/everest-forms/convertkit/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to connect your form with ConvertKit to collect subscribers
+
+* [PDF Form Submission](https://wpeverest.com/wordpress-plugins/everest-forms/pdf-form-submission/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Create PDF for  submitted form entries and attach to emails as well.
+
+* [PayPal Standard](https://wpeverest.com/wordpress-plugins/everest-forms/paypal-standard/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to connect your forms site with PayPal to easily collect payments, donations, and online orders.
+
+* [Geolocation](https://wpeverest.com/wordpress-plugins/everest-forms/geolocation/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to collect geolocation data like IP, Country, Postal and zip code along with the form submission.
 
 ### What's Next
 
