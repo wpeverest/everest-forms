@@ -84,15 +84,17 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 
 == Changelog ==
 
-= 1.3.0 - 07-09-2018 =
+= 1.3.0 - 11-09-2018 =
 * Feature - CSV exporter for entries.
-* Feature - Introduced Addons page.
-* Fix - Sorting of forms fields order.
-* Fix - Place holder and default value for select.
-* Fix - Error tips during any changes on Meta Key.
-* Tweak - Meta key field required.
+* Feature - Introduced Addons fetaures page.
+* Fix - Navigation tab colors.
+* Fix - Meta key field required.
+* Fix - Ordering of forms fields after sorting.
+* Fix - Placeholder and default value for select.
+* Fix - Validation on change for meta key and CSS class name.
 * Dev - Integration pannel for Everest Forms Pro.
 * Dev - Everest Forms Pro fields registered.
+* Deprecated - `evf_get_us_states` function is deprecated.
 
 = 1.2.4 - 30-07-2018 =
 * Feature - Smart Tags.
