@@ -304,7 +304,6 @@ body.everest-forms-builder-setup,
 				display: block;
 				cursor: pointer;
 				font-size: 12px;
-				font-weight: 400;
 				line-height: 24px;
 				padding: 10px 30px;
 				border: none transparent;
@@ -368,8 +367,7 @@ body.everest-forms-builder-setup,
 
 				&.nav-tab-active {
 					margin-bottom: 0;
-					color: $color-gray-darker;
-					background-color: #f1f1f1;
+					background-color: #8e42eb;
 
 					&:focus {
 						box-shadow: none;
@@ -381,7 +379,7 @@ body.everest-forms-builder-setup,
 				}
 
 				&:hover:not(.nav-tab-active) {
-					background: $header-shade;
+					background: #7435c1;
 				}
 			}
 		}
@@ -664,8 +662,8 @@ body.everest-forms-builder-setup,
 						width: 34px;
 						height: 34px;
 						margin-left: -4px;
+						background-color: #8e42eb;
 						border-radius: 0 3px 3px 0;
-						background-color: $header-shade;
 
 						&.copy-shortcode {
 							font-size: 16px;

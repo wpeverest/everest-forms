@@ -295,8 +295,8 @@
 
 					&.active {
 						background-color: $color-white;
+						color: $everestforms;
 						position: relative;
-						color: $color-brand-secondary;
 
 						&::after {
 							position: absolute;

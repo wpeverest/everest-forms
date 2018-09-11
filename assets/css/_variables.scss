@@ -2,13 +2,13 @@
  * EverestForms CSS Variables
  */
 
-$everestforms:   	#7f5aec;
+$everestforms:   	#7e3bd0;
 $green:         	#51cf66;
 $red:           	#a00;
 $orange:        	#ffba00;
 $blue:          	#2ea2cc;
 
-$primary:           #ff0033;                                  // Primary color for buttons (alt)
+$primary:           #7e3bd0;                                  // Primary color for buttons (alt)
 $primarytext:       desaturate(lighten($primary, 52%), 18%);  // Text on primary color bg
 
 $secondary:         desaturate(lighten($primary, 44%), 91%);  // Secondary buttons
