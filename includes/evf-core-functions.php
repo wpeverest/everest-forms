@@ -1261,7 +1261,7 @@ function evf_get_form_data_by_meta_key( $form_id, $meta_key ) {
 
 	if ( ! empty( $form_fields ) ) {
 		foreach( $form_fields as $field ) {
-			if ( $meta_key == $field['meta-key'] ) {
+			if ( isset( $field['meta-key'] ) && $meta_key == $field['meta-key'] ) {
 				return $field['label'];
 			}
 		}

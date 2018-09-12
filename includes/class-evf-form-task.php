@@ -443,6 +443,11 @@ class EVF_Form_Task {
 			foreach ( $fields as $field ) {
 				$field = apply_filters( 'everest_forms_entry_save_fields', $field, $form_data, $entry_id );
 
+				// Add only whitelisted fields to entry meta.
+				if ( in_array( $field['type'], array( 'html', 'title' ), true ) ) {
+					continue;
+				}
+
 				if ( isset( $field['value'], $field['meta_key'] ) && '' !== $field['value'] ) {
 					$field_value    = is_array( $field['value'] ) ? serialize( $field['value'] ) : $field['value'];
 					$entry_metadata = array(

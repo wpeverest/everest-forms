@@ -208,9 +208,9 @@ class EVF_AJAX {
 		// Check for empty meta key.
 		$empty_meta_data = array();
 		if ( ! empty( $data['form_fields'] ) ) {
-			foreach ( $data['form_fields'] as $field_key => $form_field ) {
-				if ( empty( $form_field['meta-key'] ) ) {
-					$empty_meta_data[] = $form_field['label'];
+			foreach ( $data['form_fields'] as $field ) {
+				if ( empty( $field['meta-key'] ) && ! in_array( $field['type'], array( 'html', 'title' ), true ) ) {
+					$empty_meta_data[] = $field['label'];
 				}
 			}
 
