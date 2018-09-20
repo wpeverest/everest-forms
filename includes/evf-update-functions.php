@@ -127,3 +127,24 @@ function evf_update_120_db_rename_options() {
 function evf_update_120_db_version() {
 	EVF_Install::update_db_version( '1.2.0' );
 }
+
+/**
+ * Change wp_evf_sessions schema to use a bigint auto increment field
+ * instead of char(32) field as the primary key. Doing this change primarily
+ * as it should reduce the occurrence of deadlocks, but also because it is
+ * not a good practice to use a char(32) field as the primary key of a table.
+ */
+function evf_update_130_change_evf_sessions_schema() {
+	global $wpdb;
+
+	$wpdb->query(
+		"ALTER TABLE `{$wpdb->prefix}evf_sessions` DROP PRIMARY KEY, DROP KEY `session_id`, ADD PRIMARY KEY(`session_id`), ADD UNIQUE KEY(`session_key`)"
+	);
+}
+
+/**
+ * Update DB Version.
+ */
+function evf_update_130_db_version() {
+	EVF_Install::update_db_version( '1.3.0' );
+}

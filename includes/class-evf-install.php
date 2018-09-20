@@ -43,6 +43,10 @@ class EVF_Install {
 			'evf_update_120_db_rename_options',
 			'evf_update_120_db_version',
 		),
+		'1.3.0' => array(
+			'evf_update_130_change_evf_sessions_schema',
+			'evf_update_130_db_version',
+		),
 	);
 
 	/**
@@ -357,8 +361,8 @@ CREATE TABLE {$wpdb->prefix}evf_sessions (
   session_key char(32) NOT NULL,
   session_value longtext NOT NULL,
   session_expiry BIGINT UNSIGNED NOT NULL,
-  PRIMARY KEY  (session_key),
-  UNIQUE KEY session_id (session_id)
+  PRIMARY KEY  (session_id),
+  UNIQUE KEY session_key (session_key)
 ) $charset_collate;
 		";
 

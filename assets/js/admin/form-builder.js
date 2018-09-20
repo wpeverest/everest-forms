@@ -1092,9 +1092,23 @@
 						var field_type  = $( this ).data('field-type'),
 							field_id    = $( this ).data('field-id'),
 							field_label = $( this ).find('.label-title span').first().text();
+							field_to_be_restricted=[];
+							field_to_be_restricted = [
+								'html',
+								'title',
+								'address',
+								'image-upload',
+								'file-upload',
+								'date',
+								'payment-multiple',
+								'payment-single',
+								'payment-checkbox',
+								'payment-total',
+							];
 
-						var allElToAppend =	'<option class="evf-conditional-fields" data-field_type="'+field_type+'" data-field_id="'+field_id+'" value="'+field_id+'">'+field_label+'</option>';
-					fields.eq(index).append(allElToAppend);
+						if( $.inArray( field_type, field_to_be_restricted ) === -1 ){
+							fields.eq(index).append('<option class="evf-conditional-fields" data-field_type="'+field_type+'" data-field_id="'+field_id+'" value="'+field_id+'">'+field_label+'</option>');
+						}
 					});
 				} else {
 
