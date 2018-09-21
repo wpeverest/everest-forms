@@ -1104,6 +1104,7 @@
 								'payment-single',
 								'payment-checkbox',
 								'payment-total',
+								dragged_el.attr('data-field-type'),
 							];
 
 						if( $.inArray( field_type, field_to_be_restricted ) === -1 ){
