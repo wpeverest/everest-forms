@@ -181,7 +181,7 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 				$field_required
 			);
 
-			printf( '<label class="everest-forms-field-label-inline" for="everest-forms-%d-field_%d_%d">%s</label>', $form_id, $field['id'], $key, wp_kses_post( $choice['label'] ) );
+			printf( '<label class="everest-forms-field-label-inline" for="everest-forms-%d-field_%s_%d">%s</label>', $form_id, $field['id'], $key, wp_kses_post( $choice['label'] ) );
 
 			echo '</li>';
 		}
