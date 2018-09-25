@@ -3,7 +3,7 @@
  * Template Loader
  *
  * @package EverestForms\Classes
- * @version 1.0.0
+ * @version 1.3.1
  */
 
 defined( 'ABSPATH' ) || exit;
