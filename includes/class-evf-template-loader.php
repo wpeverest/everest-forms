@@ -2,16 +2,14 @@
 /**
  * Template Loader
  *
- * @version 1.0.0
  * @package EverestForms\Classes
+ * @version 1.0.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
- * EVF_Template_Loader Class.
+ * Template loader class.
  */
 class EVF_Template_Loader {
 
@@ -91,3 +89,5 @@ class EVF_Template_Loader {
 		return array_unique( $search_files );
 	}
 }
+
+add_action( 'init', array( 'WC_Template_Loader', 'init' ) );
