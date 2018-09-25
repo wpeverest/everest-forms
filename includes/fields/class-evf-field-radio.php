@@ -145,8 +145,8 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 	 * @param array $form_data
 	 */
 	public function field_display( $field, $field_atts, $form_data ) {
-
  		// Setup and sanitize the necessary data
+		$conditional_rules  = $field['properties']['inputs']['primary']['attr']['conditional_rules'];
 		$field          = apply_filters( 'everest_forms_radio_field_display', $field, $field_atts, $form_data );
 		$field_required = ! empty( $field['required'] ) ? ' required' : '';
 		$field_class    = implode( ' ', array_map( 'sanitize_html_class', $field_atts['input_class'] ) );
@@ -160,7 +160,12 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 			}
 		}
 		// List.
-		printf( '<ul id="%s" class="%s" %s>', $field_id, $field_class, $field_data );
+		if( ! empty($conditional_rules) ){
+			printf( '<ul id="%s" class="%s" %s conditional_rules="%s">', $field_id, $field_class, $field_data,$conditional_rules );
+
+		}else {
+			printf( '<ul id="%s" class="%s" %s>', $field_id, $field_class, $field_data );
+		}
 
 		foreach ( $choices as $key => $choice ) {
 

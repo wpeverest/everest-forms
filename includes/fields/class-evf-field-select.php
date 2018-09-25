@@ -113,6 +113,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 	public function field_display( $field, $field_atts, $form_data ) {
 
 		// Setup and sanitize the necessary data.
+		$conditional_rules  = $field['properties']['inputs']['primary']['attr']['conditional_rules'];
 		$field             = apply_filters( 'everest_forms_select_field_display', $field, $field_atts, $form_data );
 		$field_placeholder = ! empty( $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : '';
 		$field_required    = ! empty( $field['required'] ) ? ' required' : '';
@@ -137,13 +138,24 @@ class EVF_Field_Select extends EVF_Form_Fields {
 		}
 
 		// Primary select field.
-		printf( '<select name="everest_forms[form_fields][%s]" id="%s" class="%s" %s %s>',
-			$field['id'],
-			$field_id,
-			$field_class,
-			$field_required,
-			$field_data
-		);
+		if( ! empty($conditional_rules) ){
+			printf( '<select name="everest_forms[form_fields][%s]" id="%s" class="%s" %s %s conditional_rules="%s">',
+				$field['id'],
+				$field_id,
+				$field_class,
+				$field_required,
+				$field_data,
+				$conditional_rules
+			);
+		}else {
+			printf( '<select name="everest_forms[form_fields][%s]" id="%s" class="%s" %s %s>',
+				$field['id'],
+				$field_id,
+				$field_class,
+				$field_required,
+				$field_data
+			);
+		}
 
 		// Optional placeholder.
 		if ( ! empty( $field_placeholder ) ) {
