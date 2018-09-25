@@ -90,4 +90,4 @@ class EVF_Template_Loader {
 	}
 }
 
-add_action( 'init', array( 'WC_Template_Loader', 'init' ) );
+add_action( 'init', array( 'EVF_Template_Loader', 'init' ) );
