@@ -270,8 +270,8 @@ final class EverestForms {
 		include_once EVF_ABSPATH . 'includes/evf-template-hooks.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-template-loader.php';  // Template Loader.
 		include_once EVF_ABSPATH . 'includes/class-evf-frontend-scripts.php'; // Frontend Scripts.
-		include_once EVF_ABSPATH . 'includes/class-evf-preview.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-shortcodes.php';       // Shortcodes class.
+		include_once EVF_ABSPATH . 'includes/class-evf-form-preview.php';     // Form preview class.
 		include_once EVF_ABSPATH . 'includes/class-evf-session-handler.php';  // Session handler class.
 	}
 
