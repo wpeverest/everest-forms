@@ -42,7 +42,7 @@ class EVF_Form_Preview {
 	 * Hook in methods.
 	 */
 	public static function init() {
-		self::$form_id = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : false;
+		self::$form_id = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
 
 		if ( isset( $_GET['everest_forms'] ) && 'preview' === $_GET['everest_forms'] ) {
 			add_action( 'pre_get_posts', array( __CLASS__, 'pre_get_posts' ) );
