@@ -114,8 +114,8 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 
 		if ( current_user_can( $post_type_object->cap->edit_post, $posts->ID ) ) {
 			$preview_link   = add_query_arg( array(
-				'form_id'       => absint( $posts->ID ),
-				'everest_forms' => 'preview',
+				'form_id'     => absint( $posts->ID ),
+				'evf_preview' => 'true',
 			), home_url() );
 			$duplicate_link = wp_nonce_url( admin_url( 'admin.php?page=evf-builder&action=duplicate_form&form_id=' . absint( $posts->ID ) ), 'everest-forms-duplicate-form_' . $posts->ID );
 

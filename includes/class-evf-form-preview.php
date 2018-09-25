@@ -44,7 +44,7 @@ class EVF_Form_Preview {
 	public static function init() {
 		self::$form_id = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
 
-		if ( isset( $_GET['everest_forms'] ) && 'preview' === $_GET['everest_forms'] ) {
+		if ( isset( $_GET['evf_preview'] ) ) {
 			add_action( 'pre_get_posts', array( __CLASS__, 'pre_get_posts' ) );
 			add_filter( 'template_include', array( __CLASS__, 'template_include' ) );
 			add_action( 'template_redirect', array( __CLASS__, 'form_preview_init' ) );
