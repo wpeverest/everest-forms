@@ -33,7 +33,7 @@ class EVF_Template_Loader {
 	public static function init() {
 		self::$form_id = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
 
-		if ( isset( $_GET['evf_preview'] ) ) {
+		if ( ! is_admin() && isset( $_GET['evf_preview'] ) ) {
 			add_action( 'pre_get_posts', array( __CLASS__, 'pre_get_posts' ) );
 			add_filter( 'template_include', array( __CLASS__, 'template_include' ) );
 			add_action( 'template_redirect', array( __CLASS__, 'form_preview_init' ) );
@@ -48,8 +48,8 @@ class EVF_Template_Loader {
 	 * @param WP_Query $q Query instance.
 	 */
 	public static function pre_get_posts( $q ) {
-		// We only want to affect the main query.
-		if ( ! is_admin() && $q->is_main_query() ) {
+		// Limit one post to query.
+		if ( $q->is_main_query() ) {
 			$q->set( 'posts_per_page', 1 );
 		}
 	}
@@ -83,7 +83,9 @@ class EVF_Template_Loader {
 			return $template;
 		}
 
-		if ( $default_file = self::get_template_loader_default_file() ) {
+		$default_file = self::get_template_loader_default_file();
+
+		if ( $default_file ) {
 			/**
 			 * Filter hook to choose which files to find before EverestForms does it's own logic.
 			 *
