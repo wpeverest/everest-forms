@@ -1100,10 +1100,6 @@
 								'image-upload',
 								'file-upload',
 								'date',
-								'payment-multiple',
-								'payment-single',
-								'payment-checkbox',
-								'payment-total',
 								dragged_el.attr('data-field-type'),
 							];
 
