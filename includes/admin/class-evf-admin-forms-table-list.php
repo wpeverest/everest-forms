@@ -112,10 +112,20 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 			}
 		}
 
-		$duplicate_link = wp_nonce_url( admin_url( 'admin.php?page=evf-builder&action=duplicate_form&form_id=' . absint( $posts->ID ) ), 'everest-forms-duplicate-form_' . $posts->ID );
+		if ( current_user_can( $post_type_object->cap->edit_post, $posts->ID ) ) {
+			$preview_link   = add_query_arg( array(
+				'form_id'     => absint( $posts->ID ),
+				'evf_preview' => 'true',
+			), home_url() );
+			$duplicate_link = wp_nonce_url( admin_url( 'admin.php?page=evf-builder&action=duplicate_form&form_id=' . absint( $posts->ID ) ), 'everest-forms-duplicate-form_' . $posts->ID );
 
-		if ( current_user_can( $post_type_object->cap->edit_post, $posts->ID ) && 'publish' === $post_status ) {
-			$actions['duplicate'] = '<a href="' . esc_url( $duplicate_link ) . '">' . __( 'Duplicate', 'everest-forms' ) . '</a>';
+			if ( 'trash' !== $post_status ) {
+				$actions['view'] = '<a href="' . esc_url( $preview_link ) . '" rel="bookmark" target="_blank">' . __( 'Preview', 'everest-forms' ) . '</a>';
+			}
+
+			if ( 'publish' === $post_status ) {
+				$actions['duplicate'] = '<a href="' . esc_url( $duplicate_link ) . '">' . __( 'Duplicate', 'everest-forms' ) . '</a>';
+			}
 		}
 
 		$row_actions = array();
