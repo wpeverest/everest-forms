@@ -134,9 +134,11 @@ class EVF_Template_Loader {
 		return array_unique( $search_files );
 	}
 
-	/**
-	 * Form preview compatibility methods.
-	 */
+	/*
+	|--------------------------------------------------------------------------
+	| Form preview Handling
+	|--------------------------------------------------------------------------
+	*/
 
 	/**
 	 * Hook in methods to enhance the form preview.
