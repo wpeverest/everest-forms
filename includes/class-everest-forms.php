@@ -146,7 +146,6 @@ final class EverestForms {
 		add_action( 'init', array( $this, 'init' ), 0 );
 		add_action( 'init', array( $this, 'form_fields' ), 0 );
 		add_action( 'init', array( 'EVF_Shortcodes', 'init' ) );
-		add_action( 'init', array( 'EVF_Template_Loader', 'init' ) );
 		add_action( 'init', array( $this, 'wpdb_table_fix' ), 0 );
 		add_action( 'switch_blog', array( $this, 'wpdb_table_fix' ), 0 );
 	}
