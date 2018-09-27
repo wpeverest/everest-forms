@@ -20,9 +20,9 @@ $tabs = apply_filters( 'everest_forms_builder_tabs_array', array() );
 			<span class="loading"><?php esc_html_e( 'Loading&hellip;', 'everest-forms' ); ?></span>
 		</div>
 	</div>
-	<form name="everest-forms-builder" id="everest-forms-builder-form" method="post" data-id="<?php echo $form_id; ?>">
-		<input type="hidden" name="id" value="<?php echo $form_id; ?>">
-		<input type="hidden" value="<?php echo( $form_data['form_field_id'] ); ?>" name="form_field_id" id="everest-forms-field-id">
+	<form name="everest-forms-builder" id="everest-forms-builder-form" method="post" data-id="<?php echo absint( $form_id ); ?>">
+		<input type="hidden" name="id" value="<?php echo absint( $form_id ); ?>">
+		<input type="hidden" value="<?php echo absint( $form_data['form_field_id'] ); ?>" name="form_field_id" id="everest-forms-field-id">
 
 		<div class="everest-forms-nav-wrapper clearfix">
 			<nav class="nav-tab-wrapper evf-nav-tab-wrapper">
@@ -53,7 +53,7 @@ $tabs = apply_filters( 'everest_forms_builder_tabs_array', array() );
 								<?php do_action( 'everest_forms_builder_sidebar_' . $slug ); ?>
 							</div>
 						<?php endif; ?>
-						<div class="everest-forms-panel-content-wrap">
+						<div class="everest-forms-panel-content-wrap panel-wrap">
 							<div class="everest-forms-panel-content">
 								<?php do_action( 'everest_forms_builder_content_' . $slug ); ?>
 							</div>
