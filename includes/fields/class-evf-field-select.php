@@ -113,8 +113,8 @@ class EVF_Field_Select extends EVF_Form_Fields {
 	public function field_display( $field, $field_atts, $form_data ) {
 
 		// Setup and sanitize the necessary data.
-		$conditional_rules  = $field['properties']['inputs']['primary']['attr']['conditional_rules'];
-		$field             = apply_filters( 'everest_forms_select_field_display', $field, $field_atts, $form_data );
+		$conditional_rules  = isset( $field['properties']['inputs']['primary']['attr']['conditional_rules'] ) ? $field['properties']['inputs']['primary']['attr']['conditional_rules'] : '';
+		$conditional_id     = isset( $field['properties']['inputs']['primary']['attr']['conditional_id'] ) ? $field['properties']['inputs']['primary']['attr']['conditional_id'] : '';		$field             = apply_filters( 'everest_forms_select_field_display', $field, $field_atts, $form_data );
 		$field_placeholder = ! empty( $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : '';
 		$field_required    = ! empty( $field['required'] ) ? ' required' : '';
 		$field_class       = implode( ' ', array_map( 'sanitize_html_class', $field_atts['input_class'] ) );
@@ -138,24 +138,15 @@ class EVF_Field_Select extends EVF_Form_Fields {
 		}
 
 		// Primary select field.
-		if( ! empty($conditional_rules) ){
-			printf( '<select name="everest_forms[form_fields][%s]" id="%s" class="%s" %s %s conditional_rules="%s">',
-				$field['id'],
-				$field_id,
-				$field_class,
-				$field_required,
-				$field_data,
-				$conditional_rules
-			);
-		}else {
-			printf( '<select name="everest_forms[form_fields][%s]" id="%s" class="%s" %s %s>',
-				$field['id'],
-				$field_id,
-				$field_class,
-				$field_required,
-				$field_data
-			);
-		}
+		printf( '<select name="everest_forms[form_fields][%s]" id="%s" class="%s" %s %s conditional_rules="%s" conditional_id="%s">',
+			$field['id'],
+			$field_id,
+			$field_class,
+			$field_required,
+			$field_data,
+			$conditional_rules,
+			$conditional_id
+		);
 
 		// Optional placeholder.
 		if ( ! empty( $field_placeholder ) ) {

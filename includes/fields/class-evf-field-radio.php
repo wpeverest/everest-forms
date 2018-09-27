@@ -146,6 +146,7 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 	 */
 	public function field_display( $field, $field_atts, $form_data ) {
  		// Setup and sanitize the necessary data
+		$conditional_id     = isset( $field['properties']['inputs']['primary']['attr']['conditional_id'] ) ? $field['properties']['inputs']['primary']['attr']['conditional_id'] : '';
 		$conditional_rules  = isset( $field['properties']['inputs']['primary']['attr']['conditional_rules'] ) ? $field['properties']['inputs']['primary']['attr']['conditional_rules'] : '';
 		$field          = apply_filters( 'everest_forms_radio_field_display', $field, $field_atts, $form_data );
 		$field_required = ! empty( $field['required'] ) ? ' required' : '';
@@ -171,7 +172,7 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 			printf( '<li class="choice-%d depth-%d">', $key, $depth );
 
 			// Checkbox elements
-			printf( "<input type='radio' class='input-text' id='everest-forms-%d-field_%s_%d' name='everest_forms[form_fields][%s][]' value='%s' %s %s conditional_rules='%s'>",
+			printf( "<input type='radio' class='input-text' id='evf-%d-field_%s_%d' name='everest_forms[form_fields][%s][]' value='%s' %s %s conditional_rules='%s' conditional_id='%s'>",
 				$form_id,
 				$field['id'],
 				$key,
@@ -179,7 +180,8 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 				$val,
 				checked( '1', $selected, false ),
 				$field_required,
-				$conditional_rules
+				$conditional_rules,
+				$conditional_id
 			);
 
 			printf( '<label class="everest-forms-field-label-inline" for="everest-forms-%d-field_%d_%d">%s</label>', $form_id, $field['id'], $key, wp_kses_post( $choice['label'] ) );
