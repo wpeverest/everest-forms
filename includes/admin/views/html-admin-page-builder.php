@@ -53,7 +53,7 @@ $tabs = apply_filters( 'everest_forms_builder_tabs_array', array() );
 								<?php do_action( 'everest_forms_builder_sidebar_' . $slug ); ?>
 							</div>
 						<?php endif; ?>
-						<div class="everest-forms-panel-content-wrap panel-wrap">
+						<div class="panel-wrap everest-forms-panel-content-wrap">
 							<div class="everest-forms-panel-content">
 								<?php do_action( 'everest_forms_builder_content_' . $slug ); ?>
 							</div>
