@@ -137,65 +137,87 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		$fields    = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
 		$form_grid = apply_filters( 'everest_forms_default_form_grid', 2 );
 
-		echo '<div class="evf-admin-field-container">';
-		echo '<div class="evf-admin-field-wrapper">';
-		$number_of_rows = isset( $form_data['structure'] ) ? count( $form_data['structure'] ) : 1;
-		$grid_number    = 1;
-		for ( $row = 1; $row <= $number_of_rows; $row ++ ) {
-			echo '<div class="evf-admin-row" data-row-id="' . $row . '">';
-			$row_grid    = isset( $form_data['structure'][ 'row_' . $row ] ) ? $form_data['structure'][ 'row_' . $row ] : array();
-			$active_grid = count( $row_grid ) > 0 ? count( $row_grid ) : $form_grid;
-			$total_grid  = $form_grid;
-			$active_grid = $active_grid > $total_grid ? $total_grid : $active_grid;
-			echo '<div class="evf-toggle-row">';
-			echo '<div class="evf-delete-row"><span class="dashicons dashicons-trash" title="Delete"></span></div>';
-			echo '<div class="evf-show-grid"><span class="dashicons dashicons-edit" title="Edit"></span></div>';
-			echo '<div class="evf-toggle-row-content">';
-			echo '<span>' . __( 'Row Settings', 'everest-forms' ) . '</span>';
-			echo '<small>' . __( 'Select the type of row', 'everest-forms' ) . '</small>';
-			echo '<div class="clear"></div>';
-			for ( $grid_active = 1; $grid_active <= $total_grid; $grid_active ++ ) {
-				$class = 'evf-grid-selector';
-				if ( $grid_active === $active_grid ) {
-					$class .= ' active';
-				}
-				echo '<div class="' . $class . '" data-evf-grid="' . $grid_active . '">';
-				$gaps   = 15;
-				$width  = ( 100 - $gaps ) / $grid_active;
-				$margin = ( $gaps / $grid_active ) / 2;
-				for ( $row_icon = 1; $row_icon <= $grid_active; $row_icon ++ ) {
-					echo '<span style="width:' . $width . '%; margin-left:' . $margin . '%; margin-right:' . $margin . '%"></span>';
-				}
-				echo '</div>';
-			}
+		$number_of_steps = apply_filters( 'everest_forms_multi_part_steps', array(
+			'page_1' => array(
+				'name'       => __( 'Page 1', 'everest-forms-multi-part' ),
+				'next_label' => __( 'Next', 'everest-forms-multi-part' ),
+				'prev_label' => __( 'Previous', 'everest-forms-multi-part' ),
+			),
+			'page_2' => array(
+				'name'       => __( 'Page 2', 'everest-forms-multi-part' ),
+				'next_label' => __( 'Next', 'everest-forms-multi-part' ),
+				'prev_label' => __( 'Previous', 'everest-forms-multi-part' ),
+			),
+			'page_3' => array(
+				'name'       => __( 'Page 3', 'everest-forms-multi-part' ),
+				'next_label' => __( 'Next', 'everest-forms-multi-part' ),
+				'prev_label' => __( 'Previous', 'everest-forms-multi-part' ),
+			),
+		) );
 
-			echo '</div>';
-			echo '</div>';
+		if ( ! empty( $number_of_steps ) ) {
+			foreach ( $number_of_steps as $step_key => $step ) {
+				echo '<div id="' . esc_attr( $step_key ) . '" class="panel evf-admin-field-container">';
+					echo '<div class="evf-admin-field-wrapper">';
+					$number_of_rows = isset( $form_data['structure'] ) ? count( $form_data['structure'] ) : 1;
+					$grid_number    = 1;
+					for ( $row = 1; $row <= $number_of_rows; $row ++ ) {
+						echo '<div class="evf-admin-row" data-row-id="' . $row . '">';
+						$row_grid    = isset( $form_data['structure'][ 'row_' . $row ] ) ? $form_data['structure'][ 'row_' . $row ] : array();
+						$active_grid = count( $row_grid ) > 0 ? count( $row_grid ) : $form_grid;
+						$total_grid  = $form_grid;
+						$active_grid = $active_grid > $total_grid ? $total_grid : $active_grid;
+						echo '<div class="evf-toggle-row">';
+						echo '<div class="evf-delete-row"><span class="dashicons dashicons-trash" title="Delete"></span></div>';
+						echo '<div class="evf-show-grid"><span class="dashicons dashicons-edit" title="Edit"></span></div>';
+						echo '<div class="evf-toggle-row-content">';
+						echo '<span>' . __( 'Row Settings', 'everest-forms' ) . '</span>';
+						echo '<small>' . __( 'Select the type of row', 'everest-forms' ) . '</small>';
+						echo '<div class="clear"></div>';
+						for ( $grid_active = 1; $grid_active <= $total_grid; $grid_active ++ ) {
+							$class = 'evf-grid-selector';
+							if ( $grid_active === $active_grid ) {
+								$class .= ' active';
+							}
+							echo '<div class="' . $class . '" data-evf-grid="' . $grid_active . '">';
+							$gaps   = 15;
+							$width  = ( 100 - $gaps ) / $grid_active;
+							$margin = ( $gaps / $grid_active ) / 2;
+							for ( $row_icon = 1; $row_icon <= $grid_active; $row_icon ++ ) {
+								echo '<span style="width:' . $width . '%; margin-left:' . $margin . '%; margin-right:' . $margin . '%"></span>';
+							}
+							echo '</div>';
+						}
 
-			echo '<div class="clear evf-clear"></div>';
+						echo '</div>';
+						echo '</div>';
 
-			$grid_class = 'evf-admin-grid evf-grid-' . ( $active_grid );
-			for ( $grid_start = 1; $grid_start <= $active_grid; $grid_start ++ ) {
-				echo '<div class="' . $grid_class . ' " data-grid-id="' . $grid_start . '">';
+						echo '<div class="clear evf-clear"></div>';
 
-				$grid_fields = isset( $row_grid[ 'grid_' . $grid_start ] ) && is_array( $row_grid[ 'grid_' . $grid_start ] ) ? $row_grid[ 'grid_' . $grid_start ] : array();
+						$grid_class = 'evf-admin-grid evf-grid-' . ( $active_grid );
+						for ( $grid_start = 1; $grid_start <= $active_grid; $grid_start ++ ) {
+							echo '<div class="' . $grid_class . ' " data-grid-id="' . $grid_start . '">';
 
-				foreach ( $grid_fields as $field_id ) {
-					if ( isset( $fields[ $field_id ] ) && ! in_array( $fields[ $field_id ]['type'], EVF()->form_fields->get_pro_form_field_types(), true ) ) {
-						$this->field_preview( $fields[ $field_id ] );
+							$grid_fields = isset( $row_grid[ 'grid_' . $grid_start ] ) && is_array( $row_grid[ 'grid_' . $grid_start ] ) ? $row_grid[ 'grid_' . $grid_start ] : array();
+
+							foreach ( $grid_fields as $field_id ) {
+								if ( isset( $fields[ $field_id ] ) && ! in_array( $fields[ $field_id ]['type'], EVF()->form_fields->get_pro_form_field_types(), true ) ) {
+									$this->field_preview( $fields[ $field_id ] );
+								}
+							}
+
+							echo '</div>';
+							$grid_number ++;
+						}
+						echo '<div class="clear evf-clear"></div>';
+						echo '</div >';
 					}
-				}
-
-				echo '</div>';
-				$grid_number ++;
+					echo '</div>';
+					echo '<div class="clear evf-clear"></div>';
+					echo '<div class="evf-add-row"><span class="everest-forms-btn dashicons dashicons-plus-alt">' . esc_html( 'Add Row', 'everest-forms' ) . '</span></div>';
+				echo '</div >';
 			}
-			echo '<div class="clear evf-clear"></div>';
-			echo '</div >';
 		}
-		echo '</div>';
-		echo '<div class="clear evf-clear"></div>';
-		echo '<div class="evf-add-row"><span class="everest-forms-btn dashicons dashicons-plus-alt">' . esc_html( 'Add Row', 'everest-forms' ) . '</span></div>';
-		echo '</div >';
 	}
 
 	/**
