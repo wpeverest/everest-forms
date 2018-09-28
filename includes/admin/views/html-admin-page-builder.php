@@ -57,6 +57,7 @@ $tabs = apply_filters( 'everest_forms_builder_tabs_array', array() );
 							<div class="everest-forms-panel-content">
 								<?php do_action( 'everest_forms_builder_content_' . $slug ); ?>
 							</div>
+							<?php do_action( 'everest_forms_builder_after_content_' . $slug ); ?>
 						</div>
 					</div>
 				</div>
