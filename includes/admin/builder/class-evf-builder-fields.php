@@ -139,16 +139,19 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 
 		$number_of_steps = apply_filters( 'everest_forms_multi_part_steps', array(
 			'page_1' => array(
+				'order'      => 1,
 				'name'       => __( 'Page 1', 'everest-forms-multi-part' ),
 				'next_label' => __( 'Next', 'everest-forms-multi-part' ),
 				'prev_label' => __( 'Previous', 'everest-forms-multi-part' ),
 			),
 			'page_2' => array(
+				'order'      => 2,
 				'name'       => __( 'Page 2', 'everest-forms-multi-part' ),
 				'next_label' => __( 'Next', 'everest-forms-multi-part' ),
 				'prev_label' => __( 'Previous', 'everest-forms-multi-part' ),
 			),
 			'page_3' => array(
+				'order'      => 3,
 				'name'       => __( 'Page 3', 'everest-forms-multi-part' ),
 				'next_label' => __( 'Next', 'everest-forms-multi-part' ),
 				'prev_label' => __( 'Previous', 'everest-forms-multi-part' ),
