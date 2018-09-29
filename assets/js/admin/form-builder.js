@@ -663,10 +663,15 @@
 		},
 		bindSaveOption: function () {
 			$( 'body' ).on( 'click', '.everest-forms-save-button', function () {
-				var $this = $(this);
-				var form = $('form#everest-forms-builder-form');
+				var $this     = $( this );
+				var $form     = $( 'form#everest-forms-builder-form' );
 				var structure = EVFPanelBuilder.getStructure();
-				var form_data = form.serializeArray();
+				var form_data = $form.serializeArray();
+
+				// Trigger a handler to let addon manipulate the form data if needed.
+				if ( $form.triggerHandler( 'everest_forms_process_ajax_data', [ $this, form_data ] ) ) {
+					form_data = $form.triggerHandler( 'everest_forms_process_ajax_data', [ $this, form_data ] );
+				}
 
 				$( '.everest-forms-panel-content-wrap' ).block({
 					message: null,

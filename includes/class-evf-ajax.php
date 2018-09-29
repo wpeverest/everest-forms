@@ -230,6 +230,10 @@ class EVF_AJAX {
 			$data['form_fields'] = array_merge( array_flip( $structure ), $data['form_fields'] );
 		}
 
+		if ( isset( $data['form_fields'] ) ) {
+			error_log( print_r( $data, true ) );
+		}
+
 		$form_id = EVF()->form->update( $data['id'], $data );
 
 		do_action( 'everest_forms_save_form', $form_id, $data );

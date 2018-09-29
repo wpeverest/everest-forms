@@ -144,23 +144,11 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 				'next_label' => __( 'Next', 'everest-forms-multi-part' ),
 				'prev_label' => __( 'Previous', 'everest-forms-multi-part' ),
 			),
-			'page_2' => array(
-				'order'      => 2,
-				'name'       => __( 'Page 2', 'everest-forms-multi-part' ),
-				'next_label' => __( 'Next', 'everest-forms-multi-part' ),
-				'prev_label' => __( 'Previous', 'everest-forms-multi-part' ),
-			),
-			'page_3' => array(
-				'order'      => 3,
-				'name'       => __( 'Page 3', 'everest-forms-multi-part' ),
-				'next_label' => __( 'Next', 'everest-forms-multi-part' ),
-				'prev_label' => __( 'Previous', 'everest-forms-multi-part' ),
-			),
 		) );
 
 		if ( ! empty( $number_of_steps ) ) {
 			foreach ( $number_of_steps as $step_key => $step ) {
-				echo '<div id="' . esc_attr( $step_key ) . '" class="panel evf-admin-field-container">';
+				echo '<div id="' . esc_attr( $step_key ) . '" class="panel evf-admin-field-container" data-sort="1">';
 					echo '<div class="evf-admin-field-wrapper">';
 					$number_of_rows = isset( $form_data['structure'] ) ? count( $form_data['structure'] ) : 1;
 					$grid_number    = 1;
