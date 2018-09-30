@@ -138,10 +138,10 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		$fields      = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
 		$multi_pages = isset( $form_data['multi_pages'] ) ? $form_data['multi_pages'] : array( 'page_1' => array() );
 
-		$page_number = 1;
+		$page_index = 1;
 		if ( ! empty( $multi_pages ) ) {
 			foreach ( $multi_pages as $page_id => $page_data ) {
-				echo '<div id="' . esc_attr( $page_id ) . '" class="panel evf-admin-field-container" data-page-id="' . absint( $page_number ) . '">';
+				echo '<div id="' . esc_attr( $page_id ) . '" class="panel evf-admin-field-container" data-page-id="' . absint( $page_index ) . '">';
 					echo '<div class="evf-admin-field-wrapper">';
 						foreach ( $structure as $row_id => $row_data ) {
 							$row         = str_replace( 'row_', '', $row_id );
@@ -208,7 +208,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 					echo '<div class="evf-add-row"><span class="everest-forms-btn dashicons dashicons-plus-alt">' . esc_html( 'Add Row', 'everest-forms' ) . '</span></div>';
 				echo '</div >';
 
-				$page_number++;
+				$page_index++;
 			}
 		}
 	}
