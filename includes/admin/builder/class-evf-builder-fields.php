@@ -47,6 +47,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		<div class="everest-forms-fields-tab">
 			<a href="#" id="add-fields" class="fields active"><?php esc_html_e( 'Add Fields', 'everest-forms' ); ?></a>
 			<a href="#" id="field-options" class="options"><?php esc_html_e( 'Field Options', 'everest-forms' ); ?></a>
+			<?php do_action( 'everest_forms_builder_fields_tab', $this->form ); ?>
 		</div>
 		<div class="everest-forms-tab-content">
 			<div class="everest-forms-add-fields">
@@ -55,6 +56,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			<div class="everest-forms-field-options">
 				<?php do_action( 'everest_forms_builder_fields_options', $this->form ); ?>
 			</div>
+			<?php do_action( 'everest_forms_builder_fields_tab_content', $this->form ); ?>
 		</div>
 		<?php
 	}

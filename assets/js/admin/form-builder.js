@@ -864,17 +864,16 @@
 			$('.everest-forms-field-options').find('.everest-forms-field-option').hide();
 			$('.evf-tab-lists').find('li a').removeClass('active');
 			$('.evf-tab-lists').find('li.evf-panel-field-options-button a').addClass('active');
-			if ( typeof field_id !== 'undefined' ) {
 
+			$( document.body ).trigger( 'evf-init-switch-field-options' );
+
+			if ( typeof field_id !== 'undefined' ) {
 				$('#everest-forms-field-option-' + field_id).show();
 				$('#everest-forms-field-' + field_id).addClass('active');
-
 			} else {
-
 				if ( $('.evf-admin-field-wrapper .everest-forms-field').length > 0 ) {
 					$('.evf-admin-field-wrapper .everest-forms-field').eq(0).addClass('active');
 					$('#everest-forms-field-option-' + $('.evf-admin-field-wrapper .everest-forms-field').eq(0).attr('data-field-id')).show();
-
 				} else {
 					$('.everest-forms-field-options').find('.no-fields').show();
 				}
@@ -945,18 +944,18 @@
 		},
 
 		/**
-		 * Toggle fields tabs (Add Fields, Field Options.
+		 * Toggle fields tabs (Add Fields, Field Options).
 		 */
 		 fieldTabChoice: function( id ) {
 		 	$( '.everest-forms-fields-tab a' ).removeClass( 'active' );
 		 	$( '.everest-forms-field, .everest-forms-title-desc' ).removeClass( 'active' );
 
+			$( '#' + id ).addClass( 'active' );
+
 		 	if ( 'add-fields' === id ) {
-		 		$( '#add-fields' ).addClass( 'active' );
 		 		$( '.everest-forms-add-fields' ).show();
 		 		$( '.everest-forms-field-options' ).hide();
 		 	} else {
-		 		$( '#field-options' ).addClass( 'active' );
 		 		if ( 'field-options' === id ) {
 		 			id = $( '.everest-forms-field' ).first().data( 'field-id' );
 		 			$( '.everest-forms-field' ).first().addClass( 'active' );
