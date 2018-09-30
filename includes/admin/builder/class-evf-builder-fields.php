@@ -152,7 +152,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 							$active_grid = $active_grid > $total_grid ? $total_grid : $active_grid;
 
 							// Display row conditionally if Multi-Part enabled.
-							if ( isset( $form_data['settings']['enable_multi_part'] ) && ! in_array( $row_id, $page_data, true ) ) {
+							if ( isset( $form_data['settings']['enable_multi_part'], $page_data['row_data'] ) && ! in_array( $row_id, $page_data['row_data'], true ) ) {
 								continue;
 							}
 
