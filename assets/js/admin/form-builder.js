@@ -541,7 +541,7 @@
 				data: data,
 				type: 'POST',
 				beforeSend: function() {
-					$( document.body ).trigger( 'init_field_options_toogle' );
+					$( document.body ).trigger( 'init_field_options_toggle' );
 				},
 				success: function ( response ) {
 					if ( typeof response.success === 'boolean' && response.success === true ) {
@@ -549,7 +549,7 @@
 						var field_key = response.data.field_key;
 						$('#everest-forms-field-id').val(field_id);
 						EVFPanelBuilder.render_node(field, element_field_id, field_key);
-						$( document.body ).trigger( 'init_field_options_toogle' );
+						$( document.body ).trigger( 'init_field_options_toggle' );
 					}
 				}
 			});
@@ -958,6 +958,7 @@
 		 	} else {
 		 		if ( 'field-options' === id ) {
 		 			id = $( '.everest-forms-field' ).first().data( 'field-id' );
+			 		$( '.everest-forms-field-options' ).show();
 		 			$( '.everest-forms-field' ).first().addClass( 'active' );
 		 		} else {
 		 			$( '#everest-forms-field-' + id ).addClass( 'active' );
@@ -965,7 +966,6 @@
 		 		$( '.everest-forms-field-option' ).hide();
 		 		$( '#everest-forms-field-option-' + id ).show();
 		 		$( '.everest-forms-add-fields' ).hide();
-		 		$( '.everest-forms-field-options' ).show();
 		 	}
 		 },
 		 bindFormPreview: function () {
@@ -1037,7 +1037,7 @@
 		 		data: data,
 		 		type: 'POST',
 		 		beforeSend: function() {
-		 			$( document.body ).trigger( 'init_field_options_toogle' );
+		 			$( document.body ).trigger( 'init_field_options_toggle' );
 		 		},
 		 		success: function( response ) {
 		 			var field_preview = response.data.preview;
@@ -1050,7 +1050,7 @@
 		 			field.remove();
 		 			EVFPanelBuilder.checkEmptyGrid();
 		 			$( document.body ).trigger( 'init_tooltips' );
-		 			$( document.body ).trigger( 'init_field_options_toogle' );
+		 			$( document.body ).trigger( 'init_field_options_toggle' );
 		 		}
 		 	});
 		 },
@@ -1143,7 +1143,7 @@
 	} ).trigger( 'init_add_fields_toogle' );
 
 	// Fields Options - Open/close.
-	$( document.body ).on( 'init_field_options_toogle', function() {
+	$( document.body ).on( 'init_field_options_toggle', function() {
 		$( '.everest-forms-field-option' ).on( 'click', '.everest-forms-field-option-group > a', function( event ) {
 			event.preventDefault();
 			$( this ).parent( '.everest-forms-field-option-group' ).toggleClass( 'closed' ).toggleClass( 'open' );
@@ -1159,7 +1159,7 @@
 		$( '.everest-forms-field-option-group.closed' ).each( function() {
 			$( this ).find( '.everest-forms-field-option-group-inner' ).hide();
 		});
-	} ).trigger( 'init_field_options_toogle' );
+	} ).trigger( 'init_field_options_toggle' );
 
 	$(document).click(function() {
 		$('.evf-smart-tag-lists').hide();
