@@ -483,7 +483,6 @@
 
 				row_clone.find( '.evf-admin-grid' ).html( '' );
 				row_clone.attr( 'data-row-id', ( total_rows + 1 ) );
-
 				$( '#page_' + page_id ).find( '.evf-admin-field-wrapper' ).append( row_clone );
 				EVFPanelBuilder.bindFields();
 				EVFPanelBuilder.checkEmptyGrid();
