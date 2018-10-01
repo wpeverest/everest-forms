@@ -136,8 +136,8 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 	 */
 	public function output_fields_preview() {
 		$form_data   = $this->form_data;
-		$structure   = isset( $form_data['structure'] ) ? $form_data['structure'] : array();
 		$fields      = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
+		$structure   = isset( $form_data['structure'] ) ? $form_data['structure'] : array( 'row_1' => array() );
 		$multi_pages = isset( $form_data['multi_pages'] ) ? $form_data['multi_pages'] : array( 'page_1' => array() );
 
 		$page_index = 1;

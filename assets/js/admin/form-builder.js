@@ -474,13 +474,17 @@
 				}
 			});
 		},
-		bindAddNewRow: function () {
-			$('body').on('click', '.evf-add-row span', function () {
-				var row_clone = $('.evf-admin-row').eq(0).clone();
-				var number_of_rows = $('.evf-admin-row').length;
-				row_clone.find('.evf-admin-grid').html('');
-				row_clone.attr('data-row-id', (number_of_rows + 1));
-				$('.evf-admin-field-wrapper').append(row_clone);
+		bindAddNewRow: function() {
+			$( 'body' ).on( 'click', '.evf-add-row span', function() {
+				var $this      = $( this ),
+					page_id    = $this.parents( '.evf-admin-field-container' ).data( 'page-id' ),
+					total_rows = $( '.evf-admin-row' ).length,
+					row_clone  = $( '#page_' + page_id ).find( '.evf-admin-row' ).eq(0).clone();
+
+				row_clone.find( '.evf-admin-grid' ).html( '' );
+				row_clone.attr( 'data-row-id', ( total_rows + 1 ) );
+
+				$( '#page_' + page_id ).find( '.evf-admin-field-wrapper' ).append( row_clone );
 				EVFPanelBuilder.bindFields();
 				EVFPanelBuilder.checkEmptyGrid();
 			});
@@ -745,30 +749,32 @@
 			});
 		},
 		getStructure: function () {
-			var wrapper = $('.evf-admin-field-wrapper');
+			var wrapper   = $( '.evf-admin-field-wrapper' );
 			var structure = [];
 
-			$.each(wrapper.find('.evf-admin-row'), function () {
-				var row = $(this);
-				var row_id = row.attr('data-row-id');
-				$.each(row.find('.evf-admin-grid'), function () {
-					var grid = $(this);
-					var grid_id = grid.attr('data-grid-id');
+			$.each( wrapper.find('.evf-admin-row'), function() {
+				var $this  = $( this ),
+					row_id = $this.attr( 'data-row-id' );
+
+				$.each( $this.find( '.evf-admin-grid' ), function() {
+					var $grid   = $( this ),
+						grid_id = $grid.attr( 'data-grid-id' );
 
 					var array_index = 0;
-					$.each(grid.find('.everest-forms-field'), function () {
+					$.each( $grid.find( '.everest-forms-field' ), function() {
 						var structure_object = { name: '', value: '' };
-						var field_id = $(this).attr('data-field-id');
+						var field_id = $( this ).attr( 'data-field-id' );
 						structure_object.name = 'structure[row_' + row_id + '][grid_' + grid_id + '][' + array_index + ']';
 						array_index++;
 						structure_object.value = field_id;
-						structure.push(structure_object);
+						structure.push( structure_object );
 					});
-					if ( grid.find('.everest-forms-field').length < 1 ) {
+					if ( $grid.find( '.everest-forms-field' ).length < 1 ) {
 						structure.push({ name: 'structure[row_' + row_id + '][grid_' + grid_id + ']', value: '' });
 					}
 				});
 			});
+
 			return structure;
 		},
 		getFieldArray: function ( grid ) {
