@@ -230,10 +230,10 @@ class EVF_AJAX {
 			$data['form_fields'] = array_merge( array_flip( $structure ), $data['form_fields'] );
 		}
 
-		if ( isset( $data['form_fields'] ) ) {
-			error_log( print_r( $data, true ) );
-			wp_send_json_error();
-		}
+		// if ( isset( $data['form_fields'] ) ) {
+		// 	error_log( print_r( $data, true ) );
+		// 	wp_send_json_error();
+		// }
 
 		$form_id = EVF()->form->update( $data['id'], $data );
 
