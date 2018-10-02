@@ -729,6 +729,12 @@ body.everest-forms-builder-setup,
 			}
 		}
 
+		.everest-forms-panel {
+			.panel-wrap {
+				overflow: hidden;
+			}
+		}
+
 		.everest-forms-panel-content-wrap {
 			.everest-forms-panel-content {
 				height: calc(100vh - 150px);
@@ -828,8 +834,7 @@ body.everest-forms-builder-setup,
 
 		.everest-forms-panel-sidebar {
 			.everest-forms-add-fields,
-			.everest-forms-field-options,
-			.everest-forms-custom-options {
+			.everest-forms-field-options {
 				padding: 15px 12px 15px 20px;
 			}
 		}

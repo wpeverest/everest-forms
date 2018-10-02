@@ -147,13 +147,15 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 	public function field_display( $field, $field_atts, $form_data ) {
 
 		// Setup and sanitize the necessary data
-		$field          = apply_filters( 'everest_forms_checkbox_field_display', $field, $field_atts, $form_data );
-		$field_required = ! empty( $field['required'] ) ? ' required' : '';
-		$field_class    = implode( ' ', array_map( 'sanitize_html_class', $field_atts['input_class'] ) );
-		$field_id       = implode( ' ', array_map( 'sanitize_html_class', $field_atts['input_id'] ) );
-		$field_data     = '';
-		$form_id        = $form_data['id'];
-		$choices        = isset( $field['choices'] ) ? $field['choices'] : array();
+		$field              = apply_filters( 'everest_forms_checkbox_field_display', $field, $field_atts, $form_data );
+		$conditional_rules  = isset( $field['properties']['inputs']['primary']['attr']['conditional_rules'] ) ? $field['properties']['inputs']['primary']['attr']['conditional_rules'] : '';
+		$conditional_id     = isset( $field['properties']['inputs']['primary']['attr']['conditional_id'] ) ? $field['properties']['inputs']['primary']['attr']['conditional_id'] : '';
+		$field_required     = ! empty( $field['required'] ) ? ' required' : '';
+		$field_class        = implode( ' ', array_map( 'sanitize_html_class', $field_atts['input_class'] ) );
+		$field_id           = implode( ' ', array_map( 'sanitize_html_class', $field_atts['input_id'] ) );
+		$field_data         = '';
+		$form_id            = $form_data['id'];
+		$choices            = isset( $field['choices'] ) ? $field['choices'] : array();
 		if ( ! empty( $field_atts['input_data'] ) ) {
 			foreach ( $field_atts['input_data'] as $key => $val ) {
 				$field_data .= ' data-' . $key . '="' . $val . '"';
@@ -171,14 +173,16 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 			printf( '<li class="choice-%d depth-%d">', $key, $depth );
 
 			// Checkbox elements
-			printf( '<input type="checkbox" id="everest-forms-%d-field_%s_%d" name="everest_forms[form_fields][%s][]" value="%s" %s %s>',
+			printf( "<input type='checkbox' class='input-text' id='evf-%d-field_%s_%d' name='everest_forms[form_fields][%s][]' value='%s' %s %s conditional_rules='%s' conditional_id ='%s'>",
 				$form_id,
 				$field['id'],
 				$key,
 				$field['id'],
 				$val,
 				checked( '1', $selected, false ),
-				$field_required
+				$field_required,
+				$conditional_rules,
+				$conditional_id
 			);
 
 			printf( '<label class="everest-forms-field-label-inline" for="everest-forms-%d-field_%d_%d">%s</label>', $form_id, $field['id'], $key, wp_kses_post( $choice['label'] ) );

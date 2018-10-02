@@ -774,11 +774,12 @@ abstract class EVF_Form_Fields {
 	 * @param array $form_data
 	 */
 	public function validate( $field_id, $field_submit, $form_data ) {
-		$field_type     = isset( $form_data['form_fields'][ $field_id ]['type'] ) ? $form_data['form_fields'][ $field_id ]['type'] : '';
-		$required_field = isset( $form_data['form_fields'][ $field_id ]['required'] ) ? $form_data['form_fields'][ $field_id ]['required'] : false;
+		$field_type         = isset( $form_data['form_fields'][ $field_id ]['type'] ) ? $form_data['form_fields'][ $field_id ]['type'] : '';
+		$required_field     = isset( $form_data['form_fields'][ $field_id ]['required'] ) ? $form_data['form_fields'][ $field_id ]['required'] : false;
+		$conditional_status = isset( $form_data['form_fields'][ $field_id ]['conditional_logic_status'] ) ? $form_data['form_fields'][ $field_id ]['conditional_logic_status'] : 0;
 
 		// Basic required check - If field is marked as required, check for entry data.
-		if ( false !== $required_field && ( empty( $field_submit ) && '0' !== $field_submit ) ) {
+		if ( false !== $required_field && '1' !== $conditional_status && ( empty( $field_submit ) && '0' !== $field_submit ) ) {
 			EVF()->task->errors[ $form_data['id'] ][ $field_id ] = evf_get_required_label();
 			update_option( 'evf_validation_error', 'yes' );
 		}

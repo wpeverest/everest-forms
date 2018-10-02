@@ -66,7 +66,6 @@
 
 			&.active {
 				display: block;
-
 			}
 
 			.everest-forms-sub-label {
@@ -228,8 +227,7 @@
 					}
 				}
 
-				.everest-forms-field-options,
-				.everest-forms-custom-options {
+				.everest-forms-field-options {
 					display: none;
 
 					.everest-forms-field-option-row {
@@ -912,7 +910,6 @@
 
 		input:not(.ed_button),
 		textarea:not(.wp-editor-area) {
-			padding: 5px 10px;
 			color: $color-gray-darker;
 
 			&::placeholder {

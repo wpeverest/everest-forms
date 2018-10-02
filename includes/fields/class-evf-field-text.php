@@ -146,7 +146,6 @@ class EVF_Field_Text extends EVF_Form_Fields {
 	 * @param array $form_data
 	 */
 	public function field_display( $field, $deprecated, $form_data ) {
-
  		// Define data.
 		$primary = $field['properties']['inputs']['primary'];
 
