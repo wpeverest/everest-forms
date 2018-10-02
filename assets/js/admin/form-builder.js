@@ -1093,6 +1093,7 @@
 								'image-upload',
 								'file-upload',
 								'date',
+								'hidden',
 								dragged_el.attr('data-field-type'),
 							];
 
