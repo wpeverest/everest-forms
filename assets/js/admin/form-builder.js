@@ -474,7 +474,7 @@
 				}
 			});
 		},
-		bindAddNewRow: function () {
+		bindAddNewRow: function() {
 			$( 'body' ).on( 'click', '.evf-add-row span', function() {
 				var total_rows = $( '.evf-admin-row' ).length,
 					row_clone  = $( '.evf-admin-row' ).eq(0).clone();
@@ -1090,7 +1090,7 @@
 						var field_type  = $( this ).data('field-type'),
 							field_id    = $( this ).data('field-id'),
 							field_label = $( this ).find('.label-title span').first().text();
-							field_to_be_restricted=[];
+							field_to_be_restricted =[];
 							field_to_be_restricted = [
 								'html',
 								'title',
