@@ -689,6 +689,11 @@
 					border: 1px dashed transparentize( $blue, 0.75 );
 				}
 
+				input[type="checkbox"],
+				input[type="radio"] {
+					margin-right: 10px;
+				}
+
 				.evf-field-action {
 					position: absolute;
 					top: 15px;
