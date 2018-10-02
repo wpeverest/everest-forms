@@ -103,7 +103,7 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 * Feature - Conditional Logics addon support.
 * Fix - Meta key required for HTML and title field.
 * Fix - Spacing of checkbox and radio button on form builder.
-* Fix - cron_interval property support in `WP_Background_Processing`
+* Fix - cron_interval property support in `WP_Background_Processing`.
 * Fix - Check post type before fetching form so error are not thrown.
 * Tweak - Image upload icon used for field.
 * Tweak - Introducing privacy policy content.

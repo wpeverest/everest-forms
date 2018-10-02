@@ -1,14 +1,14 @@
 /* global everest_forms_admin */
-jQuery( function ( $ ) {
+( function( $, params ) {
 
-	// Field validation error tips
+	// Field validation error tips.
 	$( document.body )
 
 		.on( 'evf_add_error_tip', function( e, element, error_type ) {
 			var offset = element.position();
 
 			if ( element.parent().find( '.evf_error_tip' ).length === 0 ) {
-				element.after( '<div class="evf_error_tip ' + error_type + '">' + everest_forms_admin[error_type] + '</div>' );
+				element.after( '<div class="evf_error_tip ' + error_type + '">' + params[error_type] + '</div>' );
 				element.parent().find( '.evf_error_tip' )
 					.css( 'left', offset.left + element.width() - ( element.width() / 2 ) - ( $( '.evf_error_tip' ).width() / 2 ) )
 					.css( 'top', offset.top + element.height() )
@@ -77,4 +77,4 @@ jQuery( function ( $ ) {
 
 	// Tooltips
 	$( document.body ).trigger( 'init_tooltips' );
-});
+})( jQuery, everest_forms_admin, wp );

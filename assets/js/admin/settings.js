@@ -1,5 +1,5 @@
 /* global everest_forms_settings_params, jconfirm */
-( function( $ ) {
+( function( $, params ) {
 
 	// Confirm defaults.
 	$( document ).ready( function () {
@@ -61,7 +61,7 @@
 		$( '.evf-nav-tab-wrapper a' ).click( function() {
 			if ( changed ) {
 				window.onbeforeunload = function() {
-					return everest_forms_settings_params.i18n_nav_warning;
+					return params.i18n_nav_warning;
 				};
 			} else {
 				window.onbeforeunload = '';
@@ -85,4 +85,4 @@
 		$( this ).closest( 'td' ).find( 'select' ).trigger( 'change' );
 		return false;
 	});
-})( jQuery );
+})( jQuery, everest_forms_settings_params );
