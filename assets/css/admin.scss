@@ -729,6 +729,12 @@ body.everest-forms-builder-setup,
 			}
 		}
 
+		.everest-forms-panel {
+			.panel-wrap {
+				overflow: hidden;
+			}
+		}
+
 		.everest-forms-panel-content-wrap {
 			.everest-forms-panel-content {
 				height: calc(100vh - 150px);
