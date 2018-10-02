@@ -20,20 +20,18 @@ class EVF_Form_Handler {
 	 * @return array|bool|null|WP_Post
 	 */
 	public function get( $id = '', $args = array() ) {
-
-		$args = apply_filters( 'everest_forms_get_form_args', $args );
+		$forms = array();
+		$args  = apply_filters( 'everest_forms_get_form_args', $args );
 
 		if ( false === $id ) {
 			return false;
 		}
 
 		if ( ! empty( $id ) ) {
-			// @todo add $id array support.
-			// If ID is provided, we get a single form.
-			$forms = get_post( absint( $id ) );
+			$the_post = get_post( absint( $id ) );
 
-			if ( ! empty( $args['content_only'] ) && ! empty( $forms ) && 'everest_form' === $forms->post_type ) {
-				$forms = evf_decode( $forms->post_content );
+			if ( $the_post && 'everest_form' === $the_post->post_type ) {
+				$forms = empty( $args['content_only'] ) ? $the_post : evf_decode( $the_post->post_content );
 			}
 		} else {
 			// No ID provided, get multiple forms.

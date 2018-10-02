@@ -49,9 +49,9 @@ function evf_update_110_update_forms() {
 		$form_data = ! empty( $form_obj->post_content ) ? evf_decode( $form_obj->post_content ) : '';
 
 		if ( ! empty( $form_data['form_fields'] ) ) {
-			foreach ( $form_data['form_fields'] as &$form_fields ) {
-				if ( ! isset( $form_fields['meta-key'] ) ) {
-					$form_fields['meta-key'] = evf_get_meta_key_field_option( $form_fields );
+			foreach ( $form_data['form_fields'] as &$field ) {
+				if ( ! isset( $field['meta-key'] ) ) {
+					$field['meta-key'] = evf_get_meta_key_field_option( $field );
 				}
 			}
 		}

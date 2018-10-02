@@ -304,6 +304,7 @@ body.everest-forms-builder-setup,
 				display: block;
 				cursor: pointer;
 				font-size: 12px;
+				font-weight: 400;
 				line-height: 24px;
 				padding: 10px 30px;
 				border: none transparent;
@@ -904,12 +905,28 @@ body.everest-forms-builder-setup,
 		input[type="text"],
 		input[type="email"],
 		input[type="number"],
+		input[type="password"],
+		input[type="datetime"],
+		input[type="datetime-local"],
+		input[type="date"],
+		input[type="time"],
+		input[type="week"],
+		input[type="url"],
+		input[type="tel"],
 		input.regular-input {
 			width: 350px;
 			margin: 0;
 			padding: 6px;
 			box-sizing: border-box;
 			vertical-align: top;
+		}
+
+		input[type="datetime-local"],
+		input[type="date"],
+		input[type="time"],
+		input[type="week"],
+		input[type="tel"] {
+			width: 200px;
 		}
 
 		select {
