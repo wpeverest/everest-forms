@@ -295,6 +295,7 @@ body.everest-forms-builder-setup,
 			padding: 0;
 			display: flex;
 			margin: 0 0 1.5em;
+			position: relative;
 			border-bottom: none;
 			background-color: $everestforms;
 
@@ -636,7 +637,6 @@ body.everest-forms-builder-setup,
 			nav.evf-nav-tab-wrapper {
 				margin: 0;
 				float: left;
-				position: relative;
 				padding-right: 30px;
 				width: calc(100% - 415px);
 			}
