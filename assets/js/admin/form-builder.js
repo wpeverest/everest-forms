@@ -1016,7 +1016,6 @@
 		 	});
 		 },
 		 fieldDrop: function ( field ) {
-		 	// console.log(field);
 		 	var field_type = field.attr('data-field-type');
 		 	field.css({
 		 		'left': '0',
@@ -1046,9 +1045,7 @@
 		 			$( '.everest-forms-field-options' ).find( '.no-fields' ).hide();
 		 			$( '.everest-forms-field-options' ).append( field_options );
 		 			field.after( field_preview );
-
 		 			var dragged_el_id = $(field_preview).attr('id');
-
 		 			field.remove();
 		 			EVFPanelBuilder.checkEmptyGrid();
 		 			$( document.body ).trigger( 'init_tooltips' );
@@ -1057,7 +1054,6 @@
 		 		}
 		 	});
 		 },
-
 		 conditionalLogicAppendField: function( id ){
 			var dragged_el = $('#' + id);
 			var dragged_index = dragged_el.index();
@@ -1076,16 +1072,13 @@
 			    this.empty().append(array);
 			};
 
-
 			fields.each(function(index, el) {
 				var id_key = id.replace('everest-forms-field-', '');
-
 				var name = $(el).attr('name');
 				var name_key = name.substring(
 				    name.indexOf("[") + 1,
 				    name.indexOf("]")
 				);
-
 
 				if (id_key === name_key) {
 					$('.evf-admin-row .evf-admin-grid .everest-forms-field').each( function(){
@@ -1108,14 +1101,9 @@
 						}
 					});
 				} else {
-
 					fields.eq(index).insertAt( el_to_append, dragged_index );
 				}
-
 			});
-
-
-
 		 },
 
 		 conditionalLogicRemoveField: function( id ){
