@@ -77,4 +77,4 @@
 
 	// Tooltips
 	$( document.body ).trigger( 'init_tooltips' );
-})( jQuery, everest_forms_admin, wp );
+})( jQuery, everest_forms_admin );
