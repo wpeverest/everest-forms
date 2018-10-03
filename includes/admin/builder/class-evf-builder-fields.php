@@ -143,7 +143,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		$page_index = 1;
 		if ( ! empty( $multi_part ) ) {
 			foreach ( $multi_part as $part_id => $part_data ) {
-				echo '<div id="' . esc_attr( $part_id ) . '" class="panel evf-admin-field-container" data-page-id="' . absint( $page_index ) . '">';
+				echo '<div id="' . esc_attr( $part_id ) . '" class="panel evf-admin-field-container" data-part-id="' . absint( $page_index ) . '">';
 					echo '<div class="evf-admin-field-wrapper">';
 						foreach ( $structure as $row_id => $row_data ) {
 							$row         = str_replace( 'row_', '', $row_id );

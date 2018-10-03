@@ -477,7 +477,7 @@
 		bindAddNewRow: function() {
 			$( 'body' ).on( 'click', '.evf-add-row span', function() {
 				var $this      = $( this ),
-					page_id    = $this.parents( '.evf-admin-field-container' ).data( 'page-id' ),
+					page_id    = $this.parents( '.evf-admin-field-container' ).data( 'part-id' ),
 					total_rows = $( '.evf-admin-row' ).length,
 					row_clone  = $( '#part_' + page_id ).find( '.evf-admin-row' ).eq(0).clone();
 
