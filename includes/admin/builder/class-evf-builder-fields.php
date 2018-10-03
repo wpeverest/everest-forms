@@ -135,15 +135,15 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 	 * Outputs fields preview content.
 	 */
 	public function output_fields_preview() {
-		$form_data   = $this->form_data;
-		$fields      = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
-		$structure   = isset( $form_data['structure'] ) ? $form_data['structure'] : array( 'row_1' => array() );
-		$multi_pages = isset( $form_data['multi_pages'] ) ? $form_data['multi_pages'] : array( 'page_1' => array() );
+		$form_data  = $this->form_data;
+		$fields     = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
+		$structure  = isset( $form_data['structure'] ) ? $form_data['structure'] : array( 'row_1' => array() );
+		$multi_part = isset( $form_data['multi_part'] ) ? $form_data['multi_part'] : array( 'part_1' => array() );
 
 		$page_index = 1;
-		if ( ! empty( $multi_pages ) ) {
-			foreach ( $multi_pages as $page_id => $page_data ) {
-				echo '<div id="' . esc_attr( $page_id ) . '" class="panel evf-admin-field-container" data-page-id="' . absint( $page_index ) . '">';
+		if ( ! empty( $multi_part ) ) {
+			foreach ( $multi_part as $part_id => $part_data ) {
+				echo '<div id="' . esc_attr( $part_id ) . '" class="panel evf-admin-field-container" data-page-id="' . absint( $page_index ) . '">';
 					echo '<div class="evf-admin-field-wrapper">';
 						foreach ( $structure as $row_id => $row_data ) {
 							$row         = str_replace( 'row_', '', $row_id );
@@ -154,7 +154,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 							$active_grid = $active_grid > $total_grid ? $total_grid : $active_grid;
 
 							// Display row conditionally if Multi-Part enabled.
-							if ( isset( $form_data['settings']['enable_multi_part'], $page_data['row_data'] ) && ! in_array( $row_id, $page_data['row_data'], true ) ) {
+							if ( isset( $form_data['settings']['enable_multi_part'], $part_data['rows'] ) && ! in_array( $row_id, $part_data['rows'], true ) ) {
 								continue;
 							}
 
