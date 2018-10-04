@@ -888,7 +888,20 @@
 			}
 		},
 		bindFields: function () {
-			$('.evf-admin-field-wrapper').sortable({
+			$( '.evf-admin-field-wrapper' ).sortable({
+				items: '.evf-admin-row',
+				cursor: 'move',
+				axis: 'y',
+				handle: '.evf-admin-row',
+				scrollSensitivity: 40,
+				forcePlaceholderSize: true,
+				helper: 'clone',
+				opacity: 0.65,
+				placeholder: 'evf-admin-row',
+			});
+
+
+			$( '.evf-admin-field-wrapper-old' ).sortable({
 				containment: '.evf-admin-field-wrapper',
 				tolerance: 'pointer',
 				revert: 'invalid',
@@ -898,19 +911,21 @@
 					$( '.evf-admin-field-wrapper' ).addClass( 'evf-hover' );
 				},
 				out: function () {
+					console.log("row");
 					$( '.evf-admin-field-wrapper' ).removeClass( 'evf-hover' );
 				}
 			});
 
-			$('.evf-admin-grid').sortable({
-				containment: '.evf-admin-field-wrapper',
+			$( '.evf-admin-grid' ).sortable({
 				cancel: false,
+				// containment: 'parent',
 				over: function ( event ) {
 					$(event.target).addClass('evf-item-hover');
 					$('.evf-admin-grid').addClass('evf-hover');
 					EVFPanelBuilder.checkEmptyGrid();
 				},
 				out: function ( event ) {
+					console.log("grid");
 					$('.evf-admin-grid').removeClass('evf-hover');
 					$(event.target).removeClass('evf-item-hover');
 					EVFPanelBuilder.checkEmptyGrid();
@@ -921,8 +936,8 @@
 			}).disableSelection();
 
 			$( '.evf-registered-buttons button.evf-registered-item' ).draggable({
-				connectToSortable: '.evf-admin-grid',
 				containment: '#everest-forms-builder',
+				connectToSortable: '.evf-admin-grid',
 				helper: 'clone',
 				cancel: false,
 				scroll: false,
