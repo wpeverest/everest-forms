@@ -754,11 +754,11 @@
 			var wrapper   = $( '.evf-admin-field-wrapper' );
 			var structure = [];
 
-			$.each( wrapper.find( '.evf-admin-row' ), function () {
-				var $this  = $( this ),
-					row_id = $this.attr( 'data-row-id' );
+			$.each( wrapper.find( '.evf-admin-row' ), function() {
+				var $row   = $( this ),
+					row_id = $row.attr( 'data-row-id' );
 
-				$.each( $this.find( '.evf-admin-grid' ), function() {
+				$.each( $row.find( '.evf-admin-grid' ), function() {
 					var $grid   = $( this ),
 						grid_id = $grid.attr( 'data-grid-id' );
 
