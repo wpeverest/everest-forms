@@ -432,10 +432,11 @@
 			row.remove();
 		},
 		bindRemoveRow: function () {
-			$( 'body' ).on('click', '.evf-delete-row', function () {
-				var row = $( this ).closest( '.evf-admin-row' );
+			$( 'body' ).on( 'click', '.evf-delete-row', function() {
+				var row     = $( this ).closest( '.evf-admin-row' ),
+					page_id = $( this ).parents( '.evf-admin-field-container' ).data( 'part-id' );
 
-				if ( $( '.evf-admin-row' ).length < 2 ) {
+				if ( $( '#part_' + page_id ).find( '.evf-admin-row' ).length < 2 ) {
 					$.alert({
 						title: evf_data.i18n_row_locked,
 						content: evf_data.i18n_row_locked_msg,
