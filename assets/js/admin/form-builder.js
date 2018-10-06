@@ -482,7 +482,6 @@
 					total_rows = $( '.evf-admin-row' ).length,
 					row_clone  = $( '#part_' + part_id ).find( '.evf-admin-row' ).eq(0).clone();
 
-					console.log( part_id );
 				row_clone.find( '.evf-admin-grid' ).html( '' );
 				row_clone.attr( 'data-row-id', ( total_rows + 1 ) );
 				$( '#part_' + part_id ).find( '.evf-admin-field-wrapper' ).append( row_clone );
