@@ -140,10 +140,10 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		$structure  = isset( $form_data['structure'] ) ? $form_data['structure'] : array( 'row_1' => array() );
 		$multi_part = isset( $form_data['multi_part'] ) ? $form_data['multi_part'] : array( 'part_1' => array() );
 
-		$page_index = 1;
 		if ( ! empty( $multi_part ) ) {
 			foreach ( $multi_part as $part_id => $part_data ) {
-				echo '<div id="' . esc_attr( $part_id ) . '" class="panel evf-admin-field-container" data-part-id="' . absint( $page_index ) . '">';
+				$part = isset( $part_data['id'] ) ? $part_data['id'] : str_replace( 'part_', '', $part_id );
+				echo '<div id="' . esc_attr( $part_id ) . '" class="panel evf-admin-field-container" data-part-id="' . absint( $part ) . '">';
 					echo '<div class="evf-admin-field-wrapper">';
 						foreach ( $structure as $row_id => $row_data ) {
 							$row         = str_replace( 'row_', '', $row_id );
@@ -209,8 +209,6 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 					echo '<div class="clear evf-clear"></div>';
 					echo '<div class="evf-add-row"><span class="everest-forms-btn dashicons dashicons-plus-alt">' . esc_html( 'Add Row', 'everest-forms' ) . '</span></div>';
 				echo '</div >';
-
-				$page_index++;
 			}
 		}
 	}
