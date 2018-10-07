@@ -1,5 +1,16 @@
-/* global everest_forms_admin */
+/* global everest_forms_admin, PerfectScrollbar */
 ( function( $, params ) {
+
+	// Enable Perfect Scrollbar.
+	if ( 'undefined' !== typeof PerfectScrollbar ) {
+		$( document ).ready( function() {
+			new PerfectScrollbar( 'nav.evf-nav-tab-wrapper', {
+				suppressScrollY : true,
+				useBothWheelAxes: true,
+				wheelPropagation: true
+			});
+		});
+	}
 
 	// Field validation error tips.
 	$( document.body )

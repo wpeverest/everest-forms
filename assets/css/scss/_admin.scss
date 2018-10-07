@@ -349,10 +349,6 @@
 					margin-bottom: 0;
 				}
 
-				&.ui-sortable-handle {
-					cursor: all-scroll;
-				}
-
 				.evf-toggle-row {
 					color: #fff;
 					position: absolute;
@@ -503,12 +499,13 @@
 				}
 
 				.evf-admin-grid {
-					background: $color-white;
 					margin: 10px;
 					padding: 10px;
+					cursor: pointer;
+					background: #fff;
+					position: relative;
 					border: 1px solid transparent;
 					transition: 0.5s border, 0.5s background-color;
-					position: relative;
 
 					&.evf-hover {
 						border: 1px dashed $color-gray-light;
@@ -569,6 +566,13 @@
 						}
 					}
 
+					.ui-sortable-placeholder {
+						width: 100%;
+						visibility: visible !important;
+						background-color: transparentize( $blue, 0.95 );
+						border: 1px dashed transparentize( $blue, 0.75 );
+					}
+
 					&.evf-empty-grid {
 						border: 1px dashed $color-gray-light;
 						position: relative;
@@ -615,18 +619,11 @@
 				}
 			}
 
-			.ui-sortable-placeholder {
-				width: 100%;
-				visibility: visible !important;
-				background-color: transparentize( $blue, 0.95 );
-				border: 1px dashed transparentize( $blue, 0.75 );
-			}
-
 			.everest-forms-field {
-				cursor: all-scroll;
-				margin-bottom: 10px;
+				cursor: move;
 				padding: 15px;
 				position: relative;
+				margin-bottom: 10px;
 				border: 1px solid transparent;
 				border-radius: 3px;
 				transition: 0.5s box-shadow;

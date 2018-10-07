@@ -1,4 +1,4 @@
-/* global evf_data, jconfirm, evfSetClipboard, evfClearClipboard */
+/* global evf_data, jconfirm, PerfectScrollbar, evfSetClipboard, evfClearClipboard */
 (function ( $, evf_data ) {
 
 	var $builder;
@@ -8,7 +8,7 @@
 		/**
 		 * Start the panel builder.
 		 */
-		 init: function () {
+		init: function () {
 		 	$( document ).ready( function( $ ) {
 		 		if ( ! $( 'evf-panel-integrations-button a' ).hasClass('active') ) {
 		 			$('#everest-forms-panel-integrations').find('.everest-forms-panel-sidebar a').first().addClass('active');
@@ -133,6 +133,12 @@
 				columnClass: 'evf-responsive-class'
 			};
 
+			// Enable Perfect Scrollbar.
+			if ( 'undefined' !== typeof PerfectScrollbar ) {
+				window.evf_tab_scroller   = new PerfectScrollbar( '.everest-forms-tab-content' );
+				window.evf_panel_scroller = new PerfectScrollbar( '.everest-forms-panel-content' );
+			}
+
 			// Action available for each binding.
 			$( document ).trigger( 'everest_forms_ready' );
 		},
@@ -167,6 +173,14 @@
 			if ( tab === 'field-options' ) {
 				$( '.evf-panel-field-options-button' ).trigger( 'click' );
 			}
+		},
+
+		/**
+		 * Update Perfect Scrollbar.
+		 */
+		updatePerfectScrollbar: function() {
+			window.evf_tab_scroller.update();
+			window.evf_panel_scroller.update();
 		},
 
 		//--------------------------------------------------------------------//
@@ -372,15 +386,11 @@
 				}
 
 				EVFPanelBuilder.choiceChange(field_id);
-
 			});
-
 		},
 
 		bindFormSettings: function () {
-
-			$('body').on('click', '.evf-setting-panel', function ( e ) {
-
+			$( 'body' ).on('click', '.evf-setting-panel', function ( e ) {
 				var data_setting_section = $(this).attr('data-section');
 				$('.evf-setting-panel').removeClass('active');
 				$('.evf-content-section').removeClass('active');
@@ -422,7 +432,7 @@
 			$('.evf-setting-panel').eq(0).trigger('click');
 		},
 		removeRow: function ( row ) {
-			$.each(row.find('.everest-forms-field'), function () {
+			$.each(row.find('.everest-forms-field'), function() {
 				var field = $(this);
 				var field_id = field.attr('data-field-id');
 				var option_field = $('#everest-forms-field-option-' + field_id);
@@ -465,6 +475,7 @@
 								keys: ['enter'],
 								action: function () {
 									EVFPanelBuilder.removeRow( row );
+									EVFPanelBuilder.updatePerfectScrollbar();
 								}
 							},
 							cancel: {
@@ -487,6 +498,7 @@
 				$( '#part_' + part_id ).find( '.evf-admin-field-wrapper' ).append( row_clone );
 				EVFPanelBuilder.bindFields();
 				EVFPanelBuilder.checkEmptyGrid();
+				EVFPanelBuilder.updatePerfectScrollbar();
 			});
 		},
 		bindCloneField: function () {
@@ -553,6 +565,7 @@
 						var field_key = response.data.field_key;
 						$('#everest-forms-field-id').val(field_id);
 						EVFPanelBuilder.render_node(field, element_field_id, field_key);
+						EVFPanelBuilder.updatePerfectScrollbar();
 						$( document.body ).trigger( 'init_field_options_toggle' );
 					}
 				}
@@ -898,12 +911,6 @@
 				opacity: 0.65,
 				placeholder: 'evf-sortable-placeholder',
 				containment: '.everest-forms-panel-content-wrap',
-				helper: function( event, ui ) {
-					ui.each( function() {
-						$( this ).width( $( this ).width() );
-					});
-					return ui;
-				},
 				start: function( event, ui ) {
 					ui.item.css({
 						'background-color': '#f7fafc',
@@ -916,49 +923,56 @@
 			});
 
 			$( '.evf-admin-grid' ).sortable({
+				revert: true,
 				cancel: false,
-				// containment: 'parent',
+				cursor: 'move',
+				scrollSensitivity: 40,
+				forcePlaceholderSize: true,
+				items: '.everest-forms-field',
+				connectWith: '.evf-admin-grid',
+				containment: '.everest-forms-panel-content-wrap',
 				over: function ( event ) {
-					$(event.target).addClass('evf-item-hover');
-					$('.evf-admin-grid').addClass('evf-hover');
+					$( event.target ).addClass( 'evf-item-hover' );
+					$( '.evf-admin-grid' ).addClass( 'evf-hover' );
 					EVFPanelBuilder.checkEmptyGrid();
 				},
 				out: function ( event ) {
-					console.log("grid");
-					$('.evf-admin-grid').removeClass('evf-hover');
-					$(event.target).removeClass('evf-item-hover');
+					$( event.target ).removeClass( 'evf-item-hover' );
+					$( '.evf-admin-grid' ).removeClass( 'evf-hover' );
 					EVFPanelBuilder.checkEmptyGrid();
-
 				},
-				revert: true,
-				connectWith: '.evf-admin-grid'
+				stop: function( event, ui ) {
+					ui.item.removeAttr( 'style' );
+				}
 			}).disableSelection();
 
 			$( '.evf-registered-buttons button.evf-registered-item' ).draggable({
-				containment: '#everest-forms-builder',
-				connectToSortable: '.evf-admin-grid',
-				helper: 'clone',
+				delay: 200,
 				cancel: false,
 				scroll: false,
-				delay: 200,
+				scrollSensitivity: 40,
+				forcePlaceholderSize: true,
+				helper: 'clone',
 				opacity: 0.75,
+				containment: '#everest-forms-builder',
+				connectToSortable: '.evf-admin-grid',
 				start: function( event, ui ) {
 					$( this ).data( 'uihelper', ui.helper );
 					$( '.evf-admin-grid' ).addClass( 'evf-hover' );
-					$( '.evf-show-grid' ).closest('.evf-toggle-row').find('.evf-toggle-row-content' ).stop(true).slideUp(200);
+					$( '.evf-show-grid' ).closest( '.evf-toggle-row' ).find( '.evf-toggle-row-content' ).stop( true ).slideUp( 200 );
 				},
 				revert: function( value ){
-					var uiHelper = ( this ).data( 'uihelper' );
+					var uiHelper = $( this ).data( 'uihelper' );
 					uiHelper.data( 'dropped', value !== false );
-					if( value === false ) {
+					if ( false === value ) {
 						return true;
 					}
 					return false;
 				},
 				stop: function( event, ui ) {
-					if( ui.helper.data( 'dropped' ) === true ) {
-						$( '.evf-admin-grid' ).removeClass( 'evf-hover' );
+					if ( true === ui.helper.data( 'dropped' ) ) {
 						var helper = ui.helper;
+						$( '.evf-admin-grid' ).removeClass( 'evf-hover' );
 						EVFPanelBuilder.fieldDrop( helper );
 					}
 				}
