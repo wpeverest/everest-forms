@@ -227,7 +227,7 @@ class EVF_AJAX {
 		// Fix for sorting field ordering.
 		if ( isset( $data['structure'], $data['form_fields'] ) ) {
 			$structure = evf_flatten_array( $data['structure'] );
-			$data['form_fields'] = array_merge( array_flip( $structure ), $data['form_fields'] );
+			$data['form_fields'] = array_merge( array_intersect_key( array_flip( $structure ), $data['form_fields'] ), $data['form_fields'] );
 		}
 
 		if ( isset( $data['form_fields'] ) ) {
