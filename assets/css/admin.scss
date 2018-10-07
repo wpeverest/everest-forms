@@ -737,9 +737,27 @@ body.everest-forms-builder-setup,
 
 		.everest-forms-panel-content-wrap {
 			.everest-forms-panel-content {
+				padding: 15px 20px;
+				background-color: #fff;
 				height: calc(100vh - 150px);
 
+				.everest-forms-title-desc {
+					.everest-forms-form-name {
+						margin-top: 0;
+					}
+				}
+
+				.evf-admin-field-wrapper {
+					position: relative;
+
+					.evf-sortable-placeholder {
+						background-color: transparentize( $green, 0.95 );
+						border: 1px dashed transparentize( $green, 0.75 );
+					}
+				}
+
 				.evf-add-row {
+					margin: 20px auto;
 					text-align: center;
 
 					span {
@@ -747,9 +765,7 @@ body.everest-forms-builder-setup,
 						height: auto;
 						cursor: pointer;
 						font-size: 13px;
-						padding: 6px 15px;
 						border-radius: 5px;
-						margin-bottom: 20px;
 						color: $color-white;
 						font-family: inherit;
 						background-color: $color-alert-success;

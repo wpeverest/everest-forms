@@ -337,36 +337,16 @@
 
 		.everest-forms-panel-content-wrap {
 
-			.everest-forms-panel-content {
-				background-color: $color-white;
-				padding: 15px 20px;
-
-				.everest-forms-title-desc {
-					.everest-forms-form-name {
-						margin-top: 0;
-					}
-				}
-
-				.evf-admin-field-wrapper {
-					padding: 0 15px;
-					position: relative;
-
-					&.evf-hover {
-						background-color: transparentize( $green, 0.95 );
-						border: 1px dashed transparentize( $green, 0.75 );
-					}
-				}
-			}
-
 			.evf-admin-row {
-				background-color: transparent;
 				display: flex;
-				margin: 0 -15px 15px;
 				position: relative;
+				margin-bottom: 15px;
+				background-color: transparent;
 				border: 1px solid transparent;
 				transition: 0.5s border, 0.5s background-color;
+
 				&:last-child {
-					margin-bottom: 10px;
+					margin-bottom: 0;
 				}
 
 				&.ui-sortable-handle {

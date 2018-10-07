@@ -892,27 +892,26 @@
 				items: '.evf-admin-row',
 				cursor: 'move',
 				axis: 'y',
-				handle: '.evf-admin-row',
+				revert: true,
 				scrollSensitivity: 40,
 				forcePlaceholderSize: true,
-				helper: 'clone',
 				opacity: 0.65,
-				placeholder: 'evf-admin-row',
-			});
-
-
-			$( '.evf-admin-field-wrapper-old' ).sortable({
-				containment: '.evf-admin-field-wrapper',
-				tolerance: 'pointer',
-				revert: 'invalid',
-				placeholder: 'evf-admin-row',
-				forceHelperSize: true,
-				over: function () {
-					$( '.evf-admin-field-wrapper' ).addClass( 'evf-hover' );
+				placeholder: 'evf-sortable-placeholder',
+				containment: '.everest-forms-panel-content-wrap',
+				helper: function( event, ui ) {
+					ui.each( function() {
+						$( this ).width( $( this ).width() );
+					});
+					return ui;
 				},
-				out: function () {
-					console.log("row");
-					$( '.evf-admin-field-wrapper' ).removeClass( 'evf-hover' );
+				start: function( event, ui ) {
+					ui.item.css({
+						'background-color': '#f7fafc',
+						'border': '1px dashed #5d96ee'
+					});
+				},
+				stop: function( event, ui ) {
+					ui.item.removeAttr( 'style' );
 				}
 			});
 
