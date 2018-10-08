@@ -537,6 +537,7 @@
 
 						&.ui-draggable {
 							margin-bottom: 10px;
+							width: 100%;
 
 							.evf-icon {
 								display: inline-block;
@@ -574,15 +575,15 @@
 					}
 
 					&.evf-empty-grid {
-						border: 1px dashed $color-gray-light;
+						display: flex;
+						align-items: center;
+						justify-content: center;
 						position: relative;
+						border: 1px dashed $color-gray-light;
 
 						&:before {
-							text-align: center;
-							margin: 0 auto;
 							content: "\f132";
 							font-size: 40px;
-							display: block;
 							font-family: dashicons;
 							line-height: 1.2;
 							cursor: all-scroll;
