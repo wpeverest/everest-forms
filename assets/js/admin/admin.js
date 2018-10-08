@@ -2,15 +2,34 @@
 ( function( $, params ) {
 
 	// Enable Perfect Scrollbar.
-	if ( 'undefined' !== typeof PerfectScrollbar ) {
-		$( document ).ready( function() {
-			new PerfectScrollbar( 'nav.evf-nav-tab-wrapper', {
+	$( document ).on( 'init_perfect_scrollbar', function() {
+		var nav_wrapper = $( 'nav.evf-nav-tab-wrapper' );
+
+		if ( nav_wrapper.length >= 1 ) {
+			window.evf_nav_ps = new PerfectScrollbar( nav_wrapper.selector, {
 				suppressScrollY : true,
 				useBothWheelAxes: true,
 				wheelPropagation: true
 			});
-		});
-	}
+		}
+	});
+
+	// Update Perfect Scrollbar.
+	$( window ).on( 'resize orientationchange', function() {
+		var resizeTimer;
+
+		clearTimeout( resizeTimer );
+		resizeTimer = setTimeout( function() {
+			window.evf_nav_ps.update();
+		}, 250 );
+	});
+
+	// Trigger Perfect Scrollbar.
+	$( document ).ready( function( $ ) {
+		if ( 'undefined' !== typeof PerfectScrollbar ) {
+			$( document ).trigger( 'init_perfect_scrollbar' );
+		}
+	});
 
 	// Field validation error tips.
 	$( document.body )
