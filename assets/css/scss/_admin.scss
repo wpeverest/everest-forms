@@ -1107,9 +1107,13 @@
 		}
 
 		&.ui-draggable-dragging {
-			width: 100% !important;
+			width: calc(100% - 20px) !important;
 			text-align: center !important;
 			font-size: 12px !important;
+		}
+
+		&.ui-sortable-placeholder {
+			width: 100% !important;
 		}
 	}
 
