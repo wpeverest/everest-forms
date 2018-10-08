@@ -37,6 +37,13 @@
 			// Page load.
 			$( window ).on( 'load', EVFPanelBuilder.load );
 
+			// Initialize builder UI fields.
+			$( document.body ).on( 'evf-init-builder-fields', function() {
+				EVFPanelBuilder.bindFields();
+			} ).trigger( 'evf-init-builder-fields' );
+
+			// Initialize the Perfect Scrollbar.
+
 			// Adjust builder width.
 			$( document.body ).on( 'adjust_builder_width', function() {
 				var builderWidth = $( '#everest-forms-builder' ).width();
@@ -133,12 +140,6 @@
 				columnClass: 'evf-responsive-class'
 			};
 
-			// Enable Perfect Scrollbar.
-			if ( 'undefined' !== typeof PerfectScrollbar ) {
-				window.evf_tab_scroller   = new PerfectScrollbar( '.everest-forms-tab-content' );
-				window.evf_panel_scroller = new PerfectScrollbar( '.everest-forms-panel-content' );
-			}
-
 			// Action available for each binding.
 			$( document ).trigger( 'everest_forms_ready' );
 		},
@@ -173,14 +174,6 @@
 			if ( tab === 'field-options' ) {
 				$( '.evf-panel-field-options-button' ).trigger( 'click' );
 			}
-		},
-
-		/**
-		 * Update Perfect Scrollbar.
-		 */
-		updatePerfectScrollbar: function() {
-			window.evf_tab_scroller.update();
-			window.evf_panel_scroller.update();
 		},
 
 		//--------------------------------------------------------------------//
@@ -475,7 +468,6 @@
 								keys: ['enter'],
 								action: function () {
 									EVFPanelBuilder.removeRow( row );
-									EVFPanelBuilder.updatePerfectScrollbar();
 								}
 							},
 							cancel: {
@@ -498,7 +490,6 @@
 				$( '#part_' + part_id ).find( '.evf-admin-field-wrapper' ).append( row_clone );
 				EVFPanelBuilder.bindFields();
 				EVFPanelBuilder.checkEmptyGrid();
-				EVFPanelBuilder.updatePerfectScrollbar();
 			});
 		},
 		bindCloneField: function () {
@@ -565,7 +556,6 @@
 						var field_key = response.data.field_key;
 						$('#everest-forms-field-id').val(field_id);
 						EVFPanelBuilder.render_node(field, element_field_id, field_key);
-						EVFPanelBuilder.updatePerfectScrollbar();
 						$( document.body ).trigger( 'init_field_options_toggle' );
 					}
 				}

@@ -4,7 +4,7 @@
 	// Enable Perfect Scrollbar.
 	if ( 'undefined' !== typeof PerfectScrollbar ) {
 		$( document ).ready( function() {
-			new PerfectScrollbar( 'nav.evf-nav-tab-wrapper', {
+			window.evf_nav_scroller = new PerfectScrollbar( 'nav.evf-nav-tab-wrapper', {
 				suppressScrollY : true,
 				useBothWheelAxes: true,
 				wheelPropagation: true
