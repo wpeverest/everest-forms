@@ -554,11 +554,10 @@
 						}
 
 						.spinner {
-							background-size: 15px 15px;
 							float: none;
-							height: 15px;
-							width: 15px;
-							margin: 0 0 5px 3px !important;
+							width: 25px;
+							height: 25px;
+							margin: 10px 0 5px 10px;
 						}
 
 						.dashicons {
@@ -581,7 +580,7 @@
 						position: relative;
 						border: 1px dashed $color-gray-light;
 
-						&:before {
+						&::before {
 							content: "\f132";
 							font-size: 40px;
 							font-family: dashicons;
