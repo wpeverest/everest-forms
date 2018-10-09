@@ -932,7 +932,6 @@
 				},
 				stop: function( event, ui ) {
 					ui.item.removeAttr( 'style' );
-					$( '.evf-admin-grid' ).removeClass( 'evf-empty-grid' );
 				}
 			}).disableSelection();
 
