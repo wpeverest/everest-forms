@@ -225,7 +225,7 @@ class EVF_Shortcode_Form {
 
 			foreach ( $structure as $row_key => $row ) {
 
-				do_action( 'everest_forms_display_rows_before', $row, $form_data );
+				do_action( 'everest_forms_display_rows_before', $row_key, $form_data );
 
 				echo '<div class="evf-frontend-row" data-row="' . $row_key . '">';
 
@@ -267,7 +267,7 @@ class EVF_Shortcode_Form {
 
 				echo '</div>';
 
-				do_action( 'everest_forms_display_rows_after', $row, $form_data );
+				do_action( 'everest_forms_display_rows_after', $row_key, $form_data );
 			}
 
 			self::process_recaptcha( $form_data );
@@ -527,8 +527,6 @@ class EVF_Shortcode_Form {
 			self::$parts = false;
 		}
 
-		evf_debug_data( self::$parts );
-
 		// Allow final action to be customized.
 		$action = apply_filters( 'evf_frontend_form_action', $action, $form_data );
 
@@ -574,7 +572,8 @@ class EVF_Shortcode_Form {
 
 		// Debug information.
 		if ( is_super_admin() ) {
-			evf_debug_data( $form_data );
+			// evf_debug_data( $form_data );
+			evf_debug_data( self::$parts );
 		}
 	}
 }
