@@ -195,66 +195,80 @@ class EVF_Shortcode_Form {
 	 * @param mixed $description
 	 */
 	public static function fields( $form_data, $title, $description ) {
+		$structure = isset( $form_data['structure'] ) ? $form_data['structure'] : array();
+
+		// Bail if empty form fields.
 		if ( empty( $form_data['form_fields'] ) ) {
 			return;
 		}
 
-		$structure = isset( $form_data['structure'] ) ? $form_data['structure'] : array();
-
 		// Form fields area.
 		echo '<div class="evf-field-container">';
 
-		do_action( 'everest_forms_display_fields_before', $form_data );
+			wp_nonce_field( 'everest-forms_process_submit' );
 
-		wp_nonce_field( 'everest-forms_process_submit' );
+			/**
+			 * Hook: everest_forms_display_fields_before.
+			 *
+			 * @hooked EverestForms_MultiPart::display_fields_before() Multi-Part markup open.
+			 */
+			do_action( 'everest_forms_display_fields_before', $form_data );
 
-		foreach ( $structure as $row_key => $row ) {
+			foreach ( $structure as $row_key => $row ) {
 
-			echo '<div class="evf-frontend-row" data-row="' . $row_key . '">';
+				do_action( 'everest_forms_display_rows_before', $row, $form_data );
 
-			foreach ( $row as $grid_key => $grid ) {
+				echo '<div class="evf-frontend-row" data-row="' . $row_key . '">';
 
-				$number_of_grid = count( $row );
+				foreach ( $row as $grid_key => $grid ) {
+					$number_of_grid = count( $row );
 
-				echo '<div class="evf-frontend-grid evf-grid-' . $number_of_grid . '" data-grid="' . $grid_key . '">';
+					echo '<div class="evf-frontend-grid evf-grid-' . $number_of_grid . '" data-grid="' . $grid_key . '">';
 
-				if ( ! is_array( $grid ) ) {
-					$grid = array();
-				}
-
-				foreach ( $grid as $field_key ) {
-					$field = isset( $form_data['form_fields'][ $field_key ] ) ? $form_data['form_fields'][ $field_key ] : array();
-					$field = apply_filters( 'everest_forms_field_data', $field, $form_data );
-
-					if ( empty( $field ) || in_array( $field['type'], EVF()->form_fields->get_pro_form_field_types(), true ) ) {
-						continue;
+					if ( ! is_array( $grid ) ) {
+						$grid = array();
 					}
 
-					// Get field attributes.
-					$attributes = self::get_field_attributes( $field, $form_data );
+					foreach ( $grid as $field_key ) {
+						$field = isset( $form_data['form_fields'][ $field_key ] ) ? $form_data['form_fields'][ $field_key ] : array();
+						$field = apply_filters( 'everest_forms_field_data', $field, $form_data );
 
-					// Get field properties.
-					$properties = self::get_field_properties( $field, $form_data, $attributes );
+						if ( empty( $field ) || in_array( $field['type'], EVF()->form_fields->get_pro_form_field_types(), true ) ) {
+							continue;
+						}
 
-					// Add properties to the field so it's available everywhere.
-					$field['properties'] = $properties;
+						// Get field attributes.
+						$attributes = self::get_field_attributes( $field, $form_data );
 
-					do_action( 'everest_forms_display_field_before', $field, $form_data );
+						// Get field properties.
+						$properties = self::get_field_properties( $field, $form_data, $attributes );
 
-					do_action( "everest_forms_display_field_{$field['type']}", $field, $attributes, $form_data );
+						// Add properties to the field so it's available everywhere.
+						$field['properties'] = $properties;
 
-					do_action( 'everest_forms_display_field_after', $field, $form_data );
+						do_action( 'everest_forms_display_field_before', $field, $form_data );
+
+						do_action( "everest_forms_display_field_{$field['type']}", $field, $attributes, $form_data );
+
+						do_action( 'everest_forms_display_field_after', $field, $form_data );
+					}
+
+					echo '</div>';
 				}
 
 				echo '</div>';
+
+				do_action( 'everest_forms_display_rows_after', $row, $form_data );
 			}
 
-			echo '</div>';
-		}
+			self::process_recaptcha( $form_data );
 
-		self::process_recaptcha( $form_data );
-
-		do_action( 'everest_forms_display_fields_after', $form_data );
+			/**
+			 * Hook: everest_forms_display_fields_after.
+			 *
+			 * @hooked EverestForms_MultiPart::display_fields_after() Multi-Part markup open.
+			 */
+			do_action( 'everest_forms_display_fields_after', $form_data );
 
 		echo '</div>';
 	}
