@@ -1883,3 +1883,35 @@ function evf_get_multipart_details( $form = false ) {
 
 	return false;
 }
+
+/**
+ * Helper function to display debug data.
+ *
+ * @since 1.3.1
+ *
+ * @param mixed $expression The expression to be printed.
+ * @param bool  $return     Optional. Default false. Set to true to return the human-readable string.
+ *
+ * @return string
+ */
+function evf_debug_data( $expression, $return = false ) {
+	if ( defined( 'EVF_DEBUG' ) && true === EVF_DEBUG ) {
+		$output = '<textarea style="color:#666;background:#fff;margin: 20px 0;width:100%;height:500px;font-size:12px;font-family: Consolas,Monaco,Lucida Console,monospace;direction: ltr;unicode-bidi: embed;line-height: 1.4;padding: 4px 6px 1px;" readonly>';
+
+		$output .= "========================= Everest Forms Debugging =========================\n\n";
+
+		if ( is_array( $expression ) || is_object( $expression ) ) {
+			$output .= evf_print_r( $expression, true );
+		} else {
+			$output .= $expression;
+		}
+
+		$output .= '</textarea>';
+
+		if ( $return ) {
+			return $output;
+		} else {
+			echo $output; // phpcs:ignore
+		}
+	}
+}

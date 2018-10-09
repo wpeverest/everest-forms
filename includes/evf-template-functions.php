@@ -46,8 +46,6 @@ function evf_no_js() {
 /**
  * Output generator tag to aid debugging.
  *
- * @access public
- *
  * @param string $gen
  * @param string $type
  *

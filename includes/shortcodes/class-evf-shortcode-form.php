@@ -527,8 +527,6 @@ class EVF_Shortcode_Form {
 			self::$parts = false;
 		}
 
-		echo '<pre>' . print_r( $parts, true ) . '</pre>';
-
 		// Allow final action to be customized.
 		$action = apply_filters( 'evf_frontend_form_action', $action, $form_data );
 
@@ -571,5 +569,10 @@ class EVF_Shortcode_Form {
 
 		// After output hook.
 		do_action( 'everest_forms_frontend_output_after', $form_data, $form );
+
+		// Debug information.
+		if ( is_super_admin() ) {
+			evf_debug_data( $form_data );
+		}
 	}
 }
