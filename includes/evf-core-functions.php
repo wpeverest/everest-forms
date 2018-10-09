@@ -924,6 +924,9 @@ function evf_sanitize_textarea_field( $string ) {
 }
 
 /**
+ * Formats, sanitizes, and returns/echos HTML element ID, classes, attributes,
+ * and data attributes.
+ *
  * @param string $id
  * @param array  $class
  * @param array  $datas
@@ -933,49 +936,57 @@ function evf_sanitize_textarea_field( $string ) {
  * @return string
  */
 function evf_html_attributes( $id = '', $class = array(), $datas = array(), $atts = array(), $echo = false ) {
-
-	$output = '';
-	$id     = trim( $id );
+	$id    = trim( $id );
+	$parts = array();
 
 	if ( ! empty( $id ) ) {
-		$output = 'id="' . sanitize_html_class( $id ) . '" ';
+		$id = sanitize_html_class( $id );
+		if ( ! empty( $id ) ) {
+			$parts[] = 'id="' . $id . '"';
+		}
 	}
 
 	if ( ! empty( $class ) ) {
-		$output .= 'class="' . evf_sanitize_classes( $class, true ) . '" ';
+		$class = wpforms_sanitize_classes( $class, true );
+		if ( ! empty( $class ) ) {
+			$parts[] = 'class="' . $class . '"';
+		}
 	}
 
 	if ( ! empty( $datas ) ) {
 		foreach ( $datas as $data => $val ) {
-			$output .= 'data-' . sanitize_html_class( $data ) . '="' . esc_attr( $val ) . '" ';
+			$parts[] = 'data-' . sanitize_html_class( $data ) . '="' . esc_attr( $val ) . '"';
 		}
 	}
 
 	if ( ! empty( $atts ) ) {
 		foreach ( $atts as $att => $val ) {
 			if ( '0' == $val || ! empty( $val ) ) {
-				$output .= sanitize_html_class( $att ) . '="' . esc_attr( $val ) . '" ';
+				$parts[] = sanitize_html_class( $att ) . '="' . esc_attr( $val ) . '"';
 			}
 		}
 	}
 
+	$output = implode( ' ', $parts );
+
 	if ( $echo ) {
-		echo trim( $output );
+		echo trim( $output ); // phpcs:ignore
 	} else {
 		return trim( $output );
 	}
 }
 
 /**
- * @param      $classes
- * @param bool $convert
+ * Sanitizes string of CSS classes.
  *
- * @return array|string
+ * @param array|string $classes
+ * @param bool         $convert True will convert strings to array and vice versa.
+ *
+ * @return string|array
  */
 function evf_sanitize_classes( $classes, $convert = false ) {
-
-	$array = is_array( $classes );
 	$css   = array();
+	$array = is_array( $classes );
 
 	if ( ! empty( $classes ) ) {
 		if ( ! $array ) {
@@ -985,6 +996,7 @@ function evf_sanitize_classes( $classes, $convert = false ) {
 			$css[] = sanitize_html_class( $class );
 		}
 	}
+
 	if ( $array ) {
 		return $convert ? implode( ' ', $css ) : $css;
 	} else {
@@ -995,10 +1007,9 @@ function evf_sanitize_classes( $classes, $convert = false ) {
 /**
  * Performs json_decode and unslash.
  *
- * @since      1.0.0
+ * @since 1.0.0
  *
  * @param string $data
- *
  * @return array|bool
  */
 function evf_decode( $data ) {

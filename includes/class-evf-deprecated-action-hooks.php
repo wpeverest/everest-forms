@@ -36,6 +36,12 @@ class EVF_Deprecated_Action_Hooks extends EVF_Deprecated_Hooks {
 		'everest_forms_display_fields_before'      => 'evf_display_fields_before',
 		'everest_forms_display_fields_after'       => 'evf_display_fields_after',
 		'everest_forms_display_field_{field_type}' => 'evf_display_field_{field_type}',
+		'everest_forms_frontend_output_before'     => 'evf_frontend_output_before',
+		'everest_forms_frontend_output_success'    => 'evf_frontend_output_success',
+		'everest_forms_frontend_output'            => 'evf_frontend_output',
+		'everest_forms_frontend_output_after'      => 'evf_frontend_output_after',
+		'everest_forms_display_submit_before'      => 'evf_display_submit_before',
+		'everest_forms_display_submit_after'       => 'evf_display_submit_after',
 	);
 
 	/**
@@ -55,6 +61,12 @@ class EVF_Deprecated_Action_Hooks extends EVF_Deprecated_Hooks {
 		'evf_display_field_after'               => '1.2.0',
 		'evf_display_fields_before'             => '1.3.0',
 		'evf_display_fields_after'              => '1.3.0',
+		'evf_frontend_output_before'            => '1.3.1',
+		'evf_frontend_output_success'           => '1.3.1',
+		'evf_frontend_output'                   => '1.3.1',
+		'evf_frontend_output_after'             => '1.3.1',
+		'evf_display_submit_before'             => '1.3.1',
+		'evf_display_submit_after'              => '1.3.1',
 	);
 
 	/**
