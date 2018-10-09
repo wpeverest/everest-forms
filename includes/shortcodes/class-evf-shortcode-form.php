@@ -17,6 +17,19 @@ defined( 'ABSPATH' ) || exit;
 class EVF_Shortcode_Form {
 
 	/**
+	 * Contains information for multi-part forms.
+	 *
+	 * Forms that do not contain parts return false, otherwise returns an array
+	 * that contains the number of total pages and page counter used when
+	 * displaying part rows.
+	 *
+	 * @since 1.3.1
+	 *
+	 * @var array
+	 */
+	public static $parts = false;
+
+	/**
 	 * Hooks in tab.
 	 */
 	public static function hooks() {
@@ -44,11 +57,7 @@ class EVF_Shortcode_Form {
 		$submit   = apply_filters( 'evf_field_submit', isset( $settings['submit_button_text'] ) ? $settings['submit_button_text'] : __( 'Submit', 'everest-forms' ), $form_data );
 		$process  = '';
 		$classes  = '';
-		$visible  = '';
-
-		if ( isset( $settings['enable_multi_part'] ) && evf_string_to_bool( $settings['enable_multi_part'] ) ) {
-			$visible = 'style="display:none;"';
-		}
+		$visible  = self::$parts ? 'style="display:none;"' : '';
 
 		// Submit button area.
 		echo '<div class="evf-submit-container" ' . $visible . '>';
@@ -286,6 +295,7 @@ class EVF_Shortcode_Form {
 		}
 
 		if ( isset( $form_data['settings']['recaptcha_support'] ) && '1' === $form_data['settings']['recaptcha_support'] ) {
+			$visible = self::$parts ? 'style="display:none;"' : '';
 			$data = apply_filters( 'everest_forms_frontend_recaptcha', array(
 				'sitekey' => trim( sanitize_text_field( $site_key ) ),
 			), $form_data );
@@ -298,7 +308,7 @@ class EVF_Shortcode_Form {
 				wp_add_inline_script( 'evf-recaptcha', $recaptch_inline );
 
 				// Output the reCapthcha container.
-				echo '<div id="evf-recaptcha-container" class="evf-recaptcha-row">';
+				echo '<div id="evf-recaptcha-container" class="evf-recaptcha-row" ' . $visible . '>';
 					echo '<div ' . evf_html_attributes( '', array( 'g-recaptcha' ), $data ) . '"></div>';
 				echo '</div>';
 			}
@@ -482,11 +492,11 @@ class EVF_Shortcode_Form {
 		}
 
 		// Basic information.
-		$form_data = apply_filters( 'everest_forms_frontend_form_data', evf_decode( $form->post_content ) );
-		$form_id   = absint( $form->ID );
-		$settings  = $form_data['settings'];
-		$action    = esc_url_raw( remove_query_arg( 'evf-forms' ) );
-		$title     = filter_var( $title, FILTER_VALIDATE_BOOLEAN );
+		$form_data   = apply_filters( 'everest_forms_frontend_form_data', evf_decode( $form->post_content ) );
+		$form_id     = absint( $form->ID );
+		$settings    = $form_data['settings'];
+		$action      = esc_url_raw( remove_query_arg( 'evf-forms' ) );
+		$title       = filter_var( $title, FILTER_VALIDATE_BOOLEAN );
 		$description = filter_var( $description, FILTER_VALIDATE_BOOLEAN );
 
 		// If the form does not contain any fields do not proceed.
@@ -508,6 +518,16 @@ class EVF_Shortcode_Form {
 			do_action( 'everest_forms_frontend_output_success', $form_data );
 			return;
 		}
+
+		// All checks have passed, so calculate multi-part details for the form.
+		$parts = evf_get_multipart_details( $form_data );
+		if ( $parts ) {
+			self::$parts = $parts;
+		} else {
+			self::$parts = false;
+		}
+
+		echo '<pre>' . print_r( $parts, true ) . '</pre>';
 
 		// Allow final action to be customized.
 		$action = apply_filters( 'evf_frontend_form_action', $action, $form_data );

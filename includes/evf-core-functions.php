@@ -1838,3 +1838,48 @@ function evf_get_all_fields_settings() {
 
 	return apply_filters( 'everest_form_all_fields_settings', $settings );
 }
+
+/**
+ * Returns information about parts if the form has multiple parts.
+ *
+ * @since 1.3.1
+ *
+ * @param  mixed $form
+ * @return mixed false or an array
+ */
+function evf_get_multipart_details( $form = false ) {
+	$parts     = 1;
+	$form_data = '';
+	$details   = array();
+
+	if ( is_object( $form ) && ! empty( $form->post_content ) ) {
+		$form_data = evf_decode( $form->post_content );
+	} elseif ( is_array( $form ) ) {
+		$form_data = $form;
+	}
+
+	if ( isset( $form_data['settings']['enable_multi_part'], $form_data['multi_part'] ) && evf_string_to_bool( $form_data['settings']['enable_multi_part'] ) ) {
+		foreach ( $form_data['multi_part'] as $part_data ) {
+			$parts ++;
+			$details['total']   = $parts;
+			$details['parts'][] = $part_data;
+		}
+
+		if ( ! empty( $details ) ) {
+			if ( empty( $details['top'] ) ) {
+				$details['top'] = array();
+			}
+			if ( empty( $details['bottom'] ) ) {
+				$details['bottom'] = array();
+			}
+
+			$details['current'] = 1;
+
+			return $details;
+		} else {
+			return false;
+		}
+	}
+
+	return false;
+}
