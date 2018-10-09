@@ -74,6 +74,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 				<div class="everest-forms-field-wrap">
 					<?php do_action( 'everest_forms_builder_fields_preview', $this->form ); ?>
 				</div>
+				<?php evf_debug_data( $this->form_data ); ?>
 			</div>
 		</div>
 		<?php
