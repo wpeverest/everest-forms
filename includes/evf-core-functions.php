@@ -1848,9 +1848,8 @@ function evf_get_all_fields_settings() {
  * @return mixed false or an array
  */
 function evf_get_multipart_details( $form = false ) {
-	$parts     = 1;
-	$form_data = '';
 	$details   = array();
+	$form_data = array();
 
 	if ( is_object( $form ) && ! empty( $form->post_content ) ) {
 		$form_data = evf_decode( $form->post_content );
@@ -1861,7 +1860,7 @@ function evf_get_multipart_details( $form = false ) {
 	if ( isset( $form_data['settings']['enable_multi_part'], $form_data['multi_part'] ) && evf_string_to_bool( $form_data['settings']['enable_multi_part'] ) ) {
 		$details['total'] = count( $form_data['multi_part'] );
 		$details['first'] = current( $form_data['multi_part'] );
-		$details['parts'] = array_values( $form_data['multi_part'] ); //array_slice( array_values( $form_data['multi_part'] ), 1, -1 );
+		$details['parts'] = array_values( $form_data['multi_part'] ); // array_slice( array_values( $form_data['multi_part'] ), 1, -1 );
 		$details['last']  = end( $form_data['multi_part'] );
 
 		if ( ! empty( $details ) ) {

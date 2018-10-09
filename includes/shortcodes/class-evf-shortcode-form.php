@@ -225,7 +225,10 @@ class EVF_Shortcode_Form {
 
 			foreach ( $structure as $row_key => $row ) {
 
-				do_action( 'everest_forms_display_rows_before', $row_key, $form_data );
+				/**
+				 * Hook: everest_forms_display_row_before.
+				 */
+				do_action( 'everest_forms_display_row_before', $row_key, $form_data );
 
 				echo '<div class="evf-frontend-row" data-row="' . $row_key . '">';
 
@@ -267,7 +270,12 @@ class EVF_Shortcode_Form {
 
 				echo '</div>';
 
-				do_action( 'everest_forms_display_rows_after', $row_key, $form_data );
+				/**
+				 * Hook: everest_forms_display_row_after.
+				 *
+				 * @hooked EverestForms_MultiPart::display_row_after() Multi-Part markup (close previous part, open next).
+				 */
+				do_action( 'everest_forms_display_row_after', $row_key, $form_data );
 			}
 
 			self::process_recaptcha( $form_data );
