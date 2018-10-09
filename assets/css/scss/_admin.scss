@@ -537,6 +537,7 @@
 
 						&.ui-draggable {
 							margin-bottom: 10px;
+							width: 100%;
 
 							.evf-icon {
 								display: inline-block;
@@ -553,11 +554,10 @@
 						}
 
 						.spinner {
-							background-size: 15px 15px;
 							float: none;
-							height: 15px;
-							width: 15px;
-							margin: 0 0 5px 3px !important;
+							width: 25px;
+							height: 25px;
+							margin: 10px 0 5px 10px;
 						}
 
 						.dashicons {
@@ -574,15 +574,15 @@
 					}
 
 					&.evf-empty-grid {
-						border: 1px dashed $color-gray-light;
+						display: flex;
+						align-items: center;
+						justify-content: center;
 						position: relative;
+						border: 1px dashed $color-gray-light;
 
-						&:before {
-							text-align: center;
-							margin: 0 auto;
+						&::before {
 							content: "\f132";
 							font-size: 40px;
-							display: block;
 							font-family: dashicons;
 							line-height: 1.2;
 							cursor: all-scroll;
@@ -1106,9 +1106,13 @@
 		}
 
 		&.ui-draggable-dragging {
-			width: 100% !important;
+			width: calc(100% - 20px) !important;
 			text-align: center !important;
 			font-size: 12px !important;
+		}
+
+		&.ui-sortable-placeholder {
+			width: 100% !important;
 		}
 	}
 

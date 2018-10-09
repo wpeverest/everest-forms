@@ -792,7 +792,6 @@
 			});
 			return fields;
 		},
-
 		checkEmptyGrid: function () {
 			$.each($('.evf-admin-grid'), function () {
 				if ( $(this).find('.everest-forms-field').length < 1 ) {
@@ -921,14 +920,14 @@
 				items: '.everest-forms-field',
 				connectWith: '.evf-admin-grid',
 				containment: '.everest-forms-panel-content-wrap',
-				over: function ( event ) {
-					$( event.target ).addClass( 'evf-item-hover' );
-					$( '.evf-admin-grid' ).addClass( 'evf-hover' );
-					EVFPanelBuilder.checkEmptyGrid();
-				},
 				out: function ( event ) {
 					$( event.target ).removeClass( 'evf-item-hover' );
 					$( '.evf-admin-grid' ).removeClass( 'evf-hover' );
+					EVFPanelBuilder.checkEmptyGrid();
+				},
+				over: function ( event ) {
+					$( event.target ).addClass( 'evf-item-hover' );
+					$( '.evf-admin-grid' ).addClass( 'evf-hover' );
 					EVFPanelBuilder.checkEmptyGrid();
 				},
 				stop: function( event, ui ) {
