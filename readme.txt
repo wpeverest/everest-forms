@@ -98,7 +98,7 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 
 == Changelog ==
 
-= 1.3.1 - XX-10-2018 =
+= 1.3.1 - 09-10-2018 =
 * Feature - Introduced form preview.
 * Feature - Conditional Logics addon support.
 * Fix - Meta key required for HTML and title field.
