@@ -1859,25 +1859,22 @@ function evf_get_multipart_details( $form = false ) {
 	}
 
 	if ( isset( $form_data['settings']['enable_multi_part'], $form_data['multi_part'] ) && evf_string_to_bool( $form_data['settings']['enable_multi_part'] ) ) {
-		foreach ( $form_data['multi_part'] as $part_data ) {
-			$parts ++;
-			$details['total']   = $parts;
-			$details['parts'][] = $part_data;
-		}
+		$details['total'] = count( $form_data['multi_part'] );
+		$details['first'] = current( $form_data['multi_part'] );
+		$details['parts'] = array_slice( array_values( $form_data['multi_part'] ), 1, -1 );
+		$details['last']  = end( $form_data['multi_part'] );
 
 		if ( ! empty( $details ) ) {
-			if ( empty( $details['top'] ) ) {
-				$details['top'] = array();
+			if ( empty( $details['first'] ) ) {
+				$details['first'] = array();
 			}
-			if ( empty( $details['bottom'] ) ) {
-				$details['bottom'] = array();
+			if ( empty( $details['last'] ) ) {
+				$details['last'] = array();
 			}
 
 			$details['current'] = 1;
 
 			return $details;
-		} else {
-			return false;
 		}
 	}
 

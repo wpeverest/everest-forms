@@ -527,6 +527,8 @@ class EVF_Shortcode_Form {
 			self::$parts = false;
 		}
 
+		evf_debug_data( self::$parts );
+
 		// Allow final action to be customized.
 		$action = apply_filters( 'evf_frontend_form_action', $action, $form_data );
 
