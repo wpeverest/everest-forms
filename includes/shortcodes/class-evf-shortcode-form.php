@@ -73,7 +73,7 @@ class EVF_Shortcode_Form {
 			do_action( 'everest_forms_display_submit_before', $form_data );
 
 			printf(
-				'<button type="submit" name="everest_forms[submit]" class="evf-submit %s" id="evf-submit-%d" value="evf-submit" %s>%s</button>',
+				'<button type="submit" name="everest_forms[submit]" class="everest-forms-submit-button %s" id="evf-submit-%d" value="evf-submit" %s>%s</button>',
 				$classes,
 				$form_id,
 				$process,
