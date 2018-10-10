@@ -527,11 +527,11 @@ class EVF_Shortcode_Form {
 			return;
 		}
 
-		// Allow final action to be customized.
-		$action = apply_filters( 'evf_frontend_form_action', $action, $form_data );
-
-		// Allow Multi-Part addon to calculate part details for the form.
+		// Allow Multi-Part to be customized.
 		self::$parts = apply_filters( 'everest_form_frontend_parts', self::$parts, $form_data );
+
+		// Allow final action to be customized.
+		$action = apply_filters( 'everest_forms_frontend_form_action', $action, $form_data );
 
 		// Allow form container classes to be filtered and user defined classes.
 		$classes = apply_filters( 'everest_forms_frontend_container_class', array(), $form_data );
