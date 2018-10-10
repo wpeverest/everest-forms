@@ -1857,8 +1857,6 @@ function evf_get_multipart_details( $form = false ) {
 		$form_data = $form;
 	}
 
-
-
 	if ( isset( $form_data['settings']['enable_multi_part'] ) && evf_string_to_bool( $form_data['settings']['enable_multi_part'] ) ) {
 		$nav_align = isset( $form_data['settings']['multi_part']['nav_align'] ) ? $form_data['settings']['multi_part']['nav_align'] : 'center';
 
