@@ -1840,44 +1840,6 @@ function evf_get_all_fields_settings() {
 }
 
 /**
- * Returns information about parts if the form has multiple parts.
- *
- * @since 1.3.1
- *
- * @param  mixed $form
- * @return mixed false or an array
- */
-function evf_get_multipart_details( $form = false ) {
-	$details   = array();
-	$form_data = array();
-
-	if ( is_object( $form ) && ! empty( $form->post_content ) ) {
-		$form_data = evf_decode( $form->post_content );
-	} elseif ( is_array( $form ) ) {
-		$form_data = $form;
-	}
-
-	if ( isset( $form_data['settings']['enable_multi_part'] ) && evf_string_to_bool( $form_data['settings']['enable_multi_part'] ) ) {
-		$settings = isset( $form_data['settingss']['multi_part'] ) ? $form_data['settings']['multi_part'] : array();
-
-		if ( ! empty( $form_data['multi_part'] ) ) {
-			$details['total']    = count( $form_data['multi_part'] );
-			$details['current']  = 1;
-			$details['parts']    = array_values( $form_data['multi_part'] );
-			$details['settings'] = wp_parse_args( $settings, array(
-				'indicator'      => 'progress',
-				'nav_align'      => 'center',
-				'part_title_pos' => 'navbar',
-			) );
-		}
-
-		return $details;
-	}
-
-	return false;
-}
-
-/**
  * Helper function to display debug data.
  *
  * @since 1.3.1
@@ -1907,4 +1869,42 @@ function evf_debug_data( $expression, $return = false ) {
 			echo $output; // phpcs:ignore
 		}
 	}
+}
+
+/**
+ * Returns information about parts if the form has multiple parts.
+ *
+ * @since 1.3.1
+ *
+ * @param  mixed $form
+ * @return mixed false or an array
+ */
+function evf_get_multipart_details( $form = false ) {
+	$details   = array();
+	$form_data = array();
+
+	if ( is_object( $form ) && ! empty( $form->post_content ) ) {
+		$form_data = evf_decode( $form->post_content );
+	} elseif ( is_array( $form ) ) {
+		$form_data = $form;
+	}
+
+	if ( isset( $form_data['settings']['enable_multi_part'] ) && evf_string_to_bool( $form_data['settings']['enable_multi_part'] ) ) {
+		$settings = isset( $form_data['settings']['multi_part'] ) ? $form_data['settings']['multi_part'] : array();
+
+		if ( ! empty( $form_data['multi_part'] ) ) {
+			$details['total']    = count( $form_data['multi_part'] );
+			$details['current']  = 1;
+			$details['parts']    = array_values( $form_data['multi_part'] );
+			$details['settings'] = wp_parse_args( $settings, array(
+				'indicator'      => 'progress',
+				'nav_align'      => 'center',
+				'part_title_pos' => 'navbar',
+			) );
+		}
+
+		return $details;
+	}
+
+	return false;
 }
