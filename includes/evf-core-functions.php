@@ -947,7 +947,7 @@ function evf_html_attributes( $id = '', $class = array(), $datas = array(), $att
 	}
 
 	if ( ! empty( $class ) ) {
-		$class = wpforms_sanitize_classes( $class, true );
+		$class = evf_sanitize_classes( $class, true );
 		if ( ! empty( $class ) ) {
 			$parts[] = 'class="' . $class . '"';
 		}
