@@ -1858,7 +1858,7 @@ function evf_get_multipart_details( $form = false ) {
 	}
 
 	if ( isset( $form_data['settings']['enable_multi_part'] ) && evf_string_to_bool( $form_data['settings']['enable_multi_part'] ) ) {
-		$settings = isset( $form_data['settings']['multi_part'] ) ? $form_data['settings']['multi_part'] : array();
+		$settings = isset( $form_data['settingss']['multi_part'] ) ? $form_data['settings']['multi_part'] : array();
 
 		if ( ! empty( $form_data['multi_part'] ) ) {
 			$details['total']    = count( $form_data['multi_part'] );
@@ -1891,7 +1891,7 @@ function evf_debug_data( $expression, $return = false ) {
 	if ( defined( 'EVF_DEBUG' ) && true === EVF_DEBUG ) {
 		$output = '<textarea style="color:#666;background:#fff;margin: 20px 0;width:100%;height:500px;font-size:12px;font-family: Consolas,Monaco,Lucida Console,monospace;direction: ltr;unicode-bidi: embed;line-height: 1.4;padding: 4px 6px 1px;" readonly>';
 
-		$output .= "========================= Everest Forms Debugging =========================\n\n";
+		$output .= "==================== Everest Forms Debugging ====================\n\n";
 
 		if ( is_array( $expression ) || is_object( $expression ) ) {
 			$output .= evf_print_r( $expression, true );
