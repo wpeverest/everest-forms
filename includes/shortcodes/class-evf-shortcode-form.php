@@ -188,7 +188,7 @@ class EVF_Shortcode_Form {
 	 */
 	public static function wrapper_start( $field, $form_data ) {
 		$container                     = $field['properties']['container'];
-		$container['data']['field-id'] = absint( $field['id'] );
+		$container['data']['field-id'] = esc_attr( $field['id'] );
 
 		printf(
 			'<div %s>',
@@ -331,7 +331,7 @@ class EVF_Shortcode_Form {
 	 */
 	private static function get_field_attributes( $field, $form_data ) {
 		$form_id    = absint( $form_data['id'] );
-		$field_id   = ( $field['id'] );
+		$field_id   = esc_attr( $field['id'] );
 		$attributes = array(
 			'field_class'       => array( 'evf-field', 'evf-field-' . sanitize_html_class( $field['type'] ), 'form-row' ),
 			'field_id'          => array( sprintf( 'evf-%d-field_%s-container', $form_id, $field_id ) ),
