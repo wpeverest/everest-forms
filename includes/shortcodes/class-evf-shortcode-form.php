@@ -527,16 +527,11 @@ class EVF_Shortcode_Form {
 			return;
 		}
 
-		// All checks have passed, so calculate multi-part details for the form.
-		$parts = evf_get_multipart_details( $form_data );
-		if ( $parts ) {
-			self::$parts = $parts;
-		} else {
-			self::$parts = false;
-		}
-
 		// Allow final action to be customized.
 		$action = apply_filters( 'evf_frontend_form_action', $action, $form_data );
+
+		// Allow Multi-Part addon to calculate part details for the form.
+		self::$parts = apply_filters( 'everest_form_frontend_parts', self::$parts, $form_data );
 
 		// Allow form container classes to be filtered and user defined classes.
 		$classes = apply_filters( 'everest_forms_frontend_container_class', array(), $form_data );
