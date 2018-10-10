@@ -1857,21 +1857,16 @@ function evf_get_multipart_details( $form = false ) {
 		$form_data = $form;
 	}
 
-	if ( isset( $form_data['settings']['enable_multi_part'], $form_data['multi_part'] ) && evf_string_to_bool( $form_data['settings']['enable_multi_part'] ) ) {
-		$details['total'] = count( $form_data['multi_part'] );
-		$details['first'] = current( $form_data['multi_part'] );
-		$details['parts'] = array_values( $form_data['multi_part'] ); // array_slice( array_values( $form_data['multi_part'] ), 1, -1 );
-		$details['last']  = end( $form_data['multi_part'] );
 
-		if ( ! empty( $details ) ) {
-			if ( empty( $details['first'] ) ) {
-				$details['first'] = array();
-			}
-			if ( empty( $details['last'] ) ) {
-				$details['last'] = array();
-			}
 
-			$details['current'] = 1;
+	if ( isset( $form_data['settings']['enable_multi_part'] ) && evf_string_to_bool( $form_data['settings']['enable_multi_part'] ) ) {
+		$nav_align = isset( $form_data['settings']['multi_part']['nav_align'] ) ? $form_data['settings']['multi_part']['nav_align'] : 'center';
+
+		if ( ! empty( $form_data['multi_part'] ) ) {
+			$details['total']     = count( $form_data['multi_part'] );
+			$details['current']   = 1;
+			$details['nav_align'] = sanitize_html_class( $nav_align );
+			$details['parts']     = array_values( $form_data['multi_part'] );
 
 			return $details;
 		}
