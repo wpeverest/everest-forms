@@ -1858,16 +1858,20 @@ function evf_get_multipart_details( $form = false ) {
 	}
 
 	if ( isset( $form_data['settings']['enable_multi_part'] ) && evf_string_to_bool( $form_data['settings']['enable_multi_part'] ) ) {
-		$nav_align = isset( $form_data['settings']['multi_part']['nav_align'] ) ? $form_data['settings']['multi_part']['nav_align'] : 'center';
+		$settings = isset( $form_data['settings']['multi_part'] ) ? $form_data['settings']['multi_part'] : array();
 
 		if ( ! empty( $form_data['multi_part'] ) ) {
-			$details['total']     = count( $form_data['multi_part'] );
-			$details['current']   = 1;
-			$details['nav_align'] = sanitize_html_class( $nav_align );
-			$details['parts']     = array_values( $form_data['multi_part'] );
-
-			return $details;
+			$details['total']    = count( $form_data['multi_part'] );
+			$details['current']  = 1;
+			$details['parts']    = array_values( $form_data['multi_part'] );
+			$details['settings'] = wp_parse_args( $settings, array(
+				'indicator'      => 'progress',
+				'nav_align'      => 'center',
+				'part_title_pos' => 'navbar',
+			) );
 		}
+
+		return $details;
 	}
 
 	return false;
