@@ -575,8 +575,7 @@ class EVF_Shortcode_Form {
 
 		// Debug information.
 		if ( is_super_admin() ) {
-			// evf_debug_data( $form_data );
-			evf_debug_data( self::$parts );
+			evf_debug_data( $form_data );
 		}
 	}
 }
