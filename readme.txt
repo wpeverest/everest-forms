@@ -4,7 +4,7 @@ Tags: contact form, form, form builder, contact, custom form
 Requires at least: 4.0
 Tested up to: 4.9
 Requires PHP: 5.4
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -97,6 +97,11 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 11. Advance Form
 
 == Changelog ==
+
+= 1.3.2 - XX-10-2018 =
+* Feature - Multi-Part addon support.
+* Tweak - Frontend form fields UI and submit button design.
+* Fix - Hook into `in_admin_header` to hide unrelated notices.
 
 = 1.3.1 - 09-10-2018 =
 * Feature - Introduced form preview.
