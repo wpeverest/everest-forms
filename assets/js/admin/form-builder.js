@@ -480,12 +480,20 @@
 			$( 'body' ).on( 'click', '.evf-add-row span', function() {
 				var $this      = $( this ),
 					part_id    = $this.parents( '.evf-admin-field-container' ).data( 'part-id' ),
-					total_rows = $( '.evf-admin-row' ).length,
-					row_clone  = $( '#part_' + part_id ).find( '.evf-admin-row' ).eq(0).clone();
+					row_clone  = $( '#part_' + part_id ).find( '.evf-admin-row' ).eq(0).clone(),
+					total_rows = $this.parent().attr( 'data-total-rows' );
 
+				total_rows++;
+
+				// Row clone.
 				row_clone.find( '.evf-admin-grid' ).html( '' );
-				row_clone.attr( 'data-row-id', ( total_rows + 1 ) );
+				row_clone.attr( 'data-row-id', total_rows );
+				$this.parent().attr( 'data-total-rows', total_rows );
+
+				// Row append.
 				$( '#part_' + part_id ).find( '.evf-admin-field-wrapper' ).append( row_clone );
+
+				// Initialize fields UI.
 				EVFPanelBuilder.bindFields();
 				EVFPanelBuilder.checkEmptyGrid();
 			});

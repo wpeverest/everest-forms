@@ -208,7 +208,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 						}
 					echo '</div>';
 					echo '<div class="clear evf-clear"></div>';
-					echo '<div class="evf-add-row"><span class="everest-forms-btn dashicons dashicons-plus-alt">' . esc_html( 'Add Row', 'everest-forms' ) . '</span></div>';
+					echo '<div class="evf-add-row" data-total-rows="' . count( $structure ) . '"><span class="everest-forms-btn dashicons dashicons-plus-alt">' . esc_html( 'Add Row', 'everest-forms' ) . '</span></div>';
 				echo '</div >';
 			}
 		}
