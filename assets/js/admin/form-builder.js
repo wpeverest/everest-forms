@@ -42,8 +42,6 @@
 				EVFPanelBuilder.bindFields();
 			} ).trigger( 'evf-init-builder-fields' );
 
-			// Initialize the Perfect Scrollbar.
-
 			// Adjust builder width.
 			$( document.body ).on( 'adjust_builder_width', function() {
 				var builderWidth = $( '#everest-forms-builder' ).width();
