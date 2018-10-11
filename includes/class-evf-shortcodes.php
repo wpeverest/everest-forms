@@ -2,15 +2,11 @@
 /**
  * Shortcodes
  *
- * @author   Automattic
- * @category Class
- * @package  EverestForms/Classes
- * @version  1.0.0
+ * @package EverestForms\Classes
+ * @version 1.0.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
  * EverestForms Shortcodes class.
@@ -22,6 +18,7 @@ class EVF_Shortcodes {
 	 */
 	public static function init() {
 		self::init_shortcode_hooks();
+
 		$shortcodes = array(
 			'everest_form' => __CLASS__ . '::form',
 		);
@@ -29,7 +26,6 @@ class EVF_Shortcodes {
 		foreach ( $shortcodes as $shortcode => $function ) {
 			add_shortcode( apply_filters( "{$shortcode}_shortcode_tag", $shortcode ), $function );
 		}
-
 	}
 
 	/**
@@ -62,20 +58,20 @@ class EVF_Shortcodes {
 		return ob_get_clean();
 	}
 
-
 	/**
-	 * test page shortcode.
+	 * Form shortcode.
 	 *
-	 * @param array $atts Attributes.
-	 *
+	 * @param  array $atts Attributes.
 	 * @return string
 	 */
 	public static function form( $atts ) {
 		return self::shortcode_wrapper( array( 'EVF_Shortcode_Form', 'output' ), $atts );
 	}
 
+	/**
+	 * Initialize shortcode.
+	 */
 	public static function init_shortcode_hooks() {
 		self::shortcode_wrapper( array( 'EVF_Shortcode_Form', 'hooks' ) );
 	}
-
 }

@@ -16,12 +16,15 @@
 
 	// Update Perfect Scrollbar.
 	$( window ).on( 'resize orientationchange', function() {
-		var resizeTimer;
+		var resizeTimer,
+			nav_wrapper = $( 'nav.evf-nav-tab-wrapper' );
 
-		clearTimeout( resizeTimer );
-		resizeTimer = setTimeout( function() {
-			window.evf_nav_ps.update();
-		}, 250 );
+		if ( nav_wrapper.length >= 1 ) {
+			clearTimeout( resizeTimer );
+			resizeTimer = setTimeout( function() {
+				window.evf_nav_ps.update();
+			}, 250 );
+		}
 	});
 
 	// Trigger Perfect Scrollbar.
