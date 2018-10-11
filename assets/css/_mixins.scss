@@ -121,12 +121,11 @@
 		position: absolute;
 		top: 50%;
 		left: 50%;
-		margin-left: -0.5em;
-		margin-top: -0.5em;
 		content: '';
 		animation: spin 1s ease-in-out infinite;
 		background: url('../images/icons/loader.svg') center center;
 		background-size: cover;
+		background-repeat: no-repeat;
 		line-height: 1;
 		text-align: center;
 		font-size: 2em;
