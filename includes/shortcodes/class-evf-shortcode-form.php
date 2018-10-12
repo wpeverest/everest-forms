@@ -6,7 +6,7 @@
  *
  * @package EverestForms\Shortcodes\Form
  * @version 1.0.0
- * @since   1.3.1
+ * @since   1.3.2
  */
 
 defined( 'ABSPATH' ) || exit;

@@ -43,8 +43,8 @@ class EVF_Deprecated_Filter_Hooks extends EVF_Deprecated_Hooks {
 		'evf_field_data'                       => '1.3.0',
 		'evf_field_properties'                 => '1.3.0',
 		'evf_field_properties_{field_type}'    => '1.3.0',
-		'evf_frontend_load'                    => '1.3.1',
-		'evf_frontend_form_action'             => '1.3.1',
+		'evf_frontend_load'                    => '1.3.2',
+		'evf_frontend_form_action'             => '1.3.2',
 	);
 
 	/**

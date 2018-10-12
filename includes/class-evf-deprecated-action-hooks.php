@@ -61,12 +61,12 @@ class EVF_Deprecated_Action_Hooks extends EVF_Deprecated_Hooks {
 		'evf_display_field_after'               => '1.2.0',
 		'evf_display_fields_before'             => '1.3.0',
 		'evf_display_fields_after'              => '1.3.0',
-		'evf_frontend_output_before'            => '1.3.1',
-		'evf_frontend_output_success'           => '1.3.1',
-		'evf_frontend_output'                   => '1.3.1',
-		'evf_frontend_output_after'             => '1.3.1',
-		'evf_display_submit_before'             => '1.3.1',
-		'evf_display_submit_after'              => '1.3.1',
+		'evf_frontend_output_before'            => '1.3.2',
+		'evf_frontend_output_success'           => '1.3.2',
+		'evf_frontend_output'                   => '1.3.2',
+		'evf_frontend_output_after'             => '1.3.2',
+		'evf_display_submit_before'             => '1.3.2',
+		'evf_display_submit_after'              => '1.3.2',
 	);
 
 	/**

@@ -1842,7 +1842,7 @@ function evf_get_all_fields_settings() {
 /**
  * Helper function to display debug data.
  *
- * @since 1.3.1
+ * @since 1.3.2
  *
  * @param mixed $expression The expression to be printed.
  * @param bool  $return     Optional. Default false. Set to true to return the human-readable string.
