@@ -18,6 +18,19 @@ if ( class_exists( 'EVF_Builder_Fields', false ) ) {
 class EVF_Builder_Fields extends EVF_Builder_Page {
 
 	/**
+	 * Contains information for multi-part forms.
+	 *
+	 * Forms that do not contain parts return false, otherwise returns an array
+	 * that contains the number of total pages and page counter used when
+	 * displaying part rows.
+	 *
+	 * @since 1.3.1
+	 *
+	 * @var array
+	 */
+	public static $parts = false;
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct() {
@@ -136,82 +149,104 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 	 * Outputs fields preview content.
 	 */
 	public function output_fields_preview() {
-		$form_data  = $this->form_data;
-		$fields     = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
-		$structure  = isset( $form_data['structure'] ) ? $form_data['structure'] : array( 'row_1' => array() );
-		$multi_part = isset( $form_data['multi_part'] ) ? $form_data['multi_part'] : array( 'part_1' => array() );
+		$form_data = $this->form_data;
+		$fields    = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
+		$structure = isset( $form_data['structure'] ) ? $form_data['structure'] : array( 'row_1' => array() );
 
-		if ( ! empty( $multi_part ) ) {
-			foreach ( $multi_part as $part_id => $part_data ) {
-				$part = isset( $part_data['id'] ) ? $part_data['id'] : str_replace( 'part_', '', $part_id );
-				echo '<div id="' . esc_attr( $part_id ) . '" class="panel evf-admin-field-container" data-part-id="' . absint( $part ) . '">';
-					echo '<div class="evf-admin-field-wrapper">';
-						foreach ( $structure as $row_id => $row_data ) {
-							$row         = str_replace( 'row_', '', $row_id );
-							$row_grid    = isset( $form_data['structure'][ 'row_' . $row ] ) ? $form_data['structure'][ 'row_' . $row ] : array();
-							$form_grid   = apply_filters( 'everest_forms_default_form_grid', 2 );
-							$total_grid  = $form_grid;
-							$active_grid = count( $row_grid ) > 0 ? count( $row_grid ) : $form_grid;
-							$active_grid = $active_grid > $total_grid ? $total_grid : $active_grid;
+		// Allow Multi-Part to be customized.
+		self::$parts = apply_filters( 'everest_forms_parts_data', self::$parts, $form_data );
 
-							// Display row conditionally if Multi-Part enabled.
-							if ( isset( $form_data['settings']['enable_multi_part'], $part_data['rows'] ) && ! in_array( $row_id, $part_data['rows'], true ) ) {
-								continue;
-							}
+		// Output the fields preview.
+		echo '<div class="evf-admin-field-container">';
+			echo '<div class="evf-admin-field-wrapper">';
 
-							echo '<div class="evf-admin-row" data-row-id="' . absint( $row ) . '">';
-								echo '<div class="evf-toggle-row">';
-									echo '<div class="evf-delete-row"><span class="dashicons dashicons-trash" title="Delete"></span></div>';
-									echo '<div class="evf-show-grid"><span class="dashicons dashicons-edit" title="Edit"></span></div>';
-									echo '<div class="evf-toggle-row-content">';
-										echo '<span>' . __( 'Row Settings', 'everest-forms' ) . '</span>';
-										echo '<small>' . __( 'Select the type of row', 'everest-forms' ) . '</small>';
-										echo '<div class="clear"></div>';
+				/**
+				 * Hook: everest_forms_display_builder_fields_before.
+				 *
+				 * @hooked EverestForms_MultiPart::display_builder_fields_before() Multi-Part markup open.
+				 */
+				do_action( 'everest_forms_display_builder_fields_before', $form_data );
 
-										for ( $grid_active = 1; $grid_active <= $total_grid; $grid_active ++ ) {
-											$class = 'evf-grid-selector';
-											if ( $grid_active === $active_grid ) {
-												$class .= ' active';
-											}
-											echo '<div class="' . $class . '" data-evf-grid="' . $grid_active . '">';
-											$gaps   = 15;
-											$width  = ( 100 - $gaps ) / $grid_active;
-											$margin = ( $gaps / $grid_active ) / 2;
-											for ( $row_icon = 1; $row_icon <= $grid_active; $row_icon ++ ) {
-												echo '<span style="width:' . $width . '%; margin-left:' . $margin . '%; margin-right:' . $margin . '%"></span>';
-											}
-											echo '</div>';
-										}
+				foreach ( $structure as $row_id => $row_data ) {
+					$row         = str_replace( 'row_', '', $row_id );
+					$row_grid    = isset( $form_data['structure'][ 'row_' . $row ] ) ? $form_data['structure'][ 'row_' . $row ] : array();
+					$form_grid   = apply_filters( 'everest_forms_default_form_grid', 2 );
+					$total_grid  = $form_grid;
+					$active_grid = count( $row_grid ) > 0 ? count( $row_grid ) : $form_grid;
+					$active_grid = $active_grid > $total_grid ? $total_grid : $active_grid;
 
-									echo '</div>';
-								echo '</div>';
+					/**
+					 * Hook: everest_forms_display_row_before.
+					 */
+					do_action( 'everest_forms_display_builder_row_before', $row_id, $form_data );
 
-								echo '<div class="clear evf-clear"></div>';
+					echo '<div class="evf-admin-row" data-row-id="' . absint( $row ) . '">';
+						echo '<div class="evf-toggle-row">';
+							echo '<div class="evf-delete-row"><span class="dashicons dashicons-trash" title="Delete"></span></div>';
+							echo '<div class="evf-show-grid"><span class="dashicons dashicons-edit" title="Edit"></span></div>';
+							echo '<div class="evf-toggle-row-content">';
+								echo '<span>' . __( 'Row Settings', 'everest-forms' ) . '</span>';
+								echo '<small>' . __( 'Select the type of row', 'everest-forms' ) . '</small>';
+								echo '<div class="clear"></div>';
 
-								$grid_class = 'evf-admin-grid evf-grid-' . ( $active_grid );
-								for ( $grid_start = 1; $grid_start <= $active_grid; $grid_start ++ ) {
-									echo '<div class="' . $grid_class . ' " data-grid-id="' . $grid_start . '">';
-
-									$grid_fields = isset( $row_grid[ 'grid_' . $grid_start ] ) && is_array( $row_grid[ 'grid_' . $grid_start ] ) ? $row_grid[ 'grid_' . $grid_start ] : array();
-
-									foreach ( $grid_fields as $field_id ) {
-										if ( isset( $fields[ $field_id ] ) && ! in_array( $fields[ $field_id ]['type'], EVF()->form_fields->get_pro_form_field_types(), true ) ) {
-											$this->field_preview( $fields[ $field_id ] );
-										}
+								for ( $grid_active = 1; $grid_active <= $total_grid; $grid_active ++ ) {
+									$class = 'evf-grid-selector';
+									if ( $grid_active === $active_grid ) {
+										$class .= ' active';
 									}
-
+									echo '<div class="' . $class . '" data-evf-grid="' . $grid_active . '">';
+									$gaps   = 15;
+									$width  = ( 100 - $gaps ) / $grid_active;
+									$margin = ( $gaps / $grid_active ) / 2;
+									for ( $row_icon = 1; $row_icon <= $grid_active; $row_icon ++ ) {
+										echo '<span style="width:' . $width . '%; margin-left:' . $margin . '%; margin-right:' . $margin . '%"></span>';
+									}
 									echo '</div>';
 								}
 
-								echo '<div class="clear evf-clear"></div>';
-							echo '</div >';
+							echo '</div>';
+						echo '</div>';
+
+						echo '<div class="clear evf-clear"></div>';
+
+						$grid_class = 'evf-admin-grid evf-grid-' . ( $active_grid );
+						for ( $grid_start = 1; $grid_start <= $active_grid; $grid_start ++ ) {
+							echo '<div class="' . $grid_class . ' " data-grid-id="' . $grid_start . '">';
+
+							$grid_fields = isset( $row_grid[ 'grid_' . $grid_start ] ) && is_array( $row_grid[ 'grid_' . $grid_start ] ) ? $row_grid[ 'grid_' . $grid_start ] : array();
+
+							foreach ( $grid_fields as $field_id ) {
+								if ( isset( $fields[ $field_id ] ) && ! in_array( $fields[ $field_id ]['type'], EVF()->form_fields->get_pro_form_field_types(), true ) ) {
+									$this->field_preview( $fields[ $field_id ] );
+								}
+							}
+
+							echo '</div>';
 						}
-					echo '</div>';
-					echo '<div class="clear evf-clear"></div>';
-					echo '<div class="evf-add-row" data-total-rows="' . count( $structure ) . '"><span class="everest-forms-btn dashicons dashicons-plus-alt">' . esc_html( 'Add Row', 'everest-forms' ) . '</span></div>';
-				echo '</div >';
-			}
-		}
+
+						echo '<div class="clear evf-clear"></div>';
+					echo '</div >';
+
+					/**
+					 * Hook: everest_forms_display_builder_row_after.
+					 *
+					 * @hooked EverestForms_MultiPart::display_builder_row_after() Multi-Part markup (close previous part, open next).
+					 */
+					do_action( 'everest_forms_display_builder_row_after', $row_id, $form_data );
+				}
+
+				/**
+				 * Hook: everest_forms_display_builder_fields_after.
+				 *
+				 * @hooked EverestForms_MultiPart::display_builder_fields_after() Multi-Part markup open.
+				 */
+				do_action( 'everest_forms_display_builder_fields_after', $form_data );
+
+			echo '</div>';
+			echo '<div class="clear evf-clear"></div>';
+			echo '<div class="evf-add-row" data-total-rows="' . count( $structure ) . '"><span class="everest-forms-btn dashicons dashicons-plus-alt">' . esc_html( 'Add Row', 'everest-forms' ) . '</span></div>';
+		echo '</div >';
+
 	}
 
 	/**

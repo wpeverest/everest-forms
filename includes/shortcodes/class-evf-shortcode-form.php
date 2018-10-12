@@ -528,7 +528,7 @@ class EVF_Shortcode_Form {
 		}
 
 		// Allow Multi-Part to be customized.
-		self::$parts = apply_filters( 'everest_form_frontend_parts', self::$parts, $form_data );
+		self::$parts = apply_filters( 'everest_forms_parts_data', self::$parts, $form_data );
 
 		// Allow final action to be customized.
 		$action = apply_filters( 'everest_forms_frontend_form_action', $action, $form_data );
