@@ -948,7 +948,6 @@
 				scrollSensitivity: 40,
 				forcePlaceholderSize: true,
 				helper: function() {
-					//debugger;
 					return $(this).clone().insertAfter($(this).closest('.everest-forms-tab-content').siblings('.everest-forms-fields-tab'));
 				},
 				opacity: 0.75,
@@ -960,9 +959,9 @@
 					$( '.evf-show-grid' ).closest( '.evf-toggle-row' ).find( '.evf-toggle-row-content' ).stop( true ).slideUp( 200 );
 				},
 				revert: function( value ){
-					// debugger;
+
 					var uiHelper = $( this ).data( 'uihelper' );
-					// console.log(uiHelper);
+
 					uiHelper.data( 'dropped', value !== false );
 					if ( false === value ) {
 						return true;
