@@ -23,7 +23,7 @@ class EVF_Shortcode_Form {
 	 * that contains the number of total pages and page counter used when
 	 * displaying part rows.
 	 *
-	 * @since 1.3.1
+	 * @since 1.3.2
 	 *
 	 * @var array
 	 */
