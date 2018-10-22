@@ -69,7 +69,7 @@ class EVF_Form_Task {
 	public function do_task( $entry ) {
 		try {
 			if ( empty( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'everest-forms_process_submit' ) ) {
-				evf_add_notice( __( 'We were unable to process your form, please try again.', 'everest-forms' ) );
+				evf_add_notice( __( 'We were unable to process your form, please try again.', 'everest-forms' ), 'error' );
 				return;
 			}
 
