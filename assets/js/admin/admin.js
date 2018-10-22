@@ -1,6 +1,9 @@
 /* global everest_forms_admin, PerfectScrollbar */
 ( function( $, params ) {
 
+	// Colorpicker.
+	$( '.colorpicker' ).wpColorPicker();
+
 	// Enable Perfect Scrollbar.
 	$( document ).on( 'init_perfect_scrollbar', function() {
 		var nav_wrapper = $( 'nav.evf-nav-tab-wrapper' );

@@ -18,6 +18,7 @@
 		 			$('.everest-forms-panel-content').find('.evf-panel-content-section').first().addClass('active');
 		 		}
 		 	});
+
 		 	$( document ).ready( function( $ ) {
 		 		if ( ! $( 'evf-panel-payment-button a' ).hasClass('active') ) {
 		 			$('#everest-forms-panel-payment').find('.everest-forms-panel-sidebar a').first().addClass('active');
@@ -1318,5 +1319,4 @@
 			}
 		}
 	}
-
 });

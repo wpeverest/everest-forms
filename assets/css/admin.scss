@@ -618,6 +618,10 @@ body.everest-forms-builder-setup,
 			box-sizing: border-box;
 		}
 
+		.wp-picker-holder * {
+			box-sizing: content-box;
+		}
+
 		a {
 			text-decoration: none;
 
@@ -732,6 +736,15 @@ body.everest-forms-builder-setup,
 		.everest-forms-panel {
 			.panel-wrap {
 				overflow: hidden;
+			}
+		}
+
+		.evf-tab-content {
+			.wp-picker-input-wrap {
+				label {
+					font-weight: 400;
+					display: inline-block;
+				}
 			}
 		}
 
