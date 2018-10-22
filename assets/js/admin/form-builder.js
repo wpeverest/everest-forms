@@ -424,21 +424,32 @@
 			$('.evf-setting-panel').eq(0).trigger('click');
 		},
 		removeRow: function ( row ) {
-			$.each(row.find('.everest-forms-field'), function() {
-				var field = $(this);
-				var field_id = field.attr('data-field-id');
-				var option_field = $('#everest-forms-field-option-' + field_id);
-				field.remove();
-				option_field.remove();
+			$.each( row.find( '.everest-forms-field' ), function() {
+				var field_id      = $( this ).attr( 'data-field-id' ),
+					field_options = $( '#everest-forms-field-option-' + field_id );
+
+				// Remove form field.
+				$( this ).remove();
+
+				// Remove field options.
+				field_options.remove();
 			});
+
+			// Remove row.
 			row.remove();
 		},
 		bindRemoveRow: function () {
 			$( 'body' ).on( 'click', '.evf-delete-row', function() {
-				var row     = $( this ).closest( '.evf-admin-row' ),
-					page_id = $( this ).parents( '.evf-admin-field-container' ).data( 'part-id' );
+				var $this        = $( this ),
+					total_rows   = $( '.evf-admin-row' ).length,
+					current_row  = $this.closest( '.evf-admin-row' ),
+					current_part = $this.parents( '.evf-admin-field-container' ).attr( 'data-current-part' );
 
-				if ( $( '#part_' + page_id ).find( '.evf-admin-row' ).length < 2 ) {
+				if ( current_part ) {
+					total_rows = $( '#part_' + current_part ).find( '.evf-admin-row' ).length;
+				}
+
+				if ( total_rows < 2 ) {
 					$.alert({
 						title: evf_data.i18n_row_locked,
 						content: evf_data.i18n_row_locked_msg,
@@ -466,7 +477,7 @@
 								btnClass: 'btn-confirm',
 								keys: ['enter'],
 								action: function () {
-									EVFPanelBuilder.removeRow( row );
+									EVFPanelBuilder.removeRow( current_row );
 								}
 							},
 							cancel: {
@@ -480,7 +491,7 @@
 		bindAddNewRow: function() {
 			$( 'body' ).on( 'click', '.evf-add-row span', function() {
 				var $this        = $( this ),
-					row_wrap     = $( '.evf-admin-field-wrapper' ),
+					wrapper      = $( '.evf-admin-field-wrapper' ),
 					row_clone    = $( '.evf-admin-row' ).eq(0).clone(),
 					total_rows   = $this.parent().attr( 'data-total-rows' ),
 					current_part = $this.parents( '.evf-admin-field-container' ).attr( 'data-current-part' );
@@ -488,7 +499,7 @@
 				total_rows++;
 
 				if ( current_part ) {
-					row_wrap  = $( '.evf-admin-field-wrapper' ).find( '#part_' + current_part );
+					wrapper   = $( '.evf-admin-field-wrapper' ).find( '#part_' + current_part );
 					row_clone = $( '#part_' + current_part ).find( '.evf-admin-row' ).eq(0).clone();
 				}
 
@@ -498,7 +509,7 @@
 				$this.parent().attr( 'data-total-rows', total_rows );
 
 				// Row append.
-				row_wrap.append( row_clone );
+				wrapper.append( row_clone );
 
 				// Initialize fields UI.
 				EVFPanelBuilder.bindFields();
