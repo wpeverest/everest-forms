@@ -479,12 +479,18 @@
 		},
 		bindAddNewRow: function() {
 			$( 'body' ).on( 'click', '.evf-add-row span', function() {
-				var $this      = $( this ),
-					part_id    = $this.parents( '.evf-admin-field-container' ).data( 'part-id' ),
-					row_clone  = $( '#part_' + part_id ).find( '.evf-admin-row' ).eq(0).clone(),
-					total_rows = $this.parent().attr( 'data-total-rows' );
+				var $this        = $( this ),
+					row_wrap     = $( '.evf-admin-field-wrapper' ),
+					row_clone    = $( '.evf-admin-row' ).eq(0).clone(),
+					total_rows   = $this.parent().attr( 'data-total-rows' ),
+					current_part = $this.parents( '.evf-admin-field-container' ).attr( 'data-current-part' );
 
 				total_rows++;
+
+				if ( current_part ) {
+					row_wrap  = $( '.evf-admin-field-wrapper' ).find( '#part_' + current_part );
+					row_clone = $( '#part_' + current_part ).find( '.evf-admin-row' ).eq(0).clone();
+				}
 
 				// Row clone.
 				row_clone.find( '.evf-admin-grid' ).html( '' );
@@ -492,7 +498,7 @@
 				$this.parent().attr( 'data-total-rows', total_rows );
 
 				// Row append.
-				$( '#part_' + part_id ).find( '.evf-admin-field-wrapper' ).append( row_clone );
+				row_wrap.append( row_clone );
 
 				// Initialize fields UI.
 				EVFPanelBuilder.bindFields();
