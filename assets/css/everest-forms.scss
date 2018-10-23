@@ -189,9 +189,14 @@
 			color: $color-gray-darker;
 
 			.required {
+				border: 0;
 				color: red;
 				font-weight: 700;
-				border: 0;
+			}
+
+			abbr[title] {
+				text-decoration: none;
+				vertical-align: text-top;
 			}
 
 			&.evf-error {
