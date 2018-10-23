@@ -141,9 +141,9 @@ class EVF_Shortcode_Form {
 			return;
 		}
 
-		$required = $label['required'] ? apply_filters( 'evf_field_required_label', ' <abbr class="required" title="' . esc_attr__( 'Required', 'everest-forms' ) . '">*</abbr>' ) : '';
+		$required = $label['required'] ? apply_filters( 'everest_forms_field_required_label', '<abbr class="required" title="' . esc_attr__( 'Required', 'everest-forms' ) . '">*</abbr>' ) : '';
 
-		printf( '<label %s>%s%s</label>',
+		printf( '<label %s>%s %s</label>',
 			evf_html_attributes( $label['id'], $label['class'], $label['data'], $label['attr'] ),
 			esc_html( $label['value'] ),
 			$required
