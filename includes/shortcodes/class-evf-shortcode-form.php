@@ -54,13 +54,16 @@ class EVF_Shortcode_Form {
 	public static function footer( $form_data, $title, $description ) {
 		$form_id  = absint( $form_data['id'] );
 		$settings = isset( $form_data['settings'] ) ? $form_data['settings'] : '' ;
-		$submit   = apply_filters( 'evf_field_submit', isset( $settings['submit_button_text'] ) ? $settings['submit_button_text'] : __( 'Submit', 'everest-forms' ), $form_data );
+		$submit   = apply_filters( 'everest_forms_field_submit', isset( $settings['submit_button_text'] ) ? $settings['submit_button_text'] : __( 'Submit', 'everest-forms' ), $form_data );
 		$process  = '';
 		$classes  = '';
-		$visible  = self::$parts ? 'style="display:none;float:right;margin-top:-40px"' : '';
+		$visible  = self::$parts ? 'style="display:none;margin-top:-40px"' : '';
+
+		// Visibility class.
+		$visibility_class = apply_filters( 'everest_forms_field_submit_visibility_class', array(), self::$parts, $form_data );
 
 		// Submit button area.
-		echo '<div class="evf-submit-container" ' . $visible . '>';
+		echo '<div class="evf-submit-container ' . esc_attr( implode( ' ', $visibility_class ) ) . '" ' . $visible . '>';
 
 			echo '<input type="hidden" name="everest_forms[id]" value="' . $form_id . '">';
 
