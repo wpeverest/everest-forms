@@ -20,7 +20,7 @@ class EVF_Shortcode_Form {
 	 * Contains information for multi-part forms.
 	 *
 	 * Forms that do not contain parts return false, otherwise returns an array
-	 * that contains the number of total pages and page counter used when
+	 * that contains the number of total parts and part counter used when
 	 * displaying part rows.
 	 *
 	 * @since 1.3.2
