@@ -276,10 +276,11 @@
 	button[type=submit],
 	.everest-forms-part-button {
 		color: #555;
-		font-size: 1em;
 		cursor: pointer;
 		background: none;
 		box-shadow: none;
+		font-weight: 400;
+		font-size: 0.95em;
 		padding: 10px 15px;
 		border-radius: 3px;
 		border: 1px solid #ccc;

@@ -57,7 +57,7 @@ class EVF_Shortcode_Form {
 		$submit   = apply_filters( 'evf_field_submit', isset( $settings['submit_button_text'] ) ? $settings['submit_button_text'] : __( 'Submit', 'everest-forms' ), $form_data );
 		$process  = '';
 		$classes  = '';
-		$visible  = self::$parts ? 'style="display:none;float:right;margin-top:-39px"' : '';
+		$visible  = self::$parts ? 'style="display:none;float:right;margin-top:-40px"' : '';
 
 		// Submit button area.
 		echo '<div class="evf-submit-container" ' . $visible . '>';
