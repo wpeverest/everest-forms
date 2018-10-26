@@ -580,13 +580,16 @@
 						position: relative;
 						border: 1px dashed $color-gray-light;
 
-						&::before {
-							content: "\f132";
-							font-size: 40px;
-							font-family: dashicons;
-							line-height: 1.2;
-							cursor: all-scroll;
-							color: $color-gray-lighter;
+						&:empty{
+
+							&::before {
+								content: "\f132";
+								font-size: 40px;
+								font-family: dashicons;
+								line-height: 1.2;
+								cursor: all-scroll;
+								color: $color-gray-lighter;
+							}
 						}
 					}
 				}
