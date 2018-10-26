@@ -226,6 +226,20 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		everest_forms_panel_field(
 			'text',
 			'settings[email]',
+			'evf_reply_to',
+			$this->form_data,
+			__( 'Reply To', 'everest-forms' ),
+			array(
+				'default' => isset( $settings['email']['evf_reply_to'] ) ? $settings['email']['evf_reply_to'] : '',
+				'smarttags'  => array(
+					'type'   => 'fields',
+					'form_fields' => 'email',
+				),
+			)
+		);
+		everest_forms_panel_field(
+			'text',
+			'settings[email]',
 			'evf_email_subject',
 			$this->form_data,
 			__( 'Email Subject', 'everest-forms' ),
