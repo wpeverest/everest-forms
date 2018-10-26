@@ -57,7 +57,7 @@ class EVF_Shortcode_Form {
 		$submit   = apply_filters( 'everest_forms_field_submit', isset( $settings['submit_button_text'] ) ? $settings['submit_button_text'] : __( 'Submit', 'everest-forms' ), $form_data );
 		$process  = '';
 		$classes  = '';
-		$visible  = self::$parts ? 'style="display:none;margin-top:-40px"' : '';
+		$visible  = self::$parts ? 'style="display:none"' : '';
 
 		// Visibility class.
 		$visibility_class = apply_filters( 'everest_forms_field_submit_visibility_class', array(), self::$parts, $form_data );
