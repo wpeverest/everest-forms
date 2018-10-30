@@ -683,6 +683,7 @@
 										$( '.everest-forms-fields-tab' ).find( 'a' ).first().addClass( 'active' );
 										$( '.everest-forms-add-fields' ).show();
 										EVFPanelBuilder.conditionalLogicRemoveField(removed_el_id);
+										EVFPanelBuilder.conditionalLogicRemoveFieldIntegration(removed_el_id);
 									});
 								}
 							},
@@ -1063,8 +1064,8 @@
 		 		$(this).addClass('active');
 		 		EVFPanelBuilder.bindFields();
 		 	});
-		 },
-		 fieldDrop: function ( field ) {
+		},
+		fieldDrop: function ( field ) {
 		 	var field_type = field.attr('data-field-type');
 		 	field.css({
 		 		'left': '0',
@@ -1100,9 +1101,11 @@
 					$( document.body ).trigger( 'init_tooltips' );
 					$( document.body ).trigger( 'init_field_options_toggle' );
 					EVFPanelBuilder.conditionalLogicAppendField(dragged_el_id);
+					EVFPanelBuilder.conditionalLogicAppendFieldIntegration(dragged_el_id);
 		 		}
 		 	});
-		 },
+		},
+
 		 conditionalLogicAppendField: function( id ){
 			var dragged_el = $('#' + id);
 			var dragged_index = dragged_el.index();
@@ -1156,23 +1159,80 @@
 			});
 		 },
 
-		 conditionalLogicRemoveField: function( id ){
-			$( '.everest-forms-conditional-fields .evf-field-conditional-field-select option[value = ' +id +' ]' ).remove();
+		conditionalLogicAppendFieldIntegration: function( id ){
+			var dragged_el = $('#' + id);
+			var dragged_index = dragged_el.index();
+
+			var fields = $( '.evf-provider-conditional' ).find('.evf-conditional-field-select');
+
+			var field_type = dragged_el.attr( 'data-field-type' );
+			var field_id = dragged_el.attr( 'data-field-id' );
+			var field_label = dragged_el.find( '.label-title .text ' ).text();
+
+			var el_to_append = '<option class="evf-conditional-fields" data-field_type="'+field_type+'" data-field_id="'+field_id+'" value="'+field_id+'">'+field_label+'</option>';
+
+			$.fn.insertAt = function(elements, index) {
+			    var array = $.makeArray(this.children().clone(true));
+			    array.splice(index, 0, elements);
+			    this.empty().append(array);
+			};
+
+			fields.each(function(index, el) {
+				var id_key = id.replace('everest-forms-field-', '');
+				var name = $(el).attr('name');
+				var name_key = name.substring(
+				    name.indexOf("[") + 1,
+				    name.indexOf("]")
+				);
+
+				if (id_key === name_key) {
+					$('.evf-admin-row .evf-admin-grid .everest-forms-field').each( function(){
+						var field_type  = $( this ).data('field-type'),
+							field_id    = $( this ).data('field-id'),
+							field_label = $( this ).find('.label-title span').first().text();
+							field_to_be_restricted =[];
+							field_to_be_restricted = [
+								'html',
+								'title',
+								'address',
+								'image-upload',
+								'file-upload',
+								'date',
+								'hidden',
+								dragged_el.attr('data-field-type'),
+							];
+
+						if( $.inArray( field_type, field_to_be_restricted ) === -1 ){
+							fields.eq(index).append('<option class="evf-conditional-fields" data-field_type="'+field_type+'" data-field_id="'+field_id+'" value="'+field_id+'">'+field_label+'</option>');
+						}
+					});
+				} else {
+					fields.eq(index).insertAt( el_to_append, dragged_index );
+				}
+			});
 		 },
 
-		 bindFieldSettings: function () {
-		 	$('body').on('click', '.everest-forms-preview .everest-forms-field, .everest-forms-preview .everest-forms-field .everest-forms-field-setting', function (e) {
-		 		e.preventDefault();
-		 		var field_id = $(this).closest('.everest-forms-field').attr('data-field-id');
-		 		EVFPanelBuilder.switchToFieldOptionPanel(field_id);
-		 	});
-		 }
-		};
+		conditionalLogicRemoveField: function( id ){
+			$( '.everest-forms-conditional-fields .evf-field-conditional-field-select option[value = ' +id +' ]' ).remove();
+		},
 
-		$(function () {
-			EVFPanelBuilder.init();
-		});
-	})(jQuery, window.evf_data);
+		conditionalLogicRemoveFieldIntegration: function( id ){
+			$( '.evf-provider-conditional .evf-conditional-field-select option[value = ' +id +' ]' ).remove();
+		},
+
+		bindFieldSettings: function () {
+			$('body').on('click', '.everest-forms-preview .everest-forms-field, .everest-forms-preview .everest-forms-field .everest-forms-field-setting', function (e) {
+				e.preventDefault();
+				var field_id = $(this).closest('.everest-forms-field').attr('data-field-id');
+				EVFPanelBuilder.switchToFieldOptionPanel(field_id);
+			});
+		}
+	};
+
+	$(function () {
+		EVFPanelBuilder.init();
+	});
+})(jQuery, window.evf_data);
 
 	jQuery(function () {
 
