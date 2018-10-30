@@ -137,9 +137,20 @@ function evf_update_120_db_version() {
 function evf_update_130_change_evf_sessions_schema() {
 	global $wpdb;
 
-	$wpdb->query(
-		"ALTER TABLE `{$wpdb->prefix}evf_sessions` DROP PRIMARY KEY, DROP KEY `session_id`, ADD PRIMARY KEY(`session_id`), ADD UNIQUE KEY(`session_key`)"
-	);
+	$results = $wpdb->get_results( "
+		SELECT CONSTRAINT_NAME
+		FROM information_schema.TABLE_CONSTRAINTS
+		WHERE CONSTRAINT_SCHEMA = '{$wpdb->dbname}'
+		AND CONSTRAINT_TYPE = 'UNIQUE'
+		AND CONSTRAINT_NAME = 'session_key'
+		AND TABLE_NAME = '{$wpdb->prefix}evf_sessions'
+	" );
+
+	if ( ! $results ) {
+		$wpdb->query(
+			"ALTER TABLE `{$wpdb->prefix}woocommerce_sessions` DROP KEY `session_id`, ADD UNIQUE KEY(`session_key`)"
+		);
+	}
 }
 
 /**
