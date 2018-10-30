@@ -102,6 +102,7 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 * Feature - Multi-Part addon support.
 * Tweak - Frontend form fields UI and submit button design.
 * Fix - Hook into `in_admin_header` to hide unrelated notices.
+* Fix - Memory limit values not correctly converting to bytes.
 
 = 1.3.1 - 09-10-2018 =
 * Feature - Introduced form preview.
