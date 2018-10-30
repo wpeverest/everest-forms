@@ -58,6 +58,8 @@ Check [documentation](http://docs.wpeverest.com/docs/everest-forms/)
 
 * [Geolocation](https://wpeverest.com/wordpress-plugins/everest-forms/geolocation/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to collect geolocation data like IP, Country, Postal and zip code along with the form submission.
 
+* [Multi-Part Forms](https://wpeverest.com/wordpress-plugins/everest-forms/multi-part-forms/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to break long or complex forms up into multiple pages.
+
 ### What's Next
 
 Checkout out our other projects for WordPress
