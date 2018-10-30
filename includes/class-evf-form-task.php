@@ -332,6 +332,7 @@ class EVF_Form_Task {
 		$email['address']        = array_map( 'sanitize_email', $email['address'] );
 		$email['sender_name']    = ! empty( $notification['evf_from_name'] ) ? $notification['evf_from_name'] : get_bloginfo( 'name' );
 		$email['sender_address'] = ! empty( $notification['evf_from_email'] ) ? $notification['evf_from_email'] : get_option( 'admin_email' );
+		$email['reply_to']       = ! empty( $notification['evf_reply_to'] ) ? $notification['evf_reply_to'] : $email['sender_address'];
 		$email['message']        = ! empty( $notification['evf_email_message'] ) ? $notification['evf_email_message'] : '{all_fields}';
 
 		// Setup confirm email properties.
@@ -357,7 +358,7 @@ class EVF_Form_Task {
 		$emails->__set( 'entry_id', $entry_id );
 		$emails->__set( 'from_name', $email['sender_name'] );
 		$emails->__set( 'from_address', $email['sender_address'] );
-		$emails->__set( 'reply_to', isset( $email['user_email'] ) ? $email['user_email'] : $email['sender_address'] );
+		$emails->__set( 'reply_to', $email['reply_to'] );
 		$emails->__set( 'attachments', apply_filters( 'everest_forms_email_file_attachments', $attachment, $entry, $form_data, 'entry-email' ) );
 
 		// Send entry email.
