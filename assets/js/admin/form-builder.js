@@ -139,6 +139,12 @@
 				columnClass: 'evf-responsive-class'
 			};
 
+			// Enable Perfect Scrollbar.
+			if ( 'undefined' !== typeof PerfectScrollbar ) {
+				window.evf_tab_scroller   = new PerfectScrollbar( '.everest-forms-tab-content' );
+				window.evf_panel_scroller = new PerfectScrollbar( '.everest-forms-panel-content' );
+			}
+
 			// Action available for each binding.
 			$( document ).trigger( 'everest_forms_ready' );
 		},
@@ -966,7 +972,9 @@
 				scroll: false,
 				scrollSensitivity: 40,
 				forcePlaceholderSize: true,
-				helper: 'clone',
+				helper: function() {
+					return $(this).clone().insertAfter($(this).closest('.everest-forms-tab-content').siblings('.everest-forms-fields-tab'));
+				},
 				opacity: 0.75,
 				containment: '#everest-forms-builder',
 				connectToSortable: '.evf-admin-grid',
@@ -976,7 +984,9 @@
 					$( '.evf-show-grid' ).closest( '.evf-toggle-row' ).find( '.evf-toggle-row-content' ).stop( true ).slideUp( 200 );
 				},
 				revert: function( value ){
+
 					var uiHelper = $( this ).data( 'uihelper' );
+
 					uiHelper.data( 'dropped', value !== false );
 					if ( false === value ) {
 						return true;
