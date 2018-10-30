@@ -44,7 +44,6 @@ class EVF_Install {
 			'evf_update_120_db_version',
 		),
 		'1.3.0' => array(
-			'evf_update_130_change_evf_sessions_schema',
 			'evf_update_130_db_version',
 		),
 	);
@@ -312,6 +311,20 @@ class EVF_Install {
 		global $wpdb;
 
 		$wpdb->hide_errors();
+
+		/**
+		 * Change wp_evf_sessions schema to use a bigint auto increment field
+		 * instead of char(32) field as the primary key. Doing this change primarily
+		 * as it should reduce the occurrence of deadlocks, but also because it is
+		 * not a good practice to use a char(32) field as the primary key of a table.
+		 */
+		if ( $wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->prefix}evf_sessions'" ) ) {
+			if ( ! $wpdb->get_var( "SHOW KEYS FROM {$wpdb->prefix}evf_sessions WHERE Key_name = 'PRIMARY' AND Column_name = 'session_id'" ) ) {
+				$wpdb->query(
+					"ALTER TABLE `{$wpdb->prefix}evf_sessions` DROP PRIMARY KEY, DROP KEY `session_id`, ADD PRIMARY KEY(`session_id`), ADD UNIQUE KEY(`session_key`)"
+				);
+			}
+		}
 
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 

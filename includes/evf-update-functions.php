@@ -129,31 +129,6 @@ function evf_update_120_db_version() {
 }
 
 /**
- * Change wp_evf_sessions schema to use a bigint auto increment field
- * instead of char(32) field as the primary key. Doing this change primarily
- * as it should reduce the occurrence of deadlocks, but also because it is
- * not a good practice to use a char(32) field as the primary key of a table.
- */
-function evf_update_130_change_evf_sessions_schema() {
-	global $wpdb;
-
-	$results = $wpdb->get_results( "
-		SELECT CONSTRAINT_NAME
-		FROM information_schema.TABLE_CONSTRAINTS
-		WHERE CONSTRAINT_SCHEMA = '{$wpdb->dbname}'
-		AND CONSTRAINT_TYPE = 'UNIQUE'
-		AND CONSTRAINT_NAME = 'session_key'
-		AND TABLE_NAME = '{$wpdb->prefix}evf_sessions'
-	" );
-
-	if ( ! $results ) {
-		$wpdb->query(
-			"ALTER TABLE `{$wpdb->prefix}woocommerce_sessions` DROP KEY `session_id`, ADD UNIQUE KEY(`session_key`)"
-		);
-	}
-}
-
-/**
  * Update DB Version.
  */
 function evf_update_130_db_version() {
