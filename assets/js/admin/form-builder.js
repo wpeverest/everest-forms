@@ -1168,27 +1168,27 @@
 			});
 		 },
 
-		 conditionalLogicRemoveField: function( id ){
+		conditionalLogicRemoveField: function( id ){
 			$( '.everest-forms-conditional-fields .evf-field-conditional-field-select option[value = ' +id +' ]' ).remove();
-		 },
+		},
 
 		conditionalLogicRemoveFieldIntegration: function( id ){
 			$( '.evf-provider-conditional .evf-conditional-field-select option[value = ' +id +' ]' ).remove();
-		 },
+		},
 
-		 bindFieldSettings: function () {
-		 	$('body').on('click', '.everest-forms-preview .everest-forms-field, .everest-forms-preview .everest-forms-field .everest-forms-field-setting', function (e) {
-		 		e.preventDefault();
-		 		var field_id = $(this).closest('.everest-forms-field').attr('data-field-id');
-		 		EVFPanelBuilder.switchToFieldOptionPanel(field_id);
-		 	});
-		 }
-		};
+		bindFieldSettings: function () {
+			$('body').on('click', '.everest-forms-preview .everest-forms-field, .everest-forms-preview .everest-forms-field .everest-forms-field-setting', function (e) {
+				e.preventDefault();
+				var field_id = $(this).closest('.everest-forms-field').attr('data-field-id');
+				EVFPanelBuilder.switchToFieldOptionPanel(field_id);
+			});
+		}
+	};
 
-		$(function () {
-			EVFPanelBuilder.init();
-		});
-	})(jQuery, window.evf_data);
+	$(function () {
+		EVFPanelBuilder.init();
+	});
+})(jQuery, window.evf_data);
 
 	jQuery(function () {
 
