@@ -99,7 +99,9 @@
 
 			.everest-forms-panel-sidebar {
 				width: 400px;
-				height: 100vh;
+				height: calc(100vh - 150px);
+				overflow-y: auto;
+				overflow-x: hidden;
 				background-color: #f8f9fa;
 				border-right: 1px solid #E0E3E6;
 
