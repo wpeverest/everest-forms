@@ -1020,8 +1020,8 @@
 		 		$(this).addClass('active');
 		 		EVFPanelBuilder.bindFields();
 		 	});
-		 },
-		 fieldDrop: function ( field ) {
+		},
+		fieldDrop: function ( field ) {
 		 	var field_type = field.attr('data-field-type');
 		 	field.css({
 		 		'left': '0',
@@ -1060,7 +1060,7 @@
 					EVFPanelBuilder.conditionalLogicAppendFieldIntegration(dragged_el_id);
 		 		}
 		 	});
-		 },
+		},
 
 		 conditionalLogicAppendField: function( id ){
 			var dragged_el = $('#' + id);
