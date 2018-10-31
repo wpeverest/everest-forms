@@ -100,7 +100,7 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 
 == Changelog ==
 
-= 1.3.2 - 30-10-2018 =
+= 1.3.2 - 31-10-2018 =
 * Feature - Multi-Part addon support.
 * Feature - "Reply to" address support on email.
 * Feature - Introduced debugging information logger.
