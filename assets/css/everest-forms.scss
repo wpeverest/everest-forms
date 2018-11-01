@@ -128,15 +128,15 @@
 
 						label,
 						input {
+							margin-bottom: 0;
 							display: inline-block;
 							vertical-align: middle;
-							margin-bottom: 0;
 						}
 
 						input[type="checkbox"],
 						input[type="radio"] {
-							margin-right: 8px;
 							padding: 0;
+							margin-right: 8px;
 						}
 
 						label {
