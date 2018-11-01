@@ -123,8 +123,8 @@
 					list-style: none;
 
 					li {
+						margin: 0;
 						display: block;
-						margin-right: 20px;
 
 						label,
 						input {
@@ -136,6 +136,7 @@
 						input[type="checkbox"],
 						input[type="radio"] {
 							margin-right: 8px;
+							padding: 0;
 						}
 
 						label {
