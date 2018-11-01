@@ -189,12 +189,9 @@
 			color: $color-gray-darker;
 
 			.required {
-				border: 0;
 				color: red;
 				font-weight: 700;
-			}
-
-			abbr[title] {
+				border: 0!important;
 				text-decoration: none;
 			}
 
