@@ -228,12 +228,8 @@ class EVF_Frontend_Scripts {
 		wp_enqueue_style( 'dashicons' );
 
 		// Global frontend scripts.
+		self::enqueue_style( 'flatpickr' );
 		self::enqueue_script( 'everest-forms' );
-
-		// Load scripts on form pages only if supported.
-		if ( evf_post_content_has_shortcode( 'everest_form' ) ) {
-			self::enqueue_style( 'flatpickr' );
-		}
 
 		// CSS Styles.
 		if ( $enqueue_styles = self::get_styles() ) {
