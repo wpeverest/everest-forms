@@ -323,6 +323,12 @@ class EVF_Form_Task {
 			return;
 		}
 
+		$process_email = apply_filters( 'everest_forms_entry_email_process', true, $fields, $form_data, $context );
+
+		if ( ! $process_email ) {
+			return;
+		}
+
 		$email = array();
 
 		// Setup email properties.
