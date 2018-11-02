@@ -67,210 +67,214 @@
 		}
 	}
 
-	.evf-frontend-row {
-		display: flex;
-		flex-wrap: wrap;
-		margin-left: -15px;
-		margin-right: -15px;
+	.evf-field-container {
+		margin: 0 !important;
 
-		.everest-forms-one-half {
-			float: left;
-			margin-left: 4%;
-			width: 48%;
+		.evf-frontend-row {
+			display: flex;
+			flex-wrap: wrap;
+			margin-left: -15px;
+			margin-right: -15px;
 
-			&:first-child {
+			.everest-forms-one-half {
+				float: left;
+				margin-left: 4%;
+				width: 48%;
+
+				&:first-child {
+					margin-left: 0;
+				}
+			}
+
+			.everest-forms-first {
 				margin-left: 0;
 			}
-		}
 
-		.everest-forms-first {
-			margin-left: 0;
-		}
-
-		.evf-frontend-grid {
-			padding-left: 15px;
-			padding-right: 15px;
-			margin-bottom: 30px;
-
-			&.evf-grid-1 {
-				width: 100%;
-			}
-
-			&.evf-grid-2 {
-				width: 50%;
-			}
-
-			&.evf-grid-3 {
-				width: 30%;
-
-			}
-
-			.evf-field {
+			.evf-frontend-grid {
+				padding-left: 15px;
+				padding-right: 15px;
 				margin-bottom: 30px;
 
-				&:last-child {
-					margin-bottom: 0;
+				&.evf-grid-1 {
+					width: 100%;
 				}
 
-				.evf-label-hide,
-				.everest-forms-sublabel-hide {
-					display:none;
+				&.evf-grid-2 {
+					width: 50%;
 				}
 
-				ul {
-					margin: 0;
-					padding: 0;
-					list-style: none;
+				&.evf-grid-3 {
+					width: 30%;
 
-					li {
+				}
+
+				.evf-field {
+					margin-bottom: 30px;
+
+					&:last-child {
+						margin-bottom: 0;
+					}
+
+					.evf-label-hide,
+					.everest-forms-sublabel-hide {
+						display:none;
+					}
+
+					ul {
 						margin: 0;
-						display: block;
+						padding: 0;
+						list-style: none;
 
-						label,
-						input {
-							margin-bottom: 0;
-							display: inline-block;
-							vertical-align: middle;
+						li {
+							margin: 0;
+							display: block;
+
+							label,
+							input {
+								margin-bottom: 0;
+								display: inline-block;
+								vertical-align: middle;
+							}
+
+							input[type="checkbox"],
+							input[type="radio"] {
+								padding: 0;
+								margin-right: 8px;
+							}
+
+							label {
+								font-weight: 500;
+								color: $color-gray-darker !important;
+							}
 						}
+					}
 
-						input[type="checkbox"],
-						input[type="radio"] {
-							padding: 0;
-							margin-right: 8px;
-						}
-
+					&.everest-forms-invalid {
 						label {
-							font-weight: 500;
-							color: $color-gray-darker !important;
+							color: $color-alert-danger;
+						}
+
+						.select2-container,
+						input.input-text,
+						select,
+						textarea {
+							border-color: $color-alert-danger;
 						}
 					}
-				}
 
-				&.everest-forms-invalid {
-					label {
-						color: $color-alert-danger;
+					&.everest-forms-validated {
+						.select2-container,
+						input.input-text,
+						select,
+						textarea {
+							border-color: $color-alert-success;
+						}
 					}
 
-					.select2-container,
-					input.input-text,
-					select,
-					textarea {
-						border-color: $color-alert-danger;
+					::-webkit-input-placeholder {
+						line-height: normal;
 					}
-				}
 
-				&.everest-forms-validated {
-					.select2-container,
-					input.input-text,
-					select,
-					textarea {
-						border-color: $color-alert-success;
+					:-moz-placeholder {
+						line-height: normal;
 					}
-				}
 
-				::-webkit-input-placeholder {
-					line-height: normal;
-				}
-
-				:-moz-placeholder {
-					line-height: normal;
-				}
-
-				:-ms-input-placeholder {
-					line-height: normal;
+					:-ms-input-placeholder {
+						line-height: normal;
+					}
 				}
 			}
-		}
 
-		label {
-			display: block;
-			font-size: 14px;
-			font-weight: 600;
-			margin: 0 0 5px 0;
-			color: $color-gray-darker;
+			label {
+				display: block;
+				font-size: 14px;
+				font-weight: 600;
+				margin: 0 0 5px 0;
+				color: $color-gray-darker;
 
-			.required {
-				color: red;
-				font-weight: 700;
-				border: 0!important;
-				text-decoration: none;
+				.required {
+					color: red;
+					font-weight: 700;
+					border: 0!important;
+					text-decoration: none;
+				}
+
+				&.evf-error {
+					margin-top: 15px;
+					margin-bottom: 0;
+					font-weight: 400;
+					padding: 7px 10px;
+					border-radius: 3px;
+					display: inline-block;
+					border: 1px solid $color-alert-danger;
+					color: darken( $color-alert-danger, 10% );
+					background-color: lighten( $color-alert-danger, 35% );
+				}
+
+				&.everest-forms-field-sublabel {
+					font-size: 12px;
+					font-weight: 400;
+				}
 			}
 
-			&.evf-error {
-				margin-top: 15px;
+			input,
+			select,
+			textarea {
+				width: 100%;
+				height: auto;
+				font-size: 14px;
+				box-shadow: none;
 				margin-bottom: 0;
-				font-weight: 400;
-				padding: 7px 10px;
+				padding: 6px 12px;
 				border-radius: 3px;
-				display: inline-block;
-				border: 1px solid $color-alert-danger;
-				color: darken( $color-alert-danger, 10% );
-				background-color: lighten( $color-alert-danger, 35% );
-			}
+				color: $color-gray-darker;
+				border: 1px solid $color-gray;
+				background-color: transparent;
 
-			&.everest-forms-field-sublabel {
-				font-size: 12px;
-				font-weight: 400;
-			}
-		}
-
-		input,
-		select,
-		textarea {
-			width: 100%;
-			height: auto;
-			font-size: 14px;
-			box-shadow: none;
-			margin-bottom: 0;
-			padding: 6px 12px;
-			border-radius: 3px;
-			color: $color-gray-darker;
-			border: 1px solid $color-gray;
-			background-color: transparent;
-
-			&[type="checkbox"],
-			&[type="radio"] {
-				width: 14px;
-				height: 14px;
-				background-color: $color-white;
-			}
-
-			&[type="radio"] {
-				border-radius: 10px;
-			}
-
-			&[type="checkbox"]:checked {
-				background-color: $color-brand-primary;
-
-				&::before {
-					color: $color-white;
-					background-color: transparent;
+				&[type="checkbox"],
+				&[type="radio"] {
+					width: 14px;
+					height: 14px;
+					background-color: $color-white;
 				}
-			}
 
-			&[type="radio"]:checked {
-				&::before {
+				&[type="radio"] {
+					border-radius: 10px;
+				}
+
+				&[type="checkbox"]:checked {
 					background-color: $color-brand-primary;
+
+					&::before {
+						color: $color-white;
+						background-color: transparent;
+					}
+				}
+
+				&[type="radio"]:checked {
+					&::before {
+						background-color: $color-brand-primary;
+					}
+				}
+
+				&::placeholder {
+					color: $input-color;
+				}
+
+				&:focus {
+					outline: none;
+					border: 1px solid $color-brand-primary;
 				}
 			}
 
-			&::placeholder {
-				color: $input-color;
+			textarea {
+				width: 100%;
+				height: 120px;
 			}
 
-			&:focus {
-				outline: none;
-				border: 1px solid $color-brand-primary;
+			.everest-forms-field-row {
+				margin-bottom: 30px;
 			}
-		}
-
-		textarea {
-			width: 100%;
-			height: 120px;
-		}
-
-		.everest-forms-field-row {
-			margin-bottom: 30px;
 		}
 	}
 
