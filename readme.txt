@@ -36,6 +36,7 @@ Check [documentation](http://docs.wpeverest.com/docs/everest-forms/)
 * Multiple email recipient
 * Smart Tags for dynamic email message, subject and more.
 * View Form entries from your dashboard
+* Quick Form Preview option
 * CSV exporter for entries
 * Provides two different form template design
 * Google Recaptcha Supported
@@ -59,6 +60,8 @@ Check [documentation](http://docs.wpeverest.com/docs/everest-forms/)
 * [Geolocation](https://wpeverest.com/wordpress-plugins/everest-forms/geolocation/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to collect geolocation data like IP, Country, Postal and zip code along with the form submission.
 
 * [Multi-Part Forms](https://wpeverest.com/wordpress-plugins/everest-forms/multi-part-forms/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to break long or complex forms up into multiple pages.
+
+* [Conditional Logic](https://wpeverest.com/wordpress-plugins/everest-forms/conditional-logic/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to conditionally hide or show form fields based on user's interaction with other form fields.
 
 ### What's Next
 
