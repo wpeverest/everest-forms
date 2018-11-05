@@ -1120,7 +1120,7 @@
 			var dragged_el = $('#' + id);
 			var dragged_index = dragged_el.index();
 
-			var fields = $( '.everest-forms-conditional-fields' ).find('.evf-field-conditional-field-select');
+			var fields = $('.evf-field-conditional-field-select');
 
 			var field_type = dragged_el.attr( 'data-field-type' );
 			var field_id = dragged_el.attr( 'data-field-id' );
