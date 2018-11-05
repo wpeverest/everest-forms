@@ -106,6 +106,7 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 = 1.3.3 - 05-11-2018 =
 * Feature - Added a filter to process Email conditionally.
 * Fix - Checkbox and radio input design issue in front-end.
+* Fix - PerfectScrollbar console error in forms list table.
 * Fix - Compatibility with different pagebuilder for flatpicker styles.
 * Tweak - Required field asterisk alignment style issue.
 * Tweak - Field container should not be overridden by theme margin.
