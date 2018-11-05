@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Everest Forms 1.3.3\n"
 "Report-Msgid-Bugs-To: https://github.com/wpeverest/everest-forms/issues\n"
-"POT-Creation-Date: 2018-11-05 09:35:18+00:00\n"
+"POT-Creation-Date: 2018-11-05 09:41:54+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -347,7 +347,7 @@ msgid "Confirmation Email Message"
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:312
-#: includes/class-evf-form-task.php:198 includes/class-evf-form-task.php:347
+#: includes/class-evf-form-task.php:198 includes/class-evf-form-task.php:353
 #: includes/shortcodes/class-evf-shortcode-form.php:162
 #: includes/templates/contact.php:60
 msgid "Thanks for contacting us! We will be in touch with you shortly."
@@ -1282,20 +1282,20 @@ msgstr ""
 msgid "Form has not been submitted, please see the errors below."
 msgstr ""
 
-#: includes/class-evf-form-task.php:330
+#: includes/class-evf-form-task.php:336
 #. translators: %s - form name.
 msgid "New %s Entry"
 msgstr ""
 
-#: includes/class-evf-form-task.php:346
+#: includes/class-evf-form-task.php:352
 msgid "Thank you!"
 msgstr ""
 
-#: includes/class-evf-form-task.php:430
+#: includes/class-evf-form-task.php:436
 msgid "No form ID was found."
 msgstr ""
 
-#: includes/class-evf-form-task.php:437
+#: includes/class-evf-form-task.php:443
 msgid "Could not create an entry"
 msgstr ""
 
