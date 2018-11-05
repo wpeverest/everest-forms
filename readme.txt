@@ -4,7 +4,7 @@ Tags: contact form, form, form builder, contact, custom form
 Requires at least: 4.0
 Tested up to: 4.9
 Requires PHP: 5.4
-Stable tag: 1.3.2
+Stable tag: 1.3.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -102,6 +102,14 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 11. Advance Form
 
 == Changelog ==
+
+= 1.3.3 - 05-11-2018 =
+* Feature - Added a filter to process Email conditionally.
+* Fix - Checkbox and radio input design issue in front-end.
+* Fix - Compatibility with different pagebuilder for flatpicker styles.
+* Tweak - Required field asterisk alignment style issue.
+* Tweak - Field container should not be overridden by theme margin.
+* Tweak - Added button class in submit button for multiple theme compat.
 
 = 1.3.2 - 31-10-2018 =
 * Feature - Multi-Part addon support.
