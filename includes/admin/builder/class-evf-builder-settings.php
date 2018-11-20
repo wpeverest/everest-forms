@@ -25,6 +25,8 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		$this->label   = __( 'Settings', 'everest-forms' );
 		$this->sidebar = true;
 
+		add_action( 'everest_forms_settings_connections_email', array( $this, 'output_connections_list' ) );
+
 		parent::__construct();
 	}
 
@@ -40,9 +42,39 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		if ( ! empty( $sections ) ) {
 			foreach ( $sections as $slug => $section ) {
 				$this->add_sidebar_tab( $section, $slug );
+				do_action( 'everest_forms_settings_connections_' . $slug, $section );
 			}
 		}
 	}
+
+	/**
+	 * Get form data
+	 *
+	 * @return array form data.
+	 */
+	private function form_data() {
+		$form_data = array();
+
+		if ( ! empty( $_GET['form_id'] ) ) {
+			$form_data = EVF()->form->get( absint( $_GET['form_id'] ), array( 'content_only' => true, ) );
+		}
+
+		return $form_data;
+	}
+
+	/**
+	 * Outputs the connection lists on sidebar.
+	 */
+	public function output_connections_list() {
+		$form_data = $this->form_data();
+		 	?>
+			<div class="everest-forms-active-connections active">
+				<button class="everest-forms-btn everest-forms-connections-add" data-form_id="<?php echo absint( $_GET['form_id'] ); ?>" data-source="email" data-type="<?php echo esc_attr( 'connection' ); ?>">
+					<?php printf( esc_html__( 'Add New Connection', 'everest-forms-pro' ) ); ?>
+				</button>
+			</div>
+			<?php
+	 }
 
 	/**
 	 * Outputs the builder content.
