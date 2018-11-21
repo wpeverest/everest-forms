@@ -36,7 +36,7 @@ class EVF_Form_Block {
 	public function enqueue_block_editor_assets() {
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
-		wp_register_script( 'everest-forms-block-editor', EVF()->plugin_url() . '/assets/js/admin/form-block' . $suffix . '.js', array( 'wp-blocks', 'wp-element', 'wp-i18n' ), EVF_VERSION, true );
+		wp_register_script( 'everest-forms-block-editor', EVF()->plugin_url() . '/assets/js/admin/form-block' . $suffix . '.js', array( 'wp-blocks', 'wp-element', 'wp-i18n', 'wp-components' ), EVF_VERSION, true );
 
 		$form_block_data = array(
 			'title'            => esc_html__( 'Everest Forms', 'everest-forms' ),

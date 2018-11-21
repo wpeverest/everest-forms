@@ -14,7 +14,7 @@
 	blocks.registerBlockType( 'everest-forms/form-selector', {
 		title: 'Everest Forms',
 		icon: 'feedback',
-		category: 'widgets',
+		category: 'common',
 		attributes: {
             formID: {
                 type: 'integer',
