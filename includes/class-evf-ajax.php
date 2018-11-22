@@ -80,6 +80,7 @@ class EVF_AJAX {
 			'get_next_id'            => false,
 			'install_extension'      => false,
 			'integration_connect'    => false,
+			'new_email_add'          => false,
 			'integration_disconnect' => false,
 			'deactivation_notice'    => false,
 			'rated'                  => false,
@@ -360,6 +361,30 @@ class EVF_AJAX {
 
 		do_action( 'everest_forms_integration_account_connect_'.$_POST["source"], $_POST );
 	}
+
+	/**
+	 * AJAX Email Add.
+	 */
+	public static function new_email_add() {
+		check_ajax_referer( 'process-ajax-nonce', 'security' );
+
+		if ( ! current_user_can( 'manage_everest_forms' ) ) {
+			wp_die( -1 );
+		}
+		// $connection = self::output_email_connection( '', array( 'connection_name' => $_POST['name'] ), $_POST['id'] );
+		$connection_id = 'connection_' . uniqid();
+
+		wp_send_json_success(
+			array(
+				// 'html' => $connection[ 'html' ],
+				'connection_id' => $connection_id,
+			)
+		);
+	}
+
+	// public static function output_email_connection( $connection_id, $connection = array(), $form_data = array() ) {
+
+	// }
 
 	/**
 	 * AJAX Integration disconnect.
