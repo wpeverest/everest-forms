@@ -76,6 +76,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					<?php printf( esc_html__( 'Add New Email', 'everest-forms' ) ); ?>
 				</button>
 					<ul class="everest-forms-active-email-connections-list <?php echo esc_attr( $class ); ?>">
+						<li class="active-user" data-connection-id= "connection_1"><a class="user-nickname" href="#">Default</a><a href="#"><span class="toggle-remove">Remove</span></a></li>
 					</ul>
 			</div>
 			<?php

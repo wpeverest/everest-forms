@@ -95,17 +95,26 @@
 									type: 'POST',
 
 									success: function( response ){
-										var cloned_email = $('.evf-content-email-settings').first().clone();
+										var cloned_email = $('.evf-content-email-settings.active').clone();
+										$('.evf-content-email-settings').removeClass('active');
 										// console.log(cloned_email);
 										cloned_email.find('input').val('');
+
+										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-evf_to_email').attr('name', 'settings[email]['+response.data.connection_id+'][evf_to_email]');
+										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-evf_from_name').attr('name', 'settings[email]['+response.data.connection_id+'][evf_from_name]');
+										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-evf_from_email').attr('name', 'settings[email]['+response.data.connection_id+'][evf_from_email]');
+										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-evf_reply_to').attr('name', 'settings[email]['+response.data.connection_id+'][evf_reply_to]');
+										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-evf_email_subject').attr('name', 'settings[email]['+response.data.connection_id+'][evf_email_subject]');
+										cloned_email.find('#everest_forms_panel_field_settingsemailconnection_1_evf_email_message').attr('name', 'settings[email]['+response.data.connection_id+'][evf_email_message]');
+										cloned_email.find('#everest-forms-panel-field-settingsemail-conditional_logic_status').attr('name', 'settings[email]['+response.data.connection_id+'][conditional_logic_status]');
 										$('.everest-forms-panel-content').append(cloned_email);
 										//EverestFormsIntegration.inputToggle($this, 'enable');
 										// $('.everest-form-add-connection-notice').remove();
 										// $connections.find('.evf-panel-content-section-'+source).find('.evf-provider-connections').append( response.data.html );
 										// $connections.find('.evf-provider-connection').removeClass('active-connection');
 										// $connections.find('.evf-provider-connection').last().addClass('active-connection');
-										// $this.parent().find('.everest-forms-active-connections-list li').removeClass('active-user');
-										// $this.closest('.everest-forms-active-connections.active').children('.everest-forms-active-connections-list').removeClass('empty-list');
+										$this.parent().find('.everest-forms-active-email-connections-list li').removeClass('active-user');
+										$this.closest('.everest-forms-active-email.active').children('.everest-forms-active-email-connections-list').removeClass('empty-list');
 										$this.parent().find('.everest-forms-active-email-connections-list ').append( '<li class="active-user" data-connection-id= "'+response.data.connection_id+'"><a class="user-nickname" href="#">'+name+'</a><a href="#"><span class="toggle-remove">Remove</span></a></li>' );
 										// $('.everest-forms-panel-sidebar-section-'+ source ).siblings('.everest-forms-active-connections.active').children('.everest-forms-active-connections-list').children('.active-user').children('.user-nickname').trigger('click');
 										// var $connection = $connections.find('.evf-panel-content-section-'+source+ ' .evf-provider-connections .evf-provider-connection:last');
