@@ -3,10 +3,12 @@
  *
  * A block for embedding a Everest Forms into a post/page.
  */
+
+/* global evf_form_block_data, wp */
 ( function( blocks, i18n, element, components ) {
 
 	var el = element.createElement, // function to create elements
-		TextControl = components.TextControl,// text input control
+        SelectControl = components.SelectControl, // select control
 		InspectorControls = wp.editor.InspectorControls, // sidebar controls
 		Sandbox = components.Sandbox; // needed to register the block
 
@@ -22,7 +24,55 @@
             },
 		},
 		edit: function( props ) {
+            var focus = props.focus;
+            var formID = props.attributes.formID;
+            var children = [];
 
+            if ( ! formID ) {
+                formID = ''; // Default.
+            }
+
+            function onFormChange( newFormID ) {
+                // updates the form id on the props
+                props.setAttributes( { formID: newFormID } );
+            }
+
+            // Set up the form dropdown in the side bar 'block' settings
+            var inspectorControls = el( InspectorControls, {},
+                el( SelectControl,
+                    {
+                        label: i18n.__( 'Selected Form' ),
+                        value: formID,
+                        options: evf_form_block_data.forms,
+                        onChange: onFormChange
+                    }
+                )
+            );
+
+            /**
+             * Create the div container, add an overlay so the user can interact
+             * with the form in Gutenberg, then render the iframe with form
+             */
+            if ( '' === formID ) {
+                children.push(
+                    el( 'div', { style : {width: '100%' } },
+                    el( 'img',{ src: 'weformsblock.block_logo' }),
+                    el( 'h3', { className : 'weforms-title' }, 'weForms' ),
+                    el( SelectControl, { value: formID, options: weformsblock.forms, onChange: onFormChange })
+                ) );
+            } else {
+                children.push(
+                    el( 'div', { className: 'weforms-form-container' },
+                        el( 'div', { className: 'weforms-form-overlay'} ),
+                        el( 'iframe', { src: evf_form_block_data.siteUrl + '?evf_preview=1&form_id=' + formID, height: '0', width: '500', scrolling: 'no' })
+                    )
+                )
+            }
+
+            return [
+                children,
+                !! focus && inspectorControls
+            ];
 		},
 		save: function( props ) {
 

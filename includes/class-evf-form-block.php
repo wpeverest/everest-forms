@@ -39,11 +39,15 @@ class EVF_Form_Block {
 		wp_register_script( 'everest-forms-block-editor', EVF()->plugin_url() . '/assets/js/admin/form-block' . $suffix . '.js', array( 'wp-blocks', 'wp-element', 'wp-i18n', 'wp-components' ), EVF_VERSION, true );
 
 		$form_block_data = array(
-			'title'            => esc_html__( 'Everest Forms', 'everest-forms' ),
-			'description'      => esc_html__( 'Select & display one of your form.', 'everest-forms' ),
-			'form_select'      => esc_html__( 'Select a Form', 'everest-forms' ),
-			'form_settings'    => esc_html__( 'Form Settings', 'everest-forms' ),
-			'form_selected'    => esc_html__( 'Form', 'everest-forms' ),
+			'forms'   => evf_get_all_forms(),
+			'siteUrl' => get_site_url(),
+			'i18n'    => array(
+				'title'            => esc_html__( 'Everest Forms', 'everest-forms' ),
+				'description'      => esc_html__( 'Select & display one of your form.', 'everest-forms' ),
+				'form_select'      => esc_html__( 'Select a Form', 'everest-forms' ),
+				'form_settings'    => esc_html__( 'Form Settings', 'everest-forms' ),
+				'form_selected'    => esc_html__( 'Form', 'everest-forms' ),
+			)
 		);
 		wp_localize_script( 'everest-forms-block-editor', 'evf_form_block_data', $form_block_data );
 
