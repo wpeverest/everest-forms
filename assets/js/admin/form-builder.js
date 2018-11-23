@@ -175,6 +175,7 @@
 			EVFPanelBuilder.bindAddNewRow();
 			EVFPanelBuilder.bindRemoveRow();
 			EVFPanelBuilder.bindFormSettings();
+			EVFPanelBuilder.bindFormEmail();
 			EVFPanelBuilder.bindFormIntegrations();
 			EVFPanelBuilder.bindFormPayment();
 			EVFPanelBuilder.choicesInit();
@@ -399,6 +400,7 @@
 			$( 'body' ).on('click', '.evf-setting-panel', function ( e ) {
 				var data_setting_section = $(this).attr('data-section');
 				$('.evf-setting-panel').removeClass('active');
+				$('.everest-forms-active-email').removeClass('active');
 				$('.evf-content-section').removeClass('active');
 				$(this).addClass('active');
 				$('.evf-content-' + data_setting_section + '-settings').addClass('active');
@@ -407,6 +409,20 @@
 
 			$('.evf-setting-panel').eq(0).trigger('click');
 		},
+
+		bindFormEmail: function () {
+			$('body').on('click', '.everest-forms-panel-sidebar-section-email', function ( e ) {
+				$(this).siblings('.everest-forms-active-email').removeClass('active');
+				$(this).next('.everest-forms-active-email').addClass('active');
+				var container = $( this ).siblings('.everest-forms-active-email.active').find('.everest-forms-active-email-connections-list li');
+
+				if( container.length ){
+					container.children('.user-nickname').first().trigger('click');
+				}
+				e.preventDefault();
+			});
+		},
+
 		bindFormIntegrations: function () {
 			$('body').on('click', '.evf-integrations-panel', function ( e ) {
 				var data_setting_section = $(this).attr('data-section');

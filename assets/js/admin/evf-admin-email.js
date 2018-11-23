@@ -16,11 +16,6 @@
 		 */
 		 init: function() {
 		 	s = this.settings;
-			// Document ready
-			// $(document).ready(EverestFormsEmail.ready);
-			// if( $('.evf-connection-list-table tbody tr').length === 0 ){
-			// 	$('.toggle-switch').removeClass('connected');
-			// }
 
 			$('.everest-forms-active-email-connections-list li').first().addClass('active-user');
 			$('.evf-content-email-settings-inner').first().addClass('active-connection');
@@ -44,7 +39,9 @@
 		 	$(document).on('click', '.everest-forms-active-email-connections-list li a', function(e) {
 		 		EverestFormsEmail.selectActiveAccount(this, e);
 		 	});
-
+		 	$(document).on('click', '.email-remove', function(e) {
+		 		EverestFormsEmail.removeAccount(this, e);
+		 	});
 		 },
 
 		 connectionAdd: function(el, e) {
@@ -101,9 +98,8 @@
 									success: function( response ){
 										var cloned_email = $('.evf-content-email-settings-inner').first().clone();
 										$('.evf-content-email-settings-inner').removeClass('active-connection');
-										// console.log(cloned_email);
 										// cloned_email.find('input').val('');
-
+										cloned_email.attr('data-connection_id',response.data.connection_id);
 										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-evf_to_email').attr('name', 'settings[email]['+response.data.connection_id+'][evf_to_email]');
 										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-evf_from_name').attr('name', 'settings[email]['+response.data.connection_id+'][evf_from_name]');
 										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-evf_from_email').attr('name', 'settings[email]['+response.data.connection_id+'][evf_from_email]');
@@ -111,22 +107,17 @@
 										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-evf_email_subject').attr('name', 'settings[email]['+response.data.connection_id+'][evf_email_subject]');
 										cloned_email.find('#everest_forms_panel_field_settingsemailconnection_1_evf_email_message').attr('name', 'settings[email]['+response.data.connection_id+'][evf_email_message]');
 										cloned_email.find('#everest-forms-panel-field-settingsemail-conditional_logic_status').attr('name', 'settings[email]['+response.data.connection_id+'][conditional_logic_status]');
+										cloned_email.find('.evf-field-show-hide').attr('name', 'settings[email]['+response.data.connection_id+'][conditional_option]');
+										cloned_email.find('.evf-field-conditional-field-select').attr('name', 'settings[email]['+response.data.connection_id+'][conditionals][1][1][field]');
+										cloned_email.find('.evf-field-conditional-condition').attr('name', 'settings[email]['+response.data.connection_id+'][conditionals][1][1][operator]');
+										cloned_email.find('.evf-field-conditional-input').attr('name', 'settings[email]['+response.data.connection_id+'][conditionals][1][1][value]');
+
 										$cloned_email = cloned_email.append('<input type="hidden" name="settings[email]['+response.data.connection_id+'][connection_name]" value='+name+'>');
 										$('.evf-content-email-settings').append(cloned_email);
-										//EverestFormsIntegration.inputToggle($this, 'enable');
-										// $('.everest-form-add-connection-notice').remove();
-										// $connections.find('.evf-panel-content-section-'+source).find('.evf-provider-connections').append( response.data.html );
-										// $connections.find('.evf-provider-connection').removeClass('active-connection');
 										$connections.find('.evf-content-email-settings-inner').last().addClass('active-connection');
 										$this.parent().find('.everest-forms-active-email-connections-list li').removeClass('active-user');
 										$this.closest('.everest-forms-active-email.active').children('.everest-forms-active-email-connections-list').removeClass('empty-list');
-										$this.parent().find('.everest-forms-active-email-connections-list ').append( '<li class="active-user" data-connection-id= "'+response.data.connection_id+'"><a class="user-nickname" href="#">'+name+'</a><a href="#"><span class="toggle-remove">Remove</span></a></li>' );
-										// $('.everest-forms-panel-sidebar-section-'+ source ).siblings('.everest-forms-active-connections.active').children('.everest-forms-active-connections-list').children('.active-user').children('.user-nickname').trigger('click');
-										// var $connection = $connections.find('.evf-panel-content-section-'+source+ ' .evf-provider-connections .evf-provider-connection:last');
-										// if ($connection.find( '.evf-provider-accounts option:selected')) {
-										// 	$connection.find( '.evf-provider-accounts option:first').prop('selected', true);
-										// 	$connection.find('.evf-provider-accounts select').trigger('change');
-										// }
+										$this.parent().find('.everest-forms-active-email-connections-list ').append( '<li class="active-user" data-connection-id= "'+response.data.connection_id+'"><a class="user-nickname" href="#">'+name+'</a><a href="#"><span class="email-remove">Remove</span></a></li>' );
 									}
 								});
 							}
@@ -155,7 +146,68 @@
 				$( active_block ).addClass('active-connection');
 			}
 
-		}
+		},
+
+		removeAccount: function(el, e) {
+			e.preventDefault();
+
+			var $this = $(el),
+			connection_id = $this.parent().parent().data('connection-id'),
+			active_block  = $('.evf-content-email-settings').find('[data-connection_id="' + connection_id + '"]'),
+			lengthOfActiveBlock = $(active_block).length,
+			closestConnection = $this.closest('.everest-forms-active-email-connections-list'),
+			connectionLength = closestConnection.find('li').length,
+			checkConnection;
+			if( connectionLength < 2 ) {
+					$.alert({
+						title: false,
+						content: "Default Email can not be deleted !",
+						icon: 'dashicons dashicons-info',
+						type: 'blue',
+						buttons: {
+							ok: {
+								text: evf_data.i18n_ok,
+								btnClass: 'btn-confirm',
+								keys: [ 'enter' ]
+							}
+						}
+					});
+			} else {
+				$.confirm({
+					title: false,
+					content: "Are you sure you want to delete this Email?",
+					backgroundDismiss: false,
+					closeIcon: false,
+					icon: 'dashicons dashicons-info',
+					type: 'orange',
+					buttons: {
+						confirm: {
+							text: evfp_params.i18n_ok,
+							btnClass: 'btn-confirm',
+							keys: ['enter'],
+							action: function(){
+								if( lengthOfActiveBlock ){
+									var toBeRemoved = $this.parent().parent();
+									active_block_after  = $('.evf-provider-connections').find('[data-connection_id="' + connection_id + '"]'),
+									lengthOfActiveBlockAfter = $(active_block).length;
+									if( toBeRemoved.prev().length ){
+										toBeRemoved.prev().children('.user-nickname').trigger('click');
+									}else {
+										toBeRemoved.next().children('.user-nickname').trigger('click');
+									}
+
+									$( active_block ).remove();
+									toBeRemoved.remove();
+								}
+							}
+						},
+						cancel: {
+							text: evfp_params.i18n_cancel
+						}
+					}
+				});
+			}
+		},
 
 
  	}
