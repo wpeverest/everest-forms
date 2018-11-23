@@ -67,8 +67,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 	 */
 	public function output_connections_list() {
 		$form_data = $this->form_data();
-		$email = $form_data['settings']['email'];
-		// echo '<pre>' . print_r( $form_data, true ) . '</pre>';
+		$email = isset($form_data['settings']['email']) ? $form_data['settings']['email'] : array();
 		$class = '';
 		 	?>
 			<div class="everest-forms-active-email active">
@@ -215,12 +214,18 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		// --------------------------------------------------------------------//
 		// Email
 		// --------------------------------------------------------------------//
-		//
-		$connection_id = 'connection_1';
+
+		if( empty( $settings['email'] ) ){
+			$settings['email'] = array();
+			$settings['email']['connection_1'] = array( 'connection_name' => __('Default', 'everest-forms') );
+		}
+
+		// echo '<pre>' . print_r( $settings, true ) . '</pre>';
+
 		echo '<div class="evf-content-section-title">';
 		_e( 'Email', 'everest-forms' );
 		echo '</div>';
-
+		foreach ( $settings['email'] as $connection_id => $connection ) :
 			echo '<div class="evf-content-section evf-content-email-settings">';
 			everest_forms_panel_field(
 				'text',
@@ -307,11 +312,10 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				)
 			);
 
-
 			do_action( 'everest_forms_inline_email_settings', $this , $connection_id );
 
 			echo '</div>';
-
+		endforeach;
 		do_action( 'everest_forms_settings_panel_content', $this );
 	}
 

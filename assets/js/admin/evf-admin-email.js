@@ -95,7 +95,7 @@
 									type: 'POST',
 
 									success: function( response ){
-										var cloned_email = $('.evf-content-email-settings.active').clone();
+										var cloned_email = $('.evf-content-email-settings').first().clone();
 										$('.evf-content-email-settings').removeClass('active');
 										// console.log(cloned_email);
 										cloned_email.find('input').val('');
@@ -107,6 +107,7 @@
 										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-evf_email_subject').attr('name', 'settings[email]['+response.data.connection_id+'][evf_email_subject]');
 										cloned_email.find('#everest_forms_panel_field_settingsemailconnection_1_evf_email_message').attr('name', 'settings[email]['+response.data.connection_id+'][evf_email_message]');
 										cloned_email.find('#everest-forms-panel-field-settingsemail-conditional_logic_status').attr('name', 'settings[email]['+response.data.connection_id+'][conditional_logic_status]');
+										$('.everest-forms-panel-content').append('<input type="hidden" name="settings[email]['+response.data.connection_id+'][connection_name]" value='+name+'>');
 										$('.everest-forms-panel-content').append(cloned_email);
 										//EverestFormsIntegration.inputToggle($this, 'enable');
 										// $('.everest-form-add-connection-notice').remove();
