@@ -221,12 +221,12 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		}
 
 		// echo '<pre>' . print_r( $settings, true ) . '</pre>';
-
+		echo '<div class="evf-content-section evf-content-email-settings">';
 		echo '<div class="evf-content-section-title">';
 		_e( 'Email', 'everest-forms' );
 		echo '</div>';
 		foreach ( $settings['email'] as $connection_id => $connection ) :
-			echo '<div class="evf-content-section evf-content-email-settings">';
+			echo '<div class="evf-content-email-settings-inner">';
 			everest_forms_panel_field(
 				'text',
 				'settings[email]['.$connection_id.']',
@@ -316,6 +316,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 
 			echo '</div>';
 		endforeach;
+		echo '</div>';
 		do_action( 'everest_forms_settings_panel_content', $this );
 	}
 
