@@ -93,10 +93,9 @@ class EVF_Form_Block {
 		}
 
 		ob_start();
-		// EVF_Shortcodes::form( array(
-		// 	'id' => $form_id,
-		// ) );
-		do_shortcode( '[everest_forms id="' . $form_id. '"]' );
+		EVF_Shortcode_Form::output( array(
+			'id' => $form_id,
+		) );
 		return ob_get_clean();
 	}
 }
