@@ -36,18 +36,18 @@ class EVF_Form_Block {
 	 */
 	public function enqueue_block_editor_assets() {
 		wp_register_script(
-			'everest-forms-block-editor', EVF()->plugin_url() . '/assets/js/admin/form-block.js',
+			'everest-forms-block-editor', EVF()->plugin_url() . '/assets/js/admin/gutenberg/form-block.min.js',
 			array( 'wp-blocks', 'wp-element', 'wp-i18n', 'wp-editor', 'wp-components' ),
-			defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( EVF()->plugin_path() . '/assets/js/admin/form-block.js' ) : EVF_VERSION,
+			defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( EVF()->plugin_path() . '/assets/js/admin/gutenberg/form-block.min.js' ) : EVF_VERSION,
 			true
 		);
 
 		$form_block_data = array(
 			'forms'    => EVF()->form->get( '', array( 'order' => 'DESC' ) ),
-			'logo_url' => EVF()->plugin_url . '/assets/images/logo.png',
+			'logo_url' => EVF()->plugin_url() . '/assets/images/logo.png',
 			'i18n'     => array(
 				'title'         => esc_html__( 'Everest Forms', 'everest-forms' ),
-				'description'   => esc_html__( 'Select & display one of your form.', 'everest-forms' ),
+				'description'   => esc_html__( 'Select &#38; display one of your form.', 'everest-forms' ),
 				'form_select'   => esc_html__( 'Select a Form', 'everest-forms' ),
 				'form_settings' => esc_html__( 'Form Settings', 'everest-forms' ),
 				'form_selected' => esc_html__( 'Form', 'everest-forms' ),
