@@ -4,96 +4,82 @@
  * A block for embedding a Everest Forms into a post/page.
  */
 
+'use strict';
+
 /* global evf_form_block_data, wp */
-( function( blocks, i18n, element, components ) {
+const { createElement } = wp.element;
+const { registerBlockType } = wp.blocks;
+const { InspectorControls } = wp.editor;
+const { SelectControl, ToggleControl, PanelBody, ServerSideRender, Placeholder } = wp.components;
 
-	var el = element.createElement, // function to create elements
-        SelectControl = components.SelectControl, // select control
-		InspectorControls = wp.editor.InspectorControls, // sidebar controls
-		Sandbox = components.Sandbox; // needed to register the block
-
-	// register our block
-	blocks.registerBlockType( 'everest-forms/form-selector', {
-		title: 'Everest Forms',
-		icon: 'feedback',
-		category: 'common',
-		attributes: {
-            formID: {
-                type: 'integer',
-                default: 0
-            },
-		},
-		edit: function( props ) {
-            var focus = props.focus;
-            var formID = props.attributes.formID;
-            var children = [];
-
-            if ( ! formID ) {
-                formID = ''; // Default.
-            }
-
-            function onFormChange( newFormID ) {
-                // updates the form id on the props
-                props.setAttributes( { formID: newFormID } );
-            }
-
-            // Set up the form dropdown in the side bar 'block' settings
-            var inspectorControls = el( InspectorControls, {},
-                el( SelectControl,
-                    {
-                        label: i18n.__( 'Selected Form' ),
-                        value: formID,
-                        options: evf_form_block_data.forms,
-                        onChange: onFormChange
-                    }
-                )
-            );
-
-            /**
-             * Create the div container, add an overlay so the user can interact
-             * with the form in Gutenberg, then render the iframe with form
-             */
-            if ( '' === formID ) {
-                children.push(
-                    el( 'div', { style : {width: '100%' } },
-                    el( 'img',{ src: 'weformsblock.block_logo' }),
-                    el( 'h3', { className : 'weforms-title' }, 'weForms' ),
-                    el( SelectControl, { value: formID, options: weformsblock.forms, onChange: onFormChange })
-                ) );
-            } else {
-                children.push(
-                    el( 'div', { className: 'weforms-form-container' },
-                        el( 'div', { className: 'weforms-form-overlay'} ),
-                        el( 'iframe', { src: evf_form_block_data.siteUrl + '?evf_preview=1&form_id=' + formID, height: '0', width: '500', scrolling: 'no' })
-                    )
-                )
-            }
-
-            return [
-                children,
-                !! focus && inspectorControls
-            ];
-		},
-		save: function( props ) {
-
-            var formID = props.attributes.formID;
-
-            if( ! formID ) return '';
-			/**
-			 * we're essentially just adding a short code, here is where
-			 * it's save in the editor
-			 *
-			 * return content wrapped in DIV b/c raw HTML is unsupported
-			 * going forward
-			 */
-			var returnHTML = '[everest_forms id=' + parseInt( formID ) + ']';
-			return el( 'div', null, returnHTML);
-		}
-	} );
-
-} )(
-	window.wp.blocks,
-	window.wp.i18n,
-	window.wp.element,
-	window.wp.components
+const everestFormIcon = createElement( 'svg', { width: 20, height: 20, viewBox: '0 0 20 20', className: 'dashicon' },
+	createElement( 'path', { fill: 'currentColor', d: 'M4.5 0v3H0v17h20V0H4.5zM9 19H1V4h8v15zm10 0h-9V3H5.5V1H19v18zM6.5 6h-4V5h4v1zm1 2v1h-5V8h5zm-5 3h3v1h-3v-1z' } )
 );
+
+registerBlockType( 'everest-forms/form-selector', {
+	title: evf_form_block_data.i18n.title,
+	description: evf_form_block_data.i18n.description,
+	icon: everestFormIcon,
+	category: 'widgets',
+	attributes: {
+		formId: {
+			type: 'string',
+		},
+	},
+	edit( props ) {
+		const { attributes: { formId = '' }, setAttributes } = props;
+		const formOptions = evf_form_block_data.forms.map( value => (
+			{ value: value.ID, label: value.post_title }
+		) );
+		let jsx;
+
+		formOptions.unshift( { value: '', label: evf_form_block_data.i18n.form_select } );
+
+		function selectForm( value ) {
+			setAttributes( { formId: value } );
+		}
+
+		jsx = [
+			<InspectorControls key="evf-gutenberg-form-selector-inspector-controls">
+				<PanelBody title={ evf_form_block_data.i18n.form_settings }>
+					<SelectControl
+						label={ evf_form_block_data.i18n.form_selected }
+						value={ formId }
+						options={ formOptions }
+						onChange={ selectForm }
+					/>
+				</PanelBody>
+			</InspectorControls>
+		];
+
+		if ( formId ) {
+			jsx.push(
+				<ServerSideRender
+					key="evf-gutenberg-form-selector-server-side-renderer"
+					block="everest-forms/form-selector"
+					attributes={ props.attributes }
+				/>
+			);
+		} else {
+			jsx.push(
+				<Placeholder
+					key="evf-gutenberg-form-selector-wrap"
+					className="evf-gutenberg-form-selector-wrap">
+					<img src={ evf_form_block_data.logo_url }/>
+					<h2>{ evf_form_block_data.i18n.title }</h2>
+					<SelectControl
+						key="evf-gutenberg-form-selector-select-control"
+						value={ formId }
+						options={ formOptions }
+						onChange={ selectForm }
+					/>
+				</Placeholder>
+			);
+		}
+
+		return jsx;
+	},
+	save() {
+		return null;
+	},
+} );
