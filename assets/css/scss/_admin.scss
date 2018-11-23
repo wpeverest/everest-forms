@@ -1226,6 +1226,17 @@
 				}
 			}
 		}
+
+		.evf-content-email-settings-inner {
+        	display: none;
+			-webkit-animation: fadeIn 0.5s;
+			animation: fadeIn 0.5s;
+            margin: 20px 0;
+
+            &.active-connection {
+            	display: block;
+            }
+        }
 	}
 
 	.evf-registered-item {

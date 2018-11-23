@@ -22,7 +22,7 @@
 			// 	$('.toggle-switch').removeClass('connected');
 			// }
 
-			$('.everest-forms-active-email-connections-list li').first().addClass('active-email');
+			$('.everest-forms-active-email-connections-list li').first().addClass('active-user');
 			$('.evf-content-email-settings-inner').first().addClass('active-connection');
 
 			EverestFormsEmail.bindUIActions();
@@ -41,6 +41,10 @@
 		 	$(document).on('click', '.everest-forms-email-add', function(e) {
 		 		EverestFormsEmail.connectionAdd(this, e);
 		 	});
+		 	$(document).on('click', '.everest-forms-active-email-connections-list li a', function(e) {
+		 		EverestFormsEmail.selectActiveAccount(this, e);
+		 	});
+
 		 },
 
 		 connectionAdd: function(el, e) {
@@ -98,7 +102,7 @@
 										var cloned_email = $('.evf-content-email-settings-inner').first().clone();
 										$('.evf-content-email-settings-inner').removeClass('active-connection');
 										// console.log(cloned_email);
-										cloned_email.find('input').val('');
+										// cloned_email.find('input').val('');
 
 										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-evf_to_email').attr('name', 'settings[email]['+response.data.connection_id+'][evf_to_email]');
 										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-evf_from_name').attr('name', 'settings[email]['+response.data.connection_id+'][evf_from_name]');
@@ -107,7 +111,7 @@
 										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-evf_email_subject').attr('name', 'settings[email]['+response.data.connection_id+'][evf_email_subject]');
 										cloned_email.find('#everest_forms_panel_field_settingsemailconnection_1_evf_email_message').attr('name', 'settings[email]['+response.data.connection_id+'][evf_email_message]');
 										cloned_email.find('#everest-forms-panel-field-settingsemail-conditional_logic_status').attr('name', 'settings[email]['+response.data.connection_id+'][conditional_logic_status]');
-										$('.evf-content-email-settings-inner').append('<input type="hidden" name="settings[email]['+response.data.connection_id+'][connection_name]" value='+name+'>');
+										$cloned_email = cloned_email.append('<input type="hidden" name="settings[email]['+response.data.connection_id+'][connection_name]" value='+name+'>');
 										$('.evf-content-email-settings').append(cloned_email);
 										//EverestFormsIntegration.inputToggle($this, 'enable');
 										// $('.everest-form-add-connection-notice').remove();
@@ -134,6 +138,24 @@
 				}
 			});
 		 },
+
+		selectActiveAccount: function(el, e) {
+			e.preventDefault();
+
+			var $this         = $(el),
+			connection_id = $this.parent().data('connection-id'),
+			active_block  = $('.evf-content-email-settings').find('[data-connection_id="' + connection_id + '"]'),
+			lengthOfActiveBlock = $(active_block).length;
+
+			$('.evf-content-email-settings').find('.evf-content-email-settings-inner').removeClass('active-connection');
+			$this.parent().siblings().removeClass('active-user');
+			$this.parent().addClass('active-user');
+
+			if( lengthOfActiveBlock ){
+				$( active_block ).addClass('active-connection');
+			}
+
+		}
 
 
  	}

@@ -75,7 +75,18 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					<?php printf( esc_html__( 'Add New Email', 'everest-forms' ) ); ?>
 				</button>
 					<ul class="everest-forms-active-email-connections-list <?php echo esc_attr( $class ); ?>">
-						<li class="active-user" data-connection-id= "connection_1"><a class="user-nickname" href="#">Default</a><a href="#"><span class="toggle-remove">Remove</span></a></li>
+					<?php if ( ! empty( $email ) ){ ?>
+						<h4><?php echo  esc_html__( 'Email connections', 'everest-forms' ) ?> </h4>
+					<?php }
+					// echo '<pre>' . print_r( $email, true ) . '</pre>';
+						if ( ! empty( $email ) ){
+							foreach ( $email as $connection_id => $connection_data ){ ?>
+								<li data-connection-id="<?php echo $connection_id; ?>">
+									<a class="user-nickname" href="#"><?php echo $connection_data['connection_name']; ?></a>
+									<a href="#"><span class="toggle-remove">Remove</a>
+								</li>
+							<?php }
+						} ?>
 					</ul>
 			</div>
 			<?php
@@ -226,7 +237,8 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		_e( 'Email', 'everest-forms' );
 		echo '</div>';
 		foreach ( $settings['email'] as $connection_id => $connection ) :
-			echo '<div class="evf-content-email-settings-inner">';
+			echo '<div class="evf-content-email-settings-inner" data-connection_id='.$connection_id.'>';
+			echo '<input type="hidden" name="settings[email]['.$connection_id.'][connection_name]" value='.$connection["connection_name"].'>';
 			everest_forms_panel_field(
 				'text',
 				'settings[email]['.$connection_id.']',
