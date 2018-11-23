@@ -311,7 +311,8 @@ class EVF_Form_Task {
 	 */
 	public function entry_email( $fields, $entry, $form_data, $entry_id, $context = '' ) {
 		// Provide the opportunity to override via a filter.
-		if ( ! apply_filters( 'everest_forms_entry_email', true, $fields, $entry, $form_data ) ) {
+		if ( ! apply_filters( '
+			', true, $fields, $entry, $form_data ) ) {
 			return;
 		}
 
@@ -320,7 +321,7 @@ class EVF_Form_Task {
 
 		foreach ($notifications as $connection_id => $notification ) :
 
-			$process_email = apply_filters( 'everest_forms_entry_email_process', true, $fields, $form_data, $context );
+			$process_email = apply_filters( 'everest_forms_entry_email_process', true, $fields, $form_data, $context, $connection_id );
 
 			if ( ! $process_email ) {
 				continue;
