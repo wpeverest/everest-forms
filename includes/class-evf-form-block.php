@@ -26,6 +26,11 @@ class EVF_Form_Block {
 	 */
 	public function register_block() {
 		register_block_type( 'everest-forms/form-selector', array(
+			'attributes'      => array(
+				'formId'       => array(
+					'type' => 'string',
+				),
+			),
 			'editor_script'   => 'everest-forms-block-editor',
 			'render_callback' => array( $this, 'get_form_html' ),
 		) );
@@ -88,7 +93,10 @@ class EVF_Form_Block {
 		}
 
 		ob_start();
-		?><p>Hello this is shiva</p><?php
+		// EVF_Shortcodes::form( array(
+		// 	'id' => $form_id,
+		// ) );
+		do_shortcode( '[everest_forms id="' . $form_id. '"]' );
 		return ob_get_clean();
 	}
 }
