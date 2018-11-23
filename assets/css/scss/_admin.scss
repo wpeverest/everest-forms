@@ -319,14 +319,134 @@
 						position: relative;
 
 						&::after {
+						    top: 50%;
+						    width: 8px;
+						    height: 8px;
+						    content: "";
+						    right: -6px;
 							position: absolute;
-							content: "";
-							top: 0;
-							right: -1px;
-							bottom: 0;
-							width: 1px;
-							height: 100%;
-							background-color: $color-white;
+						    border: 1px solid transparent;
+						    border-left-color: $border-color;
+						    border-bottom-color: $border-color;
+						    transform: translate(0, -50%) rotate(45deg);
+						}
+
+						.dashicons {
+							transform: rotate(90deg);
+						}
+					}
+				}
+
+				.everest-forms-active-connections,
+				.everest-forms-active-email {
+					display: none;
+					padding: 0 20px;
+					margin-top: -1px;
+					background: #fff;
+					position: relative;
+					border-bottom: 1px solid $border-color;
+
+					&.active {
+						display: flex;
+						align-items: flex-end;
+						flex-direction: column-reverse;
+					}
+
+					.everest-forms-connections-add,
+					.everest-forms-email-add {
+						background: #8e42eb;
+						margin-bottom: 20px;
+
+						&:hover {
+							background: #7435c1;
+						}
+					}
+
+					.everest-forms-active-connections-list,
+					.everest-forms-active-email-connections-list {
+						width: 100%;
+						padding: 20px;
+						display: flex;
+						flex-wrap: wrap;
+						margin: 0 0 20px;
+						border: 1px solid $border-color;
+
+						&.empty-list {
+							display: none;
+						}
+
+						h4 {
+							margin-top: 0;
+						}
+
+						li {
+							width: 100%;
+							display: flex;
+							padding: 10px;
+							cursor: pointer;
+							margin-bottom: -1px;
+							align-items: center;
+							justify-content: space-between;
+							transition: all 0.25s ease 0s;
+							border: 1px solid $border-color;
+
+							&.active-user {
+								background: $color-white;
+
+								.user-nickname {
+									color: $everestforms;
+									transition: all 0.25s ease 0s;
+								}
+							}
+
+							&:hover {
+								.user-nickname {
+									color: $everestforms;
+								}
+							}
+
+							.user-nickname {
+								color: #444;
+								font-weight: 600;
+							}
+
+							.toggle-remove {
+								color: #444;
+								cursor: pointer;
+								position: relative;
+								padding-left: 13px;
+								transition: all 0.25s ease 0s;
+
+								&:hover {
+									color: $red;
+
+									&::before,
+									&::after {
+										background: $red;
+									}
+								}
+
+								&::before,
+								&::after {
+									top: 50%;
+									left: 3px;
+									width: 2px;
+									content: "";
+									height: 10px;
+									position: absolute;
+									background: #444;
+									display: inline-block;
+									transition: all 0.25s ease 0s;
+								}
+
+								&::before {
+									transform: translateY(-50%) rotate(45deg);
+								}
+
+								&::after {
+									transform: translateY(-50%) rotate(-45deg);
+								}
+							}
 						}
 					}
 				}
