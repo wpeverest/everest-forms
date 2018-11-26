@@ -17,11 +17,11 @@ class EVF_Form_Block {
 	 * Constructor.
 	 */
 	public function __construct() {
-		if ( function_exists( 'register_block_type' ) ) {
+		// if ( function_exists( 'register_block_type' ) ) {
 			add_action( 'init', array( $this, 'register_block' ) );
 			add_action( 'enqueue_block_assets', array( $this, 'enqueue_block_assets' ) );
 			add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_block_editor_assets' ) );
-		}
+		// }
 	}
 
 	/**
