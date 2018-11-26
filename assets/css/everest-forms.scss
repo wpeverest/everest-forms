@@ -402,6 +402,32 @@
 	}
 }
 
+
+/* Gutenberg Block
+----------------------------------------------------------------------------- */
+
+.edit-post-visual-editor {
+	.evf-gutenberg-form-selector-wrap,
+	.everest-form-gutenberg-form-selector-wrap {
+		h2 {
+			width: 100%;
+			margin-bottom: 0.5em;
+		}
+
+		.components-base-control {
+			width: 100%;
+		}
+	}
+}
+
+div.evf-gutenberg-form-selector .evf-frontend-row input:disabled,
+div.evf-gutenberg-form-selector .evf-frontend-row textarea:disabled,
+div.evf-gutenberg-form-selector .evf-frontend-row select:disabled,
+div.evf-gutenberg-form-selector .evf-frontend-row button[type=submit]:disabled {
+	cursor: not-allowed;
+}
+
+
 /* reCAPTCHA Area
 ----------------------------------------------------------------------------- */
 
