@@ -12,8 +12,8 @@ const { registerBlockType } = wp.blocks;
 const { InspectorControls } = wp.editor;
 const { SelectControl, ToggleControl, PanelBody, ServerSideRender, Placeholder } = wp.components;
 
-const everestFormIcon = createElement( 'svg', { width: 20, height: 20, viewBox: '0 0 20 20', className: 'dashicon' },
-	createElement( 'path', { fill: 'currentColor', d: 'M4.5 0v3H0v17h20V0H4.5zM9 19H1V4h8v15zm10 0h-9V3H5.5V1H19v18zM6.5 6h-4V5h4v1zm1 2v1h-5V8h5zm-5 3h3v1h-3v-1z' } )
+const everestFormIcon = createElement( 'svg', { width: 24, height: 24, viewBox: '0 0 24 24', className: 'dashicon' },
+	createElement( 'path', { fill: 'currentColor', d: 'M18.1 4h-3.8l1.2 2h3.9zM20.6 8h-3.9l1.2 2h3.9zM20.6 18H5.8L12 7.9l2.5 4.1H12l-1.2 2h7.3L12 4.1 2.2 20h19.6z' } )
 );
 
 registerBlockType( 'everest-forms/form-selector', {
