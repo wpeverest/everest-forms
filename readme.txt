@@ -2,9 +2,9 @@
 Contributors: WPEverest
 Tags: contact form, form, form builder, contact, custom form
 Requires at least: 4.0
-Tested up to: 4.9
+Tested up to: 5.0
 Requires PHP: 5.4
-Stable tag: 1.3.3
+Stable tag: 1.3.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -102,6 +102,10 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 11. Advance Form
 
 == Changelog ==
+
+= 1.3.4 - 27-11-2018 =
+* Feature - Added Gutenberg forms block.
+* Fix - reCaptcha not displayed in multi-part form addon.
 
 = 1.3.3 - 05-11-2018 =
 * Feature - Added a filter to process Email conditionally.
