@@ -404,14 +404,8 @@
 /* reCAPTCHA Area
 ----------------------------------------------------------------------------- */
 
-.evf-field-container {
-	.evf-recaptcha-container {
-		padding: 10px 0 20px 0;
-		clear: both;
-	}
-}
-
 .evf-recaptcha-container {
+	clear: both;
 	margin-bottom: 30px;
 
 	.evf-error {
