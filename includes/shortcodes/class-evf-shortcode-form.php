@@ -319,7 +319,7 @@ class EVF_Shortcode_Form {
 				wp_add_inline_script( 'evf-recaptcha', $recaptch_inline );
 
 				// Output the reCapthcha container.
-				echo '<div id="evf-recaptcha-container" class="evf-recaptcha-row" ' . $visible . '>';
+				echo '<div class="evf-recaptcha-container" ' . $visible . '>';
 					echo '<div ' . evf_html_attributes( '', array( 'g-recaptcha' ), $data ) . '"></div>';
 				echo '</div>';
 			}

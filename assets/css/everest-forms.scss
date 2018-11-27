@@ -430,14 +430,8 @@ div.evf-gutenberg-form-selector .evf-frontend-row button[type=submit]:disabled {
 /* reCAPTCHA Area
 ----------------------------------------------------------------------------- */
 
-.evf-field-container {
-	.evf-recaptcha-container {
-		padding: 10px 0 20px 0;
-		clear: both;
-	}
-}
-
-.evf-recaptcha-row {
+.evf-recaptcha-container {
+	clear: both;
 	margin-bottom: 30px;
 
 	.evf-error {
@@ -475,7 +469,7 @@ div.evf-gutenberg-form-selector .evf-frontend-row button[type=submit]:disabled {
 			}
 		}
 
-		.evf-recaptcha-row {
+		.evf-recaptcha-container {
 			margin: 25px 0;
 		}
 	}
