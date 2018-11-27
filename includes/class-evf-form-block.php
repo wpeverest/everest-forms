@@ -65,9 +65,8 @@ class EVF_Form_Block {
 		);
 
 		$form_block_data = array(
-			'forms'    => EVF()->form->get( '', array( 'order' => 'DESC' ) ),
-			'logo_url' => EVF()->plugin_url() . '/assets/images/logo.png',
-			'i18n'     => array(
+			'forms' => EVF()->form->get( '', array( 'order' => 'DESC' ) ),
+			'i18n'  => array(
 				'title'         => esc_html__( 'Everest Forms', 'everest-forms' ),
 				'description'   => esc_html__( 'Select &#38; display one of your form.', 'everest-forms' ),
 				'form_select'   => esc_html__( 'Select a Form', 'everest-forms' ),

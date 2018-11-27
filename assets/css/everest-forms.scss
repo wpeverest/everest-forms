@@ -407,15 +407,25 @@
 ----------------------------------------------------------------------------- */
 
 .edit-post-visual-editor {
-	.evf-gutenberg-form-selector-wrap,
 	.everest-form-gutenberg-form-selector-wrap {
-		h2 {
-			width: 100%;
-			margin-bottom: 0.5em;
-		}
+		.components-placeholder__label {
+			margin-bottom: 0;
 
-		.components-base-control {
-			width: 100%;
+			svg {
+				width: 75px;
+				height: 75px;
+				color: #7e3bd0;
+			}
+		}
+		.components-placeholder__instructions {
+			color: #23282d;
+			font-size: 1.3em;
+			font-weight: 600;
+		}
+		.components-placeholder__fieldset {
+			.components-base-control {
+				width: 100%;
+			}
 		}
 	}
 }
