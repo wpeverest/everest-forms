@@ -17,17 +17,19 @@ class EVF_Form_Block {
 	 * Constructor.
 	 */
 	public function __construct() {
-		// if ( function_exists( 'register_block_type' ) ) {
-			add_action( 'init', array( $this, 'register_block' ) );
-			add_action( 'enqueue_block_assets', array( $this, 'enqueue_block_assets' ) );
-			add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_block_editor_assets' ) );
-		// }
+		add_action( 'init', array( $this, 'register_block' ) );
+		add_action( 'enqueue_block_assets', array( $this, 'enqueue_block_assets' ) );
+		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_block_editor_assets' ) );
 	}
 
 	/**
 	 * Register the block and its scripts.
 	 */
 	public function register_block() {
+		if ( ! function_exists( 'register_block_type' ) ) {
+			return;
+		}
+
 		register_block_type( 'everest-forms/form-selector', array(
 			'attributes'      => array(
 				'formId'       => array(
