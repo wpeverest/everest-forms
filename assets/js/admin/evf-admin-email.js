@@ -97,8 +97,13 @@
 
 									success: function( response ){
 										var cloned_email = $('.evf-content-email-settings-inner').first().clone();
+										console.log(cloned_email);
 										$('.evf-content-email-settings-inner').removeClass('active-connection');
 										cloned_email.find('input:not(#qt_everest_forms_panel_field_settingsemailconnection_1_evf_email_message_toolbar input[type="button"])').val('');
+										cloned_email.find('.evf_conditional_logic_container input[type="checkbox"]').attr('checked', false);
+										cloned_email.find('.evf-field-conditional-container').hide();
+										cloned_email.find('.evf-field-conditional-wrapper li:not(:first)').remove();
+
 										cloned_email.attr('data-connection_id',response.data.connection_id);
 										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-evf_to_email').attr('name', 'settings[email]['+response.data.connection_id+'][evf_to_email]');
 										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-evf_from_name').attr('name', 'settings[email]['+response.data.connection_id+'][evf_from_name]');
