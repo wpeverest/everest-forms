@@ -80,7 +80,6 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					<?php }
 						if ( ! empty( $email ) ){
 							foreach ( $email as $connection_id => $connection_data ){
-								var_dump($connection_data['connection_name']);
 								$connection_name = ! empty( $connection_data['connection_name'] ) ?$connection_data['connection_name'] : __('Default', 'everest-forms' );
 								if( 'Default' !== $connection_name ) {
 									$remove_class = 'email-remove';
