@@ -148,6 +148,20 @@ class EVF_Admin_Assets {
 			wp_enqueue_script( 'jquery-ui-autocomplete' );
 
 			wp_localize_script(
+				'everest-forms-email-admin',
+				'evf_email_params',
+				array(
+					'i18n_email_connection'  => esc_html__( 'Enter a Email nickname', 'everest-forms' ),
+					'i18n_email_placeholder' => esc_html__( 'Eg: Support Email', 'everest-forms' ),
+					'i18n_email_error_name'  => esc_html__( 'You must provide a Email nickname', 'everest-forms' ),
+					'i18n_email_ok'          => esc_html__( 'OK', 'everest-forms' ),
+					'ajax_email_nonce'       => wp_create_nonce( 'process-ajax-nonce' ),
+					'ajax_url'               => admin_url( 'admin-ajax.php', 'relative' ),
+					'i18n_email_cancel'             => esc_html__( 'Cancel', 'everest-forms-pro' ),
+				)
+			);
+
+			wp_localize_script(
 				'everest-forms-admin',
 				'everest_forms_admin',
 				array(

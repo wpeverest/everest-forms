@@ -80,9 +80,11 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					<?php }
 					// echo '<pre>' . print_r( $email, true ) . '</pre>';
 						if ( ! empty( $email ) ){
-							foreach ( $email as $connection_id => $connection_data ){ ?>
+							foreach ( $email as $connection_id => $connection_data ){
+								$connection_name = isset( $connection_data['connection_name'] ) ?$connection_data['connection_name'] : '';
+								?>
 								<li data-connection-id="<?php echo $connection_id; ?>">
-									<a class="user-nickname" href="#"><?php echo $connection_data['connection_name']; ?></a>
+									<a class="user-nickname" href="#"><?php echo $connection_name; ?></a>
 									<a href="#"><span class="email-remove">Remove</a>
 								</li>
 							<?php }
@@ -238,7 +240,8 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		echo '</div>';
 		foreach ( $settings['email'] as $connection_id => $connection ) :
 			echo '<div class="evf-content-email-settings-inner" data-connection_id='.$connection_id.'>';
-			echo '<input type="hidden" name="settings[email]['.$connection_id.'][connection_name]" value='.$connection["connection_name"].'>';
+			$connection_name = isset( $connection["connection_name"] ) ? $connection["connection_name"] : '';
+			echo '<input type="hidden" name="settings[email]['.$connection_id.'][connection_name]" value='.$connection_name.'>';
 			everest_forms_panel_field(
 				'text',
 				'settings[email]['.$connection_id.']',

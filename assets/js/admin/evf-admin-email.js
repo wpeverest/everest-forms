@@ -1,6 +1,6 @@
 /**
  * EverestFormsEmail JS
- * global evfp_params
+ * global evf_email_params
  */
 ;(function($) {
  	var s;
@@ -52,9 +52,9 @@
 		 	$connections = $this.closest('.everest-forms-panel-sidebar-content'),
 		 	$container   = $this.parent(),
 		 	type         = $this.data('type'),
-		 	namePrompt   = evfp_params.i18n_prompt_connection,
-		 	nameField    = '<input autofocus="" type="text" id="provider-connection-name" placeholder="'+evfp_params.i18n_prompt_placeholder+'">',
-		 	nameError    = '<p class="error">'+evfp_params.i18n_error_name+'</p>',
+		 	namePrompt   = evf_email_params.i18n_email_connection,
+		 	nameField    = '<input autofocus="" type="text" id="provider-connection-name" placeholder="'+evf_email_params.i18n_email_placeholder+'">',
+		 	nameError    = '<p class="error">'+evf_email_params.i18n_email_error_name+'</p>',
 		 	modalContent = namePrompt+nameField+nameError;
 
 		 	modalContent = modalContent.replace(/%type%/g,type);
@@ -67,7 +67,7 @@
 		 		closeIcon: false,
 		 		buttons: {
 		 			confirm: {
-		 				text: evfp_params.i18n_ok,
+		 				text: evf_email_params.i18n_email_ok,
 		 				btnClass: 'btn-confirm',
 		 				keys: ['enter'],
 		 				action: function() {
@@ -88,10 +88,10 @@
 									source  : source,
 									name    : name,
 									id      : s.form.data('id'),
-									security: evfp_params.ajax_nonce
+									security: evf_email_params.ajax_email_nonce
 								}
 								$.ajax({
-									url: evfp_params.ajax_url,
+									url: evf_email_params.ajax_url,
 									data: data,
 									type: 'POST',
 
@@ -124,7 +124,7 @@
 						}
 					},
 					cancel: {
-						text: evfp_params.i18n_cancel
+						text: evf_email_params.i18n_email_cancel
 					}
 				}
 			});
@@ -182,7 +182,7 @@
 					type: 'orange',
 					buttons: {
 						confirm: {
-							text: evfp_params.i18n_ok,
+							text: evf_email_params.i18n_email_ok,
 							btnClass: 'btn-confirm',
 							keys: ['enter'],
 							action: function(){
@@ -202,7 +202,7 @@
 							}
 						},
 						cancel: {
-							text: evfp_params.i18n_cancel
+							text: evf_email_params.i18n_email_cancel
 						}
 					}
 				});
