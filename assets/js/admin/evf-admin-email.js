@@ -42,6 +42,9 @@
 		 	$(document).on('click', '.email-remove', function(e) {
 		 		EverestFormsEmail.removeAccount(this, e);
 		 	});
+		 	$(document).on('click', '.email-default-remove', function(e) {
+		 		EverestFormsEmail.removeDefaultAccount(this, e);
+		 	});
 		 },
 
 		 connectionAdd: function(el, e) {
@@ -79,9 +82,6 @@
 		 					} else {
 		 						var name = input.val();
 
-								// Disable button
-								//EverestFormsIntegration.inputToggle($this, 'disable');
-
 								// Fire AJAX
 								var data =  {
 									action  : 'everest_forms_new_email_add',
@@ -116,8 +116,7 @@
 										cloned_email.find('.evf-field-conditional-field-select').attr('name', 'settings[email]['+response.data.connection_id+'][conditionals][1][1][field]');
 										cloned_email.find('.evf-field-conditional-condition').attr('name', 'settings[email]['+response.data.connection_id+'][conditionals][1][1][operator]');
 										cloned_email.find('.evf-field-conditional-input').attr('name', 'settings[email]['+response.data.connection_id+'][conditionals][1][1][value]');
-
-										$cloned_email = cloned_email.append('<input type="hidden" name="settings[email]['+response.data.connection_id+'][connection_name]" value='+name+'>');
+										$cloned_email = cloned_email.append('<input type="hidden" name="settings[email]['+response.data.connection_id+'][connection_name]" value="'+name+'">');
 										$('.evf-content-email-settings').append(cloned_email);
 										$connections.find('.evf-content-email-settings-inner').last().addClass('active-connection');
 										$this.parent().find('.everest-forms-active-email-connections-list li').removeClass('active-user');
@@ -159,25 +158,7 @@
 			var $this = $(el),
 			connection_id = $this.parent().parent().data('connection-id'),
 			active_block  = $('.evf-content-email-settings').find('[data-connection_id="' + connection_id + '"]'),
-			lengthOfActiveBlock = $(active_block).length,
-			closestConnection = $this.closest('.everest-forms-active-email-connections-list'),
-			connectionLength = closestConnection.find('li').length,
-			checkConnection;
-			if( connectionLength < 2 ) {
-					$.alert({
-						title: false,
-						content: "Default Email can not be deleted !",
-						icon: 'dashicons dashicons-info',
-						type: 'blue',
-						buttons: {
-							ok: {
-								text: evf_data.i18n_ok,
-								btnClass: 'btn-confirm',
-								keys: [ 'enter' ]
-							}
-						}
-					});
-			} else {
+			lengthOfActiveBlock = $(active_block).length;
 				$.confirm({
 					title: false,
 					content: "Are you sure you want to delete this Email?",
@@ -211,8 +192,24 @@
 						}
 					}
 				});
-			}
 		},
+
+		removeDefaultAccount: function( el, e ) {
+			e.preventDefault;
+			$.alert({
+				title: false,
+				content: "Default Email can not be deleted !",
+				icon: 'dashicons dashicons-info',
+				type: 'blue',
+				buttons: {
+					ok: {
+						text: evf_data.i18n_ok,
+						btnClass: 'btn-confirm',
+						keys: [ 'enter' ]
+					}
+				}
+			});
+		}
 
 
  	}
