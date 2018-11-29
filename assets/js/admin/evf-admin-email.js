@@ -103,6 +103,11 @@
 										cloned_email.find('.evf_conditional_logic_container input[type="checkbox"]').attr('checked', false);
 										cloned_email.find('.evf-field-conditional-container').hide();
 										cloned_email.find('.evf-field-conditional-wrapper li:not(:first)').remove();
+										cloned_email.find('.conditional_or:not(:first)').remove();
+
+										setTimeout(function() {
+											cloned_email.find('.evf-field-conditional-input').val('');
+										}, 2000);
 
 										cloned_email.attr('data-connection_id',response.data.connection_id);
 										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-evf_to_email').attr('name', 'settings[email]['+response.data.connection_id+'][evf_to_email]');
