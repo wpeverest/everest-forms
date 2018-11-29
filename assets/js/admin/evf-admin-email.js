@@ -97,9 +97,9 @@
 
 									success: function( response ){
 										var cloned_email = $('.evf-content-email-settings-inner').first().clone();
-										console.log(cloned_email);
 										$('.evf-content-email-settings-inner').removeClass('active-connection');
-										cloned_email.find('input:not(#qt_everest_forms_panel_field_settingsemailconnection_1_evf_email_message_toolbar input[type="button"])').val('');
+										cloned_email.find('input:not(#qt_everest_forms_panel_field_settingsemailconnection_1_evf_email_message_toolbar input[type="button"], .evf_conditional_logic_container input)').val('');
+
 										cloned_email.find('.evf_conditional_logic_container input[type="checkbox"]').attr('checked', false);
 										cloned_email.find('.evf-field-conditional-container').hide();
 										cloned_email.find('.evf-field-conditional-wrapper li:not(:first)').remove();
@@ -111,12 +111,14 @@
 										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-evf_reply_to').attr('name', 'settings[email]['+response.data.connection_id+'][evf_reply_to]');
 										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-evf_email_subject').attr('name', 'settings[email]['+response.data.connection_id+'][evf_email_subject]');
 										cloned_email.find('#everest_forms_panel_field_settingsemailconnection_1_evf_email_message').attr('name', 'settings[email]['+response.data.connection_id+'][evf_email_message]');
-										cloned_email.find('#everest-forms-panel-field-settingsemail-conditional_logic_status').attr('name', 'settings[email]['+response.data.connection_id+'][conditional_logic_status]');
+										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-conditional_logic_status').attr('name', 'settings[email]['+response.data.connection_id+'][conditional_logic_status]');
+										cloned_email.find('.evf_conditional_logic_container input[type="hidden"]').attr('name', 'settings[email]['+response.data.connection_id+'][conditional_logic_status]');
 										cloned_email.find('.evf-field-show-hide').attr('name', 'settings[email]['+response.data.connection_id+'][conditional_option]');
 										cloned_email.find('.evf-field-conditional-field-select').attr('name', 'settings[email]['+response.data.connection_id+'][conditionals][1][1][field]');
 										cloned_email.find('.evf-field-conditional-condition').attr('name', 'settings[email]['+response.data.connection_id+'][conditionals][1][1][operator]');
 										cloned_email.find('.evf-field-conditional-input').attr('name', 'settings[email]['+response.data.connection_id+'][conditionals][1][1][value]');
 										$cloned_email = cloned_email.append('<input type="hidden" name="settings[email]['+response.data.connection_id+'][connection_name]" value="'+name+'">');
+
 										$('.evf-content-email-settings').append(cloned_email);
 										$connections.find('.evf-content-email-settings-inner').last().addClass('active-connection');
 										$this.parent().find('.everest-forms-active-email-connections-list li').removeClass('active-user');
