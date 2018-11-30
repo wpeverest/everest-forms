@@ -37,6 +37,24 @@ if ( ! class_exists( 'EverestForms' ) ) {
 function evf() {
 	return EverestForms::instance();
 }
+/**
+ * Update email settings adding connection data.
+ */
+function evf_update_140_db_multiple_email() {
+
+    $forms = EVF()->form->get( '', array( 'order' => 'DESC' ) );
+	foreach ( $forms as $form_id => $form ) {
+
+		$form_data = ! empty( $form->post_content ) ? evf_decode( $form->post_content ) : '';
+
+		if ( ! empty( $form_data['settings'] ) ) {
+			$email = $form_data['settings']['email'];
+			$form_data['settings']['email']['connection_1'] = $email;
+		}
+	}
+}
+
+add_action('init', 'evf_update_140_db_multiple_email');
 
 // Global for backwards compatibility.
 $GLOBALS['everest-forms'] = evf();

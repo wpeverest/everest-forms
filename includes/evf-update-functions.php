@@ -125,7 +125,6 @@ function evf_update_120_db_rename_options() {
  * Update email settings adding connection data.
  */
 function evf_update_140_db_multiple_email() {
-
 }
 
 /**
