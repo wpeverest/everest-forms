@@ -126,7 +126,7 @@ function evf_update_120_db_rename_options() {
  */
 function evf_update_140_db_multiple_email() {
     $forms = EVF()->form->get( '', array( 'order' => 'DESC' ) );
-	foreach ( $forms as $form_id => $form ) {
+	foreach ( $forms as $form ) {
 
 		$form_data = ! empty( $form->post_content ) ? evf_decode( $form->post_content ) : '';
 
@@ -162,6 +162,7 @@ function evf_update_140_db_multiple_email() {
 					$form_data['settings']['email'][$unique_connection_id]['attach_pdf_to_admin_email'] = '1';
 				}
 
+				$form_id = isset( $form->ID ) ? $form->ID : '0';
 				// Update form data.
 				EVF()->form->update( $form_id, $form_data );
 
