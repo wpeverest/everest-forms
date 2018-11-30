@@ -125,6 +125,49 @@ function evf_update_120_db_rename_options() {
  * Update email settings adding connection data.
  */
 function evf_update_140_db_multiple_email() {
+    $forms = EVF()->form->get( '', array( 'order' => 'DESC' ) );
+	foreach ( $forms as $form_id => $form ) {
+
+		$form_data = ! empty( $form->post_content ) ? evf_decode( $form->post_content ) : '';
+
+		if ( ! empty( $form_data['settings'] ) ) {
+			$email = $form_data['settings']['email'];
+			$new_email = array();
+			$new_email['connection_name'] = 'Default';
+			$new_email = array_merge($new_email, $email);
+
+			unset($new_email['evf_send_confirmation_email']);
+			unset($new_email['evf_user_to_email']);
+			unset($new_email['evf_user_email_subject']);
+			unset($new_email['evf_user_email_message']);
+			unset($new_email['attach_pdf_to_user_email']);
+
+
+			$form_data['settings']['email'] = array( 'connection_1' => $new_email );
+
+			if( '1' === $email['evf_send_confirmation_email'] ) {
+				$unique_connection_id = 'connection_'.uniqid();
+
+				$form_data['settings']['email'][$unique_connection_id] = array(
+					'connection_name'   => 'User Confirmation',
+					'evf_to_email'      => '{field_id="'.$email['evf_user_to_email'].'"}',
+                    'evf_from_name'     => $email['evf_from_name'],
+                    'evf_from_email'    => $email['evf_from_email'],
+                    'evf_reply_to'      => $email['evf_reply_to'],
+                    'evf_email_subject' => $email['evf_user_email_subject'],
+                    'evf_email_message' => $email['evf_user_email_message'],
+				);
+
+				if( isset( $email['attach_pdf_to_user_email'] ) && '1' === $email['attach_pdf_to_user_email'] ){
+					$form_data['settings']['email'][$unique_connection_id]['attach_pdf_to_admin_email'] = '1';
+				}
+
+				// Update form data.
+				EVF()->form->update( $form_id, $form_data );
+
+			}
+		}
+	}
 }
 
 /**
