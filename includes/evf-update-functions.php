@@ -145,7 +145,7 @@ function evf_update_140_db_multiple_email() {
 
 			$form_data['settings']['email'] = array( 'connection_1' => $new_email );
 
-			if( '1' === $email['evf_send_confirmation_email'] ) {
+			if( isset( $email['evf_send_confirmation_email'] ) && '1' === $email['evf_send_confirmation_email'] ) {
 				$unique_connection_id = 'connection_'.uniqid();
 
 				$form_data['settings']['email'][$unique_connection_id] = array(
