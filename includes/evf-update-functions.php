@@ -122,6 +122,13 @@ function evf_update_120_db_rename_options() {
 }
 
 /**
+ * Update email settings adding connection data.
+ */
+function evf_update_140_db_multiple_email() {
+
+}
+
+/**
  * Update DB Version.
  */
 function evf_update_120_db_version() {
@@ -133,4 +140,11 @@ function evf_update_120_db_version() {
  */
 function evf_update_130_db_version() {
 	EVF_Install::update_db_version( '1.3.0' );
+}
+
+/**
+ * Update DB Version.
+ */
+function evf_update_140_db_version() {
+	EVF_Install::update_db_version( '1.4.0' );
 }
