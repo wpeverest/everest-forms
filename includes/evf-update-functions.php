@@ -162,6 +162,12 @@ function evf_update_140_db_multiple_email() {
 					$form_data['settings']['email'][$unique_connection_id]['attach_pdf_to_admin_email'] = '1';
 				}
 
+				if( isset( $email['conditional_logic_status'] ) ){
+					$form_data['settings']['email'][$unique_connection_id]['conditional_logic_status'] = '0';
+					$form_data['settings']['email'][$unique_connection_id]['conditional_option'] = $email['conditional_option'];
+					$form_data['settings']['email'][$unique_connection_id]['conditionals'] = array();
+				}
+
 				$form_id = isset( $form->ID ) ? $form->ID : '0';
 				// Update form data.
 				EVF()->form->update( $form_id, $form_data );
