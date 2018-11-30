@@ -1150,8 +1150,6 @@
 			var field_id = dragged_el.attr( 'data-field-id' );
 			var field_label = dragged_el.find( '.label-title .text ' ).text();
 
-			var el_to_append = '<option class="evf-conditional-fields" data-field_type="'+field_type+'" data-field_id="'+field_id+'" value="'+field_id+'">'+field_label+'</option>';
-
 			$.fn.insertAt = function(elements, index) {
 			    var array = $.makeArray(this.children().clone(true));
 			    array.splice(index, 0, elements);
@@ -1167,6 +1165,7 @@
 				);
 
 				if (id_key === name_key) {
+					// console.log("here");
 					$('.evf-admin-row .evf-admin-grid .everest-forms-field').each( function(){
 						var field_type  = $( this ).data('field-type'),
 							field_id    = $( this ).data('field-id'),
@@ -1182,13 +1181,15 @@
 								'hidden',
 								dragged_el.attr('data-field-type'),
 							];
-
 						if( $.inArray( field_type, field_to_be_restricted ) === -1 ){
 							fields.eq(index).append('<option class="evf-conditional-fields" data-field_type="'+field_type+'" data-field_id="'+field_id+'" value="'+field_id+'">'+field_label+'</option>');
 						}
 					});
 				} else {
-					fields.eq(index).insertAt( el_to_append, dragged_index );
+					var el_to_append = '<option class="evf-conditional-fields" data-field_type="'+field_type+'" data-field_id="'+field_id+'" value="'+field_id+'">'+field_label+'</option>';
+					if( 'html' !== field_type && 'title' !== field_type && 'address' !== field_type && 'image-upload' !== field_type && 'file-upload' !== field_type && 'date' !== field_type && 'hidden' !== field_type  ) {
+						fields.eq(index).insertAt( el_to_append, dragged_index );
+					}
 				}
 			});
 		 },
@@ -1203,8 +1204,6 @@
 			var field_id = dragged_el.attr( 'data-field-id' );
 			var field_label = dragged_el.find( '.label-title .text ' ).text();
 
-			var el_to_append = '<option class="evf-conditional-fields" data-field_type="'+field_type+'" data-field_id="'+field_id+'" value="'+field_id+'">'+field_label+'</option>';
-
 			$.fn.insertAt = function(elements, index) {
 			    var array = $.makeArray(this.children().clone(true));
 			    array.splice(index, 0, elements);
@@ -1241,7 +1240,10 @@
 						}
 					});
 				} else {
-					fields.eq(index).insertAt( el_to_append, dragged_index );
+					var el_to_append = '<option class="evf-conditional-fields" data-field_type="'+field_type+'" data-field_id="'+field_id+'" value="'+field_id+'">'+field_label+'</option>';
+					if( 'html' !== field_type && 'title' !== field_type && 'address' !== field_type && 'image-upload' !== field_type && 'file-upload' !== field_type && 'date' !== field_type && 'hidden' !== field_type  ) {
+						fields.eq(index).insertAt( el_to_append, dragged_index );
+					}
 				}
 			});
 		 },
