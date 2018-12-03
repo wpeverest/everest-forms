@@ -46,6 +46,10 @@ class EVF_Install {
 		'1.3.0' => array(
 			'evf_update_130_db_version',
 		),
+		'1.4.0' => array(
+			'evf_update_140_db_multiple_email',
+			'evf_update_140_db_version'
+		)
 	);
 
 	/**

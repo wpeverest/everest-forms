@@ -311,79 +311,54 @@ class EVF_Form_Task {
 	 */
 	public function entry_email( $fields, $entry, $form_data, $entry_id, $context = '' ) {
 		// Provide the opportunity to override via a filter.
-		if ( ! apply_filters( 'everest_forms_entry_email', true, $fields, $entry, $form_data ) ) {
+		if ( ! apply_filters( '
+			', true, $fields, $entry, $form_data ) ) {
 			return;
 		}
 
 		$fields       = apply_filters( 'everest_forms_entry_email_data', $fields, $entry, $form_data );
-		$notification = isset( $form_data['settings']['email'] ) ? $form_data['settings']['email'] : array();
+		$notifications = isset( $form_data['settings']['email'] ) ? $form_data['settings']['email'] : array();
 
-		// Check that the form was configured for email notifications.
-		if ( empty( $notification['evf_to_email'] ) && '1' !== $notification['evf_send_confirmation_email'] ) {
-			return;
-		}
+		foreach ($notifications as $connection_id => $notification ) :
 
-		$process_email = apply_filters( 'everest_forms_entry_email_process', true, $fields, $form_data, $context );
+			$process_email = apply_filters( 'everest_forms_entry_email_process', true, $fields, $form_data, $context, $connection_id );
 
-		if ( ! $process_email ) {
-			return;
-		}
-
-		$email = array();
-
-		// Setup email properties.
-		/* translators: %s - form name. */
-		$email['subject']        = ! empty( $notification['evf_email_subject'] ) ? $notification['evf_email_subject'] : sprintf( esc_html__( 'New %s Entry', 'everest-forms' ), $form_data['settings']['form_title'] );
-		$email['address']        = explode( ',', apply_filters( 'everest_forms_process_smart_tags', $notification['evf_to_email'], $form_data, $fields, $this->entry_id ) );
-		$email['address']        = array_map( 'sanitize_email', $email['address'] );
-		$email['sender_name']    = ! empty( $notification['evf_from_name'] ) ? $notification['evf_from_name'] : get_bloginfo( 'name' );
-		$email['sender_address'] = ! empty( $notification['evf_from_email'] ) ? $notification['evf_from_email'] : get_option( 'admin_email' );
-		$email['reply_to']       = ! empty( $notification['evf_reply_to'] ) ? $notification['evf_reply_to'] : $email['sender_address'];
-		$email['message']        = ! empty( $notification['evf_email_message'] ) ? $notification['evf_email_message'] : '{all_fields}';
-
-		// Setup confirm email properties.
-		if ( isset( $notification['evf_send_confirmation_email'] ) && '1' === $notification['evf_send_confirmation_email'] ) {
-			$fields_meta = wp_list_pluck( $fields, 'value', 'meta_key' );
-			$field_email = ! empty( $notification['evf_user_to_email'] ) ? $notification['evf_user_to_email'] : '';
-
-			// Check if user email is setup.
-			if ( ! empty( $fields_meta[ $field_email ] ) ) {
-				$email['user_email']           = $fields_meta[ $field_email ];
-				$email['confirmation_subject'] = ! empty( $notification['evf_user_email_subject'] ) ? apply_filters( 'everest_forms_process_smart_tags', $notification['evf_user_email_subject'], $form_data, $fields, $this->entry_id ) : esc_html__( 'Thank you!', 'everest-forms' );
-				$email['confirmation_message'] = ! empty( $notification['evf_user_email_message'] ) ? apply_filters( 'everest_forms_process_smart_tags', $notification['evf_user_email_message'], $form_data, $fields, $this->entry_id ) : esc_html__( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
+			if ( ! $process_email ) {
+				continue;
 			}
-		}
 
-		$email = apply_filters( 'everest_forms_entry_email_atts', $email, $fields, $entry, $form_data );
+			$email = array();
 
-		$attachment = '';
-		// Create new email.
-		$emails = new EVF_Emails();
-		$emails->__set( 'form_data', $form_data );
-		$emails->__set( 'fields', $fields );
-		$emails->__set( 'entry_id', $entry_id );
-		$emails->__set( 'from_name', $email['sender_name'] );
-		$emails->__set( 'from_address', $email['sender_address'] );
-		$emails->__set( 'reply_to', $email['reply_to'] );
-		$emails->__set( 'attachments', apply_filters( 'everest_forms_email_file_attachments', $attachment, $entry, $form_data, 'entry-email' ) );
+			// Setup email properties.
+			/* translators: %s - form name. */
+			$email['subject']        = ! empty( $notification['evf_email_subject'] ) ? $notification['evf_email_subject'] : sprintf( esc_html__( 'New %s Entry', 'everest-forms' ), $form_data['settings']['form_title'] );
+			$email['address']        = explode( ',', apply_filters( 'everest_forms_process_smart_tags', $notification['evf_to_email'], $form_data, $fields, $this->entry_id ) );
+			$email['address']        = array_map( 'sanitize_email', $email['address'] );
+			$email['sender_name']    = ! empty( $notification['evf_from_name'] ) ? $notification['evf_from_name'] : get_bloginfo( 'name' );
+			$email['sender_address'] = ! empty( $notification['evf_from_email'] ) ? $notification['evf_from_email'] : get_option( 'admin_email' );
+			$email['reply_to']       = ! empty( $notification['evf_reply_to'] ) ? $notification['evf_reply_to'] : $email['sender_address'];
+			$email['message']        = ! empty( $notification['evf_email_message'] ) ? $notification['evf_email_message'] : '{all_fields}';
 
-		// Send entry email.
-		foreach ( $email['address'] as $address ) {
-			$emails->send( trim( $address ), $email['subject'], $email['message'] );
-		}
+			$email = apply_filters( 'everest_forms_entry_email_atts', $email, $fields, $entry, $form_data );
 
-		// Send confirmation email.
-		if ( ! empty( $email['user_email'] ) ) {
+			$attachment = '';
+			// Create new email.
 			$emails = new EVF_Emails();
 			$emails->__set( 'form_data', $form_data );
 			$emails->__set( 'fields', $fields );
 			$emails->__set( 'entry_id', $entry_id );
 			$emails->__set( 'from_name', $email['sender_name'] );
 			$emails->__set( 'from_address', $email['sender_address'] );
-			$emails->__set( 'reply_to', isset( $email['sender_address'] ) ? $email['sender_address'] : false );
-			$emails->__set( 'attachments', apply_filters( 'everest_forms_email_file_attachments', $attachment, $entry, $form_data, 'confirmation-email' ) );
-			$emails->send( trim( $email['user_email'] ), $email['confirmation_subject'], $email['confirmation_message'] );
-		}
+			$emails->__set( 'reply_to', $email['reply_to'] );
+			$emails->__set( 'attachments', apply_filters( 'everest_forms_email_file_attachments', $attachment, $entry, $form_data, 'entry-email', $connection_id ) );
+
+			// Send entry email.
+			foreach ( $email['address'] as $address ) {
+				$emails->send( trim( $address ), $email['subject'], $email['message'] );
+			}
+
+		endforeach;
+
 	}
 
 	/**
