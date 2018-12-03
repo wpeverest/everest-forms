@@ -79,7 +79,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				</button>
 					<ul class="everest-forms-active-email-connections-list">
 					<?php if ( ! empty( $email ) ){ ?>
-						<h4><?php echo  esc_html__( 'Email connections', 'everest-forms' ) ?> </h4>
+						<h4><?php echo  esc_html__( 'Email Notifications', 'everest-forms' ) ?> </h4>
 					<?php }
 						if ( ! empty( $email ) ){
 							foreach ( $email as $connection_id => $connection_data ){
@@ -251,7 +251,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				'settings[email]['.$connection_id.']',
 				'connection_name',
 				$this->form_data,
-				__( 'Connection Name', 'everest-forms' ),
+				__( 'Notification Name', 'everest-forms' ),
 				array(
 					'default' => isset( $settings['email'][$connection_id]['connection_name'] ) ? $settings['email'][$connection_id]['connection_name'] : __('Admin Notification', 'everest-forms'),
 					'class'   => 'everest-forms-email-name',
