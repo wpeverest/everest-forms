@@ -36,7 +36,7 @@
 		 	$(document).on('click', '.everest-forms-email-add', function(e) {
 		 		EverestFormsEmail.connectionAdd(this, e);
 		 	});
-		 	$(document).on('click', '.everest-forms-active-email-connections-list li a', function(e) {
+		 	$(document).on('click', '.everest-forms-active-email-connections-list li', function(e) {
 		 		EverestFormsEmail.selectActiveAccount(this, e);
 		 	});
 		 	$(document).on('click', '.email-remove', function(e) {
@@ -145,13 +145,13 @@
 			e.preventDefault();
 
 			var $this         = $(el),
-			connection_id = $this.parent().data('connection-id'),
+			connection_id = $this.data('connection-id'),
 			active_block  = $('.evf-content-email-settings').find('[data-connection_id="' + connection_id + '"]'),
 			lengthOfActiveBlock = $(active_block).length;
 
 			$('.evf-content-email-settings').find('.evf-content-email-settings-inner').removeClass('active-connection');
-			$this.parent().siblings().removeClass('active-user');
-			$this.parent().addClass('active-user');
+			$this.siblings().removeClass('active-user');
+			$this.addClass('active-user');
 
 			if( lengthOfActiveBlock ){
 				$( active_block ).addClass('active-connection');
@@ -184,9 +184,9 @@
 									active_block_after  = $('.evf-provider-connections').find('[data-connection_id="' + connection_id + '"]'),
 									lengthOfActiveBlockAfter = $(active_block).length;
 									if( toBeRemoved.prev().length ){
-										toBeRemoved.prev().children('.user-nickname').trigger('click');
+										toBeRemoved.prev('.connection-list').trigger('click');
 									}else {
-										toBeRemoved.next().children('.user-nickname').trigger('click');
+										toBeRemoved.next('.connection-list').trigger('click');
 									}
 
 									$( active_block ).remove();

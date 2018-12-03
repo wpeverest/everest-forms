@@ -90,7 +90,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 									$remove_class = 'email-default-remove';
 								}
 								?>
-								<li data-connection-id="<?php echo $connection_id; ?>">
+								<li class="connection-list" data-connection-id="<?php echo $connection_id; ?>">
 									<a class="user-nickname" href="#"><?php echo $connection_name; ?></a>
 									<a href="#"><span class="<?php echo $remove_class; ?>">Remove</a>
 								</li>
