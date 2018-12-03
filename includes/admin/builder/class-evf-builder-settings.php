@@ -70,7 +70,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		$email = isset($form_data['settings']['email']) ? $form_data['settings']['email'] : array();
 
 		if( empty( $email ) ){
-			$email['connection_1'] = array( 'connection_name' => __('Default', 'everest-forms') );
+			$email['connection_1'] = array( 'connection_name' => __('Admin Notification', 'everest-forms') );
 		}
 		 	?>
 			<div class="everest-forms-active-email">
@@ -83,8 +83,8 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					<?php }
 						if ( ! empty( $email ) ){
 							foreach ( $email as $connection_id => $connection_data ){
-								$connection_name = ! empty( $connection_data['connection_name'] ) ?$connection_data['connection_name'] : __('Default', 'everest-forms' );
-								if( 'Default' !== $connection_name ) {
+								$connection_name = ! empty( $connection_data['connection_name'] ) ?$connection_data['connection_name'] : __('Admin Notification', 'everest-forms' );
+								if( 'Admin Notification' !== $connection_name ) {
 									$remove_class = 'email-remove';
 								}else {
 									$remove_class = 'email-default-remove';
@@ -237,7 +237,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 
 		if( empty( $settings['email'] ) ){
 			$settings['email'] = array();
-			$settings['email']['connection_1'] = array( 'connection_name' => __('Default', 'everest-forms') );
+			$settings['email']['connection_1'] = array( 'connection_name' => __('Admin Notification', 'everest-forms') );
 		}
 		echo '<div class="evf-content-section evf-content-email-settings">';
 		echo '<div class="evf-content-section-title">';
@@ -245,7 +245,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		echo '</div>';
 		foreach ( $settings['email'] as $connection_id => $connection ) :
 			echo '<div class="evf-content-email-settings-inner" data-connection_id='.$connection_id.'>';
-			$connection_name = ! empty( $connection["connection_name"] ) ? $connection["connection_name"] : 'Default';
+			$connection_name = ! empty( $connection["connection_name"] ) ? $connection["connection_name"] : 'Admin Notification';
 			echo '<input type="hidden" name="settings[email]['.$connection_id.'][connection_name]" value="'.$connection_name.'">';
 			everest_forms_panel_field(
 				'text',

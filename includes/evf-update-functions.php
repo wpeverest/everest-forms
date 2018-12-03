@@ -133,7 +133,7 @@ function evf_update_140_db_multiple_email() {
 		if ( ! empty( $form_data['settings'] ) ) {
 			$email = $form_data['settings']['email'];
 			$new_email = array();
-			$new_email['connection_name'] = 'Default';
+			$new_email['connection_name'] = 'Admin Notification';
 			$new_email = array_merge($new_email, $email);
 
 			unset($new_email['evf_send_confirmation_email']);
@@ -149,7 +149,7 @@ function evf_update_140_db_multiple_email() {
 				$unique_connection_id = 'connection_'.uniqid();
 
 				$form_data['settings']['email'][$unique_connection_id] = array(
-					'connection_name'   => 'User Confirmation',
+					'connection_name'   => 'User Notification',
 					'evf_to_email'      => '{field_id="'.$email['evf_user_to_email'].'"}',
                     'evf_from_name'     => $email['evf_from_name'],
                     'evf_from_email'    => $email['evf_from_email'],
