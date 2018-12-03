@@ -4,7 +4,7 @@ Tags: contact form, form, form builder, contact, custom form
 Requires at least: 4.0
 Tested up to: 5.0
 Requires PHP: 5.4
-Stable tag: 1.3.4
+Stable tag: 1.4.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -102,6 +102,9 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 11. Advance Form
 
 == Changelog ==
+
+= 1.4.0 - 03-12-2018 =
+* Feature - Introduced Multiple Email.
 
 = 1.3.4 - 27-11-2018 =
 * Feature - Added Gutenberg forms block.

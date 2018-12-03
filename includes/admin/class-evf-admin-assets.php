@@ -157,7 +157,7 @@ class EVF_Admin_Assets {
 					'i18n_email_ok'          => esc_html__( 'OK', 'everest-forms' ),
 					'ajax_email_nonce'       => wp_create_nonce( 'process-ajax-nonce' ),
 					'ajax_url'               => admin_url( 'admin-ajax.php', 'relative' ),
-					'i18n_email_cancel'      => esc_html__( 'Cancel', 'everest-forms-pro' ),
+					'i18n_email_cancel'      => esc_html__( 'Cancel', 'everest-forms' ),
 					'i18n_default_address'   => get_option( 'admin_email' ),
 				)
 			);
