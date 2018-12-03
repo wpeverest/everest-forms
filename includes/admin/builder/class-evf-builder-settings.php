@@ -84,7 +84,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 						if ( ! empty( $email ) ){
 							foreach ( $email as $connection_id => $connection_data ){
 								$connection_name = ! empty( $connection_data['connection_name'] ) ?$connection_data['connection_name'] : __('Admin Notification', 'everest-forms' );
-								if( 'Admin Notification' !== $connection_name ) {
+								if( 'connection_1' !== $connection_id ) {
 									$remove_class = 'email-remove';
 								}else {
 									$remove_class = 'email-default-remove';
@@ -245,8 +245,18 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		echo '</div>';
 		foreach ( $settings['email'] as $connection_id => $connection ) :
 			echo '<div class="evf-content-email-settings-inner" data-connection_id='.$connection_id.'>';
-			$connection_name = ! empty( $connection["connection_name"] ) ? $connection["connection_name"] : 'Admin Notification';
-			echo '<input type="hidden" name="settings[email]['.$connection_id.'][connection_name]" value="'.$connection_name.'">';
+
+			everest_forms_panel_field(
+				'text',
+				'settings[email]['.$connection_id.']',
+				'connection_name',
+				$this->form_data,
+				__( 'Connection Name', 'everest-forms' ),
+				array(
+					'default' => isset( $settings['email'][$connection_id]['connection_name'] ) ? $settings['email'][$connection_id]['connection_name'] : __('Admin Notification', 'everest-forms'),
+					'class'   => 'everest-forms-email-name',
+				)
+			);
 			everest_forms_panel_field(
 				'text',
 				'settings[email]['.$connection_id.']',

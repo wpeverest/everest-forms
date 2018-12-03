@@ -45,6 +45,10 @@
 		 	$(document).on('click', '.email-default-remove', function(e) {
 		 		EverestFormsEmail.removeDefaultAccount(this, e);
 		 	});
+		 	$(document).on('input', '.everest-forms-email-name input', function(e) {
+		 		EverestFormsEmail.renameConnection(this, e);
+		 	});
+
 		 },
 
 		 connectionAdd: function(el, e) {
@@ -104,6 +108,7 @@
 										cloned_email.find('.evf-field-conditional-container').hide();
 										cloned_email.find('.evf-field-conditional-wrapper li:not(:first)').remove();
 										cloned_email.find('.conditional_or:not(:first)').remove();
+										cloned_email.find('.everest-forms-email-name input').val(name);
 
 										setTimeout(function() {
 											cloned_email.find('.evf-field-conditional-input').val('');
@@ -216,6 +221,14 @@
 					}
 				}
 			});
+		},
+
+		renameConnection: function( el,e ){
+			e.preventDefault;
+			var $this = $(el);
+			var connection_id = $this.closest('.evf-content-email-settings-inner').data('connection_id');
+			$active_block = $('.everest-forms-active-email-connections-list').find('[data-connection-id="' + connection_id + '"]');
+			$active_block.find('.user-nickname').text($this.val());
 		}
 
 
