@@ -341,6 +341,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 	}
 
 	public function evf_get_all_pages(){
+		$pages = array();
 		foreach(get_pages() as $page){
 			$pages[$page->ID] = $page->post_title; ;
 		}
