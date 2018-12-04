@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Everest Forms 1.4.0\n"
 "Report-Msgid-Bugs-To: https://github.com/wpeverest/everest-forms/issues\n"
-"POT-Creation-Date: 2018-12-03 11:53:54+00:00\n"
+"POT-Creation-Date: 2018-12-04 09:32:20+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -232,6 +232,7 @@ msgstr ""
 #: includes/admin/builder/class-evf-builder-settings.php:86
 #: includes/admin/builder/class-evf-builder-settings.php:240
 #: includes/admin/builder/class-evf-builder-settings.php:256
+#: includes/evf-update-functions.php:140
 msgid "Admin Notification"
 msgstr ""
 
@@ -2691,6 +2692,10 @@ msgstr ""
 #: includes/evf-notice-functions.php:111 includes/evf-notice-functions.php:124
 #: includes/evf-notice-functions.php:169
 msgid "This function should not be called before everest_forms_init."
+msgstr ""
+
+#: includes/evf-update-functions.php:156
+msgid "User Notification"
 msgstr ""
 
 #: includes/export/class-evf-entry-csv-exporter.php:58
