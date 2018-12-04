@@ -115,6 +115,7 @@
 										}, 2000);
 
 										cloned_email.attr('data-connection_id',response.data.connection_id);
+										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-connection_name').attr('name', 'settings[email]['+response.data.connection_id+'][connection_name]');
 										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-evf_to_email').attr('name', 'settings[email]['+response.data.connection_id+'][evf_to_email]');
 										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-evf_from_name').attr('name', 'settings[email]['+response.data.connection_id+'][evf_from_name]');
 										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-evf_from_email').attr('name', 'settings[email]['+response.data.connection_id+'][evf_from_email]');
