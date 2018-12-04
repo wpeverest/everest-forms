@@ -83,18 +83,20 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					<?php }
 						if ( ! empty( $email ) ){
 							foreach ( $email as $connection_id => $connection_data ){
-								$connection_name = ! empty( $connection_data['connection_name'] ) ?$connection_data['connection_name'] : __('Admin Notification', 'everest-forms' );
-								if( 'connection_1' !== $connection_id ) {
-									$remove_class = 'email-remove';
-								}else {
-									$remove_class = 'email-default-remove';
-								}
-								?>
-								<li class="connection-list" data-connection-id="<?php echo $connection_id; ?>">
-									<a class="user-nickname" href="#"><?php echo $connection_name; ?></a>
-									<a href="#"><span class="<?php echo $remove_class; ?>">Remove</a>
-								</li>
+								if( preg_match( '/connection_/' , $connection_id ) ){
+									$connection_name = ! empty( $connection_data['connection_name'] ) ? $connection_data['connection_name'] : '';
+									if( 'connection_1' !== $connection_id ) {
+										$remove_class = 'email-remove';
+									}else {
+										$remove_class = 'email-default-remove';
+									}
+									?>
+									<li class="connection-list" data-connection-id="<?php echo $connection_id; ?>">
+										<a class="user-nickname" href="#"><?php echo $connection_name; ?></a>
+										<a href="#"><span class="<?php echo $remove_class; ?>">Remove</a>
+									</li>
 							<?php }
+							}
 						} ?>
 					</ul>
 			</div>
