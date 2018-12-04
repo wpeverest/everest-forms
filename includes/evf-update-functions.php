@@ -126,53 +126,56 @@ function evf_update_120_db_rename_options() {
  */
 function evf_update_140_db_multiple_email() {
     $forms = EVF()->form->get( '', array( 'order' => 'DESC' ) );
-	foreach ( $forms as $form ) {
 
+    // Loop through each forms.
+	foreach ( $forms as $form ) {
+		$form_id   = isset( $form->ID ) ? $form->ID : '0';
 		$form_data = ! empty( $form->post_content ) ? evf_decode( $form->post_content ) : '';
 
 		if ( ! empty( $form_data['settings'] ) ) {
-			$email = $form_data['settings']['email'];
+			$email = (array) $form_data['settings']['email'];
+
+			// New email conn.
 			$new_email = array();
-			$new_email['connection_name'] = 'Admin Notification';
-			$new_email = array_merge($new_email, $email);
+			$new_email['connection_name'] = esc_html__( 'Admin Notification', 'everest-forms' );
+			$new_email = array_merge( $new_email, $email );
 
-			unset($new_email['evf_send_confirmation_email']);
-			unset($new_email['evf_user_to_email']);
-			unset($new_email['evf_user_email_subject']);
-			unset($new_email['evf_user_email_message']);
-			unset($new_email['attach_pdf_to_user_email']);
+			// Unset previous email data structure.
+   			$email_settings = array( 'evf_send_confirmation_email', 'evf_user_to_email', 'evf_user_email_subject', 'evf_user_email_message', 'attach_pdf_to_user_email' );
+   			foreach ( $email_settings as $email_setting ) {
+   				unset( $email_setting );
+   			}
 
+   			// Maintain the multiple-email connections data structure.
+   			if ( ! isset( $form_data['settings']['email']['connection_1'] ) ) {
+				$unique_connection_id = sprintf( 'connection_%s', uniqid() );
+				$form_data['settings']['email'] = array( 'connection_1' => $new_email );
 
-			$form_data['settings']['email'] = array( 'connection_1' => $new_email );
-
-			if( isset( $email['evf_send_confirmation_email'] ) && '1' === $email['evf_send_confirmation_email'] ) {
-				$unique_connection_id = 'connection_'.uniqid();
-
-				$form_data['settings']['email'][$unique_connection_id] = array(
-					'connection_name'   => 'User Notification',
-					'evf_to_email'      => '{field_id="'.$email['evf_user_to_email'].'"}',
-                    'evf_from_name'     => $email['evf_from_name'],
-                    'evf_from_email'    => $email['evf_from_email'],
-                    'evf_reply_to'      => $email['evf_reply_to'],
-                    'evf_email_subject' => $email['evf_user_email_subject'],
-                    'evf_email_message' => $email['evf_user_email_message'],
-				);
-
-				if( isset( $email['attach_pdf_to_user_email'] ) && '1' === $email['attach_pdf_to_user_email'] ){
-					$form_data['settings']['email'][$unique_connection_id]['attach_pdf_to_admin_email'] = '1';
+				if ( isset( $email['evf_send_confirmation_email'] ) && '1' === $email['evf_send_confirmation_email'] ) {
+					$form_data['settings']['email'][ $unique_connection_id ] = array(
+						'connection_name'   => esc_html__( 'User Notification', 'everest-forms' ),
+						'evf_to_email'      => '{field_id="' . $email['evf_user_to_email'] . '"}',
+						'evf_from_name'     => $email['evf_from_name'],
+						'evf_from_email'    => $email['evf_from_email'],
+						'evf_reply_to'      => $email['evf_reply_to'],
+						'evf_email_subject' => $email['evf_user_email_subject'],
+						'evf_email_message' => $email['evf_user_email_message'],
+					);
 				}
 
-				if( isset( $email['conditional_logic_status'] ) ){
-					$form_data['settings']['email'][$unique_connection_id]['conditional_logic_status'] = '0';
-					$form_data['settings']['email'][$unique_connection_id]['conditional_option'] = $email['conditional_option'];
-					$form_data['settings']['email'][$unique_connection_id]['conditionals'] = array();
+				if ( isset( $email['attach_pdf_to_user_email'] ) && '1' === $email['attach_pdf_to_user_email'] ){
+					$form_data['settings']['email'][ $unique_connection_id ]['attach_pdf_to_admin_email'] = '1';
 				}
 
-				$form_id = isset( $form->ID ) ? $form->ID : '0';
-				// Update form data.
-				EVF()->form->update( $form_id, $form_data );
-
+				if ( isset( $email['conditional_logic_status'] ) ) {
+					$form_data['settings']['email'][ $unique_connection_id ]['conditional_logic_status'] = $email['conditional_logic_status'];
+					$form_data['settings']['email'][ $unique_connection_id ]['conditional_option']       = $email['conditional_option'];
+					$form_data['settings']['email'][ $unique_connection_id ]['conditionals']             = array();
+				}
 			}
+
+			// Update form data.
+			EVF()->form->update( $form_id, $form_data );
 		}
 	}
 }
