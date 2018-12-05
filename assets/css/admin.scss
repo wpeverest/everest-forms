@@ -755,6 +755,23 @@ body.everest-forms-builder-setup,
 				height: calc(100vh - 150px);
 				overflow-x: auto;
 
+				.evf-content-email-settings {
+
+					.evf-content-email-settings-inner {
+						padding: 20px;
+						border: 1px solid #E0E3E6;
+
+						.everest-forms-email-name {
+							background: #f8f9fa;
+							margin-left: -20px;
+							margin-top: -20px;
+							margin-right: -20px;
+							padding: 20px;
+							border-bottom: 1px solid #E0E3E6;
+						}
+					}
+				}
+
 				.everest-forms-title-desc {
 					.everest-forms-form-name {
 						margin-top: 0;
