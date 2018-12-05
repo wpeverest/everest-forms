@@ -1,4 +1,4 @@
-=== Everest Forms - Easy Contact Form and Form Builder for WordPress ===
+=== Contact Form, Drag and Drop Form Builder for WordPress - Everest Forms ===
 Contributors: WPEverest
 Tags: contact form, form, form builder, contact, custom form
 Requires at least: 4.0
@@ -8,7 +8,7 @@ Stable tag: 1.4.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Drag and Drop form builder to easily create contact forms and more.
+Drag and Drop contact form builder to easily create simple to complex forms for any purpose. Lightweight, Beautiful design, responsive and more.
 
 == Description ==
 Everest Forms plugin provides you with an easy way to create any kind of forms including contact forms. Drag and Drop fields make ordering and creating forms so easy that even a beginner to WordPress can create beautiful forms within minutes. The plugin is lightweight, fast, extendible and 100% mobile responsive.
@@ -34,6 +34,7 @@ Check [documentation](http://docs.wpeverest.com/docs/everest-forms/)
 * Supports multiple column layout
 * Shortcode support
 * Multiple email recipient
+* Mulitple email notifications
 * Smart Tags for dynamic email message, subject and more.
 * View Form entries from your dashboard
 * Quick Form Preview option
