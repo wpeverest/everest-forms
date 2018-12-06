@@ -1384,9 +1384,10 @@
 
 		var field_id    = $( this ).data('field_id'),
             field_label = $( this ).text(),
-			$parent = $ ( this ).parent().parent().parent(),
-			$input  = $parent.find('input[type=text]'),
-			$textarea  = $parent.find('textarea');
+            type        = $( this ).data('type'),
+			$parent     = $ ( this ).parent().parent().parent(),
+			$input      = $parent.find('input[type=text]'),
+			$textarea   = $parent.find('textarea');
 		if( field_id !== 'fullname' && field_id !== 'email' && field_id !== 'subject' && field_id !== 'message' ){
 			field_label = field_label.split(/[\s-_]/);
 		    for(var i = 0 ; i < field_label.length ; i++){
@@ -1401,9 +1402,12 @@
 		} else {
 			field_id = field_id;
 		}
+		if( 'field' === type ){
+			$input.val( $input.val() + '{field_id="'+field_id+'"}' );
+			$textarea.val($textarea.val()+'{field_id="'+field_id+'"}' );
+		}else if( 'other' === type ){
 
-		$input.val( $input.val() + '{field_id="'+field_id+'"}' );
-		$textarea.val($textarea.val()+'{field_id="'+field_id+'"}' );
+		}
 	});
 
 	function get_all_available_field( allowed_field, type , el ) {

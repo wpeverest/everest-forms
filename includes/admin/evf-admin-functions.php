@@ -415,14 +415,10 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 			$smart_tag .= '<a href="#" class="evf-toggle-smart-tag-display" data-type="' . $type . '" data-fields="' . $form_fields . '"><span class="dashicons dashicons-editor-code"></span></a>';
 			$smart_tag .= '<div class="evf-smart-tag-lists" style="display: none">';
 			$smart_tag .= '<div class="smart-tag-title">Available Fields</div><ul class="evf-fields"></ul>';
-			$smart_tag .= '<div class="smart-tag-title">Others</div><ul class="evf-others">';
-			$smart_tag .= '<li>Admin Email</li>';
-			$smart_tag .= '<li>Admin Email</li>';
-			$smart_tag .= '<li>Admin Email</li>';
-			$smart_tag .= '<li>Admin Email</li>';
-			$smart_tag .= '<li>Admin Email</li>';
-			$smart_tag .= '<li>Admin Email</li>';
-			$smart_tag .= '</ul></div>';
+			if( $type == 'all' || $type == 'other' ){
+				$smart_tag .= '<div class="smart-tag-title">Others</div><ul class="evf-others"></ul>';
+			}
+			$smart_tag .= '</div>';
 		} else {
 			$smart_tag = '';
 		}
