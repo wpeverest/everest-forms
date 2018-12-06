@@ -104,6 +104,12 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 
 == Changelog ==
 
+= 1.4.1 - 06-12-2018 =
+* Fix - Default notification label behaviour.
+* Fix - Backward compatibility on multiple email.
+* Fix - Drag and drop bug in choices lists while sorting.
+* Tweak - Design for multiple email notification area.
+
 = 1.4.0 - 03-12-2018 =
 * Feature - Introduced Multiple Email.
 
