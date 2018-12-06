@@ -413,7 +413,16 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 			$form_fields = ! empty( $args['smarttags']['form_fields'] ) ? esc_attr( $args['smarttags']['form_fields'] ) : '';
 
 			$smart_tag .= '<a href="#" class="evf-toggle-smart-tag-display" data-type="' . $type . '" data-fields="' . $form_fields . '"><span class="dashicons dashicons-editor-code"></span></a>';
-			$smart_tag .= '<div class="evf-smart-tag-lists" style="display: none"><div class="smart-tag-title">Available Fields </div><ul></ul></div>';
+			$smart_tag .= '<div class="evf-smart-tag-lists" style="display: none">';
+			$smart_tag .= '<div class="smart-tag-title">Available Fields</div><ul class="evf-fields"></ul>';
+			$smart_tag .= '<div class="smart-tag-title">Others</div><ul class="evf-others">';
+			$smart_tag .= '<li>Admin Email</li>';
+			$smart_tag .= '<li>Admin Email</li>';
+			$smart_tag .= '<li>Admin Email</li>';
+			$smart_tag .= '<li>Admin Email</li>';
+			$smart_tag .= '<li>Admin Email</li>';
+			$smart_tag .= '<li>Admin Email</li>';
+			$smart_tag .= '</ul></div>';
 		} else {
 			$smart_tag = '';
 		}

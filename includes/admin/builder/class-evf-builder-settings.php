@@ -282,7 +282,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				array(
 					'default' => isset( $settings['email'][$connection_id]['evf_from_name'] ) ? $settings['email'][$connection_id]['evf_from_name'] : get_bloginfo( 'name', 'display' ),
 					'smarttags'  => array(
-					'type'   => 'fields',
+					'type'   => 'all',
 					'form_fields' => 'all',
 					),
 				)
@@ -294,7 +294,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				$this->form_data,
 				__( 'From Address', 'everest-forms' ),
 				array(
-					'default' => isset( $settings['email'][$connection_id]['evf_from_email'] ) ? $settings['email'][$connection_id]['evf_from_email'] : get_option( 'admin_email' ),
+					'default' => '{admin_email}',
 					'smarttags'  => array(
 						'type'   => 'fields',
 						'form_fields' => 'email',
@@ -308,7 +308,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				$this->form_data,
 				__( 'Reply To', 'everest-forms' ),
 				array(
-					'default' => isset( $settings['email'][$connection_id]['evf_reply_to'] ) ? $settings['email'][$connection_id]['evf_reply_to'] : '',
+					'default' => '{admin_email}',
 					'smarttags'  => array(
 						'type'   => 'fields',
 						'form_fields' => 'email',

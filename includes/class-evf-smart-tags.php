@@ -21,6 +21,37 @@ class EVF_Smart_Tags {
 	}
 
 	/**
+	 * Other smart tags.
+	 *
+	 * @param string $return
+	 *
+	 * @return string|array
+	 */
+	public function other_smart_tags( $return = 'array' ) {
+
+		$smart_tags = array(
+			'admin_email'      => esc_html__( 'Site Admin Email', 'everest-forms' ),
+			'site_name'        => esc_html__( 'Site Name', 'everest-forms' ),
+			'site_url'         => esc_html__( 'Site URL', 'everest-forms' ),
+			'page_title'       => esc_html__( 'Page Title', 'everest-forms' ),
+			'page_url'         => esc_html__( 'Page URL', 'everest-forms' ),
+			'page_id'          => esc_html__( 'Page ID', 'everest-forms' ),
+			'page_id'          => esc_html__( 'Page ID', 'everest-forms' ),
+			'form_name'        => esc_html__( 'Form Name', 'everest-forms' ),
+			'user_ip_address'  => esc_html__( 'User IP Address', 'everest-forms' ),
+			'user_id'          => esc_html__( 'User ID', 'everest-forms' ),
+			'user_name'        => esc_html__( 'User Name', 'everest-forms' ),
+			'user_email'       => esc_html__( 'User Email', 'everest-forms' ),
+			'referrer_url'     => esc_html__( 'Referrer URL', 'everest-forms' ),
+
+		);
+
+		$smart_tags = apply_filters( 'everest_forms_smart_tags', $smart_tags );
+
+		return $smart_tags;
+	}
+
+	/**
 	 * Process and parse smart tags.
 	 *
 	 * @param string       $content The string to preprocess.
