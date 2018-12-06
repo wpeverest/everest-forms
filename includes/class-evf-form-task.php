@@ -316,11 +316,22 @@ class EVF_Form_Task {
 			return;
 		}
 
-		$fields       = apply_filters( 'everest_forms_entry_email_data', $fields, $entry, $form_data );
+		$fields = apply_filters( 'everest_forms_entry_email_data', $fields, $entry, $form_data );
+
+		if ( ! isset( $form_data['settings']['email']['connection_1'] ) ) {
+			$old_email_data = $form_data['settings']['email'];
+			$form_data['settings']['email'] = array();
+			$form_data['settings']['email']['connection_1'] = array( 'connection_name' => __('Admin Notification', 'everest-forms') );
+			$email_settings = array( 'evf_to_email', 'evf_from_name', 'evf_from_email', 'evf_reply_to', 'evf_email_subject', 'evf_email_message' );
+
+			foreach ( $email_settings as $email_setting ) {
+				$form_data['settings']['email']['connection_1'][ $email_setting ] = $old_email_data[ $email_setting ];
+   			}
+		}
+
 		$notifications = isset( $form_data['settings']['email'] ) ? $form_data['settings']['email'] : array();
 
-		foreach ($notifications as $connection_id => $notification ) :
-
+		foreach ( $notifications as $connection_id => $notification ) :
 			$process_email = apply_filters( 'everest_forms_entry_email_process', true, $fields, $form_data, $context, $connection_id );
 
 			if ( ! $process_email ) {
