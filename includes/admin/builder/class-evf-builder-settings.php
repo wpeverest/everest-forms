@@ -253,7 +253,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				'settings[email]['.$connection_id.']',
 				'connection_name',
 				$this->form_data,
-				__( 'Notification Name', 'everest-forms' ),
+				'',
 				array(
 					'default' => isset( $settings['email'][$connection_id]['connection_name'] ) ? $settings['email'][$connection_id]['connection_name'] : __('Admin Notification', 'everest-forms'),
 					'class'   => 'everest-forms-email-name',
