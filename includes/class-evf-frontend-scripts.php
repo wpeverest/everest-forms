@@ -179,7 +179,7 @@ class EVF_Frontend_Scripts {
 			),
 			'everest-forms'   => array(
 				'src'     => self::get_asset_url( 'assets/js/frontend/everest-forms' . $suffix . '.js' ),
-				'deps'    => array( 'jquery', 'inputmask', 'flatpickr', 'jquery-validate' ),
+				'deps'    => array( 'jquery', 'inputmask', 'jquery-validate' ),
 				'version' => EVF_VERSION,
 			),
 		);
@@ -226,10 +226,6 @@ class EVF_Frontend_Scripts {
 
 		// Enqueue dashicons.
 		wp_enqueue_style( 'dashicons' );
-
-		// Global frontend scripts.
-		self::enqueue_style( 'flatpickr' );
-		self::enqueue_script( 'everest-forms' );
 
 		// CSS Styles.
 		if ( $enqueue_styles = self::get_styles() ) {
