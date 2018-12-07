@@ -106,7 +106,8 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 
 = 1.4.2 - 07-12-2018 =
 * Fix - Form block styles not loaded in WP 5.0.
-* Tweak - Conditionally load scripts on demand.
+* Fix - Classic layout rendering default layout.
+* Tweak - Conditionally load the scripts on demand.
 
 = 1.4.1 - 06-12-2018 =
 * Fix - Default notification label behaviour.

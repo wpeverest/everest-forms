@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Everest Forms package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Everest Forms 1.4.1\n"
+"Project-Id-Version: Everest Forms 1.4.2\n"
 "Report-Msgid-Bugs-To: https://github.com/wpeverest/everest-forms/issues\n"
-"POT-Creation-Date: 2018-12-06 11:41:34+00:00\n"
+"POT-Creation-Date: 2018-12-07 11:14:26+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1265,19 +1265,19 @@ msgstr ""
 msgid "Unserializing instances of this class is forbidden."
 msgstr ""
 
-#: includes/class-evf-form-block.php:73
+#: includes/class-evf-form-block.php:67
 msgid "Select &#38; display one of your form."
 msgstr ""
 
-#: includes/class-evf-form-block.php:74
+#: includes/class-evf-form-block.php:68
 msgid "Select a Form"
 msgstr ""
 
-#: includes/class-evf-form-block.php:75
+#: includes/class-evf-form-block.php:69
 msgid "Form Settings"
 msgstr ""
 
-#: includes/class-evf-form-block.php:76 includes/class-evf-post-types.php:43
+#: includes/class-evf-form-block.php:70 includes/class-evf-post-types.php:43
 msgid "Form"
 msgstr ""
 
