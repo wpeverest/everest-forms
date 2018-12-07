@@ -104,7 +104,7 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 
 == Changelog ==
 
-= 1.4.1 - 07-12-2018 =
+= 1.4.2 - 07-12-2018 =
 * Fix - Form block styles not loaded in WP 5.0.
 * Tweak - Conditionally load scripts on demand.
 
