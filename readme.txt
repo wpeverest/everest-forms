@@ -98,9 +98,10 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 6. Settings Recaptcha
 7. Settings Email
 8. Settings Validation
-9. Simple Contact Form 1
-10. Simple Contact Form 2
-11. Advance Form
+9. Everest Forms Block
+10. Contact Form - Default Layout
+11. Contact Form - Classic Layout
+12. Advance Form
 
 == Changelog ==
 
