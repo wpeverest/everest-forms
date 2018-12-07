@@ -179,7 +179,7 @@ class EVF_Frontend_Scripts {
 			),
 			'everest-forms'   => array(
 				'src'     => self::get_asset_url( 'assets/js/frontend/everest-forms' . $suffix . '.js' ),
-				'deps'    => array( 'jquery', 'inputmask', 'flatpickr', 'jquery-validate' ),
+				'deps'    => array( 'jquery', 'inputmask', 'jquery-validate' ),
 				'version' => EVF_VERSION,
 			),
 		);
