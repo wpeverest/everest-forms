@@ -226,9 +226,7 @@
 				box-shadow: none;
 				margin-bottom: 0;
 				padding: 6px 12px;
-				border-radius: 3px;
 				color: $color-gray-darker;
-				border: 1px solid $color-gray;
 				background-color: transparent;
 
 				&[type="checkbox"],
@@ -301,6 +299,16 @@
 		}
 	}
 
+	.default {
+
+		input,
+		select,
+		textarea {
+			border-radius: 3px;
+			border: 1px solid $color-gray;
+		}
+	}
+
 	.layout-two {
 		label {
 			margin-bottom: 0;
@@ -316,6 +324,7 @@
 		input,
 		select,
 		textarea {
+			border-radius: 0;
 			border-top:none transparent;
 			border-right:none transparent;
 			border-left:none transparent;
