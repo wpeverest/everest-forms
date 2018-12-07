@@ -1840,6 +1840,16 @@ function evf_get_all_fields_settings() {
 }
 
 /**
+ * Checks if date field exists in the form.
+ * @since  1.4.3
+ * @param  int 	 $form_id   Form ID.
+ * @return bool
+ */
+function evf_has_date_field( $form_id ) {
+	return true;
+}
+
+/**
  * Helper function to display debug data.
  *
  * @since 1.3.2

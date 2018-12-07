@@ -227,10 +227,6 @@ class EVF_Frontend_Scripts {
 		// Enqueue dashicons.
 		wp_enqueue_style( 'dashicons' );
 
-		// Global frontend scripts.
-		self::enqueue_style( 'flatpickr' );
-		self::enqueue_script( 'everest-forms' );
-
 		// CSS Styles.
 		if ( $enqueue_styles = self::get_styles() ) {
 			foreach ( $enqueue_styles as $handle => $args ) {
