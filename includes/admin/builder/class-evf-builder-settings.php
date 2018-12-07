@@ -266,7 +266,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				$this->form_data,
 				__( 'To Address', 'everest-forms' ),
 				array(
-					'default' => isset( $settings['email'][$connection_id]['evf_to_email'] ) ? $settings['email'][$connection_id]['evf_to_email'] : get_option( 'admin_email' ),
+					'default' => '{admin_email}',
 					'smarttags'  => array(
 						'type'   => 'fields',
 						'form_fields' => 'email',
@@ -324,7 +324,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				array(
 					'default' => isset( $settings['email'][$connection_id]['evf_email_subject'] ) ? $settings['email'][$connection_id]['evf_email_subject'] : __( 'New Form Entry', 'everest-forms' ),
 					'smarttags'  => array(
-						'type'   => 'fields',
+						'type'   => 'all',
 						'form_fields' => 'all',
 					),
 				)
@@ -338,7 +338,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				array(
 					'default' => isset( $settings['email'][$connection_id]['evf_email_message'] ) ? $settings['email'][$connection_id]['evf_email_message'] : __( '{all_fields}', 'everest-forms' ),
 					'smarttags'  => array(
-						'type'   => 'fields',
+						'type'   => 'all',
 						'form_fields' => 'all',
 					),
 				)
