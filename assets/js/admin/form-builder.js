@@ -1388,7 +1388,7 @@
 			$parent     = $ ( this ).parent().parent().parent(),
 			$input      = $parent.find('input[type=text]'),
 			$textarea   = $parent.find('textarea');
-		if( field_id !== 'fullname' && field_id !== 'email' && field_id !== 'subject' && field_id !== 'message' ){
+		if( field_id !== 'fullname' && field_id !== 'email' && field_id !== 'subject' && field_id !== 'message' && 'other' !== type ){
 			field_label = field_label.split(/[\s-_]/);
 		    for(var i = 0 ; i < field_label.length ; i++){
 		    	if ( i === 0 ) {
@@ -1406,7 +1406,8 @@
 			$input.val( $input.val() + '{field_id="'+field_id+'"}' );
 			$textarea.val($textarea.val()+'{field_id="'+field_id+'"}' );
 		}else if( 'other' === type ){
-
+			$input.val( $input.val() + '{'+field_id+'}' );
+			$textarea.val($textarea.val() + '{'+field_id+'}' );
 		}
 	});
 

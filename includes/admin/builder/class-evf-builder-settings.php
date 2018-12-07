@@ -308,7 +308,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				$this->form_data,
 				__( 'Reply To', 'everest-forms' ),
 				array(
-					'default' => '{admin_email}',
+					'default' => isset( $settings['email'][$connection_id]['evf_reply_to'] ) ? $settings['email'][$connection_id]['evf_reply_to'] : '',
 					'smarttags'  => array(
 						'type'   => 'fields',
 						'form_fields' => 'email',
