@@ -18,7 +18,6 @@ class EVF_Form_Block {
 	 */
 	public function __construct() {
 		add_action( 'init', array( $this, 'register_block' ) );
-		add_action( 'enqueue_block_assets', array( $this, 'enqueue_block_assets' ) );
 		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_block_editor_assets' ) );
 	}
 
@@ -43,21 +42,16 @@ class EVF_Form_Block {
 	}
 
 	/**
-	 * Load Gutenberg block assets.
+	 * Load Gutenberg block scripts.
 	 */
-	public function enqueue_block_assets() {
+	public function enqueue_block_editor_assets() {
 		wp_register_style(
 			'everest-forms-block-editor',
 			EVF()->plugin_url() . '/assets/css/everest-forms.css',
 			array( 'wp-edit-blocks' ),
 			defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( EVF()->plugin_path() . '/assets/css/everest-forms.css' ) : EVF_VERSION
 		);
-	}
 
-	/**
-	 * Load Gutenberg block scripts.
-	 */
-	public function enqueue_block_editor_assets() {
 		wp_register_script(
 			'everest-forms-block-editor',
 			EVF()->plugin_url() . '/assets/js/admin/gutenberg/form-block.min.js',
