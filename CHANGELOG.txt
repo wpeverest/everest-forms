@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 1.4.1 - 07-12-2018 =
+* Fix - Form block styles not loaded in WP 5.0.
+* Tweak - Conditionally load scripts on demand.
+
 = 1.4.1 - 06-12-2018 =
 * Fix - Default notification label behaviour.
 * Fix - Backward compatibility on multiple email.
