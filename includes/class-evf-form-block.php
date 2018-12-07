@@ -71,8 +71,6 @@ class EVF_Form_Block {
 			)
 		);
 		wp_localize_script( 'everest-forms-block-editor', 'evf_form_block_data', $form_block_data );
-
-		wp_enqueue_script( 'everest-forms-block-editor' );
 	}
 
 	/**
