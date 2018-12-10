@@ -1,14 +1,14 @@
-=== Everest Forms - Easy Contact Form and Form Builder for WordPress ===
+=== Contact Form, Drag and Drop Form Builder for WordPress - Everest Forms ===
 Contributors: WPEverest
 Tags: contact form, form, form builder, contact, custom form
 Requires at least: 4.0
 Tested up to: 5.0
 Requires PHP: 5.4
-Stable tag: 1.4.0
+Stable tag: 1.4.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Drag and Drop form builder to easily create contact forms and more.
+Drag and Drop contact form builder to easily create simple to complex forms for any purpose. Lightweight, Beautiful design, responsive and more.
 
 == Description ==
 Everest Forms plugin provides you with an easy way to create any kind of forms including contact forms. Drag and Drop fields make ordering and creating forms so easy that even a beginner to WordPress can create beautiful forms within minutes. The plugin is lightweight, fast, extendible and 100% mobile responsive.
@@ -34,6 +34,7 @@ Check [documentation](http://docs.wpeverest.com/docs/everest-forms/)
 * Supports multiple column layout
 * Shortcode support
 * Multiple email recipient
+* Mulitple email notifications
 * Smart Tags for dynamic email message, subject and more.
 * View Form entries from your dashboard
 * Quick Form Preview option
@@ -97,11 +98,23 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 6. Settings Recaptcha
 7. Settings Email
 8. Settings Validation
-9. Simple Contact Form 1
-10. Simple Contact Form 2
-11. Advance Form
+9. Everest Forms Block
+10. Contact Form - Default Layout
+11. Contact Form - Classic Layout
+12. Advance Form
 
 == Changelog ==
+
+= 1.4.2 - 07-12-2018 =
+* Fix - Form block styles not loaded in WP 5.0.
+* Fix - Classic layout rendering default layout.
+* Tweak - Conditionally load the scripts on demand.
+
+= 1.4.1 - 06-12-2018 =
+* Fix - Default notification label behaviour.
+* Fix - Backward compatibility on multiple email.
+* Fix - Drag and drop bug in choices lists while sorting.
+* Tweak - Design for multiple email notification area.
 
 = 1.4.0 - 03-12-2018 =
 * Feature - Introduced Multiple Email.

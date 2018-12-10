@@ -1,5 +1,16 @@
 == Changelog ==
 
+= 1.4.2 - 07-12-2018 =
+* Fix - Form block styles not loaded in WP 5.0.
+* Fix - Classic layout rendering default layout.
+* Tweak - Conditionally load the scripts on demand.
+
+= 1.4.1 - 06-12-2018 =
+* Fix - Default notification label behaviour.
+* Fix - Backward compatibility on multiple email.
+* Fix - Drag and drop bug in choices lists while sorting.
+* Tweak - Design for multiple email notification area.
+
 = 1.4.0 - 03-12-2018 =
 * Feature - Introduced Multiple Email.
 

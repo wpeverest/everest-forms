@@ -300,9 +300,12 @@
 			});
 		},
 		choicesInit: function () {
-			var choice_list = $(".evf-choices-list");
-			choice_list.sortable({
+			$( 'ul.evf-choices-list' ).sortable({
+				items: 'li',
 				axis: 'y',
+				cursor: 'move',
+				scrollSensitivity: 40,
+				helper: 'clone',
 				out: function ( event ) {
 					var field_id = $( event.target ).attr( 'data-field-id' );
 					EVFPanelBuilder.choiceChange( field_id );

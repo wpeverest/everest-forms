@@ -325,6 +325,8 @@
 					display: none;
 
 					.everest-forms-field-option-row {
+						display: block;
+						position: relative;
 						margin-bottom: 15px;
 						position: relative;
 
@@ -391,19 +393,6 @@
 						color: $everestforms;
 						background-color: $color-white;
 						position: relative;
-
-						&::after {
-						    top: 50%;
-						    width: 8px;
-						    height: 8px;
-						    content: "";
-						    right: -6px;
-							position: absolute;
-						    border: 1px solid transparent;
-						    border-left-color: $border-color;
-						    border-bottom-color: $border-color;
-						    transform: translate(0, -50%) rotate(45deg);
-						}
 
 						.dashicons {
 							transform: rotate(90deg);

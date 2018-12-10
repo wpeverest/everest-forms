@@ -23,9 +23,11 @@ jQuery( function ( $ ) {
 			}
 		},
 		init_datepicker: function () {
-			$( '.flatpickr-field' ).flatpickr({
-				disableMobile: true
-			});
+			if ( $( '.evf-field-date' ).length > 0 ) {
+				$( '.flatpickr-field' ).flatpickr({
+					disableMobile: true
+				});
+			}
 		},
 		load_validation: function() {
 			if ( typeof $.fn.validate === 'undefined' ) {
