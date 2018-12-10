@@ -59,6 +59,14 @@
 			line-height: normal;
 		}
 
+		.evf_smart_tag,
+		.everest-forms-field-option-row-default_value {
+
+			input[type="text"] {
+				width: calc(100% - 29px);
+			}
+		}
+
 		.evf-toggle-smart-tag-display {
 			right: 0;
 			width: 30px;
