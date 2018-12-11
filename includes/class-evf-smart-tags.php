@@ -61,7 +61,6 @@ class EVF_Smart_Tags {
 	 * @return string
 	 */
 	public function process( $content, $form_data, $fields = '', $entry_id = '' ) {
-		// echo '<pre>' . print_r( $content, true ) . '</pre>';
 		// Field smart tags (settings, etc).
 		preg_match_all( "/\{field_id=\"(.+?)\"\}/", $content, $ids );
 
