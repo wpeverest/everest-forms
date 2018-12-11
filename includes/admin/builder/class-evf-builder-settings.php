@@ -349,68 +349,14 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 							),
 						)
 					);
-				everest_forms_panel_field(
-					'text',
-					'settings[email]['.$connection_id.']',
-					'evf_from_email',
-					$this->form_data,
-					__( 'From Address', 'everest-forms' ),
-					array(
-						'default' => isset( $settings['email'][$connection_id]['evf_from_email'] ) ? $settings['email'][$connection_id]['evf_from_email'] : get_option( 'admin_email' ),
-						'smarttags'  => array(
-							'type'   => 'fields',
-							'form_fields' => 'email',
-						),
-					)
-				);
-				everest_forms_panel_field(
-					'text',
-					'settings[email]['.$connection_id.']',
-					'evf_reply_to',
-					$this->form_data,
-					__( 'Reply To', 'everest-forms' ),
-					array(
-						'default' => isset( $settings['email'][$connection_id]['evf_reply_to'] ) ? $settings['email'][$connection_id]['evf_reply_to'] : '',
-						'smarttags'  => array(
-							'type'   => 'fields',
-							'form_fields' => 'email',
-						),
-					)
-				);
-				everest_forms_panel_field(
-					'text',
-					'settings[email]['.$connection_id.']',
-					'evf_email_subject',
-					$this->form_data,
-					__( 'Email Subject', 'everest-forms' ),
-					array(
-						'default' => isset( $settings['email'][$connection_id]['evf_email_subject'] ) ? $settings['email'][$connection_id]['evf_email_subject'] : __( 'New Form Entry', 'everest-forms' ),
-						'smarttags'  => array(
-							'type'   => 'fields',
-							'form_fields' => 'all',
-						),
-					)
-				);
-				everest_forms_panel_field(
-					'tinymce',
-					'settings[email]['.$connection_id.']',
-					'evf_email_message',
-					$this->form_data,
-					__( 'Email Message', 'everest-forms' ),
-					array(
-						'default' => isset( $settings['email'][$connection_id]['evf_email_message'] ) ? $settings['email'][$connection_id]['evf_email_message'] : __( '{all_fields}', 'everest-forms' ),
-						'smarttags'  => array(
-							'type'   => 'fields',
-							'form_fields' => 'all',
-						),
-					)
-				);
 
 				do_action( 'everest_forms_inline_email_settings', $this , $connection_id );
 
 				echo '</div>';
 			}
+
 		endforeach;
+
 		echo '</div>';
 		do_action( 'everest_forms_settings_panel_content', $this );
 	}
