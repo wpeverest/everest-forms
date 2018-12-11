@@ -469,21 +469,23 @@ div.evf-gutenberg-form-selector .evf-frontend-row button[type=submit]:disabled {
 
 @media screen and (max-width: 768px) {
 	.everest-forms {
-		.evf-frontend-row {
-			flex-direction: column;
-			margin: 0;
+		.evf-field-container {
+			.evf-frontend-row {
+				flex-direction: column;
+				margin: 0;
 
-			.evf-frontend-grid {
-				margin-bottom: 30px;
-				padding: 0;
+				.evf-frontend-grid {
+					margin-bottom: 30px;
+					padding: 0;
 
-				&:last-child {
-					margin-bottom: 0;
-				}
+					&:last-child {
+						margin-bottom: 0;
+					}
 
-				&.evf-grid-2,
-				&.evf-grid-3 {
-					width: 100%;
+					&.evf-grid-2,
+					&.evf-grid-3 {
+						width: 100%;
+					}
 				}
 			}
 		}
