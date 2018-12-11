@@ -768,6 +768,10 @@ body.everest-forms-builder-setup,
 							margin-right: -20px;
 							padding: 20px;
 							border-bottom: 1px solid #E0E3E6;
+
+							input[type="text"] {
+								font-weight: 600;
+							}
 						}
 					}
 				}
