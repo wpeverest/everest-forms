@@ -72,7 +72,7 @@ $form_template['contact'] = array(
 				'evf_from_name'     => get_bloginfo( 'name', 'display' ),
 				'evf_from_email'    => get_option( 'admin_email' ),
 				'evf_reply_to'      => '{field_id="email"}',
-				'evf_email_subject' => 'New Form Entry '.$form_name,
+				'evf_email_subject' => sprintf( __( 'New Form Entry %s', 'everest-forms' ), $form_name ),
 				'evf_email_message' => '{all_fields}',
 			),
 		),

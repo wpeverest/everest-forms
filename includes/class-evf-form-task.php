@@ -326,7 +326,7 @@ class EVF_Form_Task {
 
 			foreach ( $email_settings as $email_setting ) {
 				$form_data['settings']['email']['connection_1'][ $email_setting ] = isset( $old_email_data[ $email_setting ] ) ? $old_email_data[ $email_setting ] : '';
-   			}
+			}
 		}
 
 		$notifications = isset( $form_data['settings']['email'] ) ? $form_data['settings']['email'] : array();

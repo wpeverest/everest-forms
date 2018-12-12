@@ -239,9 +239,13 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		if ( ! isset( $settings['email']['connection_1'] ) ){
 			$settings['email']['connection_1'] = array( 'connection_name' => __('Admin Notification', 'everest-forms') );
 			$email_settings = array( 'evf_to_email', 'evf_from_name', 'evf_from_email', 'evf_reply_to', 'evf_email_subject', 'evf_email_message' );
+			$form_name = isset( $settings['form_title'] ) ? ' - '.$settings['form_title'] : '';
 
 			foreach ( $email_settings as $email_setting ) {
 				$settings['email']['connection_1'][ $email_setting ] = isset( $settings['email'][ $email_setting ] ) ? $settings['email'][ $email_setting ] : '';
+				if( 'evf_email_subject' === $email_setting ){
+					$settings['email']['connection_1'][ $email_setting ] = sprintf( __( 'New Form Entry %s', 'everest-forms' ), $form_name );
+				}
    			}
 		}
 
@@ -252,7 +256,6 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 
 		foreach ( $settings['email'] as $connection_id => $connection ) :
 			if ( preg_match( '/connection_/' , $connection_id ) ) {
-				$form_name = isset( $settings['form_title'] ) ? ' - '.$settings['form_title'] : '';
 				echo '<div class="evf-content-email-settings-inner" data-connection_id='.$connection_id.'>';
 
 				everest_forms_panel_field(
@@ -321,7 +324,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					$this->form_data,
 					__( 'Email Subject', 'everest-forms' ),
 					array(
-						'default'    => isset( $settings['email'][$connection_id]['evf_email_subject'] ) ? $settings['email'][$connection_id]['evf_email_subject'] : 'New Form Entry'. $form_name,
+						'default'    => isset( $settings['email'][$connection_id]['evf_email_subject'] ) ? $settings['email'][$connection_id]['evf_email_subject'] : sprintf( __( 'New Form Entry %s', 'everest-forms' ), $form_name ),
 						'tooltip'    => __('Enter the subject of the email.', 'everest_forms'),
 						'smarttags'  => array( 'type'   => 'all', 'form_fields' => 'all' ),
 					)
