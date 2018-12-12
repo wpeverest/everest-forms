@@ -384,11 +384,8 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 			break;
 	}
 
-	if( ! empty( $args['smarttags'] ) ){
-		$smarttags_class = 'evf_smart_tag';
-	} else {
-		$smarttags_class = '';
-	}
+	! empty( $args['smarttags'] ) ? $smarttags_class = 'evf_smart_tag' : $smarttags_class = '';
+
 	// Put the pieces together....
 	$field_open = sprintf(
 		'<div id="everest-forms-panel-field-%s-%s-wrap" class="everest-forms-panel-field %s %s %s">',
