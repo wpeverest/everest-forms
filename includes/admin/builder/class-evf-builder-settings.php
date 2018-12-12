@@ -277,7 +277,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					__( 'To Address', 'everest-forms' ),
 					array(
 						'default'    => '{admin_email}',
-						'tooltip'    => __( 'Enter email address/es separated by comma to receive email notification.', 'everest_forms' ),
+						'tooltip'    => __( 'Enter your email address to receive notifications; separate with a comma if multiple addresses.', 'everest_forms' ),
 						'smarttags'  => array( 'type' => 'fields', 'form_fields' => 'email' ),
 					)
 				);
