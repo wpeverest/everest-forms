@@ -9,7 +9,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$form_title               = isset( $title ) ? sanitize_text_field( $title ) : esc_html__( 'Contact Form', 'everest-forms' );
+$form_title = isset( $title ) ? sanitize_text_field( $title ) : esc_html__( 'Contact Form', 'everest-forms' );
+$form_name  = isset( $title ) ? '- '.$title : '';
 $form_template['contact'] = array(
 	'form_field_id' => '1',
 	'form_fields' => array(
@@ -71,7 +72,7 @@ $form_template['contact'] = array(
 				'evf_from_name'     => get_bloginfo( 'name', 'display' ),
 				'evf_from_email'    => get_option( 'admin_email' ),
 				'evf_reply_to'      => '{field_id="email"}',
-				'evf_email_subject' => __( 'New Form Entry', 'everest-forms' ),
+				'evf_email_subject' => 'New Form Entry '.$form_name,
 				'evf_email_message' => '{all_fields}',
 			),
 		),

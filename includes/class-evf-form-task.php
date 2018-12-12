@@ -325,7 +325,7 @@ class EVF_Form_Task {
 			$email_settings = array( 'evf_to_email', 'evf_from_name', 'evf_from_email', 'evf_reply_to', 'evf_email_subject', 'evf_email_message' );
 
 			foreach ( $email_settings as $email_setting ) {
-				$form_data['settings']['email']['connection_1'][ $email_setting ] = $old_email_data[ $email_setting ];
+				$form_data['settings']['email']['connection_1'][ $email_setting ] = isset( $old_email_data[ $email_setting ] ) ? $old_email_data[ $email_setting ] : '';
    			}
 		}
 
