@@ -9,7 +9,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$form_title               = isset( $title ) ? sanitize_text_field( $title ) : esc_html__( 'Contact Form', 'everest-forms' );
+$form_title = isset( $title ) ? sanitize_text_field( $title ) : esc_html__( 'Contact Form', 'everest-forms' );
+$form_name  = isset( $title ) ? '- '.$title : '';
 $form_template['contact'] = array(
 	'form_field_id' => '1',
 	'form_fields' => array(
@@ -64,16 +65,18 @@ $form_template['contact'] = array(
 		'layout_class'                       => 'default',
 		'form_class'                         => '',
 		'submit_button_text'                 => get_option( 'everest_forms_form_submit_button_label', __( 'Submit', 'everest-forms' ) ),
-		'email' => array( 'connection_1' => array(
-				'connection_name'   => __('Admin Notification','everest-forms'),
+		'email'                              => array(
+			'connection_1' => array(
+				'connection_name'   => __( 'Admin Notification', 'everest-forms' ),
 				'evf_to_email'      => get_option( 'admin_email' ),
 				'evf_from_name'     => get_bloginfo( 'name', 'display' ),
 				'evf_from_email'    => get_option( 'admin_email' ),
-				'evf_email_subject' => __( 'New Form Entry', 'everest-forms' ),
+				'evf_reply_to'      => '{field_id="email"}',
+				'evf_email_subject' => sprintf( __( 'New Form Entry %s', 'everest-forms' ), $form_name ),
 				'evf_email_message' => '{all_fields}',
-				),
 			),
 		),
+	),
 	'structure' => array(
 		'row_1' => array(
 			'grid_1' => array(

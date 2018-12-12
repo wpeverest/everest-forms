@@ -450,6 +450,11 @@ abstract class EVF_Form_Fields {
 					'slug'  => 'default_value',
 					'value' => $value
 				), false );
+
+				$output .= '<a href="#" class="evf-toggle-smart-tag-display" data-type="other"><span class="dashicons dashicons-editor-code"></span></a>';
+				$output .= '<div class="evf-smart-tag-lists" style="display: none">';
+				$output .= '<div class="smart-tag-title">Others</div><ul class="evf-others"></ul></div>';
+
 				$output  = $this->field_element( 'row', $field, array(
 					'slug'    => 'default_value',
 					'content' => $output

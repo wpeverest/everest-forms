@@ -4,7 +4,6 @@
 	var $builder;
 
 	var EVFPanelBuilder = {
-
 		/**
 		 * Start the panel builder.
 		 */
@@ -1375,10 +1374,12 @@
 		e.stopPropagation();
 		$('.evf-smart-tag-lists').hide();
 		$('.evf-smart-tag-lists ul').empty();
-		$( this ).parent().find('.evf-smart-tag-lists').toggle();
+		$( this ).parent().find('.evf-smart-tag-lists').toggle('show');
+
+		var type = $( this ).data('type');
 
 		var allowed_field = $ ( this ).data( 'fields' );
-		get_all_available_field( allowed_field, $( this ) );
+		get_all_available_field( allowed_field, type , $( this ) );
 
 	});
 
@@ -1386,10 +1387,11 @@
 
 		var field_id    = $( this ).data('field_id'),
             field_label = $( this ).text(),
-			$parent = $ ( this ).parent().parent().parent(),
-			$input  = $parent.find('input[type=text]'),
-			$textarea  = $parent.find('textarea');
-		if( field_id !== 'fullname' && field_id !== 'email' && field_id !== 'subject' && field_id !== 'message' ){
+            type        = $( this ).data('type'),
+			$parent     = $ ( this ).parent().parent().parent(),
+			$input      = $parent.find('input[type=text]'),
+			$textarea   = $parent.find('textarea');
+		if ( field_id !== 'fullname' && field_id !== 'email' && field_id !== 'subject' && field_id !== 'message' && 'other' !== type ) {
 			field_label = field_label.split(/[\s-_]/);
 		    for(var i = 0 ; i < field_label.length ; i++){
 		    	if ( i === 0 ) {
@@ -1403,14 +1405,18 @@
 		} else {
 			field_id = field_id;
 		}
-
-		$input.val( $input.val() + '{field_id="'+field_id+'"}' );
-		// $textarea.append( '{field_id="'+field_id+'"}' );
-		$textarea.val($textarea.val()+'{field_id="'+field_id+'"}' );
+		if ( 'field' === type ) {
+			$input.val( $input.val() + '{field_id="'+field_id+'"}' );
+			$textarea.val($textarea.val()+'{field_id="'+field_id+'"}' );
+		} else if ( 'other' === type ) {
+			$input.val( $input.val() + '{'+field_id+'}' );
+			$textarea.val($textarea.val() + '{'+field_id+'}' );
+		}
 	});
 
-	function get_all_available_field( allowed_field , el ) {
+	function get_all_available_field( allowed_field, type , el ) {
 		var all_fields_without_email = [];
+		var all_fields = [];
 		var email_field = [];
 		$('.evf-admin-row .evf-admin-grid .everest-forms-field').each( function(){
 			var field_type = $( this ).data('field-type');
@@ -1423,15 +1429,25 @@
 					var field_label = $( this ).find('.label-title span').first().text();
 					all_fields_without_email[ field_id ] = field_label;
 				}
+			all_fields[ field_id ] = $( this ).find('.label-title span').first().text();
 		});
 
-		if ( allowed_field === 'email' ) {
-			for (var key in email_field ) {
-				$(el).parent().find('.evf-smart-tag-lists ul').append('<li class = "smart-tag-field" data-field_id="'+key+'">'+email_field[key]+'</li>');
+		if( 'other' === type || 'all' === type ){
+			var other_smart_tags = evf_data.smart_tags_other;
+			for( var key in other_smart_tags ) {
+				$(el).parent().find('.evf-smart-tag-lists .evf-others').append('<li class = "smart-tag-field" data-type="other" data-field_id="'+key+'">'+other_smart_tags[key]+'</li>');
 			}
-		} else {
-			for (var meta in all_fields_without_email ) {
-				$(el).parent().find('.evf-smart-tag-lists ul').append('<li class = "smart-tag-field" data-field_id="'+meta+'">'+all_fields_without_email[meta]+'</li>');
+		}
+
+		if ( 'fields' === type || 'all' === type ) {
+			if ( allowed_field === 'email' ) {
+				for (var key in email_field ) {
+					$(el).parent().find('.evf-smart-tag-lists .evf-fields').append('<li class = "smart-tag-field" data-type="field" data-field_id="'+key+'">'+email_field[key]+'</li>');
+				}
+			} else {
+				for (var meta in all_fields ) {
+					$(el).parent().find('.evf-smart-tag-lists .evf-fields').append('<li class = "smart-tag-field" data-type="field" data-field_id="'+meta+'">'+all_fields[meta]+'</li>');
+				}
 			}
 		}
 	}
