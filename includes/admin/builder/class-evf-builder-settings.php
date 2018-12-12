@@ -243,10 +243,10 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 
 			foreach ( $email_settings as $email_setting ) {
 				$settings['email']['connection_1'][ $email_setting ] = isset( $settings['email'][ $email_setting ] ) ? $settings['email'][ $email_setting ] : '';
-				if( 'evf_email_subject' === $email_setting ){
+				if ( 'evf_email_subject' === $email_setting ) {
 					$settings['email']['connection_1'][ $email_setting ] = sprintf( __( 'New Form Entry %s', 'everest-forms' ), $form_name );
 				}
-   			}
+			}
 		}
 
 		echo '<div class="evf-content-section evf-content-email-settings">';
