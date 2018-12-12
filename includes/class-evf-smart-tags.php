@@ -84,9 +84,8 @@ class EVF_Smart_Tags {
 			}
 		}
 
-		//Other Smart tags
+		// Other Smart tags
 		preg_match_all( "/\{(.+?)\}/", $content, $other_tags );
-
 
 		if ( ! empty( $other_tags[1] ) ) {
 

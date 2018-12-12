@@ -1391,7 +1391,7 @@
 			$parent     = $ ( this ).parent().parent().parent(),
 			$input      = $parent.find('input[type=text]'),
 			$textarea   = $parent.find('textarea');
-		if( field_id !== 'fullname' && field_id !== 'email' && field_id !== 'subject' && field_id !== 'message' && 'other' !== type ){
+		if ( field_id !== 'fullname' && field_id !== 'email' && field_id !== 'subject' && field_id !== 'message' && 'other' !== type ) {
 			field_label = field_label.split(/[\s-_]/);
 		    for(var i = 0 ; i < field_label.length ; i++){
 		    	if ( i === 0 ) {
@@ -1405,10 +1405,10 @@
 		} else {
 			field_id = field_id;
 		}
-		if( 'field' === type ){
+		if ( 'field' === type ) {
 			$input.val( $input.val() + '{field_id="'+field_id+'"}' );
 			$textarea.val($textarea.val()+'{field_id="'+field_id+'"}' );
-		}else if( 'other' === type ){
+		} else if ( 'other' === type ) {
 			$input.val( $input.val() + '{'+field_id+'}' );
 			$textarea.val($textarea.val() + '{'+field_id+'}' );
 		}
@@ -1439,7 +1439,7 @@
 			}
 		}
 
-		if( 'fields' === type || 'all' === type ) {
+		if ( 'fields' === type || 'all' === type ) {
 			if ( allowed_field === 'email' ) {
 				for (var key in email_field ) {
 					$(el).parent().find('.evf-smart-tag-lists .evf-fields').append('<li class = "smart-tag-field" data-type="field" data-field_id="'+key+'">'+email_field[key]+'</li>');

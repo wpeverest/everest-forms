@@ -384,7 +384,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 			break;
 	}
 
-	! empty( $args['smarttags'] ) ? $smarttags_class = 'evf_smart_tag' : $smarttags_class = '';
+	$smarttags_class = ! empty( $args['smarttags'] ) ? 'evf_smart_tag' : '';
 
 	// Put the pieces together....
 	$field_open = sprintf(
@@ -417,9 +417,13 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 
 			$smart_tag .= '<a href="#" class="evf-toggle-smart-tag-display" data-type="' . $type . '" data-fields="' . $form_fields . '"><span class="dashicons dashicons-editor-code"></span></a>';
 			$smart_tag .= '<div class="evf-smart-tag-lists" style="display: none">';
-			$smart_tag .= '<div class="smart-tag-title">Available Fields</div><ul class="evf-fields"></ul>';
+			$smart_tag .= '<div class="smart-tag-title">';
+			$smart_tag .= __( 'Available Fields', 'everest-forms');
+			$smart_tag .= '</div><ul class="evf-fields"></ul>';
 			if( $type == 'all' || $type == 'other' ){
-				$smart_tag .= '<div class="smart-tag-title">Others</div><ul class="evf-others"></ul>';
+				$smart_tag .= '<div class="smart-tag-title">';
+				$smart_tag .= __( 'Others', 'everest-froms');
+				$smart_tag .= '</div><ul class="evf-others"></ul>';
 			}
 			$smart_tag .= '</div>';
 		} else {
