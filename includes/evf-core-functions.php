@@ -1847,13 +1847,14 @@ function evf_get_all_fields_settings() {
  * @return bool
  */
 function evf_has_date_field( $form_id ) {
-	$form        = EVF()->form->get( $form_id );
-	$form_data   = $form ? evf_decode( $form->post_content ) : false;
-	$form_fields = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
+	$form_obj  = EVF()->form->get( $form_id );
+	$form_data = ! empty( $form_obj->post_content ) ? evf_decode( $form_obj->post_content ) : '';
 
-	foreach( $form_data['form_fields'] as $field ) {
-		if ( 'date' === $field['type'] ) {
-			return true;
+	if ( ! empty( $form_data['form_fields'] ) ) {
+		foreach( $form_data['form_fields'] as $form_field ) {
+			if ( 'date' === $form_field['type'] ) {
+				return true;
+			}
 		}
 	}
 
