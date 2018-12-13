@@ -238,13 +238,19 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		// --------------------------------------------------------------------//
 		if ( ! isset( $settings['email']['connection_1'] ) ){
 			$settings['email']['connection_1'] = array( 'connection_name' => __('Admin Notification', 'everest-forms') );
-			$email_settings = array( 'evf_to_email', 'evf_from_name', 'evf_from_email', 'evf_reply_to', 'evf_email_subject', 'evf_email_message' );
-			$form_name = isset( $settings['form_title'] ) ? ' - '. $settings['form_title'] : '';
 
+			$email_settings = array( 'evf_to_email', 'evf_from_name', 'evf_from_email', 'evf_reply_to', 'evf_email_subject', 'evf_email_message', 'attach_pdf_to_admin_email', 'show_header_in_attachment_pdf_file', 'conditional_logic_status', 'conditional_option', 'conditionals' );
 			foreach ( $email_settings as $email_setting ) {
 				$settings['email']['connection_1'][ $email_setting ] = isset( $settings['email'][ $email_setting ] ) ? $settings['email'][ $email_setting ] : '';
-				if ( 'evf_email_subject' === $email_setting ) {
-					$settings['email']['connection_1'][ $email_setting ] = sprintf( __( 'New Form Entry %s', 'everest-forms' ), $form_name );
+			}
+
+			// Backward compatibility.
+			$unique_connection_id = sprintf( 'connection_%s', uniqid() );
+			if ( isset( $settings['email']['evf_send_confirmation_email'] ) && '1' === $settings['email']['evf_send_confirmation_email'] ) {
+				$settings['email'][ $unique_connection_id ] = array( 'connection_name'   => esc_html__( 'User Notification', 'everest-forms' ) );
+
+				foreach ( $email_settings as $email_setting ) {
+					$settings['email'][ $unique_connection_id ][ $email_setting ] = isset( $settings['email'][ $email_setting ] ) ? $settings['email'][ $email_setting ] : '';
 				}
 			}
 		}

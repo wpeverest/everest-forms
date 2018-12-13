@@ -23,7 +23,7 @@ class EVF_Form_Task {
 	/**
 	 * Holds formatted fields.
 	 *
-	 * @since      1.0.0
+	 * @since 1.0.0
 	 * @var array
 	 */
 	public $form_fields;
@@ -31,7 +31,7 @@ class EVF_Form_Task {
 	/**
 	 * Holds the ID of a successful entry.
 	 *
-	 * @since      1.0.0
+	 * @since 1.0.0
 	 * @var int
 	 */
 	public $entry_id = 0;
@@ -39,7 +39,7 @@ class EVF_Form_Task {
 	/**
 	 * Primary class constructor.
 	 *
-	 * @since      1.0.0
+	 * @since 1.0.0
 	 */
 	public function __construct() {
 		add_action( 'wp', array( $this, 'listen_task' ) );
@@ -48,7 +48,7 @@ class EVF_Form_Task {
 	/**
 	 * Listen to see if this is a return callback or a posted form entry.
 	 *
-	 * @since      1.0.0
+	 * @since 1.0.0
 	 */
 	public function listen_task() {
 		if ( ! empty( $_GET['everest_forms_return'] ) ) {
@@ -232,14 +232,13 @@ class EVF_Form_Task {
 	/**
 	 * Redirects user to a page or URL specified in the form confirmation settings.
 	 *
-	 * @since      1.0.0
+	 * @since 1.0.0
 	 *
 	 * @param array|string $form_data
 	 * @param string       $hash
 	 */
 	public function entry_confirmation_redirect( $form_data = '', $hash = '' ) {
-
-		$_POST = array(); //clear fields after successful form submission
+		$_POST = array(); // clear fields after successful form submission
 
 		if ( ! empty( $hash ) ) {
 
@@ -259,17 +258,17 @@ class EVF_Form_Task {
 			?>
 				<script>
 					var redirect = '<?php echo get_permalink( $settings['custom_page'] ); ?>';
-				window.setTimeout(function () {
-			        window.location.href = redirect;
-			    }, 3000)
+				window.setTimeout( function () {
+					window.location.href = redirect;
+				}, 3000 )
 				</script>
 			<?php
 		}
 		else if ( isset( $settings['redirect_to'] ) && '2' == $settings['redirect_to']){
 			?><script>
-				window.setTimeout(function () {
-			        window.location.href = '<?php echo $settings['external_url'];?>';
-			    }, 3000)
+				window.setTimeout( function () {
+					window.location.href = '<?php echo $settings['external_url'];?>';
+				}, 3000 )
 				</script>
 			<?php
 		}
@@ -322,8 +321,8 @@ class EVF_Form_Task {
 			$old_email_data = $form_data['settings']['email'];
 			$form_data['settings']['email'] = array();
 			$form_data['settings']['email']['connection_1'] = array( 'connection_name' => __('Admin Notification', 'everest-forms') );
-			$email_settings = array( 'evf_to_email', 'evf_from_name', 'evf_from_email', 'evf_reply_to', 'evf_email_subject', 'evf_email_message' );
 
+			$email_settings = array( 'evf_to_email', 'evf_from_name', 'evf_from_email', 'evf_reply_to', 'evf_email_subject', 'evf_email_message', 'attach_pdf_to_admin_email', 'show_header_in_attachment_pdf_file', 'conditional_logic_status', 'conditional_option', 'conditionals' );
 			foreach ( $email_settings as $email_setting ) {
 				$form_data['settings']['email']['connection_1'][ $email_setting ] = isset( $old_email_data[ $email_setting ] ) ? $old_email_data[ $email_setting ] : '';
 			}
@@ -353,6 +352,7 @@ class EVF_Form_Task {
 			$email = apply_filters( 'everest_forms_entry_email_atts', $email, $fields, $entry, $form_data );
 
 			$attachment = '';
+
 			// Create new email.
 			$emails = new EVF_Emails();
 			$emails->__set( 'form_data', $form_data );

@@ -17,8 +17,8 @@
 	<rule ref="WPEverest-Core" />
 
 	<rule ref="PEAR.NamingConventions.ValidClassName">
-        <exclude-pattern>includes/</exclude-pattern>
-    </rule>
+		<exclude-pattern>includes/</exclude-pattern>
+	</rule>
 
 	<rule ref="WordPress.Files.FileName.InvalidClassFileName">
 		<exclude-pattern>includes/class-everest-forms.php</exclude-pattern>

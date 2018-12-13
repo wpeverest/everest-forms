@@ -9,7 +9,7 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Features Class.
+ * Guten Block Class.
  */
 class EVF_Form_Block {
 
