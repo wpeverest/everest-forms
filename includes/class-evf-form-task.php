@@ -310,8 +310,7 @@ class EVF_Form_Task {
 	 */
 	public function entry_email( $fields, $entry, $form_data, $entry_id, $context = '' ) {
 		// Provide the opportunity to override via a filter.
-		if ( ! apply_filters( '
-			', true, $fields, $entry, $form_data ) ) {
+		if ( ! apply_filters( 'everest_forms_entry_email', true, $fields, $entry, $form_data ) ) {
 			return;
 		}
 
@@ -338,11 +337,12 @@ class EVF_Form_Task {
 			}
 
 			$email = array();
+			$evf_to_email = isset( $notification['evf_to_email'] ) ? $notification['evf_to_email'] : '';
 
 			// Setup email properties.
 			/* translators: %s - form name. */
 			$email['subject']        = ! empty( $notification['evf_email_subject'] ) ? $notification['evf_email_subject'] : sprintf( esc_html__( 'New %s Entry', 'everest-forms' ), $form_data['settings']['form_title'] );
-			$email['address']        = explode( ',', apply_filters( 'everest_forms_process_smart_tags', $notification['evf_to_email'], $form_data, $fields, $this->entry_id ) );
+			$email['address']        = explode( ',', apply_filters( 'everest_forms_process_smart_tags', $evf_to_email, $form_data, $fields, $this->entry_id ) );
 			$email['address']        = array_map( 'sanitize_email', $email['address'] );
 			$email['sender_name']    = ! empty( $notification['evf_from_name'] ) ? $notification['evf_from_name'] : get_bloginfo( 'name' );
 			$email['sender_address'] = ! empty( $notification['evf_from_email'] ) ? $notification['evf_from_email'] : get_option( 'admin_email' );
