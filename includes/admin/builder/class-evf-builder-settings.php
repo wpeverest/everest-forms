@@ -255,6 +255,8 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			}
 		}
 
+		$form_name = isset( $settings['form_title'] ) ? ' - '. $settings['form_title'] : '';
+
 		echo '<div class="evf-content-section evf-content-email-settings">';
 		echo '<div class="evf-content-section-title">';
 		_e( 'Email', 'everest-forms' );
