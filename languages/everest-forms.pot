@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Everest Forms 1.4.2\n"
 "Report-Msgid-Bugs-To: https://github.com/wpeverest/everest-forms/issues\n"
-"POT-Creation-Date: 2018-12-17 05:19:25+00:00\n"
+"POT-Creation-Date: 2018-12-17 10:37:25+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -221,7 +221,7 @@ msgid "General"
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:39
-#: includes/admin/builder/class-evf-builder-settings.php:260
+#: includes/admin/builder/class-evf-builder-settings.php:262
 #: includes/admin/settings/class-evf-settings-email.php:25
 #: includes/admin/settings/class-evf-settings-validation.php:63
 #: includes/fields/class-evf-field-email.php:20
@@ -230,7 +230,7 @@ msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:73
 #: includes/admin/builder/class-evf-builder-settings.php:240
-#: includes/admin/builder/class-evf-builder-settings.php:274
+#: includes/admin/builder/class-evf-builder-settings.php:276
 #: includes/class-evf-form-task.php:322 includes/evf-update-functions.php:140
 #: includes/templates/contact.php:70
 msgid "Admin Notification"
@@ -315,64 +315,64 @@ msgstr ""
 msgid "User Notification"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:283
+#: includes/admin/builder/class-evf-builder-settings.php:285
 msgid "To Address"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:286
+#: includes/admin/builder/class-evf-builder-settings.php:288
 msgid ""
 "Enter your email address to receive notifications; separate with a comma if "
 "multiple addresses."
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:298
+#: includes/admin/builder/class-evf-builder-settings.php:300
 msgid "From Name"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:301
+#: includes/admin/builder/class-evf-builder-settings.php:303
 msgid "Enter the From Name."
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:313
+#: includes/admin/builder/class-evf-builder-settings.php:315
 msgid "From Address"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:316
+#: includes/admin/builder/class-evf-builder-settings.php:318
 msgid "Enter the Email address from which you want to send Email."
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:328
+#: includes/admin/builder/class-evf-builder-settings.php:330
 msgid "Reply To"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:331
+#: includes/admin/builder/class-evf-builder-settings.php:333
 msgid ""
 "Enter the reply to email where the email address will be sent while user "
 "replies Email."
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:343
+#: includes/admin/builder/class-evf-builder-settings.php:345
 msgid "Email Subject"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:345
+#: includes/admin/builder/class-evf-builder-settings.php:347
 #: includes/templates/contact.php:75
 msgid "New Form Entry %s"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:346
+#: includes/admin/builder/class-evf-builder-settings.php:348
 msgid "Enter the subject of the email."
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:358
+#: includes/admin/builder/class-evf-builder-settings.php:360
 msgid "Email Message"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:360
+#: includes/admin/builder/class-evf-builder-settings.php:362
 msgid "{all_fields}"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:361
+#: includes/admin/builder/class-evf-builder-settings.php:363
 msgid "Enter the message of Email."
 msgstr ""
 
