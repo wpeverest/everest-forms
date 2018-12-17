@@ -283,7 +283,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					__( 'To Address', 'everest-forms' ),
 					array(
 						'default'    => isset( $settings['email'][ $connection_id ]['evf_to_email'] ) ? $settings['email'][ $connection_id ]['evf_to_email'] : '{admin_email}',
-						'tooltip'    => __( 'Enter your email address to receive notifications; separate with a comma if multiple addresses.', 'everest_forms' ),
+						'tooltip'    => __( 'Enter your email address to receive notifications; separate with a comma if multiple addresses.', 'everest-forms' ),
 						'smarttags'  => array(
 							'type'        => 'fields',
 							'form_fields' => 'email'
@@ -298,7 +298,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					__( 'From Name', 'everest-forms' ),
 					array(
 						'default'    => isset( $settings['email'][$connection_id]['evf_from_name'] ) ? $settings['email'][$connection_id]['evf_from_name'] : get_bloginfo( 'name', 'display' ),
-						'tooltip'    => __('Enter the From Name.', 'everest_forms'),
+						'tooltip'    => __('Enter the From Name.', 'everest-forms'),
 						'smarttags'  => array(
 							'type'        => 'all',
 							'form_fields' => 'all'
@@ -313,7 +313,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					__( 'From Address', 'everest-forms' ),
 					array(
 						'default'    => isset( $settings['email'][ $connection_id ]['evf_from_email'] ) ? $settings['email'][ $connection_id ]['evf_from_email'] : '{admin_email}',
-						'tooltip'    => __('Enter the Email address from which you want to send Email.', 'everest_forms'),
+						'tooltip'    => __('Enter the Email address from which you want to send Email.', 'everest-forms'),
 						'smarttags'  => array(
 							'type' => 'fields',
 							'form_fields' => 'email'
@@ -328,7 +328,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					__( 'Reply To', 'everest-forms' ),
 					array(
 						'default'    => isset( $settings['email'][ $connection_id ]['evf_reply_to'] ) ? $settings['email'][ $connection_id ]['evf_reply_to'] : '',
-						'tooltip'    => __('Enter the reply to email where the email address will be sent while user replies Email.', 'everest_forms'),
+						'tooltip'    => __('Enter the reply to email where the email address will be sent while user replies Email.', 'everest-forms'),
 						'smarttags'  => array(
 							'type'   => 'fields',
 							'form_fields' => 'email'
@@ -343,7 +343,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					__( 'Email Subject', 'everest-forms' ),
 					array(
 						'default'    => isset( $settings['email'][ $connection_id ]['evf_email_subject'] ) ? $settings['email'][ $connection_id ]['evf_email_subject'] : sprintf( __( 'New Form Entry %s', 'everest-forms' ), $form_name ),
-						'tooltip'    => __('Enter the subject of the email.', 'everest_forms'),
+						'tooltip'    => __('Enter the subject of the email.', 'everest-forms'),
 						'smarttags'  => array(
 							'type'        => 'all',
 							'form_fields' => 'all'
@@ -358,7 +358,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					__( 'Email Message', 'everest-forms' ),
 					array(
 						'default'    => isset( $settings['email'][ $connection_id ]['evf_email_message'] ) ? $settings['email'][ $connection_id ]['evf_email_message'] : __( '{all_fields}', 'everest-forms' ),
-						'tooltip'    => __('Enter the message of Email.', 'everest_forms'),
+						'tooltip'    => __('Enter the message of Email.', 'everest-forms'),
 						'smarttags'  => array(
 							'type'   => 'all',
 							'form_fields' => 'all'
