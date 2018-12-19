@@ -105,9 +105,10 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 
 == Changelog ==
 
-= 1.4.2 - 17-12-2018 =
+= 1.4.2 - 19-12-2018 =
 * Fix - Form block styles not loaded in WP 5.0.
 * Fix - Classic layout rendering default layout.
+* Fix - Google reCAPTCHA conflict during validation.
 * Fix - BW compatibility for multiple-emails support.
 * Tweak - Conditionally load the scripts on demand.
 * Tweak - Smart Tags enhanchment with extra smart Tags and can be used on default value of form fields.
