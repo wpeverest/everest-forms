@@ -93,11 +93,7 @@ jQuery( function ( $ ) {
 						$parent.removeClass( 'evf-has-error' );
 					},
 					submitHandler: function( form ) {
-						if ( typeof grecaptcha !== 'undefined' && '' === grecaptcha.getResponse() ) {
-							$( '.evf-recaptcha-container' ).append( '<label class="evf-error">' + everest_forms_params.i18n_messages_recaptcha + '</div>');
-						} else {
-							form.submit();
-						}
+						form.submit();
 					}
 				});
 			});
