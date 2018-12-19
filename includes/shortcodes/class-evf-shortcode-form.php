@@ -41,6 +41,7 @@ class EVF_Shortcode_Form {
 		add_action( 'everest_forms_display_field_after', array( 'EVF_Shortcode_Form', 'messages' ), 3, 2 );
 		add_action( 'everest_forms_display_field_after', array( 'EVF_Shortcode_Form', 'description' ), 5, 2 );
 		add_action( 'everest_forms_display_field_after', array( 'EVF_Shortcode_Form', 'wrapper_end' ), 15, 2 );
+		add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'recaptcha' ), 20, 3 );
 		add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'footer' ), 25, 3 );
 	}
 
@@ -281,8 +282,6 @@ class EVF_Shortcode_Form {
 				do_action( 'everest_forms_display_row_after', $row_key, $form_data );
 			}
 
-			self::process_recaptcha( $form_data );
-
 			/**
 			 * Hook: everest_forms_display_fields_after.
 			 *
@@ -298,7 +297,7 @@ class EVF_Shortcode_Form {
 	 *
 	 * @param array $form_data
 	 */
-	public static function process_recaptcha( $form_data ){
+	public static function recaptcha( $form_data ){
 		$site_key   = get_option( 'everest_forms_recaptcha_site_key' );
 		$secret_key = get_option( 'everest_forms_recaptcha_site_secret' );
 		if ( ! $site_key || ! $secret_key ) {
@@ -307,20 +306,18 @@ class EVF_Shortcode_Form {
 
 		if ( isset( $form_data['settings']['recaptcha_support'] ) && '1' === $form_data['settings']['recaptcha_support'] ) {
 			$visible = self::$parts ? 'style="display:none;"' : '';
-			$data = apply_filters( 'everest_forms_frontend_recaptcha', array(
+			$data    = apply_filters( 'everest_forms_frontend_recaptcha', array(
 				'sitekey' => trim( sanitize_text_field( $site_key ) ),
 			), $form_data );
 
 			if ( $site_key && $secret_key ) {
-				$recaptch_inline = 'var EVFRecaptchaLoad = function(){jQuery(".g-recaptcha").each(function(index, el){grecaptcha.render(el,{},true);});};';
+				$recaptch_inline  = 'var EVFRecaptchaLoad = function(){jQuery(".g-recaptcha").each(function(index, el){grecaptcha.render(el,{callback:function(){EVFRecaptchaCallback(el);}},true);});};';
+				$recaptch_inline .= 'var EVFRecaptchaCallback = function(el){jQuery(el).parent().find(".evf-recaptcha-hidden").val("1").valid();};';
 
-				// Enqueue reCaptcha scripts.
-				wp_enqueue_script( 'evf-recaptcha' );
-				wp_add_inline_script( 'evf-recaptcha', $recaptch_inline );
-
-				// Output the reCapthcha container.
+				// Output the reCAPTCHA container.
 				echo '<div class="evf-recaptcha-container" ' . $visible . '>';
-					echo '<div ' . evf_html_attributes( '', array( 'g-recaptcha' ), $data ) . '"></div>';
+					echo '<div ' . evf_html_attributes( '', array( 'g-recaptcha' ), $data ) . '></div>';
+					echo '<input type="text" name="g-recaptcha-hidden" class="evf-recaptcha-hidden" style="position:absolute!important;clip:rect(0,0,0,0)!important;height:1px!important;width:1px!important;border:0!important;overflow:hidden!important;padding:0!important;margin:0!important;" required>';
 				echo '</div>';
 			}
 		}
