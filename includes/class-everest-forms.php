@@ -317,8 +317,8 @@ final class EverestForms {
 	 */
 	public function objects() {
 		// Global objects.
-		$this->form = new EVF_Form_Handler();
-		$this->task = new EVF_Form_Task();
+		$this->form       = new EVF_Form_Handler();
+		$this->task       = new EVF_Form_Task();
 		$this->smart_tags = new EVF_Smart_Tags();
 	}
 
