@@ -4,7 +4,7 @@ Tags: contact form, form, form builder, contact, custom form
 Requires at least: 4.0
 Tested up to: 5.0
 Requires PHP: 5.4
-Stable tag: 1.4.2
+Stable tag: 1.4.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -104,6 +104,9 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 12. Advance Form
 
 == Changelog ==
+
+= 1.4.3 - 21-12-2018 =
+* Fix - Uncaught TypeError Flatpicker JS console error.
 
 = 1.4.2 - 19-12-2018 =
 * Fix - Form block styles not loaded in WP 5.0.
