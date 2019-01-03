@@ -21,3 +21,14 @@ if ( ! function_exists( 'is_ajax' ) ) {
 		return function_exists( 'wp_doing_ajax' ) ? wp_doing_ajax() : defined( 'DOING_AJAX' );
 	}
 }
+
+/**
+ * Check if the string JSON.
+ *
+ * @param  string $string
+ * @return bool
+ */
+function evf_is_json( $string ) {
+	json_decode( $string );
+	return ( json_last_error() == JSON_ERROR_NONE );
+}

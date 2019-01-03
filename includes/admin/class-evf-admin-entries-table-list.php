@@ -178,7 +178,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		if ( ! empty( $entry->meta[ $meta_key ] ) ) {
 			$value = $entry->meta[ $meta_key ];
 
-			if ( evf_isJson( $value ) === true ) {
+			if ( evf_is_json( $value ) === true ) {
 				$field_value = json_decode( $value, true );
 				$value       = $field_value['value'];
 			}
