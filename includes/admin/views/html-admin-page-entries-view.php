@@ -45,8 +45,8 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 
 										$meta_value = is_serialized( $meta_value ) ? $meta_value : wp_strip_all_tags( $meta_value );
 										if ( evf_isJson( $meta_value ) === true ) {
-											 $meta_value  = json_decode( $meta_value, true );
-											  $meta_value = $meta_value['value'];
+											$meta_value = json_decode( $meta_value, true );
+											$meta_value = $meta_value['value'];
 										}
 
 										$field_value = apply_filters( 'everest_forms_html_field_value', $meta_value, $entry_meta[ $meta_key ], $entry_meta, 'entry-single' );
