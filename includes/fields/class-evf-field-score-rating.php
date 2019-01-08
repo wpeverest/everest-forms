@@ -9,9 +9,9 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * EVF_Field_Score_Rating Class.
+ * EVF_Field_Scale_Rating Class.
  */
-class EVF_Field_Score_Rating extends EVF_Form_Fields {
+class EVF_Field_Scale_Rating extends EVF_Form_Fields {
 
 	/**
 	 * Constructor.
