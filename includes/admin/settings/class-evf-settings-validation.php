@@ -78,15 +78,6 @@ class EVF_Settings_Validation extends EVF_Settings_Page {
 					'default'  => __( 'Please enter a valid number.', 'everest-forms' ),
 				),
 				array(
-					'title'    => __( 'reCAPTCHA', 'everest-forms' ),
-					'desc'     => __( 'Enter the message for the valid recaptcha', 'everest-forms' ),
-					'id'       => 'everest_forms_recaptcha_validation',
-					'type'     => 'text',
-					'desc_tip' => true,
-					'css'      => 'min-width: 350px;',
-					'default'  => __( 'Invalid reCaptcha Code.', 'everest-forms' ),
-				),
-				array(
 					'type' => 'sectionend',
 					'id'   => 'validation_options',
 				),

@@ -125,9 +125,9 @@ function evf_update_120_db_rename_options() {
  * Update email settings adding connection data.
  */
 function evf_update_140_db_multiple_email() {
-    $forms = EVF()->form->get( '', array( 'order' => 'DESC' ) );
+	$forms = EVF()->form->get( '', array( 'order' => 'DESC' ) );
 
-    // Loop through each forms.
+	// Loop through each forms.
 	foreach ( $forms as $form ) {
 		$form_id   = isset( $form->ID ) ? $form->ID : '0';
 		$form_data = ! empty( $form->post_content ) ? evf_decode( $form->post_content ) : '';
@@ -136,19 +136,19 @@ function evf_update_140_db_multiple_email() {
 			$email = (array) $form_data['settings']['email'];
 
 			// New email conn.
-			$new_email = array();
+			$new_email                    = array();
 			$new_email['connection_name'] = esc_html__( 'Admin Notification', 'everest-forms' );
-			$new_email = array_merge( $new_email, $email );
+			$new_email                    = array_merge( $new_email, $email );
 
 			// Unset previous email data structure.
-   			$email_settings = array( 'evf_send_confirmation_email', 'evf_user_to_email', 'evf_user_email_subject', 'evf_user_email_message', 'attach_pdf_to_user_email' );
-   			foreach ( $email_settings as $email_setting ) {
-   				unset( $email_setting );
-   			}
+			$email_settings = array( 'evf_send_confirmation_email', 'evf_user_to_email', 'evf_user_email_subject', 'evf_user_email_message', 'attach_pdf_to_user_email' );
+			foreach ( $email_settings as $email_setting ) {
+				unset( $email_setting );
+			}
 
-   			// Maintain the multiple-email connections data structure.
-   			if ( ! isset( $form_data['settings']['email']['connection_1'] ) ) {
-				$unique_connection_id = sprintf( 'connection_%s', uniqid() );
+			// Maintain the multiple-email connections data structure.
+			if ( ! isset( $form_data['settings']['email']['connection_1'] ) ) {
+				$unique_connection_id           = sprintf( 'connection_%s', uniqid() );
 				$form_data['settings']['email'] = array( 'connection_1' => $new_email );
 
 				if ( isset( $email['evf_send_confirmation_email'] ) && '1' === $email['evf_send_confirmation_email'] ) {
@@ -163,7 +163,7 @@ function evf_update_140_db_multiple_email() {
 					);
 				}
 
-				if ( isset( $email['attach_pdf_to_user_email'] ) && '1' === $email['attach_pdf_to_user_email'] ){
+				if ( isset( $email['attach_pdf_to_user_email'] ) && '1' === $email['attach_pdf_to_user_email'] ) {
 					$form_data['settings']['email'][ $unique_connection_id ]['attach_pdf_to_admin_email'] = '1';
 				}
 
@@ -199,4 +199,18 @@ function evf_update_130_db_version() {
  */
 function evf_update_140_db_version() {
 	EVF_Install::update_db_version( '1.4.0' );
+}
+
+/**
+ * Delete global reCAPTCHA related options.
+ */
+function evf_update_144_delete_options() {
+	delete_option( 'everest_forms_recaptcha_validation' );
+}
+
+/**
+ * Update DB Version.
+ */
+function evf_update_144_db_version() {
+	EVF_Install::update_db_version( '1.4.4' );
 }
