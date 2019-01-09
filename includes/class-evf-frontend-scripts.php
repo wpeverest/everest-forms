@@ -232,19 +232,6 @@ class EVF_Frontend_Scripts {
 				self::enqueue_style( $handle, $args['src'], $args['deps'], $args['version'], $args['media'], $args['has_rtl'] );
 			}
 		}
-
-		// Load reCAPTCHA support if form supports it.
-		$site_key   = get_option( 'everest_forms_recaptcha_site_key' );
-		$secret_key = get_option( 'everest_forms_recaptcha_site_secret' );
-		if ( $site_key && $secret_key ) {
-			$recaptcha_api    = apply_filters( 'everest_forms_frontend_recaptcha_url', 'https://www.google.com/recaptcha/api.js?onload=EVFRecaptchaLoad&render=explicit' );
-			$recaptch_inline  = 'var EVFRecaptchaLoad = function(){jQuery(".g-recaptcha").each(function(index, el){grecaptcha.render(el,{callback:function(){EVFRecaptchaCallback(el);}},true);});};';
-			$recaptch_inline .= 'var EVFRecaptchaCallback = function(el){jQuery(el).parent().find(".evf-recaptcha-hidden").val("1").valid();};';
-
-			// Enqueue reCaptcha scripts.
-			wp_enqueue_script( 'evf-recaptcha', $recaptcha_api, array( 'jquery' ), '2.0.0', true  );
-			wp_add_inline_script( 'evf-recaptcha', $recaptch_inline );
-		}
 	}
 
 	/**
