@@ -4,7 +4,7 @@ Tags: contact form, form, form builder, contact, custom form
 Requires at least: 4.0
 Tested up to: 5.0
 Requires PHP: 5.4
-Stable tag: 1.4.3
+Stable tag: 1.4.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -108,6 +108,9 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 12. Advance Form
 
 == Changelog ==
+
+= 1.4.4 - 09-01-2018 =
+* Fix - Google reCAPTCHA conflict with others plugins.
 
 = 1.4.3 - 21-12-2018 =
 * Fix - Uncaught TypeError Flatpicker JS console error.
