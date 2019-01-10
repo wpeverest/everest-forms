@@ -42,8 +42,6 @@ class EVF_Forms_Features {
 			'EVF_Field_Payment_Checkbox',
 			'EVF_Field_Payment_Total',
 			'EVF_Field_Rating',
-			'EVF_Field_Likert',
-			'EVF_Field_Scale_Rating',
 		);
 
 		return array_merge( $fields, $pro_fields );
