@@ -347,14 +347,16 @@
 				clone.find('input[type="text"]').val('');
 				var ul = $(this).closest('.evf-choices-list');
 				var field_id = ul.attr('data-field-id');
-				var total_list = ul.find('li').length;
-				total_list++;
+				var next_id = ul.attr('data-next-id');
+
 				clone.find('input[type="checkbox"],input[type="radio"]').prop('checked', false);
-				clone.attr('data-key', total_list);
-				clone.find('.default').attr('name', 'form_fields[' + field_id + '][choices][' + total_list + '][default]');
-				clone.find('.label').attr('name', 'form_fields[' + field_id + '][choices][' + total_list + '][label]');
-				clone.find('.value').attr('name', 'form_fields[' + field_id + '][choices][' + total_list + '][value]');
+				clone.attr('data-key', next_id);
+				clone.find('.default').attr('name', 'form_fields[' + field_id + '][choices][' + next_id + '][default]');
+				clone.find('.label').attr('name', 'form_fields[' + field_id + '][choices][' + next_id + '][label]');
+				clone.find('.value').attr('name', 'form_fields[' + field_id + '][choices][' + next_id + '][value]');
 				$(this).closest('li').after(clone);
+				next_id++;
+				$( this ).closest('.evf-choices-list').attr('data-next-id',next_id);
 				EVFPanelBuilder.choiceChange(field_id);
 			});
 			$('body').on('click', '.evf-choices-list a.remove', function () {
