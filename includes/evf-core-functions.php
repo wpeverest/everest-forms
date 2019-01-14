@@ -1767,6 +1767,7 @@ function evf_get_fields_groups() {
 			'general'  => __( 'General Fields', 'everest-forms' ),
 			'advanced' => __( 'Advanced Fields', 'everest-forms' ),
 			'payment'  => __( 'Payment Fields', 'everest-forms' ),
+			'survey'   => __( 'Survey Fields', 'everest-forms' ),
 		)
 	);
 }
