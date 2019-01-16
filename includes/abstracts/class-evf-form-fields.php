@@ -265,6 +265,7 @@ abstract class EVF_Form_Fields {
 				}
 				$output .= '</select>';
 				break;
+
 		} // End switch().
 
 		if ( $echo ) {
@@ -707,6 +708,7 @@ abstract class EVF_Form_Fields {
 				if ( is_callable( array( $this, $option ) ) ) {
 					$this->{$option}( $field );
 				}
+				do_action( 'everest_forms_field_options_' . $option, $this, $field, $args );
 				break;
 
 		} // End switch().
