@@ -1,11 +1,21 @@
-module.exports = {
-	entry: './assets/js/admin/gutenberg/form-block.js',
+/**
+ * External dependencies
+ */
+const path = require("path");
+const NODE_ENV = process.env.NODE_ENV || "development";
+
+const webpackConfig = {
+	mode: NODE_ENV,
+	entry: {
+		"form-block": './assets/js/admin/gutenberg/form-block.js'
+	},
 	output: {
-		path: __dirname,
-		filename: 'assets/js/admin/gutenberg/form-block.min.js',
+		path: path.resolve(__dirname, "assets/js/admin/gutenberg"),
+		filename: "[name].min.js",
+		libraryTarget: "this"
 	},
 	module: {
-		loaders: [
+		rules: [
 			{
 				test: /.js$/,
 				loader: 'babel-loader',
@@ -14,3 +24,9 @@ module.exports = {
 		],
 	},
 };
+
+if (webpackConfig.mode !== "production") {
+	webpackConfig.devtool = process.env.SOURCEMAP || "source-map";
+}
+
+module.exports = webpackConfig;
