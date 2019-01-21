@@ -1,1 +1,10 @@
 *.min.js
+
+/assets/js/flatpickr/**
+/assets/js/inputmask/**
+/assets/js/jquery-blockui/**
+/assets/js/jquery-confirm/**
+/assets/js/jquery-tiptip/**
+/assets/js/jquery-validate/**
+/assets/js/perfect-scrollbar/**
+/assets/js/selectWoo/**
