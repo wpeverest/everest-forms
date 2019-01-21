@@ -13,7 +13,7 @@
     "build": "cross-env BABEL_ENV=default NODE_ENV=production webpack",
     "watch": "cross-env BABEL_ENV=default webpack --watch",
     "lint:js": "eslint assets/js --ext=js",
-    "git:update-hooks": "rm -r .git/hooks && mkdir -p .git/hooks && node ./node_modules/husky/husky.js install"
+    "git:update-hooks": "rm -r .git/hooks && node ./node_modules/husky/husky.js install"
   },
   "devDependencies": {
     "autoprefixer": "~9.4.2",
