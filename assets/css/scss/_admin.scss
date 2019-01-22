@@ -357,8 +357,7 @@
 					.everest-forms-field-option-group-toggle {
 						background-color: $accordion-bg;
 						border-bottom: 1px solid #E0E3E6;
-						margin-bottom: 15px;
-    					padding-bottom: 15px;
+    					padding: 15px 0;
 						font-size: 14px;
 						font-weight: 600;
 						display: block;
@@ -366,8 +365,7 @@
 					}
 
 					.everest-forms-field-option-group-inner {
-						padding-bottom: 15px;
-						margin-bottom: 15px;
+						padding: 15px 0;
 						border-bottom: 1px solid #E0E3E6;
 					}
 				}
@@ -1300,9 +1298,14 @@
 	}
 
 	.everest-forms-border-container {
-		margin: 30px 0;
+		margin-top: 5px;
+		margin-bottom: 20px;
 		padding: 0 20px 20px;
 		border: 1px solid #ddd;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
 
 		.everest-forms-border-container-title {
 			padding: 0 10px;
