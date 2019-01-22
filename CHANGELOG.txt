@@ -1,5 +1,11 @@
 == Changelog ==
 
+= 1.4.5 - XX-XX-2019 =
+* Fix - Smart tag design issue on tinyMCE.
+* Tweak - Hide preview suffix on customize preview.
+* Tweak - Correctly set webpack mode to minify builds.
+* Dev - New pre-commit hook for PHP, JS, CSS.
+
 = 1.4.4 - 09-01-2018 =
 * Fix - Google reCAPTCHA conflict with others plugins.
 

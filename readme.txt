@@ -4,7 +4,7 @@ Tags: contact form, form, form builder, contact, custom form
 Requires at least: 4.0
 Tested up to: 5.0
 Requires PHP: 5.4
-Stable tag: 1.4.4
+Stable tag: 1.4.5
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -108,6 +108,12 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 12. Advance Form
 
 == Changelog ==
+
+= 1.4.5 - XX-XX-2019 =
+* Fix - Smart tag design issue on tinyMCE.
+* Tweak - Hide preview suffix on customize preview.
+* Tweak - Correctly set webpack mode to minify builds.
+* Dev - New pre-commit hook for PHP, JS, CSS.
 
 = 1.4.4 - 09-01-2018 =
 * Fix - Google reCAPTCHA conflict with others plugins.
