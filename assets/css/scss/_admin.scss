@@ -1298,6 +1298,20 @@
 			font-size: 302x !important;
 		}
 	}
+
+	.everest-forms-border-container {
+		margin: 30px 0;
+		padding: 0 20px 20px;
+		border: 1px solid #ddd;
+
+		.everest-forms-border-container-title {
+			padding: 0 10px;
+			margin: 0 0 10px -10px;
+			background: #f8f9fa;
+			display: inline-block;
+			transform: translateY(-50%);
+		}
+	}
 }
 
 #everest-forms-panel-settings {
