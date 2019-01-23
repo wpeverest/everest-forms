@@ -19,7 +19,7 @@ class EVF_Field_Rating extends EVF_Form_Fields {
 	public function __construct() {
 		$this->name   = esc_html__( 'Rating', 'everest-forms' );
 		$this->type   = 'rating';
-		$this->icon   = 'evf-icon';
+		$this->icon   = 'evf-icon evf-icon-star';
 		$this->order  = 200;
 		$this->group  = 'advanced';
 		$this->is_pro = true;

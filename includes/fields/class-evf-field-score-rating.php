@@ -19,7 +19,7 @@ class EVF_Field_Scale_Rating extends EVF_Form_Fields {
 	public function __construct() {
 		$this->name   = esc_html__( 'Score Rating', 'everest-forms' );
 		$this->type   = 'score-rating';
-		$this->icon   = 'evf-icon';
+		$this->icon   = 'evf-icon evf-icon-scale-rating';
 		$this->order  = 220;
 		$this->group  = 'advanced';
 		$this->is_pro = true;
