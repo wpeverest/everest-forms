@@ -55,6 +55,7 @@ jQuery( function ( $ ) {
 				$this.validate({
 					errorClass: 'evf-error',
 					validClass: 'evf-valid',
+					ignore: "",
 					errorPlacement: function( error, element ) {
 						if ( 'radio' === element.attr( 'type' ) || 'checkbox' === element.attr( 'type' ) ) {
 							element.parent().parent().parent().append( error );
