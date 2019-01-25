@@ -15,7 +15,7 @@ jQuery( function ( $ ) {
 			this.load_validation();
 
 			// Inline validation
-			this.$everest_form.on( 'input validate change', '.input-text, select, input:checkbox', this.validate_field );
+			this.$everest_form.on( 'input validate change', '.input-text, select, input:checkbox, input:radio', this.validate_field );
 		},
 		init_inputMask: function() {
 			if ( typeof $.fn.inputmask !== 'undefined' ) {
@@ -58,7 +58,11 @@ jQuery( function ( $ ) {
 					ignore: "",
 					errorPlacement: function( error, element ) {
 						if ( 'radio' === element.attr( 'type' ) || 'checkbox' === element.attr( 'type' ) ) {
-							element.parent().parent().parent().append( error );
+							if( element.hasClass( 'everest-forms-likert-field-option' ) ) {
+								element.closest('tr').children('th').append( error );
+							} else {
+								element.parent().parent().parent().append( error );
+							}
 						} else if ( element.is( 'select' ) && element.attr( 'class' ).match( /date-month|date-day|date-year/ ) ) {
 							if ( element.parent().find( 'label.evf-error:visible' ).length === 0 ) {
 								element.parent().find( 'select:last' ).after( error );
@@ -100,6 +104,7 @@ jQuery( function ( $ ) {
 			});
 		},
 		validate_field: function ( e ) {
+
 			var $this             = $( this ),
 				$parent           = $this.closest( '.form-row' ),
 				validated         = true,
@@ -114,7 +119,12 @@ jQuery( function ( $ ) {
 			if ( 'validate' === event_type || 'change' === event_type ) {
 
 				if ( validate_required ) {
-					if ( 'checkbox' === $this.attr( 'type' ) && ! $this.is( ':checked' ) ) {
+					if ( $this.hasClass( 'everest-forms-likert-field-option' ) ) {
+						if ( $parent.find('input.evf-error').length > 0 ) {
+							$parent.removeClass( 'everest-forms-validated' ).addClass( 'everest-forms-invalid everest-forms-invalid-required-field' );
+							validated = false;
+						}
+					} else if ( 'checkbox' === $this.attr( 'type' ) && ! $this.is( ':checked' ) ) {
 						$parent.removeClass( 'everest-forms-validated' ).addClass( 'everest-forms-invalid everest-forms-invalid-required-field' );
 						validated = false;
 					} else if ( $this.val() === '' ) {
