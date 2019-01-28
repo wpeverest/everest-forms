@@ -29,6 +29,5 @@ if ( ! function_exists( 'is_ajax' ) ) {
  * @return bool
  */
 function evf_is_json( $string ) {
-	json_decode( $string );
-	return ( json_last_error() == JSON_ERROR_NONE );
+	return is_object( json_decode( $string ) );
 }
