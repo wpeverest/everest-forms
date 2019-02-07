@@ -11,10 +11,10 @@
 defined( 'ABSPATH' ) || exit;
 
 // Include core functions (available in both admin and frontend).
-include EVF_ABSPATH . 'includes/evf-conditional-functions.php';
+require EVF_ABSPATH . 'includes/evf-conditional-functions.php';
 require EVF_ABSPATH . 'includes/evf-deprecated-functions.php';
-include EVF_ABSPATH . 'includes/evf-formatting-functions.php';
-include EVF_ABSPATH . 'includes/evf-entry-functions.php';
+require EVF_ABSPATH . 'includes/evf-formatting-functions.php';
+require EVF_ABSPATH . 'includes/evf-entry-functions.php';
 
 /**
  * Define a constant if it is not already defined.
@@ -93,7 +93,7 @@ function evf_get_template( $template_name, $args = array(), $template_path = '',
 
 	do_action( 'everest_forms_before_template_part', $template_name, $template_path, $located, $args );
 
-	include( $located );
+	include $located;
 
 	do_action( 'everest_forms_after_template_part', $template_name, $template_path, $located, $args );
 }
@@ -170,7 +170,7 @@ function evf_locate_template( $template_name, $template_path = '', $default_path
  * @param string $headers     (default: "Content-Type: text/html\r\n")
  * @param string $attachments (default: "")
  */
-function evf_mail( $to, $subject, $message, $headers = "Content-Type: text/html\r\n", $attachments = "" ) {
+function evf_mail( $to, $subject, $message, $headers = "Content-Type: text/html\r\n", $attachments = '' ) {
 	$mailer = EVF()->mailer();
 
 	$mailer->send( $to, $subject, $message, $headers, $attachments );
@@ -275,13 +275,15 @@ function evf_get_csv_file_name( $handle ) {
  * @return int[]
  */
 function evf_get_page_children( $page_id ) {
-	$page_ids = get_posts( array(
-		'post_parent' => $page_id,
-		'post_type'   => 'page',
-		'numberposts' => - 1,
-		'post_status' => 'any',
-		'fields'      => 'ids',
-	) );
+	$page_ids = get_posts(
+		array(
+			'post_parent' => $page_id,
+			'post_type'   => 'page',
+			'numberposts' => - 1,
+			'post_status' => 'any',
+			'fields'      => 'ids',
+		)
+	);
 
 	if ( ! empty( $page_ids ) ) {
 		foreach ( $page_ids as $page_id ) {
@@ -294,6 +296,7 @@ function evf_get_page_children( $page_id ) {
 
 /**
  * Get user agent string.
+ *
  * @since      1.0.0
  * @return string
  */
@@ -348,6 +351,7 @@ function evf_rand_hash() {
 
 /**
  * Find all possible combinations of values from the input array and return in a logical order.
+ *
  * @since      1.0.0
  *
  * @param array $input
@@ -430,13 +434,13 @@ function evf_transaction_query( $type = 'start' ) {
 
 	if ( EVF_USE_TRANSACTIONS ) {
 		switch ( $type ) {
-			case 'commit' :
+			case 'commit':
 				$wpdb->query( 'COMMIT' );
 				break;
-			case 'rollback' :
+			case 'rollback':
 				$wpdb->query( 'ROLLBACK' );
 				break;
-			default :
+			default:
 				$wpdb->query( 'START TRANSACTION' );
 				break;
 		}
@@ -475,13 +479,13 @@ function evf_help_tip( $tip, $allow_html = false ) {
 
 /**
  * Wrapper for set_time_limit to see if it is enabled.
- * @since      1.0.0
  *
- * @param int $limit
+ * @since 1.0.0
+ * @param int $limit Time limit.
  */
 function evf_set_time_limit( $limit = 0 ) {
-	if ( function_exists( 'set_time_limit' ) && false === strpos( ini_get( 'disable_functions' ), 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
-		@set_time_limit( $limit );
+	if ( function_exists( 'set_time_limit' ) && false === strpos( ini_get( 'disable_functions' ), 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) { // phpcs:ignore PHPCompatibility.IniDirectives.RemovedIniDirectives.safe_modeDeprecatedRemoved
+		@set_time_limit( $limit ); // @codingStandardsIgnoreLine
 	}
 }
 
@@ -556,10 +560,22 @@ function evf_get_logger() {
  */
 function evf_print_r( $expression, $return = false ) {
 	$alternatives = array(
-		array( 'func' => 'print_r', 'args' => array( $expression, true ) ),
-		array( 'func' => 'var_export', 'args' => array( $expression, true ) ),
-		array( 'func' => 'json_encode', 'args' => array( $expression ) ),
-		array( 'func' => 'serialize', 'args' => array( $expression ) ),
+		array(
+			'func' => 'print_r',
+			'args' => array( $expression, true ),
+		),
+		array(
+			'func' => 'var_export',
+			'args' => array( $expression, true ),
+		),
+		array(
+			'func' => 'json_encode',
+			'args' => array( $expression ),
+		),
+		array(
+			'func' => 'serialize',
+			'args' => array( $expression ),
+		),
 	);
 
 	$alternatives = apply_filters( 'everest_forms_print_r_alternatives', $alternatives, $expression );
@@ -1066,11 +1082,11 @@ function evf_crypto_rand_secure( $min, $max ) {
  * @return string
  */
 function evf_get_random_string( $length = 10 ) {
-	$string       = "";
-	$codeAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	$codeAlphabet .= "abcdefghijklmnopqrstuvwxyz";
-	$codeAlphabet .= "0123456789";
-	$max          = strlen( $codeAlphabet ); // edited
+	$string        = '';
+	$codeAlphabet  = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	$codeAlphabet .= 'abcdefghijklmnopqrstuvwxyz';
+	$codeAlphabet .= '0123456789';
+	$max           = strlen( $codeAlphabet ); // edited
 	for ( $i = 0; $i < $length; $i ++ ) {
 		$string .= $codeAlphabet[ evf_crypto_rand_secure( 0, $max - 1 ) ];
 	}
@@ -1085,8 +1101,8 @@ function evf_get_random_string( $length = 10 ) {
  * @return array of form data.
  */
 function evf_get_all_forms( $skip_disabled_entries = false ) {
-	$forms     = array();
-	$form_ids  = wp_parse_id_list(
+	$forms    = array();
+	$form_ids = wp_parse_id_list(
 		get_posts(
 			array(
 				'post_type'   => 'everest_form',
@@ -1149,81 +1165,81 @@ function evf_get_ip_address() {
  * @return array
  */
 function evf_get_browser() {
-    $u_agent  = $_SERVER['HTTP_USER_AGENT'];
-    $bname    = 'Unknown';
-    $platform = 'Unknown';
-    $version  = '';
+	$u_agent  = $_SERVER['HTTP_USER_AGENT'];
+	$bname    = 'Unknown';
+	$platform = 'Unknown';
+	$version  = '';
 
-    // First get the platform.
-    if ( preg_match( '/linux/i', $u_agent ) ) {
-        $platform = 'Linux';
-    } elseif ( preg_match( '/macintosh|mac os x/i', $u_agent ) ) {
-        $platform = 'MAC OS';
-    } elseif ( preg_match( '/windows|win32/i', $u_agent ) ) {
-        $platform = 'Windows';
-    }
+	// First get the platform.
+	if ( preg_match( '/linux/i', $u_agent ) ) {
+		$platform = 'Linux';
+	} elseif ( preg_match( '/macintosh|mac os x/i', $u_agent ) ) {
+		$platform = 'MAC OS';
+	} elseif ( preg_match( '/windows|win32/i', $u_agent ) ) {
+		$platform = 'Windows';
+	}
 
-    // Next get the name of the useragent yes seperately and for good reason.
-    if ( preg_match( '/MSIE/i',$u_agent ) && ! preg_match( '/Opera/i',$u_agent ) ) {
-        $bname = 'Internet Explorer';
-        $ub    = 'MSIE';
-    } elseif ( preg_match( '/Trident/i',$u_agent ) ) {
-        // this condition is for IE11
-        $bname = 'Internet Explorer';
-        $ub = 'rv';
-    } elseif ( preg_match( '/Firefox/i',$u_agent ) ) {
-        $bname = 'Mozilla Firefox';
-        $ub = 'Firefox';
-    } elseif ( preg_match( '/Chrome/i',$u_agent ) ) {
-        $bname = 'Google Chrome';
-        $ub = 'Chrome';
-    } elseif ( preg_match( '/Safari/i',$u_agent ) ) {
-        $bname = 'Apple Safari';
-        $ub = 'Safari';
-    } elseif ( preg_match( '/Opera/i',$u_agent ) ) {
-        $bname = 'Opera';
-        $ub = 'Opera';
-    } elseif ( preg_match( '/Netscape/i',$u_agent ) ) {
-        $bname = 'Netscape';
-        $ub = 'Netscape';
-    }
+	// Next get the name of the useragent yes seperately and for good reason.
+	if ( preg_match( '/MSIE/i', $u_agent ) && ! preg_match( '/Opera/i', $u_agent ) ) {
+		$bname = 'Internet Explorer';
+		$ub    = 'MSIE';
+	} elseif ( preg_match( '/Trident/i', $u_agent ) ) {
+		// this condition is for IE11
+		$bname = 'Internet Explorer';
+		$ub    = 'rv';
+	} elseif ( preg_match( '/Firefox/i', $u_agent ) ) {
+		$bname = 'Mozilla Firefox';
+		$ub    = 'Firefox';
+	} elseif ( preg_match( '/Chrome/i', $u_agent ) ) {
+		$bname = 'Google Chrome';
+		$ub    = 'Chrome';
+	} elseif ( preg_match( '/Safari/i', $u_agent ) ) {
+		$bname = 'Apple Safari';
+		$ub    = 'Safari';
+	} elseif ( preg_match( '/Opera/i', $u_agent ) ) {
+		$bname = 'Opera';
+		$ub    = 'Opera';
+	} elseif ( preg_match( '/Netscape/i', $u_agent ) ) {
+		$bname = 'Netscape';
+		$ub    = 'Netscape';
+	}
 
-    // Finally get the correct version number.
-    // Added "|:"
-    $known = array( 'Version', $ub, 'other' );
-    $pattern = '#(?<browser>' . join( '|', $known ) .
-     ')[/|: ]+(?<version>[0-9.|a-zA-Z.]*)#';
-    if ( ! preg_match_all( $pattern, $u_agent, $matches ) ) {
-        // We have no matching number just continue.
-    }
+	// Finally get the correct version number.
+	// Added "|:"
+	$known   = array( 'Version', $ub, 'other' );
+	$pattern = '#(?<browser>' . join( '|', $known ) .
+	 ')[/|: ]+(?<version>[0-9.|a-zA-Z.]*)#';
+	if ( ! preg_match_all( $pattern, $u_agent, $matches ) ) {
+		// We have no matching number just continue.
+	}
 
-    // See how many we have.
-    $i = count( $matches['browser'] );
+	// See how many we have.
+	$i = count( $matches['browser'] );
 
-    if ( $i != 1 ) {
-        // we will have two since we are not using 'other' argument yet.
-        // see if version is before or after the name.
-        if ( strripos( $u_agent,'Version' ) < strripos( $u_agent,$ub ) ) {
-            $version = $matches['version'][0];
-        } else {
-            $version = $matches['version'][1];
-        }
-    } else {
-        $version = $matches['version'][0];
-    }
+	if ( $i != 1 ) {
+		// we will have two since we are not using 'other' argument yet.
+		// see if version is before or after the name.
+		if ( strripos( $u_agent, 'Version' ) < strripos( $u_agent, $ub ) ) {
+			$version = $matches['version'][0];
+		} else {
+			$version = $matches['version'][1];
+		}
+	} else {
+		$version = $matches['version'][0];
+	}
 
-    // Check if we have a number.
-    if ( $version == null || $version == '' ) {
-        $version = '';
-    }
+	// Check if we have a number.
+	if ( $version == null || $version == '' ) {
+		$version = '';
+	}
 
-    return array(
-        'userAgent' => $u_agent,
-        'name'      => $bname,
-        'version'   => $version,
-        'platform'  => $platform,
-        'pattern'   => $pattern
-    );
+	return array(
+		'userAgent' => $u_agent,
+		'name'      => $bname,
+		'version'   => $version,
+		'platform'  => $platform,
+		'pattern'   => $pattern,
+	);
 }
 
 /**
@@ -1267,11 +1283,11 @@ function evf_get_day_period_date( $period, $timestamp = '', $format = 'Y-m-d H:i
  */
 function evf_get_form_data_by_meta_key( $form_id, $meta_key ) {
 	$get_post     = get_post( $form_id );
-	$post_content = json_decode( $get_post->post_content, true ) ;
+	$post_content = json_decode( $get_post->post_content, true );
 	$form_fields  = isset( $post_content['form_fields'] ) ? $post_content['form_fields'] : array();
 
 	if ( ! empty( $form_fields ) ) {
-		foreach( $form_fields as $field ) {
+		foreach ( $form_fields as $field ) {
 			if ( isset( $field['meta-key'] ) && $meta_key == $field['meta-key'] ) {
 				return $field['label'];
 			}
@@ -1433,9 +1449,13 @@ function evf_get_license_plan() {
 		$license_data = get_transient( 'evf_pro_license_plan' );
 
 		if ( false === $license_data ) {
-			$license_data = json_decode( EVF_Updater_Key_API::check( array(
-				'license' => $license_key,
-			) ) );
+			$license_data = json_decode(
+				EVF_Updater_Key_API::check(
+					array(
+						'license' => $license_key,
+					)
+				)
+			);
 
 			if ( ! empty( $license_data->item_plan ) ) {
 				set_transient( 'evf_pro_license_plan', $license_data, WEEK_IN_SECONDS );
@@ -1456,7 +1476,7 @@ function evf_get_license_plan() {
  * @return string
  */
 function evf_decode_string( $string ) {
-	if ( ! is_string( $string) ) {
+	if ( ! is_string( $string ) ) {
 		return $string;
 	}
 
@@ -1732,7 +1752,8 @@ function evf_get_countries() {
  */
 function evf_get_fields_groups() {
 	return (array) apply_filters(
-		'everest_forms_builder_fields_groups', array(
+		'everest_forms_builder_fields_groups',
+		array(
 			'general'  => __( 'General Fields', 'everest-forms' ),
 			'advanced' => __( 'Advanced Fields', 'everest-forms' ),
 			'payment'  => __( 'Payment Fields', 'everest-forms' ),
@@ -1758,7 +1779,7 @@ function evf_get_fields_group( $type = '' ) {
  */
 function evf_get_all_fields_settings() {
 	$settings = array(
-		'label' => array(
+		'label'         => array(
 			'id'       => 'label',
 			'title'    => __( 'Label', 'everest-forms' ),
 			'desc'     => __( 'Enter text for the form field label.', 'everest-forms' ),
@@ -1766,7 +1787,7 @@ function evf_get_all_fields_settings() {
 			'type'     => 'text',
 			'desc_tip' => true,
 		),
-		'meta' => array(
+		'meta'          => array(
 			'id'       => 'meta-key',
 			'title'    => __( 'Meta Key', 'everest-forms' ),
 			'desc'     => __( 'Enter meta key to be stored in database.', 'everest-forms' ),
@@ -1774,15 +1795,15 @@ function evf_get_all_fields_settings() {
 			'type'     => 'text',
 			'desc_tip' => true,
 		),
-		'description'     => array(
-			'id'          => 'description',
-			'title'       => __( 'Description', 'everest-forms' ),
-			'type'        => 'textarea',
-			'desc' => __( 'Enter text for the form field description.', 'everest-forms' ),
-			'default'     => '',
-			'desc_tip'    => true,
+		'description'   => array(
+			'id'       => 'description',
+			'title'    => __( 'Description', 'everest-forms' ),
+			'type'     => 'textarea',
+			'desc'     => __( 'Enter text for the form field description.', 'everest-forms' ),
+			'default'  => '',
+			'desc_tip' => true,
 		),
-		'required' => array(
+		'required'      => array(
 			'id'       => 'require',
 			'title'    => __( 'Required', 'everest-forms' ),
 			'type'     => 'checkbox',
@@ -1790,7 +1811,7 @@ function evf_get_all_fields_settings() {
 			'default'  => 'no',
 			'desc_tip' => true,
 		),
-		'choices' => array(
+		'choices'       => array(
 			'id'       => 'choices',
 			'title'    => __( 'Choices', 'everest-forms' ),
 			'desc'     => __( 'Add choices for the form field.', 'everest-forms' ),
@@ -1802,7 +1823,7 @@ function evf_get_all_fields_settings() {
 				3 => __( 'Third Choice', 'everest-forms' ),
 			),
 		),
-		'placeholder' => array(
+		'placeholder'   => array(
 			'id'       => 'placeholder',
 			'title'    => __( 'Placeholder Text', 'everest-forms' ),
 			'desc'     => __( 'Enter text for the form field placeholder.', 'everest-forms' ),
@@ -1810,7 +1831,7 @@ function evf_get_all_fields_settings() {
 			'type'     => 'text',
 			'desc_tip' => true,
 		),
-		'css' => array(
+		'css'           => array(
 			'id'       => 'css',
 			'title'    => __( 'CSS Classes', 'everest-forms' ),
 			'desc'     => __( 'Enter CSS class for this field container. Class names should be separated with spaces.', 'everest-forms' ),
@@ -1818,21 +1839,21 @@ function evf_get_all_fields_settings() {
 			'type'     => 'text',
 			'desc_tip' => true,
 		),
-		'label_hide' => array(
-			'id'      => 'label_hide',
-			'title'   => __( 'Hide Label', 'everest-forms' ),
-			'type'    => 'checkbox',
-			'desc'    => __( 'Check this option to hide the form field label.', 'everest-forms' ),
-			'default' => 'no',
-			'desc_tip'    => true,
+		'label_hide'    => array(
+			'id'       => 'label_hide',
+			'title'    => __( 'Hide Label', 'everest-forms' ),
+			'type'     => 'checkbox',
+			'desc'     => __( 'Check this option to hide the form field label.', 'everest-forms' ),
+			'default'  => 'no',
+			'desc_tip' => true,
 		),
 		'sublabel_hide' => array(
-			'id'      => 'sublabel_hide',
-			'title'   => __( 'Hide Sub-Labels', 'everest-forms' ),
-			'type'    => 'checkbox',
-			'desc'    => __( 'Check this option to hide the form field sub-label.', 'everest-forms' ),
-			'default' => 'no',
-			'desc_tip'    => true,
+			'id'       => 'sublabel_hide',
+			'title'    => __( 'Hide Sub-Labels', 'everest-forms' ),
+			'type'     => 'checkbox',
+			'desc'     => __( 'Check this option to hide the form field sub-label.', 'everest-forms' ),
+			'default'  => 'no',
+			'desc_tip' => true,
 		),
 	);
 
@@ -1851,7 +1872,7 @@ function evf_has_date_field( $form_id ) {
 	$form_data = ! empty( $form_obj->post_content ) ? evf_decode( $form_obj->post_content ) : '';
 
 	if ( ! empty( $form_data['form_fields'] ) ) {
-		foreach( $form_data['form_fields'] as $form_field ) {
+		foreach ( $form_data['form_fields'] as $form_field ) {
 			if ( 'date' === $form_field['type'] ) {
 				return true;
 			}
