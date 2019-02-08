@@ -61,6 +61,7 @@ class EVF_Admin_Entries {
 			<hr class="wp-header-end">
 
 			<?php settings_errors(); ?>
+			<?php do_action( 'everest_forms_before_entry_list', $entries_table_list ); ?>
 
 			<?php if ( 0 < $count ) : ?>
 				<form id="entries-list" method="post">
@@ -83,10 +84,10 @@ class EVF_Admin_Entries {
 								$entries_table_list->forms_dropdown();
 								$output = ob_get_clean();
 
-								if ( ! empty( $output ) ) {
-									echo $output;
-									submit_button( __( 'Filter', 'everest-forms' ), '', '', false, array( 'id' => 'post-query-submit' ) );
-								}
+							if ( ! empty( $output ) ) {
+								echo $output;
+								submit_button( __( 'Filter', 'everest-forms' ), '', '', false, array( 'id' => 'post-query-submit' ) );
+							}
 							?>
 						</form>
 					<?php else : ?>
@@ -148,7 +149,17 @@ class EVF_Admin_Entries {
 			}
 		}
 
-		wp_redirect( esc_url_raw( add_query_arg( array( 'form_id' => $form_id, 'trashed' => 1 ), admin_url( 'admin.php?page=evf-entries' ) ) ) );
+		wp_redirect(
+			esc_url_raw(
+				add_query_arg(
+					array(
+						'form_id' => $form_id,
+						'trashed' => 1,
+					),
+					admin_url( 'admin.php?page=evf-entries' )
+				)
+			)
+		);
 		exit();
 	}
 
@@ -168,7 +179,17 @@ class EVF_Admin_Entries {
 			}
 		}
 
-		wp_redirect( esc_url_raw( add_query_arg( array( 'form_id' => $form_id, 'untrashed' => 1 ), admin_url( 'admin.php?page=evf-entries' ) ) ) );
+		wp_redirect(
+			esc_url_raw(
+				add_query_arg(
+					array(
+						'form_id'   => $form_id,
+						'untrashed' => 1,
+					),
+					admin_url( 'admin.php?page=evf-entries' )
+				)
+			)
+		);
 		exit();
 	}
 
@@ -188,7 +209,17 @@ class EVF_Admin_Entries {
 			}
 		}
 
-		wp_redirect( esc_url_raw( add_query_arg( array( 'form_id' => $form_id, 'deleted' => 1 ), admin_url( 'admin.php?page=evf-entries' ) ) ) );
+		wp_redirect(
+			esc_url_raw(
+				add_query_arg(
+					array(
+						'form_id' => $form_id,
+						'deleted' => 1,
+					),
+					admin_url( 'admin.php?page=evf-entries' )
+				)
+			)
+		);
 		exit();
 	}
 
