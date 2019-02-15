@@ -33,7 +33,9 @@ class EVF_Admin_Entries {
 	 * Page output.
 	 */
 	public static function page_output() {
-		if ( isset( $_GET['view-entry'] ) ) {
+		if ( apply_filters( 'everest_forms_entries_list_actions', false ) ) {
+			do_action( 'everest_forms_entries_list_actions_execute' );
+		} elseif ( isset( $_GET['view-entry'] ) ) {
 			$form_id  = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0; // WPCS: input var okay, CSRF ok.
 			$entry_id = isset( $_GET['view-entry'] ) ? absint( $_GET['view-entry'] ) : 0; // WPCS: input var okay, CSRF ok.
 			$entry    = evf_get_entry( $entry_id );
