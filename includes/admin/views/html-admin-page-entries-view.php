@@ -49,29 +49,38 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 											$meta_value = $meta_value['value'];
 										}
 
-										$field_value = apply_filters( 'everest_forms_html_field_value', $meta_value, $entry_meta[ $meta_key ], $entry_meta, 'entry-single' );
-										$field_class = empty( $field_value ) ? ' empty' : '';
-										$field_style = $hide_empty && empty( $field_value ) ? 'display:none;' : '';
-
+										$field_value     = apply_filters( 'everest_forms_html_field_value', $meta_value, $entry_meta[ $meta_key ], $entry_meta, 'entry-single' );
+										$field_class     = empty( $field_value ) ? ' empty' : '';
+										$field_style     = $hide_empty && empty( $field_value ) ? 'display:none;' : '';
+										$correct_answers = array();
 										// Field name.
-										echo '<tr class="everest-forms-entry-field field-name' . $field_class . '" style="' . $field_style . '"><th><strong>';
+										echo '<tr class="everest-forms-entry-field field-name' . $field_class . '" style="' . $field_style . '"><th>';
 											$value = evf_get_form_data_by_meta_key( $form_id, $meta_key );
 
 										if ( $value ) {
-											echo esc_html( $value );
+											if ( apply_filters( 'everest_forms_html_field_label', false ) ) {
+												$correct_answers = apply_filters( 'everest_forms_single_entry_label', $value, $meta_key, $field_value );
+											} else {
+												echo '<strong>' . esc_html( $value ) . '</strong>';
+											}
 										} else {
-											esc_html_e( 'Field ID', 'everest-forms' );
+											echo '<strong>' . esc_html__( 'Field ID', 'everest-forms' ) . '</strong>';
 										}
-											echo '</strong></th></tr>';
+											echo '</th></tr>';
 
 											// Field value.
 											echo '<tr class="everest-forms-entry-field field-value' . $field_class . '" style="' . $field_style . '"><td>';
 										if ( ! empty( $field_value ) ) {
 											if ( is_serialized( $field_value ) ) {
 												$field_value = maybe_unserialize( $field_value );
-
 												foreach ( $field_value as $field => $value ) {
-													echo '<span class="list">' . wp_strip_all_tags( $value ) . '</span>';
+													$answer_class = '';
+													if ( in_array( $value, $correct_answers, true ) ) {
+														$answer_class = 'correct_answer';
+													} else {
+														$answer_class = 'wrong_answer';
+													}
+													echo '<span class="list ' . $answer_class . '">' . wp_strip_all_tags( $value ) . '</span>';
 												}
 											} else {
 												echo nl2br( make_clickable( $field_value ) );
