@@ -140,6 +140,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Tweak - Hide preview suffix on customize preview.
 * Tweak - Change 'store' to 'site' in update notice.
 * Tweak - Correctly set webpack mode to minify builds.
+* Tweak - Introduced script load action hook for shortcode.
 * Dev - New pre-commit hook for PHP, JS, CSS.
 
 = 1.4.4 - 09-01-2018 =
