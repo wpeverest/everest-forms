@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 ?>
 <div id="message" class="updated everest-forms-message evf-connect">
-	<p><strong><?php esc_html_e( 'Everest Forms data update', 'everest-forms' ); ?></strong> &#8211; <?php esc_html_e( 'We need to update your store database to the latest version.', 'everest-forms' ); ?></p>
+	<p><strong><?php esc_html_e( 'Everest Forms data update', 'everest-forms' ); ?></strong> &#8211; <?php esc_html_e( 'We need to update your site database to the latest version.', 'everest-forms' ); ?></p>
 	<p class="submit"><a href="<?php echo esc_url( add_query_arg( 'do_update_everest_forms', 'true', admin_url( 'admin.php?page=evf-settings' ) ) ); ?>" class="evf-update-now button-primary"><?php esc_html_e( 'Run the updater', 'everest-forms' ); ?></a></p>
 </div>
 <script type="text/javascript">

@@ -509,6 +509,9 @@ class EVF_Shortcode_Form {
 			'output'
 		);
 
+		// Scripts load action.
+		do_action( 'everest_forms_shortcodes_scripts', $atts );
+
 		ob_start();
 
 		self::view( $atts['id'], $atts['title'], $atts['description'] );
