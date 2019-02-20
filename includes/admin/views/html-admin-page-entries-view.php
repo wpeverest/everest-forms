@@ -52,7 +52,7 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 										$field_value     = apply_filters( 'everest_forms_html_field_value', $meta_value, $entry_meta[ $meta_key ], $entry_meta, 'entry-single' );
 										$field_class     = empty( $field_value ) ? ' empty' : '';
 										$field_style     = $hide_empty && empty( $field_value ) ? 'display:none;' : '';
-										$correct_answers = array();
+										$correct_answers = false;
 										// Field name.
 										echo '<tr class="everest-forms-entry-field field-name' . $field_class . '" style="' . $field_style . '"><th>';
 											$value = evf_get_form_data_by_meta_key( $form_id, $meta_key );
@@ -83,7 +83,16 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 													echo '<span class="list ' . $answer_class . '">' . wp_strip_all_tags( $value ) . '</span>';
 												}
 											} else {
-												echo nl2br( make_clickable( $field_value ) );
+												if ( false !== $correct_answers ) {
+													if ( in_array( $field_value, $correct_answers, true ) ) {
+														$answer_class = 'correct_answer';
+													} else {
+														$answer_class = 'wrong_answer';
+													}
+													echo '<span class="list ' . $answer_class . '">' . wp_strip_all_tags( $field_value ) . '</span>';
+												} else {
+													echo nl2br( make_clickable( $field_value ) );
+												}
 											}
 										} else {
 											esc_html_e( 'Empty', 'everest-forms' );
