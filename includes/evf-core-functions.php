@@ -1297,6 +1297,29 @@ function evf_get_form_data_by_meta_key( $form_id, $meta_key ) {
 }
 
 /**
+ * Get field type by meta key
+ *
+ * @param  $form_id  Form ID
+ * @param  $meta_key Field's meta key
+ * @return mixed
+ */
+function evf_get_field_type_by_meta_key( $form_id, $meta_key ) {
+	$get_post     = get_post( $form_id );
+	$post_content = json_decode( $get_post->post_content, true );
+	$form_fields  = isset( $post_content['form_fields'] ) ? $post_content['form_fields'] : array();
+
+	if ( ! empty( $form_fields ) ) {
+		foreach ( $form_fields as $field ) {
+			if ( isset( $field['meta-key'] ) && $meta_key == $field['meta-key'] ) {
+				return $field['type'];
+			}
+		}
+	}
+
+	return false;
+}
+
+/**
  * Get all the email fields of a Form.
  *
  * @param int $form_id
