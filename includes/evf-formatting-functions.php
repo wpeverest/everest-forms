@@ -34,14 +34,50 @@ function evf_bool_to_string( $bool ) {
 }
 
 /**
+ * Add a suffix into an array.
+ *
+ * @since  1.4.5
+ * @param  array  $array  Raw array data.
+ * @param  string $suffix Suffix to be added.
+ * @return array Modified array with suffix added.
+ */
+function evf_suffix_array( $array = array(), $suffix = '' ) {
+	return preg_filter( '/$/', $suffix, $array );
+}
+
+/**
+ * Implode an array into a string by $glue and remove empty values.
+ *
+ * @since  1.4.5
+ * @param  array  $array Array to convert.
+ * @param  string $glue  Delimiter, defaults to ','.
+ * @return string
+ */
+function evf_array_to_string( $array = array(), $glue = ' ' ) {
+	return is_string( $array ) ? $array : implode( $glue, array_filter( $array ) );
+}
+
+/**
  * Explode a string into an array by $delimiter and remove empty values.
  *
- * @param string $string    String to convert.
- * @param string $delimiter Delimiter, defaults to ','.
+ * @param  string $string    String to convert.
+ * @param  string $delimiter Delimiter, defaults to ','.
  * @return array
  */
 function evf_string_to_array( $string, $delimiter = ',' ) {
 	return is_array( $string ) ? $string : array_filter( explode( $delimiter, $string ) );
+}
+
+/**
+ * Format dimensions for display.
+ *
+ * @since  1.4.5
+ * @param  array $dimensions Array of dimensions.
+ * @param  array $suffix     Suffix, defaults to 'px'.
+ * @return string
+ */
+function evf_sanitize_dimension_unit( $dimensions = array(), $unit = 'px' ) {
+	return evf_array_to_string( evf_suffix_array( $dimensions, $unit ) );
 }
 
 /**
@@ -125,7 +161,8 @@ function evf_sanitize_textarea( $var ) {
 function evf_sanitize_tooltip( $var ) {
 	return htmlspecialchars(
 		wp_kses(
-			html_entity_decode( $var ), array(
+			html_entity_decode( $var ),
+			array(
 				'br'     => array(),
 				'em'     => array(),
 				'strong' => array(),
@@ -570,10 +607,13 @@ function evf_parse_relative_date_option( $raw_value ) {
 		'years'  => __( 'Year(s)', 'everest-forms' ),
 	);
 
-	$value = wp_parse_args( (array) $raw_value, array(
-		'number' => '',
-		'unit'   => 'days',
-	) );
+	$value = wp_parse_args(
+		(array) $raw_value,
+		array(
+			'number' => '',
+			'unit'   => 'days',
+		)
+	);
 
 	$value['number'] = ! empty( $value['number'] ) ? absint( $value['number'] ) : '';
 
