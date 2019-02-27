@@ -112,8 +112,8 @@ class EVF_Form_Task {
 				'1' === $form_data['settings']['recaptcha_support']
 			) {
 				if ( ! empty( $_POST['g-recaptcha-response'] ) ) {
-					$data  = wp_remote_get( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $_POST['g-recaptcha-response'] );
-					$data  = json_decode( wp_remote_retrieve_body( $data ) );
+					$data = wp_remote_get( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $_POST['g-recaptcha-response'] );
+					$data = json_decode( wp_remote_retrieve_body( $data ) );
 					if ( empty( $data->success ) ) {
 						evf_add_notice( get_option( 'everest_forms_recaptcha_validation', __( 'Incorrect reCAPTCHA, please try again.', 'everest-forms' ) ), 'error' );
 						return;
@@ -195,7 +195,9 @@ class EVF_Form_Task {
 			evf_add_notice( $e->getMessage(), 'error' );
 		}
 
-		evf_add_notice( isset( $form_data['settings']['successful_form_submission_message'] ) ? $form_data['settings']['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' ), 'success' );
+		$message = isset( $form_data['settings']['successful_form_submission_message'] ) ? $form_data['settings']['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
+		$message = apply_filters( 'everest_forms_frontend_confirmation_message', $message, $form_data );
+		evf_add_notice( $message, 'success' );
 
 		$this->entry_confirmation_redirect( $form_data );
 	}
@@ -249,12 +251,15 @@ class EVF_Form_Task {
 			}
 
 			// Get form
-			$form_data = EVF()->form->get( $form_id, array(
-				'content_only' => true,
-			) );
+			$form_data = EVF()->form->get(
+				$form_id,
+				array(
+					'content_only' => true,
+				)
+			);
 		}
 		$settings = $form_data['settings'];
-		if( isset( $settings['redirect_to'] ) && '1' == $settings['redirect_to'] ) {
+		if ( isset( $settings['redirect_to'] ) && '1' == $settings['redirect_to'] ) {
 			?>
 				<script>
 					var redirect = '<?php echo get_permalink( $settings['custom_page'] ); ?>';
@@ -263,11 +268,11 @@ class EVF_Form_Task {
 				}, 3000 )
 				</script>
 			<?php
-		}
-		else if ( isset( $settings['redirect_to'] ) && '2' == $settings['redirect_to']){
-			?><script>
+		} elseif ( isset( $settings['redirect_to'] ) && '2' == $settings['redirect_to'] ) {
+			?>
+			<script>
 				window.setTimeout( function () {
-					window.location.href = '<?php echo $settings['external_url'];?>';
+					window.location.href = '<?php echo $settings['external_url']; ?>';
 				}, 3000 )
 				</script>
 			<?php
@@ -317,9 +322,9 @@ class EVF_Form_Task {
 		$fields = apply_filters( 'everest_forms_entry_email_data', $fields, $entry, $form_data );
 
 		if ( ! isset( $form_data['settings']['email']['connection_1'] ) ) {
-			$old_email_data = $form_data['settings']['email'];
-			$form_data['settings']['email'] = array();
-			$form_data['settings']['email']['connection_1'] = array( 'connection_name' => __('Admin Notification', 'everest-forms') );
+			$old_email_data                                 = $form_data['settings']['email'];
+			$form_data['settings']['email']                 = array();
+			$form_data['settings']['email']['connection_1'] = array( 'connection_name' => __( 'Admin Notification', 'everest-forms' ) );
 
 			$email_settings = array( 'evf_to_email', 'evf_from_name', 'evf_from_email', 'evf_reply_to', 'evf_email_subject', 'evf_email_message', 'attach_pdf_to_admin_email', 'show_header_in_attachment_pdf_file', 'conditional_logic_status', 'conditional_option', 'conditionals' );
 			foreach ( $email_settings as $email_setting ) {
@@ -336,7 +341,7 @@ class EVF_Form_Task {
 				continue;
 			}
 
-			$email = array();
+			$email        = array();
 			$evf_to_email = isset( $notification['evf_to_email'] ) ? $notification['evf_to_email'] : '';
 
 			// Setup email properties.
@@ -415,7 +420,7 @@ class EVF_Form_Task {
 			'user_ip_address' => sanitize_text_field( $user_ip ),
 			'status'          => 'publish',
 			'referer'         => $_SERVER['HTTP_REFERER'],
-			'date_created'    => current_time( 'mysql' )
+			'date_created'    => current_time( 'mysql' ),
 		);
 
 		if ( ! $entry_data['form_id'] ) {
