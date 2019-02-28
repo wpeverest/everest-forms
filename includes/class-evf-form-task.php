@@ -196,7 +196,7 @@ class EVF_Form_Task {
 		}
 
 		$message = isset( $form_data['settings']['successful_form_submission_message'] ) ? $form_data['settings']['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
-		$message = apply_filters( 'everest_forms_frontend_confirmation_message', $message, $form_data );
+		$message = apply_filters( 'everest_forms_frontend_confirmation_message', $message, $form_data, $entry );
 		evf_add_notice( $message, 'success' );
 
 		$this->entry_confirmation_redirect( $form_data );

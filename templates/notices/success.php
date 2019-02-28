@@ -20,6 +20,30 @@ defined( 'ABSPATH' ) || exit;
 
 <?php if ( $messages ) : ?>
 	<?php foreach ( $messages as $message ) : ?>
-		<div class="everest-forms-notice everest-forms-notice--success" role="alert"><?php echo wp_kses_post( $message ); ?></div>
+		<div class="everest-forms-notice everest-forms-notice--success" role="alert">
+		<?php
+			echo wp_kses(
+				$message,
+				array(
+					'div'   => array(
+						'class' => true,
+					),
+					'input' => array(
+						'type'     => true,
+						'value'    => true,
+						'class'    => true,
+						'disabled' => true,
+						'checked'  => true,
+					),
+					'ul'    => array(
+						'class' => true,
+					),
+					'li'    => array(
+						'class' => true,
+					),
+				)
+			);
+		?>
+	</div>
 	<?php endforeach; ?>
 <?php endif; ?>
