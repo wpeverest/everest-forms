@@ -236,8 +236,13 @@
 					background-color: $color-white;
 				}
 
+				&[type="checkbox"] {
+					appearance: checkbox;
+				}
+
 				&[type="radio"] {
 					border-radius: 10px;
+					appearance: radio;
 				}
 
 				&[type="checkbox"]:checked {
