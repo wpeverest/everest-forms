@@ -141,6 +141,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Tweak - Change 'store' to 'site' in update notice.
 * Tweak - Correctly set webpack mode to minify builds.
 * Tweak - Introduced script load action hook for shortcode.
+* Tweak - Introduced dimension related formatting functions.
 * Dev - New pre-commit hook for PHP, JS, CSS.
 
 = 1.4.4 - 09-01-2018 =
