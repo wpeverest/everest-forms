@@ -1138,6 +1138,14 @@
 					$( '.everest-forms-field-options' ).append( field_options );
 					field.after( field_preview );
 					var dragged_el_id = $(field_preview).attr('id');
+					if ( null !== $( '#everest-forms-panel-field-settings-enable_survey') && $('#everest-forms-panel-field-settings-enable_survey').prop('checked') ){
+						var fieldID = $( field_preview ).attr('data-field-id');
+						$('#everest-forms-field-option-'+fieldID+'-survey_status' ).prop('checked', true);
+					 }
+					 if ( null !== $( '#everest-forms-panel-field-settings-enable_quiz') && $('#everest-forms-panel-field-settings-enable_quiz').prop('checked') ){
+						var fieldID = $( field_preview ).attr('data-field-id');
+						$('#everest-forms-field-option-'+fieldID+'-quiz_status' ).prop('checked', true);
+					 }
 					field.remove();
 					EVFPanelBuilder.checkEmptyGrid();
 					$( document.body ).trigger( 'init_tooltips' );
