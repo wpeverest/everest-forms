@@ -50,7 +50,7 @@ function evf_suffix_array( $array = array(), $suffix = '' ) {
  *
  * @since  1.4.5
  * @param  array  $array Array to convert.
- * @param  string $glue  Delimiter, defaults to ','.
+ * @param  string $glue  Glue, defaults to ' '.
  * @return string
  */
 function evf_array_to_string( $array = array(), $glue = ' ' ) {
