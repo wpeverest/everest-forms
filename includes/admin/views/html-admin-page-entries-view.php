@@ -75,15 +75,17 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 												$field_value = maybe_unserialize( $field_value );
 												foreach ( $field_value as $field => $value ) {
 													$answer_class = '';
-													if ( in_array( $value, $correct_answers, true ) ) {
-														$answer_class = 'correct_answer';
-													} else {
-														$answer_class = 'wrong_answer';
+													if ( $correct_answers ) {
+														if ( in_array( $value, $correct_answers, true ) ) {
+															$answer_class = 'correct_answer';
+														} else {
+															$answer_class = 'wrong_answer';
+														}
 													}
 													echo '<span class="list ' . $answer_class . '">' . wp_strip_all_tags( $value ) . '</span>';
 												}
 											} else {
-												if ( false !== $correct_answers ) {
+												if ( $correct_answers && false !== $correct_answers ) {
 													if ( in_array( $field_value, $correct_answers, true ) ) {
 														$answer_class = 'correct_answer';
 													} else {
