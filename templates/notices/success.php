@@ -27,6 +27,7 @@ defined( 'ABSPATH' ) || exit;
 				array(
 					'div'   => array(
 						'class' => true,
+						'style' => true,
 					),
 					'input' => array(
 						'type'     => true,
