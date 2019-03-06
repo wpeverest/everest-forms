@@ -23,7 +23,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 		$this->order    = 80;
 		$this->group    = 'general';
 		$this->settings = array(
-			'basic-options' => array(
+			'basic-options'    => array(
 				'field_options' => array(
 					'label',
 					'meta',
@@ -36,6 +36,9 @@ class EVF_Field_Number extends EVF_Form_Fields {
 					'placeholder',
 					'label_hide',
 					'css',
+					'maximum_number',
+					'minimum_number',
+
 				),
 			),
 		);
@@ -76,13 +79,15 @@ class EVF_Field_Number extends EVF_Form_Fields {
 	 */
 	public function field_display( $field, $deprecated, $form_data ) {
 
- 		// Define data.
+		// Define data.
 		$primary = $field['properties']['inputs']['primary'];
 		// Primary field.
-		printf( '<input type="number" %s %s>',
+		printf(
+			'<input type="number" %s %s>',
 			evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ),
 			$primary['required']
 		);
+
 	}
 
 	/**
