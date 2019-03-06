@@ -221,11 +221,6 @@ abstract class EVF_Form_Fields {
 				$output = sprintf( '%s<input type="%s" class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" value="%s" placeholder="%s" %s>', $before, $type, $class, $id, $slug, $id, $slug, esc_attr( $args['value'] ), $placeholder, $data );
 				break;
 
-			// Number input
-			case 'number':
-				$output = sprintf( '<input type="number"  size="3" class="widefat %s"/>', $class );
-				break;
-
 			// Textarea.
 			case 'textarea':
 				$rows   = ! empty( $args['rows'] ) ? (int) $args['rows'] : '3';
@@ -603,37 +598,6 @@ abstract class EVF_Form_Fields {
 					array(
 						'slug'    => 'placeholder',
 						'content' => $output,
-					),
-					false
-				);
-				break;
-
-			// Minimum  number. ---------------------------------------------------//
-			case 'minimum_number':
-				$value   = ! empty( $field['minimum_number'] ) ? esc_attr( $field['minimum_number'] ) : '';
-				$tooltip = __( 'Set minimum value for the field.', 'everest-forms' );
-				$output .= $this->field_element(
-					'number',
-					$field,
-					array(
-						'slug'    => 'minimum_number',
-						'value'   => $value,
-						'tooltip' => $tooltip,
-					),
-					false
-				);
-				break;
-			// Maximum  number. ---------------------------------------------------//
-			case 'maximum_number':
-				$value   = ! empty( $field['maximum_number'] ) ? esc_attr( $field['maximum_number'] ) : '';
-				$tooltip = __( 'Set maximum value for the field.', 'everest-forms' );
-				$output .= $this->field_element(
-					'number',
-					$field,
-					array(
-						'slug'    => 'maximum_number',
-						'value'   => $value,
-						'tooltip' => $tooltip,
 					),
 					false
 				);
