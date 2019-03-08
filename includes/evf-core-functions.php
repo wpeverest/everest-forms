@@ -79,15 +79,13 @@ function evf_get_template( $template_name, $args = array(), $template_path = '',
 	}
 
 	$located = evf_locate_template( $template_name, $template_path, $default_path );
+	// Allow 3rd party plugin filter template file from their plugin.
+	$located = apply_filters( 'evf_get_template', $located, $template_name, $args, $template_path, $default_path );
 
 	if ( ! file_exists( $located ) ) {
 		_doing_it_wrong( __FUNCTION__, sprintf( __( '%s does not exist.', 'everest-forms' ), '<code>' . $located . '</code>' ), '1.0.0' );
-
 		return;
 	}
-
-	// Allow 3rd party plugin filter template file from their plugin.
-	$located = apply_filters( 'evf_get_template', $located, $template_name, $args, $template_path, $default_path );
 
 	do_action( 'everest_forms_before_template_part', $template_name, $template_path, $located, $args );
 
