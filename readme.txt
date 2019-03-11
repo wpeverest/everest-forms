@@ -137,6 +137,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 = 1.4.5 - XX-XX-2019 =
 * Fix - Smart tag design issue on tinyMCE.
 * Fix - The result parameter for function `parse_str()` is missing.
+* Fix - Address field styles conflict with bootstrap framework theme.
 * Tweak - Hide preview suffix on customize preview.
 * Tweak - Change 'store' to 'site' in update notice.
 * Tweak - Correctly set webpack mode to minify builds.
