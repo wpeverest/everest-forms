@@ -510,7 +510,7 @@ class EVF_Shortcode_Form {
 		);
 
 		// Scripts load action.
-		do_action( 'everest_forms_shortcodes_scripts', $atts );
+		do_action( 'everest_forms_shortcode_scripts', $atts );
 
 		ob_start();
 
