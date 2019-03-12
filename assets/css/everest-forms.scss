@@ -109,6 +109,7 @@
 				}
 
 				.evf-field {
+					display: block;
 					margin-bottom: 30px;
 
 					&:last-child {
@@ -217,7 +218,22 @@
 				}
 			}
 
-			input,
+			input[type="text"],
+			input[type="date"],
+			input[type="date"],
+			input[type="datetime-local"],
+			input[type="email"],
+			input[type="file"],
+			input[type="image"],
+			input[type="month"],
+			input[type="number"],
+			input[type="password"],
+			input[type="range"],
+			input[type="search"],
+			input[type="tel"],
+			input[type="time"],
+			input[type="timeurl"],
+			input[type="week"],
 			select,
 			textarea {
 				width: 100%;
@@ -227,7 +243,6 @@
 				margin-bottom: 0;
 				padding: 6px 12px;
 				color: $color-gray-darker;
-				background-color: transparent;
 
 				&[type="checkbox"],
 				&[type="radio"] {
@@ -310,7 +325,22 @@
 
 	.default {
 
-		input,
+		input[type="text"],
+		input[type="date"],
+		input[type="date"],
+		input[type="datetime-local"],
+		input[type="email"],
+		input[type="file"],
+		input[type="image"],
+		input[type="month"],
+		input[type="number"],
+		input[type="password"],
+		input[type="range"],
+		input[type="search"],
+		input[type="tel"],
+		input[type="time"],
+		input[type="timeurl"],
+		input[type="week"],
 		select,
 		textarea {
 			border-radius: 3px;
@@ -340,7 +370,6 @@
 			border-bottom: 1px solid $color-gray;
 			height: 40px;
 			padding: 10px 0;
-			background-color: transparent;
 
 			&:focus {
 				border-top:none transparent;
