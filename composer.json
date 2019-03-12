@@ -8,24 +8,14 @@
     "composer/installers": "~1.2"
   },
   "require-dev": {
-    "wpeverest/wpeverest-git-hooks": "*",
     "wpeverest/wpeverest-sniffs": "^0.0.2"
   },
   "scripts": {
-    "pre-update-cmd": [
-      "WPEverest\\GitHooks\\Hooks::preHooks"
-    ],
-    "pre-install-cmd": [
-      "WPEverest\\GitHooks\\Hooks::preHooks"
-    ],
-    "post-install-cmd": [
-      "WPEverest\\GitHooks\\Hooks::postHooks"
-    ],
-    "post-update-cmd": [
-      "WPEverest\\GitHooks\\Hooks::postHooks"
-    ],
     "phpcs": [
       "phpcs -s -p"
+    ],
+    "phpcs-pre-commit": [
+      "phpcs -s -p -n"
     ],
     "phpcbf": [
       "phpcbf -p"

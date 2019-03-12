@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "13113048f54644bd139ac83d547efe6f",
+    "content-hash": "1eca58bd82310d2a09341d727a7e8de5",
     "packages": [
         {
             "name": "composer/installers",
@@ -196,16 +196,16 @@
         },
         {
             "name": "phpcompatibility/php-compatibility",
-            "version": "9.1.0",
+            "version": "9.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPCompatibility/PHPCompatibility.git",
-                "reference": "a898db5410e365eeb658c63a76bd08d211769321"
+                "reference": "2b63c5d284ab8857f7b1d5c240ddb507a6b2293c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPCompatibility/PHPCompatibility/zipball/a898db5410e365eeb658c63a76bd08d211769321",
-                "reference": "a898db5410e365eeb658c63a76bd08d211769321",
+                "url": "https://api.github.com/repos/PHPCompatibility/PHPCompatibility/zipball/2b63c5d284ab8857f7b1d5c240ddb507a6b2293c",
+                "reference": "2b63c5d284ab8857f7b1d5c240ddb507a6b2293c",
                 "shasum": ""
             },
             "require": {
@@ -250,7 +250,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2018-12-16T19:16:39+00:00"
+            "time": "2018-12-30T23:16:27+00:00"
         },
         {
             "name": "phpcompatibility/phpcompatibility-paragonie",
@@ -354,16 +354,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "3.3.2",
+            "version": "3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "6ad28354c04b364c3c71a34e4a18b629cc3b231e"
+                "reference": "379deb987e26c7cd103a7b387aea178baec96e48"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/6ad28354c04b364c3c71a34e4a18b629cc3b231e",
-                "reference": "6ad28354c04b364c3c71a34e4a18b629cc3b231e",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/379deb987e26c7cd103a7b387aea178baec96e48",
+                "reference": "379deb987e26c7cd103a7b387aea178baec96e48",
                 "shasum": ""
             },
             "require": {
@@ -401,7 +401,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2018-09-23T23:08:17+00:00"
+            "time": "2018-12-19T23:57:18+00:00"
         },
         {
             "name": "wp-coding-standards/wpcs",
@@ -445,39 +445,6 @@
                 "wordpress"
             ],
             "time": "2018-12-18T09:43:51+00:00"
-        },
-        {
-            "name": "wpeverest/wpeverest-git-hooks",
-            "version": "1.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/wpeverest/wpeverest-git-hooks.git",
-                "reference": "81b1a2ff501252a23cbd59155bdc21918cef0dd2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/wpeverest/wpeverest-git-hooks/zipball/81b1a2ff501252a23cbd59155bdc21918cef0dd2",
-                "reference": "81b1a2ff501252a23cbd59155bdc21918cef0dd2",
-                "shasum": ""
-            },
-            "type": "scripts",
-            "autoload": {
-                "psr-4": {
-                    "WPEverest\\GitHooks\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Shiva Poudel",
-                    "email": "dev.shivapoudel@gmail.com"
-                }
-            ],
-            "description": "WPEverest Git Hooks",
-            "time": "2017-12-18T16:25:25+00:00"
         },
         {
             "name": "wpeverest/wpeverest-sniffs",

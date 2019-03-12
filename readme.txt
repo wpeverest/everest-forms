@@ -4,7 +4,7 @@ Tags: contact form, form, form builder, contact, custom form
 Requires at least: 4.0
 Tested up to: 5.0
 Requires PHP: 5.4
-Stable tag: 1.4.3
+Stable tag: 1.4.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -25,6 +25,10 @@ View [Demo](http://demo.wpeverest.com/everest-forms/)
 Get [free support](https://wpeverest.com/support-forum/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme)
 
 Check [documentation](http://docs.wpeverest.com/docs/everest-forms/)
+
+= Everest Forms Plugin in action: =
+
+[youtube https://www.youtube.com/watch?v=-yE0C_Yq_qQ]
 
 ### Features And Options:
 * Create unlimited forms without any restrictions
@@ -104,6 +108,9 @@ Yes, the plugin is designed to work with any themes that have been coded followi
 12. Advance Form
 
 == Changelog ==
+
+= 1.4.4 - 09-01-2018 =
+* Fix - Google reCAPTCHA conflict with others plugins.
 
 = 1.4.3 - 21-12-2018 =
 * Fix - Uncaught TypeError Flatpicker JS console error.

@@ -55,17 +55,19 @@ defined( 'ABSPATH' ) || exit;
 					<div class="the-list">
 						<?php foreach ( $addons as $addon ) : ?>
 							<div class="plugin-card plugin-card-<?php echo esc_attr( $addon->slug ); ?>">
-								<div class="plugin-card-top">
-									<div class="name column-name">
-										<h3 class="plugin-name">
-											<?php echo esc_html( $addon->title ); ?>
-											<img src="<?php echo esc_url( $addon->image ); ?>" class="plugin-icon" alt="" />
-										</h3>
+								<a href="<?php echo esc_url( $addon->link ); ?>">
+									<div class="plugin-card-top">
+										<div class="name column-name">
+											<h3 class="plugin-name">
+												<?php echo esc_html( $addon->title ); ?>
+												<img src="<?php echo esc_url( $addon->image ); ?>" class="plugin-icon" alt="" />
+											</h3>
+										</div>
+										<div class="desc column-description">
+											<p class="plugin-desc"><?php echo esc_html( $addon->excerpt ); ?></p>
+										</div>
 									</div>
-									<div class="desc column-description">
-										<p class="plugin-desc"><?php echo esc_html( $addon->excerpt ); ?></p>
-									</div>
-								</div>
+								</a>
 								<div class="plugin-card-bottom">
 									<?php if ( in_array( $license_plan, $addon->plan, true ) ) : ?>
 										<div class="status column-status">
@@ -105,7 +107,7 @@ defined( 'ABSPATH' ) || exit;
 										</div>
 									<?php else: ?>
 										<div class="action-buttons upgrade-plan">
-											<a class="button upgrade-now" href="https://wpeverest.com/wordpress-plugins/everest-forms/pricing/" target="_blank"><?php esc_html_e( 'Upgrade Plan', 'everest-forms' ); ?></a>
+											<a class="button upgrade-now" href="https://wpeverest.com/wordpress-plugins/everest-forms/pricing/?utm_source=user-dashboard&utm_medium=addons-upgrade-button&utm_campaign=free-version" target="_blank"><?php esc_html_e( 'Upgrade Plan', 'everest-forms' ); ?></a>
 										</div>
 									<?php endif; ?>
 								</div>

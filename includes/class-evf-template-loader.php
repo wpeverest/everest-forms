@@ -31,9 +31,9 @@ class EVF_Template_Loader {
 	 * Hook in methods.
 	 */
 	public static function init() {
-		self::$form_id = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
+		self::$form_id = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0; // WPCS: CSRF ok.
 
-		if ( ! is_admin() && isset( $_GET['evf_preview'] ) ) {
+		if ( ! is_admin() && isset( $_GET['evf_preview'] ) ) { // WPCS: CSRF ok.
 			add_action( 'pre_get_posts', array( __CLASS__, 'pre_get_posts' ) );
 			add_filter( 'template_include', array( __CLASS__, 'template_include' ) );
 			add_action( 'template_redirect', array( __CLASS__, 'form_preview_init' ) );
@@ -163,11 +163,18 @@ class EVF_Template_Loader {
 	 * @return string
 	 */
 	public static function form_preview_title_filter( $title ) {
-		$form = EVF()->form->get( self::$form_id, array(
-			'content_only' => true,
-		) );
+		$form = EVF()->form->get(
+			self::$form_id,
+			array(
+				'content_only' => true,
+			)
+		);
 
 		if ( ! empty( $form['settings']['form_title'] ) && in_the_loop() ) {
+			if ( is_customize_preview() ) {
+				return esc_html( sanitize_text_field( $form['settings']['form_title'] ) );
+			}
+
 			/* translators: %s - Form name. */
 			return sprintf( esc_html__( '%s &ndash; Preview', 'everest-forms' ), sanitize_text_field( $form['settings']['form_title'] ) );
 		}

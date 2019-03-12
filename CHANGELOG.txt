@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 1.4.4 - 09-01-2018 =
+* Fix - Google reCAPTCHA conflict with others plugins.
+
 = 1.4.3 - 21-12-2018 =
 * Fix - Uncaught TypeError Flatpicker JS console error.
 
