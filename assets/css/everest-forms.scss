@@ -217,7 +217,22 @@
 				}
 			}
 
-			input,
+			input[type="text"],
+			input[type="date"],
+			input[type="date"],
+			input[type="datetime-local"],
+			input[type="email"],
+			input[type="file"],
+			input[type="image"],
+			input[type="month"],
+			input[type="number"],
+			input[type="password"],
+			input[type="range"],
+			input[type="search"],
+			input[type="tel"],
+			input[type="time"],
+			input[type="timeurl"],
+			input[type="week"],
 			select,
 			textarea {
 				width: 100%;
@@ -300,7 +315,22 @@
 
 	.default {
 
-		input,
+		input[type="text"],
+		input[type="date"],
+		input[type="date"],
+		input[type="datetime-local"],
+		input[type="email"],
+		input[type="file"],
+		input[type="image"],
+		input[type="month"],
+		input[type="number"],
+		input[type="password"],
+		input[type="range"],
+		input[type="search"],
+		input[type="tel"],
+		input[type="time"],
+		input[type="timeurl"],
+		input[type="week"],
 		select,
 		textarea {
 			border-radius: 3px;
