@@ -2,8 +2,11 @@
 
 = 1.4.5 - XX-XX-2019 =
 * Fix - Smart tag design issue on tinyMCE.
+* Fix - Spacing between two form on single page.
+* Fix - Prioritize default background color in input field.
 * Fix - The result parameter for function `parse_str()` is missing.
 * Fix - Address field styles conflict with bootstrap framework theme.
+* Tweak - Add `span` tag for all fields label.
 * Tweak - Hide preview suffix on customize preview.
 * Tweak - Change 'store' to 'site' in update notice.
 * Tweak - Correctly set webpack mode to minify builds.
