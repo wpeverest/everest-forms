@@ -1325,6 +1325,7 @@
 	$( document.body ).on( 'init_tooltips', function() {
 		$( '.tips, .help_tip, .everest-forms-help-tooltip' ).tipTip( {
 			'attribute': 'data-tip',
+			'keepAlive': true,
 			'fadeIn': 50,
 			'fadeOut': 50,
 			'delay': 200
