@@ -4,6 +4,7 @@
 	var $builder;
 
 	var EVFPanelBuilder = {
+
 		/**
 		 * Start the panel builder.
 		 */
@@ -145,6 +146,10 @@
 
 				if ( tab_content.length >= 1 ) {
 					window.evf_tab_scroller = new PerfectScrollbar( tab_content.selector );
+
+					$( document.body ).on( 'click', '#field-options, .everest-forms-field', function() {
+						tab_content.scrollTop(0);
+					} );
 				}
 
 				if ( panel_content.length >= 1 ) {
