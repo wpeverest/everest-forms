@@ -150,7 +150,7 @@
 
 				if ( panel_content.length >= 1 ) {
 					window.evf_panel_scroller = new PerfectScrollbar( panel_content.selector );
-					var pScrollBar = 	window.evf_panel_scroller = new PerfectScrollbar( panel_content.selector );
+					var pScrollBar = window.evf_panel_scroller = new PerfectScrollbar( panel_content.selector );
 				}
 
 				pScrollBar.scrollTop = 0;
