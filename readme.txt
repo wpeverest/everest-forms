@@ -138,6 +138,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Fix - Smart tag design issue on tinyMCE.
 * Fix - Spacing between two form on single page.
 * Fix - Prioritize default background color in input field.
+* Fix - Scroll options to top when field setting is triggered.
 * Fix - The result parameter for function `parse_str()` is missing.
 * Fix - Address field styles conflict with bootstrap framework theme.
 * Tweak - Add `span` tag for all fields label.
