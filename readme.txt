@@ -135,6 +135,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 == Changelog ==
 
 = 1.4.5 - XX-XX-2019 =
+* Fix - Placeholder live change.
 * Fix - Smart tag design issue on tinyMCE.
 * Fix - Spacing between two form on single page.
 * Fix - Prioritize default background color in input field.
