@@ -144,16 +144,16 @@
 					panel_content = $( '.everest-forms-panel-content' );
 
 				if ( tab_content.length >= 1 ) {
-					window.evf_tab_scroller = new PerfectScrollbar( tab_content.selector );
-					var pScrollBar = window.evf_tab_scroller = new PerfectScrollbar( tab_content.selector );
+					 window.evf_tab_scroller = new PerfectScrollbar( tab_content.selector );
 				}
 
 				if ( panel_content.length >= 1 ) {
-					window.evf_panel_scroller = new PerfectScrollbar( panel_content.selector );
-					var pScrollBar = window.evf_panel_scroller = new PerfectScrollbar( panel_content.selector );
+					 window.evf_panel_scroller = new PerfectScrollbar( panel_content.selector );
 				}
 
-				pScrollBar.scrollTop = 0;
+				$( document.body ).on( 'click', '#field-options, .everest-forms-field', function() {
+					tab_content.scrollTop(0);
+				} );
 			}
 
 			// Action available for each binding.
