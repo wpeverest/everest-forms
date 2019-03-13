@@ -404,7 +404,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 			$label
 		);
 		if ( ! empty( $args['tooltip'] ) ) {
-			$field_label .= sprintf( ' <i class="dashicons dashicons-editor-help everest-forms-help-tooltip" title="%s"></i>', esc_attr( $args['tooltip'] ) );
+			$field_label .= sprintf( ' <i class="dashicons dashicons-editor-help everest-forms-help-tooltip" data-tip="%s"></i>', esc_attr( $args['tooltip'] ) );
 		}
 		if ( ! empty( $args['after_tooltip'] ) ) {
 			$field_label .= $args['after_tooltip'];

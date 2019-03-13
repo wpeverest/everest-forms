@@ -103,7 +103,7 @@
 		})
 
 		.on( 'init_tooltips', function() {
-			$( '.tips, .help_tip, .everest-forms-help-tip' ).tipTip( {
+			$( '.tips, .help_tip, .everest-forms-help-tooltip, .everest-forms-help-tip' ).tipTip( {
 				'attribute': 'data-tip',
 				'fadeIn': 50,
 				'fadeOut': 50,
