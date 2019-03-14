@@ -1149,6 +1149,7 @@
 					 if ( null !== $( '#everest-forms-panel-field-settings-enable_quiz') && $('#everest-forms-panel-field-settings-enable_quiz').prop('checked') ){
 						var fieldID = $( field_preview ).attr('data-field-id');
 						$('#everest-forms-field-option-'+fieldID+'-quiz_status' ).prop('checked', true);
+						$('#everest-forms-field-option-'+fieldID+'-quiz_status' ).closest('.everest-forms-field-option-row-quiz_status').siblings('.everst-forms-field-quiz-settings').removeClass('everest-forms-hidden').addClass('everest-forms-show');
 					 }
 					field.remove();
 					EVFPanelBuilder.checkEmptyGrid();
