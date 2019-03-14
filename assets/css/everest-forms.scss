@@ -59,8 +59,8 @@
 
 		&::before,
 		&::after {
-			clear: both;
 			content: '';
+			clear: both;
 			display: table;
 		}
 
@@ -72,7 +72,7 @@
 	}
 
 	.evf-field-container {
-		margin: 0 !important;
+		margin-bottom: 10px;
 
 		.evf-frontend-row {
 			display: flex;
@@ -81,9 +81,9 @@
 			margin-right: -15px;
 
 			.everest-forms-one-half {
+				width: 48%;
 				float: left;
 				margin-left: 4%;
-				width: 48%;
 
 				&:first-child {
 					margin-left: 0;
@@ -106,7 +106,7 @@
 
 				.evf-field {
 					display: block;
-					margin-bottom: 20px;
+					margin-bottom: 10px;
 
 					.evf-label-hide,
 					.everest-forms-sublabel-hide {
@@ -139,6 +139,14 @@
 								font-weight: 500;
 								color: $color-gray-darker !important;
 							}
+						}
+					}
+
+					&.evf-field-title {
+						h3 {
+							margin: 25px 0;
+							font-size: 16px;
+							line-height: 1.5;
 						}
 					}
 
@@ -209,6 +217,7 @@
 					font-size: 12px;
 					font-weight: 400;
 					line-height: 1.5;
+					margin: 0 0 10px 0;
 				}
 			}
 
@@ -283,10 +292,6 @@
 				line-height: 1.7;
 				margin-bottom: 10px;
 			}
-
-			.everest-forms-field-row {
-				margin-bottom: 20px;
-			}
 		}
 	}
 
@@ -298,8 +303,8 @@
 		cursor: pointer;
 		background: none;
 		box-shadow: none;
+		font-size: 14px;
 		font-weight: 400;
-		font-size: 0.95em;
 		line-height: 1.5;
 		padding: 10px 15px;
 		border-radius: 3px;
