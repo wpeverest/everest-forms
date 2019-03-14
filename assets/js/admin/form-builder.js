@@ -1181,13 +1181,20 @@
 			var field_id = dragged_el.attr( 'data-field-id' );
 			var field_label = dragged_el.find( '.label-title .text ' ).text();
 
-			$.fn.insertAt = function(elements, index) {
+			$.fn.insertAt = function(elements, index, selected_id ) {
 			    var array = $.makeArray(this.children().clone(true));
-			    array.splice(index, 0, elements);
+				array.splice(index, 0, elements);
+				$.each( array, function( index, el ) {
+					if( selected_id === $( el )[0]['value'] ) {
+						$( el )[0]['selected'] = true;
+						array[ index ] = el;
+					}
+				} );
 			    this.empty().append(array);
 			};
 			var dragged_field_id = field_id;
 			fields.each(function(index, el) {
+				var selected_id = $( el ).val();
 				var id_key = id.replace('everest-forms-field-', '');
 				var name = $(el).attr('name');
 				var name_key = name.substring(
@@ -1197,9 +1204,9 @@
 
 				if (id_key === name_key) {
 					$('.evf-admin-row .evf-admin-grid .everest-forms-field').each( function(){
-						var field_type  = $( this ).data('field-type'),
-							field_id    = $( this ).data('field-id'),
-							field_label = $( this ).find('.label-title span').first().text();
+						var form_field_type  = $( this ).data('field-type'),
+							form_field_id    = $( this ).data('field-id'),
+							form_field_label = $( this ).find('.label-title span').first().text();
 							field_to_be_restricted =[];
 							field_to_be_restricted = [
 								'html',
@@ -1210,15 +1217,14 @@
 								'date',
 								'hidden',
 							];
-
-						if( $.inArray( field_type, field_to_be_restricted ) === -1  && dragged_field_id !== field_id ){
-							fields.eq(index).append('<option class="evf-conditional-fields" data-field_type="'+field_type+'" data-field_id="'+field_id+'" value="'+field_id+'">'+field_label+'</option>');
+						if( $.inArray( form_field_type, field_to_be_restricted ) === -1  && dragged_field_id !== form_field_id ){
+							fields.eq(index).append('<option class="evf-conditional-fields" data-field_type="'+form_field_type+'" data-field_id="'+form_field_id+'" value="'+form_field_id+'">'+form_field_label+'</option>');
 						}
 					});
 				} else {
 					var el_to_append = '<option class="evf-conditional-fields" data-field_type="'+field_type+'" data-field_id="'+field_id+'" value="'+field_id+'">'+field_label+'</option>';
 					if( 'html' !== field_type && 'title' !== field_type && 'address' !== field_type && 'image-upload' !== field_type && 'file-upload' !== field_type && 'date' !== field_type && 'hidden' !== field_type  ) {
-						fields.eq(index).insertAt( el_to_append, dragged_index );
+						fields.eq(index).insertAt( el_to_append, dragged_index, selected_id );
 					}
 				}
 			});
