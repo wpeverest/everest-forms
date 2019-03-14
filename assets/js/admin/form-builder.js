@@ -378,7 +378,11 @@
 						}
 					});
 				} else {
-					$( this ).closest( 'li' ).remove();
+					var self = $( this );
+					setTimeout(function(){
+						self.closest( 'li' ).remove();
+					}, 100);
+
 					EVFPanelBuilder.choiceChange( field_id );
 				}
 			});
