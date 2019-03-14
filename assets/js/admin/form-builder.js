@@ -1140,6 +1140,16 @@
 					$( '#everest-forms-field-id' ).val( form_field_id );
 					$( '.everest-forms-field-options' ).find( '.no-fields' ).hide();
 					$( '.everest-forms-field-options' ).append( field_options );
+					$( '.everest-forms-field-option-row-icon_color input.colorpicker' ).wpColorPicker({
+						change: function( event ){
+							var $this     = $( this ),
+								value     = $this.val(),
+								id        = $this.closest( '.everest-forms-field-option-row' ).data( 'field-id' ),
+								$icons    = $( '#everest-forms-field-'+id +' .rating-icon svg' );
+
+							$icons.css( 'fill', value );
+						}
+					});
 					field.after( field_preview );
 					var dragged_el_id = $(field_preview).attr('id');
 					if ( null !== $( '#everest-forms-panel-field-settings-enable_survey') && $('#everest-forms-panel-field-settings-enable_survey').prop('checked') ){
