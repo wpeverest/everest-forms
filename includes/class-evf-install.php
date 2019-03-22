@@ -48,8 +48,12 @@ class EVF_Install {
 		),
 		'1.4.0' => array(
 			'evf_update_140_db_multiple_email',
-			'evf_update_140_db_version'
-		)
+			'evf_update_140_db_version',
+		),
+		'1.4.4' => array(
+			'evf_update_144_delete_options',
+			'evf_update_144_db_version',
+		),
 	);
 
 	/**
@@ -330,7 +334,7 @@ class EVF_Install {
 			}
 		}
 
-		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
 		dbDelta( self::get_schema() );
 	}
@@ -525,18 +529,22 @@ CREATE TABLE {$wpdb->prefix}evf_sessions (
 			include_once dirname( __FILE__ ) . '/templates/contact.php';
 
 			// Create a form.
-			$form_id = wp_insert_post( array(
-				'post_title'   => esc_html( 'Contact Form', 'everest-forms' ),
-				'post_status'  => 'publish',
-				'post_type'    => 'everest_form',
-				'post_content' => '{}',
-			) );
+			$form_id = wp_insert_post(
+				array(
+					'post_title'   => esc_html( 'Contact Form', 'everest-forms' ),
+					'post_status'  => 'publish',
+					'post_type'    => 'everest_form',
+					'post_content' => '{}',
+				)
+			);
 
 			if ( $form_id ) {
-				wp_update_post( array(
-					'ID'           => $form_id,
-					'post_content' => evf_encode( array_merge( array( 'id' => $form_id ), $form_template['contact'] ) ),
-				) );
+				wp_update_post(
+					array(
+						'ID'           => $form_id,
+						'post_content' => evf_encode( array_merge( array( 'id' => $form_id ), $form_template['contact'] ) ),
+					)
+				);
 			}
 
 			update_option( 'everest_forms_default_form_page_id', $form_id );

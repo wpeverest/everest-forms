@@ -75,7 +75,7 @@
 			position: absolute;
 			background: $color-white;
 			border: 1px solid #dddddd;
-			border-left: transparent;
+			border-left: none;
 			box-shadow: inset 0 1px 2px rgba( 0, 0, 0, 0.07 );
 
 			.dashicons-editor-code {
@@ -868,9 +868,22 @@
 					border: 1px dashed transparentize( $blue, 0.75 );
 				}
 
-				input[type="checkbox"],
-				input[type="radio"] {
-					margin-right: 10px;
+				input {
+
+					&[type="text"] {
+						margin-bottom: 5px;
+					}
+
+					&[type="checkbox"],
+					&[type="radio"] {
+						margin-right: 10px;
+					}
+				}
+
+				option,
+				select,
+				textarea {
+					margin-bottom: 5px;
 				}
 
 				.evf-field-action {
@@ -1133,8 +1146,9 @@
 
 			&.everest-forms-panel-field-tinymce {
 				.evf-toggle-smart-tag-display {
-					top: 38px;
+					top: 40px;
 					right: 5px;
+					border: 1px solid #dddddd;
 				}
 				.evf-smart-tag-lists {
 				    top: 70px;

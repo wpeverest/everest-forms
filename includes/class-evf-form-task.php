@@ -115,7 +115,7 @@ class EVF_Form_Task {
 					$data = wp_remote_get( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $_POST['g-recaptcha-response'] );
 					$data = json_decode( wp_remote_retrieve_body( $data ) );
 					if ( empty( $data->success ) ) {
-						evf_add_notice( get_option( 'everest_forms_recaptcha_validation', __( 'Incorrect reCAPTCHA, please try again.', 'everest-forms' ) ), 'error' );
+						evf_add_notice( __( 'Incorrect reCAPTCHA, please try again.', 'everest-forms' ), 'error' );
 						return;
 					}
 				} else {
@@ -207,26 +207,24 @@ class EVF_Form_Task {
 	/**
 	 * Validate the form return hash.
 	 *
-	 * @since      1.0.0
-	 *
-	 * @param string $hash
-	 *
-	 * @return mixed false for invalid or form id
+	 * @since  1.0.0
+	 * @param  string $hash Hash data.
+	 * @return mixed false for invalid or form id.
 	 */
 	public function validate_return_hash( $hash = '' ) {
-
 		$query_args = base64_decode( $hash );
-		parse_str( $query_args );
+
+		parse_str( $query_args, $output );
 
 		// Verify hash matches.
-		if ( wp_hash( $form_id . ',' . $entry_id ) !== $hash ) {
+		if ( wp_hash( $output['form_id'] . ',' . $output['entry_id'] ) !== $output['hash'] ) {
 			return false;
 		}
 
 		// Get lead and verify it is attached to the form we received with it.
-		$entry = EVF()->entry->get( $entry_id );
+		$entry = EVF()->entry->get( $output['entry_id'] );
 
-		if ( $form_id != $entry->form_id ) {
+		if ( $output['form_id'] != $entry->form_id ) {
 			return false;
 		}
 

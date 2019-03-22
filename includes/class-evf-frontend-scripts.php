@@ -2,16 +2,12 @@
 /**
  * Handle frontend scripts
  *
- * @class       EVF_Frontend_Scripts
- * @version     1.0.0
- * @package     EverestForms/Classes/
- * @category    Class
- * @author      WPEverest
+ * @class   EVF_Frontend_Scripts
+ * @version 1.0.0
+ * @package EverestForms/Classes/
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
  * EVF_Frontend_Scripts Class.
@@ -20,18 +16,21 @@ class EVF_Frontend_Scripts {
 
 	/**
 	 * Contains an array of script handles registered by EVF.
+	 *
 	 * @var array
 	 */
 	private static $scripts = array();
 
 	/**
 	 * Contains an array of script handles registered by EVF.
+	 *
 	 * @var array
 	 */
 	private static $styles = array();
 
 	/**
 	 * Contains an array of script handles localized by EVF.
+	 *
 	 * @var array
 	 */
 	private static $wp_localize_scripts = array();
@@ -51,15 +50,18 @@ class EVF_Frontend_Scripts {
 	 * @return array
 	 */
 	public static function get_styles() {
-		return apply_filters( 'everest_forms_enqueue_styles', array(
-			'everest-forms-general' => array(
-				'src'     => self::get_asset_url( 'assets/css/everest-forms.css' ),
-				'deps'    => '',
-				'version' => EVF_VERSION,
-				'media'   => 'all',
-				'has_rtl' => true,
-			),
-		) );
+		return apply_filters(
+			'everest_forms_enqueue_styles',
+			array(
+				'everest-forms-general' => array(
+					'src'     => self::get_asset_url( 'assets/css/everest-forms.css' ),
+					'deps'    => '',
+					'version' => EVF_VERSION,
+					'media'   => 'all',
+					'has_rtl' => true,
+				),
+			)
+		);
 	}
 
 	/**
@@ -162,7 +164,7 @@ class EVF_Frontend_Scripts {
 				'deps'    => array( 'jquery' ),
 				'version' => '4.0.0-beta.58',
 			),
-			'flatpickr' => array(
+			'flatpickr'       => array(
 				'src'     => self::get_asset_url( 'assets/js/flatpickr/flatpickr' . $suffix . '.js' ),
 				'deps'    => array( 'jquery' ),
 				'version' => '4.5.1',
@@ -188,7 +190,7 @@ class EVF_Frontend_Scripts {
 	 */
 	private static function register_styles() {
 		$register_styles = array(
-			'select2' => array(
+			'select2'   => array(
 				'src'     => self::get_asset_url( 'assets/css/select2.css' ),
 				'deps'    => array(),
 				'version' => EVF_VERSION,
@@ -232,23 +234,11 @@ class EVF_Frontend_Scripts {
 				self::enqueue_style( $handle, $args['src'], $args['deps'], $args['version'], $args['media'], $args['has_rtl'] );
 			}
 		}
-
-		// Load reCAPTCHA support if form supports it.
-		$site_key   = get_option( 'everest_forms_recaptcha_site_key' );
-		$secret_key = get_option( 'everest_forms_recaptcha_site_secret' );
-		if ( $site_key && $secret_key ) {
-			$recaptcha_api    = apply_filters( 'everest_forms_frontend_recaptcha_url', 'https://www.google.com/recaptcha/api.js?onload=EVFRecaptchaLoad&render=explicit' );
-			$recaptch_inline  = 'var EVFRecaptchaLoad = function(){jQuery(".g-recaptcha").each(function(index, el){grecaptcha.render(el,{callback:function(){EVFRecaptchaCallback(el);}},true);});};';
-			$recaptch_inline .= 'var EVFRecaptchaCallback = function(el){jQuery(el).parent().find(".evf-recaptcha-hidden").val("1").valid();};';
-
-			// Enqueue reCaptcha scripts.
-			wp_enqueue_script( 'evf-recaptcha', $recaptcha_api, array( 'jquery' ), '2.0.0', true  );
-			wp_add_inline_script( 'evf-recaptcha', $recaptch_inline );
-		}
 	}
 
 	/**
 	 * Localize a EVF script once.
+	 *
 	 * @access private
 	 *
 	 * @param  string $handle
@@ -263,6 +253,7 @@ class EVF_Frontend_Scripts {
 
 	/**
 	 * Return data for script handles.
+	 *
 	 * @access private
 	 *
 	 * @param  string $handle
@@ -271,16 +262,16 @@ class EVF_Frontend_Scripts {
 	 */
 	private static function get_script_data( $handle ) {
 		switch ( $handle ) {
-			case 'everest-forms' :
+			case 'everest-forms':
 				$params = array(
 					'ajax_url'                => EVF()->ajax_url(),
 					'everest_forms_data_save' => wp_create_nonce( 'everest_forms_data_save_nonce' ),
- 					'i18n_messages_required'  => get_option( 'everest_forms_required_validation' ),
- 					'i18n_messages_url'       => get_option( 'everest_forms_url_validation' ),
- 					'i18n_messages_email'     => get_option( 'everest_forms_email_validation' ),
- 					'i18n_messages_number'    => get_option( 'everest_forms_number_validation' ),
- 				);
-			break;
+					'i18n_messages_required'  => get_option( 'everest_forms_required_validation' ),
+					'i18n_messages_url'       => get_option( 'everest_forms_url_validation' ),
+					'i18n_messages_email'     => get_option( 'everest_forms_email_validation' ),
+					'i18n_messages_number'    => get_option( 'everest_forms_number_validation' ),
+				);
+				break;
 			default:
 				$params = false;
 		}

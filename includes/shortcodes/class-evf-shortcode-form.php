@@ -150,7 +150,7 @@ class EVF_Shortcode_Form {
 		$custom_tags = apply_filters( 'everest_forms_field_custom_tags', false, $field, $form_data );
 
 		printf(
-			'<label %s>%s %s %s</label>',
+			'<label %s><span class="evf-label">%s</span> %s</label>',
 			evf_html_attributes( $label['id'], $label['class'], $label['data'], $label['attr'] ),
 			esc_html( $label['value'] ),
 			$required,
@@ -318,9 +318,21 @@ class EVF_Shortcode_Form {
 				$form_data
 			);
 
+			// Load reCAPTCHA support if form supports it.
 			if ( $site_key && $secret_key ) {
-				$recaptch_inline  = 'var EVFRecaptchaLoad = function(){jQuery(".g-recaptcha").each(function(index, el){grecaptcha.render(el,{callback:function(){EVFRecaptchaCallback(el);}},true);});};';
-				$recaptch_inline .= 'var EVFRecaptchaCallback = function(el){jQuery(el).parent().find(".evf-recaptcha-hidden").val("1").valid();};';
+				$recaptcha_api     = apply_filters( 'everest_forms_frontend_recaptcha_url', 'https://www.google.com/recaptcha/api.js?onload=EVFRecaptchaLoad&render=explicit' );
+				$recaptcha_inline  = 'var EVFRecaptchaLoad = function(){jQuery(".g-recaptcha").each(function(index, el){grecaptcha.render(el,{callback:function(){EVFRecaptchaCallback(el);}},true);});};';
+				$recaptcha_inline .= 'var EVFRecaptchaCallback = function(el){jQuery(el).parent().find(".evf-recaptcha-hidden").val("1").valid();};';
+
+				// Enqueue reCaptcha scripts.
+				wp_enqueue_script( 'evf-recaptcha', $recaptcha_api, array( 'jquery' ), '2.0.0', false );
+
+				// Load reCaptcha callback once.
+				static $count = 1;
+				if ( $count === 1 ) {
+					wp_add_inline_script( 'evf-recaptcha', $recaptcha_inline );
+					$count++;
+				}
 
 				// Output the reCAPTCHA container.
 				echo '<div class="evf-recaptcha-container" ' . $visible . '>';
@@ -498,6 +510,9 @@ class EVF_Shortcode_Form {
 			$atts,
 			'output'
 		);
+
+		// Scripts load action.
+		do_action( 'everest_forms_shortcode_scripts', $atts );
 
 		ob_start();
 

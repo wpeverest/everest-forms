@@ -1,5 +1,11 @@
 == Changelog ==
 
+= 1.4.4 - 09-01-2018 =
+* Fix - Google reCAPTCHA conflict with others plugins.
+
+= 1.4.3 - 21-12-2018 =
+* Fix - Uncaught TypeError Flatpicker JS console error.
+
 = 1.4.2 - 19-12-2018 =
 * Fix - Form block styles not loaded in WP 5.0.
 * Fix - Classic layout rendering default layout.
