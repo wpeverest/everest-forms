@@ -18,7 +18,7 @@
   "devDependencies": {
     "@babel/core": "7.4.0",
     "@wordpress/babel-preset-default": "3.0.2",
-    "@wordpress/browserslist-config": "2.2.3",
+    "@wordpress/browserslist-config": "2.3.0",
     "autoprefixer": "9.4.10",
     "babel-loader": "8.0.5",
     "babel-plugin-transform-react-jsx": "6.24.1",
