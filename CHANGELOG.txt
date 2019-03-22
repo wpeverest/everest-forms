@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 1.4.6 - XX-03-2019 =
+* Fix - Add-ons installation process.
+
 = 1.4.5 - 22-03-2019 =
 * Fix - Placeholder live change.
 * Fix - Smart tag design issue on tinyMCE.

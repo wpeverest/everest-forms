@@ -4,7 +4,7 @@ Tags: contact form, form, form builder, contact, custom form
 Requires at least: 4.0
 Tested up to: 5.1
 Requires PHP: 5.4
-Stable tag: 1.4.5
+Stable tag: 1.4.6
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -70,6 +70,10 @@ Check [documentation](http://docs.wpeverest.com/docs/everest-forms/)
 
 * [Conditional Logic](https://wpeverest.com/wordpress-plugins/everest-forms/conditional-logic/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to conditionally hide or show form fields based on user's interaction with other form fields.
 
+* [Style Customizer](https://wpeverest.com/wordpress-plugins/everest-forms/style-customizer/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to customize your form elements with the WordPress Customizer.
+
+* [Survey, Polls and Quiz](https://wpeverest.com/wordpress-plugins/everest-forms/survey-polls-and-quiz/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to create intuitive survey, poll and quiz forms within a minute.
+
 ### What's Next
 
 Checkout out our other projects for WordPress
@@ -133,6 +137,9 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 12. Advance Form
 
 == Changelog ==
+
+= 1.4.6 - XX-03-2019 =
+* Fix - Add-ons installation process.
 
 = 1.4.5 - 22-03-2019 =
 * Fix - Placeholder live change.
