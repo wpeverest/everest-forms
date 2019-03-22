@@ -5,10 +5,10 @@
   "type": "wordpress-plugin",
   "license": "GPL-2.0+",
   "require": {
-    "composer/installers": "~1.2"
+    "composer/installers": "1.6.0"
   },
   "require-dev": {
-    "wpeverest/wpeverest-sniffs": "^0.0.2"
+    "wpeverest/wpeverest-sniffs": "0.0.2"
   },
   "scripts": {
     "phpcs": [
