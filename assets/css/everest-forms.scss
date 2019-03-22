@@ -254,7 +254,12 @@
 					background-color: $color-white;
 				}
 
+				&[type="checkbox"] {
+					appearance: checkbox;
+				}
+
 				&[type='radio'] {
+					appearance: radio;
 					border-radius: 10px;
 				}
 
@@ -281,6 +286,10 @@
 					outline: none;
 					border: 1px solid $color-brand-primary;
 				}
+			}
+
+			select {
+				appearance: menulist;
 			}
 
 			textarea {
