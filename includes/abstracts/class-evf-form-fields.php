@@ -127,9 +127,13 @@ abstract class EVF_Form_Fields {
 		$settings = $this->get_field_settings();
 
 		foreach ( $settings as $option_key => $option ) {
-			$this->field_option( $option_key, $field, array(
-				'markup' => 'open',
-			) );
+			$this->field_option(
+				$option_key,
+				$field,
+				array(
+					'markup' => 'open',
+				)
+			);
 
 			if ( ! empty( $option['field_options'] ) ) {
 				foreach ( $option['field_options'] as $option_name ) {
@@ -137,9 +141,13 @@ abstract class EVF_Form_Fields {
 				}
 			}
 
-			$this->field_option( $option_key, $field, array(
-				'markup' => 'close',
-			) );
+			$this->field_option(
+				$option_key,
+				$field,
+				array(
+					'markup' => 'close',
+				)
+			);
 		}
 	}
 
@@ -205,12 +213,19 @@ abstract class EVF_Form_Fields {
 			// Text input.
 			case 'text':
 				$type        = ! empty( $args['type'] ) ? esc_attr( $args['type'] ) : 'text';
+				$min         = ! empty( $args['min'] ) ? esc_attr( $args['min'] ) : 0;
+				$max         = ! empty( $args['max'] ) ? esc_attr( $args['max'] ) : '';
+				$required    = ( ! empty( $args['required'] ) && $args['required'] ) ? esc_attr( 'required' ) : '';
 				$placeholder = ! empty( $args['placeholder'] ) ? esc_attr( $args['placeholder'] ) : '';
 				$before      = ! empty( $args['before'] ) ? '<span class="before-input">' . esc_html( $args['before'] ) . '</span>' : '';
 				if ( ! empty( $before ) ) {
 					$class .= ' has-before';
 				}
-				$output = sprintf( '%s<input type="%s" class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" value="%s" placeholder="%s" %s>', $before, $type, $class, $id, $slug, $id, $slug, esc_attr( $args['value'] ), $placeholder, $data );
+				if ( 'number' === $type ) {
+					$output = sprintf( '%s<input type="%s" class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" min="%s" max="%s" value="%s" placeholder="%s" %s %s>', $before, $type, $class, $id, $slug, $id, $slug, $min, $max, esc_attr( $args['value'] ), $placeholder, $required, $data );
+				} else {
+					$output = sprintf( '%s<input type="%s" class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" value="%s" placeholder="%s" %s %s>', $before, $type, $class, $id, $slug, $id, $slug, esc_attr( $args['value'] ), $placeholder, $required, $data );
+				}
 				break;
 
 			// Textarea.
@@ -223,7 +238,7 @@ abstract class EVF_Form_Fields {
 			case 'checkbox':
 				$checked = checked( '1', $args['value'], false );
 				$output  = sprintf( '<input type="checkbox" class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" value="1" %s %s>', $class, $id, $slug, $id, $slug, $checked, $data );
-				$output  .= sprintf( '<label for="everest-forms-field-option-%s-%s" class="inline">%s', $id, $slug, $args['desc'] );
+				$output .= sprintf( '<label for="everest-forms-field-option-%s-%s" class="inline">%s', $id, $slug, $args['desc'] );
 				if ( isset( $args['tooltip'] ) && ! empty( $args['tooltip'] ) ) {
 					$output .= ' ' . sprintf( '<i class="dashicons dashicons-editor-help everest-forms-help-tooltip" data-tip="%s"></i>', esc_attr( $args['tooltip'] ) );
 				}
@@ -237,7 +252,7 @@ abstract class EVF_Form_Fields {
 				$cls     = $args['value'] ? 'everest-forms-on' : 'everest-forms-off';
 				$status  = $args['value'] ? __( 'On', 'everest-forms' ) : __( 'Off', 'everest-forms' );
 				$output  = sprintf( '<span class="everest-forms-toggle-icon %s"><i class="fa %s" aria-hidden="true"></i> <span class="everest-forms-toggle-icon-label">%s</span>', $cls, $icon, $status );
-				$output  .= sprintf( '<input type="checkbox" class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" value="1" %s %s></span>', $class, $id, $slug, $id, $slug, $checked, $data );
+				$output .= sprintf( '<input type="checkbox" class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" value="1" %s %s></span>', $class, $id, $slug, $id, $slug, $checked, $data );
 				break;
 
 			// Select.
@@ -250,6 +265,7 @@ abstract class EVF_Form_Fields {
 				}
 				$output .= '</select>';
 				break;
+
 		} // End switch().
 
 		if ( $echo ) {
@@ -279,14 +295,12 @@ abstract class EVF_Form_Fields {
 			// --------------------------------------------------------------//
 			// Basic Fields.
 			// --------------------------------------------------------------//
-
 			// Basic Options markup. ------------------------------------------//
-
 			case 'basic-options':
 				$markup = ! empty( $args['markup'] ) ? $args['markup'] : 'open';
 				$class  = ! empty( $args['class'] ) ? esc_html( $args['class'] ) : '';
 				if ( 'open' === $markup ) {
-					$output = sprintf( '<div class="everest-forms-field-option-group everest-forms-field-option-group-basic open" id="everest-forms-field-option-basic-%s">', $field['id'] );
+					$output  = sprintf( '<div class="everest-forms-field-option-group everest-forms-field-option-group-basic open" id="everest-forms-field-option-basic-%s">', $field['id'] );
 					$output .= sprintf( '<a href="#" class="everest-forms-field-option-group-toggle">%s<span> (ID #%s)</span> <i class="handlediv"></i></a>', $this->name, $field['id'] );
 					$output .= sprintf( '<div class="everest-forms-field-option-group-inner %s">', $class );
 				} else {
@@ -295,102 +309,177 @@ abstract class EVF_Form_Fields {
 				break;
 
 			// Field Label. ---------------------------------------------------//
-
 			case 'label':
 				$value   = ! empty( $field['label'] ) ? esc_attr( $field['label'] ) : '';
 				$tooltip = __( 'Enter text for the form field label.', 'everest-forms' );
-				$output  = $this->field_element( 'label', $field, array(
-					'slug'    => 'label',
-					'value'   => __( 'Label', 'everest-forms' ),
-					'tooltip' => $tooltip
-				), false );
-				$output  .= $this->field_element( 'text', $field, array(
-					'slug'  => 'label',
-					'value' => $value
-				), false );
-				$output  = $this->field_element( 'row', $field, array(
-					'slug'    => 'label',
-					'content' => $output
-				), false );
+				$output  = $this->field_element(
+					'label',
+					$field,
+					array(
+						'slug'    => 'label',
+						'value'   => __( 'Label', 'everest-forms' ),
+						'tooltip' => $tooltip,
+					),
+					false
+				);
+				$output .= $this->field_element(
+					'text',
+					$field,
+					array(
+						'slug'  => 'label',
+						'value' => $value,
+					),
+					false
+				);
+				$output  = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'label',
+						'content' => $output,
+					),
+					false
+				);
 				break;
 
 			// Field Meta. ---------------------------------------------------//
 			case 'meta':
-				$value   =  ! empty( $field['meta-key'] ) ? esc_attr( $field['meta-key'] ) : evf_get_meta_key_field_option( $field );
+				$value   = ! empty( $field['meta-key'] ) ? esc_attr( $field['meta-key'] ) : evf_get_meta_key_field_option( $field );
 				$tooltip = __( 'Enter meta key to be stored in database.', 'everest-forms' );
-				$output  = $this->field_element( 'label', $field, array(
-					'slug'    => 'meta-key',
-					'value'   => __( 'Meta Key', 'everest-forms' ),
-					'tooltip' => $tooltip
-				), false );
-				$output  .= $this->field_element( 'text', $field, array(
-					'slug'  => 'meta-key',
-					'class' => 'evf-input-meta-key',
-					'value' => $value
-				), false );
-				$output  = $this->field_element( 'row', $field, array(
-					'slug'    => 'meta-key',
-					'content' => $output
-				), false );
+				$output  = $this->field_element(
+					'label',
+					$field,
+					array(
+						'slug'    => 'meta-key',
+						'value'   => __( 'Meta Key', 'everest-forms' ),
+						'tooltip' => $tooltip,
+					),
+					false
+				);
+				$output .= $this->field_element(
+					'text',
+					$field,
+					array(
+						'slug'  => 'meta-key',
+						'class' => 'evf-input-meta-key',
+						'value' => $value,
+					),
+					false
+				);
+				$output  = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'meta-key',
+						'content' => $output,
+					),
+					false
+				);
 				break;
 
 			// Field Description. ---------------------------------------------//
-
 			case 'description':
 				$value   = ! empty( $field['description'] ) ? esc_attr( $field['description'] ) : '';
 				$tooltip = __( 'Enter text for the form field description.', 'everest-forms' );
-				$output  = $this->field_element( 'label', $field, array(
-					'slug'    => 'description',
-					'value'   => __( 'Description', 'everest-forms' ),
-					'tooltip' => $tooltip
-				), false );
-				$output  .= $this->field_element( 'textarea', $field, array(
-					'slug'  => 'description',
-					'value' => $value
-				), false );
-				$output  = $this->field_element( 'row', $field, array(
-					'slug'    => 'description',
-					'content' => $output
-				), false );
+				$output  = $this->field_element(
+					'label',
+					$field,
+					array(
+						'slug'    => 'description',
+						'value'   => __( 'Description', 'everest-forms' ),
+						'tooltip' => $tooltip,
+					),
+					false
+				);
+				$output .= $this->field_element(
+					'textarea',
+					$field,
+					array(
+						'slug'  => 'description',
+						'value' => $value,
+					),
+					false
+				);
+				$output  = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'description',
+						'content' => $output,
+					),
+					false
+				);
 				break;
 
 			// Field Required toggle. -----------------------------------------//
-
 			case 'required':
 				$default = ! empty( $args['default'] ) ? $args['default'] : '0';
 				$value   = isset( $field['required'] ) ? $field['required'] : $default;
 				$tooltip = __( 'Check this option to mark the field required.', 'everest-forms' );
-				$output  = $this->field_element( 'checkbox', $field, array(
-					'slug'    => 'required',
-					'value'   => $value,
-					'desc'    => __( 'Required', 'everest-forms' ),
-					'tooltip' => $tooltip
-				), false );
-				$output  = $this->field_element( 'row', $field, array(
-					'slug'    => 'required',
-					'content' => $output
-				), false );
+				$output  = $this->field_element(
+					'checkbox',
+					$field,
+					array(
+						'slug'    => 'required',
+						'value'   => $value,
+						'desc'    => __( 'Required', 'everest-forms' ),
+						'tooltip' => $tooltip,
+					),
+					false
+				);
+				$output  = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'required',
+						'content' => $output,
+					),
+					false
+				);
 				break;
 
 			// Code Block. ----------------------------------------------------//
-
 			case 'code':
 				$value   = ! empty( $field['code'] ) ? esc_attr( $field['code'] ) : '';
 				$tooltip = esc_html__( 'Enter code for the form field.', 'everest-forms' );
-				$output  = $this->field_element( 'label',    $field, array( 'slug' => 'code', 'value' => esc_html__( 'Code', 'everest-forms' ), 'tooltip' => $tooltip ), false );
-				$output .= $this->field_element( 'textarea', $field, array( 'slug' => 'code', 'value' => $value ), false );
-				$output  = $this->field_element( 'row',      $field, array( 'slug' => 'code', 'content' => $output ), false );
+				$output  = $this->field_element(
+					'label',
+					$field,
+					array(
+						'slug'    => 'code',
+						'value'   => esc_html__( 'Code', 'everest-forms' ),
+						'tooltip' => $tooltip,
+					),
+					false
+				);
+				$output .= $this->field_element(
+					'textarea',
+					$field,
+					array(
+						'slug'  => 'code',
+						'value' => $value,
+					),
+					false
+				);
+				$output  = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'code',
+						'content' => $output,
+					),
+					false
+				);
 				break;
 
 			// Choices. ------------------------------------------------------//
-
 			case 'choices':
 				$tooltip = __( 'Add choices for the form field.', 'everest-forms' );
 				$toggle  = '';
 				$dynamic = ! empty( $field['dynamic_choices'] ) ? esc_html( $field['dynamic_choices'] ) : '';
 				$values  = ! empty( $field['choices'] ) ? $field['choices'] : $this->defaults;
 				$class   = ! empty( $field['show_values'] ) && $field['show_values'] == '1' ? 'show-values' : '';
-				$class   .= ! empty( $dynamic ) ? ' hidden' : '';
+				$class  .= ! empty( $dynamic ) ? ' hidden' : '';
 
 				// Field option label and type.
 				$option_label = $this->field_element(
@@ -409,7 +498,7 @@ abstract class EVF_Form_Fields {
 				// Field option choices inputs
 				$option_choices = sprintf( '<ul data-next-id="%s" class="evf-choices-list %s" data-field-id="%s" data-field-type="%s">', max( array_keys( $values ) ) + 1, $class, $field['id'], $this->type );
 				foreach ( $values as $key => $value ) {
-					$default        = ! empty( $value['default'] ) ? $value['default'] : '';
+					$default         = ! empty( $value['default'] ) ? $value['default'] : '';
 					$option_choices .= sprintf( '<li data-key="%d">', $key );
 					$option_choices .= sprintf( '<input type="%s" name="form_fields[%s][choices][%s][default]" class="default" value="1" %s>', $option_type, $field['id'], $key, checked( '1', $default, false ) );
 					$option_choices .= sprintf( '<input type="text" name="form_fields[%s][choices][%s][label]" value="%s" class="label">', $field['id'], $key, esc_attr( $value['label'] ) );
@@ -433,126 +522,193 @@ abstract class EVF_Form_Fields {
 			// ---------------------------------------------------------------//
 			// Advanced Fields.
 			// ---------------------------------------------------------------//
-
 			// Default value. -------------------------------------------------//
-
 			case 'default_value':
 				$value   = ! empty( $field['default_value'] ) ? esc_attr( $field['default_value'] ) : '';
 				$tooltip = __( 'Enter text for the default form field value.', 'everest-forms' );
 				$toggle  = '';
-				$output  = $this->field_element( 'label', $field, array(
-					'slug'          => 'default_value',
-					'value'         => __( 'Default Value', 'everest-forms' ),
-					'tooltip'       => $tooltip,
-					'after_tooltip' => $toggle
-				), false );
-				$output  .= $this->field_element( 'text', $field, array(
-					'slug'  => 'default_value',
-					'value' => $value
-				), false );
-
-				$output .= '<a href="#" class="evf-toggle-smart-tag-display" data-type="other"><span class="dashicons dashicons-editor-code"></span></a>';
-				$output .= '<div class="evf-smart-tag-lists" style="display: none">';
-				$output .= '<div class="smart-tag-title">Others</div><ul class="evf-others"></ul></div>';
-
-				$output  = $this->field_element( 'row', $field, array(
-					'slug'    => 'default_value',
-					'content' => $output
-				), false );
+				$output  = $this->field_element(
+					'label',
+					$field,
+					array(
+						'slug'          => 'default_value',
+						'value'         => __( 'Default Value', 'everest-forms' ),
+						'tooltip'       => $tooltip,
+						'after_tooltip' => $toggle,
+					),
+					false
+				);
+				$output .= $this->field_element(
+					'text',
+					$field,
+					array(
+						'slug'  => 'default_value',
+						'value' => $value,
+					),
+					false
+				);
+				// echo '<pre>' . print_r( $field, true ) . '</pre>';
+				if ( 'rating' !== $field['type'] ) {
+					$output .= '<a href="#" class="evf-toggle-smart-tag-display" data-type="other"><span class="dashicons dashicons-editor-code"></span></a>';
+					$output .= '<div class="evf-smart-tag-lists" style="display: none">';
+					$output .= '<div class="smart-tag-title">Others</div><ul class="evf-others"></ul></div>';
+				}
+				$output = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'default_value',
+						'content' => $output,
+					),
+					false
+				);
 				break;
 
 			// Advanced Options markup. ---------------------------------------//
-
 			case 'advanced-options':
 				$markup = ! empty( $args['markup'] ) ? $args['markup'] : 'open';
 				if ( 'open' === $markup ) {
 					$override = apply_filters( 'everest_forms_advanced_options_override', false );
 					$override = ! empty( $override ) ? 'style="display:' . $override . ';"' : '';
 					$output   = sprintf( '<div class="everest-forms-field-option-group everest-forms-field-option-group-advanced everest-forms-hide closed" id="everest-forms-field-option-advanced-%s" %s>', $field['id'], $override );
-					$output   .= sprintf( '<a href="#" class="everest-forms-field-option-group-toggle">%s<i class="handlediv"></i></a>', __( 'Advanced Options', 'everest-forms' ) );
-					$output   .= '<div class="everest-forms-field-option-group-inner">';
+					$output  .= sprintf( '<a href="#" class="everest-forms-field-option-group-toggle">%s<i class="handlediv"></i></a>', __( 'Advanced Options', 'everest-forms' ) );
+					$output  .= '<div class="everest-forms-field-option-group-inner">';
 				} else {
 					$output = '</div></div>';
 				}
 				break;
 
 			// Placeholder. ---------------------------------------------------//
-
 			case 'placeholder':
 				$value   = ! empty( $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : '';
 				$tooltip = __( 'Enter text for the form field placeholder.', 'everest-forms' );
-				$output  = $this->field_element( 'label', $field, array(
-					'slug'    => 'placeholder',
-					'value'   => __( 'Placeholder Text', 'everest-forms' ),
-					'tooltip' => $tooltip
-				), false );
-				$output  .= $this->field_element( 'text', $field, array(
-					'slug'  => 'placeholder',
-					'value' => $value
-				), false );
-				$output  = $this->field_element( 'row', $field, array(
-					'slug'    => 'placeholder',
-					'content' => $output
-				), false );
+				$output  = $this->field_element(
+					'label',
+					$field,
+					array(
+						'slug'    => 'placeholder',
+						'value'   => __( 'Placeholder Text', 'everest-forms' ),
+						'tooltip' => $tooltip,
+					),
+					false
+				);
+				$output .= $this->field_element(
+					'text',
+					$field,
+					array(
+						'slug'  => 'placeholder',
+						'value' => $value,
+					),
+					false
+				);
+				$output  = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'placeholder',
+						'content' => $output,
+					),
+					false
+				);
 				break;
 
 			// CSS classes. ---------------------------------------------------//
-
 			case 'css':
 				$toggle  = '';
 				$tooltip = __( 'Enter CSS class for this field container. Class names should be separated with spaces.', 'everest-forms' );
 				$value   = ! empty( $field['css'] ) ? esc_attr( $field['css'] ) : '';
 				// Build output
-				$output = $this->field_element( 'label', $field, array(
-					'slug'          => 'css',
-					'value'         => __( 'CSS Classes', 'everest-forms' ),
-					'tooltip'       => $tooltip,
-					'after_tooltip' => $toggle
-				), false );
-				$output .= $this->field_element( 'text', $field, array( 'slug' => 'css', 'class' => 'evf-input-css-class', 'value' => $value ), false );
-				$output = $this->field_element( 'row', $field, array( 'slug' => 'css', 'content' => $output ), false );
+				$output  = $this->field_element(
+					'label',
+					$field,
+					array(
+						'slug'          => 'css',
+						'value'         => __( 'CSS Classes', 'everest-forms' ),
+						'tooltip'       => $tooltip,
+						'after_tooltip' => $toggle,
+					),
+					false
+				);
+				$output .= $this->field_element(
+					'text',
+					$field,
+					array(
+						'slug'  => 'css',
+						'class' => 'evf-input-css-class',
+						'value' => $value,
+					),
+					false
+				);
+				$output  = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'css',
+						'content' => $output,
+					),
+					false
+				);
 				break;
 
 			// Hide Label. ----------------------------------------------------//
-
 			case 'label_hide':
 				$value   = isset( $field['label_hide'] ) ? $field['label_hide'] : '0';
 				$tooltip = __( 'Check this option to hide the form field label.', 'everest-forms' );
 				// Build output
-				$output = $this->field_element( 'checkbox', $field, array(
-					'slug'    => 'label_hide',
-					'value'   => $value,
-					'desc'    => __( 'Hide Label', 'everest-forms' ),
-					'tooltip' => $tooltip
-				), false );
-				$output = $this->field_element( 'row', $field, array(
-					'slug'    => 'label_hide',
-					'content' => $output
-				), false );
+				$output = $this->field_element(
+					'checkbox',
+					$field,
+					array(
+						'slug'    => 'label_hide',
+						'value'   => $value,
+						'desc'    => __( 'Hide Label', 'everest-forms' ),
+						'tooltip' => $tooltip,
+					),
+					false
+				);
+				$output = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'label_hide',
+						'content' => $output,
+					),
+					false
+				);
 				break;
 
 			// Hide Sub-Labels. -----------------------------------------------//
-
 			case 'sublabel_hide':
 				$value   = isset( $field['sublabel_hide'] ) ? $field['sublabel_hide'] : '0';
 				$tooltip = __( 'Check this option to hide the form field sub-label.', 'everest-forms' );
 				// Build output
-				$output = $this->field_element( 'checkbox', $field, array(
-					'slug'    => 'sublabel_hide',
-					'value'   => $value,
-					'desc'    => __( 'Hide Sub-Labels', 'everest-forms' ),
-					'tooltip' => $tooltip
-				), false );
-				$output = $this->field_element( 'row', $field, array(
-					'slug'    => 'sublabel_hide',
-					'content' => $output
-				), false );
+				$output = $this->field_element(
+					'checkbox',
+					$field,
+					array(
+						'slug'    => 'sublabel_hide',
+						'value'   => $value,
+						'desc'    => __( 'Hide Sub-Labels', 'everest-forms' ),
+						'tooltip' => $tooltip,
+					),
+					false
+				);
+				$output = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'sublabel_hide',
+						'content' => $output,
+					),
+					false
+				);
 				break;
 
 			default:
 				if ( is_callable( array( $this, $option ) ) ) {
 					$this->{$option}( $field );
 				}
+				do_action( 'everest_forms_field_options_' . $option, $this, $field, $args );
 				break;
 
 		} // End switch().
@@ -671,23 +827,23 @@ abstract class EVF_Form_Fields {
 		// Build Preview.
 		ob_start();
 		$this->field_preview( $field );
-		$preview = sprintf( '<div class="everest-forms-field everest-forms-field-%s %s %s" id="everest-forms-field-%s" data-field-id="%s" data-field-type="%s">', $field_type, $field_required, $field_class, $field['id'], $field['id'], $field_type );
+		$preview      = sprintf( '<div class="everest-forms-field everest-forms-field-%s %s %s" id="everest-forms-field-%s" data-field-id="%s" data-field-type="%s">', $field_type, $field_required, $field_class, $field['id'], $field['id'], $field_type );
 			$preview .= sprintf( '<div class="evf-field-action">' );
 			$preview .= sprintf( '<a href="#" class="everest-forms-field-duplicate" title="%s"><span class="dashicons dashicons-media-default"></span></a>', __( 'Duplicate Field', 'everest-forms' ) );
 			$preview .= sprintf( '<a href="#" class="everest-forms-field-delete" title="%s"><span class="dashicons dashicons-trash"></span></a>', __( 'Delete Field', 'everest-forms' ) );
 			$preview .= sprintf( '<a href="#" class="everest-forms-field-setting" title="%s"><span class="dashicons dashicons-admin-generic"></span></a>', __( 'Settings', 'everest-forms' ) );
 			$preview .= sprintf( '</div>' );
 			$preview .= ob_get_clean();
-		$preview .= '</div>';
+		$preview     .= '</div>';
 
 		// Build Options.
-		$options = sprintf( '<div class="everest-forms-field-option everest-forms-field-option-%s" id="everest-forms-field-option-%s" data-field-id="%s">', esc_attr( $field['type'] ), $field['id'], $field['id'] );
+		$options      = sprintf( '<div class="everest-forms-field-option everest-forms-field-option-%s" id="everest-forms-field-option-%s" data-field-id="%s">', esc_attr( $field['type'] ), $field['id'], $field['id'] );
 			$options .= sprintf( '<input type="hidden" name="form_fields[%s][id]" value="%s" class="everest-forms-field-option-hidden-id">', $field['id'], $field['id'] );
 			$options .= sprintf( '<input type="hidden" name="form_fields[%s][type]" value="%s" class="everest-forms-field-option-hidden-type">', $field['id'], esc_attr( $field['type'] ) );
 			ob_start();
 			$this->field_options( $field );
 			$options .= ob_get_clean();
-		$options .= '</div>';
+		$options     .= '</div>';
 
 		$form_field_array = explode( '-', $field_id );
 		$field_id_int     = absint( $form_field_array[ count( $form_field_array ) - 1 ] );
@@ -699,7 +855,7 @@ abstract class EVF_Form_Fields {
 				'field'         => $field,
 				'preview'       => $preview,
 				'options'       => $options,
-				'form_field_id' => ( $field_id_int + 1 )
+				'form_field_id' => ( $field_id_int + 1 ),
 			)
 		);
 	}
@@ -792,17 +948,17 @@ abstract class EVF_Form_Fields {
 		// Type validations.
 		switch ( $field_type ) {
 			case 'url':
-				if( ! empty( $_POST['everest_forms']['form_fields'][ $field_id ] ) && filter_var( $field_submit, FILTER_VALIDATE_URL ) === FALSE ){
+				if ( ! empty( $_POST['everest_forms']['form_fields'][ $field_id ] ) && filter_var( $field_submit, FILTER_VALIDATE_URL ) === false ) {
 					$validation_text = get_option( 'evf_' . $field_type . '_validation', __( 'Please enter a valid url', 'everest-forms' ) );
 				}
 				break;
 			case 'email':
-			 	if ( ! empty( $_POST['everest_forms']['form_fields'][ $field_id ] ) && ! is_email( $field_submit ) ) {
+				if ( ! empty( $_POST['everest_forms']['form_fields'][ $field_id ] ) && ! is_email( $field_submit ) ) {
 					$validation_text = get_option( 'evf_' . $field_type . '_validation', __( 'Please enter a valid email address', 'everest-forms' ) );
 				}
 				break;
 			case 'number':
-				if ( ! empty( $_POST['everest_forms']['form_fields'][ $field_id ] ) && ! is_numeric( $field_submit ) ){
+				if ( ! empty( $_POST['everest_forms']['form_fields'][ $field_id ] ) && ! is_numeric( $field_submit ) ) {
 					$validation_text = get_option( 'evf_' . $field_type . '_validation', __( 'Please enter a valid number', 'everest-forms' ) );
 				}
 				break;

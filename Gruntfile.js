@@ -258,10 +258,12 @@ module.exports = function( grunt ){
 					'!phpcs.xml',
 					'!Gruntfile.js',
 					'!package.json',
+					'!renovate.json',
 					'!composer.json',
 					'!composer.lock',
 					'!node_modules/**',
-					'!package-lock.json'
+					'!package-lock.json',
+					'!webpack.config.js'
 				],
 				dest: 'everest-forms',
 				expand: true

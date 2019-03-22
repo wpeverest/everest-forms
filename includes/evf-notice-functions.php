@@ -59,6 +59,7 @@ function evf_has_notice( $message, $notice_type = 'success' ) {
 
 	$notices = EVF()->session->get( 'evf_notices', array() );
 	$notices = isset( $notices[ $notice_type ] ) ? $notices[ $notice_type ] : array();
+
 	return array_search( $message, $notices, true ) !== false;
 }
 
@@ -130,9 +131,12 @@ function evf_print_notices() {
 
 	foreach ( $notice_types as $notice_type ) {
 		if ( evf_notice_count( $notice_type ) > 0 ) {
-			evf_get_template( "notices/{$notice_type}.php", array(
-				'messages' => array_filter( $all_notices[ $notice_type ] ),
-			) );
+			evf_get_template(
+				"notices/{$notice_type}.php",
+				array(
+					'messages' => array_filter( $all_notices[ $notice_type ] ),
+				)
+			);
 		}
 	}
 
@@ -152,9 +156,12 @@ function evf_print_notice( $message, $notice_type = 'success' ) {
 		$message = apply_filters( 'everest_forms_add_message', $message );
 	}
 
-	evf_get_template( "notices/{$notice_type}.php", array(
-		'messages' => array( apply_filters( 'everest_forms_add_' . $notice_type, $message ) ),
-	) );
+	evf_get_template(
+		"notices/{$notice_type}.php",
+		array(
+			'messages' => array( apply_filters( 'everest_forms_add_' . $notice_type, $message ) ),
+		)
+	);
 }
 
 /**
