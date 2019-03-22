@@ -172,6 +172,17 @@ img.help_tip {
 }
 
 /**
+ * toggleclass
+ */
+.everest-forms-hidden {
+	display: none;
+}
+
+.everest-forms-show {
+	display: block;
+}
+
+/**
  * Core styling.
  */
 body.everest-forms-builder {

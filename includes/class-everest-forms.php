@@ -129,7 +129,7 @@ final class EverestForms {
 		$this->define_constants();
 		$this->includes();
 		$this->init_hooks();
-		add_action( 'plugins_loaded', array( $this, 'objects' ), 10 );
+		add_action( 'plugins_loaded', array( $this, 'objects' ), 1 );
 
 		do_action( 'everest_forms_loaded' );
 	}

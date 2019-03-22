@@ -153,6 +153,7 @@
 					&.everest-forms-invalid {
 						label {
 							color: $color-alert-danger;
+							white-space: nowrap;
 						}
 
 						.select2-container,

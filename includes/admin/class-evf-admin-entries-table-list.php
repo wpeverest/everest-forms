@@ -59,11 +59,13 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 			$this->form_data = ! empty( $this->form->post_content ) ? evf_decode( $this->form->post_content ) : '';
 		}
 
-		parent::__construct( array(
-			'singular' => 'entry',
-			'plural'   => 'entries',
-			'ajax'     => false,
-		) );
+		parent::__construct(
+			array(
+				'singular' => 'entry',
+				'plural'   => 'entries',
+				'ajax'     => false,
+			)
+		);
 	}
 
 	/**
@@ -102,9 +104,12 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 			);
 		}
 
-		return array_merge( array(
-			'id'   => array( 'title', false ),
-		), $sortable_columns );
+		return array_merge(
+			array(
+				'id' => array( 'title', false ),
+			),
+			$sortable_columns
+		);
 	}
 
 	/**
@@ -172,6 +177,11 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 
 		if ( ! empty( $entry->meta[ $meta_key ] ) ) {
 			$value = $entry->meta[ $meta_key ];
+
+			if ( evf_is_json( $value ) === true ) {
+				$field_value = json_decode( $value, true );
+				$value       = $field_value['value'];
+			}
 
 			// Limit to 5 lines.
 			$lines = explode( "\n", $value );
@@ -245,21 +255,45 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 			$actions = array(
 				'view'  => '<a href="' . esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $entry->form_id . '&amp;view-entry=' . $entry->entry_id ) ) . '">' . esc_html__( 'View', 'everest-forms' ) . '</a>',
 				/* translators: %s: entry name */
-				'trash' => '<a class="submitdelete" aria-label="' . esc_attr__( 'Trash form entry', 'everest-forms' ) . '" href="' . esc_url( wp_nonce_url( add_query_arg( array(
-					'trash'   => $entry->entry_id,
-					'form_id' => $this->form_id,
-				), admin_url( 'admin.php?page=evf-entries' ) ), 'trash-entry' ) ) . '">' . esc_html__( 'Trash', 'everest-forms' ) . '</a>',
+				'trash' => '<a class="submitdelete" aria-label="' . esc_attr__( 'Trash form entry', 'everest-forms' ) . '" href="' . esc_url(
+					wp_nonce_url(
+						add_query_arg(
+							array(
+								'trash'   => $entry->entry_id,
+								'form_id' => $this->form_id,
+							),
+							admin_url( 'admin.php?page=evf-entries' )
+						),
+						'trash-entry'
+					)
+				) . '">' . esc_html__( 'Trash', 'everest-forms' ) . '</a>',
 			);
 		} else {
 			$actions = array(
-				'untrash' => '<a aria-label="' . esc_attr__( 'Restore form entry from trash', 'everest-forms' ) . '" href="' . esc_url( wp_nonce_url( add_query_arg( array(
-					'untrash' => $entry->entry_id,
-					'form_id' => $this->form_id,
-				), admin_url( 'admin.php?page=evf-entries' ) ), 'untrash-entry' ) ) . '">' . esc_html__( 'Restore', 'everest-forms' ) . '</a>',
-				'delete'  => '<a class="submitdelete" aria-label="' . esc_attr__( 'Delete form entry permanently', 'everest-forms' ) . '" href="' . esc_url( wp_nonce_url( add_query_arg( array(
-					'delete'  => $entry->entry_id,
-					'form_id' => $this->form_id,
-				), admin_url( 'admin.php?page=evf-entries' ) ), 'delete-entry' ) ) . '">' . esc_html__( 'Delete Permanently', 'everest-forms' ) . '</a>',
+				'untrash' => '<a aria-label="' . esc_attr__( 'Restore form entry from trash', 'everest-forms' ) . '" href="' . esc_url(
+					wp_nonce_url(
+						add_query_arg(
+							array(
+								'untrash' => $entry->entry_id,
+								'form_id' => $this->form_id,
+							),
+							admin_url( 'admin.php?page=evf-entries' )
+						),
+						'untrash-entry'
+					)
+				) . '">' . esc_html__( 'Restore', 'everest-forms' ) . '</a>',
+				'delete'  => '<a class="submitdelete" aria-label="' . esc_attr__( 'Delete form entry permanently', 'everest-forms' ) . '" href="' . esc_url(
+					wp_nonce_url(
+						add_query_arg(
+							array(
+								'delete'  => $entry->entry_id,
+								'form_id' => $this->form_id,
+							),
+							admin_url( 'admin.php?page=evf-entries' )
+						),
+						'delete-entry'
+					)
+				) . '">' . esc_html__( 'Delete Permanently', 'everest-forms' ) . '</a>',
 			);
 		}
 
@@ -420,25 +454,25 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		?>
 		<div class="alignleft actions">
 		<?php
-			if ( ! empty( $this->forms ) && 'top' === $which ) {
-				ob_start();
-				$this->forms_dropdown();
-				$output = ob_get_clean();
+		if ( ! empty( $this->forms ) && 'top' === $which ) {
+			ob_start();
+			$this->forms_dropdown();
+			$output = ob_get_clean();
 
-				if ( ! empty( $output ) ) {
-					echo $output;
-					submit_button( __( 'Filter', 'everest-forms' ), '', 'filter_action', false, array( 'id' => 'post-query-submit' ) );
+			if ( ! empty( $output ) ) {
+				echo $output;
+				submit_button( __( 'Filter', 'everest-forms' ), '', 'filter_action', false, array( 'id' => 'post-query-submit' ) );
 
-					// Export CSV submit button.
-					if ( apply_filters( 'everest_forms_enable_csv_export', $show_export ) && current_user_can( 'export' ) ) {
-						submit_button( __( 'Export CSV', 'everest-forms' ), '', 'export_action', false, array( 'id' => 'export-csv-submit' ) );
-					}
+				// Export CSV submit button.
+				if ( apply_filters( 'everest_forms_enable_csv_export', $show_export ) && current_user_can( 'export' ) ) {
+					submit_button( __( 'Export CSV', 'everest-forms' ), '', 'export_action', false, array( 'id' => 'export-csv-submit' ) );
 				}
 			}
+		}
 
-			if ( $num_entries['trash'] && isset( $_GET['status'] ) && 'trash' === $_GET['status'] && current_user_can( 'manage_everest_forms' ) ) {
-				submit_button( __( 'Empty Trash', 'everest-forms' ), 'apply', 'delete_all', false );
-			}
+		if ( $num_entries['trash'] && isset( $_GET['status'] ) && 'trash' === $_GET['status'] && current_user_can( 'manage_everest_forms' ) ) {
+			submit_button( __( 'Empty Trash', 'everest-forms' ), 'apply', 'delete_all', false );
+		}
 		?>
 		</div>
 		<?php
@@ -454,7 +488,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		?>
 		<label for="filter-by-form" class="screen-reader-text"><?php esc_html_e( 'Filter by form', 'everest-forms' ); ?></label>
 		<select name="form_id" id="filter-by-form">
-			<?php foreach( $forms as $id => $form ) : ?>
+			<?php foreach ( $forms as $id => $form ) : ?>
 				<option value="<?php echo esc_attr( $id ); ?>" <?php selected( $form_id, $id ); ?>><?php echo esc_html( $form ); ?></option>
 			<?php endforeach; ?>
 		</select>
@@ -507,10 +541,12 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		$total_items    = count( evf_search_entries( $args ) );
 
 		// Set the pagination.
-		$this->set_pagination_args( array(
-			'total_items' => $total_items,
-			'per_page'    => $per_page,
-			'total_pages' => ceil( $total_items / $per_page ),
-		) );
+		$this->set_pagination_args(
+			array(
+				'total_items' => $total_items,
+				'per_page'    => $per_page,
+				'total_pages' => ceil( $total_items / $per_page ),
+			)
+		);
 	}
 }
