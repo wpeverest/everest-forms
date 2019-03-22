@@ -4,6 +4,7 @@
 	var $builder;
 
 	var EVFPanelBuilder = {
+
 		/**
 		 * Start the panel builder.
 		 */
@@ -145,6 +146,10 @@
 
 				if ( tab_content.length >= 1 ) {
 					window.evf_tab_scroller = new PerfectScrollbar( tab_content.selector );
+
+					$( document.body ).on( 'click', '#field-options, .everest-forms-field', function() {
+						tab_content.scrollTop(0);
+					} );
 				}
 
 				if ( panel_content.length >= 1 ) {
@@ -248,12 +253,12 @@
 				$( '#everest-forms-field-option-' + id ).toggleClass( 'everest-forms-confirm-enabled everest-forms-confirm-disabled' );
 			});
 
-			// Real-time updates for "Placeholder" field option
+			// Real-time updates for "Placeholder" field option.
 			$builder.on( 'input', '.everest-forms-field-option-row-placeholder input', function(e) {
 				var $this   = $( this ),
 					value   = $this.val(),
 					id      = $this.parent().data( 'field-id' ),
-					$primary = $( '#everest-forms-field-' + id ).find( '.primary-input' );
+					$primary = $( '#everest-forms-field-' + id ).find( '.widefat' );
 
 				if ( $primary.is( 'select' ) ) {
 					if ( ! value.length ) {
@@ -347,14 +352,16 @@
 				clone.find('input[type="text"]').val('');
 				var ul = $(this).closest('.evf-choices-list');
 				var field_id = ul.attr('data-field-id');
-				var total_list = ul.find('li').length;
-				total_list++;
+				var next_id = ul.attr('data-next-id');
+
 				clone.find('input[type="checkbox"],input[type="radio"]').prop('checked', false);
-				clone.attr('data-key', total_list);
-				clone.find('.default').attr('name', 'form_fields[' + field_id + '][choices][' + total_list + '][default]');
-				clone.find('.label').attr('name', 'form_fields[' + field_id + '][choices][' + total_list + '][label]');
-				clone.find('.value').attr('name', 'form_fields[' + field_id + '][choices][' + total_list + '][value]');
+				clone.attr('data-key', next_id);
+				clone.find('.default').attr('name', 'form_fields[' + field_id + '][choices][' + next_id + '][default]');
+				clone.find('.label').attr('name', 'form_fields[' + field_id + '][choices][' + next_id + '][label]');
+				clone.find('.value').attr('name', 'form_fields[' + field_id + '][choices][' + next_id + '][value]');
 				$(this).closest('li').after(clone);
+				next_id++;
+				$( this ).closest('.evf-choices-list').attr('data-next-id',next_id);
 				EVFPanelBuilder.choiceChange(field_id);
 			});
 			$('body').on('click', '.evf-choices-list a.remove', function () {
@@ -376,7 +383,11 @@
 						}
 					});
 				} else {
-					$( this ).closest( 'li' ).remove();
+					var self = $( this );
+					setTimeout(function(){
+						self.closest( 'li' ).remove();
+					}, 100);
+
 					EVFPanelBuilder.choiceChange( field_id );
 				}
 			});
@@ -775,39 +786,43 @@
 					security: evf_data.evf_save_form,
 					form_data: JSON.stringify( new_form_data )
 				};
+				if ( $form[0].checkValidity() ) {
+					$.ajax({
+						url: evf_data.ajax_url,
+						data: data,
+						type: 'POST',
+						beforeSend: function () {
+							$this.addClass( 'processing' );
+							$this.find( '.loading-dot' ).remove();
+							$this.append( '<span class="loading-dot"></span>' );
+						},
+						success: function ( response ) {
+							$this.removeClass( 'processing' );
+							$this.find( '.loading-dot' ).remove();
 
-				$.ajax({
-					url: evf_data.ajax_url,
-					data: data,
-					type: 'POST',
-					beforeSend: function () {
-						$this.addClass( 'processing' );
-						$this.find( '.loading-dot' ).remove();
-						$this.append( '<span class="loading-dot"></span>' );
-					},
-					success: function ( response ) {
-						$this.removeClass( 'processing' );
-						$this.find( '.loading-dot' ).remove();
-
-						if ( ! response.success ) {
-							$.alert({
-								title: response.data.errorTitle,
-								content: response.data.errorMessage,
-								icon: 'dashicons dashicons-warning',
-								type: 'red',
-								buttons: {
-									ok: {
-										text: evf_data.i18n_ok,
-										btnClass: 'btn-confirm',
-										keys: [ 'enter' ]
+							if ( ! response.success ) {
+								$.alert({
+									title: response.data.errorTitle,
+									content: response.data.errorMessage,
+									icon: 'dashicons dashicons-warning',
+									type: 'red',
+									buttons: {
+										ok: {
+											text: evf_data.i18n_ok,
+											btnClass: 'btn-confirm',
+											keys: [ 'enter' ]
+										}
 									}
-								}
-							});
-						}
+								});
+							}
 
-						$( '.everest-forms-panel-content-wrap' ).unblock();
-					}
-				});
+							$( '.everest-forms-panel-content-wrap' ).unblock();
+						}
+					});
+				} else {
+					$form[0].reportValidity();
+					$( '.everest-forms-panel-content-wrap' ).unblock();
+				}
 			});
 		},
 		getStructure: function () {
@@ -1130,8 +1145,27 @@
 					$( '#everest-forms-field-id' ).val( form_field_id );
 					$( '.everest-forms-field-options' ).find( '.no-fields' ).hide();
 					$( '.everest-forms-field-options' ).append( field_options );
+					$( '.everest-forms-field-option-row-icon_color input.colorpicker' ).wpColorPicker({
+						change: function( event ){
+							var $this     = $( this ),
+								value     = $this.val(),
+								id        = $this.closest( '.everest-forms-field-option-row' ).data( 'field-id' ),
+								$icons    = $( '#everest-forms-field-'+id +' .rating-icon svg' );
+
+							$icons.css( 'fill', value );
+						}
+					});
 					field.after( field_preview );
 					var dragged_el_id = $(field_preview).attr('id');
+					if ( null !== $( '#everest-forms-panel-field-settings-enable_survey') && $('#everest-forms-panel-field-settings-enable_survey').prop('checked') ){
+						var fieldID = $( field_preview ).attr('data-field-id');
+						$('#everest-forms-field-option-'+fieldID+'-survey_status' ).prop('checked', true);
+					 }
+					 if ( null !== $( '#everest-forms-panel-field-settings-enable_quiz') && $('#everest-forms-panel-field-settings-enable_quiz').prop('checked') ){
+						var fieldID = $( field_preview ).attr('data-field-id');
+						$('#everest-forms-field-option-'+fieldID+'-quiz_status' ).prop('checked', true);
+						$('#everest-forms-field-option-'+fieldID+'-quiz_status' ).closest('.everest-forms-field-option-row-quiz_status').siblings('.everst-forms-field-quiz-settings').removeClass('everest-forms-hidden').addClass('everest-forms-show');
+					 }
 					field.remove();
 					EVFPanelBuilder.checkEmptyGrid();
 					$( document.body ).trigger( 'init_tooltips' );
@@ -1152,13 +1186,20 @@
 			var field_id = dragged_el.attr( 'data-field-id' );
 			var field_label = dragged_el.find( '.label-title .text ' ).text();
 
-			$.fn.insertAt = function(elements, index) {
+			$.fn.insertAt = function(elements, index, selected_id ) {
 			    var array = $.makeArray(this.children().clone(true));
-			    array.splice(index, 0, elements);
+				array.splice(index, 0, elements);
+				$.each( array, function( index, el ) {
+					if( selected_id === $( el )[0]['value'] ) {
+						$( el )[0]['selected'] = true;
+						array[ index ] = el;
+					}
+				} );
 			    this.empty().append(array);
 			};
 			var dragged_field_id = field_id;
 			fields.each(function(index, el) {
+				var selected_id = $( el ).val();
 				var id_key = id.replace('everest-forms-field-', '');
 				var name = $(el).attr('name');
 				var name_key = name.substring(
@@ -1168,9 +1209,9 @@
 
 				if (id_key === name_key) {
 					$('.evf-admin-row .evf-admin-grid .everest-forms-field').each( function(){
-						var field_type  = $( this ).data('field-type'),
-							field_id    = $( this ).data('field-id'),
-							field_label = $( this ).find('.label-title span').first().text();
+						var form_field_type  = $( this ).data('field-type'),
+							form_field_id    = $( this ).data('field-id'),
+							form_field_label = $( this ).find('.label-title span').first().text();
 							field_to_be_restricted =[];
 							field_to_be_restricted = [
 								'html',
@@ -1180,16 +1221,17 @@
 								'file-upload',
 								'date',
 								'hidden',
+								'scale-rating',
+								'likert',
 							];
-
-						if( $.inArray( field_type, field_to_be_restricted ) === -1  && dragged_field_id !== field_id ){
-							fields.eq(index).append('<option class="evf-conditional-fields" data-field_type="'+field_type+'" data-field_id="'+field_id+'" value="'+field_id+'">'+field_label+'</option>');
+						if( $.inArray( form_field_type, field_to_be_restricted ) === -1  && dragged_field_id !== form_field_id ){
+							fields.eq(index).append('<option class="evf-conditional-fields" data-field_type="'+form_field_type+'" data-field_id="'+form_field_id+'" value="'+form_field_id+'">'+form_field_label+'</option>');
 						}
 					});
 				} else {
 					var el_to_append = '<option class="evf-conditional-fields" data-field_type="'+field_type+'" data-field_id="'+field_id+'" value="'+field_id+'">'+field_label+'</option>';
-					if( 'html' !== field_type && 'title' !== field_type && 'address' !== field_type && 'image-upload' !== field_type && 'file-upload' !== field_type && 'date' !== field_type && 'hidden' !== field_type  ) {
-						fields.eq(index).insertAt( el_to_append, dragged_index );
+					if( 'html' !== field_type && 'title' !== field_type && 'address' !== field_type && 'image-upload' !== field_type && 'file-upload' !== field_type && 'date' !== field_type && 'hidden' !== field_type && 'likert' !== field_type && 'scale-rating' !== field_type ) {
+						fields.eq(index).insertAt( el_to_append, dragged_index, selected_id );
 					}
 				}
 			});
@@ -1233,6 +1275,8 @@
 								'file-upload',
 								'date',
 								'hidden',
+								'scale-rating',
+								'likert',
 								dragged_el.attr('data-field-type'),
 							];
 
@@ -1242,7 +1286,7 @@
 					});
 				} else {
 					var el_to_append = '<option class="evf-conditional-fields" data-field_type="'+field_type+'" data-field_id="'+field_id+'" value="'+field_id+'">'+field_label+'</option>';
-					if( 'html' !== field_type && 'title' !== field_type && 'address' !== field_type && 'image-upload' !== field_type && 'file-upload' !== field_type && 'date' !== field_type && 'hidden' !== field_type  ) {
+					if( 'html' !== field_type && 'title' !== field_type && 'address' !== field_type && 'image-upload' !== field_type && 'file-upload' !== field_type && 'date' !== field_type && 'hidden' !== field_type && 'likert' !== field_type && 'scale-rating' !== field_type ) {
 						fields.eq(index).insertAt( el_to_append, dragged_index );
 					}
 				}

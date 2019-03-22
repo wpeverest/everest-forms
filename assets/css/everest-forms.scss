@@ -51,12 +51,16 @@
 		@include loader();
 	}
 
+	.evf-container {
+		margin-bottom: 30px;
+	}
+
 	.everest-forms-field-row {
 
-		&:before,
-		&:after {
+		&::before,
+		&::after {
+			content: '';
 			clear: both;
-			content: "";
 			display: table;
 		}
 
@@ -68,7 +72,7 @@
 	}
 
 	.evf-field-container {
-		margin: 0 !important;
+		margin-bottom: 10px;
 
 		.evf-frontend-row {
 			display: flex;
@@ -77,9 +81,9 @@
 			margin-right: -15px;
 
 			.everest-forms-one-half {
+				width: 48%;
 				float: left;
 				margin-left: 4%;
-				width: 48%;
 
 				&:first-child {
 					margin-left: 0;
@@ -91,34 +95,22 @@
 			}
 
 			.evf-frontend-grid {
+				width: 100%;
 				padding-left: 15px;
 				padding-right: 15px;
-				margin-bottom: 30px;
-
-				&.evf-grid-1 {
-					width: 100%;
-				}
 
 				&.evf-grid-2 {
-					width: 50%;
-				}
-
-				&.evf-grid-3 {
-					width: 30%;
-
+					flex: 0 0 50%;
+					max-width: 50%;
 				}
 
 				.evf-field {
 					display: block;
-					margin-bottom: 30px;
-
-					&:last-child {
-						margin-bottom: 0;
-					}
+					margin-bottom: 10px;
 
 					.evf-label-hide,
 					.everest-forms-sublabel-hide {
-						display:none;
+						display: none;
 					}
 
 					ul {
@@ -137,22 +129,31 @@
 								vertical-align: middle;
 							}
 
-							input[type="checkbox"],
-							input[type="radio"] {
+							input[type='checkbox'],
+							input[type='radio'] {
 								padding: 0;
 								margin-right: 8px;
 							}
 
 							label {
 								font-weight: 500;
-								color: $color-gray-darker !important;
+								color: $color-gray-darker;
 							}
+						}
+					}
+
+					&.evf-field-title {
+						h3 {
+							margin: 25px 0;
+							font-size: 16px;
+							line-height: 1.5;
 						}
 					}
 
 					&.everest-forms-invalid {
 						label {
 							color: $color-alert-danger;
+							white-space: nowrap;
 						}
 
 						.select2-container,
@@ -190,13 +191,14 @@
 				display: block;
 				font-size: 14px;
 				font-weight: 600;
-				margin: 0 0 5px 0;
+				line-height: 1.7;
+				margin: 0 0 10px 0;
 				color: $color-gray-darker;
 
 				.required {
-					color: red;
+					color: #f00;
 					font-weight: 700;
-					border: 0!important;
+					border: 0 !important;
 					text-decoration: none;
 				}
 
@@ -208,32 +210,34 @@
 					border-radius: 3px;
 					display: inline-block;
 					border: 1px solid $color-alert-danger;
-					color: darken( $color-alert-danger, 10% );
-					background-color: lighten( $color-alert-danger, 35% );
+					color: darken($color-alert-danger, 10%);
+					background-color: lighten($color-alert-danger, 35%);
 				}
 
 				&.everest-forms-field-sublabel {
 					font-size: 12px;
 					font-weight: 400;
+					line-height: 1.5;
+					margin: 0 0 10px 0;
 				}
 			}
 
-			input[type="text"],
-			input[type="date"],
-			input[type="date"],
-			input[type="datetime-local"],
-			input[type="email"],
-			input[type="file"],
-			input[type="image"],
-			input[type="month"],
-			input[type="number"],
-			input[type="password"],
-			input[type="range"],
-			input[type="search"],
-			input[type="tel"],
-			input[type="time"],
-			input[type="timeurl"],
-			input[type="week"],
+			input[type='text'],
+			input[type='date'],
+			input[type='date'],
+			input[type='datetime-local'],
+			input[type='email'],
+			input[type='file'],
+			input[type='image'],
+			input[type='month'],
+			input[type='number'],
+			input[type='password'],
+			input[type='range'],
+			input[type='search'],
+			input[type='tel'],
+			input[type='time'],
+			input[type='timeurl'],
+			input[type='week'],
 			select,
 			textarea {
 				width: 100%;
@@ -244,18 +248,23 @@
 				padding: 6px 12px;
 				color: $color-gray-darker;
 
-				&[type="checkbox"],
-				&[type="radio"] {
+				&[type='checkbox'],
+				&[type='radio'] {
 					width: 14px;
 					height: 14px;
 					background-color: $color-white;
 				}
 
-				&[type="radio"] {
+				&[type="checkbox"] {
+					appearance: checkbox;
+				}
+
+				&[type='radio'] {
+					appearance: radio;
 					border-radius: 10px;
 				}
 
-				&[type="checkbox"]:checked {
+				&[type='checkbox']:checked {
 					background-color: $color-brand-primary;
 
 					&::before {
@@ -264,7 +273,7 @@
 					}
 				}
 
-				&[type="radio"]:checked {
+				&[type='radio']:checked {
 					&::before {
 						background-color: $color-brand-primary;
 					}
@@ -280,31 +289,33 @@
 				}
 			}
 
+			select {
+				appearance: menulist;
+			}
+
 			textarea {
 				width: 100%;
 				height: 120px;
 			}
 
-			.everest-forms-field-row {
-				margin-bottom: 30px;
+			.evf-field-description {
+				line-height: 1.7;
+				margin-bottom: 10px;
 			}
 		}
 	}
 
-	.evf-submit-container  {
-		margin-bottom: 30px;
-	}
-
-	input[type=submit],
-	button[type=submit],
+	input[type='submit'],
+	button[type='submit'],
 	.everest-forms-part-button {
 		color: #555;
 		height: auto;
 		cursor: pointer;
 		background: none;
 		box-shadow: none;
+		font-size: 14px;
 		font-weight: 400;
-		font-size: 0.95em;
+		line-height: 1.5;
 		padding: 10px 15px;
 		border-radius: 3px;
 		border: 1px solid #ccc;
@@ -320,22 +331,22 @@
 
 	.default {
 
-		input[type="text"],
-		input[type="date"],
-		input[type="date"],
-		input[type="datetime-local"],
-		input[type="email"],
-		input[type="file"],
-		input[type="image"],
-		input[type="month"],
-		input[type="number"],
-		input[type="password"],
-		input[type="range"],
-		input[type="search"],
-		input[type="tel"],
-		input[type="time"],
-		input[type="timeurl"],
-		input[type="week"],
+		input[type='text'],
+		input[type='date'],
+		input[type='date'],
+		input[type='datetime-local'],
+		input[type='email'],
+		input[type='file'],
+		input[type='image'],
+		input[type='month'],
+		input[type='number'],
+		input[type='password'],
+		input[type='range'],
+		input[type='search'],
+		input[type='tel'],
+		input[type='time'],
+		input[type='timeurl'],
+		input[type='week'],
 		select,
 		textarea {
 			border-radius: 3px;
@@ -359,17 +370,17 @@
 		select,
 		textarea {
 			border-radius: 0;
-			border-top:none transparent;
-			border-right:none transparent;
-			border-left:none transparent;
+			border-top: none transparent;
+			border-right: none transparent;
+			border-left: none transparent;
 			border-bottom: 1px solid $color-gray;
 			height: 40px;
 			padding: 10px 0;
 
 			&:focus {
-				border-top:none transparent;
-				border-right:none transparent;
-				border-left:none transparent;
+				border-top: none transparent;
+				border-right: none transparent;
+				border-left: none transparent;
 			}
 		}
 
@@ -391,12 +402,12 @@
 		@include clearfix();
 
 		&::before {
-			font-family: 'dashicons';
-			content: "\f348";
+			font-family: dashicons;
+			content: '\f348';
 			position: absolute;
 			top: 1em;
 			left: 1.5em;
-			color:inherit;
+			color: inherit;
 		}
 
 		.button {
@@ -418,7 +429,7 @@
 		background-color: $color-alert-success;
 
 		&::before {
-			content: "\f147";
+			content: '\f147';
 		}
 	}
 
@@ -426,7 +437,7 @@
 		background-color: $color-alert-danger;
 
 		&::before {
-			content: "\f534";
+			content: '\f534';
 			color: inherit;
 		}
 
@@ -435,7 +446,7 @@
 			list-style: none outside;
 
 			.everest-forms-notice-list__item {
-				margin-bottom: .5em;
+				margin-bottom: 0.5em;
 			}
 			.everest-forms-notice-list__item:last-child {
 				margin-bottom: 0;
@@ -475,7 +486,7 @@
 div.evf-gutenberg-form-selector .evf-frontend-row input:disabled,
 div.evf-gutenberg-form-selector .evf-frontend-row textarea:disabled,
 div.evf-gutenberg-form-selector .evf-frontend-row select:disabled,
-div.evf-gutenberg-form-selector .evf-frontend-row button[type=submit]:disabled {
+div.evf-gutenberg-form-selector .evf-frontend-row button[type='submit']:disabled {
 	cursor: not-allowed;
 }
 
@@ -487,15 +498,16 @@ div.evf-gutenberg-form-selector .evf-frontend-row button[type=submit]:disabled {
 	margin-bottom: 30px;
 
 	.evf-error {
-		border: 1px solid $color-alert-danger;
-		background-color: lighten($color-alert-danger, 35%);
-		padding: 7px 10px;
-		color:darken($color-alert-danger, 10%);
-		display: inline-block;
 		margin-top: 15px;
 		margin-bottom: 0;
-		border-radius: 3px;
 		font-weight: 300;
+		line-height: 1.7;
+		padding: 7px 10px;
+		border-radius: 3px;
+		display: inline-block;
+		color: darken($color-alert-danger, 10%);
+		border: 1px solid $color-alert-danger;
+		background-color: lighten($color-alert-danger, 35%);
 	}
 }
 
