@@ -138,8 +138,9 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 1.4.6 - XX-03-2019 =
+= 1.4.6 - 23-03-2019 =
 * Fix - Add-ons installation process.
+* Tweak - Keep tooltip alive on hover.
 
 = 1.4.5 - 22-03-2019 =
 * Fix - Placeholder live change.
