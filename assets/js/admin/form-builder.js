@@ -4,6 +4,7 @@
 	var $builder;
 
 	var EVFPanelBuilder = {
+
 		/**
 		 * Start the panel builder.
 		 */
@@ -145,6 +146,10 @@
 
 				if ( tab_content.length >= 1 ) {
 					window.evf_tab_scroller = new PerfectScrollbar( tab_content.selector );
+
+					$( document.body ).on( 'click', '#field-options, .everest-forms-field', function() {
+						tab_content.scrollTop(0);
+					} );
 				}
 
 				if ( panel_content.length >= 1 ) {
@@ -248,12 +253,12 @@
 				$( '#everest-forms-field-option-' + id ).toggleClass( 'everest-forms-confirm-enabled everest-forms-confirm-disabled' );
 			});
 
-			// Real-time updates for "Placeholder" field option
+			// Real-time updates for "Placeholder" field option.
 			$builder.on( 'input', '.everest-forms-field-option-row-placeholder input', function(e) {
 				var $this   = $( this ),
 					value   = $this.val(),
 					id      = $this.parent().data( 'field-id' ),
-					$primary = $( '#everest-forms-field-' + id ).find( '.primary-input' );
+					$primary = $( '#everest-forms-field-' + id ).find( '.widefat' );
 
 				if ( $primary.is( 'select' ) ) {
 					if ( ! value.length ) {

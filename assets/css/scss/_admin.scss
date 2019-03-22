@@ -871,9 +871,22 @@
 					border: 1px dashed transparentize( $blue, 0.75 );
 				}
 
-				input[type="checkbox"],
-				input[type="radio"] {
-					margin-right: 10px;
+				input {
+
+					&[type="text"] {
+						margin-bottom: 5px;
+					}
+
+					&[type="checkbox"],
+					&[type="radio"] {
+						margin-right: 10px;
+					}
+				}
+
+				option,
+				select,
+				textarea {
+					margin-bottom: 5px;
 				}
 
 				.evf-field-action {
