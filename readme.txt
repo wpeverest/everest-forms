@@ -56,6 +56,8 @@ Check [documentation](http://docs.wpeverest.com/docs/everest-forms/)
 
 * 9 Advanced fields (Image upload, file upload, Hidden Field, Phone, Password, Custom HTML, Section Title, Address, Country)
 
+* [Style Customizer](https://wpeverest.com/wordpress-plugins/everest-forms/style-customizer/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to make form design changes like color, fonts, background, borders, alignments and more without touching any code
+
 * [MailChimp](https://wpeverest.com/wordpress-plugins/everest-forms/mailchimp/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows your users to subscribe to MailChimp via Everest Forms
 
 * [ConvertKit](https://wpeverest.com/wordpress-plugins/everest-forms/convertkit/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to connect your form with ConvertKit to collect subscribers
@@ -69,8 +71,6 @@ Check [documentation](http://docs.wpeverest.com/docs/everest-forms/)
 * [Multi-Part Forms](https://wpeverest.com/wordpress-plugins/everest-forms/multi-part-forms/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to break long or complex forms up into multiple pages.
 
 * [Conditional Logic](https://wpeverest.com/wordpress-plugins/everest-forms/conditional-logic/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to conditionally hide or show form fields based on user's interaction with other form fields.
-
-* [Style Customizer](https://wpeverest.com/wordpress-plugins/everest-forms/style-customizer/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to customize your form elements with the WordPress Customizer.
 
 * [Survey, Polls and Quiz](https://wpeverest.com/wordpress-plugins/everest-forms/survey-polls-and-quiz/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to create intuitive survey, poll and quiz forms within a minute.
 
