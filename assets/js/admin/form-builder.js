@@ -142,7 +142,8 @@
 			// Enable Perfect Scrollbar.
 			if ( 'undefined' !== typeof PerfectScrollbar ) {
 				var tab_content   = $( '.everest-forms-tab-content' ),
-					panel_content = $( '.everest-forms-panel-content' );
+					panel_content = $( '.everest-forms-panel-content' ),
+					panel_setting = $('#everest-forms-panel-settings .everest-forms-panel-sidebar');
 
 				if ( tab_content.length >= 1 ) {
 					window.evf_tab_scroller = new PerfectScrollbar( tab_content.selector );
@@ -154,6 +155,10 @@
 
 				if ( panel_content.length >= 1 ) {
 					window.evf_panel_scroller = new PerfectScrollbar( panel_content.selector );
+				}
+
+				if ( panel_setting.length >= 1 ) {
+					window.evf_setting_scroller = new PerfectScrollbar(panel_setting.selector );
 				}
 			}
 
