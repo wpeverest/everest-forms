@@ -46,12 +46,15 @@ function evf_create_page( $slug, $option = '', $page_title = '', $page_content =
 	$option_value = get_option( $option );
 
 	if ( $option_value > 0 && ( $page_object = get_post( $option_value ) ) ) {
-		if ( 'page' === $page_object->post_type && ! in_array( $page_object->post_status, array(
+		if ( 'page' === $page_object->post_type && ! in_array(
+			$page_object->post_status,
+			array(
 				'pending',
 				'trash',
 				'future',
-				'auto-draft'
-			) )
+				'auto-draft',
+			)
+		)
 		) {
 			// Valid page is already in place
 			return $page_object->ID;
@@ -123,7 +126,7 @@ function evf_create_page( $slug, $option = '', $page_title = '', $page_content =
 function everest_forms_admin_fields( $options ) {
 
 	if ( ! class_exists( 'EVF_Admin_Settings', false ) ) {
-		include( dirname( __FILE__ ) . '/class-evf-admin-settings.php' );
+		include dirname( __FILE__ ) . '/class-evf-admin-settings.php';
 	}
 
 	EVF_Admin_Settings::output_fields( $options );
@@ -138,7 +141,7 @@ function everest_forms_admin_fields( $options ) {
 function everest_forms_update_options( $options, $data = null ) {
 
 	if ( ! class_exists( 'EVF_Admin_Settings', false ) ) {
-		include( dirname( __FILE__ ) . '/class-evf-admin-settings.php' );
+		include dirname( __FILE__ ) . '/class-evf-admin-settings.php';
 	}
 
 	EVF_Admin_Settings::save_fields( $options, $data );
@@ -155,7 +158,7 @@ function everest_forms_update_options( $options, $data = null ) {
 function everest_forms_settings_get_option( $option_name, $default = '' ) {
 
 	if ( ! class_exists( 'EVF_Admin_Settings', false ) ) {
-		include( dirname( __FILE__ ) . '/class-evf-admin-settings.php' );
+		include dirname( __FILE__ ) . '/class-evf-admin-settings.php';
 	}
 
 	return EVF_Admin_Settings::get_option( $option_name, $default );
@@ -187,7 +190,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 	$panel_id    = sanitize_html_class( $panel );
 	$parent      = ! empty( $args['parent'] ) ? esc_attr( $args['parent'] ) : '';
 	$subsection  = ! empty( $args['subsection'] ) ? esc_attr( $args['subsection'] ) : '';
-	$label       = ! empty( $label ) ?  $label  : '';
+	$label       = ! empty( $label ) ? $label : '';
 	$class       = ! empty( $args['class'] ) ? esc_attr( $args['class'] ) : '';
 	$input_class = ! empty( $args['input_class'] ) ? esc_attr( $args['input_class'] ) : '';
 	$default     = isset( $args['default'] ) ? $args['default'] : '';
@@ -226,7 +229,6 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 
 		// Text input
 		case 'text':
-
 			$type   = ! empty( $args['type'] ) ? esc_attr( $args['type'] ) : 'text';
 			$output = sprintf(
 				'<input type="%s" id="everest-forms-panel-field-%s-%s" name="%s" value="%s" placeholder="%s" class="widefat %s" %s>',
@@ -259,14 +261,17 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 
 		// TinyMCE
 		case 'tinymce':
-			$arguments = wp_parse_args( $tinymce, array(
-				'media_buttons' => false,
-				'tinymce'       => false,
-			) );
+			$arguments                  = wp_parse_args(
+				$tinymce,
+				array(
+					'media_buttons' => false,
+					'tinymce'       => false,
+				)
+			);
 			$arguments['textarea_name'] = $field_name;
 			$arguments['teeny']         = true;
-			$id                    = 'everest-forms-panel-field-' . sanitize_html_class( $panel_id ) . '-' . sanitize_html_class( $field );
-			$id                    = str_replace( '-', '_', $id );
+			$id                         = 'everest-forms-panel-field-' . sanitize_html_class( $panel_id ) . '-' . sanitize_html_class( $field );
+			$id                         = str_replace( '-', '_', $id );
 			ob_start();
 			wp_editor( $value, $id, $arguments );
 			$output = ob_get_clean();
@@ -274,8 +279,8 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 
 		// Checkbox
 		case 'checkbox':
-			$checked  = checked( '1', $value, false );
-			$checkbox = sprintf(
+			$checked   = checked( '1', $value, false );
+			$checkbox  = sprintf(
 				'<input type="hidden" name="%s" value="0" class="widefat %s" %s %s>',
 				$field_name,
 				$input_class,
@@ -291,7 +296,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 				$checked,
 				$data_attr
 			);
-			$output  = sprintf(
+			$output    = sprintf(
 				'<label for="everest-forms-panel-field-%s-%s" class="inline">%s',
 				sanitize_html_class( $panel_id ),
 				sanitize_html_class( $field ),
@@ -313,7 +318,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 					continue;
 				}
 				$checked = checked( $key, $value, false );
-				$output  .= sprintf(
+				$output .= sprintf(
 					'<span class="row"><input type="radio" id="everest-forms-panel-field-%s-%s-%d" name="%s" value="%s" class="widefat %s" %s %s>',
 					sanitize_html_class( $panel_id ),
 					sanitize_html_class( $field ),
@@ -324,7 +329,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 					$checked,
 					$data_attr
 				);
-				$output  .= sprintf(
+				$output .= sprintf(
 					'<label for="everest-forms-panel-field-%s-%s-%d" class="inline">%s',
 					sanitize_html_class( $panel_id ),
 					sanitize_html_class( $field ),
@@ -387,7 +392,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 	$smarttags_class = ! empty( $args['smarttags'] ) ? 'evf_smart_tag' : '';
 
 	// Put the pieces together....
-	$field_open = sprintf(
+	$field_open  = sprintf(
 		'<div id="everest-forms-panel-field-%s-%s-wrap" class="everest-forms-panel-field %s %s %s">',
 		sanitize_html_class( $panel_id ),
 		sanitize_html_class( $field ),
@@ -404,25 +409,25 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 			$label
 		);
 		if ( ! empty( $args['tooltip'] ) ) {
-			$field_label .= sprintf( ' <i class="dashicons dashicons-editor-help everest-forms-help-tooltip" data-tip="%s"></i>', esc_attr( $args['tooltip'] ) );
+			$field_label .= sprintf( ' <i class="dashicons dashicons-editor-help everest-forms-help-tooltip" title="%s"></i>', esc_attr( $args['tooltip'] ) );
 		}
 		if ( ! empty( $args['after_tooltip'] ) ) {
 			$field_label .= $args['after_tooltip'];
 		}
 		if ( ! empty( $args['smarttags'] ) ) {
-			$smart_tag ='';
+			$smart_tag = '';
 
-			$type   = ! empty( $args['smarttags']['type'] ) ? esc_attr( $args['smarttags']['type'] ) : 'form_fields';
+			$type        = ! empty( $args['smarttags']['type'] ) ? esc_attr( $args['smarttags']['type'] ) : 'form_fields';
 			$form_fields = ! empty( $args['smarttags']['form_fields'] ) ? esc_attr( $args['smarttags']['form_fields'] ) : '';
 
 			$smart_tag .= '<a href="#" class="evf-toggle-smart-tag-display" data-type="' . $type . '" data-fields="' . $form_fields . '"><span class="dashicons dashicons-editor-code"></span></a>';
 			$smart_tag .= '<div class="evf-smart-tag-lists" style="display: none">';
 			$smart_tag .= '<div class="smart-tag-title">';
-			$smart_tag .= __( 'Available Fields', 'everest-forms');
+			$smart_tag .= __( 'Available Fields', 'everest-forms' );
 			$smart_tag .= '</div><ul class="evf-fields"></ul>';
-			if( $type == 'all' || $type == 'other' ){
+			if ( $type == 'all' || $type == 'other' ) {
 				$smart_tag .= '<div class="smart-tag-title">';
-				$smart_tag .= __( 'Others', 'everest-forms');
+				$smart_tag .= __( 'Others', 'everest-forms' );
 				$smart_tag .= '</div><ul class="evf-others"></ul>';
 			}
 			$smart_tag .= '</div>';
@@ -435,9 +440,9 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 		$field_label = '';
 		$smart_tag   = '';
 	}
-	$field_close = ! empty( $args['after'] ) ? $args['after'] : '';
+	$field_close  = ! empty( $args['after'] ) ? $args['after'] : '';
 	$field_close .= '</div>';
-	$output      = $field_open . $field_label . $output . $smart_tag. $field_close;
+	$output       = $field_open . $field_label . $output . $smart_tag . $field_close;
 
 	// Wash our hands.
 	if ( $echo ) {

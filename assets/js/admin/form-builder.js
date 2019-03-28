@@ -1320,66 +1320,55 @@
 	});
 })(jQuery, window.evf_data);
 
-	jQuery(function () {
+jQuery(function () {
 
-		if ( jQuery('#everest-forms-panel-field-settingsemail-evf_send_confirmation_email').attr("checked") != 'checked' )	{
+	if ( jQuery('#everest-forms-panel-field-settingsemail-evf_send_confirmation_email').attr("checked") != 'checked' )	{
+		jQuery('#everest-forms-panel-field-settingsemail-evf_send_confirmation_email-wrap').nextAll().hide();
+	}
+
+	jQuery( '#everest-forms-panel-field-settingsemail-evf_send_confirmation_email' ).on( 'change', function () {
+
+		if ( jQuery( this ).attr('checked') != 'checked') {
 			jQuery('#everest-forms-panel-field-settingsemail-evf_send_confirmation_email-wrap').nextAll().hide();
+		} else {
+			jQuery('#everest-forms-panel-field-settingsemail-evf_send_confirmation_email-wrap').nextAll().show();
 		}
+	});
 
-		jQuery( '#everest-forms-panel-field-settingsemail-evf_send_confirmation_email' ).on( 'change', function () {
+	var mySelect = jQuery('#everest-forms-panel-field-settings-redirect_to option:selected').val();
 
-			if ( jQuery( this ).attr('checked') != 'checked') {
-				jQuery('#everest-forms-panel-field-settingsemail-evf_send_confirmation_email-wrap').nextAll().hide();
-			} else {
-				jQuery('#everest-forms-panel-field-settingsemail-evf_send_confirmation_email-wrap').nextAll().show();
-			}
-		});
+	if ( mySelect == '0' ) {
+		jQuery('#everest-forms-panel-field-settings-custom_page-wrap').hide();
+		jQuery('#everest-forms-panel-field-settings-external_url-wrap').hide();
+	}
+	else if(mySelect == '1') {
+		jQuery('#everest-forms-panel-field-settings-custom_page-wrap').show();
+		jQuery('#everest-forms-panel-field-settings-external_url-wrap').hide();
+	}
+	else if(mySelect == '2'){
+		jQuery('#everest-forms-panel-field-settings-external_url-wrap').show();
+		jQuery('#everest-forms-panel-field-settings-custom_page-wrap').hide();
+	}
 
-		var mySelect = jQuery('#everest-forms-panel-field-settings-redirect_to option:selected').val();
-
-		if ( mySelect == '0' ) {
+	jQuery( '#everest-forms-panel-field-settings-redirect_to' ).on( 'change', function () {
+		if ( this.value == '0' ) {
 			jQuery('#everest-forms-panel-field-settings-custom_page-wrap').hide();
 			jQuery('#everest-forms-panel-field-settings-external_url-wrap').hide();
 		}
-		else if(mySelect == '1') {
+		else if ( this.value == '1') {
 			jQuery('#everest-forms-panel-field-settings-custom_page-wrap').show();
 			jQuery('#everest-forms-panel-field-settings-external_url-wrap').hide();
 		}
-		else if(mySelect == '2'){
-			jQuery('#everest-forms-panel-field-settings-external_url-wrap').show();
+		else if ( this.value == '2') {
 			jQuery('#everest-forms-panel-field-settings-custom_page-wrap').hide();
+			jQuery('#everest-forms-panel-field-settings-external_url-wrap').show();
 		}
-
-		jQuery( '#everest-forms-panel-field-settings-redirect_to' ).on( 'change', function () {
-			if ( this.value == '0' ) {
-				jQuery('#everest-forms-panel-field-settings-custom_page-wrap').hide();
-				jQuery('#everest-forms-panel-field-settings-external_url-wrap').hide();
-			}
-			else if ( this.value == '1') {
-				jQuery('#everest-forms-panel-field-settings-custom_page-wrap').show();
-				jQuery('#everest-forms-panel-field-settings-external_url-wrap').hide();
-			}
-			else if ( this.value == '2') {
-				jQuery('#everest-forms-panel-field-settings-custom_page-wrap').hide();
-				jQuery('#everest-forms-panel-field-settings-external_url-wrap').show();
-			}
-		});
-		jQuery( '.evf-panel-field-options-button.evf-disabled-tab' ).hide();
-
 	});
+	jQuery( '.evf-panel-field-options-button.evf-disabled-tab' ).hide();
 
-	jQuery( function ( $ ) {
+});
 
-	// Init tooltip.
-	$( document.body ).on( 'init_tooltips', function() {
-		$( '.tips, .help_tip, .everest-forms-help-tooltip' ).tipTip( {
-			'attribute': 'data-tip',
-			'keepAlive': true,
-			'fadeIn': 50,
-			'fadeOut': 50,
-			'delay': 200
-		} );
-	} ).trigger( 'init_tooltips' );
+jQuery( function ( $ ) {
 
 	// Add Fields - Open/close.
 	$( document.body ).on( 'init_add_fields_toogle', function() {
@@ -1414,8 +1403,8 @@
 		});
 	} ).trigger( 'init_field_options_toggle' );
 
-	$(document).click(function() {
-		$('.evf-smart-tag-lists').hide();
+	$( document ).click(function() {
+		$( '.evf-smart-tag-lists' ).hide();
 	});
 
 	// Toggle Smart Tags

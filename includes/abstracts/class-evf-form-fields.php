@@ -202,7 +202,7 @@ abstract class EVF_Form_Fields {
 			case 'label':
 				$output = sprintf( '<label for="everest-forms-field-option-%s-%s">%s', $id, $slug, esc_html( $args['value'] ) );
 				if ( isset( $args['tooltip'] ) && ! empty( $args['tooltip'] ) ) {
-					$output .= ' ' . sprintf( '<i class="dashicons dashicons-editor-help everest-forms-help-tooltip" data-tip="%s"></i>', esc_attr( $args['tooltip'] ) );
+					$output .= ' ' . sprintf( '<i class="dashicons dashicons-editor-help everest-forms-help-tooltip" title="%s"></i>', esc_attr( $args['tooltip'] ) );
 				}
 				if ( isset( $args['after_tooltip'] ) && ! empty( $args['after_tooltip'] ) ) {
 					$output .= $args['after_tooltip'];
@@ -240,7 +240,7 @@ abstract class EVF_Form_Fields {
 				$output  = sprintf( '<input type="checkbox" class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" value="1" %s %s>', $class, $id, $slug, $id, $slug, $checked, $data );
 				$output .= sprintf( '<label for="everest-forms-field-option-%s-%s" class="inline">%s', $id, $slug, $args['desc'] );
 				if ( isset( $args['tooltip'] ) && ! empty( $args['tooltip'] ) ) {
-					$output .= ' ' . sprintf( '<i class="dashicons dashicons-editor-help everest-forms-help-tooltip" data-tip="%s"></i>', esc_attr( $args['tooltip'] ) );
+					$output .= ' ' . sprintf( '<i class="dashicons dashicons-editor-help everest-forms-help-tooltip" title="%s"></i>', esc_attr( $args['tooltip'] ) );
 				}
 				$output .= '</label>';
 				break;

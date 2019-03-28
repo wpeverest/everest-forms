@@ -103,12 +103,20 @@
 		})
 
 		.on( 'init_tooltips', function() {
-			$( '.tips, .help_tip, .everest-forms-help-tooltip, .everest-forms-help-tip' ).tipTip( {
-				'attribute': 'data-tip',
-				'keepAlive': true,
-				'fadeIn': 50,
-				'fadeOut': 50,
-				'delay': 200
+			$( '.tips, .help_tip, .everest-forms-help-tip, .everest-forms-help-tooltip' ).tooltipster( {
+				maxWidth: 200,
+				multiple: true,
+				interactive: true,
+				position: 'bottom',
+				contentAsHTML: true,
+				functionInit: function( instance, helper ) {
+					var $origin = $( helper.origin ),
+						dataTip = $origin.attr( 'data-tip' );
+
+					if ( dataTip ) {
+						instance.content( dataTip );
+					}
+				}
 			} );
 		});
 
