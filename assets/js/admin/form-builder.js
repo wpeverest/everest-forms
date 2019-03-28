@@ -791,43 +791,38 @@
 					security: evf_data.evf_save_form,
 					form_data: JSON.stringify( new_form_data )
 				};
-				if ( $form[0].checkValidity() ) {
-					$.ajax({
-						url: evf_data.ajax_url,
-						data: data,
-						type: 'POST',
-						beforeSend: function () {
-							$this.addClass( 'processing' );
-							$this.find( '.loading-dot' ).remove();
-							$this.append( '<span class="loading-dot"></span>' );
-						},
-						success: function ( response ) {
-							$this.removeClass( 'processing' );
-							$this.find( '.loading-dot' ).remove();
+				$.ajax({
+					url: evf_data.ajax_url,
+					data: data,
+					type: 'POST',
+					beforeSend: function () {
+						$this.addClass( 'processing' );
+						$this.find( '.loading-dot' ).remove();
+						$this.append( '<span class="loading-dot"></span>' );
+					},
+					success: function ( response ) {
+						$this.removeClass( 'processing' );
+						$this.find( '.loading-dot' ).remove();
 
-							if ( ! response.success ) {
-								$.alert({
-									title: response.data.errorTitle,
-									content: response.data.errorMessage,
-									icon: 'dashicons dashicons-warning',
-									type: 'red',
-									buttons: {
-										ok: {
-											text: evf_data.i18n_ok,
-											btnClass: 'btn-confirm',
-											keys: [ 'enter' ]
-										}
+						if ( ! response.success ) {
+							$.alert({
+								title: response.data.errorTitle,
+								content: response.data.errorMessage,
+								icon: 'dashicons dashicons-warning',
+								type: 'red',
+								buttons: {
+									ok: {
+										text: evf_data.i18n_ok,
+										btnClass: 'btn-confirm',
+										keys: [ 'enter' ]
 									}
-								});
-							}
-
-							$( '.everest-forms-panel-content-wrap' ).unblock();
+								}
+							});
 						}
-					});
-				} else {
-					$form[0].reportValidity();
-					$( '.everest-forms-panel-content-wrap' ).unblock();
-				}
+
+						$( '.everest-forms-panel-content-wrap' ).unblock();
+					}
+				});
 			});
 		},
 		getStructure: function () {
