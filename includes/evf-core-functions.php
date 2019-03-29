@@ -34,8 +34,6 @@ function evf_maybe_define_constant( $name, $value ) {
  *
  * EVF_TEMPLATE_DEBUG_MODE will prevent overrides in themes from taking priority.
  *
- * @access public
- *
  * @param mixed  $slug
  * @param string $name (default: '')
  */
@@ -81,15 +79,13 @@ function evf_get_template( $template_name, $args = array(), $template_path = '',
 	}
 
 	$located = evf_locate_template( $template_name, $template_path, $default_path );
+	// Allow 3rd party plugin filter template file from their plugin.
+	$located = apply_filters( 'evf_get_template', $located, $template_name, $args, $template_path, $default_path );
 
 	if ( ! file_exists( $located ) ) {
 		_doing_it_wrong( __FUNCTION__, sprintf( __( '%s does not exist.', 'everest-forms' ), '<code>' . $located . '</code>' ), '1.0.0' );
-
 		return;
 	}
-
-	// Allow 3rd party plugin filter template file from their plugin.
-	$located = apply_filters( 'evf_get_template', $located, $template_name, $args, $template_path, $default_path );
 
 	do_action( 'everest_forms_before_template_part', $template_name, $template_path, $located, $args );
 
@@ -1298,6 +1294,29 @@ function evf_get_form_data_by_meta_key( $form_id, $meta_key ) {
 }
 
 /**
+ * Get field type by meta key
+ *
+ * @param  $form_id  Form ID
+ * @param  $meta_key Field's meta key
+ * @return mixed
+ */
+function evf_get_field_type_by_meta_key( $form_id, $meta_key ) {
+	$get_post     = get_post( $form_id );
+	$post_content = json_decode( $get_post->post_content, true );
+	$form_fields  = isset( $post_content['form_fields'] ) ? $post_content['form_fields'] : array();
+
+	if ( ! empty( $form_fields ) ) {
+		foreach ( $form_fields as $field ) {
+			if ( isset( $field['meta-key'] ) && $meta_key == $field['meta-key'] ) {
+				return $field['type'];
+			}
+		}
+	}
+
+	return false;
+}
+
+/**
  * Get all the email fields of a Form.
  *
  * @param int $form_id
@@ -1338,6 +1357,17 @@ function evf_get_all_form_fields_by_form_id( $form_id ) {
 	}
 
 	return $data;
+}
+
+/**
+ * Check if the string JSON.
+ *
+ * @param  string $string
+ * @return bool
+ */
+function evf_isJson( $string ) {
+	json_decode( $string );
+	return ( json_last_error() == JSON_ERROR_NONE );
 }
 
 /**
@@ -1757,6 +1787,7 @@ function evf_get_fields_groups() {
 			'general'  => __( 'General Fields', 'everest-forms' ),
 			'advanced' => __( 'Advanced Fields', 'everest-forms' ),
 			'payment'  => __( 'Payment Fields', 'everest-forms' ),
+			'survey'   => __( 'Survey Fields', 'everest-forms' ),
 		)
 	);
 }

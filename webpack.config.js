@@ -7,7 +7,7 @@ const NODE_ENV = process.env.NODE_ENV || "development";
 const webpackConfig = {
 	mode: NODE_ENV,
 	entry: {
-		"form-block": './assets/js/admin/gutenberg/form-block.js'
+		"form-block": "./assets/js/admin/gutenberg/form-block.js"
 	},
 	output: {
 		path: path.resolve(__dirname, "assets/js/admin/gutenberg"),
@@ -18,11 +18,11 @@ const webpackConfig = {
 		rules: [
 			{
 				test: /.js$/,
-				loader: 'babel-loader',
-				exclude: /node_modules/,
-			},
-		],
-	},
+				loader: "babel-loader",
+				exclude: /node_modules/
+			}
+		]
+	}
 };
 
 if (webpackConfig.mode !== "production") {
