@@ -239,7 +239,8 @@
 			input[type='timeurl'],
 			input[type='week'],
 			select,
-			textarea {
+			textarea,
+			canvas.evf-signature-canvas {
 				width: 100%;
 				height: auto;
 				font-size: 14px;
@@ -255,7 +256,7 @@
 					background-color: $color-white;
 				}
 
-				&[type="checkbox"] {
+				&[type='checkbox'] {
 					appearance: checkbox;
 				}
 
@@ -348,7 +349,8 @@
 		input[type='timeurl'],
 		input[type='week'],
 		select,
-		textarea {
+		textarea,
+		canvas.evf-signature-canvas {
 			border-radius: 3px;
 			border: 1px solid $color-gray;
 		}
@@ -368,7 +370,8 @@
 
 		input,
 		select,
-		textarea {
+		textarea,
+		canvas.evf-signature-canvas {
 			border-radius: 0;
 			border-top: none transparent;
 			border-right: none transparent;
