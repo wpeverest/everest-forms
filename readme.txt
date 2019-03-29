@@ -138,6 +138,15 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
+= 1.4.7 - xx-xx-2019 =
+* Feature - Tooltipster introduced.
+* Feature - Add support for Payment options.
+* Feature - Add support for signature field.
+* Fix - Likert and scale rating field icons.
+* Fix - Replace tipTip with Tooltipster.
+* Fix - Scrollbar position in sidebar.
+* Tweak - Scale rating min & max point validation error tips.
+
 = 1.4.6 - 25-03-2019 =
 * Fix - Add-ons installation process.
 * Tweak - Keep tooltip alive on hover.
