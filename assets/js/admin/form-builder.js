@@ -64,6 +64,11 @@
 					$( document.body ).trigger( 'adjust_builder_width' );
 				}, 250 );
 			}).trigger( 'resize' );
+
+			$( document.body ).ready(function(){
+				$( '.evf-payment-setting-content' ).hide();
+				$( '.evf-payments-panel:first' ).trigger( 'click' );
+			});
 		},
 
 		/**
@@ -348,6 +353,7 @@
 				if ( $(this).find('.default').is(":checked") ) {
 					list.find('input').prop('checked', true);
 				}
+
 				primary_field.append(list);
 			});
 		},
@@ -461,12 +467,12 @@
 			$('.evf-setting-panel').eq(0).trigger('click');
 		},
 		bindFormPayment: function () {
-			$('body').on('click', '.evf-payment-panel', function ( e ) {
+			$('body').on('click', '.evf-payments-panel', function ( e ) {
 				var data_setting_section = $(this).attr('data-section');
-				$('.evf-payment-panel').removeClass('active');
-				$('.evf-panel-content-section').removeClass('active');
-				$(this).addClass('active');
-				$('.evf-panel-content-section-' + data_setting_section ).addClass('active');
+				$(this).siblings().removeClass('icon active');
+				$(this).addClass('icon active');
+				$('.evf-content-section').removeClass('active').hide();
+				$('.evf-content-' + data_setting_section + '-settings' ).addClass('active').show();
 				e.preventDefault();
 			});
 			$('.evf-setting-panel').eq(0).trigger('click');
@@ -1020,6 +1026,9 @@
 				containment: '#everest-forms-builder',
 				connectToSortable: '.evf-admin-grid',
 				start: function( event, ui ) {
+
+					$(ui.draggable).appendTo($( this ));
+
 					$( this ).data( 'uihelper', ui.helper );
 					$( '.evf-admin-grid' ).addClass( 'evf-hover' );
 					$( '.evf-show-grid' ).closest( '.evf-toggle-row' ).find( '.evf-toggle-row-content' ).stop( true ).slideUp( 200 );
@@ -1036,6 +1045,8 @@
 				},
 				stop: function( event, ui ) {
 					if ( true === ui.helper.data( 'dropped' ) ) {
+
+						$(ui.draggable).appendTo($( this ));
 						var helper = ui.helper;
 						$( '.evf-admin-grid' ).removeClass( 'evf-hover' );
 						EVFPanelBuilder.fieldDrop( helper );

@@ -131,16 +131,18 @@ if ( ! class_exists( 'EVF_Builder_Page', false ) ) :
 		 * @param string $container_name Name of that container.
 		 */
 		public function add_sidebar_tab( $name, $slug, $icon = '', $container_name = 'setting' ) {
-			$class = '';
+			$class  = '';
 			$class .= $slug == 'default' ? ' default' : '';
 			$class .= ! empty( $icon ) ? ' icon' : '';
 
-			echo '<a href="#" class="evf-panel-tab evf-' . esc_attr( $container_name ) . '-panel everest-forms-panel-sidebar-section everest-forms-panel-sidebar-section-' . esc_attr( $slug ) . $class . '" data-section="' . esc_attr( $slug ) . '">';
-				if ( ! empty( $icon ) ) {
-					echo '<figure class="logo"><img src="' . esc_url( $icon ) . '"></figure>';
-				}
-				echo esc_html( $name );
-				echo '<i class="dashicons dashicons-arrow-right-alt2 everest-forms-toggle-arrow"></i>';
+			echo '<a href="#" class="evf-panel-tab evf-' . esc_attr( $container_name ) .
+				'-panel everest-forms-panel-sidebar-section everest-forms-panel-sidebar-section-' . esc_attr( $slug ) .
+				$class . '" data-section="' . esc_attr( $slug ) . '">';
+			if ( ! empty( $icon ) ) {
+				echo '<figure class="logo"><img src="' . esc_url( $icon ) . '"></figure>';
+			}
+			echo esc_html( $name );
+			echo '<i class="dashicons dashicons-arrow-right-alt2 everest-forms-toggle-arrow"></i>';
 			echo '</a>';
 		}
 

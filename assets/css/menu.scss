@@ -197,7 +197,7 @@
  * Fonts icons.
  */
 [class^='evf-icon-'],
- [class*=' evf-icon-'] {
+[class*=' evf-icon-'] {
 	/* use !important to prevent issues with browser extensions that change fonts */
 	font-family: 'EverestForms' !important;
 	speak: none;
@@ -284,6 +284,9 @@
 }
 .evf-icon-section-divider::before {
 	content: '\e01d';
+}
+.evf-icon-payment::before {
+	content: '\e01f';
 }
 .evf-icon-total::before {
 	content: '\e020';
