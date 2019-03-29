@@ -73,9 +73,9 @@ module.exports = function( grunt ){
 			vendor: {
 				files: {
 					'<%= dirs.js %>/jquery-blockui/jquery.blockUI.min.js': [ '<%= dirs.js %>/jquery-blockui/jquery.blockUI.js' ],
-					'<%= dirs.js %>/jquery-tiptip/jquery.tipTip.min.js': [ '<%= dirs.js %>/jquery-tiptip/jquery.tipTip.js' ],
 					'<%= dirs.js %>/flatpickr/flatpickr.min.js': ['<%= dirs.js %>/flatpickr/flatpickr.js'],
-					'<%= dirs.js %>/selectWoo/selectWoo.min.js': ['<%= dirs.js %>/selectWoo/selectWoo.js']
+					'<%= dirs.js %>/selectWoo/selectWoo.min.js': ['<%= dirs.js %>/selectWoo/selectWoo.js'],
+					'<%= dirs.js %>/tooltipster/tooltipster.bundle.min.js': [ '<%= dirs.js %>/tooltipster/tooltipster.bundle.js' ],
 				}
 			}
 		},
@@ -258,10 +258,12 @@ module.exports = function( grunt ){
 					'!phpcs.xml',
 					'!Gruntfile.js',
 					'!package.json',
+					'!renovate.json',
 					'!composer.json',
 					'!composer.lock',
 					'!node_modules/**',
-					'!package-lock.json'
+					'!package-lock.json',
+					'!webpack.config.js'
 				],
 				dest: 'everest-forms',
 				expand: true

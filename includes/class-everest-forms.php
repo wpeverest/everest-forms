@@ -21,7 +21,7 @@ final class EverestForms {
 	 *
 	 * @var string
 	 */
-	public $version = '1.4.4';
+	public $version = '1.4.6';
 
 	/**
 	 * The single instance of the class.
@@ -129,7 +129,7 @@ final class EverestForms {
 		$this->define_constants();
 		$this->includes();
 		$this->init_hooks();
-		add_action( 'plugins_loaded', array( $this, 'objects' ), 10 );
+		add_action( 'plugins_loaded', array( $this, 'objects' ), 1 );
 
 		do_action( 'everest_forms_loaded' );
 	}

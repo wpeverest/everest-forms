@@ -195,7 +195,11 @@ class EVF_Form_Task {
 			evf_add_notice( $e->getMessage(), 'error' );
 		}
 
-		evf_add_notice( isset( $form_data['settings']['successful_form_submission_message'] ) ? $form_data['settings']['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' ), 'success' );
+		$message = isset( $form_data['settings']['successful_form_submission_message'] ) ? $form_data['settings']['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
+
+		evf_add_notice( $message, 'success' );
+
+		do_action( 'everest_forms_after_success_message', $form_data, $entry );
 
 		$this->entry_confirmation_redirect( $form_data );
 	}

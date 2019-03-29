@@ -40,11 +40,11 @@
 	// Field validation error tips.
 	$( document.body )
 
-		.on( 'evf_add_error_tip', function( e, element, error_type ) {
+		.on( 'evf_add_error_tip', function( e, element, error_type, locale ) {
 			var offset = element.position();
 
 			if ( element.parent().find( '.evf_error_tip' ).length === 0 ) {
-				element.after( '<div class="evf_error_tip ' + error_type + '">' + params[error_type] + '</div>' );
+				element.after( '<div class="evf_error_tip ' + error_type + '">' + locale[error_type] + '</div>' );
 				element.parent().find( '.evf_error_tip' )
 					.css( 'left', offset.left + element.width() - ( element.width() / 2 ) - ( $( '.evf_error_tip' ).width() / 2 ) )
 					.css( 'top', offset.top + element.height() )
@@ -56,7 +56,7 @@
 			element.parent().find( '.evf_error_tip.' + error_type ).fadeOut( '100', function() { $( this ).remove(); } );
 		})
 
-		.on( 'click', function() {
+		.on( 'click', 'input:not([type=number])', function() {
 			$( '.evf_error_tip' ).fadeOut( '100', function() { $( this ).remove(); } );
 		})
 
@@ -96,18 +96,27 @@
 			var newvalue = value.replace( regex, '' );
 
 			if ( value !== newvalue ) {
-				$( document.body ).triggerHandler( 'evf_add_error_tip', [ $( this ), error ] );
+				$( document.body ).triggerHandler( 'evf_add_error_tip', [ $( this ), error, params ] );
 			} else {
 				$( document.body ).triggerHandler( 'evf_remove_error_tip', [ $( this ), error ] );
 			}
 		})
 
 		.on( 'init_tooltips', function() {
-			$( '.tips, .help_tip, .everest-forms-help-tip' ).tipTip( {
-				'attribute': 'data-tip',
-				'fadeIn': 50,
-				'fadeOut': 50,
-				'delay': 200
+			$( '.tips, .help_tip, .everest-forms-help-tip, .everest-forms-help-tooltip' ).tooltipster( {
+				maxWidth: 200,
+				multiple: true,
+				interactive: true,
+				position: 'bottom',
+				contentAsHTML: true,
+				functionInit: function( instance, helper ) {
+					var $origin = $( helper.origin ),
+						dataTip = $origin.attr( 'data-tip' );
+
+					if ( dataTip ) {
+						instance.content( dataTip );
+					}
+				}
 			} );
 		});
 

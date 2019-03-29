@@ -202,7 +202,7 @@ abstract class EVF_Form_Fields {
 			case 'label':
 				$output = sprintf( '<label for="everest-forms-field-option-%s-%s">%s', $id, $slug, esc_html( $args['value'] ) );
 				if ( isset( $args['tooltip'] ) && ! empty( $args['tooltip'] ) ) {
-					$output .= ' ' . sprintf( '<i class="dashicons dashicons-editor-help everest-forms-help-tooltip" data-tip="%s"></i>', esc_attr( $args['tooltip'] ) );
+					$output .= ' ' . sprintf( '<i class="dashicons dashicons-editor-help everest-forms-help-tooltip" title="%s"></i>', esc_attr( $args['tooltip'] ) );
 				}
 				if ( isset( $args['after_tooltip'] ) && ! empty( $args['after_tooltip'] ) ) {
 					$output .= $args['after_tooltip'];
@@ -213,12 +213,19 @@ abstract class EVF_Form_Fields {
 			// Text input.
 			case 'text':
 				$type        = ! empty( $args['type'] ) ? esc_attr( $args['type'] ) : 'text';
+				$min         = ! empty( $args['min'] ) ? esc_attr( $args['min'] ) : 0;
+				$max         = ! empty( $args['max'] ) ? esc_attr( $args['max'] ) : '';
+				$required    = ( ! empty( $args['required'] ) && $args['required'] ) ? esc_attr( 'required' ) : '';
 				$placeholder = ! empty( $args['placeholder'] ) ? esc_attr( $args['placeholder'] ) : '';
 				$before      = ! empty( $args['before'] ) ? '<span class="before-input">' . esc_html( $args['before'] ) . '</span>' : '';
 				if ( ! empty( $before ) ) {
 					$class .= ' has-before';
 				}
-				$output = sprintf( '%s<input type="%s" class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" value="%s" placeholder="%s" %s>', $before, $type, $class, $id, $slug, $id, $slug, esc_attr( $args['value'] ), $placeholder, $data );
+				if ( 'number' === $type ) {
+					$output = sprintf( '%s<input type="%s" class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" min="%s" max="%s" value="%s" placeholder="%s" %s %s>', $before, $type, $class, $id, $slug, $id, $slug, $min, $max, esc_attr( $args['value'] ), $placeholder, $required, $data );
+				} else {
+					$output = sprintf( '%s<input type="%s" class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" value="%s" placeholder="%s" %s %s>', $before, $type, $class, $id, $slug, $id, $slug, esc_attr( $args['value'] ), $placeholder, $required, $data );
+				}
 				break;
 
 			// Textarea.
@@ -233,7 +240,7 @@ abstract class EVF_Form_Fields {
 				$output  = sprintf( '<input type="checkbox" class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" value="1" %s %s>', $class, $id, $slug, $id, $slug, $checked, $data );
 				$output .= sprintf( '<label for="everest-forms-field-option-%s-%s" class="inline">%s', $id, $slug, $args['desc'] );
 				if ( isset( $args['tooltip'] ) && ! empty( $args['tooltip'] ) ) {
-					$output .= ' ' . sprintf( '<i class="dashicons dashicons-editor-help everest-forms-help-tooltip" data-tip="%s"></i>', esc_attr( $args['tooltip'] ) );
+					$output .= ' ' . sprintf( '<i class="dashicons dashicons-editor-help everest-forms-help-tooltip" title="%s"></i>', esc_attr( $args['tooltip'] ) );
 				}
 				$output .= '</label>';
 				break;
@@ -258,6 +265,7 @@ abstract class EVF_Form_Fields {
 				}
 				$output .= '</select>';
 				break;
+
 		} // End switch().
 
 		if ( $echo ) {
@@ -540,9 +548,11 @@ abstract class EVF_Form_Fields {
 					false
 				);
 
-				$output .= '<a href="#" class="evf-toggle-smart-tag-display" data-type="other"><span class="dashicons dashicons-editor-code"></span></a>';
-				$output .= '<div class="evf-smart-tag-lists" style="display: none">';
-				$output .= '<div class="smart-tag-title">Others</div><ul class="evf-others"></ul></div>';
+				if ( 'rating' !== $field['type'] ) {
+					$output .= '<a href="#" class="evf-toggle-smart-tag-display" data-type="other"><span class="dashicons dashicons-editor-code"></span></a>';
+					$output .= '<div class="evf-smart-tag-lists" style="display: none">';
+					$output .= '<div class="smart-tag-title">Others</div><ul class="evf-others"></ul></div>';
+				}
 
 				$output = $this->field_element(
 					'row',
@@ -603,7 +613,7 @@ abstract class EVF_Form_Fields {
 				);
 				break;
 
-				// CSS classes. ---------------------------------------------------//
+			// CSS classes. ---------------------------------------------------//
 			case 'css':
 				$toggle  = '';
 				$tooltip = __( 'Enter CSS class for this field container. Class names should be separated with spaces.', 'everest-forms' );
@@ -699,6 +709,7 @@ abstract class EVF_Form_Fields {
 				if ( is_callable( array( $this, $option ) ) ) {
 					$this->{$option}( $field );
 				}
+				do_action( 'everest_forms_field_options_' . $option, $this, $field, $args );
 				break;
 
 		} // End switch().
