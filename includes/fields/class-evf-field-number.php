@@ -72,7 +72,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 			$field,
 			array(
 				'slug'  => 'minimum_number',
-				'value' => null !== trim( $field['minimum_number'] ) ? $field['minimum_number'] : '',
+				'value' => isset( $field['maximum_number'] ) && null !== trim( $field['minimum_number'] ) ? $field['minimum_number'] : '',
 			),
 			false
 		);
@@ -105,7 +105,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 			$field,
 			array(
 				'slug'  => 'maximum_number',
-				'value' => null !== trim( $field['maximum_number'] ) ? $field['maximum_number'] : '',
+				'value' => isset( $field['maximum_number'] ) && null !== trim( $field['maximum_number'] ) ? $field['maximum_number'] : '',
 			),
 			false
 		);
@@ -148,8 +148,8 @@ class EVF_Field_Number extends EVF_Form_Fields {
 	 */
 	public function field_display( $field, $deprecated, $form_data ) {
 
-		$min_num = null !== trim( $field['minimum_number'] ) ? "min='{$field['minimum_number']}'" : '';
-		$max_num = null !== trim( $field['maximum_number'] ) ? "max='{$field['maximum_number']}'" : '';
+		$min_num = isset( $field['minimum_number'] ) && null !== trim( $field['minimum_number'] ) ? "min='{$field['minimum_number']}'" : '';
+		$max_num = isset( $field['maximum_number'] ) && null !== trim( $field['maximum_number'] ) ? "max='{$field['maximum_number']}'" : '';
 
 		// Define data.
 		$primary = $field['properties']['inputs']['primary'];
