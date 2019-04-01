@@ -4,7 +4,7 @@ Tags: contact form, form, form builder, contact, custom form
 Requires at least: 4.0
 Tested up to: 5.1
 Requires PHP: 5.4
-Stable tag: 1.4.6
+Stable tag: 1.4.7
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -137,6 +137,15 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 12. Advance Form
 
 == Changelog ==
+
+= 1.4.7 - xx-xx-2019 =
+* Feature - Tooltipster introduced.
+* Feature - Add support for Payment options.
+* Feature - Add support for signature field.
+* Fix - Likert and scale rating field icons.
+* Fix - Replace tipTip with Tooltipster.
+* Fix - Scrollbar position in sidebar.
+* Tweak - Scale rating min & max point validation error tips.
 
 = 1.4.6 - 25-03-2019 =
 * Fix - Add-ons installation process.
