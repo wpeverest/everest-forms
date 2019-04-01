@@ -2,5 +2,9 @@
   "extends": [
     "config:base"
   ],
-  "lockFileMaintenance": { "enabled": true }
+  "labels": [ "Renovate", "[Status] Needs Review" ],
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": "every weekday"
+  }
 }
