@@ -1,9 +1,8 @@
 == Changelog ==
 
-= 1.4.7 - xx-xx-2019 =
+= 1.4.7 - 02-04-2019 =
 * Feature - Tooltipster introduced.
-* Feature - Add support for Payment options.
-* Feature - Add support for signature field.
+* Feature - Add support for Payment charge & section field.
 * Fix - Likert and scale rating field icons.
 * Fix - Replace tipTip with Tooltipster.
 * Fix - Scrollbar position in sidebar.
