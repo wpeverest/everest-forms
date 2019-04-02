@@ -3,8 +3,5 @@
     "config:base"
   ],
   "labels": [ "Renovate", "[Status] Needs Review" ],
-  "lockFileMaintenance": {
-    "enabled": true,
-    "schedule": "earlyMondays"
-  }
+  "schedule": "before 3am on Monday"
 }
