@@ -5,6 +5,6 @@
   "labels": [ "Renovate", "[Status] Needs Review" ],
   "lockFileMaintenance": {
     "enabled": true,
-    "schedule": "every weekday"
+    "schedule": "earlyMondays"
   }
 }
