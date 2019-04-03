@@ -249,6 +249,14 @@
 				padding: 6px 12px;
 				color: $color-gray-darker;
 
+				&:focus {
+					outline: none;
+					border: 1px solid $color-brand-primary;
+				}
+			}
+
+			input {
+
 				&[type='checkbox'],
 				&[type='radio'] {
 					width: 14px;
@@ -284,10 +292,6 @@
 					color: $input-color;
 				}
 
-				&:focus {
-					outline: none;
-					border: 1px solid $color-brand-primary;
-				}
 			}
 
 			select {
