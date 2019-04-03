@@ -184,6 +184,18 @@
 					:-ms-input-placeholder {
 						line-height: normal;
 					}
+
+					&.evf-field-radio,
+					&.evf-field-checkbox,
+					&.evf-field-payment-multiple,
+					&.evf-field-payment-checkbox {
+						ul {
+							li {
+								display: flex;
+								align-items: center;
+							}
+						}
+					}
 				}
 			}
 

@@ -20,7 +20,7 @@ class EVF_Field_Signature extends EVF_Form_Fields {
 		$this->name   = esc_html__( 'Signature', 'everest-forms' );
 		$this->type   = 'signature';
 		$this->icon   = 'evf-icon evf-icon-signature';
-		$this->order  = 90;
+		$this->order  = 100;
 		$this->group  = 'advanced';
 		$this->is_pro = true;
 
