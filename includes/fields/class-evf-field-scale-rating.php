@@ -17,11 +17,11 @@ class EVF_Field_Scale_Rating extends EVF_Form_Fields {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->name   = esc_html__( 'Score Rating', 'everest-forms' );
-		$this->type   = 'score-rating';
+		$this->name   = esc_html__( 'Scale Rating', 'everest-forms' );
+		$this->type   = 'scale-rating';
 		$this->icon   = 'evf-icon evf-icon-scale-rating';
-		$this->order  = 220;
-		$this->group  = 'advanced';
+		$this->order  = 30;
+		$this->group  = 'survey';
 		$this->is_pro = true;
 
 		parent::__construct();
