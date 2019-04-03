@@ -20,7 +20,7 @@ class EVF_Field_Address extends EVF_Form_Fields {
 		$this->name   = esc_html__( 'Address', 'everest-forms' );
 		$this->type   = 'address';
 		$this->icon   = 'evf-icon evf-icon-map-marker';
-		$this->order  = 100;
+		$this->order  = 110;
 		$this->group  = 'advanced';
 		$this->is_pro = true;
 
