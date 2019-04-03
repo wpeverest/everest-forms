@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Everest Forms 1.4.7\n"
 "Report-Msgid-Bugs-To: https://github.com/wpeverest/everest-forms/issues\n"
-"POT-Creation-Date: 2019-03-29 11:21:41+00:00\n"
+"POT-Creation-Date: 2019-04-03 10:53:32+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2872,8 +2872,8 @@ msgstr ""
 msgid "Rating"
 msgstr ""
 
-#: includes/fields/class-evf-field-score-rating.php:20
-msgid "Score Rating"
+#: includes/fields/class-evf-field-scale-rating.php:20
+msgid "Scale Rating"
 msgstr ""
 
 #: includes/fields/class-evf-field-select.php:20
@@ -2893,7 +2893,7 @@ msgid "Option 3"
 msgstr ""
 
 #: includes/fields/class-evf-field-signature.php:20
-msgid "e-Signature"
+msgid "Signature"
 msgstr ""
 
 #: includes/fields/class-evf-field-text.php:20
