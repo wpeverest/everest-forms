@@ -54,7 +54,7 @@ Check [documentation](http://docs.wpeverest.com/docs/everest-forms/)
 
 ### Premium Features and Addons
 
-* 9 Advanced fields (Image upload, file upload, Hidden Field, Phone, Password, Custom HTML, Section Title, Address, Country)
+* 10 Advanced fields (Image upload, File upload, Hidden Field, Phone, Password, Custom HTML, Section Title, Signature Address, Country)
 
 * [Style Customizer](https://wpeverest.com/wordpress-plugins/everest-forms/style-customizer/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to make form design changes like color, fonts, background, borders, alignments and more without touching any code
 
