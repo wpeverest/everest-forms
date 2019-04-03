@@ -140,7 +140,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 1.4.7 - 02-04-2019 =
+= 1.4.7 - 03-04-2019 =
 * Feature - Tooltipster introduced.
 * Feature - Add support for Payment charge & section field.
 * Fix - Likert and scale rating field icons.
