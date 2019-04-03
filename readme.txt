@@ -66,6 +66,8 @@ Check [documentation](http://docs.wpeverest.com/docs/everest-forms/)
 
 * [PayPal Standard](https://wpeverest.com/wordpress-plugins/everest-forms/paypal-standard/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to connect your forms site with PayPal to easily collect payments, donations, and online orders.
 
+* [Stripe](https://wpeverest.com/wordpress-plugins/everest-forms/stripe/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to connect your forms site with Stripe to easily collect payments, donations, and online orders.
+
 * [Geolocation](https://wpeverest.com/wordpress-plugins/everest-forms/geolocation/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to collect geolocation data like IP, Country, Postal and zip code along with the form submission.
 
 * [Multi-Part Forms](https://wpeverest.com/wordpress-plugins/everest-forms/multi-part-forms/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to break long or complex forms up into multiple pages.
@@ -138,14 +140,14 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 1.4.7 - xx-xx-2019 =
+= 1.4.7 - 03-04-2019 =
 * Feature - Tooltipster introduced.
-* Feature - Add support for Payment options.
-* Feature - Add support for signature field.
+* Feature - Add support for Payment charge & section field.
 * Fix - Likert and scale rating field icons.
 * Fix - Replace tipTip with Tooltipster.
 * Fix - Scrollbar position in sidebar.
 * Tweak - Scale rating min & max point validation error tips.
+* Tweak - Alignment position with higher font size in radio/checkbox.
 
 = 1.4.6 - 25-03-2019 =
 * Fix - Add-ons installation process.
