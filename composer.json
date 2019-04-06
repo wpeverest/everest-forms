@@ -3,7 +3,7 @@
   "description": "Easily allows to create form.",
   "homepage": "https://wpeverest.com/plugins/everest-forms/",
   "type": "wordpress-plugin",
-  "license": "GPL-2.0+",
+  "license": "GPL-3.0-or-later",
   "require": {
     "composer/installers": "1.6.0"
   },
