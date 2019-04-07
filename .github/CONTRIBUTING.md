@@ -57,7 +57,7 @@ If Everest Forms is already 100% translated for your language, join the team any
 
 Please refer to this page on the [Translator Handbook](https://make.wordpress.org/polyglots/handbook/translating/glossary-style-guide/) for information about the glossary and the style guide.
 
-We maintain the Everest Forms glossary [on this shared Google Sheet](https://docs.google.com/spreadsheets/d/1Pobl2nNWieaSpZND9-Bwa4G8pnMU7QYceKsXuWCwSxQ/edit?usp=sharing). You can use it as a template for creating your own glossary.
+We maintain the Everest Forms glossary [on this shared Google Sheet](https://docs.google.com/spreadsheets/d/1LlTmZLSuAyrJD_rHCsPY0ofCB1h1OT45SXFNU_a8ki8/edit?usp=sharing). You can use it as a template for creating your own glossary.
 Please download the file by going to **File > Download as > Comma-separated values (.csv, current sheet)** and save it on your computer/Mac. Open it with your favourite CSV editor (or re-upload it on your own Google Drive) and edit it.
 
 Make sure to edit the second column’s header by using your own language’s code (eg. for Italian you would use `it`, for Portuguese (Brazil) you would use `pt-BR`).
