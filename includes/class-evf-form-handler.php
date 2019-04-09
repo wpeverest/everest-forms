@@ -153,6 +153,14 @@ class EVF_Form_Handler {
 			wp_update_post( $form_data );
 		}
 
+		// Restore removed content filters.
+		if ( $has_kses ) {
+			kses_init_filters();
+		}
+		if ( $has_targeted_link_rel_filters ) {
+			wp_init_targeted_link_rel_filters();
+		}
+
 		do_action( 'everest_forms_create_form', $form_id, $form_data, $data );
 
 		return $form_id;
@@ -224,6 +232,14 @@ class EVF_Form_Handler {
 		);
 		$form    = apply_filters( 'everest_forms_save_form_args', $form, $data, $args );
 		$form_id = wp_update_post( $form );
+
+		// Restore removed content filters.
+		if ( $has_kses ) {
+			kses_init_filters();
+		}
+		if ( $has_targeted_link_rel_filters ) {
+			wp_init_targeted_link_rel_filters();
+		}
 
 		do_action( 'everest_forms_save_form', $form_id, $form );
 
