@@ -1,11 +1,11 @@
 # [Everest Forms](https://wpeverest.com/wordpress-plugins/everest-forms/)
 
-[![License](https://poser.pugx.org/wpeverest/everest-forms/license)](https://packagist.org/packages/wpeverest/everest-forms)
-[![Latest Stable Version](https://poser.pugx.org/wpeverest/everest-forms/v/stable)](https://packagist.org/packages/wpeverest/everest-forms)
 [![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://renovateapp.com/)
-![Plugin Downloads](https://img.shields.io/wordpress/plugin/dt/everest-forms.svg)
-![Plugin Rating](https://img.shields.io/wordpress/plugin/r/everest-forms.svg)
-![WordPress Compatibility](https://img.shields.io/wordpress/plugin/tested/everest-forms.svg)
+[![License](https://img.shields.io/badge/license-GPL--3.0%2B-orange.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
+[![Latest Stable Version](https://img.shields.io/wordpress/plugin/v/everest-forms.svg)](https://wordpress.org/plugins/everest-forms/)
+[![Plugin Downloads](https://img.shields.io/wordpress/plugin/dt/everest-forms.svg)](https://wordpress.org/plugins/everest-forms/advanced/)
+[![Plugin Rating](https://img.shields.io/wordpress/plugin/r/everest-forms.svg)](https://wordpress.org/support/plugin/everest-forms/reviews/)
+[![WordPress Compatibility](https://img.shields.io/wordpress/plugin/tested/everest-forms.svg)](https://wordpress.org/plugins/everest-forms/)
 
 Welcome to the Everest Forms repository on GitHub. Here you can browse the source, look at open issues and keep track of development. We recommend all developers to follow the [WPEverest blog](https://wpeverest.com/blog/) to stay up to date about everything happening in the project.
 
