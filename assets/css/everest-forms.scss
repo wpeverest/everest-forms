@@ -549,6 +549,7 @@ div.evf-gutenberg-form-selector .evf-frontend-row button[type='submit']:disabled
 					&.evf-grid-2,
 					&.evf-grid-3 {
 						width: 100%;
+						max-width: 100%;
 					}
 				}
 			}
