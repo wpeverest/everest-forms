@@ -36,6 +36,10 @@ https://wpeverest.com/contact/
 **General usage and development questions**
 - WordPress.org Forums: https://wordpress.org/support/plugin/everest-forms
 
+## Code of conduct
+
+Everest Forms has adopted a Code of Conduct that we expect project participants to adhere to. Please read [the full text](.github/CODE_OF_CONDUCT.md) so that you can understand what actions will and will not be tolerated.
+
 ## Coding Guidelines
 
 - **Ensure you stick to the [WordPress Coding Standards](https://make.wordpress.org/core/handbook/best-practices/coding-standards/php/)**
