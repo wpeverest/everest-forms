@@ -2,7 +2,7 @@
 
 * [ ] Have you followed the [Everest Forms Contributing guideline](https://github.com/wpeverest/everest-forms/blob/master/.github/CONTRIBUTING.md)?
 * [ ] Does your code follow the [WordPress' coding standards](https://make.wordpress.org/core/handbook/best-practices/coding-standards/)?
-* [ ] Have you checked to ensure there aren't other open [Pull Requests](../../pulls) for the same update/change?
+* [ ] Have you checked to ensure there aren't other open [Pull Requests](../pulls) for the same update/change?
 
 <!-- Mark completed items with an [x] -->
 
@@ -20,11 +20,20 @@ Closes # .
 2.
 3.
 
+### Types of changes:
+
+* [ ] Bug fix (non-breaking change which fixes an issue)
+* [ ] Enhancement (modification of the currently available functionality)
+* [ ] New feature (non-breaking change which adds functionality)
+* [ ] Breaking change (fix or feature that would cause existing functionality to change)
+
+<!-- Mark completed items with an [x] -->
+
 ### Other information:
 
 * [ ] Have you added an explanation of what your changes do and why you'd like us to include them?
-* [ ] Have you written new tests for your changes, as applicable?
 * [ ] Have you successfully ran tests with your changes locally?
+* [ ] Have you updated the documentation accordingly?
 
 <!-- Mark completed items with an [x] -->
 
