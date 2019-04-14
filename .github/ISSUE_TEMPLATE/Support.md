@@ -14,7 +14,7 @@ Usage docs can be found here: https://docs.wpeverest.com/docs/everest-forms/
 
 If you have a problem, you may want to start with the self help guide here: https://docs.wpeverest.com/docs/everest-forms/troubleshooting/
 
-**Technical support for premium extensions or if you're a WooCommerce.com customer**
+**Technical support for premium extensions or if you're a WPEverest.com customer**
  from a human being - submit a ticket via the helpdesk
 https://wpeverest.com/contact/
 
