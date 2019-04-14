@@ -1,6 +1,7 @@
 ---
 name: "\U0001F41E Bug report"
-about: Report a bug if something isn't working as expected in the core Everest Forms plugin.
+about: Report a bug if something isn't working as expected in the core Everest Forms
+  plugin.
 title: ''
 labels: ''
 assignees: ''
