@@ -23,18 +23,23 @@ class EVF_Field_Date extends EVF_Form_Fields {
 		$this->order    = 20;
 		$this->group    = 'advanced';
 		$this->settings = array(
-			'basic-options' => array(
+			'basic-options'    => array(
 				'field_options' => array(
 					'label',
 					'meta',
+					'date_time_select',
 					'description',
 					'required',
+
 				),
 			),
 			'advanced-options' => array(
 				'field_options' => array(
 					'placeholder',
 					'label_hide',
+					'date_format_select',
+					'date_default_current',
+					'time_interval_format_select',
 					'css',
 				),
 			),
@@ -42,6 +47,179 @@ class EVF_Field_Date extends EVF_Form_Fields {
 
 		parent::__construct();
 	}
+
+
+
+
+	/**
+	 * Option to select date or time or both.
+	 *
+	 * @since      1.4.4
+	 *
+	 * @param array $field Field Data.
+	 */
+	public function date_time_select( $field ) {
+
+		$lbl  = $this->field_element(
+			'label',
+			$field,
+			array(
+				'slug'    => 'date_time_select',
+				'value'   => esc_html__( 'Format', 'everest-forms' ),
+				'tooltip' => sprintf( esc_html__( ' Select Date, Time Or Both.', 'everest-forms' ) ),
+			),
+			false
+		);
+		$fld  = $this->field_element(
+			'select',
+			$field,
+			array(
+				'slug'    => 'date_time_select',
+				'value'   => isset( $field['date_time_select'] ) && null !== trim( $field['date_time_select'] ) ? $field['date_time_select'] : 'date',
+				'options' => array(
+					'date' => 'Date',
+					'time' => 'Time',
+					'both' => 'Both',
+				),
+			),
+			false
+		);
+		$args = array(
+			'slug'    => 'date_time_select',
+			'content' => $lbl . $fld,
+		);
+		$this->field_element( 'row', $field, $args );
+	}
+
+	/**
+	 * Option to select date or time or both.
+	 *
+	 * @since      1.4.4
+	 *
+	 * @param array $field Field Data.
+	 */
+	public function date_format_select( $field ) {
+
+		$lbl  = $this->field_element(
+			'label',
+			$field,
+			array(
+				'slug'    => 'date_format_select',
+				'value'   => esc_html__( 'Date', 'everest-forms' ),
+				'tooltip' => sprintf( esc_html__( 'Date format selection.', 'everest-forms' ) ),
+			),
+			false
+		);
+		$fld  = $this->field_element(
+			'select',
+			$field,
+			array(
+				'slug'    => 'date_format_select',
+				'value'   => isset( $field['date_format_select'] ) ? $field['date_format_select'] : '',
+				'options' => array(
+					'F j, Y' => date( 'F j, Y' ) . ' ( F j,Y ) ',
+					'Y-m-d'  => date( 'Y-m-d' ) . ' ( Y-m-d ) ',
+					'm/d/Y'  => date( 'm/d/Y' ) . ' ( m/d/Y ) ',
+					'd/m/Y'  => date( 'd/m/Y' ) . ' ( d/m/Y ) ',
+				),
+			),
+			false
+		);
+		$args = array(
+			'slug'    => 'date_format_select',
+			'content' => $lbl . $fld,
+		);
+		$this->field_element( 'row', $field, $args );
+	}
+
+		/**
+		 * Option to select current date as default.
+		 *
+		 * @since      1.4.4
+		 *
+		 * @param array $field Field Data.
+		 */
+	public function date_default_current( $field ) {
+
+		$fld  = $this->field_element(
+			'checkbox',
+			$field,
+			array(
+				'slug'    => 'date_default_current',
+				'value'   => isset( $field['date_default_current'] ) ? $field['date_default_current'] : '',
+				'desc'    => 'Default To Current Date.',
+				'tooltip' => sprintf( esc_html__( 'Check to set current date as default', 'everest-forms' ) ),
+			),
+			false
+		);
+		$args = array(
+			'slug'    => 'date_default_current',
+			'content' => $fld,
+		);
+
+		$this->field_element( 'row', $field, $args );
+	}
+
+
+	/**
+	 * Option to select time interval and format.
+	 *
+	 * @since      1.4.4
+	 *
+	 * @param array $field Field Data.
+	 */
+	public function time_interval_format_select( $field ) {
+
+		$lbl  = $this->field_element(
+			'label',
+			$field,
+			array(
+				'slug'    => 'time_interval_format_select',
+				'value'   => esc_html__( 'Time', 'everest-forms' ),
+				'tooltip' => sprintf( esc_html__( 'Select time interval and time format.', 'everest-forms' ) ),
+			),
+			false
+		);
+		$fld1 = $this->field_element(
+			'select',
+			$field,
+			array(
+				'slug'    => 'time_interval_select',
+				'value'   => isset( $field['time_interval_select'] ) ? $field['time_interval_select'] : '',
+				'class'   => 'time_interval_select',
+				'options' => array(
+					''    => 'Interval',
+					'0.5' => ' 30 Mins',
+					'1'   => ' 1 Hour',
+					'2'   => ' 2 Hours',
+					'3'   => ' 3 Hours',
+				),
+			),
+			false
+		);
+
+		$fld2 = $this->field_element(
+			'select',
+			$field,
+			array(
+				'slug'    => 'time_format_select',
+				'value'   => isset( $field['time_format_select'] ) ? $field['time_format_select'] : '',
+				'class'   => 'time_format_select',
+				'options' => array(
+					''  => 'Format',
+					'h' => ' 12 Hrs',
+					'H' => ' 24 Hrs',
+				),
+			),
+			false
+		);
+		$args = array(
+			'slug'    => 'time_interval_format_select',
+			'content' => $lbl . $fld1 . $fld2,
+		);
+		$this->field_element( 'row', $field, $args );
+	}
+
 
 	/**
 	 * Field preview inside the builder.
@@ -76,13 +254,14 @@ class EVF_Field_Date extends EVF_Form_Fields {
 	 */
 	public function field_display( $field, $deprecated, $form_data ) {
 
- 		// Define data.
+		// Define data.
 		$primary = $field['properties']['inputs']['primary'];
 
 		$class = array_merge( array( 'flatpickr-field' ), $primary['class'] );
 
 		// Primary field.
-		printf( '<input type="text" %s %s>',
+		printf(
+			'<input type="text" %s %s>',
 			evf_html_attributes( $primary['id'], $class, $primary['data'], $primary['attr'] ),
 			$primary['required']
 		);

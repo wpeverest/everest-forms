@@ -189,6 +189,7 @@
 			EVFPanelBuilder.bindFormPayment();
 			EVFPanelBuilder.choicesInit();
 			EVFPanelBuilder.choicesUpdate();
+			EVFPanelBuilder.dateTimeSelect();
 
 			// Fields Panel
 			EVFPanelBuilder.bindUIActionsFields();
@@ -308,6 +309,54 @@
 				var id = $( this ).parent().data( 'field-id' );
 				$( '#everest-forms-field-' + id ).toggleClass( 'sublabel_hide' );
 			});
+		},
+		dateTimeSelect: function(){
+
+			var dateTimeSelect = $('.everest-forms-field-option-row-date_time_select');
+
+			//Onload check hide show date time.
+			if(dateTimeSelect.length >= 1){
+				dateTimeSelect.each(function(i){
+					var selectedOption = $(this).find('select').val();
+					var id = $(this).data('fieldId');
+					hideShowSection(id, selectedOption);
+				});
+			}
+			// Hide show date and time section based on date format choice
+			$(document).on('change ready','.everest-forms-field-option-row-date_time_select select',function(){
+
+				var fieldId = $(this).parent().data('fieldId');
+				var selectedOption = $(this).val();
+
+				hideShowSection(fieldId,selectedOption);
+
+			});
+			// Hide show section based on
+			function hideShowSection(fieldId,option){
+
+				switch(option){
+					case 'date':
+						$('#everest-forms-field-option-row-'+fieldId+'-date_format_select, #everest-forms-field-option-row-'+fieldId+'-date_default_current').show();
+						$('#everest-forms-field-option-row-'+fieldId+'-time_interval_format_select').hide();
+					break;
+					case 'time':
+						$('#everest-forms-field-option-row-'+fieldId+'-time_interval_format_select').show();
+						$('#everest-forms-field-option-row-'+fieldId+'-date_format_select, #everest-forms-field-option-row-'+fieldId+'-date_default_current').hide();
+					break;
+					case 'both':
+						var sectionArr = [
+										  '#everest-forms-field-option-row-'+fieldId+'-date_format_select',
+										  '#everest-forms-field-option-row-'+fieldId+'-date_default_current',
+										  '#everest-forms-field-option-row-'+fieldId+'-time_interval_format_select',
+										]
+						 sectionArr.map(function(section){
+							$(section).show();
+						 });
+					break;
+					default:
+				}
+			}
+
 		},
 		choicesInit: function () {
 			$( 'ul.evf-choices-list' ).sortable({
