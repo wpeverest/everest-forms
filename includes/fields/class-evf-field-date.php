@@ -30,7 +30,6 @@ class EVF_Field_Date extends EVF_Form_Fields {
 					'date_time_select',
 					'description',
 					'required',
-
 				),
 			),
 			'advanced-options' => array(
@@ -48,9 +47,6 @@ class EVF_Field_Date extends EVF_Form_Fields {
 		parent::__construct();
 	}
 
-
-
-
 	/**
 	 * Option to select date or time or both.
 	 *
@@ -65,8 +61,8 @@ class EVF_Field_Date extends EVF_Form_Fields {
 			$field,
 			array(
 				'slug'    => 'date_time_select',
-				'value'   => esc_html__( 'Format', 'everest-forms' ),
-				'tooltip' => sprintf( esc_html__( ' Select Date, Time Or Both.', 'everest-forms' ) ),
+				'value'   => __( 'Format', 'everest-forms' ),
+				'tooltip' => __( ' Select either date or time or both.', 'everest-forms' ),
 			),
 			false
 		);
@@ -77,9 +73,9 @@ class EVF_Field_Date extends EVF_Form_Fields {
 				'slug'    => 'date_time_select',
 				'value'   => isset( $field['date_time_select'] ) && null !== trim( $field['date_time_select'] ) ? $field['date_time_select'] : 'date',
 				'options' => array(
-					'date' => 'Date',
-					'time' => 'Time',
-					'both' => 'Both',
+					'date' => __( 'Date', 'everest-forms' ),
+					'time' => __( 'Time', 'everest-forms' ),
+					'both' => __( 'Both', 'everest-forms' ),
 				),
 			),
 			false
@@ -105,8 +101,8 @@ class EVF_Field_Date extends EVF_Form_Fields {
 			$field,
 			array(
 				'slug'    => 'date_format_select',
-				'value'   => esc_html__( 'Date', 'everest-forms' ),
-				'tooltip' => sprintf( esc_html__( 'Date format selection.', 'everest-forms' ) ),
+				'value'   => __( 'Date', 'everest-forms' ),
+				'tooltip' => __( 'Select date format.', 'everest-forms' ),
 			),
 			false
 		);
@@ -132,13 +128,13 @@ class EVF_Field_Date extends EVF_Form_Fields {
 		$this->field_element( 'row', $field, $args );
 	}
 
-		/**
-		 * Option to select current date as default.
-		 *
-		 * @since      1.4.4
-		 *
-		 * @param array $field Field Data.
-		 */
+	/**
+	 * Option to select current date as default.
+	 *
+	 * @since      1.4.4
+	 *
+	 * @param array $field Field Data.
+	 */
 	public function date_default_current( $field ) {
 
 		$fld  = $this->field_element(
@@ -147,8 +143,8 @@ class EVF_Field_Date extends EVF_Form_Fields {
 			array(
 				'slug'    => 'date_default_current',
 				'value'   => isset( $field['date_default_current'] ) ? $field['date_default_current'] : '',
-				'desc'    => 'Default To Current Date.',
-				'tooltip' => sprintf( esc_html__( 'Check to set current date as default', 'everest-forms' ) ),
+				'desc'    => __( 'Default To Current Date.', 'everest-forms' ),
+				'tooltip' => __( 'Check to set current date as default', 'everest-forms' ),
 			),
 			false
 		);
@@ -159,7 +155,6 @@ class EVF_Field_Date extends EVF_Form_Fields {
 
 		$this->field_element( 'row', $field, $args );
 	}
-
 
 	/**
 	 * Option to select time interval and format.
@@ -175,8 +170,8 @@ class EVF_Field_Date extends EVF_Form_Fields {
 			$field,
 			array(
 				'slug'    => 'time_interval_format_select',
-				'value'   => esc_html__( 'Time', 'everest-forms' ),
-				'tooltip' => sprintf( esc_html__( 'Select time interval and time format.', 'everest-forms' ) ),
+				'value'   => __( 'Time', 'everest-forms' ),
+				'tooltip' => __( 'Select time interval and format.', 'everest-forms' ),
 			),
 			false
 		);
@@ -188,10 +183,9 @@ class EVF_Field_Date extends EVF_Form_Fields {
 				'value'   => isset( $field['time_interval_select'] ) ? $field['time_interval_select'] : '',
 				'class'   => 'time_interval_select',
 				'options' => array(
-					''   => 'Interval',
-					'15' => ' 15 Mins',
-					'30' => ' 30 Mins',
-
+					''   => __( 'Interval', 'everest-forms' ),
+					'15' => __( ' 15 Mins', 'everest-forms' ),
+					'30' => __( ' 30 Mins', 'everest-forms' ),
 				),
 			),
 			false
@@ -205,9 +199,9 @@ class EVF_Field_Date extends EVF_Form_Fields {
 				'value'   => isset( $field['time_format_select'] ) ? $field['time_format_select'] : '',
 				'class'   => 'time_format_select',
 				'options' => array(
-					''      => 'Format',
-					'g:i A' => ' 12 Hrs',
-					'H:i'   => ' 24 Hrs',
+					''      => __( 'Format', 'everest-forms' ),
+					'g:i A' => __( ' 12 H', 'everest-forms' ),
+					'H:i'   => __( ' 24 H', 'everest-forms' ),
 				),
 			),
 			false
@@ -219,13 +213,12 @@ class EVF_Field_Date extends EVF_Form_Fields {
 		$this->field_element( 'row', $field, $args );
 	}
 
-
 	/**
 	 * Field preview inside the builder.
 	 *
 	 * @since      1.0.0
 	 *
-	 * @param array $field
+	 * @param array $field Field Data.
 	 */
 	public function field_preview( $field ) {
 
@@ -247,9 +240,9 @@ class EVF_Field_Date extends EVF_Form_Fields {
 	 *
 	 * @since      1.0.0
 	 *
-	 * @param array $field
-	 * @param array $deprecated
-	 * @param array $form_data
+	 * @param array $field Field Data.
+	 * @param array $deprecated Deprecated Param.
+	 * @param array $form_data Form Data.
 	 */
 	public function field_display( $field, $deprecated, $form_data ) {
 
