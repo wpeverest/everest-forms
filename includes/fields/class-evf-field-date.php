@@ -17,7 +17,7 @@ class EVF_Field_Date extends EVF_Form_Fields {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->name     = esc_html__( 'Date', 'everest-forms' );
+		$this->name     = esc_html__( 'Date / Time', 'everest-forms' );
 		$this->type     = 'date';
 		$this->icon     = 'evf-icon evf-icon-calendar';
 		$this->order    = 20;
@@ -188,11 +188,10 @@ class EVF_Field_Date extends EVF_Form_Fields {
 				'value'   => isset( $field['time_interval_select'] ) ? $field['time_interval_select'] : '',
 				'class'   => 'time_interval_select',
 				'options' => array(
-					''    => 'Interval',
-					'0.5' => ' 30 Mins',
-					'1'   => ' 1 Hour',
-					'2'   => ' 2 Hours',
-					'3'   => ' 3 Hours',
+					''   => 'Interval',
+					'15' => ' 15 Mins',
+					'30' => ' 30 Mins',
+
 				),
 			),
 			false
@@ -206,9 +205,9 @@ class EVF_Field_Date extends EVF_Form_Fields {
 				'value'   => isset( $field['time_format_select'] ) ? $field['time_format_select'] : '',
 				'class'   => 'time_format_select',
 				'options' => array(
-					''  => 'Format',
-					'h' => ' 12 Hrs',
-					'H' => ' 24 Hrs',
+					''      => 'Format',
+					'g:i A' => ' 12 Hrs',
+					'H:i'   => ' 24 Hrs',
 				),
 			),
 			false
@@ -254,16 +253,47 @@ class EVF_Field_Date extends EVF_Form_Fields {
 	 */
 	public function field_display( $field, $deprecated, $form_data ) {
 
-		// Define data.
-		$primary = $field['properties']['inputs']['primary'];
+		$data_time_date     = ! empty( $field['date_time_select'] ) ? 'data-date-time = "' . esc_attr( $field['date_time_select'] ) . '"' : '';
+		$data_time_interval = ! empty( $field['time_interval_select'] ) ? 'data-time-interval = "' . esc_attr( $field['time_interval_select'] ) . '"' : '';
+		switch ( $field['date_time_select'] ) {
 
-		$class = array_merge( array( 'flatpickr-field' ), $primary['class'] );
+			case 'date':
+				$default_date_time = isset( $field['date_default_current'] ) ? date( $field['date_format_select'] ) : '';
+				$data_date_format  = ! empty( $field['date_format_select'] ) ? 'data-date-format = "' . esc_attr( $field['date_format_select'] ) . '"' : '';
+				break;
+			case 'time':
+				$default_date_time = '';
+				$data_date_format  = ! empty( $field['time_format_select'] ) ? 'data-date-format = "' . esc_attr( $field['time_format_select'] ) . '"' : 'data-date-format = "g:i A"';
+				break;
+			case 'both':
+				if ( ! empty( $field['time_format_select'] ) ) {
+					$format            = esc_attr( $field['date_format_select'] ) . ' ' . esc_attr( $field['time_format_select'] );
+					$default_date_time = isset( $field['date_default_current'] ) ? date( $format ) : '';
+					$data_date_format  = 'data-date-format = "' . $format . '"';
 
-		// Primary field.
-		printf(
-			'<input type="text" %s %s>',
-			evf_html_attributes( $primary['id'], $class, $primary['data'], $primary['attr'] ),
-			$primary['required']
-		);
+				} else {
+					$format            = esc_attr( $field['date_format_select'] ) . ' g:i A';
+					$default_date_time = isset( $field['date_default_current'] ) ? date( $format ) : '';
+					$data_date_format  = 'data-date-format = "' . $format . '"';
+				}
+				break;
+			default:
+		}
+
+			// Define data.
+			$primary = $field['properties']['inputs']['primary'];
+
+			$class = array_merge( array( 'flatpickr-field' ), $primary['class'] );
+
+			// Primary field.
+			printf(
+				'<input type="text" %s %s value="%s" %s %s %s>',
+				evf_html_attributes( $primary['id'], $class, $primary['data'], $primary['attr'] ),
+				$primary['required'],
+				esc_attr( $default_date_time ),
+				str_replace( 'g:i A', 'h:i K', $data_date_format ),
+				$data_time_interval,
+				$data_time_date
+			);
 	}
 }

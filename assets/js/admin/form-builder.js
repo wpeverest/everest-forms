@@ -311,9 +311,7 @@
 			});
 		},
 		dateTimeSelect: function(){
-
 			var dateTimeSelect = $('.everest-forms-field-option-row-date_time_select');
-
 			//Onload check hide show date time.
 			if(dateTimeSelect.length >= 1){
 				dateTimeSelect.each(function(i){
@@ -324,12 +322,9 @@
 			}
 			// Hide show date and time section based on date format choice
 			$(document).on('change ready','.everest-forms-field-option-row-date_time_select select',function(){
-
 				var fieldId = $(this).parent().data('fieldId');
 				var selectedOption = $(this).val();
-
 				hideShowSection(fieldId,selectedOption);
-
 			});
 			// Hide show section based on
 			function hideShowSection(fieldId,option){
@@ -349,6 +344,7 @@
 										  '#everest-forms-field-option-row-'+fieldId+'-date_default_current',
 										  '#everest-forms-field-option-row-'+fieldId+'-time_interval_format_select',
 										]
+
 						 sectionArr.map(function(section){
 							$(section).show();
 						 });
