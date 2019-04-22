@@ -646,6 +646,23 @@ body.everest-forms-builder-setup,
 			float: right;
 		}
 
+		.input-group-col-2 {
+			display: flex;
+			flex-wrap: wrap;
+
+			input[type='text'],
+			select {
+				flex: 0 0 50%;
+				margin-right: 2%;
+				margin-bottom: 10px;
+				max-width: calc(50% - 1%);
+
+				&:nth-child(2n) {
+					margin-right: 0;
+				}
+			}
+		}
+
 		.everest-forms-nav-wrapper {
 			background-color: $everestforms;
 
@@ -1902,7 +1919,7 @@ img.ui-datepicker-trigger {
 .select2-results {
 	line-height: 1.5em;
 	.select2-results__option,
- .select2-results__group {
+	.select2-results__group {
 		margin: 0;
 		padding: 8px;
 	}

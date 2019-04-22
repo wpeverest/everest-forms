@@ -165,7 +165,7 @@ class EVF_Field_Date extends EVF_Form_Fields {
 	 */
 	public function time_interval_format_select( $field ) {
 
-		$lbl  = $this->field_element(
+		$lbl   = $this->field_element(
 			'label',
 			$field,
 			array(
@@ -175,7 +175,8 @@ class EVF_Field_Date extends EVF_Form_Fields {
 			),
 			false
 		);
-		$fld1 = $this->field_element(
+		$fld1  = '<div class="input-group-col-2">';
+		$fld1 .= $this->field_element(
 			'select',
 			$field,
 			array(
@@ -190,7 +191,7 @@ class EVF_Field_Date extends EVF_Form_Fields {
 			),
 			false
 		);
-		$fld2 = $this->field_element(
+		$fld2  = $this->field_element(
 			'select',
 			$field,
 			array(
@@ -205,7 +206,8 @@ class EVF_Field_Date extends EVF_Form_Fields {
 			),
 			false
 		);
-		$args = array(
+		$fld2 .= '</div>';
+		$args  = array(
 			'slug'    => 'time_interval_format_select',
 			'content' => $lbl . $fld1 . $fld2,
 		);
