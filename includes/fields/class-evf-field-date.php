@@ -190,7 +190,6 @@ class EVF_Field_Date extends EVF_Form_Fields {
 			),
 			false
 		);
-
 		$fld2 = $this->field_element(
 			'select',
 			$field,
@@ -241,7 +240,7 @@ class EVF_Field_Date extends EVF_Form_Fields {
 	 * @since      1.0.0
 	 *
 	 * @param array $field Field Data.
-	 * @param array $deprecated Deprecated Param.
+	 * @param array $deprecated Deprecated Parameter.
 	 * @param array $form_data Form Data.
 	 */
 	public function field_display( $field, $deprecated, $form_data ) {
@@ -263,7 +262,6 @@ class EVF_Field_Date extends EVF_Form_Fields {
 					$format            = esc_attr( $field['date_format_select'] ) . ' ' . esc_attr( $field['time_format_select'] );
 					$default_date_time = isset( $field['date_default_current'] ) ? date( $format ) : '';
 					$data_date_format  = 'data-date-format = "' . $format . '"';
-
 				} else {
 					$format            = esc_attr( $field['date_format_select'] ) . ' g:i A';
 					$default_date_time = isset( $field['date_default_current'] ) ? date( $format ) : '';
