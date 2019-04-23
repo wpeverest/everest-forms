@@ -1,7 +1,7 @@
 {
   "name": "everest-forms",
   "title": "Everest Forms",
-  "version": "1.4.7",
+  "version": "1.4.8",
   "homepage": "https://wpeverest.com/wordpress-plugins/everest-forms/",
   "repository": {
     "type": "git",
@@ -43,7 +43,7 @@
     "lint-staged": "8.1.5",
     "node-sass": "4.11.0",
     "stylelint": "10.0.1",
-    "stylelint-config-wordpress": "13.1.0",
+    "stylelint-config-wordpress": "14.0.0",
     "webpack": "4.30.0",
     "webpack-cli": "3.3.1"
   },
