@@ -967,7 +967,22 @@ body.everest-forms-builder-setup,
 			margin: 0;
 			padding: 6px;
 			box-sizing: border-box;
-			vertical-align: top;
+		}
+
+
+		input[type='text'],
+		input[type='email'],
+		input[type='number'],
+		input[type='password'],
+		input[type='datetime'],
+		input[type='datetime-local'],
+		input[type='date'],
+		input[type='time'],
+		input[type='week'],
+		input[type='url'],
+		input[type='tel'],
+		input.regular-input {
+			vertical-align: middle;
 		}
 
 		input[type='datetime-local'],
@@ -976,6 +991,10 @@ body.everest-forms-builder-setup,
 		input[type='week'],
 		input[type='tel'] {
 			width: 200px;
+		}
+
+		textarea {
+			vertical-align: top;
 		}
 
 		select {
