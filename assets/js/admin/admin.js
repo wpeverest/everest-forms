@@ -70,7 +70,7 @@
 			if ( $( this ).is( '.evf-input-meta-key' ) ) {
 				regex = new RegExp( '[^a-z0-9_]+', 'gi' );
 			} else {
-				regex = new RegExp( '[^a-z0-9_,-]+', 'gi' );
+				regex = new RegExp( '[^a-z0-9 _-]+', 'gi' );
 			}
 
 			var value    = $( this ).val();
@@ -88,7 +88,7 @@
 				regex = new RegExp( '[^a-z0-9_]+', 'gi' );
 				error = 'i18n_field_meta_key_error';
 			} else {
-				regex = new RegExp( '[^a-z0-9_,-]+', 'gi' );
+				regex = new RegExp( '[^a-z0-9 _-]+', 'gi' );
 				error = 'i18n_field_css_class_error';
 			}
 
