@@ -45,6 +45,13 @@ class EVF_Emails {
 	 */
 	private $cc = false;
 
+		/**
+		 * Holds the blind carbon copy addresses.
+		 *
+		 * @var string
+		 */
+	private $bcc = false;
+
 	/**
 	 * Holds the email content type.
 	 *
@@ -122,6 +129,16 @@ class EVF_Emails {
 	 * @param mixed  $value
 	 */
 	public function __set( $key, $value ) {
+
+		if ( 'form_data' === $key ) {
+			$form_email_data = $value['settings']['email'];
+
+			foreach ( $form_email_data as $email_key => $email_data ) {
+				$this->cc  = ! empty( $email_data['evf_cc'] ) ? $email_data['evf_cc'] : false;
+				$this->bcc = ! empty( $email_data['evf_bcc'] ) ? $email_data['evf_bcc'] : false;
+			}
+		}
+
 		$this->$key = $value;
 	}
 
@@ -168,7 +185,6 @@ class EVF_Emails {
 				$this->reply_to = false;
 			}
 		}
-
 		return apply_filters( 'everest_forms_email_reply_to', $this->reply_to, $this );
 	}
 
@@ -192,6 +208,28 @@ class EVF_Emails {
 		}
 
 		return apply_filters( 'everest_forms_email_cc', $this->cc, $this );
+	}
+
+	/**
+	 * Get the emailblind  carbon copy addresses.
+	 *
+	 * @return string The email reply-to address.
+	 */
+	public function get_bcc() {
+		if ( ! empty( $this->bcc ) ) {
+			$this->bcc = $this->process_tag( $this->bcc );
+			$addresses = array_map( 'trim', explode( ',', $this->bcc ) );
+
+			foreach ( $addresses as $key => $address ) {
+				if ( ! is_email( $address ) ) {
+					unset( $addresses[ $key ] );
+				}
+			}
+
+			$this->bcc = implode( ',', $addresses );
+		}
+
+		return apply_filters( 'everest_forms_email_bcc', $this->bcc, $this );
 	}
 
 	/**
@@ -223,6 +261,10 @@ class EVF_Emails {
 			if ( $this->get_cc() ) {
 				$this->headers .= "Cc: {$this->get_cc()}\r\n";
 			}
+			if ( $this->get_bcc() ) {
+				$this->headers .= "Bcc: {$this->get_bcc()}\r\n";
+			}
+
 			$this->headers .= "Content-Type: {$this->get_content_type()}; charset=utf-8\r\n";
 		}
 
@@ -300,9 +342,9 @@ class EVF_Emails {
 		// Hooks before email is sent.
 		do_action( 'everest_forms_email_send_before', $this );
 
-		$message     = $this->build_email( $message );
+		$message           = $this->build_email( $message );
 		$this->attachments = apply_filters( 'everest_forms_email_attachments', $this->attachments, $this );
-		$subject     = evf_decode_string( $this->process_tag( $subject ) );
+		$subject           = evf_decode_string( $this->process_tag( $subject ) );
 
 		// Let's do this.
 		$sent = wp_mail( $to, $subject, $message, $this->get_headers(), $this->attachments );
