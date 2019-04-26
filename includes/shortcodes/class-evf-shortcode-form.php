@@ -367,7 +367,12 @@ class EVF_Shortcode_Form {
 
 		// Check user field defined classes.
 		if ( ! empty( $field['css'] ) ) {
-			$attributes['field_class'] = array_merge( $attributes['field_class'], evf_sanitize_classes( $field['css'], true ) );
+			$field['css']    = explode( ',', $field['css'] );
+			$sanitized_class = array();
+			foreach ( $field['css'] as $key => $field_class ) {
+				$sanitized_class[ $key ] = evf_sanitize_classes( $field_class );
+			}
+			$attributes['field_class'] = array_merge( $attributes['field_class'], $sanitized_class );
 		}
 
 		// Input class.

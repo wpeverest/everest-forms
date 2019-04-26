@@ -547,7 +547,7 @@ abstract class EVF_Form_Fields {
 					),
 					false
 				);
-				// echo '<pre>' . print_r( $field, true ) . '</pre>';
+
 				if ( 'rating' !== $field['type'] ) {
 					$output .= '<a href="#" class="evf-toggle-smart-tag-display" data-type="other"><span class="dashicons dashicons-editor-code"></span></a>';
 					$output .= '<div class="evf-smart-tag-lists" style="display: none">';
