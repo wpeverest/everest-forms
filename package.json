@@ -27,7 +27,7 @@
     "eslint": "5.16.0",
     "grunt": "1.0.4",
     "grunt-checktextdomain": "1.0.1",
-    "grunt-contrib-compress": "1.4.3",
+    "grunt-contrib-compress": "1.5.0",
     "grunt-contrib-concat": "1.0.1",
     "grunt-contrib-cssmin": "3.0.0",
     "grunt-contrib-jshint": "2.1.0",
