@@ -64,6 +64,7 @@
 
 			input[type='text'] {
 				width: calc(100% - 30px);
+				min-height: 27px;
 			}
 		}
 
@@ -1092,7 +1093,7 @@
 		}
 
 		label {
-			font-size: 12px;
+			font-size: 13px;
 			margin-bottom: 15px;
 			color: $color-gray-darker;
 			display: block;
