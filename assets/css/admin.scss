@@ -153,6 +153,36 @@
 	}
 }
 
+/**
+ * Notice info
+ */
+
+.everest-forms-notice {
+	padding: 10px;
+	display: block;
+	margin-bottom: 15px;
+
+	&.everest-forms-notice-info {
+		background: transparentize($color-alert-info, 0.9);
+		border: 1px solid $color-alert-info;
+	}
+
+	&.everest-forms-notice-success {
+		background: transparentize($color-alert-success, 0.9);
+		border: 1px solid $color-alert-success;
+	}
+
+	&.everest-forms-notice-warning {
+		background: transparentize($color-alert-warning, 0.9);
+		border: 1px solid $color-alert-warning;
+	}
+
+	&.everest-forms-notice-danger {
+		background: transparentize($color-alert-danger, 0.9);
+		border: 1px solid $color-alert-danger;
+	}
+}
+
 h2 .everest-forms-help-tip {
 	margin-top: -5px;
 	margin-left: 0.25em;
@@ -742,6 +772,10 @@ body.everest-forms-builder-setup,
 
 			.everest-forms-add-fields-group {
 				margin-bottom: 5px;
+			}
+
+			.everest-forms-notice {
+				display: inline-block;
 			}
 		}
 
