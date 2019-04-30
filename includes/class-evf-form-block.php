@@ -29,16 +29,19 @@ class EVF_Form_Block {
 			return;
 		}
 
-		register_block_type( 'everest-forms/form-selector', array(
-			'attributes'      => array(
-				'formId'       => array(
-					'type' => 'string',
+		register_block_type(
+			'everest-forms/form-selector',
+			array(
+				'attributes'      => array(
+					'formId' => array(
+						'type' => 'string',
+					),
 				),
-			),
-			'editor_style'    => 'everest-forms-block-editor',
-			'editor_script'   => 'everest-forms-block-editor',
-			'render_callback' => array( $this, 'get_form_html' ),
-		) );
+				'editor_style'    => 'everest-forms-block-editor',
+				'editor_script'   => 'everest-forms-block-editor',
+				'render_callback' => array( $this, 'get_form_html' ),
+			)
+		);
 	}
 
 	/**
@@ -64,11 +67,16 @@ class EVF_Form_Block {
 			'forms' => EVF()->form->get( '', array( 'order' => 'DESC' ) ),
 			'i18n'  => array(
 				'title'         => esc_html__( 'Everest Forms', 'everest-forms' ),
-				'description'   => esc_html__( 'Select &#38; display one of your form.', 'everest-forms' ),
+				'description'   => esc_html__( 'Select and display one of your forms.', 'everest-forms' ),
+				'form_keywords' => array(
+					esc_html__( 'form', 'everest-forms' ),
+					esc_html__( 'contact', 'everest-forms' ),
+					esc_html__( 'survey', 'everest-forms' ),
+				),
 				'form_select'   => esc_html__( 'Select a Form', 'everest-forms' ),
 				'form_settings' => esc_html__( 'Form Settings', 'everest-forms' ),
 				'form_selected' => esc_html__( 'Form', 'everest-forms' ),
-			)
+			),
 		);
 		wp_localize_script( 'everest-forms-block-editor', 'evf_form_block_data', $form_block_data );
 	}
@@ -90,16 +98,27 @@ class EVF_Form_Block {
 
 		// Disable form fields if called from the Gutenberg editor.
 		if ( $is_gb_editor ) {
-			add_filter( 'everest_forms_frontend_container_class', function ( $classes ) {
-				$classes[] = 'evf-gutenberg-form-selector';
-				return $classes;
-			} );
-			add_action( 'everest_forms_frontend_output', function () {
-				echo '<fieldset disabled>';
-			}, 3 );
-			add_action( 'everest_forms_frontend_output', function () {
-				echo '</fieldset>';
-			}, 30 );
+			add_filter(
+				'everest_forms_frontend_container_class',
+				function ( $classes ) {
+					$classes[] = 'evf-gutenberg-form-selector';
+					return $classes;
+				}
+			);
+			add_action(
+				'everest_forms_frontend_output',
+				function () {
+					echo '<fieldset disabled>';
+				},
+				3
+			);
+			add_action(
+				'everest_forms_frontend_output',
+				function () {
+					echo '</fieldset>';
+				},
+				30
+			);
 		}
 
 		return EVF_Shortcodes::form(
