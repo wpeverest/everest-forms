@@ -33,7 +33,10 @@ class EVF_Form_Block {
 			'everest-forms/form-selector',
 			array(
 				'attributes'      => array(
-					'formId' => array(
+					'formId'    => array(
+						'type' => 'string',
+					),
+					'className' => array(
 						'type' => 'string',
 					),
 				),
@@ -94,6 +97,12 @@ class EVF_Form_Block {
 			return '';
 		}
 
+		// Wrapper classes.
+		$classes = 'everest-forms';
+		if ( isset( $attr['className'] ) ) {
+			$classes .= ' ' . $attr['className'];
+		}
+
 		$is_gb_editor = defined( 'REST_REQUEST' ) && REST_REQUEST && ! empty( $_REQUEST['context'] ) && 'edit' === $_REQUEST['context'];
 
 		// Disable form fields if called from the Gutenberg editor.
@@ -121,9 +130,13 @@ class EVF_Form_Block {
 			);
 		}
 
-		return EVF_Shortcodes::form(
+		return EVF_Shortcodes::shortcode_wrapper(
+			array( 'EVF_Shortcode_Form', 'output' ),
 			array(
 				'id' => $form_id,
+			),
+			array(
+				'class' => evf_sanitize_classes( $classes ),
 			)
 		);
 	}

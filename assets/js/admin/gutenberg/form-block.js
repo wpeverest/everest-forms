@@ -26,7 +26,7 @@ registerBlockType( 'everest-forms/form-selector', {
 	attributes: {
 		formId: {
 			type: 'string',
-		}
+		},
 	},
 	edit( props ) {
 		const { attributes: { formId = '' }, setAttributes } = props;
