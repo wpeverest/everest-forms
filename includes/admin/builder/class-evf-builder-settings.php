@@ -380,7 +380,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					)
 				);
 
-				echo '<span class="everest-forms-email-message-info">' . esc_html__( 'To display all form fields, use the {all_fields} Smart Tag.', 'everest-forms' ) . '</span>';
+				echo '<span class="everest-forms-notice everest-forms-notice-info everest-forms-email-message-info">' . esc_html__( 'To display all form fields, use the {all_fields} Smart Tag.', 'everest-forms' ) . '</span>';
 
 				do_action( 'everest_forms_inline_email_settings', $this, $connection_id );
 
