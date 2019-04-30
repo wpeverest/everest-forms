@@ -1495,6 +1495,11 @@ jQuery( function ( $ ) {
 					$(el).parent().find('.evf-smart-tag-lists .evf-fields').append('<li class = "smart-tag-field" data-type="field" data-field_id="'+key+'">'+email_field[key]+'</li>');
 				}
 			} else {
+				if ( Object.keys(all_fields).length < 1 ){
+					$(el).parent().find('.evf-smart-tag-lists .smart-tag-title:not(".other-tag-title")').addClass('everest-forms-hidden');
+				} else {
+					$(el).parent().find('.evf-smart-tag-lists .smart-tag-title:not(".other-tag-title")').removeClass('everest-forms-hidden');
+				}
 				for (var meta in all_fields ) {
 					$(el).parent().find('.evf-smart-tag-lists .evf-fields').append('<li class = "smart-tag-field" data-type="field" data-field_id="'+meta+'">'+all_fields[meta]+'</li>');
 				}
