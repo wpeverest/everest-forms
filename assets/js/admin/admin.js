@@ -60,19 +60,12 @@
 			$( '.evf_error_tip' ).fadeOut( '100', function() { $( this ).remove(); } );
 		})
 
-		.on( 'blur', '.evf-input-meta-key[type=text], .evf-input-css-class[type=text]', function() {
+		.on( 'blur', '.evf-input-meta-key[type=text]', function() {
 			$( '.evf_error_tip' ).fadeOut( '100', function() { $( this ).remove(); } );
 		})
 
-		.on( 'change', '.evf-input-meta-key[type=text], .evf-input-css-class[type=text]', function() {
-			var regex;
-
-			if ( $( this ).is( '.evf-input-meta-key' ) ) {
-				regex = new RegExp( '[^a-z0-9_]+', 'gi' );
-			} else {
-				regex = new RegExp( '[^a-z0-9 _-]+', 'gi' );
-			}
-
+		.on( 'change', '.evf-input-meta-key[type=text]', function() {
+			var regex    = new RegExp( '[^a-z0-9_]+', 'gi' );
 			var value    = $( this ).val();
 			var newvalue = value.replace( regex, '' );
 
@@ -81,15 +74,12 @@
 			}
 		})
 
-		.on( 'keyup', '.evf-input-meta-key[type=text], .evf-input-css-class[type=text]', function() {
+		.on( 'keyup', '.evf-input-meta-key[type=text]', function() {
 			var regex, error;
 
 			if ( $( this ).is( '.evf-input-meta-key' ) ) {
 				regex = new RegExp( '[^a-z0-9_]+', 'gi' );
 				error = 'i18n_field_meta_key_error';
-			} else {
-				regex = new RegExp( '[^a-z0-9 _-]+', 'gi' );
-				error = 'i18n_field_css_class_error';
 			}
 
 			var value    = $( this ).val();
