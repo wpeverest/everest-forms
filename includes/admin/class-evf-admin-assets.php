@@ -173,8 +173,7 @@ class EVF_Admin_Assets {
 				'everest-forms-admin',
 				'everest_forms_admin',
 				array(
-					'i18n_field_meta_key_error'  => esc_html__( 'Please enter in meta key with alphanumeric and underscores character.', 'everest-forms' ),
-					'i18n_field_css_class_error' => esc_html__( 'Please enter in classname with alphanumeric, underscores and hyphen character.', 'everest-forms' ),
+					'i18n_field_meta_key_error' => esc_html__( 'Please enter in meta key with alphanumeric and underscores character.', 'everest-forms' ),
 				)
 			);
 		}

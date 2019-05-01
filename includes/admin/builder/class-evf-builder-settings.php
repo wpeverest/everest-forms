@@ -123,7 +123,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		// --------------------------------------------------------------------//
 		echo '<div class="evf-content-section evf-content-general-settings">';
 		echo '<div class="evf-content-section-title">';
-		_e( 'General', 'everest-forms' );
+		esc_html_e( 'General', 'everest-forms' );
 		echo '</div>';
 		everest_forms_panel_field(
 			'text',
@@ -203,6 +203,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			__( 'Form Class', 'everest-forms' ),
 			array(
 				'default' => isset( $this->form->form_class ) ? $this->form->form_class : '',
+				'tooltip' => esc_html( 'Enter CSS class names for the form wrapper. Multiple class names should be separated with spaces.', 'everest-forms' ),
 			)
 		);
 		everest_forms_panel_field(
