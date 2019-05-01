@@ -1,0 +1,47 @@
+$primary:           #ff0033;                                       // Primary color for buttons (alt)
+$primarytext:       desaturate( lighten( $primary, 52% ), 18% );   // Text on primary color bg
+
+$secondary:         desaturate( lighten( $primary, 44% ), 91% );   // Secondary buttons
+$secondarytext:     desaturate( darken( $secondary, 64% ), 91% );  // Text on secondary color bg
+
+$border-color: #D5D9E2;
+$text-color: #C6CCD7;
+$uploader-background: #FBFDFE;
+$button-color: #5D96EE;
+$input-color: #C6CCD7;
+$accordion-bg: #F9FAFC;
+$accordion-content-bg: #F0F1F2;
+$color-evf-hover: #F7FAFC;
+
+
+$color-gray-base: 				#000000;
+$color-gray-more-darken: 		#292929; //Gray 16%
+$color-gray-darken:             #404040; //Gray 25%
+$color-gray-darker: 			#575757; // Gray 34%
+$color-gray-dark: 				#747474; // Gray 45.5%
+$color-gray: 					#969696; // Gray 59%
+$color-gray-light:				#BDBDBD; // Gray 74%
+$color-gray-lighter: 			#D6D8DA; // Gray 84%
+
+/*=====  Light colors  ======*/
+$color-white:					#FFFFFF;
+$color-white-dark:              #FAFAFA; // white 2%
+$color-white-darker:            #F5F5F5; // white 4%
+$color-white-darken:		    #EFEFEF; // white 6.2%
+$color-white-more-darken:		#E6E6E6; // white 10%
+$color-border-right:            #EBEDF0;
+
+/*==========  Brand-colors  ==========*/
+$color-brand-primary:        	#7CA8EB; // #337ab7
+$color-brand-primary-light:      lighten($color-brand-primary, 20%); // #337ab7
+$color-brand-secondary:			#7F5AEC;
+
+/*==========  Alert Colors  ==========*/
+$color-alert-success:        	#5CB85C;
+$color-alert-info:           	#5BC0DE;
+$color-alert-warning:        	#F0AD4E;
+$color-alert-danger:         	#D9534F;
+
+/*==========  Typography Colors  ==========*/
+$color-heading:					$color-gray-dark;
+$color-body:                    $color-gray;
