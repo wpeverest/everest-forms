@@ -547,7 +547,7 @@ abstract class EVF_Form_Fields {
 					),
 					false
 				);
-				// echo '<pre>' . print_r( $field, true ) . '</pre>';
+
 				if ( 'rating' !== $field['type'] ) {
 					$output .= '<a href="#" class="evf-toggle-smart-tag-display" data-type="other"><span class="dashicons dashicons-editor-code"></span></a>';
 					$output .= '<div class="evf-smart-tag-lists" style="display: none">';
@@ -615,7 +615,7 @@ abstract class EVF_Form_Fields {
 			// CSS classes. ---------------------------------------------------//
 			case 'css':
 				$toggle  = '';
-				$tooltip = __( 'Enter CSS class for this field container. Class names should be separated with spaces.', 'everest-forms' );
+				$tooltip = __( 'Enter CSS class names for this field container. Multiple class names should be separated with spaces.', 'everest-forms' );
 				$value   = ! empty( $field['css'] ) ? esc_attr( $field['css'] ) : '';
 				// Build output
 				$output  = $this->field_element(
@@ -634,7 +634,6 @@ abstract class EVF_Form_Fields {
 					$field,
 					array(
 						'slug'  => 'css',
-						'class' => 'evf-input-css-class',
 						'value' => $value,
 					),
 					false

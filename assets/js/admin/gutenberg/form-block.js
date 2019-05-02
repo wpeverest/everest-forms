@@ -7,6 +7,7 @@
 'use strict';
 
 /* global evf_form_block_data, wp */
+const { __ } = wp.i18n;
 const { createElement } = wp.element;
 const { registerBlockType } = wp.blocks;
 const { InspectorControls } = wp.editor;
@@ -18,9 +19,10 @@ const EverestFormIcon = createElement( 'svg', { width: 24, height: 24, viewBox: 
 
 registerBlockType( 'everest-forms/form-selector', {
 	title: evf_form_block_data.i18n.title,
-	description: evf_form_block_data.i18n.description,
 	icon: EverestFormIcon,
 	category: 'widgets',
+	keywords: evf_form_block_data.i18n.form_keywords,
+	description: evf_form_block_data.i18n.description,
 	attributes: {
 		formId: {
 			type: 'string',
