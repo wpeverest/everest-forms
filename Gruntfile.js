@@ -138,8 +138,7 @@ module.exports = function( grunt ){
 		watch: {
 			css: {
 				files: [
-					'<%= dirs.css %>/*.scss',
-					'<%= dirs.css %>/**/*.scss'
+					'<%= dirs.css %>/*.scss'
 				],
 				tasks: ['sass', 'rtlcss', 'postcss', 'cssmin', 'concat']
 			},
