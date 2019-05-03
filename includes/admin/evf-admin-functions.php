@@ -426,7 +426,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 			$smart_tag .= __( 'Available Fields', 'everest-forms' );
 			$smart_tag .= '</div><ul class="evf-fields"></ul>';
 			if ( $type == 'all' || $type == 'other' ) {
-				$smart_tag .= '<div class="smart-tag-title">';
+				$smart_tag .= '<div class="smart-tag-title other-tag-title">';
 				$smart_tag .= __( 'Others', 'everest-forms' );
 				$smart_tag .= '</div><ul class="evf-others"></ul>';
 			}

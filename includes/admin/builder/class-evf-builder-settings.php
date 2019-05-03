@@ -244,10 +244,17 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		// --------------------------------------------------------------------//
 		// Email
 		// --------------------------------------------------------------------//
+		$form_name = isset( $settings['form_title'] ) ? ' - ' . $settings['form_title'] : '';
 		if ( ! isset( $settings['email']['connection_1'] ) ) {
-			$settings['email']['connection_1'] = array( 'connection_name' => __( 'Admin Notification', 'everest-forms' ) );
+			$settings['email']['connection_1']                      = array( 'connection_name' => __( 'Admin Notification', 'everest-forms' ) );
+			$settings['email']['connection_1']['evf_to_email']      = isset( $settings['email']['evf_to_email'] ) ? $settings['email']['evf_to_email'] : '{admin_email}';
+			$settings['email']['connection_1']['evf_from_name']     = isset( $settings['email']['evf_from_name'] ) ? $settings['email']['evf_from_name'] : get_bloginfo( 'name', 'display' );
+			$settings['email']['connection_1']['evf_from_email']    = isset( $settings['email']['evf_from_email'] ) ? $settings['email']['evf_from_email'] : '{admin_email}';
+			$settings['email']['connection_1']['evf_reply_to']      = isset( $settings['email']['evf_reply_to'] ) ? $settings['email']['evf_reply_to'] : '';
+			$settings['email']['connection_1']['evf_email_subject'] = isset( $settings['email']['evf_email_subject'] ) ? $settings['email']['evf_email_subject'] : sprintf( __( 'New Form Entry %s', 'everest-forms' ), $form_name );
+			$settings['email']['connection_1']['evf_email_message'] = isset( $settings['email']['evf_email_message'] ) ? $settings['email']['evf_email_message'] : '{all_fields}';
 
-			$email_settings = array( 'evf_to_email', 'evf_from_name', 'evf_from_email', 'evf_reply_to', 'evf_email_subject', 'evf_email_message', 'attach_pdf_to_admin_email', 'show_header_in_attachment_pdf_file', 'conditional_logic_status', 'conditional_option', 'conditionals' );
+			$email_settings = array( 'attach_pdf_to_admin_email', 'show_header_in_attachment_pdf_file', 'conditional_logic_status', 'conditional_option', 'conditionals' );
 			foreach ( $email_settings as $email_setting ) {
 				$settings['email']['connection_1'][ $email_setting ] = isset( $settings['email'][ $email_setting ] ) ? $settings['email'][ $email_setting ] : '';
 			}
@@ -262,8 +269,6 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				}
 			}
 		}
-
-		$form_name = isset( $settings['form_title'] ) ? ' - ' . $settings['form_title'] : '';
 
 		echo '<div class="evf-content-section evf-content-email-settings">';
 		echo '<div class="evf-content-section-title">';
@@ -375,6 +380,8 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 						),
 					)
 				);
+
+				echo '<p class="description everest-forms-email-message-info">' . esc_html__( 'To display all form fields, use the', 'everest-froms' ) . ' <code>{all_fields}</code> ' . esc_html__( 'Smart Tags.', 'everest-forms' ) . '</p>';
 
 				do_action( 'everest_forms_inline_email_settings', $this, $connection_id );
 
