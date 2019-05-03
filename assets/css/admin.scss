@@ -2180,6 +2180,20 @@ body.everest-forms-builder-setup,
 				height: calc(100vh - 150px);
 				overflow-x: auto;
 
+				.everest-forms-border-container {
+
+					.everest-forms-border-container-title {
+						background: $color-white;
+					}
+
+					.everest-forms-panel-field {
+
+						&:last-child {
+							margin-bottom: 0;
+						}
+					}
+				}
+
 				.evf-content-email-settings {
 
 					.evf-content-email-settings-inner {
