@@ -445,7 +445,7 @@
 			$('body').on('click', '.evf-integrations-panel', function ( e ) {
 				var data_setting_section = $(this).attr('data-section');
 				$('.evf-integrations-panel').removeClass('active');
-				$('.evf-panel-content-section').removeClass('active');
+				$('#everest-forms-panel-integrations').find('.evf-panel-content-section').removeClass('active');
 				$(this).addClass('active');
 				$(this).parent().find('.everest-forms-active-connections').removeClass('active');
 				$(this).next('.everest-forms-active-connections').addClass('active');
@@ -464,10 +464,9 @@
 			$('body').on('click', '.evf-payments-panel', function ( e ) {
 				var data_setting_section = $(this).attr('data-section');
 				$('.evf-payments-panel').removeClass('active');
-				$('.evf-panel-content-section').removeClass('active');
 				$(this).siblings().removeClass('icon active');
 				$(this).addClass('active');
-				$('.evf-content-section').removeClass('active').hide();
+				$(this).parents('#everest-forms-panel-payments').find('.evf-payment-setting-content').removeClass('active').hide();
 				$('.evf-content-' + data_setting_section + '-settings' ).addClass('active').show();
 				e.preventDefault();
 			});
