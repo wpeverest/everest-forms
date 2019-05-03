@@ -206,7 +206,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				'tooltip' => esc_html( 'Enter CSS class names for the form wrapper. Multiple class names should be separated with spaces.', 'everest-forms' ),
 			)
 		);
-		echo '<div class="everest-forms-border-container">';
+		echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'Submit Button', 'everest-forms' ) . '</h4>';
 		everest_forms_panel_field(
 			'text',
 			'settings',
