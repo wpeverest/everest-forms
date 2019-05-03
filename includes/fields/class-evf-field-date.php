@@ -36,8 +36,8 @@ class EVF_Field_Date extends EVF_Form_Fields {
 				'field_options' => array(
 					'placeholder',
 					'label_hide',
-					'date_format_select',
 					'date_default_current',
+					'date_format_select',
 					'time_interval_format_select',
 					'css',
 				),
@@ -101,7 +101,7 @@ class EVF_Field_Date extends EVF_Form_Fields {
 			$field,
 			array(
 				'slug'    => 'date_format_select',
-				'value'   => __( 'Date', 'everest-forms' ),
+				'value'   => __( 'Date Format', 'everest-forms' ),
 				'tooltip' => __( 'Select date format.', 'everest-forms' ),
 			),
 			false
@@ -123,7 +123,7 @@ class EVF_Field_Date extends EVF_Form_Fields {
 		);
 		$args = array(
 			'slug'    => 'date_format_select',
-			'content' => $lbl . $fld,
+			'content' => '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . $lbl . '</h4>' . $fld . '</div>',
 		);
 		$this->field_element( 'row', $field, $args );
 	}
@@ -170,7 +170,7 @@ class EVF_Field_Date extends EVF_Form_Fields {
 			$field,
 			array(
 				'slug'    => 'time_interval_format_select',
-				'value'   => __( 'Time', 'everest-forms' ),
+				'value'   => __( 'Time Format', 'everest-forms' ),
 				'tooltip' => __( 'Select time interval and format.', 'everest-forms' ),
 			),
 			false
@@ -209,9 +209,10 @@ class EVF_Field_Date extends EVF_Form_Fields {
 		$fld2 .= '</div>';
 		$args  = array(
 			'slug'    => 'time_interval_format_select',
-			'content' => $lbl . $fld1 . $fld2,
+			'content' => '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . $lbl . '</h4>' . $fld1 . $fld2 . '</div>',
 		);
 		$this->field_element( 'row', $field, $args );
+
 	}
 
 	/**
