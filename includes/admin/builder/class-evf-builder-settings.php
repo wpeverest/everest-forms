@@ -215,6 +215,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			__( 'Submit button text', 'everest-forms' ),
 			array(
 				'default' => isset( $settings['submit_button_text'] ) ? $settings['submit_button_text'] : __( 'Submit', 'everest-forms' ),
+				'tooltip' => esc_html__( 'Enter desired text for submit button.', 'everest-forms' ),
 			)
 		);
 		everest_forms_panel_field(
@@ -225,6 +226,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			__( 'Submit button Class', 'everest-forms' ),
 			array(
 				'default' => isset( $settings['submit_button_class'] ) ? $settings['submit_button_class'] : '',
+				'tooltip' => esc_html__( 'Enter CSS class names for submit button. Multiple class names should be separated with spaces.', 'everest-forms' ),
 			)
 		);
 		echo '</div>';
