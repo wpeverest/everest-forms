@@ -295,7 +295,6 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 						'default'   => isset( $settings['email'][ $connection_id ]['evf_to_email'] ) ? $settings['email'][ $connection_id ]['evf_to_email'] : '{admin_email}',
 						'tooltip'   => __( 'Enter your email address to receive notifications; separate with a comma if multiple addresses.', 'everest-forms' ),
 						'smarttags' => array(
-<<<<<<< HEAD
 							'type'        => 'fields',
 							'form_fields' => 'email',
 						),
@@ -327,8 +326,6 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 						'default'   => isset( $settings['email'][ $connection_id ]['evf_bcc'] ) ? $settings['email'][ $connection_id ]['evf_bcc'] : '',
 						'tooltip'   => __( 'Enter Bcc email address to receive notifications; separate with a comma if multiple addresses.', 'everest-forms' ),
 						'smarttags' => array(
-=======
->>>>>>> develop
 							'type'        => 'fields',
 							'form_fields' => 'email',
 						),
