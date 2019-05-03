@@ -21,7 +21,7 @@
 	@include loader();
 }
 
-// loader
+// Loader
 .evf-loading {
 	background: url('../images/icons/loader.svg');
 	background-size: 20px 20px;
@@ -638,7 +638,6 @@ body.everest-forms-builder-setup,
 /**
  * Form Builder.
  */
-
 #everest-forms-panel-settings {
 	.evf-content-section {
 		display: none;
@@ -2969,7 +2968,6 @@ table.wp-list-table {
 	 *   info             -> blue
 	 *   debug            -> green
 	 */
-
 	.log-level--emergency,
 	.log-level--alert {
 		background-color: #ff4136;
