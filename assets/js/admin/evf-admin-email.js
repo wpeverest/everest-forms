@@ -117,11 +117,16 @@
 										cloned_email.attr('data-connection_id',response.data.connection_id);
 										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-connection_name').attr('name', 'settings[email]['+response.data.connection_id+'][connection_name]');
 										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-evf_to_email').attr('name', 'settings[email]['+response.data.connection_id+'][evf_to_email]');
+										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-evf_to_email').attr('value', '{admin_email}');
 										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-evf_from_name').attr('name', 'settings[email]['+response.data.connection_id+'][evf_from_name]');
+										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-evf_from_name').attr('value', evf_email_params.from_name );
 										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-evf_from_email').attr('name', 'settings[email]['+response.data.connection_id+'][evf_from_email]');
+										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-evf_from_email').attr('value', '{admin_email}');
 										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-evf_reply_to').attr('name', 'settings[email]['+response.data.connection_id+'][evf_reply_to]');
 										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-evf_email_subject').attr('name', 'settings[email]['+response.data.connection_id+'][evf_email_subject]');
+										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-evf_email_subject').attr('value', evf_email_params.email_subject );
 										cloned_email.find('#everest_forms_panel_field_settingsemailconnection_1_evf_email_message').attr('name', 'settings[email]['+response.data.connection_id+'][evf_email_message]');
+										cloned_email.find('#everest_forms_panel_field_settingsemailconnection_1_evf_email_message').attr('value', '{all_fields}');
 										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-conditional_logic_status').attr('name', 'settings[email]['+response.data.connection_id+'][conditional_logic_status]');
 										cloned_email.find('.evf_conditional_logic_container input[type="hidden"]').attr('name', 'settings[email]['+response.data.connection_id+'][conditional_logic_status]');
 										cloned_email.find('.evf-field-show-hide').attr('name', 'settings[email]['+response.data.connection_id+'][conditional_option]');
