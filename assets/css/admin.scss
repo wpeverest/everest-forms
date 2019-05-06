@@ -1151,6 +1151,16 @@ body.everest-forms-builder-setup,
 					.everest-forms-field-options {
 						display: none;
 
+						.everest-forms-border-container {
+
+							.everest-forms-field-option-row {
+
+								&:last-child {
+									margin-bottom: 15px;
+								}
+							}
+						}
+
 						.everest-forms-field-option-row {
 							position: relative;
 							margin-bottom: 15px;
@@ -2147,19 +2157,23 @@ body.everest-forms-builder-setup,
 		.everest-forms-border-container {
 			margin-top: 5px;
 			margin-bottom: 20px;
-			padding: 0 20px 20px;
+			padding: 0 20px;
 			border: 1px solid #ddd;
-
-			&:last-child {
-				margin-bottom: 0;
-			}
 
 			.everest-forms-border-container-title {
 				padding: 0 10px;
-				margin: 0 0 10px -10px;
+				margin: 0 0 5px -10px;
 				background: #f8f9fa;
 				display: inline-block;
 				transform: translateY(-50%);
+
+				label {
+					margin-bottom: 0;
+				}
+			}
+
+			select {
+				margin-bottom: 15px;
 			}
 		}
 
