@@ -50,7 +50,7 @@ class EVF_Field_Date extends EVF_Form_Fields {
 	/**
 	 * Option to select date or time or both.
 	 *
-	 * @since      1.4.4
+	 * @since      1.4.9
 	 *
 	 * @param array $field Field Data.
 	 */
@@ -90,7 +90,7 @@ class EVF_Field_Date extends EVF_Form_Fields {
 	/**
 	 * Option to select date or time or both.
 	 *
-	 * @since      1.4.4
+	 * @since      1.4.9
 	 *
 	 * @param array $field Field Data.
 	 */
@@ -131,12 +131,11 @@ class EVF_Field_Date extends EVF_Form_Fields {
 	/**
 	 * Option to select current date as default.
 	 *
-	 * @since      1.4.4
+	 * @since      1.4.9
 	 *
 	 * @param array $field Field Data.
 	 */
 	public function date_default_current( $field ) {
-
 		$fld  = $this->field_element(
 			'checkbox',
 			$field,
@@ -159,12 +158,11 @@ class EVF_Field_Date extends EVF_Form_Fields {
 	/**
 	 * Option to select time interval and format.
 	 *
-	 * @since      1.4.4
+	 * @since      1.4.9
 	 *
 	 * @param array $field Field Data.
 	 */
 	public function time_interval_format_select( $field ) {
-
 		$lbl   = $this->field_element(
 			'label',
 			$field,
@@ -212,7 +210,6 @@ class EVF_Field_Date extends EVF_Form_Fields {
 			'content' => '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . $lbl . '</h4>' . $fld1 . $fld2 . '</div>',
 		);
 		$this->field_element( 'row', $field, $args );
-
 	}
 
 	/**

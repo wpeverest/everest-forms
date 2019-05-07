@@ -24,6 +24,7 @@ jQuery( function ( $ ) {
 		},
 		init_datepicker: function () {
 			var evfDateField = $( '.evf-field-date' );
+
 			if ( evfDateField.length > 0 ) {
 				$( '.flatpickr-field' ).each(function(){
 					var timeInterval = 5;
@@ -32,9 +33,9 @@ jQuery( function ( $ ) {
 							case 'date':
 								// Apply flatpicker to field.
 								$(this).flatpickr({
-													disableMobile: true,
-													dateFormat      : inputData.dateFormat,
-												});
+									disableMobile: true,
+									dateFormat   : inputData.dateFormat,
+								});
 							break;
 							case 'time':
 								if(undefined !== inputData.timeInterval){
@@ -42,14 +43,13 @@ jQuery( function ( $ ) {
 								}
 								// Apply flatpicker to field.
 								$(this).flatpickr({
-													enableTime   	: true,
-													noCalendar   	: true,
-													minuteIncrement : timeInterval,
-													dateFormat      : inputData.dateFormat,
-													disableMobile	: true,
-													time_24hr		: inputData.dateFormat.includes('H:i')
-
-												});
+									enableTime   	: true,
+									noCalendar   	: true,
+									minuteIncrement : timeInterval,
+									dateFormat      : inputData.dateFormat,
+									disableMobile	: true,
+									time_24hr		: inputData.dateFormat.includes('H:i')
+								});
 							break;
 							case 'both':
 								if(undefined !== inputData.timeInterval){
@@ -57,13 +57,13 @@ jQuery( function ( $ ) {
 								}
 								// Apply flatpicker to field.
 								$(this).flatpickr({
-													enableTime   	: true,
-													noCalendar   	: false,
-													disableMobile	: true,
-													minuteIncrement : timeInterval,
-													dateFormat      : inputData.dateFormat,
-													time_24hr		: inputData.dateFormat.includes('H:i')
-												});
+									enableTime   	: true,
+									noCalendar   	: false,
+									disableMobile	: true,
+									minuteIncrement : timeInterval,
+									dateFormat      : inputData.dateFormat,
+									time_24hr		: inputData.dateFormat.includes('H:i')
+								});
 							break;
 							default:
 					}
