@@ -39,7 +39,7 @@ if ( ! $tab_exists ) {
 			?>
 			<p class="submit">
 				<?php if ( empty( $GLOBALS['hide_save_button'] ) ) : ?>
-					<button name="save" class="button-primary everest-forms-btn everest-forms-save-button" type="submit" value="<?php esc_attr_e( 'Save Changes', 'everest-forms' ); ?>"><?php esc_html_e( 'Save Changes', 'everest-forms' ); ?></button>
+					<button name="save" class="everest-forms-btn everest-forms-btn-primary everest-forms-save-button" type="submit" value="<?php esc_attr_e( 'Save Changes', 'everest-forms' ); ?>"><?php esc_html_e( 'Save Changes', 'everest-forms' ); ?></button>
 				<?php endif; ?>
 				<?php wp_nonce_field( 'everest-forms-settings' ); ?>
 			</p>
