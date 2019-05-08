@@ -35,10 +35,10 @@ class EVF_Field_Date extends EVF_Form_Fields {
 			'advanced-options' => array(
 				'field_options' => array(
 					'placeholder',
-					'label_hide',
 					'date_default_current',
 					'date_format_select',
 					'time_interval_format_select',
+					'label_hide',
 					'css',
 				),
 			),
@@ -50,19 +50,16 @@ class EVF_Field_Date extends EVF_Form_Fields {
 	/**
 	 * Option to select date or time or both.
 	 *
-	 * @since      1.4.9
-	 *
 	 * @param array $field Field Data.
 	 */
 	public function date_time_select( $field ) {
-
 		$lbl  = $this->field_element(
 			'label',
 			$field,
 			array(
 				'slug'    => 'date_time_select',
 				'value'   => __( 'Format', 'everest-forms' ),
-				'tooltip' => __( ' Select either date or time or both.', 'everest-forms' ),
+				'tooltip' => __( 'Select a format for the date field.', 'everest-forms' ),
 			),
 			false
 		);
