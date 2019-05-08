@@ -158,14 +158,14 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 
 		// Output the fields preview.
 		echo '<div class="evf-admin-field-container">';
-			echo '<div class="evf-admin-field-wrapper">';
+		echo '<div class="evf-admin-field-wrapper">';
 
-				/**
-				 * Hook: everest_forms_display_builder_fields_before.
-				 *
-				 * @hooked EverestForms_MultiPart::display_builder_fields_before() Multi-Part markup open.
-				 */
-				do_action( 'everest_forms_display_builder_fields_before', $form_data );
+		/**
+		 * Hook: everest_forms_display_builder_fields_before.
+		 *
+		 * @hooked EverestForms_MultiPart::display_builder_fields_before() Multi-Part markup open.
+		 */
+		do_action( 'everest_forms_display_builder_fields_before', $form_data );
 
 		foreach ( $structure as $row_id => $row_data ) {
 			$row         = str_replace( 'row_', '', $row_id );
@@ -181,70 +181,61 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			do_action( 'everest_forms_display_builder_row_before', $row_id, $form_data );
 
 			echo '<div class="evf-admin-row" data-row-id="' . absint( $row ) . '">';
-				echo '<div class="evf-toggle-row">';
-					echo '<div class="evf-delete-row"><span class="dashicons dashicons-trash" title="Delete"></span></div>';
-					echo '<div class="evf-show-grid"><span class="dashicons dashicons-edit" title="Edit"></span></div>';
-					echo '<div class="evf-toggle-row-content">';
-						echo '<span>' . __( 'Row Settings', 'everest-forms' ) . '</span>';
-						echo '<small>' . __( 'Select the type of row', 'everest-forms' ) . '</small>';
-						echo '<div class="clear"></div>';
-
+			echo '<div class="evf-toggle-row">';
+			echo '<div class="evf-delete-row"><span class="dashicons dashicons-trash" title="Delete"></span></div>';
+			echo '<div class="evf-show-grid"><span class="dashicons dashicons-edit" title="Edit"></span></div>';
+			echo '<div class="evf-toggle-row-content">';
+			echo '<span>' . __( 'Row Settings', 'everest-forms' ) . '</span>';
+			echo '<small>' . __( 'Select the type of row', 'everest-forms' ) . '</small>';
+			echo '<div class="clear"></div>';
 			for ( $grid_active = 1; $grid_active <= $total_grid; $grid_active ++ ) {
 				$class = 'evf-grid-selector';
 				if ( $grid_active === $active_grid ) {
-								$class .= ' active';
+					$class .= ' active';
 				}
-							echo '<div class="' . $class . '" data-evf-grid="' . $grid_active . '">';
-							$gaps   = 15;
-							$width  = ( 100 - $gaps ) / $grid_active;
-							$margin = ( $gaps / $grid_active ) / 2;
+				echo '<div class="' . $class . '" data-evf-grid="' . $grid_active . '">';
+					$gaps   = 15;
+					$width  = ( 100 - $gaps ) / $grid_active;
+					$margin = ( $gaps / $grid_active ) / 2;
 				for ( $row_icon = 1; $row_icon <= $grid_active; $row_icon ++ ) {
-							echo '<span style="width:' . $width . '%; margin-left:' . $margin . '%; margin-right:' . $margin . '%"></span>';
+					echo '<span style="width:' . $width . '%; margin-left:' . $margin . '%; margin-right:' . $margin . '%"></span>';
 				}
-							echo '</div>';
-			}
-
-					echo '</div>';
 				echo '</div>';
-
-				echo '<div class="clear evf-clear"></div>';
-
-				$grid_class = 'evf-admin-grid evf-grid-' . ( $active_grid );
+			}
+			echo '</div>';
+			echo '</div>';
+			echo '<div class="clear evf-clear"></div>';
+			$grid_class = 'evf-admin-grid evf-grid-' . ( $active_grid );
 			for ( $grid_start = 1; $grid_start <= $active_grid; $grid_start ++ ) {
-						echo '<div class="' . $grid_class . ' " data-grid-id="' . $grid_start . '">';
-
-						$grid_fields = isset( $row_grid[ 'grid_' . $grid_start ] ) && is_array( $row_grid[ 'grid_' . $grid_start ] ) ? $row_grid[ 'grid_' . $grid_start ] : array();
-
+				echo '<div class="' . $grid_class . ' " data-grid-id="' . $grid_start . '">';
+				$grid_fields = isset( $row_grid[ 'grid_' . $grid_start ] ) && is_array( $row_grid[ 'grid_' . $grid_start ] ) ? $row_grid[ 'grid_' . $grid_start ] : array();
 				foreach ( $grid_fields as $field_id ) {
 					if ( isset( $fields[ $field_id ] ) && ! in_array( $fields[ $field_id ]['type'], EVF()->form_fields->get_pro_form_field_types(), true ) ) {
 						$this->field_preview( $fields[ $field_id ] );
 					}
 				}
-
-						echo '</div>';
+				echo '</div>';
 			}
+			echo '<div class="clear evf-clear"></div>';
+			echo '</div >';
 
-							echo '<div class="clear evf-clear"></div>';
-							echo '</div >';
-
-							/**
-							 * Hook: everest_forms_display_builder_row_after.
-							 *
-							 * @hooked EverestForms_MultiPart::display_builder_row_after() Multi-Part markup (close previous part, open next).
-							 */
-							do_action( 'everest_forms_display_builder_row_after', $row_id, $form_data );
+			/**
+			 * Hook: everest_forms_display_builder_row_after.
+			 *
+			 * @hooked EverestForms_MultiPart::display_builder_row_after() Multi-Part markup (close previous part, open next).
+			 */
+			do_action( 'everest_forms_display_builder_row_after', $row_id, $form_data );
 		}
 
-				/**
-				 * Hook: everest_forms_display_builder_fields_after.
-				 *
-				 * @hooked EverestForms_MultiPart::display_builder_fields_after() Multi-Part markup open.
-				 */
-				do_action( 'everest_forms_display_builder_fields_after', $form_data );
-
-			echo '</div>';
-			echo '<div class="clear evf-clear"></div>';
-			echo '<div class="evf-add-row" data-total-rows="' . count( $structure ) . '"><span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-plus-alt">' . esc_html( 'Add Row', 'everest-forms' ) . '</span></div>';
+		/**
+		 * Hook: everest_forms_display_builder_fields_after.
+		 *
+		 * @hooked EverestForms_MultiPart::display_builder_fields_after() Multi-Part markup open.
+		 */
+		do_action( 'everest_forms_display_builder_fields_after', $form_data );
+		echo '</div>';
+		echo '<div class="clear evf-clear"></div>';
+		echo '<div class="evf-add-row" data-total-rows="' . count( $structure ) . '"><span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-plus-alt">' . esc_html( 'Add Row', 'everest-forms' ) . '</span></div>';
 		echo '</div >';
 	}
 
