@@ -188,23 +188,31 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			echo '<span>' . __( 'Row Settings', 'everest-forms' ) . '</span>';
 			echo '<small>' . __( 'Select the type of row', 'everest-forms' ) . '</small>';
 			echo '<div class="clear"></div>';
+
 			for ( $grid_active = 1; $grid_active <= $total_grid; $grid_active ++ ) {
 				$class = 'evf-grid-selector';
+
 				if ( $grid_active === $active_grid ) {
 					$class .= ' active';
 				}
+
 				echo '<div class="' . $class . '" data-evf-grid="' . $grid_active . '">';
-					$gaps   = 15;
-					$width  = ( 100 - $gaps ) / $grid_active;
-					$margin = ( $gaps / $grid_active ) / 2;
+
+				$gaps   = 15;
+				$width  = ( 100 - $gaps ) / $grid_active;
+				$margin = ( $gaps / $grid_active ) / 2;
+
 				for ( $row_icon = 1; $row_icon <= $grid_active; $row_icon ++ ) {
 					echo '<span style="width:' . $width . '%; margin-left:' . $margin . '%; margin-right:' . $margin . '%"></span>';
 				}
+
 				echo '</div>';
 			}
+
 			echo '</div>';
 			echo '</div>';
 			echo '<div class="clear evf-clear"></div>';
+
 			$grid_class = 'evf-admin-grid evf-grid-' . ( $active_grid );
 			for ( $grid_start = 1; $grid_start <= $active_grid; $grid_start ++ ) {
 				echo '<div class="' . $grid_class . ' " data-grid-id="' . $grid_start . '">';
@@ -233,6 +241,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		 * @hooked EverestForms_MultiPart::display_builder_fields_after() Multi-Part markup open.
 		 */
 		do_action( 'everest_forms_display_builder_fields_after', $form_data );
+
 		echo '</div>';
 		echo '<div class="clear evf-clear"></div>';
 		echo '<div class="evf-add-row" data-total-rows="' . count( $structure ) . '"><span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-plus-alt">' . esc_html( 'Add Row', 'everest-forms' ) . '</span></div>';
