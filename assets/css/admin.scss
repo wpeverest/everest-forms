@@ -862,6 +862,7 @@ body.everest-forms-builder-setup,
 				.everest-forms-save-button {
 					width: 75px;
 					cursor: pointer;
+					min-height: 36px;
 					color: $color-white;
 					background: $green;
 					margin-left: 10px;
@@ -877,7 +878,7 @@ body.everest-forms-builder-setup,
 					&.processing {
 						width: 75px;
 						font-size: 0;
-						padding: 18px 0;
+						min-height: 36px;
 						transition: all 0.35s ease 0s;
 
 						&:focus {
@@ -2290,6 +2291,7 @@ body.everest-forms-builder-setup,
 						width: auto;
 						height: auto;
 						font-size: 13px;
+						background: #51cf66;
 						font-family: inherit;
 
 						&.dashicons {
@@ -2304,6 +2306,10 @@ body.everest-forms-builder-setup,
 								padding: 2px 12px 2px 0;
 								border-right: 1px solid transparentize($color-white, 0.7);
 							}
+						}
+
+						&:hover {
+							background: #33ba4a;
 						}
 					}
 				}
