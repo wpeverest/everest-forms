@@ -80,11 +80,12 @@
 		 * Display a "Copied!" tip when success copying.
 		 */
 		copySuccess: function() {
-			$( '#copy-shortcode' ).tooltipster( 'content', $( this ).attr( 'data-copied' ) ).trigger( 'mouseenter' ).on( 'mouseleave', function (){
-				var buttonObj = $( this );
-				setTimeout( function(){
-					buttonObj.tooltipster( 'content', buttonObj.attr( 'data-tip' ) );
-				}, 600 );
+			$( '#copy-shortcode' ).tooltipster( 'content', $( this ).attr( 'data-copied' ) ).trigger( 'mouseenter' ).on( 'mouseleave', function() {
+				var $this = $( this );
+
+				setTimeout( function() {
+					$this.tooltipster( 'content', $this.attr( 'data-tip' ) );
+				}, 1000 );
 			} );
 		},
 
