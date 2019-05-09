@@ -27,7 +27,7 @@ class EVF_Field_Date extends EVF_Form_Fields {
 				'field_options' => array(
 					'label',
 					'meta',
-					'choose_format', // format
+					'choose_format',
 					'description',
 					'required',
 				),
@@ -35,8 +35,8 @@ class EVF_Field_Date extends EVF_Form_Fields {
 			'advanced-options' => array(
 				'field_options' => array(
 					'placeholder',
-					'date_options', // date_options
-					'time_options', // time_options
+					'date_options',
+					'time_options',
 					'label_hide',
 					'css',
 				),
