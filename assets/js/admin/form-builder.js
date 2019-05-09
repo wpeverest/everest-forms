@@ -333,17 +333,16 @@
 			function hideShowSection(fieldId,option){
 				switch(option){
 					case 'date':
-							$('#everest-forms-field-option-row-'+fieldId+'-date_format_select, #everest-forms-field-option-row-'+fieldId+'-date_default_current').show();
-							$('#everest-forms-field-option-row-'+fieldId+'-time_interval_format_select').hide();
+						$('#everest-forms-field-option-row-'+fieldId+'-date_format_select, #everest-forms-field-option-row-'+fieldId+'-date_default_current').show();
+						$('#everest-forms-field-option-row-'+fieldId+'-time_interval_format_select').hide();
 					break;
 					case 'time':
-							$('#everest-forms-field-option-row-'+fieldId+'-time_interval_format_select').show();
-							$('#everest-forms-field-option-row-'+fieldId+'-date_format_select, #everest-forms-field-option-row-'+fieldId+'-date_default_current').hide();
+						$('#everest-forms-field-option-row-'+fieldId+'-time_interval_format_select').show();
+						$('#everest-forms-field-option-row-'+fieldId+'-date_format_select, #everest-forms-field-option-row-'+fieldId+'-date_default_current').hide();
 					break;
 					case 'both':
-							$('#everest-forms-field-option-row-'+fieldId+'-date_format_select,#everest-forms-field-option-row-'+fieldId+'-date_default_current,#everest-forms-field-option-row-'+fieldId+'-time_interval_format_select').show();
+						$('#everest-forms-field-option-row-'+fieldId+'-date_format_select,#everest-forms-field-option-row-'+fieldId+'-date_default_current,#everest-forms-field-option-row-'+fieldId+'-time_interval_format_select').show();
 					break;
-					default:
 				}
 			}
 		},

@@ -85,13 +85,13 @@ class EVF_Field_Date extends EVF_Form_Fields {
 	}
 
 	/**
-	 * Option to select date or time or both.
+	 * Option to select date format.
 	 *
 	 * @since 1.4.9
 	 * @param array $field Field Data.
 	 */
 	public function date_options( $field ) {
-		echo '<div class = "date-options everest-forms-border-container" >';
+		echo '<div class = "everest-forms-border-container date-options">';
 		echo '<h4 class="everest-forms-border-container-title">' . esc_html__( 'Date', 'everest-forms' ) . '</h4>'; // WPCS: XSS ok.
 
 		$lbl = $this->field_element(
@@ -145,18 +145,20 @@ class EVF_Field_Date extends EVF_Form_Fields {
 	/**
 	 * Option to select time interval and format.
 	 *
-	 * @since      1.4.9
-	 *
+	 * @since 1.4.9
 	 * @param array $field Field Data.
 	 */
 	public function time_options( $field ) {
+		echo '<div class = "everest-forms-border-container time-options">';
+		echo '<h4 class="everest-forms-border-container-title">' . esc_html__( 'Time', 'everest-forms' ) . '</h4>'; // WPCS: XSS ok.
+
 		$lbl   = $this->field_element(
 			'label',
 			$field,
 			array(
 				'slug'    => 'time_interval_format_select',
-				'value'   => __( 'Time', 'everest-forms' ),
-				'tooltip' => __( 'Select time interval and format.', 'everest-forms' ),
+				'value'   => __( 'Time Format', 'everest-forms' ),
+				'tooltip' => __( 'Choose time interval and format to display.', 'everest-forms' ),
 			),
 			false
 		);
@@ -169,9 +171,9 @@ class EVF_Field_Date extends EVF_Form_Fields {
 				'value'   => isset( $field['time_interval_select'] ) ? $field['time_interval_select'] : '',
 				'class'   => 'time_interval_select',
 				'options' => array(
-					''   => __( 'Interval', 'everest-forms' ),
-					'15' => __( ' 15 Mins', 'everest-forms' ),
-					'30' => __( ' 30 Mins', 'everest-forms' ),
+					'15' => __( '15 minutes', 'everest-forms' ),
+					'30' => __( '30 minutes', 'everest-forms' ),
+					'60' => __( '1 hour', 'everest-forms' ),
 				),
 			),
 			false
@@ -184,19 +186,21 @@ class EVF_Field_Date extends EVF_Form_Fields {
 				'value'   => isset( $field['time_format_select'] ) ? $field['time_format_select'] : '',
 				'class'   => 'time_format_select',
 				'options' => array(
-					''      => __( 'Format', 'everest-forms' ),
-					'g:i A' => __( ' 12 H', 'everest-forms' ),
-					'H:i'   => __( ' 24 H', 'everest-forms' ),
+					'g:i A' => __( '12 H', 'everest-forms' ),
+					'H:i'   => __( '24 H', 'everest-forms' ),
 				),
 			),
 			false
 		);
 		$fld2 .= '</div>';
-		$args  = array(
+
+		$args = array(
 			'slug'    => 'time_interval_format_select',
-			'content' => '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . $lbl . '</h4><h4>' . __( 'Format', 'everest-forms' ) . '</h4>' . $fld1 . $fld2 . '</div>',
+			'content' => $lbl . $fld1 . $fld2,
 		);
 		$this->field_element( 'row', $field, $args );
+
+		echo '</div>';
 	}
 
 	/**
