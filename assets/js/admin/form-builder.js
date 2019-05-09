@@ -311,7 +311,7 @@
 			});
 		},
 		dateTimeSelect: function(){
-			var dateTimeSelect = $('.everest-forms-field-option-row-date_time_select');
+			var dateTimeSelect = $('.everest-forms-field-option-row-datetime_format');
 
 			// Onload check hide show date time.
 			if(dateTimeSelect.length >= 1){
@@ -322,8 +322,13 @@
 				});
 			}
 
+			$( document ).ajaxComplete(function() {
+
+
+
+			});
 			// Hide show date and time section based on date format choice
-			$(document).on('change ready','.everest-forms-field-option-row-date_time_select select',function(){
+			$(document).on('input ready','.everest-forms-field-option-row-datetime_format select',function(){
 				var fieldId = $(this).parent().data('fieldId');
 				var selectedOption = $(this).val();
 				hideShowSection(fieldId,selectedOption);
@@ -333,15 +338,15 @@
 			function hideShowSection(fieldId,option){
 				switch(option){
 					case 'date':
-						$('#everest-forms-field-option-row-'+fieldId+'-date_format_select, #everest-forms-field-option-row-'+fieldId+'-date_default_current').show();
-						$('#everest-forms-field-option-row-'+fieldId+'-time_interval_format_select').hide();
+						$('#date-options-'+fieldId).show();
+						$('#time-options-'+fieldId).hide();
 					break;
 					case 'time':
-						$('#everest-forms-field-option-row-'+fieldId+'-time_interval_format_select').show();
-						$('#everest-forms-field-option-row-'+fieldId+'-date_format_select, #everest-forms-field-option-row-'+fieldId+'-date_default_current').hide();
+						$('#time-options-'+fieldId).show();
+						$('#date-options-'+fieldId).hide();
 					break;
 					case 'both':
-						$('#everest-forms-field-option-row-'+fieldId+'-date_format_select,#everest-forms-field-option-row-'+fieldId+'-date_default_current,#everest-forms-field-option-row-'+fieldId+'-time_interval_format_select').show();
+						$('#date-options-'+fieldId+',#time-options-'+fieldId).show();
 					break;
 				}
 			}

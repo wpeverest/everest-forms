@@ -57,7 +57,7 @@ class EVF_Field_Date extends EVF_Form_Fields {
 			'label',
 			$field,
 			array(
-				'slug'    => 'date_time_select',
+				'slug'    => 'datetime_format',
 				'value'   => __( 'Format', 'everest-forms' ),
 				'tooltip' => __( 'Select a format for the date field.', 'everest-forms' ),
 			),
@@ -67,8 +67,8 @@ class EVF_Field_Date extends EVF_Form_Fields {
 			'select',
 			$field,
 			array(
-				'slug'    => 'date_time_select',
-				'value'   => isset( $field['date_time_select'] ) && null !== trim( $field['date_time_select'] ) ? $field['date_time_select'] : 'date',
+				'slug'    => 'datetime_format',
+				'value'   => isset( $field['datetime_format'] ) && null !== trim( $field['datetime_format'] ) ? $field['datetime_format'] : 'date',
 				'options' => array(
 					'date' => __( 'Date', 'everest-forms' ),
 					'time' => __( 'Time', 'everest-forms' ),
@@ -78,7 +78,7 @@ class EVF_Field_Date extends EVF_Form_Fields {
 			false
 		);
 		$args = array(
-			'slug'    => 'date_time_select',
+			'slug'    => 'datetime_format',
 			'content' => $lbl . $fld,
 		);
 		$this->field_element( 'row', $field, $args );
@@ -91,14 +91,14 @@ class EVF_Field_Date extends EVF_Form_Fields {
 	 * @param array $field Field Data.
 	 */
 	public function date_options( $field ) {
-		echo '<div class = "everest-forms-border-container date-options">';
+		echo '<div id = "date-options-' . $field['id'] . '" class = "everest-forms-border-container date-options">';
 		echo '<h4 class="everest-forms-border-container-title">' . esc_html__( 'Date', 'everest-forms' ) . '</h4>'; // WPCS: XSS ok.
 
 		$lbl = $this->field_element(
 			'label',
 			$field,
 			array(
-				'slug'    => 'date_format_select',
+				'slug'    => 'date_format',
 				'value'   => __( 'Date Format', 'everest-forms' ),
 				'tooltip' => __( 'Choose a desire date format to display.', 'everest-forms' ),
 			),
@@ -109,11 +109,11 @@ class EVF_Field_Date extends EVF_Form_Fields {
 			'select',
 			$field,
 			array(
-				'slug'    => 'date_format_select',
-				'value'   => isset( $field['date_format_select'] ) ? $field['date_format_select'] : 'Y-m-d',
+				'slug'    => 'date_format',
+				'value'   => isset( $field['date_format'] ) ? $field['date_format'] : 'Y-m-d',
 				'options' => array(
-					'F j, Y' => date( 'F j, Y' ) . ' (F j, Y)',
 					'Y-m-d'  => date( 'Y-m-d' ) . ' (Y-m-d)',
+					'F j, Y' => date( 'F j, Y' ) . ' (F j, Y)',
 					'm/d/Y'  => date( 'm/d/Y' ) . ' (m/d/Y)',
 					'd/m/Y'  => date( 'd/m/Y' ) . ' (d/m/Y)',
 				),
@@ -125,8 +125,8 @@ class EVF_Field_Date extends EVF_Form_Fields {
 			'checkbox',
 			$field,
 			array(
-				'slug'    => 'date_default_current',
-				'value'   => isset( $field['date_default_current'] ) ? $field['date_default_current'] : '',
+				'slug'    => 'date_default',
+				'value'   => isset( $field['date_default'] ) ? $field['date_default'] : '',
 				'desc'    => __( 'Default to current date.', 'everest-forms' ),
 				'tooltip' => __( 'Check this option to set current date as default.', 'everest-forms' ),
 			),
@@ -134,7 +134,7 @@ class EVF_Field_Date extends EVF_Form_Fields {
 		);
 
 		$args = array(
-			'slug'    => 'date_format_select',
+			'slug'    => 'date_format',
 			'content' => $lbl . $fld,
 		);
 		$this->field_element( 'row', $field, $args );
@@ -149,14 +149,14 @@ class EVF_Field_Date extends EVF_Form_Fields {
 	 * @param array $field Field Data.
 	 */
 	public function time_options( $field ) {
-		echo '<div class = "everest-forms-border-container time-options">';
+		echo '<div id="time-options-' . $field['id'] . '" class = "everest-forms-border-container time-options" style="display:none;">';
 		echo '<h4 class="everest-forms-border-container-title">' . esc_html__( 'Time', 'everest-forms' ) . '</h4>'; // WPCS: XSS ok.
 
 		$lbl   = $this->field_element(
 			'label',
 			$field,
 			array(
-				'slug'    => 'time_interval_format_select',
+				'slug'    => 'time_interval_format',
 				'value'   => __( 'Time Format', 'everest-forms' ),
 				'tooltip' => __( 'Choose time interval and format to display.', 'everest-forms' ),
 			),
@@ -167,13 +167,12 @@ class EVF_Field_Date extends EVF_Form_Fields {
 			'select',
 			$field,
 			array(
-				'slug'    => 'time_interval_select',
-				'value'   => isset( $field['time_interval_select'] ) ? $field['time_interval_select'] : '',
-				'class'   => 'time_interval_select',
+				'slug'    => 'time_interval',
+				'value'   => isset( $field['time_interval'] ) ? $field['time_interval'] : '',
+				'class'   => 'time_interval',
 				'options' => array(
 					'15' => __( '15 minutes', 'everest-forms' ),
 					'30' => __( '30 minutes', 'everest-forms' ),
-					'60' => __( '1 hour', 'everest-forms' ),
 				),
 			),
 			false
@@ -182,9 +181,9 @@ class EVF_Field_Date extends EVF_Form_Fields {
 			'select',
 			$field,
 			array(
-				'slug'    => 'time_format_select',
-				'value'   => isset( $field['time_format_select'] ) ? $field['time_format_select'] : '',
-				'class'   => 'time_format_select',
+				'slug'    => 'time_format',
+				'value'   => isset( $field['time_format'] ) ? $field['time_format'] : '',
+				'class'   => 'time_format',
 				'options' => array(
 					'g:i A' => __( '12 H', 'everest-forms' ),
 					'H:i'   => __( '24 H', 'everest-forms' ),
@@ -195,7 +194,7 @@ class EVF_Field_Date extends EVF_Form_Fields {
 		$fld2 .= '</div>';
 
 		$args = array(
-			'slug'    => 'time_interval_format_select',
+			'slug'    => 'time_interval_format',
 			'content' => $lbl . $fld1 . $fld2,
 		);
 		$this->field_element( 'row', $field, $args );
@@ -236,27 +235,27 @@ class EVF_Field_Date extends EVF_Form_Fields {
 	 */
 	public function field_display( $field, $deprecated, $form_data ) {
 
-		$data_time_date     = ! empty( $field['date_time_select'] ) ? 'data-date-time = "' . esc_attr( $field['date_time_select'] ) . '"' : '';
-		$data_time_interval = ! empty( $field['time_interval_select'] ) ? 'data-time-interval = "' . esc_attr( $field['time_interval_select'] ) . '"' : '';
-		switch ( $field['date_time_select'] ) {
+		$data_time_date     = ! empty( $field['datetime_format'] ) ? 'data-date-time = "' . esc_attr( $field['datetime_format'] ) . '"' : '';
+		$data_time_interval = ! empty( $field['time_interval'] ) ? 'data-time-interval = "' . esc_attr( $field['time_interval'] ) . '"' : '';
+		switch ( $field['datetime_format'] ) {
 
 			case 'date':
-				$default_date_time = isset( $field['date_default_current'] ) ? date( $field['date_format_select'] ) : '';
-				$data_date_format  = ! empty( $field['date_format_select'] ) ? 'data-date-format = "' . esc_attr( $field['date_format_select'] ) . '"' : '';
+				$default_datetime = isset( $field['date_default'] ) ? date( $field['date_format'] ) : '';
+				$data_date_format = ! empty( $field['date_format'] ) ? 'data-date-format = "' . esc_attr( $field['date_format'] ) . '"' : '';
 				break;
 			case 'time':
-				$default_date_time = '';
-				$data_date_format  = ! empty( $field['time_format_select'] ) ? 'data-date-format = "' . esc_attr( $field['time_format_select'] ) . '"' : 'data-date-format = "g:i A"';
+				$default_datetime = '';
+				$data_date_format = ! empty( $field['time_format'] ) ? 'data-date-format = "' . esc_attr( $field['time_format'] ) . '"' : 'data-date-format = "g:i A"';
 				break;
 			case 'both':
-				if ( ! empty( $field['time_format_select'] ) ) {
-					$format            = esc_attr( $field['date_format_select'] ) . ' ' . esc_attr( $field['time_format_select'] );
-					$default_date_time = isset( $field['date_default_current'] ) ? date( $format ) : '';
-					$data_date_format  = 'data-date-format = "' . $format . '"';
+				if ( ! empty( $field['time_format'] ) ) {
+					$format           = esc_attr( $field['date_format'] ) . ' ' . esc_attr( $field['time_format'] );
+					$default_datetime = isset( $field['date_default'] ) ? date( $format ) : '';
+					$data_date_format = 'data-date-format = "' . $format . '"';
 				} else {
-					$format            = esc_attr( $field['date_format_select'] ) . ' g:i A';
-					$default_date_time = isset( $field['date_default_current'] ) ? date( $format ) : '';
-					$data_date_format  = 'data-date-format = "' . $format . '"';
+					$format           = esc_attr( $field['date_format'] ) . ' g:i A';
+					$default_datetime = isset( $field['date_default'] ) ? date( $format ) : '';
+					$data_date_format = 'data-date-format = "' . $format . '"';
 				}
 				break;
 			default:
@@ -272,7 +271,7 @@ class EVF_Field_Date extends EVF_Form_Fields {
 				'<input type="text" %s %s value="%s" %s %s %s>',
 				evf_html_attributes( $primary['id'], $class, $primary['data'], $primary['attr'] ),
 				$primary['required'],
-				esc_attr( $default_date_time ),
+				esc_attr( $default_datetime ),
 				str_replace( 'g:i A', 'h:i K', $data_date_format ),
 				$data_time_interval,
 				$data_time_date
