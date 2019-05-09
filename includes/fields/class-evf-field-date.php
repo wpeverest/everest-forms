@@ -49,6 +49,7 @@ class EVF_Field_Date extends EVF_Form_Fields {
 	/**
 	 * Option to select date or time or both.
 	 *
+	 * @since 1.4.9
 	 * @param array $field Field Data.
 	 */
 	public function choose_format( $field ) {
@@ -86,19 +87,20 @@ class EVF_Field_Date extends EVF_Form_Fields {
 	/**
 	 * Option to select date or time or both.
 	 *
-	 * @since      1.4.9
-	 *
+	 * @since 1.4.9
 	 * @param array $field Field Data.
 	 */
 	public function date_options( $field ) {
+		echo '<div class = "date-options everest-forms-border-container" >';
+		echo '<h4 class="everest-forms-border-container-title">' . esc_html__( 'Date', 'everest-forms' ) . '</h4>'; // WPCS: XSS ok.
 
 		$lbl = $this->field_element(
 			'label',
 			$field,
 			array(
 				'slug'    => 'date_format_select',
-				'value'   => __( 'Date', 'everest-forms' ),
-				'tooltip' => __( 'Select date format.', 'everest-forms' ),
+				'value'   => __( 'Date Format', 'everest-forms' ),
+				'tooltip' => __( 'Choose a desire date format to display.', 'everest-forms' ),
 			),
 			false
 		);
@@ -108,12 +110,12 @@ class EVF_Field_Date extends EVF_Form_Fields {
 			$field,
 			array(
 				'slug'    => 'date_format_select',
-				'value'   => isset( $field['date_format_select'] ) ? $field['date_format_select'] : '',
+				'value'   => isset( $field['date_format_select'] ) ? $field['date_format_select'] : 'Y-m-d',
 				'options' => array(
-					'F j, Y' => date( 'F j, Y' ) . ' ( F j,Y ) ',
-					'Y-m-d'  => date( 'Y-m-d' ) . ' ( Y-m-d ) ',
-					'm/d/Y'  => date( 'm/d/Y' ) . ' ( m/d/Y ) ',
-					'd/m/Y'  => date( 'd/m/Y' ) . ' ( d/m/Y ) ',
+					'F j, Y' => date( 'F j, Y' ) . ' (F j, Y)',
+					'Y-m-d'  => date( 'Y-m-d' ) . ' (Y-m-d)',
+					'm/d/Y'  => date( 'm/d/Y' ) . ' (m/d/Y)',
+					'd/m/Y'  => date( 'd/m/Y' ) . ' (d/m/Y)',
 				),
 			),
 			false
@@ -125,16 +127,19 @@ class EVF_Field_Date extends EVF_Form_Fields {
 			array(
 				'slug'    => 'date_default_current',
 				'value'   => isset( $field['date_default_current'] ) ? $field['date_default_current'] : '',
-				'desc'    => __( 'Default To Current Date.', 'everest-forms' ),
-				'tooltip' => __( 'Check to set current date as default', 'everest-forms' ),
+				'desc'    => __( 'Default to current date.', 'everest-forms' ),
+				'tooltip' => __( 'Check this option to set current date as default.', 'everest-forms' ),
 			),
 			false
 		);
+
 		$args = array(
 			'slug'    => 'date_format_select',
-			'content' => '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . $lbl . '</h4><h4>' . __( 'Format', 'everest-forms' ) . '</h4>' . $fld . '</div>',
+			'content' => $lbl . $fld,
 		);
 		$this->field_element( 'row', $field, $args );
+
+		echo '</div>';
 	}
 
 	/**
