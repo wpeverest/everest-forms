@@ -52,7 +52,7 @@ jQuery( function ( $ ) {
 									time_24hr		: inputData.dateFormat.includes('H:i')
 								});
 							break;
-							case 'both':
+							case 'date-time':
 								if (undefined !== inputData.timeInterval) {
 									timeInterval = parseInt(inputData.timeInterval);
 								}

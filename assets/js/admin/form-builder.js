@@ -179,7 +179,6 @@
 			EVFPanelBuilder.bindFormPayment();
 			EVFPanelBuilder.choicesInit();
 			EVFPanelBuilder.choicesUpdate();
-			EVFPanelBuilder.dateTimeSelect();
 
 			// Fields Panel
 			EVFPanelBuilder.bindUIActionsFields();
@@ -308,43 +307,6 @@
 				$( '#everest-forms-field-' + id ).find( '.format-selected' ).removeClass().addClass( 'format-selected format-selected-' + value );
 				$( '#everest-forms-field-option-' + id ).find( '.format-selected' ).removeClass().addClass( 'format-selected format-selected-'+ value );
 			});
-		},
-		dateTimeSelect: function(){
-			var dateTimeSelect = $('.everest-forms-field-option-row-datetime_format');
-
-			// Onload check hide show date time.
-			if ( dateTimeSelect.length >= 1 ) {
-				dateTimeSelect.each( function(i) {
-					var id             = $(this).data('fieldId'),
-						selectedOption = $(this).find( 'select' ).val();
-
-					hideShowSection( id, selectedOption );
-				} );
-			}
-
-			// Hide show date and time section based on date format choice.
-			$( document ).on( 'input ready','.everest-forms-field-option-row-datetime_format select',function() {
-				var fieldId = $(this).parent().data('fieldId');
-				var selectedOption = $(this).val();
-				hideShowSection(fieldId,selectedOption);
-			});
-
-			// Hide show section based on date format.
-			function hideShowSection( fieldId, option ) {
-				switch(option){
-					case 'date':
-						$( '#date-options-' + fieldId ).show();
-						$( '#time-options-' + fieldId ).hide();
-					break;
-					case 'time':
-						$( '#time-options-' + fieldId ).show();
-						$( '#date-options-' + fieldId ).hide();
-					break;
-					case 'both':
-						$( '#date-options-' + fieldId+', #time-options-' + fieldId ).show();
-					break;
-				}
-			}
 		},
 		choicesInit: function () {
 			$( 'ul.evf-choices-list' ).sortable({

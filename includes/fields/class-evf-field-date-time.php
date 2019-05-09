@@ -70,9 +70,9 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				'slug'    => 'datetime_format',
 				'value'   => isset( $field['datetime_format'] ) && null !== trim( $field['datetime_format'] ) ? $field['datetime_format'] : 'date',
 				'options' => array(
-					'date' => __( 'Date', 'everest-forms' ),
-					'time' => __( 'Time', 'everest-forms' ),
-					'both' => __( 'Both', 'everest-forms' ),
+					'date'      => __( 'Date', 'everest-forms' ),
+					'time'      => __( 'Time', 'everest-forms' ),
+					'date-time' => __( 'Both', 'everest-forms' ),
 				),
 			),
 			false
@@ -245,7 +245,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				$default_datetime = '';
 				$date_format      = ! empty( $field['time_format'] ) ? 'data-date-format = "' . esc_attr( $field['time_format'] ) . '"' : 'data-date-format = "g:i A"';
 				break;
-			case 'both':
+			case 'date-time':
 				if ( ! empty( $field['time_format'] ) ) {
 					$format           = esc_attr( $field['date_format'] ) . ' ' . esc_attr( $field['time_format'] );
 					$default_datetime = isset( $field['date_default'] ) ? date( $format ) : '';
