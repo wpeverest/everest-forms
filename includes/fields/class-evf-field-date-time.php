@@ -233,27 +233,27 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	 * @param array $form_data Form Data.
 	 */
 	public function field_display( $field, $deprecated, $form_data ) {
-		$data_time_date     = ! empty( $field['datetime_format'] ) ? 'data-date-time = "' . esc_attr( $field['datetime_format'] ) . '"' : '';
-		$data_time_interval = ! empty( $field['time_interval'] ) ? 'data-time-interval = "' . esc_attr( $field['time_interval'] ) . '"' : '';
+		$time_interval   = ! empty( $field['time_interval'] ) ? 'data-time-interval = "' . esc_attr( $field['time_interval'] ) . '"' : '';
+		$datetime_format = ! empty( $field['datetime_format'] ) ? 'data-date-time = "' . esc_attr( $field['datetime_format'] ) . '"' : '';
 
 		switch ( $field['datetime_format'] ) {
 			case 'date':
 				$default_datetime = isset( $field['date_default'] ) ? date( $field['date_format'] ) : '';
-				$data_date_format = ! empty( $field['date_format'] ) ? 'data-date-format = "' . esc_attr( $field['date_format'] ) . '"' : '';
+				$date_format      = ! empty( $field['date_format'] ) ? 'data-date-format = "' . esc_attr( $field['date_format'] ) . '"' : '';
 				break;
 			case 'time':
 				$default_datetime = '';
-				$data_date_format = ! empty( $field['time_format'] ) ? 'data-date-format = "' . esc_attr( $field['time_format'] ) . '"' : 'data-date-format = "g:i A"';
+				$date_format      = ! empty( $field['time_format'] ) ? 'data-date-format = "' . esc_attr( $field['time_format'] ) . '"' : 'data-date-format = "g:i A"';
 				break;
 			case 'both':
 				if ( ! empty( $field['time_format'] ) ) {
 					$format           = esc_attr( $field['date_format'] ) . ' ' . esc_attr( $field['time_format'] );
 					$default_datetime = isset( $field['date_default'] ) ? date( $format ) : '';
-					$data_date_format = 'data-date-format = "' . $format . '"';
+					$date_format      = 'data-date-format = "' . $format . '"';
 				} else {
 					$format           = esc_attr( $field['date_format'] ) . ' g:i A';
 					$default_datetime = isset( $field['date_default'] ) ? date( $format ) : '';
-					$data_date_format = 'data-date-format = "' . $format . '"';
+					$date_format      = 'data-date-format = "' . $format . '"';
 				}
 				break;
 		}
@@ -269,9 +269,9 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			evf_html_attributes( $primary['id'], $class, $primary['data'], $primary['attr'] ),
 			$primary['required'],
 			esc_attr( $default_datetime ),
-			str_replace( 'g:i A', 'h:i K', $data_date_format ),
-			$data_time_interval,
-			$data_time_date
+			str_replace( 'g:i A', 'h:i K', $date_format ),
+			$time_interval,
+			$datetime_format
 		);
 	}
 }
