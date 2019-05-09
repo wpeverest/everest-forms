@@ -90,13 +90,10 @@
 		 * Display a "Copied!" tip when success copying.
 		 */
 		copySuccess: function() {
-			$( '#copy-shortcode' ).tipTip({
-				'attribute': 'data-copied',
-				'activation': 'focus',
-				'fadeIn': 50,
-				'fadeOut': 50,
-				'delay': 0
-			}).focus();
+			$('#copy-shortcode').tooltipster('content' , $(this).attr('data-copied')).trigger('mouseenter').on('mouseleave',function (){
+				var buttonObj = $(this);
+				setTimeout(function(){ buttonObj.tooltipster('content' , buttonObj.attr('data-tip')); }, 600);
+			});
 		},
 
 		/**
