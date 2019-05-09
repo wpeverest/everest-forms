@@ -26,7 +26,7 @@ jQuery( function ( $ ) {
 			var evfDateField = $( '.evf-field-date' );
 
 			if ( evfDateField.length > 0 ) {
-				$( '.flatpickr-field' ).each(function(){
+				$( '.flatpickr-field' ).each( function() {
 					var timeInterval = 5;
 					var inputData  	 = $(this).data();
 					switch(inputData.dateTime){
@@ -38,9 +38,10 @@ jQuery( function ( $ ) {
 								});
 							break;
 							case 'time':
-								if(undefined !== inputData.timeInterval){
+								if (undefined !== inputData.timeInterval) {
 									timeInterval = parseInt(inputData.timeInterval);
 								}
+
 								// Apply flatpicker to field.
 								$(this).flatpickr({
 									enableTime   	: true,
@@ -52,9 +53,10 @@ jQuery( function ( $ ) {
 								});
 							break;
 							case 'both':
-								if(undefined !== inputData.timeInterval){
+								if (undefined !== inputData.timeInterval) {
 									timeInterval = parseInt(inputData.timeInterval);
 								}
+
 								// Apply flatpicker to field.
 								$(this).flatpickr({
 									enableTime   	: true,

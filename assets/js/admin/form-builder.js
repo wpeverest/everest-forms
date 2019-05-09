@@ -299,44 +299,49 @@
 				var id = $( this ).parent().data( 'field-id' );
 				$( '#everest-forms-field-' + id ).toggleClass( 'sublabel_hide' );
 			});
+
+			// Real-time updates for Date/Time field option.
+			$builder.on( 'change', '.everest-forms-field-option-row-datetime_format select', function(e) {
+				var $this = $(this),
+					value = $this.val(),
+					id    = $this.parent().data( 'field-id' );
+				$( '#everest-forms-field-' + id ).find( '.format-selected' ).removeClass().addClass( 'format-selected format-selected-' + value );
+				$( '#everest-forms-field-option-' + id ).find( '.format-selected' ).removeClass().addClass( 'format-selected format-selected-'+ value );
+			});
 		},
 		dateTimeSelect: function(){
 			var dateTimeSelect = $('.everest-forms-field-option-row-datetime_format');
 
 			// Onload check hide show date time.
-			if(dateTimeSelect.length >= 1){
-				dateTimeSelect.each(function(i){
-					var selectedOption = $(this).find('select').val();
-					var id = $(this).data('fieldId');
-					hideShowSection(id, selectedOption);
-				});
+			if ( dateTimeSelect.length >= 1 ) {
+				dateTimeSelect.each( function(i) {
+					var id             = $(this).data('fieldId'),
+						selectedOption = $(this).find( 'select' ).val();
+
+					hideShowSection( id, selectedOption );
+				} );
 			}
 
-			$( document ).ajaxComplete(function() {
-
-
-
-			});
-			// Hide show date and time section based on date format choice
-			$(document).on('input ready','.everest-forms-field-option-row-datetime_format select',function(){
+			// Hide show date and time section based on date format choice.
+			$( document ).on( 'input ready','.everest-forms-field-option-row-datetime_format select',function() {
 				var fieldId = $(this).parent().data('fieldId');
 				var selectedOption = $(this).val();
 				hideShowSection(fieldId,selectedOption);
 			});
 
-			// Hide show section based on
-			function hideShowSection(fieldId,option){
+			// Hide show section based on date format.
+			function hideShowSection( fieldId, option ) {
 				switch(option){
 					case 'date':
-						$('#date-options-'+fieldId).show();
-						$('#time-options-'+fieldId).hide();
+						$( '#date-options-' + fieldId ).show();
+						$( '#time-options-' + fieldId ).hide();
 					break;
 					case 'time':
-						$('#time-options-'+fieldId).show();
-						$('#date-options-'+fieldId).hide();
+						$( '#time-options-' + fieldId ).show();
+						$( '#date-options-' + fieldId ).hide();
 					break;
 					case 'both':
-						$('#date-options-'+fieldId+',#time-options-'+fieldId).show();
+						$( '#date-options-' + fieldId+', #time-options-' + fieldId ).show();
 					break;
 				}
 			}

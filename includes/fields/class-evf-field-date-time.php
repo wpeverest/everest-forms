@@ -149,7 +149,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	 * @param array $field Field Data.
 	 */
 	public function time_options( $field ) {
-		echo '<div id="time-options-' . esc_attr( $field['id'] ) . '" class = "everest-forms-border-container time-options" style="display:none;">';
+		echo '<div id="time-options-' . esc_attr( $field['id'] ) . '" class = "everest-forms-border-container time-options hidden">';
 		echo '<h4 class="everest-forms-border-container-title">' . esc_html__( 'Time', 'everest-forms' ) . '</h4>'; // WPCS: XSS ok.
 
 		$lbl   = $this->field_element(
