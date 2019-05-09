@@ -47,7 +47,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	}
 
 	/**
-	 * Format field option.
+	 * Date field format option.
 	 *
 	 * @since 1.4.9
 	 * @param array $field Field Data.
@@ -85,7 +85,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	}
 
 	/**
-	 * Date format field option.
+	 * Date default and format field options.
 	 *
 	 * @since 1.4.9
 	 * @param array $field Field Data.
@@ -143,7 +143,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	}
 
 	/**
-	 * Time interval and format field option.
+	 * Time interval and format field options.
 	 *
 	 * @since 1.4.9
 	 * @param array $field Field Data.
