@@ -99,6 +99,7 @@
 				interactive: true,
 				position: 'bottom',
 				contentAsHTML: true,
+				updateAnimation: false,
 				functionInit: function( instance, helper ) {
 					var $origin = $( helper.origin ),
 						dataTip = $origin.attr( 'data-tip' );
