@@ -27,7 +27,6 @@
 		 	});
 
 		 	$( document.body )
-				.on( 'click', 'a.help_tip, a.everets-forms-help-tip', this.preventTipTipClick )
 				.on( 'click', '#copy-shortcode', this.copyShortcode )
 				.on( 'aftercopy', '#copy-shortcode', this.copySuccess )
 				.on( 'aftercopyfailure', '#copy-shortcode', this.copyFail );
@@ -67,15 +66,6 @@
 		},
 
 		/**
-		 * Prevent anchor behavior when click on TipTip.
-		 *
-		 * @return {Bool}
-		 */
-		preventTipTipClick: function() {
-			return false;
-		},
-
-		/**
 		 * Copy shortcode.
 		 *
 		 * @param {Object} evt Copy event.
@@ -90,10 +80,12 @@
 		 * Display a "Copied!" tip when success copying.
 		 */
 		copySuccess: function() {
-			$('#copy-shortcode').tooltipster('content' , $(this).attr('data-copied')).trigger('mouseenter').on('mouseleave',function (){
-				var buttonObj = $(this);
-				setTimeout(function(){ buttonObj.tooltipster('content' , buttonObj.attr('data-tip')); }, 600);
-			});
+			$( '#copy-shortcode' ).tooltipster( 'content', $( this ).attr( 'data-copied' ) ).trigger( 'mouseenter' ).on( 'mouseleave', function (){
+				var buttonObj = $( this );
+				setTimeout( function(){
+					buttonObj.tooltipster( 'content', buttonObj.attr( 'data-tip' ) );
+				}, 600 );
+			} );
 		},
 
 		/**
