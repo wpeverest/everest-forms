@@ -1,6 +1,6 @@
 <?php
 /**
- * Date field.
+ * Date and Time field.
  *
  * @package EverestForms\Fields
  * @since   1.0.0
@@ -9,9 +9,9 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * EVF_Field_Date class.
+ * EVF_Field_Date_Time class.
  */
-class EVF_Field_Date extends EVF_Form_Fields {
+class EVF_Field_Date_Time extends EVF_Form_Fields {
 
 	/**
 	 * Constructor.
@@ -47,7 +47,7 @@ class EVF_Field_Date extends EVF_Form_Fields {
 	}
 
 	/**
-	 * Option to select date or time or both.
+	 * Format field option.
 	 *
 	 * @since 1.4.9
 	 * @param array $field Field Data.
@@ -85,13 +85,13 @@ class EVF_Field_Date extends EVF_Form_Fields {
 	}
 
 	/**
-	 * Option to select date format.
+	 * Date format field option.
 	 *
 	 * @since 1.4.9
 	 * @param array $field Field Data.
 	 */
 	public function date_options( $field ) {
-		echo '<div id = "date-options-' . $field['id'] . '" class = "everest-forms-border-container date-options">';
+		echo '<div id = "date-options-' . esc_attr( $field['id'] ) . '" class = "everest-forms-border-container date-options">';
 		echo '<h4 class="everest-forms-border-container-title">' . esc_html__( 'Date', 'everest-forms' ) . '</h4>'; // WPCS: XSS ok.
 
 		$lbl = $this->field_element(
@@ -143,13 +143,13 @@ class EVF_Field_Date extends EVF_Form_Fields {
 	}
 
 	/**
-	 * Option to select time interval and format.
+	 * Time interval and format field option.
 	 *
 	 * @since 1.4.9
 	 * @param array $field Field Data.
 	 */
 	public function time_options( $field ) {
-		echo '<div id="time-options-' . $field['id'] . '" class = "everest-forms-border-container time-options" style="display:none;">';
+		echo '<div id="time-options-' . esc_attr( $field['id'] ) . '" class = "everest-forms-border-container time-options" style="display:none;">';
 		echo '<h4 class="everest-forms-border-container-title">' . esc_html__( 'Time', 'everest-forms' ) . '</h4>'; // WPCS: XSS ok.
 
 		$lbl   = $this->field_element(
@@ -157,7 +157,7 @@ class EVF_Field_Date extends EVF_Form_Fields {
 			$field,
 			array(
 				'slug'    => 'time_interval_format',
-				'value'   => __( 'Time Format', 'everest-forms' ),
+				'value'   => __( 'Time interval and format', 'everest-forms' ),
 				'tooltip' => __( 'Choose time interval and format to display.', 'everest-forms' ),
 			),
 			false
@@ -205,8 +205,7 @@ class EVF_Field_Date extends EVF_Form_Fields {
 	/**
 	 * Field preview inside the builder.
 	 *
-	 * @since      1.0.0
-	 *
+	 * @since 1.0.0
 	 * @param array $field Field Data.
 	 */
 	public function field_preview( $field ) {
@@ -227,18 +226,17 @@ class EVF_Field_Date extends EVF_Form_Fields {
 	/**
 	 * Field display on the form front-end.
 	 *
-	 * @since      1.0.0
+	 * @since 1.0.0
 	 *
 	 * @param array $field Field Data.
 	 * @param array $deprecated Deprecated Parameter.
 	 * @param array $form_data Form Data.
 	 */
 	public function field_display( $field, $deprecated, $form_data ) {
-
 		$data_time_date     = ! empty( $field['datetime_format'] ) ? 'data-date-time = "' . esc_attr( $field['datetime_format'] ) . '"' : '';
 		$data_time_interval = ! empty( $field['time_interval'] ) ? 'data-time-interval = "' . esc_attr( $field['time_interval'] ) . '"' : '';
-		switch ( $field['datetime_format'] ) {
 
+		switch ( $field['datetime_format'] ) {
 			case 'date':
 				$default_datetime = isset( $field['date_default'] ) ? date( $field['date_format'] ) : '';
 				$data_date_format = ! empty( $field['date_format'] ) ? 'data-date-format = "' . esc_attr( $field['date_format'] ) . '"' : '';
@@ -258,23 +256,22 @@ class EVF_Field_Date extends EVF_Form_Fields {
 					$data_date_format = 'data-date-format = "' . $format . '"';
 				}
 				break;
-			default:
 		}
 
-			// Define data.
-			$primary = $field['properties']['inputs']['primary'];
+		// Define data.
+		$primary = $field['properties']['inputs']['primary'];
 
-			$class = array_merge( array( 'flatpickr-field' ), $primary['class'] );
+		$class = array_merge( array( 'flatpickr-field' ), $primary['class'] );
 
-			// Primary field.
-			printf(
-				'<input type="text" %s %s value="%s" %s %s %s>',
-				evf_html_attributes( $primary['id'], $class, $primary['data'], $primary['attr'] ),
-				$primary['required'],
-				esc_attr( $default_datetime ),
-				str_replace( 'g:i A', 'h:i K', $data_date_format ),
-				$data_time_interval,
-				$data_time_date
-			);
+		// Primary field.
+		printf(
+			'<input type="text" %s %s value="%s" %s %s %s>',
+			evf_html_attributes( $primary['id'], $class, $primary['data'], $primary['attr'] ),
+			$primary['required'],
+			esc_attr( $default_datetime ),
+			str_replace( 'g:i A', 'h:i K', $data_date_format ),
+			$data_time_interval,
+			$data_time_date
+		);
 	}
 }
