@@ -35,8 +35,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			'advanced-options' => array(
 				'field_options' => array(
 					'placeholder',
-					'date_options',
-					'time_options',
+					'datetime_options',
 					'label_hide',
 					'css',
 				),
@@ -53,7 +52,8 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	 * @param array $field Field Data.
 	 */
 	public function choose_format( $field ) {
-		$lbl  = $this->field_element(
+		$format        = ! empty( $field['datetime_format'] ) ? esc_attr( $field['datetime_format'] ) : 'date';
+		$format_label  = $this->field_element(
 			'label',
 			$field,
 			array(
@@ -63,12 +63,12 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			),
 			false
 		);
-		$fld  = $this->field_element(
+		$format_select = $this->field_element(
 			'select',
 			$field,
 			array(
 				'slug'    => 'datetime_format',
-				'value'   => isset( $field['datetime_format'] ) && null !== trim( $field['datetime_format'] ) ? $field['datetime_format'] : 'date',
+				'value'   => $format,
 				'options' => array(
 					'date'      => __( 'Date', 'everest-forms' ),
 					'time'      => __( 'Time', 'everest-forms' ),
@@ -77,127 +77,126 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			),
 			false
 		);
-		$args = array(
+		$args          = array(
 			'slug'    => 'datetime_format',
-			'content' => $lbl . $fld,
+			'content' => $format_label . $format_select,
 		);
 		$this->field_element( 'row', $field, $args );
 	}
 
 	/**
-	 * Date default and format field options.
+	 * Date and time advanced field options.
 	 *
 	 * @since 1.4.9
 	 * @param array $field Field Data.
 	 */
-	public function date_options( $field ) {
-		echo '<div id = "date-options-' . esc_attr( $field['id'] ) . '" class = "everest-forms-border-container date-options">';
-		echo '<h4 class="everest-forms-border-container-title">' . esc_html__( 'Date', 'everest-forms' ) . '</h4>'; // WPCS: XSS ok.
+	public function datetime_options( $field ) {
+		$format = ! empty( $field['datetime_format'] ) ? esc_attr( $field['datetime_format'] ) : 'date';
 
-		$lbl = $this->field_element(
-			'label',
-			$field,
-			array(
-				'slug'    => 'date_format',
-				'value'   => __( 'Date Format', 'everest-forms' ),
-				'tooltip' => __( 'Choose a desire date format to display.', 'everest-forms' ),
-			),
-			false
-		);
+		echo '<div class="format-selected-' . esc_attr( $format ) . ' format-selected">';
 
-		$fld = $this->field_element(
-			'select',
-			$field,
-			array(
-				'slug'    => 'date_format',
-				'value'   => isset( $field['date_format'] ) ? $field['date_format'] : 'Y-m-d',
-				'options' => array(
-					'Y-m-d'  => date( 'Y-m-d' ) . ' (Y-m-d)',
-					'F j, Y' => date( 'F j, Y' ) . ' (F j, Y)',
-					'm/d/Y'  => date( 'm/d/Y' ) . ' (m/d/Y)',
-					'd/m/Y'  => date( 'd/m/Y' ) . ' (d/m/Y)',
+			echo '<div class="everest-forms-border-container everest-forms-date">';
+			echo '<h4 class="everest-forms-border-container-title">' . esc_html__( 'Date', 'everest-forms' ) . '</h4>'; // WPCS: XSS ok.
+
+			$date_format_label = $this->field_element(
+				'label',
+				$field,
+				array(
+					'slug'    => 'date_format',
+					'value'   => __( 'Date Format', 'everest-forms' ),
+					'tooltip' => __( 'Choose a desire date format to display.', 'everest-forms' ),
 				),
-			),
-			false
-		);
+				false
+			);
 
-		$fld .= $this->field_element(
-			'checkbox',
-			$field,
-			array(
-				'slug'    => 'date_default',
-				'value'   => isset( $field['date_default'] ) ? $field['date_default'] : '',
-				'desc'    => __( 'Default to current date.', 'everest-forms' ),
-				'tooltip' => __( 'Check this option to set current date as default.', 'everest-forms' ),
-			),
-			false
-		);
+			$date_format_select = $this->field_element(
+				'select',
+				$field,
+				array(
+					'slug'    => 'date_format',
+					'value'   => isset( $field['date_format'] ) ? $field['date_format'] : 'Y-m-d',
+					'options' => array(
+						'Y-m-d'  => date( 'Y-m-d' ) . ' (Y-m-d)',
+						'F j, Y' => date( 'F j, Y' ) . ' (F j, Y)',
+						'm/d/Y'  => date( 'm/d/Y' ) . ' (m/d/Y)',
+						'd/m/Y'  => date( 'd/m/Y' ) . ' (d/m/Y)',
+					),
+				),
+				false
+			);
 
-		$args = array(
-			'slug'    => 'date_format',
-			'content' => $lbl . $fld,
-		);
-		$this->field_element( 'row', $field, $args );
+			$current_date_default = $this->field_element(
+				'checkbox',
+				$field,
+				array(
+					'slug'    => 'date_default',
+					'value'   => isset( $field['date_default'] ) ? $field['date_default'] : '',
+					'desc'    => __( 'Default to current date.', 'everest-forms' ),
+					'tooltip' => __( 'Check this option to set current date as default.', 'everest-forms' ),
+				),
+				false
+			);
 
-		echo '</div>';
-	}
+			$args = array(
+				'slug'    => 'date_format',
+				'content' => $date_format_label . $date_format_select . $current_date_default,
+			);
+			$this->field_element( 'row', $field, $args );
 
-	/**
-	 * Time interval and format field options.
-	 *
-	 * @since 1.4.9
-	 * @param array $field Field Data.
-	 */
-	public function time_options( $field ) {
-		echo '<div id="time-options-' . esc_attr( $field['id'] ) . '" class = "everest-forms-border-container time-options hidden">';
-		echo '<h4 class="everest-forms-border-container-title">' . esc_html__( 'Time', 'everest-forms' ) . '</h4>'; // WPCS: XSS ok.
+			echo '</div>';
 
-		$lbl   = $this->field_element(
-			'label',
-			$field,
-			array(
+			echo '<div class="everest-forms-border-container everest-forms-time">';
+			echo '<h4 class="everest-forms-border-container-title">' . esc_html__( 'Time', 'everest-forms' ) . '</h4>'; // WPCS: XSS ok.
+
+			$time_format_label = $this->field_element(
+				'label',
+				$field,
+				array(
+					'slug'    => 'time_interval_format',
+					'value'   => __( 'Time interval and format', 'everest-forms' ),
+					'tooltip' => __( 'Choose time interval and format to display.', 'everest-forms' ),
+				),
+				false
+			);
+
+			$time_interval_select  = '<div class="input-group-col-2">';
+			$time_interval_select .= $this->field_element(
+				'select',
+				$field,
+				array(
+					'slug'    => 'time_interval',
+					'value'   => isset( $field['time_interval'] ) ? $field['time_interval'] : '',
+					'class'   => 'time_interval',
+					'options' => array(
+						'15' => __( '15 minutes', 'everest-forms' ),
+						'30' => __( '30 minutes', 'everest-forms' ),
+					),
+				),
+				false
+			);
+			$time_format_select    = $this->field_element(
+				'select',
+				$field,
+				array(
+					'slug'    => 'time_format',
+					'value'   => isset( $field['time_format'] ) ? $field['time_format'] : '',
+					'class'   => 'time_format',
+					'options' => array(
+						'g:i A' => __( '12 H', 'everest-forms' ),
+						'H:i'   => __( '24 H', 'everest-forms' ),
+					),
+				),
+				false
+			);
+			$time_format_select   .= '</div>';
+
+			$args = array(
 				'slug'    => 'time_interval_format',
-				'value'   => __( 'Time interval and format', 'everest-forms' ),
-				'tooltip' => __( 'Choose time interval and format to display.', 'everest-forms' ),
-			),
-			false
-		);
-		$fld1  = '<div class="input-group-col-2">';
-		$fld1 .= $this->field_element(
-			'select',
-			$field,
-			array(
-				'slug'    => 'time_interval',
-				'value'   => isset( $field['time_interval'] ) ? $field['time_interval'] : '',
-				'class'   => 'time_interval',
-				'options' => array(
-					'15' => __( '15 minutes', 'everest-forms' ),
-					'30' => __( '30 minutes', 'everest-forms' ),
-				),
-			),
-			false
-		);
-		$fld2  = $this->field_element(
-			'select',
-			$field,
-			array(
-				'slug'    => 'time_format',
-				'value'   => isset( $field['time_format'] ) ? $field['time_format'] : '',
-				'class'   => 'time_format',
-				'options' => array(
-					'g:i A' => __( '12 H', 'everest-forms' ),
-					'H:i'   => __( '24 H', 'everest-forms' ),
-				),
-			),
-			false
-		);
-		$fld2 .= '</div>';
+				'content' => $time_format_label . $time_interval_select . $time_format_select,
+			);
+			$this->field_element( 'row', $field, $args );
 
-		$args = array(
-			'slug'    => 'time_interval_format',
-			'content' => $lbl . $fld1 . $fld2,
-		);
-		$this->field_element( 'row', $field, $args );
+			echo '</div>';
 
 		echo '</div>';
 	}

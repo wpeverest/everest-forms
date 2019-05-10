@@ -1395,6 +1395,13 @@ body.everest-forms-builder-setup,
 					}
 				}
 
+				.everest-forms-field-option-date {
+					.format-selected-date .everest-forms-time,
+					.format-selected-time .everest-forms-date {
+						display: none;
+					}
+				}
+
 				.everest-forms-field-option-address {
 					.default,
 					.placeholder {
