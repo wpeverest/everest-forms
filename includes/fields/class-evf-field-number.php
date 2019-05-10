@@ -197,6 +197,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 		$field_type = isset( $form_data['form_fields'][ $field_id ]['type'] ) ? $form_data['form_fields'][ $field_id ]['type'] : '';
 		$min        = null !== trim( $form_data['form_fields'][ $field_id ]['minimum_number'] ) ? $form_data['form_fields'][ $field_id ]['minimum_number'] : '';
 		$max        = null !== trim( $form_data['form_fields'][ $field_id ]['maximum_number'] ) ? $form_data['form_fields'][ $field_id ]['maximum_number'] : '';
+
 		if ( $field_submit < $min ) {
 			$validation_text = get_option( 'evf_' . $field_type . '_validation', __( 'Please enter a value greater than or equal to ' . $min, 'everest-forms' ) );
 		} elseif ( $field_submit > $max ) {
@@ -205,6 +206,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 		if ( isset( $validation_text ) ) {
 			EVF()->task->errors[ $form_data['id'] ][ $field_id ] = apply_filters( 'everest_forms_type_validation', $validation_text );
 			update_option( 'evf_validation_error', 'yes' );
-		}   }
+		}
+	}
 }
 
