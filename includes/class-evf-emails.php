@@ -45,11 +45,11 @@ class EVF_Emails {
 	 */
 	private $cc = false;
 
-		/**
-		 * Holds the blind carbon copy addresses.
-		 *
-		 * @var string
-		 */
+	/**
+	 * Holds the blind carbon copy addresses.
+	 *
+	 * @var string
+	 */
 	private $bcc = false;
 
 	/**
