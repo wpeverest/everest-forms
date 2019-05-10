@@ -334,7 +334,6 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 						),
 					)
 				);
-
 				everest_forms_panel_field(
 					'text',
 					'settings[email][' . $connection_id . ']',
