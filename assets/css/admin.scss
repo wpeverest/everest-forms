@@ -2228,6 +2228,14 @@ body.everest-forms-builder-setup,
 			select {
 				margin-bottom: 15px;
 			}
+
+			.input-group-col-2 {
+				margin-bottom: 15px;
+
+				select {
+					margin-bottom: 0;
+				}
+			}
 		}
 
 		.everest-forms-tab-content {
