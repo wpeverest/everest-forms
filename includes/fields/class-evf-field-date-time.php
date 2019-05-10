@@ -92,7 +92,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	 */
 	public function datetime_options( $field ) {
 		$format = ! empty( $field['datetime_format'] ) ? esc_attr( $field['datetime_format'] ) : 'date';
-
+		echo '<label>' . esc_html__( 'Date/Time Format', 'everest-forms' ) . '</label>';
 		echo '<div class="format-selected-' . esc_attr( $format ) . ' format-selected">';
 
 			echo '<div class="everest-forms-border-container everest-forms-date">';
