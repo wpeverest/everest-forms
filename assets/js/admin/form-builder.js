@@ -27,7 +27,6 @@
 		 	});
 
 		 	$( document.body )
-				.on( 'click', 'a.help_tip, a.everets-forms-help-tip', this.preventTipTipClick )
 				.on( 'click', '#copy-shortcode', this.copyShortcode )
 				.on( 'aftercopy', '#copy-shortcode', this.copySuccess )
 				.on( 'aftercopyfailure', '#copy-shortcode', this.copyFail );
@@ -67,15 +66,6 @@
 		},
 
 		/**
-		 * Prevent anchor behavior when click on TipTip.
-		 *
-		 * @return {Bool}
-		 */
-		preventTipTipClick: function() {
-			return false;
-		},
-
-		/**
 		 * Copy shortcode.
 		 *
 		 * @param {Object} evt Copy event.
@@ -90,13 +80,13 @@
 		 * Display a "Copied!" tip when success copying.
 		 */
 		copySuccess: function() {
-			$( '#copy-shortcode' ).tipTip({
-				'attribute': 'data-copied',
-				'activation': 'focus',
-				'fadeIn': 50,
-				'fadeOut': 50,
-				'delay': 0
-			}).focus();
+			$( '#copy-shortcode' ).tooltipster( 'content', $( this ).attr( 'data-copied' ) ).trigger( 'mouseenter' ).on( 'mouseleave', function() {
+				var $this = $( this );
+
+				setTimeout( function() {
+					$this.tooltipster( 'content', $this.attr( 'data-tip' ) );
+				}, 1000 );
+			} );
 		},
 
 		/**
@@ -445,7 +435,7 @@
 			$('body').on('click', '.evf-integrations-panel', function ( e ) {
 				var data_setting_section = $(this).attr('data-section');
 				$('.evf-integrations-panel').removeClass('active');
-				$('.evf-panel-content-section').removeClass('active');
+				$('#everest-forms-panel-integrations').find('.evf-panel-content-section').removeClass('active');
 				$(this).addClass('active');
 				$(this).parent().find('.everest-forms-active-connections').removeClass('active');
 				$(this).next('.everest-forms-active-connections').addClass('active');
@@ -464,10 +454,9 @@
 			$('body').on('click', '.evf-payments-panel', function ( e ) {
 				var data_setting_section = $(this).attr('data-section');
 				$('.evf-payments-panel').removeClass('active');
-				$('.evf-panel-content-section').removeClass('active');
 				$(this).siblings().removeClass('icon active');
 				$(this).addClass('active');
-				$('.evf-content-section').removeClass('active').hide();
+				$(this).parents('#everest-forms-panel-payments').find('.evf-payment-setting-content').removeClass('active').hide();
 				$('.evf-content-' + data_setting_section + '-settings' ).addClass('active').show();
 				e.preventDefault();
 			});
@@ -1482,10 +1471,24 @@ jQuery( function ( $ ) {
 
 		if ( 'fields' === type || 'all' === type ) {
 			if ( allowed_field === 'email' ) {
+				if ( Object.keys(email_field).length < 1 ){
+					$(el).parent().find('.evf-smart-tag-lists .smart-tag-title:not(".other-tag-title")').addClass('everest-forms-hidden');
+				} else {
+					$(el).parent().find('.evf-smart-tag-lists .smart-tag-title:not(".other-tag-title")').removeClass('everest-forms-hidden');
+				}
+				$(el).parent().find('.evf-smart-tag-lists .other-tag-title').remove();
+				$(el).parent().find('.evf-smart-tag-lists .evf-others').remove();
+				$(el).parent().find('.evf-smart-tag-lists').append('<div class="smart-tag-title other-tag-title">Others</div><ul class="evf-others"></ul>');
+				$(el).parent().find('.evf-smart-tag-lists .evf-others').append('<li class="smart-tag-field" data-type="other" data-field_id="admin_email">Site Admin Email</li><li class="smart-tag-field" data-type="other" data-field_id="user_email">User Email</li>');
 				for (var key in email_field ) {
 					$(el).parent().find('.evf-smart-tag-lists .evf-fields').append('<li class = "smart-tag-field" data-type="field" data-field_id="'+key+'">'+email_field[key]+'</li>');
 				}
 			} else {
+				if ( Object.keys(all_fields).length < 1 ){
+					$(el).parent().find('.evf-smart-tag-lists .smart-tag-title:not(".other-tag-title")').addClass('everest-forms-hidden');
+				} else {
+					$(el).parent().find('.evf-smart-tag-lists .smart-tag-title:not(".other-tag-title")').removeClass('everest-forms-hidden');
+				}
 				for (var meta in all_fields ) {
 					$(el).parent().find('.evf-smart-tag-lists .evf-fields').append('<li class = "smart-tag-field" data-type="field" data-field_id="'+meta+'">'+all_fields[meta]+'</li>');
 				}
