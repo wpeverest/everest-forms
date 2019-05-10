@@ -173,7 +173,9 @@ class EVF_Admin_Assets {
 				'everest-forms-admin',
 				'everest_forms_admin',
 				array(
-					'i18n_field_meta_key_error' => esc_html__( 'Please enter in meta key with alphanumeric and underscores character.', 'everest-forms' ),
+					'i18n_field_meta_key_error'    => esc_html__( 'Please enter in meta key with alphanumeric and underscores character.', 'everest-forms' ),
+					'i18n_field_min_value_greater' => __( 'Minimum value is greater than Maximum value.', 'everest-forms' ),
+					'i18n_field_max_value_smaller' => __( 'Maximum value is samller than Maximum value.', 'everest-forms' ),
 				)
 			);
 		}

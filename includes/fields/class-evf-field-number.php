@@ -46,9 +46,6 @@ class EVF_Field_Number extends EVF_Form_Fields {
 		parent::__construct();
 	}
 
-
-
-
 	/**
 	 * Minimum number field option
 	 *
@@ -72,6 +69,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 			$field,
 			array(
 				'slug'  => 'minimum_number',
+				'class' => 'evf-input-number',
 				'value' => isset( $field['maximum_number'] ) && null !== trim( $field['minimum_number'] ) ? $field['minimum_number'] : '',
 			),
 			false
@@ -105,6 +103,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 			$field,
 			array(
 				'slug'  => 'maximum_number',
+				'class' => 'evf-input-number',
 				'value' => isset( $field['maximum_number'] ) && null !== trim( $field['maximum_number'] ) ? $field['maximum_number'] : '',
 			),
 			false

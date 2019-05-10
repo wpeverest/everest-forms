@@ -60,7 +60,7 @@
 			$( '.evf_error_tip' ).fadeOut( '100', function() { $( this ).remove(); } );
 		})
 
-		.on( 'blur', '.evf-input-meta-key[type=text]', function() {
+		.on( 'blur', '.evf-input-meta-key[type=text], .evf-input-number[type=number]', function() {
 			$( '.evf_error_tip' ).fadeOut( '100', function() { $( this ).remove(); } );
 		})
 
@@ -89,6 +89,25 @@
 				$( document.body ).triggerHandler( 'evf_add_error_tip', [ $( this ), error, params ] );
 			} else {
 				$( document.body ).triggerHandler( 'evf_remove_error_tip', [ $( this ), error ] );
+			}
+		})
+
+		.on( 'keyup', '.evf-input-number', function() {
+			var fieldId  = $(this).parent().data('fieldId');
+			var maxField = $("#everest-forms-field-option-"+fieldId+"-maximum_number");
+			var minField = $("#everest-forms-field-option-"+fieldId+"-minimum_number");
+			var maxVal   = parseFloat(maxField.val());
+			var minVal   = parseFloat(minField.val());
+
+			if ( 0 !== minVal.length && 0 !== maxVal.length ) {
+				if ( minVal > maxVal ) {
+					$( document.body ).triggerHandler( 'evf_add_error_tip', [ $(this), 'i18n_field_min_value_greater', params ] );
+				} else if ( maxVal < minVal ) {
+					$( document.body ).triggerHandler( 'evf_add_error_tip', [ $(this), 'i18n_field_max_value_smaller', params ] );
+				} else {
+					$( document.body ).triggerHandler( 'evf_remove_error_tip', [ $(this), 'i18n_field_max_value_smaller' ] );
+					$( document.body ).triggerHandler( 'evf_remove_error_tip', [ $(this), 'i18n_field_min_value_greater' ] );
+				}
 			}
 		})
 
