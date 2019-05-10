@@ -73,7 +73,8 @@
 	input[type='week'],
 	select,
 	textarea,
-	canvas.evf-signature-canvas {
+	canvas.evf-signature-canvas,
+	.StripeElement {
 		width: 100%;
 		height: auto;
 		font-size: 14px;
