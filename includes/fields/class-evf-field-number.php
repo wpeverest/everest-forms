@@ -36,8 +36,9 @@ class EVF_Field_Number extends EVF_Form_Fields {
 					'placeholder',
 					'label_hide',
 					'css',
-					'maximum_number',
-					'minimum_number',
+					'step',
+					'max_value',
+					'min_value',
 
 				),
 			),
@@ -47,19 +48,19 @@ class EVF_Field_Number extends EVF_Form_Fields {
 	}
 
 	/**
-	 * Minimum number field option
+	 * Step field option.
 	 *
 	 * @since 1.4.9
 	 * @param array $field Field Data.
 	 */
-	public function minimum_number( $field ) {
+	public function step( $field ) {
 		$lbl  = $this->field_element(
 			'label',
 			$field,
 			array(
-				'slug'    => 'minimum_number',
-				'value'   => esc_html__( 'Minimum Number', 'everest-forms' ),
-				'tooltip' => sprintf( esc_html__( 'Minimum number user is allowed to enter.', 'everest-forms' ) ),
+				'slug'    => 'step',
+				'value'   => esc_html__( 'Step', 'everest-forms' ),
+				'tooltip' => sprintf( esc_html__( 'Allows users to specific the legal number intervals.', 'everest-forms' ) ),
 			),
 			false
 		);
@@ -67,33 +68,33 @@ class EVF_Field_Number extends EVF_Form_Fields {
 			'text',
 			$field,
 			array(
-				'slug'  => 'minimum_number',
-				'class' => 'evf-input-number',
-				'value' => isset( $field['maximum_number'] ) && null !== trim( $field['minimum_number'] ) ? $field['minimum_number'] : '',
+				'slug'  => 'step',
+				'class' => 'evf-input-number-step',
+				'value' => isset( $field['step'] ) ? $field['step'] : '1',
 			),
 			false
 		);
 		$args = array(
-			'slug'    => 'minimum_number',
+			'slug'    => 'step',
 			'content' => $lbl . $fld,
 		);
 		$this->field_element( 'row', $field, $args );
 	}
 
 	/**
-	 * Maximum number field option
+	 * Minimum value field option.
 	 *
 	 * @since 1.4.9
 	 * @param array $field Field Data.
 	 */
-	public function maximum_number( $field ) {
+	public function min_value( $field ) {
 		$lbl  = $this->field_element(
 			'label',
 			$field,
 			array(
-				'slug'    => 'maximum_number',
-				'value'   => esc_html__( 'Maximum Number', 'everest-forms' ),
-				'tooltip' => sprintf( esc_html__( 'Minimum number user is allowed to enter.', 'everest-forms' ) ),
+				'slug'    => 'min_value',
+				'value'   => esc_html__( 'Min Value', 'everest-forms' ),
+				'tooltip' => sprintf( esc_html__( 'Minimum value user is allowed to enter.', 'everest-forms' ) ),
 			),
 			false
 		);
@@ -101,14 +102,48 @@ class EVF_Field_Number extends EVF_Form_Fields {
 			'text',
 			$field,
 			array(
-				'slug'  => 'maximum_number',
+				'slug'  => 'min_value',
 				'class' => 'evf-input-number',
-				'value' => isset( $field['maximum_number'] ) && null !== trim( $field['maximum_number'] ) ? $field['maximum_number'] : '',
+				'value' => isset( $field['min_value'] ) ? $field['min_value'] : '',
 			),
 			false
 		);
 		$args = array(
-			'slug'    => 'maximum_number',
+			'slug'    => 'min_value',
+			'content' => $lbl . $fld,
+		);
+		$this->field_element( 'row', $field, $args );
+	}
+
+	/**
+	 * Maximum value field option.
+	 *
+	 * @since 1.4.9
+	 * @param array $field Field Data.
+	 */
+	public function max_value( $field ) {
+		$lbl  = $this->field_element(
+			'label',
+			$field,
+			array(
+				'slug'    => 'max_value',
+				'value'   => esc_html__( 'Max Value', 'everest-forms' ),
+				'tooltip' => sprintf( esc_html__( 'Maximum value user is allowed to enter.', 'everest-forms' ) ),
+			),
+			false
+		);
+		$fld  = $this->field_element(
+			'text',
+			$field,
+			array(
+				'slug'  => 'max_value',
+				'class' => 'evf-input-number',
+				'value' => isset( $field['max_value'] ) ? $field['max_value'] : '',
+			),
+			false
+		);
+		$args = array(
+			'slug'    => 'max_value',
 			'content' => $lbl . $fld,
 		);
 		$this->field_element( 'row', $field, $args );
@@ -146,18 +181,19 @@ class EVF_Field_Number extends EVF_Form_Fields {
 	 */
 	public function field_display( $field, $deprecated, $form_data ) {
 
-		$min_num = isset( $field['minimum_number'] ) && null !== trim( $field['minimum_number'] ) ? "min='{$field['minimum_number']}'" : '';
-		$max_num = isset( $field['maximum_number'] ) && null !== trim( $field['maximum_number'] ) ? "max='{$field['maximum_number']}'" : '';
-
+		$min_num = isset( $field['min_value'] ) && null !== trim( $field['min_value'] ) ? $field['min_value'] : '';
+		$max_num = isset( $field['max_value'] ) && null !== trim( $field['max_value'] ) ? $field['max_value'] : '';
+		$step    = isset( $field['step'] ) && null !== trim( $field['step'] ) ? $field['step'] : '';
 		// Define data.
 		$primary = $field['properties']['inputs']['primary'];
 		// Primary field.
 		printf(
-			'<input type="number" %s %s %s %s>',
+			'<input type="number" %s %s min="%s" max="%s" step="%s" />',
 			esc_html( evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ) ),
 			esc_html( $primary['required'] ),
 			esc_html( $min_num ),
-			esc_html( $max_num )
+			esc_html( $max_num ),
+			esc_html( $step )
 		);
 
 	}
@@ -195,12 +231,12 @@ class EVF_Field_Number extends EVF_Form_Fields {
 		 */
 	public function validate( $field_id, $field_submit, $form_data ) {
 		$field_type = isset( $form_data['form_fields'][ $field_id ]['type'] ) ? $form_data['form_fields'][ $field_id ]['type'] : '';
-		$min        = null !== trim( $form_data['form_fields'][ $field_id ]['minimum_number'] ) ? $form_data['form_fields'][ $field_id ]['minimum_number'] : '';
-		$max        = null !== trim( $form_data['form_fields'][ $field_id ]['maximum_number'] ) ? $form_data['form_fields'][ $field_id ]['maximum_number'] : '';
+		$min        = null !== trim( $form_data['form_fields'][ $field_id ]['min_value'] ) ? floatval( $form_data['form_fields'][ $field_id ]['min_value'] ) : '';
+		$max        = null !== trim( $form_data['form_fields'][ $field_id ]['max_value'] ) ? floatval( $form_data['form_fields'][ $field_id ]['max_value'] ) : '';
 
-		if ( $field_submit < $min ) {
+		if ( floatval( $field_submit ) < $min ) {
 			$validation_text = get_option( 'evf_' . $field_type . '_validation', __( 'Please enter a value greater than or equal to ' . $min, 'everest-forms' ) );
-		} elseif ( $field_submit > $max ) {
+		} elseif ( floatval( $field_submit ) > $max ) {
 			$validation_text = get_option( 'evf_' . $field_type . '_validation', __( 'Please enter a value less than or equal to ' . $max, 'everest-forms' ) );
 		}
 		if ( isset( $validation_text ) ) {
