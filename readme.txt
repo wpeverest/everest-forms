@@ -4,7 +4,7 @@ Tags: contact form, form, form builder, contact, custom form
 Requires at least: 4.0
 Tested up to: 5.1
 Requires PHP: 5.4
-Stable tag: 1.4.6
+Stable tag: 1.4.8
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -54,7 +54,7 @@ Check [documentation](http://docs.wpeverest.com/docs/everest-forms/)
 
 ### Premium Features and Addons
 
-* 9 Advanced fields (Image upload, file upload, Hidden Field, Phone, Password, Custom HTML, Section Title, Address, Country)
+* 10 Advanced fields (Image upload, File upload, Hidden Field, Phone, Password, Custom HTML, Section Title, Signature Address, Country)
 
 * [Style Customizer](https://wpeverest.com/wordpress-plugins/everest-forms/style-customizer/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to make form design changes like color, fonts, background, borders, alignments and more without touching any code
 
@@ -65,6 +65,8 @@ Check [documentation](http://docs.wpeverest.com/docs/everest-forms/)
 * [PDF Form Submission](https://wpeverest.com/wordpress-plugins/everest-forms/pdf-form-submission/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Create PDF for  submitted form entries and attach to emails as well.
 
 * [PayPal Standard](https://wpeverest.com/wordpress-plugins/everest-forms/paypal-standard/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to connect your forms site with PayPal to easily collect payments, donations, and online orders.
+
+* [Stripe](https://wpeverest.com/wordpress-plugins/everest-forms/stripe/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to connect your forms site with Stripe to easily collect payments, donations, and online orders.
 
 * [Geolocation](https://wpeverest.com/wordpress-plugins/everest-forms/geolocation/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to collect geolocation data like IP, Country, Postal and zip code along with the form submission.
 
@@ -137,6 +139,18 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 12. Advance Form
 
 == Changelog ==
+
+= 1.4.8 - 23-04-2019 =
+* Fix - Prevent content filters from corrupting form JSON data.
+
+= 1.4.7 - 03-04-2019 =
+* Feature - Tooltipster introduced.
+* Feature - Add support for Payment charge & section field.
+* Fix - Likert and scale rating field icons.
+* Fix - Replace tipTip with Tooltipster.
+* Fix - Scrollbar position in sidebar.
+* Tweak - Scale rating min & max point validation error tips.
+* Tweak - Alignment position with higher font size in radio/checkbox.
 
 = 1.4.6 - 25-03-2019 =
 * Fix - Add-ons installation process.

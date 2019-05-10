@@ -164,6 +164,8 @@ class EVF_Admin_Assets {
 					'ajax_url'               => admin_url( 'admin-ajax.php', 'relative' ),
 					'i18n_email_cancel'      => esc_html__( 'Cancel', 'everest-forms' ),
 					'i18n_default_address'   => get_option( 'admin_email' ),
+					'from_name'              => get_bloginfo( 'name', 'display' ),
+					'email_subject'          => esc_html__( 'New Form Entry', 'everest-forms' ),
 				)
 			);
 
@@ -171,8 +173,7 @@ class EVF_Admin_Assets {
 				'everest-forms-admin',
 				'everest_forms_admin',
 				array(
-					'i18n_field_meta_key_error'  => esc_html__( 'Please enter in meta key with alphanumeric and underscores character.', 'everest-forms' ),
-					'i18n_field_css_class_error' => esc_html__( 'Please enter in classname with alphanumeric, underscores and hyphen character.', 'everest-forms' ),
+					'i18n_field_meta_key_error' => esc_html__( 'Please enter in meta key with alphanumeric and underscores character.', 'everest-forms' ),
 				)
 			);
 		}

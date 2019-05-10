@@ -20,7 +20,7 @@ class EVF_Field_Country extends EVF_Form_Fields {
 		$this->name   = esc_html__( 'Country', 'everest-forms' );
 		$this->type   = 'country';
 		$this->icon   = 'evf-icon evf-icon-flag';
-		$this->order  = 110;
+		$this->order  = 120;
 		$this->group  = 'advanced';
 		$this->is_pro = true;
 

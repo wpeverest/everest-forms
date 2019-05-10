@@ -11,8 +11,8 @@
 @import 'variables';
 @import 'animation';
 @import 'fonts';
-@import 'scss/colors';
-@import 'scss/clearings';
+@import 'colors';
+@import 'clearings';
 
 /**
  * Global styles
@@ -53,6 +53,41 @@
 
 	.evf-container {
 		margin-bottom: 30px;
+	}
+
+	input[type='text'],
+	input[type='date'],
+	input[type='date'],
+	input[type='datetime-local'],
+	input[type='email'],
+	input[type='file'],
+	input[type='image'],
+	input[type='month'],
+	input[type='number'],
+	input[type='password'],
+	input[type='range'],
+	input[type='search'],
+	input[type='tel'],
+	input[type='time'],
+	input[type='url'],
+	input[type='week'],
+	select,
+	textarea,
+	canvas.evf-signature-canvas {
+		width: 100%;
+		height: auto;
+		font-size: 14px;
+		box-shadow: none;
+		margin-bottom: 10px;
+		padding: 6px 12px;
+		color: $color-gray-darker;
+		border: 1px solid $color-gray-light;
+	}
+
+	input {
+		&:focus {
+			outline: 1px solid $color-brand-primary;
+		}
 	}
 
 	.everest-forms-field-row {
@@ -184,6 +219,18 @@
 					:-ms-input-placeholder {
 						line-height: normal;
 					}
+
+					&.evf-field-radio,
+					&.evf-field-checkbox,
+					&.evf-field-payment-multiple,
+					&.evf-field-payment-checkbox {
+						ul {
+							li {
+								display: flex;
+								align-items: center;
+							}
+						}
+					}
 				}
 			}
 
@@ -222,31 +269,7 @@
 				}
 			}
 
-			input[type='text'],
-			input[type='date'],
-			input[type='date'],
-			input[type='datetime-local'],
-			input[type='email'],
-			input[type='file'],
-			input[type='image'],
-			input[type='month'],
-			input[type='number'],
-			input[type='password'],
-			input[type='range'],
-			input[type='search'],
-			input[type='tel'],
-			input[type='time'],
-			input[type='timeurl'],
-			input[type='week'],
-			select,
-			textarea {
-				width: 100%;
-				height: auto;
-				font-size: 14px;
-				box-shadow: none;
-				margin-bottom: 10px;
-				padding: 6px 12px;
-				color: $color-gray-darker;
+			input {
 
 				&[type='checkbox'],
 				&[type='radio'] {
@@ -255,7 +278,7 @@
 					background-color: $color-white;
 				}
 
-				&[type="checkbox"] {
+				&[type='checkbox'] {
 					appearance: checkbox;
 				}
 
@@ -283,10 +306,6 @@
 					color: $input-color;
 				}
 
-				&:focus {
-					outline: none;
-					border: 1px solid $color-brand-primary;
-				}
 			}
 
 			select {
@@ -329,31 +348,6 @@
 		}
 	}
 
-	.default {
-
-		input[type='text'],
-		input[type='date'],
-		input[type='date'],
-		input[type='datetime-local'],
-		input[type='email'],
-		input[type='file'],
-		input[type='image'],
-		input[type='month'],
-		input[type='number'],
-		input[type='password'],
-		input[type='range'],
-		input[type='search'],
-		input[type='tel'],
-		input[type='time'],
-		input[type='timeurl'],
-		input[type='week'],
-		select,
-		textarea {
-			border-radius: 3px;
-			border: 1px solid $color-gray;
-		}
-	}
-
 	.layout-two {
 		label {
 			margin-bottom: 0;
@@ -368,7 +362,8 @@
 
 		input,
 		select,
-		textarea {
+		textarea,
+		canvas.evf-signature-canvas {
 			border-radius: 0;
 			border-top: none transparent;
 			border-right: none transparent;
@@ -378,6 +373,7 @@
 			padding: 10px 0;
 
 			&:focus {
+				outline: none;
 				border-top: none transparent;
 				border-right: none transparent;
 				border-left: none transparent;
@@ -530,6 +526,7 @@ div.evf-gutenberg-form-selector .evf-frontend-row button[type='submit']:disabled
 					&.evf-grid-2,
 					&.evf-grid-3 {
 						width: 100%;
+						max-width: 100%;
 					}
 				}
 			}

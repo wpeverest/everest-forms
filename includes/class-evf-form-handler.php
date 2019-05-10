@@ -116,26 +116,49 @@ class EVF_Form_Handler {
 
 		// Check for template and format the form content.
 		if ( in_array( $template, array( 'contact' ), true ) ) {
-			include_once( dirname( __FILE__ ) . "/templates/{$template}.php" );
+			include_once dirname( __FILE__ ) . "/templates/{$template}.php";
 			$form_content = $form_template[ $template ];
 		}
 
+		// Prevent content filters from corrupting JSON in post_content.
+		$has_kses = ( false !== has_filter( 'content_save_pre', 'wp_filter_post_kses' ) );
+		if ( $has_kses ) {
+			kses_remove_filters();
+		}
+		$has_targeted_link_rel_filters = ( false !== has_filter( 'content_save_pre', 'wp_targeted_link_rel' ) );
+		if ( $has_targeted_link_rel_filters ) {
+			wp_remove_targeted_link_rel_filters();
+		}
+
 		// Create a form.
- 		$form_id = wp_insert_post( array(
-			'post_title'   => esc_html( $title ),
-			'post_status'  => 'publish',
-			'post_type'    => 'everest_form',
-			'post_content' => '{}',
-		) );
+		$form_id = wp_insert_post(
+			array(
+				'post_title'   => esc_html( $title ),
+				'post_status'  => 'publish',
+				'post_type'    => 'everest_form',
+				'post_content' => '{}',
+			)
+		);
 
 		if ( $form_id ) {
-			$form_data = wp_parse_args( $args, array(
-				'ID'           => $form_id,
-				'post_title'   => esc_html( $title ),
-				'post_content' => evf_encode( array_merge( array( 'id' => $form_id ), $form_content ) ),
-			) );
+			$form_data = wp_parse_args(
+				$args,
+				array(
+					'ID'           => $form_id,
+					'post_title'   => esc_html( $title ),
+					'post_content' => evf_encode( array_merge( array( 'id' => $form_id ), $form_content ) ),
+				)
+			);
 
 			wp_update_post( $form_data );
+		}
+
+		// Restore removed content filters.
+		if ( $has_kses ) {
+			kses_init_filters();
+		}
+		if ( $has_targeted_link_rel_filters ) {
+			wp_init_targeted_link_rel_filters();
 		}
 
 		do_action( 'everest_forms_create_form', $form_id, $form_data, $data );
@@ -154,11 +177,7 @@ class EVF_Form_Handler {
 	 * @internal param string $title
 	 */
 	public function update( $form_id = '', $data = array(), $args = array() ) {
-
-		// This filter breaks forms if they contain HTML
-		remove_filter( 'content_save_pre', 'balanceTags', 50 );
-
-		// Check for permissions
+		// Check for permissions.
 		if ( ! current_user_can( apply_filters( 'everest_forms_manage_cap', 'manage_options' ) ) ) {
 			return false;
 		}
@@ -187,9 +206,22 @@ class EVF_Form_Handler {
 
 		$data['form_field_id'] = ! empty( $data['form_field_id'] ) ? absint( $data['form_field_id'] ) : '0';
 
-		// Sanitize - don't allow tags for users who do not have appropriate cap
+		// This filter can destroy the JSON when messing with HTML.
+		remove_filter( 'content_save_pre', 'balanceTags', 50 );
+
+		// Don't allow tags for users who do not have appropriate cap.
 		if ( ! current_user_can( 'unfiltered_html' ) ) {
-			array_walk_recursive( $data, 'wp_strip_all_tags' );
+			$data = map_deep( $data, 'wp_strip_all_tags' );
+		}
+
+		// Prevent content filters from corrupting JSON in post_content.
+		$has_kses = ( false !== has_filter( 'content_save_pre', 'wp_filter_post_kses' ) );
+		if ( $has_kses ) {
+			kses_remove_filters();
+		}
+		$has_targeted_link_rel_filters = ( false !== has_filter( 'content_save_pre', 'wp_targeted_link_rel' ) );
+		if ( $has_targeted_link_rel_filters ) {
+			wp_remove_targeted_link_rel_filters();
 		}
 
 		$form    = array(
@@ -200,6 +232,14 @@ class EVF_Form_Handler {
 		);
 		$form    = apply_filters( 'everest_forms_save_form_args', $form, $data, $args );
 		$form_id = wp_update_post( $form );
+
+		// Restore removed content filters.
+		if ( $has_kses ) {
+			kses_init_filters();
+		}
+		if ( $has_targeted_link_rel_filters ) {
+			wp_init_targeted_link_rel_filters();
+		}
 
 		do_action( 'everest_forms_save_form', $form_id, $form );
 
@@ -214,7 +254,6 @@ class EVF_Form_Handler {
 	 * @return boolean
 	 */
 	public function duplicate( $ids = array() ) {
-
 		// Check for permissions.
 		if ( ! current_user_can( apply_filters( 'everest_forms_manage_cap', 'manage_options' ) ) ) {
 			return false;
@@ -292,9 +331,12 @@ class EVF_Form_Handler {
 			return false;
 		}
 
-		$data = $this->get( $form_id, array(
-			'content_only' => true,
-		) );
+		$data = $this->get(
+			$form_id,
+			array(
+				'content_only' => true,
+			)
+		);
 
 		if ( isset( $data['meta'] ) ) {
 			if ( empty( $field ) ) {
@@ -323,10 +365,12 @@ class EVF_Form_Handler {
 			return false;
 		}
 
-
-		$form = $this->get( $form_id, array(
-			'content_only' => true,
-		) );
+		$form = $this->get(
+			$form_id,
+			array(
+				'content_only' => true,
+			)
+		);
 
 		if ( ! empty( $form['form_field_id'] ) ) {
 			$form_field_id = absint( $form['form_field_id'] );
@@ -358,9 +402,12 @@ class EVF_Form_Handler {
 			return false;
 		}
 
-		$data = $this->get( $form_id, array(
-			'content_only' => true,
-		) );
+		$data = $this->get(
+			$form_id,
+			array(
+				'content_only' => true,
+			)
+		);
 
 		return isset( $data['form_fields'][ $field_id ] ) ? $data['form_fields'][ $field_id ] : false;
 	}

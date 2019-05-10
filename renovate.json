@@ -2,6 +2,6 @@
   "extends": [
     "config:base"
   ],
-  "lockFileMaintenance": { "enabled": true },
-  "schedule": ["before 3am on wednesday"]
+  "labels": [ "Renovate", "[Status] Needs Review" ],
+  "schedule": "before 3am on Monday"
 }

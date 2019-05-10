@@ -35,6 +35,7 @@ class EVF_Forms_Features {
 			'EVF_Field_Password',
 			'EVF_Field_HTML',
 			'EVF_Field_Title',
+			'EVF_Field_Signature',
 			'EVF_Field_Address',
 			'EVF_Field_Country',
 			'EVF_Field_Payment_Single',
@@ -42,8 +43,9 @@ class EVF_Forms_Features {
 			'EVF_Field_Payment_Checkbox',
 			'EVF_Field_Payment_Total',
 			'EVF_Field_Payment_Charge_Options',
-			'EVF_Field_Signature',
 			'EVF_Field_Rating',
+			'EVF_Field_Likert',
+			'EVF_Field_Scale_Rating',
 		);
 
 		return array_merge( $fields, $pro_fields );
