@@ -60,7 +60,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 			array(
 				'slug'    => 'step',
 				'value'   => esc_html__( 'Step', 'everest-forms' ),
-				'tooltip' => sprintf( esc_html__( 'Allows users to specific the legal number intervals.', 'everest-forms' ) ),
+				'tooltip' => sprintf( esc_html__( 'Allows users to enter specific legal number intervals.', 'everest-forms' ) ),
 			),
 			false
 		);
