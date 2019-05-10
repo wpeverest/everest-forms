@@ -92,9 +92,19 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	 */
 	public function datetime_options( $field ) {
 		$format = ! empty( $field['datetime_format'] ) ? esc_attr( $field['datetime_format'] ) : 'date';
-		echo '<label>' . esc_html__( 'Date/Time Format', 'everest-forms' ) . '</label>';
-		echo '<div class="format-selected-' . esc_attr( $format ) . ' format-selected">';
 
+		$this->field_element(
+			'label',
+			$field,
+			array(
+				'slug'    => 'datetime_advanced',
+				'value'   => esc_html__( 'Date & Time Format', 'everest-forms' ),
+				'tooltip' => esc_html__( 'Advanced date and time formatting options.', 'everest-forms' ),
+			),
+			true
+		);
+
+		echo '<div class="format-selected-' . esc_attr( $format ) . ' format-selected">';
 			echo '<div class="everest-forms-border-container everest-forms-date">';
 			echo '<h4 class="everest-forms-border-container-title">' . esc_html__( 'Date', 'everest-forms' ) . '</h4>'; // WPCS: XSS ok.
 
@@ -152,7 +162,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				'label',
 				$field,
 				array(
-					'slug'    => 'time_interval_format',
+					'slug'    => 'time_interval',
 					'value'   => __( 'Time interval and format', 'everest-forms' ),
 					'tooltip' => __( 'Choose time interval and format to display.', 'everest-forms' ),
 				),
@@ -197,7 +207,6 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			$this->field_element( 'row', $field, $args );
 
 			echo '</div>';
-
 		echo '</div>';
 	}
 
