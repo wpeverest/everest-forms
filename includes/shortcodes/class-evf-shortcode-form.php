@@ -62,8 +62,14 @@ class EVF_Shortcode_Form {
 
 		// Visibility class.
 		$visibility_class = apply_filters( 'everest_forms_field_submit_visibility_class', array(), self::$parts, $form_data );
-
+		// echo '<pre>' . print_r( $form_data, true ) . '</pre>';
 		// Submit button area.
+		$conditional_id    = 'evf-submit-'.$form_id;
+		$con_rules         = array(
+			'conditional_option' => isset( $form_data['settings']['submit']['connection_1']['conditional_option'] ) ? $form_data['settings']['submit']['connection_1']['conditional_option'] : '',
+			'conditionals'       => isset( $form_data['settings']['submit']['connection_1']['conditionals'] ) ? $form_data['settings']['submit']['connection_1']['conditionals'] : '',
+		);
+		$conditional_rules = json_encode( $con_rules );
 		echo '<div class="evf-submit-container ' . esc_attr( implode( ' ', $visibility_class ) ) . '" ' . $visible . '>';
 
 			echo '<input type="hidden" name="everest_forms[id]" value="' . $form_id . '">';
@@ -77,10 +83,12 @@ class EVF_Shortcode_Form {
 			do_action( 'everest_forms_display_submit_before', $form_data );
 
 			printf(
-				'<button type="submit" name="everest_forms[submit]" class="everest-forms-submit-button button evf-submit %s" id="evf-submit-%d" value="evf-submit" %s>%s</button>',
+				"<button type='submit' name='everest_forms[submit]' class='everest-forms-submit-button button evf-submit %s' id='evf-submit-%d' value='evf-submit' %s conditional_rules='%s' conditional_id='%s'>%s</button>",
 				$classes,
 				$form_id,
 				$process,
+				$conditional_rules,
+				$conditional_id,
 				$submit
 			);
 

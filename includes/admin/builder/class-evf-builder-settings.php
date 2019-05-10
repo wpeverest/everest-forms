@@ -229,6 +229,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				'tooltip' => esc_html__( 'Enter CSS class names for submit button. Multiple class names should be separated with spaces.', 'everest-forms' ),
 			)
 		);
+		do_action( 'everest_forms_inline_submit_settings', $this, 'submit', 'connection_1' );
 		echo '</div>';
 		everest_forms_panel_field(
 			'checkbox',
