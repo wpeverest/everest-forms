@@ -49,8 +49,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 	/**
 	 * Minimum number field option
 	 *
-	 * @since      1.4.5
-	 *
+	 * @since 1.4.9
 	 * @param array $field Field Data.
 	 */
 	public function minimum_number( $field ) {
@@ -84,7 +83,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 	/**
 	 * Maximum number field option
 	 *
-	 * @since      1.4.5
+	 * @since 1.4.9
 	 * @param array $field Field Data.
 	 */
 	public function maximum_number( $field ) {
@@ -189,7 +188,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 		/**
 		 * Validates field for minimum and maximum data input.
 		 *
-		 * @since 1.4.5
+		 * @since 1.4.9
 		 * @param int   $field_id Field Id.
 		 * @param array $field_submit Submitted Data.
 		 * @param array $form_data All Form Data.
