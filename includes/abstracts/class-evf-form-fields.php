@@ -311,7 +311,7 @@ abstract class EVF_Form_Fields {
 			// Field Label. ---------------------------------------------------//
 			case 'label':
 				$value   = ! empty( $field['label'] ) ? esc_attr( $field['label'] ) : '';
-				$tooltip = __( 'Enter text for the form field label.', 'everest-forms' );
+				$tooltip = __( 'Enter text for the form field label. This is recommended and can be hidden in the Advanced Settings.', 'everest-forms' );
 				$output  = $this->field_element(
 					'label',
 					$field,
@@ -415,7 +415,7 @@ abstract class EVF_Form_Fields {
 			case 'required':
 				$default = ! empty( $args['default'] ) ? $args['default'] : '0';
 				$value   = isset( $field['required'] ) ? $field['required'] : $default;
-				$tooltip = __( 'Check this option to mark the field required.', 'everest-forms' );
+				$tooltip = __( 'Check this option to mark the field required. A form will not submit unless all required fields are provided.', 'everest-forms' );
 				$output  = $this->field_element(
 					'checkbox',
 					$field,
