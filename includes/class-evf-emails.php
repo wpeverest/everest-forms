@@ -130,15 +130,6 @@ class EVF_Emails {
 	 */
 	public function __set( $key, $value ) {
 
-		if ( 'form_data' === $key ) {
-			$form_email_data = $value['settings']['email'];
-
-			foreach ( $form_email_data as $email_key => $email_data ) {
-				$this->cc  = ! empty( $email_data['evf_cc'] ) ? $email_data['evf_cc'] : false;
-				$this->bcc = ! empty( $email_data['evf_bcc'] ) ? $email_data['evf_bcc'] : false;
-			}
-		}
-
 		$this->$key = $value;
 	}
 
@@ -194,6 +185,13 @@ class EVF_Emails {
 	 * @return string The email reply-to address.
 	 */
 	public function get_cc() {
+
+		// Get cc email addresses from form data.
+		$form_email_data = $this->form_data['settings']['email'];
+		foreach ( $form_email_data as $email_key => $email_data ) {
+			$this->cc = ! empty( $email_data['evf_cc'] ) ? $email_data['evf_cc'] : false;
+		}
+
 		if ( ! empty( $this->cc ) ) {
 			$this->cc  = $this->process_tag( $this->cc );
 			$addresses = array_map( 'trim', explode( ',', $this->cc ) );
@@ -216,6 +214,13 @@ class EVF_Emails {
 	 * @return string The email reply-to address.
 	 */
 	public function get_bcc() {
+
+		// Get bcc email address from form data.
+		$form_email_data = $this->form_data['settings']['email'];
+		foreach ( $form_email_data as $email_key => $email_data ) {
+			$this->bcc = ! empty( $email_data['evf_bcc'] ) ? $email_data['evf_bcc'] : false;
+		}
+
 		if ( ! empty( $this->bcc ) ) {
 			$this->bcc = $this->process_tag( $this->bcc );
 			$addresses = array_map( 'trim', explode( ',', $this->bcc ) );
