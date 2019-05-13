@@ -65,9 +65,10 @@ class EVF_Field_Number extends EVF_Form_Fields {
 			false
 		);
 		$step_field = $this->field_element(
-			'number',
+			'text',
 			$field,
 			array(
+				'type'  => 'number',
 				'slug'  => 'step',
 				'class' => 'evf-input-number-step',
 				'value' => isset( $field['step'] ) ? $field['step'] : '1',
@@ -102,9 +103,10 @@ class EVF_Field_Number extends EVF_Form_Fields {
 			false
 		);
 		$min_field = $this->field_element(
-			'number',
+			'text',
 			$field,
 			array(
+				'type'  => 'number',
 				'slug'  => 'min_value',
 				'class' => 'evf-input-number',
 				'value' => isset( $field['min_value'] ) ? $field['min_value'] : '',
@@ -139,9 +141,10 @@ class EVF_Field_Number extends EVF_Form_Fields {
 			false
 		);
 		$max_field = $this->field_element(
-			'number',
+			'text',
 			$field,
 			array(
+				'type'  => 'number',
 				'slug'  => 'max_value',
 				'class' => 'evf-input-number',
 				'value' => isset( $field['max_value'] ) ? $field['max_value'] : '',
