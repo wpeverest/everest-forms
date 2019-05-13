@@ -54,7 +54,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 	 * @param array $field Field Data.
 	 */
 	public function step( $field ) {
-		$label = $this->field_element(
+		$step_label = $this->field_element(
 			'label',
 			$field,
 			array(
@@ -64,7 +64,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 			),
 			false
 		);
-		$field = $this->field_element(
+		$step_field = $this->field_element(
 			'number',
 			$field,
 			array(
@@ -79,7 +79,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 			$field,
 			array(
 				'slug'    => 'step',
-				'content' => $label . $field,
+				'content' => $step_label . $step_field,
 			)
 		);
 	}
@@ -91,7 +91,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 	 * @param array $field Field Data.
 	 */
 	public function min_value( $field ) {
-		$label = $this->field_element(
+		$min_label = $this->field_element(
 			'label',
 			$field,
 			array(
@@ -101,7 +101,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 			),
 			false
 		);
-		$field = $this->field_element(
+		$min_field = $this->field_element(
 			'number',
 			$field,
 			array(
@@ -116,7 +116,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 			$field,
 			array(
 				'slug'    => 'min_value',
-				'content' => $label . $field,
+				'content' => $min_label . $min_field,
 			)
 		);
 	}
@@ -128,7 +128,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 	 * @param array $field Field Data.
 	 */
 	public function max_value( $field ) {
-		$label = $this->field_element(
+		$max_label = $this->field_element(
 			'label',
 			$field,
 			array(
@@ -138,7 +138,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 			),
 			false
 		);
-		$field = $this->field_element(
+		$max_field = $this->field_element(
 			'number',
 			$field,
 			array(
