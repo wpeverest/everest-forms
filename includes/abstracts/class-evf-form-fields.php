@@ -213,6 +213,8 @@ abstract class EVF_Form_Fields {
 			// Text input.
 			case 'text':
 				$type        = ! empty( $args['type'] ) ? esc_attr( $args['type'] ) : 'text';
+				$min         = ! empty( $args['min'] ) ? esc_attr( $args['min'] ) : 0;
+				$max         = ! empty( $args['max'] ) ? esc_attr( $args['max'] ) : '';
 				$required    = ( ! empty( $args['required'] ) && $args['required'] ) ? esc_attr( 'required' ) : '';
 				$placeholder = ! empty( $args['placeholder'] ) ? esc_attr( $args['placeholder'] ) : '';
 				$before      = ! empty( $args['before'] ) ? '<span class="before-input">' . esc_html( $args['before'] ) . '</span>' : '';
@@ -220,7 +222,7 @@ abstract class EVF_Form_Fields {
 					$class .= ' has-before';
 				}
 				if ( 'number' === $type ) {
-					$output = sprintf( '%s<input type="%s" class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" value="%s" placeholder="%s" %s %s>', $before, $type, $class, $id, $slug, $id, $slug, esc_attr( $args['value'] ), $placeholder, $required, $data );
+					$output = sprintf( '%s<input type="%s" class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" min="%s" max="%s" value="%s" placeholder="%s" %s %s>', $before, $type, $class, $id, $slug, $id, $slug, $min, $max, esc_attr( $args['value'] ), $placeholder, $required, $data );
 				} else {
 					$output = sprintf( '%s<input type="%s" class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" value="%s" placeholder="%s" %s %s>', $before, $type, $class, $id, $slug, $id, $slug, esc_attr( $args['value'] ), $placeholder, $required, $data );
 				}
