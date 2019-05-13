@@ -19,7 +19,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 	public function __construct() {
 		$this->name     = esc_html__( 'Number', 'everest-forms' );
 		$this->type     = 'number';
-		$this->icon     = 'evf-icon  evf-icon-number';
+		$this->icon     = 'evf-icon evf-icon-number';
 		$this->order    = 80;
 		$this->group    = 'general';
 		$this->settings = array(
@@ -33,13 +33,13 @@ class EVF_Field_Number extends EVF_Form_Fields {
 			),
 			'advanced-options' => array(
 				'field_options' => array(
-					'placeholder',
-					'label_hide',
-					'css',
 					'step',
 					'max_value',
 					'min_value',
-
+					'placeholder',
+					'label_hide',
+					'default_value',
+					'css',
 				),
 			),
 		);
@@ -54,7 +54,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 	 * @param array $field Field Data.
 	 */
 	public function step( $field ) {
-		$lbl  = $this->field_element(
+		$label = $this->field_element(
 			'label',
 			$field,
 			array(
@@ -64,7 +64,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 			),
 			false
 		);
-		$fld  = $this->field_element(
+		$field = $this->field_element(
 			'number',
 			$field,
 			array(
@@ -74,11 +74,14 @@ class EVF_Field_Number extends EVF_Form_Fields {
 			),
 			false
 		);
-		$args = array(
-			'slug'    => 'step',
-			'content' => $lbl . $fld,
+		$this->field_element(
+			'row',
+			$field,
+			array(
+				'slug'    => 'step',
+				'content' => $label . $field,
+			)
 		);
-		$this->field_element( 'row', $field, $args );
 	}
 
 	/**
@@ -88,7 +91,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 	 * @param array $field Field Data.
 	 */
 	public function min_value( $field ) {
-		$lbl  = $this->field_element(
+		$label = $this->field_element(
 			'label',
 			$field,
 			array(
@@ -98,7 +101,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 			),
 			false
 		);
-		$fld  = $this->field_element(
+		$field = $this->field_element(
 			'number',
 			$field,
 			array(
@@ -108,11 +111,14 @@ class EVF_Field_Number extends EVF_Form_Fields {
 			),
 			false
 		);
-		$args = array(
-			'slug'    => 'min_value',
-			'content' => $lbl . $fld,
+		$this->field_element(
+			'row',
+			$field,
+			array(
+				'slug'    => 'min_value',
+				'content' => $label . $field,
+			)
 		);
-		$this->field_element( 'row', $field, $args );
 	}
 
 	/**
@@ -122,7 +128,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 	 * @param array $field Field Data.
 	 */
 	public function max_value( $field ) {
-		$lbl  = $this->field_element(
+		$label = $this->field_element(
 			'label',
 			$field,
 			array(
@@ -132,7 +138,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 			),
 			false
 		);
-		$fld  = $this->field_element(
+		$field = $this->field_element(
 			'number',
 			$field,
 			array(
@@ -142,18 +148,20 @@ class EVF_Field_Number extends EVF_Form_Fields {
 			),
 			false
 		);
-		$args = array(
-			'slug'    => 'max_value',
-			'content' => $lbl . $fld,
+		$this->field_element(
+			'row',
+			$field,
+			array(
+				'slug'    => 'max_value',
+				'content' => $max_label . $max_field,
+			)
 		);
-		$this->field_element( 'row', $field, $args );
 	}
-
 
 	/**
 	 * Field preview inside the builder.
 	 *
-	 * @since      1.0.0
+	 * @since 1.0.0
 	 * @param array $field Field Data.
 	 */
 	public function field_preview( $field ) {
@@ -165,7 +173,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 		$this->field_preview_option( 'label', $field );
 
 		// Primary input.
-		echo '<input type="number" placeholder="' . esc_html( $placeholder ) . '" class="widefat" disabled>';
+		echo '<input type="number" placeholder="' . esc_attr( $placeholder ) . '" class="widefat" disabled>';
 
 		// Description.
 		$this->field_preview_option( 'description', $field );
@@ -174,7 +182,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 	/**
 	 * Field display on the form front-end.
 	 *
-	 * @since      1.0.0
+	 * @since 1.0.0
 	 * @param array $field Field Data.
 	 * @param array $deprecated Deprecated Parameter.
 	 * @param array $form_data All Form Data.
@@ -201,7 +209,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 	/**
 	 * Formats and sanitizes field.
 	 *
-	 * @param int    $field_id Field Id.
+	 * @param string $field_id Field Id.
 	 * @param array  $field_submit Submitted Field.
 	 * @param array  $form_data All Form Data.
 	 * @param string $meta_key Field Meta Key.
@@ -221,14 +229,14 @@ class EVF_Field_Number extends EVF_Form_Fields {
 		);
 	}
 
-		/**
-		 * Validates field for minimum and maximum data input.
-		 *
-		 * @since 1.4.9
-		 * @param int   $field_id Field Id.
-		 * @param array $field_submit Submitted Data.
-		 * @param array $form_data All Form Data.
-		 */
+	/**
+	 * Validates field for minimum and maximum data input.
+	 *
+	 * @since 1.4.9
+	 * @param string $field_id Field Id.
+	 * @param array  $field_submit Submitted Data.
+	 * @param array  $form_data All Form Data.
+	 */
 	public function validate( $field_id, $field_submit, $form_data ) {
 		$field_type = isset( $form_data['form_fields'][ $field_id ]['type'] ) ? $form_data['form_fields'][ $field_id ]['type'] : '';
 		$min        = null !== trim( $form_data['form_fields'][ $field_id ]['min_value'] ) ? floatval( $form_data['form_fields'][ $field_id ]['min_value'] ) : '';
@@ -239,6 +247,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 		} elseif ( floatval( $field_submit ) > $max ) {
 			$validation_text = get_option( 'evf_' . $field_type . '_validation', __( 'Please enter a value less than or equal to ' . $max, 'everest-forms' ) );
 		}
+
 		if ( isset( $validation_text ) ) {
 			EVF()->task->errors[ $form_data['id'] ][ $field_id ] = apply_filters( 'everest_forms_type_validation', $validation_text );
 			update_option( 'evf_validation_error', 'yes' );
