@@ -20,7 +20,7 @@
     "@wordpress/babel-preset-default": "4.1.0",
     "@wordpress/browserslist-config": "2.3.0",
     "autoprefixer": "9.5.1",
-    "babel-loader": "8.0.5",
+    "babel-loader": "8.0.6",
     "babel-plugin-transform-react-jsx": "6.24.1",
     "babel-preset-env": "1.7.0",
     "cross-env": "5.2.0",
