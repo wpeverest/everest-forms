@@ -86,7 +86,8 @@
 
 	input {
 		&:focus {
-			outline: 1px solid $color-brand-primary;
+			outline: none;
+			border: 1px solid $color-brand-primary;
 		}
 	}
 
