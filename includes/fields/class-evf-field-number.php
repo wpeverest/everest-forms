@@ -191,9 +191,9 @@ class EVF_Field_Number extends EVF_Form_Fields {
 	 * @param array $form_data All Form Data.
 	 */
 	public function field_display( $field, $deprecated, $form_data ) {
-		$step    = isset( $field['step'] ) ? $field['step'] : '1';
-		$min_num = isset( $field['min_value'] ) ? $field['min_value'] : '';
-		$max_num = isset( $field['max_value'] ) ? $field['max_value'] : '';
+		$step      = isset( $field['step'] ) ? $field['step'] : '1';
+		$min_value = isset( $field['min_value'] ) ? $field['min_value'] : '';
+		$max_value = isset( $field['max_value'] ) ? $field['max_value'] : '';
 
 		// Define data.
 		$primary = $field['properties']['inputs']['primary'];
@@ -203,8 +203,8 @@ class EVF_Field_Number extends EVF_Form_Fields {
 			'<input type="number" %s %s min="%s" max="%s" step="%s" />',
 			evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ),
 			esc_html( $primary['required'] ),
-			esc_html( $min_num ),
-			esc_html( $max_num ),
+			esc_html( $min_value ),
+			esc_html( $max_value ),
 			esc_html( $step )
 		);
 	}
