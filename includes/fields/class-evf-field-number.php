@@ -65,7 +65,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 			false
 		);
 		$fld  = $this->field_element(
-			'text',
+			'number',
 			$field,
 			array(
 				'slug'  => 'step',
@@ -99,7 +99,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 			false
 		);
 		$fld  = $this->field_element(
-			'text',
+			'number',
 			$field,
 			array(
 				'slug'  => 'min_value',
@@ -133,7 +133,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 			false
 		);
 		$fld  = $this->field_element(
-			'text',
+			'number',
 			$field,
 			array(
 				'slug'  => 'max_value',

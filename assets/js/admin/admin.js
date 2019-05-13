@@ -92,21 +92,23 @@
 			}
 		})
 
-		.on( 'keyup', '.evf-input-number', function() {
-			var fieldId  = $(this).parent().data('fieldId');
-			var maxField = $("#everest-forms-field-option-"+fieldId+"-maximum_number");
-			var minField = $("#everest-forms-field-option-"+fieldId+"-minimum_number");
-			var maxVal   = parseFloat(maxField.val());
-			var minVal   = parseFloat(minField.val());
+		.on( 'keyup focus', '.evf-input-number', function() {
+			var fieldId  = $( this ).parent().data( 'fieldId' );
+			var maxField = $( "input#everest-forms-field-option-"+fieldId+"-max_value" );
+			var minField = $( "input#everest-forms-field-option-"+fieldId+"-min_value" );
+			var maxVal   = maxField.val();
+			var minVal   = minField.val();
 
 			if ( 0 !== minVal.length && 0 !== maxVal.length ) {
-				if ( minVal > maxVal ) {
-					$( document.body ).triggerHandler( 'evf_add_error_tip', [ $(this), 'i18n_field_min_value_greater', params ] );
-				} else if ( maxVal < minVal ) {
-					$( document.body ).triggerHandler( 'evf_add_error_tip', [ $(this), 'i18n_field_max_value_smaller', params ] );
+				if ( parseFloat( minVal ) > parseFloat( maxVal ) ) {
+					if( $( this ).attr( 'id' ).indexOf( 'min_value' ) !== -1 ) {
+						$( document.body ).triggerHandler( 'evf_add_error_tip', [ $( this ), 'i18n_field_min_value_greater', params ] );
+					} else {
+						$( document.body ).triggerHandler( 'evf_add_error_tip', [ $( this ), 'i18n_field_max_value_smaller', params ] );
+					}
 				} else {
-					$( document.body ).triggerHandler( 'evf_remove_error_tip', [ $(this), 'i18n_field_max_value_smaller' ] );
-					$( document.body ).triggerHandler( 'evf_remove_error_tip', [ $(this), 'i18n_field_min_value_greater' ] );
+					$( document.body ).triggerHandler( 'evf_remove_error_tip', [ $( this ), 'i18n_field_max_value_smaller' ] );
+					$( document.body ).triggerHandler( 'evf_remove_error_tip', [ $( this ), 'i18n_field_min_value_greater' ] );
 				}
 			}
 		})
