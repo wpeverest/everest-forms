@@ -146,6 +146,16 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			)
 		);
 		everest_forms_panel_field(
+			'checkbox',
+			'settings',
+			'submission_message_scroll',
+			$this->form_data,
+			__( 'Automatically scroll to the submission message', 'everest-forms' ),
+			array(
+				'default' => '1',
+			)
+		);
+		everest_forms_panel_field(
 			'select',
 			'settings',
 			'redirect_to',

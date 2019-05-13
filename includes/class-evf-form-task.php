@@ -265,7 +265,7 @@ class EVF_Form_Task {
 					var redirect = '<?php echo get_permalink( $settings['custom_page'] ); ?>';
 				window.setTimeout( function () {
 					window.location.href = redirect;
-				}, 3000 )
+				})
 				</script>
 			<?php
 		} elseif ( isset( $settings['redirect_to'] ) && '2' == $settings['redirect_to'] ) {
@@ -273,7 +273,7 @@ class EVF_Form_Task {
 			<script>
 				window.setTimeout( function () {
 					window.location.href = '<?php echo $settings['external_url']; ?>';
-				}, 3000 )
+				})
 				</script>
 			<?php
 		}
@@ -295,6 +295,11 @@ class EVF_Form_Task {
 		} else {
 			return;
 		}
+
+		if ( $settings['submission_message_scroll'] ) {
+			add_filter( 'everest_forms_success_notice_class', array( $this, 'add_scroll_notice_class' ) );
+		}
+
 		if ( ! empty( $url ) ) {
 			$url = apply_filters( 'everest_forms_process_redirect_url', $url, $form_id, $this->form_fields );
 			wp_redirect( esc_url_raw( $url ) );
@@ -302,6 +307,16 @@ class EVF_Form_Task {
 			do_action( "everest_forms_process_redirect_{$form_id}", $form_id );
 			exit;
 		}
+	}
+
+	/**
+	 * Add scroll notice class.
+	 *
+	 * @param string $class  Notice Class.
+	 */
+	public function add_scroll_notice_class( $class ) {
+		$class = 'everest-forms-submission-scroll ' . $class;
+		return $class;
 	}
 
 	/**
