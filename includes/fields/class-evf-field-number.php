@@ -36,9 +36,9 @@ class EVF_Field_Number extends EVF_Form_Fields {
 					'step',
 					'max_value',
 					'min_value',
+					'default_value',
 					'placeholder',
 					'label_hide',
-					'default_value',
 					'css',
 				),
 			),
@@ -173,7 +173,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 		$this->field_preview_option( 'label', $field );
 
 		// Primary input.
-		echo '<input type="number" placeholder="' . esc_attr( $placeholder ) . '" class="widefat" disabled>';
+		echo '<input type="number" placeholder="' . $placeholder . '" class="widefat" disabled>'; // WPCS: sanitization ok.
 
 		// Description.
 		$this->field_preview_option( 'description', $field );
