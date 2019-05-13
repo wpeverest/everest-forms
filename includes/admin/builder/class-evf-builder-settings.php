@@ -221,6 +221,17 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		everest_forms_panel_field(
 			'text',
 			'settings',
+			'submit_button_processing_text',
+			$this->form_data,
+			__( 'Submit Button Processing Text ', 'everest-forms' ),
+			array(
+				'default' => isset( $settings['submit_button_processing_text'] ) ? $settings['submit_button_processing_text'] : __( 'Sending...', 'everest-forms' ),
+				'tooltip' => esc_html__( 'Enter the desire text you would like the button to display while the form submit is processing.', 'everest-forms' ),
+			)
+		);
+		everest_forms_panel_field(
+			'text',
+			'settings',
 			'submit_button_class',
 			$this->form_data,
 			__( 'Submit button Class', 'everest-forms' ),

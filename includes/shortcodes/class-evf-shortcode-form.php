@@ -53,12 +53,13 @@ class EVF_Shortcode_Form {
 	 * @param mixed $description
 	 */
 	public static function footer( $form_data, $title, $description ) {
-		$form_id  = absint( $form_data['id'] );
-		$settings = isset( $form_data['settings'] ) ? $form_data['settings'] : '';
-		$submit   = apply_filters( 'everest_forms_field_submit', isset( $settings['submit_button_text'] ) ? $settings['submit_button_text'] : __( 'Submit', 'everest-forms' ), $form_data );
-		$process  = '';
-		$classes  = isset( $form_data['settings']['submit_button_class'] ) ? evf_sanitize_classes( $form_data['settings']['submit_button_class'] ) : '';
-		$visible  = self::$parts ? 'style="display:none"' : '';
+		$form_id        = absint( $form_data['id'] );
+		$settings       = isset( $form_data['settings'] ) ? $form_data['settings'] : '';
+		$submit         = apply_filters( 'everest_forms_field_submit', isset( $settings['submit_button_text'] ) ? $settings['submit_button_text'] : __( 'Submit', 'everest-forms' ), $form_data );
+		$process_submit = isset( $settings['submit_button_processing_text'] ) ? $settings['submit_button_processing_text'] : '';
+		$process        = '';
+		$classes        = isset( $form_data['settings']['submit_button_class'] ) ? evf_sanitize_classes( $form_data['settings']['submit_button_class'] ) : '';
+		$visible        = self::$parts ? 'style="display:none"' : '';
 
 		// Visibility class.
 		$visibility_class = apply_filters( 'everest_forms_field_submit_visibility_class', array(), self::$parts, $form_data );
@@ -77,10 +78,11 @@ class EVF_Shortcode_Form {
 			do_action( 'everest_forms_display_submit_before', $form_data );
 
 			printf(
-				'<button type="submit" name="everest_forms[submit]" class="everest-forms-submit-button button evf-submit %s" id="evf-submit-%d" value="evf-submit" %s>%s</button>',
+				'<button type="submit" name="everest_forms[submit]" class="everest-forms-submit-button button evf-submit %s" id="evf-submit-%d" value="evf-submit" %s data-process-text="%s">%s</button>',
 				$classes,
 				$form_id,
 				$process,
+				$process_submit,
 				$submit
 			);
 
