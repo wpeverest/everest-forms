@@ -60,7 +60,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 			array(
 				'slug'    => 'step',
 				'value'   => esc_html__( 'Step', 'everest-forms' ),
-				'tooltip' => sprintf( esc_html__( 'Allows users to enter specific legal number intervals.', 'everest-forms' ) ),
+				'tooltip' => esc_html__( 'Allows users to enter specific legal number intervals.', 'everest-forms' ),
 			),
 			false
 		);
@@ -94,7 +94,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 			array(
 				'slug'    => 'min_value',
 				'value'   => esc_html__( 'Min Value', 'everest-forms' ),
-				'tooltip' => sprintf( esc_html__( 'Minimum value user is allowed to enter.', 'everest-forms' ) ),
+				'tooltip' => esc_html__( 'Minimum value user is allowed to enter.', 'everest-forms' ),
 			),
 			false
 		);
@@ -128,7 +128,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 			array(
 				'slug'    => 'max_value',
 				'value'   => esc_html__( 'Max Value', 'everest-forms' ),
-				'tooltip' => sprintf( esc_html__( 'Maximum value user is allowed to enter.', 'everest-forms' ) ),
+				'tooltip' => esc_html__( 'Maximum value user is allowed to enter.', 'everest-forms' ),
 			),
 			false
 		);
