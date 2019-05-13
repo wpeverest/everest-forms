@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Everest Forms 1.4.8\n"
 "Report-Msgid-Bugs-To: https://github.com/wpeverest/everest-forms/issues\n"
-"POT-Creation-Date: 2019-05-10 05:08:40+00:00\n"
+"POT-Creation-Date: 2019-04-23 06:17:10+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -94,27 +94,28 @@ msgstr ""
 msgid "Default Value"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:575
+#: includes/abstracts/class-evf-form-fields.php:574
 msgid "Advanced Options"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:585
+#: includes/abstracts/class-evf-form-fields.php:584
 #: includes/evf-core-functions.php:1860
 msgid "Enter text for the form field placeholder."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:591
+#: includes/abstracts/class-evf-form-fields.php:590
 #: includes/evf-core-functions.php:1859
 msgid "Placeholder Text"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:619
+#: includes/abstracts/class-evf-form-fields.php:618
+#: includes/evf-core-functions.php:1868
 msgid ""
-"Enter CSS class names for this field container. Multiple class names should "
-"be separated with spaces."
+"Enter CSS class for this field container. Class names should be separated "
+"with spaces."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:627
+#: includes/abstracts/class-evf-form-fields.php:626
 #: includes/evf-core-functions.php:1867
 msgid "CSS Classes"
 msgstr ""
@@ -213,193 +214,166 @@ msgstr ""
 msgid "Select the type of row"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:40
-#: includes/admin/builder/class-evf-builder-settings.php:126
+#: includes/admin/builder/class-evf-builder-settings.php:38
+#: includes/admin/builder/class-evf-builder-settings.php:119
 #: includes/admin/settings/class-evf-settings-general.php:25
 msgid "General"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:41
-#: includes/admin/builder/class-evf-builder-settings.php:289
+#: includes/admin/builder/class-evf-builder-settings.php:39
+#: includes/admin/builder/class-evf-builder-settings.php:262
 #: includes/admin/settings/class-evf-settings-email.php:25
 #: includes/admin/settings/class-evf-settings-validation.php:63
 #: includes/fields/class-evf-field-email.php:20
 msgid "Email"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:77
-#: includes/admin/builder/class-evf-builder-settings.php:263
-#: includes/admin/builder/class-evf-builder-settings.php:303
+#: includes/admin/builder/class-evf-builder-settings.php:73
+#: includes/admin/builder/class-evf-builder-settings.php:240
+#: includes/admin/builder/class-evf-builder-settings.php:276
 #: includes/class-evf-form-task.php:327 includes/evf-update-functions.php:140
 #: includes/templates/contact.php:70
 msgid "Admin Notification"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:82
+#: includes/admin/builder/class-evf-builder-settings.php:78
 msgid "Add New Email"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:86
+#: includes/admin/builder/class-evf-builder-settings.php:82
 msgid "Email Notifications"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:133
+#: includes/admin/builder/class-evf-builder-settings.php:126
 #: includes/admin/views/html-admin-page-builder-setup.php:25
 #: includes/class-evf-smart-tags.php:39
 msgid "Form Name"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:143
+#: includes/admin/builder/class-evf-builder-settings.php:136
 msgid "Successful form submission message"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:145
+#: includes/admin/builder/class-evf-builder-settings.php:138
 msgid "Thanks for contacting us! We will be in touch with you shortly"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:153
+#: includes/admin/builder/class-evf-builder-settings.php:146
 msgid "Redirect To"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:157
+#: includes/admin/builder/class-evf-builder-settings.php:150
 msgid "Same Page"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:158
-#: includes/admin/builder/class-evf-builder-settings.php:168
+#: includes/admin/builder/class-evf-builder-settings.php:151
+#: includes/admin/builder/class-evf-builder-settings.php:161
 msgid "Custom Page"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:159
-#: includes/admin/builder/class-evf-builder-settings.php:179
+#: includes/admin/builder/class-evf-builder-settings.php:152
+#: includes/admin/builder/class-evf-builder-settings.php:172
 msgid "External URL"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:189
+#: includes/admin/builder/class-evf-builder-settings.php:182
 msgid "Layout Design"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:193
+#: includes/admin/builder/class-evf-builder-settings.php:186
 msgid "Default"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:194
+#: includes/admin/builder/class-evf-builder-settings.php:187
 msgid "Classic Layout"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:203
+#: includes/admin/builder/class-evf-builder-settings.php:196
 msgid "Form Class"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:209
-msgid "Submit Button"
-msgstr ""
-
-#: includes/admin/builder/class-evf-builder-settings.php:215
+#: includes/admin/builder/class-evf-builder-settings.php:206
 msgid "Submit button text"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:217
+#: includes/admin/builder/class-evf-builder-settings.php:208
 #: includes/shortcodes/class-evf-shortcode-form.php:58
 #: includes/templates/contact.php:67
 msgid "Submit"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:218
-msgid "Enter desired text for submit button."
-msgstr ""
-
-#: includes/admin/builder/class-evf-builder-settings.php:226
-msgid "Submit button Class"
-msgstr ""
-
-#: includes/admin/builder/class-evf-builder-settings.php:229
-msgid ""
-"Enter CSS class names for submit button. Multiple class names should be "
-"separated with spaces."
-msgstr ""
-
-#: includes/admin/builder/class-evf-builder-settings.php:238
+#: includes/admin/builder/class-evf-builder-settings.php:216
 msgid "Enable %1$s %2$s reCaptcha %3$s support"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:248
+#: includes/admin/builder/class-evf-builder-settings.php:226
 msgid "Disable storing entry information"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:268
-#: includes/admin/builder/class-evf-builder-settings.php:374
-#: includes/templates/contact.php:75
-msgid "New Form Entry %s"
-msgstr ""
-
-#: includes/admin/builder/class-evf-builder-settings.php:279
+#: includes/admin/builder/class-evf-builder-settings.php:250
 #: includes/evf-update-functions.php:156
 msgid "User Notification"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:312
+#: includes/admin/builder/class-evf-builder-settings.php:285
 msgid "To Address"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:315
+#: includes/admin/builder/class-evf-builder-settings.php:288
 msgid ""
 "Enter your email address to receive notifications; separate with a comma if "
 "multiple addresses."
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:327
+#: includes/admin/builder/class-evf-builder-settings.php:300
 msgid "From Name"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:330
+#: includes/admin/builder/class-evf-builder-settings.php:303
 msgid "Enter the From Name."
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:342
+#: includes/admin/builder/class-evf-builder-settings.php:315
 msgid "From Address"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:345
+#: includes/admin/builder/class-evf-builder-settings.php:318
 msgid "Enter the Email address from which you want to send Email."
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:357
+#: includes/admin/builder/class-evf-builder-settings.php:330
 msgid "Reply To"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:360
+#: includes/admin/builder/class-evf-builder-settings.php:333
 msgid ""
 "Enter the reply to email where the email address will be sent while user "
 "replies Email."
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:372
+#: includes/admin/builder/class-evf-builder-settings.php:345
 msgid "Email Subject"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:375
+#: includes/admin/builder/class-evf-builder-settings.php:347
+#: includes/templates/contact.php:75
+msgid "New Form Entry %s"
+msgstr ""
+
+#: includes/admin/builder/class-evf-builder-settings.php:348
 msgid "Enter the subject of the email."
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:387
+#: includes/admin/builder/class-evf-builder-settings.php:360
 msgid "Email Message"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:389
+#: includes/admin/builder/class-evf-builder-settings.php:362
 msgid "{all_fields}"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:390
+#: includes/admin/builder/class-evf-builder-settings.php:363
 msgid "Enter the message of Email."
-msgstr ""
-
-#: includes/admin/builder/class-evf-builder-settings.php:398
-msgid "To display all form fields, use the"
-msgstr ""
-
-#: includes/admin/builder/class-evf-builder-settings.php:398
-msgid "Smart Tags."
 msgstr ""
 
 #: includes/admin/class-evf-admin-assets.php:114
@@ -484,12 +458,14 @@ msgstr ""
 msgid "You must provide a Email nickname"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:168
-msgid "New Form Entry"
+#: includes/admin/class-evf-admin-assets.php:174
+msgid "Please enter in meta key with alphanumeric and underscores character."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:176
-msgid "Please enter in meta key with alphanumeric and underscores character."
+#: includes/admin/class-evf-admin-assets.php:175
+msgid ""
+"Please enter in classname with alphanumeric, underscores and hyphen "
+"character."
 msgstr ""
 
 #: includes/admin/class-evf-admin-editor.php:42
@@ -1318,31 +1294,19 @@ msgstr ""
 msgid "Unserializing instances of this class is forbidden."
 msgstr ""
 
-#: includes/class-evf-form-block.php:73
-msgid "Select and display one of your forms."
+#: includes/class-evf-form-block.php:67
+msgid "Select &#38; display one of your form."
 msgstr ""
 
-#: includes/class-evf-form-block.php:75
-msgid "form"
-msgstr ""
-
-#: includes/class-evf-form-block.php:76
-msgid "contact"
-msgstr ""
-
-#: includes/class-evf-form-block.php:77
-msgid "survey"
-msgstr ""
-
-#: includes/class-evf-form-block.php:79
+#: includes/class-evf-form-block.php:68
 msgid "Select a Form"
 msgstr ""
 
-#: includes/class-evf-form-block.php:80
+#: includes/class-evf-form-block.php:69
 msgid "Form Settings"
 msgstr ""
 
-#: includes/class-evf-form-block.php:81 includes/class-evf-post-types.php:43
+#: includes/class-evf-form-block.php:70 includes/class-evf-post-types.php:43
 msgid "Form"
 msgstr ""
 
@@ -1749,7 +1713,7 @@ msgstr ""
 msgid "Referrer URL"
 msgstr ""
 
-#: includes/class-evf-template-loader.php:193
+#: includes/class-evf-template-loader.php:179
 #. translators: %s - Form name.
 msgid "%s &ndash; Preview"
 msgstr ""
@@ -2792,12 +2756,6 @@ msgstr ""
 msgid "Third Choice"
 msgstr ""
 
-#: includes/evf-core-functions.php:1868
-msgid ""
-"Enter CSS class for this field container. Class names should be separated "
-"with spaces."
-msgstr ""
-
 #: includes/evf-entry-functions.php:51
 msgid "Published"
 msgstr ""
@@ -2883,19 +2841,6 @@ msgstr ""
 
 #: includes/fields/class-evf-field-likert.php:20
 msgid "Likert"
-msgstr ""
-
-#: includes/fields/class-evf-field-number.php:65
-msgid "Minimum Number"
-msgstr ""
-
-#: includes/fields/class-evf-field-number.php:66
-#: includes/fields/class-evf-field-number.php:99
-msgid "Minimum number user is allowed to enter."
-msgstr ""
-
-#: includes/fields/class-evf-field-number.php:98
-msgid "Maximum Number"
 msgstr ""
 
 #: includes/fields/class-evf-field-password.php:20
