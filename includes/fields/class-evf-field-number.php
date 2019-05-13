@@ -173,7 +173,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 		$this->field_preview_option( 'label', $field );
 
 		// Primary input.
-		echo '<input type="number" placeholder="' . $placeholder . '" class="widefat" disabled>'; // WPCS: sanitization ok.
+		echo '<input type="number" placeholder="' . $placeholder . '" class="widefat" disabled>'; // @codingStandardsIgnoreLine.
 
 		// Description.
 		$this->field_preview_option( 'description', $field );
