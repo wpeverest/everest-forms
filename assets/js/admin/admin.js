@@ -68,7 +68,7 @@
 			var regex;
 
 			if ( $( this ).is( '.evf-input-number' ) ) {
-				regex = new RegExp( '[^\-0-9]+', 'gi' );
+				regex = new RegExp( '[^0-9]+', 'gi' );
 			} else {
 				regex = new RegExp( '[^a-z0-9_]+', 'gi' );
 			}
