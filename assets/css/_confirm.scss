@@ -71,7 +71,7 @@ div.jconfirm {
 				outline: none;
 
 				&:hover {
-					background-color: transparentize( $button-color, 0.2 )
+					background-color: transparentize($button-color, 0.2);
 				}
 			}
 

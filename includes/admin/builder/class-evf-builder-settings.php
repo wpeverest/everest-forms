@@ -78,7 +78,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		}
 		?>
 			<div class="everest-forms-active-email">
-				<button class="everest-forms-btn everest-forms-email-add" data-form_id="<?php echo absint( $_GET['form_id'] ); ?>" data-source="email" data-type="<?php echo esc_attr( 'connection' ); ?>">
+				<button class="everest-forms-btn everest-forms-btn-primary everest-forms-email-add" data-form_id="<?php echo absint( $_GET['form_id'] ); ?>" data-source="email" data-type="<?php echo esc_attr( 'connection' ); ?>">
 					<?php printf( esc_html__( 'Add New Email', 'everest-forms' ) ); ?>
 				</button>
 					<ul class="everest-forms-active-email-connections-list">
@@ -206,6 +206,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				'tooltip' => esc_html( 'Enter CSS class names for the form wrapper. Multiple class names should be separated with spaces.', 'everest-forms' ),
 			)
 		);
+		echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'Submit Button', 'everest-forms' ) . '</h4>';
 		everest_forms_panel_field(
 			'text',
 			'settings',
@@ -214,8 +215,21 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			__( 'Submit button text', 'everest-forms' ),
 			array(
 				'default' => isset( $settings['submit_button_text'] ) ? $settings['submit_button_text'] : __( 'Submit', 'everest-forms' ),
+				'tooltip' => esc_html__( 'Enter desired text for submit button.', 'everest-forms' ),
 			)
 		);
+		everest_forms_panel_field(
+			'text',
+			'settings',
+			'submit_button_class',
+			$this->form_data,
+			__( 'Submit button Class', 'everest-forms' ),
+			array(
+				'default' => isset( $settings['submit_button_class'] ) ? $settings['submit_button_class'] : '',
+				'tooltip' => esc_html__( 'Enter CSS class names for submit button. Multiple class names should be separated with spaces.', 'everest-forms' ),
+			)
+		);
+		echo '</div>';
 		everest_forms_panel_field(
 			'checkbox',
 			'settings',
@@ -381,7 +395,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					)
 				);
 
-				echo '<p class="description everest-forms-email-message-info">' . esc_html__( 'To display all form fields, use the', 'everest-froms' ) . ' <code>{all_fields}</code> ' . esc_html__( 'Smart Tags.', 'everest-forms' ) . '</p>';
+				echo '<p class="description everest-forms-email-message-info">' . esc_html__( 'To display all form fields, use the', 'everest-forms' ) . ' <code>{all_fields}</code> ' . esc_html__( 'Smart Tags.', 'everest-forms' ) . '</p>';
 
 				do_action( 'everest_forms_inline_email_settings', $this, $connection_id );
 

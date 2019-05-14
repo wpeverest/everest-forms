@@ -72,19 +72,22 @@ class EVF_Fields {
 	 * Load fields and hook in functions.
 	 */
 	public function init() {
-		$load_fields = apply_filters( 'everest_forms_fields', array(
-			'EVF_Field_First_Name',
-			'EVF_Field_Last_Name',
-			'EVF_Field_Text',
-			'EVF_Field_Textarea',
-			'EVF_Field_Select',
-			'EVF_Field_Radio',
-			'EVF_Field_Checkbox',
-			'EVF_Field_Number',
-			'EVF_Field_Email',
-			'EVF_Field_URL',
-			'EVF_Field_Date',
-		) );
+		$load_fields = apply_filters(
+			'everest_forms_fields',
+			array(
+				'EVF_Field_First_Name',
+				'EVF_Field_Last_Name',
+				'EVF_Field_Text',
+				'EVF_Field_Textarea',
+				'EVF_Field_Select',
+				'EVF_Field_Radio',
+				'EVF_Field_Checkbox',
+				'EVF_Field_Number',
+				'EVF_Field_Email',
+				'EVF_Field_URL',
+				'EVF_Field_Date_Time',
+			)
+		);
 
 		// Get sort order.
 		$order_end = 999;

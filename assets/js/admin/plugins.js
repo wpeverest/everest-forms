@@ -1,11 +1,11 @@
 /* global evf_plugins_params */
 jQuery( function( $ ) {
 
-   $( document.body ).on( 'click' ,'tr[data-plugin="everest-forms/everest-forms.php"] span.deactivate a', function( e ) {
-        var isUpdateNotice = $( 'tr.plugin-update-tr[data-plugin="everest-forms/everest-forms.php"]' );
-        if ( isUpdateNotice.length || $( this ).hasClass( 'hasNotice' ) ) {
-            return true;
-        }
+	$( document.body ).on( 'click' ,'tr[data-plugin="everest-forms/everest-forms.php"] span.deactivate a', function( e ) {
+		var isUpdateNotice = $( 'tr.plugin-update-tr[data-plugin="everest-forms/everest-forms.php"]' );
+		if ( isUpdateNotice.length || $( this ).hasClass( 'hasNotice' ) ) {
+			return true;
+		}
 
 		e.preventDefault();
 
