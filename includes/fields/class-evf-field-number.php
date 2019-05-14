@@ -54,7 +54,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 	 * @param array $field Field Data.
 	 */
 	public function step( $field ) {
-		$step_label = $this->field_element(
+		$label       = $this->field_element(
 			'label',
 			$field,
 			array(
@@ -64,7 +64,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 			),
 			false
 		);
-		$step_field = $this->field_element(
+		$input_field = $this->field_element(
 			'text',
 			$field,
 			array(
@@ -80,7 +80,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 			$field,
 			array(
 				'slug'    => 'step',
-				'content' => $step_label . $step_field,
+				'content' => $label . $input_field,
 			)
 		);
 	}
@@ -92,7 +92,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 	 * @param array $field Field Data.
 	 */
 	public function min_value( $field ) {
-		$min_label = $this->field_element(
+		$label       = $this->field_element(
 			'label',
 			$field,
 			array(
@@ -102,7 +102,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 			),
 			false
 		);
-		$min_field = $this->field_element(
+		$input_field = $this->field_element(
 			'text',
 			$field,
 			array(
@@ -118,7 +118,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 			$field,
 			array(
 				'slug'    => 'min_value',
-				'content' => $min_label . $min_field,
+				'content' => $label . $input_field,
 			)
 		);
 	}
@@ -130,7 +130,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 	 * @param array $field Field Data.
 	 */
 	public function max_value( $field ) {
-		$max_label = $this->field_element(
+		$label       = $this->field_element(
 			'label',
 			$field,
 			array(
@@ -140,7 +140,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 			),
 			false
 		);
-		$max_field = $this->field_element(
+		$input_field = $this->field_element(
 			'text',
 			$field,
 			array(
@@ -156,7 +156,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 			$field,
 			array(
 				'slug'    => 'max_value',
-				'content' => $max_label . $max_field,
+				'content' => $label . $input_field,
 			)
 		);
 	}
