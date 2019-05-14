@@ -298,6 +298,15 @@
 				var id = $( this ).parent().data( 'field-id' );
 				$( '#everest-forms-field-' + id ).toggleClass( 'sublabel_hide' );
 			});
+
+			// Real-time updates for Date/Time field option.
+			$builder.on( 'change', '.everest-forms-field-option-row-datetime_format select', function(e) {
+				var $this = $(this),
+					value = $this.val(),
+					id    = $this.parent().data( 'field-id' );
+				$( '#everest-forms-field-' + id ).find( '.format-selected' ).removeClass().addClass( 'format-selected format-selected-' + value );
+				$( '#everest-forms-field-option-' + id ).find( '.format-selected' ).removeClass().addClass( 'format-selected format-selected-'+ value );
+			});
 		},
 		choicesInit: function () {
 			$( 'ul.evf-choices-list' ).sortable({
