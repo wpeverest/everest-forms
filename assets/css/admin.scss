@@ -244,10 +244,7 @@ body.everest-forms-builder {
 			padding-left: 0;
 		}
 		#wpfooter {
-			position: fixed;
-			padding: 11px 20px;
-			background: #f1f1f1;
-			border-top: 1px solid $color-gray-lighter;
+			display: none;
 		}
 	}
 
@@ -1051,7 +1048,7 @@ body.everest-forms-builder-setup,
 
 				.everest-forms-panel-sidebar {
 					width: 400px;
-					height: calc(100vh - 150px);
+					height: calc(100vh - 109px);
 					position: relative;
 					background-color: #f8f9fa;
 					border-right: 1px solid #e0e3e6;
@@ -2252,7 +2249,7 @@ body.everest-forms-builder-setup,
 
 		.everest-forms-tab-content {
 			position: relative;
-			height: calc(100vh - 200px);
+			height: calc(100vh - 158px);
 
 			.everest-forms-add-fields-group {
 				margin-bottom: 5px;
@@ -2281,7 +2278,7 @@ body.everest-forms-builder-setup,
 				position: relative;
 				padding: 15px 20px;
 				background-color: #fff;
-				height: calc(100vh - 150px);
+				height: calc(100vh - 109px);
 				overflow-x: auto;
 
 				.everest-forms-border-container {
