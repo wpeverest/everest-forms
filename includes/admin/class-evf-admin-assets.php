@@ -137,10 +137,12 @@ class EVF_Admin_Assets {
 			'evf-upgrade',
 			'evf_upgrade',
 			array(
-				'upgrade_title'   => esc_html__( 'is a PRO Feature', 'everest-forms' ),
-				'upgrade_message' => esc_html__( 'We\'re sorry, %name% is not available on your plan.<br>Please upgrade to the PRO plan to unlock all these awesome features.', 'everest-forms' ),
-				'upgrade_button'  => esc_html__( 'Upgrade to PRO', 'everest-forms' ),
-				'upgrade_url'     => apply_filters( 'everest_forms_upgrade_url', 'https://wpeverest.com/wordpress-plugins/everest-forms/?utm_source=user-dashboard&utm_medium=modal-button&utm_campaign=free-version' ),
+				'upgrade_title'         => esc_html__( 'is a PRO Feature', 'everest-forms' ),
+				'upgrade_message'       => esc_html__( 'We\'re sorry, %name% is not available on your plan.<br>Please upgrade to the PRO plan to unlock all these awesome features.', 'everest-forms' ),
+				'upgrade_button'        => esc_html__( 'Upgrade to PRO', 'everest-forms' ),
+				'upgrade_url'           => apply_filters( 'everest_forms_upgrade_url', 'https://wpeverest.com/wordpress-plugins/everest-forms/?utm_source=user-dashboard&utm_medium=modal-button&utm_campaign=free-version' ),
+				'enable_stripe_title'   => esc_html__( 'Please enable Stripe', 'everest-forms' ),
+				'enable_stripe_message' => esc_html__( 'Please enable Stripe Payment gateway in payment section.', 'everest-forms' ),
 			)
 		);
 

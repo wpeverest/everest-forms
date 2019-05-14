@@ -7,10 +7,27 @@ jQuery( function( $ ) {
 	var evf_upgrade_actions = {
 		init: function() {
 			$( document.body ).on( 'click dragstart', '.evf-registered-item.upgrade-modal', this.field_upgrade );
+			$( document.body ).on( 'click dragstart', '.evf-registered-item.enable-stripe-model', this.enable_stripe_model );
 		},
 		field_upgrade: function( e ) {
 			e.preventDefault();
 			evf_upgrade_actions.upgrade_modal( $(this).text() + ' field' );
+		},
+		enable_stripe_model: function( e ) {
+			e.preventDefault();
+
+			$.alert({
+				title: evf_upgrade.enable_stripe_title,
+				icon: 'dashicons dashicons-lock',
+				content: evf_upgrade.enable_stripe_message,
+				type: 'red',
+				boxWidth: '565px',
+				buttons: {
+					cancel: {
+						text: evf_data.i18n_ok
+					}
+				}
+			});
 		},
 		upgrade_modal: function( feature ) {
 			var message = evf_upgrade.upgrade_message.replace( /%name%/g, feature );
