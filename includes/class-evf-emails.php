@@ -193,7 +193,8 @@ class EVF_Emails {
 		}
 
 		if ( ! empty( $this->cc ) ) {
-			$this->cc  = $this->process_tag( $this->cc );
+			$this->cc = $this->process_tag( $this->cc );
+
 			$addresses = array_map( 'trim', explode( ',', $this->cc ) );
 
 			foreach ( $addresses as $key => $address ) {
@@ -209,7 +210,7 @@ class EVF_Emails {
 	}
 
 	/**
-	 * Get the emailblind  carbon copy addresses.
+	 * Get the email blind carbon copy addresses.
 	 *
 	 * @return string The email reply-to address.
 	 */
@@ -223,6 +224,7 @@ class EVF_Emails {
 
 		if ( ! empty( $this->bcc ) ) {
 			$this->bcc = $this->process_tag( $this->bcc );
+
 			$addresses = array_map( 'trim', explode( ',', $this->bcc ) );
 
 			foreach ( $addresses as $key => $address ) {
