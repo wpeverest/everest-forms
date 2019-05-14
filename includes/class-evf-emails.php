@@ -129,7 +129,6 @@ class EVF_Emails {
 	 * @param mixed  $value
 	 */
 	public function __set( $key, $value ) {
-
 		$this->$key = $value;
 	}
 
@@ -176,6 +175,7 @@ class EVF_Emails {
 				$this->reply_to = false;
 			}
 		}
+
 		return apply_filters( 'everest_forms_email_reply_to', $this->reply_to, $this );
 	}
 
@@ -185,9 +185,9 @@ class EVF_Emails {
 	 * @return string The email reply-to address.
 	 */
 	public function get_cc() {
-
 		// Get cc email addresses from form data.
 		$form_email_data = $this->form_data['settings']['email'];
+
 		foreach ( $form_email_data as $email_key => $email_data ) {
 			$this->cc = ! empty( $email_data['evf_cc'] ) ? $email_data['evf_cc'] : false;
 		}
@@ -214,9 +214,9 @@ class EVF_Emails {
 	 * @return string The email reply-to address.
 	 */
 	public function get_bcc() {
-
 		// Get bcc email address from form data.
 		$form_email_data = $this->form_data['settings']['email'];
+
 		foreach ( $form_email_data as $email_key => $email_data ) {
 			$this->bcc = ! empty( $email_data['evf_bcc'] ) ? $email_data['evf_bcc'] : false;
 		}
