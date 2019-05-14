@@ -1813,7 +1813,7 @@ function evf_get_all_fields_settings() {
 		'label'         => array(
 			'id'       => 'label',
 			'title'    => __( 'Label', 'everest-forms' ),
-			'desc'     => __( 'Enter text for the form field label.', 'everest-forms' ),
+			'desc'     => __( 'Enter text for the form field label. This is recommended and can be hidden in the Advanced Settings.', 'everest-forms' ),
 			'default'  => '',
 			'type'     => 'text',
 			'desc_tip' => true,
