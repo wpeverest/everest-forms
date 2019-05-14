@@ -348,8 +348,8 @@
 		}
 
 		&:disabled {
-			opacity: 0.6;
-			cursor: default;
+			opacity: 0.5;
+			cursor: not-allowed;
 
 			&:hover {
 				color: #555;
