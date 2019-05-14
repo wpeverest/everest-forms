@@ -241,19 +241,17 @@ class EVF_Field_Number extends EVF_Form_Fields {
 	 * @param array  $form_data All Form Data.
 	 */
 	public function validate( $field_id, $field_submit, $form_data ) {
-		$field_type = isset( $form_data['form_fields'][ $field_id ]['type'] ) ? $form_data['form_fields'][ $field_id ]['type'] : '';
-		$min        = null !== trim( $form_data['form_fields'][ $field_id ]['min_value'] ) ? floatval( $form_data['form_fields'][ $field_id ]['min_value'] ) : '';
-		$max        = null !== trim( $form_data['form_fields'][ $field_id ]['max_value'] ) ? floatval( $form_data['form_fields'][ $field_id ]['max_value'] ) : '';
+		$form_id   = absint( $form_data['id'] );
+		$min_value = isset( $form_data['form_fields'][ $field_id ]['min_value'] ) ? floatval( $form_data['form_fields'][ $field_id ]['min_value'] ) : '';
+		$max_value = isset( $form_data['form_fields'][ $field_id ]['max_value'] ) ? floatval( $form_data['form_fields'][ $field_id ]['max_value'] ) : '';
 
-		if ( floatval( $field_submit ) < $min ) {
-			$validation_text = get_option( 'evf_' . $field_type . '_validation', __( 'Please enter a value greater than or equal to ' . $min, 'everest-forms' ) );
-		} elseif ( floatval( $field_submit ) > $max ) {
-			$validation_text = get_option( 'evf_' . $field_type . '_validation', __( 'Please enter a value less than or equal to ' . $max, 'everest-forms' ) );
-		}
-
-		if ( isset( $validation_text ) ) {
-			EVF()->task->errors[ $form_data['id'] ][ $field_id ] = apply_filters( 'everest_forms_type_validation', $validation_text );
-			update_option( 'evf_validation_error', 'yes' );
+		// Minimum and maximum value check.
+		if ( floatval( $field_submit ) < $min_value ) {
+			/* translators: %s - minimum value. */
+			evf()->task->errors[ $form_id ][ $field_id ] = sprintf( esc_html__( 'Please enter a value greater than or equal to %s', 'everest-forms' ), absint( $min_value ) );
+		} elseif ( floatval( $field_submit ) > $max_value ) {
+			/* translators: %s - maximum value. */
+			evf()->task->errors[ $form_id ][ $field_id ] = sprintf( esc_html__( 'Please enter a value less than or equal to %s', 'everest-forms' ), absint( $max_value ) );
 		}
 	}
 }
