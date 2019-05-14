@@ -42,7 +42,6 @@ class EVF_Forms_Features {
 			'EVF_Field_Payment_Radio',
 			'EVF_Field_Payment_Checkbox',
 			'EVF_Field_Payment_Total',
-			'EVF_Field_Payment_Charge_Options',
 			'EVF_Field_Credit_Card',
 			'EVF_Field_Rating',
 			'EVF_Field_Likert',
