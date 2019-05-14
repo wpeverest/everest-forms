@@ -15,7 +15,6 @@ jQuery( function( $ ) {
 		},
 		enable_stripe_model: function( e ) {
 			e.preventDefault();
-
 			$.alert({
 				title: evf_upgrade.enable_stripe_title,
 				icon: 'dashicons dashicons-lock',
