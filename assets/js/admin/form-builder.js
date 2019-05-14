@@ -27,7 +27,6 @@
 		 	});
 
 		 	$( document.body )
-				.on( 'click', 'a.help_tip, a.everets-forms-help-tip', this.preventTipTipClick )
 				.on( 'click', '#copy-shortcode', this.copyShortcode )
 				.on( 'aftercopy', '#copy-shortcode', this.copySuccess )
 				.on( 'aftercopyfailure', '#copy-shortcode', this.copyFail );
@@ -67,15 +66,6 @@
 		},
 
 		/**
-		 * Prevent anchor behavior when click on TipTip.
-		 *
-		 * @return {Bool}
-		 */
-		preventTipTipClick: function() {
-			return false;
-		},
-
-		/**
 		 * Copy shortcode.
 		 *
 		 * @param {Object} evt Copy event.
@@ -90,13 +80,13 @@
 		 * Display a "Copied!" tip when success copying.
 		 */
 		copySuccess: function() {
-			$( '#copy-shortcode' ).tipTip({
-				'attribute': 'data-copied',
-				'activation': 'focus',
-				'fadeIn': 50,
-				'fadeOut': 50,
-				'delay': 0
-			}).focus();
+			$( '#copy-shortcode' ).tooltipster( 'content', $( this ).attr( 'data-copied' ) ).trigger( 'mouseenter' ).on( 'mouseleave', function() {
+				var $this = $( this );
+
+				setTimeout( function() {
+					$this.tooltipster( 'content', $this.attr( 'data-tip' ) );
+				}, 1000 );
+			} );
 		},
 
 		/**
@@ -307,6 +297,15 @@
 			$builder.on( 'change', '.everest-forms-field-option-row-sublabel_hide input', function() {
 				var id = $( this ).parent().data( 'field-id' );
 				$( '#everest-forms-field-' + id ).toggleClass( 'sublabel_hide' );
+			});
+
+			// Real-time updates for Date/Time field option.
+			$builder.on( 'change', '.everest-forms-field-option-row-datetime_format select', function(e) {
+				var $this = $(this),
+					value = $this.val(),
+					id    = $this.parent().data( 'field-id' );
+				$( '#everest-forms-field-' + id ).find( '.format-selected' ).removeClass().addClass( 'format-selected format-selected-' + value );
+				$( '#everest-forms-field-option-' + id ).find( '.format-selected' ).removeClass().addClass( 'format-selected format-selected-'+ value );
 			});
 		},
 		choicesInit: function () {

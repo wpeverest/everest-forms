@@ -189,7 +189,7 @@ $background_color = '#e9eaec';
 		/* Body - Body Link */
 		#templateBody .mcnTextContent a,
 		#templateBody .mcnTextContent p a{
-			color:#ff7f50;
+			color: #7e3bd0;
 			font-weight:normal;
 			text-decoration:underline;
 		}

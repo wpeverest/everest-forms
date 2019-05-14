@@ -78,7 +78,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		}
 		?>
 			<div class="everest-forms-active-email">
-				<button class="everest-forms-btn everest-forms-email-add" data-form_id="<?php echo absint( $_GET['form_id'] ); ?>" data-source="email" data-type="<?php echo esc_attr( 'connection' ); ?>">
+				<button class="everest-forms-btn everest-forms-btn-primary everest-forms-email-add" data-form_id="<?php echo absint( $_GET['form_id'] ); ?>" data-source="email" data-type="<?php echo esc_attr( 'connection' ); ?>">
 					<?php printf( esc_html__( 'Add New Email', 'everest-forms' ) ); ?>
 				</button>
 					<ul class="everest-forms-active-email-connections-list">
