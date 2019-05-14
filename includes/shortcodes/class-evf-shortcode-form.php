@@ -62,9 +62,9 @@ class EVF_Shortcode_Form {
 
 		// Visibility class.
 		$visibility_class = apply_filters( 'everest_forms_field_submit_visibility_class', array(), self::$parts, $form_data );
-		// echo '<pre>' . print_r( $form_data, true ) . '</pre>';
+
 		// Submit button area.
-		$conditional_id    = 'evf-submit-'.$form_id;
+		$conditional_id    = 'evf-submit-' . $form_id;
 		$con_rules         = array(
 			'conditional_option' => isset( $form_data['settings']['submit']['connection_1']['conditional_option'] ) ? $form_data['settings']['submit']['connection_1']['conditional_option'] : '',
 			'conditionals'       => isset( $form_data['settings']['submit']['connection_1']['conditionals'] ) ? $form_data['settings']['submit']['connection_1']['conditionals'] : '',
