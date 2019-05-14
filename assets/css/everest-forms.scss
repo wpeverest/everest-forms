@@ -346,6 +346,16 @@
 			color: #23282d;
 			background-color: #eee;
 		}
+
+		&:disabled {
+			opacity: 0.6;
+			cursor: default;
+
+			&:hover {
+				color: #555;
+				background-color: #f7f7f7;
+			}
+		}
 	}
 
 	.layout-two {
