@@ -64,8 +64,15 @@
 			$( '.evf_error_tip' ).fadeOut( '100', function() { $( this ).remove(); } );
 		})
 
-		.on( 'change', '.evf-input-meta-key[type=text]', function() {
-			var regex    = new RegExp( '[^a-z0-9_]+', 'gi' );
+		.on( 'change', '.evf-input-meta-key[type=text], .evf-input-number[type=number]', function() {
+			var regex;
+
+			if ( $( this ).is( '.evf-input-number' ) ) {
+				regex = new RegExp( '[^\-0-9]+', 'gi' );
+			} else {
+				regex = new RegExp( '[^a-z0-9_]+', 'gi' );
+			}
+
 			var value    = $( this ).val();
 			var newvalue = value.replace( regex, '' );
 
@@ -92,7 +99,7 @@
 			}
 		})
 
-		.on( 'keyup focus', '.evf-input-number', function() {
+		.on( 'keyup focus', '.evf-input-number[type=number]', function() {
 			var fieldId  = $( this ).parent().data( 'fieldId' );
 			var maxField = $( "input#everest-forms-field-option-"+fieldId+"-max_value" );
 			var minField = $( "input#everest-forms-field-option-"+fieldId+"-min_value" );
