@@ -367,7 +367,7 @@ class EVF_Form_Task {
 			$emails->__set( 'reply_to', $email['reply_to'] );
 			$emails->__set( 'attachments', apply_filters( 'everest_forms_email_file_attachments', $attachment, $entry, $form_data, 'entry-email', $connection_id ) );
 
-			// Maybe include CC and BCC email addresses.
+			// Maybe include Cc and Bcc email addresses.
 			if ( 'yes' === get_option( 'everest_forms_enable_email_copies' ) ) {
 				if ( ! empty( $notification['evf_carboncopy'] ) ) {
 					$emails->__set( 'cc', $notification['evf_carboncopy'] );
