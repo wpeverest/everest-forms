@@ -312,7 +312,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					__( 'To Address', 'everest-forms' ),
 					array(
 						'default'   => isset( $settings['email'][ $connection_id ]['evf_to_email'] ) ? $settings['email'][ $connection_id ]['evf_to_email'] : '{admin_email}',
-						'tooltip'   => __( 'Enter your email address to receive notifications; separate with a comma if multiple addresses.', 'everest-forms' ),
+						'tooltip'   => __( 'Enter the recipient\'s email address (comma separated) to receive form entry notifications.', 'everest-forms' ),
 						'smarttags' => array(
 							'type'        => 'fields',
 							'form_fields' => 'email',
@@ -322,12 +322,12 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				everest_forms_panel_field(
 					'text',
 					'settings[email][' . $connection_id . ']',
-					'evf_cc',
+					'evf_carboncopy',
 					$this->form_data,
 					__( 'CC Address', 'everest-forms' ),
 					array(
-						'default'   => isset( $settings['email'][ $connection_id ]['evf_cc'] ) ? $settings['email'][ $connection_id ]['evf_cc'] : '',
-						'tooltip'   => __( 'Enter Cc email address to receive notifications; separate with a comma if multiple addresses.', 'everest-forms' ),
+						'default'   => isset( $settings['email'][ $connection_id ]['evf_carboncopy'] ) ? $settings['email'][ $connection_id ]['evf_carboncopy'] : '',
+						'tooltip'   => __( 'Enter the CC email address (comma separated) to receive form entry notifications.', 'everest-forms' ),
 						'smarttags' => array(
 							'type'        => 'fields',
 							'form_fields' => 'email',
@@ -337,12 +337,12 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				everest_forms_panel_field(
 					'text',
 					'settings[email][' . $connection_id . ']',
-					'evf_bcc',
+					'evf_blindcarboncopy',
 					$this->form_data,
 					__( 'BCC Address', 'everest-forms' ),
 					array(
-						'default'   => isset( $settings['email'][ $connection_id ]['evf_bcc'] ) ? $settings['email'][ $connection_id ]['evf_bcc'] : '',
-						'tooltip'   => __( 'Enter Bcc email address to receive notifications; separate with a comma if multiple addresses.', 'everest-forms' ),
+						'default'   => isset( $settings['email'][ $connection_id ]['evf_blindcarboncopy'] ) ? $settings['email'][ $connection_id ]['evf_blindcarboncopy'] : '',
+						'tooltip'   => __( 'Enter the BCC email address (comma separated) to receive form entry notifications.', 'everest-forms' ),
 						'smarttags' => array(
 							'type'        => 'fields',
 							'form_fields' => 'email',
