@@ -319,36 +319,38 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 						),
 					)
 				);
-				everest_forms_panel_field(
-					'text',
-					'settings[email][' . $connection_id . ']',
-					'evf_carboncopy',
-					$this->form_data,
-					__( 'CC Address', 'everest-forms' ),
-					array(
-						'default'   => isset( $settings['email'][ $connection_id ]['evf_carboncopy'] ) ? $settings['email'][ $connection_id ]['evf_carboncopy'] : '',
-						'tooltip'   => __( 'Enter the CC email address (comma separated) to receive form entry notifications.', 'everest-forms' ),
-						'smarttags' => array(
-							'type'        => 'fields',
-							'form_fields' => 'email',
-						),
-					)
-				);
-				everest_forms_panel_field(
-					'text',
-					'settings[email][' . $connection_id . ']',
-					'evf_blindcarboncopy',
-					$this->form_data,
-					__( 'BCC Address', 'everest-forms' ),
-					array(
-						'default'   => isset( $settings['email'][ $connection_id ]['evf_blindcarboncopy'] ) ? $settings['email'][ $connection_id ]['evf_blindcarboncopy'] : '',
-						'tooltip'   => __( 'Enter the BCC email address (comma separated) to receive form entry notifications.', 'everest-forms' ),
-						'smarttags' => array(
-							'type'        => 'fields',
-							'form_fields' => 'email',
-						),
-					)
-				);
+				if ( 'yes' === get_option( 'everest_forms_enable_email_copies' ) ) {
+					everest_forms_panel_field(
+						'text',
+						'settings[email][' . $connection_id . ']',
+						'evf_carboncopy',
+						$this->form_data,
+						__( 'CC Address', 'everest-forms' ),
+						array(
+							'default'   => isset( $settings['email'][ $connection_id ]['evf_carboncopy'] ) ? $settings['email'][ $connection_id ]['evf_carboncopy'] : '',
+							'tooltip'   => __( 'Enter the CC email address (comma separated) to receive form entry notifications.', 'everest-forms' ),
+							'smarttags' => array(
+								'type'        => 'fields',
+								'form_fields' => 'email',
+							),
+						)
+					);
+					everest_forms_panel_field(
+						'text',
+						'settings[email][' . $connection_id . ']',
+						'evf_blindcarboncopy',
+						$this->form_data,
+						__( 'BCC Address', 'everest-forms' ),
+						array(
+							'default'   => isset( $settings['email'][ $connection_id ]['evf_blindcarboncopy'] ) ? $settings['email'][ $connection_id ]['evf_blindcarboncopy'] : '',
+							'tooltip'   => __( 'Enter the BCC email address (comma separated) to receive form entry notifications.', 'everest-forms' ),
+							'smarttags' => array(
+								'type'        => 'fields',
+								'form_fields' => 'email',
+							),
+						)
+					);
+				}
 				everest_forms_panel_field(
 					'text',
 					'settings[email][' . $connection_id . ']',
@@ -379,7 +381,6 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 						),
 					)
 				);
-
 				everest_forms_panel_field(
 					'text',
 					'settings[email][' . $connection_id . ']',

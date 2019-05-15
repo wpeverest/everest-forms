@@ -367,14 +367,16 @@ class EVF_Form_Task {
 			$emails->__set( 'reply_to', $email['reply_to'] );
 			$emails->__set( 'attachments', apply_filters( 'everest_forms_email_file_attachments', $attachment, $entry, $form_data, 'entry-email', $connection_id ) );
 
-			// Maybe include CC.
-			if ( ! empty( $notification['evf_carboncopy'] ) ) {
-				$emails->__set( 'cc', $notification['evf_carboncopy'] );
-			}
+			// Maybe include CC and BCC email addresses.
+			if ( 'yes' === get_option( 'everest_forms_enable_email_copies' ) ) {
+				if ( ! empty( $notification['evf_carboncopy'] ) ) {
+					$emails->__set( 'cc', $notification['evf_carboncopy'] );
+				}
 
-			// Maybe include BCC.
-			if ( ! empty( $notification['evf_blindcarboncopy'] ) ) {
-				$emails->__set( 'bcc', $notification['evf_blindcarboncopy'] );
+				// Maybe include BCC.
+				if ( ! empty( $notification['evf_blindcarboncopy'] ) ) {
+					$emails->__set( 'bcc', $notification['evf_blindcarboncopy'] );
+				}
 			}
 
 			$emails = apply_filters( 'everest_forms_entry_email_before_send', $emails );
