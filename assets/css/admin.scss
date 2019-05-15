@@ -2284,6 +2284,10 @@ body.everest-forms-builder-setup,
 				height: calc(100vh - 150px);
 				overflow-x: auto;
 
+				p {
+					margin-bottom: 20px;
+				}
+
 				.everest-forms-border-container {
 
 					.everest-forms-border-container-title {
