@@ -374,7 +374,7 @@ class EVF_Form_Task {
 
 			// Maybe include BCC.
 			if ( ! empty( $notification['evf_blindcarboncopy'] ) ) {
-				$emails->__set( 'cc', $notification['evf_blindcarboncopy'] );
+				$emails->__set( 'bcc', $notification['evf_blindcarboncopy'] );
 			}
 
 			$emails = apply_filters( 'everest_forms_entry_email_before_send', $emails );
