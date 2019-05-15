@@ -329,7 +329,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 						__( 'Cc Address', 'everest-forms' ),
 						array(
 							'default'   => isset( $settings['email'][ $connection_id ]['evf_carboncopy'] ) ? $settings['email'][ $connection_id ]['evf_carboncopy'] : '',
-							'tooltip'   => __( 'Enter the Cc recipient\'s email address (comma separated) to receive form entry notifications.', 'everest-forms' ),
+							'tooltip'   => __( 'Enter Cc recipient\'s email address (comma separated) to receive form entry notifications.', 'everest-forms' ),
 							'smarttags' => array(
 								'type'        => 'fields',
 								'form_fields' => 'email',
@@ -344,7 +344,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 						__( 'Bcc Address', 'everest-forms' ),
 						array(
 							'default'   => isset( $settings['email'][ $connection_id ]['evf_blindcarboncopy'] ) ? $settings['email'][ $connection_id ]['evf_blindcarboncopy'] : '',
-							'tooltip'   => __( 'Enter the Bcc recipient\'s email address (comma separated) to receive form entry notifications.', 'everest-forms' ),
+							'tooltip'   => __( 'Enter Bcc recipient\'s email address (comma separated) to receive form entry notifications.', 'everest-forms' ),
 							'smarttags' => array(
 								'type'        => 'fields',
 								'form_fields' => 'email',
