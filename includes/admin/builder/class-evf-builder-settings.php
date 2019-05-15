@@ -229,6 +229,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				'tooltip' => esc_html__( 'Enter CSS class names for submit button. Multiple class names should be separated with spaces.', 'everest-forms' ),
 			)
 		);
+		do_action( 'everest_forms_inline_submit_settings', $this, 'submit', 'connection_1' );
 		echo '</div>';
 		everest_forms_panel_field(
 			'checkbox',
@@ -427,7 +428,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					)
 				);
 
-				echo '<p class="description everest-forms-email-message-info">' . esc_html__( 'To display all form fields, use the', 'everest-froms' ) . ' <code>{all_fields}</code> ' . esc_html__( 'Smart Tags.', 'everest-forms' ) . '</p>';
+				echo '<p class="description everest-forms-email-message-info">' . esc_html__( 'To display all form fields, use the', 'everest-forms' ) . ' <code>{all_fields}</code> ' . esc_html__( 'Smart Tags.', 'everest-forms' ) . '</p>';
 
 				do_action( 'everest_forms_inline_email_settings', $this, $connection_id );
 

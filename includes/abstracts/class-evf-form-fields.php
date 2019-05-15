@@ -553,6 +553,7 @@ abstract class EVF_Form_Fields {
 					$output .= '<div class="evf-smart-tag-lists" style="display: none">';
 					$output .= '<div class="smart-tag-title other-tag-title">Others</div><ul class="evf-others"></ul></div>';
 				}
+
 				$output = $this->field_element(
 					'row',
 					$field,
