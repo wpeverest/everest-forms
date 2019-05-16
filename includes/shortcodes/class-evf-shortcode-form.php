@@ -33,7 +33,7 @@ class EVF_Shortcode_Form {
 	 * Hooks in tab.
 	 */
 	public static function hooks() {
-		add_action( 'everest_forms_frontend_output_success', array( 'EVF_Shortcode_Form', 'confirmation' ), 10, 2 );
+		add_action( 'everest_forms_frontend_output_success', 'evf_print_notices', 10, 2 );
 		add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'fields' ), 10, 3 );
 		add_action( 'everest_forms_display_field_before', array( 'EVF_Shortcode_Form', 'wrapper_start' ), 5, 2 );
 		add_action( 'everest_forms_display_field_before', array( 'EVF_Shortcode_Form', 'label' ), 15, 2 );
@@ -157,30 +157,6 @@ class EVF_Shortcode_Form {
 			esc_html( $label['value'] ),
 			$required,
 			$custom_tags
-		);
-	}
-
-	/**
-	 * @param $form_data
-	 */
-	public static function confirmation( $form_data ) {
-
-		$settings        = $form_data['settings'];
-		$success_message = isset( $settings['successful_form_submission_message'] ) ? $settings['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
-
-		// Only display if a confirmation message has been configured.
-		if ( ! empty( $settings['confirmation_type'] ) ) {
-			$success_message = $settings['confirmation_type'];
-		}
-
-		$form_id = absint( $form_data['id'] );
-		$message = apply_filters( 'everest_forms_frontend_confirmation_message', $success_message, $form_data );
-		$class   = 'everest-forms-confirmation-container';
-		printf(
-			'<div class="%s" id="evf-confirmation-%d">%s</div>',
-			$class,
-			$form_id,
-			wpautop( $message )
 		);
 	}
 
@@ -564,7 +540,7 @@ class EVF_Shortcode_Form {
 			return;
 		}
 
-		$success = isset( $_POST['evf_success'] ) && $_POST['evf_success'] ? true : false;
+		$success = apply_filters( 'everest_forms_success', false );
 		if ( $success && ! empty( $form_data ) ) {
 			do_action( 'everest_forms_frontend_output_success', $form_data );
 			return;

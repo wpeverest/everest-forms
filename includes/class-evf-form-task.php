@@ -181,6 +181,8 @@ class EVF_Form_Task {
 
 				$_POST['evf_success'] = true;
 
+				add_filter( 'everest_forms_success', '__return_true' );
+
 				// Pass completed and formatted fields in POST.
 				$_POST['everest-forms']['complete'] = $this->form_fields;
 
