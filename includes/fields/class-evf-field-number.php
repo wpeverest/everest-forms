@@ -34,8 +34,8 @@ class EVF_Field_Number extends EVF_Form_Fields {
 			'advanced-options' => array(
 				'field_options' => array(
 					'step',
-					'max_value',
 					'min_value',
+					'max_value',
 					'default_value',
 					'placeholder',
 					'label_hide',
@@ -45,6 +45,13 @@ class EVF_Field_Number extends EVF_Form_Fields {
 		);
 
 		parent::__construct();
+	}
+
+	/**
+	 * Hook in tabs.
+	 */
+	public function init_hooks() {
+		add_filter( 'everest_forms_field_properties_' . $this->type, array( $this, 'field_properties' ), 5, 3 );
 	}
 
 	/**
@@ -71,7 +78,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 				'type'  => 'number',
 				'slug'  => 'step',
 				'class' => 'evf-input-number-step',
-				'value' => isset( $field['step'] ) ? $field['step'] : '1',
+				'value' => isset( $field['step'] ) ? $field['step'] : 1,
 			),
 			false
 		);
@@ -162,10 +169,37 @@ class EVF_Field_Number extends EVF_Form_Fields {
 	}
 
 	/**
+	 * Define additional field properties.
+	 *
+	 * @param  array $properties Field properties.
+	 * @param  array $field      Field settings.
+	 * @param  array $form_data  Form data and settings.
+	 * @return array of additional field properties.
+	 */
+	public function field_properties( $properties, $field, $form_data ) {
+		// Input primary: step interval.
+		if ( ! empty( $field['step'] ) ) {
+			$properties['inputs']['primary']['attr']['step'] = absint( $field['step'] );
+		}
+
+		// Input primary: min value.
+		if ( ! empty( $field['min_value'] ) ) {
+			$properties['inputs']['primary']['attr']['min'] = (int) $field['min_value'];
+		}
+
+		// Input primary: max value.
+		if ( ! empty( $field['max_value'] ) ) {
+			$properties['inputs']['primary']['attr']['max'] = (int) $field['max_value'];
+		}
+
+		return $properties;
+	}
+
+	/**
 	 * Field preview inside the builder.
 	 *
 	 * @since 1.0.0
-	 * @param array $field Field Data.
+	 * @param array $field Field settings.
 	 */
 	public function field_preview( $field ) {
 
@@ -191,21 +225,14 @@ class EVF_Field_Number extends EVF_Form_Fields {
 	 * @param array $form_data All Form Data.
 	 */
 	public function field_display( $field, $deprecated, $form_data ) {
-		$step      = isset( $field['step'] ) ? $field['step'] : '1';
-		$min_value = isset( $field['min_value'] ) ? $field['min_value'] : '';
-		$max_value = isset( $field['max_value'] ) ? $field['max_value'] : '';
-
 		// Define data.
 		$primary = $field['properties']['inputs']['primary'];
 
 		// Primary field.
 		printf(
-			'<input type="number" %s %s min="%s" max="%s" step="%s" />',
+			'<input type="number" %s %s />',
 			evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ),
-			esc_html( $primary['required'] ),
-			esc_html( $min_value ),
-			esc_html( $max_value ),
-			esc_html( $step )
+			esc_html( $primary['required'] )
 		);
 	}
 
@@ -242,17 +269,26 @@ class EVF_Field_Number extends EVF_Form_Fields {
 	 */
 	public function validate( $field_id, $field_submit, $form_data ) {
 		$form_id   = absint( $form_data['id'] );
-		$min_value = isset( $form_data['form_fields'][ $field_id ]['min_value'] ) ? floatval( $form_data['form_fields'][ $field_id ]['min_value'] ) : '';
-		$max_value = isset( $form_data['form_fields'][ $field_id ]['max_value'] ) ? floatval( $form_data['form_fields'][ $field_id ]['max_value'] ) : '';
+		$min_value = isset( $form_data['form_fields'][ $field_id ]['min_value'] ) ? floatval( $form_data['form_fields'][ $field_id ]['min_value'] ) : 0;
+		$max_value = isset( $form_data['form_fields'][ $field_id ]['max_value'] ) ? floatval( $form_data['form_fields'][ $field_id ]['max_value'] ) : 0;
 
-		// Minimum and maximum value check.
-		if ( floatval( $field_submit ) < $min_value ) {
+		// Basic required check - If field is marked as required, check for entry data.
+		if ( ! empty( $form_data['form_fields'][ $field_id ]['required'] ) && empty( $field_submit ) && '0' !== $field_submit ) {
+			evf()->task->errors[ $form_id ][ $field_id ] = evf_get_required_label();
+		}
+
+		// Check if value is numeric.
+		if ( ! empty( $field_submit ) && ! is_numeric( $field_submit ) ) {
+			evf()->task->errors[ $form_id ][ $field_id ] = apply_filters( 'everest_forms_valid_number_label', esc_html__( 'Please enter a valid number.', 'everest-forms' ) );
+		}
+
+		// Check if minimum and maximum value is valid.
+		if ( ! empty( $form_data['form_fields'][ $field_id ]['min_value'] ) && floatval( $field_submit ) < $min_value ) {
 			/* translators: %s - minimum value. */
 			evf()->task->errors[ $form_id ][ $field_id ] = sprintf( esc_html__( 'Please enter a value greater than or equal to %s', 'everest-forms' ), absint( $min_value ) );
-		} elseif ( floatval( $field_submit ) > $max_value ) {
+		} elseif ( ! empty( $form_data['form_fields'][ $field_id ]['max_value'] ) && floatval( $field_submit ) > $max_value ) {
 			/* translators: %s - maximum value. */
 			evf()->task->errors[ $form_id ][ $field_id ] = sprintf( esc_html__( 'Please enter a value less than or equal to %s', 'everest-forms' ), absint( $max_value ) );
 		}
 	}
 }
-
