@@ -353,8 +353,7 @@ class EVF_Form_Task {
 			$email['sender_address'] = ! empty( $notification['evf_from_email'] ) ? $notification['evf_from_email'] : get_option( 'admin_email' );
 			$email['reply_to']       = ! empty( $notification['evf_reply_to'] ) ? $notification['evf_reply_to'] : $email['sender_address'];
 			$email['message']        = ! empty( $notification['evf_email_message'] ) ? $notification['evf_email_message'] : '{all_fields}';
-
-			$email = apply_filters( 'everest_forms_entry_email_atts', $email, $fields, $entry, $form_data );
+			$email                   = apply_filters( 'everest_forms_entry_email_atts', $email, $fields, $entry, $form_data );
 
 			$attachment = '';
 
@@ -368,13 +367,24 @@ class EVF_Form_Task {
 			$emails->__set( 'reply_to', $email['reply_to'] );
 			$emails->__set( 'attachments', apply_filters( 'everest_forms_email_file_attachments', $attachment, $entry, $form_data, 'entry-email', $connection_id ) );
 
+			// Maybe include Cc and Bcc email addresses.
+			if ( 'yes' === get_option( 'everest_forms_enable_email_copies' ) ) {
+				if ( ! empty( $notification['evf_carboncopy'] ) ) {
+					$emails->__set( 'cc', $notification['evf_carboncopy'] );
+				}
+				if ( ! empty( $notification['evf_blindcarboncopy'] ) ) {
+					$emails->__set( 'bcc', $notification['evf_blindcarboncopy'] );
+				}
+			}
+
+			$emails = apply_filters( 'everest_forms_entry_email_before_send', $emails );
+
 			// Send entry email.
 			foreach ( $email['address'] as $address ) {
 				$emails->send( trim( $address ), $email['subject'], $email['message'] );
 			}
 
 		endforeach;
-
 	}
 
 	/**
