@@ -60,12 +60,19 @@
 			$( '.evf_error_tip' ).fadeOut( '100', function() { $( this ).remove(); } );
 		})
 
-		.on( 'blur', '.evf-input-meta-key[type=text]', function() {
+		.on( 'blur', '.evf-input-meta-key[type=text], .evf-input-number[type=number]', function() {
 			$( '.evf_error_tip' ).fadeOut( '100', function() { $( this ).remove(); } );
 		})
 
-		.on( 'change', '.evf-input-meta-key[type=text]', function() {
-			var regex    = new RegExp( '[^a-z0-9_]+', 'gi' );
+		.on( 'change', '.evf-input-meta-key[type=text], .evf-input-number[type=number]', function() {
+			var regex;
+
+			if ( $( this ).is( '.evf-input-number' ) ) {
+				regex = new RegExp( '[^0-9]+', 'gi' );
+			} else {
+				regex = new RegExp( '[^a-z0-9_]+', 'gi' );
+			}
+
 			var value    = $( this ).val();
 			var newvalue = value.replace( regex, '' );
 
@@ -89,6 +96,27 @@
 				$( document.body ).triggerHandler( 'evf_add_error_tip', [ $( this ), error, params ] );
 			} else {
 				$( document.body ).triggerHandler( 'evf_remove_error_tip', [ $( this ), error ] );
+			}
+		})
+
+		.on( 'keyup focus', '.evf-input-number[type=number]', function() {
+			var fieldId  = $( this ).parent().data( 'fieldId' );
+			var maxField = $( "input#everest-forms-field-option-"+fieldId+"-max_value" );
+			var minField = $( "input#everest-forms-field-option-"+fieldId+"-min_value" );
+			var maxVal   = maxField.val();
+			var minVal   = minField.val();
+
+			if ( 0 !== minVal.length && 0 !== maxVal.length ) {
+				if ( parseFloat( minVal ) > parseFloat( maxVal ) ) {
+					if( $( this ).attr( 'id' ).indexOf( 'min_value' ) !== -1 ) {
+						$( document.body ).triggerHandler( 'evf_add_error_tip', [ $( this ), 'i18n_field_min_value_greater', params ] );
+					} else {
+						$( document.body ).triggerHandler( 'evf_add_error_tip', [ $( this ), 'i18n_field_max_value_smaller', params ] );
+					}
+				} else {
+					$( document.body ).triggerHandler( 'evf_remove_error_tip', [ $( this ), 'i18n_field_max_value_smaller' ] );
+					$( document.body ).triggerHandler( 'evf_remove_error_tip', [ $( this ), 'i18n_field_min_value_greater' ] );
+				}
 			}
 		})
 

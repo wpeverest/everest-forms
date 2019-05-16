@@ -86,7 +86,8 @@
 
 	input {
 		&:focus {
-			outline: 1px solid $color-brand-primary;
+			outline: none;
+			border: 1px solid $color-brand-primary;
 		}
 	}
 
@@ -345,6 +346,16 @@
 			outline: none;
 			color: #23282d;
 			background-color: #eee;
+		}
+
+		&:disabled {
+			opacity: 0.5;
+			cursor: not-allowed;
+
+			&:hover {
+				color: #555;
+				background-color: #f7f7f7;
+			}
 		}
 	}
 

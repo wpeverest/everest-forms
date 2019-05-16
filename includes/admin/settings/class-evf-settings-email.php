@@ -34,7 +34,8 @@ class EVF_Settings_Email extends EVF_Settings_Page {
 	 */
 	public function get_settings() {
 		$settings = apply_filters(
-			'everest_forms_email_settings', array(
+			'everest_forms_email_settings',
+			array(
 				array(
 					'title' => __( 'Template Settings', 'everest-forms' ),
 					'type'  => 'title',
@@ -50,6 +51,14 @@ class EVF_Settings_Email extends EVF_Settings_Page {
 						'default' => esc_html__( 'HTML', 'everest-forms' ),
 						'none'    => esc_html__( 'Plain', 'everest-forms' ),
 					),
+				),
+				array(
+					'title'    => __( 'Enable copies', 'everest-forms' ),
+					'desc'     => __( 'Enable the use of Cc and Bcc email addresses', 'everest-forms' ),
+					'desc_tip' => __( 'Email addresses for Cc and Bcc can be applied from the form notification settings.', 'everest-forms' ),
+					'id'       => 'everest_forms_enable_email_copies',
+					'default'  => 'no',
+					'type'     => 'checkbox',
 				),
 				array(
 					'type' => 'sectionend',
