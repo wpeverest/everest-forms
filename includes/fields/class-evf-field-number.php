@@ -182,12 +182,12 @@ class EVF_Field_Number extends EVF_Form_Fields {
 			$properties['inputs']['primary']['attr']['step'] = absint( $field['step'] );
 		}
 
-		// Input primary: min value.
+		// Input primary: minimum value.
 		if ( ! empty( $field['min_value'] ) ) {
 			$properties['inputs']['primary']['attr']['min'] = (int) $field['min_value'];
 		}
 
-		// Input primary: max value.
+		// Input primary: maximum value.
 		if ( ! empty( $field['max_value'] ) ) {
 			$properties['inputs']['primary']['attr']['max'] = (int) $field['max_value'];
 		}
