@@ -34,7 +34,8 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 	 */
 	public function get_settings() {
 		$settings = apply_filters(
-			'everest_forms_recaptcha_settings', array(
+			'everest_forms_recaptcha_settings',
+			array(
 				array(
 					'title' => __( 'Google reCaptcha Integation', 'everest-forms' ),
 					'type'  => 'title',
@@ -43,9 +44,54 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 					'id'    => 'integration_options',
 				),
 				array(
+					'title'    => __( 'reCaptcha version', 'everest-forms' ),
+					'desc'     => __( 'Choose the reCaptcha version', 'everest-forms' ),
+					'id'       => 'everest_forms_recaptcha_version',
+					'default'  => 'v2',
+					'type'     => 'radio',
+					'options'  => array(
+						'v2' => esc_html__( 'reCaptcha v2', 'everest-forms' ),
+						'v3' => esc_html__( 'reCaptcha v3', 'everest-forms' ),
+					),
+					'class'    => '',
+					'css'      => '',
+					'desc_tip' => true,
+
+				),
+				array(
 					'title'    => __( 'Site Key', 'everest-forms' ),
 					'desc'     => __( 'Get site key from google.', 'everest-forms' ),
 					'id'       => 'everest_forms_recaptcha_site_key',
+					'default'  => '',
+					'type'     => 'text',
+					'class'    => 'everest_foms_recaptcha_v2',
+					'css'      => 'min-width: 350px;',
+					'desc_tip' => true,
+
+				),
+				array(
+					'title'    => __( 'Secret Key', 'everest-forms' ),
+					'desc'     => __( 'Get secret key from google.', 'everest-forms' ),
+					'id'       => 'everest_forms_recaptcha_site_secret',
+					'default'  => '',
+					'type'     => 'text',
+					'class'    => 'everest_foms_recaptcha_v2',
+					'css'      => 'min-width: 350px;',
+					'desc_tip' => true,
+
+				),
+				array(
+					'title'   => __( 'Invisible reCaptcha', 'everest-forms' ),
+					'desc'    => __( 'Check this option to activate invisible reCaptcha.', 'everest-forms' ),
+					'id'      => 'everest_forms_recaptcha_v2_invisible',
+					'default' => 'no',
+					'class'   => 'everest_foms_recaptcha_v2',
+					'type'    => 'checkbox',
+				),
+				array(
+					'title'    => __( 'Site Key', 'everest-forms' ),
+					'desc'     => __( 'Get site key from google.', 'everest-forms' ),
+					'id'       => 'everest_forms_recaptcha_v3_site_key',
 					'default'  => '',
 					'type'     => 'text',
 					'class'    => '',
@@ -56,7 +102,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 				array(
 					'title'    => __( 'Secret Key', 'everest-forms' ),
 					'desc'     => __( 'Get secret key from google.', 'everest-forms' ),
-					'id'       => 'everest_forms_recaptcha_site_secret',
+					'id'       => 'everest_forms_recaptcha_v3_site_secret',
 					'default'  => '',
 					'type'     => 'text',
 					'class'    => '',

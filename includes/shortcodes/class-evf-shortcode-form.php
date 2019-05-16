@@ -310,12 +310,19 @@ class EVF_Shortcode_Form {
 	 * @param array $form_data
 	 */
 	public static function recaptcha( $form_data ) {
-		$site_key   = get_option( 'everest_forms_recaptcha_site_key' );
-		$secret_key = get_option( 'everest_forms_recaptcha_site_secret' );
+		$recaptcha_version = get_option( 'everest_forms_recaptcha_version', 'v2' );
+
+		if ( 'v2' === $recaptcha_version ) {
+			$site_key            = get_option( 'everest_forms_recaptcha_site_key' );
+			$secret_key          = get_option( 'everest_forms_recaptcha_site_secret' );
+			$invisible_recaptcha = get_option( 'everest_forms_recaptcha_v2_invisible', false );
+		} else {
+			$site_key   = get_option( 'everest_forms_recaptcha_v3_site_key' );
+			$secret_key = get_option( 'everest_forms_recaptcha_v3_site_secret' );
+		}
 		if ( ! $site_key || ! $secret_key ) {
 			return;
 		}
-
 		if ( isset( $form_data['settings']['recaptcha_support'] ) && '1' === $form_data['settings']['recaptcha_support'] ) {
 			$visible = self::$parts ? 'style="display:none;"' : '';
 			$data    = apply_filters(
@@ -328,9 +335,18 @@ class EVF_Shortcode_Form {
 
 			// Load reCAPTCHA support if form supports it.
 			if ( $site_key && $secret_key ) {
-				$recaptcha_api     = apply_filters( 'everest_forms_frontend_recaptcha_url', 'https://www.google.com/recaptcha/api.js?onload=EVFRecaptchaLoad&render=explicit' );
-				$recaptcha_inline  = 'var EVFRecaptchaLoad = function(){jQuery(".g-recaptcha").each(function(index, el){grecaptcha.render(el,{callback:function(){EVFRecaptchaCallback(el);}},true);});};';
-				$recaptcha_inline .= 'var EVFRecaptchaCallback = function(el){jQuery(el).parent().find(".evf-recaptcha-hidden").val("1").valid();};';
+				if ( 'v2' === $recaptcha_version ) {
+					$recaptcha_api = apply_filters( 'everest_forms_frontend_recaptcha_url', 'https://www.google.com/recaptcha/api.js?onload=EVFRecaptchaLoad&render=explicit' );
+					if ( $invisible_recaptcha ) {
+						$recaptcha_inline = 'var EVFRecaptchaLoad = function(){jQuery(".g-recaptcha").each(function(index, el){var recaptchaID = grecaptcha.render(el,{},true); grecaptcha.execute(recaptchaID);});};';
+					} else {
+						$recaptcha_inline  = 'var EVFRecaptchaLoad = function(){jQuery(".g-recaptcha").each(function(index, el){grecaptcha.render(el,{callback:function(){EVFRecaptchaCallback(el);}},true);});};';
+						$recaptcha_inline .= 'var EVFRecaptchaCallback = function(el){jQuery(el).parent().find(".evf-recaptcha-hidden").val("1").valid();};';
+					}
+				} else {
+					$recaptcha_api    = apply_filters( 'everest_forms_frontend_recaptcha_url', 'https://www.google.com/recaptcha/api.js?render=' . $site_key );
+					$recaptcha_inline = 'grecaptcha.ready( function() { grecaptcha.execute( "' . $site_key . '", { action: "everest_form" } ).then( function( token ) { jQuery( ".evf-recaptcha-hidden" ).val( token ); } ) } )';
+				}
 
 				// Enqueue reCaptcha scripts.
 				wp_enqueue_script( 'evf-recaptcha', $recaptcha_api, array( 'jquery' ), '2.0.0', false );
@@ -342,11 +358,20 @@ class EVF_Shortcode_Form {
 					$count++;
 				}
 
-				// Output the reCAPTCHA container.
-				echo '<div class="evf-recaptcha-container" ' . $visible . '>';
+				if ( 'v2' === $recaptcha_version && $invisible_recaptcha ) {
+					// Output the reCAPTCHA container.
+					$data['size']    = 'invisible';
+					$data['sitekey'] = $site_key;
+					echo '<div class="evf-recaptcha-container" ' . $visible . '>';
+					echo '<div ' . evf_html_attributes( '', array( 'g-recaptcha' ), $data ) . '></div>';
+					echo '</div>';
+				} else {
+					// Output the reCAPTCHA container.
+					echo '<div class="evf-recaptcha-container" ' . $visible . '>';
 					echo '<div ' . evf_html_attributes( '', array( 'g-recaptcha' ), $data ) . '></div>';
 					echo '<input type="text" name="g-recaptcha-hidden" class="evf-recaptcha-hidden" style="position:absolute!important;clip:rect(0,0,0,0)!important;height:1px!important;width:1px!important;border:0!important;overflow:hidden!important;padding:0!important;margin:0!important;" required>';
-				echo '</div>';
+					echo '</div>';
+				}
 			}
 		}
 	}
