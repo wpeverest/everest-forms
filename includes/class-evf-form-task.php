@@ -372,8 +372,6 @@ class EVF_Form_Task {
 				if ( ! empty( $notification['evf_carboncopy'] ) ) {
 					$emails->__set( 'cc', $notification['evf_carboncopy'] );
 				}
-
-				// Maybe include BCC.
 				if ( ! empty( $notification['evf_blindcarboncopy'] ) ) {
 					$emails->__set( 'bcc', $notification['evf_blindcarboncopy'] );
 				}
