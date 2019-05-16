@@ -3,7 +3,6 @@
  * Credit Card field
  *
  * @package EverestForms\Fields
- * @since   1.2.0
  */
 
 defined( 'ABSPATH' ) || exit;
