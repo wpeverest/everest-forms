@@ -142,7 +142,7 @@ class EVF_Admin_Assets {
 				'upgrade_button'        => esc_html__( 'Upgrade to PRO', 'everest-forms' ),
 				'upgrade_url'           => apply_filters( 'everest_forms_upgrade_url', 'https://wpeverest.com/wordpress-plugins/everest-forms/?utm_source=user-dashboard&utm_medium=modal-button&utm_campaign=free-version' ),
 				'enable_stripe_title'   => esc_html__( 'Please enable Stripe', 'everest-forms' ),
-				'enable_stripe_message' => esc_html__( 'Please enable Stripe Payment gateway in payment section.', 'everest-forms' ),
+				'enable_stripe_message' => esc_html__( 'Enable Stripe Payment gateway in payments section to use this field.', 'everest-forms' ),
 			)
 		);
 

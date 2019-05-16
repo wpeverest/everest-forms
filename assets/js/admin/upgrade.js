@@ -13,21 +13,6 @@ jQuery( function( $ ) {
 			e.preventDefault();
 			evf_upgrade_actions.upgrade_modal( $(this).text() + ' field' );
 		},
-		enable_stripe_model: function( e ) {
-			e.preventDefault();
-			$.alert({
-				title: evf_upgrade.enable_stripe_title,
-				icon: 'dashicons dashicons-lock',
-				content: evf_upgrade.enable_stripe_message,
-				type: 'red',
-				boxWidth: '565px',
-				buttons: {
-					cancel: {
-						text: evf_data.i18n_ok
-					}
-				}
-			});
-		},
 		upgrade_modal: function( feature ) {
 			var message = evf_upgrade.upgrade_message.replace( /%name%/g, feature );
 
@@ -48,6 +33,22 @@ jQuery( function( $ ) {
 					},
 					cancel: {
 						text: evf_data.i18n_ok
+					}
+				}
+			});
+		},
+		enable_stripe_model: function( e ) {
+			e.preventDefault();
+			$.alert({
+				title: evf_upgrade.enable_stripe_title,
+				content: evf_upgrade.enable_stripe_message,
+				icon: 'dashicons dashicons-info',
+				type: 'blue',
+				buttons : {
+					confirm : {
+						text: evf_data.i18n_close,
+						btnClass: 'btn-confirm',
+						keys: ['enter']
 					}
 				}
 			});
