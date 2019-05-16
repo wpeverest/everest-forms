@@ -2281,17 +2281,14 @@ body.everest-forms-builder-setup,
 				height: calc(100vh - 109px);
 				overflow-x: auto;
 
+				p {
+					margin-bottom: 20px;
+				}
+
 				.everest-forms-border-container {
 
 					.everest-forms-border-container-title {
 						background: $color-white;
-					}
-
-					.everest-forms-panel-field {
-
-						&:last-child {
-							margin-bottom: 0;
-						}
 					}
 				}
 
