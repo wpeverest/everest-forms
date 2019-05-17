@@ -2630,6 +2630,22 @@ body.everest-forms-builder-setup,
 			border: 1px solid #ddd;
 			font-size: 14px;
 		}
+
+		.recaptcha-version-options {
+			.forminp-radio {
+				ul {
+					display: flex;
+
+					li {
+						margin-right: 15px;
+
+						label {
+							margin-bottom: 0!important;
+						}
+					}
+				}
+			}
+		}
 	}
 
 	.everest-forms-save-button {
