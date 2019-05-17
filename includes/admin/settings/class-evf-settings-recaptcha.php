@@ -41,7 +41,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 					'title' => __( 'Google reCaptcha Integation', 'everest-forms' ),
 					'type'  => 'title',
 					/* translators: %s - Google reCaptch URL. */
-					'desc'  => sprintf( __( '<p><a href="%s" target="_blank">reCAPTCHA</a> is a free service that protects your website from spam and abuse.</p><p>reCAPTCHA uses an advanced risk analysis engine and adaptive challenges to keep automated software from engaging in abusive activities on your site.</p><p>Sites already using v2 reCAPTCHA will need to create new site keys before switching to the Invisible reCAPTCHA or v3 reCAPTCHA.</p><p><a href="%s" target="_blank">Read the docs</a> for step-by-step directions.</p>', 'everest-forms' ), 'https://www.google.com/recaptcha', 'https://docs.wpeverest.com/docs/everest-forms/tutorials/how-to-integrate-google-recaptcha/' ),
+					'desc'  => sprintf( __( '<p><a href="%s" target="_blank">reCAPTCHA</a> is a free service that protects your website from spam and abuse.</p><p>reCAPTCHA uses an advanced risk analysis engine and adaptive challenges to keep automated software from engaging in abusive activities on your site.</p><p>Sites already using v2 reCAPTCHA will need to create new site keys before switching to the Invisible reCAPTCHA or v3 reCAPTCHA.</p><p><a href="%s" target="_blank">Read our walk through</a> for step-by-step directions.</p>', 'everest-forms' ), 'https://www.google.com/recaptcha', 'https://docs.wpeverest.com/docs/everest-forms/tutorials/how-to-integrate-google-recaptcha/' ),
 					'id'    => 'integration_options',
 				),
 				array(
