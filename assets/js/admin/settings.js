@@ -14,6 +14,8 @@
 			boxWidth: '400px',
 			columnClass: 'evf-responsive-class'
 		};
+
+		$('.everest-forms .everest_forms_recaptcha_version:checked').trigger("change");
 	});
 
 	// Color picker
@@ -84,5 +86,16 @@
 		$( this ).closest( 'td' ).find( 'select option' ).removeAttr( 'selected' );
 		$( this ).closest( 'td' ).find( 'select' ).trigger( 'change' );
 		return false;
+	});
+
+	$('.everest-forms').on( 'change', '.everest_forms_recaptcha_version:checked', function() {
+		var version = $( this ).val();
+		if ( 'v3' === version ) {
+			$('.everest_foms_recaptcha_v2').closest('tr').hide();
+			$('.everest_foms_recaptcha_v3').closest('tr').show();
+		} else {
+			$('.everest_foms_recaptcha_v3').closest('tr').hide();
+			$('.everest_foms_recaptcha_v2').closest('tr').show();
+		}
 	});
 })( jQuery, everest_forms_settings_params );

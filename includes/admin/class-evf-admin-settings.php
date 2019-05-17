@@ -126,7 +126,9 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 			wp_enqueue_script( 'everest_forms_settings', EVF()->plugin_url() . '/assets/js/admin/settings' . $suffix . '.js', array( 'jquery', 'jquery-confirm', 'jquery-ui-datepicker', 'jquery-ui-sortable', 'iris', 'selectWoo' ), EVF()->version, true );
 
 			wp_localize_script(
-				'everest_forms_settings', 'everest_forms_settings_params', array(
+				'everest_forms_settings',
+				'everest_forms_settings_params',
+				array(
 					'i18n_nav_warning' => __( 'The changes you made will be lost if you navigate away from this page.', 'everest-forms' ),
 				)
 			);
@@ -197,6 +199,9 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 				}
 				if ( ! isset( $value['class'] ) ) {
 					$value['class'] = '';
+				}
+				if ( ! isset( $value['parent_class'] ) ) {
+					$value['parent_class'] = '';
 				}
 				if ( ! isset( $value['css'] ) ) {
 					$value['css'] = '';
@@ -274,7 +279,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 					case 'tel':
 						$option_value = self::get_option( $value['id'], $value['default'] );
 
-						?><tr valign="top">
+						?><tr valign="top" class="<?php echo esc_attr( $value['parent_class'] ); ?>">
 							<th scope="row" class="titledesc">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
 							</th>
@@ -299,7 +304,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						$option_value = self::get_option( $value['id'], $value['default'] );
 
 						?>
-						<tr valign="top">
+						<tr valign="top" class="<?php echo esc_attr( $value['parent_class'] ); ?>">
 							<th scope="row" class="titledesc">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
 							</th>
@@ -327,7 +332,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						$option_value = self::get_option( $value['id'], $value['default'] );
 
 						?>
-						<tr valign="top">
+						<tr valign="top" class="<?php echo esc_attr( $value['parent_class'] ); ?>">
 							<th scope="row" class="titledesc">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
 							</th>
@@ -353,7 +358,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						$option_value = self::get_option( $value['id'], $value['default'] );
 
 						?>
-						<tr valign="top">
+						<tr valign="top" class="<?php echo esc_attr( $value['parent_class'] ); ?>">
 							<th scope="row" class="titledesc">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
 							</th>
@@ -378,7 +383,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 												selected( $option_value, (string) $key );
 											}
 
-										?>
+											?>
 										>
 										<?php echo esc_html( $val ); ?></option>
 										<?php
@@ -395,7 +400,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						$option_value = self::get_option( $value['id'], $value['default'] );
 
 						?>
-						<tr valign="top">
+						<tr valign="top" class="<?php echo esc_attr( $value['parent_class'] ); ?>">
 							<th scope="row" class="titledesc">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
 							</th>
@@ -450,7 +455,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 
 						if ( ! isset( $value['checkboxgroup'] ) || 'start' === $value['checkboxgroup'] ) {
 							?>
-								<tr valign="top" class="<?php echo esc_attr( implode( ' ', $visibility_class ) ); ?>">
+								<tr valign="top" class="<?php echo esc_attr( $value['parent_class'] ) . ' ' . esc_attr( implode( ' ', $visibility_class ) ); ?>">
 									<th scope="row" class="titledesc"><?php echo esc_html( $value['title'] ); ?></th>
 									<td class="forminp forminp-checkbox">
 										<fieldset>
@@ -482,7 +487,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						<?php
 
 						if ( ! isset( $value['checkboxgroup'] ) || 'end' === $value['checkboxgroup'] ) {
-										?>
+							?>
 										</fieldset>
 									</td>
 								</tr>
@@ -513,7 +518,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						}
 
 						?>
-						<tr valign="top" class="single_select_page">
+						<tr valign="top" class="single_select_page <?php echo esc_attr( $value['parent_class'] ); ?>">
 							<th scope="row" class="titledesc">
 								<label><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
 							</th>
@@ -534,7 +539,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						);
 						$option_value = evf_parse_relative_date_option( self::get_option( $value['id'], $value['default'] ) );
 						?>
-						<tr valign="top">
+						<tr valign="top" class="<?php echo esc_attr( $value['parent_class'] ); ?>">
 							<th scope="row" class="titledesc">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
 							</th>
