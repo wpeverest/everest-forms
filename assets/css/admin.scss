@@ -1103,7 +1103,8 @@ body.everest-forms-builder-setup,
 							margin: 0 auto;
 						}
 
-						&.upgrade-modal {
+						&.upgrade-modal,
+						&.enable-stripe-model {
 							opacity: 0.6;
 						}
 

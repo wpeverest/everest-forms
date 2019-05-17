@@ -213,7 +213,7 @@ abstract class EVF_Form_Fields {
 			// Text input.
 			case 'text':
 				$type        = ! empty( $args['type'] ) ? esc_attr( $args['type'] ) : 'text';
-				$min         = ! empty( $args['min'] ) ? esc_attr( $args['min'] ) : 0;
+				$min         = ! empty( $args['min'] ) ? esc_attr( $args['min'] ) : '';
 				$max         = ! empty( $args['max'] ) ? esc_attr( $args['max'] ) : '';
 				$required    = ( ! empty( $args['required'] ) && $args['required'] ) ? esc_attr( 'required' ) : '';
 				$placeholder = ! empty( $args['placeholder'] ) ? esc_attr( $args['placeholder'] ) : '';

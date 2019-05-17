@@ -23,7 +23,7 @@ class EVF_Field_Text extends EVF_Form_Fields {
 		$this->order    = 30;
 		$this->group    = 'general';
 		$this->settings = array(
-			'basic-options' => array(
+			'basic-options'    => array(
 				'field_options' => array(
 					'label',
 					'meta',
@@ -79,20 +79,23 @@ class EVF_Field_Text extends EVF_Form_Fields {
 			),
 			false
 		);
-		$this->field_element( 'row', $field, array(
-			'slug'    => 'input_mask',
-			'content' => $lbl . $fld,
-		) );
+		$this->field_element(
+			'row',
+			$field,
+			array(
+				'slug'    => 'input_mask',
+				'content' => $lbl . $fld,
+			)
+		);
 	}
 
 	/**
 	 * Define additional field properties.
 	 *
-	 * @param array $properties
-	 * @param array $field
-	 * @param array $form_data
-	 *
-	 * @return array
+	 * @param  array $properties Field properties.
+	 * @param  array $field      Field settings.
+	 * @param  array $form_data  Form data and settings.
+	 * @return array of additional field properties.
 	 */
 	public function field_properties( $properties, $field, $form_data ) {
 		// Input primary: Detect custom input mask.
@@ -146,11 +149,12 @@ class EVF_Field_Text extends EVF_Form_Fields {
 	 * @param array $form_data
 	 */
 	public function field_display( $field, $deprecated, $form_data ) {
- 		// Define data.
+		// Define data.
 		$primary = $field['properties']['inputs']['primary'];
 
 		// Primary field.
-		printf( '<input type="text" %s %s>',
+		printf(
+			'<input type="text" %s %s>',
 			evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ),
 			$primary['required']
 		);
