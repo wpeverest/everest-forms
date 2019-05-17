@@ -179,17 +179,17 @@ class EVF_Field_Number extends EVF_Form_Fields {
 	public function field_properties( $properties, $field, $form_data ) {
 		// Input primary: step interval.
 		if ( ! empty( $field['step'] ) ) {
-			$properties['inputs']['primary']['attr']['step'] = absint( $field['step'] );
+			$properties['inputs']['primary']['attr']['step'] = (float) $field['step'];
 		}
 
-		// Input primary: min value.
+		// Input primary: minimum value.
 		if ( ! empty( $field['min_value'] ) ) {
-			$properties['inputs']['primary']['attr']['min'] = (int) $field['min_value'];
+			$properties['inputs']['primary']['attr']['min'] = (float) $field['min_value'];
 		}
 
-		// Input primary: max value.
+		// Input primary: maximum value.
 		if ( ! empty( $field['max_value'] ) ) {
-			$properties['inputs']['primary']['attr']['max'] = (int) $field['max_value'];
+			$properties['inputs']['primary']['attr']['max'] = (float) $field['max_value'];
 		}
 
 		return $properties;
