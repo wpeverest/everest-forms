@@ -504,7 +504,6 @@ body.everest-forms-builder-setup,
 
 				th {
 					padding-top: 25px;
-					vertical-align: middle;
 
 					.everest-forms-help-tip {
 						margin: 0;
@@ -514,6 +513,48 @@ body.everest-forms-builder-setup,
 
 				td {
 					padding: 25px 0;
+				}
+
+				.forminp-radio-image {
+
+					ul {
+						display: flex;
+						margin: 0;
+
+						li {
+							margin-bottom: 0;
+							margin-right: 30px;
+
+							label,
+							img {
+								display: block;
+							}
+
+							label {
+
+								input{
+									display: none;
+
+									&:checked {
+
+										+ img {
+											border: 2px solid $everestforms;
+										}
+
+										~ span {
+											color: $everestforms;
+										}
+									}
+								}
+							}
+
+							img {
+								margin-bottom: 15px;
+								border: 2px solid #d6d6d6;
+								transition: all 0.25s;
+							}
+						}
+					}
 				}
 			}
 		}
