@@ -61,7 +61,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 				array(
 					'title'        => __( 'Site Key', 'everest-forms' ),
 					'desc'         => __( 'Please enter your site key for your reCAPTCHA v2.', 'everest-forms' ),
-					'id'           => 'everest_forms_recaptcha_site_key',
+					'id'           => 'everest_forms_recaptcha_v2_site_key',
 					'default'      => '',
 					'type'         => 'text',
 					'class'        => 'everest_foms_recaptcha_v2',
@@ -72,7 +72,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 				array(
 					'title'        => __( 'Secret Key', 'everest-forms' ),
 					'desc'         => __( 'Please enter your secret key for your reCAPTCHA v2.', 'everest-forms' ),
-					'id'           => 'everest_forms_recaptcha_site_secret',
+					'id'           => 'everest_forms_recaptcha_v2_site_secret',
 					'default'      => '',
 					'type'         => 'text',
 					'class'        => 'everest_foms_recaptcha_v2',
