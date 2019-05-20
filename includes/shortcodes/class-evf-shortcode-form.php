@@ -313,8 +313,8 @@ class EVF_Shortcode_Form {
 		$recaptcha_type = get_option( 'everest_forms_recaptcha_type', 'v2' );
 
 		if ( 'v2' === $recaptcha_type ) {
-			$site_key            = get_option( 'everest_forms_recaptcha_site_key' );
-			$secret_key          = get_option( 'everest_forms_recaptcha_site_secret' );
+			$site_key            = get_option( 'everest_forms_recaptcha_v2_site_key' );
+			$secret_key          = get_option( 'everest_forms_recaptcha_v2_site_secret' );
 			$invisible_recaptcha = get_option( 'everest_forms_recaptcha_v2_invisible', 'no' );
 		} else {
 			$site_key   = get_option( 'everest_forms_recaptcha_v3_site_key' );
