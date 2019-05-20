@@ -315,7 +315,7 @@ class EVF_Shortcode_Form {
 		if ( 'v2' === $recaptcha_version ) {
 			$site_key            = get_option( 'everest_forms_recaptcha_site_key' );
 			$secret_key          = get_option( 'everest_forms_recaptcha_site_secret' );
-			$invisible_recaptcha = get_option( 'everest_forms_recaptcha_v2_invisible', false );
+			$invisible_recaptcha = get_option( 'everest_forms_recaptcha_v2_invisible', 'no' );
 		} else {
 			$site_key   = get_option( 'everest_forms_recaptcha_v3_site_key' );
 			$secret_key = get_option( 'everest_forms_recaptcha_v3_site_secret' );
@@ -337,7 +337,7 @@ class EVF_Shortcode_Form {
 			if ( $site_key && $secret_key ) {
 				if ( 'v2' === $recaptcha_version ) {
 					$recaptcha_api = apply_filters( 'everest_forms_frontend_recaptcha_url', 'https://www.google.com/recaptcha/api.js?onload=EVFRecaptchaLoad&render=explicit' );
-					if ( $invisible_recaptcha ) {
+					if ( 'yes' === $invisible_recaptcha ) {
 						$recaptcha_inline = 'var EVFRecaptchaLoad = function(){jQuery(".g-recaptcha").each(function(index, el){var recaptchaID = grecaptcha.render(el,{},true); grecaptcha.execute(recaptchaID);});};';
 					} else {
 						$recaptcha_inline  = 'var EVFRecaptchaLoad = function(){jQuery(".g-recaptcha").each(function(index, el){grecaptcha.render(el,{callback:function(){EVFRecaptchaCallback(el);}},true);});};';
@@ -358,16 +358,17 @@ class EVF_Shortcode_Form {
 					$count++;
 				}
 
-				if ( 'v2' === $recaptcha_version && $invisible_recaptcha ) {
+				if ( 'v2' === $recaptcha_version && 'yes' === $invisible_recaptcha ) {
 					// Output the reCAPTCHA container.
 					$data['size']    = 'invisible';
 					$data['sitekey'] = $site_key;
-					echo '<div class="evf-recaptcha-container" ' . $visible . '>';
+					echo '<div class="evf-recaptcha-container recaptcha-hidden" ' . $visible . '>';
 					echo '<div ' . evf_html_attributes( '', array( 'g-recaptcha' ), $data ) . '></div>';
 					echo '</div>';
 				} else {
 					// Output the reCAPTCHA container.
-					echo '<div class="evf-recaptcha-container" ' . $visible . '>';
+					$class = 'v3' === $recaptcha_version ? 'recaptcha-hidden' : '';
+					echo '<div class="evf-recaptcha-container ' . $class . '" ' . $visible . '>';
 					echo '<div ' . evf_html_attributes( '', array( 'g-recaptcha' ), $data ) . '></div>';
 					echo '<input type="text" name="g-recaptcha-hidden" class="evf-recaptcha-hidden" style="position:absolute!important;clip:rect(0,0,0,0)!important;height:1px!important;width:1px!important;border:0!important;overflow:hidden!important;padding:0!important;margin:0!important;" required>';
 					echo '</div>';
