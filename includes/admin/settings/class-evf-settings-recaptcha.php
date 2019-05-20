@@ -55,7 +55,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 						'v3' => esc_html__( 'reCAPTCHA v3', 'everest-forms' ),
 					),
 					'class'        => 'everest_forms_recaptcha_type',
-					'parent_class' => 'recaptcha-version-options',
+					'parent_class' => 'recaptcha-type-options',
 					'desc_tip'     => true,
 				),
 				array(
