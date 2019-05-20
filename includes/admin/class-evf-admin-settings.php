@@ -335,7 +335,6 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						<?php
 						break;
 
-					// Co
 					// Color picker.
 					case 'color':
 						$option_value = self::get_option( $value['id'], $value['default'] );
