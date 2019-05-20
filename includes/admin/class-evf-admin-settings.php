@@ -492,7 +492,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 
 						if ( ! isset( $value['checkboxgroup'] ) || 'start' === $value['checkboxgroup'] ) {
 							?>
-								<tr valign="top" class="<?php echo esc_attr( $value['parent_class'] ) . ' ' . esc_attr( implode( ' ', $visibility_class ) ); ?>">
+								<tr valign="top" class="<?php echo esc_attr( implode( ' ', $visibility_class ) ); ?>">
 									<th scope="row" class="titledesc"><?php echo esc_html( $value['title'] ); ?></th>
 									<td class="forminp forminp-checkbox">
 										<fieldset>
@@ -555,7 +555,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						}
 
 						?>
-						<tr valign="top" class="single_select_page <?php echo esc_attr( $value['parent_class'] ); ?>">
+						<tr valign="top" class="single_select_page">
 							<th scope="row" class="titledesc">
 								<label><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
 							</th>
