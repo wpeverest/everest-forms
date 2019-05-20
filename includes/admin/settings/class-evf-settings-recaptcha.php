@@ -46,7 +46,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 				),
 				array(
 					'title'        => __( 'reCAPTCHA type', 'everest-forms' ),
-					'desc'         => __( 'Choose which version of reCAPTCHA to use.', 'everest-forms' ),
+					'desc'         => __( 'Choose the type of reCAPTCHA for this site key.', 'everest-forms' ),
 					'id'           => 'everest_forms_recaptcha_type',
 					'default'      => 'v2',
 					'type'         => 'radio',
@@ -60,8 +60,8 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 				),
 				array(
 					'title'        => __( 'Site Key', 'everest-forms' ),
-					'desc'         => __( 'Get site key from google.', 'everest-forms' ),
-					'id'           => 'everest_forms_recaptcha_site_key',
+					'desc'         => __( 'Please enter your site key for your reCAPTCHA v2.', 'everest-forms' ),
+					'id'           => 'everest_forms_recaptcha_v2_site_key',
 					'default'      => '',
 					'type'         => 'text',
 					'class'        => 'everest_foms_recaptcha_v2',
@@ -71,8 +71,8 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 				),
 				array(
 					'title'        => __( 'Secret Key', 'everest-forms' ),
-					'desc'         => __( 'Get secret key from google.', 'everest-forms' ),
-					'id'           => 'everest_forms_recaptcha_site_secret',
+					'desc'         => __( 'Please enter your secret key for your reCAPTCHA v2.', 'everest-forms' ),
+					'id'           => 'everest_forms_recaptcha_v2_site_secret',
 					'default'      => '',
 					'type'         => 'text',
 					'class'        => 'everest_foms_recaptcha_v2',
@@ -81,8 +81,8 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 					'desc_tip'     => true,
 				),
 				array(
-					'title'        => __( 'Invisible reCaptcha', 'everest-forms' ),
-					'desc'         => __( 'Check this option to activate invisible reCaptcha.', 'everest-forms' ),
+					'title'        => __( 'Invisible reCAPTCHA', 'everest-forms' ),
+					'desc'         => __( 'Enable Invisible reCAPTCHA.', 'everest-forms' ),
 					'id'           => 'everest_forms_recaptcha_v2_invisible',
 					'default'      => 'no',
 					'class'        => 'everest_foms_recaptcha_v2',
@@ -91,7 +91,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 				),
 				array(
 					'title'        => __( 'Site Key', 'everest-forms' ),
-					'desc'         => __( 'Get site key from google.', 'everest-forms' ),
+					'desc'         => __( 'Please enter your site key for your reCAPTCHA v3.', 'everest-forms' ),
 					'id'           => 'everest_forms_recaptcha_v3_site_key',
 					'default'      => '',
 					'type'         => 'text',
@@ -102,7 +102,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 				),
 				array(
 					'title'        => __( 'Secret Key', 'everest-forms' ),
-					'desc'         => __( 'Get secret key from google.', 'everest-forms' ),
+					'desc'         => __( 'Please enter your secret key for your reCAPTCHA v3.', 'everest-forms' ),
 					'id'           => 'everest_forms_recaptcha_v3_site_secret',
 					'default'      => '',
 					'type'         => 'text',

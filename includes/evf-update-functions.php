@@ -214,3 +214,29 @@ function evf_update_144_delete_options() {
 function evf_update_144_db_version() {
 	EVF_Install::update_db_version( '1.4.4' );
 }
+
+/**
+ * Update settings option to use new renamed option for 1.4.9.
+ */
+function evf_update_149_db_rename_options() {
+	$rename_options = array(
+		'everest_forms_recaptcha_site_key'    => 'everest_forms_recaptcha_v2_site_key',
+		'everest_forms_recaptcha_site_secret' => 'everest_forms_recaptcha_v2_site_secret',
+	);
+
+	foreach ( $rename_options as $old_option => $new_option ) {
+		$raw_old_option = get_option( $old_option );
+
+		if ( ! empty( $raw_old_option ) ) {
+			update_option( $new_option, $raw_old_option );
+			delete_option( $old_option );
+		}
+	}
+}
+
+/**
+ * Update DB Version.
+ */
+function evf_update_149_db_version() {
+	EVF_Install::update_db_version( '1.4.9' );
+}
