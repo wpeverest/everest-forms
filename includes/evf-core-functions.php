@@ -1945,3 +1945,22 @@ function evf_debug_data( $expression, $return = false ) {
 	}
 }
 
+/**
+ * String translation function.
+ *
+ * @param [int]    $form_id Form ID.
+ * @param [string] $field_id Field ID.
+ * @param [mixed]  $variable To be translated for WPML compatibility.
+ */
+function evf_string_translation( $form_id, $field_id, $variable ) {
+	if ( function_exists( 'icl_register_string' ) ) {
+		icl_register_string( isset( $form_id ) ? 'everest_forms_' . absint( $form_id ) : 0, isset( $field_id ) ? $field_id : '', $variable );
+	}
+
+	if ( function_exists( 'icl_t' ) ) {
+		$variable = icl_t( isset( $form_id ) ? 'everest_forms_' . absint( $form_id ) : 0, isset( $field_id ) ? $field_id : '', $variable );
+	}
+
+	return $variable;
+}
+

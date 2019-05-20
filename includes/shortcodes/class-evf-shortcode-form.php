@@ -60,6 +60,8 @@ class EVF_Shortcode_Form {
 		$classes  = isset( $form_data['settings']['submit_button_class'] ) ? evf_sanitize_classes( $form_data['settings']['submit_button_class'] ) : '';
 		$visible  = self::$parts ? 'style="display:none"' : '';
 
+		$evf_submit = evf_string_translation( $form_data['id'], 'submit_button', $submit );
+
 		// Visibility class.
 		$visibility_class = apply_filters( 'everest_forms_field_submit_visibility_class', array(), self::$parts, $form_data );
 
@@ -89,7 +91,7 @@ class EVF_Shortcode_Form {
 				$process,
 				$conditional_rules,
 				$conditional_id,
-				$submit
+				$evf_submit
 			);
 
 			do_action( 'everest_forms_display_submit_after', $form_data );
@@ -139,10 +141,12 @@ class EVF_Shortcode_Form {
 			$description['class'][] = 'evf-field-description-before';
 		}
 
+		$evf_description = evf_string_translation( $form_data['id'], $field['id'], $description['value'] );
+
 		printf(
 			'<div %s>%s</div>',
 			evf_html_attributes( $description['id'], $description['class'], $description['data'], $description['attr'] ),
-			$description['value']
+			$evf_description
 		);
 	}
 
@@ -157,10 +161,11 @@ class EVF_Shortcode_Form {
 		$required    = $label['required'] ? apply_filters( 'everest_forms_field_required_label', '<abbr class="required" title="' . esc_attr__( 'Required', 'everest-forms' ) . '">*</abbr>' ) : '';
 		$custom_tags = apply_filters( 'everest_forms_field_custom_tags', false, $field, $form_data );
 
+		$evf_label = evf_string_translation( $form_data['id'], $field['id'], $label['value'] );
 		printf(
 			'<label %s><span class="evf-label">%s</span> %s</label>',
 			evf_html_attributes( $label['id'], $label['class'], $label['data'], $label['attr'] ),
-			esc_html( $label['value'] ),
+			esc_html( $evf_label ),
 			$required,
 			$custom_tags
 		);
