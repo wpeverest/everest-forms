@@ -200,9 +200,6 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 				if ( ! isset( $value['class'] ) ) {
 					$value['class'] = '';
 				}
-				if ( ! isset( $value['parent_class'] ) ) {
-					$value['parent_class'] = '';
-				}
 				if ( ! isset( $value['css'] ) ) {
 					$value['css'] = '';
 				}
@@ -279,7 +276,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 					case 'tel':
 						$option_value = self::get_option( $value['id'], $value['default'] );
 
-						?><tr valign="top" class="<?php echo esc_attr( $value['parent_class'] ); ?>">
+						?><tr valign="top">
 							<th scope="row" class="titledesc">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
 							</th>
@@ -304,7 +301,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						$option_value = self::get_option( $value['id'], $value['default'] );
 
 						?>
-						<tr valign="top" class="<?php echo esc_attr( $value['parent_class'] ); ?>">
+						<tr valign="top">
 							<th scope="row" class="titledesc">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
 							</th>
@@ -332,7 +329,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						$option_value = self::get_option( $value['id'], $value['default'] );
 
 						?>
-						<tr valign="top" class="<?php echo esc_attr( $value['parent_class'] ); ?>">
+						<tr valign="top">
 							<th scope="row" class="titledesc">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
 							</th>
@@ -358,7 +355,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						$option_value = self::get_option( $value['id'], $value['default'] );
 
 						?>
-						<tr valign="top" class="<?php echo esc_attr( $value['parent_class'] ); ?>">
+						<tr valign="top">
 							<th scope="row" class="titledesc">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
 							</th>
@@ -579,7 +576,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						);
 						$option_value = evf_parse_relative_date_option( self::get_option( $value['id'], $value['default'] ) );
 						?>
-						<tr valign="top" class="<?php echo esc_attr( $value['parent_class'] ); ?>">
+						<tr valign="top">
 							<th scope="row" class="titledesc">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
 							</th>
