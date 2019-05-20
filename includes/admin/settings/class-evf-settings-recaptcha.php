@@ -33,8 +33,8 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 	 * @return array
 	 */
 	public function get_settings() {
-		$recaptcha_version = get_option( 'everest_forms_recaptcha_type', 'v2' );
-		$settings          = apply_filters(
+		$recaptcha_type = get_option( 'everest_forms_recaptcha_type', 'v2' );
+		$settings       = apply_filters(
 			'everest_forms_recaptcha_settings',
 			array(
 				array(
@@ -65,7 +65,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 					'default'      => '',
 					'type'         => 'text',
 					'class'        => 'everest_foms_recaptcha_v2',
-					'parent_class' => ( 'v2' !== $recaptcha_version ) ? 'everest-forms-hidden' : '',
+					'parent_class' => ( 'v2' !== $recaptcha_type ) ? 'everest-forms-hidden' : '',
 					'css'          => 'min-width: 350px;',
 					'desc_tip'     => true,
 				),
@@ -76,7 +76,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 					'default'      => '',
 					'type'         => 'text',
 					'class'        => 'everest_foms_recaptcha_v2',
-					'parent_class' => ( 'v2' !== $recaptcha_version ) ? 'everest-forms-hidden' : '',
+					'parent_class' => ( 'v2' !== $recaptcha_type ) ? 'everest-forms-hidden' : '',
 					'css'          => 'min-width: 350px;',
 					'desc_tip'     => true,
 				),
@@ -86,7 +86,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 					'id'           => 'everest_forms_recaptcha_v2_invisible',
 					'default'      => 'no',
 					'class'        => 'everest_foms_recaptcha_v2',
-					'parent_class' => ( 'v2' !== $recaptcha_version ) ? 'everest-forms-hidden' : '',
+					'parent_class' => ( 'v2' !== $recaptcha_type ) ? 'everest-forms-hidden' : '',
 					'type'         => 'checkbox',
 				),
 				array(
@@ -96,7 +96,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 					'default'      => '',
 					'type'         => 'text',
 					'class'        => 'everest_foms_recaptcha_v3',
-					'parent_class' => ( 'v3' !== $recaptcha_version ) ? 'everest-forms-hidden' : '',
+					'parent_class' => ( 'v3' !== $recaptcha_type ) ? 'everest-forms-hidden' : '',
 					'css'          => 'min-width: 350px;',
 					'desc_tip'     => true,
 				),
@@ -107,7 +107,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 					'default'      => '',
 					'type'         => 'text',
 					'class'        => 'everest_foms_recaptcha_v3',
-					'parent_class' => ( 'v3' !== $recaptcha_version ) ? 'everest-forms-hidden' : '',
+					'parent_class' => ( 'v3' !== $recaptcha_type ) ? 'everest-forms-hidden' : '',
 					'css'          => 'min-width: 350px;',
 					'desc_tip'     => true,
 				),
