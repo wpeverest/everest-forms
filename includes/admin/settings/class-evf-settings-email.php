@@ -53,7 +53,7 @@ class EVF_Settings_Email extends EVF_Settings_Page {
 							'image' => plugins_url( 'assets/images/email-template-html.png', EVF_PLUGIN_FILE ),
 						),
 						'none'    => array(
-							'name'  => esc_html__( 'Plain Template', 'everest-forms' ),
+							'name'  => esc_html__( 'Plain Text Template', 'everest-forms' ),
 							'image' => plugins_url( 'assets/images/email-template-plain.png', EVF_PLUGIN_FILE ),
 						),
 					),
