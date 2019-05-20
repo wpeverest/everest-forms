@@ -49,7 +49,7 @@ class EVF_Settings_Email extends EVF_Settings_Page {
 					'default' => 'default',
 					'options' => array(
 						'default' => array(
-							'name'  => esc_html__( 'Pre-built Template', 'everest-forms' ),
+							'name'  => esc_html__( 'HTML Template', 'everest-forms' ),
 							'image' => plugins_url( 'assets/images/email-template-html.png', EVF_PLUGIN_FILE ),
 						),
 						'none'    => array(
