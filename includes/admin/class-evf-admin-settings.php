@@ -307,13 +307,14 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 							</th>
 							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
 								<fieldset>
-									<?php echo $description; // WPCS: XSS ok. ?>
 									<ul>
 									<?php
 									foreach ( $value['options'] as $key => $val ) {
 										?>
 										<li>
-											<label><input
+											<label>
+												<img src="<?php echo esc_html( $val['image'] ); ?>">
+												<input
 												name="<?php echo esc_attr( $value['id'] ); ?>"
 												value="<?php echo esc_attr( $key ); ?>"
 												type="radio"
@@ -322,13 +323,13 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 												<?php echo implode( ' ', $custom_attributes ); // WPCS: XSS ok. ?>
 												<?php checked( $key, $option_value ); ?>
 												/>
-												<img src="<?php echo esc_html( $val['image'] ); ?>">
-												<span><?php echo esc_html( $val['name'] ); ?></span></label>
+												<?php echo esc_html( $val['name'] ); ?></label>
 										</li>
 										<?php
 									}
 									?>
 									</ul>
+									<?php echo $description; // WPCS: XSS ok. ?>
 								</fieldset>
 							</td>
 						</tr>

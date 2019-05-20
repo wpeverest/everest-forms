@@ -46,6 +46,7 @@ class EVF_Settings_Email extends EVF_Settings_Page {
 					'title'   => __( 'Template', 'everest-forms' ),
 					'type'    => 'radio-image',
 					'id'      => 'everest_forms_email_template',
+					'desc'    => esc_html__( 'Determine which format of email to send. HTML Template is default.', 'everest-forms' ),
 					'default' => 'default',
 					'options' => array(
 						'default' => array(
@@ -53,7 +54,7 @@ class EVF_Settings_Email extends EVF_Settings_Page {
 							'image' => plugins_url( 'assets/images/email-template-html.png', EVF_PLUGIN_FILE ),
 						),
 						'none'    => array(
-							'name'  => esc_html__( 'Plain Text Template', 'everest-forms' ),
+							'name'  => esc_html__( 'Plain text', 'everest-forms' ),
 							'image' => plugins_url( 'assets/images/email-template-plain.png', EVF_PLUGIN_FILE ),
 						),
 					),

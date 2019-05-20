@@ -518,11 +518,10 @@ body.everest-forms-builder-setup,
 				.forminp-radio-image {
 
 					ul {
-						display: flex;
 						margin: 0;
+						display: flex;
 
 						li {
-							margin-bottom: 0;
 							margin-right: 30px;
 
 							label,
@@ -530,29 +529,9 @@ body.everest-forms-builder-setup,
 								display: block;
 							}
 
-							label {
-								text-align: center;
-
-								input{
-									display: none;
-
-									&:checked {
-
-										+ img {
-											border: 2px solid $everestforms;
-										}
-
-										~ span {
-											color: $everestforms;
-										}
-									}
-								}
-							}
-
 							img {
 								margin-bottom: 15px;
 								border: 2px solid #d6d6d6;
-								transition: all 0.25s;
 							}
 						}
 					}
