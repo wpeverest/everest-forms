@@ -299,6 +299,46 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						<?php
 						break;
 
+					// Radio inputs.
+					case 'radio-image':
+						$option_value = self::get_option( $value['id'], $value['default'] );
+
+						?>
+						<tr valign="top">
+							<th scope="row" class="titledesc">
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
+							</th>
+							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
+								<fieldset>
+									<ul>
+									<?php
+									foreach ( $value['options'] as $key => $val ) {
+										?>
+										<li>
+											<label>
+												<img src="<?php echo esc_html( $val['image'] ); ?>">
+												<input
+												name="<?php echo esc_attr( $value['id'] ); ?>"
+												value="<?php echo esc_attr( $key ); ?>"
+												type="radio"
+												style="<?php echo esc_attr( $value['css'] ); ?>"
+												class="<?php echo esc_attr( $value['class'] ); ?>"
+												<?php echo implode( ' ', $custom_attributes ); // WPCS: XSS ok. ?>
+												<?php checked( $key, $option_value ); ?>
+												/>
+												<?php echo esc_html( $val['name'] ); ?></label>
+										</li>
+										<?php
+									}
+									?>
+									</ul>
+									<?php echo $description; // WPCS: XSS ok. ?>
+								</fieldset>
+							</td>
+						</tr>
+						<?php
+						break;
+
 					// Color picker.
 					case 'color':
 						$option_value = self::get_option( $value['id'], $value['default'] );
