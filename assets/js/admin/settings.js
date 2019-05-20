@@ -15,7 +15,7 @@
 			columnClass: 'evf-responsive-class'
 		};
 
-		$('.everest-forms .everest_forms_recaptcha_version:checked').trigger("change");
+		$('.everest-forms .everest_forms_recaptcha_type:checked').trigger("change");
 	});
 
 	// Color picker
@@ -88,7 +88,7 @@
 		return false;
 	});
 
-	$('.everest-forms').on( 'change', '.everest_forms_recaptcha_version:checked', function() {
+	$('.everest-forms').on( 'change', '.everest_forms_recaptcha_type:checked', function() {
 		var version = $( this ).val();
 		if ( 'v3' === version ) {
 			$('.everest_foms_recaptcha_v2').closest('tr').hide();

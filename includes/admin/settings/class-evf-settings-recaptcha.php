@@ -33,7 +33,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 	 * @return array
 	 */
 	public function get_settings() {
-		$recaptcha_version = get_option( 'everest_forms_recaptcha_version', 'v2' );
+		$recaptcha_version = get_option( 'everest_forms_recaptcha_type', 'v2' );
 		$settings          = apply_filters(
 			'everest_forms_recaptcha_settings',
 			array(
@@ -47,14 +47,14 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 				array(
 					'title'        => __( 'reCAPTCHA type', 'everest-forms' ),
 					'desc'         => __( 'Choose which version of reCAPTCHA to use.', 'everest-forms' ),
-					'id'           => 'everest_forms_recaptcha_version',
+					'id'           => 'everest_forms_recaptcha_type',
 					'default'      => 'v2',
 					'type'         => 'radio',
 					'options'      => array(
 						'v2' => esc_html__( 'reCAPTCHA v2', 'everest-forms' ),
 						'v3' => esc_html__( 'reCAPTCHA v3', 'everest-forms' ),
 					),
-					'class'        => 'everest_forms_recaptcha_version',
+					'class'        => 'everest_forms_recaptcha_type',
 					'parent_class' => 'recaptcha-version-options',
 					'desc_tip'     => true,
 				),

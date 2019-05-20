@@ -310,9 +310,9 @@ class EVF_Shortcode_Form {
 	 * @param array $form_data
 	 */
 	public static function recaptcha( $form_data ) {
-		$recaptcha_version = get_option( 'everest_forms_recaptcha_version', 'v2' );
+		$recaptcha_type = get_option( 'everest_forms_recaptcha_type', 'v2' );
 
-		if ( 'v2' === $recaptcha_version ) {
+		if ( 'v2' === $recaptcha_type ) {
 			$site_key            = get_option( 'everest_forms_recaptcha_site_key' );
 			$secret_key          = get_option( 'everest_forms_recaptcha_site_secret' );
 			$invisible_recaptcha = get_option( 'everest_forms_recaptcha_v2_invisible', 'no' );
@@ -335,7 +335,7 @@ class EVF_Shortcode_Form {
 
 			// Load reCAPTCHA support if form supports it.
 			if ( $site_key && $secret_key ) {
-				if ( 'v2' === $recaptcha_version ) {
+				if ( 'v2' === $recaptcha_type ) {
 					$recaptcha_api = apply_filters( 'everest_forms_frontend_recaptcha_url', 'https://www.google.com/recaptcha/api.js?onload=EVFRecaptchaLoad&render=explicit' );
 					if ( 'yes' === $invisible_recaptcha ) {
 						$recaptcha_inline = 'var EVFRecaptchaLoad = function(){jQuery(".g-recaptcha").each(function(index, el){var recaptchaID = grecaptcha.render(el,{},true); grecaptcha.execute(recaptchaID);});};';
@@ -358,7 +358,7 @@ class EVF_Shortcode_Form {
 					$count++;
 				}
 
-				if ( 'v2' === $recaptcha_version && 'yes' === $invisible_recaptcha ) {
+				if ( 'v2' === $recaptcha_type && 'yes' === $invisible_recaptcha ) {
 					// Output the reCAPTCHA container.
 					$data['size']    = 'invisible';
 					$data['sitekey'] = $site_key;
@@ -367,7 +367,7 @@ class EVF_Shortcode_Form {
 					echo '</div>';
 				} else {
 					// Output the reCAPTCHA container.
-					$class = 'v3' === $recaptcha_version ? 'recaptcha-hidden' : '';
+					$class = 'v3' === $recaptcha_type ? 'recaptcha-hidden' : '';
 					echo '<div class="evf-recaptcha-container ' . $class . '" ' . $visible . '>';
 					echo '<div ' . evf_html_attributes( '', array( 'g-recaptcha' ), $data ) . '></div>';
 					echo '<input type="text" name="g-recaptcha-hidden" class="evf-recaptcha-hidden" style="position:absolute!important;clip:rect(0,0,0,0)!important;height:1px!important;width:1px!important;border:0!important;overflow:hidden!important;padding:0!important;margin:0!important;" required>';
