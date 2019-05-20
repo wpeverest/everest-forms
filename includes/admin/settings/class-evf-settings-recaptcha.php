@@ -45,18 +45,17 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 					'id'    => 'integration_options',
 				),
 				array(
-					'title'        => __( 'reCAPTCHA type', 'everest-forms' ),
-					'desc'         => __( 'Choose the type of reCAPTCHA for this site key.', 'everest-forms' ),
-					'id'           => 'everest_forms_recaptcha_type',
-					'default'      => 'v2',
-					'type'         => 'radio',
-					'options'      => array(
+					'title'    => __( 'reCAPTCHA type', 'everest-forms' ),
+					'desc'     => __( 'Choose the type of reCAPTCHA for this site key.', 'everest-forms' ),
+					'id'       => 'everest_forms_recaptcha_type',
+					'default'  => 'v2',
+					'type'     => 'radio',
+					'options'  => array(
 						'v2' => esc_html__( 'reCAPTCHA v2', 'everest-forms' ),
 						'v3' => esc_html__( 'reCAPTCHA v3', 'everest-forms' ),
 					),
-					'class'        => 'everest_forms_recaptcha_type',
-					'parent_class' => 'recaptcha-type-options',
-					'desc_tip'     => true,
+					'class'    => 'everest-forms-recaptcha-type',
+					'desc_tip' => true,
 				),
 				array(
 					'title'        => __( 'Site Key', 'everest-forms' ),
