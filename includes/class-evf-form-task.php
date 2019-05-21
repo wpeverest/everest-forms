@@ -103,20 +103,31 @@ class EVF_Form_Task {
 			}
 
 			// reCAPTCHA check.
-			$site_key   = get_option( 'everest_forms_recaptcha_site_key' );
-			$secret_key = get_option( 'everest_forms_recaptcha_site_secret' );
-			if (
-				! empty( $site_key ) &&
-				! empty( $secret_key ) &&
-				isset( $form_data['settings']['recaptcha_support'] ) &&
-				'1' === $form_data['settings']['recaptcha_support']
-			) {
-				if ( ! empty( $_POST['g-recaptcha-response'] ) ) {
-					$data = wp_remote_get( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $_POST['g-recaptcha-response'] );
-					$data = json_decode( wp_remote_retrieve_body( $data ) );
-					if ( empty( $data->success ) ) {
-						evf_add_notice( __( 'Incorrect reCAPTCHA, please try again.', 'everest-forms' ), 'error' );
-						return;
+			$recaptcha_type = get_option( 'everest_forms_recaptcha_type', 'v2' );
+
+			if ( 'v2' === $recaptcha_type ) {
+				$site_key   = get_option( 'everest_forms_recaptcha_v2_site_key' );
+				$secret_key = get_option( 'everest_forms_recaptcha_v2_secret_key' );
+			} else {
+				$site_key   = get_option( 'everest_forms_recaptcha_v3_site_key' );
+				$secret_key = get_option( 'everest_forms_recaptcha_v3_secret_key' );
+			}
+
+			if ( ! empty( $site_key ) && ! empty( $secret_key ) && isset( $form_data['settings']['recaptcha_support'] ) && '1' === $form_data['settings']['recaptcha_support'] ) {
+				if ( ( 'v2' === $recaptcha_type && ! empty( $_POST['g-recaptcha-response'] ) ) || ( 'v3' === $recaptcha_type && ! empty( $_POST['g-recaptcha-hidden'] ) ) ) {
+					$response = ( 'v2' === $recaptcha_type ) ? $_POST['g-recaptcha-response'] : $_POST['g-recaptcha-hidden'];
+					$data     = wp_remote_get( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $response );
+					$data     = json_decode( wp_remote_retrieve_body( $data ) );
+					if ( 'v2' === $recaptcha_type ) {
+						if ( empty( $data->success ) ) {
+							evf_add_notice( __( 'Incorrect reCAPTCHA, please try again.', 'everest-forms' ), 'error' );
+							return;
+						}
+					} else {
+						if ( empty( $data->success ) && 0.5 > absint( $data->score ) && 'everest_form' === $data->action && $_SERVER['HTTP_HOST'] === $data->hostname ) {
+							evf_add_notice( __( 'Incorrect reCAPTCHA, please try again.', 'everest-forms' ), 'error' );
+							return;
+						}
 					}
 				} else {
 					$this->errors[ $form_id ]['recaptcha'] = esc_html__( 'reCAPTCHA is required.', 'everest-forms' );

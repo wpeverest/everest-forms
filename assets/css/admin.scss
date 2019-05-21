@@ -2467,10 +2467,26 @@ body.everest-forms-builder-setup,
 		position: relative;
 		table-layout: fixed;
 
-		.forminp-radio ul {
-			margin: 0;
-			li {
-				line-height: 1.4em;
+		.forminp-radio {
+			ul {
+				margin: 0;
+
+				li {
+					line-height: 1.4em;
+				}
+
+				&.everest-forms-recaptcha-type {
+					display: flex;
+
+					li {
+						margin-right: 15px;
+
+						label {
+							margin-bottom: 0 !important;
+							margin-top: -6px !important;
+						}
+					}
+				}
 			}
 		}
 
