@@ -495,15 +495,15 @@ body.everest-forms-builder-setup,
 
 			.form-table {
 				tr {
-					border-bottom: 1px solid #e4e4e4;
+					border-bottom: 1px solid $color_gray-lighten;
 
 					&:first-child {
-						border-top: 1px solid #e4e4e4;
+						border-top: 1px solid $color_gray-lighten;
 					}
 				}
 
 				th {
-					padding-top: 25px;
+					padding-top: 31px;
 
 					.everest-forms-help-tip {
 						margin: 0;
@@ -836,6 +836,10 @@ body.everest-forms-builder-setup,
 
 			&::placeholder {
 				color: $color_gray-light;
+			}
+
+			&:focus {
+				border-color: #5b9dd9;
 			}
 		}
 
@@ -1305,7 +1309,7 @@ body.everest-forms-builder-setup,
 						font-size: 14px;
 						font-weight: 600;
 						color: $color-gray-darken;
-						border-bottom: 1px solid #e0e3e6;
+						border-bottom: 1px solid $color_gray-lighten;
 
 						.everest-forms-toggle-arrow {
 							font-size: 14px;
@@ -2075,7 +2079,7 @@ body.everest-forms-builder-setup,
 				margin-bottom: 20px;
 				padding-bottom: 20px;
 				color: $color_gray-dark;
-				border-bottom: 1px solid $color-white-darken;
+				border-bottom: 1px solid $color_gray-lighten;
 			}
 
 			.everest-forms-panel-field {
@@ -2504,10 +2508,10 @@ body.everest-forms-builder-setup,
 
 					li {
 						margin-right: 15px;
+						margin-bottom: 0;
 
 						label {
 							margin-bottom: 0 !important;
-							margin-top: -6px !important;
 						}
 					}
 				}
