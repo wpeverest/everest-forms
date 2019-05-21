@@ -221,7 +221,7 @@ function evf_update_144_db_version() {
 function evf_update_149_db_rename_options() {
 	$rename_options = array(
 		'everest_forms_recaptcha_site_key'    => 'everest_forms_recaptcha_v2_site_key',
-		'everest_forms_recaptcha_site_secret' => 'everest_forms_recaptcha_v2_site_secret',
+		'everest_forms_recaptcha_site_secret' => 'everest_forms_recaptcha_v2_secret_key',
 	);
 
 	foreach ( $rename_options as $old_option => $new_option ) {

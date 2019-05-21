@@ -14,8 +14,6 @@
 			boxWidth: '400px',
 			columnClass: 'evf-responsive-class'
 		};
-
-		$('.everest-forms .everest_forms_recaptcha_type:checked').trigger("change");
 	});
 
 	// Color picker
@@ -88,14 +86,27 @@
 		return false;
 	});
 
-	$('.everest-forms').on( 'change', '.everest_forms_recaptcha_type:checked', function() {
-		var version = $( this ).val();
-		if ( 'v3' === version ) {
-			$('.everest_foms_recaptcha_v2').closest('tr').hide();
-			$('.everest_foms_recaptcha_v3').closest('tr').show();
+	// Show/hide based on reCAPTCHA type.
+	$( 'input#everest_forms_recaptcha_type' ).change( function() {
+		var recaptcha_v2_site_key   = $( '#everest_forms_recaptcha_v2_site_key' ).parents( 'tr' ).eq( 0 ),
+			recaptcha_v2_secret_key = $( '#everest_forms_recaptcha_v2_secret_key' ).parents( 'tr' ).eq( 0 ),
+			recaptcha_v2_invisible  = $( '#everest_forms_recaptcha_v2_invisible' ).parents( 'tr' ).eq( 0 ),
+			recaptcha_v3_site_key   = $( '#everest_forms_recaptcha_v3_site_key' ).parents( 'tr' ).eq( 0 ),
+			recaptcha_v3_secret_key = $( '#everest_forms_recaptcha_v3_secret_key' ).parents( 'tr' ).eq( 0 );
+
+		if ( 'v2' === $( this ).val() ) {
+			recaptcha_v2_site_key.show();
+			recaptcha_v2_secret_key.show();
+			recaptcha_v2_invisible.show();
+			recaptcha_v3_site_key.hide();
+			recaptcha_v3_secret_key.hide();
 		} else {
-			$('.everest_foms_recaptcha_v3').closest('tr').hide();
-			$('.everest_foms_recaptcha_v2').closest('tr').show();
+			recaptcha_v2_site_key.hide();
+			recaptcha_v2_secret_key.hide();
+			recaptcha_v2_invisible.hide();
+			recaptcha_v3_site_key.show();
+			recaptcha_v3_secret_key.show();
 		}
-	});
+	}).change();
+
 })( jQuery, everest_forms_settings_params );

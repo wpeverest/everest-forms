@@ -314,15 +314,17 @@ class EVF_Shortcode_Form {
 
 		if ( 'v2' === $recaptcha_type ) {
 			$site_key            = get_option( 'everest_forms_recaptcha_v2_site_key' );
-			$secret_key          = get_option( 'everest_forms_recaptcha_v2_site_secret' );
+			$secret_key          = get_option( 'everest_forms_recaptcha_v2_secret_key' );
 			$invisible_recaptcha = get_option( 'everest_forms_recaptcha_v2_invisible', 'no' );
 		} else {
 			$site_key   = get_option( 'everest_forms_recaptcha_v3_site_key' );
-			$secret_key = get_option( 'everest_forms_recaptcha_v3_site_secret' );
+			$secret_key = get_option( 'everest_forms_recaptcha_v3_secret_key' );
 		}
+
 		if ( ! $site_key || ! $secret_key ) {
 			return;
 		}
+
 		if ( isset( $form_data['settings']['recaptcha_support'] ) && '1' === $form_data['settings']['recaptcha_support'] ) {
 			$visible = self::$parts ? 'style="display:none;"' : '';
 			$data    = apply_filters(

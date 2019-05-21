@@ -107,10 +107,10 @@ class EVF_Form_Task {
 
 			if ( 'v2' === $recaptcha_type ) {
 				$site_key   = get_option( 'everest_forms_recaptcha_v2_site_key' );
-				$secret_key = get_option( 'everest_forms_recaptcha_v2_site_secret' );
+				$secret_key = get_option( 'everest_forms_recaptcha_v2_secret_key' );
 			} else {
 				$site_key   = get_option( 'everest_forms_recaptcha_v3_site_key' );
-				$secret_key = get_option( 'everest_forms_recaptcha_v3_site_secret' );
+				$secret_key = get_option( 'everest_forms_recaptcha_v3_secret_key' );
 			}
 
 			if ( ! empty( $site_key ) && ! empty( $secret_key ) && isset( $form_data['settings']['recaptcha_support'] ) && '1' === $form_data['settings']['recaptcha_support'] ) {

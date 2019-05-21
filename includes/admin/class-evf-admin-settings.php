@@ -411,6 +411,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 										<li>
 											<label><input
 												name="<?php echo esc_attr( $value['id'] ); ?>"
+												id="<?php echo esc_attr( $value['id'] ); ?>"
 												value="<?php echo esc_attr( $key ); ?>"
 												type="radio"
 												style="<?php echo esc_attr( $value['css'] ); ?>"
