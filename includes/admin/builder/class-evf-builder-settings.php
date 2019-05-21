@@ -236,10 +236,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			'settings',
 			'honeypot',
 			$this->form_data,
-			esc_html__( 'Enable anti-spam honeypot', 'everest-forms' ),
-			array(
-				'default' => '1',
-			)
+			esc_html__( 'Enable anti-spam honeypot', 'everest-forms' )
 		);
 		$recaptcha_type   = get_option( 'everest_forms_recaptcha_type', 'v2' );
 		$recaptcha_key    = get_option( 'everest_forms_recaptcha_' . $recaptcha_type . '_site_key' );
