@@ -23,6 +23,13 @@ $color-gray: 					#969696; // Gray 59%
 $color-gray-light:				#bdbdbd; // Gray 74%
 $color-gray-lighter: 			#d6d8da; // Gray 84%
 
+$color_gray-dark:				#23282d;
+$color_gray-base:				#494d50;
+$color_gray-normal:				#6d7378;
+$color_gray-light:				#949a9e;
+$color_gray-lighten:			#cdd0d8;
+$color_gray-light-skin:			#f6f7f9;
+
 /*=====  Light colors  ======*/
 $color-white:					#fff;
 $color-white-dark:              #fafafa; // white 2%
@@ -41,6 +48,10 @@ $color-alert-success:        	#5cb85c;
 $color-alert-info:           	#5bc0de;
 $color-alert-warning:        	#f0ad4e;
 $color-alert-danger:         	#d9534f;
+
+/*==========  Typography Colors  ==========*/
+$color-heading:					$color-gray-dark;
+$color-body:                    $color-gray;
 
 /*==========  Typography Colors  ==========*/
 $color-heading:					$color-gray-dark;
