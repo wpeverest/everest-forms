@@ -274,9 +274,14 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 					case 'email':
 					case 'url':
 					case 'tel':
-						$option_value = self::get_option( $value['id'], $value['default'] );
+						$option_value     = self::get_option( $value['id'], $value['default'] );
+						$visibility_class = array();
 
-						?><tr valign="top">
+						if ( isset( $value['is_visible'] ) ) {
+							$visibility_class[] = $value['is_visible'] ? 'everest-forms-visible' : 'everest-forms-hidden';
+						}
+
+						?><tr valign="top" class="<?php echo esc_attr( implode( ' ', $visibility_class ) ); ?>">
 							<th scope="row" class="titledesc">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
 							</th>
@@ -489,6 +494,9 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						}
 						if ( 'option' === $value['show_if_checked'] ) {
 							$visibility_class[] = 'show_options_if_checked';
+						}
+						if ( isset( $value['is_visible'] ) ) {
+							$visibility_class[] = $value['is_visible'] ? 'everest-forms-visible' : 'everest-forms-hidden';
 						}
 
 						if ( ! isset( $value['checkboxgroup'] ) || 'start' === $value['checkboxgroup'] ) {
