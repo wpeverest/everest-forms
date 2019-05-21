@@ -77,6 +77,7 @@ class EVF_Form_Task {
 			$this->form_fields = array();
 			$form_id           = absint( $entry['id'] );
 			$form              = EVF()->form->get( $form_id );
+			$honeypot          = false;
 
 			// Validate form is real and active (published).
 			if ( ! $form || 'publish' !== $form->post_status ) {
@@ -141,67 +142,82 @@ class EVF_Form_Task {
 				if ( empty( $this->errors[ $form_id ]['header'] ) ) {
 					$this->errors[ $form_id ]['header'] = __( 'Form has not been submitted, please see the errors below.', 'everest-forms' );
 				}
+				$this->errors = $errors;
+				return;
 			}
 
-			$is_spam = false;
-
-			// Only trigger the processing (saving/sending entries, etc) if the entry.
-			// is not spam.
-			if ( ! $is_spam ) {
-
-				// Pass the form created date into the form data.
-				$form_data['created'] = $form->post_date;
-
-				// Format fields.
-				foreach ( (array) $form_data['form_fields'] as $field ) {
-					$field_id     = $field['id'];
-					$field_key    = isset( $field['meta-key'] ) ? $field['meta-key'] : '';
-					$field_type   = $field['type'];
-					$field_submit = isset( $entry['form_fields'][ $field_id ] ) ? $entry['form_fields'][ $field_id ] : '';
-
-					do_action( "everest_forms_process_format_{$field_type}", $field_id, $field_submit, $form_data, $field_key );
-				}
-
-				// This hook is for internal purposes and should not be leveraged.
-				do_action( 'everest_forms_process_format_after', $form_data );
-
-				// Process hooks/filter - this is where most addons should hook
-				// because at this point we have completed all field validation and
-				// formatted the data.
-				$this->form_fields = apply_filters( 'everest_forms_process_filter', $this->form_fields, $entry, $form_data );
-
-				do_action( 'everest_forms_process', $this->form_fields, $entry, $form_data );
-				do_action( "everest_forms_process_{$form_id}", $this->form_fields, $entry, $form_data );
-
-				$this->form_fields = apply_filters( 'everest_forms_process_after_filter', $this->form_fields, $entry, $form_data );
-
-				// One last error check - don't proceed if there are any errors.
-				if ( ! empty( $this->errors[ $form_id ] ) ) {
-					if ( empty( $this->errors[ $form_id ]['header'] ) ) {
-						$this->errors[ $form_id ]['header'] = __( 'Form has not been submitted, please see the errors below.', 'everest-forms' );
-					}
-
-					return;
-				}
-
-				// Success - add entry to database.
-				$entry_id = $this->entry_save( $this->form_fields, $entry, $form_data['id'], $form_data );
-
-				// Success - send email notification.
-				$this->entry_email( $this->form_fields, $entry, $form_data, $entry_id, 'entry' );
-
-				$_POST['evf_success'] = true;
-
-				// Pass completed and formatted fields in POST.
-				$_POST['everest-forms']['complete'] = $this->form_fields;
-
-				// Pass entry ID in POST.
-				$_POST['everest-forms']['entry_id'] = $entry_id;
-
-				// Post-process hooks.
-				do_action( 'everest_forms_process_complete', $this->form_fields, $entry, $form_data, $entry_id );
-				do_action( "everest_forms_process_complete_{$form_id}", $this->form_fields, $entry, $form_data, $entry_id );
+			if ( isset( $form_data['settings']['honeypot'] ) && '1' === $form_data['settings']['honeypot'] && ! empty( $entry['hp'] ) ) {
+				$honeypot = esc_html__( 'Everest Forms honeypot field triggered.', 'everest-forms' );
 			}
+
+			$honeypot = apply_filters( 'everest_forms_process_honeypot', $honeypot, $this->form_fields, $entry, $form_data );
+
+			// If spam - return early.
+			if ( $honeypot ) {
+				$logger = evf_get_logger();
+				$logger->warning(
+					'Spam Entry ' . uniqid(),
+					array(
+						'source'  => 'spam',
+						'form_id' => $form_data['id'],
+					)
+				);
+
+				return;
+			}
+
+			// Pass the form created date into the form data.
+			$form_data['created'] = $form->post_date;
+
+			// Format fields.
+			foreach ( (array) $form_data['form_fields'] as $field ) {
+				$field_id     = $field['id'];
+				$field_key    = isset( $field['meta-key'] ) ? $field['meta-key'] : '';
+				$field_type   = $field['type'];
+				$field_submit = isset( $entry['form_fields'][ $field_id ] ) ? $entry['form_fields'][ $field_id ] : '';
+
+				do_action( "everest_forms_process_format_{$field_type}", $field_id, $field_submit, $form_data, $field_key );
+			}
+
+			// This hook is for internal purposes and should not be leveraged.
+			do_action( 'everest_forms_process_format_after', $form_data );
+
+			// Process hooks/filter - this is where most addons should hook
+			// because at this point we have completed all field validation and
+			// formatted the data.
+			$this->form_fields = apply_filters( 'everest_forms_process_filter', $this->form_fields, $entry, $form_data );
+
+			do_action( 'everest_forms_process', $this->form_fields, $entry, $form_data );
+			do_action( "everest_forms_process_{$form_id}", $this->form_fields, $entry, $form_data );
+
+			$this->form_fields = apply_filters( 'everest_forms_process_after_filter', $this->form_fields, $entry, $form_data );
+
+			// One last error check - don't proceed if there are any errors.
+			if ( ! empty( $this->errors[ $form_id ] ) ) {
+				if ( empty( $this->errors[ $form_id ]['header'] ) ) {
+					$this->errors[ $form_id ]['header'] = __( 'Form has not been submitted, please see the errors below.', 'everest-forms' );
+				}
+
+				return;
+			}
+
+			// Success - add entry to database.
+			$entry_id = $this->entry_save( $this->form_fields, $entry, $form_data['id'], $form_data );
+
+			// Success - send email notification.
+			$this->entry_email( $this->form_fields, $entry, $form_data, $entry_id, 'entry' );
+
+			$_POST['evf_success'] = true;
+
+			// Pass completed and formatted fields in POST.
+			$_POST['everest-forms']['complete'] = $this->form_fields;
+
+			// Pass entry ID in POST.
+			$_POST['everest-forms']['entry_id'] = $entry_id;
+
+			// Post-process hooks.
+			do_action( 'everest_forms_process_complete', $this->form_fields, $entry, $form_data, $entry_id );
+			do_action( "everest_forms_process_complete_{$form_id}", $this->form_fields, $entry, $form_data, $entry_id );
 		} catch ( Exception $e ) {
 			evf_add_notice( $e->getMessage(), 'error' );
 		}
