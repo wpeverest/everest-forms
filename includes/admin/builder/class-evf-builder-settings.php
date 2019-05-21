@@ -231,16 +231,21 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		);
 		do_action( 'everest_forms_inline_submit_settings', $this, 'submit', 'connection_1' );
 		echo '</div>';
-		everest_forms_panel_field(
-			'checkbox',
-			'settings',
-			'recaptcha_support',
-			$this->form_data,
-			sprintf( __( 'Enable %1$s %2$s reCaptcha %3$s support', 'everest-forms' ), '<a title="', 'Please make sure the site key and secret are not empty in setting page." href="' . admin_url() . 'admin.php?page=evf-settings&tab=recaptcha" target="_blank">', '</a>' ),
-			array(
-				'default' => '0',
-			)
-		);
+		$recaptcha_type   = get_option( 'everest_forms_recaptcha_type', 'v2' );
+		$recaptcha_key    = get_option( 'everest_forms_recaptcha_' . $recaptcha_type . '_site_key' );
+		$recaptcha_secret = get_option( 'everest_forms_recaptcha_' . $recaptcha_type . '_secret_key' );
+		if ( ! empty( $recaptcha_key ) && ! empty( $recaptcha_secret ) ) {
+			everest_forms_panel_field(
+				'checkbox',
+				'settings',
+				'recaptcha_support',
+				$this->form_data,
+				'v3' === $recaptcha_type ? esc_html__( 'Enable Google reCAPTCHA v3', 'everest-forms' ) : ( 'yes' === get_option( 'everest_forms_recaptcha_v2_invisible' ) ? esc_html__( 'Enable Google Invisible reCAPTCHA v2', 'everest-forms' ) : esc_html__( 'Enable Google Checkbox reCAPTCHA v2', 'everest-forms' ) ),
+				array(
+					'default' => '0',
+				)
+			);
+		}
 		everest_forms_panel_field(
 			'checkbox',
 			'settings',
