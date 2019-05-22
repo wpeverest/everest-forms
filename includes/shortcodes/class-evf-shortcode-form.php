@@ -315,7 +315,7 @@ class EVF_Shortcode_Form {
 		$names = array( 'Name', 'Phone', 'Comment', 'Message', 'Email', 'Website' );
 
 		// Output the honeypot container.
-		if ( isset( $form_data['settings']['honeypot'] ) && '1' !== $form_data['settings']['honeypot'] ) {
+		if ( isset( $form_data['settings']['honeypot'] ) && '1' === $form_data['settings']['honeypot'] ) {
 			echo '<div class="evf-honeypot-container evf-field-hp">';
 
 				echo '<label for="evf-' . $form_data['id'] . '-field-hp" class="evf-field-label">' . $names[ array_rand( $names ) ] . '</label>'; // phpcs:ignore
