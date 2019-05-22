@@ -60,7 +60,8 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 				array(
 					'title'      => __( 'Site Key', 'everest-forms' ),
 					'type'       => 'text',
-					'desc'       => __( 'Please enter your site key for your reCAPTCHA v2.', 'everest-forms' ),
+					/* translators: %1$s - Google reCAPTCHA docs url */
+					'desc'       => sprintf( __( 'Please enter your site key for your reCAPTCHA v2. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/tutorials/how-to-integrate-google-recaptcha/' ) ),
 					'id'         => 'everest_forms_recaptcha_v2_site_key',
 					'is_visible' => 'v2' === $recaptcha_type,
 					'default'    => '',
@@ -69,7 +70,8 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 				array(
 					'title'      => __( 'Secret Key', 'everest-forms' ),
 					'type'       => 'text',
-					'desc'       => __( 'Please enter your secret key for your reCAPTCHA v2.', 'everest-forms' ),
+					/* translators: %1$s - Google reCAPTCHA docs url */
+					'desc'       => sprintf( __( 'Please enter your secret key for your reCAPTCHA v2. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/tutorials/how-to-integrate-google-recaptcha/' ) ),
 					'id'         => 'everest_forms_recaptcha_v2_secret_key',
 					'is_visible' => 'v2' === $recaptcha_type,
 					'default'    => '',
@@ -86,7 +88,8 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 				array(
 					'title'      => __( 'Site Key', 'everest-forms' ),
 					'type'       => 'text',
-					'desc'       => __( 'Please enter your site key for your reCAPTCHA v3.', 'everest-forms' ),
+					/* translators: %1$s - Google reCAPTCHA docs url */
+					'desc'       => sprintf( __( 'Please enter your site key for your reCAPTCHA v3. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/tutorials/how-to-integrate-google-recaptcha/' ) ),
 					'id'         => 'everest_forms_recaptcha_v3_site_key',
 					'is_visible' => 'v3' === $recaptcha_type,
 					'default'    => '',
@@ -95,7 +98,8 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 				array(
 					'title'      => __( 'Secret Key', 'everest-forms' ),
 					'type'       => 'text',
-					'desc'       => __( 'Please enter your secret key for your reCAPTCHA v3.', 'everest-forms' ),
+					/* translators: %1$s - Google reCAPTCHA docs url */
+					'desc'       => sprintf( __( 'Please enter your secret key for your reCAPTCHA v2. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/tutorials/how-to-integrate-google-recaptcha/' ) ),
 					'id'         => 'everest_forms_recaptcha_v3_secret_key',
 					'is_visible' => 'v3' === $recaptcha_type,
 					'default'    => '',
