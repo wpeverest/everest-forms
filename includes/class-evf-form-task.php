@@ -155,13 +155,7 @@ class EVF_Form_Task {
 			// If spam - return early.
 			if ( $honeypot ) {
 				$logger = evf_get_logger();
-				$logger->warning(
-					'Spam Entry ' . uniqid(),
-					array(
-						'source'  => 'spam',
-						'form_id' => $form_data['id'],
-					)
-				);
+				$logger->notice( sprintf( 'Spam entry for Form ID %d Response: %s', absint( $form_data['id'] ), evf_print_r( $entry, true ) ), array( 'source' => 'honeypot' ) );
 				return;
 			}
 
