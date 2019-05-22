@@ -312,7 +312,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					__( 'To Address', 'everest-forms' ),
 					array(
 						'default'   => isset( $settings['email'][ $connection_id ]['evf_to_email'] ) ? $settings['email'][ $connection_id ]['evf_to_email'] : '{admin_email}',
-						'tooltip'   => __( 'Enter your email address to receive notifications; separate with a comma if multiple addresses.', 'everest-forms' ),
+						'tooltip'   => sprintf( __( 'Enter your email address to receive notifications. Separate with a comma if multiple addresses <a href="%s" target="_blank">Learn More</a>','everest-forms' ),esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#to-address' ) ),
 						'smarttags' => array(
 							'type'        => 'fields',
 							'form_fields' => 'email',
@@ -327,7 +327,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					__( 'From Name', 'everest-forms' ),
 					array(
 						'default'   => isset( $settings['email'][ $connection_id ]['evf_from_name'] ) ? $settings['email'][ $connection_id ]['evf_from_name'] : get_bloginfo( 'name', 'display' ),
-						'tooltip'   => __( 'Enter the From Name.', 'everest-forms' ),
+						'tooltip'   => sprintf( __( 'Enter the From Name to be displayed in Email <a href="%s" target="_blank">Learn More</a>','everest-forms' ),esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#from-name' ) ),
 						'smarttags' => array(
 							'type'        => 'all',
 							'form_fields' => 'all',
@@ -342,7 +342,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					__( 'From Address', 'everest-forms' ),
 					array(
 						'default'   => isset( $settings['email'][ $connection_id ]['evf_from_email'] ) ? $settings['email'][ $connection_id ]['evf_from_email'] : '{admin_email}',
-						'tooltip'   => __( 'Enter the Email address from which you want to send Email.', 'everest-forms' ),
+						'tooltip'   => sprintf( __( 'Enter the Email address from which you want to send Email <a href="%s" target="_blank">Learn More</a>','everest-forms' ),esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#from-address' ) ),
 						'smarttags' => array(
 							'type'        => 'fields',
 							'form_fields' => 'email',
@@ -357,7 +357,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					__( 'Reply To', 'everest-forms' ),
 					array(
 						'default'   => isset( $settings['email'][ $connection_id ]['evf_reply_to'] ) ? $settings['email'][ $connection_id ]['evf_reply_to'] : '',
-						'tooltip'   => __( 'Enter the reply to email where the email address will be sent while user replies Email.', 'everest-forms' ),
+						'tooltip'   => sprintf( __( 'Enter the reply to email address where you want the email to be received when this email is replied <a href="%s" target="_blank">Learn More</a>','everest-forms' ),esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#reply-to' ) ),
 						'smarttags' => array(
 							'type'        => 'fields',
 							'form_fields' => 'email',
@@ -372,7 +372,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					__( 'Email Subject', 'everest-forms' ),
 					array(
 						'default'   => isset( $settings['email'][ $connection_id ]['evf_email_subject'] ) ? $settings['email'][ $connection_id ]['evf_email_subject'] : sprintf( __( 'New Form Entry %s', 'everest-forms' ), $form_name ),
-						'tooltip'   => __( 'Enter the subject of the email.', 'everest-forms' ) . sprintf( '<a href="%s" target="_blank" >' . __( ' Learn More ', 'everest-forms' ) . '</a>', esc_url( 'https://docs.wpeverest.com/docs/everest-forms/troubleshooting/emails-are-not-being-delivered/#emails-blocked' ) ),
+						'tooltip'   => sprintf( __( 'Enter the subject of the email <a href="%s" target="_blank">Learn More</a>','everest-forms' ),esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#email-subject' ) ),
 						'smarttags' => array(
 							'type'        => 'all',
 							'form_fields' => 'all',
@@ -387,7 +387,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					__( 'Email Message', 'everest-forms' ),
 					array(
 						'default'   => isset( $settings['email'][ $connection_id ]['evf_email_message'] ) ? $settings['email'][ $connection_id ]['evf_email_message'] : __( '{all_fields}', 'everest-forms' ),
-						'tooltip'   => __( 'Enter the message of Email.', 'everest-forms' ) . sprintf( '<a href="%s" target="_blank" >' . __( ' Learn More ', 'everest-forms' ) . '</a>', esc_url( 'https://docs.wpeverest.com/docs/everest-forms/troubleshooting/emails-are-not-being-delivered/#emails-blocked' ) ),
+						'tooltip'   => sprintf( __( 'Enter the message of the email <a href="%s" target="_blank">Learn More</a>','everest-forms' ),esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#email-message' ) ),
 						'smarttags' => array(
 							'type'        => 'all',
 							'form_fields' => 'all',
