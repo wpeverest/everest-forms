@@ -133,6 +133,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			__( 'Form Name', 'everest-forms' ),
 			array(
 				'default' => $this->form->post_title,
+				'tooltip' => __('Give a name to this form', 'everest-forms')
 			)
 		);
 		everest_forms_panel_field(
@@ -143,6 +144,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			__( 'Successful form submission message', 'everest-forms' ),
 			array(
 				'default' => isset( $this->form->successful_form_submission_message ) ? $this->form->successful_form_submission_message : __( 'Thanks for contacting us! We will be in touch with you shortly', 'everest-forms' ),
+				'tooltip'   => sprintf( __( 'Success message that shows up after submitting form <a href="%s" target="_blank">Learn More</a>','everest-forms' ),esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/general-settings/#successful-form-submission-message' ) ),
 			)
 		);
 		everest_forms_panel_field(
@@ -153,6 +155,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			__( 'Redirect To', 'everest-forms' ),
 			array(
 				'default' => '0',
+				'tooltip'   => sprintf( __( 'Choose where to redirect after form submission <a href="%s" target="_blank">Learn More</a>','everest-forms' ),esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/general-settings/#redirect-to' ) ),
 				'options' => array(
 					'0' => __( 'Same Page', 'everest-forms' ),
 					'1' => __( 'Custom Page', 'everest-forms' ),
@@ -189,6 +192,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			__( 'Layout Design', 'everest-forms' ),
 			array(
 				'default' => '0',
+				'tooltip' => __('Choose design template for the Form', 'everest-forms'),
 				'options' => array(
 					'default'    => __( 'Default', 'everest-forms' ),
 					'layout-two' => __( 'Classic Layout', 'everest-forms' ),
@@ -203,7 +207,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			__( 'Form Class', 'everest-forms' ),
 			array(
 				'default' => isset( $this->form->form_class ) ? $this->form->form_class : '',
-				'tooltip' => esc_html( 'Enter CSS class names for the form wrapper. Multiple class names should be separated with spaces.', 'everest-forms' ),
+				'tooltip' => sprintf( __( 'Enter CSS class names for the form wrapper. Multiple class names should be separated with spaces <a href="%s" target="_blank">Learn More</a>','everest-forms' ),esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/general-settings/#form-class' ) ),
 			)
 		);
 		echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'Submit Button', 'everest-forms' ) . '</h4>';
@@ -238,6 +242,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			sprintf( __( 'Enable %1$s %2$s reCaptcha %3$s support', 'everest-forms' ), '<a title="', 'Please make sure the site key and secret are not empty in setting page." href="' . admin_url() . 'admin.php?page=evf-settings&tab=recaptcha" target="_blank">', '</a>' ),
 			array(
 				'default' => '0',
+				'tooltip' => sprintf( __( 'Enable Google reCaptcha. Make sure the site key and secret key is set in settings page <a href="%s" target="_blank">Learn More</a>','everest-forms' ),esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/general-settings/#enable-recaptcha-support' ) ),
 			)
 		);
 		everest_forms_panel_field(
@@ -248,6 +253,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			__( 'Disable storing entry information', 'everest-forms' ),
 			array(
 				'default' => isset( $settings['disabled_entries'] ) ? $settings['disabled_entries'] : 0,
+				'tooltip' => sprintf( __( 'Disable storing form entries <a href="%s" target="_blank">Learn More</a>','everest-forms' ),esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/general-settings/#disable-storing-entry-information' ) ),
 			)
 		);
 
