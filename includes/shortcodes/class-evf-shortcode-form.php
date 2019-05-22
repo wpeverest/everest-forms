@@ -312,19 +312,18 @@ class EVF_Shortcode_Form {
 	 * @param array $form_data   Form data and settings.
 	 */
 	public static function honeypot( $form_data ) {
-		if ( isset( $form_data['settings']['honeypot'] ) && '1' !== $form_data['settings']['honeypot'] ) {
-			return;
-		}
-
 		$names = array( 'Name', 'Phone', 'Comment', 'Message', 'Email', 'Website' );
 
-		echo '<div class="evf-honeypot-container evf-field-hp">';
+		// Output the honeypot container.
+		if ( isset( $form_data['settings']['honeypot'] ) && '1' !== $form_data['settings']['honeypot'] ) {
+			echo '<div class="evf-honeypot-container evf-field-hp">';
 
-			echo '<label for="evf-' . $form_data['id'] . '-field-hp" class="evf-field-label">' . $names[ array_rand( $names ) ] . '</label>'; // phpcs:ignore
+				echo '<label for="evf-' . $form_data['id'] . '-field-hp" class="evf-field-label">' . $names[ array_rand( $names ) ] . '</label>'; // phpcs:ignore
 
-			echo '<input type="text" name="everest_forms[hp]" id="evf-' . $form_data['id'] . '-field-hp" class="input-text">';  // phpcs:ignore
+				echo '<input type="text" name="everest_forms[hp]" id="evf-' . $form_data['id'] . '-field-hp" class="input-text">';  // phpcs:ignore
 
-		echo '</div>';
+			echo '</div>';
+		}
 	}
 
 	/**
