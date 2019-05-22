@@ -85,7 +85,7 @@ class EVF_Form_Task {
 				return;
 			}
 
-			// Formatted form data for hooks
+			// Formatted form data for hooks.
 			$form_data = apply_filters( 'everest_forms_process_before_form_data', evf_decode( $form->post_content ), $entry );
 
 			// Pre-process/validate hooks and filter. Data is not validated or cleaned yet so use with caution.
@@ -116,21 +116,20 @@ class EVF_Form_Task {
 
 			if ( ! empty( $site_key ) && ! empty( $secret_key ) && isset( $form_data['settings']['recaptcha_support'] ) && '1' === $form_data['settings']['recaptcha_support'] ) {
 				if ( ( 'v2' === $recaptcha_type && ! empty( $_POST['g-recaptcha-response'] ) ) || ( 'v3' === $recaptcha_type && ! empty( $_POST['g-recaptcha-hidden'] ) ) ) {
-					$response = ( 'v2' === $recaptcha_type ) ? $_POST['g-recaptcha-response'] : $_POST['g-recaptcha-hidden'];
-					$data     = wp_remote_get( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $response );
-					$data     = json_decode( wp_remote_retrieve_body( $data ) );
-					if ( 'v2' === $recaptcha_type ) {
-						if ( empty( $data->success ) ) {
-							evf_add_notice( __( 'Incorrect reCAPTCHA, please try again.', 'everest-forms' ), 'error' );
-							return;
-						}
-					} else {
-						if ( empty( $data->success ) && 0.5 > absint( $data->score ) && 'everest_form' === $data->action && $_SERVER['HTTP_HOST'] === $data->hostname ) {
+					$response = 'v2' === $recaptcha_type ? evf_clean( wp_unslash( $_POST['g-recaptcha-response'] ) ) : evf_clean( wp_unslash( $_POST['g-recaptcha-hidden'] ) ); // PHPCS: input var ok.
+					$raw_data = wp_safe_remote_get( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $response );
+
+					if ( ! is_wp_error( $raw_data ) ) {
+						$data = json_decode( wp_remote_retrieve_body( $raw_data ) );
+
+						// Check reCAPTCHA response.
+						if ( empty( $data->success ) || ( isset( $data->hostname ) && evf_clean( wp_unslash( $_SERVER['HTTP_HOST'] ) ) !== $data->hostname ) || ( isset( $data->action, $data->score ) && ( 'everest_form' !== $data->action && 0.5 > floatval( $data->score ) ) ) ) {
 							evf_add_notice( __( 'Incorrect reCAPTCHA, please try again.', 'everest-forms' ), 'error' );
 							return;
 						}
 					}
 				} else {
+					// @todo This error message is not delivered in frontend. Need to fix :)
 					$this->errors[ $form_id ]['recaptcha'] = esc_html__( 'reCAPTCHA is required.', 'everest-forms' );
 				}
 			}
@@ -146,6 +145,7 @@ class EVF_Form_Task {
 				return;
 			}
 
+			// Early honeypot validation - before actual processing.
 			if ( isset( $form_data['settings']['honeypot'] ) && '1' === $form_data['settings']['honeypot'] && ! empty( $entry['hp'] ) ) {
 				$honeypot = esc_html__( 'Everest Forms honeypot field triggered.', 'everest-forms' );
 			}
@@ -162,7 +162,6 @@ class EVF_Form_Task {
 						'form_id' => $form_data['id'],
 					)
 				);
-
 				return;
 			}
 
