@@ -46,6 +46,13 @@ class EVF_Emails {
 	private $cc = false;
 
 	/**
+	 * Holds the blind carbon copy addresses.
+	 *
+	 * @var string
+	 */
+	private $bcc = false;
+
+	/**
 	 * Holds the email content type.
 	 *
 	 * @var string
@@ -112,14 +119,13 @@ class EVF_Emails {
 		// Hooks.
 		add_action( 'everest_forms_email_send_before', array( $this, 'send_before' ) );
 		add_action( 'everest_forms_email_send_after', array( $this, 'send_after' ) );
-
 	}
 
 	/**
 	 * Set a property.
 	 *
-	 * @param string $key
-	 * @param mixed  $value
+	 * @param string $key   Object property key.
+	 * @param mixed  $value Object property value.
 	 */
 	public function __set( $key, $value ) {
 		$this->$key = $value;
@@ -175,7 +181,7 @@ class EVF_Emails {
 	/**
 	 * Get the email carbon copy addresses.
 	 *
-	 * @return string The email reply-to address.
+	 * @return string The email carbon copy addresses.
 	 */
 	public function get_cc() {
 		if ( ! empty( $this->cc ) ) {
@@ -192,6 +198,28 @@ class EVF_Emails {
 		}
 
 		return apply_filters( 'everest_forms_email_cc', $this->cc, $this );
+	}
+
+	/**
+	 * Get the email blind carbon copy addresses.
+	 *
+	 * @return string The email blind carbon copy addresses.
+	 */
+	public function get_bcc() {
+		if ( ! empty( $this->bcc ) ) {
+			$this->bcc = $this->process_tag( $this->bcc );
+			$addresses = array_map( 'trim', explode( ',', $this->bcc ) );
+
+			foreach ( $addresses as $key => $address ) {
+				if ( ! is_email( $address ) ) {
+					unset( $addresses[ $key ] );
+				}
+			}
+
+			$this->bcc = implode( ',', $addresses );
+		}
+
+		return apply_filters( 'everest_forms_email_bcc', $this->bcc, $this );
 	}
 
 	/**
@@ -222,6 +250,9 @@ class EVF_Emails {
 			}
 			if ( $this->get_cc() ) {
 				$this->headers .= "Cc: {$this->get_cc()}\r\n";
+			}
+			if ( $this->get_bcc() ) {
+				$this->headers .= "Bcc: {$this->get_bcc()}\r\n";
 			}
 			$this->headers .= "Content-Type: {$this->get_content_type()}; charset=utf-8\r\n";
 		}
@@ -292,7 +323,7 @@ class EVF_Emails {
 			return false;
 		}
 
-		// Don't send if email address is invalid
+		// Don't send if email address is invalid.
 		if ( ! is_email( $to ) ) {
 			return false;
 		}
@@ -300,9 +331,9 @@ class EVF_Emails {
 		// Hooks before email is sent.
 		do_action( 'everest_forms_email_send_before', $this );
 
-		$message     = $this->build_email( $message );
+		$message           = $this->build_email( $message );
 		$this->attachments = apply_filters( 'everest_forms_email_attachments', $this->attachments, $this );
-		$subject     = evf_decode_string( $this->process_tag( $subject ) );
+		$subject           = evf_decode_string( $this->process_tag( $subject ) );
 
 		// Let's do this.
 		$sent = wp_mail( $to, $subject, $message, $this->get_headers(), $this->attachments );
@@ -335,7 +366,7 @@ class EVF_Emails {
 	 * Converts text formatted HTML. This is primarily for turning line breaks
 	 * into <p> and <br/> tags.
 	 *
-	 * @param  string $message
+	 * @param  string $message Text to convert.
 	 * @return string
 	 */
 	public function text_to_html( $message ) {
@@ -349,9 +380,9 @@ class EVF_Emails {
 	/**
 	 * Processes a smart tag.
 	 *
-	 * @param string $string
-	 * @param bool   $sanitize
-	 * @param bool   $linebreaks
+	 * @param string $string     String that may contain tags.
+	 * @param bool   $sanitize   Toggle to maybe sanitize.
+	 * @param bool   $linebreaks Toggle to process linebreaks.
 	 *
 	 * @return string
 	 */
@@ -373,7 +404,7 @@ class EVF_Emails {
 	/**
 	 * Process the all fields smart tag if present.
 	 *
-	 * @param  bool $html
+	 * @param  bool $html Toggle to use HTML or plaintext.
 	 * @return string
 	 */
 	public function everest_forms_html_field_value( $html = true ) {

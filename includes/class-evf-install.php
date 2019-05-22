@@ -54,6 +54,10 @@ class EVF_Install {
 			'evf_update_144_delete_options',
 			'evf_update_144_db_version',
 		),
+		'1.4.9' => array(
+			'evf_update_149_db_rename_options',
+			'evf_update_149_db_version',
+		),
 	);
 
 	/**

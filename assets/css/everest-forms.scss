@@ -73,6 +73,7 @@
 	input[type='week'],
 	select,
 	textarea,
+	.StripeElement,
 	canvas.evf-signature-canvas {
 		width: 100%;
 		height: auto;
@@ -86,7 +87,8 @@
 
 	input {
 		&:focus {
-			outline: 1px solid $color-brand-primary;
+			outline: none;
+			border: 1px solid $color-brand-primary;
 		}
 	}
 
@@ -346,6 +348,16 @@
 			color: #23282d;
 			background-color: #eee;
 		}
+
+		&:disabled {
+			opacity: 0.5;
+			cursor: not-allowed;
+
+			&:hover {
+				color: #555;
+				background-color: #f7f7f7;
+			}
+		}
 	}
 
 	.layout-two {
@@ -504,6 +516,10 @@ div.evf-gutenberg-form-selector .evf-frontend-row button[type='submit']:disabled
 		color: darken($color-alert-danger, 10%);
 		border: 1px solid $color-alert-danger;
 		background-color: lighten($color-alert-danger, 35%);
+	}
+
+	&.recaptcha-hidden {
+		margin: 0;
 	}
 }
 

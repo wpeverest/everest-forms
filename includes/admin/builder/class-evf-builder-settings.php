@@ -130,10 +130,10 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			'settings',
 			'form_title',
 			$this->form_data,
-			__( 'Form Name', 'everest-forms' ),
+			esc_html__( 'Form Name', 'everest-forms' ),
 			array(
 				'default' => $this->form->post_title,
-				'tooltip' => __('Give a name to this form', 'everest-forms')
+				'tooltip' => esc_html__( 'Give a name to this form', 'everest-forms' ),
 			)
 		);
 		everest_forms_panel_field(
@@ -141,10 +141,11 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			'settings',
 			'successful_form_submission_message',
 			$this->form_data,
-			__( 'Successful form submission message', 'everest-forms' ),
+			esc_html__( 'Successful form submission message', 'everest-forms' ),
 			array(
 				'default' => isset( $this->form->successful_form_submission_message ) ? $this->form->successful_form_submission_message : __( 'Thanks for contacting us! We will be in touch with you shortly', 'everest-forms' ),
-				'tooltip'   => sprintf( __( 'Success message that shows up after submitting form <a href="%s" target="_blank">Learn More</a>','everest-forms' ),esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/general-settings/#successful-form-submission-message' ) ),
+				/* translators: %1$s - general settings docs url */
+				'tooltip' => sprintf( esc_html__( 'Success message that shows up after submitting form. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/general-settings/#successful-form-submission-message' ) ),
 			)
 		);
 		everest_forms_panel_field(
@@ -152,14 +153,15 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			'settings',
 			'redirect_to',
 			$this->form_data,
-			__( 'Redirect To', 'everest-forms' ),
+			esc_html__( 'Redirect To', 'everest-forms' ),
 			array(
 				'default' => '0',
-				'tooltip'   => sprintf( __( 'Choose where to redirect after form submission <a href="%s" target="_blank">Learn More</a>','everest-forms' ),esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/general-settings/#redirect-to' ) ),
+				/* translators: %1$s - general settings docs url */
+				'tooltip' => sprintf( esc_html__( 'Choose where to redirect after form submission. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/general-settings/#redirect-to' ) ),
 				'options' => array(
-					'0' => __( 'Same Page', 'everest-forms' ),
-					'1' => __( 'Custom Page', 'everest-forms' ),
-					'2' => __( 'External URL', 'everest-forms' ),
+					'0' => esc_html__( 'Same Page', 'everest-forms' ),
+					'1' => esc_html__( 'Custom Page', 'everest-forms' ),
+					'2' => esc_html__( 'External URL', 'everest-forms' ),
 				),
 			)
 		);
@@ -168,7 +170,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			'settings',
 			'custom_page',
 			$this->form_data,
-			__( 'Custom Page', 'everest-forms' ),
+			esc_html__( 'Custom Page', 'everest-forms' ),
 			array(
 				'default' => '0',
 				'options' => $this->evf_get_all_pages(),
@@ -179,7 +181,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			'settings',
 			'external_url',
 			$this->form_data,
-			__( 'External URL', 'everest-forms' ),
+			esc_html__( 'External URL', 'everest-forms' ),
 			array(
 				'default' => isset( $this->form->external_url ) ? $this->form->external_url : '',
 			)
@@ -189,13 +191,13 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			'settings',
 			'layout_class',
 			$this->form_data,
-			__( 'Layout Design', 'everest-forms' ),
+			esc_html__( 'Layout Design', 'everest-forms' ),
 			array(
 				'default' => '0',
-				'tooltip' => __('Choose design template for the Form', 'everest-forms'),
+				'tooltip' => esc_html__( 'Choose design template for the Form', 'everest-forms' ),
 				'options' => array(
-					'default'    => __( 'Default', 'everest-forms' ),
-					'layout-two' => __( 'Classic Layout', 'everest-forms' ),
+					'default'    => esc_html__( 'Default', 'everest-forms' ),
+					'layout-two' => esc_html__( 'Classic Layout', 'everest-forms' ),
 				),
 			)
 		);
@@ -204,10 +206,11 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			'settings',
 			'form_class',
 			$this->form_data,
-			__( 'Form Class', 'everest-forms' ),
+			esc_html__( 'Form Class', 'everest-forms' ),
 			array(
 				'default' => isset( $this->form->form_class ) ? $this->form->form_class : '',
-				'tooltip' => sprintf( __( 'Enter CSS class names for the form wrapper. Multiple class names should be separated with spaces <a href="%s" target="_blank">Learn More</a>','everest-forms' ),esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/general-settings/#form-class' ) ),
+				/* translators: %1$s - general settings docs url */
+				'tooltip' => sprintf( esc_html__( 'Enter CSS class names for the form wrapper. Multiple class names should be separated with spaces. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/general-settings/#form-class' ) ),
 			)
 		);
 		echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'Submit Button', 'everest-forms' ) . '</h4>';
@@ -216,7 +219,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			'settings',
 			'submit_button_text',
 			$this->form_data,
-			__( 'Submit button text', 'everest-forms' ),
+			esc_html__( 'Submit button text', 'everest-forms' ),
 			array(
 				'default' => isset( $settings['submit_button_text'] ) ? $settings['submit_button_text'] : __( 'Submit', 'everest-forms' ),
 				'tooltip' => esc_html__( 'Enter desired text for submit button.', 'everest-forms' ),
@@ -227,33 +230,41 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			'settings',
 			'submit_button_class',
 			$this->form_data,
-			__( 'Submit button Class', 'everest-forms' ),
+			esc_html__( 'Submit button Class', 'everest-forms' ),
 			array(
 				'default' => isset( $settings['submit_button_class'] ) ? $settings['submit_button_class'] : '',
 				'tooltip' => esc_html__( 'Enter CSS class names for submit button. Multiple class names should be separated with spaces.', 'everest-forms' ),
 			)
 		);
+		do_action( 'everest_forms_inline_submit_settings', $this, 'submit', 'connection_1' );
 		echo '</div>';
-		everest_forms_panel_field(
-			'checkbox',
-			'settings',
-			'recaptcha_support',
-			$this->form_data,
-			sprintf( __( 'Enable %1$s %2$s reCaptcha %3$s support', 'everest-forms' ), '<a title="', 'Please make sure the site key and secret are not empty in setting page." href="' . admin_url() . 'admin.php?page=evf-settings&tab=recaptcha" target="_blank">', '</a>' ),
-			array(
-				'default' => '0',
-				'tooltip' => sprintf( __( 'Enable Google reCaptcha. Make sure the site key and secret key is set in settings page <a href="%s" target="_blank">Learn More</a>','everest-forms' ),esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/general-settings/#enable-recaptcha-support' ) ),
-			)
-		);
+		$recaptcha_type   = get_option( 'everest_forms_recaptcha_type', 'v2' );
+		$recaptcha_key    = get_option( 'everest_forms_recaptcha_' . $recaptcha_type . '_site_key' );
+		$recaptcha_secret = get_option( 'everest_forms_recaptcha_' . $recaptcha_type . '_secret_key' );
+		if ( ! empty( $recaptcha_key ) && ! empty( $recaptcha_secret ) ) {
+			everest_forms_panel_field(
+				'checkbox',
+				'settings',
+				'recaptcha_support',
+				$this->form_data,
+				'v3' === $recaptcha_type ? esc_html__( 'Enable Google reCAPTCHA v3', 'everest-forms' ) : ( 'yes' === get_option( 'everest_forms_recaptcha_v2_invisible' ) ? esc_html__( 'Enable Google Invisible reCAPTCHA v2', 'everest-forms' ) : esc_html__( 'Enable Google Checkbox reCAPTCHA v2', 'everest-forms' ) ),
+				array(
+					'default' => '0',
+					/* translators: %1$s - general settings docs url */
+					'tooltip' => sprintf( esc_html__( 'Enable Google reCaptcha. Make sure the site key and secret key is set in settings page. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/general-settings/#enable-recaptcha-support' ) ),
+				)
+			);
+		}
 		everest_forms_panel_field(
 			'checkbox',
 			'settings',
 			'disabled_entries',
 			$this->form_data,
-			__( 'Disable storing entry information', 'everest-forms' ),
+			esc_html__( 'Disable storing entry information', 'everest-forms' ),
 			array(
 				'default' => isset( $settings['disabled_entries'] ) ? $settings['disabled_entries'] : 0,
-				'tooltip' => sprintf( __( 'Disable storing form entries <a href="%s" target="_blank">Learn More</a>','everest-forms' ),esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/general-settings/#disable-storing-entry-information' ) ),
+				/* translators: %1$s - general settings docs url */
+				'tooltip' => sprintf( esc_html__( 'Disable storing form entries. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/general-settings/#disable-storing-entry-information' ) ),
 			)
 		);
 
@@ -315,25 +326,59 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					'settings[email][' . $connection_id . ']',
 					'evf_to_email',
 					$this->form_data,
-					__( 'To Address', 'everest-forms' ),
+					esc_html__( 'To Address', 'everest-forms' ),
 					array(
 						'default'   => isset( $settings['email'][ $connection_id ]['evf_to_email'] ) ? $settings['email'][ $connection_id ]['evf_to_email'] : '{admin_email}',
-						'tooltip'   => sprintf( __( 'Enter your email address to receive notifications. Separate with a comma if multiple addresses <a href="%s" target="_blank">Learn More</a>','everest-forms' ),esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#to-address' ) ),
+						/* translators: %1$s - general settings docs url */
+						'tooltip'   => sprintf( esc_html__( 'Enter the recipient\'s email address (comma separated) to receive form entry notifications. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#to-address' ) ),
 						'smarttags' => array(
 							'type'        => 'fields',
 							'form_fields' => 'email',
 						),
 					)
 				);
+				if ( 'yes' === get_option( 'everest_forms_enable_email_copies' ) ) {
+					everest_forms_panel_field(
+						'text',
+						'settings[email][' . $connection_id . ']',
+						'evf_carboncopy',
+						$this->form_data,
+						esc_html__( 'Cc Address', 'everest-forms' ),
+						array(
+							'default'   => isset( $settings['email'][ $connection_id ]['evf_carboncopy'] ) ? $settings['email'][ $connection_id ]['evf_carboncopy'] : '',
+							'tooltip'   => esc_html__( 'Enter Cc recipient\'s email address (comma separated) to receive form entry notifications.', 'everest-forms' ),
+							'smarttags' => array(
+								'type'        => 'fields',
+								'form_fields' => 'email',
+							),
+						)
+					);
+					everest_forms_panel_field(
+						'text',
+						'settings[email][' . $connection_id . ']',
+						'evf_blindcarboncopy',
+						$this->form_data,
+						esc_html__( 'Bcc Address', 'everest-forms' ),
+						array(
+							'default'   => isset( $settings['email'][ $connection_id ]['evf_blindcarboncopy'] ) ? $settings['email'][ $connection_id ]['evf_blindcarboncopy'] : '',
+							'tooltip'   => esc_html__( 'Enter Bcc recipient\'s email address (comma separated) to receive form entry notifications.', 'everest-forms' ),
+							'smarttags' => array(
+								'type'        => 'fields',
+								'form_fields' => 'email',
+							),
+						)
+					);
+				}
 				everest_forms_panel_field(
 					'text',
 					'settings[email][' . $connection_id . ']',
 					'evf_from_name',
 					$this->form_data,
-					__( 'From Name', 'everest-forms' ),
+					esc_html__( 'From Name', 'everest-forms' ),
 					array(
 						'default'   => isset( $settings['email'][ $connection_id ]['evf_from_name'] ) ? $settings['email'][ $connection_id ]['evf_from_name'] : get_bloginfo( 'name', 'display' ),
-						'tooltip'   => sprintf( __( 'Enter the From Name to be displayed in Email <a href="%s" target="_blank">Learn More</a>','everest-forms' ),esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#from-name' ) ),
+						/* translators: %1$s - general settings docs url */
+						'tooltip'   => sprintf( esc_html__( 'Enter the From Name to be displayed in Email. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#from-name' ) ),
 						'smarttags' => array(
 							'type'        => 'all',
 							'form_fields' => 'all',
@@ -345,10 +390,11 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					'settings[email][' . $connection_id . ']',
 					'evf_from_email',
 					$this->form_data,
-					__( 'From Address', 'everest-forms' ),
+					esc_html__( 'From Address', 'everest-forms' ),
 					array(
 						'default'   => isset( $settings['email'][ $connection_id ]['evf_from_email'] ) ? $settings['email'][ $connection_id ]['evf_from_email'] : '{admin_email}',
-						'tooltip'   => sprintf( __( 'Enter the Email address from which you want to send Email <a href="%s" target="_blank">Learn More</a>','everest-forms' ),esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#from-address' ) ),
+						/* translators: %1$s - general settings docs url */
+						'tooltip'   => sprintf( esc_html__( 'Enter the Email address from which you want to send Email <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#from-address' ) ),
 						'smarttags' => array(
 							'type'        => 'fields',
 							'form_fields' => 'email',
@@ -360,10 +406,11 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					'settings[email][' . $connection_id . ']',
 					'evf_reply_to',
 					$this->form_data,
-					__( 'Reply To', 'everest-forms' ),
+					esc_html__( 'Reply To', 'everest-forms' ),
 					array(
 						'default'   => isset( $settings['email'][ $connection_id ]['evf_reply_to'] ) ? $settings['email'][ $connection_id ]['evf_reply_to'] : '',
-						'tooltip'   => sprintf( __( 'Enter the reply to email address where you want the email to be received when this email is replied <a href="%s" target="_blank">Learn More</a>','everest-forms' ),esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#reply-to' ) ),
+						/* translators: %1$s - general settings docs url */
+						'tooltip'   => sprintf( esc_html__( 'Enter the reply to email address where you want the email to be received when this email is replied. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#reply-to' ) ),
 						'smarttags' => array(
 							'type'        => 'fields',
 							'form_fields' => 'email',
@@ -375,10 +422,11 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					'settings[email][' . $connection_id . ']',
 					'evf_email_subject',
 					$this->form_data,
-					__( 'Email Subject', 'everest-forms' ),
+					esc_html__( 'Email Subject', 'everest-forms' ),
 					array(
 						'default'   => isset( $settings['email'][ $connection_id ]['evf_email_subject'] ) ? $settings['email'][ $connection_id ]['evf_email_subject'] : sprintf( __( 'New Form Entry %s', 'everest-forms' ), $form_name ),
-						'tooltip'   => sprintf( __( 'Enter the subject of the email <a href="%s" target="_blank">Learn More</a>','everest-forms' ),esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#email-subject' ) ),
+						/* translators: %1$s - general settings docs url */
+						'tooltip'   => sprintf( esc_html__( 'Enter the subject of the email. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#email-subject' ) ),
 						'smarttags' => array(
 							'type'        => 'all',
 							'form_fields' => 'all',
@@ -390,10 +438,11 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					'settings[email][' . $connection_id . ']',
 					'evf_email_message',
 					$this->form_data,
-					__( 'Email Message', 'everest-forms' ),
+					esc_html__( 'Email Message', 'everest-forms' ),
 					array(
 						'default'   => isset( $settings['email'][ $connection_id ]['evf_email_message'] ) ? $settings['email'][ $connection_id ]['evf_email_message'] : __( '{all_fields}', 'everest-forms' ),
-						'tooltip'   => sprintf( __( 'Enter the message of the email <a href="%s" target="_blank">Learn More</a>','everest-forms' ),esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#email-message' ) ),
+						/* translators: %1$s - general settings docs url */
+						'tooltip'   => sprintf( esc_html__( 'Enter the message of the email <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#email-message' ) ),
 						'smarttags' => array(
 							'type'        => 'all',
 							'form_fields' => 'all',
@@ -401,7 +450,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					)
 				);
 
-				echo '<p class="description everest-forms-email-message-info">' . esc_html__( 'To display all form fields, use the', 'everest-froms' ) . ' <code>{all_fields}</code> ' . esc_html__( 'Smart Tags.', 'everest-forms' ) . '</p>';
+				echo '<p class="description everest-forms-email-message-info">' . esc_html__( 'To display all form fields, use the', 'everest-forms' ) . ' <code>{all_fields}</code> ' . esc_html__( 'Smart Tags.', 'everest-forms' ) . '</p>';
 
 				do_action( 'everest_forms_inline_email_settings', $this, $connection_id );
 

@@ -103,20 +103,31 @@ class EVF_Form_Task {
 			}
 
 			// reCAPTCHA check.
-			$site_key   = get_option( 'everest_forms_recaptcha_site_key' );
-			$secret_key = get_option( 'everest_forms_recaptcha_site_secret' );
-			if (
-				! empty( $site_key ) &&
-				! empty( $secret_key ) &&
-				isset( $form_data['settings']['recaptcha_support'] ) &&
-				'1' === $form_data['settings']['recaptcha_support']
-			) {
-				if ( ! empty( $_POST['g-recaptcha-response'] ) ) {
-					$data = wp_remote_get( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $_POST['g-recaptcha-response'] );
-					$data = json_decode( wp_remote_retrieve_body( $data ) );
-					if ( empty( $data->success ) ) {
-						evf_add_notice( __( 'Incorrect reCAPTCHA, please try again.', 'everest-forms' ), 'error' );
-						return;
+			$recaptcha_type = get_option( 'everest_forms_recaptcha_type', 'v2' );
+
+			if ( 'v2' === $recaptcha_type ) {
+				$site_key   = get_option( 'everest_forms_recaptcha_v2_site_key' );
+				$secret_key = get_option( 'everest_forms_recaptcha_v2_secret_key' );
+			} else {
+				$site_key   = get_option( 'everest_forms_recaptcha_v3_site_key' );
+				$secret_key = get_option( 'everest_forms_recaptcha_v3_secret_key' );
+			}
+
+			if ( ! empty( $site_key ) && ! empty( $secret_key ) && isset( $form_data['settings']['recaptcha_support'] ) && '1' === $form_data['settings']['recaptcha_support'] ) {
+				if ( ( 'v2' === $recaptcha_type && ! empty( $_POST['g-recaptcha-response'] ) ) || ( 'v3' === $recaptcha_type && ! empty( $_POST['g-recaptcha-hidden'] ) ) ) {
+					$response = ( 'v2' === $recaptcha_type ) ? $_POST['g-recaptcha-response'] : $_POST['g-recaptcha-hidden'];
+					$data     = wp_remote_get( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $response );
+					$data     = json_decode( wp_remote_retrieve_body( $data ) );
+					if ( 'v2' === $recaptcha_type ) {
+						if ( empty( $data->success ) ) {
+							evf_add_notice( __( 'Incorrect reCAPTCHA, please try again.', 'everest-forms' ), 'error' );
+							return;
+						}
+					} else {
+						if ( empty( $data->success ) && 0.5 > absint( $data->score ) && 'everest_form' === $data->action && $_SERVER['HTTP_HOST'] === $data->hostname ) {
+							evf_add_notice( __( 'Incorrect reCAPTCHA, please try again.', 'everest-forms' ), 'error' );
+							return;
+						}
 					}
 				} else {
 					$this->errors[ $form_id ]['recaptcha'] = esc_html__( 'reCAPTCHA is required.', 'everest-forms' );
@@ -353,8 +364,7 @@ class EVF_Form_Task {
 			$email['sender_address'] = ! empty( $notification['evf_from_email'] ) ? $notification['evf_from_email'] : get_option( 'admin_email' );
 			$email['reply_to']       = ! empty( $notification['evf_reply_to'] ) ? $notification['evf_reply_to'] : $email['sender_address'];
 			$email['message']        = ! empty( $notification['evf_email_message'] ) ? $notification['evf_email_message'] : '{all_fields}';
-
-			$email = apply_filters( 'everest_forms_entry_email_atts', $email, $fields, $entry, $form_data );
+			$email                   = apply_filters( 'everest_forms_entry_email_atts', $email, $fields, $entry, $form_data );
 
 			$attachment = '';
 
@@ -368,13 +378,24 @@ class EVF_Form_Task {
 			$emails->__set( 'reply_to', $email['reply_to'] );
 			$emails->__set( 'attachments', apply_filters( 'everest_forms_email_file_attachments', $attachment, $entry, $form_data, 'entry-email', $connection_id ) );
 
+			// Maybe include Cc and Bcc email addresses.
+			if ( 'yes' === get_option( 'everest_forms_enable_email_copies' ) ) {
+				if ( ! empty( $notification['evf_carboncopy'] ) ) {
+					$emails->__set( 'cc', $notification['evf_carboncopy'] );
+				}
+				if ( ! empty( $notification['evf_blindcarboncopy'] ) ) {
+					$emails->__set( 'bcc', $notification['evf_blindcarboncopy'] );
+				}
+			}
+
+			$emails = apply_filters( 'everest_forms_entry_email_before_send', $emails );
+
 			// Send entry email.
 			foreach ( $email['address'] as $address ) {
 				$emails->send( trim( $address ), $email['subject'], $email['message'] );
 			}
 
 		endforeach;
-
 	}
 
 	/**
