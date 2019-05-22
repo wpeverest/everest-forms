@@ -44,7 +44,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 				),
 				array(
 					'title'    => __( 'Site Key', 'everest-forms' ),
-					'desc'     => __( 'Get site key from google.', 'everest-forms' ),
+					'desc' 	   => sprintf( __( 'Get site key from google <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/tutorials/how-to-integrate-google-recaptcha/' ) ),	
 					'id'       => 'everest_forms_recaptcha_site_key',
 					'default'  => '',
 					'type'     => 'text',
@@ -55,7 +55,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 				),
 				array(
 					'title'    => __( 'Secret Key', 'everest-forms' ),
-					'desc'     => __( 'Get secret key from google.', 'everest-forms' ),
+					'desc' 	   => sprintf( __( 'Get secret key from google <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/tutorials/how-to-integrate-google-recaptcha/' ) ),	
 					'id'       => 'everest_forms_recaptcha_site_secret',
 					'default'  => '',
 					'type'     => 'text',
