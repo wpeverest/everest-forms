@@ -81,8 +81,8 @@
 		box-shadow: none;
 		margin-bottom: 10px;
 		padding: 6px 12px;
-		color: $color-gray-darker;
-		border: 1px solid $color-gray-light;
+		color: $color_gray-base;
+		border: 1px solid $color_gray-light;
 	}
 
 	input {
@@ -174,7 +174,6 @@
 
 							label {
 								font-weight: 500;
-								color: $color-gray-darker;
 							}
 						}
 					}
@@ -242,7 +241,7 @@
 				font-weight: 600;
 				line-height: 1.7;
 				margin: 0 0 10px 0;
-				color: $color-gray-darker;
+				color: $color_gray-base;
 
 				.required {
 					color: #f00;
