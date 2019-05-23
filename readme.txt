@@ -155,6 +155,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Fix - Display a "Copied!" tip when success copying. #148
 * Fix - Tab content hiding on payment gateway tab click. #124
 * Fix - Fill email notifications settings in blank form. #135
+* Fix - Field attribute structure on form email notification. #166
 * Tweak - Rearrange scss files. #137
 * Tweak - Button design consistence. #146
 * Tweak - Edit form link in form preview. #145
