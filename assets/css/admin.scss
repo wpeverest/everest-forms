@@ -247,7 +247,7 @@ body.everest-forms-builder {
 			position: fixed;
 			padding: 11px 20px;
 			background: #f1f1f1;
-			border-top: 1px solid $color-gray-lighter;
+			border-top: 1px solid $color_gray-lighten;
 		}
 	}
 
@@ -300,7 +300,7 @@ body.everest-forms-builder-setup,
 		display: inline-block;
 		text-decoration: none;
 		color: $color_gray-base;
-		background: $color-gray-lighter;
+		background: $color_gray-lighten;
 		transition: all 0.2s ease 0s;
 		z-index: 1;
 
@@ -342,7 +342,7 @@ body.everest-forms-builder-setup,
 		}
 
 		&:hover {
-			background-color: darken($color-gray-lighter, 10%);
+			background-color: darken($color_gray-lighten, 10%);
 		}
 
 		&:focus {
@@ -1116,7 +1116,7 @@ body.everest-forms-builder-setup,
 						width: 30.3%;
 						z-index: 999;
 						margin-bottom: 10px;
-						color: $color-gray;
+						color: $color_gray-light;
 						cursor: pointer;
 						border-radius: 2px;
 						font-size: 12px;
@@ -1690,7 +1690,7 @@ body.everest-forms-builder-setup,
 									font-family: dashicons;
 									line-height: 1.2;
 									cursor: all-scroll;
-									color: $color-gray-lighter;
+									color: $color_gray-lighten;
 								}
 							}
 						}
@@ -1937,7 +1937,7 @@ body.everest-forms-builder-setup,
 						display: block;
 						font-size: 14px;
 						font-weight: 600;
-						color: $color-gray;
+						color: $color_gray-light;
 						margin-bottom: 10px;
 					}
 
@@ -1998,7 +1998,7 @@ body.everest-forms-builder-setup,
 				font-weight: 600;
 
 				i {
-					color: $color-gray;
+					color: $color_gray-light;
 					font-size: 16px;
 					line-height: 1.2;
 				}
@@ -2166,16 +2166,6 @@ body.everest-forms-builder-setup,
 		}
 
 		.evf-registered-item {
-			z-index: 999;
-			cursor: pointer;
-			border-radius: 2px;
-			font-size: 12px;
-			text-align: center;
-			margin: 0;
-			background-color: $color-white;
-			border: 1px solid $color-border-right;
-			color: $color-gray;
-
 			.evf-icon {
 				color: inherit;
 				display: block;
