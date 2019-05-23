@@ -457,10 +457,10 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 							'type'        => 'all',
 							'form_fields' => 'all',
 						),
+						/* translators: %s - all fields smart tag. */
+						'after'     => '<p class="desc">' . sprintf( esc_html__( 'To display all form fields, use the %s Smart Tag.', 'everest-forms' ), '<code>{all_fields}</code>' ) . '</p>',
 					)
 				);
-
-				echo '<p class="description everest-forms-email-message-info">' . esc_html__( 'To display all form fields, use the', 'everest-forms' ) . ' <code>{all_fields}</code> ' . esc_html__( 'Smart Tags.', 'everest-forms' ) . '</p>';
 
 				do_action( 'everest_forms_inline_email_settings', $this, $connection_id );
 
