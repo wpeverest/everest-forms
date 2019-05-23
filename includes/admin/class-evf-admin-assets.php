@@ -33,17 +33,15 @@ class EVF_Admin_Assets {
 		$screen_id = $screen ? $screen->id : '';
 
 		// Register admin styles.
-		wp_register_style( 'everest-forms-admin', EVF()->plugin_url() . '/assets/css/admin.css', array( 'everest-forms-admin-builder' ), EVF_VERSION );
+		wp_register_style( 'everest-forms-admin', EVF()->plugin_url() . '/assets/css/admin.css', array(), EVF_VERSION );
 		wp_register_style( 'everest-forms-admin-menu', EVF()->plugin_url() . '/assets/css/menu.css', array(), EVF_VERSION );
 		wp_register_style( 'jquery-ui-style', EVF()->plugin_url() . '/assets/css/jquery-ui/jquery-ui.min.css', array(), EVF_VERSION );
 		wp_register_style( 'jquery-confirm', EVF()->plugin_url() . '/assets/css/jquery-confirm/jquery-confirm.min.css', array(), '3.3.0' );
 		wp_register_style( 'perfect-scrollbar', EVF()->plugin_url() . '/assets/css/perfect-scrollbar/perfect-scrollbar.css', array(), '1.4.0' );
-		wp_register_style( 'everest-forms-admin-builder', EVF()->plugin_url() . '/assets/css/everest-builder.css', array(), EVF_VERSION );
 
 		// Add RTL support for admin styles.
 		wp_style_add_data( 'everest-forms-admin', 'rtl', 'replace' );
 		wp_style_add_data( 'everest-forms-admin-menu', 'rtl', 'replace' );
-		wp_style_add_data( 'everest-forms-admin-builder', 'rtl', 'replace' );
 
 		// Sitewide menu CSS.
 		wp_enqueue_style( 'everest-forms-admin-menu' );
