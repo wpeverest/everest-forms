@@ -2059,6 +2059,16 @@ body.everest-forms-builder-setup,
 				position: relative;
 				margin-bottom: 20px;
 
+				.wp-editor-container {
+					margin-bottom: 10px;
+				}
+
+				.desc {
+					margin: 10px 0;
+					font-style: italic;
+					line-height: 1.2;
+				}
+
 				&.everest-forms-panel-field-tinymce {
 
 					.evf-toggle-smart-tag-display {
@@ -2305,10 +2315,6 @@ body.everest-forms-builder-setup,
 				background-color: #fff;
 				height: calc(100vh - 150px);
 				overflow-x: auto;
-
-				p {
-					margin-bottom: 20px;
-				}
 
 				.everest-forms-border-container {
 
