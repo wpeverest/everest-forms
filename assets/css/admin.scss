@@ -374,7 +374,7 @@ body.everest-forms-builder-setup,
 					position: absolute;
 
 					&:checked {
-						+ .check-one {
+						+ .evf-toggle-switch-wrap {
 							background-color: #11a0d2;
 							border: 2px solid #11a0d2;
 							border: 9px solid transparent;
@@ -393,7 +393,7 @@ body.everest-forms-builder-setup,
 							}
 						}
 
-						~ .check-two {
+						~ .evf-toggle-switch-control {
 							background-color: #fff;
 							border-width: 0;
 							transform: translateX(18px) translateY(-50%);
@@ -405,13 +405,13 @@ body.everest-forms-builder-setup,
 					}
 
 					&:focus {
-						+ .check-one {
+						+ .evf-toggle-switch-wrap {
 							box-shadow: 0 0 0 2px #fff, 0 0 0 3px #6c7781;
 						}
 					}
 				}
 
-				.check-one {
+				.evf-toggle-switch-wrap {
 					display: inline-flex;
 					background-color: #fff;
 					border: 2px solid #6c7781;
@@ -434,7 +434,7 @@ body.everest-forms-builder-setup,
 					}
 				}
 
-				.check-two {
+				.evf-toggle-switch-control {
 					display: block;
 					position: absolute;
 					top: 50%;
@@ -2158,8 +2158,15 @@ body.everest-forms-builder-setup,
 				padding-bottom: 20px;
 				display: flex;
 				align-items: center;
-				justify-content: space-between;
 				border-bottom: 1px solid $color-white-darken;
+
+				.evf-title {
+					margin-right: 20px;
+				}
+
+				.evf-toggle-section {
+					margin-top: 2px;
+				}
 			}
 
 			.everest-forms-panel-field {
