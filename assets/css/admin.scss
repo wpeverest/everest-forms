@@ -399,7 +399,7 @@ body.everest-forms-builder-setup,
 			background-color: $everestforms;
 
 			a.nav-tab {
-				color: #fff;
+				color: $color-white;
 				margin-left: 0;
 				display: block;
 				cursor: pointer;
@@ -637,7 +637,7 @@ body.everest-forms-builder-setup,
 						.evf-button,
 						.evf-button::before,
 						.evf-button::after {
-							background: #fff;
+							background: $color-white;
 							-webkit-animation: load1 1s infinite ease-in-out;
 							animation: load1 1s infinite ease-in-out;
 							width: 1em;
@@ -646,7 +646,7 @@ body.everest-forms-builder-setup,
 							border-radius: 0;
 						}
 						.evf-button {
-							color: #fff;
+							color: $color-white;
 							text-indent: -9999em;
 							margin: 0 auto;
 							position: relative;
@@ -1322,9 +1322,9 @@ body.everest-forms-builder-setup,
 						display: none;
 						padding: 0 20px;
 						margin-top: -1px;
-						background: #fff;
+						background: $color-white;
 						position: relative;
-						border-bottom: 1px solid $border-color;
+						border-bottom: 1px solid $color_gray-lighten;
 
 						&.active {
 							display: flex;
@@ -1344,7 +1344,7 @@ body.everest-forms-builder-setup,
 							display: flex;
 							flex-wrap: wrap;
 							margin: 0 0 20px;
-							border: 1px solid $border-color;
+							border: 1px solid $color_gray-lighten;
 
 							&.empty-list {
 								display: none;
@@ -1363,7 +1363,7 @@ body.everest-forms-builder-setup,
 								align-items: center;
 								justify-content: space-between;
 								transition: all 0.25s ease 0s;
-								border: 1px solid $border-color;
+								border: 1px solid $color_gray-lighten;
 
 								&.active-user {
 									background: $color-white;
@@ -1568,7 +1568,7 @@ body.everest-forms-builder-setup,
 								span {
 									height: 100%;
 									display: inline-block;
-									background: #fff;
+									background: $color-white;
 
 									&:nth-child(n+1) {
 										border-left: 1px solid $color_gray-lighten;
@@ -1608,7 +1608,7 @@ body.everest-forms-builder-setup,
 						margin: 10px;
 						padding: 10px;
 						cursor: pointer;
-						background: #fff;
+						background: $color-white;
 						position: relative;
 						border: 1px solid transparent;
 						transition: 0.5s border, 0.5s background-color;
@@ -1906,7 +1906,7 @@ body.everest-forms-builder-setup,
 
 				.file-uploader {
 					width: 100%;
-					border: 2px dashed $border-color;
+					border: 2px dashed $color_gray-lighten;
 					background-color: $uploader-background;
 					border-radius: 3px;
 					cursor: pointer;
@@ -2084,7 +2084,7 @@ body.everest-forms-builder-setup,
 
 					&:hover {
 						background: $color-white;
-						border: 1px solid $border-color;
+						border: 1px solid $color_gray-lighten;
 					}
 
 					input[type='text'] {
@@ -2098,7 +2098,7 @@ body.everest-forms-builder-setup,
 						color: $color_gray-base;
 						display: inline-block;
 						border-radius: 3px;
-						border: 1px solid $border-color;
+						border: 1px solid $color_gray-lighten;
 						text-align: center;
 						margin-right: 8px;
 						line-height: 1;
@@ -2273,7 +2273,7 @@ body.everest-forms-builder-setup,
 			.everest-forms-panel-content {
 				position: relative;
 				padding: 15px 20px;
-				background-color: #fff;
+				background-color: $color-white;
 				height: calc(100vh - 150px);
 				overflow-x: auto;
 
@@ -3101,7 +3101,7 @@ table.wp-list-table {
 		font-size: 80%;
 		font-weight: bold;
 		line-height: 1;
-		color: #fff;
+		color: $color-white;
 		text-align: center;
 		white-space: nowrap;
 		vertical-align: baseline;
@@ -3165,7 +3165,7 @@ table.wp-list-table {
 }
 
 #log-viewer {
-	background: #fff;
+	background: $color-white;
 	border: 1px solid #e5e5e5;
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
 	padding: 5px 20px;
@@ -3212,7 +3212,7 @@ img.tips {
 		margin: 0 !important;
 
 		.tooltipster-content {
-			color: #fff;
+			color: $color-white;
 			overflow: auto;
 			font-size: 0.8em;
 			max-width: 150px;
@@ -3334,7 +3334,7 @@ img.tips {
 }
 
 .evf_error_tip {
-	color: #fff;
+	color: $color-white;
 	max-width: 20em;
 	font-size: 0.8em;
 	line-height: 1.8em;
@@ -3510,7 +3510,7 @@ img.ui-datepicker-trigger {
 					.everest-forms-panel-content-wrap {
 						.everest-forms-panel-content {
 							padding: 15px 20px;
-							background-color: #fff;
+							background-color: $color-white;
 						}
 					}
 				}

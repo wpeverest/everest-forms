@@ -4,7 +4,7 @@ $primarytext:       desaturate(lighten($primary, 52%), 18%);   // Text on primar
 $secondary:         desaturate(lighten($primary, 44%), 91%);   // Secondary buttons
 $secondarytext:     desaturate(darken($secondary, 64%), 91%);  // Text on secondary color bg
 
-$border-color: #d5d9e2;
+
 $text-color: #c6ccd7;
 $uploader-background: #fbfdfe;
 $button-color: #5d96ee;
