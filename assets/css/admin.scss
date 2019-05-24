@@ -1533,7 +1533,7 @@ body.everest-forms-builder-setup,
 							font-weight: 600;
 							font-size: 12px;
 							top: 35px;
-							box-shadow: 0 0 39px transparentize($color_gray-dark, 0.8);
+							box-shadow: 1px 3px 20px 0 transparentize($color_gray-dark, 0.8);
 							transition: 0.9s background-color;
 
 							&::before {
@@ -2008,6 +2008,20 @@ body.everest-forms-builder-setup,
 				}
 			}
 
+			input:not(.ed_button),
+			textarea:not(.wp-editor-area) {
+				color: $color_gray-base;
+
+ 				&::placeholder {
+					color: $color_gray-light
+				}
+			}
+
+ 			textarea,
+			textarea:not(.wp-editor-area) {
+				height: 120px;
+			}
+
 			.description {
 				color: $color_gray-normal;
 			}
@@ -2384,7 +2398,7 @@ body.everest-forms-builder-setup,
 				font-weight: 600;
 				text-align: center;
 				color: $color_gray-dark;
-				background: $color_gray-lighten;
+				background: $color_gray-more-lighten;
 				border-bottom: 1px solid $color_gray-lighten;
 
 				&.active {
