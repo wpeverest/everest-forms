@@ -2165,6 +2165,16 @@ body.everest-forms-builder-setup,
 		}
 
 		.evf-registered-item {
+			z-index: 999;
+			cursor: pointer;
+			border-radius: 2px;
+			font-size: 12px;
+			text-align: center;
+			margin: 0;
+			background-color: $color-white;
+			border: 1px solid $color_gray-lighten;
+			color: $color_gray-normal;
+
 			.evf-icon {
 				color: inherit;
 				display: block;
