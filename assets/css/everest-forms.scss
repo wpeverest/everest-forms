@@ -498,8 +498,14 @@ div.evf-gutenberg-form-selector .evf-frontend-row button[type='submit']:disabled
 	cursor: not-allowed;
 }
 
-/* reCAPTCHA Area
+/* Anti-spam Honeypot and reCAPTCHA Area
 ----------------------------------------------------------------------------- */
+
+.evf-honeypot-container {
+	display: none !important;
+	position: absolute !important;
+	left: -9000px !important;
+}
 
 .evf-recaptcha-container {
 	clear: both;
@@ -517,8 +523,11 @@ div.evf-gutenberg-form-selector .evf-frontend-row button[type='submit']:disabled
 		border: 1px solid $color-alert-danger;
 		background-color: lighten($color-alert-danger, 35%);
 	}
-}
 
+	&.recaptcha-hidden {
+		margin: 0;
+	}
+}
 
 @media screen and (max-width: 768px) {
 	.everest-forms {

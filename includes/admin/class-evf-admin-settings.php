@@ -274,9 +274,14 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 					case 'email':
 					case 'url':
 					case 'tel':
-						$option_value = self::get_option( $value['id'], $value['default'] );
+						$option_value     = self::get_option( $value['id'], $value['default'] );
+						$visibility_class = array();
 
-						?><tr valign="top">
+						if ( isset( $value['is_visible'] ) ) {
+							$visibility_class[] = $value['is_visible'] ? 'everest-forms-visible' : 'everest-forms-hidden';
+						}
+
+						?><tr valign="top" class="<?php echo esc_attr( implode( ' ', $visibility_class ) ); ?>">
 							<th scope="row" class="titledesc">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
 							</th>
@@ -291,46 +296,6 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 									placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
 									<?php echo implode( ' ', $custom_attributes ); // WPCS: XSS ok. ?>
 									/><?php echo esc_html( $value['suffix'] ); ?> <?php echo $description; // WPCS: XSS ok. ?>
-							</td>
-						</tr>
-						<?php
-						break;
-
-					// Radio inputs.
-					case 'radio-image':
-						$option_value = self::get_option( $value['id'], $value['default'] );
-
-						?>
-						<tr valign="top">
-							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
-							</th>
-							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
-								<fieldset>
-									<ul>
-									<?php
-									foreach ( $value['options'] as $key => $val ) {
-										?>
-										<li>
-											<label>
-												<img src="<?php echo esc_html( $val['image'] ); ?>">
-												<input
-												name="<?php echo esc_attr( $value['id'] ); ?>"
-												value="<?php echo esc_attr( $key ); ?>"
-												type="radio"
-												style="<?php echo esc_attr( $value['css'] ); ?>"
-												class="<?php echo esc_attr( $value['class'] ); ?>"
-												<?php echo implode( ' ', $custom_attributes ); // WPCS: XSS ok. ?>
-												<?php checked( $key, $option_value ); ?>
-												/>
-												<?php echo esc_html( $val['name'] ); ?></label>
-										</li>
-										<?php
-									}
-									?>
-									</ul>
-									<?php echo $description; // WPCS: XSS ok. ?>
-								</fieldset>
 							</td>
 						</tr>
 						<?php
@@ -444,13 +409,14 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
 								<fieldset>
 									<?php echo $description; // WPCS: XSS ok. ?>
-									<ul>
+									<ul class="<?php echo esc_attr( $value['class'] ); ?>">
 									<?php
 									foreach ( $value['options'] as $key => $val ) {
 										?>
 										<li>
 											<label><input
 												name="<?php echo esc_attr( $value['id'] ); ?>"
+												id="<?php echo esc_attr( $value['id'] ); ?>"
 												value="<?php echo esc_attr( $key ); ?>"
 												type="radio"
 												style="<?php echo esc_attr( $value['css'] ); ?>"
@@ -463,6 +429,46 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 									}
 									?>
 									</ul>
+								</fieldset>
+							</td>
+						</tr>
+						<?php
+						break;
+
+					// Radio image inputs.
+					case 'radio-image':
+						$option_value = self::get_option( $value['id'], $value['default'] );
+
+						?>
+						<tr valign="top">
+							<th scope="row" class="titledesc">
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
+							</th>
+							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
+								<fieldset>
+									<ul>
+									<?php
+									foreach ( $value['options'] as $key => $val ) {
+										?>
+										<li>
+											<label>
+												<img src="<?php echo esc_html( $val['image'] ); ?>">
+												<input
+												name="<?php echo esc_attr( $value['id'] ); ?>"
+												value="<?php echo esc_attr( $key ); ?>"
+												type="radio"
+												style="<?php echo esc_attr( $value['css'] ); ?>"
+												class="<?php echo esc_attr( $value['class'] ); ?>"
+												<?php echo implode( ' ', $custom_attributes ); // WPCS: XSS ok. ?>
+												<?php checked( $key, $option_value ); ?>
+												/>
+												<?php echo esc_html( $val['name'] ); ?></label>
+										</li>
+										<?php
+									}
+									?>
+									</ul>
+									<?php echo $description; // WPCS: XSS ok. ?>
 								</fieldset>
 							</td>
 						</tr>
@@ -488,6 +494,9 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						}
 						if ( 'option' === $value['show_if_checked'] ) {
 							$visibility_class[] = 'show_options_if_checked';
+						}
+						if ( isset( $value['is_visible'] ) ) {
+							$visibility_class[] = $value['is_visible'] ? 'everest-forms-visible' : 'everest-forms-hidden';
 						}
 
 						if ( ! isset( $value['checkboxgroup'] ) || 'start' === $value['checkboxgroup'] ) {

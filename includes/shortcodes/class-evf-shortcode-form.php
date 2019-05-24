@@ -41,6 +41,7 @@ class EVF_Shortcode_Form {
 		add_action( 'everest_forms_display_field_after', array( 'EVF_Shortcode_Form', 'messages' ), 3, 2 );
 		add_action( 'everest_forms_display_field_after', array( 'EVF_Shortcode_Form', 'description' ), 5, 2 );
 		add_action( 'everest_forms_display_field_after', array( 'EVF_Shortcode_Form', 'wrapper_end' ), 15, 2 );
+		add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'honeypot' ), 15, 3 );
 		add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'recaptcha' ), 20, 3 );
 		add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'footer' ), 25, 3 );
 	}
@@ -48,9 +49,9 @@ class EVF_Shortcode_Form {
 	/**
 	 * Form footer area.
 	 *
-	 * @param array $form_data
-	 * @param mixed $title
-	 * @param mixed $description
+	 * @param array $form_data   Form data and settings.
+	 * @param bool  $title       Whether to display form title.
+	 * @param bool  $description Whether to display form description.
 	 */
 	public static function footer( $form_data, $title, $description ) {
 		$form_id  = absint( $form_data['id'] );
@@ -66,11 +67,15 @@ class EVF_Shortcode_Form {
 		$visibility_class = apply_filters( 'everest_forms_field_submit_visibility_class', array(), self::$parts, $form_data );
 
 		// Submit button area.
-		$conditional_id    = 'evf-submit-' . $form_id;
-		$con_rules         = array(
-			'conditional_option' => isset( $form_data['settings']['submit']['connection_1']['conditional_option'] ) ? $form_data['settings']['submit']['connection_1']['conditional_option'] : '',
-			'conditionals'       => isset( $form_data['settings']['submit']['connection_1']['conditionals'] ) ? $form_data['settings']['submit']['connection_1']['conditionals'] : '',
-		);
+		$conditional_id = 'evf-submit-' . $form_id;
+		if ( isset( $form_data['settings']['submit']['connection_1']['conditional_logic_status'] ) && '1' === $form_data['settings']['submit']['connection_1']['conditional_logic_status'] ) {
+			$con_rules = array(
+				'conditional_option' => isset( $form_data['settings']['submit']['connection_1']['conditional_option'] ) ? $form_data['settings']['submit']['connection_1']['conditional_option'] : '',
+				'conditionals'       => isset( $form_data['settings']['submit']['connection_1']['conditionals'] ) ? $form_data['settings']['submit']['connection_1']['conditionals'] : '',
+			);
+		} else {
+			$con_rules = '';
+		}
 		$conditional_rules = json_encode( $con_rules );
 		echo '<div class="evf-submit-container ' . esc_attr( implode( ' ', $visibility_class ) ) . '" ' . $visible . '>';
 
@@ -220,9 +225,9 @@ class EVF_Shortcode_Form {
 	/**
 	 * Form field area.
 	 *
-	 * @param array $form_data
-	 * @param mixed $title
-	 * @param mixed $description
+	 * @param array $form_data   Form data and settings.
+	 * @param bool  $title       Whether to display form title.
+	 * @param bool  $description Whether to display form description.
 	 */
 	public static function fields( $form_data, $title, $description ) {
 		$structure = isset( $form_data['structure'] ) ? $form_data['structure'] : array();
@@ -235,14 +240,14 @@ class EVF_Shortcode_Form {
 		// Form fields area.
 		echo '<div class="evf-field-container">';
 
-			wp_nonce_field( 'everest-forms_process_submit' );
+		wp_nonce_field( 'everest-forms_process_submit' );
 
-			/**
-			 * Hook: everest_forms_display_fields_before.
-			 *
-			 * @hooked EverestForms_MultiPart::display_fields_before() Multi-Part markup open.
-			 */
-			do_action( 'everest_forms_display_fields_before', $form_data );
+		/**
+		 * Hook: everest_forms_display_fields_before.
+		 *
+		 * @hooked EverestForms_MultiPart::display_fields_before() Multi-Part markup open.
+		 */
+		do_action( 'everest_forms_display_fields_before', $form_data );
 
 		foreach ( $structure as $row_key => $row ) {
 
@@ -299,24 +304,54 @@ class EVF_Shortcode_Form {
 			do_action( 'everest_forms_display_row_after', $row_key, $form_data );
 		}
 
-			/**
-			 * Hook: everest_forms_display_fields_after.
-			 *
-			 * @hooked EverestForms_MultiPart::display_fields_after() Multi-Part markup open.
-			 */
-			do_action( 'everest_forms_display_fields_after', $form_data );
+		/**
+		 * Hook: everest_forms_display_fields_after.
+		 *
+		 * @hooked EverestForms_MultiPart::display_fields_after() Multi-Part markup open.
+		 */
+		do_action( 'everest_forms_display_fields_after', $form_data );
 
 		echo '</div>';
 	}
 
 	/**
+	 * Anti-spam honeypot output if configured.
+	 *
+	 * @since 1.4.9
+	 * @param array $form_data   Form data and settings.
+	 */
+	public static function honeypot( $form_data ) {
+		$names = array( 'Name', 'Phone', 'Comment', 'Message', 'Email', 'Website' );
+
+		// Output the honeypot container.
+		if ( isset( $form_data['settings']['honeypot'] ) && '1' === $form_data['settings']['honeypot'] ) {
+			echo '<div class="evf-honeypot-container evf-field-hp">';
+
+				echo '<label for="evf-' . $form_data['id'] . '-field-hp" class="evf-field-label">' . $names[ array_rand( $names ) ] . '</label>'; // phpcs:ignore
+
+				echo '<input type="text" name="everest_forms[hp]" id="evf-' . $form_data['id'] . '-field-hp" class="input-text">';  // phpcs:ignore
+
+			echo '</div>';
+		}
+	}
+
+	/**
 	 * Google reCAPTCHA output if configured.
 	 *
-	 * @param array $form_data
+	 * @param array $form_data Form data and settings.
 	 */
 	public static function recaptcha( $form_data ) {
-		$site_key   = get_option( 'everest_forms_recaptcha_site_key' );
-		$secret_key = get_option( 'everest_forms_recaptcha_site_secret' );
+		$recaptcha_type = get_option( 'everest_forms_recaptcha_type', 'v2' );
+
+		if ( 'v2' === $recaptcha_type ) {
+			$site_key            = get_option( 'everest_forms_recaptcha_v2_site_key' );
+			$secret_key          = get_option( 'everest_forms_recaptcha_v2_secret_key' );
+			$invisible_recaptcha = get_option( 'everest_forms_recaptcha_v2_invisible', 'no' );
+		} else {
+			$site_key   = get_option( 'everest_forms_recaptcha_v3_site_key' );
+			$secret_key = get_option( 'everest_forms_recaptcha_v3_secret_key' );
+		}
+
 		if ( ! $site_key || ! $secret_key ) {
 			return;
 		}
@@ -333,9 +368,18 @@ class EVF_Shortcode_Form {
 
 			// Load reCAPTCHA support if form supports it.
 			if ( $site_key && $secret_key ) {
-				$recaptcha_api     = apply_filters( 'everest_forms_frontend_recaptcha_url', 'https://www.google.com/recaptcha/api.js?onload=EVFRecaptchaLoad&render=explicit' );
-				$recaptcha_inline  = 'var EVFRecaptchaLoad = function(){jQuery(".g-recaptcha").each(function(index, el){grecaptcha.render(el,{callback:function(){EVFRecaptchaCallback(el);}},true);});};';
-				$recaptcha_inline .= 'var EVFRecaptchaCallback = function(el){jQuery(el).parent().find(".evf-recaptcha-hidden").val("1").valid();};';
+				if ( 'v2' === $recaptcha_type ) {
+					$recaptcha_api = apply_filters( 'everest_forms_frontend_recaptcha_url', 'https://www.google.com/recaptcha/api.js?onload=EVFRecaptchaLoad&render=explicit' );
+					if ( 'yes' === $invisible_recaptcha ) {
+						$recaptcha_inline = 'var EVFRecaptchaLoad = function(){jQuery(".g-recaptcha").each(function(index, el){var recaptchaID = grecaptcha.render(el,{},true); grecaptcha.execute(recaptchaID);});};';
+					} else {
+						$recaptcha_inline  = 'var EVFRecaptchaLoad = function(){jQuery(".g-recaptcha").each(function(index, el){grecaptcha.render(el,{callback:function(){EVFRecaptchaCallback(el);}},true);});};';
+						$recaptcha_inline .= 'var EVFRecaptchaCallback = function(el){jQuery(el).parent().find(".evf-recaptcha-hidden").val("1").valid();};';
+					}
+				} else {
+					$recaptcha_api    = apply_filters( 'everest_forms_frontend_recaptcha_url', 'https://www.google.com/recaptcha/api.js?render=' . $site_key );
+					$recaptcha_inline = 'grecaptcha.ready( function() { grecaptcha.execute( "' . $site_key . '", { action: "everest_form" } ).then( function( token ) { jQuery( ".evf-recaptcha-hidden" ).val( token ); } ) } )';
+				}
 
 				// Enqueue reCaptcha scripts.
 				wp_enqueue_script( 'evf-recaptcha', $recaptcha_api, array( 'jquery' ), '2.0.0', false );
@@ -347,11 +391,21 @@ class EVF_Shortcode_Form {
 					$count++;
 				}
 
-				// Output the reCAPTCHA container.
-				echo '<div class="evf-recaptcha-container" ' . $visible . '>';
+				if ( 'v2' === $recaptcha_type && 'yes' === $invisible_recaptcha ) {
+					// Output the reCAPTCHA container.
+					$data['size']    = 'invisible';
+					$data['sitekey'] = $site_key;
+					echo '<div class="evf-recaptcha-container recaptcha-hidden" ' . $visible . '>';
+					echo '<div ' . evf_html_attributes( '', array( 'g-recaptcha' ), $data ) . '></div>';
+					echo '</div>';
+				} else {
+					// Output the reCAPTCHA container.
+					$class = 'v3' === $recaptcha_type ? 'recaptcha-hidden' : '';
+					echo '<div class="evf-recaptcha-container ' . $class . '" ' . $visible . '>';
 					echo '<div ' . evf_html_attributes( '', array( 'g-recaptcha' ), $data ) . '></div>';
 					echo '<input type="text" name="g-recaptcha-hidden" class="evf-recaptcha-hidden" style="position:absolute!important;clip:rect(0,0,0,0)!important;height:1px!important;width:1px!important;border:0!important;overflow:hidden!important;padding:0!important;margin:0!important;" required>';
-				echo '</div>';
+					echo '</div>';
+				}
 			}
 		}
 	}
