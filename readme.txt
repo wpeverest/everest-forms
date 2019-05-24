@@ -141,6 +141,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 == Changelog ==
 
 = 1.4.9 - XX-05-2019 =
+* Feature - Everest Forms is WPML Compatiable. #161
 * Feature - Introduced Credit card field for stripe. #154
 * Feature - Anti-spam honeypot form field for spam protection. #162
 * Feature - Introduced reCaptcha version 2 invisible and reCaptcha version 3. #157
