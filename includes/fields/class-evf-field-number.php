@@ -221,10 +221,10 @@ class EVF_Field_Number extends EVF_Form_Fields {
 	 *
 	 * @since 1.0.0
 	 * @param array $field Field Data.
-	 * @param array $deprecated Deprecated Parameter.
+	 * @param array $field_atts Field attributes.
 	 * @param array $form_data All Form Data.
 	 */
-	public function field_display( $field, $deprecated, $form_data ) {
+	public function field_display( $field, $field_atts, $form_data ) {
 		// Define data.
 		$primary = $field['properties']['inputs']['primary'];
 

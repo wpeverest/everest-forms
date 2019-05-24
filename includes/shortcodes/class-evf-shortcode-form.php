@@ -41,6 +41,7 @@ class EVF_Shortcode_Form {
 		add_action( 'everest_forms_display_field_after', array( 'EVF_Shortcode_Form', 'messages' ), 3, 2 );
 		add_action( 'everest_forms_display_field_after', array( 'EVF_Shortcode_Form', 'description' ), 5, 2 );
 		add_action( 'everest_forms_display_field_after', array( 'EVF_Shortcode_Form', 'wrapper_end' ), 15, 2 );
+		add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'honeypot' ), 15, 3 );
 		add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'recaptcha' ), 20, 3 );
 		add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'footer' ), 25, 3 );
 	}
@@ -48,9 +49,9 @@ class EVF_Shortcode_Form {
 	/**
 	 * Form footer area.
 	 *
-	 * @param array $form_data
-	 * @param mixed $title
-	 * @param mixed $description
+	 * @param array $form_data   Form data and settings.
+	 * @param bool  $title       Whether to display form title.
+	 * @param bool  $description Whether to display form description.
 	 */
 	public static function footer( $form_data, $title, $description ) {
 		$form_id  = absint( $form_data['id'] );
@@ -64,11 +65,15 @@ class EVF_Shortcode_Form {
 		$visibility_class = apply_filters( 'everest_forms_field_submit_visibility_class', array(), self::$parts, $form_data );
 
 		// Submit button area.
-		$conditional_id    = 'evf-submit-' . $form_id;
-		$con_rules         = array(
-			'conditional_option' => isset( $form_data['settings']['submit']['connection_1']['conditional_option'] ) ? $form_data['settings']['submit']['connection_1']['conditional_option'] : '',
-			'conditionals'       => isset( $form_data['settings']['submit']['connection_1']['conditionals'] ) ? $form_data['settings']['submit']['connection_1']['conditionals'] : '',
-		);
+		$conditional_id = 'evf-submit-' . $form_id;
+		if ( '1' === $form_data['settings']['submit']['connection_1']['conditional_logic_status'] ) {
+			$con_rules = array(
+				'conditional_option' => isset( $form_data['settings']['submit']['connection_1']['conditional_option'] ) ? $form_data['settings']['submit']['connection_1']['conditional_option'] : '',
+				'conditionals'       => isset( $form_data['settings']['submit']['connection_1']['conditionals'] ) ? $form_data['settings']['submit']['connection_1']['conditionals'] : '',
+			);
+		} else {
+			$con_rules = '';
+		}
 		$conditional_rules = json_encode( $con_rules );
 		echo '<div class="evf-submit-container ' . esc_attr( implode( ' ', $visibility_class ) ) . '" ' . $visible . '>';
 
@@ -215,9 +220,9 @@ class EVF_Shortcode_Form {
 	/**
 	 * Form field area.
 	 *
-	 * @param array $form_data
-	 * @param mixed $title
-	 * @param mixed $description
+	 * @param array $form_data   Form data and settings.
+	 * @param bool  $title       Whether to display form title.
+	 * @param bool  $description Whether to display form description.
 	 */
 	public static function fields( $form_data, $title, $description ) {
 		$structure = isset( $form_data['structure'] ) ? $form_data['structure'] : array();
@@ -230,14 +235,14 @@ class EVF_Shortcode_Form {
 		// Form fields area.
 		echo '<div class="evf-field-container">';
 
-			wp_nonce_field( 'everest-forms_process_submit' );
+		wp_nonce_field( 'everest-forms_process_submit' );
 
-			/**
-			 * Hook: everest_forms_display_fields_before.
-			 *
-			 * @hooked EverestForms_MultiPart::display_fields_before() Multi-Part markup open.
-			 */
-			do_action( 'everest_forms_display_fields_before', $form_data );
+		/**
+		 * Hook: everest_forms_display_fields_before.
+		 *
+		 * @hooked EverestForms_MultiPart::display_fields_before() Multi-Part markup open.
+		 */
+		do_action( 'everest_forms_display_fields_before', $form_data );
 
 		foreach ( $structure as $row_key => $row ) {
 
@@ -294,20 +299,41 @@ class EVF_Shortcode_Form {
 			do_action( 'everest_forms_display_row_after', $row_key, $form_data );
 		}
 
-			/**
-			 * Hook: everest_forms_display_fields_after.
-			 *
-			 * @hooked EverestForms_MultiPart::display_fields_after() Multi-Part markup open.
-			 */
-			do_action( 'everest_forms_display_fields_after', $form_data );
+		/**
+		 * Hook: everest_forms_display_fields_after.
+		 *
+		 * @hooked EverestForms_MultiPart::display_fields_after() Multi-Part markup open.
+		 */
+		do_action( 'everest_forms_display_fields_after', $form_data );
 
 		echo '</div>';
 	}
 
 	/**
+	 * Anti-spam honeypot output if configured.
+	 *
+	 * @since 1.4.9
+	 * @param array $form_data   Form data and settings.
+	 */
+	public static function honeypot( $form_data ) {
+		$names = array( 'Name', 'Phone', 'Comment', 'Message', 'Email', 'Website' );
+
+		// Output the honeypot container.
+		if ( isset( $form_data['settings']['honeypot'] ) && '1' === $form_data['settings']['honeypot'] ) {
+			echo '<div class="evf-honeypot-container evf-field-hp">';
+
+				echo '<label for="evf-' . $form_data['id'] . '-field-hp" class="evf-field-label">' . $names[ array_rand( $names ) ] . '</label>'; // phpcs:ignore
+
+				echo '<input type="text" name="everest_forms[hp]" id="evf-' . $form_data['id'] . '-field-hp" class="input-text">';  // phpcs:ignore
+
+			echo '</div>';
+		}
+	}
+
+	/**
 	 * Google reCAPTCHA output if configured.
 	 *
-	 * @param array $form_data
+	 * @param array $form_data Form data and settings.
 	 */
 	public static function recaptcha( $form_data ) {
 		$recaptcha_type = get_option( 'everest_forms_recaptcha_type', 'v2' );

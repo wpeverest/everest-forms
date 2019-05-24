@@ -152,10 +152,10 @@ abstract class EVF_Form_Fields {
 	}
 
 	/**
-	 * Creates the field preview. Used by subclasses.
+	 * Field preview inside the builder.
 	 *
 	 * @since 1.0.0
-	 * @param array $field
+	 * @param array $field Field settings.
 	 */
 	public function field_preview( $field ) {}
 
@@ -861,13 +861,13 @@ abstract class EVF_Form_Fields {
 	}
 
 	/**
-	 * Display the field input elements on the frontend.
+	 * Field display on the form front-end.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $field
-	 * @param array $field_atts
-	 * @param array $form_data
+	 * @param array $field Field Data.
+	 * @param array $field_atts Field attributes.
+	 * @param array $form_data All Form Data.
 	 */
 	public function field_display( $field, $field_atts, $form_data ) {}
 
