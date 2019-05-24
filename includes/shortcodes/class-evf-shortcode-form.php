@@ -66,7 +66,7 @@ class EVF_Shortcode_Form {
 
 		// Submit button area.
 		$conditional_id = 'evf-submit-' . $form_id;
-		if ( $form_data['settings']['submit']['connection_1']['conditional_logic_status'] === '1' ) {
+		if ( '1' === $form_data['settings']['submit']['connection_1']['conditional_logic_status'] ) {
 			$con_rules = array(
 				'conditional_option' => isset( $form_data['settings']['submit']['connection_1']['conditional_option'] ) ? $form_data['settings']['submit']['connection_1']['conditional_option'] : '',
 				'conditionals'       => isset( $form_data['settings']['submit']['connection_1']['conditionals'] ) ? $form_data['settings']['submit']['connection_1']['conditionals'] : '',
