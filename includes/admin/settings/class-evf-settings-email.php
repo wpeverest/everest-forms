@@ -44,12 +44,19 @@ class EVF_Settings_Email extends EVF_Settings_Page {
 				),
 				array(
 					'title'   => __( 'Template', 'everest-forms' ),
-					'type'    => 'radio',
+					'type'    => 'radio-image',
 					'id'      => 'everest_forms_email_template',
+					'desc'    => esc_html__( 'Determine which format of email to send. HTML Template is default.', 'everest-forms' ),
 					'default' => 'default',
 					'options' => array(
-						'default' => esc_html__( 'HTML', 'everest-forms' ),
-						'none'    => esc_html__( 'Plain', 'everest-forms' ),
+						'default' => array(
+							'name'  => esc_html__( 'HTML Template', 'everest-forms' ),
+							'image' => plugins_url( 'assets/images/email-template-html.png', EVF_PLUGIN_FILE ),
+						),
+						'none'    => array(
+							'name'  => esc_html__( 'Plain text', 'everest-forms' ),
+							'image' => plugins_url( 'assets/images/email-template-plain.png', EVF_PLUGIN_FILE ),
+						),
 					),
 				),
 				array(

@@ -181,28 +181,53 @@
  * Notice info
  */
 .everest-forms-notice {
-	padding: 10px;
 	display: block;
+	padding: 5px 15px;
 	margin-bottom: 15px;
+	max-width: fit-content;
+
+	&::before {
+		content: '\f348';
+		font-size: 22px;
+		vertical-align: middle;
+		font-family: dashicons;
+		margin-right: 10px;
+	}
 
 	&.everest-forms-notice-info {
 		background: transparentize($color-alert-info, 0.9);
 		border: 1px solid $color-alert-info;
+
+		&::before {
+			color: $color-alert-info;
+		}
 	}
 
 	&.everest-forms-notice-success {
 		background: transparentize($color-alert-success, 0.9);
 		border: 1px solid $color-alert-success;
+
+		&::before {
+			color: $color-alert-success;
+		}
 	}
 
 	&.everest-forms-notice-warning {
 		background: transparentize($color-alert-warning, 0.9);
 		border: 1px solid $color-alert-warning;
+
+		&::before {
+			color: $color-alert-warning;
+		}
 	}
 
 	&.everest-forms-notice-danger {
 		background: transparentize($color-alert-danger, 0.9);
 		border: 1px solid $color-alert-danger;
+
+		&::before {
+			color: $color-alert-danger;
+		}
 	}
 }
 
@@ -504,7 +529,6 @@ body.everest-forms-builder-setup,
 
 				th {
 					padding-top: 25px;
-					vertical-align: middle;
 
 					.everest-forms-help-tip {
 						margin: 0;
@@ -514,6 +538,28 @@ body.everest-forms-builder-setup,
 
 				td {
 					padding: 25px 0;
+				}
+
+				.forminp-radio-image {
+
+					ul {
+						margin: 0;
+						display: flex;
+
+						li {
+							margin-right: 30px;
+
+							label,
+							img {
+								display: block;
+							}
+
+							img {
+								margin-bottom: 15px;
+								border: 2px solid #d6d6d6;
+							}
+						}
+					}
 				}
 			}
 		}
@@ -2038,6 +2084,16 @@ body.everest-forms-builder-setup,
 				position: relative;
 				margin-bottom: 20px;
 
+				.wp-editor-container {
+					margin-bottom: 10px;
+				}
+
+				.desc {
+					margin: 10px 0;
+					font-style: italic;
+					line-height: 1.2;
+				}
+
 				&.everest-forms-panel-field-tinymce {
 
 					.evf-toggle-smart-tag-display {
@@ -2285,10 +2341,6 @@ body.everest-forms-builder-setup,
 				height: calc(100vh - 150px);
 				overflow-x: auto;
 
-				p {
-					margin-bottom: 20px;
-				}
-
 				.everest-forms-border-container {
 
 					.everest-forms-border-container-title {
@@ -2299,7 +2351,7 @@ body.everest-forms-builder-setup,
 				.evf-content-email-settings {
 
 					.evf-content-email-settings-inner {
-						padding: 20px;
+						padding: 20px 20px 0;
 						border: 1px solid #e0e3e6;
 
 						.everest-forms-email-name {
@@ -2446,10 +2498,26 @@ body.everest-forms-builder-setup,
 		position: relative;
 		table-layout: fixed;
 
-		.forminp-radio ul {
-			margin: 0;
-			li {
-				line-height: 1.4em;
+		.forminp-radio {
+			ul {
+				margin: 0;
+
+				li {
+					line-height: 1.4em;
+				}
+
+				&.everest-forms-recaptcha-type {
+					display: flex;
+
+					li {
+						margin-right: 15px;
+
+						label {
+							margin-bottom: 0 !important;
+							margin-top: -6px !important;
+						}
+					}
+				}
 			}
 		}
 
@@ -3212,6 +3280,10 @@ img.tips {
 			padding: 0.618em 1em;
 			box-sizing: border-box;
 			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+
+			a {
+				color: #ff7d20;
+			}
 
 			code {
 				padding: 1px;
