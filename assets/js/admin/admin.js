@@ -140,9 +140,9 @@
 			} );
 		});
 
-		//Dynamic live binding on newly created elements
-		$('body').on('mouseenter', '.evf-content-email-settings-inner .everest-forms-help-tooltip:not(.tooltipstered)', function(){
-			$(this).tooltipster({
+		// Dynamic live binding on newly created elements.
+		$( 'body' ).on( 'mouseenter', '.evf-content-email-settings-inner .everest-forms-help-tooltip:not(.tooltipstered)', function() {
+			$( this ).tooltipster({
 				maxWidth: 200,
 				multiple: true,
 				interactive: true,
@@ -151,7 +151,6 @@
 				updateAnimation: false,
 				restoration: 'current',
 				functionInit: function( instance, helper ) {
-					console.log('run');
 					var $origin = $( helper.origin ),
 						dataTip = $origin.attr( 'data-tip' );
 					if ( dataTip ) {
@@ -159,13 +158,12 @@
 					}
 				}
 			});
-			$(this).tooltipster('open');
-	    });
-	   	
-		$(document).on('click', '.everest-forms-email-add', function(){
-			$( '.evf-content-email-settings-inner .tooltipstered' ).tooltipster( 'destroy' );
-	   });
+			$( this ).tooltipster( 'open' );
+		});
 
+		$( document ).on('click', '.everest-forms-email-add', function(){
+			$( '.evf-content-email-settings-inner .tooltipstered' ).tooltipster( 'destroy' );
+		});
 
 	// Tooltips
 	$( document.body ).trigger( 'init_tooltips' );
