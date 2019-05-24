@@ -132,8 +132,7 @@ function evf_print_notices( $form_data ) {
 	foreach ( $notice_types as $notice_type ) {
 		if ( evf_notice_count( $notice_type ) > 0 ) {
 			foreach ( $all_notices[ $notice_type ] as $key => $message ) {
-				$message                             = evf_string_translation( $form_data['id'], 'notice_message_' . $notice_type, $message );
-				$all_notices[ $notice_type ][ $key ] = $message;
+				$all_notices[ $notice_type ][ $key ] = evf_string_translation( $form_data['id'], 'notice_message_' . $notice_type, $message );
 			}
 			evf_get_template(
 				"notices/{$notice_type}.php",
