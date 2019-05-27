@@ -18,6 +18,7 @@ class EVF_Admin_Entries {
 	 */
 	public function __construct() {
 		add_action( 'admin_init', array( $this, 'actions' ) );
+		add_filter( 'heartbeat_received', array( $this, 'heartbeat_new_entries_check' ), 10, 3 );
 	}
 
 	/**
@@ -316,6 +317,25 @@ class EVF_Admin_Entries {
 		);
 
 		return $update;
+	}
+
+	/**
+	 * Check for new entries using Heartbeat API.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param array  $response  The Heartbeat response.
+	 * @param array  $data      The $_POST data sent.
+	 * @param string $screen_id The screen id.
+	 *
+	 * @return array
+	 */
+	public function heartbeat_new_entries_check( $response, $data, $screen_id ) {
+		if ( $this->is_entries_page() ) {
+
+		}
+
+		return $response;
 	}
 }
 
