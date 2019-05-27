@@ -164,7 +164,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Tweak - Tooltip information enhancements #163
 * Tweak - Input styles inherited from theme's style. #138
 * Tweak - Email HTML template and plain text image selection. #160
-* Performance - Improve the speed of templates by caching them. #156
+* Performance - Improve the speed of templates loader by caching. #156
 * Dev - Define `$wpdb` tables as early as possible, before init. #139
 * Deprecated - Payment charge field by introducing conditional logic.
 
