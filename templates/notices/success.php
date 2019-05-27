@@ -17,12 +17,17 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$class = apply_filters( 'everest_forms_success_notice_class', '' );
+$classes = apply_filters(
+	'everest_forms_success_notice_class',
+	array(
+		'everest-forms-notice--success',
+	)
+);
 ?>
 
 <?php if ( $messages ) : ?>
 	<?php foreach ( $messages as $message ) : ?>
-		<div class="everest-forms-notice <?php echo $class; ?> everest-forms-notice--success" role="alert">
+		<div class="everest-forms-notice <?php echo esc_attr( implode( ' ', $classes ) ); ?>" role="alert">
 		<?php
 			echo wp_kses(
 				$message,

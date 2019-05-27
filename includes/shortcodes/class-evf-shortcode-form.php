@@ -58,9 +58,9 @@ class EVF_Shortcode_Form {
 		$settings       = isset( $form_data['settings'] ) ? $form_data['settings'] : '';
 		$submit         = apply_filters( 'everest_forms_field_submit', isset( $settings['submit_button_text'] ) ? $settings['submit_button_text'] : __( 'Submit', 'everest-forms' ), $form_data );
 		$submit_btn     = evf_string_translation( $form_data['id'], 'submit_button', $submit );
-    $process        = '';
+		$process        = '';
 		$process_submit = isset( $settings['submit_button_processing_text'] ) ? $settings['submit_button_processing_text'] : '';
-    $classes        = isset( $form_data['settings']['submit_button_class'] ) ? evf_sanitize_classes( $form_data['settings']['submit_button_class'] ) : '';
+		$classes        = isset( $form_data['settings']['submit_button_class'] ) ? evf_sanitize_classes( $form_data['settings']['submit_button_class'] ) : '';
 		$visible        = self::$parts ? 'style="display:none"' : '';
 
 		// Visibility class.

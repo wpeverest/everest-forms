@@ -142,12 +142,15 @@ jQuery( function ( $ ) {
 						$parent.removeClass( 'evf-has-error' );
 					},
 					submitHandler: function( form ) {
-						var $form   = $(form),
-						$submit = $form.find('.evf-submit'),
-						processText = $submit.data('process-text');
-						if (processText) {
-							$submit.text(processText).prop('disabled', true);
+						var $form       = $( form ),
+							$submit     = $form.find( '.evf-submit' ),
+							processText = $submit.data( 'process-text' );
+
+						// Normal form.
+						if ( processText ) {
+							$submit.text( processText ).prop( 'disabled', true );
 						}
+
 						form.submit();
 					}
 				});

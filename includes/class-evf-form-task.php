@@ -1,14 +1,15 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
-}
-
 /**
  * Process form data
  *
- * @package    EverestForms
- * @author     WPEverest
- * @since      1.0.0
+ * @package EverestForms
+ * @since   1.0.0
+ */
+
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * EVF_Form_Task class.
  */
 class EVF_Form_Task {
 
@@ -200,10 +201,10 @@ class EVF_Form_Task {
 			// Success - send email notification.
 			$this->entry_email( $this->form_fields, $entry, $form_data, $entry_id, 'entry' );
 
-				add_filter( 'everest_forms_success', '__return_true' );
+			add_filter( 'everest_forms_success', '__return_true' );
 
-				// Pass completed and formatted fields in POST.
-				$_POST['everest-forms']['complete'] = $this->form_fields;
+			// Pass completed and formatted fields in POST.
+			$_POST['everest-forms']['complete'] = $this->form_fields;
 
 			// Pass completed and formatted fields in POST.
 			$_POST['everest-forms']['complete'] = $this->form_fields;
@@ -335,11 +336,13 @@ class EVF_Form_Task {
 	/**
 	 * Add scroll notice class.
 	 *
-	 * @param string $class  Notice Class.
+	 * @param  array $classes Notice Classes.
+	 * @return array of notice classes.
 	 */
-	public function add_scroll_notice_class( $class ) {
-		$class = 'everest-forms-submission-scroll ' . $class;
-		return $class;
+	public function add_scroll_notice_class( $classes ) {
+		$classes[] = 'everest-forms-submission-scroll';
+
+		return $classes;
 	}
 
 	/**

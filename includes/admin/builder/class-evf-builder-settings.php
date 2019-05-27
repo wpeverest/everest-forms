@@ -240,10 +240,10 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			'settings',
 			'submit_button_processing_text',
 			$this->form_data,
-			__( 'Submit Button Processing Text ', 'everest-forms' ),
+			__( 'Submit button processing text', 'everest-forms' ),
 			array(
-				'default' => isset( $settings['submit_button_processing_text'] ) ? $settings['submit_button_processing_text'] : __( 'Sending...', 'everest-forms' ),
-				'tooltip' => esc_html__( 'Enter the desire text you would like the button to display while the form submit is processing.', 'everest-forms' ),
+				'default' => isset( $settings['submit_button_processing_text'] ) ? $settings['submit_button_processing_text'] : __( 'Processing&hellip;', 'everest-forms' ),
+				'tooltip' => esc_html__( 'Enter the submit button text that you would like the button to display while the form submission is processing.', 'everest-forms' ),
 			)
 		);
 		everest_forms_panel_field(
@@ -251,7 +251,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			'settings',
 			'submit_button_class',
 			$this->form_data,
-			esc_html__( 'Submit button Class', 'everest-forms' ),
+			esc_html__( 'Submit button class', 'everest-forms' ),
 			array(
 				'default' => isset( $settings['submit_button_class'] ) ? $settings['submit_button_class'] : '',
 				'tooltip' => esc_html__( 'Enter CSS class names for submit button. Multiple class names should be separated with spaces.', 'everest-forms' ),
