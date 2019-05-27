@@ -317,7 +317,7 @@ class EVF_Form_Task {
 			return;
 		}
 
-		if ( $settings['submission_message_scroll'] ) {
+		if ( isset( $settings['submission_message_scroll'] ) && $settings['submission_message_scroll'] ) {
 			add_filter( 'everest_forms_success_notice_class', array( $this, 'add_scroll_notice_class' ) );
 		}
 
