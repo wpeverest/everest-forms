@@ -1,14 +1,15 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
-}
-
 /**
  * Process form data
  *
- * @package    EverestForms
- * @author     WPEverest
- * @since      1.0.0
+ * @package EverestForms
+ * @since   1.0.0
+ */
+
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * EVF_Form_Task class.
  */
 class EVF_Form_Task {
 
@@ -200,7 +201,18 @@ class EVF_Form_Task {
 			// Success - send email notification.
 			$this->entry_email( $this->form_fields, $entry, $form_data, $entry_id, 'entry' );
 
-			$_POST['evf_success'] = true;
+			add_filter(
+				'everest_forms_success',
+				function( $status, $form_id ) use ( $form_data ) {
+					if ( isset( $form_data['id'] ) && absint( $form_data['id'] ) === absint( $form_id ) ) {
+						return true;
+					} else {
+						return false;
+					}
+				},
+				10,
+				2
+			);
 
 			// Pass completed and formatted fields in POST.
 			$_POST['everest-forms']['complete'] = $this->form_fields;
@@ -285,7 +297,7 @@ class EVF_Form_Task {
 					var redirect = '<?php echo get_permalink( $settings['custom_page'] ); ?>';
 				window.setTimeout( function () {
 					window.location.href = redirect;
-				}, 3000 )
+				})
 				</script>
 			<?php
 		} elseif ( isset( $settings['redirect_to'] ) && '2' == $settings['redirect_to'] ) {
@@ -293,7 +305,7 @@ class EVF_Form_Task {
 			<script>
 				window.setTimeout( function () {
 					window.location.href = '<?php echo $settings['external_url']; ?>';
-				}, 3000 )
+				})
 				</script>
 			<?php
 		}
@@ -315,6 +327,11 @@ class EVF_Form_Task {
 		} else {
 			return;
 		}
+
+		if ( isset( $settings['submission_message_scroll'] ) && $settings['submission_message_scroll'] ) {
+			add_filter( 'everest_forms_success_notice_class', array( $this, 'add_scroll_notice_class' ) );
+		}
+
 		if ( ! empty( $url ) ) {
 			$url = apply_filters( 'everest_forms_process_redirect_url', $url, $form_id, $this->form_fields );
 			wp_redirect( esc_url_raw( $url ) );
@@ -322,6 +339,18 @@ class EVF_Form_Task {
 			do_action( "everest_forms_process_redirect_{$form_id}", $form_id );
 			exit;
 		}
+	}
+
+	/**
+	 * Add scroll notice class.
+	 *
+	 * @param  array $classes Notice Classes.
+	 * @return array of notice classes.
+	 */
+	public function add_scroll_notice_class( $classes ) {
+		$classes[] = 'everest-forms-submission-scroll';
+
+		return $classes;
 	}
 
 	/**
