@@ -515,7 +515,7 @@ class EVF_Shortcode_Form {
 						'attr'     => array(
 							'name'        => "everest_forms[form_fields][{$field_id}]",
 							'value'       => ( isset( $field['default_value'] ) && ! empty( $field['default_value'] ) ) ? apply_filters( 'everest_forms_process_smart_tags', $field['default_value'], $form_data ) : ( isset( $_POST['everest_forms']['form_fields'][ $field_id ] ) ? $_POST['everest_forms']['form_fields'][ $field_id ] : '' ),
-							'placeholder' => isset( $field['placeholder'] ) ? $field['placeholder'] : '',
+							'placeholder' => isset( $field['placeholder'] ) ? evf_string_translation( $form_data['id'], $field['id'], $field['placeholder'] ) : '',
 						),
 						'class'    => $attributes['input_class'],
 						'data'     => $attributes['input_data'],
