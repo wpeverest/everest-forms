@@ -65,6 +65,7 @@ $form_template['contact'] = array(
 		'layout_class'                       => 'default',
 		'form_class'                         => '',
 		'submit_button_text'                 => get_option( 'everest_forms_form_submit_button_label', __( 'Submit', 'everest-forms' ) ),
+		'honeypot'                           => '1',
 		'email'                              => array(
 			'connection_1' => array(
 				'connection_name'   => __( 'Admin Notification', 'everest-forms' ),
