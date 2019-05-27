@@ -608,7 +608,7 @@ class EVF_Shortcode_Form {
 			return;
 		}
 
-		$success = apply_filters( 'everest_forms_success', false );
+		$success = apply_filters( 'everest_forms_success', false, $form_id );
 		if ( $success && ! empty( $form_data ) ) {
 			do_action( 'everest_forms_frontend_output_success', $form_data );
 			return;

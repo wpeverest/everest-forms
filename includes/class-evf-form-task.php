@@ -201,7 +201,18 @@ class EVF_Form_Task {
 			// Success - send email notification.
 			$this->entry_email( $this->form_fields, $entry, $form_data, $entry_id, 'entry' );
 
-			add_filter( 'everest_forms_success', '__return_true' );
+			add_filter(
+				'everest_forms_success',
+				function( $status, $form_id ) use ( $form_data ) {
+					if ( isset( $form_data['id'] ) && absint( $form_data['id'] ) === absint( $form_id ) ) {
+						return true;
+					} else {
+						return false;
+					}
+				},
+				10,
+				2
+			);
 
 			// Pass completed and formatted fields in POST.
 			$_POST['everest-forms']['complete'] = $this->form_fields;
