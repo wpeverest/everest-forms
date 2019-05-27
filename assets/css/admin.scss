@@ -979,7 +979,7 @@ body.everest-forms-builder-setup,
 				background: $color-white;
 				border: 1px solid $color_gray-lighten;
 				border-left: none;
-				box-shadow: inset 0 1px 2px transparentize($color_gray-dark, 0.8);
+				box-shadow: inset 0 1px 2px transparentize($color_gray-dark, 0.9);
 
 				.dashicons-editor-code {
 
@@ -1289,7 +1289,6 @@ body.everest-forms-builder-setup,
 					}
 
 					.evf-panel-tab {
-						background-color: $accordion-content-bg;
 						display: flex;
 						align-items: center;
 						justify-content: space-between;
@@ -1297,6 +1296,7 @@ body.everest-forms-builder-setup,
 						font-size: 14px;
 						font-weight: 600;
 						color: $color_gray-dark;
+						background-color: adjust-color($color_gray-more-lighten, $saturation: -1, $lightness: +2);
 						border-bottom: 1px solid $color_gray-lighten;
 
 						.everest-forms-toggle-arrow {
@@ -1380,12 +1380,12 @@ body.everest-forms-builder-setup,
 								}
 
 								.user-nickname {
-									color: #444;
+									color: $color_gray-base;
 									font-weight: 600;
 								}
 
 								.toggle-remove {
-									color: #444;
+									color: $color_gray-base;
 									cursor: pointer;
 									position: relative;
 									padding-left: 13px;
@@ -1408,7 +1408,7 @@ body.everest-forms-builder-setup,
 										content: '';
 										height: 10px;
 										position: absolute;
-										background: #444;
+										background: $color_gray-base;
 										display: inline-block;
 										transition: all 0.25s ease 0s;
 									}
@@ -2068,7 +2068,7 @@ body.everest-forms-builder-setup,
 					.evf-toggle-smart-tag-display {
 						top: 40px;
 						right: 5px;
-						border: 1px solid #ddd;
+						border: 1px solid $color_gray-lighten;
 					}
 					.evf-smart-tag-lists {
 						top: 70px;
@@ -2237,12 +2237,12 @@ body.everest-forms-builder-setup,
 			margin-top: 5px;
 			margin-bottom: 20px;
 			padding: 0 20px;
-			border: 1px solid #ddd;
+			border: 1px solid $color_gray-lighten;
 
 			.everest-forms-border-container-title {
 				padding: 0 10px;
 				margin: 0 0 0 -10px;
-				background: #f8f9fa;
+				background: $color_gray-light-skin;
 				display: inline-block;
 				transform: translateY(-50%);
 			}
@@ -2321,15 +2321,15 @@ body.everest-forms-builder-setup,
 
 					.evf-content-email-settings-inner {
 						padding: 20px 20px 0;
-						border: 1px solid #e0e3e6;
+						border: 1px solid $color_gray-lighten;
 
 						.everest-forms-email-name {
-							background: #f8f9fa;
+							background: $color_gray-light-skin;
 							margin-left: -20px;
 							margin-top: -20px;
 							margin-right: -20px;
 							padding: 20px;
-							border-bottom: 1px solid #e0e3e6;
+							border-bottom: 1px solid $color_gray-lighten;
 
 							input[type='text'] {
 								font-weight: 600;
@@ -2595,7 +2595,7 @@ body.everest-forms-builder-setup,
 
 		th label,
 		th.titledesc {
-			color: #444;
+			color: $color_gray-base;
 		}
 
 		th label + .everest-forms-help-tip {
