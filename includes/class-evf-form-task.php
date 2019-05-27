@@ -206,9 +206,6 @@ class EVF_Form_Task {
 			// Pass completed and formatted fields in POST.
 			$_POST['everest-forms']['complete'] = $this->form_fields;
 
-			// Pass completed and formatted fields in POST.
-			$_POST['everest-forms']['complete'] = $this->form_fields;
-
 			// Pass entry ID in POST.
 			$_POST['everest-forms']['entry_id'] = $entry_id;
 
