@@ -120,7 +120,7 @@ function evf_clear_notices() {
  *
  * @since 1.0.0
  */
-function evf_print_notices() {
+function evf_print_notices( $form_data ) {
 	if ( ! did_action( 'everest_forms_init' ) ) {
 		evf_doing_it_wrong( __FUNCTION__, __( 'This function should not be called before everest_forms_init.', 'everest-forms' ), '1.0' );
 		return;
@@ -131,6 +131,9 @@ function evf_print_notices() {
 
 	foreach ( $notice_types as $notice_type ) {
 		if ( evf_notice_count( $notice_type ) > 0 ) {
+			foreach ( $all_notices[ $notice_type ] as $key => $message ) {
+				$all_notices[ $notice_type ][ $key ] = evf_string_translation( $form_data['id'], 'notice_message_' . $notice_type, $message );
+			}
 			evf_get_template(
 				"notices/{$notice_type}.php",
 				array(
