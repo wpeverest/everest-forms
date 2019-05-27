@@ -21,7 +21,7 @@ defined( 'ABSPATH' ) || exit;
 	</p>
 
 	<p class="submit">
-		<a class="button-secondary" href="https://docs.wpeverest.com/docs/everest-forms/everest-forms-add-ons/stripe/">
+		<a class="button-secondary" href="https://docs.wpeverest.com/docs/everest-forms/everest-forms-add-ons/stripe/#new">
 			<?php esc_html_e( 'Learn more about the changes here!', 'everest-forms' ); ?>
 		</a>
 	</p>
