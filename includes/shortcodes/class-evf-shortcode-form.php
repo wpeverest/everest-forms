@@ -80,12 +80,14 @@ class EVF_Shortcode_Form {
 		} else {
 			$con_rules = '';
 		}
-		$conditional_rules = json_encode( $con_rules );
+
+		$conditional_rules = wp_json_encode( $con_rules );
+
 		echo '<div class="evf-submit-container ' . esc_attr( implode( ' ', $visibility_class ) ) . '" ' . $visible . '>';
 
-			echo '<input type="hidden" name="everest_forms[id]" value="' . $form_id . '">';
+		echo '<input type="hidden" name="everest_forms[id]" value="' . $form_id . '">';
 
-			echo '<input type="hidden" name="everest_forms[author]" value="' . absint( get_the_author_meta( 'ID' ) ) . '">';
+		echo '<input type="hidden" name="everest_forms[author]" value="' . absint( get_the_author_meta( 'ID' ) ) . '">';
 
 		if ( is_singular() ) {
 			echo '<input type="hidden" name="everest_forms[post_id]" value="' . get_the_ID() . '">';

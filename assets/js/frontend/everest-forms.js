@@ -146,7 +146,7 @@ jQuery( function ( $ ) {
 							$submit     = $form.find( '.evf-submit' ),
 							processText = $submit.data( 'process-text' );
 
-						// Normal form.
+						// Process form.
 						if ( processText ) {
 							$submit.text( processText ).prop( 'disabled', true );
 						}
