@@ -145,7 +145,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Feature - Introduced Credit card field for stripe. #154
 * Feature - Anti-spam honeypot form field for spam protection. #162
 * Feature - Introduced reCaptcha version 2 invisible and reCaptcha version 3. #157
-* Enhancement - Added submit button class name support. #140
+* Enhancement - Added submit button processing text and class name support. #140
 * Enhancement - Added smart tag admin email and user email on email field. #135
 * Enhancement - Added time support and advanced formatting options for a date field. #122
 * Enhancement - Added Cc and Bcc email addresses support for form notification settings. #129
@@ -160,8 +160,10 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Fix - Field attribute structure on form email notification. #166
 * Tweak - Rearrange scss files. #137
 * Tweak - Button design consistence. #146
+* Tweak - Form Hide after the submission. #153
 * Tweak - Edit form link in form preview. #145
 * Tweak - Tooltip information enhancements #163
+* Tweak - Scroll to the confirmation message. #153
 * Tweak - Input styles inherited from theme's style. #138
 * Tweak - Email HTML template and plain text image selection. #160
 * Performance - Improve the speed of templates loader by caching. #156
