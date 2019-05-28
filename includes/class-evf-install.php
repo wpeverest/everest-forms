@@ -56,6 +56,7 @@ class EVF_Install {
 		),
 		'1.4.9' => array(
 			'evf_update_149_db_rename_options',
+			'evf_update_149_no_payment_options',
 			'evf_update_149_db_version',
 		),
 	);
