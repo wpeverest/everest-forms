@@ -1,7 +1,7 @@
 {
   "name": "everest-forms",
   "title": "Everest Forms",
-  "version": "1.4.8",
+  "version": "1.4.9",
   "homepage": "https://wpeverest.com/wordpress-plugins/everest-forms/",
   "repository": {
     "type": "git",
@@ -16,9 +16,9 @@
     "git:update-hooks": "rm -r .git/hooks && node ./node_modules/husky/husky.js install"
   },
   "devDependencies": {
-    "@babel/core": "7.4.4",
-    "@wordpress/babel-preset-default": "4.1.0",
-    "@wordpress/browserslist-config": "2.3.0",
+    "@babel/core": "7.4.5",
+    "@wordpress/babel-preset-default": "4.2.0",
+    "@wordpress/browserslist-config": "2.4.0",
     "autoprefixer": "9.5.1",
     "babel-loader": "8.0.6",
     "babel-plugin-transform-react-jsx": "6.24.1",
@@ -44,7 +44,7 @@
     "node-sass": "4.12.0",
     "stylelint": "10.0.1",
     "stylelint-config-wordpress": "14.0.0",
-    "webpack": "4.31.0",
+    "webpack": "4.32.2",
     "webpack-cli": "3.3.2"
   },
   "engines": {

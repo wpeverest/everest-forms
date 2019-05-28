@@ -180,28 +180,53 @@
  * Notice info
  */
 .everest-forms-notice {
-	padding: 10px;
 	display: block;
+	padding: 5px 15px;
 	margin-bottom: 15px;
+	max-width: fit-content;
+
+	&::before {
+		content: '\f348';
+		font-size: 22px;
+		vertical-align: middle;
+		font-family: dashicons;
+		margin-right: 10px;
+	}
 
 	&.everest-forms-notice-info {
 		background: transparentize($color-alert-info, 0.9);
 		border: 1px solid $color-alert-info;
+
+		&::before {
+			color: $color-alert-info;
+		}
 	}
 
 	&.everest-forms-notice-success {
 		background: transparentize($color-alert-success, 0.9);
 		border: 1px solid $color-alert-success;
+
+		&::before {
+			color: $color-alert-success;
+		}
 	}
 
 	&.everest-forms-notice-warning {
 		background: transparentize($color-alert-warning, 0.9);
 		border: 1px solid $color-alert-warning;
+
+		&::before {
+			color: $color-alert-warning;
+		}
 	}
 
 	&.everest-forms-notice-danger {
 		background: transparentize($color-alert-danger, 0.9);
 		border: 1px solid $color-alert-danger;
+
+		&::before {
+			color: $color-alert-danger;
+		}
 	}
 }
 
