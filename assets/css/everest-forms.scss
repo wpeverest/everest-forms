@@ -317,6 +317,10 @@
 			textarea {
 				width: 100%;
 				height: 120px;
+
+				&::placeholder {
+					color: $input-color;
+				}
 			}
 
 			.evf-field-description {
