@@ -194,38 +194,38 @@
 	}
 
 	&.everest-forms-notice-info {
-		background: transparentize($color-alert-info, 0.5);
-		border: 1px solid $color-alert-info;
+		background: lighten($blue, 45%);
+		border: 1px solid $blue;
 
 		&::before {
-			color: $color-alert-info;
+			color: $blue;
 		}
 	}
 
 	&.everest-forms-notice-success {
-		background: transparentize($color-alert-success, 0.5);
-		border: 1px solid $color-alert-success;
+		background: lighten($green, 40%);
+		border: 1px solid $green;
 
 		&::before {
-			color: $color-alert-success;
+			color: $green;
 		}
 	}
 
 	&.everest-forms-notice-warning {
-		background: transparentize($color-alert-warning, 0.5);
-		border: 1px solid $color-alert-warning;
+		background: lighten($orange, 45%);
+		border: 1px solid $orange;
 
 		&::before {
-			color: $color-alert-warning;
+			color: $orange;
 		}
 	}
 
 	&.everest-forms-notice-danger {
-		background: transparentize($color-alert-danger, 0.5);
-		border: 1px solid $color-alert-danger;
+		background: lighten(red, 45%);
+		border: 1px solid red;
 
 		&::before {
-			color: $color-alert-danger;
+			color: red;
 		}
 	}
 }
@@ -1511,7 +1511,7 @@ body.everest-forms-builder-setup,
 							&:hover {
 								span {
 									&.dashicons {
-										background-color: $color-alert-success;
+										background-color: $green;
 									}
 								}
 							}
@@ -1528,7 +1528,7 @@ body.everest-forms-builder-setup,
 							&:hover {
 								span {
 									&.dashicons {
-										background-color: $color-alert-danger;
+										background-color: $red;
 									}
 								}
 							}
@@ -1843,7 +1843,7 @@ body.everest-forms-builder-setup,
 							}
 
 							&.everest-forms-field-delete:hover {
-								background-color: $color-alert-danger;
+								background-color: $red;
 							}
 							&:hover {
 								background-color: $button-color;
@@ -2167,8 +2167,8 @@ body.everest-forms-builder-setup,
 						&.removePayment {
 
 							&:hover {
-								background: $color-alert-danger;
-								border: 1px solid $color-alert-danger;
+								background: red;
+								border: 1px solid red;
 							}
 						}
 
