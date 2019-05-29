@@ -352,7 +352,7 @@ final class EverestForms {
 
 		unload_textdomain( 'everest-forms' );
 		load_textdomain( 'everest-forms', WP_LANG_DIR . '/everest-forms/everest-forms-' . $locale . '.mo' );
-		load_plugin_textdomain( 'everest-forms', false, plugin_basename( dirname( EVF_PLUGIN_FILE ) ) . '/i18n/languages' );
+		load_plugin_textdomain( 'everest-forms', false, plugin_basename( dirname( EVF_PLUGIN_FILE ) ) . '/languages' );
 	}
 
 	/**
