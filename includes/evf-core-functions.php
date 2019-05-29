@@ -1983,4 +1983,3 @@ function evf_string_translation( $form_id, $field_id, $variable ) {
 
 	return $variable;
 }
-

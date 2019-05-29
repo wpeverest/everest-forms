@@ -140,7 +140,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 1.4.9 - XX-05-2019 =
+= 1.4.9 - 28-05-2019 =
 * Feature - Everest Forms is WPML Compatiable. #161
 * Feature - Introduced Credit card field for stripe. #154
 * Feature - Anti-spam honeypot form field for spam protection. #162
@@ -159,6 +159,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Fix - Tooltip not showing on new email notifications. #168
 * Fix - Field attribute structure on form email notification. #166
 * Tweak - Rearrange scss files. #137
+* Tweak - Maintained placeholder color.
 * Tweak - Button design consistence. #146
 * Tweak - Form Hide after the submission. #153
 * Tweak - Edit form link in form preview. #145
