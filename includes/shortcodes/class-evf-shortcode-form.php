@@ -33,7 +33,7 @@ class EVF_Shortcode_Form {
 	 * Hooks in tab.
 	 */
 	public static function hooks() {
-		add_action( 'everest_forms_frontend_output_success', array( 'EVF_Shortcode_Form', 'confirmation' ), 10, 2 );
+		add_action( 'everest_forms_frontend_output_success', 'evf_print_notices', 10, 2 );
 		add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'fields' ), 10, 3 );
 		add_action( 'everest_forms_display_field_before', array( 'EVF_Shortcode_Form', 'wrapper_start' ), 5, 2 );
 		add_action( 'everest_forms_display_field_before', array( 'EVF_Shortcode_Form', 'label' ), 15, 2 );
@@ -55,7 +55,7 @@ class EVF_Shortcode_Form {
 	 */
 	public static function footer( $form_data, $title, $description ) {
 		$form_id    = absint( $form_data['id'] );
-		$settings   = isset( $form_data['settings'] ) ? $form_data['settings'] : '';
+		$settings   = isset( $form_data['settings'] ) ? $form_data['settings'] : array();
 		$submit     = apply_filters( 'everest_forms_field_submit', isset( $settings['submit_button_text'] ) ? $settings['submit_button_text'] : __( 'Submit', 'everest-forms' ), $form_data );
 		$submit_btn = evf_string_translation( $form_data['id'], 'submit_button', $submit );
 		$process    = '';
@@ -64,6 +64,11 @@ class EVF_Shortcode_Form {
 
 		// Visibility class.
 		$visibility_class = apply_filters( 'everest_forms_field_submit_visibility_class', array(), self::$parts, $form_data );
+
+		// Check for submit button processing-text.
+		if ( ! empty( $settings['submit_button_processing_text'] ) ) {
+			$process = 'data-process-text="' . esc_attr( $settings['submit_button_processing_text'] ) . '"';
+		}
 
 		// Submit button area.
 		$conditional_id = 'evf-submit-' . $form_id;
@@ -75,30 +80,32 @@ class EVF_Shortcode_Form {
 		} else {
 			$con_rules = '';
 		}
-		$conditional_rules = json_encode( $con_rules );
+
+		$conditional_rules = wp_json_encode( $con_rules );
+
 		echo '<div class="evf-submit-container ' . esc_attr( implode( ' ', $visibility_class ) ) . '" ' . $visible . '>';
 
-			echo '<input type="hidden" name="everest_forms[id]" value="' . $form_id . '">';
+		echo '<input type="hidden" name="everest_forms[id]" value="' . $form_id . '">';
 
-			echo '<input type="hidden" name="everest_forms[author]" value="' . absint( get_the_author_meta( 'ID' ) ) . '">';
+		echo '<input type="hidden" name="everest_forms[author]" value="' . absint( get_the_author_meta( 'ID' ) ) . '">';
 
 		if ( is_singular() ) {
 			echo '<input type="hidden" name="everest_forms[post_id]" value="' . get_the_ID() . '">';
 		}
 
-			do_action( 'everest_forms_display_submit_before', $form_data );
+		do_action( 'everest_forms_display_submit_before', $form_data );
 
-			printf(
-				"<button type='submit' name='everest_forms[submit]' class='everest-forms-submit-button button evf-submit %s' id='evf-submit-%d' value='evf-submit' %s conditional_rules='%s' conditional_id='%s'>%s</button>",
-				$classes,
-				$form_id,
-				$process,
-				$conditional_rules,
-				$conditional_id,
-				$submit_btn
-			);
+		printf(
+			"<button type='submit' name='everest_forms[submit]' class='everest-forms-submit-button button evf-submit %s' id='evf-submit-%d' value='evf-submit' %s conditional_rules='%s' conditional_id='%s'>%s</button>",
+			$classes,
+			$form_id,
+			$process,
+			$conditional_rules,
+			$conditional_id,
+			$submit_btn
+		);
 
-			do_action( 'everest_forms_display_submit_after', $form_data );
+		do_action( 'everest_forms_display_submit_after', $form_data );
 
 		echo '</div>';
 	}
@@ -169,30 +176,6 @@ class EVF_Shortcode_Form {
 			evf_string_translation( $form_data['id'], $field['id'], esc_html( $label['value'] ) ),
 			$required,
 			$custom_tags
-		);
-	}
-
-	/**
-	 * @param $form_data
-	 */
-	public static function confirmation( $form_data ) {
-
-		$settings        = $form_data['settings'];
-		$success_message = isset( $settings['successful_form_submission_message'] ) ? $settings['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
-
-		// Only display if a confirmation message has been configured.
-		if ( ! empty( $settings['confirmation_type'] ) ) {
-			$success_message = $settings['confirmation_type'];
-		}
-
-		$form_id = absint( $form_data['id'] );
-		$message = apply_filters( 'everest_forms_frontend_confirmation_message', $success_message, $form_data );
-		$class   = 'everest-forms-confirmation-container';
-		printf(
-			'<div class="%s" id="evf-confirmation-%d">%s</div>',
-			$class,
-			$form_id,
-			wpautop( $message )
 		);
 	}
 
@@ -515,7 +498,7 @@ class EVF_Shortcode_Form {
 						'attr'     => array(
 							'name'        => "everest_forms[form_fields][{$field_id}]",
 							'value'       => ( isset( $field['default_value'] ) && ! empty( $field['default_value'] ) ) ? apply_filters( 'everest_forms_process_smart_tags', $field['default_value'], $form_data ) : ( isset( $_POST['everest_forms']['form_fields'][ $field_id ] ) ? $_POST['everest_forms']['form_fields'][ $field_id ] : '' ),
-							'placeholder' => isset( $field['placeholder'] ) ? $field['placeholder'] : '',
+							'placeholder' => isset( $field['placeholder'] ) ? evf_string_translation( $form_data['id'], $field['id'], $field['placeholder'] ) : '',
 						),
 						'class'    => $attributes['input_class'],
 						'data'     => $attributes['input_data'],
@@ -625,7 +608,7 @@ class EVF_Shortcode_Form {
 			return;
 		}
 
-		$success = isset( $_POST['evf_success'] ) && $_POST['evf_success'] ? true : false;
+		$success = apply_filters( 'everest_forms_success', false, $form_id );
 		if ( $success && ! empty( $form_data ) ) {
 			do_action( 'everest_forms_frontend_output_success', $form_data );
 			return;

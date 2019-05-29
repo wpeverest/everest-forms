@@ -13,6 +13,7 @@ jQuery( function ( $ ) {
 			this.init_inputMask();
 			this.init_datepicker();
 			this.load_validation();
+			this.submission_scroll();
 
 			// Inline validation
 			this.$everest_form.on( 'input validate change', '.input-text, select, input:checkbox, input:radio', this.validate_field );
@@ -141,6 +142,15 @@ jQuery( function ( $ ) {
 						$parent.removeClass( 'evf-has-error' );
 					},
 					submitHandler: function( form ) {
+						var $form       = $( form ),
+							$submit     = $form.find( '.evf-submit' ),
+							processText = $submit.data( 'process-text' );
+
+						// Process form.
+						if ( processText ) {
+							$submit.text( processText ).prop( 'disabled', true );
+						}
+
 						form.submit();
 					}
 				});
@@ -191,6 +201,13 @@ jQuery( function ( $ ) {
 				if ( validated ) {
 					$parent.removeClass( 'everest-forms-invalid everest-forms-invalid-required-field everest-forms-invalid-email' ).addClass( 'everest-forms-validated' );
 				}
+			}
+		},
+		submission_scroll: function(){
+			if ( $( 'div.everest-forms-submission-scroll' ).length ) {
+				$( 'html,body' ).animate( {
+					scrollTop: ( $( 'div.everest-forms-submission-scroll' ).offset().top ) - 100
+				}, 1000 );
 			}
 		}
 	};
