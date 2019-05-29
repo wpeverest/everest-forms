@@ -187,7 +187,7 @@
 
 					&.everest-forms-invalid {
 						label {
-							color: $color-alert-danger;
+							color: $red;
 							white-space: nowrap;
 						}
 
@@ -195,7 +195,7 @@
 						input.input-text,
 						select,
 						textarea {
-							border-color: $color-alert-danger;
+							border-color: $red;
 						}
 					}
 
@@ -204,7 +204,7 @@
 						input.input-text,
 						select,
 						textarea {
-							border-color: $color-alert-success;
+							border-color: $green;
 						}
 					}
 
@@ -256,9 +256,9 @@
 					padding: 7px 10px;
 					border-radius: 3px;
 					display: inline-block;
-					border: 1px solid $color-alert-danger;
-					color: darken($color-alert-danger, 10%);
-					background-color: lighten($color-alert-danger, 35%);
+					border: 1px solid $red;
+					color: darken($red, 10%);
+					background-color: lighten($red, 35%);
 				}
 
 				&.everest-forms-field-sublabel {
@@ -436,7 +436,7 @@
 	}
 
 	.everest-forms-notice--success {
-		background-color: $color-alert-success;
+		background-color: $green;
 
 		&::before {
 			content: '\f147';
@@ -444,7 +444,7 @@
 	}
 
 	.everest-forms-notice--error {
-		background-color: $color-alert-danger;
+		background-color: $red;
 
 		&::before {
 			content: '\f534';
@@ -521,9 +521,9 @@ div.evf-gutenberg-form-selector .evf-frontend-row button[type='submit']:disabled
 		padding: 7px 10px;
 		border-radius: 3px;
 		display: inline-block;
-		color: darken($color-alert-danger, 10%);
-		border: 1px solid $color-alert-danger;
-		background-color: lighten($color-alert-danger, 35%);
+		color: darken($red, 10%);
+		border: 1px solid $red;
+		background-color: lighten($red, 35%);
 	}
 
 	&.recaptcha-hidden {
