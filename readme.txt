@@ -2,9 +2,9 @@
 Contributors: WPEverest
 Tags: contact form, form, form builder, contact, custom form
 Requires at least: 4.0
-Tested up to: 5.1
+Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 1.4.8
+Stable tag: 1.4.9
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -139,6 +139,37 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 12. Advance Form
 
 == Changelog ==
+
+= 1.4.9 - 28-05-2019 =
+* Feature - Everest Forms is WPML Compatiable. #161
+* Feature - Introduced Credit card field for stripe. #154
+* Feature - Anti-spam honeypot form field for spam protection. #162
+* Feature - Introduced reCaptcha version 2 invisible and reCaptcha version 3. #157
+* Enhancement - Added submit button processing text and class name support. #140
+* Enhancement - Added smart tag admin email and user email on email field. #135
+* Enhancement - Added time support and advanced formatting options for a date field. #122
+* Enhancement - Added Cc and Bcc email addresses support for form notification settings. #129
+* Enhancement - Added maximum and minum value support in number field. #77
+* Fix - Dragging field item being hidden. #147
+* Fix - Multiple CSS classes option in the fields. #128
+* Fix - Form Block additional CSS returning error. #136
+* Fix - Display a "Copied!" tip when success copying. #148
+* Fix - Tab content hiding on payment gateway tab click. #124
+* Fix - Fill email notifications settings in blank form. #135
+* Fix - Tooltip not showing on new email notifications. #168
+* Fix - Field attribute structure on form email notification. #166
+* Tweak - Rearrange scss files. #137
+* Tweak - Maintained placeholder color.
+* Tweak - Button design consistence. #146
+* Tweak - Form Hide after the submission. #153
+* Tweak - Edit form link in form preview. #145
+* Tweak - Tooltip information enhancements #163
+* Tweak - Scroll to the confirmation message. #153
+* Tweak - Input styles inherited from theme's style. #138
+* Tweak - Email HTML template and plain text image selection. #160
+* Performance - Improve the speed of templates loader by caching. #156
+* Dev - Define `$wpdb` tables as early as possible, before init. #139
+* Deprecated - Payment charge field by introducing conditional logic.
 
 = 1.4.8 - 23-04-2019 =
 * Fix - Prevent content filters from corrupting form JSON data.

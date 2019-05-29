@@ -152,10 +152,10 @@ abstract class EVF_Form_Fields {
 	}
 
 	/**
-	 * Creates the field preview. Used by subclasses.
+	 * Field preview inside the builder.
 	 *
 	 * @since 1.0.0
-	 * @param array $field
+	 * @param array $field Field settings.
 	 */
 	public function field_preview( $field ) {}
 
@@ -213,7 +213,7 @@ abstract class EVF_Form_Fields {
 			// Text input.
 			case 'text':
 				$type        = ! empty( $args['type'] ) ? esc_attr( $args['type'] ) : 'text';
-				$min         = ! empty( $args['min'] ) ? esc_attr( $args['min'] ) : 0;
+				$min         = ! empty( $args['min'] ) ? esc_attr( $args['min'] ) : '';
 				$max         = ! empty( $args['max'] ) ? esc_attr( $args['max'] ) : '';
 				$required    = ( ! empty( $args['required'] ) && $args['required'] ) ? esc_attr( 'required' ) : '';
 				$placeholder = ! empty( $args['placeholder'] ) ? esc_attr( $args['placeholder'] ) : '';
@@ -311,7 +311,7 @@ abstract class EVF_Form_Fields {
 			// Field Label. ---------------------------------------------------//
 			case 'label':
 				$value   = ! empty( $field['label'] ) ? esc_attr( $field['label'] ) : '';
-				$tooltip = __( 'Enter text for the form field label.', 'everest-forms' );
+				$tooltip = __( 'Enter text for the form field label. This is recommended and can be hidden in the Advanced Settings.', 'everest-forms' );
 				$output  = $this->field_element(
 					'label',
 					$field,
@@ -415,7 +415,7 @@ abstract class EVF_Form_Fields {
 			case 'required':
 				$default = ! empty( $args['default'] ) ? $args['default'] : '0';
 				$value   = isset( $field['required'] ) ? $field['required'] : $default;
-				$tooltip = __( 'Check this option to mark the field required.', 'everest-forms' );
+				$tooltip = __( 'Check this option to mark the field required. A form will not submit unless all required fields are provided.', 'everest-forms' );
 				$output  = $this->field_element(
 					'checkbox',
 					$field,
@@ -553,6 +553,7 @@ abstract class EVF_Form_Fields {
 					$output .= '<div class="evf-smart-tag-lists" style="display: none">';
 					$output .= '<div class="smart-tag-title other-tag-title">Others</div><ul class="evf-others"></ul></div>';
 				}
+
 				$output = $this->field_element(
 					'row',
 					$field,
@@ -860,13 +861,13 @@ abstract class EVF_Form_Fields {
 	}
 
 	/**
-	 * Display the field input elements on the frontend.
+	 * Field display on the form front-end.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $field
-	 * @param array $field_atts
-	 * @param array $form_data
+	 * @param array $field Field Data.
+	 * @param array $field_atts Field attributes.
+	 * @param array $form_data All Form Data.
 	 */
 	public function field_display( $field, $field_atts, $form_data ) {}
 

@@ -21,7 +21,7 @@ final class EverestForms {
 	 *
 	 * @var string
 	 */
-	public $version = '1.4.8';
+	public $version = '1.4.9';
 
 	/**
 	 * The single instance of the class.
@@ -127,6 +127,7 @@ final class EverestForms {
 	 */
 	public function __construct() {
 		$this->define_constants();
+		$this->define_tables();
 		$this->includes();
 		$this->init_hooks();
 		add_action( 'plugins_loaded', array( $this, 'objects' ), 1 );
@@ -146,7 +147,6 @@ final class EverestForms {
 		add_action( 'init', array( $this, 'init' ), 0 );
 		add_action( 'init', array( $this, 'form_fields' ), 0 );
 		add_action( 'init', array( 'EVF_Shortcodes', 'init' ), 0 );
-		add_action( 'init', array( $this, 'wpdb_table_fix' ), 0 );
 		add_action( 'switch_blog', array( $this, 'wpdb_table_fix' ), 0 );
 	}
 
@@ -180,6 +180,22 @@ final class EverestForms {
 		$this->define( 'EVF_LOG_DIR', $upload_dir['basedir'] . '/evf-logs/' );
 		$this->define( 'EVF_SESSION_CACHE_GROUP', 'evf_session_id' );
 		$this->define( 'EVF_TEMPLATE_DEBUG_MODE', false );
+	}
+
+	/**
+	 * Register custom tables within $wpdb object.
+	 */
+	private function define_tables() {
+		global $wpdb;
+
+		// List of tables without prefixes.
+		$tables = array(
+			'form_entrymeta' => 'evf_entrymeta',
+		);
+		foreach ( $tables as $name => $table ) {
+			$wpdb->$name    = $wpdb->prefix . $table;
+			$wpdb->tables[] = $table;
+		}
 	}
 
 	/**
@@ -336,7 +352,7 @@ final class EverestForms {
 
 		unload_textdomain( 'everest-forms' );
 		load_textdomain( 'everest-forms', WP_LANG_DIR . '/everest-forms/everest-forms-' . $locale . '.mo' );
-		load_plugin_textdomain( 'everest-forms', false, plugin_basename( dirname( EVF_PLUGIN_FILE ) ) . '/i18n/languages' );
+		load_plugin_textdomain( 'everest-forms', false, plugin_basename( dirname( EVF_PLUGIN_FILE ) ) . '/languages' );
 	}
 
 	/**
@@ -379,9 +395,7 @@ final class EverestForms {
 	 * Everest Forms Entry Meta - set table names.
 	 */
 	public function wpdb_table_fix() {
-		global $wpdb;
-		$wpdb->form_entrymeta = $wpdb->prefix . 'evf_entrymeta';
-		$wpdb->tables[]       = 'evf_entrymeta';
+		$this->define_tables();
 	}
 
 	/**

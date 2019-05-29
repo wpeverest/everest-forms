@@ -1,0 +1,11 @@
+<wpml-config>
+	<admin-texts>
+		<key name="everest_forms_required_validation" />
+		<key name="everest_forms_url_validation" />
+		<key name="everest_forms_email_validation" />
+		<key name="everest_forms_number_validation" />
+		<key name="everest_forms_confirm_validation" />
+		<key name="everest_forms_fileextension_validation" />
+		<key name="everest_forms_filesize_validation" />
+	</admin-texts>
+</wpml-config>

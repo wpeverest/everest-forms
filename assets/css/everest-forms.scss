@@ -73,6 +73,7 @@
 	input[type='week'],
 	select,
 	textarea,
+	.StripeElement,
 	canvas.evf-signature-canvas {
 		width: 100%;
 		height: auto;
@@ -86,7 +87,8 @@
 
 	input {
 		&:focus {
-			outline: 1px solid $color-brand-primary;
+			outline: none;
+			border: 1px solid $color-brand-primary;
 		}
 	}
 
@@ -315,6 +317,10 @@
 			textarea {
 				width: 100%;
 				height: 120px;
+
+				&::placeholder {
+					color: $input-color;
+				}
 			}
 
 			.evf-field-description {
@@ -345,6 +351,16 @@
 			outline: none;
 			color: #23282d;
 			background-color: #eee;
+		}
+
+		&:disabled {
+			opacity: 0.5;
+			cursor: not-allowed;
+
+			&:hover {
+				color: #555;
+				background-color: #f7f7f7;
+			}
 		}
 	}
 
@@ -486,8 +502,14 @@ div.evf-gutenberg-form-selector .evf-frontend-row button[type='submit']:disabled
 	cursor: not-allowed;
 }
 
-/* reCAPTCHA Area
+/* Anti-spam Honeypot and reCAPTCHA Area
 ----------------------------------------------------------------------------- */
+
+.evf-honeypot-container {
+	display: none !important;
+	position: absolute !important;
+	left: -9000px !important;
+}
 
 .evf-recaptcha-container {
 	clear: both;
@@ -505,8 +527,11 @@ div.evf-gutenberg-form-selector .evf-frontend-row button[type='submit']:disabled
 		border: 1px solid $color-alert-danger;
 		background-color: lighten($color-alert-danger, 35%);
 	}
-}
 
+	&.recaptcha-hidden {
+		margin: 0;
+	}
+}
 
 @media screen and (max-width: 768px) {
 	.everest-forms {

@@ -214,3 +214,53 @@ function evf_update_144_delete_options() {
 function evf_update_144_db_version() {
 	EVF_Install::update_db_version( '1.4.4' );
 }
+
+/**
+ * Update settings option to use new renamed option for 1.4.9.
+ */
+function evf_update_149_db_rename_options() {
+	$rename_options = array(
+		'everest_forms_recaptcha_site_key'    => 'everest_forms_recaptcha_v2_site_key',
+		'everest_forms_recaptcha_site_secret' => 'everest_forms_recaptcha_v2_secret_key',
+	);
+
+	foreach ( $rename_options as $old_option => $new_option ) {
+		$raw_old_option = get_option( $old_option );
+
+		if ( ! empty( $raw_old_option ) ) {
+			update_option( $new_option, $raw_old_option );
+			delete_option( $old_option );
+		}
+	}
+}
+
+/**
+ * Remove payment option field from all forms.
+ */
+function evf_update_149_no_payment_options() {
+	$forms = evf_get_all_forms();
+
+	// Loop through each forms.
+	foreach ( $forms as $form_id => $form ) {
+		$form_obj  = EVF()->form->get( $form_id );
+		$form_data = ! empty( $form_obj->post_content ) ? evf_decode( $form_obj->post_content ) : '';
+
+		if ( ! empty( $form_data['form_fields'] ) ) {
+			foreach ( $form_data['form_fields'] as $field_id => &$field ) {
+				if ( isset( $field['type'] ) && 'payment-charge-options' === $field['type'] ) {
+					unset( $form_data['form_fields'][ $field_id ] );
+				}
+			}
+		}
+
+		// Update form data.
+		EVF()->form->update( $form_id, $form_data );
+	}
+}
+
+/**
+ * Update DB Version.
+ */
+function evf_update_149_db_version() {
+	EVF_Install::update_db_version( '1.4.9' );
+}

@@ -1,14 +1,15 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
-}
-
 /**
  * Process form data
  *
- * @package    EverestForms
- * @author     WPEverest
- * @since      1.0.0
+ * @package EverestForms
+ * @since   1.0.0
+ */
+
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * EVF_Form_Task class.
  */
 class EVF_Form_Task {
 
@@ -77,6 +78,7 @@ class EVF_Form_Task {
 			$this->form_fields = array();
 			$form_id           = absint( $entry['id'] );
 			$form              = EVF()->form->get( $form_id );
+			$honeypot          = false;
 
 			// Validate form is real and active (published).
 			if ( ! $form || 'publish' !== $form->post_status ) {
@@ -84,7 +86,7 @@ class EVF_Form_Task {
 				return;
 			}
 
-			// Formatted form data for hooks
+			// Formatted form data for hooks.
 			$form_data = apply_filters( 'everest_forms_process_before_form_data', evf_decode( $form->post_content ), $entry );
 
 			// Pre-process/validate hooks and filter. Data is not validated or cleaned yet so use with caution.
@@ -103,22 +105,32 @@ class EVF_Form_Task {
 			}
 
 			// reCAPTCHA check.
-			$site_key   = get_option( 'everest_forms_recaptcha_site_key' );
-			$secret_key = get_option( 'everest_forms_recaptcha_site_secret' );
-			if (
-				! empty( $site_key ) &&
-				! empty( $secret_key ) &&
-				isset( $form_data['settings']['recaptcha_support'] ) &&
-				'1' === $form_data['settings']['recaptcha_support']
-			) {
-				if ( ! empty( $_POST['g-recaptcha-response'] ) ) {
-					$data = wp_remote_get( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $_POST['g-recaptcha-response'] );
-					$data = json_decode( wp_remote_retrieve_body( $data ) );
-					if ( empty( $data->success ) ) {
-						evf_add_notice( __( 'Incorrect reCAPTCHA, please try again.', 'everest-forms' ), 'error' );
-						return;
+			$recaptcha_type = get_option( 'everest_forms_recaptcha_type', 'v2' );
+
+			if ( 'v2' === $recaptcha_type ) {
+				$site_key   = get_option( 'everest_forms_recaptcha_v2_site_key' );
+				$secret_key = get_option( 'everest_forms_recaptcha_v2_secret_key' );
+			} else {
+				$site_key   = get_option( 'everest_forms_recaptcha_v3_site_key' );
+				$secret_key = get_option( 'everest_forms_recaptcha_v3_secret_key' );
+			}
+
+			if ( ! empty( $site_key ) && ! empty( $secret_key ) && isset( $form_data['settings']['recaptcha_support'] ) && '1' === $form_data['settings']['recaptcha_support'] ) {
+				if ( ( 'v2' === $recaptcha_type && ! empty( $_POST['g-recaptcha-response'] ) ) || ( 'v3' === $recaptcha_type && ! empty( $_POST['g-recaptcha-hidden'] ) ) ) {
+					$response = 'v2' === $recaptcha_type ? evf_clean( wp_unslash( $_POST['g-recaptcha-response'] ) ) : evf_clean( wp_unslash( $_POST['g-recaptcha-hidden'] ) ); // PHPCS: input var ok.
+					$raw_data = wp_safe_remote_get( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $response );
+
+					if ( ! is_wp_error( $raw_data ) ) {
+						$data = json_decode( wp_remote_retrieve_body( $raw_data ) );
+
+						// Check reCAPTCHA response.
+						if ( empty( $data->success ) || ( isset( $data->hostname ) && evf_clean( wp_unslash( $_SERVER['HTTP_HOST'] ) ) !== $data->hostname ) || ( isset( $data->action, $data->score ) && ( 'everest_form' !== $data->action && 0.5 > floatval( $data->score ) ) ) ) {
+							evf_add_notice( __( 'Incorrect reCAPTCHA, please try again.', 'everest-forms' ), 'error' );
+							return;
+						}
 					}
 				} else {
+					// @todo This error message is not delivered in frontend. Need to fix :)
 					$this->errors[ $form_id ]['recaptcha'] = esc_html__( 'reCAPTCHA is required.', 'everest-forms' );
 				}
 			}
@@ -130,67 +142,87 @@ class EVF_Form_Task {
 				if ( empty( $this->errors[ $form_id ]['header'] ) ) {
 					$this->errors[ $form_id ]['header'] = __( 'Form has not been submitted, please see the errors below.', 'everest-forms' );
 				}
+				$this->errors = $errors;
+				return;
 			}
 
-			$is_spam = false;
+			// Early honeypot validation - before actual processing.
+			if ( isset( $form_data['settings']['honeypot'] ) && '1' === $form_data['settings']['honeypot'] && ! empty( $entry['hp'] ) ) {
+				$honeypot = esc_html__( 'Everest Forms honeypot field triggered.', 'everest-forms' );
+			}
 
-			// Only trigger the processing (saving/sending entries, etc) if the entry.
-			// is not spam.
-			if ( ! $is_spam ) {
+			$honeypot = apply_filters( 'everest_forms_process_honeypot', $honeypot, $this->form_fields, $entry, $form_data );
 
-				// Pass the form created date into the form data.
-				$form_data['created'] = $form->post_date;
+			// If spam - return early.
+			if ( $honeypot ) {
+				$logger = evf_get_logger();
+				$logger->notice( sprintf( 'Spam entry for Form ID %d Response: %s', absint( $form_data['id'] ), evf_print_r( $entry, true ) ), array( 'source' => 'honeypot' ) );
+				return;
+			}
 
-				// Format fields.
-				foreach ( (array) $form_data['form_fields'] as $field ) {
-					$field_id     = $field['id'];
-					$field_key    = isset( $field['meta-key'] ) ? $field['meta-key'] : '';
-					$field_type   = $field['type'];
-					$field_submit = isset( $entry['form_fields'][ $field_id ] ) ? $entry['form_fields'][ $field_id ] : '';
+			// Pass the form created date into the form data.
+			$form_data['created'] = $form->post_date;
 
-					do_action( "everest_forms_process_format_{$field_type}", $field_id, $field_submit, $form_data, $field_key );
+			// Format fields.
+			foreach ( (array) $form_data['form_fields'] as $field ) {
+				$field_id     = $field['id'];
+				$field_key    = isset( $field['meta-key'] ) ? $field['meta-key'] : '';
+				$field_type   = $field['type'];
+				$field_submit = isset( $entry['form_fields'][ $field_id ] ) ? $entry['form_fields'][ $field_id ] : '';
+
+				do_action( "everest_forms_process_format_{$field_type}", $field_id, $field_submit, $form_data, $field_key );
+			}
+
+			// This hook is for internal purposes and should not be leveraged.
+			do_action( 'everest_forms_process_format_after', $form_data );
+
+			// Process hooks/filter - this is where most addons should hook
+			// because at this point we have completed all field validation and
+			// formatted the data.
+			$this->form_fields = apply_filters( 'everest_forms_process_filter', $this->form_fields, $entry, $form_data );
+
+			do_action( 'everest_forms_process', $this->form_fields, $entry, $form_data );
+			do_action( "everest_forms_process_{$form_id}", $this->form_fields, $entry, $form_data );
+
+			$this->form_fields = apply_filters( 'everest_forms_process_after_filter', $this->form_fields, $entry, $form_data );
+
+			// One last error check - don't proceed if there are any errors.
+			if ( ! empty( $this->errors[ $form_id ] ) ) {
+				if ( empty( $this->errors[ $form_id ]['header'] ) ) {
+					$this->errors[ $form_id ]['header'] = __( 'Form has not been submitted, please see the errors below.', 'everest-forms' );
 				}
 
-				// This hook is for internal purposes and should not be leveraged.
-				do_action( 'everest_forms_process_format_after', $form_data );
+				return;
+			}
 
-				// Process hooks/filter - this is where most addons should hook
-				// because at this point we have completed all field validation and
-				// formatted the data.
-				$this->form_fields = apply_filters( 'everest_forms_process_filter', $this->form_fields, $entry, $form_data );
+			// Success - add entry to database.
+			$entry_id = $this->entry_save( $this->form_fields, $entry, $form_data['id'], $form_data );
 
-				do_action( 'everest_forms_process', $this->form_fields, $entry, $form_data );
-				do_action( "everest_forms_process_{$form_id}", $this->form_fields, $entry, $form_data );
+			// Success - send email notification.
+			$this->entry_email( $this->form_fields, $entry, $form_data, $entry_id, 'entry' );
 
-				$this->form_fields = apply_filters( 'everest_forms_process_after_filter', $this->form_fields, $entry, $form_data );
-
-				// One last error check - don't proceed if there are any errors.
-				if ( ! empty( $this->errors[ $form_id ] ) ) {
-					if ( empty( $this->errors[ $form_id ]['header'] ) ) {
-						$this->errors[ $form_id ]['header'] = __( 'Form has not been submitted, please see the errors below.', 'everest-forms' );
+			add_filter(
+				'everest_forms_success',
+				function( $status, $form_id ) use ( $form_data ) {
+					if ( isset( $form_data['id'] ) && absint( $form_data['id'] ) === absint( $form_id ) ) {
+						return true;
+					} else {
+						return false;
 					}
+				},
+				10,
+				2
+			);
 
-					return;
-				}
+			// Pass completed and formatted fields in POST.
+			$_POST['everest-forms']['complete'] = $this->form_fields;
 
-				// Success - add entry to database.
-				$entry_id = $this->entry_save( $this->form_fields, $entry, $form_data['id'], $form_data );
+			// Pass entry ID in POST.
+			$_POST['everest-forms']['entry_id'] = $entry_id;
 
-				// Success - send email notification.
-				$this->entry_email( $this->form_fields, $entry, $form_data, $entry_id, 'entry' );
-
-				$_POST['evf_success'] = true;
-
-				// Pass completed and formatted fields in POST.
-				$_POST['everest-forms']['complete'] = $this->form_fields;
-
-				// Pass entry ID in POST.
-				$_POST['everest-forms']['entry_id'] = $entry_id;
-
-				// Post-process hooks.
-				do_action( 'everest_forms_process_complete', $this->form_fields, $entry, $form_data, $entry_id );
-				do_action( "everest_forms_process_complete_{$form_id}", $this->form_fields, $entry, $form_data, $entry_id );
-			}
+			// Post-process hooks.
+			do_action( 'everest_forms_process_complete', $this->form_fields, $entry, $form_data, $entry_id );
+			do_action( "everest_forms_process_complete_{$form_id}", $this->form_fields, $entry, $form_data, $entry_id );
 		} catch ( Exception $e ) {
 			evf_add_notice( $e->getMessage(), 'error' );
 		}
@@ -265,7 +297,7 @@ class EVF_Form_Task {
 					var redirect = '<?php echo get_permalink( $settings['custom_page'] ); ?>';
 				window.setTimeout( function () {
 					window.location.href = redirect;
-				}, 3000 )
+				})
 				</script>
 			<?php
 		} elseif ( isset( $settings['redirect_to'] ) && '2' == $settings['redirect_to'] ) {
@@ -273,7 +305,7 @@ class EVF_Form_Task {
 			<script>
 				window.setTimeout( function () {
 					window.location.href = '<?php echo $settings['external_url']; ?>';
-				}, 3000 )
+				})
 				</script>
 			<?php
 		}
@@ -295,6 +327,11 @@ class EVF_Form_Task {
 		} else {
 			return;
 		}
+
+		if ( isset( $settings['submission_message_scroll'] ) && $settings['submission_message_scroll'] ) {
+			add_filter( 'everest_forms_success_notice_class', array( $this, 'add_scroll_notice_class' ) );
+		}
+
 		if ( ! empty( $url ) ) {
 			$url = apply_filters( 'everest_forms_process_redirect_url', $url, $form_id, $this->form_fields );
 			wp_redirect( esc_url_raw( $url ) );
@@ -302,6 +339,18 @@ class EVF_Form_Task {
 			do_action( "everest_forms_process_redirect_{$form_id}", $form_id );
 			exit;
 		}
+	}
+
+	/**
+	 * Add scroll notice class.
+	 *
+	 * @param  array $classes Notice Classes.
+	 * @return array of notice classes.
+	 */
+	public function add_scroll_notice_class( $classes ) {
+		$classes[] = 'everest-forms-submission-scroll';
+
+		return $classes;
 	}
 
 	/**
@@ -353,8 +402,7 @@ class EVF_Form_Task {
 			$email['sender_address'] = ! empty( $notification['evf_from_email'] ) ? $notification['evf_from_email'] : get_option( 'admin_email' );
 			$email['reply_to']       = ! empty( $notification['evf_reply_to'] ) ? $notification['evf_reply_to'] : $email['sender_address'];
 			$email['message']        = ! empty( $notification['evf_email_message'] ) ? $notification['evf_email_message'] : '{all_fields}';
-
-			$email = apply_filters( 'everest_forms_entry_email_atts', $email, $fields, $entry, $form_data );
+			$email                   = apply_filters( 'everest_forms_entry_email_atts', $email, $fields, $entry, $form_data );
 
 			$attachment = '';
 
@@ -368,13 +416,24 @@ class EVF_Form_Task {
 			$emails->__set( 'reply_to', $email['reply_to'] );
 			$emails->__set( 'attachments', apply_filters( 'everest_forms_email_file_attachments', $attachment, $entry, $form_data, 'entry-email', $connection_id ) );
 
+			// Maybe include Cc and Bcc email addresses.
+			if ( 'yes' === get_option( 'everest_forms_enable_email_copies' ) ) {
+				if ( ! empty( $notification['evf_carboncopy'] ) ) {
+					$emails->__set( 'cc', $notification['evf_carboncopy'] );
+				}
+				if ( ! empty( $notification['evf_blindcarboncopy'] ) ) {
+					$emails->__set( 'bcc', $notification['evf_blindcarboncopy'] );
+				}
+			}
+
+			$emails = apply_filters( 'everest_forms_entry_email_before_send', $emails );
+
 			// Send entry email.
 			foreach ( $email['address'] as $address ) {
 				$emails->send( trim( $address ), $email['subject'], $email['message'] );
 			}
 
 		endforeach;
-
 	}
 
 	/**

@@ -54,6 +54,11 @@ class EVF_Install {
 			'evf_update_144_delete_options',
 			'evf_update_144_db_version',
 		),
+		'1.4.9' => array(
+			'evf_update_149_db_rename_options',
+			'evf_update_149_no_payment_options',
+			'evf_update_149_db_version',
+		),
 	);
 
 	/**
@@ -103,6 +108,7 @@ class EVF_Install {
 	 */
 	public static function install_actions() {
 		if ( ! empty( $_GET['do_update_everest_forms'] ) ) {
+			check_admin_referer( 'evf_db_update', 'evf_db_update_nonce' );
 			self::update();
 			EVF_Admin_Notices::add_notice( 'update' );
 		}
@@ -177,11 +183,13 @@ class EVF_Install {
 	 *
 	 * @return boolean
 	 */
-	private static function needs_db_update() {
+	public static function needs_db_update() {
 		$current_db_version = get_option( 'everest_forms_db_version', null );
 		$updates            = self::get_db_update_callbacks();
+		$update_versions    = array_keys( $updates );
+		usort( $update_versions, 'version_compare' );
 
-		return ! is_null( $current_db_version ) && version_compare( $current_db_version, max( array_keys( $updates ) ), '<' );
+		return ! is_null( $current_db_version ) && version_compare( $current_db_version, end( $update_versions ), '<' );
 	}
 
 	/**
