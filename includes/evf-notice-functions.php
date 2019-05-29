@@ -128,13 +128,14 @@ function evf_print_notices( $form_data = array() ) {
 		return;
 	}
 
+	$form_id      = isset( $form_data['id'] ) ? $form_data['id'] : 0;
 	$all_notices  = EVF()->session->get( 'evf_notices', array() );
 	$notice_types = apply_filters( 'everest_forms_notice_types', array( 'error', 'success', 'notice' ) );
 
 	foreach ( $notice_types as $notice_type ) {
 		if ( evf_notice_count( $notice_type ) > 0 ) {
 			foreach ( $all_notices[ $notice_type ] as $key => $message ) {
-				$all_notices[ $notice_type ][ $key ] = evf_string_translation( $form_data['id'], 'notice_message_' . $notice_type, $message );
+				$all_notices[ $notice_type ][ $key ] = evf_string_translation( $form_id, 'notice_message_' . $notice_type, $message );
 			}
 			evf_get_template(
 				"notices/{$notice_type}.php",
