@@ -128,7 +128,7 @@ function evf_print_notices( $form_data = array() ) {
 		return;
 	}
 
-	$form_id      = isset( $form_data['id'] ) ? $form_data['id'] : 0;
+	$form_id      = isset( $form_data['id'] ) ? absint( $form_data['id'] ) : 0;
 	$all_notices  = EVF()->session->get( 'evf_notices', array() );
 	$notice_types = apply_filters( 'everest_forms_notice_types', array( 'error', 'success', 'notice' ) );
 
