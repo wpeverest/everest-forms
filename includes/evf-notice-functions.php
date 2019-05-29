@@ -119,20 +119,23 @@ function evf_clear_notices() {
  * Prints messages and errors which are stored in the session, then clears them.
  *
  * @since 1.0.0
+ *
+ * @param array $form_data Prepared form settings.
  */
-function evf_print_notices( $form_data ) {
+function evf_print_notices( $form_data = array() ) {
 	if ( ! did_action( 'everest_forms_init' ) ) {
 		evf_doing_it_wrong( __FUNCTION__, __( 'This function should not be called before everest_forms_init.', 'everest-forms' ), '1.0' );
 		return;
 	}
 
+	$form_id      = isset( $form_data['id'] ) ? absint( $form_data['id'] ) : 0;
 	$all_notices  = EVF()->session->get( 'evf_notices', array() );
 	$notice_types = apply_filters( 'everest_forms_notice_types', array( 'error', 'success', 'notice' ) );
 
 	foreach ( $notice_types as $notice_type ) {
 		if ( evf_notice_count( $notice_type ) > 0 ) {
 			foreach ( $all_notices[ $notice_type ] as $key => $message ) {
-				$all_notices[ $notice_type ][ $key ] = evf_string_translation( $form_data['id'], 'notice_message_' . $notice_type, $message );
+				$all_notices[ $notice_type ][ $key ] = evf_string_translation( $form_id, 'notice_message_' . $notice_type, $message );
 			}
 			evf_get_template(
 				"notices/{$notice_type}.php",
