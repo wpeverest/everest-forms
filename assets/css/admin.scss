@@ -1159,11 +1159,19 @@ body.everest-forms-builder-setup,
 						}
 
 						&:hover {
-							color: $color-brand-primary;
-							border-color: $color-brand-primary;
+							color: $blue;
+							border-color: $blue;
 
 							.evf-icon {
 								color: inherit;
+							}
+
+							svg {
+								.cls-1,
+								.cls-2,
+								.cls-3 {
+									fill: $blue;
+								}
 							}
 						}
 
@@ -1183,51 +1191,18 @@ body.everest-forms-builder-setup,
 							}
 						}
 
-						&:hover {
-							color: $color-brand-primary;
-							border-color: $color-brand-primary;
-
-							svg {
-								.cls-1,
-								.cls-2,
-								.cls-3 {
-									fill: $color-brand-primary;
-								}
-							}
-						}
-
 						&.ui-draggable-dragging {
 							margin: 0;
-							border: 1px solid $color-brand-primary;
 							width: 105px !important;
-							color: $color-brand-primary;
-							background-color: $color-white;
-							position: relative;
-
-							svg {
-								.cls-1,
-								.cls-2,
-								.cls-3 {
-									fill: $color-brand-primary;
-								}
-							}
-						}
-
-						&.ui-draggable-dragging {
-							margin: 0;
-							border: 1px solid $color-brand-primary;
-							width: 105px !important;
-							color: $color-brand-primary;
 							background-color: $color-white;
 							position: relative;
 							z-index: 99999;
 
 							svg {
-
 								.cls-1,
 								.cls-2,
 								.cls-3 {
-									fill: $color-brand-primary;
+									fill: $blue;
 								}
 							}
 						}
@@ -1603,9 +1578,10 @@ body.everest-forms-builder-setup,
 								}
 
 								&.active {
-									border-color: $color-brand-primary;
+									border-color: $blue;
+
 									span {
-										border-color: $color-brand-primary;
+										border-color: $blue;
 
 									}
 								}
@@ -1615,8 +1591,8 @@ body.everest-forms-builder-setup,
 					}
 
 					&:hover {
-						background-color: $color-evf-hover;
-						border: 1px dashed $button-color;
+						background-color: lighten($blue, 48%);
+						border: 1px dashed $blue;
 
 						.evf-admin-grid {
 							border: 1px dashed $color-gray-light;
@@ -1846,7 +1822,7 @@ body.everest-forms-builder-setup,
 								background-color: $red;
 							}
 							&:hover {
-								background-color: $button-color;
+								background-color: $blue;
 							}
 						}
 
@@ -1931,7 +1907,7 @@ body.everest-forms-builder-setup,
 				.file-uploader {
 					width: 100%;
 					border: 2px dashed $color_gray-lighten;
-					background-color: $uploader-background;
+					background-color: $color_gray-light-skin;
 					border-radius: 3px;
 					cursor: pointer;
 					text-align: center;
@@ -1977,7 +1953,7 @@ body.everest-forms-builder-setup,
 					.file-control {
 						position: absolute;
 						bottom: 30px;
-						color: $button-color;
+						color: $blue;
 						padding-bottom: 2px;
 						display: block;
 						left: 0;
@@ -1986,7 +1962,7 @@ body.everest-forms-builder-setup,
 						&::before {
 							content: '';
 							width: 45px;
-							background-color: $button-color;
+							background-color: $blue;
 							height: 1px;
 							display: block;
 							left: 50%;
@@ -2054,7 +2030,7 @@ body.everest-forms-builder-setup,
 			.evf-grid-lists {
 				margin-left: -1.5%;
 				margin-right: 1.5%;
-				background-color: $accordion-bg;
+				background-color: $color_gray-light-skin;
 				display: flex;
 
 				.evf-grid-lists-item {
@@ -2158,9 +2134,9 @@ body.everest-forms-builder-setup,
 						}
 
 						&:hover {
-							background: $button-color;
+							background: $blue;
 							color: $color-white;
-							border: 1px solid $button-color;
+							border: 1px solid $blue;
 						}
 
 						&.remove,
@@ -2244,9 +2220,7 @@ body.everest-forms-builder-setup,
 
 		.everest-forms-field.ui-draggable-dragging {
 			margin: 0;
-			border: 1px solid $color-brand-primary;
 			width: 105px !important;
-			color: $color-brand-primary;
 			background-color: $color-white;
 			text-align: center;
 			font-size: 12px !important;

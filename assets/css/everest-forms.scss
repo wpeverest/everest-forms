@@ -87,7 +87,7 @@
 	input {
 		&:focus {
 			outline: none;
-			border: 1px solid $color-brand-primary;
+			border: 1px solid $blue;
 		}
 	}
 
@@ -288,7 +288,7 @@
 				}
 
 				&[type='checkbox']:checked {
-					background-color: $color-brand-primary;
+					background-color: $blue;
 
 					&::before {
 						color: $color-white;
@@ -298,12 +298,12 @@
 
 				&[type='radio']:checked {
 					&::before {
-						background-color: $color-brand-primary;
+						background-color: $blue;
 					}
 				}
 
 				&::placeholder {
-					color: $input-color;
+					color: $color_gray-light;
 				}
 
 			}
@@ -317,7 +317,7 @@
 				height: 120px;
 
 				&::placeholder {
-					color: $input-color;
+					color: $color_gray-light;
 				}
 			}
 
@@ -406,7 +406,7 @@
 		padding: 1em 3em;
 		margin: 0 0 2em;
 		position: relative;
-		background-color: $color-brand-primary;
+		background-color: $blue;
 		color: $color-white;
 		border-radius: 5px;
 		@include clearfix();

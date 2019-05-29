@@ -66,12 +66,12 @@ div.jconfirm {
 			}
 
 			button.btn-confirm {
-				background-color: $button-color;
+				background-color: $blue;
 				color: $color-white;
 				outline: none;
 
 				&:hover {
-					background-color: transparentize($button-color, 0.2);
+					background-color: transparentize($blue, 0.2);
 				}
 			}
 
