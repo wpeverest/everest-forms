@@ -98,7 +98,7 @@ function evf_get_template( $template_name, $args = array(), $template_path = '',
 	$filter_template = apply_filters( 'evf_get_template', $template, $template_name, $args, $template_path, $default_path );
 
 	if ( $filter_template !== $template ) {
-		if ( ! file_exists( $located ) ) {
+		if ( ! file_exists( $filter_template ) ) {
 			/* translators: %s template */
 			evf_doing_it_wrong( __FUNCTION__, sprintf( __( '%s does not exist.', 'everest-forms' ), '<code>' . $template . '</code>' ), '1.0.0' );
 			return;
