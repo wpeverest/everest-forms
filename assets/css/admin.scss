@@ -1614,8 +1614,6 @@ body.everest-forms-builder-setup,
 						transition: 0.5s border, 0.5s background-color;
 
 						&.evf-hover {
-							border: 1px dashed $color-gray-light;
-
 							&.evf-item-hover {
 								position: relative;
 
@@ -1671,8 +1669,8 @@ body.everest-forms-builder-setup,
 						.ui-sortable-placeholder {
 							width: 100%;
 							visibility: visible !important;
-							background-color: transparentize($blue, 0.95);
-							border: 1px dashed transparentize($blue, 0.75);
+							background-color: lighten($green, 42%);
+							border: 1px dashed lighten($green, 15%);
 						}
 
 						&.evf-empty-grid {
