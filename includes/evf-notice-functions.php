@@ -119,8 +119,10 @@ function evf_clear_notices() {
  * Prints messages and errors which are stored in the session, then clears them.
  *
  * @since 1.0.0
+ *
+ * @param array $form_data Prepared form settings.
  */
-function evf_print_notices( $form_data ) {
+function evf_print_notices( $form_data = array() ) {
 	if ( ! did_action( 'everest_forms_init' ) ) {
 		evf_doing_it_wrong( __FUNCTION__, __( 'This function should not be called before everest_forms_init.', 'everest-forms' ), '1.0' );
 		return;
