@@ -59,6 +59,10 @@ class EVF_Install {
 			'evf_update_149_no_payment_options',
 			'evf_update_149_db_version',
 		),
+		'1.5.0' => array(
+			'evf_update_150_field_datetime_type',
+			'evf_update_150_db_version',
+		),
 	);
 
 	/**

@@ -264,3 +264,34 @@ function evf_update_149_no_payment_options() {
 function evf_update_149_db_version() {
 	EVF_Install::update_db_version( '1.4.9' );
 }
+
+/**
+ * Update date field type for all forms.
+ */
+function evf_update_150_field_datetime_type() {
+	$forms = EVF()->form->get( '', array( 'order' => 'DESC' ) );
+
+	// Loop through each forms.
+	foreach ( $forms as $form ) {
+		$form_id   = isset( $form->ID ) ? $form->ID : '0';
+		$form_data = ! empty( $form->post_content ) ? evf_decode( $form->post_content ) : '';
+
+		if ( ! empty( $form_data['form_fields'] ) ) {
+			foreach ( $form_data['form_fields'] as &$field ) {
+				if ( isset( $field['type'] ) && 'date' === $field['type'] ) {
+					$field['type'] = 'date-time';
+				}
+			}
+		}
+
+		// Update form data.
+		EVF()->form->update( $form_id, $form_data );
+	}
+}
+
+/**
+ * Update DB Version.
+ */
+function evf_update_150_db_version() {
+	EVF_Install::update_db_version( '1.5.0' );
+}
