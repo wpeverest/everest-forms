@@ -11,26 +11,28 @@ div.everest-forms-message {
 	position: relative;
 	border-left-color: #2ea2cc !important;
 
-	a.button-primary,
-	a.button-secondary {
-		text-decoration: none !important;
-	}
+	a {
+		&.button-primary,
+		&.button-secondary {
+			text-decoration: none !important;
+		}
 
-	a.everest-forms-message-close {
-		position: absolute;
-		top: 0;
-		right: 0;
-		padding: 10px 15px 10px 21px;
-		font-size: 13px;
-		line-height: 1.23076923;
-		text-decoration: none;
-
-		&:before {
+		&.everest-forms-message-close {
 			position: absolute;
-			top: 8px;
-			left: 0;
-			-webkit-transition: all .1s ease-in-out;
-			transition: all .1s ease-in-out;
+			top: 0;
+			right: 0;
+			padding: 10px 15px 10px 21px;
+			font-size: 13px;
+			line-height: 1.23076923;
+			text-decoration: none;
+
+			&:before {
+				position: absolute;
+				top: 8px;
+				left: 0;
+				-webkit-transition: all .1s ease-in-out;
+				transition: all .1s ease-in-out;
+			}
 		}
 	}
 }

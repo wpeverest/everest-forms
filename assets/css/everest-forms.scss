@@ -36,7 +36,6 @@
  * Main EverestForms styles
  */
 .everest-forms {
-
 	* {
 		box-sizing: border-box;
 	}
@@ -92,7 +91,6 @@
 	}
 
 	.everest-forms-field-row {
-
 		&::before,
 		&::after {
 			content: '';
@@ -243,7 +241,7 @@
 				color: $color_gray-base;
 
 				.required {
-					color: #f00;
+					color: $red;
 					font-weight: 700;
 					border: 0 !important;
 					text-decoration: none;
@@ -270,7 +268,6 @@
 			}
 
 			input {
-
 				&[type='checkbox'],
 				&[type='radio'] {
 					width: 14px;
@@ -466,9 +463,9 @@
 }
 
 
-/* Gutenberg Block
------------------------------------------------------------------------------ */
-
+/**
+ * Gutenberg Block
+ */
 .edit-post-visual-editor {
 	.everest-form-gutenberg-form-selector-wrap {
 		.components-placeholder__label {
@@ -480,11 +477,13 @@
 				color: #7e3bd0;
 			}
 		}
+
 		.components-placeholder__instructions {
 			color: #23282d;
 			font-size: 1.3em;
 			font-weight: 600;
 		}
+
 		.components-placeholder__fieldset {
 			.components-base-control {
 				width: 100%;
@@ -500,8 +499,9 @@ div.evf-gutenberg-form-selector .evf-frontend-row button[type='submit']:disabled
 	cursor: not-allowed;
 }
 
-/* Anti-spam Honeypot and reCAPTCHA Area
------------------------------------------------------------------------------ */
+/**
+ * Anti-spam Honeypot and reCAPTCHA Area
+ */
 
 .evf-honeypot-container {
 	display: none !important;
