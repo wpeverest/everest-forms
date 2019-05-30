@@ -66,7 +66,9 @@ class EVF_Shortcode_Form {
 		$visibility_class = apply_filters( 'everest_forms_field_submit_visibility_class', array(), self::$parts, $form_data );
 
 		// Check for submit button processing-text.
-		if ( ! empty( $settings['submit_button_processing_text'] ) ) {
+		if ( ! isset( $settings['submit_button_processing_text'] ) ) {
+			$process = 'data-process-text="' . esc_attr__( 'Processing&hellip;', 'everest-forms' ) . '"';
+		} elseif ( ! empty( $settings['submit_button_processing_text'] ) ) {
 			$process = 'data-process-text="' . esc_attr( $settings['submit_button_processing_text'] ) . '"';
 		}
 
