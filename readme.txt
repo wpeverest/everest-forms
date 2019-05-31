@@ -4,7 +4,7 @@ Tags: contact form, form, form builder, contact, custom form
 Requires at least: 4.0
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 1.4.9
+Stable tag: 1.4.10
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -139,6 +139,12 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 12. Advance Form
 
 == Changelog ==
+
+= 1.4.10 - XX-06-2019 =
+* Fix - Correctly load localisation file.
+* Fix - WPML string translation for notices.
+* Fix - Undefined variable for filtered template file.
+* Fix - Submit button Processing text while form is not saved.
 
 = 1.4.9 - 28-05-2019 =
 * Feature - Everest Forms is WPML Compatiable. #161
