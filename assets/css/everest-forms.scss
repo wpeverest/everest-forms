@@ -254,15 +254,7 @@
 				}
 
 				&.evf-error {
-					margin-top: 0;
-					margin-bottom: 10px;
 					font-weight: 400;
-					padding: 7px 10px;
-					border-radius: 3px;
-					display: inline-block;
-					border: 1px solid $red;
-					color: darken($red, 10%);
-					background-color: lighten($red, 35%);
 				}
 
 				&.everest-forms-field-sublabel {
