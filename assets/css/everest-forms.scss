@@ -90,6 +90,14 @@
 		}
 	}
 
+	.everest-form {
+		&::after {
+			content: '';
+			clear: both;
+			display: table;
+		}
+	}
+
 	.everest-forms-field-row {
 		&::before,
 		&::after {
@@ -106,8 +114,6 @@
 	}
 
 	.evf-field-container {
-		margin-bottom: 10px;
-
 		.evf-frontend-row {
 			display: flex;
 			flex-wrap: wrap;
