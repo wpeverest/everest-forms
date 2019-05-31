@@ -476,6 +476,11 @@ body.everest-forms-builder-setup,
 		}
 	}
 
+	.everest-forms-disabled {
+		opacity: 0.5;
+		pointer-events: none;
+	}
+
 	.everest-forms {
 		margin: 0;
 
