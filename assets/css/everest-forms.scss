@@ -36,7 +36,9 @@
  * Main EverestForms styles
  */
 .everest-forms {
-	* {
+	*,
+	*::before,
+	*::after {
 		box-sizing: border-box;
 	}
 
