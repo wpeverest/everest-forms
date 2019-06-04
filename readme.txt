@@ -144,7 +144,8 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Fix - Correctly load localisation file.
 * Fix - WPML string translation for notices.
 * Fix - Undefined variable for filtered template file.
-* Fix - Submit button Processing text while form is not saved.
+* Fix - WP admin bar design issue in safari on EVF pages. #179
+* Fix - Submit button Processing text while form is not saved. #177
 
 = 1.4.9 - 28-05-2019 =
 * Feature - Everest Forms is WPML Compatiable. #161
