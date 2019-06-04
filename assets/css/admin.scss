@@ -294,18 +294,6 @@ body.everest-forms-builder-setup,
 	}
 }
 
-/* WP Core issue in WP 4.9.6 */
-.everest-forms_page_evf-builder,
-.everest-forms_page_evf-entries,
-.everest-forms_page_evf-settings,
-.everest-forms_page_evf-status,
-.everest-forms_page_evf-addons {
-	#wpwrap {
-		z-index: 9999;
-		overflow: hidden;
-	}
-}
-
 /**
  * Branding.
  */
