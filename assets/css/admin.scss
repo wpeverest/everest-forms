@@ -220,11 +220,11 @@
 	}
 
 	&.everest-forms-notice-danger {
-		background: lighten(red, 45%);
-		border: 1px solid red;
+		background: lighten($red, 30%);
+		border: 1px solid $red;
 
 		&::before {
-			color: red;
+			color: $red;
 		}
 	}
 }
