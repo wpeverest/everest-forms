@@ -854,7 +854,6 @@ body.everest-forms-builder-setup,
  * Form Builder.
  */
 #everest-forms-panel-settings {
-
 	.evf-content-section {
 		display: none;
 	}
@@ -943,6 +942,41 @@ body.everest-forms-builder-setup,
 			&:focus {
 				outline: none;
 				box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+			}
+		}
+
+		// To do after merging with develop - set variables
+		.add,
+		.remove {
+			color: $color-gray-darker;
+			background: $color-white;
+			border: 1px solid #b4b9be;
+			height: 24px;
+			width: 24px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+
+			.dashicons {
+				line-height: 1.1;
+			}
+
+			&:hover {
+				color: $color-white;
+			}
+		}
+
+		.add {
+			&:hover {
+				background: $button-color;
+				border: 1px solid $button-color;
+			}
+		}
+
+		.remove {
+			&:hover {
+				background: $color-alert-danger;
+    			border: 1px solid $color-alert-danger;
 			}
 		}
 
@@ -2489,7 +2523,7 @@ body.everest-forms-builder-setup,
 				}
 
 				.evf-content-user-registration-settings {
-					select {
+					.everest-forms-panel-field {
 						max-width: 500px;
 					}
 				}
