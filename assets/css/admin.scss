@@ -1138,7 +1138,7 @@ body.everest-forms-builder-setup,
 
 						&.upgrade-modal,
 						&.enable-stripe-model {
-							opacity: 0.6;
+							opacity: 0.45;
 						}
 
 						&:hover {
@@ -3513,7 +3513,7 @@ img.ui-datepicker-trigger {
 .everest-forms {
 	table {
 		&.form-table {
-			.select2-container--default{
+			.select2-container--default {
 				&.select2-container--focus {
 					.select2-selection--multiple {
 						border-color: #5b9dd9;
