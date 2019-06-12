@@ -46,6 +46,13 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	}
 
 	/**
+	 * Hook in tabs.
+	 */
+	public function init_hooks() {
+		add_filter( 'everest_forms_field_properties_' . $this->type, array( $this, 'field_properties' ), 5, 3 );
+	}
+
+	/**
 	 * Date field format option.
 	 *
 	 * @since 1.4.9
@@ -147,9 +154,21 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				false
 			);
 
+			$current_date_range = $this->field_element(
+				'checkbox',
+				$field,
+				array(
+					'slug'    => 'date_range',
+					'value'   => isset( $field['date_range'] ) ? $field['date_range'] : '',
+					'desc'    => __( 'Enable range', 'everest-forms' ),
+					'tooltip' => __( 'Check this option to enable date range mode.', 'everest-forms' ),
+				),
+				false
+			);
+
 			$args = array(
 				'slug'    => 'date_format',
-				'content' => $date_format_label . $date_format_select . $current_date_default,
+				'content' => $date_format_label . $date_format_select . $current_date_default . $current_date_range,
 			);
 			$this->field_element( 'row', $field, $args );
 
@@ -207,7 +226,34 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			$this->field_element( 'row', $field, $args );
 
 			echo '</div>';
-		echo '</div>';
+			echo '</div>';
+	}
+
+	/**
+	 * Define additional field properties.
+	 *
+	 * @param  array $properties Field properties.
+	 * @param  array $field      Field settings.
+	 * @param  array $form_data  Form data and settings.
+	 * @return array of additional field properties.
+	 */
+	public function field_properties( $properties, $field, $form_data ) {
+		// Input primary: data-date-time.
+		if ( ! empty( $field['datetime_format'] ) ) {
+			$properties['inputs']['primary']['attr']['data-date-time'] = esc_attr( $field['datetime_format'] );
+
+			// Input primary: data-mode.
+			if ( 'time' !== $field['datetime_format'] ) {
+				$properties['inputs']['primary']['attr']['data-mode'] = isset( $field['date_range'] ) ? 'range' : 'single';
+			}
+		}
+
+		// Input primary: data-time-interval.
+		if ( ! empty( $field['time_interval'] ) ) {
+			$properties['inputs']['primary']['attr']['data-time-interval'] = esc_attr( $field['time_interval'] );
+		}
+
+		return $properties;
 	}
 
 	/**
@@ -241,9 +287,6 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	 * @param array $form_data Form Data.
 	 */
 	public function field_display( $field, $deprecated, $form_data ) {
-		$time_interval   = ! empty( $field['time_interval'] ) ? 'data-time-interval = "' . esc_attr( $field['time_interval'] ) . '"' : '';
-		$datetime_format = ! empty( $field['datetime_format'] ) ? 'data-date-time = "' . esc_attr( $field['datetime_format'] ) . '"' : '';
-
 		switch ( $field['datetime_format'] ) {
 			case 'date':
 				$default_datetime = isset( $field['date_default'] ) ? date( $field['date_format'] ) : '';
@@ -273,13 +316,11 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 
 		// Primary field.
 		printf(
-			'<input type="text" %s %s value="%s" %s %s %s>',
+			'<input type="text" %s %s value="%s" %s >',
 			evf_html_attributes( $primary['id'], $class, $primary['data'], $primary['attr'] ),
 			$primary['required'],
 			esc_attr( $default_datetime ),
-			str_replace( 'g:i A', 'h:i K', $date_format ),
-			$time_interval,
-			$datetime_format
+			str_replace( 'g:i A', 'h:i K', $date_format )
 		);
 	}
 }
