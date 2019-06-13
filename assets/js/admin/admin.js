@@ -165,6 +165,11 @@
 			$( '.evf-content-email-settings-inner .tooltipstered' ).tooltipster( 'destroy' );
 		});
 
+		// Check for new form entries using Heartbeat API.
+		$( document ).on( 'heartbeat-send', function( event, data ) {
+
+		});
+
 	// Tooltips
 	$( document.body ).trigger( 'init_tooltips' );
 })( jQuery, everest_forms_admin );
