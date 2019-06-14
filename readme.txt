@@ -99,7 +99,7 @@ In the search field type “Everest Forms” and click Search Plugins. Once you�
 
 = Manual installation =
 
-The manual installation method involves downloading our form builder plugin and uploading it to your webserver via your favourite FTP application. The WordPress codex contains [instructions on how to do this here](https://codex.wordpress.org/Managing_Plugins#Manual_Plugin_Installation).
+The manual installation method involves downloading our form builder plugin and uploading it to your webserver via your favourite FTP application. The WordPress codex contains [instructions on how to do this here](https://wordpress.org/support/article/managing-plugins/#manual-plugin-installation).
 
 == Frequently Asked Questions ==
 
