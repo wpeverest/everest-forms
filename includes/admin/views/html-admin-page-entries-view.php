@@ -30,7 +30,7 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 							<table class="wp-list-table widefat fixed striped posts">
 								<tbody>
 								<?php
-									$entry_meta = apply_filters( 'everest_forms_entry_single_data', $entry->meta );
+								$entry_meta = apply_filters( 'everest_forms_entry_single_data', $entry->meta );
 
 								if ( empty( $entry_meta ) ) {
 									// Whoops, no fields! This shouldn't happen under normal use cases.
@@ -53,9 +53,11 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 										$field_class     = empty( $field_value ) ? ' empty' : '';
 										$field_style     = $hide_empty && empty( $field_value ) ? 'display:none;' : '';
 										$correct_answers = false;
+
 										// Field name.
 										echo '<tr class="everest-forms-entry-field field-name' . $field_class . '" style="' . $field_style . '"><th>';
-											$value = evf_get_form_data_by_meta_key( $form_id, $meta_key );
+
+										$value = evf_get_form_data_by_meta_key( $form_id, $meta_key );
 
 										if ( $value ) {
 											if ( apply_filters( 'everest_forms_html_field_label', false ) ) {
@@ -66,10 +68,12 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 										} else {
 											echo '<strong>' . esc_html__( 'Field ID', 'everest-forms' ) . '</strong>';
 										}
-											echo '</th></tr>';
 
-											// Field value.
-											echo '<tr class="everest-forms-entry-field field-value' . $field_class . '" style="' . $field_style . '"><td>';
+										echo '</th></tr>';
+
+										// Field value.
+										echo '<tr class="everest-forms-entry-field field-value' . $field_class . '" style="' . $field_style . '"><td>';
+
 										if ( ! empty( $field_value ) ) {
 											if ( is_serialized( $field_value ) ) {
 												$field_value = maybe_unserialize( $field_value );
@@ -99,7 +103,8 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 										} else {
 											esc_html_e( 'Empty', 'everest-forms' );
 										}
-											echo '</td></tr>';
+
+										echo '</td></tr>';
 									}
 								}
 								?>
