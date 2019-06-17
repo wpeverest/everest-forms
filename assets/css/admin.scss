@@ -1514,17 +1514,32 @@ body.everest-forms-builder-setup,
 							font-weight: 600;
 							font-size: 12px;
 							top: 35px;
-							box-shadow: 1px 3px 20px 0 transparentize($color_gray-dark, 0.8);
 							transition: 0.9s background-color;
+							border: 1px solid $color-gray-lighten;
+							box-shadow: 1px 2px 10px 0 transparentize($color_gray-dark, 0.85);
+
+							&::before,
+							&::after {
+								content: '';
+								position: absolute;
+
+							}
 
 							&::before {
-								top: -5px;
-								content: '';
-								right: 17px;
-								border-right: 6px solid transparent;
-								border-bottom: 6px solid $color-white;
-								border-left: 6px solid transparent;
-								position: absolute;
+								top: -7px;
+								right: 14px;
+								border-right: 7px solid transparent;
+								border-bottom: 7px solid $color-white;
+								border-left: 7px solid transparent;
+							}
+
+							&::after {
+								top: -8px;
+								right: 12px;
+								border-right: 9px solid transparent;
+								border-bottom: 9px solid $color-gray-lighten;
+								border-left: 9px solid transparent;
+								z-index: -1;
 							}
 
 							> span {
@@ -1746,8 +1761,12 @@ body.everest-forms-builder-setup,
 						border: 1px dashed transparentize($blue, 0.75);
 					}
 
+					&.hide-lalbel {
+
+					}
 					input {
-						&[type='text'] {
+						&[type='text'],
+						&[type='email'] {
 							margin-bottom: 5px;
 						}
 
@@ -1965,7 +1984,7 @@ body.everest-forms-builder-setup,
 
 			label {
 				font-size: 13px;
-				margin-bottom: 15px;
+				margin-bottom: 10px;
 				color: $color_gray-base;
 				display: block;
 				font-weight: 600;
@@ -1979,6 +1998,13 @@ body.everest-forms-builder-setup,
 				.required {
 					color: $red;
 					display: none;
+				}
+
+				input {
+					&[type='checkbox'],
+					&[type='radio'] {
+						margin-right: 10px;
+					}
 				}
 			}
 
