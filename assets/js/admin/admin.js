@@ -198,7 +198,7 @@
 		}
 
 		if ( ! $entriesList.find( '.new-entries-notification' ).length ) {
-			$entriesList.find( '.wp-list-table thead' ).append( '<tr class="new-entries-notification"><td colspan="' + columnsCount + '"><a href="/"></a></td></tr>' );
+			$entriesList.find( '.wp-list-table thead' ).append( '<tr class="new-entries-notification"><td colspan="' + columnsCount + '"><a href="#new" onClick="window.location.reload(true);"></a></td></tr>' );
 		}
 
 		$entriesList
