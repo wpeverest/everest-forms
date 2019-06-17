@@ -18,7 +18,7 @@ class EVF_Admin_Entries {
 	 */
 	public function __construct() {
 		add_action( 'admin_init', array( $this, 'actions' ) );
-		add_filter( 'heartbeat_received', array( $this, 'heartbeat_new_entries_check' ), 10, 3 );
+		add_filter( 'heartbeat_received', array( $this, 'check_new_entries' ), 10, 3 );
 	}
 
 	/**
@@ -53,21 +53,21 @@ class EVF_Admin_Entries {
 	private static function table_list_output() {
 		global $entries_table_list;
 
-		// Get the entries count.
-		$count = count( evf_get_entries_ids( $entries_table_list->form_id ) );
+		// Get the entries IDs.
+		$entry_ids = evf_get_entries_ids( $entries_table_list->form_id );
 
 		$entries_table_list->process_bulk_action();
 		$entries_table_list->prepare_items();
 		?>
-		<div class="wrap">
+		<div id="everest-forms-entries-list" class="wrap">
 			<h1 class="wp-heading-inline"><?php esc_html_e( 'Entries', 'everest-forms' ); ?></h1>
 			<hr class="wp-header-end">
 
 			<?php settings_errors(); ?>
 			<?php do_action( 'everest_forms_before_entry_list', $entries_table_list ); ?>
 
-			<?php if ( 0 < $count ) : ?>
-				<form id="entries-list" method="post">
+			<?php if ( 0 < count( $entry_ids ) ) : ?>
+				<form id="entries-list" method="post" data-form-id="<?php echo absint( $entries_table_list->form_id ); ?>" data-last-entry-id="<?php echo absint( end( $entry_ids ) ); ?>">
 					<input type="hidden" name="page" value="evf-entries" />
 					<?php
 						$entries_table_list->views();
@@ -320,19 +320,26 @@ class EVF_Admin_Entries {
 	}
 
 	/**
-	 * Check for new entries using Heartbeat API.
+	 * Check new entries with heartbeat API.
 	 *
 	 * @since 1.5.0
 	 *
-	 * @param array  $response  The Heartbeat response.
-	 * @param array  $data      The $_POST data sent.
-	 * @param string $screen_id The screen id.
-	 *
-	 * @return array
+	 * @param  array  $response  The Heartbeat response.
+	 * @param  array  $data      The $_POST data sent.
+	 * @param  string $screen_id The screen id.
+	 * @return array The Heartbeat response.
 	 */
-	public function heartbeat_new_entries_check( $response, $data, $screen_id ) {
-		if ( $this->is_entries_page() ) {
+	public function check_new_entries( $response, $data, $screen_id ) {
+		if ( 'everest-forms_page_evf-entries' === $screen_id ) {
+			$form_id    = ! empty( $data['evf_new_entries_form_id'] ) ? absint( $data['evf_new_entries_form_id'] ) : 0;
+			$last_entry = ! empty( $data['evf_new_entries_entry_id'] ) ? absint( $data['evf_new_entries_entry_id'] ) : 0;
 
+			$entries_count = 20;
+
+			if ( ! empty( $entries_count ) ) {
+				/* translators: %d - Number of form entries. */
+				$response['evf_new_entries_notification'] = esc_html( sprintf( _n( 'See %d new entry', 'See %d new entries', $entries_count, 'everest-forms' ), $entries_count ) );
+			}
 		}
 
 		return $response;
