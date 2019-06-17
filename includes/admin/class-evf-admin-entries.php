@@ -334,7 +334,8 @@ class EVF_Admin_Entries {
 			$form_id       = ! empty( $data['evf_new_entries_form_id'] ) ? absint( $data['evf_new_entries_form_id'] ) : 0;
 			$last_entry_id = ! empty( $data['evf_new_entries_last_entry_id'] ) ? absint( $data['evf_new_entries_last_entry_id'] ) : 0;
 
-			$entries_count = 20;
+			// Count new entries.
+			$entries_count = evf_get_count_entries_by_last_entry( $form_id, $last_entry_id );
 
 			if ( ! empty( $entries_count ) ) {
 				/* translators: %d - New form entries count. */

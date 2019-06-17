@@ -47,10 +47,13 @@ function evf_get_entries_ids( $form_id ) {
  * @return array
  */
 function evf_get_entry_statuses() {
-	return apply_filters( 'everest_forms_entry_statuses', array(
-		'publish' => __( 'Published', 'everest-forms' ),
-		'trash'   => __( 'Trash', 'everest-forms' ),
-	) );
+	return apply_filters(
+		'everest_forms_entry_statuses',
+		array(
+			'publish' => __( 'Published', 'everest-forms' ),
+			'trash'   => __( 'Trash', 'everest-forms' ),
+		)
+	);
 }
 
 /**
@@ -62,12 +65,15 @@ function evf_get_entry_statuses() {
 function evf_search_entries( $args ) {
 	global $wpdb;
 
-	$args = wp_parse_args( $args, array(
-		'limit'   => 10,
-		'offset'  => 0,
-		'order'   => 'DESC',
-		'orderby' => 'entry_id',
-	) );
+	$args = wp_parse_args(
+		$args,
+		array(
+			'limit'   => 10,
+			'offset'  => 0,
+			'order'   => 'DESC',
+			'orderby' => 'entry_id',
+		)
+	);
 
 	// Check if form ID is valid for entries.
 	if ( ! array_key_exists( $args['form_id'], evf_get_all_forms() ) ) {
@@ -100,7 +106,8 @@ function evf_search_entries( $args ) {
 
 	$order = "ORDER BY {$orderby} " . strtoupper( sanitize_key( $args['order'] ) );
 
-	$query = trim( "
+	$query = trim(
+		"
 		SELECT DISTINCT {$wpdb->prefix}evf_entries.entry_id
 		FROM {$wpdb->prefix}evf_entries
 		INNER JOIN {$wpdb->prefix}evf_entrymeta
@@ -114,7 +121,8 @@ function evf_search_entries( $args ) {
 		{$order}
 		{$limit}
 		{$offset}
-	" );
+	"
+	);
 
 	$results = $wpdb->get_results( $query ); // WPCS: cache ok, DB call ok, unprepared SQL ok.
 
@@ -134,14 +142,35 @@ function evf_get_count_entries_by_status( $form_id ) {
 	$counts   = array();
 
 	foreach ( $statuses as $status ) {
-		$count = count( evf_search_entries( array(
-			'limit'   => -1,
-			'status'  => $status,
-			'form_id' => $form_id,
-		) ) );
+		$count = count(
+			evf_search_entries(
+				array(
+					'limit'   => -1,
+					'status'  => $status,
+					'form_id' => $form_id,
+				)
+			)
+		);
 
 		$counts[ $status ] = $count;
 	}
 
 	return $counts;
+}
+
+/**
+ * Get total next entries counts by last entry.
+ *
+ * @since 1.5.0
+ *
+ * @param  int $form_id    Form ID.
+ * @param  int $last_entry Last Form ID.
+ * @return int[]
+ */
+function evf_get_count_entries_by_last_entry( $form_id, $last_entry ) {
+	global $wpdb;
+
+	$entries_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(entry_id) FROM {$wpdb->prefix}evf_entries WHERE form_id = %d AND entry_id > %d", $form_id, $last_entry ) ); // WPCS: cache ok, DB call ok.
+
+	return absint( $entries_count );
 }
