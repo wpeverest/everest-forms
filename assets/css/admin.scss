@@ -1240,6 +1240,11 @@ body.everest-forms-builder-setup,
 						.everest-forms-border-container {
 
 							.everest-forms-field-option-row {
+								&.everest-forms-field-option-row-date_format {
+									.inline {
+										margin-right: 15px;
+									}
+								}
 
 								&:last-child {
 									margin-bottom: 15px;

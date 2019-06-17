@@ -196,7 +196,7 @@ class EVF_Shortcode_Form {
 	public static function wrapper_start( $field, $form_data ) {
 		$container                     = $field['properties']['container'];
 		$container['data']['field-id'] = esc_attr( $field['id'] );
-
+		evf_add_notice( __( 'Invalid form. Please check again.', 'everest-forms' ), 'error' );
 		printf(
 			'<div %s>',
 			evf_html_attributes( $container['id'], $container['class'], $container['data'], $container['attr'] )
