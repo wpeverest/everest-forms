@@ -331,14 +331,14 @@ class EVF_Admin_Entries {
 	 */
 	public function check_new_entries( $response, $data, $screen_id ) {
 		if ( 'everest-forms_page_evf-entries' === $screen_id ) {
-			$form_id    = ! empty( $data['evf_new_entries_form_id'] ) ? absint( $data['evf_new_entries_form_id'] ) : 0;
-			$last_entry = ! empty( $data['evf_new_entries_entry_id'] ) ? absint( $data['evf_new_entries_entry_id'] ) : 0;
+			$form_id       = ! empty( $data['evf_new_entries_form_id'] ) ? absint( $data['evf_new_entries_form_id'] ) : 0;
+			$last_entry_id = ! empty( $data['evf_new_entries_last_entry_id'] ) ? absint( $data['evf_new_entries_last_entry_id'] ) : 0;
 
 			$entries_count = 20;
 
 			if ( ! empty( $entries_count ) ) {
-				/* translators: %d - Number of form entries. */
-				$response['evf_new_entries_notification'] = esc_html( sprintf( _n( 'See %d new entry', 'See %d new entries', $entries_count, 'everest-forms' ), $entries_count ) );
+				/* translators: %d - New form entries count. */
+				$response['evf_new_entries_notification'] = esc_html( sprintf( _n( '%d new entry since you last checked.', '%d new entries since you last checked.', $entries_count, 'everest-forms' ), $entries_count ) );
 			}
 		}
 
