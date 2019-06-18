@@ -121,7 +121,7 @@ function evf_search_entries( $args ) {
 		{$order}
 		{$limit}
 		{$offset}
-	"
+		"
 	);
 
 	$results = $wpdb->get_results( $query ); // WPCS: cache ok, DB call ok, unprepared SQL ok.
@@ -161,7 +161,7 @@ function evf_get_count_entries_by_status( $form_id ) {
 /**
  * Get total next entries counts by last entry.
  *
- * @since 1.5.0
+ * @since 1.4.10
  *
  * @param  int $form_id    Form ID.
  * @param  int $last_entry Last Form ID.
@@ -170,7 +170,5 @@ function evf_get_count_entries_by_status( $form_id ) {
 function evf_get_count_entries_by_last_entry( $form_id, $last_entry ) {
 	global $wpdb;
 
-	$entries_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(entry_id) FROM {$wpdb->prefix}evf_entries WHERE form_id = %d AND entry_id > %d", $form_id, $last_entry ) ); // WPCS: cache ok, DB call ok.
-
-	return absint( $entries_count );
+	return $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(entry_id) FROM {$wpdb->prefix}evf_entries WHERE form_id = %d AND entry_id > %d", $form_id, $last_entry ) );
 }
