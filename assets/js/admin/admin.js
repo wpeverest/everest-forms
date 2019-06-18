@@ -168,9 +168,6 @@
 	// Tooltips
 	$( document.body ).trigger( 'init_tooltips' );
 
-	// Modify Heartbeat interval for testing purpose.
-	wp.heartbeat.interval( 'fast' );
-
 	// Check for new form entries using Heartbeat API.
 	$( document ).on( 'heartbeat-send', function( event, data ) {
 		var $entriesList  = $( '#everest-forms-entries-list' ),
