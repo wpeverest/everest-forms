@@ -322,7 +322,7 @@ class EVF_Admin_Entries {
 	/**
 	 * Check new entries with heartbeat API.
 	 *
-	 * @since 1.5.0
+	 * @since 1.4.10
 	 *
 	 * @param  array  $response  The Heartbeat response.
 	 * @param  array  $data      The $_POST data sent.
