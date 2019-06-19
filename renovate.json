@@ -2,6 +2,6 @@
   "extends": [
     "config:base"
   ],
-  "labels": [ "Renovate", "[Status] Needs Review" ],
+  "labels": [ "Renovate" ],
   "schedule": "before 3am on Monday"
 }

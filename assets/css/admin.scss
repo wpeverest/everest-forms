@@ -3089,6 +3089,18 @@ table.wp-list-table {
 			color: #a00;
 		}
 	}
+
+	.new-entries-notification td {
+		padding: 0;
+		text-align: center;
+
+		a {
+			display: none;
+			padding: 10px;
+			box-shadow: none;
+			background: lighten(#0095ff, 45%);
+		}
+	}
 }
 
 /**
