@@ -337,7 +337,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 
 		echo '<div class="evf-content-section evf-content-email-settings">';
 		echo '<div class="evf-content-section-title">';
-		_e( 'Email', 'everest-forms' );
+		echo '<div class="evf-title">' . esc_html__( 'Email', 'everest-forms' ) . '</div>';
 		?>
 			<div class="evf-toggle-section">
 				<label class="evf-toggle-switch">
