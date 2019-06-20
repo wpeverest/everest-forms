@@ -382,16 +382,18 @@ body.everest-forms-builder-setup,
 			z-index: 140005;
 			overflow: hidden;
 			background: #f1f1f1;
-			position: absolute;
+			position: fixed;
 			top: 0;
 			bottom: 0;
 
 			.everest-forms-overlay-content {
-				width: 128px;
-				height: 128px;
 				position: absolute;
 				top: 50%;
-				left: 50%;
+				left: 0%;
+				right: 0;
+				width: 128px;
+				height: 128px;
+				margin: 0 auto;
 				transform: translate(-50%, -50%);
 
 				span.loading {
@@ -778,12 +780,6 @@ body.everest-forms-builder-setup,
 }
 
 .everest-forms_page_evf-builder {
-	&.folded {
-		#everest-forms-builder {
-			width: calc(100% - 36px);
-		}
-	}
-
 	.everest-forms-add-fields-group,
 	.everest-forms-field-option-group {
 		.handlediv {
@@ -811,7 +807,6 @@ body.everest-forms-builder-setup,
 
 	#everest-forms-builder {
 		position: fixed;
-		width: calc(100% - 160px);
 
 		* {
 			box-sizing: border-box;

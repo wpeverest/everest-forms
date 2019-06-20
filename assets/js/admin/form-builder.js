@@ -44,9 +44,9 @@
 
 			// Adjust builder width.
 			$( document.body ).on( 'adjust_builder_width', function() {
-				var builderWidth = $( '#adminmenuwrap' ).width();
+				var adminMenuWidth = $( '#adminmenuwrap' ).width();
 
-				$( '#everest-forms-builder' ).css({ 'width': 'calc(100% - ' + builderWidth+ 'px)' });
+				$( '#everest-forms-builder' ).css({ 'width': 'calc(100% - ' + adminMenuWidth + 'px)' });
 			} ).trigger( 'adjust_builder_width' );
 
 			$( document.body ).on( 'click', '#collapse-button', function() {
