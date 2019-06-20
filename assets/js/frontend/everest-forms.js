@@ -28,47 +28,50 @@ jQuery( function ( $ ) {
 
 			if ( evfDateField.length > 0 ) {
 				$( '.flatpickr-field' ).each( function() {
-					var timeInterval = 5;
-					var inputData  	 = $(this).data();
-					switch(inputData.dateTime){
-							case 'date':
-								// Apply flatpicker to field.
-								$(this).flatpickr({
-									disableMobile: true,
-									dateFormat   : inputData.dateFormat,
-								});
-							break;
-							case 'time':
-								if (undefined !== inputData.timeInterval) {
-									timeInterval = parseInt(inputData.timeInterval);
-								}
+					var timeInterval = 5,
+						inputData  	 = $( this ).data();
 
-								// Apply flatpicker to field.
-								$(this).flatpickr({
-									enableTime   	: true,
-									noCalendar   	: true,
-									minuteIncrement : timeInterval,
-									dateFormat      : inputData.dateFormat,
-									disableMobile	: true,
-									time_24hr		: inputData.dateFormat.includes('H:i')
-								});
-							break;
-							case 'date-time':
-								if (undefined !== inputData.timeInterval) {
-									timeInterval = parseInt(inputData.timeInterval);
-								}
+					switch( inputData.dateTime ) {
+						case 'date':
+							// Apply flatpicker to field.
+							$( this ).flatpickr({
+								disableMobile : true,
+								mode          : inputData.mode,
+								dateFormat    : inputData.dateFormat,
+							});
+						break;
+						case 'time':
+							if ( undefined !== inputData.timeInterval ) {
+								timeInterval = parseInt( inputData.timeInterval );
+							}
 
-								// Apply flatpicker to field.
-								$(this).flatpickr({
-									enableTime   	: true,
-									noCalendar   	: false,
-									disableMobile	: true,
-									minuteIncrement : timeInterval,
-									dateFormat      : inputData.dateFormat,
-									time_24hr		: inputData.dateFormat.includes('H:i')
-								});
-							break;
-							default:
+							// Apply flatpicker to field.
+							$( this ).flatpickr({
+								enableTime   	: true,
+								noCalendar   	: true,
+								minuteIncrement : timeInterval,
+								dateFormat      : inputData.dateFormat,
+								disableMobile	: true,
+								time_24hr		: inputData.dateFormat.includes('H:i')
+							});
+						break;
+						case 'date-time':
+							if ( undefined !== inputData.timeInterval ) {
+								timeInterval = parseInt( inputData.timeInterval );
+							}
+
+							// Apply flatpicker to field.
+							$( this ).flatpickr({
+								enableTime   	: true,
+								noCalendar   	: false,
+								disableMobile	: true,
+								mode            : inputData.mode,
+								minuteIncrement : timeInterval,
+								dateFormat      : inputData.dateFormat,
+								time_24hr		: inputData.dateFormat.includes( 'H:i' )
+							});
+						break;
+						default:
 					}
 				});
 			}
