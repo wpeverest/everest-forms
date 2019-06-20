@@ -933,41 +933,6 @@ body.everest-forms-builder-setup,
 			}
 		}
 
-		// To do after merging with develop - set variables
-		.add,
-		.remove {
-			color: #969696;
-			background: $color-white;
-			border: 1px solid #b4b9be;
-			height: 24px;
-			width: 24px;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-
-			.dashicons {
-				line-height: 1.1;
-			}
-
-			&:hover {
-				color: $color-white;
-			}
-		}
-
-		.add {
-			&:hover {
-				background: #5d96ee;
-				border: 1px solid #5d96ee;
-			}
-		}
-
-		.remove {
-			&:hover {
-				background: #d9534f;
-    			border: 1px solid #d9534f;
-			}
-		}
-
 		.after-label-description {
 			float: right;
 		}
@@ -2512,12 +2477,6 @@ body.everest-forms-builder-setup,
 								font-weight: 600;
 							}
 						}
-					}
-				}
-
-				.evf-content-user-registration-settings {
-					.everest-forms-panel-field {
-						max-width: 500px;
 					}
 				}
 
