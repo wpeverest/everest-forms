@@ -370,7 +370,7 @@ class EVF_Form_Task {
 
 		$check_email_notification_status = isset( $form_data['settings']['email']['enable_email_notification'] ) ? $form_data['settings']['email']['enable_email_notification'] : 0;
 
-		if ( $check_email_notification_status !== '1' ) {
+		if ( '1' !== $check_email_notification_status ) {
 			return;
 		}
 
