@@ -42,11 +42,11 @@
 				EVFPanelBuilder.bindFields();
 			} ).trigger( 'evf-init-builder-fields' );
 
-			// Adjust builder width.
+		// Adjust builder width.
 			$( document.body ).on( 'adjust_builder_width', function() {
-				var builderWidth = $( '#everest-forms-builder' ).width();
+				var builderWidth = $( '#adminmenuwrap' ).width();
 
-				$( '#everest-forms-builder' ).width( builderWidth );
+			$( '#everest-forms-builder' ).css({ 'width': 'calc(100% - ' + builderWidth+ 'px)' });
 			} ).trigger( 'adjust_builder_width' );
 
 			$( document.body ).on( 'click', '#collapse-button', function() {
