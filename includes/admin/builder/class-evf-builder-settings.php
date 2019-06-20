@@ -332,11 +332,22 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			}
 		}
 
+		$value   = isset( $settings['email']['enable_email_notification'] ) ? $settings['email']['enable_email_notification'] : 0;
+		$checked = checked( '1', $value, false );
+
 		echo '<div class="evf-content-section evf-content-email-settings">';
 		echo '<div class="evf-content-section-title">';
 		_e( 'Email', 'everest-forms' );
-		echo '</div>';
-
+		?>
+			<div class="evf-toggle-section">
+				<label class="evf-toggle-switch">
+					<input type="checkbox" name="settings[email][enable_email_notification]" value="1" <?php echo $checked; ?> >
+					<span class="evf-toggle-switch-wrap"></span>
+					<span class="evf-toggle-switch-control"></span>
+				</label>
+			</div>
+		</div>
+		<?php
 		foreach ( $settings['email'] as $connection_id => $connection ) :
 			if ( preg_match( '/connection_/', $connection_id ) ) {
 				echo '<div class="evf-content-email-settings-inner" data-connection_id=' . $connection_id . '>';

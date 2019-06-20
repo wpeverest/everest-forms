@@ -368,6 +368,12 @@ class EVF_Form_Task {
 			return;
 		}
 
+		$check_email_notification_status = isset( $form_data['settings']['email']['enable_email_notification'] ) ? $form_data['settings']['email']['enable_email_notification'] : 0;
+
+		if ( $check_email_notification_status !== '1' ) {
+			return;
+		}
+
 		$fields = apply_filters( 'everest_forms_entry_email_data', $fields, $entry, $form_data );
 
 		if ( ! isset( $form_data['settings']['email']['connection_1'] ) ) {
