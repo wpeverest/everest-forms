@@ -186,6 +186,8 @@ class EVF_Form_Task {
 
 			$this->form_fields = apply_filters( 'everest_forms_process_after_filter', $this->form_fields, $entry, $form_data );
 
+			$this->errors = apply_filters( 'everest_forms_process_after_errors', $this->errors, $form_data );
+
 			// One last error check - don't proceed if there are any errors.
 			if ( ! empty( $this->errors[ $form_id ] ) ) {
 				if ( empty( $this->errors[ $form_id ]['header'] ) ) {
