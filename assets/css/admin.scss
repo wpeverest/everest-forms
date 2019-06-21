@@ -383,7 +383,10 @@ body.everest-forms-builder-setup,
 			overflow: hidden;
 			background: #f1f1f1;
 			position: absolute;
-			height: 100vh;
+			top: 0;
+			bottom: 0;
+			height: auto;
+			min-height: 100vh;
 
 			.everest-forms-overlay-content {
 				position: absolute;
