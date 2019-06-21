@@ -44,13 +44,13 @@
 
 			// Adjust builder width.
 			$( document.body ).on( 'adjust_builder_width', function() {
-				var builderWidth = $( '#everest-forms-builder' ).width();
+				var adminMenuWidth = $( '#adminmenuwrap' ).width();
 
-				$( '#everest-forms-builder' ).width( builderWidth );
+				$( '#everest-forms-builder-form' ).css({ 'width': 'calc(100% - ' + adminMenuWidth + 'px)' });
 			} ).trigger( 'adjust_builder_width' );
 
 			$( document.body ).on( 'click', '#collapse-button', function() {
-				$( '#everest-forms-builder' ).width( '' );
+				$( '#everest-forms-builder-form' ).width( '' );
 				$( document.body ).trigger( 'adjust_builder_width' );
 			});
 
