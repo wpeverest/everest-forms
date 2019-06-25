@@ -138,7 +138,7 @@
 				if ( tab_content.length >= 1 ) {
 					window.evf_tab_scroller = new PerfectScrollbar( tab_content.selector );
 
-					$( document.body ).on( 'click', '#field-options, .everest-forms-field', function() {
+					$( document.body ).on( 'click', '#field-options, .everest-forms-field, .everest-forms-tabs li', function() {
 						tab_content.scrollTop(0);
 					} );
 				}
