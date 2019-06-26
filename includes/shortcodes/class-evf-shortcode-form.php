@@ -600,6 +600,11 @@ class EVF_Shortcode_Form {
 			return;
 		}
 
+		if ( isset( $form_data['settings']['enable_user_registration'] ) && $form_data['settings']['enable_user_registration'] && is_user_logged_in() && ! current_user_can( 'administrator' ) ) {
+			echo '<p class="everest-forms-notice everest-forms-notice--error">' . esc_html__( 'You are already logged in. Please logout to register New User.', 'everest-forms' ) . ' <a href="' . wp_logout_url( get_permalink() ) . '">' . esc_html__( 'Logout', 'everest-forms' ) . '</a></p>';
+			return;
+		}
+
 		// Before output hook.
 		do_action( 'everest_forms_frontend_output_before', $form_data, $form );
 
