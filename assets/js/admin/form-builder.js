@@ -140,6 +140,7 @@
 
 					$( document.body ).on( 'click', '#field-options, .everest-forms-field, .everest-forms-tabs li', function() {
 						tab_content.scrollTop(0);
+						panel_content.scrollTop(0);
 					} );
 				}
 
