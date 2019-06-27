@@ -114,9 +114,10 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 	 * Outputs the builder content.
 	 */
 	public function output_content() {
-		$form_id     = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
-		$user_emails = evf_get_all_email_fields_by_form_id( $form_id );
-		$settings    = isset( $this->form_data['settings'] ) ? $this->form_data['settings'] : array();
+		$form_id      = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
+		$user_emails  = evf_get_all_email_fields_by_form_id( $form_id );
+		$settings     = isset( $this->form_data['settings'] ) ? $this->form_data['settings'] : array();
+		$email_status = isset( $this->form_data['settings']['enable_email_notification'] ) ? $this->form_data['settings']['enable_email_notification'] : 0;
 
 		// --------------------------------------------------------------------//
 		// General
@@ -348,9 +349,14 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			</div>
 		</div>
 		<?php
+		$hidden_class = 0 === $email_status ? 'everest-forms-hidden' : '';
+		if ( 'everest-forms-hidden' === $hidden_class ) {
+			echo '<p class="email-disable-message everest-forms-notice everest-forms-notice-info">' . esc_html__( 'Enable Email to send email notifications.', 'everest-forms' ) . '</p>';
+		}
+
 		foreach ( $settings['email'] as $connection_id => $connection ) :
 			if ( preg_match( '/connection_/', $connection_id ) ) {
-				echo '<div class="evf-content-email-settings-inner" data-connection_id=' . $connection_id . '>';
+				echo '<div class="evf-content-email-settings-inner ' . $hidden_class . '" data-connection_id=' . $connection_id . '>';
 
 				everest_forms_panel_field(
 					'text',

@@ -1453,6 +1453,22 @@ jQuery( function ( $ ) {
 		}
 	});
 
+	$( document ).on( 'change', '.evf-content-email-settings .evf-toggle-switch input', function(e) {
+		var $this = $( this ),
+			value = $this.prop('checked');
+
+			if ( value === false ) {
+				$this.closest('.evf-content-email-settings').find('.email-disable-message').remove();
+				$this.closest('.evf-content-section-title').siblings('.evf-content-email-settings-inner').addClass('everest-forms-hidden');
+				$('<p class="email-disable-message everest-forms-notice everest-forms-notice-info">Enable Email to send email notifications.</p>').insertAfter( $this.closest('.evf-content-section-title' ));
+			} else if( value === true ){
+				$this.closest('.evf-content-section-title').siblings('.evf-content-email-settings-inner').removeClass('everest-forms-hidden');
+				$this.closest('.evf-content-email-settings').find('.email-disable-message').remove();
+			}
+
+	});
+
+
 	function get_all_available_field( allowed_field, type , el ) {
 		var all_fields_without_email = [];
 		var all_fields = [];
