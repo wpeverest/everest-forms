@@ -2326,6 +2326,10 @@ body.everest-forms-builder-setup,
 
 				&.active-connection {
 					display: block;
+
+					&.everest-forms-hidden {
+						display: none;
+					}
 				}
 			}
 		}
