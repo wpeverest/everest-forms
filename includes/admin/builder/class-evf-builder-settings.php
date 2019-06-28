@@ -336,8 +336,9 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			}
 		}
 
-		$email_status = isset( $settings['email']['enable_email_notification'] ) ? $settings['email']['enable_email_notification'] : 0;
+		$email_status = isset( $settings['email']['enable_email_notification'] ) ? $settings['email']['enable_email_notification'] : '1';
 		$checked      = checked( '1', $email_status, false );
+		$hidden_class = '1' !== $email_status ? 'everest-forms-hidden' : '';
 
 		echo '<div class="evf-content-section evf-content-email-settings">';
 		echo '<div class="evf-content-section-title">';
@@ -352,8 +353,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			</div>
 		</div>
 		<?php
-		$hidden_class = '1' !== $email_status ? 'everest-forms-hidden' : '';
-		if ( 'everest-forms-hidden' === $hidden_class ) {
+		if ( '1' !== $email_status ) {
 			printf( '<p class="email-disable-message everest-forms-notice everest-forms-notice-info">%s</p>', esc_html__( 'Turn on Email settings to manage your email notifications.', 'everest-forms' ) );
 		}
 
