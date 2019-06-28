@@ -1456,14 +1456,17 @@ jQuery( function ( $ ) {
 			value = $this.prop('checked');
 
 			if ( false === value ) {
+				$( this ).closest('#everest-forms-panel-settings').find('.everest-forms-active-email .everest-forms-active-email-connections-list li a span').addClass('everest-forms-hidden');
+				$( this ).closest('#everest-forms-panel-settings').find('.everest-forms-active-email .everest-forms-email-add').addClass('everest-forms-hidden');
 				$this.closest('.evf-content-email-settings').find('.email-disable-message').remove();
 				$this.closest('.evf-content-section-title').siblings('.evf-content-email-settings-inner').addClass('everest-forms-hidden');
 				$('<p class="email-disable-message everest-forms-notice everest-forms-notice-info">' + evf_data.i18n_email_disable_message + '</p>').insertAfter( $this.closest('.evf-content-section-title' ));
 			} else if( true === value ){
+				$( this ).closest('#everest-forms-panel-settings').find('.everest-forms-active-email .everest-forms-active-email-connections-list li a span').removeClass('everest-forms-hidden');
+				$( this ).closest('#everest-forms-panel-settings').find('.everest-forms-active-email .everest-forms-email-add').removeClass('everest-forms-hidden');
 				$this.closest('.evf-content-section-title').siblings('.evf-content-email-settings-inner').removeClass('everest-forms-hidden');
 				$this.closest('.evf-content-email-settings').find('.email-disable-message').remove();
 			}
-
 	});
 
 
