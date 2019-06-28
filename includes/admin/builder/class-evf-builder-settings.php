@@ -349,9 +349,9 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			</div>
 		</div>
 		<?php
-		$hidden_class = 0 === $email_status ? 'everest-forms-hidden' : '';
+		$hidden_class = '0' === $email_status ? 'everest-forms-hidden' : '';
 		if ( 'everest-forms-hidden' === $hidden_class ) {
-			echo '<p class="email-disable-message everest-forms-notice everest-forms-notice-info">' . esc_html__( 'Enable Email to send email notifications.', 'everest-forms' ) . '</p>';
+			printf( '<p class="email-disable-message everest-forms-notice everest-forms-notice-info">%s</p>', esc_html__( 'Turn on Email settings to manage your email notifications.', 'everest-forms' ) );
 		}
 
 		foreach ( $settings['email'] as $connection_id => $connection ) :
