@@ -1458,7 +1458,7 @@ jQuery( function ( $ ) {
 			if ( false === value ) {
 				$this.closest('.evf-content-email-settings').find('.email-disable-message').remove();
 				$this.closest('.evf-content-section-title').siblings('.evf-content-email-settings-inner').addClass('everest-forms-hidden');
-				$('<p class="email-disable-message everest-forms-notice everest-forms-notice-info">' + evf_data.i18n_email-disable-message + '</p>').insertAfter( $this.closest('.evf-content-section-title' ));
+				$('<p class="email-disable-message everest-forms-notice everest-forms-notice-info">' + evf_data.i18n_email_disable_message + '</p>').insertAfter( $this.closest('.evf-content-section-title' ));
 			} else if( true === value ){
 				$this.closest('.evf-content-section-title').siblings('.evf-content-email-settings-inner').removeClass('everest-forms-hidden');
 				$this.closest('.evf-content-email-settings').find('.email-disable-message').remove();
