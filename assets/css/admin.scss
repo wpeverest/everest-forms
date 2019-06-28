@@ -1448,6 +1448,10 @@ body.everest-forms-builder-setup,
 							display: flex;
 							align-items: flex-end;
 							flex-direction: column-reverse;
+
+							&.everest-forms-hidden {
+								display: none;
+							}
 						}
 
 						.everest-forms-connections-add,
