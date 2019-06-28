@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Everest Forms 1.4.9\n"
 "Report-Msgid-Bugs-To: https://github.com/wpeverest/everest-forms/issues\n"
-"POT-Creation-Date: 2019-05-28 10:48:53+00:00\n"
+"POT-Creation-Date: 2019-06-20 11:15:26+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -67,7 +67,7 @@ msgstr ""
 #: includes/abstracts/class-evf-form-fields.php:425
 #: includes/admin/settings/class-evf-settings-validation.php:45
 #: includes/evf-core-functions.php:1857
-#: includes/shortcodes/class-evf-shortcode-form.php:170
+#: includes/shortcodes/class-evf-shortcode-form.php:172
 msgid "Required"
 msgstr ""
 
@@ -223,7 +223,7 @@ msgid "General"
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:41
-#: includes/admin/builder/class-evf-builder-settings.php:337
+#: includes/admin/builder/class-evf-builder-settings.php:340
 #: includes/admin/settings/class-evf-settings-email.php:25
 #: includes/admin/settings/class-evf-settings-validation.php:63
 #: includes/fields/class-evf-field-email.php:20
@@ -232,8 +232,8 @@ msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:77
 #: includes/admin/builder/class-evf-builder-settings.php:311
-#: includes/admin/builder/class-evf-builder-settings.php:351
-#: includes/class-evf-form-task.php:376 includes/evf-update-functions.php:140
+#: includes/admin/builder/class-evf-builder-settings.php:362
+#: includes/class-evf-form-task.php:382 includes/evf-update-functions.php:140
 #: includes/templates/contact.php:71
 msgid "Admin Notification"
 msgstr ""
@@ -350,6 +350,7 @@ msgid "Submit button processing text"
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:245
+#: includes/shortcodes/class-evf-shortcode-form.php:70
 msgid "Processing&hellip;"
 msgstr ""
 
@@ -404,7 +405,7 @@ msgid ""
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:316
-#: includes/admin/builder/class-evf-builder-settings.php:473
+#: includes/admin/builder/class-evf-builder-settings.php:484
 #: includes/templates/contact.php:76
 msgid "New Form Entry %s"
 msgstr ""
@@ -414,64 +415,64 @@ msgstr ""
 msgid "User Notification"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:363
+#: includes/admin/builder/class-evf-builder-settings.php:374
 msgid "To Address"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:367
+#: includes/admin/builder/class-evf-builder-settings.php:378
 #. translators: %1$s - general settings docs url
 msgid ""
 "Enter the recipient's email address (comma separated) to receive form entry "
 "notifications. <a href=\"%s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:382
+#: includes/admin/builder/class-evf-builder-settings.php:393
 msgid "Cc Address"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:385
+#: includes/admin/builder/class-evf-builder-settings.php:396
 msgid ""
 "Enter Cc recipient's email address (comma separated) to receive form entry "
 "notifications."
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:399
+#: includes/admin/builder/class-evf-builder-settings.php:410
 msgid "Bcc Address"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:402
+#: includes/admin/builder/class-evf-builder-settings.php:413
 msgid ""
 "Enter Bcc recipient's email address (comma separated) to receive form entry "
 "notifications."
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:417
+#: includes/admin/builder/class-evf-builder-settings.php:428
 msgid "From Name"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:421
+#: includes/admin/builder/class-evf-builder-settings.php:432
 #. translators: %1$s - general settings docs url
 msgid ""
 "Enter the From Name to be displayed in Email. <a href=\"%1$s\" "
 "target=\"_blank\">Learn More</a>"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:435
+#: includes/admin/builder/class-evf-builder-settings.php:446
 msgid "From Address"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:439
+#: includes/admin/builder/class-evf-builder-settings.php:450
 #. translators: %1$s - general settings docs url
 msgid ""
 "Enter the Email address from which you want to send Email <a href=\"%s\" "
 "target=\"_blank\">Learn More</a>"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:453
+#: includes/admin/builder/class-evf-builder-settings.php:464
 msgid "Reply To"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:457
+#: includes/admin/builder/class-evf-builder-settings.php:468
 #. translators: %1$s - general settings docs url
 msgid ""
 "Enter the reply to email address where you want the email to be received "
@@ -479,33 +480,33 @@ msgid ""
 "More</a>"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:471
+#: includes/admin/builder/class-evf-builder-settings.php:482
 msgid "Email Subject"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:475
+#: includes/admin/builder/class-evf-builder-settings.php:486
 #. translators: %1$s - general settings docs url
 msgid ""
 "Enter the subject of the email. <a href=\"%1$s\" target=\"_blank\">Learn "
 "More</a>"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:489
+#: includes/admin/builder/class-evf-builder-settings.php:500
 msgid "Email Message"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:491
+#: includes/admin/builder/class-evf-builder-settings.php:502
 msgid "{all_fields}"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:493
+#: includes/admin/builder/class-evf-builder-settings.php:504
 #. translators: %1$s - general settings docs url
 msgid ""
 "Enter the message of the email <a href=\"%1$s\" target=\"_blank\">Learn "
 "More</a>"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:501
+#: includes/admin/builder/class-evf-builder-settings.php:512
 #. translators: %s - all fields smart tag.
 msgid "To display all form fields, use the %s Smart Tag."
 msgstr ""
@@ -641,7 +642,7 @@ msgid ""
 msgstr ""
 
 #: includes/admin/class-evf-admin-entries-table-list.php:75
-#: includes/admin/class-evf-admin-entries.php:80
+#: includes/admin/class-evf-admin-entries.php:81
 msgid "Whoops, it appears you do not have any form entries yet."
 msgstr ""
 
@@ -671,7 +672,7 @@ msgstr ""
 
 #: includes/admin/class-evf-admin-entries-table-list.php:269
 #: includes/admin/class-evf-admin-forms-table-list.php:108
-#: includes/evf-entry-functions.php:52
+#: includes/evf-entry-functions.php:54
 msgid "Trash"
 msgstr ""
 
@@ -714,7 +715,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: includes/admin/class-evf-admin-entries-table-list.php:438
-#: includes/admin/class-evf-admin-entries.php:254
+#: includes/admin/class-evf-admin-entries.php:255
 #. translators: %d: number of entries
 msgid "%d entry permanently deleted."
 msgid_plural "%d entries permanently deleted."
@@ -722,7 +723,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: includes/admin/class-evf-admin-entries-table-list.php:464
-#: includes/admin/class-evf-admin-entries.php:91
+#: includes/admin/class-evf-admin-entries.php:92
 msgid "Filter"
 msgstr ""
 
@@ -739,24 +740,31 @@ msgstr ""
 msgid "Filter by form"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries.php:62
+#: includes/admin/class-evf-admin-entries.php:63
 #: includes/admin/class-evf-admin-forms-table-list.php:50
 #: includes/admin/class-evf-admin-forms-table-list.php:101
 #: includes/admin/class-evf-admin-menus.php:126
 msgid "Entries"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries.php:73
+#: includes/admin/class-evf-admin-entries.php:74
 msgid "Search Entries"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries.php:96
+#: includes/admin/class-evf-admin-entries.php:97
 msgid "Learn more about entries"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries.php:97
+#: includes/admin/class-evf-admin-entries.php:98
 msgid "Create your first form!"
 msgstr ""
+
+#: includes/admin/class-evf-admin-entries.php:342
+#. translators: %d - New form entries count.
+msgid "%d new entry since you last checked."
+msgid_plural "%d new entries since you last checked."
+msgstr[0] ""
+msgstr[1] ""
 
 #: includes/admin/class-evf-admin-forms-table-list.php:35
 msgid "No Forms found."
@@ -775,8 +783,8 @@ msgid "Author"
 msgstr ""
 
 #: includes/admin/class-evf-admin-forms-table-list.php:49
-#: includes/fields/class-evf-field-date-time.php:73
-#: includes/fields/class-evf-field-date-time.php:109
+#: includes/fields/class-evf-field-date-time.php:80
+#: includes/fields/class-evf-field-date-time.php:116
 msgid "Date"
 msgstr ""
 
@@ -841,8 +849,8 @@ msgid "Pending <span class=\"count\">(%s)</span>"
 msgstr ""
 
 #: includes/admin/class-evf-admin-forms-table-list.php:331
-#: includes/admin/views/html-admin-page-entries-view.php:174
-#: includes/admin/views/html-admin-page-entries-view.php:188
+#: includes/admin/views/html-admin-page-entries-view.php:179
+#: includes/admin/views/html-admin-page-entries-view.php:193
 msgid "Move to trash"
 msgstr ""
 
@@ -1214,7 +1222,7 @@ msgid "Add-ons list"
 msgstr ""
 
 #: includes/admin/views/html-admin-page-addons.php:74
-#: includes/admin/views/html-admin-page-entries-view.php:164
+#: includes/admin/views/html-admin-page-entries-view.php:169
 msgid "Status:"
 msgstr ""
 
@@ -1320,39 +1328,39 @@ msgstr ""
 msgid "This entry does not have any fields."
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:67
+#: includes/admin/views/html-admin-page-entries-view.php:69
 msgid "Field ID"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:100
+#: includes/admin/views/html-admin-page-entries-view.php:104
 msgid "Empty"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:117
+#: includes/admin/views/html-admin-page-entries-view.php:122
 msgid "Entry Details"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:123
+#: includes/admin/views/html-admin-page-entries-view.php:128
 msgid "Entry ID:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:129
+#: includes/admin/views/html-admin-page-entries-view.php:134
 msgid "Submitted:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:130
+#: includes/admin/views/html-admin-page-entries-view.php:135
 msgid "M j, Y @ g:ia"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:137
+#: includes/admin/views/html-admin-page-entries-view.php:142
 msgid "User:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:156
+#: includes/admin/views/html-admin-page-entries-view.php:161
 msgid "User IP:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:165
+#: includes/admin/views/html-admin-page-entries-view.php:170
 msgid "Completed"
 msgstr ""
 
@@ -1600,16 +1608,16 @@ msgstr ""
 msgid "Thanks for contacting us! We will be in touch with you shortly."
 msgstr ""
 
-#: includes/class-evf-form-task.php:398
+#: includes/class-evf-form-task.php:404
 #. translators: %s - form name.
 msgid "New %s Entry"
 msgstr ""
 
-#: includes/class-evf-form-task.php:486
+#: includes/class-evf-form-task.php:492
 msgid "No form ID was found."
 msgstr ""
 
-#: includes/class-evf-form-task.php:493
+#: includes/class-evf-form-task.php:499
 msgid "Could not create an entry"
 msgstr ""
 
@@ -3035,14 +3043,14 @@ msgid ""
 "with spaces."
 msgstr ""
 
-#: includes/evf-entry-functions.php:51
+#: includes/evf-entry-functions.php:53
 msgid "Published"
 msgstr ""
 
 #: includes/evf-notice-functions.php:25 includes/evf-notice-functions.php:56
 #: includes/evf-notice-functions.php:75 includes/evf-notice-functions.php:99
-#: includes/evf-notice-functions.php:112 includes/evf-notice-functions.php:125
-#: includes/evf-notice-functions.php:179
+#: includes/evf-notice-functions.php:112 includes/evf-notice-functions.php:127
+#: includes/evf-notice-functions.php:182
 msgid "This function should not be called before everest_forms_init."
 msgstr ""
 
@@ -3102,68 +3110,76 @@ msgstr ""
 msgid "Date / Time"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:61
+#: includes/fields/class-evf-field-date-time.php:68
 msgid "Format"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:62
+#: includes/fields/class-evf-field-date-time.php:69
 msgid "Select a format for the date field."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:74
-#: includes/fields/class-evf-field-date-time.php:159
+#: includes/fields/class-evf-field-date-time.php:81
+#: includes/fields/class-evf-field-date-time.php:178
 msgid "Time"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:75
+#: includes/fields/class-evf-field-date-time.php:82
 msgid "Both"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:101
+#: includes/fields/class-evf-field-date-time.php:108
 msgid "Date & Time Format"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:102
+#: includes/fields/class-evf-field-date-time.php:109
 msgid "Advanced date and time formatting options."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:116
+#: includes/fields/class-evf-field-date-time.php:123
 msgid "Date Format"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:117
+#: includes/fields/class-evf-field-date-time.php:124
 msgid "Choose a desire date format to display."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:144
+#: includes/fields/class-evf-field-date-time.php:151
 msgid "Default to current date."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:145
+#: includes/fields/class-evf-field-date-time.php:152
 msgid "Check this option to set current date as default."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:166
+#: includes/fields/class-evf-field-date-time.php:163
+msgid "Enable range"
+msgstr ""
+
+#: includes/fields/class-evf-field-date-time.php:164
+msgid "Check this option to enable date range mode."
+msgstr ""
+
+#: includes/fields/class-evf-field-date-time.php:185
 msgid "Time interval and format"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:167
+#: includes/fields/class-evf-field-date-time.php:186
 msgid "Choose time interval and format to display."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:181
+#: includes/fields/class-evf-field-date-time.php:200
 msgid "15 minutes"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:182
+#: includes/fields/class-evf-field-date-time.php:201
 msgid "30 minutes"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:195
+#: includes/fields/class-evf-field-date-time.php:214
 msgid "12 H"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:196
+#: includes/fields/class-evf-field-date-time.php:215
 msgid "24 H"
 msgstr ""
 
