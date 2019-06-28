@@ -44,13 +44,13 @@
 
 			// Adjust builder width.
 			$( document.body ).on( 'adjust_builder_width', function() {
-				var builderWidth = $( '#everest-forms-builder' ).width();
+				var adminMenuWidth = $( '#adminmenuwrap' ).width();
 
-				$( '#everest-forms-builder' ).width( builderWidth );
+				$( '#everest-forms-builder-form' ).css({ 'width': 'calc(100% - ' + adminMenuWidth + 'px)' });
 			} ).trigger( 'adjust_builder_width' );
 
 			$( document.body ).on( 'click', '#collapse-button', function() {
-				$( '#everest-forms-builder' ).width( '' );
+				$( '#everest-forms-builder-form' ).width( '' );
 				$( document.body ).trigger( 'adjust_builder_width' );
 			});
 
@@ -137,10 +137,6 @@
 
 				if ( tab_content.length >= 1 ) {
 					window.evf_tab_scroller = new PerfectScrollbar( tab_content.selector );
-
-					$( document.body ).on( 'click', '#field-options, .everest-forms-field', function() {
-						tab_content.scrollTop(0);
-					} );
 				}
 
 				if ( panel_content.length >= 1 ) {
@@ -148,7 +144,7 @@
 				}
 
 				if ( panel_setting.length >= 1 ) {
-					window.evf_setting_scroller = new PerfectScrollbar(panel_setting.selector );
+					window.evf_setting_scroller = new PerfectScrollbar( panel_setting.selector );
 				}
 			}
 
@@ -1054,6 +1050,7 @@
 		 * Toggle fields tabs (Add Fields, Field Options).
 		 */
 		fieldTabChoice: function( id ) {
+			$( '.everest-forms-tab-content' ).scrollTop(0);
 			$( '.everest-forms-fields-tab a' ).removeClass( 'active' );
 			$( '.everest-forms-field, .everest-forms-title-desc' ).removeClass( 'active' );
 
@@ -1308,11 +1305,12 @@
 		},
 
 		bindFieldSettings: function () {
-			$('body').on('click', '.everest-forms-preview .everest-forms-field, .everest-forms-preview .everest-forms-field .everest-forms-field-setting', function (e) {
+			$( 'body' ).on( 'click', '.everest-forms-preview .everest-forms-field, .everest-forms-preview .everest-forms-field .everest-forms-field-setting', function(e) {
 				e.preventDefault();
-				var field_id = $(this).closest('.everest-forms-field').attr('data-field-id');
-				EVFPanelBuilder.switchToFieldOptionPanel(field_id);
-			});
+				var field_id = $( this ).closest( '.everest-forms-field' ).attr( 'data-field-id' );
+				$( '.everest-forms-tab-content' ).scrollTop(0);
+				EVFPanelBuilder.switchToFieldOptionPanel( field_id );
+			} );
 		}
 	};
 

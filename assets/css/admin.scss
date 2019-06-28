@@ -484,20 +484,24 @@ body.everest-forms-builder-setup,
 
 		.everest-forms-overlay {
 			width: 100%;
-			z-index: 140005;
+			z-index: 9;
 			overflow: hidden;
 			background: #f1f1f1;
 			position: absolute;
 			top: 0;
 			bottom: 0;
+			height: auto;
+			min-height: 100vh;
 
 			.everest-forms-overlay-content {
-				width: 128px;
-				height: 128px;
 				position: absolute;
 				top: 50%;
-				left: 50%;
-				transform: translate(-50%, -50%);
+				left: 0;
+				right: 0;
+				width: 128px;
+				height: 128px;
+				margin: 0 auto;
+				transform: translateY(-50%);
 
 				span.loading {
 					display: block;
@@ -510,6 +514,7 @@ body.everest-forms-builder-setup,
 
 		nav.evf-nav-tab-wrapper {
 			padding: 0;
+			border: none;
 			display: flex;
 			margin: 0 0 1.5em;
 			position: relative;
@@ -881,12 +886,6 @@ body.everest-forms-builder-setup,
 }
 
 .everest-forms_page_evf-builder {
-	&.folded {
-		#everest-forms-builder {
-			width: calc(100% - 36px);
-		}
-	}
-
 	.everest-forms-add-fields-group,
 	.everest-forms-field-option-group {
 		.handlediv {
@@ -913,8 +912,11 @@ body.everest-forms-builder-setup,
 	}
 
 	#everest-forms-builder {
-		position: fixed;
-		width: calc(100% - 160px);
+		width: 100%;
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		min-height: 100vh;
 
 		* {
 			box-sizing: border-box;
@@ -922,6 +924,10 @@ body.everest-forms-builder-setup,
 
 		.wp-picker-holder * {
 			box-sizing: content-box;
+		}
+
+		#everest-forms-builder-form {
+			position: fixed;
 		}
 
 		a {

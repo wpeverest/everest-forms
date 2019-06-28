@@ -485,7 +485,7 @@ class EVF_Form_Task {
 			'user_ip_address' => sanitize_text_field( $user_ip ),
 			'status'          => 'publish',
 			'referer'         => $_SERVER['HTTP_REFERER'],
-			'date_created'    => current_time( 'mysql' ),
+			'date_created'    => current_time( 'mysql', true ),
 		);
 
 		if ( ! $entry_data['form_id'] ) {
