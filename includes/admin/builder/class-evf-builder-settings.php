@@ -76,8 +76,11 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		if ( empty( $email ) ) {
 			$email['connection_1'] = array( 'connection_name' => __( 'Admin Notification', 'everest-forms' ) );
 		}
+		$email_status = isset( $form_data['settings']['email']['enable_email_notification'] ) ? $form_data['settings']['email']['enable_email_notification'] : 0;
+		$hidden_class = '1' !== $email_status ? 'everest-forms-hidden' : '';
+
 		?>
-			<div class="everest-forms-active-email">
+			<div class="everest-forms-active-email <?php echo esc_attr( $hidden_class ); ?>">
 				<button class="everest-forms-btn everest-forms-btn-primary everest-forms-email-add" data-form_id="<?php echo absint( $_GET['form_id'] ); ?>" data-source="email" data-type="<?php echo esc_attr( 'connection' ); ?>">
 					<?php printf( esc_html__( 'Add New Email', 'everest-forms' ) ); ?>
 				</button>
@@ -98,7 +101,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 								?>
 									<li class="connection-list" data-connection-id="<?php echo $connection_id; ?>">
 										<a class="user-nickname" href="#"><?php echo $connection_name; ?></a>
-										<a href="#"><span class="<?php echo $remove_class; ?>">Remove</a>
+										<a href="#"><span class="<?php echo esc_attr( $remove_class ); ?>">Remove</a>
 									</li>
 								<?php
 							}
@@ -333,8 +336,8 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			}
 		}
 
-		$value   = isset( $settings['email']['enable_email_notification'] ) ? $settings['email']['enable_email_notification'] : 0;
-		$checked = checked( '1', $value, false );
+		$email_status = isset( $settings['email']['enable_email_notification'] ) ? $settings['email']['enable_email_notification'] : 0;
+		$checked      = checked( '1', $email_status, false );
 
 		echo '<div class="evf-content-section evf-content-email-settings">';
 		echo '<div class="evf-content-section-title">';
@@ -349,14 +352,14 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			</div>
 		</div>
 		<?php
-		$hidden_class = 0 === $email_status ? 'everest-forms-hidden' : '';
+		$hidden_class = '1' !== $email_status ? 'everest-forms-hidden' : '';
 		if ( 'everest-forms-hidden' === $hidden_class ) {
-			echo '<p class="email-disable-message everest-forms-notice everest-forms-notice-info">' . esc_html__( 'Enable Email to send email notifications.', 'everest-forms' ) . '</p>';
+			printf( '<p class="email-disable-message everest-forms-notice everest-forms-notice-info">%s</p>', esc_html__( 'Turn on Email settings to manage your email notifications.', 'everest-forms' ) );
 		}
 
 		foreach ( $settings['email'] as $connection_id => $connection ) :
 			if ( preg_match( '/connection_/', $connection_id ) ) {
-				echo '<div class="evf-content-email-settings-inner ' . $hidden_class . '" data-connection_id=' . $connection_id . '>';
+				echo '<div class="evf-content-email-settings-inner ' . esc_attr( $hidden_class ) . '" data-connection_id=' . $connection_id . '>';
 
 				everest_forms_panel_field(
 					'text',

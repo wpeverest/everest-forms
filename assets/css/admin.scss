@@ -1425,13 +1425,9 @@ body.everest-forms-builder-setup,
 						}
 
 						&.active {
+							position: relative;
 							color: $everestforms;
 							background-color: $color-white;
-							position: relative;
-
-							.dashicons {
-								transform: rotate(90deg);
-							}
 						}
 					}
 
@@ -1448,6 +1444,10 @@ body.everest-forms-builder-setup,
 							display: flex;
 							align-items: flex-end;
 							flex-direction: column-reverse;
+
+							&.everest-forms-hidden {
+								display: none;
+							}
 						}
 
 						.everest-forms-connections-add,
