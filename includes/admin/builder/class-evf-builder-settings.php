@@ -80,8 +80,8 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		$hidden_class = '1' !== $email_status ? 'everest-forms-hidden' : '';
 
 		?>
-			<div class="everest-forms-active-email">
-				<button class="everest-forms-btn everest-forms-btn-primary everest-forms-email-add <?php echo esc_attr( $hidden_class ); ?>" data-form_id="<?php echo absint( $_GET['form_id'] ); ?>" data-source="email" data-type="<?php echo esc_attr( 'connection' ); ?>">
+			<div class="everest-forms-active-email <?php echo esc_attr( $hidden_class ); ?>">
+				<button class="everest-forms-btn everest-forms-btn-primary everest-forms-email-add" data-form_id="<?php echo absint( $_GET['form_id'] ); ?>" data-source="email" data-type="<?php echo esc_attr( 'connection' ); ?>">
 					<?php printf( esc_html__( 'Add New Email', 'everest-forms' ) ); ?>
 				</button>
 					<ul class="everest-forms-active-email-connections-list">
@@ -101,7 +101,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 								?>
 									<li class="connection-list" data-connection-id="<?php echo $connection_id; ?>">
 										<a class="user-nickname" href="#"><?php echo $connection_name; ?></a>
-										<a href="#"><span class="<?php echo esc_attr( $remove_class ) . ' ' . esc_attr( $hidden_class ); ?>">Remove</a>
+										<a href="#"><span class="<?php echo esc_attr( $remove_class ); ?>">Remove</a>
 									</li>
 								<?php
 							}
