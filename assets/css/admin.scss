@@ -3,9 +3,7 @@
  * General EverestForms admin styles.
  */
 
-/**
- * Import
- */
+// Import
 @import 'fonts';
 @import 'mixins';
 @import 'variables';
@@ -13,9 +11,7 @@
 @import 'clearings';
 @import 'confirm';
 
-/**
- * Styling begins
- */
+// Styling begins
 .blockUI.blockOverlay {
 	@include loader();
 }
@@ -155,9 +151,7 @@
 	margin-top: 10px;
 }
 
-/**
- * Help Tip
- */
+// Help Tip
 .everest-forms-help-tip {
 	color: #666;
 	display: inline-block;
@@ -175,9 +169,7 @@
 	}
 }
 
-/**
- * Notice info
- */
+// Notice info
 .everest-forms-notice {
 	display: block;
 	padding: 5px 15px;
@@ -247,9 +239,7 @@ img.help_tip {
 	margin: 0 0 0 9px;
 }
 
-/**
- * toggleclass
- */
+//toggleclass
 .everest-forms-hidden {
 	display: none;
 }
@@ -258,9 +248,7 @@ img.help_tip {
 	display: block;
 }
 
-/**
- * Core styling.
- */
+//Core styling.
 body.everest-forms-builder {
 	&.everest-forms_page_evf-builder {
 		#wpcontent {
@@ -292,9 +280,7 @@ body.everest-forms-builder-setup,
 	}
 }
 
-/**
- * Branding.
- */
+//Branding.
 .everest-forms_page_evf-builder,
 .everest-forms_page_evf-settings,
 .everest-forms_page_evf-entries {
@@ -552,9 +538,7 @@ body.everest-forms-builder-setup,
 	}
 }
 
-/**
- * Form Setup.
- */
+//Form Setup.
 .everest-forms-builder-setup {
 	.everest-forms {
 		width: 600px;
@@ -731,9 +715,7 @@ body.everest-forms-builder-setup,
 	}
 }
 
-/**
- * Form Builder.
- */
+//Form Builder.
 #everest-forms-panel-settings {
 	.evf-content-section {
 		display: none;
@@ -2386,9 +2368,7 @@ body.everest-forms-builder-setup,
 	}
 }
 
-/**
- * Settings styling.
- */
+//Settings styling.
 .everest-forms {
 	h2.evf-nav-tab-wrapper {
 		margin-bottom: 1em;
@@ -2980,9 +2960,7 @@ body.everest-forms-builder-setup,
 	}
 }
 
-/**
- * List Table.
- */
+// List Table.
 .tablenav {
 	#delete_all {
 		margin: 1px;
@@ -3032,9 +3010,7 @@ table.wp-list-table {
 	}
 }
 
-/**
- * Entry viewer.
- */
+// Entry viewer.
 .everest-forms-entry {
 	.postbox {
 		.inside {
@@ -3083,9 +3059,7 @@ table.wp-list-table {
 	}
 }
 
-/**
- * DB log viewer.
- */
+// DB log viewer.
 .wp-list-table.logs {
 	.log-level {
 		display: inline;
@@ -3169,9 +3143,7 @@ table.wp-list-table {
 	}
 }
 
-/**
- * Tooltips.
- */
+//Tooltips.
 .tips {
 	cursor: help;
 	text-decoration: none;
@@ -3363,9 +3335,7 @@ img.tips {
 	}
 }
 
-/**
- * Date picker.
- */
+//Date picker.
 img.ui-datepicker-trigger {
 	vertical-align: middle;
 	margin-top: -1px;
@@ -3376,9 +3346,7 @@ img.ui-datepicker-trigger {
 	display: none;
 }
 
-/**
- * Blank State.
- */
+//Blank State.
 .everest-forms-BlankState {
 	text-align: center;
 	padding: 5em 0 0;
@@ -3416,9 +3384,7 @@ img.ui-datepicker-trigger {
 	}
 }
 
-/**
- * Select2 elements.
- */
+//Select2 elements.
 .select2-drop,
 .select2-dropdown {
 	z-index: 999999 !important;
@@ -3542,9 +3508,7 @@ img.ui-datepicker-trigger {
 	}
 }
 
-/**
- * Small screen optimisation.
- */
+//Small screen optimisation.
 @media only screen and (max-width: 1280px) {
 	.everest-forms_page_evf-builder {
 		#everest-forms-builder {
@@ -3566,9 +3530,7 @@ img.ui-datepicker-trigger {
 	}
 }
 
-/**
- * Optimisation for screens 960px and smaller.
- */
+//Optimisation for screens 960px and smaller.
 @media only screen and (max-width: 960px) {
 	.everest-forms_page_evf-builder {
 		#everest-forms-builder {
@@ -3626,9 +3588,7 @@ img.ui-datepicker-trigger {
 	}
 }
 
-/**
- * Optimisation for screens 782px and smaller.
- */
+//Optimisation for screens 782px and smaller.
 @media screen and (max-width: 782px) {
 	.everest-forms_page_evf-builder {
 		.auto-fold {
@@ -3718,9 +3678,7 @@ img.ui-datepicker-trigger {
 	}
 }
 
-/**
- * Optimisation for screens 600px and smaller.
- */
+//Optimisation for screens 600px and smaller.
 @media screen and (max-width: 600px) {
 	.everest-forms .evf-nav-tab-wrapper a.nav-tab {
 		padding: 10px;
@@ -3856,9 +3814,7 @@ img.ui-datepicker-trigger {
 	}
 }
 
-/**
- * Optimisation for screens 400px and smaller.
- */
+//Optimisation for screens 400px and smaller.
 @media screen and (max-width: 400px) {
 	#everest-forms-builder {
 		.evf-tab-lists li {
