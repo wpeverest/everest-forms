@@ -4,18 +4,14 @@
  * integrate with EverestForms specifically.
  */
 
-/**
- * Imports
- */
+// Imports
 @import 'mixins';
 @import 'variables';
 @import 'animation';
 @import 'fonts';
 @import 'clearings';
 
-/**
- * Global styles
- */
+// Global styles
 .screen-reader-text {
 	clip: rect(1px, 1px, 1px, 1px);
 	height: 1px;
@@ -25,16 +21,12 @@
 	word-wrap: normal !important;
 }
 
-/**
- * Utility classes
- */
+// Utility classes
 .clear {
 	clear: both;
 }
 
-/**
- * Main EverestForms styles
- */
+// Main EverestForms styles
 .everest-forms {
 	*,
 	*::before,
@@ -333,7 +325,7 @@
 		cursor: pointer;
 		background: none;
 		box-shadow: none;
-		font-size: 14px;
+		font-size: inherit;
 		font-weight: 400;
 		line-height: 1.5;
 		padding: 10px 15px;
@@ -396,9 +388,7 @@
 		}
 	}
 
-	/**
-	 * Notices.
-	 */
+	// Notices.
 	.everest-forms-notice {
 		padding: 1em 3em;
 		margin: 0 0 2em;
@@ -462,10 +452,7 @@
 	}
 }
 
-
-/**
- * Gutenberg Block
- */
+// Gutenberg Block
 .edit-post-visual-editor {
 	.everest-form-gutenberg-form-selector-wrap {
 		.components-placeholder__label {
@@ -499,10 +486,7 @@ div.evf-gutenberg-form-selector .evf-frontend-row button[type='submit']:disabled
 	cursor: not-allowed;
 }
 
-/**
- * Anti-spam Honeypot and reCAPTCHA Area
- */
-
+// Anti-spam Honeypot and reCAPTCHA Area
 .evf-honeypot-container {
 	display: none !important;
 	position: absolute !important;

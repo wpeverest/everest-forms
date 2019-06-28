@@ -20,7 +20,7 @@ $tabs = apply_filters( 'everest_forms_builder_tabs_array', array() );
 			<span class="loading"><?php esc_html_e( 'Loading&hellip;', 'everest-forms' ); ?></span>
 		</div>
 	</div>
-	<form name="everest-forms-builder" id="everest-forms-builder-form" method="post" data-id="<?php echo absint( $form_id ); ?>">
+	<form id="everest-forms-builder-form" name="everest-forms-builder" method="post" data-id="<?php echo absint( $form_id ); ?>">
 		<input type="hidden" name="id" value="<?php echo absint( $form_id ); ?>">
 		<input type="hidden" value="<?php echo absint( $form_data['form_field_id'] ); ?>" name="form_field_id" id="everest-forms-field-id">
 
