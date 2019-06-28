@@ -1455,11 +1455,11 @@ jQuery( function ( $ ) {
 		var $this = $( this ),
 			value = $this.prop('checked');
 
-			if ( value === false ) {
+			if ( false === value ) {
 				$this.closest('.evf-content-email-settings').find('.email-disable-message').remove();
 				$this.closest('.evf-content-section-title').siblings('.evf-content-email-settings-inner').addClass('everest-forms-hidden');
-				$('<p class="email-disable-message everest-forms-notice everest-forms-notice-info">Enable Email to send email notifications.</p>').insertAfter( $this.closest('.evf-content-section-title' ));
-			} else if( value === true ){
+				$('<p class="email-disable-message everest-forms-notice everest-forms-notice-info">' + evf_data.i18n_email-disable-message + '</p>').insertAfter( $this.closest('.evf-content-section-title' ));
+			} else if( true === value ){
 				$this.closest('.evf-content-section-title').siblings('.evf-content-email-settings-inner').removeClass('everest-forms-hidden');
 				$this.closest('.evf-content-email-settings').find('.email-disable-message').remove();
 			}
