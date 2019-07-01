@@ -143,6 +143,18 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		everest_forms_panel_field(
 			'textarea',
 			'settings',
+			'form_description',
+			$this->form_data,
+			esc_html__( 'Form description', 'everest-forms' ),
+			array(
+				'input_class' => 'short',
+				'default'     => isset( $this->form->form_description ) ? $this->form->form_description : '',
+				'tooltip'     => sprintf( esc_html__( 'Give the description to this form', 'everest-forms' ) ),
+			)
+		);
+		everest_forms_panel_field(
+			'textarea',
+			'settings',
 			'form_disable_message',
 			$this->form_data,
 			esc_html__( 'Form disabled message', 'everest-forms' ),

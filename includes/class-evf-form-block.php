@@ -33,11 +33,17 @@ class EVF_Form_Block {
 			'everest-forms/form-selector',
 			array(
 				'attributes'      => array(
-					'formId'    => array(
+					'formId'             => array(
 						'type' => 'string',
 					),
-					'className' => array(
+					'className'          => array(
 						'type' => 'string',
+					),
+					'displayTitle'       => array(
+						'type' => 'boolean',
+					),
+					'displayDescription' => array(
+						'type' => 'boolean',
 					),
 				),
 				'editor_style'    => 'everest-forms-block-editor',
@@ -69,16 +75,18 @@ class EVF_Form_Block {
 		$form_block_data = array(
 			'forms' => EVF()->form->get( '', array( 'order' => 'DESC' ) ),
 			'i18n'  => array(
-				'title'         => esc_html__( 'Everest Forms', 'everest-forms' ),
-				'description'   => esc_html__( 'Select and display one of your forms.', 'everest-forms' ),
-				'form_keywords' => array(
+				'title'            => esc_html__( 'Everest Forms', 'everest-forms' ),
+				'description'      => esc_html__( 'Select and display one of your forms.', 'everest-forms' ),
+				'form_keywords'    => array(
 					esc_html__( 'form', 'everest-forms' ),
 					esc_html__( 'contact', 'everest-forms' ),
 					esc_html__( 'survey', 'everest-forms' ),
 				),
-				'form_select'   => esc_html__( 'Select a Form', 'everest-forms' ),
-				'form_settings' => esc_html__( 'Form Settings', 'everest-forms' ),
-				'form_selected' => esc_html__( 'Form', 'everest-forms' ),
+				'form_select'      => esc_html__( 'Select a Form', 'everest-forms' ),
+				'form_settings'    => esc_html__( 'Form Settings', 'everest-forms' ),
+				'form_selected'    => esc_html__( 'Form', 'everest-forms' ),
+				'show_title'       => esc_html__( 'Show Title', 'everest-forms' ),
+				'show_description' => esc_html__( 'Show Description', 'everest-forms' ),
 			),
 		);
 		wp_localize_script( 'everest-forms-block-editor', 'evf_form_block_data', $form_block_data );
@@ -104,6 +112,8 @@ class EVF_Form_Block {
 		}
 
 		$is_gb_editor = defined( 'REST_REQUEST' ) && REST_REQUEST && ! empty( $_REQUEST['context'] ) && 'edit' === $_REQUEST['context'];
+		$title        = ! empty( $attr['displayTitle'] ) ? true : false;
+		$description  = ! empty( $attr['displayDescription'] ) ? true : false;
 
 		// Disable form fields if called from the Gutenberg editor.
 		if ( $is_gb_editor ) {
@@ -111,6 +121,7 @@ class EVF_Form_Block {
 				'everest_forms_frontend_container_class',
 				function ( $classes ) {
 					$classes[] = 'evf-gutenberg-form-selector';
+					$classes[] = 'evf-container-full';
 					return $classes;
 				}
 			);
@@ -133,7 +144,9 @@ class EVF_Form_Block {
 		return EVF_Shortcodes::shortcode_wrapper(
 			array( 'EVF_Shortcode_Form', 'output' ),
 			array(
-				'id' => $form_id,
+				'id'          => $form_id,
+				'title'       => $title,
+				'description' => $description,
 			),
 			array(
 				'class' => evf_sanitize_classes( $classes ),
