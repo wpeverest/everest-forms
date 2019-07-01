@@ -140,12 +140,22 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 1.4.10 - XX-06-2019 =
+= 1.4.10 - XX-07-2019 =
+* Feature - Form specific email notification toggle.
+* Feature - Form enable/disable toggle with disabled message.
+* Feature - Form title and description support in Guten block.
+* Feature - New entries "heartbeat" notification on the entries list table screen.
+* Enhancement - Introduced range support in the date/time field.
 * Fix - Correctly load localisation file.
 * Fix - WPML string translation for notices.
+* Fix - Navigation alignment issue with multi-part.
 * Fix - Undefined variable for filtered template file.
+* Fix - Date and time of entry submission. #191
+* Fix - Dragging forms fields bug in the builder. #196
+* Fix - Form builder design bug on wp.com dashboard. #190
 * Fix - WP admin bar design issue in safari on EVF pages. #179
 * Fix - Submit button Processing text while form is not saved. #177
+* Tweak - Set margin to fix spacing issue on Multi-part buttons.
 
 = 1.4.9 - 28-05-2019 =
 * Feature - Everest Forms is WPML Compatiable. #161
