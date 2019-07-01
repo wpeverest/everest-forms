@@ -143,13 +143,26 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		everest_forms_panel_field(
 			'textarea',
 			'settings',
+			'form_disable_message',
+			$this->form_data,
+			esc_html__( 'Form disabled message', 'everest-forms' ),
+			array(
+				'input_class' => 'short',
+				'default'     => isset( $this->form->form_disable_message ) ? $this->form->form_disable_message : __( 'This form is disabled.', 'everest-forms' ),
+				'tooltip'     => sprintf( esc_html__( 'Message that shows up if the form is disabled.', 'everest-forms' ) ),
+			)
+		);
+		everest_forms_panel_field(
+			'textarea',
+			'settings',
 			'successful_form_submission_message',
 			$this->form_data,
 			esc_html__( 'Successful form submission message', 'everest-forms' ),
 			array(
-				'default' => isset( $this->form->successful_form_submission_message ) ? $this->form->successful_form_submission_message : __( 'Thanks for contacting us! We will be in touch with you shortly', 'everest-forms' ),
+				'input_class' => 'short',
+				'default'     => isset( $this->form->successful_form_submission_message ) ? $this->form->successful_form_submission_message : __( 'Thanks for contacting us! We will be in touch with you shortly', 'everest-forms' ),
 				/* translators: %1$s - general settings docs url */
-				'tooltip' => sprintf( esc_html__( 'Success message that shows up after submitting form. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/general-settings/#successful-form-submission-message' ) ),
+				'tooltip'     => sprintf( esc_html__( 'Success message that shows up after submitting form. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/general-settings/#successful-form-submission-message' ) ),
 			)
 		);
 		everest_forms_panel_field(
@@ -455,7 +468,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					array(
 						'default'    => isset( $settings['email'][ $connection_id ]['evf_from_email'] ) ? $settings['email'][ $connection_id ]['evf_from_email'] : '{admin_email}',
 						/* translators: %1$s - general settings docs url */
-						'tooltip'    => sprintf( esc_html__( 'Enter the Email address from which you want to send Email <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#from-address' ) ),
+						'tooltip'    => sprintf( esc_html__( 'Enter the Email address from which you want to send Email. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#from-address' ) ),
 						'smarttags'  => array(
 							'type'        => 'fields',
 							'form_fields' => 'email',
@@ -509,7 +522,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					array(
 						'default'    => isset( $settings['email'][ $connection_id ]['evf_email_message'] ) ? $settings['email'][ $connection_id ]['evf_email_message'] : __( '{all_fields}', 'everest-forms' ),
 						/* translators: %1$s - general settings docs url */
-						'tooltip'    => sprintf( esc_html__( 'Enter the message of the email <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#email-message' ) ),
+						'tooltip'    => sprintf( esc_html__( 'Enter the message of the email. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#email-message' ) ),
 						'smarttags'  => array(
 							'type'        => 'all',
 							'form_fields' => 'all',

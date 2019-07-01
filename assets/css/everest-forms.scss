@@ -432,6 +432,12 @@
 			padding-left: 0 !important; // Required for default theme compatibility
 			margin-left: 0 !important; // Required for default theme compatibility
 		}
+
+		&.everst-forms-form-disable-notice {
+			color: $color_gray-base;
+			background: lighten($orange, 47%);
+			border: 1px solid adjust-color($orange, $saturation: -15%, $lightness: +20%);
+		}
 	}
 
 	.everest-forms-notice--success {

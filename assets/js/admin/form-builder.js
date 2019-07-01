@@ -1406,7 +1406,7 @@ jQuery( function ( $ ) {
 		$( '.evf-smart-tag-lists' ).hide();
 	});
 
-	// Toggle Smart Tags
+	// Toggle Smart Tags.
 	$( document.body ).on('click', '.evf-toggle-smart-tag-display', function(e) {
 		e.stopPropagation();
 		$('.evf-smart-tag-lists').hide();
@@ -1417,7 +1417,17 @@ jQuery( function ( $ ) {
 
 		var allowed_field = $ ( this ).data( 'fields' );
 		get_all_available_field( allowed_field, type , $( this ) );
+	});
 
+	// Toggle form status.
+	$( document.body ).on( 'change', '.everest-forms-toggle-form input', function(e) {
+		e.stopPropagation();
+		$.post( evf_data.ajax_url, {
+			action: 'everest_forms_enabled_form',
+			security: evf_data.evf_enabled_form,
+			form_id: $( this ).data( 'form_id' ),
+			enabled: $( this ).attr( 'checked' ) ? 1 : 0
+		});
 	});
 
 	$( document.body ).on('click', '.smart-tag-field', function(e) {

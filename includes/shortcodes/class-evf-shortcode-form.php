@@ -588,12 +588,21 @@ class EVF_Shortcode_Form {
 		}
 
 		// Basic information.
-		$form_data   = apply_filters( 'everest_forms_frontend_form_data', evf_decode( $form->post_content ) );
-		$form_id     = absint( $form->ID );
-		$settings    = $form_data['settings'];
-		$action      = esc_url_raw( remove_query_arg( 'evf-forms' ) );
-		$title       = filter_var( $title, FILTER_VALIDATE_BOOLEAN );
-		$description = filter_var( $description, FILTER_VALIDATE_BOOLEAN );
+		$form_data       = apply_filters( 'everest_forms_frontend_form_data', evf_decode( $form->post_content ) );
+		$form_id         = absint( $form->ID );
+		$settings        = $form_data['settings'];
+		$action          = esc_url_raw( remove_query_arg( 'evf-forms' ) );
+		$title           = filter_var( $title, FILTER_VALIDATE_BOOLEAN );
+		$description     = filter_var( $description, FILTER_VALIDATE_BOOLEAN );
+		$form_enabled    = isset( $form_data['form_enabled'] ) ? absint( $form_data['form_enabled'] ) : 1;
+		$disable_message = isset( $form_data['settings']['form_disable_message'] ) ? $form_data['settings']['form_disable_message'] : __( 'This form is disabled.', 'everest-forms' );
+
+		if ( 1 !== $form_enabled ) {
+			if ( ! empty( $disable_message ) ) {
+				printf( '<p class="everst-forms-form-disable-notice everest-forms-notice everest-forms-notice--info">%s</p>', esc_textarea( $disable_message ) );
+			}
+			return;
+		}
 
 		// If the form does not contain any fields do not proceed.
 		if ( empty( $form_data['form_fields'] ) ) {
@@ -604,7 +613,7 @@ class EVF_Shortcode_Form {
 		// Before output hook.
 		do_action( 'everest_forms_frontend_output_before', $form_data, $form );
 
-		// Allow filter to return early if some condition is not met.
+		// Allow filter to return early if some condition is not meet.
 		if ( ! apply_filters( 'everest_forms_frontend_load', true, $form_data, null ) ) {
 			return;
 		}

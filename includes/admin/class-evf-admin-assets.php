@@ -108,6 +108,7 @@ class EVF_Admin_Assets {
 					'evf_field_drop_nonce'         => wp_create_nonce( 'everest_forms_field_drop' ),
 					'evf_save_form'                => wp_create_nonce( 'everest_forms_save_form' ),
 					'evf_get_next_id'              => wp_create_nonce( 'everest_forms_get_next_id' ),
+					'evf_enabled_form'             => wp_create_nonce( 'everest_forms_enabled_form' ),
 					'form_id'                      => isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0,
 					'field'                        => esc_html__( 'field', 'everest-forms' ),
 					'i18n_ok'                      => esc_html__( 'OK', 'everest-forms' ),
