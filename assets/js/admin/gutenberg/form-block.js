@@ -27,9 +27,15 @@ registerBlockType( 'everest-forms/form-selector', {
 		formId: {
 			type: 'string',
 		},
+		displayTitle: {
+			type: 'boolean',
+		},
+		displayDescription: {
+			type: 'boolean',
+		},
 	},
 	edit( props ) {
-		const { attributes: { formId = '' }, setAttributes } = props;
+		const { attributes: { formId = '', displayTitle = false, displayDescription = false }, setAttributes } = props;
 		const formOptions = evf_form_block_data.forms.map( value => (
 			{ value: value.ID, label: value.post_title }
 		) );
@@ -41,6 +47,14 @@ registerBlockType( 'everest-forms/form-selector', {
 			setAttributes( { formId: value } );
 		}
 
+		function toggleDisplayTitle( value ) {
+			setAttributes( { displayTitle: value } );
+		}
+
+		function toggleDisplayDescription( value ) {
+			setAttributes( { displayDescription: value } );
+		}
+
 		jsx = [
 			<InspectorControls key="evf-gutenberg-form-selector-inspector-controls">
 				<PanelBody title={ evf_form_block_data.i18n.form_settings }>
@@ -49,6 +63,16 @@ registerBlockType( 'everest-forms/form-selector', {
 						value={ formId }
 						options={ formOptions }
 						onChange={ selectForm }
+					/>
+					<ToggleControl
+						label={ evf_form_block_data.i18n.show_title }
+						checked={ displayTitle }
+						onChange={ toggleDisplayTitle }
+					/>
+					<ToggleControl
+						label={ evf_form_block_data.i18n.show_description }
+						checked={ displayDescription }
+						onChange={ toggleDisplayDescription }
 					/>
 				</PanelBody>
 			</InspectorControls>

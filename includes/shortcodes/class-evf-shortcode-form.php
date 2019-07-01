@@ -34,6 +34,7 @@ class EVF_Shortcode_Form {
 	 */
 	public static function hooks() {
 		add_action( 'everest_forms_frontend_output_success', 'evf_print_notices', 10, 2 );
+		add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'header' ), 5, 3 );
 		add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'fields' ), 10, 3 );
 		add_action( 'everest_forms_display_field_before', array( 'EVF_Shortcode_Form', 'wrapper_start' ), 5, 2 );
 		add_action( 'everest_forms_display_field_before', array( 'EVF_Shortcode_Form', 'label' ), 15, 2 );
@@ -196,11 +197,36 @@ class EVF_Shortcode_Form {
 	public static function wrapper_start( $field, $form_data ) {
 		$container                     = $field['properties']['container'];
 		$container['data']['field-id'] = esc_attr( $field['id'] );
-
 		printf(
 			'<div %s>',
 			evf_html_attributes( $container['id'], $container['class'], $container['data'], $container['attr'] )
 		);
+	}
+
+	/**
+	 * Form header for displaying form title and description if enabled.
+	 *
+	 * @param array $form_data   Form data and settings.
+	 * @param bool  $title       Whether to display form title.
+	 * @param bool  $description Whether to display form description.
+	 */
+	public static function header( $form_data, $title, $description ) {
+		$settings = isset( $form_data['settings'] ) ? $form_data['settings'] : array();
+
+		// Check if title and/or description is enabled.
+		if ( true === $title || true === $description ) {
+			echo '<div class="evf-title-container">';
+
+			if ( true === $title && ! empty( $settings['form_title'] ) ) {
+				echo '<div class="everest-forms--title">' . esc_html( $settings['form_title'] ) . '</div>';
+			}
+
+			if ( true === $description && ! empty( $settings['form_description'] ) ) {
+				echo '<div class="everest-forms--description">' . esc_textarea( $settings['form_description'] ) . '</div>';
+			}
+
+			echo '</div>';
+		}
 	}
 
 	/**
@@ -589,23 +615,30 @@ class EVF_Shortcode_Form {
 		}
 
 		// Basic information.
-		$form_data   = apply_filters( 'everest_forms_frontend_form_data', evf_decode( $form->post_content ) );
-		$form_id     = absint( $form->ID );
-		$settings    = $form_data['settings'];
-		$action      = esc_url_raw( remove_query_arg( 'evf-forms' ) );
-		$title       = filter_var( $title, FILTER_VALIDATE_BOOLEAN );
-		$description = filter_var( $description, FILTER_VALIDATE_BOOLEAN );
+		$form_data       = apply_filters( 'everest_forms_frontend_form_data', evf_decode( $form->post_content ) );
+		$form_id         = absint( $form->ID );
+		$settings        = $form_data['settings'];
+		$action          = esc_url_raw( remove_query_arg( 'evf-forms' ) );
+		$title           = filter_var( $title, FILTER_VALIDATE_BOOLEAN );
+		$description     = filter_var( $description, FILTER_VALIDATE_BOOLEAN );
+		$form_enabled    = isset( $form_data['form_enabled'] ) ? absint( $form_data['form_enabled'] ) : 1;
+		$disable_message = isset( $form_data['settings']['form_disable_message'] ) ? $form_data['settings']['form_disable_message'] : __( 'This form is disabled.', 'everest-forms' );
 
-		// If the form does not contain any fields do not proceed.
+		// If the form is disabled or does not contain any fields do not proceed.
 		if ( empty( $form_data['form_fields'] ) ) {
-			echo '<!-- EverestForms: no fields, form hidden -->';
+			echo '<!-- Everest Forms: no fields, form hidden -->';
+			return;
+		} elseif ( 1 !== $form_enabled ) {
+			if ( ! empty( $disable_message ) ) {
+				printf( '<p class="everst-forms-form-disable-notice everest-forms-notice everest-forms-notice--info">%s</p>', esc_textarea( $disable_message ) );
+			}
 			return;
 		}
 
 		// Before output hook.
 		do_action( 'everest_forms_frontend_output_before', $form_data, $form );
 
-		// Allow filter to return early if some condition is not met.
+		// Allow filter to return early if some condition is not meet.
 		if ( ! apply_filters( 'everest_forms_frontend_load', true, $form_data, null ) ) {
 			return;
 		}
