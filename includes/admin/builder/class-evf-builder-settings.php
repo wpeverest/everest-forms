@@ -77,7 +77,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			$email['connection_1'] = array( 'connection_name' => __( 'Admin Notification', 'everest-forms' ) );
 		}
 		$email_status = isset( $form_data['settings']['email']['enable_email_notification'] ) ? $form_data['settings']['email']['enable_email_notification'] : 1;
-		$hidden_class = 1 !== $email_status ? 'everest-forms-hidden' : '';
+		$hidden_class = '1' != $email_status ? 'everest-forms-hidden' : '';
 
 		?>
 			<div class="everest-forms-active-email <?php echo esc_attr( $hidden_class ); ?>">
