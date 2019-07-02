@@ -168,7 +168,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 
 			$args = array(
 				'slug'    => 'date_format',
-				'content' => $date_format_label . $date_format_select . $current_date_default . $current_date_range,
+				'content' => $date_format_label . $date_format_select . '<div class="inline">' . $current_date_default . '</div>' . '<div class="inline">' . $current_date_range . '</div>',
 			);
 			$this->field_element( 'row', $field, $args );
 
