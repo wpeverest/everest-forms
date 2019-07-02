@@ -150,6 +150,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Fix - WPML string translation for notices.
 * Fix - Navigation alignment issue with multi-part.
 * Fix - Undefined variable for filtered template file.
+* Fix - Active email list not shown on first page load.
 * Fix - Date and time of entry submission. #191
 * Fix - Dragging forms fields bug in the builder. #196
 * Fix - Form builder design bug on wp.com dashboard. #190
