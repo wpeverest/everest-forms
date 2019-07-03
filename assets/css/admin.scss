@@ -896,7 +896,7 @@ body.everest-forms-builder-setup,
 		position: absolute;
 		top: 0;
 		bottom: 0;
-		min-height: 100vh;
+		min-height: calc(100vh - 32px);
 
 		* {
 			box-sizing: border-box;
