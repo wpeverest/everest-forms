@@ -82,7 +82,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		<div class="everest-forms-preview-wrap">
 			<div class="everest-forms-preview">
 				<div class="everest-forms-title-desc">
-					<h2 class="everest-forms-form-name"><?php echo esc_html( $this->form->post_title ); ?></h2>
+					<h2 class="everest-forms-form-name"><?php echo isset( $this->form->post_title ) ? esc_html( $this->form->post_title ) : esc_html__( 'Form not found.', 'everest-forms' ); ?></h2>
 				</div>
 				<div class="everest-forms-field-wrap">
 					<?php do_action( 'everest_forms_builder_fields_preview', $this->form ); ?>
