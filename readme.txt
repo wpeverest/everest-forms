@@ -149,6 +149,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Fix - Correctly load localisation file.
 * Fix - WPML string translation for notices.
 * Fix - Navigation alignment issue with multi-part.
+* Fix - Email field should default to being required.
 * Fix - Undefined variable for filtered template file.
 * Fix - Active email list not shown on first page load.
 * Fix - Date and time of entry submission. #191
