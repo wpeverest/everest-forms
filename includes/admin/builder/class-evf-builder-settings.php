@@ -76,8 +76,11 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		if ( empty( $email ) ) {
 			$email['connection_1'] = array( 'connection_name' => __( 'Admin Notification', 'everest-forms' ) );
 		}
+		$email_status = isset( $form_data['settings']['email']['enable_email_notification'] ) ? $form_data['settings']['email']['enable_email_notification'] : '1';
+		$hidden_class = '1' !== $email_status ? 'everest-forms-hidden' : '';
+
 		?>
-			<div class="everest-forms-active-email">
+			<div class="everest-forms-active-email <?php echo esc_attr( $hidden_class ); ?>">
 				<button class="everest-forms-btn everest-forms-btn-primary everest-forms-email-add" data-form_id="<?php echo absint( $_GET['form_id'] ); ?>" data-source="email" data-type="<?php echo esc_attr( 'connection' ); ?>">
 					<?php printf( esc_html__( 'Add New Email', 'everest-forms' ) ); ?>
 				</button>
@@ -98,7 +101,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 								?>
 									<li class="connection-list" data-connection-id="<?php echo $connection_id; ?>">
 										<a class="user-nickname" href="#"><?php echo $connection_name; ?></a>
-										<a href="#"><span class="<?php echo $remove_class; ?>">Remove</a>
+										<a href="#"><span class="<?php echo esc_attr( $remove_class ); ?>">Remove</a>
 									</li>
 								<?php
 							}
@@ -114,9 +117,10 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 	 * Outputs the builder content.
 	 */
 	public function output_content() {
-		$form_id     = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
-		$user_emails = evf_get_all_email_fields_by_form_id( $form_id );
-		$settings    = isset( $this->form_data['settings'] ) ? $this->form_data['settings'] : array();
+		$form_id      = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
+		$user_emails  = evf_get_all_email_fields_by_form_id( $form_id );
+		$settings     = isset( $this->form_data['settings'] ) ? $this->form_data['settings'] : array();
+		$email_status = isset( $this->form_data['settings']['enable_email_notification'] ) ? $this->form_data['settings']['enable_email_notification'] : 0;
 
 		// --------------------------------------------------------------------//
 		// General
@@ -139,13 +143,38 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		everest_forms_panel_field(
 			'textarea',
 			'settings',
+			'form_description',
+			$this->form_data,
+			esc_html__( 'Form description', 'everest-forms' ),
+			array(
+				'input_class' => 'short',
+				'default'     => isset( $this->form->form_description ) ? $this->form->form_description : '',
+				'tooltip'     => sprintf( esc_html__( 'Give the description to this form', 'everest-forms' ) ),
+			)
+		);
+		everest_forms_panel_field(
+			'textarea',
+			'settings',
+			'form_disable_message',
+			$this->form_data,
+			esc_html__( 'Form disabled message', 'everest-forms' ),
+			array(
+				'input_class' => 'short',
+				'default'     => isset( $this->form->form_disable_message ) ? $this->form->form_disable_message : __( 'This form is disabled.', 'everest-forms' ),
+				'tooltip'     => sprintf( esc_html__( 'Message that shows up if the form is disabled.', 'everest-forms' ) ),
+			)
+		);
+		everest_forms_panel_field(
+			'textarea',
+			'settings',
 			'successful_form_submission_message',
 			$this->form_data,
 			esc_html__( 'Successful form submission message', 'everest-forms' ),
 			array(
-				'default' => isset( $this->form->successful_form_submission_message ) ? $this->form->successful_form_submission_message : __( 'Thanks for contacting us! We will be in touch with you shortly', 'everest-forms' ),
+				'input_class' => 'short',
+				'default'     => isset( $this->form->successful_form_submission_message ) ? $this->form->successful_form_submission_message : __( 'Thanks for contacting us! We will be in touch with you shortly', 'everest-forms' ),
 				/* translators: %1$s - general settings docs url */
-				'tooltip' => sprintf( esc_html__( 'Success message that shows up after submitting form. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/general-settings/#successful-form-submission-message' ) ),
+				'tooltip'     => sprintf( esc_html__( 'Success message that shows up after submitting form. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/general-settings/#successful-form-submission-message' ) ),
 			)
 		);
 		everest_forms_panel_field(
@@ -332,14 +361,29 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			}
 		}
 
+		$email_status = isset( $settings['email']['enable_email_notification'] ) ? $settings['email']['enable_email_notification'] : '1';
+		$hidden_class = '1' !== $email_status ? 'everest-forms-hidden' : '';
+
 		echo '<div class="evf-content-section evf-content-email-settings">';
 		echo '<div class="evf-content-section-title">';
-		_e( 'Email', 'everest-forms' );
-		echo '</div>';
+		echo '<div class="evf-title">' . esc_html__( 'Email', 'everest-forms' ) . '</div>';
+		?>
+		<div class="evf-toggle-section">
+			<label class="evf-toggle-switch">
+				<input type="hidden" name="settings[email][enable_email_notification]" value="0" class="widefat">
+				<input type="checkbox" name="settings[email][enable_email_notification]" value="1" <?php echo checked( '1', $email_status, false ); ?> >
+				<span class="evf-toggle-switch-wrap"></span>
+				<span class="evf-toggle-switch-control"></span>
+			</label>
+		</div></div>
+		<?php
+		if ( '1' !== $email_status ) {
+			printf( '<p class="email-disable-message everest-forms-notice everest-forms-notice-info">%s</p>', esc_html__( 'Turn on Email settings to manage your email notifications.', 'everest-forms' ) );
+		}
 
 		foreach ( $settings['email'] as $connection_id => $connection ) :
 			if ( preg_match( '/connection_/', $connection_id ) ) {
-				echo '<div class="evf-content-email-settings-inner" data-connection_id=' . $connection_id . '>';
+				echo '<div class="evf-content-email-settings-inner ' . esc_attr( $hidden_class ) . '" data-connection_id=' . $connection_id . '>';
 
 				everest_forms_panel_field(
 					'text',
@@ -436,7 +480,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					array(
 						'default'    => isset( $settings['email'][ $connection_id ]['evf_from_email'] ) ? $settings['email'][ $connection_id ]['evf_from_email'] : '{admin_email}',
 						/* translators: %1$s - general settings docs url */
-						'tooltip'    => sprintf( esc_html__( 'Enter the Email address from which you want to send Email <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#from-address' ) ),
+						'tooltip'    => sprintf( esc_html__( 'Enter the Email address from which you want to send Email. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#from-address' ) ),
 						'smarttags'  => array(
 							'type'        => 'fields',
 							'form_fields' => 'email',
@@ -490,7 +534,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					array(
 						'default'    => isset( $settings['email'][ $connection_id ]['evf_email_message'] ) ? $settings['email'][ $connection_id ]['evf_email_message'] : __( '{all_fields}', 'everest-forms' ),
 						/* translators: %1$s - general settings docs url */
-						'tooltip'    => sprintf( esc_html__( 'Enter the message of the email <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#email-message' ) ),
+						'tooltip'    => sprintf( esc_html__( 'Enter the message of the email. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#email-message' ) ),
 						'smarttags'  => array(
 							'type'        => 'all',
 							'form_fields' => 'all',

@@ -370,6 +370,12 @@ class EVF_Form_Task {
 			return;
 		}
 
+		$check_email_notification_status = isset( $form_data['settings']['email']['enable_email_notification'] ) ? $form_data['settings']['email']['enable_email_notification'] : 0;
+
+		if ( '1' !== $check_email_notification_status ) {
+			return;
+		}
+
 		$fields = apply_filters( 'everest_forms_entry_email_data', $fields, $entry, $form_data );
 
 		if ( ! isset( $form_data['settings']['email']['connection_1'] ) ) {
@@ -481,7 +487,7 @@ class EVF_Form_Task {
 			'user_ip_address' => sanitize_text_field( $user_ip ),
 			'status'          => 'publish',
 			'referer'         => $_SERVER['HTTP_REFERER'],
-			'date_created'    => current_time( 'mysql' ),
+			'date_created'    => current_time( 'mysql', true ),
 		);
 
 		if ( ! $entry_data['form_id'] ) {

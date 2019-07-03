@@ -1,15 +1,25 @@
 /**
  * EverestForms CSS Variables
  */
+/*=====  Primary Color  ======*/
+$everestforms:					#7e3bd0;
 
-$everestforms:   	#7e3bd0;
-$green:         	#51cf66;
-$red:           	#fa5252;
-$orange:        	#ffba00;
-$blue:          	#2ea2cc;
+/*=====  Semantic Color  ======*/
+// Colors for notifications
+$green:							#4bce61;
+$red:							#fa5252;
+$orange:						#ffba00;
+$blue:							#0095ff;
 
-$primary:           #7e3bd0;                                  // Primary color for buttons (alt)
-$primarytext:       desaturate(lighten($primary, 52%), 18%);  // Text on primary color bg
+/*=====  Neutral colors  ======*/
+// Gray shades
+$color_gray-dark:				#23282d;
+$color_gray-base:				#494d50;
+$color_gray-normal:				#6c7680;
+$color_gray-light:				#8e98a2;
+$color_gray-lighten:			#cdd0d8;
+$color_gray-more-lighten:		#e9ebf1;
+$color_gray-light-skin:			#f6f7f9;
 
-$secondary:         desaturate(lighten($primary, 44%), 91%);  // Secondary buttons
-$secondarytext:     desaturate(darken($secondary, 64%), 91%); // Text on secondary color bg
+// White color
+$color-white:					#fff;

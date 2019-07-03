@@ -44,13 +44,13 @@
 
 			// Adjust builder width.
 			$( document.body ).on( 'adjust_builder_width', function() {
-				var builderWidth = $( '#everest-forms-builder' ).width();
+				var adminMenuWidth = $( '#adminmenuwrap' ).width();
 
-				$( '#everest-forms-builder' ).width( builderWidth );
+				$( '#everest-forms-builder-form' ).css({ 'width': 'calc(100% - ' + adminMenuWidth + 'px)' });
 			} ).trigger( 'adjust_builder_width' );
 
 			$( document.body ).on( 'click', '#collapse-button', function() {
-				$( '#everest-forms-builder' ).width( '' );
+				$( '#everest-forms-builder-form' ).width( '' );
 				$( document.body ).trigger( 'adjust_builder_width' );
 			});
 
@@ -137,10 +137,6 @@
 
 				if ( tab_content.length >= 1 ) {
 					window.evf_tab_scroller = new PerfectScrollbar( tab_content.selector );
-
-					$( document.body ).on( 'click', '#field-options, .everest-forms-field', function() {
-						tab_content.scrollTop(0);
-					} );
 				}
 
 				if ( panel_content.length >= 1 ) {
@@ -148,7 +144,7 @@
 				}
 
 				if ( panel_setting.length >= 1 ) {
-					window.evf_setting_scroller = new PerfectScrollbar(panel_setting.selector );
+					window.evf_setting_scroller = new PerfectScrollbar( panel_setting.selector );
 				}
 			}
 
@@ -1055,6 +1051,7 @@
 		 * Toggle fields tabs (Add Fields, Field Options).
 		 */
 		fieldTabChoice: function( id ) {
+			$( '.everest-forms-tab-content' ).scrollTop(0);
 			$( '.everest-forms-fields-tab a' ).removeClass( 'active' );
 			$( '.everest-forms-field, .everest-forms-title-desc' ).removeClass( 'active' );
 
@@ -1310,11 +1307,12 @@
 		},
 
 		bindFieldSettings: function () {
-			$('body').on('click', '.everest-forms-preview .everest-forms-field, .everest-forms-preview .everest-forms-field .everest-forms-field-setting', function (e) {
+			$( 'body' ).on( 'click', '.everest-forms-preview .everest-forms-field, .everest-forms-preview .everest-forms-field .everest-forms-field-setting', function(e) {
 				e.preventDefault();
-				var field_id = $(this).closest('.everest-forms-field').attr('data-field-id');
-				EVFPanelBuilder.switchToFieldOptionPanel(field_id);
-			});
+				var field_id = $( this ).closest( '.everest-forms-field' ).attr( 'data-field-id' );
+				$( '.everest-forms-tab-content' ).scrollTop(0);
+				EVFPanelBuilder.switchToFieldOptionPanel( field_id );
+			} );
 		}
 	};
 
@@ -1410,7 +1408,7 @@ jQuery( function ( $ ) {
 		$( '.evf-smart-tag-lists' ).hide();
 	});
 
-	// Toggle Smart Tags
+	// Toggle Smart Tags.
 	$( document.body ).on('click', '.evf-toggle-smart-tag-display', function(e) {
 		e.stopPropagation();
 		$('.evf-smart-tag-lists').hide();
@@ -1421,7 +1419,17 @@ jQuery( function ( $ ) {
 
 		var allowed_field = $ ( this ).data( 'fields' );
 		get_all_available_field( allowed_field, type , $( this ) );
+	});
 
+	// Toggle form status.
+	$( document.body ).on( 'change', '.everest-forms-toggle-form input', function(e) {
+		e.stopPropagation();
+		$.post( evf_data.ajax_url, {
+			action: 'everest_forms_enabled_form',
+			security: evf_data.evf_enabled_form,
+			form_id: $( this ).data( 'form_id' ),
+			enabled: $( this ).attr( 'checked' ) ? 1 : 0
+		});
 	});
 
 	$( document.body ).on('click', '.smart-tag-field', function(e) {
@@ -1452,6 +1460,22 @@ jQuery( function ( $ ) {
 		} else if ( 'other' === type ) {
 			$input.val( $input.val() + '{'+field_id+'}' );
 			$textarea.val($textarea.val() + '{'+field_id+'}' );
+		}
+	});
+
+	$( document ).on( 'change', '.evf-content-email-settings .evf-toggle-switch input', function(e) {
+		var $this = $( this ),
+			value = $this.prop( 'checked' );
+
+		if ( false === value ) {
+			$( this ).closest( '#everest-forms-panel-settings' ).find( '.everest-forms-active-email' ).addClass( 'everest-forms-hidden' );
+			$this.closest( '.evf-content-email-settings' ).find( '.email-disable-message' ).remove();
+			$this.closest( '.evf-content-section-title' ).siblings( '.evf-content-email-settings-inner' ).addClass( 'everest-forms-hidden' );
+			$( '<p class="email-disable-message everest-forms-notice everest-forms-notice-info">' + evf_data.i18n_email_disable_message + '</p>' ).insertAfter( $this.closest( '.evf-content-section-title' ) );
+		} else if ( true === value ) {
+			$( this ).closest( '#everest-forms-panel-settings' ).find( '.everest-forms-active-email' ).removeClass( 'everest-forms-hidden' );
+			$this.closest( '.evf-content-section-title' ).siblings( '.evf-content-email-settings-inner' ).removeClass( 'everest-forms-hidden' );
+			$this.closest( '.evf-content-email-settings' ).find( '.email-disable-message' ).remove();
 		}
 	});
 

@@ -140,31 +140,74 @@
 			} );
 		});
 
-		// Dynamic live binding on newly created elements.
-		$( 'body' ).on( 'mouseenter', '.evf-content-email-settings-inner .everest-forms-help-tooltip:not(.tooltipstered)', function() {
-			$( this ).tooltipster({
-				maxWidth: 200,
-				multiple: true,
-				interactive: true,
-				position: 'bottom',
-				contentAsHTML: true,
-				updateAnimation: false,
-				restoration: 'current',
-				functionInit: function( instance, helper ) {
-					var $origin = $( helper.origin ),
-						dataTip = $origin.attr( 'data-tip' );
-					if ( dataTip ) {
-						instance.content( dataTip );
-					}
+	// Dynamic live binding on newly created elements.
+	$( 'body' ).on( 'mouseenter', '.evf-content-email-settings-inner .everest-forms-help-tooltip:not(.tooltipstered)', function() {
+		$( this ).tooltipster({
+			maxWidth: 200,
+			multiple: true,
+			interactive: true,
+			position: 'bottom',
+			contentAsHTML: true,
+			updateAnimation: false,
+			restoration: 'current',
+			functionInit: function( instance, helper ) {
+				var $origin = $( helper.origin ),
+					dataTip = $origin.attr( 'data-tip' );
+				if ( dataTip ) {
+					instance.content( dataTip );
 				}
-			});
-			$( this ).tooltipster( 'open' );
+			}
 		});
+		$( this ).tooltipster( 'open' );
+	});
 
-		$( document ).on('click', '.everest-forms-email-add', function(){
-			$( '.evf-content-email-settings-inner .tooltipstered' ).tooltipster( 'destroy' );
-		});
+	$( document ).on( 'click', '.everest-forms-email-add', function() {
+		$( '.evf-content-email-settings-inner .tooltipstered' ).tooltipster( 'destroy' );
+	});
 
 	// Tooltips
 	$( document.body ).trigger( 'init_tooltips' );
+
+	// Check for new form entries using Heartbeat API.
+	$( document ).on( 'heartbeat-send', function( event, data ) {
+		var $entriesList  = $( '#everest-forms-entries-list' ),
+			form_id       = $entriesList.find( '#entries-list' ).data( 'form-id' );
+			last_entry_id = $entriesList.find( '#entries-list' ).data( 'last-entry-id' );
+
+		// Work on entry list table page and check if last entry ID is found.
+		if ( ! $entriesList.length || typeof last_entry_id === 'undefined' ) {
+			return;
+		}
+
+		// Add custom entries data to Heartbeat data.
+		data.evf_new_entries_form_id       = form_id;
+		data.evf_new_entries_last_entry_id = last_entry_id;
+	});
+
+	// Display entries list notification if Heartbeat API new form entries check is successful.
+	$( document ).on( 'heartbeat-tick', function ( event, data ) {
+		var $entriesList = $( '#everest-forms-entries-list' ),
+			columnsCount = $entriesList.find( '.wp-list-table thead tr' ).first().children().length;
+
+		// Work on entry list table page and check for new entry notification.
+		if ( ! $entriesList.length || ! data.evf_new_entries_notification ) {
+			return;
+		}
+
+		if ( ! $entriesList.find( '.new-entries-notification' ).length ) {
+			$entriesList.find( '.wp-list-table thead' ).append( '<tr class="new-entries-notification"><td colspan="' + columnsCount + '"><a href="#new" onClick="window.location.reload(true);"></a></td></tr>' );
+		}
+
+		$entriesList
+			.find( '.new-entries-notification a' )
+			.text( data.evf_new_entries_notification )
+			.slideDown( {
+				duration : 500,
+				start    : function () {
+					$( this ).css( {
+						display: 'block'
+					} );
+				}
+			} );
+	});
 })( jQuery, everest_forms_admin );

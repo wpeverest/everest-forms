@@ -84,6 +84,7 @@ class EVF_AJAX {
 			'integration_disconnect' => false,
 			'deactivation_notice'    => false,
 			'rated'                  => false,
+			'enabled_form'           => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -104,9 +105,11 @@ class EVF_AJAX {
 
 		$form_id = isset( $_POST['form_id'] ) ? absint( $_POST['form_id'] ) : 0;
 		if ( $form_id < 1 ) {
-			wp_send_json_error( array(
-				'error' => __( 'Invalid form', 'everest-forms' )
-			) );
+			wp_send_json_error(
+				array(
+					'error' => __( 'Invalid form', 'everest-forms' ),
+				)
+			);
 		}
 		if ( ! current_user_can( apply_filters( 'everest_forms_manage_cap', 'manage_options' ) ) ) {
 			wp_send_json_error();
@@ -117,7 +120,7 @@ class EVF_AJAX {
 		wp_send_json_success(
 			array(
 				'field_id'  => $new_field_id,
-				'field_key' => $field_key
+				'field_key' => $field_key,
 			)
 		);
 	}
@@ -154,9 +157,11 @@ class EVF_AJAX {
 			wp_send_json_success( $data );
 		}
 
-		wp_send_json_error( array(
-			'error' => __( 'Something went wrong, please try again later', 'everest-forms' )
-		) );
+		wp_send_json_error(
+			array(
+				'error' => __( 'Something went wrong, please try again later', 'everest-forms' ),
+			)
+		);
 	}
 
 	public static function save_form() {
@@ -227,7 +232,7 @@ class EVF_AJAX {
 
 		// Fix for sorting field ordering.
 		if ( isset( $data['structure'], $data['form_fields'] ) ) {
-			$structure = evf_flatten_array( $data['structure'] );
+			$structure           = evf_flatten_array( $data['structure'] );
 			$data['form_fields'] = array_merge( array_intersect_key( array_flip( $structure ), $data['form_fields'] ), $data['form_fields'] );
 		}
 
@@ -260,11 +265,13 @@ class EVF_AJAX {
 		check_ajax_referer( 'updates' );
 
 		if ( empty( $_POST['slug'] ) ) {
-			wp_send_json_error( array(
-				'slug'         => '',
-				'errorCode'    => 'no_plugin_specified',
-				'errorMessage' => __( 'No plugin specified.', 'everest-forms' ),
-			) );
+			wp_send_json_error(
+				array(
+					'slug'         => '',
+					'errorCode'    => 'no_plugin_specified',
+					'errorMessage' => __( 'No plugin specified.', 'everest-forms' ),
+				)
+			);
 		}
 
 		$status = array(
@@ -278,14 +285,18 @@ class EVF_AJAX {
 			wp_send_json_error( $status );
 		}
 
-		include_once( ABSPATH . 'wp-admin/includes/class-wp-upgrader.php' );
-		include_once( ABSPATH . 'wp-admin/includes/plugin-install.php' );
+		include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+		include_once ABSPATH . 'wp-admin/includes/plugin-install.php';
 
 		$key = get_option( 'everest-forms-pro_license_key' );
-		$api = json_decode( EVF_Updater_Key_API::version( array(
-			'license'   => $key,
-			'item_name' => $status['name'],
-		) ) );
+		$api = json_decode(
+			EVF_Updater_Key_API::version(
+				array(
+					'license'   => $key,
+					'item_name' => $status['name'],
+				)
+			)
+		);
 
 		if ( is_wp_error( $api ) ) {
 			$status['errorMessage'] = $api->get_error_message();
@@ -330,11 +341,14 @@ class EVF_AJAX {
 		$install_status = install_plugin_install_status( $api );
 
 		if ( current_user_can( 'activate_plugin', $install_status['file'] ) && is_plugin_inactive( $install_status['file'] ) ) {
-			$status['activateUrl'] = add_query_arg( array(
-				'action'   => 'activate',
-				'plugin'   => $install_status['file'],
-				'_wpnonce' => wp_create_nonce( 'activate-plugin_' . $install_status['file'] ),
-			), admin_url( 'admin.php?page=evf-addons' ) );
+			$status['activateUrl'] = add_query_arg(
+				array(
+					'action'   => 'activate',
+					'plugin'   => $install_status['file'],
+					'_wpnonce' => wp_create_nonce( 'activate-plugin_' . $install_status['file'] ),
+				),
+				admin_url( 'admin.php?page=evf-addons' )
+			);
 		}
 
 		wp_send_json_success( $status );
@@ -359,7 +373,7 @@ class EVF_AJAX {
 			);
 		}
 
-		do_action( 'everest_forms_integration_account_connect_'.$_POST["source"], $_POST );
+		do_action( 'everest_forms_integration_account_connect_' . $_POST['source'], $_POST );
 	}
 
 	/**
@@ -381,10 +395,6 @@ class EVF_AJAX {
 			)
 		);
 	}
-
-	// public static function output_email_connection( $connection_id, $connection = array(), $form_data = array() ) {
-
-	// }
 
 	/**
 	 * AJAX Integration disconnect.
@@ -436,19 +446,24 @@ class EVF_AJAX {
 					'plugin_status' => $status,
 					'paged'         => $page,
 					's'             => $s,
-				), admin_url( 'plugins.php' )
-			), 'deactivate-plugin_' . EVF_PLUGIN_BASENAME
+				),
+				admin_url( 'plugins.php' )
+			),
+			'deactivate-plugin_' . EVF_PLUGIN_BASENAME
 		);
 
 		$deactivation_notice = sprintf( __( 'Before we deactivate Everest Forms, would you care to <a href="%1$s" target="_blank">let us know why</a> so we can improve it for you? <a href="%2$s">No, deactivate now</a>.', 'everest-forms' ), 'https://wpeverest.com/deactivation/everest-forms/', $deactivate_url );
 
-		wp_send_json( array(
-			'fragments' => apply_filters(
-				'everest_forms_deactivation_notice_fragments', array(
-					'deactivation_notice' => '<tr class="plugin-update-tr active updated" data-slug="everest-forms" data-plugin="everest-forms/everest-forms.php"><td colspan ="3" class="plugin-update colspanchange"><div class="notice inline notice-warning notice-alt"><p>' . $deactivation_notice . '</p></div></td></tr>',
-				)
+		wp_send_json(
+			array(
+				'fragments' => apply_filters(
+					'everest_forms_deactivation_notice_fragments',
+					array(
+						'deactivation_notice' => '<tr class="plugin-update-tr active updated" data-slug="everest-forms" data-plugin="everest-forms/everest-forms.php"><td colspan ="3" class="plugin-update colspanchange"><div class="notice inline notice-warning notice-alt"><p>' . $deactivation_notice . '</p></div></td></tr>',
+					)
+				),
 			)
-		) );
+		);
 	}
 
 	/**
@@ -460,6 +475,27 @@ class EVF_AJAX {
 		}
 		update_option( 'everest_forms_admin_footer_text_rated', 1 );
 		wp_die();
+	}
+
+	/**
+	 * Triggered when clicking the form toggle.
+	 */
+	public static function enabled_form() {
+		// Run a security check.
+		check_ajax_referer( 'everest_forms_enabled_form', 'security' );
+
+		if ( ! current_user_can( 'manage_everest_forms' ) ) {
+			wp_die( -1 );
+		}
+
+		$form_id = isset( $_POST['form_id'] ) ? absint( $_POST['form_id'] ) : 0;
+		$enabled = isset( $_POST['enabled'] ) ? absint( $_POST['enabled'] ) : 0;
+
+		$form_data = EVF()->form->get( absint( $form_id ), array( 'content_only' => true ) );
+
+		$form_data['form_enabled'] = $enabled;
+
+		EVF()->form->update( $form_id, $form_data );
 	}
 }
 
