@@ -175,7 +175,7 @@ abstract class EVF_Form_Fields {
 	 * @return mixed echo or return string
 	 */
 	public function field_element( $option, $field, $args = array(), $echo = true ) {
-		$id     = (int) $field['id'];
+		$id     = (string) $field['id'];
 		$class  = ! empty( $args['class'] ) ? sanitize_html_class( $args['class'] ) : '';
 		$slug   = ! empty( $args['slug'] ) ? sanitize_title( $args['slug'] ) : '';
 		$data   = '';
