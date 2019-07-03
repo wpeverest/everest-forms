@@ -973,10 +973,10 @@ abstract class EVF_Form_Fields {
 	/**
 	 * Formats and sanitizes field.
 	 *
-	 * @param int    $field_id
-	 * @param array  $field_submit
-	 * @param array  $form_data
-	 * @param string $meta_key
+	 * @param int    $field_id     Field ID.
+	 * @param array  $field_submit Submitted field value.
+	 * @param array  $form_data    Form data and settings.
+	 * @param string $meta_key     Field meta key.
 	 */
 	public function format( $field_id, $field_submit, $form_data, $meta_key ) {
 		if ( is_array( $field_submit ) ) {
