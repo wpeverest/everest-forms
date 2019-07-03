@@ -156,6 +156,8 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Fix - Form builder design bug on wp.com dashboard. #190
 * Fix - WP admin bar design issue in safari on EVF pages. #179
 * Fix - Submit button Processing text while form is not saved. #177
+* Tweak - Responsive design issue within builder.
+* Tweak - Date and time field advanced option design.
 * Tweak - Set margin to fix spacing issue on Multi-part buttons.
 
 = 1.4.9 - 28-05-2019 =
