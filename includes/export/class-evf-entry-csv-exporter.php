@@ -73,7 +73,7 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 
 		// If user details are disabled globally discard the IP and UA.
 		if ( 'yes' !== get_option( 'everest_forms_disable_user_details' ) ) {
-			$columns['user_device' ]    = __( 'User Device', 'everest-forms' );
+			$columns['user_device']     = __( 'User Device', 'everest-forms' );
 			$columns['user_ip_address'] = __( 'User IP Address', 'everest-forms' );
 		}
 
@@ -86,11 +86,13 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 	 * @since 1.3.0
 	 */
 	public function prepare_data_to_export() {
-		$entry_ids = evf_search_entries( array(
-			'limit'   => -1,
-			'order'   => 'ASC',
-			'form_id' => $this->form_id,
-		) );
+		$entry_ids = evf_search_entries(
+			array(
+				'limit'   => -1,
+				'order'   => 'ASC',
+				'form_id' => $this->form_id,
+			)
+		);
 
 		// Get the entries.
 		$entries        = array_map( 'evf_get_entry', $entry_ids );
@@ -113,10 +115,10 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 		$columns = $this->get_column_names();
 		$row     = array();
 		foreach ( $columns as $column_id => $column_name ) {
-			$column_id  = strstr( $column_id, ':' ) ? current( explode( ':', $column_id ) ) : $column_id;
+			$column_id = strstr( $column_id, ':' ) ? current( explode( ':', $column_id ) ) : $column_id;
 			$value     = '';
 
-			if ( isset( $entry->meta[ $column_id] ) ) {
+			if ( isset( $entry->meta[ $column_id ] ) ) {
 				// Filter for entry meta data.
 				$value = $entry->meta[ $column_id ];
 
