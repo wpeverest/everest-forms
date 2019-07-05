@@ -164,18 +164,20 @@ class EVF_AJAX {
 		);
 	}
 
+	/**
+	 * AJAX Form save.
+	 */
 	public static function save_form() {
-
 		check_ajax_referer( 'everest_forms_save_form', 'security' );
 
-		// Check for permissions
+		// Check for permissions.
 		if ( ! current_user_can( apply_filters( 'everest_forms_manage_cap', 'manage_options' ) ) ) {
-			die( __( 'You do not have permission.', 'everest-forms' ) );
+			die( esc_html__( 'You do not have permission.', 'everest-forms' ) );
 		}
 
-		// Check for form data
+		// Check for form data.
 		if ( empty( $_POST['form_data'] ) ) {
-			die( __( 'No data provided', 'everest-forms' ) );
+			die( esc_html__( 'No data provided', 'everest-forms' ) );
 		}
 
 		$form_post = json_decode( stripslashes( $_POST['form_data'] ) );
@@ -241,7 +243,12 @@ class EVF_AJAX {
 		do_action( 'everest_forms_save_form', $form_id, $data );
 
 		if ( ! $form_id ) {
-			die( __( 'An error occurred and the form could not be saved', 'everest-forms' ) );
+			wp_send_json_error(
+				array(
+					'errorTitle'   => esc_html__( 'Form not found', 'everest-forms' ),
+					'errorMessage' => esc_html__( 'An error occurred while saving the form.', 'everest-forms' ),
+				)
+			);
 		} else {
 			wp_send_json_success(
 				array(
@@ -452,7 +459,7 @@ class EVF_AJAX {
 			'deactivate-plugin_' . EVF_PLUGIN_BASENAME
 		);
 
-		$deactivation_notice = sprintf( __( 'Before we deactivate Everest Forms, would you care to <a href="%1$s" target="_blank">let us know why</a> so we can improve it for you? <a href="%2$s">No, deactivate now</a>.', 'everest-forms' ), 'https://wpeverest.com/deactivation/everest-forms/', $deactivate_url );
+		$deactivation_notice = sprintf( esc_html__( 'Before we deactivate Everest Forms, would you care to <a href="%1$s" target="_blank">let us know why</a> so we can improve it for you? <a href="%2$s">No, deactivate now</a>.', 'everest-forms' ), 'https://wpeverest.com/deactivation/everest-forms/', $deactivate_url );
 
 		wp_send_json(
 			array(

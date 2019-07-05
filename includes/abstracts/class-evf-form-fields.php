@@ -167,16 +167,15 @@ abstract class EVF_Form_Fields {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string  $option
-	 * @param array   $field
-	 * @param array   $args
-	 * @param boolean $echo
+	 * @param string  $option Field option to render.
+	 * @param array   $field  Field data and settings.
+	 * @param array   $args   Field preview arguments.
+	 * @param boolean $echo   Print or return the value. Print by default.
 	 *
 	 * @return mixed echo or return string
 	 */
 	public function field_element( $option, $field, $args = array(), $echo = true ) {
-
-		$id     = $field['id'];
+		$id     = (string) $field['id'];
 		$class  = ! empty( $args['class'] ) ? sanitize_html_class( $args['class'] ) : '';
 		$slug   = ! empty( $args['slug'] ) ? sanitize_title( $args['slug'] ) : '';
 		$data   = '';
