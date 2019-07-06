@@ -127,8 +127,6 @@
 	}
 
 	.evf-field-container {
-		margin-bottom: 10px;
-
 		.evf-frontend-row {
 			display: flex;
 			flex-wrap: wrap;
@@ -338,6 +336,7 @@
 		}
 	}
 
+	button,
 	input[type='submit'],
 	button[type='submit'],
 	.everest-forms-part-button {
