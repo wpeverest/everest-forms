@@ -2247,12 +2247,23 @@ body.everest-forms-builder-setup,
 						display: inline-block;
 					}
 				}
+			}
 
-				&.questions li {
+			.evf-questions-list {
+				li {
 					cursor: inherit;
+
+					input.value {
+						display: none;
+					}
 
 					input[type='text'] {
 						width: 90%;
+					}
+
+					a.add,
+					a.remove {
+						display: inline-block;
 					}
 				}
 			}
