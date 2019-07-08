@@ -4,7 +4,7 @@ Tags: contact form, form, form builder, contact, custom form
 Requires at least: 4.0
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 1.4.10
+Stable tag: 1.5.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -140,7 +140,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 1.4.10 - XX-07-2019 =
+= 1.5.0 - XX-07-2019 =
 * Feature - Form specific email notification toggle.
 * Feature - Form enable/disable toggle with disabled message.
 * Feature - Form title and description support in Guten block.
