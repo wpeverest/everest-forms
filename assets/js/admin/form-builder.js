@@ -305,7 +305,7 @@
 			});
 		},
 		choicesInit: function () {
-			$( 'ul.evf-choices-list' ).sortable({
+			$( 'ul.evf-choices-list:not(.questions)' ).sortable({
 				items: 'li',
 				axis: 'y',
 				cursor: 'move',

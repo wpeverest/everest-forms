@@ -2231,9 +2231,18 @@ body.everest-forms-builder-setup,
 						display: inline-block;
 					}
 				}
+
+				&.questions li {
+					cursor: inherit;
+
+					input[type='text'] {
+						width: 90%;
+					}
+				}
 			}
 
-			.everest-forms-field-option-row-choices {
+			.everest-forms-field-option-row-choices,
+			.everest-forms-field-option-row-questions {
 
 				li {
 					border: 1px solid transparent;
