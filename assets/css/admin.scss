@@ -2249,25 +2249,6 @@ body.everest-forms-builder-setup,
 				}
 			}
 
-			.evf-questions-list {
-				li {
-					cursor: inherit;
-
-					input.value {
-						display: none;
-					}
-
-					input[type='text'] {
-						width: 90%;
-					}
-
-					a.add,
-					a.remove {
-						display: inline-block;
-					}
-				}
-			}
-
 			.everest-forms-field-option-row-choices,
 			.everest-forms-field-option-row-questions {
 
@@ -2275,7 +2256,6 @@ body.everest-forms-builder-setup,
 					border: 1px solid transparent;
 					border-radius: 4px;
 					clear: both;
-					cursor: all-scroll;
 					margin-bottom: 2px;
 					padding: 5px 10px;
 
@@ -2328,6 +2308,25 @@ body.everest-forms-builder-setup,
 						}
 					}
 				}
+
+				.evf-questions-list li {
+					input[type='text'] {
+						width: 90%;
+					}
+
+					.answer-wrap {
+						margin-top: 3px;
+					}
+
+					a.add,
+					a.remove {
+						display: inline-block;
+					}
+				}
+			}
+
+			.everest-forms-field-option-row-choices {
+				cursor: all-scroll;
 			}
 
 			.everest-forms-field-option-payment-multiple,
