@@ -7,7 +7,7 @@
 # Prefer associating a "team" with a path rather than an individual. That allows individuals to
 # move around without having to continually update this file.
 #
-# See https://docs.gitlab.com/ee/user/project/code_owners.html for details on the format of this file
+# See https://help.github.com/en/articles/about-code-owners for details on the format of this file
 
 # Root level files and configuration
 /*.* @shivapoudel

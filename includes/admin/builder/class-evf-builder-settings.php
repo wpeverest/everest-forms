@@ -136,7 +136,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			$this->form_data,
 			esc_html__( 'Form Name', 'everest-forms' ),
 			array(
-				'default' => $this->form->post_title,
+				'default' => isset( $this->form->post_title ) ? $this->form->post_title : '',
 				'tooltip' => esc_html__( 'Give a name to this form', 'everest-forms' ),
 			)
 		);
