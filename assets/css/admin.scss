@@ -441,7 +441,7 @@ body.everest-forms-builder-setup,
 						border: 2px solid gray;
 						display: inline-block;
 						border-radius: 50%;
-						margin-right: 2px
+						margin-right: 2px;
 					}
 				}
 
@@ -1532,6 +1532,22 @@ body.everest-forms-builder-setup,
 				.everest-forms-field-option-date {
 					.format-selected-date .everest-forms-time,
 					.format-selected-time .everest-forms-date {
+						display: none;
+					}
+				}
+
+				.everest-forms-field-captcha {
+					.format-selected-math {
+						font-size: 16px;
+
+						input {
+							width: 70px;
+							display: inline-block;
+						}
+					}
+
+					.format-selected-math .everest-forms-question,
+					.format-selected-question .everest-forms-equation {
 						display: none;
 					}
 				}
@@ -3210,7 +3226,7 @@ table.wp-list-table {
 			background-color: #cdd0d2;
 
 			&::before {
-				content: "";
+				content: '';
 				width: 12px;
 				height: 12px;
 				position: absolute;
