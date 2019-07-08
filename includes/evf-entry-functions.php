@@ -161,7 +161,7 @@ function evf_get_count_entries_by_status( $form_id ) {
 /**
  * Get total next entries counts by last entry.
  *
- * @since 1.4.10
+ * @since 1.5.0
  *
  * @param  int $form_id    Form ID.
  * @param  int $last_entry Last Form ID.

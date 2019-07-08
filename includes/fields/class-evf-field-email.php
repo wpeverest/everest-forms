@@ -55,7 +55,7 @@ class EVF_Field_Email extends EVF_Form_Fields {
 	/**
 	 * Field should default to being required.
 	 *
-	 * @since 1.4.10
+	 * @since 1.5.0
 	 *
 	 * @param bool  $required Required status, true is required.
 	 * @param array $field    Field settings.
