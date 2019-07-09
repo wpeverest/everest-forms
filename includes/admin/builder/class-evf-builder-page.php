@@ -58,9 +58,9 @@ if ( ! class_exists( 'EVF_Builder_Page', false ) ) :
 		 * Constructor.
 		 */
 		public function __construct() {
-			$form_id         = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : false;
+			$form_id         = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
 			$this->form      = evf()->form->get( $form_id );
-			$this->form_data = $this->form ? evf_decode( $this->form->post_content ) : false;
+			$this->form_data = is_object( $this->form ) ? evf_decode( $this->form->post_content ) : array();
 
 			// Init hooks.
 			$this->init_hooks();
@@ -132,12 +132,10 @@ if ( ! class_exists( 'EVF_Builder_Page', false ) ) :
 		 */
 		public function add_sidebar_tab( $name, $slug, $icon = '', $container_name = 'setting' ) {
 			$class  = '';
-			$class .= $slug == 'default' ? ' default' : '';
+			$class .= 'default' === $slug ? ' default' : '';
 			$class .= ! empty( $icon ) ? ' icon' : '';
 
-			echo '<a href="#" class="evf-panel-tab evf-' . esc_attr( $container_name ) .
-				'-panel everest-forms-panel-sidebar-section everest-forms-panel-sidebar-section-' . esc_attr( $slug ) .
-				$class . '" data-section="' . esc_attr( $slug ) . '">';
+			echo '<a href="#" class="evf-panel-tab evf-' . esc_attr( $container_name ) . '-panel everest-forms-panel-sidebar-section everest-forms-panel-sidebar-section-' . esc_attr( $slug ) . esc_attr( $class ) . '" data-section="' . esc_attr( $slug ) . '">';
 			if ( ! empty( $icon ) ) {
 				echo '<figure class="logo"><img src="' . esc_url( $icon ) . '"></figure>';
 			}

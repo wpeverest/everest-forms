@@ -38,8 +38,8 @@ class EVF_Admin_Forms {
 
 		if ( isset( $_GET['form_id'] ) && $current_tab ) {
 			$form      = EVF()->form->get( absint( $_GET['form_id'] ) );
-			$form_id   = $form ? absint( $form->ID ) : absint( $_GET['form_id'] );
-			$form_data = $form ? evf_decode( $form->post_content ) : false;
+			$form_id   = is_object( $form ) ? absint( $form->ID ) : absint( $_GET['form_id'] );
+			$form_data = is_object( $form ) ? evf_decode( $form->post_content ) : false;
 
 			include 'views/html-admin-page-builder.php';
 		} elseif ( isset( $_GET['create-form'] ) ) {
