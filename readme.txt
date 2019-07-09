@@ -145,6 +145,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Feature - Form enable/disable toggle with disabled message.
 * Feature - Form title and description support in Guten block.
 * Feature - New entries "heartbeat" notification on the entries list table screen.
+* Enhancement - Add support for custom captcha addon. #209
 * Enhancement - Introduced range support in the date/time field.
 * Fix - Correctly load localisation file.
 * Fix - WPML string translation for notices.
@@ -159,7 +160,6 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Fix - Form builder design bug on wp.com dashboard. #190
 * Fix - WP admin bar design issue in safari on EVF pages. #179
 * Fix - Submit button Processing text while form is not saved. #177
-* Tweak - Add support for custom captcha addon. #209
 * Tweak - Responsive design issue within builder.
 * Tweak - Date and time field advanced option design.
 * Tweak - Set margin to fix spacing issue on Multi-part buttons.
