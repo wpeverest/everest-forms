@@ -458,19 +458,22 @@ class EVF_Shortcode_Form {
 		if ( ! empty( $field['size'] ) ) {
 			$attributes['input_class'][] = 'evf-field-' . sanitize_html_class( $field['size'] );
 		}
+
 		// Check if required.
 		if ( ! empty( $field['required'] ) ) {
 			$attributes['field_class'][] = 'validate-required';
 		}
 
 		// Check if extra validation required.
-		if ( in_array( $field['type'], array( 'email', 'phone' ) ) ) {
+		if ( in_array( $field['type'], array( 'email', 'phone' ), true ) ) {
 			$attributes['field_class'][] = 'validate-' . esc_attr( $field['type'] );
 		}
 
 		// Check if there are errors.
-		if ( ! empty( evf()->task->errors[ $form_id ][ $field_id ] ) ) {
+		$errors = evf()->task->errors[ $form_id ];
+		if ( ! empty( $errors[ $field_id ] ) ) {
 			$attributes['input_class'][] = 'evf-error';
+			$attributes['field_class'][] = 'everest-forms-invalid';
 		}
 
 		// This filter is deprecated, filter the properties (below) instead.
