@@ -1570,7 +1570,7 @@ body.everest-forms-builder-setup,
 
 					.hide {
 						input {
-							margin: 10px 0 0 0;
+							margin: 7px 0 0 0;
 						}
 					}
 				}
@@ -2304,7 +2304,9 @@ body.everest-forms-builder-setup,
 						}
 
 						&.add,
-						&.remove {
+						&.remove,
+						&.addPayment,
+						&.removePayment {
 							height: 27px;
 							width: 27px;
 							display: inline-flex;
@@ -2324,7 +2326,6 @@ body.everest-forms-builder-setup,
 
 						&.remove,
 						&.removePayment {
-
 							&:hover {
 								background: $red;
 								border: 1px solid $red;
