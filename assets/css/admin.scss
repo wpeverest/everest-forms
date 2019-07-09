@@ -2251,14 +2251,14 @@ body.everest-forms-builder-setup,
 
 					&.ui-sortable-handle {
 						&.ui-sortable-placeholder {
-							height: 40px !important; //Overwrite CSS over js
-							visibility: visible !important; //Overwrite CSS over js
+							height: 40px !important; // Overwrite CSS over JS.
+							visibility: visible !important; // Overwrite CSS over JS.
 							background: $color_gray-more-lighten;
 							border: 1px dashed $color_gray-lighten;
 						}
 
 						&.ui-sortable-helper {
-							z-index: 99999 !important;
+							z-index: 99999 !important; // Overwrite CSS over JS.
 						}
 					}
 				}
