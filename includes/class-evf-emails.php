@@ -430,10 +430,7 @@ class EVF_Emails {
 			$x = 1;
 			foreach ( $this->fields as $field ) {
 
-				if (
-					! apply_filters( 'everest_forms_email_display_empty_fields', false ) &&
-					( empty( $field['value'] ) && '0' !== $field['value'] )
-				) {
+				if ( ( ! apply_filters( 'everest_forms_email_display_empty_fields', false ) && ( empty( $field['value'] ) && '0' !== $field['value'] ) ) || ! apply_filters( 'everest_forms_email_display_field', true, $field ) ) {
 					continue;
 				}
 
