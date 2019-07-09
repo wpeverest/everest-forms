@@ -40,16 +40,30 @@ https://wpeverest.com/contact/
 
 Everest Forms has adopted a Code of Conduct that we expect project participants to adhere to. Please read [the full text](.github/CODE_OF_CONDUCT.md) so that you can understand what actions will and will not be tolerated.
 
+## Build process
+
+The source code found in GitHub doesn't contains any compiled CSS or JS files, requiring a build process.
+
+In a terminal go to your WooCommerce installation, and run:
+
+```bash
+npm install
+composer install
+npm run build
+```
+
+Note that it's required to have installed [Node.js to run NPM](https://nodejs.org/en/) and [Composer](https://getcomposer.org/).
+
 ## Coding Guidelines
 
 - **Ensure you stick to the [WordPress Coding Standards](https://make.wordpress.org/core/handbook/best-practices/coding-standards/php/)**
-- Install our pre-commit hook using composer. It'll help with the Coding Standards. To install run `composer install` from the command line within the everest-forms plugin directory.
+- Run our build process described in the section above, it will install our pre-commit hook, code sniffs, dependencies, and more.
 - Ensure you use LF line endings in your code editor. Use [EditorConfig](http://editorconfig.org/) if your editor supports it so that indentation, line endings and other settings are auto configured.
 - When committing, reference your issue number (#1234) and include a note about the fix.
 - Ensure that your code is compatible with PHP 5.4+.
 - Push the changes to your fork and submit a pull request on the master branch of the Everest Forms repository. Existing maintenance branches will be maintained by Everest Forms developers.
 
-Please **don't** modify the changelog or update the .pot files. These will be maintained by the Everest Forms team.
+Please **don't** modify the changelog or update the .pot files, it will be maintained by the Everest Forms team.
 
 ## Translating Everest Forms
 
