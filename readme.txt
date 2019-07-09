@@ -149,6 +149,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Fix - Correctly load localisation file.
 * Fix - WPML string translation for notices.
 * Fix - Fatal error thrown if form not found.
+* Fix - Frontend error message on PHP validation.
 * Fix - Navigation alignment issue with multi-part.
 * Fix - Email field should default to being required.
 * Fix - Undefined variable for filtered template file.
