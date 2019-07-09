@@ -305,6 +305,11 @@ module.exports = function( grunt ){
 		'concat'
 	]);
 
+	grunt.registerTask( 'assets', [
+		'js',
+		'css'
+	]);
+
 	// Only an alias to 'default' task.
 	grunt.registerTask( 'dev', [
 		'default'

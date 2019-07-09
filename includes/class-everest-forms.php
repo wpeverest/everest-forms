@@ -142,7 +142,10 @@ final class EverestForms {
 	 */
 	private function init_hooks() {
 		register_activation_hook( EVF_PLUGIN_FILE, array( 'EVF_Install', 'install' ) );
+
 		register_shutdown_function( array( $this, 'log_errors' ) );
+
+		add_action( 'admin_notices', array( $this, 'build_dependencies_notice' ) );
 		add_action( 'after_setup_theme', array( $this, 'include_template_functions' ), 11 );
 		add_action( 'init', array( $this, 'init' ), 0 );
 		add_action( 'init', array( $this, 'form_fields' ), 0 );
@@ -405,5 +408,38 @@ final class EverestForms {
 	 */
 	public function form_fields() {
 		return EVF_Fields::instance();
+	}
+
+	/**
+	 * Check if plugin assets are built and minified.
+	 *
+	 * @return bool
+	 */
+	public function build_dependencies_satisfied() {
+		// Check if we have compiled CSS and minified JS.
+		if ( ! file_exists( EVF()->plugin_path() . '/assets/css/admin.css' ) || ! file_exists( EVF()->plugin_path() . '/assets/js/admin/admin.min.js' ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Output a admin notice when build dependencies not met.
+	 *
+	 * @return void
+	 */
+	public function build_dependencies_notice() {
+		if ( $this->build_dependencies_satisfied() ) {
+			return;
+		}
+		$message_one = __( 'You have installed a development version of Everest Forms which requires files to be built and minified. From the plugin directory, run <code>grunt assets</code> to build and minify assets.', 'everest-forms' );
+		$message_two = sprintf(
+			/* translators: 1: URL of WordPress.org Repository 2: URL of the GitHub Repository release page */
+			__( 'Or you can download a pre-built version of the plugin from the <a href="%1$s">WordPress.org repository</a> or by visiting <a href="%2$s">the releases page in the GitHub repository</a>.', 'everest-forms' ),
+			'https://wordpress.org/plugins/everest-forms/',
+			'https://github.com/wpeverest/everest-forms/releases'
+		);
+		printf( '<div class="error"><p>%s %s</p></div>', $message_one, $message_two ); /* WPCS: xss ok. */
 	}
 }
