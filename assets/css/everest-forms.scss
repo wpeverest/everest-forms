@@ -166,6 +166,14 @@
 						display: none;
 					}
 
+					.validate-required {
+						canvas {
+							&.evf-signature-canvas {
+								border-color: $red;
+							}
+						}
+					}
+
 					ul {
 						margin: 0;
 						padding: 0;
@@ -211,7 +219,8 @@
 						.select2-container,
 						input.input-text,
 						select,
-						textarea {
+						textarea,
+						.evf-signature-canvas {
 							border-color: $red;
 						}
 					}

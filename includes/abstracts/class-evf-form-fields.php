@@ -886,7 +886,7 @@ abstract class EVF_Form_Fields {
 		}
 
 		printf(
-			'<label class="everest-forms-error" for="%s">%s</label>',
+			'<label class="everest-forms-error evf-error" for="%s">%s</label>',
 			esc_attr( $field['properties']['inputs'][ $key ]['id'] ),
 			esc_html( $field['properties']['error']['value'][ $key ] )
 		);
