@@ -441,7 +441,7 @@ body.everest-forms-builder-setup,
 						border: 2px solid gray;
 						display: inline-block;
 						border-radius: 50%;
-						margin-right: 2px
+						margin-right: 2px;
 					}
 				}
 
@@ -1536,6 +1536,22 @@ body.everest-forms-builder-setup,
 					}
 				}
 
+				.everest-forms-field-captcha {
+					.format-selected-math {
+						font-size: 16px;
+
+						input {
+							width: 70px;
+							display: inline-block;
+						}
+					}
+
+					.format-selected-math .everest-forms-question,
+					.format-selected-question .everest-forms-equation {
+						display: none;
+					}
+				}
+
 				.everest-forms-field-option-address {
 					.default,
 					.placeholder {
@@ -1886,6 +1902,7 @@ body.everest-forms-builder-setup,
 					&.hide-lalbel {
 
 					}
+
 					input {
 						&[type='text'],
 						&[type='email'] {
@@ -2015,6 +2032,10 @@ body.everest-forms-builder-setup,
 					label,
 					input {
 						cursor: all-scroll;
+					}
+
+					.primary-input {
+						margin-bottom: 0;
 					}
 				}
 
@@ -2218,38 +2239,47 @@ body.everest-forms-builder-setup,
 
 			.evf-choices-list {
 				li {
-					input.value {
-						display: none;
+					input {
+						&.value {
+							display: none;
+						}
+
+						&[type='text'] {
+							width: 73%;
+						}
 					}
 
-					input[type='text'] {
-						width: 73%;
-					}
+					&.ui-sortable-handle {
+						&.ui-sortable-placeholder {
+							height: 40px !important; // Overwrite CSS over JS.
+							visibility: visible !important; // Overwrite CSS over JS.
+							background: $color_gray-more-lighten;
+							border: 1px dashed $color_gray-lighten;
+						}
 
-					a.add,
-					a.remove {
-						display: inline-block;
+						&.ui-sortable-helper {
+							z-index: 99999 !important; // Overwrite CSS over JS.
+						}
 					}
 				}
 			}
 
-			.everest-forms-field-option-row-choices {
-
+			.everest-forms-field-option-row-choices,
+			.everest-forms-field-option-row-questions {
 				li {
-					border: 1px solid transparent;
-					border-radius: 4px;
 					clear: both;
-					cursor: all-scroll;
 					margin-bottom: 2px;
 					padding: 5px 10px;
+					border: 1px solid transparent;
 
-					&:hover {
+					&:hover,
+					&.ui-sortable-helper {
 						background: $color-white;
 						border: 1px solid $color_gray-lighten;
+						z-index: 99999 !important;
 					}
 
 					input[type='text'] {
-						height: 30px;
 						margin-right: 8px;
 						vertical-align: middle;
 					}
@@ -2258,13 +2288,24 @@ body.everest-forms-builder-setup,
 						background: $color-white;
 						color: $color_gray-base;
 						display: inline-block;
-						border-radius: 3px;
 						border: 1px solid $color_gray-lighten;
-						text-align: center;
 						margin-right: 8px;
-						line-height: 1;
-						padding: 3px;
 						vertical-align: middle;
+
+						.dashicons {
+							font-size: 16px;
+							height: 16px;
+							width: 16px;
+						}
+
+						&.add,
+						&.remove {
+							height: 27px;
+							width: 27px;
+							display: inline-flex;
+							align-items: center;
+							justify-content: center;
+						}
 
 						&:last-child {
 							margin-right: 0;
@@ -2280,18 +2321,33 @@ body.everest-forms-builder-setup,
 						&.removePayment {
 
 							&:hover {
-								background: red;
-								border: 1px solid red;
+								background: $red;
+								border: 1px solid $red;
 							}
-						}
-
-						.dashicons {
-							font-size: 16px;
-							height: 16px;
-							width: 16px;
 						}
 					}
 				}
+
+				.evf-questions-list {
+					li {
+						padding: 10px;
+						background:$color-white;
+						margin-bottom: 10px;
+						border: 1px solid $color_gray-lighten;
+
+						input[type='text'] {
+							width: 89%;
+						}
+
+						.answer-wrap {
+							margin-top: 6px;
+						}
+					}
+				}
+			}
+
+			.everest-forms-field-option-row-choices {
+				cursor: all-scroll;
 			}
 
 			.everest-forms-field-option-payment-multiple,
@@ -3201,7 +3257,7 @@ table.wp-list-table {
 			background-color: #cdd0d2;
 
 			&::before {
-				content: "";
+				content: '';
 				width: 12px;
 				height: 12px;
 				position: absolute;

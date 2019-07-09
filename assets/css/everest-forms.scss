@@ -248,6 +248,23 @@
 							}
 						}
 					}
+
+					&.evf-field-captcha {
+						.everest-forms-captcha-equation {
+							font-size: 16px;
+						}
+
+						.everest-forms-captcha-question {
+							margin: 0 0 4px 0;
+						}
+
+						.everest-forms-captcha-math input {
+							width: 70px;
+							margin: 0 0 0 5px;
+							display: inline-block;
+							vertical-align: inherit;
+						}
+					}
 				}
 			}
 
