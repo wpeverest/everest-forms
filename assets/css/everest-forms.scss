@@ -212,16 +212,32 @@
 
 					&.everest-forms-invalid {
 						label {
-							color: $red;
 							white-space: nowrap;
+
+							&.evf-error {
+								color: $red;
+							}
+						}
+
+						> label {
+							color: $red;
 						}
 
 						.select2-container,
-						input.input-text,
-						select,
+						input.evf-error,
+						select.evf-error,
 						textarea,
 						.evf-signature-canvas {
 							border-color: $red;
+						}
+
+						input {
+							&.evf-error {
+								border-color: $red;
+								~ .everest-forms-field-sublabel {
+									color: $red;
+								}
+							}
 						}
 					}
 
