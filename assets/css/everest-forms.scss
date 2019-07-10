@@ -242,10 +242,11 @@
 					}
 
 					&.everest-forms-validated {
-						.select2-container,
-						input.input-text,
 						select,
-						textarea {
+						textarea,
+						input.input-text,
+						.select2-container,
+						.evf-signature-canvas {
 							border-color: $green;
 						}
 					}
