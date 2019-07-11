@@ -2253,82 +2253,84 @@ body.everest-forms-builder-setup,
 							width: 73%;
 						}
 					}
-
-					&.ui-sortable-handle {
-						&.ui-sortable-placeholder {
-							height: 40px !important; // Overwrite CSS over JS.
-							visibility: visible !important; // Overwrite CSS over JS.
-							background: $color_gray-more-lighten;
-							border: 1px dashed $color_gray-lighten;
-						}
-
-						&.ui-sortable-helper {
-							z-index: 99999 !important; // Overwrite CSS over JS.
-						}
-					}
 				}
 			}
 
 			.everest-forms-field-option-row-choices,
 			.everest-forms-field-option-row-questions {
-				li {
-					clear: both;
-					margin-bottom: 2px;
-					padding: 5px 10px;
-					border: 1px solid transparent;
+				.ui-sortable {
+					li {
+						clear: both;
+						margin-bottom: 2px;
+						padding: 5px 10px;
+						border: 1px solid transparent;
 
-					&:hover,
-					&.ui-sortable-helper {
-						background: $color-white;
-						border: 1px solid $color_gray-lighten;
-						z-index: 99999 !important;
-					}
+						&.ui-sortable-handle {
+							&.ui-sortable-placeholder {
+								height: 40px !important; // Overwrite CSS over JS.
+								visibility: visible !important; // Overwrite CSS over JS.
+								background: $color_gray-more-lighten;
+								border: 1px dashed $color_gray-lighten;
+							}
 
-					input[type='text'] {
-						margin-right: 8px;
-						vertical-align: middle;
-					}
-
-					a {
-						background: $color-white;
-						color: $color_gray-base;
-						display: inline-block;
-						border: 1px solid $color_gray-lighten;
-						margin-right: 8px;
-						vertical-align: middle;
-
-						.dashicons {
-							font-size: 16px;
-							height: 16px;
-							width: 16px;
+							&.ui-sortable-helper {
+								z-index: 99999 !important; // Overwrite CSS over JS.
+							}
 						}
 
-						&.add,
-						&.remove,
-						&.addPayment,
-						&.removePayment {
-							height: 27px;
-							width: 27px;
-							display: inline-flex;
-							align-items: center;
-							justify-content: center;
+						&:hover,
+						&.ui-sortable-helper {
+							background: $color-white;
+							border: 1px solid $color_gray-lighten;
+							z-index: 99999 !important;
 						}
 
-						&:last-child {
-							margin-right: 0;
+						input[type='text'] {
+							margin-right: 8px;
+							vertical-align: middle;
 						}
 
-						&:hover {
-							background: $blue;
-							color: $color-white;
-							border: 1px solid $blue;
-						}
+						a {
+							background: $color-white;
+							color: $color_gray-base;
+							display: inline-block;
+							border: 1px solid $color_gray-lighten;
+							margin-right: 8px;
+							vertical-align: middle;
 
-						&.remove,
-						&.removePayment {
+							.dashicons {
+								font-size: 16px;
+								height: 16px;
+								width: 16px;
+							}
+
+							&.add,
+							&.remove,
+							&.addPayment,
+							&.removePayment {
+								height: 27px;
+								width: 27px;
+								display: inline-flex;
+								align-items: center;
+								justify-content: center;
+							}
+
+							&:last-child {
+								margin-right: 0;
+							}
+
 							&:hover {
-								background: $red;
-								border: 1px solid $red;
+								background: $blue;
+								color: $color-white;
+								border: 1px solid $blue;
+							}
+
+							&.remove,
+							&.removePayment {
+								&:hover {
+									background: $red;
+									border: 1px solid $red;
+								}
 							}
 						}
 					}
