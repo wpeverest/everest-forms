@@ -45,7 +45,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 	 * Hook in tabs.
 	 */
 	public function init_hooks() {
-		if ( $this->form ) {
+		if ( is_object( $this->form ) ) {
 			add_action( 'everest_forms_builder_fields', array( $this, 'output_fields' ) );
 			add_action( 'everest_forms_builder_fields_options', array( $this, 'output_fields_options' ) );
 			add_action( 'everest_forms_builder_fields_preview', array( $this, 'output_fields_preview' ) );

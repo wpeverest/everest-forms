@@ -80,9 +80,10 @@ function evf_search_entries( $args ) {
 		return array();
 	}
 
-	$orderby       = isset( $args['orderby'] ) ? $args['orderby'] : 'entry_id';
-	$limit         = -1 < $args['limit'] ? sprintf( 'LIMIT %d', $args['limit'] ) : '';
-	$offset        = 0 < $args['offset'] ? sprintf( 'OFFSET %d', $args['offset'] ) : '';
+	$orderby       = isset( $args['orderby'] ) ? sanitize_key( $args['orderby'] ) : 'entry_id';
+	$order         = "ORDER BY {$orderby} " . esc_sql( strtoupper( $args['order'] ) );
+	$limit         = -1 < $args['limit'] ? $wpdb->prepare( 'LIMIT %d', $args['limit'] ) : '';
+	$offset        = 0 < $args['offset'] ? $wpdb->prepare( 'OFFSET %d', $args['offset'] ) : '';
 	$status        = ! empty( $args['status'] ) ? "AND `status` = '" . sanitize_key( $args['status'] ) . "'" : '';
 	$search        = ! empty( $args['search'] ) ? "AND `meta_value` LIKE '%" . $wpdb->esc_like( sanitize_text_field( $args['search'] ) ) . "%'" : '';
 	$include       = ! empty( $args['form_id'] ) ? "AND `form_id` = '" . absint( $args['form_id'] ) . "'" : '';
@@ -94,17 +95,15 @@ function evf_search_entries( $args ) {
 		$args['after']  = empty( $args['after'] ) ? '0000-00-00' : $args['after'];
 		$args['before'] = empty( $args['before'] ) ? current_time( 'mysql', 1 ) : $args['before'];
 
-		$date_created = "AND `date_created_gmt` BETWEEN STR_TO_DATE('" . $args['after'] . "', '%Y-%m-%d %H:%i:%s') and STR_TO_DATE('" . $args['before'] . "', '%Y-%m-%d %H:%i:%s')";
+		$date_created = "AND `date_created_gmt` BETWEEN STR_TO_DATE('" . esc_sql( $args['after'] ) . "', '%Y-%m-%d %H:%i:%s') and STR_TO_DATE('" . esc_sql( $args['before'] ) . "', '%Y-%m-%d %H:%i:%s')";
 	}
 
 	if ( ! empty( $args['modified_after'] ) || ! empty( $args['modified_before'] ) ) {
 		$args['modified_after']  = empty( $args['modified_after'] ) ? '0000-00-00' : $args['modified_after'];
 		$args['modified_before'] = empty( $args['modified_before'] ) ? current_time( 'mysql', 1 ) : $args['modified_before'];
 
-		$date_modified = "AND `date_modified_gmt` BETWEEN STR_TO_DATE('" . $args['modified_after'] . "', '%Y-%m-%d %H:%i:%s') and STR_TO_DATE('" . $args['modified_before'] . "', '%Y-%m-%d %H:%i:%s')";
+		$date_modified = "AND `date_modified_gmt` BETWEEN STR_TO_DATE('" . esc_sql( $args['modified_after'] ) . "', '%Y-%m-%d %H:%i:%s') and STR_TO_DATE('" . esc_sql( $args['modified_before'] ) . "', '%Y-%m-%d %H:%i:%s')";
 	}
-
-	$order = "ORDER BY {$orderby} " . strtoupper( sanitize_key( $args['order'] ) );
 
 	$query = trim(
 		"

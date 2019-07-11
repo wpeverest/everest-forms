@@ -295,8 +295,8 @@
 				$( '#everest-forms-field-' + id ).toggleClass( 'sublabel_hide' );
 			});
 
-			// Real-time updates for Date/Time field option.
-			$builder.on( 'change', '.everest-forms-field-option-row-datetime_format select', function(e) {
+			// Real-time updates for Date/Time and Name "Format" option.
+			$builder.on( 'change', '.everest-forms-field-option-row-datetime_format select, .everest-forms-field-option-row-format select', function(e) {
 				var $this = $(this),
 					value = $this.val(),
 					id    = $this.parent().data( 'field-id' );
