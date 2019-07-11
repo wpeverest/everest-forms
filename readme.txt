@@ -165,6 +165,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Tweak - Date and time field advanced option design.
 * Tweak - Set margin to fix spacing issue on Multi-part buttons.
 * Tweak - Removed unnecessary CSS to fix Multi-part button alignment.
+* Tweak - Use `determine_locale()` to properly load custom translation files.
 
 = 1.4.9 - 28-05-2019 =
 * Feature - Everest Forms is WPML Compatiable. #161
