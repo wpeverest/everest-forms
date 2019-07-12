@@ -81,7 +81,8 @@ function evf_search_entries( $args ) {
 	}
 
 	$orderby       = isset( $args['orderby'] ) ? sanitize_key( $args['orderby'] ) : 'entry_id';
-	$order         = "ORDER BY {$orderby} " . esc_sql( strtoupper( $args['order'] ) );
+	$orderby       = $wpdb->prepare( 'ORDER BY %s', $orderby );
+	$order         = $orderby . esc_sql( strtoupper( $args['order'] ) );
 	$limit         = -1 < $args['limit'] ? $wpdb->prepare( 'LIMIT %d', $args['limit'] ) : '';
 	$offset        = 0 < $args['offset'] ? $wpdb->prepare( 'OFFSET %d', $args['offset'] ) : '';
 	$status        = ! empty( $args['status'] ) ? "AND `status` = '" . sanitize_key( $args['status'] ) . "'" : '';
