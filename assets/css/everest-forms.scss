@@ -463,6 +463,10 @@
 			margin-bottom: 0;
 		}
 
+		a {
+			color: $color-white;
+		}
+
 		li {
 			list-style: none outside !important; // Required for default theme compatibility
 			padding-left: 0 !important; // Required for default theme compatibility
