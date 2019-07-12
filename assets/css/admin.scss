@@ -2299,10 +2299,6 @@ body.everest-forms-builder-setup,
 						padding: 5px 10px;
 						border: 1px solid transparent;
 
-						input[type='checkbox'] {
-							margin-top: 1px;
-						}
-
 						&.ui-sortable-handle {
 							&.ui-sortable-placeholder {
 								height: 40px !important; // Overwrite CSS over JS.
