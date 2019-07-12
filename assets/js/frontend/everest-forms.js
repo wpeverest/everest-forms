@@ -167,8 +167,8 @@ jQuery( function ( $ ) {
 				validate_email    = $parent.is( '.validate-email' ),
 				event_type        = e.type;
 
-			if( $parent.hasClass('evf-field-address') ) {
-				if ( 0 === $parent.find('input.evf-error').length ) {
+			if ( $parent.hasClass( 'evf-field-address' ) ) {
+				if ( 0 === $parent.find( 'input.evf-error' ).length ) {
 					$parent.removeClass( 'everest-forms-invalid everest-forms-invalid-required-field everest-forms-invalid-email' ).addClass( 'everest-forms-validated' );
 				}
 			} else {
@@ -186,7 +186,7 @@ jQuery( function ( $ ) {
 						} else if ( 'checkbox' === $this.attr( 'type' ) && 0 === $parent.find('input:checked').length ) {
 							$parent.removeClass( 'everest-forms-validated' ).addClass( 'everest-forms-invalid everest-forms-invalid-required-field' );
 							validated = false;
-						} else if ( $this.val() === '' ) {
+						} else if ( '' === $this.val() ) {
 							$parent.removeClass( 'everest-forms-validated' ).addClass( 'everest-forms-invalid everest-forms-invalid-required-field' );
 							validated = false;
 						}
