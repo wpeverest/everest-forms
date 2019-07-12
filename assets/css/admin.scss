@@ -927,12 +927,11 @@ body.everest-forms-builder-setup,
 			}
 		}
 
-		// To do after merging with develop - set variables
 		.add,
 		.remove {
-			color: #969696;
+			color: $color_gray-normal;
 			background: $color-white;
-			border: 1px solid #b4b9be;
+			border: 1px solid $color_gray-lighten;
 			height: 24px;
 			width: 24px;
 			display: flex;
@@ -950,15 +949,15 @@ body.everest-forms-builder-setup,
 
 		.add {
 			&:hover {
-				background: #5d96ee;
-				border: 1px solid #5d96ee;
+				background: $blue;
+				border: 1px solid $blue;
 			}
 		}
 
 		.remove {
 			&:hover {
-				background: #d9534f;
-    			border: 1px solid #d9534f;
+				background: $red;
+    			border: 1px solid $red;
 			}
 		}
 
