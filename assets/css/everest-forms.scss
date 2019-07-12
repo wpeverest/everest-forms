@@ -175,7 +175,7 @@
 					}
 
 					ul {
-						margin: 0;
+						margin-bottom: 10px;
 						padding: 0;
 						list-style: none;
 
@@ -212,24 +212,41 @@
 
 					&.everest-forms-invalid {
 						label {
-							color: $red;
 							white-space: nowrap;
+
+							&.evf-error {
+								color: $red;
+							}
+						}
+
+						> label {
+							color: $red;
 						}
 
 						.select2-container,
-						input.input-text,
-						select,
+						input.evf-error,
+						select.evf-error,
 						textarea,
 						.evf-signature-canvas {
 							border-color: $red;
 						}
+
+						input {
+							&.evf-error {
+								border-color: $red;
+								~ .everest-forms-field-sublabel {
+									color: $red;
+								}
+							}
+						}
 					}
 
 					&.everest-forms-validated {
-						.select2-container,
-						input.input-text,
 						select,
-						textarea {
+						textarea,
+						input.input-text,
+						.select2-container,
+						.evf-signature-canvas {
 							border-color: $green;
 						}
 					}
