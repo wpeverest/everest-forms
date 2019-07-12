@@ -4,7 +4,7 @@ Tags: contact form, form, form builder, contact, custom form
 Requires at least: 4.0
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 1.4.9
+Stable tag: 1.5.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -140,90 +140,32 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 1.4.9 - 28-05-2019 =
-* Feature - Everest Forms is WPML Compatiable. #161
-* Feature - Introduced Credit card field for stripe. #154
-* Feature - Anti-spam honeypot form field for spam protection. #162
-* Feature - Introduced reCaptcha version 2 invisible and reCaptcha version 3. #157
-* Enhancement - Added submit button processing text and class name support. #140
-* Enhancement - Added smart tag admin email and user email on email field. #135
-* Enhancement - Added time support and advanced formatting options for a date field. #122
-* Enhancement - Added Cc and Bcc email addresses support for form notification settings. #129
-* Enhancement - Added maximum and minum value support in number field. #77
-* Fix - Dragging field item being hidden. #147
-* Fix - Multiple CSS classes option in the fields. #128
-* Fix - Form Block additional CSS returning error. #136
-* Fix - Display a "Copied!" tip when success copying. #148
-* Fix - Tab content hiding on payment gateway tab click. #124
-* Fix - Fill email notifications settings in blank form. #135
-* Fix - Tooltip not showing on new email notifications. #168
-* Fix - Field attribute structure on form email notification. #166
-* Tweak - Rearrange scss files. #137
-* Tweak - Maintained placeholder color.
-* Tweak - Button design consistence. #146
-* Tweak - Form Hide after the submission. #153
-* Tweak - Edit form link in form preview. #145
-* Tweak - Tooltip information enhancements #163
-* Tweak - Scroll to the confirmation message. #153
-* Tweak - Input styles inherited from theme's style. #138
-* Tweak - Email HTML template and plain text image selection. #160
-* Performance - Improve the speed of templates loader by caching. #156
-* Dev - Define `$wpdb` tables as early as possible, before init. #139
-* Deprecated - Payment charge field by introducing conditional logic.
-
-= 1.4.8 - 23-04-2019 =
-* Fix - Prevent content filters from corrupting form JSON data.
-
-= 1.4.7 - 03-04-2019 =
-* Feature - Tooltipster introduced.
-* Feature - Add support for Payment charge & section field.
-* Fix - Likert and scale rating field icons.
-* Fix - Replace tipTip with Tooltipster.
-* Fix - Scrollbar position in sidebar.
-* Tweak - Scale rating min & max point validation error tips.
-* Tweak - Alignment position with higher font size in radio/checkbox.
-
-= 1.4.6 - 25-03-2019 =
-* Fix - Add-ons installation process.
-* Tweak - Keep tooltip alive on hover.
-
-= 1.4.5 - 22-03-2019 =
-* Fix - Placeholder live change.
-* Fix - Smart tag design issue on tinyMCE.
-* Fix - Spacing between two form on single page.
-* Fix - Prioritize default background color in input field.
-* Fix - Scroll options to top when field setting is triggered.
-* Fix - The result parameter for function `parse_str()` is missing.
-* Fix - Address field styles conflict with bootstrap framework theme.
-* Tweak - Add `span` tag for all fields label.
-* Tweak - Hide preview suffix on customize preview.
-* Tweak - Change 'store' to 'site' in update notice.
-* Tweak - Correctly set webpack mode to minify builds.
-* Tweak - Introduced script load action hook for shortcode.
-* Tweak - Introduced dimension related formatting functions.
-* Dev - New pre-commit hook for PHP, JS, CSS.
-
-= 1.4.4 - 09-01-2018 =
-* Fix - Google reCAPTCHA conflict with others plugins.
-
-= 1.4.3 - 21-12-2018 =
-* Fix - Uncaught TypeError Flatpicker JS console error.
-
-= 1.4.2 - 19-12-2018 =
-* Fix - Form block styles not loaded in WP 5.0.
-* Fix - Classic layout rendering default layout.
-* Fix - Google reCAPTCHA conflict during validation.
-* Fix - BW compatibility for multiple-emails support.
-* Tweak - Conditionally load the scripts on demand.
-* Tweak - Smart Tags enhanchment with extra smart Tags and can be used on default value of form fields.
-
-= 1.4.1 - 06-12-2018 =
-* Fix - Default notification label behaviour.
-* Fix - Backward compatibility on multiple email.
-* Fix - Drag and drop bug in choices lists while sorting.
-* Tweak - Design for multiple email notification area.
-
-= 1.4.0 - 03-12-2018 =
-* Feature - Introduced Multiple Email.
+= 1.5.0 - XX-07-2019 =
+* Feature - Form specific email notification toggle.
+* Feature - Form enable/disable toggle with disabled message.
+* Feature - Form title and description support in Guten block.
+* Feature - New entries "heartbeat" notification on the entries list table screen.
+* Enhancement - Add support for custom captcha addon. #209
+* Enhancement - Introduced range support in the date/time field.
+* Fix - Correctly load localisation file.
+* Fix - WPML string translation for notices.
+* Fix - Fatal error thrown if form not found.
+* Fix - SQL Injection (discovered by Tin Duong).
+* Fix - Frontend error message on PHP validation.
+* Fix - Navigation alignment issue with multi-part.
+* Fix - Email field should default to being required.
+* Fix - Undefined variable for filtered template file.
+* Fix - Active email list not shown on first page load.
+* Fix - Date and time of entry submission. #191
+* Fix - Dragging forms fields bug in the builder. #196
+* Fix - Form builder design bug on wp.com dashboard. #190
+* Fix - WP admin bar design issue in safari on EVF pages. #179
+* Fix - Submit button Processing text while form is not saved. #177
+* Fix - Prepare a SQL query for safe execution in `evf_search_entries()`.
+* Tweak - Responsive design issue within builder.
+* Tweak - Date and time field advanced option design.
+* Tweak - Set margin to fix spacing issue on Multi-part buttons.
+* Tweak - Removed unnecessary CSS to fix Multi-part button alignment.
+* Tweak - Use `determine_locale()` to properly load custom translation files.
 
 [See changelog for all versions](https://github.com/wpeverest/everest-forms/raw/master/CHANGELOG.txt).

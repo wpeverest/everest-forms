@@ -927,6 +927,40 @@ body.everest-forms-builder-setup,
 			}
 		}
 
+		.add,
+		.remove {
+			color: $color_gray-normal;
+			background: $color-white;
+			border: 1px solid $color_gray-lighten;
+			height: 24px;
+			width: 24px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+
+			.dashicons {
+				line-height: 1.1;
+			}
+
+			&:hover {
+				color: $color-white;
+			}
+		}
+
+		.add {
+			&:hover {
+				background: $blue;
+				border: 1px solid $blue;
+			}
+		}
+
+		.remove {
+			&:hover {
+				background: $red;
+    			border: 1px solid $red;
+			}
+		}
+
 		.after-label-description {
 			float: right;
 		}
@@ -2538,6 +2572,12 @@ body.everest-forms-builder-setup,
 								font-weight: 600;
 							}
 						}
+					}
+				}
+
+				.evf-content-user-registration-settings {
+					.everest-forms-panel-field {
+						max-width: 500px;
 					}
 				}
 
