@@ -721,6 +721,7 @@
 									$( '.evf-panel-fields-button' ).trigger( 'click' );
 									$field.fadeOut( 'slow', function () {
 										var removed_el_id = $field.attr('data-field-id');
+										$( document.body ).trigger( 'evf_before_field_deleted', [ removed_el_id] );
 										$field.remove();
 										option_field.remove();
 										EVFPanelBuilder.checkEmptyGrid();
@@ -1173,6 +1174,7 @@
 					EVFPanelBuilder.checkEmptyGrid();
 					$( document.body ).trigger( 'init_tooltips' );
 					$( document.body ).trigger( 'init_field_options_toggle' );
+					$( document.body ).trigger( 'evf_after_field_append', [dragged_el_id] );
 					EVFPanelBuilder.conditionalLogicAppendField(dragged_el_id);
 					EVFPanelBuilder.conditionalLogicAppendFieldIntegration(dragged_el_id);
 		 		}
