@@ -4,7 +4,7 @@ Tags: contact form, form, form builder, contact, custom form
 Requires at least: 4.0
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 1.4.9
+Stable tag: 1.5.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -139,6 +139,34 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 12. Advance Form
 
 == Changelog ==
+
+= 1.5.0 - XX-07-2019 =
+* Feature - Form specific email notification toggle.
+* Feature - Form enable/disable toggle with disabled message.
+* Feature - Form title and description support in Guten block.
+* Feature - New entries "heartbeat" notification on the entries list table screen.
+* Enhancement - Add support for custom captcha addon. #209
+* Enhancement - Introduced range support in the date/time field.
+* Fix - Correctly load localisation file.
+* Fix - WPML string translation for notices.
+* Fix - Fatal error thrown if form not found.
+* Fix - SQL Injection (discovered by Tin Duong).
+* Fix - Frontend error message on PHP validation.
+* Fix - Navigation alignment issue with multi-part.
+* Fix - Email field should default to being required.
+* Fix - Undefined variable for filtered template file.
+* Fix - Active email list not shown on first page load.
+* Fix - Date and time of entry submission. #191
+* Fix - Dragging forms fields bug in the builder. #196
+* Fix - Form builder design bug on wp.com dashboard. #190
+* Fix - WP admin bar design issue in safari on EVF pages. #179
+* Fix - Submit button Processing text while form is not saved. #177
+* Fix - Prepare a SQL query for safe execution in `evf_search_entries()`.
+* Tweak - Responsive design issue within builder.
+* Tweak - Date and time field advanced option design.
+* Tweak - Set margin to fix spacing issue on Multi-part buttons.
+* Tweak - Removed unnecessary CSS to fix Multi-part button alignment.
+* Tweak - Use `determine_locale()` to properly load custom translation files.
 
 = 1.4.9 - 28-05-2019 =
 * Feature - Everest Forms is WPML Compatiable. #161
