@@ -21,7 +21,7 @@ final class EverestForms {
 	 *
 	 * @var string
 	 */
-	public $version = '1.4.9';
+	public $version = '1.5.0';
 
 	/**
 	 * The single instance of the class.
@@ -347,7 +347,13 @@ final class EverestForms {
 	 *      - WP_LANG_DIR/plugins/everest-forms-LOCALE.mo
 	 */
 	public function load_plugin_textdomain() {
-		$locale = is_admin() && function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
+		if ( function_exists( 'determine_locale' ) ) {
+			$locale = determine_locale();
+		} else {
+			// @todo Remove when start supporting WP 5.0 or later.
+			$locale = is_admin() ? get_user_locale() : get_locale();
+		}
+
 		$locale = apply_filters( 'plugin_locale', $locale, 'everest_forms' );
 
 		unload_textdomain( 'everest-forms' );
