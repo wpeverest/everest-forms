@@ -150,6 +150,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Fix - Correctly load localisation file.
 * Fix - WPML string translation for notices.
 * Fix - Fatal error thrown if form not found.
+* Fix - SQL Injection (discovered by Tin Duong).
 * Fix - Frontend error message on PHP validation.
 * Fix - Navigation alignment issue with multi-part.
 * Fix - Email field should default to being required.
@@ -160,7 +161,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Fix - Form builder design bug on wp.com dashboard. #190
 * Fix - WP admin bar design issue in safari on EVF pages. #179
 * Fix - Submit button Processing text while form is not saved. #177
-* Fix - Prepare a SQL query for safe execution in `evf_search_entries()` to prevent potential SQL injection (discovered by Tin Duong).
+* Fix - Prepare a SQL query for safe execution in `evf_search_entries()`.
 * Tweak - Responsive design issue within builder.
 * Tweak - Date and time field advanced option design.
 * Tweak - Set margin to fix spacing issue on Multi-part buttons.
