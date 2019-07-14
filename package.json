@@ -74,11 +74,11 @@
     "ignore": [
       "*.min.js",
       "*.css"
-    ],
-    "browserslist": [
-      "> 0.1%",
-      "ie 8",
-      "ie 9"
     ]
-  }
+  },
+  "browserslist": [
+    "> 0.1%",
+    "ie 8",
+    "ie 9"
+  ]
 }
