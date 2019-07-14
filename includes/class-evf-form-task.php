@@ -135,7 +135,7 @@ class EVF_Form_Task {
 
 						// Check reCAPTCHA response.
 						if ( empty( $data->success ) || ( isset( $data->hostname ) && evf_clean( wp_unslash( $_SERVER['HTTP_HOST'] ) ) !== $data->hostname ) || ( isset( $data->action, $data->score ) && ( 'everest_form' !== $data->action && 0.5 > floatval( $data->score ) ) ) ) {
-							evf_add_notice( __( 'Incorrect reCAPTCHA, please try again.', 'everest-forms' ), 'error' );
+							$this->errors[ $form_id ]['header'] = esc_html__( 'Incorrect reCAPTCHA, please try again.', 'everest-forms' );
 							return;
 						}
 					}
@@ -149,8 +149,8 @@ class EVF_Form_Task {
 			$errors = apply_filters( 'everest_forms_process_initial_errors', $this->errors, $this->form_data );
 
 			if ( ! empty( $errors[ $form_id ] ) ) {
-				if ( empty( $this->errors[ $form_id ]['header'] ) ) {
-					$this->errors[ $form_id ]['header'] = __( 'Form has not been submitted, please see the errors below.', 'everest-forms' );
+				if ( empty( $errors[ $form_id ]['header'] ) ) {
+					$errors[ $form_id ]['header'] = __( 'Form has not been submitted, please see the errors below.', 'everest-forms' );
 				}
 				$this->errors = $errors;
 				return;
