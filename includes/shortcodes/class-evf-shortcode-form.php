@@ -644,12 +644,6 @@ class EVF_Shortcode_Form {
 			return;
 		}
 
-		// If the form has user registration enabled and current Whether the current user is logged in and doesn't have a administrator capability do not proceed.
-		if ( isset( $form_data['settings']['enable_user_registration'] ) && '1' === $form_data['settings']['enable_user_registration'] && is_user_logged_in() && ! current_user_can( 'administrator' ) ) {
-			echo '<p class="everest-forms-notice everest-forms-notice--error">' . esc_html__( 'You are already logged in. Please logout to register New User.', 'everest-forms' ) . ' <a href="' . esc_url( wp_logout_url( get_permalink() ) ) . '">' . esc_html__( 'Logout', 'everest-forms' ) . '</a></p>';
-			return;
-		}
-
 		// Before output hook.
 		do_action( 'everest_forms_frontend_output_before', $form_data, $form );
 
