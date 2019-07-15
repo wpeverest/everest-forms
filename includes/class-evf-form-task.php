@@ -238,11 +238,11 @@ class EVF_Form_Task {
 	/**
 	 * Check the sucessful message.
 	 *
-	 * @param [bool] $status Message status.
-	 * @param [int]  $form_id Form ID.
+	 * @param bool $status Message status.
+	 * @param int  $form_id Form ID.
 	 */
 	public function check_success_message( $status, $form_id ) {
-		if ( isset( $this->form_data['id'] ) && absint( $this->form_data['id'] ) === absint( $form_id ) ) {
+		if ( isset( $this->form_data['id'] ) && $form_id === absint( $this->form_data['id'] ) ) {
 			return true;
 		}
 		return false;
