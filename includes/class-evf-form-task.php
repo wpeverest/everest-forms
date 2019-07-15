@@ -211,19 +211,7 @@ class EVF_Form_Task {
 			$this->entry_email( $this->form_fields, $entry, $this->form_data, $entry_id, 'entry' );
 
 			// @todo remove this way of printing notices.
-			$raw_form_data = $this->form_data;
-			add_filter(
-				'everest_forms_success',
-				function( $status, $form_id ) use ( $raw_form_data ) {
-					if ( isset( $raw_form_data['id'] ) && absint( $raw_form_data['id'] ) === absint( $form_id ) ) {
-						return true;
-					} else {
-						return false;
-					}
-				},
-				10,
-				2
-			);
+			add_filter( 'everest_forms_success', array( $this, 'check_form_id_for_success_message' ), 10, 2 );
 
 			// Pass completed and formatted fields in POST.
 			$_POST['everest-forms']['complete'] = $this->form_fields;
@@ -245,6 +233,21 @@ class EVF_Form_Task {
 		do_action( 'everest_forms_after_success_message', $this->form_data, $entry );
 
 		$this->entry_confirmation_redirect( $this->form_data );
+	}
+
+	/**
+	 * Check the sucessful message.
+	 *
+	 * @param [bool] $status Message status.
+	 * @param [int]  $form_id Form ID.
+	 */
+	public function check_form_id_for_success_message( $status, $form_id ) {
+		if ( isset( $this->form_id ) && absint( $this->form_id ) === absint( $form_id ) ) {
+			return true;
+		} else {
+			return false;
+		}
+
 	}
 
 	/**
