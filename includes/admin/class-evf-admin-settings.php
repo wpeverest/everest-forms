@@ -267,6 +267,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 					case 'datetime':
 					case 'datetime-local':
 					case 'date':
+					case 'date-time':
 					case 'month':
 					case 'time':
 					case 'week':
