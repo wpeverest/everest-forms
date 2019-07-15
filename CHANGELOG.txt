@@ -1,6 +1,6 @@
 == Changelog ==
 
-= 1.5.0 - XX-07-2019 =
+= 1.5.0 - 15-07-2019 =
 * Feature - Form specific email notification toggle.
 * Feature - Form enable/disable toggle with disabled message.
 * Feature - Form title and description support in Guten block.
@@ -19,14 +19,18 @@
 * Fix - Date and time of entry submission. #191
 * Fix - Dragging forms fields bug in the builder. #196
 * Fix - Form builder design bug on wp.com dashboard. #190
+* Fix - Show form error notice on any form field error. #213
 * Fix - WP admin bar design issue in safari on EVF pages. #179
 * Fix - Submit button Processing text while form is not saved. #177
 * Fix - Prepare a SQL query for safe execution in `evf_search_entries()`.
+* Fix - Validation message issue on the address field and checkbox field.
 * Tweak - Responsive design issue within builder.
 * Tweak - Date and time field advanced option design.
 * Tweak - Set margin to fix spacing issue on Multi-part buttons.
 * Tweak - Removed unnecessary CSS to fix Multi-part button alignment.
+* Tweak - Field type changed from date to date-time for date/time field.
 * Tweak - Use `determine_locale()` to properly load custom translation files.
+* Tweak - Drag and drop sortable-ui design enhancement on builder sidebar panel.
 
 = 1.4.9 - 28-05-2019 =
 * Feature - Everest Forms is WPML Compatiable. #161
