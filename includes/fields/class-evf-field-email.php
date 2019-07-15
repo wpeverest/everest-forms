@@ -75,7 +75,7 @@ class EVF_Field_Email extends EVF_Form_Fields {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $field    Field settings.
+	 * @param array $field Field settings.
 	 */
 	public function field_preview( $field ) {
 		$placeholder = ! empty( $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : '';
@@ -183,4 +183,3 @@ class EVF_Field_Email extends EVF_Form_Fields {
 		);
 	}
 }
-

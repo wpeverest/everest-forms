@@ -72,7 +72,8 @@ class EVF_Admin_Addons {
 				'page'             => 'evf-addons',
 				'action'           => 'evf-addons-refresh',
 				'evf-addons-nonce' => wp_create_nonce( 'refresh' ),
-			), admin_url( 'admin.php' )
+			),
+			admin_url( 'admin.php' )
 		);
 		$license_plan    = evf_get_license_plan();
 		$current_section = isset( $_GET['section'] ) ? sanitize_text_field( $_GET['section'] ) : '_all';

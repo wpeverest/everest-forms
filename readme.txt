@@ -155,6 +155,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Fix - Show form error notice on any form field error. #213
 * Fix - WP admin bar design issue in safari on EVF pages. #179
 * Fix - Submit button Processing text while form is not saved. #177
+* Fix - Field choices preview fixed while removing field choices. #221
 * Fix - Prepare a SQL query for safe execution in `evf_search_entries()`.
 * Fix - Validation message issue on the address field and checkbox field.
 * Tweak - Responsive design issue within builder.
