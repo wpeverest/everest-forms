@@ -384,11 +384,7 @@
 						}
 					});
 				} else {
-					var self = $( this );
-					setTimeout(function(){
-						self.closest( 'li' ).remove();
-					}, 100);
-
+					$( this ).closest( 'li' ).remove();
 					EVFPanelBuilder.choiceChange( field_id );
 				}
 			});
