@@ -10,7 +10,7 @@
   "license": "GPL-3.0+",
   "main": "Gruntfile.js",
   "scripts": {
-    "build": "cross-env BABEL_ENV=default NODE_ENV=production webpack",
+    "build": "grunt && cross-env BABEL_ENV=default NODE_ENV=production webpack",
     "watch": "cross-env BABEL_ENV=default webpack --watch",
     "lint:js": "eslint assets/js --ext=js",
     "git:update-hooks": "rm -r .git/hooks && node ./node_modules/husky/husky.js install"
@@ -75,10 +75,5 @@
       "*.min.js",
       "*.css"
     ]
-  },
-  "browserslist": [
-    "> 0.1%",
-    "ie 8",
-    "ie 9"
-  ]
+  }
 }

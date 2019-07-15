@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Everest Forms 1.5.0\n"
 "Report-Msgid-Bugs-To: https://github.com/wpeverest/everest-forms/issues\n"
-"POT-Creation-Date: 2019-07-08 11:12:42+00:00\n"
+"POT-Creation-Date: 2019-07-15 10:00:01+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -168,7 +168,7 @@ msgstr ""
 #: includes/admin/builder/class-evf-builder-fields.php:267
 #: includes/admin/builder/class-evf-builder-settings.php:25
 #: includes/admin/class-evf-admin-menus.php:154
-#: includes/class-evf-install.php:604
+#: includes/class-evf-install.php:608
 msgid "Settings"
 msgstr ""
 
@@ -237,7 +237,7 @@ msgstr ""
 #: includes/admin/builder/class-evf-builder-settings.php:77
 #: includes/admin/builder/class-evf-builder-settings.php:340
 #: includes/admin/builder/class-evf-builder-settings.php:395
-#: includes/class-evf-form-task.php:382 includes/evf-update-functions.php:140
+#: includes/class-evf-form-task.php:396 includes/evf-update-functions.php:140
 #: includes/templates/contact.php:71
 msgid "Admin Notification"
 msgstr ""
@@ -273,7 +273,7 @@ msgid "Form disabled message"
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:163
-#: includes/shortcodes/class-evf-shortcode-form.php:625
+#: includes/shortcodes/class-evf-shortcode-form.php:634
 msgid "This form is disabled."
 msgstr ""
 
@@ -981,26 +981,26 @@ msgstr ""
 msgid "The changes you made will be lost if you navigate away from this page."
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:572
+#: includes/admin/class-evf-admin-settings.php:573
 msgid "Select a page&hellip;"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:581
+#: includes/admin/class-evf-admin-settings.php:582
 #: includes/evf-formatting-functions.php:604
 msgid "Day(s)"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:582
+#: includes/admin/class-evf-admin-settings.php:583
 #: includes/evf-formatting-functions.php:605
 msgid "Week(s)"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:583
+#: includes/admin/class-evf-admin-settings.php:584
 #: includes/evf-formatting-functions.php:606
 msgid "Month(s)"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:584
+#: includes/admin/class-evf-admin-settings.php:585
 #: includes/evf-formatting-functions.php:607
 msgid "Year(s)"
 msgstr ""
@@ -1542,7 +1542,8 @@ msgstr ""
 msgid "Connection missing"
 msgstr ""
 
-#: includes/class-evf-ajax.php:462
+#: includes/class-evf-ajax.php:463
+#. translators: %1$s - deactivation reason page; %2$d - deactivation url.
 msgid ""
 "Before we deactivate Everest Forms, would you care to <a href=\"%1$s\" "
 "target=\"_blank\">let us know why</a> so we can improve it for you? <a "
@@ -1622,68 +1623,68 @@ msgstr ""
 msgid "Show Description"
 msgstr ""
 
-#: includes/class-evf-form-task.php:73
+#: includes/class-evf-form-task.php:89
 msgid "We were unable to process your form, please try again."
 msgstr ""
 
-#: includes/class-evf-form-task.php:85
+#: includes/class-evf-form-task.php:95
 msgid "Invalid form. Please check again."
 msgstr ""
 
-#: includes/class-evf-form-task.php:128
+#: includes/class-evf-form-task.php:138
 msgid "Incorrect reCAPTCHA, please try again."
 msgstr ""
 
-#: includes/class-evf-form-task.php:134
+#: includes/class-evf-form-task.php:144
 msgid "reCAPTCHA is required."
 msgstr ""
 
-#: includes/class-evf-form-task.php:143 includes/class-evf-form-task.php:192
+#: includes/class-evf-form-task.php:153 includes/class-evf-form-task.php:202
 msgid "Form has not been submitted, please see the errors below."
 msgstr ""
 
-#: includes/class-evf-form-task.php:151
+#: includes/class-evf-form-task.php:161
 msgid "Everest Forms honeypot field triggered."
 msgstr ""
 
-#: includes/class-evf-form-task.php:230 includes/templates/contact.php:61
+#: includes/class-evf-form-task.php:229 includes/templates/contact.php:61
 msgid "Thanks for contacting us! We will be in touch with you shortly."
 msgstr ""
 
-#: includes/class-evf-form-task.php:404
+#: includes/class-evf-form-task.php:418
 #. translators: %s - form name.
 msgid "New %s Entry"
 msgstr ""
 
-#: includes/class-evf-form-task.php:492
+#: includes/class-evf-form-task.php:506
 msgid "No form ID was found."
 msgstr ""
 
-#: includes/class-evf-form-task.php:499
+#: includes/class-evf-form-task.php:513
 msgid "Could not create an entry"
 msgstr ""
 
-#: includes/class-evf-install.php:282
+#: includes/class-evf-install.php:286
 msgid "Monthly"
 msgstr ""
 
-#: includes/class-evf-install.php:604
+#: includes/class-evf-install.php:608
 msgid "View Everest Forms Settings"
 msgstr ""
 
-#: includes/class-evf-install.php:620
+#: includes/class-evf-install.php:624
 msgid "View Everest Forms documentation"
 msgstr ""
 
-#: includes/class-evf-install.php:620
+#: includes/class-evf-install.php:624
 msgid "Docs"
 msgstr ""
 
-#: includes/class-evf-install.php:621
+#: includes/class-evf-install.php:625
 msgid "Visit free customer support"
 msgstr ""
 
-#: includes/class-evf-install.php:621
+#: includes/class-evf-install.php:625
 msgid "Free support"
 msgstr ""
 

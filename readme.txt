@@ -72,9 +72,17 @@ Check [documentation](http://docs.wpeverest.com/docs/everest-forms/)
 
 * [Multi-Part Forms](https://wpeverest.com/wordpress-plugins/everest-forms/multi-part-forms/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to break long or complex forms up into multiple pages.
 
+* [Custom Captcha](https://wpeverest.com/wordpress-plugins/everest-forms/captcha/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to add Custom Questions and Math Captcha to your forms for spam prevention.
+
 * [Conditional Logic](https://wpeverest.com/wordpress-plugins/everest-forms/conditional-logic/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to conditionally hide or show form fields based on user's interaction with other form fields.
 
 * [Survey, Polls and Quiz](https://wpeverest.com/wordpress-plugins/everest-forms/survey-polls-and-quiz/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to create intuitive survey, poll and quiz forms within a minute.
+
+* [User Registration](https://wpeverest.com/wordpress-plugins/everest-forms/user-registration/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to create a custom WordPress user registration form and collect payments.
+
+* [Post Submission](https://wpeverest.com/wordpress-plugins/everest-forms/post-submission/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows your users to submit blog posts from front-end without logging into the admin area.
+
+* [Zapier](https://wpeverest.com/wordpress-plugins/everest-forms/zapier/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to connect your forms with your 1500+ web applications.
 
 ### What's Next
 
@@ -122,21 +130,6 @@ Bugs can be reported either in our support forum or preferably on the [Everest F
 = Everest Forms is awesome! Can I contribute? =
 
 Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/everest-forms/) :)
-
-== Screenshots ==
-
-1. Form Fields
-2. Form Field Options
-3. Form General Settings
-4. Form Email Settings
-5. Settings General
-6. Settings Recaptcha
-7. Settings Email
-8. Settings Validation
-9. Everest Forms Block
-10. Contact Form - Default Layout
-11. Contact Form - Classic Layout
-12. Advance Form
 
 == Changelog ==
 
