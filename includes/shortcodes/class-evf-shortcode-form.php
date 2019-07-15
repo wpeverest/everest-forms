@@ -451,7 +451,7 @@ class EVF_Shortcode_Form {
 		}
 
 		// Input class.
-		if ( ! in_array( $field['type'], array( 'checkbox', 'radio' ) ) ) {
+		if ( ! in_array( $field['type'], array( 'checkbox', 'radio', 'payment-checkbox', 'payment-multiple' ) ) ) {
 			$attributes['input_class'][] = 'input-text';
 		}
 
