@@ -140,7 +140,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 1.5.0 - XX-07-2019 =
+= 1.5.0 - 15-07-2019 =
 * Feature - Form specific email notification toggle.
 * Feature - Form enable/disable toggle with disabled message.
 * Feature - Form title and description support in Guten block.
@@ -168,6 +168,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Tweak - Date and time field advanced option design.
 * Tweak - Set margin to fix spacing issue on Multi-part buttons.
 * Tweak - Removed unnecessary CSS to fix Multi-part button alignment.
+* Tweak - Field type changed from date to date-time for date/time field.
 * Tweak - Use `determine_locale()` to properly load custom translation files.
 * Tweak - Drag and drop sortable-ui design enhancement on builder sidebar panel.
 
