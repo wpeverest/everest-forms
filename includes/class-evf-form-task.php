@@ -242,11 +242,12 @@ class EVF_Form_Task {
 	 * @param [int]  $form_id Form ID.
 	 */
 	public function check_form_id_for_success_message( $status, $form_id ) {
-		if ( isset( $this->form_id ) && absint( $this->form_id ) === absint( $form_id ) ) {
-			return true;
+		if ( isset( $this->form_data['id'] ) && absint( $this->form_data['id'] ) === absint( $form_id ) ) {
+			$status = true;
 		} else {
-			return false;
+			$status = false;
 		}
+		return $status;
 
 	}
 
