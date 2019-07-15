@@ -18,7 +18,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	 */
 	public function __construct() {
 		$this->name     = esc_html__( 'Date / Time', 'everest-forms' );
-		$this->type     = 'date';
+		$this->type     = 'date-time';
 		$this->icon     = 'evf-icon evf-icon-calendar';
 		$this->order    = 20;
 		$this->group    = 'advanced';

@@ -24,7 +24,7 @@ jQuery( function ( $ ) {
 			}
 		},
 		init_datepicker: function () {
-			var evfDateField = $( '.evf-field-date' );
+			var evfDateField = $( '.evf-field-date-time' );
 
 			if ( evfDateField.length > 0 ) {
 				$( '.flatpickr-field' ).each( function() {

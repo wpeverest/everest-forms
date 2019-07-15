@@ -1224,7 +1224,7 @@
 								'address',
 								'image-upload',
 								'file-upload',
-								'date',
+								'date-time',
 								'hidden',
 								'scale-rating',
 								'likert',
@@ -1235,7 +1235,7 @@
 					});
 				} else {
 					var el_to_append = '<option class="evf-conditional-fields" data-field_type="'+field_type+'" data-field_id="'+field_id+'" value="'+field_id+'">'+field_label+'</option>';
-					if( 'html' !== field_type && 'title' !== field_type && 'address' !== field_type && 'image-upload' !== field_type && 'file-upload' !== field_type && 'date' !== field_type && 'hidden' !== field_type && 'likert' !== field_type && 'scale-rating' !== field_type ) {
+					if( 'html' !== field_type && 'title' !== field_type && 'address' !== field_type && 'image-upload' !== field_type && 'file-upload' !== field_type && 'date-time' !== field_type && 'hidden' !== field_type && 'likert' !== field_type && 'scale-rating' !== field_type ) {
 						fields.eq(index).insertAt( el_to_append, dragged_index, selected_id );
 					}
 				}
@@ -1278,7 +1278,7 @@
 								'address',
 								'image-upload',
 								'file-upload',
-								'date',
+								'date-time',
 								'hidden',
 								'scale-rating',
 								'likert',
@@ -1291,7 +1291,7 @@
 					});
 				} else {
 					var el_to_append = '<option class="evf-conditional-fields" data-field_type="'+field_type+'" data-field_id="'+field_id+'" value="'+field_id+'">'+field_label+'</option>';
-					if( 'html' !== field_type && 'title' !== field_type && 'address' !== field_type && 'image-upload' !== field_type && 'file-upload' !== field_type && 'date' !== field_type && 'hidden' !== field_type && 'likert' !== field_type && 'scale-rating' !== field_type ) {
+					if( 'html' !== field_type && 'title' !== field_type && 'address' !== field_type && 'image-upload' !== field_type && 'file-upload' !== field_type && 'date-time' !== field_type && 'hidden' !== field_type && 'likert' !== field_type && 'scale-rating' !== field_type ) {
 						fields.eq(index).insertAt( el_to_append, dragged_index );
 					}
 				}

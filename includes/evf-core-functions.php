@@ -1922,7 +1922,7 @@ function evf_has_date_field( $form_id ) {
 
 	if ( ! empty( $form_data['form_fields'] ) ) {
 		foreach ( $form_data['form_fields'] as $form_field ) {
-			if ( 'date' === $form_field['type'] ) {
+			if ( 'date-time' === $form_field['type'] ) {
 				return true;
 			}
 		}
