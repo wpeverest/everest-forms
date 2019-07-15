@@ -159,6 +159,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Fix - Date and time of entry submission. #191
 * Fix - Dragging forms fields bug in the builder. #196
 * Fix - Form builder design bug on wp.com dashboard. #190
+* Fix - Show form error notice on any form field error. #213
 * Fix - WP admin bar design issue in safari on EVF pages. #179
 * Fix - Submit button Processing text while form is not saved. #177
 * Fix - Prepare a SQL query for safe execution in `evf_search_entries()`.
