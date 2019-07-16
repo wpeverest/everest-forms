@@ -532,57 +532,60 @@ body.everest-forms-builder-setup,
 				background-color: transparent;
 				transition: 0.5s background-color ease-in-out;
 
-				span.evf-nav-icon {
-					width: auto;
-					height: auto;
-					display: block;
-					font-size: 32px;
-					text-align: center;
+				span {
+					&.evf-nav-icon {
+						float: none;
+						width: auto;
+						height: auto;
+						display: block;
+						font-size: 32px;
+						text-align: center;
 
-					&::before {
-						@include iconbefore( '\e001' );
-						margin-right: 0;
-					}
-
-					&.general::before {
-						content: '\e001';
-					}
-
-					&.settings::before {
-						content: '\e002';
-					}
-
-					&.recaptcha::before {
-						content: '\e003';
-					}
-
-					&.email::before {
-						content: '\e006';
-					}
-
-					&.validations::before {
-						content: '\e012';
-					}
-
-					&.pdf-submission::before {
-						content: '\e023';
-					}
-
-					&.fields::before {
-						content: '\e00b';
-					}
-
-					&.payment,
-					&.payments {
 						&::before {
-							content: '\e01f';
+							@include iconbefore( '\e001' );
+							margin-right: 0;
 						}
-					}
 
-					&.integration,
-					&.integrations {
-						&::before {
-							content: '\e01e';
+						&.general::before {
+							content: '\e001';
+						}
+
+						&.settings::before {
+							content: '\e002';
+						}
+
+						&.recaptcha::before {
+							content: '\e003';
+						}
+
+						&.email::before {
+							content: '\e006';
+						}
+
+						&.validations::before {
+							content: '\e012';
+						}
+
+						&.pdf-submission::before {
+							content: '\e023';
+						}
+
+						&.fields::before {
+							content: '\e00b';
+						}
+
+						&.payment,
+						&.payments {
+							&::before {
+								content: '\e01f';
+							}
+						}
+
+						&.integration,
+						&.integrations {
+							&::before {
+								content: '\e01e';
+							}
 						}
 					}
 				}
