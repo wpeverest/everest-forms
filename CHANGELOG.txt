@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 1.5.1 - 19-07-2019 =
+* Fix - Email notification issue in older forms.
+* Fix - Addon installation error notice margin bug.
+* Fix - Icon floating on nav effected by auto load next plugin.
+
 = 1.5.0 - 15-07-2019 =
 * Feature - Form specific email notification toggle.
 * Feature - Form enable/disable toggle with disabled message.
