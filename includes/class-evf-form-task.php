@@ -382,9 +382,8 @@ class EVF_Form_Task {
 			return;
 		}
 
-		$check_email_notification_status = isset( $form_data['settings']['email']['enable_email_notification'] ) ? $form_data['settings']['email']['enable_email_notification'] : 0;
-
-		if ( '1' !== $check_email_notification_status ) {
+		// Don't proceed if email notification is not enabled.
+		if ( isset( $form_data['settings']['email']['enable_email_notification'] ) && '1' !== $form_data['settings']['email']['enable_email_notification'] ) {
 			return;
 		}
 
