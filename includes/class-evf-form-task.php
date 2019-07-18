@@ -387,6 +387,11 @@ class EVF_Form_Task {
 			return;
 		}
 
+		// Make sure we have an entry id.
+		if ( empty( $this->entry_id ) ) {
+			$this->entry_id = (int) $entry_id;
+		}
+
 		$fields = apply_filters( 'everest_forms_entry_email_data', $fields, $entry, $form_data );
 
 		if ( ! isset( $form_data['settings']['email']['connection_1'] ) ) {
