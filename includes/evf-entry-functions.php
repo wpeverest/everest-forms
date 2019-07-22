@@ -75,7 +75,7 @@ function evf_search_entries( $args ) {
 		)
 	);
 
-	$statuses     = array_keys( evf_get_entry_statuses() );
+	$statuses     = evf_get_entry_statuses();
 	$valid_fields = array( 'date', 'form_id', 'title', 'status' );
 
 	// Check if form ID is valid for entries.
@@ -96,7 +96,7 @@ function evf_search_entries( $args ) {
 	}
 
 	if ( ! empty( $args['status'] ) ) {
-		$query[] = $wpdb->prepare( 'AND `status` = %s', isset( $statuses[ $args['status'] ] ) ? $statuses[ $args['status'] ] : 'publish' );
+		$query[] = $wpdb->prepare( 'AND `status` = %s', isset( $statuses[ $args['status'] ] ) ? $args['status'] : 'publish' );
 	}
 
 	$orderby     = in_array( $args['orderby'], $valid_fields, true ) ? $args['orderby'] : 'entry_id';
