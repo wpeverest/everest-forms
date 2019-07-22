@@ -4,7 +4,7 @@ Tags: contact form, form, form builder, contact, custom form
 Requires at least: 4.0
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 1.5.1
+Stable tag: 1.5.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -132,6 +132,10 @@ Bugs can be reported either in our support forum or preferably on the [Everest F
 Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/everest-forms/) :)
 
 == Changelog ==
+
+= 1.5.2 - 22-07-2019 =
+* Fix - Entries list-table with status query bug.
+* Fix - Entries list table offset bug for pagination.
 
 = 1.5.1 - 19-07-2019 =
 * Fix - Email notification issue in older forms.
