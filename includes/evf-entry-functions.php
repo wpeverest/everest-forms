@@ -109,7 +109,7 @@ function evf_search_entries( $args ) {
 	}
 
 	if ( 0 < $args['offset'] ) {
-		$query[] = $wpdb->prepare( 'LIMIT %d', absint( $args['offset'] ) );
+		$query[] = $wpdb->prepare( 'OFFSET %d', absint( $args['offset'] ) );
 	}
 
 	// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
