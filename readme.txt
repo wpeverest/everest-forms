@@ -133,7 +133,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 1.5.2 - 22-07-2019 =
+= 1.5.2 - 23-07-2019 =
 * Fix - Prevent empty search term in forms query.
 * Fix - Entries list-table with status query bug.
 * Fix - Entries list table offset bug for pagination.
