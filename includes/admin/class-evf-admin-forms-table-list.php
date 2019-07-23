@@ -224,6 +224,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 
 		if ( $time_diff > 0 && $time_diff < 24 * 60 * 60 ) {
 			$h_time = sprintf(
+				/* translators: %s: Time */
 				__( '%s ago', 'everest-forms' ),
 				human_time_diff( $time )
 			);
@@ -445,7 +446,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 		$per_page     = $this->get_items_per_page( 'evf_forms_per_page' );
 		$current_page = $this->get_pagenum();
 
-		// Query args
+		// Query args.
 		$args = array(
 			'post_type'           => 'everest_form',
 			'posts_per_page'      => $per_page,
@@ -453,20 +454,24 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 			'paged'               => $current_page,
 		);
 
-		// Handle the status query
-		if ( ! empty( $_REQUEST['status'] ) ) {
-			$args['post_status'] = sanitize_text_field( $_REQUEST['status'] );
+		// Handle the status query.
+		if ( ! empty( $_REQUEST['status'] ) ) { // WPCS: input var ok, CSRF ok.
+			$args['post_status'] = sanitize_text_field( $_REQUEST['status'] ); // WPCS: input var ok, sanitization ok.
 		}
 
-		$args['s']       = isset( $_REQUEST['s'] ) ? wp_unslash( trim( $_REQUEST['s'] ) ) : '';
-		$args['orderby'] = isset( $_REQUEST['orderby'] ) ? sanitize_text_field( $_REQUEST['orderby'] ) : 'date_created';
-		$args['order']   = isset( $_REQUEST['order'] ) && 'ASC' === strtoupper( $_REQUEST['order'] ) ? 'ASC' : 'DESC';
+		// Handle the search query.
+		if ( ! empty( $_REQUEST['s'] ) ) { // WPCS: input var ok, CSRF ok.
+			$args['s'] = sanitize_text_field( trim( wp_unslash( $_REQUEST['s'] ) ) ); // WPCS: sanitization ok, CSRF ok.
+		}
 
-		// Get the registrations
+		$args['orderby'] = isset( $_REQUEST['orderby'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['orderby'] ) ) : 'date_created'; // WPCS: sanitization ok, CSRF ok.
+		$args['order']   = isset( $_REQUEST['order'] ) && 'ASC' === strtoupper( wp_unslash( $_REQUEST['order'] ) ) ? 'ASC' : 'DESC'; // WPCS: sanitization ok, CSRF ok.
+
+		// Get the forms.
 		$posts       = new WP_Query( $args );
 		$this->items = $posts->posts;
 
-		// Set the pagination
+		// Set the pagination.
 		$this->set_pagination_args(
 			array(
 				'total_items' => $posts->found_posts,
