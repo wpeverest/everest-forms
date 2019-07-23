@@ -67,10 +67,13 @@ class EVF_Admin_Entries {
 			<?php do_action( 'everest_forms_before_entry_list', $entries_table_list ); ?>
 
 			<?php if ( 0 < count( $entry_ids ) ) : ?>
-				<form id="entries-list" method="post" data-form-id="<?php echo absint( $entries_table_list->form_id ); ?>" data-last-entry-id="<?php echo absint( end( $entry_ids ) ); ?>">
+				<?php $entries_table_list->views(); ?>
+				<form id="entries-list" method="get" data-form-id="<?php echo absint( $entries_table_list->form_id ); ?>" data-last-entry-id="<?php echo absint( end( $entry_ids ) ); ?>">
 					<input type="hidden" name="page" value="evf-entries" />
+					<?php if ( ! empty( $_REQUEST['form_id'] ) ) : // WPCS: input var ok, CSRF ok. ?>
+						<input type="hidden" name="form_id" value="<?php echo absint( $_REQUEST['form_id'] ); ?>" />
+					<?php endif; ?>
 					<?php
-						$entries_table_list->views();
 						$entries_table_list->search_box( __( 'Search Entries', 'everest-forms' ), 'everest-forms' );
 						$entries_table_list->display();
 					?>
@@ -88,7 +91,7 @@ class EVF_Admin_Entries {
 								$output = ob_get_clean();
 
 							if ( ! empty( $output ) ) {
-								echo $output;
+								echo $output; // @codingStandardsIgnoreLine
 								submit_button( __( 'Filter', 'everest-forms' ), '', '', false, array( 'id' => 'post-query-submit' ) );
 							}
 							?>
@@ -134,6 +137,11 @@ class EVF_Admin_Entries {
 				$this->empty_trash();
 			}
 		}
+
+		if ( ! empty( $_REQUEST['_wp_http_referer'] ) && isset( $_SERVER['REQUEST_URI'] ) ) { // WPCS: input var ok, CSRF ok.
+			wp_safe_redirect( remove_query_arg( array( '_wp_http_referer', '_wpnonce' ), wp_unslash( $_SERVER['REQUEST_URI'] ) ) ); // WPCS: input var ok, sanitization ok.
+			exit();
+		}
 	}
 
 	/**
@@ -152,7 +160,7 @@ class EVF_Admin_Entries {
 			}
 		}
 
-		wp_redirect(
+		wp_safe_redirect(
 			esc_url_raw(
 				add_query_arg(
 					array(
@@ -182,7 +190,7 @@ class EVF_Admin_Entries {
 			}
 		}
 
-		wp_redirect(
+		wp_safe_redirect(
 			esc_url_raw(
 				add_query_arg(
 					array(
@@ -212,7 +220,7 @@ class EVF_Admin_Entries {
 			}
 		}
 
-		wp_redirect(
+		wp_safe_redirect(
 			esc_url_raw(
 				add_query_arg(
 					array(
