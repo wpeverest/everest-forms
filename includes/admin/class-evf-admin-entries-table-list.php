@@ -460,7 +460,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 			$output = ob_get_clean();
 
 			if ( ! empty( $output ) ) {
-				echo $output;
+				echo $output; // @codingStandardsIgnoreLine
 				submit_button( __( 'Filter', 'everest-forms' ), '', 'filter_action', false, array( 'id' => 'post-query-submit' ) );
 
 				// Export CSV submit button.

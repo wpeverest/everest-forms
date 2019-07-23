@@ -136,11 +136,11 @@ class EVF_Admin_Entries {
 			if ( isset( $_REQUEST['delete_all'] ) || isset( $_REQUEST['delete_all2'] ) ) { // WPCS: input var okay, CSRF ok.
 				$this->empty_trash();
 			}
-		}
 
-		if ( ! empty( $_REQUEST['_wp_http_referer'] ) && isset( $_SERVER['REQUEST_URI'] ) ) { // WPCS: input var ok, CSRF ok.
-			wp_safe_redirect( remove_query_arg( array( '_wp_http_referer', '_wpnonce' ), wp_unslash( $_SERVER['REQUEST_URI'] ) ) ); // WPCS: input var ok, sanitization ok.
-			exit();
+			if ( ! empty( $_REQUEST['_wp_http_referer'] ) && isset( $_SERVER['REQUEST_URI'] ) ) { // WPCS: input var ok, CSRF ok.
+				wp_safe_redirect( remove_query_arg( array( '_wp_http_referer', '_wpnonce' ), wp_unslash( $_SERVER['REQUEST_URI'] ) ) ); // WPCS: input var ok, sanitization ok.
+				exit();
+			}
 		}
 	}
 
