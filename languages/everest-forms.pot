@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Everest Forms 1.5.2\n"
 "Report-Msgid-Bugs-To: https://github.com/wpeverest/everest-forms/issues\n"
-"POT-Creation-Date: 2019-07-22 11:00:55+00:00\n"
+"POT-Creation-Date: 2019-07-23 11:38:22+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -672,7 +672,7 @@ msgid ""
 msgstr ""
 
 #: includes/admin/class-evf-admin-entries-table-list.php:75
-#: includes/admin/class-evf-admin-entries.php:81
+#: includes/admin/class-evf-admin-entries.php:84
 msgid "Whoops, it appears you do not have any form entries yet."
 msgstr ""
 
@@ -713,7 +713,7 @@ msgstr ""
 #: includes/admin/class-evf-admin-entries-table-list.php:284
 #: includes/admin/class-evf-admin-entries-table-list.php:372
 #: includes/admin/class-evf-admin-forms-table-list.php:122
-#: includes/admin/class-evf-admin-forms-table-list.php:352
+#: includes/admin/class-evf-admin-forms-table-list.php:353
 msgid "Restore"
 msgstr ""
 
@@ -745,7 +745,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: includes/admin/class-evf-admin-entries-table-list.php:438
-#: includes/admin/class-evf-admin-entries.php:255
+#: includes/admin/class-evf-admin-entries.php:263
 #. translators: %d: number of entries
 msgid "%d entry permanently deleted."
 msgid_plural "%d entries permanently deleted."
@@ -753,7 +753,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: includes/admin/class-evf-admin-entries-table-list.php:464
-#: includes/admin/class-evf-admin-entries.php:92
+#: includes/admin/class-evf-admin-entries.php:95
 msgid "Filter"
 msgstr ""
 
@@ -762,7 +762,7 @@ msgid "Export CSV"
 msgstr ""
 
 #: includes/admin/class-evf-admin-entries-table-list.php:474
-#: includes/admin/class-evf-admin-forms-table-list.php:435
+#: includes/admin/class-evf-admin-forms-table-list.php:436
 msgid "Empty Trash"
 msgstr ""
 
@@ -777,19 +777,19 @@ msgstr ""
 msgid "Entries"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries.php:74
+#: includes/admin/class-evf-admin-entries.php:77
 msgid "Search Entries"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries.php:97
+#: includes/admin/class-evf-admin-entries.php:100
 msgid "Learn more about entries"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries.php:98
+#: includes/admin/class-evf-admin-entries.php:101
 msgid "Create your first form!"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries.php:342
+#: includes/admin/class-evf-admin-entries.php:350
 #. translators: %d - New form entries count.
 msgid "%d new entry since you last checked."
 msgid_plural "%d new entries since you last checked."
@@ -836,7 +836,7 @@ msgid "Delete this item permanently"
 msgstr ""
 
 #: includes/admin/class-evf-admin-forms-table-list.php:127
-#: includes/admin/class-evf-admin-forms-table-list.php:353
+#: includes/admin/class-evf-admin-forms-table-list.php:354
 msgid "Delete permanently"
 msgstr ""
 
@@ -852,53 +852,54 @@ msgstr ""
 msgid "Y/m/d g:i:s A"
 msgstr ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:227
+#: includes/admin/class-evf-admin-forms-table-list.php:228
+#. translators: %s: Time
 msgid "%s ago"
 msgstr ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:231
+#: includes/admin/class-evf-admin-forms-table-list.php:232
 msgid "Y/m/d"
 msgstr ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:267
 #: includes/admin/class-evf-admin-forms-table-list.php:268
+#: includes/admin/class-evf-admin-forms-table-list.php:269
 #. translators: %s: count
 msgid "Published <span class=\"count\">(%s)</span>"
 msgstr ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:276
 #: includes/admin/class-evf-admin-forms-table-list.php:277
+#: includes/admin/class-evf-admin-forms-table-list.php:278
 #. translators: %s: count
 msgid "Draft <span class=\"count\">(%s)</span>"
 msgstr ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:285
 #: includes/admin/class-evf-admin-forms-table-list.php:286
+#: includes/admin/class-evf-admin-forms-table-list.php:287
 #. translators: %s: count
 msgid "Pending <span class=\"count\">(%s)</span>"
 msgstr ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:358
+#: includes/admin/class-evf-admin-forms-table-list.php:359
 #: includes/admin/views/html-admin-page-entries-view.php:179
 #: includes/admin/views/html-admin-page-entries-view.php:193
 msgid "Move to trash"
 msgstr ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:388
+#: includes/admin/class-evf-admin-forms-table-list.php:389
 #. translators: %d: number of forms
 msgid "%d form moved to the Trash."
 msgid_plural "%d forms moved to the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:403
+#: includes/admin/class-evf-admin-forms-table-list.php:404
 #. translators: %d: number of forms
 msgid "%d form restored from the Trash."
 msgid_plural "%d forms restored from the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:418
+#: includes/admin/class-evf-admin-forms-table-list.php:419
 #: includes/admin/class-evf-admin-forms.php:124
 #. translators: %d: number of forms
 msgid "%d form permanently deleted."
@@ -3450,7 +3451,7 @@ msgid_plural "All <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:318
+#: includes/admin/class-evf-admin-forms-table-list.php:319
 #. translators: %s: count
 msgctxt "posts"
 msgid "All <span class=\"count\">(%s)</span>"
