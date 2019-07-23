@@ -70,6 +70,9 @@ class EVF_Admin_Entries {
 				<?php $entries_table_list->views(); ?>
 				<form id="entries-list" method="get" data-form-id="<?php echo absint( $entries_table_list->form_id ); ?>" data-last-entry-id="<?php echo absint( end( $entry_ids ) ); ?>">
 					<input type="hidden" name="page" value="evf-entries" />
+					<?php if ( ! empty( $_REQUEST['form_id'] ) ) : // WPCS: input var ok, CSRF ok. ?>
+						<input type="hidden" name="form_id" value="<?php echo absint( $_REQUEST['form_id'] ); ?>" />
+					<?php endif; ?>
 					<?php
 						$entries_table_list->search_box( __( 'Search Entries', 'everest-forms' ), 'everest-forms' );
 						$entries_table_list->display();
