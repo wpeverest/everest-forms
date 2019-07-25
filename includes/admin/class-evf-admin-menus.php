@@ -67,10 +67,13 @@ class EVF_Admin_Menus {
 				$redirect_url = admin_url( 'admin.php?page=evf-builder&create-form=1' );
 
 				if ( isset( $_GET['tab'], $_GET['form_id'] ) ) {
-					$redirect_url = add_query_arg( array(
-						'tab'     => evf_clean( wp_unslash( $_GET['tab'] ) ),
-						'form_id' => absint( wp_unslash( $_GET['form_id'] ) ),
-					), admin_url( 'admin.php?page=evf-builder' ) );
+					$redirect_url = add_query_arg(
+						array(
+							'tab'     => evf_clean( wp_unslash( $_GET['tab'] ) ),
+							'form_id' => absint( wp_unslash( $_GET['form_id'] ) ),
+						),
+						admin_url( 'admin.php?page=evf-builder' )
+					);
 				}
 			} else {
 				$redirect_url = str_replace( $_GET['page'], 'evf-builder', wp_unslash( $_SERVER['REQUEST_URI'] ) ); // WPCS: input var okay, CSRF ok.
@@ -110,10 +113,13 @@ class EVF_Admin_Menus {
 			$forms_table_list = new EVF_Admin_Forms_Table_List();
 
 			// Add screen option.
-			add_screen_option( 'per_page', array(
-				'default' => 20,
-				'option'  => 'evf_forms_per_page',
-			) );
+			add_screen_option(
+				'per_page',
+				array(
+					'default' => 20,
+					'option'  => 'evf_forms_per_page',
+				)
+			);
 		}
 
 		do_action( 'everest_forms_builder_page_init' );
@@ -138,10 +144,13 @@ class EVF_Admin_Menus {
 			$entries_table_list = new EVF_Admin_Entries_Table_List();
 
 			// Add screen option.
-			add_screen_option( 'per_page', array(
-				'default' => 20,
-				'option'  => 'evf_entries_per_page',
-			) );
+			add_screen_option(
+				'per_page',
+				array(
+					'default' => 20,
+					'option'  => 'evf_entries_per_page',
+				)
+			);
 		}
 
 		do_action( 'everest_forms_entries_page_init' );

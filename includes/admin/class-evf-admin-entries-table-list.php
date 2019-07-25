@@ -385,60 +385,79 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 * @since 1.2.0
 	 */
 	public function process_bulk_action() {
-		$action    = $this->current_action();
+		$pagenum   = $this->get_pagenum();
+		$doaction  = $this->current_action();
 		$entry_ids = isset( $_REQUEST['entry'] ) ? wp_parse_id_list( wp_unslash( $_REQUEST['entry'] ) ) : array(); // WPCS: input var ok, CSRF ok.
 		$count     = 0;
 
-		if ( $entry_ids ) {
+		if ( $doaction ) {
 			check_admin_referer( 'bulk-entries' );
-		}
 
-		switch ( $action ) {
-			case 'trash':
-				foreach ( $entry_ids as $entry_id ) {
-					if ( EVF_Admin_Entries::update_status( $entry_id, 'trash' ) ) {
-						$count ++;
+			$sendback = remove_query_arg( array( 'trashed', 'untrashed', 'deleted' ), wp_get_referer() );
+			if ( ! $sendback ) {
+				$sendback = admin_url( 'admin.php?page=evf-entries' );
+			}
+			$sendback = add_query_arg( 'paged', $pagenum, $sendback );
+
+			if ( ! isset( $entry_ids ) ) {
+				wp_redirect( $sendback );
+				exit;
+			}
+
+			switch ( $doaction ) {
+				case 'trash':
+					foreach ( $entry_ids as $entry_id ) {
+						if ( EVF_Admin_Entries::update_status( $entry_id, 'trash' ) ) {
+							$count ++;
+						}
 					}
-				}
 
-				add_settings_error(
-					'bulk_action',
-					'bulk_action',
-					/* translators: %d: number of entries */
-					sprintf( _n( '%d entry moved to the Trash.', '%d entries moved to the Trash.', $count, 'everest-forms' ), $count ),
-					'updated'
-				);
-				break;
-			case 'untrash':
-				foreach ( $entry_ids as $entry_id ) {
-					if ( EVF_Admin_Entries::update_status( $entry_id, 'publish' ) ) {
-						$count ++;
+					add_settings_error(
+						'bulk_action',
+						'bulk_action',
+						/* translators: %d: number of entries */
+						sprintf( _n( '%d entry moved to the Trash.', '%d entries moved to the Trash.', $count, 'everest-forms' ), $count ),
+						'updated'
+					);
+					break;
+				case 'untrash':
+					foreach ( $entry_ids as $entry_id ) {
+						if ( EVF_Admin_Entries::update_status( $entry_id, 'publish' ) ) {
+							$count ++;
+						}
 					}
-				}
 
-				add_settings_error(
-					'bulk_action',
-					'bulk_action',
-					/* translators: %d: number of entries */
-					sprintf( _n( '%d entry restored from the Trash.', '%d entries restored from the Trash.', $count, 'everest-forms' ), $count ),
-					'updated'
-				);
-				break;
-			case 'delete':
-				foreach ( $entry_ids as $entry_id ) {
-					if ( EVF_Admin_Entries::remove_entry( $entry_id ) ) {
-						$count ++;
+					add_settings_error(
+						'bulk_action',
+						'bulk_action',
+						/* translators: %d: number of entries */
+						sprintf( _n( '%d entry restored from the Trash.', '%d entries restored from the Trash.', $count, 'everest-forms' ), $count ),
+						'updated'
+					);
+					break;
+				case 'delete':
+					foreach ( $entry_ids as $entry_id ) {
+						if ( EVF_Admin_Entries::remove_entry( $entry_id ) ) {
+							$count ++;
+						}
 					}
-				}
 
-				add_settings_error(
-					'bulk_action',
-					'bulk_action',
-					/* translators: %d: number of entries */
-					sprintf( _n( '%d entry permanently deleted.', '%d entries permanently deleted.', $count, 'everest-forms' ), $count ),
-					'updated'
-				);
-				break;
+					add_settings_error(
+						'bulk_action',
+						'bulk_action',
+						/* translators: %d: number of entries */
+						sprintf( _n( '%d entry permanently deleted.', '%d entries permanently deleted.', $count, 'everest-forms' ), $count ),
+						'updated'
+					);
+					break;
+			}
+			$sendback = remove_query_arg( array( 'action', 'action2' ), $sendback );
+
+			wp_safe_redirect( $sendback );
+			exit();
+		} elseif ( ! empty( $_REQUEST['_wp_http_referer'] ) && isset( $_SERVER['REQUEST_URI'] ) ) { // WPCS: input var ok, CSRF ok.
+			wp_safe_redirect( remove_query_arg( array( '_wp_http_referer', '_wpnonce' ), wp_unslash( $_SERVER['REQUEST_URI'] ) ) ); // WPCS: input var ok, sanitization ok.
+			exit();
 		}
 	}
 
