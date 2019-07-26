@@ -69,6 +69,21 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	}
 
 	/**
+	 * Get the current action selected from the bulk actions dropdown.
+	 *
+	 * @since 1.5.3
+	 *
+	 * @return string|false The action name or False if no action was selected.
+	 */
+	public function current_action() {
+		if ( isset( $_REQUEST['delete_all'] ) || isset( $_REQUEST['delete_all2'] ) ) { // WPCS: input var okay, CSRF ok.
+			return 'delete_all';
+		}
+
+		return parent::current_action();
+	}
+
+	/**
 	 * No items found text.
 	 */
 	public function no_items() {
@@ -98,7 +113,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	protected function get_sortable_columns() {
 		$sortable_columns = array();
 
-		if ( isset( $_GET['form_id'] ) ) {
+		if ( isset( $_GET['form_id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			$sortable_columns = array(
 				'date' => array( 'date_created', false ),
 			);
@@ -464,12 +479,11 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	/**
 	 * Extra controls to be displayed between bulk actions and pagination.
 	 *
-	 * @param string $which
+	 * @param string $which The location of the extra table nav markup.
 	 */
 	protected function extra_tablenav( $which ) {
 		$num_entries = evf_get_count_entries_by_status( $this->form_id );
 		$show_export = isset( $_GET['status'] ) && 'trash' === $_GET['status'] ? false : true;
-
 		?>
 		<div class="alignleft actions">
 		<?php

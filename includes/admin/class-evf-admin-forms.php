@@ -103,13 +103,15 @@ class EVF_Admin_Forms {
 		check_admin_referer( 'bulk-forms' );
 
 		$count    = 0;
-		$form_ids = get_posts( array(
-			'post_type'           => 'everest_form',
-			'ignore_sticky_posts' => true,
-			'nopaging'            => true,
-			'post_status'         => 'trash',
-			'fields'              => 'ids',
-		) );
+		$form_ids = get_posts(
+			array(
+				'post_type'           => 'everest_form',
+				'ignore_sticky_posts' => true,
+				'nopaging'            => true,
+				'post_status'         => 'trash',
+				'fields'              => 'ids',
+			)
+		);
 
 		foreach ( $form_ids as $form_id ) {
 			if ( wp_delete_post( $form_id, true ) ) {
@@ -131,7 +133,7 @@ class EVF_Admin_Forms {
 	 */
 	private function duplicate_form() {
 		if ( empty( $_REQUEST['form_id'] ) ) {
-			wp_die( __( 'No form to duplicate has been supplied!', 'everest-forms' ) );
+			wp_die( esc_html__( 'No form to duplicate has been supplied!', 'everest-forms' ) );
 		}
 
 		$form_id = isset( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : '';
@@ -141,7 +143,7 @@ class EVF_Admin_Forms {
 		$duplicate_id = evf()->form->duplicate( $form_id );
 
 		// Redirect to the edit screen for the new form page.
-		wp_redirect( admin_url( 'admin.php?page=evf-builder&tab=fields&form_id=' . $duplicate_id ) );
+		wp_safe_redirect( admin_url( 'admin.php?page=evf-builder&tab=fields&form_id=' . $duplicate_id ) );
 		exit;
 	}
 
@@ -150,7 +152,7 @@ class EVF_Admin_Forms {
 	 *
 	 * When form is deleted then it also deletes its entries meta.
 	 *
-	 * @param int $post_id
+	 * @param int $postid Post ID.
 	 */
 	public function delete_entries( $postid ) {
 		global $wpdb;
