@@ -54,7 +54,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 
 		// Check that the user has created at least one form.
 		if ( ! empty( $this->forms ) ) {
-			$this->form_id   = ! empty( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : apply_filters( 'everest_forms_entry_list_default_form_id', key( $this->forms ) );
+			$this->form_id   = ! empty( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : apply_filters( 'everest_forms_entry_list_default_form_id', key( $this->forms ) ); // phpcs:ignore WordPress.Security.NonceVerification
 			$this->form      = EVF()->form->get( $this->form_id );
 			$this->form_data = ! empty( $this->form->post_content ) ? evf_decode( $this->form->post_content ) : '';
 		}
@@ -139,8 +139,8 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	/**
 	 * Logic to determine which fields are displayed in the table columns.
 	 *
-	 * @param array $columns
-	 * @param int   $display
+	 * @param array $columns List of colums.
+	 * @param int   $display Numbers of columns to display.
 	 *
 	 * @return array
 	 */
@@ -182,8 +182,8 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	/**
 	 * Show specific form fields.
 	 *
-	 * @param  object $entry
-	 * @param  string $column_name
+	 * @param  object $entry Entry object.
+	 * @param  string $column_name Column Name.
 	 * @return string
 	 */
 	public function column_form_field( $entry, $column_name ) {
@@ -233,8 +233,8 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	/**
 	 * Renders the columns.
 	 *
-	 * @param  object $entry
-	 * @param  string $column_name
+	 * @param  object $entry Entry object.
+	 * @param  string $column_name Column Name.
 	 * @return string
 	 */
 	public function column_default( $entry, $column_name ) {
@@ -262,7 +262,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	/**
 	 * Render the actions column.
 	 *
-	 * @param  object $entry
+	 * @param  object $entry Entry object.
 	 * @return string
 	 */
 	public function column_actions( $entry ) {
@@ -382,7 +382,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 * @return array
 	 */
 	protected function get_bulk_actions() {
-		if ( isset( $_GET['status'] ) && 'trash' == $_GET['status'] ) {
+		if ( isset( $_GET['status'] ) && 'trash' === $_GET['status'] ) { // phpcs:ignore WordPress.Security.NonceVerification
 			return array(
 				'untrash' => __( 'Restore', 'everest-forms' ),
 				'delete'  => __( 'Delete Permanently', 'everest-forms' ),
@@ -415,7 +415,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 			$sendback = add_query_arg( 'paged', $pagenum, $sendback );
 
 			if ( ! isset( $entry_ids ) ) {
-				wp_redirect( $sendback );
+				wp_safe_redirect( $sendback );
 				exit;
 			}
 
@@ -483,7 +483,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 */
 	protected function extra_tablenav( $which ) {
 		$num_entries = evf_get_count_entries_by_status( $this->form_id );
-		$show_export = isset( $_GET['status'] ) && 'trash' === $_GET['status'] ? false : true;
+		$show_export = isset( $_GET['status'] ) && 'trash' === $_GET['status'] ? false : true; // phpcs:ignore WordPress.Security.NonceVerification
 		?>
 		<div class="alignleft actions">
 		<?php
@@ -503,7 +503,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 			}
 		}
 
-		if ( $num_entries['trash'] && isset( $_GET['status'] ) && 'trash' === $_GET['status'] && current_user_can( 'manage_everest_forms' ) ) {
+		if ( $num_entries['trash'] && isset( $_GET['status'] ) && 'trash' === $_GET['status'] && current_user_can( 'manage_everest_forms' ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			submit_button( __( 'Empty Trash', 'everest-forms' ), 'apply', 'delete_all', false );
 		}
 		?>
@@ -516,8 +516,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 */
 	public function forms_dropdown() {
 		$forms   = evf_get_all_forms( true );
-		$form_id = isset( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : $this->form_id;
-
+		$form_id = isset( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : $this->form_id; // phpcs:ignore WordPress.Security.NonceVerification
 		?>
 		<label for="filter-by-form" class="screen-reader-text"><?php esc_html_e( 'Filter by form', 'everest-forms' ); ?></label>
 		<select name="form_id" id="filter-by-form">
@@ -530,12 +529,8 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 
 	/**
 	 * Prepare table list items.
-	 *
-	 * @global wpdb $wpdb
 	 */
-	public function prepare_items( $args = array() ) {
-		global $wpdb;
-
+	public function prepare_items() {
 		$per_page     = $this->get_items_per_page( 'evf_entries_per_page' );
 		$current_page = $this->get_pagenum();
 
@@ -552,6 +547,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 			$args['status'] = sanitize_key( wp_unslash( $_REQUEST['status'] ) ); // WPCS: input var okay, CSRF ok.
 		}
 
+		// Handle the search query.
 		if ( ! empty( $_REQUEST['s'] ) ) { // WPCS: input var okay, CSRF ok.
 			$args['search'] = sanitize_text_field( wp_unslash( $_REQUEST['s'] ) ); // WPCS: input var okay, CSRF ok.
 		}
