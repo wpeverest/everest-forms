@@ -36,13 +36,13 @@ class EVF_Admin_Forms {
 	public static function page_output() {
 		global $current_tab;
 
-		if ( isset( $_GET['form_id'] ) && $current_tab ) {
-			$form      = EVF()->form->get( absint( $_GET['form_id'] ) );
+		if ( isset( $_GET['form_id'] ) && $current_tab ) { // phpcs:ignore WordPress.Security.NonceVerification
+			$form      = EVF()->form->get( absint( $_GET['form_id'] ) ); // phpcs:ignore WordPress.Security.NonceVerification
 			$form_id   = is_object( $form ) ? absint( $form->ID ) : absint( $_GET['form_id'] );
 			$form_data = is_object( $form ) ? evf_decode( $form->post_content ) : false;
 
 			include 'views/html-admin-page-builder.php';
-		} elseif ( isset( $_GET['create-form'] ) ) {
+		} elseif ( isset( $_GET['create-form'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			include 'views/html-admin-page-builder-setup.php';
 		} else {
 			self::table_list_output();

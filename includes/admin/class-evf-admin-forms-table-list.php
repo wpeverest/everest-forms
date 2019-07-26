@@ -331,7 +331,8 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 	protected function get_edit_link( $args, $label, $class = '' ) {
 		$url = add_query_arg( $args, 'admin.php' );
 
-		$class_html = $aria_current = '';
+		$class_html   = '';
+		$aria_current = '';
 
 		if ( ! empty( $class ) ) {
 			$class_html = sprintf(
@@ -359,7 +360,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 	 * @return array
 	 */
 	protected function get_bulk_actions() {
-		if ( isset( $_GET['status'] ) && 'trash' == $_GET['status'] ) { // phpcs:ignore WordPress.Security.NonceVerification
+		if ( isset( $_GET['status'] ) && 'trash' === $_GET['status'] ) { // phpcs:ignore WordPress.Security.NonceVerification
 			return array(
 				'untrash' => __( 'Restore', 'everest-forms' ),
 				'delete'  => __( 'Delete permanently', 'everest-forms' ),
@@ -377,7 +378,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 	 * @since 1.2.0
 	 */
 	public function process_bulk_action() {
-		$doaction = $this->current_action();
+		$action   = $this->current_action();
 		$form_ids = isset( $_REQUEST['form_id'] ) ? wp_parse_id_list( wp_unslash( $_REQUEST['form_id'] ) ) : array(); // WPCS: input var ok, CSRF ok.
 		$count    = 0;
 
@@ -385,7 +386,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 			check_admin_referer( 'bulk-forms' );
 		}
 
-		switch ( $doaction ) {
+		switch ( $action ) {
 			case 'trash':
 				foreach ( $form_ids as $form_id ) {
 					if ( wp_trash_post( $form_id ) ) {
