@@ -76,7 +76,11 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 * @return string|false The action name or False if no action was selected.
 	 */
 	public function current_action() {
-		if ( isset( $_REQUEST['delete_all'] ) || isset( $_REQUEST['delete_all2'] ) ) { // WPCS: input var okay, CSRF ok.
+		if ( isset( $_REQUEST['export_action'] ) && ! empty( $_REQUEST['export_action'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			return false;
+		}
+
+		if ( isset( $_REQUEST['delete_all'] ) || isset( $_REQUEST['delete_all2'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			return 'delete_all';
 		}
 
