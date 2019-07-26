@@ -70,8 +70,11 @@ class EVF_Admin_Entries {
 				<?php $entries_table_list->views(); ?>
 				<form id="entries-list" method="get" data-form-id="<?php echo absint( $entries_table_list->form_id ); ?>" data-last-entry-id="<?php echo absint( end( $entry_ids ) ); ?>">
 					<input type="hidden" name="page" value="evf-entries" />
-					<?php if ( ! empty( $_REQUEST['form_id'] ) ) : // WPCS: input var ok, CSRF ok. ?>
+					<?php if ( ! empty( $_REQUEST['form_id'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification ?>
 						<input type="hidden" name="form_id" value="<?php echo absint( $_REQUEST['form_id'] ); ?>" />
+					<?php endif; ?>
+					<?php if ( ! empty( $_REQUEST['status'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification ?>
+						<input type="hidden" name="status" value="<?php echo sanitize_text_field( wp_unslash( $_REQUEST['status'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification, WordPress.Security.EscapeOutput ?>" />
 					<?php endif; ?>
 					<?php
 						$entries_table_list->search_box( __( 'Search Entries', 'everest-forms' ), 'everest-forms' );
@@ -135,11 +138,6 @@ class EVF_Admin_Entries {
 			// Empty Trash.
 			if ( isset( $_REQUEST['delete_all'] ) || isset( $_REQUEST['delete_all2'] ) ) { // WPCS: input var okay, CSRF ok.
 				$this->empty_trash();
-			}
-
-			if ( ! empty( $_REQUEST['_wp_http_referer'] ) && isset( $_SERVER['REQUEST_URI'] ) ) { // WPCS: input var ok, CSRF ok.
-				wp_safe_redirect( remove_query_arg( array( '_wp_http_referer', '_wpnonce' ), wp_unslash( $_SERVER['REQUEST_URI'] ) ) ); // WPCS: input var ok, sanitization ok.
-				exit();
 			}
 		}
 	}
