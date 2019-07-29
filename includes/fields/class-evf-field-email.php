@@ -53,6 +53,7 @@ class EVF_Field_Email extends EVF_Form_Fields {
 	public function init_hooks() {
 		add_filter( 'everest_forms_field_properties_' . $this->type, array( $this, 'field_properties' ), 5, 3 );
 		add_filter( 'everest_forms_field_new_required', array( $this, 'field_default_required' ), 5, 3 );
+		add_filter( 'everest_forms_builder_field_option_class', array( $this, 'field_option_class' ), 10, 2 );
 	}
 
 	/**
@@ -224,10 +225,10 @@ class EVF_Field_Email extends EVF_Form_Fields {
 		?>
 		<div class="everest-forms-confirm everest-forms-confirm-<?php echo $confirm; ?>">
 			<div class="everest-forms-confirm-primary">
-				<input type="email" placeholder="<?php echo $placeholder; ?>" class="widefat" disabled>
+				<input type="email" placeholder="<?php echo $placeholder; ?>" class="widefat primary-input" disabled>
 			</div>
 			<div class="everest-forms-confirm-confirmation">
-				<input type="email" placeholder="<?php echo $confirm_placeholder; ?>" class="secondary-input" disabled>
+				<input type="email" placeholder="<?php echo $confirm_placeholder; ?>" class="widefat secondary-input" disabled>
 			</div>
 		</div>
 		<?php
@@ -295,6 +296,25 @@ class EVF_Field_Email extends EVF_Form_Fields {
 			echo '</div>';
 
 		}
+	}
+
+	/**
+	 * Add class to field options wrapper to indicate if field confirmation is enabled.
+	 *
+	 * @param  string $class
+	 * @param  array $field
+	 * @return string
+	 */
+	public function field_option_class( $class, $field ) {
+		if ( 'email' === $field['type'] ) {
+			if ( isset( $field['confirmation'] ) ) {
+				$class = 'everest-forms-confirm-enabled';
+			} else {
+				$class = 'everest-forms-confirm-disabled';
+			}
+		}
+
+		return $class;
 	}
 
 	/**
