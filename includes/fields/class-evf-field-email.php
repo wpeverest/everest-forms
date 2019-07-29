@@ -29,12 +29,14 @@ class EVF_Field_Email extends EVF_Form_Fields {
 					'meta',
 					'description',
 					'required',
+					'confirmation'
 				),
 			),
 			'advanced-options' => array(
 				'field_options' => array(
 					'size',
 					'placeholder',
+					'confirmation_placeholder',
 					'label_hide',
 					'default_value',
 					'css',
@@ -49,7 +51,86 @@ class EVF_Field_Email extends EVF_Form_Fields {
 	 * Hook in tabs.
 	 */
 	public function init_hooks() {
+		add_filter( 'everest_forms_field_properties_' . $this->type, array( $this, 'field_properties' ), 5, 3 );
 		add_filter( 'everest_forms_field_new_required', array( $this, 'field_default_required' ), 5, 3 );
+	}
+
+	/**
+	 * Field properties.
+	 *
+	 * @param array $properties Field properties.
+	 * @param array $field Field Data.
+	 * @param array $form_data Form Data.
+	 *
+	 * @return array
+	 */
+	public function field_properties( $properties, $field, $form_data ) {
+		if ( empty( $field['confirmation'] ) ) {
+			return $properties;
+		}
+
+		$form_id  = absint( $form_data['id'] );
+		$field_id = $field['id'];
+
+		$props      = array(
+			'inputs' => array(
+				'primary'   => array(
+					'block'    => array(
+						'everest-forms-field-row-block',
+						'everest-forms-one-half',
+						'everest-forms-first',
+					),
+					'class'    => array(
+						'everest-forms-field-email-primary',
+					),
+				),
+				'secondary' => array(
+					'attr'     => array(
+						'name'        => "everest_forms[form_fields][{$field_id}][secondary]",
+						'value'       => '',
+						'placeholder' => ! empty( $field['confirmation_placeholder'] ) ? $field['confirmation_placeholder'] : '',
+					),
+					'block'    => array(
+						'everest-forms-field-row-block',
+						'everest-forms-one-half',
+					),
+					'class'    => array(
+						'input-text',
+						'everest-forms-field-password-secondary',
+					),
+					'data'     => array(
+						'rule-confirm' => '#' . $properties['inputs']['primary']['id'],
+					),
+					'id'       => "evf-{$form_id}-field_{$field_id}-secondary",
+					'required' => ! empty( $field['required'] ) ? 'required' : '',
+					'value'    => '',
+				),
+			),
+		);
+		$properties = array_merge_recursive( $properties, $props );
+
+		$properties['inputs']['primary']['attr']['name'] = "everest_forms[form_fields][{$field_id}][primary]";
+
+		$properties['inputs']['primary']['class'] = array_diff(
+			$properties['inputs']['primary']['class'],
+			array(
+				'evf-error',
+			)
+		);
+
+		if ( ! empty( $properties['error']['value']['primary'] ) ) {
+			$properties['inputs']['primary']['class'][] = 'evf-error';
+		}
+
+		if ( ! empty( $properties['error']['value']['secondary'] ) ) {
+			$properties['inputs']['secondary']['class'][] = 'evf-error';
+		}
+
+		if ( ! empty( $field['required'] ) ) {
+			$properties['inputs']['secondary']['class'][] = 'evf-field-required';
+		}
+
+		return $properties;
 	}
 
 	/**
@@ -71,6 +152,62 @@ class EVF_Field_Email extends EVF_Form_Fields {
 	}
 
 	/**
+	 * Confirmation field option.
+	 *
+	 * @param array $field
+	 */
+	public function confirmation( $field ) {
+		$fld  = $this->field_element(
+			'checkbox',
+			$field,
+			array(
+				'slug'    => 'confirmation',
+				'value'   => isset( $field['confirmation'] ) ? '1' : '0',
+				'desc'    => esc_html__( 'Enable Email Confirmation', 'everest-forms' ),
+				'tooltip' => esc_html__( 'Check to enable email confirmation.', 'everest-forms' ),
+			),
+			false
+		);
+		$args = array(
+			'slug'    => 'confirmation',
+			'content' => $fld,
+		);
+		$this->field_element( 'row', $field, $args );
+	}
+
+	/**
+	 * Confirmation Placeholder field option.
+	 *
+	 * @param array $field
+	 */
+	public function confirmation_placeholder( $field ) {
+		$lbl  = $this->field_element(
+			'label',
+			$field,
+			array(
+				'slug'    => 'confirmation_placeholder',
+				'value'   => esc_html__( 'Confirmation Placeholder Text', 'everest-forms' ),
+				'tooltip' => esc_html__( 'Enter text for the confirmation field placeholder.', 'everest-forms' ),
+			),
+			false
+		);
+		$fld  = $this->field_element(
+			'text',
+			$field,
+			array(
+				'slug'  => 'confirmation_placeholder',
+				'value' => ! empty( $field['confirmation_placeholder'] ) ? esc_attr( $field['confirmation_placeholder'] ) : '',
+			),
+			false
+		);
+		$args = array(
+			'slug'    => 'confirmation_placeholder',
+			'content' => $lbl . $fld,
+		);
+		$this->field_element( 'row', $field, $args );
+	}
+
+	/**
 	 * Field preview inside the builder.
 	 *
 	 * @since 1.0.0
@@ -79,6 +216,7 @@ class EVF_Field_Email extends EVF_Form_Fields {
 	 */
 	public function field_preview( $field ) {
 		$placeholder = ! empty( $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : '';
+		$confirm_placeholder = ! empty( $field['confirmation_placeholder'] ) ? esc_attr( $field['confirmation_placeholder'] ) : '';
 		$confirm     = ! empty( $field['confirmation'] ) ? 'enabled' : 'disabled';
 
 		// Label.
@@ -87,6 +225,9 @@ class EVF_Field_Email extends EVF_Form_Fields {
 		<div class="everest-forms-confirm everest-forms-confirm-<?php echo $confirm; ?>">
 			<div class="everest-forms-confirm-primary">
 				<input type="email" placeholder="<?php echo $placeholder; ?>" class="widefat" disabled>
+			</div>
+			<div class="everest-forms-confirm-confirmation">
+				<input type="email" placeholder="<?php echo $confirm_placeholder; ?>" class="secondary-input" disabled>
 			</div>
 		</div>
 		<?php
@@ -125,7 +266,7 @@ class EVF_Field_Email extends EVF_Form_Fields {
 		} else {
 
 			// Row wrapper.
-			echo '<div class="everest-forms-field-row everest-forms-field-' . sanitize_html_class( $field['size'] ) . '">';
+			echo '<div class="everest-forms-field-row everest-forms-field">';
 
 			// Primary field.
 			echo '<div ' . evf_html_attributes( false, $primary['block'] ) . '>';
