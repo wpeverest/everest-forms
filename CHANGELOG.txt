@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 1.5.3 - 26-07-2019 =
+* Fix - Entry search in trash listing page.
+* Fix - Bulk actions for entries list table.
+
 = 1.5.2 - 23-07-2019 =
 * Fix - Prevent empty search term in forms query.
 * Fix - Entries list-table with status query bug.
