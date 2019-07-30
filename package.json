@@ -65,7 +65,7 @@
       "stylelint --syntax=scss --fix",
       "git add"
     ],
-    "*.js,!*.min.js": [
+    "!(*.min).js": [
       "eslint --fix",
       "git add"
     ]
