@@ -56,33 +56,33 @@ Check [documentation](http://docs.wpeverest.com/docs/everest-forms/)
 
 * 10 Advanced fields (Image upload, File upload, Hidden Field, Phone, Password, Custom HTML, Section Title, Signature Address, Country)
 
-* [Style Customizer](https://wpeverest.com/wordpress-plugins/everest-forms/style-customizer/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to make form design changes like color, fonts, background, borders, alignments and more without touching any code
+* [Style Customizer](https://wpeverest.com/wordpress-plugins/everest-forms/style-customizer/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to make form design changes like color, fonts, spacing, background, borders, alignments and much more without touching any code.
 
-* [MailChimp](https://wpeverest.com/wordpress-plugins/everest-forms/mailchimp/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows your users to subscribe to MailChimp via Everest Forms
+* [MailChimp](https://wpeverest.com/wordpress-plugins/everest-forms/mailchimp/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows your users to subscribe to MailChimp through form submission via Everest Forms.
 
-* [ConvertKit](https://wpeverest.com/wordpress-plugins/everest-forms/convertkit/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to connect your form with ConvertKit to collect subscribers
+* [ConvertKit](https://wpeverest.com/wordpress-plugins/everest-forms/convertkit/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to connect your form with ConvertKit to efficiently grow your business by generating more leads.
 
-* [PDF Form Submission](https://wpeverest.com/wordpress-plugins/everest-forms/pdf-form-submission/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Create PDF for  submitted form entries and attach to emails as well.
+* [PDF Form Submission](https://wpeverest.com/wordpress-plugins/everest-forms/pdf-form-submission/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to generate digital PDF documents of any form submission to export or send a PDF copy of it via email attachment.
 
-* [PayPal Standard](https://wpeverest.com/wordpress-plugins/everest-forms/paypal-standard/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to connect your forms site with PayPal to easily collect payments, donations, and online orders.
+* [PayPal Standard](https://wpeverest.com/wordpress-plugins/everest-forms/paypal-standard/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to connect your forms with PayPal to easily collect payments, donations, and online orders.
 
-* [Stripe](https://wpeverest.com/wordpress-plugins/everest-forms/stripe/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to connect your forms site with Stripe to easily collect payments, donations, and online orders.
+* [Stripe](https://wpeverest.com/wordpress-plugins/everest-forms/stripe/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to connect your forms with Stripe to easily collect payments, donations, and online orders.
 
-* [Geolocation](https://wpeverest.com/wordpress-plugins/everest-forms/geolocation/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to collect geolocation data like IP, Country, Postal and zip code along with the form submission.
+* [Geolocation](https://wpeverest.com/wordpress-plugins/everest-forms/geolocation/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to collect geolocation data like IP, Country, Postal/Zip code along with the form submission.
 
-* [Multi-Part Forms](https://wpeverest.com/wordpress-plugins/everest-forms/multi-part-forms/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to break long or complex forms up into multiple pages.
+* [Multi-Part Forms](https://wpeverest.com/wordpress-plugins/everest-forms/multi-part-forms/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to make a stepwise form by breaking long or complex forms up into multiple parts/pages.
 
-* [Custom Captcha](https://wpeverest.com/wordpress-plugins/everest-forms/captcha/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to add Custom Questions and Math Captcha to your forms for spam prevention.
+* [Custom Captcha](https://wpeverest.com/wordpress-plugins/everest-forms/captcha/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to add custom questions or math captcha to your form and fight back against spam form submissions.
 
 * [Conditional Logic](https://wpeverest.com/wordpress-plugins/everest-forms/conditional-logic/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to conditionally hide or show form fields based on user's interaction with other form fields.
 
-* [Survey, Polls and Quiz](https://wpeverest.com/wordpress-plugins/everest-forms/survey-polls-and-quiz/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to create intuitive survey, poll and quiz forms within a minute.
+* [Survey, Polls and Quiz](https://wpeverest.com/wordpress-plugins/everest-forms/survey-polls-and-quiz/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to create intuitive survey, poll and quiz forms within a minute. It also provides admin reporting for data-driven decisions.
 
-* [User Registration](https://wpeverest.com/wordpress-plugins/everest-forms/user-registration/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to create a custom WordPress user registration form and collect payments.
+* [User Registration](https://wpeverest.com/wordpress-plugins/everest-forms/user-registration/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to create a custom WordPress user registration form instantly in few simple steps and collect payments.
 
-* [Post Submission](https://wpeverest.com/wordpress-plugins/everest-forms/post-submission/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows your users to submit blog posts from front-end without logging into the admin area.
+* [Post Submission](https://wpeverest.com/wordpress-plugins/everest-forms/post-submission/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows your users to submit their blogs posts from front-end without the hassle of logging into the admin dashboard.
 
-* [Zapier](https://wpeverest.com/wordpress-plugins/everest-forms/zapier/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to connect your forms with your 1500+ web applications.
+* [Zapier](https://wpeverest.com/wordpress-plugins/everest-forms/zapier/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to connect your forms with over 1500+ popular web applications without any hassle. It makes integrating forms and apps buttery-smooth.
 
 ### What's Next
 
