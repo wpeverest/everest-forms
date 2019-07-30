@@ -29,7 +29,7 @@ class EVF_Field_Email extends EVF_Form_Fields {
 					'meta',
 					'description',
 					'required',
-					'confirmation'
+					'confirmation',
 				),
 			),
 			'advanced-options' => array(
@@ -76,12 +76,12 @@ class EVF_Field_Email extends EVF_Form_Fields {
 		$props      = array(
 			'inputs' => array(
 				'primary'   => array(
-					'block'    => array(
+					'block' => array(
 						'everest-forms-field-row-block',
 						'everest-forms-one-half',
 						'everest-forms-first',
 					),
-					'class'    => array(
+					'class' => array(
 						'everest-forms-field-email-primary',
 					),
 				),
@@ -97,7 +97,7 @@ class EVF_Field_Email extends EVF_Form_Fields {
 					),
 					'class'    => array(
 						'input-text',
-						'everest-forms-field-password-secondary',
+						'everest-forms-field-email-secondary',
 					),
 					'data'     => array(
 						'rule-confirm' => '#' . $properties['inputs']['primary']['id'],
@@ -216,9 +216,9 @@ class EVF_Field_Email extends EVF_Form_Fields {
 	 * @param array $field Field settings.
 	 */
 	public function field_preview( $field ) {
-		$placeholder = ! empty( $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : '';
+		$placeholder         = ! empty( $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : '';
 		$confirm_placeholder = ! empty( $field['confirmation_placeholder'] ) ? esc_attr( $field['confirmation_placeholder'] ) : '';
-		$confirm     = ! empty( $field['confirmation'] ) ? 'enabled' : 'disabled';
+		$confirm             = ! empty( $field['confirmation'] ) ? 'enabled' : 'disabled';
 
 		// Label.
 		$this->field_preview_option( 'label', $field );
@@ -268,33 +268,27 @@ class EVF_Field_Email extends EVF_Form_Fields {
 
 			// Row wrapper.
 			echo '<div class="everest-forms-field-row everest-forms-field">';
-
 			// Primary field.
 			echo '<div ' . evf_html_attributes( false, $primary['block'] ) . '>';
-			$this->field_display_sublabel( 'primary', 'before', $field );
 			printf(
 				'<input type="email" %s %s>',
 				evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ),
 				$primary['required']
 			);
-			$this->field_display_sublabel( 'primary', 'after', $field );
 			$this->field_display_error( 'primary', $field );
 			echo '</div>';
 
 			// Secondary field.
 			echo '<div ' . evf_html_attributes( false, $secondary['block'] ) . '>';
-			$this->field_display_sublabel( 'secondary', 'before', $field );
 			printf(
 				'<input type="email" %s %s>',
 				evf_html_attributes( $secondary['id'], $secondary['class'], $secondary['data'], $secondary['attr'] ),
 				$secondary['required']
 			);
-			$this->field_display_sublabel( 'secondary', 'after', $field );
 			$this->field_display_error( 'secondary', $field );
 			echo '</div>';
 
 			echo '</div>';
-
 		}
 	}
 
@@ -302,7 +296,7 @@ class EVF_Field_Email extends EVF_Form_Fields {
 	 * Add class to field options wrapper to indicate if field confirmation is enabled.
 	 *
 	 * @param  string $class
-	 * @param  array $field
+	 * @param  array  $field
 	 * @return string
 	 */
 	public function field_option_class( $class, $field ) {
@@ -326,6 +320,7 @@ class EVF_Field_Email extends EVF_Form_Fields {
 	 * @param string $meta_key     Field meta key.
 	 */
 	public function format( $field_id, $field_submit, $form_data, $meta_key ) {
+
 		if ( is_array( $field_submit ) ) {
 			$value = ! empty( $field_submit['primary'] ) ? $field_submit['primary'] : '';
 		} else {
