@@ -152,11 +152,6 @@
 				padding-left: 15px;
 				padding-right: 15px;
 
-				&.evf-grid-2 {
-					flex: 0 0 50%;
-					max-width: 50%;
-				}
-
 				.evf-field {
 					display: block;
 					margin-bottom: 10px;
@@ -591,6 +586,21 @@ div.evf-gutenberg-form-selector .evf-frontend-row button[type='submit']:disabled
 
 	&.recaptcha-hidden {
 		margin: 0;
+	}
+}
+
+@media screen and (min-width: 768px) {
+	.everest-forms {
+		.evf-field-container {
+			.evf-frontend-row {
+				.evf-frontend-grid {
+					&.evf-grid-2 {
+						flex: 0 0 50%;
+						max-width: 50%;
+					}
+				}
+			}
+		}
 	}
 }
 
