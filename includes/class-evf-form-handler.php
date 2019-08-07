@@ -326,7 +326,6 @@ class EVF_Form_Handler {
 	 * @return bool
 	 */
 	public function get_meta( $form_id, $field = '' ) {
-
 		if ( empty( $form_id ) ) {
 			return false;
 		}
