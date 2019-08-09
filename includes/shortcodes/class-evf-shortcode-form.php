@@ -274,7 +274,7 @@ class EVF_Shortcode_Form {
 			foreach ( $row as $grid_key => $grid ) {
 				$number_of_grid = count( $row );
 
-				echo '<div class="evf-frontend-grid evf-grid-' . $number_of_grid . '" data-grid="' . $grid_key . '">';
+				echo '<div class="evf-frontend-grid evf-grid-' . absint( $number_of_grid ) . '" data-grid="' . esc_attr( $grid_key ) . '">';
 
 				if ( ! is_array( $grid ) ) {
 					$grid = array();
