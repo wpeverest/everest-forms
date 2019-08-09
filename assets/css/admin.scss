@@ -1310,6 +1310,10 @@ body.everest-forms-builder-setup,
 							}
 						}
 
+						&:focus {
+							outline: none;
+						}
+
 						svg {
 							width: 40px;
 							height: 40px;
