@@ -2278,6 +2278,13 @@ body.everest-forms-builder-setup,
 						top: 70px;
 					}
 				}
+
+				&.evf_conditional_logic_container {
+					label {
+						margin-bottom: 0;
+						display: inline-block;
+					}
+				}
 			}
 
 			.evf-choices-list {
