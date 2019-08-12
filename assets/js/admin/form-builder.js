@@ -1296,7 +1296,7 @@
 		 },
 
 		conditionalLogicRemoveField: function( id ){
-			$( '.everest-forms-conditional-fields .evf-field-conditional-field-select option[value = ' +id +' ]' ).remove();
+			$( '.evf-field-conditional-field-select option[value = ' +id +' ]' ).remove();
 		},
 
 		conditionalLogicRemoveFieldIntegration: function( id ){

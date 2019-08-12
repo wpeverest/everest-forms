@@ -68,7 +68,7 @@
 		 	$.confirm({
 		 		title: false,
 		 		content: modalContent,
-		 		icon: 'dashicons dashicons-info',
+				icon: 'dashicons dashicons-info',
 		 		type: 'blue',
 		 		backgroundDismiss: false,
 		 		closeIcon: false,
@@ -142,7 +142,7 @@
 										$connections.find('.evf-content-email-settings-inner').last().addClass('active-connection');
 										$this.parent().find('.everest-forms-active-email-connections-list li').removeClass('active-user');
 										$this.closest('.everest-forms-active-email.active').children('.everest-forms-active-email-connections-list').removeClass('empty-list');
-										$this.parent().find('.everest-forms-active-email-connections-list ').append( '<li class="active-user" data-connection-id= "'+response.data.connection_id+'"><a class="user-nickname" href="#">'+name+'</a><a href="#"><span class="email-remove">Remove</span></a></li>' );
+										$this.parent().find('.everest-forms-active-email-connections-list ').append( '<li class="connection-list active-user" data-connection-id= "'+response.data.connection_id+'"><a class="user-nickname" href="#">'+name+'</a><a href="#"><span class="email-remove">Remove</span></a></li>' );
 									}
 								});
 							}
