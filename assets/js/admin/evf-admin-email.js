@@ -249,14 +249,14 @@
 			$active_block.find('.user-nickname').text($this.val());
 			if ( $this.val().trim().length === 0 ) {
 				$this.parent('.everest-forms-email-name').find('.everest-forms-error').remove();
-				$this.parent('.everest-forms-email-name').append('<p class="everest-forms-error error">Email name cant be empty.</p>');
-				$this.next('.everest-forms-error').fadeOut(2000);
+				$this.parent('.everest-forms-email-name').append('<p class="evf-alert everest-forms-error error">Email name cannot be empty.</p>');
+				$this.next('.everest-forms-error').fadeOut(3000);
 				setTimeout(function() {
 					if ( $this.val().length === 0 ){
 						$this.val($this.data('val'));
 						$active_block.find('.user-nickname').text($this.data('val'));
 					}
-				}, 2000);
+				}, 3000);
 			}
 		}
 
