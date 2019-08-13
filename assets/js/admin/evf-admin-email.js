@@ -47,7 +47,10 @@
 		 	});
 		 	$(document).on('input', '.everest-forms-email-name input', function(e) {
 		 		EverestFormsEmail.renameConnection(this, e);
-		 	});
+			 });
+			 $(document).on('focusin', '.everest-forms-email-name input', function(e) {
+				EverestFormsEmail.focusConnectionName(this, e);
+			});
 
 		 },
 
@@ -79,12 +82,13 @@
 		 				keys: ['enter'],
 		 				action: function() {
 		 					var input = this.$content.find('input#provider-connection-name');
-		 					var error = this.$content.find('.error');
-		 					if (input.val() === '') {
+							 var error = this.$content.find('.error');
+							 var value = input.val().trim();
+		 					if ( value.length === 0 ) {
 		 						error.show();
 		 						return false;
 		 					} else {
-		 						var name = input.val();
+		 						var name = value;
 
 								// Fire AJAX
 								var data =  {
@@ -232,12 +236,28 @@
 			});
 		},
 
+		focusConnectionName: function( el,e ){
+			var $this = $(el);
+			$this.data('val', $this.val().trim());
+		},
+
 		renameConnection: function( el,e ){
 			e.preventDefault;
 			var $this = $(el);
 			var connection_id = $this.closest('.evf-content-email-settings-inner').data('connection_id');
 			$active_block = $('.everest-forms-active-email-connections-list').find('[data-connection-id="' + connection_id + '"]');
 			$active_block.find('.user-nickname').text($this.val());
+			if ( $this.val().trim().length === 0 ) {
+				$this.parent('.everest-forms-email-name').find('.everest-forms-error').remove();
+				$this.parent('.everest-forms-email-name').append('<p class="everest-forms-error error">Email name cant be empty.</p>');
+				$this.next('.everest-forms-error').fadeOut(2000);
+				setTimeout(function() {
+					if ( $this.val().length === 0 ){
+						$this.val($this.data('val'));
+						$active_block.find('.user-nickname').text($this.data('val'));
+					}
+				}, 2000);
+			}
 		}
 
 
