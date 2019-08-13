@@ -259,8 +259,6 @@
 				}, 3000);
 			}
 		}
-
-
  	}
 	EverestFormsEmail.init();
 })(jQuery);
