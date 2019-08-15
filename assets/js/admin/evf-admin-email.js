@@ -249,7 +249,7 @@
 			$active_block.find('.user-nickname').text($this.val());
 			if ( $this.val().trim().length === 0 ) {
 				$this.parent('.everest-forms-email-name').find('.everest-forms-error').remove();
-				$this.parent('.everest-forms-email-name').append('<p class="everest-forms-text-danger">Email name cannot be empty.</p>');
+				$this.parent('.everest-forms-email-name').append('<p class="everest-forms-error everest-forms-text-danger">Email name cannot be empty.</p>');
 				$this.next('.everest-forms-error').fadeOut(3000);
 				setTimeout(function() {
 					if ( $this.val().length === 0 ){
