@@ -148,6 +148,68 @@
 	z-index: 100100;
 }
 
+/**
+ * Dashboard Notice Styles
+ * Notice for review.
+ */
+.notice {
+	&.everest-forms-review-notice {
+		&.notice-info {
+			padding: 16px;
+			display: flex;
+			align-items: center;
+			border-left-color: $everestforms;
+		}
+
+		.everest-forms-review-thumbnail {
+			height: 80px;
+			width: 80px;
+			border-radius: 4px;
+			margin-right: 16px;
+			flex: 0 0 80px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: $everestforms;
+
+			svg {
+				height: 64px;
+				width: 64px;
+				fill: $color-white;
+			}
+		}
+
+		.everest-forms-review-text {
+			h3 {
+				margin: 0;
+				font-size: 14px;
+			}
+
+			p {
+				margin-top: 4px;
+				padding: 0;
+
+				&.everest-forms-review {
+					margin-top: 9px;
+					margin-bottom: 0;
+
+					.button {
+						margin-right: 5px;
+					}
+
+					.everest-forms-rating-received {
+						padding: 0 2px 0;
+					}
+				}
+			}
+
+			a {
+				text-decoration: none;
+			}
+		}
+	}
+}
+
 @media screen and (max-width: 782px) {
 	#evf-modal-wrap {
 		height: 280px;
