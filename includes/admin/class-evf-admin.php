@@ -152,7 +152,7 @@ class EVF_Admin {
 			</div>
 			<div class="everest-forms-review-text">
 					<h3><?php _e( 'Hi <strong>' . $current_user->user_login . '</strong>!', 'everest-forms' ); ?></h3>
-					<p><?php _e( 'If you liked the experience with <strong>Everest Forms</strong>, please show us a little love by rating us in the <a href="https://wordpress.org/support/plugin/everest-forms/reviews/?filter=5" target="_blank"><strong>WordPress.org</strong></a>', 'everest-forms' ); ?></p>
+					<p><?php _e( 'Enjoying the experience with <strong>Everest Forms</strong>? Please take a moment to spread your love by rating us in the <a href="https://wordpress.org/support/plugin/everest-forms/reviews/?filter=5" target="_blank"><strong>WordPress.org</strong></a>', 'everest-forms' ); ?></p>
 
 				<p class="submit everest-forms-review">
 					<a class="button button-primary" href="https://wordpress.org/support/plugin/everest-forms/reviews/?filter=5" target="_blank"><?php _e( 'Sure, I\'d love to!', 'everest-forms' ); ?></a>
