@@ -187,7 +187,7 @@
 	// Display entries list notification if Heartbeat API new form entries check is successful.
 	$( document ).on( 'heartbeat-tick', function ( event, data ) {
 		var $entriesList = $( '#everest-forms-entries-list' ),
-			columnsCount = $entriesList.find( '.wp-list-table thead tr' ).first().children().length;
+			columnsCount = $entriesList.find( '.wp-list-table thead tr:first-child > :visible' ).length;
 
 		// Work on entry list table page and check for new entry notification.
 		if ( ! $entriesList.length || ! data.evf_new_entries_notification ) {
