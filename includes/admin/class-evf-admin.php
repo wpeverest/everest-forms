@@ -142,26 +142,26 @@ class EVF_Admin {
 		}
 
 		// Return if activation date is less than 15 days.
-		// if ( evf_check_activation_date() === false ) {
-		// return;
-		// }
+		if ( evf_check_activation_date() === false ) {
+			return;
+		}
 		?>
-			<div id="everest-forms-review-notice" class="notice notice-info everest-forms-review-notice">
-				<div class="everest-forms-review-thumbnail">
-					<img src="" alt="">
-				</div>
-				<div class="everest-forms-review-text">
-						<h3><?php _e( 'Enjoying <strong>Everest Forms</strong>?', 'everest-forms' ); ?></h3>
-						<p><?php _e( 'Looks like you have been using everest forms for a while. Would you do us some favour and leave a review on <a href="https://wordpress.org/support/plugin/everest-forms/reviews/#new-post" target="_blank"><strong>WordPress.org</strong></a>?', 'everest-forms' ); ?></p>
-
-					<ul class="everest-forms-review-ul">
-						<li><a class="button button-primary" href="https://wordpress.org/support/plugin/everest-forms/reviews/#postform" target="_blank"><span class="dashicons dashicons-external"></span><?php _e( 'Sure, I\'d love to!', 'everest-forms' ); ?></a></li>
-						<li><a href="#" class="button button-link"><span class="dashicons dashicons-dismiss"></span><?php _e( 'Remind me later!', 'everest-forms' ); ?></a></li>
-						<li><a href="#" class="button button-secondary"><span  class="dashicons dashicons-smiley"></span><?php _e( 'I already did!', 'everest-forms' ); ?></a></li>
-						<li><a href="https://wordpress.org/support/plugin/everest-forms/" class="button button-link" target="_blank"><span class="dashicons dashicons-edit"></span><?php _e( 'Got Plugin Support Question?', 'everest-forms' ); ?></a></li>
-					 </ul>
-				</div>
+		<div id="everest-forms-review-notice" class="notice notice-info everest-forms-review-notice">
+			<div class="everest-forms-review-thumbnail">
+				<img src="" alt="">
 			</div>
+			<div class="everest-forms-review-text">
+					<h3><?php _e( 'Enjoying <strong>Everest Forms</strong>?', 'everest-forms' ); ?></h3>
+					<p><?php _e( 'Looks like you have been using everest forms for a while. Would you do us some favour and leave a review on <a href="https://wordpress.org/support/plugin/everest-forms/reviews/#new-post" target="_blank"><strong>WordPress.org</strong></a>?', 'everest-forms' ); ?></p>
+
+				<ul class="everest-forms-review-ul">
+					<li><a class="button button-primary" href="https://wordpress.org/support/plugin/everest-forms/reviews/#postform" target="_blank"><span class="dashicons dashicons-external"></span><?php _e( 'Sure, I\'d love to!', 'everest-forms' ); ?></a></li>
+					<li><a href="#" class="button button-link"><span class="dashicons dashicons-dismiss"></span><?php _e( 'Remind me later!', 'everest-forms' ); ?></a></li>
+					<li><a href="#" class="button button-secondary"><span  class="dashicons dashicons-smiley"></span><?php _e( 'I already did!', 'everest-forms' ); ?></a></li>
+					<li><a href="https://wordpress.org/support/plugin/everest-forms/" class="button button-link" target="_blank"><span class="dashicons dashicons-edit"></span><?php _e( 'Got Plugin Support Question?', 'everest-forms' ); ?></a></li>
+					</ul>
+			</div>
+		</div>
 		<?php
 	}
 

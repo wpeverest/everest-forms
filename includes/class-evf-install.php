@@ -160,6 +160,13 @@ class EVF_Install {
 	}
 
 	/**
+	 * Run on plugin-deactivation.
+	 */
+	public function uninstall() {
+		delete_option( 'everest_forms_activated' );
+	}
+
+	/**
 	 * Reset any notices added to admin.
 	 */
 	private static function remove_admin_notices() {

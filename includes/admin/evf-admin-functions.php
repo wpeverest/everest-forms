@@ -462,14 +462,11 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
  * @return bool
  */
 function evf_check_activation_date() {
-
 	// Plugin Activation Time.
 	$activation_date    = get_option( 'everest_forms_activated' );
-	$to_be_checked_date = strtotime( 'now' ) - strtotime( '15 day' );
-	$to_be_checked_date = date( 'Y-m-d', $to_be_checked_date );
-
+	$to_be_checked_date = date( 'Y-m-d', strtotime( '-15 days', strtotime( 'now' ) ) );
 	if ( ! empty( $activation_date ) ) {
-		if ( $activation_date < $to_be_checked_date ) {
+		if ( $activation_date <= $to_be_checked_date ) {
 			return true;
 		}
 	}
