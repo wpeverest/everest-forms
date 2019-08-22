@@ -451,3 +451,28 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 		return $output;
 	}
 }
+
+/**
+ * Check for plugin activation date.
+ *
+ * True if Everest Forms has been installed 15 days ago.
+ *
+ * @since 1.5.4
+ *
+ * @return bool
+ */
+function evf_check_activation_date() {
+
+	// Plugin Activation Time.
+	$activation_date    = get_option( 'everest_forms_activated' );
+	$to_be_checked_date = strtotime( 'now' ) - strtotime( '15 day' );
+	$to_be_checked_date = date( 'Y-m-d', $to_be_checked_date );
+
+	if ( ! empty( $activation_date ) ) {
+		if ( $activation_date < $to_be_checked_date ) {
+			return true;
+		}
+	}
+
+	return false;
+}
