@@ -2306,7 +2306,7 @@ body.everest-forms-builder-setup,
 						}
 
 						&[type='text'] {
-							width: 73%;
+							width: 72%;
 						}
 					}
 				}
@@ -2342,6 +2342,7 @@ body.everest-forms-builder-setup,
 						}
 
 						input[type='text'] {
+							margin-left: 4px;
 							margin-right: 8px;
 							vertical-align: middle;
 						}
@@ -2424,7 +2425,7 @@ body.everest-forms-builder-setup,
 							vertical-align: middle;
 
 							&.value {
-								width: 23%;
+								width: 22%;
 							}
 						}
 					}

@@ -266,6 +266,7 @@
 							li {
 								display: flex;
 								align-items: center;
+								margin-bottom: 5px;
 							}
 						}
 					}
@@ -614,7 +615,6 @@ div.evf-gutenberg-form-selector .evf-frontend-row button[type='submit']:disabled
 				margin: 0;
 
 				.evf-frontend-grid {
-					margin-bottom: 30px;
 					padding: 0;
 
 					&:last-child {
