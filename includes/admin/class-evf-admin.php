@@ -135,9 +135,9 @@ class EVF_Admin {
 			return;
 		}
 
-		$notice_dismissed = get_option( 'everest_forms_review_notice_dismissed', 'no' );
+		$current_user = wp_get_current_user();
 
-		if ( 'yes' === $notice_dismissed ) {
+		if ( ! empty( $current_user->everest_forms_review_notice_dismissed ) && 'yes' === $current_user->everest_forms_review_notice_dismissed ) {
 			return;
 		}
 
@@ -151,13 +151,13 @@ class EVF_Admin {
 			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.15,4l1.23,2H15.49L14.26,4ZM20,20H2.21L12,4.09,18.1,14H10.77L12,12h2.52L12,7.91,5.79,18H20.56l1.23,2ZM17.94,10,16.71,8H20.6l1.23,2Z"/></svg>
 			</div>
 			<div class="everest-forms-review-text">
-					<h3><?php _e( 'Hi <strong>Username</strong>!', 'everest-forms' ); ?></h3>
-					<p><?php _e( 'Enjoying <strong>Everest Forms</strong>? It\'s been quite some time that you\'ve been using Everest Forms. Please take a moment to spread your love towards us by giving us a review on <a href="https://wordpress.org/support/plugin/everest-forms/reviews/#new-post" target="_blank"><strong>WordPress.org</strong></a>?', 'everest-forms' ); ?></p>
+					<h3><?php _e( 'Hi <strong>' . $current_user->user_login . '</strong>!', 'everest-forms' ); ?></h3>
+					<p><?php _e( 'If you liked the experience with <strong>Everest Forms</strong>, please show us a little love by rating us in the <a href="https://wordpress.org/support/plugin/everest-forms/reviews/?filter=5" target="_blank"><strong>WordPress.org</strong></a>', 'everest-forms' ); ?></p>
 
 				<p class="submit everest-forms-review">
-					<a class="button button-primary" href="https://wordpress.org/support/plugin/everest-forms/reviews/#postform" target="_blank"><?php _e( 'Sure, I\'d love to!', 'everest-forms' ); ?></a>
-					<a href="#" class="button button-secondary"><?php _e( 'Remind me later!', 'everest-forms' ); ?></a>
-					<a href="#" class="everest-forms-rating-received"><?php _e( 'I already did!', 'everest-forms' ); ?></a>
+					<a class="button button-primary" href="https://wordpress.org/support/plugin/everest-forms/reviews/?filter=5" target="_blank"><?php _e( 'Sure, I\'d love to!', 'everest-forms' ); ?></a>
+					<a href="#" class="button button-secondary"><?php _e( 'Remind me later', 'everest-forms' ); ?></a>
+					<a href="#" class="everest-forms-rating-received"><?php _e( 'I already did', 'everest-forms' ); ?></a>
 				</p>
 			</div>
 		</div>
