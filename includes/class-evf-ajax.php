@@ -85,6 +85,8 @@ class EVF_AJAX {
 			'deactivation_notice'    => false,
 			'rated'                  => false,
 			'enabled_form'           => false,
+			'review_dismissed'       => false,
+			'review_later'           => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -504,6 +506,44 @@ class EVF_AJAX {
 		$form_data['form_enabled'] = $enabled;
 
 		EVF()->form->update( $form_id, $form_data );
+	}
+
+	/**
+	 * Review notice dismiss.
+	 */
+	public static function review_dismissed() {
+
+		// Run a security check.
+		check_ajax_referer( 'review-notice', 'security' );
+
+		if ( ! current_user_can( 'manage_everest_forms' ) ) {
+			wp_die( -1 );
+		}
+
+		global $current_user;
+		$user_id = $current_user->ID;
+		/* If user clicks to ignore the notice, add that to their user meta */
+		add_user_meta( $user_id, 'everest_forms_dismiss_review_notice', 'true', true );
+
+	}
+
+	/**
+	 * Review notice later.
+	 */
+	public static function review_later() {
+
+		// Run a security check.
+		check_ajax_referer( 'review-notice', 'security' );
+
+		if ( ! current_user_can( 'manage_everest_forms' ) ) {
+			wp_die( -1 );
+		}
+
+		global $current_user;
+		$user_id = $current_user->ID;
+		/* If user clicks to ignore the notice, add that to their user meta */
+		update_user_meta( $user_id, 'everest_forms_dismiss_review_notice_later', current_time( 'Y-m-d' ) );
+
 	}
 }
 

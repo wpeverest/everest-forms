@@ -131,13 +131,16 @@ class EVF_Admin {
 	 */
 	public function review_notice() {
 		// Show only to Admins.
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( 'manage_everest_forms' ) ) {
 			return;
 		}
 
-		$current_user = wp_get_current_user();
+		global $current_user;
 
-		if ( ! empty( $current_user->everest_forms_review_notice_dismissed ) && 'yes' === $current_user->everest_forms_review_notice_dismissed ) {
+		if ( ! empty( $current_user->everest_forms_dismiss_review_notice ) && 'truea' === $current_user->everest_forms_dismiss_review_notice ) {
+			return;
+		}
+		if ( ! empty( $current_user->everest_forms_dismiss_review_notice_later ) && false === $this->evf_check_user_review_later() ) {
 			return;
 		}
 
@@ -145,6 +148,7 @@ class EVF_Admin {
 		if ( evf_check_activation_date() === false ) {
 			return;
 		}
+
 		?>
 		<div id="everest-forms-review-notice" class="notice notice-info everest-forms-review-notice">
 			<div class="everest-forms-review-thumbnail">
@@ -152,16 +156,35 @@ class EVF_Admin {
 			</div>
 			<div class="everest-forms-review-text">
 					<h3><?php _e( 'Hi <strong>' . $current_user->user_login . '</strong>!', 'everest-forms' ); ?></h3>
-					<p><?php _e( 'Enjoying the experience with <strong>Everest Forms</strong>? Please take a moment to spread your love by rating us in the <a href="https://wordpress.org/support/plugin/everest-forms/reviews/?filter=5" target="_blank"><strong>WordPress.org</strong></a>', 'everest-forms' ); ?></p>
+					<p><?php _e( 'Enjoying the experience with <strong>Everest Forms</strong>? Please take a moment to spread your love by rating us on <a href="https://wordpress.org/support/plugin/everest-forms/reviews/?filter=5" target="_blank"><strong>WordPress.org</strong>!</a>', 'everest-forms' ); ?></p>
 
 				<p class="submit everest-forms-review">
-					<a class="button button-primary" href="https://wordpress.org/support/plugin/everest-forms/reviews/?filter=5" target="_blank"><?php _e( 'Sure, I\'d love to!', 'everest-forms' ); ?></a>
-					<a href="#" class="button button-secondary"><?php _e( 'Remind me later', 'everest-forms' ); ?></a>
-					<a href="#" class="everest-forms-rating-received"><?php _e( 'I already did', 'everest-forms' ); ?></a>
+					<a class="button button-primary review-sure" href="https://wordpress.org/support/plugin/everest-forms/reviews/?filter=5" target="_blank"><?php _e( 'Sure, I\'d love to!', 'everest-forms' ); ?></a>
+					<a href="#" class="button button-secondary review-later"><?php _e( 'Remind me later', 'everest-forms' ); ?></a>
+					<a href="#" class="everest-forms-rating-received review-done"><?php _e( 'I already did', 'everest-forms' ); ?></a>
 				</p>
 			</div>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Check user meta for review later.
+	 */
+	public function evf_check_user_review_later() {
+
+		global $current_user;
+
+		$review_later       = get_user_meta( $current_user->ID, 'everest_forms_dismiss_review_notice_later', true );
+		$to_be_checked_date = date( 'Y-m-d', strtotime( '-15 days', strtotime( 'now' ) ) );
+
+		if ( ! empty( $review_later ) ) {
+			if ( $review_later < $to_be_checked_date ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**

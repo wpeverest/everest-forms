@@ -163,6 +163,21 @@ class EVF_Install {
 	 * Run on plugin-deactivation.
 	 */
 	public function uninstall() {
+		$all_users = get_users();
+
+		foreach ( $all_users as $user ) {
+			$user_id        = $user->ID;
+			$review_later   = get_user_meta( $user_id, 'everest_forms_dismiss_review_notice_later', true );
+			$review_dismiss = get_user_meta( $user_id, 'everest_forms_dismiss_review_notice', true );
+
+			if ( $review_dismiss ) {
+				delete_user_meta( $user_id, 'everest_forms_dismiss_review_notice' );
+			}
+
+			if ( $review_later ) {
+				delete_user_meta( $user_id, 'everest_forms_dismiss_review_notice_later' );
+			}
+		}
 		delete_option( 'everest_forms_activated' );
 	}
 
