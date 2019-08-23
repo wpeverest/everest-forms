@@ -38,6 +38,7 @@ class EVF_Field_Email extends EVF_Form_Fields {
 					'placeholder',
 					'confirmation_placeholder',
 					'label_hide',
+					'sublabel_hide',
 					'default_value',
 					'css',
 				),
@@ -76,13 +77,17 @@ class EVF_Field_Email extends EVF_Form_Fields {
 		$props      = array(
 			'inputs' => array(
 				'primary'   => array(
-					'block' => array(
+					'block'    => array(
 						'everest-forms-field-row-block',
 						'everest-forms-one-half',
 						'everest-forms-first',
 					),
-					'class' => array(
+					'class'    => array(
 						'everest-forms-field-email-primary',
+					),
+					'sublabel' => array(
+						'hidden' => ! empty( $field['sublabel_hide'] ),
+						'value'  => esc_html__( 'Email', 'everest-forms' ),
 					),
 				),
 				'secondary' => array(
@@ -104,6 +109,10 @@ class EVF_Field_Email extends EVF_Form_Fields {
 					),
 					'id'       => "evf-{$form_id}-field_{$field_id}-secondary",
 					'required' => ! empty( $field['required'] ) ? 'required' : '',
+					'sublabel' => array(
+						'hidden' => ! empty( $field['sublabel_hide'] ),
+						'value'  => esc_html__( 'Confirm Email', 'everest-forms' ),
+					),
 					'value'    => '',
 				),
 			),
@@ -226,9 +235,12 @@ class EVF_Field_Email extends EVF_Form_Fields {
 		<div class="everest-forms-confirm everest-forms-confirm-<?php echo $confirm; ?>">
 			<div class="everest-forms-confirm-primary">
 				<input type="email" placeholder="<?php echo $placeholder; ?>" class="widefat primary-input" disabled>
+				<label class="everest-forms-sub-label"><?php esc_html_e( 'Email', 'everest-forms' ); ?></label>
+
 			</div>
 			<div class="everest-forms-confirm-confirmation">
 				<input type="email" placeholder="<?php echo $confirm_placeholder; ?>" class="widefat secondary-input" disabled>
+				<label class="everest-forms-sub-label"><?php esc_html_e( 'Confirm Email', 'everest-forms' ); ?></label>
 			</div>
 		</div>
 		<?php
@@ -275,6 +287,7 @@ class EVF_Field_Email extends EVF_Form_Fields {
 				evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ),
 				$primary['required']
 			);
+			$this->field_display_sublabel( 'primary', 'after', $field );
 			$this->field_display_error( 'primary', $field );
 			echo '</div>';
 
@@ -285,6 +298,7 @@ class EVF_Field_Email extends EVF_Form_Fields {
 				evf_html_attributes( $secondary['id'], $secondary['class'], $secondary['data'], $secondary['attr'] ),
 				$secondary['required']
 			);
+			$this->field_display_sublabel( 'secondary', 'after', $field );
 			$this->field_display_error( 'secondary', $field );
 			echo '</div>';
 
@@ -309,6 +323,44 @@ class EVF_Field_Email extends EVF_Form_Fields {
 		}
 
 		return $class;
+	}
+
+	/**
+	 * Validates field on form submit.
+	 *
+	 * @param int   $field_id
+	 * @param array $field_submit
+	 * @param array $form_data
+	 */
+	public function validate( $field_id, $field_submit, $form_data ) {
+		$form_id  = $form_data['id'];
+		$fields   = $form_data['form_fields'];
+		$required = evf_get_required_label();
+
+		// Standard configuration, confirmation disabled.
+		if ( empty( $fields[ $field_id ]['confirmation'] ) ) {
+
+			// Required check.
+			if ( ! empty( $fields[ $field_id ]['required'] ) && empty( $field_submit ) ) {
+				evf()->task->errors[ $form_id ][ $field_id ] = $required;
+			}
+		} else {
+
+			// Required check.
+			if ( ! empty( $fields[ $field_id ]['required'] ) && empty( $field_submit['primary'] ) ) {
+				evf()->task->errors[ $form_id ][ $field_id ]['primary'] = $required;
+			}
+
+			// Required check, secondary confirmation field.
+			if ( ! empty( $fields[ $field_id ]['required'] ) && empty( $field_submit['secondary'] ) ) {
+				evf()->task->errors[ $form_id ][ $field_id ]['secondary'] = $required;
+			}
+
+			// Fields need to match.
+			if ( $field_submit['primary'] !== $field_submit['secondary'] ) {
+				evf()->task->errors[ $form_id ][ $field_id ]['secondary'] = esc_html__( 'Confirmation Email do not match.', 'everest-forms' );
+			}
+		}
 	}
 
 	/**
