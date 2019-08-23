@@ -180,10 +180,10 @@
  * Notice info
  */
 .everest-forms-notice {
-	display: block;
+	display: inline-block;
 	padding: 5px 15px;
 	margin-bottom: 15px;
-	max-width: fit-content;
+	min-width: 500px;
 
 	&::before {
 		content: '\f348';
@@ -398,6 +398,8 @@ body.everest-forms-builder-setup,
 								background: #fff;
 								position: absolute;
 								left: 0;
+								top: 0;
+								transform: translateY(-50%);
 							}
 
 							&::after {
@@ -483,7 +485,7 @@ body.everest-forms-builder-setup,
 
 		.everest-forms-overlay {
 			width: 100%;
-			z-index: 9;
+			z-index: 99999;
 			overflow: hidden;
 			background: #f1f1f1;
 			position: absolute;
@@ -961,7 +963,7 @@ body.everest-forms-builder-setup,
 		.remove {
 			&:hover {
 				background: $red;
-    			border: 1px solid $red;
+				border: 1px solid $red;
 			}
 		}
 
@@ -1030,8 +1032,9 @@ body.everest-forms-builder-setup,
 					input {
 						margin: 0;
 						width: 225px;
+						height: 36px;
 						padding: 4px 10px;
-						line-height: 26px;
+						line-height: 1.25;
 						border-radius: 3px 0 0 3px;
 					}
 
@@ -1305,6 +1308,10 @@ body.everest-forms-builder-setup,
 									fill: $blue;
 								}
 							}
+						}
+
+						&:focus {
+							outline: none;
 						}
 
 						svg {
@@ -1937,8 +1944,18 @@ body.everest-forms-builder-setup,
 						border: 1px dashed transparentize($blue, 0.75);
 					}
 
-					&.hide-lalbel {
+					&.label_hide {
+						input[type=text] {
+							margin-bottom: 0;
+						}
 
+						.description {
+							margin-top: 5px;
+
+							&:empty {
+								margin-top: 0;
+							}
+						}
 					}
 
 					input {
@@ -2189,6 +2206,7 @@ body.everest-forms-builder-setup,
 				}
 
 				&.evf-toggle-switch {
+					display: flex;
 					margin-bottom: 0;
 				}
 			}
@@ -2288,7 +2306,7 @@ body.everest-forms-builder-setup,
 						}
 
 						&[type='text'] {
-							width: 73%;
+							width: 72%;
 						}
 					}
 				}
@@ -2324,6 +2342,7 @@ body.everest-forms-builder-setup,
 						}
 
 						input[type='text'] {
+							margin-left: 4px;
 							margin-right: 8px;
 							vertical-align: middle;
 						}
@@ -2377,7 +2396,7 @@ body.everest-forms-builder-setup,
 				.evf-questions-list {
 					li {
 						padding: 10px;
-						background:$color-white;
+						background: $color-white;
 						margin-bottom: 10px;
 						border: 1px solid $color_gray-lighten;
 
@@ -2406,7 +2425,7 @@ body.everest-forms-builder-setup,
 							vertical-align: middle;
 
 							&.value {
-								width: 23%;
+								width: 22%;
 							}
 						}
 					}
@@ -2998,6 +3017,7 @@ body.everest-forms-builder-setup,
 					.logo {
 						width: 50px;
 						height: 50px;
+						flex: 0 0 50px;
 						display: flex;
 						overflow: hidden;
 						margin: 0 20px 0 0;
@@ -3012,7 +3032,6 @@ body.everest-forms-builder-setup,
 					}
 
 					.integration-info {
-						flex: 1;
 						margin-right: 20px;
 
 						a {
