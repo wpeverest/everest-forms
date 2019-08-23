@@ -151,34 +151,12 @@ class EVF_Install {
 		self::maybe_enable_setup_wizard();
 		self::update_evf_version();
 		self::maybe_update_db_version();
-		self::maybe_add_installation_date();
+		self::maybe_add_activated_date();
 
 		delete_transient( 'evf_installing' );
 
 		do_action( 'everest_forms_flush_rewrite_rules' );
 		do_action( 'everest_forms_installed' );
-	}
-
-	/**
-	 * Run on plugin-deactivation.
-	 */
-	public function uninstall() {
-		$all_users = get_users();
-
-		foreach ( $all_users as $user ) {
-			$user_id        = $user->ID;
-			$review_later   = get_user_meta( $user_id, 'everest_forms_dismiss_review_notice_later', true );
-			$review_dismiss = get_user_meta( $user_id, 'everest_forms_dismiss_review_notice', true );
-
-			if ( $review_dismiss ) {
-				delete_user_meta( $user_id, 'everest_forms_dismiss_review_notice' );
-			}
-
-			if ( $review_later ) {
-				delete_user_meta( $user_id, 'everest_forms_dismiss_review_notice_later' );
-			}
-		}
-		delete_option( 'everest_forms_activated' );
 	}
 
 	/**
@@ -245,14 +223,13 @@ class EVF_Install {
 	}
 
 	/**
-	 * May be add installation date. Donot insert on every update.
+	 * Store the initial plugin activation date during install.
 	 */
-	private static function maybe_add_installation_date() {
+	private static function maybe_add_activated_date() {
+		$activated_date = get_option( 'everest_forms_activated', '' );
 
-		$installed_date = get_option( 'everest_forms_activated' );
-
-		if ( empty( $installed_date ) ) {
-			update_option( 'everest_forms_activated', current_time( 'Y-m-d' ) );
+		if ( empty( $activated_date ) ) {
+			update_option( 'everest_forms_activated', current_time( 'timestamp' ) );
 		}
 	}
 

@@ -142,7 +142,6 @@ final class EverestForms {
 	 */
 	private function init_hooks() {
 		register_activation_hook( EVF_PLUGIN_FILE, array( 'EVF_Install', 'install' ) );
-		register_deactivation_hook( EVF_PLUGIN_FILE, array( 'EVF_Install', 'uninstall' ) );
 		register_shutdown_function( array( $this, 'log_errors' ) );
 		add_action( 'after_setup_theme', array( $this, 'include_template_functions' ), 11 );
 		add_action( 'init', array( $this, 'init' ), 0 );
