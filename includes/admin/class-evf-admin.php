@@ -176,7 +176,7 @@ class EVF_Admin {
 	 *
 	 * @return bool
 	 */
-	public function evf_check_activation_date() {
+	private function evf_check_activation_date() {
 		// Plugin Activation Time.
 		$activation_date    = get_option( 'everest_forms_activated' );
 		$to_be_checked_date = date( 'Y-m-d', strtotime( '-15 days', strtotime( 'now' ) ) );
@@ -242,7 +242,7 @@ class EVF_Admin {
 						jQuery.post( '" . EVF()->ajax_url() . "', { action: 'everest_forms_rated' } );
 						jQuery( this ).parent().text( jQuery( this ).data( 'rated' ) );
 					});
-				"
+					"
 				);
 			} else {
 				$footer_text = __( 'Thank you for creating with Everest Forms.', 'everest-forms' );
@@ -263,8 +263,8 @@ class EVF_Admin {
 		$screen_id = $screen ? $screen->id : '';
 
 		// Check to make sure we're on a EverestForms builder page.
-		if ( ( isset( $_GET['form_id'] ) || isset( $_GET['create-form'] ) ) && in_array( $screen_id, array( 'everest-forms_page_evf-builder' ), true ) ) {
-			$classes = isset( $_GET['form_id'] ) ? 'everest-forms-builder' : 'everest-forms-builder-setup';
+		if ( ( isset( $_GET['form_id'] ) || isset( $_GET['create-form'] ) ) && in_array( $screen_id, array( 'everest-forms_page_evf-builder' ), true ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			$classes = isset( $_GET['form_id'] ) ? 'everest-forms-builder' : 'everest-forms-builder-setup'; // phpcs:ignore WordPress.Security.NonceVerification
 		}
 
 		return $classes;
