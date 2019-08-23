@@ -333,32 +333,35 @@ class EVF_Field_Email extends EVF_Form_Fields {
 	 * @param array $form_data
 	 */
 	public function validate( $field_id, $field_submit, $form_data ) {
-		$form_id  = $form_data['id'];
-		$fields   = $form_data['form_fields'];
-		$required = evf_get_required_label();
+		$form_id            = $form_data['id'];
+		$fields             = $form_data['form_fields'];
+		$required           = evf_get_required_label();
+		$conditional_status = isset( $form_data['form_fields'][ $field_id ]['conditional_logic_status'] ) ? $form_data['form_fields'][ $field_id ]['conditional_logic_status'] : 0;
 
 		// Standard configuration, confirmation disabled.
 		if ( empty( $fields[ $field_id ]['confirmation'] ) ) {
 
 			// Required check.
-			if ( ! empty( $fields[ $field_id ]['required'] ) && empty( $field_submit ) ) {
+			if ( ! empty( $fields[ $field_id ]['required'] ) && '1' !== $conditional_status && ( empty( $field_submit ) && '0' !== $field_submit ) ) {
 				evf()->task->errors[ $form_id ][ $field_id ] = $required;
 			}
 		} else {
 
 			// Required check.
-			if ( ! empty( $fields[ $field_id ]['required'] ) && empty( $field_submit['primary'] ) ) {
+			if ( ! empty( $fields[ $field_id ]['required'] ) && '1' !== $conditional_status && ( empty( $field_submit['primary'] ) && '0' !== $field_submit ) ) {
 				evf()->task->errors[ $form_id ][ $field_id ]['primary'] = $required;
 			}
 
 			// Required check, secondary confirmation field.
-			if ( ! empty( $fields[ $field_id ]['required'] ) && empty( $field_submit['secondary'] ) ) {
+			if ( ! empty( $fields[ $field_id ]['required'] ) && '1' !== $conditional_status && ( empty( $field_submit['secondary'] ) && '0' !== $field_submit ) ) {
 				evf()->task->errors[ $form_id ][ $field_id ]['secondary'] = $required;
 			}
 
 			// Fields need to match.
-			if ( $field_submit['primary'] !== $field_submit['secondary'] ) {
-				evf()->task->errors[ $form_id ][ $field_id ]['secondary'] = esc_html__( 'Confirmation Email do not match.', 'everest-forms' );
+			if ( isset( $field_submit['primary'] ) && isset( $field_submit['secondary'] ) ) {
+				if ( $field_submit['primary'] !== $field_submit['secondary'] ) {
+					evf()->task->errors[ $form_id ][ $field_id ]['secondary'] = esc_html__( 'Confirmation Email do not match.', 'everest-forms' );
+				}
 			}
 		}
 	}
