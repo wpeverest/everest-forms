@@ -124,20 +124,19 @@ class EVF_Admin {
 	}
 
 	/**
-	 * Review notice on header.
+	 * Show review notice.
 	 *
-	 * @since  1.5.4
-	 * @return void
+	 * @since 1.5.4
 	 */
 	public function review_notice() {
-		// Show only to Admins.
+		global $current_user;
+
+		// Check for user capability.
 		if ( ! current_user_can( 'manage_everest_forms' ) ) {
 			return;
 		}
 
-		global $current_user;
-
-		if ( ! empty( $current_user->everest_forms_dismiss_review_notice ) && 'truea' === $current_user->everest_forms_dismiss_review_notice ) {
+		if ( ! empty( $current_user->everest_forms_dismiss_review_notice ) && 'true' === $current_user->everest_forms_dismiss_review_notice ) {
 			return;
 		}
 		if ( ! empty( $current_user->everest_forms_dismiss_review_notice_later ) && false === $this->evf_check_user_review_later() ) {

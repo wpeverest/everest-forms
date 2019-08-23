@@ -223,7 +223,7 @@ class EVF_Admin_Assets {
 			);
 		}
 
-		// All over dashboard.
+		// Global scripts.
 		wp_enqueue_script( 'evf-review-notice' );
 		wp_localize_script(
 			'evf-review-notice',
