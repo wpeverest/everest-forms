@@ -524,6 +524,7 @@ class EVF_AJAX {
 		$user_id = $current_user->ID;
 		/* If user clicks to ignore the notice, add that to their user meta */
 		add_user_meta( $user_id, 'everest_forms_dismiss_review_notice', 'true', true );
+		wp_die();
 
 	}
 
@@ -543,6 +544,7 @@ class EVF_AJAX {
 		$user_id = $current_user->ID;
 		/* If user clicks to ignore the notice, add that to their user meta */
 		update_user_meta( $user_id, 'everest_forms_dismiss_review_notice_later', current_time( 'Y-m-d' ) );
+		wp_die();
 
 	}
 }

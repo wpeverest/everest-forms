@@ -145,7 +145,7 @@ class EVF_Admin {
 		}
 
 		// Return if activation date is less than 15 days.
-		if ( evf_check_activation_date() === false ) {
+		if ( false === $this->evf_check_activation_date() ) {
 			return;
 		}
 
@@ -169,7 +169,33 @@ class EVF_Admin {
 	}
 
 	/**
+	 * Check for plugin activation date.
+	 *
+	 * True if Everest Forms has been installed 15 days ago.
+	 *
+	 * @since 1.5.4
+	 *
+	 * @return bool
+	 */
+	public function evf_check_activation_date() {
+		// Plugin Activation Time.
+		$activation_date    = get_option( 'everest_forms_activated' );
+		$to_be_checked_date = date( 'Y-m-d', strtotime( '-15 days', strtotime( 'now' ) ) );
+		if ( ! empty( $activation_date ) ) {
+			if ( $activation_date < $to_be_checked_date ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * Check user meta for review later.
+	 *
+	 * @since 1.5.4
+	 *
+	 * @return bool
 	 */
 	public function evf_check_user_review_later() {
 
