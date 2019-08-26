@@ -2,7 +2,7 @@
   "name": "everest-forms",
   "title": "Everest Forms",
   "version": "1.5.0",
-  "homepage": "https://wpeverest.com/wordpress-plugins/everest-forms/",
+  "homepage": "https://github.com/wpeverest/everest-forms/",
   "repository": {
     "type": "git",
     "url": "https://github.com/wpeverest/everest-forms.git"
@@ -17,14 +17,14 @@
   },
   "devDependencies": {
     "@babel/core": "7.5.5",
-    "@wordpress/babel-preset-default": "4.3.0",
-    "@wordpress/browserslist-config": "2.5.0",
+    "@wordpress/babel-preset-default": "4.4.0",
+    "@wordpress/browserslist-config": "2.6.0",
     "autoprefixer": "9.6.1",
     "babel-loader": "8.0.6",
     "babel-plugin-transform-react-jsx": "6.24.1",
     "babel-preset-env": "1.7.0",
     "cross-env": "5.2.0",
-    "eslint": "6.1.0",
+    "eslint": "6.2.0",
     "grunt": "1.0.4",
     "grunt-checktextdomain": "1.0.1",
     "grunt-contrib-compress": "1.5.0",
@@ -36,15 +36,15 @@
     "grunt-phpcs": "0.4.0",
     "grunt-postcss": "0.9.0",
     "grunt-rtlcss": "2.0.1",
-    "grunt-sass": "3.0.2",
-    "grunt-stylelint": "0.11.0",
+    "grunt-sass": "3.1.0",
+    "grunt-stylelint": "0.11.1",
     "grunt-wp-i18n": "1.0.3",
-    "husky": "3.0.1",
+    "husky": "3.0.4",
     "lint-staged": "9.2.1",
     "node-sass": "4.12.0",
     "stylelint": "10.1.0",
     "stylelint-config-wordpress": "14.0.0",
-    "webpack": "4.38.0",
+    "webpack": "4.39.1",
     "webpack-cli": "3.3.6"
   },
   "engines": {
@@ -57,23 +57,17 @@
     }
   },
   "lint-staged": {
-    "linters": {
-      "*.php": [
-        "php -d display_errors=1 -l",
-        "composer run-script phpcs-pre-commit"
-      ],
-      "*.scss": [
-        "stylelint --syntax=scss --fix",
-        "git add"
-      ],
-      "*.js": [
-        "eslint --fix",
-        "git add"
-      ]
-    },
-    "ignore": [
-      "*.min.js",
-      "*.css"
+    "*.php": [
+      "php -d display_errors=1 -l",
+      "composer run-script phpcs-pre-commit"
+    ],
+    "*.scss": [
+      "stylelint --syntax=scss --fix",
+      "git add"
+    ],
+    "!(*.min).js": [
+      "eslint --fix",
+      "git add"
     ]
   }
 }
