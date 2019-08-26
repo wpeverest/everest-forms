@@ -81,6 +81,17 @@ jQuery( function ( $ ) {
 				return false;
 			}
 
+			// prepend http:// if user missed that.
+			$( '.evf-field-url input[type=url]' ).change( function () {
+				var url = $( this ).val();
+				if ( ! url ) {
+					return false;
+				}
+				if ( url.substr( 0, 7 ) !== 'http://' && url.substr( 0, 8 ) !== 'https://' ) {
+					$( this ).val( 'http://' + url );
+				}
+			});
+
 			// Validator messages.
 			$.extend( $.validator.messages, {
 				required: everest_forms_params.i18n_messages_required,
