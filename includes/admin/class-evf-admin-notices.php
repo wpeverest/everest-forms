@@ -246,7 +246,7 @@ class EVF_Admin_Notices {
 		if ( $load && class_exists( 'EverestForms_Pro', false ) ) {
 			$entries_count = $wpdb->get_var( "SELECT COUNT(entry_id) FROM {$wpdb->prefix}evf_entries WHERE `status` = 'publish'" );
 
-			// Only show review request if the site has collected at least 50 entries.
+			// Only continue if the site has collected at least 50 entries.
 			if ( empty( $entries_count ) || $entries_count < 50 ) {
 				return;
 			}
