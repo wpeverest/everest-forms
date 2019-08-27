@@ -79,7 +79,6 @@ class EVF_Admin_Assets {
 		wp_register_script( 'evf-clipboard', EVF()->plugin_url() . '/assets/js/admin/evf-clipboard' . $suffix . '.js', array( 'jquery' ), EVF_VERSION );
 		wp_register_script( 'selectWoo', EVF()->plugin_url() . '/assets/js/selectWoo/selectWoo.full' . $suffix . '.js', array( 'jquery' ), '1.0.4' );
 		wp_register_script( 'evf-enhanced-select', EVF()->plugin_url() . '/assets/js/admin/evf-enhanced-select' . $suffix . '.js', array( 'jquery', 'selectWoo' ), EVF_VERSION );
-		wp_register_script( 'evf-review-notice', EVF()->plugin_url() . '/assets/js/admin/review-notice' . $suffix . '.js', array( 'jquery' ), EVF_VERSION );
 		wp_localize_script(
 			'evf-enhanced-select',
 			'evf_enhanced_select_params',
@@ -222,17 +221,6 @@ class EVF_Admin_Assets {
 				)
 			);
 		}
-
-		// Global scripts.
-		wp_enqueue_script( 'evf-review-notice' );
-		wp_localize_script(
-			'evf-review-notice',
-			'evf_review_params',
-			array(
-				'ajax_url'     => admin_url( 'admin-ajax.php' ),
-				'review_nonce' => wp_create_nonce( 'review-notice' ),
-			)
-		);
 	}
 }
 
