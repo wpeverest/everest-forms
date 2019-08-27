@@ -4,12 +4,64 @@
  */
 
 /**
+ * Imports
+ */
+@import 'variables';
+
+/**
  * Styling begins
  */
 div.everest-forms-message {
+	padding: 16px;
+	display: flex;
+	align-items: center;
 	overflow: hidden;
 	position: relative;
-	border-left-color: #2ea2cc !important;
+	border-left-color: $everestforms !important;
+
+	.everest-forms-logo {
+		height: 80px;
+		width: 80px;
+		border-radius: 4px;
+		margin-right: 16px;
+		flex: 0 0 80px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: $everestforms;
+
+		svg {
+			height: 64px;
+			width: 64px;
+			fill: $color-white;
+		}
+	}
+
+	.everest-forms-message--content {
+		h3 {
+			margin: 0;
+			font-size: 14px;
+		}
+
+		p {
+			margin-top: 4px;
+			padding: 0;
+
+			&.submit {
+				margin-top: 9px;
+				margin-bottom: 0;
+
+				.button {
+					margin-right: 5px;
+				}
+
+				.evf-button-link {
+					padding: 0 2px 0;
+					box-shadow: none;
+				}
+			}
+		}
+	}
 
 	a {
 		&.button-primary,
