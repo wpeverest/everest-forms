@@ -133,7 +133,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 1.5.4 - XX-08-2019 =
+= 1.5.4 - 25-08-2019 =
 * Fix - Meta key for cloned form field.
 * Fix - CSV export broken due to uppercase alphanumric meta-key.
 * Fix - Layout of entries is broken when heartbeat notification appears.
