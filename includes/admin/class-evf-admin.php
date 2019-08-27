@@ -21,7 +21,6 @@ class EVF_Admin {
 		add_action( 'admin_init', array( $this, 'buffer' ), 1 );
 		add_action( 'admin_init', array( $this, 'addon_actions' ) );
 		add_action( 'admin_init', array( $this, 'admin_redirects' ) );
-		add_action( 'admin_notices', array( $this, 'review_notice' ) );
 		add_action( 'admin_footer', 'evf_print_js', 25 );
 		add_filter( 'admin_body_class', array( $this, 'admin_body_class' ) );
 		add_filter( 'admin_footer_text', array( $this, 'admin_footer_text' ), 1 );
@@ -121,50 +120,6 @@ class EVF_Admin {
 				exit;
 			}
 		}
-	}
-
-	/**
-	 * Show review notice.
-	 *
-	 * @since 1.5.4
-	 */
-	public function review_notice() {
-		global $current_user;
-
-		// Check for user capability.
-		if ( ! current_user_can( 'manage_everest_forms' ) ) {
-			return;
-		}
-
-		if ( ! empty( $current_user->everest_forms_dismiss_review_notice ) && 'true' === $current_user->everest_forms_dismiss_review_notice ) {
-			return;
-		}
-		if ( ! empty( $current_user->everest_forms_dismiss_review_notice_later ) && false === $this->evf_check_user_review_later() ) {
-			return;
-		}
-
-		// Return if activation date is less than 15 days.
-		if ( false === $this->evf_check_activation_date() ) {
-			return;
-		}
-
-		?>
-		<div id="everest-forms-review-notice" class="notice notice-info everest-forms-review-notice">
-			<div class="everest-forms-review-thumbnail">
-			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.15,4l1.23,2H15.49L14.26,4ZM20,20H2.21L12,4.09,18.1,14H10.77L12,12h2.52L12,7.91,5.79,18H20.56l1.23,2ZM17.94,10,16.71,8H20.6l1.23,2Z"/></svg>
-			</div>
-			<div class="everest-forms-review-text">
-					<h3><?php _e( 'Hi <strong>' . $current_user->user_login . '</strong>!', 'everest-forms' ); ?></h3>
-					<p><?php _e( 'Enjoying the experience with <strong>Everest Forms</strong>? Please take a moment to spread your love by rating us on <a href="https://wordpress.org/support/plugin/everest-forms/reviews/?filter=5" target="_blank"><strong>WordPress.org</strong>!</a>', 'everest-forms' ); ?></p>
-
-				<p class="submit everest-forms-review">
-					<a class="button button-primary review-sure" href="https://wordpress.org/support/plugin/everest-forms/reviews/?filter=5" target="_blank"><?php _e( 'Sure, I\'d love to!', 'everest-forms' ); ?></a>
-					<a href="#" class="button button-secondary review-later"><?php _e( 'Remind me later', 'everest-forms' ); ?></a>
-					<a href="#" class="everest-forms-rating-received review-done"><?php _e( 'I already did', 'everest-forms' ); ?></a>
-				</p>
-			</div>
-		</div>
-		<?php
 	}
 
 	/**
