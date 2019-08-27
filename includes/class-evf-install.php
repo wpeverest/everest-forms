@@ -151,6 +151,7 @@ class EVF_Install {
 		self::maybe_enable_setup_wizard();
 		self::update_evf_version();
 		self::maybe_update_db_version();
+		self::maybe_add_activated_date();
 
 		delete_transient( 'evf_installing' );
 
@@ -218,6 +219,17 @@ class EVF_Install {
 			}
 		} else {
 			self::update_db_version();
+		}
+	}
+
+	/**
+	 * Store the initial plugin activation date during install.
+	 */
+	private static function maybe_add_activated_date() {
+		$activated_date = get_option( 'everest_forms_activated', '' );
+
+		if ( empty( $activated_date ) ) {
+			update_option( 'everest_forms_activated', current_time( 'timestamp' ) );
 		}
 	}
 
