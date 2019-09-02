@@ -28,7 +28,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 	 *
 	 * @var array
 	 */
-	public static $parts = false;
+	public static $parts = array();
 
 	/**
 	 * Constructor.
