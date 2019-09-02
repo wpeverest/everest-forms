@@ -27,6 +27,7 @@ class EVF_Admin_Notices {
 	 */
 	private static $core_notices = array(
 		'update'                    => 'update_notice',
+		'review'                    => 'review_notice',
 		'deprecated_payment_charge' => 'deprecated_payment_charge_notice',
 	);
 
@@ -77,6 +78,7 @@ class EVF_Admin_Notices {
 		if ( self::is_plugin_active( 'everest-forms-stripe/everest-forms-stripe.php' ) ) {
 			self::add_notice( 'deprecated_payment_charge' );
 		}
+		self::add_notice( 'review' );
 	}
 
 	/**
@@ -212,6 +214,52 @@ class EVF_Admin_Notices {
 		} else {
 			EVF_Install::update_db_version();
 			include 'views/html-notice-updated.php';
+		}
+	}
+
+	/**
+	 * If we need reviews, include a message requesting review.
+	 */
+	public static function review_notice() {
+		global $wpdb;
+
+		$load      = false;
+		$time      = current_time( 'timestamp' );
+		$review    = get_option( 'everest_forms_review' );
+		$activated = get_option( 'everest_forms_activated' );
+
+		// Verify for review.
+		if ( ! $review ) {
+			$review = array(
+				'time'      => $time,
+				'dismissed' => false,
+			);
+			update_option( 'everest_forms_review', $review );
+		} else {
+			// Check if it has been dismissed or not.
+			if ( ( isset( $review['dismissed'] ) && ! $review['dismissed'] ) && ( isset( $review['time'] ) && ( ( $review['time'] + DAY_IN_SECONDS ) <= $time ) ) ) {
+				$load = true;
+			}
+		}
+
+		// Continue only if review request criteria meets.
+		if ( $load && class_exists( 'EverestForms_Pro', false ) ) {
+			$entries_count = $wpdb->get_var( "SELECT COUNT(entry_id) FROM {$wpdb->prefix}evf_entries WHERE `status` = 'publish'" );
+
+			// Only continue if the site has collected at least 50 entries.
+			if ( empty( $entries_count ) || $entries_count < 50 ) {
+				return;
+			}
+		} else {
+			// Only continue if plugin has been installed for at least 14 days.
+			if ( ( $activated + ( WEEK_IN_SECONDS * 2 ) ) > $time ) {
+				return;
+			}
+		}
+
+		// Ask for some love.
+		if ( $load && ( is_super_admin() || current_user_can( 'manage_everest_forms' ) ) ) {
+			include 'views/html-notice-review.php';
 		}
 	}
 
