@@ -155,7 +155,11 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		$structure = isset( $form_data['structure'] ) ? $form_data['structure'] : array( 'row_1' => array() );
 
 		// Allow Multi-Part to be customized.
-		self::$parts[ $form_id ] = apply_filters( 'everest_forms_parts_data', self::$parts, $form_data, $form_id );
+		if ( isset( self::$parts[ $form_id ] ) ) {
+			self::$parts[ $form_id ] = apply_filters( 'everest_forms_parts_data', self::$parts[ $form_id ], $form_data, $form_id );
+		} else {
+			self::$parts = apply_filters( 'everest_forms_parts_data', self::$parts, $form_data, $form_id );
+		}
 
 		// Output the fields preview.
 		echo '<div class="evf-admin-field-container">';
