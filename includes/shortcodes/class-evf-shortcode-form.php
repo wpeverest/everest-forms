@@ -27,7 +27,7 @@ class EVF_Shortcode_Form {
 	 *
 	 * @var array
 	 */
-	public static $parts = array();
+	public static $parts = false;
 
 	/**
 	 * Hooks in tab.
@@ -660,7 +660,11 @@ class EVF_Shortcode_Form {
 		}
 
 		// Allow Multi-Part to be customized.
-		self::$parts[ $form_id ] = apply_filters( 'everest_forms_parts_data', self::$parts, $form_data, $form_id );
+		if ( isset( self::$parts[ $form_id ] ) ) {
+			self::$parts[ $form_id ] = apply_filters( 'everest_forms_parts_data', self::$parts[ $form_id ], $form_data, $form_id );
+		} else {
+			self::$parts = apply_filters( 'everest_forms_parts_data', self::$parts, $form_data, $form_id );
+		}
 
 		// Allow final action to be customized.
 		$action = apply_filters( 'everest_forms_frontend_form_action', $action, $form_data );
