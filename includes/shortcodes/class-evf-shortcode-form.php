@@ -27,7 +27,7 @@ class EVF_Shortcode_Form {
 	 *
 	 * @var array
 	 */
-	public static $parts = false;
+	public static $parts = array();
 
 	/**
 	 * Hooks in tab.
