@@ -146,12 +146,14 @@ class EVF_Admin {
 					sprintf( '<strong>%s</strong>', esc_html__( 'Everest Forms', 'everest-forms' ) ),
 					'<a href="https://wordpress.org/support/plugin/everest-forms/reviews?rate=5#new-post" target="_blank" class="evf-rating-link" data-rated="' . esc_attr__( 'Thanks :)', 'everest-forms' ) . '">&#9733;&#9733;&#9733;&#9733;&#9733;</a>'
 				);
-				evf_enqueue_js( "
+				evf_enqueue_js(
+					"
 					jQuery( 'a.evf-rating-link' ).click( function() {
 						jQuery.post( '" . EVF()->ajax_url() . "', { action: 'everest_forms_rated' } );
 						jQuery( this ).parent().text( jQuery( this ).data( 'rated' ) );
 					});
-				" );
+					"
+				);
 			} else {
 				$footer_text = __( 'Thank you for creating with Everest Forms.', 'everest-forms' );
 			}
@@ -171,8 +173,8 @@ class EVF_Admin {
 		$screen_id = $screen ? $screen->id : '';
 
 		// Check to make sure we're on a EverestForms builder page.
-		if ( ( isset( $_GET['form_id'] ) || isset( $_GET['create-form'] ) ) && in_array( $screen_id, array( 'everest-forms_page_evf-builder' ), true ) ) {
-			$classes = isset( $_GET['form_id'] ) ? 'everest-forms-builder' : 'everest-forms-builder-setup';
+		if ( ( isset( $_GET['form_id'] ) || isset( $_GET['create-form'] ) ) && in_array( $screen_id, array( 'everest-forms_page_evf-builder' ), true ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			$classes = isset( $_GET['form_id'] ) ? 'everest-forms-builder' : 'everest-forms-builder-setup'; // phpcs:ignore WordPress.Security.NonceVerification
 		}
 
 		return $classes;

@@ -70,7 +70,7 @@
 			if ( $( this ).is( '.evf-input-number' ) ) {
 				regex = new RegExp( '[^-0-9]+', 'gi' );
 			} else {
-				regex = new RegExp( '[^a-z0-9_]+', 'gi' );
+				regex = new RegExp( '[^a-z0-9_\-]+', 'gi' );
 			}
 
 			var value    = $( this ).val();
@@ -85,7 +85,7 @@
 			var regex, error;
 
 			if ( $( this ).is( '.evf-input-meta-key' ) ) {
-				regex = new RegExp( '[^a-z0-9_]+', 'gi' );
+				regex = new RegExp( '[^a-z0-9_\-]+', 'gi' );
 				error = 'i18n_field_meta_key_error';
 			}
 
@@ -187,7 +187,7 @@
 	// Display entries list notification if Heartbeat API new form entries check is successful.
 	$( document ).on( 'heartbeat-tick', function ( event, data ) {
 		var $entriesList = $( '#everest-forms-entries-list' ),
-			columnsCount = $entriesList.find( '.wp-list-table thead tr' ).first().children().length;
+			columnsCount = $entriesList.find( '.wp-list-table thead tr:first-child > :visible' ).length;
 
 		// Work on entry list table page and check for new entry notification.
 		if ( ! $entriesList.length || ! data.evf_new_entries_notification ) {
