@@ -84,6 +84,7 @@ class EVF_AJAX {
 			'integration_disconnect' => false,
 			'deactivation_notice'    => false,
 			'rated'                  => false,
+			'review_dismiss'         => false,
 			'enabled_form'           => false,
 		);
 
@@ -482,6 +483,20 @@ class EVF_AJAX {
 			wp_die( -1 );
 		}
 		update_option( 'everest_forms_admin_footer_text_rated', 1 );
+		wp_die();
+	}
+
+	/**
+	 * Triggered when clicking the review notice button.
+	 */
+	public static function review_dismiss() {
+		if ( ! current_user_can( 'manage_everest_forms' ) ) {
+			wp_die( -1 );
+		}
+		$review              = get_option( 'everest_forms_review', array() );
+		$review['time']      = current_time( 'timestamp' );
+		$review['dismissed'] = true;
+		update_option( 'everest_forms_review', $review );
 		wp_die();
 	}
 

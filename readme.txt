@@ -4,7 +4,7 @@ Tags: contact form, form, form builder, contact, custom form
 Requires at least: 4.0
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 1.5.3
+Stable tag: 1.5.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -132,6 +132,14 @@ Bugs can be reported either in our support forum or preferably on the [Everest F
 Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/everest-forms/) :)
 
 == Changelog ==
+
+= 1.5.4 - 25-08-2019 =
+* Fix - Meta key for cloned form field.
+* Fix - CSV export broken due to uppercase alphanumric meta-key.
+* Fix - Layout of entries is broken when heartbeat notification appears.
+* Tweak - Removed focus effect on add field buttons.
+* Tweak - Design fix for choice option on Internet Explorer.
+* Tweak - Textarea width on frontend and field spacing on builder.
 
 = 1.5.3 - 26-07-2019 =
 * Fix - Entry search in trash listing page.
