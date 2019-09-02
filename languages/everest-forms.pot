@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Everest Forms 1.5.4\n"
 "Report-Msgid-Bugs-To: https://github.com/wpeverest/everest-forms/issues\n"
-"POT-Creation-Date: 2019-08-27 08:37:17+00:00\n"
+"POT-Creation-Date: 2019-09-02 08:40:58+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1565,8 +1565,8 @@ msgid ""
 msgstr ""
 
 #: includes/class-evf-emails.php:440 includes/class-evf-emails.php:482
-#: includes/fields/class-evf-field-checkbox.php:116
-#: includes/fields/class-evf-field-radio.php:116
+#: includes/fields/class-evf-field-checkbox.php:139
+#: includes/fields/class-evf-field-radio.php:139
 #: includes/fields/class-evf-field-select.php:88
 msgid "(empty)"
 msgstr ""
@@ -3125,18 +3125,18 @@ msgstr ""
 msgid "Checkboxes"
 msgstr ""
 
-#: includes/fields/class-evf-field-checkbox.php:79
-#: includes/fields/class-evf-field-radio.php:79
+#: includes/fields/class-evf-field-checkbox.php:102
+#: includes/fields/class-evf-field-radio.php:102
 msgid "Show Values"
 msgstr ""
 
-#: includes/fields/class-evf-field-checkbox.php:80
-#: includes/fields/class-evf-field-radio.php:80
+#: includes/fields/class-evf-field-checkbox.php:103
+#: includes/fields/class-evf-field-radio.php:103
 msgid "Check this to manually set form field values."
 msgstr ""
 
-#: includes/fields/class-evf-field-checkbox.php:134
-#: includes/fields/class-evf-field-radio.php:134
+#: includes/fields/class-evf-field-checkbox.php:157
+#: includes/fields/class-evf-field-radio.php:157
 msgid ""
 "Showing the first 20 choices.<br> All %d choices will be displayed when "
 "viewing the form."
