@@ -150,11 +150,12 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 	 */
 	public function output_fields_preview() {
 		$form_data = $this->form_data;
+		$form_id   = absint( $form_data['id'] );
 		$fields    = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
 		$structure = isset( $form_data['structure'] ) ? $form_data['structure'] : array( 'row_1' => array() );
 
 		// Allow Multi-Part to be customized.
-		self::$parts = apply_filters( 'everest_forms_parts_data', self::$parts, $form_data );
+		self::$parts[ $form_id ] = apply_filters( 'everest_forms_parts_data', self::$parts, $form_data, $form_id );
 
 		// Output the fields preview.
 		echo '<div class="evf-admin-field-container">';
@@ -165,7 +166,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		 *
 		 * @hooked EverestForms_MultiPart::display_builder_fields_before() Multi-Part markup open.
 		 */
-		do_action( 'everest_forms_display_builder_fields_before', $form_data );
+		do_action( 'everest_forms_display_builder_fields_before', $form_data, $form_id );
 
 		foreach ( $structure as $row_id => $row_data ) {
 			$row         = str_replace( 'row_', '', $row_id );
@@ -178,7 +179,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			/**
 			 * Hook: everest_forms_display_row_before.
 			 */
-			do_action( 'everest_forms_display_builder_row_before', $row_id, $form_data );
+			do_action( 'everest_forms_display_builder_row_before', $row_id, $form_data, $form_id );
 
 			echo '<div class="evf-admin-row" data-row-id="' . absint( $row ) . '">';
 			echo '<div class="evf-toggle-row">';
@@ -232,7 +233,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			 *
 			 * @hooked EverestForms_MultiPart::display_builder_row_after() Multi-Part markup (close previous part, open next).
 			 */
-			do_action( 'everest_forms_display_builder_row_after', $row_id, $form_data );
+			do_action( 'everest_forms_display_builder_row_after', $row_id, $form_data, $form_id );
 		}
 
 		/**
@@ -240,7 +241,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		 *
 		 * @hooked EverestForms_MultiPart::display_builder_fields_after() Multi-Part markup open.
 		 */
-		do_action( 'everest_forms_display_builder_fields_after', $form_data );
+		do_action( 'everest_forms_display_builder_fields_after', $form_data, $form_id );
 
 		echo '</div>';
 		echo '<div class="clear evf-clear"></div>';

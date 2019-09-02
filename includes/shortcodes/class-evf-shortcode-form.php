@@ -27,7 +27,7 @@ class EVF_Shortcode_Form {
 	 *
 	 * @var array
 	 */
-	public static $parts = false;
+	public static $parts = array();
 
 	/**
 	 * Hooks in tab.
@@ -61,10 +61,11 @@ class EVF_Shortcode_Form {
 		$submit_btn = evf_string_translation( $form_data['id'], 'submit_button', $submit );
 		$process    = '';
 		$classes    = isset( $form_data['settings']['submit_button_class'] ) ? evf_sanitize_classes( $form_data['settings']['submit_button_class'] ) : '';
-		$visible    = self::$parts ? 'style="display:none"' : '';
+		$parts      = ! empty( self::$parts[ $form_id ] ) ? self::$parts[ $form_id ] : array();
+		$visible    = ! empty( $parts ) ? 'style="display:none"' : '';
 
 		// Visibility class.
-		$visibility_class = apply_filters( 'everest_forms_field_submit_visibility_class', array(), self::$parts, $form_data );
+		$visibility_class = apply_filters( 'everest_forms_field_submit_visibility_class', array(), $parts, $form_data );
 
 		// Check for submit button processing-text.
 		if ( ! isset( $settings['submit_button_processing_text'] ) ) {
@@ -370,7 +371,8 @@ class EVF_Shortcode_Form {
 		}
 
 		if ( isset( $form_data['settings']['recaptcha_support'] ) && '1' === $form_data['settings']['recaptcha_support'] ) {
-			$visible = self::$parts ? 'style="display:none;"' : '';
+			$form_id = isset( $form_data['id'] ) ? absint( $form_data['id'] ) : 0;
+			$visible = ! empty( self::$parts[ $form_id ] ) ? 'style="display:none;"' : '';
 			$data    = apply_filters(
 				'everest_forms_frontend_recaptcha',
 				array(
@@ -597,10 +599,8 @@ class EVF_Shortcode_Form {
 		do_action( 'everest_forms_shortcode_scripts', $atts );
 
 		ob_start();
-
 		self::view( $atts['id'], $atts['title'], $atts['description'] );
-
-		echo ob_get_clean();
+		echo ob_get_clean(); // phpcs:ignore WordPress.Security.EscapeOutput
 	}
 
 	/**
@@ -660,7 +660,7 @@ class EVF_Shortcode_Form {
 		}
 
 		// Allow Multi-Part to be customized.
-		self::$parts = apply_filters( 'everest_forms_parts_data', self::$parts, $form_data );
+		self::$parts[ $form_id ] = apply_filters( 'everest_forms_parts_data', self::$parts, $form_data, $form_id );
 
 		// Allow final action to be customized.
 		$action = apply_filters( 'everest_forms_frontend_form_action', $action, $form_data );
