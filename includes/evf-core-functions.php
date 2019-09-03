@@ -1987,7 +1987,7 @@ function evf_string_translation( $form_id, $field_id, $variable ) {
 /**
  * BW compatiable for multi-parts form.
  *
- * @todo remove this way of multi-part compat.
+ * @todo remove this way of multi-part compat in 1.6.
  *
  * @param array $parts Form parts.
  * @param array $form_data Form data.
