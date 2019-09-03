@@ -1994,20 +1994,21 @@ function evf_string_translation( $form_id, $field_id, $variable ) {
  * @return mixed false or an array of part data.
  */
 function _evf_bw_compat_multipart( $parts, $form_data ) {
+	$settings_defaults = array(
+		'indicator'       => 'progress',
+		'indicator_color' => '#7e3bd0',
+		'nav_align'       => 'center',
+	);
+
 	if ( isset( $form_data['settings']['enable_multi_part'] ) && evf_string_to_bool( $form_data['settings']['enable_multi_part'] ) ) {
 		$settings = isset( $form_data['settings']['multi_part'] ) ? $form_data['settings']['multi_part'] : array();
 
 		if ( ! empty( $form_data['multi_part'] ) ) {
-			$parts['total']    = count( $form_data['multi_part'] );
-			$parts['current']  = 1;
-			$parts['parts']    = array_values( $form_data['multi_part'] );
-			$parts['settings'] = wp_parse_args(
-				$settings,
-				array(
-					'indicator'       => 'progress',
-					'indicator_color' => '#7e3bd0',
-					'nav_align'       => 'center',
-				)
+			$parts = array(
+				'total'    => count( $form_data['multi_part'] ),
+				'current'  => 1,
+				'parts'    => array_values( $form_data['multi_part'] ),
+				'settings' => wp_parse_args( $settings, $settings_defaults ),
 			);
 		}
 	} else {
@@ -2015,11 +2016,7 @@ function _evf_bw_compat_multipart( $parts, $form_data ) {
 			'total'    => '',
 			'current'  => '',
 			'parts'    => array(),
-			'settings' => array(
-				'indicator'       => 'progress',
-				'indicator_color' => '#7e3bd0',
-				'nav_align'       => 'center',
-			),
+			'settings' => $settings_defaults,
 		);
 	}
 
