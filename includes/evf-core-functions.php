@@ -1991,9 +1991,10 @@ function evf_string_translation( $form_id, $field_id, $variable ) {
  *
  * @param array $parts Form parts.
  * @param array $form_data Form data.
+ * @param array $form_id Form ID.
  * @return mixed false or an array of part data.
  */
-function _evf_bw_compat_multipart( $parts, $form_data ) {
+function _evf_bw_compat_multipart( $parts, $form_data, $form_id ) {
 	$settings_defaults = array(
 		'indicator'       => 'progress',
 		'indicator_color' => '#7e3bd0',
@@ -2020,5 +2021,5 @@ function _evf_bw_compat_multipart( $parts, $form_data ) {
 		);
 	}
 
-	return $parts;
+	return apply_filters( 'everest_forms_parts_data', $parts, $form_data, $form_id );
 }
