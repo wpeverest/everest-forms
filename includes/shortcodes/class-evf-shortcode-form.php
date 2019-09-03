@@ -27,7 +27,7 @@ class EVF_Shortcode_Form {
 	 *
 	 * @var array
 	 */
-	public static $parts = false;
+	public static $parts = array();
 
 	/**
 	 * Hooks in tab.
@@ -61,10 +61,11 @@ class EVF_Shortcode_Form {
 		$submit_btn = evf_string_translation( $form_data['id'], 'submit_button', $submit );
 		$process    = '';
 		$classes    = isset( $form_data['settings']['submit_button_class'] ) ? evf_sanitize_classes( $form_data['settings']['submit_button_class'] ) : '';
-		$visible    = self::$parts ? 'style="display:none"' : '';
+		$parts      = ! empty( self::$parts[ $form_id ] ) ? self::$parts[ $form_id ] : array();
+		$visible    = ! empty( $parts ) ? 'style="display:none"' : '';
 
 		// Visibility class.
-		$visibility_class = apply_filters( 'everest_forms_field_submit_visibility_class', array(), self::$parts, $form_data );
+		$visibility_class = apply_filters( 'everest_forms_field_submit_visibility_class', array(), $parts, $form_data );
 
 		// Check for submit button processing-text.
 		if ( ! isset( $settings['submit_button_processing_text'] ) ) {
@@ -370,7 +371,8 @@ class EVF_Shortcode_Form {
 		}
 
 		if ( isset( $form_data['settings']['recaptcha_support'] ) && '1' === $form_data['settings']['recaptcha_support'] ) {
-			$visible = self::$parts ? 'style="display:none;"' : '';
+			$form_id = isset( $form_data['id'] ) ? absint( $form_data['id'] ) : 0;
+			$visible = ! empty( self::$parts[ $form_id ] ) ? 'style="display:none;"' : '';
 			$data    = apply_filters(
 				'everest_forms_frontend_recaptcha',
 				array(
@@ -597,10 +599,8 @@ class EVF_Shortcode_Form {
 		do_action( 'everest_forms_shortcode_scripts', $atts );
 
 		ob_start();
-
 		self::view( $atts['id'], $atts['title'], $atts['description'] );
-
-		echo ob_get_clean();
+		echo ob_get_clean(); // phpcs:ignore WordPress.Security.EscapeOutput
 	}
 
 	/**
@@ -659,8 +659,46 @@ class EVF_Shortcode_Form {
 			return;
 		}
 
+		/**
+		 * BW compatiable for multi-parts form.
+		 *
+		 * @todo Remove in Major EVF version 1.6.0
+		 */
+		if ( defined( 'EVF_MULTI_PART_PLUGIN_FILE' ) ) {
+			include_once ABSPATH . 'wp-admin/includes/plugin.php';
+			$plugin_data = get_plugin_data( EVF_MULTI_PART_PLUGIN_FILE, false, false );
+
+			if ( version_compare( $plugin_data['Version'], '1.3.0', '<' ) ) {
+				$settings_defaults = array(
+					'indicator'       => 'progress',
+					'indicator_color' => '#7e3bd0',
+					'nav_align'       => 'center',
+				);
+
+				if ( isset( $form_data['settings']['enable_multi_part'] ) && evf_string_to_bool( $form_data['settings']['enable_multi_part'] ) ) {
+					$settings = isset( $form_data['settings']['multi_part'] ) ? $form_data['settings']['multi_part'] : array();
+
+					if ( ! empty( $form_data['multi_part'] ) ) {
+						self::$parts = array(
+							'total'    => count( $form_data['multi_part'] ),
+							'current'  => 1,
+							'parts'    => array_values( $form_data['multi_part'] ),
+							'settings' => wp_parse_args( $settings, $settings_defaults ),
+						);
+					}
+				} else {
+					self::$parts = array(
+						'total'    => '',
+						'current'  => '',
+						'parts'    => array(),
+						'settings' => $settings_defaults,
+					);
+				}
+			}
+		}
+
 		// Allow Multi-Part to be customized.
-		self::$parts = apply_filters( 'everest_forms_parts_data', self::$parts, $form_data );
+		self::$parts[ $form_id ] = apply_filters( 'everest_forms_parts_data', self::$parts, $form_data, $form_id );
 
 		// Allow final action to be customized.
 		$action = apply_filters( 'everest_forms_frontend_form_action', $action, $form_data );
