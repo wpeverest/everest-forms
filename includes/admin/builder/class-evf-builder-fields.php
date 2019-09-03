@@ -155,6 +155,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		$structure = isset( $form_data['structure'] ) ? $form_data['structure'] : array( 'row_1' => array() );
 
 		// Allow Multi-Part to be customized.
+		self::$parts             = _evf_bw_compat_multipart( self::$parts, $form_data );
 		self::$parts[ $form_id ] = apply_filters( 'everest_forms_parts_data', self::$parts, $form_data, $form_id );
 
 		// Output the fields preview.

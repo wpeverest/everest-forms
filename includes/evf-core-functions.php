@@ -1983,3 +1983,45 @@ function evf_string_translation( $form_id, $field_id, $variable ) {
 
 	return $variable;
 }
+
+/**
+ * BW compatiable for multi-parts form.
+ *
+ * @todo remove this way of multi-part compat.
+ *
+ * @param array $parts Form parts.
+ * @param array $form_data Form data.
+ * @return mixed false or an array of part data.
+ */
+function _evf_bw_compat_multipart( $parts, $form_data ) {
+	if ( isset( $form_data['settings']['enable_multi_part'] ) && evf_string_to_bool( $form_data['settings']['enable_multi_part'] ) ) {
+		$settings = isset( $form_data['settings']['multi_part'] ) ? $form_data['settings']['multi_part'] : array();
+
+		if ( ! empty( $form_data['multi_part'] ) ) {
+			$parts['total']    = count( $form_data['multi_part'] );
+			$parts['current']  = 1;
+			$parts['parts']    = array_values( $form_data['multi_part'] );
+			$parts['settings'] = wp_parse_args(
+				$settings,
+				array(
+					'indicator'       => 'progress',
+					'indicator_color' => '#7e3bd0',
+					'nav_align'       => 'center',
+				)
+			);
+		}
+	} else {
+		$parts = array(
+			'total'    => '',
+			'current'  => '',
+			'parts'    => array(),
+			'settings' => array(
+				'indicator'       => 'progress',
+				'indicator_color' => '#7e3bd0',
+				'nav_align'       => 'center',
+			),
+		);
+	}
+
+	return $parts;
+}
