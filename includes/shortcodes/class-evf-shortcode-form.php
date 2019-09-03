@@ -659,13 +659,41 @@ class EVF_Shortcode_Form {
 			return;
 		}
 
-		// BW compatiable for multi-parts form.
+		/**
+		 * BW compatiable for multi-parts form.
+		 *
+		 * @todo Remove in Major EVF version 1.6.0
+		 */
 		if ( defined( 'EVF_MULTI_PART_PLUGIN_FILE' ) ) {
 			include_once ABSPATH . 'wp-admin/includes/plugin.php';
-
 			$plugin_data = get_plugin_data( EVF_MULTI_PART_PLUGIN_FILE, false, false );
+
 			if ( version_compare( $plugin_data['Version'], '1.3.0', '<' ) ) {
-				self::$parts = _evf_bw_compat_multipart( self::$parts, $form_data );
+				$settings_defaults = array(
+					'indicator'       => 'progress',
+					'indicator_color' => '#7e3bd0',
+					'nav_align'       => 'center',
+				);
+
+				if ( isset( $form_data['settings']['enable_multi_part'] ) && evf_string_to_bool( $form_data['settings']['enable_multi_part'] ) ) {
+					$settings = isset( $form_data['settings']['multi_part'] ) ? $form_data['settings']['multi_part'] : array();
+
+					if ( ! empty( $form_data['multi_part'] ) ) {
+						self::$parts = array(
+							'total'    => count( $form_data['multi_part'] ),
+							'current'  => 1,
+							'parts'    => array_values( $form_data['multi_part'] ),
+							'settings' => wp_parse_args( $settings, $settings_defaults ),
+						);
+					}
+				} else {
+					self::$parts = array(
+						'total'    => '',
+						'current'  => '',
+						'parts'    => array(),
+						'settings' => $settings_defaults,
+					);
+				}
 			}
 		}
 
