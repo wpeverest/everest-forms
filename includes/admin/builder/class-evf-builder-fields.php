@@ -154,6 +154,16 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		$fields    = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
 		$structure = isset( $form_data['structure'] ) ? $form_data['structure'] : array( 'row_1' => array() );
 
+		// BW compatiable for multi-parts form.
+		if ( defined( 'EVF_MULTI_PART_PLUGIN_FILE' ) ) {
+			include_once ABSPATH . 'wp-admin/includes/plugin.php';
+
+			$plugin_data = get_plugin_data( EVF_MULTI_PART_PLUGIN_FILE, false, false );
+			if ( version_compare( $plugin_data['Version'], '1.3.0', '<' ) ) {
+				self::$parts = _evf_bw_compat_multipart( self::$parts, $form_data );
+			}
+		}
+
 		// Allow Multi-Part to be customized.
 		self::$parts[ $form_id ] = apply_filters( 'everest_forms_parts_data', self::$parts, $form_data, $form_id );
 
