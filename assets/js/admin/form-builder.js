@@ -978,7 +978,6 @@
 			});
 
 			$( '.evf-admin-grid' ).sortable({
-				revert: true,
 				cancel: false,
 				cursor: 'move',
 				scrollSensitivity: 40,
@@ -1034,9 +1033,8 @@
 					var helper = ui.helper;
 
 					if ( true === helper.data( 'dropped' ) ) {
-						$( ui.draggable ).appendTo( $( this ) );
-						$( '.evf-admin-grid' ).removeClass( 'evf-hover' );
 						EVFPanelBuilder.fieldDrop( helper );
+						$( '.evf-admin-grid' ).removeClass( 'evf-hover' );
 					}
 				}
 			}).disableSelection();
