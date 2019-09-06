@@ -1008,34 +1008,33 @@
 				scrollSensitivity: 40,
 				forcePlaceholderSize: true,
 				helper: function() {
-					return $(this).clone().insertAfter($(this).closest('.everest-forms-tab-content').siblings('.everest-forms-fields-tab'));
+					return $( this ).clone().insertAfter( $( this ).closest( '.everest-forms-tab-content' ).siblings( '.everest-forms-fields-tab' ) );
 				},
 				opacity: 0.75,
 				containment: '#everest-forms-builder',
 				connectToSortable: '.evf-admin-grid',
 				start: function( event, ui ) {
-
-					$(ui.draggable).appendTo($( this ));
-
+					$( ui.draggable ).appendTo( $( this ) );
 					$( this ).data( 'uihelper', ui.helper );
 					$( '.evf-admin-grid' ).addClass( 'evf-hover' );
 					$( '.evf-show-grid' ).closest( '.evf-toggle-row' ).find( '.evf-toggle-row-content' ).stop( true ).slideUp( 200 );
 				},
-				revert: function( value ){
-
+				revert: function( value ) {
 					var uiHelper = $( this ).data( 'uihelper' );
 
 					uiHelper.data( 'dropped', value !== false );
+
 					if ( false === value ) {
 						return true;
 					}
+
 					return false;
 				},
 				stop: function( event, ui ) {
-					if ( true === ui.helper.data( 'dropped' ) ) {
+					var helper = ui.helper;
 
-						$(ui.draggable).appendTo($( this ));
-						var helper = ui.helper;
+					if ( true === helper.data( 'dropped' ) ) {
+						$( ui.draggable ).appendTo( $( this ) );
 						$( '.evf-admin-grid' ).removeClass( 'evf-hover' );
 						EVFPanelBuilder.fieldDrop( helper );
 					}
@@ -1117,67 +1116,72 @@
 		 	});
 		},
 		fieldDrop: function ( field ) {
-		 	var field_type = field.attr('data-field-type');
-		 	field.css({
-		 		'left': '0',
-		 		'width': '100%'
-		 	});
+			var field_type = field.attr( 'data-field-type' );
 
-		 	field.append( '<i class="spinner is-active"></i>' );
+			field.css({
+				'left': '0',
+				'width': '100%'
+			}).append( '<i class="spinner is-active"></i>' );
 
-		 	var data = {
-		 		action: 'everest_forms_new_field_' + field_type,
-		 		security: evf_data.evf_field_drop_nonce,
-		 		field_type: field_type,
-		 		form_id: evf_data.form_id
-		 	};
-		 	$.ajax({
-		 		url: evf_data.ajax_url,
-		 		data: data,
-		 		type: 'POST',
-		 		beforeSend: function() {
+			$.ajax({
+				url: evf_data.ajax_url,
+				type: 'POST',
+				data: {
+					action: 'everest_forms_new_field_' + field_type,
+					security: evf_data.evf_field_drop_nonce,
+					field_type: field_type,
+					form_id: evf_data.form_id
+				},
+				beforeSend: function() {
 					$( document.body ).trigger( 'init_field_options_toggle' );
-		 		},
-		 		success: function( response ) {
-					var field_preview = response.data.preview;
-					var field_options = response.data.options;
-					var form_field_id = response.data.form_field_id;
+				},
+				success: function( response ) {
+					var field_preview = response.data.preview,
+						field_options = response.data.options,
+						form_field_id = response.data.form_field_id,
+						dragged_el_id = $( field_preview ).attr( 'id' ),
+						dragged_field_id = $( field_preview ).attr( 'data-field-id' );
+
 					$( '#everest-forms-field-id' ).val( form_field_id );
 					$( '.everest-forms-field-options' ).find( '.no-fields' ).hide();
 					$( '.everest-forms-field-options' ).append( field_options );
 					$( '.everest-forms-field-option-row-icon_color input.colorpicker' ).wpColorPicker({
-						change: function( event ){
-							var $this     = $( this ),
-								value     = $this.val(),
-								id        = $this.closest( '.everest-forms-field-option-row' ).data( 'field-id' ),
-								$icons    = $( '#everest-forms-field-'+id +' .rating-icon svg' );
+						change: function( event ) {
+							var $this    = $( this ),
+								value    = $this.val(),
+								field_id = $this.closest( '.everest-forms-field-option-row' ).data( 'field-id' );
 
-							$icons.css( 'fill', value );
+							$( '#everest-forms-field-' + field_id + ' .rating-icon svg' ).css( 'fill', value );
 						}
 					});
+
 					field.after( field_preview );
-					var dragged_el_id = $(field_preview).attr('id');
-					if ( null !== $( '#everest-forms-panel-field-settings-enable_survey') && $('#everest-forms-panel-field-settings-enable_survey').prop('checked') ){
-						var fieldID = $( field_preview ).attr('data-field-id');
-						$('#everest-forms-field-option-'+fieldID+'-survey_status' ).prop('checked', true);
-					 }
-					 if ( null !== $( '#everest-forms-panel-field-settings-enable_quiz') && $('#everest-forms-panel-field-settings-enable_quiz').prop('checked') ){
-						var fieldID = $( field_preview ).attr('data-field-id');
-						$('#everest-forms-field-option-'+fieldID+'-quiz_status' ).prop('checked', true);
-						$('#everest-forms-field-option-'+fieldID+'-quiz_status' ).closest('.everest-forms-field-option-row-quiz_status').siblings('.everst-forms-field-quiz-settings').removeClass('everest-forms-hidden').addClass('everest-forms-show');
-					 }
+
+					if ( null !== $( '#everest-forms-panel-field-settings-enable_survey') && $( '#everest-forms-panel-field-settings-enable_survey' ).prop( 'checked' ) ) {
+						$( '#everest-forms-field-option-' + dragged_field_id + '-survey_status' ).prop( 'checked', true );
+					}
+
+					if ( null !== $( '#everest-forms-panel-field-settings-enable_quiz' ) && $( '#everest-forms-panel-field-settings-enable_quiz' ).prop( 'checked' ) ) {
+						$( '#everest-forms-field-option-' + dragged_field_id + '-quiz_status' ).prop( 'checked', true );
+						$( '#everest-forms-field-option-' + dragged_field_id + '-quiz_status' ).closest( '.everest-forms-field-option-row-quiz_status' ).siblings( '.everst-forms-field-quiz-settings' ).removeClass( 'everest-forms-hidden' ).addClass( 'everest-forms-show' );
+					}
+
 					field.remove();
 					EVFPanelBuilder.checkEmptyGrid();
+
+					// Triggers.
 					$( document.body ).trigger( 'init_tooltips' );
 					$( document.body ).trigger( 'init_field_options_toggle' );
 					$( document.body ).trigger( 'evf_after_field_append', [dragged_el_id] );
-					EVFPanelBuilder.conditionalLogicAppendField(dragged_el_id);
-					EVFPanelBuilder.conditionalLogicAppendFieldIntegration(dragged_el_id);
+
+					// Conditional logic append rules.
+					EVFPanelBuilder.conditionalLogicAppendField( dragged_el_id );
+					EVFPanelBuilder.conditionalLogicAppendFieldIntegration( dragged_el_id );
 		 		}
 		 	});
 		},
 
-		 conditionalLogicAppendField: function( id ){
+		conditionalLogicAppendField: function( id ){
 			var dragged_el = $('#' + id);
 			var dragged_index = dragged_el.index();
 
@@ -1236,7 +1240,7 @@
 					}
 				}
 			});
-		 },
+		},
 
 		conditionalLogicAppendFieldIntegration: function( id ){
 			var dragged_el = $('#' + id);

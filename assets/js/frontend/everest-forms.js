@@ -1,4 +1,4 @@
-/* global everest_forms_params, grecaptcha */
+/* global everest_forms_params */
 jQuery( function ( $ ) {
 	'use strict';
 
@@ -37,12 +37,12 @@ jQuery( function ( $ ) {
 							$( this ).flatpickr({
 								disableMobile : true,
 								mode          : inputData.mode,
-								dateFormat    : inputData.dateFormat,
+								dateFormat    : inputData.dateFormat
 							});
 						break;
 						case 'time':
 							if ( undefined !== inputData.timeInterval ) {
-								timeInterval = parseInt( inputData.timeInterval );
+								timeInterval = parseInt( inputData.timeInterval, 10 );
 							}
 
 							// Apply flatpicker to field.
@@ -57,7 +57,7 @@ jQuery( function ( $ ) {
 						break;
 						case 'date-time':
 							if ( undefined !== inputData.timeInterval ) {
-								timeInterval = parseInt( inputData.timeInterval );
+								timeInterval = parseInt( inputData.timeInterval, 10 );
 							}
 
 							// Apply flatpicker to field.
@@ -100,9 +100,9 @@ jQuery( function ( $ ) {
 				var $this = $( this );
 
 				$this.validate({
+					ignore: '',
 					errorClass: 'evf-error',
 					validClass: 'evf-valid',
-					ignore: "",
 					errorPlacement: function( error, element ) {
 						if ( 'radio' === element.attr( 'type' ) || 'checkbox' === element.attr( 'type' ) ) {
 							if( element.hasClass( 'everest-forms-likert-field-option' ) ) {
