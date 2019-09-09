@@ -960,7 +960,6 @@
 				items: '.evf-admin-row',
 				cursor: 'move',
 				axis: 'y',
-				revert: true,
 				scrollSensitivity: 40,
 				forcePlaceholderSize: true,
 				opacity: 0.65,
