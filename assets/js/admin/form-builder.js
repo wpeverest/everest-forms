@@ -981,6 +981,7 @@
 				delay: 200,
 				cancel: false,
 				scroll: false,
+				revert: 'invalid',
 				scrollSensitivity: 40,
 				forcePlaceholderSize: true,
 				helper: function() {
@@ -995,21 +996,10 @@
 					$( '.evf-admin-grid' ).addClass( 'evf-hover' );
 					$( '.evf-show-grid' ).closest( '.evf-toggle-row' ).find( '.evf-toggle-row-content' ).stop( true ).slideUp( 200 );
 				},
-				revert: function( value ) {
-					var uiHelper = $( this ).data( 'uihelper' );
-
-					uiHelper.data( 'dropped', value !== false );
-
-					if ( false === value ) {
-						return true;
-					}
-
-					return false;
-				},
 				stop: function( event, ui ) {
 					var helper = ui.helper;
 
-					if ( true === helper.data( 'dropped' ) ) {
+					if ( helper.data( 'fieldType' ) ) {
 						EVFPanelBuilder.fieldDrop( helper );
 						$( '.evf-admin-grid' ).removeClass( 'evf-hover' );
 					}
