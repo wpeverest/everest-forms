@@ -963,15 +963,18 @@
 				forcePlaceholderSize: true,
 				connectWith: '.evf-admin-grid',
 				containment: '.everest-forms-panel-content-wrap',
+				out: function ( event ) {
+					$( event.target ).removeClass( 'evf-item-hover' );
+					$( '.evf-admin-grid' ).removeClass( 'evf-hover' );
+					EVFPanelBuilder.checkEmptyGrid();
+				},
 				over: function ( event ) {
 					$( event.target ).addClass( 'evf-item-hover' );
 					$( '.evf-admin-grid' ).addClass( 'evf-hover' );
 					EVFPanelBuilder.checkEmptyGrid();
 				},
-				out: function ( event ) {
-					$( event.target ).removeClass( 'evf-item-hover' );
-					$( '.evf-admin-grid' ).removeClass( 'evf-hover' );
-					EVFPanelBuilder.checkEmptyGrid();
+				stop: function( event, ui ) {
+					ui.item.removeAttr( 'style' );
 				},
 				receive: function( event, ui ) {
 					var helper = ui.helper;
