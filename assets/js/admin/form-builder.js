@@ -934,8 +934,6 @@
 			}
 		},
 		bindFields: function () {
-			var fieldOptions = $( '.everest-forms-field-options' ),	fieldReceived = false, fieldIndex, fieldIndexNew, field, fieldNew;
-
 			$( '.evf-admin-field-wrapper' ).sortable({
 				items: '.evf-admin-row',
 				axis: 'y',
@@ -965,36 +963,23 @@
 				forcePlaceholderSize: true,
 				connectWith: '.evf-admin-grid',
 				containment: '.everest-forms-panel-content-wrap',
-				start: function( event, ui ) {
-					fieldIndex = ui.item.index();
-					field      = fieldOptions[0].children[ fieldIndex ];
-				},
-				stop: function( event, ui ) {
-					fieldIndexNew = ui.item.index();
-					fieldNew      = fieldOptions[0].children[ fieldIndexNew ];
-					if ( fieldIndex < fieldIndexNew ) {
-						$( fieldNew ).after( field );
-					} else {
-						$( fieldNew ).before( field );
-					}
-					fieldReceived = false;
+				out: function ( event ) {
+					$( event.target ).removeClass( 'evf-item-hover' );
+					$( '.evf-admin-grid' ).removeClass( 'evf-hover' );
+					EVFPanelBuilder.checkEmptyGrid();
 				},
 				over: function ( event ) {
 					$( event.target ).addClass( 'evf-item-hover' );
 					$( '.evf-admin-grid' ).addClass( 'evf-hover' );
 					EVFPanelBuilder.checkEmptyGrid();
 				},
-				out: function ( event ) {
-					$( event.target ).removeClass( 'evf-item-hover' );
-					$( '.evf-admin-grid' ).removeClass( 'evf-hover' );
-					EVFPanelBuilder.checkEmptyGrid();
+				stop: function( event, ui ) {
+					ui.item.removeAttr( 'style' );
 				},
 				receive: function( event, ui ) {
-					fieldReceived = true;
-
-					var helper = ui.helper;
-
-					EVFPanelBuilder.fieldDrop( helper );
+					if ( ui.sender.is( 'button' ) ) {
+						EVFPanelBuilder.fieldDrop( ui.helper );
+					}
 				}
 			}).disableSelection();
 
