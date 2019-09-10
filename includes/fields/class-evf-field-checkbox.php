@@ -79,8 +79,8 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 	 * @return array
 	 */
 	public function field_properties( $properties, $field, $form_data ) {
-
-		$properties['inputs']['primary']['class'][] = 'input-text';
+		$properties['inputs']['primary']['attr']['name'] = 'everest_forms[form_fields][' . $field['id'] . '][]';
+		$properties['inputs']['primary']['class'][]      = 'input-text';
 
 		return $properties;
 	}
@@ -221,6 +221,7 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 	 * @param string $meta_key
 	 */
 	public function format( $field_id, $field_submit, $form_data, $meta_key ) {
+
 		$field_submit = (array) $field_submit;
 		$field        = $form_data['form_fields'][ $field_id ];
 		$dynamic      = ! empty( $field['dynamic_choices'] ) ? $field['dynamic_choices'] : false;
