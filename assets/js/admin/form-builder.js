@@ -989,21 +989,7 @@
 				},
 				opacity: 0.75,
 				containment: '#everest-forms-builder',
-				connectToSortable: '.evf-admin-grid',
-				start: function( event, ui ) {
-					$( ui.draggable ).appendTo( $( this ) );
-					$( this ).data( 'uihelper', ui.helper );
-					$( '.evf-admin-grid' ).addClass( 'evf-hover' );
-					$( '.evf-show-grid' ).closest( '.evf-toggle-row' ).find( '.evf-toggle-row-content' ).stop( true ).slideUp( 200 );
-				},
-				stop: function( event, ui ) {
-					var helper = ui.helper;
-
-					if ( helper.data( 'fieldType' ) ) {
-						EVFPanelBuilder.fieldDrop( helper );
-						$( '.evf-admin-grid' ).removeClass( 'evf-hover' );
-					}
-				}
+				connectToSortable: '.evf-admin-grid'
 			}).disableSelection();
 		},
 
