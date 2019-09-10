@@ -936,8 +936,8 @@
 		bindFields: function () {
 			$( '.evf-admin-field-wrapper' ).sortable({
 				items: '.evf-admin-row',
-				cursor: 'move',
 				axis: 'y',
+				cursor: 'move',
 				scrollSensitivity: 40,
 				forcePlaceholderSize: true,
 				opacity: 0.65,
@@ -955,25 +955,30 @@
 			});
 
 			$( '.evf-admin-grid' ).sortable({
-				cancel: false,
+				items: '> .everest-forms-field',
+				delay  : 100,
+				opacity: 0.65,
 				cursor: 'move',
 				scrollSensitivity: 40,
 				forcePlaceholderSize: true,
-				items: '.everest-forms-field',
 				connectWith: '.evf-admin-grid',
 				containment: '.everest-forms-panel-content-wrap',
-				out: function ( event ) {
-					$( event.target ).removeClass( 'evf-item-hover' );
-					$( '.evf-admin-grid' ).removeClass( 'evf-hover' );
-					EVFPanelBuilder.checkEmptyGrid();
-				},
 				over: function ( event ) {
 					$( event.target ).addClass( 'evf-item-hover' );
 					$( '.evf-admin-grid' ).addClass( 'evf-hover' );
 					EVFPanelBuilder.checkEmptyGrid();
 				},
-				stop: function( event, ui ) {
-					ui.item.removeAttr( 'style' );
+				out: function ( event ) {
+					$( event.target ).removeClass( 'evf-item-hover' );
+					$( '.evf-admin-grid' ).removeClass( 'evf-hover' );
+					EVFPanelBuilder.checkEmptyGrid();
+				},
+				receive: function( event, ui ) {
+					var helper = ui.helper;
+
+					if ( helper.data( 'fieldType' ) ) {
+						EVFPanelBuilder.fieldDrop( helper );
+					}
 				}
 			}).disableSelection();
 
@@ -989,7 +994,14 @@
 				},
 				opacity: 0.75,
 				containment: '#everest-forms-builder',
-				connectToSortable: '.evf-admin-grid'
+				connectToSortable: '.evf-admin-grid',
+				start: function( event, ui ) {
+					$( '.evf-admin-grid' ).addClass( 'evf-hover' );
+					$( '.evf-show-grid' ).closest( '.evf-toggle-row' ).find( '.evf-toggle-row-content' ).stop( true ).slideUp( 200 );
+				},
+				stop: function( event, ui ) {
+					$( '.evf-admin-grid' ).removeClass( 'evf-hover' );
+				}
 			}).disableSelection();
 		},
 
