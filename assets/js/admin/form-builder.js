@@ -998,11 +998,11 @@
 				opacity: 0.75,
 				containment: '#everest-forms-builder',
 				connectToSortable: '.evf-admin-grid',
-				start: function( event, ui ) {
+				start: function() {
 					$( '.evf-admin-grid' ).addClass( 'evf-hover' );
 					$( '.evf-show-grid' ).closest( '.evf-toggle-row' ).find( '.evf-toggle-row-content' ).stop( true ).slideUp( 200 );
 				},
-				stop: function( event, ui ) {
+				stop: function() {
 					$( '.evf-admin-grid' ).removeClass( 'evf-hover' );
 				}
 			}).disableSelection();
