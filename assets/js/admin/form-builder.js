@@ -934,6 +934,8 @@
 			}
 		},
 		bindFields: function () {
+			var fieldOptions = $( '.everest-forms-field-options' ),	fieldReceived = false, fieldIndex, fieldIndexNew, field, fieldNew;
+
 			$( '.evf-admin-field-wrapper' ).sortable({
 				items: '.evf-admin-row',
 				axis: 'y',
@@ -963,25 +965,36 @@
 				forcePlaceholderSize: true,
 				connectWith: '.evf-admin-grid',
 				containment: '.everest-forms-panel-content-wrap',
-				out: function ( event ) {
-					$( event.target ).removeClass( 'evf-item-hover' );
-					$( '.evf-admin-grid' ).removeClass( 'evf-hover' );
-					EVFPanelBuilder.checkEmptyGrid();
+				start: function( event, ui ) {
+					fieldIndex = ui.item.index();
+					field      = fieldOptions[0].children[ fieldIndex ];
+				},
+				stop: function( event, ui ) {
+					fieldIndexNew = ui.item.index();
+					fieldNew      = fieldOptions[0].children[ fieldIndexNew ];
+					if ( fieldIndex < fieldIndexNew ) {
+						$( fieldNew ).after( field );
+					} else {
+						$( fieldNew ).before( field );
+					}
+					fieldReceived = false;
 				},
 				over: function ( event ) {
 					$( event.target ).addClass( 'evf-item-hover' );
 					$( '.evf-admin-grid' ).addClass( 'evf-hover' );
 					EVFPanelBuilder.checkEmptyGrid();
 				},
-				stop: function( event, ui ) {
-					ui.item.removeAttr( 'style' );
+				out: function ( event ) {
+					$( event.target ).removeClass( 'evf-item-hover' );
+					$( '.evf-admin-grid' ).removeClass( 'evf-hover' );
+					EVFPanelBuilder.checkEmptyGrid();
 				},
 				receive: function( event, ui ) {
+					fieldReceived = true;
+
 					var helper = ui.helper;
 
-					if ( helper.data( 'fieldType' ) ) {
-						EVFPanelBuilder.fieldDrop( helper );
-					}
+					EVFPanelBuilder.fieldDrop( helper );
 				}
 			}).disableSelection();
 
@@ -997,14 +1010,7 @@
 				},
 				opacity: 0.75,
 				containment: '#everest-forms-builder',
-				connectToSortable: '.evf-admin-grid',
-				start: function() {
-					$( '.evf-admin-grid' ).addClass( 'evf-hover' );
-					$( '.evf-show-grid' ).closest( '.evf-toggle-row' ).find( '.evf-toggle-row-content' ).stop( true ).slideUp( 200 );
-				},
-				stop: function() {
-					$( '.evf-admin-grid' ).removeClass( 'evf-hover' );
-				}
+				connectToSortable: '.evf-admin-grid'
 			}).disableSelection();
 		},
 
