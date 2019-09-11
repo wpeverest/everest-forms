@@ -2567,6 +2567,8 @@ body.everest-forms-builder-setup,
 				padding: 15px 20px;
 				background-color: $color-white;
 				height: calc(100vh - 150px);
+				overflow: auto !important;
+				overflow-y: hidden !important;
 
 				.everest-forms-border-container {
 					.everest-forms-border-container-title {
