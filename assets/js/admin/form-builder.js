@@ -836,9 +836,10 @@
 			});
 			return fields;
 		},
-		checkEmptyGrid: function () {
+		checkEmptyGrid: function( $force ) {
 			$.each( $( '.evf-admin-grid' ), function () {
-				if ( $( this ).find( '.everest-forms-field' ).not( '.ui-sortable-helper' ).length < 1 ) {
+				var $fields = $( this ).find( '.everest-forms-field' );
+				if ( $fields.not( '.ui-sortable-helper' ).length < 1 ) {
 					$( this ).addClass( 'evf-empty-grid' );
 				} else {
 					$( this ).removeClass( 'evf-empty-grid' );
@@ -964,17 +965,18 @@
 				connectWith: '.evf-admin-grid',
 				containment: '.everest-forms-panel-content-wrap',
 				out: function( event ) {
-					$( event.target ).removeClass( 'evf-item-hover' );
 					$( '.evf-admin-grid' ).removeClass( 'evf-hover' );
+					$( event.target ).removeClass( 'evf-item-hover' );
 					EVFPanelBuilder.checkEmptyGrid();
 				},
 				over: function( event, ui ) {
-					$( event.target ).addClass( 'evf-item-hover' );
 					$( '.evf-admin-grid' ).addClass( 'evf-hover' );
+					$( event.target ).addClass( 'evf-item-hover' );
 					EVFPanelBuilder.checkEmptyGrid();
 				},
 				stop: function( event, ui ) {
 					ui.item.removeAttr( 'style' );
+					$( event.target ).removeClass( 'evf-empty-grid' );
 				},
 				receive: function( event, ui ) {
 					if ( ui.sender.is( 'button' ) ) {
