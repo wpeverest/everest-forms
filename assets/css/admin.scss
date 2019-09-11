@@ -2536,7 +2536,6 @@ body.everest-forms-builder-setup,
 
 		.everest-forms-tab-content {
 			position: relative;
-			overflow-y: scroll;
 			height: calc(100vh - 200px);
 
 			.everest-forms-add-fields-group {
@@ -2567,8 +2566,6 @@ body.everest-forms-builder-setup,
 				padding: 15px 20px;
 				background-color: $color-white;
 				height: calc(100vh - 150px);
-				overflow: auto;
-				overflow-x: hidden;
 
 				.everest-forms-border-container {
 					.everest-forms-border-container-title {
