@@ -135,6 +135,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 = 1.5.5 - XX-09-2019 =
 * Fix - Multi-part form conflict in frontend single page.
+* Fix - Icon placement design conflict with TheGem theme on builder page.
 * Fix - String translation while updating the label and placeholder of fields.
 
 = 1.5.4 - 25-08-2019 =
