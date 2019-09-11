@@ -963,12 +963,13 @@
 				forcePlaceholderSize: true,
 				connectWith: '.evf-admin-grid',
 				containment: '.everest-forms-panel-content-wrap',
-				out: function ( event ) {
+				start: function( event, ui ) {},
+				out: function( event ) {
 					$( event.target ).removeClass( 'evf-item-hover' );
 					$( '.evf-admin-grid' ).removeClass( 'evf-hover' );
 					EVFPanelBuilder.checkEmptyGrid();
 				},
-				over: function ( event ) {
+				over: function( event ) {
 					$( event.target ).addClass( 'evf-item-hover' );
 					$( '.evf-admin-grid' ).addClass( 'evf-hover' );
 					EVFPanelBuilder.checkEmptyGrid();
