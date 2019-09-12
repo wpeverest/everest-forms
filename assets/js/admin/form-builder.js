@@ -956,10 +956,12 @@
 			});
 
 			$( '.evf-admin-row' ).on( 'mouseenter mouseleave', function( event ) {
-				if( 'mouseenter' === event.type ) {
-					$( this ).addClass( 'evf-hover' );
-				} else {
-					$( this ).removeClass( 'evf-hover' );
+				if( 1 > event.buttons ) {
+					if( 'mouseenter' === event.type ) {
+						$( this ).addClass( 'evf-hover' );
+					} else {
+						$( '.evf-admin-row' ).removeClass( 'evf-hover' );
+					}
 				}
 			} );
 
