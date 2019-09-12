@@ -939,11 +939,11 @@
 				items: '.evf-admin-row',
 				axis: 'y',
 				cursor: 'move',
+				opacity: 0.65,
 				scrollSensitivity: 40,
 				forcePlaceholderSize: true,
-				opacity: 0.65,
 				placeholder: 'evf-sortable-placeholder',
-				containment: '.everest-forms-panel-content-wrap',
+				containment: '.everest-forms-panel-content',
 				start: function( event, ui ) {
 					ui.item.css({
 						'background-color': '#f7fafc',
@@ -953,7 +953,7 @@
 				stop: function( event, ui ) {
 					ui.item.removeAttr( 'style' );
 				}
-			});
+			}).disableSelection();
 
 			$( '.evf-admin-row' ).on( 'mouseenter mouseleave', function( event ) {
 				if( 1 > event.buttons ) {
@@ -973,7 +973,7 @@
 				scrollSensitivity: 40,
 				forcePlaceholderSize: true,
 				connectWith: '.evf-admin-grid',
-				containment: '.everest-forms-panel-content-wrap',
+				containment: '.everest-forms-field-wrap',
 				out: function( event ) {
 					$( '.evf-admin-grid' ).removeClass( 'evf-hover' );
 					$( event.target ).removeClass( 'evf-item-hover' );
@@ -1012,6 +1012,12 @@
 				containment: '#everest-forms-builder',
 				connectToSortable: '.evf-admin-grid'
 			}).disableSelection();
+
+			// Refresh the position of placeholders on drag scroll.
+			$( '.everest-forms-panel-content' ).on( 'scroll', function() {
+				$( '.evf-admin-grid' ).sortable( 'refreshPositions' );
+				$( '.evf-admin-field-wrapper' ).sortable( 'refreshPositions' );
+			} );
 		},
 
 		/**
