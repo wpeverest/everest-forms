@@ -838,7 +838,7 @@
 		},
 		checkEmptyGrid: function( $force ) {
 			$.each( $( '.evf-admin-grid' ), function () {
-				var $fields = $( this ).find( '.everest-forms-field' );
+				var $fields = $( this ).find( '.everest-forms-field, .evf-registered-item' );
 				if ( $fields.not( '.ui-sortable-helper' ).length < 1 ) {
 					$( this ).addClass( 'evf-empty-grid' );
 				} else {
@@ -974,14 +974,14 @@
 					$( event.target ).addClass( 'evf-item-hover' );
 					EVFPanelBuilder.checkEmptyGrid();
 				},
-				stop: function( event, ui ) {
-					ui.item.removeAttr( 'style' );
-					$( event.target ).removeClass( 'evf-empty-grid' );
-				},
 				receive: function( event, ui ) {
 					if ( ui.sender.is( 'button' ) ) {
 						EVFPanelBuilder.fieldDrop( ui.helper );
 					}
+				},
+				stop: function( event, ui ) {
+					ui.item.removeAttr( 'style' );
+					EVFPanelBuilder.checkEmptyGrid();
 				}
 			}).disableSelection();
 

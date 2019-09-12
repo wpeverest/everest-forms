@@ -1859,15 +1859,13 @@ body.everest-forms-builder-setup,
 							position: relative;
 							border: 1px dashed $color-gray-light;
 
-							&:empty {
-								&::before {
-									content: '\f132';
-									font-size: 40px;
-									font-family: dashicons;
-									line-height: 1.2;
-									cursor: all-scroll;
-									color: $color_gray-lighten;
-								}
+							&::before {
+								content: '\f132';
+								font-size: 40px;
+								font-family: dashicons;
+								line-height: 1.2;
+								cursor: all-scroll;
+								color: $color_gray-lighten;
 							}
 						}
 					}
