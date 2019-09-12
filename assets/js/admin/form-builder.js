@@ -838,7 +838,7 @@
 		},
 		checkEmptyGrid: function( $force ) {
 			$.each( $( '.evf-admin-grid' ), function () {
-				var $fields = $( this ).find( '.everest-forms-field, .evf-registered-item' );
+				var $fields = $( this ).find( '.everest-forms-field, .evf-registered-item:not(.ui-draggable-dragging)' );
 				if ( $fields.not( '.ui-sortable-helper' ).length < 1 ) {
 					$( this ).addClass( 'evf-empty-grid' );
 				} else {
