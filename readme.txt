@@ -4,7 +4,7 @@ Tags: contact form, form, form builder, contact, custom form
 Requires at least: 4.0
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 1.5.4
+Stable tag: 1.5.5
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -132,6 +132,11 @@ Bugs can be reported either in our support forum or preferably on the [Everest F
 Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/everest-forms/) :)
 
 == Changelog ==
+
+= 1.5.5 - XX-09-2019 =
+* Fix - Multi-part form conflict in frontend single page.
+* Fix - Icon placement design conflict with TheGem theme on builder page.
+* Fix - String translation while updating the label and placeholder of fields.
 
 = 1.5.4 - 25-08-2019 =
 * Fix - Meta key for cloned form field.

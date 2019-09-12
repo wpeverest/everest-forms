@@ -28,7 +28,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 	 *
 	 * @var array
 	 */
-	public static $parts = false;
+	public static $parts = array();
 
 	/**
 	 * Constructor.
@@ -150,11 +150,50 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 	 */
 	public function output_fields_preview() {
 		$form_data = $this->form_data;
+		$form_id   = absint( $form_data['id'] );
 		$fields    = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
 		$structure = isset( $form_data['structure'] ) ? $form_data['structure'] : array( 'row_1' => array() );
 
+		/**
+		 * BW compatiable for multi-parts form.
+		 *
+		 * @todo Remove in Major EVF version 1.6.0
+		 */
+		if ( defined( 'EVF_MULTI_PART_PLUGIN_FILE' ) ) {
+			include_once ABSPATH . 'wp-admin/includes/plugin.php';
+			$plugin_data = get_plugin_data( EVF_MULTI_PART_PLUGIN_FILE, false, false );
+
+			if ( version_compare( $plugin_data['Version'], '1.3.0', '<' ) ) {
+				$settings_defaults = array(
+					'indicator'       => 'progress',
+					'indicator_color' => '#7e3bd0',
+					'nav_align'       => 'center',
+				);
+
+				if ( isset( $form_data['settings']['enable_multi_part'] ) && evf_string_to_bool( $form_data['settings']['enable_multi_part'] ) ) {
+					$settings = isset( $form_data['settings']['multi_part'] ) ? $form_data['settings']['multi_part'] : array();
+
+					if ( ! empty( $form_data['multi_part'] ) ) {
+						self::$parts = array(
+							'total'    => count( $form_data['multi_part'] ),
+							'current'  => 1,
+							'parts'    => array_values( $form_data['multi_part'] ),
+							'settings' => wp_parse_args( $settings, $settings_defaults ),
+						);
+					}
+				} else {
+					self::$parts = array(
+						'total'    => '',
+						'current'  => '',
+						'parts'    => array(),
+						'settings' => $settings_defaults,
+					);
+				}
+			}
+		}
+
 		// Allow Multi-Part to be customized.
-		self::$parts = apply_filters( 'everest_forms_parts_data', self::$parts, $form_data );
+		self::$parts[ $form_id ] = apply_filters( 'everest_forms_parts_data', self::$parts, $form_data, $form_id );
 
 		// Output the fields preview.
 		echo '<div class="evf-admin-field-container">';
@@ -165,7 +204,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		 *
 		 * @hooked EverestForms_MultiPart::display_builder_fields_before() Multi-Part markup open.
 		 */
-		do_action( 'everest_forms_display_builder_fields_before', $form_data );
+		do_action( 'everest_forms_display_builder_fields_before', $form_data, $form_id );
 
 		foreach ( $structure as $row_id => $row_data ) {
 			$row         = str_replace( 'row_', '', $row_id );
@@ -178,7 +217,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			/**
 			 * Hook: everest_forms_display_row_before.
 			 */
-			do_action( 'everest_forms_display_builder_row_before', $row_id, $form_data );
+			do_action( 'everest_forms_display_builder_row_before', $row_id, $form_data, $form_id );
 
 			echo '<div class="evf-admin-row" data-row-id="' . absint( $row ) . '">';
 			echo '<div class="evf-toggle-row">';
@@ -232,7 +271,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			 *
 			 * @hooked EverestForms_MultiPart::display_builder_row_after() Multi-Part markup (close previous part, open next).
 			 */
-			do_action( 'everest_forms_display_builder_row_after', $row_id, $form_data );
+			do_action( 'everest_forms_display_builder_row_after', $row_id, $form_data, $form_id );
 		}
 
 		/**
@@ -240,7 +279,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		 *
 		 * @hooked EverestForms_MultiPart::display_builder_fields_after() Multi-Part markup open.
 		 */
-		do_action( 'everest_forms_display_builder_fields_after', $form_data );
+		do_action( 'everest_forms_display_builder_fields_after', $form_data, $form_id );
 
 		echo '</div>';
 		echo '<div class="clear evf-clear"></div>';

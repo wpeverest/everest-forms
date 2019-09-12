@@ -540,8 +540,7 @@
 				total_rows++;
 
 				if ( current_part ) {
-					wrapper   = $( '.evf-admin-field-wrapper' ).find( '#part_' + current_part );
-					row_clone = $( '#part_' + current_part ).find( '.evf-admin-row' ).eq(0).clone();
+					wrapper = $( '.evf-admin-field-wrapper' ).find( '#part_' + current_part );
 				}
 
 				// Row clone.
