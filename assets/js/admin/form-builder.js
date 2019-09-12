@@ -955,6 +955,14 @@
 				}
 			});
 
+			$( '.evf-admin-row' ).on( 'mouseenter mouseleave', function( event ) {
+				if( 'mouseenter' === event.type ) {
+					$( this ).addClass( 'evf-hover' );
+				} else {
+					$( this ).removeClass( 'evf-hover' );
+				}
+			} );
+
 			$( '.evf-admin-grid' ).sortable({
 				items: '> .everest-forms-field',
 				delay  : 100,
@@ -967,12 +975,15 @@
 				out: function( event ) {
 					$( '.evf-admin-grid' ).removeClass( 'evf-hover' );
 					$( event.target ).removeClass( 'evf-item-hover' );
+					$( event.target ).closest( '.evf-admin-row' ).removeClass( 'evf-hover' );
 					EVFPanelBuilder.checkEmptyGrid();
 				},
 				over: function( event, ui ) {
 					$( '.evf-admin-grid' ).addClass( 'evf-hover' );
 					$( event.target ).addClass( 'evf-item-hover' );
+					$( event.target ).closest( '.evf-admin-row' ).addClass( 'evf-hover' );
 					EVFPanelBuilder.checkEmptyGrid();
+
 				},
 				receive: function( event, ui ) {
 					if ( ui.sender.is( 'button' ) ) {
