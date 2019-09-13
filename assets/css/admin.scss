@@ -1793,7 +1793,7 @@ body.everest-forms-builder-setup,
 
 					}
 
-					&:hover {
+					&.evf-hover {
 						background-color: lighten($blue, 48%);
 						border: 1px dashed $blue;
 
@@ -1883,15 +1883,13 @@ body.everest-forms-builder-setup,
 							position: relative;
 							border: 1px dashed $color-gray-light;
 
-							&:empty {
-								&::before {
-									content: '\f132';
-									font-size: 40px;
-									font-family: dashicons;
-									line-height: 1.2;
-									cursor: all-scroll;
-									color: $color_gray-lighten;
-								}
+							&::before {
+								content: '\f132';
+								font-size: 40px;
+								font-family: dashicons;
+								line-height: 1.2;
+								cursor: all-scroll;
+								color: $color_gray-lighten;
 							}
 						}
 					}
@@ -2598,7 +2596,8 @@ body.everest-forms-builder-setup,
 				padding: 15px 20px;
 				background-color: $color-white;
 				height: calc(100vh - 150px);
-				overflow-x: auto;
+				overflow: auto !important;
+				overflow-y: hidden !important;
 
 				.everest-forms-border-container {
 					.everest-forms-border-container-title {
