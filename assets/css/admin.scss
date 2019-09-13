@@ -224,11 +224,35 @@
 		background: lighten($red, 30%);
 		border: 1px solid $red;
 
+		&.everest-forms-notice-danger-text {
+			color: $red;
+		}
+
 		&::before {
 			color: $red;
 		}
 	}
 }
+
+.everest-forms-text-info {
+	color: $blue;
+}
+
+.everest-forms-text-success {
+	color: $green;
+}
+
+.everest-forms-text-warming {
+	color: $orange;
+}
+
+.everest-forms-text-danger {
+	color: $red;
+}
+
+/**
+ * Help tip
+ */
 
 h2 .everest-forms-help-tip {
 	margin-top: -5px;
@@ -2296,6 +2320,13 @@ body.everest-forms-builder-setup,
 						top: 70px;
 					}
 				}
+
+				&.evf_conditional_logic_container {
+					label {
+						margin-bottom: 0;
+						display: inline-block;
+					}
+				}
 			}
 
 			.evf-choices-list {
@@ -2590,6 +2621,10 @@ body.everest-forms-builder-setup,
 
 							input[type='text'] {
 								font-weight: 600;
+							}
+
+							.everest-forms-text-danger {
+								margin: 10px 0 0;
 							}
 						}
 					}
