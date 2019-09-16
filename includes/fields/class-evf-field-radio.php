@@ -192,6 +192,7 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 			$selected = isset( $choice['default'] ) ? '1' : '0';
 			$val      = isset( $field['show_values'] ) ? esc_attr( $choice['value'] ) : esc_attr( $choice['label'] );
 			$depth    = isset( $choice['depth'] ) ? absint( $choice['depth'] ) : 1;
+			$id       = $primary['id'] . '_' . $key;
 
 			printf( '<li class="choice-%d depth-%d">', $key, $depth );
 
@@ -199,7 +200,7 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 			printf(
 				'<input type="radio" value="%s" %s %s>',
 				esc_attr( $val ),
-				evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				evf_html_attributes( $id, $primary['class'], $primary['data'], $primary['attr'] ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				$primary['required'] // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			);
 
