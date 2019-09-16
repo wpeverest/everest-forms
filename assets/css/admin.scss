@@ -1820,6 +1820,13 @@ body.everest-forms-builder-setup,
 							&.evf-item-hover {
 								position: relative;
 
+								.everest-forms-field,
+								.evf-registered-item {
+									&:nth-last-child(2) {
+										margin-bottom: 0;
+									}
+								}
+
 								&::before {
 									display: none;
 								}
@@ -1843,6 +1850,10 @@ body.everest-forms-builder-setup,
 							font-size: 18px;
 							min-height: 94px;
 							margin-bottom: 10px;
+
+							&:last-child {
+								margin-bottom: 0;
+							}
 
 							&.ui-draggable {
 								width: 100%;
