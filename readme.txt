@@ -141,6 +141,9 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Fix - Conditional logic rules improved for all the fields.
 * Fix - Icon placement design conflict with TheGem theme on builder page.
 * Fix - String translation while updating the label and placeholder of fields.
+* Tweak - Mouse cursor on draggable elements.
+* Tweak - Managed spacing after dropping the field.
+* Tweak - Placeholder adding extra margin while dragging.
 
 = 1.5.4 - 25-08-2019 =
 * Fix - Meta key for cloned form field.
