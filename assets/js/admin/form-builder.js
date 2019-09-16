@@ -481,12 +481,13 @@
 		},
 		bindRemoveRow: function () {
 			$( 'body' ).on( 'click', '.evf-delete-row', function() {
-				var $this        = $( this ),
-					total_rows   = $( '.evf-admin-row' ).length,
-					current_row  = $this.closest( '.evf-admin-row' ),
-					current_part = $this.parents( '.evf-admin-field-container' ).attr( 'data-current-part' );
+				var $this            = $( this ),
+					total_rows       = $( '.evf-admin-row' ).length,
+					current_row      = $this.closest( '.evf-admin-row' ),
+					current_part     = $this.parents( '.evf-admin-field-container' ).attr( 'data-current-part' ),
+					multipart_active = $( '#everest-forms-builder' ).hasClass( 'multi-part-activated' );
 
-				if ( current_part ) {
+				if ( current_part && multipart_active ) {
 					total_rows = $( '#part_' + current_part ).find( '.evf-admin-row' ).length;
 				}
 

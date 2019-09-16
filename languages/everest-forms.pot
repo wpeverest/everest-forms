@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Everest Forms package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Everest Forms 1.5.4\n"
+"Project-Id-Version: Everest Forms 1.5.5-dev\n"
 "Report-Msgid-Bugs-To: https://github.com/wpeverest/everest-forms/issues\n"
-"POT-Creation-Date: 2019-09-10 09:56:19+00:00\n"
+"POT-Creation-Date: 2019-09-16 08:47:40+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -67,7 +67,7 @@ msgstr ""
 #: includes/abstracts/class-evf-form-fields.php:424
 #: includes/admin/settings/class-evf-settings-validation.php:45
 #: includes/evf-core-functions.php:1857
-#: includes/shortcodes/class-evf-shortcode-form.php:173
+#: includes/shortcodes/class-evf-shortcode-form.php:174
 msgid "Required"
 msgstr ""
 
@@ -155,17 +155,17 @@ msgid "No field type found"
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:831
-#: includes/admin/builder/class-evf-builder-fields.php:265
+#: includes/admin/builder/class-evf-builder-fields.php:304
 msgid "Duplicate Field"
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:832
-#: includes/admin/builder/class-evf-builder-fields.php:266
+#: includes/admin/builder/class-evf-builder-fields.php:305
 msgid "Delete Field"
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:833
-#: includes/admin/builder/class-evf-builder-fields.php:267
+#: includes/admin/builder/class-evf-builder-fields.php:306
 #: includes/admin/builder/class-evf-builder-settings.php:25
 #: includes/admin/class-evf-admin-menus.php:163
 #: includes/class-evf-install.php:620
@@ -212,11 +212,11 @@ msgstr ""
 msgid "You don't have any fields yet."
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-fields.php:188
+#: includes/admin/builder/class-evf-builder-fields.php:227
 msgid "Row Settings"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-fields.php:189
+#: includes/admin/builder/class-evf-builder-fields.php:228
 msgid "Select the type of row"
 msgstr ""
 
@@ -375,7 +375,7 @@ msgid "Submit button processing text"
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:274
-#: includes/shortcodes/class-evf-shortcode-form.php:71
+#: includes/shortcodes/class-evf-shortcode-form.php:72
 msgid "Processing&hellip;"
 msgstr ""
 
@@ -1507,43 +1507,43 @@ msgstr ""
 msgid "No data provided"
 msgstr ""
 
-#: includes/class-evf-ajax.php:229
+#: includes/class-evf-ajax.php:232
 msgid "Meta Key missing"
 msgstr ""
 
-#: includes/class-evf-ajax.php:230
+#: includes/class-evf-ajax.php:233
 msgid "Please add Meta key for fields: %s"
 msgstr ""
 
-#: includes/class-evf-ajax.php:249
+#: includes/class-evf-ajax.php:252
 msgid "Form not found"
 msgstr ""
 
-#: includes/class-evf-ajax.php:250
+#: includes/class-evf-ajax.php:253
 msgid "An error occurred while saving the form."
 msgstr ""
 
-#: includes/class-evf-ajax.php:280
+#: includes/class-evf-ajax.php:283
 msgid "No plugin specified."
 msgstr ""
 
-#: includes/class-evf-ajax.php:292
+#: includes/class-evf-ajax.php:295
 msgid "Sorry, you are not allowed to install plugins on this site."
 msgstr ""
 
-#: includes/class-evf-ajax.php:339
+#: includes/class-evf-ajax.php:342
 msgid "Unable to connect to the filesystem. Please confirm your credentials."
 msgstr ""
 
-#: includes/class-evf-ajax.php:379 includes/class-evf-ajax.php:421
+#: includes/class-evf-ajax.php:382 includes/class-evf-ajax.php:424
 msgid "Missing data"
 msgstr ""
 
-#: includes/class-evf-ajax.php:435
+#: includes/class-evf-ajax.php:438
 msgid "Connection missing"
 msgstr ""
 
-#: includes/class-evf-ajax.php:464
+#: includes/class-evf-ajax.php:467
 #. translators: %1$s - deactivation reason page; %2$d - deactivation url.
 msgid ""
 "Before we deactivate Everest Forms, would you care to <a href=\"%1$s\" "
