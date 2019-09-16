@@ -957,7 +957,7 @@
 			}).disableSelection();
 
 			$( '.evf-admin-row' ).on( 'mouseenter mouseleave', function( event ) {
-				if ( 100 > event.buttons ) {
+				if ( 1 > event.buttons ) {
 					if ( 'mouseenter' === event.type ) {
 						$( this ).addClass( 'evf-hover' );
 					} else {
@@ -982,7 +982,6 @@
 					EVFPanelBuilder.checkEmptyGrid();
 				},
 				over: function( event, ui ) {
-					// debugger;
 					$( '.evf-admin-grid' ).addClass( 'evf-hover' );
 					$( event.target ).addClass( 'evf-item-hover' );
 					$( event.target ).closest( '.evf-admin-row' ).addClass( 'evf-hover' );
