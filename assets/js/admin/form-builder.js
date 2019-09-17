@@ -956,16 +956,6 @@
 				}
 			}).disableSelection();
 
-			$( '.evf-admin-row' ).on( 'mouseenter mouseleave', function( event ) {
-				if ( 1 > event.buttons ) {
-					if ( 'mouseenter' === event.type ) {
-						$( this ).addClass( 'evf-hover' );
-					} else {
-						$( '.evf-admin-row' ).removeClass( 'evf-hover' );
-					}
-				}
-			} );
-
 			$( '.evf-admin-grid' ).sortable({
 				items: '> .everest-forms-field',
 				delay  : 100,
@@ -1012,6 +1002,17 @@
 				containment: '#everest-forms-builder',
 				connectToSortable: '.evf-admin-grid'
 			}).disableSelection();
+
+			// Adapt hover behaviour on mouse event.
+			$( '.evf-admin-row' ).on( 'mouseenter mouseleave', function( event ) {
+				if ( 1 > event.buttons ) {
+					if ( 'mouseenter' === event.type ) {
+						$( this ).addClass( 'evf-hover' );
+					} else {
+						$( '.evf-admin-row' ).removeClass( 'evf-hover' );
+					}
+				}
+			} );
 
 			// Refresh the position of placeholders on drag scroll.
 			$( '.everest-forms-panel-content' ).on( 'scroll', function() {
