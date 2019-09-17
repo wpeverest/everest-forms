@@ -201,7 +201,7 @@ class EVF_Install {
 	 * See if we need the wizard or not.
 	 */
 	private static function maybe_enable_setup_wizard() {
-		if ( apply_filters( 'everest_forms_enable_setup_wizard', self::is_new_install() ) ) {
+		if ( apply_filters( 'everest_forms_enable_setup_wizard', true ) ) {
 			set_transient( '_evf_activation_redirect', 1, 30 );
 		}
 	}

@@ -28,13 +28,22 @@ class EVF_Admin_Welcome {
 	 * Add admin menus/screens.
 	 */
 	public function admin_menus() {
-		add_dashboard_page(
+		$welcome_page = add_dashboard_page(
 			esc_html__( 'Welcome to Everest Forms', 'everest-forms' ),
 			esc_html__( 'Welcome to Everest Forms', 'everest-forms' ),
 			apply_filters( 'evf_welcome_cap', 'manage_options' ),
 			'evf-welcome',
 			array( $this, 'welcome_page' )
 		);
+
+		add_action( 'load-' . $welcome_page, array( $this, 'welcome_page_init' ) );
+	}
+
+	/**
+	 * Welcome page init.
+	 */
+	public function welcome_page_init() {
+		delete_transient( '_evf_activation_redirect' );
 	}
 
 	/**
