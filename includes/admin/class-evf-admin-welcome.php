@@ -71,7 +71,7 @@ class EVF_Admin_Welcome {
 				<div class="everest-forms-welcome-video">
 				</div>
 				<div class="everest-forms-welcome-container__action">
-					<a href="<?php echo admin_url( 'admin.php?page=evf-builder&create-form=1' ); ?>" class="everest-forms-welcome-container__action-card">
+					<a href="<?php echo esc_url( admin_url( 'admin.php?page=evf-builder&create-form=1' ) ); ?>" class="everest-forms-welcome-container__action-card">
 						<figure class="everest-forms-welcome-container__action-card-img">
 						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><style>.cls-1{fill:none;}.cls-1,.cls-2{stroke:#3D8FC9;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}.cls-2{fill:#E1F0FA;}</style></defs><rect class="cls-1" x="12" y="11" width="40" height="48" rx="2" ry="2"/><rect class="cls-2" x="18" y="46" width="6" height="6"/><circle class="cls-2" cx="12" cy="52" r="7"/><line class="cls-1" x1="12" y1="49" x2="12" y2="55"/><line class="cls-1" x1="9" y1="52" x2="15" y2="52"/><path class="cls-2" d="M35,8a3,3,0,0,0-6,0H25a2,2,0,0,0-2,2v2a2,2,0,0,0,2,2H39a2,2,0,0,0,2-2V10a2,2,0,0,0-2-2Z"/><rect class="cls-2" x="49" y="29" width="6" height="18"/><polygon class="cls-2" points="52 57 49 51 49 47 55 47 55 51 52 57"/><path class="cls-2" d="M52,23h0a3,3,0,0,1,3,3v3a0,0,0,0,1,0,0H49a0,0,0,0,1,0,0V26A3,3,0,0,1,52,23Z"/><line class="cls-1" x1="59" y1="25" x2="59" y2="39"/><line class="cls-1" x1="49.5" y1="29" x2="58.5" y2="29"/><rect class="cls-2" x="18" y="22" width="28" height="6"/><rect class="cls-2" x="18" y="34" width="6" height="6"/><line class="cls-1" x1="28" y1="37" x2="42" y2="37"/><line class="cls-1" x1="28" y1="49" x2="42" y2="49"/></svg>
 						</figure>
@@ -93,9 +93,7 @@ class EVF_Admin_Welcome {
 			</div>
 		</div>
 		<?php
-		exit();
 	}
-
 }
 
 new EVF_Admin_Welcome();
