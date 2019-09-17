@@ -1824,6 +1824,10 @@ body.everest-forms-builder-setup,
 								.evf-registered-item {
 									&:nth-last-child(2) {
 										margin-bottom: 0;
+
+										&.active {
+											margin-bottom: 10px;
+										}
 									}
 								}
 
@@ -1958,10 +1962,15 @@ body.everest-forms-builder-setup,
 					&.active {
 						background: $color_gray-light-skin;
 						border: 1px solid $color_gray-lighten;
+						margin: 10px 0;
 
 						.evf-field-action {
 							opacity: 1;
 							visibility: visible;
+						}
+
+						&:last-child {
+							margin-bottom: 0;
 						}
 					}
 
