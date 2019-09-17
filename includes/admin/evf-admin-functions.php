@@ -24,6 +24,7 @@ function evf_get_screen_ids() {
 		$evf_screen_id . '_page_evf-settings',
 		$evf_screen_id . '_page_evf-status',
 		$evf_screen_id . '_page_evf-addons',
+		'dashboard_page_evf-welcome',
 	);
 
 	return apply_filters( 'everest_forms_screen_ids', $screen_ids );
