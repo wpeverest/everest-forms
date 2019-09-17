@@ -318,6 +318,16 @@ body.everest-forms-builder-setup,
 }
 
 /**
+ * Welcome page
+ */
+#everest-forms-welcome {
+	max-width: 760px;
+	border: 1px solid $color_gray-lighten;
+	border-radius: 4px;
+	box-shadow: 2px 5px 30px transparantize(#23282d, 0.15);
+}
+
+/**
  * Branding
  */
 .everest-forms_page_evf-builder,
