@@ -1960,9 +1960,9 @@ body.everest-forms-builder-setup,
 					}
 
 					&.active {
-						background: $color_gray-light-skin;
+						margin: 0 0 10px;
 						border: 1px solid $color_gray-lighten;
-						margin: 10px 0;
+						background: $color_gray-light-skin;
 
 						.evf-field-action {
 							opacity: 1;
