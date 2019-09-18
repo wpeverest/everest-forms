@@ -218,8 +218,10 @@ class EVF_AJAX {
 		$empty_meta_data = array();
 		if ( ! empty( $data['form_fields'] ) ) {
 			foreach ( $data['form_fields'] as $field ) {
-				// register string for translation.
-				evf_string_translation( $data['id'], $field['id'], $field['label'] );
+				// Register string for translation.
+				if ( isset( $field['label'] ) ) {
+					evf_string_translation( $data['id'], $field['id'], $field['label'] );
+				}
 
 				if ( empty( $field['meta-key'] ) && ! in_array( $field['type'], array( 'html', 'title', 'captcha' ), true ) ) {
 					$empty_meta_data[] = $field['label'];
