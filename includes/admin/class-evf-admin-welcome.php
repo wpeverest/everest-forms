@@ -68,7 +68,7 @@ class EVF_Admin_Welcome {
 					<h2><?php esc_html_e( 'Welcome to Everest Forms', 'everest-forms' ); ?></h2>
 					<p><?php esc_html_e( 'Thank you for choosing Everest Forms, the most poweful and easy drag & drop WordPress form builder in the market.', 'everest-forms' ); ?></p>
 				</div>
-				<div class="everest-forms-welcome-video">
+				<div class="everest-forms-welcome-video welcome-video-play">
 				</div>
 				<div class="everest-forms-welcome-container__action">
 					<a href="<?php echo esc_url( admin_url( 'admin.php?page=evf-builder&create-form=1' ) ); ?>" class="everest-forms-welcome-container__action-card">
