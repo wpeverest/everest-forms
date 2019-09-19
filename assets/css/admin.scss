@@ -385,8 +385,12 @@ body.everest-forms-builder-setup,
 		}
 
 		.everest-forms-welcome-video {
-			min-height: 350px;
-			background: $color-gray-lighten;
+			cursor: pointer;
+
+			img {
+				display: block;
+				max-width: 100%;
+			}
 		}
 
 		.everest-forms-welcome-container__action {
