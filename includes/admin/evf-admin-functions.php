@@ -18,13 +18,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 function evf_get_screen_ids() {
 	$evf_screen_id = sanitize_title( __( 'Everest Forms', 'everest-forms' ) );
 	$screen_ids    = array(
+		'dashboard_page_evf-welcome',
 		'toplevel_page_' . $evf_screen_id,
 		$evf_screen_id . '_page_evf-builder',
 		$evf_screen_id . '_page_evf-entries',
 		$evf_screen_id . '_page_evf-settings',
 		$evf_screen_id . '_page_evf-status',
 		$evf_screen_id . '_page_evf-addons',
-		'dashboard_page_evf-welcome',
 	);
 
 	return apply_filters( 'everest_forms_screen_ids', $screen_ids );
