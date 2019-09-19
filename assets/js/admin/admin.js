@@ -210,4 +210,15 @@
 				}
 			} );
 	});
+
+	// To play welocme video.
+	$( document ).on( 'click', '#everest-forms-welcome .welcome-video-play', function( event ) {
+
+		event.preventDefault();
+
+		var video = '<div class="welcome-video-container"><iframe width="760" height="429" src="https://www.youtube.com/embed/N_HbZccA-Ts?rel=0&amp;showinfo=0&amp;autoplay=1" frameborder="0" allowfullscreen></iframe></div>';
+		$(this).find('.everest-froms-welcome-thumb').remove();
+		$(this).append(video);
+
+	});
 })( jQuery, everest_forms_admin );
