@@ -10,7 +10,7 @@
 	"rules": {
 		"camelcase": 0,
 		"indent": 0,
-		"max-len": [ 2, { "code": 220 } ],
+		"max-len": [ 2, { "code": 275 } ],
 		"no-console": 1
 	}
 }
