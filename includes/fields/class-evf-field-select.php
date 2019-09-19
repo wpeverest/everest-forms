@@ -112,13 +112,9 @@ class EVF_Field_Select extends EVF_Form_Fields {
 	 */
 	public function field_display( $field, $field_atts, $form_data ) {
 		// Setup and sanitize the necessary data.
-		$conditional_rules = isset( $field['properties']['inputs']['primary']['attr']['conditional_rules'] ) ? $field['properties']['inputs']['primary']['attr']['conditional_rules'] : '';
-		$conditional_id    = isset( $field['properties']['inputs']['primary']['attr']['conditional_id'] ) ? $field['properties']['inputs']['primary']['attr']['conditional_id'] : '';
+		$primary           = $field['properties']['inputs']['primary'];
 		$field             = apply_filters( 'everest_forms_select_field_display', $field, $field_atts, $form_data );
 		$field_placeholder = ! empty( $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : '';
-		$field_required    = ! empty( $field['required'] ) ? ' required' : '';
-		$field_class       = implode( ' ', array_map( 'sanitize_html_class', $field_atts['input_class'] ) );
-		$field_id          = implode( ' ', array_map( 'sanitize_html_class', $field_atts['input_id'] ) );
 		$field_data        = '';
 		$choices           = $field['choices'];
 		$has_default       = false;
@@ -139,14 +135,9 @@ class EVF_Field_Select extends EVF_Form_Fields {
 
 		// Primary select field.
 		printf(
-			"<select type='select' name='everest_forms[form_fields][%s]' id='%s' class='%s' %s %s conditional_rules='%s' conditional_id='%s'>",
-			$field['id'],
-			$field_id,
-			$field_class,
-			$field_required,
-			$field_data,
-			$conditional_rules,
-			$conditional_id
+			"<select type='select' %s %s>",
+			evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			$primary['required'] // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		);
 
 		// Optional placeholder.

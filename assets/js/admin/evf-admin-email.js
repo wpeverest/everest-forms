@@ -47,7 +47,10 @@
 		 	});
 		 	$(document).on('input', '.everest-forms-email-name input', function(e) {
 		 		EverestFormsEmail.renameConnection(this, e);
-		 	});
+			 });
+			 $(document).on('focusin', '.everest-forms-email-name input', function(e) {
+				EverestFormsEmail.focusConnectionName(this, e);
+			});
 
 		 },
 
@@ -68,7 +71,7 @@
 		 	$.confirm({
 		 		title: false,
 		 		content: modalContent,
-		 		icon: 'dashicons dashicons-info',
+				icon: 'dashicons dashicons-info',
 		 		type: 'blue',
 		 		backgroundDismiss: false,
 		 		closeIcon: false,
@@ -79,12 +82,13 @@
 		 				keys: ['enter'],
 		 				action: function() {
 		 					var input = this.$content.find('input#provider-connection-name');
-		 					var error = this.$content.find('.error');
-		 					if (input.val() === '') {
+							 var error = this.$content.find('.error');
+							 var value = input.val().trim();
+		 					if ( value.length === 0 ) {
 		 						error.show();
 		 						return false;
 		 					} else {
-		 						var name = input.val();
+		 						var name = value;
 
 								// Fire AJAX
 								var data =  {
@@ -115,6 +119,7 @@
 										}, 2000);
 
 										cloned_email.attr('data-connection_id',response.data.connection_id);
+										cloned_email.find('.evf-field-conditional-container').attr('data-connection_id',response.data.connection_id);
 										cloned_email.find('#everest-forms-panel-field-email-connection_1-connection_name').attr('name', 'settings[email]['+response.data.connection_id+'][connection_name]');
 										cloned_email.find('#everest-forms-panel-field-email-connection_1-evf_to_email').attr('name', 'settings[email]['+response.data.connection_id+'][evf_to_email]');
 										cloned_email.find('#everest-forms-panel-field-email-connection_1-evf_to_email').attr('value', '{admin_email}');
@@ -141,7 +146,7 @@
 										$connections.find('.evf-content-email-settings-inner').last().addClass('active-connection');
 										$this.parent().find('.everest-forms-active-email-connections-list li').removeClass('active-user');
 										$this.closest('.everest-forms-active-email.active').children('.everest-forms-active-email-connections-list').removeClass('empty-list');
-										$this.parent().find('.everest-forms-active-email-connections-list ').append( '<li class="active-user" data-connection-id= "'+response.data.connection_id+'"><a class="user-nickname" href="#">'+name+'</a><a href="#"><span class="email-remove">Remove</span></a></li>' );
+										$this.parent().find('.everest-forms-active-email-connections-list ').append( '<li class="connection-list active-user" data-connection-id= "'+response.data.connection_id+'"><a class="user-nickname" href="#">'+name+'</a><a href="#"><span class="email-remove">Remove</span></a></li>' );
 									}
 								});
 							}
@@ -231,15 +236,29 @@
 			});
 		},
 
+		focusConnectionName: function( el,e ){
+			var $this = $(el);
+			$this.data('val', $this.val().trim());
+		},
+
 		renameConnection: function( el,e ){
 			e.preventDefault;
 			var $this = $(el);
 			var connection_id = $this.closest('.evf-content-email-settings-inner').data('connection_id');
 			$active_block = $('.everest-forms-active-email-connections-list').find('[data-connection-id="' + connection_id + '"]');
 			$active_block.find('.user-nickname').text($this.val());
+			if ( $this.val().trim().length === 0 ) {
+				$this.parent('.everest-forms-email-name').find('.everest-forms-error').remove();
+				$this.parent('.everest-forms-email-name').append('<p class="everest-forms-error everest-forms-text-danger">Email name cannot be empty.</p>');
+				$this.next('.everest-forms-error').fadeOut(3000);
+				setTimeout(function() {
+					if ( $this.val().length === 0 ){
+						$this.val($this.data('val'));
+						$active_block.find('.user-nickname').text($this.data('val'));
+					}
+				}, 3000);
+			}
 		}
-
-
  	}
 	EverestFormsEmail.init();
 })(jQuery);

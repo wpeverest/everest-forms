@@ -17,7 +17,7 @@ module.exports = function( grunt ){
 			},
 			all: [
 				'Gruntfile.js',
-				'<%= dirs.js %>/admin/*.js',
+				'!<%= dirs.js %>/admin/*.js',
 				'!<%= dirs.js %>/admin/*.min.js',
 				'<%= dirs.js %>/frontend/*.js',
 				'!<%= dirs.js %>/frontend/*.min.js'
@@ -75,7 +75,7 @@ module.exports = function( grunt ){
 					'<%= dirs.js %>/jquery-blockui/jquery.blockUI.min.js': [ '<%= dirs.js %>/jquery-blockui/jquery.blockUI.js' ],
 					'<%= dirs.js %>/flatpickr/flatpickr.min.js': ['<%= dirs.js %>/flatpickr/flatpickr.js'],
 					'<%= dirs.js %>/selectWoo/selectWoo.min.js': ['<%= dirs.js %>/selectWoo/selectWoo.js'],
-					'<%= dirs.js %>/tooltipster/tooltipster.bundle.min.js': [ '<%= dirs.js %>/tooltipster/tooltipster.bundle.js' ],
+					'<%= dirs.js %>/tooltipster/tooltipster.bundle.min.js': [ '<%= dirs.js %>/tooltipster/tooltipster.bundle.js' ]
 				}
 			}
 		},

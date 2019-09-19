@@ -63,6 +63,29 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 	}
 
 	/**
+	 * Hook in tabs.
+	 */
+	public function init_hooks() {
+		add_filter( 'everest_forms_field_properties_' . $this->type, array( $this, 'field_properties' ), 5, 3 );
+	}
+
+	/**
+	 * Define additional field properties.
+	 *
+	 * @param array $properties Field properties.
+	 * @param array $field Field data.
+	 * @param array $form_data Form data.
+	 *
+	 * @return array
+	 */
+	public function field_properties( $properties, $field, $form_data ) {
+		$properties['inputs']['primary']['attr']['name'] = 'everest_forms[form_fields][' . $field['id'] . '][]';
+		$properties['inputs']['primary']['class'][]      = 'input-text';
+
+		return $properties;
+	}
+
+	/**
 	 * Show values field option.
 	 *
 	 * @param array $field
@@ -151,15 +174,13 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 	public function field_display( $field, $field_atts, $form_data ) {
 
 		// Setup and sanitize the necessary data
-		$field             = apply_filters( 'everest_forms_checkbox_field_display', $field, $field_atts, $form_data );
-		$conditional_rules = isset( $field['properties']['inputs']['primary']['attr']['conditional_rules'] ) ? $field['properties']['inputs']['primary']['attr']['conditional_rules'] : '';
-		$conditional_id    = isset( $field['properties']['inputs']['primary']['attr']['conditional_id'] ) ? $field['properties']['inputs']['primary']['attr']['conditional_id'] : '';
-		$field_required    = ! empty( $field['required'] ) ? ' required' : '';
-		$field_class       = implode( ' ', array_map( 'sanitize_html_class', $field_atts['input_class'] ) );
-		$field_id          = implode( ' ', array_map( 'sanitize_html_class', $field_atts['input_id'] ) );
-		$field_data        = '';
-		$form_id           = $form_data['id'];
-		$choices           = isset( $field['choices'] ) ? $field['choices'] : array();
+		$primary     = $field['properties']['inputs']['primary'];
+		$field       = apply_filters( 'everest_forms_checkbox_field_display', $field, $field_atts, $form_data );
+		$field_class = implode( ' ', array_map( 'sanitize_html_class', $field_atts['input_class'] ) );
+		$field_id    = implode( ' ', array_map( 'sanitize_html_class', $field_atts['input_id'] ) );
+		$field_data  = '';
+		$form_id     = $form_data['id'];
+		$choices     = isset( $field['choices'] ) ? $field['choices'] : array();
 		if ( ! empty( $field_atts['input_data'] ) ) {
 			foreach ( $field_atts['input_data'] as $key => $val ) {
 				$field_data .= ' data-' . $key . '="' . $val . '"';
@@ -173,23 +194,17 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 			$selected = isset( $choice['default'] ) ? '1' : '0';
 			$val      = isset( $field['show_values'] ) ? esc_attr( $choice['value'] ) : esc_attr( $choice['label'] );
 			$depth    = isset( $choice['depth'] ) ? absint( $choice['depth'] ) : 1;
+			$id       = $primary['id'] . '_' . $key;
 
 			printf( '<li class="choice-%d depth-%d">', $key, $depth );
 
 			// Checkbox elements
 			printf(
-				"<input type='checkbox' class='input-text' id='everest-forms-%d-field_%s_%d' name='everest_forms[form_fields][%s][]' value='%s' %s %s conditional_rules='%s' conditional_id ='%s'>",
-				$form_id,
-				$field['id'],
-				$key,
-				$field['id'],
-				$val,
-				checked( '1', $selected, false ),
-				$field_required,
-				$conditional_rules,
-				$conditional_id
+				'<input type="checkbox" value="%s" %s %s>',
+				esc_attr( $val ),
+				evf_html_attributes( $id, $primary['class'], $primary['data'], $primary['attr'] ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				$primary['required'] // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			);
-
 			printf( '<label class="everest-forms-field-label-inline" for="everest-forms-%d-field_%s_%d">%s</label>', $form_id, $field['id'], $key, wp_kses_post( $choice['label'] ) );
 
 			echo '</li>';
@@ -207,6 +222,7 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 	 * @param string $meta_key
 	 */
 	public function format( $field_id, $field_submit, $form_data, $meta_key ) {
+
 		$field_submit = (array) $field_submit;
 		$field        = $form_data['form_fields'][ $field_id ];
 		$dynamic      = ! empty( $field['dynamic_choices'] ) ? $field['dynamic_choices'] : false;
