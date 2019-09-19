@@ -134,6 +134,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 == Changelog ==
 
 = 1.5.5 - 19-09-2019 =
+* Feature - Confirm Email option on Email Field.
 * Fix - Sortable Fields scrollable bug.
 * Fix - Field not appended in the droppable zone.
 * Fix - Multi-part form conflict in frontend single page.
