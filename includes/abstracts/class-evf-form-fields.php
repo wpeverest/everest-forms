@@ -952,7 +952,12 @@ abstract class EVF_Form_Fields {
 				}
 				break;
 			case 'email':
-				if ( ! empty( $_POST['everest_forms']['form_fields'][ $field_id ] ) && ! is_email( $field_submit ) ) {
+				if ( is_array( $field_submit ) ) {
+					$value = ! empty( $field_submit['primary'] ) ? $field_submit['primary'] : '';
+				} else {
+					$value = ! empty( $field_submit ) ? $field_submit : '';
+				}
+				if ( ! empty( $_POST['everest_forms']['form_fields'][ $field_id ] ) && ! is_email( $value ) ) {
 					$validation_text = get_option( 'evf_' . $field_type . '_validation', __( 'Please enter a valid email address', 'everest-forms' ) );
 				}
 				break;

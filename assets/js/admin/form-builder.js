@@ -244,7 +244,7 @@
 				var $this   = $( this ),
 					value   = $this.val(),
 					id      = $this.parent().data( 'field-id' ),
-					$primary = $( '#everest-forms-field-' + id ).find( '.widefat' );
+					$primary = $( '#everest-forms-field-' + id ).find( '.primary-input' );
 
 				if ( $primary.is( 'select' ) ) {
 					if ( ! value.length ) {
