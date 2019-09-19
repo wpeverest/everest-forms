@@ -81,7 +81,7 @@ class EVF_Admin_Welcome {
 					<p><?php esc_html_e( 'Thank you for choosing Everest Forms, the most poweful and easy drag & drop WordPress form builder in the market.', 'everest-forms' ); ?></p>
 				</div>
 				<a class="everest-forms-welcome-video welcome-video-play">
-					<img src="<?php echo plugins_url( 'assets/images/welcome-video-thumb.png', EVF_PLUGIN_FILE ); ?>" alt="<?php esc_attr_e( 'Watch how to create your first form with Everest Forms', 'everest-forms' ); ?>" class="">
+					<img src="<?php echo plugins_url( 'assets/images/welcome-video-thumb.png', EVF_PLUGIN_FILE ); ?>" alt="<?php esc_attr_e( 'Watch how to create your first form with Everest Forms', 'everest-forms' ); ?>" class="everest-froms-welcome-thumb">
 				</a>
 				<div class="everest-forms-welcome-container__action">
 					<a href="<?php echo esc_url( admin_url( 'admin.php?page=evf-builder&create-form=1' ) ); ?>" class="everest-forms-welcome-container__action-card">

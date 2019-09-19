@@ -330,6 +330,11 @@ body.everest-forms-builder-setup,
 
 	a {
 		text-decoration: none;
+
+		&:focus {
+			box-shadow: none;
+			outline: none;
+		}
 	}
 
 	p {
@@ -386,6 +391,7 @@ body.everest-forms-builder-setup,
 
 		.everest-forms-welcome-video {
 			cursor: pointer;
+			display: block;
 
 			img {
 				display: block;

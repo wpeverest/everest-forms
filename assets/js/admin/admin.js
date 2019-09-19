@@ -216,13 +216,9 @@
 
 		event.preventDefault();
 
-		var video = '<div class="welcome-video-container"><iframe width="1280" height="720" src="https://www.youtube.com/embed/N_HbZccA-Ts?rel=0&amp;showinfo=0&amp;autoplay=1" frameborder="0" allowfullscreen></iframe></div>';
+		var video = '<div class="welcome-video-container"><iframe width="760" height="429" src="https://www.youtube.com/embed/N_HbZccA-Ts?rel=0&amp;showinfo=0&amp;autoplay=1" frameborder="0" allowfullscreen></iframe></div>';
+		$(this).find('.everest-froms-welcome-thumb').remove();
+		$(this).append(video);
 
-		$.dialog({
-			title: false,
-			content: video,
-			closeIcon: true,
-			boxWidth: '70%'
-		});
 	});
 })( jQuery, everest_forms_admin );
