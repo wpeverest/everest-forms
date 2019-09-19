@@ -1960,9 +1960,9 @@ body.everest-forms-builder-setup,
 					}
 
 					&.active {
-						background: $color_gray-light-skin;
+						margin: 0 0 10px;
 						border: 1px solid $color_gray-lighten;
-						margin: 10px 0;
+						background: $color_gray-light-skin;
 
 						.evf-field-action {
 							opacity: 1;
@@ -2615,8 +2615,7 @@ body.everest-forms-builder-setup,
 				padding: 15px 20px;
 				background-color: $color-white;
 				height: calc(100vh - 150px);
-				overflow: auto !important;
-				overflow-y: hidden !important;
+				overflow-x: hidden !important;
 
 				.everest-forms-border-container {
 					.everest-forms-border-container-title {
