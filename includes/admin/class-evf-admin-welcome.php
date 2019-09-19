@@ -4,52 +4,64 @@
  *
  * Takes new users to Welcome Page.
  *
- * @package     EverestForms/Admin
- * @version     5.2.4
+ * @package EverestForms/Admin
+ * @version 1.5.5
  */
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * EVF_Admin_Welcome.
+ * Welcome class.
  */
 class EVF_Admin_Welcome {
 
 	/**
-	 * Constructor.
+	 * Hook in methods.
 	 */
-	public function __construct() {
+	public static function init() {
 		if ( apply_filters( 'everest_forms_show_welcome_page', true ) && current_user_can( 'manage_everest_forms' ) ) {
-			add_action( 'admin_menu', array( $this, 'admin_menus' ) );
+			add_action( 'admin_menu', array( __CLASS__, 'add_menu' ) );
+			add_action( 'admin_head', array( __CLASS__, 'hide_menu' ) );
 		}
 	}
 
 	/**
 	 * Add admin menus/screens.
 	 */
-	public function admin_menus() {
+	public static function add_menu() {
 		$welcome_page = add_dashboard_page(
 			esc_html__( 'Welcome to Everest Forms', 'everest-forms' ),
 			esc_html__( 'Welcome to Everest Forms', 'everest-forms' ),
 			apply_filters( 'evf_welcome_cap', 'manage_options' ),
 			'evf-welcome',
-			array( $this, 'welcome_page' )
+			array( __CLASS__, 'welcome_page' )
 		);
 
-		add_action( 'load-' . $welcome_page, array( $this, 'welcome_page_init' ) );
+		add_action( 'load-' . $welcome_page, array( __CLASS__, 'welcome_page_init' ) );
+	}
+
+	/**
+	 * Removed the dashboard pages from the admin menu.
+	 *
+	 * This means the pages are still available to us, but hidden.
+	 *
+	 * @since 1.0.0
+	 */
+	public static function hide_menu() {
+		remove_submenu_page( 'index.php', 'evf-welcome' );
 	}
 
 	/**
 	 * Welcome page init.
 	 */
-	public function welcome_page_init() {
+	public static function welcome_page_init() {
 		delete_transient( '_evf_activation_redirect' );
 	}
 
 	/**
 	 * Show the welcome page.
 	 */
-	public function welcome_page() {
+	public static function welcome_page() {
 		?>
 		<div id="everest-forms-welcome" >
 			<div class="eveverest-forms-welcome-header">
@@ -96,4 +108,4 @@ class EVF_Admin_Welcome {
 	}
 }
 
-new EVF_Admin_Welcome();
+EVF_Admin_Welcome::init();
