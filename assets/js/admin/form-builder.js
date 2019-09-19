@@ -132,15 +132,10 @@
 			// Enable Perfect Scrollbar.
 			if ( 'undefined' !== typeof PerfectScrollbar ) {
 				var tab_content   = $( '.everest-forms-tab-content' ),
-					panel_content = $( '.everest-forms-panel-content' ),
-					panel_setting = $('#everest-forms-panel-settings .everest-forms-panel-sidebar');
+					panel_setting = $( '#everest-forms-panel-settings .everest-forms-panel-sidebar' );
 
 				if ( tab_content.length >= 1 ) {
 					window.evf_tab_scroller = new PerfectScrollbar( tab_content.selector );
-				}
-
-				if ( panel_content.length >= 1 ) {
-					window.evf_panel_scroller = new PerfectScrollbar( panel_content.selector );
 				}
 
 				if ( panel_setting.length >= 1 ) {
@@ -956,16 +951,6 @@
 				}
 			}).disableSelection();
 
-			$( '.evf-admin-row' ).on( 'mouseenter mouseleave', function( event ) {
-				if( 1 > event.buttons ) {
-					if( 'mouseenter' === event.type ) {
-						$( this ).addClass( 'evf-hover' );
-					} else {
-						$( '.evf-admin-row' ).removeClass( 'evf-hover' );
-					}
-				}
-			} );
-
 			$( '.evf-admin-grid' ).sortable({
 				items: '> .everest-forms-field',
 				delay  : 100,
@@ -986,7 +971,6 @@
 					$( event.target ).addClass( 'evf-item-hover' );
 					$( event.target ).closest( '.evf-admin-row' ).addClass( 'evf-hover' );
 					EVFPanelBuilder.checkEmptyGrid();
-
 				},
 				receive: function( event, ui ) {
 					if ( ui.sender.is( 'button' ) ) {
@@ -1013,6 +997,17 @@
 				containment: '#everest-forms-builder',
 				connectToSortable: '.evf-admin-grid'
 			}).disableSelection();
+
+			// Adapt hover behaviour on mouse event.
+			$( '.evf-admin-row' ).on( 'mouseenter mouseleave', function( event ) {
+				if ( 1 > event.buttons ) {
+					if ( 'mouseenter' === event.type ) {
+						$( this ).addClass( 'evf-hover' );
+					} else {
+						$( '.evf-admin-row' ).removeClass( 'evf-hover' );
+					}
+				}
+			} );
 
 			// Refresh the position of placeholders on drag scroll.
 			$( '.everest-forms-panel-content' ).on( 'scroll', function() {
