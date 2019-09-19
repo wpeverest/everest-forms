@@ -145,6 +145,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Tweak - Mouse cursor on draggable elements.
 * Tweak - Managed spacing after dropping the field.
 * Tweak - Captcha field question option design issue.
+* Tweak - Date/Time field format option design issue.
 * Tweak - Placeholder adding extra margin while dragging.
 
 = 1.5.4 - 25-08-2019 =
