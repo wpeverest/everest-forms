@@ -72,6 +72,7 @@
 				border: 1px solid #eee;
 			}
 		}
+
 		.plugin-card-bottom {
 			.status {
 				text-align: left;
@@ -553,6 +554,10 @@ body.everest-forms-builder-setup,
 			outline: none;
 			box-shadow: 0 0 0 2px lighten($everestforms, 35%);
 		}
+	}
+
+	.creafix {
+		height: auto;
 	}
 
 	// Toggle switch.
