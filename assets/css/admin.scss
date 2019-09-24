@@ -1207,7 +1207,7 @@ body.everest-forms-builder-setup,
 				margin: 0;
 				float: left;
 				padding-right: 30px;
-				width: calc(100% - 415px);
+				width: calc(100% - 505px);
 			}
 
 			.everest-forms-btn {
@@ -1218,7 +1218,7 @@ body.everest-forms-builder-setup,
 
 			.evf-forms-nav-right {
 				float: right;
-				width: 415px;
+				width: 505px;
 				text-align: right;
 				padding: 21px 30px 19px;
 
@@ -1307,6 +1307,17 @@ body.everest-forms-builder-setup,
 
 					&:hover {
 						background: darken($green, 10%);
+					}
+				}
+
+				.everest-forms-preview-button {
+					background: $color-white;
+					margin-left: 10px;
+					display: inline-block;
+					vertical-align: middle;
+
+					&:hover {
+						background: transparentize($color-white, 0.1)
 					}
 				}
 			}

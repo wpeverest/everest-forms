@@ -13,6 +13,15 @@ $form_data['form_enabled']  = isset( $form_data['form_enabled'] ) ? $form_data['
 // Get tabs for the builder panel.
 $tabs = apply_filters( 'everest_forms_builder_tabs_array', array() );
 
+// Get preview link.
+$preview_link = add_query_arg(
+	array(
+		'form_id'     => absint( $form_data['id'] ),
+		'evf_preview' => 'true',
+	),
+	home_url()
+);
+
 ?>
 <div id="everest-forms-builder" class="everest-forms">
 	<div class="everest-forms-overlay">
@@ -43,6 +52,7 @@ $tabs = apply_filters( 'everest_forms_builder_tabs_array', array() );
 						<span class="screen-reader-text"><?php esc_html_e( 'Copy shortcode', 'everest-forms' ); ?></span>
 					</button>
 				</div>
+				<a class="everest-forms-btn everest-forms-preview-button" href="<?php echo esc_url( $preview_link ); ?>" rel="bookmark" target="_blank"><?php esc_html_e( 'Preview', 'everest-forms' ); ?></a>
 				<button name="save_form" class="everest-forms-btn everest-forms-save-button" type="button" value="<?php esc_attr_e( 'Save', 'everest-forms' ); ?>"><?php esc_html_e( 'Save', 'everest-forms' ); ?></button>
 			</div>
 		</div>
