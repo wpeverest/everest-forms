@@ -70,7 +70,7 @@ Check [documentation](http://docs.wpeverest.com/docs/everest-forms/)
 
 * [Geolocation](https://wpeverest.com/wordpress-plugins/everest-forms/geolocation/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to collect geolocation data like IP, Country, Postal/Zip code along with the form submission.
 
-* [Multi-Part Forms](https://wpeverest.com/wordpress-plugins/everest-forms/multi-part-forms/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to make a stepwise form by breaking long or complex forms up into multiple parts/pages.
+* [Multi-Part Forms](https://wpeverest.com/wordpress-plugins/everest-forms/multi-part-forms/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to make a stepwise form by breaking long or complex forms up into multiple parts/pages. Check [Detail guide](https://wpeverest.com/blog/wordpress-multi-step-form/)
 
 * [Custom Captcha](https://wpeverest.com/wordpress-plugins/everest-forms/captcha/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to add custom questions or math captcha to your form and fight back against spam form submissions.
 
