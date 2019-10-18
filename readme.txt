@@ -4,7 +4,7 @@ Tags: contact form, form, form builder, contact, custom form
 Requires at least: 4.0
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 1.5.5
+Stable tag: 1.5.6
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -132,6 +132,11 @@ Bugs can be reported either in our support forum or preferably on the [Everest F
 Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/everest-forms/) :)
 
 == Changelog ==
+
+= 1.5.6 - 18-10-2019 =
+* Feature - Added form preview button inside builder area.
+* Fix - Submit button disable when multiple forms is present.
+* Fix - Undefined meta-key error on console while cloning HTML field.
 
 = 1.5.5 - 19-09-2019 =
 * Feature - Confirm Email option on Email Field.

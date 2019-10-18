@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 1.5.6 - 18-10-2019 =
+* Feature - Added form preview button inside builder area.
+* Fix - Submit button disable when multiple forms is present.
+* Fix - Undefined meta-key error on console while cloning HTML field.
+
 = 1.5.5 - 19-09-2019 =
 * Feature - Confirm Email option on Email Field.
 * Fix - Sortable Fields scrollable bug.
