@@ -45,7 +45,8 @@ Check [documentation](http://docs.wpeverest.com/docs/everest-forms/)
 * Quick Form Preview option
 * CSV exporter for entries
 * Provides two different form template design
-* Google Recaptcha Supported
+* Google Recaptcha V2 and V3 Supported
+* Spam protection via honeypot
 * Editable successful form submission message
 * Redirect option after submission
 * Editable Email Settings
@@ -54,7 +55,7 @@ Check [documentation](http://docs.wpeverest.com/docs/everest-forms/)
 
 ### Premium Features and Addons
 
-* 10 Advanced fields (Image upload, File upload, Hidden Field, Phone, Password, Custom HTML, Section Title, Signature Address, Country)
+* 11 Advanced fields: **Image upload, File upload, Hidden Field, Phone, Password, Custom HTML, Section Title, Signature, Address, Country, Rating**
 
 * [Style Customizer](https://wpeverest.com/wordpress-plugins/everest-forms/style-customizer/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to make form design changes like color, fonts, spacing, background, borders, alignments and much more without touching any code.
 
@@ -64,7 +65,7 @@ Check [documentation](http://docs.wpeverest.com/docs/everest-forms/)
 
 * [PDF Form Submission](https://wpeverest.com/wordpress-plugins/everest-forms/pdf-form-submission/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to generate digital PDF documents of any form submission to export or send a PDF copy of it via email attachment.
 
-* [PayPal Standard](https://wpeverest.com/wordpress-plugins/everest-forms/paypal-standard/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to connect your forms with PayPal to easily collect payments, donations, and online orders.
+* [PayPal Standard](https://wpeverest.com/wordpress-plugins/everest-forms/paypal-standard/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to connect your forms with PayPal to easily collect payments, donations, and online orders. Check our article on [accepting PayPal payment via WordPress Forms](https://wpeverest.com/blog/wordpress-form-payment-option-paypal/)
 
 * [Stripe](https://wpeverest.com/wordpress-plugins/everest-forms/stripe/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme) - Allows you to connect your forms with Stripe to easily collect credit card payments, donations, and online orders.
 
