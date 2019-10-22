@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Everest Forms package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Everest Forms 1.5.6\n"
+"Project-Id-Version: Everest Forms 1.5.7\n"
 "Report-Msgid-Bugs-To: https://github.com/wpeverest/everest-forms/issues\n"
-"POT-Creation-Date: 2019-10-18 09:31:58+00:00\n"
+"POT-Creation-Date: 2019-10-22 10:21:47+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1566,23 +1566,23 @@ msgstr ""
 msgid "No plugin specified."
 msgstr ""
 
-#: includes/class-evf-ajax.php:297
+#: includes/class-evf-ajax.php:296
 msgid "Sorry, you are not allowed to install plugins on this site."
 msgstr ""
 
-#: includes/class-evf-ajax.php:344
+#: includes/class-evf-ajax.php:342
 msgid "Unable to connect to the filesystem. Please confirm your credentials."
 msgstr ""
 
-#: includes/class-evf-ajax.php:384 includes/class-evf-ajax.php:426
+#: includes/class-evf-ajax.php:382 includes/class-evf-ajax.php:424
 msgid "Missing data"
 msgstr ""
 
-#: includes/class-evf-ajax.php:440
+#: includes/class-evf-ajax.php:438
 msgid "Connection missing"
 msgstr ""
 
-#: includes/class-evf-ajax.php:469
+#: includes/class-evf-ajax.php:467
 #. translators: %1$s - deactivation reason page; %2$d - deactivation url.
 msgid ""
 "Before we deactivate Everest Forms, would you care to <a href=\"%1$s\" "
