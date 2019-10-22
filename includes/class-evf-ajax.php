@@ -290,7 +290,6 @@ class EVF_AJAX {
 		$status = array(
 			'install' => 'plugin',
 			'slug'    => sanitize_key( wp_unslash( $_POST['slug'] ) ),
-			'name'    => wp_unslash( $_POST['name'] ),
 		);
 
 		if ( ! current_user_can( 'install_plugins' ) ) {
@@ -301,12 +300,11 @@ class EVF_AJAX {
 		include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
 		include_once ABSPATH . 'wp-admin/includes/plugin-install.php';
 
-		$key = get_option( 'everest-forms-pro_license_key' );
 		$api = json_decode(
 			EVF_Updater_Key_API::version(
 				array(
-					'license'   => $key,
-					'item_name' => $status['name'],
+					'license'   => get_option( 'everest-forms-pro_license_key' ),
+					'item_name' => sanitize_text_field( wp_unslash( $_POST['name'] ) ), // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 				)
 			)
 		);
