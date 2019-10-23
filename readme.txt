@@ -134,8 +134,9 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 1.5.7 - 22-10-2019 =
+= 1.5.7 - 24-10-2019 =
 * Tweak - Introduced entry ID params in filter hook for email attachment.
+* Deprecated - Function `evf_has_date_field` has been deprecated instead added `evf_form_has_field` function.
 
 = 1.5.6 - 18-10-2019 =
 * Feature - Added form preview button inside builder area.
