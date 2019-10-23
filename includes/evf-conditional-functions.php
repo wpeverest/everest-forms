@@ -31,3 +31,26 @@ if ( ! function_exists( 'is_ajax' ) ) {
 function evf_is_json( $string ) {
 	return is_object( json_decode( $string ) );
 }
+
+/**
+ * Checks if field exists within the form.
+ *
+ * @since 1.5.7
+ * @param int    $form_id Form ID.
+ * @param string $field   Field ID.
+ * @return bool  True if the field exists in the form.
+ */
+function evf_is_field_exists( $form_id, $field ) {
+	$form_obj  = EVF()->form->get( $form_id );
+	$form_data = ! empty( $form_obj->post_content ) ? evf_decode( $form_obj->post_content ) : '';
+
+	if ( ! empty( $form_data['form_fields'] ) ) {
+		foreach ( $form_data['form_fields'] as $form_field ) {
+			if ( $field === $form_field['type'] ) {
+				return true;
+			}
+		}
+	}
+
+	return false;
+}

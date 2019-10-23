@@ -197,6 +197,6 @@ function get_all_form_fields_by_form_id( $form_id ) {
  * @deprecated 1.5.7
  */
 function evf_has_date_field( $form_id ) {
-	evf_deprecated_function( 'evf_has_date_field', '1.5.7', 'evf_form_has_field' );
-	return evf_form_has_field( $form_id, 'date-time' );
+	evf_deprecated_function( 'evf_has_date_field', '1.5.7', 'evf_is_field_exists' );
+	return evf_is_field_exists( $form_id, 'date-time' );
 }

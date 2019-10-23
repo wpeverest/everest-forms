@@ -580,7 +580,7 @@ class EVF_Shortcode_Form {
 
 		wp_enqueue_script( 'everest-forms' );
 
-		if ( evf_form_has_field( $atts['id'], 'date-time' ) ) {
+		if ( evf_is_field_exists( $atts['id'], 'date-time' ) ) {
 			wp_enqueue_style( 'flatpickr' );
 			wp_enqueue_script( 'flatpickr' );
 		}
