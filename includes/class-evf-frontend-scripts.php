@@ -265,6 +265,7 @@ class EVF_Frontend_Scripts {
 			case 'everest-forms':
 				$params = array(
 					'ajax_url'                => EVF()->ajax_url(),
+					'disable_user_details'    => get_option( 'everest_forms_disable_user_details' ),
 					'everest_forms_data_save' => wp_create_nonce( 'everest_forms_data_save_nonce' ),
 					'i18n_messages_required'  => get_option( 'everest_forms_required_validation' ),
 					'i18n_messages_url'       => get_option( 'everest_forms_url_validation' ),

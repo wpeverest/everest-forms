@@ -1596,7 +1596,6 @@ body.everest-forms-builder-setup,
 						.everest-forms-field-option-row {
 							position: relative;
 							margin-bottom: 15px;
-							position: relative;
 
 							&:last-child {
 								margin-bottom: 0;
@@ -1612,6 +1611,18 @@ body.everest-forms-builder-setup,
 
 						.everest-forms-field-option {
 							display: none;
+						}
+
+						.everest-forms-field-option-phone {
+							.format-selected-smart {
+								display: none;
+							}
+
+							.format-selected-default {
+								.everest-forms-field-option-row {
+									margin-bottom: 15px;
+								}
+							}
 						}
 
 						.everest-forms-field-option-group {

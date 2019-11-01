@@ -291,7 +291,7 @@
 			});
 
 			// Real-time updates for Date/Time and Name "Format" option.
-			$builder.on( 'change', '.everest-forms-field-option-row-datetime_format select, .everest-forms-field-option-row-format select', function(e) {
+			$builder.on( 'change', '.everest-forms-field-option-row-datetime_format select, .everest-forms-field-option-row-phone_format select, .everest-forms-field-option-row-format select', function(e) {
 				var $this = $(this),
 					value = $this.val(),
 					id    = $this.parent().data( 'field-id' );
