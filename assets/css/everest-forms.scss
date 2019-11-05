@@ -55,6 +55,34 @@
 		margin-bottom: 30px;
 	}
 
+	label {
+		display: block;
+		font-weight: 600;
+		line-height: 1.7;
+		margin: 0 0 10px 0;
+		color: $color_gray-base;
+		font-size: $font_size-label;
+
+		.required {
+			color: $red;
+			font-weight: 700;
+			border: 0 !important;
+			text-decoration: none;
+		}
+
+		&.evf-error {
+			color: $red;
+			font-weight: 400;
+		}
+
+		&.everest-forms-field-sublabel {
+			font-size: 12px;
+			font-weight: 400;
+			line-height: 1.5;
+			margin: 0 0 10px 0;
+		}
+	}
+
 	input[type='text'],
 	input[type='date'],
 	input[type='date'],
@@ -206,12 +234,6 @@
 					}
 
 					&.everest-forms-invalid {
-						label {
-							&.evf-error {
-								color: $red;
-							}
-						}
-
 						> label {
 							color: $red;
 						}
@@ -285,33 +307,6 @@
 							vertical-align: inherit;
 						}
 					}
-				}
-			}
-
-			label {
-				display: block;
-				font-size: 14px;
-				font-weight: 600;
-				line-height: 1.7;
-				margin: 0 0 10px 0;
-				color: $color_gray-base;
-
-				.required {
-					color: $red;
-					font-weight: 700;
-					border: 0 !important;
-					text-decoration: none;
-				}
-
-				&.evf-error {
-					font-weight: 400;
-				}
-
-				&.everest-forms-field-sublabel {
-					font-size: 12px;
-					font-weight: 400;
-					line-height: 1.5;
-					margin: 0 0 10px 0;
 				}
 			}
 
