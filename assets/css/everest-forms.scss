@@ -42,6 +42,10 @@
 		box-sizing: border-box;
 	}
 
+	ul {
+		margin-left: 0;
+	}
+
 	.blockUI.blockOverlay {
 		position: relative;
 		@include loader();
