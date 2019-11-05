@@ -220,6 +220,7 @@
 							input[type='checkbox'],
 							input[type='radio'] {
 								padding: 0;
+								margin-top: 2px;
 								margin-right: 8px;
 							}
 
@@ -317,9 +318,7 @@
 			input {
 				&[type='checkbox'],
 				&[type='radio'] {
-					width: 14px;
-					height: 14px;
-					background-color: $color-white;
+					box-shadow: none;
 				}
 
 				&[type='checkbox'] {
@@ -328,7 +327,6 @@
 
 				&[type='radio'] {
 					appearance: radio;
-					border-radius: 10px;
 				}
 
 				&[type='checkbox']:checked {
