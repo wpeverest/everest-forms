@@ -42,6 +42,10 @@
 		box-sizing: border-box;
 	}
 
+	ul {
+		margin-left: 0;
+	}
+
 	.blockUI.blockOverlay {
 		position: relative;
 		@include loader();
@@ -53,6 +57,37 @@
 
 	.evf-container {
 		margin-bottom: 30px;
+	}
+
+	label {
+		display: block;
+		line-height: 1.7;
+		margin: 0 0 10px 0;
+		color: $color_gray-base;
+		font-size: $font_size-label;
+
+		.required {
+			color: $red;
+			font-weight: 700;
+			border: 0 !important;
+			text-decoration: none;
+		}
+
+		&.evf-field-label {
+			font-weight: 600;
+		}
+
+		&.evf-error {
+			color: $red;
+			font-weight: 400;
+		}
+
+		&.everest-forms-field-sublabel {
+			font-size: 12px;
+			font-weight: 400;
+			line-height: 1.5;
+			margin: 0 0 10px 0;
+		}
 	}
 
 	input[type='text'],
@@ -180,19 +215,14 @@
 
 							label,
 							input {
-								margin-bottom: 0;
-								display: inline-block;
-								vertical-align: middle;
+								margin: 0;
 							}
 
 							input[type='checkbox'],
 							input[type='radio'] {
 								padding: 0;
+								margin-top: 2px;
 								margin-right: 8px;
-							}
-
-							label {
-								font-weight: 500;
 							}
 						}
 					}
@@ -206,12 +236,6 @@
 					}
 
 					&.everest-forms-invalid {
-						label {
-							&.evf-error {
-								color: $red;
-							}
-						}
-
 						> label {
 							color: $red;
 						}
@@ -288,39 +312,10 @@
 				}
 			}
 
-			label {
-				display: block;
-				font-size: 14px;
-				font-weight: 600;
-				line-height: 1.7;
-				margin: 0 0 10px 0;
-				color: $color_gray-base;
-
-				.required {
-					color: $red;
-					font-weight: 700;
-					border: 0 !important;
-					text-decoration: none;
-				}
-
-				&.evf-error {
-					font-weight: 400;
-				}
-
-				&.everest-forms-field-sublabel {
-					font-size: 12px;
-					font-weight: 400;
-					line-height: 1.5;
-					margin: 0 0 10px 0;
-				}
-			}
-
 			input {
 				&[type='checkbox'],
 				&[type='radio'] {
-					width: 14px;
-					height: 14px;
-					background-color: $color-white;
+					box-shadow: none;
 				}
 
 				&[type='checkbox'] {
@@ -329,7 +324,6 @@
 
 				&[type='radio'] {
 					appearance: radio;
-					border-radius: 10px;
 				}
 
 				&[type='checkbox']:checked {
@@ -371,6 +365,7 @@
 			.evf-field-description {
 				line-height: 1.7;
 				margin-bottom: 10px;
+				font-size: $font_size-label;
 			}
 		}
 	}
