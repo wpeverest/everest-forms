@@ -61,7 +61,6 @@
 
 	label {
 		display: block;
-		font-weight: 600;
 		line-height: 1.7;
 		margin: 0 0 10px 0;
 		color: $color_gray-base;
@@ -72,6 +71,10 @@
 			font-weight: 700;
 			border: 0 !important;
 			text-decoration: none;
+		}
+
+		&.evf-field-label {
+			font-weight: 600;
 		}
 
 		&.evf-error {
@@ -220,10 +223,6 @@
 								padding: 0;
 								margin-top: 2px;
 								margin-right: 8px;
-							}
-
-							label {
-								font-weight: 500;
 							}
 						}
 					}
