@@ -436,18 +436,26 @@ class EVF_Emails {
 				) {
 					continue;
 				}
-
 				$field_val  = empty( $field['value'] ) && '0' !== $field['value'] ? '<em>' . __( '(empty)', 'everest-forms' ) . '</em>' : $field['value'];
 				$field_name = $field['name'];
 
+				if ( isset( $field_val['type'] ) && in_array( $field['type'], array( 'image-upload', 'file-upload', 'rating' ) ) ) {
+					if ( 'rating' === $field_val['type'] ) {
+						$value           = ! empty( $field_val['value'] ) ? $field_val['value'] : 0;
+						$number_of_stars = ! empty( $field_val['number_of_rating'] ) ? $field_val['number_of_rating'] : 5;
+						$field_val       = $value . '/' . $number_of_stars;
+
+					} else {
+						$field_val = empty( $field_val['file_url'] ) ? '<em>' . __( '(empty)', 'everest-forms' ) . '</em>' : $field_val;
+					}
+				}
+
 				if ( is_array( $field_val ) ) {
 					$field_html = array();
-
 					foreach ( $field_val as $meta_val ) {
 						$field_html[] = $meta_val;
 					}
-
-					$field_val = implode( ', ', $field_html );
+						$field_val = implode( ', ', $field_html );
 				}
 
 				if ( empty( $field_name ) ) {
