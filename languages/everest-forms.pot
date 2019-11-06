@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Everest Forms 1.5.7\n"
 "Report-Msgid-Bugs-To: https://github.com/wpeverest/everest-forms/issues\n"
-"POT-Creation-Date: 2019-10-22 10:21:47+00:00\n"
+"POT-Creation-Date: 2019-11-06 10:19:18+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -275,7 +275,7 @@ msgid "Form disabled message"
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:163
-#: includes/shortcodes/class-evf-shortcode-form.php:635
+#: includes/shortcodes/class-evf-shortcode-form.php:634
 msgid "This form is disabled."
 msgstr ""
 
@@ -1603,19 +1603,20 @@ msgid ""
 "reached"
 msgstr ""
 
-#: includes/class-evf-emails.php:440 includes/class-evf-emails.php:482
+#: includes/class-evf-emails.php:439 includes/class-evf-emails.php:449
+#: includes/class-evf-emails.php:490
 #: includes/fields/class-evf-field-checkbox.php:139
 #: includes/fields/class-evf-field-radio.php:139
 #: includes/fields/class-evf-field-select.php:88
 msgid "(empty)"
 msgstr ""
 
-#: includes/class-evf-emails.php:456 includes/class-evf-emails.php:498
+#: includes/class-evf-emails.php:464 includes/class-evf-emails.php:506
 #. translators: %d - field ID.
 msgid "Field ID #%d"
 msgstr ""
 
-#: includes/class-evf-emails.php:510
+#: includes/class-evf-emails.php:518
 msgid "An empty form was submitted."
 msgstr ""
 
