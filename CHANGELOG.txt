@@ -1,6 +1,6 @@
 == Changelog ==
 
-= 1.5.7 - xx-11-2019 =
+= 1.5.7 - 20-11-2019 =
 * Tweak - Design for smart phone field.
 * Tweak - CSS styling for label and radio/checkbox field.
 * Tweak - Introduced entry ID params in filter hook for email attachment.
