@@ -81,7 +81,7 @@ jQuery( function ( $ ) {
 				return false;
 			}
 
-			// prepend http:// if user missed that.
+			// Prepend URL field contents with http:// if user input doesn't contain a schema.
 			$( '.evf-field-url input[type=url]' ).change( function () {
 				var url = $( this ).val();
 				if ( ! url ) {
