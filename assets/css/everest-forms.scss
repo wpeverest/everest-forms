@@ -310,6 +310,14 @@
 							vertical-align: inherit;
 						}
 					}
+
+					.iti {
+						&.iti--allow-dropdown {
+							& + .evf-error {
+								margin-top: 10px;
+							}
+						}
+					}
 				}
 			}
 
