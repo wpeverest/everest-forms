@@ -265,6 +265,24 @@ abstract class EVF_Form_Fields {
 				$output .= '</select>';
 				break;
 
+			// Radio.
+			case 'radio':
+				$options = $args['options'];
+				$default = isset( $args['default'] ) ? $args['default'] : '';
+				$output  = '<label>' . $args['desc'];
+				if ( isset( $args['tooltip'] ) && ! empty( $args['tooltip'] ) ) {
+					$output .= ' ' . sprintf( '<i class="dashicons dashicons-editor-help everest-forms-help-tooltip" title="%s"></i></label>', esc_attr( $args['tooltip'] ) );
+				}
+				$output .= '<ul>';
+
+				foreach ( $options as $key => $option ) {
+					$output .= '<li>';
+					$output .= sprintf( '<label><input type="radio" class="widefat %s" id="everest-forms-field-option-%s-%s-%s" value="%s" name="form_fields[%s][%s]" %s %s>%s</label>', $class, $id, $slug, $key, $key, $id, $slug, $data, checked( $key, $default, false ), $option );
+					$output .= '</li>';
+				}
+				$output .= '</ul>';
+				break;
+
 		} // End switch().
 
 		if ( $echo ) {

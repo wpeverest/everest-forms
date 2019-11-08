@@ -98,7 +98,8 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	 * @param array $field Field Data.
 	 */
 	public function datetime_options( $field ) {
-		$format = ! empty( $field['datetime_format'] ) ? esc_attr( $field['datetime_format'] ) : 'date';
+		$format             = ! empty( $field['datetime_format'] ) ? esc_attr( $field['datetime_format'] ) : 'date';
+		$field['date_mode'] = isset( $field['date_range'] ) && '1' === $field['date_range'] ? $field['date_range'] : $field['date_mode'];
 
 		$this->field_element(
 			'label',
@@ -142,14 +143,19 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				false
 			);
 
-			$current_date_default = $this->field_element(
-				'checkbox',
+			$current_date_mode = $this->field_element(
+				'radio',
 				$field,
 				array(
-					'slug'    => 'date_default',
-					'value'   => isset( $field['date_default'] ) ? $field['date_default'] : '',
-					'desc'    => __( 'Default to current date.', 'everest-forms' ),
-					'tooltip' => __( 'Check this option to set current date as default.', 'everest-forms' ),
+					'slug'    => 'date_mode',
+					'default' => isset( $field['date_mode'] ) ? $field['date_mode'] : 'single',
+					'desc'    => __( 'Date Mode', 'everest-forms' ),
+					'tooltip' => __( 'Select your desire date mode.', 'everest-forms' ),
+					'options' => array(
+						'single'   => 'Single',
+						'range'    => 'Range',
+						'multiple' => 'Multiple',
+					),
 				),
 				false
 			);
@@ -166,9 +172,21 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				false
 			);
 
+			$current_date_default = $this->field_element(
+				'checkbox',
+				$field,
+				array(
+					'slug'    => 'date_default',
+					'value'   => isset( $field['date_default'] ) ? $field['date_default'] : '',
+					'desc'    => __( 'Default to current date.', 'everest-forms' ),
+					'tooltip' => __( 'Check this option to set current date as default.', 'everest-forms' ),
+				),
+				false
+			);
+
 			$args = array(
 				'slug'    => 'date_format',
-				'content' => $date_format_label . $date_format_select . '<div class="inline">' . $current_date_default . '</div>' . '<div class="inline">' . $current_date_range . '</div>',
+				'content' => $date_format_label . $date_format_select . '<div class="everest-forms-checklist everest-forms-checklist-inline">' . $current_date_mode . '</div>' . '<div class="inline">' . $current_date_default . '</div>',
 			);
 			$this->field_element( 'row', $field, $args );
 
@@ -249,7 +267,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 
 			// Input primary: data-mode.
 			if ( 'time' !== $field['datetime_format'] ) {
-				$properties['inputs']['primary']['attr']['data-mode'] = isset( $field['date_range'] ) ? 'range' : 'single';
+				$properties['inputs']['primary']['attr']['data-mode'] = isset( $field['date_range'] ) ? 'multiple' : 'single';
 			}
 			// Input primary: data-date-format and value.
 			switch ( $field['datetime_format'] ) {
