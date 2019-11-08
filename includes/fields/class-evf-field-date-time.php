@@ -267,7 +267,11 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 
 			// Input primary: data-mode.
 			if ( 'time' !== $field['datetime_format'] ) {
-				$properties['inputs']['primary']['attr']['data-mode'] = isset( $field['date_range'] ) ? 'multiple' : 'single';
+				if ( isset( $field['date_range'] ) && '1' === $field['date_range'] ) {
+					$properties['inputs']['primary']['attr']['data-mode'] = 'range';
+				} else {
+					$properties['inputs']['primary']['attr']['data-mode'] = isset( $field['date_mode'] ) ? $field['date_mode'] : 'single';
+				}
 			}
 			// Input primary: data-date-format and value.
 			switch ( $field['datetime_format'] ) {
