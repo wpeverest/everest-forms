@@ -309,9 +309,15 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				false
 			);
 
+		if ( isset( $field['enable_min_max'] ) && '1' === $field['enable_min_max'] ) {
+			$class_name = '';
+		} else {
+			$class_name = 'everest-forms-hidden';
+		}
+
 			$args = array(
 				'slug'    => 'date_format',
-				'content' => $date_format_label . $date_format_select . $date_localization_label . $date_localization_select . '<div class="everest-forms-checklist everest-forms-checklist-inline">' . $current_date_mode . '</div><div class="everest-forms-current-date-format">' . $current_date_default . '</div><div class="everest-forms-min-max-date-format">' . $enable_min_max . '</div><div class="everest-forms-min-max-date-option everest-forms-hidden">' . $min_date_label . $min_date . $max_date_label . $max_date . '</div>',
+				'content' => $date_format_label . $date_format_select . $date_localization_label . $date_localization_select . '<div class="everest-forms-checklist everest-forms-checklist-inline">' . $current_date_mode . '</div><div class="everest-forms-current-date-format">' . $current_date_default . '</div><div class="everest-forms-min-max-date-format">' . $enable_min_max . '</div><div class="everest-forms-min-max-date-option ' . $class_name . '">' . $min_date_label . $min_date . $max_date_label . $max_date . '</div>',
 			);
 			$this->field_element( 'row', $field, $args );
 

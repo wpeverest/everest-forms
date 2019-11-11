@@ -1453,6 +1453,14 @@ jQuery( function ( $ ) {
 		}
 	});
 
+	$( document ).on('click', '.everest-forms-min-max-date-format input', function() {
+		if( $(this).is(':checked')) {
+			$(".everest-forms-min-max-date-option").removeClass('everest-forms-hidden');
+		} else {
+			$(".everest-forms-min-max-date-option").addClass('everest-forms-hidden');
+		}
+	});
+
 	function get_all_available_field( allowed_field, type , el ) {
 		var all_fields_without_email = [];
 		var all_fields = [];
