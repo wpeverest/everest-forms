@@ -49,6 +49,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	 * Hook in tabs.
 	 */
 	public function init_hooks() {
+		add_action( 'everest_forms_shortcode_scripts', array( $this, 'load_assets' ) );
 		add_filter( 'everest_forms_field_properties_' . $this->type, array( $this, 'field_properties' ), 5, 3 );
 	}
 
@@ -160,14 +161,84 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				false
 			);
 
-			$current_date_range = $this->field_element(
-				'checkbox',
+			$date_localization_label = $this->field_element(
+				'label',
 				$field,
 				array(
-					'slug'    => 'date_range',
-					'value'   => isset( $field['date_range'] ) ? $field['date_range'] : '',
-					'desc'    => __( 'Enable range', 'everest-forms' ),
-					'tooltip' => __( 'Check this option to enable date range mode.', 'everest-forms' ),
+					'slug'    => 'date_localization',
+					'value'   => __( 'Date Localization', 'everest-forms' ),
+					'tooltip' => __( 'Choose a desire date localization to display.', 'everest-forms' ),
+				),
+				false
+			);
+
+			$date_localization_select = $this->field_element(
+				'select',
+				$field,
+				array(
+					'slug'    => 'date_localization',
+					'value'   => isset( $field['date_localization'] ) ? $field['date_localization'] : 'en',
+					'options' => array(
+						'en'    => 'English',
+						'ar'    => 'Arabic',
+						'at'    => 'Austria',
+						'az'    => 'Azerbaijan',
+						'be'    => 'Belarusian',
+						'bg'    => 'Bulgarian',
+						'bn'    => 'Bangla',
+						'bs'    => 'Bosnian',
+						'cat'   => 'Catalan',
+						'cs'    => 'Czech',
+						'cy'    => 'Welsh',
+						'da'    => 'Danish',
+						'de'    => 'German',
+						'eo'    => 'Esperanto',
+						'es'    => 'Spanish',
+						'et'    => 'Estonian',
+						'fa'    => 'Persian',
+						'fi'    => 'Finnish',
+						'fo'    => 'Faroese',
+						'fr'    => 'French',
+						'ga'    => 'Irish',
+						'gr'    => 'Greek',
+						'he'    => 'Hebrew',
+						'hi'    => 'Hindi',
+						'hr'    => 'Croatian',
+						'hu'    => 'Hungarian',
+						'id'    => 'Indonesian',
+						'is'    => 'Icelandic',
+						'it'    => 'Italian',
+						'ja'    => 'Japanese',
+						'ka'    => 'Georgian',
+						'ko'    => 'Korean',
+						'km'    => 'Khmer',
+						'kz'    => 'Kazakh',
+						'lt'    => 'Lithuanian',
+						'lv'    => 'Latvian',
+						'mk'    => 'Macedonian',
+						'mn'    => 'Mongolian',
+						'ms'    => 'Malaysian',
+						'my'    => 'Burmese',
+						'nl'    => 'Dutch',
+						'no'    => 'Norwegian',
+						'pa'    => 'Punjabi',
+						'pl'    => 'Polish',
+						'pt'    => 'Portuguese',
+						'ro'    => 'Romanian',
+						'ru'    => 'Russian',
+						'si'    => 'Sinhala',
+						'sk'    => 'Slovak',
+						'sl'    => 'Slovenian',
+						'sq'    => 'Albanian',
+						'sr'    => 'Serbian',
+						'sv'    => 'Swedish',
+						'th'    => 'Thai',
+						'tr'    => 'Turkish',
+						'uk'    => 'Ukrainian',
+						'vn'    => 'Vietnamese',
+						'zh'    => 'Mandarin',
+						'zh_tw' => 'MandarinTraditional',
+					),
 				),
 				false
 			);
@@ -186,7 +257,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 
 			$args = array(
 				'slug'    => 'date_format',
-				'content' => $date_format_label . $date_format_select . '<div class="everest-forms-checklist everest-forms-checklist-inline">' . $current_date_mode . '</div>' . '<div class="inline">' . $current_date_default . '</div>',
+				'content' => $date_format_label . $date_format_select . $date_localization_label . $date_localization_select . '<div class="everest-forms-checklist everest-forms-checklist-inline">' . $current_date_mode . '</div>' . '<div class="inline">' . $current_date_default . '</div>',
 			);
 			$this->field_element( 'row', $field, $args );
 
@@ -272,6 +343,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				} else {
 					$properties['inputs']['primary']['attr']['data-mode'] = isset( $field['date_mode'] ) ? $field['date_mode'] : 'single';
 				}
+				$properties['inputs']['primary']['attr']['data-locale'] = isset( $field['date_localization'] ) ? $field['date_localization'] : 'en';
 			}
 			// Input primary: data-date-format and value.
 			switch ( $field['datetime_format'] ) {
@@ -341,5 +413,25 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			evf_html_attributes( $primary['id'], $class, $primary['data'], $primary['attr'] ),
 			esc_html( $primary['required'] )
 		);
+	}
+
+	/**
+	 * Register/queue frontend scripts.
+	 */
+	public static function load_assets( $atts ) {
+		$form_id           = isset( $atts['id'] ) ? wp_unslash( $atts['id'] ) : ''; // WPCS: CSRF ok, input var ok, sanitization ok.
+		$form_obj          = EVF()->form->get( $form_id );
+		$form_data         = ! empty( $form_obj->post_content ) ? evf_decode( $form_obj->post_content ) : '';
+		$data_localization = 'en';
+
+		if ( ! empty( $form_data['form_fields'] ) ) {
+			foreach ( $form_data['form_fields'] as $form_field ) {
+				if ( 'date-time' === $form_field['type'] ) {
+					$data_localization = $form_field['date_localization'];
+				}
+			}
+		}
+		wp_register_script( 'flatpickr-localization', 'https://npmcdn.com/flatpickr/dist/l10n/' . $data_localization . '.js' );
+		wp_enqueue_script( 'flatpickr-localization', 'https://npmcdn.com/flatpickr/dist/l10n/' . $data_localization . '.js' );
 	}
 }
