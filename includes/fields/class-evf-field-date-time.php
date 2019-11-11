@@ -100,6 +100,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	 */
 	public function datetime_options( $field ) {
 		$format             = ! empty( $field['datetime_format'] ) ? esc_attr( $field['datetime_format'] ) : 'date';
+		$field['date_mode'] = isset( $field['date_mode'] ) ? $field['date_mode'] : 'single';
 		$field['date_mode'] = isset( $field['date_range'] ) && '1' === $field['date_range'] ? 'range' : $field['date_mode'];
 
 		$this->field_element(
