@@ -284,6 +284,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				array(
 					'slug'  => 'min_date',
 					'value' => isset( $field['min_date'] ) ? $field['min_date'] : '',
+					'class' => 'everest-forms-min-date',
 				),
 				false
 			);
@@ -305,6 +306,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				array(
 					'slug'  => 'max_date',
 					'value' => isset( $field['max_date'] ) ? $field['max_date'] : '',
+					'class' => 'everest-forms-max-date',
 				),
 				false
 			);
@@ -403,7 +405,9 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				} else {
 					$properties['inputs']['primary']['attr']['data-mode'] = isset( $field['date_mode'] ) ? $field['date_mode'] : 'single';
 				}
-				$properties['inputs']['primary']['attr']['data-locale'] = isset( $field['date_localization'] ) ? $field['date_localization'] : 'en';
+				$properties['inputs']['primary']['attr']['data-locale']   = isset( $field['date_localization'] ) ? $field['date_localization'] : 'en';
+				$properties['inputs']['primary']['attr']['data-min-date'] = ! empty( $field['min_date'] ) ? $field['min_date'] : '';
+				$properties['inputs']['primary']['attr']['data-max-date'] = ! empty( $field['max_date'] ) ? $field['max_date'] : '';
 			}
 			// Input primary: data-date-format and value.
 			switch ( $field['datetime_format'] ) {
