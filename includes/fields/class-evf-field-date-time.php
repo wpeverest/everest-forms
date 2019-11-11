@@ -255,9 +255,63 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				false
 			);
 
+			$enable_min_max = $this->field_element(
+				'checkbox',
+				$field,
+				array(
+					'slug'    => 'enable_min_max',
+					'value'   => isset( $field['enable_min_max'] ) ? $field['enable_min_max'] : '',
+					'desc'    => __( 'Enable Min Max date.', 'everest-forms' ),
+					'tooltip' => __( 'Check this option to set min max date.', 'everest-forms' ),
+				),
+				false
+			);
+
+			$min_date_label = $this->field_element(
+				'label',
+				$field,
+				array(
+					'slug'    => 'min_date',
+					'value'   => esc_html__( 'Minimun Date', 'everest-forms' ),
+					'tooltip' => __( 'Select minium date.', 'everest-forms' ),
+				),
+				false
+			);
+
+			$min_date = $this->field_element(
+				'text',
+				$field,
+				array(
+					'slug'  => 'min_date',
+					'value' => isset( $field['min_date'] ) ? $field['min_date'] : '',
+				),
+				false
+			);
+
+			$max_date_label = $this->field_element(
+				'label',
+				$field,
+				array(
+					'slug'    => 'max_date',
+					'value'   => esc_html__( 'Maxium Date', 'everest-forms' ),
+					'tooltip' => __( 'Select maximum date.', 'everest-forms' ),
+				),
+				false
+			);
+
+			$max_date = $this->field_element(
+				'text',
+				$field,
+				array(
+					'slug'  => 'max_date',
+					'value' => isset( $field['max_date'] ) ? $field['max_date'] : '',
+				),
+				false
+			);
+
 			$args = array(
 				'slug'    => 'date_format',
-				'content' => $date_format_label . $date_format_select . $date_localization_label . $date_localization_select . '<div class="everest-forms-checklist everest-forms-checklist-inline">' . $current_date_mode . '</div>' . '<div class="inline">' . $current_date_default . '</div>',
+				'content' => $date_format_label . $date_format_select . $date_localization_label . $date_localization_select . '<div class="everest-forms-checklist everest-forms-checklist-inline">' . $current_date_mode . '</div>' . '<div class="inline">' . $current_date_default . '</div><div class="inline">' . $enable_min_max . '</div>' . $min_date_label . $min_date . $max_date_label . $max_date,
 			);
 			$this->field_element( 'row', $field, $args );
 
