@@ -134,6 +134,9 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
+= 1.5.8 - xx-xx-2019 =
+* Tweak - Smart phone field enhancement.
+
 = 1.5.7 - 20-11-2019 =
 * Tweak - Design for smart phone field.
 * Tweak - CSS styling for label and radio/checkbox field.
