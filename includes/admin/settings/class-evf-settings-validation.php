@@ -34,7 +34,8 @@ class EVF_Settings_Validation extends EVF_Settings_Page {
 	 */
 	public function get_settings() {
 		$settings = apply_filters(
-			'everest_forms_validation_settings', array(
+			'everest_forms_validation_settings',
+			array(
 				array(
 					'title' => __( 'Validation Messages', 'everest-forms' ),
 					'type'  => 'title',
@@ -67,6 +68,15 @@ class EVF_Settings_Validation extends EVF_Settings_Page {
 					'desc_tip' => true,
 					'css'      => 'min-width: 350px;',
 					'default'  => __( 'Please enter a valid email address.', 'everest-forms' ),
+				),
+				array(
+					'title'    => __( 'Email Suggestion', 'everest-forms' ),
+					'desc'     => __( 'Enter the message for the valid email suggestion', 'everest-forms' ),
+					'id'       => 'everest_forms_email_suggestion',
+					'type'     => 'text',
+					'desc_tip' => true,
+					'css'      => 'min-width: 350px;',
+					'default'  => __( 'Did you mean {suggestion}?', 'everest-forms' ),
 				),
 				array(
 					'title'    => __( 'Number', 'everest-forms' ),

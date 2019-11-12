@@ -580,9 +580,15 @@ class EVF_Shortcode_Form {
 
 		wp_enqueue_script( 'everest-forms' );
 
+		// Load jQuery flatpickr libraries. https://github.com/flatpickr/flatpickr.
 		if ( evf_is_field_exists( $atts['id'], 'date-time' ) ) {
 			wp_enqueue_style( 'flatpickr' );
 			wp_enqueue_script( 'flatpickr' );
+		}
+
+		// Load jQuery mailcheck library - https://github.com/mailcheck/mailcheck.
+		if ( evf_is_field_exists( $atts['id'], 'email' ) && (bool) apply_filters( 'everest_forms_mailcheck_enabled', true ) ) {
+			wp_enqueue_script( 'mailcheck' );
 		}
 
 		$atts = shortcode_atts(

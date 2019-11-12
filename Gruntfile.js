@@ -72,8 +72,13 @@ module.exports = function( grunt ){
 			},
 			vendor: {
 				files: {
+					'<%= dirs.js %>/inputmask/jquery.inputmask.bundle.min.js': [ '<%= dirs.js %>/inputmask/jquery.inputmask.bundle.js' ],
 					'<%= dirs.js %>/jquery-blockui/jquery.blockUI.min.js': [ '<%= dirs.js %>/jquery-blockui/jquery.blockUI.js' ],
+					'<%= dirs.js %>/jquery-confirm/jquery-confirm.min.js': [ '<%= dirs.js %>/jquery-confirm/jquery-confirm.js' ],
+					'<%= dirs.js %>/jquery-validate/jquery.validate.min.js': [ '<%= dirs.js %>/jquery-validate/jquery.validate.js' ],
 					'<%= dirs.js %>/flatpickr/flatpickr.min.js': ['<%= dirs.js %>/flatpickr/flatpickr.js'],
+					'<%= dirs.js %>/mailcheck/mailcheck.min.js': ['<%= dirs.js %>/mailcheck/mailcheck.js'],
+					'<%= dirs.js %>/perfect-scrollbar/perfect-scrollbar.min.js': ['<%= dirs.js %>/perfect-scrollbar/perfect-scrollbar.js'],
 					'<%= dirs.js %>/selectWoo/selectWoo.min.js': ['<%= dirs.js %>/selectWoo/selectWoo.js'],
 					'<%= dirs.js %>/tooltipster/tooltipster.bundle.min.js': [ '<%= dirs.js %>/tooltipster/tooltipster.bundle.js' ]
 				}

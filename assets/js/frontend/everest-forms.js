@@ -11,6 +11,7 @@ jQuery( function ( $ ) {
 		$everest_form: $( 'form.everest-form' ),
 		init: function() {
 			this.init_inputMask();
+			this.init_mailcheck();
 			this.init_datepicker();
 			this.load_validation();
 			this.submission_scroll();
@@ -19,9 +20,52 @@ jQuery( function ( $ ) {
 			this.$everest_form.on( 'input validate change', '.input-text, select, input:checkbox, input:radio', this.validate_field );
 		},
 		init_inputMask: function() {
+			// Only load if jQuery inputMask library exists.
 			if ( typeof $.fn.inputmask !== 'undefined' ) {
 				$( '.evf-masked-input' ).inputmask();
 			}
+		},
+		init_mailcheck: function() {
+			// Only load if Mailcheck library exists and enabled.
+			if ( typeof $.fn.mailcheck === 'undefined' || ! everest_forms_params.mailcheck_enabled ) {
+				return;
+			}
+
+			// Setup default domains for Mailcheck.
+			if ( everest_forms_params.mailcheck_domains.length > 0 ) {
+				Mailcheck.defaultDomains = Mailcheck.defaultDomains.concat( everest_forms_params.mailcheck_domains );
+			}
+
+			// Setup default top level domains for Mailcheck.
+			if ( everest_forms_params.mailcheck_toplevel_domains.length > 0 ) {
+				Mailcheck.defaultTopLevelDomains = Mailcheck.defaultTopLevelDomains.concat( everest_forms_params.mailcheck_toplevel_domains );
+			}
+
+			// Mailcheck suggestion.
+			$( document ).on( 'blur', '.evf-field-email input', function() {
+				var $el = $( this ),
+					id  = $el.attr( 'id' );
+
+				$el.mailcheck( {
+					suggested: function( el, suggestion ) {
+						$( '#' + id + '_suggestion' ).remove();
+						var suggestion_msg = everest_forms_params.i18n_messages_email_suggestion.replace( '{suggestion}', '<a href="#" class="mailcheck-suggestion" data-id="' + id + '" title="' + everest_forms_params.i18n_messages_email_suggestion_title + '">' + suggestion.full + '</a>' );
+						$( el ).after( '<label class="evf-error mailcheck-error" id="' + id + '_suggestion">' + suggestion_msg + '</label>' );
+					},
+					empty: function() {
+						$( '#' + id + '_suggestion' ).remove();
+					},
+				} );
+			} );
+
+			// Apply Mailcheck suggestion.
+			$( document ).on( 'click', '.evf-field-email .mailcheck-suggestion', function( e ) {
+				var $el = $( this ),
+					id  = $el.attr( 'data-id' );
+				e.preventDefault();
+				$( '#' + id ).val( $el.text() );
+				$el.parent().remove();
+			} );
 		},
 		init_datepicker: function () {
 			var evfDateField = $( '.evf-field-date-time' );
