@@ -184,6 +184,7 @@
 	display: inline-block;
 	padding: 5px 15px;
 	margin-bottom: 15px;
+	border-radius: 4px;
 	min-width: 500px;
 
 	&::before {
@@ -1139,13 +1140,16 @@ body.everest-forms-builder-setup,
 			color: $color_gray-normal;
 			background: $color-white;
 			border: 1px solid $color_gray-lighten;
-			height: 24px;
-			width: 24px;
+			height: 30px;
+			width: 30px;
 			display: flex;
 			align-items: center;
 			justify-content: center;
 
 			.dashicons {
+				width: 16px;
+				height: 16px;
+				font-size: 16px;
 				line-height: 1.1;
 			}
 
@@ -2607,12 +2611,6 @@ body.everest-forms-builder-setup,
 							color: $color_gray-base;
 							display: inline-block;
 							vertical-align: middle;
-
-							.dashicons {
-								font-size: 16px;
-								height: 16px;
-								width: 16px;
-							}
 
 							&.add,
 							&.remove,
