@@ -23,7 +23,7 @@ class EVF_Field_URL extends EVF_Form_Fields {
 		$this->order    = 10;
 		$this->group    = 'advanced';
 		$this->settings = array(
-			'basic-options' => array(
+			'basic-options'    => array(
 				'field_options' => array(
 					'label',
 					'meta',
@@ -75,14 +75,14 @@ class EVF_Field_URL extends EVF_Form_Fields {
 	 * @param array $form_data
 	 */
 	public function field_display( $field, $deprecated, $form_data ) {
-
- 		// Define data.
+		// Define data.
 		$primary = $field['properties']['inputs']['primary'];
+
 		// Primary field.
-		printf( '<input type="url" %s %s>',
+		printf(
+			'<input type="url" %s %s>',
 			evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ),
-			$primary['required']
+			esc_attr( $primary['required'] )
 		);
 	}
 }
-

@@ -75,15 +75,14 @@ class EVF_Field_First_Name extends EVF_Form_Fields {
 	 * @param array $form_data
 	 */
 	public function field_display( $field, $deprecated, $form_data ) {
-
 		// Define data.
 		$primary = $field['properties']['inputs']['primary'];
+
 		// Primary field.
 		printf(
 			'<input type="text" %s %s>',
 			evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ),
-			$primary['required']
+			esc_attr( $primary['required'] )
 		);
 	}
 }
-

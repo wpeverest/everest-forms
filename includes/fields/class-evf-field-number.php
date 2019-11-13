@@ -232,7 +232,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 		printf(
 			'<input type="number" %s %s />',
 			evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ),
-			esc_html( $primary['required'] )
+			esc_attr( $primary['required'] )
 		);
 	}
 
