@@ -135,6 +135,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 == Changelog ==
 
 = 1.5.8 - xx-xx-2019 =
+* Fix - Selection of radio and checkbox on label click.
 * Tweak - Smart phone field design enhancement.
 * Added - Default value for "Paragraph text" field.
 

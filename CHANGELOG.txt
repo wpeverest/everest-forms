@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 1.5.8 - xx-xx-2019 =
+* Fix - Selection of radio and checkbox on label click.
+* Tweak - Smart phone field design enhancement.
+* Added - Default value for "Paragraph text" field.
+
 = 1.5.7 - 20-11-2019 =
 * Tweak - Design for smart phone field.
 * Tweak - CSS styling for label and radio/checkbox field.
