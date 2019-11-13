@@ -1136,7 +1136,9 @@ body.everest-forms-builder-setup,
 		}
 
 		.add,
-		.remove {
+		.remove,
+		.addPayment,
+		.removePayment {
 			color: $color_gray-normal;
 			background: $color-white;
 			border: 1px solid $color_gray-lighten;
@@ -1158,7 +1160,8 @@ body.everest-forms-builder-setup,
 			}
 		}
 
-		.add {
+		.add,
+		.addPayment {
 			border-radius: 4px 0 0 4px;
 
 			&:hover {
@@ -1167,7 +1170,8 @@ body.everest-forms-builder-setup,
 			}
 		}
 
-		.remove {
+		.remove,
+		.removePayment {
 			border-left: none;
 			border-radius: 0 4px 4px 0;
 
@@ -2652,7 +2656,13 @@ body.everest-forms-builder-setup,
 						border: 1px solid $color_gray-lighten;
 
 						input[type='text'] {
-							width: 89%;
+							width: calc(100% - 39px);
+						}
+
+						.add,
+						.remove {
+							border-radius: 4px;
+							border: 1px solid $color_gray-lighten;
 						}
 
 						.answer-wrap {
