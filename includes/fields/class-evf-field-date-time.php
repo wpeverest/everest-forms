@@ -492,7 +492,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 		if ( ! empty( $form_data['form_fields'] ) ) {
 			foreach ( $form_data['form_fields'] as $form_field ) {
 				if ( 'date-time' === $form_field['type'] ) {
-					$data_localization = $form_field['date_localization'];
+					$data_localization = isset( $form_field['date_localization'] ) ? $form_field['date_localization'] : 'en';
 				}
 			}
 		}
