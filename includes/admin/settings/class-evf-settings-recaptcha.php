@@ -35,8 +35,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 	public function get_settings() {
 		$recaptcha_type = get_option( 'everest_forms_recaptcha_type', 'v2' );
 		$invisible      = get_option( 'everest_forms_recaptcha_v2_invisible', 'no' );
-		echo '<pre>' . print_r( $invisible, true ) . '</pre>';
-		$settings = apply_filters(
+		$settings       = apply_filters(
 			'everest_forms_recaptcha_settings',
 			array(
 				array(
