@@ -169,6 +169,11 @@ class EVF_Frontend_Scripts {
 				'deps'    => array( 'jquery' ),
 				'version' => '4.5.1',
 			),
+			'mailcheck'       => array(
+				'src'     => self::get_asset_url( 'assets/js/mailcheck/mailcheck' . $suffix . '.js' ),
+				'deps'    => array( 'jquery' ),
+				'version' => '1.1.2',
+			),
 			'jquery-validate' => array(
 				'src'     => self::get_asset_url( 'assets/js/jquery-validate/jquery.validate' . $suffix . '.js' ),
 				'deps'    => array( 'jquery' ),
@@ -264,13 +269,18 @@ class EVF_Frontend_Scripts {
 		switch ( $handle ) {
 			case 'everest-forms':
 				$params = array(
-					'ajax_url'                => EVF()->ajax_url(),
-					'disable_user_details'    => get_option( 'everest_forms_disable_user_details' ),
-					'everest_forms_data_save' => wp_create_nonce( 'everest_forms_data_save_nonce' ),
-					'i18n_messages_required'  => get_option( 'everest_forms_required_validation' ),
-					'i18n_messages_url'       => get_option( 'everest_forms_url_validation' ),
-					'i18n_messages_email'     => get_option( 'everest_forms_email_validation' ),
-					'i18n_messages_number'    => get_option( 'everest_forms_number_validation' ),
+					'ajax_url'                             => EVF()->ajax_url(),
+					'disable_user_details'                 => get_option( 'everest_forms_disable_user_details' ),
+					'everest_forms_data_save'              => wp_create_nonce( 'everest_forms_data_save_nonce' ),
+					'i18n_messages_required'               => get_option( 'everest_forms_required_validation' ),
+					'i18n_messages_url'                    => get_option( 'everest_forms_url_validation' ),
+					'i18n_messages_email'                  => get_option( 'everest_forms_email_validation' ),
+					'i18n_messages_email_suggestion'       => get_option( 'everest_forms_email_suggestion', esc_html__( 'Did you mean {suggestion}?', 'everest-forms' ) ),
+					'i18n_messages_email_suggestion_title' => esc_attr__( 'Click to accept this suggestion.', 'everest-forms' ),
+					'i18n_messages_number'                 => get_option( 'everest_forms_number_validation' ),
+					'mailcheck_enabled'                    => (bool) apply_filters( 'everest_forms_mailcheck_enabled', true ),
+					'mailcheck_domains'                    => array_map( 'sanitize_text_field', (array) apply_filters( 'everest_forms_mailcheck_domains', array() ) ),
+					'mailcheck_toplevel_domains'           => array_map( 'sanitize_text_field', (array) apply_filters( 'everest_forms_mailcheck_toplevel_domains', array( 'dev' ) ) ),
 				);
 				break;
 			default:
