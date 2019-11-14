@@ -4313,11 +4313,11 @@ img.ui-datepicker-trigger {
 
 			.everest-forms-nav-wrapper {
 				nav.evf-nav-tab-wrapper {
-					width: calc(100% - 185px);
+					width: calc(100% - 269px);
 				}
 
 				.evf-forms-nav-right {
-					width: 185px;
+					width: 269px;
 
 					.evf-shortcode-field {
 						input {
@@ -4436,19 +4436,16 @@ img.ui-datepicker-trigger {
 
 			.everest-forms-nav-wrapper {
 				nav.evf-nav-tab-wrapper {
-					width: calc(100% - 115px);
+					width: calc(100% - 207px);
 				}
 
 				.evf-forms-nav-right {
-					width: 115px;
+					width: 207px;
+					margin-top: 10px;
 					padding: 9px 17px;
 
 					.evf-shortcode-field {
 						display: none;
-					}
-
-					.everest-forms-save-button {
-						margin: 12px 15px 0 5px;
 					}
 				}
 			}
