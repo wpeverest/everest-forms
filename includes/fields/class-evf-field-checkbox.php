@@ -198,14 +198,14 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 
 			printf( '<li class="choice-%d depth-%d">', $key, $depth );
 
-			// Checkbox elements
+			// Checkbox elements.
 			printf(
 				'<input type="checkbox" value="%s" %s %s>',
 				esc_attr( $val ),
-				evf_html_attributes( $id, $primary['class'], $primary['data'], $primary['attr'] ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-				$primary['required'] // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				evf_html_attributes( $id, $primary['class'], $primary['data'], $primary['attr'] ),
+				esc_attr( $primary['required'] )
 			);
-			printf( '<label class="everest-forms-field-label-inline" for="everest-forms-%d-field_%s_%d">%s</label>', $form_id, $field['id'], $key, wp_kses_post( $choice['label'] ) );
+			printf( '<label class="everest-forms-field-label-inline" for="evf-%d-field_%s_%d">%s</label>', $form_id, $field['id'], $key, wp_kses_post( $choice['label'] ) );
 
 			echo '</li>';
 		}
@@ -307,4 +307,3 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 		EVF()->task->form_fields[ $field_id ] = $data;
 	}
 }
-

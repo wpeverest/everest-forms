@@ -317,7 +317,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 		printf(
 			'<input type="text" %s %s >',
 			evf_html_attributes( $primary['id'], $class, $primary['data'], $primary['attr'] ),
-			esc_html( $primary['required'] )
+			esc_attr( $primary['required'] )
 		);
 	}
 }
