@@ -88,13 +88,13 @@
 
 	// Show/hide based on reCAPTCHA type.
 	$( 'input#everest_forms_recaptcha_type' ).change( function() {
-		var recaptcha_v2_site_key   = $( '#everest_forms_recaptcha_v2_site_key' ).parents( 'tr' ).eq( 0 ),
-			recaptcha_v2_secret_key = $( '#everest_forms_recaptcha_v2_secret_key' ).parents( 'tr' ).eq( 0 ),
-			recaptcha_v2_invisible_site_key  = $( '#everest_forms_recaptcha_v2_invisible_site_key' ).parents( 'tr' ).eq( 0 ),
-			recaptcha_v2_invisible_secret_key  = $( '#everest_forms_recaptcha_v2_invisible_secret_key' ).parents( 'tr' ).eq( 0 ),
-			recaptcha_v2_invisible  = $( '#everest_forms_recaptcha_v2_invisible' ).parents( 'tr' ).eq( 0 ),
-			recaptcha_v3_site_key   = $( '#everest_forms_recaptcha_v3_site_key' ).parents( 'tr' ).eq( 0 ),
-			recaptcha_v3_secret_key = $( '#everest_forms_recaptcha_v3_secret_key' ).parents( 'tr' ).eq( 0 );
+		var recaptcha_v2_site_key             = $( '#everest_forms_recaptcha_v2_site_key' ).parents( 'tr' ).eq( 0 ),
+			recaptcha_v2_secret_key           = $( '#everest_forms_recaptcha_v2_secret_key' ).parents( 'tr' ).eq( 0 ),
+			recaptcha_v2_invisible_site_key   = $( '#everest_forms_recaptcha_v2_invisible_site_key' ).parents( 'tr' ).eq( 0 ),
+			recaptcha_v2_invisible_secret_key = $( '#everest_forms_recaptcha_v2_invisible_secret_key' ).parents( 'tr' ).eq( 0 ),
+			recaptcha_v2_invisible            = $( '#everest_forms_recaptcha_v2_invisible' ).parents( 'tr' ).eq( 0 ),
+			recaptcha_v3_site_key             = $( '#everest_forms_recaptcha_v3_site_key' ).parents( 'tr' ).eq( 0 ),
+			recaptcha_v3_secret_key           = $( '#everest_forms_recaptcha_v3_secret_key' ).parents( 'tr' ).eq( 0 );
 
 		if ( $( this ).is( ':checked' ) ) {
 			if ( 'v2' === $( this ).val() ) {
@@ -110,7 +110,6 @@
 					recaptcha_v2_secret_key.show();
 				}
 				recaptcha_v2_invisible.show();
-
 				recaptcha_v3_site_key.hide();
 				recaptcha_v3_secret_key.hide();
 			} else {
@@ -125,7 +124,7 @@
 		}
 	}).change();
 
-	$('input#everest_forms_recaptcha_v2_invisible').change( function() {
+	$( 'input#everest_forms_recaptcha_v2_invisible' ).change( function() {
 		if ( $( this ).is( ':checked' ) ) {
 			$('#everest_forms_recaptcha_v2_site_key').parents( 'tr' ).eq( 0 ).hide();
 			$('#everest_forms_recaptcha_v2_secret_key').parents( 'tr' ).eq( 0 ).hide();
