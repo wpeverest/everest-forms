@@ -100,14 +100,9 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	 */
 	public function datetime_options( $field ) {
 		$format             = ! empty( $field['datetime_format'] ) ? esc_attr( $field['datetime_format'] ) : 'date';
+		$class_name         = isset( $field['enable_min_max'] ) && '1' === $field['enable_min_max'] ? '' : 'everest-forms-hidden';
 		$field['date_mode'] = isset( $field['date_mode'] ) ? $field['date_mode'] : 'single';
 		$field['date_mode'] = isset( $field['date_range'] ) && '1' === $field['date_range'] ? 'range' : $field['date_mode'];
-
-		if ( isset( $field['enable_min_max'] ) && '1' === $field['enable_min_max'] ) {
-			$class_name = '';
-		} else {
-			$class_name = 'everest-forms-hidden';
-		}
 
 		$this->field_element(
 			'label',
@@ -407,9 +402,10 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 					$properties['inputs']['primary']['attr']['data-mode'] = isset( $field['date_mode'] ) ? $field['date_mode'] : 'single';
 				}
 				$properties['inputs']['primary']['attr']['data-locale']   = isset( $field['date_localization'] ) ? $field['date_localization'] : 'en';
-				$properties['inputs']['primary']['attr']['data-min-date'] = ! empty( $field['min_date'] ) ? $field['min_date'] : '';
-				$properties['inputs']['primary']['attr']['data-max-date'] = ! empty( $field['max_date'] ) ? $field['max_date'] : '';
+				$properties['inputs']['primary']['attr']['data-min-date'] = isset( $field['enable_min_max'], $field['min_date'] ) ? $field['min_date'] : '';
+				$properties['inputs']['primary']['attr']['data-max-date'] = isset( $field['enable_min_max'], $field['max_date'] ) ? $field['max_date'] : '';
 			}
+
 			// Input primary: data-date-format and value.
 			switch ( $field['datetime_format'] ) {
 				case 'date':
@@ -443,7 +439,6 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	 * @param array $field Field Data.
 	 */
 	public function field_preview( $field ) {
-
 		// Define data.
 		$placeholder = ! empty( $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : '';
 
@@ -482,6 +477,8 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 
 	/**
 	 * Register/queue frontend scripts.
+	 *
+	 * @param array $atts Shortcode attributes.
 	 */
 	public static function load_assets( $atts ) {
 		$form_id   = isset( $atts['id'] ) ? wp_unslash( $atts['id'] ) : ''; // WPCS: CSRF ok, input var ok, sanitization ok.
