@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Everest Forms package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Everest Forms 1.5.7\n"
+"Project-Id-Version: Everest Forms 1.5.8\n"
 "Report-Msgid-Bugs-To: https://github.com/wpeverest/everest-forms/issues\n"
-"POT-Creation-Date: 2019-11-12 05:07:34+00:00\n"
+"POT-Creation-Date: 2019-11-15 06:27:36+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -65,7 +65,7 @@ msgid ""
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:442
-#: includes/admin/settings/class-evf-settings-validation.php:45
+#: includes/admin/settings/class-evf-settings-validation.php:46
 #: includes/evf-core-functions.php:1857
 #: includes/shortcodes/class-evf-shortcode-form.php:175
 msgid "Required"
@@ -229,7 +229,7 @@ msgstr ""
 #: includes/admin/builder/class-evf-builder-settings.php:41
 #: includes/admin/builder/class-evf-builder-settings.php:369
 #: includes/admin/settings/class-evf-settings-email.php:25
-#: includes/admin/settings/class-evf-settings-validation.php:63
+#: includes/admin/settings/class-evf-settings-validation.php:64
 #: includes/fields/class-evf-field-email.php:20
 #: includes/fields/class-evf-field-email.php:90
 #: includes/fields/class-evf-field-email.php:238
@@ -275,7 +275,7 @@ msgid "Form disabled message"
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:163
-#: includes/shortcodes/class-evf-shortcode-form.php:634
+#: includes/shortcodes/class-evf-shortcode-form.php:640
 msgid "This form is disabled."
 msgstr ""
 
@@ -818,7 +818,7 @@ msgstr ""
 
 #: includes/admin/class-evf-admin-forms-table-list.php:52
 #: includes/fields/class-evf-field-date-time.php:81
-#: includes/fields/class-evf-field-date-time.php:119
+#: includes/fields/class-evf-field-date-time.php:120
 msgid "Date"
 msgstr ""
 
@@ -1124,11 +1124,11 @@ msgstr ""
 msgid "reCAPTCHA"
 msgstr ""
 
-#: includes/admin/settings/class-evf-settings-recaptcha.php:41
+#: includes/admin/settings/class-evf-settings-recaptcha.php:42
 msgid "Google reCAPTCHA Integration"
 msgstr ""
 
-#: includes/admin/settings/class-evf-settings-recaptcha.php:44
+#: includes/admin/settings/class-evf-settings-recaptcha.php:45
 #. translators: %1$s - Google reCAPTCHA docs url
 msgid ""
 "<p>Google's reCAPTCHA is a free service that protects your website from "
@@ -1141,56 +1141,60 @@ msgid ""
 "documentation</a> for step-by-step instructions.</p>"
 msgstr ""
 
-#: includes/admin/settings/class-evf-settings-recaptcha.php:48
+#: includes/admin/settings/class-evf-settings-recaptcha.php:49
 msgid "reCAPTCHA type"
 msgstr ""
 
-#: includes/admin/settings/class-evf-settings-recaptcha.php:49
+#: includes/admin/settings/class-evf-settings-recaptcha.php:50
 msgid "Choose the type of reCAPTCHA for this site key."
 msgstr ""
 
-#: includes/admin/settings/class-evf-settings-recaptcha.php:54
+#: includes/admin/settings/class-evf-settings-recaptcha.php:55
 msgid "reCAPTCHA v2"
 msgstr ""
 
-#: includes/admin/settings/class-evf-settings-recaptcha.php:55
+#: includes/admin/settings/class-evf-settings-recaptcha.php:56
 msgid "reCAPTCHA v3"
 msgstr ""
 
-#: includes/admin/settings/class-evf-settings-recaptcha.php:61
-#: includes/admin/settings/class-evf-settings-recaptcha.php:89
+#: includes/admin/settings/class-evf-settings-recaptcha.php:62
+#: includes/admin/settings/class-evf-settings-recaptcha.php:82
+#: includes/admin/settings/class-evf-settings-recaptcha.php:110
 msgid "Site Key"
 msgstr ""
 
-#: includes/admin/settings/class-evf-settings-recaptcha.php:64
+#: includes/admin/settings/class-evf-settings-recaptcha.php:65
+#: includes/admin/settings/class-evf-settings-recaptcha.php:85
 #. translators: %1$s - Google reCAPTCHA docs url
 msgid ""
 "Please enter your site key for your reCAPTCHA v2. <a href=\"%1$s\" "
 "target=\"_blank\">Learn More</a>"
 msgstr ""
 
-#: includes/admin/settings/class-evf-settings-recaptcha.php:71
-#: includes/admin/settings/class-evf-settings-recaptcha.php:99
+#: includes/admin/settings/class-evf-settings-recaptcha.php:72
+#: includes/admin/settings/class-evf-settings-recaptcha.php:92
+#: includes/admin/settings/class-evf-settings-recaptcha.php:120
 msgid "Secret Key"
 msgstr ""
 
-#: includes/admin/settings/class-evf-settings-recaptcha.php:74
-#: includes/admin/settings/class-evf-settings-recaptcha.php:102
+#: includes/admin/settings/class-evf-settings-recaptcha.php:75
+#: includes/admin/settings/class-evf-settings-recaptcha.php:95
+#: includes/admin/settings/class-evf-settings-recaptcha.php:123
 #. translators: %1$s - Google reCAPTCHA docs url
 msgid ""
 "Please enter your secret key for your reCAPTCHA v2. <a href=\"%1$s\" "
 "target=\"_blank\">Learn More</a>"
 msgstr ""
 
-#: includes/admin/settings/class-evf-settings-recaptcha.php:81
+#: includes/admin/settings/class-evf-settings-recaptcha.php:102
 msgid "Invisible reCAPTCHA"
 msgstr ""
 
-#: includes/admin/settings/class-evf-settings-recaptcha.php:83
+#: includes/admin/settings/class-evf-settings-recaptcha.php:104
 msgid "Enable Invisible reCAPTCHA."
 msgstr ""
 
-#: includes/admin/settings/class-evf-settings-recaptcha.php:92
+#: includes/admin/settings/class-evf-settings-recaptcha.php:113
 #. translators: %1$s - Google reCAPTCHA docs url
 msgid ""
 "Please enter your site key for your reCAPTCHA v3. <a href=\"%1$s\" "
@@ -1201,49 +1205,62 @@ msgstr ""
 msgid "Validations"
 msgstr ""
 
-#: includes/admin/settings/class-evf-settings-validation.php:39
+#: includes/admin/settings/class-evf-settings-validation.php:40
 msgid "Validation Messages"
 msgstr ""
 
-#: includes/admin/settings/class-evf-settings-validation.php:46
+#: includes/admin/settings/class-evf-settings-validation.php:47
 msgid "Enter the message for the required form field"
 msgstr ""
 
-#: includes/admin/settings/class-evf-settings-validation.php:51
+#: includes/admin/settings/class-evf-settings-validation.php:52
 #: includes/evf-core-functions.php:1484
 msgid "This field is required."
 msgstr ""
 
-#: includes/admin/settings/class-evf-settings-validation.php:54
+#: includes/admin/settings/class-evf-settings-validation.php:55
 msgid "Website URL"
 msgstr ""
 
-#: includes/admin/settings/class-evf-settings-validation.php:55
+#: includes/admin/settings/class-evf-settings-validation.php:56
 msgid "Enter the message for the valid website url"
 msgstr ""
 
-#: includes/admin/settings/class-evf-settings-validation.php:60
+#: includes/admin/settings/class-evf-settings-validation.php:61
 msgid "Please enter a valid URL."
 msgstr ""
 
-#: includes/admin/settings/class-evf-settings-validation.php:64
+#: includes/admin/settings/class-evf-settings-validation.php:65
 msgid "Enter the message for the valid email"
 msgstr ""
 
-#: includes/admin/settings/class-evf-settings-validation.php:69
+#: includes/admin/settings/class-evf-settings-validation.php:70
 msgid "Please enter a valid email address."
 msgstr ""
 
-#: includes/admin/settings/class-evf-settings-validation.php:72
+#: includes/admin/settings/class-evf-settings-validation.php:73
+msgid "Email Suggestion"
+msgstr ""
+
+#: includes/admin/settings/class-evf-settings-validation.php:74
+msgid "Enter the message for the valid email suggestion"
+msgstr ""
+
+#: includes/admin/settings/class-evf-settings-validation.php:79
+#: includes/class-evf-frontend-scripts.php:278
+msgid "Did you mean {suggestion}?"
+msgstr ""
+
+#: includes/admin/settings/class-evf-settings-validation.php:82
 #: includes/fields/class-evf-field-number.php:20
 msgid "Number"
 msgstr ""
 
-#: includes/admin/settings/class-evf-settings-validation.php:73
+#: includes/admin/settings/class-evf-settings-validation.php:83
 msgid "Enter the message for the valid number"
 msgstr ""
 
-#: includes/admin/settings/class-evf-settings-validation.php:78
+#: includes/admin/settings/class-evf-settings-validation.php:88
 #: includes/fields/class-evf-field-number.php:282
 msgid "Please enter a valid number."
 msgstr ""
@@ -1703,6 +1720,10 @@ msgstr ""
 
 #: includes/class-evf-form-task.php:517
 msgid "Could not create an entry"
+msgstr ""
+
+#: includes/class-evf-frontend-scripts.php:279
+msgid "Click to accept this suggestion."
 msgstr ""
 
 #: includes/class-evf-install.php:298
@@ -3203,7 +3224,7 @@ msgid "Select a format for the date field."
 msgstr ""
 
 #: includes/fields/class-evf-field-date-time.php:82
-#: includes/fields/class-evf-field-date-time.php:330
+#: includes/fields/class-evf-field-date-time.php:325
 msgid "Time"
 msgstr ""
 
@@ -3211,91 +3232,91 @@ msgstr ""
 msgid "Both"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:111
+#: includes/fields/class-evf-field-date-time.php:112
 msgid "Date & Time Format"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:112
+#: includes/fields/class-evf-field-date-time.php:113
 msgid "Advanced date and time formatting options."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:126
+#: includes/fields/class-evf-field-date-time.php:127
 msgid "Date Format"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:127
+#: includes/fields/class-evf-field-date-time.php:128
 msgid "Choose a desire date format to display."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:154
+#: includes/fields/class-evf-field-date-time.php:155
 msgid "Date Mode"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:155
+#: includes/fields/class-evf-field-date-time.php:156
 msgid "Select your desire date mode."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:170
+#: includes/fields/class-evf-field-date-time.php:171
 msgid "Date Localization"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:171
+#: includes/fields/class-evf-field-date-time.php:172
 msgid "Choose a desire date localization to display."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:253
+#: includes/fields/class-evf-field-date-time.php:254
 msgid "Default to current date."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:254
+#: includes/fields/class-evf-field-date-time.php:255
 msgid "Check this option to set current date as default."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:265
+#: includes/fields/class-evf-field-date-time.php:266
 msgid "Enable Min Max date."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:266
+#: includes/fields/class-evf-field-date-time.php:267
 msgid "Check this option to set min max date."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:276
+#: includes/fields/class-evf-field-date-time.php:277
 msgid "Minimun Date"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:277
+#: includes/fields/class-evf-field-date-time.php:278
 msgid "Select minium date."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:298
+#: includes/fields/class-evf-field-date-time.php:299
 msgid "Maxium Date"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:299
+#: includes/fields/class-evf-field-date-time.php:300
 msgid "Select maximum date."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:337
+#: includes/fields/class-evf-field-date-time.php:332
 msgid "Time interval and format"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:338
+#: includes/fields/class-evf-field-date-time.php:333
 msgid "Choose time interval and format to display."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:352
+#: includes/fields/class-evf-field-date-time.php:347
 msgid "15 minutes"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:353
+#: includes/fields/class-evf-field-date-time.php:348
 msgid "30 minutes"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:366
+#: includes/fields/class-evf-field-date-time.php:361
 msgid "12 H"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:367
+#: includes/fields/class-evf-field-date-time.php:362
 msgid "24 H"
 msgstr ""
 
