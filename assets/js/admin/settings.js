@@ -126,15 +126,15 @@
 
 	$( 'input#everest_forms_recaptcha_v2_invisible' ).change( function() {
 		if ( $( this ).is( ':checked' ) ) {
-			$('#everest_forms_recaptcha_v2_site_key').parents( 'tr' ).eq( 0 ).hide();
-			$('#everest_forms_recaptcha_v2_secret_key').parents( 'tr' ).eq( 0 ).hide();
-			$('#everest_forms_recaptcha_v2_invisible_site_key').parents( 'tr' ).eq( 0 ).show();
-			$('#everest_forms_recaptcha_v2_invisible_secret_key').parents( 'tr' ).eq( 0 ).show();
+			$( '#everest_forms_recaptcha_v2_site_key' ).parents( 'tr' ).eq( 0 ).hide();
+			$( '#everest_forms_recaptcha_v2_secret_key' ).parents( 'tr' ).eq( 0 ).hide();
+			$( '#everest_forms_recaptcha_v2_invisible_site_key' ).parents( 'tr' ).eq( 0 ).show();
+			$( '#everest_forms_recaptcha_v2_invisible_secret_key' ).parents( 'tr' ).eq( 0 ).show();
 		} else {
-			$('#everest_forms_recaptcha_v2_site_key').parents( 'tr' ).eq( 0 ).show();
-			$('#everest_forms_recaptcha_v2_secret_key').parents( 'tr' ).eq( 0 ).show();
-			$('#everest_forms_recaptcha_v2_invisible_site_key').parents( 'tr' ).eq( 0 ).hide();
-			$('#everest_forms_recaptcha_v2_invisible_secret_key').parents( 'tr' ).eq( 0 ).hide();
+			$( '#everest_forms_recaptcha_v2_site_key' ).parents( 'tr' ).eq( 0 ).show();
+			$( '#everest_forms_recaptcha_v2_secret_key' ).parents( 'tr' ).eq( 0 ).show();
+			$( '#everest_forms_recaptcha_v2_invisible_site_key' ).parents( 'tr' ).eq( 0 ).hide();
+			$( '#everest_forms_recaptcha_v2_invisible_secret_key' ).parents( 'tr' ).eq( 0 ).hide();
 		}
 	}).change();
 

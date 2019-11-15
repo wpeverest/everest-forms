@@ -49,6 +49,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	 * Hook in tabs.
 	 */
 	public function init_hooks() {
+		add_action( 'everest_forms_shortcode_scripts', array( $this, 'load_assets' ) );
 		add_filter( 'everest_forms_field_properties_' . $this->type, array( $this, 'field_properties' ), 5, 3 );
 	}
 
@@ -98,7 +99,10 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	 * @param array $field Field Data.
 	 */
 	public function datetime_options( $field ) {
-		$format = ! empty( $field['datetime_format'] ) ? esc_attr( $field['datetime_format'] ) : 'date';
+		$format             = ! empty( $field['datetime_format'] ) ? esc_attr( $field['datetime_format'] ) : 'date';
+		$class_name         = isset( $field['enable_min_max'] ) && '1' === $field['enable_min_max'] ? '' : 'everest-forms-hidden';
+		$field['date_mode'] = isset( $field['date_mode'] ) ? $field['date_mode'] : 'single';
+		$field['date_mode'] = isset( $field['date_range'] ) && '1' === $field['date_range'] ? 'range' : $field['date_mode'];
 
 		$this->field_element(
 			'label',
@@ -142,6 +146,105 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				false
 			);
 
+			$current_date_mode = $this->field_element(
+				'radio',
+				$field,
+				array(
+					'slug'    => 'date_mode',
+					'default' => isset( $field['date_mode'] ) ? $field['date_mode'] : 'single',
+					'desc'    => __( 'Date Mode', 'everest-forms' ),
+					'tooltip' => __( 'Select your desire date mode.', 'everest-forms' ),
+					'options' => array(
+						'single'   => 'Single',
+						'range'    => 'Range',
+						'multiple' => 'Multiple',
+					),
+				),
+				false
+			);
+
+			$date_localization_label = $this->field_element(
+				'label',
+				$field,
+				array(
+					'slug'    => 'date_localization',
+					'value'   => __( 'Date Localization', 'everest-forms' ),
+					'tooltip' => __( 'Choose a desire date localization to display.', 'everest-forms' ),
+				),
+				false
+			);
+
+			$date_localization_select = $this->field_element(
+				'select',
+				$field,
+				array(
+					'slug'    => 'date_localization',
+					'value'   => isset( $field['date_localization'] ) ? $field['date_localization'] : 'en',
+					'options' => array(
+						'en'    => 'English',
+						'ar'    => 'Arabic',
+						'at'    => 'Austria',
+						'az'    => 'Azerbaijan',
+						'be'    => 'Belarusian',
+						'bg'    => 'Bulgarian',
+						'bn'    => 'Bangla',
+						'bs'    => 'Bosnian',
+						'cat'   => 'Catalan',
+						'cs'    => 'Czech',
+						'cy'    => 'Welsh',
+						'da'    => 'Danish',
+						'de'    => 'German',
+						'eo'    => 'Esperanto',
+						'es'    => 'Spanish',
+						'et'    => 'Estonian',
+						'fa'    => 'Persian',
+						'fi'    => 'Finnish',
+						'fo'    => 'Faroese',
+						'fr'    => 'French',
+						'ga'    => 'Irish',
+						'gr'    => 'Greek',
+						'he'    => 'Hebrew',
+						'hi'    => 'Hindi',
+						'hr'    => 'Croatian',
+						'hu'    => 'Hungarian',
+						'id'    => 'Indonesian',
+						'is'    => 'Icelandic',
+						'it'    => 'Italian',
+						'ja'    => 'Japanese',
+						'ka'    => 'Georgian',
+						'ko'    => 'Korean',
+						'km'    => 'Khmer',
+						'kz'    => 'Kazakh',
+						'lt'    => 'Lithuanian',
+						'lv'    => 'Latvian',
+						'mk'    => 'Macedonian',
+						'mn'    => 'Mongolian',
+						'ms'    => 'Malaysian',
+						'my'    => 'Burmese',
+						'nl'    => 'Dutch',
+						'no'    => 'Norwegian',
+						'pa'    => 'Punjabi',
+						'pl'    => 'Polish',
+						'pt'    => 'Portuguese',
+						'ro'    => 'Romanian',
+						'ru'    => 'Russian',
+						'si'    => 'Sinhala',
+						'sk'    => 'Slovak',
+						'sl'    => 'Slovenian',
+						'sq'    => 'Albanian',
+						'sr'    => 'Serbian',
+						'sv'    => 'Swedish',
+						'th'    => 'Thai',
+						'tr'    => 'Turkish',
+						'uk'    => 'Ukrainian',
+						'vn'    => 'Vietnamese',
+						'zh'    => 'Mandarin',
+						'zh_tw' => 'MandarinTraditional',
+					),
+				),
+				false
+			);
+
 			$current_date_default = $this->field_element(
 				'checkbox',
 				$field,
@@ -154,21 +257,65 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				false
 			);
 
-			$current_date_range = $this->field_element(
+			$enable_min_max = $this->field_element(
 				'checkbox',
 				$field,
 				array(
-					'slug'    => 'date_range',
-					'value'   => isset( $field['date_range'] ) ? $field['date_range'] : '',
-					'desc'    => __( 'Enable range', 'everest-forms' ),
-					'tooltip' => __( 'Check this option to enable date range mode.', 'everest-forms' ),
+					'slug'    => 'enable_min_max',
+					'value'   => isset( $field['enable_min_max'] ) ? $field['enable_min_max'] : '',
+					'desc'    => __( 'Enable Min Max date.', 'everest-forms' ),
+					'tooltip' => __( 'Check this option to set min max date.', 'everest-forms' ),
+				),
+				false
+			);
+
+			$min_date_label = $this->field_element(
+				'label',
+				$field,
+				array(
+					'slug'    => 'min_date',
+					'value'   => esc_html__( 'Minimun Date', 'everest-forms' ),
+					'tooltip' => __( 'Select minium date.', 'everest-forms' ),
+				),
+				false
+			);
+
+			$min_date = $this->field_element(
+				'text',
+				$field,
+				array(
+					'slug'  => 'min_date',
+					'value' => isset( $field['min_date'] ) ? $field['min_date'] : '',
+					'class' => 'everest-forms-min-date',
+				),
+				false
+			);
+
+			$max_date_label = $this->field_element(
+				'label',
+				$field,
+				array(
+					'slug'    => 'max_date',
+					'value'   => esc_html__( 'Maxium Date', 'everest-forms' ),
+					'tooltip' => __( 'Select maximum date.', 'everest-forms' ),
+				),
+				false
+			);
+
+			$max_date = $this->field_element(
+				'text',
+				$field,
+				array(
+					'slug'  => 'max_date',
+					'value' => isset( $field['max_date'] ) ? $field['max_date'] : '',
+					'class' => 'everest-forms-max-date',
 				),
 				false
 			);
 
 			$args = array(
 				'slug'    => 'date_format',
-				'content' => $date_format_label . $date_format_select . '<div class="inline">' . $current_date_default . '</div>' . '<div class="inline">' . $current_date_range . '</div>',
+				'content' => $date_format_label . $date_format_select . $date_localization_label . $date_localization_select . '<div class="everest-forms-checklist everest-forms-checklist-inline">' . $current_date_mode . '</div><div class="everest-forms-current-date-format">' . $current_date_default . '</div><div class="everest-forms-min-max-date-format">' . $enable_min_max . '</div><div class="everest-forms-min-max-date-option ' . $class_name . '">' . $min_date_label . $min_date . $max_date_label . $max_date . '</div>',
 			);
 			$this->field_element( 'row', $field, $args );
 
@@ -238,19 +385,27 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	 * @return array of additional field properties.
 	 */
 	public function field_properties( $properties, $field, $form_data ) {
-
 		// Input primary: data-time-interval.
 		if ( ! empty( $field['time_interval'] ) ) {
 			$properties['inputs']['primary']['attr']['data-time-interval'] = esc_attr( $field['time_interval'] );
 		}
+
 		// Input primary: data-date-time.
 		if ( ! empty( $field['datetime_format'] ) ) {
 			$properties['inputs']['primary']['attr']['data-date-time'] = esc_attr( $field['datetime_format'] );
 
 			// Input primary: data-mode.
 			if ( 'time' !== $field['datetime_format'] ) {
-				$properties['inputs']['primary']['attr']['data-mode'] = isset( $field['date_range'] ) ? 'range' : 'single';
+				if ( isset( $field['date_range'] ) && '1' === $field['date_range'] ) {
+					$properties['inputs']['primary']['attr']['data-mode'] = 'range';
+				} else {
+					$properties['inputs']['primary']['attr']['data-mode'] = isset( $field['date_mode'] ) ? $field['date_mode'] : 'single';
+				}
+				$properties['inputs']['primary']['attr']['data-locale']   = isset( $field['date_localization'] ) ? $field['date_localization'] : 'en';
+				$properties['inputs']['primary']['attr']['data-min-date'] = isset( $field['enable_min_max'], $field['min_date'] ) ? $field['min_date'] : '';
+				$properties['inputs']['primary']['attr']['data-max-date'] = isset( $field['enable_min_max'], $field['max_date'] ) ? $field['max_date'] : '';
 			}
+
 			// Input primary: data-date-format and value.
 			switch ( $field['datetime_format'] ) {
 				case 'date':
@@ -284,7 +439,6 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	 * @param array $field Field Data.
 	 */
 	public function field_preview( $field ) {
-
 		// Define data.
 		$placeholder = ! empty( $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : '';
 
@@ -319,5 +473,29 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			evf_html_attributes( $primary['id'], $class, $primary['data'], $primary['attr'] ),
 			esc_attr( $primary['required'] )
 		);
+	}
+
+	/**
+	 * Register/queue frontend scripts.
+	 *
+	 * @param array $atts Shortcode attributes.
+	 */
+	public static function load_assets( $atts ) {
+		$form_id   = isset( $atts['id'] ) ? wp_unslash( $atts['id'] ) : ''; // WPCS: CSRF ok, input var ok, sanitization ok.
+		$form_obj  = EVF()->form->get( $form_id );
+		$form_data = ! empty( $form_obj->post_content ) ? evf_decode( $form_obj->post_content ) : '';
+		$data_i10n = 'en';
+
+		if ( ! empty( $form_data['form_fields'] ) ) {
+			foreach ( $form_data['form_fields'] as $form_field ) {
+				if ( 'date-time' === $form_field['type'] ) {
+					$data_i10n = isset( $form_field['date_localization'] ) ? $form_field['date_localization'] : 'en';
+				}
+			}
+		}
+
+		if ( wp_script_is( 'flatpickr' ) && 'en' !== $data_i10n ) {
+			wp_enqueue_script( 'flatpickr-localization', 'https://npmcdn.com/flatpickr/dist/l10n/' . $data_i10n . '.js', array(), EVF_VERSION, true );
+		}
 	}
 }

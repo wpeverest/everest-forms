@@ -672,6 +672,33 @@ body.everest-forms-builder-setup,
 		pointer-events: none;
 	}
 
+	// Radio and checkbox list option
+	.everest-forms-checklist {
+		margin-bottom: 14px;
+
+		ul {
+			margin-bottom: 0;
+
+			label {
+				font-weight: normal;
+				margin-bottom: 0;
+				margin-top: 0;
+			}
+		}
+
+		&.everest-forms-checklist-inline {
+			ul {
+				display: flex;
+				flex-wrap: wrap;
+
+				li {
+					margin-right: 10px;
+					margin-bottom: 0;
+				}
+			}
+		}
+	}
+
 	.everest-forms {
 		margin: 0;
 
@@ -1625,6 +1652,11 @@ body.everest-forms-builder-setup,
 								vertical-align: top;
 								margin-left: 5px;
 							}
+
+							.everest-forms-current-date-format,
+							.everest-forms-min-max-date-format {
+								margin-bottom: 14px;
+							}
 						}
 
 						.everest-forms-field-option {
@@ -2487,6 +2519,16 @@ body.everest-forms-builder-setup,
 
 			.description {
 				color: $color_gray-normal;
+			}
+
+			.everest-forms-checklist {
+				ul {
+					label {
+						margin-top: 0;
+						margin-bottom: 0;
+						font-weight: normal;
+					}
+				}
 			}
 
 			.everest-forms-question {
