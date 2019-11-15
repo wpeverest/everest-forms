@@ -20,10 +20,10 @@
 		 	});
 
 		 	$( document ).ready( function( $ ) {
-
-				if( '1' === $('.everest-forms-min-max-date-format input').val() ) {
+				if ( '1' === $( '.everest-forms-min-max-date-format input' ).val() ) {
 					$( '.everest-forms-min-date, .everest-forms-max-date' ).flatpickr();
 				}
+
 		 		if ( ! $( 'evf-panel-payments-button a' ).hasClass( 'active' ) ) {
 		 			$( '#everest-forms-panel-payments' ).find( '.everest-forms-panel-sidebar a' ).first().addClass( 'active' );
 					$( '.everest-forms-panel-content' ).find( '.evf-payment-setting-content' ).first().addClass( 'active' );
@@ -1457,12 +1457,12 @@ jQuery( function ( $ ) {
 		}
 	});
 
-	$( document ).on('click', '.everest-forms-min-max-date-format input', function() {
-		if( $(this).is(':checked')) {
-			$( '.everest-forms-min-date, .everest-forms-max-date' ).addClass('flatpickr-field').flatpickr();
-			$(".everest-forms-min-max-date-option").removeClass('everest-forms-hidden');
+	$( document ).on( 'click', '.everest-forms-min-max-date-format input', function() {
+		if ( $( this ).is( ':checked' ) ) {
+			$( '.everest-forms-min-date, .everest-forms-max-date' ).addClass( 'flatpickr-field' ).flatpickr();
+			$( '.everest-forms-min-max-date-option' ).removeClass( 'everest-forms-hidden' );
 		} else {
-			$(".everest-forms-min-max-date-option").addClass('everest-forms-hidden');
+			$( '.everest-forms-min-max-date-option' ).addClass( 'everest-forms-hidden' );
 		}
 	});
 

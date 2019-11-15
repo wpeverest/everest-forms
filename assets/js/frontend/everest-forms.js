@@ -72,7 +72,7 @@ jQuery( function ( $ ) {
 			if ( evfDateField.length > 0 ) {
 				$( '.flatpickr-field' ).each( function() {
 					var timeInterval = 5,
-					inputData  	 = $( this ).data();
+						inputData  	 = $( this ).data();
 
 					switch( inputData.dateTime ) {
 						case 'date':
@@ -80,8 +80,8 @@ jQuery( function ( $ ) {
 							$( this ).flatpickr({
 								disableMobile : true,
 								mode          : inputData.mode,
-								minDate: inputData.minDate,
-								maxDate: inputData.maxDate,
+								minDate       : inputData.minDate,
+								maxDate       : inputData.maxDate,
 								dateFormat    : inputData.dateFormat
 							});
 						break;
@@ -111,8 +111,8 @@ jQuery( function ( $ ) {
 								noCalendar   	: false,
 								disableMobile	: true,
 								mode            : inputData.mode,
-								minDate: inputData.minDate,
-								maxDate: inputData.maxDate,
+								minDate         : inputData.minDate,
+								maxDate         : inputData.maxDate,
 								minuteIncrement : timeInterval,
 								dateFormat      : inputData.dateFormat,
 								time_24hr		: inputData.dateFormat.includes( 'H:i' )

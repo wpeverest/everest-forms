@@ -103,6 +103,12 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 		$field['date_mode'] = isset( $field['date_mode'] ) ? $field['date_mode'] : 'single';
 		$field['date_mode'] = isset( $field['date_range'] ) && '1' === $field['date_range'] ? 'range' : $field['date_mode'];
 
+		if ( isset( $field['enable_min_max'] ) && '1' === $field['enable_min_max'] ) {
+			$class_name = '';
+		} else {
+			$class_name = 'everest-forms-hidden';
+		}
+
 		$this->field_element(
 			'label',
 			$field,
@@ -312,12 +318,6 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				false
 			);
 
-		if ( isset( $field['enable_min_max'] ) && '1' === $field['enable_min_max'] ) {
-			$class_name = '';
-		} else {
-			$class_name = 'everest-forms-hidden';
-		}
-
 			$args = array(
 				'slug'    => 'date_format',
 				'content' => $date_format_label . $date_format_select . $date_localization_label . $date_localization_select . '<div class="everest-forms-checklist everest-forms-checklist-inline">' . $current_date_mode . '</div><div class="everest-forms-current-date-format">' . $current_date_default . '</div><div class="everest-forms-min-max-date-format">' . $enable_min_max . '</div><div class="everest-forms-min-max-date-option ' . $class_name . '">' . $min_date_label . $min_date . $max_date_label . $max_date . '</div>',
@@ -390,11 +390,11 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	 * @return array of additional field properties.
 	 */
 	public function field_properties( $properties, $field, $form_data ) {
-
 		// Input primary: data-time-interval.
 		if ( ! empty( $field['time_interval'] ) ) {
 			$properties['inputs']['primary']['attr']['data-time-interval'] = esc_attr( $field['time_interval'] );
 		}
+
 		// Input primary: data-date-time.
 		if ( ! empty( $field['datetime_format'] ) ) {
 			$properties['inputs']['primary']['attr']['data-date-time'] = esc_attr( $field['datetime_format'] );
@@ -484,19 +484,21 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	 * Register/queue frontend scripts.
 	 */
 	public static function load_assets( $atts ) {
-		$form_id           = isset( $atts['id'] ) ? wp_unslash( $atts['id'] ) : ''; // WPCS: CSRF ok, input var ok, sanitization ok.
-		$form_obj          = EVF()->form->get( $form_id );
-		$form_data         = ! empty( $form_obj->post_content ) ? evf_decode( $form_obj->post_content ) : '';
-		$data_localization = 'en';
+		$form_id   = isset( $atts['id'] ) ? wp_unslash( $atts['id'] ) : ''; // WPCS: CSRF ok, input var ok, sanitization ok.
+		$form_obj  = EVF()->form->get( $form_id );
+		$form_data = ! empty( $form_obj->post_content ) ? evf_decode( $form_obj->post_content ) : '';
+		$data_i10n = 'en';
 
 		if ( ! empty( $form_data['form_fields'] ) ) {
 			foreach ( $form_data['form_fields'] as $form_field ) {
 				if ( 'date-time' === $form_field['type'] ) {
-					$data_localization = isset( $form_field['date_localization'] ) ? $form_field['date_localization'] : 'en';
+					$data_i10n = isset( $form_field['date_localization'] ) ? $form_field['date_localization'] : 'en';
 				}
 			}
 		}
-		wp_register_script( 'flatpickr-localization', 'https://npmcdn.com/flatpickr/dist/l10n/' . $data_localization . '.js' );
-		wp_enqueue_script( 'flatpickr-localization', 'https://npmcdn.com/flatpickr/dist/l10n/' . $data_localization . '.js' );
+
+		if ( wp_script_is( 'flatpickr' ) && 'en' !== $data_i10n ) {
+			wp_enqueue_script( 'flatpickr-localization', 'https://npmcdn.com/flatpickr/dist/l10n/' . $data_i10n . '.js', array(), EVF_VERSION, true );
+		}
 	}
 }
