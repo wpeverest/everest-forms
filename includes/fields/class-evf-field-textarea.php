@@ -23,7 +23,7 @@ class EVF_Field_Textarea extends EVF_Form_Fields {
 		$this->order    = 40;
 		$this->group    = 'general';
 		$this->settings = array(
-			'basic-options' => array(
+			'basic-options'    => array(
 				'field_options' => array(
 					'label',
 					'meta',
@@ -36,6 +36,7 @@ class EVF_Field_Textarea extends EVF_Form_Fields {
 					'size',
 					'placeholder',
 					'label_hide',
+					'default_value',
 					'css',
 				),
 			),
@@ -92,9 +93,8 @@ class EVF_Field_Textarea extends EVF_Form_Fields {
 		printf(
 			'<textarea %s %s>%s</textarea>',
 			evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ),
-			$primary['required'],
-			$value
+			esc_attr( $primary['required'] ),
+			$value // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		);
 	}
 }
-

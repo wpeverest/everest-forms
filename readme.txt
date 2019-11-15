@@ -2,9 +2,9 @@
 Contributors: WPEverest
 Tags: contact form, form, form builder, contact, custom form
 Requires at least: 4.0
-Tested up to: 5.2
+Tested up to: 5.3
 Requires PHP: 5.4
-Stable tag: 1.5.7
+Stable tag: 1.5.8
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -135,7 +135,9 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 == Changelog ==
 
 = 1.5.8 - xx-xx-2019 =
-* Tweak - Smart phone field enhancement.
+* Fix - Selection of radio and checkbox on label click.
+* Tweak - Smart phone field design enhancement.
+* Added - Default value for "Paragraph text" field.
 
 = 1.5.7 - 20-11-2019 =
 * Tweak - Design for smart phone field.

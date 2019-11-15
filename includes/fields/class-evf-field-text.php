@@ -156,8 +156,7 @@ class EVF_Field_Text extends EVF_Form_Fields {
 		printf(
 			'<input type="text" %s %s>',
 			evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ),
-			$primary['required']
+			esc_attr( $primary['required'] )
 		);
 	}
 }
-

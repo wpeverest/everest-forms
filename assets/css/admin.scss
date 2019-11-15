@@ -184,6 +184,7 @@
 	display: inline-block;
 	padding: 5px 15px;
 	margin-bottom: 15px;
+	border-radius: 4px;
 	min-width: 500px;
 
 	&::before {
@@ -556,6 +557,10 @@ body.everest-forms-builder-setup,
 		}
 	}
 
+	select {
+		max-width: inherit;
+	}
+
 	.clearfix {
 		height: auto;
 	}
@@ -921,7 +926,7 @@ body.everest-forms-builder-setup,
 			.everest-forms-setup-name {
 				margin-left: 40px;
 				padding: 10px;
-				height: 45px;
+				height: 35px;
 				width: 400px;
 
 				&.everest-forms-required {
@@ -1158,17 +1163,22 @@ body.everest-forms-builder-setup,
 		}
 
 		.add,
-		.remove {
+		.remove,
+		.addPayment,
+		.removePayment {
 			color: $color_gray-normal;
 			background: $color-white;
 			border: 1px solid $color_gray-lighten;
-			height: 24px;
-			width: 24px;
+			height: 30px;
+			width: 30px;
 			display: flex;
 			align-items: center;
 			justify-content: center;
 
 			.dashicons {
+				width: 16px;
+				height: 16px;
+				font-size: 16px;
 				line-height: 1.1;
 			}
 
@@ -1177,14 +1187,21 @@ body.everest-forms-builder-setup,
 			}
 		}
 
-		.add {
+		.add,
+		.addPayment {
+			border-radius: 4px 0 0 4px;
+
 			&:hover {
 				background: $blue;
 				border: 1px solid $blue;
 			}
 		}
 
-		.remove {
+		.remove,
+		.removePayment {
+			border-left: none;
+			border-radius: 0 4px 4px 0;
+
 			&:hover {
 				background: $red;
 				border: 1px solid $red;
@@ -1361,7 +1378,7 @@ body.everest-forms-builder-setup,
 			.everest-forms-field-option-row-default_value {
 
 				input[type='text'] {
-					width: calc(100% - 30px);
+					width: calc(100% - 34px);
 					min-height: 27px;
 				}
 			}
@@ -1369,12 +1386,12 @@ body.everest-forms-builder-setup,
 			.evf-toggle-smart-tag-display {
 				right: 0;
 				width: 30px;
-				height: 27px;
+				min-height: 30px;
 				color: $color_gray-base;
 				position: absolute;
 				background: $color-white;
 				border: 1px solid $color_gray-lighten;
-				border-left: none;
+				border-radius: 4px;
 				box-shadow: inset 0 1px 2px transparentize($color_gray-dark, 0.9);
 
 				.dashicons-editor-code {
@@ -1382,7 +1399,7 @@ body.everest-forms-builder-setup,
 						left: 0;
 						right: 0;
 						margin: 0 auto;
-						line-height: 26px;
+						line-height: 28px;
 						position: absolute;
 					}
 				}
@@ -1397,6 +1414,7 @@ body.everest-forms-builder-setup,
 				overflow-y: auto;
 				position: absolute;
 				background: $color-white;
+				border-radius: 4px;
 				border: 1px solid $color_gray-lighten;
 				box-shadow: 1px 3px 20px 0 transparentize($color_gray-dark, 0.8);
 
@@ -1512,7 +1530,7 @@ body.everest-forms-builder-setup,
 						margin-bottom: 10px;
 						color: $color_gray-light;
 						cursor: pointer;
-						border-radius: 2px;
+						border-radius: 4px;
 						font-size: 12px;
 						transition: 0.5s color ease-in-out, 0.5s border-color ease-in-out;
 						text-align: center;
@@ -1742,6 +1760,7 @@ body.everest-forms-builder-setup,
 							display: flex;
 							flex-wrap: wrap;
 							margin: 0 0 20px;
+							border-radius: 4px;
 							border: 1px solid $color_gray-lighten;
 
 							&.empty-list {
@@ -2494,7 +2513,7 @@ body.everest-forms-builder-setup,
 				height: 120px;
 
 				&.short {
-					height: 45px;
+					height: 60px;
 				}
 			}
 
@@ -2566,7 +2585,7 @@ body.everest-forms-builder-setup,
 
 				&.everest-forms-panel-field-tinymce {
 					.evf-toggle-smart-tag-display {
-						top: 35px;
+						top: 34px;
 						right: 5px;
 						border: 1px solid $color_gray-lighten;
 					}
@@ -2592,7 +2611,7 @@ body.everest-forms-builder-setup,
 						}
 
 						&[type='text'] {
-							width: 72%;
+							width: calc(100% - 89px);
 						}
 					}
 				}
@@ -2605,6 +2624,7 @@ body.everest-forms-builder-setup,
 						clear: both;
 						margin-bottom: 2px;
 						padding: 5px 10px;
+						border-radius: 4px;
 						border: 1px solid transparent;
 
 						&.ui-sortable-handle {
@@ -2636,22 +2656,14 @@ body.everest-forms-builder-setup,
 							background: $color-white;
 							color: $color_gray-base;
 							display: inline-block;
-							border: 1px solid $color_gray-lighten;
-							margin-right: 8px;
 							vertical-align: middle;
-
-							.dashicons {
-								font-size: 16px;
-								height: 16px;
-								width: 16px;
-							}
 
 							&.add,
 							&.remove,
 							&.addPayment,
 							&.removePayment {
-								height: 27px;
-								width: 27px;
+								height: 30px;
+								width: 30px;
 								display: inline-flex;
 								align-items: center;
 								justify-content: center;
@@ -2686,7 +2698,13 @@ body.everest-forms-builder-setup,
 						border: 1px solid $color_gray-lighten;
 
 						input[type='text'] {
-							width: 89%;
+							width: calc(100% - 39px);
+						}
+
+						.add,
+						.remove {
+							border-radius: 4px;
+							border: 1px solid $color_gray-lighten;
 						}
 
 						.answer-wrap {
@@ -2722,6 +2740,7 @@ body.everest-forms-builder-setup,
 				-webkit-animation: fadeIn 0.5s;
 				animation: fadeIn 0.5s;
 				margin: 20px 0;
+				border-radius: 4px;
 
 				&.active-connection {
 					display: block;
@@ -2781,6 +2800,7 @@ body.everest-forms-builder-setup,
 			margin-top: 5px;
 			margin-bottom: 20px;
 			padding: 0 20px;
+			border-radius: 4px;
 			border: 1px solid $color_gray-lighten;
 
 			.everest-forms-border-container-title {
@@ -2871,6 +2891,7 @@ body.everest-forms-builder-setup,
 							margin-top: -20px;
 							margin-right: -20px;
 							padding: 20px;
+							border-radius: 4px 4px 0 0;
 							border-bottom: 1px solid $color_gray-lighten;
 
 							input[type='text'] {
@@ -3072,7 +3093,6 @@ body.everest-forms-builder-setup,
 		input.regular-input {
 			width: 350px;
 			margin: 0;
-			padding: 6px;
 			box-sizing: border-box;
 			vertical-align: top;
 		}
@@ -3090,7 +3110,6 @@ body.everest-forms-builder-setup,
 			margin: 0;
 			box-sizing: border-box;
 			height: 32px;
-			line-height: 32px;
 			vertical-align: top;
 		}
 
@@ -3503,7 +3522,6 @@ body.everest-forms-builder-setup,
 
 					input {
 						width: 350px;
-						padding: 6px;
 						margin-right: 15px;
 					}
 				}
@@ -4115,7 +4133,7 @@ img.ui-datepicker-trigger {
 	}
 
 	.select2-selection {
-		border-color: #ddd;
+		border-color: #7e8993;
 	}
 
 	.select2-search__field {
@@ -4140,6 +4158,7 @@ img.ui-datepicker-trigger {
 		min-height: 28px;
 		border-radius: 0;
 		line-height: 1.5;
+		border-radius: 4px;
 
 		li {
 			margin: 0;
@@ -4215,10 +4234,6 @@ img.ui-datepicker-trigger {
 					}
 				}
 			}
-
-			.everest-forms-field-option-row-choices li a {
-				margin-right: 5px;
-			}
 		}
 	}
 }
@@ -4245,14 +4260,6 @@ img.ui-datepicker-trigger {
 					.everest-forms-panel-sidebar-content {
 						.everest-forms-panel-content-wrap {
 							width: calc(100% - 280px);
-						}
-					}
-				}
-
-				.evf-choices-list {
-					li {
-						input[type='text'] {
-							width: 60.5%;
 						}
 					}
 				}
@@ -4324,16 +4331,34 @@ img.ui-datepicker-trigger {
 							}
 						}
 					}
+
+					.everest-forms-field-option-row-choices {
+						ul {
+							li {
+								input[type='text'] {
+									width: calc(100% - 118px);
+								}
+
+								a {
+									&.add,
+									&.remove {
+										width: 40px;
+										height: 40px;
+									}
+								}
+							}
+						}
+					}
 				}
 			}
 
 			.everest-forms-nav-wrapper {
 				nav.evf-nav-tab-wrapper {
-					width: calc(100% - 185px);
+					width: calc(100% - 269px);
 				}
 
 				.evf-forms-nav-right {
-					width: 185px;
+					width: 269px;
 
 					.evf-shortcode-field {
 						input {
@@ -4452,19 +4477,16 @@ img.ui-datepicker-trigger {
 
 			.everest-forms-nav-wrapper {
 				nav.evf-nav-tab-wrapper {
-					width: calc(100% - 115px);
+					width: calc(100% - 207px);
 				}
 
 				.evf-forms-nav-right {
-					width: 115px;
+					width: 207px;
+					margin-top: 10px;
 					padding: 9px 17px;
 
 					.evf-shortcode-field {
 						display: none;
-					}
-
-					.everest-forms-save-button {
-						margin: 12px 15px 0 5px;
 					}
 				}
 			}
