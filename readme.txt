@@ -134,7 +134,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 1.5.8 - 15-11-2019 =
+= 1.5.8 - 18-11-2019 =
 * Feature - Email field mailcheck feature to offer additional controls.
 * Feature - Date field localization, multiple date selections with min/max date.
 * Feature - Default value for "Paragraph text" field.
