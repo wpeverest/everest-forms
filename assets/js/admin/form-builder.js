@@ -21,7 +21,20 @@
 
 		 	$( document ).ready( function( $ ) {
 				if ( '1' === $( '.everest-forms-min-max-date-format input' ).val() ) {
-					$( '.everest-forms-min-date, .everest-forms-max-date' ).flatpickr();
+					$( '.everest-forms-min-max-date-option' ).find( 'input' ).datepicker({
+						defaultDate:     '',
+						dateFormat:      'yy-mm-dd',
+						numberOfMonths:  1,
+						showButtonPanel: true,
+						onSelect:        function() {
+							var option = $( this ).is( '.everest-forms-min-date' ) ? 'minDate' : 'maxDate',
+								dates  = $( this ).closest( '.everest-forms-min-max-date-option' ).find( 'input' ),
+								date   = $( this ).datepicker( 'getDate' );
+
+							dates.not( this ).datepicker( 'option', option, date );
+							$( this ).change();
+						}
+					} );
 				}
 
 		 		if ( ! $( 'evf-panel-payments-button a' ).hasClass( 'active' ) ) {
@@ -1459,7 +1472,6 @@ jQuery( function ( $ ) {
 
 	$( document ).on( 'click', '.everest-forms-min-max-date-format input', function() {
 		if ( $( this ).is( ':checked' ) ) {
-			$( '.everest-forms-min-date, .everest-forms-max-date' ).addClass( 'flatpickr-field' ).flatpickr();
 			$( '.everest-forms-min-max-date-option' ).removeClass( 'everest-forms-hidden' );
 		} else {
 			$( '.everest-forms-min-max-date-option' ).addClass( 'everest-forms-hidden' );

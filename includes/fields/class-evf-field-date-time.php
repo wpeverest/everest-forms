@@ -274,7 +274,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				$field,
 				array(
 					'slug'    => 'min_date',
-					'value'   => esc_html__( 'Minimun Date', 'everest-forms' ),
+					'value'   => esc_html__( 'Minimum Date', 'everest-forms' ),
 					'tooltip' => __( 'Select minium date.', 'everest-forms' ),
 				),
 				false
@@ -296,7 +296,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				$field,
 				array(
 					'slug'    => 'max_date',
-					'value'   => esc_html__( 'Maxium Date', 'everest-forms' ),
+					'value'   => esc_html__( 'Maximum Date', 'everest-forms' ),
 					'tooltip' => __( 'Select maximum date.', 'everest-forms' ),
 				),
 				false
