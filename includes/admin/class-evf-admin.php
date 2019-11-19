@@ -118,7 +118,7 @@ class EVF_Admin {
 		// Setup wizard redirect.
 		if ( get_transient( '_evf_activation_redirect' ) && apply_filters( 'everest_forms_show_welcome_page', true ) ) {
 			$do_redirect  = true;
-			$current_page = isset( $_GET['page'] ) ? wc_clean( wp_unslash( $_GET['page'] ) ) : false;
+			$current_page = isset( $_GET['page'] ) ? evf_clean( wp_unslash( $_GET['page'] ) ) : false;
 
 			// On these pages, or during these events, postpone the redirect.
 			if ( wp_doing_ajax() || is_network_admin() || ! current_user_can( 'manage_everest_forms' ) ) {

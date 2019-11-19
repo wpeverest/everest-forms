@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 1.5.9 - 19-11-2019 =
+* Fix - Fatal error: Called to undefined function.
+
 = 1.5.8 - 18-11-2019 =
 * Feature - Email field mailcheck feature to offer additional controls.
 * Feature - Date field localization, multiple date selections with min/max date.
