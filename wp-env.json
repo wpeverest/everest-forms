@@ -1,0 +1,19 @@
+{
+  "themes": [],
+  "plugins": [
+    "../everest-forms-pro",
+    "../everest-forms-captcha",
+    "../everest-forms-convertkit",
+    "../everest-forms-geolocation",
+    "../everest-forms-mailchimp",
+    "../everest-forms-multi-part",
+    "../everest-forms-paypal-standard",
+    "../everest-forms-pdf-submission",
+    "../everest-forms-post-submissions",
+    "../everest-forms-stripe",
+    "../everest-forms-style-customizer",
+    "../everest-forms-survey-polls-quiz",
+    "../everest-forms-user-registration",
+    "../everest-forms-zapier"
+  ]
+}
