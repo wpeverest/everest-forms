@@ -135,6 +135,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 == Changelog ==
 
 = 1.5.10 - 25-11-2019 =
+* Fix - Google reCAPTCHA v2 invisible settings bug.
 * Fix - DB unwanted data erase for fields data save.
 * Fix - Multi-part submit button hidden due to theme style conflict.
 
