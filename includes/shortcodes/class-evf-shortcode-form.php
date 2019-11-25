@@ -356,13 +356,13 @@ class EVF_Shortcode_Form {
 	 * @param array $form_data Form data and settings.
 	 */
 	public static function recaptcha( $form_data ) {
-		$recaptcha_type = get_option( 'everest_forms_recaptcha_type', 'v2' );
-		$invisible      = get_option( 'everest_forms_recaptcha_v2_invisible', 'no' );
+		$recaptcha_type      = get_option( 'everest_forms_recaptcha_type', 'v2' );
+		$invisible_recaptcha = get_option( 'everest_forms_recaptcha_v2_invisible', 'no' );
 
-		if ( 'v2' === $recaptcha_type && 'no' === $invisible ) {
+		if ( 'v2' === $recaptcha_type && 'no' === $invisible_recaptcha ) {
 			$site_key   = get_option( 'everest_forms_recaptcha_v2_site_key' );
 			$secret_key = get_option( 'everest_forms_recaptcha_v2_secret_key' );
-		} elseif ( 'v2' === $recaptcha_type && 'yes' === $invisible ) {
+		} elseif ( 'v2' === $recaptcha_type && 'yes' === $invisible_recaptcha ) {
 			$site_key   = get_option( 'everest_forms_recaptcha_v2_invisible_site_key' );
 			$secret_key = get_option( 'everest_forms_recaptcha_v2_invisible_secret_key' );
 		} else {
