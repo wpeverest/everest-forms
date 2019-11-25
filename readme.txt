@@ -4,7 +4,7 @@ Tags: contact form, form, form builder, contact, custom form
 Requires at least: 4.9
 Tested up to: 5.3
 Requires PHP: 5.4
-Stable tag: 1.5.9
+Stable tag: 1.5.10
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -133,6 +133,10 @@ Bugs can be reported either in our support forum or preferably on the [Everest F
 Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/everest-forms/) :)
 
 == Changelog ==
+
+= 1.5.10 - 25-11-2019 =
+* Fix - DB unwanted data erase for fields data save.
+* Fix - Multi-part submit button hidden due to theme style conflict.
 
 = 1.5.9 - 19-11-2019 =
 * Fix - Fatal error: Called to undefined function.

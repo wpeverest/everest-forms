@@ -51,6 +51,12 @@
 		@include loader();
 	}
 
+	.clear {
+		height: auto;
+		width: auto;
+		visibility: visible;
+	}
+
 	.loader {
 		@include loader();
 	}
