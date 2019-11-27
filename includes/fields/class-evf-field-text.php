@@ -81,6 +81,7 @@ class EVF_Field_Text extends EVF_Form_Fields {
 			$field,
 			array(
 				'type'  => 'number',
+				'class' => 'small-text',
 				'slug'  => 'limit_count',
 				'attrs' => array(
 					'min'     => 1,
