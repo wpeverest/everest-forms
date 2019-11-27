@@ -103,7 +103,7 @@ class EVF_Field_Text extends EVF_Form_Fields {
 				'value'   => ! empty( $field['limit_mode'] ) ? esc_attr( $field['limit_mode'] ) : 'characters',
 				'options' => array(
 					'characters' => esc_html__( 'Characters', 'everest-forms' ),
-					'words'      => esc_html__( 'Words', 'everest-forms' ),
+					'words'      => esc_html__( 'Words Count', 'everest-forms' ),
 				),
 			),
 			false
@@ -188,7 +188,7 @@ class EVF_Field_Text extends EVF_Form_Fields {
 	/**
 	 * Field preview inside the builder.
 	 *
-	 * @param array $field
+	 * @param array $field Field settings.
 	 */
 	public function field_preview( $field ) {
 
@@ -199,7 +199,7 @@ class EVF_Field_Text extends EVF_Form_Fields {
 		$this->field_preview_option( 'label', $field );
 
 		// Primary input.
-		echo '<input type="text" placeholder="' . $placeholder . '" class="widefat" disabled>';
+		echo '<input type="text" placeholder="' . esc_attr( $placeholder ) . '" class="widefat" disabled>';
 
 		// Description.
 		$this->field_preview_option( 'description', $field );
@@ -208,13 +208,30 @@ class EVF_Field_Text extends EVF_Form_Fields {
 	/**
 	 * Field display on the form front-end.
 	 *
-	 * @param array $field
-	 * @param array $deprecated
-	 * @param array $form_data
+	 * @param array $field      Field settings.
+	 * @param array $deprecated Deprecated.
+	 * @param array $form_data  Form data and settings.
 	 */
 	public function field_display( $field, $deprecated, $form_data ) {
 		// Define data.
 		$primary = $field['properties']['inputs']['primary'];
+
+		if ( isset( $field['limit_enabled'] ) ) {
+			$limit_count = isset( $field['limit_count'] ) ? absint( $field['limit_count'] ) : 0;
+			$limit_mode  = isset( $field['limit_mode'] ) ? sanitize_key( $field['limit_mode'] ) : 'characters';
+
+			$primary['data']['form-id']  = $form_data['id'];
+			$primary['data']['field-id'] = $field['id'];
+
+			if ( 'characters' === $limit_mode ) {
+				$primary['class'][]            = 'everest-forms-limit-characters-enabled';
+				$primary['attr']['maxlength']  = $limit_count;
+				$primary['data']['text-limit'] = $limit_count;
+			} else {
+				$primary['class'][]            = 'everest-forms-limit-words-enabled';
+				$primary['data']['text-limit'] = $limit_count;
+			}
+		}
 
 		// Primary field.
 		printf(
