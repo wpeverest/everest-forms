@@ -160,8 +160,29 @@
 				}
 			}
 
+			// Enable Limit length.
+			$builder.on( 'change', '.everest-forms-field-option-row-limit_enabled input', function( event ) {
+				EVFPanelBuilder.updateTextFieldsLimitControls( $( event.target ).parents( '.everest-forms-field-option-row-limit_enabled' ).data().fieldId, event.target.checked );
+			} );
+
 			// Action available for each binding.
 			$( document ).trigger( 'everest_forms_ready' );
+		},
+
+		/**
+		 * Update text fields limit controls.
+		 *
+		 * @since 1.5.10
+		 *
+		 * @param {number} fieldId Field ID.
+		 * @param {bool} checked Whether an option is checked or not.
+		 */
+		updateTextFieldsLimitControls: function( fieldId, checked ) {
+			if ( ! checked ) {
+				$( '#everest-forms-field-option-row-' + fieldId + '-limit_controls' ).addClass( 'everest-forms-hidden' );
+			} else {
+				$( '#everest-forms-field-option-row-' + fieldId + '-limit_controls' ).removeClass( 'everest-forms-hidden' );
+			}
 		},
 
 		/**

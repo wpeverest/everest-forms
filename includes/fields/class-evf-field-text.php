@@ -35,6 +35,7 @@ class EVF_Field_Text extends EVF_Form_Fields {
 				'field_options' => array(
 					'placeholder',
 					'label_hide',
+					'limit_length',
 					'default_value',
 					'css',
 					'input_mask',
@@ -53,9 +54,69 @@ class EVF_Field_Text extends EVF_Form_Fields {
 	}
 
 	/**
+	 * Limit length field option.
+	 *
+	 * @param array $field Field settings.
+	 */
+	public function limit_length( $field ) {
+		// Limit length.
+		$args = array(
+			'slug'    => 'limit_enabled',
+			'content' => $this->field_element(
+				'checkbox',
+				$field,
+				array(
+					'slug'    => 'limit_enabled',
+					'value'   => isset( $field['limit_enabled'] ),
+					'desc'    => esc_html__( 'Limit Length', 'everest-forms' ),
+					'tooltip' => esc_html__( 'Check this option to limit text length by characters or words count.', 'everest-forms' ),
+				),
+				false
+			),
+		);
+		$this->field_element( 'row', $field, $args );
+
+		$count = $this->field_element(
+			'text',
+			$field,
+			array(
+				'type'  => 'number',
+				'slug'  => 'limit_count',
+				'attrs' => array(
+					'min'     => 1,
+					'step'    => 1,
+					'pattern' => '[0-9]',
+				),
+				'value' => ! empty( $field['limit_count'] ) ? absint( $field['limit_count'] ) : 1,
+			),
+			false
+		);
+
+		$mode = $this->field_element(
+			'select',
+			$field,
+			array(
+				'slug'    => 'limit_mode',
+				'value'   => ! empty( $field['limit_mode'] ) ? esc_attr( $field['limit_mode'] ) : 'characters',
+				'options' => array(
+					'characters' => esc_html__( 'Characters', 'everest-forms' ),
+					'words'      => esc_html__( 'Words', 'everest-forms' ),
+				),
+			),
+			false
+		);
+		$args = array(
+			'slug'    => 'limit_controls',
+			'class'   => ! isset( $field['limit_enabled'] ) ? 'everest-forms-hidden' : '',
+			'content' => $count . $mode,
+		);
+		$this->field_element( 'row', $field, $args );
+	}
+
+	/**
 	 * Input mask field option.
 	 *
-	 * @param array $field
+	 * @param array $field Field settings.
 	 */
 	public function input_mask( $field ) {
 		// Input Mask.
