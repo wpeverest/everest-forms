@@ -50,6 +50,7 @@ class EVF_Field_Text extends EVF_Form_Fields {
 	 * Hook in tabs.
 	 */
 	public function init_hooks() {
+		add_action( 'everest_forms_shortcode_scripts', array( $this, 'load_assets' ) );
 		add_filter( 'everest_forms_field_properties_' . $this->type, array( $this, 'field_properties' ), 5, 3 );
 	}
 
@@ -154,6 +155,17 @@ class EVF_Field_Text extends EVF_Form_Fields {
 	}
 
 	/**
+	 * Enqueue shortcode scripts.
+	 *
+	 * @param array $atts Shortcode Attributes.
+	 */
+	public static function load_assets( $atts ) {
+		if ( evf_is_field_exists( $atts['id'], 'text' ) ) {
+			// @todo load text-limit script.
+		}
+	}
+
+	/**
 	 * Define additional field properties.
 	 *
 	 * @param  array $properties Field properties.
@@ -191,7 +203,6 @@ class EVF_Field_Text extends EVF_Form_Fields {
 	 * @param array $field Field settings.
 	 */
 	public function field_preview( $field ) {
-
 		// Define data.
 		$placeholder = ! empty( $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : '';
 

@@ -47,6 +47,13 @@ class EVF_Field_Textarea extends EVF_Form_Fields {
 	}
 
 	/**
+	 * Hook in tabs.
+	 */
+	public function init_hooks() {
+		add_action( 'everest_forms_shortcode_scripts', array( $this, 'load_assets' ) );
+	}
+
+	/**
 	 * Limit length field option.
 	 *
 	 * @param array $field Field settings.
@@ -107,6 +114,17 @@ class EVF_Field_Textarea extends EVF_Form_Fields {
 			'content' => $count . $mode,
 		);
 		$this->field_element( 'row', $field, $args );
+	}
+
+	/**
+	 * Enqueue shortcode scripts.
+	 *
+	 * @param array $atts Shortcode Attributes.
+	 */
+	public static function load_assets( $atts ) {
+		if ( evf_is_field_exists( $atts['id'], 'textarea' ) ) {
+			// @todo load text-limit script.
+		}
 	}
 
 	/**
