@@ -216,6 +216,7 @@ class EVF_Field_Text extends EVF_Form_Fields {
 		// Define data.
 		$primary = $field['properties']['inputs']['primary'];
 
+		// Limit length.
 		if ( isset( $field['limit_enabled'] ) ) {
 			$limit_count = isset( $field['limit_count'] ) ? absint( $field['limit_count'] ) : 0;
 			$limit_mode  = isset( $field['limit_mode'] ) ? sanitize_key( $field['limit_mode'] ) : 'characters';
