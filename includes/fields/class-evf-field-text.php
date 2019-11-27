@@ -76,6 +76,7 @@ class EVF_Field_Text extends EVF_Form_Fields {
 		);
 		$this->field_element( 'row', $field, $args );
 
+		// Limit controls.
 		$count = $this->field_element(
 			'text',
 			$field,
