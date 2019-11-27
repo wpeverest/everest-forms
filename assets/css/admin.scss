@@ -1657,6 +1657,19 @@ body.everest-forms-builder-setup,
 							.everest-forms-min-max-date-format {
 								margin-bottom: 14px;
 							}
+
+							&.everest-forms-field-option-row-limit_controls {
+								display: flex;
+								align-items: center;
+
+								.small-text {
+									margin-right: 8px;
+								}
+
+								select {
+									min-height: 30px;
+								}
+							}
 						}
 
 						.everest-forms-field-option {
