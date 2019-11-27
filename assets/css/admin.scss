@@ -1662,12 +1662,17 @@ body.everest-forms-builder-setup,
 								display: flex;
 								align-items: center;
 
-								.small-text {
+								input[type=number] {
+									width: 30%;
 									margin-right: 8px;
 								}
 
 								select {
 									min-height: 30px;
+								}
+
+								&.everest-forms-hidden {
+									display: none;
 								}
 							}
 						}

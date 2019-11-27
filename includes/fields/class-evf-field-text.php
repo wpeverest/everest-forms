@@ -98,6 +98,7 @@ class EVF_Field_Text extends EVF_Form_Fields {
 			$field,
 			array(
 				'slug'    => 'limit_mode',
+				'class'   => 'limit-select',
 				'value'   => ! empty( $field['limit_mode'] ) ? esc_attr( $field['limit_mode'] ) : 'characters',
 				'options' => array(
 					'characters' => esc_html__( 'Characters', 'everest-forms' ),
