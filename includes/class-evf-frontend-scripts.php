@@ -288,6 +288,12 @@ class EVF_Frontend_Scripts {
 					'mailcheck_toplevel_domains'           => array_map( 'sanitize_text_field', (array) apply_filters( 'everest_forms_mailcheck_toplevel_domains', array( 'dev' ) ) ),
 				);
 				break;
+			case 'everest-forms-text-limit':
+				$params = array(
+					'i18n_messages_limit_characters' => esc_html__( '{count} of {limit} max characters.', 'everest-forms' ),
+					'i18n_messages_limit_words'      => esc_html__( '{count} of {limit} max words.', 'everest-forms' ),
+				);
+				break;
 			default:
 				$params = false;
 		}
