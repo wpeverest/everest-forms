@@ -164,7 +164,7 @@ class EVF_Field_Email extends EVF_Form_Fields {
 	/**
 	 * Confirmation field option.
 	 *
-	 * @param array $field
+	 * @param array $field Field settings.
 	 */
 	public function confirmation( $field ) {
 		$fld  = $this->field_element(
