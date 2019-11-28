@@ -185,8 +185,8 @@ class EVF_Frontend_Scripts {
 				'version' => EVF_VERSION,
 			),
 			'everest-forms-text-limit' => array(
-				'src'     => self::get_asset_url( 'assets/js/frontend/everest-forms-text-limit' . $suffix . '.js' ),
-				'deps'    => array( 'everest-forms' ),
+				'src'     => self::get_asset_url( 'assets/js/frontend/text-limit' . $suffix . '.js' ),
+				'deps'    => array(),
 				'version' => EVF_VERSION,
 			),
 		);
