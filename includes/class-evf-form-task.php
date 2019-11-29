@@ -311,20 +311,20 @@ class EVF_Form_Task {
 		$settings = $this->form_data['settings'];
 		if ( isset( $settings['redirect_to'] ) && '1' === $settings['redirect_to'] ) {
 			?>
-				<script>
-				var redirect = '<?php echo get_permalink( $settings['custom_page'] ); ?>';
-				window.setTimeout( function () {
-					window.location.href = redirect;
-				})
-				</script>
+			<script>
+                var redirect = '<?php echo get_permalink( $settings['custom_page'] ); ?>';
+                window.setTimeout( function () {
+                    window.location.href = redirect;
+                })
+			</script>
 			<?php
 		} elseif ( isset( $settings['redirect_to'] ) && '2' == $settings['redirect_to'] ) {
 			?>
 			<script>
-				window.setTimeout( function () {
-					window.location.href = '<?php echo $settings['external_url']; ?>';
-				})
-				</script>
+                window.setTimeout( function () {
+                    window.location.href = '<?php echo $settings['external_url']; ?>';
+                })
+			</script>
 			<?php
 		}
 
@@ -442,8 +442,11 @@ class EVF_Form_Task {
 			$emails->__set( 'from_name', $email['sender_name'] );
 			$emails->__set( 'from_address', $email['sender_address'] );
 			$emails->__set( 'reply_to', $email['reply_to'] );
-			$emails->__set( 'attachments', apply_filters( 'everest_forms_email_file_attachments', $attachment, $entry, $form_data, 'entry-email', $connection_id, $entry_id ) );
-
+			if($entry_id) {
+				$emails->__set('attachments', apply_filters('everest_forms_email_file_attachments', $attachment, $entry, $form_data, 'entry-email', $connection_id, $entry_id));
+			} else {
+				return;
+			}
 			// Maybe include Cc and Bcc email addresses.
 			if ( 'yes' === get_option( 'everest_forms_enable_email_copies' ) ) {
 				if ( ! empty( $notification['evf_carboncopy'] ) ) {
