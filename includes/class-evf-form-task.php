@@ -442,11 +442,11 @@ class EVF_Form_Task {
 			$emails->__set( 'from_name', $email['sender_name'] );
 			$emails->__set( 'from_address', $email['sender_address'] );
 			$emails->__set( 'reply_to', $email['reply_to'] );
-			if($entry_id) {
-				$emails->__set('attachments', apply_filters('everest_forms_email_file_attachments', $attachment, $entry, $form_data, 'entry-email', $connection_id, $entry_id));
-			} else {
-				return;
+
+			if( $entry_id ) {
+				$emails->__set( 'attachments', apply_filters('everest_forms_email_file_attachments', $attachment, $entry, $form_data, 'entry-email', $connection_id, $entry_id ));
 			}
+
 			// Maybe include Cc and Bcc email addresses.
 			if ( 'yes' === get_option( 'everest_forms_enable_email_copies' ) ) {
 				if ( ! empty( $notification['evf_carboncopy'] ) ) {
