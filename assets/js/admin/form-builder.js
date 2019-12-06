@@ -739,6 +739,7 @@
 										$( '.everest-forms-add-fields' ).show();
 										EVFPanelBuilder.conditionalLogicRemoveField(removed_el_id);
 										EVFPanelBuilder.conditionalLogicRemoveFieldIntegration(removed_el_id);
+										EVFPanelBuilder.paymentFieldRemoveFromQuantity(removed_el_id);
 									});
 								}
 							},
@@ -1168,6 +1169,7 @@
 					// Conditional logic append rules.
 					EVFPanelBuilder.conditionalLogicAppendField( dragged_el_id );
 					EVFPanelBuilder.conditionalLogicAppendFieldIntegration( dragged_el_id );
+					EVFPanelBuilder.paymentFieldAppendToQuantity( dragged_el_id );
 		 		}
 		 	});
 		},
@@ -1233,6 +1235,20 @@
 			});
 		},
 
+		paymentFieldAppendToQuantity: function( id ) {
+			var dragged_el = $('#' + id);
+
+			var fields = $( '.everest-forms-field-option-row-map_field select' );
+			var field_type = dragged_el.attr( 'data-field-type' );
+			var field_id = dragged_el.attr( 'data-field-id' );
+			var field_label = dragged_el.find( '.label-title .text ' ).text();
+
+			var el_to_append = '<option value="'+field_id+'">'+field_label+'</option>';
+			if( 'payment-single' === field_type || 'payment-multiple' === field_type || 'payment-checkbox' === field_type ) {
+				fields.append( el_to_append );
+			}
+		},
+
 		conditionalLogicAppendFieldIntegration: function( id ){
 			var dragged_el = $('#' + id);
 			var dragged_index = dragged_el.index();
@@ -1295,6 +1311,10 @@
 
 		conditionalLogicRemoveFieldIntegration: function( id ){
 			$( '.evf-provider-conditional .evf-conditional-field-select option[value = ' +id +' ]' ).remove();
+		},
+
+		paymentFieldRemoveFromQuantity: function( id ) {
+			$('.everest-forms-field-option-row-map_field select option[value = ' +id +' ]').remove();
 		},
 
 		bindFieldSettings: function () {
