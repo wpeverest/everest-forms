@@ -26,14 +26,16 @@ class EVF_AJAX {
 	 * Set EVF AJAX constant and headers.
 	 */
 	public static function define_ajax() {
+		// @codingStandardsIgnoreStart
 		if ( ! empty( $_GET['ev-ajax'] ) ) {
 			evf_maybe_define_constant( 'DOING_AJAX', true );
 			evf_maybe_define_constant( 'EVF_DOING_AJAX', true );
 			if ( ! WP_DEBUG || ( WP_DEBUG && ! WP_DEBUG_DISPLAY ) ) {
-				@ini_set( 'display_errors', 0 ); // Turn off display_errors during AJAX events to prevent malformed JSON
+				@ini_set( 'display_errors', 0 ); // Turn off display_errors during AJAX events to prevent malformed JSON.
 			}
 			$GLOBALS['wpdb']->hide_errors();
 		}
+		// @codingStandardsIgnoreEnd
 	}
 
 	/**
@@ -42,12 +44,17 @@ class EVF_AJAX {
 	 * @since 1.0.0
 	 */
 	private static function evf_ajax_headers() {
-		send_origin_headers();
-		@header( 'Content-Type: text/html; charset=' . get_option( 'blog_charset' ) );
-		@header( 'X-Robots-Tag: noindex' );
-		send_nosniff_header();
-		evf_nocache_headers();
-		status_header( 200 );
+		if ( ! headers_sent() ) {
+			send_origin_headers();
+			send_nosniff_header();
+			evf_nocache_headers();
+			header( 'Content-Type: text/html; charset=' . get_option( 'blog_charset' ) );
+			header( 'X-Robots-Tag: noindex' );
+			status_header( 200 );
+		} elseif ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			headers_sent( $file, $line );
+			trigger_error( "evf_ajax_headers cannot set headers - headers already sent by {$file} on line {$line}", E_USER_NOTICE ); // @codingStandardsIgnoreLine
+		}
 	}
 
 	/**
@@ -56,8 +63,8 @@ class EVF_AJAX {
 	public static function do_evf_ajax() {
 		global $wp_query;
 
-		if ( ! empty( $_GET['evf-ajax'] ) ) {
-			$wp_query->set( 'evf-ajax', sanitize_text_field( $_GET['evf-ajax'] ) );
+		if ( ! empty( $_GET['evf-ajax'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
+			$wp_query->set( 'evf-ajax', sanitize_text_field( wp_unslash( $_GET['evf-ajax'] ) ) ); // phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
 		}
 
 		$action = $wp_query->get( 'evf-ajax' );
