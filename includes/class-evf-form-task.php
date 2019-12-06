@@ -547,8 +547,10 @@ class EVF_Form_Task {
 			}
 		}
 
+		$this->entry_id = $entry_id;
+
 		do_action( 'everest_forms_complete_entry_save', $entry_id, $fields, $entry, $form_id, $form_data );
 
-		return $entry_id;
+		return $this->entry_id;
 	}
 }
