@@ -27,7 +27,7 @@ class EVF_AJAX {
 	 */
 	public static function define_ajax() {
 		// @codingStandardsIgnoreStart
-		if ( ! empty( $_GET['ev-ajax'] ) ) {
+		if ( ! empty( $_GET['evf-ajax'] ) ) {
 			evf_maybe_define_constant( 'DOING_AJAX', true );
 			evf_maybe_define_constant( 'EVF_DOING_AJAX', true );
 			if ( ! WP_DEBUG || ( WP_DEBUG && ! WP_DEBUG_DISPLAY ) ) {
