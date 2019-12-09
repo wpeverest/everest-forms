@@ -132,6 +132,12 @@ function evf_print_notices( $form_data = array() ) {
 	$all_notices  = EVF()->session->get( 'evf_notices', array() );
 	$notice_types = apply_filters( 'everest_forms_notice_types', array( 'error', 'success', 'notice' ) );
 
+	// Escapes in case of multiple forms to find out the correct form
+	// to post notices on
+	if ( ( (int) $form_id !== (int) $_REQUEST['everest_forms']['id'] ) )
+		// If it doesn't align with the right form, don't proceed
+		return;
+
 	foreach ( $notice_types as $notice_type ) {
 		if ( evf_notice_count( $notice_type ) > 0 ) {
 			foreach ( $all_notices[ $notice_type ] as $key => $message ) {
