@@ -19,7 +19,7 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 	public function __construct() {
 		$this->name     = esc_html__( 'Checkboxes', 'everest-forms' );
 		$this->type     = 'checkbox';
-		$this->icon     = 'evf-icon  evf-icon-checkbox';
+		$this->icon     = 'evf-icon evf-icon-checkbox';
 		$this->order    = 70;
 		$this->group    = 'general';
 		$this->defaults = array(
@@ -239,8 +239,7 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 		);
 
 		if ( 'post_type' === $dynamic && ! empty( $field['dynamic_post_type'] ) ) {
-
-			// Dynamic population is enabled using post type
+			// Dynamic population is enabled using post type.
 			$value_raw                 = implode( ',', array_map( 'absint', $field_submit ) );
 			$data['value_raw']         = $value_raw;
 			$data['dynamic']           = 'post_type';
