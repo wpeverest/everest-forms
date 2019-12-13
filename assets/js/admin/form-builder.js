@@ -1131,6 +1131,7 @@
 					var field_preview = response.data.preview,
 						field_options = response.data.options,
 						form_field_id = response.data.form_field_id,
+						field_type = response.data.field.type,
 						dragged_el_id = $( field_preview ).attr( 'id' ),
 						dragged_field_id = $( field_preview ).attr( 'data-field-id' );
 
@@ -1170,6 +1171,7 @@
 					EVFPanelBuilder.conditionalLogicAppendField( dragged_el_id );
 					EVFPanelBuilder.conditionalLogicAppendFieldIntegration( dragged_el_id );
 					EVFPanelBuilder.paymentFieldAppendToQuantity( dragged_el_id );
+					EVFPanelBuilder.paymentFieldAppendToDropdown( dragged_field_id, field_type );
 		 		}
 		 	});
 		},
@@ -1246,6 +1248,21 @@
 			var el_to_append = '<option value="'+field_id+'">'+field_label+'</option>';
 			if( 'payment-single' === field_type || 'payment-multiple' === field_type || 'payment-checkbox' === field_type ) {
 				fields.append( el_to_append );
+			}
+		},
+
+		paymentFieldAppendToDropdown: function( dragged_field_id, field_type ){
+			if('payment-quantity' === field_type ) {
+				let match_fields = ['-checkbox', '-multiple', '-single'],
+					qty_dropdown = $('#everest-forms-field-option-' + dragged_field_id + '-map_field');
+				match_fields.forEach(function(single_field){
+					$('.everest-forms-field-payment'+single_field).each(function(){
+						var id = $(this).attr('data-field-id'),
+							label = $(this).find( ".label-title .text" ).text();
+						var el_to_append = '<option value="'+id+'">'+label+'</option>';
+						qty_dropdown.append( el_to_append );
+					});
+				});
 			}
 		},
 
