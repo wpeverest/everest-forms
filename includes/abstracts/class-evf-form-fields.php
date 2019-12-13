@@ -1036,4 +1036,16 @@ abstract class EVF_Form_Fields {
 			'meta_key' => $meta_key,
 		);
 	}
+
+	/**
+	 * Field with limit.
+	 *
+	 * @param  array $field Field to check.
+	 * @return boolean
+	 */
+	protected function field_is_limit( $field ) {
+		if ( in_array( $field['type'], array( 'text', 'textarea' ), true ) ) {
+			return isset( $field['limit_enabled'] ) && ! empty( $field['limit_count'] );
+		}
+	}
 }
