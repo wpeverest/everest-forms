@@ -159,9 +159,16 @@ class EVF_Field_Text extends EVF_Form_Fields {
 	 *
 	 * @param array $atts Shortcode Attributes.
 	 */
-	public static function load_assets( $atts ) {
-		if ( evf_is_field_exists( $atts['id'], 'text' ) ) {
-			// @todo load text-limit script.
+	public function load_assets( $atts ) {
+		$form_id   = isset( $atts['id'] ) ? wp_unslash( $atts['id'] ) : ''; // WPCS: CSRF ok, input var ok, sanitization ok.
+		$form_obj  = EVF()->form->get( $form_id );
+		$form_data = ! empty( $form_obj->post_content ) ? evf_decode( $form_obj->post_content ) : '';
+
+		// Leave only fields with limit.
+		$form_fields = array_filter( $form_data['form_fields'], array( $this, 'field_is_limit' ) );
+
+		if ( count( $form_fields ) ) {
+			wp_enqueue_script( 'everest-forms-text-limit' );
 		}
 	}
 

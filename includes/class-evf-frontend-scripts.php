@@ -159,29 +159,34 @@ class EVF_Frontend_Scripts {
 	private static function register_scripts() {
 		$suffix           = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		$register_scripts = array(
-			'inputmask'       => array(
+			'inputmask'                => array(
 				'src'     => self::get_asset_url( 'assets/js/inputmask/jquery.inputmask.bundle' . $suffix . '.js' ),
 				'deps'    => array( 'jquery' ),
 				'version' => '4.0.0-beta.58',
 			),
-			'flatpickr'       => array(
+			'flatpickr'                => array(
 				'src'     => self::get_asset_url( 'assets/js/flatpickr/flatpickr' . $suffix . '.js' ),
 				'deps'    => array( 'jquery' ),
 				'version' => '4.5.1',
 			),
-			'mailcheck'       => array(
+			'mailcheck'                => array(
 				'src'     => self::get_asset_url( 'assets/js/mailcheck/mailcheck' . $suffix . '.js' ),
 				'deps'    => array( 'jquery' ),
 				'version' => '1.1.2',
 			),
-			'jquery-validate' => array(
+			'jquery-validate'          => array(
 				'src'     => self::get_asset_url( 'assets/js/jquery-validate/jquery.validate' . $suffix . '.js' ),
 				'deps'    => array( 'jquery' ),
 				'version' => '1.17.0',
 			),
-			'everest-forms'   => array(
+			'everest-forms'            => array(
 				'src'     => self::get_asset_url( 'assets/js/frontend/everest-forms' . $suffix . '.js' ),
 				'deps'    => array( 'jquery', 'inputmask', 'jquery-validate' ),
+				'version' => EVF_VERSION,
+			),
+			'everest-forms-text-limit' => array(
+				'src'     => self::get_asset_url( 'assets/js/frontend/text-limit' . $suffix . '.js' ),
+				'deps'    => array(),
 				'version' => EVF_VERSION,
 			),
 		);
@@ -281,6 +286,12 @@ class EVF_Frontend_Scripts {
 					'mailcheck_enabled'                    => (bool) apply_filters( 'everest_forms_mailcheck_enabled', true ),
 					'mailcheck_domains'                    => array_map( 'sanitize_text_field', (array) apply_filters( 'everest_forms_mailcheck_domains', array() ) ),
 					'mailcheck_toplevel_domains'           => array_map( 'sanitize_text_field', (array) apply_filters( 'everest_forms_mailcheck_toplevel_domains', array( 'dev' ) ) ),
+				);
+				break;
+			case 'everest-forms-text-limit':
+				$params = array(
+					'i18n_messages_limit_characters' => esc_html__( '{count} of {limit} max characters.', 'everest-forms' ),
+					'i18n_messages_limit_words'      => esc_html__( '{count} of {limit} max words.', 'everest-forms' ),
 				);
 				break;
 			default:
