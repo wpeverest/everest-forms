@@ -44,7 +44,7 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 										}
 
 										$meta_value = is_serialized( $meta_value ) ? $meta_value : wp_strip_all_tags( $meta_value );
-										if ( evf_is_json( $meta_value ) === true ) {
+										if ( evf_is_json( $meta_value ) ) {
 											$meta_value = json_decode( $meta_value, true );
 											$meta_value = $meta_value['value'];
 										}
@@ -55,7 +55,7 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 										$correct_answers = false;
 
 										// Field name.
-										echo '<tr class="everest-forms-entry-field field-name' . $field_class . '" style="' . $field_style . '"><th>';
+										echo '<tr class="everest-forms-entry-field field-name' . $field_class . '" style="' . esc_attr( $field_style ) . '"><th>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 										$value = evf_get_form_data_by_meta_key( $form_id, $meta_key );
 

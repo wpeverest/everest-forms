@@ -197,7 +197,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		if ( ! empty( $entry->meta[ $meta_key ] ) ) { // phpcs:ignore WordPress.Security.EscapeOutput
 			$value = $entry->meta[ $meta_key ];
 
-			if ( evf_is_json( $value ) === true ) {
+			if ( evf_is_json( $value ) ) {
 				$field_value = json_decode( $value, true );
 				$value       = $field_value['value'];
 			}
