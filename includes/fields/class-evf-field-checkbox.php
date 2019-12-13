@@ -66,7 +66,52 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 	 * Hook in tabs.
 	 */
 	public function init_hooks() {
+		add_filter( 'everest_forms_html_field_value', array( $this, 'field_html_value' ), 10, 4 );
 		add_filter( 'everest_forms_field_properties_' . $this->type, array( $this, 'field_properties' ), 5, 3 );
+	}
+
+	/**
+	 * Return images, if any, for HTML supported values.
+	 *
+	 * @since 1.6.0
+	 *
+	 * @param string $value     Field value.
+	 * @param array  $field     Field settings.
+	 * @param array  $form_data Form data and settings.
+	 * @param string $context   Value display context.
+	 *
+	 * @return string
+	 */
+	public function field_html_value( $value, $field, $form_data = array(), $context = '' ) {
+		// Only use HTML formatting for checkbox fields, with image choices
+		// enabled, and exclude the entry table display. Lastly, provides a
+		// filter to disable fancy display.
+		if (
+			! empty( $field['value'] ) &&
+			$this->type === $field['type'] &&
+			! empty( $field['images'] ) &&
+			'entry-table' !== $context &&
+			apply_filters( 'everest_forms_checkbox_field_html_value_images', true, $context )
+		) {
+			$items  = array();
+			$values = explode( "\n", $field['value'] );
+
+			foreach ( $values as $key => $val ) {
+				if ( ! empty( $field['images'][ $key ] ) ) {
+					$items[] = sprintf(
+						'<span style="max-width:200px;display:block;margin:0 0 5px 0;"><img src="%s" style="max-width:100%%;display:block;margin:0;"></span>%s',
+						esc_url( $field['images'][ $key ] ),
+						$val
+					);
+				} else {
+					$items[] = $val;
+				}
+			}
+
+			return implode( '<br><br>', $items );
+		}
+
+		return $value;
 	}
 
 	/**
