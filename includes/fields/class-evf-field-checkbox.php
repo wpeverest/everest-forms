@@ -88,7 +88,7 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 	/**
 	 * Show values field option.
 	 *
-	 * @param array $field
+	 * @param array $field Field Data.
 	 */
 	public function show_values( $field ) {
 		// Show Values toggle option. This option will only show if already used or if manually enabled by a filter.
