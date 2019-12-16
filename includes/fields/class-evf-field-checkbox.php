@@ -19,7 +19,7 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 	public function __construct() {
 		$this->name     = esc_html__( 'Checkboxes', 'everest-forms' );
 		$this->type     = 'checkbox';
-		$this->icon     = 'evf-icon  evf-icon-checkbox';
+		$this->icon     = 'evf-icon evf-icon-checkbox';
 		$this->order    = 70;
 		$this->group    = 'general';
 		$this->defaults = array(
@@ -51,6 +51,7 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 			),
 			'advanced-options' => array(
 				'field_options' => array(
+					'randomize',
 					'show_values',
 					'input_columns',
 					'label_hide',
@@ -86,9 +87,33 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 	}
 
 	/**
+	 * Randomize order of choices.
+	 *
+	 * @since 1.6.0
+	 * @param array $field Field Data.
+	 */
+	public function randomize( $field ) {
+		$args = array(
+			'slug'    => 'random',
+			'content' => $this->field_element(
+				'checkbox',
+				$field,
+				array(
+					'slug'    => 'random',
+					'value'   => isset( $field['random'] ) ? '1' : '0',
+					'desc'    => esc_html__( 'Randomize Choices', 'everest-forms' ),
+					'tooltip' => esc_html__( 'Check this option to randomize the order of the choices.', 'everest-forms' ),
+				),
+				false
+			),
+		);
+		$this->field_element( 'row', $field, $args );
+	}
+
+	/**
 	 * Show values field option.
 	 *
-	 * @param array $field
+	 * @param array $field Field Data.
 	 */
 	public function show_values( $field ) {
 		// Show Values toggle option. This option will only show if already used or if manually enabled by a filter.
