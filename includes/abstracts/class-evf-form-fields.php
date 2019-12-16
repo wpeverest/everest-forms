@@ -566,6 +566,12 @@ abstract class EVF_Form_Fields {
 				);
 				break;
 
+			/*
+			 * Choices Images.
+			 */
+			case 'choices_images':
+				break;
+
 			/**
 			 * Advanced Fields.
 			 */
