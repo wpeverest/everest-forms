@@ -983,7 +983,6 @@ abstract class EVF_Form_Fields {
 
 					$output .= '</ul>';
 				}
-
 				break;
 		}
 
