@@ -919,19 +919,17 @@ abstract class EVF_Form_Fields {
 						break;
 				}
 
-				$list_class = array( 'widefat', 'primary-input' );
-				if ( ! empty( $field['choices_images'] ) ) {
+				$list_class     = array( 'widefat', 'primary-input' );
+				$choices_images = ! empty( $field['choices_images'] );
+
+				if ( $choices_images ) {
 					$list_class[] = 'everest-forms-image-choices';
 					$list_class[] = 'everest-forms-image-choices-' . sanitize_html_class( $field['choices_images_style'] );
 				}
 
 				if ( 'select' === $type ) {
 					$placeholder = ! empty( $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : '';
-
-					$output = sprintf(
-						'<select class="%s" disabled>',
-						evf_sanitize_classes( $list_class, true )
-					);
+					$output      = sprintf( '<select class="%s" disabled>', evf_sanitize_classes( $list_class, true ) );
 
 					// Optional placeholder.
 					if ( ! empty( $placeholder ) ) {
@@ -939,7 +937,7 @@ abstract class EVF_Form_Fields {
 					}
 
 					// Build the select options (even though user can only see 1st option).
-					foreach ( $values as $key => $value ) {
+					foreach ( $values as $value ) {
 						$default  = isset( $value['default'] ) ? (bool) $value['default'] : false;
 						$selected = ! empty( $placeholder ) ? '' : selected( true, $default, false );
 
@@ -948,7 +946,42 @@ abstract class EVF_Form_Fields {
 
 					$output .= '</select>';
 				} else {
+					$output = sprintf( '<ul class="%s">', evf_sanitize_classes( $list_class, true ) );
 
+					// Individual checkbox/radio options.
+					foreach ( $values as $key => $value ) {
+						$default     = isset( $value['default'] ) ? $value['default'] : '';
+						$selected    = checked( '1', $default, false );
+						$input_class = array();
+						$item_class  = array();
+
+						if ( ! empty( $value['default'] ) ) {
+							$item_class[] = 'everest-forms-selected';
+						}
+
+						if ( $choices_images ) {
+							$item_class[] = 'everest-forms-image-choices-item';
+						}
+
+						$output .= sprintf( '<li class="%s">', evf_sanitize_classes( $item_class, true ) );
+
+						if ( $choices_images ) {
+							$output .= '<label>';
+							// @todo Output for image choices.
+							$output .= '</label>';
+						} else {
+							$output .= sprintf(
+								'<input type="%s" %s disabled>%s',
+								$type,
+								$selected,
+								$value['label']
+							);
+						}
+
+						$output .= '</li>';
+					}
+
+					$output .= '</ul>';
 				}
 
 				break;
