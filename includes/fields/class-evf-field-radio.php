@@ -149,7 +149,7 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 	/**
 	 * Show values field option.
 	 *
-	 * @param array $field
+	 * @param array $field Field Data.
 	 */
 	public function show_values( $field ) {
 		// Show Values toggle option. This option will only show if already used or if manually enabled by a filter.
@@ -298,8 +298,7 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 		);
 
 		if ( 'post_type' === $dynamic && ! empty( $field['dynamic_post_type'] ) ) {
-
-			// Dynamic population is enabled using post type
+			// Dynamic population is enabled using post type.
 			$value_raw                 = implode( ',', array_map( 'absint', $field_submit ) );
 			$data['value_raw']         = $value_raw;
 			$data['dynamic']           = 'post_type';

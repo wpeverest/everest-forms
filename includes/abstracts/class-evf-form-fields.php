@@ -1061,7 +1061,7 @@ abstract class EVF_Form_Fields {
 			'value'    => $value,
 			'id'       => $field_id,
 			'type'     => $this->type,
-			'meta_key' => $meta_key, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+			'meta_key' => $meta_key,
 		);
 	}
 
