@@ -774,6 +774,54 @@ abstract class EVF_Form_Fields {
 				);
 				break;
 
+			/*
+			 * Input columns.
+			 */
+			case 'input_columns':
+				$value   = ! empty( $field['input_columns'] ) ? esc_attr( $field['input_columns'] ) : '';
+				$tooltip = esc_html__( 'Select the layout for displaying field choices.', 'everest-forms' );
+				$options = array(
+					''       => esc_html__( 'One Column', 'everest-forms' ),
+					'2'      => esc_html__( 'Two Columns', 'everest-forms' ),
+					'3'      => esc_html__( 'Three Columns', 'everest-forms' ),
+					'inline' => esc_html__( 'Inline', 'everest-forms' ),
+				);
+
+				// Build output.
+				$output  = $this->field_element(
+					'label',
+					$field,
+					array(
+						'slug'    => 'input_columns',
+						'value'   => esc_html__( 'Choice Layout', 'everest-forms' ),
+						'tooltip' => $tooltip,
+					),
+					false
+				);
+				$output .= $this->field_element(
+					'select',
+					$field,
+					array(
+						'slug'    => 'input_columns',
+						'value'   => $value,
+						'options' => $options,
+					),
+					false
+				);
+				$output  = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'input_columns',
+						'content' => $output,
+					),
+					false
+				);
+				break;
+
+			/*
+			 * Default.
+			 */
 			default:
 				if ( is_callable( array( $this, $option ) ) ) {
 					$this->{$option}( $field );
