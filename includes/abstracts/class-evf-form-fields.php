@@ -884,7 +884,73 @@ abstract class EVF_Form_Fields {
 			case 'description':
 				$description = isset( $field['description'] ) && ! empty( $field['description'] ) ? $field['description'] : '';
 				$description = false !== strpos( $class, 'nl2br' ) ? nl2br( $description ) : $description;
-				$output      = sprintf( '<div class="description">%s</div>', $description );
+				$output      = sprintf( '<div class="description %s">%s</div>', $class, $description );
+				break;
+
+			case 'choices':
+				$total          = 0;
+				$values         = ! empty( $field['choices'] ) ? $field['choices'] : $this->defaults;
+				$choices_fields = array( 'checkbox', 'payment-checkbox', 'select', 'radio', 'payment-radio' );
+
+				// Notify if choices source is currently empty.
+				if ( empty( $values ) ) {
+					$values = array(
+						'label' => esc_html__( '(empty)', 'everest-forms' ),
+					);
+				}
+
+				// Build output.
+				if ( ! in_array( $field['type'], $choices_fields, true ) ) {
+					break;
+				}
+
+				switch ( $field['type'] ) {
+					case 'checkbox':
+					case 'payment-checkbox':
+						$type = 'checkbox';
+						break;
+
+					case 'select':
+						$type = 'select';
+						break;
+
+					default:
+						$type = 'radio';
+						break;
+				}
+
+				$list_class = array( 'widefat', 'primary-input' );
+				if ( ! empty( $field['choices_images'] ) ) {
+					$list_class[] = 'everest-forms-image-choices';
+					$list_class[] = 'everest-forms-image-choices-' . sanitize_html_class( $field['choices_images_style'] );
+				}
+
+				if ( 'select' === $type ) {
+					$placeholder = ! empty( $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : '';
+
+					$output = sprintf(
+						'<select class="%s" disabled>',
+						evf_sanitize_classes( $list_class, true )
+					);
+
+					// Optional placeholder.
+					if ( ! empty( $placeholder ) ) {
+						$output .= sprintf( '<option value="" class="placeholder">%s</option>', esc_html( $placeholder ) );
+					}
+
+					// Build the select options (even though user can only see 1st option).
+					foreach ( $values as $key => $value ) {
+						$default  = isset( $value['default'] ) ? (bool) $value['default'] : false;
+						$selected = ! empty( $placeholder ) ? '' : selected( true, $default, false );
+
+						$output .= sprintf( '<option %s>%s</option>', $selected, esc_html( $value['label'] ) );
+					}
+
+					$output .= '</select>';
+				} else {
+
+				}
+
 				break;
 		}
 
