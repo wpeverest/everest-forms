@@ -2616,6 +2616,19 @@ body.everest-forms-builder-setup,
 				border-radius: 4px;
 				padding: 8px;
 
+				span.move {
+					box-shadow: none;
+					background: none;
+					color: rgba(10, 24, 41, 0.7);
+
+					svg {
+						width: 28px;
+						height: 24px;
+						padding: 2px 5px;
+						transform: rotate(90deg);
+					}
+				}
+
 				.ui-sortable-handle {
 					background: $color-white;
 					border: 1px solid $color_gray-lighten;

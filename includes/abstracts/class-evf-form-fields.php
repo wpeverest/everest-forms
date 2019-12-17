@@ -545,10 +545,11 @@ abstract class EVF_Form_Fields {
 				);
 
 				// Field contents.
+				$field_type    = 'checkbox' === $this->type ? 'checkbox' : 'radio';
 				$field_content = sprintf(
 					'<ul data-next-id="%s" class="evf-choices-list %s" data-field-id="%s" data-field-type="%s">',
 					max( array_keys( $values ) ) + 1,
-					evf_sanitize_classes( $class ),
+					evf_sanitize_classes( $class, true ),
 					$field['id'],
 					$this->type
 				);
@@ -556,15 +557,14 @@ abstract class EVF_Form_Fields {
 					$default = ! empty( $value['default'] ) ? $value['default'] : '';
 					$name    = sprintf( 'form_fields[%s][choices][%s]', $field['id'], $key );
 
-					$field_content .= sprintf( '<li data-key="%d">', absint( $key ) );
-					$field_content .= '<svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" role="img" aria-hidden="true" focusable="false"><path d="M13,8c0.6,0,1-0.4,1-1s-0.4-1-1-1s-1,0.4-1,1S12.4,8,13,8z M5,6C4.4,6,4,6.4,4,7s0.4,1,1,1s1-0.4,1-1S5.6,6,5,6z M5,10 c-0.6,0-1,0.4-1,1s0.4,1,1,1s1-0.4,1-1S5.6,10,5,10z M13,10c-0.6,0-1,0.4-1,1s0.4,1,1,1s1-0.4,1-1S13.6,10,13,10z M9,6 C8.4,6,8,6.4,8,7s0.4,1,1,1s1-0.4,1-1S9.6,6,9,6z M9,10c-0.6,0-1,0.4-1,1s0.4,1,1,1s1-0.4,1-1S9.6,10,9,10z"></path></svg>';
-					$field_content .= sprintf(
-						'<input type="%s" name="%s[default]" class="default" value="1" %s>',
-						'checkbox' === $this->type ? 'checkbox' : 'radio',
-						$name,
-						checked( '1', $default, false )
-					);
-					$field_content .= '</li>';
+					$field_content     .= sprintf( '<li data-key="%1$d">', absint( $key ) );
+						$field_content .= '<span class="move"><svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" role="img" aria-hidden="true" focusable="false"><path d="M13,8c0.6,0,1-0.4,1-1s-0.4-1-1-1s-1,0.4-1,1S12.4,8,13,8z M5,6C4.4,6,4,6.4,4,7s0.4,1,1,1s1-0.4,1-1S5.6,6,5,6z M5,10 c-0.6,0-1,0.4-1,1s0.4,1,1,1s1-0.4,1-1S5.6,10,5,10z M13,10c-0.6,0-1,0.4-1,1s0.4,1,1,1s1-0.4,1-1S13.6,10,13,10z M9,6 C8.4,6,8,6.4,8,7s0.4,1,1,1s1-0.4,1-1S9.6,6,9,6z M9,10c-0.6,0-1,0.4-1,1s0.4,1,1,1s1-0.4,1-1S9.6,10,9,10z"></path></svg></span>';
+						$field_content .= sprintf( '<input type="%1$s" name="%2$s[default]" class="default" value="1" %3$s>', $field_type, $name, checked( '1', $default, false ) );
+						$field_content .= sprintf( '<input type="text" name="%1$s[label]" value="%2$s" class="label">', $name, esc_attr( $value['label'] ) );
+						$field_content .= sprintf( '<input type="text" name="%1$s[value]" value="%2$s" class="value">', $name, esc_attr( $value['value'] ) );
+						$field_content .= '<a class="add" href="#"><i class="dashicons dashicons-plus"></i></a>';
+						$field_content .= '<a class="remove" href="#"><i class="dashicons dashicons-minus"></i></a>';
+					$field_content     .= '</li>';
 				}
 				$field_content .= '</ul>';
 
@@ -577,55 +577,6 @@ abstract class EVF_Form_Fields {
 						'content' => $field_label . $field_content,
 					),
 					false
-				);
-				break;
-
-			/*
-			 * Choices.
-			 */
-			case 'choices_old':
-				$tooltip = __( 'Add choices for the form field.', 'everest-forms' );
-				$toggle  = '';
-				$dynamic = ! empty( $field['dynamic_choices'] ) ? esc_html( $field['dynamic_choices'] ) : '';
-				$values  = ! empty( $field['choices'] ) ? $field['choices'] : $this->defaults;
-				$class   = ! empty( $field['show_values'] ) && $field['show_values'] == '1' ? 'show-values' : '';
-				$class  .= ! empty( $dynamic ) ? ' hidden' : '';
-
-				// Field option label and type.
-				$option_label = $this->field_element(
-					'label',
-					$field,
-					array(
-						'slug'          => 'choices',
-						'value'         => __( 'Choices', 'everest-forms' ),
-						'tooltip'       => $tooltip,
-						'after_tooltip' => $toggle,
-					),
-					false
-				);
-				$option_type  = 'checkbox' === $this->type ? 'checkbox' : 'radio';
-
-				// Field option choices inputs.
-				$option_choices = sprintf( '<ul data-next-id="%s" class="evf-choices-list %s" data-field-id="%s" data-field-type="%s">', max( array_keys( $values ) ) + 1, $class, $field['id'], $this->type );
-				foreach ( $values as $key => $value ) {
-					$default         = ! empty( $value['default'] ) ? $value['default'] : '';
-					$option_choices .= sprintf( '<li data-key="%d">', $key );
-					$option_choices .= sprintf( '<input type="%s" name="form_fields[%s][choices][%s][default]" class="default" value="1" %s>', $option_type, $field['id'], $key, checked( '1', $default, false ) );
-					$option_choices .= sprintf( '<input type="text" name="form_fields[%s][choices][%s][label]" value="%s" class="label">', $field['id'], $key, esc_attr( $value['label'] ) );
-					$option_choices .= sprintf( '<input type="text" name="form_fields[%s][choices][%s][value]" value="%s" class="value">', $field['id'], $key, esc_attr( $value['value'] ) );
-					$option_choices .= '<a class="add" href="#"><i class="dashicons dashicons-plus"></i></a>';
-					$option_choices .= '<a class="remove" href="#"><i class="dashicons dashicons-minus"></i></a>';
-					$option_choices .= '</li>';
-				}
-				$option_choices .= '</ul>';
-				// Field option row (markup) including label and input.
-				$output = $this->field_element(
-					'row',
-					$field,
-					array(
-						'slug'    => 'choices',
-						'content' => $option_label . $option_choices,
-					)
 				);
 				break;
 

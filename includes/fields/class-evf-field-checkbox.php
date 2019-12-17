@@ -45,7 +45,6 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 					'label',
 					'meta',
 					'choices',
-					'choices_old',
 					'choices_images',
 					'description',
 					'required',
