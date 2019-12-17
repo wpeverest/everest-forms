@@ -285,6 +285,19 @@
 				file_frame.open();
 			} );
 
+			// Remove and uploaded image.
+			$builder.on( 'click', '.everest-forms-image-upload-remove', function( event ) {
+				event.preventDefault();
+
+				var $container = $( this ).parent().parent();
+
+				$container.find( '.preview' ).empty();
+				$container.find( '.everest-forms-image-upload-add' ).show();
+				$container.find( '.source' ).val( '' );
+
+				$builder.trigger( 'everestFormsImageUploadRemove', [ $( this ), $container ] );
+			});
+
 			// Field sidebar tab toggle.
 			$builder.on( 'click', '.everest-forms-fields-tab a', function(e) {
 				e.preventDefault();
