@@ -584,6 +584,28 @@ abstract class EVF_Form_Fields {
 			 * Choices Images.
 			 */
 			case 'choices_images':
+				$fld = $this->field_element(
+					'checkbox',
+					$field,
+					array(
+						'slug'    => 'choices_images',
+						'value'   => isset( $field['choices_images'] ) ? '1' : '0',
+						'desc'    => esc_html__( 'Use image choices', 'wpforms-lite' ),
+						'tooltip' => esc_html__( 'Check this option to enable using images with the choices.', 'wpforms-lite' ),
+					),
+					false
+				);
+
+				// Final field output.
+				$output = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'choices_images',
+						'content' => $fld,
+					),
+					false
+				);
 				break;
 
 			/**
