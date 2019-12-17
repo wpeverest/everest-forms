@@ -2609,8 +2609,9 @@ body.everest-forms-builder-setup,
 				padding: 8px;
 
 				.move {
-					display: flex;
 					cursor: grab;
+					display: flex;
+					margin-top: 6px;
 					color: $color_gray-light;
 
 					svg {
@@ -2628,20 +2629,36 @@ body.everest-forms-builder-setup,
 					border: 1px solid $color_gray-lighten;
 					display: flex;
 					flex-wrap: wrap;
-					align-items: center;
 					padding: 8px;
 					margin-bottom: 8px;
 					z-index: 99999 !important;
 
+					.evf-choice-list-input {
+						flex: 1;
+						margin-right: 6px;
+					}
+
 					input {
 						&[type="text"] {
-							flex: 1;
-							margin-right: 6px;
+							width: 100%;
 						}
 
 						&[type="radio"],
 						&[type="checkbox"] {
-							margin: 0 6px 0 0;
+							margin: 7px 6px 0 0;
+						}
+
+						&.value {
+							margin-top: 8px;
+						}
+					}
+
+					.everest-forms-image-upload {
+						flex: 100%;
+						margin-top: 8px;
+
+						.everest-forms-image-upload-add {
+							width: 100%;
 						}
 					}
 
@@ -2668,6 +2685,7 @@ body.everest-forms-builder-setup,
 					justify-content: center;
 					width: 20px;
 					height: 20px;
+					margin-top: 5px;
 					border-radius: 10px;
 
 					.dashicons {
