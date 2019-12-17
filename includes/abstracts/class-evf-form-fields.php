@@ -521,6 +521,19 @@ abstract class EVF_Form_Fields {
 			 * Choices.
 			 */
 			case 'choices':
+				$class      = array();
+				$values     = ! empty( $field['choices'] ) ? $field['choices'] : $this->defaults;
+				$input_type = in_array( $field['type'], array( 'payment-multiple', 'payment-select' ), true ) ? 'radio' : 'checkbox';
+
+				if ( ! empty( $field['choices_images'] ) ) {
+					$class[] = 'show-images';
+				}
+				break;
+
+			/*
+			 * Choices.
+			 */
+			case 'choices__':
 				$tooltip = __( 'Add choices for the form field.', 'everest-forms' );
 				$toggle  = '';
 				$dynamic = ! empty( $field['dynamic_choices'] ) ? esc_html( $field['dynamic_choices'] ) : '';
