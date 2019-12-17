@@ -2660,6 +2660,19 @@ body.everest-forms-builder-setup,
 						.everest-forms-image-upload-add {
 							width: 100%;
 						}
+
+						.everest-forms-image-upload-remove {
+							display: block;
+							background-color: $color-gray-lighten;
+							max-height: 200px;
+							border-radius: 4px;
+							overflow: hidden;
+
+							img {
+								display: inline-block;
+								max-width: 100%;
+							}
+						}
 					}
 
 					&.ui-sortable-placeholder {
