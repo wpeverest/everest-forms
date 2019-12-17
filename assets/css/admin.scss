@@ -1169,19 +1169,11 @@ body.everest-forms-builder-setup,
 		.removePayment {
 			color: $color_gray-normal;
 			background: $color-white;
-			border: 1px solid $color_gray-lighten;
 			height: 30px;
 			width: 30px;
 			display: flex;
 			align-items: center;
 			justify-content: center;
-
-			.dashicons {
-				width: 16px;
-				height: 16px;
-				font-size: 16px;
-				line-height: 1.1;
-			}
 
 			&:hover {
 				color: $color-white;
@@ -2616,16 +2608,18 @@ body.everest-forms-builder-setup,
 				border-radius: 4px;
 				padding: 8px;
 
-				span.move {
-					box-shadow: none;
-					background: none;
-					color: rgba(10, 24, 41, 0.7);
+				.move {
+					display: flex;
+					cursor: grab;
+					color: $color_gray-light;
 
 					svg {
-						width: 28px;
-						height: 24px;
-						padding: 2px 5px;
+						fill: currentColor;
 						transform: rotate(90deg);
+					}
+
+					&:active {
+						cursor: grabbing;
 					}
 				}
 
@@ -2639,8 +2633,27 @@ body.everest-forms-builder-setup,
 					margin-bottom: 8px;
 					z-index: 99999 !important;
 
-					input[type="text"] {
-						flex: 1;
+					input {
+						&[type="text"] {
+							flex: 1;
+							margin-right: 6px;
+						}
+
+						&[type="radio"],
+						&[type="checkbox"] {
+							margin: 0 6px 0 0;
+						}
+					}
+
+					&.ui-sortable-placeholder {
+						height: 48px !important; // Overwrite CSS over JS.
+						visibility: visible !important; // Overwrite CSS over JS.
+						background: $color_gray-more-lighten;
+						border: 1px dashed $color_gray-lighten;
+					}
+
+					&.ui-sortable-helper {
+						z-index: 99999 !important; // Overwrite CSS over JS.
 					}
 
 					&:last-child {
@@ -2658,14 +2671,22 @@ body.everest-forms-builder-setup,
 					border-radius: 10px;
 
 					.dashicons {
-						width: 14px;
-						height: 14px;
-						font-size: 14px;
+						width: 16px;
+						height: 16px;
+						font-size: 16px;
 					}
 				}
 
 				.add {
-					margin-right: 8px;
+					&:hover {
+						color: $blue;
+					}
+				}
+
+				.remove {
+					&:hover {
+						color: $red;
+					}
 				}
 			}
 
@@ -2677,49 +2698,6 @@ body.everest-forms-builder-setup,
 						padding: 5px 10px;
 						border-radius: 4px;
 						border: 1px solid transparent;
-
-						&.ui-sortable-handle {
-							&.ui-sortable-placeholder {
-								height: 40px !important; // Overwrite CSS over JS.
-								visibility: visible !important; // Overwrite CSS over JS.
-								background: $color_gray-more-lighten;
-								border: 1px dashed $color_gray-lighten;
-							}
-
-							&.ui-sortable-helper {
-								z-index: 99999 !important; // Overwrite CSS over JS.
-							}
-						}
-
-						input[type='text'] {
-							margin-right: 8px;
-							vertical-align: middle;
-						}
-
-						a {
-							background: $color-white;
-							color: $color_gray-base;
-							display: inline-block;
-							vertical-align: middle;
-
-							&:last-child {
-								margin-right: 0;
-							}
-
-							&:hover {
-								background: $blue;
-								color: $color-white;
-								border: 1px solid $blue;
-							}
-
-							&.remove,
-							&.removePayment {
-								&:hover {
-									background: $red;
-									border: 1px solid $red;
-								}
-							}
-						}
 					}
 				}
 
@@ -2732,12 +2710,6 @@ body.everest-forms-builder-setup,
 
 						input[type='text'] {
 							width: calc(100% - 39px);
-						}
-
-						.add,
-						.remove {
-							border-radius: 4px;
-							border: 1px solid $color_gray-lighten;
 						}
 
 						.answer-wrap {
