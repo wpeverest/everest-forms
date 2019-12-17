@@ -2655,6 +2655,7 @@ body.everest-forms-builder-setup,
 
 					.everest-forms-image-upload {
 						flex: 100%;
+						display: none;
 						margin-top: 8px;
 
 						.everest-forms-image-upload-add {
@@ -2717,6 +2718,12 @@ body.everest-forms-builder-setup,
 				.remove {
 					&:hover {
 						color: $red;
+					}
+				}
+
+				&.show-images {
+					.everest-forms-image-upload {
+						display: block;
 					}
 				}
 			}
