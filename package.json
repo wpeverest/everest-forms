@@ -16,7 +16,7 @@
     "git:update-hooks": "rm -r .git/hooks && node ./node_modules/husky/husky.js install"
   },
   "devDependencies": {
-    "@babel/core": "7.7.4",
+    "@babel/core": "7.7.5",
     "@wordpress/babel-preset-default": "4.7.0",
     "@wordpress/browserslist-config": "2.6.0",
     "autoprefixer": "9.7.3",
@@ -37,7 +37,7 @@
     "grunt-postcss": "0.9.0",
     "grunt-rtlcss": "2.0.2",
     "grunt-sass": "3.1.0",
-    "grunt-stylelint": "0.12.0",
+    "grunt-stylelint": "0.13.0",
     "grunt-wp-i18n": "1.0.3",
     "husky": "3.1.0",
     "lint-staged": "9.5.0",
