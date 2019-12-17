@@ -562,8 +562,8 @@ abstract class EVF_Form_Fields {
 						$field_content .= sprintf( '<input type="%1$s" name="%2$s[default]" class="default" value="1" %3$s>', $field_type, $name, checked( '1', $default, false ) );
 						$field_content .= sprintf( '<input type="text" name="%1$s[label]" value="%2$s" class="label">', $name, esc_attr( $value['label'] ) );
 						$field_content .= sprintf( '<input type="text" name="%1$s[value]" value="%2$s" class="value">', $name, esc_attr( $value['value'] ) );
-						$field_content .= '<a class="add" href="#"><i class="dashicons dashicons-plus"></i></a>';
-						$field_content .= '<a class="remove" href="#"><i class="dashicons dashicons-minus"></i></a>';
+						$field_content .= '<a class="add" href="#"><i class="dashicons dashicons-plus-alt"></i></a>';
+						$field_content .= '<a class="remove" href="#"><i class="dashicons dashicons-dismiss"></i></a>';
 					$field_content     .= '</li>';
 				}
 				$field_content .= '</ul>';
