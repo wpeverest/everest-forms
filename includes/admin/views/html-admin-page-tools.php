@@ -33,11 +33,17 @@ $tabs        = apply_filters( 'everest_forms_admin_status_tabs', $tabs );
 			case "logs" :
 				EVF_Admin_Tools::status_logs();
 			break;
+			case "import" :
+				EVF_Admin_Tools::import();
+			break;
+			case "export" :
+				EVF_Admin_Tools::export();
+			break;
 			default :
 					if ( array_key_exists( $current_tab, $tabs ) && has_action( 'everest_forms_admin_status_content_' . $current_tab ) ) {
 						do_action( 'everest_forms_admin_status_content_' . $current_tab );
 					} else {
-						EVF_Admin_Tools::status_logs();
+						EVF_Admin_Tools::import();
 					}
 			break;
 		}

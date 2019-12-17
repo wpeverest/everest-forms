@@ -18,6 +18,7 @@ class EVF_Admin_Tools {
 	 */
 	public static function output() {
 		include_once( dirname( __FILE__ ) . '/views/html-admin-page-tools.php' );
+
 	}
 
 	/**
@@ -25,6 +26,20 @@ class EVF_Admin_Tools {
 	 */
 	public static function status_logs() {
 		self::status_logs_file();
+	}
+
+	/**
+	 * Show the import page.
+	 */
+	public static function import() {
+		include_once( dirname( __FILE__ ) . '/views/html-admin-page-import.php' );
+	}
+
+	/**
+	 * Show the export page.
+	 */
+	public static function export() {
+		include_once( dirname( __FILE__ ) . '/views/html-admin-page-export.php' );
 	}
 
 	/**
