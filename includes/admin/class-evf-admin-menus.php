@@ -28,6 +28,7 @@ class EVF_Admin_Menus {
 		add_action( 'admin_menu', array( $this, 'entries_menu' ), 30 );
 		add_action( 'admin_menu', array( $this, 'settings_menu' ), 50 );
 		add_action( 'admin_menu', array( $this, 'status_menu' ), 60 );
+		add_action( 'admin_menu', array( $this, 'import_export_menu' ), 70 );
 
 		if ( apply_filters( 'everest_forms_show_addons_page', true ) ) {
 			add_action( 'admin_menu', array( $this, 'addons_menu' ), 70 );
@@ -198,6 +199,13 @@ class EVF_Admin_Menus {
 	/**
 	 * Add menu item.
 	 */
+	public function import_export_menu() {
+		add_submenu_page( 'everest-forms', __( 'Everest Forms import/export', 'everest-forms' ), __( 'Import/Export', 'everest-forms' ), 'manage_everest_forms', 'evf-import-export', array( $this, 'import_export_page' ) );
+	}
+
+	/**
+	 * Add menu item.
+	 */
 	public function status_menu() {
 		add_submenu_page( 'everest-forms', __( 'Everest Forms status', 'everest-forms' ), __( 'Status', 'everest-forms' ), 'manage_everest_forms', 'evf-status', array( $this, 'status_page' ) );
 	}
@@ -286,6 +294,13 @@ class EVF_Admin_Menus {
 	 */
 	public function settings_page() {
 		EVF_Admin_Settings::output();
+	}
+
+	/**
+	 * Init the status page.
+	 */
+	public function import_export_page() {
+		EVF_Admin_Import_Export::output();
 	}
 
 	/**
