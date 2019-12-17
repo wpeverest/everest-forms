@@ -238,6 +238,31 @@
 				$fieldOptions.find( '.everest-forms-field-option-row-choices_images_style' ).toggleClass( 'wpforms-hidden' );
 			} );
 
+			// Upload or add an image.
+			$builder.on( 'click', '.everest-forms-image-upload-add', function( event ) {
+				event.preventDefault();
+
+				var $this = $( this ),
+					$wrapper = $this.parent(),
+					mediaModal;
+
+				mediaModal = wp.media.frames.everest_forms_media_frame = wp.media({
+					className: 'media-frame everest-forms-media-frame',
+					frame:     'select',
+					multiple:   false,
+					title:      evf_data.i18n_upload_image_title,
+					library: {
+						type: 'image'
+					},
+					button: {
+						text: evf_data.i18n_upload_image_button
+					}
+				});
+
+				// Now that everything has been set, let's open up the frame.
+				mediaModal.open();
+			} );
+
 			// Field sidebar tab toggle.
 			$builder.on( 'click', '.everest-forms-fields-tab a', function(e) {
 				e.preventDefault();
