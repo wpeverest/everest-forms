@@ -268,12 +268,11 @@
 
 				// When an image is selected, run a callback.
 				file_frame.on( 'select', function() {
-					var attachment           = file_frame.state().get( 'selection' ).first().toJSON();
-					var attachment_thumbnail = attachment.sizes.thumbnail || attachment.sizes.full;
+					var attachment = file_frame.state().get( 'selection' ).first().toJSON();
 
 					$this.parent().find( '.source' ).val( attachment.url );
 					$this.parent().find( '.preview'  ).empty();
-					$this.parent().find( '.preview'  ).prepend( '<a href="#" title="' + evf_data.i18n_upload_image_remove + '" class="everest-forms-image-upload-remove"><img src="' + attachment_thumbnail.url + '"></a>' );
+					$this.parent().find( '.preview'  ).prepend( '<a href="#" title="' + evf_data.i18n_upload_image_remove + '" class="everest-forms-image-upload-remove"><img src="' + attachment.url + '"></a>' );
 
 					if ( 'hide' === $this.data( 'after-upload' ) ) {
 						$this.hide();
