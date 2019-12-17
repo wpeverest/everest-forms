@@ -228,6 +228,16 @@
 		 * @since 1.2.0
 		 */
 		bindUIActionsFields: function() {
+			// Field choices image toggle.
+			$builder.on( 'change', '.everest-forms-field-option-row-choices_images input', function() {
+				var $this         = $( this ),
+					fieldID       = $this.parent().data( 'field-id' ),
+					$fieldOptions = $( '#everest-forms-field-option-' + fieldID );
+
+				$fieldOptions.find( '.everest-forms-field-option-row-choices ul' ).toggleClass( 'show-images' );
+				$fieldOptions.find( '.everest-forms-field-option-row-choices_images_style' ).toggleClass( 'wpforms-hidden' );
+			} );
+
 			// Field sidebar tab toggle.
 			$builder.on( 'click', '.everest-forms-fields-tab a', function(e) {
 				e.preventDefault();

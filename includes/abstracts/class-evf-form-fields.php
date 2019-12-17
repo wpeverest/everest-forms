@@ -554,17 +554,43 @@ abstract class EVF_Form_Fields {
 					$this->type
 				);
 				foreach ( $values as $key => $value ) {
-					$default = ! empty( $value['default'] ) ? $value['default'] : '';
-					$name    = sprintf( 'form_fields[%s][choices][%s]', $field['id'], $key );
+					$default    = ! empty( $value['default'] ) ? $value['default'] : '';
+					$name       = sprintf( 'form_fields[%s][choices][%s]', $field['id'], $key );
+					$image      = ! empty( $value['image'] ) ? $value['image'] : '';
+					$upload_btn = '';
 
-					$field_content     .= sprintf( '<li data-key="%1$d">', absint( $key ) );
-						$field_content .= '<span class="move"><svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" role="img" aria-hidden="true" focusable="false"><path d="M13,8c0.6,0,1-0.4,1-1s-0.4-1-1-1s-1,0.4-1,1S12.4,8,13,8z M5,6C4.4,6,4,6.4,4,7s0.4,1,1,1s1-0.4,1-1S5.6,6,5,6z M5,10 c-0.6,0-1,0.4-1,1s0.4,1,1,1s1-0.4,1-1S5.6,10,5,10z M13,10c-0.6,0-1,0.4-1,1s0.4,1,1,1s1-0.4,1-1S13.6,10,13,10z M9,6 C8.4,6,8,6.4,8,7s0.4,1,1,1s1-0.4,1-1S9.6,6,9,6z M9,10c-0.6,0-1,0.4-1,1s0.4,1,1,1s1-0.4,1-1S9.6,10,9,10z"></path></svg></span>';
-						$field_content .= sprintf( '<input type="%1$s" name="%2$s[default]" class="default" value="1" %3$s>', $field_type, $name, checked( '1', $default, false ) );
-						$field_content .= sprintf( '<input type="text" name="%1$s[label]" value="%2$s" class="label">', $name, esc_attr( $value['label'] ) );
-						$field_content .= sprintf( '<input type="text" name="%1$s[value]" value="%2$s" class="value">', $name, esc_attr( $value['value'] ) );
-						$field_content .= '<a class="add" href="#"><i class="dashicons dashicons-plus-alt"></i></a>';
-						$field_content .= '<a class="remove" href="#"><i class="dashicons dashicons-dismiss"></i></a>';
-					$field_content     .= '</li>';
+					$field_content .= sprintf( '<li data-key="%1$d">', absint( $key ) );
+					$field_content .= '<span class="move"><svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" role="img" aria-hidden="true" focusable="false"><path d="M13,8c0.6,0,1-0.4,1-1s-0.4-1-1-1s-1,0.4-1,1S12.4,8,13,8z M5,6C4.4,6,4,6.4,4,7s0.4,1,1,1s1-0.4,1-1S5.6,6,5,6z M5,10 c-0.6,0-1,0.4-1,1s0.4,1,1,1s1-0.4,1-1S5.6,10,5,10z M13,10c-0.6,0-1,0.4-1,1s0.4,1,1,1s1-0.4,1-1S13.6,10,13,10z M9,6 C8.4,6,8,6.4,8,7s0.4,1,1,1s1-0.4,1-1S9.6,6,9,6z M9,10c-0.6,0-1,0.4-1,1s0.4,1,1,1s1-0.4,1-1S9.6,10,9,10z"></path></svg></span>';
+					$field_content .= sprintf( '<input type="%1$s" name="%2$s[default]" class="default" value="1" %3$s>', $field_type, $name, checked( '1', $default, false ) );
+					$field_content .= sprintf( '<input type="text" name="%1$s[label]" value="%2$s" class="label">', $name, esc_attr( $value['label'] ) );
+					$field_content .= sprintf( '<input type="text" name="%1$s[value]" value="%2$s" class="value">', $name, esc_attr( $value['value'] ) );
+					$field_content .= '<a class="add" href="#"><i class="dashicons dashicons-plus-alt"></i></a>';
+					$field_content .= '<a class="remove" href="#"><i class="dashicons dashicons-dismiss"></i></a>';
+
+					// @todo Image upload area.
+					$field_content .= '<div class="everest-forms-image-upload">';
+					$field_content .= '<div class="preview">';
+					if ( ! empty( $image ) ) {
+						$field_content .= sprintf(
+							'<a href="#" title="%s" class="everest-forms-image-upload-remove"><img src="%s"></a>',
+							esc_attr__( 'Remove Image', 'everest-forms' ),
+							esc_url_raw( $image )
+						);
+						$upload_btn     = ' style="display:none;"';
+					}
+					$field_content .= '</div>';
+					$field_content .= sprintf(
+						'<button class="button button-secondary everest-forms-image-upload-add" data-after-upload="hide"%s>%s</button>',
+						$upload_btn,
+						esc_html__( 'Upload Image', 'wpforms-lite' )
+					);
+					$field_content .= sprintf(
+						'<input type="hidden" name="%s[image]" value="%s" class="source">',
+						$name,
+						esc_url_raw( $image )
+					);
+					$field_content .= '</div>';
+					$field_content .= '</li>';
 				}
 				$field_content .= '</ul>';
 
@@ -960,7 +986,6 @@ abstract class EVF_Form_Fields {
 
 				if ( $choices_images ) {
 					$list_class[] = 'everest-forms-image-choices';
-					$list_class[] = 'everest-forms-image-choices-' . sanitize_html_class( $field['choices_images_style'] );
 				}
 
 				if ( 'select' === $type ) {
