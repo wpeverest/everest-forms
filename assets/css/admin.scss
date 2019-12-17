@@ -1188,27 +1188,6 @@ body.everest-forms-builder-setup,
 			}
 		}
 
-		.add,
-		.addPayment {
-			border-radius: 4px 0 0 4px;
-
-			&:hover {
-				background: $blue;
-				border: 1px solid $blue;
-			}
-		}
-
-		.remove,
-		.removePayment {
-			border-left: none;
-			border-radius: 0 4px 4px 0;
-
-			&:hover {
-				background: $red;
-				border: 1px solid $red;
-			}
-		}
-
 		.after-label-description {
 			float: right;
 		}
@@ -2628,11 +2607,52 @@ body.everest-forms-builder-setup,
 						&.value {
 							display: none;
 						}
-
-						&[type='text'] {
-							width: calc(100% - 89px);
-						}
 					}
+				}
+			}
+
+			.evf-choices-list {
+				background: $color_gray-more-lighten;
+				border-radius: 4px;
+				padding: 8px;
+
+				.ui-sortable-handle {
+					background: $color-white;
+					border: 1px solid $color_gray-lighten;
+					display: flex;
+					flex-wrap: wrap;
+					align-items: center;
+					padding: 8px;
+					margin-bottom: 8px;
+					z-index: 99999 !important;
+
+					input[type="text"] {
+						flex: 1;
+					}
+
+					&:last-child {
+						margin-bottom: 0;
+					}
+				}
+
+				.add,
+				.remove {
+					display: inline-flex;
+					align-items: center;
+					justify-content: center;
+					width: 20px;
+					height: 20px;
+					border-radius: 10px;
+
+					.dashicons {
+						width: 14px;
+						height: 14px;
+						font-size: 14px;
+					}
+				}
+
+				.add {
+					margin-right: 8px;
 				}
 			}
 
@@ -2641,7 +2661,6 @@ body.everest-forms-builder-setup,
 				ul {
 					li {
 						clear: both;
-						margin-bottom: 2px;
 						padding: 5px 10px;
 						border-radius: 4px;
 						border: 1px solid transparent;
@@ -2659,13 +2678,6 @@ body.everest-forms-builder-setup,
 							}
 						}
 
-						&:hover,
-						&.ui-sortable-helper {
-							background: $color-white;
-							border: 1px solid $color_gray-lighten;
-							z-index: 99999 !important;
-						}
-
 						input[type='text'] {
 							margin-right: 8px;
 							vertical-align: middle;
@@ -2676,17 +2688,6 @@ body.everest-forms-builder-setup,
 							color: $color_gray-base;
 							display: inline-block;
 							vertical-align: middle;
-
-							&.add,
-							&.remove,
-							&.addPayment,
-							&.removePayment {
-								height: 30px;
-								width: 30px;
-								display: inline-flex;
-								align-items: center;
-								justify-content: center;
-							}
 
 							&:last-child {
 								margin-right: 0;
