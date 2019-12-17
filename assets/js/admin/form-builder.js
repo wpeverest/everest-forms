@@ -228,6 +228,8 @@
 		 * @since 1.2.0
 		 */
 		bindUIActionsFields: function() {
+			var file_frame;
+
 			// Field choices image toggle.
 			$builder.on( 'change', '.everest-forms-field-option-row-choices_images input', function() {
 				var $this         = $( this ),
@@ -240,17 +242,22 @@
 
 			// Upload or add an image.
 			$builder.on( 'click', '.everest-forms-image-upload-add', function( event ) {
+				var $this = $( this );
+
 				event.preventDefault();
 
-				var $this = $( this ),
-					$wrapper = $this.parent(),
-					mediaModal;
+				// If the media frame already exists, reopen it.
+				if ( file_frame ) {
+					file_frame.open();
+					return;
+				}
 
-				mediaModal = wp.media.frames.everest_forms_media_frame = wp.media({
+				// Create the media frame.
+				file_frame = wp.media.frames.everestforms_media_frame = wp.media({
+					title:      evf_data.i18n_upload_image_title,
 					className: 'media-frame everest-forms-media-frame',
 					frame:     'select',
 					multiple:   false,
-					title:      evf_data.i18n_upload_image_title,
 					library: {
 						type: 'image'
 					},
@@ -259,8 +266,24 @@
 					}
 				});
 
-				// Now that everything has been set, let's open up the frame.
-				mediaModal.open();
+				// When an image is selected, run a callback.
+				file_frame.on( 'select', function() {
+					var attachment           = file_frame.state().get( 'selection' ).first().toJSON();
+					var attachment_thumbnail = attachment.sizes.thumbnail || attachment.sizes.full;
+
+					$this.parent().find( '.source' ).val( attachment.url );
+					$this.parent().find( '.preview'  ).empty();
+					$this.parent().find( '.preview'  ).prepend( '<a href="#" title="' + evf_data.i18n_upload_image_remove + '" class="everest-forms-image-upload-remove"><img src="' + attachment_thumbnail.url + '"></a>' );
+
+					if ( 'hide' === $this.data( 'after-upload' ) ) {
+						$this.hide();
+					}
+
+					$builder.trigger( 'everestFormsImageUploadAdd', [ $this, $this.parent() ] );
+				});
+
+				// Finally, open the modal.
+				file_frame.open();
 			} );
 
 			// Field sidebar tab toggle.
