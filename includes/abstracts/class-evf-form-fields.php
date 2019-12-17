@@ -540,9 +540,33 @@ abstract class EVF_Form_Fields {
 						'slug'          => 'choices',
 						'value'         => $label,
 						'tooltip'       => esc_html__( 'Add choices for the form field.', 'everest-forms' ),
-						'after_tooltip' => '',
+						'after_tooltip' => '', // @todo Bulk import and export for choices.
 					)
 				);
+
+				// Field contents.
+				$field_content = sprintf(
+					'<ul data-next-id="%s" class="evf-choices-list %s" data-field-id="%s" data-field-type="%s">',
+					max( array_keys( $values ) ) + 1,
+					evf_sanitize_classes( $class ),
+					$field['id'],
+					$this->type
+				);
+				foreach ( $values as $key => $value ) {
+					$default = ! empty( $value['default'] ) ? $value['default'] : '';
+					$name    = sprintf( 'form_fields[%s][choices][%s]', $field['id'], $key );
+
+					$field_content .= sprintf( '<li data-key="%d">', absint( $key ) );
+					$field_content .= '<svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" role="img" aria-hidden="true" focusable="false"><path d="M13,8c0.6,0,1-0.4,1-1s-0.4-1-1-1s-1,0.4-1,1S12.4,8,13,8z M5,6C4.4,6,4,6.4,4,7s0.4,1,1,1s1-0.4,1-1S5.6,6,5,6z M5,10 c-0.6,0-1,0.4-1,1s0.4,1,1,1s1-0.4,1-1S5.6,10,5,10z M13,10c-0.6,0-1,0.4-1,1s0.4,1,1,1s1-0.4,1-1S13.6,10,13,10z M9,6 C8.4,6,8,6.4,8,7s0.4,1,1,1s1-0.4,1-1S9.6,6,9,6z M9,10c-0.6,0-1,0.4-1,1s0.4,1,1,1s1-0.4,1-1S9.6,10,9,10z"></path></svg>';
+					$field_content .= sprintf(
+						'<input type="%s" name="%s[default]" class="default" value="1" %s>',
+						'checkbox' === $this->type ? 'checkbox' : 'radio',
+						$name,
+						checked( '1', $default, false )
+					);
+					$field_content .= '</li>';
+				}
+				$field_content .= '</ul>';
 
 				// Final field output.
 				$output = $this->field_element(
@@ -550,7 +574,7 @@ abstract class EVF_Form_Fields {
 					$field,
 					array(
 						'slug'    => 'choices',
-						'content' => $field_label,
+						'content' => $field_label . $field_content,
 					),
 					false
 				);
