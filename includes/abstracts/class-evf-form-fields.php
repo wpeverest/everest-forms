@@ -559,7 +559,7 @@ abstract class EVF_Form_Fields {
 			/*
 			 * Choices.
 			 */
-			case 'choices__':
+			case 'choices_old':
 				$tooltip = __( 'Add choices for the form field.', 'everest-forms' );
 				$toggle  = '';
 				$dynamic = ! empty( $field['dynamic_choices'] ) ? esc_html( $field['dynamic_choices'] ) : '';
