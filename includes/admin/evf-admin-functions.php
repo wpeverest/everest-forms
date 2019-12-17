@@ -23,7 +23,7 @@ function evf_get_screen_ids() {
 		$evf_screen_id . '_page_evf-builder',
 		$evf_screen_id . '_page_evf-entries',
 		$evf_screen_id . '_page_evf-settings',
-		$evf_screen_id . '_page_evf-status',
+		$evf_screen_id . '_page_evf-tools',
 		$evf_screen_id . '_page_evf-addons',
 	);
 

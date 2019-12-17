@@ -2,22 +2,22 @@
 /**
  * Debug/Status page
  *
- * @package EverestForms/Admin/System Status
+ * @package EverestForms/Admin/Tools
  * @version 1.0.0
  */
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * EVF_Admin_Status Class.
+ * EVF_Admin_Tools Class.
  */
-class EVF_Admin_Status {
+class EVF_Admin_Tools {
 
 	/**
 	 * Handles output of the reports page in admin.
 	 */
 	public static function output() {
-		include_once( dirname( __FILE__ ) . '/views/html-admin-page-status.php' );
+		include_once( dirname( __FILE__ ) . '/views/html-admin-page-tools.php' );
 	}
 
 	/**
@@ -45,7 +45,7 @@ class EVF_Admin_Status {
 			self::remove_log();
 		}
 
-		include_once( 'views/html-admin-page-status-logs.php' );
+		include_once( 'views/html-admin-page-tools-logs.php' );
 	}
 
 	/**
@@ -159,7 +159,7 @@ class EVF_Admin_Status {
 			$log_handler->remove( $_REQUEST['handle'] );
 		}
 
-		wp_safe_redirect( esc_url_raw( admin_url( 'admin.php?page=evf-status&tab=logs' ) ) );
+		wp_safe_redirect( esc_url_raw( admin_url( 'admin.php?page=evf-tools&tab=logs' ) ) );
 		exit();
 	}
 }
