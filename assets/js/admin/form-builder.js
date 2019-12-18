@@ -270,12 +270,10 @@
 					var attachment = file_frame.state().get( 'selection' ).first().toJSON();
 
 					$el.parent().find( '.source' ).val( attachment.url );
-					$el.parent().find( '.preview'  ).empty();
-					$el.parent().find( '.preview'  ).prepend( '<a href="#" title="' + evf_data.i18n_upload_image_remove + '" class="everest-forms-image-upload-remove"><img src="' + attachment.url + '"></a>' );
-
-					if ( 'hide' === $el.data( 'after-upload' ) ) {
-						$el.hide();
-					}
+					$el.parent().find( '.attachment-thumb' ).remove();
+					$el.parent().find( '.thumbnail-image'  ).prepend( '<img class="attachment-thumb" src="' + attachment.url + '">' );
+					$el.parent().find( '.actions' ).show();
+					$el.hide();
 
 					$builder.trigger( 'everestFormsImageUploadAdd', [ $el, $el.parent() ] );
 				});
@@ -285,7 +283,7 @@
 			} );
 
 			// Remove and uploaded image.
-			$builder.on( 'click', '.everest-forms-image-upload-remove', function( event ) {
+			$builder.on( 'click', '.everest-forms-attachment-media-view .remove-button', function( event ) {
 				event.preventDefault();
 
 				var $container = $( this ).parent().parent();
