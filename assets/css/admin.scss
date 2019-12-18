@@ -2658,9 +2658,10 @@ body.everest-forms-builder-setup,
 						display: none;
 						margin-top: 8px;
 
-						.everest-forms-image-upload-add {
+						.button-add-media {
 							width: 100%;
-							padding: 5px 8px;
+							padding: 8px;
+							cursor: pointer;
 							color: $color_gray-base;
 							border: 1px dashed $color-gray-lighten;
 						}

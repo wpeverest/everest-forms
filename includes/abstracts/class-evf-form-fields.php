@@ -569,6 +569,7 @@ abstract class EVF_Form_Fields {
 					$field_content .= '<a class="remove" href="#"><i class="dashicons dashicons-dismiss"></i></a>';
 					$field_content .= '<div class="everest-forms-attachment-media-view">';
 					$field_content .= sprintf( '<input type="hidden" class="source" name="%s[image]" value="%s">', $name, esc_url_raw( $image ) );
+					$field_content .= sprintf( '<button type="button" class="upload-button button-add-media"%s>%s</button>', ! empty( $image ) ? ' style="display:none;"' : '', esc_html__( 'Upload Image', 'everest-forms' ) );
 					$field_content .= '<div class="thumbnail thumbnail-image">';
 					if ( ! empty( $image ) ) {
 						$field_content .= sprintf( '<img class="attachment-thumb" src="%1$s">', esc_url_raw( $image ) );
@@ -578,7 +579,6 @@ abstract class EVF_Form_Fields {
 					$field_content .= sprintf( '<button type="button" class="button upload-button">%1$s</button>', esc_html__( 'Change image', 'everest-forms' ) );
 					$field_content .= '</div>';
 					$field_content .= '</div>';
-					$field_content .= sprintf( '<button type="button" class="button button-secondary everest-forms-image-upload-add"%s>%s</button>', ! empty( $image ) ? ' style="display:none;"' : '', esc_html__( 'Upload Image', 'everest-forms' ) );
 					$field_content .= '</div>';
 					$field_content .= '</li>';
 				}

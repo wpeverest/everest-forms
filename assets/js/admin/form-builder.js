@@ -239,7 +239,7 @@
 			} );
 
 			// Upload or add an image.
-			$builder.on( 'click', '.everest-forms-image-upload-add', function( event ) {
+			$builder.on( 'click', '.everest-forms-attachment-media-view .upload-button', function( event ) {
 				var $el = $( this ),
 					file_frame;
 
