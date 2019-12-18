@@ -461,12 +461,15 @@
 				var field_id = ul.attr('data-field-id');
 				var next_id = ul.attr('data-next-id');
 
-				clone.find('input[type="checkbox"],input[type="radio"]').prop('checked', false);
-				clone.attr('data-key', next_id);
-				clone.find('.default').attr('name', 'form_fields[' + field_id + '][choices][' + next_id + '][default]');
-				clone.find('.label').attr('name', 'form_fields[' + field_id + '][choices][' + next_id + '][label]');
-				clone.find('.value').attr('name', 'form_fields[' + field_id + '][choices][' + next_id + '][value]');
-				$(this).closest('li').after(clone);
+				clone.find( 'input[type="checkbox"],input[type="radio"]' ).prop( 'checked', false);
+				clone.attr( 'data-key', next_id );
+				clone.find( '.default' ).attr( 'name', 'form_fields[' + field_id + '][choices][' + next_id + '][default]' );
+				clone.find( '.label' ).val( '' ).attr( 'name', 'form_fields[' + field_id + '][choices][' + next_id + '][label]' );
+				clone.find( '.value' ).val( '' ).attr( 'name', 'form_fields[' + field_id + '][choices][' + next_id + '][value]' );
+				clone.find( '.source' ).val( '' ).attr( 'name', 'form_fields[' + field_id + '][choices][' + next_id + '][image]' );
+				clone.find( '.attachment-thumb' ).remove();
+				clone.find( '.button-add-media' ).show();
+				$(this).closest( 'li' ).after( clone );
 				next_id++;
 				$( this ).closest('.evf-choices-list').attr('data-next-id',next_id);
 				EVFPanelBuilder.choiceChange(field_id);
