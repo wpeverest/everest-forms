@@ -45,6 +45,7 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 					'label',
 					'meta',
 					'choices',
+					'choices_images',
 					'description',
 					'required',
 				),
