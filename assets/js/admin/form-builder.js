@@ -247,8 +247,8 @@
 
 				// If the media frame already exists, reopen it.
 				if ( file_frame ) {
-					// file_frame.open();
-					// return;
+					file_frame.open();
+					return;
 				}
 
 				// Create the media frame.
