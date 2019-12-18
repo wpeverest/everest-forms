@@ -23,6 +23,6 @@ defined( 'ABSPATH' ) || exit;
 	}
 	?>
 	<br>
-	<input type="hidden" name="action" value="export_form">
+	<?php wp_nonce_field( 'everest_forms_export_nonce', 'everest-forms-export-nonce' ); ?>
 	<button type="submit" name="everest-forms-export-form"><?php esc_html_e( 'Export', 'everest-forms' ); ?></button>
 </form>

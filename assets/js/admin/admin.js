@@ -221,4 +221,46 @@
 		$(this).append(video);
 
 	});
+
+
+	$('.everest_forms_import_action').on('click', function () {
+		var file_data = $('#everest-forms-import').prop('files')[0];
+console.log(file_data);
+
+		var form_data = new FormData();
+		form_data.append('jsonfile', file_data);
+		form_data.append('action', 'everest_forms_import_form_action');
+		form_data.append('security', everest_forms_admin.ajax_import_nonce);
+
+		$.ajax({
+			url: evf_email_params.ajax_url,
+			dataType: 'json',  // what to expect back from the PHP script, if anything
+			cache: false,
+			contentType: false,
+			processData: false,
+			data: form_data,
+			type: 'POST',
+			beforeSend: function () {
+				var spinner = '<span class="spinner is-active" style="float: left;margin-top: 6px;"></span>';
+				console.log(spinner);
+				$('.everest_forms_import_action').closest('.publishing-action').append(spinner);
+				$('.everest-froms-import_notice').remove();
+			},
+			complete: function (response) {
+				var message_string = '';
+
+				$('.everest_forms_import_action').closest('.publishing-action').find('.spinner').remove();
+				$('.everest-froms-import_notice').remove();
+
+				if (response.responseJSON.success === true) {
+					message_string = '<div id="message" class="updated inline everest-froms-import_notice"><p><strong>' + response.responseJSON.data.message + '</strong></p></div>';
+				} else {
+					message_string = '<div id="message" class="error inline everest-froms-import_notice"><p><strong>' + response.responseJSON.data.message + '</strong></p></div>';
+				}
+
+				$('.everest-forms-import-form').prepend(message_string);
+				$('#everest-forms-import').val("");
+			}
+		});
+	});
 })( jQuery, everest_forms_admin );

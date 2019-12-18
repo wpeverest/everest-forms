@@ -6,7 +6,7 @@
  */
 
 defined( 'ABSPATH' ) || exit;
-
+error_log( print_r( $form_data, true ) );
 $form_data['form_field_id'] = isset( $form_data['form_field_id'] ) ? $form_data['form_field_id'] : 0;
 $form_data['form_enabled']  = isset( $form_data['form_enabled'] ) ? $form_data['form_enabled'] : 1;
 

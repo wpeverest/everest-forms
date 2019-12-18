@@ -93,6 +93,7 @@ class EVF_AJAX {
 			'rated'                  => false,
 			'review_dismiss'         => false,
 			'enabled_form'           => false,
+			'import_form_action'     => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -529,6 +530,24 @@ class EVF_AJAX {
 		$form_data['form_enabled'] = $enabled;
 
 		EVF()->form->update( $form_id, $form_data );
+	}
+
+	/**
+	 * Import Form ajax.
+	 *
+	 */
+	public static function import_form_action() {
+		try {
+			check_ajax_referer( 'process-import-ajax-nonce', 'security' );
+			EVF_Admin_Import_Export::import_form();
+		} catch ( Exception $e ) {
+			error_log( print_r( "out", true ) );
+			wp_send_json_error(
+				array(
+					'message' => $e->getMessage(),
+				)
+			);
+		}
 	}
 }
 

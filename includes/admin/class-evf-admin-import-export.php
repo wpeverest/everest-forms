@@ -28,8 +28,13 @@ class EVF_Admin_Import_Export {
 	public function export_json() {
 		global $wpdb;
 		// Check for non empty $_POST.
-		if ( ! isset( $_POST['everest-forms-export-form'] ) ) {
+		if ( ! isset( $_POST['everest-forms-export-form'] ) || ! isset( $_POST['everest-forms-export-nonce'] ) ) {
 			return;
+		}
+
+		// Nonce check.
+		if ( ! wp_verify_nonce( $_POST['everest-forms-export-nonce'], 'everest_forms_export_nonce' ) ) {
+			die( __( 'Action failed. Please refresh the page and retry.', 'everest-forms' ) );
 		}
 
 		$form_id = isset( $_POST['form_id'] ) ? $_POST['form_id'] : 0;
@@ -61,6 +66,102 @@ class EVF_Admin_Import_Export {
 		header( 'Content-type: application/json' );
 		echo $export_json; // phpcs:ignore WordPress.Security.EscapeOutput
 		exit();
+	}
+
+	/**
+	 * Get post meta for a given key prefix.
+	 *
+	 * @param int    $post_id
+	 * @param string $key_prefix Prefix.
+	 * @return array
+	 */
+	protected function get_post_meta_by_prefix( $post_id, $key_prefix ) {
+		$values        = get_post_meta( $post_id );
+		error_log( print_r( $values, true ) );
+		$return_values = array();
+		if ( gettype( $values ) !== 'array' ) {
+			return $return_values;
+		}
+		foreach ( $values as $meta_key => $value ) {
+			if ( substr( $meta_key, 0, strlen( $key_prefix ) ) === $key_prefix ) {
+				if ( isset( $value[0] ) ) {
+					$return_values[ $meta_key ] = $value[0];
+				} elseif ( 'string' === gettype( $values ) ) {
+					$return_values[ $meta_key ] = $value;
+				}
+			}
+		}
+		return $return_values;
+	}
+
+	/**
+	 * Import Form from backend.
+	 */
+	public static function import_form() {
+		// Check for $_FILES set or not.
+		if ( isset( $_FILES['jsonfile'] ) ) {
+			$filename = esc_html( sanitize_text_field( $_FILES['jsonfile']['name'] ) ); // Get file name.
+			$ext      = pathinfo( $filename, PATHINFO_EXTENSION ); // Get file extention.
+			// Check for file format.
+			if ( 'json' === $ext ) {
+				// read json file.
+				$form_data = json_decode( file_get_contents( $_FILES['jsonfile']['tmp_name'] ) ); // @codingStandardsIgnoreLine
+				// check for non empty json file.
+				if ( ! empty( $form_data ) ) {
+					// check for non empty post data array.
+					if ( ! empty( $form_data->form_post ) ) {
+						// If Form Title already exist concat it with imported tag.
+						$args  = array( 'post_type' => 'everest_form' );
+						$forms = get_posts( $args );
+
+						foreach ( $forms as $key => $form_obj ) {
+							if ( $form_data->form_post->post_title === $form_obj->post_title ) {
+								$form_data->form_post->post_title = $form_data->form_post->post_title . ' (Imported)';
+								break;
+							}
+						}
+						error_log( print_r( $form_data->form_post, true ) );
+						$post_id = wp_insert_post( $form_data->form_post );
+
+						// Check for any error while inserting.
+						if ( is_wp_error( $post_id ) ) {
+							return $post_id;
+						}
+						if ( $post_id ) {
+							wp_send_json_success(
+								array(
+									'message' => __( 'Imported Successfully.', 'user-registration' ),
+								)
+							);
+						}
+					} else {
+						wp_send_json_error(
+							array(
+								'message' => __( 'Invalid file content. Please export file from user registration plugin.', 'user-registration' ),
+							)
+						);
+					}
+				} else {
+					wp_send_json_error(
+						array(
+							'message' => __( 'Invalid file content. Please export file from user registration plugin.', 'user-registration' ),
+						)
+					);
+				}
+			} else {
+				wp_send_json_error(
+					array(
+						'message' => __( 'Invalid file format. Only Json File Allowed.', 'user-registration' ),
+					)
+				);
+			}
+		} else {
+			wp_send_json_error(
+				array(
+					'message' => __( 'Please select json file to import form data.', 'user-registration' ),
+				)
+			);
+		}
 	}
 
 
