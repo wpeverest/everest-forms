@@ -582,9 +582,9 @@ abstract class EVF_Form_Fields {
 					}
 					$field_content .= '</div>';
 					$field_content .= sprintf(
-						'<button class="button button-secondary everest-forms-image-upload-add" data-after-upload="hide"%s>%s</button>',
+						'<button type="button" class="button button-secondary everest-forms-image-upload-add" data-after-upload="hide"%s>%s</button>',
 						$upload_btn,
-						esc_html__( 'Upload Image', 'wpforms-lite' )
+						esc_html__( 'Upload Image', 'everest-forms' )
 					);
 					$field_content .= sprintf(
 						'<input type="hidden" name="%s[image]" value="%s" class="source">',

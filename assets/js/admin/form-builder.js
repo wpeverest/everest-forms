@@ -228,8 +228,6 @@
 		 * @since 1.2.0
 		 */
 		bindUIActionsFields: function() {
-			var file_frame;
-
 			// Field choices image toggle.
 			$builder.on( 'change', '.everest-forms-field-option-row-choices_images input', function() {
 				var $this         = $( this ),
@@ -242,7 +240,8 @@
 
 			// Upload or add an image.
 			$builder.on( 'click', '.everest-forms-image-upload-add', function( event ) {
-				var $this = $( this );
+				var $el = $( this ),
+					file_frame;
 
 				event.preventDefault();
 
@@ -270,15 +269,15 @@
 				file_frame.on( 'select', function() {
 					var attachment = file_frame.state().get( 'selection' ).first().toJSON();
 
-					$this.parent().find( '.source' ).val( attachment.url );
-					$this.parent().find( '.preview'  ).empty();
-					$this.parent().find( '.preview'  ).prepend( '<a href="#" title="' + evf_data.i18n_upload_image_remove + '" class="everest-forms-image-upload-remove"><img src="' + attachment.url + '"></a>' );
+					$el.parent().find( '.source' ).val( attachment.url );
+					$el.parent().find( '.preview'  ).empty();
+					$el.parent().find( '.preview'  ).prepend( '<a href="#" title="' + evf_data.i18n_upload_image_remove + '" class="everest-forms-image-upload-remove"><img src="' + attachment.url + '"></a>' );
 
-					if ( 'hide' === $this.data( 'after-upload' ) ) {
-						$this.hide();
+					if ( 'hide' === $el.data( 'after-upload' ) ) {
+						$el.hide();
 					}
 
-					$builder.trigger( 'everestFormsImageUploadAdd', [ $this, $this.parent() ] );
+					$builder.trigger( 'everestFormsImageUploadAdd', [ $el, $el.parent() ] );
 				});
 
 				// Finally, open the modal.
