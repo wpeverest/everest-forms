@@ -234,6 +234,8 @@
 					fieldID       = $this.parent().data( 'field-id' ),
 					$fieldOptions = $( '#everest-forms-field-option-' + fieldID );
 
+
+				$this.parent().find( '.notice' ).toggleClass( 'hidden' );
 				$fieldOptions.find( '.everest-forms-field-option-row-choices ul' ).toggleClass( 'show-images' );
 				$fieldOptions.find( '.everest-forms-field-option-row-choices_images_style' ).toggleClass( 'wpforms-hidden' );
 			} );

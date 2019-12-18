@@ -2745,6 +2745,17 @@ body.everest-forms-builder-setup,
 				}
 			}
 
+			.everest-forms-field-option-row-choices_images {
+				.notice {
+					display: inline-block;
+					margin: 0 0 15px 0 !important;
+
+					&.hidden {
+						display: none;
+					}
+				}
+			}
+
 			.everest-forms-field-option-row-choices,
 			.everest-forms-field-option-row-questions {
 				ul {
