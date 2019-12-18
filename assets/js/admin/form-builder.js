@@ -240,8 +240,7 @@
 
 			// Upload or add an image.
 			$builder.on( 'click', '.everest-forms-attachment-media-view .upload-button', function( event ) {
-				var $el = $( this ),
-					file_frame;
+				var $el = $( this ), $wrapper, file_frame;
 
 				event.preventDefault();
 
@@ -269,16 +268,19 @@
 				file_frame.on( 'select', function() {
 					var attachment = file_frame.state().get( 'selection' ).first().toJSON();
 
-					$el.parent().find( '.source' ).val( attachment.url );
-					$el.parent().find( '.attachment-thumb' ).remove();
-					$el.parent().find( '.thumbnail-image'  ).prepend( '<img class="attachment-thumb" src="' + attachment.url + '">' );
-					$el.parent().find( '.actions' ).show();
-
 					if ( $el.hasClass( 'button-add-media' ) ) {
 						$el.hide();
+						$wrapper = $el.parent();
+					} else {
+						$wrapper = $el.parent().parent().parent();
 					}
 
-					$builder.trigger( 'everestFormsImageUploadAdd', [ $el, $el.parent() ] );
+					$wrapper.find( '.source' ).val( attachment.url );
+					$wrapper.find( '.attachment-thumb' ).remove();
+					$wrapper.find( '.thumbnail-image'  ).prepend( '<img class="attachment-thumb" src="' + attachment.url + '">' );
+					$wrapper.find( '.actions' ).show();
+
+					$builder.trigger( 'everestFormsImageUploadAdd', [ $el, $wrapper ] );
 				});
 
 				// Finally, open the modal.
