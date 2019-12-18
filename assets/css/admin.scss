@@ -2594,24 +2594,15 @@ body.everest-forms-builder-setup,
 			}
 
 			.evf-choices-list {
-				li {
-					input {
-						&.value {
-							display: none;
-						}
-					}
-				}
-			}
-
-			.evf-choices-list {
 				background: $color_gray-more-lighten;
 				border-radius: 4px;
-				padding: 8px;
+				padding: 1px 8px;
 
-				.move {
+				.sort {
 					cursor: grab;
 					display: flex;
 					margin-top: 6px;
+					padding-right: 6px;
 					color: $color_gray-light;
 
 					svg {
@@ -2624,13 +2615,13 @@ body.everest-forms-builder-setup,
 					}
 				}
 
-				.ui-sortable-handle {
+				li {
 					background: $color-white;
 					border: 1px solid $color_gray-lighten;
 					display: flex;
 					flex-wrap: wrap;
 					padding: 8px;
-					margin-bottom: 8px;
+					margin: 8px 0;
 					z-index: 99999 !important;
 
 					.evf-choice-list-input {
@@ -2649,6 +2640,7 @@ body.everest-forms-builder-setup,
 						}
 
 						&.value {
+							display: none;
 							margin-top: 8px;
 						}
 					}
@@ -2663,6 +2655,7 @@ body.everest-forms-builder-setup,
 							padding: 8px;
     						outline: none;
 							cursor: pointer;
+							border-radius: 3px;
 							color: $color_gray-base;
 							border: 1px dashed $color-gray-lighten;
 						}
@@ -2670,6 +2663,7 @@ body.everest-forms-builder-setup,
 						.thumbnail-image {
 							display: block;
 							max-height: 200px;
+							margin-bottom: 3px;
 							position: relative;
 							overflow: hidden;
 
@@ -2692,7 +2686,6 @@ body.everest-forms-builder-setup,
 					}
 
 					&.ui-sortable-placeholder {
-						height: 48px !important; // Overwrite CSS over JS.
 						visibility: visible !important; // Overwrite CSS over JS.
 						background: $color_gray-more-lighten;
 						border: 1px dashed $color_gray-lighten;
@@ -2700,10 +2693,6 @@ body.everest-forms-builder-setup,
 
 					&.ui-sortable-helper {
 						z-index: 99999 !important; // Overwrite CSS over JS.
-					}
-
-					&:last-child {
-						margin-bottom: 0;
 					}
 				}
 
@@ -2737,7 +2726,7 @@ body.everest-forms-builder-setup,
 				}
 
 				&.show-images {
-					.ui-sortable-handle {
+					li {
 						.everest-forms-attachment-media-view {
 							display: block;
 						}
@@ -2783,10 +2772,6 @@ body.everest-forms-builder-setup,
 						}
 					}
 				}
-			}
-
-			.everest-forms-field-option-row-choices {
-				cursor: all-scroll;
 			}
 
 			.everest-forms-field-option-payment-multiple,
