@@ -247,8 +247,8 @@
 
 				// If the media frame already exists, reopen it.
 				if ( file_frame ) {
-					file_frame.open();
-					return;
+					// file_frame.open();
+					// return;
 				}
 
 				// Create the media frame.
@@ -273,7 +273,10 @@
 					$el.parent().find( '.attachment-thumb' ).remove();
 					$el.parent().find( '.thumbnail-image'  ).prepend( '<img class="attachment-thumb" src="' + attachment.url + '">' );
 					$el.parent().find( '.actions' ).show();
-					$el.hide();
+
+					if ( $el.hasClass( 'button-add-media' ) ) {
+						$el.hide();
+					}
 
 					$builder.trigger( 'everestFormsImageUploadAdd', [ $el, $el.parent() ] );
 				});
@@ -288,9 +291,9 @@
 
 				var $container = $( this ).parent().parent();
 
-				$container.find( '.preview' ).empty();
-				$container.find( '.everest-forms-image-upload-add' ).show();
-				$container.find( '.source' ).val( '' );
+				$container.find( '.attachment-thumb' ).remove();
+				$container.parent().find( '.source' ).val( '' );
+				$container.parent().find( '.button-add-media' ).show();
 
 				$builder.trigger( 'everestFormsImageUploadRemove', [ $( this ), $container ] );
 			});
