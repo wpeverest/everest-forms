@@ -547,16 +547,21 @@
 			});
 		},
 		choicesInit: function () {
-			$( 'ul.evf-choices-list' ).sortable({
+			var selector = $( '.everest-forms-field-option-row-choices ul.evf-choices-list' );
+
+			// Sortable items.
+			selector.sortable({
 				items: 'li',
 				axis: 'y',
 				handle: '.sort',
 				scrollSensitivity: 40,
-				out: function ( event ) {
-					var field_id = $( event.target ).attr( 'data-field-id' );
-					EVFPanelBuilder.choiceChange( field_id );
+				stop: function ( event ) {
+					var field_id = $( event.target ).attr( 'data-field-id' ),
+						type     = $( '#everest-forms-field-option-' + field_id ).find( '.everest-forms-field-option-hidden-type' ).val();
+
+					EVFPanelBuilder.fieldChoiceUpdate( type, field_id );
 				}
-			});
+			} );
 		},
 		choiceChange: function ( field_id ) {
 			var choices_wrapper = $('#everest-forms-field-option-row-' + field_id + '-choices');
