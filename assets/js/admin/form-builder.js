@@ -547,7 +547,7 @@
 			});
 		},
 		choicesInit: function () {
-			var selector = $( '.everest-forms-field-option-row-choices ul.evf-choices-list' );
+			var selector = $( '.everest-forms-field-option-row-choices ul' );
 
 			// Sortable items.
 			selector.sortable({
@@ -594,31 +594,45 @@
 			});
 		},
 		choicesUpdate: function () {
-			$('body').on('click', '.evf-choices-list a.add', function () {
-				var clone = $(this).closest('li').clone();
-				clone.find('input[type="text"]').val('');
-				var ul = $(this).closest('.evf-choices-list');
-				var field_id = ul.attr('data-field-id');
-				var next_id = ul.attr('data-next-id');
+			// Add new field choice.
+			$builder.on( 'click', '.everest-forms-field-option-row-choices .add', function( e ) {
+				e.preventDefault();
 
-				clone.find( 'input[type="checkbox"],input[type="radio"]' ).prop( 'checked', false);
-				clone.attr( 'data-key', next_id );
-				clone.find( '.default' ).attr( 'name', 'form_fields[' + field_id + '][choices][' + next_id + '][default]' );
-				clone.find( '.label' ).val( '' ).attr( 'name', 'form_fields[' + field_id + '][choices][' + next_id + '][label]' );
-				clone.find( '.value' ).val( '' ).attr( 'name', 'form_fields[' + field_id + '][choices][' + next_id + '][value]' );
-				clone.find( '.source' ).val( '' ).attr( 'name', 'form_fields[' + field_id + '][choices][' + next_id + '][image]' );
-				clone.find( '.attachment-thumb' ).remove();
-				clone.find( '.button-add-media' ).show();
-				$(this).closest( 'li' ).after( clone );
-				next_id++;
-				$( this ).closest('.evf-choices-list').attr('data-next-id',next_id);
-				EVFPanelBuilder.choiceChange(field_id);
+				var $this   = $( this ),
+					$parent = $this.parent(),
+					checked = $parent.find( 'input.default' ).is( ':checked' ),
+					fieldID = $this.closest( '.everest-forms-field-option-row-choices' ).data( 'field-id' ),
+					nextID  = $parent.parent().attr( 'data-next-id' ),
+					type    = $parent.parent().data( 'field-type' ),
+					$choice = $parent.clone().insertAfter( $parent );
+
+				$choice.attr( 'data-key', nextID );
+				$choice.find( 'input.label' ).val( '' ).attr( 'name', 'form_fields[' + fieldID + '][choices][' + nextID + '][label]' );
+				$choice.find( 'input.value' ).val( '' ).attr( 'name', 'form_fields[' + fieldID + '][choices][' + nextID + '][value]' );
+				$choice.find( 'input.source' ).val( '' ).attr( 'name', 'form_fields[' + fieldID + '][choices][' + nextID + '][image]' );
+				$choice.find( 'input.default').attr( 'name', 'form_fields[' + fieldID + '][choices][' + nextID + '][default]' ).prop( 'checked', false );
+				$choice.find( '.attachment-thumb' ).remove();
+				$choice.find( '.button-add-media' ).show();
+
+				if ( checked === true ) {
+					$parent.find( 'input.default' ).prop( 'checked', true );
+				}
+
+				nextID++;
+				$parent.parent().attr( 'data-next-id', nextID );
+				$builder.trigger( 'everestFormsFieldChoiceAdd' );
+				EVFPanelBuilder.fieldChoiceUpdate( type, fieldID );
 			});
-			$('body').on('click', '.evf-choices-list a.remove', function () {
-				var ul = $( this ).closest( '.evf-choices-list' );
-				var field_id = ul.attr( 'data-field-id' );
 
-				if ( ul.find( 'li' ).length < 2 ) {
+			// Delete field choice.
+			$builder.on( 'click', '.everest-forms-field-option-row-choices .remove', function( e ) {
+				e.preventDefault();
+
+				var $this = $(this),
+					$list = $this.parent().parent(),
+					total = $list.find('li').length;
+
+				if ( total < 2 ) {
 					$.alert({
 						title: false,
 						content: evf_data.i18n_field_error_choice,
@@ -633,8 +647,9 @@
 						}
 					});
 				} else {
-					$( this ).closest( 'li' ).remove();
-					EVFPanelBuilder.choiceChange( field_id );
+					$this.parent().remove();
+					EVFPanelBuilder.fieldChoiceUpdate( $list.data( 'field-type' ), $list.data( 'field-id' ) );
+					$builder.trigger('everestFormsFieldChoiceDelete');
 				}
 			});
 
@@ -650,8 +665,9 @@
 						$(this).prop('checked', true);
 					}
 				}
+				EVFPanelBuilder.fieldChoiceUpdate( type, field_id );
 
-				EVFPanelBuilder.choiceChange(field_id);
+				// EVFPanelBuilder.choiceChange(field_id);
 			});
 		},
 
