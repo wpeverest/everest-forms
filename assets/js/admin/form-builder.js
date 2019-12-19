@@ -230,12 +230,20 @@
 		bindUIActionsFields: function() {
 			// Field image choices toggle.
 			$builder.on( 'change', '.everest-forms-field-option-row-choices_images input', function() {
-				var $this         = $( this ),
-					fieldID       = $this.parent().data( 'field-id' ),
-					$fieldOptions = $( '#everest-forms-field-option-' + fieldID );
+				var $this          = $( this ),
+					checked        = $this.is( ':checked' ),
+					field_id       = $this.parent().data( 'field-id' ),
+					$fieldOptions  = $( '#everest-forms-field-option-' + field_id ),
+					$columnOptions = $( '#everest-forms-field-option-' + fieldID + '-input_columns' );
 
 				$this.parent().find( '.notice' ).toggleClass( 'hidden' );
 				$fieldOptions.find( '.everest-forms-field-option-row-choices ul' ).toggleClass( 'show-images' );
+
+				if ( checked ) {
+					$columnOptions.val( 'inline' ).trigger( 'change' );
+				} else {
+					$columnOptions.val( '' ).trigger( 'change' );
+				}
 			} );
 
 			// Upload or add an image.
@@ -298,6 +306,22 @@
 				$container.parent().find( '.button-add-media' ).show();
 
 				$builder.trigger( 'everestFormsImageUploadRemove', [ $( this ), $container ] );
+			});
+
+			// Toggle Layout advanced field option.
+			$builder.on( 'change', '.everest-forms-field-option-row-input_columns select', function() {
+				var $this     = $( this ),
+					value     = $this.val(),
+					field_id  = $this.parent().data( 'field-id' ),
+					css_class = '';
+
+				if ( 'inline' === value ) {
+					css_class = 'everest-forms-list-inline';
+				} else if ( '' !== value ) {
+					css_class = 'everest-forms-list-' + value + '-columns';
+				}
+
+				$( '#everest-forms-field-' + field_id ).removeClass( 'everest-forms-list-inline everest-forms-list-2-columns everest-forms-list-3-columns' ).addClass( css_class );
 			});
 
 			// Field sidebar tab toggle.

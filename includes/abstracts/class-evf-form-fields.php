@@ -837,7 +837,7 @@ abstract class EVF_Form_Fields {
 			 */
 			case 'input_columns':
 				$value   = ! empty( $field['input_columns'] ) ? esc_attr( $field['input_columns'] ) : '';
-				$tooltip = esc_html__( 'Select the layout for displaying field choices.', 'everest-forms' );
+				$tooltip = esc_html__( 'Select the column layout for displaying field choices.', 'everest-forms' );
 				$options = array(
 					''       => esc_html__( 'One Column', 'everest-forms' ),
 					'2'      => esc_html__( 'Two Columns', 'everest-forms' ),
@@ -851,7 +851,7 @@ abstract class EVF_Form_Fields {
 					$field,
 					array(
 						'slug'    => 'input_columns',
-						'value'   => esc_html__( 'Choice Layout', 'everest-forms' ),
+						'value'   => esc_html__( 'Layout', 'everest-forms' ),
 						'tooltip' => $tooltip,
 					),
 					false
@@ -946,7 +946,6 @@ abstract class EVF_Form_Fields {
 				break;
 
 			case 'choices':
-				$total          = 0;
 				$values         = ! empty( $field['choices'] ) ? $field['choices'] : $this->defaults;
 				$choices_fields = array( 'checkbox', 'payment-checkbox', 'select', 'radio', 'payment-radio' );
 
@@ -997,8 +996,7 @@ abstract class EVF_Form_Fields {
 					foreach ( $values as $value ) {
 						$default  = isset( $value['default'] ) ? (bool) $value['default'] : false;
 						$selected = ! empty( $placeholder ) ? '' : selected( true, $default, false );
-
-						$output .= sprintf( '<option %s>%s</option>', $selected, esc_html( $value['label'] ) );
+						$output  .= sprintf( '<option %s>%s</option>', $selected, esc_html( $value['label'] ) );
 					}
 
 					$output .= '</select>';
@@ -1009,6 +1007,8 @@ abstract class EVF_Form_Fields {
 					foreach ( $values as $key => $value ) {
 						$default     = isset( $value['default'] ) ? $value['default'] : '';
 						$selected    = checked( '1', $default, false );
+						$placeholder = EVF()->plugin_url() . '/assets/images/placeholder.png';
+						$image_src   = ! empty( $value['image'] ) ? esc_url( $value['image'] ) : $placeholder;
 						$input_class = array();
 						$item_class  = array();
 
@@ -1024,15 +1024,12 @@ abstract class EVF_Form_Fields {
 
 						if ( $choices_images ) {
 							$output .= '<label>';
-							// @todo Output for image choices.
+							$output .= sprintf( '<span class="everest-forms-image-choices-image"><img src="%s" alt="%s"%s></span>', $image_src, esc_attr( $value['label'] ), ! empty( $value['label'] ) ? ' title="' . esc_attr( $value['label'] ) . '"' : '' );
+							$output .= sprintf( '<input type="%s" class="%s" disabled>', $type, evf_sanitize_classes( $input_class, true ), $selected );
+							$output .= '<span class="everest-forms-image-choices-label">' . wp_kses_post( $value['label'] ) . '</span>';
 							$output .= '</label>';
 						} else {
-							$output .= sprintf(
-								'<input type="%s" %s disabled>%s',
-								$type,
-								$selected,
-								$value['label']
-							);
+							$output .= sprintf( '<input type="%s" %s disabled>%s', $type, $selected, $value['label'] );
 						}
 
 						$output .= '</li>';
