@@ -223,6 +223,74 @@
 		//--------------------------------------------------------------------//
 
 		/**
+		 * Creates a object from form elements.
+		 *
+		 * @since 1.6.0
+		 */
+		formObject: function( el ) {
+			var form       = jQuery( el ),
+				fields     = form.find( '[name]' ),
+				json       = {},
+				arraynames = {};
+
+			for ( var v = 0; v < fields.length; v++ ){
+
+				var field     = jQuery( fields[v] ),
+					name      = field.prop( 'name' ).replace( /\]/gi,'' ).split( '[' ),
+					value     = field.val(),
+					lineconf  = {};
+
+				if ( ( field.is( ':radio' ) || field.is( ':checkbox' ) ) && ! field.is( ':checked' ) ) {
+					continue;
+				}
+				for ( var i = name.length-1; i >= 0; i-- ) {
+					var nestname = name[i];
+					if ( typeof nestname === 'undefined' ) {
+						nestname = '';
+					}
+					if ( nestname.length === 0 ){
+						lineconf = [];
+						if ( typeof arraynames[name[i-1]] === 'undefined' )  {
+							arraynames[name[i-1]] = 0;
+						} else {
+							arraynames[name[i-1]] += 1;
+						}
+						nestname = arraynames[name[i-1]];
+					}
+					if ( i === name.length-1 ){
+						if ( value ) {
+							if ( value === 'true' ) {
+								value = true;
+							} else if ( value === 'false' ) {
+								value = false;
+							}else if ( ! isNaN( parseFloat( value ) ) && parseFloat( value ).toString() === value ) {
+								value = parseFloat( value );
+							} else if ( typeof value === 'string' && ( value.substr( 0,1 ) === '{' || value.substr( 0,1 ) === '[' ) ) {
+								try {
+									value = JSON.parse( value );
+								} catch (e) {}
+							} else if ( typeof value === 'object' && value.length && field.is( 'select' ) ){
+								var new_val = {};
+								for ( var i = 0; i < value.length; i++ ) {
+									new_val[ 'n' + i ] = value[ i ];
+								}
+								value = new_val;
+							}
+						}
+						lineconf[nestname] = value;
+					} else {
+						var newobj = lineconf;
+						lineconf = {};
+						lineconf[nestname] = newobj;
+					}
+				}
+				$.extend( true, json, lineconf );
+			}
+
+			return json;
+		},
+
+		/**
 		 * Element bindings for Fields panel.
 		 *
 		 * @since 1.2.0
@@ -246,31 +314,28 @@
 					$columnOptions.val( '' ).trigger( 'change' );
 				}
 
-				// Radio, Checkbox, and Payment Multiple/Checkbox use _ template.
-				if ( 'radio' === type || 'checkbox' === type || 'payment-multiple' === type || 'payment-checkbox' === type ) {
-					var choices = [];
+				// Radio and Checkbox use _ template.
+				if ( 'radio' === type || 'checkbox' === type ) {
+					var choices  = [],
+						formData = EVFPanelBuilder.formObject( $fieldOptions );
 
 					// Order of choices for a specific field.
 					$( '#everest-forms-field-option-' + field_id ).find( '.evf-choices-list li' ).each( function() {
 						choices.push( $( this ).data( 'key' ) );
 					});
 
-					var tmpl = wp.template( 'wpforms-field-preview-checkbox-radio-payment-multiple' ),
+					var tmpl = wp.template( 'everest-forms-field-preview-choices' ),
 						data = {
-							// settings: wpf.getField( id ),
+							settings: formData.form_fields[ field_id ],
 							order:    choices,
 							type:     'radio'
 						};
 
-					console.log( choices );
-
-					if ( 'checkbox' === type || 'payment-checkbox' === type ) {
+					if ( 'checkbox' === type ) {
 						data.type = 'checkbox';
 					}
 
-					// $( '#everest-forms-field-' + field_id ).find( 'ul.primary-input' ).replaceWith( tmpl( data ) );
-
-					return;
+					$( '#everest-forms-field-' + field_id ).find( 'ul.primary-input' ).replaceWith( tmpl( data ) );
 				}
 			} );
 

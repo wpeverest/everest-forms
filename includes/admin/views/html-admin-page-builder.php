@@ -11,7 +11,7 @@ $form_data['form_field_id'] = isset( $form_data['form_field_id'] ) ? $form_data[
 $form_data['form_enabled']  = isset( $form_data['form_enabled'] ) ? $form_data['form_enabled'] : 1;
 
 // Get tabs for the builder panel.
-$tabs = apply_filters( 'everest_forms_builder_tabs_array', array() );
+$tabs = apply_filters( 'everest_forms_builder_tabs_array', array() ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.OverrideProhibited
 
 // Get preview link.
 $preview_link = add_query_arg(
@@ -78,3 +78,37 @@ $preview_link = add_query_arg(
 		</div>
 	</form>
 </div>
+<script type="text/html" id="tmpl-everest-forms-field-preview-choices">
+	<# if ( data.settings.choices_images ) { #>
+	<ul class="primary-input wpforms-image-choices wpforms-image-choices-{{ data.settings.choices_images_style }}">
+		<# _.each( data.order, function( choiceID, key ) {  #>
+		<li class="wpforms-image-choices-item<# if ( 1 === data.settings.choices[choiceID].default ) { print( ' wpforms-selected' ); } #>">
+			<label>
+				<span class="wpforms-image-choices-image">
+					<# if ( ! _.isEmpty( data.settings.choices[choiceID].image ) ) { #>
+						<img src="{{ data.settings.choices[choiceID].image }}" alt="{{ data.settings.choices[choiceID].label }}"<# if ( data.settings.choices[choiceID].label ) { print( ' title="{{ data.settings.choices[choiceID].label }}"' ); } #>>
+					<# } else { #>
+						<img src="<?php echo esc_url( EVF()->plugin_url() . '/assets/images/placeholder.png' ); ?>" alt="{{ data.settings.choices[choiceID].label }}"<# if ( data.settings.choices[choiceID].label ) { print( ' title="{{ data.settings.choices[choiceID].label }}"' ); } #>>
+					<# } #>
+				</span>
+				<# if ( 'none' === data.settings.choices_images_style ) { #>
+					<br>
+					<input type="{{ data.type }}" disabled<# if ( 1 === data.settings.choices[choiceID].default ) { print( ' checked' ); } #>>
+				<# } else { #>
+					<input class="wpforms-screen-reader-element" type="{{ data.type }}" disabled<# if ( 1 === data.settings.choices[choiceID].default ) { print( ' checked' ); } #>>
+				<# } #>
+				<span class="wpforms-image-choices-label">{{{ data.settings.choices[choiceID].label }}}</span>
+			</label>
+		</li>
+		<# }) #>
+	</ul>
+	<# } else { #>
+	<ul class="primary-input">
+		<# _.each( data.order, function( choiceID, key ) {  #>
+		<li>
+			<input type="{{ data.type }}" disabled<# if ( 1 === data.settings.choices[choiceID].default ) { print( ' checked' ); } #>>{{{ data.settings.choices[choiceID].label }}}
+		</li>
+		<# }) #>
+	</ul>
+	<# } #>
+</script>
