@@ -412,6 +412,15 @@
 				$builder.trigger( 'everestFormsImageUploadRemove', [ $( this ), $container ] );
 			});
 
+			// Field choices image upload add/remove image.
+			$builder.on( 'everestFormsImageUploadAdd everestFormsImageUploadRemove', function( event, $this, $container ) {
+				var $el      = $container.closest( '.evf-choices-list' ),
+					type     = $el.data( 'field-type' ),
+					field_id = $el.data( 'field-id' );
+
+				EVFPanelBuilder.fieldChoiceUpdate( type, field_id );
+			});
+
 			// Toggle Layout advanced field option.
 			$builder.on( 'change', '.everest-forms-field-option-row-input_columns select', function() {
 				var $this     = $( this ),
