@@ -59,6 +59,7 @@ class EVF_Admin_Import_Export {
 			ob_clean();
 		}
 		$export_json = wp_json_encode( $export_data );
+		error_log( print_r( $export_json, true ) );
 		// Force download.
 		header( 'Content-Type: application/force-download' );
 		// Disposition / Encoding on response body.
@@ -120,8 +121,18 @@ class EVF_Admin_Import_Export {
 								break;
 							}
 						}
-						error_log( print_r( $form_data->form_post, true ) );
-						$post_id = wp_insert_post( $form_data->form_post );
+
+						// Get the form data.
+						$new_form_data = evf_decode( $form_data->form_post->post_content );
+
+						$new_form    = array(
+							'post_content' => evf_encode( $new_form_data ),
+							'post_status'  => $form_data->form_post->post_status,
+							'post_title'   => $form_data->form_post->post_title,
+							'post_type'    => $form_data->form_post->post_type,
+						);
+
+						$post_id = wp_insert_post( $new_form );
 
 						// Check for any error while inserting.
 						if ( is_wp_error( $post_id ) ) {
