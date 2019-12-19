@@ -317,7 +317,8 @@
 				// Radio and Checkbox use _ template.
 				if ( 'radio' === type || 'checkbox' === type ) {
 					var choices  = [],
-						formData = EVFPanelBuilder.formObject( $fieldOptions );
+						formData = EVFPanelBuilder.formObject( $fieldOptions ),
+						settings = formData.form_fields[ field_id ];
 
 					// Order of choices for a specific field.
 					$( '#everest-forms-field-option-' + field_id ).find( '.evf-choices-list li' ).each( function() {
@@ -325,15 +326,12 @@
 					});
 
 					var tmpl = wp.template( 'everest-forms-field-preview-choices' ),
+						type = 'checkbox' === type ? 'checkbox' : 'radio';
 						data = {
-							settings: formData.form_fields[ field_id ],
+							type:     type,
 							order:    choices,
-							type:     'radio'
+							settings: settings,
 						};
-
-					if ( 'checkbox' === type ) {
-						data.type = 'checkbox';
-					}
 
 					$( '#everest-forms-field-' + field_id ).find( 'ul.primary-input' ).replaceWith( tmpl( data ) );
 				}
