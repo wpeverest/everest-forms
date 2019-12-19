@@ -291,6 +291,39 @@
 		},
 
 		/**
+		 * Update field choices in preview area, for the Fields panel.
+		 *
+		 * Currently used for radio and checkboxes field types.
+		 *
+		 * @since 1.6.0
+		 */
+		fieldChoiceUpdate: function( type, id ) {
+			var $fieldOptions = $( '#everest-forms-field-option-' + id );
+
+			// Radio and Checkbox use _ template.
+			if ( 'radio' === type || 'checkbox' === type ) {
+				var choices  = [],
+					formData = EVFPanelBuilder.formObject( $fieldOptions ),
+					settings = formData.form_fields[ id ];
+
+				// Order of choices for a specific field.
+				$( '#everest-forms-field-option-' + id ).find( '.evf-choices-list li' ).each( function() {
+					choices.push( $( this ).data( 'key' ) );
+				});
+
+				var tmpl = wp.template( 'everest-forms-field-preview-choices' ),
+					type = 'checkbox' === type ? 'checkbox' : 'radio';
+					data = {
+						type:     type,
+						order:    choices,
+						settings: settings,
+					};
+
+				$( '#everest-forms-field-' + id ).find( 'ul.primary-input' ).replaceWith( tmpl( data ) );
+			}
+		},
+
+		/**
 		 * Element bindings for Fields panel.
 		 *
 		 * @since 1.2.0
@@ -314,27 +347,7 @@
 					$columnOptions.val( '' ).trigger( 'change' );
 				}
 
-				// Radio and Checkbox use _ template.
-				if ( 'radio' === type || 'checkbox' === type ) {
-					var choices  = [],
-						formData = EVFPanelBuilder.formObject( $fieldOptions ),
-						settings = formData.form_fields[ field_id ];
-
-					// Order of choices for a specific field.
-					$( '#everest-forms-field-option-' + field_id ).find( '.evf-choices-list li' ).each( function() {
-						choices.push( $( this ).data( 'key' ) );
-					});
-
-					var tmpl = wp.template( 'everest-forms-field-preview-choices' ),
-						type = 'checkbox' === type ? 'checkbox' : 'radio';
-						data = {
-							type:     type,
-							order:    choices,
-							settings: settings,
-						};
-
-					$( '#everest-forms-field-' + field_id ).find( 'ul.primary-input' ).replaceWith( tmpl( data ) );
-				}
+				EVFPanelBuilder.fieldChoiceUpdate( type, field_id );
 			} );
 
 			// Upload or add an image.
