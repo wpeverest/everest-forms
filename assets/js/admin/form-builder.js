@@ -233,7 +233,7 @@
 				var $this          = $( this ),
 					field_id       = $this.parent().data( 'field-id' ),
 					$fieldOptions  = $( '#everest-forms-field-option-' + field_id ),
-					$columnOptions = $( '#everest-forms-field-option-' + fieldID + '-input_columns' );
+					$columnOptions = $( '#everest-forms-field-option-' + field_id + '-input_columns' );
 
 				$this.parent().find( '.notice' ).toggleClass( 'hidden' );
 				$fieldOptions.find( '.everest-forms-field-option-row-choices ul' ).toggleClass( 'show-images' );
