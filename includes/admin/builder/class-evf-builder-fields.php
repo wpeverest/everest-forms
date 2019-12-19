@@ -297,6 +297,9 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		$css .= ! empty( $field['label_hide'] ) && $field['label_hide'] == '1' ? ' label_hide' : '';
 		$css .= ! empty( $field['sublabel_hide'] ) && $field['sublabel_hide'] == '1' ? ' sublabel_hide' : '';
 		$css .= ! empty( $field['required'] ) && $field['required'] == '1' ? ' required' : '';
+		$css .= ! empty( $field['input_columns'] ) && '2' === $field['input_columns'] ? ' everest-forms-list-2-columns' : '';
+		$css .= ! empty( $field['input_columns'] ) && '3' === $field['input_columns'] ? ' everest-forms-list-3-columns' : '';
+		$css .= ! empty( $field['input_columns'] ) && 'inline' === $field['input_columns'] ? ' everest-forms-list-inline' : '';
 		$css  = apply_filters( 'everest_forms_field_preview_class', $css, $field );
 
 		printf( '<div class="everest-forms-field everest-forms-field-%s %s" id="everest-forms-field-%s" data-field-id="%s" data-field-type="%s">', $field['type'], $css, $field['id'], $field['id'], $field['type'] );
