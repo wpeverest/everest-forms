@@ -231,7 +231,6 @@
 			// Field image choices toggle.
 			$builder.on( 'change', '.everest-forms-field-option-row-choices_images input', function() {
 				var $this          = $( this ),
-					checked        = $this.is( ':checked' ),
 					field_id       = $this.parent().data( 'field-id' ),
 					$fieldOptions  = $( '#everest-forms-field-option-' + field_id ),
 					$columnOptions = $( '#everest-forms-field-option-' + fieldID + '-input_columns' );
@@ -239,7 +238,8 @@
 				$this.parent().find( '.notice' ).toggleClass( 'hidden' );
 				$fieldOptions.find( '.everest-forms-field-option-row-choices ul' ).toggleClass( 'show-images' );
 
-				if ( checked ) {
+				// Trigger columns changes.
+				if ( $this.is( ':checked' ) ) {
 					$columnOptions.val( 'inline' ).trigger( 'change' );
 				} else {
 					$columnOptions.val( '' ).trigger( 'change' );
