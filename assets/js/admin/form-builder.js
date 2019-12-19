@@ -233,7 +233,8 @@
 				var $this          = $( this ),
 					field_id       = $this.parent().data( 'field-id' ),
 					$fieldOptions  = $( '#everest-forms-field-option-' + field_id ),
-					$columnOptions = $( '#everest-forms-field-option-' + field_id + '-input_columns' );
+					$columnOptions = $( '#everest-forms-field-option-' + field_id + '-input_columns' ),
+					type           = $( '#everest-forms-field-option-' + field_id ).find( '.everest-forms-field-option-hidden-type' ).val();
 
 				$this.parent().find( '.notice' ).toggleClass( 'hidden' );
 				$fieldOptions.find( '.everest-forms-field-option-row-choices ul' ).toggleClass( 'show-images' );
@@ -243,6 +244,33 @@
 					$columnOptions.val( 'inline' ).trigger( 'change' );
 				} else {
 					$columnOptions.val( '' ).trigger( 'change' );
+				}
+
+				// Radio, Checkbox, and Payment Multiple/Checkbox use _ template.
+				if ( 'radio' === type || 'checkbox' === type || 'payment-multiple' === type || 'payment-checkbox' === type ) {
+					var choices = [];
+
+					// Order of choices for a specific field.
+					$( '#everest-forms-field-option-' + field_id ).find( '.evf-choices-list li' ).each( function() {
+						choices.push( $( this ).data( 'key' ) );
+					});
+
+					var tmpl = wp.template( 'wpforms-field-preview-checkbox-radio-payment-multiple' ),
+						data = {
+							// settings: wpf.getField( id ),
+							order:    choices,
+							type:     'radio'
+						};
+
+					console.log( choices );
+
+					if ( 'checkbox' === type || 'payment-checkbox' === type ) {
+						data.type = 'checkbox';
+					}
+
+					// $( '#everest-forms-field-' + field_id ).find( 'ul.primary-input' ).replaceWith( tmpl( data ) );
+
+					return;
 				}
 			} );
 
