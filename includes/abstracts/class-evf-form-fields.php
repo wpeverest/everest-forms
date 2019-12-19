@@ -1004,12 +1004,11 @@ abstract class EVF_Form_Fields {
 					$output = sprintf( '<ul class="%s">', evf_sanitize_classes( $list_class, true ) );
 
 					// Individual checkbox/radio options.
-					foreach ( $values as $key => $value ) {
+					foreach ( $values as $value ) {
 						$default     = isset( $value['default'] ) ? $value['default'] : '';
 						$selected    = checked( '1', $default, false );
 						$placeholder = EVF()->plugin_url() . '/assets/images/placeholder.png';
 						$image_src   = ! empty( $value['image'] ) ? esc_url( $value['image'] ) : $placeholder;
-						$input_class = array();
 						$item_class  = array();
 
 						if ( ! empty( $value['default'] ) ) {
@@ -1025,7 +1024,7 @@ abstract class EVF_Form_Fields {
 						if ( $choices_images ) {
 							$output .= '<label>';
 							$output .= sprintf( '<span class="everest-forms-image-choices-image"><img src="%s" alt="%s"%s></span>', $image_src, esc_attr( $value['label'] ), ! empty( $value['label'] ) ? ' title="' . esc_attr( $value['label'] ) . '"' : '' );
-							$output .= sprintf( '<input type="%s" class="%s" disabled>', $type, evf_sanitize_classes( $input_class, true ), $selected );
+							$output .= sprintf( '<input type="%s" %s disabled>', $type, $selected );
 							$output .= '<span class="everest-forms-image-choices-label">' . wp_kses_post( $value['label'] ) . '</span>';
 							$output .= '</label>';
 						} else {
