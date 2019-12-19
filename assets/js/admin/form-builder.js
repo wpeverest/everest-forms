@@ -228,12 +228,11 @@
 		 * @since 1.2.0
 		 */
 		bindUIActionsFields: function() {
-			// Field choices image toggle.
+			// Field image choices toggle.
 			$builder.on( 'change', '.everest-forms-field-option-row-choices_images input', function() {
 				var $this         = $( this ),
 					fieldID       = $this.parent().data( 'field-id' ),
 					$fieldOptions = $( '#everest-forms-field-option-' + fieldID );
-
 
 				$this.parent().find( '.notice' ).toggleClass( 'hidden' );
 				$fieldOptions.find( '.everest-forms-field-option-row-choices ul' ).toggleClass( 'show-images' );
