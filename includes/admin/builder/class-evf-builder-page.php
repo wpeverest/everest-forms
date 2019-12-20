@@ -58,7 +58,7 @@ if ( ! class_exists( 'EVF_Builder_Page', false ) ) :
 		 * Constructor.
 		 */
 		public function __construct() {
-			$form_id         = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
+			$form_id         = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification
 			$this->form      = evf()->form->get( $form_id );
 			$this->form_data = is_object( $this->form ) ? evf_decode( $this->form->post_content ) : array();
 
@@ -161,4 +161,3 @@ if ( ! class_exists( 'EVF_Builder_Page', false ) ) :
 	}
 
 endif;
-
