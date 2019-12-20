@@ -131,14 +131,14 @@ class EVF_Admin_Import_Export {
 					} else {
 						wp_send_json_error(
 							array(
-								'message' => __( 'Invalid file content. Please export file from user registration plugin.', 'everest-forms' ),
+								'message' => __( 'Invalid file content. Please export file from Everest Forms plugin.', 'everest-forms' ),
 							)
 						);
 					}
 				} else {
 					wp_send_json_error(
 						array(
-							'message' => __( 'Invalid file content. Please export file from user registration plugin.', 'everest-forms' ),
+							'message' => __( 'Invalid file content. Please export file from Everest Forms plugin.', 'everest-forms' ),
 						)
 					);
 				}
