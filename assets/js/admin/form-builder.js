@@ -296,62 +296,13 @@
 		 */
 		bindUIActionsFields: function() {
 			// Add new field choice.
-			$builder.on( 'click', '.everest-forms-field-option-row-choices .add', function( e ) {
-				e.preventDefault();
-
-				var $this   = $( this ),
-					$parent = $this.parent(),
-					checked = $parent.find( 'input.default' ).is( ':checked' ),
-					fieldID = $this.closest( '.everest-forms-field-option-row-choices' ).data( 'field-id' ),
-					nextID  = $parent.parent().attr( 'data-next-id' ),
-					type    = $parent.parent().data( 'field-type' ),
-					$choice = $parent.clone().insertAfter( $parent );
-
-				$choice.attr( 'data-key', nextID );
-				$choice.find( 'input.label' ).val( '' ).attr( 'name', 'form_fields[' + fieldID + '][choices][' + nextID + '][label]' );
-				$choice.find( 'input.value' ).val( '' ).attr( 'name', 'form_fields[' + fieldID + '][choices][' + nextID + '][value]' );
-				$choice.find( 'input.source' ).val( '' ).attr( 'name', 'form_fields[' + fieldID + '][choices][' + nextID + '][image]' );
-				$choice.find( 'input.default').attr( 'name', 'form_fields[' + fieldID + '][choices][' + nextID + '][default]' ).prop( 'checked', false );
-				$choice.find( '.attachment-thumb' ).remove();
-				$choice.find( '.button-add-media' ).show();
-
-				if ( checked === true ) {
-					$parent.find( 'input.default' ).prop( 'checked', true );
-				}
-
-				nextID++;
-				$parent.parent().attr( 'data-next-id', nextID );
-				$builder.trigger( 'everestFormsFieldChoiceAdd' );
-				EVFPanelBuilder.choiceUpdate( type, fieldID );
+			$builder.on( 'click', '.everest-forms-field-option-row-choices .add', function( event ) {
+				EVFPanelBuilder.choiceAdd( event, $(this) );
 			});
 
 			// Delete field choice.
 			$builder.on( 'click', '.everest-forms-field-option-row-choices .remove', function( e ) {
-				e.preventDefault();
-
-				var $this = $(this),
-					$list = $this.parent().parent(),
-					total = $list.find('li').length;
-
-				if ( total < 2 ) {
-					$.alert({
-						title: false,
-						content: evf_data.i18n_field_error_choice,
-						icon: 'dashicons dashicons-info',
-						type: 'blue',
-						buttons: {
-							ok: {
-								text: evf_data.i18n_ok,
-								btnClass: 'btn-confirm',
-								keys: [ 'enter' ]
-							}
-						}
-					});
-				} else {
-					$this.parent().remove();
-					EVFPanelBuilder.choiceUpdate( $list.data( 'field-type' ), $list.data( 'field-id' ) );
-					$builder.trigger( 'everestFormsFieldChoiceDelete' );
-				}
+				EVFPanelBuilder.choiceDelete( event, $(this) );
 			});
 
 			// Field choices defaults - (before change).
@@ -614,6 +565,12 @@
 				$( '#everest-forms-field-option-' + id ).find( '.format-selected' ).removeClass().addClass( 'format-selected format-selected-'+ value );
 			});
 		},
+
+		/**
+		 * Make field choices sortable.
+		 *
+		 * @since 1.0.0
+		 */
 		choicesInit: function () {
 			$( '.everest-forms-field-option-row-choices ul' ).sortable({
 				items: 'li',
@@ -630,9 +587,74 @@
 		},
 
 		/**
-		 * Update field choices in preview area, for the Fields panel.
+		 * Add new field choice.
 		 *
-		 * Currently used for radio and checkboxes field types.
+		 * @since 1.6.0
+		 */
+		choiceAdd: function( event, el ) {
+			event.preventDefault();
+
+			var $this   = $( el ),
+				$parent = $this.parent(),
+				checked = $parent.find( 'input.default' ).is( ':checked' ),
+				fieldID = $this.closest( '.everest-forms-field-option-row-choices' ).data( 'field-id' ),
+				nextID  = $parent.parent().attr( 'data-next-id' ),
+				type    = $parent.parent().data( 'field-type' ),
+				$choice = $parent.clone().insertAfter( $parent );
+
+			$choice.attr( 'data-key', nextID );
+			$choice.find( 'input.label' ).val( '' ).attr( 'name', 'form_fields[' + fieldID + '][choices][' + nextID + '][label]' );
+			$choice.find( 'input.value' ).val( '' ).attr( 'name', 'form_fields[' + fieldID + '][choices][' + nextID + '][value]' );
+			$choice.find( 'input.source' ).val( '' ).attr( 'name', 'form_fields[' + fieldID + '][choices][' + nextID + '][image]' );
+			$choice.find( 'input.default').attr( 'name', 'form_fields[' + fieldID + '][choices][' + nextID + '][default]' ).prop( 'checked', false );
+			$choice.find( '.attachment-thumb' ).remove();
+			$choice.find( '.button-add-media' ).show();
+
+			if ( checked === true ) {
+				$parent.find( 'input.default' ).prop( 'checked', true );
+			}
+
+			nextID++;
+			$parent.parent().attr( 'data-next-id', nextID );
+			$builder.trigger( 'everestFormsChoiceAdd' );
+			EVFPanelBuilder.choiceUpdate( type, fieldID );
+		},
+
+		/**
+		 * Delete field choice.
+		 *
+		 * @since 1.6.0
+		 */
+		choiceDelete: function( event, el ) {
+			event.preventDefault();
+
+			var $this = $( el ),
+				$list = $this.parent().parent(),
+				total = $list.find( 'li' ).length;
+
+			if ( total < 2 ) {
+				$.alert({
+					title: false,
+					content: evf_data.i18n_field_error_choice,
+					icon: 'dashicons dashicons-info',
+					type: 'blue',
+					buttons: {
+						ok: {
+							text: evf_data.i18n_ok,
+							btnClass: 'btn-confirm',
+							keys: [ 'enter' ]
+						}
+					}
+				});
+			} else {
+				$this.parent().remove();
+				EVFPanelBuilder.choiceUpdate( $list.data( 'field-type' ), $list.data( 'field-id' ) );
+				$builder.trigger( 'everestFormsChoiceDelete' );
+			}
+		},
+
+		/**
+		 * Update field choices in preview area, for the Fields panel.
 		 *
 		 * @since 1.6.0
 		 */
