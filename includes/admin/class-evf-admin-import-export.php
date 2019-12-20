@@ -125,35 +125,35 @@ class EVF_Admin_Import_Export {
 						if ( $post_id ) {
 							wp_send_json_success(
 								array(
-									'message' => __( 'Imported Successfully.', 'user-registration' ),
+									'message' => __( 'Imported Successfully.', 'everest-forms' ),
 								)
 							);
 						}
 					} else {
 						wp_send_json_error(
 							array(
-								'message' => __( 'Invalid file content. Please export file from user registration plugin.', 'user-registration' ),
+								'message' => __( 'Invalid file content. Please export file from user registration plugin.', 'everest-forms' ),
 							)
 						);
 					}
 				} else {
 					wp_send_json_error(
 						array(
-							'message' => __( 'Invalid file content. Please export file from user registration plugin.', 'user-registration' ),
+							'message' => __( 'Invalid file content. Please export file from user registration plugin.', 'everest-forms' ),
 						)
 					);
 				}
 			} else {
 				wp_send_json_error(
 					array(
-						'message' => __( 'Invalid file format. Only Json File Allowed.', 'user-registration' ),
+						'message' => __( 'Invalid file format. Only Json File Allowed.', 'everest-forms' ),
 					)
 				);
 			}
 		} else {
 			wp_send_json_error(
 				array(
-					'message' => __( 'Please select json file to import form data.', 'user-registration' ),
+					'message' => __( 'Please select json file to import form data.', 'everest-forms' ),
 				)
 			);
 		}
