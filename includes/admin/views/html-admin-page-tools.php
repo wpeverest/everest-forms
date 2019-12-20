@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$current_tab = ! empty( $_REQUEST['tab'] ) ? sanitize_title( $_REQUEST['tab'] ) : 'logs';
+$current_tab = ! empty( $_REQUEST['tab'] ) ? sanitize_title( $_REQUEST['tab'] ) : 'import';
 $tabs        = array(
 	'import' => __( 'Import', 'everest-forms' ),
 	'export' => __( 'Export', 'everest-forms' ),
