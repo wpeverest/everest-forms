@@ -541,7 +541,6 @@ class EVF_AJAX {
 			check_ajax_referer( 'process-import-ajax-nonce', 'security' );
 			EVF_Admin_Import_Export::import_form();
 		} catch ( Exception $e ) {
-			error_log( print_r( "out", true ) );
 			wp_send_json_error(
 				array(
 					'message' => $e->getMessage(),
