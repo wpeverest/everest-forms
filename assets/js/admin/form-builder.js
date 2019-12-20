@@ -355,7 +355,7 @@
 			});
 
 			// Field choices defaults - (before change).
-			$builder.on( 'mousedowns', '.everest-forms-field-option-row-choices input[type=radio]', function(e) {
+			$builder.on( 'mousedown', '.everest-forms-field-option-row-choices input[type=radio]', function(e) {
 				var $this = $(this);
 
 				if ( $this.is( ':checked' ) ) {
