@@ -114,7 +114,74 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 	 * @return array
 	 */
 	public function field_properties( $properties, $field, $form_data ) {
-		$properties['inputs']['primary']['class'][] = 'input-text';
+		// Remove primary input.
+		unset( $properties['inputs']['primary'] );
+
+		// Define data.
+		$form_id  = absint( $form_data['id'] );
+		$field_id = $field['id'];
+		$choices  = $field['choices'];
+
+		// Set input container (ul) properties.
+		$properties['input_container'] = array(
+			'class' => array( ! empty( $field['random'] ) ? 'everest-forms-randomize' : '' ),
+			'data'  => array(),
+			'attr'  => array(),
+			'id'    => "evf-{$form_id}-field_{$field_id}",
+		);
+
+		// Set input properties.
+		foreach ( $choices as $key => $choice ) {
+			$depth                        = isset( $choice['depth'] ) ? absint( $choice['depth'] ) : 1;
+			$properties['inputs'][ $key ] = array(
+				'container' => array(
+					'attr'  => array(),
+					'class' => array( "choice-{$key}", "depth-{$depth}" ),
+					'data'  => array(),
+					'id'    => '',
+				),
+				'label'     => array(
+					'attr'  => array(
+						'for' => "evf-{$form_id}-field_{$field_id}_{$key}",
+					),
+					'class' => array( 'everest-forms-field-label-inline' ),
+					'data'  => array(),
+					'id'    => '',
+					'text'  => $choice['label'],
+				),
+				'attr'      => array(
+					'name'  => "everest_forms[form_fields][{$field_id}]",
+					'value' => isset( $field['show_values'] ) ? $choice['value'] : $choice['label'],
+				),
+				'class'     => array(),
+				'data'      => array(),
+				'id'        => "evf-{$form_id}-field_{$field_id}_{$key}",
+				'image'     => isset( $choice['image'] ) ? $choice['image'] : '',
+				'required'  => ! empty( $field['required'] ) ? 'required' : '',
+				'default'   => isset( $choice['default'] ),
+			);
+		}
+
+		// Required class for validation.
+		if ( ! empty( $field['required'] ) ) {
+			$properties['input_container']['class'][] = 'evf-field-required';
+		}
+
+		// Custom properties if enabled image choices.
+		if ( ! empty( $field['choices_images'] ) ) {
+			$properties['input_container']['class'][] = 'everest-forms-image-choices';
+
+			foreach ( $properties['inputs'] as $key => $inputs ) {
+				$properties['inputs'][ $key ]['container']['class'][] = 'everest-forms-image-choices-item';
+			}
+		}
+
+		// Add selected class for choices with defaults.
+		foreach ( $properties['inputs'] as $key => $inputs ) {
+			if ( ! empty( $inputs['default'] ) ) {
+				$properties['inputs'][ $key ]['container']['class'][] = 'everest-forms-selected';
+			}
+		}
 
 		return $properties;
 	}
@@ -194,46 +261,55 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 	/**
 	 * Field display on the form front-end.
 	 *
-	 * @since      1.0.0
+	 * @since 1.0.0
 	 *
-	 * @param array $field
-	 * @param array $field_atts
-	 * @param array $form_data
+	 * @param array $field      Field settings.
+	 * @param array $field_atts Field attributes.
+	 * @param array $form_data  Form data and settings.
 	 */
 	public function field_display( $field, $field_atts, $form_data ) {
-		// Setup and sanitize the necessary data
-		$primary     = $field['properties']['inputs']['primary'];
-		$field_class = implode( ' ', array_map( 'sanitize_html_class', $field_atts['input_class'] ) );
-		$field_id    = implode( ' ', array_map( 'sanitize_html_class', $field_atts['input_id'] ) );
-		$field_data  = '';
-		$form_id     = $form_data['id'];
-		$choices     = isset( $field['choices'] ) ? $field['choices'] : array();
-		if ( ! empty( $field_atts['input_data'] ) ) {
-			foreach ( $field_atts['input_data'] as $key => $val ) {
-				$field_data .= ' data-' . $key . '="' . $val . '"';
-			}
-		}
+		// Define data.
+		$container = $field['properties']['input_container'];
+		$choices   = $field['properties']['inputs'];
+
 		// List.
-		printf( '<ul id="%s" class="%s" %s>', $field_id, $field_class, $field_data );
+		printf( '<ul %s>', evf_html_attributes( $container['id'], $container['class'], $container['data'], $container['attr'] ) );
 
 		foreach ( $choices as $key => $choice ) {
+			if ( empty( $choice['container'] ) ) {
+				continue;
+			}
 
-			$selected = isset( $choice['default'] ) ? '1' : '0';
-			$val      = isset( $field['show_values'] ) ? esc_attr( $choice['value'] ) : esc_attr( $choice['label'] );
-			$depth    = isset( $choice['depth'] ) ? absint( $choice['depth'] ) : 1;
-			$id       = $primary['id'] . '_' . $key;
+			printf( '<li %s>', evf_html_attributes( $choice['container']['id'], $choice['container']['class'], $choice['container']['data'], $choice['container']['attr'] ) );
 
-			printf( '<li class="choice-%d depth-%d">', $key, $depth );
+			if ( ! empty( $field['choices_images'] ) ) {
+				// Make image choices keyboard-accessible.
+				$choice['label']['attr']['tabindex'] = 0;
 
-			// Radio elements.
-			printf(
-				'<input type="radio" value="%s" %s %s>',
-				esc_attr( $val ),
-				evf_html_attributes( $id, $primary['class'], $primary['data'], $primary['attr'] ),
-				esc_attr( $primary['required'] )
-			);
+				// Image choices.
+				printf( '<label %s>', evf_html_attributes( $choice['label']['id'], $choice['label']['class'], $choice['label']['data'], $choice['label']['attr'] ) );
 
-			printf( '<label class="everest-forms-field-label-inline" for="evf-%d-field_%s_%d">%s</label>', $form_id, $field['id'], $key, wp_kses_post( $choice['label'] ) );
+				if ( ! empty( $choice['image'] ) ) {
+					printf(
+						'<span class="everest-forms-image-choices-image"><img src="%s" alt="%s"%s></span>',
+						esc_url( $choice['image'] ),
+						esc_attr( $choice['label']['text'] ),
+						! empty( $choice['label']['text'] ) ? ' title="' . esc_attr( $choice['label']['text'] ) . '"' : ''
+					);
+				}
+
+				echo '<br>';
+
+				$choice['attr']['tabindex'] = '-1';
+
+				printf( '<input type="radio" %s %s %s>', evf_html_attributes( $choice['id'], $choice['class'], $choice['data'], $choice['attr'] ), esc_attr( $choice['required'] ), checked( '1', $choice['default'], false ) );
+				echo '<span class="everest-forms-image-choices-label">' . wp_kses_post( $choice['label']['text'] ) . '</span>';
+				echo '</label>';
+			} else {
+				// Normal display.
+				printf( '<input type="radio" %s %s %s>', evf_html_attributes( $choice['id'], $choice['class'], $choice['data'], $choice['attr'] ), esc_attr( $choice['required'] ), checked( '1', $choice['default'], false ) );
+				printf( '<label %s>%s</label>', evf_html_attributes( $choice['label']['id'], $choice['label']['class'], $choice['label']['data'], $choice['label']['attr'] ), wp_kses_post( $choice['label']['text'] ) );
+			}
 
 			echo '</li>';
 		}

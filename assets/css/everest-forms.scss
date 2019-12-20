@@ -39,6 +39,7 @@
 	*,
 	*::before,
 	*::after {
+		outline: none;
 		box-sizing: border-box;
 	}
 
@@ -66,7 +67,6 @@
 	}
 
 	label {
-		display: block;
 		line-height: 1.7;
 		margin: 0 0 10px 0;
 		color: $color_gray-base;
@@ -297,6 +297,16 @@
 								align-items: center;
 								margin-bottom: 5px;
 							}
+
+							&.everest-forms-image-choices label {
+								cursor: pointer;
+							}
+						}
+
+						&.everest-forms-list-inline ul li {
+							vertical-align: top;
+							display: inline-block;
+							margin-right: 20px !important;
 						}
 					}
 
@@ -359,7 +369,6 @@
 				&::placeholder {
 					color: $color_gray-light;
 				}
-
 			}
 
 			select {
