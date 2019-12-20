@@ -85,7 +85,6 @@ class EVF_Admin_Import_Export {
 				if ( ! empty( $form_data ) ) {
 					// check for non empty post data array.
 					if ( ! empty( $form_data->form_post ) ) {
-						// If Form Title already exist concat it with imported tag.
 						$args  = array( 'post_type' => 'everest_form' );
 						$forms = get_posts( $args );
 
