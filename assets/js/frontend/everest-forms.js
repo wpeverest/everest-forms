@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* global everest_forms_params */
 jQuery( function ( $ ) {
 	'use strict';
