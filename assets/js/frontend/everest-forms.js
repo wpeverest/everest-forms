@@ -15,8 +15,9 @@ jQuery( function ( $ ) {
 			this.init_datepicker();
 			this.load_validation();
 			this.submission_scroll();
+			this.randomize_elements();
 
-			// Inline validation
+			// Inline validation.
 			this.$everest_form.on( 'input validate change', '.input-text, select, input:checkbox, input:radio', this.validate_field );
 		},
 		init_inputMask: function() {
@@ -275,6 +276,16 @@ jQuery( function ( $ ) {
 					scrollTop: ( $( 'div.everest-forms-submission-scroll' ).offset().top ) - 100
 				}, 1000 );
 			}
+		},
+		randomize_elements: function() {
+			$( '.everest-forms-randomize' ).each( function() {
+				var $list      = $( this ),
+					$listItems = $list.children();
+
+				while ( $listItems.length ) {
+					$list.append( $listItems.splice( Math.floor( Math.random() * $listItems.length ), 1 )[0] );
+				}
+			} );
 		}
 	};
 
