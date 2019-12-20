@@ -498,7 +498,7 @@
 				$( '#everest-forms-field-' + id ).toggleClass( 'required' );
 			});
 
-			// Real-time updates for "Confirmation" field option
+			// Real-time updates for "Confirmation" field option.
 			$builder.on( 'change', '.everest-forms-field-option-row-confirmation input', function() {
 				var id = $( this ).parent().data( 'field-id' );
 				$( '#everest-forms-field-' + id ).find( '.everest-forms-confirm' ).toggleClass( 'everest-forms-confirm-enabled everest-forms-confirm-disabled' );
@@ -726,7 +726,6 @@
 
 			$('.evf-setting-panel').eq(0).trigger('click');
 		},
-
 		bindFormEmail: function () {
 			$('body').on('click', '.everest-forms-panel-sidebar-section-email', function ( e ) {
 				$(this).siblings('.everest-forms-active-email').removeClass('active');
