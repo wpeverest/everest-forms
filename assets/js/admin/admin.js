@@ -228,6 +228,16 @@
 		$('#import-file-name').html(file.name);
 	});
 
+	$('.everest-forms-export-form-action').on('click', function() {
+		var form_id = $(this).closest('.everest-forms-export-form').find('#everest-forms-form-export').val();
+		if( 'undefined' === typeof form_id || 0 == form_id ) {
+			$(this).closest('.everest-forms-export-form').prepend('<div id="message" class="updated inline everest-froms-import_notice"><p><strong>Please select a form which you want to export.</strong></p></div>');
+			return false;
+		} else {
+			$(this).closest('.everest-forms-export-form').find('#message').remove();
+		}
+	});
+
 
 	$('.everest_forms_import_action').on('click', function () {
 		var file_data = $('#everest-forms-import').prop('files')[0],
@@ -247,7 +257,6 @@
 			type: 'POST',
 			beforeSend: function () {
 				var spinner = '<i class="evf-loading evf-loading-active"></i>';
-				console.log(spinner);
 				$('.everest_forms_import_action').closest('.everest_forms_import_action').append(spinner);
 				$('.everest-froms-import_notice').remove();
 			},

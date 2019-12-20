@@ -38,8 +38,9 @@ class EVF_Admin_Import_Export {
 		}
 
 		$form_id = isset( $_POST['form_id'] ) ? $_POST['form_id'] : 0;
+
 		// Return if form id is not set and current user doesnot have export capability.
-		if ( ! isset( $form_id ) || ! current_user_can( 'export' ) ) {
+		if ( empty( $form_id ) || ! current_user_can( 'export' ) ) {
 			return;
 		}
 		$form_post       = get_post( $form_id );
@@ -69,32 +70,6 @@ class EVF_Admin_Import_Export {
 	}
 
 	/**
-	 * Get post meta for a given key prefix.
-	 *
-	 * @param int    $post_id
-	 * @param string $key_prefix Prefix.
-	 * @return array
-	 */
-	protected function get_post_meta_by_prefix( $post_id, $key_prefix ) {
-		$values        = get_post_meta( $post_id );
-		error_log( print_r( $values, true ) );
-		$return_values = array();
-		if ( gettype( $values ) !== 'array' ) {
-			return $return_values;
-		}
-		foreach ( $values as $meta_key => $value ) {
-			if ( substr( $meta_key, 0, strlen( $key_prefix ) ) === $key_prefix ) {
-				if ( isset( $value[0] ) ) {
-					$return_values[ $meta_key ] = $value[0];
-				} elseif ( 'string' === gettype( $values ) ) {
-					$return_values[ $meta_key ] = $value;
-				}
-			}
-		}
-		return $return_values;
-	}
-
-	/**
 	 * Import Form from backend.
 	 */
 	public static function import_form() {
@@ -110,7 +85,6 @@ class EVF_Admin_Import_Export {
 				if ( ! empty( $form_data ) ) {
 					// check for non empty post data array.
 					if ( ! empty( $form_data->form_post ) ) {
-						// If Form Title already exist concat it with imported tag.
 						$args  = array( 'post_type' => 'everest_form' );
 						$forms = get_posts( $args );
 
@@ -150,35 +124,35 @@ class EVF_Admin_Import_Export {
 						if ( $post_id ) {
 							wp_send_json_success(
 								array(
-									'message' => __( 'Imported Successfully.', 'user-registration' ),
+									'message' => __( 'Imported Successfully.', 'everest-forms' ),
 								)
 							);
 						}
 					} else {
 						wp_send_json_error(
 							array(
-								'message' => __( 'Invalid file content. Please export file from user registration plugin.', 'user-registration' ),
+								'message' => __( 'Invalid file content. Please export file from Everest Forms plugin.', 'everest-forms' ),
 							)
 						);
 					}
 				} else {
 					wp_send_json_error(
 						array(
-							'message' => __( 'Invalid file content. Please export file from user registration plugin.', 'user-registration' ),
+							'message' => __( 'Invalid file content. Please export file from Everest Forms plugin.', 'everest-forms' ),
 						)
 					);
 				}
 			} else {
 				wp_send_json_error(
 					array(
-						'message' => __( 'Invalid file format. Only Json File Allowed.', 'user-registration' ),
+						'message' => __( 'Invalid file format. Only Json File Allowed.', 'everest-forms' ),
 					)
 				);
 			}
 		} else {
 			wp_send_json_error(
 				array(
-					'message' => __( 'Please select json file to import form data.', 'user-registration' ),
+					'message' => __( 'Please select json file to import form data.', 'everest-forms' ),
 				)
 			);
 		}
