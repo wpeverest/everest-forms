@@ -612,8 +612,8 @@ abstract class EVF_Form_Fields {
 					array(
 						'slug'    => 'choices_images',
 						'value'   => isset( $field['choices_images'] ) ? '1' : '0',
-						'desc'    => esc_html__( 'Use image choices', 'wpforms-lite' ),
-						'tooltip' => esc_html__( 'Check this option to enable using images with the choices.', 'wpforms-lite' ),
+						'desc'    => esc_html__( 'Use image choices', 'everest-forms' ),
+						'tooltip' => esc_html__( 'Check this option to enable using images with the choices.', 'everest-forms' ),
 					),
 					false
 				);
