@@ -615,10 +615,7 @@
 			});
 		},
 		choicesInit: function () {
-			var selector = $( '.everest-forms-field-option-row-choices ul' );
-
-			// Sortable items.
-			selector.sortable({
+			$( '.everest-forms-field-option-row-choices ul' ).sortable({
 				items: 'li',
 				axis: 'y',
 				handle: '.sort',
