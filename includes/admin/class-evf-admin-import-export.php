@@ -38,8 +38,9 @@ class EVF_Admin_Import_Export {
 		}
 
 		$form_id = isset( $_POST['form_id'] ) ? $_POST['form_id'] : 0;
+
 		// Return if form id is not set and current user doesnot have export capability.
-		if ( ! isset( $form_id ) || ! current_user_can( 'export' ) ) {
+		if ( empty( $form_id ) || ! current_user_can( 'export' ) ) {
 			return;
 		}
 		$form_post       = get_post( $form_id );
