@@ -319,7 +319,37 @@
 					};
 
 				$( '#everest-forms-field-' + id ).find( 'ul.primary-input' ).replaceWith( tmpl( data ) );
+
+				return;
 			}
+
+			var new_choice;
+
+			if ( 'select' === type ) {
+				$( '#everest-forms-field-' + id + ' .primary-input option' ).not( '.placeholder' ).remove();
+				new_choice = '<option>{label}</option>';
+			}
+
+			$( '#everest-forms-field-option-row-' + id + '-choices .evf-choices-list li' ).each( function( index ) {
+				var $this    = $(this),
+					label    = $this.find('input.label').val(),
+					selected = $this.find('input.default').is(':checked'),
+					choice 	 = $( new_choice.replace('{label}',label) );
+
+				$( '#everest-forms-field-' + id + ' .primary-input' ).append( choice );
+
+				if ( true === selected ) {
+					switch ( type ) {
+						case 'select':
+							choice.prop( 'selected', 'true' );
+							break;
+						case 'radio':
+						case 'checkbox':
+							choice.find( 'input' ).prop( 'checked', 'true' );
+							break;
+					}
+				}
+			});
 		},
 
 		/**
