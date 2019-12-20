@@ -497,6 +497,7 @@ button.everest-forms-btn {
 	border: none;
 	cursor: pointer;
 	overflow: hidden;
+	font-family: inherit;
 	padding: 10px 15px;
 	border-radius: 3px;
 	line-height: 1.25;
@@ -542,6 +543,22 @@ button.everest-forms-btn {
 		&:focus {
 			box-shadow: none;
 			text-decoration: underline;
+		}
+	}
+
+	&.dashicons {
+		padding: 8px 15px;
+
+		&::before {
+			width: 20px;
+			height: 20px;
+			line-height: 1;
+			font-size: 20px;
+			margin-right: 10px;
+			font-family: dashicons;
+			vertical-align: middle;
+			padding: 2px 12px 2px 0;
+			border-right: 1px solid transparentize($color_gray-base, 0.7);
 		}
 	}
 
@@ -3617,26 +3634,68 @@ button.everest-forms-btn {
 }
 
 /**
- * List Table.
+ * Import and Export
  */
 .everest-forms-import-form {
 	background: $color-white;
-	max-width: 768px;
+	max-width: 700px;
 	padding: 20px;
+	margin-top: 20px;
 	box-shadow: 1px 3px 10px transparentize($color_gray-base, 0.95);
 	border-radius: 4px;
 
 	h3 {
-		font-size: 24px;
-		margin-top: 0;
+		margin: 0;
+		font-size: 20px;
+		padding-bottom: 16px;
+		border-bottom: 2px solid #f1f1f1;
 	}
 
 	p {
 		font-size: 14px;
 	}
 
-	.everest-forms-btn {
-		margin-bottom: 20px;
+	.description {
+		margin-bottom: 16px;
+
+		.dashicons {
+			width: 16px;
+			height: 16px;
+			font-size: 16px;
+			vertical-align: middle;
+			margin-right: 2px;
+			margin-bottom: 3px;
+		}
+	}
+
+	.everest-forms-file-upload {
+		margin: 1em 0;
+
+		input {
+			display: none;
+		}
+
+		label {
+			display: inline-block;
+			padding: 4px;
+			min-width: 400px;
+			border-radius: 4px;
+			border: 1px solid $color_gray-lighten;
+		}
+
+		.everest-forms-btn {
+			width: auto;
+			height: auto;
+			font-size: 13px;
+			margin-right: 10px;
+			vertical-align: middle;
+		}
+	}
+
+	.publishing-action {
+		padding-top: 20px;
+		text-align: right;
+		border-top: 2px solid #f1f1f1;
 	}
 }
 
