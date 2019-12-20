@@ -290,69 +290,6 @@
 		},
 
 		/**
-		 * Update field choices in preview area, for the Fields panel.
-		 *
-		 * Currently used for radio and checkboxes field types.
-		 *
-		 * @since 1.6.0
-		 */
-		fieldChoiceUpdate: function( type, id ) {
-			var $fieldOptions = $( '#everest-forms-field-option-' + id );
-
-			// Radio and Checkbox use _ template.
-			if ( 'radio' === type || 'checkbox' === type ) {
-				var choices  = [],
-					formData = EVFPanelBuilder.formObject( $fieldOptions ),
-					settings = formData.form_fields[ id ];
-
-				// Order of choices for a specific field.
-				$( '#everest-forms-field-option-' + id ).find( '.evf-choices-list li' ).each( function() {
-					choices.push( $( this ).data( 'key' ) );
-				});
-
-				var tmpl = wp.template( 'everest-forms-field-preview-choices' ),
-					type = 'checkbox' === type ? 'checkbox' : 'radio';
-					data = {
-						type:     type,
-						order:    choices,
-						settings: settings,
-					};
-
-				$( '#everest-forms-field-' + id ).find( 'ul.primary-input' ).replaceWith( tmpl( data ) );
-
-				return;
-			}
-
-			var new_choice;
-
-			if ( 'select' === type ) {
-				$( '#everest-forms-field-' + id + ' .primary-input option' ).not( '.placeholder' ).remove();
-				new_choice = '<option>{label}</option>';
-			}
-
-			$( '#everest-forms-field-option-row-' + id + '-choices .evf-choices-list li' ).each( function( index ) {
-				var $this    = $(this),
-					label    = $this.find('input.label').val(),
-					selected = $this.find('input.default').is(':checked'),
-					choice 	 = $( new_choice.replace('{label}',label) );
-
-				$( '#everest-forms-field-' + id + ' .primary-input' ).append( choice );
-
-				if ( true === selected ) {
-					switch ( type ) {
-						case 'select':
-							choice.prop( 'selected', 'true' );
-							break;
-						case 'radio':
-						case 'checkbox':
-							choice.find( 'input' ).prop( 'checked', 'true' );
-							break;
-					}
-				}
-			});
-		},
-
-		/**
 		 * Element bindings for Fields panel.
 		 *
 		 * @since 1.2.0
@@ -385,7 +322,7 @@
 				nextID++;
 				$parent.parent().attr( 'data-next-id', nextID );
 				$builder.trigger( 'everestFormsFieldChoiceAdd' );
-				EVFPanelBuilder.fieldChoiceUpdate( type, fieldID );
+				EVFPanelBuilder.choiceUpdate( type, fieldID );
 			});
 
 			// Delete field choice.
@@ -412,7 +349,7 @@
 					});
 				} else {
 					$this.parent().remove();
-					EVFPanelBuilder.fieldChoiceUpdate( $list.data( 'field-type' ), $list.data( 'field-id' ) );
+					EVFPanelBuilder.choiceUpdate( $list.data( 'field-type' ), $list.data( 'field-id' ) );
 					$builder.trigger( 'everestFormsFieldChoiceDelete' );
 				}
 			});
@@ -440,19 +377,19 @@
 					$this.attr( 'data-checked', '0' );
 				}
 
-				EVFPanelBuilder.fieldChoiceUpdate( list.data( 'field-type' ), list.data( 'field-id' ) );
+				EVFPanelBuilder.choiceUpdate( list.data( 'field-type' ), list.data( 'field-id' ) );
 			});
 
 			// Field choices update preview area.
 			$builder.on( 'change', '.everest-forms-field-option-row-choices input[type=checkbox]', function(e) {
 				var list = $(this).parent().parent();
-				EVFPanelBuilder.fieldChoiceUpdate( list.data( 'field-type' ), list.data( 'field-id' ) );
+				EVFPanelBuilder.choiceUpdate( list.data( 'field-type' ), list.data( 'field-id' ) );
 			});
 
 			// Updates field choices text in almost real time.
 			$builder.on( 'keyup paste focusout', '.everest-forms-field-option-row-choices input.label', function(e) {
 				var list = $(this).parent().parent().parent();
-				EVFPanelBuilder.fieldChoiceUpdate( list.data( 'field-type' ), list.data( 'field-id' ) );
+				EVFPanelBuilder.choiceUpdate( list.data( 'field-type' ), list.data( 'field-id' ) );
 			});
 
 			// Field choices display value toggle.
@@ -478,7 +415,7 @@
 					$columnOptions.val( '' ).trigger( 'change' );
 				}
 
-				EVFPanelBuilder.fieldChoiceUpdate( type, field_id );
+				EVFPanelBuilder.choiceUpdate( type, field_id );
 			} );
 
 			// Upload or add an image.
@@ -549,7 +486,7 @@
 					type     = $el.data( 'field-type' ),
 					field_id = $el.data( 'field-id' );
 
-				EVFPanelBuilder.fieldChoiceUpdate( type, field_id );
+				EVFPanelBuilder.choiceUpdate( type, field_id );
 			});
 
 			// Toggle Layout advanced field option.
@@ -690,38 +627,71 @@
 					var field_id = $( event.target ).attr( 'data-field-id' ),
 						type     = $( '#everest-forms-field-option-' + field_id ).find( '.everest-forms-field-option-hidden-type' ).val();
 
-					EVFPanelBuilder.fieldChoiceUpdate( type, field_id );
+					EVFPanelBuilder.choiceUpdate( type, field_id );
 				}
 			} );
 		},
-		choiceChange: function ( field_id ) {
-			var choices_wrapper = $('#everest-forms-field-option-row-' + field_id + '-choices');
-			var choices_field = $('#everest-forms-field-' + field_id);
-			var primary_field = choices_field.find('ul.primary-input');
 
-			var choice_type = choices_wrapper.find('ul.evf-choices-list').attr('data-field-type');
-			if ( choice_type === 'select' ) {
-				primary_field = choices_field.find('select.primary-input');
+		/**
+		 * Update field choices in preview area, for the Fields panel.
+		 *
+		 * Currently used for radio and checkboxes field types.
+		 *
+		 * @since 1.6.0
+		 */
+		choiceUpdate: function( type, id ) {
+			var $fieldOptions = $( '#everest-forms-field-option-' + id );
+
+			// Radio and Checkbox use _ template.
+			if ( 'radio' === type || 'checkbox' === type ) {
+				var choices  = [],
+					formData = EVFPanelBuilder.formObject( $fieldOptions ),
+					settings = formData.form_fields[ id ];
+
+				// Order of choices for a specific field.
+				$( '#everest-forms-field-option-' + id ).find( '.evf-choices-list li' ).each( function() {
+					choices.push( $( this ).data( 'key' ) );
+				});
+
+				var tmpl = wp.template( 'everest-forms-field-preview-choices' ),
+					type = 'checkbox' === type ? 'checkbox' : 'radio';
+					data = {
+						type:     type,
+						order:    choices,
+						settings: settings,
+					};
+
+				$( '#everest-forms-field-' + id ).find( 'ul.primary-input' ).replaceWith( tmpl( data ) );
+
+				return;
 			}
-			primary_field.html('');
 
-			$.each( choices_wrapper.find( 'ul.evf-choices-list').find( 'li' ), function () {
-				var type  = $( this ).find( '.default' ).attr( 'type' );
-				var field = type ? '<input type="' + type + '" disabled="">' : '';
-				var list = $('<li/>').append( field );
+			var new_choice;
 
-				if ( choice_type === 'select' ) {
-					list = $( '<option/>' );
-					if ( $(this).find('.default').is( ':checked' ) ) {
-						list.attr('selected', 'selected');
+			if ( 'select' === type ) {
+				$( '#everest-forms-field-' + id + ' .primary-input option' ).not( '.placeholder' ).remove();
+				new_choice = '<option>{label}</option>';
+			}
+
+			$( '#everest-forms-field-option-row-' + id + '-choices .evf-choices-list li' ).each( function( index ) {
+				var $this    = $(this),
+					label    = $this.find( 'input.label' ).val(),
+					selected = $this.find( 'input.default' ).is( ':checked' ),
+					choice 	 = $( new_choice.replace('{label}', label) );
+
+				$( '#everest-forms-field-' + id + ' .primary-input' ).append( choice );
+
+				if ( true === selected ) {
+					switch ( type ) {
+						case 'select':
+							choice.prop( 'selected', 'true' );
+							break;
+						case 'radio':
+						case 'checkbox':
+							choice.find( 'input' ).prop( 'checked', 'true' );
+							break;
 					}
 				}
-				list.append($(this).find('.label').val());
-				if ( $(this).find('.default').is(":checked") ) {
-					list.find('input').prop('checked', true);
-				}
-
-				primary_field.append(list);
 			});
 		},
 		bindFormSettings: function () {
