@@ -85,9 +85,6 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 	 * @return string
 	 */
 	public function field_html_value( $value, $field, $form_data = array(), $context = '' ) {
-		// Only use HTML formatting for radio fields, with image choices
-		// enabled, and exclude the entry table display. Lastly, provides a
-		// filter to disable fancy display.
 		if (
 			! empty( $field['value'] ) &&
 			$this->type === $field['type'] &&
@@ -95,7 +92,6 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 			'entry-table' !== $context &&
 			apply_filters( 'everest_forms_radio_field_html_value_images', true, $context )
 		) {
-
 			if ( ! empty( $field['image'] ) ) {
 				return sprintf(
 					'<span style="max-width:200px;display:block;margin:0 0 5px 0;"><img src="%s" style="max-width:100%%;display:block;margin:0;"></span>%s',

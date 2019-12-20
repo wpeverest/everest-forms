@@ -85,9 +85,6 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 	 * @return string
 	 */
 	public function field_html_value( $value, $field, $form_data = array(), $context = '' ) {
-		// Only use HTML formatting for checkbox fields, with image choices
-		// enabled, and exclude the entry table display. Lastly, provides a
-		// filter to disable fancy display.
 		if (
 			! empty( $field['value'] ) &&
 			$this->type === $field['type'] &&
