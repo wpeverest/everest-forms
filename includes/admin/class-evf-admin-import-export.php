@@ -70,32 +70,6 @@ class EVF_Admin_Import_Export {
 	}
 
 	/**
-	 * Get post meta for a given key prefix.
-	 *
-	 * @param int    $post_id
-	 * @param string $key_prefix Prefix.
-	 * @return array
-	 */
-	protected function get_post_meta_by_prefix( $post_id, $key_prefix ) {
-		$values        = get_post_meta( $post_id );
-		error_log( print_r( $values, true ) );
-		$return_values = array();
-		if ( gettype( $values ) !== 'array' ) {
-			return $return_values;
-		}
-		foreach ( $values as $meta_key => $value ) {
-			if ( substr( $meta_key, 0, strlen( $key_prefix ) ) === $key_prefix ) {
-				if ( isset( $value[0] ) ) {
-					$return_values[ $meta_key ] = $value[0];
-				} elseif ( 'string' === gettype( $values ) ) {
-					$return_values[ $meta_key ] = $value;
-				}
-			}
-		}
-		return $return_values;
-	}
-
-	/**
 	 * Import Form from backend.
 	 */
 	public static function import_form() {
