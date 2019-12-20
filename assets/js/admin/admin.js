@@ -246,7 +246,7 @@
 			data: form_data,
 			type: 'POST',
 			beforeSend: function () {
-				var spinner = '<span class="spinner is-active" style="float: left;margin-top: 6px;"></span>';
+				var spinner = '<i class="evf-loading evf-loading-active"></i>';
 				console.log(spinner);
 				$('.everest_forms_import_action').closest('.everest_forms_import_action').append(spinner);
 				$('.everest-froms-import_notice').remove();
@@ -254,7 +254,7 @@
 			complete: function (response) {
 				var message_string = '';
 
-				$('.everest_forms_import_action').closest('.everest_forms_import_action').find('.spinner').remove();
+				$('.everest_forms_import_action').closest('.everest_forms_import_action').find('.evf-loading').remove();
 				$('.everest-froms-import_notice').remove();
 
 				if (response.responseJSON.success === true) {
