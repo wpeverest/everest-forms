@@ -222,12 +222,17 @@
 
 	});
 
+	// Change span with file name when user selects a file
+	$('#everest-forms-import').change(function(e){
+		var file = $('#everest-forms-import').prop('files')[0];
+		$('#import-file-name').html(file.name);
+	});
+
 
 	$('.everest_forms_import_action').on('click', function () {
-		var file_data = $('#everest-forms-import').prop('files')[0];
-console.log(file_data);
+		var file_data = $('#everest-forms-import').prop('files')[0],
+			form_data = new FormData();
 
-		var form_data = new FormData();
 		form_data.append('jsonfile', file_data);
 		form_data.append('action', 'everest_forms_import_form_action');
 		form_data.append('security', everest_forms_admin.ajax_import_nonce);
@@ -243,13 +248,13 @@ console.log(file_data);
 			beforeSend: function () {
 				var spinner = '<span class="spinner is-active" style="float: left;margin-top: 6px;"></span>';
 				console.log(spinner);
-				$('.everest_forms_import_action').closest('.publishing-action').append(spinner);
+				$('.everest_forms_import_action').closest('.everest_forms_import_action').append(spinner);
 				$('.everest-froms-import_notice').remove();
 			},
 			complete: function (response) {
 				var message_string = '';
 
-				$('.everest_forms_import_action').closest('.publishing-action').find('.spinner').remove();
+				$('.everest_forms_import_action').closest('.everest_forms_import_action').find('.spinner').remove();
 				$('.everest-froms-import_notice').remove();
 
 				if (response.responseJSON.success === true) {
