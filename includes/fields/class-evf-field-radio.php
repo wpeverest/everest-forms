@@ -326,9 +326,9 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 	public function format( $field_id, $field_submit, $form_data, $meta_key ) {
 		$field_submit = (array) $field_submit;
 		$field        = $form_data['form_fields'][ $field_id ];
-		$dynamic      = ! empty( $field['dynamic_choices'] ) ? $field['dynamic_choices'] : false;
 		$name         = sanitize_text_field( $field['label'] );
 		$value_raw    = evf_sanitize_array_combine( $field_submit );
+		$choice_key   = '';
 
 		$data = array(
 			'name'      => $name,
@@ -339,67 +339,32 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 			'meta_key'  => $meta_key,
 		);
 
-		if ( 'post_type' === $dynamic && ! empty( $field['dynamic_post_type'] ) ) {
-			// Dynamic population is enabled using post type.
-			$value_raw                 = implode( ',', array_map( 'absint', $field_submit ) );
-			$data['value_raw']         = $value_raw;
-			$data['dynamic']           = 'post_type';
-			$data['dynamic_items']     = $value_raw;
-			$data['dynamic_post_type'] = $field['dynamic_post_type'];
-			$posts                     = array();
-
-			foreach ( $field_submit as $id ) {
-				$post = get_post( $id );
-
-				if ( ! is_wp_error( $post ) && ! empty( $post ) && $data['dynamic_post_type'] === $post->post_type ) {
-					$posts[] = esc_html( $post->post_title );
+		/*
+		 * If show_values is true, that means values posted are the raw values
+		 * and not the labels. So we need to get the label values.
+		 */
+		if ( ! empty( $field['show_values'] ) ) {
+			foreach ( $field['choices'] as $key => $choice ) {
+				if ( $choice['value'] === $field_submit ) {
+					$data['value'] = sanitize_text_field( $choice['label'] );
+					$choice_key    = $key;
+					break;
 				}
 			}
-
-			$data['value'] = ! empty( $posts ) ? evf_sanitize_array_combine( $posts ) : '';
-
-		} elseif ( 'taxonomy' === $dynamic && ! empty( $field['dynamic_taxonomy'] ) ) {
-
-			// Dynamic population is enabled using taxonomy
-			$value_raw                = implode( ',', array_map( 'absint', $field_submit ) );
-			$data['value_raw']        = $value_raw;
-			$data['dynamic']          = 'taxonomy';
-			$data['dynamic_items']    = $value_raw;
-			$data['dynamic_taxonomy'] = $field['dynamic_taxonomy'];
-			$terms                    = array();
-
-			foreach ( $field_submit as $id ) {
-				$term = get_term( $id, $field['dynamic_taxonomy'] );
-
-				if ( ! is_wp_error( $term ) && ! empty( $term ) ) {
-					$terms[] = esc_html( $term->name );
-				}
-			}
-
-			$data['value'] = ! empty( $terms ) ? evf_sanitize_array_combine( $terms ) : '';
-
 		} else {
+			$data['value'] = $value_raw;
 
-			// Normal processing, dynamic population is off
-			// If show_values is true, that means values posted are the raw values
-			// and not the labels. So we need to get the label values.
-			if ( ! empty( $field['show_values'] ) && '1' == $field['show_values'] ) {
-
-				$value = array();
-
-				foreach ( $field_submit as $field_submit_single ) {
-					foreach ( $field['choices'] as $choice ) {
-						if ( $choice['value'] == $field_submit_single ) {
-							$value[] = $choice['label'];
-							break;
-						}
-					}
+			// Determine choice key, this is needed for image choices.
+			foreach ( $field['choices'] as $key => $choice ) {
+				if ( $choice['label'] === $field_submit ) {
+					$choice_key = $key;
+					break;
 				}
+			}
 
-				$data['value'] = ! empty( $value ) ? evf_sanitize_array_combine( $value ) : '';
-
-			} else {
-				$data['value'] = $value_raw;
+			// Images choices are enabled, lookup and store image URL.
+			if ( ! empty( $choice_key ) && ! empty( $field['choices_images'] ) ) {
+				$data['image'] = ! empty( $field['choices'][ $choice_key ]['image'] ) ? esc_url_raw( $field['choices'][ $choice_key ]['image'] ) : '';
 			}
 		}
 
