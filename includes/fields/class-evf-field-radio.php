@@ -85,20 +85,23 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 	 * @return string
 	 */
 	public function html_field_value( $value, $field_val, $form_data = array(), $context = '' ) {
-		if ( is_serialized( $field_val ) || in_array( $context, array( 'entry-single' ), true ) ) {
+		if ( is_serialized( $field_val ) ) {
 			$value = maybe_unserialize( $field_val );
 
 			if (
-				isset( $value['type'] ) &&
-				$this->type === $value['type'] &&
-				apply_filters( 'everest_forms_radio_field_html_value_images', true, $context )
+				isset( $value['label'], $value['image'] )
+				&& $this->type === $value['type']
+				&& 'entry-table' !== $context
+				&& apply_filters( 'everest_forms_radio_field_html_value_images', true, $context )
 			) {
 				return sprintf(
 					'<span style="max-width:200px;display:block;margin:0 0 5px 0;"><img src="%s" style="max-width:100%%;display:block;margin:0;"></span>%s',
 					esc_url( $value['image'] ),
-					esc_html( $value['name'] )
+					esc_html( $value['label'] )
 				);
 			}
+
+			return ! empty( $value['label'] ) ? esc_html( $value['label'] ) : esc_html( $value[0] );
 		}
 
 		return $value;
@@ -333,7 +336,7 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 			'name'     => $name,
 			'value'    => array(
 				'image' => '',
-				'name'  => $value_raw,
+				'label' => $value_raw,
 				'type'  => $this->type,
 			),
 			'id'       => $field_id,
