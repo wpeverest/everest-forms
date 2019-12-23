@@ -218,25 +218,21 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 	public function show_values( $field ) {
 		// Show Values toggle option. This option will only show if already used or if manually enabled by a filter.
 		if ( ! empty( $field['show_values'] ) || apply_filters( 'everest_forms_fields_show_options_setting', false ) ) {
-			$show_values = $this->field_element(
-				'checkbox',
-				$field,
-				array(
-					'slug'    => 'show_values',
-					'value'   => isset( $field['show_values'] ) ? $field['show_values'] : '0',
-					'desc'    => __( 'Show Values', 'everest-forms' ),
-					'tooltip' => __( 'Check this to manually set form field values.', 'everest-forms' ),
+			$args = array(
+				'slug'    => 'show_values',
+				'content' => $this->field_element(
+					'checkbox',
+					$field,
+					array(
+						'slug'    => 'show_values',
+						'value'   => isset( $field['show_values'] ) ? $field['show_values'] : '0',
+						'desc'    => __( 'Show Values', 'everest-forms' ),
+						'tooltip' => __( 'Check this to manually set form field values.', 'everest-forms' ),
+					),
+					false
 				),
-				false
 			);
-			$this->field_element(
-				'row',
-				$field,
-				array(
-					'slug'    => 'show_values',
-					'content' => $show_values,
-				)
-			);
+			$this->field_element( 'row', $field, $args );
 		}
 	}
 
@@ -320,10 +316,12 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 	/**
 	 * Formats and sanitizes field.
 	 *
-	 * @param int    $field_id
-	 * @param array  $field_submit
-	 * @param array  $form_data
-	 * @param string $meta_key
+	 * @since 1.0.0
+	 *
+	 * @param string $field_id Field Id.
+	 * @param array  $field_submit Submitted Field.
+	 * @param array  $form_data All Form Data.
+	 * @param string $meta_key Field Meta Key.
 	 */
 	public function format( $field_id, $field_submit, $form_data, $meta_key ) {
 		$field_submit = (array) $field_submit;

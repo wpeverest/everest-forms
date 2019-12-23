@@ -161,25 +161,21 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 	public function show_values( $field ) {
 		// Show Values toggle option. This option will only show if already used or if manually enabled by a filter.
 		if ( ! empty( $field['show_values'] ) || apply_filters( 'everest_forms_fields_show_options_setting', false ) ) {
-			$show_values = $this->field_element(
-				'checkbox',
-				$field,
-				array(
-					'slug'    => 'show_values',
-					'value'   => isset( $field['show_values'] ) ? $field['show_values'] : '0',
-					'desc'    => __( 'Show Values', 'everest-forms' ),
-					'tooltip' => __( 'Check this to manually set form field values.', 'everest-forms' ),
+			$args = array(
+				'slug'    => 'show_values',
+				'content' => $this->field_element(
+					'checkbox',
+					$field,
+					array(
+						'slug'    => 'show_values',
+						'value'   => isset( $field['show_values'] ) ? $field['show_values'] : '0',
+						'desc'    => __( 'Show Values', 'everest-forms' ),
+						'tooltip' => __( 'Check this to manually set form field values.', 'everest-forms' ),
+					),
+					false
 				),
-				false
 			);
-			$this->field_element(
-				'row',
-				$field,
-				array(
-					'slug'    => 'show_values',
-					'content' => $show_values,
-				)
-			);
+			$this->field_element( 'row', $field, $args );
 		}
 	}
 
@@ -204,11 +200,11 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 	/**
 	 * Field display on the form front-end.
 	 *
-	 * @since      1.0.0
+	 * @since 1.0.0
 	 *
-	 * @param array $field
-	 * @param array $field_atts
-	 * @param array $form_data
+	 * @param array $field      Field settings.
+	 * @param array $field_atts Field attributes.
+	 * @param array $form_data  Form data and settings.
 	 */
 	public function field_display( $field, $field_atts, $form_data ) {
 

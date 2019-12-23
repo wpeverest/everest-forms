@@ -2803,6 +2803,14 @@ body.everest-forms-builder-setup,
 						}
 					}
 				}
+
+				&.show-values {
+					li {
+						input[type=text].value {
+							display: block;
+						}
+					}
+				}
 			}
 
 			.everest-forms-field-option-row-choices_images {
