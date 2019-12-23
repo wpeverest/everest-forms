@@ -330,12 +330,15 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 		$choice_key = '';
 
 		$data = array(
-			'name'      => $name,
-			'value'     => '',
-			'value_raw' => $value_raw,
-			'id'        => $field_id,
-			'type'      => $this->type,
-			'meta_key'  => $meta_key,
+			'name'     => $name,
+			'value'    => array(
+				'image' => '',
+				'name'  => $value_raw,
+				'type'  => $this->type,
+			),
+			'id'       => $field_id,
+			'type'     => $this->type,
+			'meta_key' => $meta_key,
 		);
 
 		/*
@@ -345,13 +348,13 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 		if ( ! empty( $field['show_values'] ) ) {
 			foreach ( $field['choices'] as $key => $choice ) {
 				if ( $choice['value'] === $field_submit ) {
-					$data['value'] = sanitize_text_field( $choice['label'] );
-					$choice_key    = $key;
+					$data['value']['name'] = sanitize_text_field( $choice['label'] );
+					$choice_key            = $key;
 					break;
 				}
 			}
 		} else {
-			$data['value'] = $value_raw;
+			$data['value']['name'] = $value_raw;
 
 			// Determine choice key, this is needed for image choices.
 			foreach ( $field['choices'] as $key => $choice ) {
@@ -360,11 +363,11 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 					break;
 				}
 			}
+		}
 
-			// Images choices are enabled, lookup and store image URL.
-			if ( ! empty( $choice_key ) && ! empty( $field['choices_images'] ) ) {
-				$data['image'] = ! empty( $field['choices'][ $choice_key ]['image'] ) ? esc_url_raw( $field['choices'][ $choice_key ]['image'] ) : '';
-			}
+		// Images choices are enabled, lookup and store image URL.
+		if ( ! empty( $choice_key ) && ! empty( $field['choices_images'] ) ) {
+			$data['value']['image'] = ! empty( $field['choices'][ $choice_key ]['image'] ) ? esc_url_raw( $field['choices'][ $choice_key ]['image'] ) : '';
 		}
 
 		// Push field details to be saved.
