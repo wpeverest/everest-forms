@@ -335,7 +335,6 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 		$data = array(
 			'name'     => $name,
 			'value'    => array(
-				'image' => '',
 				'label' => $value_raw,
 				'type'  => $this->type,
 			),
