@@ -78,7 +78,7 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 	 * @since 1.6.0
 	 *
 	 * @param string $value     Field value.
-	 * @param array  $field_val     Field settings.
+	 * @param array  $field_val Field settings.
 	 * @param array  $form_data Form data and settings.
 	 * @param string $context   Value display context.
 	 *

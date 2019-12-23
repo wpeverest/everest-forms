@@ -79,36 +79,38 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 	 * @since 1.6.0
 	 *
 	 * @param string $value     Field value.
-	 * @param array  $field     Field settings.
+	 * @param array  $field_val Field settings.
 	 * @param array  $form_data Form data and settings.
 	 * @param string $context   Value display context.
 	 *
 	 * @return string
 	 */
-	public function html_field_value( $value, $field, $form_data = array(), $context = '' ) {
-		if (
-			! empty( $field['value'] ) &&
-			$this->type === $field['type'] &&
-			! empty( $field['images'] ) &&
-			'entry-table' !== $context &&
-			apply_filters( 'everest_forms_checkbox_field_html_value_images', true, $context )
-		) {
-			$items  = array();
-			$values = explode( "\n", $field['value'] );
+	public function html_field_value( $value, $field_val, $form_data = array(), $context = '' ) {
+		if ( is_serialized( $field_val ) ) {
+			$value = maybe_unserialize( $field_val );
 
-			foreach ( $values as $key => $val ) {
-				if ( ! empty( $field['images'][ $key ] ) ) {
-					$items[] = sprintf(
-						'<span style="max-width:200px;display:block;margin:0 0 5px 0;"><img src="%s" style="max-width:100%%;display:block;margin:0;"></span>%s',
-						esc_url( $field['images'][ $key ] ),
-						$val
-					);
-				} else {
-					$items[] = $val;
+			if (
+				isset( $value['label'], $value['image'] )
+				&& $this->type === $value['type']
+				&& 'entry-table' !== $context
+				&& apply_filters( 'everest_forms_checkbox_field_html_value_images', true, $context )
+			) {
+				$items = array();
+
+				foreach ( $value as $key => $val ) {
+					if ( ! empty( $value['images'][ $key ] ) ) {
+						$items[] = sprintf(
+							'<span style="max-width:200px;display:block;margin:0 0 5px 0;"><img src="%s" style="max-width:100%%;display:block;margin:0;"></span>%s',
+							esc_url( $value['images'][ $key ] ),
+							esc_html( $val )
+						);
+					} else {
+						$items[] = esc_html( $val );
+					}
 				}
-			}
 
-			return implode( '<br><br>', $items );
+				return implode( '<br><br>', $items );
+			}
 		}
 
 		return $value;
