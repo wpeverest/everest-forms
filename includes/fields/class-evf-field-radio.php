@@ -68,7 +68,7 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 	 * Hook in tabs.
 	 */
 	public function init_hooks() {
-		add_filter( 'everest_forms_html_field_value', array( $this, 'field_html_value' ), 10, 4 );
+		add_filter( 'everest_forms_html_field_value', array( $this, 'html_field_value' ), 10, 4 );
 		add_filter( 'everest_forms_field_properties_' . $this->type, array( $this, 'field_properties' ), 5, 3 );
 	}
 
@@ -78,25 +78,25 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 	 * @since 1.6.0
 	 *
 	 * @param string $value     Field value.
-	 * @param array  $field     Field settings.
+	 * @param array  $field_val     Field settings.
 	 * @param array  $form_data Form data and settings.
 	 * @param string $context   Value display context.
 	 *
 	 * @return string
 	 */
-	public function field_html_value( $value, $field, $form_data = array(), $context = '' ) {
-		if (
-			! empty( $field['value'] ) &&
-			$this->type === $field['type'] &&
-			! empty( $field['images'] ) &&
-			'entry-table' !== $context &&
-			apply_filters( 'everest_forms_radio_field_html_value_images', true, $context )
-		) {
-			if ( ! empty( $field['image'] ) ) {
+	public function html_field_value( $value, $field_val, $form_data = array(), $context = '' ) {
+		if ( is_serialized( $field_val ) || in_array( $context, array( 'entry-single' ), true ) ) {
+			$value = maybe_unserialize( $field_val );
+
+			if (
+				isset( $value['type'] ) &&
+				$this->type === $value['type'] &&
+				apply_filters( 'everest_forms_radio_field_html_value_images', true, $context )
+			) {
 				return sprintf(
 					'<span style="max-width:200px;display:block;margin:0 0 5px 0;"><img src="%s" style="max-width:100%%;display:block;margin:0;"></span>%s',
-					esc_url( $field['image'] ),
-					$value
+					esc_url( $value['image'] ),
+					esc_html( $value['name'] )
 				);
 			}
 		}
