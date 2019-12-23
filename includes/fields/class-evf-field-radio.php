@@ -274,7 +274,7 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 		// List.
 		printf( '<ul %s>', evf_html_attributes( $container['id'], $container['class'], $container['data'], $container['attr'] ) );
 
-		foreach ( $choices as $key => $choice ) {
+		foreach ( $choices as $choice ) {
 			if ( empty( $choice['container'] ) ) {
 				continue;
 			}
@@ -347,7 +347,7 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 		 * If show_values is true, that means values posted are the raw values
 		 * and not the labels. So we need to get the label values.
 		 */
-		if ( ! empty( $field['show_values'] ) ) {
+		if ( ! empty( $field['show_values'] ) && '1' === $field['show_values'] ) {
 			foreach ( $field['choices'] as $key => $choice ) {
 				if ( $choice['value'] === $field_submit ) {
 					$data['value']['name'] = sanitize_text_field( $choice['label'] );
