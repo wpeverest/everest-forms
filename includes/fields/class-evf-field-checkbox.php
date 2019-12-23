@@ -126,8 +126,97 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 	 * @return array
 	 */
 	public function field_properties( $properties, $field, $form_data ) {
-		$properties['inputs']['primary']['attr']['name'] = 'everest_forms[form_fields][' . $field['id'] . '][]';
-		$properties['inputs']['primary']['class'][]      = 'input-text';
+		// Define data.
+		$form_id  = absint( $form_data['id'] );
+		$field_id = $field['id'];
+		$choices  = $field['choices'];
+
+		// Remove primary input.
+		unset( $properties['inputs']['primary'] );
+
+		// Set input container (ul) properties.
+		$properties['input_container'] = array(
+			'class' => array( ! empty( $field['random'] ) ? 'everest-forms-randomize' : '' ),
+			'data'  => array(),
+			'attr'  => array(),
+			'id'    => "evf-{$form_id}-field_{$field_id}",
+		);
+
+		// Set choice limit.
+		$field['choice_limit'] = empty( $field['choice_limit'] ) ? 0 : (int) $field['choice_limit'];
+		if ( $field['choice_limit'] > 0 ) {
+			$properties['input_container']['data']['choice-limit'] = $field['choice_limit'];
+		}
+
+		// Set input properties.
+		foreach ( $choices as $key => $choice ) {
+			$depth = isset( $choice['depth'] ) ? absint( $choice['depth'] ) : 1;
+
+			// Choice labels should not be left blank, but if they are we provide a basic value.
+			$value = isset( $field['show_values'] ) ? $choice['value'] : $choice['label'];
+			if ( '' === $value ) {
+				if ( 1 === count( $choices ) ) {
+					$value = esc_html__( 'Checked', 'everest-forms' );
+				} else {
+					/* translators: %s - Choice Number. */
+					$value = sprintf( esc_html__( 'Choice %s', 'everest-forms' ), $key );
+				}
+			}
+
+			$properties['inputs'][ $key ] = array(
+				'container' => array(
+					'attr'  => array(),
+					'class' => array( "choice-{$key}", "depth-{$depth}" ),
+					'data'  => array(),
+					'id'    => '',
+				),
+				'label'     => array(
+					'attr'  => array(
+						'for' => "evf-{$form_id}-field_{$field_id}_{$key}",
+					),
+					'class' => array( 'everest-forms-field-label-inline' ),
+					'data'  => array(),
+					'id'    => '',
+					'text'  => $choice['label'],
+				),
+				'attr'      => array(
+					'name'  => "everest_forms[form_fields][{$field_id}][]",
+					'value' => $value,
+				),
+				'class'     => array(),
+				'data'      => array(),
+				'id'        => "evf-{$form_id}-field_{$field_id}_{$key}",
+				'image'     => isset( $choice['image'] ) ? $choice['image'] : '',
+				'required'  => ! empty( $field['required'] ) ? 'required' : '',
+				'default'   => isset( $choice['default'] ),
+			);
+
+			// Rule for validator only if needed.
+			if ( $field['choice_limit'] > 0 ) {
+				$properties['inputs'][ $key ]['data']['rule-check-limit'] = 'true';
+			}
+		}
+
+		// Required class for validation.
+		if ( ! empty( $field['required'] ) ) {
+			$properties['input_container']['class'][] = 'evf-field-required';
+		}
+
+		// Custom properties if enabled image choices.
+		if ( ! empty( $field['choices_images'] ) ) {
+			$properties['input_container']['class'][] = 'everest-forms-image-choices';
+
+			foreach ( $properties['inputs'] as $key => $inputs ) {
+				$properties['inputs'][ $key ]['container']['class'][] = 'everest-forms-image-choices-item';
+			}
+		}
+
+		// Add selected class for choices with defaults.
+		foreach ( $properties['inputs'] as $key => $inputs ) {
+			if ( ! empty( $inputs['default'] ) ) {
+				$properties['inputs'][ $key ]['container']['class'][] = 'everest-forms-selected';
+			}
+		}
 
 		return $properties;
 	}

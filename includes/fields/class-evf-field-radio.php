@@ -117,13 +117,13 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 	 * @return array
 	 */
 	public function field_properties( $properties, $field, $form_data ) {
-		// Remove primary input.
-		unset( $properties['inputs']['primary'] );
-
 		// Define data.
 		$form_id  = absint( $form_data['id'] );
 		$field_id = $field['id'];
 		$choices  = $field['choices'];
+
+		// Remove primary input.
+		unset( $properties['inputs']['primary'] );
 
 		// Set input container (ul) properties.
 		$properties['input_container'] = array(
