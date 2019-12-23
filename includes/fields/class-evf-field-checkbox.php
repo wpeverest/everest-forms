@@ -86,12 +86,11 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 	 * @return string
 	 */
 	public function html_field_value( $value, $field_val, $form_data = array(), $context = '' ) {
-		if ( is_serialized( $field_val ) ) {
+		if ( is_serialized( $field_val ) && $this->type === $field_val['type'] ) {
 			$value = maybe_unserialize( $field_val );
 
 			if (
 				isset( $value['label'], $value['image'] )
-				&& $this->type === $value['type']
 				&& 'entry-table' !== $context
 				&& apply_filters( 'everest_forms_checkbox_field_html_value_images', true, $context )
 			) {
@@ -402,10 +401,7 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 
 		$data = array(
 			'name'      => $name,
-			'value'     => array(
-				'label' => '',
-				'type'  => $this->type,
-			),
+			'value'     => array(),
 			'value_raw' => $value_raw,
 			'id'        => $field_id,
 			'type'      => $this->type,
@@ -419,7 +415,7 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 		if ( ! empty( $field['show_values'] ) && '1' === $field['show_values'] ) {
 			foreach ( $field_submit as $item ) {
 				foreach ( $field['choices'] as $key => $choice ) {
-					if ( $item === $choice['value'] || ( empty( $choice['value'] ) && (int) str_replace( 'Choice ', '', $item ) === $key ) ) {
+					if ( $item === $choice['value'] || ( empty( $choice['value']['label'] ) && (int) str_replace( 'Choice ', '', $item ) === $key ) ) {
 						$value[]       = $choice['label'];
 						$choice_keys[] = $key;
 						break;
@@ -427,9 +423,9 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 				}
 			}
 
-			$data['value'] = ! empty( $value ) ? evf_sanitize_array_combine( $value ) : '';
+			$data['value']['label'] = ! empty( $value ) ? evf_sanitize_array_combine( $value ) : '';
 		} else {
-			$data['value'] = $value_raw;
+			$data['value']['label'] = $value_raw;
 
 			// Determine choices keys, this is needed for image choices.
 			foreach ( $field_submit as $item ) {
@@ -444,10 +440,10 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 
 		// Images choices are enabled, lookup and store image URLs.
 		if ( ! empty( $choice_keys ) && ! empty( $field['choices_images'] ) ) {
-			$data['images'] = array();
+			$data['value']['images'] = array();
 
 			foreach ( $choice_keys as $key ) {
-				$data['images'][] = ! empty( $field['choices'][ $key ]['image'] ) ? esc_url_raw( $field['choices'][ $key ]['image'] ) : '';
+				$data['value']['images'][] = ! empty( $field['choices'][ $key ]['image'] ) ? esc_url_raw( $field['choices'][ $key ]['image'] ) : '';
 			}
 		}
 

@@ -85,12 +85,11 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 	 * @return string
 	 */
 	public function html_field_value( $value, $field_val, $form_data = array(), $context = '' ) {
-		if ( is_serialized( $field_val ) ) {
+		if ( is_serialized( $field_val ) && $this->type === $field_val['type'] ) {
 			$value = maybe_unserialize( $field_val );
 
 			if (
 				isset( $value['label'], $value['image'] )
-				&& $this->type === $value['type']
 				&& 'entry-table' !== $context
 				&& apply_filters( 'everest_forms_radio_field_html_value_images', true, $context )
 			) {
@@ -334,10 +333,7 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 
 		$data = array(
 			'name'     => $name,
-			'value'    => array(
-				'label' => $value_raw,
-				'type'  => $this->type,
-			),
+			'value'    => array(),
 			'id'       => $field_id,
 			'type'     => $this->type,
 			'meta_key' => $meta_key,
@@ -350,8 +346,8 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 		if ( ! empty( $field['show_values'] ) && '1' === $field['show_values'] ) {
 			foreach ( $field['choices'] as $key => $choice ) {
 				if ( $choice['value'] === $field_submit ) {
-					$data['value']['name'] = sanitize_text_field( $choice['label'] );
-					$choice_key            = $key;
+					$data['value']['label'] = sanitize_text_field( $choice['label'] );
+					$choice_key             = $key;
 					break;
 				}
 			}
