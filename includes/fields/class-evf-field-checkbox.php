@@ -55,6 +55,7 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 					'randomize',
 					'show_values',
 					'input_columns',
+					'choice_limit',
 					'label_hide',
 					'css',
 				),
@@ -149,6 +150,41 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 				),
 				false
 			),
+		);
+		$this->field_element( 'row', $field, $args );
+	}
+
+	/**
+	 * Choice limit field option.
+	 *
+	 * @since 1.6.0
+	 * @param array $field Field data.
+	 */
+	public function choice_limit( $field ) {
+		$choice_limit_label = $this->field_element(
+			'label',
+			$field,
+			array(
+				'slug'    => 'choice_limit',
+				'value'   => esc_html__( 'Choice Limit', 'everest-forms' ),
+				'tooltip' => esc_html__( 'Check this option to limit the number of checkboxes a user can select.', 'everest-forms' ),
+			),
+			false
+		);
+		$choice_limit_input = $this->field_element(
+			'text',
+			$field,
+			array(
+				'slug'  => 'choice_limit',
+				'value' => ( isset( $field['choice_limit'] ) && $field['choice_limit'] > 0 ) ? (int) $field['choice_limit'] : '',
+				'type'  => 'number',
+			),
+			false
+		);
+
+		$args = array(
+			'slug'    => 'choice_limit',
+			'content' => $choice_limit_label . $choice_limit_input,
 		);
 		$this->field_element( 'row', $field, $args );
 	}
