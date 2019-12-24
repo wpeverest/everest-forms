@@ -79,20 +79,20 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 	 * @since 1.6.0
 	 *
 	 * @param string $value     Field value.
-	 * @param array  $field_val Field settings.
+	 * @param array  $field     Field settings.
 	 * @param array  $form_data Form data and settings.
 	 * @param string $context   Value display context.
 	 *
 	 * @return string
 	 */
-	public function html_field_value( $value, $field_val, $form_data = array(), $context = '' ) {
-		if ( is_serialized( $field_val ) && $this->type === $field_val['type'] ) {
-			$value = maybe_unserialize( $field_val );
+	public function html_field_value( $value, $field, $form_data = array(), $context = '' ) {
+		if ( is_serialized( $field ) ) {
+			$field_value = maybe_unserialize( $field );
 
 			if (
-				isset( $value['label'], $value['image'] )
-				&& 'entry-table' !== $context
-				&& apply_filters( 'everest_forms_checkbox_field_html_value_images', true, $context )
+				isset( $field_value['label'], $field_value['images'] )
+				&& 'entry-table' !== $context && $this->type === $field['type']
+				&& apply_filters( 'everest_forms_radio_field_html_value_images', true, $context )
 			) {
 				$items = array();
 
