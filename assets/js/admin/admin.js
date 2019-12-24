@@ -221,4 +221,24 @@
 		$(this).append(video);
 
 	});
+
+	// Edit the title
+	$( document ).on( 'click', '#edit-form-name', function( e ) {
+
+		e.preventDefault();
+
+		$('.everest-forms-form-name').toggle();
+		$('#evf-edit-form-name').toggle();
+
+	});
+
+	// Apply the title change to other
+	$( document ).on( 'change keydown', '#evf-edit-form-name', function( e ) {
+
+		var $this = $(this);
+
+		$('.everest-forms-form-name').html($this.val());
+		$('#everest-forms-panel-field-settings-form_title').val($this.val());
+
+	});
 })( jQuery, everest_forms_admin );
