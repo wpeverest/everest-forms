@@ -86,21 +86,23 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 	 */
 	public function html_field_value( $value, $field, $form_data = array(), $context = '' ) {
 		if ( is_serialized( $field ) ) {
-			$value = maybe_unserialize( $field );
+			$field_value = maybe_unserialize( $field );
 
 			if (
-				isset( $value['label'], $value['image'] )
-				&& 'entry-table' !== $context && $this->type === $field['type']
+				'entry-table' !== $context
+				&& ! empty( $field_value['label'] )
+				&& ! empty( $field_value['image'] )
+				&& $this->type === $field_value['type']
 				&& apply_filters( 'everest_forms_radio_field_html_value_images', true, $context )
 			) {
 				return sprintf(
 					'<span style="max-width:200px;display:block;margin:0 0 5px 0;"><img src="%s" style="max-width:100%%;display:block;margin:0;"></span>%s',
-					esc_url( $value['image'] ),
-					esc_html( $value['label'] )
+					esc_url( $field_value['image'] ),
+					esc_html( $field_value['label'] )
 				);
 			}
 
-			return ! empty( $value['label'] ) ? esc_html( $value['label'] ) : esc_html( $value[0] );
+			return ! empty( $field_value['label'] ) ? esc_html( $field_value['label'] ) : $field_value[0];
 		}
 
 		return $value;
@@ -355,7 +357,7 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 				}
 			}
 		} else {
-			$data['value']['name'] = $value_raw;
+			$data['value']['label'] = $value_raw;
 
 			// Determine choice key, this is needed for image choices.
 			foreach ( $field['choices'] as $key => $choice ) {

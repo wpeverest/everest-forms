@@ -455,7 +455,7 @@ class EVF_Emails {
 					foreach ( $field_val as $meta_val ) {
 						$field_html[] = $meta_val;
 					}
-						$field_val = implode( ', ', $field_html );
+					$field_val = implode( ', ', $field_html );
 				}
 
 				if ( empty( $field_name ) ) {
