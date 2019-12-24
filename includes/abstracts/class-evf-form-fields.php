@@ -603,7 +603,7 @@ abstract class EVF_Form_Fields {
 				$field_content = sprintf(
 					'<div class="notice notice-warning%s"><p>%s</p></div>',
 					empty( $field['choices_images'] ) ? ' hidden' : '',
-					esc_html__( 'For best results, images should be square and at least 256 × 256 pixels or smaller.', 'everest-forms' )
+					esc_html__( 'For best results, images should be square and at least 200 × 160 pixels or smaller.', 'everest-forms' )
 				);
 
 				$field_content .= $this->field_element(
