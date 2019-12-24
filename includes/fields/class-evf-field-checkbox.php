@@ -401,7 +401,9 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 
 		$data = array(
 			'name'      => $name,
-			'value'     => array(),
+			'value'     => array(
+				'type' => $this->type,
+			),
 			'value_raw' => $value_raw,
 			'id'        => $field_id,
 			'type'      => $this->type,
