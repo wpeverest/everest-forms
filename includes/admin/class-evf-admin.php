@@ -20,6 +20,7 @@ class EVF_Admin {
 		add_action( 'init', array( $this, 'includes' ) );
 		add_action( 'admin_init', array( $this, 'buffer' ), 1 );
 		add_action( 'admin_init', array( $this, 'addon_actions' ) );
+		add_action( 'admin_init', array( $this, 'template_actions' ) );
 		add_action( 'admin_init', array( $this, 'admin_redirects' ) );
 		add_action( 'admin_footer', 'evf_print_js', 25 );
 		add_filter( 'admin_body_class', array( $this, 'admin_body_class' ) );
@@ -96,6 +97,51 @@ class EVF_Admin {
 
 			// Redirect to the add-ons page.
 			wp_safe_redirect( admin_url( 'admin.php?page=evf-addons' ) );
+			exit;
+		}
+	}
+
+	/**
+	 * Handle redirects after template refresh.
+	 */
+	public function template_actions() {
+		if ( isset( $_GET['page'], $_REQUEST['action'] ) && 'evf-builder' === $_GET['page'] ) {  // WPCS: input var okay, CSRF ok.
+			$action = sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ); // WPCS: input var okay, CSRF ok.
+			$plugin = isset( $_REQUEST['plugin'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['plugin'] ) ) : false; // WPCS: input var okay, CSRF ok.
+
+			if ( 'evf-template-refresh' === $action ) {
+				if ( empty( $_GET['evf-template-nonce'] ) || ! wp_verify_nonce( wp_unslash( $_GET['evf-template-nonce'] ), 'refresh' ) ) { // WPCS: input var ok, sanitization ok.
+					wp_die( esc_html_e( 'Could not verify nonce', 'everest-forms' ) );
+				}
+
+				foreach ( array( 'evf_pro_license_plan', 'evf_template_sections', 'evf_template_section' ) as $transient ) {
+					delete_transient( $transient );
+				}
+			}
+
+			// if ( $plugin && in_array( $action, array( 'activate', 'deactivate' ), true ) ) {
+
+			// 	if ( 'activate' === $action ) {
+			// 		if ( ! current_user_can( 'activate_plugin', $plugin ) ) {
+			// 			wp_die( esc_html__( 'Sorry, you are not allowed to activate this plugin.', 'everest-forms' ) );
+			// 		}
+
+			// 		check_admin_referer( 'activate-plugin_' . $plugin );
+
+			// 		activate_plugin( $plugin );
+			// 	} elseif ( 'deactivate' === $action ) {
+			// 		if ( ! current_user_can( 'deactivate_plugins' ) ) {
+			// 			wp_die( esc_html__( 'Sorry, you are not allowed to deactivate plugins for this site.', 'everest-forms' ) );
+			// 		}
+
+			// 		check_admin_referer( 'deactivate-plugin_' . $plugin );
+
+			// 		deactivate_plugins( $plugin );
+			// 	}
+			// }
+
+			// Redirect to the builder page.
+			wp_safe_redirect( admin_url( 'admin.php?page=evf-builder&create-form=1' ) );
 			exit;
 		}
 	}

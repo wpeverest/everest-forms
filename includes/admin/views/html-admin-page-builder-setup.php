@@ -3,6 +3,9 @@
  * Admin View: Builder setup
  *
  * @package EverestForms/Admin/Builder
+ *
+ * @var string $view
+ * @var object $templates
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -19,6 +22,11 @@ $core_templates = apply_filters( 'everest_forms_templates_core', array(
 ) );
 
 ?>
+	<?php if ( apply_filters( 'everest_forms_refresh_templates', true ) ) : ?>
+		<a href="<?php echo esc_url( $refresh_url ); ?>" class="page-title-action"><?php esc_html_e( 'Refresh Templates', 'everest-forms' ); ?></a>
+	<?php endif; ?>
+
+	<?php echo '<pre>' . print_r( $templates, true ) . '</pre>'; ?>
 <div class ="wrap everest-forms">
 	<form id="everest-forms" class="everest-forms-setup" name="everest-forms-setup" method="post">
 		<div class="everest-forms-setup-form-name">
