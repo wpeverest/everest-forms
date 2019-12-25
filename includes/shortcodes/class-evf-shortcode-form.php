@@ -514,6 +514,14 @@ class EVF_Shortcode_Form {
 		$form_id  = absint( $form_data['id'] );
 		$field_id = sanitize_text_field( $field['id'] );
 
+		// Data to embed on the field container
+		$container_data = array();
+
+		// Embed required-field-message to the container if the field is required
+		if ( isset( $field['required'] ) && ( '1' === $field['required'] || true === $field['required'] ) ) {
+			$container_data['required-field-message'] = isset( $field["required-field-message"] ) ? $field["required-field-message"] : '';
+		}
+
 		$properties = apply_filters(
 			'everest_forms_field_properties_' . $field['type'],
 			array(
@@ -522,7 +530,7 @@ class EVF_Shortcode_Form {
 						'style' => $attributes['field_style'],
 					),
 					'class' => $attributes['field_class'],
-					'data'  => array(),
+					'data'  => $container_data,
 					'id'    => implode( '', array_slice( $attributes['field_id'], 0 ) ),
 				),
 				'label'       => array(

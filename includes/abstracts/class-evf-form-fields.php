@@ -471,6 +471,41 @@ abstract class EVF_Form_Fields {
 					false
 				);
 				break;
+				
+			// Required Field Message. -------------------------------------------//
+			case 'required_field_message':
+				$value   = isset( $field['required-field-message'] ) ? esc_attr( $field['required-field-message'] ) : esc_attr( get_option( 'everest_forms_required_validation' ) );
+				$tooltip = __( "Enter a message to show for this field if it's required.", 'everest-forms' );
+				$output  = $this->field_element(
+					'label',
+					$field,
+					array(
+						'slug'    => 'required-field-message',
+						'value'   => __( 'Required Field Message', 'everest-forms' ),
+						'tooltip' => $tooltip,
+					),
+					false
+				);
+				$output .= $this->field_element(
+					'text',
+					$field,
+					array(
+						'slug'  => 'required-field-message',
+						'value' => $value,
+					),
+					false
+				);
+				$output  = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'required-field-message',
+						'class'   => isset( $field['required'] ) ? '' : 'hidden',
+						'content' => $output,
+					),
+					false
+				);
+				break;
 
 			// Code Block. ----------------------------------------------------//
 			case 'code':

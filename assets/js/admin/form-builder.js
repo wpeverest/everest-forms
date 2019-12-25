@@ -268,6 +268,12 @@
 			$builder.on('change', '.everest-forms-field-option-row-required input', function(e) {
 				var id = $( this ).parent().data( 'field-id' );
 				$( '#everest-forms-field-' + id ).toggleClass( 'required' );
+
+				if ( $('.everest-forms-field-option-row-required input').is(':checked') ) {
+					$( '#everest-forms-field-option-row-' + id + '-required-field-message' ).show();
+				} else {
+					$( '#everest-forms-field-option-row-' + id + '-required-field-message' ).hide();
+				}
 			});
 
 			// Real-time updates for "Confirmation" field option

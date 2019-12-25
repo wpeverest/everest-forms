@@ -162,6 +162,10 @@ jQuery( function ( $ ) {
 					errorClass: 'evf-error',
 					validClass: 'evf-valid',
 					errorPlacement: function( error, element ) {
+						// Set individual required-field error message
+						let message = $(element).closest('.evf-field').data('required-field-message');
+						error.text( message );
+
 						if ( 'radio' === element.attr( 'type' ) || 'checkbox' === element.attr( 'type' ) ) {
 							if( element.hasClass( 'everest-forms-likert-field-option' ) ) {
 								element.closest('tr').children('th').append( error );
