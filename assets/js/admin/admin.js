@@ -228,7 +228,16 @@
 		e.preventDefault();
 
 		$('.everest-forms-form-name').toggle();
-		$('#evf-edit-form-name').toggle();
+		if( ! $('#evf-edit-form-name').hasClass('everst-forms-name-editing') ){
+			$('#evf-edit-form-name').addClass('everst-forms-name-editing');
+			$('#evf-edit-form-name').toggle();
+		}
+		// Remove
+		else {
+			$('#evf-edit-form-name').removeClass('everst-forms-name-editing');
+			$('#evf-edit-form-name').toggle();
+		}
+
 
 	});
 
