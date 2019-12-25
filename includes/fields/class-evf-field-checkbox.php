@@ -86,33 +86,36 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 	 * @return string
 	 */
 	public function html_field_value( $value, $field, $form_data = array(), $context = '' ) {
-		if ( is_serialized( $field ) ) {
+		if ( is_serialized( $field ) && 'checkbox' === $this->type ) {
 			$field_value = maybe_unserialize( $field );
+			$field_type  = isset( $field_value['type'] ) ? sanitize_text_field( $field_value['type'] ) : 'checkbox';
 
-			if (
-				'entry-table' !== $context
-				&& ! empty( $field_value['label'] )
-				&& ! empty( $field_value['images'] )
-				&& $this->type === $field_value['type']
-				&& apply_filters( 'everest_forms_checkbox_field_html_value_images', true, $context )
-			) {
-				$items = array();
+			if ( $field_type === $this->type ) {
 
-				if ( ! empty( $field_value['label'] ) ) {
-					foreach ( $field_value['label'] as $key => $value ) {
-						if ( ! empty( $field_value['images'][ $key ] ) ) {
-							$items[] = sprintf(
-								'<span style="max-width:200px;display:block;margin:0 0 5px 0;"><img src="%s" style="max-width:100%%;display:block;margin:0;"></span>%s',
-								esc_url( $field_value['images'][ $key ] ),
-								esc_html( $value )
-							);
-						} else {
-							$items[] = esc_html( $value );
+				if (
+					'entry-table' !== $context
+					&& ! empty( $field_value['label'] )
+					&& ! empty( $field_value['images'] )
+					&& apply_filters( 'everest_forms_checkbox_field_html_value_images', true, $context )
+				) {
+					$items = array();
+
+					if ( ! empty( $field_value['label'] ) ) {
+						foreach ( $field_value['label'] as $key => $value ) {
+							if ( ! empty( $field_value['images'][ $key ] ) ) {
+								$items[] = sprintf(
+									'<span style="max-width:200px;display:block;margin:0 0 5px 0;"><img src="%s" style="max-width:100%%;display:block;margin:0;"></span>%s',
+									esc_url( $field_value['images'][ $key ] ),
+									esc_html( $value )
+								);
+							} else {
+								$items[] = esc_html( $value );
+							}
 						}
 					}
-				}
 
-				return implode( '<br><br>', $items );
+					return implode( '<br><br>', $items );
+				}
 			}
 		}
 

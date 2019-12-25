@@ -87,22 +87,22 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 	public function html_field_value( $value, $field, $form_data = array(), $context = '' ) {
 		if ( is_serialized( $field ) ) {
 			$field_value = maybe_unserialize( $field );
+			$field_type  = isset( $field_value['type'] ) ? sanitize_text_field( $field_value['type'] ) : 'radio';
 
-			if (
-				'entry-table' !== $context
-				&& ! empty( $field_value['label'] )
-				&& ! empty( $field_value['image'] )
-				&& $this->type === $field_value['type']
-				&& apply_filters( 'everest_forms_radio_field_html_value_images', true, $context )
-			) {
-				return sprintf(
-					'<span style="max-width:200px;display:block;margin:0 0 5px 0;"><img src="%s" style="max-width:100%%;display:block;margin:0;"></span>%s',
-					esc_url( $field_value['image'] ),
-					esc_html( $field_value['label'] )
-				);
+			if ( $field_type === $this->type ) {
+				if (
+					'entry-table' !== $context
+					&& ! empty( $field_value['label'] )
+					&& ! empty( $field_value['images'] )
+					&& apply_filters( 'everest_forms_checkbox_field_html_value_images', true, $context )
+				) {
+					return sprintf(
+						'<span style="max-width:200px;display:block;margin:0 0 5px 0;"><img src="%s" style="max-width:100%%;display:block;margin:0;"></span>%s',
+						esc_url( $field_value['image'] ),
+						esc_html( $field_value['label'] )
+					);
+				}
 			}
-
-			return ! empty( $field_value['label'] ) ? esc_html( $field_value['label'] ) : $field_value[0];
 		}
 
 		return $value;
