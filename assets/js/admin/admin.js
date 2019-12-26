@@ -222,32 +222,24 @@
 
 	});
 
-	// Edit the title
-	$( document ).on( 'click', '#edit-form-name', function( e ) {
-
+	// Edit the title.
+	$( document.body ).on( 'click', '#edit-form-name', function( e ) {
 		e.preventDefault();
 
-		$('.everest-forms-form-name').toggle();
-		if( ! $('#evf-edit-form-name').hasClass('everst-forms-name-editing') ){
-			$('#evf-edit-form-name').addClass('everst-forms-name-editing');
-			$('#evf-edit-form-name').toggle();
+		window.ip = $( this ).siblings( '#evf-edit-form-name' );
+		var $input = $( this ).siblings( '#evf-edit-form-name' );
+		if( ! $input.hasClass( 'everst-forms-name-editing' ) ) {
+			$input.focus();
 		}
-		// Remove
-		else {
-			$('#evf-edit-form-name').removeClass('everst-forms-name-editing');
-			$('#evf-edit-form-name').toggle();
-		}
-
-
+		$input.toggleClass( 'everst-forms-name-editing' );
 	});
 
-	// Apply the title change to other
-	$( document ).on( 'change keydown', '#evf-edit-form-name', function( e ) {
+	// Apply the title change to other.
+	$( document ).on( 'change', '#evf-edit-form-name', function( e ) {
+		e.preventDefault();
 
-		var $this = $(this);
-
-		$('.everest-forms-form-name').html($this.val());
-		$('#everest-forms-panel-field-settings-form_title').val($this.val());
-
+		var $this = $( this );
+		$('.everest-forms-form-name').html( $this.val() );
+		$( '#everest-forms-panel-field-settings-form_title' ).val( $this.val() );
 	});
 })( jQuery, everest_forms_admin );
