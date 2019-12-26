@@ -2961,18 +2961,19 @@ body.everest-forms-builder-setup,
 						}
 					}
 
-					.everest-forms-form-name {
-						margin: 0 0 0 8px;
-					}
-
 					.everest-forms-name-input {
 						font-size: 1.3em;
 						font-weight: 600;
 						height: 36px;
 						border: none;
 						margin: 0;
+						pointer-events: none;
+						background: none;
+						z-index: 1;
 
 						&.everst-forms-name-editing {
+							pointer-events: all;
+
 							& + .evf-icon {
 								background: $everestforms;
 								color: $color-white;
@@ -2984,6 +2985,10 @@ body.everest-forms-builder-setup,
 									border: 1px solid $everestforms;
 								}
 							}
+						}
+
+						&:focus {
+							box-shadow: none;
 						}
 					}
 				}
