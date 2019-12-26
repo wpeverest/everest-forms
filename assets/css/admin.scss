@@ -939,9 +939,6 @@ body.everest-forms-builder-setup,
 	}
 
 	.everest-forms {
-		padding: 0 16px;
-		background-color: $color-white;
-		border: 1px solid $color_gray-lighten;
 		border-radius: 4px;
 
 		* {
@@ -963,6 +960,9 @@ body.everest-forms-builder-setup,
 				display: flex;
 				flex-wrap: wrap;
 				align-items: center;
+				padding: 0 16px;
+				background-color: $color-white;
+				border-bottom: 1px solid $color_gray-lighten;
 
 				.everest-forms-logo {
 					display: flex;

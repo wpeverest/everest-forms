@@ -74,7 +74,18 @@ $core_templates = apply_filters(
 			</nav>
 		</div>
 		<div class="everest-forms-form-template">
-
+			<div class="everest-forms-template-wrap setup-from-scratch">
+				<figure class="everest-forms-screenshot">
+					<img src="<?php echo esc_url( EVF()->plugin_url() . "/assets/images/templates/new-form.png" ); ?>"/>
+				</figure>
+				<h3 class="everest-forms-template-name">Start From Scratch</h3>
+			</div>
+			<div class="everest-forms-template-wrap">
+				<figure class="everest-forms-screenshot">
+					<img src="<?php echo esc_url( EVF()->plugin_url() . "/assets/images/templates/simple-contact-form.png" ); ?>"/>
+				</figure>
+				<h3 class="everest-forms-template-name">Start From Scratch</h3>
+			</div>
 		</div>
 	</div>
 </div>
