@@ -23,11 +23,12 @@ $core_templates = apply_filters(
 		),
 	)
 );
-
+delete_transient( 'evf_template_section' );
+delete_transient( 'evf_template_sections' );
 ?>
-	<!-- <?php if ( apply_filters( 'everest_forms_refresh_templates', true ) ) : ?>
+	<?php if ( apply_filters( 'everest_forms_refresh_templates', true ) ) : ?>
 		<a href="<?php echo esc_url( $refresh_url ); ?>" class="page-title-action"><?php esc_html_e( 'Refresh Templates', 'everest-forms' ); ?></a>
-	<?php endif; ?> -->
+	<?php endif; ?>
 
 <!-- <div class ="wrap everest-forms">
 	<form id="everest-forms" class="everest-forms-setup" name="everest-forms-setup" method="post">
@@ -73,19 +74,17 @@ $core_templates = apply_filters(
 				</ul>
 			</nav>
 		</div>
-		<div class="everest-forms-form-template">
-			<div class="everest-forms-template-wrap setup-from-scratch">
+		<div class="everest-forms-form-template evf-setup-templates">
+			<?php foreach ( $templates as $template ) : ?>
+				<div class="everest-forms-template-wrap evf-template"  id="everest-forms-template-<?php echo esc_attr( $template->slug ); ?>">
 				<figure class="everest-forms-screenshot">
-					<img src="<?php echo esc_url( EVF()->plugin_url() . "/assets/images/templates/new-form.png" ); ?>"/>
+					<img src="<?php echo esc_url( $template->image ); ?>"/>
 				</figure>
-				<h3 class="everest-forms-template-name">Start From Scratch</h3>
+				<div class="evf-template-overlay">
+					<h3 class="everest-forms-template-name"><a href="#" class="evf-button evf-button-rounded evf-template-select" data-template-name-raw="<?php echo esc_attr( $template->title ); ?>" data-template-name="<?php printf( _x( '%s template', 'Template name', 'everest-forms' ), esc_attr( $template->title ) ); ?>" data-template="<?php echo esc_attr( $template->slug ); ?>"><?php printf( _x( '%s', 'Template name', 'everest-forms' ), esc_html( $template->title ) ); ?></a></h3>
+				</div>
 			</div>
-			<div class="everest-forms-template-wrap">
-				<figure class="everest-forms-screenshot">
-					<img src="<?php echo esc_url( EVF()->plugin_url() . "/assets/images/templates/simple-contact-form.png" ); ?>"/>
-				</figure>
-				<h3 class="everest-forms-template-name">Start From Scratch</h3>
-			</div>
+			<?php endforeach; ?>
 		</div>
 	</div>
 </div>

@@ -5,7 +5,7 @@ jQuery( function( $ ) {
 	 * Setup actions.
 	 */
 	var evf_setup_actions = {
-		$setup_form: $( 'form.everest-forms-setup' ),
+		$setup_form: $( '.everest-forms-setup' ),
 		init: function() {
 			this.title_focus();
 
@@ -22,9 +22,8 @@ jQuery( function( $ ) {
 		},
 		template_select: function( e ) {
 			e.preventDefault();
-
 			var $this        = $( this ),
-				$formName    = $( '#everest-forms-setup-name' ),
+				// $formName    = $formName.val('test'),
 				template     = $this.data( 'template' ),
 				templateName = $this.data( 'template-name-raw' ),
 				formName     = '';
@@ -35,13 +34,13 @@ jQuery( function( $ ) {
 			}
 
 			// Check that form title is provided.
-			if ( ! $formName.val() ) {
+			// if ( ! $formName.val() ) {
 				formName = templateName;
-				$( '.everest-forms-setup-name' ).addClass( 'everest-forms-required' ).focus();
-				return false;
-			} else {
-				formName = $formName.val();
-			}
+				// $( '.everest-forms-setup-name' ).addClass( 'everest-forms-required' ).focus();
+				// return false;
+			// } else {
+			// 	formName = $formName.val();
+			// }
 
 			$this.parent().addClass( 'loading' );
 
