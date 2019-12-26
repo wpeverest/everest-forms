@@ -223,11 +223,17 @@
 	});
 
 	// Edit the title.
+	window.ip = $( '#evf-edit-form-name' );
 	$( document.body ).on( 'click', '#edit-form-name', function( e ) {
 		e.preventDefault();
 
-		window.ip = $( this ).siblings( '#evf-edit-form-name' );
 		var $input = $( this ).siblings( '#evf-edit-form-name' );
+		if( $input.prop ('disabled') ) {
+			$input.prop('disabled', false);
+		}
+		else {
+			$input.prop('disabled', true);
+		}
 		if( ! $input.hasClass( 'everst-forms-name-editing' ) ) {
 			$input.focus();
 		}
