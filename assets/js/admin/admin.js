@@ -223,21 +223,16 @@
 	});
 
 	// Edit the title.
-	window.ip = $( '#evf-edit-form-name' );
 	$( document.body ).on( 'click', '#edit-form-name', function( e ) {
 		e.preventDefault();
 
-		var $input = $( this ).siblings( '#evf-edit-form-name' );
-		if( $input.prop ('disabled') ) {
-			$input.prop('disabled', false);
+		var $input_title = $( this ).siblings( '#evf-edit-form-name' );
+		// Toggle disabled property.
+		$input_title.prop('disabled', function (_, val) { return ! val; });
+		if( ! $input_title.hasClass( 'everst-forms-name-editing' ) ) {
+			$input_title.focus();
 		}
-		else {
-			$input.prop('disabled', true);
-		}
-		if( ! $input.hasClass( 'everst-forms-name-editing' ) ) {
-			$input.focus();
-		}
-		$input.toggleClass( 'everst-forms-name-editing' );
+		$input_title.toggleClass( 'everst-forms-name-editing' );
 	});
 
 	// Apply the title change to other.
