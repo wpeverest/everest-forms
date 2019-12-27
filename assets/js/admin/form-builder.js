@@ -269,7 +269,8 @@
 				var id = $( this ).parent().data( 'field-id' );
 				$( '#everest-forms-field-' + id ).toggleClass( 'required' );
 
-				if ( $('.everest-forms-field-option-row-required input').is(':checked') ) {
+				// Show/Hide the 'required-field-message' field when the value of 'required' field is changed
+				if ( $ (e.target ).is( ':checked' ) ) {
 					$( '#everest-forms-field-option-row-' + id + '-required-field-message' ).show();
 				} else {
 					$( '#everest-forms-field-option-row-' + id + '-required-field-message' ).hide();

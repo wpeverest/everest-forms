@@ -157,15 +157,28 @@ jQuery( function ( $ ) {
 			this.$everest_form.each( function() {
 				var $this = $( this );
 
+				// List messages to show for required fields. Use name of the field as key.
+				let error_messages = { };
+				$('.evf-field').each( function() {
+					let field_id      = $( this ).data( 'field-id' )
+					let error_message = $( this ).data( 'required-field-message' )
+					let key           = `everest_forms[form_fields][${field_id}]`  // name of the input field is used as a key
+
+					if ( $( this ).hasClass( 'evf-field-checkbox' ) ) {
+						key = key + '[]';
+					}
+					
+					if ( error_message ) {
+						error_messages[ key ] = error_message;
+					}
+				})
+
 				$this.validate({
+					messages: error_messages,
 					ignore: '',
 					errorClass: 'evf-error',
 					validClass: 'evf-valid',
 					errorPlacement: function( error, element ) {
-						// Set individual required-field error message
-						let message = $(element).closest('.evf-field').data('required-field-message');
-						error.text( message );
-
 						if ( 'radio' === element.attr( 'type' ) || 'checkbox' === element.attr( 'type' ) ) {
 							if( element.hasClass( 'everest-forms-likert-field-option' ) ) {
 								element.closest('tr').children('th').append( error );
