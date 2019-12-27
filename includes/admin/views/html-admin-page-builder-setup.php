@@ -55,8 +55,8 @@ delete_transient( 'evf_template_sections' );
 		<div class="clear"></div>
 	</form>
 </div> -->
-
 <div class ="wrap everest-forms">
+	<div class="evf-loading"></div>
 	<div class="everest-forms-setup">
 		<div class="everest-forms-setup-header">
 			<div class="everest-forms-logo">
