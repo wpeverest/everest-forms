@@ -83,7 +83,7 @@ delete_transient( 'evf_template_sections' );
 						<div class="everest-forms-form-id-container">
 							<h3 class="everest-forms-template-name"><?php echo esc_attr( $template->title ); ?></h3>
 							<div class="form-action">
-								<a href="#" class="everest-forms-btn everest-forms-btn-primary" data-template-name-raw="<?php echo esc_attr( $template->title ); ?>" data-template-name="<?php printf( _x( '%s template', 'Template name', 'everest-forms' ), esc_attr( $template->title ) ); ?>" data-template="<?php echo esc_attr( $template->slug ); ?>"><?php printf( _x( '%s', 'Template name', 'everest-forms' ), __( 'Get Started', 'everest-forms' ) ); ?></a>
+								<a href="#" class="everest-forms-btn everest-forms-btn-primary evf-template-select" data-template-name-raw="<?php echo esc_attr( $template->title ); ?>" data-template-name="<?php printf( _x( '%s template', 'Template name', 'everest-forms' ), esc_attr( $template->title ) ); ?>" data-template="<?php echo esc_attr( $template->slug ); ?>"><?php printf( _x( '%s', 'Template name', 'everest-forms' ), __( 'Get Started', 'everest-forms' ) ); ?></a>
 								<a href="#" class="everest-forms-btn everest-forms-btn-secondary"><?php echo __( 'Preview', 'everest-forms' ); ?></a>
 							</div>
 						</div>
