@@ -172,7 +172,7 @@
 	$( document ).on( 'heartbeat-send', function( event, data ) {
 		var $entriesList  = $( '#everest-forms-entries-list' ),
 			form_id       = $entriesList.find( '#entries-list' ).data( 'form-id' );
-			last_entry_id = $entriesList.find( '#entries-list' ).data( 'last-entry-id' );
+		last_entry_id = $entriesList.find( '#entries-list' ).data( 'last-entry-id' );
 
 		// Work on entry list table page and check if last entry ID is found.
 		if ( ! $entriesList.length || typeof last_entry_id === 'undefined' ) {
@@ -223,24 +223,37 @@
 	});
 
 	// Edit the title.
-	$( document.body ).on( 'click', '#edit-form-name', function( e ) {
+	function toggleEditTitle( $ele, e ) {
 		e.preventDefault();
 
-		var $input_title = $( this ).siblings( '#evf-edit-form-name' );
+		var $input_title = $ele.siblings( '#evf-edit-form-name' );
 		// Toggle disabled property.
-		$input_title.prop('disabled', function (_, val) { return ! val; });
+		$input_title.prop( 'disabled' , function (_, val) {
+			return ! val;
+		});
 		if( ! $input_title.hasClass( 'everst-forms-name-editing' ) ) {
 			$input_title.focus();
 		}
 		$input_title.toggleClass( 'everst-forms-name-editing' );
+	}
+
+	// Delegates event to toggleEditTitle()
+	$( '#edit-form-name' ).on( 'click', function( e ) {
+		e.stopPropagation();
+		toggleEditTitle($(this), e);
 	});
 
 	// Apply the title change to other.
-	$( document ).on( 'change', '#evf-edit-form-name', function( e ) {
+	$( '#evf-edit-form-name' ).on( 'change', function( e ) {
 		e.preventDefault();
 
 		var $this = $( this );
 		$('.everest-forms-form-name').html( $this.val() );
 		$( '#everest-forms-panel-field-settings-form_title' ).val( $this.val() );
+	}).on('keypress',function(e) {
+		if( 13 === e.which || 27 === e.which ) {
+			toggleEditTitle( $( '#edit-form-name' ), e );
+		}
 	});
+
 })( jQuery, everest_forms_admin );
