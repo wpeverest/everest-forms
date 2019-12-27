@@ -76,14 +76,18 @@ delete_transient( 'evf_template_sections' );
 		</div>
 		<div class="everest-forms-form-template evf-setup-templates">
 			<?php foreach ( $templates as $template ) : ?>
-				<div class="everest-forms-template-wrap evf-template"  id="everest-forms-template-<?php echo esc_attr( $template->slug ); ?>">
-				<figure class="everest-forms-screenshot">
-					<img src="<?php echo esc_url( $template->image ); ?>"/>
-				</figure>
-				<div class="evf-template-overlay">
-					<h3 class="everest-forms-template-name"><a href="#" class="evf-button evf-button-rounded evf-template-select" data-template-name-raw="<?php echo esc_attr( $template->title ); ?>" data-template-name="<?php printf( _x( '%s template', 'Template name', 'everest-forms' ), esc_attr( $template->title ) ); ?>" data-template="<?php echo esc_attr( $template->slug ); ?>"><?php printf( _x( '%s', 'Template name', 'everest-forms' ), esc_html( $template->title ) ); ?></a></h3>
-				</div>
-			</div>
+					<div class="everest-forms-template-wrap evf-template"  id="everest-forms-template-<?php echo esc_attr( $template->slug ); ?>">
+						<figure class="everest-forms-screenshot evf-template-select" data-template-name-raw="<?php echo esc_attr( $template->title ); ?>" data-template="<?php echo esc_attr( $template->slug ); ?>" data-template-name="<?php printf( _x( '%s template', 'Template name', 'everest-forms' ), esc_attr( $template->title ) ); ?>">
+							<img src="<?php echo esc_url( $template->image ); ?>"/>
+						</figure>
+						<div class="everest-forms-form-id-container">
+							<h3 class="everest-forms-template-name"><?php echo esc_attr( $template->title ); ?></h3>
+							<div class="form-action">
+								<a href="#" class="everest-forms-btn everest-forms-btn-primary" data-template-name-raw="<?php echo esc_attr( $template->title ); ?>" data-template-name="<?php printf( _x( '%s template', 'Template name', 'everest-forms' ), esc_attr( $template->title ) ); ?>" data-template="<?php echo esc_attr( $template->slug ); ?>"><?php printf( _x( '%s', 'Template name', 'everest-forms' ), __( 'Get Started', 'everest-forms' ) ); ?></a>
+								<a href="#" class="everest-forms-btn everest-forms-btn-secondary"><?php echo __( 'Preview', 'everest-forms' ); ?></a>
+							</div>
+						</div>
+					</div>
 			<?php endforeach; ?>
 		</div>
 	</div>
