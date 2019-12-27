@@ -196,12 +196,13 @@ class EVF_Admin_Assets {
 					'evf-setup',
 					'evf_setup_params',
 					array(
-						'ajax_url'          => admin_url( 'admin-ajax.php' ),
-						'create_form_nonce' => wp_create_nonce( 'everest_forms_create_form' ),
-						'i18n_form_name'  => esc_html__( 'Enter a Form name', 'everest-forms' ),
+						'ajax_url'              => admin_url( 'admin-ajax.php' ),
+						'create_form_nonce'     => wp_create_nonce( 'everest_forms_create_form' ),
+						'i18n_form_name'        => esc_html__( 'Give it a name.', 'everest-forms' ),
 						'i18n_form_error_name'  => esc_html__( 'You must provide a Form name', 'everest-forms' ),
-						'i18n_form_ok'          => esc_html__( 'OK', 'everest-forms' ),
-						'i18n_form_placeholder' => esc_html__( 'Eg: Contact Form', 'everest-forms' ),
+						'i18n_form_ok'          => esc_html__( 'Continue', 'everest-forms' ),
+						'i18n_form_placeholder' => esc_html__( 'Untitled Form', 'everest-forms' ),
+						'i18n_form_title'       => esc_html__( 'Uplift your form experience to the next level.', 'everest-forms' ),
 					)
 				);
 			}

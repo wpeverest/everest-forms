@@ -938,6 +938,47 @@ body.everest-forms-builder-setup,
 		display: none;
 	}
 
+	.jconfirm {
+		&.jconfirm-modern {
+			.jconfirm-box {
+				width: 500px !important;
+				padding: 20px 30px 15px;
+				border-radius: 4px !important;
+
+				.jconfirm-title-c {
+					text-align: left;
+					font-size: 20px;
+					font-weight: 400;
+					padding-bottom: 0;
+					line-height: 1.8;
+
+					.jconfirm-icon-c {
+						margin: 0;
+					}
+				}
+
+				.jconfirm-content {
+					text-align: left;
+					margin-bottom: 0;
+
+					input[type="text"] {
+						margin-top: 5px;
+						padding: 5px 10px;
+					}
+				}
+
+				.jconfirm-buttons {
+					text-align: right;
+
+					.everest-forms-btn {
+						font-weight: 400;
+						text-transform: none
+					}
+				}
+			}
+		}
+	}
+
 	.everest-forms {
 		border-radius: 4px;
 

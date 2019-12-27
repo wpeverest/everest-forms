@@ -31,16 +31,14 @@ jQuery( function( $ ) {
 				nameError    = '<p class="error">'+evf_setup_params.i18n_form_error_name+'</p>',
 				modalContent = namePrompt+nameField+nameError;
 				$.confirm({
-					title: false,
+					title: evf_setup_params.i18n_form_title,
 					content: modalContent,
-				   icon: 'dashicons dashicons-info',
-					type: 'blue',
 					backgroundDismiss: false,
-					closeIcon: false,
+					closeIcon: true,
 					buttons: {
 						confirm: {
 							text: evf_setup_params.i18n_form_ok,
-							btnClass: 'btn-confirm',
+							btnClass: 'everest-forms-btn everest-forms-btn-primary',
 							keys: ['enter'],
 							action: function() {
 							// Don't do anything for selects that trigger modal.
@@ -80,9 +78,6 @@ jQuery( function( $ ) {
 							});
 						}
 					},
-					cancel: {
-						text: evf_email_params.i18n_email_cancel
-					}
 				}
 			});
 		},
