@@ -255,5 +255,9 @@
 			toggleEditTitle( $( '#edit-form-name' ), e );
 		}
 	});
-
+	$(document).not( $( '.everest-forms-title-desc' ) ).click( function( e ) {
+		if( ! $( '#evf-edit-form-name' ).prop( 'disabled' ) ) {
+			toggleEditTitle( $( '#edit-form-name' ), e );
+		}
+	});
 })( jQuery, everest_forms_admin );
