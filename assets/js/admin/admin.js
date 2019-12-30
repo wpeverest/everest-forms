@@ -211,7 +211,7 @@
 			} );
 	});
 
-	// To play welocme video.
+	// To play welcome video.
 	$( document ).on( 'click', '#everest-forms-welcome .welcome-video-play', function( event ) {
 
 		event.preventDefault();
@@ -222,11 +222,12 @@
 
 	});
 
-	// Edit the title.
-	function toggleEditTitle( $ele, e ) {
+	// Toggles edit state.
+	function toggleEditTitle( e ) {
 		e.preventDefault();
 
-		var $input_title = $ele.siblings( '#evf-edit-form-name' );
+		var $ele = $( '#edit-form-name' ),
+			$input_title = $ele.siblings( '#evf-edit-form-name' );
 		// Toggle disabled property.
 		$input_title.prop( 'disabled' , function (_, val) {
 			return ! val;
@@ -237,13 +238,13 @@
 		$input_title.toggleClass( 'everst-forms-name-editing' );
 	}
 
-	// Delegates event to toggleEditTitle()
+	// Delegates event to toggleEditTitle() on clicking
 	$( '#edit-form-name' ).on( 'click', function( e ) {
 		e.stopPropagation();
-		toggleEditTitle($(this), e);
+		toggleEditTitle( e );
 	});
 
-	// Apply the title change to other.
+	// Apply the title change to form name field.
 	$( '#evf-edit-form-name' ).on( 'change', function( e ) {
 		e.preventDefault();
 
@@ -252,12 +253,18 @@
 		$( '#everest-forms-panel-field-settings-form_title' ).val( $this.val() );
 	}).on('keypress',function(e) {
 		if( 13 === e.which || 27 === e.which ) {
-			toggleEditTitle( $( '#edit-form-name' ), e );
+			toggleEditTitle( e );
 		}
+	}).on('click',function(e) {
+		e.stopPropagation();
 	});
-	$(document).not( $( '.everest-forms-title-desc' ) ).click( function( e ) {
+
+	// In case the user goes out of focus from title edit state.
+	$(document).not( $( '.everest-forms-title-desc' ) ).click( function(e) {
+		e.stopPropagation();
+		// Only allow flipping state if currently editing.
 		if( ! $( '#evf-edit-form-name' ).prop( 'disabled' ) ) {
-			toggleEditTitle( $( '#edit-form-name' ), e );
+			toggleEditTitle( e );
 		}
 	});
 })( jQuery, everest_forms_admin );
