@@ -1073,7 +1073,7 @@ body.everest-forms-builder-setup,
 		.evf-setup-templates {
 			display: flex;
 			flex-wrap: wrap;
-			padding: 0 8px;
+			padding: 8px;
 
 			.evf-template {
 				width: calc(25% - 24px);
@@ -1085,16 +1085,37 @@ body.everest-forms-builder-setup,
 
 				.everest-forms-screenshot {
 					cursor: pointer;
-					padding: 16px;
+					padding: 8px;
 					margin: 0;
 					min-height: 280px;
 					position: relative;
+					border-radius: 4px;
 					background: $color_gray-more-lighten;
 
 					.everest-forms-badge {
 						position: absolute;
-						bottom: 24px;
-						right: 24px;
+						bottom: 16px;
+						right: 16px;
+					}
+
+					.form-action {
+						display: none;
+						position: absolute;
+						left: 0;
+						right: 0;
+						top: 50%;
+						transform: translateY(-50%);
+						z-index: 1;
+
+						.everest-forms-btn {
+							&.everest-forms-btn-secondary {
+								background: $color-white;
+							}
+
+							&:last-child {
+								margin-left: 8px;
+							}
+						}
 					}
 				}
 
@@ -1109,34 +1130,38 @@ body.everest-forms-builder-setup,
 					align-items: center;
 					justify-content: space-between;
 					position: relative;
-					padding: 20px;
 
 					.everest-forms-template-name {
 						font-size: 16px;
-						margin: 0;
-					}
+						font-weight: 500;
+						margin: 16px 0;
+						color: $color_gray-base;
+						text-decoration: none;
 
-					.form-action {
-						display: none;
-						position: absolute;
-						right: 0;
-						padding: 10px 16px;
-						background: transparentize($color-white, 0.15);
-						border-left: 1px solid $color_gray-more-lighten;
-
-						.everest-forms-btn {
-							&:last-child {
-								margin-left: 8px;
-							}
+						&:hover {
+							color: $everestforms;
 						}
 					}
 				}
 
 				&:hover {
+					.everest-forms-screenshot::after {
+						content: '';
+						display: block;
+						background: transparentize($color_gray-base, 0.5);
+						position: absolute;
+						top: 0;
+						left: 0;
+						bottom: 0;
+						right: 0;
+					}
+
 					.form-action {
 						display: flex;
 						align-items: center;
+						justify-content: center;
 					}
+
 				}
 
 				&:nth-child(even) {

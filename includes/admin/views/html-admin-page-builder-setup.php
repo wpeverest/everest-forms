@@ -37,37 +37,39 @@ delete_transient( 'evf_template_sections' );
 			<div class="everest-forms-logo">
 				<svg xmlns="http://www.w3.org/2000/svg" height="32" width="32" viewBox="0 0 24 24"><path fill="#7e3bd0" d="M21.23,10H17.79L16.62,8h3.46ZM17.77,4l1.15,2H15.48L14.31,4Zm-15,16L12,4l5.77,10H10.85L12,12h2.31L12,8,6.23,18H20.08l1.16,2Z"/></svg>
 			</div>
-			<h4><?php _e('Add New Form', 'everest-forms'); ?></h4>
+			<h4><?php _e( 'Add New Form', 'everest-forms' ); ?></h4>
 			<nav class="everest-forms-tab">
 				<ul>
 					<li class="everest-forms-tab-nav active">
-						<a href="#" class="everest-forms-tab-nav-link"><?php _e('Free', 'everest-forms'); ?></a>
+						<a href="#" class="everest-forms-tab-nav-link"><?php _e( 'Free', 'everest-forms' ); ?></a>
 					</li>
 					<li class="everest-forms-tab-nav">
-						<a href="#" class="everest-forms-tab-nav-link"><?php _e('Premium', 'everest-forms'); ?></a>
+						<a href="#" class="everest-forms-tab-nav-link"><?php _e( 'Premium', 'everest-forms' ); ?></a>
 					</li>
 				</ul>
 			</nav>
 		</div>
 		<div class="everest-forms-form-template evf-setup-templates">
-			<?php foreach ( $templates as $template ) :
+			<?php
+			foreach ( $templates as $template ) :
 				$badge = '';
 				if ( in_array( 'pro', $template->plan ) ) {
-					$badge = '<span class="everest-forms-badge everest-forms-badge-success">'. __( 'Pro', 'everest-forms' ) .'</span>';
-				} ?>
+					$badge = '<span class="everest-forms-badge everest-forms-badge-success">' . __( 'Pro', 'everest-forms' ) . '</span>';
+				}
+				?>
 				<div class="everest-forms-template-wrap evf-template"  id="everest-forms-template-<?php echo esc_attr( $template->slug ); ?>">
 					<figure class="everest-forms-screenshot evf-template-select" data-template-name-raw="<?php echo esc_attr( $template->title ); ?>" data-template="<?php echo esc_attr( $template->slug ); ?>" data-template-name="<?php printf( _x( '%s template', 'Template name', 'everest-forms' ), esc_attr( $template->title ) ); ?>">
 						<img src="<?php echo esc_url( $template->image ); ?>"/>
 						<?php echo $badge; ?>
-					</figure>
-					<div class="everest-forms-form-id-container">
-						<h3 class="everest-forms-template-name"><?php echo esc_attr( $template->title ); ?></h3>
-						<?php if( 'blank' !== $template->slug ) : ?>
+						<?php if ( 'blank' !== $template->slug ) : ?>
 							<div class="form-action">
 								<a href="#" class="everest-forms-btn everest-forms-btn-primary evf-template-select" data-template-name-raw="<?php echo esc_attr( $template->title ); ?>" data-template-name="<?php printf( _x( '%s template', 'Template name', 'everest-forms' ), esc_attr( $template->title ) ); ?>" data-template="<?php echo esc_attr( $template->slug ); ?>"><?php printf( _x( '%s', 'Template name', 'everest-forms' ), __( 'Get Started', 'everest-forms' ) ); ?></a>
 								<a href="#" class="everest-forms-btn everest-forms-btn-secondary"><?php _e( 'Preview', 'everest-forms' ); ?></a>
 							</div>
 						<?php endif; ?>
+					</figure>
+					<div class="everest-forms-form-id-container">
+						<a class="everest-forms-template-name evf-template-select" href="#" data-template-name-raw="<?php echo esc_attr( $template->title ); ?>" data-template="<?php echo esc_attr( $template->slug ); ?>" data-template-name="<?php printf( _x( '%s template', 'Template name', 'everest-forms' ), esc_attr( $template->title ) ); ?>"><?php echo esc_attr( $template->title ); ?></a>
 					</div>
 				</div>
 			<?php endforeach; ?>
