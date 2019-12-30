@@ -777,7 +777,24 @@
 				var $form     = $( 'form#everest-forms-builder-form' );
 				var structure = EVFPanelBuilder.getStructure();
 				var form_data = $form.serializeArray();
+				var form_title =  $( '#evf-edit-form-name' ).val().trim();
 
+				if ( '' === form_title ) {
+					$.alert({
+						title: evf_data.i18n_field_title_empty,
+						content: evf_data.i18n_field_title_payload,
+						icon: 'dashicons dashicons-warning',
+						type: 'red',
+						buttons: {
+							ok: {
+								text: evf_data.i18n_ok,
+								btnClass: 'btn-confirm',
+								keys: [ 'enter' ]
+							}
+						}
+					});
+					return;
+				}
 				// Trigger a handler to let addon manipulate the form data if needed.
 				if ( $form.triggerHandler( 'everest_forms_process_ajax_data', [ $this, form_data ] ) ) {
 					form_data = $form.triggerHandler( 'everest_forms_process_ajax_data', [ $this, form_data ] );
