@@ -79,6 +79,7 @@ delete_transient( 'evf_template_sections' );
 					<div class="everest-forms-template-wrap evf-template"  id="everest-forms-template-<?php echo esc_attr( $template->slug ); ?>">
 						<figure class="everest-forms-screenshot evf-template-select" data-template-name-raw="<?php echo esc_attr( $template->title ); ?>" data-template="<?php echo esc_attr( $template->slug ); ?>" data-template-name="<?php printf( _x( '%s template', 'Template name', 'everest-forms' ), esc_attr( $template->title ) ); ?>">
 							<img src="<?php echo esc_url( $template->image ); ?>"/>
+							<span class="everest-forms-badge everest-forms-badge-success"><?php echo __( 'Pro', 'everest-forms' ); ?></span>
 						</figure>
 						<div class="everest-forms-form-id-container">
 							<h3 class="everest-forms-template-name"><?php echo esc_attr( $template->title ); ?></h3>
