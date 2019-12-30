@@ -236,12 +236,18 @@
 			$input_title.focus();
 		}
 		$input_title.toggleClass( 'everst-forms-name-editing' );
+		$( '#evf-title-error' ).hide();
 	}
 
 	// Delegates event to toggleEditTitle() on clicking
 	$( '#edit-form-name' ).on( 'click', function( e ) {
 		e.stopPropagation();
-		toggleEditTitle( e );
+		if( '' !== $( '#evf-edit-form-name').val().trim() ) {
+			toggleEditTitle( e );
+		}
+		else {
+			$( '#evf-title-error' ).show();
+		}
 	});
 
 	// Apply the title change to form name field.
@@ -249,21 +255,36 @@
 		e.preventDefault();
 
 		var $this = $( this );
-		$('.everest-forms-form-name').html( $this.val() );
-		$( '#everest-forms-panel-field-settings-form_title' ).val( $this.val() );
+		if ( '' !== $this.val().trim() ){
+			$( '.everest-forms-form-name' ).html( $this.val().trim() );
+			$( '#everest-forms-panel-field-settings-form_title' ).val( $this.val().trim() );
+		}
 	}).on('keypress',function(e) {
-		if( 13 === e.which || 27 === e.which ) {
+		e.stopPropagation();
+
+		if( 13 === e.which && '' !== $( this ).val().trim() ) {
 			toggleEditTitle( e );
 		}
 	}).on('click',function(e) {
 		e.stopPropagation();
+	}).on( 'keydown keyup' , function() {
+		if ( '' === $( this ).val().trim() ) {
+			$( '#evf-title-error' ).show();
+		}
+		else {
+			$( '#evf-title-error' ).hide();
+		}
 	});
 
 	// In case the user goes out of focus from title edit state.
 	$(document).not( $( '.everest-forms-title-desc' ) ).click( function(e) {
 		e.stopPropagation();
+		var field = $( '#evf-edit-form-name' );
 		// Only allow flipping state if currently editing.
-		if( ! $( '#evf-edit-form-name' ).prop( 'disabled' ) ) {
+		if ( '' === field.val().trim() ) {
+			$( '#evf-title-error' ).show();
+		}
+		if( ! field.prop( 'disabled' ) && '' !== field.val().trim() ) {
 			toggleEditTitle( e );
 		}
 	});
