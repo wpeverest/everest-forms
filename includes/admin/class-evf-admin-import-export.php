@@ -3,7 +3,7 @@
  * EverestForms Import Export Class
  *
  * @package EverestForms\Admin
- * @since   1.5.11
+ * @since   1.6.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -27,6 +27,7 @@ class EVF_Admin_Import_Export {
 	 */
 	public function export_json() {
 		global $wpdb;
+
 		// Check for non empty $_POST.
 		if ( ! isset( $_POST['everest-forms-export-form'] ) || ! isset( $_POST['everest-forms-export-nonce'] ) ) {
 			return;
@@ -43,8 +44,8 @@ class EVF_Admin_Import_Export {
 		if ( empty( $form_id ) || ! current_user_can( 'export' ) ) {
 			return;
 		}
-		$form_post       = get_post( $form_id );
 
+		$form_post   = get_post( $form_id );
 		$export_data = array(
 			'form_post'      => array(
 				'post_content' => $form_post->post_content,
@@ -79,11 +80,11 @@ class EVF_Admin_Import_Export {
 			$ext      = pathinfo( $filename, PATHINFO_EXTENSION ); // Get file extention.
 			// Check for file format.
 			if ( 'json' === $ext ) {
-				// read json file.
+				// Read JSON file.
 				$form_data = json_decode( file_get_contents( $_FILES['jsonfile']['tmp_name'] ) ); // @codingStandardsIgnoreLine
-				// check for non empty json file.
+				// Check for non-empty JSON file.
 				if ( ! empty( $form_data ) ) {
-					// check for non empty post data array.
+					// Check for non-empty post data array.
 					if ( ! empty( $form_data->form_post ) ) {
 						$args  = array( 'post_type' => 'everest_form' );
 						$forms = get_posts( $args );
@@ -97,24 +98,20 @@ class EVF_Admin_Import_Export {
 
 						// Get the form data.
 						$new_form_data = evf_decode( $form_data->form_post->post_content );
-
 						$new_form    = array(
 							'post_content' => evf_encode( $new_form_data ),
 							'post_status'  => $form_data->form_post->post_status,
 							'post_title'   => $form_data->form_post->post_title,
 							'post_type'    => $form_data->form_post->post_type,
 						);
-
 						$post_id = wp_insert_post( $new_form );
 
 						// Set new form ID.
 						$new_form_data['id'] = absint( $post_id );
-
 						$form    = array(
 							'ID'           => $post_id,
 							'post_content' => evf_encode( $new_form_data ),
 						);
-
 						$form_id = wp_update_post( $form );
 
 						// Check for any error while inserting.

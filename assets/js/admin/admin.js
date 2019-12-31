@@ -213,24 +213,25 @@
 
 	// To play welocme video.
 	$( document ).on( 'click', '#everest-forms-welcome .welcome-video-play', function( event ) {
+		var video = '<div class="welcome-video-container"><iframe width="760" height="429" src="https://www.youtube.com/embed/N_HbZccA-Ts?rel=0&amp;showinfo=0&amp;autoplay=1" frameborder="0" allowfullscreen></iframe></div>';
 
 		event.preventDefault();
 
-		var video = '<div class="welcome-video-container"><iframe width="760" height="429" src="https://www.youtube.com/embed/N_HbZccA-Ts?rel=0&amp;showinfo=0&amp;autoplay=1" frameborder="0" allowfullscreen></iframe></div>';
 		$(this).find('.everest-froms-welcome-thumb').remove();
 		$(this).append(video);
-
 	});
 
-	// Change span with file name when user selects a file
-	$('#everest-forms-import').change(function(e){
+	// Change span with file name when user selects a file.
+	$('#everest-forms-import').change( function(e) {
 		var file = $('#everest-forms-import').prop('files')[0];
+
 		$('#import-file-name').html(file.name);
 	});
 
 	$('.everest-forms-export-form-action').on('click', function() {
 		var form_id = $(this).closest('.everest-forms-export-form').find('#everest-forms-form-export').val();
-		if( 'undefined' === typeof form_id || 0 == form_id ) {
+
+		if( 'undefined' === typeof form_id || 0 === form_id ) {
 			$(this).closest('.everest-forms-export-form').prepend('<div id="message" class="updated inline everest-froms-import_notice"><p><strong>Please select a form which you want to export.</strong></p></div>');
 			return false;
 		} else {
@@ -249,7 +250,9 @@
 
 		$.ajax({
 			url: evf_email_params.ajax_url,
-			dataType: 'json',  // what to expect back from the PHP script, if anything
+
+			// JSON type is expected back from the PHP script.
+			dataType: 'json',
 			cache: false,
 			contentType: false,
 			processData: false,
@@ -257,6 +260,7 @@
 			type: 'POST',
 			beforeSend: function () {
 				var spinner = '<i class="evf-loading evf-loading-active"></i>';
+
 				$('.everest_forms_import_action').closest('.everest_forms_import_action').append(spinner);
 				$('.everest-froms-import_notice').remove();
 			},
@@ -266,14 +270,14 @@
 				$('.everest_forms_import_action').closest('.everest_forms_import_action').find('.evf-loading').remove();
 				$('.everest-froms-import_notice').remove();
 
-				if (response.responseJSON.success === true) {
+				if ( true === response.responseJSON.success ) {
 					message_string = '<div id="message" class="updated inline everest-froms-import_notice"><p><strong>' + response.responseJSON.data.message + '</strong></p></div>';
 				} else {
 					message_string = '<div id="message" class="error inline everest-froms-import_notice"><p><strong>' + response.responseJSON.data.message + '</strong></p></div>';
 				}
 
 				$('.everest-forms-import-form').prepend(message_string);
-				$('#everest-forms-import').val("");
+				$('#everest-forms-import').val('');
 			}
 		});
 	});

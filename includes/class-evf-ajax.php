@@ -534,7 +534,6 @@ class EVF_AJAX {
 
 	/**
 	 * Import Form ajax.
-	 *
 	 */
 	public static function import_form_action() {
 		try {
