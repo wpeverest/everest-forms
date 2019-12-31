@@ -82,8 +82,8 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		<div class="everest-forms-preview-wrap">
 			<div class="everest-forms-preview">
 				<div class="everest-forms-title-desc">
-					<input type="text" disabled autocomplete="off" required id= "evf-edit-form-name" class="everest-forms-form-name everest-forms-name-input" value ="<?php echo isset( $this->form->post_title ) ? esc_html( $this->form->post_title ) : esc_html__( 'Form not found.', 'everest-forms' ); ?>">
-					<span class = "evf-icon dashicons dashicons-edit" id="edit-form-name"></span>
+					<input id= "evf-edit-form-name" type="text" class="everest-forms-form-name everest-forms-name-input" value ="<?php echo isset( $this->form->post_title ) ? esc_html( $this->form->post_title ) : esc_html__( 'Form not found.', 'everest-forms' ); ?>" disabled autocomplete="off" required>
+					<span id="edit-form-name" class = "evf-icon dashicons dashicons-edit"></span>
 				</div>
 				<div class="everest-forms-field-wrap">
 					<?php do_action( 'everest_forms_builder_fields_preview', $this->form ); ?>

@@ -773,11 +773,11 @@
 		},
 		bindSaveOption: function () {
 			$( 'body' ).on( 'click', '.everest-forms-save-button', function () {
-				var $this     = $( this );
-				var $form     = $( 'form#everest-forms-builder-form' );
-				var structure = EVFPanelBuilder.getStructure();
-				var form_data = $form.serializeArray();
-				var form_title =  $( '#evf-edit-form-name' ).val().trim();
+				var $this      = $( this );
+				var $form      = $( 'form#everest-forms-builder-form' );
+				var structure  = EVFPanelBuilder.getStructure();
+				var form_data  = $form.serializeArray();
+				var form_title = $( '#evf-edit-form-name' ).val().trim();
 
 				if ( '' === form_title ) {
 					$.alert({
@@ -795,6 +795,7 @@
 					});
 					return;
 				}
+
 				// Trigger a handler to let addon manipulate the form data if needed.
 				if ( $form.triggerHandler( 'everest_forms_process_ajax_data', [ $this, form_data ] ) ) {
 					form_data = $form.triggerHandler( 'everest_forms_process_ajax_data', [ $this, form_data ] );
