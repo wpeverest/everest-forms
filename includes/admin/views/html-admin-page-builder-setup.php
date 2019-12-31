@@ -26,9 +26,6 @@ $core_templates = apply_filters(
 delete_transient( 'evf_template_section' );
 delete_transient( 'evf_template_sections' );
 ?>
-	<?php if ( apply_filters( 'everest_forms_refresh_templates', true ) ) : ?>
-		<a href="<?php echo esc_url( $refresh_url ); ?>" class="page-title-action"><?php esc_html_e( 'Refresh Templates', 'everest-forms' ); ?></a>
-	<?php endif; ?>
 
 <div class ="wrap everest-forms">
 	<div class="evf-loading"></div>
@@ -38,6 +35,9 @@ delete_transient( 'evf_template_sections' );
 				<svg xmlns="http://www.w3.org/2000/svg" height="32" width="32" viewBox="0 0 24 24"><path fill="#7e3bd0" d="M21.23,10H17.79L16.62,8h3.46ZM17.77,4l1.15,2H15.48L14.31,4Zm-15,16L12,4l5.77,10H10.85L12,12h2.31L12,8,6.23,18H20.08l1.16,2Z"/></svg>
 			</div>
 			<h4><?php _e( 'Add New Form', 'everest-forms' ); ?></h4>
+			<?php if ( apply_filters( 'everest_forms_refresh_templates', true ) ) : ?>
+				<a href="<?php echo esc_url( $refresh_url ); ?>" class="page-title-action"><?php esc_html_e( 'Refresh Templates', 'everest-forms' ); ?></a>
+			<?php endif; ?>
 			<nav class="everest-forms-tab">
 				<ul>
 					<li class="everest-forms-tab-nav active">
