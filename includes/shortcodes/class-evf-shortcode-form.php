@@ -519,7 +519,36 @@ class EVF_Shortcode_Form {
 
 		// Embed required-field-message to the container if the field is required
 		if ( isset( $field['required'] ) && ( '1' === $field['required'] || true === $field['required'] ) ) {
-			$container_data['required-field-message'] = isset( $field["required-field-message"] ) ? $field["required-field-message"] : '';
+			$has_sub_fields = false;
+			$sub_field_messages = array();
+			if ( 'likert' === $field['type'] ) {
+				$has_sub_fields = true;
+				$likert_rows    = isset( $field['likert_rows'] ) ? $field['likert_rows'] : array();
+				$row_keys       = array();
+				foreach ( $likert_rows as $row_key => $row_label ) {
+					$row_keys[] = $row_key;
+					$row_slug   = 'required-field-message-' . $row_key;
+					$sub_field_messages[ $row_key ] = isset( $field[ $row_slug ] ) ? $field[ $row_slug ] : '';
+				}
+				$container_data[ 'row-keys' ] = json_encode( $row_keys );
+			} else if ( 'address' === $field['type'] ) {
+				$has_sub_fields = true;
+				// Format : 'sub_field_type' => 'error_message'
+				$sub_field_messages = array(
+					'address1' => isset( $field["required-field-message-address1"] ) ? $field["required-field-message-address1"] : '',
+					'city'     => isset( $field["required-field-message-city"] ) ? $field["required-field-message-city"] : '',
+					'state'    => isset( $field["required-field-message-state"] ) ? $field["required-field-message-state"] : '',
+					'postal'   => isset( $field["required-field-message-postal"] ) ? $field["required-field-message-postal"] : '',
+					'country'  => isset( $field["required-field-message-country"] ) ? $field["required-field-message-country"] : '',
+				);
+			}
+			if ( true === $has_sub_fields ) {
+				foreach ( $sub_field_messages as $sub_field_type => $error_message ) {
+					$container_data[ 'required-field-message-' . $sub_field_type ] = $error_message;
+				}
+			} else {
+				$container_data['required-field-message'] = isset( $field["required-field-message"] ) ? $field["required-field-message"] : '';
+			}
 		}
 
 		$properties = apply_filters(

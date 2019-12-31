@@ -474,37 +474,154 @@ abstract class EVF_Form_Fields {
 				
 			// Required Field Message. -------------------------------------------//
 			case 'required_field_message':
-				$value   = isset( $field['required-field-message'] ) ? esc_attr( $field['required-field-message'] ) : esc_attr( get_option( 'everest_forms_required_validation' ) );
-				$tooltip = __( "Enter a message to show for this field if it's required.", 'everest-forms' );
-				$output  = $this->field_element(
-					'label',
-					$field,
-					array(
-						'slug'    => 'required-field-message',
-						'value'   => __( 'Required Field Message', 'everest-forms' ),
-						'tooltip' => $tooltip,
-					),
-					false
-				);
-				$output .= $this->field_element(
-					'text',
-					$field,
-					array(
-						'slug'  => 'required-field-message',
-						'value' => $value,
-					),
-					false
-				);
-				$output  = $this->field_element(
-					'row',
-					$field,
-					array(
-						'slug'    => 'required-field-message',
-						'class'   => isset( $field['required'] ) ? '' : 'hidden',
-						'content' => $output,
-					),
-					false
-				);
+				$has_sub_fields = false;
+				$sub_fields     = array();
+				if ( 'likert' === $field['type'] ) {
+					$has_sub_fields = true;
+					// Format : 'slug' => 'data'
+					$likert_rows = isset( $field['likert_rows'] ) ? $field['likert_rows'] : array();
+					foreach ( $likert_rows as $row_number => $row_label ) {
+						$row_slug                = 'required-field-message-' . $row_number;
+						$sub_fields[ $row_slug ] = array(
+							'label' => array(
+								'value'   => $row_label,
+								'tooltip' => 'Error message for this likert row.',
+							),
+							'text'  => array(
+								'value' => isset( $field[ $row_slug ] ) ? esc_attr( $field[ $row_slug ] ) : esc_attr( get_option( 'everest_forms_required_validation' ) ),
+							)
+						);
+					}
+				} else if ( 'address' === $field['type'] ) {
+					$has_sub_fields = true;
+					// Format : 'slug' => 'data'
+					$sub_fields = array(
+						'required-field-message-address1' => array(
+							'label' => array(
+								'value'   => 'Address Line 1',
+								'tooltip' => "Error message for Address Line 1 when it's empty.",
+							),
+							'text'  => array(
+								'value' => isset( $field['required-field-message-address1'] ) ? esc_attr( $field['required-field-message-address1'] ) : esc_attr( get_option( 'everest_forms_required_validation' ) ),
+							)
+						),
+						'required-field-message-city' => array(
+							'label' => array(
+								'value'   => 'City',
+								'tooltip' => "Error message for City when it's empty.",
+							),
+							'text'  => array(
+								'value' => isset( $field['required-field-message-city'] ) ? esc_attr( $field['required-field-message-city'] ) : esc_attr( get_option( 'everest_forms_required_validation' ) ),
+							)
+						),
+						'required-field-message-state' => array(
+							'label' => array(
+								'value'   => 'State / Province / Region',
+								'tooltip' => "Error message for State/Province/Region when it's empty.",
+							),
+							'text'  => array(
+								'value' => isset( $field['required-field-message-state'] ) ? esc_attr( $field['required-field-message-state'] ) : esc_attr( get_option( 'everest_forms_required_validation' ) ),
+							)
+						),
+						'required-field-message-postal' => array(
+							'label' => array(
+								'value'   => 'Zip / Postal Code',
+								'tooltip' => "Error message for Zip/Postal Code when it's empty.",
+							),
+							'text'  => array(
+								'value' => isset( $field['required-field-message-postal'] ) ? esc_attr( $field['required-field-message-postal'] ) : esc_attr( get_option( 'everest_forms_required_validation' ) ),
+							)
+						),
+						'required-field-message-country' => array(
+							'label' => array(
+								'value'   => 'Country',
+								'tooltip' => "Error message for Country when it's empty.",
+							),
+							'text'  => array(
+								'value' => isset( $field['required-field-message-country'] ) ? esc_attr( $field['required-field-message-country'] ) : esc_attr( get_option( 'everest_forms_required_validation' ) ),
+							)
+						),
+					);
+				}
+				if ( true === $has_sub_fields ) {
+					$sub_field_output_array = array();
+					foreach ( $sub_fields as $sub_field_slug => $sub_field_data ) {
+						$value   = isset( $field['required-field-message'] ) ? esc_attr( $field['required-field-message'] ) : esc_attr( get_option( 'everest_forms_required_validation' ) );
+						$tooltip = __( "Enter a message to show for this field if it's required.", 'everest-forms' );
+						$output  = $this->field_element(
+							'label',
+							$field,
+							array(
+								'slug'    => $sub_field_slug,
+								'value'   => __( $sub_field_data['label']['value'], 'everest-forms' ),
+								'tooltip' => $sub_field_data['label']['tooltip'],
+							),
+							false
+						);
+						$output .= $this->field_element(
+							'text',
+							$field,
+							array(
+								'slug'  => $sub_field_slug,
+								'value' => $sub_field_data['text']['value'],
+							),
+							false
+						);
+						$output  = $this->field_element(
+							'row',
+							$field,
+							array(
+								'slug'    => $sub_field_slug,
+								'content' => $output,
+							),
+							false
+						);
+						$sub_field_output_array[] = $output;
+					}
+					$output  = implode( '', $sub_field_output_array );
+					$output  = $this->field_element(
+						'row',
+						$field,
+						array(
+							'slug'    => 'required-field-message',
+							'class'   => isset( $field['required'] ) ? '' : 'hidden',
+							'content' => $output,
+						),
+						false
+					);
+				} else {
+					$value   = isset( $field['required-field-message'] ) ? esc_attr( $field['required-field-message'] ) : esc_attr( get_option( 'everest_forms_required_validation' ) );
+					$tooltip = __( "Enter a message to show for this field if it's required.", 'everest-forms' );
+					$output  = $this->field_element(
+						'label',
+						$field,
+						array(
+							'slug'    => 'required-field-message',
+							'value'   => __( 'Required Field Message', 'everest-forms' ),
+							'tooltip' => $tooltip,
+						),
+						false
+					);
+					$output .= $this->field_element(
+						'text',
+						$field,
+						array(
+							'slug'  => 'required-field-message',
+							'value' => $value,
+						),
+						false
+					);
+					$output  = $this->field_element(
+						'row',
+						$field,
+						array(
+							'slug'    => 'required-field-message',
+							'class'   => isset( $field['required'] ) ? '' : 'hidden',
+							'content' => $output,
+						),
+						false
+					);
+				}
 				break;
 
 			// Code Block. ----------------------------------------------------//

@@ -160,12 +160,58 @@ jQuery( function ( $ ) {
 				// List messages to show for required fields. Use name of the field as key.
 				let error_messages = { };
 				$('.evf-field').each( function() {
+					let form_id       = $( this ).closest( 'form' ).data( 'formid' );
 					let field_id      = $( this ).data( 'field-id' )
 					let error_message = $( this ).data( 'required-field-message' )
 					let key           = `everest_forms[form_fields][${field_id}]`  // name of the input field is used as a key
 
-					if ( $( this ).hasClass( 'evf-field-checkbox' ) ) {
+					if ( $(this).is( '.evf-field-checkbox, .evf-field-payment-checkbox' ) ) {
 						key = key + '[]';
+					} else if ( $(this).is( '.evf-field-file-upload, .evf-field-image-upload' ) ) {
+						key = `evf_${form_id}_${field_id}`;
+					} else if ( $(this).is( '.evf-field-signature' ) ) {
+						key = `everest_forms[form_fields][${field_id}][signature_image]`;
+					} else if ( $(this).is( '.evf-field-phone' ) ) {
+						key = key + '[phone_field]';
+						error_message = {
+							required: error_message
+						};
+				 	} else if ( $(this).is( '.evf-field-address' ) ) {
+						let sub_field_error_messages = {
+							'address1': $( this ).data( 'required-field-message-address1' ),
+							'city'    : $( this ).data( 'required-field-message-city' ),
+							'state'   : $( this ).data( 'required-field-message-state' ),
+							'postal'  : $( this ).data( 'required-field-message-postal' ),
+							'country' : $( this ).data( 'required-field-message-country' ),
+						}
+						Object.entries( sub_field_error_messages ).forEach( ([ sub_field_type, error_message ]) => {
+							key                   = `everest_forms[form_fields][${field_id}][${sub_field_type}]`;
+							error_messages[ key ] = error_message;
+						})
+						error_message = null;
+					} else if ( $(this).is( '.evf-field-likert' ) ) {
+						let row_keys = $( this ).data( 'row-keys' );
+						let sub_field_error_messages = {};
+						if ( row_keys ) {
+							try {
+								row_keys.forEach( row_key => {
+									try {
+										sub_field_error_messages[ row_key ] = $( this ).data( `required-field-message-${row_key}` );
+									} catch (error) {
+										console.log( `Following data is not a string or a key:` );
+										console.log( row_key );
+									}
+								})
+							} catch (error) {
+								console.log( `Following data is not an array:` );
+								console.log( $( this ).data( `row-keys` ) );
+							}
+						}
+						Object.entries( sub_field_error_messages ).forEach( ([ index, error_message ]) => {
+							key                   = `everest_forms[form_fields][${field_id}][${index}]`;
+							error_messages[ key ] = error_message;
+						})
+						error_message = null;
 					}
 					
 					if ( error_message ) {
