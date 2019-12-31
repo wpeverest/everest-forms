@@ -53,12 +53,17 @@ delete_transient( 'evf_template_sections' );
 			<?php
 			foreach ( $templates as $template ) :
 				$badge = '';
+				$click_class = '';
 				if ( in_array( 'pro', $template->plan ) ) {
 					$badge = '<span class="everest-forms-badge everest-forms-badge-success">' . __( 'Pro', 'everest-forms' ) . '</span>';
 				}
+
+				if ( 'blank' === $template->slug ) {
+					$click_class = "evf-template-select";
+				}
 				?>
 				<div class="everest-forms-template-wrap evf-template"  id="everest-forms-template-<?php echo esc_attr( $template->slug ); ?>">
-					<figure class="everest-forms-screenshot evf-template-select" data-template-name-raw="<?php echo esc_attr( $template->title ); ?>" data-template="<?php echo esc_attr( $template->slug ); ?>" data-template-name="<?php printf( _x( '%s template', 'Template name', 'everest-forms' ), esc_attr( $template->title ) ); ?>">
+					<figure class="everest-forms-screenshot <?php echo $click_class; ?>" data-template-name-raw="<?php echo esc_attr( $template->title ); ?>" data-template="<?php echo esc_attr( $template->slug ); ?>" data-template-name="<?php printf( _x( '%s template', 'Template name', 'everest-forms' ), esc_attr( $template->title ) ); ?>">
 						<img src="<?php echo esc_url( $template->image ); ?>"/>
 						<?php echo $badge; ?>
 						<?php if ( 'blank' !== $template->slug ) : ?>
