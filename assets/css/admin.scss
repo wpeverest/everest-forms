@@ -2942,8 +2942,8 @@ body.everest-forms-builder-setup,
 						display: flex;
 						align-items: center;
 						justify-content: center;
-						width: 36px;
-						height: 36px;
+						width: 32px;
+						height: 32px;
 						cursor: pointer;
 						border-radius: 3px;
 						color: $color_gray-normal;
@@ -2953,9 +2953,9 @@ body.everest-forms-builder-setup,
 							content: '';
 							border-radius: 3px;
 							position: absolute;
-							left: 36px;
+							left: 32px;
 							right: calc(100% - 36px);
-							height: 34px;
+							height: 30px;
 							border-radius: 0 3px 3px 0;
 							transition: all .3s ease 0s;
 						}
@@ -2964,7 +2964,7 @@ body.everest-forms-builder-setup,
 					.everest-forms-name-input {
 						font-size: 1.3em;
 						font-weight: 600;
-						height: 36px;
+						height: 32px;
 						border: none;
 						margin: 0;
 						box-shadow: none;
