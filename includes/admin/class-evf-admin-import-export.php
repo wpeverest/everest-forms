@@ -47,7 +47,7 @@ class EVF_Admin_Import_Export {
 
 		$form_post   = get_post( $form_id );
 		$export_data = array(
-			'form_post'      => array(
+			'form_post' => array(
 				'post_content' => $form_post->post_content,
 				'post_title'   => $form_post->post_title,
 				'post_name'    => $form_post->post_name,
@@ -55,8 +55,8 @@ class EVF_Admin_Import_Export {
 				'post_status'  => $form_post->post_status,
 			),
 		);
-		$form_name = strtolower( str_replace( ' ', '-', get_the_title( $form_id ) ) );
-		$file_name = $form_name . '-' . current_time( 'Y-m-d_H:i:s' ) . '.json';
+		$form_name   = strtolower( str_replace( ' ', '-', get_the_title( $form_id ) ) );
+		$file_name   = $form_name . '-' . current_time( 'Y-m-d_H:i:s' ) . '.json';
 		if ( ob_get_contents() ) {
 			ob_clean();
 		}
@@ -98,21 +98,21 @@ class EVF_Admin_Import_Export {
 
 						// Get the form data.
 						$new_form_data = evf_decode( $form_data->form_post->post_content );
-						$new_form    = array(
+						$new_form      = array(
 							'post_content' => evf_encode( $new_form_data ),
 							'post_status'  => $form_data->form_post->post_status,
 							'post_title'   => $form_data->form_post->post_title,
 							'post_type'    => $form_data->form_post->post_type,
 						);
-						$post_id = wp_insert_post( $new_form );
+						$post_id       = wp_insert_post( $new_form );
 
 						// Set new form ID.
 						$new_form_data['id'] = absint( $post_id );
-						$form    = array(
+						$form                = array(
 							'ID'           => $post_id,
 							'post_content' => evf_encode( $new_form_data ),
 						);
-						$form_id = wp_update_post( $form );
+						$form_id             = wp_update_post( $form );
 
 						// Check for any error while inserting.
 						if ( is_wp_error( $post_id ) ) {
