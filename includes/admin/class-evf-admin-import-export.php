@@ -81,7 +81,7 @@ class EVF_Admin_Import_Export {
 
 			// Check for file format.
 			if ( 'json' === $extension ) {
-				$form_data = json_decode( file_get_contents( wp_unslash( $_FILES['jsonfile']['tmp_name'] ) ) ); // @codingStandardsIgnoreLine
+				$form_data = json_decode( file_get_contents( $_FILES['jsonfile']['tmp_name'] ) ); // @codingStandardsIgnoreLine
 
 				// Check for non-empty JSON file.
 				if ( ! empty( $form_data ) ) {
