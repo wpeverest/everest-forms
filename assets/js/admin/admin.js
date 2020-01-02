@@ -239,7 +239,6 @@
 		}
 	});
 
-
 	$('.everest_forms_import_action').on('click', function () {
 		var file_data = $('#everest-forms-import').prop('files')[0],
 			form_data = new FormData();
@@ -250,9 +249,7 @@
 
 		$.ajax({
 			url: evf_email_params.ajax_url,
-
-			// JSON type is expected back from the PHP script.
-			dataType: 'json',
+			dataType: 'json', // JSON type is expected back from the PHP script.
 			cache: false,
 			contentType: false,
 			processData: false,
@@ -280,63 +277,5 @@
 				$('#everest-forms-import').val('');
 			}
 		});
-	});
-
-	// Toggles edit state.
-	function toggleEditTitle(e) {
-		var $el          = $( '#edit-form-name' ),
-			$input_title = $el.siblings( '#evf-edit-form-name' );
-		e.preventDefault();
-
-		// Toggle disabled property.
-		$input_title.prop ( 'disabled' , function( _ , val ) {
-			return ! val;
-		});
-
-		if ( ! $input_title.hasClass( 'everst-forms-name-editing' ) ) {
-			$input_title.focus();
-		}
-
-		$input_title.toggleClass( 'everst-forms-name-editing' );
-	}
-
-	// Delegates event to toggleEditTitle() on clicking.
-	$( '#edit-form-name' ).on( 'click', function(e) {
-		e.stopPropagation();
-
-		if ( '' !== $( '#evf-edit-form-name').val().trim() ) {
-			toggleEditTitle(e);
-		}
-	});
-
-	// Apply the title change to form name field.
-	$( '#evf-edit-form-name' )
-		.on( 'change keypress', function( e ) {
-			var $this = $( this );
-
-			e.stopPropagation();
-
-			if ( 13 === e.which && '' !== $( this ).val().trim() ) {
-				toggleEditTitle( e );
-			}
-
-			if ( '' !== $this.val().trim() ) {
-				$( '#everest-forms-panel-field-settings-form_title' ).val( $this.val().trim() );
-			}
-		})
-		.on( 'click', function(e) {
-			e.stopPropagation();
-		});
-
-	// In case the user goes out of focus from title edit state.
-	$( document ).not( $( '.everest-forms-title-desc' ) ).click( function( e ) {
-		var field = $( '#evf-edit-form-name' );
-
-		e.stopPropagation();
-
-		// Only allow flipping state if currently editing.
-		if( ! field.prop( 'disabled' ) && '' !== field.val().trim() ) {
-			toggleEditTitle(e);
-		}
 	});
 })( jQuery, everest_forms_admin );
