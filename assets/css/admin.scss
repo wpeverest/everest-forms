@@ -3048,8 +3048,65 @@ body.everest-forms-builder-setup,
 				}
 
 				.everest-forms-title-desc {
-					.everest-forms-form-name {
-						margin-top: 0;
+					display: inline-flex;
+					align-items: center;
+					flex-direction: row-reverse;
+					position: relative;
+					margin-bottom: 10px;
+
+					.evf-icon {
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						width: 32px;
+						height: 32px;
+						cursor: pointer;
+						border-radius: 3px;
+						color: $color_gray-normal;
+						background: $color_gray-more-lighten;
+
+						&::after {
+							content: '';
+							border-radius: 3px;
+							position: absolute;
+							left: 32px;
+							right: calc(100% - 36px);
+							height: 30px;
+							border-radius: 0 3px 3px 0;
+							transition: all .3s ease 0s;
+						}
+					}
+
+					.everest-forms-name-input {
+						font-size: 1.3em;
+						font-weight: 600;
+						height: 32px;
+						border: none;
+						margin: 0;
+						box-shadow: none;
+						pointer-events: none;
+						background: none;
+						z-index: 1;
+
+						&.everst-forms-name-editing {
+							pointer-events: all;
+
+							& + .evf-icon {
+								background: $everestforms;
+								color: $color-white;
+								border-radius: 4px 0 0 4px;
+
+								&::after {
+									top: 0;
+									right: 0;
+									border: 1px solid $everestforms;
+								}
+							}
+						}
+
+						&:focus {
+							box-shadow: none;
+						}
 					}
 				}
 

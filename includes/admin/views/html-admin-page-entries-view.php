@@ -163,6 +163,14 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 									</p>
 								<?php endif; ?>
 
+								<?php if ( ! empty( $entry->referer ) ) : ?>
+									<p class="everest-forms-entry-referer">
+										<span class="dashicons dashicons-admin-links"></span>
+										<?php esc_html_e( 'Referer Link:', 'everest-forms' ); ?>
+										<strong><a href="<?php echo esc_url( $entry->referer ); ?>" target="_blank"><?php esc_html_e( 'View', 'everest-forms' ); ?></a></strong>
+									</p>
+								<?php endif; ?>
+
 								<?php if ( apply_filters( 'everest_forms_entry_details_sidebar_details_status', false, $entry ) ) : ?>
 									<p class="everest-forms-entry-status">
 										<span class="dashicons dashicons-category"></span>
