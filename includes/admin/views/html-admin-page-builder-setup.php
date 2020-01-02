@@ -9,7 +9,6 @@
  */
 
 defined( 'ABSPATH' ) || exit;
-
 $core_templates = apply_filters(
 	'everest_forms_templates_core',
 	array(
@@ -21,10 +20,11 @@ $core_templates = apply_filters(
 			'slug' => 'contact',
 			'name' => __( 'Contact Form', 'everest-forms' ),
 		),
-	)
-);
-delete_transient( 'evf_template_section' );
-delete_transient( 'evf_template_sections' );
+		)
+	);
+	delete_transient( 'evf_template_section' );
+	delete_transient( 'evf_template_sections' );
+	echo '<pre>' . print_r( $license_plan, true ) . '</pre>';
 ?>
 
 <div class ="wrap everest-forms">
@@ -54,7 +54,7 @@ delete_transient( 'evf_template_sections' );
 			foreach ( $templates as $template ) :
 				$badge = '';
 				$click_class = '';
-				if ( in_array( 'pro', $template->plan ) ) {
+				if ( 'free' !== $template->plan ) {
 					$badge = '<span class="everest-forms-badge everest-forms-badge-success">' . __( 'Pro', 'everest-forms' ) . '</span>';
 				}
 
