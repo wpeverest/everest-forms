@@ -82,6 +82,18 @@ class EVF_Admin_Assets {
 		wp_register_script( 'evf-clipboard', EVF()->plugin_url() . '/assets/js/admin/evf-clipboard' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true );
 		wp_register_script( 'selectWoo', EVF()->plugin_url() . '/assets/js/selectWoo/selectWoo.full' . $suffix . '.js', array( 'jquery' ), '1.0.4', true );
 		wp_register_script( 'evf-enhanced-select', EVF()->plugin_url() . '/assets/js/admin/evf-enhanced-select' . $suffix . '.js', array( 'jquery', 'selectWoo' ), EVF_VERSION, true );
+		wp_register_script( 'evf-template-controller', EVF()->plugin_url() . '/assets/js/admin/form-template-controller' . $suffix . '.js', array( 'jquery' ), EVF_VERSION );
+		wp_localize_script(
+			'evf-template-controller',
+			'evf_templates',
+			array(
+				'evf_template_url' => 'https://raw.githubusercontent.com/wpeverest/extensions-json/template/everest-forms/templates/all_templates.json',
+				'i18n_get_started' => _x( 'Get Started', 'template controller: get started button', 'everest-forms' ),
+				'i18n_get_preview' => _x( 'Preview', 'template controller: preview button', 'everest-forms' ),
+				'i18n_pro_feature' => _x( 'Pro', 'template controller: pro version span', 'everest-forms' ),
+				'i18n_pro_error_f' => _x( 'Please check your internet connection.', 'template controller: pro version error', 'everest-forms' ),
+			)
+		);
 		wp_localize_script(
 			'evf-enhanced-select',
 			'evf_enhanced_select_params',
