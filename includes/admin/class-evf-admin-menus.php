@@ -62,11 +62,11 @@ class EVF_Admin_Menus {
 		add_menu_page( __( 'Everest Forms', 'everest-forms' ), __( 'Everest Forms', 'everest-forms' ), 'manage_everest_forms', 'everest-forms', null, $this->get_icon_svg(), '55.5' );
 
 		// Backward compatibility for builder page redirects.
-		if ( ! empty( $_GET['page'] ) && in_array( $_GET['page'], array( 'everest-forms', 'edit-evf-form' ), true ) ) {
-			if ( 'edit-evf-form' === $_GET['page'] ) {
+		if ( ! empty( $_GET['page'] ) && in_array( wp_unslash( $_GET['page'] ), array( 'everest-forms', 'edit-evf-form', 'evf-status' ), true ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			if ( 'edit-evf-form' === $_GET['page'] ) { // phpcs:ignore WordPress.Security.NonceVerification
 				$redirect_url = admin_url( 'admin.php?page=evf-builder&create-form=1' );
 
-				if ( isset( $_GET['tab'], $_GET['form_id'] ) ) {
+				if ( isset( $_GET['tab'], $_GET['form_id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 					$redirect_url = add_query_arg(
 						array(
 							'tab'     => evf_clean( wp_unslash( $_GET['tab'] ) ),
@@ -75,8 +75,10 @@ class EVF_Admin_Menus {
 						admin_url( 'admin.php?page=evf-builder' )
 					);
 				}
+			} elseif ( 'evf-status' === $_GET['page'] ) { // phpcs:ignore WordPress.Security.NonceVerification
+				$redirect_url = str_replace( sanitize_text_field( wp_unslash( $_GET['page'] ) ), 'evf-tools', wp_unslash( $_SERVER['REQUEST_URI'] ) ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 			} else {
-				$redirect_url = str_replace( $_GET['page'], 'evf-builder', wp_unslash( $_SERVER['REQUEST_URI'] ) ); // WPCS: input var okay, CSRF ok.
+				$redirect_url = str_replace( sanitize_text_field( wp_unslash( $_GET['page'] ) ), 'evf-builder', wp_unslash( $_SERVER['REQUEST_URI'] ) ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 			}
 
 			wp_safe_redirect( $redirect_url );
