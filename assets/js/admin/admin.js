@@ -211,7 +211,7 @@
 			} );
 	});
 
-	// To play welocme video.
+	// To play welcome video.
 	$( document ).on( 'click', '#everest-forms-welcome .welcome-video-play', function( event ) {
 		var video = '<div class="welcome-video-container"><iframe width="760" height="429" src="https://www.youtube.com/embed/N_HbZccA-Ts?rel=0&amp;showinfo=0&amp;autoplay=1" frameborder="0" allowfullscreen></iframe></div>';
 
@@ -280,5 +280,63 @@
 				$('#everest-forms-import').val('');
 			}
 		});
+	});
+
+	// Toggles edit state.
+	function toggleEditTitle(e) {
+		var $el          = $( '#edit-form-name' ),
+			$input_title = $el.siblings( '#evf-edit-form-name' );
+		e.preventDefault();
+
+		// Toggle disabled property.
+		$input_title.prop ( 'disabled' , function( _ , val ) {
+			return ! val;
+		});
+
+		if ( ! $input_title.hasClass( 'everst-forms-name-editing' ) ) {
+			$input_title.focus();
+		}
+
+		$input_title.toggleClass( 'everst-forms-name-editing' );
+	}
+
+	// Delegates event to toggleEditTitle() on clicking.
+	$( '#edit-form-name' ).on( 'click', function(e) {
+		e.stopPropagation();
+
+		if ( '' !== $( '#evf-edit-form-name').val().trim() ) {
+			toggleEditTitle(e);
+		}
+	});
+
+	// Apply the title change to form name field.
+	$( '#evf-edit-form-name' )
+		.on( 'change keypress', function( e ) {
+			var $this = $( this );
+
+			e.stopPropagation();
+
+			if ( 13 === e.which && '' !== $( this ).val().trim() ) {
+				toggleEditTitle( e );
+			}
+
+			if ( '' !== $this.val().trim() ) {
+				$( '#everest-forms-panel-field-settings-form_title' ).val( $this.val().trim() );
+			}
+		})
+		.on( 'click', function(e) {
+			e.stopPropagation();
+		});
+
+	// In case the user goes out of focus from title edit state.
+	$( document ).not( $( '.everest-forms-title-desc' ) ).click( function( e ) {
+		var field = $( '#evf-edit-form-name' );
+
+		e.stopPropagation();
+
+		// Only allow flipping state if currently editing.
+		if( ! field.prop( 'disabled' ) && '' !== field.val().trim() ) {
+			toggleEditTitle(e);
+		}
 	});
 })( jQuery, everest_forms_admin );
