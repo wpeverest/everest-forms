@@ -26,19 +26,17 @@ class EVF_Admin_Import_Export {
 	 * @return void
 	 */
 	public function export_json() {
-		global $wpdb;
-
 		// Check for non empty $_POST.
 		if ( ! isset( $_POST['everest-forms-export-form'] ) || ! isset( $_POST['everest-forms-export-nonce'] ) ) {
 			return;
 		}
 
 		// Nonce check.
-		if ( ! wp_verify_nonce( $_POST['everest-forms-export-nonce'], 'everest_forms_export_nonce' ) ) {
-			die( __( 'Action failed. Please refresh the page and retry.', 'everest-forms' ) );
+		if ( ! wp_verify_nonce( wp_unslash( $_POST['everest-forms-export-nonce'] ), 'everest_forms_export_nonce' ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			wp_die( esc_html__( 'Action failed. Please refresh the page and retry.', 'everest-forms' ) );
 		}
 
-		$form_id = isset( $_POST['form_id'] ) ? $_POST['form_id'] : 0;
+		$form_id = isset( $_POST['form_id'] ) ? absint( wp_unslash( $_POST['form_id'] ) ) : 0;
 
 		// Return if form id is not set and current user doesnot have export capability.
 		if ( empty( $form_id ) || ! current_user_can( 'export' ) ) {
@@ -57,9 +55,11 @@ class EVF_Admin_Import_Export {
 		);
 		$form_name   = strtolower( str_replace( ' ', '-', get_the_title( $form_id ) ) );
 		$file_name   = $form_name . '-' . current_time( 'Y-m-d_H:i:s' ) . '.json';
+
 		if ( ob_get_contents() ) {
 			ob_clean();
 		}
+
 		$export_json = wp_json_encode( $export_data );
 		// Force download.
 		header( 'Content-Type: application/force-download' );
@@ -76,12 +76,13 @@ class EVF_Admin_Import_Export {
 	public static function import_form() {
 		// Check for $_FILES set or not.
 		if ( isset( $_FILES['jsonfile'] ) ) {
-			$filename = esc_html( sanitize_text_field( $_FILES['jsonfile']['name'] ) ); // Get file name.
-			$ext      = pathinfo( $filename, PATHINFO_EXTENSION ); // Get file extention.
+			$filename  = esc_html( sanitize_text_field( wp_unslash( $_FILES['jsonfile']['name'] ) ) );
+			$extension = pathinfo( $filename, PATHINFO_EXTENSION );
+
 			// Check for file format.
-			if ( 'json' === $ext ) {
-				// Read JSON file.
-				$form_data = json_decode( file_get_contents( $_FILES['jsonfile']['tmp_name'] ) ); // @codingStandardsIgnoreLine
+			if ( 'json' === $extension ) {
+				$form_data = json_decode( file_get_contents( wp_unslash( $_FILES['jsonfile']['tmp_name'] ) ) ); // @codingStandardsIgnoreLine
+
 				// Check for non-empty JSON file.
 				if ( ! empty( $form_data ) ) {
 					// Check for non-empty post data array.
@@ -118,43 +119,43 @@ class EVF_Admin_Import_Export {
 						if ( is_wp_error( $post_id ) ) {
 							return $post_id;
 						}
+
 						if ( $post_id ) {
 							wp_send_json_success(
 								array(
-									'message' => __( 'Imported Successfully.', 'everest-forms' ),
+									'message' => esc_html__( 'Imported Successfully.', 'everest-forms' ),
 								)
 							);
 						}
 					} else {
 						wp_send_json_error(
 							array(
-								'message' => __( 'Invalid file content. Please export file from Everest Forms plugin.', 'everest-forms' ),
+								'message' => esc_html__( 'Invalid file content. Please export file from Everest Forms plugin.', 'everest-forms' ),
 							)
 						);
 					}
 				} else {
 					wp_send_json_error(
 						array(
-							'message' => __( 'Invalid file content. Please export file from Everest Forms plugin.', 'everest-forms' ),
+							'message' => esc_html__( 'Invalid file content. Please export file from Everest Forms plugin.', 'everest-forms' ),
 						)
 					);
 				}
 			} else {
 				wp_send_json_error(
 					array(
-						'message' => __( 'Invalid file format. Only Json File Allowed.', 'everest-forms' ),
+						'message' => esc_html__( 'Invalid file format. Only Json File Allowed.', 'everest-forms' ),
 					)
 				);
 			}
 		} else {
 			wp_send_json_error(
 				array(
-					'message' => __( 'Please select json file to import form data.', 'everest-forms' ),
+					'message' => esc_html__( 'Please select json file to import form data.', 'everest-forms' ),
 				)
 			);
 		}
 	}
-
-
 }
+
 new EVF_Admin_Import_Export();

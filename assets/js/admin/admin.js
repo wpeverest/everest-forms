@@ -272,7 +272,7 @@
 					message_string = '<div id="message" class="error inline everest-froms-import_notice"><p><strong>' + response.responseJSON.data.message + '</strong></p></div>';
 				}
 
-				$( '.everest-forms-import-form' ).prepend( message_string );
+				$( '.everest-forms-import-form' ).find( 'h3' ).after( message_string );
 				$( '#everest-forms-import' ).val( '' );
 			}
 		});
