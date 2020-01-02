@@ -6,11 +6,12 @@
  */
 
 defined( 'ABSPATH' ) || exit;
+
 $form_data['form_field_id'] = isset( $form_data['form_field_id'] ) ? $form_data['form_field_id'] : 0;
 $form_data['form_enabled']  = isset( $form_data['form_enabled'] ) ? $form_data['form_enabled'] : 1;
 
 // Get tabs for the builder panel.
-$tabs = apply_filters( 'everest_forms_builder_tabs_array', array() );
+$tabs = apply_filters( 'everest_forms_builder_tabs_array', array() ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride
 
 // Get preview link.
 $preview_link = add_query_arg(

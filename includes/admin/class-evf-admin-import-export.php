@@ -113,7 +113,8 @@ class EVF_Admin_Import_Export {
 							'ID'           => $post_id,
 							'post_content' => evf_encode( $new_form_data ),
 						);
-						$form_id             = wp_update_post( $form );
+
+						wp_update_post( $form );
 
 						// Check for any error while inserting.
 						if ( is_wp_error( $post_id ) ) {
