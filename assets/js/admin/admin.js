@@ -231,10 +231,10 @@
 	$( '.everest-forms-export-form-action' ).on( 'click', function() {
 		var form_id = $( this ).closest( '.everest-forms-export-form' ).find( '#everest-forms-form-export' ).val();
 
-		if ( 'undefined' !== typeof form_id || 0 !== form_id ) {
-			$( this ).closest( '.everest-forms-export-form' ).find( '#message' ).remove();
-		} else {
-			$( this ).closest( '.everest-forms-export-form' ).prepend( '<div id="message" class="updated inline everest-froms-import_notice"><p><strong>Please select a form which you want to export.</strong></p></div>' );
+		$( this ).closest( '.everest-forms-export-form' ).find( '#message' ).remove();
+
+		if ( ! form_id ) {
+			$( this ).closest( '.everest-forms-export-form' ).find( 'h3' ).after( '<div id="message" class="error inline everest-froms-import_notice"><p><strong>' + everest_forms_admin.i18n_form_export_action_error + '</strong></p></div>' );
 			return false;
 		}
 	});
