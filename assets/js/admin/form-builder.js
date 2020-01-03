@@ -1373,6 +1373,7 @@
 			});
 			
 			$( 'body' ).on( 'focusout', '.focusout-actions', function ( e ) {
+				e.stopPropagation();
 				$( this ).siblings( 'label' ).toggle();
 				$( this ).toggle();
 				// let hide = $( this ).data( 'hide' );
