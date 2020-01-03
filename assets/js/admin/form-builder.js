@@ -1355,9 +1355,26 @@
 			$( 'body' ).on( 'click', '.toggle-handle', function ( e ) {
 				let toggle_targets  = $( this ).data( 'toggle-targets' );
 				let toggle_class    = $( this ).data( 'toggle-class' );
+				let focus_element = $( this ).data( 'focus-element' );
 
 				if ( toggle_targets && toggle_class ) {
 					$( toggle_targets ).toggleClass( toggle_class );
+				}
+				if ( focus_element ) {
+					$( focus_element ).focus();
+				}
+			});
+			
+			$( 'body' ).on( 'focusout', '.focusout-actions', function ( e ) {
+				let hide = $( this ).data( 'hide' );
+				let show_elements = $( this ).data( 'show-elements' );
+				
+				if ( hide ) {
+					$( this ).addClass( 'everest-forms-hidden' )
+				}
+				if ( show_elements ) {
+					$( show_elements ).removeClass( 'everest-forms-hidden' )
+					$( show_elements ).removeClass( 'hidden' )
 				}
 			});
 		},
