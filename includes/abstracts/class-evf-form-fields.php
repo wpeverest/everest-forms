@@ -230,7 +230,7 @@ abstract class EVF_Form_Fields {
 				break;
 			// Label.
 			case 'label':
-				$output = sprintf( '<label for="everest-forms-field-option-%s-%s" class="%s" >%s', $id, $slug, $class, esc_html( $args['value'] ) );
+				$output = sprintf( '<label for="everest-forms-field-option-%s-%s" class="%s" %s>%s', $id, $slug, $class, $data, esc_html( $args['value'] ) );
 				if ( isset( $args['tooltip'] ) && ! empty( $args['tooltip'] ) ) {
 					$output .= ' ' . sprintf( '<i class="dashicons dashicons-editor-help everest-forms-help-tooltip" title="%s"></i>', esc_attr( $args['tooltip'] ) );
 				}
@@ -238,79 +238,6 @@ abstract class EVF_Form_Fields {
 					$output .= $args['after_tooltip'];
 				}
 				$output .= '</label>';
-				break;
-
-			// Edit Field Label.
-			case 'edit_field_label':
-				/**
-				 * - $args Parameter API:
-				 * value          : value of the label
-				 * slug           : unique identifier to save the label value
-				 * placeholder    : placeholder for when the label is in edit mode
-				 * tooltip        : tooltip for the edit icon
-				 * toggle-class   : class to use for hiding the label and the input elements (default: .everest-forms-hidden)
-				 * label => class : class to append to the label element
-				 * input => class : class to append to the input element
-				 * input => data  : data to embed on the input element
-				 */
-				$value = ! empty( $args['value'] ) ? esc_attr( $args['value'] ) : '';
-				$slug  = ! empty( $args['slug'] ) ? esc_attr( $args['slug'] ) : 'edit-field-label';
-				$placeholder = ! empty( $args['placeholder'] ) ? esc_attr__( $args['placeholder'] ) : '';
-				$label_unique_class = sprintf( 'everest-forms-field-option-%s-%s-label', $id, $slug );
-				$tooltip = ! empty( $args['tooltip'] ) ? esc_html__( $args['tooltip'] ) : 'Edit Label';
-				$input_element_id = sprintf( '#everest-forms-field-option-%s-%s', $id, $slug );
-
-				$toggle_targets = sprintf( '%s, .everest-forms-field-option-%s-%s-label', $input_element_id, $id, $slug );
-				$toggle_class = ! empty( $args['toggle-class'] ) ? esc_attr( $args['toggle-class'] ) : 'everest-forms-hidden';
-
-				$input_class = ! empty( $args['input']['class'] ) ? esc_attr( $args['input']['class'] ) : '';
-				$input_class .= ' focusout-actions';
-				$label_class = sprintf( '%s %s', $label_unique_class, ! empty( $args['label-class'] ) ? esc_attr( $args['label-class'] ) : '' );
-				$icon_class = ! empty( $args['icon-class'] ) ? esc_attr( $args['icon-class'] ) : '';
-
-				$input_data = isset( $args['input']['data'] ) && is_array( $args['input']['data'] ) ? $args['input']['data'] : array();
-				$input_data['hide'] = true;
-				$input_data['show-elements'] = sprintf( '.%s', $label_unique_class );
-				
-				$output .= $this->field_element(
-					'text',
-					$field,
-					array(
-						'slug'  => $slug,
-						'value' => __( $value, 'everest-forms-pro' ),
-						'placeholder' => __( $placeholder, 'everest-forms-pro' ),
-						'class' => $input_class,
-						'data' => $input_data,
-					),
-					false
-				);
-				$output .= $this->field_element(
-					'label',
-					$field,
-					array(
-						'slug'  => $slug,
-						'class' => $label_class,
-						'value' => $value,
-					),
-					false
-				);
-				$output .= $this->field_element(
-					'icon',
-					$field,
-					array(
-						'tooltip' => $tooltip,
-						'class' => 'toggle-handle ' . $icon_class,
-						'data' => array(
-							'toggle-targets' => $toggle_targets,
-							'toggle-class' => $toggle_class,
-							'focus-element' => $input_element_id,
-							'toggle-input' => $input_element_id,
-							'toggle-label' => sprintf( '.everest-forms-field-option-%s-%s-label', $id, $slug ),
-						),
-					),
-					false
-				);
-				$output = sprintf( '<div class="everest-forms-label-edit">%s</div>', $output);
 				break;
 
 			// Text input.

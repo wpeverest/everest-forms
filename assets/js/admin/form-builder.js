@@ -209,6 +209,7 @@
 			EVFPanelBuilder.choicesInit();
 			EVFPanelBuilder.choicesUpdate();
 			EVFPanelBuilder.bindToggleHandleActions();
+			EVFPanelBuilder.bindFocusOutClassActions();
 			EVFPanelBuilder.bindSyncedInputActions();
 
 			// Fields Panel
@@ -1351,46 +1352,60 @@
 			} );
 		},
 
+		/**
+		 * Toggle Handle:
+		 * Toggle Handle is any element that will toggle elements (literally toggle using .toggle() method of jquery) specified in
+		 * `data-toggle-targets` attribute of the handle.
+		 * 
+		 * `data-toggle-targets` attribute:
+		 * This property is string and selector of elements which will be passed to jQuery as $(selector)...
+		 */
 		bindToggleHandleActions: function () {
 			$( 'body' ).on( 'click', '.toggle-handle', function ( e ) {
-				e.stopPropagation();
-				// console.log($(this).siblings('label'))
-				// console.log($(this).siblings('input'))`
-				let input = $( this ).data( 'toggle-input' )
-				let label = $( this ).data( 'toggle-label' )
-				$( input ).toggle();
-				$( label ).toggle();
-				// let toggle_targets  = $( this ).data( 'toggle-targets' );
-				// let toggle_class    = $( this ).data( 'toggle-class' );
-				let focus_element = $( this ).data( 'focus-element' );
+				let toggle_targets = $( this ).data( 'toggle-targets' )
+				let focus_element = $( this ).data( 'focus-element-on-toggle' )
 
-				// if ( toggle_targets && toggle_class ) {
-				// 	$( toggle_targets ).toggleClass( toggle_class );
-				// }
+				if ( toggle_targets ) {
+					$( toggle_targets ).toggle();
+				}
 				if ( focus_element ) {
 					$( focus_element ).focus();
 				}
 			});
-			
+		},
+
+		/**
+		 * Perform actions when an element with `focusout-actions` class loses focus.
+		 * Currently added actions:
+		 * - Toggle Elements ( it will toggle the elements specified in `focusout-toggle-elements` attribute. )
+		 * - Toggle Self ( it will toggle itself. Set `toggle-self` data as `false` to disable it. )
+		 */
+		bindFocusOutClassActions: function () {
 			$( 'body' ).on( 'focusout', '.focusout-actions', function ( e ) {
-				e.stopPropagation();
-				$( this ).siblings( 'label' ).toggle();
-				$( this ).toggle();
-				// let hide = $( this ).data( 'hide' );
-				// let show_elements = $( this ).data( 'show-elements' );
-				
-				// if ( hide ) {
-				// 	$( this ).addClass( 'everest-forms-hidden' )
-				// }
-				// if ( show_elements ) {
-				// 	$( show_elements ).removeClass( 'everest-forms-hidden' )
-				// 	$( show_elements ).removeClass( 'hidden' )
-				// }
+				// Whether to toggle the element itself(the event source) when it loses focus
+				let toggle_self = $( this ).data( 'toggle-self' ) === false ? false : true;
+
+				// selector for elements that should be toggled
+				let toggle_elements = $( this ).data( 'focusout-toggle-elements' );
+
+				if ( true === toggle_self ) {
+					$( this ).toggle();
+				}
+				if ( toggle_elements ) {
+					$( toggle_elements ).toggle();
+				}
 			});
 		},
 
+		/**
+		 * Sync an input element with other elements like labels. An element with `sync-input` class will be synced to the elements
+		 * specified in `sync-targets` data.
+		 * 
+		 * `Warning:` This is an one way sync, meaning only the text `sync-targets` will be updated when the source element's value changes
+		 * and the source element's value will not be updated if the value of `sync-targets` changes.
+		 */
 		bindSyncedInputActions: function () {
-			$( 'body' ).on( 'input', '.sync-input', function ( e ) {
+			$( 'body' ).on( 'input change keypress', '.sync-input', function ( e ) {
 				let changed_value = $( this ).val();
 				let sync_targets = $( this ).data( 'sync-targets' );
 
