@@ -388,18 +388,23 @@ abstract class EVF_Form_Fields {
 
 			// Edit Field Label
 			case 'edit_field_label':
+				/**
+				 * API Documentation for $args parameter:
+				 * value :
+				 */
 				$value = ! empty( $args['value'] ) ? esc_attr( $args['value'] ) : '';
 				$slug  = ! empty( $args['slug'] ) ? esc_attr( $args['slug'] ) : 'edit-field-label';
 				$placeholder = ! empty( $args['placeholder'] ) ? esc_attr__( $args['placeholder'] ) : '';
+				$label_class = sprintf( 'everest-forms-field-option-%s-%s-label ', $id, $slug );
+				$tooltip = ! empty( $args['tooltip'] ) ? esc_html__( $args['tooltip'] ) : 'Edit Label';
 
-				$icon_class = ! empty( $args['icon-class'] ) ? esc_attr( $args['icon-class'] ) : '';
-				$input_class = ! empty( $args['input']['class'] ) ? esc_attr( $args['input']['class'] ) : '';
-				$label_class = sprintf( 'everest-forms-field-option-%s-%s-label', $id, $slug );
-				$label_class = ! empty( $args['label-class'] ) ? esc_attr( $args['label-class'] ) : '';
-				
-				$toggle_targets = ! empty( $args['toggle-targets'] ) ? esc_attr( $args['toggle-targets'] ) : '';
-				// $toggle_targets = sprintf( '#everest-forms-field-option-%s-%s .everest-forms-field-option-%s-%s-label', $id, $slug, $id, $slug );
+				$toggle_targets = sprintf( '#everest-forms-field-option-%s-%s, .everest-forms-field-option-%s-%s-label', $id, $slug, $id, $slug );
 				$toggle_class = ! empty( $args['toggle-class'] ) ? esc_attr( $args['toggle-class'] ) : 'everest-forms-hidden';
+
+				$input_class = ! empty( $args['input']['class'] ) ? esc_attr( $args['input']['class'] ) : '';
+				$label_class .= ! empty( $args['label-class'] ) ? esc_attr( $args['label-class'] ) : '';
+				$icon_class = ! empty( $args['icon-class'] ) ? esc_attr( $args['icon-class'] ) : '';
+				
 				$output .= $this->field_element(
 					'text',
 					$field,
@@ -426,7 +431,7 @@ abstract class EVF_Form_Fields {
 					'icon',
 					$field,
 					array(
-						'tooltip' => 'Edit Label',
+						'tooltip' => $tooltip,
 						'class' => 'toggle-handle ' . $icon_class,
 						'data' => array(
 							'toggle-targets' => $toggle_targets,
@@ -435,15 +440,7 @@ abstract class EVF_Form_Fields {
 					),
 					false
 				);
-				$output = $this->field_element(
-					'row',
-					$field,
-					array(
-						'slug' => $slug,
-						'content' => $output,
-					),
-					false
-				);
+				$output = sprintf( '<div class="everest-forms-label-edit">%s</div>',$output);
 				break;
 
 			// Field Meta. ---------------------------------------------------//
