@@ -306,7 +306,7 @@ class EVF_AJAX {
 		$output  = '<div class="everest-forms-recommend-addons">';
 		$output .= '<p>' . __( 'This form template requires the following addons.', 'everest-forms' ) . '</p>';
 		$output .= '<table class="plugins-list-table widefat striped">';
-		$output .= '<thead><tr><th scope="col" class="manage-column required-plugins" colspan="2">Required Plugins</th></tr></thead><tbody id="the-list">';
+		$output .= '<thead><tr><th scope="col" class="manage-column required-plugins" colspan="2">Required Addons</th></tr></thead><tbody id="the-list">';
 		$output .= '</div>';
 
 		foreach ( $addons as $addon ) {

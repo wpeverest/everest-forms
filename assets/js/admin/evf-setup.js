@@ -54,7 +54,13 @@ jQuery( function( $ ) {
 						});
 					},
 					onAction: function () {
-						// Don't do anything for selects that trigger modal.
+						setTimeout( function() {
+							alert("hello");
+						}, 500);
+					},
+					buttons: {
+						continue: function(){
+							// Don't do anything for selects that trigger modal.
 						if ( $this.closest('.everest-forms').find('.evf-loading').hasClass( 'evf-loading-active' ) ) {
 							return;
 						}
@@ -91,7 +97,8 @@ jQuery( function( $ ) {
 						}).fail( function( xhr ) {
 							window.console.log( xhr.responseText );
 						});
-					},
+						}
+					}
 			});
 		},
 		input_keypress: function ( e ) {
