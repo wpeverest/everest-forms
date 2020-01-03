@@ -2516,6 +2516,10 @@ body.everest-forms-builder-setup,
 					display: flex;
 					margin-bottom: 0;
 				}
+
+				&.everest-forms-hidden {
+					display: none;
+				}
 			}
 
 			input:not(.ed_button),
