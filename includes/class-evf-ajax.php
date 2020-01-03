@@ -291,6 +291,7 @@ class EVF_AJAX {
 			);
 		}
 		$addons = array();
+		$deactivated_addons = array();
 		$raw_templates = wp_safe_remote_get( 'https://raw.githubusercontent.com/wpeverest/extensions-json/template/everest-forms/templates/all_templates.json' );
 		if ( ! is_wp_error( $raw_templates ) ) {
 			$template_data = json_decode( wp_remote_retrieve_body( $raw_templates ) );
@@ -301,17 +302,24 @@ class EVF_AJAX {
 					}
 				}
 			}
-
-			foreach ( $addons as $addon ) {
-				if ( ! is_plugin_active( $addon . '/' . $addon . '.php' ) ) :
-					echo $addon;
-				endif;
-			}
 		}
+		$output = '<table class="plugins-list-table widefat striped">';
+		$output .= '<thead><tr><th scope="col" class="manage-column required-plugins" colspan="2">Required Plugins</th></tr></thead><tbody id="the-list">';
 
+		foreach ($addons as $addon ) {
+			if ( ! is_plugin_active( $addon . '/' . $addon . '.php' ) ) {
+				$class = 'inactive';
+			} else {
+				$class = 'active';
+			}
+			$output .='<tr class="plugin" data-slug="'.$addon.'" data-plugin="'.$addon.'/'.$addon.'.php" data-name="'.$addon.'">';
+			$output .= '<td class="plugin-name">'.$addon.'</td>';
+			$output .= '<td class="plugin-status"><span class="'.esc_attr( $class ).'"></span></td>';
+			$output .= '</tr>';
+		}
+		$output .= '</tbody></table>';
 
-		echo '<pre>' . print_r( $addons, true ) . '</pre>';
-		die();
+	wp_send_json_success( $output );
 	}
 
 	/**
