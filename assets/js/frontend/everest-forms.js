@@ -156,6 +156,22 @@ jQuery( function ( $ ) {
 				return this.optional( element ) || pattern.test( value );
 			};
 
+			// Validate checkbox choice limit.
+			$.validator.addMethod( 'check-limit', function( value, element ) {
+				var $ul         = $( element ).closest( 'ul' ),
+					$checked    = $ul.find( 'input[type="checkbox"]:checked' ),
+					choiceLimit = parseInt( $ul.attr( 'data-choice-limit' ) || 0, 10 );
+
+				if ( 0 === choiceLimit ) {
+					return true;
+				}
+
+				return $checked.length <= choiceLimit;
+			}, function( params, element ) {
+				var	choiceLimit = parseInt( $( element ).closest( 'ul' ).attr( 'data-choice-limit' ) || 0, 10 );
+				return everest_forms_params.i18n_messages_check_limit.replace( '{#}', choiceLimit );
+			} );
+
 			this.$everest_form.each( function() {
 				var $this = $( this );
 
@@ -165,9 +181,10 @@ jQuery( function ( $ ) {
 					validClass: 'evf-valid',
 					errorPlacement: function( error, element ) {
 						if ( 'radio' === element.attr( 'type' ) || 'checkbox' === element.attr( 'type' ) ) {
-							if( element.hasClass( 'everest-forms-likert-field-option' ) ) {
-								element.closest('tr').children('th').append( error );
+							if ( element.hasClass( 'everest-forms-likert-field-option' ) ) {
+								element.closest( 'tr' ).children( 'th' ).append( error );
 							} else {
+								element.closest( '.evf-field-checkbox' ).find( 'label.evf-error' ).remove();
 								element.parent().parent().parent().append( error );
 							}
 						} else if ( element.is( 'select' ) && element.attr( 'class' ).match( /date-month|date-day|date-year/ ) ) {
@@ -217,7 +234,51 @@ jQuery( function ( $ ) {
 						}
 
 						form.submit();
-					}
+					},
+					onkeyup: function( element, event ) {
+						// This code is copied from JQuery Validate 'onkeyup' method with only one change: 'everest-forms-novalidate-onkeyup' class check.
+						var excludedKeys = [ 16, 17, 18, 20, 35, 36, 37, 38, 39, 40, 45, 144, 225 ];
+
+						// Disable onkeyup validation for some elements (e.g. remote calls).
+						if ( $( element ).hasClass( 'everest-forms-novalidate-onkeyup' ) ) {
+							return;
+						}
+
+						if ( 9 === event.which && '' === this.elementValue( element ) || $.inArray( event.keyCode, excludedKeys ) !== -1 ) {
+							return;
+						} else if ( element.name in this.submitted || element.name in this.invalid ) {
+							this.element( element );
+						}
+					},
+					onfocusout: function( element ) {
+						// This code is copied from JQuery Validate 'onfocusout' method with only one change: 'everest-forms-novalidate-onkeyup' class check.
+						var validate = false;
+
+						// Empty value error handling for elements with onkeyup validation disabled.
+						if ( $( element ).hasClass( 'everest-forms-novalidate-onkeyup' ) && ! element.value ) {
+							validate = true;
+						}
+
+						if ( ! this.checkable( element ) && ( element.name in this.submitted || ! this.optional( element ) ) ) {
+							validate = true;
+						}
+
+						if ( validate ) {
+							this.element( element );
+						}
+					},
+					onclick: function( element ) {
+						var validate = false;
+
+						if ( 'checkbox' === ( element || {} ).type ) {
+							$( element ).closest( '.evf-field-checkbox' ).find( 'label.evf-error' ).remove();
+							validate = true;
+						}
+
+						if ( validate ) {
+							this.element( element );
+						}
+					},
 				});
 			});
 		},
