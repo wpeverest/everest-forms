@@ -1353,6 +1353,7 @@
 
 		bindToggleHandleActions: function () {
 			$( 'body' ).on( 'click', '.toggle-handle', function ( e ) {
+				e.stopPropagation();
 				// console.log($(this).siblings('label'))
 				// console.log($(this).siblings('input'))
 				let input = $( this ).data( 'toggle-input' )
