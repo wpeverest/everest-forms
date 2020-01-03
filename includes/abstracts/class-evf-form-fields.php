@@ -304,6 +304,8 @@ abstract class EVF_Form_Fields {
 							'toggle-targets' => $toggle_targets,
 							'toggle-class' => $toggle_class,
 							'focus-element' => $input_element_id,
+							'toggle-input' => $input_element_id,
+							'toggle-label' => sprintf( '.everest-forms-field-option-%s-%s-label', $id, $slug ),
 						),
 					),
 					false
