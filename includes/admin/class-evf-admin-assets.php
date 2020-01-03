@@ -198,6 +198,7 @@ class EVF_Admin_Assets {
 					array(
 						'ajax_url'              => admin_url( 'admin-ajax.php' ),
 						'create_form_nonce'     => wp_create_nonce( 'everest_forms_create_form' ),
+						'template_licence_check_nonce'     => wp_create_nonce( 'everest_forms_template_licence_check' ),
 						'i18n_form_name'        => esc_html__( 'Give it a name.', 'everest-forms' ),
 						'i18n_form_error_name'  => esc_html__( 'You must provide a Form name', 'everest-forms' ),
 						'i18n_form_ok'          => esc_html__( 'Continue', 'everest-forms' ),

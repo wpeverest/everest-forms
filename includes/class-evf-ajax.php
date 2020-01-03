@@ -93,6 +93,7 @@ class EVF_AJAX {
 			'rated'                  => false,
 			'review_dismiss'         => false,
 			'enabled_form'           => false,
+			'template_licence_check'           => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -270,6 +271,47 @@ class EVF_AJAX {
 				)
 			);
 		}
+	}
+
+	/**
+	 * Ajax handler for licence check.
+	 *
+	 * @global WP_Filesystem_Base $wp_filesystem Subclass
+	 */
+	public static function template_licence_check() {
+		check_ajax_referer( 'everest_forms_template_licence_check', 'security' );
+
+		if ( empty( $_POST['plan'] ) ) {
+			wp_send_json_error(
+				array(
+					'plan'         => '',
+					'errorCode'    => 'no_plan_specified',
+					'errorMessage' => __( 'No Plan specified.', 'everest-forms' ),
+				)
+			);
+		}
+		$addons = array();
+		$raw_templates = wp_safe_remote_get( 'https://raw.githubusercontent.com/wpeverest/extensions-json/template/everest-forms/templates/all_templates.json' );
+		if ( ! is_wp_error( $raw_templates ) ) {
+			$template_data = json_decode( wp_remote_retrieve_body( $raw_templates ) );
+			if ( ! empty( $template_data->templates ) ) {
+				foreach ($template_data->templates as $template ) {
+					if( $template->slug === $_POST['slug'] && in_array( $_POST['plan'], $template->plan ) ) {
+						$addons = $template->addons;
+					}
+				}
+			}
+
+			foreach ( $addons as $addon ) {
+				if ( ! is_plugin_active( $addon . '/' . $addon . '.php' ) ) :
+					echo $addon;
+				endif;
+			}
+		}
+
+
+		echo '<pre>' . print_r( $addons, true ) . '</pre>';
+		die();
 	}
 
 	/**
