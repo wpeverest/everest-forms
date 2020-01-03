@@ -32,76 +32,78 @@ jQuery( function( $ ) {
 				nameError    = '<p class="error">'+evf_setup_params.i18n_form_error_name+'</p>',
 				plugin_list = '';
 
-				// Fire AJAX
-				var data =  {
-					action  : 'everest_forms_template_licence_check',
-					plan    : $this.attr('data-licence-plan'),
-					slug    : $this.attr('data-template'),
-					security: evf_setup_params.template_licence_check_nonce
-				}
-
-				$.ajax({
-					url: evf_email_params.ajax_url,
-					data: data,
-					type: 'POST',
-					success: function( response ){
-						var modalContent = namePrompt+nameField+nameError+response.data;
-						$.confirm({
-							title: evf_setup_params.i18n_form_title,
-							content: modalContent,
-							backgroundDismiss: false,
-							closeIcon: true,
-							buttons: {
-								confirm: {
-									text: evf_setup_params.i18n_form_ok,
-									btnClass: 'everest-forms-btn everest-forms-btn-primary',
-									keys: ['enter'],
-									action: function() {
-
-									// debugger;
-									// Don't do anything for selects that trigger modal.
-									// if ( $this.closest('.everest-forms').find('.evf-loading').hasClass( 'evf-loading-active' ) ) {
-									// 	return;
-									// }
-									// var $formName    = $( '#everest-forms-setup-name' );
-									// Check that form title is provided.
-									// if ( ! $formName.val() ) {
-									// 	formName = templateName;
-									// 	var error = this.$content.find('.error');
-									// 	$( '.everest-forms-setup-name' ).addClass( 'everest-forms-required' ).focus();
-									// 	error.show();
-									// 	return false;
-									// } else {
-									// 	formName = $formName.val();
-									// }
-
-									// $this.closest('.everest-forms').find('.evf-loading').addClass( 'evf-loading-active' );
-
-									// var data = {
-									// 	title: formName,
-									// 	action: 'everest_forms_create_form',
-									// 	template: template,
-									// 	security: evf_setup_params.create_form_nonce
-									// };
-
-									// $.post( evf_setup_params.ajax_url, data, function( response ) {
-									// 	if ( response.success ) {
-									// 		$this.closest('.everest-forms').find('.evf-loading').removeClass( 'evf-loading-active' );
-									// 		window.location.href = response.data.redirect;
-									// 	} else {
-									// 		$this.closest('.everest-forms').find('.evf-loading').removeClass( 'evf-loading-active' );
-									// 		$( '.everest-forms-setup-name' ).addClass( 'everest-forms-required' ).focus();
-									// 		window.console.log( response );
-									// 	}
-									// }).fail( function( xhr ) {
-									// 	window.console.log( xhr.responseText );
-									// });
-								}
-							},
+				$.confirm({
+					title: evf_setup_params.i18n_form_title,
+					// content: modalContent,
+					content: function() {
+						// Fire AJAX
+						var self = this;
+						var data =  {
+							action  : 'everest_forms_template_licence_check',
+							plan    : $this.attr('data-licence-plan'),
+							slug    : $this.attr('data-template'),
+							security: evf_setup_params.template_licence_check_nonce
 						}
-					});
-					}
-				});
+
+						return $.ajax({
+							url: evf_email_params.ajax_url,
+							data: data,
+							type: 'POST',
+						}).done( function( response ) {
+							self.setContentAppend( namePrompt+nameField+nameError+response.data );
+						});
+					},
+					backgroundDismiss: false,
+					closeIcon: true,
+					buttons: {
+						confirm: {
+							text: evf_setup_params.i18n_form_ok,
+							btnClass: 'everest-forms-btn everest-forms-btn-primary',
+							keys: ['enter'],
+							action: function() {
+
+							// debugger;
+							// Don't do anything for selects that trigger modal.
+							// if ( $this.closest('.everest-forms').find('.evf-loading').hasClass( 'evf-loading-active' ) ) {
+							// 	return;
+							// }
+							// var $formName    = $( '#everest-forms-setup-name' );
+							// Check that form title is provided.
+							// if ( ! $formName.val() ) {
+							// 	formName = templateName;
+							// 	var error = this.$content.find('.error');
+							// 	$( '.everest-forms-setup-name' ).addClass( 'everest-forms-required' ).focus();
+							// 	error.show();
+							// 	return false;
+							// } else {
+							// 	formName = $formName.val();
+							// }
+
+							// $this.closest('.everest-forms').find('.evf-loading').addClass( 'evf-loading-active' );
+
+							// var data = {
+							// 	title: formName,
+							// 	action: 'everest_forms_create_form',
+							// 	template: template,
+							// 	security: evf_setup_params.create_form_nonce
+							// };
+
+							// $.post( evf_setup_params.ajax_url, data, function( response ) {
+							// 	if ( response.success ) {
+							// 		$this.closest('.everest-forms').find('.evf-loading').removeClass( 'evf-loading-active' );
+							// 		window.location.href = response.data.redirect;
+							// 	} else {
+							// 		$this.closest('.everest-forms').find('.evf-loading').removeClass( 'evf-loading-active' );
+							// 		$( '.everest-forms-setup-name' ).addClass( 'everest-forms-required' ).focus();
+							// 		window.console.log( response );
+							// 	}
+							// }).fail( function( xhr ) {
+							// 	window.console.log( xhr.responseText );
+							// });
+						}
+					},
+				}
+			});
 		},
 		input_keypress: function ( e ) {
 			var button = e.keyCode || e.which;
