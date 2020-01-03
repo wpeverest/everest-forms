@@ -260,7 +260,7 @@
 				e.stopPropagation();
 
 				// Only allow flipping state if currently editing.
-				if( ! field.prop( 'disabled' ) && '' !== field.val().trim() ) {
+				if ( ! field.prop( 'disabled' ) && field.val() && '' !== field.val().trim() ) {
 					EVFPanelBuilder.toggleEditTitle( e );
 				}
 			});
