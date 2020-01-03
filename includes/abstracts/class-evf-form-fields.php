@@ -176,7 +176,10 @@ abstract class EVF_Form_Fields {
 	 */
 	public function field_element( $option, $field, $args = array(), $echo = true ) {
 		$id     = (string) $field['id'];
-		$class  = ! empty( $args['class'] ) ? sanitize_html_class( $args['class'] ) : '';
+		//... Previous line of code
+		// $class  = ! empty( $args['class'] ) ? sanitize_html_class( $args['class'] ) : '';
+		//... New line of code
+		$class  = ! empty( $args['class'] ) && is_string( $args['class'] ) ? esc_attr( $args['class'] ) : '';
 		$slug   = ! empty( $args['slug'] ) ? sanitize_title( $args['slug'] ) : '';
 		$data   = '';
 		$output = '';
@@ -219,10 +222,15 @@ abstract class EVF_Form_Fields {
 			case 'row':
 				$output = sprintf( '<div class="everest-forms-field-option-row everest-forms-field-option-row-%s %s" id="everest-forms-field-option-row-%s-%s" data-field-id="%s">%s</div>', $slug, $class, $id, $slug, $id, $args['content'] );
 				break;
-
+			// Icon.
+			case 'icon':
+				$element_tooltip = isset( $args['tooltip'] ) ? $args['tooltip'] : 'Edit Label';
+				$icon            = isset( $args['icon'] ) ? $args['icon'] : 'dashicons-edit';
+				$output         .= sprintf( ' <i class="dashicons %s everest-forms-icon %s" title="%s" %s></i>', esc_attr( $icon ), $class, esc_attr( $element_tooltip ), $data );
+				break;
 			// Label.
 			case 'label':
-				$output = sprintf( '<label for="everest-forms-field-option-%s-%s">%s', $id, $slug, esc_html( $args['value'] ) );
+				$output = sprintf( '<label for="everest-forms-field-option-%s-%s" class="%s" >%s', $id, $slug, $class, esc_html( $args['value'] ) );
 				if ( isset( $args['tooltip'] ) && ! empty( $args['tooltip'] ) ) {
 					$output .= ' ' . sprintf( '<i class="dashicons dashicons-editor-help everest-forms-help-tooltip" title="%s"></i>', esc_attr( $args['tooltip'] ) );
 				}
@@ -322,6 +330,8 @@ abstract class EVF_Form_Fields {
 	 * @return mixed echo or return string
 	 */
 	public function field_option( $option, $field, $args = array(), $echo = true ) {
+		$id     = (string) $field['id'];
+		$slug   = ! empty( $args['slug'] ) ? sanitize_title( $args['slug'] ) : '';
 		$output = '';
 
 		switch ( $option ) {
@@ -370,6 +380,66 @@ abstract class EVF_Form_Fields {
 					$field,
 					array(
 						'slug'    => 'label',
+						'content' => $output,
+					),
+					false
+				);
+				break;
+
+			// Edit Field Label
+			case 'edit_field_label':
+				$value = ! empty( $args['value'] ) ? esc_attr( $args['value'] ) : '';
+				$slug  = ! empty( $args['slug'] ) ? esc_attr( $args['slug'] ) : 'edit-field-label';
+				$placeholder = ! empty( $args['placeholder'] ) ? esc_attr__( $args['placeholder'] ) : '';
+
+				$icon_class = ! empty( $args['icon-class'] ) ? esc_attr( $args['icon-class'] ) : '';
+				$input_class = ! empty( $args['input']['class'] ) ? esc_attr( $args['input']['class'] ) : '';
+				$label_class = sprintf( 'everest-forms-field-option-%s-%s-label', $id, $slug );
+				$label_class = ! empty( $args['label-class'] ) ? esc_attr( $args['label-class'] ) : '';
+				
+				$toggle_targets = ! empty( $args['toggle-targets'] ) ? esc_attr( $args['toggle-targets'] ) : '';
+				// $toggle_targets = sprintf( '#everest-forms-field-option-%s-%s .everest-forms-field-option-%s-%s-label', $id, $slug, $id, $slug );
+				$toggle_class = ! empty( $args['toggle-class'] ) ? esc_attr( $args['toggle-class'] ) : 'everest-forms-hidden';
+				$output .= $this->field_element(
+					'text',
+					$field,
+					array(
+						'slug'  => $slug,
+						'value' => __( $value, 'everest-forms-pro' ),
+						'placeholder' => __( $placeholder, 'everest-forms-pro' ),
+						'class' => $input_class,
+						'data' => isset( $args['input']['data'] ) ? $args['input']['data'] : array(),
+					),
+					false
+				);
+				$output .= $this->field_element(
+					'label',
+					$field,
+					array(
+						'slug'  => $slug,
+						'class' => $label_class,
+						'value' => $value,
+					),
+					false
+				);
+				$output .= $this->field_element(
+					'icon',
+					$field,
+					array(
+						'tooltip' => 'Edit Label',
+						'class' => 'toggle-handle ' . $icon_class,
+						'data' => array(
+							'toggle-targets' => $toggle_targets,
+							'toggle-class' => $toggle_class,
+						),
+					),
+					false
+				);
+				$output = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug' => $slug,
 						'content' => $output,
 					),
 					false

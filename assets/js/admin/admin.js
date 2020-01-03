@@ -121,7 +121,7 @@
 		})
 
 		.on( 'init_tooltips', function() {
-			$( '.tips, .help_tip, .everest-forms-help-tip, .everest-forms-help-tooltip' ).tooltipster( {
+			$( '.tips, .help_tip, .everest-forms-help-tip, .everest-forms-help-tooltip, .everest-forms-icon' ).tooltipster( {
 				maxWidth: 200,
 				multiple: true,
 				interactive: true,

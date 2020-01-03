@@ -208,6 +208,8 @@
 			EVFPanelBuilder.bindFormPayment();
 			EVFPanelBuilder.choicesInit();
 			EVFPanelBuilder.choicesUpdate();
+			EVFPanelBuilder.bindToggleHandleActions();
+			EVFPanelBuilder.bindSyncedInputActions();
 
 			// Fields Panel
 			EVFPanelBuilder.bindUIActionsFields();
@@ -1347,6 +1349,28 @@
 				$( '.everest-forms-tab-content' ).scrollTop(0);
 				EVFPanelBuilder.switchToFieldOptionPanel( field_id );
 			} );
+		},
+
+		bindToggleHandleActions: function () {
+			$( 'body' ).on( 'click', '.toggle-handle', function ( e ) {
+				let toggle_targets  = $( this ).data( 'toggle-targets' );
+				let toggle_class    = $( this ).data( 'toggle-class' );
+
+				if ( toggle_targets && toggle_class ) {
+					$( toggle_targets ).toggleClass( toggle_class );
+				}
+			});
+		},
+
+		bindSyncedInputActions: function () {
+			$( 'body' ).on( 'input', '.sync-input', function ( e ) {
+				let changed_value = $( this ).val();
+				let sync_targets = $( this ).data( 'sync-targets' );
+
+				if ( changed_value && sync_targets ) {
+					$( sync_targets ).text( changed_value );
+				}
+			});
 		}
 	};
 
