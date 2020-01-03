@@ -700,6 +700,26 @@ body.everest-forms-builder-setup,
 		}
 	}
 
+	.everest-forms-label-edit {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		.dashicons {
+			background: $color-white;
+			height: 30px;
+			width: 30px;
+			cursor: pointer;
+			flex: 0 0 30px;
+			margin-left: 4px;
+			border-radius: 3px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border: 1px solid $color_gray-lighten;
+		}
+	}
+
 	.everest-forms {
 		margin: 0;
 
@@ -2519,6 +2539,19 @@ body.everest-forms-builder-setup,
 
 				&.everest-forms-hidden {
 					display: none;
+				}
+			}
+
+			.everest-forms-label-edit {
+				margin-bottom: 4px;
+
+				label {
+					margin-bottom: 0;
+				}
+
+				input {
+					font-size: 13px;
+					font-weight: 600;
 				}
 			}
 
