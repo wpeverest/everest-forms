@@ -34,6 +34,7 @@ jQuery( function( $ ) {
 
 				$.confirm({
 					title: evf_setup_params.i18n_form_title,
+					backgroundDismiss: false,
 					// content: modalContent,
 					content: function() {
 						// Fire AJAX
