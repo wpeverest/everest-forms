@@ -17,14 +17,10 @@
 		var $card    = $( '.plugin-card-' + args.slug ),
 			$message = $card.find( '.install-now' );
 
-		args = _.extend( {
+			args = _.extend( {
 			success: wp.updates.installExtensionSuccess,
 			error: wp.updates.installExtensionError
 		}, args );
-
-		if ( 'everest-forms_page_evf-builder' === pagenow ) {
-			$message = $( '[data-slug="' + args.slug + '"]' );
-		}
 
 		if ( $message.html() !== wp.updates.l10n.installing ) {
 			$message.data( 'originaltext', $message.html() );

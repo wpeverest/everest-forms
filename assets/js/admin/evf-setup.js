@@ -91,6 +91,19 @@ jQuery( function( $ ) {
 						} );
 					} );
 
+					if ( ! wp.updates.queue.length ) {
+						if ( error > 0 ) {
+							$target
+								.removeClass( 'updating-message' )
+								.text( $target.data( 'originaltext' ) );
+						} else {
+							_this.model.set( { requiredPlugins: false } );
+
+							// Disable the next and previous demo.
+							$( '.theme-install-overlay' ).find( '.next-theme, .previous-theme' ).addClass( 'disabled' );
+						}
+					}
+
 					// Check the queue, now that the event handlers have been added.
 					wp.updates.queueChecker();
 				},

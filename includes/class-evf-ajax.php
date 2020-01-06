@@ -311,13 +311,13 @@ class EVF_AJAX {
 
 		foreach ( $addons as $slug => $addon ) {
 			if ( ! is_plugin_active( $slug . '/' . $slug . '.php' ) ) {
-				$class        = 'inactive';
+				$class        = 'install-now';
 				$parent_class = 'inactive';
 			} else {
 				$class        = 'active';
 				$parent_class = '';
 			}
-			$output .= '<tr class="plugin ' . $parent_class . '" data-slug="' . $slug . '" data-plugin="' . $slug . '/' . $slug . '.php" data-name="' . $addon . '">';
+			$output .= '<tr class="plugin-card-'.$slug.' plugin ' . $parent_class . '" data-slug="' . $slug . '" data-plugin="' . $slug . '/' . $slug . '.php" data-name="' . $addon . '">';
 			$output .= '<td class="plugin-name">' . $addon . '</td>';
 			$output .= '<td class="plugin-status"><span class="' . esc_attr( $class ) . '"></span></td>';
 			$output .= '</tr>';
