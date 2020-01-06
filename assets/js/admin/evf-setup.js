@@ -85,6 +85,7 @@ jQuery( function( $ ) {
 						wp.updates.queue.push( {
 							action: 'everest_forms_install_extension',
 							data: {
+								name: $itemRow.data( 'name' ),
 								slug: $itemRow.data( 'slug' )
 							}
 						} );

@@ -309,13 +309,13 @@ class EVF_AJAX {
 		$output .= '<thead><tr><th scope="col" class="manage-column required-plugins" colspan="2">Required Addons</th></tr></thead><tbody id="the-list">';
 		$output .= '</div>';
 
-		foreach ( $addons as $addon ) {
-			if ( ! is_plugin_active( $addon . '/' . $addon . '.php' ) ) {
+		foreach ( $addons as $slug => $addon ) {
+			if ( ! is_plugin_active( $slug . '/' . $slug . '.php' ) ) {
 				$class = 'inactive';
 			} else {
 				$class = 'active';
 			}
-			$output .= '<tr class="plugin" data-slug="' . $addon . '" data-plugin="' . $addon . '/' . $addon . '.php" data-name="' . $addon . '">';
+			$output .= '<tr class="plugin" data-slug="' . $slug . '" data-plugin="' . $slug . '/' . $slug . '.php" data-name="' . $addon . '">';
 			$output .= '<td class="plugin-name">' . $addon . '</td>';
 			$output .= '<td class="plugin-status"><span class="' . esc_attr( $class ) . '"></span></td>';
 			$output .= '</tr>';
@@ -364,7 +364,7 @@ class EVF_AJAX {
 			EVF_Updater_Key_API::version(
 				array(
 					'license'   => get_option( 'everest-forms-pro_license_key' ),
-					'item_name' => sanitize_text_field( wp_unslash( $_POST['name'] ) ), // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+					'item_name' => sanitize_text_field( wp_unslash( $_POST['name'] ) ), // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 				)
 			)
 		);
