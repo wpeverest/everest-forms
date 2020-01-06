@@ -78,7 +78,7 @@ jQuery( function( $ ) {
 
 						// Only add inactive items to the update queue.
 						if ( ! $itemRow.hasClass( 'inactive' ) || $itemRow.find( 'notice-error' ).length ) {
-							// return;
+							return;
 						}
 
 						// Add it to the queue.
