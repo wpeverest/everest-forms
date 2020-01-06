@@ -574,10 +574,10 @@ abstract class EVF_Form_Fields {
 					if ( ! empty( $image ) ) {
 						$field_content .= sprintf( '<img class="attachment-thumb" src="%1$s">', esc_url_raw( $image ) );
 					}
+					$field_content .= '</div>';
 					$field_content .= sprintf( '<div class="actions"%s>', empty( $image ) ? ' style="display:none;"' : '' );
 					$field_content .= sprintf( '<button type="button" class="button remove-button">%1$s</button>', esc_html__( 'Remove', 'everest-forms' ) );
 					$field_content .= sprintf( '<button type="button" class="button upload-button">%1$s</button>', esc_html__( 'Change image', 'everest-forms' ) );
-					$field_content .= '</div>';
 					$field_content .= '</div>';
 					$field_content .= '</div>';
 					$field_content .= '</li>';
@@ -603,7 +603,7 @@ abstract class EVF_Form_Fields {
 				$field_content = sprintf(
 					'<div class="notice notice-warning%s"><p>%s</p></div>',
 					empty( $field['choices_images'] ) ? ' hidden' : '',
-					esc_html__( 'For best results, images should be square and at least 256 × 256 pixels or smaller.', 'everest-forms' )
+					esc_html__( 'For best results, images should be square and at least 200 × 160 pixels or smaller.', 'everest-forms' )
 				);
 
 				$field_content .= $this->field_element(
@@ -1007,7 +1007,7 @@ abstract class EVF_Form_Fields {
 					foreach ( $values as $value ) {
 						$default     = isset( $value['default'] ) ? $value['default'] : '';
 						$selected    = checked( '1', $default, false );
-						$placeholder = EVF()->plugin_url() . '/assets/images/placeholder.png';
+						$placeholder = EVF()->plugin_url() . '/assets/images/everest-forms-placeholder.png';
 						$image_src   = ! empty( $value['image'] ) ? esc_url( $value['image'] ) : $placeholder;
 						$item_class  = array();
 

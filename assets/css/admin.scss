@@ -2217,10 +2217,6 @@ button.everest-forms-btn {
 									display: block;
 								}
 							}
-
-							input {
-								display: none;
-							}
 						}
 					}
 
@@ -2765,15 +2761,13 @@ button.everest-forms-btn {
 								user-select: none;
 								border-radius: 4px;
 							}
+						}
 
-							.actions {
-								position: absolute;
-								right: 8px;
-								bottom: 8px;
+						.actions {
+							margin-top: 8px;
 
-								.remove-button {
-									margin-right: 8px;
-								}
+							.remove-button {
+								margin-right: 8px;
 							}
 						}
 					}
