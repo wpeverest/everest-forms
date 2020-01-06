@@ -716,7 +716,19 @@ body.everest-forms-builder-setup,
 			display: flex;
 			align-items: center;
 			justify-content: center;
+			opacity: 0;
+			visibility: none;
 			border: 1px solid $color_gray-lighten;
+		}
+
+		&:hover,
+		&:active,
+		&:focus,
+		&:focus-within {
+			.dashicons {
+				visibility: visible;
+				opacity: 1;
+			}
 		}
 	}
 
