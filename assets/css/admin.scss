@@ -2166,24 +2166,28 @@ button.everest-forms-btn {
 				}
 
 				.everest-forms-field-payment-single {
-					.format-selected-single {
-						.primary-input,
-						.item-price-hidden {
-							display: none;
-						}
+					.widefat,
+					.item-price-hidden {
+						display: none;
+					}
+					.item-price-hidden {
+						margin: 0;
+						color: #999;
+						font-size: 12px;
 					}
 
 					.format-selected-user {
-						.item-price,
-						.item-price-hidden {
+						.widefat {
+							display: block;
+						}
+						.item-price {
 							display: none;
 						}
 					}
 
 					.format-selected-hidden {
-						.item-price,
-						.primary-input {
-							display: none;
+						.item-price-hidden {
+							display: block;
 						}
 					}
 				}
