@@ -82,18 +82,18 @@ class EVF_AJAX {
 	 */
 	public static function add_ajax_events() {
 		$ajax_events = array(
-			'save_form'              => false,
-			'create_form'            => false,
-			'get_next_id'            => false,
-			'install_extension'      => false,
-			'integration_connect'    => false,
-			'new_email_add'          => false,
-			'integration_disconnect' => false,
-			'deactivation_notice'    => false,
-			'rated'                  => false,
-			'review_dismiss'         => false,
-			'enabled_form'           => false,
-			'template_licence_check' => false,
+			'save_form'               => false,
+			'create_form'             => false,
+			'get_next_id'             => false,
+			'install_extension'       => false,
+			'integration_connect'     => false,
+			'new_email_add'           => false,
+			'integration_disconnect'  => false,
+			'deactivation_notice'     => false,
+			'rated'                   => false,
+			'review_dismiss'          => false,
+			'enabled_form'            => false,
+			'template_licence_check'  => false,
 			'template_activate_addon' => false,
 		);
 
@@ -345,24 +345,29 @@ class EVF_AJAX {
 			} elseif ( file_exists( WP_PLUGIN_DIR . '/' . $slug . '/' . $slug . '.php' ) ) {
 				$class        = 'activate-now';
 				$parent_class = 'inactive';
-				$acitvated = false;
+				$acitvated    = false;
 			} else {
 				$class        = 'install-now';
 				$parent_class = 'inactive';
-				$acitvated = false;
+				$acitvated    = false;
 			}
-			$output .= '<tr class="plugin-card-'.$slug.' plugin ' . $parent_class . '" data-slug="' . $slug . '" data-plugin="' . $slug . '/' . $slug . '.php" data-name="' . $addon . '">';
+			$output .= '<tr class="plugin-card-' . $slug . ' plugin ' . $parent_class . '" data-slug="' . $slug . '" data-plugin="' . $slug . '/' . $slug . '.php" data-name="' . $addon . '">';
 			$output .= '<td class="plugin-name">' . $addon . '</td>';
 			$output .= '<td class="plugin-status"><span class="' . esc_attr( $class ) . '"></span></td>';
 			$output .= '</tr>';
 		}
 		$output .= '</tbody></table>';
-		if( ! $acitvated ) {
-			$output .= '<a href="#" class="everest-forms-template-install-addon">'.esc_html( 'Install & Activate', 'everest-forms' ).'</a>';
+		if ( ! $acitvated ) {
+			$output .= '<a href="#" class="everest-forms-btn everest-forms-btn-primary everest-forms-template-install-addon">' . esc_html( 'Install & Activate', 'everest-forms' ) . '</a>';
 		}
 		$output .= '</div>';
 
-		wp_send_json_success( array( 'html' => $output, 'activate' => $acitvated ) );
+		wp_send_json_success(
+			array(
+				'html'     => $output,
+				'activate' => $acitvated,
+			)
+		);
 	}
 
 	/**
