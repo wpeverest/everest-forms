@@ -290,7 +290,7 @@ jQuery( function ( $ ) {
 				validate_email    = $parent.is( '.validate-email' ),
 				event_type        = e.type;
 
-			if ( $parent.hasClass( 'evf-field-address' ) ) {
+			if ( $parent.hasClass( 'evf-field-address' ) || $parent.hasClass( 'evf-field-payment-single' ) ) {
 				if ( 0 === $parent.find( 'input.evf-error' ).length ) {
 					$parent.removeClass( 'everest-forms-invalid everest-forms-invalid-required-field everest-forms-invalid-email' ).addClass( 'everest-forms-validated' );
 				}
