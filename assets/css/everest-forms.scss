@@ -198,6 +198,10 @@
 					display: block;
 					margin-bottom: 10px;
 
+					&.evf-field-hidden {
+						display: none;
+					}
+
 					.evf-label-hide,
 					.everest-forms-sublabel-hide {
 						display: none;
