@@ -24,7 +24,6 @@ $core_templates = apply_filters(
 	);
 	delete_transient( 'evf_template_section' );
 	delete_transient( 'evf_template_sections' );
-	echo '<pre>' . print_r( $license_plan, true ) . '</pre>';
 ?>
 
 <div class ="wrap everest-forms">

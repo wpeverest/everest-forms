@@ -337,6 +337,7 @@ class EVF_AJAX {
 		$output .= '<thead><tr><th scope="col" class="manage-column required-plugins" colspan="2">Required Addons</th></tr></thead><tbody id="the-list">';
 		$output .= '</div>';
 
+		$acitvated = true;
 		foreach ( $addons as $slug => $addon ) {
 			if ( is_plugin_active( $slug . '/' . $slug . '.php' ) ) {
 				$class        = 'active';
@@ -344,9 +345,11 @@ class EVF_AJAX {
 			} elseif ( file_exists( WP_PLUGIN_DIR . '/' . $slug . '/' . $slug . '.php' ) ) {
 				$class        = 'activate-now';
 				$parent_class = 'inactive';
+				$acitvated = false;
 			} else {
 				$class        = 'install-now';
 				$parent_class = 'inactive';
+				$acitvated = false;
 			}
 			$output .= '<tr class="plugin-card-'.$slug.' plugin ' . $parent_class . '" data-slug="' . $slug . '" data-plugin="' . $slug . '/' . $slug . '.php" data-name="' . $addon . '">';
 			$output .= '<td class="plugin-name">' . $addon . '</td>';
@@ -354,8 +357,12 @@ class EVF_AJAX {
 			$output .= '</tr>';
 		}
 		$output .= '</tbody></table>';
+		if( ! $acitvated ) {
+			$output .= '<a href="#" class="everest-forms-template-install-addon">'.esc_html( 'Install & Activate', 'everest-forms' ).'</a>';
+		}
+		$output .= '</div>';
 
-		wp_send_json_success( $output );
+		wp_send_json_success( array( 'html' => $output, 'activate' => $acitvated ) );
 	}
 
 	/**
