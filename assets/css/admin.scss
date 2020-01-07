@@ -2867,6 +2867,38 @@ button.everest-forms-btn {
 						}
 					}
 				}
+
+				.question-wrap,
+				.answer-wrap {
+					input {
+						margin-right: 8px;
+						vertical-align: middle;
+					}
+
+					.add,
+					.remove {
+						width: 30px;
+						height: 30px;
+						display: inline-flex;
+						vertical-align: middle;
+						border-radius: 3px;
+						border: 1px solid $color_gray-lighten;
+					}
+
+					.add {
+						&:hover {
+							background: $blue;
+							border-color: $blue;
+						}
+					}
+
+					.remove {
+						&:hover {
+							background: $red;
+							border-color: $red;
+						}
+					}
+				}
 			}
 
 			.everest-forms-field-option-payment-multiple,
