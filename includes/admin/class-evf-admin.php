@@ -119,27 +119,6 @@ class EVF_Admin {
 				}
 			}
 
-			// if ( $plugin && in_array( $action, array( 'activate', 'deactivate' ), true ) ) {
-
-			// 	if ( 'activate' === $action ) {
-			// 		if ( ! current_user_can( 'activate_plugin', $plugin ) ) {
-			// 			wp_die( esc_html__( 'Sorry, you are not allowed to activate this plugin.', 'everest-forms' ) );
-			// 		}
-
-			// 		check_admin_referer( 'activate-plugin_' . $plugin );
-
-			// 		activate_plugin( $plugin );
-			// 	} elseif ( 'deactivate' === $action ) {
-			// 		if ( ! current_user_can( 'deactivate_plugins' ) ) {
-			// 			wp_die( esc_html__( 'Sorry, you are not allowed to deactivate plugins for this site.', 'everest-forms' ) );
-			// 		}
-
-			// 		check_admin_referer( 'deactivate-plugin_' . $plugin );
-
-			// 		deactivate_plugins( $plugin );
-			// 	}
-			// }
-
 			// Redirect to the builder page.
 			wp_safe_redirect( admin_url( 'admin.php?page=evf-builder&create-form=1' ) );
 			exit;

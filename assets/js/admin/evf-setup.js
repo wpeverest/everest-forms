@@ -85,24 +85,62 @@ jQuery( function( $ ) {
 						wp.updates.queue.push( {
 							action: 'everest_forms_install_extension',
 							data: {
+								page: pagenow,
 								name: $itemRow.data( 'name' ),
 								slug: $itemRow.data( 'slug' )
 							}
 						} );
 					} );
 
-					if ( ! wp.updates.queue.length ) {
-						if ( error > 0 ) {
-							$target
-								.removeClass( 'updating-message' )
-								.text( $target.data( 'originaltext' ) );
-						} else {
-							_this.model.set( { requiredPlugins: false } );
 
-							// Disable the next and previous demo.
-							$( '.theme-install-overlay' ).find( '.next-theme, .previous-theme' ).addClass( 'disabled' );
-						}
-					}
+
+		// Display bulk notification for install of plugin.
+		$( document ).on( 'wp-plugin-bulk-install-success wp-plugin-bulk-install-error', function( event, response ) {
+			var $itemRow = $( '[data-slug="' + response.slug + '"]' ),
+				$bulkActionNotice, itemName;
+
+			if ( 'wp-' + response.install + '-bulk-install-success' === event.type ) {
+				success++;
+			} else {
+				itemName = response.pluginName ? response.pluginName : $itemRow.find( '.plugin-name' ).text();
+
+				error++;
+				errorMessages.push( itemName + ': ' + response.errorMessage );
+			}
+
+			wp.updates.adminNotice = wp.template( 'wp-bulk-installs-admin-notice' );
+
+			// Remove previous error messages, if any.
+			$( '.everest-forms-recommend-addons .bulk-action-notice' ).remove();
+
+			$( '.everest-forms-recommend-addons .plugins-info' ).after( wp.updates.adminNotice( {
+				id:            'bulk-action-notice',
+				className:     'bulk-action-notice notice-alt',
+				successes:     success,
+				errors:        error,
+				errorMessages: errorMessages,
+				type:          response.install
+			} ) );
+
+			$bulkActionNotice = $( '#bulk-action-notice' ).on( 'click', 'button', function() {
+				// $( this ) is the clicked button, no need to get it again.
+				$( this )
+					.toggleClass( 'bulk-action-errors-collapsed' )
+					.attr( 'aria-expanded', ! $( this ).hasClass( 'bulk-action-errors-collapsed' ) );
+				// Show the errors list.
+				$bulkActionNotice.find( '.bulk-action-errors' ).toggleClass( 'hidden' );
+			} );
+
+			if ( ! wp.updates.queue.length ) {
+				if ( error > 0 ) {
+					$target
+						.removeClass( 'updating-message' )
+						.text( $target.data( 'originaltext' ) );
+				}
+			}
+		} );
+
+
 
 					// Check the queue, now that the event handlers have been added.
 					wp.updates.queueChecker();

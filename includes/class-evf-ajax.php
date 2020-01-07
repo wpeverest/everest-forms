@@ -94,6 +94,7 @@ class EVF_AJAX {
 			'review_dismiss'         => false,
 			'enabled_form'           => false,
 			'template_licence_check' => false,
+			'template_activate_addon' => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -273,6 +274,33 @@ class EVF_AJAX {
 		}
 	}
 
+	public static function template_activate_addon() {
+		check_ajax_referer( 'everest_forms_template_licence_check', 'security' );
+
+		if ( empty( $_POST['addon'] ) ) {
+			wp_send_json_error(
+				array(
+					'errorCode'    => 'no_addon_specified',
+					'errorMessage' => __( 'No Addon specified.', 'everest-forms' ),
+				)
+			);
+		}
+
+		$activate = activate_plugin( $_POST['addon'] . '/' . $_POST['addon'] . '.php' );
+
+		if ( is_wp_error( $activate ) ) {
+			wp_send_json_error(
+				array(
+					'errorCode'    => 'addon_not_active',
+					'errorMessage' => __( 'Addon can not be activate. Please try again.', 'everest-forms' ),
+				)
+			);
+		} else {
+			wp_send_json_success( 'Addon sucessfully activated.' );
+		}
+
+	}
+
 	/**
 	 * Ajax handler for licence check.
 	 *
@@ -304,18 +332,21 @@ class EVF_AJAX {
 			}
 		}
 		$output  = '<div class="everest-forms-recommend-addons">';
-		$output .= '<p>' . __( 'This form template requires the following addons.', 'everest-forms' ) . '</p>';
+		$output .= '<p class="desc plugins-info">' . __( 'This form template requires the following addons.', 'everest-forms' ) . '</p>';
 		$output .= '<table class="plugins-list-table widefat striped">';
 		$output .= '<thead><tr><th scope="col" class="manage-column required-plugins" colspan="2">Required Addons</th></tr></thead><tbody id="the-list">';
 		$output .= '</div>';
 
 		foreach ( $addons as $slug => $addon ) {
-			if ( ! is_plugin_active( $slug . '/' . $slug . '.php' ) ) {
-				$class        = 'install-now';
-				$parent_class = 'inactive';
-			} else {
+			if ( is_plugin_active( $slug . '/' . $slug . '.php' ) ) {
 				$class        = 'active';
 				$parent_class = '';
+			} elseif ( file_exists( WP_PLUGIN_DIR . '/' . $slug . '/' . $slug . '.php' ) ) {
+				$class        = 'activate-now';
+				$parent_class = 'inactive';
+			} else {
+				$class        = 'install-now';
+				$parent_class = 'inactive';
 			}
 			$output .= '<tr class="plugin-card-'.$slug.' plugin ' . $parent_class . '" data-slug="' . $slug . '" data-plugin="' . $slug . '/' . $slug . '.php" data-name="' . $addon . '">';
 			$output .= '<td class="plugin-name">' . $addon . '</td>';
@@ -348,7 +379,8 @@ class EVF_AJAX {
 				)
 			);
 		}
-
+		$slug   = sanitize_key( wp_unslash( $_POST['slug'] ) );
+		$plugin = plugin_basename( sanitize_text_field( wp_unslash( $_POST['slug'] . '/' . $_POST['slug'] . '.php' ) ) );
 		$status = array(
 			'install' => 'plugin',
 			'slug'    => sanitize_key( wp_unslash( $_POST['slug'] ) ),
@@ -361,6 +393,24 @@ class EVF_AJAX {
 
 		include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
 		include_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+
+		if ( file_exists( WP_PLUGIN_DIR . '/' . $slug ) ) {
+			$plugin_data          = get_plugin_data( WP_PLUGIN_DIR . '/' . $plugin );
+			$status['plugin']     = $plugin;
+			$status['pluginName'] = $plugin_data['Name'];
+
+			if ( current_user_can( 'activate_plugin', $plugin ) && is_plugin_inactive( $plugin ) ) {
+				$result = activate_plugin( $plugin );
+
+				if ( is_wp_error( $result ) ) {
+					$status['errorCode']    = $result->get_error_code();
+					$status['errorMessage'] = $result->get_error_message();
+					wp_send_json_error( $status );
+				}
+
+				wp_send_json_success( $status );
+			}
+		}
 
 		$api = json_decode(
 			EVF_Updater_Key_API::version(
@@ -414,14 +464,18 @@ class EVF_AJAX {
 		$install_status = install_plugin_install_status( $api );
 
 		if ( current_user_can( 'activate_plugin', $install_status['file'] ) && is_plugin_inactive( $install_status['file'] ) ) {
-			$status['activateUrl'] = add_query_arg(
-				array(
-					'action'   => 'activate',
-					'plugin'   => $install_status['file'],
-					'_wpnonce' => wp_create_nonce( 'activate-plugin_' . $install_status['file'] ),
-				),
-				admin_url( 'admin.php?page=evf-addons' )
-			);
+			if ( 'everest-forms_page_evf-builder' === $_POST['page'] ) {
+				activate_plugin( $install_status['file'] );
+			} else {
+				$status['activateUrl'] = add_query_arg(
+					array(
+						'action'   => 'activate',
+						'plugin'   => $install_status['file'],
+						'_wpnonce' => wp_create_nonce( 'activate-plugin_' . $install_status['file'] ),
+					),
+					admin_url( 'admin.php?page=evf-addons' )
+				);
+			}
 		}
 
 		wp_send_json_success( $status );
