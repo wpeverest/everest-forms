@@ -152,11 +152,14 @@ jQuery( function( $ ) {
 						self.setContentAppend( namePrompt+nameField+nameError+response.data.html );
 						if( response.data.activate ) {
 							$('.everest-forms-builder-setup .jconfirm-buttons button').show();
+						} else {
+							var installButton = '<a href="#" class="everest-forms-btn everest-forms-btn-primary everest-forms-template-install-addon">Install & Activate</a>';
+							$('.everest-forms-builder-setup .jconfirm-buttons').append(installButton);
 						}
 					});
 				},
 				buttons: {
-					CONTINUE: {
+					Continue: {
 						isHidden: true, // hide the button
 						btnClass: 'everest-forms-btn everest-forms-btn-primary',
 						action: function () {

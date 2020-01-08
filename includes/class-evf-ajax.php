@@ -356,11 +356,7 @@ class EVF_AJAX {
 			$output .= '<td class="plugin-status"><span class="' . esc_attr( $class ) . '"></span></td>';
 			$output .= '</tr>';
 		}
-		$output .= '</tbody></table>';
-		if ( ! $acitvated ) {
-			$output .= '<a href="#" class="everest-forms-btn everest-forms-btn-primary everest-forms-template-install-addon">' . esc_html( 'Install & Activate', 'everest-forms' ) . '</a>';
-		}
-		$output .= '</div>';
+		$output .= '</tbody></table></div>';
 
 		wp_send_json_success(
 			array(
