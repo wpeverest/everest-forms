@@ -10,6 +10,7 @@ jQuery( function( $ ) {
 			this.title_focus();
 
 			$( document ).on('click', '.everest-forms-template-install-addon', this.install_addon);
+			$( document ).on('click', '.everest-forms-builder-setup .upgrade-modal', this.message_upgrade);
 
 			// Select and apply a template.
 			this.$setup_form.on( 'click', '.evf-template-select', this.template_select );
@@ -112,6 +113,30 @@ jQuery( function( $ ) {
 
 			// Check the queue, now that the event handlers have been added.
 			wp.updates.queueChecker();
+		},
+		message_upgrade: function(){
+			var templateName = $(this).data('template-name-raw'),
+				message = evf_setup_params.upgrade_message.replace( /%name%/g, templateName );
+			$.alert({
+				title: templateName + ' ' + evf_setup_params.upgrade_title,
+				icon: 'dashicons dashicons-lock',
+				content: message,
+				type: 'red',
+				boxWidth: '565px',
+				buttons: {
+					confirm: {
+						text: evf_setup_params.upgrade_button,
+						btnClass: 'btn-confirm',
+						keys: ['enter'],
+						action: function () {
+							window.open( evf_setup_params.upgrade_url, '_blank' );
+						}
+					},
+					cancel: {
+						text: evf_data.i18n_ok
+					}
+				}
+			});
 		},
 		template_select: function( event ) {
 			var $this        = $( this ),
