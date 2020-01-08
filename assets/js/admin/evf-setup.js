@@ -156,9 +156,8 @@ jQuery( function( $ ) {
 					});
 				},
 				buttons: {
-					confirm: {
+					CONTINUE: {
 						isHidden: true, // hide the button
-						keys: ['y'],
 						btnClass: 'everest-forms-btn everest-forms-btn-primary',
 						action: function () {
 								// Don't do anything for selects that trigger modal.
