@@ -26,16 +26,19 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 			1 => array(
 				'label'   => esc_html__( 'First Choice', 'everest-forms' ),
 				'value'   => '',
+				'image'   => '',
 				'default' => '',
 			),
 			2 => array(
 				'label'   => esc_html__( 'Second Choice', 'everest-forms' ),
 				'value'   => '',
+				'image'   => '',
 				'default' => '',
 			),
 			3 => array(
 				'label'   => esc_html__( 'Third Choice', 'everest-forms' ),
 				'value'   => '',
+				'image'   => '',
 				'default' => '',
 			),
 		);
