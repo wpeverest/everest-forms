@@ -11,6 +11,7 @@ jQuery( function( $ ) {
 
 			$( document ).on('click', '.everest-forms-template-install-addon', this.install_addon);
 			$( document ).on('click', '.everest-forms-builder-setup .upgrade-modal', this.message_upgrade);
+			$( document ).on('click', '.everest-forms-builder-setup .evf-template-preview', this.template_preview);
 
 			// Select and apply a template.
 			this.$setup_form.on( 'click', '.evf-template-select', this.template_select );
@@ -138,6 +139,11 @@ jQuery( function( $ ) {
 				}
 			});
 		},
+		template_preview: function() {
+			var $this = $(this),
+				previewLink = $this.data('preview-link');
+				$this.closest('.everest-forms-setup').find('.evf-template-preview-iframe #frame').attr('src', previewLink);
+			},
 		template_select: function( event ) {
 			var $this        = $( this ),
 				spinner      = '<i class="evf-loading evf-loading-active" />';
