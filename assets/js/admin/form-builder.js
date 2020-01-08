@@ -730,7 +730,7 @@
 			var $fieldOptions = $( '#everest-forms-field-option-' + id );
 
 			// Radio and Checkbox use _ template.
-			if ( 'radio' === type || 'checkbox' === type ) {
+			if ( 'radio' === type || 'checkbox' === type || 'payment-multiple' === type || 'payment-checkbox' === type ) {
 				var choices  = [],
 					formData = EVFPanelBuilder.formObject( $fieldOptions ),
 					settings = formData.form_fields[ id ];
