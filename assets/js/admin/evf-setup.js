@@ -99,11 +99,13 @@ jQuery( function( $ ) {
 				});
 
 				if ( ! wp.updates.queue.length) {
-					$('.everest-forms-template-install-addon').remove();
-					$('.everest-forms-builder-setup .jconfirm-buttons button').show();
 					if (error > 0) {
 						$target.removeClass("updating-message").text($target.data("originaltext"));
 					}
+				}
+				if ( wp.updates.queue.length === 0 ) {
+					$('.everest-forms-template-install-addon').remove();
+					$('.everest-forms-builder-setup .jconfirm-buttons button').show();
 				}
 			}
 			);
@@ -157,6 +159,7 @@ jQuery( function( $ ) {
 					confirm: {
 						isHidden: true, // hide the button
 						keys: ['y'],
+						btnClass: 'everest-forms-btn everest-forms-btn-primary',
 						action: function () {
 								// Don't do anything for selects that trigger modal.
 							if ( $this.closest('.everest-forms').find('.evf-loading').hasClass( 'evf-loading-active' ) ) {
