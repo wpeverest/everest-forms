@@ -137,26 +137,31 @@ jQuery( function( $ ) {
 				content: function() {
 					// Fire AJAX.
 					var self = this;
-					var data =  {
-						action  : 'everest_forms_template_licence_check',
-						plan    : $this.attr('data-licence-plan'),
-						slug    : $this.attr('data-template'),
-						security: evf_setup_params.template_licence_check_nonce
-					}
-
-					return $.ajax({
-						url: evf_email_params.ajax_url,
-						data: data,
-						type: 'POST',
-					}).done( function( response ) {
-						self.setContentAppend( namePrompt+nameField+nameError+response.data.html );
-						if( response.data.activate ) {
-							$('.everest-forms-builder-setup .jconfirm-buttons button').show();
-						} else {
-							var installButton = '<a href="#" class="everest-forms-btn everest-forms-btn-primary everest-forms-template-install-addon">Install & Activate</a>';
-							$('.everest-forms-builder-setup .jconfirm-buttons').append(installButton);
+					if( $target.closest('.evf-template').find('span.everest-forms-badge').length ){
+						var data =  {
+							action  : 'everest_forms_template_licence_check',
+							plan    : $this.attr('data-licence-plan'),
+							slug    : $this.attr('data-template'),
+							security: evf_setup_params.template_licence_check_nonce
 						}
-					});
+
+						return $.ajax({
+							url: evf_email_params.ajax_url,
+							data: data,
+							type: 'POST',
+						}).done( function( response ) {
+							self.setContentAppend( namePrompt+nameField+nameError+response.data.html );
+							if( response.data.activate ) {
+								$('.everest-forms-builder-setup .jconfirm-buttons button').show();
+							} else {
+								var installButton = '<a href="#" class="everest-forms-btn everest-forms-btn-primary everest-forms-template-install-addon">Install & Activate</a>';
+								$('.everest-forms-builder-setup .jconfirm-buttons').append(installButton);
+							}
+						});
+					} else {
+						$('.everest-forms-builder-setup .jconfirm-buttons button').show();
+						return namePrompt+nameField+nameError;
+					}
 				},
 				buttons: {
 					Continue: {
