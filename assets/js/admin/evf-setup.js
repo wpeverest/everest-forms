@@ -115,13 +115,12 @@ jQuery( function( $ ) {
 			wp.updates.queueChecker();
 		},
 		message_upgrade: function(){
-			var templateName = $(this).data('template-name-raw'),
-				message = evf_setup_params.upgrade_message.replace( /%name%/g, templateName );
+			var templateName = $(this).data('template-name-raw');
 			$.alert({
 				title: templateName + ' ' + evf_setup_params.upgrade_title,
 				icon: 'dashicons dashicons-lock',
 				backgroundDismiss: false,
-				content: message,
+				content: evf_setup_params.upgrade_message,
 				type: 'red',
 				boxWidth: '565px',
 				buttons: {
