@@ -120,6 +120,7 @@ jQuery( function( $ ) {
 			$.alert({
 				title: templateName + ' ' + evf_setup_params.upgrade_title,
 				icon: 'dashicons dashicons-lock',
+				backgroundDismiss: false,
 				content: message,
 				type: 'red',
 				boxWidth: '565px',
