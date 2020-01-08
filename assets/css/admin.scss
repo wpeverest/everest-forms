@@ -980,7 +980,7 @@ body.everest-forms-builder-setup,
 					margin-bottom: 0;
 
 					input[type="text"] {
-						margin-top: 5px;
+						margin: 5px 2px 2px 2px;
 						padding: 5px 10px;
 
 						&:focus {
@@ -1051,8 +1051,25 @@ body.everest-forms-builder-setup,
 					display: inline-block;
 					border: 2px solid $color_gray-lighten;
 
+					&.active,
 					&.activate-now {
-						border-color: $green;
+						&::after {
+							position: absolute;
+							left: 50%;
+							top: 50%;
+							opacity: 1;
+							width: 34%;
+							height: 50%;
+							content: '';
+							transform-origin: left top;
+							border-top: 2px solid $color_gray-lighten;
+							border-right: 2px solid $color_gray-lighten;
+							transform: scaleX(-1) rotate(135deg) translate(-58%,-40%);
+						}
+					}
+
+					&.activate-now {
+						border-color: $color_gray-lighten;
 
 						&.updating-message {
 							border-color: $color_gray-lighten;
@@ -1064,23 +1081,18 @@ body.everest-forms-builder-setup,
 						border-color: $green;
 
 						&::after {
-							position: absolute;
-							left: 50%;
-							top: 50%;
-							opacity: 1;
-							width: 34%;
-							height: 50%;
-							content: '';
-							transform-origin: left top;
 							border-top: 2px solid $green;
 							border-right: 2px solid $green;
-							transform: scaleX(-1) rotate(135deg) translate(-58%,-40%);
 						}
 					}
 
 					&.updating-message {
 						border-left-color: $green;
 						animation: spin .75s linear infinite;
+
+						&:after {
+							content: none;
+						}
 					}
 				}
 			}
