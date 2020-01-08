@@ -50,33 +50,38 @@ $core_templates = apply_filters(
 		</div>
 		<div class="everest-forms-form-template evf-setup-templates">
 			<?php
-			foreach ( $templates as $template ) :
-				$badge = '';
-				$click_class = '';
-				if ( ! in_array( 'free', $template->plan ) ) {
-					$badge = '<span class="everest-forms-badge everest-forms-badge-success">' . __( 'Pro', 'everest-forms' ) . '</span>';
-				}
+			if ( empty( $templates ) ) {
+				$error_string = esc_html("Please check your internet connection.", 'everest-forms' );
+				echo '<div id="message" class="error"><p>' . $error_string . '</p></div>';
+			} else {
+				foreach ( $templates as $template ) :
+					$badge = '';
+					$click_class = '';
+					if ( ! in_array( 'free', $template->plan ) ) {
+						$badge = '<span class="everest-forms-badge everest-forms-badge-success">' . __( 'Pro', 'everest-forms' ) . '</span>';
+					}
 
-				if ( 'blank' === $template->slug ) {
-					$click_class = "evf-template-select";
-				}
-				?>
-				<div class="everest-forms-template-wrap evf-template"  id="everest-forms-template-<?php echo esc_attr( $template->slug ); ?>">
-					<figure class="everest-forms-screenshot <?php echo $click_class; ?>" data-template-name-raw="<?php echo esc_attr( $template->title ); ?>" data-template="<?php echo esc_attr( $template->slug ); ?>" data-template-name="<?php printf( _x( '%s template', 'Template name', 'everest-forms' ), esc_attr( $template->title ) ); ?>">
-						<img src="<?php echo esc_url( $template->image ); ?>"/>
-						<?php echo $badge; ?>
-						<?php if ( 'blank' !== $template->slug ) : ?>
-							<div class="form-action">
-								<a href="#" class="everest-forms-btn everest-forms-btn-primary evf-template-select" data-licence-plan="<?php echo esc_attr( $license_plan ); ?>" data-template-name-raw="<?php echo esc_attr( $template->title ); ?>" data-template-name="<?php printf( _x( '%s template', 'Template name', 'everest-forms' ), esc_attr( $template->title ) ); ?>" data-template="<?php echo esc_attr( $template->slug ); ?>"><?php printf( _x( '%s', 'Template name', 'everest-forms' ), __( 'Get Started', 'everest-forms' ) ); ?></a>
-								<a href="#" class="everest-forms-btn everest-forms-btn-secondary"><?php _e( 'Preview', 'everest-forms' ); ?></a>
-							</div>
-						<?php endif; ?>
-					</figure>
-					<div class="everest-forms-form-id-container">
-						<a class="everest-forms-template-name evf-template-select" href="#" data-licence-plan="<?php echo esc_attr( $license_plan ); ?>" data-template-name-raw="<?php echo esc_attr( $template->title ); ?>" data-template="<?php echo esc_attr( $template->slug ); ?>" data-template-name="<?php printf( _x( '%s template', 'Template name', 'everest-forms' ), esc_attr( $template->title ) ); ?>"><?php echo esc_attr( $template->title ); ?></a>
+					if ( 'blank' === $template->slug ) {
+						$click_class = "evf-template-select";
+					}
+					?>
+					<div class="everest-forms-template-wrap evf-template"  id="everest-forms-template-<?php echo esc_attr( $template->slug ); ?>">
+						<figure class="everest-forms-screenshot <?php echo $click_class; ?>" data-template-name-raw="<?php echo esc_attr( $template->title ); ?>" data-template="<?php echo esc_attr( $template->slug ); ?>" data-template-name="<?php printf( _x( '%s template', 'Template name', 'everest-forms' ), esc_attr( $template->title ) ); ?>">
+							<img src="<?php echo esc_url( $template->image ); ?>"/>
+							<?php echo $badge; ?>
+							<?php if ( 'blank' !== $template->slug ) : ?>
+								<div class="form-action">
+									<a href="#" class="everest-forms-btn everest-forms-btn-primary evf-template-select" data-licence-plan="<?php echo esc_attr( $license_plan ); ?>" data-template-name-raw="<?php echo esc_attr( $template->title ); ?>" data-template-name="<?php printf( _x( '%s template', 'Template name', 'everest-forms' ), esc_attr( $template->title ) ); ?>" data-template="<?php echo esc_attr( $template->slug ); ?>"><?php printf( _x( '%s', 'Template name', 'everest-forms' ), __( 'Get Started', 'everest-forms' ) ); ?></a>
+									<a href="#" class="everest-forms-btn everest-forms-btn-secondary"><?php _e( 'Preview', 'everest-forms' ); ?></a>
+								</div>
+							<?php endif; ?>
+						</figure>
+						<div class="everest-forms-form-id-container">
+							<a class="everest-forms-template-name evf-template-select" href="#" data-licence-plan="<?php echo esc_attr( $license_plan ); ?>" data-template-name-raw="<?php echo esc_attr( $template->title ); ?>" data-template="<?php echo esc_attr( $template->slug ); ?>" data-template-name="<?php printf( _x( '%s template', 'Template name', 'everest-forms' ), esc_attr( $template->title ) ); ?>"><?php echo esc_attr( $template->title ); ?></a>
+						</div>
 					</div>
-				</div>
-			<?php endforeach; ?>
+				<?php endforeach;
+		 	} ?>
 		</div>
 	</div>
 </div>

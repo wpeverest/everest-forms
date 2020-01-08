@@ -118,8 +118,9 @@ class EVF_Admin_Forms {
 				}
 			}
 		}
-
-		return apply_filters( 'everest_forms_template_section_data', $template_data->templates );
+		if ( ! empty( $template_data->templates ) ) {
+			return apply_filters( 'everest_forms_template_section_data', $template_data->templates );
+		}
 	}
 
 	/**
