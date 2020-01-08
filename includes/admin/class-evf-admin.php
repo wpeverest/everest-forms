@@ -117,11 +117,11 @@ class EVF_Admin {
 				foreach ( array( 'evf_pro_license_plan', 'evf_template_sections', 'evf_template_section' ) as $transient ) {
 					delete_transient( $transient );
 				}
-			}
 
-			// Redirect to the builder page.
-			wp_safe_redirect( admin_url( 'admin.php?page=evf-builder&create-form=1' ) );
-			exit;
+				// Redirect to the builder page.
+				wp_safe_redirect( admin_url( 'admin.php?page=evf-builder&create-form=1' ) );
+				exit;
+			}
 		}
 	}
 
