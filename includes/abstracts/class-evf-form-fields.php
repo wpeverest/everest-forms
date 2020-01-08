@@ -521,9 +521,10 @@ abstract class EVF_Form_Fields {
 			 * Choices.
 			 */
 			case 'choices':
-				$class  = array();
-				$label  = ! empty( $args['label'] ) ? esc_html( $args['label'] ) : esc_html__( 'Choices', 'everest-forms' );
-				$values = ! empty( $field['choices'] ) ? $field['choices'] : $this->defaults;
+				$class      = array();
+				$label      = ! empty( $args['label'] ) ? esc_html( $args['label'] ) : esc_html__( 'Choices', 'everest-forms' );
+				$values     = ! empty( $field['choices'] ) ? $field['choices'] : $this->defaults;
+				$input_type = in_array( $field['type'], array( 'radio', 'payment-multiple' ), true ) ? 'radio' : 'checkbox';
 
 				if ( ! empty( $field['show_values'] ) ) {
 					$class[] = 'show-values';
@@ -545,7 +546,6 @@ abstract class EVF_Form_Fields {
 				);
 
 				// Field contents.
-				$field_type    = 'checkbox' === $this->type ? 'checkbox' : 'radio';
 				$field_content = sprintf(
 					'<ul data-next-id="%s" class="evf-choices-list %s" data-field-id="%s" data-field-type="%s">',
 					max( array_keys( $values ) ) + 1,
@@ -560,10 +560,14 @@ abstract class EVF_Form_Fields {
 
 					$field_content .= sprintf( '<li data-key="%1$d">', absint( $key ) );
 					$field_content .= '<span class="sort"><svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" role="img" aria-hidden="true" focusable="false"><path d="M13,8c0.6,0,1-0.4,1-1s-0.4-1-1-1s-1,0.4-1,1S12.4,8,13,8z M5,6C4.4,6,4,6.4,4,7s0.4,1,1,1s1-0.4,1-1S5.6,6,5,6z M5,10 c-0.6,0-1,0.4-1,1s0.4,1,1,1s1-0.4,1-1S5.6,10,5,10z M13,10c-0.6,0-1,0.4-1,1s0.4,1,1,1s1-0.4,1-1S13.6,10,13,10z M9,6 C8.4,6,8,6.4,8,7s0.4,1,1,1s1-0.4,1-1S9.6,6,9,6z M9,10c-0.6,0-1,0.4-1,1s0.4,1,1,1s1-0.4,1-1S9.6,10,9,10z"></path></svg></span>';
-					$field_content .= sprintf( '<input type="%1$s" name="%2$s[default]" class="default" value="1" %3$s>', $field_type, $name, checked( '1', $default, false ) );
+					$field_content .= sprintf( '<input type="%1$s" name="%2$s[default]" class="default" value="1" %3$s>', $input_type, $name, checked( '1', $default, false ) );
 					$field_content .= '<div class="evf-choice-list-input">';
 					$field_content .= sprintf( '<input type="text" name="%1$s[label]" value="%2$s" class="label">', $name, esc_attr( $value['label'] ) );
-					$field_content .= sprintf( '<input type="text" name="%1$s[value]" value="%2$s" class="value">', $name, esc_attr( $value['value'] ) );
+					if ( in_array( $field['type'], array( 'payment-multiple', 'payment-checkbox' ), true ) ) {
+						$field_content .= sprintf( '<input type="text" name="%1$s[value]" value="%2$s" class="value evf-money-input" placeholder="%3$s">', $name, esc_attr( $value['value'] ), evf_format_amount( 0 ) );
+					} else {
+						$field_content .= sprintf( '<input type="text" name="%1$s[value]" value="%2$s" class="value">', $name, esc_attr( $value['value'] ) );
+					}
 					$field_content .= '</div>';
 					$field_content .= '<a class="add" href="#"><i class="dashicons dashicons-plus-alt"></i></a>';
 					$field_content .= '<a class="remove" href="#"><i class="dashicons dashicons-dismiss"></i></a>';
@@ -947,7 +951,7 @@ abstract class EVF_Form_Fields {
 
 			case 'choices':
 				$values         = ! empty( $field['choices'] ) ? $field['choices'] : $this->defaults;
-				$choices_fields = array( 'select', 'radio', 'checkbox', 'payment-checkbox', 'payment-multiple' );
+				$choices_fields = array( 'select', 'radio', 'checkbox', 'payment-multiple', 'payment-checkbox' );
 
 				// Notify if choices source is currently empty.
 				if ( empty( $values ) ) {

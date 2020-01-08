@@ -2729,6 +2729,13 @@ button.everest-forms-btn {
 						&.value {
 							display: none;
 							margin-top: 8px;
+
+							&.evf-money-input {
+								width: 22%;
+								display: inline-block;
+								margin: 0 0 0 auto;
+								flex: 0 0 22%;
+							}
 						}
 					}
 
@@ -2906,12 +2913,14 @@ button.everest-forms-btn {
 				.everest-forms-field-option-row {
 					li {
 						input[type='text'] {
-							width: 46%;
+							width: 73%;
 							margin-right: 8px;
-							vertical-align: middle;
 
-							&.value {
-								width: 22%;
+							&.evf-money-input {
+								width: 23%;
+								display: inline-block;
+								margin: 0 0 0 auto;
+								flex: 0 0 23%;
 							}
 						}
 					}
