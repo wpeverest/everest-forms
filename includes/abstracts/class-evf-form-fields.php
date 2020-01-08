@@ -563,11 +563,15 @@ abstract class EVF_Form_Fields {
 					$field_content .= sprintf( '<input type="%1$s" name="%2$s[default]" class="default" value="1" %3$s>', $input_type, $name, checked( '1', $default, false ) );
 					$field_content .= '<div class="evf-choice-list-input">';
 					$field_content .= sprintf( '<input type="text" name="%1$s[label]" value="%2$s" class="label">', $name, esc_attr( $value['label'] ) );
-					if ( in_array( $field['type'], array( 'payment-multiple', 'payment-checkbox' ), true ) ) {
-						$field_content .= sprintf( '<input type="text" name="%1$s[value]" value="%2$s" class="value evf-money-input" placeholder="%3$s">', $name, esc_attr( $value['value'] ), evf_format_amount( 0 ) );
-					} else {
-						$field_content .= sprintf( '<input type="text" name="%1$s[value]" value="%2$s" class="value">', $name, esc_attr( $value['value'] ) );
+
+					// BW compatibility for amount and supports payment choice fields.
+					$amount = ! empty( $field['amount'][ $key ]['value'] ) ? $field['amount'][ $key ]['value'] : $value['value'];
+					if ( $amount && in_array( $field['type'], array( 'payment-multiple', 'payment-checkbox' ), true ) ) {
+						$field_content .= sprintf( '<input type="text" name="%1$s[value]" value="%2$s" class="value evf-money-input" placeholder="%3$s">', $name, esc_attr( $amount ), evf_format_amount( 0 ) );
+					} elseif ( $amount ) {
+						$field_content .= sprintf( '<input type="text" name="%1$s[value]" value="%2$s" class="value">', $name, esc_attr( $amount ) );
 					}
+
 					$field_content .= '</div>';
 					$field_content .= '<a class="add" href="#"><i class="dashicons dashicons-plus-alt"></i></a>';
 					$field_content .= '<a class="remove" href="#"><i class="dashicons dashicons-dismiss"></i></a>';
