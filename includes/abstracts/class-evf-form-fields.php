@@ -560,7 +560,7 @@ abstract class EVF_Form_Fields {
 
 					// BW compatibility for value in payment fields.
 					if ( ! empty( $field['amount'][ $key ]['value'] ) ) {
-						$choice['value'] = ! empty( $field['amount'][ $key ]['value'] ) ? $field['amount'][ $key ]['value'] : $choice['value'];
+						$choice['value'] = $field['amount'][ $key ]['value'];
 					}
 
 					$field_content .= sprintf( '<li data-key="%1$d">', absint( $key ) );
