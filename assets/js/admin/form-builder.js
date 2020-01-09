@@ -738,7 +738,7 @@
 				// Order of choices for a specific field.
 				$( '#everest-forms-field-option-' + id ).find( '.evf-choices-list li' ).each( function() {
 					choices.push( $( this ).data( 'key' ) );
-				});
+				} );
 
 				var tmpl = wp.template( 'everest-forms-field-preview-choices' ),
 					type = 'checkbox' === type || 'payment-checkbox' === type ? 'checkbox' : 'radio';
@@ -761,28 +761,28 @@
 			}
 
 			$( '#everest-forms-field-option-row-' + id + '-choices .evf-choices-list li' ).each( function( index ) {
-				var $this    = $(this),
+				var $this    = $( this ),
 					label    = $this.find( 'input.label' ).val(),
 					selected = $this.find( 'input.default' ).is( ':checked' ),
-					choice 	 = $( new_choice.replace('{label}', label) );
+					choice 	 = $( new_choice.replace( '{label}', label ) );
 
 				$( '#everest-forms-field-' + id + ' .primary-input' ).append( choice );
 
 				if ( true === selected ) {
 					switch ( type ) {
 						case 'select':
-							choice.prop( 'selected', 'true' );
+							choice.prop( 'selected', true );
 							break;
 						case 'radio':
 						case 'checkbox':
-							choice.find( 'input' ).prop( 'checked', 'true' );
+							choice.find( 'input' ).prop( 'checked', true );
 							break;
 					}
 				}
-			});
+			} );
 		},
 		bindFormSettings: function () {
-			$( 'body' ).on('click', '.evf-setting-panel', function ( e ) {
+			$( 'body' ).on( 'click', '.evf-setting-panel', function( e ) {
 				var data_setting_section = $(this).attr('data-section');
 				$('.evf-setting-panel').removeClass('active');
 				$('.everest-forms-active-email').removeClass('active');
