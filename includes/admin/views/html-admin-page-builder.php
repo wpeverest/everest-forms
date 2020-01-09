@@ -86,9 +86,9 @@ $preview_link = add_query_arg(
 					<label>
 						<span class="everest-forms-image-choices-image">
 							<# if ( ! _.isEmpty( data.settings.choices[choiceID].image ) ) { #>
-								<img src="{{ data.settings.choices[choiceID].image }}" alt="{{ data.settings.choices[choiceID].label }}"<# if ( data.settings.choices[choiceID].label ) { print( ' title="{{ data.settings.choices[choiceID].label }}"' ); } #>>
+								<img src="{{ data.settings.choices[choiceID].image }}" alt="{{ data.settings.choices[choiceID].label }}"<# if ( data.settings.choices[choiceID].label ) { #> title="{{ data.settings.choices[choiceID].label }}"<# } #>>
 							<# } else { #>
-								<img src="<?php echo esc_url( EVF()->plugin_url() . '/assets/images/everest-forms-placeholder.png' ); ?>" alt="{{ data.settings.choices[choiceID].label }}"<# if ( data.settings.choices[choiceID].label ) { print( ' title="{{ data.settings.choices[choiceID].label }}"' ); } #>>
+								<img src="<?php echo esc_url( EVF()->plugin_url() . '/assets/images/everest-forms-placeholder.png' ); ?>" alt="{{ data.settings.choices[choiceID].label }}"<# if ( data.settings.choices[choiceID].label ) { #> title="{{ data.settings.choices[choiceID].label }}"<# } #>>
 							<# } #>
 						</span>
 						<input type="{{ data.type }}" disabled<# if ( 1 === data.settings.choices[choiceID].default ) { print( ' checked' ); } #>>
