@@ -702,23 +702,21 @@ body.everest-forms-builder-setup,
 
 	.everest-forms-label-edit {
 		display: flex;
-		align-items: center;
 		justify-content: space-between;
 
 		.dashicons {
-			background: $color-white;
-			height: 30px;
-			width: 30px;
+			color: $color_gray-light;
+			height: 24px;
+			width: 24px;
 			cursor: pointer;
-			flex: 0 0 30px;
-			margin-left: 4px;
+			flex: 0 0 24px;
+			margin: 4px;
 			border-radius: 3px;
 			display: flex;
 			align-items: center;
 			justify-content: center;
 			opacity: 0;
-			visibility: none;
-			border: 1px solid $color_gray-lighten;
+			visibility: hidden;
 		}
 
 		&:hover,
@@ -729,6 +727,10 @@ body.everest-forms-builder-setup,
 				visibility: visible;
 				opacity: 1;
 			}
+		}
+
+		input {
+			margin-right: 6px;
 		}
 	}
 
@@ -2558,7 +2560,9 @@ body.everest-forms-builder-setup,
 				margin-bottom: 4px;
 
 				label {
-					margin-bottom: 0;
+					margin-bottom: 4px;
+					padding: 4px 0;
+					flex: 1;
 				}
 
 				input {
