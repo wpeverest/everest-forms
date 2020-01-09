@@ -741,7 +741,7 @@
 				});
 
 				var tmpl = wp.template( 'everest-forms-field-preview-choices' ),
-					type = 'checkbox' === type ? 'checkbox' : 'radio';
+					type = 'checkbox' === type || 'payment-checkbox' === type ? 'checkbox' : 'radio';
 					data = {
 						type:     type,
 						order:    choices,
