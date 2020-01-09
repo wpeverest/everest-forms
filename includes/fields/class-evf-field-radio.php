@@ -377,6 +377,6 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 		}
 
 		// Push field details to be saved.
-		EVF()->task->form_fields[ $field_id ] = $data;
+		evf()->task->form_fields[ $field_id ] = $data;
 	}
 }
