@@ -45,6 +45,7 @@ class EVF_Admin {
 		include_once dirname( __FILE__ ) . '/class-evf-admin-editor.php';
 		include_once dirname( __FILE__ ) . '/class-evf-admin-forms.php';
 		include_once dirname( __FILE__ ) . '/class-evf-admin-entries.php';
+		include_once dirname( __FILE__ ) . '/class-evf-admin-import-export.php';
 
 		// Setup/welcome.
 		if ( ! empty( $_GET['page'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
