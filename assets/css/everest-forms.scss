@@ -232,7 +232,7 @@
 							input[type='checkbox'],
 							input[type='radio'] {
 								padding: 0;
-								margin-top: 2px;
+								margin-top: 6px;
 								margin-right: 8px;
 							}
 						}
@@ -298,8 +298,13 @@
 						ul {
 							li {
 								display: flex;
-								align-items: center;
 								margin-bottom: 5px;
+
+								&.everest-forms-image-choices-item {
+									input {
+										margin-top: 0px;
+									}
+								}
 							}
 
 							&.everest-forms-image-choices label {
@@ -315,13 +320,14 @@
 
 						&.everest-forms-list-2-columns,
 						&.everest-forms-list-3-columns {
-							.everest-forms-image-choices {
+							ul {
 								display: flex;
 								flex-wrap: wrap;
 								margin-left: -15px;
 								margin-right: -15px;
 
-								.everest-forms-image-choices-item {
+								li {
+									width: 100%;
 									padding-left: 15px;
 									padding-right: 15px;
 
@@ -333,23 +339,31 @@
 						}
 
 						&.everest-forms-list-2-columns {
-							.everest-forms-image-choices-item {
-								flex: 0 0 50%;
-								max-width: 50%;
+							@media (min-width: 768px) {
+								li {
+									flex: 0 0 50%;
+									max-width: 50%;
 
-								&:nth-child(1n + 3) {
-									margin-top: 10px;
+									&:nth-child(1n + 3) {
+										margin-top: 10px;
+
+										@media screen and (max-width: 768px) {
+											margin-top: 0;
+										}
+									}
 								}
 							}
 						}
 
 						&.everest-forms-list-3-columns {
-							.everest-forms-image-choices-item {
-								flex: 0 0 33.33333%;
-								max-width: 33.33333%;
+							@media (min-width: 768px) {
+								li {
+									flex: 0 0 33.33333%;
+									max-width: 33.33333%;
 
-								&:nth-child(1n + 4) {
-									margin-top: 10px;
+									&:nth-child(1n + 4) {
+										margin-top: 10px;
+									}
 								}
 							}
 						}
