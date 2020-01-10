@@ -2,11 +2,17 @@
 
 = 1.6.0 - xx-xx-2020 =
 * Feature - Import Export of Everest Forms.
+* Enhancement - Improve choice field with image support.
+* Enhancement - Randomize the order of the choice field support.
+* Enhancement - Limit the number of options to be checked in checkboxes field.
+* Enhancement - Robust the layout for displaying field choice i.e inline or {one|two|three} columns.
 * Enhancement - Single Line Text/Paragraph fields limitation options (limit by character or word count).
 * Fix - Error handling in AJAX handler for endpoint.
+* Fix - Choice default value not rendered on frontend.
 * Fix - Checks if only string is provided for JSON content.
 * Fix - Select2 style and admin screen button alignments in WP 5.3+.
 * Fix - Use brackets instead of braces to avoid deprecation notices in PHP 5.6.
+* Tweak - Sortable design issue and smooth choices.
 * Tweak - Store entry ID in property of task handler.
 * Tweak - Editable Form name from the form builder title.
 * Tweak - Referal in admin panel for origination of form entry.
