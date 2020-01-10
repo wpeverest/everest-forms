@@ -66,7 +66,6 @@ jQuery( function( $ ) {
 						dataType: 'json'
 					})
 					.success( function( data ) {
-						window.results = data.templates;
 						evf_template_controller.results = data.templates;
 					})
 					.error( function() {
@@ -114,11 +113,20 @@ jQuery( function( $ ) {
 			}
 
 			html += '<div class="everest-forms-template-wrap evf-template" id="everest-forms-template-' + template.slug + '" data-plan="' + plan + '">';
-			html += '<figure class="everest-forms-screenshot" ';
+
+			if ( 'blank' !== template.slug ) {
+				html += '<figure class="everest-forms-screenshot" ';
+			} else {
+				html += '<figure class="everest-forms-screenshot evf-template-select" ';
+			}
+
 			html +=	'data-template-name-raw="' + template.title + '" data-template="' + template.slug + '" data-template-name="' + template.title + ' template">';
 			html +=	'<img src=" ' + template.image +' ">';
+
+			if ( 'blank' !== template.slug ) {
 			html += '<div class="form-action"><a href="#" class="everest-forms-btn everest-forms-btn-primary ' + modal +'" data-licence-plan="' + data_plan + '" data-template-name-raw="' + template.title + '" data-template-name="' + template.title + ' template" data-template="' + template.slug + '">' + evf_templates.i18n_get_started + '</a>';
 			html += '<a href="#" class="everest-forms-btn everest-forms-btn-secondary">' + evf_templates.i18n_get_preview + '</a></div>';
+			}
 
 			if ( ! template.plan.includes('free') ) {
 				html +=	'<span class="everest-forms-badge everest-forms-badge-success">' + evf_templates.i18n_pro_feature + '</span>';
