@@ -60,6 +60,7 @@ $core_templates = apply_filters(
 				foreach ( $templates as $template ) :
 					$badge = '';
 					$upgrade_class = 'evf-template-select';
+					$preview_link = isset( $template->preview_link ) ? $template->preview_link : '';
 					$click_class = '';
 					if ( ! in_array( 'free', $template->plan ) ) {
 						$badge = '<span class="everest-forms-badge everest-forms-badge-success">' . __( 'Pro', 'everest-forms' ) . '</span>';
@@ -80,7 +81,7 @@ $core_templates = apply_filters(
 							<?php if ( 'blank' !== $template->slug ) : ?>
 								<div class="form-action">
 									<a href="#" class="everest-forms-btn everest-forms-btn-primary <?php echo esc_attr( $upgrade_class ); ?>" data-licence-plan="<?php echo esc_attr( $license_plan ); ?>" data-template-name-raw="<?php echo esc_attr( $template->title ); ?>" data-template-name="<?php printf( _x( '%s template', 'Template name', 'everest-forms' ), esc_attr( $template->title ) ); ?>" data-template="<?php echo esc_attr( $template->slug ); ?>"><?php printf( _x( '%s', 'Template name', 'everest-forms' ), __( 'Get Started', 'everest-forms' ) ); ?></a>
-									<a href="#" class="everest-forms-btn everest-forms-btn-secondary evf-template-preview" data-preview-link="https://wpeverest.me/preview/"><?php _e( 'Preview', 'everest-forms' ); ?></a>
+									<a href="#" target="blank" class="everest-forms-btn everest-forms-btn-secondary evf-template-preview" data-preview-link="<?php echo $preview_link; ?>"><?php _e( 'Preview', 'everest-forms' ); ?></a>
 								</div>
 							<?php endif; ?>
 						</figure>
@@ -90,9 +91,6 @@ $core_templates = apply_filters(
 					</div>
 				<?php endforeach;
 		 	} ?>
-		</div>
-		<div class="evf-template-preview-iframe">
-			<iframe id="frame" src="" width="100%" height="100%"></iframe>
 		</div>
 	</div>
 </div>
