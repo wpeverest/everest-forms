@@ -1,5 +1,12 @@
 == Changelog ==
 
+= 1.6.0 - xx-xx-2020 =
+* Fix - Error handling in AJAX handler for endpoint.
+* Fix - Checks if only string is provided for JSON content.
+* Fix - Select2 style and admin screen button alignments in WP 5.3+.
+* Fix - Use brackets instead of braces to avoid deprecation notices in PHP 5.6.
+* Tweak - Store entry ID in property of task handler.
+
 = 1.5.10 - 25-11-2019 =
 * Fix - Google reCAPTCHA v2 invisible settings bug.
 * Fix - DB unwanted data erase for fields data save.
