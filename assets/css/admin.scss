@@ -948,23 +948,23 @@ button.everest-forms-btn {
 
 		.everest-forms-tab-nav {
 			display: inline-flex;
-			margin: 0 16px 0 0;
+			margin: 0 8px 0 0;
 
 			.everest-forms-tab-nav-link {
-				padding: 16px 0;
+				font-weight: 600;
+				padding: 16px 8px;
 				color: $color_gray-base;
 				text-decoration: none;
+				border-bottom: 2px solid transparent;
 			}
 
 			&.active {
 				.everest-forms-tab-nav-link {
 					color: $everestforms;
-					font-weight: 600;
-					border-bottom: 2px solid $everestforms;
+					border-color: $everestforms;
 				}
 			}
 		}
-
 	}
 }
 
@@ -976,7 +976,40 @@ button.everest-forms-btn {
 		display: none;
 	}
 
-	.jconfirm {
+	.jconfirm-everest-forms {
+		.jconfirm-box {
+			border-radius: 4px !important;
+
+			div.jconfirm-title-c {
+				padding-bottom: 10px;
+
+				.jconfirm-icon-c {
+					margin-bottom: 16px !important;
+
+					.dashicons {
+						color: $color-white;
+						font-size: 28px !important;
+						height: 54px !important;
+						width: 54px !important;
+						border-radius: 50%;
+						background: $red;
+						line-height: 54px;
+					}
+				}
+
+				.jconfirm-title {
+					font-size: 22px !important;
+					font-weight: 600;
+				}
+			}
+
+			div.jconfirm-content {
+				margin-bottom: 0 !important;
+			}
+		}
+	}
+
+	.jconfirm-everest-forms-left {
 		&.jconfirm-modern {
 			.jconfirm-box {
 				width: 500px !important;
@@ -1139,6 +1172,12 @@ button.everest-forms-btn {
 			max-width: 1100px;
 			margin: 20px auto;
 			background: $color-white;
+
+			a {
+				&:focus {
+					box-shadow: none;
+				}
+			}
 
 			.everest-forms-setup-header {
 				display: flex;

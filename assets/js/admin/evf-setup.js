@@ -119,6 +119,7 @@ jQuery( function( $ ) {
 			var templateName = $(this).data('template-name-raw');
 			$.alert({
 				title: templateName + ' ' + evf_setup_params.upgrade_title,
+				theme: 'jconfirm-modern jconfirm-everest-forms',
 				icon: 'dashicons dashicons-lock',
 				backgroundDismiss: false,
 				content: evf_setup_params.upgrade_message,
@@ -163,8 +164,8 @@ jQuery( function( $ ) {
 
 			$.confirm({
 				title: evf_setup_params.i18n_form_title,
+				theme: 'jconfirm-modern jconfirm-everest-forms-left',
 				backgroundDismiss: false,
-				// content: modalContent,
 				content: function() {
 					// Fire AJAX.
 					var self = this;
