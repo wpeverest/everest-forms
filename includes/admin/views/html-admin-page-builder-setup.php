@@ -22,10 +22,10 @@ $core_templates = apply_filters(
 		),
 		)
 	);
+	wp_enqueue_script( 'evf-template-controller' );
 	delete_transient( 'evf_template_section' );
 	delete_transient( 'evf_template_sections' );
 ?>
-
 <div class ="wrap everest-forms">
 	<div class="evf-loading"></div>
 	<div class="everest-forms-setup">
@@ -40,15 +40,18 @@ $core_templates = apply_filters(
 			<nav class="everest-forms-tab">
 				<ul>
 					<li class="everest-forms-tab-nav active">
-						<a href="#" class="everest-forms-tab-nav-link"><?php _e( 'Free', 'everest-forms' ); ?></a>
+						<a href="#" id="evf-form-all" class="everest-forms-tab-nav-link"><?php _e( 'All', 'everest-forms' ); ?></a>
 					</li>
 					<li class="everest-forms-tab-nav">
-						<a href="#" class="everest-forms-tab-nav-link"><?php _e( 'Premium', 'everest-forms' ); ?></a>
+						<a href="#" id="evf-form-basic" class="everest-forms-tab-nav-link"><?php _e( 'Free', 'everest-forms' ); ?></a>
+					</li>
+					<li class="everest-forms-tab-nav">
+						<a href="#" id="evf-form-pro" class="everest-forms-tab-nav-link"><?php _e( 'Premium', 'everest-forms' ); ?></a>
 					</li>
 				</ul>
 			</nav>
 		</div>
-		<div class="everest-forms-form-template evf-setup-templates">
+		<div class="everest-forms-form-template evf-setup-templates" data-license-type="<?php echo esc_attr( $license_plan )?>">
 			<?php
 			if ( empty( $templates ) ) {
 				$error_string = esc_html("Please check your internet connection.", 'everest-forms' );
@@ -82,7 +85,7 @@ $core_templates = apply_filters(
 							<?php endif; ?>
 						</figure>
 						<div class="everest-forms-form-id-container">
-							<a class="everest-forms-template-name evf-template-select" href="#" data-licence-plan="<?php echo esc_attr( $license_plan ); ?>" data-template-name-raw="<?php echo esc_attr( $template->title ); ?>" data-template="<?php echo esc_attr( $template->slug ); ?>" data-template-name="<?php printf( _x( '%s template', 'Template name', 'everest-forms' ), esc_attr( $template->title ) ); ?>"><?php echo esc_attr( $template->title ); ?></a>
+							<a class="everest-forms-template-name <?php echo esc_attr( $upgrade_class ); ?>" href="#" data-licence-plan="<?php echo esc_attr( $license_plan ); ?>" data-template-name-raw="<?php echo esc_attr( $template->title ); ?>" data-template="<?php echo esc_attr( $template->slug ); ?>" data-template-name="<?php printf( _x( '%s template', 'Template name', 'everest-forms' ), esc_attr( $template->title ) ); ?>"><?php echo esc_attr( $template->title ); ?></a>
 						</div>
 					</div>
 				<?php endforeach;
