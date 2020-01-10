@@ -5,7 +5,8 @@ jQuery( function( $ ) {
 	 * Setup actions.
 	 */
 	var evf_setup_actions = {
-		$setup_form: $( '.everest-forms-setup' ),
+		$setup_form     : $( '.everest-forms-setup' ),
+		$button_install : evf_data.i18n_activating,
 		init: function() {
 			this.title_focus();
 
@@ -33,6 +34,7 @@ jQuery( function( $ ) {
 				errorMessages = [];
 
 			wp.updates.maybeRequestFilesystemCredentials(event);
+			$('.everest-forms-template-install-addon').html( '<div class="evf-loading evf-loading-active"></div>' + evf_setup_actions.$button_install ).prop( 'disabled', true );
 
 			$(document).trigger("wp-plugin-bulk-install", pluginsList);
 
@@ -168,7 +170,9 @@ jQuery( function( $ ) {
 				backgroundDismiss: false,
 				content: function() {
 					// Fire AJAX.
-					var self = this;
+					var self = this,
+						button = evf_data.i18n_install_only;
+
 					if( $target.closest('.evf-template').find('span.everest-forms-badge').length ){
 						var data =  {
 							action  : 'everest_forms_template_licence_check',
@@ -186,7 +190,11 @@ jQuery( function( $ ) {
 							if( response.data.activate ) {
 								$('.everest-forms-builder-setup .jconfirm-buttons button').show();
 							} else {
-								var installButton = '<a href="#" class="everest-forms-btn everest-forms-btn-primary everest-forms-template-install-addon">Install & Activate</a>';
+								if ( response.data.html.includes( 'install-now' ) ) {
+									button = evf_data.i18n_install_activate;
+									evf_setup_actions.$button_install = evf_data.i18n_installing;
+								}
+								var installButton = '<a href="#" class="everest-forms-btn everest-forms-btn-primary everest-forms-template-install-addon">' + button + '</a>';
 								$('.everest-forms-builder-setup .jconfirm-buttons').append(installButton);
 							}
 						});

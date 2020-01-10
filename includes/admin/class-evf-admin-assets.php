@@ -127,6 +127,10 @@ class EVF_Admin_Assets {
 					'form_id'                      => isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0, // phpcs:ignore WordPress.Security.NonceVerification
 					'field'                        => esc_html__( 'field', 'everest-forms' ),
 					'i18n_ok'                      => esc_html__( 'OK', 'everest-forms' ),
+					'i18n_installing'              => esc_html__( 'Installing', 'everest-forms' ),
+					'i18n_activating'              => esc_html__( 'Activating', 'everest-forms' ),
+					'i18n_install_activate'        => esc_html__( 'Install & Activate', 'everest-forms' ),
+					'i18n_install_only'        	   => esc_html__( 'Activate Plugins', 'everest-forms' ),
 					'i18n_copy'                    => esc_html__( '(copy)', 'everest-forms' ),
 					'i18n_close'                   => esc_html__( 'Close', 'everest-forms' ),
 					'i18n_cancel'                  => esc_html__( 'Cancel', 'everest-forms' ),
