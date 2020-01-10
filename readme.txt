@@ -148,110 +148,14 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 == Changelog ==
 
 = 1.6.0 - xx-xx-2020 =
+* Feature - Import Export of Everest Forms.
+* Enhancement - Single Line Text/Paragraph fields limitation options (limit by character or word count).
 * Fix - Error handling in AJAX handler for endpoint.
 * Fix - Checks if only string is provided for JSON content.
 * Fix - Select2 style and admin screen button alignments in WP 5.3+.
 * Fix - Use brackets instead of braces to avoid deprecation notices in PHP 5.6.
 * Tweak - Store entry ID in property of task handler.
-
-= 1.5.10 - 25-11-2019 =
-* Fix - Google reCAPTCHA v2 invisible settings bug.
-* Fix - DB unwanted data erase for fields data save.
-* Fix - Multi-part submit button hidden due to theme style conflict.
-
-= 1.5.9 - 19-11-2019 =
-* Fix - Fatal error: Called to undefined function.
-
-= 1.5.8 - 18-11-2019 =
-* Feature - Email field mailcheck feature to offer additional controls.
-* Feature - Date field localization, multiple date selections with min/max date.
-* Feature - Default value for "Paragraph text" field.
-* Fix - WordPress 5.3 compatibility.
-* Fix - Selection of radio and checkbox on label click.
-* Tweak - Smart phone field design enhancement.
-* Tweak - Seperate site and secret key for recaptcha v2 invisible.
-
-= 1.5.7 - 07-11-2019 =
-* Tweak - Design for smart phone field.
-* Tweak - CSS styling for label and radio/checkbox field.
-* Tweak - Introduced entry ID params in filter hook for email attachment.
-* Deprecated - Function `evf_has_date_field` has been deprecated instead added `evf_is_field_exists` function.
-
-= 1.5.6 - 18-10-2019 =
-* Feature - Added form preview button inside builder area.
-* Fix - Submit button disable when multiple forms is present.
-* Fix - Undefined meta-key error on console while cloning HTML field.
-
-= 1.5.5 - 19-09-2019 =
-* Feature - Confirm Email option on Email Field.
-* Fix - Sortable Fields scrollable bug.
-* Fix - Field not appended in the droppable zone.
-* Fix - Multi-part form conflict in frontend single page.
-* Fix - Undefined label for html field translation string.
-* Fix - Checkbox field on entries while selecting multiple.
-* Fix - Conditional logic rules improved for all the fields.
-* Fix - Icon placement design conflict with TheGem theme on builder page.
-* Fix - String translation while updating the label and placeholder of fields.
-* Tweak - Mouse cursor on draggable elements.
-* Tweak - Managed spacing after dropping the field.
-* Tweak - Captcha field question option design issue.
-* Tweak - Date/Time field format option design issue.
-* Tweak - Placeholder adding extra margin while dragging.
-
-= 1.5.4 - 25-08-2019 =
-* Fix - Meta key for cloned form field.
-* Fix - CSV export broken due to uppercase alphanumric meta-key.
-* Fix - Layout of entries is broken when heartbeat notification appears.
-* Tweak - Removed focus effect on add field buttons.
-* Tweak - Design fix for choice option on Internet Explorer.
-* Tweak - Textarea width on frontend and field spacing on builder.
-
-= 1.5.3 - 26-07-2019 =
-* Fix - Entry search in trash listing page.
-* Fix - Bulk actions for entries list table.
-
-= 1.5.2 - 23-07-2019 =
-* Fix - Prevent empty search term in forms query.
-* Fix - Entries list-table with status query bug.
-* Fix - Entries list table offset bug for pagination.
-* Fix - Entries form filter action bug while paginated.
-
-= 1.5.1 - 19-07-2019 =
-* Fix - Email notification issue in older forms.
-* Fix - Addon installation error notice margin bug.
-* Fix - Icon floating on nav effected by auto load next plugin.
-
-= 1.5.0 - 15-07-2019 =
-* Feature - Form specific email notification toggle.
-* Feature - Form enable/disable toggle with disabled message.
-* Feature - Form title and description support in Guten block.
-* Feature - New entries "heartbeat" notification on the entries list table screen.
-* Enhancement - Add support for custom captcha addon. #209
-* Enhancement - Introduced range support in the date/time field.
-* Fix - Correctly load localisation file.
-* Fix - WPML string translation for notices.
-* Fix - Fatal error thrown if form not found.
-* Fix - SQL Injection (discovered by Tin Duong).
-* Fix - Frontend error message on PHP validation.
-* Fix - Navigation alignment issue with multi-part.
-* Fix - Email field should default to being required.
-* Fix - Undefined variable for filtered template file.
-* Fix - Active email list not shown on first page load.
-* Fix - Date and time of entry submission. #191
-* Fix - Dragging forms fields bug in the builder. #196
-* Fix - Form builder design bug on wp.com dashboard. #190
-* Fix - Show form error notice on any form field error. #213
-* Fix - WP admin bar design issue in safari on EVF pages. #179
-* Fix - Submit button Processing text while form is not saved. #177
-* Fix - Field choices preview fixed while removing field choices. #221
-* Fix - Prepare a SQL query for safe execution in `evf_search_entries()`.
-* Fix - Validation message issue on the address field and checkbox field.
-* Tweak - Responsive design issue within builder.
-* Tweak - Date and time field advanced option design.
-* Tweak - Set margin to fix spacing issue on Multi-part buttons.
-* Tweak - Removed unnecessary CSS to fix Multi-part button alignment.
-* Tweak - Field type changed from date to date-time for date/time field.
-* Tweak - Use `determine_locale()` to properly load custom translation files.
-* Tweak - Drag and drop sortable-ui design enhancement on builder sidebar panel.
+* Tweak - Editable Form name from the form builder title.
+* Tweak - Referal in admin panel for origination of form entry.
 
 [See changelog for all versions](https://github.com/wpeverest/everest-forms/raw/master/CHANGELOG.txt).

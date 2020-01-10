@@ -1,11 +1,15 @@
 == Changelog ==
 
 = 1.6.0 - xx-xx-2020 =
+* Feature - Import Export of Everest Forms.
+* Enhancement - Single Line Text/Paragraph fields limitation options (limit by character or word count).
 * Fix - Error handling in AJAX handler for endpoint.
 * Fix - Checks if only string is provided for JSON content.
 * Fix - Select2 style and admin screen button alignments in WP 5.3+.
 * Fix - Use brackets instead of braces to avoid deprecation notices in PHP 5.6.
 * Tweak - Store entry ID in property of task handler.
+* Tweak - Editable Form name from the form builder title.
+* Tweak - Referal in admin panel for origination of form entry.
 
 = 1.5.10 - 25-11-2019 =
 * Fix - Google reCAPTCHA v2 invisible settings bug.
