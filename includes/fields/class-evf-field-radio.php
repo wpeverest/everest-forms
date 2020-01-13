@@ -96,7 +96,7 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 				if (
 					'entry-table' !== $context
 					&& ! empty( $field_value['label'] )
-					&& ! empty( $field_value['images'] )
+					&& ! empty( $field_value['image'] )
 					&& apply_filters( 'everest_forms_checkbox_field_html_value_images', true, $context )
 				) {
 					return sprintf(
