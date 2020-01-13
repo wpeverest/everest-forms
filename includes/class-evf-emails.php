@@ -436,10 +436,11 @@ class EVF_Emails {
 				) {
 					continue;
 				}
-				$field_val  = empty( $field['value'] ) && '0' !== $field['value'] ? '<em>' . __( '(empty)', 'everest-forms' ) . '</em>' : $field['value'];
-				$field_name = $field['name'];
+				$field_val   = empty( $field['value'] ) && '0' !== $field['value'] ? '<em>' . __( '(empty)', 'everest-forms' ) . '</em>' : $field['value'];
+				$field_name  = isset( $field_val['name'] ) ? $field_val['name'] : $field['name'];
+				$field_label = ! empty( $field_val['label'] ) ? $field_val['label'] : $field_val;
 
-				if ( isset( $field_val['type'] ) && in_array( $field['type'], array( 'image-upload', 'file-upload', 'rating' ) ) ) {
+				if ( isset( $field_val['type'] ) && in_array( $field['type'], array( 'image-upload', 'file-upload', 'rating' ), true ) ) {
 					if ( 'rating' === $field_val['type'] ) {
 						$value           = ! empty( $field_val['value'] ) ? $field_val['value'] : 0;
 						$number_of_stars = ! empty( $field_val['number_of_rating'] ) ? $field_val['number_of_rating'] : 5;
@@ -450,12 +451,14 @@ class EVF_Emails {
 					}
 				}
 
-				if ( is_array( $field_val ) ) {
+				if ( is_array( $field_label ) ) {
 					$field_html = array();
-					foreach ( $field_val as $meta_val ) {
-						$field_html[] = $meta_val;
+					foreach ( $field_label as $meta_val ) {
+						$field_html[] = esc_html( $meta_val );
 					}
 					$field_val = implode( ', ', $field_html );
+				} else {
+					$field_val = esc_html( $field_label );
 				}
 
 				if ( empty( $field_name ) ) {
