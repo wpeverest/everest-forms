@@ -534,11 +534,16 @@ class EVF_Form_Task {
 					continue;
 				}
 
-				if ( isset( $field['value'], $field['meta_key'] ) && '' !== $field['value'] ) {
+				// BW compatibility for meta value.
+				if ( isset( $field['value'] ) && '' !== $field['value'] ) {
+					$field['meta_value'] = $field['value']; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value
+				}
+
+				if ( isset( $field['meta_key'], $field['meta_value'] ) ) {
 					$entry_metadata = array(
 						'entry_id'   => $entry_id,
 						'meta_key'   => sanitize_key( $field['meta_key'] ),
-						'meta_value' => maybe_serialize( $field['value'] ), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value
+						'meta_value' => maybe_serialize( $field['meta_value'] ), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value
 					);
 
 					// Insert entry meta.
