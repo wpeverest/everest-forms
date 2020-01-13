@@ -337,14 +337,14 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 		$choice_key = '';
 
 		$data = array(
-			'name'      => $name,
-			'value'     => array(
-				'type' => $this->type,
-			),
-			'value_raw' => $value_raw,
 			'id'        => $field_id,
 			'type'      => $this->type,
+			'value'     => array(
+				'name' => $name,
+				'type' => $this->type,
+			),
 			'meta_key'  => $meta_key,
+			'value_raw' => $value_raw,
 		);
 
 		/*
