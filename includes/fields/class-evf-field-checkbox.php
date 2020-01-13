@@ -94,7 +94,6 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 			$field_type  = isset( $field_value['type'] ) ? sanitize_text_field( $field_value['type'] ) : 'checkbox';
 
 			if ( $field_type === $this->type ) {
-
 				if (
 					'entry-table' !== $context
 					&& ! empty( $field_value['label'] )
