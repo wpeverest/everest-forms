@@ -638,9 +638,13 @@
 		 * Make field choices sortable.
 		 *
 		 * @since 1.0.0
+		 *
+		 * @param {string} selector Selector.
 		 */
-		choicesInit: function () {
-			$( '.everest-forms-field-option-row-choices ul' ).sortable({
+		choicesInit: function( selector ) {
+			selector = selector || '.everest-forms-field-option-row-choices ul';
+
+			$( selector ).sortable({
 				items: 'li',
 				axis: 'y',
 				handle: '.sort',
