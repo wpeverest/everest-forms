@@ -287,8 +287,11 @@ abstract class EVF_Form_Fields {
 				$options = $args['options'];
 				$default = isset( $args['default'] ) ? $args['default'] : '';
 				$output  = '<label>' . $args['desc'];
+
 				if ( isset( $args['tooltip'] ) && ! empty( $args['tooltip'] ) ) {
 					$output .= ' ' . sprintf( '<i class="dashicons dashicons-editor-help everest-forms-help-tooltip" title="%s"></i></label>', esc_attr( $args['tooltip'] ) );
+				}  else {
+					$output .= '</label>';
 				}
 				$output .= '<ul>';
 
