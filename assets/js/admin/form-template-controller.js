@@ -125,7 +125,7 @@ jQuery( function( $ ) {
 
 			if ( 'blank' !== template.slug ) {
 			html += '<div class="form-action"><a href="#" class="everest-forms-btn everest-forms-btn-primary ' + modal +'" data-licence-plan="' + data_plan + '" data-template-name-raw="' + template.title + '" data-template-name="' + template.title + ' template" data-template="' + template.slug + '">' + evf_templates.i18n_get_started + '</a>';
-			html += '<a href="#" class="everest-forms-btn everest-forms-btn-secondary" data-preview-link="' + template.preview_link + '">' + evf_templates.i18n_get_preview + '</a></div>';
+			html += '<a href="' + template.preview_link + '" target="_blank" class="everest-forms-btn everest-forms-btn-secondary">' + evf_templates.i18n_get_preview + '</a></div>';
 			}
 
 			if ( ! template.plan.includes('free') ) {
