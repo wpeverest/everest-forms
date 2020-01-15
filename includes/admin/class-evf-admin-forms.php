@@ -45,7 +45,7 @@ class EVF_Admin_Forms {
 		} elseif ( isset( $_GET['create-form'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 
 			$templates          = array();
-			$sections        = self::get_sections();
+			// $sections        = self::get_sections();
 			$refresh_url     = add_query_arg(
 				array(
 					'page'             => 'evf-builder&create-form=1',
