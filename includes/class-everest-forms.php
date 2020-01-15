@@ -324,6 +324,26 @@ final class EverestForms {
 
 		// Init action.
 		do_action( 'everest_forms_init' );
+
+		// Adding transient endpoint for template.
+		add_action( 'rest_api_init', function () {
+			register_rest_route(
+				'evf-templates', '/all/', array(
+					'methods'  => 'GET',
+					'callback' => array( $this, 'api_fetch_templates' ),
+				)
+			);
+		});
+	}
+
+	/**
+	 * Returns templates from transient.
+	 *
+	 * @return array
+	 */
+	public function api_fetch_templates() {
+
+		return get_transient('evf_template_section');
 	}
 
 	/**

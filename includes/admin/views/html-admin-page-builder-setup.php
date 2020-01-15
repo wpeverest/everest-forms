@@ -23,8 +23,8 @@ $core_templates = apply_filters(
 		)
 	);
 	wp_enqueue_script( 'evf-template-controller' );
-	delete_transient( 'evf_template_section' );
-	delete_transient( 'evf_template_sections' );
+//	delete_transient( 'evf_template_section' );
+//	delete_transient( 'evf_template_sections' );
 ?>
 <div class ="wrap everest-forms">
 	<div class="evf-loading"></div>
