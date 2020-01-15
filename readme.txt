@@ -158,6 +158,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Fix - Choice default value not rendered on frontend.
 * Fix - Checks if only string is provided for JSON content.
 * Fix - Select2 style and admin screen button alignments in WP 5.3+.
+* Fix - Show forms with disabled entries if they have previous entries count.
 * Fix - Use brackets instead of braces to avoid deprecation notices in PHP 5.6.
 * Tweak - Sortable design issue and smooth choices.
 * Tweak - Store entry ID in property of task handler.
