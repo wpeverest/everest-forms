@@ -88,6 +88,7 @@ class EVF_Admin_Assets {
 			'evf_templates',
 			array(
 				'evf_template_url'  => get_site_url() . '/wp-json/evf-templates/all',
+				'template_refresh'  => 'Updating Templates',
 				'i18n_get_started'  => _x( 'Get Started', 'template controller: get started button', 'everest-forms' ),
 				'i18n_get_preview'  => _x( 'Preview', 'template controller: preview button', 'everest-forms' ),
 				'i18n_pro_feature'  => _x( 'Pro', 'template controller: pro version span', 'everest-forms' ),

@@ -102,16 +102,65 @@ class EVF_Admin_Forms {
 	/**
 	 * Get section content for the template screen.
 	 *
+	 * @param  string $arguments
+	 * @return array|string
+	 */
+	public static function upload_directory( $arguments ) {
+		$folder = 'uploads/evf_templates';
+
+		$arguments['path']    = untrailingslashit( plugin_dir_path(EVF_PLUGIN_FILE ) . '/' . $folder );
+		$arguments['url']     = untrailingslashit( plugin_dir_url(EVF_PLUGIN_FILE ) . $folder );
+		$arguments['subdir']  = '/evf_templates';
+		$arguments['baseurl'] = untrailingslashit( plugin_dir_url(EVF_PLUGIN_FILE ) . 'uploads');
+
+		return $arguments;
+	}
+
+	/**
+	 * Get section content for the template screen.
+	 *
 	 * @param  string $category
 	 * @param  string $term
 	 * @return array
 	 */
 	public static function get_template_data() {
 		$template_data = get_transient( 'evf_template_section' );
+
 		if ( false === $template_data ) {
 			$raw_templates = wp_safe_remote_get( 'https://raw.githubusercontent.com/wpeverest/extensions-json/template/everest-forms/templates/all_templates.json' );
+
 			if ( ! is_wp_error( $raw_templates ) ) {
 				$template_data = json_decode( wp_remote_retrieve_body( $raw_templates ) );
+
+				// Removing directory so the templates can be reinitialized
+				$folder_path = untrailingslashit( plugin_dir_path(EVF_PLUGIN_FILE ) . '/uploads/evf_templates' );
+				$files = glob($folder_path.'/*');
+
+				// Deleting all the files in the list
+				foreach($files as $file) {
+					if(is_file($file)) {
+						unlink($file);
+					}
+				}
+
+				foreach ( $template_data->templates as $templateTuple ) {
+
+					// We retrieve the image, then use them instead of the remote server.
+					$image = wp_remote_get( $templateTuple->image );
+					$type = wp_remote_retrieve_header( $image, 'content-type' );
+
+					if ( ! $type ) {
+						continue;
+					}
+
+					add_filter( 'upload_dir',  array( 'EVF_Admin_Forms', 'upload_directory') );
+					$upload = wp_upload_bits( $templateTuple ->slug . '.' . explode( '/', $type )[1], null, wp_remote_retrieve_body( $image ) );
+					remove_filter( 'upload_dir', array( 'EVF_Admin_Forms', 'upload_directory') );
+
+					if ( isset( $upload['url'] ) ) {
+						$templateTuple->image = $upload['url'];
+					}
+				}
 
 				if ( ! empty( $template_data->templates ) ) {
 					set_transient( 'evf_template_section', $template_data, WEEK_IN_SECONDS );

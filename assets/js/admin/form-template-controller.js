@@ -25,11 +25,16 @@ jQuery( function( $ ) {
 				$( evf_template_controller.all ).click( function() {
 					evf_template_controller.sort_all( this );
 				});
-				$( evf_template_controller.basic ).click(function() {
+				$( evf_template_controller.basic ).click( function() {
 					evf_template_controller.sort_basic( this );
 				});
-				$( evf_template_controller.pro ).click(function() {
+				$( evf_template_controller.pro ).click( function() {
 					evf_template_controller.sort_pro( this );
+				});
+				$( '.page-title-action' ).click( function(e) {
+					e.stopImmediatePropagation();
+
+					$( this ).html( evf_templates.template_refresh + ' <div id="loading" class="evf-loading evf-loading-active"></div>' );
 				});
 			});
 		},
