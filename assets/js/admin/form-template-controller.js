@@ -78,12 +78,17 @@ jQuery( function( $ ) {
 
 		render_results: function( template, allow ) {
 			var el_to_append = $('.evf-setup-templates'),
-				error = '<div id="message" class="error"><p>' + evf_templates.i18n_pro_error_f + '</p></div>';
+				error = '<div id="loading" class="evf-loading evf-loading-active"></div> ' + evf_templates.i18n_pro_error_f;
 
 			if ( ! template ) {
-
 				$('#message').remove();
-				el_to_append.append( error );
+				el_to_append.html( error );
+
+				// Adds a loading screen so the async results is populated.
+				window.setTimeout( function() {
+					evf_template_controller.render_results( evf_template_controller.results, allow );
+				}, 800 );
+
 				return;
 			}
 

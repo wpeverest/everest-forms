@@ -91,7 +91,7 @@ class EVF_Admin_Assets {
 				'i18n_get_started'  => _x( 'Get Started', 'template controller: get started button', 'everest-forms' ),
 				'i18n_get_preview'  => _x( 'Preview', 'template controller: preview button', 'everest-forms' ),
 				'i18n_pro_feature'  => _x( 'Pro', 'template controller: pro version span', 'everest-forms' ),
-				'i18n_pro_error_f'  => _x( 'Please check your internet connection.', 'template controller: pro version error', 'everest-forms' ),
+				'i18n_pro_error_f'  => _x( 'Fetching Results.', 'template controller: pro version error', 'everest-forms' ),
 			)
 		);
 		wp_localize_script(
