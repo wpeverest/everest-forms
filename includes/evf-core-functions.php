@@ -1962,3 +1962,12 @@ function evf_string_translation( $form_id, $field_id, $variable ) {
 
 	return $variable;
 }
+
+/**
+ * Add entries columns.
+ */
+function evf_update_160_add_entries_columns() {
+	global $wpdb;
+
+}
+add_action( 'init', 'evf_update_160_add_entries_columns' );
