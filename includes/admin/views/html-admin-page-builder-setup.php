@@ -51,10 +51,15 @@ $core_templates = apply_filters(
 				</ul>
 			</nav>
 		</div>
+		<?php if ( 'false' === filter_input( INPUT_GET, 'evf-templates-fetch' ) ) {
+			$error_string = esc_html__("Couldn't connect to templates server. Please reload again.", 'everest-forms' );
+			echo '<div id="message" class="notice notice-warning is-dismissible"><p>' . $error_string . '</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">x</span></button></div>';
+		}
+		?>
 		<div class="everest-forms-form-template evf-setup-templates" data-license-type="<?php echo esc_attr( $license_plan )?>">
 			<?php
 			if ( empty( $templates ) ) {
-				$error_string = esc_html__("Please refresh your templates.", 'everest-forms' );
+				$error_string = esc_html__("Something went wrong. Please refresh your templates.", 'everest-forms' );
 				echo '<div id="message" class="error"><p>' . $error_string . '</p></div>';
 			} else {
 				foreach ( $templates as $template ) :

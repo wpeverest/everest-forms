@@ -120,10 +120,16 @@ class EVF_Admin {
 				foreach ( array( 'evf_pro_license_plan', 'evf_template_sections', 'evf_template_section' ) as $transient ) {
 					delete_transient( $transient );
 				}
+
+				// Redirect to the builder page normally.
+				$redirect = add_query_arg( 'evf-templates-fetch', 'true', admin_url( 'admin.php?page=evf-builder&create-form=1' ) );
+				wp_safe_redirect( $redirect );
+				exit;
 			}
 
 			// Redirect to the builder page.
-			wp_safe_redirect( admin_url( 'admin.php?page=evf-builder&create-form=1' ) );
+			$redirect = add_query_arg( 'evf-templates-fetch', 'false', admin_url( 'admin.php?page=evf-builder&create-form=1' ) );
+			wp_safe_redirect( $redirect );
 			exit;
 		}
 	}
