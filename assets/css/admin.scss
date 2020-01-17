@@ -1169,9 +1169,17 @@ button.everest-forms-btn {
 
 		.everest-forms-setup {
 			font-size: 14px;
-			max-width: 1100px;
+			max-width: calc(100% - 32px);
 			margin: 20px auto;
 			background: $color-white;
+
+			@media (min-width: 960px) {
+				max-width: 835px;
+			}
+
+			@media (min-width: 1280px) {
+				max-width: 1100px;
+			}
 
 			a {
 				&:focus {
@@ -1246,21 +1254,39 @@ button.everest-forms-btn {
 			padding: 8px;
 
 			.evf-template {
-				width: calc(25% - 24px);
-				flex: 0 0 calc(25% - 24px);
+				width: 100%;
 				background: $color-white;
 				border-radius: 4px;
 				position: relative;
 				margin: 12px;
 
+				@media (min-width: 400px) {
+					width: calc(50% - 24px);
+					flex: 0 0 calc(50% - 24px);
+				}
+
+				@media only screen and (min-width: 768px) {
+					width: calc(33.333% - 24px);
+					flex: 0 0 calc(33.333% - 24px);
+				}
+
+				@media (min-width: 960px) {
+					width: calc(25% - 24px);
+					flex: 0 0 calc(25% - 24px);
+				}
+
 				.everest-forms-screenshot {
 					cursor: pointer;
 					padding: 8px;
 					margin: 0;
-					min-height: 280px;
+					min-height: auto;
 					position: relative;
 					border-radius: 4px;
 					background: $color_gray-more-lighten;
+
+					@media only screen and (min-width: 1280px) {
+						min-height: 280px;
+					}
 
 					.everest-forms-badge {
 						position: absolute;
@@ -1291,8 +1317,8 @@ button.everest-forms-btn {
 				}
 
 				img {
-					width: 100%;
 					display: block;
+					width: 100%;
 				}
 
 				.everest-forms-form-id-container {
