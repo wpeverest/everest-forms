@@ -35,7 +35,7 @@ $core_templates = apply_filters(
 			</div>
 			<h4><?php _e( 'Add New Form', 'everest-forms' ); ?></h4>
 			<?php if ( apply_filters( 'everest_forms_refresh_templates', true ) ) : ?>
-				<a href="<?php echo esc_url( $refresh_url ); ?>" class="page-title-action"><?php esc_html_e( 'Refresh Templates', 'everest-forms' ); ?></a>
+				<a href="<?php echo esc_url( $refresh_url ); ?>" class="everest-forms-btn page-title-action"><?php esc_html_e( 'Refresh Templates', 'everest-forms' ); ?></a>
 			<?php endif; ?>
 			<nav class="everest-forms-tab">
 				<ul>

@@ -34,7 +34,7 @@ jQuery( function( $ ) {
 				$( '.page-title-action' ).click( function(e) {
 					e.stopImmediatePropagation();
 
-					$( this ).html( evf_templates.template_refresh + ' <div id="loading" class="evf-loading evf-loading-active"></div>' );
+					$( this ).html( evf_templates.template_refresh + ' <div  class="evf-loading evf-loading-active"></div>' );
 				});
 			});
 		},
@@ -83,7 +83,7 @@ jQuery( function( $ ) {
 
 		render_results: function( template, allow ) {
 			var el_to_append = $('.evf-setup-templates'),
-				error = '<div id="loading" class="evf-loading evf-loading-active"></div> ' + evf_templates.i18n_pro_error_f;
+				error = '<div  class="evf-loading evf-loading-active"></div> ' + evf_templates.i18n_pro_error_f;
 
 			if ( ! template ) {
 				$('#message').remove();
