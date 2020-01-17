@@ -54,7 +54,7 @@ $core_templates = apply_filters(
 		<div class="everest-forms-form-template evf-setup-templates" data-license-type="<?php echo esc_attr( $license_plan )?>">
 			<?php
 			if ( empty( $templates ) ) {
-				$error_string = esc_html("Please check your internet connection.", 'everest-forms' );
+				$error_string = esc_html__("Please refresh your templates.", 'everest-forms' );
 				echo '<div id="message" class="error"><p>' . $error_string . '</p></div>';
 			} else {
 				foreach ( $templates as $template ) :

@@ -109,8 +109,10 @@ class EVF_Admin {
 		if ( isset( $_GET['page'], $_REQUEST['action'] ) && 'evf-builder' === $_GET['page'] ) {  // WPCS: input var okay, CSRF ok.
 			$action = sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ); // WPCS: input var okay, CSRF ok.
 			$plugin = isset( $_REQUEST['plugin'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['plugin'] ) ) : false; // WPCS: input var okay, CSRF ok.
+			$raw_templates = wp_safe_remote_get( 'https://raw.githubusercontent.com/wpeverest/extensions-json/template/everest-forms/templates/all_templates.json' );
 
-			if ( 'evf-template-refresh' === $action ) {
+
+			if ( 'evf-template-refresh' === $action && ! is_wp_error( $raw_templates ) ) {
 				if ( empty( $_GET['evf-template-nonce'] ) || ! wp_verify_nonce( wp_unslash( $_GET['evf-template-nonce'] ), 'refresh' ) ) { // WPCS: input var ok, sanitization ok.
 					wp_die( esc_html_e( 'Could not verify nonce', 'everest-forms' ) );
 				}
@@ -118,11 +120,11 @@ class EVF_Admin {
 				foreach ( array( 'evf_pro_license_plan', 'evf_template_sections', 'evf_template_section' ) as $transient ) {
 					delete_transient( $transient );
 				}
-
-				// Redirect to the builder page.
-				wp_safe_redirect( admin_url( 'admin.php?page=evf-builder&create-form=1' ) );
-				exit;
 			}
+
+			// Redirect to the builder page.
+			wp_safe_redirect( admin_url( 'admin.php?page=evf-builder&create-form=1' ) );
+			exit;
 		}
 	}
 
