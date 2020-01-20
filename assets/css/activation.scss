@@ -12,78 +12,80 @@
  * Styling begins
  */
 div.everest-forms-message {
-	padding: 16px;
-	display: flex;
-	align-items: center;
-	overflow: hidden;
-	position: relative;
-	border-left-color: $everestforms !important;
-
-	.everest-forms-logo {
-		height: 80px;
-		width: 80px;
-		border-radius: 4px;
-		margin-right: 16px;
-		flex: 0 0 80px;
+	&.evf-review-notice {
+		padding: 16px;
 		display: flex;
 		align-items: center;
-		justify-content: center;
-		background: $everestforms;
+		overflow: hidden;
+		position: relative;
+		border-left-color: $everestforms !important;
 
-		svg {
-			height: 64px;
-			width: 64px;
-			fill: $color-white;
+		.everest-forms-logo {
+			height: 80px;
+			width: 80px;
+			border-radius: 4px;
+			margin-right: 16px;
+			flex: 0 0 80px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: $everestforms;
+
+			svg {
+				height: 64px;
+				width: 64px;
+				fill: $color-white;
+			}
 		}
-	}
 
-	.everest-forms-message--content {
-		h3 {
-			margin: 0;
-			font-size: 14px;
-		}
+		.everest-forms-message--content {
+			h3 {
+				margin: 0;
+				font-size: 14px;
+			}
 
-		p {
-			margin-top: 4px;
-			padding: 0;
+			p {
+				margin-top: 4px;
+				padding: 0;
 
-			&.submit {
-				margin-top: 9px;
-				margin-bottom: 0;
+				&.submit {
+					margin-top: 9px;
+					margin-bottom: 0;
 
-				.button {
-					margin-right: 5px;
-				}
+					.button {
+						margin-right: 5px;
+					}
 
-				.evf-button-link {
-					padding: 0 2px 0;
-					box-shadow: none;
+					.evf-button-link {
+						padding: 0 2px 0;
+						box-shadow: none;
+					}
 				}
 			}
 		}
-	}
 
-	a {
-		&.button-primary,
-		&.button-secondary {
-			text-decoration: none !important;
-		}
+		a {
+			&.button-primary,
+			&.button-secondary {
+				text-decoration: none !important;
+			}
 
-		&.everest-forms-message-close {
-			position: absolute;
-			top: 0;
-			right: 0;
-			padding: 10px 15px 10px 21px;
-			font-size: 13px;
-			line-height: 1.23076923;
-			text-decoration: none;
-
-			&:before {
+			&.everest-forms-message-close {
 				position: absolute;
-				top: 8px;
-				left: 0;
-				-webkit-transition: all .1s ease-in-out;
-				transition: all .1s ease-in-out;
+				top: 0;
+				right: 0;
+				padding: 10px 15px 10px 21px;
+				font-size: 13px;
+				line-height: 1.23076923;
+				text-decoration: none;
+
+				&:before {
+					position: absolute;
+					top: 8px;
+					left: 0;
+					-webkit-transition: all .1s ease-in-out;
+					transition: all .1s ease-in-out;
+				}
 			}
 		}
 	}
