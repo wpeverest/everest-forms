@@ -12,14 +12,23 @@ defined( 'ABSPATH' ) || exit;
  * Get entry.
  *
  * @param  int|EVF_Entry $id Entry ID or object.
+ * @param  bool          $with_fields True if empty data should be present.
  * @return EVF_Entry|null
  */
-function evf_get_entry( $id ) {
+function evf_get_entry( $id, $with_fields = false ) {
 	global $wpdb;
 
 	$entry = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}evf_entries WHERE entry_id = %d LIMIT 1;", $id ) ); // WPCS: cache ok, DB call ok.
 
-	if ( apply_filters( 'everest_forms_get_entry_metadata', true ) ) {
+	if ( $with_fields && ! empty( $entry->fields ) ) {
+		$fields = evf_decode( $entry->fields );
+
+		foreach ( $fields as $field ) {
+			if ( isset( $field['meta_key'], $field['value'] ) ) {
+				$entry->meta[ $field['meta_key'] ] = maybe_serialize( $field['value'] );
+			}
+		}
+	} elseif ( apply_filters( 'everest_forms_get_entry_metadata', true ) ) {
 		$results     = $wpdb->get_results( $wpdb->prepare( "SELECT meta_key,meta_value FROM {$wpdb->prefix}evf_entrymeta WHERE entry_id = %d", $id ), ARRAY_A );
 		$entry->meta = wp_list_pluck( $results, 'meta_value', 'meta_key' );
 	}

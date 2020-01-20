@@ -9,7 +9,7 @@ defined( 'ABSPATH' ) || exit;
 
 $form_id    = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0; // WPCS: input var okay, CSRF ok.
 $entry_id   = isset( $_GET['view-entry'] ) ? absint( $_GET['view-entry'] ) : 0; // WPCS: input var okay, CSRF ok.
-$entry      = evf_get_entry( $entry_id );
+$entry      = evf_get_entry( $entry_id, true );
 $form_data  = evf()->form->get( $form_id, array( 'content_only' => true ) );
 $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === $_COOKIE['everest_forms_entry_hide_empty'];
 $trash_link = wp_nonce_url(
