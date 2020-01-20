@@ -20,14 +20,16 @@ $core_templates = apply_filters(
 			'slug' => 'contact',
 			'name' => __( 'Contact Form', 'everest-forms' ),
 		),
-		)
-	);
+	)
+);
 	wp_enqueue_script( 'evf-template-controller' );
-//	delete_transient( 'evf_template_section' );
-//	delete_transient( 'evf_template_sections' );
+// delete_transient( 'evf_template_section' );
+// delete_transient( 'evf_template_sections' );
 ?>
 <div class ="wrap everest-forms">
-	<div class="evf-loading"></div>
+	<div class="everest-forms-loader-overlay">
+		<div class="evf-loading"></div>
+	</div>
 	<div class="everest-forms-setup">
 		<div class="everest-forms-setup-header">
 			<div class="everest-forms-logo">
@@ -51,32 +53,33 @@ $core_templates = apply_filters(
 				</ul>
 			</nav>
 		</div>
-		<?php if ( 'false' === filter_input( INPUT_GET, 'evf-templates-fetch' ) ) {
-			$error_string = esc_html__("Couldn't connect to templates server. Please reload again.", 'everest-forms' );
+		<?php
+		if ( 'false' === filter_input( INPUT_GET, 'evf-templates-fetch' ) ) {
+			$error_string = esc_html__( "Couldn't connect to templates server. Please reload again.", 'everest-forms' );
 			echo '<div id="message" class="notice notice-warning is-dismissible"><p>' . $error_string . '</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">x</span></button></div>';
 		}
 		?>
-		<div class="everest-forms-form-template evf-setup-templates" data-license-type="<?php echo esc_attr( $license_plan )?>">
+		<div class="everest-forms-form-template evf-setup-templates" data-license-type="<?php echo esc_attr( $license_plan ); ?>">
 			<?php
 			if ( empty( $templates ) ) {
-				$error_string = esc_html__("Something went wrong. Please refresh your templates.", 'everest-forms' );
+				$error_string = esc_html__( 'Something went wrong. Please refresh your templates.', 'everest-forms' );
 				echo '<div id="message" class="error"><p>' . $error_string . '</p></div>';
 			} else {
 				foreach ( $templates as $template ) :
-					$badge = '';
+					$badge         = '';
 					$upgrade_class = 'evf-template-select';
-					$preview_link = isset( $template->preview_link ) ? $template->preview_link : '';
-					$click_class = '';
+					$preview_link  = isset( $template->preview_link ) ? $template->preview_link : '';
+					$click_class   = '';
 					if ( ! in_array( 'free', $template->plan ) ) {
 						$badge = '<span class="everest-forms-badge everest-forms-badge-success">' . __( 'Pro', 'everest-forms' ) . '</span>';
 					}
 
 					if ( 'blank' === $template->slug ) {
-						$click_class = "evf-template-select";
+						$click_class = 'evf-template-select';
 					}
 
-					if ( empty( $license_plan) && ! in_array( 'free', $template->plan ) ) {
-						$upgrade_class = "upgrade-modal";
+					if ( empty( $license_plan ) && ! in_array( 'free', $template->plan ) ) {
+						$upgrade_class = 'upgrade-modal';
 					}
 					?>
 					<div class="everest-forms-template-wrap evf-template"  id="everest-forms-template-<?php echo esc_attr( $template->slug ); ?>">
@@ -94,8 +97,10 @@ $core_templates = apply_filters(
 							<a class="everest-forms-template-name <?php echo esc_attr( $upgrade_class ); ?>" href="#" data-licence-plan="<?php echo esc_attr( $license_plan ); ?>" data-template-name-raw="<?php echo esc_attr( $template->title ); ?>" data-template="<?php echo esc_attr( $template->slug ); ?>" data-template-name="<?php printf( _x( '%s template', 'Template name', 'everest-forms' ), esc_attr( $template->title ) ); ?>"><?php echo esc_attr( $template->title ); ?></a>
 						</div>
 					</div>
-				<?php endforeach;
-		 	} ?>
+					<?php
+				endforeach;
+			}
+			?>
 		</div>
 	</div>
 </div>
