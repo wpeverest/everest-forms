@@ -19,6 +19,7 @@
 * Tweak - Editable Form name from the form builder title.
 * Tweak - Admin notice design conflicted due to review notice.
 * Tweak - Referal in admin panel for origination of form entry.
+* Tweak - Display empty field value so users can toggle them in single entry view.
 
 = 1.5.10 - 25-11-2019 =
 * Fix - Google reCAPTCHA v2 invisible settings bug.

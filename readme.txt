@@ -166,5 +166,6 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Tweak - Editable Form name from the form builder title.
 * Tweak - Admin notice design conflicted due to review notice.
 * Tweak - Referal in admin panel for origination of form entry.
+* Tweak - Display empty field value so users can toggle them in single entry view.
 
 [See changelog for all versions](https://github.com/wpeverest/everest-forms/raw/master/CHANGELOG.txt).
