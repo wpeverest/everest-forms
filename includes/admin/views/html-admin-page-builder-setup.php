@@ -27,8 +27,8 @@ $core_templates = apply_filters(
 // delete_transient( 'evf_template_sections' );
 ?>
 <div class ="wrap everest-forms">
-	<div class="everest-forms-loader-overlay">
-		<div class="evf-loading"></div>
+	<div class="everest-forms-loader-overlay" style="display:none">
+		<div class="evf-loading evf-loading-active"></div>
 	</div>
 	<div class="everest-forms-setup">
 		<div class="everest-forms-setup-header">

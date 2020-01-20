@@ -179,7 +179,7 @@ jQuery( function( $ ) {
 							plan    : $this.attr('data-licence-plan'),
 							slug    : $this.attr('data-template'),
 							security: evf_setup_params.template_licence_check_nonce
-						}
+						};
 
 						return $.ajax({
 							url: evf_email_params.ajax_url,
@@ -208,11 +208,9 @@ jQuery( function( $ ) {
 						isHidden: true, // hide the button
 						btnClass: 'everest-forms-btn everest-forms-btn-primary',
 						action: function () {
-								// Don't do anything for selects that trigger modal.
-							if ( $this.closest('.everest-forms').find('.evf-loading').hasClass( 'evf-loading-active' ) ) {
-								return;
-							}
-							var $formName    = $( '#everest-forms-setup-name' );
+							var overlay 	 = $('.everest-forms-loader-overlay'),
+								$formName    = $( '#everest-forms-setup-name' );
+
 							// Check that form title is provided.
 							if ( ! $formName.val() ) {
 								formName = templateName;
@@ -224,7 +222,7 @@ jQuery( function( $ ) {
 								formName = $formName.val();
 							}
 
-							$this.closest('.everest-forms').find('.evf-loading').addClass( 'evf-loading-active' );
+							overlay.show();
 
 							var data = {
 								title: formName,
@@ -235,10 +233,9 @@ jQuery( function( $ ) {
 
 							$.post( evf_setup_params.ajax_url, data, function( response ) {
 								if ( response.success ) {
-									$this.closest('.everest-forms').find('.evf-loading').removeClass( 'evf-loading-active' );
 									window.location.href = response.data.redirect;
 								} else {
-									$this.closest('.everest-forms').find('.evf-loading').removeClass( 'evf-loading-active' );
+									overlay.hide();
 									$( '.everest-forms-setup-name' ).addClass( 'everest-forms-required' ).focus();
 									window.console.log( response );
 								}

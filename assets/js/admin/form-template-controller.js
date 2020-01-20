@@ -83,7 +83,7 @@ jQuery( function( $ ) {
 
 		render_results: function( template, allow ) {
 			var el_to_append = $('.evf-setup-templates'),
-				error = '<div  class="evf-loading evf-loading-active"></div> ' + evf_templates.i18n_pro_error_f;
+				error = '<div  class="evf-loading evf-loading-active"></div>';
 
 			if ( ! template ) {
 				$('#message').remove();
@@ -92,7 +92,7 @@ jQuery( function( $ ) {
 				// Adds a loading screen so the async results is populated.
 				window.setTimeout( function() {
 					evf_template_controller.render_results( evf_template_controller.results, allow );
-				}, 800 );
+				}, 1000 );
 
 				return;
 			}
