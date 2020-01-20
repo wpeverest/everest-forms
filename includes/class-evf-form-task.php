@@ -535,6 +535,11 @@ class EVF_Form_Task {
 					continue;
 				}
 
+				// If empty file is supplied, do store their data nor send email.
+				if ( in_array( $field['type'], array( 'image-upload', 'file-upload' ), true ) && '' === $field['value']['file_url'] ) {
+					continue;
+				}
+
 				if ( isset( $field['meta_key'], $field['value'] ) && '' !== $field['value'] ) {
 					$entry_metadata = array(
 						'entry_id'   => $entry_id,
