@@ -64,7 +64,7 @@ class EVF_Install {
 			'evf_update_150_db_version',
 		),
 		'1.6.0' => array(
-			'evf_update_160_add_entries_columns',
+			'evf_update_160_add_fields_columns',
 			'evf_update_160_db_version',
 		)
 	);
@@ -348,6 +348,17 @@ class EVF_Install {
 
 		$wpdb->hide_errors();
 
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+
+		/**
+		 * Before updating with DBDELTA, add fields column to entries table schema.
+		 */
+		if ( $wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->prefix}evf_entries';" ) ) {
+			if ( ! $wpdb->get_var( "SHOW COLUMNS FROM `{$wpdb->prefix}evf_entries` LIKE 'fields';" ) ) {
+				$wpdb->query( "ALTER TABLE {$wpdb->prefix}evf_entries ADD `fields` longtext NULL AFTER `referer`;" );
+			}
+		}
+
 		/**
 		 * Change wp_evf_sessions schema to use a bigint auto increment field
 		 * instead of char(32) field as the primary key. Doing this change primarily
@@ -361,8 +372,6 @@ class EVF_Install {
 				);
 			}
 		}
-
-		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
 		dbDelta( self::get_schema() );
 	}

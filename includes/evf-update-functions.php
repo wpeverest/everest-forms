@@ -299,7 +299,7 @@ function evf_update_150_db_version() {
 /**
  * Add entries columns.
  */
-function evf_update_160_add_entries_columns() {
+function evf_update_160_add_fields_columns() {
 
 }
 
