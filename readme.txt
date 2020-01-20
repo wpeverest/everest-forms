@@ -156,6 +156,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Enhancement - Single Line Text/Paragraph fields limitation options (limit by character or word count).
 * Fix - Error handling in AJAX handler for endpoint.
 * Fix - Choice default value not rendered on frontend.
+* Fix - Correctly closes label if no desc arg is passed.
 * Fix - Checks if only string is provided for JSON content.
 * Fix - Select2 style and admin screen button alignments in WP 5.3+.
 * Fix - Show forms with disabled entries if they have previous entries count.
@@ -163,6 +164,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Tweak - Sortable design issue and smooth choices.
 * Tweak - Store entry ID in property of task handler.
 * Tweak - Editable Form name from the form builder title.
+* Tweak - Admin notice design conflicted due to review notice.
 * Tweak - Referal in admin panel for origination of form entry.
 
 [See changelog for all versions](https://github.com/wpeverest/everest-forms/raw/master/CHANGELOG.txt).
