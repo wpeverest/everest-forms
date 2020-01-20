@@ -297,13 +297,6 @@ function evf_update_150_db_version() {
 }
 
 /**
- * Add entries columns.
- */
-function evf_update_160_add_fields_columns() {
-
-}
-
-/**
  * Update DB Version.
  */
 function evf_update_160_db_version() {

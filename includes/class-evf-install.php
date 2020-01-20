@@ -64,7 +64,6 @@ class EVF_Install {
 			'evf_update_150_db_version',
 		),
 		'1.6.0' => array(
-			'evf_update_160_add_fields_columns',
 			'evf_update_160_db_version',
 		)
 	);
