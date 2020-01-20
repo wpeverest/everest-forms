@@ -12,13 +12,14 @@
  * Styling begins
  */
 div.everest-forms-message {
+	overflow: hidden;
+	position: relative;
+	border-left-color: $everestforms !important;
+
 	&.evf-review-notice {
 		padding: 16px;
 		display: flex;
 		align-items: center;
-		overflow: hidden;
-		position: relative;
-		border-left-color: $everestforms !important;
 
 		.everest-forms-logo {
 			height: 80px;
