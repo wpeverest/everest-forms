@@ -68,7 +68,7 @@ $trash_link = wp_nonce_url(
 										}
 
 										$field_value     = apply_filters( 'everest_forms_html_field_value', $meta_value, $entry_meta[ $meta_key ], $entry_meta, 'entry-single' );
-										$field_class     = is_string( $field_value ) && '' === $field_value ? ' empty' : '';
+										$field_class     = is_string( $field_value ) && ( '' === $field_value || '(empty)' === wp_strip_all_tags( $field_value ) ) ? ' empty' : '';
 										$field_style     = $hide_empty && empty( $field_value ) ? 'display:none;' : '';
 										$correct_answers = false;
 
