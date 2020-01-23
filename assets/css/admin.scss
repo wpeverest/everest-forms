@@ -313,8 +313,13 @@ body.everest-forms-builder {
 	}
 }
 
-body.everest-forms-builder-setup,
+.everest-forms-builder,
+.everest-forms-builder-setup,
 .everest-forms_page_evf-settings {
+	.everest-forms {
+		margin: 0;
+	}
+
 	#wpcontent {
 		padding-left: 0;
 	}
@@ -721,8 +726,6 @@ button.everest-forms-btn {
 	}
 
 	.everest-forms {
-		margin: 0;
-
 		.loading-dot {
 			background: url(../images/icons/three-dots.svg);
 			opacity: 0.7;
