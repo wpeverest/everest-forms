@@ -252,6 +252,7 @@ class EVF_Form_Task {
 			$form_id           = absint( $entry['id'] );
 			$form              = EVF()->form->get( $form_id );
 			$honeypot          = false;
+			$response_data     = array();
 
 			// Check nonce for form submission.
 			if ( empty( $_POST['_wpnonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['_wpnonce'] ), 'everest-forms_process_submit' ) ) { // WPCS: input var ok, sanitization ok.
@@ -385,12 +386,13 @@ class EVF_Form_Task {
 			do_action( "everest_forms_process_complete_{$form_id}", $this->form_fields, $entry, $this->form_data, $entry_id );
 		} catch ( Exception $e ) {
 			evf_add_notice( $e->getMessage(), 'error' );
-			$this->errors[] = $e->getMessage();
-			return $this->errors;
+			$this->errors[]            = $e->getMessage();
+			$response_data['message']  = $this->errors;
+			$response_data['response'] = 'error';
+			return $response_data;
 		}
 
 		do_action( 'everest_forms_after_ajax_success', $this->form_data, $entry );
-		$response_data             = array();
 		$message                   = isset( $this->form_data['settings']['successful_form_submission_message'] ) ? $this->form_data['settings']['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
 		$response_data['message']  = $message;
 		$response_data['response'] = 'success';
