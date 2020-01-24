@@ -188,6 +188,16 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			)
 		);
 		everest_forms_panel_field(
+			'checkbox',
+			'settings',
+			'ajax_form_submission',
+			$this->form_data,
+			__( 'Enable Ajax Form Submission', 'everest-forms' ),
+			array(
+				'default' => isset( $settings['ajax_form_submission'] ) ? $settings['ajax_form_submission'] : 0,
+			)
+		);
+		everest_forms_panel_field(
 			'select',
 			'settings',
 			'redirect_to',

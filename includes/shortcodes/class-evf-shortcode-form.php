@@ -634,15 +634,20 @@ class EVF_Shortcode_Form {
 		}
 
 		// Basic form information.
-		$form_data       = apply_filters( 'everest_forms_frontend_form_data', evf_decode( $form->post_content ) );
-		$form_id         = absint( $form->ID );
-		$settings        = $form_data['settings'];
-		$action          = esc_url_raw( remove_query_arg( 'evf-forms' ) );
-		$title           = filter_var( $title, FILTER_VALIDATE_BOOLEAN );
-		$description     = filter_var( $description, FILTER_VALIDATE_BOOLEAN );
-		$errors          = isset( evf()->task->errors[ $form_id ] ) ? evf()->task->errors[ $form_id ] : array();
-		$form_enabled    = isset( $form_data['form_enabled'] ) ? absint( $form_data['form_enabled'] ) : 1;
-		$disable_message = isset( $form_data['settings']['form_disable_message'] ) ? $form_data['settings']['form_disable_message'] : __( 'This form is disabled.', 'everest-forms' );
+		$form_data            = apply_filters( 'everest_forms_frontend_form_data', evf_decode( $form->post_content ) );
+		$form_id              = absint( $form->ID );
+		$settings             = $form_data['settings'];
+		$action               = esc_url_raw( remove_query_arg( 'evf-forms' ) );
+		$title                = filter_var( $title, FILTER_VALIDATE_BOOLEAN );
+		$description          = filter_var( $description, FILTER_VALIDATE_BOOLEAN );
+		$errors               = isset( evf()->task->errors[ $form_id ] ) ? evf()->task->errors[ $form_id ] : array();
+		$form_enabled         = isset( $form_data['form_enabled'] ) ? absint( $form_data['form_enabled'] ) : 1;
+		$disable_message      = isset( $form_data['settings']['form_disable_message'] ) ? $form_data['settings']['form_disable_message'] : __( 'This form is disabled.', 'everest-forms' );
+		$ajax_form_submission = isset( $settings['ajax_form_submission'] ) ? $settings['ajax_form_submission'] : 0;
+
+		if ( 0 !== $ajax_form_submission ) {
+			wp_enqueue_script( 'ajax-form-submission' );
+		}
 
 		// If the form is disabled or does not contain any fields do not proceed.
 		if ( empty( $form_data['form_fields'] ) ) {
@@ -731,7 +736,8 @@ class EVF_Shortcode_Form {
 				'id'    => sprintf( 'evf-form-%d', absint( $form_id ) ),
 				'class' => array( 'everest-form' ),
 				'data'  => array(
-					'formid' => absint( $form_id ),
+					'formid'          => absint( $form_id ),
+					'ajax_submission' => $ajax_form_submission,
 				),
 				'atts'  => array(
 					'method'  => 'post',
