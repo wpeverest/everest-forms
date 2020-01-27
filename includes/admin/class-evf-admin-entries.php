@@ -310,13 +310,35 @@ class EVF_Admin_Entries {
 	public static function update_status( $entry_id, $status = 'publish' ) {
 		global $wpdb;
 
-		$update = $wpdb->update(
-			$wpdb->prefix . 'evf_entries',
-			array( 'status' => $status ),
-			array( 'entry_id' => $entry_id ),
-			array( '%s' ),
-			array( '%d' )
-		);
+		if ( in_array( $status, array( 'star', 'unstar' ), true ) ) {
+			$update = $wpdb->update(
+				$wpdb->prefix . 'evf_entries',
+				array(
+					'starred' => 'star' === $status ? 1 : 0
+				),
+				array( 'entry_id' => $entry_id ),
+				array( '%d' ),
+				array( '%d' )
+			);
+		} elseif ( in_array( $status, array( 'read', 'unread' ), true ) ) {
+			$update = $wpdb->update(
+				$wpdb->prefix . 'evf_entries',
+				array(
+					'viewed' => 'read' === $status ? 1 : 0
+				),
+				array( 'entry_id' => $entry_id ),
+				array( '%d' ),
+				array( '%d' )
+			);
+		} else {
+			$update = $wpdb->update(
+				$wpdb->prefix . 'evf_entries',
+				array( 'status' => $status ),
+				array( 'entry_id' => $entry_id ),
+				array( '%s' ),
+				array( '%d' )
+			);
+		}
 
 		return $update;
 	}

@@ -389,15 +389,17 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 */
 	protected function get_bulk_actions() {
 		if ( isset( $_GET['status'] ) && 'trash' === $_GET['status'] ) { // phpcs:ignore WordPress.Security.NonceVerification
-			return array(
+			$actions = array(
 				'untrash' => __( 'Restore', 'everest-forms' ),
 				'delete'  => __( 'Delete Permanently', 'everest-forms' ),
 			);
+		} else {
+			$actions = array(
+				'trash' => __( 'Move to Trash', 'everest-forms' ),
+			);
 		}
 
-		return array(
-			'trash' => __( 'Move to Trash', 'everest-forms' ),
-		);
+		return apply_filters( 'everest_forms_entry_bulk_actions', $actions );
 	}
 
 	/**
@@ -426,6 +428,38 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 			}
 
 			switch ( $doaction ) {
+				case 'star':
+				case 'unstar':
+					foreach ( $entry_ids as $entry_id ) {
+						if ( EVF_Admin_Entries::update_status( $entry_id, $doaction ) ) {
+							$count ++;
+						}
+					}
+
+					add_settings_error(
+						'bulk_action',
+						'bulk_action',
+						/* translators: %d: number of entries, %s: entries status */
+						sprintf( _n( '%d entry successfully %s.', '%d entries successfully %s.', $count, 'everest-forms-pro' ), $count, 'star' === $doaction ? 'starred' : 'unstarred' ),
+						'updated'
+					);
+					break;
+				case 'read':
+				case 'unread':
+					foreach ( $entry_ids as $entry_id ) {
+						if ( EVF_Admin_Entries::update_status( $entry_id, $doaction ) ) {
+							$count ++;
+						}
+					}
+
+					add_settings_error(
+						'bulk_action',
+						'bulk_action',
+						/* translators: %d: number of entries, %s: entries status */
+						sprintf( _n( '%d entry successfully marked as %s.', '%d entries successfully marked as %s.', $count, 'everest-forms-pro' ), $count, $doaction ),
+						'updated'
+					);
+					break;
 				case 'trash':
 					foreach ( $entry_ids as $entry_id ) {
 						if ( EVF_Admin_Entries::update_status( $entry_id, 'trash' ) ) {
