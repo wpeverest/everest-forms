@@ -105,13 +105,11 @@ function evf_search_entries( $args ) {
 	}
 
 	if ( ! empty( $args['status'] ) ) {
-		$query[] = $wpdb->prepare( 'AND `status` = %s', isset( $statuses[ $args['status'] ] ) && 'trash' === $args['status'] ? $args['status'] : 'publish' );
+		$query[] = $wpdb->prepare( 'AND `status` = %s', isset( $statuses[ $args['status'] ] ) && 'trash' === $args['status'] ? 'trash' : 'publish' );
 
 		if ( 'unread' === $args['status'] ) {
 			$query[] = esc_sql( 'AND `viewed` = 0' );
-		}
-
-		if ( 'starred' === $args['status'] ) {
+		} elseif ( 'starred' === $args['status'] ) {
 			$query[] = esc_sql( 'AND `starred` = 1' );
 		}
 	}
