@@ -496,7 +496,6 @@ abstract class EVF_Form_Fields {
 					}
 				} else if ( 'address' === $field['type'] ) {
 					$has_sub_fields = true;
-					// Format : 'slug' => 'data'
 					$sub_fields = array(
 						'required-field-message-address1' => array(
 							'label' => array(
