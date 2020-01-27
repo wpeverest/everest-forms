@@ -27,7 +27,7 @@ class EVF_Admin_Menus {
 		add_action( 'admin_menu', array( $this, 'builder_menu' ), 20 );
 		add_action( 'admin_menu', array( $this, 'entries_menu' ), 30 );
 		add_action( 'admin_menu', array( $this, 'settings_menu' ), 50 );
-		add_action( 'admin_menu', array( $this, 'status_menu' ), 60 );
+		add_action( 'admin_menu', array( $this, 'tools_menu' ), 60 );
 
 		if ( apply_filters( 'everest_forms_show_addons_page', true ) ) {
 			add_action( 'admin_menu', array( $this, 'addons_menu' ), 70 );
@@ -62,11 +62,11 @@ class EVF_Admin_Menus {
 		add_menu_page( __( 'Everest Forms', 'everest-forms' ), __( 'Everest Forms', 'everest-forms' ), 'manage_everest_forms', 'everest-forms', null, $this->get_icon_svg(), '55.5' );
 
 		// Backward compatibility for builder page redirects.
-		if ( ! empty( $_GET['page'] ) && in_array( $_GET['page'], array( 'everest-forms', 'edit-evf-form' ), true ) ) {
-			if ( 'edit-evf-form' === $_GET['page'] ) {
+		if ( ! empty( $_GET['page'] ) && in_array( wp_unslash( $_GET['page'] ), array( 'everest-forms', 'edit-evf-form', 'evf-status' ), true ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			if ( 'edit-evf-form' === $_GET['page'] ) { // phpcs:ignore WordPress.Security.NonceVerification
 				$redirect_url = admin_url( 'admin.php?page=evf-builder&create-form=1' );
 
-				if ( isset( $_GET['tab'], $_GET['form_id'] ) ) {
+				if ( isset( $_GET['tab'], $_GET['form_id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 					$redirect_url = add_query_arg(
 						array(
 							'tab'     => evf_clean( wp_unslash( $_GET['tab'] ) ),
@@ -75,8 +75,10 @@ class EVF_Admin_Menus {
 						admin_url( 'admin.php?page=evf-builder' )
 					);
 				}
+			} elseif ( 'evf-status' === $_GET['page'] ) { // phpcs:ignore WordPress.Security.NonceVerification
+				$redirect_url = str_replace( sanitize_text_field( wp_unslash( $_GET['page'] ) ), 'evf-tools', wp_unslash( $_SERVER['REQUEST_URI'] ) ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 			} else {
-				$redirect_url = str_replace( $_GET['page'], 'evf-builder', wp_unslash( $_SERVER['REQUEST_URI'] ) ); // WPCS: input var okay, CSRF ok.
+				$redirect_url = str_replace( sanitize_text_field( wp_unslash( $_GET['page'] ) ), 'evf-builder', wp_unslash( $_SERVER['REQUEST_URI'] ) ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 			}
 
 			wp_safe_redirect( $redirect_url );
@@ -198,8 +200,8 @@ class EVF_Admin_Menus {
 	/**
 	 * Add menu item.
 	 */
-	public function status_menu() {
-		add_submenu_page( 'everest-forms', __( 'Everest Forms status', 'everest-forms' ), __( 'Status', 'everest-forms' ), 'manage_everest_forms', 'evf-status', array( $this, 'status_page' ) );
+	public function tools_menu() {
+		add_submenu_page( 'everest-forms', __( 'Everest Forms tools', 'everest-forms' ), __( 'Tools', 'everest-forms' ), 'manage_everest_forms', 'evf-tools', array( $this, 'tools_page' ) );
 	}
 
 	/**
@@ -291,8 +293,8 @@ class EVF_Admin_Menus {
 	/**
 	 * Init the status page.
 	 */
-	public function status_page() {
-		EVF_Admin_Status::output();
+	public function tools_page() {
+		EVF_Admin_Tools::output();
 	}
 
 	/**

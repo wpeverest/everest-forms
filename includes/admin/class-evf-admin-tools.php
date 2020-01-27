@@ -2,22 +2,22 @@
 /**
  * Debug/Status page
  *
- * @package EverestForms/Admin/System Status
+ * @package EverestForms/Admin/Tools
  * @version 1.0.0
  */
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * EVF_Admin_Status Class.
+ * EVF_Admin_Tools Class.
  */
-class EVF_Admin_Status {
+class EVF_Admin_Tools {
 
 	/**
 	 * Handles output of the reports page in admin.
 	 */
 	public static function output() {
-		include_once( dirname( __FILE__ ) . '/views/html-admin-page-status.php' );
+		include_once dirname( __FILE__ ) . '/views/html-admin-page-tools.php';
 	}
 
 	/**
@@ -25,6 +25,20 @@ class EVF_Admin_Status {
 	 */
 	public static function status_logs() {
 		self::status_logs_file();
+	}
+
+	/**
+	 * Show the import page.
+	 */
+	public static function import() {
+		include_once dirname( __FILE__ ) . '/views/html-admin-page-import.php';
+	}
+
+	/**
+	 * Show the export page.
+	 */
+	public static function export() {
+		include_once dirname( __FILE__ ) . '/views/html-admin-page-export.php';
 	}
 
 	/**
@@ -45,7 +59,7 @@ class EVF_Admin_Status {
 			self::remove_log();
 		}
 
-		include_once( 'views/html-admin-page-status-logs.php' );
+		include_once 'views/html-admin-page-tools-logs.php';
 	}
 
 	/**
@@ -56,8 +70,7 @@ class EVF_Admin_Status {
 	 * @return string
 	 */
 	public static function get_file_version( $file ) {
-
-		// Avoid notices if file does not exist
+		// Avoid notices if file does not exist.
 		if ( ! file_exists( $file ) ) {
 			return '';
 		}
@@ -159,7 +172,7 @@ class EVF_Admin_Status {
 			$log_handler->remove( $_REQUEST['handle'] );
 		}
 
-		wp_safe_redirect( esc_url_raw( admin_url( 'admin.php?page=evf-status&tab=logs' ) ) );
+		wp_safe_redirect( esc_url_raw( admin_url( 'admin.php?page=evf-tools&tab=logs' ) ) );
 		exit();
 	}
 }

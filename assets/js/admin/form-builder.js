@@ -134,6 +134,9 @@
 			// Bind all actions.
 			EVFPanelBuilder.bindUIActions();
 
+			// Bind edit form actions.
+			EVFPanelBuilder.bindEditActions();
+
 			// jquery-confirm defaults.
 			jconfirm.defaults = {
 				closeIcon: true,
@@ -209,13 +212,78 @@
 			EVFPanelBuilder.choicesInit();
 			EVFPanelBuilder.choicesUpdate();
 
-			// Fields Panel
+			// Fields Panel.
 			EVFPanelBuilder.bindUIActionsFields();
 
-			var tab = evf_data.tab;
-			if ( tab === 'field-options' ) {
+			if ( evf_data.tab === 'field-options' ) {
 				$( '.evf-panel-field-options-button' ).trigger( 'click' );
 			}
+		},
+
+		/**
+		 * Form edit title actions.
+		 *
+		 * @since 1.6.0
+		 */
+		bindEditActions: function() {
+			// Delegates event to toggleEditTitle() on clicking.
+			$( '#edit-form-name' ).on( 'click', function( e ) {
+				e.stopPropagation();
+
+				if ( '' !== $( '#evf-edit-form-name' ).val().trim() ) {
+					EVFPanelBuilder.toggleEditTitle( e );
+				}
+			});
+
+			// Apply the title change to form name field.
+			$( '#evf-edit-form-name' )
+				.on( 'change keypress', function( e ) {
+					var $this = $( this );
+
+					e.stopPropagation();
+
+					if ( 13 === e.which && '' !== $( this ).val().trim() ) {
+						EVFPanelBuilder.toggleEditTitle( e );
+					}
+
+					if ( '' !== $this.val().trim() ) {
+						$( '#everest-forms-panel-field-settings-form_title' ).val( $this.val().trim() );
+					}
+				})
+				.on( 'click', function( e ) {
+					e.stopPropagation();
+				});
+
+			// In case the user goes out of focus from title edit state.
+			$( document ).not( $( '.everest-forms-title-desc' ) ).click( function( e ) {
+				var field = $( '#evf-edit-form-name' );
+
+				e.stopPropagation();
+
+				// Only allow flipping state if currently editing.
+				if ( ! field.prop( 'disabled' ) && field.val() && '' !== field.val().trim() ) {
+					EVFPanelBuilder.toggleEditTitle( e );
+				}
+			});
+		},
+
+		// Toggles edit state.
+		toggleEditTitle: function( event ) {
+			var $el          = $( '#edit-form-name' ),
+				$input_title = $el.siblings( '#evf-edit-form-name' );
+
+			event.preventDefault();
+
+			// Toggle disabled property.
+			$input_title.prop ( 'disabled' , function( _ , val ) {
+				return ! val;
+			});
+
+			if ( ! $input_title.hasClass( 'everst-forms-name-editing' ) ) {
+				$input_title.focus();
+			}
+
+			$input_title.toggleClass( 'everst-forms-name-editing' );
 		},
 
 		//--------------------------------------------------------------------//
@@ -780,10 +848,28 @@
 		},
 		bindSaveOption: function () {
 			$( 'body' ).on( 'click', '.everest-forms-save-button', function () {
-				var $this     = $( this );
-				var $form     = $( 'form#everest-forms-builder-form' );
-				var structure = EVFPanelBuilder.getStructure();
-				var form_data = $form.serializeArray();
+				var $this      = $( this );
+				var $form      = $( 'form#everest-forms-builder-form' );
+				var structure  = EVFPanelBuilder.getStructure();
+				var form_data  = $form.serializeArray();
+				var form_title = $( '#evf-edit-form-name' ).val().trim();
+
+				if ( '' === form_title ) {
+					$.alert({
+						title: evf_data.i18n_field_title_empty,
+						content: evf_data.i18n_field_title_payload,
+						icon: 'dashicons dashicons-warning',
+						type: 'red',
+						buttons: {
+							ok: {
+								text: evf_data.i18n_ok,
+								btnClass: 'btn-confirm',
+								keys: [ 'enter' ]
+							}
+						}
+					});
+					return;
+				}
 
 				// Trigger a handler to let addon manipulate the form data if needed.
 				if ( $form.triggerHandler( 'everest_forms_process_ajax_data', [ $this, form_data ] ) ) {
