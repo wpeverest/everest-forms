@@ -481,7 +481,6 @@ abstract class EVF_Form_Fields {
 				$sub_fields     = array();
 				if ( 'likert' === $field['type'] ) {
 					$has_sub_fields = true;
-					// Format : 'slug' => 'data'
 					$likert_rows = isset( $field['likert_rows'] ) ? $field['likert_rows'] : array();
 					foreach ( $likert_rows as $row_number => $row_label ) {
 						$row_slug                = 'required-field-message-' . $row_number;
