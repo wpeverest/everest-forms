@@ -59,8 +59,8 @@ function evf_get_entry_statuses() {
 	return apply_filters(
 		'everest_forms_entry_statuses',
 		array(
-			'publish' => __( 'Published', 'everest-forms' ),
-			'trash'   => __( 'Trash', 'everest-forms' ),
+			'publish' => esc_html__( 'Published', 'everest-forms' ),
+			'trash'   => esc_html__( 'Trash', 'everest-forms' ),
 		)
 	);
 }
@@ -105,7 +105,15 @@ function evf_search_entries( $args ) {
 	}
 
 	if ( ! empty( $args['status'] ) ) {
-		$query[] = $wpdb->prepare( 'AND `status` = %s', isset( $statuses[ $args['status'] ] ) ? $args['status'] : 'publish' );
+		$query[] = $wpdb->prepare( 'AND `status` = %s', isset( $statuses[ $args['status'] ] ) && 'trash' === $args['status'] ? $args['status'] : 'publish' );
+
+		if ( 'unread' === $args['status'] ) {
+			$query[] = esc_sql( 'AND `viewed` = 0' );
+		}
+
+		if ( 'starred' === $args['status'] ) {
+			$query[] = esc_sql( 'AND `starred` = 1' );
+		}
 	}
 
 	$orderby     = in_array( $args['orderby'], $valid_fields, true ) ? $args['orderby'] : 'entry_id';

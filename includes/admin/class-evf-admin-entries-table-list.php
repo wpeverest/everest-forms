@@ -333,15 +333,15 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 
 		if ( isset( $statuses[ $status_name ] ) ) {
 			return array(
-				'singular' => sprintf( '%s <span class="count">(%s)</span>', esc_html( $statuses[ $status_name ] ), $amount ),
-				'plural'   => sprintf( '%s <span class="count">(%s)</span>', esc_html( $statuses[ $status_name ] ), $amount ),
+				'singular' => sprintf( '%s <span class="count">(<span class="%s-count">%s</span>)</span>', esc_html( $statuses[ $status_name ] ), $status_name, $amount ),
+				'plural'   => sprintf( '%s <span class="count">(<span class="%s-count">%s</span>)</span>', esc_html( $statuses[ $status_name ] ), $status_name, $amount ),
 				'context'  => '',
 				'domain'   => 'everest-forms',
 			);
 		}
 
 		return array(
-			'singular' => sprintf( '%s <span class="count">(%s)</span>', esc_html( $status_name ), $amount ),
+			'singular' => sprintf( '%s <span class="count">(<span class="%s-count">%s</span>)</span>', esc_html( $statuses[ $status_name ] ), $status_name, $amount ),
 			'plural'   => sprintf( '%s <span class="count">(%s)</span>', esc_html( $status_name ), $amount ),
 			'context'  => '',
 			'domain'   => 'everest-forms',
@@ -366,7 +366,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		foreach ( $statuses as $status_name ) {
 			$class = '';
 
-			if ( empty( $num_entries[ $status_name ] ) || 'publish' === $status_name ) {
+			if ( 'publish' === $status_name ) {
 				continue;
 			}
 

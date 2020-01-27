@@ -4067,32 +4067,44 @@ table.wp-list-table {
 		}
 	}
 
-	#poststuff #everest-forms-entry-fields {
-		.hndle {
-			cursor: inherit;
-		}
+	#poststuff {
+		#everest-forms-entry-fields,
+		#everest-forms-entry-details {
+			h2.hndle {
+				cursor: inherit;
 
-		.inside {
-			margin: 0;
-			padding: 0;
-
-			table {
-				border: none;
-			}
-
-			span.list {
-				display: block;
-			}
-
-			img.attachment-thumbnail {
-				height: 150px;
+				.dashicons {
+					width: 16px;
+					height: 16px;
+					font-size: 16px;
+					margin: 1px 4px 0 0;
+				}
 			}
 		}
 
-		.everest-forms-empty-field-toggle {
-			float: right;
-			padding: 3px 0 0;
-			text-decoration: none;
+		#everest-forms-entry-fields {
+			.inside {
+				margin: 0;
+				padding: 0;
+
+				table {
+					border: none;
+				}
+
+				span.list {
+					display: block;
+				}
+
+				img.attachment-thumbnail {
+					height: 150px;
+				}
+			}
+
+			.everest-forms-empty-field-toggle {
+				float: right;
+				padding: 3px 0 0;
+				text-decoration: none;
+			}
 		}
 	}
 }

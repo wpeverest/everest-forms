@@ -34,6 +34,7 @@ $trash_link = wp_nonce_url(
 				<div id="post-body-content" style="position: relative;">
 					<div id="everest-forms-entry-fields" class="postbox">
 						<h2 class="hndle">
+							<?php do_action( 'everest_forms_before_entry_details_hndle', $entry ); ?>
 							<span>
 							<?php
 							/* translators: %s: Entry ID */
