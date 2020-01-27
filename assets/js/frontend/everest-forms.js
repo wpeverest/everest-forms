@@ -198,13 +198,9 @@ jQuery( function ( $ ) {
 									try {
 										sub_field_error_messages[ row_key ] = $( this ).data( `required-field-message-${row_key}` );
 									} catch (error) {
-										console.log( `Following data is not a string or a key:` );
-										console.log( row_key );
 									}
 								})
 							} catch (error) {
-								console.log( `Following data is not an array:` );
-								console.log( $( this ).data( `row-keys` ) );
 							}
 						}
 						Object.entries( sub_field_error_messages ).forEach( ([ index, error_message ]) => {
