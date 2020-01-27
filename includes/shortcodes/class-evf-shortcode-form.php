@@ -533,7 +533,6 @@ class EVF_Shortcode_Form {
 				$container_data[ 'row-keys' ] = json_encode( $row_keys );
 			} else if ( 'address' === $field['type'] ) {
 				$has_sub_fields = true;
-				// Format : 'sub_field_type' => 'error_message'
 				$sub_field_messages = array(
 					'address1' => isset( $field["required-field-message-address1"] ) ? $field["required-field-message-address1"] : '',
 					'city'     => isset( $field["required-field-message-city"] ) ? $field["required-field-message-city"] : '',
