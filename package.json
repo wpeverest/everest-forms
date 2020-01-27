@@ -40,7 +40,7 @@
     "grunt-stylelint": "0.13.0",
     "grunt-wp-i18n": "1.0.3",
     "husky": "4.2.1",
-    "lint-staged": "10.0.0",
+    "lint-staged": "10.0.2",
     "node-sass": "4.13.1",
     "stylelint": "13.0.0",
     "stylelint-config-wordpress": "16.0.0",
