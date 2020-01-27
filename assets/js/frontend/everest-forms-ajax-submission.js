@@ -26,6 +26,9 @@ jQuery( function($) {
 						return;
 					}
 
+					// Change the text to user defined property.
+					$( this ).html( formTuple.data('process-text'));
+
 					// Add action intend for ajax_form_submission endpoint.
 					data.push({
 						name: 'action',
