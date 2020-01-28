@@ -136,6 +136,12 @@ class EVF_Form_Task {
 				$field_submit = isset( $entry['form_fields'][ $field_id ] ) ? $entry['form_fields'][ $field_id ] : '';
 
 				do_action( "everest_forms_process_validate_{$field_type}", $field_id, $field_submit, $this->form_data, $field_type );
+
+				if ( 'yes' === get_option('evf_validation_error') ) {
+					return [
+						'errors' => ucfirst( $field_type ) . __(' validation issue.', 'everest-forms')
+					];
+				}
 			}
 
 			// reCAPTCHA check.
