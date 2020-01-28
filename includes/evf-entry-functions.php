@@ -84,9 +84,6 @@ function evf_search_entries( $args ) {
 		)
 	);
 
-	$statuses     = evf_get_entry_statuses();
-	$valid_fields = array( 'date', 'form_id', 'title', 'status' );
-
 	// Check if form ID is valid for entries.
 	if ( ! array_key_exists( $args['form_id'], evf_get_all_forms() ) ) {
 		return array();
@@ -105,7 +102,7 @@ function evf_search_entries( $args ) {
 	}
 
 	if ( ! empty( $args['status'] ) ) {
-		$query[] = $wpdb->prepare( 'AND `status` = %s', isset( $statuses[ $args['status'] ] ) && 'trash' === $args['status'] ? 'trash' : 'publish' );
+		$query[] = $wpdb->prepare( 'AND `status` = %s', 'trash' === $args['status'] ? 'trash' : 'publish' );
 
 		if ( 'unread' === $args['status'] ) {
 			$query[] = esc_sql( 'AND `viewed` = 0' );
@@ -114,10 +111,11 @@ function evf_search_entries( $args ) {
 		}
 	}
 
-	$orderby     = in_array( $args['orderby'], $valid_fields, true ) ? $args['orderby'] : 'entry_id';
-	$order       = 'DESC' === strtoupper( $args['order'] ) ? 'DESC' : 'ASC';
-	$orderby_sql = sanitize_sql_orderby( "{$orderby} {$order}" );
-	$query[]     = "ORDER BY {$orderby_sql}";
+	$valid_fields = array( 'date', 'form_id', 'title', 'status' );
+	$orderby      = in_array( $args['orderby'], $valid_fields, true ) ? $args['orderby'] : 'entry_id';
+	$order        = 'DESC' === strtoupper( $args['order'] ) ? 'DESC' : 'ASC';
+	$orderby_sql  = sanitize_sql_orderby( "{$orderby} {$order}" );
+	$query[]      = "ORDER BY {$orderby_sql}";
 
 	if ( -1 < $args['limit'] ) {
 		$query[] = $wpdb->prepare( 'LIMIT %d', absint( $args['limit'] ) );
