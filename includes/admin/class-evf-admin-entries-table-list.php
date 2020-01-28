@@ -132,6 +132,23 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	}
 
 	/**
+	 * Generates content for a single row of the table.
+	 *
+	 * @since 1.6.0
+	 *
+	 * @param object $entry Entry data.
+	 */
+	public function single_row( $entry ) {
+		if ( empty( $_GET['status'] ) || ( isset( $_GET['status'] ) && 'trash' !== $_GET['status'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			echo '<tr class="' . ( '1' !== $entry->viewed ? 'unread' : 'read' ) . '">';
+			$this->single_row_columns( $entry );
+			echo '</tr>';
+		} else {
+			parent::single_row( $entry );
+		}
+	}
+
+	/**
 	 * Get the list of fields, that are disallowed to be displayed as column in a table.
 	 *
 	 * @return array
