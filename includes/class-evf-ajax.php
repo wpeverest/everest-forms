@@ -83,6 +83,7 @@ class EVF_AJAX {
 	public static function add_ajax_events() {
 		$ajax_events = array(
 			'save_form'              => false,
+			'ajax_form_submission'   => true,
 			'create_form'            => false,
 			'get_next_id'            => false,
 			'install_extension'      => false,
@@ -271,6 +272,18 @@ class EVF_AJAX {
 				)
 			);
 		}
+	}
+
+	public static function ajax_form_submission() {
+		check_ajax_referer( 'everest_forms_ajax_form_submission', 'security' );
+		$form = new EVF_Form_Task();
+		if ( ! empty( $_POST['everest_forms']['id'] ) ) { // WPCS: CSRF ok.
+			$done = $form->do_ajax( stripslashes_deep( $_POST['everest_forms'] ) ); // WPCS: sanitization ok, CSRF ok.
+		}
+		if ( 'success' !== $done['response'] ) {
+			wp_send_json_error( $done );
+		}
+		wp_send_json_success( $done );
 	}
 
 	/**

@@ -159,6 +159,11 @@ class EVF_Frontend_Scripts {
 	private static function register_scripts() {
 		$suffix           = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		$register_scripts = array(
+			'ajax-form-submission'     => array(
+				'src'     => self::get_asset_url( 'assets/js/frontend/everest-forms-ajax-submission' . $suffix . '.js' ),
+				'deps'    => array( 'jquery', 'inputmask', 'jquery-validate' ),
+				'version' => EVF_VERSION,
+			),
 			'inputmask'                => array(
 				'src'     => self::get_asset_url( 'assets/js/inputmask/jquery.inputmask.bundle' . $suffix . '.js' ),
 				'deps'    => array( 'jquery' ),
@@ -292,6 +297,13 @@ class EVF_Frontend_Scripts {
 				$params = array(
 					'i18n_messages_limit_characters' => esc_html__( '{count} of {limit} max characters.', 'everest-forms' ),
 					'i18n_messages_limit_words'      => esc_html__( '{count} of {limit} max words.', 'everest-forms' ),
+				);
+				break;
+			case 'ajax-form-submission':
+				$params = array(
+					'ajax_url'            => admin_url( 'admin-ajax.php' ),
+					'evf_ajax_submission' => wp_create_nonce( 'everest_forms_ajax_form_submission' ),
+					'error'               => __( 'Sorry, something went wrong. Please try again', 'everest-forms' ),
 				);
 				break;
 			default:
