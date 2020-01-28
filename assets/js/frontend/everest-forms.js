@@ -177,6 +177,8 @@ jQuery( function ( $ ) {
 							required: error_message
 						};
 				 	} else if ( $(this).is( '.evf-field-password' ) ) {
+						key = `everest_forms[form_fields][${field_id}]`;
+						error_messages[ key ] = error_message;
 						key = `everest_forms[form_fields][${field_id}][primary]`;
 						error_messages[ key ] = error_message;
 						key = `everest_forms[form_fields][${field_id}][secondary]`;
