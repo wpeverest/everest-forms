@@ -487,7 +487,7 @@ abstract class EVF_Form_Fields {
 						$sub_fields[ $row_slug ] = array(
 							'label' => array(
 								'value'   => __( $row_label, 'everest-forms' ),
-								'tooltip' => __( 'Error message for this likert row.', 'everest-forms' ),
+								'tooltip' => __( "Enter a message to show for this row if it's required.", 'everest-forms' ),
 							),
 							'text'  => array(
 								'value' => isset( $field[ $row_slug ] ) ? esc_attr( $field[ $row_slug ] ) : esc_attr( get_option( 'everest_forms_required_validation' ) ),
@@ -500,7 +500,7 @@ abstract class EVF_Form_Fields {
 						'required-field-message-address1' => array(
 							'label' => array(
 								'value'   => __( 'Address Line 1', 'everest-forms' ),
-								'tooltip' => __( "Error message for Address Line 1 when it's empty.", 'everest-forms' ),
+								'tooltip' => __( "Enter a message to show for Address Line 1 if it's required.", 'everest-forms' ),
 							),
 							'text'  => array(
 								'value' => isset( $field['required-field-message-address1'] ) ? esc_attr( $field['required-field-message-address1'] ) : esc_attr( get_option( 'everest_forms_required_validation' ) ),
@@ -509,7 +509,7 @@ abstract class EVF_Form_Fields {
 						'required-field-message-city' => array(
 							'label' => array(
 								'value'   => __( 'City', 'everest-forms' ),
-								'tooltip' => __( "Error message for City when it's empty.", 'everest-forms' ),
+								'tooltip' => __( "Enter a message to show for City if it's required.", 'everest-forms' ),
 							),
 							'text'  => array(
 								'value' => isset( $field['required-field-message-city'] ) ? esc_attr( $field['required-field-message-city'] ) : esc_attr( get_option( 'everest_forms_required_validation' ) ),
@@ -518,7 +518,7 @@ abstract class EVF_Form_Fields {
 						'required-field-message-state' => array(
 							'label' => array(
 								'value'   => __( 'State / Province / Region', 'everest-forms' ),
-								'tooltip' => __( "Error message for State/Province/Region when it's empty.", 'everest-forms' ),
+								'tooltip' => __( "Enter a message to show for State/Province/Region if it's required.", 'everest-forms' ),
 							),
 							'text'  => array(
 								'value' => isset( $field['required-field-message-state'] ) ? esc_attr( $field['required-field-message-state'] ) : esc_attr( get_option( 'everest_forms_required_validation' ) ),
@@ -527,7 +527,7 @@ abstract class EVF_Form_Fields {
 						'required-field-message-postal' => array(
 							'label' => array(
 								'value'   => __( 'Zip / Postal Code', 'everest-forms' ),
-								'tooltip' => __( "Error message for Zip/Postal Code when it's empty.", 'everest-forms' ),
+								'tooltip' => __( "Enter a message to show for Zip/Postal Code if it's required.", 'everest-forms' ),
 							),
 							'text'  => array(
 								'value' => isset( $field['required-field-message-postal'] ) ? esc_attr( $field['required-field-message-postal'] ) : esc_attr( get_option( 'everest_forms_required_validation' ) ),
@@ -536,7 +536,7 @@ abstract class EVF_Form_Fields {
 						'required-field-message-country' => array(
 							'label' => array(
 								'value'   => __( 'Country', 'everest-forms' ),
-								'tooltip' => __( "Error message for Country when it's empty.", 'everest-forms' ),
+								'tooltip' => __( "Enter a message to show for Country if it's required.", 'everest-forms' ),
 							),
 							'text'  => array(
 								'value' => isset( $field['required-field-message-country'] ) ? esc_attr( $field['required-field-message-country'] ) : esc_attr( get_option( 'everest_forms_required_validation' ) ),
