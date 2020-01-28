@@ -176,7 +176,12 @@ jQuery( function ( $ ) {
 						error_message = {
 							required: error_message
 						};
-				 	} else if ( $(this).is( '.evf-field-address' ) ) {
+				 	} else if ( $(this).is( '.evf-field-password' ) ) {
+						key = `everest_forms[form_fields][${field_id}][primary]`;
+						error_messages[ key ] = error_message;
+						key = `everest_forms[form_fields][${field_id}][secondary]`;
+						error_messages[ key ] = error_message;
+					} else if ( $(this).is( '.evf-field-address' ) ) {
 						let sub_field_error_messages = {
 							'address1': $( this ).data( 'required-field-message-address1' ),
 							'city'    : $( this ).data( 'required-field-message-city' ),
