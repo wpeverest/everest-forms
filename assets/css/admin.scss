@@ -4069,7 +4069,8 @@ table.wp-list-table {
 
 	#poststuff {
 		#everest-forms-entry-fields,
-		#everest-forms-entry-details {
+		#everest-forms-entry-details,
+		#everest-forms-entry-actions {
 			h2.hndle {
 				cursor: inherit;
 
@@ -4077,16 +4078,42 @@ table.wp-list-table {
 					width: 16px;
 					height: 16px;
 					font-size: 16px;
-					margin: 1px 4px 0 0;
+					margin: 1px 2px 0 4px;
+				}
+			}
+
+			.inside {
+				margin: 0;
+				padding: 0;
+
+				.everest-forms-entry-details-meta,
+				.everest-forms-entry-actions-meta {
+					padding: 6px 0 0;
+
+					p {
+						margin: 0;
+						padding: 6px 10px 8px;
+					}
+
+					.dashicons {
+						top: 0;
+						left: -2px;
+						position: relative;
+						padding: 0 2px 0 0;
+						color: $color_gray-light;
+						text-decoration: none;
+					}
+				}
+
+				.everest-forms-entry-actions-meta a {
+					box-shadow: none;
+					text-decoration: none;
 				}
 			}
 		}
 
 		#everest-forms-entry-fields {
 			.inside {
-				margin: 0;
-				padding: 0;
-
 				table {
 					border: none;
 				}
