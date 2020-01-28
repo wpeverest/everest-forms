@@ -16,8 +16,7 @@ jQuery( function($) {
 					e.preventDefault();
 
 					// We let the bubbling events in form play itself out.
-					// @todo - bad practice
-					formTuple.trigger('focusout').trigger('change');
+					formTuple.trigger('focusout').trigger('change').trigger('submit');
 					var errors = formTuple.find('.evf-error:visible');
 					if( errors.length > 0 ){
 						$([document.documentElement, document.body]).animate({

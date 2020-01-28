@@ -278,7 +278,7 @@ class EVF_AJAX {
 		check_ajax_referer( 'everest_forms_ajax_form_submission', 'security' );
 		$form = new EVF_Form_Task();
 		if ( ! empty( $_POST['everest_forms']['id'] ) ) { // WPCS: CSRF ok.
-			$done = $form->do_ajax( stripslashes_deep( $_POST['everest_forms'] ) ); // WPCS: sanitization ok, CSRF ok.
+			$done = $form->do_task( stripslashes_deep( $_POST['everest_forms'] ) ); // WPCS: sanitization ok, CSRF ok.
 		}
 		if ( 'success' !== $done['response'] ) {
 			wp_send_json_error( $done );

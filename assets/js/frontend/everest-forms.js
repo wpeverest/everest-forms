@@ -213,8 +213,11 @@ jQuery( function ( $ ) {
 						if ( processText ) {
 							$submit.text( processText ).prop( 'disabled', true );
 						}
-
-						form.submit();
+						if ( 1 === $($(this)[0].currentForm).data('ajax_submission') ) {
+							return;
+						} else {
+							form.submit();
+						}
 					}
 				});
 			});
