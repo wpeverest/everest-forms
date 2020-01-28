@@ -989,7 +989,7 @@ abstract class EVF_Form_Fields {
 			die( esc_html__( 'No field type found', 'everest-forms' ) );
 		}
 
-		$field_args = ! empty( $_POST['defaults'] ) ? (array) $_POST['defaults'] : array();
+		$field_args = ! empty( $_POST['defaults'] ) ? (array) $_POST['defaults'] : (array) $this->defaults;
 
 		$field_type = esc_attr( $_POST['field_type'] );
 		$field_id   = EVF()->form->field_unique_key( $_POST['form_id'] );
