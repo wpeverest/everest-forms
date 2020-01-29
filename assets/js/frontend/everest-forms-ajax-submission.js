@@ -18,7 +18,8 @@ jQuery( function($) {
 					// We let the bubbling events in form play itself out.
 					formTuple.trigger('focusout').trigger('change').trigger('submit');
 					var errors = formTuple.find('.evf-error:visible');
-					if( errors.length > 0 ){
+
+					if( errors.length > 0 ) {
 						$([document.documentElement, document.body]).animate({
 							scrollTop: errors.last().offset().top
 						}, 800);
@@ -45,24 +46,36 @@ jQuery( function($) {
 						type: 'POST',
 						data: data
 					})
-					.done( function ( res ) {
-						if ( 'success' === res.data.response ){
+					.done( function ( xhr ) {
+						if ( 'success' === xhr.data.response ){
 								formTuple.trigger('reset');
-								formTuple.closest('.everest-forms').html('<div class="everest-forms-notice everest-forms-notice--success" role="alert">' + res.data.message + '</div>').focus();
+								formTuple.closest('.everest-forms').html('<div class="everest-forms-notice everest-forms-notice--success" role="alert">' + xhr.data.message + '</div>').focus();
 						} else {
-							formTuple.closest('.everest-forms').find('.everest-forms-notice').remove();
-								formTuple.closest('.everest-forms').prepend('<div class="everest-forms-notice everest-forms-notice--error" role="alert">'+ res.data.message +'</div>').focus();
+								let error =  ajax_form_submission_params.error ;
+
+								if ( 'undefined' !== typeof( xhr.data.error )) {
+									error = '';
+
+									Object.values( xhr.data.error ).forEach( ( key ) => {
+										error +=  Object.values(key).join('<br>') + '<br>';
+									});
+								}
+
+								formTuple.closest('.everest-forms').find('.everest-forms-notice').remove();
+								formTuple.closest('.everest-forms').prepend('<div class="everest-forms-notice everest-forms-notice--error" role="alert">'+ error +'</div>').focus();
 						}
 					})
 					.fail( function () {
 						formTuple.closest('.everest-forms').find('.everest-forms-notice').remove();
-						formTuple.closest('.everest-forms').prepend('<div class="everest-forms-notice everest-forms-notice--error" role="alert">'+ ajax_form_submission_params.error +'</div>').focus();
+						formTuple.closest('.everest-forms').prepend('<div class="everest-forms-notice everest-forms-notice--error" role="alert">'+ ajax_form_submission_params.error  +'</div>').focus();
 					})
 					.always(function() {
 						$([document.documentElement, document.body]).animate({
 							scrollTop: $('.everest-forms-notice').offset().top
 						}, 800);
 					});
+
+					$( this ).attr('disabled', false).text( ajax_form_submission_params.submit );
 				});
 			});
 		});
