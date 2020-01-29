@@ -53,19 +53,16 @@ jQuery( function($) {
 						} else {
 								let error =  ajax_form_submission_params.error ;
 
-								if ( 'undefined' !== typeof( xhr.data.error )) {
-									error = '';
-
-									Object.values( xhr.data.error ).forEach( ( key ) => {
-										error +=  Object.values(key).join('<br>') + '<br>';
-									});
+								if ( 'undefined' !== typeof xhr.data.messsage ) {
+									error =  xhr.data.messsage;
 								}
 
 								formTuple.closest('.everest-forms').find('.everest-forms-notice').remove();
-								formTuple.closest('.everest-forms').prepend('<div class="everest-forms-notice everest-forms-notice--error" role="alert">'+ error +'</div>').focus();
+								formTuple.closest('.everest-forms').prepend('<div class="everest-forms-notice everest-forms-notice--error" role="alert">'+ error  +'</div>').focus();
 						}
 					})
-					.fail( function () {
+					.fail( function ( xhr ) {
+						formTuple.trigger('focusout').trigger('change').trigger('submit');
 						formTuple.closest('.everest-forms').find('.everest-forms-notice').remove();
 						formTuple.closest('.everest-forms').prepend('<div class="everest-forms-notice everest-forms-notice--error" role="alert">'+ ajax_form_submission_params.error  +'</div>').focus();
 					})
@@ -75,7 +72,7 @@ jQuery( function($) {
 						}, 800);
 					});
 
-					$( this ).attr('disabled', false).text( ajax_form_submission_params.submit );
+					$( this ).attr('disabled', false).html( ajax_form_submission_params.submit );
 				});
 			});
 		});

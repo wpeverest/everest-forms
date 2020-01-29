@@ -88,7 +88,7 @@ class EVF_Form_Task {
 
 
 			// For the sake of validation we completely remove the validator option.
-			delete_option('evf_validation_error');
+			update_option('evf_validation_error', '');
 
 			// Check nonce for form submission.
 			if ( empty( $_POST['_wpnonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['_wpnonce'] ), 'everest-forms_process_submit' ) ) { // WPCS: input var ok, sanitization ok.
@@ -142,18 +142,17 @@ class EVF_Form_Task {
 
 				do_action( "everest_forms_process_validate_{$field_type}", $field_id, $field_submit, $this->form_data, $field_type );
 
-				if ( 'yes' === get_option('evf_validation_error') && ajax_form_submission ) {
-					$this->ajax_err[] = [
-						$field_type => ucfirst( $field_type ) . esc_html__(' Validation Issue.', 'everest-forms')
+				if ( 'yes' === get_option('evf_validation_error') && $ajax_form_submission ) {
+					$this->ajax_err = [
+						$field_type => $field_id
 					];
-
-					delete_option('evf_validation_error');
 				}
 			}
 
 			// If validation issues occur, send the results accordingly.
 			if ( $ajax_form_submission && sizeof( $this->ajax_err ) ) {
 				$response_data['error']  = $this->ajax_err;
+				$response_data['message']  = esc_html_e( 'Form has not been submitted, please see the errors below.', 'everest-forms' );
 				$response_data['response'] = 'error';
 				return $response_data;
 			}
