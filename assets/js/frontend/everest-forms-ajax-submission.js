@@ -51,7 +51,7 @@ jQuery( function($) {
 								formTuple.trigger('reset');
 								formTuple.closest('.everest-forms').html('<div class="everest-forms-notice everest-forms-notice--success" role="alert">' + xhr.data.message + '</div>').focus();
 						} else {
-								let error   =  ajax_form_submission_params.error,
+								var error   =  ajax_form_submission_params.error,
 									err     =  JSON.parse(errorThrown.responseText),
 									fields  = err.data.error;
 								var	form_id = formTuple.data('formid');
@@ -65,11 +65,11 @@ jQuery( function($) {
 
 								// Begin fixing the tamper.
 								fields.forEach( function( fieldTuple ) {
-									let fid = 'evf-' + form_id + '-field_' + fieldTuple,
+									var fid = 'evf-' + form_id + '-field_' + fieldTuple,
 										fld = $('#' + fid);
 
 									fld.addClass('evf-error');
-									fld.after('<label id="' + fld.attr('id') + '-error" class="evf-error" for="' + fld.attr('id') + '">This field is required.</label>');
+									fld.after('<label id="' + fld.attr('id') + '-error" class="evf-error" for="' + fld.attr('id') + '">' + ajax_form_submission_params.required + '</label>');
 									fld.attr('required', true);
 									fld.attr('aria-invalid', true);
 									fld.closest('.evf-field').addClass('everest-forms-invalid evf-has-error');
@@ -77,7 +77,7 @@ jQuery( function($) {
 						}
 					})
 					.fail( function () {
-						formTuple.trigger('focusout').trigger('change').trigger('submit');
+						formTuple.trigger('focusout').trigger('change');
 						formTuple.closest('.everest-forms').find('.everest-forms-notice').remove();
 						formTuple.closest('.everest-forms').prepend('<div class="everest-forms-notice everest-forms-notice--error" role="alert">'+ ajax_form_submission_params.error  +'</div>').focus();
 					})
