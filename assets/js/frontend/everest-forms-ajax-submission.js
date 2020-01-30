@@ -54,24 +54,25 @@ jQuery( function($) {
 								let error   =  ajax_form_submission_params.error,
 									err     =  JSON.parse(errorThrown.responseText),
 									fields  = err.data.error;
-								var	form_id = formTuple.attr('id');
+								var	form_id = formTuple.data('formid');
 
 								if ( 'string' === typeof err.data.message ) {
 									error =  err.data.message;
-								}eee
+								}
 
 								formTuple.closest('.everest-forms').find('.everest-forms-notice').remove();
 								formTuple.closest('.everest-forms').prepend('<div class="everest-forms-notice everest-forms-notice--error" role="alert">'+ error  +'</div>').focus();
 
+								// Begin fixing the tamper.
 								fields.forEach( function( fieldTuple ) {
-										let fld = $('#' + form_id + '_' + fieldTuple);
+									let fid = 'evf-' + form_id + '-field_' + fieldTuple,
+										fld = $('#' + fid);
 
-										console.log(fld);
-										fld.addClass('evf-error');
-										fld.attr('required', true);
-										fld.attr('aria-invalid', true);
-										fld.closest('.evf-field').addClass('everest-forms-invalid evf-has-error');
-										console.log(form_id + '_' + fieldTuple);
+									fld.addClass('evf-error');
+									fld.after('<label id="' + fld.attr('id') + '-error" class="evf-error" for="' + fld.attr('id') + '">This field is required.</label>');
+									fld.attr('required', true);
+									fld.attr('aria-invalid', true);
+									fld.closest('.evf-field').addClass('everest-forms-invalid evf-has-error');
 								});
 						}
 					})
