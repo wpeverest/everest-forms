@@ -46,22 +46,24 @@ jQuery( function($) {
 						type: 'POST',
 						data: data
 					})
-					.done( function ( xhr ) {
+					.done( function ( xhr, textStatus, errorThrown ) {
 						if ( 'success' === xhr.data.response ){
 								formTuple.trigger('reset');
 								formTuple.closest('.everest-forms').html('<div class="everest-forms-notice everest-forms-notice--success" role="alert">' + xhr.data.message + '</div>').focus();
 						} else {
-								let error =  ajax_form_submission_params.error ;
+								let error  =  ajax_form_submission_params.error,
+									err    =  JSON.parse(errorThrown.responseText),
+									fields = err.data.error;
 
-								if ( 'undefined' !== typeof xhr.data.messsage ) {
-									error =  xhr.data.messsage;
+								if ( 'string' === typeof err.data.message ) {
+									error =  err.data.message;
 								}
 
 								formTuple.closest('.everest-forms').find('.everest-forms-notice').remove();
 								formTuple.closest('.everest-forms').prepend('<div class="everest-forms-notice everest-forms-notice--error" role="alert">'+ error  +'</div>').focus();
 						}
 					})
-					.fail( function ( xhr ) {
+					.fail( function () {
 						formTuple.trigger('focusout').trigger('change').trigger('submit');
 						formTuple.closest('.everest-forms').find('.everest-forms-notice').remove();
 						formTuple.closest('.everest-forms').prepend('<div class="everest-forms-notice everest-forms-notice--error" role="alert">'+ ajax_form_submission_params.error  +'</div>').focus();

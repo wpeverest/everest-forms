@@ -151,8 +151,8 @@ class EVF_Form_Task {
 
 			// If validation issues occur, send the results accordingly.
 			if ( $ajax_form_submission && sizeof( $this->ajax_err ) ) {
-				$response_data['error']  = $this->ajax_err;
-				$response_data['message']  = esc_html_e( 'Form has not been submitted, please see the errors below.', 'everest-forms' );
+				$response_data['error']    = $this->ajax_err;
+				$response_data['message']  = __( 'Form has not been submitted, please see the errors below.', 'everest-forms' );
 				$response_data['response'] = 'error';
 				return $response_data;
 			}
