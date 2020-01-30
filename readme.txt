@@ -1,6 +1,6 @@
 === Contact Form, Drag and Drop Form Builder for WordPress - Everest Forms ===
 Contributors: WPEverest
-Tags: contact form, form, form builder, contact, custom form
+Tags: contact form, forms, form builder, contact, custom form
 Requires at least: 4.9
 Tested up to: 5.3
 Requires PHP: 5.4
