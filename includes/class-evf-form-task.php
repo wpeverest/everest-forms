@@ -84,7 +84,7 @@ class EVF_Form_Task {
 			$form              = EVF()->form->get( $form_id );
 			$honeypot          = false;
 			$response_data     = array();
-			$this->ajax_err	   = array();
+			$this->ajax_err    = array();
 
 			// Check nonce for form submission.
 			if ( empty( $_POST['_wpnonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['_wpnonce'] ), 'everest-forms_process_submit' ) ) { // WPCS: input var ok, sanitization ok.
@@ -111,7 +111,7 @@ class EVF_Form_Task {
 			if ( 1 == $ajax_form_submission ) {
 
 				// For the sake of validation we completely remove the validator option.
-				update_option('evf_validation_error', '');
+				update_option( 'evf_validation_error', '' );
 
 				// Prepare fields for entry_save.
 				foreach ( $this->form_data['form_fields'] as $field ) {
@@ -142,9 +142,9 @@ class EVF_Form_Task {
 
 				do_action( "everest_forms_process_validate_{$field_type}", $field_id, $field_submit, $this->form_data, $field_type );
 
-				if ( 'yes' === get_option('evf_validation_error') && $ajax_form_submission ) {
+				if ( 'yes' === get_option( 'evf_validation_error' ) && $ajax_form_submission ) {
 					$this->ajax_err[] = $field_id;
-					update_option('evf_validation_error', '');
+					update_option( 'evf_validation_error', '' );
 				}
 			}
 
