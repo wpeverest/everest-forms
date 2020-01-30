@@ -176,9 +176,6 @@ abstract class EVF_Form_Fields {
 	 */
 	public function field_element( $option, $field, $args = array(), $echo = true ) {
 		$id     = (string) $field['id'];
-		//... Previous line of code
-		// $class  = ! empty( $args['class'] ) ? sanitize_html_class( $args['class'] ) : '';
-		//... New line of code
 		$class  = ! empty( $args['class'] ) && is_string( $args['class'] ) ? esc_attr( $args['class'] ) : '';
 		$slug   = ! empty( $args['slug'] ) ? sanitize_title( $args['slug'] ) : '';
 		$data   = '';
@@ -222,12 +219,14 @@ abstract class EVF_Form_Fields {
 			case 'row':
 				$output = sprintf( '<div class="everest-forms-field-option-row everest-forms-field-option-row-%s %s" id="everest-forms-field-option-row-%s-%s" data-field-id="%s">%s</div>', $slug, $class, $id, $slug, $id, $args['content'] );
 				break;
+
 			// Icon.
 			case 'icon':
 				$element_tooltip = isset( $args['tooltip'] ) ? $args['tooltip'] : 'Edit Label';
 				$icon            = isset( $args['icon'] ) ? $args['icon'] : 'dashicons-edit';
 				$output         .= sprintf( ' <i class="dashicons %s everest-forms-icon %s" title="%s" %s></i>', esc_attr( $icon ), $class, esc_attr( $element_tooltip ), $data );
 				break;
+				
 			// Label.
 			case 'label':
 				$output = sprintf( '<label for="everest-forms-field-option-%s-%s" class="%s" %s>%s', $id, $slug, $class, $data, esc_html( $args['value'] ) );

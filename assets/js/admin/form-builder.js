@@ -1439,31 +1439,31 @@
 		},
 
 		toggleLabelEdit( label, input ) {
-			$( label ).toggleClass( 'everest-forms-hidden' )
-			$( input ).toggleClass( 'everest-forms-hidden' )
+			$( label ).toggleClass( 'everest-forms-hidden' );
+			$( input ).toggleClass( 'everest-forms-hidden' );
 			
 			if ( $( input ).is(':visible') ) {
-				$( input ).focus()
+				$( input ).focus();
 			}
 		},
 
 		bindToggleHandleActions: function () {
 			$( 'body' ).on( 'click', '.toggle-handle', function ( e ) {
-				let label = $( this ).data( 'label' )
-				let input = $( this ).data( 'input' )
+				let label = $( this ).data( 'label' );
+				let input = $( this ).data( 'input' );
 
 				if ( ! $( input ).is(':visible') ) {
-					EVFPanelBuilder.toggleLabelEdit( label, input )
+					EVFPanelBuilder.toggleLabelEdit( label, input );
 				}
 			});
 		},
 
 		bindLabelEditInputActions: function () {
 			$( 'body' ).on( 'focusout', '.label-edit-input', function ( e ) {
-				let label = $( this ).data( 'label' )
-				let input = this
+				let label = $( this ).data( 'label' );
+				let input = this;
 
-				EVFPanelBuilder.toggleLabelEdit( label, input )
+				EVFPanelBuilder.toggleLabelEdit( label, input );
 			});
 		},
 
