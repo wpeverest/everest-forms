@@ -304,6 +304,7 @@ class EVF_Frontend_Scripts {
 				$params = array(
 					'ajax_url'            => admin_url( 'admin-ajax.php' ),
 					'evf_ajax_submission' => wp_create_nonce( 'everest_forms_ajax_form_submission' ),
+					'submit'              => __( 'Submit', 'everest-forms' ),
 					'error'               => __( 'Sorry, something went wrong. Please try again', 'everest-forms' ),
 				);
 				break;

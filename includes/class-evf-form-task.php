@@ -86,10 +86,6 @@ class EVF_Form_Task {
 			$response_data     = array();
 			$this->ajax_err	   = array();
 
-
-			// For the sake of validation we completely remove the validator option.
-			update_option('evf_validation_error', '');
-
 			// Check nonce for form submission.
 			if ( empty( $_POST['_wpnonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['_wpnonce'] ), 'everest-forms_process_submit' ) ) { // WPCS: input var ok, sanitization ok.
 				$this->errors[ $form_id ]['header'] = esc_html__( 'We were unable to process your form, please try again.', 'everest-forms' );
@@ -113,6 +109,10 @@ class EVF_Form_Task {
 
 			$ajax_form_submission = isset( $this->form_data['settings']['ajax_form_submission'] ) ? $this->form_data['settings']['ajax_form_submission'] : 0;
 			if ( 1 == $ajax_form_submission ) {
+
+				// For the sake of validation we completely remove the validator option.
+				update_option('evf_validation_error', '');
+
 				// Prepare fields for entry_save.
 				foreach ( $this->form_data['form_fields'] as $field ) {
 
@@ -143,9 +143,8 @@ class EVF_Form_Task {
 				do_action( "everest_forms_process_validate_{$field_type}", $field_id, $field_submit, $this->form_data, $field_type );
 
 				if ( 'yes' === get_option('evf_validation_error') && $ajax_form_submission ) {
-					$this->ajax_err = [
-						$field_type => $field_id
-					];
+					$this->ajax_err[] = $field_id;
+					update_option('evf_validation_error', '');
 				}
 			}
 
