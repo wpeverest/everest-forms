@@ -64,15 +64,27 @@ jQuery( function($) {
 								formTuple.closest('.everest-forms').prepend('<div class="everest-forms-notice everest-forms-notice--error" role="alert">'+ error  +'</div>').focus();
 
 								// Begin fixing the tamper.
-								fields.forEach( function( fieldTuple ) {
-									var fid = 'evf-' + form_id + '-field_' + fieldTuple,
-										fld = $('#' + fid);
+								$( fields ).each( function( index, fieldTuple ) {
+									let tuple = Object.values(fieldTuple)[0],
+										type  = Object.keys(fieldTuple)[0];
+									let err_field, fid;
 
-									fld.addClass('evf-error');
-									fld.after('<label id="' + fld.attr('id') + '-error" class="evf-error" for="' + fld.attr('id') + '">' + ajax_form_submission_params.required + '</label>');
-									fld.attr('required', true);
-									fld.attr('aria-invalid', true);
-									fld.closest('.evf-field').addClass('everest-forms-invalid evf-has-error');
+									switch ( type ){
+										case 'signature':
+											fid = 'evf-signature-img-input-' + tuple;
+											break;
+
+										default:
+											fid = 'evf-' + form_id + '-field_' + tuple;
+											break;
+									}
+
+									err_field = $('#' + fid);
+									err_field.addClass('evf-error');
+									err_field.after('<label id="' + err_field.attr('id') + '-error" class="evf-error" for="' + err_field.attr('id') + '">' + ajax_form_submission_params.required + '</label>');
+									err_field.attr('required', true);
+									err_field.attr('aria-invalid', true);
+									err_field.closest('.evf-field').addClass('everest-forms-invalid evf-has-error');
 								});
 						}
 					})

@@ -143,7 +143,7 @@ class EVF_Form_Task {
 				do_action( "everest_forms_process_validate_{$field_type}", $field_id, $field_submit, $this->form_data, $field_type );
 
 				if ( 'yes' === get_option( 'evf_validation_error' ) && $ajax_form_submission ) {
-					$this->ajax_err[] = $field_id;
+					$this->ajax_err[] = array ( $field_type => $field_id );
 					update_option( 'evf_validation_error', '' );
 				}
 			}
