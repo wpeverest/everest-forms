@@ -275,20 +275,24 @@ class EVF_Field_Number extends EVF_Form_Fields {
 		// Basic required check - If field is marked as required, check for entry data.
 		if ( ! empty( $form_data['form_fields'][ $field_id ]['required'] ) && empty( $field_submit ) && '0' !== $field_submit ) {
 			evf()->task->errors[ $form_id ][ $field_id ] = evf_get_required_label();
+			update_option( 'evf_validation_error', 'yes' );
 		}
 
 		// Check if value is numeric.
 		if ( ! empty( $field_submit ) && ! is_numeric( $field_submit ) ) {
 			evf()->task->errors[ $form_id ][ $field_id ] = apply_filters( 'everest_forms_valid_number_label', esc_html__( 'Please enter a valid number.', 'everest-forms' ) );
+			update_option( 'evf_validation_error', 'yes' );
 		}
 
 		// Check if minimum and maximum value is valid.
 		if ( ! empty( $form_data['form_fields'][ $field_id ]['min_value'] ) && floatval( $field_submit ) < $min_value ) {
 			/* translators: %s - minimum value. */
 			evf()->task->errors[ $form_id ][ $field_id ] = sprintf( esc_html__( 'Please enter a value greater than or equal to %s', 'everest-forms' ), absint( $min_value ) );
+			update_option( 'evf_validation_error', 'yes' );
 		} elseif ( ! empty( $form_data['form_fields'][ $field_id ]['max_value'] ) && floatval( $field_submit ) > $max_value ) {
 			/* translators: %s - maximum value. */
 			evf()->task->errors[ $form_id ][ $field_id ] = sprintf( esc_html__( 'Please enter a value less than or equal to %s', 'everest-forms' ), absint( $max_value ) );
+			update_option( 'evf_validation_error', 'yes' );
 		}
 	}
 }
