@@ -51,16 +51,28 @@ jQuery( function($) {
 								formTuple.trigger('reset');
 								formTuple.closest('.everest-forms').html('<div class="everest-forms-notice everest-forms-notice--success" role="alert">' + xhr.data.message + '</div>').focus();
 						} else {
-								let error  =  ajax_form_submission_params.error,
-									err    =  JSON.parse(errorThrown.responseText),
-									fields = err.data.error;
+								let error   =  ajax_form_submission_params.error,
+									err     =  JSON.parse(errorThrown.responseText),
+									fields  = err.data.error;
+								var	form_id = formTuple.attr('id');
 
 								if ( 'string' === typeof err.data.message ) {
 									error =  err.data.message;
-								}
+								}eee
 
 								formTuple.closest('.everest-forms').find('.everest-forms-notice').remove();
 								formTuple.closest('.everest-forms').prepend('<div class="everest-forms-notice everest-forms-notice--error" role="alert">'+ error  +'</div>').focus();
+
+								fields.forEach( function( fieldTuple ) {
+										let fld = $('#' + form_id + '_' + fieldTuple);
+
+										console.log(fld);
+										fld.addClass('evf-error');
+										fld.attr('required', true);
+										fld.attr('aria-invalid', true);
+										fld.closest('.evf-field').addClass('everest-forms-invalid evf-has-error');
+										console.log(form_id + '_' + fieldTuple);
+								});
 						}
 					})
 					.fail( function () {
