@@ -154,6 +154,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Enhancement - Limit the number of options to be checked in checkboxes field.
 * Enhancement - Robust the layout for displaying field choice i.e inline or {one|two|three} columns.
 * Enhancement - Single Line Text/Paragraph fields limitation options (limit by character or word count).
+* Enhancement - Added a filter `everest_forms_builder_field_option_class` to support field option class.
 * Fix - Error handling in AJAX handler for endpoint.
 * Fix - Choice default value not rendered on frontend.
 * Fix - Correctly closes label if no desc arg is passed.
@@ -167,5 +168,6 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Tweak - Admin notice design conflicted due to review notice.
 * Tweak - Referal in admin panel for origination of form entry.
 * Tweak - Display empty field value so users can toggle them in single entry view.
+* Tweak - Hide confirm placeholder text & sub-label option accordingly for email and password field.
 
 [See changelog for all versions](https://github.com/wpeverest/everest-forms/raw/master/CHANGELOG.txt).
