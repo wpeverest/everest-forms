@@ -173,12 +173,12 @@ jQuery( function ( $ ) {
 						key = `everest_forms[form_fields][${field_id}][signature_image]`;
 					} else if ( $(this).is( '.evf-field-phone' ) ) {
 						key = key + '[phone_field]';
-						error_message = {
-							required: error_message
-						};
 				 	} else if ( $(this).is( '.evf-field-password' ) ) {
+						// For when the confirm password is disabled.
 						key = `everest_forms[form_fields][${field_id}]`;
 						error_messages[ key ] = error_message;
+
+						// For when the confirm password is enabled.
 						key = `everest_forms[form_fields][${field_id}][primary]`;
 						error_messages[ key ] = error_message;
 						key = `everest_forms[form_fields][${field_id}][secondary]`;
@@ -191,6 +191,7 @@ jQuery( function ( $ ) {
 							'postal'  : $( this ).data( 'required-field-message-postal' ),
 							'country' : $( this ).data( 'required-field-message-country' ),
 						}
+
 						Object.entries( sub_field_error_messages ).forEach( ([ sub_field_type, error_message ]) => {
 							key                   = `everest_forms[form_fields][${field_id}][${sub_field_type}]`;
 							error_messages[ key ] = error_message;
@@ -199,16 +200,11 @@ jQuery( function ( $ ) {
 					} else if ( $(this).is( '.evf-field-likert' ) ) {
 						let row_keys = $( this ).data( 'row-keys' );
 						let sub_field_error_messages = {};
-						if ( row_keys ) {
-							try {
-								row_keys.forEach( row_key => {
-									try {
-										sub_field_error_messages[ row_key ] = $( this ).data( `required-field-message-${row_key}` );
-									} catch (error) {
-									}
-								})
-							} catch (error) {
-							}
+
+						if ( row_keys && Array.isArray( row_keys ) ) {
+							row_keys.forEach( row_key => {
+								sub_field_error_messages[ row_key ] = $( this ).data( `required-field-message-${row_key}` );
+							})
 						}
 						Object.entries( sub_field_error_messages ).forEach( ([ index, error_message ]) => {
 							key                   = `everest_forms[form_fields][${field_id}][${index}]`;
@@ -217,6 +213,10 @@ jQuery( function ( $ ) {
 						error_message = null;
 					}
 					
+					/**
+					 * Check if the error message has been already set (null value in error_message variable
+					 * should indicate that the message has already been set).
+					 */
 					if ( error_message ) {
 						error_messages[ key ] = error_message;
 					}
