@@ -67,7 +67,7 @@ jQuery( function($) {
 								$( fields ).each( function( index, fieldTuple ) {
 									let tuple = Object.values(fieldTuple)[0],
 										type  = Object.keys(fieldTuple)[0];
-									let err_field, fid;
+									let err_field, fid, lbl = true;
 
 									switch ( type ){
 										case 'signature':
@@ -76,8 +76,18 @@ jQuery( function($) {
 											break;
 
 										case 'likert':
-											fid = 'evf-' + form_id + '-field_' + tuple;
-											err_field = $('.' + fid);
+											fid = 'everest_forms-' + form_id + '-field_' + tuple + '_';
+											err_field = $('[id^="' + fid + '"]');
+											lbl = false;
+
+											err_field.each ( function ( index, element ) {
+												var tbl_header = $( element ).closest( 'tr.evf-' + form_id +'-field_' + tuple).find('th'),
+													id         = 'everest_forms[form_fields][' + tuple + '][' + ( parseInt( tbl_header.closest("tr").index() ) + 1 ) + ']';
+
+												if ( ! tbl_header.children().is('label') ) {
+													tbl_header.append('<label id="' + id + '" for="' + id + '" class="evf-error">' + ajax_form_submission_params.required + '</label>');
+												}
+											});
 											break;
 
 										default:
@@ -87,10 +97,13 @@ jQuery( function($) {
 									}
 
 									err_field.addClass('evf-error');
-									err_field.after('<label id="' + err_field.attr('id') + '-error" class="evf-error" for="' + err_field.attr('id') + '">' + ajax_form_submission_params.required + '</label>');
 									err_field.attr('required', true);
 									err_field.attr('aria-invalid', true);
-									err_field.closest('.evf-field').addClass('everest-forms-invalid evf-has-error');
+									err_field.first().closest('.evf-field').addClass('everest-forms-invalid evf-has-error');
+
+									if ( lbl ) {
+										err_field.after('<label id="' + err_field.attr('id') + '-error" class="evf-error" for="' + err_field.attr('id') + '">' + ajax_form_submission_params.required + '</label>');
+									}
 								});
 						}
 					})
