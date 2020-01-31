@@ -86,6 +86,8 @@ jQuery( function($) {
 
 												if ( ! tbl_header.children().is('label') ) {
 													tbl_header.append('<label id="' + id + '" for="' + id + '" class="evf-error">' + ajax_form_submission_params.required + '</label>');
+												} else {
+													tbl_header.children().find('#' + id).show();
 												}
 											});
 											break;
@@ -100,9 +102,9 @@ jQuery( function($) {
 												if ( fieldId.includes( '-container' ) || fieldId.includes( '-address2' ) ) {
 													err_field.splice( index, 1 );
 												} else  {
-													if ( '' === $( element ).val() ) {
+														if ( 'undefined' !== typeof $( element ).val() ) {
 														err_field.splice( index, 1 );
-													}
+														};
 												}
 											});
 											break;
@@ -118,8 +120,8 @@ jQuery( function($) {
 									err_field.attr('aria-invalid', true);
 									err_field.first().closest('.evf-field').addClass('everest-forms-invalid evf-has-error');
 
-									if (  true === lbl ) {
-										err_field.after('<label id="' + err_field.attr('id') + '-error" class="evf-error" for="' + err_field.attr('id') + '">' + ajax_form_submission_params.required + '</label>');
+									if (  true === lbl && ! err_field.is('label') ) {
+										err_field.after('<label id="' + err_field.attr('id') + '-error" class="evf-error" for="' + err_field.attr('id') + '">' + ajax_form_submission_params.required + '</label>').show();
 									}
 								});
 
