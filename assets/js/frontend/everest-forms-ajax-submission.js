@@ -95,10 +95,14 @@ jQuery( function($) {
 											err_field = $('[id^="' + fid + '"]');
 
 											err_field.each ( function ( index, element ) {
-												let fieldid   =  String( $( element ).attr('id') );
+												var fieldId   =  String( $( element ).attr('id') );
 
-												if ( fieldid.includes( '-container' ) || fieldid.includes( '-address2' ) ) {
+												if ( fieldId.includes( '-container' ) || fieldId.includes( '-address2' ) ) {
 													err_field.splice( index, 1 );
+												} else  {
+													if ( '' === $( element ).val() ) {
+														err_field.splice( index, 1 );
+													}
 												}
 											});
 											break;
