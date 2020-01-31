@@ -21,7 +21,7 @@ final class EverestForms {
 	 *
 	 * @var string
 	 */
-	public $version = '1.5.9';
+	public $version = '1.5.10';
 
 	/**
 	 * The single instance of the class.
@@ -157,7 +157,8 @@ final class EverestForms {
 	 */
 	public function log_errors() {
 		$error = error_get_last();
-		if ( E_ERROR === $error['type'] ) {
+
+		if ( $error && in_array( $error['type'], array( E_ERROR, E_PARSE, E_COMPILE_ERROR, E_USER_ERROR, E_RECOVERABLE_ERROR ), true ) ) {
 			$logger = evf_get_logger();
 			$logger->critical(
 				$error['message'] . PHP_EOL,

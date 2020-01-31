@@ -82,7 +82,8 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		<div class="everest-forms-preview-wrap">
 			<div class="everest-forms-preview">
 				<div class="everest-forms-title-desc">
-					<h2 class="everest-forms-form-name"><?php echo isset( $this->form->post_title ) ? esc_html( $this->form->post_title ) : esc_html__( 'Form not found.', 'everest-forms' ); ?></h2>
+					<input id= "evf-edit-form-name" type="text" class="everest-forms-form-name everest-forms-name-input" value ="<?php echo isset( $this->form->post_title ) ? esc_html( $this->form->post_title ) : esc_html__( 'Form not found.', 'everest-forms' ); ?>" disabled autocomplete="off" required>
+					<span id="edit-form-name" class = "evf-icon dashicons dashicons-edit"></span>
 				</div>
 				<div class="everest-forms-field-wrap">
 					<?php do_action( 'everest_forms_builder_fields_preview', $this->form ); ?>
@@ -132,8 +133,17 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 					continue;
 				}
 
+				$field_option_class = apply_filters(
+					'everest_forms_builder_field_option_class',
+					array(
+						'everest-forms-field-option',
+						'everest-forms-field-option-' . esc_attr( $field['type'] ),
+					),
+					$field
+				);
+
 				?>
-				<div class="everest-forms-field-option everest-forms-field-option-<?php echo esc_attr( $field['type'] ); ?>" id="everest-forms-field-option-<?php echo esc_attr( $field['id'] ); ?>" data-field-id="<?php echo esc_attr( $field['id'] ); ?>" >
+				<div class="<?php echo esc_attr( implode( ' ', $field_option_class ) ); ?>" id="everest-forms-field-option-<?php echo esc_attr( $field['id'] ); ?>" data-field-id="<?php echo esc_attr( $field['id'] ); ?>" >
 					<input type="hidden" name="form_fields[<?php echo esc_attr( $field['id'] ); ?>][id]" value="<?php echo esc_attr( $field['id'] ); ?>" class="everest-forms-field-option-hidden-id" />
 					<input type="hidden" name="form_fields[<?php echo esc_attr( $field['id'] ); ?>][type]" value="<?php echo esc_attr( $field['type'] ); ?>" class="everest-forms-field-option-hidden-type" />
 					<?php do_action( 'everest_forms_builder_fields_options_' . $field['type'], $field ); ?>

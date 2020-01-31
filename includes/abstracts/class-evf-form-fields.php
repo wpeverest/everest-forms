@@ -190,6 +190,29 @@ abstract class EVF_Form_Fields {
 			}
 		}
 
+		// BW compat for number attrs.
+		if ( ! empty( $args['min'] ) ) {
+			$args['attrs']['min'] = esc_attr( $args['min'] );
+			unset( $args['min'] );
+		}
+		if ( ! empty( $args['max'] ) ) {
+			$args['attrs']['max'] = esc_attr( $args['max'] );
+			unset( $args['min'] );
+		}
+		if ( ! empty( $args['required'] ) && $args['required'] ) {
+			$args['attrs']['required'] = 'required';
+			unset( $args['required'] );
+		}
+
+		if ( ! empty( $args['attrs'] ) ) {
+			foreach ( $args['attrs'] as $arg_key => $val ) {
+				if ( is_array( $val ) ) {
+					$val = wp_json_encode( $val );
+				}
+				$data .= $arg_key . '=\'' . $val . '\'';
+			}
+		}
+
 		switch ( $option ) {
 
 			// Row.
@@ -212,19 +235,13 @@ abstract class EVF_Form_Fields {
 			// Text input.
 			case 'text':
 				$type        = ! empty( $args['type'] ) ? esc_attr( $args['type'] ) : 'text';
-				$min         = ! empty( $args['min'] ) ? esc_attr( $args['min'] ) : '';
-				$max         = ! empty( $args['max'] ) ? esc_attr( $args['max'] ) : '';
-				$required    = ( ! empty( $args['required'] ) && $args['required'] ) ? esc_attr( 'required' ) : '';
 				$placeholder = ! empty( $args['placeholder'] ) ? esc_attr( $args['placeholder'] ) : '';
 				$before      = ! empty( $args['before'] ) ? '<span class="before-input">' . esc_html( $args['before'] ) . '</span>' : '';
 				if ( ! empty( $before ) ) {
 					$class .= ' has-before';
 				}
-				if ( 'number' === $type ) {
-					$output = sprintf( '%s<input type="%s" class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" min="%s" max="%s" value="%s" placeholder="%s" %s %s>', $before, $type, $class, $id, $slug, $id, $slug, $min, $max, esc_attr( $args['value'] ), $placeholder, $required, $data );
-				} else {
-					$output = sprintf( '%s<input type="%s" class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" value="%s" placeholder="%s" %s %s>', $before, $type, $class, $id, $slug, $id, $slug, esc_attr( $args['value'] ), $placeholder, $required, $data );
-				}
+
+				$output = sprintf( '%s<input type="%s" class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" value="%s" placeholder="%s" %s>', $before, $type, $class, $id, $slug, $id, $slug, esc_attr( $args['value'] ), $placeholder, $data );
 				break;
 
 			// Textarea.
@@ -270,8 +287,11 @@ abstract class EVF_Form_Fields {
 				$options = $args['options'];
 				$default = isset( $args['default'] ) ? $args['default'] : '';
 				$output  = '<label>' . $args['desc'];
+
 				if ( isset( $args['tooltip'] ) && ! empty( $args['tooltip'] ) ) {
 					$output .= ' ' . sprintf( '<i class="dashicons dashicons-editor-help everest-forms-help-tooltip" title="%s"></i></label>', esc_attr( $args['tooltip'] ) );
+				}  else {
+					$output .= '</label>';
 				}
 				$output .= '<ul>';
 
@@ -1018,5 +1038,17 @@ abstract class EVF_Form_Fields {
 			'type'     => $this->type,
 			'meta_key' => $meta_key,
 		);
+	}
+
+	/**
+	 * Field with limit.
+	 *
+	 * @param  array $field Field to check.
+	 * @return boolean
+	 */
+	protected function field_is_limit( $field ) {
+		if ( in_array( $field['type'], array( 'text', 'textarea' ), true ) ) {
+			return isset( $field['limit_enabled'] ) && ! empty( $field['limit_count'] );
+		}
 	}
 }

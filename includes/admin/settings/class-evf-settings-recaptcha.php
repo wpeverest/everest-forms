@@ -84,7 +84,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 					/* translators: %1$s - Google reCAPTCHA docs url */
 					'desc'       => sprintf( __( 'Please enter your site key for your reCAPTCHA v2. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/tutorials/how-to-integrate-google-recaptcha/' ) ),
 					'id'         => 'everest_forms_recaptcha_v2_invisible_site_key',
-					'is_visible' => 'yes' === $invisible,
+					'is_visible' => 'yes' === $invisible && 'v2' === $recaptcha_type,
 					'default'    => '',
 					'desc_tip'   => true,
 				),
@@ -94,7 +94,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 					/* translators: %1$s - Google reCAPTCHA docs url */
 					'desc'       => sprintf( __( 'Please enter your secret key for your reCAPTCHA v2. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/tutorials/how-to-integrate-google-recaptcha/' ) ),
 					'id'         => 'everest_forms_recaptcha_v2_invisible_secret_key',
-					'is_visible' => 'yes' === $invisible,
+					'is_visible' => 'yes' === $invisible && 'v2' === $recaptcha_type,
 					'default'    => '',
 					'desc_tip'   => true,
 				),

@@ -23,13 +23,13 @@ if ( ! function_exists( 'is_ajax' ) ) {
 }
 
 /**
- * Check if the string JSON.
+ * Check if the string is JSON.
  *
- * @param  string $string
+ * @param  string $string String to check.
  * @return bool
  */
 function evf_is_json( $string ) {
-	return is_object( json_decode( $string ) );
+	return is_string( $string ) ? is_object( json_decode( $string ) ) : false;
 }
 
 /**

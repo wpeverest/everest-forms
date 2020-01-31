@@ -1,10 +1,10 @@
 === Contact Form, Drag and Drop Form Builder for WordPress - Everest Forms ===
 Contributors: WPEverest
-Tags: contact form, form, form builder, contact, custom form
+Tags: contact form, forms, form builder, contact, custom form
 Requires at least: 4.9
 Tested up to: 5.3
 Requires PHP: 5.4
-Stable tag: 1.5.9
+Stable tag: 1.5.10
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -21,8 +21,6 @@ Multiple column forms can be designed with a click. Pre-built templates and desi
 View [All features](https://wpeverest.com/wordpress-plugins/everest-forms/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme)
 
 View [Demo](http://demo.wpeverest.com/everest-forms/)
-
-Get [free support](https://wpeverest.com/support-forum/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme)
 
 Check [documentation](http://docs.wpeverest.com/docs/everest-forms/)
 
@@ -112,27 +110,47 @@ The manual installation method involves downloading our form builder plugin and 
 
 == Frequently Asked Questions ==
 
-= What is the plugin license? =
+= Do I need to have coding skills to use the Everest Forms Plugin? =
 
-* This plugin is released under a GPL license.
+No, you don't need any coding skills. One can simply drag and drop fields, arrange them and use built-in shortcodes to display the form.
 
-= Where can I find Everest Forms documentation and user guides? =
+= Does the plugin work with any WordPress themes?
 
-For help setting up and configuring Everest Forms please refer to our [user guide](http://docs.wpeverest.com/docs/everest-forms/)
+Yes, Everest Forms is designed to work with any themes that have been coded following WordPress guidelines.
 
-= Will Everest Forms work with my theme? =
+= What type of form can I build with Everest Forms?
 
-Yes; Everest Forms will work with any theme that have been coded following WordPress guidelines, but may require some styling to make it match nicely.
+The drag and drop builder allows you to create a variety of WordPress forms, not limited to just a contact form. Combined with our premium addons, you can create forms like
+* Contact Form
+* Support Request Form
+* Suggestion Form
+* Job Application Form
+* Multi-step Form
+* Conditional Form
+* Registration Form
+* Customer Survey Form
+* Poll Form
+* Quiz Form
+* Paypal Payment Form
+* Stripe Payment Form
+* Signature Form
+* Post Submission Form
+* Newsletter Signup Forms
 
-= Where can I report bugs or contribute to the project? =
+= Do you have a quick get started video for Everest Form?
 
-Bugs can be reported either in our support forum or preferably on the [Everest Forms GitHub repository](https://github.com/wpeverest/everest-forms/issues).
+Yes, we do. Check out this [Getting Started Videos](https://docs.wpeverest.com/docs/everest-forms/getting-started/watch-video-guide/?utm_source=wporg&utm_medium=link&utm_campaign=everest-forms-readme)
 
 = Everest Forms is awesome! Can I contribute? =
 
 Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/everest-forms/) :)
 
 == Changelog ==
+
+= 1.5.10 - 25-11-2019 =
+* Fix - Google reCAPTCHA v2 invisible settings bug.
+* Fix - DB unwanted data erase for fields data save.
+* Fix - Multi-part submit button hidden due to theme style conflict.
 
 = 1.5.9 - 19-11-2019 =
 * Fix - Fatal error: Called to undefined function.

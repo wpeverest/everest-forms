@@ -44,7 +44,7 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 										}
 
 										$meta_value = is_serialized( $meta_value ) ? $meta_value : wp_strip_all_tags( $meta_value );
-										if ( evf_is_json( $meta_value ) === true ) {
+										if ( evf_is_json( $meta_value ) ) {
 											$meta_value = json_decode( $meta_value, true );
 											$meta_value = $meta_value['value'];
 										}
@@ -55,7 +55,7 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 										$correct_answers = false;
 
 										// Field name.
-										echo '<tr class="everest-forms-entry-field field-name' . $field_class . '" style="' . $field_style . '"><th>';
+										echo '<tr class="everest-forms-entry-field field-name' . $field_class . '" style="' . esc_attr( $field_style ) . '"><th>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 										$value = evf_get_form_data_by_meta_key( $form_id, $meta_key );
 
@@ -160,6 +160,14 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 										<span class="dashicons dashicons-location"></span>
 										<?php esc_html_e( 'User IP:', 'everest-forms' ); ?>
 										<strong><?php echo esc_html( $entry->user_ip_address ); ?></strong>
+									</p>
+								<?php endif; ?>
+
+								<?php if ( ! empty( $entry->referer ) ) : ?>
+									<p class="everest-forms-entry-referer">
+										<span class="dashicons dashicons-admin-links"></span>
+										<?php esc_html_e( 'Referer Link:', 'everest-forms' ); ?>
+										<strong><a href="<?php echo esc_url( $entry->referer ); ?>" target="_blank"><?php esc_html_e( 'View', 'everest-forms' ); ?></a></strong>
 									</p>
 								<?php endif; ?>
 

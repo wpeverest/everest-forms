@@ -115,11 +115,15 @@ class EVF_Form_Task {
 			}
 
 			// reCAPTCHA check.
-			$recaptcha_type = get_option( 'everest_forms_recaptcha_type', 'v2' );
+			$recaptcha_type      = get_option( 'everest_forms_recaptcha_type', 'v2' );
+			$invisible_recaptcha = get_option( 'everest_forms_recaptcha_v2_invisible', 'no' );
 
-			if ( 'v2' === $recaptcha_type ) {
+			if ( 'v2' === $recaptcha_type && 'no' === $invisible_recaptcha ) {
 				$site_key   = get_option( 'everest_forms_recaptcha_v2_site_key' );
 				$secret_key = get_option( 'everest_forms_recaptcha_v2_secret_key' );
+			} elseif ( 'v2' === $recaptcha_type && 'yes' === $invisible_recaptcha ) {
+				$site_key   = get_option( 'everest_forms_recaptcha_v2_invisible_site_key' );
+				$secret_key = get_option( 'everest_forms_recaptcha_v2_invisible_secret_key' );
 			} else {
 				$site_key   = get_option( 'everest_forms_recaptcha_v3_site_key' );
 				$secret_key = get_option( 'everest_forms_recaptcha_v3_secret_key' );
@@ -543,8 +547,10 @@ class EVF_Form_Task {
 			}
 		}
 
+		$this->entry_id = $entry_id;
+
 		do_action( 'everest_forms_complete_entry_save', $entry_id, $fields, $entry, $form_id, $form_data );
 
-		return $entry_id;
+		return $this->entry_id;
 	}
 }

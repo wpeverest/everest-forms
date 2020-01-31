@@ -51,12 +51,29 @@
 		@include loader();
 	}
 
+	.clear {
+		height: auto;
+		width: auto;
+		visibility: visible;
+	}
+
 	.loader {
 		@include loader();
 	}
 
 	.evf-container {
 		margin-bottom: 30px;
+	}
+
+	.everest-forms-progress-bar {
+		background: $color_gray-lighten;
+		border-radius: 2px;
+
+		.everest-forms-progress-bar-indicator {
+			height: 4px;
+			background: $green;
+			border-radius: 2px;
+		}
 	}
 
 	label {
@@ -371,7 +388,8 @@
 				}
 			}
 
-			.evf-field-description {
+			.evf-field-description,
+			.everest-forms-field-limit-text {
 				line-height: 1.7;
 				margin-bottom: 10px;
 				font-size: $font_size-label;

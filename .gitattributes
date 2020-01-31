@@ -9,3 +9,4 @@ package-lock.json export-ignore
 webpack.config.js export-ignore
 phpcs.xml export-ignore
 README.md export-ignore
+wp-env.json export-ignore

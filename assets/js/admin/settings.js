@@ -136,6 +136,6 @@
 			$( '#everest_forms_recaptcha_v2_invisible_site_key' ).parents( 'tr' ).eq( 0 ).hide();
 			$( '#everest_forms_recaptcha_v2_invisible_secret_key' ).parents( 'tr' ).eq( 0 ).hide();
 		}
-	}).change();
+	});
 
 })( jQuery, everest_forms_settings_params );

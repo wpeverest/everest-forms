@@ -134,6 +134,9 @@
 			// Bind all actions.
 			EVFPanelBuilder.bindUIActions();
 
+			// Bind edit form actions.
+			EVFPanelBuilder.bindEditActions();
+
 			// jquery-confirm defaults.
 			jconfirm.defaults = {
 				closeIcon: true,
@@ -160,8 +163,29 @@
 				}
 			}
 
+			// Enable Limit length.
+			$builder.on( 'change', '.everest-forms-field-option-row-limit_enabled input', function( event ) {
+				EVFPanelBuilder.updateTextFieldsLimitControls( $( event.target ).parents( '.everest-forms-field-option-row-limit_enabled' ).data().fieldId, event.target.checked );
+			} );
+
 			// Action available for each binding.
 			$( document ).trigger( 'everest_forms_ready' );
+		},
+
+		/**
+		 * Update text fields limit controls.
+		 *
+		 * @since 1.5.10
+		 *
+		 * @param {number} fieldId Field ID.
+		 * @param {bool} checked Whether an option is checked or not.
+		 */
+		updateTextFieldsLimitControls: function( fieldId, checked ) {
+			if ( ! checked ) {
+				$( '#everest-forms-field-option-row-' + fieldId + '-limit_controls' ).addClass( 'everest-forms-hidden' );
+			} else {
+				$( '#everest-forms-field-option-row-' + fieldId + '-limit_controls' ).removeClass( 'everest-forms-hidden' );
+			}
 		},
 
 		/**
@@ -188,13 +212,78 @@
 			EVFPanelBuilder.choicesInit();
 			EVFPanelBuilder.choicesUpdate();
 
-			// Fields Panel
+			// Fields Panel.
 			EVFPanelBuilder.bindUIActionsFields();
 
-			var tab = evf_data.tab;
-			if ( tab === 'field-options' ) {
+			if ( evf_data.tab === 'field-options' ) {
 				$( '.evf-panel-field-options-button' ).trigger( 'click' );
 			}
+		},
+
+		/**
+		 * Form edit title actions.
+		 *
+		 * @since 1.6.0
+		 */
+		bindEditActions: function() {
+			// Delegates event to toggleEditTitle() on clicking.
+			$( '#edit-form-name' ).on( 'click', function( e ) {
+				e.stopPropagation();
+
+				if ( '' !== $( '#evf-edit-form-name' ).val().trim() ) {
+					EVFPanelBuilder.toggleEditTitle( e );
+				}
+			});
+
+			// Apply the title change to form name field.
+			$( '#evf-edit-form-name' )
+				.on( 'change keypress', function( e ) {
+					var $this = $( this );
+
+					e.stopPropagation();
+
+					if ( 13 === e.which && '' !== $( this ).val().trim() ) {
+						EVFPanelBuilder.toggleEditTitle( e );
+					}
+
+					if ( '' !== $this.val().trim() ) {
+						$( '#everest-forms-panel-field-settings-form_title' ).val( $this.val().trim() );
+					}
+				})
+				.on( 'click', function( e ) {
+					e.stopPropagation();
+				});
+
+			// In case the user goes out of focus from title edit state.
+			$( document ).not( $( '.everest-forms-title-desc' ) ).click( function( e ) {
+				var field = $( '#evf-edit-form-name' );
+
+				e.stopPropagation();
+
+				// Only allow flipping state if currently editing.
+				if ( ! field.prop( 'disabled' ) && field.val() && '' !== field.val().trim() ) {
+					EVFPanelBuilder.toggleEditTitle( e );
+				}
+			});
+		},
+
+		// Toggles edit state.
+		toggleEditTitle: function( event ) {
+			var $el          = $( '#edit-form-name' ),
+				$input_title = $el.siblings( '#evf-edit-form-name' );
+
+			event.preventDefault();
+
+			// Toggle disabled property.
+			$input_title.prop ( 'disabled' , function( _ , val ) {
+				return ! val;
+			});
+
+			if ( ! $input_title.hasClass( 'everst-forms-name-editing' ) ) {
+				$input_title.focus();
+			}
+
+			$input_title.toggleClass( 'everst-forms-name-editing' );
 		},
 
 		//--------------------------------------------------------------------//
@@ -753,10 +842,28 @@
 		},
 		bindSaveOption: function () {
 			$( 'body' ).on( 'click', '.everest-forms-save-button', function () {
-				var $this     = $( this );
-				var $form     = $( 'form#everest-forms-builder-form' );
-				var structure = EVFPanelBuilder.getStructure();
-				var form_data = $form.serializeArray();
+				var $this      = $( this );
+				var $form      = $( 'form#everest-forms-builder-form' );
+				var structure  = EVFPanelBuilder.getStructure();
+				var form_data  = $form.serializeArray();
+				var form_title = $( '#evf-edit-form-name' ).val().trim();
+
+				if ( '' === form_title ) {
+					$.alert({
+						title: evf_data.i18n_field_title_empty,
+						content: evf_data.i18n_field_title_payload,
+						icon: 'dashicons dashicons-warning',
+						type: 'red',
+						buttons: {
+							ok: {
+								text: evf_data.i18n_ok,
+								btnClass: 'btn-confirm',
+								keys: [ 'enter' ]
+							}
+						}
+					});
+					return;
+				}
 
 				// Trigger a handler to let addon manipulate the form data if needed.
 				if ( $form.triggerHandler( 'everest_forms_process_ajax_data', [ $this, form_data ] ) ) {
@@ -770,6 +877,28 @@
 						opacity: 0.6
 					}
 				});
+
+				/* DB unwanted data erase start */
+				var rfields_ids = [];
+				$( '.everest-forms-field[data-field-id]' ).each( function() {
+					rfields_ids.push( $( this ).attr( 'data-field-id' ) );
+				});
+
+				var form_data_length = form_data.length;
+				while ( form_data_length-- ) {
+					if ( form_data[ form_data_length ].name.startsWith( 'form_fields' ) ) {
+						var idflag = false;
+						rfields_ids.forEach( function( element ) {
+							if ( form_data[ form_data_length ].name.startsWith( 'form_fields[' + element + ']' ) ) {
+								idflag = true;
+							}
+						});
+						if ( form_data_length > -1 && idflag === false )  {
+							form_data.splice( form_data_length, 1 );
+						}
+					}
+				}
+				/* DB fix end */
 
 				var new_form_data = form_data.concat( structure );
 				var data = {

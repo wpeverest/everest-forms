@@ -14,12 +14,12 @@ defined( 'ABSPATH' ) || exit;
 			<h2>
 				<?php echo esc_html( $viewed_log ); ?>
 				<?php if ( ! empty( $handle ) ) : ?>
-					<a class="page-title-action" href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'handle' => $handle ), admin_url( 'admin.php?page=evf-status&tab=logs' ) ), 'remove_log' ) ); ?>" class="button"><?php esc_html_e( 'Delete log', 'everest-forms' ); ?></a>
+					<a class="page-title-action" href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'handle' => $handle ), admin_url( 'admin.php?page=evf-tools&tab=logs' ) ), 'remove_log' ) ); ?>" class="button"><?php esc_html_e( 'Delete log', 'everest-forms' ); ?></a>
 				<?php endif; ?>
 			</h2>
 		</div>
 		<div class="alignright">
-			<form action="<?php echo esc_url( admin_url( 'admin.php?page=evf-status&tab=logs' ) ); ?>" method="post">
+			<form action="<?php echo esc_url( admin_url( 'admin.php?page=evf-tools&tab=logs' ) ); ?>" method="post">
 				<select name="log_file">
 					<?php foreach ( $logs as $log_key => $log_file ) : ?>
 						<?php

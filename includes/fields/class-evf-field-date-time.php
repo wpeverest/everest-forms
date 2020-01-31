@@ -446,7 +446,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 		$this->field_preview_option( 'label', $field );
 
 		// Primary input.
-		echo '<input type="text" placeholder="' . $placeholder . '" class="widefat" disabled>';
+		echo '<input type="text" placeholder="' . esc_attr( $placeholder ) . '" class="widefat" disabled>';
 
 		// Description.
 		$this->field_preview_option( 'description', $field );

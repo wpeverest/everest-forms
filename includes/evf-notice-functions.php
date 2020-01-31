@@ -132,6 +132,11 @@ function evf_print_notices( $form_data = array() ) {
 	$all_notices  = EVF()->session->get( 'evf_notices', array() );
 	$notice_types = apply_filters( 'everest_forms_notice_types', array( 'error', 'success', 'notice' ) );
 
+	// Skips notice print if it isn't the right form.
+	if ( isset( $_REQUEST['everest_forms']['id'] ) && ( (int) $form_id !== (int) $_REQUEST['everest_forms']['id'] ) ) {
+		return;
+	}
+
 	foreach ( $notice_types as $notice_type ) {
 		if ( evf_notice_count( $notice_type ) > 0 ) {
 			foreach ( $all_notices[ $notice_type ] as $key => $message ) {
