@@ -176,7 +176,7 @@ abstract class EVF_Form_Fields {
 	 */
 	public function field_element( $option, $field, $args = array(), $echo = true ) {
 		$id     = (string) $field['id'];
-		$class  = ! empty( $args['class'] ) ? sanitize_html_class( $args['class'] ) : '';
+		$class  = ! empty( $args['class'] ) && is_string( $args['class'] ) ? esc_attr( $args['class'] ) : '';
 		$slug   = ! empty( $args['slug'] ) ? sanitize_title( $args['slug'] ) : '';
 		$data   = '';
 		$output = '';
@@ -220,9 +220,16 @@ abstract class EVF_Form_Fields {
 				$output = sprintf( '<div class="everest-forms-field-option-row everest-forms-field-option-row-%s %s" id="everest-forms-field-option-row-%s-%s" data-field-id="%s">%s</div>', $slug, $class, $id, $slug, $id, $args['content'] );
 				break;
 
+			// Icon.
+			case 'icon':
+				$element_tooltip = isset( $args['tooltip'] ) ? $args['tooltip'] : 'Edit Label';
+				$icon            = isset( $args['icon'] ) ? $args['icon'] : 'dashicons-edit';
+				$output         .= sprintf( ' <i class="dashicons %s everest-forms-icon %s" title="%s" %s></i>', esc_attr( $icon ), $class, esc_attr( $element_tooltip ), $data );
+				break;
+
 			// Label.
 			case 'label':
-				$output = sprintf( '<label for="everest-forms-field-option-%s-%s">%s', $id, $slug, esc_html( $args['value'] ) );
+				$output = sprintf( '<label for="everest-forms-field-option-%s-%s" class="%s" %s>%s', $id, $slug, $class, $data, esc_html( $args['value'] ) );
 				if ( isset( $args['tooltip'] ) && ! empty( $args['tooltip'] ) ) {
 					$output .= ' ' . sprintf( '<i class="dashicons dashicons-editor-help everest-forms-help-tooltip" title="%s"></i>', esc_attr( $args['tooltip'] ) );
 				}
@@ -1117,9 +1124,9 @@ abstract class EVF_Form_Fields {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param int   $field_id
-	 * @param array $field_submit
-	 * @param array $form_data
+	 * @param string $field_id Field Id.
+	 * @param array  $field_submit Submitted Data.
+	 * @param array  $form_data All Form Data.
 	 */
 	public function validate( $field_id, $field_submit, $form_data ) {
 		$field_type         = isset( $form_data['form_fields'][ $field_id ]['type'] ) ? $form_data['form_fields'][ $field_id ]['type'] : '';

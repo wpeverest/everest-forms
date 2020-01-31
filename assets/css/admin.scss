@@ -725,6 +725,40 @@ button.everest-forms-btn {
 		}
 	}
 
+	.everest-forms-label-edit {
+		display: flex;
+		justify-content: space-between;
+
+		.dashicons {
+			color: $color_gray-light;
+			height: 24px;
+			width: 24px;
+			cursor: pointer;
+			flex: 0 0 24px;
+			margin: 4px;
+			border-radius: 3px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			opacity: 0;
+			visibility: hidden;
+		}
+
+		&:hover,
+		&:active,
+		&:focus,
+		&:focus-within {
+			.dashicons {
+				visibility: visible;
+				opacity: 1;
+			}
+		}
+
+		input {
+			margin-right: 6px;
+		}
+	}
+
 	.everest-forms {
 		.loading-dot {
 			background: url(../images/icons/three-dots.svg);
@@ -1251,6 +1285,10 @@ button.everest-forms-btn {
 			}
 		}
 
+		.everest-forms-inner-options {
+			padding-left: 20px;
+		}
+
 		.input-group-col-2 {
 			display: flex;
 			flex-wrap: wrap;
@@ -1440,8 +1478,8 @@ button.everest-forms-btn {
 				border: 1px solid $color_gray-lighten;
 				box-shadow: 1px 3px 20px 0 transparentize($color_gray-dark, 0.8);
 
-				.smart-tag-title,
-				li {
+				li,
+				.smart-tag-title {
 					padding: 7px 10px;
 				}
 
@@ -1701,6 +1739,14 @@ button.everest-forms-btn {
 
 						.everest-forms-field-option {
 							display: none;
+
+							// Email/Password Confirmation.
+							&.everest-forms-confirm-disabled {
+								.everest-forms-field-option-row-sublabel_hide,
+								.everest-forms-field-option-row-confirmation_placeholder {
+									display: none;
+								}
+							}
 						}
 
 						.everest-forms-field-option-phone {
@@ -2536,6 +2582,29 @@ button.everest-forms-btn {
 				&.evf-toggle-switch {
 					display: flex;
 					margin-bottom: 0;
+				}
+
+				&.everest-forms-hidden {
+					display: none;
+				}
+			}
+
+			.everest-forms-label-edit {
+				margin-bottom: 4px;
+
+				label {
+					margin-bottom: 4px;
+					padding: 4px 0;
+					flex: 1;
+				}
+
+				input {
+					font-size: 13px;
+					font-weight: 600;
+				}
+
+				.dashicons {
+					margin-right: 7px;
 				}
 			}
 
