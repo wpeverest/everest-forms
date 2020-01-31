@@ -26,9 +26,8 @@ class EVF_Admin_Notices {
 	 * @var array
 	 */
 	private static $core_notices = array(
-		'update'                    => 'update_notice',
-		'review'                    => 'review_notice',
-		'deprecated_payment_charge' => 'deprecated_payment_charge_notice',
+		'update' => 'update_notice',
+		'review' => 'review_notice',
 	);
 
 	/**
@@ -261,21 +260,6 @@ class EVF_Admin_Notices {
 		if ( $load && ( is_super_admin() || current_user_can( 'manage_everest_forms' ) ) ) {
 			include 'views/html-notice-review.php';
 		}
-	}
-
-	/**
-	 * If on Everest Forms 1.4.9 or greater, inform users of Everest Forms Stripe about deprecated payment charge field.
-	 *
-	 * @since 1.4.9
-	 * @todo  Remove this notice and associated code once the stripe addon requires everest forms 1.5.0.
-	 */
-	public static function deprecated_payment_charge_notice() {
-		if ( get_user_meta( get_current_user_id(), 'dismissed_legacy_payment_charge_notice', true ) || ! self::is_plugin_active( 'everest-forms-stripe/everest-forms-stripe.php' ) ) {
-			self::remove_notice( 'deprecated_payment_charge' );
-			return;
-		}
-
-		include dirname( __FILE__ ) . '/views/html-notice-deprecated-payment-charge.php';
 	}
 
 	/**
