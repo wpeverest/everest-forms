@@ -172,7 +172,7 @@ jQuery( function ( $ ) {
 							if ( element.parent().find( 'label.evf-error:visible' ).length === 0 ) {
 								element.parent().find( 'select:last' ).after( error );
 							}
-						} else if ( element.hasClass( 'evf-smart-phone-field' ) ) {
+						} else if ( element.hasClass( 'evf-smart-phone-field' ) || element.hasClass( 'everest-forms-field-password-primary' ) || element.hasClass( 'everest-forms-field-password-secondary' ) ) {
 							element.parent().after( error );
 						} else {
 							error.insertAfter( element );

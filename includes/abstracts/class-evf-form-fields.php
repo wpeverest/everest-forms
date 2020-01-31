@@ -226,7 +226,7 @@ abstract class EVF_Form_Fields {
 				$icon            = isset( $args['icon'] ) ? $args['icon'] : 'dashicons-edit';
 				$output         .= sprintf( ' <i class="dashicons %s everest-forms-icon %s" title="%s" %s></i>', esc_attr( $icon ), $class, esc_attr( $element_tooltip ), $data );
 				break;
-				
+
 			// Label.
 			case 'label':
 				$output = sprintf( '<label for="everest-forms-field-option-%s-%s" class="%s" %s>%s', $id, $slug, $class, $data, esc_html( $args['value'] ) );
@@ -974,9 +974,9 @@ abstract class EVF_Form_Fields {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param int   $field_id
-	 * @param array $field_submit
-	 * @param array $form_data
+	 * @param string $field_id Field Id.
+	 * @param array  $field_submit Submitted Data.
+	 * @param array  $form_data All Form Data.
 	 */
 	public function validate( $field_id, $field_submit, $form_data ) {
 		$field_type         = isset( $form_data['form_fields'][ $field_id ]['type'] ) ? $form_data['form_fields'][ $field_id ]['type'] : '';
