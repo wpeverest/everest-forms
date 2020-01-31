@@ -90,6 +90,20 @@ jQuery( function($) {
 											});
 											break;
 
+										case 'address':
+											fid = 'evf-' + form_id + '-field_' + tuple;
+											err_field = $('[id^="' + fid + '"]');
+											lbl = false;
+
+											err_field.each ( function ( index, element ) {
+												let fieldid   =  String( $( element ).attr('id') );
+
+												if ( fieldid.includes( '-container' ) || fieldid.includes( '-address2' ) ) {
+													err_field.splice( index, 1 );
+												}
+											});
+											break;
+
 										default:
 											fid = 'evf-' + form_id + '-field_' + tuple;
 											err_field = $('#' + fid);
