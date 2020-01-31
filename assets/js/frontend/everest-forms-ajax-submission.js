@@ -93,7 +93,6 @@ jQuery( function($) {
 										case 'address':
 											fid = 'evf-' + form_id + '-field_' + tuple;
 											err_field = $('[id^="' + fid + '"]');
-											lbl = false;
 
 											err_field.each ( function ( index, element ) {
 												let fieldid   =  String( $( element ).attr('id') );
@@ -115,13 +114,16 @@ jQuery( function($) {
 									err_field.attr('aria-invalid', true);
 									err_field.first().closest('.evf-field').addClass('everest-forms-invalid evf-has-error');
 
-									if ( lbl ) {
+									if (  true === lbl ) {
 										err_field.after('<label id="' + err_field.attr('id') + '-error" class="evf-error" for="' + err_field.attr('id') + '">' + ajax_form_submission_params.required + '</label>');
 									}
 								});
+
+								btn.attr('disabled', false).html( ajax_form_submission_params.submit );
 						}
 					})
 					.fail( function () {
+						btn.attr('disabled', false).html( ajax_form_submission_params.submit );
 						formTuple.trigger('focusout').trigger('change');
 						formTuple.closest('.everest-forms').find('.everest-forms-notice').remove();
 						formTuple.closest('.everest-forms').prepend('<div class="everest-forms-notice everest-forms-notice--error" role="alert">'+ ajax_form_submission_params.error  +'</div>').focus();
@@ -131,8 +133,6 @@ jQuery( function($) {
 							scrollTop: $('.everest-forms-notice').offset().top
 						}, 800);
 					});
-
-					$( this ).attr('disabled', false).html( ajax_form_submission_params.submit );
 				});
 			});
 		});
