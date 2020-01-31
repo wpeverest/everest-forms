@@ -72,14 +72,20 @@ jQuery( function($) {
 									switch ( type ){
 										case 'signature':
 											fid = 'evf-signature-img-input-' + tuple;
+											err_field = $('#' + fid);
+											break;
+
+										case 'likert':
+											fid = 'evf-' + form_id + '-field_' + tuple;
+											err_field = $('.' + fid);
 											break;
 
 										default:
 											fid = 'evf-' + form_id + '-field_' + tuple;
+											err_field = $('#' + fid);
 											break;
 									}
 
-									err_field = $('#' + fid);
 									err_field.addClass('evf-error');
 									err_field.after('<label id="' + err_field.attr('id') + '-error" class="evf-error" for="' + err_field.attr('id') + '">' + ajax_form_submission_params.required + '</label>');
 									err_field.attr('required', true);
