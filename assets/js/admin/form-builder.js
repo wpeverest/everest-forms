@@ -336,9 +336,17 @@
 			});
 
 			// Real-time updates for "Required" field option.
-			$builder.on('change', '.everest-forms-field-option-row-required input', function(e) {
+			$builder.on( 'change', '.everest-forms-field-option-row-required input', function( event ) {
 				var id = $( this ).parent().data( 'field-id' );
+
 				$( '#everest-forms-field-' + id ).toggleClass( 'required' );
+
+				// Toggle "Required Field Message" option.
+				if ( $( event.target ).is( ':checked' ) ) {
+					$( '#everest-forms-field-option-row-' + id + '-required-field-message' ).show();
+				} else {
+					$( '#everest-forms-field-option-row-' + id + '-required-field-message' ).hide();
+				}
 			});
 
 			// Real-time updates for "Confirmation" field option
@@ -1441,7 +1449,7 @@
 		toggleLabelEdit( label, input ) {
 			$( label ).toggleClass( 'everest-forms-hidden' );
 			$( input ).toggleClass( 'everest-forms-hidden' );
-			
+
 			if ( $( input ).is(':visible') ) {
 				$( input ).focus();
 			}
@@ -1470,7 +1478,7 @@
 		/**
 		 * Sync an input element with other elements like labels. An element with `sync-input` class will be synced to the elements
 		 * specified in `sync-targets` data.
-		 * 
+		 *
 		 * `Warning:` This is an one way sync, meaning only the text `sync-targets` will be updated when the source element's value changes
 		 * and the source element's value will not be updated if the value of `sync-targets` changes.
 		 */
