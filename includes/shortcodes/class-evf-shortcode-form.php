@@ -514,39 +514,41 @@ class EVF_Shortcode_Form {
 		$form_id  = absint( $form_data['id'] );
 		$field_id = sanitize_text_field( $field['id'] );
 
-		// Data to embed on the field container
+		// Field container data.
 		$container_data = array();
 
-		// Embed required-field-message to the container if the field is required
+		// Embed required-field-message to the container if the field is required.
 		if ( isset( $field['required'] ) && ( '1' === $field['required'] || true === $field['required'] ) ) {
-			$has_sub_fields = false;
+			$has_sub_fields     = false;
 			$sub_field_messages = array();
+
 			if ( 'likert' === $field['type'] ) {
 				$has_sub_fields = true;
 				$likert_rows    = isset( $field['likert_rows'] ) ? $field['likert_rows'] : array();
 				$row_keys       = array();
 				foreach ( $likert_rows as $row_key => $row_label ) {
-					$row_keys[] = $row_key;
-					$row_slug   = 'required-field-message-' . $row_key;
+					$row_keys[]                     = $row_key;
+					$row_slug                       = 'required-field-message-' . $row_key;
 					$sub_field_messages[ $row_key ] = isset( $field[ $row_slug ] ) ? $field[ $row_slug ] : '';
 				}
-				$container_data[ 'row-keys' ] = json_encode( $row_keys );
-			} else if ( 'address' === $field['type'] ) {
-				$has_sub_fields = true;
+				$container_data['row-keys'] = wp_json_encode( $row_keys );
+			} elseif ( 'address' === $field['type'] ) {
+				$has_sub_fields     = true;
 				$sub_field_messages = array(
-					'address1' => isset( $field["required-field-message-address1"] ) ? $field["required-field-message-address1"] : '',
-					'city'     => isset( $field["required-field-message-city"] ) ? $field["required-field-message-city"] : '',
-					'state'    => isset( $field["required-field-message-state"] ) ? $field["required-field-message-state"] : '',
-					'postal'   => isset( $field["required-field-message-postal"] ) ? $field["required-field-message-postal"] : '',
-					'country'  => isset( $field["required-field-message-country"] ) ? $field["required-field-message-country"] : '',
+					'address1' => isset( $field['required-field-message-address1'] ) ? $field['required-field-message-address1'] : '',
+					'city'     => isset( $field['required-field-message-city'] ) ? $field['required-field-message-city'] : '',
+					'state'    => isset( $field['required-field-message-state'] ) ? $field['required-field-message-state'] : '',
+					'postal'   => isset( $field['required-field-message-postal'] ) ? $field['required-field-message-postal'] : '',
+					'country'  => isset( $field['required-field-message-country'] ) ? $field['required-field-message-country'] : '',
 				);
 			}
+
 			if ( true === $has_sub_fields ) {
 				foreach ( $sub_field_messages as $sub_field_type => $error_message ) {
 					$container_data[ 'required-field-message-' . $sub_field_type ] = $error_message;
 				}
 			} else {
-				$container_data['required-field-message'] = isset( $field["required-field-message"] ) ? $field["required-field-message"] : '';
+				$container_data['required-field-message'] = isset( $field['required-field-message'] ) ? $field['required-field-message'] : '';
 			}
 		}
 
@@ -614,11 +616,9 @@ class EVF_Shortcode_Form {
 	/**
 	 * Output the shortcode.
 	 *
-	 * @param array $atts
+	 * @param array $atts Attributes.
 	 */
 	public static function output( $atts ) {
-		global $wp;
-
 		wp_enqueue_script( 'everest-forms' );
 
 		// Load jQuery flatpickr libraries. https://github.com/flatpickr/flatpickr.
