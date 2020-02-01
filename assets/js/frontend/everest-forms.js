@@ -158,22 +158,22 @@ jQuery( function ( $ ) {
 				var $this = $( this );
 
 				// List messages to show for required fields. Use name of the field as key.
-				let error_messages = { };
-				$('.evf-field').each( function() {
+				let error_messages = {};
+				$( '.evf-field' ).each( function() {
 					let form_id       = $( this ).closest( 'form' ).data( 'formid' );
-					let field_id      = $( this ).data( 'field-id' )
-					let error_message = $( this ).data( 'required-field-message' )
-					let key           = `everest_forms[form_fields][${field_id}]`  // name of the input field is used as a key
+					let field_id      = $( this ).data( 'field-id' );
+					let error_message = $( this ).data( 'required-field-message' );
+					let key           = `everest_forms[form_fields][${field_id}]`; // Name of the input field is used as a key.
 
-					if ( $(this).is( '.evf-field-checkbox, .evf-field-payment-checkbox' ) ) {
+					if ( $( this ).is( '.evf-field-checkbox, .evf-field-payment-checkbox' ) ) {
 						key = key + '[]';
-					} else if ( $(this).is( '.evf-field-file-upload, .evf-field-image-upload' ) ) {
+					} else if ( $( this ).is( '.evf-field-file-upload, .evf-field-image-upload' ) ) {
 						key = `evf_${form_id}_${field_id}`;
-					} else if ( $(this).is( '.evf-field-signature' ) ) {
+					} else if ( $( this ).is( '.evf-field-signature' ) ) {
 						key = `everest_forms[form_fields][${field_id}][signature_image]`;
-					} else if ( $(this).is( '.evf-field-phone' ) ) {
+					} else if ( $( this ).is( '.evf-field-phone' ) ) {
 						key = key + '[phone_field]';
-				 	} else if ( $(this).is( '.evf-field-password' ) ) {
+				 	} else if ( $( this ).is( '.evf-field-password' ) ) {
 						// For when the confirm password is disabled.
 						key = `everest_forms[form_fields][${field_id}]`;
 						error_messages[ key ] = error_message;
@@ -183,7 +183,7 @@ jQuery( function ( $ ) {
 						error_messages[ key ] = error_message;
 						key = `everest_forms[form_fields][${field_id}][secondary]`;
 						error_messages[ key ] = error_message;
-					} else if ( $(this).is( '.evf-field-address' ) ) {
+					} else if ( $( this ).is( '.evf-field-address' ) ) {
 						let sub_field_error_messages = {
 							'address1': $( this ).data( 'required-field-message-address1' ),
 							'city'    : $( this ).data( 'required-field-message-city' ),
@@ -192,27 +192,27 @@ jQuery( function ( $ ) {
 							'country' : $( this ).data( 'required-field-message-country' ),
 						}
 
-						Object.entries( sub_field_error_messages ).forEach( ([ sub_field_type, error_message ]) => {
+						Object.entries( sub_field_error_messages ).forEach( ( [ sub_field_type, error_message ] ) => {
 							key                   = `everest_forms[form_fields][${field_id}][${sub_field_type}]`;
 							error_messages[ key ] = error_message;
-						})
+						});
 						error_message = null;
-					} else if ( $(this).is( '.evf-field-likert' ) ) {
+					} else if ( $( this ).is( '.evf-field-likert' ) ) {
 						let row_keys = $( this ).data( 'row-keys' );
 						let sub_field_error_messages = {};
 
 						if ( row_keys && Array.isArray( row_keys ) ) {
 							row_keys.forEach( row_key => {
 								sub_field_error_messages[ row_key ] = $( this ).data( `required-field-message-${row_key}` );
-							})
+							});
 						}
 						Object.entries( sub_field_error_messages ).forEach( ([ index, error_message ]) => {
 							key                   = `everest_forms[form_fields][${field_id}][${index}]`;
 							error_messages[ key ] = error_message;
-						})
+						});
 						error_message = null;
 					}
-					
+
 					/**
 					 * Check if the error message has been already set (null value in error_message variable
 					 * should indicate that the message has already been set).
@@ -220,7 +220,7 @@ jQuery( function ( $ ) {
 					if ( error_message ) {
 						error_messages[ key ] = error_message;
 					}
-				})
+				});
 
 				$this.validate({
 					messages: error_messages,
