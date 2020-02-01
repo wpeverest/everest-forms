@@ -2,6 +2,7 @@
 
 = 1.6.0 - xx-xx-2020 =
 * Feature - Import Export of Everest Forms.
+* Feature - Required field message are made editable.
 * Enhancement - Improve choice field with image support.
 * Enhancement - Randomize the order of the choice field support.
 * Enhancement - Limit the number of options to be checked in checkboxes field.
