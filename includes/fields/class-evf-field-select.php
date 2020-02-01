@@ -47,6 +47,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 					'choices',
 					'description',
 					'required',
+					'required_field_message',
 				),
 			),
 			'advanced-options' => array(
