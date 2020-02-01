@@ -522,6 +522,11 @@ class EVF_Shortcode_Form {
 			$has_sub_fields     = false;
 			$sub_field_messages = array();
 
+			$required_validation = get_option( 'everest_forms_required_validation' );
+			if ( in_array( $field['type'], array( 'number', 'email', 'url', 'phone' ), true ) ) {
+				$required_validation = get_option( 'everest_forms_' . $field['type'] . '_validation' );
+			}
+
 			if ( 'likert' === $field['type'] ) {
 				$has_sub_fields = true;
 				$likert_rows    = isset( $field['likert_rows'] ) ? $field['likert_rows'] : array();
@@ -548,7 +553,7 @@ class EVF_Shortcode_Form {
 					$container_data[ 'required-field-message-' . $sub_field_type ] = $error_message;
 				}
 			} else {
-				$container_data['required-field-message'] = isset( $field['required-field-message'] ) ? $field['required-field-message'] : '';
+				$container_data['required-field-message'] = isset( $field['required-field-message'] ) && '' !== $field['required-field-message'] ? $field['required-field-message'] : $required_validation;
 			}
 		}
 

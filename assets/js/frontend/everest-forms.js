@@ -173,12 +173,12 @@ jQuery( function ( $ ) {
 						key = `everest_forms[form_fields][${field_id}][signature_image]`;
 					} else if ( $( this ).is( '.evf-field-phone' ) ) {
 						key = key + '[phone_field]';
-				 	} else if ( $( this ).is( '.evf-field-password' ) ) {
-						// For when the confirm password is disabled.
+					} else if ( $( this ).is( '.evf-field-email' ) || $( this ).is( '.evf-field-password' ) ) {
+						// For when the confirm is disabled.
 						key = `everest_forms[form_fields][${field_id}]`;
 						error_messages[ key ] = error_message;
 
-						// For when the confirm password is enabled.
+						// For when the confirm is enabled.
 						key = `everest_forms[form_fields][${field_id}][primary]`;
 						error_messages[ key ] = error_message;
 						key = `everest_forms[form_fields][${field_id}][secondary]`;

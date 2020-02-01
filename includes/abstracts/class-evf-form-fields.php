@@ -484,9 +484,13 @@ abstract class EVF_Form_Fields {
 
 			// Required Field Message. -------------------------------------------//
 			case 'required_field_message':
-				$has_sub_fields      = false;
-				$sub_fields          = array();
+				$has_sub_fields = false;
+				$sub_fields     = array();
+
 				$required_validation = get_option( 'everest_forms_required_validation' );
+				if ( in_array( $field['type'], array( 'number', 'email', 'url', 'phone' ), true ) ) {
+					$required_validation = get_option( 'everest_forms_' . $field['type'] . '_validation' );
+				}
 
 				if ( 'likert' === $field['type'] ) {
 					$has_sub_fields = true;
@@ -609,7 +613,7 @@ abstract class EVF_Form_Fields {
 						$field,
 						array(
 							'slug'    => 'required-field-message',
-							'value'   => __( 'Required Field Message', 'everest-forms' ),
+							'value'   => esc_html__( 'Required Field Message', 'everest-forms' ),
 							'tooltip' => $tooltip,
 						),
 						false
