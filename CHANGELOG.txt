@@ -15,6 +15,7 @@
 * Fix - Checks if only string is provided for JSON content.
 * Fix - Specific form submission notice display in another.
 * Fix - Select2 style and admin screen button alignments in WP 5.3+.
+* Fix - reCAPTCHA when running on localhost with port different from 80.
 * Fix - Show forms with disabled entries if they have previous entries count.
 * Fix - Use brackets instead of braces to avoid deprecation notices in PHP 5.6.
 * Tweak - Sortable design issue and smooth choices.
