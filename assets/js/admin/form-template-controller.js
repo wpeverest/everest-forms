@@ -70,7 +70,7 @@ jQuery( function( $ ) {
 			template.forEach( function( tuple ) {
 				var toAppend  = '',
 					plan      = ( tuple.plan.includes('free') ) ? 'free' : 'pro',
-					data_plan = $( '.evf-setup-templates' ).data( 'license-type' );
+					data_plan = $( '.everest-forms-form-template' ).data( 'license-type' );
 
 				if ( 'all' === allow || 'blank' === tuple.slug ) {
 					toAppend = evf_template_controller.template_snippet( tuple, plan, data_plan );
