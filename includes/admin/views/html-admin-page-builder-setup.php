@@ -108,7 +108,7 @@ defined( 'ABSPATH' ) || exit;
  *         @type string type      The type of update the notice is for. Either 'plugin' or 'theme'.
  *     }
  *
- * @since 1.4.0
+ * @since 1.6.0
  */
 function everest_forms_print_admin_notice_templates() {
 	?>
