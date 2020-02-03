@@ -79,6 +79,15 @@ class EVF_Settings_Validation extends EVF_Settings_Page {
 					'default'  => __( 'Did you mean {suggestion}?', 'everest-forms' ),
 				),
 				array(
+					'title'    => __( 'Confirm Value', 'everest-forms-pro' ),
+					'desc'     => __( 'Enter the message for confirm field value.', 'everest-forms-pro' ),
+					'id'       => 'everest_forms_confirm_validation',
+					'type'     => 'text',
+					'desc_tip' => true,
+					'css'      => 'min-width: 350px;',
+					'default'  => __( 'Field values do not match.', 'everest-forms-pro' ),
+				),
+				array(
 					'title'    => __( 'Number', 'everest-forms' ),
 					'desc'     => __( 'Enter the message for the valid number', 'everest-forms' ),
 					'id'       => 'everest_forms_number_validation',
