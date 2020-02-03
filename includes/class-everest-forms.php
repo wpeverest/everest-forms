@@ -321,6 +321,9 @@ final class EverestForms {
 			$this->session = new $session_class();
 			$this->session->init();
 		}
+
+		// Init action.
+		do_action( 'everest_forms_init' );
 	}
 
 	/**
