@@ -87,11 +87,11 @@ class EVF_Admin_Assets {
 			'evf-template-controller',
 			'evf_templates',
 			array(
-				'evf_template_url'  => get_site_url() . '/wp-json/evf-templates/all',
-				'template_refresh'  => 'Updating Templates',
-				'i18n_get_started'  => _x( 'Get Started', 'template controller: get started button', 'everest-forms' ),
-				'i18n_get_preview'  => _x( 'Preview', 'template controller: preview button', 'everest-forms' ),
-				'i18n_pro_feature'  => _x( 'Pro', 'template controller: pro version span', 'everest-forms' ),
+				'evf_template_all'  => EVF_Admin_Forms::get_template_data(),
+				'i18n_get_started'  => esc_html__( 'Get Started', 'everest-forms' ),
+				'i18n_get_preview'  => esc_html__( 'Preview', 'everest-forms' ),
+				'i18n_pro_feature'  => esc_html__( 'Pro', 'everest-forms' ),
+				'template_refresh'  => esc_html__( 'Updating Templates', 'everest-forms' ),
 			)
 		);
 		wp_localize_script(

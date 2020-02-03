@@ -99,23 +99,8 @@ class EVF_Admin_Forms {
 	/**
 	 * Get section content for the template screen.
 	 *
-	 * @param  string $arguments Arguments.
-	 * @return array|string
-	 */
-	public static function upload_directory( $arguments ) {
-		$folder = 'uploads/evf_templates';
-
-		$arguments['path']    = untrailingslashit( plugin_dir_path( EVF_PLUGIN_FILE ) . '/' . $folder );
-		$arguments['url']     = untrailingslashit( plugin_dir_url( EVF_PLUGIN_FILE ) . $folder );
-		$arguments['subdir']  = '/evf_templates';
-		$arguments['baseurl'] = untrailingslashit( plugin_dir_url( EVF_PLUGIN_FILE ) . 'uploads' );
-
-		return $arguments;
-	}
-
-	/**
-	 * Get section content for the template screen.
-	 *
+	 * @param  string $category
+	 * @param  string $term
 	 * @return array
 	 */
 	public static function get_template_data() {
@@ -128,31 +113,25 @@ class EVF_Admin_Forms {
 				$template_data = json_decode( wp_remote_retrieve_body( $raw_templates ) );
 
 				// Removing directory so the templates can be reinitialized
-				$folder_path = untrailingslashit( plugin_dir_path( EVF_PLUGIN_FILE ) . '/uploads/evf_templates' );
-				$files       = glob( $folder_path . '/*' );
-
-				// Deleting all the files in the list.
-				foreach( $files as $file ) {
-					if ( is_file( $file ) ) {
-						unlink( $file );
-					}
-				}
+				$folder_path = untrailingslashit( plugin_dir_path( EVF_PLUGIN_FILE ) . '/assets/images/templates' );
 
 				foreach ( $template_data->templates as $templateTuple ) {
 					// We retrieve the image, then use them instead of the remote server.
 					$image = wp_remote_get( $templateTuple->image );
 					$type  = wp_remote_retrieve_header( $image, 'content-type' );
 
+					// Remote file check failed, we'll fallback to remote image.
 					if ( ! $type ) {
 						continue;
 					}
 
-					add_filter( 'upload_dir',  array( 'EVF_Admin_Forms', 'upload_directory') );
-					$upload = wp_upload_bits( $templateTuple ->slug . '.' . explode( '/', $type )[1], null, wp_remote_retrieve_body( $image ) );
-					remove_filter( 'upload_dir', array( 'EVF_Admin_Forms', 'upload_directory') );
+					$file_name     = end( explode( '/', $templateTuple->image ) );
+					$relative_path = $folder_path . '/' . $file_name;
+					$exists = file_exists( $relative_path );
 
-					if ( isset( $upload['url'] ) ) {
-						$templateTuple->image = $upload['url'];
+					// If it exists, utilize this file instead of remote file.
+					if ( $exists ) {
+						$templateTuple->image = plugin_dir_url( EVF_PLUGIN_FILE ) . 'assets/images/templates/' . $file_name;
 					}
 				}
 

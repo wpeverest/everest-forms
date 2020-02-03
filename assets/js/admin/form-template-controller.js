@@ -4,18 +4,16 @@ jQuery( function( $ ) {
 	/**
 	 * Template actions.
 	 */
-	var evf_template_controller = {
+	var  evf_template_controller = {
 		all: '#evf-form-all',
 		basic: '#evf-form-basic',
 		pro: '#evf-form-pro',
-		results: null,
-		url: evf_templates.evf_template_url,
+		results: evf_templates.evf_template_all,
 		init: function() {
-			evf_template_controller.latch_hooks();
-			evf_template_controller.fetch_ajax();
+				evf_template_controller.latch_hooks();
 		},
 		latch_hooks: function() {
-			$( document ).ready( function() {
+			$( document.body ).ready( function() {
 				$( evf_template_controller.all ).click( function() {
 					evf_template_controller.sort_all( this );
 				} );
@@ -47,20 +45,6 @@ jQuery( function( $ ) {
 		class_update: function( $el ) {
 			$( '.everest-forms-tab-nav' ).removeClass( 'active' );
 			$el.parent().addClass( 'active' );
-		},
-		fetch_ajax: function() {
-			// Fetch results once, then reuse them.
-			try {
-				$.ajax( evf_template_controller.url, {
-					type: 'GET',
-					jsonp: false,
-					dataType: 'json'
-				} ).success( function( data ) {
-					evf_template_controller.results = data.templates;
-				} );
-			} catch ( err ) {
-				return false;
-			}
 		},
 		render_results: function( template, allow ) {
 			var el_to_append = $( '.evf-setup-templates' ),

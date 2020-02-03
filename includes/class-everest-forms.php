@@ -321,42 +321,6 @@ final class EverestForms {
 			$this->session = new $session_class();
 			$this->session->init();
 		}
-
-		// Init action.
-		do_action( 'everest_forms_init' );
-
-		// Adding transient endpoint for template.
-		add_action( 'rest_api_init', function () {
-			register_rest_route(
-				'evf-templates', '/all/', array(
-					'methods'  => 'GET',
-					'callback' => array( $this, 'api_fetch_templates' ),
-				)
-			);
-		});
-	}
-
-	/**
-	 * Returns templates from transient.
-	 *
-	 * @return array
-	 */
-	public function api_fetch_templates() {
-		$templates = get_transient( 'evf_template_section' );
-
-		if ( false === $templates ) {
-			$raw_sections = wp_safe_remote_get( 'https://raw.githubusercontent.com/wpeverest/extensions-json/template/everest-forms/templates/template-sections.json' );
-
-			if ( ! is_wp_error( $raw_sections ) ) {
-				$template_sections = json_decode( wp_remote_retrieve_body( $raw_sections ) );
-
-				if ( $template_sections ) {
-					set_transient( 'evf_template_sections', $template_sections, WEEK_IN_SECONDS );
-				}
-			}
-		}
-
-		return apply_filters( 'everest_forms_template_sections', $templates );
 	}
 
 	/**
