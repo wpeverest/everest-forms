@@ -211,6 +211,9 @@
 			EVFPanelBuilder.bindFormPayment();
 			EVFPanelBuilder.choicesInit();
 			EVFPanelBuilder.choicesUpdate();
+			EVFPanelBuilder.bindToggleHandleActions();
+			EVFPanelBuilder.bindLabelEditInputActions();
+			EVFPanelBuilder.bindSyncedInputActions();
 
 			// Fields Panel.
 			EVFPanelBuilder.bindUIActionsFields();
@@ -333,9 +336,17 @@
 			});
 
 			// Real-time updates for "Required" field option.
-			$builder.on('change', '.everest-forms-field-option-row-required input', function(e) {
+			$builder.on( 'change', '.everest-forms-field-option-row-required input', function( event ) {
 				var id = $( this ).parent().data( 'field-id' );
+
 				$( '#everest-forms-field-' + id ).toggleClass( 'required' );
+
+				// Toggle "Required Field Message" option.
+				if ( $( event.target ).is( ':checked' ) ) {
+					$( '#everest-forms-field-option-row-' + id + '-required-field-message' ).show();
+				} else {
+					$( '#everest-forms-field-option-row-' + id + '-required-field-message' ).hide();
+				}
 			});
 
 			// Real-time updates for "Confirmation" field option
@@ -1433,6 +1444,53 @@
 				$( '.everest-forms-tab-content' ).scrollTop(0);
 				EVFPanelBuilder.switchToFieldOptionPanel( field_id );
 			} );
+		},
+
+		toggleLabelEdit( label, input ) {
+			$( label ).toggleClass( 'everest-forms-hidden' );
+			$( input ).toggleClass( 'everest-forms-hidden' );
+
+			if ( $( input ).is(':visible') ) {
+				$( input ).focus();
+			}
+		},
+
+		bindToggleHandleActions: function () {
+			$( 'body' ).on( 'click', '.toggle-handle', function ( e ) {
+				let label = $( this ).data( 'label' );
+				let input = $( this ).data( 'input' );
+
+				if ( ! $( input ).is(':visible') ) {
+					EVFPanelBuilder.toggleLabelEdit( label, input );
+				}
+			});
+		},
+
+		bindLabelEditInputActions: function () {
+			$( 'body' ).on( 'focusout', '.label-edit-input', function ( e ) {
+				let label = $( this ).data( 'label' );
+				let input = this;
+
+				EVFPanelBuilder.toggleLabelEdit( label, input );
+			});
+		},
+
+		/**
+		 * Sync an input element with other elements like labels. An element with `sync-input` class will be synced to the elements
+		 * specified in `sync-targets` data.
+		 *
+		 * `Warning:` This is an one way sync, meaning only the text `sync-targets` will be updated when the source element's value changes
+		 * and the source element's value will not be updated if the value of `sync-targets` changes.
+		 */
+		bindSyncedInputActions: function () {
+			$( 'body' ).on( 'input', '.sync-input', function ( e ) {
+				let changed_value = $( this ).val();
+				let sync_targets = $( this ).data( 'sync-targets' );
+
+				if ( changed_value && sync_targets ) {
+					$( sync_targets ).text( changed_value );
+				}
+			});
 		}
 	};
 
