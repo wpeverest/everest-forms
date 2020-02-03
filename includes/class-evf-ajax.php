@@ -323,7 +323,7 @@ class EVF_AJAX {
 		}
 
 		$addons        = array();
-		$raw_templates = wp_safe_remote_get( 'https://raw.githubusercontent.com/wpeverest/extensions-json/template/everest-forms/templates/all_templates.json' );
+		$raw_templates = wp_safe_remote_get( 'https://raw.githubusercontent.com/wpeverest/extensions-json/master/everest-forms/templates/all_templates.json' );
 
 		if ( ! is_wp_error( $raw_templates ) ) {
 			$template_data = json_decode( wp_remote_retrieve_body( $raw_templates ) );

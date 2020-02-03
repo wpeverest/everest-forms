@@ -82,7 +82,7 @@ class EVF_Admin_Forms {
 		$template_sections = get_transient( 'evf_template_sections' );
 
 		if ( false === $template_sections ) {
-			$raw_sections = wp_safe_remote_get( 'https://raw.githubusercontent.com/wpeverest/extensions-json/template/everest-forms/templates/template-sections.json' );
+			$raw_sections = wp_safe_remote_get( 'https://raw.githubusercontent.com/wpeverest/extensions-json/master/everest-forms/templates/template-sections.json' );
 
 			if ( ! is_wp_error( $raw_sections ) ) {
 				$template_sections = json_decode( wp_remote_retrieve_body( $raw_sections ) );
@@ -107,7 +107,7 @@ class EVF_Admin_Forms {
 		$template_data = get_transient( 'evf_template_section' );
 
 		if ( false === $template_data ) {
-			$raw_templates = wp_safe_remote_get( 'https://raw.githubusercontent.com/wpeverest/extensions-json/template/everest-forms/templates/all_templates.json' );
+			$raw_templates = wp_safe_remote_get( 'https://raw.githubusercontent.com/wpeverest/extensions-json/master/everest-forms/templates/all_templates.json' );
 
 			if ( ! is_wp_error( $raw_templates ) ) {
 				$template_data = json_decode( wp_remote_retrieve_body( $raw_templates ) );

@@ -113,12 +113,12 @@ class EVF_Form_Handler {
 			),
 		);
 
-		$raw_templates = wp_safe_remote_get( 'https://raw.githubusercontent.com/wpeverest/extensions-json/template/everest-forms/templates/all_templates.json' );
+		$raw_templates = wp_safe_remote_get( 'https://raw.githubusercontent.com/wpeverest/extensions-json/master/everest-forms/templates/all_templates.json' );
 		$templates     = json_decode( wp_remote_retrieve_body( $raw_templates ) );
 
 		if ( ! empty( $templates ) ) {
 			foreach ( $templates->templates as $template_data ) {
-				if( $template_data->slug === $template ) {
+				if ( $template_data->slug === $template ) {
 					$form_content = json_decode( base64_decode( $template_data->settings ), true );
 				}
 			}

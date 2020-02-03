@@ -108,7 +108,7 @@ class EVF_Admin {
 	public function template_actions() {
 		if ( isset( $_GET['page'], $_REQUEST['action'] ) && 'evf-builder' === $_GET['page'] ) { // WPCS: input var okay, CSRF ok.
 			$action        = sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ); // WPCS: input var okay, CSRF ok.
-			$raw_templates = wp_safe_remote_get( 'https://raw.githubusercontent.com/wpeverest/extensions-json/template/everest-forms/templates/all_templates.json' );
+			$raw_templates = wp_safe_remote_get( 'https://raw.githubusercontent.com/wpeverest/extensions-json/master/everest-forms/templates/all_templates.json' );
 
 			if ( 'evf-template-refresh' === $action && ! is_wp_error( $raw_templates ) ) {
 				if ( empty( $_GET['evf-template-nonce'] ) || ! wp_verify_nonce( wp_unslash( $_GET['evf-template-nonce'] ), 'refresh' ) ) { // WPCS: input var ok, sanitization ok.
