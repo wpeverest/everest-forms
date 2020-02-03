@@ -214,7 +214,7 @@ class EVF_Admin_Assets {
 
 			// EverestForms builder setup page.
 			if ( isset( $_GET['create-form'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-				wp_register_script( 'evf-setup', EVF()->plugin_url() . '/assets/js/admin/evf-setup' . $suffix . '.js', array( 'jquery', 'everest-forms-extensions' ), EVF_VERSION );
+				wp_register_script( 'evf-setup', EVF()->plugin_url() . '/assets/js/admin/evf-setup' . $suffix . '.js', array( 'jquery', 'everest-forms-extensions', 'evf-template-controller' ), EVF_VERSION );
 				wp_enqueue_script( 'evf-setup' );
 				wp_localize_script(
 					'evf-setup',

@@ -5,14 +5,14 @@ jQuery( function( $ ) {
 	 * Setup actions.
 	 */
 	var evf_setup_actions = {
-		$setup_form     : $( '.everest-forms-setup' ),
-		$button_install : evf_data.i18n_activating,
+		$setup_form: $( '.everest-forms-setup' ),
+		$button_install: evf_data.i18n_activating,
 		init: function() {
 			this.title_focus();
 
-			$( document ).on('click', '.everest-forms-template-install-addon', this.install_addon);
-			$( document ).on('click', '.everest-forms-builder-setup .upgrade-modal', this.message_upgrade);
-			$( document ).on('click', '.everest-forms-builder-setup .evf-template-preview', this.template_preview);
+			$( document ).on( 'click', '.everest-forms-template-install-addon', this.install_addon );
+			$( document ).on( 'click', '.everest-forms-builder-setup .upgrade-modal', this.message_upgrade );
+			$( document ).on( 'click', '.everest-forms-builder-setup .evf-template-preview', this.template_preview );
 
 			// Select and apply a template.
 			this.$setup_form.on( 'click', '.evf-template-select', this.template_select );
@@ -25,64 +25,59 @@ jQuery( function( $ ) {
 				$( '#everest-forms-setup-name' ).focus();
 			}, 100 );
 		},
-		install_addon: function(event) {
-			var _this = this,
-				pluginsList = $(".plugins-list-table").find("#the-list tr"),
+		install_addon: function( event ) {
+			var pluginsList   = $( '.plugins-list-table' ).find( '#the-list tr' ),
 				$target       = $( event.target ),
 				success       = 0,
 				error         = 0,
 				errorMessages = [];
 
 			wp.updates.maybeRequestFilesystemCredentials(event);
-			$('.everest-forms-template-install-addon').html( '<div class="evf-loading evf-loading-active"></div>' + evf_setup_actions.$button_install ).prop( 'disabled', true );
 
-			$(document).trigger("wp-plugin-bulk-install", pluginsList);
+			$( '.everest-forms-template-install-addon' ).html( '<div class="evf-loading evf-loading-active"></div>' + evf_setup_actions.$button_install ).prop( 'disabled', true );
+
+			$( document ).trigger( 'wp-plugin-bulk-install', pluginsList );
 
 			// Find all the plugins which are required.
-			pluginsList.each(function(index, element) {
+			pluginsList.each( function( index, element ) {
 				var $itemRow = $(element);
 
 				// Only add inactive items to the update queue.
-				if (!$itemRow.hasClass("inactive") || $itemRow.find("notice-error").length) {
+				if ( ! $itemRow.hasClass( 'inactive' ) || $itemRow.find( 'notice-error' ).length ) {
 					return;
 				}
 
 				// Add it to the queue.
 				wp.updates.queue.push({
-					action: "everest_forms_install_extension",
+					action: 'everest_forms_install_extension',
 					data: {
-					page: pagenow,
-					name: $itemRow.data("name"),
-					slug: $itemRow.data("slug")
+						page: pagenow,
+						name: $itemRow.data( 'name' ),
+						slug: $itemRow.data( 'slug' )
 					}
 				});
 			});
 
 			// Display bulk notification for install of plugin.
-			$(document).on( "wp-plugin-bulk-install-success wp-plugin-bulk-install-error", function(event, response) {
-				var $itemRow = $('[data-slug="' + response.slug + '"]'),
-				$bulkActionNotice,
-				itemName;
+			$( document ).on( 'wp-plugin-bulk-install-success wp-plugin-bulk-install-error', function( event, response ) {
+				var $itemRow = $( '[data-slug="' + response.slug + '"]' ), $bulkActionNotice, itemName;
 
-				if ("wp-" + response.install + "-bulk-install-success" === event.type) {
-				success++;
+				if ( 'wp-' + response.install + '-bulk-install-success' === event.type ) {
+					success++;
 				} else {
-				itemName = response.pluginName
-					? response.pluginName
-					: $itemRow.find(".plugin-name").text();
-
-				error++;
-				errorMessages.push(itemName + ": " + response.errorMessage);
+					itemName = response.pluginName ? response.pluginName : $itemRow.find( '.plugin-name' ).text();
+					error++;
+					errorMessages.push( itemName + ': ' + response.errorMessage );
 				}
 
-				wp.updates.adminNotice = wp.template("wp-bulk-installs-admin-notice");
+				wp.updates.adminNotice = wp.template( 'wp-bulk-installs-admin-notice' );
 
 				// Remove previous error messages, if any.
-				$(".everest-forms-recommend-addons .bulk-action-notice").remove();
+				$( '.everest-forms-recommend-addons .bulk-action-notice' ).remove();
 
-				$(".everest-forms-recommend-addons .plugins-info").after( wp.updates.adminNotice({
-						id: "bulk-action-notice",
-						className: "bulk-action-notice notice-alt",
+				$( '.everest-forms-recommend-addons .plugins-info' ).after( wp.updates.adminNotice({
+						id: 'bulk-action-notice',
+						className: 'bulk-action-notice notice-alt',
 						successes: success,
 						errors: error,
 						errorMessages: errorMessages,
@@ -90,36 +85,36 @@ jQuery( function( $ ) {
 					})
 				);
 
-				$bulkActionNotice = $("#bulk-action-notice").on( "click", "button", function() {
+				$bulkActionNotice = $( '#bulk-action-notice' ).on( 'click', 'button', function() {
 					// $( this ) is the clicked button, no need to get it again.
-					$(this)
-					.toggleClass("bulk-action-errors-collapsed")
-					.attr(
-						"aria-expanded",
-						!$(this).hasClass("bulk-action-errors-collapsed")
-					);
+					$( this )
+						.toggleClass( 'bulk-action-errors-collapsed' )
+						.attr( 'aria-expanded', ! $( this ).hasClass( 'bulk-action-errors-collapsed' ) );
 					// Show the errors list.
-					$bulkActionNotice.find(".bulk-action-errors").toggleClass("hidden");
+					$bulkActionNotice.find( '.bulk-action-errors' ).toggleClass( 'hidden' );
 				});
 
-				if ( ! wp.updates.queue.length) {
-					if (error > 0) {
-						$target.removeClass("updating-message").text($target.data("originaltext"));
+				if ( ! wp.updates.queue.length ) {
+					if ( error > 0 ) {
+						$target
+							.removeClass( 'updating-message' )
+							.text( $target.data( 'originaltext' ) );
 					}
 				}
-				if ( wp.updates.queue.length === 0 ) {
-					$('.everest-forms-template-install-addon').remove();
-					$('.everest-forms-builder-setup .jconfirm-buttons button').show();
+
+				if ( 0 === wp.updates.queue.length ) {
+					$( '.everest-forms-template-install-addon' ).remove();
+					$( '.everest-forms-builder-setup .jconfirm-buttons button' ).show();
 				}
-			}
-			);
+			} );
 
 			// Check the queue, now that the event handlers have been added.
 			wp.updates.queueChecker();
 		},
 		message_upgrade: function(){
-			var templateName = $(this).data('template-name-raw');
-			$.alert({
+			var templateName = $( this ).data( 'template-name-raw' );
+
+			$.alert( {
 				title: templateName + ' ' + evf_setup_params.upgrade_title,
 				theme: 'jconfirm-modern jconfirm-everest-forms',
 				icon: 'dashicons dashicons-lock',
@@ -140,16 +135,16 @@ jQuery( function( $ ) {
 						text: evf_data.i18n_ok
 					}
 				}
-			});
+			} );
 		},
 		template_preview: function() {
-			var $this = $(this),
+			var $this       = $(this),
 				previewLink = $this.data('preview-link');
-				$this.closest('.everest-forms-setup').find('.evf-template-preview-iframe #frame').attr('src', previewLink);
-			},
+
+			$this.closest( '.everest-forms-setup' ).find( '.evf-template-preview-iframe #frame' ).attr( 'src', previewLink );
+		},
 		template_select: function( event ) {
 			var $this        = $( this ),
-				spinner      = '<i class="evf-loading evf-loading-active" />';
 				template     = $this.data( 'template' ),
 				templateName = $this.data( 'template-name-raw' ),
 				formName     = '',
@@ -158,7 +153,8 @@ jQuery( function( $ ) {
 				nameError    = '<p class="error">'+evf_setup_params.i18n_form_error_name+'</p>';
 
 			event.preventDefault();
-			$target       = $( event.target );
+
+			$target = $( event.target );
 
 			if ( $target.hasClass( 'disabled' ) || $target.hasClass( 'updating-message' ) ) {
 				return;
@@ -173,48 +169,49 @@ jQuery( function( $ ) {
 					var self = this,
 						button = evf_data.i18n_install_only;
 
-					if( $target.closest('.evf-template').find('span.everest-forms-badge').length ){
+					if ( $target.closest( '.evf-template' ).find( 'span.everest-forms-badge' ).length ) {
 						var data =  {
-							action  : 'everest_forms_template_licence_check',
-							plan    : $this.attr('data-licence-plan'),
-							slug    : $this.attr('data-template'),
+							action: 'everest_forms_template_licence_check',
+							plan: $this.attr( 'data-licence-plan' ),
+							slug: $this.attr( 'data-template' ),
 							security: evf_setup_params.template_licence_check_nonce
 						};
 
-						return $.ajax({
+						return $.ajax( {
 							url: evf_email_params.ajax_url,
 							data: data,
 							type: 'POST',
-						}).done( function( response ) {
+						} ).done( function( response ) {
 							self.setContentAppend( namePrompt+nameField+nameError+response.data.html );
+
 							if( response.data.activate ) {
-								$('.everest-forms-builder-setup .jconfirm-buttons button').show();
+								$( '.everest-forms-builder-setup .jconfirm-buttons button' ).show();
 							} else {
 								if ( response.data.html.includes( 'install-now' ) ) {
 									button = evf_data.i18n_install_activate;
 									evf_setup_actions.$button_install = evf_data.i18n_installing;
 								}
 								var installButton = '<a href="#" class="everest-forms-btn everest-forms-btn-primary everest-forms-template-install-addon">' + button + '</a>';
-								$('.everest-forms-builder-setup .jconfirm-buttons').append(installButton);
+								$( '.everest-forms-builder-setup .jconfirm-buttons' ).append( installButton );
 							}
-						});
+						} );
 					} else {
-						$('.everest-forms-builder-setup .jconfirm-buttons button').show();
+						$( '.everest-forms-builder-setup .jconfirm-buttons button' ).show();
 						return namePrompt+nameField+nameError;
 					}
 				},
 				buttons: {
 					Continue: {
-						isHidden: true, // hide the button
+						isHidden: true, // Hide the button.
 						btnClass: 'everest-forms-btn everest-forms-btn-primary',
 						action: function () {
-							var overlay 	 = $('.everest-forms-loader-overlay'),
-								$formName    = $( '#everest-forms-setup-name' );
+							var $formName = $( '#everest-forms-setup-name' ),
+								overlay   = $( '.everest-forms-loader-overlay' );
 
 							// Check that form title is provided.
 							if ( ! $formName.val() ) {
 								formName = templateName;
-								var error = this.$content.find('.error');
+								var error = this.$content.find( '.error' );
 								$( '.everest-forms-setup-name' ).addClass( 'everest-forms-required' ).focus();
 								error.show();
 								return false;

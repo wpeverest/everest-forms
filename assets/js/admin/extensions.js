@@ -16,7 +16,8 @@
 	wp.updates.installExtension = function( args ) {
 		var $card    = $( '.plugin-card-' + args.slug ),
 			$message = $card.find( '.install-now, .activate-now' );
-			args = _.extend( {
+
+		args = _.extend( {
 			success: wp.updates.installExtensionSuccess,
 			error: wp.updates.installExtensionError
 		}, args );
@@ -53,8 +54,8 @@
 	 */
 	wp.updates.installExtensionSuccess = function( response ) {
 		if ( 'everest-forms_page_evf-builder' === pagenow ) {
-			var $pluginRow     = $( 'tr[data-slug="' + response.slug + '"]' ).removeClass( 'install' ).addClass( 'installed' ),
-			$updateMessage = $pluginRow.find( '.plugin-status span' );
+			var $pluginRow = $( 'tr[data-slug="' + response.slug + '"]' ).removeClass( 'install' ).addClass( 'installed' ),
+				$updateMessage = $pluginRow.find( '.plugin-status span' );
 
 			$updateMessage
 				.removeClass( 'updating-message install-now' )
@@ -133,41 +134,41 @@
 			$document.trigger( 'wp-plugin-bulk-install-error', response );
 		} else {
 			var $card   = $( '.plugin-card-' + response.slug ),
-			$button = $card.find( '.install-now' ),
-			errorMessage;
+				$button = $card.find( '.install-now' ),
+				errorMessage;
 
-		if ( ! wp.updates.isValidResponse( response, 'install' ) ) {
-			return;
-		}
+			if ( ! wp.updates.isValidResponse( response, 'install' ) ) {
+				return;
+			}
 
-		if ( wp.updates.maybeHandleCredentialError( response, 'everest_forms_install_extension' ) ) {
-			return;
-		}
+			if ( wp.updates.maybeHandleCredentialError( response, 'everest_forms_install_extension' ) ) {
+				return;
+			}
 
-		errorMessage = wp.updates.l10n.installFailed.replace( '%s', response.errorMessage );
+			errorMessage = wp.updates.l10n.installFailed.replace( '%s', response.errorMessage );
 
-		$card
-			.addClass( 'plugin-card-update-failed' )
-			.append( '<div class="notice notice-error notice-alt is-dismissible"><p>' + errorMessage + '</p></div>' );
+			$card
+				.addClass( 'plugin-card-update-failed' )
+				.append( '<div class="notice notice-error notice-alt is-dismissible"><p>' + errorMessage + '</p></div>' );
 
-		$card.on( 'click', '.notice.is-dismissible .notice-dismiss', function() {
+			$card.on( 'click', '.notice.is-dismissible .notice-dismiss', function() {
 
-			// Use same delay as the total duration of the notice fadeTo + slideUp animation.
-			setTimeout( function() {
-				$card
-					.removeClass( 'plugin-card-update-failed' )
-					.find( '.column-name a' ).focus();
-			}, 200 );
-		} );
+				// Use same delay as the total duration of the notice fadeTo + slideUp animation.
+				setTimeout( function() {
+					$card
+						.removeClass( 'plugin-card-update-failed' )
+						.find( '.column-name a' ).focus();
+				}, 200 );
+			} );
 
-		$button
-			.removeClass( 'updating-message' ).addClass( 'button-disabled' )
-			.attr( 'aria-label', wp.updates.l10n.pluginInstallFailedLabel.replace( '%s', $button.data( 'name' ) ) )
-			.text( wp.updates.l10n.installFailedShort );
+			$button
+				.removeClass( 'updating-message' ).addClass( 'button-disabled' )
+				.attr( 'aria-label', wp.updates.l10n.pluginInstallFailedLabel.replace( '%s', $button.data( 'name' ) ) )
+				.text( wp.updates.l10n.installFailedShort );
 
-		wp.a11y.speak( errorMessage, 'assertive' );
+			wp.a11y.speak( errorMessage, 'assertive' );
 
-		$document.trigger( 'wp-plugin-install-error', response );
+			$document.trigger( 'wp-plugin-install-error', response );
 		}
 	};
 

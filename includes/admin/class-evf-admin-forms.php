@@ -43,10 +43,8 @@ class EVF_Admin_Forms {
 
 			include 'views/html-admin-page-builder.php';
 		} elseif ( isset( $_GET['create-form'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-
-			$templates          = array();
-			// $sections        = self::get_sections();
-			$refresh_url     = add_query_arg(
+			$templates   = array();
+			$refresh_url = add_query_arg(
 				array(
 					'page'             => 'evf-builder&create-form=1',
 					'action'           => 'evf-template-refresh',
@@ -66,7 +64,6 @@ class EVF_Admin_Forms {
 			 * Addon page view.
 			 *
 			 * @uses $templates
-			 * @uses $sections
 			 * @uses $refresh_url
 			 * @uses $current_section
 			 */
@@ -102,16 +99,16 @@ class EVF_Admin_Forms {
 	/**
 	 * Get section content for the template screen.
 	 *
-	 * @param  string $arguments
+	 * @param  string $arguments Arguments.
 	 * @return array|string
 	 */
 	public static function upload_directory( $arguments ) {
 		$folder = 'uploads/evf_templates';
 
-		$arguments['path']    = untrailingslashit( plugin_dir_path(EVF_PLUGIN_FILE ) . '/' . $folder );
-		$arguments['url']     = untrailingslashit( plugin_dir_url(EVF_PLUGIN_FILE ) . $folder );
+		$arguments['path']    = untrailingslashit( plugin_dir_path( EVF_PLUGIN_FILE ) . '/' . $folder );
+		$arguments['url']     = untrailingslashit( plugin_dir_url( EVF_PLUGIN_FILE ) . $folder );
 		$arguments['subdir']  = '/evf_templates';
-		$arguments['baseurl'] = untrailingslashit( plugin_dir_url(EVF_PLUGIN_FILE ) . 'uploads');
+		$arguments['baseurl'] = untrailingslashit( plugin_dir_url( EVF_PLUGIN_FILE ) . 'uploads' );
 
 		return $arguments;
 	}
@@ -119,8 +116,6 @@ class EVF_Admin_Forms {
 	/**
 	 * Get section content for the template screen.
 	 *
-	 * @param  string $category
-	 * @param  string $term
 	 * @return array
 	 */
 	public static function get_template_data() {
@@ -133,21 +128,20 @@ class EVF_Admin_Forms {
 				$template_data = json_decode( wp_remote_retrieve_body( $raw_templates ) );
 
 				// Removing directory so the templates can be reinitialized
-				$folder_path = untrailingslashit( plugin_dir_path(EVF_PLUGIN_FILE ) . '/uploads/evf_templates' );
-				$files = glob($folder_path.'/*');
+				$folder_path = untrailingslashit( plugin_dir_path( EVF_PLUGIN_FILE ) . '/uploads/evf_templates' );
+				$files       = glob( $folder_path . '/*' );
 
-				// Deleting all the files in the list
-				foreach($files as $file) {
-					if(is_file($file)) {
-						unlink($file);
+				// Deleting all the files in the list.
+				foreach( $files as $file ) {
+					if ( is_file( $file ) ) {
+						unlink( $file );
 					}
 				}
 
 				foreach ( $template_data->templates as $templateTuple ) {
-
 					// We retrieve the image, then use them instead of the remote server.
 					$image = wp_remote_get( $templateTuple->image );
-					$type = wp_remote_retrieve_header( $image, 'content-type' );
+					$type  = wp_remote_retrieve_header( $image, 'content-type' );
 
 					if ( ! $type ) {
 						continue;
@@ -167,6 +161,7 @@ class EVF_Admin_Forms {
 				}
 			}
 		}
+
 		if ( ! empty( $template_data->templates ) ) {
 			return apply_filters( 'everest_forms_template_section_data', $template_data->templates );
 		}

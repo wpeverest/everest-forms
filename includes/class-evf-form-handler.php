@@ -1,7 +1,6 @@
 <?php
-
 /**
- * form handler.
+ * Form handler.
  *
  * Contains a bunch of helper methods as well.
  *
@@ -106,7 +105,6 @@ class EVF_Form_Handler {
 		}
 
 		$args         = apply_filters( 'everest_forms_create_form_args', $args, $data );
-
 		$form_content = array(
 			'form_field_id' => '1',
 			'settings'      => array(
@@ -116,14 +114,14 @@ class EVF_Form_Handler {
 		);
 
 		$raw_templates = wp_safe_remote_get( 'https://raw.githubusercontent.com/wpeverest/extensions-json/template/everest-forms/templates/all_templates.json' );
-		$templates = json_decode( wp_remote_retrieve_body( $raw_templates ) );
+		$templates     = json_decode( wp_remote_retrieve_body( $raw_templates ) );
 
-		if( ! empty( $templates) ) {
+		if ( ! empty( $templates) ) {
 			foreach ( $templates->templates as $template_data ) {
 				if( $template_data->slug === $template ) {
 					$form_title               = isset( $title ) ? sanitize_text_field( $title ) : esc_html__( 'Contact Form', 'everest-forms' );
 					$form_name                = isset( $title ) ? '- ' . $title : '';
-					$form_content = json_decode( base64_decode ($template_data->settings ), true );
+					$form_content = json_decode( base64_decode( $template_data->settings ), true );
 				}
 			}
 		}
