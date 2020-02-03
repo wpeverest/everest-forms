@@ -330,7 +330,7 @@ class EVF_AJAX {
 
 			if ( ! empty( $template_data->templates ) ) {
 				foreach ( $template_data->templates as $template ) {
-					if ( $template->slug === $_POST['slug'] && in_array( $_POST['plan'], $template->plan ) ) {
+					if ( $template->slug === $_POST['slug'] && in_array( $_POST['plan'], $template->plan, true ) ) {
 						$addons = $template->addons;
 					}
 				}

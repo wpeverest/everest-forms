@@ -112,8 +112,10 @@ jQuery( function( $ ) {
 			// Check the queue, now that the event handlers have been added.
 			wp.updates.queueChecker();
 		},
-		message_upgrade: function(){
+		message_upgrade: function( e ) {
 			var templateName = $( this ).data( 'template-name-raw' );
+
+			e.preventDefault();
 
 			$.alert( {
 				title: templateName + ' ' + evf_setup_params.upgrade_title,
@@ -151,7 +153,7 @@ jQuery( function( $ ) {
 				formName     = '',
 				namePrompt   = evf_setup_params.i18n_form_name,
 				nameField    = '<input autofocus="" type="text" id="everest-forms-setup-name" class="everest-forms-setup-name" placeholder="'+evf_setup_params.i18n_form_placeholder+'">',
-				nameError    = '<p class="error">'+evf_setup_params.i18n_form_error_name+'</p>';
+				nameError    = '<p class="error">' + evf_setup_params.i18n_form_error_name + '</p>';
 
 			event.preventDefault();
 
@@ -185,7 +187,7 @@ jQuery( function( $ ) {
 						} ).done( function( response ) {
 							self.setContentAppend( namePrompt+nameField+nameError+response.data.html );
 
-							if( response.data.activate ) {
+							if ( response.data.activate ) {
 								$( '.everest-forms-builder-setup .jconfirm-buttons button' ).show();
 							} else {
 								if ( response.data.html.includes( 'install-now' ) ) {

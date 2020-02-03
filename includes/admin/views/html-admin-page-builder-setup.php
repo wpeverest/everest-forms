@@ -61,7 +61,10 @@ defined( 'ABSPATH' ) || exit;
 						$click_class = 'evf-template-select';
 					}
 
+					// Upgrade checks.
 					if ( empty( $license_plan ) && ! in_array( 'free', $template->plan, true ) ) {
+						$upgrade_class = 'upgrade-modal';
+					} elseif ( ! in_array( $license_plan, $template->plan, true ) ) {
 						$upgrade_class = 'upgrade-modal';
 					}
 
