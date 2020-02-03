@@ -144,6 +144,9 @@ class EVF_Form_Handler {
 			)
 		);
 
+		$form_content['id']                     = $form_id;
+		$form_content['settings']['form_title'] = $title;
+
 		if ( $form_id ) {
 			$form_data = wp_parse_args(
 				$args,
