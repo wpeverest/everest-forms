@@ -119,8 +119,6 @@ class EVF_Form_Handler {
 		if ( ! empty( $templates ) ) {
 			foreach ( $templates->templates as $template_data ) {
 				if( $template_data->slug === $template ) {
-					$form_title               = isset( $title ) ? sanitize_text_field( $title ) : esc_html__( 'Contact Form', 'everest-forms' );
-					$form_name                = isset( $title ) ? '- ' . $title : '';
 					$form_content = json_decode( base64_decode( $template_data->settings ), true );
 				}
 			}
