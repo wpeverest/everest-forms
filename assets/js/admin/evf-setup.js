@@ -168,6 +168,7 @@ jQuery( function( $ ) {
 				title: evf_setup_params.i18n_form_title,
 				theme: 'jconfirm-modern jconfirm-everest-forms-left',
 				backgroundDismiss: false,
+				scrollToPreviousElement: false,
 				content: function() {
 					// Fire AJAX.
 					var self = this,

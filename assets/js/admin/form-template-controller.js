@@ -86,7 +86,7 @@ jQuery( function( $ ) {
 				modal     = 'evf-template-select';
 				data_plan = ( '' === data_plan ) ? 'free' : data_plan;
 
-			if ( 'free' !== data_plan && ! template.plan.includes( data_plan ) ) {
+			if ( ! template.plan.includes( 'free' ) && ! template.plan.includes( data_plan ) ) {
 				modal = 'upgrade-modal';
 			}
 
