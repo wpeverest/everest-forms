@@ -10,17 +10,20 @@ jQuery( function( $ ) {
 		pro: '#evf-form-pro',
 		results: evf_templates.evf_template_all,
 		init: function() {
-				evf_template_controller.latch_hooks();
+			evf_template_controller.latch_hooks();
 		},
 		latch_hooks: function() {
 			$( document.body ).ready( function() {
-				$( evf_template_controller.all ).click( function() {
+				$( evf_template_controller.all ).click( function( e ) {
+					e.preventDefault();
 					evf_template_controller.sort_all( this );
 				} );
-				$( evf_template_controller.basic ).click( function() {
+				$( evf_template_controller.basic ).click( function( e ) {
+					e.preventDefault();
 					evf_template_controller.sort_basic( this );
 				} );
-				$( evf_template_controller.pro ).click( function() {
+				$( evf_template_controller.pro ).click( function( e ) {
+					e.preventDefault();
 					evf_template_controller.sort_pro( this );
 				} );
 				$( '.page-title-action' ).click( function( e ) {

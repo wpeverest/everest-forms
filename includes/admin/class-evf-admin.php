@@ -120,15 +120,9 @@ class EVF_Admin {
 				}
 
 				// Redirect to the builder page normally.
-				$redirect = add_query_arg( 'evf-templates-fetch', 'true', admin_url( 'admin.php?page=evf-builder&create-form=1' ) );
-				wp_safe_redirect( $redirect );
+				wp_safe_redirect( admin_url( 'admin.php?page=evf-builder&create-form=1' ) );
 				exit;
 			}
-
-			// Redirect to the builder page.
-			$redirect = add_query_arg( 'evf-templates-fetch', 'false', admin_url( 'admin.php?page=evf-builder&create-form=1' ) );
-			wp_safe_redirect( $redirect );
-			exit;
 		}
 	}
 

@@ -10,20 +10,6 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$core_templates = apply_filters(
-	'everest_forms_templates_core',
-	array(
-		'blank-form'   => array(
-			'slug' => 'blank',
-			'name' => __( 'Blank Form', 'everest-forms' ),
-		),
-		'contact-form' => array(
-			'slug' => 'contact',
-			'name' => __( 'Contact Form', 'everest-forms' ),
-		),
-	)
-);
-
 ?>
 <div class ="wrap everest-forms">
 	<div class="everest-forms-loader-overlay" style="display:none">

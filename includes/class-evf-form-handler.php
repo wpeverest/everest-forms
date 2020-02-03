@@ -116,7 +116,7 @@ class EVF_Form_Handler {
 		$raw_templates = wp_safe_remote_get( 'https://raw.githubusercontent.com/wpeverest/extensions-json/template/everest-forms/templates/all_templates.json' );
 		$templates     = json_decode( wp_remote_retrieve_body( $raw_templates ) );
 
-		if ( ! empty( $templates) ) {
+		if ( ! empty( $templates ) ) {
 			foreach ( $templates->templates as $template_data ) {
 				if( $template_data->slug === $template ) {
 					$form_title               = isset( $title ) ? sanitize_text_field( $title ) : esc_html__( 'Contact Form', 'everest-forms' );

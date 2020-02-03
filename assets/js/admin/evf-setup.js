@@ -10,6 +10,7 @@ jQuery( function( $ ) {
 		init: function() {
 			this.title_focus();
 
+			// Template actions.
 			$( document ).on( 'click', '.everest-forms-template-install-addon', this.install_addon );
 			$( document ).on( 'click', '.everest-forms-builder-setup .upgrade-modal', this.message_upgrade );
 			$( document ).on( 'click', '.everest-forms-builder-setup .evf-template-preview', this.template_preview );
@@ -160,7 +161,7 @@ jQuery( function( $ ) {
 				return;
 			}
 
-			$.confirm({
+			$.confirm( {
 				title: evf_setup_params.i18n_form_title,
 				theme: 'jconfirm-modern jconfirm-everest-forms-left',
 				backgroundDismiss: false,
@@ -242,7 +243,7 @@ jQuery( function( $ ) {
 						}
 					},
 				}
-			});
+			} );
 		},
 		input_keypress: function ( e ) {
 			var button = e.keyCode || e.which;

@@ -125,13 +125,13 @@ class EVF_Admin_Forms {
 						continue;
 					}
 
-					$file_name     = end( explode( '/', $templateTuple->image ) );
-					$relative_path = $folder_path . '/' . $file_name;
+					$temp_name     = explode( '/', $templateTuple->image );
+					$relative_path = $folder_path . '/' . end( $temp_name );
 					$exists = file_exists( $relative_path );
 
 					// If it exists, utilize this file instead of remote file.
 					if ( $exists ) {
-						$templateTuple->image = plugin_dir_url( EVF_PLUGIN_FILE ) . 'assets/images/templates/' . $file_name;
+						$templateTuple->image = plugin_dir_url( EVF_PLUGIN_FILE ) . 'assets/images/templates/' . end( $temp_name );
 					}
 				}
 
