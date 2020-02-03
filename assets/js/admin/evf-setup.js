@@ -122,6 +122,7 @@ jQuery( function( $ ) {
 				theme: 'jconfirm-modern jconfirm-everest-forms',
 				icon: 'dashicons dashicons-lock',
 				backgroundDismiss: false,
+				scrollToPreviousElement: false,
 				content: evf_setup_params.upgrade_message,
 				type: 'red',
 				boxWidth: '565px',
