@@ -138,7 +138,7 @@ class EVF_Form_Task {
 						$data = json_decode( wp_remote_retrieve_body( $raw_data ) );
 
 						// Check reCAPTCHA response.
-						if ( empty( $data->success ) || ( isset( $data->hostname ) && evf_clean( wp_unslash( $_SERVER['HTTP_HOST'] ) ) !== $data->hostname ) || ( isset( $data->action, $data->score ) && ( 'everest_form' !== $data->action && 0.5 > floatval( $data->score ) ) ) ) {
+						if ( empty( $data->success ) || ( isset( $data->hostname ) && evf_clean( wp_unslash( $_SERVER['SERVER_NAME'] ) ) !== $data->hostname ) || ( isset( $data->action, $data->score ) && ( 'everest_form' !== $data->action && 0.5 > floatval( $data->score ) ) ) ) {
 							$this->errors[ $form_id ]['header'] = esc_html__( 'Incorrect reCAPTCHA, please try again.', 'everest-forms' );
 							return;
 						}

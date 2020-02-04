@@ -175,7 +175,80 @@ jQuery( function ( $ ) {
 			this.$everest_form.each( function() {
 				var $this = $( this );
 
+				// List messages to show for required fields. Use name of the field as key.
+				var error_messages = {};
+				$( '.evf-field' ).each( function() {
+					var form_id       = $( this ).closest( 'form' ).data( 'formid' );
+					var field_id      = $( this ).data( 'field-id' );
+					var error_message = $( this ).data( 'required-field-message' );
+					var key           = 'everest_forms[form_fields][' + field_id + ']'; // Name of the input field is used as a key.
+
+					if ( $( this ).is( '.evf-field-checkbox, .evf-field-payment-checkbox' ) ) {
+						key = key + '[]';
+					} else if ( $( this ).is( '.evf-field-file-upload, .evf-field-image-upload' ) ) {
+						key = 'evf_' + form_id + '_' + field_id;
+					} else if ( $( this ).is( '.evf-field-signature' ) ) {
+						key = 'everest_forms[form_fields][' + field_id + '][signature_image]';
+					} else if ( $( this ).is( '.evf-field-phone' ) ) {
+						key = key + '[phone_field]';
+					} else if ( $( this ).is( '.evf-field-email' ) || $( this ).is( '.evf-field-password' ) ) {
+						// For when the confirm is disabled.
+						key = 'everest_forms[form_fields][' + field_id + ']';
+						error_messages[ key ] = error_message;
+
+						// For when the confirm is enabled.
+						key = 'everest_forms[form_fields][' + field_id + '][primary]';
+						error_messages[ key ] = error_message;
+						key = 'everest_forms[form_fields][' + field_id + '][secondary]';
+						error_messages[ key ] = error_message;
+					} else if ( $( this ).is( '.evf-field-address' ) ) {
+						var sub_field_error_messages = {
+							'address1': $( this ).data( 'required-field-message-address1' ),
+							'city'    : $( this ).data( 'required-field-message-city' ),
+							'state'   : $( this ).data( 'required-field-message-state' ),
+							'postal'  : $( this ).data( 'required-field-message-postal' ),
+							'country' : $( this ).data( 'required-field-message-country' ),
+						}
+
+						var sub_field_types = Object.keys( sub_field_error_messages );
+						for ( var i = 0; i < sub_field_types.length; i++ ) {
+							var sub_field_type = sub_field_types[i],
+								error_message = sub_field_error_messages[ sub_field_types[i] ];
+
+							key                   = 'everest_forms[form_fields][' + field_id + '][' + sub_field_type + ']';
+							error_messages[ key ] = error_message;
+						}
+						error_message = null;
+					} else if ( $( this ).is( '.evf-field-likert' ) ) {
+						var row_keys = $( this ).data( 'row-keys' );
+						var sub_field_error_messages = {};
+
+						if ( row_keys && Array.isArray( row_keys ) ) {
+							for ( var i = 0; i < row_keys.length; i++ ) {
+								var row_key = row_keys[i];
+								sub_field_error_messages[ row_key ] = $( this ).data( 'required-field-message-' + row_key );
+							}
+						}
+						for ( var i = 0; i < sub_field_error_messages.length; i++ ) {
+							var error_message = sub_field_error_messages[ i ];
+
+							key                   = 'everest_forms[form_fields][' + field_id + '][' + i + ']';
+							error_messages[ key ] = error_message;
+						}
+						error_message = null;
+					}
+
+					/**
+					 * Check if the error message has been already set (null value in error_message variable
+					 * should indicate that the message has already been set).
+					 */
+					if ( error_message ) {
+						error_messages[ key ] = error_message;
+					}
+				});
+
 				$this.validate({
+					messages: error_messages,
 					ignore: '',
 					errorClass: 'evf-error',
 					validClass: 'evf-valid',
@@ -191,7 +264,7 @@ jQuery( function ( $ ) {
 							if ( element.parent().find( 'label.evf-error:visible' ).length === 0 ) {
 								element.parent().find( 'select:last' ).after( error );
 							}
-						} else if ( element.hasClass( 'evf-smart-phone-field' ) ) {
+						} else if ( element.hasClass( 'evf-smart-phone-field' ) || element.hasClass( 'everest-forms-field-password-primary' ) || element.hasClass( 'everest-forms-field-password-secondary' ) ) {
 							element.parent().after( error );
 						} else {
 							error.insertAfter( element );

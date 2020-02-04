@@ -51,6 +51,7 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 					'choices_images',
 					'description',
 					'required',
+					'required_field_message',
 				),
 			),
 			'advanced-options' => array(

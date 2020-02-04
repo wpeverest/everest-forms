@@ -29,6 +29,7 @@ class EVF_Field_Email extends EVF_Form_Fields {
 					'meta',
 					'description',
 					'required',
+					'required_field_message',
 					'confirmation',
 				),
 			),
@@ -309,16 +310,16 @@ class EVF_Field_Email extends EVF_Form_Fields {
 	/**
 	 * Add class to field options wrapper to indicate if field confirmation is enabled.
 	 *
-	 * @param  string $class
-	 * @param  array  $field
-	 * @return string
+	 * @param  array $class Field class.
+	 * @param  array $field Field option data.
+	 * @return array
 	 */
 	public function field_option_class( $class, $field ) {
 		if ( 'email' === $field['type'] ) {
 			if ( isset( $field['confirmation'] ) ) {
-				$class = 'everest-forms-confirm-enabled';
+				$class[] = 'everest-forms-confirm-enabled';
 			} else {
-				$class = 'everest-forms-confirm-disabled';
+				$class[] = 'everest-forms-confirm-disabled';
 			}
 		}
 
