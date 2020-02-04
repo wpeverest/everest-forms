@@ -84,6 +84,7 @@ class EVF_Form_Task {
 			$form              = EVF()->form->get( $form_id );
 			$honeypot          = false;
 			$response_data     = array();
+			$this->ajax_err    = array();
 
 			// Check nonce for form submission.
 			if ( empty( $_POST['_wpnonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['_wpnonce'] ), 'everest-forms_process_submit' ) ) { // WPCS: input var ok, sanitization ok.
@@ -108,6 +109,10 @@ class EVF_Form_Task {
 
 			$ajax_form_submission = isset( $this->form_data['settings']['ajax_form_submission'] ) ? $this->form_data['settings']['ajax_form_submission'] : 0;
 			if ( 1 == $ajax_form_submission ) {
+
+				// For the sake of validation we completely remove the validator option.
+				update_option( 'evf_validation_error', '' );
+
 				// Prepare fields for entry_save.
 				foreach ( $this->form_data['form_fields'] as $field ) {
 
@@ -137,11 +142,18 @@ class EVF_Form_Task {
 
 				do_action( "everest_forms_process_validate_{$field_type}", $field_id, $field_submit, $this->form_data, $field_type );
 
-				if ( 'yes' === get_option('evf_validation_error') ) {
-					return [
-						'errors' => ucfirst( $field_type ) . __(' validation issue.', 'everest-forms')
-					];
+				if ( 'yes' === get_option( 'evf_validation_error' ) && $ajax_form_submission ) {
+					$this->ajax_err[] = array ( $field_type => $field_id );
+					update_option( 'evf_validation_error', '' );
 				}
+			}
+
+			// If validation issues occur, send the results accordingly.
+			if ( $ajax_form_submission && sizeof( $this->ajax_err ) ) {
+				$response_data['error']    = $this->ajax_err;
+				$response_data['message']  = __( 'Form has not been submitted, please see the errors below.', 'everest-forms' );
+				$response_data['response'] = 'error';
+				return $response_data;
 			}
 
 			// reCAPTCHA check.
@@ -168,7 +180,7 @@ class EVF_Form_Task {
 						$data = json_decode( wp_remote_retrieve_body( $raw_data ) );
 
 						// Check reCAPTCHA response.
-						if ( empty( $data->success ) || ( isset( $data->hostname ) && evf_clean( wp_unslash( $_SERVER['HTTP_HOST'] ) ) !== $data->hostname ) || ( isset( $data->action, $data->score ) && ( 'everest_form' !== $data->action && 0.5 > floatval( $data->score ) ) ) ) {
+						if ( empty( $data->success ) || ( isset( $data->hostname ) && evf_clean( wp_unslash( $_SERVER['SERVER_NAME'] ) ) !== $data->hostname ) || ( isset( $data->action, $data->score ) && ( 'everest_form' !== $data->action && 0.5 > floatval( $data->score ) ) ) ) {
 							$this->errors[ $form_id ]['header'] = esc_html__( 'Incorrect reCAPTCHA, please try again.', 'everest-forms' );
 							return $this->errors;
 						}
