@@ -185,7 +185,9 @@ jQuery( function ( $ ) {
 
 						// For when the confirm is enabled.
 						key = `everest_forms[form_fields][${field_id}][primary]`;
-						error_messages[ key ] = error_message;
+						error_messages[ key ] = {
+							required: error_message, // Set message using 'required' key to avoid conflicts with other validations.
+						};
 						key = `everest_forms[form_fields][${field_id}][secondary]`;
 						error_messages[ key ] = {
 							required: error_message, // Set message using 'required' key to avoid conflicts with other validations.
@@ -226,7 +228,9 @@ jQuery( function ( $ ) {
 					 * should indicate that the message has already been set).
 					 */
 					if ( error_message ) {
-						error_messages[ key ] = error_message;
+						error_messages[ key ] = {
+							required: error_message, // Set message using 'required' key to avoid conflicts with other validations.
+						};
 					}
 				});
 
