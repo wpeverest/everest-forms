@@ -1,7 +1,6 @@
 <?php
-
 /**
- * form handler.
+ * Form handler.
  *
  * Contains a bunch of helper methods as well.
  *
@@ -106,6 +105,7 @@ class EVF_Form_Handler {
 		}
 
 		$args         = apply_filters( 'everest_forms_create_form_args', $args, $data );
+		$form_style   = array();
 		$form_content = array(
 			'form_field_id' => '1',
 			'settings'      => array(
@@ -113,12 +113,6 @@ class EVF_Form_Handler {
 				'form_desc'  => '',
 			),
 		);
-
-		// Check for template and format the form content.
-		if ( in_array( $template, array( 'contact' ), true ) ) {
-			include_once dirname( __FILE__ ) . "/templates/{$template}.php";
-			$form_content = $form_template[ $template ];
-		}
 
 		// Prevent content filters from corrupting JSON in post_content.
 		$has_kses = ( false !== has_filter( 'content_save_pre', 'wp_filter_post_kses' ) );
@@ -140,7 +134,25 @@ class EVF_Form_Handler {
 			)
 		);
 
+		$raw_templates = wp_safe_remote_get( 'https://raw.githubusercontent.com/wpeverest/extensions-json/master/everest-forms/templates/all_templates.json' );
+		$templates     = json_decode( wp_remote_retrieve_body( $raw_templates ) );
+
+		if ( ! empty( $templates ) ) {
+			foreach ( $templates->templates as $template_data ) {
+				if ( $template_data->slug === $template ) {
+					$form_content = json_decode( base64_decode( $template_data->settings ), true );
+
+					if ( isset( $template_data->styles ) ) {
+						$form_style[ $form_id ] = json_decode( base64_decode( $template_data->styles ), true );
+					}
+				}
+			}
+		}
+
 		if ( $form_id ) {
+			$form_content['id']                     = $form_id;
+			$form_content['settings']['form_title'] = $title;
+
 			$form_data = wp_parse_args(
 				$args,
 				array(
@@ -151,6 +163,10 @@ class EVF_Form_Handler {
 			);
 
 			wp_update_post( $form_data );
+
+			if ( ! empty( $form_style ) ) {
+				update_option( 'everest_forms_styles', $form_style );
+			}
 		}
 
 		// Restore removed content filters.

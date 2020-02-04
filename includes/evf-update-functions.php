@@ -295,3 +295,10 @@ function evf_update_150_field_datetime_type() {
 function evf_update_150_db_version() {
 	EVF_Install::update_db_version( '1.5.0' );
 }
+
+/**
+ * Update DB Version.
+ */
+function evf_update_160_db_version() {
+	EVF_Install::update_db_version( '1.6.0' );
+}
