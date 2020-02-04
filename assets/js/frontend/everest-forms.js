@@ -358,6 +358,8 @@ jQuery( function ( $ ) {
 						if ( 'checkbox' === ( element || {} ).type ) {
 							$( element ).closest( '.evf-field-checkbox' ).find( 'label.evf-error' ).remove();
 							validate = true;
+						} else {
+							$( element ).valid();
 						}
 
 						if ( validate ) {
