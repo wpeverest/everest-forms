@@ -66,6 +66,17 @@
 		margin-bottom: 30px;
 	}
 
+	.everest-forms-progress-bar {
+		background: $color_gray-lighten;
+		border-radius: 2px;
+
+		.everest-forms-progress-bar-indicator {
+			height: 4px;
+			background: $green;
+			border-radius: 2px;
+		}
+	}
+
 	label {
 		line-height: 1.7;
 		margin: 0 0 10px 0;

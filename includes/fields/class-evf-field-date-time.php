@@ -30,6 +30,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 					'choose_format',
 					'description',
 					'required',
+					'required_field_message',
 				),
 			),
 			'advanced-options' => array(
