@@ -317,7 +317,7 @@ jQuery( function ( $ ) {
 							return;
 						}
 
-						if ( 9 === event.which && '' === this.elementValue( element ) || $.inArray( event.keyCode, excludedKeys ) !== -1 ) {
+						if ( 9 === event.which && '' === this.elementValue( element ) || -1 !== $.inArray( event.keyCode, excludedKeys ) ) {
 							return;
 						} else if ( element.name in this.submitted || element.name in this.invalid ) {
 							this.element( element );
