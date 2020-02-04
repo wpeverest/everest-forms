@@ -78,3 +78,32 @@ $preview_link = add_query_arg(
 		</div>
 	</form>
 </div>
+<script type="text/html" id="tmpl-everest-forms-field-preview-choices">
+	<# if ( data.settings.choices_images ) { #>
+		<ul class="widefat primary-input everest-forms-image-choices">
+			<# _.each( data.order, function( choiceID, key ) {  #>
+				<li class="everest-forms-image-choices-item<# if ( 1 === data.settings.choices[choiceID].default ) { print( ' everest-forms-selected' ); } #>">
+					<label>
+						<span class="everest-forms-image-choices-image">
+							<# if ( ! _.isEmpty( data.settings.choices[choiceID].image ) ) { #>
+								<img src="{{ data.settings.choices[choiceID].image }}" alt="{{ data.settings.choices[choiceID].label }}"<# if ( data.settings.choices[choiceID].label ) { #> title="{{ data.settings.choices[choiceID].label }}"<# } #>>
+							<# } else { #>
+								<img src="<?php echo esc_url( EVF()->plugin_url() . '/assets/images/everest-forms-placeholder.png' ); ?>" alt="{{ data.settings.choices[choiceID].label }}"<# if ( data.settings.choices[choiceID].label ) { #> title="{{ data.settings.choices[choiceID].label }}"<# } #>>
+							<# } #>
+						</span>
+						<input type="{{ data.type }}" disabled<# if ( 1 === data.settings.choices[choiceID].default ) { print( ' checked' ); } #>>
+						<span class="everest-forms-image-choices-label">{{{ data.settings.choices[choiceID].label }}}</span>
+					</label>
+				</li>
+			<# }) #>
+		</ul>
+	<# } else { #>
+		<ul class="widefat primary-input">
+			<# _.each( data.order, function( choiceID, key ) {  #>
+				<li>
+					<input type="{{ data.type }}" disabled<# if ( 1 === data.settings.choices[choiceID].default ) { print( ' checked' ); } #>>{{{ data.settings.choices[choiceID].label }}}
+				</li>
+			<# }) #>
+		</ul>
+	<# } #>
+</script>

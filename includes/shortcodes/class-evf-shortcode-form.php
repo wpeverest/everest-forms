@@ -458,8 +458,17 @@ class EVF_Shortcode_Form {
 			$attributes['field_class'] = array_merge( $attributes['field_class'], evf_sanitize_classes( $field['css'], true ) );
 		}
 
+		// Check for input column layouts.
+		if ( ! empty( $field['input_columns'] ) ) {
+			if ( 'inline' === $field['input_columns'] ) {
+				$attributes['field_class'][] = 'everest-forms-list-inline';
+			} elseif ( '' !== $field['input_columns'] ) {
+				$attributes['field_class'][] = 'everest-forms-list-' . $field['input_columns'] . '-columns';
+			}
+		}
+
 		// Input class.
-		if ( ! in_array( $field['type'], array( 'checkbox', 'radio', 'payment-checkbox', 'payment-multiple' ) ) ) {
+		if ( ! in_array( $field['type'], array( 'checkbox', 'radio', 'payment-checkbox', 'payment-multiple' ), true ) ) {
 			$attributes['input_class'][] = 'input-text';
 		}
 

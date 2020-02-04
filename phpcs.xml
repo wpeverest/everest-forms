@@ -13,6 +13,11 @@
 	<config name="minimum_supported_wp_version" value="4.7" />
 	<config name="testVersion" value="5.4-" />
 
+	<!-- WordPress -->
+	<rule ref="WordPress">
+		<exclude name="WordPress.DB.SlowDBQuery.slow_db_query_meta_key" />
+	</rule>
+
 	<!-- Rules -->
 	<rule ref="WPEverest-Core" />
 

@@ -205,14 +205,17 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 			if ( is_serialized( $value ) ) {
 				$field_html  = array();
 				$field_value = maybe_unserialize( $value );
+				$field_label = ! empty( $field_value['label'] ) ? evf_clean( $field_value['label'] ) : $field_value;
 
-				if ( ! empty( $field_value ) ) {
-					foreach ( $field_value as $field => $meta_val ) {
-						$field_html[] = $meta_val;
+				if ( is_array( $field_label ) ) {
+					foreach ( $field_label as $value ) {
+						$field_html[] = esc_html( $value );
 					}
-				}
 
-				$value = implode( ' | ', $field_html );
+					$value = implode( ' | ', $field_html );
+				} else {
+					$value = esc_html( $field_label );
+				}
 			}
 
 			// Limit to 5 lines.

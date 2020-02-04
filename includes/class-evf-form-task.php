@@ -492,6 +492,7 @@ class EVF_Form_Task {
 		$browser    = evf_get_browser();
 		$user_ip    = evf_get_ip_address();
 		$user_agent = $browser['name'] . '/' . $browser['platform'];
+		$referer    = ! empty( $_SERVER['HTTP_REFERER'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_REFERER'] ) ) : '';
 		$entry_id   = false;
 
 		// GDPR enhancements - If user details are disabled globally discard the IP and UA.
@@ -506,7 +507,7 @@ class EVF_Form_Task {
 			'user_device'     => sanitize_text_field( $user_agent ),
 			'user_ip_address' => sanitize_text_field( $user_ip ),
 			'status'          => 'publish',
-			'referer'         => $_SERVER['HTTP_REFERER'],
+			'referer'         => $referer,
 			'date_created'    => current_time( 'mysql', true ),
 		);
 
@@ -533,12 +534,11 @@ class EVF_Form_Task {
 					continue;
 				}
 
-				if ( isset( $field['value'], $field['meta_key'] ) && '' !== $field['value'] ) {
-					$field_value    = is_array( $field['value'] ) ? serialize( $field['value'] ) : $field['value'];
+				if ( isset( $field['meta_key'], $field['value'] ) && '' !== $field['value'] ) {
 					$entry_metadata = array(
 						'entry_id'   => $entry_id,
-						'meta_key'   => $field['meta_key'],
-						'meta_value' => $field_value,
+						'meta_key'   => sanitize_key( $field['meta_key'] ),
+						'meta_value' => maybe_serialize( $field['value'] ), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value
 					);
 
 					// Insert entry meta.
