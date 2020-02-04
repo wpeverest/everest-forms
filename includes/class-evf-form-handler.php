@@ -106,6 +106,7 @@ class EVF_Form_Handler {
 
 		$args         = apply_filters( 'everest_forms_create_form_args', $args, $data );
 		$form_style   = array();
+		$style_needed = false;
 		$form_content = array(
 			'form_field_id' => '1',
 			'settings'      => array(
@@ -143,6 +144,7 @@ class EVF_Form_Handler {
 					$form_content = json_decode( base64_decode( $template_data->settings ), true );
 
 					if ( isset( $template_data->styles ) ) {
+						$style_needed = true;
 						$form_style[ $form_id ] = json_decode( base64_decode( $template_data->styles ), true );
 					}
 				}
@@ -177,7 +179,7 @@ class EVF_Form_Handler {
 			wp_init_targeted_link_rel_filters();
 		}
 
-		do_action( 'everest_forms_create_form', $form_id, $form_data, $data, $template );
+		do_action( 'everest_forms_create_form', $form_id, $form_data, $data, $style_needed );
 
 		return $form_id;
 	}
