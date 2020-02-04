@@ -1,7 +1,7 @@
 === Contact Form, Drag and Drop Form Builder for WordPress - Everest Forms ===
 Contributors: WPEverest
 Tags: contact form, forms, form builder, contact, custom form
-Requires at least: 4.9
+Requires at least: 5.0
 Tested up to: 5.3
 Requires PHP: 5.4
 Stable tag: 1.6.0
@@ -147,20 +147,23 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 1.6.0 - xx-xx-2020 =
+= 1.6.0 - 04-02-2020 =
 * Feature - Import Export of Everest Forms.
+* Feature - Required field message are made editable.
 * Enhancement - Improve choice field with image support.
 * Enhancement - Randomize the order of the choice field support.
 * Enhancement - Limit the number of options to be checked in checkboxes field.
 * Enhancement - Robust the layout for displaying field choice i.e inline or {one|two|three} columns.
 * Enhancement - Single Line Text/Paragraph fields limitation options (limit by character or word count).
 * Enhancement - Added a filter `everest_forms_builder_field_option_class` to support field option class.
+* Enhancement - Added a settings for confirm field validation message to support email confirmation error.
 * Fix - Error handling in AJAX handler for endpoint.
 * Fix - Choice default value not rendered on frontend.
 * Fix - Correctly closes label if no desc arg is passed.
 * Fix - Checks if only string is provided for JSON content.
 * Fix - Specific form submission notice display in another.
 * Fix - Select2 style and admin screen button alignments in WP 5.3+.
+* Fix - reCAPTCHA when running on localhost with port different from 80.
 * Fix - Show forms with disabled entries if they have previous entries count.
 * Fix - Use brackets instead of braces to avoid deprecation notices in PHP 5.6.
 * Tweak - Sortable design issue and smooth choices.

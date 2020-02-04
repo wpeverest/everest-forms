@@ -1,6 +1,6 @@
 == Changelog ==
 
-= 1.6.0 - xx-xx-2020 =
+= 1.6.0 - 04-02-2020 =
 * Feature - Import Export of Everest Forms.
 * Feature - Required field message are made editable.
 * Enhancement - Improve choice field with image support.
@@ -9,6 +9,7 @@
 * Enhancement - Robust the layout for displaying field choice i.e inline or {one|two|three} columns.
 * Enhancement - Single Line Text/Paragraph fields limitation options (limit by character or word count).
 * Enhancement - Added a filter `everest_forms_builder_field_option_class` to support field option class.
+* Enhancement - Added a settings for confirm field validation message to support email confirmation error.
 * Fix - Error handling in AJAX handler for endpoint.
 * Fix - Choice default value not rendered on frontend.
 * Fix - Correctly closes label if no desc arg is passed.
