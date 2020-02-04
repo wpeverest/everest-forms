@@ -1,5 +1,31 @@
 == Changelog ==
 
+= 1.6.0 - xx-xx-2020 =
+* Feature - Import Export of Everest Forms.
+* Feature - Required field message are made editable.
+* Enhancement - Improve choice field with image support.
+* Enhancement - Randomize the order of the choice field support.
+* Enhancement - Limit the number of options to be checked in checkboxes field.
+* Enhancement - Robust the layout for displaying field choice i.e inline or {one|two|three} columns.
+* Enhancement - Single Line Text/Paragraph fields limitation options (limit by character or word count).
+* Enhancement - Added a filter `everest_forms_builder_field_option_class` to support field option class.
+* Fix - Error handling in AJAX handler for endpoint.
+* Fix - Choice default value not rendered on frontend.
+* Fix - Correctly closes label if no desc arg is passed.
+* Fix - Checks if only string is provided for JSON content.
+* Fix - Specific form submission notice display in another.
+* Fix - Select2 style and admin screen button alignments in WP 5.3+.
+* Fix - reCAPTCHA when running on localhost with port different from 80.
+* Fix - Show forms with disabled entries if they have previous entries count.
+* Fix - Use brackets instead of braces to avoid deprecation notices in PHP 5.6.
+* Tweak - Sortable design issue and smooth choices.
+* Tweak - Store entry ID in property of task handler.
+* Tweak - Editable Form name from the form builder title.
+* Tweak - Admin notice design conflicted due to review notice.
+* Tweak - Referal in admin panel for origination of form entry.
+* Tweak - Display empty field value so users can toggle them in single entry view.
+* Tweak - Hide confirm placeholder text & sub-label option accordingly for email and password field.
+
 = 1.5.10 - 25-11-2019 =
 * Fix - Google reCAPTCHA v2 invisible settings bug.
 * Fix - DB unwanted data erase for fields data save.
