@@ -1,6 +1,7 @@
 {
 	"root": true,
 	"env": {
+		"es6": true,
 		"browser": true,
 		"node": true
 	},
@@ -10,7 +11,7 @@
 	"rules": {
 		"camelcase": 0,
 		"indent": 0,
-		"max-len": [ 2, { "code": 320 } ],
+		"max-len": [ 2, { "code": 350 } ],
 		"no-console": 1
 	}
 }

@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* global everest_forms_params */
 jQuery( function ( $ ) {
 	'use strict';
@@ -15,8 +16,9 @@ jQuery( function ( $ ) {
 			this.init_datepicker();
 			this.load_validation();
 			this.submission_scroll();
+			this.randomize_elements();
 
-			// Inline validation
+			// Inline validation.
 			this.$everest_form.on( 'input validate change', '.input-text, select, input:checkbox, input:radio', this.validate_field );
 		},
 		init_inputMask: function() {
@@ -128,6 +130,11 @@ jQuery( function ( $ ) {
 				return false;
 			}
 
+			// Validate confirmations.
+			$.validator.addMethod( 'confirm', function( value, element, param ) {
+				return $.validator.methods.equalTo.call( this, value, element, param );
+			}, everest_forms_params.i18n_messages_confirm );
+
 			// Prepend URL field contents with http:// if user input doesn't contain a schema.
 			$( '.evf-field-url input[type=url]' ).change( function () {
 				var url = $( this ).val();
@@ -154,25 +161,122 @@ jQuery( function ( $ ) {
 				return this.optional( element ) || pattern.test( value );
 			};
 
+			// Validate checkbox choice limit.
+			$.validator.addMethod( 'check-limit', function( value, element ) {
+				var $ul         = $( element ).closest( 'ul' ),
+					$checked    = $ul.find( 'input[type="checkbox"]:checked' ),
+					choiceLimit = parseInt( $ul.attr( 'data-choice-limit' ) || 0, 10 );
+
+				if ( 0 === choiceLimit ) {
+					return true;
+				}
+
+				return $checked.length <= choiceLimit;
+			}, function( params, element ) {
+				var	choiceLimit = parseInt( $( element ).closest( 'ul' ).attr( 'data-choice-limit' ) || 0, 10 );
+				return everest_forms_params.i18n_messages_check_limit.replace( '{#}', choiceLimit );
+			} );
+
 			this.$everest_form.each( function() {
 				var $this = $( this );
 
+				// List messages to show for required fields. Use name of the field as key.
+				var error_messages = {};
+				$( '.evf-field' ).each( function() {
+					var form_id       = $( this ).closest( 'form' ).data( 'formid' );
+					var field_id      = $( this ).data( 'field-id' );
+					var error_message = $( this ).data( 'required-field-message' );
+					var key           = 'everest_forms[form_fields][' + field_id + ']'; // Name of the input field is used as a key.
+
+					if ( $( this ).is( '.evf-field-checkbox, .evf-field-payment-checkbox' ) ) {
+						key = key + '[]';
+					} else if ( $( this ).is( '.evf-field-file-upload, .evf-field-image-upload' ) ) {
+						key = 'evf_' + form_id + '_' + field_id;
+					} else if ( $( this ).is( '.evf-field-signature' ) ) {
+						key = 'everest_forms[form_fields][' + field_id + '][signature_image]';
+					} else if ( $( this ).is( '.evf-field-phone' ) ) {
+						key = key + '[phone_field]';
+					} else if ( $( this ).is( '.evf-field-email' ) || $( this ).is( '.evf-field-password' ) ) {
+						// For when the confirm is disabled.
+						key = 'everest_forms[form_fields][' + field_id + ']';
+						error_messages[ key ] = error_message;
+
+						// For when the confirm is enabled.
+						key = 'everest_forms[form_fields][' + field_id + '][primary]';
+						error_messages[ key ] = {
+							required: error_message, // Set message using 'required' key to avoid conflicts with other validations.
+						};
+						key = 'everest_forms[form_fields][' + field_id + '][secondary]';
+						error_messages[ key ] = {
+							required: error_message, // Set message using 'required' key to avoid conflicts with other validations.
+						};
+						error_message = null;
+					} else if ( $( this ).is( '.evf-field-address' ) ) {
+						var sub_field_error_messages = {
+							'address1': $( this ).data( 'required-field-message-address1' ),
+							'city'    : $( this ).data( 'required-field-message-city' ),
+							'state'   : $( this ).data( 'required-field-message-state' ),
+							'postal'  : $( this ).data( 'required-field-message-postal' ),
+							'country' : $( this ).data( 'required-field-message-country' ),
+						}
+
+						var sub_field_types = Object.keys( sub_field_error_messages );
+						for ( var i = 0; i < sub_field_types.length; i++ ) {
+							var sub_field_type = sub_field_types[i],
+								error_message = sub_field_error_messages[ sub_field_types[i] ];
+
+							key                   = 'everest_forms[form_fields][' + field_id + '][' + sub_field_type + ']';
+							error_messages[ key ] = error_message;
+						}
+						error_message = null;
+					} else if ( $( this ).is( '.evf-field-likert' ) ) {
+						var row_keys = $( this ).data( 'row-keys' );
+						var sub_field_error_messages = {};
+
+						if ( row_keys && Array.isArray( row_keys ) ) {
+							for ( var i = 0; i < row_keys.length; i++ ) {
+								var row_key = row_keys[i];
+								sub_field_error_messages[ row_key ] = $( this ).data( 'required-field-message-' + row_key );
+							}
+						}
+						for ( var i = 0; i < sub_field_error_messages.length; i++ ) {
+							var error_message = sub_field_error_messages[ i ];
+
+							key                   = 'everest_forms[form_fields][' + field_id + '][' + i + ']';
+							error_messages[ key ] = error_message;
+						}
+						error_message = null;
+					}
+
+					/**
+					 * Check if the error message has been already set (null value in error_message variable
+					 * should indicate that the message has already been set).
+					 */
+					if ( error_message ) {
+						error_messages[ key ] = {
+							required: error_message, // Set message using 'required' key to avoid conflicts with other validations.
+						};
+					}
+				});
+
 				$this.validate({
+					messages: error_messages,
 					ignore: '',
 					errorClass: 'evf-error',
 					validClass: 'evf-valid',
 					errorPlacement: function( error, element ) {
 						if ( 'radio' === element.attr( 'type' ) || 'checkbox' === element.attr( 'type' ) ) {
-							if( element.hasClass( 'everest-forms-likert-field-option' ) ) {
-								element.closest('tr').children('th').append( error );
+							if ( element.hasClass( 'everest-forms-likert-field-option' ) ) {
+								element.closest( 'tr' ).children( 'th' ).append( error );
 							} else {
+								element.closest( '.evf-field-checkbox' ).find( 'label.evf-error' ).remove();
 								element.parent().parent().parent().append( error );
 							}
 						} else if ( element.is( 'select' ) && element.attr( 'class' ).match( /date-month|date-day|date-year/ ) ) {
 							if ( element.parent().find( 'label.evf-error:visible' ).length === 0 ) {
 								element.parent().find( 'select:last' ).after( error );
 							}
-						} else if ( element.hasClass( 'evf-smart-phone-field' ) ) {
+						} else if ( element.hasClass( 'evf-smart-phone-field' ) || element.hasClass( 'everest-forms-field-password-primary' ) || element.hasClass( 'everest-forms-field-password-secondary' ) ) {
 							element.parent().after( error );
 						} else {
 							error.insertAfter( element );
@@ -215,7 +319,51 @@ jQuery( function ( $ ) {
 						}
 
 						form.submit();
-					}
+					},
+					onkeyup: function( element, event ) {
+						// This code is copied from JQuery Validate 'onkeyup' method with only one change: 'everest-forms-novalidate-onkeyup' class check.
+						var excludedKeys = [ 16, 17, 18, 20, 35, 36, 37, 38, 39, 40, 45, 144, 225 ];
+
+						// Disable onkeyup validation for some elements (e.g. remote calls).
+						if ( $( element ).hasClass( 'everest-forms-novalidate-onkeyup' ) ) {
+							return;
+						}
+
+						if ( 9 === event.which && '' === this.elementValue( element ) || -1 !== $.inArray( event.keyCode, excludedKeys ) ) {
+							return;
+						} else if ( element.name in this.submitted || element.name in this.invalid ) {
+							this.element( element );
+						}
+					},
+					onfocusout: function( element ) {
+						// This code is copied from JQuery Validate 'onfocusout' method with only one change: 'everest-forms-novalidate-onkeyup' class check.
+						var validate = false;
+
+						// Empty value error handling for elements with onkeyup validation disabled.
+						if ( $( element ).hasClass( 'everest-forms-novalidate-onkeyup' ) && ! element.value ) {
+							validate = true;
+						}
+
+						if ( ! this.checkable( element ) && ( element.name in this.submitted || ! this.optional( element ) ) ) {
+							validate = true;
+						}
+
+						if ( validate ) {
+							this.element( element );
+						}
+					},
+					onclick: function( element ) {
+						var validate = false;
+
+						if ( 'checkbox' === ( element || {} ).type ) {
+							$( element ).closest( '.evf-field-checkbox' ).find( 'label.evf-error' ).remove();
+							validate = true;
+						}
+
+						if ( validate ) {
+							this.element( element );
+						}
+					},
 				});
 			});
 		},
@@ -227,7 +375,7 @@ jQuery( function ( $ ) {
 				validate_email    = $parent.is( '.validate-email' ),
 				event_type        = e.type;
 
-			if ( $parent.hasClass( 'evf-field-address' ) ) {
+			if ( $parent.hasClass( 'evf-field-address' ) || $parent.hasClass( 'evf-field-payment-single' ) ) {
 				if ( 0 === $parent.find( 'input.evf-error' ).length ) {
 					$parent.removeClass( 'everest-forms-invalid everest-forms-invalid-required-field everest-forms-invalid-email' ).addClass( 'everest-forms-validated' );
 				}
@@ -275,6 +423,16 @@ jQuery( function ( $ ) {
 					scrollTop: ( $( 'div.everest-forms-submission-scroll' ).offset().top ) - 100
 				}, 1000 );
 			}
+		},
+		randomize_elements: function() {
+			$( '.everest-forms-randomize' ).each( function() {
+				var $list      = $( this ),
+					$listItems = $list.children();
+
+				while ( $listItems.length ) {
+					$list.append( $listItems.splice( Math.floor( Math.random() * $listItems.length ), 1 )[0] );
+				}
+			} );
 		}
 	};
 

@@ -7,13 +7,27 @@
 
 defined( 'ABSPATH' ) || exit;
 
+$form_id    = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0; // WPCS: input var okay, CSRF ok.
+$entry_id   = isset( $_GET['view-entry'] ) ? absint( $_GET['view-entry'] ) : 0; // WPCS: input var okay, CSRF ok.
+$entry      = evf_get_entry( $entry_id, true );
+$form_data  = evf()->form->get( $form_id, array( 'content_only' => true ) );
 $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === $_COOKIE['everest_forms_entry_hide_empty'];
+$trash_link = wp_nonce_url(
+	add_query_arg(
+		array(
+			'trash' => $entry_id,
+		),
+		admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $form_id )
+	),
+	'trash-entry'
+);
 
 ?>
 <div class="wrap everest-forms">
 	<h1 class="wp-heading-inline"><?php esc_html_e( 'View Entry', 'everest-forms' ); ?></h1>
 	<a href="<?php echo esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $form_id ) ); ?>" class="page-title-action"><?php esc_html_e( 'Back to All Entries', 'everest-forms' ); ?></a>
 	<hr class="wp-header-end">
+	<?php do_action( 'everest_forms_view_entries_notices' ); ?>
 	<div class="everest-forms-entry">
 		<div id="poststuff">
 			<div id="post-body" class="metabox-holder columns-2">
@@ -21,7 +35,14 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 				<div id="post-body-content" style="position: relative;">
 					<div id="everest-forms-entry-fields" class="postbox">
 						<h2 class="hndle">
-							<span><?php printf( __( '%1$s : Entry #%2$s', 'everest-forms' ), esc_html( _draft_or_post_title( $form_id ) ), absint( $entry_id ) ); ?></span>
+							<?php do_action( 'everest_forms_before_entry_details_hndle', $entry ); ?>
+							<span>
+							<?php
+							/* translators: %s: Entry ID */
+							printf( esc_html__( '%1$s: Entry #%2$s', 'everest-forms' ), esc_html( _draft_or_post_title( $form_id ) ), absint( $entry_id ) );
+							?>
+							</span>
+							<?php do_action( 'everest_forms_after_entry_details_hndle', $entry ); ?>
 							<a href="#" class="everest-forms-empty-field-toggle">
 								<?php echo $hide_empty ? esc_html__( 'Show Empty Fields', 'everest-forms' ) : esc_html__( 'Hide Empty Fields', 'everest-forms' ); ?>
 							</a>
@@ -30,7 +51,7 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 							<table class="wp-list-table widefat fixed striped posts">
 								<tbody>
 								<?php
-								$entry_meta = apply_filters( 'everest_forms_entry_single_data', $entry->meta );
+								$entry_meta = apply_filters( 'everest_forms_entry_single_data', $entry->meta, $entry, $form_data );
 
 								if ( empty( $entry_meta ) ) {
 									// Whoops, no fields! This shouldn't happen under normal use cases.
@@ -50,7 +71,7 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 										}
 
 										$field_value     = apply_filters( 'everest_forms_html_field_value', $meta_value, $entry_meta[ $meta_key ], $entry_meta, 'entry-single' );
-										$field_class     = empty( $field_value ) ? ' empty' : '';
+										$field_class     = is_string( $field_value ) && ( '(empty)' === wp_strip_all_tags( $field_value ) || '' === $field_value ) ? ' empty' : '';
 										$field_style     = $hide_empty && empty( $field_value ) ? 'display:none;' : '';
 										$correct_answers = false;
 
@@ -72,21 +93,27 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 										echo '</th></tr>';
 
 										// Field value.
-										echo '<tr class="everest-forms-entry-field field-value' . $field_class . '" style="' . $field_style . '"><td>';
+										echo '<tr class="everest-forms-entry-field field-value' . $field_class . '" style="' . $field_style . '"><td>'; // @codingStandardsIgnoreLine
 
 										if ( ! empty( $field_value ) ) {
 											if ( is_serialized( $field_value ) ) {
 												$field_value = maybe_unserialize( $field_value );
-												foreach ( $field_value as $field => $value ) {
-													$answer_class = '';
-													if ( $correct_answers ) {
-														if ( in_array( $value, $correct_answers, true ) ) {
-															$answer_class = 'correct_answer';
-														} else {
-															$answer_class = 'wrong_answer';
+												$field_label = isset( $field_value['label'] ) ? $field_value['label'] : $field_value;
+
+												if ( ! empty( $field_label ) && is_array( $field_label ) ) {
+													foreach ( $field_label as $field => $value ) {
+														$answer_class = '';
+														if ( $correct_answers ) {
+															if ( in_array( $value, $correct_answers, true ) ) {
+																$answer_class = 'correct_answer';
+															} else {
+																$answer_class = 'wrong_answer';
+															}
 														}
+														echo '<span class="list ' . $answer_class . '">' . esc_html( wp_strip_all_tags( $value ) ) . '</span>';
 													}
-													echo '<span class="list ' . $answer_class . '">' . wp_strip_all_tags( $value ) . '</span>';
+												} else {
+													echo nl2br( make_clickable( $field_label ) );
 												}
 											} else {
 												if ( $correct_answers && false !== $correct_answers ) {
@@ -95,7 +122,7 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 													} else {
 														$answer_class = 'wrong_answer';
 													}
-													echo '<span class="list ' . $answer_class . '">' . wp_strip_all_tags( $field_value ) . '</span>';
+													echo '<span class="list ' . $answer_class . '">' . esc_html( wp_strip_all_tags( $field_value ) ) . '</span>';
 												} else {
 													echo nl2br( make_clickable( $field_value ) );
 												}
@@ -179,32 +206,18 @@ $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === 
 									</p>
 								<?php endif; ?>
 
-								<?php do_action( 'everest_forms_entry_details_sidebar_details', $entry, $entry_meta ); ?>
+								<?php do_action( 'everest_forms_entry_details_sidebar_details', $entry, $entry_meta, $form_data ); ?>
 							</div>
 
 							<div id="major-publishing-actions">
 								<div id="delete-action">
-									<a class="submitdelete" aria-label="<?php echo esc_attr__( 'Move to trash', 'everest-forms' ); ?>" href="
-																					<?php
-																					echo esc_url(
-																						wp_nonce_url(
-																							add_query_arg(
-																								array(
-																									'trash' => $entry_id,
-																								),
-																								admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $form_id )
-																							),
-																							'trash-entry'
-																						)
-																					);
-																					?>
-									"><?php esc_html_e( 'Move to trash', 'everest-forms' ); ?></a>
+									<a class="submitdelete" aria-label="<?php echo esc_attr__( 'Move to trash', 'everest-forms' ); ?>" href="<?php echo esc_url( $trash_link ); ?>"><?php esc_html_e( 'Move to trash', 'everest-forms' ); ?></a>
 								</div>
 								<div class="clear"></div>
 							</div>
 						</div>
 					</div>
-					<?php do_action( 'everest_forms_after_entry_details', $entry, $entry_meta ); ?>
+					<?php do_action( 'everest_forms_after_entry_details', $entry, $entry_meta, $form_data ); ?>
 				</div>
 			</div>
 		</div>

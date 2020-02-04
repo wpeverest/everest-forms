@@ -19,23 +19,26 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 	public function __construct() {
 		$this->name     = esc_html__( 'Multiple Choice', 'everest-forms' );
 		$this->type     = 'radio';
-		$this->icon     = 'evf-icon evf-icon-multiple-choices';
+		$this->icon     = 'evf-icon evf-icon-multiple-choices-radio';
 		$this->order    = 60;
 		$this->group    = 'general';
 		$this->defaults = array(
 			1 => array(
 				'label'   => esc_html__( 'First Choice', 'everest-forms' ),
 				'value'   => '',
+				'image'   => '',
 				'default' => '',
 			),
 			2 => array(
 				'label'   => esc_html__( 'Second Choice', 'everest-forms' ),
 				'value'   => '',
+				'image'   => '',
 				'default' => '',
 			),
 			3 => array(
 				'label'   => esc_html__( 'Third Choice', 'everest-forms' ),
 				'value'   => '',
+				'image'   => '',
 				'default' => '',
 			),
 		);
@@ -45,12 +48,15 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 					'label',
 					'meta',
 					'choices',
+					'choices_images',
 					'description',
 					'required',
+					'required_field_message',
 				),
 			),
 			'advanced-options' => array(
 				'field_options' => array(
+					'randomize',
 					'show_values',
 					'input_columns',
 					'label_hide',
@@ -66,7 +72,44 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 	 * Hook in tabs.
 	 */
 	public function init_hooks() {
+		add_filter( 'everest_forms_html_field_value', array( $this, 'html_field_value' ), 10, 4 );
 		add_filter( 'everest_forms_field_properties_' . $this->type, array( $this, 'field_properties' ), 5, 3 );
+	}
+
+	/**
+	 * Return images, if any, for HTML supported values.
+	 *
+	 * @since 1.6.0
+	 *
+	 * @param string $value     Field value.
+	 * @param array  $field     Field settings.
+	 * @param array  $form_data Form data and settings.
+	 * @param string $context   Value display context.
+	 *
+	 * @return string
+	 */
+	public function html_field_value( $value, $field, $form_data = array(), $context = '' ) {
+		if ( is_serialized( $field ) ) {
+			$field_value = maybe_unserialize( $field );
+			$field_type  = isset( $field_value['type'] ) ? sanitize_text_field( $field_value['type'] ) : 'radio';
+
+			if ( $field_type === $this->type ) {
+				if (
+					'entry-table' !== $context
+					&& ! empty( $field_value['label'] )
+					&& ! empty( $field_value['image'] )
+					&& apply_filters( 'everest_forms_checkbox_field_html_value_images', true, $context )
+				) {
+					return sprintf(
+						'<span style="max-width:200px;display:block;margin:0 0 5px 0;"><img src="%s" style="max-width:100%%;display:block;margin:0;"></span>%s',
+						esc_url( $field_value['image'] ),
+						esc_html( $field_value['label'] )
+					);
+				}
+			}
+		}
+
+		return $value;
 	}
 
 	/**
@@ -79,132 +122,198 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 	 * @return array
 	 */
 	public function field_properties( $properties, $field, $form_data ) {
+		// Define data.
+		$form_id  = absint( $form_data['id'] );
+		$field_id = $field['id'];
+		$choices  = $field['choices'];
 
-		$properties['inputs']['primary']['class'][] = 'input-text';
+		// Remove primary input.
+		unset( $properties['inputs']['primary'] );
+
+		// Set input container (ul) properties.
+		$properties['input_container'] = array(
+			'class' => array( ! empty( $field['random'] ) ? 'everest-forms-randomize' : '' ),
+			'data'  => array(),
+			'attr'  => array(),
+			'id'    => "evf-{$form_id}-field_{$field_id}",
+		);
+
+		// Set input properties.
+		foreach ( $choices as $key => $choice ) {
+			$depth                        = isset( $choice['depth'] ) ? absint( $choice['depth'] ) : 1;
+			$properties['inputs'][ $key ] = array(
+				'container' => array(
+					'attr'  => array(),
+					'class' => array( "choice-{$key}", "depth-{$depth}" ),
+					'data'  => array(),
+					'id'    => '',
+				),
+				'label'     => array(
+					'attr'  => array(
+						'for' => "evf-{$form_id}-field_{$field_id}_{$key}",
+					),
+					'class' => array( 'everest-forms-field-label-inline' ),
+					'data'  => array(),
+					'id'    => '',
+					'text'  => $choice['label'],
+				),
+				'attr'      => array(
+					'name'  => "everest_forms[form_fields][{$field_id}]",
+					'value' => isset( $field['show_values'] ) ? $choice['value'] : $choice['label'],
+				),
+				'class'     => array(),
+				'data'      => array(),
+				'id'        => "evf-{$form_id}-field_{$field_id}_{$key}",
+				'image'     => isset( $choice['image'] ) ? $choice['image'] : '',
+				'required'  => ! empty( $field['required'] ) ? 'required' : '',
+				'default'   => isset( $choice['default'] ),
+			);
+		}
+
+		// Required class for validation.
+		if ( ! empty( $field['required'] ) ) {
+			$properties['input_container']['class'][] = 'evf-field-required';
+		}
+
+		// Custom properties if enabled image choices.
+		if ( ! empty( $field['choices_images'] ) ) {
+			$properties['input_container']['class'][] = 'everest-forms-image-choices';
+
+			foreach ( $properties['inputs'] as $key => $inputs ) {
+				$properties['inputs'][ $key ]['container']['class'][] = 'everest-forms-image-choices-item';
+			}
+		}
+
+		// Add selected class for choices with defaults.
+		foreach ( $properties['inputs'] as $key => $inputs ) {
+			if ( ! empty( $inputs['default'] ) ) {
+				$properties['inputs'][ $key ]['container']['class'][] = 'everest-forms-selected';
+			}
+		}
 
 		return $properties;
 	}
 
 	/**
+	 * Randomize order of choices.
+	 *
+	 * @since 1.6.0
+	 * @param array $field Field Data.
+	 */
+	public function randomize( $field ) {
+		$args = array(
+			'slug'    => 'random',
+			'content' => $this->field_element(
+				'checkbox',
+				$field,
+				array(
+					'slug'    => 'random',
+					'value'   => isset( $field['random'] ) ? '1' : '0',
+					'desc'    => esc_html__( 'Randomize Choices', 'everest-forms' ),
+					'tooltip' => esc_html__( 'Check this option to randomize the order of the choices.', 'everest-forms' ),
+				),
+				false
+			),
+		);
+		$this->field_element( 'row', $field, $args );
+	}
+
+	/**
 	 * Show values field option.
 	 *
-	 * @param array $field
+	 * @param array $field Field Data.
 	 */
 	public function show_values( $field ) {
 		// Show Values toggle option. This option will only show if already used or if manually enabled by a filter.
 		if ( ! empty( $field['show_values'] ) || apply_filters( 'everest_forms_fields_show_options_setting', false ) ) {
-			$show_values = $this->field_element(
-				'checkbox',
-				$field,
-				array(
-					'slug'    => 'show_values',
-					'value'   => isset( $field['show_values'] ) ? $field['show_values'] : '0',
-					'desc'    => __( 'Show Values', 'everest-forms' ),
-					'tooltip' => __( 'Check this to manually set form field values.', 'everest-forms' ),
+			$args = array(
+				'slug'    => 'show_values',
+				'content' => $this->field_element(
+					'checkbox',
+					$field,
+					array(
+						'slug'    => 'show_values',
+						'value'   => isset( $field['show_values'] ) ? $field['show_values'] : '0',
+						'desc'    => __( 'Show Values', 'everest-forms' ),
+						'tooltip' => __( 'Check this to manually set form field values.', 'everest-forms' ),
+					),
+					false
 				),
-				false
 			);
-			$this->field_element(
-				'row',
-				$field,
-				array(
-					'slug'    => 'show_values',
-					'content' => $show_values,
-				)
-			);
+			$this->field_element( 'row', $field, $args );
 		}
 	}
 
 	/**
 	 * Field preview inside the builder.
 	 *
-	 * @since      1.0.0
+	 * @since 1.0.0
 	 *
-	 * @param array $field
+	 * @param array $field Field settings.
 	 */
 	public function field_preview( $field ) {
-
-		$values  = ! empty( $field['choices'] ) ? $field['choices'] : $this->defaults;
-		$dynamic = ! empty( $field['dynamic_choices'] ) ? $field['dynamic_choices'] : false;
-
-		// Label
+		// Label.
 		$this->field_preview_option( 'label', $field );
 
-		// Field checkbox elements
-		echo '<ul class="primary-input">';
+		// Choices.
+		$this->field_preview_option( 'choices', $field );
 
-		// Notify if currently empty
-		if ( empty( $values ) ) {
-			$values = array(
-				'label' => __( '(empty)', 'everest-forms' ),
-			);
-		}
-
-		// Individual checkbox options
-		foreach ( $values as $key => $value ) {
-
-			$default  = isset( $value['default'] ) ? $value['default'] : '';
-			$selected = checked( '1', $default, false );
-
-			printf( '<li><input type="radio" %s disabled>%s</li>', $selected, $value['label'] );
-		}
-
-		echo '</ul>';
-
-		// Dynamic population is enabled and contains more than 20 items
-		if ( isset( $total ) && $total > 20 ) {
-			echo '<div class="everest-forms-alert-dynamic everest-forms-alert everest-forms-alert-warning">';
-			printf( __( 'Showing the first 20 choices.<br> All %d choices will be displayed when viewing the form.', 'everest-forms' ), absint( $total ) );
-			echo '</div>';
-		}
-
-		// Description
+		// Description.
 		$this->field_preview_option( 'description', $field );
 	}
 
 	/**
 	 * Field display on the form front-end.
 	 *
-	 * @since      1.0.0
+	 * @since 1.0.0
 	 *
-	 * @param array $field
-	 * @param array $field_atts
-	 * @param array $form_data
+	 * @param array $field      Field settings.
+	 * @param array $field_atts Field attributes.
+	 * @param array $form_data  Form data and settings.
 	 */
 	public function field_display( $field, $field_atts, $form_data ) {
-		// Setup and sanitize the necessary data
-		$primary     = $field['properties']['inputs']['primary'];
-		$field_class = implode( ' ', array_map( 'sanitize_html_class', $field_atts['input_class'] ) );
-		$field_id    = implode( ' ', array_map( 'sanitize_html_class', $field_atts['input_id'] ) );
-		$field_data  = '';
-		$form_id     = $form_data['id'];
-		$choices     = isset( $field['choices'] ) ? $field['choices'] : array();
-		if ( ! empty( $field_atts['input_data'] ) ) {
-			foreach ( $field_atts['input_data'] as $key => $val ) {
-				$field_data .= ' data-' . $key . '="' . $val . '"';
-			}
-		}
+		// Define data.
+		$container = $field['properties']['input_container'];
+		$choices   = $field['properties']['inputs'];
+
 		// List.
-		printf( '<ul id="%s" class="%s" %s>', $field_id, $field_class, $field_data );
+		printf( '<ul %s>', evf_html_attributes( $container['id'], $container['class'], $container['data'], $container['attr'] ) );
 
-		foreach ( $choices as $key => $choice ) {
+		foreach ( $choices as $choice ) {
+			if ( empty( $choice['container'] ) ) {
+				continue;
+			}
 
-			$selected = isset( $choice['default'] ) ? '1' : '0';
-			$val      = isset( $field['show_values'] ) ? esc_attr( $choice['value'] ) : esc_attr( $choice['label'] );
-			$depth    = isset( $choice['depth'] ) ? absint( $choice['depth'] ) : 1;
-			$id       = $primary['id'] . '_' . $key;
+			printf( '<li %s>', evf_html_attributes( $choice['container']['id'], $choice['container']['class'], $choice['container']['data'], $choice['container']['attr'] ) );
 
-			printf( '<li class="choice-%d depth-%d">', $key, $depth );
+			if ( ! empty( $field['choices_images'] ) ) {
+				// Make image choices keyboard-accessible.
+				$choice['label']['attr']['tabindex'] = 0;
 
-			// Radio elements.
-			printf(
-				'<input type="radio" value="%s" %s %s>',
-				esc_attr( $val ),
-				evf_html_attributes( $id, $primary['class'], $primary['data'], $primary['attr'] ),
-				esc_attr( $primary['required'] )
-			);
+				// Image choices.
+				printf( '<label %s>', evf_html_attributes( $choice['label']['id'], $choice['label']['class'], $choice['label']['data'], $choice['label']['attr'] ) );
 
-			printf( '<label class="everest-forms-field-label-inline" for="evf-%d-field_%s_%d">%s</label>', $form_id, $field['id'], $key, wp_kses_post( $choice['label'] ) );
+				if ( ! empty( $choice['image'] ) ) {
+					printf(
+						'<span class="everest-forms-image-choices-image"><img src="%s" alt="%s"%s></span>',
+						esc_url( $choice['image'] ),
+						esc_attr( $choice['label']['text'] ),
+						! empty( $choice['label']['text'] ) ? ' title="' . esc_attr( $choice['label']['text'] ) . '"' : ''
+					);
+				}
+
+				echo '<br>';
+
+				$choice['attr']['tabindex'] = '-1';
+
+				printf( '<input type="radio" %s %s %s>', evf_html_attributes( $choice['id'], $choice['class'], $choice['data'], $choice['attr'] ), esc_attr( $choice['required'] ), checked( '1', $choice['default'], false ) );
+				echo '<span class="everest-forms-image-choices-label">' . wp_kses_post( $choice['label']['text'] ) . '</span>';
+				echo '</label>';
+			} else {
+				// Normal display.
+				printf( '<input type="radio" %s %s %s>', evf_html_attributes( $choice['id'], $choice['class'], $choice['data'], $choice['attr'] ), esc_attr( $choice['required'] ), checked( '1', $choice['default'], false ) );
+				printf( '<label %s>%s</label>', evf_html_attributes( $choice['label']['id'], $choice['label']['class'], $choice['label']['data'], $choice['label']['attr'] ), wp_kses_post( $choice['label']['text'] ) );
+			}
 
 			echo '</li>';
 		}
@@ -215,93 +324,60 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 	/**
 	 * Formats and sanitizes field.
 	 *
-	 * @param int    $field_id
-	 * @param array  $field_submit
-	 * @param array  $form_data
-	 * @param string $meta_key
+	 * @since 1.0.0
+	 *
+	 * @param string $field_id Field Id.
+	 * @param array  $field_submit Submitted Field.
+	 * @param array  $form_data All Form Data.
+	 * @param string $meta_key Field Meta Key.
 	 */
 	public function format( $field_id, $field_submit, $form_data, $meta_key ) {
-		$field_submit = (array) $field_submit;
-		$field        = $form_data['form_fields'][ $field_id ];
-		$dynamic      = ! empty( $field['dynamic_choices'] ) ? $field['dynamic_choices'] : false;
-		$name         = sanitize_text_field( $field['label'] );
-		$value_raw    = evf_sanitize_array_combine( $field_submit );
+		$field      = $form_data['form_fields'][ $field_id ];
+		$name       = sanitize_text_field( $field['label'] );
+		$value_raw  = sanitize_text_field( $field_submit );
+		$choice_key = '';
 
 		$data = array(
-			'name'      => $name,
-			'value'     => '',
-			'value_raw' => $value_raw,
 			'id'        => $field_id,
 			'type'      => $this->type,
+			'value'     => array(
+				'name' => $name,
+				'type' => $this->type,
+			),
 			'meta_key'  => $meta_key,
+			'value_raw' => $value_raw,
 		);
 
-		if ( 'post_type' === $dynamic && ! empty( $field['dynamic_post_type'] ) ) {
-
-			// Dynamic population is enabled using post type
-			$value_raw                 = implode( ',', array_map( 'absint', $field_submit ) );
-			$data['value_raw']         = $value_raw;
-			$data['dynamic']           = 'post_type';
-			$data['dynamic_items']     = $value_raw;
-			$data['dynamic_post_type'] = $field['dynamic_post_type'];
-			$posts                     = array();
-
-			foreach ( $field_submit as $id ) {
-				$post = get_post( $id );
-
-				if ( ! is_wp_error( $post ) && ! empty( $post ) && $data['dynamic_post_type'] === $post->post_type ) {
-					$posts[] = esc_html( $post->post_title );
+		/*
+		 * If show_values is true, that means values posted are the raw values
+		 * and not the labels. So we need to get the label values.
+		 */
+		if ( ! empty( $field['show_values'] ) && '1' === $field['show_values'] ) {
+			foreach ( $field['choices'] as $key => $choice ) {
+				if ( $choice['value'] === $field_submit ) {
+					$data['value']['label'] = sanitize_text_field( $choice['label'] );
+					$choice_key             = $key;
+					break;
 				}
 			}
-
-			$data['value'] = ! empty( $posts ) ? evf_sanitize_array_combine( $posts ) : '';
-
-		} elseif ( 'taxonomy' === $dynamic && ! empty( $field['dynamic_taxonomy'] ) ) {
-
-			// Dynamic population is enabled using taxonomy
-			$value_raw                = implode( ',', array_map( 'absint', $field_submit ) );
-			$data['value_raw']        = $value_raw;
-			$data['dynamic']          = 'taxonomy';
-			$data['dynamic_items']    = $value_raw;
-			$data['dynamic_taxonomy'] = $field['dynamic_taxonomy'];
-			$terms                    = array();
-
-			foreach ( $field_submit as $id ) {
-				$term = get_term( $id, $field['dynamic_taxonomy'] );
-
-				if ( ! is_wp_error( $term ) && ! empty( $term ) ) {
-					$terms[] = esc_html( $term->name );
-				}
-			}
-
-			$data['value'] = ! empty( $terms ) ? evf_sanitize_array_combine( $terms ) : '';
-
 		} else {
+			$data['value']['label'] = $value_raw;
 
-			// Normal processing, dynamic population is off
-			// If show_values is true, that means values posted are the raw values
-			// and not the labels. So we need to get the label values.
-			if ( ! empty( $field['show_values'] ) && '1' == $field['show_values'] ) {
-
-				$value = array();
-
-				foreach ( $field_submit as $field_submit_single ) {
-					foreach ( $field['choices'] as $choice ) {
-						if ( $choice['value'] == $field_submit_single ) {
-							$value[] = $choice['label'];
-							break;
-						}
-					}
+			// Determine choice key, this is needed for image choices.
+			foreach ( $field['choices'] as $key => $choice ) {
+				if ( $choice['label'] === $field_submit ) {
+					$choice_key = $key;
+					break;
 				}
-
-				$data['value'] = ! empty( $value ) ? evf_sanitize_array_combine( $value ) : '';
-
-			} else {
-				$data['value'] = $value_raw;
 			}
 		}
 
+		// Images choices are enabled, lookup and store image URL.
+		if ( ! empty( $choice_key ) && ! empty( $field['choices_images'] ) ) {
+			$data['value']['image'] = ! empty( $field['choices'][ $choice_key ]['image'] ) ? esc_url_raw( $field['choices'][ $choice_key ]['image'] ) : '';
+		}
+
 		// Push field details to be saved.
-		EVF()->task->form_fields[ $field_id ] = $data;
+		evf()->task->form_fields[ $field_id ] = $data;
 	}
 }

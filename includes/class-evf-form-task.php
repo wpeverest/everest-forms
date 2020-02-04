@@ -138,7 +138,7 @@ class EVF_Form_Task {
 						$data = json_decode( wp_remote_retrieve_body( $raw_data ) );
 
 						// Check reCAPTCHA response.
-						if ( empty( $data->success ) || ( isset( $data->hostname ) && evf_clean( wp_unslash( $_SERVER['HTTP_HOST'] ) ) !== $data->hostname ) || ( isset( $data->action, $data->score ) && ( 'everest_form' !== $data->action && 0.5 > floatval( $data->score ) ) ) ) {
+						if ( empty( $data->success ) || ( isset( $data->hostname ) && evf_clean( wp_unslash( $_SERVER['SERVER_NAME'] ) ) !== $data->hostname ) || ( isset( $data->action, $data->score ) && ( 'everest_form' !== $data->action && 0.5 > floatval( $data->score ) ) ) ) {
 							$this->errors[ $form_id ]['header'] = esc_html__( 'Incorrect reCAPTCHA, please try again.', 'everest-forms' );
 							return;
 						}
@@ -492,6 +492,7 @@ class EVF_Form_Task {
 		$browser    = evf_get_browser();
 		$user_ip    = evf_get_ip_address();
 		$user_agent = $browser['name'] . '/' . $browser['platform'];
+		$referer    = ! empty( $_SERVER['HTTP_REFERER'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_REFERER'] ) ) : '';
 		$entry_id   = false;
 
 		// GDPR enhancements - If user details are disabled globally discard the IP and UA.
@@ -506,7 +507,8 @@ class EVF_Form_Task {
 			'user_device'     => sanitize_text_field( $user_agent ),
 			'user_ip_address' => sanitize_text_field( $user_ip ),
 			'status'          => 'publish',
-			'referer'         => $_SERVER['HTTP_REFERER'],
+			'referer'         => $referer,
+			'fields'          => wp_json_encode( $fields ),
 			'date_created'    => current_time( 'mysql', true ),
 		);
 
@@ -533,12 +535,16 @@ class EVF_Form_Task {
 					continue;
 				}
 
-				if ( isset( $field['value'], $field['meta_key'] ) && '' !== $field['value'] ) {
-					$field_value    = is_array( $field['value'] ) ? serialize( $field['value'] ) : $field['value'];
+				// If empty file is supplied, do store their data nor send email.
+				if ( in_array( $field['type'], array( 'image-upload', 'file-upload' ), true ) && '' === $field['value']['file_url'] ) {
+					continue;
+				}
+
+				if ( isset( $field['meta_key'], $field['value'] ) && '' !== $field['value'] ) {
 					$entry_metadata = array(
 						'entry_id'   => $entry_id,
-						'meta_key'   => $field['meta_key'],
-						'meta_value' => $field_value,
+						'meta_key'   => sanitize_key( $field['meta_key'] ),
+						'meta_value' => maybe_serialize( $field['value'] ), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value
 					);
 
 					// Insert entry meta.

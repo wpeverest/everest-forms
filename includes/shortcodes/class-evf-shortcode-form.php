@@ -458,8 +458,17 @@ class EVF_Shortcode_Form {
 			$attributes['field_class'] = array_merge( $attributes['field_class'], evf_sanitize_classes( $field['css'], true ) );
 		}
 
+		// Check for input column layouts.
+		if ( ! empty( $field['input_columns'] ) ) {
+			if ( 'inline' === $field['input_columns'] ) {
+				$attributes['field_class'][] = 'everest-forms-list-inline';
+			} elseif ( '' !== $field['input_columns'] ) {
+				$attributes['field_class'][] = 'everest-forms-list-' . $field['input_columns'] . '-columns';
+			}
+		}
+
 		// Input class.
-		if ( ! in_array( $field['type'], array( 'checkbox', 'radio', 'payment-checkbox', 'payment-multiple' ) ) ) {
+		if ( ! in_array( $field['type'], array( 'checkbox', 'radio', 'payment-checkbox', 'payment-multiple' ), true ) ) {
 			$attributes['input_class'][] = 'input-text';
 		}
 
@@ -514,6 +523,49 @@ class EVF_Shortcode_Form {
 		$form_id  = absint( $form_data['id'] );
 		$field_id = sanitize_text_field( $field['id'] );
 
+		// Field container data.
+		$container_data = array();
+
+		// Embed required-field-message to the container if the field is required.
+		if ( isset( $field['required'] ) && ( '1' === $field['required'] || true === $field['required'] ) ) {
+			$has_sub_fields     = false;
+			$sub_field_messages = array();
+
+			$required_validation = get_option( 'everest_forms_required_validation' );
+			if ( in_array( $field['type'], array( 'number', 'email', 'url', 'phone' ), true ) ) {
+				$required_validation = get_option( 'everest_forms_' . $field['type'] . '_validation' );
+			}
+
+			if ( 'likert' === $field['type'] ) {
+				$has_sub_fields = true;
+				$likert_rows    = isset( $field['likert_rows'] ) ? $field['likert_rows'] : array();
+				$row_keys       = array();
+				foreach ( $likert_rows as $row_key => $row_label ) {
+					$row_keys[]                     = $row_key;
+					$row_slug                       = 'required-field-message-' . $row_key;
+					$sub_field_messages[ $row_key ] = isset( $field[ $row_slug ] ) ? $field[ $row_slug ] : '';
+				}
+				$container_data['row-keys'] = wp_json_encode( $row_keys );
+			} elseif ( 'address' === $field['type'] ) {
+				$has_sub_fields     = true;
+				$sub_field_messages = array(
+					'address1' => isset( $field['required-field-message-address1'] ) ? $field['required-field-message-address1'] : '',
+					'city'     => isset( $field['required-field-message-city'] ) ? $field['required-field-message-city'] : '',
+					'state'    => isset( $field['required-field-message-state'] ) ? $field['required-field-message-state'] : '',
+					'postal'   => isset( $field['required-field-message-postal'] ) ? $field['required-field-message-postal'] : '',
+					'country'  => isset( $field['required-field-message-country'] ) ? $field['required-field-message-country'] : '',
+				);
+			}
+
+			if ( true === $has_sub_fields ) {
+				foreach ( $sub_field_messages as $sub_field_type => $error_message ) {
+					$container_data[ 'required-field-message-' . $sub_field_type ] = $error_message;
+				}
+			} else {
+				$container_data['required-field-message'] = isset( $field['required-field-message'] ) && '' !== $field['required-field-message'] ? $field['required-field-message'] : $required_validation;
+			}
+		}
+
 		$properties = apply_filters(
 			'everest_forms_field_properties_' . $field['type'],
 			array(
@@ -522,7 +574,7 @@ class EVF_Shortcode_Form {
 						'style' => $attributes['field_style'],
 					),
 					'class' => $attributes['field_class'],
-					'data'  => array(),
+					'data'  => $container_data,
 					'id'    => implode( '', array_slice( $attributes['field_id'], 0 ) ),
 				),
 				'label'       => array(
@@ -578,11 +630,9 @@ class EVF_Shortcode_Form {
 	/**
 	 * Output the shortcode.
 	 *
-	 * @param array $atts
+	 * @param array $atts Attributes.
 	 */
 	public static function output( $atts ) {
-		global $wp;
-
 		wp_enqueue_script( 'everest-forms' );
 
 		// Load jQuery flatpickr libraries. https://github.com/flatpickr/flatpickr.

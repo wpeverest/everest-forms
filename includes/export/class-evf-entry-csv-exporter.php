@@ -28,6 +28,13 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 	public $form_id;
 
 	/**
+	 * Entry ID.
+	 *
+	 * @var int|mixed
+	 */
+	public $entry_id;
+
+	/**
 	 * Type of export used in filter names.
 	 *
 	 * @var string
@@ -37,10 +44,12 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 	/**
 	 * Constructor.
 	 *
-	 * @param int $form_id Form ID.
+	 * @param int $form_id  Form ID.
+	 * @param int $entry_id Entry ID.
 	 */
-	public function __construct( $form_id = '' ) {
+	public function __construct( $form_id = '', $entry_id = '' ) {
 		$this->form_id      = absint( $form_id );
+		$this->entry_id     = absint( $entry_id );
 		$this->column_names = $this->get_default_column_names();
 	}
 
@@ -83,23 +92,29 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 	/**
 	 * Prepare data for export.
 	 *
-	 * @since 1.3.0
+	 * @since 1.6.0
 	 */
 	public function prepare_data_to_export() {
-		$entry_ids = evf_search_entries(
-			array(
-				'limit'   => -1,
-				'order'   => 'ASC',
-				'form_id' => $this->form_id,
-			)
-		);
-
-		// Get the entries.
-		$entries        = array_map( 'evf_get_entry', $entry_ids );
 		$this->row_data = array();
 
-		foreach ( $entries as $entry ) {
+		if ( $this->entry_id ) {
+			$entry            = evf_get_entry( $this->entry_id );
 			$this->row_data[] = $this->generate_row_data( $entry );
+		} else {
+			$entry_ids = evf_search_entries(
+				array(
+					'limit'   => -1,
+					'order'   => 'ASC',
+					'form_id' => $this->form_id,
+				)
+			);
+
+			// Get the entries.
+			$entries = array_map( 'evf_get_entry', $entry_ids );
+
+			foreach ( $entries as $entry ) {
+				$this->row_data[] = $this->generate_row_data( $entry );
+			}
 		}
 
 		return $this->row_data;
