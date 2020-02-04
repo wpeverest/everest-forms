@@ -148,6 +148,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 == Changelog ==
 
 = 1.6.0 - 04-02-2020 =
+* Feature - Add support for form template.
 * Feature - Import Export of Everest Forms.
 * Feature - Required field message are made editable.
 * Enhancement - Improve choice field with image support.
