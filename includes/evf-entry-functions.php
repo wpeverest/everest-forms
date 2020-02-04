@@ -38,9 +38,9 @@ function evf_get_entry( $id, $with_fields = false ) {
 		}
 	}
 
-	if ( $with_fields && ! empty( $entry->fields ) ) {
-		$fields = evf_decode( $entry->fields );
+	$fields = evf_decode( $entry->fields );
 
+	if ( $with_fields && ! empty( $fields ) ) {
 		foreach ( $fields as $field ) {
 			if ( isset( $field['meta_key'], $field['value'] ) ) {
 				$entry->meta[ $field['meta_key'] ] = maybe_serialize( $field['value'] );
