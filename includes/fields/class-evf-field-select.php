@@ -1,6 +1,6 @@
 <?php
 /**
- * Select field.
+ * Select Dropdown field.
  *
  * @package EverestForms\Fields
  * @since   1.0.0
@@ -66,39 +66,16 @@ class EVF_Field_Select extends EVF_Form_Fields {
 	/**
 	 * Field preview inside the builder.
 	 *
-	 * @param array $field
+	 * @since 1.0.0
+	 *
+	 * @param array $field Field settings.
 	 */
 	public function field_preview( $field ) {
-		$values      = ! empty( $field['choices'] ) ? $field['choices'] : $this->defaults;
-		$placeholder = ! empty( $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : '';
-
 		// Label.
 		$this->field_preview_option( 'label', $field );
 
-		// Field select element.
-		echo '<select class="widefat" disabled>';
-
-		// Optional placeholder.
-		if ( ! empty( $placeholder ) ) {
-			printf( '<option value="" class="placeholder">%s</option>', $placeholder );
-		}
-
-		// Notify if currently empty.
-		if ( empty( $values ) ) {
-			$values = array(
-				'label' => __( '(empty)', 'everest-forms' ),
-			);
-		}
-
-		// Build the select options (even though user can only see 1st option).
-		foreach ( $values as $key => $value ) {
-			$default  = isset( $value['default'] ) ? $value['default'] : '';
-			$selected = ! empty( $placeholder ) ? '' : selected( '1', $default, false );
-
-			printf( '<option %s>%s</option>', $selected, $value['label'] );
-		}
-
-		echo '</select>';
+		// Choices.
+		$this->field_preview_option( 'choices', $field );
 
 		// Description.
 		$this->field_preview_option( 'description', $field );
@@ -202,4 +179,3 @@ class EVF_Field_Select extends EVF_Form_Fields {
 		EVF()->task->form_fields[ $field_id ] = $data;
 	}
 }
-

@@ -288,6 +288,7 @@ class EVF_Frontend_Scripts {
 					'i18n_messages_email'                  => get_option( 'everest_forms_email_validation' ),
 					'i18n_messages_email_suggestion'       => get_option( 'everest_forms_email_suggestion', esc_html__( 'Did you mean {suggestion}?', 'everest-forms' ) ),
 					'i18n_messages_email_suggestion_title' => esc_attr__( 'Click to accept this suggestion.', 'everest-forms' ),
+					'i18n_messages_check_limit'            => get_option( 'everest_forms_check_limit_validation', esc_html__( 'You have exceeded number of allowed selections: {#}.', 'everest-forms' ) ),
 					'i18n_messages_number'                 => get_option( 'everest_forms_number_validation' ),
 					'mailcheck_enabled'                    => (bool) apply_filters( 'everest_forms_mailcheck_enabled', true ),
 					'mailcheck_domains'                    => array_map( 'sanitize_text_field', (array) apply_filters( 'everest_forms_mailcheck_domains', array() ) ),

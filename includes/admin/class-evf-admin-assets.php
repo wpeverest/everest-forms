@@ -82,6 +82,18 @@ class EVF_Admin_Assets {
 		wp_register_script( 'evf-clipboard', EVF()->plugin_url() . '/assets/js/admin/evf-clipboard' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true );
 		wp_register_script( 'selectWoo', EVF()->plugin_url() . '/assets/js/selectWoo/selectWoo.full' . $suffix . '.js', array( 'jquery' ), '1.0.4', true );
 		wp_register_script( 'evf-enhanced-select', EVF()->plugin_url() . '/assets/js/admin/evf-enhanced-select' . $suffix . '.js', array( 'jquery', 'selectWoo' ), EVF_VERSION, true );
+		wp_register_script( 'evf-template-controller', EVF()->plugin_url() . '/assets/js/admin/form-template-controller' . $suffix . '.js', array( 'jquery' ), EVF_VERSION );
+		wp_localize_script(
+			'evf-template-controller',
+			'evf_templates',
+			array(
+				'evf_template_all'  => EVF_Admin_Forms::get_template_data(),
+				'i18n_get_started'  => esc_html__( 'Get Started', 'everest-forms' ),
+				'i18n_get_preview'  => esc_html__( 'Preview', 'everest-forms' ),
+				'i18n_pro_feature'  => esc_html__( 'Pro', 'everest-forms' ),
+				'template_refresh'  => esc_html__( 'Updating Templates', 'everest-forms' ),
+			)
+		);
 		wp_localize_script(
 			'evf-enhanced-select',
 			'evf_enhanced_select_params',
@@ -115,6 +127,10 @@ class EVF_Admin_Assets {
 					'form_id'                      => isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0, // phpcs:ignore WordPress.Security.NonceVerification
 					'field'                        => esc_html__( 'field', 'everest-forms' ),
 					'i18n_ok'                      => esc_html__( 'OK', 'everest-forms' ),
+					'i18n_installing'              => esc_html__( 'Installing', 'everest-forms' ),
+					'i18n_activating'              => esc_html__( 'Activating', 'everest-forms' ),
+					'i18n_install_activate'        => esc_html__( 'Install & Activate', 'everest-forms' ),
+					'i18n_install_only'        	   => esc_html__( 'Activate Plugins', 'everest-forms' ),
 					'i18n_copy'                    => esc_html__( '(copy)', 'everest-forms' ),
 					'i18n_close'                   => esc_html__( 'Close', 'everest-forms' ),
 					'i18n_cancel'                  => esc_html__( 'Cancel', 'everest-forms' ),
@@ -127,6 +143,9 @@ class EVF_Admin_Assets {
 					'i18n_delete_field_confirm'    => esc_html__( 'Are you sure you want to delete this field?', 'everest-forms' ),
 					'i18n_duplicate_field_confirm' => esc_html__( 'Are you sure you want to duplicate this field?', 'everest-forms' ),
 					'i18n_email_disable_message'   => esc_html__( 'Turn on Email settings to manage your email notifications.', 'everest-forms' ),
+					'i18n_upload_image_title'      => esc_html__( 'Choose an image', 'everest-forms' ),
+					'i18n_upload_image_button'     => esc_html__( 'Use Image', 'everest-forms' ),
+					'i18n_upload_image_remove'     => esc_html__( 'Remove Image', 'everest-forms' ),
 					'i18n_field_title_empty'       => esc_html__( 'Empty Form Name', 'everest-forms' ),
 					'i18n_field_title_payload'     => esc_html__( 'Form name can\'t be empty.', 'everest-forms' ),
 					'email_fields'                 => evf_get_all_email_fields_by_form_id( isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0 ), // phpcs:ignore WordPress.Security.NonceVerification
@@ -198,14 +217,24 @@ class EVF_Admin_Assets {
 
 			// EverestForms builder setup page.
 			if ( isset( $_GET['create-form'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-				wp_register_script( 'evf-setup', EVF()->plugin_url() . '/assets/js/admin/evf-setup' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true );
+				wp_register_script( 'evf-setup', EVF()->plugin_url() . '/assets/js/admin/evf-setup' . $suffix . '.js', array( 'jquery', 'everest-forms-extensions', 'evf-template-controller' ), EVF_VERSION );
 				wp_enqueue_script( 'evf-setup' );
 				wp_localize_script(
 					'evf-setup',
 					'evf_setup_params',
 					array(
-						'ajax_url'          => admin_url( 'admin-ajax.php' ),
-						'create_form_nonce' => wp_create_nonce( 'everest_forms_create_form' ),
+						'ajax_url'                     => admin_url( 'admin-ajax.php' ),
+						'create_form_nonce'            => wp_create_nonce( 'everest_forms_create_form' ),
+						'template_licence_check_nonce' => wp_create_nonce( 'everest_forms_template_licence_check' ),
+						'i18n_form_name'               => esc_html__( 'Give it a name.', 'everest-forms' ),
+						'i18n_form_error_name'         => esc_html__( 'You must provide a Form name', 'everest-forms' ),
+						'upgrade_url'                  => apply_filters( 'everest_forms_upgrade_url', 'https://wpeverest.com/wordpress-plugins/everest-forms/?utm_source=user-dashboard&utm_medium=modal-button&utm_campaign=free-version' ),
+						'upgrade_button'               => esc_html__( 'Upgrade Plan', 'everest-forms' ),
+						'upgrade_message'              => esc_html__( 'This template requires premium addons. Please upgrade to the Premium plan to unlock all these awesome Templates.', 'everest-forms' ),
+						'upgrade_title'                => esc_html__( 'is a Premium Template', 'everest-forms' ),
+						'i18n_form_ok'                 => esc_html__( 'Continue', 'everest-forms' ),
+						'i18n_form_placeholder'        => esc_html__( 'Untitled Form', 'everest-forms' ),
+						'i18n_form_title'              => esc_html__( 'Uplift your form experience to the next level.', 'everest-forms' ),
 					)
 				);
 			}

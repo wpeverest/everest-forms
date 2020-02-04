@@ -12,14 +12,23 @@ defined( 'ABSPATH' ) || exit;
  * Get entry.
  *
  * @param  int|EVF_Entry $id Entry ID or object.
+ * @param  bool          $with_fields True if empty data should be present.
  * @return EVF_Entry|null
  */
-function evf_get_entry( $id ) {
+function evf_get_entry( $id, $with_fields = false ) {
 	global $wpdb;
 
 	$entry = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}evf_entries WHERE entry_id = %d LIMIT 1;", $id ) ); // WPCS: cache ok, DB call ok.
 
-	if ( apply_filters( 'everest_forms_get_entry_metadata', true ) ) {
+	if ( $with_fields && ! empty( $entry->fields ) ) {
+		$fields = evf_decode( $entry->fields );
+
+		foreach ( $fields as $field ) {
+			if ( isset( $field['meta_key'], $field['value'] ) ) {
+				$entry->meta[ $field['meta_key'] ] = maybe_serialize( $field['value'] );
+			}
+		}
+	} elseif ( apply_filters( 'everest_forms_get_entry_metadata', true ) ) {
 		$results     = $wpdb->get_results( $wpdb->prepare( "SELECT meta_key,meta_value FROM {$wpdb->prefix}evf_entrymeta WHERE entry_id = %d", $id ), ARRAY_A );
 		$entry->meta = wp_list_pluck( $results, 'meta_value', 'meta_key' );
 	}
@@ -50,8 +59,8 @@ function evf_get_entry_statuses() {
 	return apply_filters(
 		'everest_forms_entry_statuses',
 		array(
-			'publish' => __( 'Published', 'everest-forms' ),
-			'trash'   => __( 'Trash', 'everest-forms' ),
+			'publish' => esc_html__( 'Published', 'everest-forms' ),
+			'trash'   => esc_html__( 'Trash', 'everest-forms' ),
 		)
 	);
 }
@@ -75,9 +84,6 @@ function evf_search_entries( $args ) {
 		)
 	);
 
-	$statuses     = evf_get_entry_statuses();
-	$valid_fields = array( 'date', 'form_id', 'title', 'status' );
-
 	// Check if form ID is valid for entries.
 	if ( ! array_key_exists( $args['form_id'], evf_get_all_forms() ) ) {
 		return array();
@@ -96,13 +102,20 @@ function evf_search_entries( $args ) {
 	}
 
 	if ( ! empty( $args['status'] ) ) {
-		$query[] = $wpdb->prepare( 'AND `status` = %s', isset( $statuses[ $args['status'] ] ) ? $args['status'] : 'publish' );
+		$query[] = $wpdb->prepare( 'AND `status` = %s', 'trash' === $args['status'] ? 'trash' : 'publish' );
+
+		if ( 'unread' === $args['status'] ) {
+			$query[] = esc_sql( 'AND `viewed` = 0' );
+		} elseif ( 'starred' === $args['status'] ) {
+			$query[] = esc_sql( 'AND `starred` = 1' );
+		}
 	}
 
-	$orderby     = in_array( $args['orderby'], $valid_fields, true ) ? $args['orderby'] : 'entry_id';
-	$order       = 'DESC' === strtoupper( $args['order'] ) ? 'DESC' : 'ASC';
-	$orderby_sql = sanitize_sql_orderby( "{$orderby} {$order}" );
-	$query[]     = "ORDER BY {$orderby_sql}";
+	$valid_fields = array( 'date', 'form_id', 'title', 'status' );
+	$orderby      = in_array( $args['orderby'], $valid_fields, true ) ? $args['orderby'] : 'entry_id';
+	$order        = 'DESC' === strtoupper( $args['order'] ) ? 'DESC' : 'ASC';
+	$orderby_sql  = sanitize_sql_orderby( "{$orderby} {$order}" );
+	$query[]      = "ORDER BY {$orderby_sql}";
 
 	if ( -1 < $args['limit'] ) {
 		$query[] = $wpdb->prepare( 'LIMIT %d', absint( $args['limit'] ) );
