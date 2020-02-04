@@ -130,6 +130,11 @@ jQuery( function ( $ ) {
 				return false;
 			}
 
+			// Validate confirmations.
+			$.validator.addMethod( 'confirm', function( value, element, param ) {
+				return $.validator.methods.equalTo.call( this, value, element, param );
+			}, everest_forms_params.i18n_messages_confirm );
+
 			// Prepend URL field contents with http:// if user input doesn't contain a schema.
 			$( '.evf-field-url input[type=url]' ).change( function () {
 				var url = $( this ).val();
@@ -198,9 +203,14 @@ jQuery( function ( $ ) {
 
 						// For when the confirm is enabled.
 						key = 'everest_forms[form_fields][' + field_id + '][primary]';
-						error_messages[ key ] = error_message;
+						error_messages[ key ] = {
+							required: error_message, // Set message using 'required' key to avoid conflicts with other validations.
+						};
 						key = 'everest_forms[form_fields][' + field_id + '][secondary]';
-						error_messages[ key ] = error_message;
+						error_messages[ key ] = {
+							required: error_message, // Set message using 'required' key to avoid conflicts with other validations.
+						};
+						error_message = null;
 					} else if ( $( this ).is( '.evf-field-address' ) ) {
 						var sub_field_error_messages = {
 							'address1': $( this ).data( 'required-field-message-address1' ),
@@ -243,7 +253,9 @@ jQuery( function ( $ ) {
 					 * should indicate that the message has already been set).
 					 */
 					if ( error_message ) {
-						error_messages[ key ] = error_message;
+						error_messages[ key ] = {
+							required: error_message, // Set message using 'required' key to avoid conflicts with other validations.
+						};
 					}
 				});
 
