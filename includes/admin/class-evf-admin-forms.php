@@ -43,9 +43,106 @@ class EVF_Admin_Forms {
 
 			include 'views/html-admin-page-builder.php';
 		} elseif ( isset( $_GET['create-form'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			$templates   = array();
+			$refresh_url = add_query_arg(
+				array(
+					'page'             => 'evf-builder&create-form=1',
+					'action'           => 'evf-template-refresh',
+					'evf-template-nonce' => wp_create_nonce( 'refresh' ),
+				),
+				admin_url( 'admin.php' )
+			);
+			$license_plan    = evf_get_license_plan();
+			$current_section = isset( $_GET['section'] ) ? sanitize_text_field( $_GET['section'] ) : '_all';
+
+			if ( '_featured' !== $current_section ) {
+				$category = isset( $_GET['section'] ) ? $_GET['section'] : 'free';
+				$templates   = self::get_template_data( $category );
+			}
+
+			/**
+			 * Addon page view.
+			 *
+			 * @uses $templates
+			 * @uses $refresh_url
+			 * @uses $current_section
+			 */
 			include 'views/html-admin-page-builder-setup.php';
 		} else {
 			self::table_list_output();
+		}
+	}
+
+	/**
+	 * Get sections for the addons screen.
+	 *
+	 * @return array of objects
+	 */
+	public static function get_sections() {
+		$template_sections = get_transient( 'evf_template_sections' );
+
+		if ( false === $template_sections ) {
+			$raw_sections = wp_safe_remote_get( 'https://raw.githubusercontent.com/wpeverest/extensions-json/master/everest-forms/templates/template-sections.json' );
+
+			if ( ! is_wp_error( $raw_sections ) ) {
+				$template_sections = json_decode( wp_remote_retrieve_body( $raw_sections ) );
+
+				if ( $template_sections ) {
+					set_transient( 'evf_template_sections', $template_sections, WEEK_IN_SECONDS );
+				}
+			}
+		}
+
+		return apply_filters( 'everest_forms_template_sections', $template_sections );
+	}
+
+	/**
+	 * Get section content for the template screen.
+	 *
+	 * @param  string $category
+	 * @param  string $term
+	 * @return array
+	 */
+	public static function get_template_data() {
+		$template_data = get_transient( 'evf_template_section' );
+
+		if ( false === $template_data ) {
+			$raw_templates = wp_safe_remote_get( 'https://raw.githubusercontent.com/wpeverest/extensions-json/master/everest-forms/templates/all_templates.json' );
+
+			if ( ! is_wp_error( $raw_templates ) ) {
+				$template_data = json_decode( wp_remote_retrieve_body( $raw_templates ) );
+
+				// Removing directory so the templates can be reinitialized
+				$folder_path = untrailingslashit( plugin_dir_path( EVF_PLUGIN_FILE ) . '/assets/images/templates' );
+
+				foreach ( $template_data->templates as $templateTuple ) {
+					// We retrieve the image, then use them instead of the remote server.
+					$image = wp_remote_get( $templateTuple->image );
+					$type  = wp_remote_retrieve_header( $image, 'content-type' );
+
+					// Remote file check failed, we'll fallback to remote image.
+					if ( ! $type ) {
+						continue;
+					}
+
+					$temp_name     = explode( '/', $templateTuple->image );
+					$relative_path = $folder_path . '/' . end( $temp_name );
+					$exists = file_exists( $relative_path );
+
+					// If it exists, utilize this file instead of remote file.
+					if ( $exists ) {
+						$templateTuple->image = plugin_dir_url( EVF_PLUGIN_FILE ) . 'assets/images/templates/' . end( $temp_name );
+					}
+				}
+
+				if ( ! empty( $template_data->templates ) ) {
+					set_transient( 'evf_template_section', $template_data, WEEK_IN_SECONDS );
+				}
+			}
+		}
+
+		if ( ! empty( $template_data->templates ) ) {
+			return apply_filters( 'everest_forms_template_section_data', $template_data->templates );
 		}
 	}
 

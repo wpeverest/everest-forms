@@ -184,7 +184,7 @@ abstract class EVF_Admin_Form_Panel {
 	/**
 	 * Outputs the panel's primary content.
 	 *
-	 * @since      1.0.0
+	 * @since 1.0.0
 	 */
 	public function panel_content() {}
 }
