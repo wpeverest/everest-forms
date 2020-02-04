@@ -140,7 +140,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 */
 	public function single_row( $entry ) {
 		if ( empty( $_GET['status'] ) || ( isset( $_GET['status'] ) && 'trash' !== $_GET['status'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-			echo '<tr class="' . ( '1' !== $entry->viewed ? 'unread' : 'read' ) . '">';
+			echo '<tr class="' . ( $entry->viewed ? 'read' : 'unread' ) . '">';
 			$this->single_row_columns( $entry );
 			echo '</tr>';
 		} else {
