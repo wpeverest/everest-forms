@@ -199,7 +199,9 @@ jQuery( function ( $ ) {
 					} else if ( $( this ).is( '.evf-field-email' ) || $( this ).is( '.evf-field-password' ) ) {
 						// For when the confirm is disabled.
 						key = 'everest_forms[form_fields][' + field_id + ']';
-						error_messages[ key ] = error_message;
+						error_messages[ key ] = {
+							required: error_message, // Set message using 'required' key to avoid conflicts with other validations.
+						};
 
 						// For when the confirm is enabled.
 						key = 'everest_forms[form_fields][' + field_id + '][primary]';
@@ -226,7 +228,9 @@ jQuery( function ( $ ) {
 								error_message = sub_field_error_messages[ sub_field_types[i] ];
 
 							key                   = 'everest_forms[form_fields][' + field_id + '][' + sub_field_type + ']';
-							error_messages[ key ] = error_message;
+							error_messages[ key ] = {
+								required: error_message, // Set message using 'required' key to avoid conflicts with other validations.
+							};
 						}
 						error_message = null;
 					} else if ( $( this ).is( '.evf-field-likert' ) ) {
@@ -239,11 +243,12 @@ jQuery( function ( $ ) {
 								sub_field_error_messages[ row_key ] = $( this ).data( 'required-field-message-' + row_key );
 							}
 						}
-						for ( var i = 0; i < sub_field_error_messages.length; i++ ) {
-							var error_message = sub_field_error_messages[ i ];
-
-							key                   = 'everest_forms[form_fields][' + field_id + '][' + i + ']';
-							error_messages[ key ] = error_message;
+						for ( var i = 0; i < row_keys.length; i++ ) {
+							error_message         = sub_field_error_messages[ row_keys[i] ];
+							key                   = 'everest_forms[form_fields][' + field_id + '][' + row_keys[i] + ']';
+							error_messages[ key ] = {
+								required: error_message, // Set message using 'required' key to avoid conflicts with other validations.
+							};
 						}
 						error_message = null;
 					}
