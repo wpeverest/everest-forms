@@ -132,6 +132,23 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	}
 
 	/**
+	 * Generates content for a single row of the table.
+	 *
+	 * @since 1.6.0
+	 *
+	 * @param object $entry Entry data.
+	 */
+	public function single_row( $entry ) {
+		if ( empty( $_GET['status'] ) || ( isset( $_GET['status'] ) && 'trash' !== $_GET['status'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			echo '<tr class="' . ( '1' !== $entry->viewed ? 'unread' : 'read' ) . '">';
+			$this->single_row_columns( $entry );
+			echo '</tr>';
+		} else {
+			parent::single_row( $entry );
+		}
+	}
+
+	/**
 	 * Get the list of fields, that are disallowed to be displayed as column in a table.
 	 *
 	 * @return array
@@ -333,15 +350,15 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 
 		if ( isset( $statuses[ $status_name ] ) ) {
 			return array(
-				'singular' => sprintf( '%s <span class="count">(%s)</span>', esc_html( $statuses[ $status_name ] ), $amount ),
-				'plural'   => sprintf( '%s <span class="count">(%s)</span>', esc_html( $statuses[ $status_name ] ), $amount ),
+				'singular' => sprintf( '%s <span class="count">(<span class="%s-count">%s</span>)</span>', esc_html( $statuses[ $status_name ] ), $status_name, $amount ),
+				'plural'   => sprintf( '%s <span class="count">(<span class="%s-count">%s</span>)</span>', esc_html( $statuses[ $status_name ] ), $status_name, $amount ),
 				'context'  => '',
 				'domain'   => 'everest-forms',
 			);
 		}
 
 		return array(
-			'singular' => sprintf( '%s <span class="count">(%s)</span>', esc_html( $status_name ), $amount ),
+			'singular' => sprintf( '%s <span class="count">(<span class="%s-count">%s</span>)</span>', esc_html( $statuses[ $status_name ] ), $status_name, $amount ),
 			'plural'   => sprintf( '%s <span class="count">(%s)</span>', esc_html( $status_name ), $amount ),
 			'context'  => '',
 			'domain'   => 'everest-forms',
@@ -356,7 +373,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	protected function get_views() {
 		$status_links  = array();
 		$num_entries   = evf_get_count_entries_by_status( $this->form_id );
-		$total_entries = array_sum( (array) $num_entries ) - $num_entries['trash'];
+		$total_entries = (int) $num_entries['publish'];
 		$statuses      = array_keys( evf_get_entry_statuses() );
 		$class         = empty( $_REQUEST['status'] ) ? ' class="current"' : ''; // WPCS: input var okay. CSRF ok.
 
@@ -366,7 +383,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		foreach ( $statuses as $status_name ) {
 			$class = '';
 
-			if ( empty( $num_entries[ $status_name ] ) || 'publish' === $status_name ) {
+			if ( 'publish' === $status_name ) {
 				continue;
 			}
 
@@ -389,15 +406,17 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 */
 	protected function get_bulk_actions() {
 		if ( isset( $_GET['status'] ) && 'trash' === $_GET['status'] ) { // phpcs:ignore WordPress.Security.NonceVerification
-			return array(
+			$actions = array(
 				'untrash' => __( 'Restore', 'everest-forms' ),
 				'delete'  => __( 'Delete Permanently', 'everest-forms' ),
 			);
+		} else {
+			$actions = array(
+				'trash' => __( 'Move to Trash', 'everest-forms' ),
+			);
 		}
 
-		return array(
-			'trash' => __( 'Move to Trash', 'everest-forms' ),
-		);
+		return apply_filters( 'everest_forms_entry_bulk_actions', $actions );
 	}
 
 	/**
@@ -426,6 +445,38 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 			}
 
 			switch ( $doaction ) {
+				case 'star':
+				case 'unstar':
+					foreach ( $entry_ids as $entry_id ) {
+						if ( EVF_Admin_Entries::update_status( $entry_id, $doaction ) ) {
+							$count ++;
+						}
+					}
+
+					add_settings_error(
+						'bulk_action',
+						'bulk_action',
+						/* translators: %d: number of entries, %s: entries status */
+						sprintf( _n( '%d entry successfully %s.', '%d entries successfully %s.', $count, 'everest-forms-pro' ), $count, 'star' === $doaction ? 'starred' : 'unstarred' ),
+						'updated'
+					);
+					break;
+				case 'read':
+				case 'unread':
+					foreach ( $entry_ids as $entry_id ) {
+						if ( EVF_Admin_Entries::update_status( $entry_id, $doaction ) ) {
+							$count ++;
+						}
+					}
+
+					add_settings_error(
+						'bulk_action',
+						'bulk_action',
+						/* translators: %d: number of entries, %s: entries status */
+						sprintf( _n( '%d entry successfully marked as %s.', '%d entries successfully marked as %s.', $count, 'everest-forms-pro' ), $count, $doaction ),
+						'updated'
+					);
+					break;
 				case 'trash':
 					foreach ( $entry_ids as $entry_id ) {
 						if ( EVF_Admin_Entries::update_status( $entry_id, 'trash' ) ) {

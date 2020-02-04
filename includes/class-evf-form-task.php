@@ -508,6 +508,7 @@ class EVF_Form_Task {
 			'user_ip_address' => sanitize_text_field( $user_ip ),
 			'status'          => 'publish',
 			'referer'         => $referer,
+			'fields'          => wp_json_encode( $fields ),
 			'date_created'    => current_time( 'mysql', true ),
 		);
 
@@ -531,6 +532,11 @@ class EVF_Form_Task {
 
 				// Add only whitelisted fields to entry meta.
 				if ( in_array( $field['type'], array( 'html', 'title' ), true ) ) {
+					continue;
+				}
+
+				// If empty file is supplied, do store their data nor send email.
+				if ( in_array( $field['type'], array( 'image-upload', 'file-upload' ), true ) && '' === $field['value']['file_url'] ) {
 					continue;
 				}
 

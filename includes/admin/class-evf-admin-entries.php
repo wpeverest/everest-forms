@@ -37,10 +37,6 @@ class EVF_Admin_Entries {
 		if ( apply_filters( 'everest_forms_entries_list_actions', false ) ) {
 			do_action( 'everest_forms_entries_list_actions_execute' );
 		} elseif ( isset( $_GET['view-entry'] ) ) {
-			$form_id  = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0; // WPCS: input var okay, CSRF ok.
-			$entry_id = isset( $_GET['view-entry'] ) ? absint( $_GET['view-entry'] ) : 0; // WPCS: input var okay, CSRF ok.
-			$entry    = evf_get_entry( $entry_id );
-
 			include 'views/html-admin-page-entries-view.php';
 		} else {
 			self::table_list_output();
@@ -314,13 +310,35 @@ class EVF_Admin_Entries {
 	public static function update_status( $entry_id, $status = 'publish' ) {
 		global $wpdb;
 
-		$update = $wpdb->update(
-			$wpdb->prefix . 'evf_entries',
-			array( 'status' => $status ),
-			array( 'entry_id' => $entry_id ),
-			array( '%s' ),
-			array( '%d' )
-		);
+		if ( in_array( $status, array( 'star', 'unstar' ), true ) ) {
+			$update = $wpdb->update(
+				$wpdb->prefix . 'evf_entries',
+				array(
+					'starred' => 'star' === $status ? 1 : 0
+				),
+				array( 'entry_id' => $entry_id ),
+				array( '%d' ),
+				array( '%d' )
+			);
+		} elseif ( in_array( $status, array( 'read', 'unread' ), true ) ) {
+			$update = $wpdb->update(
+				$wpdb->prefix . 'evf_entries',
+				array(
+					'viewed' => 'read' === $status ? 1 : 0
+				),
+				array( 'entry_id' => $entry_id ),
+				array( '%d' ),
+				array( '%d' )
+			);
+		} else {
+			$update = $wpdb->update(
+				$wpdb->prefix . 'evf_entries',
+				array( 'status' => $status ),
+				array( 'entry_id' => $entry_id ),
+				array( '%s' ),
+				array( '%d' )
+			);
+		}
 
 		return $update;
 	}
