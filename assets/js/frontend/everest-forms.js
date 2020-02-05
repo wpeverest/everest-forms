@@ -156,6 +156,11 @@ jQuery( function ( $ ) {
 				return this.optional( element ) || pattern.test( value );
 			};
 
+			// Validate confirmations.
+			$.validator.addMethod( 'confirm', function( value, element, param ) {
+				return $.validator.methods.equalTo.call( this, value, element, param );
+			}, everest_forms_params.i18n_messages_confirm );
+
 			// Validate checkbox choice limit.
 			$.validator.addMethod( 'check-limit', function( value, element ) {
 				var $ul         = $( element ).closest( 'ul' ),
@@ -194,13 +199,20 @@ jQuery( function ( $ ) {
 					} else if ( $( this ).is( '.evf-field-email' ) || $( this ).is( '.evf-field-password' ) ) {
 						// For when the confirm is disabled.
 						key = 'everest_forms[form_fields][' + field_id + ']';
-						error_messages[ key ] = error_message;
+						error_messages[ key ] = {
+							required: error_message, // Set message using 'required' key to avoid conflicts with other validations.
+						};
 
 						// For when the confirm is enabled.
 						key = 'everest_forms[form_fields][' + field_id + '][primary]';
-						error_messages[ key ] = error_message;
+						error_messages[ key ] = {
+							required: error_message, // Set message using 'required' key to avoid conflicts with other validations.
+						};
 						key = 'everest_forms[form_fields][' + field_id + '][secondary]';
-						error_messages[ key ] = error_message;
+						error_messages[ key ] = {
+							required: error_message, // Set message using 'required' key to avoid conflicts with other validations.
+						};
+						error_message = null;
 					} else if ( $( this ).is( '.evf-field-address' ) ) {
 						var sub_field_error_messages = {
 							'address1': $( this ).data( 'required-field-message-address1' ),
@@ -216,7 +228,9 @@ jQuery( function ( $ ) {
 								error_message = sub_field_error_messages[ sub_field_types[i] ];
 
 							key                   = 'everest_forms[form_fields][' + field_id + '][' + sub_field_type + ']';
-							error_messages[ key ] = error_message;
+							error_messages[ key ] = {
+								required: error_message, // Set message using 'required' key to avoid conflicts with other validations.
+							};
 						}
 						error_message = null;
 					} else if ( $( this ).is( '.evf-field-likert' ) ) {
@@ -229,11 +243,12 @@ jQuery( function ( $ ) {
 								sub_field_error_messages[ row_key ] = $( this ).data( 'required-field-message-' + row_key );
 							}
 						}
-						for ( var i = 0; i < sub_field_error_messages.length; i++ ) {
-							var error_message = sub_field_error_messages[ i ];
-
-							key                   = 'everest_forms[form_fields][' + field_id + '][' + i + ']';
-							error_messages[ key ] = error_message;
+						for ( var i = 0; i < row_keys.length; i++ ) {
+							error_message         = sub_field_error_messages[ row_keys[i] ];
+							key                   = 'everest_forms[form_fields][' + field_id + '][' + row_keys[i] + ']';
+							error_messages[ key ] = {
+								required: error_message, // Set message using 'required' key to avoid conflicts with other validations.
+							};
 						}
 						error_message = null;
 					}
@@ -243,7 +258,9 @@ jQuery( function ( $ ) {
 					 * should indicate that the message has already been set).
 					 */
 					if ( error_message ) {
-						error_messages[ key ] = error_message;
+						error_messages[ key ] = {
+							required: error_message, // Set message using 'required' key to avoid conflicts with other validations.
+						};
 					}
 				});
 
@@ -305,10 +322,42 @@ jQuery( function ( $ ) {
 						if ( processText ) {
 							$submit.text( processText ).prop( 'disabled', true );
 						}
-						if ( 1 === $($(this)[0].currentForm).data('ajax_submission') ) {
+
+						if ( 1 === $( $(this)[0].currentForm ).data( 'ajax_submission' ) ) {
 							return;
+						} else if ( element.name in this.submitted || element.name in this.invalid ) {
+							this.element( element );
+						}
+					},
+					onfocusout: function( element ) {
+						// This code is copied from JQuery Validate 'onfocusout' method with only one change: 'everest-forms-novalidate-onkeyup' class check.
+						var validate = false;
+
+						// Empty value error handling for elements with onkeyup validation disabled.
+						if ( $( element ).hasClass( 'everest-forms-novalidate-onkeyup' ) && ! element.value ) {
+							validate = true;
+						}
+
+						if ( ! this.checkable( element ) && ( element.name in this.submitted || ! this.optional( element ) ) ) {
+							validate = true;
+						}
+
+						if ( validate ) {
+							this.element( element );
+						}
+					},
+					onclick: function( element ) {
+						var validate = false;
+
+						if ( 'checkbox' === ( element || {} ).type ) {
+							$( element ).closest( '.evf-field-checkbox' ).find( 'label.evf-error' ).remove();
+							validate = true;
 						} else {
-							form.submit();
+							$( element ).valid();
+						}
+
+						if ( validate ) {
+							this.element( element );
 						}
 					}
 				});

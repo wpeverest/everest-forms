@@ -79,6 +79,15 @@ class EVF_Settings_Validation extends EVF_Settings_Page {
 					'default'  => esc_html__( 'Did you mean {suggestion}?', 'everest-forms' ),
 				),
 				array(
+					'title'    => esc_html__( 'Confirm Value', 'everest-forms' ),
+					'desc'     => esc_html__( 'Enter the message for confirm field value.', 'everest-forms' ),
+					'id'       => 'everest_forms_confirm_validation',
+					'type'     => 'text',
+					'desc_tip' => true,
+					'css'      => 'min-width: 350px;',
+					'default'  => esc_html__( 'Field values do not match.', 'everest-forms' ),
+				),
+				array(
 					'title'    => esc_html__( 'Checkbox Selection Limit', 'everest-forms' ),
 					'desc'     => esc_html__( 'Enter the message for the checkbox selection limit.', 'everest-forms' ),
 					'id'       => 'everest_forms_check_limit_validation',

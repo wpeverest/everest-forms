@@ -1116,6 +1116,7 @@
 										$( '.everest-forms-add-fields' ).show();
 										EVFPanelBuilder.conditionalLogicRemoveField(removed_el_id);
 										EVFPanelBuilder.conditionalLogicRemoveFieldIntegration(removed_el_id);
+										EVFPanelBuilder.paymentFieldRemoveFromQuantity(removed_el_id);
 									});
 								}
 							},
@@ -1547,6 +1548,7 @@
 					var field_preview = response.data.preview,
 						field_options = response.data.options,
 						form_field_id = response.data.form_field_id,
+						field_type = response.data.field.type,
 						dragged_el_id = $( field_preview ).attr( 'id' ),
 						dragged_field_id = $( field_preview ).attr( 'data-field-id' );
 
@@ -1585,6 +1587,8 @@
 					// Conditional logic append rules.
 					EVFPanelBuilder.conditionalLogicAppendField( dragged_el_id );
 					EVFPanelBuilder.conditionalLogicAppendFieldIntegration( dragged_el_id );
+					EVFPanelBuilder.paymentFieldAppendToQuantity( dragged_el_id );
+					EVFPanelBuilder.paymentFieldAppendToDropdown( dragged_field_id, field_type );
 		 		}
 		 	});
 		},
@@ -1650,6 +1654,35 @@
 			});
 		},
 
+		paymentFieldAppendToQuantity: function( id ) {
+			var dragged_el = $( '#' + id );
+
+			var fields = $( '.everest-forms-field-option-row-map_field select' );
+			var field_type = dragged_el.attr( 'data-field-type' );
+			var field_id = dragged_el.attr( 'data-field-id' );
+			var field_label = dragged_el.find( '.label-title .text ' ).text();
+
+			var el_to_append = '<option value="'+field_id+'">'+field_label+'</option>';
+			if( 'payment-single' === field_type || 'payment-multiple' === field_type || 'payment-checkbox' === field_type ) {
+				fields.append( el_to_append );
+			}
+		},
+
+		paymentFieldAppendToDropdown: function( dragged_field_id, field_type ){
+			if('payment-quantity' === field_type ) {
+				var match_fields = [ 'payment-checkbox', 'payment-multiple', 'payment-single' ],
+					qty_dropdown = $('#everest-forms-field-option-' + dragged_field_id + '-map_field');
+				match_fields.forEach(function(single_field){
+					$('.everest-forms-field-'+single_field).each(function(){
+						var id = $(this).attr('data-field-id'),
+							label = $(this).find( ".label-title .text" ).text();
+						var el_to_append = '<option value="'+id+'">'+label+'</option>';
+						qty_dropdown.append( el_to_append );
+					});
+				});
+			}
+		},
+
 		conditionalLogicAppendFieldIntegration: function( id ){
 			var dragged_el = $('#' + id);
 			var dragged_index = dragged_el.index();
@@ -1712,6 +1745,10 @@
 
 		conditionalLogicRemoveFieldIntegration: function( id ){
 			$( '.evf-provider-conditional .evf-conditional-field-select option[value = ' +id +' ]' ).remove();
+		},
+
+		paymentFieldRemoveFromQuantity: function( id ) {
+			$('.everest-forms-field-option-row-map_field select option[value = ' +id +' ]').remove();
 		},
 
 		bindFieldSettings: function () {

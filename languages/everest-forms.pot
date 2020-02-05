@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Everest Forms package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Everest Forms 1.5.10\n"
+"Project-Id-Version: Everest Forms 1.6.0\n"
 "Report-Msgid-Bugs-To: https://github.com/wpeverest/everest-forms/issues\n"
-"POT-Creation-Date: 2020-02-04 05:33:46+00:00\n"
+"POT-Creation-Date: 2020-02-04 18:02:09+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -26,215 +26,271 @@ msgstr ""
 msgid "Off"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:358
+#: includes/abstracts/class-evf-form-fields.php:361
 #: includes/evf-core-functions.php:1835
 msgid ""
 "Enter text for the form field label. This is recommended and can be hidden "
 "in the Advanced Settings."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:364
+#: includes/abstracts/class-evf-form-fields.php:367
 #: includes/evf-core-functions.php:1834
 msgid "Label"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:392
+#: includes/abstracts/class-evf-form-fields.php:397
 #: includes/evf-core-functions.php:1843
 msgid "Enter meta key to be stored in database."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:398
+#: includes/abstracts/class-evf-form-fields.php:403
 #: includes/evf-core-functions.php:1842
 msgid "Meta Key"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:427
+#: includes/abstracts/class-evf-form-fields.php:434
 #: includes/evf-core-functions.php:1852
 msgid "Enter text for the form field description."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:433
+#: includes/abstracts/class-evf-form-fields.php:440
 #: includes/evf-core-functions.php:1850
 msgid "Description"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:462
+#: includes/abstracts/class-evf-form-fields.php:471
 msgid ""
 "Check this option to mark the field required. A form will not submit unless "
 "all required fields are provided."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:469
+#: includes/abstracts/class-evf-form-fields.php:478
 #: includes/admin/settings/class-evf-settings-validation.php:46
 #: includes/evf-core-functions.php:1858
 #: includes/shortcodes/class-evf-shortcode-form.php:175
 msgid "Required"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:503
+#: includes/abstracts/class-evf-form-fields.php:514
 msgid "Enter a message to show for this row if it's required."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:515
+#: includes/abstracts/class-evf-form-fields.php:526
 msgid "Address Line 1"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:516
+#: includes/abstracts/class-evf-form-fields.php:527
 msgid "Enter a message to show for Address Line 1 if it's required."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:524
+#: includes/abstracts/class-evf-form-fields.php:535
 msgid "City"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:525
+#: includes/abstracts/class-evf-form-fields.php:536
 msgid "Enter a message to show for City if it's required."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:533
+#: includes/abstracts/class-evf-form-fields.php:544
 msgid "State / Province / Region"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:534
+#: includes/abstracts/class-evf-form-fields.php:545
 msgid "Enter a message to show for State/Province/Region if it's required."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:542
+#: includes/abstracts/class-evf-form-fields.php:553
 msgid "Zip / Postal Code"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:543
+#: includes/abstracts/class-evf-form-fields.php:554
 msgid "Enter a message to show for Zip/Postal Code if it's required."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:551
+#: includes/abstracts/class-evf-form-fields.php:562
 #: includes/fields/class-evf-field-country.php:20
 msgid "Country"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:552
+#: includes/abstracts/class-evf-form-fields.php:563
 msgid "Enter a message to show for Country if it's required."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:565
-#: includes/abstracts/class-evf-form-fields.php:610
+#: includes/abstracts/class-evf-form-fields.php:576
+#: includes/abstracts/class-evf-form-fields.php:621
 msgid "Enter a message to show for this field if it's required."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:616
+#: includes/abstracts/class-evf-form-fields.php:627
 msgid "Required Field Message"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:646
+#: includes/abstracts/class-evf-form-fields.php:657
 msgid "Enter code for the form field."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:652
+#: includes/abstracts/class-evf-form-fields.php:663
 msgid "Code"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:679
-#: includes/evf-core-functions.php:1867
-msgid "Add choices for the form field."
-msgstr ""
-
-#: includes/abstracts/class-evf-form-fields.php:692
+#: includes/abstracts/class-evf-form-fields.php:693
 #: includes/evf-core-functions.php:1866
 msgid "Choices"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:730
+#: includes/abstracts/class-evf-form-fields.php:711
+#: includes/evf-core-functions.php:1867
+msgid "Add choices for the form field."
+msgstr ""
+
+#: includes/abstracts/class-evf-form-fields.php:749
+msgid "Upload Image"
+msgstr ""
+
+#: includes/abstracts/class-evf-form-fields.php:756
+msgid "Remove"
+msgstr ""
+
+#: includes/abstracts/class-evf-form-fields.php:757
+msgid "Change image"
+msgstr ""
+
+#: includes/abstracts/class-evf-form-fields.php:783
+msgid ""
+"For best results, images should be square and at least 200 × 160 pixels or "
+"smaller."
+msgstr ""
+
+#: includes/abstracts/class-evf-form-fields.php:792
+msgid "Use image choices"
+msgstr ""
+
+#: includes/abstracts/class-evf-form-fields.php:793
+msgid "Check this option to enable using images with the choices."
+msgstr ""
+
+#: includes/abstracts/class-evf-form-fields.php:819
 msgid "Enter text for the default form field value."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:737
+#: includes/abstracts/class-evf-form-fields.php:826
 msgid "Default Value"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:777
+#: includes/abstracts/class-evf-form-fields.php:869
 msgid "Advanced Options"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:787
+#: includes/abstracts/class-evf-form-fields.php:881
 #: includes/evf-core-functions.php:1879
 msgid "Enter text for the form field placeholder."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:793
+#: includes/abstracts/class-evf-form-fields.php:887
 #: includes/evf-core-functions.php:1878
 msgid "Placeholder Text"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:821
+#: includes/abstracts/class-evf-form-fields.php:917
 msgid ""
 "Enter CSS class names for this field container. Multiple class names should "
 "be separated with spaces."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:829
+#: includes/abstracts/class-evf-form-fields.php:926
 #: includes/evf-core-functions.php:1886
 msgid "CSS Classes"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:858
+#: includes/abstracts/class-evf-form-fields.php:957
 #: includes/evf-core-functions.php:1896
 msgid "Check this option to hide the form field label."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:866
+#: includes/abstracts/class-evf-form-fields.php:966
 #: includes/evf-core-functions.php:1894
 msgid "Hide Label"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:885
+#: includes/abstracts/class-evf-form-fields.php:987
 #: includes/evf-core-functions.php:1904
 msgid "Check this option to hide the form field sub-label."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:893
+#: includes/abstracts/class-evf-form-fields.php:996
 #: includes/evf-core-functions.php:1902
 msgid "Hide Sub-Labels"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:994
+#: includes/abstracts/class-evf-form-fields.php:1017
+msgid "Select the column layout for displaying field choices."
+msgstr ""
+
+#: includes/abstracts/class-evf-form-fields.php:1019
+msgid "One Column"
+msgstr ""
+
+#: includes/abstracts/class-evf-form-fields.php:1020
+msgid "Two Columns"
+msgstr ""
+
+#: includes/abstracts/class-evf-form-fields.php:1021
+msgid "Three Columns"
+msgstr ""
+
+#: includes/abstracts/class-evf-form-fields.php:1022
+msgid "Inline"
+msgstr ""
+
+#: includes/abstracts/class-evf-form-fields.php:1031
+msgid "Layout"
+msgstr ""
+
+#: includes/abstracts/class-evf-form-fields.php:1132
+#: includes/class-evf-emails.php:439 includes/class-evf-emails.php:450
+#: includes/class-evf-emails.php:493
+msgid "(empty)"
+msgstr ""
+
+#: includes/abstracts/class-evf-form-fields.php:1237
 msgid "You do no have permission."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:999
+#: includes/abstracts/class-evf-form-fields.php:1242
 msgid "No form ID found"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:1004
+#: includes/abstracts/class-evf-form-fields.php:1247
 msgid "No field type found"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:1034
-#: includes/admin/builder/class-evf-builder-fields.php:314
+#: includes/abstracts/class-evf-form-fields.php:1276
+#: includes/admin/builder/class-evf-builder-fields.php:317
 msgid "Duplicate Field"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:1035
-#: includes/admin/builder/class-evf-builder-fields.php:315
+#: includes/abstracts/class-evf-form-fields.php:1277
+#: includes/admin/builder/class-evf-builder-fields.php:318
 msgid "Delete Field"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:1036
-#: includes/admin/builder/class-evf-builder-fields.php:316
+#: includes/abstracts/class-evf-form-fields.php:1278
+#: includes/admin/builder/class-evf-builder-fields.php:319
 #: includes/admin/builder/class-evf-builder-settings.php:25
 #: includes/admin/class-evf-admin-menus.php:165
-#: includes/class-evf-install.php:620
+#: includes/class-evf-install.php:635
 msgid "Settings"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:1154
+#: includes/abstracts/class-evf-form-fields.php:1394
 msgid "Please enter a valid url"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:1164
+#: includes/abstracts/class-evf-form-fields.php:1404
 msgid "Please enter a valid email address"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:1169
+#: includes/abstracts/class-evf-form-fields.php:1409
 msgid "Please enter a valid number"
 msgstr ""
 
@@ -328,7 +384,7 @@ msgid "Form disabled message"
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:163
-#: includes/shortcodes/class-evf-shortcode-form.php:686
+#: includes/shortcodes/class-evf-shortcode-form.php:695
 msgid "This form is disabled."
 msgstr ""
 
@@ -622,7 +678,7 @@ msgid "field"
 msgstr ""
 
 #: includes/admin/class-evf-admin-assets.php:129
-#: includes/admin/class-evf-admin-assets.php:185
+#: includes/admin/class-evf-admin-assets.php:188
 msgid "OK"
 msgstr ""
 
@@ -652,7 +708,7 @@ msgid "Close"
 msgstr ""
 
 #: includes/admin/class-evf-admin-assets.php:136
-#: includes/admin/class-evf-admin-assets.php:188
+#: includes/admin/class-evf-admin-assets.php:191
 #: includes/admin/class-evf-admin-editor.php:98
 msgid "Cancel"
 msgstr ""
@@ -690,101 +746,113 @@ msgid "Are you sure you want to duplicate this field?"
 msgstr ""
 
 #: includes/admin/class-evf-admin-assets.php:146
-msgid "Empty Form Name"
+msgid "Choose an image"
 msgstr ""
 
 #: includes/admin/class-evf-admin-assets.php:147
+msgid "Use Image"
+msgstr ""
+
+#: includes/admin/class-evf-admin-assets.php:148
+msgid "Remove Image"
+msgstr ""
+
+#: includes/admin/class-evf-admin-assets.php:149
+msgid "Empty Form Name"
+msgstr ""
+
+#: includes/admin/class-evf-admin-assets.php:150
 msgid "Form name can't be empty."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:161
+#: includes/admin/class-evf-admin-assets.php:164
 msgid "is a PRO Feature"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:162
+#: includes/admin/class-evf-admin-assets.php:165
 msgid ""
 "We're sorry, %name% is not available on your plan.<br>Please upgrade to the "
 "PRO plan to unlock all these awesome features."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:163
+#: includes/admin/class-evf-admin-assets.php:166
 msgid "Upgrade to PRO"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:165
+#: includes/admin/class-evf-admin-assets.php:168
 msgid "Please enable Stripe"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:166
+#: includes/admin/class-evf-admin-assets.php:169
 msgid "Enable Stripe Payment gateway in payments section to use this field."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:182
+#: includes/admin/class-evf-admin-assets.php:185
 msgid "Enter a Email nickname"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:183
+#: includes/admin/class-evf-admin-assets.php:186
 msgid "Eg: Support Email"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:184
+#: includes/admin/class-evf-admin-assets.php:187
 msgid "You must provide a Email nickname"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:191
+#: includes/admin/class-evf-admin-assets.php:194
 msgid "New Form Entry"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:201
+#: includes/admin/class-evf-admin-assets.php:204
 msgid ""
 "Please enter in meta key with alphanumeric characters, dashes and "
 "underscores."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:202
+#: includes/admin/class-evf-admin-assets.php:205
 msgid "Minimum value is greater than Maximum value."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:203
+#: includes/admin/class-evf-admin-assets.php:206
 msgid "Maximum value is smaller than Minimum value."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:204
+#: includes/admin/class-evf-admin-assets.php:207
 msgid "Please select a form which you want to export."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:226
+#: includes/admin/class-evf-admin-assets.php:229
 msgid "Give it a name."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:227
+#: includes/admin/class-evf-admin-assets.php:230
 msgid "You must provide a Form name"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:229
+#: includes/admin/class-evf-admin-assets.php:232
 #: includes/admin/views/html-admin-page-addons.php:110
 msgid "Upgrade Plan"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:230
+#: includes/admin/class-evf-admin-assets.php:233
 msgid ""
 "This template requires premium addons. Please upgrade to the Premium plan "
 "to unlock all these awesome Templates."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:231
+#: includes/admin/class-evf-admin-assets.php:234
 msgid "is a Premium Template"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:232
+#: includes/admin/class-evf-admin-assets.php:235
 msgid "Continue"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:233
+#: includes/admin/class-evf-admin-assets.php:236
 msgid "Untitled Form"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:234
+#: includes/admin/class-evf-admin-assets.php:237
 msgid "Uplift your form experience to the next level."
 msgstr ""
 
@@ -813,12 +881,12 @@ msgid ""
 msgstr ""
 
 #: includes/admin/class-evf-admin-entries-table-list.php:94
-#: includes/admin/class-evf-admin-entries.php:87
+#: includes/admin/class-evf-admin-entries.php:83
 msgid "Whoops, it appears you do not have any form entries yet."
 msgstr ""
 
 #: includes/admin/class-evf-admin-entries-table-list.php:106
-#: includes/export/class-evf-entry-csv-exporter.php:71
+#: includes/export/class-evf-entry-csv-exporter.php:80
 msgid "Date Created"
 msgstr ""
 
@@ -826,112 +894,126 @@ msgstr ""
 msgid "Actions"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:158
-#: includes/admin/class-evf-admin-entries-table-list.php:169
+#: includes/admin/class-evf-admin-entries-table-list.php:175
+#: includes/admin/class-evf-admin-entries-table-list.php:186
 msgid "Field"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:274
-#: includes/admin/views/html-admin-page-entries-view.php:170
+#: includes/admin/class-evf-admin-entries-table-list.php:294
+#: includes/admin/views/html-admin-page-entries-view.php:197
 #: includes/admin/views/html-admin-page-tools-logs.php:33
 msgid "View"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:276
+#: includes/admin/class-evf-admin-entries-table-list.php:296
 #. translators: %s: entry name
 msgid "Trash form entry"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:287
+#: includes/admin/class-evf-admin-entries-table-list.php:307
 #: includes/admin/class-evf-admin-forms-table-list.php:124
-#: includes/evf-entry-functions.php:54
+#: includes/evf-entry-functions.php:63
 msgid "Trash"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:291
+#: includes/admin/class-evf-admin-entries-table-list.php:311
 msgid "Restore form entry from trash"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:302
-#: includes/admin/class-evf-admin-entries-table-list.php:390
+#: includes/admin/class-evf-admin-entries-table-list.php:322
+#: includes/admin/class-evf-admin-entries-table-list.php:410
 #: includes/admin/class-evf-admin-forms-table-list.php:122
 #: includes/admin/class-evf-admin-forms-table-list.php:365
 msgid "Restore"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:303
+#: includes/admin/class-evf-admin-entries-table-list.php:323
 msgid "Delete form entry permanently"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:314
-#: includes/admin/class-evf-admin-entries-table-list.php:391
+#: includes/admin/class-evf-admin-entries-table-list.php:334
+#: includes/admin/class-evf-admin-entries-table-list.php:411
 msgid "Delete Permanently"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:396
+#: includes/admin/class-evf-admin-entries-table-list.php:415
 msgid "Move to Trash"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:437
+#: includes/admin/class-evf-admin-entries-table-list.php:460
+#. translators: %d: number of entries, %s: entries status
+msgid "%d entry successfully %s."
+msgid_plural "%d entries successfully %s."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/admin/class-evf-admin-entries-table-list.php:476
+#. translators: %d: number of entries, %s: entries status
+msgid "%d entry successfully marked as %s."
+msgid_plural "%d entries successfully marked as %s."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/admin/class-evf-admin-entries-table-list.php:491
 #. translators: %d: number of entries
 msgid "%d entry moved to the Trash."
 msgid_plural "%d entries moved to the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:452
+#: includes/admin/class-evf-admin-entries-table-list.php:506
 #. translators: %d: number of entries
 msgid "%d entry restored from the Trash."
 msgid_plural "%d entries restored from the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:467
-#: includes/admin/class-evf-admin-entries.php:261
+#: includes/admin/class-evf-admin-entries-table-list.php:521
+#: includes/admin/class-evf-admin-entries.php:257
 #. translators: %d: number of entries
 msgid "%d entry permanently deleted."
 msgid_plural "%d entries permanently deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:500
-#: includes/admin/class-evf-admin-entries.php:98
+#: includes/admin/class-evf-admin-entries-table-list.php:554
+#: includes/admin/class-evf-admin-entries.php:94
 msgid "Filter"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:504
+#: includes/admin/class-evf-admin-entries-table-list.php:558
 msgid "Export CSV"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:510
+#: includes/admin/class-evf-admin-entries-table-list.php:564
 #: includes/admin/class-evf-admin-forms-table-list.php:448
 msgid "Empty Trash"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:524
+#: includes/admin/class-evf-admin-entries-table-list.php:578
 msgid "Filter by form"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries.php:63
+#: includes/admin/class-evf-admin-entries.php:59
 #: includes/admin/class-evf-admin-forms-table-list.php:53
 #: includes/admin/class-evf-admin-forms-table-list.php:117
 #: includes/admin/class-evf-admin-menus.php:134
 msgid "Entries"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries.php:80
+#: includes/admin/class-evf-admin-entries.php:76
 msgid "Search Entries"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries.php:103
+#: includes/admin/class-evf-admin-entries.php:99
 msgid "Learn more about entries"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries.php:104
+#: includes/admin/class-evf-admin-entries.php:100
 msgid "Create your first form!"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries.php:348
+#: includes/admin/class-evf-admin-entries.php:366
 #. translators: %d - New form entries count.
 msgid "%d new entry since you last checked."
 msgid_plural "%d new entries since you last checked."
@@ -1000,8 +1082,7 @@ msgid "Y/m/d"
 msgstr ""
 
 #: includes/admin/class-evf-admin-forms-table-list.php:371
-#: includes/admin/views/html-admin-page-entries-view.php:187
-#: includes/admin/views/html-admin-page-entries-view.php:201
+#: includes/admin/views/html-admin-page-entries-view.php:214
 msgid "Move to trash"
 msgstr ""
 
@@ -1402,15 +1483,42 @@ msgid "Did you mean {suggestion}?"
 msgstr ""
 
 #: includes/admin/settings/class-evf-settings-validation.php:82
+msgid "Confirm Value"
+msgstr ""
+
+#: includes/admin/settings/class-evf-settings-validation.php:83
+msgid "Enter the message for confirm field value."
+msgstr ""
+
+#: includes/admin/settings/class-evf-settings-validation.php:88
+#: includes/class-evf-frontend-scripts.php:285
+msgid "Field values do not match."
+msgstr ""
+
+#: includes/admin/settings/class-evf-settings-validation.php:91
+msgid "Checkbox Selection Limit"
+msgstr ""
+
+#: includes/admin/settings/class-evf-settings-validation.php:92
+msgid "Enter the message for the checkbox selection limit."
+msgstr ""
+
+#: includes/admin/settings/class-evf-settings-validation.php:97
+#: includes/class-evf-frontend-scripts.php:286
+#: includes/fields/class-evf-field-checkbox.php:412
+msgid "You have exceeded number of allowed selections: {#}."
+msgstr ""
+
+#: includes/admin/settings/class-evf-settings-validation.php:100
 #: includes/fields/class-evf-field-number.php:20
 msgid "Number"
 msgstr ""
 
-#: includes/admin/settings/class-evf-settings-validation.php:83
+#: includes/admin/settings/class-evf-settings-validation.php:101
 msgid "Enter the message for the valid number"
 msgstr ""
 
-#: includes/admin/settings/class-evf-settings-validation.php:88
+#: includes/admin/settings/class-evf-settings-validation.php:106
 #: includes/fields/class-evf-field-number.php:283
 msgid "Please enter a valid number."
 msgstr ""
@@ -1443,7 +1551,7 @@ msgid "Add-ons list"
 msgstr ""
 
 #: includes/admin/views/html-admin-page-addons.php:74
-#: includes/admin/views/html-admin-page-entries-view.php:177
+#: includes/admin/views/html-admin-page-entries-view.php:204
 msgid "Status:"
 msgstr ""
 
@@ -1549,67 +1657,68 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:14
+#: includes/admin/views/html-admin-page-entries-view.php:27
 msgid "View Entry"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:15
+#: includes/admin/views/html-admin-page-entries-view.php:28
 msgid "Back to All Entries"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:24
-msgid "%1$s : Entry #%2$s"
+#: includes/admin/views/html-admin-page-entries-view.php:42
+#. translators: %s: Entry ID
+msgid "%1$s: Entry #%2$s"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:26
+#: includes/admin/views/html-admin-page-entries-view.php:47
 msgid "Show Empty Fields"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:26
+#: includes/admin/views/html-admin-page-entries-view.php:47
 msgid "Hide Empty Fields"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:37
+#: includes/admin/views/html-admin-page-entries-view.php:58
 msgid "This entry does not have any fields."
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:69
+#: includes/admin/views/html-admin-page-entries-view.php:90
 msgid "Field ID"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:104
+#: includes/admin/views/html-admin-page-entries-view.php:131
 msgid "Empty"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:122
+#: includes/admin/views/html-admin-page-entries-view.php:149
 msgid "Entry Details"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:128
+#: includes/admin/views/html-admin-page-entries-view.php:155
 msgid "Entry ID:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:134
+#: includes/admin/views/html-admin-page-entries-view.php:161
 msgid "Submitted:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:135
+#: includes/admin/views/html-admin-page-entries-view.php:162
 msgid "M j, Y @ g:ia"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:142
+#: includes/admin/views/html-admin-page-entries-view.php:169
 msgid "User:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:161
+#: includes/admin/views/html-admin-page-entries-view.php:188
 msgid "User IP:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:169
+#: includes/admin/views/html-admin-page-entries-view.php:196
 msgid "Referer Link:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:178
+#: includes/admin/views/html-admin-page-entries-view.php:205
 msgid "Completed"
 msgstr ""
 
@@ -1634,7 +1743,7 @@ msgid "You need to create a form before you can use form export."
 msgstr ""
 
 #: includes/admin/views/html-admin-page-export.php:29
-#: includes/admin/views/html-admin-page-tools.php:13
+#: includes/admin/views/html-admin-page-tools.php:15
 msgid "Export"
 msgstr ""
 
@@ -1671,11 +1780,11 @@ msgstr ""
 msgid "There are currently no logs to view."
 msgstr ""
 
-#: includes/admin/views/html-admin-page-tools.php:12
+#: includes/admin/views/html-admin-page-tools.php:14
 msgid "Import"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-tools.php:14
+#: includes/admin/views/html-admin-page-tools.php:16
 msgid "Logs"
 msgstr ""
 
@@ -1840,20 +1949,12 @@ msgid ""
 "reached"
 msgstr ""
 
-#: includes/class-evf-emails.php:439 includes/class-evf-emails.php:449
-#: includes/class-evf-emails.php:490
-#: includes/fields/class-evf-field-checkbox.php:140
-#: includes/fields/class-evf-field-radio.php:140
-#: includes/fields/class-evf-field-select.php:89
-msgid "(empty)"
-msgstr ""
-
-#: includes/class-evf-emails.php:464 includes/class-evf-emails.php:506
+#: includes/class-evf-emails.php:467 includes/class-evf-emails.php:509
 #. translators: %d - field ID.
 msgid "Field ID #%d"
 msgstr ""
 
-#: includes/class-evf-emails.php:518
+#: includes/class-evf-emails.php:521
 msgid "An empty form was submitted."
 msgstr ""
 
@@ -1934,11 +2035,11 @@ msgstr ""
 msgid "New %s Entry"
 msgstr ""
 
-#: includes/class-evf-form-task.php:514
+#: includes/class-evf-form-task.php:516
 msgid "No form ID was found."
 msgstr ""
 
-#: includes/class-evf-form-task.php:521
+#: includes/class-evf-form-task.php:523
 msgid "Could not create an entry"
 msgstr ""
 
@@ -1946,35 +2047,35 @@ msgstr ""
 msgid "Click to accept this suggestion."
 msgstr ""
 
-#: includes/class-evf-frontend-scripts.php:293
+#: includes/class-evf-frontend-scripts.php:295
 msgid "{count} of {limit} max characters."
 msgstr ""
 
-#: includes/class-evf-frontend-scripts.php:294
+#: includes/class-evf-frontend-scripts.php:296
 msgid "{count} of {limit} max words."
 msgstr ""
 
-#: includes/class-evf-install.php:298
+#: includes/class-evf-install.php:301
 msgid "Monthly"
 msgstr ""
 
-#: includes/class-evf-install.php:620
+#: includes/class-evf-install.php:635
 msgid "View Everest Forms Settings"
 msgstr ""
 
-#: includes/class-evf-install.php:636
+#: includes/class-evf-install.php:651
 msgid "View Everest Forms documentation"
 msgstr ""
 
-#: includes/class-evf-install.php:636
+#: includes/class-evf-install.php:651
 msgid "Docs"
 msgstr ""
 
-#: includes/class-evf-install.php:637
+#: includes/class-evf-install.php:652
 msgid "Visit free customer support"
 msgstr ""
 
-#: includes/class-evf-install.php:637
+#: includes/class-evf-install.php:652
 msgid "Free support"
 msgstr ""
 
@@ -2298,7 +2399,7 @@ msgid "Page ID"
 msgstr ""
 
 #: includes/class-evf-smart-tags.php:40
-#: includes/export/class-evf-entry-csv-exporter.php:77
+#: includes/export/class-evf-entry-csv-exporter.php:86
 msgid "User IP Address"
 msgstr ""
 
@@ -3359,14 +3460,14 @@ msgid "First Choice"
 msgstr ""
 
 #: includes/evf-core-functions.php:1872
-#: includes/fields/class-evf-field-checkbox.php:32
-#: includes/fields/class-evf-field-radio.php:32
+#: includes/fields/class-evf-field-checkbox.php:33
+#: includes/fields/class-evf-field-radio.php:33
 msgid "Second Choice"
 msgstr ""
 
 #: includes/evf-core-functions.php:1873
-#: includes/fields/class-evf-field-checkbox.php:37
-#: includes/fields/class-evf-field-radio.php:37
+#: includes/fields/class-evf-field-checkbox.php:39
+#: includes/fields/class-evf-field-radio.php:39
 msgid "Third Choice"
 msgstr ""
 
@@ -3376,7 +3477,7 @@ msgid ""
 "with spaces."
 msgstr ""
 
-#: includes/evf-entry-functions.php:53
+#: includes/evf-entry-functions.php:62
 msgid "Published"
 msgstr ""
 
@@ -3387,24 +3488,24 @@ msgstr ""
 msgid "This function should not be called before everest_forms_init."
 msgstr ""
 
-#: includes/export/class-evf-entry-csv-exporter.php:58
+#: includes/export/class-evf-entry-csv-exporter.php:67
 msgid "ID"
 msgstr ""
 
-#: includes/export/class-evf-entry-csv-exporter.php:70
+#: includes/export/class-evf-entry-csv-exporter.php:79
 msgid "Status"
 msgstr ""
 
-#: includes/export/class-evf-entry-csv-exporter.php:72
+#: includes/export/class-evf-entry-csv-exporter.php:81
 msgid "Date Created GMT"
 msgstr ""
 
-#: includes/export/class-evf-entry-csv-exporter.php:76
+#: includes/export/class-evf-entry-csv-exporter.php:85
 msgid "User Device"
 msgstr ""
 
-#: includes/export/class-evf-entry-csv-exporter.php:182
-#: includes/export/class-evf-entry-csv-exporter.php:199
+#: includes/export/class-evf-entry-csv-exporter.php:197
+#: includes/export/class-evf-entry-csv-exporter.php:214
 #. translators: 1: entry date 2: entry time
 msgid "%1$s %2$s"
 msgstr ""
@@ -3418,21 +3519,41 @@ msgstr ""
 msgid "Checkboxes"
 msgstr ""
 
-#: includes/fields/class-evf-field-checkbox.php:103
-#: includes/fields/class-evf-field-radio.php:103
+#: includes/fields/class-evf-field-checkbox.php:168
+msgid "Checked"
+msgstr ""
+
+#: includes/fields/class-evf-field-checkbox.php:171
+#. translators: %s - Choice Number.
+msgid "Choice %s"
+msgstr ""
+
+#: includes/fields/class-evf-field-checkbox.php:248
+#: includes/fields/class-evf-field-radio.php:212
+msgid "Randomize Choices"
+msgstr ""
+
+#: includes/fields/class-evf-field-checkbox.php:249
+#: includes/fields/class-evf-field-radio.php:213
+msgid "Check this option to randomize the order of the choices."
+msgstr ""
+
+#: includes/fields/class-evf-field-checkbox.php:269
+msgid "Choice Limit"
+msgstr ""
+
+#: includes/fields/class-evf-field-checkbox.php:270
+msgid "Check this option to limit the number of checkboxes a user can select."
+msgstr ""
+
+#: includes/fields/class-evf-field-checkbox.php:308
+#: includes/fields/class-evf-field-radio.php:237
 msgid "Show Values"
 msgstr ""
 
-#: includes/fields/class-evf-field-checkbox.php:104
-#: includes/fields/class-evf-field-radio.php:104
+#: includes/fields/class-evf-field-checkbox.php:309
+#: includes/fields/class-evf-field-radio.php:238
 msgid "Check this to manually set form field values."
-msgstr ""
-
-#: includes/fields/class-evf-field-checkbox.php:158
-#: includes/fields/class-evf-field-radio.php:158
-msgid ""
-"Showing the first 20 choices.<br> All %d choices will be displayed when "
-"viewing the form."
 msgstr ""
 
 #: includes/fields/class-evf-field-credit-card.php:20
@@ -3639,6 +3760,11 @@ msgstr ""
 msgid "Password"
 msgstr ""
 
+#: includes/fields/class-evf-field-payment-quantity.php:19
+#: includes/fields/class-evf-field-payment-total.php:20
+msgid "Total"
+msgstr ""
+
 #: includes/fields/class-evf-field-payment-radio.php:20
 #: includes/fields/class-evf-field-radio.php:20
 msgid "Multiple Choice"
@@ -3646,10 +3772,6 @@ msgstr ""
 
 #: includes/fields/class-evf-field-payment-single.php:20
 msgid "Single Item"
-msgstr ""
-
-#: includes/fields/class-evf-field-payment-total.php:20
-msgid "Total"
 msgstr ""
 
 #: includes/fields/class-evf-field-phone.php:20
@@ -3813,7 +3935,7 @@ msgctxt "enhanced select"
 msgid "Searching&hellip;"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:361
+#: includes/admin/class-evf-admin-entries-table-list.php:381
 #. translators: %s: count
 msgctxt "entries"
 msgid "All <span class=\"count\">(%s)</span>"

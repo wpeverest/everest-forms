@@ -82,7 +82,6 @@ class EVF_AJAX {
 	 */
 	public static function add_ajax_events() {
 		$ajax_events = array(
-			'ajax_form_submission'    => true,
 			'save_form'               => false,
 			'create_form'             => false,
 			'get_next_id'             => false,
@@ -97,6 +96,7 @@ class EVF_AJAX {
 			'import_form_action'      => false,
 			'template_licence_check'  => false,
 			'template_activate_addon' => false,
+			'ajax_form_submission'    => true,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -111,6 +111,9 @@ class EVF_AJAX {
 		}
 	}
 
+	/**
+	 * Ajax handler to get next form ID.
+	 */
 	public static function get_next_id() {
 		// Run a security check.
 		check_ajax_referer( 'everest_forms_get_next_id', 'security' );
@@ -276,16 +279,23 @@ class EVF_AJAX {
 		}
 	}
 
+	/**
+	 * Ajax handler for form submission.
+	 */
 	public static function ajax_form_submission() {
 		check_ajax_referer( 'everest_forms_ajax_form_submission', 'security' );
-		$form = new EVF_Form_Task();
-		if ( ! empty( $_POST['everest_forms']['id'] ) ) { // WPCS: CSRF ok.
-			$done = $form->do_task( stripslashes_deep( $_POST['everest_forms'] ) ); // WPCS: sanitization ok, CSRF ok.
+
+		if ( ! empty( $_POST['everest_forms']['id'] ) ) {
+			return;
 		}
-		if ( 'success' !== $done['response'] ) {
-			wp_send_json_error( $done );
+
+		$process = evf()->task->do_task( stripslashes_deep( $_POST['everest_forms'] ) );
+
+		if ( 'success' !== $process['response'] ) {
+			wp_send_json_error( $process );
 		}
-		wp_send_json_success( $done );
+
+		wp_send_json_success( $process );
 	}
 
 	/**

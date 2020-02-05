@@ -654,11 +654,11 @@ button.everest-forms-btn {
 				}
 
 				.evf-toggle-switch-wrap {
+					width: 36px;
+					height: 18px;
 					display: inline-flex;
 					background-color: #fff;
 					border: 2px solid #6c7781;
-					width: 36px;
-					height: 18px;
 					border-radius: 9px;
 					transition: 0.2s background ease;
 					position: relative;
@@ -667,12 +667,12 @@ button.everest-forms-btn {
 
 					&::after {
 						content: '';
-						height: 4px;
 						width: 4px;
-						border: 2px solid gray;
-						display: inline-block;
-						border-radius: 50%;
+						height: 4px;
 						margin-right: 2px;
+						border-radius: 50%;
+						display: inline-block;
+						border: 2px solid $color_gray-normal;
 					}
 				}
 
@@ -1070,7 +1070,7 @@ button.everest-forms-btn {
 					margin-bottom: 0;
 
 					input[type="text"] {
-						margin: 5px 2px 2px 2px;
+						margin: 5px 2px 2px;
 						padding: 5px 10px;
 
 						&:focus {
@@ -2103,7 +2103,7 @@ button.everest-forms-btn {
 								display: flex;
 								align-items: center;
 
-								input[type=number] {
+								input[type="number"] {
 									width: 30%;
 									margin-right: 8px;
 								}
@@ -2771,7 +2771,7 @@ button.everest-forms-btn {
 					}
 
 					&.label_hide {
-						input[type=text] {
+						input[type="text"] {
 							margin-bottom: 0;
 						}
 
@@ -3312,7 +3312,7 @@ button.everest-forms-btn {
 
 				&.show-values {
 					li {
-						input[type=text].value {
+						input[type="text"].value {
 							display: block;
 						}
 					}

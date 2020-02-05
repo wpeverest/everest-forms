@@ -39,7 +39,6 @@ jQuery( function($) {
 						value: ajax_form_submission_params.evf_ajax_submission
 					});
 
-
 					// Fire the ajax request.
 					$.ajax({
 						url: ajax_form_submission_params.ajax_url,

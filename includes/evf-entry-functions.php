@@ -20,9 +20,27 @@ function evf_get_entry( $id, $with_fields = false ) {
 
 	$entry = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}evf_entries WHERE entry_id = %d LIMIT 1;", $id ) ); // WPCS: cache ok, DB call ok.
 
-	if ( $with_fields && ! empty( $entry->fields ) ) {
-		$fields = evf_decode( $entry->fields );
+	// BW: Mark entry as read for older entries.
+	if ( is_null( $entry->fields ) && empty( $entry->viewed ) ) {
+		$is_viewed = $wpdb->update(
+			$wpdb->prefix . 'evf_entries',
+			array(
+				'viewed' => 1,
+				'fields' => '{}',
+			),
+			array(
+				'entry_id' => $entry->entry_id,
+			)
+		);
 
+		if ( $is_viewed ) {
+			$entry->viewed = 1;
+		}
+	}
+
+	$fields = evf_decode( $entry->fields );
+
+	if ( $with_fields && ! empty( $fields ) ) {
 		foreach ( $fields as $field ) {
 			if ( isset( $field['meta_key'], $field['value'] ) ) {
 				$entry->meta[ $field['meta_key'] ] = maybe_serialize( $field['value'] );

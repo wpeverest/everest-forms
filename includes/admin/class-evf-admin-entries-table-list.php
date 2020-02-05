@@ -140,7 +140,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 */
 	public function single_row( $entry ) {
 		if ( empty( $_GET['status'] ) || ( isset( $_GET['status'] ) && 'trash' !== $_GET['status'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-			echo '<tr class="' . ( '1' !== $entry->viewed ? 'unread' : 'read' ) . '">';
+			echo '<tr class="' . ( $entry->viewed ? 'read' : 'unread' ) . '">';
 			$this->single_row_columns( $entry );
 			echo '</tr>';
 		} else {
@@ -457,7 +457,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 						'bulk_action',
 						'bulk_action',
 						/* translators: %d: number of entries, %s: entries status */
-						sprintf( _n( '%d entry successfully %s.', '%d entries successfully %s.', $count, 'everest-forms-pro' ), $count, 'star' === $doaction ? 'starred' : 'unstarred' ),
+						sprintf( _n( '%d entry successfully %s.', '%d entries successfully %s.', $count, 'everest-forms' ), $count, 'star' === $doaction ? 'starred' : 'unstarred' ),
 						'updated'
 					);
 					break;
@@ -473,7 +473,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 						'bulk_action',
 						'bulk_action',
 						/* translators: %d: number of entries, %s: entries status */
-						sprintf( _n( '%d entry successfully marked as %s.', '%d entries successfully marked as %s.', $count, 'everest-forms-pro' ), $count, $doaction ),
+						sprintf( _n( '%d entry successfully marked as %s.', '%d entries successfully marked as %s.', $count, 'everest-forms' ), $count, $doaction ),
 						'updated'
 					);
 					break;
