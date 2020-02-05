@@ -285,17 +285,22 @@ class EVF_AJAX {
 	public static function ajax_form_submission() {
 		check_ajax_referer( 'everest_forms_ajax_form_submission', 'security' );
 
+<<<<<<< HEAD
 		if ( empty( $_POST['everest_forms']['id'] ) ) {
 			return;
 		}
+=======
+		if ( ! empty( $_POST['everest_forms']['id'] ) ) {
+			$process = evf()->task->do_task( stripslashes_deep( $_POST['everest_forms'] ) );
+>>>>>>> cfeb2888c335d2441ab649c20747ecaa0b362af9
 
-		$process = evf()->task->do_task( stripslashes_deep( $_POST['everest_forms'] ) );
+			if ( 'success' === $process['response'] ) {
+				wp_send_json_success( $process );
+			}
 
-		if ( 'success' !== $process['response'] ) {
 			wp_send_json_error( $process );
 		}
-
-		wp_send_json_success( $process );
+		wp_die();
 	}
 
 	/**

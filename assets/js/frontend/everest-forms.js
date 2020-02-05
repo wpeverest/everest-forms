@@ -329,6 +329,21 @@ jQuery( function ( $ ) {
 							this.element( element );
 						}
 					},
+					onkeyup: function( element, event ) {
+						// This code is copied from JQuery Validate 'onkeyup' method with only one change: 'everest-forms-novalidate-onkeyup' class check.
+						var excludedKeys = [ 16, 17, 18, 20, 35, 36, 37, 38, 39, 40, 45, 144, 225 ];
+
+						// Disable onkeyup validation for some elements (e.g. remote calls).
+						if ( $( element ).hasClass( 'everest-forms-novalidate-onkeyup' ) ) {
+							return;
+						}
+
+						if ( 9 === event.which && '' === this.elementValue( element ) || -1 !== $.inArray( event.keyCode, excludedKeys ) ) {
+							return;
+						} else if ( element.name in this.submitted || element.name in this.invalid ) {
+							this.element( element );
+						}
+					},
 					onfocusout: function( element ) {
 						// This code is copied from JQuery Validate 'onfocusout' method with only one change: 'everest-forms-novalidate-onkeyup' class check.
 						var validate = false;
