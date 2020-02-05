@@ -287,7 +287,7 @@ class EVF_Form_Task {
 		}
 
 		$message = isset( $this->form_data['settings']['successful_form_submission_message'] ) ? $this->form_data['settings']['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
-		if ( 1 === $ajax_form_submission ) {
+		if ( 1 == $ajax_form_submission ) {
 			$response_data['message']  = $message;
 			$response_data['response'] = 'success';
 			return $response_data;
