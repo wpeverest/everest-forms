@@ -121,18 +121,18 @@ jQuery( function( $ ) {
 									err_field.first().closest( '.evf-field' ).addClass( 'everest-forms-invalid evf-has-error' );
 
 									if ( true === lbl && ! err_field.is( 'label' ) ) {
-										err_field.after( '<label id="' + err_field.attr( 'id' ) + '-error" class="evf-error" for="' + err_field.attr( 'id' ) + '">' + ajax_form_submission_params.required + '</label>' ).show();
+										err_field.after( '<label id="' + err_field.attr( 'id' ) + '-error" class="evf-error" for="' + err_field.attr( 'id' ) + '">' + everest_forms_ajax_submission_params.required + '</label>' ).show();
 									}
 								});
 
-							btn.attr( 'disabled', false ).html( ajax_form_submission_params.submit );
+							btn.attr( 'disabled', false ).html( everest_forms_ajax_submission_params.submit );
 						}
 					})
 					.fail( function () {
-						btn.attr( 'disabled', false ).html( ajax_form_submission_params.submit );
+						btn.attr( 'disabled', false ).html( everest_forms_ajax_submission_params.submit );
 						formTuple.trigger( 'focusout' ).trigger( 'change' );
 						formTuple.closest( '.everest-forms' ).find( '.everest-forms-notice' ).remove();
-						formTuple.closest( '.everest-forms' ).prepend( '<div class="everest-forms-notice everest-forms-notice--error" role="alert">'+ ajax_form_submission_params.error  +'</div>' ).focus();
+						formTuple.closest( '.everest-forms' ).prepend( '<div class="everest-forms-notice everest-forms-notice--error" role="alert">'+ everest_forms_ajax_submission_params.error  +'</div>' ).focus();
 					})
 					.always( function() {
 						$( [document.documentElement, document.body] ).animate({
