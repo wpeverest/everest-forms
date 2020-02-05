@@ -159,11 +159,6 @@ class EVF_Frontend_Scripts {
 	private static function register_scripts() {
 		$suffix           = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		$register_scripts = array(
-			'ajax-form-submission'     => array(
-				'src'     => self::get_asset_url( 'assets/js/frontend/everest-forms-ajax-submission' . $suffix . '.js' ),
-				'deps'    => array( 'jquery', 'inputmask', 'jquery-validate' ),
-				'version' => EVF_VERSION,
-			),
 			'inputmask'                => array(
 				'src'     => self::get_asset_url( 'assets/js/inputmask/jquery.inputmask.bundle' . $suffix . '.js' ),
 				'deps'    => array( 'jquery' ),
@@ -192,6 +187,11 @@ class EVF_Frontend_Scripts {
 			'everest-forms-text-limit' => array(
 				'src'     => self::get_asset_url( 'assets/js/frontend/text-limit' . $suffix . '.js' ),
 				'deps'    => array(),
+				'version' => EVF_VERSION,
+			),
+			'everest-forms-ajax-submission'     => array(
+				'src'     => self::get_asset_url( 'assets/js/frontend/ajax-submission' . $suffix . '.js' ),
+				'deps'    => array( 'jquery', 'inputmask', 'jquery-validate' ),
 				'version' => EVF_VERSION,
 			),
 		);
@@ -302,13 +302,13 @@ class EVF_Frontend_Scripts {
 					'i18n_messages_limit_words'      => esc_html__( '{count} of {limit} max words.', 'everest-forms' ),
 				);
 				break;
-			case 'ajax-form-submission':
+			case 'everest-forms-ajax-submission':
 				$params = array(
 					'ajax_url'            => admin_url( 'admin-ajax.php' ),
 					'evf_ajax_submission' => wp_create_nonce( 'everest_forms_ajax_form_submission' ),
-					'submit'              => __( 'Submit', 'everest-forms' ),
-					'error'               => __( 'Sorry, something went wrong. Please try again', 'everest-forms' ),
-					'required'            => __( 'This field is required.', 'everest-forms' ),
+					'submit'              => esc_html__( 'Submit', 'everest-forms' ),
+					'error'               => esc_html__( 'Sorry, something went wrong. Please try again', 'everest-forms' ),
+					'required'            => esc_html__( 'This field is required.', 'everest-forms' ),
 				);
 				break;
 			default:

@@ -696,7 +696,7 @@ class EVF_Shortcode_Form {
 		$ajax_form_submission = isset( $settings['ajax_form_submission'] ) ? $settings['ajax_form_submission'] : 0;
 
 		if ( 0 !== $ajax_form_submission ) {
-			wp_enqueue_script( 'ajax-form-submission' );
+			wp_enqueue_script( 'everest-forms-ajax-submission' );
 		}
 
 		// If the form is disabled or does not contain any fields do not proceed.
