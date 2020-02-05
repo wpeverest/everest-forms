@@ -285,7 +285,7 @@ class EVF_AJAX {
 	public static function ajax_form_submission() {
 		check_ajax_referer( 'everest_forms_ajax_form_submission', 'security' );
 
-		if ( ! empty( $_POST['everest_forms']['id'] ) ) {
+		if ( empty( $_POST['everest_forms']['id'] ) ) {
 			return;
 		}
 

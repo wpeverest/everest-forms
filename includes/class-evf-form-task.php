@@ -128,13 +128,17 @@ class EVF_Form_Task {
 						$field_submit = isset ( $field_submit['signature_image'] ) ? $field_submit['signature_image'] : '';
 					}
 
-					$this->form_fields[ $field_id ] = [
-						'id'       => $field_id,
-						'name'     => sanitize_text_field( $field['label'] ),
-						'meta_key' => $this->form_data['form_fields'][ $field_id ]['meta-key'],
-						'type'     => $field_type,
-						'value'    => evf_sanitize_textarea_field( $field_submit ),
-					];
+					$exclude = array( 'title', 'html' );
+
+					if ( ! in_array( $field_type, $exclude ) ) {
+						$this->form_fields[ $field_id ] = [
+							'id'       => $field_id,
+							'name'     => sanitize_text_field( $field['label'] ),
+							'meta_key' => $this->form_data['form_fields'][ $field_id ]['meta-key'],
+							'type'     => $field_type,
+							'value'    => evf_sanitize_textarea_field( $field_submit ),
+						];
+					}
 				}
 			}
 
