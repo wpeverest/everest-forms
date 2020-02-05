@@ -598,7 +598,7 @@ class EVF_Form_Task {
 				if ( in_array( $field['type'], array( 'image-upload', 'file-upload' ), true ) ) {
 
 					// BW compatibility for previous file uploader.
-					if ( isset( $field['value']['file_url'] ) && '' !== $field['value']['file_url'] ) {
+					if ( isset( $field['value']['file_url'] ) && '' === $field['value']['file_url'] ) {
 						continue;
 					}
 				}
