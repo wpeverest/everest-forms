@@ -124,6 +124,10 @@ class EVF_Form_Task {
 					$field_type   = $field['type'];
 					$field_submit = isset( $entry['form_fields'][ $field_id ] ) ? $entry['form_fields'][ $field_id ] : '';
 
+					if ( 'signature' === $field_type ) {
+						$field_submit = isset ( $field_submit['signature_image'] ) ? $field_submit['signature_image'] : '';
+					}
+
 					$this->form_fields[ $field_id ] = [
 						'id'       => $field_id,
 						'name'     => sanitize_text_field( $field['label'] ),
