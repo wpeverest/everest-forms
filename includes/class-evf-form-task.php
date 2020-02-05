@@ -128,7 +128,7 @@ class EVF_Form_Task {
 						$field_submit = isset ( $field_submit['signature_image'] ) ? $field_submit['signature_image'] : '';
 					}
 
-					$exclude = array( 'title', 'html' );
+					$exclude = array( 'title', 'html', 'captcha' );
 
 					if ( ! in_array( $field_type, $exclude ) ) {
 						$this->form_fields[ $field_id ] = [
