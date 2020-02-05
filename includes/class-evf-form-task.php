@@ -108,7 +108,7 @@ class EVF_Form_Task {
 			do_action( "everest_forms_process_before_{$form_id}", $entry, $this->form_data );
 
 			$ajax_form_submission = isset( $this->form_data['settings']['ajax_form_submission'] ) ? $this->form_data['settings']['ajax_form_submission'] : 0;
-			if ( 1 == $ajax_form_submission ) {
+			if ( 1 === $ajax_form_submission ) {
 
 				// For the sake of validation we completely remove the validator option.
 				update_option( 'evf_validation_error', '' );
@@ -278,7 +278,7 @@ class EVF_Form_Task {
 			do_action( "everest_forms_process_complete_{$form_id}", $this->form_fields, $entry, $this->form_data, $entry_id );
 		} catch ( Exception $e ) {
 			evf_add_notice( $e->getMessage(), 'error' );
-			if ( 1 == $ajax_form_submission ) {
+			if ( 1 === $ajax_form_submission ) {
 				$this->errors[]            = $e->getMessage();
 				$response_data['message']  = $this->errors;
 				$response_data['response'] = 'error';
@@ -378,7 +378,7 @@ class EVF_Form_Task {
 				})
 				</script>
 			<?php
-		} elseif ( isset( $settings['redirect_to'] ) && '2' == $settings['redirect_to'] ) {
+		} elseif ( isset( $settings['redirect_to'] ) && '2' === $settings['redirect_to'] ) {
 			?>
 			<script>
 				window.setTimeout( function () {
