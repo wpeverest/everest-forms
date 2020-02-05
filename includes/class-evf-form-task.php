@@ -125,7 +125,7 @@ class EVF_Form_Task {
 					$field_submit = isset( $entry['form_fields'][ $field_id ] ) ? $entry['form_fields'][ $field_id ] : '';
 
 					if ( 'signature' === $field_type ) {
-						$field_submit = isset ( $field_submit['signature_image'] ) ? $field_submit['signature_image'] : '';
+						$field_submit = isset( $field_submit['signature_image'] ) ? $field_submit['signature_image'] : '';
 					}
 
 					$exclude = array( 'title', 'html', 'captcha' );
@@ -151,7 +151,7 @@ class EVF_Form_Task {
 				do_action( "everest_forms_process_validate_{$field_type}", $field_id, $field_submit, $this->form_data, $field_type );
 
 				if ( 'yes' === get_option( 'evf_validation_error' ) && $ajax_form_submission ) {
-					$this->ajax_err[] = array ( $field_type => $field_id );
+					$this->ajax_err[] = array( $field_type => $field_id );
 					update_option( 'evf_validation_error', '' );
 				}
 			}
@@ -297,6 +297,44 @@ class EVF_Form_Task {
 		do_action( 'everest_forms_after_success_message', $this->form_data, $entry );
 
 		$this->entry_confirmation_redirect( $this->form_data );
+	}
+
+	/**
+	 * Process AJAX form submission.
+	 *
+	 * @since 1.6.0
+	 */
+	public function ajax_form_submission( $entry ) {
+		add_filter( 'wp_redirect', array( $this, 'ajax_process_redirect' ), 999 );
+		$process = $this->do_task( stripslashes_deep( $_POST['everest_forms'] ) );
+		return $process;
+	}
+
+	/**
+	 * Process AJAX redirect.
+	 *
+	 * @since 1.6.0
+	 *
+	 * @param string $url Redirect URL.
+	 */
+	public function ajax_process_redirect( $url ) {
+
+		$form_id = isset( $_POST['everest_forms']['id'] ) ? absint( $_POST['everest_forms']['id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification
+
+		if ( empty( $form_id ) ) {
+			wp_send_json_error();
+		}
+
+		$response = array(
+			'form_id'      => $form_id,
+			'redirect_url' => $url,
+		);
+
+		$response = apply_filters( 'everest_forms_ajax_submit_redirect', $response, $form_id, $url );
+
+		do_action( 'everest_forms_ajax_submit_completed', $form_id, $response );
+
+		wp_send_json_success( $response );
 	}
 
 	/**

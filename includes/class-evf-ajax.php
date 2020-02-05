@@ -286,8 +286,8 @@ class EVF_AJAX {
 		check_ajax_referer( 'everest_forms_ajax_form_submission', 'security' );
 
 		if ( ! empty( $_POST['everest_forms']['id'] ) ) {
-			$process = evf()->task->do_task( stripslashes_deep( $_POST['everest_forms'] ) );
-
+			// $process = evf()->task->do_task( stripslashes_deep( $_POST['everest_forms'] ) );
+			$process = evf()->task->ajax_form_submission( stripslashes_deep( $_POST['everest_forms'] ) );
 			if ( 'success' === $process['response'] ) {
 				wp_send_json_success( $process );
 			}

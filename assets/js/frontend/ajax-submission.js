@@ -47,7 +47,11 @@ jQuery( function( $ ) {
 						data: data
 					})
 					.done( function ( xhr, textStatus, errorThrown ) {
-						if ( 'success' === xhr.data.response ) {
+						if ( 'undefined' !== typeof xhr.data.redirect_url ) {
+							window.location = xhr.data.redirect_url;
+							return;
+						}
+						if ( 'success' === xhr.data.response || true === xhr.success ) {
 							formTuple.trigger( 'reset' );
 							formTuple.closest( '.everest-forms' ).html( '<div class="everest-forms-notice everest-forms-notice--success" role="alert">' + xhr.data.message + '</div>' ).focus();
 						} else {
@@ -134,10 +138,12 @@ jQuery( function( $ ) {
 						formTuple.closest( '.everest-forms' ).find( '.everest-forms-notice' ).remove();
 						formTuple.closest( '.everest-forms' ).prepend( '<div class="everest-forms-notice everest-forms-notice--error" role="alert">'+ everest_forms_ajax_submission_params.error  +'</div>' ).focus();
 					})
-					.always( function() {
-						$( [document.documentElement, document.body] ).animate({
-							scrollTop: $( '.everest-forms-notice' ).offset().top
-						}, 800 );
+					.always( function( xhr ) {
+						if ( 'undefined' === typeof xhr.data.redirect_url ) {
+							$( [document.documentElement, document.body] ).animate({
+								scrollTop: $( '.everest-forms-notice' ).offset().top
+							}, 800 );
+						}
 					});
 				});
 			});
