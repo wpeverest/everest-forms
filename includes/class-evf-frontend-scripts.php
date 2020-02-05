@@ -189,6 +189,11 @@ class EVF_Frontend_Scripts {
 				'deps'    => array(),
 				'version' => EVF_VERSION,
 			),
+			'everest-forms-ajax-submission'     => array(
+				'src'     => self::get_asset_url( 'assets/js/frontend/ajax-submission' . $suffix . '.js' ),
+				'deps'    => array( 'jquery', 'inputmask', 'jquery-validate' ),
+				'version' => EVF_VERSION,
+			),
 		);
 		foreach ( $register_scripts as $name => $props ) {
 			self::register_script( $name, $props['src'], $props['deps'], $props['version'] );
@@ -275,6 +280,7 @@ class EVF_Frontend_Scripts {
 			case 'everest-forms':
 				$params = array(
 					'ajax_url'                             => EVF()->ajax_url(),
+					'submit'                               => esc_html__( 'Submit', 'everest-forms' ),
 					'disable_user_details'                 => get_option( 'everest_forms_disable_user_details' ),
 					'everest_forms_data_save'              => wp_create_nonce( 'everest_forms_data_save_nonce' ),
 					'i18n_messages_required'               => get_option( 'everest_forms_required_validation' ),
@@ -294,6 +300,15 @@ class EVF_Frontend_Scripts {
 				$params = array(
 					'i18n_messages_limit_characters' => esc_html__( '{count} of {limit} max characters.', 'everest-forms' ),
 					'i18n_messages_limit_words'      => esc_html__( '{count} of {limit} max words.', 'everest-forms' ),
+				);
+				break;
+			case 'everest-forms-ajax-submission':
+				$params = array(
+					'ajax_url'            => admin_url( 'admin-ajax.php' ),
+					'evf_ajax_submission' => wp_create_nonce( 'everest_forms_ajax_form_submission' ),
+					'submit'              => esc_html__( 'Submit', 'everest-forms' ),
+					'error'               => esc_html__( 'Sorry, something went wrong. Please try again', 'everest-forms' ),
+					'required'            => esc_html__( 'This field is required.', 'everest-forms' ),
 				);
 				break;
 			default:

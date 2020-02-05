@@ -318,6 +318,17 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		everest_forms_panel_field(
 			'checkbox',
 			'settings',
+			'ajax_form_submission',
+			$this->form_data,
+			esc_html__( 'Enable Ajax Form Submission', 'everest-forms' ),
+			array(
+				'default' => isset( $settings['ajax_form_submission'] ) ? $settings['ajax_form_submission'] : 0,
+				'tooltip' => esc_html__( 'Enables form submission without reloading the page.', 'everest-forms' ),
+			)
+		);
+		everest_forms_panel_field(
+			'checkbox',
+			'settings',
 			'disabled_entries',
 			$this->form_data,
 			esc_html__( 'Disable storing entry information', 'everest-forms' ),

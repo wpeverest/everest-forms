@@ -1047,7 +1047,7 @@ function evf_decode( $data ) {
 		return false;
 	}
 
-	return wp_unslash( json_decode( $data, true ) );
+	return json_decode( $data, true );
 }
 
 /**

@@ -242,13 +242,13 @@ jQuery( function ( $ ) {
 								var row_key = row_keys[i];
 								sub_field_error_messages[ row_key ] = $( this ).data( 'required-field-message-' + row_key );
 							}
-						}
-						for ( var i = 0; i < row_keys.length; i++ ) {
-							error_message         = sub_field_error_messages[ row_keys[i] ];
-							key                   = 'everest_forms[form_fields][' + field_id + '][' + row_keys[i] + ']';
-							error_messages[ key ] = {
-								required: error_message, // Set message using 'required' key to avoid conflicts with other validations.
-							};
+							for ( var i = 0; i < row_keys.length; i++ ) {
+								error_message         = sub_field_error_messages[ row_keys[i] ];
+								key                   = 'everest_forms[form_fields][' + field_id + '][' + row_keys[i] + ']';
+								error_messages[ key ] = {
+									required: error_message, // Set message using 'required' key to avoid conflicts with other validations.
+								};
+							}
 						}
 						error_message = null;
 					}
@@ -323,7 +323,11 @@ jQuery( function ( $ ) {
 							$submit.text( processText ).prop( 'disabled', true );
 						}
 
-						form.submit();
+						if ( 1 === $( $(this)[0].currentForm ).data( 'ajax_submission' ) ) {
+							return;
+						} else if ( element.name in this.submitted || element.name in this.invalid ) {
+							this.element( element );
+						}
 					},
 					onkeyup: function( element, event ) {
 						// This code is copied from JQuery Validate 'onkeyup' method with only one change: 'everest-forms-novalidate-onkeyup' class check.
@@ -370,7 +374,7 @@ jQuery( function ( $ ) {
 						if ( validate ) {
 							this.element( element );
 						}
-					},
+					}
 				});
 			});
 		},

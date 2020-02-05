@@ -83,17 +83,19 @@ class EVF_Form_Task {
 			$form_id           = absint( $entry['id'] );
 			$form              = EVF()->form->get( $form_id );
 			$honeypot          = false;
+			$response_data     = array();
+			$this->ajax_err    = array();
 
 			// Check nonce for form submission.
 			if ( empty( $_POST['_wpnonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['_wpnonce'] ), 'everest-forms_process_submit' ) ) { // WPCS: input var ok, sanitization ok.
 				$this->errors[ $form_id ]['header'] = esc_html__( 'We were unable to process your form, please try again.', 'everest-forms' );
-				return;
+				return $this->errors;
 			}
 
 			// Validate form is real and active (published).
 			if ( ! $form || 'publish' !== $form->post_status ) {
 				$this->errors[ $form_id ]['header'] = esc_html__( 'Invalid form. Please check again.', 'everest-forms' );
-				return;
+				return $this->errors;
 			}
 
 			// Formatted form data for hooks.
@@ -105,6 +107,41 @@ class EVF_Form_Task {
 			do_action( 'everest_forms_process_before', $entry, $this->form_data );
 			do_action( "everest_forms_process_before_{$form_id}", $entry, $this->form_data );
 
+			$ajax_form_submission = isset( $this->form_data['settings']['ajax_form_submission'] ) ? $this->form_data['settings']['ajax_form_submission'] : 0;
+			if ( 1 == $ajax_form_submission ) {
+
+				// For the sake of validation we completely remove the validator option.
+				update_option( 'evf_validation_error', '' );
+
+				// Prepare fields for entry_save.
+				foreach ( $this->form_data['form_fields'] as $field ) {
+
+					if ( '' === isset( $this->form_data['form_fields']['meta-key'] ) ) {
+						continue;
+					}
+
+					$field_id     = $field['id'];
+					$field_type   = $field['type'];
+					$field_submit = isset( $entry['form_fields'][ $field_id ] ) ? $entry['form_fields'][ $field_id ] : '';
+
+					if ( 'signature' === $field_type ) {
+						$field_submit = isset ( $field_submit['signature_image'] ) ? $field_submit['signature_image'] : '';
+					}
+
+					$exclude = array( 'title', 'html', 'captcha' );
+
+					if ( ! in_array( $field_type, $exclude ) ) {
+						$this->form_fields[ $field_id ] = [
+							'id'       => $field_id,
+							'name'     => sanitize_text_field( $field['label'] ),
+							'meta_key' => $this->form_data['form_fields'][ $field_id ]['meta-key'],
+							'type'     => $field_type,
+							'value'    => evf_sanitize_textarea_field( $field_submit ),
+						];
+					}
+				}
+			}
+
 			// Validate fields.
 			foreach ( $this->form_data['form_fields'] as $field ) {
 				$field_id     = $field['id'];
@@ -112,6 +149,19 @@ class EVF_Form_Task {
 				$field_submit = isset( $entry['form_fields'][ $field_id ] ) ? $entry['form_fields'][ $field_id ] : '';
 
 				do_action( "everest_forms_process_validate_{$field_type}", $field_id, $field_submit, $this->form_data, $field_type );
+
+				if ( 'yes' === get_option( 'evf_validation_error' ) && $ajax_form_submission ) {
+					$this->ajax_err[] = array ( $field_type => $field_id );
+					update_option( 'evf_validation_error', '' );
+				}
+			}
+
+			// If validation issues occur, send the results accordingly.
+			if ( $ajax_form_submission && sizeof( $this->ajax_err ) ) {
+				$response_data['error']    = $this->ajax_err;
+				$response_data['message']  = __( 'Form has not been submitted, please see the errors below.', 'everest-forms' );
+				$response_data['response'] = 'error';
+				return $response_data;
 			}
 
 			// reCAPTCHA check.
@@ -140,7 +190,7 @@ class EVF_Form_Task {
 						// Check reCAPTCHA response.
 						if ( empty( $data->success ) || ( isset( $data->hostname ) && evf_clean( wp_unslash( $_SERVER['SERVER_NAME'] ) ) !== $data->hostname ) || ( isset( $data->action, $data->score ) && ( 'everest_form' !== $data->action && 0.5 > floatval( $data->score ) ) ) ) {
 							$this->errors[ $form_id ]['header'] = esc_html__( 'Incorrect reCAPTCHA, please try again.', 'everest-forms' );
-							return;
+							return $this->errors;
 						}
 					}
 				} else {
@@ -157,7 +207,7 @@ class EVF_Form_Task {
 					$errors[ $form_id ]['header'] = __( 'Form has not been submitted, please see the errors below.', 'everest-forms' );
 				}
 				$this->errors = $errors;
-				return;
+				return $this->errors;
 			}
 
 			// Early honeypot validation - before actual processing.
@@ -171,7 +221,7 @@ class EVF_Form_Task {
 			if ( $honeypot ) {
 				$logger = evf_get_logger();
 				$logger->notice( sprintf( 'Spam entry for Form ID %d Response: %s', absint( $this->form_data['id'] ), evf_print_r( $entry, true ) ), array( 'source' => 'honeypot' ) );
-				return;
+				return $this->errors;
 			}
 
 			// Pass the form created date into the form data.
@@ -205,7 +255,7 @@ class EVF_Form_Task {
 				if ( empty( $this->errors[ $form_id ]['header'] ) ) {
 					$this->errors[ $form_id ]['header'] = esc_html__( 'Form has not been submitted, please see the errors below.', 'everest-forms' );
 				}
-				return;
+				return $this->errors;
 			}
 
 			// Success - add entry to database.
@@ -228,10 +278,20 @@ class EVF_Form_Task {
 			do_action( "everest_forms_process_complete_{$form_id}", $this->form_fields, $entry, $this->form_data, $entry_id );
 		} catch ( Exception $e ) {
 			evf_add_notice( $e->getMessage(), 'error' );
+			if ( 1 == $ajax_form_submission ) {
+				$this->errors[]            = $e->getMessage();
+				$response_data['message']  = $this->errors;
+				$response_data['response'] = 'error';
+				return $response_data;
+			}
 		}
 
 		$message = isset( $this->form_data['settings']['successful_form_submission_message'] ) ? $this->form_data['settings']['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
-
+		if ( 1 == $ajax_form_submission ) {
+			$response_data['message']  = $message;
+			$response_data['response'] = 'success';
+			return $response_data;
+		}
 		evf_add_notice( $message, 'success' );
 
 		do_action( 'everest_forms_after_success_message', $this->form_data, $entry );
@@ -529,7 +589,6 @@ class EVF_Form_Task {
 		if ( $entry_id ) {
 			foreach ( $fields as $field ) {
 				$field = apply_filters( 'everest_forms_entry_save_fields', $field, $form_data, $entry_id );
-
 				// Add only whitelisted fields to entry meta.
 				if ( in_array( $field['type'], array( 'html', 'title' ), true ) ) {
 					continue;
