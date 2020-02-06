@@ -192,3 +192,20 @@ function evf_get_count_entries_by_last_entry( $form_id, $last_entry ) {
 
 	return $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(entry_id) FROM {$wpdb->prefix}evf_entries WHERE form_id = %d AND entry_id > %d", $form_id, $last_entry ) );
 }
+
+/**
+ * Get field from meta key.
+ *
+ * @since 1.6.0
+ *
+ * @param string $meta_key Meta key.
+ *
+ * @return EVF_Entry|false
+ */
+function evf_get_entry_by_meta_key( $meta_key ) {
+	global $wpdb;
+
+	$entry_id = $wpdb->get_var( $wpdb->prepare( "SELECT entry_id FROM {$wpdb->prefix}evf_entrymeta WHERE meta_key = %s LIMIT 1;", $meta_key ) ); // WPCS: cache ok, DB call ok.
+
+	return $entry_id ? evf_get_entry( $entry_id, true ) : false;
+}
