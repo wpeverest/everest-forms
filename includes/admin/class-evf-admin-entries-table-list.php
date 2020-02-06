@@ -457,7 +457,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 						'bulk_action',
 						'bulk_action',
 						/* translators: %d: number of entries, %s: entries status */
-						sprintf( _n( '%d entry successfully %s.', '%d entries successfully %s.', $count, 'everest-forms' ), $count, 'star' === $doaction ? 'starred' : 'unstarred' ),
+						sprintf( _n( '%1$d entry successfully %2$s.', '%1$d entries successfully %2$s.', $count, 'everest-forms' ), $count, 'star' === $doaction ? 'starred' : 'unstarred' ),
 						'updated'
 					);
 					break;
@@ -473,7 +473,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 						'bulk_action',
 						'bulk_action',
 						/* translators: %d: number of entries, %s: entries status */
-						sprintf( _n( '%d entry successfully marked as %s.', '%d entries successfully marked as %s.', $count, 'everest-forms' ), $count, $doaction ),
+						sprintf( _n( '%1$d entry successfully marked as %2$s.', '%1$d entries successfully marked as %2$s.', $count, 'everest-forms' ), $count, $doaction ),
 						'updated'
 					);
 					break;

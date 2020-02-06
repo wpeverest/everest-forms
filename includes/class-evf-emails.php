@@ -439,7 +439,7 @@ class EVF_Emails {
 				$field_val   = empty( $field['value'] ) && '0' !== $field['value'] ? '<em>' . __( '(empty)', 'everest-forms' ) . '</em>' : $field['value'];
 				$field_name  = isset( $field_val['name'] ) ? $field_val['name'] : $field['name'];
 				$field_label = ! empty( $field_val['label'] ) ? $field_val['label'] : $field_val;
-				$field_type = $field['type'];
+				$field_type  = $field['type'];
 
 				if ( isset( $field_val['type'] ) && in_array( $field['type'], array( 'image-upload', 'file-upload', 'rating' ), true ) ) {
 					if ( 'rating' === $field_val['type'] ) {
