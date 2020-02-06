@@ -236,18 +236,21 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 			}
 
 			// Limit to 5 lines.
-			$lines = explode( "\n", $value );
-			$value = array_slice( $lines, 0, 4 );
-			$value = implode( "\n", $value );
+			if ( false === strpos( $value, 'http' ) ) {
+				$lines = explode( "\n", $value );
+				$value = array_slice( $lines, 0, 4 );
+				$value = implode( "\n", $value );
 
-			if ( count( $lines ) > 5 ) {
-				$value .= '&hellip;';
-			} elseif ( strlen( $value ) > 75 ) {
-				$value = substr( $value, 0, 75 ) . '&hellip;';
+				if ( count( $lines ) > 5 ) {
+					$value .= '&hellip;';
+				} elseif ( strlen( $value ) > 75 ) {
+					$value = substr( $value, 0, 75 ) . '&hellip;';
+				}
+
+				$value = nl2br( wp_strip_all_tags( trim( $value ) ) );
 			}
-			$value = nl2br( wp_strip_all_tags( trim( $value ) ) );
 
-			return apply_filters( 'everest_forms_html_field_value', $value, $entry->meta[ $meta_key ], $this->form_data, 'entry-table' );
+			return apply_filters( 'everest_forms_html_field_value', $value, $entry->meta[ $meta_key ], $entry->meta, 'entry-table' );
 		} else {
 			return '<span class="na">&mdash;</span>';
 		}
