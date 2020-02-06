@@ -290,6 +290,7 @@ class EVF_Form_Task {
 		if ( 1 == $ajax_form_submission ) {
 			$response_data['message']  = $message;
 			$response_data['response'] = 'success';
+			evf_add_notice( $message, 'success' );
 			return $response_data;
 		}
 		evf_add_notice( $message, 'success' );
