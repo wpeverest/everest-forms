@@ -4595,6 +4595,10 @@ table.wp-list-table {
 			.inside {
 				table {
 					border: none;
+
+					td a:focus {
+						box-shadow: none;
+					}
 				}
 
 				span.list {

@@ -131,13 +131,13 @@ class EVF_Form_Task {
 					$exclude = array( 'title', 'html', 'captcha' );
 
 					if ( ! in_array( $field_type, $exclude ) ) {
-						$this->form_fields[ $field_id ] = [
+						$this->form_fields[ $field_id ] = array(
 							'id'       => $field_id,
 							'name'     => sanitize_text_field( $field['label'] ),
 							'meta_key' => $this->form_data['form_fields'][ $field_id ]['meta-key'],
 							'type'     => $field_type,
 							'value'    => evf_sanitize_textarea_field( $field_submit ),
-						];
+						);
 					}
 				}
 			}
@@ -386,7 +386,7 @@ class EVF_Form_Task {
 	 * @param string $hash      Hash data.
 	 */
 	public function entry_confirmation_redirect( $form_data = '', $hash = '' ) {
-		$_POST = array(); // clear fields after successful form submission
+		$_POST = array(); // clear fields after successful form submission.
 
 		if ( ! empty( $hash ) ) {
 			$form_id = $this->validate_return_hash( $hash );

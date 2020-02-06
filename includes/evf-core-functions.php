@@ -287,7 +287,7 @@ function evf_get_log_file_path( $handle ) {
  */
 function evf_get_csv_file_name( $handle ) {
 	if ( function_exists( 'wp_hash' ) ) {
-		$date_suffix = date( 'Y-m-d', current_time( 'timestamp', true ) );
+		$date_suffix = date( 'Y-m-d', time() );
 		$hash_suffix = wp_hash( $handle );
 		return sanitize_file_name( implode( '-', array( 'evf-entry-export', $handle, $date_suffix, $hash_suffix ) ) . '.csv' );
 	} else {
@@ -1292,9 +1292,10 @@ function evf_get_day_period_date( $period, $timestamp = '', $format = 'Y-m-d H:i
 /**
  * Get field label by meta key
  *
- * @param  $form_id  Form ID
- * @param  $meta_key Field's meta key
- * @return mixed
+ * @param int    $form_id  Form ID.
+ * @param string $meta_key Field's meta key.
+ *
+ * @return string|false True if field label exists in form.
  */
 function evf_get_form_data_by_meta_key( $form_id, $meta_key ) {
 	$get_post     = get_post( $form_id );
@@ -1315,9 +1316,10 @@ function evf_get_form_data_by_meta_key( $form_id, $meta_key ) {
 /**
  * Get field type by meta key
  *
- * @param  $form_id  Form ID
- * @param  $meta_key Field's meta key
- * @return mixed
+ * @param int    $form_id  Form ID.
+ * @param string $meta_key Field's meta key.
+ *
+ * @return string|false True if field type exists in form.
  */
 function evf_get_field_type_by_meta_key( $form_id, $meta_key ) {
 	$get_post     = get_post( $form_id );
@@ -1338,7 +1340,7 @@ function evf_get_field_type_by_meta_key( $form_id, $meta_key ) {
 /**
  * Get all the email fields of a Form.
  *
- * @param int $form_id
+ * @param int $form_id  Form ID.
  */
 function evf_get_all_email_fields_by_form_id( $form_id ) {
 	$user_emails = array();
@@ -1359,7 +1361,7 @@ function evf_get_all_email_fields_by_form_id( $form_id ) {
 /**
  * Get all the field's meta-key label pair.
  *
- * @param  int $form_id
+ * @param int $form_id  Form ID.
  * @return array
  */
 function evf_get_all_form_fields_by_form_id( $form_id ) {
@@ -1381,12 +1383,12 @@ function evf_get_all_form_fields_by_form_id( $form_id ) {
 /**
  * Check if the string JSON.
  *
- * @param  string $string
+ * @param string $string String to check.
  * @return bool
  */
 function evf_isJson( $string ) {
 	json_decode( $string );
-	return ( json_last_error() == JSON_ERROR_NONE );
+	return ( json_last_error() == JSON_ERROR_NONE ); // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 }
 
 /**

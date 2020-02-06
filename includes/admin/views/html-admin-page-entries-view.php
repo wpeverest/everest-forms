@@ -110,7 +110,7 @@ $trash_link = wp_nonce_url(
 																$answer_class = 'wrong_answer';
 															}
 														}
-														echo '<span class="list ' . $answer_class . '">' . esc_html( wp_strip_all_tags( $value ) ) . '</span>';
+														echo '<span class="list ' . $answer_class . '">' . esc_html( wp_strip_all_tags( $value ) ) . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 													}
 												} else {
 													echo nl2br( make_clickable( $field_label ) );
@@ -122,7 +122,7 @@ $trash_link = wp_nonce_url(
 													} else {
 														$answer_class = 'wrong_answer';
 													}
-													echo '<span class="list ' . $answer_class . '">' . esc_html( wp_strip_all_tags( $field_value ) ) . '</span>';
+													echo '<span class="list ' . $answer_class . '">' . esc_html( wp_strip_all_tags( $field_value ) ) . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 												} else {
 													echo nl2br( make_clickable( $field_value ) );
 												}
