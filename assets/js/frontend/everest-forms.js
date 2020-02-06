@@ -188,7 +188,12 @@ jQuery( function ( $ ) {
 					var error_message = $( this ).data( 'required-field-message' );
 					var key           = 'everest_forms[form_fields][' + field_id + ']'; // Name of the input field is used as a key.
 
-					if ( $( this ).is( '.evf-field-checkbox, .evf-field-payment-checkbox' ) ) {
+					if ( $( this ).is( '.evf-field-payment-single' ) ) {
+						if ( ! $( this ).find('.evf-payment-price').is( '.evf-payment-user-input' ) ) {
+							$( this ).find('.evf-payment-price').attr( 'required', false );
+							error_message = null;
+						}
+					} else if ( $( this ).is( '.evf-field-checkbox, .evf-field-payment-checkbox' ) ) {
 						key = key + '[]';
 					} else if ( $( this ).is( '.evf-field-file-upload, .evf-field-image-upload' ) ) {
 						key = 'evf_' + form_id + '_' + field_id;
