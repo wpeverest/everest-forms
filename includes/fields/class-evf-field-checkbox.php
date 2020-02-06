@@ -355,6 +355,12 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 				continue;
 			}
 
+			// Conditional logic.
+			$choice['attr']['conditional_id']    = $choices['primary']['attr']['conditional_id'];
+			if (  isset( $choices['primary']['attr']['conditional_rules'] ) ) {
+				$choice['attr']['conditional_rules'] = $choices['primary']['attr']['conditional_rules'];
+			}
+
 			printf( '<li %s>', evf_html_attributes( $choice['container']['id'], $choice['container']['class'], $choice['container']['data'], $choice['container']['attr'] ) );
 
 			if ( ! empty( $field['choices_images'] ) ) {
