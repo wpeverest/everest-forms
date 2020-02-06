@@ -356,7 +356,7 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 			}
 
 			// Conditional logic.
-			if ( $choices['primary'] ) {
+			if ( isset( $choices['primary'] ) ) {
 				$choice['attr']['conditional_id']    = $choices['primary']['attr']['conditional_id'];
 				if (  isset( $choices['primary']['attr']['conditional_rules'] ) ) {
 					$choice['attr']['conditional_rules'] = $choices['primary']['attr']['conditional_rules'];
