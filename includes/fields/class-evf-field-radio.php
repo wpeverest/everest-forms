@@ -100,22 +100,11 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 					&& ! empty( $field_value['image'] )
 					&& apply_filters( 'everest_forms_checkbox_field_html_value_images', true, $context )
 				) {
-					$uploads = wp_upload_dir();
-
-					if ( 'export-pdf' === $context ) {
-						$pdf_file = $uploads['basedir'] . str_replace( '/uploads/', '/', str_replace( content_url(), '', esc_url( $field_value['image'] ) ) );
-						return sprintf(
-							'<span style="max-width:200px;display:block;margin:0 0 5px 0;"><img src="%s" style="max-width:100%%;display:block;margin:0;"></span>%s',
-							esc_url( $pdf_file ),
-							esc_html( $field_value['label'] )
-						);
-					} else {
-						return sprintf(
-							'<span style="max-width:200px;display:block;margin:0 0 5px 0;"><img src="%s" style="max-width:100%%;display:block;margin:0;"></span>%s',
-							esc_url( $field_value['image'] ),
-							esc_html( $field_value['label'] )
-						);
-					}
+					return sprintf(
+						'<span style="max-width:200px;display:block;margin:0 0 5px 0;"><img src="%s" style="max-width:100%%;display:block;margin:0;"></span>%s',
+						esc_url( $field_value['image'] ),
+						esc_html( $field_value['label'] )
+					);
 				} elseif ( isset( $field_value['label'] ) ) {
 					return esc_html( $field_value['label'] );
 				}
