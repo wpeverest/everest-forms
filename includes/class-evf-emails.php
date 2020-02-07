@@ -441,6 +441,17 @@ class EVF_Emails {
 				$field_label = ! empty( $field_val['label'] ) ? $field_val['label'] : $field_val;
 				$field_type  = $field['type'];
 
+				// If empty label is provided for choice field, don't store their data nor send email.
+				if ( in_array( $field_type, array( 'radio', 'payment-multiple' ), true ) ) {
+					if ( isset( $field_val['label'] ) && '' === $field_val['label'] ) {
+						continue;
+					}
+				} elseif ( in_array( $field_type, array( 'checkbox', 'payment-checkbox' ), true ) ) {
+					if ( isset( $field_val['label'] ) && '' === current( $field_val['label'] ) ) {
+						continue;
+					}
+				}
+
 				if ( isset( $field_val['type'] ) && in_array( $field['type'], array( 'image-upload', 'file-upload', 'rating' ), true ) ) {
 					if ( 'rating' === $field_val['type'] ) {
 						$value           = ! empty( $field_val['value'] ) ? $field_val['value'] : 0;
