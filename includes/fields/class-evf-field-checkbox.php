@@ -101,16 +101,27 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 					&& ! empty( $field_value['images'] )
 					&& apply_filters( 'everest_forms_checkbox_field_html_value_images', true, $context )
 				) {
-					$items = array();
+					$items   = array();
+					$uploads = wp_upload_dir();
 
 					if ( ! empty( $field_value['label'] ) ) {
 						foreach ( $field_value['label'] as $key => $value ) {
 							if ( ! empty( $field_value['images'][ $key ] ) ) {
-								$items[] = sprintf(
-									'<span style="max-width:200px;display:block;margin:0 0 5px 0;"><img src="%s" style="max-width:100%%;display:block;margin:0;"></span>%s',
-									esc_url( $field_value['images'][ $key ] ),
-									esc_html( $value )
-								);
+								$img_url = trailingslashit( content_url() ) . str_replace( str_replace( 'uploads', '', $uploads['basedir'] ), '', $field_value['images'][ $key ] );
+								if ( 'export-pdf' === $context ) {
+									$pdf_file = $uploads['basedir'] . str_replace( '/uploads/', '/', str_replace( content_url(), '', esc_url( $img_url ) ) );
+									$items[]  = sprintf(
+										'<span style="max-width:200px;display:block;margin:0 0 5px 0;"><img src="%s" style="max-width:100%%;display:block;margin:0;"></span>%s',
+										esc_url( $pdf_file ),
+										esc_html( $value )
+									);
+								} else {
+									$items[] = sprintf(
+										'<span style="max-width:200px;display:block;margin:0 0 5px 0;"><img src="%s" style="max-width:100%%;display:block;margin:0;"></span>%s',
+										esc_url( $img_url ),
+										esc_html( $value )
+									);
+								}
 							} else {
 								$items[] = esc_html( $value );
 							}
