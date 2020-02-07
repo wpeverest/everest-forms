@@ -275,7 +275,9 @@ jQuery( function ( $ ) {
 					errorClass: 'evf-error',
 					validClass: 'evf-valid',
 					errorPlacement: function( error, element ) {
-						if ( 'radio' === element.attr( 'type' ) || 'checkbox' === element.attr( 'type' ) ) {
+						if ( element.closest( '.evf-field' ).is( '.evf-field-scale-rating' ) ) {
+							element.closest( '.evf-field' ).find( '.everest-forms-field-scale-rating' ).after( error );
+						} else if ( 'radio' === element.attr( 'type' ) || 'checkbox' === element.attr( 'type' ) ) {
 							if ( element.hasClass( 'everest-forms-likert-field-option' ) ) {
 								element.closest( 'tr' ).children( 'th' ).append( error );
 							} else {
