@@ -89,7 +89,7 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 	 * @return string
 	 */
 	public function html_field_value( $value, $field, $form_data = array(), $context = '' ) {
-		if ( is_serialized( $field ) || in_array( $context, array( 'email-html', 'export-csv', 'export-pdf' ), true ) ) {
+		if ( is_serialized( $field ) || in_array( $context, array( 'email-html', 'export-pdf' ), true ) ) {
 			$field_value = maybe_unserialize( $field );
 			$field_type  = isset( $field_value['type'] ) ? sanitize_text_field( $field_value['type'] ) : 'radio';
 
@@ -101,18 +101,18 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 					&& apply_filters( 'everest_forms_checkbox_field_html_value_images', true, $context )
 				) {
 					$uploads = wp_upload_dir();
-					$img_url = trailingslashit( content_url() ) . str_replace( str_replace( 'uploads', '', $uploads['basedir'] ), '', $field_value['image'] );
+
 					if ( 'export-pdf' === $context ) {
-						$pdf_file = $uploads['basedir'] . str_replace( '/uploads/', '/', str_replace( content_url(), '', esc_url( $img_url ) ) );
+						$pdf_file = $uploads['basedir'] . str_replace( '/uploads/', '/', str_replace( content_url(), '', esc_url( $field_value['image'] ) ) );
 						return sprintf(
 							'<span style="max-width:200px;display:block;margin:0 0 5px 0;"><img src="%s" style="max-width:100%%;display:block;margin:0;"></span>%s',
-							esc_url( $img_url ),
+							esc_url( $pdf_file ),
 							esc_html( $pdf_file )
 						);
 					} else {
 						return sprintf(
 							'<span style="max-width:200px;display:block;margin:0 0 5px 0;"><img src="%s" style="max-width:100%%;display:block;margin:0;"></span>%s',
-							esc_url( $img_url ),
+							esc_url( $field_value['image'] ),
 							esc_html( $field_value['label'] )
 						);
 					}
