@@ -78,13 +78,14 @@ class EVF_Form_Task {
 	 */
 	public function do_task( $entry ) {
 		try {
-			$this->errors      = array();
-			$this->form_fields = array();
-			$form_id           = absint( $entry['id'] );
-			$form              = EVF()->form->get( $form_id );
-			$honeypot          = false;
-			$response_data     = array();
-			$this->ajax_err    = array();
+			$this->errors      		  = array();
+			$this->form_fields 		  = array();
+			$form_id           		  = absint( $entry['id'] );
+			$form              		  = EVF()->form->get( $form_id );
+			$honeypot          		  = false;
+			$response_data     		  = array();
+			$this->ajax_err    		  = array();
+			$this->evf_notice_print   = false;
 
 			// Check nonce for form submission.
 			if ( empty( $_POST['_wpnonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['_wpnonce'] ), 'everest-forms_process_submit' ) ) { // WPCS: input var ok, sanitization ok.
@@ -149,6 +150,10 @@ class EVF_Form_Task {
 				$field_submit = isset( $entry['form_fields'][ $field_id ] ) ? $entry['form_fields'][ $field_id ] : '';
 
 				do_action( "everest_forms_process_validate_{$field_type}", $field_id, $field_submit, $this->form_data, $field_type );
+
+				if ( 'credit-card' === $field_type ) {
+					$this->evf_notice_print = true;
+				}
 
 				if ( 'yes' === get_option( 'evf_validation_error' ) && $ajax_form_submission ) {
 					$this->ajax_err[] = array( $field_type => $field_id );
@@ -290,7 +295,12 @@ class EVF_Form_Task {
 		if ( 1 == $ajax_form_submission ) {
 			$response_data['message']  = $message;
 			$response_data['response'] = 'success';
-			evf_add_notice( $message, 'success' );
+
+			// Add notice only if credit card is populated in form fields.
+			if ( isset( $this->evf_notice_print ) && $this->evf_notice_print ) {
+				evf_add_notice( $message, 'success' );
+			}
+
 			return $response_data;
 		}
 		evf_add_notice( $message, 'success' );
