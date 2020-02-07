@@ -89,7 +89,7 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 	 * @return string
 	 */
 	public function html_field_value( $value, $field, $form_data = array(), $context = '' ) {
-		if ( is_serialized( $field ) ) {
+		if ( is_serialized( $field ) || in_array( $context, array( 'email-html', 'export-csv', 'export-pdf' ), true ) ) {
 			$field_value = maybe_unserialize( $field );
 			$field_type  = isset( $field_value['type'] ) ? sanitize_text_field( $field_value['type'] ) : 'radio';
 
