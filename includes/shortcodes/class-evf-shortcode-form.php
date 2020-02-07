@@ -543,7 +543,7 @@ class EVF_Shortcode_Form {
 				foreach ( $likert_rows as $row_key => $row_label ) {
 					$row_keys[]                     = $row_key;
 					$row_slug                       = 'required-field-message-' . $row_key;
-					$sub_field_messages[ $row_key ] = isset( $field[ $row_slug ] ) ? $field[ $row_slug ] : '';
+					$sub_field_messages[ $row_key ] = isset( $field[ $row_slug ] ) ? $field[ $row_slug ] : $required_validation;
 				}
 				$container_data['row-keys'] = wp_json_encode( $row_keys );
 			} elseif ( 'address' === $field['type'] ) {
