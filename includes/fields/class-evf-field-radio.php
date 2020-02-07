@@ -107,7 +107,7 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 						return sprintf(
 							'<span style="max-width:200px;display:block;margin:0 0 5px 0;"><img src="%s" style="max-width:100%%;display:block;margin:0;"></span>%s',
 							esc_url( $pdf_file ),
-							esc_html( $pdf_file )
+							esc_html( $field_value['label'] )
 						);
 					} else {
 						return sprintf(
