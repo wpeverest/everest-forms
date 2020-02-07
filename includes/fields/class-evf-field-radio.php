@@ -105,6 +105,8 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 						esc_url( $field_value['image'] ),
 						esc_html( $field_value['label'] )
 					);
+				} elseif ( isset( $field_value['label'] ) ) {
+					return esc_html( $field_value['label'] );
 				}
 			}
 		}
@@ -286,8 +288,9 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 
 			// Conditional logic.
 			if ( isset( $choices['primary'] ) ) {
-				$choice['attr']['conditional_id']    = $choices['primary']['attr']['conditional_id'];
-				if (  isset( $choices['primary']['attr']['conditional_rules'] ) ) {
+				$choice['attr']['conditional_id'] = $choices['primary']['attr']['conditional_id'];
+
+				if ( isset( $choices['primary']['attr']['conditional_rules'] ) ) {
 					$choice['attr']['conditional_rules'] = $choices['primary']['attr']['conditional_rules'];
 				}
 			}

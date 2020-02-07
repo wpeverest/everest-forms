@@ -633,11 +633,22 @@ class EVF_Form_Task {
 					continue;
 				}
 
-				// If empty file is supplied, do store their data nor send email.
+				// If empty file is supplied, don't store their data nor send email.
 				if ( in_array( $field['type'], array( 'image-upload', 'file-upload' ), true ) ) {
 
 					// BW compatibility for previous file uploader.
 					if ( isset( $field['value']['file_url'] ) && '' === $field['value']['file_url'] ) {
+						continue;
+					}
+				}
+
+				// If empty label is provided for choice field, don't store their data nor send email.
+				if ( in_array( $field['type'], array( 'radio', 'payment-multiple' ), true ) ) {
+					if ( isset( $field['value']['label'] ) && '' === $field['value']['label'] ) {
+						continue;
+					}
+				} elseif ( in_array( $field['type'], array( 'checkbox', 'payment-checkbox' ), true ) ) {
+					if ( isset( $field['value']['label'] ) && '' === array_pop( $field['value']['label'] ) ) {
 						continue;
 					}
 				}
