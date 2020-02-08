@@ -101,8 +101,7 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 					&& ! empty( $field_value['images'] )
 					&& apply_filters( 'everest_forms_checkbox_field_html_value_images', true, $context )
 				) {
-					$items   = array();
-					$uploads = wp_upload_dir();
+					$items = array();
 
 					if ( ! empty( $field_value['label'] ) ) {
 						foreach ( $field_value['label'] as $key => $value ) {
@@ -118,7 +117,7 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 						}
 					}
 
-					return implode( '<br><br>', $items );
+					return implode( 'export-csv' !== $context ? '<br><br>' : '|', $items );
 				}
 			}
 		}
