@@ -658,7 +658,7 @@ class EVF_Form_Task {
 						continue;
 					}
 				} elseif ( in_array( $field['type'], array( 'checkbox', 'payment-checkbox' ), true ) ) {
-					if ( isset( $field['value']['label'] ) && '' === current( $field['value']['label'] ) ) {
+					if ( isset( $field['value']['label'] ) && ( empty( $field['value']['label'] ) || '' === current( $field['value']['label'] ) ) ) {
 						continue;
 					}
 				}
