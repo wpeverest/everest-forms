@@ -412,6 +412,11 @@ class EVF_Emails {
 			return '';
 		}
 
+		// Make sure we have an entry id.
+		if ( ! empty( $this->entry_id ) ) {
+			$this->form_data['entry_id'] = (int) $this->entry_id;
+		}
+
 		$message = '';
 
 		if ( $html ) {
@@ -436,6 +441,7 @@ class EVF_Emails {
 				) {
 					continue;
 				}
+
 				$field_val   = empty( $field['value'] ) && '0' !== $field['value'] ? '<em>' . __( '(empty)', 'everest-forms' ) . '</em>' : $field['value'];
 				$field_name  = isset( $field_val['name'] ) ? $field_val['name'] : $field['name'];
 				$field_label = ! empty( $field_val['label'] ) ? $field_val['label'] : $field_val;
@@ -452,12 +458,15 @@ class EVF_Emails {
 					}
 				}
 
+				if ( isset( $field['value'], $field['value_raw'] ) && is_string( $field['value'] ) && in_array( $field_type, array( 'image-upload', 'file-upload' ), true ) ) {
+					$field['value'] = $field;
+				}
+
 				if ( isset( $field_val['type'] ) && in_array( $field['type'], array( 'image-upload', 'file-upload', 'rating' ), true ) ) {
 					if ( 'rating' === $field_val['type'] ) {
 						$value           = ! empty( $field_val['value'] ) ? $field_val['value'] : 0;
 						$number_of_stars = ! empty( $field_val['number_of_rating'] ) ? $field_val['number_of_rating'] : 5;
 						$field_val       = $value . '/' . $number_of_stars;
-
 					} else {
 						$field_val = empty( $field_val['file_url'] ) ? '<em>' . __( '(empty)', 'everest-forms' ) . '</em>' : $field_val;
 					}

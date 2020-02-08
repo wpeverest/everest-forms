@@ -78,14 +78,14 @@ class EVF_Form_Task {
 	 */
 	public function do_task( $entry ) {
 		try {
-			$this->errors      		  = array();
-			$this->form_fields 		  = array();
-			$form_id           		  = absint( $entry['id'] );
-			$form              		  = EVF()->form->get( $form_id );
-			$honeypot          		  = false;
-			$response_data     		  = array();
-			$this->ajax_err    		  = array();
-			$this->evf_notice_print   = false;
+			$this->errors           = array();
+			$this->form_fields      = array();
+			$form_id                = absint( $entry['id'] );
+			$form                   = evf()->form->get( $form_id );
+			$honeypot               = false;
+			$response_data          = array();
+			$this->ajax_err         = array();
+			$this->evf_notice_print = false;
 
 			// Check nonce for form submission.
 			if ( empty( $_POST['_wpnonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['_wpnonce'] ), 'everest-forms_process_submit' ) ) { // WPCS: input var ok, sanitization ok.
@@ -131,7 +131,7 @@ class EVF_Form_Task {
 
 					$exclude = array( 'title', 'html', 'captcha' );
 
-					if ( ! in_array( $field_type, $exclude ) ) {
+					if ( ! in_array( $field_type, $exclude, true ) ) {
 						$this->form_fields[ $field_id ] = array(
 							'id'       => $field_id,
 							'name'     => sanitize_text_field( $field['label'] ),
@@ -162,7 +162,7 @@ class EVF_Form_Task {
 			}
 
 			// If validation issues occur, send the results accordingly.
-			if ( $ajax_form_submission && sizeof( $this->ajax_err ) ) {
+			if ( $ajax_form_submission && count( $this->ajax_err ) ) {
 				$response_data['error']    = $this->ajax_err;
 				$response_data['message']  = __( 'Form has not been submitted, please see the errors below.', 'everest-forms' );
 				$response_data['response'] = 'error';
