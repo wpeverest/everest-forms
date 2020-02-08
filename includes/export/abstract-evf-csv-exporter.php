@@ -327,6 +327,11 @@ abstract class EVF_CSV_Exporter {
 	protected function implode_values( $values ) {
 		$values_to_implode = array();
 
+		// For checkboxe and radio.
+		if ( ! empty( $values['label'] ) ) {
+			$values = $values['label'];
+		}
+
 		foreach ( $values as $value ) {
 			$value               = (string) is_scalar( $value ) ? $value : '';
 			$values_to_implode[] = str_replace( ',', '\\,', $value );
