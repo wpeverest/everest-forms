@@ -453,7 +453,7 @@ class EVF_Emails {
 						continue;
 					}
 				} elseif ( in_array( $field_type, array( 'checkbox', 'payment-checkbox' ), true ) ) {
-					if ( isset( $field_val['label'] ) && '' === current( $field_val['label'] ) ) {
+					if ( isset( $field_val['label'] ) && ( empty( $field_val['label'] ) || '' === current( $field_val['label'] ) ) ) {
 						continue;
 					}
 				}
