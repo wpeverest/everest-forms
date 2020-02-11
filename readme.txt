@@ -149,7 +149,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 1.6.0 - 10-02-2020 =
+= 1.6.0 - 11-02-2020 =
 * Feature - Add support for form template.
 * Feature - Import Export of Everest Forms.
 * Feature - Add support for AJAX form submission.
