@@ -42,7 +42,9 @@ Check [documentation](http://docs.wpeverest.com/docs/everest-forms/)
 * View Form entries from your dashboard
 * Quick Form Preview option
 * CSV exporter for entries
-* Provides two different form template design
+* Form Import Export
+* Prebuilt Form templates
+* AJAX form submission
 * Google Recaptcha V2 and V3 Supported
 * Spam protection via honeypot
 * Editable successful form submission message

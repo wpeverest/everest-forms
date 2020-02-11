@@ -228,7 +228,7 @@ class EVF_Admin_Assets {
 						'template_licence_check_nonce' => wp_create_nonce( 'everest_forms_template_licence_check' ),
 						'i18n_form_name'               => esc_html__( 'Give it a name.', 'everest-forms' ),
 						'i18n_form_error_name'         => esc_html__( 'You must provide a Form name', 'everest-forms' ),
-						'upgrade_url'                  => apply_filters( 'everest_forms_upgrade_url', 'https://wpeverest.com/wordpress-plugins/everest-forms/?utm_source=user-dashboard&utm_medium=modal-button&utm_campaign=free-version' ),
+						'upgrade_url'                  => apply_filters( 'everest_forms_upgrade_url', 'https://wpeverest.com/wordpress-plugins/everest-forms/?utm_source=user-dashboard&utm_medium=form-template&utm_campaign=free-version' ),
 						'upgrade_button'               => esc_html__( 'Upgrade Plan', 'everest-forms' ),
 						'upgrade_message'              => esc_html__( 'This template requires premium addons. Please upgrade to the Premium plan to unlock all these awesome Templates.', 'everest-forms' ),
 						'upgrade_title'                => esc_html__( 'is a Premium Template', 'everest-forms' ),
