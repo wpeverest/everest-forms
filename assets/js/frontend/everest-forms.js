@@ -330,10 +330,10 @@ jQuery( function ( $ ) {
 							$submit.text( processText ).prop( 'disabled', true );
 						}
 
-						if ( 1 === $( $(this)[0].currentForm ).data( 'ajax_submission' ) ) {
+						if ( 1 !== $form.data( 'ajax_submission' ) ) {
+							form.submit();
+						} else {
 							return;
-						} else if ( element.name in this.submitted || element.name in this.invalid ) {
-							this.element( element );
 						}
 					},
 					onkeyup: function( element, event ) {

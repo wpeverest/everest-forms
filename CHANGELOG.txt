@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 1.6.1 - 13-02-2020 =
+* Fix - Form submission error while processing on frontend.
+
 = 1.6.0 - 11-02-2020 =
 * Feature - Add support for form template.
 * Feature - Import Export of Everest Forms.
