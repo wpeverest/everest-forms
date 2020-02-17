@@ -80,6 +80,8 @@ class EVF_Smart_Tags {
 						} elseif ( in_array( $value['type'], array( 'checkbox', 'payment-checkbox' ), true ) ) {
 							$value = implode( ', ', $value['label'] );
 						}
+					} elseif ( isset( $value['number_of_rating'], $value['value'] ) ) {
+						$value = (string) $value['value'] . '/' . (string) $value['number_of_rating'];
 					}
 
 					$content = str_replace( '{field_id="' . $field_id . '"}', $value, $content );
