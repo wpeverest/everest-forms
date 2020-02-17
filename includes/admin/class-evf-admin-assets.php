@@ -164,7 +164,7 @@ class EVF_Admin_Assets {
 				'upgrade_title'         => esc_html__( 'is a PRO Feature', 'everest-forms' ),
 				'upgrade_message'       => esc_html__( 'We\'re sorry, %name% is not available on your plan.<br>Please upgrade to the PRO plan to unlock all these awesome features.', 'everest-forms' ),
 				'upgrade_button'        => esc_html__( 'Upgrade to PRO', 'everest-forms' ),
-				'upgrade_url'           => apply_filters( 'everest_forms_upgrade_url', 'https://wpeverest.com/wordpress-plugins/everest-forms/?utm_source=user-dashboard&utm_medium=modal-button&utm_campaign=free-version' ),
+				'upgrade_url'           => apply_filters( 'everest_forms_upgrade_url', 'https://wpeverest.com/wordpress-plugins/everest-forms/?utm_source=premium-fields&utm_medium=modal-button&utm_campaign=evf-upgrade-to-pro' ),
 				'enable_stripe_title'   => esc_html__( 'Please enable Stripe', 'everest-forms' ),
 				'enable_stripe_message' => esc_html__( 'Enable Stripe Payment gateway in payments section to use this field.', 'everest-forms' ),
 			)
@@ -228,7 +228,7 @@ class EVF_Admin_Assets {
 						'template_licence_check_nonce' => wp_create_nonce( 'everest_forms_template_licence_check' ),
 						'i18n_form_name'               => esc_html__( 'Give it a name.', 'everest-forms' ),
 						'i18n_form_error_name'         => esc_html__( 'You must provide a Form name', 'everest-forms' ),
-						'upgrade_url'                  => apply_filters( 'everest_forms_upgrade_url', 'https://wpeverest.com/wordpress-plugins/everest-forms/?utm_source=user-dashboard&utm_medium=form-template&utm_campaign=free-version' ),
+						'upgrade_url'                  => apply_filters( 'everest_forms_upgrade_url', 'https://wpeverest.com/wordpress-plugins/everest-forms/?utm_source=form-template&utm_medium=button&utm_campaign=evf-upgrade-to-pro' ),
 						'upgrade_button'               => esc_html__( 'Upgrade Plan', 'everest-forms' ),
 						'upgrade_message'              => esc_html__( 'This template requires premium addons. Please upgrade to the Premium plan to unlock all these awesome Templates.', 'everest-forms' ),
 						'upgrade_title'                => esc_html__( 'is a Premium Template', 'everest-forms' ),
