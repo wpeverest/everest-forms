@@ -78,7 +78,18 @@ class EVF_Smart_Tags {
 				if( ! is_array($value) ){
 					$content = str_replace( '{field_id="' . $field_id . '"}', $value, $content );
 				} else {
-					$value = implode(" ",$value);
+					$mulitple_choice_fields   = array( 'radio', 'payment-multiple' );
+					$checkbox_fields          = array( 'checkbox', 'payment-checkbox' );
+					$is_multiple_choice_field = isset( $value['type'] ) && in_array( $value['type'], $mulitple_choice_fields );
+					$is_checkbox_field        = isset( $value['type'] ) && in_array( $value['type'], $checkbox_fields );
+
+					if ( $is_multiple_choice_field ) {
+						$value = $value['label'];
+					} else if ( $is_checkbox_field ) {
+						$value = implode( ', ', $value['label'] );
+					} else {
+						$value = implode( " ", $value );
+					}
 					$content = str_replace( '{field_id="' . $field_id . '"}', $value, $content );
 				}
 			}
