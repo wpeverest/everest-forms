@@ -29,7 +29,7 @@ final class EverestForms {
 	 * @var   EverestForms
 	 * @since 1.0.0
 	 */
-	protected static $_instance = null;
+	protected static $instance = null;
 
 	/**
 	 * Session instance.
@@ -86,10 +86,10 @@ final class EverestForms {
 	 * @return EverestForms - Main instance.
 	 */
 	public static function instance() {
-		if ( is_null( self::$_instance ) ) {
-			self::$_instance = new self();
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
 		}
-		return self::$_instance;
+		return self::$instance;
 	}
 
 	/**
