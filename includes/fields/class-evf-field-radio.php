@@ -163,7 +163,7 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 					'name'  => "everest_forms[form_fields][{$field_id}]",
 					'value' => isset( $field['show_values'] ) ? $choice['value'] : $choice['label'],
 				),
-				'class'     => array(),
+				'class'     => array( 'input-text' ),
 				'data'      => array(),
 				'id'        => "evf-{$form_id}-field_{$field_id}_{$key}",
 				'image'     => isset( $choice['image'] ) ? $choice['image'] : '',

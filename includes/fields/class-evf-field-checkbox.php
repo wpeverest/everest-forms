@@ -192,7 +192,7 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 					'name'  => "everest_forms[form_fields][{$field_id}][]",
 					'value' => $value,
 				),
-				'class'     => array(),
+				'class'     => array( 'input-text' ),
 				'data'      => array(),
 				'id'        => "evf-{$form_id}-field_{$field_id}_{$key}",
 				'image'     => isset( $choice['image'] ) ? $choice['image'] : '',
