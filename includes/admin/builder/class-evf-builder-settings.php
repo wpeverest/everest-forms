@@ -22,7 +22,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 	 */
 	public function __construct() {
 		$this->id      = 'settings';
-		$this->label   = __( 'Settings', 'everest-forms' );
+		$this->label   = esc_html__( 'Settings', 'everest-forms' );
 		$this->sidebar = true;
 
 		add_action( 'everest_forms_settings_connections_email', array( $this, 'output_connections_list' ) );
@@ -37,8 +37,8 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		$sections = apply_filters(
 			'everest_forms_builder_settings_section',
 			array(
-				'general' => __( 'General', 'everest-forms' ),
-				'email'   => __( 'Email', 'everest-forms' ),
+				'general' => esc_html__( 'General', 'everest-forms' ),
+				'email'   => esc_html__( 'Email', 'everest-forms' ),
 			),
 			$this->form_data
 		);
@@ -59,8 +59,8 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 	private function form_data() {
 		$form_data = array();
 
-		if ( ! empty( $_GET['form_id'] ) ) {
-			$form_data = EVF()->form->get( absint( $_GET['form_id'] ), array( 'content_only' => true ) );
+		if ( ! empty( $_GET['form_id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			$form_data = EVF()->form->get( absint( $_GET['form_id'] ), array( 'content_only' => true ) ); // phpcs:ignore WordPress.Security.NonceVerification
 		}
 
 		return $form_data;
@@ -81,7 +81,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 
 		?>
 			<div class="everest-forms-active-email <?php echo esc_attr( $hidden_class ); ?>">
-				<button class="everest-forms-btn everest-forms-btn-primary everest-forms-email-add" data-form_id="<?php echo absint( $_GET['form_id'] ); ?>" data-source="email" data-type="<?php echo esc_attr( 'connection' ); ?>">
+				<button class="everest-forms-btn everest-forms-btn-primary everest-forms-email-add" data-form_id="<?php echo absint( $_GET['form_id'] ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotValidated ?>" data-source="email" data-type="<?php echo esc_attr( 'connection' ); ?>">
 					<?php printf( esc_html__( 'Add New Email', 'everest-forms' ) ); ?>
 				</button>
 					<ul class="everest-forms-active-email-connections-list">
@@ -99,9 +99,9 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 									$remove_class = 'email-default-remove';
 								}
 								?>
-									<li class="connection-list" data-connection-id="<?php echo $connection_id; ?>">
-										<a class="user-nickname" href="#"><?php echo $connection_name; ?></a>
-										<a href="#"><span class="<?php echo esc_attr( $remove_class ); ?>">Remove</a>
+									<li class="connection-list" data-connection-id="<?php echo esc_attr( $connection_id ); ?>">
+										<a class="user-nickname" href="#"><?php echo esc_html( $connection_name ); ?></a>
+										<a href="#"><span class="<?php echo esc_attr( $remove_class ); ?>"><?php esc_html_e( 'Remove', 'everest-forms' ); ?></a>
 									</li>
 								<?php
 							}
@@ -117,8 +117,6 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 	 * Outputs the builder content.
 	 */
 	public function output_content() {
-		$form_id      = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
-		$user_emails  = evf_get_all_email_fields_by_form_id( $form_id );
 		$settings     = isset( $this->form_data['settings'] ) ? $this->form_data['settings'] : array();
 		$email_status = isset( $this->form_data['settings']['enable_email_notification'] ) ? $this->form_data['settings']['enable_email_notification'] : 0;
 
@@ -348,12 +346,13 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		// --------------------------------------------------------------------//
 		$form_name = isset( $settings['form_title'] ) ? ' - ' . $settings['form_title'] : '';
 		if ( ! isset( $settings['email']['connection_1'] ) ) {
-			$settings['email']['connection_1']                      = array( 'connection_name' => __( 'Admin Notification', 'everest-forms' ) );
-			$settings['email']['connection_1']['evf_to_email']      = isset( $settings['email']['evf_to_email'] ) ? $settings['email']['evf_to_email'] : '{admin_email}';
-			$settings['email']['connection_1']['evf_from_name']     = isset( $settings['email']['evf_from_name'] ) ? $settings['email']['evf_from_name'] : get_bloginfo( 'name', 'display' );
-			$settings['email']['connection_1']['evf_from_email']    = isset( $settings['email']['evf_from_email'] ) ? $settings['email']['evf_from_email'] : '{admin_email}';
-			$settings['email']['connection_1']['evf_reply_to']      = isset( $settings['email']['evf_reply_to'] ) ? $settings['email']['evf_reply_to'] : '';
-			$settings['email']['connection_1']['evf_email_subject'] = isset( $settings['email']['evf_email_subject'] ) ? $settings['email']['evf_email_subject'] : sprintf( __( 'New Form Entry %s', 'everest-forms' ), $form_name );
+			$settings['email']['connection_1']                   = array( 'connection_name' => __( 'Admin Notification', 'everest-forms' ) );
+			$settings['email']['connection_1']['evf_to_email']   = isset( $settings['email']['evf_to_email'] ) ? $settings['email']['evf_to_email'] : '{admin_email}';
+			$settings['email']['connection_1']['evf_from_name']  = isset( $settings['email']['evf_from_name'] ) ? $settings['email']['evf_from_name'] : get_bloginfo( 'name', 'display' );
+			$settings['email']['connection_1']['evf_from_email'] = isset( $settings['email']['evf_from_email'] ) ? $settings['email']['evf_from_email'] : '{admin_email}';
+			$settings['email']['connection_1']['evf_reply_to']   = isset( $settings['email']['evf_reply_to'] ) ? $settings['email']['evf_reply_to'] : '';
+			/* translators: %s: Form Name */
+			$settings['email']['connection_1']['evf_email_subject'] = isset( $settings['email']['evf_email_subject'] ) ? $settings['email']['evf_email_subject'] : sprintf( esc_html__( 'New Form Entry %s', 'everest-forms' ), $form_name );
 			$settings['email']['connection_1']['evf_email_message'] = isset( $settings['email']['evf_email_message'] ) ? $settings['email']['evf_email_message'] : '{all_fields}';
 
 			$email_settings = array( 'attach_pdf_to_admin_email', 'show_header_in_attachment_pdf_file', 'conditional_logic_status', 'conditional_option', 'conditionals' );
@@ -394,7 +393,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 
 		foreach ( $settings['email'] as $connection_id => $connection ) :
 			if ( preg_match( '/connection_/', $connection_id ) ) {
-				echo '<div class="evf-content-email-settings-inner ' . esc_attr( $hidden_class ) . '" data-connection_id=' . $connection_id . '>';
+				echo '<div class="evf-content-email-settings-inner ' . esc_attr( $hidden_class ) . '" data-connection_id=' . esc_attr( $connection_id ) . '>';
 
 				everest_forms_panel_field(
 					'text',
@@ -525,8 +524,9 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					$this->form_data,
 					esc_html__( 'Email Subject', 'everest-forms' ),
 					array(
-						'default'    => isset( $settings['email'][ $connection_id ]['evf_email_subject'] ) ? $settings['email'][ $connection_id ]['evf_email_subject'] : sprintf( __( 'New Form Entry %s', 'everest-forms' ), $form_name ),
-						/* translators: %1$s - general settings docs url */
+						/* translators: %s: Form Name */
+						'default'    => isset( $settings['email'][ $connection_id ]['evf_email_subject'] ) ? $settings['email'][ $connection_id ]['evf_email_subject'] : sprintf( esc_html__( 'New Form Entry %s', 'everest-forms' ), $form_name ),
+						/* translators: %1$s - General Settings docs url */
 						'tooltip'    => sprintf( esc_html__( 'Enter the subject of the email. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#email-subject' ) ),
 						'smarttags'  => array(
 							'type'        => 'all',
@@ -568,6 +568,9 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		do_action( 'everest_forms_settings_panel_content', $this );
 	}
 
+	/**
+	 * Get all pages.
+	 */
 	public function evf_get_all_pages() {
 		$pages = array();
 		foreach ( get_pages() as $page ) {

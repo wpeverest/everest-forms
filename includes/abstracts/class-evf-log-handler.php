@@ -20,7 +20,7 @@ abstract class EVF_Log_Handler implements EVF_Log_Handler_Interface {
 	 * @return string Formatted time for use in log entry.
 	 */
 	protected static function format_time( $timestamp ) {
-		return date( 'c', $timestamp );
+		return date( 'c', $timestamp ); // phpcs:ignore WordPress.DateTime.RestrictedFunctions
 	}
 
 	/**
@@ -37,11 +37,15 @@ abstract class EVF_Log_Handler implements EVF_Log_Handler_Interface {
 		$level_string = strtoupper( $level );
 		$entry        = "{$time_string} {$level_string} {$message}";
 
-		return apply_filters( 'everest_forms_format_log_entry', $entry, array(
-			'timestamp' => $timestamp,
-			'level'     => $level,
-			'message'   => $message,
-			'context'   => $context,
-		) );
+		return apply_filters(
+			'everest_forms_format_log_entry',
+			$entry,
+			array(
+				'timestamp' => $timestamp,
+				'level'     => $level,
+				'message'   => $message,
+				'context'   => $context,
+			)
+		);
 	}
 }

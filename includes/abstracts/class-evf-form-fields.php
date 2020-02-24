@@ -651,7 +651,9 @@ abstract class EVF_Form_Fields {
 				}
 				break;
 
-			// Code Block. ----------------------------------------------------//
+			/*
+			 * Code Block.
+			 */
 			case 'code':
 				$value   = ! empty( $field['code'] ) ? esc_attr( $field['code'] ) : '';
 				$tooltip = esc_html__( 'Enter code for the form field.', 'everest-forms' );
