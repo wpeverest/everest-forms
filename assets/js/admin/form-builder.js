@@ -1018,7 +1018,7 @@
 		render_node: function ( field, old_key, new_key ) {
 			var option = $('.everest-forms-field-options #everest-forms-field-option-' + old_key );
 			var old_field_label = $('#everest-forms-field-option-' + old_key + '-label' ).val();
-			var old_field_meta_key = $('#everest-forms-field-option-' + old_key + '-meta-key' ).val();
+			var old_field_meta_key = $( '#everest-forms-field-option-' + old_key + '-meta-key' ).length ? $( '#everest-forms-field-option-' + old_key + '-meta-key' ).val() : '';
 			var field_type = field.attr('data-field-type'),
 			newOptionHtml = option.html(),
 			new_field_label = old_field_label + ' ' + evf_data.i18n_copy,
@@ -1030,7 +1030,7 @@
 			newOption.append(newOptionHtml);
 			$.each(option.find(':input'), function () {
 				var type = $(this).attr('type');
-				var name = $(this).attr('name');
+				var name = $( this ).attr( 'name' ) ? $( this ).attr( 'name' ) : '';
 				var new_name = name.replace(regex, new_key);
 				var value = '';
 				if ( type === 'text' || type === 'hidden' ) {
