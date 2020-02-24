@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return array
  */
 function evf_get_screen_ids() {
-	$evf_screen_id = sanitize_title( __( 'Everest Forms', 'everest-forms' ) );
+	$evf_screen_id = sanitize_title( esc_html__( 'Everest Forms', 'everest-forms' ) );
 	$screen_ids    = array(
 		'dashboard_page_evf-welcome',
 		'toplevel_page_' . $evf_screen_id,
@@ -33,11 +33,11 @@ function evf_get_screen_ids() {
 /**
  * Create a page and store the ID in an option.
  *
- * @param mixed  $slug         Slug for the new page
- * @param string $option       Option name to store the page's ID
- * @param string $page_title   (default: '') Title for the new page
- * @param string $page_content (default: '') Content for the new page
- * @param int    $post_parent  (default: 0) Parent for the new page
+ * @param mixed  $slug         Slug for the new page.
+ * @param string $option       Option name to store the page's ID.
+ * @param string $page_title   (default: '') Title for the new page.
+ * @param string $page_content (default: '') Content for the new page.
+ * @param int    $post_parent  (default: 0) Parent for the new page.
  *
  * @return int page ID
  */
@@ -45,8 +45,9 @@ function evf_create_page( $slug, $option = '', $page_title = '', $page_content =
 	global $wpdb;
 
 	$option_value = get_option( $option );
+	$page_object  = get_post( $option_value );
 
-	if ( $option_value > 0 && ( $page_object = get_post( $option_value ) ) ) {
+	if ( $option_value > 0 && $page_object ) {
 		if ( 'page' === $page_object->post_type && ! in_array(
 			$page_object->post_status,
 			array(
@@ -54,19 +55,19 @@ function evf_create_page( $slug, $option = '', $page_title = '', $page_content =
 				'trash',
 				'future',
 				'auto-draft',
-			)
-		)
-		) {
-			// Valid page is already in place
+			),
+			true
+		) ) {
+			// Valid page is already in place.
 			return $page_object->ID;
 		}
 	}
 
 	if ( strlen( $page_content ) > 0 ) {
-		// Search for an existing page with the specified page content (typically a shortcode)
+		// Search for an existing page with the specified page content (typically a shortcode).
 		$valid_page_found = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type='page' AND post_status NOT IN ( 'pending', 'trash', 'future', 'auto-draft' ) AND post_content LIKE %s LIMIT 1;", "%{$page_content}%" ) );
 	} else {
-		// Search for an existing page with the specified page slug
+		// Search for an existing page with the specified page slug.
 		$valid_page_found = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type='page' AND post_status NOT IN ( 'pending', 'trash', 'future', 'auto-draft' )  AND post_name = %s LIMIT 1;", $slug ) );
 	}
 
@@ -80,12 +81,12 @@ function evf_create_page( $slug, $option = '', $page_title = '', $page_content =
 		return $valid_page_found;
 	}
 
-	// Search for a matching valid trashed page
+	// Search for a matching valid trashed page.
 	if ( strlen( $page_content ) > 0 ) {
-		// Search for an existing page with the specified page content (typically a shortcode)
+		// Search for an existing page with the specified page content (typically a shortcode).
 		$trashed_page_found = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type='page' AND post_status = 'trash' AND post_content LIKE %s LIMIT 1;", "%{$page_content}%" ) );
 	} else {
-		// Search for an existing page with the specified page slug
+		// Search for an existing page with the specified page slug.
 		$trashed_page_found = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type='page' AND post_status = 'trash' AND post_name = %s LIMIT 1;", $slug ) );
 	}
 
@@ -122,10 +123,9 @@ function evf_create_page( $slug, $option = '', $page_title = '', $page_content =
  *
  * Loops though the EverestFormsoptions array and outputs each field.
  *
- * @param array $options Opens array to output
+ * @param array[] $options Opens array to output.
  */
 function everest_forms_admin_fields( $options ) {
-
 	if ( ! class_exists( 'EVF_Admin_Settings', false ) ) {
 		include dirname( __FILE__ ) . '/class-evf-admin-settings.php';
 	}
@@ -136,11 +136,10 @@ function everest_forms_admin_fields( $options ) {
 /**
  * Update all settings which are passed.
  *
- * @param array $options
- * @param array $data
+ * @param array $options Options array to output.
+ * @param array $data    Optional. Data to use for saving. Defaults to $_POST.
  */
 function everest_forms_update_options( $options, $data = null ) {
-
 	if ( ! class_exists( 'EVF_Admin_Settings', false ) ) {
 		include dirname( __FILE__ ) . '/class-evf-admin-settings.php';
 	}
@@ -151,13 +150,12 @@ function everest_forms_update_options( $options, $data = null ) {
 /**
  * Get a setting from the settings API.
  *
- * @param mixed $option_name
- * @param mixed $default
+ * @param string $option_name Option name.
+ * @param mixed  $default     Default value.
  *
  * @return string
  */
 function everest_forms_settings_get_option( $option_name, $default = '' ) {
-
 	if ( ! class_exists( 'EVF_Admin_Settings', false ) ) {
 		include dirname( __FILE__ ) . '/class-evf-admin-settings.php';
 	}
@@ -168,24 +166,23 @@ function everest_forms_settings_get_option( $option_name, $default = '' ) {
 /**
  * Outputs fields to be used on panels (settings etc).
  *
- * @param string  $option
- * @param string  $panel
- * @param string  $field
- * @param array   $form_data
- * @param string  $label
- * @param array   $args
- * @param boolean $echo
+ * @param string  $option Option.
+ * @param string  $panel  Panel.
+ * @param string  $field  Field.
+ * @param array   $form_data Form data.
+ * @param string  $label  Label.
+ * @param array   $args   Arguments.
+ * @param boolean $echo   True to echo else return.
  *
  * @return string
  */
 function everest_forms_panel_field( $option, $panel, $field, $form_data, $label, $args = array(), $echo = true ) {
-
-	// Required params
+	// Required params.
 	if ( empty( $option ) || empty( $panel ) || empty( $field ) ) {
 		return '';
 	}
 
-	// Setup basic vars
+	// Setup basic vars.
 	$panel       = esc_attr( $panel );
 	$field       = esc_attr( $field );
 	$panel_id    = sanitize_html_class( $panel );
@@ -200,7 +197,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 	$data_attr   = '';
 	$output      = '';
 
-	// Check if we should store values in a parent array
+	// Check if we should store values in a parent array.
 	if ( ! empty( $parent ) ) {
 		if ( ! empty( $subsection ) ) {
 			$field_name = sprintf( '%s[%s][%s][%s]', $parent, $panel, $subsection, $field );
@@ -215,7 +212,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 		$value      = isset( $form_data[ $panel ][ $field ] ) ? $form_data[ $panel ][ $field ] : $default;
 	}
 
-	// Check for data attributes
+	// Check for data attributes.
 	if ( ! empty( $args['data'] ) ) {
 		foreach ( $args['data'] as $key => $val ) {
 			if ( is_array( $val ) ) {
@@ -225,10 +222,10 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 		}
 	}
 
-	// Determine what field type to output
+	// Determine what field type to output.
 	switch ( $option ) {
 
-		// Text input
+		// Text input.
 		case 'text':
 			$type   = ! empty( $args['type'] ) ? esc_attr( $args['type'] ) : 'text';
 			$output = sprintf(
@@ -244,7 +241,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 			);
 			break;
 
-		// Textarea
+		// Textarea.
 		case 'textarea':
 			$rows   = ! empty( $args['rows'] ) ? (int) $args['rows'] : '3';
 			$output = sprintf(
@@ -260,7 +257,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 			);
 			break;
 
-		// TinyMCE
+		// TinyMCE.
 		case 'tinymce':
 			$arguments                  = wp_parse_args(
 				$tinymce,
@@ -278,7 +275,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 			$output = ob_get_clean();
 			break;
 
-		// Checkbox
+		// Checkbox.
 		case 'checkbox':
 			$checked   = checked( '1', $value, false );
 			$checkbox  = sprintf(
@@ -309,7 +306,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 			$output .= '</label>';
 			break;
 
-		// Radio
+		// Radio.
 		case 'radio':
 			$options = $args['options'];
 			$x       = 1;
@@ -345,7 +342,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 			}
 			break;
 
-		// Select
+		// Select.
 		case 'select':
 			if ( empty( $args['options'] ) && empty( $args['field_map'] ) ) {
 				return '';
@@ -356,7 +353,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 				$available_fields = evf_get_form_fields( $form_data, $args['field_map'] );
 				if ( ! empty( $available_fields ) ) {
 					foreach ( $available_fields as $id => $available_field ) {
-						$lbl            = ! empty( $available_field['label'] ) ? esc_attr( $available_field['label'] ) : __( 'Field #', 'everest-forms' ) . $id;
+						$lbl            = ! empty( $available_field['label'] ) ? esc_attr( $available_field['label'] ) : esc_html__( 'Field #', 'everest-forms' ) . $id;
 						$options[ $id ] = $lbl;
 					}
 				}
@@ -424,11 +421,11 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 			$smart_tag .= '<a href="#" class="evf-toggle-smart-tag-display" data-type="' . $type . '" data-fields="' . $form_fields . '"><span class="dashicons dashicons-editor-code"></span></a>';
 			$smart_tag .= '<div class="evf-smart-tag-lists" style="display: none">';
 			$smart_tag .= '<div class="smart-tag-title">';
-			$smart_tag .= __( 'Available Fields', 'everest-forms' );
+			$smart_tag .= esc_html__( 'Available Fields', 'everest-forms' );
 			$smart_tag .= '</div><ul class="evf-fields"></ul>';
-			if ( $type == 'all' || $type == 'other' ) {
+			if ( 'all' === $type || 'other' === $type ) {
 				$smart_tag .= '<div class="smart-tag-title other-tag-title">';
-				$smart_tag .= __( 'Others', 'everest-forms' );
+				$smart_tag .= esc_html__( 'Others', 'everest-forms' );
 				$smart_tag .= '</div><ul class="evf-others"></ul>';
 			}
 			$smart_tag .= '</div>';
@@ -447,7 +444,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 
 	// Wash our hands.
 	if ( $echo ) {
-		echo $output;
+		echo $output; // phpcs:ignore WordPress.Security.EscapeOutput
 	} else {
 		return $output;
 	}
