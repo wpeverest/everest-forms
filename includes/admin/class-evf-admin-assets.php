@@ -33,11 +33,11 @@ class EVF_Admin_Assets {
 		$screen_id = $screen ? $screen->id : '';
 
 		// Register admin styles.
-		wp_register_style( 'everest-forms-admin', EVF()->plugin_url() . '/assets/css/admin.css', array(), EVF_VERSION );
-		wp_register_style( 'everest-forms-admin-menu', EVF()->plugin_url() . '/assets/css/menu.css', array(), EVF_VERSION );
-		wp_register_style( 'jquery-ui-style', EVF()->plugin_url() . '/assets/css/jquery-ui/jquery-ui.min.css', array(), EVF_VERSION );
-		wp_register_style( 'jquery-confirm', EVF()->plugin_url() . '/assets/css/jquery-confirm/jquery-confirm.min.css', array(), '3.3.0' );
-		wp_register_style( 'perfect-scrollbar', EVF()->plugin_url() . '/assets/css/perfect-scrollbar/perfect-scrollbar.css', array(), '1.4.0' );
+		wp_register_style( 'everest-forms-admin', evf()->plugin_url() . '/assets/css/admin.css', array(), EVF_VERSION );
+		wp_register_style( 'everest-forms-admin-menu', evf()->plugin_url() . '/assets/css/menu.css', array(), EVF_VERSION );
+		wp_register_style( 'jquery-ui-style', evf()->plugin_url() . '/assets/css/jquery-ui/jquery-ui.min.css', array(), EVF_VERSION );
+		wp_register_style( 'jquery-confirm', evf()->plugin_url() . '/assets/css/jquery-confirm/jquery-confirm.min.css', array(), '3.3.0' );
+		wp_register_style( 'perfect-scrollbar', evf()->plugin_url() . '/assets/css/perfect-scrollbar/perfect-scrollbar.css', array(), '1.4.0' );
 
 		// Add RTL support for admin styles.
 		wp_style_add_data( 'everest-forms-admin', 'rtl', 'replace' );
@@ -70,28 +70,28 @@ class EVF_Admin_Assets {
 		$suffix    = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
 		// Register scripts.
-		wp_register_script( 'everest-forms-admin', EVF()->plugin_url() . '/assets/js/admin/admin' . $suffix . '.js', array( 'jquery', 'jquery-blockui', 'jquery-ui-sortable', 'jquery-ui-widget', 'jquery-ui-core', 'tooltipster', 'wp-color-picker', 'perfect-scrollbar' ), EVF_VERSION, true );
-		wp_register_script( 'everest-forms-extensions', EVF()->plugin_url() . '/assets/js/admin/extensions' . $suffix . '.js', array( 'jquery', 'updates' ), EVF_VERSION, true );
-		wp_register_script( 'everest-forms-email-admin', EVF()->plugin_url() . '/assets/js/admin/evf-admin-email' . $suffix . '.js', array( 'jquery', 'jquery-blockui', 'jquery-ui-sortable', 'jquery-ui-widget', 'jquery-ui-core', 'tooltipster', 'wp-color-picker', 'perfect-scrollbar' ), EVF_VERSION, true );
-		wp_register_script( 'everest-forms-editor', EVF()->plugin_url() . '/assets/js/admin/editor' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true );
-		wp_register_script( 'jquery-blockui', EVF()->plugin_url() . '/assets/js/jquery-blockui/jquery.blockUI' . $suffix . '.js', array( 'jquery' ), '2.70', true );
-		wp_register_script( 'jquery-confirm', EVF()->plugin_url() . '/assets/js/jquery-confirm/jquery-confirm' . $suffix . '.js', array( 'jquery' ), '3.3.0', true );
-		wp_register_script( 'jquery-tiptip', EVF()->plugin_url() . '/assets/js/jquery-tiptip/jquery.tipTip' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true ); // @deprecated
-		wp_register_script( 'tooltipster', EVF()->plugin_url() . '/assets/js/tooltipster/tooltipster.bundle' . $suffix . '.js', array( 'jquery' ), '4.6.2', true );
-		wp_register_script( 'perfect-scrollbar', EVF()->plugin_url() . '/assets/js/perfect-scrollbar/perfect-scrollbar' . $suffix . '.js', array( 'jquery' ), '1.4.0', true );
-		wp_register_script( 'evf-clipboard', EVF()->plugin_url() . '/assets/js/admin/evf-clipboard' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true );
-		wp_register_script( 'selectWoo', EVF()->plugin_url() . '/assets/js/selectWoo/selectWoo.full' . $suffix . '.js', array( 'jquery' ), '1.0.4', true );
-		wp_register_script( 'evf-enhanced-select', EVF()->plugin_url() . '/assets/js/admin/evf-enhanced-select' . $suffix . '.js', array( 'jquery', 'selectWoo' ), EVF_VERSION, true );
-		wp_register_script( 'evf-template-controller', EVF()->plugin_url() . '/assets/js/admin/form-template-controller' . $suffix . '.js', array( 'jquery' ), EVF_VERSION );
+		wp_register_script( 'everest-forms-admin', evf()->plugin_url() . '/assets/js/admin/admin' . $suffix . '.js', array( 'jquery', 'jquery-blockui', 'jquery-ui-sortable', 'jquery-ui-widget', 'jquery-ui-core', 'tooltipster', 'wp-color-picker', 'perfect-scrollbar' ), EVF_VERSION, true );
+		wp_register_script( 'everest-forms-extensions', evf()->plugin_url() . '/assets/js/admin/extensions' . $suffix . '.js', array( 'jquery', 'updates' ), EVF_VERSION, true );
+		wp_register_script( 'everest-forms-email-admin', evf()->plugin_url() . '/assets/js/admin/evf-admin-email' . $suffix . '.js', array( 'jquery', 'jquery-blockui', 'jquery-ui-sortable', 'jquery-ui-widget', 'jquery-ui-core', 'tooltipster', 'wp-color-picker', 'perfect-scrollbar' ), EVF_VERSION, true );
+		wp_register_script( 'everest-forms-editor', evf()->plugin_url() . '/assets/js/admin/editor' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true );
+		wp_register_script( 'jquery-blockui', evf()->plugin_url() . '/assets/js/jquery-blockui/jquery.blockUI' . $suffix . '.js', array( 'jquery' ), '2.70', true );
+		wp_register_script( 'jquery-confirm', evf()->plugin_url() . '/assets/js/jquery-confirm/jquery-confirm' . $suffix . '.js', array( 'jquery' ), '3.3.0', true );
+		wp_register_script( 'jquery-tiptip', evf()->plugin_url() . '/assets/js/jquery-tiptip/jquery.tipTip' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true ); // @deprecated
+		wp_register_script( 'tooltipster', evf()->plugin_url() . '/assets/js/tooltipster/tooltipster.bundle' . $suffix . '.js', array( 'jquery' ), '4.6.2', true );
+		wp_register_script( 'perfect-scrollbar', evf()->plugin_url() . '/assets/js/perfect-scrollbar/perfect-scrollbar' . $suffix . '.js', array( 'jquery' ), '1.4.0', true );
+		wp_register_script( 'evf-clipboard', evf()->plugin_url() . '/assets/js/admin/evf-clipboard' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true );
+		wp_register_script( 'selectWoo', evf()->plugin_url() . '/assets/js/selectWoo/selectWoo.full' . $suffix . '.js', array( 'jquery' ), '1.0.4', true );
+		wp_register_script( 'evf-enhanced-select', evf()->plugin_url() . '/assets/js/admin/evf-enhanced-select' . $suffix . '.js', array( 'jquery', 'selectWoo' ), EVF_VERSION, true );
+		wp_register_script( 'evf-template-controller', evf()->plugin_url() . '/assets/js/admin/form-template-controller' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true );
 		wp_localize_script(
 			'evf-template-controller',
 			'evf_templates',
 			array(
-				'evf_template_all'  => EVF_Admin_Forms::get_template_data(),
-				'i18n_get_started'  => esc_html__( 'Get Started', 'everest-forms' ),
-				'i18n_get_preview'  => esc_html__( 'Preview', 'everest-forms' ),
-				'i18n_pro_feature'  => esc_html__( 'Pro', 'everest-forms' ),
-				'template_refresh'  => esc_html__( 'Updating Templates', 'everest-forms' ),
+				'evf_template_all' => EVF_Admin_Forms::get_template_data(),
+				'i18n_get_started' => esc_html__( 'Get Started', 'everest-forms' ),
+				'i18n_get_preview' => esc_html__( 'Preview', 'everest-forms' ),
+				'i18n_pro_feature' => esc_html__( 'Pro', 'everest-forms' ),
+				'template_refresh' => esc_html__( 'Updating Templates', 'everest-forms' ),
 			)
 		);
 		wp_localize_script(
@@ -110,7 +110,7 @@ class EVF_Admin_Assets {
 				'i18n_searching'            => _x( 'Searching&hellip;', 'enhanced select', 'everest-forms' ),
 			)
 		);
-		wp_register_script( 'evf-form-builder', EVF()->plugin_url() . '/assets/js/admin/form-builder' . $suffix . '.js', array( 'jquery', 'jquery-blockui', 'tooltipster', 'jquery-ui-sortable', 'jquery-ui-widget', 'jquery-ui-core', 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-datepicker', 'jquery-confirm', 'evf-clipboard' ), EVF_VERSION, true );
+		wp_register_script( 'evf-form-builder', evf()->plugin_url() . '/assets/js/admin/form-builder' . $suffix . '.js', array( 'jquery', 'jquery-blockui', 'tooltipster', 'jquery-ui-sortable', 'jquery-ui-widget', 'jquery-ui-core', 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-datepicker', 'jquery-confirm', 'evf-clipboard' ), EVF_VERSION, true );
 		wp_localize_script(
 			'evf-form-builder',
 			'evf_data',
@@ -130,7 +130,7 @@ class EVF_Admin_Assets {
 					'i18n_installing'              => esc_html__( 'Installing', 'everest-forms' ),
 					'i18n_activating'              => esc_html__( 'Activating', 'everest-forms' ),
 					'i18n_install_activate'        => esc_html__( 'Install & Activate', 'everest-forms' ),
-					'i18n_install_only'        	   => esc_html__( 'Activate Plugins', 'everest-forms' ),
+					'i18n_install_only'            => esc_html__( 'Activate Plugins', 'everest-forms' ),
 					'i18n_copy'                    => esc_html__( '(copy)', 'everest-forms' ),
 					'i18n_close'                   => esc_html__( 'Close', 'everest-forms' ),
 					'i18n_cancel'                  => esc_html__( 'Cancel', 'everest-forms' ),
@@ -156,7 +156,7 @@ class EVF_Admin_Assets {
 		);
 
 		// Builder upgrade.
-		wp_register_script( 'evf-upgrade', EVF()->plugin_url() . '/assets/js/admin/upgrade.js', array( 'jquery', 'jquery-confirm' ), EVF_VERSION, false );
+		wp_register_script( 'evf-upgrade', evf()->plugin_url() . '/assets/js/admin/upgrade.js', array( 'jquery', 'jquery-confirm' ), EVF_VERSION, false );
 		wp_localize_script(
 			'evf-upgrade',
 			'evf_upgrade',
@@ -217,7 +217,7 @@ class EVF_Admin_Assets {
 
 			// EverestForms builder setup page.
 			if ( isset( $_GET['create-form'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-				wp_register_script( 'evf-setup', EVF()->plugin_url() . '/assets/js/admin/evf-setup' . $suffix . '.js', array( 'jquery', 'everest-forms-extensions', 'evf-template-controller' ), EVF_VERSION );
+				wp_register_script( 'evf-setup', evf()->plugin_url() . '/assets/js/admin/evf-setup' . $suffix . '.js', array( 'jquery', 'everest-forms-extensions', 'evf-template-controller' ), EVF_VERSION, true );
 				wp_enqueue_script( 'evf-setup' );
 				wp_localize_script(
 					'evf-setup',
@@ -247,7 +247,7 @@ class EVF_Admin_Assets {
 
 		// Plugins page.
 		if ( in_array( $screen_id, array( 'plugins' ), true ) ) {
-			wp_register_script( 'evf-plugins', EVF()->plugin_url() . '/assets/js/admin/plugins' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true );
+			wp_register_script( 'evf-plugins', evf()->plugin_url() . '/assets/js/admin/plugins' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true );
 			wp_enqueue_script( 'evf-plugins' );
 			wp_localize_script(
 				'evf-plugins',
