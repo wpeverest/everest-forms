@@ -47,15 +47,15 @@ class EVF_Admin_Tools {
 	public static function status_logs_file() {
 		$logs = self::scan_log_files();
 
-		if ( ! empty( $_REQUEST['log_file'] ) && isset( $logs[ sanitize_title( $_REQUEST['log_file'] ) ] ) ) {
-			$viewed_log = $logs[ sanitize_title( $_REQUEST['log_file'] ) ];
+		if ( ! empty( $_REQUEST['log_file'] ) && isset( $logs[ sanitize_title( wp_unslash( $_REQUEST['log_file'] ) ) ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			$viewed_log = $logs[ sanitize_title( wp_unslash( $_REQUEST['log_file'] ) ) ]; // phpcs:ignore WordPress.Security.NonceVerification
 		} elseif ( ! empty( $logs ) ) {
 			$viewed_log = current( $logs );
 		}
 
 		$handle = ! empty( $viewed_log ) ? self::get_log_file_handle( $viewed_log ) : '';
 
-		if ( ! empty( $_REQUEST['handle'] ) ) {
+		if ( ! empty( $_REQUEST['handle'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			self::remove_log();
 		}
 
@@ -76,13 +76,13 @@ class EVF_Admin_Tools {
 		}
 
 		// We don't need to write to the file, so just open for reading.
-		$fp = fopen( $file, 'r' );
+		$fp = fopen( $file, 'r' ); // @codingStandardsIgnoreLine
 
 		// Pull only the first 8kiB of the file in.
-		$file_data = fread( $fp, 8192 );
+		$file_data = fread( $fp, 8192 ); // @codingStandardsIgnoreLine
 
 		// PHP will close file handle, but we are good citizens.
-		fclose( $fp );
+		fclose( $fp ); // @codingStandardsIgnoreLine
 
 		// Make sure we catch CR-only line endings.
 		$file_data = str_replace( "\r", "\n", $file_data );
@@ -98,7 +98,7 @@ class EVF_Admin_Tools {
 	/**
 	 * Return the log file handle.
 	 *
-	 * @param string $filename
+	 * @param string $filename Filename to get the handle for.
 	 * @return string
 	 */
 	public static function get_log_file_handle( $filename ) {
@@ -108,18 +108,18 @@ class EVF_Admin_Tools {
 	/**
 	 * Scan the template files.
 	 *
-	 * @param  string $template_path
+	 * @param  string $template_path Path to the template directory.
 	 * @return array
 	 */
 	public static function scan_template_files( $template_path ) {
-		$files  = @scandir( $template_path );
+		$files  = @scandir( $template_path ); // @codingStandardsIgnoreLine
 		$result = array();
 
 		if ( ! empty( $files ) ) {
 
 			foreach ( $files as $key => $value ) {
 
-				if ( ! in_array( $value, array( '.', '..' ) ) ) {
+				if ( ! in_array( $value, array( '.', '..' ), true ) ) {
 
 					if ( is_dir( $template_path . DIRECTORY_SEPARATOR . $value ) ) {
 						$sub_files = self::scan_template_files( $template_path . DIRECTORY_SEPARATOR . $value );
@@ -141,14 +141,14 @@ class EVF_Admin_Tools {
 	 * @return array
 	 */
 	public static function scan_log_files() {
-		$files  = @scandir( EVF_LOG_DIR );
+		$files  = @scandir( EVF_LOG_DIR ); // @codingStandardsIgnoreLine
 		$result = array();
 
 		if ( ! empty( $files ) ) {
 
 			foreach ( $files as $key => $value ) {
 
-				if ( ! in_array( $value, array( '.', '..' ) ) ) {
+				if ( ! in_array( $value, array( '.', '..' ), true ) ) {
 					if ( ! is_dir( $value ) && strstr( $value, '.log' ) ) {
 						$result[ sanitize_title( $value ) ] = $value;
 					}
@@ -163,13 +163,13 @@ class EVF_Admin_Tools {
 	 * Remove/delete the chosen file.
 	 */
 	public static function remove_log() {
-		if ( empty( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'remove_log' ) ) {
-			wp_die( __( 'Action failed. Please refresh the page and retry.', 'everest-forms' ) );
+		if ( empty( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( wp_unslash( $_REQUEST['_wpnonce'] ), 'remove_log' ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			wp_die( esc_html__( 'Action failed. Please refresh the page and retry.', 'everest-forms' ) );
 		}
 
 		if ( ! empty( $_REQUEST['handle'] ) ) {
 			$log_handler = new EVF_Log_Handler_File();
-			$log_handler->remove( $_REQUEST['handle'] );
+			$log_handler->remove( wp_unslash( $_REQUEST['handle'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		}
 
 		wp_safe_redirect( esc_url_raw( admin_url( 'admin.php?page=evf-tools&tab=logs' ) ) );
