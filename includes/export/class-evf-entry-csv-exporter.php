@@ -60,11 +60,11 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 	 */
 	public function get_default_column_names() {
 		$columns   = array();
-		$form_obj  = EVF()->form->get( $this->form_id );
+		$form_obj  = evf()->form->get( $this->form_id );
 		$form_data = ! empty( $form_obj->post_content ) ? evf_decode( $form_obj->post_content ) : '';
 
 		// Set Entry ID at first.
-		$columns['entry_id'] = __( 'ID', 'everest-forms' );
+		$columns['entry_id'] = esc_html__( 'ID', 'everest-forms' );
 
 		// Add whitelisted fields to export columns.
 		if ( ! empty( $form_data['form_fields'] ) ) {
@@ -76,14 +76,14 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 		}
 
 		// Set the default columns.
-		$columns['status']           = __( 'Status', 'everest-forms' );
-		$columns['date_created']     = __( 'Date Created', 'everest-forms' );
-		$columns['date_created_gmt'] = __( 'Date Created GMT', 'everest-forms' );
+		$columns['status']           = esc_html__( 'Status', 'everest-forms' );
+		$columns['date_created']     = esc_html__( 'Date Created', 'everest-forms' );
+		$columns['date_created_gmt'] = esc_html__( 'Date Created GMT', 'everest-forms' );
 
 		// If user details are disabled globally discard the IP and UA.
 		if ( 'yes' !== get_option( 'everest_forms_disable_user_details' ) ) {
-			$columns['user_device']     = __( 'User Device', 'everest-forms' );
-			$columns['user_ip_address'] = __( 'User IP Address', 'everest-forms' );
+			$columns['user_device']     = esc_html__( 'User Device', 'everest-forms' );
+			$columns['user_ip_address'] = esc_html__( 'User IP Address', 'everest-forms' );
 		}
 
 		return apply_filters( "everest_forms_export_{$this->export_type}_default_columns", $columns );
@@ -194,7 +194,7 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 		}
 
 		/* translators: 1: entry date 2: entry time */
-		return sprintf( __( '%1$s %2$s', 'everest-forms' ), date_i18n( evf_date_format(), $timestamp ), date_i18n( evf_time_format(), $timestamp ) );
+		return sprintf( esc_html__( '%1$s %2$s', 'everest-forms' ), date_i18n( evf_date_format(), $timestamp ), date_i18n( evf_time_format(), $timestamp ) );
 	}
 
 	/**
@@ -211,7 +211,7 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 		}
 
 		/* translators: 1: entry date 2: entry time */
-		return sprintf( __( '%1$s %2$s', 'everest-forms' ), date_i18n( evf_date_format(), $timestamp ), date_i18n( evf_time_format(), $timestamp ) );
+		return sprintf( esc_html__( '%1$s %2$s', 'everest-forms' ), date_i18n( evf_date_format(), $timestamp ), date_i18n( evf_time_format(), $timestamp ) );
 	}
 
 	/**

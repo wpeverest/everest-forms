@@ -16,6 +16,8 @@
 	<!-- WordPress -->
 	<rule ref="WordPress">
 		<exclude name="WordPress.DB.SlowDBQuery.slow_db_query_meta_key" />
+		<!-- Ignore base64_encode() obfuscation error in parser -->
+		<exclude name="WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode" />
 	</rule>
 
 	<!-- Rules -->
@@ -26,6 +28,7 @@
 	</rule>
 
 	<rule ref="WordPress.Files.FileName.InvalidClassFileName">
+		<exclude-pattern>includes/**/abstract-*.php</exclude-pattern>
 		<exclude-pattern>includes/class-everest-forms.php</exclude-pattern>
 	</rule>
 

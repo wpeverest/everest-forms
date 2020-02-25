@@ -379,7 +379,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 	 */
 	public function process_bulk_action() {
 		$action   = $this->current_action();
-		$form_ids = isset( $_REQUEST['form_id'] ) ? wp_parse_id_list( wp_unslash( $_REQUEST['form_id'] ) ) : array(); // WPCS: input var ok, CSRF ok.
+		$form_ids = isset( $_REQUEST['form_id'] ) ? wp_parse_id_list( wp_unslash( $_REQUEST['form_id'] ) ) : array(); // phpcs:ignore WordPress.Security.NonceVerification
 		$count    = 0;
 
 		if ( $form_ids ) {
@@ -466,17 +466,17 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 		);
 
 		// Handle the status query.
-		if ( ! empty( $_REQUEST['status'] ) ) { // WPCS: input var ok, CSRF ok.
-			$args['post_status'] = sanitize_text_field( $_REQUEST['status'] ); // WPCS: input var ok, sanitization ok.
+		if ( ! empty( $_REQUEST['status'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			$args['post_status'] = sanitize_text_field( wp_unslash( $_REQUEST['status'] ) ); // phpcs:ignore WordPress.Security.NonceVerification
 		}
 
 		// Handle the search query.
-		if ( ! empty( $_REQUEST['s'] ) ) { // WPCS: input var ok, CSRF ok.
-			$args['s'] = sanitize_text_field( trim( wp_unslash( $_REQUEST['s'] ) ) ); // WPCS: sanitization ok, CSRF ok.
+		if ( ! empty( $_REQUEST['s'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			$args['s'] = sanitize_text_field( wp_unslash( $_REQUEST['s'] ) ); // phpcs:ignore WordPress.Security.NonceVerification
 		}
 
-		$args['orderby'] = isset( $_REQUEST['orderby'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['orderby'] ) ) : 'date_created'; // WPCS: sanitization ok, CSRF ok.
-		$args['order']   = isset( $_REQUEST['order'] ) && 'ASC' === strtoupper( wp_unslash( $_REQUEST['order'] ) ) ? 'ASC' : 'DESC'; // WPCS: sanitization ok, CSRF ok.
+		$args['orderby'] = isset( $_REQUEST['orderby'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['orderby'] ) ) : 'date_created'; // phpcs:ignore WordPress.Security.NonceVerification
+		$args['order']   = isset( $_REQUEST['order'] ) && 'ASC' === strtoupper( evf_clean( wp_unslash( $_REQUEST['order'] ) ) ) ? 'ASC' : 'DESC'; // phpcs:ignore WordPress.Security.NonceVerification
 
 		// Get the forms.
 		$posts       = new WP_Query( $args );

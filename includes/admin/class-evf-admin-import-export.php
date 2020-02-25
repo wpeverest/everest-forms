@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || exit;
 class EVF_Admin_Import_Export {
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 */
 	public function __construct() {
 		add_action( 'admin_init', array( $this, 'export_json' ) );
@@ -22,8 +22,6 @@ class EVF_Admin_Import_Export {
 
 	/**
 	 * Exports form data along with settings in JSON format.
-	 *
-	 * @return void
 	 */
 	public function export_json() {
 		// Check for non empty $_POST.
@@ -75,7 +73,7 @@ class EVF_Admin_Import_Export {
 	 */
 	public static function import_form() {
 		// Check for $_FILES set or not.
-		if ( isset( $_FILES['jsonfile'] ) ) {
+		if ( isset( $_FILES['jsonfile']['name'], $_FILES['jsonfile']['tmp_name'] ) ) {
 			$filename  = esc_html( sanitize_text_field( wp_unslash( $_FILES['jsonfile']['name'] ) ) );
 			$extension = pathinfo( $filename, PATHINFO_EXTENSION );
 
@@ -145,7 +143,7 @@ class EVF_Admin_Import_Export {
 			} else {
 				wp_send_json_error(
 					array(
-						'message' => esc_html__( 'Invalid file format. Only Json File Allowed.', 'everest-forms' ),
+						'message' => esc_html__( 'Invalid file format. Only JSON File Allowed.', 'everest-forms' ),
 					)
 				);
 			}
