@@ -9,13 +9,13 @@ defined( 'ABSPATH' ) || exit;
 
 ?>
 <div class="everest-forms-export-form">
-	<h3><?php echo __( 'Export Everest Forms with Settings', 'everest-forms' ); ?></h3>
-	<p><?php echo __( 'Export your forms along with their settings as JSON file.', 'everest-forms' ); ?></p>
+	<h3><?php esc_html_e( 'Export Everest Forms with Settings', 'everest-forms' ); ?></h3>
+	<p><?php esc_html_e( 'Export your forms along with their settings as JSON file.', 'everest-forms' ); ?></p>
 	<form method="post" action="<?php echo esc_url( admin_url( 'admin.php?page=evf-tools&tab=export' ) ); ?>">
 		<?php
 		$forms = evf_get_all_forms( true );
 		if ( ! empty( $forms ) ) {
-			echo '<select id="everest-forms-form-export" style="min-width: 350px;" name="form_id" data-placeholder="' . esc_attr__( 'Select form', 'everest-forms' ) . '"><option value="">' . __( 'Select a form', 'everest-forms' ) . '</option>';
+			echo '<select id="everest-forms-form-export" style="min-width: 350px;" name="form_id" data-placeholder="' . esc_attr__( 'Select form', 'everest-forms' ) . '"><option value="">' . esc_html__( 'Select a form', 'everest-forms' ) . '</option>';
 			foreach ( $forms as $id => $form ) { // phpcs:ignore WordPress.WP.GlobalVariablesOverride
 				echo '<option value="' . esc_attr( $id ) . '">' . esc_html( $form ) . '</option>';
 			}

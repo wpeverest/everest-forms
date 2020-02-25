@@ -38,7 +38,7 @@ $preview_link = add_query_arg(
 		<div class="everest-forms-nav-wrapper clearfix">
 			<nav class="nav-tab-wrapper evf-nav-tab-wrapper">
 				<?php
-				foreach ( $tabs as $slug => $tab ) {
+				foreach ( $tabs as $slug => $tab ) { // phpcs:ignore WordPress.WP.GlobalVariablesOverride
 					echo '<a href="#" class="evf-panel-' . esc_attr( $slug ) . '-button nav-tab ' . ( $current_tab === $slug ? 'nav-tab-active' : '' ) . '" data-panel="' . esc_attr( $slug ) . '"><span class="evf-nav-icon ' . esc_attr( $slug ) . '"></span>' . esc_html( $tab['label'] ) . '</a>';
 				}
 
@@ -47,7 +47,7 @@ $preview_link = add_query_arg(
 			</nav>
 			<div class="evf-forms-nav-right">
 				<div class="evf-shortcode-field">
-					<input type="text" class="large-text code" onfocus="this.select();" value="<?php printf( esc_html( '[everest_form id="%s"]' ), absint( wp_unslash( $_GET['form_id'] ) ) ); ?>" id="evf-form-shortcode" readonly="readonly" />
+					<input type="text" class="large-text code" onfocus="this.select();" value="<?php printf( esc_html( '[everest_form id="%s"]' ), absint( wp_unslash( $_GET['form_id'] ) ) ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotValidated ?>" id="evf-form-shortcode" readonly="readonly" />
 					<button id="copy-shortcode" class="everest-forms-btn help_tip dashicons copy-shortcode" href="#" data-tip="<?php esc_attr_e( 'Copy Shortcode!', 'everest-forms' ); ?>" data-copied="<?php esc_attr_e( 'Copied!', 'everest-forms' ); ?>">
 						<span class="screen-reader-text"><?php esc_html_e( 'Copy shortcode', 'everest-forms' ); ?></span>
 					</button>
@@ -57,7 +57,7 @@ $preview_link = add_query_arg(
 			</div>
 		</div>
 		<div class="evf-tab-content">
-			<?php foreach ( $tabs as $slug => $tab ) : ?>
+			<?php foreach ( $tabs as $slug => $tab ) : // phpcs:ignore WordPress.WP.GlobalVariablesOverride ?>
 				<div id="everest-forms-panel-<?php echo esc_attr( $slug ); ?>" class="everest-forms-panel<?php echo $current_tab === $slug ? ' active' : ''; ?>">
 					<div class="everest-forms-panel-<?php echo $tab['sidebar'] ? 'sidebar-content' : 'full-content'; ?>">
 						<?php if ( $tab['sidebar'] ) : ?>

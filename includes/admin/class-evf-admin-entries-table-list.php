@@ -378,7 +378,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		$num_entries   = evf_get_count_entries_by_status( $this->form_id );
 		$total_entries = (int) $num_entries['publish'];
 		$statuses      = array_keys( evf_get_entry_statuses() );
-		$class         = empty( $_REQUEST['status'] ) ? ' class="current"' : ''; // WPCS: input var okay. CSRF ok.
+		$class         = empty( $_REQUEST['status'] ) ? ' class="current"' : ''; // phpcs:ignore WordPress.Security.NonceVerification
 
 		/* translators: %s: count */
 		$status_links['all'] = "<a href='admin.php?page=evf-entries&amp;form_id=$this->form_id'$class>" . sprintf( _nx( 'All <span class="count">(%s)</span>', 'All <span class="count">(%s)</span>', $total_entries, 'entries', 'everest-forms' ), number_format_i18n( $total_entries ) ) . '</a>';
@@ -390,7 +390,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 				continue;
 			}
 
-			if ( isset( $_REQUEST['status'] ) && sanitize_key( wp_unslash( $_REQUEST['status'] ) ) === $status_name ) { // WPCS: input var okay, CSRF ok.
+			if ( isset( $_REQUEST['status'] ) && sanitize_key( wp_unslash( $_REQUEST['status'] ) ) === $status_name ) { // phpcs:ignore WordPress.Security.NonceVerification
 				$class = ' class="current"';
 			}
 
@@ -430,7 +430,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	public function process_bulk_action() {
 		$pagenum   = $this->get_pagenum();
 		$doaction  = $this->current_action();
-		$entry_ids = isset( $_REQUEST['entry'] ) ? wp_parse_id_list( wp_unslash( $_REQUEST['entry'] ) ) : array(); // WPCS: input var ok, CSRF ok.
+		$entry_ids = isset( $_REQUEST['entry'] ) ? wp_parse_id_list( wp_unslash( $_REQUEST['entry'] ) ) : array(); // phpcs:ignore WordPress.Security.NonceVerification
 		$count     = 0;
 
 		if ( $doaction ) {
@@ -530,8 +530,8 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 
 			wp_safe_redirect( $sendback );
 			exit();
-		} elseif ( ! empty( $_REQUEST['_wp_http_referer'] ) && isset( $_SERVER['REQUEST_URI'] ) ) { // WPCS: input var ok, CSRF ok.
-			wp_safe_redirect( remove_query_arg( array( '_wp_http_referer', '_wpnonce' ), wp_unslash( $_SERVER['REQUEST_URI'] ) ) ); // WPCS: input var ok, sanitization ok.
+		} elseif ( ! empty( $_REQUEST['_wp_http_referer'] ) && isset( $_SERVER['REQUEST_URI'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			wp_safe_redirect( remove_query_arg( array( '_wp_http_referer', '_wpnonce' ), wp_unslash( $_SERVER['REQUEST_URI'] ) ) ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 			exit();
 		}
 	}
@@ -603,21 +603,21 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		);
 
 		// Handle the status query.
-		if ( ! empty( $_REQUEST['status'] ) ) { // WPCS: input var okay, CSRF ok.
-			$args['status'] = sanitize_key( wp_unslash( $_REQUEST['status'] ) ); // WPCS: input var okay, CSRF ok.
+		if ( ! empty( $_REQUEST['status'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			$args['status'] = sanitize_key( wp_unslash( $_REQUEST['status'] ) ); // phpcs:ignore WordPress.Security.NonceVerification
 		}
 
 		// Handle the search query.
-		if ( ! empty( $_REQUEST['s'] ) ) { // WPCS: input var okay, CSRF ok.
-			$args['search'] = sanitize_text_field( wp_unslash( $_REQUEST['s'] ) ); // WPCS: input var okay, CSRF ok.
+		if ( ! empty( $_REQUEST['s'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			$args['search'] = sanitize_text_field( wp_unslash( $_REQUEST['s'] ) ); // phpcs:ignore WordPress.Security.NonceVerification
 		}
 
-		if ( ! empty( $_REQUEST['orderby'] ) ) { // WPCS: input var okay, CSRF ok.
-			$args['orderby'] = sanitize_text_field( wp_unslash( $_REQUEST['orderby'] ) ); // WPCS: input var okay, CSRF ok.
+		if ( ! empty( $_REQUEST['orderby'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			$args['orderby'] = sanitize_text_field( wp_unslash( $_REQUEST['orderby'] ) ); // phpcs:ignore WordPress.Security.NonceVerification
 		}
 
-		if ( ! empty( $_REQUEST['order'] ) ) { // WPCS: input var okay, CSRF ok.
-			$args['order'] = sanitize_text_field( wp_unslash( $_REQUEST['order'] ) ); // WPCS: input var okay, CSRF ok.
+		if ( ! empty( $_REQUEST['order'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			$args['order'] = sanitize_text_field( wp_unslash( $_REQUEST['order'] ) ); // phpcs:ignore WordPress.Security.NonceVerification
 		}
 
 		// Get the entries.

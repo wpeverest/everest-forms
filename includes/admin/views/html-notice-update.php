@@ -5,16 +5,13 @@
  * @package EverestForms\Admin\Notice
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 $update_url = wp_nonce_url(
 	add_query_arg( 'do_update_everest_forms', 'true', admin_url( 'admin.php?page=evf-settings' ) ),
 	'evf_db_update',
 	'evf_db_update_nonce'
 );
-
 ?>
 <div id="message" class="updated everest-forms-message evf-connect">
 	<p>
