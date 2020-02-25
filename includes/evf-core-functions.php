@@ -1964,3 +1964,17 @@ function evf_string_translation( $form_id, $field_id, $variable ) {
 
 	return $variable;
 }
+
+/**
+ * Trigger logging cleanup using the logging class.
+ *
+ * @since 1.6.2
+ */
+function evf_cleanup_logs() {
+	$logger = evf_get_logger();
+
+	if ( is_callable( array( $logger, 'clear_expired_logs' ) ) ) {
+		$logger->clear_expired_logs();
+	}
+}
+add_action( 'everest_forms_cleanup_logs', 'evf_cleanup_logs' );
