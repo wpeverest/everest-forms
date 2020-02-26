@@ -1,16 +1,16 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
-}
-
 /**
  * Provides logging capabilities for debugging purposes.
  *
- * @class          EVF_Logger
- * @version        1.0.0
- * @package        EverestForms/Classes
- * @category       Class
- * @author         WPEverest
+ * @class   EVF_Logger
+ * @version 1.0.0
+ * @package EverestForms/Classes
+ */
+
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * EVF_Logger class
  */
 class EVF_Logger implements EVF_Logger_Interface {
 
@@ -31,12 +31,8 @@ class EVF_Logger implements EVF_Logger_Interface {
 	/**
 	 * Constructor for the logger.
 	 *
-	 * @param array $handlers Optional. Array of log handlers. If $handlers is not provided,
-	 *     the filter 'everest_forms_register_log_handlers' will be used to define the handlers.
-	 *     If $handlers is provided, the filter will not be applied and the handlers will be
-	 *     used directly.
-	 * @param string $threshold Optional. Define an explicit threshold. May be configured
-	 *     via  EVF_LOG_THRESHOLD. By default, all logs will be processed.
+	 * @param array  $handlers Optional. Array of log handlers. If $handlers is not provided, the filter 'everest_forms_register_log_handlers' will be used to define the handlers. If $handlers is provided, the filter will not be applied and the handlers will be used directly.
+	 * @param string $threshold Optional. Define an explicit threshold. May be configured via  EVF_LOG_THRESHOLD. By default, all logs will be processed.
 	 */
 	public function __construct( $handlers = null, $threshold = null ) {
 		if ( null === $handlers ) {
@@ -48,7 +44,7 @@ class EVF_Logger implements EVF_Logger_Interface {
 		if ( ! empty( $handlers ) && is_array( $handlers ) ) {
 			foreach ( $handlers as $handler ) {
 				$implements = class_implements( $handler );
-				if ( is_object( $handler ) && is_array( $implements ) && in_array( 'EVF_Log_Handler_Interface', $implements ) ) {
+				if ( is_object( $handler ) && is_array( $implements ) && in_array( 'EVF_Log_Handler_Interface', $implements, true ) ) {
 					$register_handlers[] = $handler;
 				} else {
 					evf_doing_it_wrong(
@@ -80,7 +76,7 @@ class EVF_Logger implements EVF_Logger_Interface {
 	/**
 	 * Determine whether to handle or ignore log.
 	 *
-	 * @param string $level emergency|alert|critical|error|warning|notice|info|debug
+	 * @param string $level emergency|alert|critical|error|warning|notice|info|debug.
 	 * @return bool True if the log should be handled.
 	 */
 	protected function should_handle( $level ) {
@@ -96,15 +92,22 @@ class EVF_Logger implements EVF_Logger_Interface {
 	 * This is not the preferred method for adding log messages. Please use log() or any one of
 	 * the level methods (debug(), info(), etc.). This method may be deprecated in the future.
 	 *
-	 * @param string $handle
-	 * @param string $message
-	 * @param string $level
+	 * @param string $handle File handle.
+	 * @param string $message Message to log.
+	 * @param string $level Logging level.
 	 *
 	 * @return bool
 	 */
 	public function add( $handle, $message, $level = EVF_Log_Levels::NOTICE ) {
 		$message = apply_filters( 'everest_forms_logger_add_message', $message, $handle );
-		$this->log( $level, $message, array( 'source' => $handle, '_legacy' => true ) );
+		$this->log(
+			$level,
+			$message,
+			array(
+				'source'  => $handle,
+				'_legacy' => true,
+			)
+		);
 		evf_do_deprecated_action( 'everest_forms_log_add', array( $handle, $message ), '1.2', 'This action has been deprecated with no alternative.' );
 		return true;
 	}
@@ -131,11 +134,10 @@ class EVF_Logger implements EVF_Logger_Interface {
 		}
 
 		if ( $this->should_handle( $level ) ) {
-			$timestamp = current_time( 'timestamp' );
-			$message   = apply_filters( 'everest_forms_logger_log_message', $message, $level, $context );
+			$message = apply_filters( 'everest_forms_logger_log_message', $message, $level, $context );
 
 			foreach ( $this->handlers as $handler ) {
-				$handler->handle( $timestamp, $level, $message, $context );
+				$handler->handle( time(), $level, $message, $context );
 			}
 		}
 	}
@@ -147,8 +149,8 @@ class EVF_Logger implements EVF_Logger_Interface {
 	 *
 	 * @see EVF_Logger::log
 	 *
-	 * @param string $message
-	 * @param array  $context
+	 * @param string $message Message to log.
+	 * @param array  $context Log context.
 	 */
 	public function emergency( $message, $context = array() ) {
 		$this->log( EVF_Log_Levels::EMERGENCY, $message, $context );
@@ -162,8 +164,8 @@ class EVF_Logger implements EVF_Logger_Interface {
 	 *
 	 * @see EVF_Logger::log
 	 *
-	 * @param string $message
-	 * @param array  $context
+	 * @param string $message Message to log.
+	 * @param array  $context Log context.
 	 */
 	public function alert( $message, $context = array() ) {
 		$this->log( EVF_Log_Levels::ALERT, $message, $context );
@@ -177,8 +179,8 @@ class EVF_Logger implements EVF_Logger_Interface {
 	 *
 	 * @see EVF_Logger::log
 	 *
-	 * @param string $message
-	 * @param array  $context
+	 * @param string $message Message to log.
+	 * @param array  $context Log context.
 	 */
 	public function critical( $message, $context = array() ) {
 		$this->log( EVF_Log_Levels::CRITICAL, $message, $context );
@@ -192,8 +194,8 @@ class EVF_Logger implements EVF_Logger_Interface {
 	 *
 	 * @see EVF_Logger::log
 	 *
-	 * @param string $message
-	 * @param array  $context
+	 * @param string $message Message to log.
+	 * @param array  $context Log context.
 	 */
 	public function error( $message, $context = array() ) {
 		$this->log( EVF_Log_Levels::ERROR, $message, $context );
@@ -209,8 +211,8 @@ class EVF_Logger implements EVF_Logger_Interface {
 	 *
 	 * @see EVF_Logger::log
 	 *
-	 * @param string $message
-	 * @param array  $context
+	 * @param string $message Message to log.
+	 * @param array  $context Log context.
 	 */
 	public function warning( $message, $context = array() ) {
 		$this->log( EVF_Log_Levels::WARNING, $message, $context );
@@ -223,8 +225,8 @@ class EVF_Logger implements EVF_Logger_Interface {
 	 *
 	 * @see EVF_Logger::log
 	 *
-	 * @param string $message
-	 * @param array  $context
+	 * @param string $message Message to log.
+	 * @param array  $context Log context.
 	 */
 	public function notice( $message, $context = array() ) {
 		$this->log( EVF_Log_Levels::NOTICE, $message, $context );
@@ -238,8 +240,8 @@ class EVF_Logger implements EVF_Logger_Interface {
 	 *
 	 * @see EVF_Logger::log
 	 *
-	 * @param string $message
-	 * @param array  $context
+	 * @param string $message Message to log.
+	 * @param array  $context Log context.
 	 */
 	public function info( $message, $context = array() ) {
 		$this->log( EVF_Log_Levels::INFO, $message, $context );
@@ -252,8 +254,8 @@ class EVF_Logger implements EVF_Logger_Interface {
 	 *
 	 * @see EVF_Logger::log
 	 *
-	 * @param string $message
-	 * @param array  $context
+	 * @param string $message Message to log.
+	 * @param array  $context Log context.
 	 */
 	public function debug( $message, $context = array() ) {
 		$this->log( EVF_Log_Levels::DEBUG, $message, $context );
@@ -264,7 +266,7 @@ class EVF_Logger implements EVF_Logger_Interface {
 	 *
 	 * @deprecated 1.2.0
 	 *
-	 * @param string $handle
+	 * @param string $handle Source/handle to clear.
 	 * @return bool
 	 */
 	public function clear( $handle ) {

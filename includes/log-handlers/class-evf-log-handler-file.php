@@ -43,7 +43,6 @@ class EVF_Log_Handler_File extends EVF_Log_Handler {
 	 * @param int $log_size_limit Optional. Size limit for log files. Default 5mb.
 	 */
 	public function __construct( $log_size_limit = null ) {
-
 		if ( null === $log_size_limit ) {
 			$log_size_limit = 5 * 1024 * 1024;
 		}
@@ -61,7 +60,7 @@ class EVF_Log_Handler_File extends EVF_Log_Handler {
 	public function __destruct() {
 		foreach ( $this->handles as $handle ) {
 			if ( is_resource( $handle ) ) {
-				fclose( $handle );
+				fclose( $handle ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fclose
 			}
 		}
 	}
@@ -69,11 +68,11 @@ class EVF_Log_Handler_File extends EVF_Log_Handler {
 	/**
 	 * Handle a log entry.
 	 *
-	 * @param int $timestamp Log timestamp.
-	 * @param string $level emergency|alert|critical|error|warning|notice|info|debug
+	 * @param int    $timestamp Log timestamp.
+	 * @param string $level emergency|alert|critical|error|warning|notice|info|debug.
 	 * @param string $message Log message.
-	 * @param array $context {
-	 *     Additional information for log handlers.
+	 * @param array  $context {
+	 *      Additional information for log handlers.
 	 *
 	 *     @type string $source Optional. Determines log file to write to. Default 'log'.
 	 *     @type bool $_legacy Optional. Default false. True to use outdated log format
@@ -98,10 +97,10 @@ class EVF_Log_Handler_File extends EVF_Log_Handler {
 	/**
 	 * Builds a log entry text from timestamp, level and message.
 	 *
-	 * @param int $timestamp Log timestamp.
-	 * @param string $level emergency|alert|critical|error|warning|notice|info|debug
+	 * @param int    $timestamp Log timestamp.
+	 * @param string $level emergency|alert|critical|error|warning|notice|info|debug.
 	 * @param string $message Log message.
-	 * @param array $context Additional information for log handlers.
+	 * @param array  $context Additional information for log handlers.
 	 *
 	 * @return string Formatted log entry.
 	 */
@@ -114,8 +113,8 @@ class EVF_Log_Handler_File extends EVF_Log_Handler {
 				$handle = 'log';
 			}
 			$message = apply_filters( 'everest_forms_logger_add_message', $message, $handle );
-			$time = date_i18n( 'm-d-Y @ H:i:s' );
-			$entry = "{$time} - {$message}";
+			$time    = date_i18n( 'm-d-Y @ H:i:s' );
+			$entry   = "{$time} - {$message}";
 		} else {
 			$entry = parent::format_entry( $timestamp, $level, $message, $context );
 		}
@@ -139,15 +138,17 @@ class EVF_Log_Handler_File extends EVF_Log_Handler {
 
 		if ( $file ) {
 			if ( ! file_exists( $file ) ) {
-				$temphandle = @fopen( $file, 'w+' );
-				@fclose( $temphandle );
+				$temphandle = @fopen( $file, 'w+' ); // @codingStandardsIgnoreLine
+				@fclose( $temphandle ); // @codingStandardsIgnoreLine
 
 				if ( defined( 'FS_CHMOD_FILE' ) ) {
-					@chmod( $file, FS_CHMOD_FILE );
+					@chmod( $file, FS_CHMOD_FILE ); // @codingStandardsIgnoreLine
 				}
 			}
 
-			if ( $resource = @fopen( $file, $mode ) ) {
+			$resource = @fopen( $file, $mode ); // @codingStandardsIgnoreLine
+
+			if ( $resource ) {
 				$this->handles[ $handle ] = $resource;
 				return true;
 			}
@@ -169,14 +170,14 @@ class EVF_Log_Handler_File extends EVF_Log_Handler {
 	/**
 	 * Close a handle.
 	 *
-	 * @param string $handle
+	 * @param string $handle Log handle.
 	 * @return bool success
 	 */
 	protected function close( $handle ) {
 		$result = false;
 
 		if ( $this->is_open( $handle ) ) {
-			$result = fclose( $this->handles[ $handle ] );
+			$result = fclose( $this->handles[ $handle ] ); // @codingStandardsIgnoreLine
 			unset( $this->handles[ $handle ] );
 		}
 
@@ -186,8 +187,8 @@ class EVF_Log_Handler_File extends EVF_Log_Handler {
 	/**
 	 * Add a log entry to chosen file.
 	 *
-	 * @param string $entry Log entry text
-	 * @param string $handle Log entry handle
+	 * @param string $entry Log entry text.
+	 * @param string $handle Log entry handle.
 	 *
 	 * @return bool True if write was successful.
 	 */
@@ -199,7 +200,7 @@ class EVF_Log_Handler_File extends EVF_Log_Handler {
 		}
 
 		if ( $this->open( $handle ) && is_resource( $this->handles[ $handle ] ) ) {
-			$result = fwrite( $this->handles[ $handle ], $entry . PHP_EOL );
+			$result = fwrite( $this->handles[ $handle ], $entry . PHP_EOL ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fwrite
 		} else {
 			$this->cache_log( $entry, $handle );
 		}
@@ -210,7 +211,7 @@ class EVF_Log_Handler_File extends EVF_Log_Handler {
 	/**
 	 * Clear entries from chosen file.
 	 *
-	 * @param string $handle
+	 * @param string $handle Log handle.
 	 *
 	 * @return bool
 	 */
@@ -236,7 +237,7 @@ class EVF_Log_Handler_File extends EVF_Log_Handler {
 	/**
 	 * Remove/delete the chosen file.
 	 *
-	 * @param string $handle
+	 * @param string $handle Log handle.
 	 *
 	 * @return bool
 	 */
@@ -260,7 +261,7 @@ class EVF_Log_Handler_File extends EVF_Log_Handler {
 	 *
 	 * Compares the size of the log file to determine whether it is over the size limit.
 	 *
-	 * @param string $handle Log handle
+	 * @param string $handle Log handle.
 	 * @return bool True if if should be rotated.
 	 */
 	protected function should_rotate( $handle ) {
@@ -291,7 +292,7 @@ class EVF_Log_Handler_File extends EVF_Log_Handler {
 	 *     base.0.log -> base.1.log
 	 *     base.log   -> base.0.log
 	 *
-	 * @param string $handle Log handle
+	 * @param string $handle Log handle.
 	 */
 	protected function log_rotate( $handle ) {
 		for ( $i = 8; $i >= 0; $i-- ) {
@@ -303,21 +304,21 @@ class EVF_Log_Handler_File extends EVF_Log_Handler {
 	/**
 	 * Increment a log file suffix.
 	 *
-	 * @param string $handle Log handle
+	 * @param string   $handle Log handle.
 	 * @param null|int $number Optional. Default null. Log suffix number to be incremented.
 	 * @return bool True if increment was successful, otherwise false.
 	 */
 	protected function increment_log_infix( $handle, $number = null ) {
 		if ( null === $number ) {
-			$suffix = '';
+			$suffix      = '';
 			$next_suffix = '.0';
 		} else {
-			$suffix = '.' . $number;
-			$next_suffix = '.' . ($number + 1);
+			$suffix      = '.' . $number;
+			$next_suffix = '.' . ( $number + 1 );
 		}
 
 		$rename_from = self::get_log_file_path( "{$handle}{$suffix}" );
-		$rename_to = self::get_log_file_path( "{$handle}{$next_suffix}" );
+		$rename_to   = self::get_log_file_path( "{$handle}{$next_suffix}" );
 
 		if ( $this->is_open( $rename_from ) ) {
 			$this->close( $rename_from );
@@ -364,12 +365,12 @@ class EVF_Log_Handler_File extends EVF_Log_Handler {
 	/**
 	 * Cache log to write later.
 	 *
-	 * @param string $entry Log entry text
-	 * @param string $handle Log entry handle
+	 * @param string $entry Log entry text.
+	 * @param string $handle Log entry handle.
 	 */
 	protected function cache_log( $entry, $handle ) {
 		$this->cached_logs[] = array(
-			'entry' => $entry,
+			'entry'  => $entry,
 			'handle' => $handle,
 		);
 	}
