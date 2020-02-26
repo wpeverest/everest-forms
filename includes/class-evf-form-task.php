@@ -61,12 +61,12 @@ class EVF_Form_Task {
 	 * @since 1.0.0
 	 */
 	public function listen_task() {
-		if ( ! empty( $_GET['everest_forms_return'] ) ) { // WPCS: CSRF ok.
-			$this->entry_confirmation_redirect( '', $_GET['everest_forms_return'] ); // WPCS: sanitization ok, CSRF ok.
+		if ( ! empty( $_GET['everest_forms_return'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			$this->entry_confirmation_redirect( '', wp_unslash( $_GET['everest_forms_return'] ) ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		}
 
-		if ( ! empty( $_POST['everest_forms']['id'] ) ) { // WPCS: CSRF ok.
-			$this->do_task( stripslashes_deep( $_POST['everest_forms'] ) ); // WPCS: sanitization ok, CSRF ok.
+		if ( ! empty( $_POST['everest_forms']['id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			$this->do_task( stripslashes_deep( $_POST['everest_forms'] ) ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		}
 	}
 
@@ -88,7 +88,7 @@ class EVF_Form_Task {
 			$this->evf_notice_print = false;
 
 			// Check nonce for form submission.
-			if ( empty( $_POST['_wpnonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['_wpnonce'] ), 'everest-forms_process_submit' ) ) { // WPCS: input var ok, sanitization ok.
+			if ( empty( $_POST['_wpnonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['_wpnonce'] ), 'everest-forms_process_submit' ) ) { // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 				$this->errors[ $form_id ]['header'] = esc_html__( 'We were unable to process your form, please try again.', 'everest-forms' );
 				return $this->errors;
 			}
@@ -109,7 +109,7 @@ class EVF_Form_Task {
 			do_action( "everest_forms_process_before_{$form_id}", $entry, $this->form_data );
 
 			$ajax_form_submission = isset( $this->form_data['settings']['ajax_form_submission'] ) ? $this->form_data['settings']['ajax_form_submission'] : 0;
-			if ( 1 === $ajax_form_submission ) {
+			if ( '1' === $ajax_form_submission ) {
 
 				// For the sake of validation we completely remove the validator option.
 				update_option( 'evf_validation_error', '' );
@@ -193,7 +193,7 @@ class EVF_Form_Task {
 						$data = json_decode( wp_remote_retrieve_body( $raw_data ) );
 
 						// Check reCAPTCHA response.
-						if ( empty( $data->success ) || ( isset( $data->hostname ) && evf_clean( wp_unslash( $_SERVER['SERVER_NAME'] ) ) !== $data->hostname ) || ( isset( $data->action, $data->score ) && ( 'everest_form' !== $data->action && 0.5 > floatval( $data->score ) ) ) ) {
+						if ( empty( $data->success ) || ( isset( $data->hostname ) && evf_clean( wp_unslash( $_SERVER['SERVER_NAME'] ) ) !== $data->hostname ) || ( isset( $data->action, $data->score ) && ( 'everest_form' !== $data->action && 0.5 > floatval( $data->score ) ) ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 							$this->errors[ $form_id ]['header'] = esc_html__( 'Incorrect reCAPTCHA, please try again.', 'everest-forms' );
 							return $this->errors;
 						}
@@ -292,7 +292,7 @@ class EVF_Form_Task {
 		}
 
 		$message = isset( $this->form_data['settings']['successful_form_submission_message'] ) ? $this->form_data['settings']['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
-		if ( 1 == $ajax_form_submission ) {
+		if ( 1 === $ajax_form_submission ) {
 			$response_data['message']  = $message;
 			$response_data['response'] = 'success';
 
@@ -314,10 +314,12 @@ class EVF_Form_Task {
 	 * Process AJAX form submission.
 	 *
 	 * @since 1.6.0
+	 *
+	 * @param mixed $posted_data Posted data.
 	 */
-	public function ajax_form_submission( $entry ) {
+	public function ajax_form_submission( $posted_data ) {
 		add_filter( 'wp_redirect', array( $this, 'ajax_process_redirect' ), 999 );
-		$process = $this->do_task( stripslashes_deep( $_POST['everest_forms'] ) );
+		$process = $this->do_task( stripslashes_deep( $posted_data ) );
 		return $process;
 	}
 
@@ -355,7 +357,7 @@ class EVF_Form_Task {
 	 * @param int  $form_id Form ID.
 	 */
 	public function check_success_message( $status, $form_id ) {
-		if ( isset( $this->form_data['id'] ) && $form_id === absint( $this->form_data['id'] ) ) {
+		if ( isset( $this->form_data['id'] ) && absint( $this->form_data['id'] ) === $form_id ) {
 			return true;
 		}
 		return false;
@@ -420,18 +422,18 @@ class EVF_Form_Task {
 		$settings = $this->form_data['settings'];
 		if ( isset( $settings['redirect_to'] ) && '1' === $settings['redirect_to'] ) {
 			?>
-				<script>
-				var redirect = '<?php echo get_permalink( $settings['custom_page'] ); ?>';
-				window.setTimeout( function () {
-					window.location.href = redirect;
-				})
-				</script>
+			<script>
+			var redirect = '<?php echo esc_url( get_permalink( $settings['custom_page'] ) ); ?>';
+			window.setTimeout( function () {
+				window.location.href = redirect;
+			})
+			</script>
 			<?php
 		} elseif ( isset( $settings['redirect_to'] ) && '2' === $settings['redirect_to'] ) {
 			?>
 			<script>
 				window.setTimeout( function () {
-					window.location.href = '<?php echo $settings['external_url']; ?>';
+					window.location.href = '<?php echo esc_url( $settings['external_url'] ); ?>';
 				})
 				</script>
 			<?php
@@ -439,7 +441,6 @@ class EVF_Form_Task {
 
 		// Redirect if needed, to either a page or URL, after form processing.
 		if ( ! empty( $this->form_data['settings']['confirmation_type'] ) && 'message' !== $this->form_data['settings']['confirmation_type'] ) {
-
 			if ( 'redirect' === $this->form_data['settings']['confirmation_type'] ) {
 				$url = apply_filters( 'everest_forms_process_smart_tags', $this->form_data['settings']['confirmation_redirect'], $this->form_data, $this->form_fields, $this->entry_id );
 			}
@@ -461,7 +462,7 @@ class EVF_Form_Task {
 
 		if ( ! empty( $url ) ) {
 			$url = apply_filters( 'everest_forms_process_redirect_url', $url, $form_id, $this->form_fields );
-			wp_redirect( esc_url_raw( $url ) );
+			wp_safe_redirect( esc_url_raw( $url ) );
 			do_action( 'everest_forms_process_redirect', $form_id );
 			do_action( "everest_forms_process_redirect_{$form_id}", $form_id );
 			exit;

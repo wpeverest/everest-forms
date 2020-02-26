@@ -7,9 +7,7 @@
  * @package EverestForms/Classes
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
  * EVF_Cache_Helper Class.
