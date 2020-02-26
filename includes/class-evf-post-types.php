@@ -35,8 +35,10 @@ class EVF_Post_Types {
 
 		do_action( 'everest_forms_register_post_type' );
 
-		register_post_type( 'everest_form',
-			apply_filters( 'everest_forms_register_post_type_product',
+		register_post_type(
+			'everest_form',
+			apply_filters(
+				'everest_forms_register_post_type_product',
 				array(
 					'labels'              => array(
 						'name'                  => __( 'Forms', 'everest-forms' ),

@@ -16,8 +16,9 @@
 	<!-- WordPress -->
 	<rule ref="WordPress">
 		<exclude name="WordPress.DB.SlowDBQuery.slow_db_query_meta_key" />
-		<!-- Ignore base64_encode() obfuscation error in parser -->
+		<!-- Ignore base64_encode() and base64_decode() obfuscation error in parser -->
 		<exclude name="WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode" />
+		<exclude name="WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode" />
 	</rule>
 
 	<!-- Rules -->
@@ -25,6 +26,10 @@
 
 	<rule ref="PEAR.NamingConventions.ValidClassName">
 		<exclude-pattern>includes/</exclude-pattern>
+	</rule>
+
+	<rule ref="PSR2.Classes.PropertyDeclaration.Underscore">
+		<exclude-pattern>includes/class-evf-session-handler.php</exclude-pattern>
 	</rule>
 
 	<rule ref="WordPress.Files.FileName.InvalidClassFileName">

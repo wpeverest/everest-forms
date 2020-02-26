@@ -59,14 +59,14 @@ class EVF_Form_Block {
 	public function enqueue_block_editor_assets() {
 		wp_register_style(
 			'everest-forms-block-editor',
-			EVF()->plugin_url() . '/assets/css/everest-forms.css',
+			evf()->plugin_url() . '/assets/css/everest-forms.css',
 			array( 'wp-edit-blocks' ),
 			defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( EVF()->plugin_path() . '/assets/css/everest-forms.css' ) : EVF_VERSION
 		);
 
 		wp_register_script(
 			'everest-forms-block-editor',
-			EVF()->plugin_url() . '/assets/js/admin/gutenberg/form-block.min.js',
+			evf()->plugin_url() . '/assets/js/admin/gutenberg/form-block.min.js',
 			array( 'wp-blocks', 'wp-element', 'wp-i18n', 'wp-editor', 'wp-components' ),
 			defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( EVF()->plugin_path() . '/assets/js/admin/gutenberg/form-block.min.js' ) : EVF_VERSION,
 			true
