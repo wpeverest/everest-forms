@@ -133,7 +133,7 @@ function evf_print_notices( $form_data = array() ) {
 	$notice_types = apply_filters( 'everest_forms_notice_types', array( 'error', 'success', 'notice' ) );
 
 	// Skips notice print if it isn't the right form.
-	if ( isset( $_REQUEST['everest_forms']['id'] ) && ( (int) $form_id !== (int) $_REQUEST['everest_forms']['id'] ) ) {
+	if ( isset( $_REQUEST['everest_forms']['id'] ) && ( (int) $form_id !== (int) $_REQUEST['everest_forms']['id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 		return;
 	}
 

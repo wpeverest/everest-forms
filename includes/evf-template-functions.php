@@ -4,10 +4,8 @@
  *
  * Functions for the templating system.
  *
- * @author   WPEveresst
- * @category Core
- * @package  EverestForms/Functions
- * @version  1.0.0
+ * @package EverestForms/Functions
+ * @version 1.0.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -46,8 +44,8 @@ function evf_no_js() {
 /**
  * Output generator tag to aid debugging.
  *
- * @param string $gen
- * @param string $type
+ * @param string $gen Generator.
+ * @param string $type Type.
  *
  * @return string
  */
