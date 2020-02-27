@@ -54,6 +54,7 @@ jQuery( function( $ ) {
 					})
 					.done( function ( xhr, textStatus, errorThrown ) {
 						if ( 'undefined' !== typeof xhr.data.redirect_url ) {
+							formTuple.trigger( 'reset' );
 							window.location = xhr.data.redirect_url;
 							return;
 						}

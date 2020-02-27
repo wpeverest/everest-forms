@@ -295,6 +295,29 @@ class EVF_Form_Task {
 		if ( 1 == $ajax_form_submission ) {
 			$response_data['message']  = $message;
 			$response_data['response'] = 'success';
+			$settings                  = $this->form_data['settings'];
+
+			// @todo Deprecate with migration script.
+			switch ( $settings['redirect_to'] ) {
+				case '0':
+					$settings['redirect_to'] = 'same';
+					break;
+
+				case '1':
+					$settings['redirect_to'] = 'custom_page';
+					break;
+
+				case '2':
+					$settings['redirect_to'] = 'external_url';
+					break;
+			}
+			// @endtodo
+
+			if ( isset( $settings['redirect_to'] ) && 'external_url' === $settings['redirect_to'] ) {
+				$response_data['redirect_url'] = isset( $settings['external_url'] ) ? esc_url( $settings['external_url'] ) : 'undefined';
+			} elseif ( isset( $settings['redirect_to'] ) && 'custom_page' === $settings['redirect_to'] ) {
+				$response_data['redirect_url'] = isset( $settings['custom_page'] ) ? get_page_link( absint( $settings['custom_page'] ) ) : 'undefined';
+			}
 
 			// Add notice only if credit card is populated in form fields.
 			if ( isset( $this->evf_notice_print ) && $this->evf_notice_print ) {
@@ -418,20 +441,37 @@ class EVF_Form_Task {
 		}
 
 		$settings = $this->form_data['settings'];
-		if ( isset( $settings['redirect_to'] ) && '1' === $settings['redirect_to'] ) {
+
+		// @todo Deprecate with migration script.
+		switch ( $settings['redirect_to'] ) {
+			case '0':
+				$settings['redirect_to'] = 'same';
+				break;
+
+			case '1':
+				$settings['redirect_to'] = 'custom_page';
+				break;
+
+			case '2':
+				$settings['redirect_to'] = 'external_url';
+				break;
+		}
+		// @endtodo
+
+		if ( isset( $settings['redirect_to'] ) && 'custom_page' === $settings['redirect_to'] ) {
 			?>
 				<script>
-				var redirect = '<?php echo get_permalink( $settings['custom_page'] ); ?>';
+				var redirect = '<?php echo esc_url( get_page_link( $settings['custom_page'] ) ); ?>';
 				window.setTimeout( function () {
 					window.location.href = redirect;
 				})
 				</script>
 			<?php
-		} elseif ( isset( $settings['redirect_to'] ) && '2' === $settings['redirect_to'] ) {
+		} elseif ( isset( $settings['redirect_to'] ) && 'external_url' === $settings['redirect_to'] ) {
 			?>
 			<script>
 				window.setTimeout( function () {
-					window.location.href = '<?php echo $settings['external_url']; ?>';
+					window.location.href = '<?php echo esc_url( $settings['external_url'] ); ?>';
 				})
 				</script>
 			<?php

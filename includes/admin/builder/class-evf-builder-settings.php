@@ -194,13 +194,13 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			$this->form_data,
 			esc_html__( 'Redirect To', 'everest-forms' ),
 			array(
-				'default' => '0',
+				'default' => 'same',
 				/* translators: %1$s - general settings docs url */
 				'tooltip' => sprintf( esc_html__( 'Choose where to redirect after form submission. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/general-settings/#redirect-to' ) ),
 				'options' => array(
-					'0' => esc_html__( 'Same Page', 'everest-forms' ),
-					'1' => esc_html__( 'Custom Page', 'everest-forms' ),
-					'2' => esc_html__( 'External URL', 'everest-forms' ),
+					'same'          => esc_html__( 'Same Page', 'everest-forms' ),
+					'custom_page'   => esc_html__( 'Custom Page', 'everest-forms' ),
+					'external_page' => esc_html__( 'External URL', 'everest-forms' ),
 				),
 			)
 		);
