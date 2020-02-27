@@ -54,7 +54,7 @@ class EVF_Admin_Import_Export {
 			),
 		);
 		$form_name   = strtolower( str_replace( ' ', '-', get_the_title( $form_id ) ) );
-		$file_name   = $form_name . '-' . current_time( 'Y-m-d_H:i:s' ) . '.json';
+		$file_name   = html_entity_decode( $form_name, ENT_QUOTES, 'UTF-8' ) . '-' . current_time( 'Y-m-d_H:i:s' ) . '.json';
 
 		if ( ob_get_contents() ) {
 			ob_clean();
@@ -64,7 +64,7 @@ class EVF_Admin_Import_Export {
 		// Force download.
 		header( 'Content-Type: application/force-download' );
 		// Disposition / Encoding on response body.
-		header( "Content-Disposition: attachment;filename={$file_name}" );
+		header( "Content-Disposition: attachment;filename={$file_name};charset=utf-8" );
 		header( 'Content-type: application/json' );
 		echo $export_json; // phpcs:ignore WordPress.Security.EscapeOutput
 		exit();
