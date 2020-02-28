@@ -1838,7 +1838,7 @@ jQuery(function () {
 		jQuery('#everest-forms-panel-field-settings-custom_page-wrap').show();
 		jQuery('#everest-forms-panel-field-settings-external_url-wrap').hide();
 	}
-	else if(mySelect == 'external_page'){
+	else if(mySelect == 'external_url'){
 		jQuery('#everest-forms-panel-field-settings-external_url-wrap').show();
 		jQuery('#everest-forms-panel-field-settings-custom_page-wrap').hide();
 	}
@@ -1852,7 +1852,7 @@ jQuery(function () {
 			jQuery('#everest-forms-panel-field-settings-custom_page-wrap').show();
 			jQuery('#everest-forms-panel-field-settings-external_url-wrap').hide();
 		}
-		else if ( this.value == 'external_page') {
+		else if ( this.value == 'external_url') {
 			jQuery('#everest-forms-panel-field-settings-custom_page-wrap').hide();
 			jQuery('#everest-forms-panel-field-settings-external_url-wrap').show();
 		}
