@@ -63,8 +63,8 @@ class EVF_AJAX {
 	public static function do_evf_ajax() {
 		global $wp_query;
 
-		if ( ! empty( $_GET['evf-ajax'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
-			$wp_query->set( 'evf-ajax', sanitize_text_field( wp_unslash( $_GET['evf-ajax'] ) ) ); // phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
+		if ( ! empty( $_GET['evf-ajax'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			$wp_query->set( 'evf-ajax', sanitize_text_field( wp_unslash( $_GET['evf-ajax'] ) ) ); // phpcs:ignore WordPress.Security.NonceVerification
 		}
 
 		$action = $wp_query->get( 'evf-ajax' );
@@ -152,8 +152,8 @@ class EVF_AJAX {
 			wp_die( -1 );
 		}
 
-		$title    = isset( $_POST['title'] ) ? $_POST['title'] : __( 'Blank Form', 'everest-forms' );
-		$template = isset( $_POST['template'] ) ? $_POST['template'] : 'blank';
+		$title    = isset( $_POST['title'] ) ? sanitize_text_field( wp_unslash( $_POST['title'] ) ) : __( 'Blank Form', 'everest-forms' );
+		$template = isset( $_POST['template'] ) ? sanitize_text_field( wp_unslash( $_POST['template'] ) ) : 'blank';
 
 		$form_id = EVF()->form->create( $title, $template );
 
@@ -195,7 +195,7 @@ class EVF_AJAX {
 			die( esc_html__( 'No data provided', 'everest-forms' ) );
 		}
 
-		$form_post = json_decode( stripslashes( $_POST['form_data'] ) );
+		$form_post = json_decode( stripslashes( wp_unslash( $_POST['form_data'] ) ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
 		$data = array();
 
@@ -215,7 +215,7 @@ class EVF_AJAX {
 
 				// Build the new array value from leaf to trunk.
 				for ( $i = count( $array_bits ) - 1; $i >= 0; $i -- ) {
-					if ( $i === count( $array_bits ) - 1 ) {
+					if ( count( $array_bits ) - 1 === $i ) {
 						$new_post_data[ $array_bits[ $i ] ] = wp_slash( $post_input_data->value );
 					} else {
 						$new_post_data = array(
@@ -246,6 +246,7 @@ class EVF_AJAX {
 				wp_send_json_error(
 					array(
 						'errorTitle'   => __( 'Meta Key missing', 'everest-forms' ),
+						/* translators: %s: empty meta data */
 						'errorMessage' => sprintf( __( 'Please add Meta key for fields: %s', 'everest-forms' ), '<strong>' . implode( ', ', $empty_meta_data ) . '</strong>' ),
 					)
 				);
@@ -286,8 +287,7 @@ class EVF_AJAX {
 		check_ajax_referer( 'everest_forms_ajax_form_submission', 'security' );
 
 		if ( ! empty( $_POST['everest_forms']['id'] ) ) {
-			// $process = evf()->task->do_task( stripslashes_deep( $_POST['everest_forms'] ) );
-			$process = evf()->task->ajax_form_submission( stripslashes_deep( $_POST['everest_forms'] ) );
+			$process = evf()->task->ajax_form_submission( stripslashes_deep( $_POST['everest_forms'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 			if ( 'success' === $process['response'] ) {
 				wp_send_json_success( $process );
 			}
@@ -311,7 +311,7 @@ class EVF_AJAX {
 			);
 		}
 
-		$activate = activate_plugin( $_POST['addon'] . '/' . $_POST['addon'] . '.php' );
+		$activate = activate_plugin( sanitize_text_field( wp_unslash( $_POST['addon'] ) ) . '/' . sanitize_text_field( wp_unslash( $_POST['addon'] ) ) . '.php' );
 
 		if ( is_wp_error( $activate ) ) {
 			wp_send_json_error(
@@ -351,7 +351,7 @@ class EVF_AJAX {
 
 			if ( ! empty( $template_data->templates ) ) {
 				foreach ( $template_data->templates as $template ) {
-					if ( $template->slug === $_POST['slug'] && in_array( $_POST['plan'], $template->plan, true ) ) {
+					if ( isset( $_POST['slug'] ) && $template->slug === $_POST['slug'] && in_array( $_POST['plan'], $template->plan, true ) ) {
 						$addons = $template->addons;
 					}
 				}
@@ -500,7 +500,7 @@ class EVF_AJAX {
 		$install_status = install_plugin_install_status( $api );
 
 		if ( current_user_can( 'activate_plugin', $install_status['file'] ) && is_plugin_inactive( $install_status['file'] ) ) {
-			if ( 'everest-forms_page_evf-builder' === $_POST['page'] ) {
+			if ( isset( $_POST['page'] ) && 'everest-forms_page_evf-builder' === $_POST['page'] ) {
 				activate_plugin( $install_status['file'] );
 			} else {
 				$status['activateUrl'] = add_query_arg(
@@ -536,7 +536,7 @@ class EVF_AJAX {
 			);
 		}
 
-		do_action( 'everest_forms_integration_account_connect_' . $_POST['source'], $_POST );
+		do_action( 'everest_forms_integration_account_connect_' . sanitize_text_field( wp_unslash( $_POST['source'] ) ), $_POST ); //phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 	}
 
 	/**
@@ -548,12 +548,10 @@ class EVF_AJAX {
 		if ( ! current_user_can( 'manage_everest_forms' ) ) {
 			wp_die( -1 );
 		}
-		// $connection = self::output_email_connection( '', array( 'connection_name' => $_POST['name'] ), $_POST['id'] );
 		$connection_id = 'connection_' . uniqid();
 
 		wp_send_json_success(
 			array(
-				// 'html' => $connection[ 'html' ],
 				'connection_id' => $connection_id,
 			)
 		);
@@ -649,7 +647,7 @@ class EVF_AJAX {
 			wp_die( -1 );
 		}
 		$review              = get_option( 'everest_forms_review', array() );
-		$review['time']      = current_time( 'timestamp' );
+		$review['time']      = current_time( 'timestamp' ); // phpcs:ignore WordPress.DateTime.CurrentTimeTimestamp.Requested
 		$review['dismissed'] = true;
 		update_option( 'everest_forms_review', $review );
 		wp_die();
