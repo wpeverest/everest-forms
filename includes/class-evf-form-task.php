@@ -297,7 +297,7 @@ class EVF_Form_Task {
 			$response_data['response'] = 'success';
 			$settings                  = $this->form_data['settings'];
 
-			// @todo Deprecate with migration script.
+			// Backward Compatibility Check.
 			switch ( $settings['redirect_to'] ) {
 				case '0':
 					$settings['redirect_to'] = 'same';
@@ -311,7 +311,6 @@ class EVF_Form_Task {
 					$settings['redirect_to'] = 'external_url';
 					break;
 			}
-			// @endtodo
 
 			if ( isset( $settings['redirect_to'] ) && 'external_url' === $settings['redirect_to'] ) {
 				$response_data['redirect_url'] = isset( $settings['external_url'] ) ? esc_url( $settings['external_url'] ) : 'undefined';
@@ -442,7 +441,7 @@ class EVF_Form_Task {
 
 		$settings = $this->form_data['settings'];
 
-		// @todo Deprecate with migration script.
+		// Backward Compatibility Check.
 		switch ( $settings['redirect_to'] ) {
 			case '0':
 				$settings['redirect_to'] = 'same';
@@ -456,7 +455,6 @@ class EVF_Form_Task {
 				$settings['redirect_to'] = 'external_url';
 				break;
 		}
-		// @endtodo
 
 		if ( isset( $settings['redirect_to'] ) && 'custom_page' === $settings['redirect_to'] ) {
 			?>
