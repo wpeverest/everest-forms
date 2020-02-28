@@ -84,7 +84,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 	 * @return string
 	 */
 	public function column_enabled( $posts ) {
-		$form_data    = EVF()->form->get( absint( $posts->ID ), array( 'content_only' => true ) );
+		$form_data    = evf()->form->get( absint( $posts->ID ), array( 'content_only' => true ) );
 		$form_enabled = isset( $form_data['form_enabled'] ) ? $form_data['form_enabled'] : 1;
 
 		return '<label class="everest-forms-toggle-form form-enabled"><input type="checkbox" data-form_id="' . absint( $posts->ID ) . '" value="1" ' . checked( 1, $form_enabled, false ) . '/><span class="slider round"></span></label>';
@@ -476,7 +476,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 		}
 
 		$args['orderby'] = isset( $_REQUEST['orderby'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['orderby'] ) ) : 'date_created'; // phpcs:ignore WordPress.Security.NonceVerification
-		$args['order']   = isset( $_REQUEST['order'] ) && 'ASC' === strtoupper( evf_clean( wp_unslash( $_REQUEST['order'] ) ) ) ? 'ASC' : 'DESC'; // phpcs:ignore WordPress.Security.NonceVerification
+		$args['order']   = isset( $_REQUEST['order'] ) && 'ASC' === strtoupper( evf_clean( wp_unslash( $_REQUEST['order'] ) ) ) ? 'ASC' : 'DESC'; // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
 		// Get the forms.
 		$posts       = new WP_Query( $args );

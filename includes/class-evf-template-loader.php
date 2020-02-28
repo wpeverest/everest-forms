@@ -110,7 +110,7 @@ class EVF_Template_Loader {
 			$template     = locate_template( $search_files );
 
 			if ( ! $template || EVF_TEMPLATE_DEBUG_MODE ) {
-				$template = EVF()->plugin_path() . '/templates/' . $default_file;
+				$template = evf()->plugin_path() . '/templates/' . $default_file;
 			}
 		}
 
@@ -143,7 +143,7 @@ class EVF_Template_Loader {
 		}
 
 		$search_files[] = $default_file;
-		$search_files[] = EVF()->template_path() . $default_file;
+		$search_files[] = evf()->template_path() . $default_file;
 
 		return array_unique( $search_files );
 	}
@@ -177,7 +177,7 @@ class EVF_Template_Loader {
 	 * @return string
 	 */
 	public static function form_preview_title_filter( $title ) {
-		$form = EVF()->form->get(
+		$form = evf()->form->get(
 			self::$form_id,
 			array(
 				'content_only' => true,

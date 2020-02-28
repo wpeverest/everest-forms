@@ -25,7 +25,7 @@ function evf_notice_count( $notice_type = '' ) {
 	}
 
 	$notice_count = 0;
-	$all_notices  = EVF()->session->get( 'evf_notices', array() );
+	$all_notices  = evf()->session->get( 'evf_notices', array() );
 
 	if ( isset( $all_notices[ $notice_type ] ) ) {
 
@@ -55,7 +55,7 @@ function evf_has_notice( $message, $notice_type = 'success' ) {
 		return false;
 	}
 
-	$notices = EVF()->session->get( 'evf_notices', array() );
+	$notices = evf()->session->get( 'evf_notices', array() );
 	$notices = isset( $notices[ $notice_type ] ) ? $notices[ $notice_type ] : array();
 
 	return array_search( $message, $notices, true ) !== false;
@@ -74,7 +74,7 @@ function evf_add_notice( $message, $notice_type = 'success' ) {
 		return;
 	}
 
-	$notices = EVF()->session->get( 'evf_notices', array() );
+	$notices = evf()->session->get( 'evf_notices', array() );
 
 	// Backward compatibility.
 	if ( 'success' === $notice_type ) {
@@ -83,7 +83,7 @@ function evf_add_notice( $message, $notice_type = 'success' ) {
 
 	$notices[ $notice_type ][] = apply_filters( 'everest_forms_add_' . $notice_type, $message );
 
-	EVF()->session->set( 'evf_notices', $notices );
+	evf()->session->set( 'evf_notices', $notices );
 }
 
 /**
@@ -97,7 +97,7 @@ function evf_set_notices( $notices ) {
 		evf_doing_it_wrong( __FUNCTION__, __( 'This function should not be called before everest_forms_init.', 'everest-forms' ), '1.0' );
 		return;
 	}
-	EVF()->session->set( 'evf_notices', $notices );
+	evf()->session->set( 'evf_notices', $notices );
 }
 
 /**
@@ -110,7 +110,7 @@ function evf_clear_notices() {
 		evf_doing_it_wrong( __FUNCTION__, __( 'This function should not be called before everest_forms_init.', 'everest-forms' ), '1.0' );
 		return;
 	}
-	EVF()->session->set( 'evf_notices', null );
+	evf()->session->set( 'evf_notices', null );
 }
 
 /**
@@ -127,7 +127,7 @@ function evf_print_notices( $form_data = array() ) {
 	}
 
 	$form_id      = isset( $form_data['id'] ) ? absint( $form_data['id'] ) : 0;
-	$all_notices  = EVF()->session->get( 'evf_notices', array() );
+	$all_notices  = evf()->session->get( 'evf_notices', array() );
 	$notice_types = apply_filters( 'everest_forms_notice_types', array( 'error', 'success', 'notice' ) );
 
 	// Skips notice print if it isn't the right form.
@@ -186,7 +186,7 @@ function evf_get_notices( $notice_type = '' ) {
 		return;
 	}
 
-	$all_notices = EVF()->session->get( 'evf_notices', array() );
+	$all_notices = evf()->session->get( 'evf_notices', array() );
 
 	if ( empty( $notice_type ) ) {
 		$notices = $all_notices;

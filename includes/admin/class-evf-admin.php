@@ -134,7 +134,7 @@ class EVF_Admin {
 	public function admin_redirects() {
 		// Nonced plugin install redirects (whitelisted).
 		if ( ! empty( $_GET['evf-install-plugin-redirect'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-			$plugin_slug = evf_clean( wp_unslash( $_GET['evf-install-plugin-redirect'] ) ); // phpcs:ignore WordPress.Security.NonceVerification
+			$plugin_slug = evf_clean( wp_unslash( $_GET['evf-install-plugin-redirect'] ) ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
 			$url = admin_url( 'plugin-install.php?tab=search&type=term&s=' . $plugin_slug );
 			wp_safe_redirect( $url );
@@ -144,7 +144,7 @@ class EVF_Admin {
 		// Setup wizard redirect.
 		if ( get_transient( '_evf_activation_redirect' ) && apply_filters( 'everest_forms_show_welcome_page', true ) ) {
 			$do_redirect  = true;
-			$current_page = isset( $_GET['page'] ) ? evf_clean( wp_unslash( $_GET['page'] ) ) : false; // phpcs:ignore WordPress.Security.NonceVerification
+			$current_page = isset( $_GET['page'] ) ? evf_clean( wp_unslash( $_GET['page'] ) ) : false; // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
 			// On these pages, or during these events, postpone the redirect.
 			if ( wp_doing_ajax() || is_network_admin() || ! current_user_can( 'manage_everest_forms' ) ) {
@@ -192,7 +192,7 @@ class EVF_Admin {
 				evf_enqueue_js(
 					"
 					jQuery( 'a.evf-rating-link' ).click( function() {
-						jQuery.post( '" . EVF()->ajax_url() . "', { action: 'everest_forms_rated' } );
+						jQuery.post( '" . evf()->ajax_url() . "', { action: 'everest_forms_rated' } );
 						jQuery( this ).parent().text( jQuery( this ).data( 'rated' ) );
 					});
 					"

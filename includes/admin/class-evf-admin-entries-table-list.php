@@ -55,7 +55,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		// Check that the user has created at least one form.
 		if ( ! empty( $this->forms ) ) {
 			$this->form_id   = ! empty( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : apply_filters( 'everest_forms_entry_list_default_form_id', key( $this->forms ) ); // phpcs:ignore WordPress.Security.NonceVerification
-			$this->form      = EVF()->form->get( $this->form_id );
+			$this->form      = evf()->form->get( $this->form_id );
 			$this->form_data = ! empty( $this->form->post_content ) ? evf_decode( $this->form->post_content ) : '';
 		}
 
@@ -166,7 +166,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 * @return array
 	 */
 	public function get_columns_form_fields( $columns = array(), $display = 3 ) {
-		$entry_columns = EVF()->form->get_meta( $this->form_id, 'entry_columns' );
+		$entry_columns = evf()->form->get_meta( $this->form_id, 'entry_columns' );
 
 		if ( ! $entry_columns && ! empty( $this->form_data['form_fields'] ) ) {
 			$x = 0;

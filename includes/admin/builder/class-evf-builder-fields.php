@@ -98,7 +98,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 	 * Output fields group buttons.
 	 */
 	public function output_fields() {
-		$form_fields = EVF()->form_fields->form_fields();
+		$form_fields = evf()->form_fields->form_fields();
 
 		if ( ! empty( $form_fields ) ) {
 			foreach ( $form_fields as $group => $form_field ) {
@@ -129,7 +129,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 
 		if ( ! empty( $fields ) ) {
 			foreach ( $fields as $field ) {
-				if ( in_array( $field['type'], EVF()->form_fields->get_pro_form_field_types(), true ) ) {
+				if ( in_array( $field['type'], evf()->form_fields->get_pro_form_field_types(), true ) ) {
 					continue;
 				}
 
@@ -267,7 +267,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 				echo '<div class="' . esc_attr( $grid_class ) . ' " data-grid-id="' . absint( $grid_start ) . '">';
 				$grid_fields = isset( $row_grid[ 'grid_' . $grid_start ] ) && is_array( $row_grid[ 'grid_' . $grid_start ] ) ? $row_grid[ 'grid_' . $grid_start ] : array();
 				foreach ( $grid_fields as $field_id ) {
-					if ( isset( $fields[ $field_id ] ) && ! in_array( $fields[ $field_id ]['type'], EVF()->form_fields->get_pro_form_field_types(), true ) ) {
+					if ( isset( $fields[ $field_id ] ) && ! in_array( $fields[ $field_id ]['type'], evf()->form_fields->get_pro_form_field_types(), true ) ) {
 						$this->field_preview( $fields[ $field_id ] );
 					}
 				}

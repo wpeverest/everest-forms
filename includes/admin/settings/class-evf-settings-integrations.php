@@ -24,7 +24,7 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 		$this->id    = 'integration';
 		$this->label = esc_html__( 'Integration', 'everest-forms' );
 
-		if ( isset( EVF()->integrations ) && EVF()->integrations->get_integrations() ) {
+		if ( isset( evf()->integrations ) && evf()->integrations->get_integrations() ) {
 			parent::__construct();
 		}
 	}
@@ -38,7 +38,7 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 		// Hide the save button.
 		$GLOBALS['hide_save_button'] = true;
 
-		$integrations = EVF()->integrations->get_integrations();
+		$integrations = evf()->integrations->get_integrations();
 
 		if ( '' === $current_section ) {
 			$this->output_integrations( $integrations );

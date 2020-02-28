@@ -1252,7 +1252,7 @@ abstract class EVF_Form_Fields {
 		// Grab field data.
 		$field_args     = ! empty( $_POST['defaults'] ) ? (array) wp_unslash( $_POST['defaults'] ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		$field_type     = esc_attr( wp_unslash( $_POST['field_type'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-		$field_id       = EVF()->form->field_unique_key( wp_unslash( $_POST['form_id'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$field_id       = evf()->form->field_unique_key( wp_unslash( $_POST['form_id'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		$field          = array(
 			'id'          => $field_id,
 			'type'        => $field_type,
@@ -1385,7 +1385,7 @@ abstract class EVF_Form_Fields {
 
 		// Basic required check - If field is marked as required, check for entry data.
 		if ( false !== $required_field && '1' !== $conditional_status && ( empty( $field_submit ) && '0' !== $field_submit ) ) {
-			EVF()->task->errors[ $form_data['id'] ][ $field_id ] = evf_get_required_label();
+			evf()->task->errors[ $form_data['id'] ][ $field_id ] = evf_get_required_label();
 			update_option( 'evf_validation_error', 'yes' );
 		}
 
@@ -1414,7 +1414,7 @@ abstract class EVF_Form_Fields {
 		}
 
 		if ( isset( $validation_text ) ) {
-			EVF()->task->errors[ $form_data['id'] ][ $field_id ] = apply_filters( 'everest_forms_type_validation', $validation_text );
+			evf()->task->errors[ $form_data['id'] ][ $field_id ] = apply_filters( 'everest_forms_type_validation', $validation_text );
 			update_option( 'evf_validation_error', 'yes' );
 		}
 	}
@@ -1440,7 +1440,7 @@ abstract class EVF_Form_Fields {
 		// Sanitize but keep line breaks.
 		$value = evf_sanitize_textarea_field( $field_submit );
 
-		EVF()->task->form_fields[ $field_id ] = array(
+		evf()->task->form_fields[ $field_id ] = array(
 			'name'     => $name,
 			'value'    => $value,
 			'id'       => $field_id,

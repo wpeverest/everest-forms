@@ -199,7 +199,7 @@ function evf_locate_template( $template_name, $template_path = '', $default_path
  * @param string $attachments Attachments. (default: "").
  */
 function evf_mail( $to, $subject, $message, $headers = "Content-Type: text/html\r\n", $attachments = '' ) {
-	$mailer = EVF()->mailer();
+	$mailer = evf()->mailer();
 
 	$mailer->send( $to, $subject, $message, $headers, $attachments );
 }
@@ -239,7 +239,7 @@ function evf_print_js() {
 		 * @since 1.0.0
 		 * @param string $js JavaScript code.
 		 */
-		echo apply_filters( 'everest_forms_queued_js', $js ); // WPCS: XSS ok.
+		echo apply_filters( 'everest_forms_queued_js', $js ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.EscapeOutput.OutputNotEscaped
 
 		unset( $evf_queued_js );
 	}
@@ -287,7 +287,7 @@ function evf_get_log_file_path( $handle ) {
  */
 function evf_get_csv_file_name( $handle ) {
 	if ( function_exists( 'wp_hash' ) ) {
-		$date_suffix = date( 'Y-m-d', time() );
+		$date_suffix = date( 'Y-m-d', time() ); // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
 		$hash_suffix = wp_hash( $handle );
 		return sanitize_file_name( implode( '-', array( 'evf-entry-export', $handle, $date_suffix, $hash_suffix ) ) . '.csv' );
 	} else {
@@ -486,8 +486,8 @@ function evf_back_link( $label, $url ) {
  *
  * @since  1.0.0
  *
- * @param  string $tip        Help tip text
- * @param  bool   $allow_html Allow sanitized HTML if true or escape
+ * @param  string $tip        Help tip text.
+ * @param  bool   $allow_html Allow sanitized HTML if true or escape.
  * @return string
  */
 function evf_help_tip( $tip, $allow_html = false ) {
@@ -642,8 +642,8 @@ add_filter( 'everest_forms_register_log_handlers', 'evf_register_default_log_han
  * Based on wp_list_pluck, this calls a method instead of returning a property.
  *
  * @since 1.0.0
- * @param array      $list              List of objects or arrays
- * @param int|string $callback_or_field Callback method from the object to place instead of the entire object
+ * @param array      $list              List of objects or arrays.
+ * @param int|string $callback_or_field Callback method from the object to place instead of the entire object.
  * @param int|string $index_key         Optional. Field from the object to use as keys for the new array.
  *                                      Default null.
  * @return array Array of values.
@@ -696,7 +696,7 @@ function evf_switch_to_site_locale() {
 		add_filter( 'plugin_locale', 'get_locale' );
 
 		// Init EVF locale.
-		EVF()->load_plugin_textdomain();
+		evf()->load_plugin_textdomain();
 	}
 }
 
@@ -713,7 +713,7 @@ function evf_restore_locale() {
 		remove_filter( 'plugin_locale', 'get_locale' );
 
 		// Init EVF locale.
-		EVF()->load_plugin_textdomain();
+		evf()->load_plugin_textdomain();
 	}
 }
 
@@ -721,12 +721,12 @@ function evf_restore_locale() {
  * Get an item of post data if set, otherwise return a default value.
  *
  * @since  1.0.0
- * @param  string $key
- * @param  string $default
+ * @param  string $key     Key.
+ * @param  string $default Default.
  * @return mixed value sanitized by evf_clean
  */
 function evf_get_post_data_by_key( $key, $default = '' ) {
-	return evf_clean( evf_get_var( $_POST[ $key ], $default ) );
+	return evf_clean( evf_get_var( $_POST[ $key ], $default ) ); // @codingStandardsIgnoreLine
 }
 
 /**
@@ -784,14 +784,14 @@ function evf_delete_expired_transients() {
 		AND a.option_name NOT LIKE %s
 		AND b.option_name = CONCAT( '_transient_timeout_', SUBSTRING( a.option_name, 12 ) )
 		AND b.option_value < %d";
-	$rows = $wpdb->query( $wpdb->prepare( $sql, $wpdb->esc_like( '_transient_' ) . '%', $wpdb->esc_like( '_transient_timeout_' ) . '%', time() ) ); // WPCS: unprepared SQL ok.
+	$rows = $wpdb->query( $wpdb->prepare( $sql, $wpdb->esc_like( '_transient_' ) . '%', $wpdb->esc_like( '_transient_timeout_' ) . '%', time() ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
 	$sql   = "DELETE a, b FROM $wpdb->options a, $wpdb->options b
 		WHERE a.option_name LIKE %s
 		AND a.option_name NOT LIKE %s
 		AND b.option_name = CONCAT( '_site_transient_timeout_', SUBSTRING( a.option_name, 17 ) )
 		AND b.option_value < %d";
-	$rows2 = $wpdb->query( $wpdb->prepare( $sql, $wpdb->esc_like( '_site_transient_' ) . '%', $wpdb->esc_like( '_site_transient_timeout_' ) . '%', time() ) ); // WPCS: unprepared SQL ok.
+	$rows2 = $wpdb->query( $wpdb->prepare( $sql, $wpdb->esc_like( '_site_transient_' ) . '%', $wpdb->esc_like( '_site_transient_timeout_' ) . '%', time() ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
 	return absint( $rows + $rows2 );
 }
@@ -869,20 +869,19 @@ function evf_selected( $value, $options ) {
  * Non-posting elements such as section divider, page break, and HTML are
  * automatically excluded. Optionally a white list can be provided.
  *
- * @since      1.0.0
+ * @since 1.0.0
  *
- * @param mixed $form
- * @param array $whitelist
+ * @param mixed $form Form data.
+ * @param array $whitelist Whitelist args.
  *
  * @return mixed boolean or array
  */
 function evf_get_form_fields( $form = false, $whitelist = array() ) {
-
-	// Accept form (post) object or form ID
+	// Accept form (post) object or form ID.
 	if ( is_object( $form ) ) {
 		$form = json_decode( $form->post_content );
 	} elseif ( is_numeric( $form ) ) {
-		$form = EVF()->form->get(
+		$form = evf()->form->get(
 			$form,
 			array(
 				'content_only' => true,
@@ -894,7 +893,7 @@ function evf_get_form_fields( $form = false, $whitelist = array() ) {
 		return false;
 	}
 
-	// White list of field types to allow
+	// White list of field types to allow.
 	$allowed_form_fields = array(
 		'first-name',
 		'last-name',
@@ -935,9 +934,15 @@ function evf_get_form_fields( $form = false, $whitelist = array() ) {
 }
 
 /**
- * @param $string
+ * Sanitize a string, that can be a multiline.
+ * If WP core `sanitize_textarea_field()` exists (after 4.7.0) - use it.
+ * Otherwise - split onto separate lines, sanitize each one, merge again.
  *
- * @return string
+ * @since 1.4.1
+ *
+ * @param string $string Raw string to sanitize.
+ *
+ * @return string If empty var is passed, or not a string - return unmodified. Otherwise - sanitize.
  */
 function evf_sanitize_textarea_field( $string ) {
 	if ( empty( $string ) || ! is_string( $string ) ) {
@@ -957,11 +962,11 @@ function evf_sanitize_textarea_field( $string ) {
  * Formats, sanitizes, and returns/echos HTML element ID, classes, attributes,
  * and data attributes.
  *
- * @param string $id
- * @param array  $class
- * @param array  $datas
- * @param array  $atts
- * @param bool   $echo
+ * @param string $id    Element ID.
+ * @param array  $class Class args.
+ * @param array  $datas Data args.
+ * @param array  $atts  Attributes.
+ * @param bool   $echo  True to echo else return.
  *
  * @return string
  */
@@ -991,7 +996,7 @@ function evf_html_attributes( $id = '', $class = array(), $datas = array(), $att
 
 	if ( ! empty( $atts ) ) {
 		foreach ( $atts as $att => $val ) {
-			if ( '0' == $val || ! empty( $val ) ) {
+			if ( '0' === $val || ! empty( $val ) ) {
 				$parts[] = sanitize_html_class( $att ) . '="' . esc_attr( $val ) . '"';
 			}
 		}
@@ -1000,16 +1005,16 @@ function evf_html_attributes( $id = '', $class = array(), $datas = array(), $att
 	$output = implode( ' ', $parts );
 
 	if ( $echo ) {
-		echo trim( $output ); // phpcs:ignore
+		echo trim( $output ); // @codingStandardsIgnoreLine
 	} else {
 		return trim( $output );
 	}
 }
 
 /**
- * Sanitizes string of CSS classes.
+ * Sanitize string of CSS classes.
  *
- * @param array|string $classes
+ * @param array|string $classes Class names.
  * @param bool         $convert True will convert strings to array and vice versa.
  *
  * @return string|array
@@ -1039,7 +1044,8 @@ function evf_sanitize_classes( $classes, $convert = false ) {
  *
  * @since 1.0.0
  *
- * @param string $data
+ * @param string $data Data to decode.
+ *
  * @return array|bool
  */
 function evf_decode( $data ) {
@@ -1053,9 +1059,9 @@ function evf_decode( $data ) {
 /**
  * Performs json_encode and wp_slash.
  *
- * @since      1.0.0
+ * @since 1.0.0
  *
- * @param mixed $data
+ * @param mixed $data Data to encode.
  *
  * @return string
  */
@@ -1068,8 +1074,10 @@ function evf_encode( $data = false ) {
 }
 
 /**
- * @param $min
- * @param $max
+ * Crypto rand secure.
+ *
+ * @param int $min Min value.
+ * @param int $max Max value.
  *
  * @return mixed
  */
@@ -1079,30 +1087,32 @@ function evf_crypto_rand_secure( $min, $max ) {
 		return $min;
 	} // not so random...
 	$log    = ceil( log( $range, 2 ) );
-	$bytes  = (int) ( $log / 8 ) + 1; // length in bytes
-	$bits   = (int) $log + 1; // length in bits
-	$filter = (int) ( 1 << $bits ) - 1; // set all lower bits to 1
+	$bytes  = (int) ( $log / 8 ) + 1; // Length in bytes.
+	$bits   = (int) $log + 1; // Length in bits.
+	$filter = (int) ( 1 << $bits ) - 1; // Set all lower bits to 1.
 	do {
 		$rnd = hexdec( bin2hex( openssl_random_pseudo_bytes( $bytes ) ) );
-		$rnd = $rnd & $filter; // discard irrelevant bits
+		$rnd = $rnd & $filter; // Discard irrelevant bits.
 	} while ( $rnd > $range );
 
 	return $min + $rnd;
 }
 
 /**
- * @param int $length
+ * Generate random string.
+ *
+ * @param int $length Length of string.
  *
  * @return string
  */
 function evf_get_random_string( $length = 10 ) {
-	$string        = '';
-	$codeAlphabet  = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-	$codeAlphabet .= 'abcdefghijklmnopqrstuvwxyz';
-	$codeAlphabet .= '0123456789';
-	$max           = strlen( $codeAlphabet ); // edited
+	$string         = '';
+	$code_alphabet  = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	$code_alphabet .= 'abcdefghijklmnopqrstuvwxyz';
+	$code_alphabet .= '0123456789';
+	$max            = strlen( $code_alphabet );
 	for ( $i = 0; $i < $length; $i ++ ) {
-		$string .= $codeAlphabet[ evf_crypto_rand_secure( 0, $max - 1 ) ];
+		$string .= $code_alphabet[ evf_crypto_rand_secure( 0, $max - 1 ) ];
 	}
 
 	return $string;
@@ -1129,7 +1139,7 @@ function evf_get_all_forms( $skip_disabled_entries = false ) {
 
 	if ( ! empty( $form_ids ) ) {
 		foreach ( $form_ids as $form_id ) {
-			$form      = EVF()->form->get( $form_id );
+			$form      = evf()->form->get( $form_id );
 			$entries   = evf_get_entries_ids( $form_id );
 			$form_data = ! empty( $form->post_content ) ? evf_decode( $form->post_content ) : '';
 
@@ -1147,11 +1157,11 @@ function evf_get_all_forms( $skip_disabled_entries = false ) {
 /**
  * Get random meta-key for field option.
  *
- * @param  array $field Field data array
+ * @param  array $field Field data array.
  * @return string
  */
 function evf_get_meta_key_field_option( $field ) {
-	$random_number = rand( pow( 10, 3 ), pow( 10, 4 ) - 1 );
+	$random_number = rand( pow( 10, 3 ), pow( 10, 4 ) - 1 ); // phpcs:ignore WordPress.WP.AlternativeFunctions.rand_rand
 	return strtolower( str_replace( array( ' ', '/_' ), array( '_', '' ), $field['label'] ) ) . '_' . $random_number;
 }
 
@@ -1180,7 +1190,7 @@ function evf_get_ip_address() {
  * @return array
  */
 function evf_get_browser() {
-	$u_agent  = $_SERVER['HTTP_USER_AGENT'];
+	$u_agent  = sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 	$bname    = 'Unknown';
 	$platform = 'Unknown';
 	$version  = '';
@@ -1199,7 +1209,7 @@ function evf_get_browser() {
 		$bname = 'Internet Explorer';
 		$ub    = 'MSIE';
 	} elseif ( preg_match( '/Trident/i', $u_agent ) ) {
-		// this condition is for IE11
+		// this condition is for IE11.
 		$bname = 'Internet Explorer';
 		$ub    = 'rv';
 	} elseif ( preg_match( '/Firefox/i', $u_agent ) ) {
@@ -1220,18 +1230,17 @@ function evf_get_browser() {
 	}
 
 	// Finally get the correct version number.
-	// Added "|:"
+	// Added "|:".
 	$known   = array( 'Version', $ub, 'other' );
-	$pattern = '#(?<browser>' . join( '|', $known ) .
-	 ')[/|: ]+(?<version>[0-9.|a-zA-Z.]*)#';
-	if ( ! preg_match_all( $pattern, $u_agent, $matches ) ) {
+	$pattern = '#(?<browser>' . join( '|', $known ) . ')[/|: ]+(?<version>[0-9.|a-zA-Z.]*)#';
+	if ( ! preg_match_all( $pattern, $u_agent, $matches ) ) { // @codingStandardsIgnoreLine
 		// We have no matching number just continue.
 	}
 
 	// See how many we have.
 	$i = count( $matches['browser'] );
 
-	if ( $i != 1 ) {
+	if ( 1 !== $i ) {
 		// we will have two since we are not using 'other' argument yet.
 		// see if version is before or after the name.
 		if ( strripos( $u_agent, 'Version' ) < strripos( $u_agent, $ub ) ) {
@@ -1244,7 +1253,7 @@ function evf_get_browser() {
 	}
 
 	// Check if we have a number.
-	if ( $version == null || $version == '' ) {
+	if ( null === $version || '' === $version ) {
 		$version = '';
 	}
 
@@ -1277,11 +1286,11 @@ function evf_get_day_period_date( $period, $timestamp = '', $format = 'Y-m-d H:i
 
 	switch ( $period ) {
 		case 'start_of_day':
-			$date = date( $format, strtotime( 'today', $timestamp ) );
+			$date = date( $format, strtotime( 'today', $timestamp ) ); // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
 			break;
 
 		case 'end_of_day':
-			$date = date( $format, strtotime( 'tomorrow', $timestamp ) - 1 );
+			$date = date( $format, strtotime( 'tomorrow', $timestamp ) - 1 ); // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
 			break;
 
 	}
@@ -1304,7 +1313,7 @@ function evf_get_form_data_by_meta_key( $form_id, $meta_key ) {
 
 	if ( ! empty( $form_fields ) ) {
 		foreach ( $form_fields as $field ) {
-			if ( isset( $field['meta-key'] ) && $meta_key == $field['meta-key'] ) {
+			if ( isset( $field['meta-key'] ) && $meta_key === $field['meta-key'] ) {
 				return $field['label'];
 			}
 		}
@@ -1328,7 +1337,7 @@ function evf_get_field_type_by_meta_key( $form_id, $meta_key ) {
 
 	if ( ! empty( $form_fields ) ) {
 		foreach ( $form_fields as $field ) {
-			if ( isset( $field['meta-key'] ) && $meta_key == $field['meta-key'] ) {
+			if ( isset( $field['meta-key'] ) && $meta_key === $field['meta-key'] ) {
 				return $field['type'];
 			}
 		}
@@ -1344,7 +1353,7 @@ function evf_get_field_type_by_meta_key( $form_id, $meta_key ) {
  */
 function evf_get_all_email_fields_by_form_id( $form_id ) {
 	$user_emails = array();
-	$form_obj    = EVF()->form->get( $form_id );
+	$form_obj    = evf()->form->get( $form_id );
 	$form_data   = ! empty( $form_obj->post_content ) ? evf_decode( $form_obj->post_content ) : '';
 
 	if ( ! empty( $form_data['form_fields'] ) ) {
@@ -1366,7 +1375,7 @@ function evf_get_all_email_fields_by_form_id( $form_id ) {
  */
 function evf_get_all_form_fields_by_form_id( $form_id ) {
 	$data      = array();
-	$form_obj  = EVF()->form->get( $form_id );
+	$form_obj  = evf()->form->get( $form_id );
 	$form_data = ! empty( $form_obj->post_content ) ? evf_decode( $form_obj->post_content ) : '';
 
 	if ( ! empty( $form_data['form_fields'] ) ) {
@@ -1410,12 +1419,11 @@ function evf_post_content_has_shortcode( $tag = '' ) {
  * @since 1.2.0
  * @link http://stackoverflow.com/a/22500394
  *
- * @param string $size
+ * @param string $size Size to convert to bytes.
  *
  * @return int
  */
 function evf_size_to_bytes( $size ) {
-
 	if ( is_numeric( $size ) ) {
 		return $size;
 	}
@@ -1423,6 +1431,7 @@ function evf_size_to_bytes( $size ) {
 	$suffix = substr( $size, - 1 );
 	$value  = substr( $size, 0, - 1 );
 
+	// @codingStandardsIgnoreStart
 	switch ( strtoupper( $suffix ) ) {
 		case 'P':
 			$value *= 1024;
@@ -1436,6 +1445,7 @@ function evf_size_to_bytes( $size ) {
 			$value *= 1024;
 			break;
 	}
+	// @codingStandardsIgnoreEnd
 
 	return $value;
 }
@@ -1445,12 +1455,11 @@ function evf_size_to_bytes( $size ) {
  *
  * @since 1.2.0
  *
- * @param int $bytes
+ * @param int $bytes Bytes to convert to a readable format.
  *
  * @return string
  */
 function evf_size_to_megabytes( $bytes ) {
-
 	if ( $bytes < 1048676 ) {
 		return number_format( $bytes / 1024, 1 ) . ' KB';
 	} else {
@@ -1464,7 +1473,7 @@ function evf_size_to_megabytes( $bytes ) {
  * @since 1.2.0
  * @link http://stackoverflow.com/a/22500394
  *
- * @param  bool $bytes
+ * @param  bool $bytes Whether to convert Bytes to a readable format.
  * @return mixed
  */
 function evf_max_upload( $bytes = false ) {
@@ -1522,8 +1531,10 @@ function evf_get_license_plan() {
 /**
  * Decode special characters, both alpha- (<) and numeric-based (').
  *
- * @since  1.2.0
- * @param  string $string
+ * @since 1.2.0
+ *
+ * @param string $string Raw string to decode.
+ *
  * @return string
  */
 function evf_decode_string( $string ) {

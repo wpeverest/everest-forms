@@ -186,14 +186,14 @@ class EVF_Form_Task {
 
 			if ( ! empty( $site_key ) && ! empty( $secret_key ) && isset( $this->form_data['settings']['recaptcha_support'] ) && '1' === $this->form_data['settings']['recaptcha_support'] ) {
 				if ( ( 'v2' === $recaptcha_type && ! empty( $_POST['g-recaptcha-response'] ) ) || ( 'v3' === $recaptcha_type && ! empty( $_POST['g-recaptcha-hidden'] ) ) ) {
-					$response = 'v2' === $recaptcha_type ? evf_clean( wp_unslash( $_POST['g-recaptcha-response'] ) ) : evf_clean( wp_unslash( $_POST['g-recaptcha-hidden'] ) ); // PHPCS: input var ok.
+					$response = 'v2' === $recaptcha_type ? evf_clean( wp_unslash( $_POST['g-recaptcha-response'] ) ) : evf_clean( wp_unslash( $_POST['g-recaptcha-hidden'] ) ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 					$raw_data = wp_safe_remote_get( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $response );
 
 					if ( ! is_wp_error( $raw_data ) ) {
 						$data = json_decode( wp_remote_retrieve_body( $raw_data ) );
 
 						// Check reCAPTCHA response.
-						if ( empty( $data->success ) || ( isset( $data->hostname ) && evf_clean( wp_unslash( $_SERVER['SERVER_NAME'] ) ) !== $data->hostname ) || ( isset( $data->action, $data->score ) && ( 'everest_form' !== $data->action && 0.5 > floatval( $data->score ) ) ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
+						if ( empty( $data->success ) || ( isset( $data->hostname ) && evf_clean( wp_unslash( $_SERVER['SERVER_NAME'] ) ) !== $data->hostname ) || ( isset( $data->action, $data->score ) && ( 'everest_form' !== $data->action && 0.5 > floatval( $data->score ) ) ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 							$this->errors[ $form_id ]['header'] = esc_html__( 'Incorrect reCAPTCHA, please try again.', 'everest-forms' );
 							return $this->errors;
 						}
@@ -381,7 +381,7 @@ class EVF_Form_Task {
 		}
 
 		// Get lead and verify it is attached to the form we received with it.
-		$entry = EVF()->entry->get( $output['entry_id'] );
+		$entry = evf()->entry->get( $output['entry_id'] );
 
 		if ( $output['form_id'] !== $entry->form_id ) {
 			return false;
@@ -409,7 +409,7 @@ class EVF_Form_Task {
 			}
 
 			// Get form.
-			$this->form_data = EVF()->form->get(
+			$this->form_data = evf()->form->get(
 				$form_id,
 				array(
 					'content_only' => true,

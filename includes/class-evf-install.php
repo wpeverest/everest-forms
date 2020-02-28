@@ -102,7 +102,7 @@ class EVF_Install {
 	 * This check is done on all requests and runs if the versions do not match.
 	 */
 	public static function check_version() {
-		if ( ! defined( 'IFRAME_REQUEST' ) && version_compare( get_option( 'everest_forms_version' ), EVF()->version, '<' ) ) {
+		if ( ! defined( 'IFRAME_REQUEST' ) && version_compare( get_option( 'everest_forms_version' ), evf()->version, '<' ) ) {
 			self::install();
 			do_action( 'everest_forms_updated' );
 		}
@@ -241,7 +241,7 @@ class EVF_Install {
 	 */
 	private static function update_evf_version() {
 		delete_option( 'everest_forms_version' );
-		add_option( 'everest_forms_version', EVF()->version );
+		add_option( 'everest_forms_version', evf()->version );
 	}
 
 	/**
@@ -286,7 +286,7 @@ class EVF_Install {
 	 */
 	public static function update_db_version( $version = null ) {
 		delete_option( 'everest_forms_db_version' );
-		add_option( 'everest_forms_db_version', is_null( $version ) ? EVF()->version : $version );
+		add_option( 'everest_forms_db_version', is_null( $version ) ? evf()->version : $version );
 	}
 
 	/**

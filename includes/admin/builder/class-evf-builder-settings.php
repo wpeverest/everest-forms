@@ -60,7 +60,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		$form_data = array();
 
 		if ( ! empty( $_GET['form_id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-			$form_data = EVF()->form->get( absint( $_GET['form_id'] ), array( 'content_only' => true ) ); // phpcs:ignore WordPress.Security.NonceVerification
+			$form_data = evf()->form->get( absint( $_GET['form_id'] ), array( 'content_only' => true ) ); // phpcs:ignore WordPress.Security.NonceVerification
 		}
 
 		return $form_data;

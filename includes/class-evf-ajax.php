@@ -122,14 +122,14 @@ class EVF_AJAX {
 		if ( $form_id < 1 ) {
 			wp_send_json_error(
 				array(
-					'error' => __( 'Invalid form', 'everest-forms' ),
+					'error' => esc_html__( 'Invalid form', 'everest-forms' ),
 				)
 			);
 		}
 		if ( ! current_user_can( apply_filters( 'everest_forms_manage_cap', 'manage_options' ) ) ) {
 			wp_send_json_error();
 		}
-		$field_key      = EVF()->form->field_unique_key( $form_id );
+		$field_key      = evf()->form->field_unique_key( $form_id );
 		$field_id_array = explode( '-', $field_key );
 		$new_field_id   = ( $field_id_array[ count( $field_id_array ) - 1 ] + 1 );
 		wp_send_json_success(
@@ -152,10 +152,10 @@ class EVF_AJAX {
 			wp_die( -1 );
 		}
 
-		$title    = isset( $_POST['title'] ) ? sanitize_text_field( wp_unslash( $_POST['title'] ) ) : __( 'Blank Form', 'everest-forms' );
+		$title    = isset( $_POST['title'] ) ? sanitize_text_field( wp_unslash( $_POST['title'] ) ) : esc_html__( 'Blank Form', 'everest-forms' );
 		$template = isset( $_POST['template'] ) ? sanitize_text_field( wp_unslash( $_POST['template'] ) ) : 'blank';
 
-		$form_id = EVF()->form->create( $title, $template );
+		$form_id = evf()->form->create( $title, $template );
 
 		if ( $form_id ) {
 			$data = array(
@@ -174,7 +174,7 @@ class EVF_AJAX {
 
 		wp_send_json_error(
 			array(
-				'error' => __( 'Something went wrong, please try again later', 'everest-forms' ),
+				'error' => esc_html__( 'Something went wrong, please try again later', 'everest-forms' ),
 			)
 		);
 	}
@@ -245,9 +245,9 @@ class EVF_AJAX {
 			if ( ! empty( $empty_meta_data ) ) {
 				wp_send_json_error(
 					array(
-						'errorTitle'   => __( 'Meta Key missing', 'everest-forms' ),
+						'errorTitle'   => esc_html__( 'Meta Key missing', 'everest-forms' ),
 						/* translators: %s: empty meta data */
-						'errorMessage' => sprintf( __( 'Please add Meta key for fields: %s', 'everest-forms' ), '<strong>' . implode( ', ', $empty_meta_data ) . '</strong>' ),
+						'errorMessage' => sprintf( esc_html__( 'Please add Meta key for fields: %s', 'everest-forms' ), '<strong>' . implode( ', ', $empty_meta_data ) . '</strong>' ),
 					)
 				);
 			}
@@ -259,7 +259,7 @@ class EVF_AJAX {
 			$data['form_fields'] = array_merge( array_intersect_key( array_flip( $structure ), $data['form_fields'] ), $data['form_fields'] );
 		}
 
-		$form_id = EVF()->form->update( $data['id'], $data );
+		$form_id = evf()->form->update( $data['id'], $data );
 
 		do_action( 'everest_forms_save_form', $form_id, $data );
 
@@ -410,7 +410,7 @@ class EVF_AJAX {
 				array(
 					'slug'         => '',
 					'errorCode'    => 'no_plugin_specified',
-					'errorMessage' => __( 'No plugin specified.', 'everest-forms' ),
+					'errorMessage' => esc_html__( 'No plugin specified.', 'everest-forms' ),
 				)
 			);
 		}
@@ -423,7 +423,7 @@ class EVF_AJAX {
 		);
 
 		if ( ! current_user_can( 'install_plugins' ) ) {
-			$status['errorMessage'] = __( 'Sorry, you are not allowed to install plugins on this site.', 'everest-forms' );
+			$status['errorMessage'] = esc_html__( 'Sorry, you are not allowed to install plugins on this site.', 'everest-forms' );
 			wp_send_json_error( $status );
 		}
 
@@ -487,7 +487,7 @@ class EVF_AJAX {
 			global $wp_filesystem;
 
 			$status['errorCode']    = 'unable_to_connect_to_filesystem';
-			$status['errorMessage'] = __( 'Unable to connect to the filesystem. Please confirm your credentials.', 'everest-forms' );
+			$status['errorMessage'] = esc_html__( 'Unable to connect to the filesystem. Please confirm your credentials.', 'everest-forms' );
 
 			// Pass through the error from WP_Filesystem if one was raised.
 			if ( $wp_filesystem instanceof WP_Filesystem_Base && is_wp_error( $wp_filesystem->errors ) && $wp_filesystem->errors->get_error_code() ) {
@@ -614,7 +614,7 @@ class EVF_AJAX {
 		);
 
 		/* translators: %1$s - deactivation reason page; %2$d - deactivation url. */
-		$deactivation_notice = sprintf( __( 'Before we deactivate Everest Forms, would you care to <a href="%1$s" target="_blank">let us know why</a> so we can improve it for you? <a href="%2$s">No, deactivate now</a>.', 'everest-forms' ), 'https://wpeverest.com/deactivation/everest-forms/', $deactivate_url );
+		$deactivation_notice = sprintf( esc_html__( 'Before we deactivate Everest Forms, would you care to <a href="%1$s" target="_blank">let us know why</a> so we can improve it for you? <a href="%2$s">No, deactivate now</a>.', 'everest-forms' ), 'https://wpeverest.com/deactivation/everest-forms/', $deactivate_url );
 
 		wp_send_json(
 			array(
@@ -667,11 +667,11 @@ class EVF_AJAX {
 		$form_id = isset( $_POST['form_id'] ) ? absint( $_POST['form_id'] ) : 0;
 		$enabled = isset( $_POST['enabled'] ) ? absint( $_POST['enabled'] ) : 0;
 
-		$form_data = EVF()->form->get( absint( $form_id ), array( 'content_only' => true ) );
+		$form_data = evf()->form->get( absint( $form_id ), array( 'content_only' => true ) );
 
 		$form_data['form_enabled'] = $enabled;
 
-		EVF()->form->update( $form_id, $form_data );
+		evf()->form->update( $form_id, $form_data );
 	}
 
 	/**

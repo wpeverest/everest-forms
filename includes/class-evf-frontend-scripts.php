@@ -273,7 +273,7 @@ class EVF_Frontend_Scripts {
 		switch ( $handle ) {
 			case 'everest-forms':
 				$params = array(
-					'ajax_url'                             => EVF()->ajax_url(),
+					'ajax_url'                             => evf()->ajax_url(),
 					'submit'                               => esc_html__( 'Submit', 'everest-forms' ),
 					'disable_user_details'                 => get_option( 'everest_forms_disable_user_details' ),
 					'everest_forms_data_save'              => wp_create_nonce( 'everest_forms_data_save_nonce' ),

@@ -16,9 +16,11 @@
 	<!-- WordPress -->
 	<rule ref="WordPress">
 		<exclude name="WordPress.DB.SlowDBQuery.slow_db_query_meta_key" />
+		<exclude name="WordPress.NamingConventions.ValidFunctionName.FunctionNameInvalid" />
 		<!-- Ignore base64_encode() and base64_decode() obfuscation error in parser -->
 		<exclude name="WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode" />
 		<exclude name="WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode" />
+
 	</rule>
 
 	<!-- Rules -->
