@@ -583,8 +583,7 @@ class EVF_Shortcode_Form {
 				$container_data['required-field-message'] = isset( $field['required-field-message'] ) && '' !== $field['required-field-message'] ? $field['required-field-message'] : $required_validation;
 			}
 		}
-
-		$errors     = evf()->task->errors[ $form_id ][ $field_id ];
+		$errors     = isset( evf()->task->errors[ $form_id ][ $field_id ] ) ? evf()->task->errors[ $form_id ][ $field_id ] : '';
 		$properties = apply_filters(
 			'everest_forms_field_properties_' . $field['type'],
 			array(
