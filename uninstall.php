@@ -12,6 +12,7 @@ defined( 'WP_UNINSTALL_PLUGIN' ) || exit;
 
 global $wpdb;
 
+wp_clear_scheduled_hook( 'everest_forms_cleanup_logs' );
 wp_clear_scheduled_hook( 'everest_forms_cleanup_sessions' );
 
 /*
@@ -20,7 +21,7 @@ wp_clear_scheduled_hook( 'everest_forms_cleanup_sessions' );
  * and to ensure only the site owner can perform this action.
  */
 if ( defined( 'EVF_REMOVE_ALL_DATA' ) && true === EVF_REMOVE_ALL_DATA ) {
-	include_once( dirname( __FILE__ ) . '/includes/class-evf-install.php' );
+	include_once dirname( __FILE__ ) . '/includes/class-evf-install.php';
 
 	// Roles + caps.
 	EVF_Install::remove_roles();

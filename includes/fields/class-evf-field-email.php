@@ -337,6 +337,7 @@ class EVF_Field_Email extends EVF_Form_Fields {
 		$form_id            = $form_data['id'];
 		$fields             = $form_data['form_fields'];
 		$required           = evf_get_required_label();
+		$invalid_email      = esc_html__( 'Please enter a valid email address.', 'everest-forms' );
 		$conditional_status = isset( $form_data['form_fields'][ $field_id ]['conditional_logic_status'] ) ? $form_data['form_fields'][ $field_id ]['conditional_logic_status'] : 0;
 
 		// Standard configuration, confirmation disabled.
@@ -346,6 +347,12 @@ class EVF_Field_Email extends EVF_Form_Fields {
 			if ( ! empty( $fields[ $field_id ]['required'] ) && '1' !== $conditional_status && ( empty( $field_submit ) && '0' !== $field_submit ) ) {
 				evf()->task->errors[ $form_id ][ $field_id ] = $required;
 				update_option( 'evf_validation_error', 'yes' );
+			}
+
+			if ( isset( $field_submit ) && ! is_email( $field_submit ) ) {
+				evf()->task->errors[ $form_id ][ $field_id ] = $invalid_email;
+				update_option( 'evf_validation_error', 'yes' );
+				return;
 			}
 		} else {
 
@@ -366,7 +373,14 @@ class EVF_Field_Email extends EVF_Form_Fields {
 				if ( $field_submit['primary'] !== $field_submit['secondary'] ) {
 					evf()->task->errors[ $form_id ][ $field_id ]['secondary'] = esc_html__( 'Confirmation Email do not match.', 'everest-forms' );
 					update_option( 'evf_validation_error', 'yes' );
+					return;
 				}
+			}
+
+			if ( isset( $field_submit['primary'] ) && ! is_email( $field_submit['primary'] ) ) {
+				evf()->task->errors[ $form_id ][ $field_id ]['primary'] = $invalid_email;
+				update_option( 'evf_validation_error', 'yes' );
+				return;
 			}
 		}
 	}

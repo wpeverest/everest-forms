@@ -264,14 +264,34 @@ class EVF_Logger implements EVF_Logger_Interface {
 	/**
 	 * Clear entries from chosen file.
 	 *
-	 * @deprecated 1.2.0
-	 *
-	 * @param string $handle Source/handle to clear.
+	 * @param string $source Source/handle to clear.
 	 * @return bool
 	 */
-	public function clear( $handle ) {
-		evf_deprecated_function( 'EVF_Logger::clear', '1.2', 'EVF_Log_Handler_File::clear' );
-		$handler = new EVF_Log_Handler_File();
-		return $handler->clear( $handle );
+	public function clear( $source = '' ) {
+		if ( ! $source ) {
+			return false;
+		}
+		foreach ( $this->handlers as $handler ) {
+			if ( is_callable( array( $handler, 'clear' ) ) ) {
+				$handler->clear( $source );
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Clear all logs older than a defined number of days. Defaults to 30 days.
+	 *
+	 * @since 1.6.2
+	 */
+	public function clear_expired_logs() {
+		$days      = absint( apply_filters( 'everest_forms_logger_days_to_retain_logs', 30 ) );
+		$timestamp = strtotime( "-{$days} days" );
+
+		foreach ( $this->handlers as $handler ) {
+			if ( is_callable( array( $handler, 'delete_logs_before_timestamp' ) ) ) {
+				$handler->delete_logs_before_timestamp( $timestamp );
+			}
+		}
 	}
 }

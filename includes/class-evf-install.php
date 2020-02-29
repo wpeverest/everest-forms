@@ -307,8 +307,10 @@ class EVF_Install {
 	 * Create cron jobs (clear them first).
 	 */
 	private static function create_cron_jobs() {
+		wp_clear_scheduled_hook( 'everest_forms_cleanup_logs' );
 		wp_clear_scheduled_hook( 'everest_forms_cleanup_sessions' );
-		wp_schedule_event( time(), 'twicedaily', 'everest_forms_cleanup_sessions' );
+		wp_schedule_event( time() + ( 3 * HOUR_IN_SECONDS ), 'daily', 'everest_forms_cleanup_logs' );
+		wp_schedule_event( time() + ( 6 * HOUR_IN_SECONDS ), 'twicedaily', 'everest_forms_cleanup_sessions' );
 	}
 
 	/**

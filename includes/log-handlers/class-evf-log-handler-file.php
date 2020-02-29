@@ -47,7 +47,7 @@ class EVF_Log_Handler_File extends EVF_Log_Handler {
 			$log_size_limit = 5 * 1024 * 1024;
 		}
 
-		$this->log_size_limit = $log_size_limit;
+		$this->log_size_limit = apply_filters( 'everest_forms_log_file_size_limit', $log_size_limit );
 
 		add_action( 'plugins_loaded', array( $this, 'write_cached_logs' ) );
 	}
@@ -82,7 +82,6 @@ class EVF_Log_Handler_File extends EVF_Log_Handler {
 	 * @return bool False if value was not handled and true if value was handled.
 	 */
 	public function handle( $timestamp, $level, $message, $context ) {
-
 		if ( isset( $context['source'] ) && $context['source'] ) {
 			$handle = $context['source'];
 		} else {
@@ -105,7 +104,6 @@ class EVF_Log_Handler_File extends EVF_Log_Handler {
 	 * @return string Formatted log entry.
 	 */
 	protected static function format_entry( $timestamp, $level, $message, $context ) {
-
 		if ( isset( $context['_legacy'] ) && true === $context['_legacy'] ) {
 			if ( isset( $context['source'] ) && $context['source'] ) {
 				$handle = $context['source'];
@@ -243,16 +241,17 @@ class EVF_Log_Handler_File extends EVF_Log_Handler {
 	 */
 	public function remove( $handle ) {
 		$removed = false;
-		$file    = self::get_log_file_path( $handle );
+		$logs    = $this->get_log_files();
+		$handle  = sanitize_title( $handle );
 
-		if ( $file ) {
-			if ( is_file( $file ) && is_writable( $file ) ) {
-				$this->close( $handle ); // Close first to be certain no processes keep it alive after it is unlinked.
-				$removed = unlink( $file );
+		if ( isset( $logs[ $handle ] ) && $logs[ $handle ] ) {
+			$file = realpath( trailingslashit( EVF_LOG_DIR ) . $logs[ $handle ] );
+			if ( 0 === stripos( $file, realpath( trailingslashit( EVF_LOG_DIR ) ) ) && is_file( $file ) && is_writable( $file ) ) { // phpcs:ignore WordPress.VIP.FileSystemWritesDisallow.file_ops_is_writable
+				$this->close( $file ); // Close first to be certain no processes keep it alive after it is unlinked.
+				$removed = unlink( $file ); // phpcs:ignore WordPress.VIP.FileSystemWritesDisallow.file_ops_unlink
 			}
 			do_action( 'everest_forms_log_remove', $handle, $removed );
 		}
-
 		return $removed;
 	}
 
@@ -324,8 +323,8 @@ class EVF_Log_Handler_File extends EVF_Log_Handler {
 			$this->close( $rename_from );
 		}
 
-		if ( is_writable( $rename_from ) ) {
-			return rename( $rename_from, $rename_to );
+		if ( is_writable( $rename_from ) ) { // phpcs:ignore WordPress.VIP.FileSystemWritesDisallow.file_ops_is_writable
+			return rename( $rename_from, $rename_to ); // phpcs:ignore WordPress.VIP.FileSystemWritesDisallow.file_ops_rename
 		} else {
 			return false;
 		}
@@ -349,13 +348,17 @@ class EVF_Log_Handler_File extends EVF_Log_Handler {
 	/**
 	 * Get a log file name.
 	 *
+	 * File names consist of the handle, followed by the date, followed by a hash, .log.
+	 *
 	 * @since 3.3
 	 * @param string $handle Log name.
 	 * @return bool|string The log file name or false if cannot be determined.
 	 */
 	public static function get_log_file_name( $handle ) {
 		if ( function_exists( 'wp_hash' ) ) {
-			return sanitize_file_name( $handle . '-' . wp_hash( $handle ) . '.log' );
+			$date_suffix = date( 'Y-m-d', time() ); // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
+			$hash_suffix = wp_hash( $handle );
+			return sanitize_file_name( implode( '-', array( $handle, $date_suffix, $hash_suffix ) ) . '.log' );
 		} else {
 			evf_doing_it_wrong( __METHOD__, __( 'This method should not be called before plugins_loaded.', 'everest-forms' ), '1.2' );
 			return false;
@@ -382,5 +385,50 @@ class EVF_Log_Handler_File extends EVF_Log_Handler {
 		foreach ( $this->cached_logs as $log ) {
 			$this->add( $log['entry'], $log['handle'] );
 		}
+	}
+
+	/**
+	 * Delete all logs older than a defined timestamp.
+	 *
+	 * @since 1.6.2
+	 * @param integer $timestamp Timestamp to delete logs before.
+	 */
+	public static function delete_logs_before_timestamp( $timestamp = 0 ) {
+		if ( ! $timestamp ) {
+			return;
+		}
+
+		$log_files = self::get_log_files();
+
+		foreach ( $log_files as $log_file ) {
+			$last_modified = filemtime( trailingslashit( EVF_LOG_DIR ) . $log_file );
+
+			if ( $last_modified < $timestamp ) {
+				@unlink( trailingslashit( EVF_LOG_DIR ) . $log_file ); // @codingStandardsIgnoreLine.
+			}
+		}
+	}
+
+	/**
+	 * Get all log files in the log directory.
+	 *
+	 * @since 1.6.2
+	 * @return array
+	 */
+	public static function get_log_files() {
+		$files  = @scandir( EVF_LOG_DIR ); // @codingStandardsIgnoreLine.
+		$result = array();
+
+		if ( ! empty( $files ) ) {
+			foreach ( $files as $key => $value ) {
+				if ( ! in_array( $value, array( '.', '..' ), true ) ) {
+					if ( ! is_dir( $value ) && strstr( $value, '.log' ) ) {
+						$result[ sanitize_title( $value ) ] = $value;
+					}
+				}
+			}
+		}
+
+		return $result;
 	}
 }
