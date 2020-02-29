@@ -45,7 +45,7 @@ function evf_update_110_update_forms() {
 	$forms = evf_get_all_forms();
 
 	foreach ( $forms as $form_id => $form ) {
-		$form_obj  = EVF()->form->get( $form_id );
+		$form_obj  = evf()->form->get( $form_id );
 		$form_data = ! empty( $form_obj->post_content ) ? evf_decode( $form_obj->post_content ) : '';
 
 		if ( ! empty( $form_data['form_fields'] ) ) {
@@ -57,7 +57,7 @@ function evf_update_110_update_forms() {
 		}
 
 		// Update form data.
-		EVF()->form->update( $form_id, $form_data );
+		evf()->form->update( $form_id, $form_data );
 	}
 }
 
@@ -125,7 +125,7 @@ function evf_update_120_db_rename_options() {
  * Update email settings adding connection data.
  */
 function evf_update_140_db_multiple_email() {
-	$forms = EVF()->form->get( '', array( 'order' => 'DESC' ) );
+	$forms = evf()->form->get( '', array( 'order' => 'DESC' ) );
 
 	// Loop through each forms.
 	foreach ( $forms as $form ) {
@@ -175,7 +175,7 @@ function evf_update_140_db_multiple_email() {
 			}
 
 			// Update form data.
-			EVF()->form->update( $form_id, $form_data );
+			evf()->form->update( $form_id, $form_data );
 		}
 	}
 }
@@ -242,7 +242,7 @@ function evf_update_149_no_payment_options() {
 
 	// Loop through each forms.
 	foreach ( $forms as $form_id => $form ) {
-		$form_obj  = EVF()->form->get( $form_id );
+		$form_obj  = evf()->form->get( $form_id );
 		$form_data = ! empty( $form_obj->post_content ) ? evf_decode( $form_obj->post_content ) : '';
 
 		if ( ! empty( $form_data['form_fields'] ) ) {
@@ -254,7 +254,7 @@ function evf_update_149_no_payment_options() {
 		}
 
 		// Update form data.
-		EVF()->form->update( $form_id, $form_data );
+		evf()->form->update( $form_id, $form_data );
 	}
 }
 
@@ -269,7 +269,7 @@ function evf_update_149_db_version() {
  * Update date field type for all forms.
  */
 function evf_update_150_field_datetime_type() {
-	$forms = EVF()->form->get( '', array( 'order' => 'DESC' ) );
+	$forms = evf()->form->get( '', array( 'order' => 'DESC' ) );
 
 	// Loop through each forms.
 	foreach ( $forms as $form ) {
@@ -285,7 +285,7 @@ function evf_update_150_field_datetime_type() {
 		}
 
 		// Update form data.
-		EVF()->form->update( $form_id, $form_data );
+		evf()->form->update( $form_id, $form_data );
 	}
 }
 

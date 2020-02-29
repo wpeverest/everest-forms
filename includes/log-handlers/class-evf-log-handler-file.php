@@ -60,7 +60,7 @@ class EVF_Log_Handler_File extends EVF_Log_Handler {
 	public function __destruct() {
 		foreach ( $this->handles as $handle ) {
 			if ( is_resource( $handle ) ) {
-				fclose( $handle ); // @codingStandardsIgnoreLine
+				fclose( $handle ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fclose
 			}
 		}
 	}
@@ -198,7 +198,7 @@ class EVF_Log_Handler_File extends EVF_Log_Handler {
 		}
 
 		if ( $this->open( $handle ) && is_resource( $this->handles[ $handle ] ) ) {
-			$result = fwrite( $this->handles[ $handle ], $entry . PHP_EOL ); // @codingStandardsIgnoreLine
+			$result = fwrite( $this->handles[ $handle ], $entry . PHP_EOL ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fwrite
 		} else {
 			$this->cache_log( $entry, $handle );
 		}

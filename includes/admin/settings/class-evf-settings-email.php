@@ -22,7 +22,7 @@ class EVF_Settings_Email extends EVF_Settings_Page {
 	 */
 	public function __construct() {
 		$this->id    = 'email';
-		$this->label = __( 'Email', 'everest-forms' );
+		$this->label = esc_html__( 'Email', 'everest-forms' );
 
 		parent::__construct();
 	}
@@ -37,13 +37,13 @@ class EVF_Settings_Email extends EVF_Settings_Page {
 			'everest_forms_email_settings',
 			array(
 				array(
-					'title' => __( 'Template Settings', 'everest-forms' ),
+					'title' => esc_html__( 'Template Settings', 'everest-forms' ),
 					'type'  => 'title',
 					'desc'  => '',
 					'id'    => 'email_template_options',
 				),
 				array(
-					'title'   => __( 'Template', 'everest-forms' ),
+					'title'   => esc_html__( 'Template', 'everest-forms' ),
 					'type'    => 'radio-image',
 					'id'      => 'everest_forms_email_template',
 					'desc'    => esc_html__( 'Determine which format of email to send. HTML Template is default.', 'everest-forms' ),
@@ -60,9 +60,9 @@ class EVF_Settings_Email extends EVF_Settings_Page {
 					),
 				),
 				array(
-					'title'    => __( 'Enable copies', 'everest-forms' ),
-					'desc'     => __( 'Enable the use of Cc and Bcc email addresses', 'everest-forms' ),
-					'desc_tip' => __( 'Email addresses for Cc and Bcc can be applied from the form notification settings.', 'everest-forms' ),
+					'title'    => esc_html__( 'Enable copies', 'everest-forms' ),
+					'desc'     => esc_html__( 'Enable the use of Cc and Bcc email addresses', 'everest-forms' ),
+					'desc_tip' => esc_html__( 'Email addresses for Cc and Bcc can be applied from the form notification settings.', 'everest-forms' ),
 					'id'       => 'everest_forms_enable_email_copies',
 					'default'  => 'no',
 					'type'     => 'checkbox',

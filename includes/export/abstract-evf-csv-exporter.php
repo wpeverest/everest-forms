@@ -286,7 +286,7 @@ abstract class EVF_CSV_Exporter {
 	public function escape_data( $data ) {
 		$active_content_triggers = array( '=', '+', '-', '@' );
 
-		if ( in_array( mb_substr( $data, 0, 1 ), $active_content_triggers, true ) ) {
+		if ( in_array( mb_substr( $data, 0, 1 ), $active_content_triggers, true ) ) { // @codingStandardsIgnoreLine
 			$data = "'" . $data . "'";
 		}
 

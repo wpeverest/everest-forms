@@ -59,7 +59,7 @@ class EVF_Admin_Menus {
 	 * Add menu items.
 	 */
 	public function admin_menu() {
-		add_menu_page( __( 'Everest Forms', 'everest-forms' ), __( 'Everest Forms', 'everest-forms' ), 'manage_everest_forms', 'everest-forms', null, $this->get_icon_svg(), '55.5' );
+		add_menu_page( esc_html__( 'Everest Forms', 'everest-forms' ), esc_html__( 'Everest Forms', 'everest-forms' ), 'manage_everest_forms', 'everest-forms', null, $this->get_icon_svg(), '55.5' );
 
 		// Backward compatibility for builder page redirects.
 		if ( ! empty( $_GET['page'] ) && in_array( wp_unslash( $_GET['page'] ), array( 'everest-forms', 'edit-evf-form', 'evf-status' ), true ) ) { // phpcs:ignore WordPress.Security.NonceVerification
@@ -69,8 +69,8 @@ class EVF_Admin_Menus {
 				if ( isset( $_GET['tab'], $_GET['form_id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 					$redirect_url = add_query_arg(
 						array(
-							'tab'     => evf_clean( wp_unslash( $_GET['tab'] ) ),
-							'form_id' => absint( wp_unslash( $_GET['form_id'] ) ),
+							'tab'     => evf_clean( wp_unslash( $_GET['tab'] ) ), // phpcs:ignore WordPress.Security.NonceVerification
+							'form_id' => absint( wp_unslash( $_GET['form_id'] ) ), // phpcs:ignore WordPress.Security.NonceVerification
 						),
 						admin_url( 'admin.php?page=evf-builder' )
 					);
@@ -90,9 +90,9 @@ class EVF_Admin_Menus {
 	 * Add menu items.
 	 */
 	public function builder_menu() {
-		$builder_page = add_submenu_page( 'everest-forms', __( 'Everest Forms Builder', 'everest-forms' ), __( 'All Forms', 'everest-forms' ), 'manage_everest_forms', 'evf-builder', array( $this, 'builder_page' ) );
+		$builder_page = add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Builder', 'everest-forms' ), esc_html__( 'All Forms', 'everest-forms' ), 'manage_everest_forms', 'evf-builder', array( $this, 'builder_page' ) );
 
-		add_submenu_page( 'everest-forms', __( 'Everest Forms Setup', 'everest-forms' ), __( 'Add New', 'everest-forms' ), 'manage_everest_forms', 'evf-builder&create-form=1', array( $this, 'builder_page' ) );
+		add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Setup', 'everest-forms' ), esc_html__( 'Add New', 'everest-forms' ), 'manage_everest_forms', 'evf-builder&create-form=1', array( $this, 'builder_page' ) );
 
 		add_action( 'load-' . $builder_page, array( $this, 'builder_page_init' ) );
 	}
@@ -109,9 +109,9 @@ class EVF_Admin_Menus {
 		EVF_Admin_Builder::get_builder_pages();
 
 		// Get current tab/section.
-		$current_tab = empty( $_GET['tab'] ) ? 'fields' : sanitize_title( wp_unslash( $_GET['tab'] ) ); // WPCS: input var okay, CSRF ok.
+		$current_tab = empty( $_GET['tab'] ) ? 'fields' : sanitize_title( wp_unslash( $_GET['tab'] ) ); // phpcs:ignore WordPress.Security.NonceVerification
 
-		if ( ! isset( $_GET['tab'], $_GET['form_id'] ) ) { // WPCS: input var okay, CSRF ok.
+		if ( ! isset( $_GET['tab'], $_GET['form_id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			$forms_table_list = new EVF_Admin_Forms_Table_List();
 
 			// Add screen option.
@@ -131,7 +131,7 @@ class EVF_Admin_Menus {
 	 * Add menu item.
 	 */
 	public function entries_menu() {
-		$entries_page = add_submenu_page( 'everest-forms', __( 'Everest Forms Entries', 'everest-forms' ), __( 'Entries', 'everest-forms' ), 'manage_everest_forms', 'evf-entries', array( $this, 'entries_page' ) );
+		$entries_page = add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Entries', 'everest-forms' ), esc_html__( 'Entries', 'everest-forms' ), 'manage_everest_forms', 'evf-entries', array( $this, 'entries_page' ) );
 
 		add_action( 'load-' . $entries_page, array( $this, 'entries_page_init' ) );
 	}
@@ -142,7 +142,7 @@ class EVF_Admin_Menus {
 	public function entries_page_init() {
 		global $entries_table_list;
 
-		if ( ! isset( $_GET['view-entry'] ) ) { // WPCS: input var okay, CSRF ok.
+		if ( ! isset( $_GET['view-entry'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			$entries_table_list = new EVF_Admin_Entries_Table_List();
 
 			// Add screen option.
@@ -162,7 +162,7 @@ class EVF_Admin_Menus {
 	 * Add menu item.
 	 */
 	public function settings_menu() {
-		$settings_page = add_submenu_page( 'everest-forms', __( 'Everest Forms settings', 'everest-forms' ), __( 'Settings', 'everest-forms' ), 'manage_everest_forms', 'evf-settings', array( $this, 'settings_page' ) );
+		$settings_page = add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms settings', 'everest-forms' ), esc_html__( 'Settings', 'everest-forms' ), 'manage_everest_forms', 'evf-settings', array( $this, 'settings_page' ) );
 
 		add_action( 'load-' . $settings_page, array( $this, 'settings_page_init' ) );
 	}
@@ -177,21 +177,21 @@ class EVF_Admin_Menus {
 		EVF_Admin_Settings::get_settings_pages();
 
 		// Get current tab/section.
-		$current_tab     = empty( $_GET['tab'] ) ? 'general' : sanitize_title( wp_unslash( $_GET['tab'] ) ); // WPCS: input var okay, CSRF ok.
-		$current_section = empty( $_REQUEST['section'] ) ? '' : sanitize_title( wp_unslash( $_REQUEST['section'] ) ); // WPCS: input var okay, CSRF ok.
+		$current_tab     = empty( $_GET['tab'] ) ? 'general' : sanitize_title( wp_unslash( $_GET['tab'] ) ); // phpcs:ignore WordPress.Security.NonceVerification
+		$current_section = empty( $_REQUEST['section'] ) ? '' : sanitize_title( wp_unslash( $_REQUEST['section'] ) ); // phpcs:ignore WordPress.Security.NonceVerification
 
 		// Save settings if data has been posted.
-		if ( apply_filters( '' !== $current_section ? "everest_forms_save_settings_{$current_tab}_{$current_section}" : "everest_forms_save_settings_{$current_tab}", ! empty( $_POST ) ) ) { // WPCS: input var okay, CSRF ok.
+		if ( apply_filters( '' !== $current_section ? "everest_forms_save_settings_{$current_tab}_{$current_section}" : "everest_forms_save_settings_{$current_tab}", ! empty( $_POST ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			EVF_Admin_Settings::save();
 		}
 
 		// Add any posted messages.
-		if ( ! empty( $_GET['evf_error'] ) ) { // WPCS: input var okay, CSRF ok.
-			EVF_Admin_Settings::add_error( wp_kses_post( wp_unslash( $_GET['evf_error'] ) ) ); // WPCS: input var okay, CSRF ok.
+		if ( ! empty( $_GET['evf_error'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			EVF_Admin_Settings::add_error( wp_kses_post( wp_unslash( $_GET['evf_error'] ) ) ); // phpcs:ignore WordPress.Security.NonceVerification
 		}
 
-		if ( ! empty( $_GET['evf_message'] ) ) { // WPCS: input var okay, CSRF ok.
-			EVF_Admin_Settings::add_message( wp_kses_post( wp_unslash( $_GET['evf_message'] ) ) ); // WPCS: input var okay, CSRF ok.
+		if ( ! empty( $_GET['evf_message'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			EVF_Admin_Settings::add_message( wp_kses_post( wp_unslash( $_GET['evf_message'] ) ) ); // phpcs:ignore WordPress.Security.NonceVerification
 		}
 
 		do_action( 'everest_forms_settings_page_init' );
@@ -201,14 +201,14 @@ class EVF_Admin_Menus {
 	 * Add menu item.
 	 */
 	public function tools_menu() {
-		add_submenu_page( 'everest-forms', __( 'Everest Forms tools', 'everest-forms' ), __( 'Tools', 'everest-forms' ), 'manage_everest_forms', 'evf-tools', array( $this, 'tools_page' ) );
+		add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms tools', 'everest-forms' ), esc_html__( 'Tools', 'everest-forms' ), 'manage_everest_forms', 'evf-tools', array( $this, 'tools_page' ) );
 	}
 
 	/**
 	 * Addons menu item.
 	 */
 	public function addons_menu() {
-		add_submenu_page( 'everest-forms', __( 'Everest Forms Add-ons', 'everest-forms' ), __( 'Add-ons', 'everest-forms' ), 'manage_everest_forms', 'evf-addons', array( $this, 'addons_page' ) );
+		add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Add-ons', 'everest-forms' ), esc_html__( 'Add-ons', 'everest-forms' ), 'manage_everest_forms', 'evf-addons', array( $this, 'addons_page' ) );
 	}
 
 	/**
@@ -221,9 +221,9 @@ class EVF_Admin_Menus {
 		$screen_id = $screen ? $screen->id : '';
 
 		// Check to make sure we're on a EverestForms builder setup page.
-		if ( isset( $_GET['create-form'] ) && in_array( $screen_id, array( 'everest-forms_page_evf-builder' ), true ) ) {
-			$parent_file  = 'everest-forms'; // WPCS: override ok.
-			$submenu_file = 'evf-builder&create-form=1'; // WPCS: override ok.
+		if ( isset( $_GET['create-form'] ) && in_array( $screen_id, array( 'everest-forms_page_evf-builder' ), true ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			$parent_file  = 'everest-forms'; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
+			$submenu_file = 'evf-builder&create-form=1'; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
 		}
 	}
 

@@ -89,7 +89,7 @@ class EVF_Shortcode_Form {
 
 		echo '<div class="evf-submit-container ' . esc_attr( implode( ' ', $visibility_class ) ) . '" >';
 
-		echo '<input type="hidden" name="everest_forms[id]" value="' . $form_id . '">';
+		echo '<input type="hidden" name="everest_forms[id]" value="' . absint( $form_id ) . '">';
 
 		echo '<input type="hidden" name="everest_forms[author]" value="' . absint( get_the_author_meta( 'ID' ) ) . '">';
 
@@ -101,13 +101,13 @@ class EVF_Shortcode_Form {
 
 		printf(
 			"<button type='submit' name='everest_forms[submit]' class='everest-forms-submit-button button evf-submit %s' id='evf-submit-%d' value='evf-submit' %s conditional_rules='%s' conditional_id='%s' %s>%s</button>",
-			$classes,
-			$form_id,
-			$process,
-			$conditional_rules,
-			$conditional_id,
-			$visible,
-			$submit_btn
+			$classes, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			$form_id, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			$process, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			$conditional_rules, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			$conditional_id, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			$visible, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			$submit_btn // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		);
 
 		do_action( 'everest_forms_display_submit_after', $form_data );
@@ -116,11 +116,12 @@ class EVF_Shortcode_Form {
 	}
 
 	/**
-	 * @param $field
-	 * @param $form_data
+	 * Message.
+	 *
+	 * @param array $field Field.
+	 * @param array $form_data Form data.
 	 */
 	public static function messages( $field, $form_data ) {
-
 		$error = $field['properties']['error'];
 
 		if ( empty( $error['value'] ) || is_array( $error['value'] ) ) {
@@ -134,8 +135,13 @@ class EVF_Shortcode_Form {
 		);
 	}
 
+	/**
+	 * Description.
+	 *
+	 * @param array $field Field.
+	 * @param array $form_data Form data.
+	 */
 	public static function description( $field, $form_data ) {
-
 		$action = current_action();
 
 		$description = $field['properties']['description'];
@@ -160,10 +166,16 @@ class EVF_Shortcode_Form {
 		printf(
 			'<div %s>%s</div>',
 			evf_html_attributes( $description['id'], $description['class'], $description['data'], $description['attr'] ),
-			evf_string_translation( $form_data['id'], $field['id'], $description['value'] )
+			evf_string_translation( $form_data['id'], $field['id'], $description['value'] ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		);
 	}
 
+	/**
+	 * Label.
+	 *
+	 * @param array $field Field.
+	 * @param array $form_data Form data.
+	 */
 	public static function label( $field, $form_data ) {
 		$label = $field['properties']['label'];
 
@@ -178,23 +190,27 @@ class EVF_Shortcode_Form {
 		printf(
 			'<label %s><span class="evf-label">%s</span> %s</label>',
 			evf_html_attributes( $label['id'], $label['class'], $label['data'], $label['attr'] ),
-			evf_string_translation( $form_data['id'], $field['id'], esc_html( $label['value'] ) ),
-			$required,
-			$custom_tags
+			evf_string_translation( $form_data['id'], $field['id'], esc_html( $label['value'] ) ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			$required, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			$custom_tags // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		);
 	}
 
 	/**
-	 * @param $field
-	 * @param $form_data
+	 * Wrapper end.
+	 *
+	 * @param array $field Field.
+	 * @param array $form_data Form data.
 	 */
 	public static function wrapper_end( $field, $form_data ) {
 		echo '</div>';
 	}
 
 	/**
-	 * @param $field
-	 * @param $form_data
+	 * Wrapper start.
+	 *
+	 * @param array $field Field.
+	 * @param array $form_data Form data.
 	 */
 	public static function wrapper_start( $field, $form_data ) {
 		$container                     = $field['properties']['container'];
@@ -271,7 +287,7 @@ class EVF_Shortcode_Form {
 			 */
 			do_action( 'everest_forms_display_row_before', $row_key, $form_data );
 
-			echo '<div class="evf-frontend-row" data-row="' . $row_key . '">';
+			echo '<div class="evf-frontend-row" data-row="' . esc_attr( $row_key ) . '">';
 
 			foreach ( $row as $grid_key => $grid ) {
 				$number_of_grid = count( $row );
@@ -286,7 +302,7 @@ class EVF_Shortcode_Form {
 					$field = isset( $form_data['form_fields'][ $field_key ] ) ? $form_data['form_fields'][ $field_key ] : array();
 					$field = apply_filters( 'everest_forms_field_data', $field, $form_data );
 
-					if ( empty( $field ) || in_array( $field['type'], EVF()->form_fields->get_pro_form_field_types(), true ) ) {
+					if ( empty( $field ) || in_array( $field['type'], evf()->form_fields->get_pro_form_field_types(), true ) ) {
 						continue;
 					}
 
@@ -407,7 +423,7 @@ class EVF_Shortcode_Form {
 
 				// Load reCaptcha callback once.
 				static $count = 1;
-				if ( $count === 1 ) {
+				if ( 1 === $count ) {
 					wp_add_inline_script( 'evf-recaptcha', $recaptcha_inline );
 					$count++;
 				}
@@ -416,13 +432,13 @@ class EVF_Shortcode_Form {
 					// Output the reCAPTCHA container.
 					$data['size']    = 'invisible';
 					$data['sitekey'] = $site_key;
-					echo '<div class="evf-recaptcha-container recaptcha-hidden" ' . $visible . '>';
+					echo '<div class="evf-recaptcha-container recaptcha-hidden" ' . $visible . '>'; // @codingStandardsIgnoreLine
 					echo '<div ' . evf_html_attributes( '', array( 'g-recaptcha' ), $data ) . '></div>';
 					echo '</div>';
 				} else {
 					// Output the reCAPTCHA container.
 					$class = 'v3' === $recaptcha_type ? 'recaptcha-hidden' : '';
-					echo '<div class="evf-recaptcha-container ' . $class . '" ' . $visible . '>';
+					echo '<div class="evf-recaptcha-container ' . $class . '" ' . $visible . '>'; // @codingStandardsIgnoreLine
 					echo '<div ' . evf_html_attributes( '', array( 'g-recaptcha' ), $data ) . '></div>';
 					echo '<input type="text" name="g-recaptcha-hidden" class="evf-recaptcha-hidden" style="position:absolute!important;clip:rect(0,0,0,0)!important;height:1px!important;width:1px!important;border:0!important;overflow:hidden!important;padding:0!important;margin:0!important;" required>';
 					echo '</div>';
@@ -432,8 +448,10 @@ class EVF_Shortcode_Form {
 	}
 
 	/**
-	 * @param $field
-	 * @param $form_data
+	 * Get field attributes.
+	 *
+	 * @param array $field Field.
+	 * @param array $form_data Form data.
 	 *
 	 * @return array
 	 */
@@ -507,9 +525,9 @@ class EVF_Shortcode_Form {
 	/**
 	 * Return base properties for a specific field.
 	 *
-	 * @param array $field
-	 * @param array $form_data
-	 * @param array $attributes
+	 * @param array $field      Field data and settings.
+	 * @param array $form_data  Form data and settings.
+	 * @param array $attributes List of field attributes.
 	 *
 	 * @return array
 	 */
@@ -566,6 +584,7 @@ class EVF_Shortcode_Form {
 			}
 		}
 
+		$errors     = evf()->task->errors[ $form_id ][ $field_id ];
 		$properties = apply_filters(
 			'everest_forms_field_properties_' . $field['type'],
 			array(
@@ -593,7 +612,7 @@ class EVF_Shortcode_Form {
 					'primary' => array(
 						'attr'     => array(
 							'name'        => "everest_forms[form_fields][{$field_id}]",
-							'value'       => ( isset( $field['default_value'] ) && ! empty( $field['default_value'] ) ) ? apply_filters( 'everest_forms_process_smart_tags', $field['default_value'], $form_data ) : ( isset( $_POST['everest_forms']['form_fields'][ $field_id ] ) ? $_POST['everest_forms']['form_fields'][ $field_id ] : '' ),
+							'value'       => ( isset( $field['default_value'] ) && ! empty( $field['default_value'] ) ) ? apply_filters( 'everest_forms_process_smart_tags', $field['default_value'], $form_data ) : ( isset( $_POST['everest_forms']['form_fields'][ $field_id ] ) ? $_POST['everest_forms']['form_fields'][ $field_id ] : '' ), // @codingStandardsIgnoreLine
 							'placeholder' => ! empty( $field['placeholder'] ) ? evf_string_translation( $form_data['id'], $field['id'], $field['placeholder'] ) : '',
 						),
 						'class'    => $attributes['input_class'],
@@ -609,7 +628,7 @@ class EVF_Shortcode_Form {
 					'class' => array( 'evf-error' ),
 					'data'  => array(),
 					'id'    => '',
-					'value' => ! empty( EVF()->task->errors[ $form_id ][ $field_id ] ) ? EVF()->task->errors[ $form_id ][ $field_id ] : '',
+					'value' => ! empty( $errors ) ? $errors : '',
 				),
 				'description' => array(
 					'attr'     => array(),
@@ -677,7 +696,7 @@ class EVF_Shortcode_Form {
 		}
 
 		// Grab the form data, if not found then we bail.
-		$form = EVF()->form->get( (int) $id );
+		$form = evf()->form->get( (int) $id );
 
 		if ( empty( $form ) || 'publish' !== $form->post_status ) {
 			return;

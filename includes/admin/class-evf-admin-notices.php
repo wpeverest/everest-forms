@@ -113,8 +113,8 @@ class EVF_Admin_Notices {
 	 * Hide a notice if the GET variable is set.
 	 */
 	public static function hide_notices() {
-		if ( isset( $_GET['evf-hide-notice'] ) && isset( $_GET['_evf_notice_nonce'] ) ) { // WPCS: input var okay, CSRF ok.
-			if ( ! wp_verify_nonce( wp_unslash( $_GET['_evf_notice_nonce'] ), 'everest_forms_hide_notices_nonce' ) ) { // WPCS: input var ok, sanitization ok.
+		if ( isset( $_GET['evf-hide-notice'] ) && isset( $_GET['_evf_notice_nonce'] ) ) {
+			if ( ! wp_verify_nonce( wp_unslash( $_GET['_evf_notice_nonce'] ), 'everest_forms_hide_notices_nonce' ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 				wp_die( esc_html__( 'Action failed. Please refresh the page and retry.', 'everest-forms' ) );
 			}
 
@@ -122,7 +122,7 @@ class EVF_Admin_Notices {
 				wp_die( esc_html__( 'You don&#8217;t have permission to do this.', 'everest-forms' ) );
 			}
 
-			$hide_notice = sanitize_text_field( wp_unslash( $_GET['evf-hide-notice'] ) ); // WPCS: input var okay, CSRF ok.
+			$hide_notice = sanitize_text_field( wp_unslash( $_GET['evf-hide-notice'] ) );
 
 			self::remove_notice( $hide_notice );
 
@@ -205,7 +205,7 @@ class EVF_Admin_Notices {
 		if ( EVF_Install::needs_db_update() ) {
 			$updater = new EVF_Background_Updater();
 
-			if ( $updater->is_updating() || ! empty( $_GET['do_update_everest_forms'] ) ) { // WPCS: input var okay, CSRF ok.
+			if ( $updater->is_updating() || ! empty( $_GET['do_update_everest_forms'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 				include 'views/html-notice-updating.php';
 			} else {
 				include 'views/html-notice-update.php';
@@ -223,7 +223,7 @@ class EVF_Admin_Notices {
 		global $wpdb;
 
 		$load      = false;
-		$time      = current_time( 'timestamp' );
+		$time      = time();
 		$review    = get_option( 'everest_forms_review' );
 		$activated = get_option( 'everest_forms_activated' );
 
@@ -271,7 +271,7 @@ class EVF_Admin_Notices {
 		global $wp_filter;
 
 		// Bail if we're not on a EverestForms screen or page.
-		if ( empty( $_REQUEST['page'] ) || false === strpos( sanitize_text_field( wp_unslash( $_REQUEST['page'] ) ), 'evf-' ) ) { // WPCS: input var okay, CSRF ok.
+		if ( empty( $_REQUEST['page'] ) || false === strpos( sanitize_text_field( wp_unslash( $_REQUEST['page'] ) ), 'evf-' ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			return;
 		}
 
@@ -283,7 +283,7 @@ class EVF_Admin_Notices {
 							unset( $wp_filter[ $wp_notice ]->callbacks[ $priority ][ $name ] );
 							continue;
 						}
-						if ( ( isset( $_GET['tab'], $_GET['form_id'] ) || isset( $_GET['create-form'] ) ) && 'evf-builder' === $_REQUEST['page'] ) {
+						if ( ( isset( $_GET['tab'], $_GET['form_id'] ) || isset( $_GET['create-form'] ) ) && 'evf-builder' === $_REQUEST['page'] ) { // phpcs:ignore WordPress.Security.NonceVerification
 							unset( $wp_filter[ $wp_notice ]->callbacks[ $priority ][ $name ] );
 							continue;
 						}

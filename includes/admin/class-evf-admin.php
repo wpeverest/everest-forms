@@ -48,8 +48,8 @@ class EVF_Admin {
 		include_once dirname( __FILE__ ) . '/class-evf-admin-import-export.php';
 
 		// Setup/welcome.
-		if ( ! empty( $_GET['page'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
-			switch ( $_GET['page'] ) { // phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
+		if ( ! empty( $_GET['page'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			switch ( $_GET['page'] ) { // phpcs:ignore WordPress.Security.NonceVerification
 				case 'evf-welcome':
 					include_once dirname( __FILE__ ) . '/class-evf-admin-welcome.php';
 					break;
@@ -61,12 +61,12 @@ class EVF_Admin {
 	 * Handle redirects after addon activate/deactivate.
 	 */
 	public function addon_actions() {
-		if ( isset( $_GET['page'], $_REQUEST['action'] ) && 'evf-addons' === $_GET['page'] ) {  // WPCS: input var okay, CSRF ok.
-			$action = sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ); // WPCS: input var okay, CSRF ok.
-			$plugin = isset( $_REQUEST['plugin'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['plugin'] ) ) : false; // WPCS: input var okay, CSRF ok.
+		if ( isset( $_GET['page'], $_REQUEST['action'] ) && 'evf-addons' === $_GET['page'] ) {
+			$action = sanitize_text_field( wp_unslash( $_REQUEST['action'] ) );
+			$plugin = isset( $_REQUEST['plugin'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['plugin'] ) ) : false;
 
 			if ( 'evf-addons-refresh' === $action ) {
-				if ( empty( $_GET['evf-addons-nonce'] ) || ! wp_verify_nonce( wp_unslash( $_GET['evf-addons-nonce'] ), 'refresh' ) ) { // WPCS: input var ok, sanitization ok.
+				if ( empty( $_GET['evf-addons-nonce'] ) || ! wp_verify_nonce( wp_unslash( $_GET['evf-addons-nonce'] ), 'refresh' ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 					wp_die( esc_html_e( 'Could not verify nonce', 'everest-forms' ) );
 				}
 
@@ -106,12 +106,12 @@ class EVF_Admin {
 	 * Handle redirects after template refresh.
 	 */
 	public function template_actions() {
-		if ( isset( $_GET['page'], $_REQUEST['action'] ) && 'evf-builder' === $_GET['page'] ) { // WPCS: input var okay, CSRF ok.
-			$action        = sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ); // WPCS: input var okay, CSRF ok.
+		if ( isset( $_GET['page'], $_REQUEST['action'] ) && 'evf-builder' === $_GET['page'] ) {
+			$action        = sanitize_text_field( wp_unslash( $_REQUEST['action'] ) );
 			$raw_templates = wp_safe_remote_get( 'https://raw.githubusercontent.com/wpeverest/extensions-json/master/everest-forms/templates/all_templates.json' );
 
 			if ( 'evf-template-refresh' === $action && ! is_wp_error( $raw_templates ) ) {
-				if ( empty( $_GET['evf-template-nonce'] ) || ! wp_verify_nonce( wp_unslash( $_GET['evf-template-nonce'] ), 'refresh' ) ) { // WPCS: input var ok, sanitization ok.
+				if ( empty( $_GET['evf-template-nonce'] ) || ! wp_verify_nonce( wp_unslash( $_GET['evf-template-nonce'] ), 'refresh' ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 					wp_die( esc_html_e( 'Could not verify nonce', 'everest-forms' ) );
 				}
 
@@ -133,8 +133,8 @@ class EVF_Admin {
 	 */
 	public function admin_redirects() {
 		// Nonced plugin install redirects (whitelisted).
-		if ( ! empty( $_GET['evf-install-plugin-redirect'] ) ) {
-			$plugin_slug = evf_clean( $_GET['evf-install-plugin-redirect'] );
+		if ( ! empty( $_GET['evf-install-plugin-redirect'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			$plugin_slug = evf_clean( wp_unslash( $_GET['evf-install-plugin-redirect'] ) ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
 			$url = admin_url( 'plugin-install.php?tab=search&type=term&s=' . $plugin_slug );
 			wp_safe_redirect( $url );
@@ -144,7 +144,7 @@ class EVF_Admin {
 		// Setup wizard redirect.
 		if ( get_transient( '_evf_activation_redirect' ) && apply_filters( 'everest_forms_show_welcome_page', true ) ) {
 			$do_redirect  = true;
-			$current_page = isset( $_GET['page'] ) ? evf_clean( wp_unslash( $_GET['page'] ) ) : false;
+			$current_page = isset( $_GET['page'] ) ? evf_clean( wp_unslash( $_GET['page'] ) ) : false; // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
 			// On these pages, or during these events, postpone the redirect.
 			if ( wp_doing_ajax() || is_network_admin() || ! current_user_can( 'manage_everest_forms' ) ) {
@@ -152,7 +152,7 @@ class EVF_Admin {
 			}
 
 			// On these pages, or during these events, disable the redirect.
-			if ( 'evf-welcome' === $current_page || EVF_Admin_Notices::has_notice( 'install' ) || apply_filters( 'everest_forms_prevent_automatic_wizard_redirect', false ) || isset( $_GET['activate-multi'] ) ) {
+			if ( 'evf-welcome' === $current_page || EVF_Admin_Notices::has_notice( 'install' ) || apply_filters( 'everest_forms_prevent_automatic_wizard_redirect', false ) || isset( $_GET['activate-multi'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 				delete_transient( '_evf_activation_redirect' );
 				$do_redirect = false;
 			}
@@ -163,7 +163,6 @@ class EVF_Admin {
 				exit;
 			}
 		}
-		// phpcs:enable WordPress.Security.NonceVerification.NoNonceVerification
 	}
 
 	/**
@@ -181,25 +180,25 @@ class EVF_Admin {
 		$evf_pages      = evf_get_screen_ids();
 
 		// Check to make sure we're on a EverestForms admin page.
-		if ( isset( $current_screen->id ) && apply_filters( 'everest_forms_display_admin_footer_text', in_array( $current_screen->id, $evf_pages ) ) ) {
+		if ( isset( $current_screen->id ) && apply_filters( 'everest_forms_display_admin_footer_text', in_array( $current_screen->id, $evf_pages, true ) ) ) {
 			// Change the footer text.
 			if ( ! get_option( 'everest_forms_admin_footer_text_rated' ) ) {
 				$footer_text = sprintf(
 					/* translators: 1: EverestForms 2:: five stars */
-					__( 'If you like %1$s please leave us a %2$s rating. A huge thanks in advance!', 'everest-forms' ),
+					esc_html__( 'If you like %1$s please leave us a %2$s rating. A huge thanks in advance!', 'everest-forms' ),
 					sprintf( '<strong>%s</strong>', esc_html__( 'Everest Forms', 'everest-forms' ) ),
 					'<a href="https://wordpress.org/support/plugin/everest-forms/reviews?rate=5#new-post" target="_blank" class="evf-rating-link" data-rated="' . esc_attr__( 'Thanks :)', 'everest-forms' ) . '">&#9733;&#9733;&#9733;&#9733;&#9733;</a>'
 				);
 				evf_enqueue_js(
 					"
 					jQuery( 'a.evf-rating-link' ).click( function() {
-						jQuery.post( '" . EVF()->ajax_url() . "', { action: 'everest_forms_rated' } );
+						jQuery.post( '" . evf()->ajax_url() . "', { action: 'everest_forms_rated' } );
 						jQuery( this ).parent().text( jQuery( this ).data( 'rated' ) );
 					});
 					"
 				);
 			} else {
-				$footer_text = __( 'Thank you for creating with Everest Forms.', 'everest-forms' );
+				$footer_text = esc_html__( 'Thank you for creating with Everest Forms.', 'everest-forms' );
 			}
 		}
 

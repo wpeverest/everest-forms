@@ -102,7 +102,7 @@ class EVF_Install {
 	 * This check is done on all requests and runs if the versions do not match.
 	 */
 	public static function check_version() {
-		if ( ! defined( 'IFRAME_REQUEST' ) && version_compare( get_option( 'everest_forms_version' ), EVF()->version, '<' ) ) {
+		if ( ! defined( 'IFRAME_REQUEST' ) && version_compare( get_option( 'everest_forms_version' ), evf()->version, '<' ) ) {
 			self::install();
 			do_action( 'everest_forms_updated' );
 		}
@@ -232,7 +232,7 @@ class EVF_Install {
 		$activated_date = get_option( 'everest_forms_activated', '' );
 
 		if ( empty( $activated_date ) ) {
-			update_option( 'everest_forms_activated', current_time( 'timestamp' ) );
+			update_option( 'everest_forms_activated', time() );
 		}
 	}
 
@@ -241,7 +241,7 @@ class EVF_Install {
 	 */
 	private static function update_evf_version() {
 		delete_option( 'everest_forms_version' );
-		add_option( 'everest_forms_version', EVF()->version );
+		add_option( 'everest_forms_version', evf()->version );
 	}
 
 	/**
@@ -286,7 +286,7 @@ class EVF_Install {
 	 */
 	public static function update_db_version( $version = null ) {
 		delete_option( 'everest_forms_db_version' );
-		add_option( 'everest_forms_db_version', is_null( $version ) ? EVF()->version : $version );
+		add_option( 'everest_forms_db_version', is_null( $version ) ? evf()->version : $version );
 	}
 
 	/**
@@ -458,7 +458,7 @@ CREATE TABLE {$wpdb->prefix}evf_sessions (
 		$tables = self::get_tables();
 
 		foreach ( $tables as $table ) {
-			$wpdb->query( "DROP TABLE IF EXISTS {$table}" ); // WPCS: unprepared SQL ok.
+			$wpdb->query( "DROP TABLE IF EXISTS {$table}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		}
 	}
 
@@ -572,7 +572,7 @@ CREATE TABLE {$wpdb->prefix}evf_sessions (
 			// Create a form.
 			$form_id = wp_insert_post(
 				array(
-					'post_title'   => esc_html( 'Contact Form', 'everest-forms' ),
+					'post_title'   => esc_html__( 'Contact Form', 'everest-forms' ),
 					'post_status'  => 'publish',
 					'post_type'    => 'everest_form',
 					'post_content' => '{}',
@@ -617,10 +617,10 @@ CREATE TABLE {$wpdb->prefix}evf_sessions (
 
 		foreach ( $files as $file ) {
 			if ( wp_mkdir_p( $file['base'] ) && ! file_exists( trailingslashit( $file['base'] ) . $file['file'] ) ) {
-				$file_handle = @fopen( trailingslashit( $file['base'] ) . $file['file'], 'w' );
+				$file_handle = @fopen( trailingslashit( $file['base'] ) . $file['file'], 'w' ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged, WordPress.WP.AlternativeFunctions.file_system_read_fopen
 				if ( $file_handle ) {
-					fwrite( $file_handle, $file['content'] );
-					fclose( $file_handle );
+					fwrite( $file_handle, $file['content'] ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fwrite
+					fclose( $file_handle ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fclose
 				}
 			}
 		}
@@ -648,7 +648,7 @@ CREATE TABLE {$wpdb->prefix}evf_sessions (
 	 * @return array
 	 */
 	public static function plugin_row_meta( $plugin_meta, $plugin_file ) {
-		if ( EVF_PLUGIN_BASENAME == $plugin_file ) {
+		if ( EVF_PLUGIN_BASENAME === $plugin_file ) {
 			$new_plugin_meta = array(
 				'docs'    => '<a href="' . esc_url( apply_filters( 'everest_forms_docs_url', 'https://docs.wpeverest.com/documentation/plugins/everest-forms/' ) ) . '" aria-label="' . esc_attr__( 'View Everest Forms documentation', 'everest-forms' ) . '">' . esc_html__( 'Docs', 'everest-forms' ) . '</a>',
 				'support' => '<a href="' . esc_url( apply_filters( 'everest_forms_support_url', 'https://wordpress.org/support/plugin/everest-forms/' ) ) . '" aria-label="' . esc_attr__( 'Visit free customer support', 'everest-forms' ) . '">' . esc_html__( 'Free support', 'everest-forms' ) . '</a>',

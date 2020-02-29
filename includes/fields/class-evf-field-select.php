@@ -84,9 +84,11 @@ class EVF_Field_Select extends EVF_Form_Fields {
 	/**
 	 * Field display on the form front-end.
 	 *
-	 * @param array $field
-	 * @param array $field_atts
-	 * @param array $form_data
+	 * @since 1.0.0
+	 *
+	 * @param array $field Field Data.
+	 * @param array $field_atts Field attributes.
+	 * @param array $form_data All Form Data.
 	 */
 	public function field_display( $field, $field_atts, $form_data ) {
 		// Setup and sanitize the necessary data.
@@ -120,7 +122,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 
 		// Optional placeholder.
 		if ( ! empty( $field_placeholder ) ) {
-			printf( '<option value="" class="placeholder" disabled %s>%s</option>', selected( false, $has_default, false ), $field_placeholder );
+			printf( '<option value="" class="placeholder" disabled %s>%s</option>', selected( false, $has_default, false ), esc_html( $field_placeholder ) );
 		}
 
 		// Build the select options.
@@ -128,7 +130,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 			$selected = isset( $choice['default'] ) && empty( $field_placeholder ) ? '1' : '0';
 			$val      = isset( $field['show_values'] ) ? esc_attr( $choice['value'] ) : esc_attr( $choice['label'] );
 
-			printf( '<option value="%s" %s>%s</option>', $val, selected( '1', $selected, false ), $choice['label'] );
+			printf( '<option value="%s" %s>%s</option>', esc_attr( $val ), selected( '1', $selected, false ), esc_html( $choice['label'] ) );
 		}
 
 		echo '</select>';
@@ -137,10 +139,12 @@ class EVF_Field_Select extends EVF_Form_Fields {
 	/**
 	 * Formats and sanitizes field.
 	 *
-	 * @param int    $field_id
-	 * @param array  $field_submit
-	 * @param array  $form_data
-	 * @param string $meta_key
+	 * @since 1.0.0
+	 *
+	 * @param int    $field_id     Field ID.
+	 * @param mixed  $field_submit Submitted field value.
+	 * @param array  $form_data    Form data and settings.
+	 * @param string $meta_key     Field meta key.
 	 */
 	public function format( $field_id, $field_submit, $form_data, $meta_key ) {
 		$field     = $form_data['form_fields'][ $field_id ];
@@ -160,8 +164,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 		// Normal processing, dynamic population is off.
 		// If show_values is true, that means values posted are the raw values
 		// and not the labels. So we need to get the label values.
-		if ( ! empty( $field['show_values'] ) && '1' == $field['show_values'] ) {
-
+		if ( ! empty( $field['show_values'] ) && '1' === $field['show_values'] ) {
 			foreach ( $field['choices'] as $choice ) {
 				if ( $choice['value'] === $field_submit ) {
 					$value = $choice['label'];
@@ -170,12 +173,11 @@ class EVF_Field_Select extends EVF_Form_Fields {
 			}
 
 			$data['value'] = sanitize_text_field( $value );
-
 		} else {
 			$data['value'] = $value_raw;
 		}
 
 		// Push field details to be saved.
-		EVF()->task->form_fields[ $field_id ] = $data;
+		evf()->task->form_fields[ $field_id ] = $data;
 	}
 }

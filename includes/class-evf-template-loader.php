@@ -31,9 +31,9 @@ class EVF_Template_Loader {
 	 * Hook in methods.
 	 */
 	public static function init() {
-		self::$form_id = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0; // WPCS: CSRF ok.
+		self::$form_id = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification
 
-		if ( ! is_admin() && isset( $_GET['evf_preview'] ) ) { // WPCS: CSRF ok.
+		if ( ! is_admin() && isset( $_GET['evf_preview'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			add_action( 'pre_get_posts', array( __CLASS__, 'pre_get_posts' ) );
 			add_filter( 'edit_post_link', array( __CLASS__, 'edit_form_link' ) );
 			add_filter( 'template_include', array( __CLASS__, 'template_include' ) );
@@ -62,7 +62,7 @@ class EVF_Template_Loader {
 	 */
 	public static function edit_form_link( $link ) {
 		if ( 0 < self::$form_id ) {
-			return '<a href="' . esc_url( admin_url( 'admin.php?page=evf-builder&tab=fields&form_id=' . self::$form_id ) ) . '" class="post-edit-link">' . esc_html( 'Edit Form', 'everest-forms' ) . '</a>';
+			return '<a href="' . esc_url( admin_url( 'admin.php?page=evf-builder&tab=fields&form_id=' . self::$form_id ) ) . '" class="post-edit-link">' . esc_html__( 'Edit Form', 'everest-forms' ) . '</a>';
 		}
 
 		return $link;
@@ -110,7 +110,7 @@ class EVF_Template_Loader {
 			$template     = locate_template( $search_files );
 
 			if ( ! $template || EVF_TEMPLATE_DEBUG_MODE ) {
-				$template = EVF()->plugin_path() . '/templates/' . $default_file;
+				$template = evf()->plugin_path() . '/templates/' . $default_file;
 			}
 		}
 
@@ -143,7 +143,7 @@ class EVF_Template_Loader {
 		}
 
 		$search_files[] = $default_file;
-		$search_files[] = EVF()->template_path() . $default_file;
+		$search_files[] = evf()->template_path() . $default_file;
 
 		return array_unique( $search_files );
 	}
@@ -177,7 +177,7 @@ class EVF_Template_Loader {
 	 * @return string
 	 */
 	public static function form_preview_title_filter( $title ) {
-		$form = EVF()->form->get(
+		$form = evf()->form->get(
 			self::$form_id,
 			array(
 				'content_only' => true,

@@ -27,7 +27,7 @@ class EVF_Admin_Forms {
 	 * @return bool
 	 */
 	private function is_forms_page() {
-		return isset( $_GET['page'] ) && 'evf-builder' === $_GET['page']; // WPCS: input var okay, CSRF ok.
+		return isset( $_GET['page'] ) && 'evf-builder' === $_GET['page']; // phpcs:ignore WordPress.Security.NonceVerification
 	}
 
 	/**
@@ -37,27 +37,27 @@ class EVF_Admin_Forms {
 		global $current_tab;
 
 		if ( isset( $_GET['form_id'] ) && $current_tab ) { // phpcs:ignore WordPress.Security.NonceVerification
-			$form      = EVF()->form->get( absint( $_GET['form_id'] ) ); // phpcs:ignore WordPress.Security.NonceVerification
-			$form_id   = is_object( $form ) ? absint( $form->ID ) : absint( $_GET['form_id'] );
+			$form      = evf()->form->get( absint( $_GET['form_id'] ) ); // phpcs:ignore WordPress.Security.NonceVerification
+			$form_id   = is_object( $form ) ? absint( $form->ID ) : absint( $_GET['form_id'] ); // phpcs:ignore WordPress.Security.NonceVerification
 			$form_data = is_object( $form ) ? evf_decode( $form->post_content ) : false;
 
 			include 'views/html-admin-page-builder.php';
 		} elseif ( isset( $_GET['create-form'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-			$templates   = array();
-			$refresh_url = add_query_arg(
+			$templates       = array();
+			$refresh_url     = add_query_arg(
 				array(
-					'page'             => 'evf-builder&create-form=1',
-					'action'           => 'evf-template-refresh',
+					'page'               => 'evf-builder&create-form=1',
+					'action'             => 'evf-template-refresh',
 					'evf-template-nonce' => wp_create_nonce( 'refresh' ),
 				),
 				admin_url( 'admin.php' )
 			);
 			$license_plan    = evf_get_license_plan();
-			$current_section = isset( $_GET['section'] ) ? sanitize_text_field( $_GET['section'] ) : '_all';
+			$current_section = isset( $_GET['section'] ) ? sanitize_text_field( wp_unslash( $_GET['section'] ) ) : '_all'; // phpcs:ignore WordPress.Security.NonceVerification
 
 			if ( '_featured' !== $current_section ) {
-				$category = isset( $_GET['section'] ) ? $_GET['section'] : 'free';
-				$templates   = self::get_template_data( $category );
+				$category  = isset( $_GET['section'] ) ? sanitize_text_field( wp_unslash( $_GET['section'] ) ) : 'free'; // phpcs:ignore WordPress.Security.NonceVerification
+				$templates = self::get_template_data( $category );
 			}
 
 			/**
@@ -99,8 +99,6 @@ class EVF_Admin_Forms {
 	/**
 	 * Get section content for the template screen.
 	 *
-	 * @param  string $category
-	 * @param  string $term
 	 * @return array
 	 */
 	public static function get_template_data() {
@@ -112,12 +110,12 @@ class EVF_Admin_Forms {
 			if ( ! is_wp_error( $raw_templates ) ) {
 				$template_data = json_decode( wp_remote_retrieve_body( $raw_templates ) );
 
-				// Removing directory so the templates can be reinitialized
+				// Removing directory so the templates can be reinitialized.
 				$folder_path = untrailingslashit( plugin_dir_path( EVF_PLUGIN_FILE ) . '/assets/images/templates' );
 
-				foreach ( $template_data->templates as $templateTuple ) {
+				foreach ( $template_data->templates as $template_tuple ) {
 					// We retrieve the image, then use them instead of the remote server.
-					$image = wp_remote_get( $templateTuple->image );
+					$image = wp_remote_get( $template_tuple->image );
 					$type  = wp_remote_retrieve_header( $image, 'content-type' );
 
 					// Remote file check failed, we'll fallback to remote image.
@@ -125,13 +123,13 @@ class EVF_Admin_Forms {
 						continue;
 					}
 
-					$temp_name     = explode( '/', $templateTuple->image );
+					$temp_name     = explode( '/', $template_tuple->image );
 					$relative_path = $folder_path . '/' . end( $temp_name );
-					$exists = file_exists( $relative_path );
+					$exists        = file_exists( $relative_path );
 
 					// If it exists, utilize this file instead of remote file.
 					if ( $exists ) {
-						$templateTuple->image = plugin_dir_url( EVF_PLUGIN_FILE ) . 'assets/images/templates/' . end( $temp_name );
+						$template_tuple->image = plugin_dir_url( EVF_PLUGIN_FILE ) . 'assets/images/templates/' . end( $temp_name );
 					}
 				}
 
@@ -182,12 +180,12 @@ class EVF_Admin_Forms {
 	public function actions() {
 		if ( $this->is_forms_page() ) {
 			// Empty trash.
-			if ( isset( $_REQUEST['delete_all'] ) || isset( $_REQUEST['delete_all2'] ) ) { // WPCS: input var okay, CSRF ok.
+			if ( isset( $_REQUEST['delete_all'] ) || isset( $_REQUEST['delete_all2'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 				$this->empty_trash();
 			}
 
 			// Duplicate form.
-			if ( isset( $_REQUEST['action'] ) && 'duplicate_form' === $_REQUEST['action'] ) { // WPCS: input var okay, CSRF ok.
+			if ( isset( $_REQUEST['action'] ) && 'duplicate_form' === $_REQUEST['action'] ) { // phpcs:ignore WordPress.Security.NonceVerification
 				$this->duplicate_form();
 			}
 		}

@@ -67,8 +67,8 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			$field,
 			array(
 				'slug'    => 'datetime_format',
-				'value'   => __( 'Format', 'everest-forms' ),
-				'tooltip' => __( 'Select a format for the date field.', 'everest-forms' ),
+				'value'   => esc_html__( 'Format', 'everest-forms' ),
+				'tooltip' => esc_html__( 'Select a format for the date field.', 'everest-forms' ),
 			),
 			false
 		);
@@ -79,9 +79,9 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				'slug'    => 'datetime_format',
 				'value'   => $format,
 				'options' => array(
-					'date'      => __( 'Date', 'everest-forms' ),
-					'time'      => __( 'Time', 'everest-forms' ),
-					'date-time' => __( 'Both', 'everest-forms' ),
+					'date'      => esc_html__( 'Date', 'everest-forms' ),
+					'time'      => esc_html__( 'Time', 'everest-forms' ),
+					'date-time' => esc_html__( 'Both', 'everest-forms' ),
 				),
 			),
 			false
@@ -118,15 +118,15 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 
 		echo '<div class="format-selected-' . esc_attr( $format ) . ' format-selected">';
 			echo '<div class="everest-forms-border-container everest-forms-date">';
-			echo '<h4 class="everest-forms-border-container-title">' . esc_html__( 'Date', 'everest-forms' ) . '</h4>'; // WPCS: XSS ok.
+			echo '<h4 class="everest-forms-border-container-title">' . esc_html__( 'Date', 'everest-forms' ) . '</h4>'; // phpcs:ignore WordPress.Security.NonceVerification
 
 			$date_format_label = $this->field_element(
 				'label',
 				$field,
 				array(
 					'slug'    => 'date_format',
-					'value'   => __( 'Date Format', 'everest-forms' ),
-					'tooltip' => __( 'Choose a desire date format to display.', 'everest-forms' ),
+					'value'   => esc_html__( 'Date Format', 'everest-forms' ),
+					'tooltip' => esc_html__( 'Choose a desire date format to display.', 'everest-forms' ),
 				),
 				false
 			);
@@ -138,10 +138,10 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 					'slug'    => 'date_format',
 					'value'   => isset( $field['date_format'] ) ? $field['date_format'] : 'Y-m-d',
 					'options' => array(
-						'Y-m-d'  => date( 'Y-m-d' ) . ' (Y-m-d)',
-						'F j, Y' => date( 'F j, Y' ) . ' (F j, Y)',
-						'm/d/Y'  => date( 'm/d/Y' ) . ' (m/d/Y)',
-						'd/m/Y'  => date( 'd/m/Y' ) . ' (d/m/Y)',
+						'Y-m-d'  => date( 'Y-m-d' ) . ' (Y-m-d)', // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
+						'F j, Y' => date( 'F j, Y' ) . ' (F j, Y)', // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
+						'm/d/Y'  => date( 'm/d/Y' ) . ' (m/d/Y)', // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
+						'd/m/Y'  => date( 'd/m/Y' ) . ' (d/m/Y)', // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
 					),
 				),
 				false
@@ -153,8 +153,8 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				array(
 					'slug'    => 'date_mode',
 					'default' => isset( $field['date_mode'] ) ? $field['date_mode'] : 'single',
-					'desc'    => __( 'Date Mode', 'everest-forms' ),
-					'tooltip' => __( 'Select your desire date mode.', 'everest-forms' ),
+					'desc'    => esc_html__( 'Date Mode', 'everest-forms' ),
+					'tooltip' => esc_html__( 'Select your desire date mode.', 'everest-forms' ),
 					'options' => array(
 						'single'   => 'Single',
 						'range'    => 'Range',
@@ -169,8 +169,8 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				$field,
 				array(
 					'slug'    => 'date_localization',
-					'value'   => __( 'Date Localization', 'everest-forms' ),
-					'tooltip' => __( 'Choose a desire date localization to display.', 'everest-forms' ),
+					'value'   => esc_html__( 'Date Localization', 'everest-forms' ),
+					'tooltip' => esc_html__( 'Choose a desire date localization to display.', 'everest-forms' ),
 				),
 				false
 			);
@@ -252,8 +252,8 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				array(
 					'slug'    => 'date_default',
 					'value'   => isset( $field['date_default'] ) ? $field['date_default'] : '',
-					'desc'    => __( 'Default to current date.', 'everest-forms' ),
-					'tooltip' => __( 'Check this option to set current date as default.', 'everest-forms' ),
+					'desc'    => esc_html__( 'Default to current date.', 'everest-forms' ),
+					'tooltip' => esc_html__( 'Check this option to set current date as default.', 'everest-forms' ),
 				),
 				false
 			);
@@ -264,8 +264,8 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				array(
 					'slug'    => 'enable_min_max',
 					'value'   => isset( $field['enable_min_max'] ) ? $field['enable_min_max'] : '',
-					'desc'    => __( 'Enable Min Max date.', 'everest-forms' ),
-					'tooltip' => __( 'Check this option to set min max date.', 'everest-forms' ),
+					'desc'    => esc_html__( 'Enable Min Max date.', 'everest-forms' ),
+					'tooltip' => esc_html__( 'Check this option to set min max date.', 'everest-forms' ),
 				),
 				false
 			);
@@ -276,7 +276,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				array(
 					'slug'    => 'min_date',
 					'value'   => esc_html__( 'Minimum Date', 'everest-forms' ),
-					'tooltip' => __( 'Select minium date.', 'everest-forms' ),
+					'tooltip' => esc_html__( 'Select minium date.', 'everest-forms' ),
 				),
 				false
 			);
@@ -298,7 +298,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				array(
 					'slug'    => 'max_date',
 					'value'   => esc_html__( 'Maximum Date', 'everest-forms' ),
-					'tooltip' => __( 'Select maximum date.', 'everest-forms' ),
+					'tooltip' => esc_html__( 'Select maximum date.', 'everest-forms' ),
 				),
 				false
 			);
@@ -323,15 +323,15 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			echo '</div>';
 
 			echo '<div class="everest-forms-border-container everest-forms-time">';
-			echo '<h4 class="everest-forms-border-container-title">' . esc_html__( 'Time', 'everest-forms' ) . '</h4>'; // WPCS: XSS ok.
+			echo '<h4 class="everest-forms-border-container-title">' . esc_html__( 'Time', 'everest-forms' ) . '</h4>'; // phpcs:ignore WordPress.Security.NonceVerification
 
 			$time_format_label = $this->field_element(
 				'label',
 				$field,
 				array(
 					'slug'    => 'time_interval',
-					'value'   => __( 'Time interval and format', 'everest-forms' ),
-					'tooltip' => __( 'Choose time interval and format to display.', 'everest-forms' ),
+					'value'   => esc_html__( 'Time interval and format', 'everest-forms' ),
+					'tooltip' => esc_html__( 'Choose time interval and format to display.', 'everest-forms' ),
 				),
 				false
 			);
@@ -345,8 +345,8 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 					'value'   => isset( $field['time_interval'] ) ? $field['time_interval'] : '',
 					'class'   => 'time_interval',
 					'options' => array(
-						'15' => __( '15 minutes', 'everest-forms' ),
-						'30' => __( '30 minutes', 'everest-forms' ),
+						'15' => esc_html__( '15 minutes', 'everest-forms' ),
+						'30' => esc_html__( '30 minutes', 'everest-forms' ),
 					),
 				),
 				false
@@ -359,8 +359,8 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 					'value'   => isset( $field['time_format'] ) ? $field['time_format'] : '',
 					'class'   => 'time_format',
 					'options' => array(
-						'g:i A' => __( '12 H', 'everest-forms' ),
-						'H:i'   => __( '24 H', 'everest-forms' ),
+						'g:i A' => esc_html__( '12 H', 'everest-forms' ),
+						'H:i'   => esc_html__( '24 H', 'everest-forms' ),
 					),
 				),
 				false
@@ -410,7 +410,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			// Input primary: data-date-format and value.
 			switch ( $field['datetime_format'] ) {
 				case 'date':
-					$properties['inputs']['primary']['attr']['value']            = isset( $field['date_default'] ) ? esc_attr( date( $field['date_format'] ) ) : '';
+					$properties['inputs']['primary']['attr']['value']            = isset( $field['date_default'] ) ? esc_attr( date( $field['date_format'] ) ) : ''; // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
 					$properties['inputs']['primary']['attr']['data-date-format'] = ! empty( $field['date_format'] ) ? str_replace( 'g:i A', 'h:i K', esc_attr( $field['date_format'] ) ) : '';
 					break;
 				case 'time':
@@ -420,11 +420,11 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				case 'date-time':
 					if ( ! empty( $field['time_format'] ) ) {
 						$date_format                                      = esc_attr( $field['date_format'] ) . ' ' . esc_attr( $field['time_format'] );
-						$properties['inputs']['primary']['attr']['value'] = isset( $field['date_default'] ) ? esc_attr( date( $date_format ) ) : '';
+						$properties['inputs']['primary']['attr']['value'] = isset( $field['date_default'] ) ? esc_attr( date( $date_format ) ) : ''; // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
 						$properties['inputs']['primary']['attr']['data-date-format'] = ! empty( $field['date_format'] ) ? str_replace( 'g:i A', 'h:i K', esc_attr( $date_format ) ) : '';
 					} else {
 						$date_format                                      = esc_attr( $field['date_format'] ) . ' g:i A';
-						$properties['inputs']['primary']['attr']['value'] = isset( $field['date_default'] ) ? esc_attr( date( $date_format ) ) : '';
+						$properties['inputs']['primary']['attr']['value'] = isset( $field['date_default'] ) ? esc_attr( date( $date_format ) ) : ''; // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
 						$properties['inputs']['primary']['attr']['data-date-format'] = ! empty( $field['date_format'] ) ? str_replace( 'g:i A', 'h:i K', esc_attr( $date_format ) ) : '';
 					}
 					break;
@@ -483,7 +483,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	 */
 	public static function load_assets( $atts ) {
 		$form_id   = isset( $atts['id'] ) ? wp_unslash( $atts['id'] ) : ''; // WPCS: CSRF ok, input var ok, sanitization ok.
-		$form_obj  = EVF()->form->get( $form_id );
+		$form_obj  = evf()->form->get( $form_id );
 		$form_data = ! empty( $form_obj->post_content ) ? evf_decode( $form_obj->post_content ) : '';
 		$data_i10n = 'en';
 

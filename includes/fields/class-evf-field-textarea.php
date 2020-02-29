@@ -124,7 +124,7 @@ class EVF_Field_Textarea extends EVF_Form_Fields {
 	 */
 	public function load_assets( $atts ) {
 		$form_id   = isset( $atts['id'] ) ? wp_unslash( $atts['id'] ) : ''; // WPCS: CSRF ok, input var ok, sanitization ok.
-		$form_obj  = EVF()->form->get( $form_id );
+		$form_obj  = evf()->form->get( $form_id );
 		$form_data = ! empty( $form_obj->post_content ) ? evf_decode( $form_obj->post_content ) : '';
 
 		// Leave only fields with limit.
@@ -200,6 +200,6 @@ class EVF_Field_Textarea extends EVF_Form_Fields {
 			evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ),
 			esc_attr( $primary['required'] ),
 			$value // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		);
+		); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 }

@@ -95,6 +95,7 @@ class EVF_Logger implements EVF_Logger_Interface {
 	 * @param string $handle File handle.
 	 * @param string $message Message to log.
 	 * @param string $level Logging level.
+	 *
 	 * @return bool
 	 */
 	public function add( $handle, $message, $level = EVF_Log_Levels::NOTICE ) {

@@ -27,7 +27,7 @@ class EVF_Admin_Entries {
 	 * @return bool
 	 */
 	private function is_entries_page() {
-		return isset( $_GET['page'] ) && 'evf-entries' === $_GET['page']; // WPCS: input var okay, CSRF ok.
+		return isset( $_GET['page'] ) && 'evf-entries' === $_GET['page']; // phpcs:ignore WordPress.Security.NonceVerification
 	}
 
 	/**
@@ -36,7 +36,7 @@ class EVF_Admin_Entries {
 	public static function page_output() {
 		if ( apply_filters( 'everest_forms_entries_list_actions', false ) ) {
 			do_action( 'everest_forms_entries_list_actions_execute' );
-		} elseif ( isset( $_GET['view-entry'] ) ) {
+		} elseif ( isset( $_GET['view-entry'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			include 'views/html-admin-page-entries-view.php';
 		} else {
 			self::table_list_output();
@@ -67,13 +67,13 @@ class EVF_Admin_Entries {
 				<form id="entries-list" method="get" data-form-id="<?php echo absint( $entries_table_list->form_id ); ?>" data-last-entry-id="<?php echo absint( end( $entry_ids ) ); ?>">
 					<input type="hidden" name="page" value="evf-entries" />
 					<?php if ( ! empty( $_REQUEST['form_id'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification ?>
-						<input type="hidden" name="form_id" value="<?php echo absint( $_REQUEST['form_id'] ); ?>" />
+						<input type="hidden" name="form_id" value="<?php echo absint( $_REQUEST['form_id'] ); // phpcs:ignore WordPress.Security.NonceVerification ?>" />
 					<?php endif; ?>
 					<?php if ( ! empty( $_REQUEST['status'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification ?>
-						<input type="hidden" name="status" value="<?php echo sanitize_text_field( wp_unslash( $_REQUEST['status'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification, WordPress.Security.EscapeOutput ?>" />
+						<input type="hidden" name="status" value="<?php echo sanitize_text_field( wp_unslash( $_REQUEST['status'] ) ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.EscapeOutput ?>" />
 					<?php endif; ?>
 					<?php
-						$entries_table_list->search_box( __( 'Search Entries', 'everest-forms' ), 'everest-forms' );
+						$entries_table_list->search_box( esc_html__( 'Search Entries', 'everest-forms' ), 'everest-forms' );
 						$entries_table_list->display();
 					?>
 				</form>
@@ -112,27 +112,27 @@ class EVF_Admin_Entries {
 	public function actions() {
 		if ( $this->is_entries_page() ) {
 			// Trash entry.
-			if ( isset( $_GET['trash'] ) ) { // WPCS: input var okay, CSRF ok.
+			if ( isset( $_GET['trash'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 				$this->trash_entry();
 			}
 
 			// Untrash entry.
-			if ( isset( $_GET['untrash'] ) ) { // WPCS: input var okay, CSRF ok.
+			if ( isset( $_GET['untrash'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 				$this->untrash_entry();
 			}
 
 			// Delete entry.
-			if ( isset( $_GET['delete'] ) ) { // WPCS: input var okay, CSRF ok.
+			if ( isset( $_GET['delete'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 				$this->delete_entry();
 			}
 
 			// Export CSV.
-			if ( isset( $_REQUEST['export_action'] ) ) { // WPCS: input var okay, CSRF ok.
+			if ( isset( $_REQUEST['export_action'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 				$this->export_csv();
 			}
 
 			// Empty Trash.
-			if ( isset( $_REQUEST['delete_all'] ) || isset( $_REQUEST['delete_all2'] ) ) { // WPCS: input var okay, CSRF ok.
+			if ( isset( $_REQUEST['delete_all'] ) || isset( $_REQUEST['delete_all2'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 				$this->empty_trash();
 			}
 		}
@@ -146,8 +146,8 @@ class EVF_Admin_Entries {
 
 		$form_id = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : '';
 
-		if ( isset( $_GET['trash'] ) ) { // WPCS: input var okay, CSRF ok.
-			$entry_id = absint( $_GET['trash'] ); // WPCS: input var okay, CSRF ok.
+		if ( isset( $_GET['trash'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			$entry_id = absint( $_GET['trash'] ); // phpcs:ignore WordPress.Security.NonceVerification
 
 			if ( $entry_id ) {
 				self::update_status( $entry_id, 'trash' );
@@ -176,8 +176,8 @@ class EVF_Admin_Entries {
 
 		$form_id = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : '';
 
-		if ( isset( $_GET['untrash'] ) ) { // WPCS: input var okay, CSRF ok.
-			$entry_id = absint( $_GET['untrash'] ); // WPCS: input var okay, CSRF ok.
+		if ( isset( $_GET['untrash'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			$entry_id = absint( $_GET['untrash'] ); // phpcs:ignore WordPress.Security.NonceVerification
 
 			if ( $entry_id ) {
 				self::update_status( $entry_id, 'publish' );
@@ -206,8 +206,8 @@ class EVF_Admin_Entries {
 
 		$form_id = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : '';
 
-		if ( isset( $_GET['delete'] ) ) { // WPCS: input var okay, CSRF ok.
-			$entry_id = absint( $_GET['delete'] ); // WPCS: input var okay, CSRF ok.
+		if ( isset( $_GET['delete'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			$entry_id = absint( $_GET['delete'] ); // phpcs:ignore WordPress.Security.NonceVerification
 
 			if ( $entry_id ) {
 				self::remove_entry( $entry_id );
@@ -236,8 +236,8 @@ class EVF_Admin_Entries {
 
 		check_admin_referer( 'bulk-entries' );
 
-		if ( isset( $_GET['form_id'] ) ) { // WPCS: input var okay, CSRF ok.
-			$form_id = absint( $_GET['form_id'] ); // WPCS: input var okay, CSRF ok.
+		if ( isset( $_GET['form_id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			$form_id = absint( $_GET['form_id'] ); // phpcs:ignore WordPress.Security.NonceVerification
 
 			if ( $form_id ) {
 				$count     = 0;
@@ -269,9 +269,9 @@ class EVF_Admin_Entries {
 	public function export_csv() {
 		check_admin_referer( 'bulk-entries' );
 
-		if ( isset( $_REQUEST['form_id'] ) && current_user_can( 'export' ) ) { // WPCS: input var okay, CSRF ok.
+		if ( isset( $_REQUEST['form_id'] ) && current_user_can( 'export' ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			include_once EVF_ABSPATH . 'includes/export/class-evf-entry-csv-exporter.php';
-			$form_id   = absint( $_REQUEST['form_id'] ); // WPCS: input var okay, CSRF ok.
+			$form_id   = absint( $_REQUEST['form_id'] ); // phpcs:ignore WordPress.Security.NonceVerification
 			$form_name = strtolower( get_the_title( $form_id ) );
 
 			if ( $form_name ) {
@@ -314,7 +314,7 @@ class EVF_Admin_Entries {
 			$update = $wpdb->update(
 				$wpdb->prefix . 'evf_entries',
 				array(
-					'starred' => 'star' === $status ? 1 : 0
+					'starred' => 'star' === $status ? 1 : 0,
 				),
 				array( 'entry_id' => $entry_id ),
 				array( '%d' ),
@@ -324,7 +324,7 @@ class EVF_Admin_Entries {
 			$update = $wpdb->update(
 				$wpdb->prefix . 'evf_entries',
 				array(
-					'viewed' => 'read' === $status ? 1 : 0
+					'viewed' => 'read' === $status ? 1 : 0,
 				),
 				array( 'entry_id' => $entry_id ),
 				array( '%d' ),

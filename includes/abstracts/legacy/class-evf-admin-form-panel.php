@@ -78,7 +78,7 @@ abstract class EVF_Admin_Form_Panel {
 	public function __construct() {
 		// Load form if found.
 		$form_id            = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
-		$this->form         = EVF()->form->get( $form_id );
+		$this->form         = evf()->form->get( $form_id );
 		$this->form_data    = is_object( $this->form ) ? evf_decode( $this->form->post_content ) : array();
 		$this->form_setting = isset( $this->form_data['settings'] ) ? $this->form_data['settings'] : array();
 		$this->init();
