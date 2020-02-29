@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Everest Forms 1.6.2\n"
 "Report-Msgid-Bugs-To: https://github.com/wpeverest/everest-forms/issues\n"
-"POT-Creation-Date: 2020-02-29 09:13:12+00:00\n"
+"POT-Creation-Date: 2020-02-29 09:50:01+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -354,7 +354,7 @@ msgstr ""
 #: includes/admin/builder/class-evf-builder-settings.php:77
 #: includes/admin/builder/class-evf-builder-settings.php:349
 #: includes/admin/builder/class-evf-builder-settings.php:405
-#: includes/class-evf-form-task.php:552 includes/evf-update-functions.php:140
+#: includes/class-evf-form-task.php:551 includes/evf-update-functions.php:140
 #: includes/templates/contact.php:71
 msgid "Admin Notification"
 msgstr ""
@@ -2056,37 +2056,37 @@ msgstr ""
 msgid "Invalid form. Please check again."
 msgstr ""
 
-#: includes/class-evf-form-task.php:167 includes/class-evf-form-task.php:212
-#: includes/class-evf-form-task.php:261
+#: includes/class-evf-form-task.php:166 includes/class-evf-form-task.php:211
+#: includes/class-evf-form-task.php:260
 msgid "Form has not been submitted, please see the errors below."
 msgstr ""
 
-#: includes/class-evf-form-task.php:197
+#: includes/class-evf-form-task.php:196
 msgid "Incorrect reCAPTCHA, please try again."
 msgstr ""
 
-#: includes/class-evf-form-task.php:203
+#: includes/class-evf-form-task.php:202
 msgid "reCAPTCHA is required."
 msgstr ""
 
-#: includes/class-evf-form-task.php:220
+#: includes/class-evf-form-task.php:219
 msgid "Everest Forms honeypot field triggered."
 msgstr ""
 
-#: includes/class-evf-form-task.php:294 includes/templates/contact.php:61
+#: includes/class-evf-form-task.php:293 includes/templates/contact.php:61
 msgid "Thanks for contacting us! We will be in touch with you shortly."
 msgstr ""
 
-#: includes/class-evf-form-task.php:574
+#: includes/class-evf-form-task.php:573
 #. translators: %s - form name.
 msgid "New %s Entry"
 msgstr ""
 
-#: includes/class-evf-form-task.php:664
+#: includes/class-evf-form-task.php:663
 msgid "No form ID was found."
 msgstr ""
 
-#: includes/class-evf-form-task.php:671
+#: includes/class-evf-form-task.php:670
 msgid "Could not create an entry"
 msgstr ""
 

@@ -160,7 +160,6 @@ class EVF_Form_Task {
 					update_option( 'evf_validation_error', '' );
 				}
 			}
-
 			// If validation issues occur, send the results accordingly.
 			if ( $ajax_form_submission && count( $this->ajax_err ) ) {
 				$response_data['error']    = $this->ajax_err;
@@ -283,7 +282,7 @@ class EVF_Form_Task {
 			do_action( "everest_forms_process_complete_{$form_id}", $this->form_fields, $entry, $this->form_data, $entry_id );
 		} catch ( Exception $e ) {
 			evf_add_notice( $e->getMessage(), 'error' );
-			if ( 1 === $ajax_form_submission ) {
+			if ( '1' === $ajax_form_submission ) {
 				$this->errors[]            = $e->getMessage();
 				$response_data['message']  = $this->errors;
 				$response_data['response'] = 'error';
@@ -292,7 +291,7 @@ class EVF_Form_Task {
 		}
 
 		$message = isset( $this->form_data['settings']['successful_form_submission_message'] ) ? $this->form_data['settings']['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
-		if ( 1 === $ajax_form_submission ) {
+		if ( '1' === $ajax_form_submission ) {
 			$response_data['message']  = $message;
 			$response_data['response'] = 'success';
 			$settings                  = $this->form_data['settings'];
