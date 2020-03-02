@@ -62,7 +62,7 @@ class EVF_Admin_Import_Export {
 		// Force download.
 		header( 'Content-Type: application/force-download' );
 		// Disposition / Encoding on response body.
-		header( "Content-Disposition: attachment;filename={$file_name};charset=utf-8" );
+		header( "Content-Disposition: attachment;filename={$file_name}; charset=utf-8" );
 		header( 'Content-type: application/json' );
 		echo $export_json; // phpcs:ignore WordPress.Security.EscapeOutput
 		exit();
