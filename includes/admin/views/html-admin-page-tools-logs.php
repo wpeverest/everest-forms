@@ -36,8 +36,8 @@ defined( 'ABSPATH' ) || exit;
 		<div class="clear"></div>
 	</div>
 	<div id="log-viewer">
-		<pre><?php echo esc_html( file_get_contents( EVF_LOG_DIR . $viewed_log ) ); ?></pre>
+		<pre><?php echo esc_html( file_get_contents( EVF_LOG_DIR . $viewed_log ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents ?></pre>
 	</div>
 <?php else : ?>
-	<div class="updated everest-forms-message inline"><p><?php _e( 'There are currently no logs to view.', 'everest-forms' ); ?></p></div>
+	<div class="updated everest-forms-message inline"><p><?php esc_html_e( 'There are currently no logs to view.', 'everest-forms' ); ?></p></div>
 <?php endif; ?>

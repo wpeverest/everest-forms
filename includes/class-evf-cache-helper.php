@@ -7,9 +7,7 @@
  * @package EverestForms/Classes
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
  * EVF_Cache_Helper Class.
@@ -77,7 +75,12 @@ class EVF_Cache_Helper {
 		if ( $enabled && ! in_array( '_evf_session_', $settings, true ) ) {
 			?>
 			<div class="error">
-				<p><?php echo wp_kses_post( sprintf( __( 'In order for <strong>database caching</strong> to work with Everest Forms you must add %1$s to the "Ignored Query Strings" option in <a href="%2$s">W3 Total Cache settings</a>.', 'everest-forms' ), '<code>_evf_session_</code>', esc_url( admin_url( 'admin.php?page=w3tc_dbcache' ) ) ) ); ?></p>
+				<p>
+				<?php
+				/* translators: 1: key 2: URL */
+				echo wp_kses_post( sprintf( __( 'In order for <strong>database caching</strong> to work with Everest Forms you must add %1$s to the "Ignored Query Strings" option in <a href="%2$s">W3 Total Cache settings</a>.', 'everest-forms' ), '<code>_evf_session_</code>', esc_url( admin_url( 'admin.php?page=w3tc_dbcache' ) ) ) );
+				?>
+				</p>
 			</div>
 			<?php
 		}

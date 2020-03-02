@@ -7,8 +7,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$form_id    = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0; // WPCS: input var okay, CSRF ok.
-$entry_id   = isset( $_GET['view-entry'] ) ? absint( $_GET['view-entry'] ) : 0; // WPCS: input var okay, CSRF ok.
+$form_id    = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification
+$entry_id   = isset( $_GET['view-entry'] ) ? absint( $_GET['view-entry'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification
 $entry      = evf_get_entry( $entry_id, true );
 $form_data  = evf()->form->get( $form_id, array( 'content_only' => true ) );
 $hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === $_COOKIE['everest_forms_entry_hide_empty'];
@@ -113,7 +113,7 @@ $trash_link = wp_nonce_url(
 														echo '<span class="list ' . $answer_class . '">' . esc_html( wp_strip_all_tags( $value ) ) . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 													}
 												} else {
-													echo nl2br( make_clickable( $field_label ) );
+													echo nl2br( make_clickable( $field_label ) ); // @codingStandardsIgnoreLine
 												}
 											} else {
 												if ( $correct_answers && false !== $correct_answers ) {
@@ -124,7 +124,7 @@ $trash_link = wp_nonce_url(
 													}
 													echo '<span class="list ' . $answer_class . '">' . esc_html( wp_strip_all_tags( $field_value ) ) . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 												} else {
-													echo nl2br( make_clickable( $field_value ) );
+													echo nl2br( make_clickable( $field_value ) ); // @codingStandardsIgnoreLine
 												}
 											}
 										} else {
@@ -159,7 +159,7 @@ $trash_link = wp_nonce_url(
 								<p class="everest-forms-entry-date">
 									<span class="dashicons dashicons-calendar"></span>
 									<?php esc_html_e( 'Submitted:', 'everest-forms' ); ?>
-									<strong><?php echo date_i18n( esc_html__( 'M j, Y @ g:ia', 'everest-forms' ), strtotime( $entry->date_created ) + ( get_option( 'gmt_offset' ) * 3600 ) ); ?> </strong>
+									<strong><?php echo date_i18n( esc_html__( 'M j, Y @ g:ia', 'everest-forms' ), strtotime( $entry->date_created ) + ( get_option( 'gmt_offset' ) * 3600 ) ); // phpcs:ignore WordPress.Security.EscapeOutput ?> </strong>
 								</p>
 
 								<?php if ( ! empty( $entry->user_id ) && 0 !== $entry->user_id ) : ?>
@@ -168,17 +168,16 @@ $trash_link = wp_nonce_url(
 										<?php
 										esc_html_e( 'User:', 'everest-forms' );
 										$user      = get_userdata( $entry->user_id );
-										$user_name = esc_html( ! empty( $user->display_name ) ? $user->display_name : $user->user_login );
-										$user_url  = esc_url(
-											add_query_arg(
-												array(
-													'user_id' => absint( $user->ID ),
-												),
-												admin_url( 'user-edit.php' )
-											)
+										$user_name = ! empty( $user->display_name ) ? $user->display_name : $user->user_login;
+										// phpcs:ignore WordPress.WP.GlobalVariablesOverride
+										$user_url = add_query_arg(
+											array(
+												'user_id' => absint( $user->ID ),
+											),
+											admin_url( 'user-edit.php' )
 										);
 										?>
-										<strong><a href="<?php echo $user_url; ?>"><?php echo $user_name; ?></a></strong>
+										<strong><a href="<?php echo esc_url( $user_url ); ?>"><?php echo esc_html( $user_name ); ?></a></strong>
 									</p>
 								<?php endif; ?>
 
@@ -202,7 +201,7 @@ $trash_link = wp_nonce_url(
 									<p class="everest-forms-entry-status">
 										<span class="dashicons dashicons-category"></span>
 										<?php esc_html_e( 'Status:', 'everest-forms' ); ?>
-										<strong><?php echo ! empty( $entry->status ) ? ucwords( sanitize_text_field( $entry->status ) ) : esc_html__( 'Completed', 'everest-forms' ); ?></strong>
+										<strong><?php echo ! empty( $entry->status ) ? ucwords( sanitize_text_field( $entry->status ) ) : esc_html__( 'Completed', 'everest-forms' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></strong>
 									</p>
 								<?php endif; ?>
 

@@ -74,7 +74,7 @@ defined( 'ABSPATH' ) || exit;
 					<div class="everest-forms-template-wrap evf-template"  id="everest-forms-template-<?php echo esc_attr( $template->slug ); ?>">
 						<figure class="everest-forms-screenshot <?php echo esc_attr( $click_class ); ?>" data-template-name-raw="<?php echo esc_attr( $template->title ); ?>" data-template="<?php echo esc_attr( $template->slug ); ?>" data-template-name="<?php echo esc_attr( $template_name ); ?>">
 							<img src="<?php echo esc_url( $template->image ); ?>"/>
-							<?php echo $badge; ?>
+							<?php echo $badge; // @codingStandardsIgnoreLine ?>
 							<?php if ( 'blank' !== $template->slug ) : ?>
 								<div class="form-action">
 									<a href="#" class="everest-forms-btn everest-forms-btn-primary <?php echo esc_attr( $upgrade_class ); ?>" data-licence-plan="<?php echo esc_attr( $license_plan ); ?>" data-template-name-raw="<?php echo esc_attr( $template->title ); ?>" data-template-name="<?php echo esc_attr( $template_name ); ?>" data-template="<?php echo esc_attr( $template->slug ); ?>"><?php esc_html_e( 'Get Started', 'everest-forms' ); ?></a>

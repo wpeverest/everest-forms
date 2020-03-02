@@ -59,21 +59,21 @@ class EVF_Form_Block {
 	public function enqueue_block_editor_assets() {
 		wp_register_style(
 			'everest-forms-block-editor',
-			EVF()->plugin_url() . '/assets/css/everest-forms.css',
+			evf()->plugin_url() . '/assets/css/everest-forms.css',
 			array( 'wp-edit-blocks' ),
-			defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( EVF()->plugin_path() . '/assets/css/everest-forms.css' ) : EVF_VERSION
+			defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( evf()->plugin_path() . '/assets/css/everest-forms.css' ) : EVF_VERSION
 		);
 
 		wp_register_script(
 			'everest-forms-block-editor',
-			EVF()->plugin_url() . '/assets/js/admin/gutenberg/form-block.min.js',
+			evf()->plugin_url() . '/assets/js/admin/gutenberg/form-block.min.js',
 			array( 'wp-blocks', 'wp-element', 'wp-i18n', 'wp-editor', 'wp-components' ),
-			defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( EVF()->plugin_path() . '/assets/js/admin/gutenberg/form-block.min.js' ) : EVF_VERSION,
+			defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( evf()->plugin_path() . '/assets/js/admin/gutenberg/form-block.min.js' ) : EVF_VERSION,
 			true
 		);
 
 		$form_block_data = array(
-			'forms' => EVF()->form->get( '', array( 'order' => 'DESC' ) ),
+			'forms' => evf()->form->get( '', array( 'order' => 'DESC' ) ),
 			'i18n'  => array(
 				'title'            => esc_html__( 'Everest Forms', 'everest-forms' ),
 				'description'      => esc_html__( 'Select and display one of your forms.', 'everest-forms' ),
@@ -111,7 +111,7 @@ class EVF_Form_Block {
 			$classes .= ' ' . $attr['className'];
 		}
 
-		$is_gb_editor = defined( 'REST_REQUEST' ) && REST_REQUEST && ! empty( $_REQUEST['context'] ) && 'edit' === $_REQUEST['context'];
+		$is_gb_editor = defined( 'REST_REQUEST' ) && REST_REQUEST && ! empty( $_REQUEST['context'] ) && 'edit' === $_REQUEST['context']; // phpcs:ignore WordPress.Security.NonceVerification
 		$title        = ! empty( $attr['displayTitle'] ) ? true : false;
 		$description  = ! empty( $attr['displayDescription'] ) ? true : false;
 

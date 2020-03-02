@@ -4,7 +4,7 @@ Tags: contact form, forms, form builder, contact, custom form
 Requires at least: 5.0
 Tested up to: 5.3
 Requires PHP: 5.4
-Stable tag: 1.6.1
+Stable tag: 1.6.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -148,6 +148,15 @@ Yes, we do. Check out this [Getting Started Videos](https://docs.wpeverest.com/d
 Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/everest-forms/) :)
 
 == Changelog ==
+
+= 1.6.2 - 29-02-2020 =
+* Fix - Cloning not working for some fields.
+* Fix - Error thrown for star rating field when using smart tags.
+* Fix - Conditional logic for Checkbox and Multiple Choice field.
+* Fix - Smart tags of Multiple Choice and Checkbox are not working in email.
+* Fix - Redirection parameter delegated to frontend for AJAX form submission.
+* Tweak - Implement log cleanup cron job.
+* Tweak - PHPCS fixes.
 
 = 1.6.1 - 13-02-2020 =
 * Fix - Form submission error while processing on frontend.

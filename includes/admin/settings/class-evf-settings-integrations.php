@@ -22,9 +22,9 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 	 */
 	public function __construct() {
 		$this->id    = 'integration';
-		$this->label = __( 'Integration', 'everest-forms' );
+		$this->label = esc_html__( 'Integration', 'everest-forms' );
 
-		if ( isset( EVF()->integrations ) && EVF()->integrations->get_integrations() ) {
+		if ( isset( evf()->integrations ) && evf()->integrations->get_integrations() ) {
 			parent::__construct();
 		}
 	}
@@ -38,7 +38,7 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 		// Hide the save button.
 		$GLOBALS['hide_save_button'] = true;
 
-		$integrations = EVF()->integrations->get_integrations();
+		$integrations = evf()->integrations->get_integrations();
 
 		if ( '' === $current_section ) {
 			$this->output_integrations( $integrations );
@@ -69,7 +69,7 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 								<img src="<?php echo esc_url( $integration->icon ); ?>" alt="<?php echo esc_attr( $integration->method_title ); ?>" />
 							</figure>
 							<div class="integration-info">
-								<a href="<?php echo admin_url( 'admin.php?page=evf-settings&tab=integration&section=' . $integration->id ); ?>">
+								<a href="<?php echo esc_url( admin_url( 'admin.php?page=evf-settings&tab=integration&section=' . $integration->id ) ); ?>">
 									<h3><?php echo esc_html( $integration->method_title ); ?></h3>
 								</a>
 								<p><?php echo esc_html( $integration->method_description ); ?></p>
@@ -77,7 +77,7 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 						</div>
 					</div>
 					<div class="integartion-action">
-						<a class="integration-setup" href="<?php echo admin_url( 'admin.php?page=evf-settings&tab=integration&section=' . $integration->id ); ?>">
+						<a class="integration-setup" href="<?php echo esc_url( admin_url( 'admin.php?page=evf-settings&tab=integration&section=' . $integration->id ) ); ?>">
 							<span class="evf-icon evf-icon-setting-cog"></span>
 						</a>
 					</div>

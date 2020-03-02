@@ -27,7 +27,7 @@ class EVF_Fields {
 	 *
 	 * @var EVF_Fields
 	 */
-	protected static $_instance = null;
+	protected static $instance = null;
 
 	/**
 	 * Main EVF_Fields Instance.
@@ -37,10 +37,10 @@ class EVF_Fields {
 	 * @return EVF_Fields Main instance.
 	 */
 	public static function instance() {
-		if ( is_null( self::$_instance ) ) {
-			self::$_instance = new self();
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
 		}
-		return self::$_instance;
+		return self::$instance;
 	}
 
 	/**

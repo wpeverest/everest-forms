@@ -1830,29 +1830,29 @@ jQuery(function () {
 
 	var mySelect = jQuery('#everest-forms-panel-field-settings-redirect_to option:selected').val();
 
-	if ( mySelect == '0' ) {
+	if ( mySelect == 'same' ) {
 		jQuery('#everest-forms-panel-field-settings-custom_page-wrap').hide();
 		jQuery('#everest-forms-panel-field-settings-external_url-wrap').hide();
 	}
-	else if(mySelect == '1') {
+	else if(mySelect == 'custom_page') {
 		jQuery('#everest-forms-panel-field-settings-custom_page-wrap').show();
 		jQuery('#everest-forms-panel-field-settings-external_url-wrap').hide();
 	}
-	else if(mySelect == '2'){
+	else if(mySelect == 'external_url'){
 		jQuery('#everest-forms-panel-field-settings-external_url-wrap').show();
 		jQuery('#everest-forms-panel-field-settings-custom_page-wrap').hide();
 	}
 
 	jQuery( '#everest-forms-panel-field-settings-redirect_to' ).on( 'change', function () {
-		if ( this.value == '0' ) {
+		if ( this.value == 'same' ) {
 			jQuery('#everest-forms-panel-field-settings-custom_page-wrap').hide();
 			jQuery('#everest-forms-panel-field-settings-external_url-wrap').hide();
 		}
-		else if ( this.value == '1') {
+		else if ( this.value == 'custom_page') {
 			jQuery('#everest-forms-panel-field-settings-custom_page-wrap').show();
 			jQuery('#everest-forms-panel-field-settings-external_url-wrap').hide();
 		}
-		else if ( this.value == '2') {
+		else if ( this.value == 'external_url') {
 			jQuery('#everest-forms-panel-field-settings-custom_page-wrap').hide();
 			jQuery('#everest-forms-panel-field-settings-external_url-wrap').show();
 		}

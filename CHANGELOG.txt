@@ -1,5 +1,14 @@
 == Changelog ==
 
+= 1.6.2 - 29-02-2020 =
+* Fix - Cloning not working for some fields.
+* Fix - Error thrown for star rating field when using smart tags.
+* Fix - Conditional logic for Checkbox and Multiple Choice field.
+* Fix - Smart tags of Multiple Choice and Checkbox are not working in email.
+* Fix - Redirection parameter delegated to frontend for AJAX form submission.
+* Tweak - PHPCS fixes.
+* Tweak - Implement log cleanup cron job.
+
 = 1.6.1 - 13-02-2020 =
 * Fix - Form submission error while processing on frontend.
 

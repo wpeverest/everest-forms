@@ -5,9 +5,7 @@
  * @package EverestForms\Admin\Notice
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 ?>
 <div id="message" class="updated everest-forms-message">

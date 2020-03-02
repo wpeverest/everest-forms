@@ -41,7 +41,7 @@ function evf_is_json( $string ) {
  * @return bool  True if the field exists in the form.
  */
 function evf_is_field_exists( $form_id, $field ) {
-	$form_obj  = EVF()->form->get( $form_id );
+	$form_obj  = evf()->form->get( $form_id );
 	$form_data = ! empty( $form_obj->post_content ) ? evf_decode( $form_obj->post_content ) : '';
 
 	if ( ! empty( $form_data['form_fields'] ) ) {

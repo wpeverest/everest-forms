@@ -14,8 +14,12 @@ defined( 'ABSPATH' ) || exit;
 	</div>
 	<div class="everest-forms-message--content">
 		<h3 class="everest-forms-message__title"><?php esc_html_e( 'Please help us spread the word', 'everest-forms' ); ?></h3>
-		<p class="everest-forms-message__description"><?php printf( esc_html( 'Enjoying the experience with %1$s? Please take a moment to spread your love by rating us on %2$s', 'everest-forms' ), '<strong>Everest Forms</strong>', '<a href="https://wordpress.org/support/plugin/everest-forms/reviews?rate=5#new-post" target="_blank"><strong>WordPress.org</strong>!</a>' ); ?></p>
-
+		<p class="everest-forms-message__description">
+			<?php
+			/* translators: %1$s: Plugin Name, %2$s: Rating link */
+			printf( esc_html__( 'Enjoying the experience with %1$s? Please take a moment to spread your love by rating us on %2$s', 'everest-forms' ), '<strong>Everest Forms</strong>', '<a href="https://wordpress.org/support/plugin/everest-forms/reviews?rate=5#new-post" target="_blank"><strong>WordPress.org</strong>!</a>' );
+			?>
+		</p>
 		<p class="everest-forms-message__action submit">
 			<a href="https://wordpress.org/support/plugin/everest-forms/reviews?rate=5#new-post" class="button button-primary evf-dismiss-review-notice evf-review-received" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Sure, I\'d love to!', 'everest-forms' ); ?></a>
 			<a href="#" class="button button-secondary evf-dismiss-review-notice" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Remind me later', 'everest-forms' ); ?></a>

@@ -22,7 +22,7 @@ class EVF_Settings_General extends EVF_Settings_Page {
 	 */
 	public function __construct() {
 		$this->id    = 'general';
-		$this->label = __( 'General', 'everest-forms' );
+		$this->label = esc_html__( 'General', 'everest-forms' );
 
 		parent::__construct();
 	}
@@ -34,16 +34,17 @@ class EVF_Settings_General extends EVF_Settings_Page {
 	 */
 	public function get_settings() {
 		$settings = apply_filters(
-			'everest_forms_general_settings', array(
+			'everest_forms_general_settings',
+			array(
 				array(
-					'title' => __( 'General Options', 'everest-forms' ),
+					'title' => esc_html__( 'General Options', 'everest-forms' ),
 					'type'  => 'title',
 					'desc'  => '',
 					'id'    => 'general_options',
 				),
 				array(
-					'title'   => __( 'Disable User Details', 'everest-forms' ),
-					'desc'    => __( 'Disable storing the IP address and User Agent on all forms.', 'everest-forms' ),
+					'title'   => esc_html__( 'Disable User Details', 'everest-forms' ),
+					'desc'    => esc_html__( 'Disable storing the IP address and User Agent on all forms.', 'everest-forms' ),
 					'id'      => 'everest_forms_disable_user_details',
 					'default' => 'no',
 					'type'    => 'checkbox',

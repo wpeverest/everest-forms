@@ -4,9 +4,14 @@
  *
  * Contains a bunch of helper methods as well.
  *
- * @package    EverestForms
- * @author     WPEverest
- * @since      1.0.0
+ * @package EverestForms
+ * @since   1.0.0
+ */
+
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Form Handler class.
  */
 class EVF_Form_Handler {
 
@@ -14,9 +19,9 @@ class EVF_Form_Handler {
 	 * Fetches forms
 	 *
 	 * @since  1.0.0
-	 * @param  mixed $id
-	 * @param  array $args
-	 * @return array|bool|null|WP_Post
+	 * @param  mixed $id   Form ID.
+	 * @param  array $args Form Arguments.
+	 * @return array|bool|null|WP_Post Form object.
 	 */
 	public function get( $id = '', $args = array() ) {
 		$forms = array();
@@ -60,7 +65,7 @@ class EVF_Form_Handler {
 	 * Delete forms.
 	 *
 	 * @since  1.0.0
-	 * @param  array $ids
+	 * @param  array $ids Form IDs.
 	 * @return boolean
 	 */
 	public function delete( $ids = array() ) {
@@ -78,10 +83,6 @@ class EVF_Form_Handler {
 		foreach ( $ids as $id ) {
 			$form = wp_delete_post( $id, true );
 
-			if ( class_exists( 'EVF_Entry_Handler' ) ) {
-				// Delete entry if exists.
-			}
-
 			if ( ! $form ) {
 				return false;
 			}
@@ -94,12 +95,13 @@ class EVF_Form_Handler {
 	 * Create new form.
 	 *
 	 * @since  1.0.0
-	 * @param  string $title
-	 * @param  array  $args
-	 * @param  array  $data
-	 * @return mixed
+	 * @param  string $title    Form title.
+	 * @param  string $template Form template.
+	 * @param  array  $args     Form Arguments.
+	 * @param  array  $data     Additional data.
+	 * @return int|bool Form ID on successful creation else false.
 	 */
-	public static function create( $title = '', $template = 'blank', $args = array(), $data = array() ) {
+	public function create( $title = '', $template = 'blank', $args = array(), $data = array() ) {
 		if ( empty( $title ) || ! current_user_can( 'manage_everest_forms' ) ) {
 			return false;
 		}
@@ -144,7 +146,7 @@ class EVF_Form_Handler {
 					$form_content = json_decode( base64_decode( $template_data->settings ), true );
 
 					if ( isset( $template_data->styles ) ) {
-						$style_needed = true;
+						$style_needed           = true;
 						$form_style[ $form_id ] = json_decode( base64_decode( $template_data->styles ), true );
 					}
 				}
@@ -188,9 +190,11 @@ class EVF_Form_Handler {
 	 * Updates form
 	 *
 	 * @since    1.0.0
-	 * @param    string $form_id
-	 * @param    array  $data
-	 * @param    array  $args
+	 *
+	 * @param string|int $form_id Form ID.
+	 * @param array      $data    Data retrieved from $_POST and processed.
+	 * @param array      $args    Empty by default, may have custom data not intended to be saved.
+	 *
 	 * @return   mixed
 	 * @internal param string $title
 	 */
@@ -268,7 +272,9 @@ class EVF_Form_Handler {
 	 * Duplicate forms.
 	 *
 	 * @since  1.0.0
-	 * @param  array $ids
+	 *
+	 * @param array $ids Form IDs to duplicate.
+	 *
 	 * @return boolean
 	 */
 	public function duplicate( $ids = array() ) {
@@ -338,10 +344,10 @@ class EVF_Form_Handler {
 	 *
 	 * @since 1.1.0
 	 *
-	 * @param string $form_id
-	 * @param string $field
+	 * @param int    $form_id Form ID.
+	 * @param string $field   Field.
 	 *
-	 * @return bool
+	 * @return false|array
 	 */
 	public function get_meta( $form_id, $field = '' ) {
 		if ( empty( $form_id ) ) {
@@ -370,7 +376,7 @@ class EVF_Form_Handler {
 	 * Get the next available field ID and increment by one.
 	 *
 	 * @since  1.0.0
-	 * @param  int $form_id
+	 * @param  int $form_id  Form ID.
 	 * @return mixed int or false
 	 */
 	public function field_unique_key( $form_id ) {
@@ -404,14 +410,15 @@ class EVF_Form_Handler {
 		return $field_id;
 	}
 
-
 	/**
 	 * Get private meta information for a form field.
 	 *
 	 * @since  1.0.0
-	 * @param  string $form_id
-	 * @param  string $field_id
-	 * @return bool
+	 *
+	 * @param int    $form_id  Form ID.
+	 * @param string $field_id Field ID.
+	 *
+	 * @return array|bool
 	 */
 	public function get_field( $form_id, $field_id = '' ) {
 
@@ -434,8 +441,8 @@ class EVF_Form_Handler {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $form_id
-	 * @param string $field
+	 * @param int    $form_id Form ID.
+	 * @param string $field   Field.
 	 *
 	 * @return bool
 	 */

@@ -189,7 +189,7 @@ class EVF_Field_Email extends EVF_Form_Fields {
 	/**
 	 * Confirmation Placeholder field option.
 	 *
-	 * @param array $field
+	 * @param array $field Field Data.
 	 */
 	public function confirmation_placeholder( $field ) {
 		$lbl  = $this->field_element(
@@ -233,14 +233,14 @@ class EVF_Field_Email extends EVF_Form_Fields {
 		// Label.
 		$this->field_preview_option( 'label', $field );
 		?>
-		<div class="everest-forms-confirm everest-forms-confirm-<?php echo $confirm; ?>">
+		<div class="everest-forms-confirm everest-forms-confirm-<?php echo esc_attr( $confirm ); ?>">
 			<div class="everest-forms-confirm-primary">
-				<input type="email" placeholder="<?php echo $placeholder; ?>" class="widefat primary-input" disabled>
+				<input type="email" placeholder="<?php echo esc_attr( $placeholder ); ?>" class="widefat primary-input" disabled>
 				<label class="everest-forms-sub-label"><?php esc_html_e( 'Email', 'everest-forms' ); ?></label>
 
 			</div>
 			<div class="everest-forms-confirm-confirmation">
-				<input type="email" placeholder="<?php echo $confirm_placeholder; ?>" class="widefat secondary-input" disabled>
+				<input type="email" placeholder="<?php echo esc_attr( $confirm_placeholder ); ?>" class="widefat secondary-input" disabled>
 				<label class="everest-forms-sub-label"><?php esc_html_e( 'Confirm Email', 'everest-forms' ); ?></label>
 			</div>
 		</div>
@@ -273,7 +273,7 @@ class EVF_Field_Email extends EVF_Form_Fields {
 			printf(
 				'<input type="email" %s %s>',
 				evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ),
-				$primary['required']
+				esc_attr( $primary['required'] )
 			);
 
 			// Confirmation email field configuration.
@@ -329,14 +329,15 @@ class EVF_Field_Email extends EVF_Form_Fields {
 	/**
 	 * Validates field on form submit.
 	 *
-	 * @param int   $field_id
-	 * @param array $field_submit
-	 * @param array $form_data
+	 * @param int   $field_id     Field ID.
+	 * @param array $field_submit Submitted data.
+	 * @param array $form_data    Form data.
 	 */
 	public function validate( $field_id, $field_submit, $form_data ) {
 		$form_id            = $form_data['id'];
 		$fields             = $form_data['form_fields'];
 		$required           = evf_get_required_label();
+		$invalid_email      = esc_html__( 'Please enter a valid email address.', 'everest-forms' );
 		$conditional_status = isset( $form_data['form_fields'][ $field_id ]['conditional_logic_status'] ) ? $form_data['form_fields'][ $field_id ]['conditional_logic_status'] : 0;
 
 		// Standard configuration, confirmation disabled.
@@ -346,6 +347,12 @@ class EVF_Field_Email extends EVF_Form_Fields {
 			if ( ! empty( $fields[ $field_id ]['required'] ) && '1' !== $conditional_status && ( empty( $field_submit ) && '0' !== $field_submit ) ) {
 				evf()->task->errors[ $form_id ][ $field_id ] = $required;
 				update_option( 'evf_validation_error', 'yes' );
+			}
+
+			if ( isset( $field_submit ) && ! is_email( $field_submit ) ) {
+				evf()->task->errors[ $form_id ][ $field_id ] = $invalid_email;
+				update_option( 'evf_validation_error', 'yes' );
+				return;
 			}
 		} else {
 
@@ -366,7 +373,14 @@ class EVF_Field_Email extends EVF_Form_Fields {
 				if ( $field_submit['primary'] !== $field_submit['secondary'] ) {
 					evf()->task->errors[ $form_id ][ $field_id ]['secondary'] = esc_html__( 'Confirmation Email do not match.', 'everest-forms' );
 					update_option( 'evf_validation_error', 'yes' );
+					return;
 				}
+			}
+
+			if ( isset( $field_submit['primary'] ) && ! is_email( $field_submit['primary'] ) ) {
+				evf()->task->errors[ $form_id ][ $field_id ]['primary'] = $invalid_email;
+				update_option( 'evf_validation_error', 'yes' );
+				return;
 			}
 		}
 	}
@@ -390,7 +404,7 @@ class EVF_Field_Email extends EVF_Form_Fields {
 		$name = ! empty( $form_data['form_fields'][ $field_id ] ['label'] ) ? $form_data['form_fields'][ $field_id ]['label'] : '';
 
 		// Set final field details.
-		EVF()->task->form_fields[ $field_id ] = array(
+		evf()->task->form_fields[ $field_id ] = array(
 			'name'     => sanitize_text_field( $name ),
 			'value'    => sanitize_text_field( $value ),
 			'id'       => $field_id,

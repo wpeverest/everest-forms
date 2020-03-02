@@ -1,7 +1,7 @@
 {
   "name": "everest-forms",
   "title": "Everest Forms",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "homepage": "https://github.com/wpeverest/everest-forms/",
   "repository": {
     "type": "git",
@@ -53,7 +53,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged",
+      "post-merge": "./bin/post-merge.sh"
     }
   },
   "lint-staged": {

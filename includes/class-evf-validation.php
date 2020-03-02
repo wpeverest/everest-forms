@@ -6,9 +6,7 @@
  * @package  EverestForms/Classes
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
  * EVF_Validation Class.

@@ -251,7 +251,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 		$value = preg_replace( '/[^0-9.]/', '', $field_submit );
 
 		// Set final field details.
-		EVF()->task->form_fields[ $field_id ] = array(
+		evf()->task->form_fields[ $field_id ] = array(
 			'name'     => sanitize_text_field( $name ),
 			'value'    => sanitize_text_field( $value ),
 			'id'       => $field_id,

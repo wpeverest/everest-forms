@@ -73,7 +73,7 @@ function evf_string_to_array( $string, $delimiter = ',' ) {
  *
  * @since  1.4.5
  * @param  array $dimensions Array of dimensions.
- * @param  array $suffix     Suffix, defaults to 'px'.
+ * @param  array $unit       Unit, defaults to 'px'.
  * @return string
  */
 function evf_sanitize_dimension_unit( $dimensions = array(), $unit = 'px' ) {
@@ -459,7 +459,7 @@ function evf_format_phone_number( $phone ) {
  * @return string
  */
 function evf_strtoupper( $string ) {
-	return function_exists( 'mb_strtoupper' ) ? mb_strtoupper( $string ) : strtoupper( $string );
+	return function_exists( 'mb_strtoupper' ) ? mb_strtoupper( $string, 'UTF-8' ) : strtoupper( $string );
 }
 
 /**
@@ -470,7 +470,7 @@ function evf_strtoupper( $string ) {
  * @return string
  */
 function evf_strtolower( $string ) {
-	return function_exists( 'mb_strtolower' ) ? mb_strtolower( $string ) : strtolower( $string );
+	return function_exists( 'mb_strtolower' ) ? mb_strtolower( $string, 'UTF-8' ) : strtolower( $string );
 }
 
 /**
@@ -486,7 +486,7 @@ function evf_strtolower( $string ) {
 function evf_trim_string( $string, $chars = 200, $suffix = '...' ) {
 	if ( strlen( $string ) > $chars ) {
 		if ( function_exists( 'mb_substr' ) ) {
-			$string = mb_substr( $string, 0, ( $chars - mb_strlen( $suffix ) ) ) . $suffix;
+			$string = mb_substr( $string, 0, ( $chars - mb_strlen( $suffix, 'UTF-8' ) ), 'UTF-8' ) . $suffix;
 		} else {
 			$string = substr( $string, 0, ( $chars - strlen( $suffix ) ) ) . $suffix;
 		}

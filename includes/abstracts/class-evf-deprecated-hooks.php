@@ -33,7 +33,7 @@ abstract class EVF_Deprecated_Hooks {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$fields = EVF()->form_fields->get_form_field_types();
+		$fields = evf()->form_fields->get_form_field_types();
 
 		// Adapt dynamic fields hook deprecation with version support.
 		foreach ( $this->deprecated_hooks as $new_hook => $old_hook ) {

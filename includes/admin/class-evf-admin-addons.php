@@ -3,7 +3,7 @@
  * Addons Page
  *
  * @package EverestForms/Admin
- * @version 1.1.1
+ * @version 1.6.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -39,8 +39,6 @@ class EVF_Admin_Addons {
 	/**
 	 * Get section content for the extensions screen.
 	 *
-	 * @param  string $category
-	 * @param  string $term
 	 * @return array
 	 */
 	public static function get_extension_data() {
@@ -76,10 +74,10 @@ class EVF_Admin_Addons {
 			admin_url( 'admin.php' )
 		);
 		$license_plan    = evf_get_license_plan();
-		$current_section = isset( $_GET['section'] ) ? sanitize_text_field( $_GET['section'] ) : '_all';
+		$current_section = isset( $_GET['section'] ) ? sanitize_text_field( wp_unslash( $_GET['section'] ) ) : '_all'; // phpcs:ignore WordPress.Security.NonceVerification
 
 		if ( '_featured' !== $current_section ) {
-			$category = isset( $_GET['section'] ) ? $_GET['section'] : null;
+			$category = isset( $_GET['section'] ) ? sanitize_text_field( wp_unslash( $_GET['section'] ) ) : null; // phpcs:ignore WordPress.Security.NonceVerification
 			$addons   = self::get_extension_data( $category );
 		}
 

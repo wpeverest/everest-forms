@@ -182,7 +182,7 @@ function evf_get_us_states() {
  */
 function get_all_email_fields_by_form_id( $form_id ) {
 	evf_deprecated_function( 'get_all_email_fields_by_form_id', '1.3.0', 'evf_get_all_email_fields_by_form_id' );
-	return evf_get_all_email_fields_by_form_id( $string );
+	return evf_get_all_email_fields_by_form_id( $form_id );
 }
 
 /**
@@ -190,7 +190,7 @@ function get_all_email_fields_by_form_id( $form_id ) {
  */
 function get_all_form_fields_by_form_id( $form_id ) {
 	evf_deprecated_function( 'get_all_form_fields_by_form_id', '1.3.0', 'evf_get_all_form_fields_by_form_id' );
-	return evf_get_all_form_fields_by_form_id( $string );
+	return evf_get_all_form_fields_by_form_id( $form_id );
 }
 
 /**

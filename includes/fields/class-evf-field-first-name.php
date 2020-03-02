@@ -47,9 +47,8 @@ class EVF_Field_First_Name extends EVF_Form_Fields {
 	/**
 	 * Field preview inside the builder.
 	 *
-	 * @since      1.0.0
-	 *
-	 * @param array $field
+	 * @since 1.0.0
+	 * @param array $field Field settings.
 	 */
 	public function field_preview( $field ) {
 
@@ -60,7 +59,7 @@ class EVF_Field_First_Name extends EVF_Form_Fields {
 		$this->field_preview_option( 'label', $field );
 
 		// Primary input.
-		echo '<input type="text" placeholder="' . $placeholder . '" class="widefat" disabled>';
+		echo '<input type="text" placeholder="' . esc_attr( $placeholder ) . '" class="widefat" disabled>';
 
 		// Description.
 		$this->field_preview_option( 'description', $field );
@@ -69,11 +68,11 @@ class EVF_Field_First_Name extends EVF_Form_Fields {
 	/**
 	 * Field display on the form front-end.
 	 *
-	 * @since      1.0.0
+	 * @since 1.0.0
 	 *
-	 * @param array $field
-	 * @param array $deprecated
-	 * @param array $form_data
+	 * @param array $field Field Data.
+	 * @param array $deprecated Deprecated Parameter.
+	 * @param array $form_data Form Data.
 	 */
 	public function field_display( $field, $deprecated, $form_data ) {
 		// Define data.

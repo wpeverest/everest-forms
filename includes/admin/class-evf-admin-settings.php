@@ -70,7 +70,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 			do_action( 'everest_forms_update_options_' . $current_tab );
 			do_action( 'everest_forms_update_options' );
 
-			self::add_message( __( 'Your settings have been saved.', 'everest-forms' ) );
+			self::add_message( esc_html__( 'Your settings have been saved.', 'everest-forms' ) );
 
 			// Clear any unwanted data and flush rules.
 			update_option( 'everest_forms_queue_flush_rewrite_rules', 'yes' );
@@ -123,7 +123,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 
 			do_action( 'everest_forms_settings_start' );
 
-			wp_enqueue_script( 'everest_forms_settings', EVF()->plugin_url() . '/assets/js/admin/settings' . $suffix . '.js', array( 'jquery', 'jquery-confirm', 'jquery-ui-datepicker', 'jquery-ui-sortable', 'iris', 'selectWoo' ), EVF()->version, true );
+			wp_enqueue_script( 'everest_forms_settings', evf()->plugin_url() . '/assets/js/admin/settings' . $suffix . '.js', array( 'jquery', 'jquery-confirm', 'jquery-ui-datepicker', 'jquery-ui-sortable', 'iris', 'selectWoo' ), evf()->version, true );
 
 			wp_localize_script(
 				'everest_forms_settings',
@@ -291,7 +291,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 
 						?><tr valign="top" class="<?php echo esc_attr( implode( ' ', $visibility_class ) ); ?>">
 							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></label>
 							</th>
 							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
 								<input
@@ -302,8 +302,8 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 									value="<?php echo esc_attr( $option_value ); ?>"
 									class="<?php echo esc_attr( $value['class'] ); ?>"
 									placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
-									<?php echo implode( ' ', $custom_attributes ); // WPCS: XSS ok. ?>
-									/><?php echo esc_html( $value['suffix'] ); ?> <?php echo $description; // WPCS: XSS ok. ?>
+									<?php echo implode( ' ', $custom_attributes ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+									/><?php echo esc_html( $value['suffix'] ); ?> <?php echo $description; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 							</td>
 						</tr>
 						<?php
@@ -316,7 +316,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						?>
 						<tr valign="top">
 							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></label>
 							</th>
 							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">&lrm;
 								<span class="colorpickpreview" style="background: <?php echo esc_attr( $option_value ); ?>">&nbsp;</span>
@@ -329,8 +329,8 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 									value="<?php echo esc_attr( $option_value ); ?>"
 									class="<?php echo esc_attr( $value['class'] ); ?>colorpick"
 									placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
-									<?php echo implode( ' ', $custom_attributes ); // WPCS: XSS ok. ?>
-									/>&lrm; <?php echo $description; // WPCS: XSS ok. ?>
+									<?php echo implode( ' ', $custom_attributes ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+									/>&lrm; <?php echo $description; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 									<div id="colorPickerDiv_<?php echo esc_attr( $value['id'] ); ?>" class="colorpickdiv" style="z-index: 100;background:#eee;border:1px solid #ccc;position:absolute;display:none;"></div>
 							</td>
 						</tr>
@@ -344,10 +344,10 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						?>
 						<tr valign="top">
 							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></label>
 							</th>
 							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
-								<?php echo $description; // WPCS: XSS ok. ?>
+								<?php echo $description; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 
 								<textarea
 									name="<?php echo esc_attr( $value['id'] ); ?>"
@@ -355,8 +355,8 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 									style="<?php echo esc_attr( $value['css'] ); ?>"
 									class="<?php echo esc_attr( $value['class'] ); ?>"
 									placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
-									<?php echo implode( ' ', $custom_attributes ); // WPCS: XSS ok. ?>
-									><?php echo esc_textarea( $option_value ); // WPCS: XSS ok. ?></textarea>
+									<?php echo implode( ' ', $custom_attributes ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+									><?php echo esc_textarea( $option_value ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></textarea>
 							</td>
 						</tr>
 						<?php
@@ -370,7 +370,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						?>
 						<tr valign="top">
 							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></label>
 							</th>
 							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
 								<select
@@ -378,7 +378,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 									id="<?php echo esc_attr( $value['id'] ); ?>"
 									style="<?php echo esc_attr( $value['css'] ); ?>"
 									class="<?php echo esc_attr( $value['class'] ); ?>"
-									<?php echo implode( ' ', $custom_attributes ); // WPCS: XSS ok. ?>
+									<?php echo implode( ' ', $custom_attributes ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 									<?php echo 'multiselect' === $value['type'] ? 'multiple="multiple"' : ''; ?>
 									>
 									<?php
@@ -399,7 +399,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 										<?php
 									}
 									?>
-								</select> <?php echo $description; // WPCS: XSS ok. ?>
+								</select> <?php echo $description; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 							</td>
 						</tr>
 						<?php
@@ -412,11 +412,11 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						?>
 						<tr valign="top">
 							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></label>
 							</th>
 							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
 								<fieldset>
-									<?php echo $description; // WPCS: XSS ok. ?>
+									<?php echo $description; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 									<ul class="<?php echo esc_attr( $value['class'] ); ?>">
 									<?php
 									foreach ( $value['options'] as $key => $val ) {
@@ -429,7 +429,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 												type="radio"
 												style="<?php echo esc_attr( $value['css'] ); ?>"
 												class="<?php echo esc_attr( $value['class'] ); ?>"
-												<?php echo implode( ' ', $custom_attributes ); // WPCS: XSS ok. ?>
+												<?php echo implode( ' ', $custom_attributes ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 												<?php checked( $key, $option_value ); ?>
 												/> <?php echo esc_html( $val ); ?></label>
 										</li>
@@ -450,7 +450,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						?>
 						<tr valign="top">
 							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></label>
 							</th>
 							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
 								<fieldset>
@@ -467,7 +467,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 												type="radio"
 												style="<?php echo esc_attr( $value['css'] ); ?>"
 												class="<?php echo esc_attr( $value['class'] ); ?>"
-												<?php echo implode( ' ', $custom_attributes ); // WPCS: XSS ok. ?>
+												<?php echo implode( ' ', $custom_attributes ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 												<?php checked( $key, $option_value ); ?>
 												/>
 												<?php echo esc_html( $val['name'] ); ?></label>
@@ -476,7 +476,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 									}
 									?>
 									</ul>
-									<?php echo $description; // WPCS: XSS ok. ?>
+									<?php echo $description; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 								</fieldset>
 							</td>
 						</tr>
@@ -535,9 +535,9 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 									class="<?php echo esc_attr( isset( $value['class'] ) ? $value['class'] : '' ); ?>"
 									value="1"
 									<?php checked( $option_value, 'yes' ); ?>
-									<?php echo implode( ' ', $custom_attributes ); // WPCS: XSS ok. ?>
-								/> <?php echo $description; // WPCS: XSS ok. ?>
-							</label> <?php echo $tooltip_html; // WPCS: XSS ok. ?>
+									<?php echo implode( ' ', $custom_attributes ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+								/> <?php echo $description; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+							</label> <?php echo $tooltip_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						<?php
 
 						if ( ! isset( $value['checkboxgroup'] ) || 'end' === $value['checkboxgroup'] ) {
@@ -574,10 +574,10 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						?>
 						<tr valign="top" class="single_select_page">
 							<th scope="row" class="titledesc">
-								<label><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
+								<label><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></label>
 							</th>
 							<td class="forminp">
-								<?php echo str_replace( ' id=', " data-placeholder='" . esc_attr__( 'Select a page&hellip;', 'everest-forms' ) . "' style='" . $value['css'] . "' class='" . $value['class'] . "' id=", wp_dropdown_pages( $args ) ); // WPCS: XSS ok. ?> <?php echo $description; // WPCS: XSS ok. ?>
+								<?php echo str_replace( ' id=', " data-placeholder='" . esc_attr__( 'Select a page&hellip;', 'everest-forms' ) . "' style='" . $value['css'] . "' class='" . $value['class'] . "' id=", wp_dropdown_pages( $args ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php echo $description; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 							</td>
 						</tr>
 						<?php
@@ -595,7 +595,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						?>
 						<tr valign="top">
 							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></label>
 							</th>
 							<td class="forminp">
 							<input
@@ -608,7 +608,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 									placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
 									step="1"
 									min="1"
-									<?php echo implode( ' ', $custom_attributes ); // WPCS: XSS ok. ?>
+									<?php echo implode( ' ', $custom_attributes ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 								/>&nbsp;
 								<select name="<?php echo esc_attr( $value['id'] ); ?>[unit]" style="width: auto;">
 									<?php
@@ -616,7 +616,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 										echo '<option value="' . esc_attr( $value ) . '"' . selected( $option_value['unit'], $value, false ) . '>' . esc_html( $label ) . '</option>';
 									}
 									?>
-								</select> <?php echo ( $description ) ? $description : ''; // WPCS: XSS ok. ?>
+								</select> <?php echo ( $description ) ? $description : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 							</td>
 						</tr>
 						<?php
@@ -682,7 +682,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 		 */
 		public static function save_fields( $options, $data = null ) {
 			if ( is_null( $data ) ) {
-				$data = $_POST; // WPCS: input var okay, CSRF ok.
+				$data = $_POST; // phpcs:ignore WordPress.Security.NonceVerification
 			}
 			if ( empty( $data ) ) {
 				return false;
