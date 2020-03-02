@@ -327,7 +327,7 @@ abstract class EVF_CSV_Exporter {
 	protected function implode_values( $values ) {
 		$values_to_implode = array();
 
-		// For checkboxe and radio.
+		// For checkbox and radio.
 		if ( ! empty( $values['label'] ) ) {
 			$values = $values['label'];
 		}
