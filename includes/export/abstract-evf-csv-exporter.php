@@ -332,9 +332,13 @@ abstract class EVF_CSV_Exporter {
 			$values = $values['label'];
 		}
 
-		foreach ( $values as $value ) {
-			$value               = (string) is_scalar( $value ) ? $value : '';
-			$values_to_implode[] = str_replace( ',', '\\,', $value );
+		if ( is_array( $values ) ) {
+			foreach ( $values as $value ) {
+				$value               = (string) is_scalar( $value ) ? $value : '';
+				$values_to_implode[] = str_replace( ',', '\\,', $value );
+			}
+		} else {
+			$values_to_implode[] = str_replace( ',', '\\,', $values );
 		}
 
 		return implode( ', ', $values_to_implode );
