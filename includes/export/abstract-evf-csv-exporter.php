@@ -334,7 +334,7 @@ abstract class EVF_CSV_Exporter {
 
 		if ( is_array( $values ) ) {
 			foreach ( $values as $value ) {
-				$value               = (string) is_scalar( $value ) ? $value : '';
+				$value               = is_scalar( $value ) ? (string) $value : '';
 				$values_to_implode[] = str_replace( ',', '\\,', $value );
 			}
 		} else {
