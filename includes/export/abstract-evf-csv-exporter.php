@@ -54,6 +54,11 @@ abstract class EVF_CSV_Exporter {
 	abstract public function prepare_data_to_export();
 
 	/**
+	 * Get quiz report in CSV format.
+	 */
+	abstract public function get_quiz_report();
+
+	/**
 	 * Return an array of supported column names and ids.
 	 *
 	 * @return array
@@ -132,6 +137,15 @@ abstract class EVF_CSV_Exporter {
 		$this->prepare_data_to_export();
 		$this->send_headers();
 		$this->send_content( chr( 239 ) . chr( 187 ) . chr( 191 ) . $this->export_column_headers() . $this->get_csv_data() );
+		die();
+	}
+
+	/**
+	 * Export quiz report.
+	 */
+	public function export_quiz_report() {
+		$this->send_headers();
+		$this->send_content( $this->get_quiz_report() );
 		die();
 	}
 
@@ -327,14 +341,18 @@ abstract class EVF_CSV_Exporter {
 	protected function implode_values( $values ) {
 		$values_to_implode = array();
 
-		// For checkboxe and radio.
+		// For checkbox and radio.
 		if ( ! empty( $values['label'] ) ) {
 			$values = $values['label'];
 		}
 
-		foreach ( $values as $value ) {
-			$value               = (string) is_scalar( $value ) ? $value : '';
-			$values_to_implode[] = str_replace( ',', '\\,', $value );
+		if ( is_array( $values ) ) {
+			foreach ( $values as $value ) {
+				$value               = is_scalar( $value ) ? (string) $value : '';
+				$values_to_implode[] = str_replace( ',', '\\,', $value );
+			}
+		} else {
+			$values_to_implode[] = str_replace( ',', '\\,', $values );
 		}
 
 		return implode( ', ', $values_to_implode );

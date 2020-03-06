@@ -121,6 +121,131 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 	}
 
 	/**
+	 * Prepare and get quiz report data in CSV format.
+	 */
+	public function get_quiz_report() {
+		$form_data          = EVF()->form->get(
+			absint( $this->form_id ),
+			array(
+				'content_only' => true,
+			)
+		);
+		$form_fields        = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
+		$entry              = evf_get_entry( $this->entry_id );
+		$columns            = array( 'ID' );
+		$row                = array( $this->entry_id );
+		$total_score        = 0;
+		$respondent_score   = 0;
+		$obtained_score     = 0;
+		$include_all_fields = apply_filters( 'evf_include_all_fields_in_quiz_report_csv', false );
+
+		// Add form fields in the CSV content.
+		foreach ( $form_fields as $field_id => $field ) {
+			$quiz_enabled = isset( $field['quiz_status'] ) && '1' === $field['quiz_status'] ? true : false;
+
+			// Move onto next field if this field has quiz disabled and non-quiz fields are to be excluded.
+			if ( false === $include_all_fields && false === $quiz_enabled ) {
+				continue;
+			}
+
+			$meta_key       = isset( $field['meta-key'] ) ? $field['meta-key'] : '';
+			$given_answer   = isset( $entry->meta[ $meta_key ] ) ? $entry->meta[ $meta_key ] : null;
+			$correct_answer = isset( $field['correct_answer'] ) ? $field['correct_answer'] : array();
+			$field_score    = empty( $field['score'] ) ? 0 : $field['score'];
+			$score          = 0;
+			$total_score   += $field_score;
+			$is_correct     = false;
+
+			if ( ! is_null( $given_answer ) ) {
+				$respondent_score += $field_score;
+
+				if ( ! empty( $correct_answer ) ) {
+					// Determine if the given answer is correct.
+					if ( 'select' === $field['type'] ) {
+						foreach ( $correct_answer as $answer_key => $answer_status ) {
+							$choice = $field['choices'][ $answer_key ]['label'];
+
+							if ( $given_answer === $choice ) {
+								$is_correct = true;
+								break;
+							}
+						}
+					} elseif ( 'radio' === $field['type'] ) {
+						$correct_answer_key = array_keys( $correct_answer )[0];
+						$correct_answer     = $field['choices'][ $correct_answer_key ]['label'];
+						$given_answer       = maybe_unserialize( $given_answer )['label'];
+						$is_correct         = ( $given_answer === $correct_answer );
+					} elseif ( 'checkbox' === $field['type'] ) {
+						$given_answer_data   = maybe_unserialize( $given_answer )['label'];
+						$is_correct          = true;
+						$choices             = $field['choices'];
+						$correct_answer_keys = array_keys( $correct_answer );
+						$correct_answers     = array();
+						$given_answers       = array();
+
+						// Prepare list of correct answers.
+						foreach ( $correct_answer_keys as $correct_answer_key ) {
+							$correct_answers[] = $choices[ $correct_answer_key ]['label'];
+						}
+
+						// Prepare list of given answers.
+						foreach ( $given_answer_data as $given_answer ) {
+							$given_answers[] = $given_answer;
+						}
+
+						// See if all the given answers are correct answers.
+						foreach ( $given_answers as $given_answer ) {
+							if ( ! in_array( $given_answer, $correct_answers, true ) ) {
+								$is_correct = false;
+								break;
+							}
+						}
+					}
+				}
+			}
+
+			// Add score if the given answer is correct.
+			if ( true === $is_correct ) {
+				$score           = $field_score;
+				$obtained_score += $field_score;
+			}
+
+			$columns[] = $this->sanitize_csv_cell_data( $field['label'] );
+			$row[]     = $this->sanitize_csv_cell_data( $score );
+		}
+
+		// Add extra columns.
+		$extra_data = array(
+			'Total Score'      => $total_score,
+			'Respondent Score' => $respondent_score,
+			'Obtained Score'   => $obtained_score,
+		);
+		foreach ( $extra_data as $key => $value ) {
+			$columns[] = $this->sanitize_csv_cell_data( $key );
+			$row[]     = $this->sanitize_csv_cell_data( $value );
+		}
+
+		ob_start();
+		echo implode( ', ', $columns );
+		echo "\n";
+		echo implode( ', ', $row );
+
+		return ob_get_clean();
+	}
+
+	/**
+	 * Sanitize data for a cell in CSV.
+	 *
+	 * @param string $str Data to sanitize.
+	 */
+	public function sanitize_csv_cell_data( $str ) {
+		$str = (string) $str;
+		$str = str_replace( '"', '""', $str );
+		$str = '"' . $str . '"';
+		return $str;
+	}
+
+	/**
 	 * Take a entry id and generate row data from it for export.
 	 *
 	 * @param  object $entry Entry object.
