@@ -86,6 +86,8 @@ defined( 'ABSPATH' ) || exit;
 										<div class="action-buttons">
 											<?php if ( is_plugin_active( $addon->slug . '/' . $addon->slug . '.php' ) ) : ?>
 												<?php
+													/* translators: %s: Add-on title */
+													$aria_label  = sprintf( esc_html__( 'Deactivate %s now', 'everest-forms' ), $addon->title );
 													$plugin_file = plugin_basename( $addon->slug . '/' . $addon->slug . '.php' );
 													$url         = wp_nonce_url(
 														add_query_arg(
@@ -99,9 +101,11 @@ defined( 'ABSPATH' ) || exit;
 														'deactivate-plugin_' . $plugin_file
 													);
 												?>
-												<a class="button button-secondary deactivate-now" href="<?php echo esc_url( $url ); ?>" aria-label="<?php printf( esc_attr__( 'Deactivate %s now', 'everest-forms' ), $addon->title ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.MissingTranslatorsComment ?>"><?php esc_html_e( 'Deactivate', 'everest-forms' ); ?></a>
+												<a class="button button-secondary deactivate-now" href="<?php echo esc_url( $url ); ?>" aria-label="<?php echo esc_attr( $aria_label ); ?>"><?php esc_html_e( 'Deactivate', 'everest-forms' ); ?></a>
 											<?php elseif ( file_exists( WP_PLUGIN_DIR . '/' . $addon->slug . '/' . $addon->slug . '.php' ) ) : ?>
 												<?php
+													/* translators: %s: Add-on title */
+													$aria_label  = sprintf( esc_html__( 'Activate %s now', 'everest-forms' ), $addon->title );
 													$plugin_file = plugin_basename( $addon->slug . '/' . $addon->slug . '.php' );
 													$url         = wp_nonce_url(
 														add_query_arg(
@@ -115,9 +119,13 @@ defined( 'ABSPATH' ) || exit;
 														'activate-plugin_' . $plugin_file
 													);
 												?>
-												<a class="button button-primary activate-now" href="<?php echo esc_url( $url ); ?>" aria-label="<?php sprintf( esc_attr__( 'Activate %s now', 'everest-forms' ), $addon->title ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.MissingTranslatorsComment ?>"><?php esc_html_e( 'Activate', 'everest-forms' ); ?></a>
+												<a class="button button-primary activate-now" href="<?php echo esc_url( $url ); ?>" aria-label="<?php echo esc_attr( $aria_label ); ?>"><?php esc_html_e( 'Activate', 'everest-forms' ); ?></a>
 											<?php else : ?>
-												<a href="#" class="button install-now" data-slug="<?php echo esc_attr( $addon->slug ); ?>" data-name="<?php echo esc_attr( $addon->name ); ?>" aria-label="<?php sprintf( esc_attr__( 'Install %s now', 'everest-forms' ), $addon->title ); // phpcs:ignore ordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.WP.I18n.MissingTranslatorsComment ?>"><?php esc_html_e( 'Install Addon', 'everest-forms' ); ?></a>
+												<?php
+												/* translators: %s: Add-on title */
+												$aria_label = sprintf( esc_html__( 'Install %s now', 'everest-forms' ), $addon->title );
+												?>
+												<a href="#" class="button install-now" data-slug="<?php echo esc_attr( $addon->slug ); ?>" data-name="<?php echo esc_attr( $addon->name ); ?>" aria-label="<?php echo esc_attr( $aria_label ); ?>"><?php esc_html_e( 'Install Addon', 'everest-forms' ); ?></a>
 											<?php endif; ?>
 										</div>
 									<?php else : ?>

@@ -8,6 +8,7 @@
     "composer/installers": "1.8.0"
   },
   "require-dev": {
+    "wp-cli/i18n-command": "2.2.2",
     "wpeverest/wpeverest-sniffs": "0.0.4"
   },
   "scripts": {
@@ -19,12 +20,20 @@
     ],
     "phpcbf": [
       "phpcbf -p"
+    ],
+    "makepot-audit": [
+      "wp i18n make-pot . --exclude=\".github,.wordpress-org,bin,node_modules,vendor\" --slug=everest-forms"
+    ],
+    "makepot": [
+      "@makepot-audit --skip-audit"
     ]
   },
   "extra": {
     "scripts-description": {
       "phpcs": "Analyze code against the WordPress coding standard with PHP_CodeSniffer",
-      "phpcbf": "Fix coding standards warnings/errors automattically with PHP Code Beautifier"
+      "phpcbf": "Fix coding standards warnings/errors automatically with PHP Code Beautifier",
+      "makepot-audit": "Generate langauges/everest-forms.pot file and run audit",
+      "makepot": "Generate langauges/everest-forms.pot file"
     }
   }
 }
