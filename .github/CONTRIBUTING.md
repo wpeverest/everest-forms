@@ -44,7 +44,7 @@ Everest Forms has adopted a Code of Conduct that we expect project participants 
 
 The source code found in GitHub doesn't contains any compiled CSS or JS files, requiring a build process.
 
-In a terminal go to your WooCommerce installation, and run:
+In a terminal go to your Everest Forms installation, and run:
 
 ```bash
 npm install
