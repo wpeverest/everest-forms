@@ -42,7 +42,7 @@
     "husky": "4.2.3",
     "lint-staged": "10.0.8",
     "node-sass": "4.13.1",
-    "stylelint": "13.2.0",
+    "stylelint": "13.2.1",
     "stylelint-config-wordpress": "16.0.0",
     "webpack": "4.41.6",
     "webpack-cli": "3.3.11"
