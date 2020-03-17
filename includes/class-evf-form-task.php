@@ -160,6 +160,7 @@ class EVF_Form_Task {
 					update_option( 'evf_validation_error', '' );
 				}
 			}
+
 			// If validation issues occur, send the results accordingly.
 			if ( $ajax_form_submission && count( $this->ajax_err ) ) {
 				$response_data['error']    = $this->ajax_err;
@@ -178,28 +179,34 @@ class EVF_Form_Task {
 			} elseif ( 'v2' === $recaptcha_type && 'yes' === $invisible_recaptcha ) {
 				$site_key   = get_option( 'everest_forms_recaptcha_v2_invisible_site_key' );
 				$secret_key = get_option( 'everest_forms_recaptcha_v2_invisible_secret_key' );
-			} else {
+			} elseif ( 'v3' === $recaptcha_type ) {
 				$site_key   = get_option( 'everest_forms_recaptcha_v3_site_key' );
 				$secret_key = get_option( 'everest_forms_recaptcha_v3_secret_key' );
 			}
 
 			if ( ! empty( $site_key ) && ! empty( $secret_key ) && isset( $this->form_data['settings']['recaptcha_support'] ) && '1' === $this->form_data['settings']['recaptcha_support'] ) {
-				if ( ( 'v2' === $recaptcha_type && ! empty( $_POST['g-recaptcha-response'] ) ) || ( 'v3' === $recaptcha_type && ! empty( $_POST['g-recaptcha-hidden'] ) ) ) {
-					$response = 'v2' === $recaptcha_type ? evf_clean( wp_unslash( $_POST['g-recaptcha-response'] ) ) : evf_clean( wp_unslash( $_POST['g-recaptcha-hidden'] ) ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-					$raw_data = wp_safe_remote_get( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $response );
+				$error = esc_html__( 'Google reCAPTCHA verification failed, please try again later.', 'everest-forms' );
+				$token = ! empty( $_POST['g-recaptcha-response'] ) ? evf_clean( wp_unslash( $_POST['g-recaptcha-response'] ) ) : false;
 
-					if ( ! is_wp_error( $raw_data ) ) {
-						$data = json_decode( wp_remote_retrieve_body( $raw_data ) );
+				if ( 'v3' === $recaptcha_type ) {
+					$token = ! empty( $_POST['everest_forms']['recaptcha'] ) ? evf_clean( wp_unslash( $_POST['everest_forms']['recaptcha'] ) ) : false;
+				}
 
-						// Check reCAPTCHA response.
-						if ( empty( $data->success ) || ( isset( $data->hostname ) && evf_clean( wp_unslash( $_SERVER['SERVER_NAME'] ) ) !== $data->hostname ) || ( isset( $data->action, $data->score ) && ( 'everest_form' !== $data->action && 0.5 > floatval( $data->score ) ) ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-							$this->errors[ $form_id ]['header'] = esc_html__( 'Incorrect reCAPTCHA, please try again.', 'everest-forms' );
-							return $this->errors;
+				$raw_response = wp_safe_remote_get( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $token );
+
+				if ( ! is_wp_error( $raw_response ) ) {
+					$response = json_decode( wp_remote_retrieve_body( $raw_response ) );
+
+					// Check reCAPTCHA response.
+					if ( empty( $response->success ) || ( 'v3' === $recaptcha_type && $response->score <= apply_filters( 'everest_forms_recaptcha_v3_threshold', '0.4' ) ) ) {
+						if ( 'v3' === $recaptcha_type ) {
+							if ( isset( $response->score ) ) {
+								$error .= ' (' . esc_html( $response->score ) . ')';
+							}
 						}
+						$this->errors[ $form_id ]['header'] = $error;
+						return $this->errors;
 					}
-				} else {
-					// @todo This error message is not delivered in frontend. Need to fix :)
-					$this->errors[ $form_id ]['recaptcha'] = esc_html__( 'reCAPTCHA is required.', 'everest-forms' );
 				}
 			}
 
