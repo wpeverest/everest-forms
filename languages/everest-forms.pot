@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Everest Forms plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Everest Forms 1.6.3\n"
+"Project-Id-Version: Everest Forms 1.6.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/everest-forms\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-03-11T10:55:57+00:00\n"
+"POT-Creation-Date: 2020-03-17T11:39:38+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: everest-forms\n"
@@ -199,103 +199,103 @@ msgstr ""
 msgid "Default Value"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:871
+#: includes/abstracts/class-evf-form-fields.php:874
 msgid "Advanced Options"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:883
+#: includes/abstracts/class-evf-form-fields.php:886
 #: includes/evf-core-functions.php:1892
 msgid "Enter text for the form field placeholder."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:889
+#: includes/abstracts/class-evf-form-fields.php:892
 #: includes/evf-core-functions.php:1891
 msgid "Placeholder Text"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:919
+#: includes/abstracts/class-evf-form-fields.php:922
 msgid "Enter CSS class names for this field container. Multiple class names should be separated with spaces."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:928
+#: includes/abstracts/class-evf-form-fields.php:931
 #: includes/evf-core-functions.php:1899
 msgid "CSS Classes"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:959
+#: includes/abstracts/class-evf-form-fields.php:962
 #: includes/evf-core-functions.php:1909
 msgid "Check this option to hide the form field label."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:968
+#: includes/abstracts/class-evf-form-fields.php:971
 #: includes/evf-core-functions.php:1907
 msgid "Hide Label"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:989
+#: includes/abstracts/class-evf-form-fields.php:992
 #: includes/evf-core-functions.php:1917
 msgid "Check this option to hide the form field sub-label."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:998
+#: includes/abstracts/class-evf-form-fields.php:1001
 #: includes/evf-core-functions.php:1915
 msgid "Hide Sub-Labels"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:1019
+#: includes/abstracts/class-evf-form-fields.php:1022
 msgid "Select the column layout for displaying field choices."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:1021
+#: includes/abstracts/class-evf-form-fields.php:1024
 msgid "One Column"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:1022
+#: includes/abstracts/class-evf-form-fields.php:1025
 msgid "Two Columns"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:1023
+#: includes/abstracts/class-evf-form-fields.php:1026
 msgid "Three Columns"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:1024
+#: includes/abstracts/class-evf-form-fields.php:1027
 msgid "Inline"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:1033
+#: includes/abstracts/class-evf-form-fields.php:1036
 msgid "Layout"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:1134
+#: includes/abstracts/class-evf-form-fields.php:1137
 #: includes/class-evf-emails.php:445
 #: includes/class-evf-emails.php:471
 #: includes/class-evf-emails.php:516
 msgid "(empty)"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:1239
+#: includes/abstracts/class-evf-form-fields.php:1242
 msgid "You do no have permission."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:1244
+#: includes/abstracts/class-evf-form-fields.php:1247
 msgid "No form ID found"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:1249
+#: includes/abstracts/class-evf-form-fields.php:1252
 msgid "No field type found"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:1278
+#: includes/abstracts/class-evf-form-fields.php:1281
 #: includes/admin/builder/class-evf-builder-fields.php:317
 msgid "Duplicate Field"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:1279
+#: includes/abstracts/class-evf-form-fields.php:1282
 #: includes/admin/builder/class-evf-builder-fields.php:318
 msgid "Delete Field"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:1280
+#: includes/abstracts/class-evf-form-fields.php:1283
 #: includes/admin/builder/class-evf-builder-fields.php:319
 #: includes/admin/builder/class-evf-builder-settings.php:25
 #: includes/admin/class-evf-admin-menus.php:165
@@ -303,15 +303,15 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:1396
+#: includes/abstracts/class-evf-form-fields.php:1399
 msgid "Please enter a valid url"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:1406
+#: includes/abstracts/class-evf-form-fields.php:1409
 msgid "Please enter a valid email address"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:1411
+#: includes/abstracts/class-evf-form-fields.php:1414
 msgid "Please enter a valid number"
 msgstr ""
 
@@ -374,7 +374,7 @@ msgstr ""
 #: includes/admin/builder/class-evf-builder-settings.php:77
 #: includes/admin/builder/class-evf-builder-settings.php:349
 #: includes/admin/builder/class-evf-builder-settings.php:405
-#: includes/class-evf-form-task.php:551
+#: includes/class-evf-form-task.php:558
 #: includes/evf-update-functions.php:140
 #: includes/templates/contact.php:71
 msgid "Admin Notification"
@@ -410,7 +410,7 @@ msgid "Form disabled message"
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:161
-#: includes/shortcodes/class-evf-shortcode-form.php:713
+#: includes/shortcodes/class-evf-shortcode-form.php:719
 msgid "This form is disabled."
 msgstr ""
 
@@ -2075,39 +2075,35 @@ msgstr ""
 msgid "Invalid form. Please check again."
 msgstr ""
 
-#: includes/class-evf-form-task.php:166
-#: includes/class-evf-form-task.php:211
-#: includes/class-evf-form-task.php:260
+#: includes/class-evf-form-task.php:167
+#: includes/class-evf-form-task.php:218
+#: includes/class-evf-form-task.php:267
 msgid "Form has not been submitted, please see the errors below."
 msgstr ""
 
-#: includes/class-evf-form-task.php:196
-msgid "Incorrect reCAPTCHA, please try again."
+#: includes/class-evf-form-task.php:188
+msgid "Google reCAPTCHA verification failed, please try again later."
 msgstr ""
 
-#: includes/class-evf-form-task.php:202
-msgid "reCAPTCHA is required."
-msgstr ""
-
-#: includes/class-evf-form-task.php:219
+#: includes/class-evf-form-task.php:226
 msgid "Everest Forms honeypot field triggered."
 msgstr ""
 
-#: includes/class-evf-form-task.php:293
+#: includes/class-evf-form-task.php:300
 #: includes/templates/contact.php:61
 msgid "Thanks for contacting us! We will be in touch with you shortly."
 msgstr ""
 
 #. translators: %s - form name.
-#: includes/class-evf-form-task.php:573
+#: includes/class-evf-form-task.php:580
 msgid "New %s Entry"
 msgstr ""
 
-#: includes/class-evf-form-task.php:663
+#: includes/class-evf-form-task.php:670
 msgid "No form ID was found."
 msgstr ""
 
-#: includes/class-evf-form-task.php:670
+#: includes/class-evf-form-task.php:677
 msgid "Could not create an entry"
 msgstr ""
 
