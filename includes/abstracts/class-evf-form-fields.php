@@ -856,7 +856,7 @@ abstract class EVF_Form_Fields {
 					array(
 						'slug'    => 'default_value',
 						'content' => $output,
-						'class'   => in_array( $field['type'], $exclude_fields, true ) ? 'evf_smart_tag' : '',
+						'class'   => in_array( $field['type'], $exclude_fields, true ) ? '' : 'evf_smart_tag',
 					),
 					false
 				);
