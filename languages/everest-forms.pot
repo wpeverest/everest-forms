@@ -1,20 +1,47 @@
 # Copyright (C) 2020 WPEverest
-# This file is distributed under the same license as the Everest Forms package.
+# This file is distributed under the same license as the Everest Forms plugin.
 msgid ""
 msgstr ""
 "Project-Id-Version: Everest Forms 1.6.3\n"
-"Report-Msgid-Bugs-To: https://github.com/wpeverest/everest-forms/issues\n"
-"POT-Creation-Date: 2020-03-02 10:40:36+00:00\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2020-MO-DA HO:MI+ZONE\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/everest-forms\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
-"X-Generator: grunt-wp-i18n 1.0.3\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2020-03-11T10:55:57+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.4.0\n"
+"X-Domain: everest-forms\n"
 
-#: includes/abstracts/class-evf-background-process.php:172
+#. Plugin Name of the plugin
+#: includes/admin/class-evf-admin-menus.php:62
+#: includes/admin/class-evf-admin.php:189
+#: includes/admin/evf-admin-functions.php:17
+#: includes/class-evf-form-block.php:78
+#: includes/class-evf-post-types.php:112
+#: includes/class-evf-privacy.php:31
+msgid "Everest Forms"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://wpeverest.com/wordpress-plugins/everest-forms/"
+msgstr ""
+
+#. Description of the plugin
+msgid "Drag and Drop contact form builder to easily create simple to complex forms for any purpose. Lightweight, Beautiful design, responsive and more."
+msgstr ""
+
+#. Author of the plugin
+msgid "WPEverest"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://wpeverest.com"
+msgstr ""
+
 #. translators: %d: interval
+#: includes/abstracts/class-evf-background-process.php:172
 msgid "Every %d minutes"
 msgstr ""
 
@@ -28,9 +55,7 @@ msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:361
 #: includes/evf-core-functions.php:1848
-msgid ""
-"Enter text for the form field label. This is recommended and can be hidden "
-"in the Advanced Settings."
+msgid "Enter text for the form field label. This is recommended and can be hidden in the Advanced Settings."
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:367
@@ -59,9 +84,7 @@ msgid "Description"
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:471
-msgid ""
-"Check this option to mark the field required. A form will not submit unless "
-"all required fields are provided."
+msgid "Check this option to mark the field required. A form will not submit unless all required fields are provided."
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:478
@@ -157,9 +180,7 @@ msgid "Change image"
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:785
-msgid ""
-"For best results, images should be square and at least 200 × 160 pixels or "
-"smaller."
+msgid "For best results, images should be square and at least 200 × 160 pixels or smaller."
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:794
@@ -193,9 +214,7 @@ msgid "Placeholder Text"
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:919
-msgid ""
-"Enter CSS class names for this field container. Multiple class names should "
-"be separated with spaces."
+msgid "Enter CSS class names for this field container. Multiple class names should be separated with spaces."
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:928
@@ -248,7 +267,8 @@ msgid "Layout"
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:1134
-#: includes/class-evf-emails.php:445 includes/class-evf-emails.php:471
+#: includes/class-evf-emails.php:445
+#: includes/class-evf-emails.php:471
 #: includes/class-evf-emails.php:516
 msgid "(empty)"
 msgstr ""
@@ -354,7 +374,8 @@ msgstr ""
 #: includes/admin/builder/class-evf-builder-settings.php:77
 #: includes/admin/builder/class-evf-builder-settings.php:349
 #: includes/admin/builder/class-evf-builder-settings.php:405
-#: includes/class-evf-form-task.php:551 includes/evf-update-functions.php:140
+#: includes/class-evf-form-task.php:551
+#: includes/evf-update-functions.php:140
 #: includes/templates/contact.php:71
 msgid "Admin Notification"
 msgstr ""
@@ -405,11 +426,9 @@ msgstr ""
 msgid "Thanks for contacting us! We will be in touch with you shortly"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:175
 #. translators: %1$s - general settings docs url
-msgid ""
-"Success message that shows up after submitting form. <a href=\"%1$s\" "
-"target=\"_blank\">Learn More</a>"
+#: includes/admin/builder/class-evf-builder-settings.php:175
+msgid "Success message that shows up after submitting form. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:183
@@ -420,11 +439,9 @@ msgstr ""
 msgid "Redirect To"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:197
 #. translators: %1$s - general settings docs url
-msgid ""
-"Choose where to redirect after form submission. <a href=\"%s\" "
-"target=\"_blank\">Learn More</a>"
+#: includes/admin/builder/class-evf-builder-settings.php:197
+msgid "Choose where to redirect after form submission. <a href=\"%s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:199
@@ -461,11 +478,9 @@ msgstr ""
 msgid "Form Class"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:250
 #. translators: %1$s - general settings docs url
-msgid ""
-"Enter CSS class names for the form wrapper. Multiple class names should be "
-"separated with spaces. <a href=\"%s\" target=\"_blank\">Learn More</a>"
+#: includes/admin/builder/class-evf-builder-settings.php:250
+msgid "Enter CSS class names for the form wrapper. Multiple class names should be separated with spaces. <a href=\"%s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:253
@@ -498,9 +513,7 @@ msgid "Processing&hellip;"
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:273
-msgid ""
-"Enter the submit button text that you would like the button to display "
-"while the form submission is processing."
+msgid "Enter the submit button text that you would like the button to display while the form submission is processing."
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:281
@@ -508,9 +521,7 @@ msgid "Submit button class"
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:284
-msgid ""
-"Enter CSS class names for submit button. Multiple class names should be "
-"separated with spaces."
+msgid "Enter CSS class names for submit button. Multiple class names should be separated with spaces."
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:294
@@ -529,11 +540,9 @@ msgstr ""
 msgid "Enable Google Checkbox reCAPTCHA v2"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:312
 #. translators: %1$s - general settings docs url
-msgid ""
-"Enable Google reCaptcha. Make sure the site key and secret key is set in "
-"settings page. <a href=\"%s\" target=\"_blank\">Learn More</a>"
+#: includes/admin/builder/class-evf-builder-settings.php:312
+msgid "Enable Google reCaptcha. Make sure the site key and secret key is set in settings page. <a href=\"%s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:321
@@ -548,17 +557,15 @@ msgstr ""
 msgid "Disable storing entry information"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:336
 #. translators: %1$s - general settings docs url
-msgid ""
-"Disable storing form entries. <a href=\"%1$s\" target=\"_blank\">Learn "
-"More</a>"
+#: includes/admin/builder/class-evf-builder-settings.php:336
+msgid "Disable storing form entries. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
+#. translators: %s: Form Name
 #: includes/admin/builder/class-evf-builder-settings.php:355
 #: includes/admin/builder/class-evf-builder-settings.php:528
 #: includes/templates/contact.php:77
-#. translators: %s: Form Name
 msgid "New Form Entry %s"
 msgstr ""
 
@@ -576,11 +583,9 @@ msgstr ""
 msgid "To Address"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:421
 #. translators: %1$s - general settings docs url
-msgid ""
-"Enter the recipient's email address (comma separated) to receive form entry "
-"notifications. <a href=\"%s\" target=\"_blank\">Learn More</a>"
+#: includes/admin/builder/class-evf-builder-settings.php:421
+msgid "Enter the recipient's email address (comma separated) to receive form entry notifications. <a href=\"%s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:436
@@ -588,9 +593,7 @@ msgid "Cc Address"
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:439
-msgid ""
-"Enter Cc recipient's email address (comma separated) to receive form entry "
-"notifications."
+msgid "Enter Cc recipient's email address (comma separated) to receive form entry notifications."
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:453
@@ -598,54 +601,43 @@ msgid "Bcc Address"
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:456
-msgid ""
-"Enter Bcc recipient's email address (comma separated) to receive form entry "
-"notifications."
+msgid "Enter Bcc recipient's email address (comma separated) to receive form entry notifications."
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:471
 msgid "From Name"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:475
 #. translators: %1$s - general settings docs url
-msgid ""
-"Enter the From Name to be displayed in Email. <a href=\"%1$s\" "
-"target=\"_blank\">Learn More</a>"
+#: includes/admin/builder/class-evf-builder-settings.php:475
+msgid "Enter the From Name to be displayed in Email. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:489
 msgid "From Address"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:493
 #. translators: %1$s - general settings docs url
-msgid ""
-"Enter the Email address from which you want to send Email. <a href=\"%s\" "
-"target=\"_blank\">Learn More</a>"
+#: includes/admin/builder/class-evf-builder-settings.php:493
+msgid "Enter the Email address from which you want to send Email. <a href=\"%s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:507
 msgid "Reply To"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:511
 #. translators: %1$s - general settings docs url
-msgid ""
-"Enter the reply to email address where you want the email to be received "
-"when this email is replied. <a href=\"%1$s\" target=\"_blank\">Learn "
-"More</a>"
+#: includes/admin/builder/class-evf-builder-settings.php:511
+msgid "Enter the reply to email address where you want the email to be received when this email is replied. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:525
 msgid "Email Subject"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:530
 #. translators: %1$s - General Settings docs url
-msgid ""
-"Enter the subject of the email. <a href=\"%1$s\" target=\"_blank\">Learn "
-"More</a>"
+#: includes/admin/builder/class-evf-builder-settings.php:530
+msgid "Enter the subject of the email. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:544
@@ -656,15 +648,13 @@ msgstr ""
 msgid "{all_fields}"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:548
 #. translators: %1$s - general settings docs url
-msgid ""
-"Enter the message of the email. <a href=\"%1$s\" target=\"_blank\">Learn "
-"More</a>"
+#: includes/admin/builder/class-evf-builder-settings.php:548
+msgid "Enter the message of the email. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:556
 #. translators: %s - all fields smart tag.
+#: includes/admin/builder/class-evf-builder-settings.php:556
 msgid "To display all form fields, use the %s Smart Tag."
 msgstr ""
 
@@ -687,6 +677,56 @@ msgstr ""
 
 #: includes/admin/class-evf-admin-assets.php:94
 msgid "Updating Templates"
+msgstr ""
+
+#: includes/admin/class-evf-admin-assets.php:101
+msgctxt "enhanced select"
+msgid "No matches found"
+msgstr ""
+
+#: includes/admin/class-evf-admin-assets.php:102
+msgctxt "enhanced select"
+msgid "Loading failed"
+msgstr ""
+
+#: includes/admin/class-evf-admin-assets.php:103
+msgctxt "enhanced select"
+msgid "Please enter 1 or more characters"
+msgstr ""
+
+#: includes/admin/class-evf-admin-assets.php:104
+msgctxt "enhanced select"
+msgid "Please enter %qty% or more characters"
+msgstr ""
+
+#: includes/admin/class-evf-admin-assets.php:105
+msgctxt "enhanced select"
+msgid "Please delete 1 character"
+msgstr ""
+
+#: includes/admin/class-evf-admin-assets.php:106
+msgctxt "enhanced select"
+msgid "Please delete %qty% characters"
+msgstr ""
+
+#: includes/admin/class-evf-admin-assets.php:107
+msgctxt "enhanced select"
+msgid "You can only select 1 item"
+msgstr ""
+
+#: includes/admin/class-evf-admin-assets.php:108
+msgctxt "enhanced select"
+msgid "You can only select %qty% items"
+msgstr ""
+
+#: includes/admin/class-evf-admin-assets.php:109
+msgctxt "enhanced select"
+msgid "Loading more results&hellip;"
+msgstr ""
+
+#: includes/admin/class-evf-admin-assets.php:110
+msgctxt "enhanced select"
+msgid "Searching&hellip;"
 msgstr ""
 
 #: includes/admin/class-evf-admin-assets.php:128
@@ -786,9 +826,7 @@ msgid "is a PRO Feature"
 msgstr ""
 
 #: includes/admin/class-evf-admin-assets.php:165
-msgid ""
-"We're sorry, %name% is not available on your plan.<br>Please upgrade to the "
-"PRO plan to unlock all these awesome features."
+msgid "We're sorry, %name% is not available on your plan.<br>Please upgrade to the PRO plan to unlock all these awesome features."
 msgstr ""
 
 #: includes/admin/class-evf-admin-assets.php:166
@@ -820,9 +858,7 @@ msgid "New Form Entry"
 msgstr ""
 
 #: includes/admin/class-evf-admin-assets.php:204
-msgid ""
-"Please enter in meta key with alphanumeric characters, dashes and "
-"underscores."
+msgid "Please enter in meta key with alphanumeric characters, dashes and underscores."
 msgstr ""
 
 #: includes/admin/class-evf-admin-assets.php:205
@@ -846,14 +882,12 @@ msgid "You must provide a Form name"
 msgstr ""
 
 #: includes/admin/class-evf-admin-assets.php:232
-#: includes/admin/views/html-admin-page-addons.php:125
+#: includes/admin/views/html-admin-page-addons.php:133
 msgid "Upgrade Plan"
 msgstr ""
 
 #: includes/admin/class-evf-admin-assets.php:233
-msgid ""
-"This template requires premium addons. Please upgrade to the Premium plan "
-"to unlock all these awesome Templates."
+msgid "This template requires premium addons. Please upgrade to the Premium plan to unlock all these awesome Templates."
 msgstr ""
 
 #: includes/admin/class-evf-admin-assets.php:234
@@ -889,11 +923,9 @@ msgstr ""
 msgid "Select a form below to insert"
 msgstr ""
 
-#: includes/admin/class-evf-admin-editor.php:82
 #. translators: %s - Everest Builder page.
-msgid ""
-"Whoops, you haven't created a form yet. Want to <a href=\"%s\">give it a "
-"go</a>?"
+#: includes/admin/class-evf-admin-editor.php:82
+msgid "Whoops, you haven't created a form yet. Want to <a href=\"%s\">give it a go</a>?"
 msgstr ""
 
 #: includes/admin/class-evf-admin-entries-table-list.php:94
@@ -921,8 +953,8 @@ msgstr ""
 msgid "View"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:299
 #. translators: %s: entry name
+#: includes/admin/class-evf-admin-entries-table-list.php:299
 msgid "Trash form entry"
 msgstr ""
 
@@ -952,41 +984,49 @@ msgstr ""
 msgid "Delete Permanently"
 msgstr ""
 
+#. translators: %s: count
+#: includes/admin/class-evf-admin-entries-table-list.php:384
+msgctxt "entries"
+msgid "All <span class=\"count\">(%s)</span>"
+msgid_plural "All <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
 #: includes/admin/class-evf-admin-entries-table-list.php:418
 msgid "Move to Trash"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:463
 #. translators: %d: number of entries, %s: entries status
+#: includes/admin/class-evf-admin-entries-table-list.php:463
 msgid "%1$d entry successfully %2$s."
 msgid_plural "%1$d entries successfully %2$s."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:479
 #. translators: %d: number of entries, %s: entries status
+#: includes/admin/class-evf-admin-entries-table-list.php:479
 msgid "%1$d entry successfully marked as %2$s."
 msgid_plural "%1$d entries successfully marked as %2$s."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:494
 #. translators: %d: number of entries
+#: includes/admin/class-evf-admin-entries-table-list.php:494
 msgid "%d entry moved to the Trash."
 msgid_plural "%d entries moved to the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:509
 #. translators: %d: number of entries
+#: includes/admin/class-evf-admin-entries-table-list.php:509
 msgid "%d entry restored from the Trash."
 msgid_plural "%d entries restored from the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
+#. translators: %d: number of entries
 #: includes/admin/class-evf-admin-entries-table-list.php:524
 #: includes/admin/class-evf-admin-entries.php:257
-#. translators: %d: number of entries
 msgid "%d entry permanently deleted."
 msgid_plural "%d entries permanently deleted."
 msgstr[0] ""
@@ -1029,8 +1069,8 @@ msgstr ""
 msgid "Create your first form!"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries.php:366
 #. translators: %d - New form entries count.
+#: includes/admin/class-evf-admin-entries.php:366
 msgid "%d new entry since you last checked."
 msgid_plural "%d new entries since you last checked."
 msgstr[0] ""
@@ -1088,8 +1128,8 @@ msgstr ""
 msgid "Y/m/d g:i:s A"
 msgstr ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:228
 #. translators: %s: Time
+#: includes/admin/class-evf-admin-forms-table-list.php:228
 msgid "%s ago"
 msgstr ""
 
@@ -1097,28 +1137,36 @@ msgstr ""
 msgid "Y/m/d"
 msgstr ""
 
+#. translators: %s: count
+#: includes/admin/class-evf-admin-forms-table-list.php:281
+msgctxt "posts"
+msgid "All <span class=\"count\">(%s)</span>"
+msgid_plural "All <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
 #: includes/admin/class-evf-admin-forms-table-list.php:371
 #: includes/admin/views/html-admin-page-entries-view.php:213
 msgid "Move to trash"
 msgstr ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:401
 #. translators: %d: number of forms
+#: includes/admin/class-evf-admin-forms-table-list.php:401
 msgid "%d form moved to the Trash."
 msgid_plural "%d forms moved to the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:416
 #. translators: %d: number of forms
+#: includes/admin/class-evf-admin-forms-table-list.php:416
 msgid "%d form restored from the Trash."
 msgid_plural "%d forms restored from the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
+#. translators: %d: number of forms
 #: includes/admin/class-evf-admin-forms-table-list.php:431
 #: includes/admin/class-evf-admin-forms.php:221
-#. translators: %d: number of forms
 msgid "%d form permanently deleted."
 msgid_plural "%d forms permanently deleted."
 msgstr[0] ""
@@ -1165,10 +1213,6 @@ msgstr ""
 
 #: includes/admin/class-evf-admin-import-export.php:153
 msgid "Please select json file to import form data."
-msgstr ""
-
-#. Plugin Name of the plugin/theme
-msgid "Everest Forms"
 msgstr ""
 
 #: includes/admin/class-evf-admin-menus.php:93
@@ -1251,9 +1295,7 @@ msgid "Getting Started"
 msgstr ""
 
 #: includes/admin/class-evf-admin-welcome.php:81
-msgid ""
-"Thank you for choosing Everest Forms, the most powerful and easy drag & "
-"drop WordPress form builder in the market."
+msgid "Thank you for choosing Everest Forms, the most powerful and easy drag & drop WordPress form builder in the market."
 msgstr ""
 
 #: includes/admin/class-evf-admin-welcome.php:84
@@ -1276,7 +1318,8 @@ msgstr ""
 msgid "Read our step by step guide on how to create your first form."
 msgstr ""
 
-#: includes/admin/class-evf-admin.php:70 includes/admin/class-evf-admin.php:115
+#: includes/admin/class-evf-admin.php:70
+#: includes/admin/class-evf-admin.php:115
 msgid "Could not verify nonce"
 msgstr ""
 
@@ -1288,8 +1331,8 @@ msgstr ""
 msgid "Sorry, you are not allowed to deactivate plugins for this site."
 msgstr ""
 
-#: includes/admin/class-evf-admin.php:188
 #. translators: 1: EverestForms 2:: five stars
+#: includes/admin/class-evf-admin.php:188
 msgid "If you like %1$s please leave us a %2$s rating. A huge thanks in advance!"
 msgstr ""
 
@@ -1342,9 +1385,7 @@ msgid "Enable the use of Cc and Bcc email addresses"
 msgstr ""
 
 #: includes/admin/settings/class-evf-settings-email.php:65
-msgid ""
-"Email addresses for Cc and Bcc can be applied from the form notification "
-"settings."
+msgid "Email addresses for Cc and Bcc can be applied from the form notification settings."
 msgstr ""
 
 #: includes/admin/settings/class-evf-settings-general.php:40
@@ -1375,17 +1416,9 @@ msgstr ""
 msgid "Google reCAPTCHA Integration"
 msgstr ""
 
-#: includes/admin/settings/class-evf-settings-recaptcha.php:45
 #. translators: %1$s - Google reCAPTCHA docs url
-msgid ""
-"<p>Google's reCAPTCHA is a free service that protects your website from "
-"spam and abuse while letting valid users pass through with "
-"ease.</p><p>reCAPTCHA uses an advanced risk analysis engine and adaptive "
-"challenges to keep automated software from engaging in abusive activities "
-"on your site.</p><p>Sites already using v2 reCAPTCHA will need to create "
-"new site keys before switching to the Invisible reCAPTCHA or v3 "
-"reCAPTCHA.</p><p><a href=\"%1$s\" target=\"_blank\">Read our "
-"documentation</a> for step-by-step instructions.</p>"
+#: includes/admin/settings/class-evf-settings-recaptcha.php:45
+msgid "<p>Google's reCAPTCHA is a free service that protects your website from spam and abuse while letting valid users pass through with ease.</p><p>reCAPTCHA uses an advanced risk analysis engine and adaptive challenges to keep automated software from engaging in abusive activities on your site.</p><p>Sites already using v2 reCAPTCHA will need to create new site keys before switching to the Invisible reCAPTCHA or v3 reCAPTCHA.</p><p><a href=\"%1$s\" target=\"_blank\">Read our documentation</a> for step-by-step instructions.</p>"
 msgstr ""
 
 #: includes/admin/settings/class-evf-settings-recaptcha.php:49
@@ -1410,12 +1443,10 @@ msgstr ""
 msgid "Site Key"
 msgstr ""
 
+#. translators: %1$s - Google reCAPTCHA docs url
 #: includes/admin/settings/class-evf-settings-recaptcha.php:65
 #: includes/admin/settings/class-evf-settings-recaptcha.php:85
-#. translators: %1$s - Google reCAPTCHA docs url
-msgid ""
-"Please enter your site key for your reCAPTCHA v2. <a href=\"%1$s\" "
-"target=\"_blank\">Learn More</a>"
+msgid "Please enter your site key for your reCAPTCHA v2. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
 #: includes/admin/settings/class-evf-settings-recaptcha.php:72
@@ -1424,13 +1455,11 @@ msgstr ""
 msgid "Secret Key"
 msgstr ""
 
+#. translators: %1$s - Google reCAPTCHA docs url
 #: includes/admin/settings/class-evf-settings-recaptcha.php:75
 #: includes/admin/settings/class-evf-settings-recaptcha.php:95
 #: includes/admin/settings/class-evf-settings-recaptcha.php:123
-#. translators: %1$s - Google reCAPTCHA docs url
-msgid ""
-"Please enter your secret key for your reCAPTCHA v2. <a href=\"%1$s\" "
-"target=\"_blank\">Learn More</a>"
+msgid "Please enter your secret key for your reCAPTCHA v2. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
 #: includes/admin/settings/class-evf-settings-recaptcha.php:102
@@ -1441,11 +1470,9 @@ msgstr ""
 msgid "Enable Invisible reCAPTCHA."
 msgstr ""
 
-#: includes/admin/settings/class-evf-settings-recaptcha.php:113
 #. translators: %1$s - Google reCAPTCHA docs url
-msgid ""
-"Please enter your site key for your reCAPTCHA v3. <a href=\"%1$s\" "
-"target=\"_blank\">Learn More</a>"
+#: includes/admin/settings/class-evf-settings-recaptcha.php:113
+msgid "Please enter your site key for your reCAPTCHA v3. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
 #: includes/admin/settings/class-evf-settings-validation.php:25
@@ -1558,11 +1585,9 @@ msgstr ""
 msgid "Search Add-ons..."
 msgstr ""
 
-#: includes/admin/views/html-admin-page-addons.php:49
 #. translators: %s: Refresh URI
-msgid ""
-"Make your forms even more robust with our premium addons. Missing any "
-"addons? Click the %1$sRefresh Add-ons%2$s button above."
+#: includes/admin/views/html-admin-page-addons.php:49
+msgid "Make your forms even more robust with our premium addons. Missing any addons? Click the %1$sRefresh Add-ons%2$s button above."
 msgstr ""
 
 #: includes/admin/views/html-admin-page-addons.php:56
@@ -1586,35 +1611,36 @@ msgstr ""
 msgid "Not Installed"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-addons.php:102
+#. translators: %s: Add-on title
+#: includes/admin/views/html-admin-page-addons.php:90
 msgid "Deactivate %s now"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-addons.php:102
+#: includes/admin/views/html-admin-page-addons.php:104
 msgid "Deactivate"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-addons.php:118
+#. translators: %s: Add-on title
+#: includes/admin/views/html-admin-page-addons.php:108
 msgid "Activate %s now"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-addons.php:118
+#: includes/admin/views/html-admin-page-addons.php:122
 msgid "Activate"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-addons.php:120
+#. translators: %s: Add-on title
+#: includes/admin/views/html-admin-page-addons.php:126
 msgid "Install %s now"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-addons.php:120
+#: includes/admin/views/html-admin-page-addons.php:128
 msgid "Install Addon"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-addons.php:139
 #. translators: %s: Add-ons Link
-msgid ""
-"Our catalog of Everest Forms Add-ons/Extensions can be found on "
-"WPEverest.com here: <a href=\"%s\">Everest Forms Extensions Catalog</a>"
+#: includes/admin/views/html-admin-page-addons.php:147
+msgid "Our catalog of Everest Forms Add-ons/Extensions can be found on WPEverest.com here: <a href=\"%s\">Everest Forms Extensions Catalog</a>"
 msgstr ""
 
 #: includes/admin/views/html-admin-page-builder-setup.php:23
@@ -1645,23 +1671,29 @@ msgstr ""
 msgid "Something went wrong. Please refresh your templates."
 msgstr ""
 
-#: includes/admin/views/html-admin-page-builder-setup.php:126
+#. translators: %s: Template title
+#: includes/admin/views/html-admin-page-builder-setup.php:72
+msgctxt "Template name"
+msgid "%s template"
+msgstr ""
+
 #. translators: %s: Number of plugins
+#: includes/admin/views/html-admin-page-builder-setup.php:126
 msgid "%s plugin successfully installed."
 msgstr ""
 
-#: includes/admin/views/html-admin-page-builder-setup.php:133
 #. translators: %s: Number of plugins
+#: includes/admin/views/html-admin-page-builder-setup.php:133
 msgid "%s plugins successfully installed."
 msgstr ""
 
-#: includes/admin/views/html-admin-page-builder-setup.php:143
 #. translators: %s: Number of failed installs
+#: includes/admin/views/html-admin-page-builder-setup.php:143
 msgid "%s install failed."
 msgstr ""
 
-#: includes/admin/views/html-admin-page-builder-setup.php:148
 #. translators: %s: Number of failed installs
+#: includes/admin/views/html-admin-page-builder-setup.php:148
 msgid "%s installs failed."
 msgstr ""
 
@@ -1697,8 +1729,8 @@ msgstr ""
 msgid "Back to All Entries"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:42
 #. translators: %s: Entry ID
+#: includes/admin/views/html-admin-page-entries-view.php:42
 msgid "%1$s: Entry #%2$s"
 msgstr ""
 
@@ -1795,8 +1827,8 @@ msgstr ""
 msgid "No file selected"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-import.php:22
 #. translators: %s: File format
+#: includes/admin/views/html-admin-page-import.php:22
 msgid "Only %s file is allowed."
 msgstr ""
 
@@ -1808,8 +1840,8 @@ msgstr ""
 msgid "Delete log"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-tools-logs.php:28
 #. translators: 1: last access date 2: last access time
+#: includes/admin/views/html-admin-page-tools-logs.php:28
 msgid "%1$s at %2$s"
 msgstr ""
 
@@ -1838,11 +1870,9 @@ msgstr ""
 msgid "Please help us spread the word"
 msgstr ""
 
-#: includes/admin/views/html-notice-review.php:20
 #. translators: %1$s: Plugin Name, %2$s: Rating link
-msgid ""
-"Enjoying the experience with %1$s? Please take a moment to spread your love "
-"by rating us on %2$s"
+#: includes/admin/views/html-notice-review.php:20
+msgid "Enjoying the experience with %1$s? Please take a moment to spread your love by rating us on %2$s"
 msgstr ""
 
 #: includes/admin/views/html-notice-review.php:24
@@ -1862,10 +1892,7 @@ msgid "Everest Forms database update required"
 msgstr ""
 
 #: includes/admin/views/html-notice-update.php:21
-msgid ""
-"Everest Forms has been updated! To keep things running smoothly, we have to "
-"update your database to the newest version. The database update process "
-"runs in the background and may take a little while, so please be patient."
+msgid "Everest Forms has been updated! To keep things running smoothly, we have to update your database to the newest version. The database update process runs in the background and may take a little while, so please be patient."
 msgstr ""
 
 #: includes/admin/views/html-notice-update.php:25
@@ -1873,15 +1900,11 @@ msgid "Update Everest Forms Database"
 msgstr ""
 
 #: includes/admin/views/html-notice-update.php:31
-msgid ""
-"It is strongly recommended that you backup your database before proceeding. "
-"Are you sure you wish to run the updater now?"
+msgid "It is strongly recommended that you backup your database before proceeding. Are you sure you wish to run the updater now?"
 msgstr ""
 
 #: includes/admin/views/html-notice-updated.php:14
-msgid ""
-"Everest Forms data update complete. Thank you for updating to the latest "
-"version!"
+msgid "Everest Forms data update complete. Thank you for updating to the latest version!"
 msgstr ""
 
 #: includes/admin/views/html-notice-updating.php:12
@@ -1896,7 +1919,8 @@ msgstr ""
 msgid "Taking a while? Click here to run it now."
 msgstr ""
 
-#: includes/class-everest-forms.php:101 includes/class-everest-forms.php:110
+#: includes/class-everest-forms.php:101
+#: includes/class-everest-forms.php:110
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
@@ -1924,8 +1948,8 @@ msgstr ""
 msgid "Meta Key missing"
 msgstr ""
 
-#: includes/class-evf-ajax.php:250
 #. translators: %s: empty meta data
+#: includes/class-evf-ajax.php:250
 msgid "Please add Meta key for fields: %s"
 msgstr ""
 
@@ -1965,7 +1989,8 @@ msgstr ""
 msgid "Unable to connect to the filesystem. Please confirm your credentials."
 msgstr ""
 
-#: includes/class-evf-ajax.php:534 includes/class-evf-ajax.php:574
+#: includes/class-evf-ajax.php:534
+#: includes/class-evf-ajax.php:574
 msgid "Missing data"
 msgstr ""
 
@@ -1973,30 +1998,23 @@ msgstr ""
 msgid "Connection missing"
 msgstr ""
 
-#: includes/class-evf-ajax.php:617
 #. translators: %1$s - deactivation reason page; %2$d - deactivation url.
-msgid ""
-"Before we deactivate Everest Forms, would you care to <a href=\"%1$s\" "
-"target=\"_blank\">let us know why</a> so we can improve it for you? <a "
-"href=\"%2$s\">No, deactivate now</a>."
+#: includes/class-evf-ajax.php:617
+msgid "Before we deactivate Everest Forms, would you care to <a href=\"%1$s\" target=\"_blank\">let us know why</a> so we can improve it for you? <a href=\"%2$s\">No, deactivate now</a>."
 msgstr ""
 
-#: includes/class-evf-cache-helper.php:81
 #. translators: 1: key 2: URL
-msgid ""
-"In order for <strong>database caching</strong> to work with Everest Forms "
-"you must add %1$s to the \"Ignored Query Strings\" option in <a "
-"href=\"%2$s\">W3 Total Cache settings</a>."
+#: includes/class-evf-cache-helper.php:81
+msgid "In order for <strong>database caching</strong> to work with Everest Forms you must add %1$s to the \"Ignored Query Strings\" option in <a href=\"%2$s\">W3 Total Cache settings</a>."
 msgstr ""
 
 #: includes/class-evf-emails.php:317
-msgid ""
-"You cannot send emails with EVF_Emails until init/admin_init has been "
-"reached"
+msgid "You cannot send emails with EVF_Emails until init/admin_init has been reached"
 msgstr ""
 
-#: includes/class-evf-emails.php:490 includes/class-evf-emails.php:532
 #. translators: %d - field ID.
+#: includes/class-evf-emails.php:490
+#: includes/class-evf-emails.php:532
 msgid "Field ID #%d"
 msgstr ""
 
@@ -2036,7 +2054,8 @@ msgstr ""
 msgid "Form Settings"
 msgstr ""
 
-#: includes/class-evf-form-block.php:87 includes/class-evf-post-types.php:45
+#: includes/class-evf-form-block.php:87
+#: includes/class-evf-post-types.php:45
 msgid "Form"
 msgstr ""
 
@@ -2056,7 +2075,8 @@ msgstr ""
 msgid "Invalid form. Please check again."
 msgstr ""
 
-#: includes/class-evf-form-task.php:166 includes/class-evf-form-task.php:211
+#: includes/class-evf-form-task.php:166
+#: includes/class-evf-form-task.php:211
 #: includes/class-evf-form-task.php:260
 msgid "Form has not been submitted, please see the errors below."
 msgstr ""
@@ -2073,12 +2093,13 @@ msgstr ""
 msgid "Everest Forms honeypot field triggered."
 msgstr ""
 
-#: includes/class-evf-form-task.php:293 includes/templates/contact.php:61
+#: includes/class-evf-form-task.php:293
+#: includes/templates/contact.php:61
 msgid "Thanks for contacting us! We will be in touch with you shortly."
 msgstr ""
 
-#: includes/class-evf-form-task.php:573
 #. translators: %s - form name.
+#: includes/class-evf-form-task.php:573
 msgid "New %s Entry"
 msgstr ""
 
@@ -2110,7 +2131,8 @@ msgstr ""
 msgid "Monthly"
 msgstr ""
 
-#: includes/class-evf-install.php:575 includes/templates/contact.php:12
+#: includes/class-evf-install.php:575
+#: includes/templates/contact.php:12
 msgid "Contact Form"
 msgstr ""
 
@@ -2134,17 +2156,22 @@ msgstr ""
 msgid "Free support"
 msgstr ""
 
-#: includes/class-evf-logger.php:54
 #. translators: 1: class name 2: EVF_Log_Handler_Interface
+#: includes/class-evf-logger.php:54
 msgid "The provided handler %1$s does not implement %2$s."
 msgstr ""
 
-#: includes/class-evf-logger.php:133
 #. translators: 1: EVF_Logger::log 2: level
+#: includes/class-evf-logger.php:133
 msgid "%1$s was called with an invalid level \"%2$s\"."
 msgstr ""
 
 #: includes/class-evf-post-types.php:44
+msgid "Forms"
+msgstr ""
+
+#: includes/class-evf-post-types.php:47
+msgctxt "Admin menu name"
 msgid "Forms"
 msgstr ""
 
@@ -2221,19 +2248,11 @@ msgid "This is where you can add new forms."
 msgstr ""
 
 #: includes/class-evf-privacy.php:45
-msgid ""
-"This sample policy includes the basics around what personal data you may be "
-"collecting, storing and sharing, as well as who may have access to that "
-"data. Depending on what settings are enabled and which additional plugins "
-"are used, the specific information shared by your form will vary. We "
-"recommend consulting with a lawyer when deciding what information to "
-"disclose on your privacy policy."
+msgid "This sample policy includes the basics around what personal data you may be collecting, storing and sharing, as well as who may have access to that data. Depending on what settings are enabled and which additional plugins are used, the specific information shared by your form will vary. We recommend consulting with a lawyer when deciding what information to disclose on your privacy policy."
 msgstr ""
 
 #: includes/class-evf-privacy.php:47
-msgid ""
-"We collect information about you during the form submission process on our "
-"site."
+msgid "We collect information about you during the form submission process on our site."
 msgstr ""
 
 #: includes/class-evf-privacy.php:48
@@ -2245,44 +2264,27 @@ msgid "While you visit our site, we’ll track:"
 msgstr ""
 
 #: includes/class-evf-privacy.php:51
-msgid ""
-"Form Fields Data: Forms Fields data includes the available field types when "
-"creating a form. We’ll use this to, for example, collect informations like "
-"Name, Email and other available fields."
+msgid "Form Fields Data: Forms Fields data includes the available field types when creating a form. We’ll use this to, for example, collect informations like Name, Email and other available fields."
 msgstr ""
 
 #: includes/class-evf-privacy.php:52
-msgid ""
-"Location, IP address and browser type: we’ll use this for purposes like "
-"geolocating users and reducing fraudulent activities."
+msgid "Location, IP address and browser type: we’ll use this for purposes like geolocating users and reducing fraudulent activities."
 msgstr ""
 
 #: includes/class-evf-privacy.php:53
-msgid ""
-"Transaction Details: we’ll ask you to enter this so we can, for instance, "
-"provide subscription packs, and keep track of your payment details for "
-"subscription packs!"
+msgid "Transaction Details: we’ll ask you to enter this so we can, for instance, provide subscription packs, and keep track of your payment details for subscription packs!"
 msgstr ""
 
 #: includes/class-evf-privacy.php:55
-msgid ""
-"We’ll also use cookies to keep track of form elements while you’re browsing "
-"our site."
+msgid "We’ll also use cookies to keep track of form elements while you’re browsing our site."
 msgstr ""
 
 #: includes/class-evf-privacy.php:56
-msgid ""
-"Note: you may want to further detail your cookie policy, and link to that "
-"section from here."
+msgid "Note: you may want to further detail your cookie policy, and link to that section from here."
 msgstr ""
 
 #: includes/class-evf-privacy.php:57
-msgid ""
-"When you fill up a form, we’ll ask you to provide information including "
-"your name, address, email, phone number, credit card/payment details and "
-"optional account information like username and password and any other form "
-"fields available in the form builder. We’ll use this information for "
-"purposes, such as, to:"
+msgid "When you fill up a form, we’ll ask you to provide information including your name, address, email, phone number, credit card/payment details and optional account information like username and password and any other form fields available in the form builder. We’ll use this information for purposes, such as, to:"
 msgstr ""
 
 #: includes/class-evf-privacy.php:59
@@ -2314,25 +2316,15 @@ msgid "Send you marketing messages, if you choose to receive them"
 msgstr ""
 
 #: includes/class-evf-privacy.php:66
-msgid ""
-"Or any other service the built form was created to comply with and it’s "
-"necessary information"
+msgid "Or any other service the built form was created to comply with and it’s necessary information"
 msgstr ""
 
 #: includes/class-evf-privacy.php:68
-msgid ""
-"If you create an account, we will store your name, address, email and phone "
-"number, which will be used to populate the form fields for future "
-"submissions."
+msgid "If you create an account, we will store your name, address, email and phone number, which will be used to populate the form fields for future submissions."
 msgstr ""
 
 #: includes/class-evf-privacy.php:69
-msgid ""
-"We generally store information about you for as long as we need the "
-"information for the purposes for which we collect and use it, and we are "
-"not legally required to continue to keep it. For example, we will store "
-"form submission information for XXX years for geolocating and marketting "
-"purposes. This includes your name, address, email, phone number."
+msgid "We generally store information about you for as long as we need the information for the purposes for which we collect and use it, and we are not legally required to continue to keep it. For example, we will store form submission information for XXX years for geolocating and marketting purposes. This includes your name, address, email, phone number."
 msgstr ""
 
 #: includes/class-evf-privacy.php:70
@@ -2340,9 +2332,7 @@ msgid "Who on our team has access"
 msgstr ""
 
 #: includes/class-evf-privacy.php:71
-msgid ""
-"Members of our team have access to the information you provide us. For "
-"example, both Administrators and Editors can access:"
+msgid "Members of our team have access to the information you provide us. For example, both Administrators and Editors can access:"
 msgstr ""
 
 #: includes/class-evf-privacy.php:73
@@ -2354,9 +2344,7 @@ msgid "Customer information like your name, email and address information."
 msgstr ""
 
 #: includes/class-evf-privacy.php:76
-msgid ""
-"Our team members have access to this information to help fulfill entries "
-"and support you."
+msgid "Our team members have access to this information to help fulfill entries and support you."
 msgstr ""
 
 #: includes/class-evf-privacy.php:77
@@ -2364,16 +2352,11 @@ msgid "What we share with others"
 msgstr ""
 
 #: includes/class-evf-privacy.php:78
-msgid ""
-"In this section you should list who you’re sharing data with, and for what "
-"purpose. This could include, but may not be limited to, analytics, "
-"marketing, payment gateways, shipping providers, and third party embeds."
+msgid "In this section you should list who you’re sharing data with, and for what purpose. This could include, but may not be limited to, analytics, marketing, payment gateways, shipping providers, and third party embeds."
 msgstr ""
 
 #: includes/class-evf-privacy.php:79
-msgid ""
-"We share information with third parties who help us provide our orders and "
-"store services to you; for example --"
+msgid "We share information with third parties who help us provide our orders and store services to you; for example --"
 msgstr ""
 
 #: includes/class-evf-privacy.php:80
@@ -2381,25 +2364,15 @@ msgid "Payments"
 msgstr ""
 
 #: includes/class-evf-privacy.php:81
-msgid ""
-"In this subsection you should list which third party payment processors "
-"you’re using to take payments on your site since these may handle customer "
-"data. We’ve included PayPal as an example, but you should remove this if "
-"you’re not using PayPal."
+msgid "In this subsection you should list which third party payment processors you’re using to take payments on your site since these may handle customer data. We’ve included PayPal as an example, but you should remove this if you’re not using PayPal."
 msgstr ""
 
 #: includes/class-evf-privacy.php:82
-msgid ""
-"We accept payments through PayPal. When processing payments, some of your "
-"data will be passed to PayPal, including information required to process or "
-"support the payment, such as the purchase total and billing information."
+msgid "We accept payments through PayPal. When processing payments, some of your data will be passed to PayPal, including information required to process or support the payment, such as the purchase total and billing information."
 msgstr ""
 
 #: includes/class-evf-privacy.php:83
-msgid ""
-"Please see the <a "
-"href=\"https://www.paypal.com/us/webapps/mpp/ua/privacy-full\">PayPal "
-"Privacy Policy</a> for more details."
+msgid "Please see the <a href=\"https://www.paypal.com/us/webapps/mpp/ua/privacy-full\">PayPal Privacy Policy</a> for more details."
 msgstr ""
 
 #: includes/class-evf-privacy.php:84
@@ -2407,26 +2380,15 @@ msgid "Available Modules"
 msgstr ""
 
 #: includes/class-evf-privacy.php:85
-msgid ""
-"In this subsection you should list which third party modules you’re using "
-"to increase functionality on your site since these may handle customer "
-"data. We’ve included MailChimp as an example, but you should remove this if "
-"you’re not using MailChimp."
+msgid "In this subsection you should list which third party modules you’re using to increase functionality on your site since these may handle customer data. We’ve included MailChimp as an example, but you should remove this if you’re not using MailChimp."
 msgstr ""
 
 #: includes/class-evf-privacy.php:86
-msgid ""
-"We send beautiful email through MailChimp. When processing emails, some of "
-"your data will be passed to MailChimp, including information required to "
-"process or support the email marketing services, such as the name, email "
-"address and any other information that you intend to pass or collect "
-"including all collected information through subscription."
+msgid "We send beautiful email through MailChimp. When processing emails, some of your data will be passed to MailChimp, including information required to process or support the email marketing services, such as the name, email address and any other information that you intend to pass or collect including all collected information through subscription."
 msgstr ""
 
 #: includes/class-evf-privacy.php:87
-msgid ""
-"Please see the <a href=\"https://mailchimp.com/legal/privacy/\">MailChimp "
-"Privacy Policy</a> for more details."
+msgid "Please see the <a href=\"https://mailchimp.com/legal/privacy/\">MailChimp Privacy Policy</a> for more details."
 msgstr ""
 
 #: includes/class-evf-smart-tags.php:31
@@ -2478,13 +2440,13 @@ msgstr ""
 msgid "Edit Form"
 msgstr ""
 
-#: includes/class-evf-template-loader.php:193
 #. translators: %s - Form name.
+#: includes/class-evf-template-loader.php:193
 msgid "%s &ndash; Preview"
 msgstr ""
 
-#: includes/evf-core-functions.php:103
 #. translators: %s template
+#: includes/evf-core-functions.php:103
 msgid "%s does not exist."
 msgstr ""
 
@@ -2498,9 +2460,8 @@ msgstr ""
 msgid "This method should not be called before plugins_loaded."
 msgstr ""
 
+#. translators: 1: class name 2: everest_forms_logging_class 3: EVF_Logger_Interface
 #: includes/evf-core-functions.php:555
-#. translators: 1: class name 2: everest_forms_logging_class 3:
-#. EVF_Logger_Interface
 msgid "The class %1$s provided by %2$s filter must implement %3$s."
 msgstr ""
 
@@ -2822,6 +2783,11 @@ msgstr ""
 
 #: includes/evf-core-functions.php:1636
 msgid "Gambia"
+msgstr ""
+
+#: includes/evf-core-functions.php:1637
+msgctxt "Country"
+msgid "Georgia"
 msgstr ""
 
 #: includes/evf-core-functions.php:1638
@@ -3531,18 +3497,19 @@ msgid "Third Choice"
 msgstr ""
 
 #: includes/evf-core-functions.php:1900
-msgid ""
-"Enter CSS class for this field container. Class names should be separated "
-"with spaces."
+msgid "Enter CSS class for this field container. Class names should be separated with spaces."
 msgstr ""
 
 #: includes/evf-entry-functions.php:80
 msgid "Published"
 msgstr ""
 
-#: includes/evf-notice-functions.php:23 includes/evf-notice-functions.php:54
-#: includes/evf-notice-functions.php:73 includes/evf-notice-functions.php:97
-#: includes/evf-notice-functions.php:110 includes/evf-notice-functions.php:125
+#: includes/evf-notice-functions.php:23
+#: includes/evf-notice-functions.php:54
+#: includes/evf-notice-functions.php:73
+#: includes/evf-notice-functions.php:97
+#: includes/evf-notice-functions.php:110
+#: includes/evf-notice-functions.php:125
 #: includes/evf-notice-functions.php:185
 msgid "This function should not be called before everest_forms_init."
 msgstr ""
@@ -3563,9 +3530,9 @@ msgstr ""
 msgid "User Device"
 msgstr ""
 
+#. translators: 1: entry date 2: entry time
 #: includes/export/class-evf-entry-csv-exporter.php:197
 #: includes/export/class-evf-entry-csv-exporter.php:214
-#. translators: 1: entry date 2: entry time
 msgid "%1$s %2$s"
 msgstr ""
 
@@ -3582,8 +3549,8 @@ msgstr ""
 msgid "Checked"
 msgstr ""
 
-#: includes/fields/class-evf-field-checkbox.php:171
 #. translators: %s - Choice Number.
+#: includes/fields/class-evf-field-checkbox.php:171
 msgid "Choice %s"
 msgstr ""
 
@@ -3805,13 +3772,13 @@ msgstr ""
 msgid "Maximum value user is allowed to enter."
 msgstr ""
 
-#: includes/fields/class-evf-field-number.php:291
 #. translators: %s - minimum value.
+#: includes/fields/class-evf-field-number.php:291
 msgid "Please enter a value greater than or equal to %s"
 msgstr ""
 
-#: includes/fields/class-evf-field-number.php:295
 #. translators: %s - maximum value.
+#: includes/fields/class-evf-field-number.php:295
 msgid "Please enter a value less than or equal to %s"
 msgstr ""
 
@@ -3913,111 +3880,7 @@ msgstr ""
 msgid "Website / URL"
 msgstr ""
 
-#: includes/libraries/wp-background-process.php:423
-msgid "Every %d Minutes"
-msgstr ""
-
-#: templates/emails/footer-default.php:45
 #. translators: %s - link to a site.
+#: templates/emails/footer-default.php:45
 msgid "Sent from %s"
-msgstr ""
-
-#. Plugin URI of the plugin/theme
-msgid "https://wpeverest.com/wordpress-plugins/everest-forms/"
-msgstr ""
-
-#. Description of the plugin/theme
-msgid ""
-"Drag and Drop contact form builder to easily create simple to complex forms "
-"for any purpose. Lightweight, Beautiful design, responsive and more."
-msgstr ""
-
-#. Author of the plugin/theme
-msgid "WPEverest"
-msgstr ""
-
-#. Author URI of the plugin/theme
-msgid "https://wpeverest.com"
-msgstr ""
-
-#: includes/admin/class-evf-admin-assets.php:101
-msgctxt "enhanced select"
-msgid "No matches found"
-msgstr ""
-
-#: includes/admin/class-evf-admin-assets.php:102
-msgctxt "enhanced select"
-msgid "Loading failed"
-msgstr ""
-
-#: includes/admin/class-evf-admin-assets.php:103
-msgctxt "enhanced select"
-msgid "Please enter 1 or more characters"
-msgstr ""
-
-#: includes/admin/class-evf-admin-assets.php:104
-msgctxt "enhanced select"
-msgid "Please enter %qty% or more characters"
-msgstr ""
-
-#: includes/admin/class-evf-admin-assets.php:105
-msgctxt "enhanced select"
-msgid "Please delete 1 character"
-msgstr ""
-
-#: includes/admin/class-evf-admin-assets.php:106
-msgctxt "enhanced select"
-msgid "Please delete %qty% characters"
-msgstr ""
-
-#: includes/admin/class-evf-admin-assets.php:107
-msgctxt "enhanced select"
-msgid "You can only select 1 item"
-msgstr ""
-
-#: includes/admin/class-evf-admin-assets.php:108
-msgctxt "enhanced select"
-msgid "You can only select %qty% items"
-msgstr ""
-
-#: includes/admin/class-evf-admin-assets.php:109
-msgctxt "enhanced select"
-msgid "Loading more results&hellip;"
-msgstr ""
-
-#: includes/admin/class-evf-admin-assets.php:110
-msgctxt "enhanced select"
-msgid "Searching&hellip;"
-msgstr ""
-
-#: includes/admin/class-evf-admin-entries-table-list.php:384
-#. translators: %s: count
-msgctxt "entries"
-msgid "All <span class=\"count\">(%s)</span>"
-msgid_plural "All <span class=\"count\">(%s)</span>"
-msgstr[0] ""
-msgstr[1] ""
-
-#: includes/admin/class-evf-admin-forms-table-list.php:281
-#. translators: %s: count
-msgctxt "posts"
-msgid "All <span class=\"count\">(%s)</span>"
-msgid_plural "All <span class=\"count\">(%s)</span>"
-msgstr[0] ""
-msgstr[1] ""
-
-#: includes/admin/views/html-admin-page-builder-setup.php:72
-#. translators: %s: Template title
-msgctxt "Template name"
-msgid "%s template"
-msgstr ""
-
-#: includes/class-evf-post-types.php:47
-msgctxt "Admin menu name"
-msgid "Forms"
-msgstr ""
-
-#: includes/evf-core-functions.php:1637
-msgctxt "Country"
-msgid "Georgia"
 msgstr ""
