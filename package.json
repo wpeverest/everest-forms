@@ -1,7 +1,7 @@
 {
   "name": "everest-forms",
   "title": "Everest Forms",
-  "version": "1.6.3",
+  "version": "1.6.4",
   "homepage": "https://github.com/wpeverest/everest-forms/",
   "repository": {
     "type": "git",
@@ -10,9 +10,10 @@
   "license": "GPL-3.0+",
   "main": "Gruntfile.js",
   "scripts": {
-    "build": "grunt && cross-env BABEL_ENV=default NODE_ENV=production webpack",
+    "build": "grunt && npm run makepot && cross-env BABEL_ENV=default NODE_ENV=production webpack",
     "watch": "cross-env BABEL_ENV=default webpack --watch",
     "lint:js": "eslint assets/js --ext=js",
+    "makepot": "composer run-script makepot",
     "git:update-hooks": "rm -r .git/hooks && node ./node_modules/husky/husky.js install"
   },
   "devDependencies": {
@@ -26,7 +27,6 @@
     "cross-env": "7.0.2",
     "eslint": "6.8.0",
     "grunt": "1.0.4",
-    "grunt-checktextdomain": "1.0.1",
     "grunt-contrib-compress": "1.6.0",
     "grunt-contrib-concat": "1.0.1",
     "grunt-contrib-cssmin": "3.0.0",
@@ -38,7 +38,6 @@
     "grunt-rtlcss": "2.0.2",
     "grunt-sass": "3.1.0",
     "grunt-stylelint": "0.14.0",
-    "grunt-wp-i18n": "1.0.3",
     "husky": "4.2.3",
     "lint-staged": "10.0.8",
     "node-sass": "4.13.1",

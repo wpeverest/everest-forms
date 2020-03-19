@@ -842,7 +842,9 @@ abstract class EVF_Form_Fields {
 				);
 
 				// Smart tag for default value.
-				if ( 'rating' !== $field['type'] ) {
+				$exclude_fields = array( 'rating', 'number', 'range-slider' );
+
+				if ( ! in_array( $field['type'], $exclude_fields, true ) ) {
 					$output .= '<a href="#" class="evf-toggle-smart-tag-display" data-type="other"><span class="dashicons dashicons-editor-code"></span></a>';
 					$output .= '<div class="evf-smart-tag-lists" style="display: none">';
 					$output .= '<div class="smart-tag-title other-tag-title">Others</div><ul class="evf-others"></ul></div>';
@@ -854,6 +856,7 @@ abstract class EVF_Form_Fields {
 					array(
 						'slug'    => 'default_value',
 						'content' => $output,
+						'class'   => in_array( $field['type'], $exclude_fields, true ) ? '' : 'evf_smart_tag',
 					),
 					false
 				);
