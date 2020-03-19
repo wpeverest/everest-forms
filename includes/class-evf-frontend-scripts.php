@@ -60,6 +60,13 @@ class EVF_Frontend_Scripts {
 					'media'   => 'all',
 					'has_rtl' => true,
 				),
+				'ion-range-slider'      => array(
+					'src'     => self::get_asset_url( 'assets/css/ion-range-slider/ion.rangeSlider.css' ),
+					'deps'    => '',
+					'version' => EVF_VERSION,
+					'media'   => 'all',
+					'has_rtl' => true,
+				),
 			)
 		);
 	}
@@ -173,7 +180,7 @@ class EVF_Frontend_Scripts {
 			),
 			'everest-forms'                 => array(
 				'src'     => self::get_asset_url( 'assets/js/frontend/everest-forms' . $suffix . '.js' ),
-				'deps'    => array( 'jquery', 'inputmask', 'jquery-validate' ),
+				'deps'    => array( 'jquery', 'inputmask', 'jquery-validate', 'ion-range-slider' ),
 				'version' => EVF_VERSION,
 			),
 			'everest-forms-text-limit'      => array(
@@ -186,6 +193,11 @@ class EVF_Frontend_Scripts {
 				'deps'    => array( 'jquery', 'inputmask', 'jquery-validate' ),
 				'version' => EVF_VERSION,
 			),
+			'ion-range-slider'              => array(
+				'src'     => self::get_asset_url( 'assets/js/ion-range-slider/ion.rangeSlider' . $suffix . '.js' ),
+				'deps'    => array( 'jquery' ),
+				'version' => '2.3.1',
+			),
 		);
 		foreach ( $register_scripts as $name => $props ) {
 			self::register_script( $name, $props['src'], $props['deps'], $props['version'] );
@@ -197,14 +209,20 @@ class EVF_Frontend_Scripts {
 	 */
 	private static function register_styles() {
 		$register_styles = array(
-			'select2'   => array(
+			'select2'          => array(
 				'src'     => self::get_asset_url( 'assets/css/select2.css' ),
 				'deps'    => array(),
 				'version' => EVF_VERSION,
 				'has_rtl' => false,
 			),
-			'flatpickr' => array(
+			'flatpickr'        => array(
 				'src'     => self::get_asset_url( 'assets/css/flatpickr.css' ),
+				'deps'    => array(),
+				'version' => EVF_VERSION,
+				'has_rtl' => false,
+			),
+			'ion-range-slider' => array(
+				'src'     => self::get_asset_url( 'assets/css/ion-range-slider/ion.rangeSlider.min.css' ),
 				'deps'    => array(),
 				'version' => EVF_VERSION,
 				'has_rtl' => false,

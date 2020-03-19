@@ -1,6 +1,9 @@
 /* global everest_forms_admin, PerfectScrollbar */
 ( function( $, params ) {
 
+	// Initialize range slider field for preview in form builder.
+	$( '.evf-range-slider-preview' ).ionRangeSlider();
+
 	// Colorpicker.
 	$( '.colorpicker' ).wpColorPicker();
 

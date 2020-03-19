@@ -189,6 +189,15 @@
 		},
 
 		/**
+		 * Update text fields limit controls.
+		 *
+		 * @since 1.7.0
+		 */
+		initializeRangeSliderFieldsPreview: function() {
+			$( '.evf-range-slider-preview' ).ionRangeSlider();
+		},
+
+		/**
 		 * Element bindings.
 		 *
 		 * @since 1.0.0
@@ -1589,6 +1598,7 @@
 					EVFPanelBuilder.conditionalLogicAppendFieldIntegration( dragged_el_id );
 					EVFPanelBuilder.paymentFieldAppendToQuantity( dragged_el_id );
 					EVFPanelBuilder.paymentFieldAppendToDropdown( dragged_field_id, field_type );
+					EVFPanelBuilder.initializeRangeSliderFieldsPreview();
 		 		}
 		 	});
 		},

@@ -11,6 +11,7 @@ jQuery( function ( $ ) {
 	var everest_forms = {
 		$everest_form: $( 'form.everest-form' ),
 		init: function() {
+			this.init_range_slider();
 			this.init_inputMask();
 			this.init_mailcheck();
 			this.init_datepicker();
@@ -20,6 +21,15 @@ jQuery( function ( $ ) {
 
 			// Inline validation.
 			this.$everest_form.on( 'input validate change', '.input-text, select, input:checkbox, input:radio', this.validate_field );
+		},
+		init_range_slider: function() {
+			$( '.evf-field-range-slider .evf-field-primary-input' ).ionRangeSlider();
+			$( '.evf-field-range-slider .evf-range-slider-reset-icon' ).on( 'click', function( e ) {
+				var $field = $( this ).parent( '.evf-field' );
+				var default_value = $field.find( '.evf-field-primary-input' ).data( 'default' );
+
+				$field.find( '.evf-field-primary-input' ).data( 'ionRangeSlider' ).update({ from: default_value });
+			});
 		},
 		init_inputMask: function() {
 			// Only load if jQuery inputMask library exists.
