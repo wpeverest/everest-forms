@@ -30,11 +30,25 @@ jQuery( function ( $ ) {
 
 				$field.find( '.evf-field-primary-input' ).data( 'ionRangeSlider' ).update({ from: default_value });
 			});
-			var new_color = 'black';
-			$field = $('.evf-field');
-			$field.find( '.irs-handle' ).css( 'background-color', new_color );
-			$field.find( '.irs-handle i' ).first().css( 'border-top-color', new_color );
-			$field.find( '.irs-single' ).css( 'background-color', new_color );
+			// var new_color = 'black';
+			// $field = $('.evf-field');
+			// $field.find( '.irs-handle' ).css( 'background-color', new_color );
+			// $field.find( '.irs-handle i' ).first().css( 'border-top-color', new_color );
+			// $field.find( '.irs-single' ).css( 'background-color', new_color );
+
+			// Setup sliders according to the options.
+			$( '.evf-field.evf-field-range-slider' ).each( function() {
+				var $primary_input = $( this ).find( '.evf-field-primary-input' );
+
+				var handle_color = $primary_input.data( 'handle_color' );
+				var highlight_color = $primary_input.data( 'highlight_color' );
+				var track_color = $primary_input.data( 'track_color' );
+				var show_slider_input = $primary_input.data( 'show_slider_input' );
+
+				if ( '1' !== show_slider_input ) {
+					$( this ).find( '.evf-slider-input' ).hide();
+				}
+			});
 		},
 		init_inputMask: function() {
 			// Only load if jQuery inputMask library exists.

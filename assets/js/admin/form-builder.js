@@ -276,6 +276,7 @@
 			var new_skin = $( '.everest-forms-field-option:visible .evf-range-slider-skin' ).val();
 			var default_value = $( '.everest-forms-field-option:visible .everest-forms-field-option-row-default_value input' ).val();
 			var $show_grid_option = $( '.everest-forms-field-option:visible .evf-range-slider-show-grid' );
+			var $show_prefix_postfix_option = $( '.everest-forms-field-option:visible .evf-show-slider-prefix-postfix' );
 			var slider_options = {};
 
 			if ( '' !== min_value ) {
@@ -297,6 +298,11 @@
 			} else {
 				slider_options.grid = false;
 			}
+			if ( $show_prefix_postfix_option.is( ':checked' ) ) {
+				slider_options.hide_min_max = false;
+			} else {
+				slider_options.hide_min_max = true;
+			}
 			if ( '' !== default_value ) {
 				slider_options.from = default_value;
 			}
@@ -317,6 +323,9 @@
 			// Show Grid option change handler.
 			$( '.everest-forms-field-option .evf-range-slider-show-grid' ).on( 'change', EVFPanelBuilder.updateRangeSliderFieldOptions );
 
+			// Show slider prefix/postfix option change handler.
+			$( '.everest-forms-field-option .evf-show-slider-prefix-postfix' ).on( 'change', EVFPanelBuilder.updateRangeSliderFieldOptions );
+
 			// Default value option change handler.
 			$( '.everest-forms-field-option .everest-forms-field-option-row-default_value input' ).on( 'input', EVFPanelBuilder.updateRangeSliderFieldOptions );
 
@@ -331,6 +340,26 @@
 
 			// Slider handle color change handler.
 			$( '.everest-forms-field-option .evf-range-slider-handle-color' )
+			.wpColorPicker({
+				change: function( event, ui ) {
+					var new_color = $( event.target ).val();
+
+					EVFPanelBuilder.updateRangeSliderHandleColor( new_color );
+				}
+			});
+
+			// Slider highlight color change handler.
+			$( '.everest-forms-field-option .evf-range-slider-highlight-color' )
+			.wpColorPicker({
+				change: function( event, ui ) {
+					var new_color = $( event.target ).val();
+
+					EVFPanelBuilder.updateRangeSliderHandleColor( new_color );
+				}
+			});
+
+			// Slider track color change handler.
+			$( '.everest-forms-field-option .evf-range-slider-track-color' )
 			.wpColorPicker({
 				change: function( event, ui ) {
 					var new_color = $( event.target ).val();
