@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 1.6.4 - 17-03-2020 =
+* Fix - Google reCAPTCHA issue with the version changes.
+* Tweak - Remove smart tags icon from default value option for Number and Rating fields.
+* Dev - Use WP-CLI to generate .pot file.
+
 = 1.6.3 - 02-03-2020 =
 * Fix - Form not saved while using smart tag.
 * Fix - Deactivation notice.
