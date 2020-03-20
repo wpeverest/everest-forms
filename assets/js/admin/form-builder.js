@@ -170,18 +170,6 @@
 
 			// Action available for each binding.
 			$( document ).trigger( 'everest_forms_ready' );
-
-			// Show/Hide slider input.
-			$( '.everest-forms-field-option .evf-show-slider-input' ).each( function() {
-				var field_id = $( this ).parent( '.everest-forms-field-option-row' ).data( 'field-id' );
-				$field = $( '#everest-forms-field-' + field_id );
-
-				if ( $field.is( ':checked' ) ) {
-					$field.find( '.evf-slider-input-wrapper' ).show();
-				} else {
-					$field.find( '.evf-slider-input-wrapper' ).hide();
-				}
-			});
 		},
 
 		/**
@@ -211,10 +199,9 @@
 			// Show/Hide slider input.
 			$( '.everest-forms-field-option .evf-show-slider-input' ).each( function() {
 				var field_id = $( this ).parent( '.everest-forms-field-option-row' ).data( 'field-id' );
-				alert( field_id );
-				$field = $( 'everest-forms-field-' + field_id );
+				$field = $( '#everest-forms-field-' + field_id );
 
-				if ( $field.is( ':checked' ) ) {
+				if ( $( this ).is( ':checked' ) ) {
 					$field.find( '.evf-slider-input-wrapper' ).show();
 				} else {
 					$field.find( '.evf-slider-input-wrapper' ).hide();
@@ -367,6 +354,8 @@
 					EVFPanelBuilder.updateRangeSliderHandleColor( new_color );
 				}
 			});
+
+			EVFPanelBuilder.initializeRangeSliderFieldsPreview();
 		},
 
 		/**

@@ -45,8 +45,8 @@ jQuery( function ( $ ) {
 				var track_color = $primary_input.data( 'track_color' );
 				var show_slider_input = $primary_input.data( 'show_slider_input' );
 
-				if ( '1' !== show_slider_input ) {
-					$( this ).find( '.evf-slider-input' ).hide();
+				if ( '1' !== show_slider_input.toString() ) {
+					$( this ).find( '.evf-slider-input-wrapper' ).hide();
 				}
 			});
 		},
