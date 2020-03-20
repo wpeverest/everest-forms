@@ -222,6 +222,7 @@
 			EVFPanelBuilder.bindToggleHandleActions();
 			EVFPanelBuilder.bindLabelEditInputActions();
 			EVFPanelBuilder.bindSyncedInputActions();
+			EVFPanelBuilder.bindRangeSliderUIActions();
 
 			// Fields Panel.
 			EVFPanelBuilder.bindUIActionsFields();
@@ -229,6 +230,80 @@
 			if ( evf_data.tab === 'field-options' ) {
 				$( '.evf-panel-field-options-button' ).trigger( 'click' );
 			}
+		},
+
+		updateRangeSliderHandleColor: function( new_color ) {
+			if ( new_color ) {
+				$field = $( '.everest-forms-field.active' );
+				$field.find( '.irs-handle' ).css( 'background-color', new_color );
+				$field.find( '.irs-handle i' ).first().css( 'border-top-color', new_color );
+				$field.find( '.irs-single' ).css( 'background-color', new_color );
+
+				var field_id = $field.attr( 'id' );
+				$( 'body' ).find( '.evf-temp-style-tag' ).remove();
+				$( 'body' ).append( '<style class="evf-temp-style-tag">#' + field_id +' .irs-single:before { border-top-color: ' + new_color + '!important; } </style>' );
+			}
+		},
+
+		updateRangeSliderFieldOptions: function( e ) {
+			var min_value = $( '.everest-forms-field-option .everest-forms-field-option-row-min_value .evf-input-number' ).val();
+			var max_value = $( '.everest-forms-field-option .everest-forms-field-option-row-max_value .evf-input-number' ).val();
+			var new_skin = $( '.everest-forms-field-option .evf-range-slider-skin' ).val();
+			var default_value = $( '.everest-forms-field-option .everest-forms-field-option-row-default_value input' ).val();
+			var $show_grid_option = $( '.everest-forms-field-option .evf-range-slider-show-grid' );
+			var slider_options = {};
+
+			if ( '' !== min_value ) {
+				slider_options.min = min_value;
+			}
+			if ( '' !== max_value ) {
+				slider_options.max = max_value;
+			}
+			if ( '' !== new_skin ) {
+				slider_options.skin = new_skin;
+			} else {
+				slider_options.skin = 'round';
+			}
+			if ( '' !== new_skin ) {
+				slider_options.skin = new_skin;
+			}
+			if ( $show_grid_option.is( ':checked' ) ) {
+				slider_options.grid = true;
+			} else {
+				slider_options.grid = false;
+			}
+			if ( '' !== default_value ) {
+				slider_options.from = default_value;
+			}
+
+			$( '.everest-forms-field.active' ).find( 'input.evf-range-slider-preview' ).data( 'ionRangeSlider' ).update( slider_options );
+		},
+
+		bindRangeSliderUIActions: function() {
+			// Min value change handler.
+			$( '.everest-forms-field-option .evf-range-slider-skin' ).on( 'change', EVFPanelBuilder.updateRangeSliderFieldOptions );
+
+			// Min value change handler.
+			$( '.everest-forms-field-option .everest-forms-field-option-row-min_value .evf-input-number' ).on( 'input', EVFPanelBuilder.updateRangeSliderFieldOptions );
+
+			// Max value change handler.
+			$( '.everest-forms-field-option .everest-forms-field-option-row-max_value .evf-input-number' ).on( 'input', EVFPanelBuilder.updateRangeSliderFieldOptions );
+
+			// Show Grid option change handler.
+			$( '.everest-forms-field-option .evf-range-slider-show-grid' ).on( 'change', EVFPanelBuilder.updateRangeSliderFieldOptions );
+
+			// Default value option change handler.
+			$( '.everest-forms-field-option .everest-forms-field-option-row-default_value input' ).on( 'input', EVFPanelBuilder.updateRangeSliderFieldOptions );
+
+			// Slider handle color change handler.
+			$( '.everest-forms-field-option .evf-range-slider-handle-color' )
+			.wpColorPicker({
+				change: function( event, ui ) {
+					var new_color = $( event.target ).val();
+
+					EVFPanelBuilder.updateRangeSliderHandleColor( new_color );
+				}
+			});
 		},
 
 		/**

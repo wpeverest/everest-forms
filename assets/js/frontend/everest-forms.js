@@ -30,6 +30,11 @@ jQuery( function ( $ ) {
 
 				$field.find( '.evf-field-primary-input' ).data( 'ionRangeSlider' ).update({ from: default_value });
 			});
+			var new_color = 'black';
+			$field = $('.evf-field');
+			$field.find( '.irs-handle' ).css( 'background-color', new_color );
+			$field.find( '.irs-handle i' ).first().css( 'border-top-color', new_color );
+			$field.find( '.irs-single' ).css( 'background-color', new_color );
 		},
 		init_inputMask: function() {
 			// Only load if jQuery inputMask library exists.
