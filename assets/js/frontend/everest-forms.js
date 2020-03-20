@@ -23,7 +23,22 @@ jQuery( function ( $ ) {
 			this.$everest_form.on( 'input validate change', '.input-text, select, input:checkbox, input:radio', this.validate_field );
 		},
 		init_range_slider: function() {
-			$( '.evf-field-range-slider .evf-field-primary-input' ).ionRangeSlider();
+			// Slider value change handler.
+			$( '.evf-field-range-slider .evf-field-primary-input' ).ionRangeSlider()
+			.on( 'change', function( e ) {
+				var new_value = $( this ).val();
+
+				$( this ).closest( '.evf-field-range-slider' ).find( '.evf-slider-input' ).val( new_value );
+			});
+
+			// Slider input value change handler.
+			$( '.evf-field-range-slider .evf-slider-input' )
+			.on( 'change', function( e ) {
+				var new_value = $( this ).val();
+
+				$( this ).closest( '.evf-field-range-slider' ).find( '.evf-field-primary-input' ).data( 'ionRangeSlider' ).update({ from: new_value });
+			});
+
 			$( '.evf-field-range-slider .evf-range-slider-reset-icon' ).on( 'click', function( e ) {
 				var $field = $( this ).parent( '.evf-field' );
 				var default_value = $field.find( '.evf-field-primary-input' ).data( 'default' );
