@@ -246,11 +246,11 @@
 		},
 
 		updateRangeSliderFieldOptions: function( e ) {
-			var min_value = $( '.everest-forms-field-option .everest-forms-field-option-row-min_value .evf-input-number' ).val();
-			var max_value = $( '.everest-forms-field-option .everest-forms-field-option-row-max_value .evf-input-number' ).val();
-			var new_skin = $( '.everest-forms-field-option .evf-range-slider-skin' ).val();
-			var default_value = $( '.everest-forms-field-option .everest-forms-field-option-row-default_value input' ).val();
-			var $show_grid_option = $( '.everest-forms-field-option .evf-range-slider-show-grid' );
+			var min_value = $( '.everest-forms-field-option:visible .everest-forms-field-option-row-min_value .evf-input-number' ).val();
+			var max_value = $( '.everest-forms-field-option:visible .everest-forms-field-option-row-max_value .evf-input-number' ).val();
+			var new_skin = $( '.everest-forms-field-option:visible .evf-range-slider-skin' ).val();
+			var default_value = $( '.everest-forms-field-option:visible .everest-forms-field-option-row-default_value input' ).val();
+			var $show_grid_option = $( '.everest-forms-field-option:visible .evf-range-slider-show-grid' );
 			var slider_options = {};
 
 			if ( '' !== min_value ) {
