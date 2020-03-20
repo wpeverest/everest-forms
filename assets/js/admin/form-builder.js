@@ -170,6 +170,18 @@
 
 			// Action available for each binding.
 			$( document ).trigger( 'everest_forms_ready' );
+
+			// Show/Hide slider input.
+			$( '.everest-forms-field-option .evf-show-slider-input' ).each( function() {
+				var field_id = $( this ).parent( '.everest-forms-field-option-row' ).data( 'field-id' );
+				$field = $( '#everest-forms-field-' + field_id );
+
+				if ( $field.is( ':checked' ) ) {
+					$field.find( '.evf-slider-input-wrapper' ).show();
+				} else {
+					$field.find( '.evf-slider-input-wrapper' ).hide();
+				}
+			});
 		},
 
 		/**
@@ -195,6 +207,19 @@
 		 */
 		initializeRangeSliderFieldsPreview: function() {
 			$( '.evf-range-slider-preview' ).ionRangeSlider();
+
+			// Show/Hide slider input.
+			$( '.everest-forms-field-option .evf-show-slider-input' ).each( function() {
+				var field_id = $( this ).parent( '.everest-forms-field-option-row' ).data( 'field-id' );
+				alert( field_id );
+				$field = $( 'everest-forms-field-' + field_id );
+
+				if ( $field.is( ':checked' ) ) {
+					$field.find( '.evf-slider-input-wrapper' ).show();
+				} else {
+					$field.find( '.evf-slider-input-wrapper' ).hide();
+				}
+			});
 		},
 
 		/**
@@ -294,6 +319,15 @@
 
 			// Default value option change handler.
 			$( '.everest-forms-field-option .everest-forms-field-option-row-default_value input' ).on( 'input', EVFPanelBuilder.updateRangeSliderFieldOptions );
+
+			// Slider input visibility option change handler.
+			$( '.everest-forms-field-option .evf-show-slider-input' ).on( 'change', function( e ) {
+				if ( $( this ).is( ':checked' ) ) {
+					$( '.everest-forms-field.active .evf-slider-input-wrapper' ).show();
+				} else {
+					$( '.everest-forms-field.active .evf-slider-input-wrapper' ).hide();
+				}
+			});
 
 			// Slider handle color change handler.
 			$( '.everest-forms-field-option .evf-range-slider-handle-color' )
@@ -1673,6 +1707,7 @@
 					EVFPanelBuilder.conditionalLogicAppendFieldIntegration( dragged_el_id );
 					EVFPanelBuilder.paymentFieldAppendToQuantity( dragged_el_id );
 					EVFPanelBuilder.paymentFieldAppendToDropdown( dragged_field_id, field_type );
+
 					EVFPanelBuilder.initializeRangeSliderFieldsPreview();
 		 		}
 		 	});
