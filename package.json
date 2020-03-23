@@ -17,11 +17,11 @@
     "git:update-hooks": "rm -r .git/hooks && node ./node_modules/husky/husky.js install"
   },
   "devDependencies": {
-    "@babel/core": "7.8.7",
+    "@babel/core": "7.9.0",
     "@wordpress/babel-preset-default": "4.10.0",
     "@wordpress/browserslist-config": "2.6.0",
     "autoprefixer": "9.7.4",
-    "babel-loader": "8.0.6",
+    "babel-loader": "8.1.0",
     "babel-plugin-transform-react-jsx": "6.24.1",
     "babel-preset-env": "1.7.0",
     "cross-env": "7.0.2",
