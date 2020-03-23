@@ -30,8 +30,8 @@ jQuery( function ( $ ) {
 
 				$( this ).closest( '.evf-field-range-slider' ).find( '.evf-slider-input' ).val( new_value );
 
-				// Update slider handle color.
-				everest_forms.setSliderHandleColor( $( this ).closest( '.evf-field' ) );
+				// Update slider handle/highlight/track color.
+				everest_forms.setSliderColors( $( this ).closest( '.evf-field' ) );
 			});
 
 			// Slider input value change handler.
@@ -49,18 +49,16 @@ jQuery( function ( $ ) {
 				$field.find( '.evf-field-primary-input' ).data( 'ionRangeSlider' ).update({ from: default_value });
 
 				// Update slider handle color.
-				everest_forms.setSliderHandleColor( $( this ).closest( '.evf-field' ) );
+				everest_forms.setSliderColors( $( this ).closest( '.evf-field' ) );
 			});
 
 			// Setup sliders according to the options.
 			$( '.evf-field.evf-field-range-slider' ).each( function() {
 				var $primary_input = $( this ).find( '.evf-field-primary-input' );
-				var highlight_color = $primary_input.data( 'highlight_color' );
-				var track_color = $primary_input.data( 'track_color' );
 				var show_slider_input = $primary_input.data( 'show_slider_input' );
 
-				// Set slider handle color.
-				everest_forms.setSliderHandleColor( this );
+				// Set slider handle/highlight/track color.
+				everest_forms.setSliderColors( this );
 
 				// Show/Hide slider input.
 				if ( '1' !== show_slider_input.toString() ) {
@@ -70,6 +68,15 @@ jQuery( function ( $ ) {
 
 			// Show Range Slider Fields.
 			$( '.evf-field.evf-field-range-slider' ).show();
+		},
+		setSliderColors: function ( element ) {
+			var $primary_input = $( element ).find( '.evf-field-primary-input' );
+			var highlight_color = $primary_input.data( 'highlight_color' );
+			var track_color = $primary_input.data( 'track_color' );
+
+			everest_forms.setSliderHandleColor( element );
+			$( element ).find( '.irs-bar' ).css( 'background', highlight_color );
+			$( element ).find( '.irs-line' ).css( 'background', track_color );
 		},
 		setSliderHandleColor: function ( element ) {
 			if ( element ) {

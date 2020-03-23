@@ -352,14 +352,7 @@
 					var new_color = $( event.target ).val();
 
 					if ( new_color ) {
-						$field = $( '.everest-forms-field.active' );
-						$field.find( '.irs-handle' ).css( 'background-color', new_color );
-						$field.find( '.irs-handle i' ).first().css( 'border-top-color', new_color );
-						$field.find( '.irs-single' ).css( 'background-color', new_color );
-
-						var field_id = $field.attr( 'id' );
-						$( 'body' ).find( '.evf-temp-style-tag' ).remove();
-						$( 'body' ).append( '<style class="evf-temp-style-tag">#' + field_id +' .irs-single:before { border-top-color: ' + new_color + '!important; } </style>' );
+						$( '.everest-forms-field.active' ).find( '.irs-bar' ).css( 'background', new_color );
 					}
 				}
 			});
@@ -374,20 +367,7 @@
 					var new_color = $( event.target ).val();
 
 					if ( new_color ) {
-						$field = $( '.everest-forms-field.active' );
-						var field_id = $field.attr( 'id' );
-						var style = '';
-
-						alert( $field.find( '.evf-range-slider-preview' ).data('skin'))
-
-						// Sharp Skin.
-						$field.find( '.irs-handle' ).css( 'background-color', new_color );
-						$field.find( '.irs-handle i' ).first().css( 'border-top-color', new_color );
-						$field.find( '.irs-single' ).css( 'background-color', new_color );
-						style = '#' + field_id +' .irs-single:before { border-top-color: ' + new_color + '!important; }';
-
-						$( 'body' ).find( '.evf-range-slider-handle-style-tag' ).remove();
-						$( 'body' ).append( '<style class="evf-range-slider-handle-style-tag">' + style + '</style>' );
+						$( '.everest-forms-field.active' ).find( '.irs-line' ).css( 'background', new_color );
 					}
 				}
 			});
