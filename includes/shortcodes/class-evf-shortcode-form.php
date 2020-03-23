@@ -190,7 +190,7 @@ class EVF_Shortcode_Form {
 		printf(
 			'<label %s><span class="evf-label">%s</span> %s</label>',
 			evf_html_attributes( $label['id'], $label['class'], $label['data'], $label['attr'] ),
-			evf_string_translation( $form_data['id'], $field['id'], esc_html( $label['value'] ) ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			evf_string_translation( $form_data['id'], $field['id'], $label['value'] ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			$required, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			$custom_tags // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		);
