@@ -29,6 +29,9 @@ jQuery( function ( $ ) {
 				var new_value = $( this ).val();
 
 				$( this ).closest( '.evf-field-range-slider' ).find( '.evf-slider-input' ).val( new_value );
+
+				// Update slider handle color.
+				everest_forms.setSliderHandleColor( $( this ).closest( '.evf-field' ) );
 			});
 
 			// Slider input value change handler.
@@ -44,26 +47,81 @@ jQuery( function ( $ ) {
 				var default_value = $field.find( '.evf-field-primary-input' ).data( 'default' );
 
 				$field.find( '.evf-field-primary-input' ).data( 'ionRangeSlider' ).update({ from: default_value });
+
+				// Update slider handle color.
+				everest_forms.setSliderHandleColor( $( this ).closest( '.evf-field' ) );
 			});
-			// var new_color = 'black';
-			// $field = $('.evf-field');
-			// $field.find( '.irs-handle' ).css( 'background-color', new_color );
-			// $field.find( '.irs-handle i' ).first().css( 'border-top-color', new_color );
-			// $field.find( '.irs-single' ).css( 'background-color', new_color );
 
 			// Setup sliders according to the options.
 			$( '.evf-field.evf-field-range-slider' ).each( function() {
 				var $primary_input = $( this ).find( '.evf-field-primary-input' );
-
-				var handle_color = $primary_input.data( 'handle_color' );
 				var highlight_color = $primary_input.data( 'highlight_color' );
 				var track_color = $primary_input.data( 'track_color' );
 				var show_slider_input = $primary_input.data( 'show_slider_input' );
 
+				// Set slider handle color.
+				everest_forms.setSliderHandleColor( this );
+
+				// Show/Hide slider input.
 				if ( '1' !== show_slider_input.toString() ) {
 					$( this ).find( '.evf-slider-input-wrapper' ).hide();
 				}
 			});
+
+			// Show Range Slider Fields.
+			$( '.evf-field.evf-field-range-slider' ).show();
+		},
+		setSliderHandleColor: function ( element ) {
+			if ( element ) {
+				var $field = $( element );
+				var field_id = $field.attr( 'id' );
+				var skin = $field.find( '.evf-field-primary-input' ).data( 'skin' );
+				var handle_color = $field.find( '.evf-field-primary-input' ).data( 'handle_color' );
+				var style = '';
+
+				switch ( skin ) {
+					case 'flat':
+						$field.find( '.irs-handle i' ).first().css( 'background-color', handle_color );
+						$field.find( '.irs-single' ).css( 'background-color', handle_color );
+						style = '#' + field_id +' .irs-single:before { border-top-color: ' + handle_color + '!important; }';
+						break;
+
+					case 'big':
+						$field.find( '.irs-single' ).css( 'background-color', handle_color );
+						$field.find( '.irs-single' ).css( 'background', handle_color );
+						$field.find( '.irs-handle' ).css( 'background-color', handle_color );
+						$field.find( '.irs-handle' ).css( 'background', handle_color );
+						break;
+
+					case 'modern':
+						$field.find( '.irs-handle i' ).css( 'background', handle_color );
+						$field.find( '.irs-single' ).css( 'background-color', handle_color );
+						style = '#' + field_id +' .irs-single:before { border-top-color: ' + handle_color + '!important; }';
+						break;
+
+					case 'sharp':
+						$field.find( '.irs-handle' ).css( 'background-color', handle_color );
+						$field.find( '.irs-handle i' ).first().css( 'border-top-color', handle_color );
+						$field.find( '.irs-single' ).css( 'background-color', handle_color );
+						style = '#' + field_id +' .irs-single:before { border-top-color: ' + handle_color + '!important; }';
+						break;
+
+					case 'round':
+						$field.find( '.irs-handle' ).css( 'border-color', handle_color );
+						$field.find( '.irs-single' ).css( 'background-color', handle_color );
+						style = '#' + field_id +' .irs-single:before { border-top-color: ' + handle_color + '!important; }';
+						break;
+
+					case 'square':
+						$field.find( '.irs-handle' ).css( 'border-color', handle_color );
+						$field.find( '.irs-single' ).css( 'background-color', handle_color );
+						style = '#' + field_id +' .irs-single:before { border-top-color: ' + handle_color + '!important; }';
+						break;
+				}
+
+				$( 'body' ).find( '.evf-range-slider-handle-style-tag-' + field_id ).remove();
+				$( 'body' ).append( '<style class="evf-range-slider-handle-style-tag-' + field_id + '" >' + style + '</style>' );
+			}
 		},
 		init_inputMask: function() {
 			// Only load if jQuery inputMask library exists.

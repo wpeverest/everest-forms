@@ -195,18 +195,6 @@
 		 */
 		initializeRangeSliderFieldsPreview: function() {
 			$( '.evf-range-slider-preview' ).ionRangeSlider();
-
-			// Show/Hide slider input.
-			$( '.everest-forms-field-option .evf-show-slider-input' ).each( function() {
-				var field_id = $( this ).parent( '.everest-forms-field-option-row' ).data( 'field-id' );
-				$field = $( '#everest-forms-field-' + field_id );
-
-				if ( $( this ).is( ':checked' ) ) {
-					$field.find( '.evf-slider-input-wrapper' ).show();
-				} else {
-					$field.find( '.evf-slider-input-wrapper' ).hide();
-				}
-			});
 		},
 
 		/**
@@ -244,23 +232,173 @@
 			}
 		},
 
-		updateRangeSliderHandleColor: function( new_color ) {
-			if ( new_color ) {
-				$field = $( '.everest-forms-field.active' );
-				$field.find( '.irs-handle' ).css( 'background-color', new_color );
-				$field.find( '.irs-handle i' ).first().css( 'border-top-color', new_color );
-				$field.find( '.irs-single' ).css( 'background-color', new_color );
+		bindRangeSliderUIActions: function() {
+			// Min value change handler.
+			$( document.body ).on( 'change', '.everest-forms-field-option .evf-range-slider-skin', EVFPanelBuilder.updateRangeSliderFieldOptions );
 
-				var field_id = $field.attr( 'id' );
-				$( 'body' ).find( '.evf-temp-style-tag' ).remove();
-				$( 'body' ).append( '<style class="evf-temp-style-tag">#' + field_id +' .irs-single:before { border-top-color: ' + new_color + '!important; } </style>' );
+			// Min value change handler.
+			$( document.body ).on( 'input', '.everest-forms-field-option .everest-forms-field-option-row-min_value .evf-input-number', EVFPanelBuilder.updateRangeSliderFieldOptions );
+
+			// Max value change handler.
+			$( document.body ).on( 'input', '.everest-forms-field-option .everest-forms-field-option-row-max_value .evf-input-number', EVFPanelBuilder.updateRangeSliderFieldOptions );
+
+			// Show Grid option change handler.
+			$( document.body ).on( 'change', '.everest-forms-field-option .evf-range-slider-show-grid', EVFPanelBuilder.updateRangeSliderFieldOptions );
+
+			// Show slider prefix/postfix option change handler.
+			$( document.body ).on( 'change', '.everest-forms-field-option .evf-show-slider-prefix-postfix', EVFPanelBuilder.updateRangeSliderFieldOptions );
+
+			// Default value option change handler.
+			$( document.body ).on( 'input', '.everest-forms-field-option .everest-forms-field-option-row-default_value input', EVFPanelBuilder.updateRangeSliderFieldOptions );
+
+			// Slider input visibility option change handler.
+			$( document.body ).on( 'change', '.everest-forms-field-option .evf-show-slider-input', function( e ) {
+				if ( $( this ).is( ':checked' ) ) {
+					$( '.everest-forms-field.active .evf-slider-input-wrapper' ).show();
+				} else {
+					$( '.everest-forms-field.active .evf-slider-input-wrapper' ).hide();
+				}
+			});
+
+			// Slider handle/highlight/track color change handler.
+			$( '.everest-forms-field.everest-forms-field-range-slider' ).each( function( e ) {
+				var field_id = $( this ).data( 'field-id' );
+
+				EVFPanelBuilder.initializeSliderHandleColorOption( field_id );
+				EVFPanelBuilder.initializeSliderHighlightColorOption( field_id );
+				EVFPanelBuilder.initializeSliderTrackColorOption( field_id );
+			});
+
+			EVFPanelBuilder.initializeRangeSliderFieldsPreview();
+		},
+
+		initializeSliderHandleColorOption: function( field_id ) {
+			var $field_options_container = $( '#everest-forms-field-option-' + field_id );
+			var handle_color = $field_options_container.find( '.evf-range-slider-handle-color' ).val();
+			var skin = $field_options_container.find( '.evf-range-slider-skin' ).val();
+
+			// Set handle color for the Slider field.
+			EVFPanelBuilder.setSliderHandleColor( field_id, handle_color, skin );
+
+			// Initialize color picker for Handle Color option.
+			$field_options_container.find( '.evf-range-slider-handle-color' )
+			.wpColorPicker({
+				change: function( event, ui ) {
+					var new_color = $( event.target ).val();
+					var field_id = $( this ).closest( '.everest-forms-field-option-row' ).data( 'field-id' );
+					var current_skin = $field_options_container.find( '.evf-range-slider-skin' ).val();
+
+					EVFPanelBuilder.setSliderHandleColor( field_id, new_color, current_skin );
+				}
+			});
+		},
+
+		setSliderHandleColor: function ( field_id, color, skin ) {
+			if ( '' !== field_id && color && skin ) {
+				var $field = $( '#everest-forms-field-' + field_id );
+				var style = '';
+
+				switch ( skin ) {
+					case 'flat':
+						$field.find( '.irs-handle i' ).first().css( 'background-color', color );
+						$field.find( '.irs-single' ).css( 'background-color', color );
+						style = '#' + field_id +' .irs-single:before { border-top-color: ' + color + '!important; }';
+						break;
+
+					case 'big':
+						$field.find( '.irs-single' ).css( 'background-color', color );
+						$field.find( '.irs-single' ).css( 'background', color );
+						$field.find( '.irs-handle' ).css( 'background-color', color );
+						$field.find( '.irs-handle' ).css( 'background', color );
+						break;
+
+					case 'modern':
+						$field.find( '.irs-handle i' ).css( 'background', color );
+						$field.find( '.irs-single' ).css( 'background-color', color );
+						style = '#' + field_id +' .irs-single:before { border-top-color: ' + color + '!important; }';
+						break;
+
+					case 'sharp':
+						$field.find( '.irs-handle' ).css( 'background-color', color );
+						$field.find( '.irs-handle i' ).first().css( 'border-top-color', color );
+						$field.find( '.irs-single' ).css( 'background-color', color );
+						style = '#' + field_id +' .irs-single:before { border-top-color: ' + color + '!important; }';
+						break;
+
+					case 'round':
+						$field.find( '.irs-handle' ).css( 'border-color', color );
+						$field.find( '.irs-single' ).css( 'background-color', color );
+						style = '#' + field_id +' .irs-single:before { border-top-color: ' + color + '!important; }';
+						break;
+
+					case 'square':
+						$field.find( '.irs-handle' ).css( 'border-color', color );
+						$field.find( '.irs-single' ).css( 'background-color', color );
+						style = '#' + field_id +' .irs-single:before { border-top-color: ' + color + '!important; }';
+						break;
+				}
+
+				$( 'body' ).find( '.evf-range-slider-handle-style-tag-' + field_id ).remove();
+				$( 'body' ).append( '<style class="evf-range-slider-handle-style-tag-' + field_id + '" >' + style + '</style>' );
 			}
+		},
+
+		initializeSliderHighlightColorOption: function( field_id ) {
+			var $field_options_container = $( '#everest-forms-field-option-' + field_id );
+
+			$field_options_container.find( '.evf-range-slider-highlight-color' )
+			.wpColorPicker({
+				change: function( event, ui ) {
+					var new_color = $( event.target ).val();
+
+					if ( new_color ) {
+						$field = $( '.everest-forms-field.active' );
+						$field.find( '.irs-handle' ).css( 'background-color', new_color );
+						$field.find( '.irs-handle i' ).first().css( 'border-top-color', new_color );
+						$field.find( '.irs-single' ).css( 'background-color', new_color );
+
+						var field_id = $field.attr( 'id' );
+						$( 'body' ).find( '.evf-temp-style-tag' ).remove();
+						$( 'body' ).append( '<style class="evf-temp-style-tag">#' + field_id +' .irs-single:before { border-top-color: ' + new_color + '!important; } </style>' );
+					}
+				}
+			});
+		},
+
+		initializeSliderTrackColorOption: function( field_id ) {
+			var $field_options_container = $( '#everest-forms-field-option-' + field_id );
+
+			$field_options_container.find( '.evf-range-slider-track-color' )
+			.wpColorPicker({
+				change: function( event, ui ) {
+					var new_color = $( event.target ).val();
+
+					if ( new_color ) {
+						$field = $( '.everest-forms-field.active' );
+						var field_id = $field.attr( 'id' );
+						var style = '';
+
+						alert( $field.find( '.evf-range-slider-preview' ).data('skin'))
+
+						// Sharp Skin.
+						$field.find( '.irs-handle' ).css( 'background-color', new_color );
+						$field.find( '.irs-handle i' ).first().css( 'border-top-color', new_color );
+						$field.find( '.irs-single' ).css( 'background-color', new_color );
+						style = '#' + field_id +' .irs-single:before { border-top-color: ' + new_color + '!important; }';
+
+						$( 'body' ).find( '.evf-range-slider-handle-style-tag' ).remove();
+						$( 'body' ).append( '<style class="evf-range-slider-handle-style-tag">' + style + '</style>' );
+					}
+				}
+			});
 		},
 
 		updateRangeSliderFieldOptions: function( e ) {
 			var min_value = $( '.everest-forms-field-option:visible .everest-forms-field-option-row-min_value .evf-input-number' ).val();
 			var max_value = $( '.everest-forms-field-option:visible .everest-forms-field-option-row-max_value .evf-input-number' ).val();
 			var new_skin = $( '.everest-forms-field-option:visible .evf-range-slider-skin' ).val();
+			var handle_color = $( '.everest-forms-field-option:visible .evf-range-slider-handle-color' ).val();
+			var field_id = $( '.everest-forms-field-option:visible' ).data( 'field-id' );
 			var default_value = $( '.everest-forms-field-option:visible .everest-forms-field-option-row-default_value input' ).val();
 			var $show_grid_option = $( '.everest-forms-field-option:visible .evf-range-slider-show-grid' );
 			var $show_prefix_postfix_option = $( '.everest-forms-field-option:visible .evf-show-slider-prefix-postfix' );
@@ -295,67 +433,7 @@
 			}
 
 			$( '.everest-forms-field.active' ).find( 'input.evf-range-slider-preview' ).data( 'ionRangeSlider' ).update( slider_options );
-		},
-
-		bindRangeSliderUIActions: function() {
-			// Min value change handler.
-			$( '.everest-forms-field-option .evf-range-slider-skin' ).on( 'change', EVFPanelBuilder.updateRangeSliderFieldOptions );
-
-			// Min value change handler.
-			$( '.everest-forms-field-option .everest-forms-field-option-row-min_value .evf-input-number' ).on( 'input', EVFPanelBuilder.updateRangeSliderFieldOptions );
-
-			// Max value change handler.
-			$( '.everest-forms-field-option .everest-forms-field-option-row-max_value .evf-input-number' ).on( 'input', EVFPanelBuilder.updateRangeSliderFieldOptions );
-
-			// Show Grid option change handler.
-			$( '.everest-forms-field-option .evf-range-slider-show-grid' ).on( 'change', EVFPanelBuilder.updateRangeSliderFieldOptions );
-
-			// Show slider prefix/postfix option change handler.
-			$( '.everest-forms-field-option .evf-show-slider-prefix-postfix' ).on( 'change', EVFPanelBuilder.updateRangeSliderFieldOptions );
-
-			// Default value option change handler.
-			$( '.everest-forms-field-option .everest-forms-field-option-row-default_value input' ).on( 'input', EVFPanelBuilder.updateRangeSliderFieldOptions );
-
-			// Slider input visibility option change handler.
-			$( '.everest-forms-field-option .evf-show-slider-input' ).on( 'change', function( e ) {
-				if ( $( this ).is( ':checked' ) ) {
-					$( '.everest-forms-field.active .evf-slider-input-wrapper' ).show();
-				} else {
-					$( '.everest-forms-field.active .evf-slider-input-wrapper' ).hide();
-				}
-			});
-
-			// Slider handle color change handler.
-			$( '.everest-forms-field-option .evf-range-slider-handle-color' )
-			.wpColorPicker({
-				change: function( event, ui ) {
-					var new_color = $( event.target ).val();
-
-					EVFPanelBuilder.updateRangeSliderHandleColor( new_color );
-				}
-			});
-
-			// Slider highlight color change handler.
-			$( '.everest-forms-field-option .evf-range-slider-highlight-color' )
-			.wpColorPicker({
-				change: function( event, ui ) {
-					var new_color = $( event.target ).val();
-
-					EVFPanelBuilder.updateRangeSliderHandleColor( new_color );
-				}
-			});
-
-			// Slider track color change handler.
-			$( '.everest-forms-field-option .evf-range-slider-track-color' )
-			.wpColorPicker({
-				change: function( event, ui ) {
-					var new_color = $( event.target ).val();
-
-					EVFPanelBuilder.updateRangeSliderHandleColor( new_color );
-				}
-			});
-
-			EVFPanelBuilder.initializeRangeSliderFieldsPreview();
+			EVFPanelBuilder.setSliderHandleColor( field_id, handle_color, new_skin );
 		},
 
 		/**
@@ -1727,6 +1805,7 @@
 					EVFPanelBuilder.paymentFieldAppendToDropdown( dragged_field_id, field_type );
 
 					EVFPanelBuilder.initializeRangeSliderFieldsPreview();
+					EVFPanelBuilder.initializeSliderHandleColorOption( dragged_field_id );
 		 		}
 		 	});
 		},
