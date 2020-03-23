@@ -189,15 +189,6 @@
 		},
 
 		/**
-		 * Update text fields limit controls.
-		 *
-		 * @since 1.7.0
-		 */
-		initializeRangeSliderFieldsPreview: function() {
-			$( '.evf-range-slider-preview' ).ionRangeSlider();
-		},
-
-		/**
 		 * Element bindings.
 		 *
 		 * @since 1.0.0
@@ -222,7 +213,7 @@
 			EVFPanelBuilder.bindToggleHandleActions();
 			EVFPanelBuilder.bindLabelEditInputActions();
 			EVFPanelBuilder.bindSyncedInputActions();
-			EVFPanelBuilder.bindRangeSliderUIActions();
+			EVFPanelBuilder.initializeRangeSliderFields();
 
 			// Fields Panel.
 			EVFPanelBuilder.bindUIActionsFields();
@@ -232,24 +223,29 @@
 			}
 		},
 
-		bindRangeSliderUIActions: function() {
+		/**
+		 * Initialize All Range Slider Fields.
+		 *
+		 * @since 1.7.0
+		 */
+		initializeRangeSliderFields: function() {
 			// Min value change handler.
-			$( document.body ).on( 'change', '.everest-forms-field-option .evf-range-slider-skin', EVFPanelBuilder.updateRangeSliderFieldOptions );
+			$( document.body ).on( 'change', '.everest-forms-field-option .evf-range-slider-skin', EVFPanelBuilder.updateRangeSliderBasicOptions );
 
 			// Min value change handler.
-			$( document.body ).on( 'input', '.everest-forms-field-option .everest-forms-field-option-row-min_value .evf-input-number', EVFPanelBuilder.updateRangeSliderFieldOptions );
+			$( document.body ).on( 'input', '.everest-forms-field-option .everest-forms-field-option-row-min_value .evf-input-number', EVFPanelBuilder.updateRangeSliderBasicOptions );
 
 			// Max value change handler.
-			$( document.body ).on( 'input', '.everest-forms-field-option .everest-forms-field-option-row-max_value .evf-input-number', EVFPanelBuilder.updateRangeSliderFieldOptions );
+			$( document.body ).on( 'input', '.everest-forms-field-option .everest-forms-field-option-row-max_value .evf-input-number', EVFPanelBuilder.updateRangeSliderBasicOptions );
 
 			// Show Grid option change handler.
-			$( document.body ).on( 'change', '.everest-forms-field-option .evf-range-slider-show-grid', EVFPanelBuilder.updateRangeSliderFieldOptions );
+			$( document.body ).on( 'change', '.everest-forms-field-option .evf-range-slider-show-grid', EVFPanelBuilder.updateRangeSliderBasicOptions );
 
 			// Show slider prefix/postfix option change handler.
-			$( document.body ).on( 'change', '.everest-forms-field-option .evf-show-slider-prefix-postfix', EVFPanelBuilder.updateRangeSliderFieldOptions );
+			$( document.body ).on( 'change', '.everest-forms-field-option .evf-show-slider-prefix-postfix', EVFPanelBuilder.updateRangeSliderBasicOptions );
 
 			// Default value option change handler.
-			$( document.body ).on( 'input', '.everest-forms-field-option .everest-forms-field-option-row-default_value input', EVFPanelBuilder.updateRangeSliderFieldOptions );
+			$( document.body ).on( 'input', '.everest-forms-field-option .everest-forms-field-option-row-default_value input', EVFPanelBuilder.updateRangeSliderBasicOptions );
 
 			// Slider input visibility option change handler.
 			$( document.body ).on( 'change', '.everest-forms-field-option .evf-show-slider-input', function( e ) {
@@ -260,25 +256,37 @@
 				}
 			});
 
-			// Slider handle/highlight/track color change handler.
 			$( '.everest-forms-field.everest-forms-field-range-slider' ).each( function( e ) {
 				var field_id = $( this ).data( 'field-id' );
-
-				EVFPanelBuilder.initializeSliderHandleColorOption( field_id );
-				EVFPanelBuilder.initializeSliderHighlightColorOption( field_id );
-				EVFPanelBuilder.initializeSliderTrackColorOption( field_id );
+				EVFPanelBuilder.initializeRangeSliderField( field_id );
 			});
-
-			EVFPanelBuilder.initializeRangeSliderFieldsPreview();
 		},
 
+		/**
+		 * Initialize a Range Slider Field.
+		 *
+		 * @since 1.7.0
+		 */
+		initializeRangeSliderField: function( field_id ) {
+			var $field = $( '#everest-forms-field-' + field_id );
+
+			// Initialize the field as an IonRangeSlider field.
+			$field.find( '.evf-range-slider-preview' ).ionRangeSlider();
+
+			// Slider handle/highlight/track color change handler.
+			EVFPanelBuilder.initializeSliderHandleColorOption( field_id );
+			EVFPanelBuilder.initializeSliderHighlightColorOption( field_id );
+			EVFPanelBuilder.initializeSliderTrackColorOption( field_id );
+			EVFPanelBuilder.updateRangeSliderColors( field_id );
+		},
+
+		/**
+		 * Initialize Range Slider Handle Color Picker.
+		 *
+		 * @since 1.7.0
+		 */
 		initializeSliderHandleColorOption: function( field_id ) {
 			var $field_options_container = $( '#everest-forms-field-option-' + field_id );
-			var handle_color = $field_options_container.find( '.evf-range-slider-handle-color' ).val();
-			var skin = $field_options_container.find( '.evf-range-slider-skin' ).val();
-
-			// Set handle color for the Slider field.
-			EVFPanelBuilder.setSliderHandleColor( field_id, handle_color, skin );
 
 			// Initialize color picker for Handle Color option.
 			$field_options_container.find( '.evf-range-slider-handle-color' )
@@ -293,6 +301,76 @@
 			});
 		},
 
+		/**
+		 * Initialize Range Slider Highlight Color Picker.
+		 *
+		 * @since 1.7.0
+		 */
+		initializeSliderHighlightColorOption: function( field_id ) {
+			var $field = $( '#everest-forms-field-' + field_id );
+			var $field_options_container = $( '#everest-forms-field-option-' + field_id );
+
+			$field_options_container.find( '.evf-range-slider-highlight-color' )
+			.wpColorPicker({
+				change: function( event, ui ) {
+					var new_color = $( event.target ).val();
+
+					if ( new_color ) {
+						$field.find( '.irs-bar' ).css( 'background', new_color );
+					}
+				}
+			});
+		},
+
+		/**
+		 * Initialize Range Slider Track Color Picker.
+		 *
+		 * @since 1.7.0
+		 */
+		initializeSliderTrackColorOption: function( field_id ) {
+			var $field = $( '#everest-forms-field-' + field_id );
+			var $field_options_container = $( '#everest-forms-field-option-' + field_id );
+
+			$field_options_container.find( '.evf-range-slider-track-color' )
+			.wpColorPicker({
+				change: function( event, ui ) {
+					var new_color = $( event.target ).val();
+
+					if ( new_color ) {
+						$field.find( '.irs-line' ).css( 'background', new_color );
+					}
+				}
+			});
+		},
+
+		/**
+		 * Update a Range Slider field's Handle/Highlight/Track colors.
+		 *
+		 * @since 1.7.0
+		 */
+		updateRangeSliderColors: function ( field_id ) {
+			var $field = $( '#everest-forms-field-' + field_id );
+			var $field_options_container = $( '#everest-forms-field-option-' + field_id );
+
+			// Set handle color for the Slider field.
+			var handle_color = $field_options_container.find( '.evf-range-slider-handle-color' ).val();
+			var skin = $field_options_container.find( '.evf-range-slider-skin' ).val();
+			EVFPanelBuilder.setSliderHandleColor( field_id, handle_color, skin );
+
+			// Set Current Highlight Color.
+			var highlight_color = $field_options_container.find( '.evf-range-slider-highlight-color' ).val();
+			$field.find( '.irs-bar' ).css( 'background', highlight_color );
+
+			// Set Current Track Color.
+			var track_color = $field_options_container.find( '.evf-range-slider-track-color' ).val();
+			$field.find( '.irs-line' ).css( 'background', track_color );
+		},
+
+		/**
+		 * Set a Range Slider's handle color.
+		 *
+		 * @since 1.7.0
+		 */
 		setSliderHandleColor: function ( field_id, color, skin ) {
 			if ( '' !== field_id && color && skin ) {
 				var $field = $( '#everest-forms-field-' + field_id );
@@ -343,41 +421,16 @@
 			}
 		},
 
-		initializeSliderHighlightColorOption: function( field_id ) {
-			var $field_options_container = $( '#everest-forms-field-option-' + field_id );
-
-			$field_options_container.find( '.evf-range-slider-highlight-color' )
-			.wpColorPicker({
-				change: function( event, ui ) {
-					var new_color = $( event.target ).val();
-
-					if ( new_color ) {
-						$( '.everest-forms-field.active' ).find( '.irs-bar' ).css( 'background', new_color );
-					}
-				}
-			});
-		},
-
-		initializeSliderTrackColorOption: function( field_id ) {
-			var $field_options_container = $( '#everest-forms-field-option-' + field_id );
-
-			$field_options_container.find( '.evf-range-slider-track-color' )
-			.wpColorPicker({
-				change: function( event, ui ) {
-					var new_color = $( event.target ).val();
-
-					if ( new_color ) {
-						$( '.everest-forms-field.active' ).find( '.irs-line' ).css( 'background', new_color );
-					}
-				}
-			});
-		},
-
-		updateRangeSliderFieldOptions: function( e ) {
+		/**
+		 * Update a Range Slider field's basic options like min/max value, default value, step, show/hide prefix/postfix, skin, grid etc.
+		 * The options like handle color, highlight color and track color are not handled by this function as it needs a unique approach.
+		 *
+		 * @since 1.7.0
+		 */
+		updateRangeSliderBasicOptions: function( e ) {
 			var min_value = $( '.everest-forms-field-option:visible .everest-forms-field-option-row-min_value .evf-input-number' ).val();
 			var max_value = $( '.everest-forms-field-option:visible .everest-forms-field-option-row-max_value .evf-input-number' ).val();
 			var new_skin = $( '.everest-forms-field-option:visible .evf-range-slider-skin' ).val();
-			var handle_color = $( '.everest-forms-field-option:visible .evf-range-slider-handle-color' ).val();
 			var field_id = $( '.everest-forms-field-option:visible' ).data( 'field-id' );
 			var default_value = $( '.everest-forms-field-option:visible .everest-forms-field-option-row-default_value input' ).val();
 			var $show_grid_option = $( '.everest-forms-field-option:visible .evf-range-slider-show-grid' );
@@ -413,7 +466,7 @@
 			}
 
 			$( '.everest-forms-field.active' ).find( 'input.evf-range-slider-preview' ).data( 'ionRangeSlider' ).update( slider_options );
-			EVFPanelBuilder.setSliderHandleColor( field_id, handle_color, new_skin );
+			EVFPanelBuilder.updateRangeSliderColors( field_id );
 		},
 
 		/**
@@ -1784,8 +1837,7 @@
 					EVFPanelBuilder.paymentFieldAppendToQuantity( dragged_el_id );
 					EVFPanelBuilder.paymentFieldAppendToDropdown( dragged_field_id, field_type );
 
-					EVFPanelBuilder.initializeRangeSliderFieldsPreview();
-					EVFPanelBuilder.initializeSliderHandleColorOption( dragged_field_id );
+					EVFPanelBuilder.initializeRangeSliderField( dragged_field_id );
 		 		}
 		 	});
 		},

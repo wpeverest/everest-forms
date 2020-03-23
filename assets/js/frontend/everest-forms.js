@@ -43,7 +43,7 @@ jQuery( function ( $ ) {
 			});
 
 			$( '.evf-field-range-slider .evf-range-slider-reset-icon' ).on( 'click', function( e ) {
-				var $field = $( this ).parent( '.evf-field' );
+				var $field = $( this ).closest( '.evf-field' );
 				var default_value = $field.find( '.evf-field-primary-input' ).data( 'default' );
 
 				$field.find( '.evf-field-primary-input' ).data( 'ionRangeSlider' ).update({ from: default_value });
