@@ -238,6 +238,9 @@
 			// Max value change handler.
 			$( document.body ).on( 'input', '.everest-forms-field-option .everest-forms-field-option-row-max_value .evf-input-number', EVFPanelBuilder.updateRangeSliderBasicOptions );
 
+			// Min/Max values change handler (This is for the two column Min/Max option UI).
+			$( document.body ).on( 'input', '.everest-forms-field-option .everest-forms-field-option-row-min_max_values .evf-input-number', EVFPanelBuilder.updateRangeSliderBasicOptions );
+
 			// Show Grid option change handler.
 			$( document.body ).on( 'change', '.everest-forms-field-option .evf-range-slider-show-grid', EVFPanelBuilder.updateRangeSliderBasicOptions );
 
@@ -429,10 +432,10 @@
 		 * @since 1.7.0
 		 */
 		updateRangeSliderBasicOptions: function( e ) {
-			var min_value = $( '.everest-forms-field-option:visible .everest-forms-field-option-row-min_value .evf-input-number' ).val();
-			var max_value = $( '.everest-forms-field-option:visible .everest-forms-field-option-row-max_value .evf-input-number' ).val();
-			var new_skin = $( '.everest-forms-field-option:visible .evf-range-slider-skin' ).val();
 			var field_id = $( '.everest-forms-field-option:visible' ).data( 'field-id' );
+			var min_value = $( '.everest-forms-field-option:visible #everest-forms-field-option-' + field_id + '-min_value' ).val();
+			var max_value = $( '.everest-forms-field-option:visible #everest-forms-field-option-' + field_id + '-max_value' ).val();
+			var new_skin = $( '.everest-forms-field-option:visible .evf-range-slider-skin' ).val();
 			var default_value = $( '.everest-forms-field-option:visible .everest-forms-field-option-row-default_value input' ).val();
 			var $show_grid_option = $( '.everest-forms-field-option:visible .evf-range-slider-show-grid' );
 			var $show_prefix_postfix_option = $( '.everest-forms-field-option:visible .evf-show-slider-prefix-postfix' );
