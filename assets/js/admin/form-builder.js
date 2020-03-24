@@ -543,10 +543,16 @@
 
 			// Real-time updates for "Show Label" field option.
 			$builder.on( 'input', '.everest-forms-field-option-row-label input', function() {
-				var $this = $(this),
-					value = $this.val(),
-					id    = $this.parent().data( 'field-id' );
-				$( '#everest-forms-field-' + id ).find( '.label-title .text' ).text(value);
+				var $this  = $(this),
+					value  = $this.val(),
+					id     = $this.parent().data( 'field-id' );
+					$label = $( '#everest-forms-field-' + id ).find( '.label-title .text' );
+
+				if ( $label.hasClass( 'nl2br' ) ) {
+					$label.html( value.replace( /\n/g, '<br>') );
+				} else {
+					$label.html( value );
+				}
 			});
 
 			// Real-time updates for "Description" field option.
