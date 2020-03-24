@@ -381,7 +381,7 @@
 					case 'flat':
 						$field.find( '.irs-handle i' ).first().css( 'background-color', color );
 						$field.find( '.irs-single' ).css( 'background-color', color );
-						style = '#' + field_id +' .irs-single:before { border-top-color: ' + color + '!important; }';
+						style = '#everest-forms-field-' + field_id +' .irs-single:before { border-top-color: ' + color + '!important; }';
 						break;
 
 					case 'big':
@@ -394,26 +394,26 @@
 					case 'modern':
 						$field.find( '.irs-handle i' ).css( 'background', color );
 						$field.find( '.irs-single' ).css( 'background-color', color );
-						style = '#' + field_id +' .irs-single:before { border-top-color: ' + color + '!important; }';
+						style = '#everest-forms-field-' + field_id +' .irs-single:before { border-top-color: ' + color + '!important; }';
 						break;
 
 					case 'sharp':
 						$field.find( '.irs-handle' ).css( 'background-color', color );
 						$field.find( '.irs-handle i' ).first().css( 'border-top-color', color );
 						$field.find( '.irs-single' ).css( 'background-color', color );
-						style = '#' + field_id +' .irs-single:before { border-top-color: ' + color + '!important; }';
+						style = '#everest-forms-field-' + field_id +' .irs-single:before { border-top-color: ' + color + '!important; }';
 						break;
 
 					case 'round':
 						$field.find( '.irs-handle' ).css( 'border-color', color );
 						$field.find( '.irs-single' ).css( 'background-color', color );
-						style = '#' + field_id +' .irs-single:before { border-top-color: ' + color + '!important; }';
+						style = '#everest-forms-field-' + field_id +' .irs-single:before { border-top-color: ' + color + '!important; }';
 						break;
 
 					case 'square':
 						$field.find( '.irs-handle' ).css( 'border-color', color );
 						$field.find( '.irs-single' ).css( 'background-color', color );
-						style = '#' + field_id +' .irs-single:before { border-top-color: ' + color + '!important; }';
+						style = '#everest-forms-field-' + field_id +' .irs-single:before { border-top-color: ' + color + '!important; }';
 						break;
 				}
 
@@ -1317,7 +1317,28 @@
 			$(document).trigger('everest-form-cloned', [ new_key, field_type ]);
 			EVFPanelBuilder.switchToFieldOptionPanel(new_key);//switch to cloned field options
 
-			EVFPanelBuilder.initializeRangeSliderField( new_key );
+			// Process the cloned data if it is a Range Slider field.
+			if ( 'range-slider' === field_type ) {
+				newFieldCloned.find( '.irs' ).remove();
+				newFieldCloned.find( '.evf-slider .evf-range-slider-preview' ).hide();
+
+				// Purify Handle Color Picker.
+				var html = newOption.find( '.everest-forms-field-option-row-handle_color .wp-picker-input-wrap label' ).html();
+				newOption.find( '.everest-forms-field-option-row-handle_color .wp-picker-container' ).remove();
+				newOption.find( '.everest-forms-field-option-row-handle_color' ).append( html );
+
+				// Purify Highlight Color Picker.
+				var html = newOption.find( '.everest-forms-field-option-row-highlight_color .wp-picker-input-wrap label' ).html();
+				newOption.find( '.everest-forms-field-option-row-highlight_color .wp-picker-container' ).remove();
+				newOption.find( '.everest-forms-field-option-row-highlight_color' ).append( html );
+
+				// Purify Track Color Picker.
+				var html = newOption.find( '.everest-forms-field-option-row-track_color .wp-picker-input-wrap label' ).html();
+				newOption.find( '.everest-forms-field-option-row-track_color .wp-picker-container' ).remove();
+				newOption.find( '.everest-forms-field-option-row-track_color' ).append( html );
+
+				EVFPanelBuilder.initializeRangeSliderField( new_key );
+			}
 		},
 		bindFieldDelete: function () {
 			$( 'body' ).on('click', '.everest-forms-preview .everest-forms-field .everest-forms-field-delete', function () {
