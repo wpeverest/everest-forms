@@ -1894,7 +1894,12 @@
 					EVFPanelBuilder.paymentFieldAppendToQuantity( dragged_el_id );
 					EVFPanelBuilder.paymentFieldAppendToDropdown( dragged_field_id, field_type );
 
+					// Initialize the dropped field as an Range Slider field.
 					EVFPanelBuilder.initializeRangeSliderField( dragged_field_id );
+
+					// Show slider input by default.
+					$( '#everest-forms-field-option-' + dragged_field_id ).find( '.evf-show-slider-input' ).attr( 'checked', 'checked' );
+					$( '#everest-forms-field-' + dragged_field_id ).find( '.evf-slider-input-wrapper' ).show();
 		 		}
 		 	});
 		},
