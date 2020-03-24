@@ -250,14 +250,14 @@
 			// Default value option change handler.
 			$( document.body ).on( 'input', '.everest-forms-field-option .everest-forms-field-option-row-default_value input', EVFPanelBuilder.updateRangeSliderBasicOptions );
 
+			// Use Text Prefix/Postfix option change handler (checkbox).
+			$( document.body ).on( 'change', '.everest-forms-field-option .evf-use-text-prefix-postfix', EVFPanelBuilder.updateRangeSliderBasicOptions );
+
+			// Text Prefix/Postfix option change handler (input).
+			$( document.body ).on( 'input', '.everest-forms-field-option .evf-input-prefix-text, .everest-forms-field-option .evf-input-postfix-text', EVFPanelBuilder.updateRangeSliderBasicOptions );
+
 			// Slider input visibility option change handler.
-			$( document.body ).on( 'change', '.everest-forms-field-option .evf-show-slider-input', function( e ) {
-				if ( $( this ).is( ':checked' ) ) {
-					$( '.everest-forms-field.active .evf-slider-input-wrapper' ).show();
-				} else {
-					$( '.everest-forms-field.active .evf-slider-input-wrapper' ).hide();
-				}
-			});
+			$( document.body ).on( 'change', '.everest-forms-field-option .evf-show-slider-input', EVFPanelBuilder.updateRangeSliderBasicOptions );
 
 			// Initialize Range Slider Fields.
 			$( '.everest-forms-field.everest-forms-field-range-slider' ).each( function( e ) {
@@ -281,6 +281,7 @@
 			EVFPanelBuilder.initializeSliderHandleColorOption( field_id );
 			EVFPanelBuilder.initializeSliderHighlightColorOption( field_id );
 			EVFPanelBuilder.initializeSliderTrackColorOption( field_id );
+			EVFPanelBuilder.updateRangeSliderBasicOptions( field_id );
 			EVFPanelBuilder.updateRangeSliderColors( field_id );
 		},
 
@@ -431,14 +432,17 @@
 		 *
 		 * @since 1.7.0
 		 */
-		updateRangeSliderBasicOptions: function( e ) {
-			var field_id = $( '.everest-forms-field-option:visible' ).data( 'field-id' );
-			var min_value = $( '.everest-forms-field-option:visible #everest-forms-field-option-' + field_id + '-min_value' ).val();
-			var max_value = $( '.everest-forms-field-option:visible #everest-forms-field-option-' + field_id + '-max_value' ).val();
-			var new_skin = $( '.everest-forms-field-option:visible .evf-range-slider-skin' ).val();
-			var default_value = $( '.everest-forms-field-option:visible .everest-forms-field-option-row-default_value input' ).val();
-			var $show_grid_option = $( '.everest-forms-field-option:visible .evf-range-slider-show-grid' );
-			var $show_prefix_postfix_option = $( '.everest-forms-field-option:visible .evf-show-slider-prefix-postfix' );
+		updateRangeSliderBasicOptions: function( field_id ) {
+			var field_id = ( 'string' === typeof field_id ) ? field_id : $( '.everest-forms-field-option:visible' ).data( 'field-id' );
+			var $field = $( '#everest-forms-field-' + field_id );
+			var $field_option_section = $( '#everest-forms-field-option-' + field_id );
+			var min_value = $( '#everest-forms-field-option-' + field_id + '-min_value' ).val();
+			var max_value = $( '#everest-forms-field-option-' + field_id + '-max_value' ).val();
+			var new_skin = $( '#everest-forms-field-option-' + field_id + '-skin' ).val();
+			var default_value = $( '#everest-forms-field-option-' + field_id + '-default_value' ).val();
+			var $show_grid_option = $( '#everest-forms-field-option-' + field_id + '-show_grid' );
+			var $show_prefix_postfix_option = $( '#everest-forms-field-option-' + field_id + '-show_prefix_postfix' );
+			var is_text_prefix_postfix_enabled = $( '#everest-forms-field-option-' + field_id + '-use_text_prefix_postfix' ).is( ':checked' );
 			var slider_options = {};
 
 			if ( '' !== min_value ) {
@@ -469,7 +473,33 @@
 				slider_options.from = default_value;
 			}
 
-			$( '.everest-forms-field.active' ).find( 'input.evf-range-slider-preview' ).data( 'ionRangeSlider' ).update( slider_options );
+			// Slider input visibility update.
+			var show_slider_input = $( '#everest-forms-field-option-' + field_id + '-show_slider_input' ).is( ':checked' )
+			if ( show_slider_input ) {
+				$field.find( '.evf-slider-input-wrapper' ).show();
+			} else {
+				$field.find( '.evf-slider-input-wrapper' ).hide();
+			}
+
+			// Update the slider field with the specified options.
+			$field.find( 'input.evf-range-slider-preview' ).data( 'ionRangeSlider' ).update( slider_options );
+			$field.find( '.evf-slider-input' ).val( default_value );
+
+			// Set prefix/postfix texts.
+			if ( is_text_prefix_postfix_enabled ) {
+				var prefix_text = $field_option_section.find( '.evf-input-prefix-text' ).val();
+				var postfix_text = $field_option_section.find( '.evf-input-postfix-text' ).val();
+
+				// Update Use Text Prefix/Postfix option.
+				$field.find( 'span.irs-min' ).html( prefix_text );
+				$field.find( 'span.irs-max' ).html( postfix_text );
+				$field_option_section.find( '.evf-range-slider-prefix-postfix-texts' ).show();
+			} else {
+				// Update Use Text Prefix/Postfix option.
+				$field_option_section.find( '.evf-range-slider-prefix-postfix-texts' ).hide();
+			}
+
+			// Update Range Slider Colors.
 			EVFPanelBuilder.updateRangeSliderColors( field_id );
 		},
 
