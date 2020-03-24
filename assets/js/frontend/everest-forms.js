@@ -11,7 +11,7 @@ jQuery( function ( $ ) {
 	var everest_forms = {
 		$everest_form: $( 'form.everest-form' ),
 		init: function() {
-			this.init_range_slider();
+			this.init_range_sliders();
 			this.init_inputMask();
 			this.init_mailcheck();
 			this.init_datepicker();
@@ -22,7 +22,13 @@ jQuery( function ( $ ) {
 			// Inline validation.
 			this.$everest_form.on( 'input validate change', '.input-text, select, input:checkbox, input:radio', this.validate_field );
 		},
-		init_range_slider: function() {
+
+		/**
+		 * Initialize Range Slider Fields.
+		 *
+		 * @since 1.7.0
+		 */
+		init_range_sliders: function() {
 			// Slider value change handler.
 			$( '.evf-field-range-slider .evf-field-primary-input' ).ionRangeSlider()
 			.on( 'change', function( e ) {
@@ -54,21 +60,19 @@ jQuery( function ( $ ) {
 
 			// Setup sliders according to the options.
 			$( '.evf-field.evf-field-range-slider' ).each( function() {
-				var $primary_input = $( this ).find( '.evf-field-primary-input' );
-				var show_slider_input = $primary_input.data( 'show_slider_input' );
-
 				// Set slider handle/highlight/track color.
 				everest_forms.setSliderColors( this );
-
-				// Show/Hide slider input.
-				if ( '1' !== show_slider_input.toString() ) {
-					$( this ).find( '.evf-slider-input-wrapper' ).hide();
-				}
 			});
 
 			// Show Range Slider Fields.
 			$( '.evf-field.evf-field-range-slider' ).show();
 		},
+
+		/**
+		 * Sets colors for a Range Slider field's handle, highlight and track.
+		 *
+		 * @since 1.7.0
+		 */
 		setSliderColors: function ( element ) {
 			var $primary_input = $( element ).find( '.evf-field-primary-input' );
 			var highlight_color = $primary_input.data( 'highlight_color' );
@@ -78,6 +82,12 @@ jQuery( function ( $ ) {
 			$( element ).find( '.irs-bar' ).css( 'background', highlight_color );
 			$( element ).find( '.irs-line' ).css( 'background', track_color );
 		},
+
+		/**
+		 * Set a Range Slider field's handle color.
+		 *
+		 * @since 1.7.0
+		 */
 		setSliderHandleColor: function ( element ) {
 			if ( element ) {
 				var $field = $( element );
@@ -130,6 +140,7 @@ jQuery( function ( $ ) {
 				$( 'body' ).append( '<style class="evf-range-slider-handle-style-tag-' + field_id + '" >' + style + '</style>' );
 			}
 		},
+
 		init_inputMask: function() {
 			// Only load if jQuery inputMask library exists.
 			if ( typeof $.fn.inputmask !== 'undefined' ) {

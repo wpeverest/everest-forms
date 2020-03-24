@@ -256,6 +256,7 @@
 				}
 			});
 
+			// Initialize Range Slider Fields.
 			$( '.everest-forms-field.everest-forms-field-range-slider' ).each( function( e ) {
 				var field_id = $( this ).data( 'field-id' );
 				EVFPanelBuilder.initializeRangeSliderField( field_id );
@@ -1315,6 +1316,8 @@
 			field.closest( '.evf-admin-grid' ).find( '[data-field-id="' + old_key + '"]' ).after( newFieldCloned );
 			$(document).trigger('everest-form-cloned', [ new_key, field_type ]);
 			EVFPanelBuilder.switchToFieldOptionPanel(new_key);//switch to cloned field options
+
+			EVFPanelBuilder.initializeRangeSliderField( new_key );
 		},
 		bindFieldDelete: function () {
 			$( 'body' ).on('click', '.everest-forms-preview .everest-forms-field .everest-forms-field-delete', function () {
