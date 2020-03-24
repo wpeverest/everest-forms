@@ -1117,7 +1117,7 @@ abstract class EVF_Form_Fields {
 
 		switch ( $option ) {
 			case 'label':
-				$label  = isset( $field['label'] ) && ! empty( $field['label'] ) ? esc_html( $field['label'] ) : '';
+				$label  = isset( $field['label'] ) && ! empty( $field['label'] ) ? $field['label'] : '';
 				$output = sprintf( '<label class="label-title %s"><span class="text">%s</span><span class="required">*</span></label>', $class, $label );
 				break;
 
