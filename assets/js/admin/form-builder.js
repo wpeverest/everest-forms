@@ -440,8 +440,8 @@
 			var max_value = $( '#everest-forms-field-option-' + field_id + '-max_value' ).val();
 			var new_skin = $( '#everest-forms-field-option-' + field_id + '-skin' ).val();
 			var default_value = $( '#everest-forms-field-option-' + field_id + '-default_value' ).val();
-			var $show_grid_option = $( '#everest-forms-field-option-' + field_id + '-show_grid' );
-			var $show_prefix_postfix_option = $( '#everest-forms-field-option-' + field_id + '-show_prefix_postfix' );
+			var show_grid_option = $( '#everest-forms-field-option-' + field_id + '-show_grid' ).is( ':checked' );
+			var show_prefix_postfix_option = $( '#everest-forms-field-option-' + field_id + '-show_prefix_postfix' ).is( ':checked' );
 			var is_text_prefix_postfix_enabled = $( '#everest-forms-field-option-' + field_id + '-use_text_prefix_postfix' ).is( ':checked' );
 			var slider_options = {};
 
@@ -459,15 +459,17 @@
 			if ( '' !== new_skin ) {
 				slider_options.skin = new_skin;
 			}
-			if ( $show_grid_option.is( ':checked' ) ) {
+			if ( show_grid_option ) {
 				slider_options.grid = true;
 			} else {
 				slider_options.grid = false;
 			}
-			if ( $show_prefix_postfix_option.is( ':checked' ) ) {
+			if ( show_prefix_postfix_option ) {
 				slider_options.hide_min_max = false;
+				$( '#everest-forms-field-option-row-' + field_id + '-use_text_prefix_postfix' ).show();
 			} else {
 				slider_options.hide_min_max = true;
+				$( '#everest-forms-field-option-row-' + field_id + '-use_text_prefix_postfix' ).hide();
 			}
 			if ( '' !== default_value ) {
 				slider_options.from = default_value;
@@ -486,7 +488,7 @@
 			$field.find( '.evf-slider-input' ).val( default_value );
 
 			// Set prefix/postfix texts.
-			if ( is_text_prefix_postfix_enabled ) {
+			if ( show_prefix_postfix_option && is_text_prefix_postfix_enabled ) {
 				var prefix_text = $field_option_section.find( '.evf-input-prefix-text' ).val();
 				var postfix_text = $field_option_section.find( '.evf-input-postfix-text' ).val();
 
