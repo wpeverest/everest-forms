@@ -467,9 +467,11 @@
 			if ( show_prefix_postfix_option ) {
 				slider_options.hide_min_max = false;
 				$( '#everest-forms-field-option-row-' + field_id + '-use_text_prefix_postfix' ).show();
+				$( '#everest-forms-field-option-' + field_id ).find( '.evf-prefix-postfix-warning-message' ).show();
 			} else {
 				slider_options.hide_min_max = true;
 				$( '#everest-forms-field-option-row-' + field_id + '-use_text_prefix_postfix' ).hide();
+				$( '#everest-forms-field-option-' + field_id ).find( '.evf-prefix-postfix-warning-message' ).hide();
 			}
 			if ( '' !== default_value ) {
 				slider_options.from = default_value;
