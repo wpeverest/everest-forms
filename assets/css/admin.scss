@@ -1675,6 +1675,7 @@ button.everest-forms-btn {
 			flex-wrap: wrap;
 
 			input[type='text'],
+			input[type='number'],
 			select {
 				flex: 0 0 50%;
 				margin-right: 2%;
@@ -3510,6 +3511,8 @@ button.everest-forms-btn {
 			.input-group-col-2 {
 				margin-bottom: 15px;
 
+				input[type='text'],
+				input[type='number'],
 				select {
 					margin-bottom: 0;
 				}
