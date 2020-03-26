@@ -3036,6 +3036,11 @@ button.everest-forms-btn {
 				&.everest-forms-hidden {
 					display: none;
 				}
+
+				&.evf-privacy-policy-consent-message {
+					display: initial;
+					margin-bottom: 0
+				}
 			}
 
 			.everest-forms-label-edit {
