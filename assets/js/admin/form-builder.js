@@ -229,7 +229,7 @@
 		 * @since 1.7.0
 		 */
 		bindPrivacyPolicyActions: function() {
-			$( '.everest-forms-field-option .evf-privacy-policy-consent-message' ).on( 'input', function ( e ) {
+			$( document.body ).on( 'input', '.everest-forms-field-option .evf-privacy-policy-consent-message', function ( e ) {
 				var new_message = $( this ).val();
 				var regex = new RegExp( /(\[[^\[\]]*\])(\([^\(\)]*\))/g );
 
@@ -1637,8 +1637,11 @@
 					EVFPanelBuilder.conditionalLogicAppendFieldIntegration( dragged_el_id );
 					EVFPanelBuilder.paymentFieldAppendToQuantity( dragged_el_id );
 					EVFPanelBuilder.paymentFieldAppendToDropdown( dragged_field_id, field_type );
-		 		}
-		 	});
+
+					// Make privacy policy field required by default.
+					$( '.everest-forms-field-options #everest-forms-field-option-row-' + dragged_field_id + '-required' ).find( 'input' ).click();
+				}
+			});
 		},
 
 		conditionalLogicAppendField: function( id ){
