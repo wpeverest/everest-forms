@@ -213,6 +213,7 @@
 			EVFPanelBuilder.bindToggleHandleActions();
 			EVFPanelBuilder.bindLabelEditInputActions();
 			EVFPanelBuilder.bindSyncedInputActions();
+			EVFPanelBuilder.bindPrivacyPolicyActions();
 
 			// Fields Panel.
 			EVFPanelBuilder.bindUIActionsFields();
@@ -220,6 +221,53 @@
 			if ( evf_data.tab === 'field-options' ) {
 				$( '.evf-panel-field-options-button' ).trigger( 'click' );
 			}
+		},
+
+		/**
+		 * All actions related to privacy policy field.
+		 *
+		 * @since 1.7.0
+		 */
+		bindPrivacyPolicyActions: function() {
+			$( '.everest-forms-field-option .evf-privacy-policy-consent-message' ).on( 'input', function ( e ) {
+				var new_message = $( this ).val();
+				var regex = new RegExp( /(\[[^\[\]]*\])(\([^\(\)]*\))/g );
+
+				// Process all the hyperlink syntax.
+				while ( matches = regex.exec( new_message ) ) {
+					var matched_string = matches[0];
+					var label          = matches[1];
+					var link           = matches[2];
+
+					// Trim brackets.
+					label = label.substring( 1, label.length - 1 );
+					link = link.substring( 1, link.length - 1 );
+
+					// Proceed only if label or link is not empty.
+					if ( '' !== label || '' !== link ) {
+
+						// Use hash(#) if the link is empty.
+						if ( '' === link ) {
+							link = '#';
+						}
+
+						// Use link as label if it's empty.
+						if ( '' === label ) {
+							label = link;
+						}
+
+						// Insert hyperlink html.
+						var html = '<a href="' + link + '">' + label + '</a>';
+						new_message = new_message.replace( matched_string, html );
+					} else {
+						// If both label and link are empty then replace it with empty string.
+						new_message = new_message.replace( matched_string, '' );
+					}
+				}
+
+				// Update the new processed consent message.
+				$( '.everest-forms-field.active' ).find( '.evf-privacy-policy-consent-message' ).html( new_message );
+			});
 		},
 
 		/**
