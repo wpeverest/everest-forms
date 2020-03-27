@@ -1638,8 +1638,13 @@
 					EVFPanelBuilder.paymentFieldAppendToQuantity( dragged_el_id );
 					EVFPanelBuilder.paymentFieldAppendToDropdown( dragged_field_id, field_type );
 
-					// Make privacy policy field required by default.
-					$( '.everest-forms-field-options #everest-forms-field-option-row-' + dragged_field_id + '-required' ).find( 'input' ).click();
+					// Set defaults in privacy policy field.
+					if ( 'privacy-policy' === field_type ) {
+						var consent_message = evf_data.i18n_privacy_policy_consent_message;
+						$( '#everest-forms-field-' + dragged_field_id ).find( '.evf-privacy-policy-consent-message' ).html( consent_message );
+						$( '#everest-forms-field-option-' + dragged_field_id ).find( '.evf-privacy-policy-consent-message' ).val( consent_message );
+						$( '.everest-forms-field-options #everest-forms-field-option-row-' + dragged_field_id + '-required' ).find( 'input' ).click();
+					}
 				}
 			});
 		},
