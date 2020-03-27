@@ -19,7 +19,7 @@ class EVF_Field_Privacy_Policy extends EVF_Form_Fields {
 	public function __construct() {
 		$this->name   = esc_html__( 'Privacy Policy', 'everest-forms' );
 		$this->type   = 'privacy-policy';
-		$this->icon   = 'evf-icon evf-icon-star';
+		$this->icon   = 'evf-icon evf-icon-privacy-policy';
 		$this->order  = 180;
 		$this->group  = 'advanced';
 		$this->is_pro = true;
