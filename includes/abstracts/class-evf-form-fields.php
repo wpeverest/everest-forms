@@ -101,6 +101,7 @@ abstract class EVF_Form_Fields {
 		add_action( 'everest_forms_process_validate_' . $this->type, array( $this, 'validate' ), 10, 3 );
 		add_action( 'everest_forms_process_format_' . $this->type, array( $this, 'format' ), 10, 4 );
 		add_filter( 'everest_forms_field_properties', array( $this, 'field_prefill_value_property' ), 10, 3 );
+		add_filter( 'everest_forms_field_exporter_' . $this->type, array( $this, 'export_data' ), 10, 2 );
 	}
 
 	/**
@@ -1487,5 +1488,18 @@ abstract class EVF_Form_Fields {
 		if ( in_array( $field['type'], array( 'text', 'textarea' ), true ) ) {
 			return isset( $field['limit_enabled'] ) && ! empty( $field['limit_count'] );
 		}
+	}
+
+	/**
+	 * Filter callback for outputting formatted data.
+	 *
+	 * @param array  $field  Field details to render.
+	 * @param string $context Context for rendering.
+	 */
+	public function export_data( $field, $context = '' ) {
+		return array(
+			'label' => ! empty( $field['name'] ) ? $field['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
+			'value' => ! empty( $field['value'] ) ? $field['value'] : false,
+		);
 	}
 }
