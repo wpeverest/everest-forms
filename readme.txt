@@ -2,7 +2,7 @@
 Contributors: WPEverest
 Tags: contact form, forms, form builder, contact, custom form
 Requires at least: 5.0
-Tested up to: 5.3
+Tested up to: 5.4
 Requires PHP: 5.4
 Stable tag: 1.6.4
 License: GPLv3
