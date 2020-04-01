@@ -619,6 +619,8 @@
  */
 .edit-post-visual-editor {
 	.everest-form-gutenberg-form-selector-wrap {
+		align-items: center;
+
 		.components-placeholder__label {
 			margin-bottom: 0;
 
@@ -638,6 +640,7 @@
 		.components-placeholder__fieldset {
 			.components-base-control {
 				width: 100%;
+				text-align: center;
 			}
 		}
 	}
