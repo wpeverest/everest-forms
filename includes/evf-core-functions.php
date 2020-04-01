@@ -1998,7 +1998,7 @@ if ( ! function_exists( 'apply_shortcodes' ) ) {
 	 *
 	 * This function is an alias for do_shortcode().
 	 *
-	 * @since 1.6.6
+	 * @since 1.6.5
 	 *
 	 * @see do_shortcode()
 	 *
