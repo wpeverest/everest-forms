@@ -213,7 +213,7 @@ class EVF_Template_Loader {
 		remove_filter( 'the_content', array( __CLASS__, 'form_preview_content_filter' ) );
 
 		if ( current_user_can( 'manage_everest_forms' ) ) {
-			$content = do_shortcode( '[everest_form id="' . absint( self::$form_id ) . '"]' );
+			$content = apply_shortcodes( '[everest_form id="' . absint( self::$form_id ) . '"]' );
 		}
 
 		self::$in_content_filter = false;
