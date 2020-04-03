@@ -522,7 +522,6 @@
 			border-right: none transparent;
 			border-left: none transparent;
 			border-bottom: 1px solid $color_gray-light;
-			height: 40px;
 			padding: 10px 0;
 
 			&:focus {
@@ -617,8 +616,11 @@
 /**
  * Gutenberg Block
  */
+
 .edit-post-visual-editor {
 	.everest-form-gutenberg-form-selector-wrap {
+		align-items: center;
+
 		.components-placeholder__label {
 			margin-bottom: 0;
 
@@ -638,6 +640,7 @@
 		.components-placeholder__fieldset {
 			.components-base-control {
 				width: 100%;
+				text-align: center;
 			}
 		}
 	}
