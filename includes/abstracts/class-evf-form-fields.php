@@ -1117,7 +1117,7 @@ abstract class EVF_Form_Fields {
 
 		switch ( $option ) {
 			case 'label':
-				$label  = isset( $field['label'] ) && ! empty( $field['label'] ) ? esc_html( $field['label'] ) : '';
+				$label  = isset( $field['label'] ) && ! empty( $field['label'] ) ? $field['label'] : '';
 				$output = sprintf( '<label class="label-title %s"><span class="text">%s</span><span class="required">*</span></label>', $class, $label );
 				break;
 
@@ -1438,7 +1438,7 @@ abstract class EVF_Form_Fields {
 			$field_submit = implode( "\r\n", $field_submit );
 		}
 
-		$name = ! empty( $form_data['form_fields'][ $field_id ]['label'] ) ? sanitize_text_field( $form_data['form_fields'][ $field_id ]['label'] ) : '';
+		$name = ! empty( $form_data['form_fields'][ $field_id ]['label'] ) ? make_clickable( $form_data['form_fields'][ $field_id ]['label'] ) : '';
 
 		// Sanitize but keep line breaks.
 		$value = evf_sanitize_textarea_field( $field_submit );

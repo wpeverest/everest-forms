@@ -349,7 +349,7 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 	 */
 	public function format( $field_id, $field_submit, $form_data, $meta_key ) {
 		$field      = $form_data['form_fields'][ $field_id ];
-		$name       = sanitize_text_field( $field['label'] );
+		$name       = make_clickable( $field['label'] );
 		$value_raw  = sanitize_text_field( $field_submit );
 		$choice_key = '';
 
