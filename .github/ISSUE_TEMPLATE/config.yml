@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: WordPress.org Community Forum
+    url: https://wordpress.org/support/plugin/everest-forms/
+    about: Please ask and answer questions here.
+  - name: Everest Forms Security Bug
+    url: https://wpeverest.com/contact/
+    about: Please report security vulnerabilities here.
