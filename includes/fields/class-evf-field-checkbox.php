@@ -355,11 +355,6 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 				continue;
 			}
 
-			// WPML Compatibility.
-			if ( isset( $choice['label']['text'], $choice['label']['attr']['for'] ) && '' !== $choice['label']['text'] ) {
-				$choice['label']['text'] = evf_string_translation( $form_data['id'], $field['id'], $choice['label']['text'] );
-			}
-
 			// Conditional logic.
 			if ( isset( $choices['primary'] ) ) {
 				$choice['attr']['conditional_id'] = $choices['primary']['attr']['conditional_id'];
