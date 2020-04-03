@@ -116,7 +116,6 @@ class EVF_Form_Task {
 
 				// Prepare fields for entry_save.
 				foreach ( $this->form_data['form_fields'] as $field ) {
-
 					if ( '' === isset( $this->form_data['form_fields']['meta-key'] ) ) {
 						continue;
 					}
