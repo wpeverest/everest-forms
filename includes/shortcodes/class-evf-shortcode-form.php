@@ -735,7 +735,7 @@ class EVF_Shortcode_Form {
 		$description          = filter_var( $description, FILTER_VALIDATE_BOOLEAN );
 		$errors               = isset( evf()->task->errors[ $form_id ] ) ? evf()->task->errors[ $form_id ] : array();
 		$form_enabled         = isset( $form_data['form_enabled'] ) ? absint( $form_data['form_enabled'] ) : 1;
-		$disable_message      = isset( $form_data['settings']['form_disable_message'] ) ? $form_data['settings']['form_disable_message'] : __( 'This form is disabled.', 'everest-forms' );
+		$disable_message      = isset( $form_data['settings']['form_disable_message'] ) ? evf_string_translation( $form_data['id'], 'form_disable_message', $form_data['settings']['form_disable_message'] ) : __( 'This form is disabled.', 'everest-forms' );
 		$ajax_form_submission = isset( $settings['ajax_form_submission'] ) ? $settings['ajax_form_submission'] : 0;
 
 		if ( 0 !== $ajax_form_submission ) {
