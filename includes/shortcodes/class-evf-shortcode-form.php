@@ -71,7 +71,7 @@ class EVF_Shortcode_Form {
 		if ( ! isset( $settings['submit_button_processing_text'] ) ) {
 			$process = 'data-process-text="' . esc_attr__( 'Processing&hellip;', 'everest-forms' ) . '"';
 		} elseif ( ! empty( $settings['submit_button_processing_text'] ) ) {
-			$process = 'data-process-text="' . esc_attr( $settings['submit_button_processing_text'] ) . '"';
+			$process = 'data-process-text="' . esc_attr( evf_string_translation( $form_data['id'], 'processing_text', $settings['submit_button_processing_text'] ) ) . '"';
 		}
 
 		// Submit button area.
