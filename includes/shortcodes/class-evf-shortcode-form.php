@@ -256,11 +256,11 @@ class EVF_Shortcode_Form {
 			echo '<div class="evf-title-container">';
 
 			if ( true === $title && ! empty( $settings['form_title'] ) ) {
-				echo '<div class="everest-forms--title">' . esc_html( $settings['form_title'] ) . '</div>';
+				echo '<div class="everest-forms--title">' . esc_html( evf_string_translation( $form_data['id'], 'form_title', $settings['form_title'] ) ) . '</div>';
 			}
 
 			if ( true === $description && ! empty( $settings['form_description'] ) ) {
-				echo '<div class="everest-forms--description">' . esc_textarea( $settings['form_description'] ) . '</div>';
+				echo '<div class="everest-forms--description">' . esc_textarea( evf_string_translation( $form_data['id'], 'form_description', $settings['form_description'] ) ) . '</div>';
 			}
 
 			echo '</div>';
