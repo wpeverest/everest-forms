@@ -233,24 +233,26 @@ class EVF_AJAX {
 		if ( ! empty( $data['form_fields'] ) ) {
 			foreach ( $data['form_fields'] as $field_key => $field ) {
 				// Only allow specific html in label.
-				$data['form_fields'][ $field_key ]['label'] = wp_kses(
-					$field['label'],
-					array(
-						'a'      => array(
-							'href'  => array(),
-							'class' => array(),
-						),
-						'span'   => array(
-							'class' => array(),
-						),
-						'em'     => array(),
-						'small'  => array(),
-						'strong' => array(),
-					)
-				);
 
-				// Register string for translation.
-				if ( isset( $field['label'] ) ) {
+				if ( ! empty( $field['label'] ) ) {
+
+					$data['form_fields'][ $field_key ]['label'] = wp_kses(
+						$field['label'],
+						array(
+							'a'      => array(
+								'href'  => array(),
+								'class' => array(),
+							),
+							'span'   => array(
+								'class' => array(),
+							),
+							'em'     => array(),
+							'small'  => array(),
+							'strong' => array(),
+						)
+					);
+
+					// Register string for translation.
 					evf_string_translation( $data['id'], $field['id'], $field['label'] );
 				}
 
