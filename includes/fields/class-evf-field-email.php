@@ -294,7 +294,9 @@ class EVF_Field_Email extends EVF_Form_Fields {
 
 			// Secondary field.
 			echo '<div ' . evf_html_attributes( false, $secondary['block'] ) . '>';
-			$secondary['attr']['placeholder'] = evf_string_translation( $form_data['id'], $field['id'], $secondary['attr']['placeholder'], '-confirmation-placeholder' );
+			if ( isset( $secondary['attr']['placeholder'] ) ) {
+				$secondary['attr']['placeholder'] = evf_string_translation( $form_data['id'], $field['id'], $secondary['attr']['placeholder'], '-confirmation-placeholder' );
+			}
 			printf(
 				'<input type="email" %s %s>',
 				evf_html_attributes( $secondary['id'], $secondary['class'], $secondary['data'], $secondary['attr'] ),

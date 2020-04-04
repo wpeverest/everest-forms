@@ -254,7 +254,10 @@ class EVF_Field_Text extends EVF_Form_Fields {
 		}
 
 		// Primary field.
-		$primary['data']['inputmask-mask'] = evf_string_translation( $form_data['id'], $field['id'], $primary['data']['inputmask-mask'], '-input-mask' );
+		if ( isset( $primary['data']['inputmask-mask'] ) ) {
+			$primary['data']['inputmask-mask'] = evf_string_translation( $form_data['id'], $field['id'], $primary['data']['inputmask-mask'], '-input-mask' );
+		}
+
 		printf(
 			'<input type="text" %s %s>',
 			evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ),
