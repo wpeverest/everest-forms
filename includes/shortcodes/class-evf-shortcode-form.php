@@ -166,7 +166,7 @@ class EVF_Shortcode_Form {
 		printf(
 			'<div %s>%s</div>',
 			evf_html_attributes( $description['id'], $description['class'], $description['data'], $description['attr'] ),
-			evf_string_translation( $form_data['id'], $field['id'], $description['value'] ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			evf_string_translation( $form_data['id'], $field['id'], $description['value'], '-description' ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		);
 	}
 
@@ -208,7 +208,8 @@ class EVF_Shortcode_Form {
 						'small'  => array(),
 						'strong' => array(),
 					)
-				)
+				),
+				'-label'
 			),
 			$required, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			$custom_tags // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -637,7 +638,7 @@ class EVF_Shortcode_Form {
 						'attr'     => array(
 							'name'        => "everest_forms[form_fields][{$field_id}]",
 							'value'       => ( isset( $field['default_value'] ) && ! empty( $field['default_value'] ) ) ? apply_filters( 'everest_forms_process_smart_tags', $field['default_value'], $form_data ) : ( isset( $_POST['everest_forms']['form_fields'][ $field_id ] ) ? $_POST['everest_forms']['form_fields'][ $field_id ] : '' ), // @codingStandardsIgnoreLine
-							'placeholder' => ! empty( $field['placeholder'] ) ? evf_string_translation( $form_data['id'], $field['id'], $field['placeholder'] ) : '',
+							'placeholder' => ! empty( $field['placeholder'] ) ? evf_string_translation( $form_data['id'], $field['id'], $field['placeholder'], '-placeholder' ) : '',
 						),
 						'class'    => $attributes['input_class'],
 						'data'     => $attributes['input_data'],
