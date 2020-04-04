@@ -184,8 +184,6 @@ class EVF_Field_Text extends EVF_Form_Fields {
 	public function field_properties( $properties, $field, $form_data ) {
 		// Input primary: Detect custom input mask.
 		if ( ! empty( $field['input_mask'] ) ) {
-			$field['input_mask'] = evf_string_translation( $form_data['id'], $field['id'], $field['input_mask'], '-input-mask' );
-
 			// Add class that will trigger custom mask.
 			$properties['inputs']['primary']['class'][] = 'evf-masked-input';
 
@@ -256,6 +254,7 @@ class EVF_Field_Text extends EVF_Form_Fields {
 		}
 
 		// Primary field.
+		$primary['data']['inputmask-mask'] = evf_string_translation( $form_data['id'], $field['id'], $primary['data']['inputmask-mask'], '-input-mask' );
 		printf(
 			'<input type="text" %s %s>',
 			evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ),
