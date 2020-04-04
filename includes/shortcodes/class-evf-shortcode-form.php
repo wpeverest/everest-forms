@@ -586,17 +586,17 @@ class EVF_Shortcode_Form {
 				foreach ( $likert_rows as $row_key => $row_label ) {
 					$row_keys[]                     = $row_key;
 					$row_slug                       = 'required-field-message-' . $row_key;
-					$sub_field_messages[ $row_key ] = isset( $field[ $row_slug ] ) ? $field[ $row_slug ] : $required_validation;
+					$sub_field_messages[ $row_key ] = isset( $field[ $row_slug ] ) ? evf_string_translation( $form_data['id'], $field['id'], $field[ $row_slug ], '-' . $row_slug ) : $required_validation;
 				}
 				$container_data['row-keys'] = wp_json_encode( $row_keys );
 			} elseif ( 'address' === $field['type'] ) {
 				$has_sub_fields     = true;
 				$sub_field_messages = array(
-					'address1' => isset( $field['required-field-message-address1'] ) ? $field['required-field-message-address1'] : '',
-					'city'     => isset( $field['required-field-message-city'] ) ? $field['required-field-message-city'] : '',
-					'state'    => isset( $field['required-field-message-state'] ) ? $field['required-field-message-state'] : '',
-					'postal'   => isset( $field['required-field-message-postal'] ) ? $field['required-field-message-postal'] : '',
-					'country'  => isset( $field['required-field-message-country'] ) ? $field['required-field-message-country'] : '',
+					'address1' => isset( $field['required-field-message-address1'] ) ? evf_string_translation( $form_data['id'], $field['id'], $field['required-field-message-address1'], '-required-field-message-address1' ) : '',
+					'city'     => isset( $field['required-field-message-city'] ) ? evf_string_translation( $form_data['id'], $field['id'], $field['required-field-message-city'], '-required-field-message-city' ) : '',
+					'state'    => isset( $field['required-field-message-state'] ) ? evf_string_translation( $form_data['id'], $field['id'], $field['required-field-message-state'], '-required-field-message-state' ) : '',
+					'postal'   => isset( $field['required-field-message-postal'] ) ? evf_string_translation( $form_data['id'], $field['id'], $field['required-field-message-postal'], '-required-field-message-postal' ) : '',
+					'country'  => isset( $field['required-field-message-country'] ) ? evf_string_translation( $form_data['id'], $field['id'], $field['required-field-message-country'], '-required-field-message-country' ) : '',
 				);
 			}
 
@@ -605,7 +605,7 @@ class EVF_Shortcode_Form {
 					$container_data[ 'required-field-message-' . $sub_field_type ] = $error_message;
 				}
 			} else {
-				$container_data['required-field-message'] = isset( $field['required-field-message'] ) && '' !== $field['required-field-message'] ? $field['required-field-message'] : $required_validation;
+				$container_data['required-field-message'] = isset( $field['required-field-message'] ) && '' !== $field['required-field-message'] ? evf_string_translation( $form_data['id'], $field['id'], $field['required-field-message'], '-required-field-message' ) : $required_validation;
 			}
 		}
 		$errors     = isset( evf()->task->errors[ $form_id ][ $field_id ] ) ? evf()->task->errors[ $form_id ][ $field_id ] : '';
