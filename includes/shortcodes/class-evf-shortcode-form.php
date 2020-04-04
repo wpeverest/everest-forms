@@ -209,7 +209,6 @@ class EVF_Shortcode_Form {
 						'strong' => array(),
 					)
 				),
-				'-label'
 			),
 			$required, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			$custom_tags // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
