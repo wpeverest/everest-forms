@@ -237,6 +237,30 @@
 	}
 }
 
+.evf-handler-counter {
+	display: flex;
+
+	.evf-handler-counter__button {
+		background: $color_gray-light-skin;
+		border: 1px solid $color_gray-lighten;
+		height: 30px;
+		width: 30px;
+
+		&.evf-handler-counter__button-minus {
+			border-radius: 3px 0 0 3px;
+		}
+
+		&.evf-handler-counter__button-plus {
+			border-radius: 0 3px 3px 0;
+		}
+	}
+
+	.evf-handler-counter__input {
+		width: 80px;
+		border-radius: 0;
+	}
+}
+
 .everest-forms-text-info {
 	color: $blue;
 }
@@ -3149,6 +3173,10 @@ button.everest-forms-btn {
 					margin: 10px 0;
 					font-style: italic;
 					line-height: 1.2;
+				}
+
+				.evf-hidden-content {
+					margin-top: 10px;
 				}
 
 				&.everest-forms-panel-field-tinymce {
