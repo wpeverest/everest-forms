@@ -1364,7 +1364,9 @@ abstract class EVF_Form_Fields {
 			return;
 		}
 
-		$field['properties']['inputs'][ $key ]['sublabel']['value'] = evf_string_translation( $form_data['id'], $field['id'], $field['properties']['inputs'][ $key ]['sublabel']['value'], '-sublabel-' . $key );
+		if ( $form_data ) {
+			$field['properties']['inputs'][ $key ]['sublabel']['value'] = evf_string_translation( $form_data['id'], $field['id'], $field['properties']['inputs'][ $key ]['sublabel']['value'], '-sublabel-' . $key );
+		}
 
 		printf(
 			'<label for="%s" class="everest-forms-field-sublabel %s %s">%s</label>',
