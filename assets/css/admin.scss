@@ -285,6 +285,16 @@
 	.evf-handler-counter__input {
 		width: 80px;
 		border-radius: 0;
+
+		&::-webkit-outer-spin-button,
+		&::-webkit-inner-spin-button {
+			-webkit-appearance: none;
+			margin: 0;
+		}
+
+		&[type='number'] {
+			-moz-appearance: textfield;
+		}
 	}
 }
 
@@ -643,6 +653,59 @@ button.everest-forms-btn {
 	}
 
 	// Toggle switch.
+	.everest-forms-toggle-form {
+		width: 28px;
+		height: 16px;
+		float: left;
+		margin-top: 3px;
+		margin-right: 16px;
+		position: relative;
+
+		input[type='checkbox'] {
+			display: none;
+
+			&:checked {
+				+ .slider {
+					background-color: $green;
+
+					&::before {
+						transform: translateX(100%);
+					}
+				}
+			}
+		}
+
+		.slider {
+			cursor: pointer;
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			transition: 0.4s;
+			background-color: #cdd0d2;
+
+			&::before {
+				content: '';
+				width: 12px;
+				height: 12px;
+				position: absolute;
+				left: 2px;
+				bottom: 2px;
+				transition: 0.4s;
+				background-color: $color-white;
+			}
+
+			&.round {
+				border-radius: 16px;
+
+				&::before {
+					border-radius: 50%;
+				}
+			}
+		}
+	}
+
 	.evf-toggle-section {
 		display: inline-block;
 
@@ -4498,59 +4561,6 @@ button.everest-forms-btn {
 table.wp-list-table {
 	span.na {
 		color: #999;
-	}
-
-	.everest-forms-toggle-form {
-		width: 28px;
-		height: 16px;
-		float: left;
-		margin-top: 3px;
-		margin-right: 16px;
-		position: relative;
-
-		input[type='checkbox'] {
-			display: none;
-
-			&:checked {
-				+ .slider {
-					background-color: $green;
-
-					&::before {
-						transform: translateX(100%);
-					}
-				}
-			}
-		}
-
-		.slider {
-			cursor: pointer;
-			position: absolute;
-			top: 0;
-			left: 0;
-			right: 0;
-			bottom: 0;
-			transition: 0.4s;
-			background-color: #cdd0d2;
-
-			&::before {
-				content: '';
-				width: 12px;
-				height: 12px;
-				position: absolute;
-				left: 2px;
-				bottom: 2px;
-				transition: 0.4s;
-				background-color: $color-white;
-			}
-
-			&.round {
-				border-radius: 16px;
-
-				&::before {
-					border-radius: 50%;
-				}
-			}
-		}
 	}
 
 	.row-actions {
