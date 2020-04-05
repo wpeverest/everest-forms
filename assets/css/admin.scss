@@ -658,11 +658,16 @@ button.everest-forms-btn {
 		height: 16px;
 		float: left;
 		margin-top: 3px;
-		margin-right: 16px;
+		margin-right: 4px;
 		position: relative;
 
 		input[type='checkbox'] {
-			display: none;
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			width: 100%;
+			opacity: 0;
+			z-index: 1;
 
 			&:checked {
 				+ .slider {
