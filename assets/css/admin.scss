@@ -43,6 +43,26 @@
 	}
 }
 
+/**
+ * Grid Styles
+ **/
+
+.evf-form-row {
+	display: flex;
+	flex-wrap: wrap;
+	margin-left: -15px;
+	margin-right: -15px;
+}
+
+// Gutter for all col
+.evf-form-col-4,
+.evf-form-col-6 {
+	position: relative;
+	width: 100%;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
 .evf_addons_wrap {
 	p.refresh {
 		margin: 0 0 2em;
@@ -5448,6 +5468,21 @@ img.ui-datepicker-trigger {
 				}
 			}
 		}
+	}
+}
+
+/**
+ * Optimisation for screens 768px.
+ */
+@media screen and (min-width: 768px) {
+	.evf-form-col-6 {
+		flex: 0 0 50%;
+		max-width: 50%;
+	}
+
+	.evf-form-col-4 {
+		flex: 0 0 33.333%;
+		max-width: 33.333%;
 	}
 }
 
