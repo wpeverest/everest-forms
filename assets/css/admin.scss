@@ -242,9 +242,12 @@
 
 	.evf-handler-counter__button {
 		background: $color_gray-light-skin;
-		border: 1px solid $color_gray-lighten;
-		height: 30px;
 		width: 30px;
+		height: 30px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border: 1px solid $color_gray-lighten;
 
 		&.evf-handler-counter__button-minus {
 			border-radius: 3px 0 0 3px;
@@ -252,6 +255,10 @@
 
 		&.evf-handler-counter__button-plus {
 			border-radius: 0 3px 3px 0;
+		}
+
+		&.dashicons {
+			font-size: 20px;
 		}
 	}
 
@@ -3177,6 +3184,21 @@ button.everest-forms-btn {
 
 				.evf-hidden-content {
 					margin-top: 10px;
+				}
+
+				.max-entry-section {
+					.max-entry-section-content {
+						display: flex;
+
+						.everest-forms-panel-field {
+							margin-bottom: 0;
+						}
+
+						.entry-period {
+							flex: 1;
+							margin-left: 10px;
+						}
+					}
 				}
 
 				&.everest-forms-panel-field-tinymce {
