@@ -1989,3 +1989,207 @@ function evf_cleanup_logs() {
 	}
 }
 add_action( 'everest_forms_cleanup_logs', 'evf_cleanup_logs' );
+
+/**
+ * Process syntaxes in a text.
+ *
+ * @since 1.7.0
+ *
+ * @param string $text Text to be processed.
+ * @param bool   $escape_html Whether to escape all the htmls before processing or not.
+ *
+ * @return string Processed text.
+ */
+function evf_process_syntaxes( $text, $escape_html = true ) {
+
+	if ( true === $escape_html ) {
+		$text = esc_html( $text );
+	}
+	$text = evf_process_hyperlink_syntax( $text );
+	$text = evf_process_italic_syntax( $text );
+	$text = evf_process_bold_syntax( $text );
+	$text = evf_process_underline_syntax( $text );
+	$text = evf_process_line_breaks( $text );
+	return $text;
+}
+
+/**
+ * Extract page ids from a text.
+ *
+ * @since 1.7.0
+ *
+ * @param string $text Text to extract page ids from.
+ *
+ * @return mixed
+ */
+function evf_extract_page_ids( $text ) {
+	$page_id_syntax_matches = array();
+	$page_ids               = array();
+
+	while ( preg_match( '/page_id=([0-9]+)/', $text, $page_id_syntax_matches ) ) {
+		$page_id    = $page_id_syntax_matches[1];
+		$page_ids[] = $page_id;
+		$text       = str_replace( 'page_id=' . $page_id, '', $text );
+	}
+
+	if ( count( $page_ids ) > 0 ) {
+		return $page_ids;
+	}
+	return false;
+}
+
+/**
+ * Process hyperlink syntaxes in a text.
+ * The syntax used for hyperlink is: [Link Label](Link URL)
+ * Example: [Google Search Page](https://google.com)
+ *
+ * @since 1.7.0
+ *
+ * @param string $text Text to process.
+ *
+ * @return string Processed text.
+ */
+function evf_process_hyperlink_syntax( $text ) {
+	$matches = array();
+	$regex   = '/(\[[^\[\]]*\])(\([^\(\)]*\))/';
+
+	while ( preg_match( $regex, $text, $matches ) ) {
+		$matched_string = $matches[0];
+		$label          = $matches[1];
+		$link           = $matches[2];
+		$class          = '';
+		$page_id        = '';
+
+		// Trim brackets.
+		$label = trim( substr( $label, 1, -1 ) );
+		$link  = trim( substr( $link, 1, -1 ) );
+
+		// Proceed only if label or link is not empty.
+		if ( ! empty( $label ) || ! empty( $link ) ) {
+
+			// Use hash(#) if the link is empty.
+			if ( empty( $link ) ) {
+				$link = '#';
+			}
+
+			// Use link as label if it's empty.
+			if ( empty( $label ) ) {
+				$label = $link;
+			}
+
+			// See if it's a link to a local page.
+			if ( strpos( $link, '?' ) === 0 ) {
+				$class .= ' evf-privacy-policy-local-page-link';
+
+				// Extract page id.
+				$page_ids = evf_extract_page_ids( $link );
+
+				if ( false !== $page_ids ) {
+					$page_id = $page_ids[0];
+				}
+				$link = '#';
+			}
+
+			// Insert hyperlink html.
+			$html = sprintf( '<a data-page-id="%s" target="_blank" rel="noopener noreferrer nofollow" href="%s" class="%s">%s</a>', $page_id, $link, $class, $label );
+			$text = str_replace( $matched_string, $html, $text );
+		} else {
+			// If both label and link are empty then replace it with empty string.
+			$text = str_replace( $matched_string, '', $text );
+		}
+	}
+
+	return $text;
+}
+
+/**
+ * Process italic syntaxes in a text.
+ * The syntax used for italic text is: `text`
+ * Just wrap the text with back tick characters. To escape a backtick insert a backslash(\) before the character like "\`".
+ *
+ * @since 1.7.0
+ *
+ * @param string $text Text to process.
+ *
+ * @return string Processed text.
+ */
+function evf_process_italic_syntax( $text ) {
+	$matches = array();
+	$regex   = '/`[^`]+`/';
+	$text    = str_replace( '\`', '<&&&&&>', $text ); // To preserve an escaped special character '`'.
+
+	while ( preg_match( $regex, $text, $matches ) ) {
+		$matched_string = $matches[0];
+		$label          = substr( trim( $matched_string ), 1, -1 );
+		$html           = sprintf( '<i>%s</i>', $label );
+		$text           = str_replace( $matched_string, $html, $text );
+	}
+
+	return str_replace( '<&&&&&>', '`', $text );
+}
+
+/**
+ * Process bold syntaxes in a text.
+ * The syntax used for bold text is: *text*
+ * Just wrap the text with asterisk characters. To escape an asterisk insert a backslash(\) before the character like "\*".
+ *
+ * @since 1.7.0
+ *
+ * @param string $text Text to process.
+ *
+ * @return string Processed text.
+ */
+function evf_process_bold_syntax( $text ) {
+	$matches = array();
+	$regex   = '/\*[^*]+\*/';
+	$text    = str_replace( '\*', '<&&&&&>', $text ); // To preserve an escaped special character '*'.
+
+	while ( preg_match( $regex, $text, $matches ) ) {
+		$matched_string = $matches[0];
+		$label          = substr( trim( $matched_string ), 1, -1 );
+		$html           = sprintf( '<b>%s</b>', $label );
+		$text           = str_replace( $matched_string, $html, $text );
+	}
+
+	return str_replace( '<&&&&&>', '*', $text );
+}
+
+/**
+ * Process underline syntaxes in a text.
+ * The syntax used for bold text is: __text__
+ * Wrap the text with double underscore characters. To escape an underscore insert a backslash(\) before the character like "\_".
+ *
+ * @since 1.7.0
+ *
+ * @param string $text Text to process.
+ *
+ * @return string Processed text.
+ */
+function evf_process_underline_syntax( $text ) {
+	$matches = array();
+	$regex   = '/__[^_]+__/';
+	$text    = str_replace( '\_', '<&&&&&>', $text ); // To preserve an escaped special character '_'.
+
+	while ( preg_match( $regex, $text, $matches ) ) {
+		$matched_string = $matches[0];
+		$label          = substr( trim( $matched_string ), 2, -2 );
+		$html           = sprintf( '<u>%s</u>', $label );
+		$text           = str_replace( $matched_string, $html, $text );
+	}
+
+	$text = str_replace( '<&&&&&>', '_', $text );
+	return $text;
+}
+
+/**
+ * It replaces `\n` characters with `<br/>` tag because new line `\n` character is not supported in html.
+ *
+ * @since 1.7.0
+ *
+ * @param string $text Text to process.
+ *
+ * @return string Processed text.
+ */
+function evf_process_line_breaks( $text ) {
+	return str_replace( "\n", '<br/>', $text );
+}
