@@ -292,6 +292,7 @@
 		 * @return {string} Processed text.
 		 */
 		processSyntaxes: function( text ) {
+			text = text.replace( /^\s+/g, '' );
 			text = EVFPanelBuilder.processHyperlinkSyntax( text );
 			text = EVFPanelBuilder.process_italic_syntax( text );
 			text = EVFPanelBuilder.process_bold_syntax( text );

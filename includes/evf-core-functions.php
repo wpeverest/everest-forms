@@ -1997,11 +1997,15 @@ add_action( 'everest_forms_cleanup_logs', 'evf_cleanup_logs' );
  *
  * @param string $text Text to be processed.
  * @param bool   $escape_html Whether to escape all the htmls before processing or not.
+ * @param bool   $trim_trailing_spaces Whether to trim trailing spaces or not.
  *
  * @return string Processed text.
  */
-function evf_process_syntaxes( $text, $escape_html = true ) {
+function evf_process_syntaxes( $text, $escape_html = true, $trim_trailing_spaces = true ) {
 
+	if ( true === $trim_trailing_spaces ) {
+		$text = trim( $text );
+	}
 	if ( true === $escape_html ) {
 		$text = esc_html( $text );
 	}
@@ -2045,11 +2049,13 @@ function evf_extract_page_ids( $text ) {
  *
  * @since 1.7.0
  *
- * @param string $text Text to process.
+ * @param string $text         Text to process.
+ * @param string $use_no_a_tag If set to `true` only the link will be used and no `a` tag. Particularly useful for exporting CSV,
+ *                             as the html tags are escaped in a CSV file.
  *
  * @return string Processed text.
  */
-function evf_process_hyperlink_syntax( $text ) {
+function evf_process_hyperlink_syntax( $text, $use_no_a_tag = false ) {
 	$matches = array();
 	$regex   = '/(\[[^\[\]]*\])(\([^\(\)]*\))/';
 
@@ -2086,12 +2092,20 @@ function evf_process_hyperlink_syntax( $text ) {
 
 				if ( false !== $page_ids ) {
 					$page_id = $page_ids[0];
+					$link    = get_page_link( $page_id );
+
+					if ( empty( $link ) ) {
+						$link = '#';
+					}
 				}
-				$link = '#';
 			}
 
 			// Insert hyperlink html.
-			$html = sprintf( '<a data-page-id="%s" target="_blank" rel="noopener noreferrer nofollow" href="%s" class="%s">%s</a>', $page_id, $link, $class, $label );
+			if ( true === $use_no_a_tag ) {
+				$html = $link;
+			} else {
+				$html = sprintf( '<a data-page-id="%s" target="_blank" rel="noopener noreferrer nofollow" href="%s" class="%s">%s</a>', $page_id, $link, $class, $label );
+			}
 			$text = str_replace( $matched_string, $html, $text );
 		} else {
 			// If both label and link are empty then replace it with empty string.
