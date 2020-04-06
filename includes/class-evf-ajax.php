@@ -232,10 +232,8 @@ class EVF_AJAX {
 		$empty_meta_data = array();
 		if ( ! empty( $data['form_fields'] ) ) {
 			foreach ( $data['form_fields'] as $field_key => $field ) {
-				// Only allow specific html in label.
-
 				if ( ! empty( $field['label'] ) ) {
-
+					// Only allow specific html in label.
 					$data['form_fields'][ $field_key ]['label'] = wp_kses(
 						$field['label'],
 						array(
