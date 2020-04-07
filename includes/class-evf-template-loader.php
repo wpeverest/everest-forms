@@ -217,7 +217,7 @@ class EVF_Template_Loader {
 				$content = apply_shortcodes( '[everest_form id="' . absint( self::$form_id ) . '"]' );
 			} else {
 				// @todo Remove when start supporting WP 5.4 or later.
-				$shortcode = do_shortcode( '[everest_form id="' . absint( self::$form_id ) . '"]' );
+				$content = do_shortcode( '[everest_form id="' . absint( self::$form_id ) . '"]' );
 			}
 		}
 
