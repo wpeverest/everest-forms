@@ -208,7 +208,7 @@ class EVF_Shortcode_Form {
 						'small'  => array(),
 						'strong' => array(),
 					)
-				),
+				)
 			),
 			$required, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			$custom_tags // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
