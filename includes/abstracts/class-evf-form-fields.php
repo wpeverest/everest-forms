@@ -824,7 +824,7 @@ abstract class EVF_Form_Fields {
 						'slug'          => 'add_bulk_options',
 						'value'         => $label,
 						'tooltip'       => esc_html__( 'Add multiple options at once.', 'everest-forms' ),
-						'after_tooltip' => '<a class="evf-toggle-prests-list" href="#">Presets</a>',
+						'after_tooltip' => sprintf( '<a class="evf-toggle-prests-list" href="#">%s</a>', esc_html__( 'Presets', 'everest-forms' ) ),
 					)
 				);
 
@@ -951,7 +951,7 @@ abstract class EVF_Form_Fields {
 					),
 					false
 				);
-				$field_content .= '<a class="button button-small evf-add-bulk-options" href="#">Add Options</a>';
+				$field_content .= sprintf( '<a class="button button-small evf-add-bulk-options" href="#">%s</a>', esc_html__( 'Add Options', 'everest-forms' ) );
 
 				// Final field output.
 				$output = $this->field_element(
