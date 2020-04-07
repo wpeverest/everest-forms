@@ -55,7 +55,7 @@ class EVF_Frontend_Scripts {
 			array(
 				'everest-forms-general' => array(
 					'src'     => self::get_asset_url( 'assets/css/everest-forms.css' ),
-					'deps'    => '',
+					'deps'    => array( 'select2' ),
 					'version' => EVF_VERSION,
 					'media'   => 'all',
 					'has_rtl' => true,
@@ -173,7 +173,7 @@ class EVF_Frontend_Scripts {
 			),
 			'everest-forms'                 => array(
 				'src'     => self::get_asset_url( 'assets/js/frontend/everest-forms' . $suffix . '.js' ),
-				'deps'    => array( 'jquery', 'inputmask', 'jquery-validate' ),
+				'deps'    => array( 'jquery', 'inputmask', 'jquery-validate', 'selectWoo' ),
 				'version' => EVF_VERSION,
 			),
 			'everest-forms-text-limit'      => array(
@@ -185,6 +185,11 @@ class EVF_Frontend_Scripts {
 				'src'     => self::get_asset_url( 'assets/js/frontend/ajax-submission' . $suffix . '.js' ),
 				'deps'    => array( 'jquery', 'inputmask', 'jquery-validate' ),
 				'version' => EVF_VERSION,
+			),
+			'selectWoo'                     => array(
+				'src'     => self::get_asset_url( 'assets/js/selectWoo/selectWoo' . $suffix . '.js' ),
+				'deps'    => array( 'jquery' ),
+				'version' => '1.0.4',
 			),
 		);
 		foreach ( $register_scripts as $name => $props ) {

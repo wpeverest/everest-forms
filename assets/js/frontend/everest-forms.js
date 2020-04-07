@@ -17,9 +17,15 @@ jQuery( function ( $ ) {
 			this.load_validation();
 			this.submission_scroll();
 			this.randomize_elements();
+			this.init_select2_fields();
 
 			// Inline validation.
 			this.$everest_form.on( 'input validate change', '.input-text, select, input:checkbox, input:radio', this.validate_field );
+		},
+		init_select2_fields: function() {
+			if ( 'function' === typeof $( '.evf-select2-enabled' ).selectWoo ) {
+				$( '.evf-select2-enabled' ).selectWoo();
+			}
 		},
 		init_inputMask: function() {
 			// Only load if jQuery inputMask library exists.

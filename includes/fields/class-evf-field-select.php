@@ -48,6 +48,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 					'description',
 					'required',
 					'required_field_message',
+					'select2',
 				),
 			),
 			'advanced-options' => array(
@@ -103,6 +104,11 @@ class EVF_Field_Select extends EVF_Form_Fields {
 			foreach ( $field_atts['input_data'] as $key => $val ) {
 				$field_data .= ' data-' . $key . '="' . $val . '"';
 			}
+		}
+
+		// Enable select2 feature.
+		if ( ! empty( $field['select2'] ) && '1' === $field['select2'] ) {
+			$primary['class'][] = 'evf-select2-enabled';
 		}
 
 		// Check to see if any of the options have selected by default.

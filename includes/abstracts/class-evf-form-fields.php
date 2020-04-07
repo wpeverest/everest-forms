@@ -903,6 +903,35 @@ abstract class EVF_Form_Fields {
 				}
 				break;
 
+			/**
+			 * Select2 Option.
+			 */
+			case 'select2':
+				$default = ! empty( $args['default'] ) ? $args['default'] : '0';
+				$value   = isset( $field['select2'] ) ? $field['select2'] : $default;
+				$tooltip = esc_html__( 'Check this option to enable select2 feature. It enables you to search items in the dropdown field.', 'everest-forms' );
+				$output  = $this->field_element(
+					'checkbox',
+					$field,
+					array(
+						'slug'    => 'select2',
+						'value'   => $value,
+						'desc'    => esc_html__( 'Enable Select2', 'everest-forms' ),
+						'tooltip' => $tooltip,
+					),
+					false
+				);
+				$output  = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'select2',
+						'content' => $output,
+					),
+					false
+				);
+				break;
+
 			/*
 			 * Placeholder.
 			 */
