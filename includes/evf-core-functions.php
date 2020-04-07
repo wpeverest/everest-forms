@@ -1808,6 +1808,70 @@ function evf_get_countries() {
 }
 
 /**
+ * Get U.S. States.
+ *
+ * @since  1.7.0
+ * @return array
+ */
+function evf_get_states() {
+	$states = array(
+		'AL' => esc_html__( 'Alabama', 'everest-forms' ),
+		'AK' => esc_html__( 'Alaska', 'everest-forms' ),
+		'AZ' => esc_html__( 'Arizona', 'everest-forms' ),
+		'AR' => esc_html__( 'Arkansas', 'everest-forms' ),
+		'CA' => esc_html__( 'California', 'everest-forms' ),
+		'CO' => esc_html__( 'Colorado', 'everest-forms' ),
+		'CT' => esc_html__( 'Connecticut', 'everest-forms' ),
+		'DE' => esc_html__( 'Delaware', 'everest-forms' ),
+		'DC' => esc_html__( 'District of Columbia', 'everest-forms' ),
+		'FL' => esc_html__( 'Florida', 'everest-forms' ),
+		'GA' => esc_html__( 'Georgia', 'everest-forms' ),
+		'HI' => esc_html__( 'Hawaii', 'everest-forms' ),
+		'ID' => esc_html__( 'Idaho', 'everest-forms' ),
+		'IL' => esc_html__( 'Illinois', 'everest-forms' ),
+		'IN' => esc_html__( 'Indiana', 'everest-forms' ),
+		'IA' => esc_html__( 'Iowa', 'everest-forms' ),
+		'KS' => esc_html__( 'Kansas', 'everest-forms' ),
+		'KY' => esc_html__( 'Kentucky', 'everest-forms' ),
+		'LA' => esc_html__( 'Louisiana', 'everest-forms' ),
+		'ME' => esc_html__( 'Maine', 'everest-forms' ),
+		'MD' => esc_html__( 'Maryland', 'everest-forms' ),
+		'MA' => esc_html__( 'Massachusetts', 'everest-forms' ),
+		'MI' => esc_html__( 'Michigan', 'everest-forms' ),
+		'MN' => esc_html__( 'Minnesota', 'everest-forms' ),
+		'MS' => esc_html__( 'Mississippi', 'everest-forms' ),
+		'MO' => esc_html__( 'Missouri', 'everest-forms' ),
+		'MT' => esc_html__( 'Montana', 'everest-forms' ),
+		'NE' => esc_html__( 'Nebraska', 'everest-forms' ),
+		'NV' => esc_html__( 'Nevada', 'everest-forms' ),
+		'NH' => esc_html__( 'New Hampshire', 'everest-forms' ),
+		'NJ' => esc_html__( 'New Jersey', 'everest-forms' ),
+		'NM' => esc_html__( 'New Mexico', 'everest-forms' ),
+		'NY' => esc_html__( 'New York', 'everest-forms' ),
+		'NC' => esc_html__( 'North Carolina', 'everest-forms' ),
+		'ND' => esc_html__( 'North Dakota', 'everest-forms' ),
+		'OH' => esc_html__( 'Ohio', 'everest-forms' ),
+		'OK' => esc_html__( 'Oklahoma', 'everest-forms' ),
+		'OR' => esc_html__( 'Oregon', 'everest-forms' ),
+		'PA' => esc_html__( 'Pennsylvania', 'everest-forms' ),
+		'RI' => esc_html__( 'Rhode Island', 'everest-forms' ),
+		'SC' => esc_html__( 'South Carolina', 'everest-forms' ),
+		'SD' => esc_html__( 'South Dakota', 'everest-forms' ),
+		'TN' => esc_html__( 'Tennessee', 'everest-forms' ),
+		'TX' => esc_html__( 'Texas', 'everest-forms' ),
+		'UT' => esc_html__( 'Utah', 'everest-forms' ),
+		'VT' => esc_html__( 'Vermont', 'everest-forms' ),
+		'VA' => esc_html__( 'Virginia', 'everest-forms' ),
+		'WA' => esc_html__( 'Washington', 'everest-forms' ),
+		'WV' => esc_html__( 'West Virginia', 'everest-forms' ),
+		'WI' => esc_html__( 'Wisconsin', 'everest-forms' ),
+		'WY' => esc_html__( 'Wyoming', 'everest-forms' ),
+	);
+
+	return (array) apply_filters( 'everest_forms_states', $states );
+}
+
+/**
  * Get builder fields groups.
  *
  * @return array

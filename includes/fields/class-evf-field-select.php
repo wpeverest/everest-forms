@@ -44,6 +44,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 				'field_options' => array(
 					'label',
 					'meta',
+					'add_bulk_options',
 					'choices',
 					'description',
 					'required',

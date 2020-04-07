@@ -810,6 +810,163 @@ abstract class EVF_Form_Fields {
 				break;
 
 			/**
+			 * Add bulk options.
+			 */
+			case 'add_bulk_options':
+				$class = ! empty( $args['class'] ) ? esc_attr( $args['class'] ) : '';
+				$label = ! empty( $args['label'] ) ? esc_html( $args['label'] ) : esc_html__( 'Add Bulk Options', 'everest-forms' );
+
+				// Field label.
+				$field_label = $this->field_element(
+					'label',
+					$field,
+					array(
+						'slug'          => 'add_bulk_options',
+						'value'         => $label,
+						'tooltip'       => esc_html__( 'Add multiple options at once.', 'everest-forms' ),
+						'after_tooltip' => '<a class="evf-toggle-prests-list" href="#">Presets</a>',
+					)
+				);
+
+				// Preset contents.
+				$presets      = array(
+					array(
+						'label'   => esc_html__( 'Months', 'everest-forms' ),
+						'class'   => 'evf-options-preset-months',
+						'options' => array(
+							esc_html__( 'January', 'everest-forms' ),
+							esc_html__( 'February', 'everest-forms' ),
+							esc_html__( 'March', 'everest-forms' ),
+							esc_html__( 'April', 'everest-forms' ),
+							esc_html__( 'May', 'everest-forms' ),
+							esc_html__( 'June', 'everest-forms' ),
+							esc_html__( 'July', 'everest-forms' ),
+							esc_html__( 'August', 'everest-forms' ),
+							esc_html__( 'September', 'everest-forms' ),
+							esc_html__( 'October', 'everest-forms' ),
+							esc_html__( 'November', 'everest-forms' ),
+							esc_html__( 'December', 'everest-forms' ),
+						),
+					),
+					array(
+						'label'   => esc_html__( 'Week Days', 'everest-forms' ),
+						'class'   => 'evf-options-preset-week-days',
+						'options' => array(
+							esc_html__( 'Sunday', 'everest-forms' ),
+							esc_html__( 'Monday', 'everest-forms' ),
+							esc_html__( 'Tuesday', 'everest-forms' ),
+							esc_html__( 'Wednesday', 'everest-forms' ),
+							esc_html__( 'Thursday', 'everest-forms' ),
+							esc_html__( 'Friday', 'everest-forms' ),
+							esc_html__( 'Saturday', 'everest-forms' ),
+						),
+					),
+					array(
+						'label'   => esc_html__( 'Countries', 'everest-forms' ),
+						'class'   => 'evf-options-preset-countries',
+						'options' => array_values( evf_get_countries() ),
+					),
+					array(
+						'label'   => esc_html__( 'Countries Postal Code', 'everest-forms' ),
+						'class'   => 'evf-options-preset-countries-postal-code',
+						'options' => array_keys( evf_get_countries() ),
+					),
+					array(
+						'label'   => esc_html__( 'U.S. States', 'everest-forms' ),
+						'class'   => 'evf-options-preset-states',
+						'options' => array_values( evf_get_states() ),
+					),
+					array(
+						'label'   => esc_html__( 'U.S. States Postal Code', 'everest-forms' ),
+						'class'   => 'evf-options-preset-states-postal-code',
+						'options' => array_keys( evf_get_states() ),
+					),
+					array(
+						'label'   => esc_html__( 'Age Groups', 'everest-forms' ),
+						'class'   => 'evf-options-preset-age-groups',
+						'options' => array(
+							esc_html__( 'Under 18', 'everest-forms' ),
+							esc_html__( '18-24', 'everest-forms' ),
+							esc_html__( '25-34', 'everest-forms' ),
+							esc_html__( '35-44', 'everest-forms' ),
+							esc_html__( '45-54', 'everest-forms' ),
+							esc_html__( '55-64', 'everest-forms' ),
+							esc_html__( '65 or Above', 'everest-forms' ),
+							esc_html__( 'Prefer Not to Answer', 'everest-forms' ),
+						),
+					),
+					array(
+						'label'   => esc_html__( 'Satisfaction', 'everest-forms' ),
+						'class'   => 'evf-options-preset-satisfaction',
+						'options' => array(
+							esc_html__( 'Very Satisfied', 'everest-forms' ),
+							esc_html__( 'Satisfied', 'everest-forms' ),
+							esc_html__( 'Neutral', 'everest-forms' ),
+							esc_html__( 'Unsatisfied', 'everest-forms' ),
+							esc_html__( 'Very Unsatisfied', 'everest-forms' ),
+							esc_html__( 'N/A', 'everest-forms' ),
+						),
+					),
+					array(
+						'label'   => esc_html__( 'Importance', 'everest-forms' ),
+						'class'   => 'evf-options-preset-importance',
+						'options' => array(
+							esc_html__( 'Very Important', 'everest-forms' ),
+							esc_html__( 'Important', 'everest-forms' ),
+							esc_html__( 'Neutral', 'everest-forms' ),
+							esc_html__( 'Somewhat Important', 'everest-forms' ),
+							esc_html__( 'Not at all Important', 'everest-forms' ),
+							esc_html__( 'N/A', 'everest-forms' ),
+						),
+					),
+					array(
+						'label'   => esc_html__( 'Agreement', 'everest-forms' ),
+						'class'   => 'evf-options-preset-agreement',
+						'options' => array(
+							esc_html__( 'Strongly Agree', 'everest-forms' ),
+							esc_html__( 'Agree', 'everest-forms' ),
+							esc_html__( 'Neutral', 'everest-forms' ),
+							esc_html__( 'Disagree', 'everest-forms' ),
+							esc_html__( 'Strongly Disagree', 'everest-forms' ),
+							esc_html__( 'N/A', 'everest-forms' ),
+						),
+					),
+				);
+				$presets_html = '<div class="evf-options-presets" hidden>';
+				foreach ( $presets as $preset ) {
+					$presets_html .= sprintf( '<div class="evf-options-preset %s">', esc_attr( $preset['class'] ) );
+					$presets_html .= sprintf( '<a class="evf-options-preset-label" href="#">%s</a>', $preset['label'] );
+					$presets_html .= sprintf( '<textarea hidden class="evf-options-preset-value">%s</textarea>', implode( "\n", $preset['options'] ) );
+					$presets_html .= '</div>';
+				}
+				$presets_html .= '</div>';
+
+				// Field contents.
+				$field_content  = $this->field_element(
+					'textarea',
+					$field,
+					array(
+						'slug'  => 'add_bulk_options',
+						'value' => '',
+					),
+					false
+				);
+				$field_content .= '<a class="button button-small evf-add-bulk-options" href="#">Add Options</a>';
+
+				// Final field output.
+				$output = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'add_bulk_options',
+						'content' => $field_label . $presets_html . $field_content,
+						'class'   => $class,
+					),
+					false
+				);
+				break;
+
+			/**
 			 * Advanced Fields.
 			 */
 
