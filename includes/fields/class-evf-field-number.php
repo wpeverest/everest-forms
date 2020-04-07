@@ -252,7 +252,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 
 		// Set final field details.
 		evf()->task->form_fields[ $field_id ] = array(
-			'name'     => sanitize_text_field( $name ),
+			'name'     => make_clickable( $name ),
 			'value'    => sanitize_text_field( $value ),
 			'id'       => $field_id,
 			'type'     => $this->type,

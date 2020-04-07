@@ -116,7 +116,6 @@ class EVF_Form_Task {
 
 				// Prepare fields for entry_save.
 				foreach ( $this->form_data['form_fields'] as $field ) {
-
 					if ( '' === isset( $this->form_data['form_fields']['meta-key'] ) ) {
 						continue;
 					}
@@ -129,7 +128,7 @@ class EVF_Form_Task {
 						$field_submit = isset( $field_submit['signature_image'] ) ? $field_submit['signature_image'] : '';
 					}
 
-					$exclude = array( 'title', 'html', 'captcha' );
+					$exclude = array( 'title', 'html', 'captcha', 'image-upload', 'file-upload' );
 
 					if ( ! in_array( $field_type, $exclude, true ) ) {
 						$this->form_fields[ $field_id ] = array(
