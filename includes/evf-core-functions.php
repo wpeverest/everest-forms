@@ -1966,12 +1966,14 @@ function evf_debug_data( $expression, $return = false ) {
  * @param string $name_suffix To make the field have unique name for the passed string.
  */
 function evf_string_translation( $form_id, $field_id, $variable, $name_suffix = '' ) {
-	if ( function_exists( 'icl_register_string' ) ) {
-		icl_register_string( isset( $form_id ) ? 'everest_forms_' . absint( $form_id ) : 0, isset( $field_id ) ? $field_id . $name_suffix : '', $variable );
-	}
 
-	if ( function_exists( 'icl_t' ) ) {
+	// If Poly-Lang is installed.
+	if ( function_exists( 'icl_register_string' ) && function_exists( 'icl_t' ) && ! has_filter( 'wpml_translate_single_string' ) ) {
+		icl_register_string( isset( $form_id ) ? 'everest_forms_' . absint( $form_id ) : 0, isset( $field_id ) ? $field_id . $name_suffix : '', $variable );
 		$variable = icl_t( isset( $form_id ) ? 'everest_forms_' . absint( $form_id ) : 0, isset( $field_id ) ? $field_id . $name_suffix : '', $variable );
+	} elseif ( has_action( 'wpml_register_single_string' ) ) { // If WPML is installed.
+		do_action( 'wpml_register_single_string', isset( $form_id ) ? 'everest_forms_' . absint( $form_id ) : 0, isset( $field_id ) ? $field_id . $name_suffix : '', $variable );
+		$variable = apply_filters( 'wpml_translate_single_string', $variable, isset( $form_id ) ? 'everest_forms_' . absint( $form_id ) : 0, isset( $field_id ) ? $field_id . $name_suffix : '', $variable );
 	}
 
 	return $variable;
