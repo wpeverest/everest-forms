@@ -95,7 +95,7 @@ class EVF_Field_Email extends EVF_Form_Fields {
 					'attr'     => array(
 						'name'        => "everest_forms[form_fields][{$field_id}][secondary]",
 						'value'       => '',
-						'placeholder' => ! empty( $field['confirmation_placeholder'] ) ? $field['confirmation_placeholder'] : '',
+						'placeholder' => ! empty( $field['confirmation_placeholder'] ) ? evf_string_translation( $form_id, $field_id, $field['confirmation_placeholder'], '-confirm-placeholder' ) : '',
 					),
 					'block'    => array(
 						'everest-forms-field-row-block',
@@ -294,9 +294,6 @@ class EVF_Field_Email extends EVF_Form_Fields {
 
 			// Secondary field.
 			echo '<div ' . evf_html_attributes( false, $secondary['block'] ) . '>';
-			if ( isset( $secondary['attr']['placeholder'] ) ) {
-				$secondary['attr']['placeholder'] = evf_string_translation( $form_data['id'], $field['id'], $secondary['attr']['placeholder'], '-confirmation-placeholder' );
-			}
 			printf(
 				'<input type="email" %s %s>',
 				evf_html_attributes( $secondary['id'], $secondary['class'], $secondary['data'], $secondary['attr'] ),

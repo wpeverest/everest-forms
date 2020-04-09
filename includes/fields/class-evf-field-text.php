@@ -187,6 +187,9 @@ class EVF_Field_Text extends EVF_Form_Fields {
 			// Add class that will trigger custom mask.
 			$properties['inputs']['primary']['class'][] = 'evf-masked-input';
 
+			// Register string for translation.
+			$field['input_mask'] = evf_string_translation( $form_data['id'], $field['id'], $field['input_mask'], '-input-mask' );
+
 			if ( false !== strpos( $field['input_mask'], 'alias:' ) ) {
 				$mask = str_replace( 'alias:', '', $field['input_mask'] );
 				$properties['inputs']['primary']['data']['inputmask-alias'] = $mask;
@@ -251,11 +254,6 @@ class EVF_Field_Text extends EVF_Form_Fields {
 				$primary['class'][]            = 'everest-forms-limit-words-enabled';
 				$primary['data']['text-limit'] = $limit_count;
 			}
-		}
-
-		// Primary field.
-		if ( isset( $primary['data']['inputmask-mask'] ) ) {
-			$primary['data']['inputmask-mask'] = evf_string_translation( $form_data['id'], $field['id'], $primary['data']['inputmask-mask'], '-input-mask' );
 		}
 
 		printf(
