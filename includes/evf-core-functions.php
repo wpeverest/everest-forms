@@ -1962,22 +1962,24 @@ function evf_debug_data( $expression, $return = false ) {
  *
  * @param int    $form_id Form ID.
  * @param string $field_id Field ID.
- * @param mixed  $variable To be translated for WPML compatibility.
- * @param string $name_suffix To make the field have unique name for the passed string.
+ * @param mixed  $value The string that needs to be translated.
+ * @param string $suffix The suffix to make the field have unique naem.
+ *
+ * @return mixed The translated string.
  */
-function evf_string_translation( $form_id, $field_id, $variable, $name_suffix = '' ) {
-	$form_id  = isset( $form_id ) ? 'everest_forms_' . absint( $form_id ) : 0;
-	$field_id = isset( $field_id ) ? $field_id . $name_suffix : '';
+function evf_string_translation( $form_id, $field_id, $value, $suffix = '' ) {
+	$context = isset( $form_id ) ? 'everest_forms_' . absint( $form_id ) : 0;
+	$name    = isset( $field_id ) ? evf_clean( $field_id . $suffix ) : '';
 
 	if ( function_exists( 'icl_register_string' ) ) {
-		icl_register_string( $form_id, $field_id, $variable );
+		icl_register_string( $context, $name, $value );
 	}
 
 	if ( function_exists( 'icl_t' ) ) {
-		$variable = icl_t( $form_id, $field_id, $variable );
+		$value = icl_t( $context, $name, $value );
 	}
 
-	return $variable;
+	return $value;
 }
 
 /**
