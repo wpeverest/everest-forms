@@ -75,7 +75,13 @@ jQuery( function ( $ ) {
 			if ( evfDateField.length > 0 ) {
 				$( '.flatpickr-field' ).each( function() {
 					var timeInterval = 5,
-						inputData  	 = $( this ).data();
+						inputData  	 = $( this ).data(),
+						disableDates = [];
+
+					// Extract list of disabled dates.
+					if ( inputData.disableDates ) {
+						disableDates = inputData.disableDates.split( ',' );
+					}
 
 					switch( inputData.dateTime ) {
 						case 'date':
@@ -85,7 +91,8 @@ jQuery( function ( $ ) {
 								mode          : inputData.mode,
 								minDate       : inputData.minDate,
 								maxDate       : inputData.maxDate,
-								dateFormat    : inputData.dateFormat
+								dateFormat    : inputData.dateFormat,
+								disable       : disableDates,
 							});
 						break;
 						case 'time':
@@ -118,7 +125,8 @@ jQuery( function ( $ ) {
 								maxDate         : inputData.maxDate,
 								minuteIncrement : timeInterval,
 								dateFormat      : inputData.dateFormat,
-								time_24hr		: inputData.dateFormat.includes( 'H:i' )
+								time_24hr		: inputData.dateFormat.includes( 'H:i' ),
+								disable       : disableDates,
 							});
 						break;
 						default:

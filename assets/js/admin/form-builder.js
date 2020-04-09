@@ -215,6 +215,7 @@
 			EVFPanelBuilder.bindToggleHandleActions();
 			EVFPanelBuilder.bindLabelEditInputActions();
 			EVFPanelBuilder.bindSyncedInputActions();
+			EVFPanelBuilder.init_datepickers();
 
 			// Fields Panel.
 			EVFPanelBuilder.bindUIActionsFields();
@@ -222,6 +223,46 @@
 			if ( evf_data.tab === 'field-options' ) {
 				$( '.evf-panel-field-options-button' ).trigger( 'click' );
 			}
+		},
+
+		/**
+		 * Initialize date pickers like min/max date, disable dates etc.
+		 *
+		 * @since 1.7.0
+		 */
+		init_datepickers: function() {
+			var date_format = $( '.everest-forms-disable-dates' ).data( 'date-format' );
+			var selection_mode = 'multiple';
+
+			// Initialize `Disable dates` option's date pickers that hasn't been initialized.
+			$( '.everest-forms-disable-dates' ).each( function() {
+				if ( ! $( this ).get(0)._flatpickr ) {
+					$( this ).flatpickr({
+						dateFormat: date_format,
+						mode: selection_mode,
+					});
+				}
+			})
+
+			// Reformat the selected dates input value for `Disable dates` option when the date format changes.
+			$( document.body ).on( 'change', '.evf-date-format', function( e ) {
+				var $disable_dates = $( '.everest-forms-field-option:visible .everest-forms-disable-dates' );
+				var flatpicker = $disable_dates.get(0)._flatpickr;
+				var selectedDates = flatpicker.selectedDates;
+				var date_format = $( this ).val();
+				var formatedDates = [];
+
+				selectedDates.forEach( function( date ) {
+					formatedDates.push( flatpickr.formatDate( date, date_format ) );
+				})
+				flatpicker.set( 'dateFormat', date_format );
+				$disable_dates.val( formatedDates.join( ', ' ) );
+			});
+
+			// Clear disabled dates.
+			$( document.body ).on( 'click', '.evf-clear-disabled-dates', function( e ) {
+				$( '.everest-forms-field-option:visible .everest-forms-disable-dates' ).get(0)._flatpickr.clear();
+			});
 		},
 
 		/**
@@ -1604,6 +1645,9 @@
 					EVFPanelBuilder.conditionalLogicAppendFieldIntegration( dragged_el_id );
 					EVFPanelBuilder.paymentFieldAppendToQuantity( dragged_el_id );
 					EVFPanelBuilder.paymentFieldAppendToDropdown( dragged_field_id, field_type );
+
+					// Initializations.
+					EVFPanelBuilder.init_datepickers();
 		 		}
 		 	});
 		},
