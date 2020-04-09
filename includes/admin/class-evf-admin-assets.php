@@ -38,6 +38,7 @@ class EVF_Admin_Assets {
 		wp_register_style( 'jquery-ui-style', evf()->plugin_url() . '/assets/css/jquery-ui/jquery-ui.min.css', array(), EVF_VERSION );
 		wp_register_style( 'jquery-confirm', evf()->plugin_url() . '/assets/css/jquery-confirm/jquery-confirm.min.css', array(), '3.3.0' );
 		wp_register_style( 'perfect-scrollbar', evf()->plugin_url() . '/assets/css/perfect-scrollbar/perfect-scrollbar.css', array(), '1.4.0' );
+		wp_register_style( 'flatpickr', evf()->plugin_url() . '/assets/css/flatpickr.css', array(), EVF_VERSION );
 
 		// Add RTL support for admin styles.
 		wp_style_add_data( 'everest-forms-admin', 'rtl', 'replace' );
@@ -52,6 +53,7 @@ class EVF_Admin_Assets {
 			wp_enqueue_style( 'jquery-confirm' );
 			wp_enqueue_style( 'jquery-ui-style' );
 			wp_enqueue_style( 'wp-color-picker' );
+			wp_enqueue_style( 'flatpickr' );
 
 			if ( 'everest-forms_page_evf-tools' !== $screen_id ) {
 				wp_enqueue_style( 'perfect-scrollbar' );
@@ -83,6 +85,7 @@ class EVF_Admin_Assets {
 		wp_register_script( 'selectWoo', evf()->plugin_url() . '/assets/js/selectWoo/selectWoo.full' . $suffix . '.js', array( 'jquery' ), '1.0.4', true );
 		wp_register_script( 'evf-enhanced-select', evf()->plugin_url() . '/assets/js/admin/evf-enhanced-select' . $suffix . '.js', array( 'jquery', 'selectWoo' ), EVF_VERSION, true );
 		wp_register_script( 'evf-template-controller', evf()->plugin_url() . '/assets/js/admin/form-template-controller' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true );
+		wp_register_script( 'flatpickr', evf()->plugin_url() . '/assets/js/flatpickr/flatpickr' . $suffix . '.js', array( 'jquery' ), '4.5.1', true );
 		wp_localize_script(
 			'evf-template-controller',
 			'evf_templates',
@@ -110,7 +113,7 @@ class EVF_Admin_Assets {
 				'i18n_searching'            => _x( 'Searching&hellip;', 'enhanced select', 'everest-forms' ),
 			)
 		);
-		wp_register_script( 'evf-form-builder', evf()->plugin_url() . '/assets/js/admin/form-builder' . $suffix . '.js', array( 'jquery', 'jquery-blockui', 'tooltipster', 'jquery-ui-sortable', 'jquery-ui-widget', 'jquery-ui-core', 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-datepicker', 'jquery-confirm', 'evf-clipboard' ), EVF_VERSION, true );
+		wp_register_script( 'evf-form-builder', evf()->plugin_url() . '/assets/js/admin/form-builder' . $suffix . '.js', array( 'jquery', 'jquery-blockui', 'tooltipster', 'jquery-ui-sortable', 'jquery-ui-widget', 'jquery-ui-core', 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-datepicker', 'jquery-confirm', 'evf-clipboard', 'flatpickr' ), EVF_VERSION, true );
 		wp_localize_script(
 			'evf-form-builder',
 			'evf_data',
