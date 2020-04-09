@@ -288,7 +288,7 @@ class EVF_Field_Email extends EVF_Form_Fields {
 				evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ),
 				esc_attr( $primary['required'] )
 			);
-			$this->field_display_sublabel( 'primary', 'after', $field, $form_data );
+			$this->field_display_sublabel( 'primary', 'after', $field );
 			$this->field_display_error( 'primary', $field );
 			echo '</div>';
 
@@ -302,7 +302,7 @@ class EVF_Field_Email extends EVF_Form_Fields {
 				evf_html_attributes( $secondary['id'], $secondary['class'], $secondary['data'], $secondary['attr'] ),
 				esc_attr( $secondary['required'] )
 			);
-			$this->field_display_sublabel( 'secondary', 'after', $field, $form_data );
+			$this->field_display_sublabel( 'secondary', 'after', $field );
 			$this->field_display_error( 'secondary', $field );
 			echo '</div>';
 

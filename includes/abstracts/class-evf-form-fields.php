@@ -100,12 +100,37 @@ abstract class EVF_Form_Fields {
 		add_action( 'everest_forms_display_field_' . $this->type, array( $this, 'field_display' ), 10, 3 );
 		add_action( 'everest_forms_process_validate_' . $this->type, array( $this, 'validate' ), 10, 3 );
 		add_action( 'everest_forms_process_format_' . $this->type, array( $this, 'format' ), 10, 4 );
+		add_filter( 'everest_forms_field_properties', array( $this, 'field_prefill_value_property' ), 10, 3 );
 	}
 
 	/**
 	 * Hook in tabs.
 	 */
 	public function init_hooks() {}
+
+	/**
+	 * Prefill field value with either fallback or dynamic data.
+	 * Needs to be public (although internal) to be used in WordPress hooks.
+	 *
+	 * @since 1.6.5
+	 *
+	 * @param array $properties Field properties.
+	 * @param array $field      Current field specific data.
+	 * @param array $form_data  Prepared form data/settings.
+	 *
+	 * @return array Modified field properties.
+	 */
+	public function field_prefill_value_property( $properties, $field, $form_data ) {
+		// Process only for current field.
+		if ( $this->type !== $field['type'] ) {
+			return $properties;
+		}
+
+		// Set the form data, so we can reuse it later, even on front-end.
+		$this->form_data = $form_data;
+
+		return $properties;
+	}
 
 	/**
 	 * Get the form fields after they are initialized.
@@ -1346,12 +1371,11 @@ abstract class EVF_Form_Fields {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string      $key       Input key.
-	 * @param string      $position  Sublabel position.
-	 * @param array       $field     Field data and settings.
-	 * @param mixed|array $form_data Form data and settings.
+	 * @param string $key      Input key.
+	 * @param string $position Sublabel position.
+	 * @param array  $field    Field data and settings.
 	 */
-	public function field_display_sublabel( $key, $position, $field, $form_data = '' ) {
+	public function field_display_sublabel( $key, $position, $field ) {
 		// Need a sublabel value.
 		if ( empty( $field['properties']['inputs'][ $key ]['sublabel']['value'] ) ) {
 			return;
@@ -1364,16 +1388,12 @@ abstract class EVF_Form_Fields {
 			return;
 		}
 
-		if ( $form_data ) {
-			$field['properties']['inputs'][ $key ]['sublabel']['value'] = evf_string_translation( $form_data['id'], $field['id'], $field['properties']['inputs'][ $key ]['sublabel']['value'], '-sublabel-' . $key );
-		}
-
 		printf(
 			'<label for="%s" class="everest-forms-field-sublabel %s %s">%s</label>',
 			esc_attr( $field['properties']['inputs'][ $key ]['id'] ),
 			sanitize_html_class( $pos ),
 			$hidden, // phpcs:ignore WordPress.Security.EscapeOutput
-			$field['properties']['inputs'][ $key ]['sublabel']['value'] // phpcs:ignore WordPress.Security.EscapeOutput
+			evf_string_translation( (int) $this->form_data['id'], $field['id'], $field['properties']['inputs'][ $key ]['sublabel']['value'], '-sublabel-' . $key ) // phpcs:ignore WordPress.Security.EscapeOutput
 		);
 	}
 
