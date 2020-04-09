@@ -277,6 +277,7 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 		// Define data.
 		$container = $field['properties']['input_container'];
 		$choices   = $field['properties']['inputs'];
+		$count     = 0;
 
 		// List.
 		printf( '<ul %s>', evf_html_attributes( $container['id'], $container['class'], $container['data'], $container['attr'] ) );
@@ -288,7 +289,7 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 
 			// WPML Compatibility.
 			if ( isset( $choice['label']['text'], $choice['label']['attr']['for'] ) && '' !== $choice['label']['text'] ) {
-				$choice['label']['text'] = evf_string_translation( $form_data['id'], $field['id'], $choice['label']['text'] );
+				$choice['label']['text'] = evf_string_translation( $form_data['id'], $field['id'], $choice['label']['text'], '-radio-choices-' . $count );
 			}
 
 			// Conditional logic.
@@ -332,6 +333,8 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 			}
 
 			echo '</li>';
+
+			$count++;
 		}
 
 		echo '</ul>';

@@ -1346,11 +1346,12 @@ abstract class EVF_Form_Fields {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $key      Input key.
-	 * @param string $position Sublabel position.
-	 * @param array  $field    Field data and settings.
+	 * @param string      $key       Input key.
+	 * @param string      $position  Sublabel position.
+	 * @param array       $field     Field data and settings.
+	 * @param mixed|array $form_data Form data and settings.
 	 */
-	public function field_display_sublabel( $key, $position, $field ) {
+	public function field_display_sublabel( $key, $position, $field, $form_data = '' ) {
 		// Need a sublabel value.
 		if ( empty( $field['properties']['inputs'][ $key ]['sublabel']['value'] ) ) {
 			return;
@@ -1361,6 +1362,10 @@ abstract class EVF_Form_Fields {
 
 		if ( $pos !== $position ) {
 			return;
+		}
+
+		if ( $form_data ) {
+			$field['properties']['inputs'][ $key ]['sublabel']['value'] = evf_string_translation( $form_data['id'], $field['id'], $field['properties']['inputs'][ $key ]['sublabel']['value'], '-sublabel-' . $key );
 		}
 
 		printf(

@@ -98,6 +98,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 		$field_data        = '';
 		$choices           = $field['choices'];
 		$has_default       = false;
+		$count             = 0;
 
 		if ( ! empty( $field_atts['input_data'] ) ) {
 			foreach ( $field_atts['input_data'] as $key => $val ) {
@@ -122,15 +123,23 @@ class EVF_Field_Select extends EVF_Form_Fields {
 
 		// Optional placeholder.
 		if ( ! empty( $field_placeholder ) ) {
+			// WPML Compatibility.
+			$field_placeholder = evf_string_translation( $form_data['id'], $field['id'], $field_placeholder, '-placeholder' );
+
 			printf( '<option value="" class="placeholder" disabled %s>%s</option>', selected( false, $has_default, false ), esc_html( $field_placeholder ) );
 		}
 
 		// Build the select options.
 		foreach ( $choices as $key => $choice ) {
+			// WPML Compatibility.
+			$choice['label'] = evf_string_translation( $form_data['id'], $field['id'], $choice['label'], '-dropdown-choices-' . $count );
+
 			$selected = isset( $choice['default'] ) && empty( $field_placeholder ) ? '1' : '0';
 			$val      = isset( $field['show_values'] ) ? esc_attr( $choice['value'] ) : esc_attr( $choice['label'] );
 
 			printf( '<option value="%s" %s>%s</option>', esc_attr( $val ), selected( '1', $selected, false ), esc_html( $choice['label'] ) );
+
+			$count ++;
 		}
 
 		echo '</select>';
