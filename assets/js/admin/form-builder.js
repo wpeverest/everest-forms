@@ -584,18 +584,25 @@
 			});
 
 			// Real-time updates for "Confirmation" field option.
-			$builder.on( 'change', '.everest-forms-field-option-row-confirmation input', function() {
+			$builder.on( 'change', '.everest-forms-field-option-row-confirmation input', function( event ) {
 				var id = $( this ).parent().data( 'field-id' );
-				$( '#everest-forms-field-' + id ).find( '.everest-forms-confirm' ).toggleClass( 'everest-forms-confirm-enabled everest-forms-confirm-disabled' );
-				$( '#everest-forms-field-option-' + id ).toggleClass( 'everest-forms-confirm-enabled everest-forms-confirm-disabled' );
+
+				// Toggle "Confirmation" field option.
+				if ( $( event.target ).is( ':checked' ) ) {
+					$( '#everest-forms-field-' + id ).find( '.everest-forms-confirm' ).removeClass( 'everest-forms-confirm-disabled' ).addClass( 'everest-forms-confirm-enabled' );
+					$( '#everest-forms-field-option-' + id ).removeClass( 'everest-forms-confirm-disabled' ).addClass( 'everest-forms-confirm-enabled' );
+				} else {
+					$( '#everest-forms-field-' + id ).find( '.everest-forms-confirm' ).removeClass( 'everest-forms-confirm-enabled' ).addClass( 'everest-forms-confirm-disabled' );
+					$( '#everest-forms-field-option-' + id ).removeClass( 'everest-forms-confirm-enabled' ).addClass( 'everest-forms-confirm-disabled' );
+				}
 			});
 
 			// Real-time updates for "Placeholder" field option.
 			$builder.on( 'input', '.everest-forms-field-option-row-placeholder input', function(e) {
-				var $this   = $( this ),
-					value   = $this.val(),
-					id      = $this.parent().data( 'field-id' ),
-					$primary = $( '#everest-forms-field-' + id ).find( '.primary-input' );
+				var $this    = $( this ),
+					value    = $this.val(),
+					id       = $this.parent().data( 'field-id' ),
+					$primary = $( '#everest-forms-field-' + id ).find( '.widefat:not(.secondary-input)' );
 
 				if ( $primary.is( 'select' ) ) {
 					if ( ! value.length ) {
@@ -622,7 +629,7 @@
 			});
 
 			// Real-time updates for "Confirmation Placeholder" field option.
-			$builder.on('input', '.everest-forms-field-option-row-confirmation_placeholder input', function() {
+			$builder.on( 'input', '.everest-forms-field-option-row-confirmation_placeholder input', function() {
 				var $this   = $( this ),
 					value   = $this.val(),
 					id      = $this.parent().data( 'field-id' );

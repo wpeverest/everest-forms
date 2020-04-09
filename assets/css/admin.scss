@@ -2120,7 +2120,9 @@ button.everest-forms-btn {
 							display: none;
 
 							// Email/Password Confirmation.
-							&.everest-forms-confirm-disabled {
+							&.everest-forms-confirm-disabled,
+							&.everest-forms-field-option-email:not(.everest-forms-confirm-enabled),
+							&.everest-forms-field-option-password:not(.everest-forms-confirm-enabled) {
 								.everest-forms-field-option-row-sublabel_hide,
 								.everest-forms-field-option-row-confirmation_placeholder {
 									display: none;
