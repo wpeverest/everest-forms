@@ -11,6 +11,7 @@
 * Fix - Image and file not being submitted with enable AJAX form submission.
 * Tweak - RTL design issue for font-weight.
 * Tweak - Google reCAPTCHA v3 threshhold default to `0.5`.
+* Tweak - Custom Captcha field now shown as part of pro fields.
 * Tweak - Prefill field value so it can be used to modify data.
 * Tweak - Removed unnecessary height for input on classic layout.
 * Tweak - Use `apply_shortocodes()` as an alias for `do_shortcode()` for better semantics.
