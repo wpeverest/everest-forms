@@ -38,6 +38,7 @@ class EVF_Forms_Features {
 			'EVF_Field_Signature',
 			'EVF_Field_Address',
 			'EVF_Field_Country',
+			'EVF_Field_Captcha',
 			'EVF_Field_Payment_Single',
 			'EVF_Field_Payment_Radio',
 			'EVF_Field_Payment_Checkbox',
