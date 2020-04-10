@@ -186,7 +186,7 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 					'class' => array( 'everest-forms-field-label-inline' ),
 					'data'  => array(),
 					'id'    => '',
-					'text'  => $choice['label'],
+					'text'  => evf_string_translation( $form_id, $field_id, $choice['label'], '-choices-' . $key ),
 				),
 				'attr'      => array(
 					'name'  => "everest_forms[form_fields][{$field_id}][]",
@@ -346,7 +346,6 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 		// Define data.
 		$container = $field['properties']['input_container'];
 		$choices   = $field['properties']['inputs'];
-		$count     = 0;
 
 		// List.
 		printf( '<ul %s>', evf_html_attributes( $container['id'], $container['class'], $container['data'], $container['attr'] ) );
@@ -354,11 +353,6 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 		foreach ( $choices as $choice ) {
 			if ( empty( $choice['container'] ) ) {
 				continue;
-			}
-
-			// WPML Compatibility.
-			if ( isset( $choice['label']['text'], $choice['label']['attr']['for'] ) && '' !== $choice['label']['text'] ) {
-				$choice['label']['text'] = evf_string_translation( $form_data['id'], $field['id'], $choice['label']['text'], '-checkbox-choices-' . $count );
 			}
 
 			// Conditional logic.
@@ -402,8 +396,6 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 			}
 
 			echo '</li>';
-
-			$count++;
 		}
 
 		echo '</ul>';
