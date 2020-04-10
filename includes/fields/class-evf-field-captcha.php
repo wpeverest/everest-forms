@@ -20,7 +20,7 @@ class EVF_Field_Captcha extends EVF_Form_Fields {
 		$this->name   = esc_html__( 'Captcha', 'everest-forms' );
 		$this->type   = 'captcha';
 		$this->icon   = 'evf-icon evf-icon-captcha';
-		$this->order  = 50;
+		$this->order  = 130;
 		$this->group  = 'advanced';
 		$this->is_pro = true;
 
