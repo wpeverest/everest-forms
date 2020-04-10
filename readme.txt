@@ -4,7 +4,7 @@ Tags: contact form, forms, form builder, contact, custom form
 Requires at least: 5.0
 Tested up to: 5.4
 Requires PHP: 5.4
-Stable tag: 1.6.4
+Stable tag: 1.6.5
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -148,6 +148,24 @@ Yes, we do. Check out this [Getting Started Videos](https://docs.wpeverest.com/d
 Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/everest-forms/) :)
 
 == Changelog ==
+
+= 1.6.5 - 10-04-2020 =
+* Fix - Shortcode design issue in list table.
+* Fix - Form block deprecated notices in console.
+* Fix - Selective html tag support in field label.
+* Fix - Placeholder live update broken for fields.
+* Fix - Set the default threshold received from reCAPTCHA.
+* Fix - Empty form fields within form throwing PHP warnings.
+* Fix - Placeholder components design issue with our form block.
+* Fix - Image and file not being submitted with enable AJAX form submission.
+* Tweak - RTL design issue for font-weight.
+* Tweak - Google reCAPTCHA v3 threshhold default to `0.5`.
+* Tweak - Prefill field value so it can be used to modify data.
+* Tweak - Removed unnecessary height for input on classic layout.
+* Tweak - Use `apply_shortocodes()` as an alias for `do_shortcode()` for better semantics.
+* Tweak - Improve WPML compatibility for form fields and its settings. Thanks @mebishalnapit!
+* Enhancement - Added Formatting function `evf_array_splice_preserve_keys`.
+* Dev - Linting fix for SCSS files and added some rules for stylelint.
 
 = 1.6.4 - 17-03-2020 =
 * Fix - Google reCAPTCHA issue with the version changes.

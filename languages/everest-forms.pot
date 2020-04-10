@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Everest Forms plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Everest Forms 1.6.4\n"
+"Project-Id-Version: Everest Forms 1.6.5\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/everest-forms\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-03-17T11:39:38+00:00\n"
+"POT-Creation-Date: 2020-04-03T11:30:15+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: everest-forms\n"
@@ -971,7 +971,7 @@ msgstr ""
 #: includes/admin/class-evf-admin-entries-table-list.php:325
 #: includes/admin/class-evf-admin-entries-table-list.php:413
 #: includes/admin/class-evf-admin-forms-table-list.php:122
-#: includes/admin/class-evf-admin-forms-table-list.php:365
+#: includes/admin/class-evf-admin-forms-table-list.php:363
 msgid "Restore"
 msgstr ""
 
@@ -1042,7 +1042,7 @@ msgid "Export CSV"
 msgstr ""
 
 #: includes/admin/class-evf-admin-entries-table-list.php:567
-#: includes/admin/class-evf-admin-forms-table-list.php:448
+#: includes/admin/class-evf-admin-forms-table-list.php:446
 msgid "Empty Trash"
 msgstr ""
 
@@ -1116,7 +1116,7 @@ msgid "Delete this item permanently"
 msgstr ""
 
 #: includes/admin/class-evf-admin-forms-table-list.php:127
-#: includes/admin/class-evf-admin-forms-table-list.php:366
+#: includes/admin/class-evf-admin-forms-table-list.php:364
 msgid "Delete permanently"
 msgstr ""
 
@@ -1124,48 +1124,48 @@ msgstr ""
 msgid "Duplicate"
 msgstr ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:216
+#: includes/admin/class-evf-admin-forms-table-list.php:214
 msgid "Y/m/d g:i:s A"
 msgstr ""
 
 #. translators: %s: Time
-#: includes/admin/class-evf-admin-forms-table-list.php:228
+#: includes/admin/class-evf-admin-forms-table-list.php:226
 msgid "%s ago"
 msgstr ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:232
+#: includes/admin/class-evf-admin-forms-table-list.php:230
 msgid "Y/m/d"
 msgstr ""
 
 #. translators: %s: count
-#: includes/admin/class-evf-admin-forms-table-list.php:281
+#: includes/admin/class-evf-admin-forms-table-list.php:279
 msgctxt "posts"
 msgid "All <span class=\"count\">(%s)</span>"
 msgid_plural "All <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:371
+#: includes/admin/class-evf-admin-forms-table-list.php:369
 #: includes/admin/views/html-admin-page-entries-view.php:213
 msgid "Move to trash"
 msgstr ""
 
 #. translators: %d: number of forms
-#: includes/admin/class-evf-admin-forms-table-list.php:401
+#: includes/admin/class-evf-admin-forms-table-list.php:399
 msgid "%d form moved to the Trash."
 msgid_plural "%d forms moved to the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d: number of forms
-#: includes/admin/class-evf-admin-forms-table-list.php:416
+#: includes/admin/class-evf-admin-forms-table-list.php:414
 msgid "%d form restored from the Trash."
 msgid_plural "%d forms restored from the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d: number of forms
-#: includes/admin/class-evf-admin-forms-table-list.php:431
+#: includes/admin/class-evf-admin-forms-table-list.php:429
 #: includes/admin/class-evf-admin-forms.php:221
 msgid "%d form permanently deleted."
 msgid_plural "%d forms permanently deleted."
@@ -1458,7 +1458,6 @@ msgstr ""
 #. translators: %1$s - Google reCAPTCHA docs url
 #: includes/admin/settings/class-evf-settings-recaptcha.php:75
 #: includes/admin/settings/class-evf-settings-recaptcha.php:95
-#: includes/admin/settings/class-evf-settings-recaptcha.php:123
 msgid "Please enter your secret key for your reCAPTCHA v2. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
@@ -1473,6 +1472,11 @@ msgstr ""
 #. translators: %1$s - Google reCAPTCHA docs url
 #: includes/admin/settings/class-evf-settings-recaptcha.php:113
 msgid "Please enter your site key for your reCAPTCHA v3. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
+msgstr ""
+
+#. translators: %1$s - Google reCAPTCHA docs url
+#: includes/admin/settings/class-evf-settings-recaptcha.php:123
+msgid "Please enter your secret key for your reCAPTCHA v3. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
 #: includes/admin/settings/class-evf-settings-validation.php:25
