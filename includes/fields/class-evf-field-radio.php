@@ -157,7 +157,7 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 					'class' => array( 'everest-forms-field-label-inline' ),
 					'data'  => array(),
 					'id'    => '',
-					'text'  => evf_string_translation( $form_id, $field_id, $choice['label'], '-choices-' . $key ),
+					'text'  => evf_string_translation( $form_id, $field_id, $choice['label'], '-choice-' . $key ),
 				),
 				'attr'      => array(
 					'name'  => "everest_forms[form_fields][{$field_id}]",
