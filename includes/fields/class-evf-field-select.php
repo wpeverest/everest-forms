@@ -128,7 +128,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 		// Build the select options.
 		foreach ( $choices as $key => $choice ) {
 			// Register string for translation.
-			$choice['label'] = evf_string_translation( $form_data['id'], $field['id'], $choice['label'], '-dropdown-choices-' . $key );
+			$choice['label'] = evf_string_translation( $form_data['id'], $field['id'], $choice['label'], '-choices-' . $key );
 
 			$selected = isset( $choice['default'] ) && empty( $field_placeholder ) ? '1' : '0';
 			$val      = isset( $field['show_values'] ) ? esc_attr( $choice['value'] ) : esc_attr( $choice['label'] );
