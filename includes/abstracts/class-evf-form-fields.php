@@ -703,20 +703,37 @@ abstract class EVF_Form_Fields {
 					$class[] = 'show-images';
 				}
 
+				// Add bulk options toggle handle.
+				$bulk_add_enabled           = apply_filters( 'evf_bulk_add_enabled', true );
+				$licensed                   = ( false === evf_get_license_plan() ) ? false : true;
+				$upgradable_feature_class   = ( true === $licensed ) ? '' : 'evf-upgradable-feature';
+				$bulk_options_toggle_handle = sprintf( '<a class="evf-toggle-bulk-options %s" href="#">%s</a>', esc_attr( $upgradable_feature_class ), esc_html__( 'Bulk Add', 'everest-forms' ) );
+
 				// Field label.
-				$field_label = $this->field_element(
+				$field_label   = $this->field_element(
 					'label',
 					$field,
 					array(
 						'slug'          => 'choices',
 						'value'         => $label,
 						'tooltip'       => esc_html__( 'Add choices for the form field.', 'everest-forms' ),
-						'after_tooltip' => '', // @todo Bulk import and export for choices.
+						'after_tooltip' => $bulk_options_toggle_handle, // @todo Bulk import and export for choices.
 					)
 				);
+				$field_content = '';
+
+				if ( true === $bulk_add_enabled && true === $licensed ) {
+					$field_content = $this->field_option(
+						'add_bulk_options',
+						$field,
+						array(
+							'class' => 'everest-forms-hidden',
+						)
+					);
+				}
 
 				// Field contents.
-				$field_content = sprintf(
+				$field_content .= sprintf(
 					'<ul data-next-id="%s" class="evf-choices-list %s" data-field-id="%s" data-field-type="%s">',
 					max( array_keys( $choices ) ) + 1,
 					evf_sanitize_classes( $class, true ),
@@ -824,8 +841,9 @@ abstract class EVF_Form_Fields {
 						'slug'          => 'add_bulk_options',
 						'value'         => $label,
 						'tooltip'       => esc_html__( 'Add multiple options at once.', 'everest-forms' ),
-						'after_tooltip' => sprintf( '<a class="evf-toggle-prests-list" href="#">%s</a>', esc_html__( 'Presets', 'everest-forms' ) ),
-					)
+						'after_tooltip' => sprintf( '<a class="evf-toggle-presets-list" href="#">%s</a>', esc_html__( 'Presets', 'everest-forms' ) ),
+					),
+					false
 				);
 
 				// Preset contents.
@@ -951,7 +969,7 @@ abstract class EVF_Form_Fields {
 					),
 					false
 				);
-				$field_content .= sprintf( '<a class="button button-small evf-add-bulk-options" href="#">%s</a>', esc_html__( 'Add Options', 'everest-forms' ) );
+				$field_content .= sprintf( '<a class="button button-small evf-add-bulk-options" href="#">%s</a>', esc_html__( 'Add New Choices', 'everest-forms' ) );
 
 				// Final field output.
 				$output = $this->field_element(

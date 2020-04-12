@@ -47,7 +47,6 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 				'field_options' => array(
 					'label',
 					'meta',
-					'add_bulk_options',
 					'choices',
 					'choices_images',
 					'description',

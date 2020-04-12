@@ -227,9 +227,13 @@
 		 * Bind user action handlers for the Add Bulk Options feature.
 		 */
 		bindBulkOptionActions: function() {
+			// Toggle `Bulk Add` option.
+			$( document.body ).on( 'click', '.evf-toggle-bulk-options', function( e ) {
+				$( this ).closest( '.everest-forms-field-option' ).find( '.everest-forms-field-option-row-add_bulk_options' ).slideToggle();
+			});
 			// Toggle presets list.
-			$( document.body ).on( 'click', '.evf-toggle-prests-list', function( e ) {
-				$( this ).closest( 'label' ).next( '.everest-forms-field-option-row' ).find( '.evf-options-presets' ).slideToggle();
+			$( document.body ).on( 'click', '.evf-toggle-presets-list', function( e ) {
+				$( this ).closest( '.everest-forms-field-option' ).find( '.everest-forms-field-option-row .evf-options-presets' ).slideToggle();
 			});
 			// Add custom list of options.
 			$( document.body ).on( 'click', '.evf-add-bulk-options', function( e ) {
@@ -254,6 +258,7 @@
 					var options_texts = $( this ).closest( '.evf-options-preset' ).find( '.evf-options-preset-value' ).val();
 
 					$option_row.find( 'textarea#everest-forms-field-option-' + field_id + '-add_bulk_options' ).val( options_texts );
+					$( this ).closest( '.evf-options-presets' ).slideUp();
 				}
 			});
 		},
