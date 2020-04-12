@@ -51,7 +51,7 @@ Check [documentation](http://docs.wpeverest.com/docs/everest-forms/)
 * Redirect option after submission
 * Editable Email Settings
 * Editable form validation message
-* Translation ready
+* Translation ready and WPML compatible
 
 ### Premium Features and Addons
 
