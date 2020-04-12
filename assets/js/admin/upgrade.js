@@ -7,7 +7,12 @@ jQuery( function( $ ) {
 	var evf_upgrade_actions = {
 		init: function() {
 			$( document.body ).on( 'click dragstart', '.evf-registered-item.upgrade-modal', this.field_upgrade );
+			$( document.body ).on( 'click dragstart', '.evf-upgradable-feature', this.feature_upgrade );
 			$( document.body ).on( 'click dragstart', '.evf-registered-item.enable-stripe-model', this.enable_stripe_model );
+		},
+		feature_upgrade: function( e ) {
+			e.preventDefault();
+			evf_upgrade_actions.upgrade_modal( $(this).text() );
 		},
 		field_upgrade: function( e ) {
 			e.preventDefault();

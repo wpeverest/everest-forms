@@ -907,10 +907,11 @@ abstract class EVF_Form_Fields {
 			 * Select2 Option.
 			 */
 			case 'select2':
-				$default = ! empty( $args['default'] ) ? $args['default'] : '0';
-				$value   = isset( $field['select2'] ) ? $field['select2'] : $default;
-				$tooltip = esc_html__( 'Check this option to enable select2 feature. It enables you to search items in the dropdown field.', 'everest-forms' );
-				$output  = $this->field_element(
+				$licensed = ( false === evf_get_license_plan() ) ? false : true;
+				$default  = ! empty( $args['default'] ) ? $args['default'] : '0';
+				$value    = isset( $field['select2'] ) ? $field['select2'] : $default;
+				$tooltip  = esc_html__( 'Check this option to enable select2 feature. It enables you to search items in the dropdown field.', 'everest-forms' );
+				$output   = $this->field_element(
 					'checkbox',
 					$field,
 					array(
@@ -921,12 +922,13 @@ abstract class EVF_Form_Fields {
 					),
 					false
 				);
-				$output  = $this->field_element(
+				$output   = $this->field_element(
 					'row',
 					$field,
 					array(
 						'slug'    => 'select2',
 						'content' => $output,
+						'class'   => ( false === $licensed ) ? 'evf-upgradable-feature' : '',
 					),
 					false
 				);

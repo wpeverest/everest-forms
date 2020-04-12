@@ -107,7 +107,8 @@ class EVF_Field_Select extends EVF_Form_Fields {
 		}
 
 		// Enable select2 feature.
-		if ( ! empty( $field['select2'] ) && '1' === $field['select2'] ) {
+		$licensed = ( false === evf_get_license_plan() ) ? false : true;
+		if ( true === $licensed && ! empty( $field['select2'] ) && '1' === $field['select2'] ) {
 			$primary['class'][] = 'evf-select2-enabled';
 		}
 
