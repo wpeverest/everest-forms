@@ -244,11 +244,11 @@
 
 			// Reformat the selected dates input value for `Disable dates` option when the date format changes.
 			$( document.body ).on( 'change', '.evf-date-format', function( e ) {
-				var $disable_dates = $( '.everest-forms-field-option:visible .everest-forms-disable-dates' );
-				var flatpicker = $disable_dates.get(0)._flatpickr;
-				var selectedDates = flatpicker.selectedDates;
-				var date_format = $( this ).val();
-				var formatedDates = [];
+				var $disable_dates = $( '.everest-forms-field-option:visible .everest-forms-disable-dates' ),
+					flatpicker = $disable_dates.get(0)._flatpickr,
+					selectedDates = flatpicker.selectedDates,
+					date_format = $( this ).val(),
+					formatedDates = [];
 
 				selectedDates.forEach( function( date ) {
 					formatedDates.push( flatpickr.formatDate( date, date_format ) );
@@ -258,7 +258,7 @@
 			});
 
 			// Clear disabled dates.
-			$( document.body ).on( 'click', '.evf-clear-disabled-dates', function( e ) {
+			$( document.body ).on( 'click', '.evf-clear-disabled-dates', function() {
 				$( '.everest-forms-field-option:visible .everest-forms-disable-dates' ).get(0)._flatpickr.clear();
 			});
 		},
@@ -1637,7 +1637,7 @@
 					EVFPanelBuilder.paymentFieldAppendToQuantity( dragged_el_id );
 					EVFPanelBuilder.paymentFieldAppendToDropdown( dragged_field_id, field_type );
 
-					// Initializations.
+					// Initialization Datepickers.
 					EVFPanelBuilder.init_datepickers();
 		 		}
 		 	});
