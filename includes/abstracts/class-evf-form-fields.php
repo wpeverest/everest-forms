@@ -1510,6 +1510,46 @@ abstract class EVF_Form_Fields {
 					'value' => ! empty( $value ) ? $value : false,
 				);
 
+			case 'country':
+				return array(
+					'label' => ! empty( $field['name'] ) ? $field['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
+					'value' => ! empty( $field['value']['country'] ) ? $field['value']['country'] : false,
+				);
+
+			case 'address':
+				$value  = '';
+				$value .= ! empty( $field['address1'] ) ? $field['address1'] . ',<br>' : '';
+				$value .= ! empty( $field['address2'] ) ? $field['address2'] . ',<br>' : '';
+				$value .= ! empty( $field['city'] ) ? $field['city'] . ',<br>' : '';
+				$value .= ! empty( $field['state'] ) ? $field['state'] . ',<br>' : '';
+				$value .= ! empty( $field['address1'] ) ? $field['address1'] . ',<br>' : '';
+				$value .= ! empty( $field['country'] ) ? $field['country'] . '.' : '';
+
+				return array(
+					'label' => ! empty( $field['name'] ) ? $field['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
+					'value' => ! empty( $value ) ? $value : false,
+				);
+
+			case 'scale-rating':
+				return array(
+					'label' => ! empty( $field['name'] ) ? $field['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
+					'value' => ! empty( $field['value'] ) ? $field['value'] : false,
+				);
+
+			case 'rating':
+				$rating = '(' . absint( $field['value']['value'] ) . "/{$field['value']['number_of_rating']})";
+
+				return array(
+					'label' => ! empty( $field['name'] ) ? $field['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
+					'value' => $rating,
+				);
+
+			case 'likert':
+				return array(
+					'label' => ! empty( $field['name'] ) ? $field['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
+					'value' => ! empty( $field['value'] ) ? str_replace( '<br />', '<br>', nl2br( $field['value'] ) ) : false,
+				);
+
 			case 'checkbox':
 			case 'payment-checkbox':
 				$value = null;
