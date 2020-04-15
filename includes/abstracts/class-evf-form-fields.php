@@ -1501,7 +1501,7 @@ abstract class EVF_Form_Fields {
 		switch ( $this->type ) {
 
 			case 'radio':
-			case 'payment-radio':
+			case 'payment-multiple':
 				$value = '';
 				$image = ! empty( $field['value']['image'] ) ? sprintf( '<img src="%s" style="width:75px;height:75px;max-height:75px;max-width:75px;"  /><br>', $field['value']['image'] ) : '';
 				$value = ! empty( $field['value']['label'] ) ? $image . $field['value']['label'] : '';
@@ -1513,7 +1513,7 @@ abstract class EVF_Form_Fields {
 			case 'country':
 				return array(
 					'label' => ! empty( $field['name'] ) ? $field['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
-					'value' => ! empty( $field['value']['country'] ) ? $field['value']['country'] : false,
+					'value' => ! empty( $field['value']['country'] ) ? $field['value']['country'] : empty( $field['value']['country_code'] ) ? false : isset( evf_get_countries()[ $field['value']['country_code'] ] ) ? evf_get_countries()[ $field['value']['country_code'] ] : $field['value']['country_code'] . '.',
 				);
 
 			case 'address':
@@ -1523,7 +1523,7 @@ abstract class EVF_Form_Fields {
 				$value .= ! empty( $field['city'] ) ? $field['city'] . ',<br>' : '';
 				$value .= ! empty( $field['state'] ) ? $field['state'] . ',<br>' : '';
 				$value .= ! empty( $field['address1'] ) ? $field['address1'] . ',<br>' : '';
-				$value .= ! empty( $field['country'] ) ? $field['country'] . '.' : '';
+				$value .= ! empty( $field['country'] ) ? isset( evf_get_countries()[ $field['country'] ] ) ? evf_get_countries()[ $field['country'] ] : $field['country'] . '.' : '';
 
 				return array(
 					'label' => ! empty( $field['name'] ) ? $field['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
