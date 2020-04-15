@@ -1550,6 +1550,55 @@ abstract class EVF_Form_Fields {
 					'value' => ! empty( $field['value'] ) ? str_replace( '<br />', '<br>', nl2br( $field['value'] ) ) : false,
 				);
 
+			case 'signature':
+				$value = '';
+
+				if ( ! empty( $field['value'] ) ) {
+
+					$path      = file_get_contents( $field['value'] );
+					$signature = tempnam( sys_get_temp_dir(), 'prefix' );
+					file_put_contents( $signature, $path );
+					$value = ! empty( $field['value'] ) ?
+					sprintf(
+						'<img src="%s" style="width:150px;height:80px;max-height:200px;max-width:100px;"/>',
+						$signature
+					)
+					: '';
+				}
+
+				return array(
+					'label' => ! empty( $field['name'] ) ? $field['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
+					'value' => ! empty( $value ) ? $value : false,
+				);
+
+			case 'file-upload':
+			case 'image-upload':
+				$value = array();
+
+				if ( ! empty( $field['value_raw'] ) ) {
+					if ( ! is_array( $field['value_raw'] ) ) {
+						$field['value_raw'] = (array) $field['value_raw'];
+					}
+
+					array_walk(
+						$field['value_raw'],
+						function ( &$val, $key, $img ) {
+							$img['data'][] = ! empty( $val['value'] ) ? sprintf(
+								'<a href="%s" rel="noopener noreferrer" target="_blank">%s</a>',
+								esc_url( $val['value'] ),
+								esc_html( $val['name'] )
+							) : '';
+						},
+						array(
+							'data' => &$value,
+						)
+					);
+				}
+				return array(
+					'label' => ! empty( $field['name'] ) ? $field['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
+					'value' => is_array( $value ) ? count( $value ) ? implode( '<br>', $value ) : false : $value,
+				);
+
 			case 'checkbox':
 			case 'payment-checkbox':
 				$value = null;
