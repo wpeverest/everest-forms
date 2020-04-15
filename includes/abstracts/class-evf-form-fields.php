@@ -1497,9 +1497,44 @@ abstract class EVF_Form_Fields {
 	 * @param string $context Context for rendering.
 	 */
 	public function export_data( $field, $context = '' ) {
-		return array(
-			'label' => ! empty( $field['name'] ) ? $field['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
-			'value' => ! empty( $field['value'] ) ? $field['value'] : false,
-		);
+
+		switch ( $this->type ) {
+
+			case 'radio':
+			case 'payment-radio':
+				$value = '';
+				$image = ! empty( $field['value']['image'] ) ? sprintf( '<img src="%s" style="width:75px;height:75px;max-height:75px;max-width:75px;"  /><br>', $field['value']['image'] ) : '';
+				$value = ! empty( $field['value']['label'] ) ? $image . $field['value']['label'] : '';
+				return array(
+					'label' => ! empty( $field['value']['name'] ) ? $field['value']['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
+					'value' => ! empty( $value ) ? $value : false,
+				);
+
+			case 'checkbox':
+			case 'payment-checkbox':
+				$value = null;
+
+				if ( count( $field['value'] ) ) {
+					foreach ( $field['value']['label'] as $key => $choice ) {
+						$image = ! empty( $field['value']['images'][ $key ] ) ?
+						sprintf( '<img src="%s" style="width:75px;height:75px;max-height:75px;max-width:75px;"  /><br>', $field['value']['images'][ $key ] )
+						: '';
+
+						if ( ! empty( $choice ) ) {
+							$value[ $key ] = $image . $choice;
+						}
+					}
+				}
+				return array(
+					'label' => ! empty( $field['value']['name'] ) ? $field['value']['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
+					'value' => is_array( $value ) ? implode( '<br>', array_values( $value ) ) : false,
+				);
+
+			default:
+				return array(
+					'label' => ! empty( $field['name'] ) ? $field['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
+					'value' => ! empty( $field['value'] ) ? is_array( $field['value'] ) ? evf_implode_r( $field['value'] ) : $field['value'] : false,
+				);
+		}
 	}
 }

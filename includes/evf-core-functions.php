@@ -1995,3 +1995,26 @@ function evf_cleanup_logs() {
 	}
 }
 add_action( 'everest_forms_cleanup_logs', 'evf_cleanup_logs' );
+
+/**
+ * Recursively process an array with an implosion.
+ *
+ * @param  array  $array     Array that needs to be recursively imploded.
+ * @param  string $delimiter Delimiter for the implosion - defaults to <br>.
+ *
+ * @return string $output    Imploded array.
+ * @since 1.6.6
+ */
+if ( ! function_exists( 'evf_implode_r' ) ) {
+	function evf_implode_r( $array, $delimiter = '<br>' ) {
+		$output = '';
+		foreach ( $array as $tuple ) {
+			if ( is_array( $tuple ) ) {
+				$output .= evf_implode_r( $tuple, ' ' );
+			} elseif ( ! empty( $tuple ) ) {
+				$output .= $delimiter . $tuple;
+			}
+		}
+		return $output;
+	}
+}

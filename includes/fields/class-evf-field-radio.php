@@ -391,20 +391,4 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 		// Push field details to be saved.
 		evf()->task->form_fields[ $field_id ] = $data;
 	}
-
-	/**
-	 * Filter callback for outputting formatted data.
-	 *
-	 * @param array  $field   Field details to render.
-	 * @param string $context Context for data morph.
-	 */
-	public function export_data( $field, $context = '' ) {
-		$value = '';
-		$image = ! empty( $field['value']['image'] ) ? sprintf( '<img src="%s" style="width:75px;height:75px;max-height:75px;max-width:75px;"  /><br>', $field['value']['image'] ) : '';
-		$value = ! empty( $field['value']['label'] ) ? $image . $field['value']['label'] : '';
-		return array(
-			'label' => ! empty( $field['value']['name'] ) ? $field['value']['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
-			'value' => ! empty( $value ) ? $value : false,
-		);
-	}
 }

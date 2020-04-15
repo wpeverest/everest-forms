@@ -502,30 +502,4 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 		// Push field details to be saved.
 		evf()->task->form_fields[ $field_id ] = $data;
 	}
-
-	/**
-	 * Filter callback for outputting formatted data.
-	 *
-	 * @param array  $field   Field details to render.
-	 * @param string $context Context for rendering.
-	 */
-	public function export_data( $field, $context = '' ) {
-		$value = null;
-
-		if ( count( $field['value'] ) ) {
-			foreach ( $field['value']['label'] as $key => $choice ) {
-				$image = ! empty( $field['value']['images'][ $key ] ) ?
-				sprintf( '<img src="%s" style="width:75px;height:75px;max-height:75px;max-width:75px;"  /><br>', $field['value']['images'][ $key ] )
-				: '';
-
-				if ( ! empty( $choice ) ) {
-					$value[ $key ] = $image . $choice;
-				}
-			}
-		}
-		return array(
-			'label' => ! empty( $field['value']['name'] ) ? $field['value']['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
-			'value' => is_array( $value ) ? implode( '<br>', array_values( $value ) ) : false,
-		);
-	}
 }
