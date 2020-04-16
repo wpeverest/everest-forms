@@ -14,7 +14,7 @@
     "watch": "cross-env BABEL_ENV=default webpack --watch",
     "lint:js": "eslint assets/js --ext=js",
     "makepot": "composer run-script makepot",
-    "git:update-hooks": "rm -r .git/hooks && node ./node_modules/husky/husky.js install"
+    "git:update-hooks": "node ./node_modules/husky/husky.js install"
   },
   "devDependencies": {
     "@babel/core": "7.9.0",
