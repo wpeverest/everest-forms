@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<phpunit
+	bootstrap="tests/bootstrap.php"
+	backupGlobals="false"
+	colors="true"
+	convertErrorsToExceptions="true"
+	convertNoticesToExceptions="true"
+	convertWarningsToExceptions="true"
+	>
+	<testsuites>
+		<testsuite name="evf_init">
+			<directory prefix="test-" suffix=".php">./tests/src/init</directory>
+		</testsuite>
+		<testsuite name="evf_db">
+			<directory prefix="test-" suffix=".php">./tests/src/db</directory>
+		</testsuite>
+		<testsuite name="evf_hooks_init">
+			<directory prefix="test-" suffix=".php">./tests/src/hooks</directory>
+		</testsuite>
+		<testsuite name="evf_wp_log">
+			<directory prefix="test-" suffix=".php">./tests/src/wp_log</directory>
+		</testsuite>
+	</testsuites>
+</phpunit>
