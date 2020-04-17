@@ -328,7 +328,7 @@ var updateGeometry = function(i) {
 
   i.containerWidth = element.clientWidth;
   i.containerHeight = element.clientHeight;
-  i.contentWidth = element.scrollWidth;
+  i.contentWidth = element.clientWidth;
   i.contentHeight = element.scrollHeight;
 
   if (!element.contains(i.scrollbarXRail)) {
