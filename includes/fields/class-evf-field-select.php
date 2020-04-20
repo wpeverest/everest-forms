@@ -94,7 +94,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 		// Setup and sanitize the necessary data.
 		$primary           = $field['properties']['inputs']['primary'];
 		$field             = apply_filters( 'everest_forms_select_field_display', $field, $field_atts, $form_data );
-		$field_placeholder = ! empty( $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : '';
+		$field_placeholder = ! empty( $field['placeholder'] ) ? evf_string_translation( $form_data['id'], $field['id'], $field['placeholder'], '-placeholder' ) : '';
 		$field_data        = '';
 		$choices           = $field['choices'];
 		$has_default       = false;
@@ -127,6 +127,9 @@ class EVF_Field_Select extends EVF_Form_Fields {
 
 		// Build the select options.
 		foreach ( $choices as $key => $choice ) {
+			// Register string for translation.
+			$choice['label'] = evf_string_translation( $form_data['id'], $field['id'], $choice['label'], '-choices-' . $key );
+
 			$selected = isset( $choice['default'] ) && empty( $field_placeholder ) ? '1' : '0';
 			$val      = isset( $field['show_values'] ) ? esc_attr( $choice['value'] ) : esc_attr( $choice['label'] );
 
@@ -148,7 +151,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 	 */
 	public function format( $field_id, $field_submit, $form_data, $meta_key ) {
 		$field     = $form_data['form_fields'][ $field_id ];
-		$name      = sanitize_text_field( $field['label'] );
+		$name      = make_clickable( $field['label'] );
 		$value_raw = sanitize_text_field( $field_submit );
 		$value     = '';
 

@@ -95,7 +95,7 @@ class EVF_Field_Email extends EVF_Form_Fields {
 					'attr'     => array(
 						'name'        => "everest_forms[form_fields][{$field_id}][secondary]",
 						'value'       => '',
-						'placeholder' => ! empty( $field['confirmation_placeholder'] ) ? $field['confirmation_placeholder'] : '',
+						'placeholder' => ! empty( $field['confirmation_placeholder'] ) ? evf_string_translation( $form_id, $field_id, $field['confirmation_placeholder'], '-confirm-placeholder' ) : '',
 					),
 					'block'    => array(
 						'everest-forms-field-row-block',
@@ -394,7 +394,6 @@ class EVF_Field_Email extends EVF_Form_Fields {
 	 * @param string $meta_key     Field meta key.
 	 */
 	public function format( $field_id, $field_submit, $form_data, $meta_key ) {
-
 		if ( is_array( $field_submit ) ) {
 			$value = ! empty( $field_submit['primary'] ) ? $field_submit['primary'] : '';
 		} else {
@@ -405,7 +404,7 @@ class EVF_Field_Email extends EVF_Form_Fields {
 
 		// Set final field details.
 		evf()->task->form_fields[ $field_id ] = array(
-			'name'     => sanitize_text_field( $name ),
+			'name'     => make_clickable( $name ),
 			'value'    => sanitize_text_field( $value ),
 			'id'       => $field_id,
 			'type'     => $this->type,

@@ -128,10 +128,12 @@ class EVF_Field_Textarea extends EVF_Form_Fields {
 		$form_data = ! empty( $form_obj->post_content ) ? evf_decode( $form_obj->post_content ) : '';
 
 		// Leave only fields with limit.
-		$form_fields = array_filter( $form_data['form_fields'], array( $this, 'field_is_limit' ) );
+		if ( ! empty( $form_data['form_fields'] ) ) {
+			$form_fields = array_filter( $form_data['form_fields'], array( $this, 'field_is_limit' ) );
 
-		if ( count( $form_fields ) ) {
-			wp_enqueue_script( 'everest-forms-text-limit' );
+			if ( count( $form_fields ) ) {
+				wp_enqueue_script( 'everest-forms-text-limit' );
+			}
 		}
 	}
 

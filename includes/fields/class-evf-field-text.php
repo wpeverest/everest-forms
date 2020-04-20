@@ -166,10 +166,12 @@ class EVF_Field_Text extends EVF_Form_Fields {
 		$form_data = ! empty( $form_obj->post_content ) ? evf_decode( $form_obj->post_content ) : '';
 
 		// Leave only fields with limit.
-		$form_fields = array_filter( $form_data['form_fields'], array( $this, 'field_is_limit' ) );
+		if ( ! empty( $form_data['form_fields'] ) ) {
+			$form_fields = array_filter( $form_data['form_fields'], array( $this, 'field_is_limit' ) );
 
-		if ( count( $form_fields ) ) {
-			wp_enqueue_script( 'everest-forms-text-limit' );
+			if ( count( $form_fields ) ) {
+				wp_enqueue_script( 'everest-forms-text-limit' );
+			}
 		}
 	}
 
@@ -186,6 +188,9 @@ class EVF_Field_Text extends EVF_Form_Fields {
 		if ( ! empty( $field['input_mask'] ) ) {
 			// Add class that will trigger custom mask.
 			$properties['inputs']['primary']['class'][] = 'evf-masked-input';
+
+			// Register string for translation.
+			$field['input_mask'] = evf_string_translation( $form_data['id'], $field['id'], $field['input_mask'], '-input-mask' );
 
 			if ( false !== strpos( $field['input_mask'], 'alias:' ) ) {
 				$mask = str_replace( 'alias:', '', $field['input_mask'] );
@@ -253,7 +258,6 @@ class EVF_Field_Text extends EVF_Form_Fields {
 			}
 		}
 
-		// Primary field.
 		printf(
 			'<input type="text" %s %s>',
 			evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ),
