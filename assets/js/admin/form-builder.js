@@ -297,9 +297,9 @@
 			$field_options_container.find( '.evf-range-slider-handle-color' )
 			.wpColorPicker({
 				change: function( event, ui ) {
-					var new_color = $( event.target ).val();
-					var field_id = $( this ).closest( '.everest-forms-field-option-row' ).data( 'field-id' );
-					var current_skin = $field_options_container.find( '.evf-range-slider-skin' ).val();
+					var new_color = $( event.target ).val(),
+						field_id = $( this ).closest( '.everest-forms-field-option-row' ).data( 'field-id' ),
+						current_skin = $field_options_container.find( '.evf-range-slider-skin' ).val();
 
 					EVFPanelBuilder.setSliderHandleColor( field_id, new_color, current_skin );
 				}
@@ -312,8 +312,8 @@
 		 * @since 1.7.0
 		 */
 		initializeSliderHighlightColorOption: function( field_id ) {
-			var $field = $( '#everest-forms-field-' + field_id );
-			var $field_options_container = $( '#everest-forms-field-option-' + field_id );
+			var $field = $( '#everest-forms-field-' + field_id ),
+				$field_options_container = $( '#everest-forms-field-option-' + field_id );
 
 			$field_options_container.find( '.evf-range-slider-highlight-color' )
 			.wpColorPicker({
@@ -333,8 +333,8 @@
 		 * @since 1.7.0
 		 */
 		initializeSliderTrackColorOption: function( field_id ) {
-			var $field = $( '#everest-forms-field-' + field_id );
-			var $field_options_container = $( '#everest-forms-field-option-' + field_id );
+			var $field = $( '#everest-forms-field-' + field_id ),
+				$field_options_container = $( '#everest-forms-field-option-' + field_id );
 
 			$field_options_container.find( '.evf-range-slider-track-color' )
 			.wpColorPicker({
@@ -354,20 +354,20 @@
 		 * @since 1.7.0
 		 */
 		updateRangeSliderColors: function ( field_id ) {
-			var $field = $( '#everest-forms-field-' + field_id );
-			var $field_options_container = $( '#everest-forms-field-option-' + field_id );
+			var $field = $( '#everest-forms-field-' + field_id ),
+				$field_options_container = $( '#everest-forms-field-option-' + field_id ),
+				skin = $field_options_container.find( '.evf-range-slider-skin' ).val(),
+				handle_color = $field_options_container.find( '.evf-range-slider-handle-color' ).val(),
+				highlight_color = $field_options_container.find( '.evf-range-slider-highlight-color' ).val(),
+				track_color = $field_options_container.find( '.evf-range-slider-track-color' ).val();
 
 			// Set handle color for the Slider field.
-			var handle_color = $field_options_container.find( '.evf-range-slider-handle-color' ).val();
-			var skin = $field_options_container.find( '.evf-range-slider-skin' ).val();
 			EVFPanelBuilder.setSliderHandleColor( field_id, handle_color, skin );
 
 			// Set Current Highlight Color.
-			var highlight_color = $field_options_container.find( '.evf-range-slider-highlight-color' ).val();
 			$field.find( '.irs-bar' ).css( 'background', highlight_color );
 
 			// Set Current Track Color.
-			var track_color = $field_options_container.find( '.evf-range-slider-track-color' ).val();
 			$field.find( '.irs-line' ).css( 'background', track_color );
 		},
 
@@ -377,9 +377,9 @@
 		 * @since 1.7.0
 		 */
 		setSliderHandleColor: function ( field_id, color, skin ) {
-			if ( '' !== field_id && color && skin ) {
-				var $field = $( '#everest-forms-field-' + field_id );
-				var style = '';
+			if ( '' !== field_id ) {
+				var $field = $( '#everest-forms-field-' + field_id ),
+					style = '';
 
 				switch ( skin ) {
 					case 'flat':
@@ -433,17 +433,17 @@
 		 * @since 1.7.0
 		 */
 		updateRangeSliderBasicOptions: function( field_id ) {
-			var field_id = ( 'string' === typeof field_id ) ? field_id : $( '.everest-forms-field-option:visible' ).data( 'field-id' );
-			var $field = $( '#everest-forms-field-' + field_id );
-			var $field_option_section = $( '#everest-forms-field-option-' + field_id );
-			var min_value = $( '#everest-forms-field-option-' + field_id + '-min_value' ).val();
-			var max_value = $( '#everest-forms-field-option-' + field_id + '-max_value' ).val();
-			var new_skin = $( '#everest-forms-field-option-' + field_id + '-skin' ).val();
-			var default_value = $( '#everest-forms-field-option-' + field_id + '-default_value' ).val();
-			var show_grid_option = $( '#everest-forms-field-option-' + field_id + '-show_grid' ).is( ':checked' );
-			var show_prefix_postfix_option = $( '#everest-forms-field-option-' + field_id + '-show_prefix_postfix' ).is( ':checked' );
-			var is_text_prefix_postfix_enabled = $( '#everest-forms-field-option-' + field_id + '-use_text_prefix_postfix' ).is( ':checked' );
-			var slider_options = {};
+			var field_id = ( 'string' === typeof field_id ) ? field_id : $( '.everest-forms-field-option:visible' ).data( 'field-id' ),
+				$field = $( '#everest-forms-field-' + field_id ),
+				$field_option_section = $( '#everest-forms-field-option-' + field_id ),
+				min_value = $( '#everest-forms-field-option-' + field_id + '-min_value' ).val(),
+				max_value = $( '#everest-forms-field-option-' + field_id + '-max_value' ).val(),
+				new_skin = $( '#everest-forms-field-option-' + field_id + '-skin' ).val(),
+				default_value = $( '#everest-forms-field-option-' + field_id + '-default_value' ).val(),
+				show_grid_option = $( '#everest-forms-field-option-' + field_id + '-show_grid' ).is( ':checked' ),
+				show_prefix_postfix_option = $( '#everest-forms-field-option-' + field_id + '-show_prefix_postfix' ).is( ':checked' ),
+				is_text_prefix_postfix_enabled = $( '#everest-forms-field-option-' + field_id + '-use_text_prefix_postfix' ).is( ':checked' ),
+				slider_options = {};
 
 			if ( '' !== min_value ) {
 				slider_options.min = min_value;
@@ -491,8 +491,8 @@
 
 			// Set prefix/postfix texts.
 			if ( show_prefix_postfix_option && is_text_prefix_postfix_enabled ) {
-				var prefix_text = $field_option_section.find( '.evf-input-prefix-text' ).val();
-				var postfix_text = $field_option_section.find( '.evf-input-postfix-text' ).val();
+				var prefix_text = $field_option_section.find( '.evf-input-prefix-text' ).val(),
+					postfix_text = $field_option_section.find( '.evf-input-postfix-text' ).val();
 
 				// Update Use Text Prefix/Postfix option.
 				$field.find( 'span.irs-min' ).html( prefix_text );
@@ -1356,21 +1356,23 @@
 
 			// Process the cloned data if it is a Range Slider field.
 			if ( 'range-slider' === field_type ) {
+				var html = '';
+
 				newFieldCloned.find( '.irs' ).remove();
 				newFieldCloned.find( '.evf-slider .evf-range-slider-preview' ).hide();
 
 				// Purify Handle Color Picker.
-				var html = newOption.find( '.everest-forms-field-option-row-handle_color .wp-picker-input-wrap label' ).html();
+				html = newOption.find( '.everest-forms-field-option-row-handle_color .wp-picker-input-wrap label' ).html();
 				newOption.find( '.everest-forms-field-option-row-handle_color .wp-picker-container' ).remove();
 				newOption.find( '.everest-forms-field-option-row-handle_color' ).append( html );
 
 				// Purify Highlight Color Picker.
-				var html = newOption.find( '.everest-forms-field-option-row-highlight_color .wp-picker-input-wrap label' ).html();
+				html = newOption.find( '.everest-forms-field-option-row-highlight_color .wp-picker-input-wrap label' ).html();
 				newOption.find( '.everest-forms-field-option-row-highlight_color .wp-picker-container' ).remove();
 				newOption.find( '.everest-forms-field-option-row-highlight_color' ).append( html );
 
 				// Purify Track Color Picker.
-				var html = newOption.find( '.everest-forms-field-option-row-track_color .wp-picker-input-wrap label' ).html();
+				html = newOption.find( '.everest-forms-field-option-row-track_color .wp-picker-input-wrap label' ).html();
 				newOption.find( '.everest-forms-field-option-row-track_color .wp-picker-container' ).remove();
 				newOption.find( '.everest-forms-field-option-row-track_color' ).append( html );
 

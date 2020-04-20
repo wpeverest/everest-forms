@@ -39,7 +39,7 @@ jQuery( function ( $ ) {
 					everest_forms.setPrefixPostfixTexts( field_id );
 				}
 			})
-			.on( 'change', function( e ) {
+			.on( 'change', function() {
 				var new_value = $( this ).val();
 
 				// Update slider input.
@@ -51,17 +51,17 @@ jQuery( function ( $ ) {
 
 			// Slider input value change handler.
 			$( '.evf-field-range-slider .evf-slider-input' )
-			.on( 'input', function( e ) {
-				var new_value = $( this ).val();
-				var field_id = $( this ).closest( '.evf-field' ).data( 'field-id' );
+			.on( 'input', function() {
+				var new_value = $( this ).val(),
+					field_id = $( this ).closest( '.evf-field' ).data( 'field-id' );
 
 				$( this ).closest( '.evf-field-range-slider' ).find( '.evf-field-primary-input' ).data( 'ionRangeSlider' ).update({ from: new_value });
 				everest_forms.setPrefixPostfixTexts( field_id );
 			});
 
 			$( '.evf-field-range-slider .evf-range-slider-reset-icon' ).on( 'click', function( e ) {
-				var $field = $( this ).closest( '.evf-field' );
-				var default_value = $field.find( '.evf-field-primary-input' ).data( 'default' );
+				var $field = $( this ).closest( '.evf-field' ),
+					default_value = $field.find( '.evf-field-primary-input' ).data( 'default' );
 
 				// Update slider to default value.
 				$field.find( '.evf-field-primary-input' ).data( 'ionRangeSlider' ).update({ from: default_value });
@@ -90,11 +90,11 @@ jQuery( function ( $ ) {
 		 */
 		setPrefixPostfixTexts: function ( field_id ) {
 			if ( field_id && '' !== field_id ) {
-				var $field = $( '#evf-111-field_' + field_id + '-container' );
-				var $primary_input = $field.find( '.evf-field-primary-input' );
-				var use_text_prefix_postfix = $primary_input.data( 'use-text-prefix-postfix' );
-				var prefix_text = $primary_input.data( 'prefix-text' );
-				var postfix_text = $primary_input.data( 'postfix-text' );
+				var $field = $( '#evf-111-field_' + field_id + '-container' ),
+					$primary_input = $field.find( '.evf-field-primary-input' ),
+					use_text_prefix_postfix = $primary_input.data( 'use-text-prefix-postfix' ),
+					prefix_text = $primary_input.data( 'prefix-text' ),
+					postfix_text = $primary_input.data( 'postfix-text' );
 
 				if ( true === use_text_prefix_postfix ) {
 					$field.find( 'span.irs-min' ).html( prefix_text );
@@ -109,9 +109,9 @@ jQuery( function ( $ ) {
 		 * @since 1.7.0
 		 */
 		setSliderColors: function ( element ) {
-			var $primary_input = $( element ).find( '.evf-field-primary-input' );
-			var highlight_color = $primary_input.data( 'highlight_color' );
-			var track_color = $primary_input.data( 'track_color' );
+			var $primary_input = $( element ).find( '.evf-field-primary-input' ),
+				highlight_color = $primary_input.data( 'highlight_color' ),
+				track_color = $primary_input.data( 'track_color' );
 
 			everest_forms.setSliderHandleColor( element );
 			$( element ).find( '.irs-bar' ).css( 'background', highlight_color );
@@ -125,11 +125,11 @@ jQuery( function ( $ ) {
 		 */
 		setSliderHandleColor: function ( element ) {
 			if ( element ) {
-				var $field = $( element );
-				var field_id = $field.attr( 'id' );
-				var skin = $field.find( '.evf-field-primary-input' ).data( 'skin' );
-				var handle_color = $field.find( '.evf-field-primary-input' ).data( 'handle_color' );
-				var style = '';
+				var $field = $( element ),
+					field_id = $field.attr( 'id' ),
+					skin = $field.find( '.evf-field-primary-input' ).data( 'skin' ),
+					handle_color = $field.find( '.evf-field-primary-input' ).data( 'handle_color' ),
+					style = '';
 
 				switch ( skin ) {
 					case 'flat':
