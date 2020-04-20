@@ -35,8 +35,9 @@ jQuery( function ( $ ) {
 			// Slider value change handler.
 			$( '.evf-field-range-slider .evf-field-primary-input' ).ionRangeSlider({
 				onFinish: function( elements ) {
-					var field_id = elements.input.closest( '.evf-field' ).data( 'field-id' );
-					everest_forms.setPrefixPostfixTexts( field_id );
+					var $field = elements.input.closest( '.evf-field' );
+
+					everest_forms.setPrefixPostfixTexts( null, null, $field );
 				}
 			})
 			.on( 'change', function() {
@@ -53,12 +54,13 @@ jQuery( function ( $ ) {
 			$( '.evf-field-range-slider .evf-slider-input' )
 			.on( 'input', function() {
 				var new_value = $( this ).val(),
-					field_id = $( this ).closest( '.evf-field' ).data( 'field-id' );
+					$field = $( this ).closest( '.evf-field' );
 
 				$( this ).closest( '.evf-field-range-slider' ).find( '.evf-field-primary-input' ).data( 'ionRangeSlider' ).update({ from: new_value });
-				everest_forms.setPrefixPostfixTexts( field_id );
+				everest_forms.setPrefixPostfixTexts( null, null, $field );
 			});
 
+			// Slider Reset icon handler.
 			$( '.evf-field-range-slider .evf-range-slider-reset-icon' ).on( 'click', function( e ) {
 				var $field = $( this ).closest( '.evf-field' ),
 					default_value = $field.find( '.evf-field-primary-input' ).data( 'default' );
@@ -68,18 +70,18 @@ jQuery( function ( $ ) {
 
 				// Update slider handle color.
 				everest_forms.setSliderColors( $( this ).closest( '.evf-field' ) );
-				everest_forms.setPrefixPostfixTexts( $field.data( 'field-id' ) );
+				everest_forms.setPrefixPostfixTexts( null, null, $field );
 			});
 
 			// Setup sliders according to the options.
 			$( '.evf-field.evf-field-range-slider' ).each( function() {
-				var field_id = $( this ).data( 'field-id' );
+				var $field = $( this ).closest( '.evf-field' );
 
 				// Set slider handle/highlight/track color.
 				everest_forms.setSliderColors( this );
 
 				// Use text prefix/postfix.
-				everest_forms.setPrefixPostfixTexts( field_id );
+				everest_forms.setPrefixPostfixTexts( null, null, $field );
 			});
 		},
 
@@ -88,9 +90,12 @@ jQuery( function ( $ ) {
 		 *
 		 * @since 1.7.0
 		 */
-		setPrefixPostfixTexts: function ( field_id ) {
-			if ( field_id && '' !== field_id ) {
-				var $field = $( '#evf-111-field_' + field_id + '-container' ),
+		setPrefixPostfixTexts: function ( field_id, form_id, $field = null ) {
+			var provided_selector_params = ( field_id && '' !== field_id && form_id && '' !== form_id ),
+				provided_field = ( null !== $field );
+
+			if ( provided_selector_params || provided_field ) {
+				var $field = provided_field ? $field : $( '#evf-' + form_id + '-field_' + field_id + '-container' ),
 					$primary_input = $field.find( '.evf-field-primary-input' ),
 					use_text_prefix_postfix = $primary_input.data( 'use-text-prefix-postfix' ),
 					prefix_text = $primary_input.data( 'prefix-text' ),
@@ -430,7 +435,9 @@ jQuery( function ( $ ) {
 					errorClass: 'evf-error',
 					validClass: 'evf-valid',
 					errorPlacement: function( error, element ) {
-						if ( element.closest( '.evf-field' ).is( '.evf-field-scale-rating' ) ) {
+						if ( element.closest( '.evf-field' ).is( '.evf-field-range-slider' ) ) {
+							element.closest( '.evf-field' ).append( error );
+						} else if ( element.closest( '.evf-field' ).is( '.evf-field-scale-rating' ) ) {
 							element.closest( '.evf-field' ).find( '.everest-forms-field-scale-rating' ).after( error );
 						} else if ( 'radio' === element.attr( 'type' ) || 'checkbox' === element.attr( 'type' ) ) {
 							if ( element.hasClass( 'everest-forms-likert-field-option' ) ) {
