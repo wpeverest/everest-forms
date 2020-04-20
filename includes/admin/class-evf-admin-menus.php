@@ -138,14 +138,17 @@ class EVF_Admin_Menus {
 
 		// Count unread entries from all forms.
 		foreach ( $forms as $form_id => $form_title ) {
-			$entries               = evf_search_entries(
+			$entries = evf_search_entries(
 				array(
 					'form_id' => $form_id,
 					'status'  => 'unread',
 					'limit'   => -1,
 				)
 			);
-			$unread_entries_count += count( $entries );
+
+			if ( is_array( $entries ) ) {
+				$unread_entries_count += count( $entries );
+			}
 		}
 
 		if ( $unread_entries_count > 0 ) {
