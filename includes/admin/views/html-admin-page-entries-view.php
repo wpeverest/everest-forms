@@ -162,6 +162,14 @@ $trash_link = wp_nonce_url(
 									<strong><?php echo date_i18n( esc_html__( 'M j, Y @ g:ia', 'everest-forms' ), strtotime( $entry->date_created ) + ( get_option( 'gmt_offset' ) * 3600 ) ); // phpcs:ignore WordPress.Security.EscapeOutput ?> </strong>
 								</p>
 
+								<?php if ( ! empty( $entry->date_modified ) ) : ?>
+									<p class="everest-forms-entry-modified">
+										<span class="dashicons dashicons-calendar"></span>
+										<?php esc_html_e( 'Modified:', 'everest-forms' ); ?>
+										<strong><?php echo date_i18n( esc_html__( 'M j, Y @ g:ia', 'everest-forms' ), strtotime( $entry->date_modified ) + ( get_option( 'gmt_offset' ) * 3600 ) ); // phpcs:ignore WordPress.Security.EscapeOutput ?> </strong>
+									</p>
+								<?php endif; ?>
+
 								<?php if ( ! empty( $entry->user_id ) && 0 !== $entry->user_id ) : ?>
 									<p class="everest-forms-entry-user">
 										<span class="dashicons dashicons-admin-users"></span>
