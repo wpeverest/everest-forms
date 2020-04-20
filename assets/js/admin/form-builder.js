@@ -239,9 +239,9 @@
 
 			// Local page add handler.
 			$( document.body ).on( 'click', '.everest-forms-field-option .evf-add-local-privacy-policy-page', function ( e ) {
-				var new_message = $( '.everest-forms-field-option:visible .evf-privacy-policy-consent-message' ).val();
-				var selected_page_id = $( '.everest-forms-field-option:visible .evf-select-local-privacy-policy-page' ).val();
-				var selected_page_title = $( '.everest-forms-field-option:visible .evf-select-local-privacy-policy-page option:selected' ).html();
+				var new_message = $( '.everest-forms-field-option:visible .evf-privacy-policy-consent-message' ).val(),
+					selected_page_id = $( '.everest-forms-field-option:visible .evf-select-local-privacy-policy-page' ).val(),
+					selected_page_title = $( '.everest-forms-field-option:visible .evf-select-local-privacy-policy-page option:selected' ).html();
 
 				// Append a hyperlink syntax containing the selected page to the consent message.
 				if ( selected_page_id ) {
@@ -256,9 +256,9 @@
 
 			// Custom page add handler.
 			$( document.body ).on( 'click', '.everest-forms-field-option .evf-privacy-policy-add-custom-url', function ( e ) {
-				var new_message = $( '.everest-forms-field-option:visible .evf-privacy-policy-consent-message' ).val();
-				var label = $( '.everest-forms-field-option:visible .evf-privacy-policy-custom-link-label' ).val().trim();
-				var url = $( '.everest-forms-field-option:visible .evf-privacy-policy-custom-link-url' ).val().trim();
+				var new_message = $( '.everest-forms-field-option:visible .evf-privacy-policy-consent-message' ).val(),
+					label = $( '.everest-forms-field-option:visible .evf-privacy-policy-custom-link-label' ).val().trim(),
+					url = $( '.everest-forms-field-option:visible .evf-privacy-policy-custom-link-url' ).val().trim();
 
 				// Prepend `http` protocol in the url.
 				if ( url.search( 'http' ) < 0 ) {
