@@ -209,6 +209,7 @@ $trash_link = wp_nonce_url(
 							</div>
 
 							<div id="major-publishing-actions">
+								<?php do_action( 'everest_forms_entry_details_sidebar_action', $entry, $form_data ); ?>
 								<div id="delete-action">
 									<a class="submitdelete" aria-label="<?php echo esc_attr__( 'Move to trash', 'everest-forms' ); ?>" href="<?php echo esc_url( $trash_link ); ?>"><?php esc_html_e( 'Move to trash', 'everest-forms' ); ?></a>
 								</div>
