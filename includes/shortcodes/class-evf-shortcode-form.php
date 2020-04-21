@@ -556,7 +556,11 @@ class EVF_Shortcode_Form {
 	 *
 	 * @return array
 	 */
-	private static function get_field_properties( $field, $form_data, $attributes = array() ) {
+	public static function get_field_properties( $field, $form_data, $attributes = array() ) {
+		if ( empty( $attributes ) ) {
+			$attributes = self::get_field_attributes( $field, $form_data );
+		}
+
 		// This filter is for backwards compatibility purposes.
 		$types = array( 'text', 'textarea', 'number', 'email', 'hidden', 'url', 'html', 'title', 'password', 'phone', 'address', 'checkbox', 'radio', 'select' );
 		if ( in_array( $field['type'], $types, true ) ) {
