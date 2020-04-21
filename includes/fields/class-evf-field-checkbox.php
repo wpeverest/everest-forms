@@ -186,7 +186,7 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 					'class' => array( 'everest-forms-field-label-inline' ),
 					'data'  => array(),
 					'id'    => '',
-					'text'  => $choice['label'],
+					'text'  => evf_string_translation( $form_id, $field_id, $choice['label'], '-choice-' . $key ),
 				),
 				'attr'      => array(
 					'name'  => "everest_forms[form_fields][{$field_id}][]",
@@ -445,7 +445,7 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 	public function format( $field_id, $field_submit, $form_data, $meta_key ) {
 		$field_submit = (array) $field_submit;
 		$field        = $form_data['form_fields'][ $field_id ];
-		$name         = sanitize_text_field( $field['label'] );
+		$name         = make_clickable( $field['label'] );
 		$value_raw    = evf_sanitize_array_combine( $field_submit );
 		$choice_keys  = array();
 

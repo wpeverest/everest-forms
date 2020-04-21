@@ -84,7 +84,7 @@ $trash_link = wp_nonce_url(
 											if ( apply_filters( 'everest_forms_html_field_label', false ) ) {
 												$correct_answers = apply_filters( 'everest_forms_single_entry_label', $value, $meta_key, $field_value );
 											} else {
-												echo '<strong>' . esc_html( $value ) . '</strong>';
+												echo '<strong>' . make_clickable( $value ) . '</strong>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 											}
 										} else {
 											echo '<strong>' . esc_html__( 'Field ID', 'everest-forms' ) . '</strong>';
@@ -93,7 +93,7 @@ $trash_link = wp_nonce_url(
 										echo '</th></tr>';
 
 										// Field value.
-										echo '<tr class="everest-forms-entry-field field-value' . $field_class . '" style="' . $field_style . '"><td>'; // @codingStandardsIgnoreLine
+										echo '<tr class="everest-forms-entry-field field-value' . $field_class . '" style="' . $field_style . '"><td>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 										if ( ! empty( $field_value ) ) {
 											if ( is_serialized( $field_value ) ) {

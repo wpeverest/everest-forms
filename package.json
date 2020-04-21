@@ -1,7 +1,7 @@
 {
   "name": "everest-forms",
   "title": "Everest Forms",
-  "version": "1.6.4",
+  "version": "1.6.5",
   "homepage": "https://github.com/wpeverest/everest-forms/",
   "repository": {
     "type": "git",
@@ -14,13 +14,14 @@
     "watch": "cross-env BABEL_ENV=default webpack --watch",
     "lint:js": "eslint assets/js --ext=js",
     "makepot": "composer run-script makepot",
-    "git:update-hooks": "rm -r .git/hooks && node ./node_modules/husky/husky.js install"
+    "git:update-hooks": "node ./node_modules/husky/husky.js install"
   },
   "devDependencies": {
     "@babel/core": "7.9.0",
-    "@wordpress/babel-preset-default": "4.10.0",
+    "@wordpress/babel-preset-default": "4.12.1",
     "@wordpress/browserslist-config": "2.6.0",
-    "autoprefixer": "9.7.4",
+    "autoprefixer": "9.7.6",
+    "babel-eslint": "10.1.0",
     "babel-loader": "8.1.0",
     "babel-plugin-transform-react-jsx": "6.24.1",
     "babel-preset-env": "1.7.0",
@@ -37,13 +38,13 @@
     "grunt-postcss": "0.9.0",
     "grunt-rtlcss": "2.0.2",
     "grunt-sass": "3.1.0",
-    "grunt-stylelint": "0.14.0",
-    "husky": "4.2.3",
-    "lint-staged": "10.0.8",
+    "grunt-stylelint": "0.15.0",
+    "husky": "4.2.5",
+    "lint-staged": "10.1.6",
     "node-sass": "4.13.1",
-    "stylelint": "13.2.1",
+    "stylelint": "13.3.2",
     "stylelint-config-wordpress": "16.0.0",
-    "webpack": "4.42.0",
+    "webpack": "4.42.1",
     "webpack-cli": "3.3.11"
   },
   "engines": {
