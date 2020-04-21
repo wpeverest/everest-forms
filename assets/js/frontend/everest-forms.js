@@ -436,7 +436,11 @@ jQuery( function ( $ ) {
 					validClass: 'evf-valid',
 					errorPlacement: function( error, element ) {
 						if ( element.closest( '.evf-field' ).is( '.evf-field-range-slider' ) ) {
-							element.closest( '.evf-field' ).append( error );
+							if ( element.closest( '.evf-field' ).find( '.evf-field-description' ).length ) {
+								element.closest( '.evf-field' ).find( '.evf-field-description' ).before( error );
+							} else {
+								element.closest( '.evf-field' ).append( error );
+							}
 						} else if ( element.closest( '.evf-field' ).is( '.evf-field-scale-rating' ) ) {
 							element.closest( '.evf-field' ).find( '.everest-forms-field-scale-rating' ).after( error );
 						} else if ( 'radio' === element.attr( 'type' ) || 'checkbox' === element.attr( 'type' ) ) {
