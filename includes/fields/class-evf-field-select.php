@@ -65,6 +65,37 @@ class EVF_Field_Select extends EVF_Form_Fields {
 	}
 
 	/**
+	 * Hook in tabs.
+	 */
+	public function init_hooks() {
+		add_action( 'everest_forms_shortcode_scripts', array( $this, 'load_assets' ) );
+	}
+
+	/**
+	 * Register/queue frontend scripts.
+	 *
+	 * @param array $atts Shortcode attributes.
+	 */
+	public static function load_assets( $atts ) {
+		$form_data = evf()->form->get( $atts['id'], array( 'content_only' => true ) );
+
+		if ( ! empty( $form_data['form_fields'] ) ) {
+			$is_enhanced_select = wp_list_filter(
+				$form_data['form_fields'],
+				array(
+					'type'            => 'select',
+					'enhanced_select' => 1,
+				)
+			);
+
+			if ( ! empty( $is_enhanced_select ) ) {
+				wp_enqueue_style( 'select2' );
+				wp_enqueue_script( 'selectWoo' );
+			}
+		}
+	}
+
+	/**
 	 * Enable enhanced select field option.
 	 *
 	 * @param array $field Field Data.
@@ -82,7 +113,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 				'slug'    => 'enhanced_select',
 				'value'   => $value,
 				'class'   => ( false === $plan ) ? 'disabled' : '',
-				'desc'    => esc_html__( 'Enable Enhanced select.', 'everest-forms' ),
+				'desc'    => esc_html__( 'Enable Enhanced select', 'everest-forms' ),
 				'tooltip' => $tooltip,
 			),
 			false
