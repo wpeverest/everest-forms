@@ -45,10 +45,10 @@ class EVF_Field_Select extends EVF_Form_Fields {
 					'label',
 					'meta',
 					'choices',
+					'enhanced_select',
 					'description',
 					'required',
 					'required_field_message',
-					'select2',
 				),
 			),
 			'advanced-options' => array(
@@ -62,6 +62,43 @@ class EVF_Field_Select extends EVF_Form_Fields {
 		);
 
 		parent::__construct();
+	}
+
+	/**
+	 * Enable enhanced select field option.
+	 *
+	 * @param array $field Field Data.
+	 */
+	public function enhanced_select( $field ) {
+		$plan    = evf_get_license_plan();
+		$value   = isset( $field['enhanced_select'] ) && false !== $plan ? $field['enhanced_select'] : '0';
+		$tooltip = esc_html__( 'Check this option to enable enhanced select. It enables you to search items in the dropdown field.', 'everest-forms' );
+
+		// Enable enhanced select toggle field.
+		$enhanced_select = $this->field_element(
+			'checkbox',
+			$field,
+			array(
+				'slug'    => 'enhanced_select',
+				'value'   => $value,
+				'class'   => ( false === $plan ) ? 'disabled' : '',
+				'desc'    => esc_html__( 'Enable Enhanced select.', 'everest-forms' ),
+				'tooltip' => $tooltip,
+			),
+			false
+		);
+		$this->field_element(
+			'row',
+			$field,
+			array(
+				'slug'    => 'enhanced_select',
+				'content' => $enhanced_select,
+				'class'   => ( false === $plan ) ? 'upgrade-modal' : '',
+				'data'    => array(
+					'feature' => esc_html__( 'Enhanced select', 'everest-forms' ),
+				),
+			)
+		);
 	}
 
 	/**
@@ -106,10 +143,10 @@ class EVF_Field_Select extends EVF_Form_Fields {
 			}
 		}
 
-		// Enable select2 feature.
-		$licensed = ( false === evf_get_license_plan() ) ? false : true;
-		if ( true === $licensed && ! empty( $field['select2'] ) && '1' === $field['select2'] ) {
-			$primary['class'][] = 'evf-select2-enabled';
+		// Enable enhanced select.
+		$plan = evf_get_license_plan();
+		if ( false !== $plan && ! empty( $field['enhanced_select'] ) && '1' === $field['enhanced_select'] ) {
+			$primary['class'][] = 'evf-enhanced-select';
 		}
 
 		// Check to see if any of the options have selected by default.
