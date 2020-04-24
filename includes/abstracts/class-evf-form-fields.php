@@ -676,35 +676,6 @@ abstract class EVF_Form_Fields {
 				}
 				break;
 
-			/**
-			 * Enable country flags.
-			 */
-			case 'enable_country_flag':
-				$default = ! empty( $args['default'] ) ? $args['default'] : '0';
-				$value   = isset( $field['enable_country_flag'] ) ? $field['enable_country_flag'] : $default;
-				$tooltip = esc_html__( 'This allows the flags to be shown for the country field in the frontend.', 'everest-forms' );
-				$output  = $this->field_element(
-					'checkbox',
-					$field,
-					array(
-						'slug'    => 'enable_country_flag',
-						'value'   => $value,
-						'desc'    => esc_html__( 'Enable Country Flags', 'everest-forms' ),
-						'tooltip' => $tooltip,
-					),
-					false
-				);
-				$output  = $this->field_element(
-					'row',
-					$field,
-					array(
-						'slug'    => 'enable_country_flag',
-						'content' => $output,
-					),
-					false
-				);
-				break;
-
 			/*
 			 * Code Block.
 			 */
