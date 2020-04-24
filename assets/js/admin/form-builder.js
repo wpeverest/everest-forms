@@ -155,7 +155,9 @@
 					panel_setting = $( '#everest-forms-panel-settings .everest-forms-panel-sidebar' );
 
 				if ( tab_content.length >= 1 ) {
-					window.evf_tab_scroller = new PerfectScrollbar( tab_content.selector );
+					window.evf_tab_scroller = new PerfectScrollbar( tab_content.selector, {
+						suppressScrollX: true,
+					});
 				}
 
 				if ( panel_setting.length >= 1 ) {
