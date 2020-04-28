@@ -148,8 +148,8 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				false
 			);
 
-			// `Disable certain dates` option.
-			$clear_disabled_dates_button = sprintf( '<a href="#" class="evf-clear-disabled-dates">%s</a>', esc_html__( 'Clear', 'everest-forms' ) );
+			// Disable certain dates option.
+			$clear_disabled_dates_button = sprintf( '<a href="#" class="evf-clear-disabled-dates after-label-description">%s</a>', esc_html__( 'Clear', 'everest-forms' ) );
 			$disable_dates_label         = $this->field_element(
 				'label',
 				$field,
