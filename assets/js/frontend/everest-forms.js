@@ -126,7 +126,7 @@ jQuery( function ( $ ) {
 								minuteIncrement : timeInterval,
 								dateFormat      : inputData.dateFormat,
 								time_24hr		: inputData.dateFormat.includes( 'H:i' ),
-								disable       : disableDates,
+								disable         : disableDates,
 							});
 						break;
 						default:
