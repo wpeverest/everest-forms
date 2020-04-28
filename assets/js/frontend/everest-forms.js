@@ -455,7 +455,11 @@ jQuery( function ( $ ) {
 		},
 		init_enhanced_select: function() {
 			if ( 'function' === typeof $( '.evf-enhanced-select' ).selectWoo ) {
-				$( '.evf-enhanced-select' ).selectWoo();
+				$( '.evf-enhanced-select' ).each( function() {
+					$( this ).selectWoo({
+						placeholder: $( this ).attr( 'placeholder' ),
+					});
+				});
 			}
 		}
 	};
