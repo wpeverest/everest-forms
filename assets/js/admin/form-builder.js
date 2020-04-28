@@ -1937,19 +1937,19 @@ jQuery( function ( $ ) {
 	} ).trigger( 'init_add_fields_toogle' );
 
 	// Fields Options - Open/close.
-	$( document.body ).on( 'init_field_options_toggle', function() {
-		$( '.everest-forms-field-option' ).on( 'click', '.everest-forms-field-option-group > a', function( event ) {
-			event.preventDefault();
-			$( this ).parent( '.everest-forms-field-option-group' ).toggleClass( 'closed' ).toggleClass( 'open' );
-		});
-		$( '.everest-forms-field-option' ).on( 'click', '.everest-forms-field-option-group a', function( event ) {
-			// If the user clicks on some form input inside, the box should not be toggled.
-			if ( $( event.target ).filter( ':input, option, .sort' ).length ) {
-				return;
-			}
+	$( document.body ).on( 'click', '.everest-forms-field-option .everest-forms-field-option-group > a', function( event ) {
+		event.preventDefault();
+		$( this ).parent( '.everest-forms-field-option-group' ).toggleClass( 'closed' ).toggleClass( 'open' );
+	});
+	$( document.body ).on( 'click', '.everest-forms-field-option .everest-forms-field-option-group a', function( event ) {
+		// If the user clicks on some form input inside, the box should not be toggled.
+		if ( $( event.target ).filter( ':input, option, .sort' ).length ) {
+			return;
+		}
 
-			$( this ).next( '.everest-forms-field-option-group-inner' ).stop().slideToggle();
-		});
+		$( this ).next( '.everest-forms-field-option-group-inner' ).stop().slideToggle();
+	});
+	$( document.body ).on( 'init_field_options_toggle', function() {
 		$( '.everest-forms-field-option-group.closed' ).each( function() {
 			$( this ).find( '.everest-forms-field-option-group-inner' ).hide();
 		});
