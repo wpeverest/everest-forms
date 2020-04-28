@@ -51,7 +51,7 @@ Check [documentation](http://docs.wpeverest.com/docs/everest-forms/)
 * Redirect option after submission
 * Editable Email Settings
 * Editable form validation message
-* Translation ready
+* Translation ready and WPML compatible
 
 ### Premium Features and Addons
 
@@ -149,6 +149,10 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
+= 1.6.6 - xx-xx-2020 =
+* Fix - Undefined PHP notice thrown if confirmation email didn't match.
+* Fix - False-positive required message displayed upon email validation.
+
 = 1.6.5 - 10-04-2020 =
 * Fix - Shortcode design issue in list table.
 * Fix - Form block deprecated notices in console.
@@ -160,6 +164,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Fix - Image and file not being submitted with enable AJAX form submission.
 * Tweak - RTL design issue for font-weight.
 * Tweak - Google reCAPTCHA v3 threshhold default to `0.5`.
+* Tweak - Custom Captcha field now shown as part of pro fields.
 * Tweak - Prefill field value so it can be used to modify data.
 * Tweak - Removed unnecessary height for input on classic layout.
 * Tweak - Use `apply_shortocodes()` as an alias for `do_shortcode()` for better semantics.
