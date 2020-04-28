@@ -472,8 +472,8 @@ jQuery( function ( $ ) {
 			} );
 		},
 		init_enhanced_select: function() {
-			// Select2 Enhancement if it exists.
-			if ( $().selectWoo ) {
+			// Only continue if SelectWoo library exists.
+			if ( 'undefined' !== typeof $.fn.selectWoo ) {
 				$( 'select.evf-enhanced-select:visible' ).each( function() {
 					var select2_args = $.extend({
 						placeholder: $( this ).attr( 'placeholder' ) || '',
