@@ -1,4 +1,6 @@
 == Changelog ==
+= 1.6.6 - xx-xx-2020 =
+* Enhance - Add ehnanced select feature to the Dropdown field
 
 = 1.6.5 - 10-04-2020 =
 * Fix - Shortcode design issue in list table.
