@@ -8,6 +8,16 @@ jQuery( function ( $ ) {
 		return false;
 	}
 
+	var getEnhancedSelectFormatString = function() {
+		return {
+			'language': {
+				noResults: function() {
+					return everest_forms_params.i18n_no_matches;
+				}
+			}
+		};
+	};
+
 	var everest_forms = {
 		$everest_form: $( 'form.everest-form' ),
 		init: function() {
@@ -17,6 +27,7 @@ jQuery( function ( $ ) {
 			this.load_validation();
 			this.submission_scroll();
 			this.randomize_elements();
+			this.init_enhanced_select();
 
 			// Inline validation.
 			this.$everest_form.on( 'input validate change', '.input-text, select, input:checkbox, input:radio', this.validate_field );
@@ -459,6 +470,18 @@ jQuery( function ( $ ) {
 					$list.append( $listItems.splice( Math.floor( Math.random() * $listItems.length ), 1 )[0] );
 				}
 			} );
+		},
+		init_enhanced_select: function() {
+			// Select2 Enhancement if it exists.
+			if ( $().selectWoo ) {
+				$( 'select.evf-enhanced-select:visible' ).each( function() {
+					var select2_args = $.extend({
+						placeholder: $( this ).attr( 'placeholder' ) || '',
+					}, getEnhancedSelectFormatString() );
+
+					$( this ).selectWoo( select2_args );
+				});
+			}
 		}
 	};
 
