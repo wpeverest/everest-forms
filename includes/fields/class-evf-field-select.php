@@ -113,7 +113,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 				'slug'    => 'enhanced_select',
 				'value'   => $value,
 				'class'   => ( false === $plan ) ? 'disabled' : '',
-				'desc'    => esc_html__( 'Enable Enhanced select', 'everest-forms' ),
+				'desc'    => esc_html__( 'Enable Enhanced Select', 'everest-forms' ),
 				'tooltip' => $tooltip,
 			),
 			false
