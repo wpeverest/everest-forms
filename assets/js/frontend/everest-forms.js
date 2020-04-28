@@ -8,6 +8,16 @@ jQuery( function ( $ ) {
 		return false;
 	}
 
+	var getEnhancedSelectFormatString = function() {
+		return {
+			'language': {
+				noResults: function() {
+					return everest_forms_params.i18n_no_matches;
+				}
+			}
+		};
+	};
+
 	var everest_forms = {
 		$everest_form: $( 'form.everest-form' ),
 		init: function() {
@@ -462,11 +472,14 @@ jQuery( function ( $ ) {
 			} );
 		},
 		init_enhanced_select: function() {
-			if ( 'function' === typeof $( '.evf-enhanced-select' ).selectWoo ) {
-				$( '.evf-enhanced-select' ).each( function() {
-					$( this ).selectWoo({
-						placeholder: $( this ).attr( 'placeholder' ),
-					});
+			// Select2 Enhancement if it exists.
+			if ( $().selectWoo ) {
+				$( 'select.evf-enhanced-select:visible' ).each( function() {
+					var select2_args = $.extend({
+						placeholder: $( this ).attr( 'placeholder' ) || '',
+					}, getEnhancedSelectFormatString() );
+
+					$( this ).selectWoo( select2_args );
 				});
 			}
 		}
