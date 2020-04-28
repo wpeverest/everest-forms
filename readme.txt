@@ -150,8 +150,10 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 == Changelog ==
 
 = 1.6.6 - xx-xx-2020 =
+* Fix - Field Options getting freezed for the first field.
 * Fix - Undefined PHP notice thrown if confirmation email didn't match.
 * Fix - False-positive required message displayed upon email validation.
+* Enhancement - Added option to disable certain dates in the Date/Time field.
 
 = 1.6.5 - 10-04-2020 =
 * Fix - Shortcode design issue in list table.
