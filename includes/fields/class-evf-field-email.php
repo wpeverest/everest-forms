@@ -341,10 +341,27 @@ class EVF_Field_Email extends EVF_Form_Fields {
 		$form_id            = (int) $form_data['id'];
 		$conditional_status = isset( $form_data['form_fields'][ $field_id ]['conditional_logic_status'] ) ? $form_data['form_fields'][ $field_id ]['conditional_logic_status'] : 0;
 
-		// Required check for primary email only (as exists secondary email then it should throw confirmation email match failure).
-		if ( ! empty( $form_data['form_fields'][ $field_id ]['required'] ) && '1' !== $conditional_status && ( empty( $field_submit ) && '0' !== $field_submit ) ) {
-			evf()->task->errors[ $form_id ][ $field_id ] = evf_get_required_label();
-			update_option( 'evf_validation_error', 'yes' );
+		// Required check.
+		if ( ! empty( $form_data['form_fields'][ $field_id ]['required'] ) && '1' !== $conditional_status ) {
+			$required = evf_get_required_label();
+
+			// Standard configuration, confirmation disabled.
+			if ( empty( $form_data['form_fields'][ $field_id ]['confirmation'] ) ) {
+				if ( empty( $field_submit ) && '0' !== $field_submit ) {
+					evf()->task->errors[ $form_id ][ $field_id ] = $required;
+					update_option( 'evf_validation_error', 'yes' );
+				}
+			} else {
+				if ( empty( $field_submit['primary'] ) && '0' !== $field_submit ) {
+					evf()->task->errors[ $form_id ][ $field_id ]['primary'] = $required;
+					update_option( 'evf_validation_error', 'yes' );
+				}
+
+				if ( empty( $field_submit['secondary'] ) && '0' !== $field_submit ) {
+					evf()->task->errors[ $form_id ][ $field_id ]['secondary'] = $required;
+					update_option( 'evf_validation_error', 'yes' );
+				}
+			}
 		}
 
 		// If confirmation disabled, treat this way for primary email.
@@ -356,7 +373,12 @@ class EVF_Field_Email extends EVF_Form_Fields {
 
 		// Standard checks for valid email address and confirmation email match.
 		if ( ! empty( $field_submit['primary'] ) && ! is_email( $field_submit['primary'] ) ) {
-			evf()->task->errors[ $form_id ][ $field_id ]['primary'] = esc_html__( 'Please enter a valid email address.', 'everest-forms' );
+			$invalid_email = esc_html__( 'Please enter a valid email address.', 'everest-forms' );
+			if ( empty( $form_data['form_fields'][ $field_id ]['confirmation'] ) ) {
+				evf()->task->errors[ $form_id ][ $field_id ] = $invalid_email;
+			} else {
+				evf()->task->errors[ $form_id ][ $field_id ]['primary'] = $invalid_email;
+			}
 			update_option( 'evf_validation_error', 'yes' );
 		} elseif ( isset( $field_submit['primary'], $field_submit['secondary'] ) && $field_submit['secondary'] !== $field_submit['primary'] ) {
 			evf()->task->errors[ $form_id ][ $field_id ]['secondary'] = esc_html__( 'Confirmation Email do not match.', 'everest-forms' );
