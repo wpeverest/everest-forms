@@ -20,7 +20,7 @@ class EVF_Shortcodes {
 		self::init_shortcode_hooks();
 
 		$shortcodes = array(
-			'everest_form' => __CLASS__ . '::form',
+			'everest_forms' => __CLASS__ . '::form',
 		);
 
 		foreach ( $shortcodes as $shortcode => $function ) {
