@@ -149,6 +149,10 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
+= 1.6.6 - xx-xx-2020 =
+* Fix - Undefined PHP notice thrown if confirmation email didn't match.
+* Fix - False-positive required message displayed upon email validation.
+
 = 1.6.5 - 10-04-2020 =
 * Fix - Shortcode design issue in list table.
 * Fix - Form block deprecated notices in console.

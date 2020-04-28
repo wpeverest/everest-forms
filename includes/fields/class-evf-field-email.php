@@ -401,7 +401,7 @@ class EVF_Field_Email extends EVF_Form_Fields {
 			$value = ! empty( $field_submit ) ? $field_submit : '';
 		}
 
-		$name = ! empty( $form_data['form_fields'][ $field_id ] ['label'] ) ? $form_data['form_fields'][ $field_id ]['label'] : '';
+		$name = ! empty( $form_data['form_fields'][ $field_id ]['label'] ) ? $form_data['form_fields'][ $field_id ]['label'] : '';
 
 		// Set final field details.
 		evf()->task->form_fields[ $field_id ] = array(
