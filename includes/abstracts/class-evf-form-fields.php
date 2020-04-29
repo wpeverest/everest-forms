@@ -1511,7 +1511,7 @@ abstract class EVF_Form_Fields {
 				break;
 			case 'checkbox':
 			case 'payment-checkbox':
-				$value = '';
+				$value = array();
 
 				if ( count( $field['value'] ) ) {
 					foreach ( $field['value']['label'] as $key => $choice ) {
