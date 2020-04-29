@@ -608,7 +608,7 @@ function evf_print_r( $expression, $return = false ) {
 				return $res;
 			}
 
-			echo $res; // WPCS: XSS ok.
+			echo $res; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			return true;
 		}
 	}
