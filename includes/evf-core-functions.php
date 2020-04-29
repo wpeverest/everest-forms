@@ -628,6 +628,7 @@ function evf_print_r( $expression, $return = false ) {
  */
 function evf_implode_r( $array, $delimiter = '<br>' ) {
 	$output = '';
+
 	foreach ( $array as $tuple ) {
 		if ( is_array( $tuple ) ) {
 			$output .= evf_implode_r( $tuple, ' ' );
@@ -635,6 +636,7 @@ function evf_implode_r( $array, $delimiter = '<br>' ) {
 			$output .= $delimiter . $tuple;
 		}
 	}
+
 	return $output;
 }
 
