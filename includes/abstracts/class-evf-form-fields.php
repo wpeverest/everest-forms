@@ -101,7 +101,7 @@ abstract class EVF_Form_Fields {
 		add_action( 'everest_forms_process_validate_' . $this->type, array( $this, 'validate' ), 10, 3 );
 		add_action( 'everest_forms_process_format_' . $this->type, array( $this, 'format' ), 10, 4 );
 		add_filter( 'everest_forms_field_properties', array( $this, 'field_prefill_value_property' ), 10, 3 );
-		add_filter( 'everest_forms_field_exporter_' . $this->type, array( $this, 'export_data' ), 10, 2 );
+		add_filter( 'everest_forms_field_exporter_' . $this->type, array( $this, 'field_exporter' ) );
 	}
 
 	/**
@@ -1493,13 +1493,10 @@ abstract class EVF_Form_Fields {
 	/**
 	 * Filter callback for outputting formatted data.
 	 *
-	 * @param array  $field  Field details to render.
-	 * @param string $context Context for rendering.
+	 * @param array $field Field data and settings.
 	 */
-	public function export_data( $field, $context = '' ) {
-
+	public function field_exporter( $field ) {
 		switch ( $this->type ) {
-
 			case 'radio':
 			case 'payment-multiple':
 				$value = '';
