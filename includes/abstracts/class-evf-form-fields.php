@@ -1496,22 +1496,26 @@ abstract class EVF_Form_Fields {
 	 * @param array $field Field data and settings.
 	 */
 	public function field_exporter( $field ) {
+		$return_variable = array();
+
 		switch ( $this->type ) {
 			case 'radio':
 			case 'payment-multiple':
-				$value = '';
-				$image = ! empty( $field['value']['image'] ) ? sprintf( '<img src="%s" style="width:75px;height:75px;max-height:75px;max-width:75px;"  /><br>', $field['value']['image'] ) : '';
-				$value = ! empty( $field['value']['label'] ) ? $image . $field['value']['label'] : '';
-				return array(
+				$value           = '';
+				$image           = ! empty( $field['value']['image'] ) ? sprintf( '<img src="%s" style="width:75px;height:75px;max-height:75px;max-width:75px;"  /><br>', $field['value']['image'] ) : '';
+				$value           = ! empty( $field['value']['label'] ) ? $image . $field['value']['label'] : '';
+				$return_variable = array(
 					'label' => ! empty( $field['value']['name'] ) ? $field['value']['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
 					'value' => ! empty( $value ) ? $value : false,
 				);
+				break;
 
 			case 'country':
-				return array(
+				$return_variable = array(
 					'label' => ! empty( $field['name'] ) ? $field['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
-					'value' => ! empty( $field['value']['country'] ) ? $field['value']['country'] : empty( $field['value']['country_code'] ) ? false : isset( evf_get_countries()[ $field['value']['country_code'] ] ) ? evf_get_countries()[ $field['value']['country_code'] ] : $field['value']['country_code'] . '.',
+					'value' => ! empty( $field['value']['country'] ) ? $field['value']['country'] : ( empty( $field['value']['country_code'] ) ? false : ( isset( evf_get_countries()[ $field['value']['country_code'] ] ) ? ( evf_get_countries()[ $field['value']['country_code'] ] ) : $field['value']['country_code'] . '.' ) ),
 				);
+				break;
 
 			case 'address':
 				$value  = '';
@@ -1522,39 +1526,43 @@ abstract class EVF_Form_Fields {
 				$value .= ! empty( $field['address1'] ) ? $field['address1'] . ',<br>' : '';
 				$value .= ! empty( $field['country'] ) ? isset( evf_get_countries()[ $field['country'] ] ) ? evf_get_countries()[ $field['country'] ] : $field['country'] . '.' : '';
 
-				return array(
+				$return_variable = array(
 					'label' => ! empty( $field['name'] ) ? $field['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
 					'value' => ! empty( $value ) ? $value : false,
 				);
+				break;
 
 			case 'scale-rating':
-				return array(
+				$return_variable = array(
 					'label' => ! empty( $field['name'] ) ? $field['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
 					'value' => ! empty( $field['value'] ) ? $field['value'] : false,
 				);
+				break;
 
 			case 'rating':
 				$rating = '(' . absint( $field['value']['value'] ) . "/{$field['value']['number_of_rating']})";
 
-				return array(
+				$return_variable = array(
 					'label' => ! empty( $field['name'] ) ? $field['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
 					'value' => $rating,
 				);
+				break;
 
 			case 'likert':
-				return array(
+				$return_variable = array(
 					'label' => ! empty( $field['name'] ) ? $field['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
 					'value' => ! empty( $field['value'] ) ? str_replace( '<br />', '<br>', nl2br( $field['value'] ) ) : false,
 				);
+				break;
 
 			case 'signature':
 				$value = '';
 
 				if ( ! empty( $field['value'] ) ) {
 
-					$path      = file_get_contents( $field['value'] );
+					$path      = file_get_contents( $field['value'] ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 					$signature = tempnam( sys_get_temp_dir(), 'prefix' );
-					file_put_contents( $signature, $path );
+					file_put_contents( $signature, $path ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
 					$value = ! empty( $field['value'] ) ?
 					sprintf(
 						'<img src="%s" style="width:150px;height:80px;max-height:200px;max-width:100px;"/>',
@@ -1563,10 +1571,11 @@ abstract class EVF_Form_Fields {
 					: '';
 				}
 
-				return array(
+				$return_variable = array(
 					'label' => ! empty( $field['name'] ) ? $field['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
 					'value' => ! empty( $value ) ? $value : false,
 				);
+				break;
 
 			case 'file-upload':
 			case 'image-upload':
@@ -1591,10 +1600,11 @@ abstract class EVF_Form_Fields {
 						)
 					);
 				}
-				return array(
+				$return_variable = array(
 					'label' => ! empty( $field['name'] ) ? $field['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
 					'value' => is_array( $value ) ? count( $value ) ? implode( '<br>', $value ) : false : $value,
 				);
+				break;
 
 			case 'checkbox':
 			case 'payment-checkbox':
@@ -1611,16 +1621,19 @@ abstract class EVF_Form_Fields {
 						}
 					}
 				}
-				return array(
+				$return_variable = array(
 					'label' => ! empty( $field['value']['name'] ) ? $field['value']['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
 					'value' => is_array( $value ) ? implode( '<br>', array_values( $value ) ) : false,
 				);
+				break;
 
 			default:
-				return array(
+				$return_variable = array(
 					'label' => ! empty( $field['name'] ) ? $field['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
 					'value' => ! empty( $field['value'] ) ? is_array( $field['value'] ) ? evf_implode_r( $field['value'] ) : $field['value'] : false,
 				);
 		}
+
+		return $return_variable;
 	}
 }
