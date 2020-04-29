@@ -1493,119 +1493,22 @@ abstract class EVF_Form_Fields {
 	/**
 	 * Filter callback for outputting formatted data.
 	 *
-	 * @param array $field Field data and settings.
+	 * @param array $field Field Data.
 	 */
 	public function field_exporter( $field ) {
-		$return_variable = array();
+		$export = array();
 
 		switch ( $this->type ) {
 			case 'radio':
 			case 'payment-multiple':
-				$value           = '';
-				$image           = ! empty( $field['value']['image'] ) ? sprintf( '<img src="%s" style="width:75px;height:75px;max-height:75px;max-width:75px;"  /><br>', $field['value']['image'] ) : '';
-				$value           = ! empty( $field['value']['label'] ) ? $image . $field['value']['label'] : '';
-				$return_variable = array(
+				$value  = '';
+				$image  = ! empty( $field['value']['image'] ) ? sprintf( '<img src="%s" style="width:75px;height:75px;max-height:75px;max-width:75px;"  /><br>', $field['value']['image'] ) : '';
+				$value  = ! empty( $field['value']['label'] ) ? $image . $field['value']['label'] : '';
+				$export = array(
 					'label' => ! empty( $field['value']['name'] ) ? $field['value']['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
 					'value' => ! empty( $value ) ? $value : false,
 				);
 				break;
-
-			case 'country':
-				$return_variable = array(
-					'label' => ! empty( $field['name'] ) ? $field['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
-					'value' => ! empty( $field['value']['country'] ) ? $field['value']['country'] : ( empty( $field['value']['country_code'] ) ? false : ( isset( evf_get_countries()[ $field['value']['country_code'] ] ) ? ( evf_get_countries()[ $field['value']['country_code'] ] ) : $field['value']['country_code'] . '.' ) ),
-				);
-				break;
-
-			case 'address':
-				$value  = '';
-				$value .= ! empty( $field['address1'] ) ? $field['address1'] . ',<br>' : '';
-				$value .= ! empty( $field['address2'] ) ? $field['address2'] . ',<br>' : '';
-				$value .= ! empty( $field['city'] ) ? $field['city'] . ',<br>' : '';
-				$value .= ! empty( $field['state'] ) ? $field['state'] . ',<br>' : '';
-				$value .= ! empty( $field['address1'] ) ? $field['address1'] . ',<br>' : '';
-				$value .= ! empty( $field['country'] ) ? isset( evf_get_countries()[ $field['country'] ] ) ? evf_get_countries()[ $field['country'] ] : $field['country'] . '.' : '';
-
-				$return_variable = array(
-					'label' => ! empty( $field['name'] ) ? $field['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
-					'value' => ! empty( $value ) ? $value : false,
-				);
-				break;
-
-			case 'scale-rating':
-				$return_variable = array(
-					'label' => ! empty( $field['name'] ) ? $field['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
-					'value' => ! empty( $field['value'] ) ? $field['value'] : false,
-				);
-				break;
-
-			case 'rating':
-				$rating = '(' . absint( $field['value']['value'] ) . "/{$field['value']['number_of_rating']})";
-
-				$return_variable = array(
-					'label' => ! empty( $field['name'] ) ? $field['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
-					'value' => $rating,
-				);
-				break;
-
-			case 'likert':
-				$return_variable = array(
-					'label' => ! empty( $field['name'] ) ? $field['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
-					'value' => ! empty( $field['value'] ) ? str_replace( '<br />', '<br>', nl2br( $field['value'] ) ) : false,
-				);
-				break;
-
-			case 'signature':
-				$value = '';
-
-				if ( ! empty( $field['value'] ) ) {
-
-					$path      = file_get_contents( $field['value'] ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-					$signature = tempnam( sys_get_temp_dir(), 'prefix' );
-					file_put_contents( $signature, $path ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
-					$value = ! empty( $field['value'] ) ?
-					sprintf(
-						'<img src="%s" style="width:150px;height:80px;max-height:200px;max-width:100px;"/>',
-						$signature
-					)
-					: '';
-				}
-
-				$return_variable = array(
-					'label' => ! empty( $field['name'] ) ? $field['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
-					'value' => ! empty( $value ) ? $value : false,
-				);
-				break;
-
-			case 'file-upload':
-			case 'image-upload':
-				$value = array();
-
-				if ( ! empty( $field['value_raw'] ) ) {
-					if ( ! is_array( $field['value_raw'] ) ) {
-						$field['value_raw'] = (array) $field['value_raw'];
-					}
-
-					array_walk(
-						$field['value_raw'],
-						function ( &$val, $key, $img ) {
-							$img['data'][] = ! empty( $val['value'] ) ? sprintf(
-								'<a href="%s" rel="noopener noreferrer" target="_blank">%s</a>',
-								esc_url( $val['value'] ),
-								esc_html( $val['name'] )
-							) : '';
-						},
-						array(
-							'data' => &$value,
-						)
-					);
-				}
-				$return_variable = array(
-					'label' => ! empty( $field['name'] ) ? $field['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
-					'value' => is_array( $value ) ? count( $value ) ? implode( '<br>', $value ) : false : $value,
-				);
-				break;
-
 			case 'checkbox':
 			case 'payment-checkbox':
 				$value = null;
@@ -1621,14 +1524,13 @@ abstract class EVF_Form_Fields {
 						}
 					}
 				}
-				$return_variable = array(
+				$export = array(
 					'label' => ! empty( $field['value']['name'] ) ? $field['value']['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
 					'value' => is_array( $value ) ? implode( '<br>', array_values( $value ) ) : false,
 				);
 				break;
-
 			default:
-				$return_variable = array(
+				$export = array(
 					'label' => ! empty( $field['name'] ) ? $field['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
 					'value' => ! empty( $field['value'] ) ? is_array( $field['value'] ) ? evf_implode_r( $field['value'] ) : $field['value'] : false,
 				);
