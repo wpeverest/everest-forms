@@ -141,14 +141,15 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 					$value = $this->implode_values( maybe_unserialize( $value ) );
 				}
 
-				$value = apply_filters( 'everest_forms_html_field_value', $value, $entry->meta[ $column_id ], $entry, 'export-csv' );
+				$value = apply_filters( 'everest_forms_html_field_value', $value, $entry->meta[ $column_id ], $entry, 'export-csv', $column_id );
 
 			} elseif ( is_callable( array( $this, "get_column_value_{$column_id}" ) ) ) {
 				// Handle special columns which don't map 1:1 to entry data.
 				$value = $this->{"get_column_value_{$column_id}"}( $entry );
 			}
 
-			$row[ $column_id ] = sanitize_text_field( $value );
+			// Ref: https://stackoverflow.com/questions/20444042/wordpress-how-to-sanitize-multi-line-text-from-a-textarea-without-losing-line .
+			$row[ $column_id ] = implode( "\n", array_map( 'sanitize_textarea_field', explode( "\n", $value ) ) );
 		}
 
 		return apply_filters( 'everest_forms_entry_export_row_data', $row, $entry );
