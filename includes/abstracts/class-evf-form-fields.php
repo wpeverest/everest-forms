@@ -1511,13 +1511,11 @@ abstract class EVF_Form_Fields {
 				break;
 			case 'checkbox':
 			case 'payment-checkbox':
-				$value = null;
+				$value = '';
 
 				if ( count( $field['value'] ) ) {
 					foreach ( $field['value']['label'] as $key => $choice ) {
-						$image = ! empty( $field['value']['images'][ $key ] ) ?
-						sprintf( '<img src="%s" style="width:75px;height:75px;max-height:75px;max-width:75px;"  /><br>', $field['value']['images'][ $key ] )
-						: '';
+						$image = ! empty( $field['value']['images'][ $key ] ) ? sprintf( '<img src="%s" style="width:75px;height:75px;max-height:75px;max-width:75px;"  /><br>', $field['value']['images'][ $key ] ) : '';
 
 						if ( ! empty( $choice ) ) {
 							$value[ $key ] = $image . $choice;
