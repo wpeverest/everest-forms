@@ -1505,6 +1505,10 @@ function evf_get_required_label() {
 function evf_get_license_plan() {
 	$license_key = get_option( 'everest-forms-pro_license_key' );
 
+	if ( ! function_exists( 'is_plugin_active' ) ) {
+		include_once ABSPATH . 'wp-admin/includes/plugin.php';
+	}
+
 	if ( $license_key && is_plugin_active( 'everest-forms-pro/everest-forms-pro.php' ) ) {
 		$license_data = get_transient( 'evf_pro_license_plan' );
 
