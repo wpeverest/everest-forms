@@ -571,7 +571,7 @@ function evf_get_logger() {
  * Some server environments blacklist some debugging functions. This function provides a safe way to
  * turn an expression into a printable, readable form without calling blacklisted functions.
  *
- * @since      1.0.0
+ * @since 1.0.0
  *
  * @param mixed $expression The expression to be printed.
  * @param bool  $return     Optional. Default false. Set to true to return the human-readable string.
@@ -614,6 +614,30 @@ function evf_print_r( $expression, $return = false ) {
 	}
 
 	return false;
+}
+
+/**
+ * Recursively process an array with an implosion.
+ *
+ * @since 1.6.6
+ *
+ * @param  array  $array     Array that needs to be recursively imploded.
+ * @param  string $delimiter Delimiter for the implosion - defaults to <br>.
+ *
+ * @return string $output Imploded array.
+ */
+function evf_implode_r( $array, $delimiter = '<br>' ) {
+	$output = '';
+
+	foreach ( $array as $tuple ) {
+		if ( is_array( $tuple ) ) {
+			$output .= evf_implode_r( $tuple, ' ' );
+		} elseif ( ! empty( $tuple ) ) {
+			$output .= $delimiter . $tuple;
+		}
+	}
+
+	return $output;
 }
 
 /**

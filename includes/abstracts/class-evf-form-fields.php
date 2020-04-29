@@ -101,6 +101,7 @@ abstract class EVF_Form_Fields {
 		add_action( 'everest_forms_process_validate_' . $this->type, array( $this, 'validate' ), 10, 3 );
 		add_action( 'everest_forms_process_format_' . $this->type, array( $this, 'format' ), 10, 4 );
 		add_filter( 'everest_forms_field_properties', array( $this, 'field_prefill_value_property' ), 10, 3 );
+		add_filter( 'everest_forms_field_exporter_' . $this->type, array( $this, 'field_exporter' ) );
 	}
 
 	/**
@@ -1487,5 +1488,52 @@ abstract class EVF_Form_Fields {
 		if ( in_array( $field['type'], array( 'text', 'textarea' ), true ) ) {
 			return isset( $field['limit_enabled'] ) && ! empty( $field['limit_count'] );
 		}
+	}
+
+	/**
+	 * Filter callback for outputting formatted data.
+	 *
+	 * @param array $field Field Data.
+	 */
+	public function field_exporter( $field ) {
+		$export = array();
+
+		switch ( $this->type ) {
+			case 'radio':
+			case 'payment-multiple':
+				$value  = '';
+				$image  = ! empty( $field['value']['image'] ) ? sprintf( '<img src="%s" style="width:75px;height:75px;max-height:75px;max-width:75px;"  /><br>', $field['value']['image'] ) : '';
+				$value  = ! empty( $field['value']['label'] ) ? $image . $field['value']['label'] : '';
+				$export = array(
+					'label' => ! empty( $field['value']['name'] ) ? $field['value']['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
+					'value' => ! empty( $value ) ? $value : false,
+				);
+				break;
+			case 'checkbox':
+			case 'payment-checkbox':
+				$value = array();
+
+				if ( count( $field['value'] ) ) {
+					foreach ( $field['value']['label'] as $key => $choice ) {
+						$image = ! empty( $field['value']['images'][ $key ] ) ? sprintf( '<img src="%s" style="width:75px;height:75px;max-height:75px;max-width:75px;"  /><br>', $field['value']['images'][ $key ] ) : '';
+
+						if ( ! empty( $choice ) ) {
+							$value[ $key ] = $image . $choice;
+						}
+					}
+				}
+				$export = array(
+					'label' => ! empty( $field['value']['name'] ) ? $field['value']['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
+					'value' => is_array( $value ) ? implode( '<br>', array_values( $value ) ) : false,
+				);
+				break;
+			default:
+				$export = array(
+					'label' => ! empty( $field['name'] ) ? $field['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
+					'value' => ! empty( $field['value'] ) ? is_array( $field['value'] ) ? evf_implode_r( $field['value'] ) : $field['value'] : false,
+				);
+		}
+
+		return $export;
 	}
 }
