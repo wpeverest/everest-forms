@@ -1536,6 +1536,6 @@ abstract class EVF_Form_Fields {
 				);
 		}
 
-		return $return_variable;
+		return $export;
 	}
 }
