@@ -54,7 +54,7 @@ class EVF_Admin_Tools {
 			$viewed_log = current( $logs );
 		}
 
-		if ( isset( $_REQUEST['action'] ) && 'purge_all' === $_REQUEST['action'] ) {
+		if ( isset( $_REQUEST['action'] ) && 'purge_all' === $_REQUEST['action'] ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			self::purge_logs();
 		} else {
 			$handle = ! empty( $viewed_log ) ? self::get_log_file_handle( $viewed_log ) : '';
