@@ -242,7 +242,16 @@ class EVF_Log_Handler_File extends EVF_Log_Handler {
 	public function remove( $handle ) {
 		$removed = false;
 		$logs    = $this->get_log_files();
-		$handle  = sanitize_title( $handle );
+
+		// Finding the index of the log for locating the file.
+		preg_match( '/(\d){4}-(\d){1,2}-(\d){1,2}/', $handle, $date );
+		if ( isset( $date[0] ) && strlen( $date[0] ) ) {
+			$date   = reset( $date );
+			$handle = substr( $handle, 0, strpos( $handle, "-{$date}" ) );
+			$handle = implode( '-', array( $handle, $date, wp_hash( $handle ), 'log' ) );
+		} else {
+			return $removed;
+		}
 
 		if ( isset( $logs[ $handle ] ) && $logs[ $handle ] ) {
 			$file = realpath( trailingslashit( EVF_LOG_DIR ) . $logs[ $handle ] );

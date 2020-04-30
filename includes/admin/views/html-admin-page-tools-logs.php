@@ -15,6 +15,7 @@ defined( 'ABSPATH' ) || exit;
 				<?php echo esc_html( $viewed_log ); ?>
 				<?php if ( ! empty( $handle ) ) : ?>
 					<a class="page-title-action" href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'handle' => $handle ), admin_url( 'admin.php?page=evf-tools&tab=logs' ) ), 'remove_log' ) ); ?>" class="button"><?php esc_html_e( 'Delete log', 'everest-forms' ); ?></a>
+					<a class="page-title-action" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin.php?page=evf-tools&tab=logs&action=purge_all' ), 'purge_logs' ) ); ?>" class="button danger"><?php esc_html_e( 'Delete all', 'everest-forms' ); ?></a>
 				<?php endif; ?>
 			</h2>
 		</div>

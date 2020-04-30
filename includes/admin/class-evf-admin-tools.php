@@ -45,7 +45,8 @@ class EVF_Admin_Tools {
 	 * Show the log page contents for file log handler.
 	 */
 	public static function status_logs_file() {
-		$logs = self::scan_log_files();
+		$logs   = self::scan_log_files();
+		$handle = null;
 
 		if ( ! empty( $_REQUEST['log_file'] ) && isset( $logs[ sanitize_title( wp_unslash( $_REQUEST['log_file'] ) ) ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			$viewed_log = $logs[ sanitize_title( wp_unslash( $_REQUEST['log_file'] ) ) ]; // phpcs:ignore WordPress.Security.NonceVerification
@@ -53,10 +54,14 @@ class EVF_Admin_Tools {
 			$viewed_log = current( $logs );
 		}
 
-		$handle = ! empty( $viewed_log ) ? self::get_log_file_handle( $viewed_log ) : '';
+		if ( isset( $_REQUEST['action'] ) && 'purge_all' === $_REQUEST['action'] ) {
+			self::purge_logs();
+		} else {
+			$handle = ! empty( $viewed_log ) ? self::get_log_file_handle( $viewed_log ) : '';
 
-		if ( ! empty( $_REQUEST['handle'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-			self::remove_log();
+			if ( ! empty( $_REQUEST['handle'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+				self::remove_log();
+			}
 		}
 
 		include_once 'views/html-admin-page-tools-logs.php';
@@ -170,6 +175,32 @@ class EVF_Admin_Tools {
 		if ( ! empty( $_REQUEST['handle'] ) ) {
 			$log_handler = new EVF_Log_Handler_File();
 			$log_handler->remove( wp_unslash( $_REQUEST['handle'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		}
+
+		wp_safe_redirect( esc_url_raw( admin_url( 'admin.php?page=evf-tools&tab=logs' ) ) );
+		exit();
+	}
+
+	/**
+	 * Purge all existing logs.
+	 */
+	public static function purge_logs() {
+		if ( empty( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( wp_unslash( $_REQUEST['_wpnonce'] ), 'purge_logs' ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			wp_die( esc_html__( 'Action failed. Please refresh the page and retry.', 'everest-forms' ) );
+		}
+		$log_handler = new EVF_Log_Handler_File();
+		foreach ( $log_handler->get_log_files() as $index => $single_log ) {
+			$file = realpath( trailingslashit( EVF_LOG_DIR ) . $single_log );
+			if ( 0 === stripos( $file, realpath( trailingslashit( EVF_LOG_DIR ) ) ) && is_file( $file ) && is_writable( $file ) ) { // phpcs:ignore WordPress.VIP.FileSystemWritesDisallow.file_ops_is_writable
+				try {
+					fclose( $file ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fclose
+					do_action( 'everest_forms_logs_purge', $index, $single_log, $file );
+					unlink( $file ); // phpcs:ignore WordPress.VIP.FileSystemWritesDisallow.file_ops_unlink
+
+				} catch ( \Exception $exception ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+					// Suppress Exceptions in case unlink/fclose fail. For PHP 8.0 compatibility.
+				}
+			}
 		}
 
 		wp_safe_redirect( esc_url_raw( admin_url( 'admin.php?page=evf-tools&tab=logs' ) ) );
