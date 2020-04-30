@@ -160,13 +160,13 @@ class EVF_Field_Textarea extends EVF_Form_Fields {
 	/**
 	 * Field display on the form front-end.
 	 *
-	 * @since      1.0.0
+	 * @since 1.0.0
 	 *
-	 * @param array $field      Field data and settings.
-	 * @param array $deprecated Deprecated.
-	 * @param array $form_data  Form data and settings.
+	 * @param array $field Field Data.
+	 * @param array $field_atts Field attributes.
+	 * @param array $form_data All Form Data.
 	 */
-	public function field_display( $field, $deprecated, $form_data ) {
+	public function field_display( $field, $field_atts, $form_data ) {
 		// Define data.
 		$value   = '';
 		$primary = $field['properties']['inputs']['primary'];
