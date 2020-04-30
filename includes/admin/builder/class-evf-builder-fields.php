@@ -300,7 +300,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 	/**
 	 * Single Field preview.
 	 *
-	 * @param array $field Field data.
+	 * @param array $field Field data and settings.
 	 */
 	public function field_preview( $field ) {
 		$css  = ! empty( $field['size'] ) ? 'size-' . esc_attr( $field['size'] ) : '';

@@ -128,11 +128,13 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 	/**
 	 * Define additional field properties.
 	 *
-	 * @param array $properties Field properties.
-	 * @param array $field Field data.
-	 * @param array $form_data Form data.
+	 * @since 1.0.0
 	 *
-	 * @return array
+	 * @param array $properties Field properties.
+	 * @param array $field      Field settings.
+	 * @param array $form_data  Form data and settings.
+	 *
+	 * @return array of additional field properties.
 	 */
 	public function field_properties( $properties, $field, $form_data ) {
 		// Define data.
@@ -320,7 +322,7 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $field Field settings.
+	 * @param array $field Field data and settings.
 	 */
 	public function field_preview( $field ) {
 		// Label.
@@ -338,9 +340,9 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $field      Field settings.
+	 * @param array $field Field Data.
 	 * @param array $field_atts Field attributes.
-	 * @param array $form_data  Form data and settings.
+	 * @param array $form_data All Form Data.
 	 */
 	public function field_display( $field, $field_atts, $form_data ) {
 		// Define data.
