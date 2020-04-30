@@ -164,15 +164,8 @@ class EVF_Field_Select extends EVF_Form_Fields {
 		$primary           = $field['properties']['inputs']['primary'];
 		$field             = apply_filters( 'everest_forms_select_field_display', $field, $field_atts, $form_data );
 		$field_placeholder = ! empty( $field['placeholder'] ) ? evf_string_translation( $form_data['id'], $field['id'], $field['placeholder'], '-placeholder' ) : '';
-		$field_data        = '';
 		$choices           = $field['choices'];
 		$has_default       = false;
-
-		if ( ! empty( $field_atts['input_data'] ) ) {
-			foreach ( $field_atts['input_data'] as $key => $val ) {
-				$field_data .= ' data-' . $key . '="' . $val . '"';
-			}
-		}
 
 		// Enable enhanced select.
 		$plan = evf_get_license_plan();
