@@ -144,6 +144,14 @@
 		border: 1px solid $color_gray-light;
 	}
 
+	.select2-container {
+		margin-bottom: 10px;
+
+		.select2-selection--single {
+			height: 32px;
+		}
+	}
+
 	input {
 		&:focus {
 			outline: none;

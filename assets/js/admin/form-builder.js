@@ -155,7 +155,9 @@
 					panel_setting = $( '#everest-forms-panel-settings .everest-forms-panel-sidebar' );
 
 				if ( tab_content.length >= 1 ) {
-					window.evf_tab_scroller = new PerfectScrollbar( tab_content.selector );
+					window.evf_tab_scroller = new PerfectScrollbar( tab_content.selector, {
+						suppressScrollX: true,
+					});
 				}
 
 				if ( panel_setting.length >= 1 ) {
@@ -214,6 +216,7 @@
 			EVFPanelBuilder.bindLabelEditInputActions();
 			EVFPanelBuilder.bindSyncedInputActions();
 			EVFPanelBuilder.bindPrivacyPolicyActions();
+			EVFPanelBuilder.init_datepickers();
 
 			// Fields Panel.
 			EVFPanelBuilder.bindUIActionsFields();
@@ -278,6 +281,46 @@
 					$( '.everest-forms-field-option:visible .evf-privacy-policy-custom-link-label' ).val( '' );
 					$( '.everest-forms-field-option:visible .evf-privacy-policy-custom-link-url' ).val( '' );
 				}
+			});
+		},
+
+		/*
+		 * Initialize date pickers like min/max date, disable dates etc.
+		 *
+		 * @since 1.6.6
+		 */
+		init_datepickers: function() {
+			var date_format = $( '.everest-forms-disable-dates' ).data( 'date-format' );
+			var selection_mode = 'multiple';
+
+			// Initialize "Disable dates" option's date pickers that hasn't been initialized.
+			$( '.everest-forms-disable-dates' ).each( function() {
+				if ( ! $( this ).get(0)._flatpickr ) {
+					$( this ).flatpickr({
+						dateFormat: date_format,
+						mode: selection_mode,
+					});
+				}
+			})
+
+			// Reformat the selected dates input value for `Disable dates` option when the date format changes.
+			$( document.body ).on( 'change', '.evf-date-format', function( e ) {
+				var $disable_dates = $( '.everest-forms-field-option:visible .everest-forms-disable-dates' ),
+					flatpicker = $disable_dates.get(0)._flatpickr,
+					selectedDates = flatpicker.selectedDates,
+					date_format = $( this ).val(),
+					formatedDates = [];
+
+				selectedDates.forEach( function( date ) {
+					formatedDates.push( flatpickr.formatDate( date, date_format ) );
+				})
+				flatpicker.set( 'dateFormat', date_format );
+				$disable_dates.val( formatedDates.join( ', ' ) );
+			});
+
+			// Clear disabled dates.
+			$( document.body ).on( 'click', '.evf-clear-disabled-dates', function() {
+				$( '.everest-forms-field-option:visible .everest-forms-disable-dates' ).get(0)._flatpickr.clear();
 			});
 		},
 
@@ -1823,8 +1866,11 @@
 						$( '#everest-forms-field-option-' + dragged_field_id ).find( '.evf-privacy-policy-consent-message' ).val( consent_message );
 						$( '.everest-forms-field-options #everest-forms-field-option-row-' + dragged_field_id + '-required' ).find( 'input' ).click();
 					}
-				}
-			});
+
+					// Initialization Datepickers.
+					EVFPanelBuilder.init_datepickers();
+		 		}
+		 	});
 		},
 
 		conditionalLogicAppendField: function( id ){
@@ -2112,19 +2158,19 @@ jQuery( function ( $ ) {
 	} ).trigger( 'init_add_fields_toogle' );
 
 	// Fields Options - Open/close.
-	$( document.body ).on( 'init_field_options_toggle', function() {
-		$( '.everest-forms-field-option' ).on( 'click', '.everest-forms-field-option-group > a', function( event ) {
-			event.preventDefault();
-			$( this ).parent( '.everest-forms-field-option-group' ).toggleClass( 'closed' ).toggleClass( 'open' );
-		});
-		$( '.everest-forms-field-option' ).on( 'click', '.everest-forms-field-option-group a', function( event ) {
-			// If the user clicks on some form input inside, the box should not be toggled.
-			if ( $( event.target ).filter( ':input, option, .sort' ).length ) {
-				return;
-			}
+	$( document.body ).on( 'click', '.everest-forms-field-option .everest-forms-field-option-group > a', function( event ) {
+		event.preventDefault();
+		$( this ).parent( '.everest-forms-field-option-group' ).toggleClass( 'closed' ).toggleClass( 'open' );
+	});
+	$( document.body ).on( 'click', '.everest-forms-field-option .everest-forms-field-option-group a', function( event ) {
+		// If the user clicks on some form input inside, the box should not be toggled.
+		if ( $( event.target ).filter( ':input, option, .sort' ).length ) {
+			return;
+		}
 
-			$( this ).next( '.everest-forms-field-option-group-inner' ).stop().slideToggle();
-		});
+		$( this ).next( '.everest-forms-field-option-group-inner' ).stop().slideToggle();
+	});
+	$( document.body ).on( 'init_field_options_toggle', function() {
 		$( '.everest-forms-field-option-group.closed' ).each( function() {
 			$( this ).find( '.everest-forms-field-option-group-inner' ).hide();
 		});

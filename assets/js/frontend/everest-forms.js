@@ -8,6 +8,16 @@ jQuery( function ( $ ) {
 		return false;
 	}
 
+	var getEnhancedSelectFormatString = function() {
+		return {
+			'language': {
+				noResults: function() {
+					return everest_forms_params.i18n_no_matches;
+				}
+			}
+		};
+	};
+
 	var everest_forms = {
 		$everest_form: $( 'form.everest-form' ),
 		init: function() {
@@ -18,6 +28,7 @@ jQuery( function ( $ ) {
 			this.submission_scroll();
 			this.randomize_elements();
 			this.init_privacy_policy_fields();
+			this.init_enhanced_select();
 
 			// Inline validation.
 			this.$everest_form.on( 'input validate change', '.input-text, select, input:checkbox, input:radio', this.validate_field );
@@ -96,7 +107,13 @@ jQuery( function ( $ ) {
 			if ( evfDateField.length > 0 ) {
 				$( '.flatpickr-field' ).each( function() {
 					var timeInterval = 5,
-						inputData  	 = $( this ).data();
+						inputData  	 = $( this ).data(),
+						disableDates = [];
+
+					// Extract list of disabled dates.
+					if ( inputData.disableDates ) {
+						disableDates = inputData.disableDates.split( ',' );
+					}
 
 					switch( inputData.dateTime ) {
 						case 'date':
@@ -106,7 +123,8 @@ jQuery( function ( $ ) {
 								mode          : inputData.mode,
 								minDate       : inputData.minDate,
 								maxDate       : inputData.maxDate,
-								dateFormat    : inputData.dateFormat
+								dateFormat    : inputData.dateFormat,
+								disable       : disableDates,
 							});
 						break;
 						case 'time':
@@ -139,7 +157,8 @@ jQuery( function ( $ ) {
 								maxDate         : inputData.maxDate,
 								minuteIncrement : timeInterval,
 								dateFormat      : inputData.dateFormat,
-								time_24hr		: inputData.dateFormat.includes( 'H:i' )
+								time_24hr		: inputData.dateFormat.includes( 'H:i' ),
+								disable         : disableDates,
 							});
 						break;
 						default:
@@ -475,6 +494,18 @@ jQuery( function ( $ ) {
 					$list.append( $listItems.splice( Math.floor( Math.random() * $listItems.length ), 1 )[0] );
 				}
 			} );
+		},
+		init_enhanced_select: function() {
+			// Only continue if SelectWoo library exists.
+			if ( 'undefined' !== typeof $.fn.selectWoo ) {
+				$( 'select.evf-enhanced-select:visible' ).each( function() {
+					var select2_args = $.extend({
+						placeholder: $( this ).attr( 'placeholder' ) || '',
+					}, getEnhancedSelectFormatString() );
+
+					$( this ).selectWoo( select2_args );
+				});
+			}
 		}
 	};
 
