@@ -137,11 +137,39 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				array(
 					'slug'    => 'date_format',
 					'value'   => isset( $field['date_format'] ) ? $field['date_format'] : 'Y-m-d',
+					'class'   => 'evf-date-format',
 					'options' => array(
 						'Y-m-d'  => date( 'Y-m-d' ) . ' (Y-m-d)', // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
 						'F j, Y' => date( 'F j, Y' ) . ' (F j, Y)', // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
 						'm/d/Y'  => date( 'm/d/Y' ) . ' (m/d/Y)', // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
 						'd/m/Y'  => date( 'd/m/Y' ) . ' (d/m/Y)', // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
+					),
+				),
+				false
+			);
+
+			// Disable certain dates option.
+			$clear_disabled_dates_button = sprintf( '<a href="#" class="evf-clear-disabled-dates after-label-description">%s</a>', esc_html__( 'Clear', 'everest-forms' ) );
+			$disable_dates_label         = $this->field_element(
+				'label',
+				$field,
+				array(
+					'slug'          => 'disable_dates',
+					'value'         => esc_html__( 'Disable Dates', 'everest-forms' ),
+					'tooltip'       => esc_html__( 'Select which dates you want to disable.', 'everest-forms' ),
+					'after_tooltip' => $clear_disabled_dates_button,
+				),
+				false
+			);
+			$disable_dates               = $this->field_element(
+				'text',
+				$field,
+				array(
+					'slug'  => 'disable_dates',
+					'value' => isset( $field['disable_dates'] ) ? $field['disable_dates'] : '',
+					'class' => 'everest-forms-disable-dates',
+					'data'  => array(
+						'date-format' => isset( $field['date_format'] ) ? $field['date_format'] : 'Y-m-d',
 					),
 				),
 				false
@@ -316,7 +344,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 
 			$args = array(
 				'slug'    => 'date_format',
-				'content' => $date_format_label . $date_format_select . $date_localization_label . $date_localization_select . '<div class="everest-forms-checklist everest-forms-checklist-inline">' . $current_date_mode . '</div><div class="everest-forms-current-date-format">' . $current_date_default . '</div><div class="everest-forms-min-max-date-format">' . $enable_min_max . '</div><div class="everest-forms-min-max-date-option ' . $class_name . '">' . $min_date_label . $min_date . $max_date_label . $max_date . '</div>',
+				'content' => $date_format_label . $date_format_select . $disable_dates_label . $disable_dates . $date_localization_label . $date_localization_select . '<div class="everest-forms-checklist everest-forms-checklist-inline">' . $current_date_mode . '</div><div class="everest-forms-current-date-format">' . $current_date_default . '</div><div class="everest-forms-min-max-date-format">' . $enable_min_max . '</div><div class="everest-forms-min-max-date-option ' . $class_name . '">' . $min_date_label . $min_date . $max_date_label . $max_date . '</div>',
 			);
 			$this->field_element( 'row', $field, $args );
 
@@ -380,15 +408,23 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	/**
 	 * Define additional field properties.
 	 *
-	 * @param  array $properties Field properties.
-	 * @param  array $field      Field settings.
-	 * @param  array $form_data  Form data and settings.
+	 * @since 1.0.0
+	 *
+	 * @param array $properties Field properties.
+	 * @param array $field      Field settings.
+	 * @param array $form_data  Form data and settings.
+	 *
 	 * @return array of additional field properties.
 	 */
 	public function field_properties( $properties, $field, $form_data ) {
 		// Input primary: data-time-interval.
 		if ( ! empty( $field['time_interval'] ) ) {
 			$properties['inputs']['primary']['attr']['data-time-interval'] = esc_attr( $field['time_interval'] );
+		}
+
+		// Input primary: Disabled dates data.
+		if ( ! empty( $field['disable_dates'] ) ) {
+			$properties['inputs']['primary']['attr']['data-disable-dates'] = esc_attr( $field['disable_dates'] );
 		}
 
 		// Input primary: data-date-time.
@@ -437,7 +473,8 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	 * Field preview inside the builder.
 	 *
 	 * @since 1.0.0
-	 * @param array $field Field Data.
+	 *
+	 * @param array $field Field data and settings.
 	 */
 	public function field_preview( $field ) {
 		// Define data.
@@ -459,10 +496,10 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	 * @since 1.0.0
 	 *
 	 * @param array $field Field Data.
-	 * @param array $deprecated Deprecated Parameter.
-	 * @param array $form_data Form Data.
+	 * @param array $field_atts Field attributes.
+	 * @param array $form_data All Form Data.
 	 */
-	public function field_display( $field, $deprecated, $form_data ) {
+	public function field_display( $field, $field_atts, $form_data ) {
 		// Define data.
 		$primary = $field['properties']['inputs']['primary'];
 

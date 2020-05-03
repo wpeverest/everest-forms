@@ -17,6 +17,7 @@ abstract class EVF_Log_Handler implements EVF_Log_Handler_Interface {
 	 * Formats a timestamp for use in log messages.
 	 *
 	 * @param int $timestamp Log timestamp.
+	 *
 	 * @return string Formatted time for use in log entry.
 	 */
 	protected static function format_time( $timestamp ) {
@@ -30,6 +31,7 @@ abstract class EVF_Log_Handler implements EVF_Log_Handler_Interface {
 	 * @param  string $level emergency|alert|critical|error|warning|notice|info|debug.
 	 * @param  string $message Log message.
 	 * @param  array  $context Additional information for log handlers.
+	 *
 	 * @return string Formatted log entry.
 	 */
 	protected static function format_entry( $timestamp, $level, $message, $context ) {

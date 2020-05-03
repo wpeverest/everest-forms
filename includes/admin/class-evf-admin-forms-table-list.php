@@ -165,7 +165,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 	 * @return string Shortcode column markup.
 	 */
 	public function column_shortcode( $posts ) {
-		return sprintf( '<span class="shortcode"><input type="text" onfocus="this.select();" readonly="readonly" value="%s" class="large-text code"></span>', esc_attr( '[everest_forms id="' . absint( $posts->ID ) . '"]' ) );
+		return sprintf( '<span class="shortcode"><input type="text" onfocus="this.select();" readonly="readonly" value="%s" class="large-text code"></span>', esc_attr( '[everest_form id="' . absint( $posts->ID ) . '"]' ) );
 	}
 
 	/**
