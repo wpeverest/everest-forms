@@ -159,7 +159,7 @@ class EVF_Frontend_Scripts {
 			'flatpickr'                     => array(
 				'src'     => self::get_asset_url( 'assets/js/flatpickr/flatpickr' . $suffix . '.js' ),
 				'deps'    => array( 'jquery' ),
-				'version' => '4.5.1',
+				'version' => '4.6.3',
 			),
 			'mailcheck'                     => array(
 				'src'     => self::get_asset_url( 'assets/js/mailcheck/mailcheck' . $suffix . '.js' ),

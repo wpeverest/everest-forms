@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 1.6.7 - 10-05-2020 =
+* Fix - Flatpickr Calendar does not open on Android Chrome.
+* Tweak - Updated flatpickr JS library to v4.6.3.
+
 = 1.6.6 - 01-05-2020 =
 * Fix - Log file deletion.
 * Fix - Field Options getting freezed for the first field.
