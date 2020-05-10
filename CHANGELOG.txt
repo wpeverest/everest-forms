@@ -1,6 +1,7 @@
 == Changelog ==
 
 = 1.6.7 - 10-05-2020 =
+* Fix - Sanitization of CSV exported field values.
 * Fix - Flatpickr Calendar does not open on Android Chrome.
 * Tweak - Updated flatpickr JS library to v4.6.3.
 

@@ -149,6 +149,9 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
+= 1.6.7 - 10-05-2020 =
+* Fix - Sanitization of CSV exported field values.
+
 = 1.6.6 - 01-05-2020 =
 * Fix - Log file deletion.
 * Fix - Field Options getting freezed for the first field.
