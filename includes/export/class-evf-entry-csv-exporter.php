@@ -148,7 +148,7 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 			} elseif ( is_callable( array( $this, "get_column_value_{$column_id}" ) ) ) {
 				// Handle special columns which don't map 1:1 to entry data.
 				$value     = $this->{"get_column_value_{$column_id}"}( $entry );
-				$raw_value = $this->{"get_column_value_{$column_id}"}( $entry );
+				$raw_value = $value;
 			}
 
 			$row[ $column_id ] = apply_filters( 'everest_forms_format_csv_field_data', sanitize_text_field( $value ), $raw_value, $column_id, $column_name, $columns, $entry );
