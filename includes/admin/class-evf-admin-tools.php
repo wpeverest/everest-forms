@@ -21,13 +21,6 @@ class EVF_Admin_Tools {
 	}
 
 	/**
-	 * Show the logs page.
-	 */
-	public static function status_logs() {
-		self::status_logs_file();
-	}
-
-	/**
 	 * Show the import page.
 	 */
 	public static function import() {
@@ -42,6 +35,13 @@ class EVF_Admin_Tools {
 	}
 
 	/**
+	 * Show the logs page.
+	 */
+	public static function status_logs() {
+		self::status_logs_file();
+	}
+
+	/**
 	 * Show the log page contents for file log handler.
 	 */
 	public static function status_logs_file() {
@@ -52,8 +52,6 @@ class EVF_Admin_Tools {
 		} elseif ( ! empty( $logs ) ) {
 			$viewed_log = current( $logs );
 		}
-
-		$handle = ! empty( $viewed_log ) ? self::get_log_file_handle( $viewed_log ) : '';
 
 		if ( ! empty( $_REQUEST['handle'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			self::remove_log();
@@ -102,7 +100,7 @@ class EVF_Admin_Tools {
 	 * @return string
 	 */
 	public static function get_log_file_handle( $filename ) {
-		return substr( $filename, 0, strlen( $filename ) > 37 ? strlen( $filename ) - 37 : strlen( $filename ) - 4 );
+		return substr( $filename, 0, strlen( $filename ) > 48 ? strlen( $filename ) - 48 : strlen( $filename ) - 4 );
 	}
 
 	/**

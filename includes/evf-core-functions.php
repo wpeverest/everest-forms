@@ -617,30 +617,6 @@ function evf_print_r( $expression, $return = false ) {
 }
 
 /**
- * Recursively process an array with an implosion.
- *
- * @since 1.6.6
- *
- * @param  array  $array     Array that needs to be recursively imploded.
- * @param  string $delimiter Delimiter for the implosion - defaults to <br>.
- *
- * @return string $output Imploded array.
- */
-function evf_implode_r( $array, $delimiter = '<br>' ) {
-	$output = '';
-
-	foreach ( $array as $tuple ) {
-		if ( is_array( $tuple ) ) {
-			$output .= evf_implode_r( $tuple, ' ' );
-		} elseif ( ! empty( $tuple ) ) {
-			$output .= $delimiter . $tuple;
-		}
-	}
-
-	return $output;
-}
-
-/**
  * Registers the default log handler.
  *
  * @since  1.0.0
