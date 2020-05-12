@@ -1125,30 +1125,8 @@
 			$(document).trigger('everest-form-cloned', [ new_key, field_type ]);
 			EVFPanelBuilder.switchToFieldOptionPanel(new_key);//switch to cloned field options
 
-			// Process the cloned data if it is a Range Slider field.
-			if ( 'range-slider' === field_type ) {
-				var html = '';
-
-				newFieldCloned.find( '.irs' ).remove();
-				newFieldCloned.find( '.evf-slider .evf-range-slider-preview' ).hide();
-
-				// Purify Handle Color Picker.
-				html = newOption.find( '.everest-forms-field-option-row-handle_color .wp-picker-input-wrap label' ).html();
-				newOption.find( '.everest-forms-field-option-row-handle_color .wp-picker-container' ).remove();
-				newOption.find( '.everest-forms-field-option-row-handle_color' ).append( html );
-
-				// Purify Highlight Color Picker.
-				html = newOption.find( '.everest-forms-field-option-row-highlight_color .wp-picker-input-wrap label' ).html();
-				newOption.find( '.everest-forms-field-option-row-highlight_color .wp-picker-container' ).remove();
-				newOption.find( '.everest-forms-field-option-row-highlight_color' ).append( html );
-
-				// Purify Track Color Picker.
-				html = newOption.find( '.everest-forms-field-option-row-track_color .wp-picker-input-wrap label' ).html();
-				newOption.find( '.everest-forms-field-option-row-track_color .wp-picker-container' ).remove();
-				newOption.find( '.everest-forms-field-option-row-track_color' ).append( html );
-
-				EVFPanelBuilder.initializeRangeSliderField( new_key );
-			}
+			// Trigger an event indicating completion of render_node action for cloning.
+			$( document.body ).trigger( 'evf_render_node_complete', [ field_type, new_key, newFieldCloned, newOption ]);
 		},
 		bindFieldDelete: function () {
 			$( 'body' ).on('click', '.everest-forms-preview .everest-forms-field .everest-forms-field-delete', function () {
@@ -1671,15 +1649,11 @@
 					EVFPanelBuilder.paymentFieldAppendToQuantity( dragged_el_id );
 					EVFPanelBuilder.paymentFieldAppendToDropdown( dragged_field_id, field_type );
 
-					// Initialize the dropped field as an Range Slider field.
-					EVFPanelBuilder.initializeRangeSliderField( dragged_field_id );
-
-					// Show slider input by default.
-					$( '#everest-forms-field-option-' + dragged_field_id ).find( '.evf-show-slider-input' ).attr( 'checked', 'checked' );
-					$( '#everest-forms-field-' + dragged_field_id ).find( '.evf-slider-input-wrapper' ).show();
-
 					// Initialization Datepickers.
 					EVFPanelBuilder.init_datepickers();
+
+					// Trigger an event indicating completion of field_drop action.
+					$( document.body ).trigger( 'evf_field_drop_complete', [ field_type, dragged_field_id, field_preview, field_options ]);
 		 		}
 		 	});
 		},
