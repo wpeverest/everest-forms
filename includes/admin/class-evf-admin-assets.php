@@ -82,10 +82,10 @@ class EVF_Admin_Assets {
 		wp_register_script( 'tooltipster', evf()->plugin_url() . '/assets/js/tooltipster/tooltipster.bundle' . $suffix . '.js', array( 'jquery' ), '4.6.2', true );
 		wp_register_script( 'perfect-scrollbar', evf()->plugin_url() . '/assets/js/perfect-scrollbar/perfect-scrollbar' . $suffix . '.js', array( 'jquery' ), '1.5.0', true );
 		wp_register_script( 'evf-clipboard', evf()->plugin_url() . '/assets/js/admin/evf-clipboard' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true );
-		wp_register_script( 'selectWoo', evf()->plugin_url() . '/assets/js/selectWoo/selectWoo.full' . $suffix . '.js', array( 'jquery' ), '1.0.4', true );
+		wp_register_script( 'selectWoo', evf()->plugin_url() . '/assets/js/selectWoo/selectWoo.full' . $suffix . '.js', array( 'jquery' ), '1.0.6', true );
 		wp_register_script( 'evf-enhanced-select', evf()->plugin_url() . '/assets/js/admin/evf-enhanced-select' . $suffix . '.js', array( 'jquery', 'selectWoo' ), EVF_VERSION, true );
 		wp_register_script( 'evf-template-controller', evf()->plugin_url() . '/assets/js/admin/form-template-controller' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true );
-		wp_register_script( 'flatpickr', evf()->plugin_url() . '/assets/js/flatpickr/flatpickr' . $suffix . '.js', array( 'jquery' ), '4.5.1', true );
+		wp_register_script( 'flatpickr', evf()->plugin_url() . '/assets/js/flatpickr/flatpickr' . $suffix . '.js', array( 'jquery' ), '4.6.3', true );
 		wp_localize_script(
 			'evf-template-controller',
 			'evf_templates',
@@ -243,7 +243,20 @@ class EVF_Admin_Assets {
 			}
 		}
 
-		// Add-ons/extensions Page.
+		// Tools page.
+		if ( 'everest-forms_page_evf-tools' === $screen_id ) {
+			wp_register_script( 'evf-admin-tools', evf()->plugin_url() . '/assets/js/admin/tools' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true );
+			wp_enqueue_script( 'evf-admin-tools' );
+			wp_localize_script(
+				'evf-admin-tools',
+				'everest_forms_admin_tools',
+				array(
+					'delete_log_confirmation' => esc_js( esc_html__( 'Are you sure you want to delete this log?', 'everest-forms' ) ),
+				)
+			);
+		}
+
+		// Add-ons/extensions page.
 		if ( 'everest-forms_page_evf-addons' === $screen_id ) {
 			wp_enqueue_script( 'everest-forms-extensions' );
 		}

@@ -1531,10 +1531,34 @@ abstract class EVF_Form_Fields {
 			default:
 				$export = array(
 					'label' => ! empty( $field['name'] ) ? $field['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
-					'value' => ! empty( $field['value'] ) ? is_array( $field['value'] ) ? evf_implode_r( $field['value'] ) : $field['value'] : false,
+					'value' => ! empty( $field['value'] ) ? is_array( $field['value'] ) ? $this->implode_recursive( $field['value'] ) : $field['value'] : false,
 				);
 		}
 
 		return $export;
+	}
+
+	/**
+	 * Recursively process an array with an implosion.
+	 *
+	 * @since 1.6.6
+	 *
+	 * @param  array  $array     Array that needs to be recursively imploded.
+	 * @param  string $delimiter Delimiter for the implosion - defaults to <br>.
+	 *
+	 * @return string $output Imploded array.
+	 */
+	protected function implode_recursive( $array, $delimiter = '<br>' ) {
+		$output = '';
+
+		foreach ( $array as $tuple ) {
+			if ( is_array( $tuple ) ) {
+				$output .= $this->implode_recursive( $tuple, ' ' );
+			} elseif ( ! empty( $tuple ) ) {
+				$output .= $delimiter . $tuple;
+			}
+		}
+
+		return $output;
 	}
 }

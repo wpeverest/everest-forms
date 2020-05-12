@@ -225,14 +225,14 @@
 			}
 		},
 
-		/*
+		/**
 		 * Initialize date pickers like min/max date, disable dates etc.
 		 *
 		 * @since 1.6.6
 		 */
 		init_datepickers: function() {
-			var date_format = $( '.everest-forms-disable-dates' ).data( 'date-format' );
-			var selection_mode = 'multiple';
+			var date_format    = $( '.everest-forms-disable-dates' ).data( 'date-format' ),
+				selection_mode = 'multiple';
 
 			// Initialize "Disable dates" option's date pickers that hasn't been initialized.
 			$( '.everest-forms-disable-dates' ).each( function() {

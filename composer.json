@@ -22,7 +22,7 @@
       "phpcbf -p"
     ],
     "makepot-audit": [
-      "wp i18n make-pot . --exclude=\".github,.wordpress-org,bin,node_modules,vendor\" --slug=everest-forms"
+      "wp --allow-root i18n make-pot . --exclude=\".github,.wordpress-org,bin,node_modules,vendor\" --slug=everest-forms"
     ],
     "makepot": [
       "@makepot-audit --skip-audit"

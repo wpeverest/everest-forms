@@ -4,7 +4,7 @@ Tags: contact form, forms, form builder, contact, custom form
 Requires at least: 5.0
 Tested up to: 5.4
 Requires PHP: 5.4
-Stable tag: 1.6.5
+Stable tag: 1.6.6.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -149,10 +149,20 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 1.6.6 - xx-xx-2020 =
+= 1.6.6.1 - 10-05-2020 =
+* Fix - Sanitization of CSV exported field values.
+* Fix - Conflict within WooCommerce checkout page.
+* Fix - Flatpickr Calendar does not open on Android Chrome.
+* Tweak - Updated selectWoo JS library to v1.6.0.
+* Tweak - Updated flatpickr JS library to v4.6.3.
+
+= 1.6.6 - 01-05-2020 =
+* Fix - Log file deletion.
 * Fix - Field Options getting freezed for the first field.
+* Fix - Perfect Scrollbar library updated to fix RTL issue.
 * Fix - Undefined PHP notice thrown if confirmation email didn't match.
 * Fix - False-positive required message displayed upon email validation.
+* Enhancement - Email attachment workflow.
 * Enhancement - Added enhanced select feature to the Dropdown field.
 * Enhancement - Added option to disable certain dates in the Date/Time field.
 
