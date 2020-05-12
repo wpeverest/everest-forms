@@ -137,7 +137,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $field Field settings.
+	 * @param array $field Field data and settings.
 	 */
 	public function field_preview( $field ) {
 		// Label.

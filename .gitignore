@@ -26,3 +26,9 @@ Thumbs.db
 
 # Composer
 /vendor/
+
+# Build
+build/
+
+# Language files
+languages/everest-forms.pot
