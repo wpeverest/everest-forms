@@ -415,12 +415,12 @@
 			});
 
 			// Delete field choice.
-			$builder.on( 'click', '.everest-forms-field-option-row-choices .remove', function( e ) {
+			$builder.on( 'click', '.everest-forms-field-option-row-choices .remove', function( event ) {
 				EVFPanelBuilder.choiceDelete( event, $(this) );
 			});
 
 			// Field choices defaults - (before change).
-			$builder.on( 'mousedown', '.everest-forms-field-option-row-choices input[type=radio]', function(e) {
+			$builder.on( 'mousedown', '.everest-forms-field-option-row-choices input[type=radio]', function()  {
 				var $this = $(this);
 
 				if ( $this.is( ':checked' ) ) {
@@ -431,7 +431,7 @@
 			});
 
 			// Field choices defaults.
-			$builder.on( 'click', '.everest-forms-field-option-row-choices input[type=radio]', function(e) {
+			$builder.on( 'click', '.everest-forms-field-option-row-choices input[type=radio]', function() {
 				var $this = $(this),
 					list  = $this.parent().parent();
 
