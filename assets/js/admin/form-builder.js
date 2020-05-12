@@ -215,7 +215,6 @@
 			EVFPanelBuilder.bindToggleHandleActions();
 			EVFPanelBuilder.bindLabelEditInputActions();
 			EVFPanelBuilder.bindSyncedInputActions();
-			EVFPanelBuilder.bindPrivacyPolicyActions();
 			EVFPanelBuilder.init_datepickers();
 
 			// Fields Panel.
@@ -224,64 +223,6 @@
 			if ( evf_data.tab === 'field-options' ) {
 				$( '.evf-panel-field-options-button' ).trigger( 'click' );
 			}
-		},
-
-		/**
-		 * All actions related to privacy policy field.
-		 *
-		 * @since 1.7.0
-		 */
-		bindPrivacyPolicyActions: function() {
-			// Consent message change handler.
-			$( document.body ).on( 'input', '.everest-forms-field-option .evf-privacy-policy-consent-message', function ( e ) {
-				var new_message = EVFPanelBuilder.processSyntaxes( $( this ).val() );
-
-				// Update with the new processed consent message.
-				$( '.everest-forms-field.active' ).find( '.evf-privacy-policy-consent-message' ).html( new_message );
-			});
-
-			// Local page add handler.
-			$( document.body ).on( 'click', '.everest-forms-field-option .evf-add-local-privacy-policy-page', function ( e ) {
-				var new_message = $( '.everest-forms-field-option:visible .evf-privacy-policy-consent-message' ).val(),
-					selected_page_id = $( '.everest-forms-field-option:visible .evf-select-local-privacy-policy-page' ).val(),
-					selected_page_title = $( '.everest-forms-field-option:visible .evf-select-local-privacy-policy-page option:selected' ).html();
-
-				// Append a hyperlink syntax containing the selected page to the consent message.
-				if ( selected_page_id ) {
-					new_message += '[' + selected_page_title + '](?page_id=' + selected_page_id + ')';
-
-					// Update with the new consent message.
-					$( '.everest-forms-field-option:visible .evf-privacy-policy-consent-message' ).val( new_message );
-					new_message = EVFPanelBuilder.processSyntaxes( new_message );
-					$( '.everest-forms-field.active' ).find( '.evf-privacy-policy-consent-message' ).html( new_message );
-				}
-			});
-
-			// Custom page add handler.
-			$( document.body ).on( 'click', '.everest-forms-field-option .evf-privacy-policy-add-custom-url', function ( e ) {
-				var new_message = $( '.everest-forms-field-option:visible .evf-privacy-policy-consent-message' ).val(),
-					label = $( '.everest-forms-field-option:visible .evf-privacy-policy-custom-link-label' ).val().trim(),
-					url = $( '.everest-forms-field-option:visible .evf-privacy-policy-custom-link-url' ).val().trim();
-
-				// Prepend `http` protocol in the url.
-				if ( url.search( 'http' ) < 0 ) {
-					url = 'http://' + url;
-				}
-
-				// Append a hyperlink syntax containing the custom URL to the consent message.
-				if ( '' !== url ) {
-					new_message += '[' + label + '](' + url + ')';
-
-					// Update with the new consent message.
-					$( '.everest-forms-field-option:visible .evf-privacy-policy-consent-message' ).val( new_message );
-					new_message = EVFPanelBuilder.processSyntaxes( new_message );
-					$( '.everest-forms-field.active' ).find( '.evf-privacy-policy-consent-message' ).html( new_message );
-
-					// Empty the input fields.
-					$( '.everest-forms-field-option:visible .evf-privacy-policy-custom-link-label' ).val( '' );
-					$( '.everest-forms-field-option:visible .evf-privacy-policy-custom-link-url' ).val( '' );
-				}
-			});
 		},
 
 		/*
@@ -322,160 +263,6 @@
 			$( document.body ).on( 'click', '.evf-clear-disabled-dates', function() {
 				$( '.everest-forms-field-option:visible .everest-forms-disable-dates' ).get(0)._flatpickr.clear();
 			});
-		},
-
-		/**
-		 * Process syntaxes in a text.
-		 *
-		 * @since 1.7.0
-		 *
-		 * @param {string} text Text to be processed.
-		 * @param {bool}   escape_html Whether to escape all the htmls before processing or not.
-		 *
-		 * @return {string} Processed text.
-		 */
-		processSyntaxes: function( text ) {
-			text = text.replace( /^\s+/g, '' );
-			text = EVFPanelBuilder.processHyperlinkSyntax( text );
-			text = EVFPanelBuilder.process_italic_syntax( text );
-			text = EVFPanelBuilder.process_bold_syntax( text );
-			text = EVFPanelBuilder.process_underline_syntax( text );
-			text = EVFPanelBuilder.process_new_lines( text );
-			return text;
-		},
-
-		/**
-		 * Process hyperlink syntaxes in a text.
-		 * The syntax used for hyperlink is: [Link Label](Link URL)
-		 * Example: [Google Search Page](https://google.com)
-		 *
-		 * @since 1.7.0
-		 *
-		 * @param {string} text Text to process.
-		 *
-		 * @return {string} Processed text.
-		 */
-		processHyperlinkSyntax: function( text ) {
-			var regex = new RegExp( /(\[[^\[\]]*\])(\([^\(\)]*\))/g );
-
-			// Process all the hyperlink syntax.
-			while ( matches = regex.exec( text ) ) {
-				var matched_string = matches[0];
-				var label          = matches[1];
-				var link           = matches[2];
-
-				// Trim brackets.
-				label = label.substring( 1, label.length - 1 );
-				link = link.substring( 1, link.length - 1 );
-
-				// Proceed only if label or link is not empty.
-				if ( '' !== label || '' !== link ) {
-
-					// Use hash(#) if the link is empty.
-					if ( '' === link ) {
-						link = '#';
-					}
-
-					// Use link as label if it's empty.
-					if ( '' === label ) {
-						label = link;
-					}
-
-					// Insert hyperlink html.
-					var html = '<a href="' + link + '">' + label + '</a>';
-					text = text.replace( matched_string, html );
-				} else {
-					// If both label and link are empty then replace it with empty string.
-					text = text.replace( matched_string, '' );
-				}
-			}
-			return text;
-		},
-
-		/**
-		 * Process italic syntaxes in a text.
-		 * The syntax used for italic text is: `text`
-		 * Just wrap the text with back tick characters. To escape a backtick insert a backslash(\) before the character like "\`".
-		 *
-		 * @since 1.7.0
-		 *
-		 * @param {string} text Text to process.
-		 *
-		 * @return {string} Processed text.
-		 */
-		process_italic_syntax: function( text ) {
-			var regex = new RegExp( /`[^`]+`/g );
-			text = text.split( '\\`' ).join( '<&&&&&>' ); // To preserve an escaped special character '`'.
-
-			while ( matches = regex.exec( text ) ) {
-				var matched_string = matches[0];
-				var label = matched_string.trim().substring( 1, matched_string.length - 1 );
-				var html = '<i>' + label + '</i>';
-				text = text.replace( matched_string, html );
-			}
-			return text.split( '<&&&&&>' ).join( '`' );
-		},
-
-		/**
-		 * Process bold syntaxes in a text.
-		 * The syntax used for bold text is: *text*
-		 * Just wrap the text with asterisk characters. To escape an asterisk insert a backslash(\) before the character like "\*".
-		 *
-		 * @since 1.7.0
-		 *
-		 * @param {string} text Text to process.
-		 *
-		 * @return {string} Processed text.
-		 */
-		process_bold_syntax: function( text ) {
-			var regex = new RegExp( /\*[^*]+\*/g );
-			text = text.split( '\\*' ).join( '<&&&&&>' ); // To preserve an escaped special character '*'.
-
-			while ( matches = regex.exec( text ) ) {
-				var matched_string = matches[0];
-				var label = matched_string.trim().substring( 1, matched_string.length - 1 );
-				var html = '<b>' + label + '</b>';
-				text = text.replace( matched_string, html );
-			}
-			return text.split( '<&&&&&>' ).join( '*' );
-		},
-
-		/**
-		 * Process underline syntaxes in a text.
-		 * The syntax used for bold text is: __text__
-		 * Wrap the text with double underscore characters. To escape an underscore insert a backslash(\) before the character like "\_".
-		 *
-		 * @since 1.7.0
-		 *
-		 * @param {string} text Text to process.
-		 *
-		 * @return {string} Processed text.
-		 */
-		process_underline_syntax: function( text ) {
-			var regex = new RegExp( /__[^_]+__/g );
-			text = text.split( '\\_' ).join( '<&&&&&>' ); // To preserve an escaped special character '_'.
-
-			while ( matches = regex.exec( text ) ) {
-				var matched_string = matches[0];
-				var label = matched_string.trim().substring( 2, matched_string.length - 2 );
-				var html = '<u>' + label + '</u>';
-				text = text.replace( matched_string, html );
-			}
-			return text.split( '<&&&&&>' ).join( '_' );
-		},
-
-		/**
-		 * It replaces `\n` characters with `<br/>` tag because new line `\n` character is not supported in html.
-		 *
-		 * @since 1.7.0
-		 *
-		 * @param {string} text
-		 *
-		 * @return {string} Processed text.
-		 */
-		process_new_lines: function( text ) {
-			//Ref: https://stackoverflow.com/questions/1144783/how-to-replace-all-occurrences-of-a-string
-			return text.split( '\n' ).join( '<br/>' );
 		},
 
 		/**
@@ -1859,16 +1646,11 @@
 					EVFPanelBuilder.paymentFieldAppendToQuantity( dragged_el_id );
 					EVFPanelBuilder.paymentFieldAppendToDropdown( dragged_field_id, field_type );
 
-					// Set defaults in privacy policy field.
-					if ( 'privacy-policy' === field_type ) {
-						var consent_message = evf_data.i18n_privacy_policy_consent_message;
-						$( '#everest-forms-field-' + dragged_field_id ).find( '.evf-privacy-policy-consent-message' ).html( consent_message );
-						$( '#everest-forms-field-option-' + dragged_field_id ).find( '.evf-privacy-policy-consent-message' ).val( consent_message );
-						$( '.everest-forms-field-options #everest-forms-field-option-row-' + dragged_field_id + '-required' ).find( 'input' ).click();
-					}
-
 					// Initialization Datepickers.
 					EVFPanelBuilder.init_datepickers();
+
+					// Trigger an event indicating completion of field_drop action.
+					$( document.body ).trigger( 'evf_field_drop_complete', [ field_type, dragged_field_id, field_preview, field_options ] );
 		 		}
 		 	});
 		},

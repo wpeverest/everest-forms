@@ -27,32 +27,10 @@ jQuery( function ( $ ) {
 			this.load_validation();
 			this.submission_scroll();
 			this.randomize_elements();
-			this.init_privacy_policy_fields();
 			this.init_enhanced_select();
 
 			// Inline validation.
 			this.$everest_form.on( 'input validate change', '.input-text, select, input:checkbox, input:radio', this.validate_field );
-		},
-		init_privacy_policy_fields: function() {
-			$( document.body ).on( 'click', '.evf-privacy-policy-local-page-link', function ( e ) {
-				e.preventDefault();
-
-				var page_id = $( this ).data( 'page-id' );
-
-				if ( '' !== page_id ) {
-					var $field = $( this ).closest( '.evf-field' );
-
-					if ( $( this ).hasClass( 'evf-page-expanded' ) ) {
-						$( this ).removeClass( 'evf-page-expanded' );
-						$field.find( '.evf-privacy-policy-local-page-content-' + page_id ).slideUp();
-					} else {
-						$field.find( '.evf-privacy-policy-local-page-content:visible' ).slideUp();
-						$field.find( '.evf-privacy-policy-local-page-content-' + page_id ).slideDown();
-						$field.find( '.evf-privacy-policy-local-page-link' ).removeClass( 'evf-page-expanded' );
-						$( this ).addClass( 'evf-page-expanded' );
-					}
-				}
-			});
 		},
 		init_inputMask: function() {
 			// Only load if jQuery inputMask library exists.
