@@ -139,6 +139,14 @@
 		border: 1px solid $color_gray-light;
 	}
 
+	.select2-container {
+		margin-bottom: 10px;
+
+		.select2-selection--single {
+			height: 32px;
+		}
+	}
+
 	input {
 		&:focus {
 			outline: none;
@@ -314,7 +322,7 @@
 
 								&.everest-forms-image-choices-item {
 									input {
-										margin-top: 0px;
+										margin-top: 0;
 									}
 								}
 							}
@@ -326,7 +334,7 @@
 
 						&.everest-forms-list-inline ul li {
 							vertical-align: top;
-							display: inline-block;
+							display: inline-flex;
 							margin-right: 20px;
 						}
 

@@ -159,12 +159,17 @@ class EVF_Frontend_Scripts {
 			'flatpickr'                     => array(
 				'src'     => self::get_asset_url( 'assets/js/flatpickr/flatpickr' . $suffix . '.js' ),
 				'deps'    => array( 'jquery' ),
-				'version' => '4.5.1',
+				'version' => '4.6.3',
 			),
 			'mailcheck'                     => array(
 				'src'     => self::get_asset_url( 'assets/js/mailcheck/mailcheck' . $suffix . '.js' ),
 				'deps'    => array( 'jquery' ),
 				'version' => '1.1.2',
+			),
+			'selectWoo'                     => array(
+				'src'     => self::get_asset_url( 'assets/js/selectWoo/selectWoo' . $suffix . '.js' ),
+				'deps'    => array( 'jquery' ),
+				'version' => '1.0.6',
 			),
 			'jquery-validate'               => array(
 				'src'     => self::get_asset_url( 'assets/js/jquery-validate/jquery.validate' . $suffix . '.js' ),
@@ -285,6 +290,7 @@ class EVF_Frontend_Scripts {
 					'i18n_messages_confirm'                => get_option( 'everest_forms_confirm_validation', __( 'Field values do not match.', 'everest-forms' ) ),
 					'i18n_messages_check_limit'            => get_option( 'everest_forms_check_limit_validation', esc_html__( 'You have exceeded number of allowed selections: {#}.', 'everest-forms' ) ),
 					'i18n_messages_number'                 => get_option( 'everest_forms_number_validation' ),
+					'i18n_no_matches'                      => _x( 'No matches found', 'enhanced select', 'everest-forms' ),
 					'mailcheck_enabled'                    => (bool) apply_filters( 'everest_forms_mailcheck_enabled', true ),
 					'mailcheck_domains'                    => array_map( 'sanitize_text_field', (array) apply_filters( 'everest_forms_mailcheck_domains', array() ) ),
 					'mailcheck_toplevel_domains'           => array_map( 'sanitize_text_field', (array) apply_filters( 'everest_forms_mailcheck_toplevel_domains', array( 'dev' ) ) ),

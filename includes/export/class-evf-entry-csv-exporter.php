@@ -132,23 +132,26 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 		foreach ( $columns as $column_id => $column_name ) {
 			$column_id = strstr( $column_id, ':' ) ? current( explode( ':', $column_id ) ) : $column_id;
 			$value     = '';
+			$raw_value = '';
 
 			if ( isset( $entry->meta[ $column_id ] ) ) {
 				// Filter for entry meta data.
-				$value = $entry->meta[ $column_id ];
+				$value     = $entry->meta[ $column_id ];
+				$raw_value = $entry->meta[ $column_id ];
 
 				if ( is_serialized( $value ) ) {
 					$value = $this->implode_values( maybe_unserialize( $value ) );
 				}
 
-				$value = apply_filters( 'everest_forms_html_field_value', $value, $entry->meta[ $column_id ], $entry, 'export-csv' );
+				$value = apply_filters( 'everest_forms_html_field_value', $value, $entry->meta[ $column_id ], $entry, 'export-csv', $column_id );
 
 			} elseif ( is_callable( array( $this, "get_column_value_{$column_id}" ) ) ) {
 				// Handle special columns which don't map 1:1 to entry data.
-				$value = $this->{"get_column_value_{$column_id}"}( $entry );
+				$value     = $this->{"get_column_value_{$column_id}"}( $entry );
+				$raw_value = $value;
 			}
 
-			$row[ $column_id ] = sanitize_text_field( $value );
+			$row[ $column_id ] = apply_filters( 'everest_forms_format_csv_field_data', sanitize_text_field( $value ), $raw_value, $column_id, $column_name, $columns, $entry );
 		}
 
 		return apply_filters( 'everest_forms_entry_export_row_data', $row, $entry );

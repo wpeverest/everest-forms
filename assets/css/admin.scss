@@ -2120,7 +2120,9 @@ button.everest-forms-btn {
 							display: none;
 
 							// Email/Password Confirmation.
-							&.everest-forms-confirm-disabled {
+							&.everest-forms-confirm-disabled,
+							&.everest-forms-field-option-email:not(.everest-forms-confirm-enabled),
+							&.everest-forms-field-option-password:not(.everest-forms-confirm-enabled) {
 								.everest-forms-field-option-row-sublabel_hide,
 								.everest-forms-field-option-row-confirmation_placeholder {
 									display: none;
@@ -2910,10 +2912,6 @@ button.everest-forms-btn {
 
 					label {
 						cursor: all-scroll;
-					}
-
-					.primary-input {
-						margin-bottom: 0;
 					}
 				}
 
@@ -5057,7 +5055,7 @@ img.ui-datepicker-trigger {
 		.select2-selection__arrow {
 			right: 1px;
 			height: 28px;
-			width: 28px;
+			width: 23px;
 			background: url(data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23555%22%2F%3E%3C%2Fsvg%3E) no-repeat right 5px top 55%;
 			background-size: 16px 16px;
 
@@ -5100,6 +5098,7 @@ img.ui-datepicker-trigger {
 	.select2-selection__clear {
 		color: #999;
 		margin-top: -1px;
+		z-index: 1;
 	}
 
 	.select2-search--inline .select2-search__field {

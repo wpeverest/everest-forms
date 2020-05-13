@@ -155,7 +155,9 @@
 					panel_setting = $( '#everest-forms-panel-settings .everest-forms-panel-sidebar' );
 
 				if ( tab_content.length >= 1 ) {
-					window.evf_tab_scroller = new PerfectScrollbar( tab_content.selector );
+					window.evf_tab_scroller = new PerfectScrollbar( tab_content.selector, {
+						suppressScrollX: true,
+					});
 				}
 
 				if ( panel_setting.length >= 1 ) {
@@ -214,6 +216,7 @@
 			EVFPanelBuilder.bindLabelEditInputActions();
 			EVFPanelBuilder.bindSyncedInputActions();
 			EVFPanelBuilder.bindBulkOptionActions();
+			EVFPanelBuilder.init_datepickers();
 
 			// Fields Panel.
 			EVFPanelBuilder.bindUIActionsFields();
@@ -275,6 +278,46 @@
 					var $add_button = $choices_container.find( 'li' ).last().find( 'a.add' );
 					EVFPanelBuilder.choiceAdd( null, $add_button, option_text.trim() );
 				}
+			});
+		},
+
+		/**
+		 * Initialize date pickers like min/max date, disable dates etc.
+		 *
+		 * @since 1.6.6
+		 */
+		init_datepickers: function() {
+			var date_format = $( '.everest-forms-disable-dates' ).data( 'date-format' );
+			var selection_mode = 'multiple';
+
+			// Initialize "Disable dates" option's date pickers that hasn't been initialized.
+			$( '.everest-forms-disable-dates' ).each( function() {
+				if ( ! $( this ).get(0)._flatpickr ) {
+					$( this ).flatpickr({
+						dateFormat: date_format,
+						mode: selection_mode,
+					});
+				}
+			})
+
+			// Reformat the selected dates input value for `Disable dates` option when the date format changes.
+			$( document.body ).on( 'change', '.evf-date-format', function( e ) {
+				var $disable_dates = $( '.everest-forms-field-option:visible .everest-forms-disable-dates' ),
+					flatpicker = $disable_dates.get(0)._flatpickr,
+					selectedDates = flatpicker.selectedDates,
+					date_format = $( this ).val(),
+					formatedDates = [];
+
+				selectedDates.forEach( function( date ) {
+					formatedDates.push( flatpickr.formatDate( date, date_format ) );
+				})
+				flatpicker.set( 'dateFormat', date_format );
+				$disable_dates.val( formatedDates.join( ', ' ) );
+			});
+
+			// Clear disabled dates.
+			$( document.body ).on( 'click', '.evf-clear-disabled-dates', function() {
+				$( '.everest-forms-field-option:visible .everest-forms-disable-dates' ).get(0)._flatpickr.clear();
 			});
 		},
 
@@ -428,12 +471,12 @@
 			});
 
 			// Delete field choice.
-			$builder.on( 'click', '.everest-forms-field-option-row-choices .remove', function( e ) {
+			$builder.on( 'click', '.everest-forms-field-option-row-choices .remove', function( event ) {
 				EVFPanelBuilder.choiceDelete( event, $(this) );
 			});
 
 			// Field choices defaults - (before change).
-			$builder.on( 'mousedown', '.everest-forms-field-option-row-choices input[type=radio]', function(e) {
+			$builder.on( 'mousedown', '.everest-forms-field-option-row-choices input[type=radio]', function()  {
 				var $this = $(this);
 
 				if ( $this.is( ':checked' ) ) {
@@ -444,7 +487,7 @@
 			});
 
 			// Field choices defaults.
-			$builder.on( 'click', '.everest-forms-field-option-row-choices input[type=radio]', function(e) {
+			$builder.on( 'click', '.everest-forms-field-option-row-choices input[type=radio]', function() {
 				var $this = $(this),
 					list  = $this.parent().parent();
 
@@ -640,18 +683,25 @@
 			});
 
 			// Real-time updates for "Confirmation" field option.
-			$builder.on( 'change', '.everest-forms-field-option-row-confirmation input', function() {
+			$builder.on( 'change', '.everest-forms-field-option-row-confirmation input', function( event ) {
 				var id = $( this ).parent().data( 'field-id' );
-				$( '#everest-forms-field-' + id ).find( '.everest-forms-confirm' ).toggleClass( 'everest-forms-confirm-enabled everest-forms-confirm-disabled' );
-				$( '#everest-forms-field-option-' + id ).toggleClass( 'everest-forms-confirm-enabled everest-forms-confirm-disabled' );
+
+				// Toggle "Confirmation" field option.
+				if ( $( event.target ).is( ':checked' ) ) {
+					$( '#everest-forms-field-' + id ).find( '.everest-forms-confirm' ).removeClass( 'everest-forms-confirm-disabled' ).addClass( 'everest-forms-confirm-enabled' );
+					$( '#everest-forms-field-option-' + id ).removeClass( 'everest-forms-confirm-disabled' ).addClass( 'everest-forms-confirm-enabled' );
+				} else {
+					$( '#everest-forms-field-' + id ).find( '.everest-forms-confirm' ).removeClass( 'everest-forms-confirm-enabled' ).addClass( 'everest-forms-confirm-disabled' );
+					$( '#everest-forms-field-option-' + id ).removeClass( 'everest-forms-confirm-enabled' ).addClass( 'everest-forms-confirm-disabled' );
+				}
 			});
 
 			// Real-time updates for "Placeholder" field option.
 			$builder.on( 'input', '.everest-forms-field-option-row-placeholder input', function(e) {
-				var $this   = $( this ),
-					value   = $this.val(),
-					id      = $this.parent().data( 'field-id' ),
-					$primary = $( '#everest-forms-field-' + id ).find( '.primary-input' );
+				var $this    = $( this ),
+					value    = $this.val(),
+					id       = $this.parent().data( 'field-id' ),
+					$primary = $( '#everest-forms-field-' + id ).find( '.widefat:not(.secondary-input)' );
 
 				if ( $primary.is( 'select' ) ) {
 					if ( ! value.length ) {
@@ -678,7 +728,7 @@
 			});
 
 			// Real-time updates for "Confirmation Placeholder" field option.
-			$builder.on('input', '.everest-forms-field-option-row-confirmation_placeholder input', function() {
+			$builder.on( 'input', '.everest-forms-field-option-row-confirmation_placeholder input', function() {
 				var $this   = $( this ),
 					value   = $this.val(),
 					id      = $this.parent().data( 'field-id' );
@@ -1653,6 +1703,9 @@
 					EVFPanelBuilder.conditionalLogicAppendFieldIntegration( dragged_el_id );
 					EVFPanelBuilder.paymentFieldAppendToQuantity( dragged_el_id );
 					EVFPanelBuilder.paymentFieldAppendToDropdown( dragged_field_id, field_type );
+
+					// Initialization Datepickers.
+					EVFPanelBuilder.init_datepickers();
 		 		}
 		 	});
 		},
@@ -1942,19 +1995,19 @@ jQuery( function ( $ ) {
 	} ).trigger( 'init_add_fields_toogle' );
 
 	// Fields Options - Open/close.
-	$( document.body ).on( 'init_field_options_toggle', function() {
-		$( '.everest-forms-field-option' ).on( 'click', '.everest-forms-field-option-group > a', function( event ) {
-			event.preventDefault();
-			$( this ).parent( '.everest-forms-field-option-group' ).toggleClass( 'closed' ).toggleClass( 'open' );
-		});
-		$( '.everest-forms-field-option' ).on( 'click', '.everest-forms-field-option-group a', function( event ) {
-			// If the user clicks on some form input inside, the box should not be toggled.
-			if ( $( event.target ).filter( ':input, option, .sort' ).length ) {
-				return;
-			}
+	$( document.body ).on( 'click', '.everest-forms-field-option .everest-forms-field-option-group > a', function( event ) {
+		event.preventDefault();
+		$( this ).parent( '.everest-forms-field-option-group' ).toggleClass( 'closed' ).toggleClass( 'open' );
+	});
+	$( document.body ).on( 'click', '.everest-forms-field-option .everest-forms-field-option-group a', function( event ) {
+		// If the user clicks on some form input inside, the box should not be toggled.
+		if ( $( event.target ).filter( ':input, option, .sort' ).length ) {
+			return;
+		}
 
-			$( this ).next( '.everest-forms-field-option-group-inner' ).stop().slideToggle();
-		});
+		$( this ).next( '.everest-forms-field-option-group-inner' ).stop().slideToggle();
+	});
+	$( document.body ).on( 'init_field_options_toggle', function() {
 		$( '.everest-forms-field-option-group.closed' ).each( function() {
 			$( this ).find( '.everest-forms-field-option-group-inner' ).hide();
 		});

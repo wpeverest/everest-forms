@@ -4,7 +4,7 @@ Tags: contact form, forms, form builder, contact, custom form
 Requires at least: 5.0
 Tested up to: 5.4
 Requires PHP: 5.4
-Stable tag: 1.6.4
+Stable tag: 1.6.6.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -51,7 +51,7 @@ Check [documentation](http://docs.wpeverest.com/docs/everest-forms/)
 * Redirect option after submission
 * Editable Email Settings
 * Editable form validation message
-* Translation ready
+* Translation ready and WPML compatible
 
 ### Premium Features and Addons
 
@@ -148,6 +148,42 @@ Yes, we do. Check out this [Getting Started Videos](https://docs.wpeverest.com/d
 Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/everest-forms/) :)
 
 == Changelog ==
+
+= 1.6.6.1 - 10-05-2020 =
+* Fix - Sanitization of CSV exported field values.
+* Fix - Conflict within WooCommerce checkout page.
+* Fix - Flatpickr Calendar does not open on Android Chrome.
+* Tweak - Updated selectWoo JS library to v1.6.0.
+* Tweak - Updated flatpickr JS library to v4.6.3.
+
+= 1.6.6 - 01-05-2020 =
+* Fix - Log file deletion.
+* Fix - Field Options getting freezed for the first field.
+* Fix - Perfect Scrollbar library updated to fix RTL issue.
+* Fix - Undefined PHP notice thrown if confirmation email didn't match.
+* Fix - False-positive required message displayed upon email validation.
+* Enhancement - Email attachment workflow.
+* Enhancement - Added enhanced select feature to the Dropdown field.
+* Enhancement - Added option to disable certain dates in the Date/Time field.
+
+= 1.6.5 - 10-04-2020 =
+* Fix - Shortcode design issue in list table.
+* Fix - Form block deprecated notices in console.
+* Fix - Selective html tag support in field label.
+* Fix - Placeholder live update broken for fields.
+* Fix - Set the default threshold received from reCAPTCHA.
+* Fix - Empty form fields within form throwing PHP warnings.
+* Fix - Placeholder components design issue with our form block.
+* Fix - Image and file not being submitted with enable AJAX form submission.
+* Tweak - RTL design issue for font-weight.
+* Tweak - Google reCAPTCHA v3 threshhold default to `0.5`.
+* Tweak - Custom Captcha field now shown as part of pro fields.
+* Tweak - Prefill field value so it can be used to modify data.
+* Tweak - Removed unnecessary height for input on classic layout.
+* Tweak - Use `apply_shortocodes()` as an alias for `do_shortcode()` for better semantics.
+* Tweak - Improve WPML compatibility for form fields and its settings. Thanks @mebishalnapit!
+* Enhancement - Added Formatting function `evf_array_splice_preserve_keys`.
+* Dev - Linting fix for SCSS files and added some rules for stylelint.
 
 = 1.6.4 - 17-03-2020 =
 * Fix - Google reCAPTCHA issue with the version changes.

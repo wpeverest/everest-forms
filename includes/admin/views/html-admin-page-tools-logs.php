@@ -13,8 +13,8 @@ defined( 'ABSPATH' ) || exit;
 		<div class="alignleft">
 			<h2>
 				<?php echo esc_html( $viewed_log ); ?>
-				<?php if ( ! empty( $handle ) ) : ?>
-					<a class="page-title-action" href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'handle' => $handle ), admin_url( 'admin.php?page=evf-tools&tab=logs' ) ), 'remove_log' ) ); ?>" class="button"><?php esc_html_e( 'Delete log', 'everest-forms' ); ?></a>
+				<?php if ( ! empty( $viewed_log ) ) : ?>
+					<a class="page-title-action" href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'handle' => sanitize_title( $viewed_log ) ), admin_url( 'admin.php?page=evf-tools&tab=logs' ) ), 'remove_log' ) ); ?>" class="button"><?php esc_html_e( 'Delete log', 'everest-forms' ); ?></a>
 				<?php endif; ?>
 			</h2>
 		</div>
