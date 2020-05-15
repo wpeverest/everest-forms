@@ -32,7 +32,6 @@ jQuery( function ( $ ) {
 			// Inline validation.
 			this.$everest_form.on( 'input validate change', '.input-text, select, input:checkbox, input:radio', this.validate_field );
 		},
-
 		init_inputMask: function() {
 			// Only load if jQuery inputMask library exists.
 			if ( typeof $.fn.inputmask !== 'undefined' ) {

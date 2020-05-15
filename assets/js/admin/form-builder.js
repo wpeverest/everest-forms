@@ -1122,11 +1122,11 @@
 			newFieldCloned.attr('data-field-type', field_type);
 			newFieldCloned.find('.label-title .text').text(new_field_label);
 			field.closest( '.evf-admin-grid' ).find( '[data-field-id="' + old_key + '"]' ).after( newFieldCloned );
-			$(document).trigger('everest-form-cloned', [ new_key, field_type ]);
+			$(document).trigger('everest-form-cloned', [ new_key, field_type ] );
 			EVFPanelBuilder.switchToFieldOptionPanel(new_key);//switch to cloned field options
 
 			// Trigger an event indicating completion of render_node action for cloning.
-			$( document.body ).trigger( 'evf_render_node_complete', [ field_type, new_key, newFieldCloned, newOption ]);
+			$( document.body ).trigger( 'evf_render_node_complete', [ field_type, new_key, newFieldCloned, newOption ] );
 		},
 		bindFieldDelete: function () {
 			$( 'body' ).on('click', '.everest-forms-preview .everest-forms-field .everest-forms-field-delete', function () {

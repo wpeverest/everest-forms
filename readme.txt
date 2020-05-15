@@ -149,7 +149,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 1.6.7 - xx-x-2020 =
+= 1.6.7 - xx-xx-2020 =
 * Feature - Added a new Pro field Range Slider.
 
 = 1.6.6.1 - 10-05-2020 =
