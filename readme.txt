@@ -151,6 +151,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 = 1.6.7 - xx-xx-2020 =
 * Feature - Added a new Pro field Range Slider.
+* Fix - JS error while removing list from choice field.
 
 = 1.6.6.1 - 10-05-2020 =
 * Fix - Sanitization of CSV exported field values.
