@@ -231,8 +231,8 @@
 		 * @since 1.6.6
 		 */
 		init_datepickers: function() {
-			var date_format = $( '.everest-forms-disable-dates' ).data( 'date-format' );
-			var selection_mode = 'multiple';
+			var date_format    = $( '.everest-forms-disable-dates' ).data( 'date-format' ),
+				selection_mode = 'multiple';
 
 			// Initialize "Disable dates" option's date pickers that hasn't been initialized.
 			$( '.everest-forms-disable-dates' ).each( function() {
@@ -1122,8 +1122,11 @@
 			newFieldCloned.attr('data-field-type', field_type);
 			newFieldCloned.find('.label-title .text').text(new_field_label);
 			field.closest( '.evf-admin-grid' ).find( '[data-field-id="' + old_key + '"]' ).after( newFieldCloned );
-			$(document).trigger('everest-form-cloned', [ new_key, field_type ]);
+			$(document).trigger('everest-form-cloned', [ new_key, field_type ] );
 			EVFPanelBuilder.switchToFieldOptionPanel(new_key);//switch to cloned field options
+
+			// Trigger an event indicating completion of render_node action for cloning.
+			$( document.body ).trigger( 'evf_render_node_complete', [ field_type, new_key, newFieldCloned, newOption ] );
 		},
 		bindFieldDelete: function () {
 			$( 'body' ).on('click', '.everest-forms-preview .everest-forms-field .everest-forms-field-delete', function () {
@@ -1648,6 +1651,9 @@
 
 					// Initialization Datepickers.
 					EVFPanelBuilder.init_datepickers();
+
+					// Trigger an event indicating completion of field_drop action.
+					$( document.body ).trigger( 'evf_field_drop_complete', [ field_type, dragged_field_id, field_preview, field_options ] );
 		 		}
 		 	});
 		},
