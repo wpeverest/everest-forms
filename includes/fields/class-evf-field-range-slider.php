@@ -3,7 +3,7 @@
  * Range Slider field
  *
  * @package EverestForms\Fields
- * @since   1.7.0
+ * @since   1.6.7
  */
 
 defined( 'ABSPATH' ) || exit;

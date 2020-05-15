@@ -1653,7 +1653,7 @@
 					EVFPanelBuilder.init_datepickers();
 
 					// Trigger an event indicating completion of field_drop action.
-					$( document.body ).trigger( 'evf_field_drop_complete', [ field_type, dragged_field_id, field_preview, field_options ]);
+					$( document.body ).trigger( 'evf_field_drop_complete', [ field_type, dragged_field_id, field_preview, field_options ] );
 		 		}
 		 	});
 		},
