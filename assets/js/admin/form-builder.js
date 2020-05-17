@@ -979,10 +979,15 @@
 			$( 'body' ).on( 'click', '.evf-add-row span', function() {
 				var $this        = $( this ),
 					wrapper      = $( '.evf-admin-field-wrapper' ),
+					row_ids      = $( '.evf-admin-row' ).map( function() {
+						return $( this ).data( 'row-id' );
+					} ).get(),
+					max_row_id   = Math.max.apply( Math, row_ids ),
 					row_clone    = $( '.evf-admin-row' ).eq(0).clone(),
 					total_rows   = $this.parent().attr( 'data-total-rows' ),
 					current_part = $this.parents( '.evf-admin-field-container' ).attr( 'data-current-part' );
 
+				max_row_id++;
 				total_rows++;
 
 				if ( current_part ) {
@@ -991,8 +996,9 @@
 
 				// Row clone.
 				row_clone.find( '.evf-admin-grid' ).html( '' );
-				row_clone.attr( 'data-row-id', total_rows );
+				row_clone.attr( 'data-row-id', max_row_id );
 				$this.parent().attr( 'data-total-rows', total_rows );
+				$this.parent().attr( 'data-next-row-id', max_row_id );
 
 				// Row append.
 				wrapper.append( row_clone );
