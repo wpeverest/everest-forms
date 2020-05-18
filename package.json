@@ -18,7 +18,7 @@
   },
   "devDependencies": {
     "@babel/core": "7.9.6",
-    "@wordpress/babel-preset-default": "4.12.1",
+    "@wordpress/babel-preset-default": "4.13.0",
     "@wordpress/browserslist-config": "2.6.0",
     "autoprefixer": "9.7.6",
     "babel-eslint": "10.1.0",
