@@ -1,10 +1,6 @@
 ---
-name: "\U0001F41E Bug report"
-about: Report a bug if something isn't working as expected in the core Everest Forms
-  plugin.
-title: ''
-labels: ''
-assignees: ''
+name: "Bug report"
+about: Create a report to help us improve
 
 ---
 
@@ -24,7 +20,7 @@ If applicable, add screenshots to help explain your problem.
 **Expected behavior**
 A clear and concise description of what you expected to happen.
 
-**Isolating the problem (mark completed items with an [x]):**
-- [ ] I have deactivated other plugins and confirmed this bug occurs when only Everest Forms plugin is active.
-- [ ] This bug happens with a default WordPress theme active.
-- [ ] I can reproduce this bug consistently using the steps above.
+**Isolating the problem (please mark completed items):**
+ - [ ] I have deactivated other plugins and confirmed a bug.
+ - [ ] This bug happens with a default WordPress theme active.
+ - [ ] I can reproduce this bug consistently using the steps above.
