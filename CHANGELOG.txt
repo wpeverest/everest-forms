@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 1.6.8 - xx-xx-2020 =
+* Tweak - Add trigger `everest_forms_loaded` to notify plugins that the core was loaded.
+
 = 1.6.7 - 17-05-2020 =
 * Feature - Added a new Pro field Range Slider.
 * Fix - JS error while removing list from choice field.

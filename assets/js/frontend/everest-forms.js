@@ -31,6 +31,9 @@ jQuery( function ( $ ) {
 
 			// Inline validation.
 			this.$everest_form.on( 'input validate change', '.input-text, select, input:checkbox, input:radio', this.validate_field );
+
+			// Notify plugins that the core was loaded.
+			$( document.body ).trigger( 'everest_forms_loaded' );
 		},
 		init_inputMask: function() {
 			// Only load if jQuery inputMask library exists.
