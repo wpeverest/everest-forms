@@ -2,6 +2,7 @@
 
 = 1.6.8 - xx-xx-2020 =
 * Tweak - Add trigger `everest_forms_loaded` to notify plugins that the core was loaded.
+* Tweak - Modify duplicated action hook `everest_forms_general_settings` to `everest_forms_inline_general_settings` for builder general settings.
 
 = 1.6.7 - 17-05-2020 =
 * Feature - Added a new Pro field Range Slider.
