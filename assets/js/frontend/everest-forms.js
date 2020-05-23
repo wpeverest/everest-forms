@@ -328,7 +328,7 @@ jQuery( function ( $ ) {
 							inputName = $element.attr( 'name' );
 
 						if ( $element.attr( 'type' ) === 'radio' || $element.attr( 'type' ) === 'checkbox' ) {
-							$parent.find( 'input[name=\''+inputName+'\']' ).addClass( errorClass ).removeClass( validClass );
+							$parent.find( 'input[name="' + inputName + '"]' ).addClass( errorClass ).removeClass( validClass );
 						} else {
 							$element.addClass( errorClass ).removeClass( validClass );
 						}
@@ -341,7 +341,7 @@ jQuery( function ( $ ) {
 							inputName = $element.attr( 'name' );
 
 						if ( $element.attr( 'type' ) === 'radio' || $element.attr( 'type' ) === 'checkbox' ) {
-							$parent.find( 'input[name=\''+inputName+'\']' ).addClass( validClass ).removeClass( errorClass );
+							$parent.find( 'input[name="' + inputName + '"]' ).addClass( validClass ).removeClass( errorClass );
 						} else {
 							$element.addClass( validClass ).removeClass( errorClass );
 						}
