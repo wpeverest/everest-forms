@@ -31,6 +31,9 @@ jQuery( function ( $ ) {
 
 			// Inline validation.
 			this.$everest_form.on( 'input validate change', '.input-text, select, input:checkbox, input:radio', this.validate_field );
+
+			// Notify plugins that the core was loaded.
+			$( document.body ).trigger( 'everest_forms_loaded' );
 		},
 		init_inputMask: function() {
 			// Only load if jQuery inputMask library exists.
@@ -325,7 +328,7 @@ jQuery( function ( $ ) {
 							inputName = $element.attr( 'name' );
 
 						if ( $element.attr( 'type' ) === 'radio' || $element.attr( 'type' ) === 'checkbox' ) {
-							$parent.find( 'input[name=\''+inputName+'\']' ).addClass( errorClass ).removeClass( validClass );
+							$parent.find( 'input[name="' + inputName + '"]' ).addClass( errorClass ).removeClass( validClass );
 						} else {
 							$element.addClass( errorClass ).removeClass( validClass );
 						}
@@ -338,7 +341,7 @@ jQuery( function ( $ ) {
 							inputName = $element.attr( 'name' );
 
 						if ( $element.attr( 'type' ) === 'radio' || $element.attr( 'type' ) === 'checkbox' ) {
-							$parent.find( 'input[name=\''+inputName+'\']' ).addClass( validClass ).removeClass( errorClass );
+							$parent.find( 'input[name="' + inputName + '"]' ).addClass( validClass ).removeClass( errorClass );
 						} else {
 							$element.addClass( validClass ).removeClass( errorClass );
 						}

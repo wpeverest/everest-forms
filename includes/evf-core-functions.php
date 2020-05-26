@@ -1687,7 +1687,7 @@ function evf_get_countries() {
 		'LT' => esc_html__( 'Lithuania', 'everest-forms' ),
 		'LU' => esc_html__( 'Luxembourg', 'everest-forms' ),
 		'MO' => esc_html__( 'Macao', 'everest-forms' ),
-		'MK' => esc_html__( 'Macedonia (Republic of)', 'everest-forms' ),
+		'MK' => esc_html__( 'North Macedonia (Republic of)', 'everest-forms' ),
 		'MG' => esc_html__( 'Madagascar', 'everest-forms' ),
 		'MW' => esc_html__( 'Malawi', 'everest-forms' ),
 		'MY' => esc_html__( 'Malaysia', 'everest-forms' ),
