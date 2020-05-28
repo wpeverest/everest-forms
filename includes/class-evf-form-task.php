@@ -116,7 +116,6 @@ class EVF_Form_Task {
 
 				// Prepare fields for entry_save.
 				foreach ( $this->form_data['form_fields'] as $field ) {
-
 					if ( '' === isset( $this->form_data['form_fields']['meta-key'] ) ) {
 						continue;
 					}
@@ -129,7 +128,7 @@ class EVF_Form_Task {
 						$field_submit = isset( $field_submit['signature_image'] ) ? $field_submit['signature_image'] : '';
 					}
 
-					$exclude = array( 'title', 'html', 'captcha' );
+					$exclude = array( 'title', 'html', 'captcha', 'image-upload', 'file-upload' );
 
 					if ( ! in_array( $field_type, $exclude, true ) ) {
 						$this->form_fields[ $field_id ] = array(
@@ -198,7 +197,7 @@ class EVF_Form_Task {
 					$response = json_decode( wp_remote_retrieve_body( $raw_response ) );
 
 					// Check reCAPTCHA response.
-					if ( empty( $response->success ) || ( 'v3' === $recaptcha_type && $response->score <= apply_filters( 'everest_forms_recaptcha_v3_threshold', '0.4' ) ) ) {
+					if ( empty( $response->success ) || ( 'v3' === $recaptcha_type && $response->score <= apply_filters( 'everest_forms_recaptcha_v3_threshold', '0.5' ) ) ) {
 						if ( 'v3' === $recaptcha_type ) {
 							if ( isset( $response->score ) ) {
 								$error .= ' (' . esc_html( $response->score ) . ')';
@@ -596,7 +595,12 @@ class EVF_Form_Task {
 			$emails->__set( 'from_name', $email['sender_name'] );
 			$emails->__set( 'from_address', $email['sender_address'] );
 			$emails->__set( 'reply_to', $email['reply_to'] );
-			$emails->__set( 'attachments', apply_filters( 'everest_forms_email_file_attachments', $attachment, $entry, $form_data, 'entry-email', $connection_id, $entry_id ) );
+
+			/**
+			 *  This filter relies on consistent data being passed for the resultant filters to function.
+			 *  The third param passed for the filter, $fields, is derived from validation routine, not the DB.
+			 */
+			$emails->__set( 'attachments', apply_filters( 'everest_forms_email_file_attachments', $attachment, $fields, $form_data, 'entry-email', $connection_id, $entry_id ) );
 
 			// Maybe include Cc and Bcc email addresses.
 			if ( 'yes' === get_option( 'everest_forms_enable_email_copies' ) ) {

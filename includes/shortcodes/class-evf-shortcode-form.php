@@ -71,7 +71,7 @@ class EVF_Shortcode_Form {
 		if ( ! isset( $settings['submit_button_processing_text'] ) ) {
 			$process = 'data-process-text="' . esc_attr__( 'Processing&hellip;', 'everest-forms' ) . '"';
 		} elseif ( ! empty( $settings['submit_button_processing_text'] ) ) {
-			$process = 'data-process-text="' . esc_attr( $settings['submit_button_processing_text'] ) . '"';
+			$process = 'data-process-text="' . esc_attr( evf_string_translation( $form_data['id'], 'processing_text', $settings['submit_button_processing_text'] ) ) . '"';
 		}
 
 		// Submit button area.
@@ -166,7 +166,7 @@ class EVF_Shortcode_Form {
 		printf(
 			'<div %s>%s</div>',
 			evf_html_attributes( $description['id'], $description['class'], $description['data'], $description['attr'] ),
-			evf_string_translation( $form_data['id'], $field['id'], $description['value'] ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			evf_string_translation( $form_data['id'], $field['id'], $description['value'], '-description' ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		);
 	}
 
@@ -190,7 +190,26 @@ class EVF_Shortcode_Form {
 		printf(
 			'<label %s><span class="evf-label">%s</span> %s</label>',
 			evf_html_attributes( $label['id'], $label['class'], $label['data'], $label['attr'] ),
-			evf_string_translation( $form_data['id'], $field['id'], esc_html( $label['value'] ) ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			evf_string_translation(
+				$form_data['id'],
+				$field['id'],
+				wp_kses(
+					$label['value'],
+					array(
+						'a'      => array(
+							'href'  => array(),
+							'class' => array(),
+						),
+						'span'   => array(
+							'class' => array(),
+						),
+						'em'     => array(),
+						'small'  => array(),
+						'strong' => array(),
+					)
+				)
+			),
 			$required, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			$custom_tags // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		);
@@ -237,11 +256,11 @@ class EVF_Shortcode_Form {
 			echo '<div class="evf-title-container">';
 
 			if ( true === $title && ! empty( $settings['form_title'] ) ) {
-				echo '<div class="everest-forms--title">' . esc_html( $settings['form_title'] ) . '</div>';
+				echo '<div class="everest-forms--title">' . esc_html( evf_string_translation( $form_data['id'], 'form_title', $settings['form_title'] ) ) . '</div>';
 			}
 
 			if ( true === $description && ! empty( $settings['form_description'] ) ) {
-				echo '<div class="everest-forms--description">' . esc_textarea( $settings['form_description'] ) . '</div>';
+				echo '<div class="everest-forms--description">' . esc_textarea( evf_string_translation( $form_data['id'], 'form_description', $settings['form_description'] ) ) . '</div>';
 			}
 
 			echo '</div>';
@@ -537,7 +556,11 @@ class EVF_Shortcode_Form {
 	 *
 	 * @return array
 	 */
-	private static function get_field_properties( $field, $form_data, $attributes = array() ) {
+	public static function get_field_properties( $field, $form_data, $attributes = array() ) {
+		if ( empty( $attributes ) ) {
+			$attributes = self::get_field_attributes( $field, $form_data );
+		}
+
 		// This filter is for backwards compatibility purposes.
 		$types = array( 'text', 'textarea', 'number', 'email', 'hidden', 'url', 'html', 'title', 'password', 'phone', 'address', 'checkbox', 'radio', 'select' );
 		if ( in_array( $field['type'], $types, true ) ) {
@@ -567,17 +590,17 @@ class EVF_Shortcode_Form {
 				foreach ( $likert_rows as $row_key => $row_label ) {
 					$row_keys[]                     = $row_key;
 					$row_slug                       = 'required-field-message-' . $row_key;
-					$sub_field_messages[ $row_key ] = isset( $field[ $row_slug ] ) ? $field[ $row_slug ] : $required_validation;
+					$sub_field_messages[ $row_key ] = isset( $field[ $row_slug ] ) ? evf_string_translation( $form_data['id'], $field['id'], $field[ $row_slug ], '-' . $row_slug ) : $required_validation;
 				}
 				$container_data['row-keys'] = wp_json_encode( $row_keys );
 			} elseif ( 'address' === $field['type'] ) {
 				$has_sub_fields     = true;
 				$sub_field_messages = array(
-					'address1' => isset( $field['required-field-message-address1'] ) ? $field['required-field-message-address1'] : '',
-					'city'     => isset( $field['required-field-message-city'] ) ? $field['required-field-message-city'] : '',
-					'state'    => isset( $field['required-field-message-state'] ) ? $field['required-field-message-state'] : '',
-					'postal'   => isset( $field['required-field-message-postal'] ) ? $field['required-field-message-postal'] : '',
-					'country'  => isset( $field['required-field-message-country'] ) ? $field['required-field-message-country'] : '',
+					'address1' => isset( $field['required-field-message-address1'] ) ? evf_string_translation( $form_data['id'], $field['id'], $field['required-field-message-address1'], '-required-field-message-address1' ) : '',
+					'city'     => isset( $field['required-field-message-city'] ) ? evf_string_translation( $form_data['id'], $field['id'], $field['required-field-message-city'], '-required-field-message-city' ) : '',
+					'state'    => isset( $field['required-field-message-state'] ) ? evf_string_translation( $form_data['id'], $field['id'], $field['required-field-message-state'], '-required-field-message-state' ) : '',
+					'postal'   => isset( $field['required-field-message-postal'] ) ? evf_string_translation( $form_data['id'], $field['id'], $field['required-field-message-postal'], '-required-field-message-postal' ) : '',
+					'country'  => isset( $field['required-field-message-country'] ) ? evf_string_translation( $form_data['id'], $field['id'], $field['required-field-message-country'], '-required-field-message-country' ) : '',
 				);
 			}
 
@@ -586,10 +609,11 @@ class EVF_Shortcode_Form {
 					$container_data[ 'required-field-message-' . $sub_field_type ] = $error_message;
 				}
 			} else {
-				$container_data['required-field-message'] = isset( $field['required-field-message'] ) && '' !== $field['required-field-message'] ? $field['required-field-message'] : $required_validation;
+				$container_data['required-field-message'] = isset( $field['required-field-message'] ) && '' !== $field['required-field-message'] ? evf_string_translation( $form_data['id'], $field['id'], $field['required-field-message'], '-required-field-message' ) : $required_validation;
 			}
 		}
 		$errors     = isset( evf()->task->errors[ $form_id ][ $field_id ] ) ? evf()->task->errors[ $form_id ][ $field_id ] : '';
+		$defaults   = isset( $_POST['everest_forms']['form_fields'][ $field_id ] ) && ( ! is_array( $_POST['everest_forms']['form_fields'][ $field_id ] ) && ! empty( $_POST['everest_forms']['form_fields'][ $field_id ] ) ) ? $_POST['everest_forms']['form_fields'][ $field_id ] : ''; // @codingStandardsIgnoreLine
 		$properties = apply_filters(
 			'everest_forms_field_properties_' . $field['type'],
 			array(
@@ -617,8 +641,8 @@ class EVF_Shortcode_Form {
 					'primary' => array(
 						'attr'     => array(
 							'name'        => "everest_forms[form_fields][{$field_id}]",
-							'value'       => ( isset( $field['default_value'] ) && ! empty( $field['default_value'] ) ) ? apply_filters( 'everest_forms_process_smart_tags', $field['default_value'], $form_data ) : ( isset( $_POST['everest_forms']['form_fields'][ $field_id ] ) ? $_POST['everest_forms']['form_fields'][ $field_id ] : '' ), // @codingStandardsIgnoreLine
-							'placeholder' => ! empty( $field['placeholder'] ) ? evf_string_translation( $form_data['id'], $field['id'], $field['placeholder'] ) : '',
+							'value'       => isset( $field['default_value'] ) ? apply_filters( 'everest_forms_process_smart_tags', $field['default_value'], $form_data ) : $defaults,
+							'placeholder' => isset( $field['placeholder'] ) ? evf_string_translation( $form_data['id'], $field['id'], $field['placeholder'], '-placeholder' ) : '',
 						),
 						'class'    => $attributes['input_class'],
 						'data'     => $attributes['input_data'],
@@ -716,7 +740,7 @@ class EVF_Shortcode_Form {
 		$description          = filter_var( $description, FILTER_VALIDATE_BOOLEAN );
 		$errors               = isset( evf()->task->errors[ $form_id ] ) ? evf()->task->errors[ $form_id ] : array();
 		$form_enabled         = isset( $form_data['form_enabled'] ) ? absint( $form_data['form_enabled'] ) : 1;
-		$disable_message      = isset( $form_data['settings']['form_disable_message'] ) ? $form_data['settings']['form_disable_message'] : __( 'This form is disabled.', 'everest-forms' );
+		$disable_message      = isset( $form_data['settings']['form_disable_message'] ) ? evf_string_translation( $form_data['id'], 'form_disable_message', $form_data['settings']['form_disable_message'] ) : __( 'This form is disabled.', 'everest-forms' );
 		$ajax_form_submission = isset( $settings['ajax_form_submission'] ) ? $settings['ajax_form_submission'] : 0;
 
 		if ( 0 !== $ajax_form_submission ) {

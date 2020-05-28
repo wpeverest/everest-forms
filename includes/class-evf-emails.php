@@ -431,9 +431,10 @@ class EVF_Emails {
 			evf_get_template( 'emails/field-' . $this->get_template() . '.php' );
 
 			$field_template = ob_get_clean();
+			$empty_message  = '<em>' . __( '(empty)', 'everest-forms' ) . '</em>';
 
-			$x = 1;
-			foreach ( $this->fields as $field ) {
+			$field_iterator = 1;
+			foreach ( $this->fields as $meta_id => $field ) {
 
 				if (
 					! apply_filters( 'everest_forms_email_display_empty_fields', false ) &&
@@ -442,7 +443,29 @@ class EVF_Emails {
 					continue;
 				}
 
-				$field_val   = empty( $field['value'] ) && '0' !== $field['value'] ? '<em>' . __( '(empty)', 'everest-forms' ) . '</em>' : $field['value'];
+				// If there's the export data filter, utilize that and re-loop promptly.
+				if ( has_filter( "everest_forms_field_exporter_{$field['type']}" ) && 'signature' !== $field['type'] ) {
+
+					$formatted_string          = apply_filters( "everest_forms_field_exporter_{$field['type']}", $field, 'email-html', 2 );
+					$formatted_string['value'] = false === $formatted_string['value'] ? $empty_message : $formatted_string['value'];
+
+					$field_item = $field_template;
+					if ( 1 === $field_iterator ) {
+						$field_item = str_replace( 'border-top:1px solid #dddddd;', '', $field_item );
+					}
+
+					// Inject the label and value into the email template.
+					$field_item = str_replace( '{field_name}', $formatted_string['label'], $field_item );
+					$field_item = str_replace( '{field_value}', $formatted_string['value'], $field_item );
+
+					$message .= wpautop( $field_item );
+
+					// For BW compatibility reasons.
+					++$field_iterator;
+					continue;
+				}
+
+				$field_val   = empty( $field['value'] ) && '0' !== $field['value'] ? $empty_message : $field['value'];
 				$field_name  = isset( $field_val['name'] ) ? $field_val['name'] : $field['name'];
 				$field_label = ! empty( $field_val['label'] ) ? $field_val['label'] : $field_val;
 				$field_type  = $field['type'];
@@ -468,7 +491,7 @@ class EVF_Emails {
 						$number_of_stars = ! empty( $field_val['number_of_rating'] ) ? $field_val['number_of_rating'] : 5;
 						$field_val       = $value . '/' . $number_of_stars;
 					} else {
-						$field_val = empty( $field_val['file_url'] ) ? '<em>' . __( '(empty)', 'everest-forms' ) . '</em>' : $field_val;
+						$field_val = empty( $field_val['file_url'] ) ? $empty_message : $field_val;
 					}
 				}
 
@@ -493,7 +516,7 @@ class EVF_Emails {
 				}
 
 				$field_item = $field_template;
-				if ( 1 === $x ) {
+				if ( 1 === $field_iterator ) {
 					$field_item = str_replace( 'border-top:1px solid #dddddd;', '', $field_item );
 				}
 
@@ -502,7 +525,7 @@ class EVF_Emails {
 				$field_item  = str_replace( '{field_value}', $field_value, $field_item );
 
 				$message .= wpautop( $field_item );
-				$x ++;
+				$field_iterator ++;
 			}
 		} else {
 			/*

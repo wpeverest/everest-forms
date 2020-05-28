@@ -6,12 +6,14 @@ jQuery( function( $ ) {
 	 */
 	var evf_upgrade_actions = {
 		init: function() {
-			$( document.body ).on( 'click dragstart', '.evf-registered-item.upgrade-modal', this.field_upgrade );
+			$( document.body ).on( 'click dragstart', '.evf-registered-item.upgrade-modal', this.feature_upgrade );
 			$( document.body ).on( 'click dragstart', '.evf-registered-item.enable-stripe-model', this.enable_stripe_model );
+			$( document.body ).on( 'click dragstart', '.everest-forms-field-option-row.upgrade-modal', this.feature_upgrade );
 		},
-		field_upgrade: function( e ) {
+		feature_upgrade: function( e ) {
 			e.preventDefault();
-			evf_upgrade_actions.upgrade_modal( $(this).text() + ' field' );
+
+			evf_upgrade_actions.upgrade_modal( $( this ).data( 'feature' ) ? $( this ).data( 'feature' ) : $( this ).text() + ' field' );
 		},
 		upgrade_modal: function( feature ) {
 			var message = evf_upgrade.upgrade_message.replace( /%name%/g, feature );

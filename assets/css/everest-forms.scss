@@ -139,6 +139,14 @@
 		border: 1px solid $color_gray-light;
 	}
 
+	.select2-container {
+		margin-bottom: 10px;
+
+		.select2-selection--single {
+			height: 32px;
+		}
+	}
+
 	input {
 		&:focus {
 			outline: none;
@@ -314,7 +322,7 @@
 
 								&.everest-forms-image-choices-item {
 									input {
-										margin-top: 0px;
+										margin-top: 0;
 									}
 								}
 							}
@@ -326,7 +334,7 @@
 
 						&.everest-forms-list-inline ul li {
 							vertical-align: top;
-							display: inline-block;
+							display: inline-flex;
 							margin-right: 20px;
 						}
 
@@ -522,7 +530,6 @@
 			border-right: none transparent;
 			border-left: none transparent;
 			border-bottom: 1px solid $color_gray-light;
-			height: 40px;
 			padding: 10px 0;
 
 			&:focus {
@@ -617,8 +624,11 @@
 /**
  * Gutenberg Block
  */
+
 .edit-post-visual-editor {
 	.everest-form-gutenberg-form-selector-wrap {
+		align-items: center;
+
 		.components-placeholder__label {
 			margin-bottom: 0;
 
@@ -638,6 +648,7 @@
 		.components-placeholder__fieldset {
 			.components-base-control {
 				width: 100%;
+				text-align: center;
 			}
 		}
 	}
