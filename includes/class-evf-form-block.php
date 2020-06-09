@@ -73,7 +73,7 @@ class EVF_Form_Block {
 		);
 
 		$form_block_data = array(
-			'forms' => evf()->form->get( '', array( 'order' => 'DESC' ) ),
+			'forms' => evf()->form->get_multiple( array( 'order' => 'DESC' ) ),
 			'i18n'  => array(
 				'title'            => esc_html__( 'Everest Forms', 'everest-forms' ),
 				'description'      => esc_html__( 'Select and display one of your forms.', 'everest-forms' ),

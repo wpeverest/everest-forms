@@ -40,7 +40,6 @@ class EVF_Form_Handler {
 		} else {
 			// No ID provided, get multiple forms.
 			$defaults = array(
-				'post_type'     => 'everest_form',
 				'orderby'       => 'id',
 				'order'         => 'DESC',
 				'no_found_rows' => true,
@@ -59,6 +58,50 @@ class EVF_Form_Handler {
 		}
 
 		return $forms;
+	}
+
+	/**
+	 * Fetch multiple forms.
+	 *
+	 * @since 1.6.8
+	 *
+	 * @param array $args Additional arguments array.
+	 * @param bool  $content_only True to return post content only.
+	 *
+	 * @return array
+	 */
+	public function get_multiple( $args = array(), $content_only = false ) {
+		$forms = array();
+		$args  = apply_filters( 'everest_forms_get_multiple_forms_args', $args, $content_only );
+
+		// No ID provided, get multiple forms.
+		$defaults = array(
+			'orderby'       => 'id',
+			'order'         => 'ASC',
+			'no_found_rows' => true,
+			'nopaging'      => true,
+		);
+
+		$args = wp_parse_args( $args, $defaults );
+
+		$args['post_type'] = 'everest_form';
+
+		$forms = get_posts( $args );
+
+		if ( $content_only ) {
+			$forms = array_map( array( $this, 'prpare_post_content' ), $forms );
+		}
+
+		return $forms;
+	}
+
+	/**
+	 * Prepares post content.
+	 *
+	 * @param object $post Post object.
+	 */
+	public function prpare_post_content( $post ) {
+		return ! empty( $post->post_content ) ? evf_decode( $post->post_content ) : false;
 	}
 
 	/**
