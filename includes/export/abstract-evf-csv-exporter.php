@@ -49,9 +49,26 @@ abstract class EVF_CSV_Exporter {
 	protected $columns_to_export = array();
 
 	/**
+	 * The delimiter parameter sets the field delimiter (one character only).
+	 *
+	 * @var string
+	 */
+	protected $delimiter = ',';
+
+	/**
 	 * Prepare data that will be exported.
 	 */
 	abstract public function prepare_data_to_export();
+
+	/**
+	 * Return the delimiter to use in CSV file
+	 *
+	 * @since  1.6.8
+	 * @return string
+	 */
+	public function get_delimiter() {
+		return apply_filters( "everest_forms_{$this->export_type}_export_delimiter", $this->delimiter );
+	}
 
 	/**
 	 * Return an array of supported column names and ids.
@@ -142,7 +159,7 @@ abstract class EVF_CSV_Exporter {
 	 */
 	public function send_headers() {
 		if ( function_exists( 'gc_enable' ) ) {
-			gc_enable(); // phpcs:ignore PHPCompatibility.PHP.NewFunctions.gc_enableFound
+			gc_enable(); // phpcs:ignore PHPCompatibility.FunctionUse.gc_enableFound
 		}
 		if ( function_exists( 'apache_setenv' ) ) {
 			@apache_setenv( 'no-gzip', 1 ); // @codingStandardsIgnoreLine
@@ -362,13 +379,13 @@ abstract class EVF_CSV_Exporter {
 		if ( version_compare( PHP_VERSION, '5.5.4', '<' ) ) {
 			ob_start();
 			$temp = fopen( 'php://output', 'w' ); // @codingStandardsIgnoreLine
-    		fputcsv( $temp, $export_row, ",", '"' ); // @codingStandardsIgnoreLine
+    		fputcsv( $temp, $export_row, $this->get_delimiter(), '"' ); // @codingStandardsIgnoreLine
 			fclose( $temp ); // @codingStandardsIgnoreLine
 			$row = ob_get_clean();
 			$row = str_replace( '\\"', '\\""', $row );
 			fwrite( $buffer, $row ); // @codingStandardsIgnoreLine
 		} else {
-			fputcsv( $buffer, $export_row, ",", '"', "\0" ); // @codingStandardsIgnoreLine
+			fputcsv( $buffer, $export_row, $this->get_delimiter(), '"', "\0" ); // @codingStandardsIgnoreLine
 		}
 	}
 }
