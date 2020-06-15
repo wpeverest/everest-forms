@@ -63,7 +63,7 @@ abstract class EVF_CSV_Exporter {
 	/**
 	 * Return the delimiter to use in CSV file
 	 *
-	 * @since  1.6.8
+	 * @since  1.7.0
 	 * @return string
 	 */
 	public function get_delimiter() {

@@ -63,7 +63,7 @@ class EVF_Form_Handler {
 	/**
 	 * Fetch multiple forms.
 	 *
-	 * @since 1.6.8
+	 * @since 1.7.0
 	 *
 	 * @param array $args Additional arguments array.
 	 * @param bool  $content_only True to return post content only.
