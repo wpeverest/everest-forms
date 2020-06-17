@@ -4192,6 +4192,18 @@ button.everest-forms-btn {
 		}
 	}
 
+	.evf-connection-form {
+		input {
+			width: 100%;
+			margin-right: 15px;
+			margin-bottom: 15px;
+
+			@media screen and (min-width: 1200px) {
+				width: calc(33% - 20px);
+			}
+		}
+	}
+
 	.everest-forms-integration-content {
 		display: flex;
 		background-color: $color-white;
@@ -4261,14 +4273,6 @@ button.everest-forms-btn {
 
 				h3 {
 					margin-top: 0;
-				}
-
-				.evf-connection-form {
-					input {
-						width: 320px;
-						margin-right: 15px;
-						margin-bottom: 15px;
-					}
 				}
 
 				.everest-forms-btn {
@@ -5252,21 +5256,6 @@ img.ui-datepicker-trigger {
 		.everest-forms-integration-content {
 			.integration-addon-detail {
 				width: 280px;
-			}
-
-			.integration-connection-detail {
-				.evf-account-connect {
-					.evf-connection-form {
-						input {
-							width: 100%;
-							margin-bottom: 15px;
-
-							&:last-child {
-								margin-bottom: 0;
-							}
-						}
-					}
-				}
 			}
 		}
 	}
