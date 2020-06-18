@@ -304,7 +304,7 @@ abstract class EVF_CSV_Exporter {
 		$active_content_triggers = array( '=', '+', '-', '@' );
 
 		if ( in_array( mb_substr( $data, 0, 1 ), $active_content_triggers, true ) ) { // @codingStandardsIgnoreLine
-			$data = "'" . $data . "'";
+			$data = "'" . $data;
 		}
 
 		return $data;
@@ -324,7 +324,6 @@ abstract class EVF_CSV_Exporter {
 		}
 
 		$use_mb = function_exists( 'mb_convert_encoding' );
-		$data   = (string) urldecode( $data );
 
 		if ( $use_mb ) {
 			$encoding = mb_detect_encoding( $data, 'UTF-8, ISO-8859-1', true );
