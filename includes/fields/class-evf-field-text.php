@@ -166,19 +166,24 @@ class EVF_Field_Text extends EVF_Form_Fields {
 		$form_data = ! empty( $form_obj->post_content ) ? evf_decode( $form_obj->post_content ) : '';
 
 		// Leave only fields with limit.
-		$form_fields = array_filter( $form_data['form_fields'], array( $this, 'field_is_limit' ) );
+		if ( ! empty( $form_data['form_fields'] ) ) {
+			$form_fields = array_filter( $form_data['form_fields'], array( $this, 'field_is_limit' ) );
 
-		if ( count( $form_fields ) ) {
-			wp_enqueue_script( 'everest-forms-text-limit' );
+			if ( count( $form_fields ) ) {
+				wp_enqueue_script( 'everest-forms-text-limit' );
+			}
 		}
 	}
 
 	/**
 	 * Define additional field properties.
 	 *
-	 * @param  array $properties Field properties.
-	 * @param  array $field      Field settings.
-	 * @param  array $form_data  Form data and settings.
+	 * @since 1.0.0
+	 *
+	 * @param array $properties Field properties.
+	 * @param array $field      Field settings.
+	 * @param array $form_data  Form data and settings.
+	 *
 	 * @return array of additional field properties.
 	 */
 	public function field_properties( $properties, $field, $form_data ) {
@@ -211,7 +216,7 @@ class EVF_Field_Text extends EVF_Form_Fields {
 	/**
 	 * Field preview inside the builder.
 	 *
-	 * @param array $field Field settings.
+	 * @param array $field Field data and settings.
 	 */
 	public function field_preview( $field ) {
 		// Define data.
@@ -230,11 +235,13 @@ class EVF_Field_Text extends EVF_Form_Fields {
 	/**
 	 * Field display on the form front-end.
 	 *
-	 * @param array $field      Field settings.
-	 * @param array $deprecated Deprecated.
-	 * @param array $form_data  Form data and settings.
+	 * @since 1.0.0
+	 *
+	 * @param array $field Field Data.
+	 * @param array $field_atts Field attributes.
+	 * @param array $form_data All Form Data.
 	 */
-	public function field_display( $field, $deprecated, $form_data ) {
+	public function field_display( $field, $field_atts, $form_data ) {
 		// Define data.
 		$primary = $field['properties']['inputs']['primary'];
 

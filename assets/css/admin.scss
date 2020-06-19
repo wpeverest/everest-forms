@@ -1675,6 +1675,7 @@ button.everest-forms-btn {
 			flex-wrap: wrap;
 
 			input[type='text'],
+			input[type='number'],
 			select {
 				flex: 0 0 50%;
 				margin-right: 2%;
@@ -2913,10 +2914,6 @@ button.everest-forms-btn {
 					label {
 						cursor: all-scroll;
 					}
-
-					.primary-input {
-						margin-bottom: 0;
-					}
 				}
 
 				.file-uploader {
@@ -3512,8 +3509,11 @@ button.everest-forms-btn {
 			.input-group-col-2 {
 				margin-bottom: 15px;
 
+				input[type='text'],
+				input[type='number'],
 				select {
 					margin-bottom: 0;
+					margin-left: 0;
 				}
 			}
 		}
@@ -4193,6 +4193,18 @@ button.everest-forms-btn {
 		}
 	}
 
+	.evf-connection-form {
+		input {
+			width: 100%;
+			margin-right: 15px;
+			margin-bottom: 15px;
+
+			@media screen and (min-width: 1200px) {
+				width: calc(33% - 20px);
+			}
+		}
+	}
+
 	.everest-forms-integration-content {
 		display: flex;
 		background-color: $color-white;
@@ -4262,15 +4274,6 @@ button.everest-forms-btn {
 
 				h3 {
 					margin-top: 0;
-				}
-
-				.evf-connection-form {
-					margin: 20px 0;
-
-					input {
-						width: 350px;
-						margin-right: 15px;
-					}
 				}
 
 				.everest-forms-btn {
@@ -4955,6 +4958,32 @@ img.ui-datepicker-trigger {
 /**
  * Select2 elements.
  */
+ .select2-container {
+	width: 100%;
+
+	.select2-selection--multiple {
+		.select2-selection__rendered {
+			display: block;
+		}
+
+		input {
+			&.select2-search__field {
+				min-width: 10px;
+				margin-top: 0 !important;
+				margin-bottom: 4px !important;
+			}
+		}
+	}
+
+	&.select2-container--focus {
+		.select2-selection--multiple {
+			border-color: #5b9dd9;
+			box-shadow: 0 0 2px rgba(30, 140, 190, 0.8);
+			outline: 2px solid transparent;
+		}
+	}
+}
+
 .select2-drop,
 .select2-dropdown {
 	z-index: 999999 !important;
@@ -5059,7 +5088,7 @@ img.ui-datepicker-trigger {
 		.select2-selection__arrow {
 			right: 1px;
 			height: 28px;
-			width: 28px;
+			width: 23px;
 			background: url(data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23555%22%2F%3E%3C%2Fsvg%3E) no-repeat right 5px top 55%;
 			background-size: 16px 16px;
 
@@ -5102,6 +5131,7 @@ img.ui-datepicker-trigger {
 	.select2-selection__clear {
 		color: #999;
 		margin-top: -1px;
+		z-index: 1;
 	}
 
 	.select2-search--inline .select2-search__field {
@@ -5183,18 +5213,6 @@ img.ui-datepicker-trigger {
 
 			.select2-container {
 				min-width: 350px !important;
-
-				ul {
-					&.select2-selection__rendered {
-						display: block;
-					}
-				}
-
-				input {
-					&.select2-search__field {
-						min-width: 50px;
-					}
-				}
 			}
 		}
 	}
@@ -5253,21 +5271,6 @@ img.ui-datepicker-trigger {
 		.everest-forms-integration-content {
 			.integration-addon-detail {
 				width: 280px;
-			}
-
-			.integration-connection-detail {
-				.evf-account-connect {
-					.evf-connection-form {
-						input {
-							width: 100%;
-							margin-bottom: 15px;
-
-							&:last-child {
-								margin-bottom: 0;
-							}
-						}
-					}
-				}
 			}
 		}
 	}

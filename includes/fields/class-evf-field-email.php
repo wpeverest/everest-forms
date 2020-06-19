@@ -59,13 +59,15 @@ class EVF_Field_Email extends EVF_Form_Fields {
 	}
 
 	/**
-	 * Field properties.
+	 * Define additional field properties.
+	 *
+	 * @since 1.0.0
 	 *
 	 * @param array $properties Field properties.
-	 * @param array $field Field Data.
-	 * @param array $form_data Form Data.
+	 * @param array $field      Field settings.
+	 * @param array $form_data  Form data and settings.
 	 *
-	 * @return array
+	 * @return array of additional field properties.
 	 */
 	public function field_properties( $properties, $field, $form_data ) {
 		if ( empty( $field['confirmation'] ) ) {
@@ -120,8 +122,10 @@ class EVF_Field_Email extends EVF_Form_Fields {
 		);
 		$properties = array_merge_recursive( $properties, $props );
 
+		// Input Primary: adjust name.
 		$properties['inputs']['primary']['attr']['name'] = "everest_forms[form_fields][{$field_id}][primary]";
 
+		// Input Primary: remove error classes.
 		$properties['inputs']['primary']['class'] = array_diff(
 			$properties['inputs']['primary']['class'],
 			array(
@@ -129,14 +133,17 @@ class EVF_Field_Email extends EVF_Form_Fields {
 			)
 		);
 
+		// Input Primary: add error class if needed.
 		if ( ! empty( $properties['error']['value']['primary'] ) ) {
 			$properties['inputs']['primary']['class'][] = 'evf-error';
 		}
 
+		// Input secondary: add error class if needed.
 		if ( ! empty( $properties['error']['value']['secondary'] ) ) {
 			$properties['inputs']['secondary']['class'][] = 'evf-error';
 		}
 
+		// Input Secondary: add required class if needed.
 		if ( ! empty( $field['required'] ) ) {
 			$properties['inputs']['secondary']['class'][] = 'evf-field-required';
 		}
@@ -160,6 +167,25 @@ class EVF_Field_Email extends EVF_Form_Fields {
 		}
 
 		return $required;
+	}
+
+	/**
+	 * Add class to field options wrapper to indicate if field confirmation is enabled.
+	 *
+	 * @param  array $class Field class.
+	 * @param  array $field Field option data.
+	 * @return array
+	 */
+	public function field_option_class( $class, $field ) {
+		if ( 'email' === $field['type'] ) {
+			if ( isset( $field['confirmation'] ) ) {
+				$class[] = 'everest-forms-confirm-enabled';
+			} else {
+				$class[] = 'everest-forms-confirm-disabled';
+			}
+		}
+
+		return $class;
 	}
 
 	/**
@@ -223,7 +249,7 @@ class EVF_Field_Email extends EVF_Form_Fields {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $field Field settings.
+	 * @param array $field Field data and settings.
 	 */
 	public function field_preview( $field ) {
 		$placeholder         = ! empty( $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : '';
@@ -252,14 +278,13 @@ class EVF_Field_Email extends EVF_Form_Fields {
 	/**
 	 * Field display on the form front-end.
 	 *
-	 * @since      1.0.0
+	 * @since 1.0.0
 	 *
-	 * @param array $field      Field settings.
-	 * @param array $deprecated Deprecated array.
-	 * @param array $form_data  Form data and settings.
+	 * @param array $field Field Data.
+	 * @param array $field_atts Field attributes.
+	 * @param array $form_data All Form Data.
 	 */
-	public function field_display( $field, $deprecated, $form_data ) {
-
+	public function field_display( $field, $field_atts, $form_data ) {
 		// Define data.
 		$form_id      = absint( $form_data['id'] );
 		$confirmation = ! empty( $field['confirmation'] );
@@ -308,25 +333,6 @@ class EVF_Field_Email extends EVF_Form_Fields {
 	}
 
 	/**
-	 * Add class to field options wrapper to indicate if field confirmation is enabled.
-	 *
-	 * @param  array $class Field class.
-	 * @param  array $field Field option data.
-	 * @return array
-	 */
-	public function field_option_class( $class, $field ) {
-		if ( 'email' === $field['type'] ) {
-			if ( isset( $field['confirmation'] ) ) {
-				$class[] = 'everest-forms-confirm-enabled';
-			} else {
-				$class[] = 'everest-forms-confirm-disabled';
-			}
-		}
-
-		return $class;
-	}
-
-	/**
 	 * Validates field on form submit.
 	 *
 	 * @param int   $field_id     Field ID.
@@ -334,54 +340,51 @@ class EVF_Field_Email extends EVF_Form_Fields {
 	 * @param array $form_data    Form data.
 	 */
 	public function validate( $field_id, $field_submit, $form_data ) {
-		$form_id            = $form_data['id'];
-		$fields             = $form_data['form_fields'];
-		$required           = evf_get_required_label();
-		$invalid_email      = esc_html__( 'Please enter a valid email address.', 'everest-forms' );
+		$form_id            = (int) $form_data['id'];
 		$conditional_status = isset( $form_data['form_fields'][ $field_id ]['conditional_logic_status'] ) ? $form_data['form_fields'][ $field_id ]['conditional_logic_status'] : 0;
 
-		// Standard configuration, confirmation disabled.
-		if ( empty( $fields[ $field_id ]['confirmation'] ) ) {
+		// Required check.
+		if ( ! empty( $form_data['form_fields'][ $field_id ]['required'] ) && '1' !== $conditional_status ) {
+			$required = evf_get_required_label();
 
-			// Required check.
-			if ( ! empty( $fields[ $field_id ]['required'] ) && '1' !== $conditional_status && ( empty( $field_submit ) && '0' !== $field_submit ) ) {
-				evf()->task->errors[ $form_id ][ $field_id ] = $required;
-				update_option( 'evf_validation_error', 'yes' );
-			}
-
-			if ( isset( $field_submit ) && ! is_email( $field_submit ) ) {
-				evf()->task->errors[ $form_id ][ $field_id ] = $invalid_email;
-				update_option( 'evf_validation_error', 'yes' );
-				return;
-			}
-		} else {
-
-			// Required check.
-			if ( ! empty( $fields[ $field_id ]['required'] ) && '1' !== $conditional_status && ( empty( $field_submit['primary'] ) && '0' !== $field_submit ) ) {
-				evf()->task->errors[ $form_id ][ $field_id ]['primary'] = $required;
-				update_option( 'evf_validation_error', 'yes' );
-			}
-
-			// Required check, secondary confirmation field.
-			if ( ! empty( $fields[ $field_id ]['required'] ) && '1' !== $conditional_status && ( empty( $field_submit['secondary'] ) && '0' !== $field_submit ) ) {
-				evf()->task->errors[ $form_id ][ $field_id ]['secondary'] = $required;
-				update_option( 'evf_validation_error', 'yes' );
-			}
-
-			// Fields need to match.
-			if ( isset( $field_submit['primary'] ) && isset( $field_submit['secondary'] ) ) {
-				if ( $field_submit['primary'] !== $field_submit['secondary'] ) {
-					evf()->task->errors[ $form_id ][ $field_id ]['secondary'] = esc_html__( 'Confirmation Email do not match.', 'everest-forms' );
+			// Standard configuration, confirmation disabled.
+			if ( empty( $form_data['form_fields'][ $field_id ]['confirmation'] ) ) {
+				if ( empty( $field_submit ) && '0' !== $field_submit ) {
+					evf()->task->errors[ $form_id ][ $field_id ] = $required;
 					update_option( 'evf_validation_error', 'yes' );
-					return;
+				}
+			} else {
+				if ( empty( $field_submit['primary'] ) && '0' !== $field_submit ) {
+					evf()->task->errors[ $form_id ][ $field_id ]['primary'] = $required;
+					update_option( 'evf_validation_error', 'yes' );
+				}
+
+				if ( empty( $field_submit['secondary'] ) && '0' !== $field_submit ) {
+					evf()->task->errors[ $form_id ][ $field_id ]['secondary'] = $required;
+					update_option( 'evf_validation_error', 'yes' );
 				}
 			}
+		}
 
-			if ( isset( $field_submit['primary'] ) && ! is_email( $field_submit['primary'] ) ) {
+		// If confirmation disabled, treat this way for primary email.
+		if ( ! is_array( $field_submit ) && ! empty( $field_submit ) ) {
+			$field_submit = array(
+				'primary' => $field_submit,
+			);
+		}
+
+		// Standard checks for valid email address and confirmation email match.
+		if ( ! empty( $field_submit['primary'] ) && ! is_email( $field_submit['primary'] ) ) {
+			$invalid_email = esc_html__( 'Please enter a valid email address.', 'everest-forms' );
+			if ( empty( $form_data['form_fields'][ $field_id ]['confirmation'] ) ) {
+				evf()->task->errors[ $form_id ][ $field_id ] = $invalid_email;
+			} else {
 				evf()->task->errors[ $form_id ][ $field_id ]['primary'] = $invalid_email;
-				update_option( 'evf_validation_error', 'yes' );
-				return;
 			}
+			update_option( 'evf_validation_error', 'yes' );
+		} elseif ( isset( $field_submit['primary'], $field_submit['secondary'] ) && $field_submit['secondary'] !== $field_submit['primary'] ) {
+			evf()->task->errors[ $form_id ][ $field_id ]['secondary'] = esc_html__( 'Confirmation Email do not match.', 'everest-forms' );
+			update_option( 'evf_validation_error', 'yes' );
 		}
 	}
 
@@ -400,7 +403,7 @@ class EVF_Field_Email extends EVF_Form_Fields {
 			$value = ! empty( $field_submit ) ? $field_submit : '';
 		}
 
-		$name = ! empty( $form_data['form_fields'][ $field_id ] ['label'] ) ? $form_data['form_fields'][ $field_id ]['label'] : '';
+		$name = ! empty( $form_data['form_fields'][ $field_id ]['label'] ) ? $form_data['form_fields'][ $field_id ]['label'] : '';
 
 		// Set final field details.
 		evf()->task->form_fields[ $field_id ] = array(

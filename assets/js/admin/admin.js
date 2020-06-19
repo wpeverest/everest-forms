@@ -100,7 +100,7 @@
 		})
 
 		.on( 'keyup focus', '.evf-input-number[type=number]', function() {
-			var fieldId  = $( this ).parent().data( 'fieldId' );
+			var fieldId  = $( this ).parent().data( 'fieldId' ) ? $( this ).parent().data( 'fieldId' ) : $( this ).closest( '.everest-forms-field-option-row' ).data( 'field-id' );
 			var maxField = $( "input#everest-forms-field-option-"+fieldId+"-max_value" );
 			var minField = $( "input#everest-forms-field-option-"+fieldId+"-min_value" );
 			var maxVal   = maxField.val();
