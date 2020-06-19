@@ -4958,6 +4958,32 @@ img.ui-datepicker-trigger {
 /**
  * Select2 elements.
  */
+ .select2-container {
+	width: 100%;
+
+	.select2-selection--multiple {
+		.select2-selection__rendered {
+			display: block;
+		}
+
+		input {
+			&.select2-search__field {
+				min-width: 10px;
+				margin-top: 0 !important;
+				margin-bottom: 4px !important;
+			}
+		}
+	}
+
+	&.select2-container--focus {
+		.select2-selection--multiple {
+			border-color: #5b9dd9;
+			box-shadow: 0 0 2px rgba(30, 140, 190, 0.8);
+			outline: 2px solid transparent;
+		}
+	}
+}
+
 .select2-drop,
 .select2-dropdown {
 	z-index: 999999 !important;
@@ -5187,18 +5213,6 @@ img.ui-datepicker-trigger {
 
 			.select2-container {
 				min-width: 350px !important;
-
-				ul {
-					&.select2-selection__rendered {
-						display: block;
-					}
-				}
-
-				input {
-					&.select2-search__field {
-						min-width: 50px;
-					}
-				}
 			}
 		}
 	}
