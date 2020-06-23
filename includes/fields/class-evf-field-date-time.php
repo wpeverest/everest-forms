@@ -139,10 +139,10 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 					'value'   => isset( $field['date_format'] ) ? $field['date_format'] : 'Y-m-d',
 					'class'   => 'evf-date-format',
 					'options' => array(
-						'Y-m-d'  => date( 'Y-m-d' ) . ' (Y-m-d)', // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
-						'F j, Y' => date( 'F j, Y' ) . ' (F j, Y)', // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
-						'm/d/Y'  => date( 'm/d/Y' ) . ' (m/d/Y)', // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
-						'd/m/Y'  => date( 'd/m/Y' ) . ' (d/m/Y)', // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
+						'Y-m-d'  => date_i18n( 'Y-m-d' ) . ' (Y-m-d)',
+						'F j, Y' => date_i18n( 'F j, Y' ) . ' (F j, Y)',
+						'm/d/Y'  => date_i18n( 'm/d/Y' ) . ' (m/d/Y)',
+						'd/m/Y'  => date_i18n( 'd/m/Y' ) . ' (d/m/Y)',
 					),
 				),
 				false
@@ -446,7 +446,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			// Input primary: data-date-format and value.
 			switch ( $field['datetime_format'] ) {
 				case 'date':
-					$properties['inputs']['primary']['attr']['value']            = isset( $field['date_default'] ) ? esc_attr( date( $field['date_format'] ) ) : ''; // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
+					$properties['inputs']['primary']['attr']['value']            = isset( $field['date_default'] ) ? esc_attr( date_i18n( $field['date_format'] ) ) : '';
 					$properties['inputs']['primary']['attr']['data-date-format'] = ! empty( $field['date_format'] ) ? str_replace( 'g:i A', 'h:i K', esc_attr( $field['date_format'] ) ) : '';
 					break;
 				case 'time':
@@ -456,11 +456,11 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				case 'date-time':
 					if ( ! empty( $field['time_format'] ) ) {
 						$date_format                                      = esc_attr( $field['date_format'] ) . ' ' . esc_attr( $field['time_format'] );
-						$properties['inputs']['primary']['attr']['value'] = isset( $field['date_default'] ) ? esc_attr( date( $date_format ) ) : ''; // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
+						$properties['inputs']['primary']['attr']['value'] = isset( $field['date_default'] ) ? esc_attr( date_i18n( $date_format ) ) : '';
 						$properties['inputs']['primary']['attr']['data-date-format'] = ! empty( $field['date_format'] ) ? str_replace( 'g:i A', 'h:i K', esc_attr( $date_format ) ) : '';
 					} else {
 						$date_format                                      = esc_attr( $field['date_format'] ) . ' g:i A';
-						$properties['inputs']['primary']['attr']['value'] = isset( $field['date_default'] ) ? esc_attr( date( $date_format ) ) : ''; // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
+						$properties['inputs']['primary']['attr']['value'] = isset( $field['date_default'] ) ? esc_attr( date_i18n( $date_format ) ) : '';
 						$properties['inputs']['primary']['attr']['data-date-format'] = ! empty( $field['date_format'] ) ? str_replace( 'g:i A', 'h:i K', esc_attr( $date_format ) ) : '';
 					}
 					break;
