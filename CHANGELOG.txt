@@ -3,6 +3,7 @@
 = 1.7.0 - xx-xx-2020 =
 * Enhancement - Add support for offline forms addon.
 * Added - Introduce `get_multiple` method in `EVF_Form_Handler` to fetch multiple forms.
+* Fix - Date/Time field to use local date instead of default UTC.
 * Fix - Export of field data with HTML encoded special characters.
 * Fix - The field placeholder & default value 0 (zero) does not display on the frontend.
 * Tweak - Updated jQuery Validation JS library to v1.19.2.
