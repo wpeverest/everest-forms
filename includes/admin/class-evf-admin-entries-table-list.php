@@ -376,7 +376,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	protected function get_views() {
 		$status_links  = array();
 		$num_entries   = evf_get_count_entries_by_status( $this->form_id );
-		$total_entries = (int) $num_entries['publish'];
+		$total_entries = apply_filters( 'everest_forms_total_entries_count', (int) $num_entries['publish'], $num_entries, $this->form_id );
 		$statuses      = array_keys( evf_get_entry_statuses() );
 		$class         = empty( $_REQUEST['status'] ) ? ' class="current"' : ''; // phpcs:ignore WordPress.Security.NonceVerification
 
@@ -596,7 +596,6 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 
 		// Query args.
 		$args = array(
-			'status'  => 'publish',
 			'form_id' => $this->form_id,
 			'limit'   => $per_page,
 			'offset'  => $per_page * ( $current_page - 1 ),
