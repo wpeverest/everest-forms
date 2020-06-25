@@ -4410,16 +4410,6 @@ button.everest-forms-btn {
 /**
  * List Table.
  */
-.tablenav {
-	#delete_all {
-		margin: 1px;
-	}
-
-	#export-csv-submit {
-		margin: 1px 8px 0 0;
-	}
-}
-
 table.wp-list-table {
 	span.na {
 		color: #999;
@@ -4958,7 +4948,7 @@ img.ui-datepicker-trigger {
 /**
  * Select2 elements.
  */
- .select2-container {
+.select2-container {
 	width: 100%;
 
 	.select2-selection--multiple {
