@@ -596,6 +596,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 
 		// Query args.
 		$args = array(
+			'status'  => 'publish',
 			'form_id' => $this->form_id,
 			'limit'   => $per_page,
 			'offset'  => $per_page * ( $current_page - 1 ),
