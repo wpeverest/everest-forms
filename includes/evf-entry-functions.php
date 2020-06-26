@@ -71,15 +71,18 @@ function evf_get_entries_ids( $form_id ) {
 /**
  * Get entry statuses.
  *
+ * @param array $form_data Form data.
+ *
  * @return array
  */
-function evf_get_entry_statuses() {
+function evf_get_entry_statuses( $form_data = array() ) {
 	return apply_filters(
 		'everest_forms_entry_statuses',
 		array(
 			'publish' => esc_html__( 'Published', 'everest-forms' ),
 			'trash'   => esc_html__( 'Trash', 'everest-forms' ),
-		)
+		),
+		$form_data
 	);
 }
 
@@ -158,8 +161,9 @@ function evf_search_entries( $args ) {
  * @return array
  */
 function evf_get_count_entries_by_status( $form_id ) {
-	$statuses = array_keys( evf_get_entry_statuses() );
-	$counts   = array();
+	$form_data = evf()->form->get( $form_id, array( 'content_only' => true ) );
+	$statuses  = array_keys( evf_get_entry_statuses( $form_data ) );
+	$counts    = array();
 
 	foreach ( $statuses as $status ) {
 		$count = count(
