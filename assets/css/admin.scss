@@ -1641,9 +1641,27 @@ button.everest-forms-btn {
 			display: flex;
 			align-items: center;
 			justify-content: center;
+			border-radius: 4px;
+			border: 1px solid $color_gray-lighten;
 
 			&:hover {
 				color: $color-white;
+			}
+		}
+
+		.add {
+			&:hover {
+				background: $blue;
+				border-color: $blue;
+			}
+		}
+
+		.remove {
+			margin-left: 8px;
+
+			&:hover {
+				background: $red;
+				border-color: $red;
 			}
 		}
 
@@ -3252,10 +3270,6 @@ button.everest-forms-btn {
 
 						.actions {
 							margin-top: 8px;
-
-							.remove-button {
-								margin-right: 8px;
-							}
 						}
 					}
 
@@ -3278,7 +3292,7 @@ button.everest-forms-btn {
 					width: 20px;
 					height: 20px;
 					margin-top: 5px;
-					border-radius: 10px;
+					border: none;
 
 					.dashicons {
 						width: 16px;
@@ -3290,12 +3304,16 @@ button.everest-forms-btn {
 				.add {
 					&:hover {
 						color: $blue;
+						background: none;
 					}
 				}
 
 				.remove {
+					margin-left: 0;
+
 					&:hover {
 						color: $red;
+						background: none;
 					}
 				}
 
