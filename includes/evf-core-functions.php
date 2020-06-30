@@ -1999,3 +1999,30 @@ function evf_cleanup_logs() {
 	}
 }
 add_action( 'everest_forms_cleanup_logs', 'evf_cleanup_logs' );
+
+
+/**
+ * Check whether it device is table or not from HTTP user agent
+ *
+ * @return bool
+ */
+function evf_is_tablet() {
+	$useragent = $_SERVER['HTTP_USER_AGENT'];
+	return false !== stripos( $useragent,'tablet' ) || false !== stripos( $useragent, 'tab' );
+}
+
+
+/**
+ * Get user device from user agent from HTTP user agent.
+ *
+ * @return string
+ */
+function evf_get_user_device() {
+	if( evf_is_tablet( ) ) {
+		return 'Tablet';
+	} elseif( wp_is_mobile() ) {
+		return 'Mobile';
+	} else {
+		return 'Desktop';
+	}
+}
