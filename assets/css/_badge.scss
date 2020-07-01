@@ -1,0 +1,67 @@
+.everest-forms-badge {
+	display: inline-block;
+	font-size: 1em;
+	line-height: 1.15;
+	padding: 4px 8px;
+	border-radius: 4px;
+
+	&.everest-forms-badge--primary {
+		background: $everestforms;
+		color: $color-white;
+	}
+
+	&.everest-forms-badge--primary-subtle {
+		background: lighten($everestforms, +35);
+		color: $everestforms;
+	}
+
+	&.everest-forms-badge--secondary {
+		background: $color_gray-lighten;
+		color: $color-white;
+	}
+
+	&.everest-forms-badge--secondary-subtle {
+		background: $color_gray-lighten;
+		color: darken($color_gray-lighten, +35);
+	}
+
+	&.everest-forms-badge--success {
+		background: $green;
+		color: $color-white;
+	}
+
+	&.everest-forms-badge--success-subtle {
+		background: lighten($green, +35);
+		color: darken($green, 10%);
+	}
+
+	&.everest-forms-badge--danger {
+		background: $red;
+		color: $color-white;
+	}
+
+	&.everest-forms-badge--danger-subtle {
+		background: lighten($red, +30);
+		color: $red;
+	}
+
+	&.everest-forms-badge--warning {
+		background: $orange;
+		color: $color-white;
+	}
+
+	&.everest-forms-badge--warning-subtle {
+		background: lighten($orange, +35);
+		color: darken($orange, 15%);
+	}
+
+	&.everest-forms-badge--info {
+		background: $blue;
+		color: $color-white;
+	}
+
+	&.everest-forms-badge--info-subtle {
+		background: lighten($blue, +35);
+		color: darken($blue, 5%);
+	}
+}
