@@ -12,8 +12,14 @@
 @import 'animation';
 @import 'clearings';
 @import 'confirm';
-@import 'layout';
+@import 'badge';
+@import 'grid';
 @import 'card';
+
+//Utilities
+@import
+	'utility/display',
+	'utility/spacing';
 
 /**
  * Styling begins
@@ -954,25 +960,6 @@ button.everest-forms-btn {
 				}
 			}
 		}
-	}
-}
-
-/**
- * Badge
- */
-.everest-forms-badge {
-	background: $color_gray-lighten;
-	height: 20px;
-	font-size: 13px;
-	padding: 2px 8px;
-	border-radius: 10px;
-	margin: 0;
-	line-height: 1.2;
-	display: inline-block;
-
-	&.everest-forms-badge-success {
-		background: $green;
-		color: $color-white;
 	}
 }
 
