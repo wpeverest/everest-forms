@@ -56,6 +56,19 @@ button.everest-forms-btn {
 		}
 	}
 
+	&.everest-forms-btn-icon {
+		background: $color_gray-more-lighten;
+		color: $color_gray-normal;
+		padding: 6px;
+
+		svg {
+			display: flex;
+			fill: currentColor;
+			height: 20px;
+			width: 20px;
+		}
+	}
+
 	&.dashicons {
 		padding: 8px 15px;
 
@@ -89,39 +102,38 @@ button.everest-forms-btn {
 }
 
 .everest-forms-btn-group {
-	background: $color_gray-lighten;
-	padding: 4px;
-	border-radius: 4px;
-	position: relative;
 	display: inline-flex;
-	vertical-align: middle;
-
-	.everest-forms-btn {
-		padding: 4px 6px;
-
-		&:active,
-		&.is-active {
-			background: $color-white;
-			color: $color_gray-base;
-		}
-	}
 
 	button,
 	.everest-forms-btn {
-		margin: 0 2px;
-	}
+		margin: 0 4px;
 
-	> button,
-	.everest-forms-btn {
 		&:first-child {
 			margin-left: 0;
 		}
-	}
 
-	> button,
-	.everest-forms-btn {
 		&:last-child {
 			margin-right: 0;
+		}
+	}
+
+	&.everest-forms-btn-group--inline {
+		background: $color_gray-lighten;
+		padding: 4px;
+		border-radius: 4px;
+		position: relative;
+		vertical-align: middle;
+
+		button,
+		.everest-forms-btn {
+			padding: 4px 6px;
+			margin: 0 2px;
+
+			&:active,
+			&.is-active {
+				background: $color-white;
+				color: $color_gray-base;
+			}
 		}
 	}
 }
