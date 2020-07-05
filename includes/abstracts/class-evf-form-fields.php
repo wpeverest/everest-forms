@@ -844,7 +844,7 @@ abstract class EVF_Form_Fields {
 			 * Default value.
 			 */
 			case 'default_value':
-				$value   = ! empty( $field['default_value'] ) ? esc_attr( $field['default_value'] ) : '';
+				$value   = ! empty( $field['default_value'] ) || ( isset( $field['default_value'] ) && '0' === (string) $field['default_value'] ) ? esc_attr( $field['default_value'] ) : '';
 				$tooltip = esc_html__( 'Enter text for the default form field value.', 'everest-forms' );
 				$toggle  = '';
 				$output  = $this->field_element(
@@ -869,7 +869,7 @@ abstract class EVF_Form_Fields {
 				);
 
 				// Smart tag for default value.
-				$exclude_fields = array( 'rating', 'number' );
+				$exclude_fields = array( 'rating', 'number', 'range-slider' );
 
 				if ( ! in_array( $field['type'], $exclude_fields, true ) ) {
 					$output .= '<a href="#" class="evf-toggle-smart-tag-display" data-type="other"><span class="dashicons dashicons-editor-code"></span></a>';
@@ -909,7 +909,7 @@ abstract class EVF_Form_Fields {
 			 * Placeholder.
 			 */
 			case 'placeholder':
-				$value   = ! empty( $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : '';
+				$value   = ! empty( $field['placeholder'] ) || ( isset( $field['placeholder'] ) && '0' === (string) $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : '';
 				$tooltip = esc_html__( 'Enter text for the form field placeholder.', 'everest-forms' );
 				$output  = $this->field_element(
 					'label',

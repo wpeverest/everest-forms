@@ -205,7 +205,7 @@ $trash_link = wp_nonce_url(
 									</p>
 								<?php endif; ?>
 
-								<?php if ( apply_filters( 'everest_forms_entry_details_sidebar_details_status', false, $entry ) ) : ?>
+								<?php if ( apply_filters( 'everest_forms_entry_details_sidebar_details_status', false, $entry, $form_data ) ) : ?>
 									<p class="everest-forms-entry-status">
 										<span class="dashicons dashicons-category"></span>
 										<?php esc_html_e( 'Status:', 'everest-forms' ); ?>

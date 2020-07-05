@@ -159,7 +159,7 @@ class EVF_Frontend_Scripts {
 			'flatpickr'                     => array(
 				'src'     => self::get_asset_url( 'assets/js/flatpickr/flatpickr' . $suffix . '.js' ),
 				'deps'    => array( 'jquery' ),
-				'version' => '4.5.1',
+				'version' => '4.6.3',
 			),
 			'mailcheck'                     => array(
 				'src'     => self::get_asset_url( 'assets/js/mailcheck/mailcheck' . $suffix . '.js' ),
@@ -169,12 +169,12 @@ class EVF_Frontend_Scripts {
 			'selectWoo'                     => array(
 				'src'     => self::get_asset_url( 'assets/js/selectWoo/selectWoo' . $suffix . '.js' ),
 				'deps'    => array( 'jquery' ),
-				'version' => '1.0.4',
+				'version' => '1.0.6',
 			),
 			'jquery-validate'               => array(
 				'src'     => self::get_asset_url( 'assets/js/jquery-validate/jquery.validate' . $suffix . '.js' ),
 				'deps'    => array( 'jquery' ),
-				'version' => '1.17.0',
+				'version' => '1.19.2',
 			),
 			'everest-forms'                 => array(
 				'src'     => self::get_asset_url( 'assets/js/frontend/everest-forms' . $suffix . '.js' ),

@@ -11,9 +11,6 @@ project.properties
 *.sublime-workspace
 .sublimelinterrc
 
-# Build
-build/
-
 # Grunt
 /node_modules/
 none
@@ -30,5 +27,5 @@ Thumbs.db
 # Composer
 /vendor/
 
-# Language files
-languages/everest-forms.pot
+# Build
+build/

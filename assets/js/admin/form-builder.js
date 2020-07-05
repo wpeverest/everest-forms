@@ -231,8 +231,8 @@
 		 * @since 1.6.6
 		 */
 		init_datepickers: function() {
-			var date_format = $( '.everest-forms-disable-dates' ).data( 'date-format' );
-			var selection_mode = 'multiple';
+			var date_format    = $( '.everest-forms-disable-dates' ).data( 'date-format' ),
+				selection_mode = 'multiple';
 
 			// Initialize "Disable dates" option's date pickers that hasn't been initialized.
 			$( '.everest-forms-disable-dates' ).each( function() {
@@ -415,12 +415,12 @@
 			});
 
 			// Delete field choice.
-			$builder.on( 'click', '.everest-forms-field-option-row-choices .remove', function( e ) {
+			$builder.on( 'click', '.everest-forms-field-option-row-choices .remove', function( event ) {
 				EVFPanelBuilder.choiceDelete( event, $(this) );
 			});
 
 			// Field choices defaults - (before change).
-			$builder.on( 'mousedown', '.everest-forms-field-option-row-choices input[type=radio]', function(e) {
+			$builder.on( 'mousedown', '.everest-forms-field-option-row-choices input[type=radio]', function()  {
 				var $this = $(this);
 
 				if ( $this.is( ':checked' ) ) {
@@ -431,7 +431,7 @@
 			});
 
 			// Field choices defaults.
-			$builder.on( 'click', '.everest-forms-field-option-row-choices input[type=radio]', function(e) {
+			$builder.on( 'click', '.everest-forms-field-option-row-choices input[type=radio]', function() {
 				var $this = $(this),
 					list  = $this.parent().parent();
 
@@ -979,10 +979,15 @@
 			$( 'body' ).on( 'click', '.evf-add-row span', function() {
 				var $this        = $( this ),
 					wrapper      = $( '.evf-admin-field-wrapper' ),
+					row_ids      = $( '.evf-admin-row' ).map( function() {
+						return $( this ).data( 'row-id' );
+					} ).get(),
+					max_row_id   = Math.max.apply( Math, row_ids ),
 					row_clone    = $( '.evf-admin-row' ).eq(0).clone(),
 					total_rows   = $this.parent().attr( 'data-total-rows' ),
 					current_part = $this.parents( '.evf-admin-field-container' ).attr( 'data-current-part' );
 
+				max_row_id++;
 				total_rows++;
 
 				if ( current_part ) {
@@ -991,8 +996,9 @@
 
 				// Row clone.
 				row_clone.find( '.evf-admin-grid' ).html( '' );
-				row_clone.attr( 'data-row-id', total_rows );
+				row_clone.attr( 'data-row-id', max_row_id );
 				$this.parent().attr( 'data-total-rows', total_rows );
+				$this.parent().attr( 'data-next-row-id', max_row_id );
 
 				// Row append.
 				wrapper.append( row_clone );
@@ -1122,8 +1128,11 @@
 			newFieldCloned.attr('data-field-type', field_type);
 			newFieldCloned.find('.label-title .text').text(new_field_label);
 			field.closest( '.evf-admin-grid' ).find( '[data-field-id="' + old_key + '"]' ).after( newFieldCloned );
-			$(document).trigger('everest-form-cloned', [ new_key, field_type ]);
+			$(document).trigger('everest-form-cloned', [ new_key, field_type ] );
 			EVFPanelBuilder.switchToFieldOptionPanel(new_key);//switch to cloned field options
+
+			// Trigger an event indicating completion of render_node action for cloning.
+			$( document.body ).trigger( 'evf_render_node_complete', [ field_type, new_key, newFieldCloned, newOption ] );
 		},
 		bindFieldDelete: function () {
 			$( 'body' ).on('click', '.everest-forms-preview .everest-forms-field .everest-forms-field-delete', function () {
@@ -1648,6 +1657,9 @@
 
 					// Initialization Datepickers.
 					EVFPanelBuilder.init_datepickers();
+
+					// Trigger an event indicating completion of field_drop action.
+					$( document.body ).trigger( 'evf_field_drop_complete', [ field_type, dragged_field_id, field_preview, field_options ] );
 		 		}
 		 	});
 		},

@@ -100,7 +100,7 @@ function evf_get_template( $template_name, $args = array(), $template_path = '',
 	if ( $filter_template !== $template ) {
 		if ( ! file_exists( $filter_template ) ) {
 			/* translators: %s template */
-			evf_doing_it_wrong( __FUNCTION__, sprintf( __( '%s does not exist.', 'everest-forms' ), '<code>' . $template . '</code>' ), '1.0.0' );
+			evf_doing_it_wrong( __FUNCTION__, sprintf( __( '%s does not exist.', 'everest-forms' ), '<code>' . $filter_template . '</code>' ), '1.0.0' );
 			return;
 		}
 		$template = $filter_template;
@@ -1687,7 +1687,7 @@ function evf_get_countries() {
 		'LT' => esc_html__( 'Lithuania', 'everest-forms' ),
 		'LU' => esc_html__( 'Luxembourg', 'everest-forms' ),
 		'MO' => esc_html__( 'Macao', 'everest-forms' ),
-		'MK' => esc_html__( 'Macedonia (Republic of)', 'everest-forms' ),
+		'MK' => esc_html__( 'North Macedonia (Republic of)', 'everest-forms' ),
 		'MG' => esc_html__( 'Madagascar', 'everest-forms' ),
 		'MW' => esc_html__( 'Malawi', 'everest-forms' ),
 		'MY' => esc_html__( 'Malaysia', 'everest-forms' ),
