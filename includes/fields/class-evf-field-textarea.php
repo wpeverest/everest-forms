@@ -128,10 +128,12 @@ class EVF_Field_Textarea extends EVF_Form_Fields {
 		$form_data = ! empty( $form_obj->post_content ) ? evf_decode( $form_obj->post_content ) : '';
 
 		// Leave only fields with limit.
-		$form_fields = array_filter( $form_data['form_fields'], array( $this, 'field_is_limit' ) );
+		if ( ! empty( $form_data['form_fields'] ) ) {
+			$form_fields = array_filter( $form_data['form_fields'], array( $this, 'field_is_limit' ) );
 
-		if ( count( $form_fields ) ) {
-			wp_enqueue_script( 'everest-forms-text-limit' );
+			if ( count( $form_fields ) ) {
+				wp_enqueue_script( 'everest-forms-text-limit' );
+			}
 		}
 	}
 
@@ -158,22 +160,20 @@ class EVF_Field_Textarea extends EVF_Form_Fields {
 	/**
 	 * Field display on the form front-end.
 	 *
-	 * @since      1.0.0
+	 * @since 1.0.0
 	 *
-	 * @param array $field      Field data and settings.
-	 * @param array $deprecated Deprecated.
-	 * @param array $form_data  Form data and settings.
+	 * @param array $field Field Data.
+	 * @param array $field_atts Field attributes.
+	 * @param array $form_data All Form Data.
 	 */
-	public function field_display( $field, $deprecated, $form_data ) {
+	public function field_display( $field, $field_atts, $form_data ) {
 		// Define data.
 		$value   = '';
 		$primary = $field['properties']['inputs']['primary'];
 
-		if ( ! empty( $primary['attr']['value'] ) ) {
-			$value = $primary['attr']['value'];
+		if ( isset( $primary['attr']['value'] ) ) {
+			$value = evf_sanitize_textarea_field( $primary['attr']['value'] );
 			unset( $primary['attr']['value'] );
-
-			$value = evf_sanitize_textarea_field( $value );
 		}
 
 		// Limit length.

@@ -117,11 +117,13 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 	/**
 	 * Define additional field properties.
 	 *
-	 * @param array $properties Field properties.
-	 * @param array $field Field data.
-	 * @param array $form_data Form data.
+	 * @since 1.0.0
 	 *
-	 * @return array
+	 * @param array $properties Field properties.
+	 * @param array $field      Field settings.
+	 * @param array $form_data  Form data and settings.
+	 *
+	 * @return array of additional field properties.
 	 */
 	public function field_properties( $properties, $field, $form_data ) {
 		// Define data.
@@ -157,7 +159,7 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 					'class' => array( 'everest-forms-field-label-inline' ),
 					'data'  => array(),
 					'id'    => '',
-					'text'  => $choice['label'],
+					'text'  => evf_string_translation( $form_id, $field_id, $choice['label'], '-choice-' . $key ),
 				),
 				'attr'      => array(
 					'name'  => "everest_forms[form_fields][{$field_id}]",
@@ -251,7 +253,7 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $field Field settings.
+	 * @param array $field Field data and settings.
 	 */
 	public function field_preview( $field ) {
 		// Label.
@@ -269,9 +271,9 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $field      Field settings.
+	 * @param array $field Field Data.
 	 * @param array $field_atts Field attributes.
-	 * @param array $form_data  Form data and settings.
+	 * @param array $form_data All Form Data.
 	 */
 	public function field_display( $field, $field_atts, $form_data ) {
 		// Define data.
@@ -284,11 +286,6 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 		foreach ( $choices as $choice ) {
 			if ( empty( $choice['container'] ) ) {
 				continue;
-			}
-
-			// WPML Compatibility.
-			if ( isset( $choice['label']['text'], $choice['label']['attr']['for'] ) && '' !== $choice['label']['text'] ) {
-				$choice['label']['text'] = evf_string_translation( $form_data['id'], $field['id'], $choice['label']['text'] );
 			}
 
 			// Conditional logic.

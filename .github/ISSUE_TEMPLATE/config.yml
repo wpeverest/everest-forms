@@ -1,8 +1,5 @@
 blank_issues_enabled: false
 contact_links:
-  - name: "❓ Support Question"
+  - name: "Submitting a support requests"
     url: https://wordpress.org/support/plugin/everest-forms/
-    about: Please ask and answer questions here.
-  - name: "\U0001F46E‍♂️ Security Bug"
-    url: https://wpeverest.com/contact/
-    about: Please report security vulnerabilities here.
+    about: Please ask and answer questions in support channels first

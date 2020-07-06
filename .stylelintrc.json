@@ -13,6 +13,7 @@
     "no-descending-specificity": null,
     "no-duplicate-selectors": null,
     "rule-empty-line-before": null,
+    "comment-no-empty": null,
     "selector-id-pattern": null,
     "selector-class-pattern": null,
     "string-quotes": "single",
