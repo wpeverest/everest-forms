@@ -349,7 +349,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 * @return array
 	 */
 	private function get_status_label( $status_name, $amount ) {
-		$statuses = evf_get_entry_statuses();
+		$statuses = evf_get_entry_statuses( $this->form_data );
 
 		if ( isset( $statuses[ $status_name ] ) ) {
 			return array(
@@ -376,8 +376,8 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	protected function get_views() {
 		$status_links  = array();
 		$num_entries   = evf_get_count_entries_by_status( $this->form_id );
-		$total_entries = (int) $num_entries['publish'];
-		$statuses      = array_keys( evf_get_entry_statuses() );
+		$total_entries = apply_filters( 'everest_forms_total_entries_count', (int) $num_entries['publish'], $num_entries, $this->form_id );
+		$statuses      = array_keys( evf_get_entry_statuses( $this->form_data ) );
 		$class         = empty( $_REQUEST['status'] ) ? ' class="current"' : ''; // phpcs:ignore WordPress.Security.NonceVerification
 
 		/* translators: %s: count */
@@ -399,7 +399,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 			$status_links[ $status_name ] = "<a href='admin.php?page=evf-entries&amp;form_id=$this->form_id&amp;status=$status_name'$class>" . sprintf( translate_nooped_plural( $label, $num_entries[ $status_name ] ), number_format_i18n( $num_entries[ $status_name ] ) ) . '</a>';
 		}
 
-		return $status_links;
+		return apply_filters( 'everest_forms_entries_table_views', $status_links, $num_entries, $this->form_data );
 	}
 
 	/**

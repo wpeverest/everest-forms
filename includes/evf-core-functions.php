@@ -100,7 +100,7 @@ function evf_get_template( $template_name, $args = array(), $template_path = '',
 	if ( $filter_template !== $template ) {
 		if ( ! file_exists( $filter_template ) ) {
 			/* translators: %s template */
-			evf_doing_it_wrong( __FUNCTION__, sprintf( __( '%s does not exist.', 'everest-forms' ), '<code>' . $template . '</code>' ), '1.0.0' );
+			evf_doing_it_wrong( __FUNCTION__, sprintf( __( '%s does not exist.', 'everest-forms' ), '<code>' . $filter_template . '</code>' ), '1.0.0' );
 			return;
 		}
 		$template = $filter_template;
