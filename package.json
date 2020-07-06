@@ -17,7 +17,7 @@
     "git:update-hooks": "node ./node_modules/husky/husky.js install"
   },
   "devDependencies": {
-    "@babel/core": "7.10.3",
+    "@babel/core": "7.10.4",
     "@wordpress/babel-preset-default": "4.15.0",
     "@wordpress/browserslist-config": "2.6.0",
     "autoprefixer": "9.8.4",
