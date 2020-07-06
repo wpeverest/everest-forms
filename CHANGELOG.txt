@@ -1,13 +1,14 @@
 == Changelog ==
 
 = 1.7.0 - xx-xx-2020 =
-* Enhancement - Add support for offline forms addon.
+* Enhancement - Add support for form restriction, offline forms addon.
 * Added - Introduce `get_multiple` method in `EVF_Form_Handler` to fetch multiple forms.
 * Fix - Modify logic for fetching unread and starred entries.
 * Fix - Date/Time field to use local date instead of default UTC.
 * Fix - Export of field data with HTML encoded special characters.
 * Fix - The field placeholder & default value 0 (zero) does not display on the frontend.
 * Tweak - Updated jQuery Validation JS library to v1.19.2.
+* Tweak - Show total unread entries count in the main menu.
 * Tweak - Preserve entry status so they are restored correctly after moving to trash.
 * Tweak - Add trigger `everest_forms_loaded` to notify plugins that the core was loaded.
 * Tweak - Modify duplicated action hook `everest_forms_general_settings` to `everest_forms_inline_general_settings` for builder general settings.
