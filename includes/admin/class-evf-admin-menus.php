@@ -131,30 +131,7 @@ class EVF_Admin_Menus {
 	 * Add menu item.
 	 */
 	public function entries_menu() {
-		$menu_title                 = esc_html__( 'Entries', 'everest-forms' );
-		$unread_entries_count       = 0;
-		$unread_entries_count_label = '';
-		$forms                      = evf_get_all_forms();
-
-		// Count unread entries from all forms.
-		foreach ( $forms as $form_id => $form_title ) {
-			$entries = evf_search_entries(
-				array(
-					'form_id' => $form_id,
-					'status'  => 'unread',
-					'limit'   => -1,
-				)
-			);
-
-			if ( is_array( $entries ) ) {
-				$unread_entries_count += count( $entries );
-			}
-		}
-
-		if ( $unread_entries_count > 0 ) {
-			$unread_entries_count_label = sprintf( ' <span class="update-plugins"><span class="plugin-count">%s</span></span>', $unread_entries_count );
-		}
-		$entries_page = add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Entries', 'everest-forms' ), $menu_title . $unread_entries_count_label, 'manage_everest_forms', 'evf-entries', array( $this, 'entries_page' ) );
+		$entries_page = add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Entries', 'everest-forms' ), esc_html__( 'Entries', 'everest-forms' ), 'manage_everest_forms', 'evf-entries', array( $this, 'entries_page' ) );
 		add_action( 'load-' . $entries_page, array( $this, 'entries_page_init' ) );
 	}
 
@@ -261,7 +238,7 @@ class EVF_Admin_Menus {
 
 			// Add count if user has access.
 			if ( apply_filters( 'everest_forms_include_count_in_menu', true ) && current_user_can( 'manage_everest_forms' ) ) {
-				do_action( 'everest_forms_custom_menu_count', $submenu );
+				do_action( 'everest_forms_custom_menu_count' );
 			}
 		}
 	}

@@ -9,7 +9,6 @@
 * Fix - Export of field data with HTML encoded special characters.
 * Fix - The field placeholder & default value 0 (zero) does not display on the frontend.
 * Tweak - Updated jQuery Validation JS library to v1.19.2.
-* Tweak - Show total unread entries count in the main menu.
 * Tweak - Preserve entry status so they are restored correctly after moving to trash.
 * Tweak - Add trigger `everest_forms_loaded` to notify plugins that the core was loaded.
 * Tweak - Modify duplicated action hook `everest_forms_general_settings` to `everest_forms_inline_general_settings` for builder general settings.
