@@ -4677,15 +4677,8 @@ table.wp-list-table {
 				padding: 0;
 
 				.everest-forms-edit-entry-field {
-					.field-name {
-						font-weight: 600;
-						padding: 8px 12px;
-						background-color: #f5f5f5;
-					}
-					.evf-field {
-						padding: 12px;
-						position: relative;
 
+					.evf-field {
 						input[type='text'],
 						input[type='date'],
 						input[type='date'],
@@ -4723,16 +4716,12 @@ table.wp-list-table {
 						margin: 5px 0 0 0;
 					}
 
-					&.everest-forms-entry-field-required {
-						.field-name::after {
-							content: '*';
-							color: #fa5252;
-							margin-left: 4px;
-							font-size: 14px;
-							font-weight: 400;
-							line-height: 12px;
-							vertical-align: middle;
-						}
+					abbr.required {
+						color: #fa5252;
+						font-weight: 700;
+						border: 0 !important;
+						text-decoration: none;
+						vertical-align: middle;
 					}
 				}
 

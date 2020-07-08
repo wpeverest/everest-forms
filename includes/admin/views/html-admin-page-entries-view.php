@@ -44,7 +44,7 @@ $trash_link = wp_nonce_url(
 							</span>
 							<?php do_action( 'everest_forms_after_entry_details_hndle', $entry ); ?>
 							<a href="#" class="everest-forms-empty-field-toggle">
-								<?php echo $hide_empty ? esc_html__( 'Show Empty Fields', 'everest-forms' ) : esc_html__( 'Hide Empty Fields', 'everest-forms' ); ?>
+								<?php $hide_empty ? esc_html_e( 'Show Empty Fields', 'everest-forms' ) : esc_html_e( 'Hide Empty Fields', 'everest-forms' ); ?>
 							</a>
 						</h2>
 						<div class="inside">
