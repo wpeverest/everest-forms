@@ -4759,6 +4759,18 @@ table.wp-list-table {
 					box-shadow: none;
 					text-decoration: none;
 				}
+
+				#major-publishing-actions {
+					outline: inherit;
+
+					.spinner {
+						margin: 4px 4px 0;
+					}
+
+					a.button-secondary {
+						margin-left: 4px;
+					}
+				}
 			}
 		}
 
