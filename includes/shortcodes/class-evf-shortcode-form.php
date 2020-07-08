@@ -761,15 +761,15 @@ class EVF_Shortcode_Form {
 		// Before output hook.
 		do_action( 'everest_forms_frontend_output_before', $form_data, $form );
 
-		// Allow filter to return early if some condition is not meet.
-		if ( ! apply_filters( 'everest_forms_frontend_load', true, $form_data ) ) {
-			do_action( 'everest_forms_frontend_not_loaded', $form_data, $form );
-			return;
-		}
-
 		$success = apply_filters( 'everest_forms_success', false, $form_id );
 		if ( $success && ! empty( $form_data ) ) {
 			do_action( 'everest_forms_frontend_output_success', $form_data );
+			return;
+		}
+
+		// Allow filter to return early if some condition is not meet.
+		if ( ! apply_filters( 'everest_forms_frontend_load', true, $form_data ) ) {
+			do_action( 'everest_forms_frontend_not_loaded', $form_data, $form );
 			return;
 		}
 

@@ -1,8 +1,9 @@
 == Changelog ==
 
 = 1.7.0 - xx-xx-2020 =
-* Enhancement - Add support for offline forms addon.
+* Enhancement - Add support for form restriction, offline forms addon.
 * Added - Introduce `get_multiple` method in `EVF_Form_Handler` to fetch multiple forms.
+* Fix - Number Field validation issue with conditional logic.
 * Fix - Modify logic for fetching unread and starred entries.
 * Fix - Date/Time field to use local date instead of default UTC.
 * Fix - Export of field data with HTML encoded special characters.
