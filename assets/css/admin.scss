@@ -4703,13 +4703,10 @@ table.wp-list-table {
 						input[type='url'],
 						input[type='week'],
 						select,
-						textarea,
 						.StripeElement,
 						canvas.evf-signature-canvas {
-							width: 100%;
-							height: auto;
-							font-size: 14px;
-							outline: none;
+							padding: 0 8px;
+							margin-bottom: 0;
 						}
 
 						textarea {

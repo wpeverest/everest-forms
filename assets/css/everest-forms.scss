@@ -152,7 +152,8 @@
 		}
 	}
 
-	input {
+	input,
+	textarea {
 		&:focus {
 			outline: none;
 			border: 1px solid $blue;
