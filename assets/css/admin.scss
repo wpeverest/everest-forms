@@ -4719,6 +4719,18 @@ table.wp-list-table {
 							height: 120px;
 						}
 					}
+
+					&.everest-forms-entry-field-required {
+						.field-name::after {
+							content: '*';
+							color: #fa5252;
+							margin-left: 4px;
+							font-size: 14px;
+							font-weight: 400;
+							line-height: 12px;
+							vertical-align: middle;
+						}
+					}
 				}
 
 				.everest-forms-entry-details-meta,
