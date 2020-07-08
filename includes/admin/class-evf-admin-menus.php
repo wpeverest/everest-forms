@@ -132,7 +132,6 @@ class EVF_Admin_Menus {
 	 */
 	public function entries_menu() {
 		$entries_page = add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Entries', 'everest-forms' ), esc_html__( 'Entries', 'everest-forms' ), 'manage_everest_forms', 'evf-entries', array( $this, 'entries_page' ) );
-
 		add_action( 'load-' . $entries_page, array( $this, 'entries_page_init' ) );
 	}
 
@@ -239,7 +238,7 @@ class EVF_Admin_Menus {
 
 			// Add count if user has access.
 			if ( apply_filters( 'everest_forms_include_count_in_menu', true ) && current_user_can( 'manage_everest_forms' ) ) {
-				do_action( 'everest_forms_custom_menu_count', $submenu );
+				do_action( 'everest_forms_custom_menu_count' );
 			}
 		}
 	}
