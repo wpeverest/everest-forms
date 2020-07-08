@@ -43,6 +43,26 @@
 	}
 }
 
+/**
+ * Grid Styles
+ **/
+
+.evf-form-row {
+	display: flex;
+	flex-wrap: wrap;
+	margin-left: -15px;
+	margin-right: -15px;
+}
+
+// Gutter for all col
+.evf-form-col-4,
+.evf-form-col-6 {
+	position: relative;
+	width: 100%;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
 .evf_addons_wrap {
 	p.refresh {
 		margin: 0 0 2em;
@@ -233,6 +253,47 @@
 
 		&::before {
 			color: $red;
+		}
+	}
+}
+
+.evf-handler-counter {
+	display: flex;
+
+	.evf-handler-counter__button {
+		background: $color_gray-light-skin;
+		width: 30px;
+		height: 30px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border: 1px solid $color_gray-lighten;
+
+		&.evf-handler-counter__button-minus {
+			border-radius: 3px 0 0 3px;
+		}
+
+		&.evf-handler-counter__button-plus {
+			border-radius: 0 3px 3px 0;
+		}
+
+		&.dashicons {
+			font-size: 20px;
+		}
+	}
+
+	.evf-handler-counter__input {
+		width: 80px;
+		border-radius: 0;
+
+		&::-webkit-outer-spin-button,
+		&::-webkit-inner-spin-button {
+			-webkit-appearance: none;
+			margin: 0;
+		}
+
+		&[type='number'] {
+			-moz-appearance: textfield;
 		}
 	}
 }
@@ -592,104 +653,168 @@ button.everest-forms-btn {
 	}
 
 	// Toggle switch.
+	.everest-forms-toggle-form {
+		width: 28px;
+		height: 16px;
+		float: left;
+		margin-top: 3px;
+		margin-right: 4px;
+		position: relative;
+
+		input[type='checkbox'] {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			width: 100%;
+			opacity: 0;
+			z-index: 1;
+
+			&:checked {
+				+ .slider {
+					background-color: $green;
+
+					&::before {
+						transform: translateX(100%);
+					}
+				}
+			}
+		}
+
+		.slider {
+			cursor: pointer;
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			transition: 0.4s;
+			background-color: #cdd0d2;
+
+			&::before {
+				content: '';
+				width: 12px;
+				height: 12px;
+				position: absolute;
+				left: 2px;
+				bottom: 2px;
+				transition: 0.4s;
+				background-color: $color-white;
+			}
+
+			&.round {
+				border-radius: 16px;
+
+				&::before {
+					border-radius: 50%;
+				}
+			}
+		}
+	}
+
 	.evf-toggle-section {
 		display: inline-block;
 
-		label {
-			&.evf-toggle-switch {
-				line-height: 1;
-				margin-bottom: 0;
-				position: relative;
+		.evf-toggle-switch {
+			display: inline-flex;
+			position: relative;
+			line-height: 1;
+			margin-bottom: 0;
+			position: relative;
 
-				input {
-					top: 0;
-					left: 0;
-					margin: 0;
-					z-index: 1;
-					opacity: 0;
-					padding: 0;
-					width: 100%;
-					height: 100%;
-					border: none;
-					position: absolute;
+			input {
+				top: 0;
+				left: 0;
+				margin: 0;
+				z-index: 1;
+				opacity: 0;
+				padding: 0;
+				width: 100%;
+				height: 100%;
+				border: none;
+				position: absolute;
 
-					&:checked {
-						+ .evf-toggle-switch-wrap {
-							background-color: #11a0d2;
-							border: 2px solid #11a0d2;
-							border: 9px solid transparent;
-
-							&::before {
-								content: '';
-								height: 6px;
-								width: 2px;
-								background: #fff;
-								position: absolute;
-								left: 0;
-								top: 0;
-								transform: translateY(-50%);
-							}
-
-							&::after {
-								border: 2px solid transparent;
-							}
-						}
-
-						~ .evf-toggle-switch-control {
-							background-color: #fff;
-							border-width: 0;
-							transform: translateX(18px) translateY(-50%);
-						}
+				&:checked {
+					+ .evf-toggle-switch-wrap {
+						background-color: #11a0d2;
+						border: 2px solid #11a0d2;
+						border: 9px solid transparent;
 
 						&::before {
-							display: none;
+							content: '';
+							height: 6px;
+							width: 2px;
+							background: #fff;
+							position: absolute;
+							left: 0;
+							top: 0;
+							transform: translateY(-50%);
+						}
+
+						&::after {
+							border: 2px solid transparent;
 						}
 					}
 
-					&:focus {
-						+ .evf-toggle-switch-wrap {
-							box-shadow: 0 0 0 2px #fff, 0 0 0 3px #6c7781;
-						}
+					~ .evf-toggle-switch-control {
+						background-color: #fff;
+						border-width: 0;
+						transform: translateX(18px) translateY(-50%);
+					}
+
+					&::before {
+						display: none;
 					}
 				}
 
-				.evf-toggle-switch-wrap {
-					width: 36px;
-					height: 18px;
-					display: inline-flex;
-					background-color: #fff;
-					border: 2px solid #6c7781;
-					border-radius: 9px;
-					transition: 0.2s background ease;
-					position: relative;
-					align-items: center;
-					justify-content: flex-end;
-
-					&::after {
-						content: '';
-						width: 4px;
-						height: 4px;
-						margin-right: 2px;
-						border-radius: 50%;
-						display: inline-block;
-						border: 2px solid $color_gray-normal;
+				&:focus {
+					+ .evf-toggle-switch-wrap {
+						box-shadow: 0 0 0 2px #fff, 0 0 0 3px #6c7781;
 					}
-				}
-
-				.evf-toggle-switch-control {
-					display: block;
-					position: absolute;
-					top: 50%;
-					left: 4px;
-					width: 10px;
-					height: 10px;
-					border-radius: 50%;
-					transition: 0.1s transform ease;
-					background-color: #6c7781;
-					border: 5px solid #6c7781;
-					transform: translateY(-50%);
 				}
 			}
+
+			.evf-toggle-switch-wrap {
+				width: 36px;
+				height: 18px;
+				display: inline-flex;
+				background-color: #fff;
+				border: 2px solid #6c7781;
+				border-radius: 9px;
+				transition: 0.2s background ease;
+				position: relative;
+				align-items: center;
+				justify-content: flex-end;
+
+				&::after {
+					content: '';
+					width: 4px;
+					height: 4px;
+					margin-right: 2px;
+					border-radius: 50%;
+					display: inline-block;
+					border: 2px solid $color_gray-normal;
+				}
+			}
+
+			.evf-toggle-switch-control {
+				display: block;
+				position: absolute;
+				top: 50%;
+				left: 4px;
+				width: 10px;
+				height: 10px;
+				border-radius: 50%;
+				transition: 0.1s transform ease;
+				background-color: #6c7781;
+				border: 5px solid #6c7781;
+				transform: translateY(-50%);
+			}
+		}
+
+		label.evf-toggle-label {
+			display: inline-block;
+			margin-bottom: 0;
+			margin-left: 4px;
 		}
 	}
 
@@ -1641,9 +1766,27 @@ button.everest-forms-btn {
 			display: flex;
 			align-items: center;
 			justify-content: center;
+			border-radius: 4px;
+			border: 1px solid $color_gray-lighten;
 
 			&:hover {
 				color: $color-white;
+			}
+		}
+
+		.add {
+			&:hover {
+				background: $blue;
+				border-color: $blue;
+			}
+		}
+
+		.remove {
+			margin-left: 8px;
+
+			&:hover {
+				background: $red;
+				border-color: $red;
 			}
 		}
 
@@ -1675,6 +1818,7 @@ button.everest-forms-btn {
 			flex-wrap: wrap;
 
 			input[type='text'],
+			input[type='number'],
 			select {
 				flex: 0 0 50%;
 				margin-right: 2%;
@@ -3027,7 +3171,11 @@ button.everest-forms-btn {
 				}
 
 				&.evf-toggle-switch {
-					display: flex;
+					margin-bottom: 0;
+				}
+
+				&.evf-toggle-label {
+					display: inline-block;
 					margin-bottom: 0;
 				}
 
@@ -3144,6 +3292,25 @@ button.everest-forms-btn {
 					line-height: 1.2;
 				}
 
+				.evf-hidden-content {
+					margin-top: 10px;
+				}
+
+				.max-entry-section {
+					.max-entry-section-content {
+						display: flex;
+
+						.everest-forms-panel-field {
+							margin-bottom: 0;
+						}
+
+						.entry-period {
+							flex: 1;
+							margin-left: 10px;
+						}
+					}
+				}
+
 				&.everest-forms-panel-field-tinymce {
 					.evf-toggle-smart-tag-display {
 						top: 34px;
@@ -3256,10 +3423,6 @@ button.everest-forms-btn {
 
 						.actions {
 							margin-top: 8px;
-
-							.remove-button {
-								margin-right: 8px;
-							}
 						}
 					}
 
@@ -3282,7 +3445,7 @@ button.everest-forms-btn {
 					width: 20px;
 					height: 20px;
 					margin-top: 5px;
-					border-radius: 10px;
+					border: none;
 
 					.dashicons {
 						width: 16px;
@@ -3294,12 +3457,16 @@ button.everest-forms-btn {
 				.add {
 					&:hover {
 						color: $blue;
+						background: none;
 					}
 				}
 
 				.remove {
+					margin-left: 0;
+
 					&:hover {
 						color: $red;
+						background: none;
 					}
 				}
 
@@ -3513,8 +3680,11 @@ button.everest-forms-btn {
 			.input-group-col-2 {
 				margin-bottom: 15px;
 
+				input[type='text'],
+				input[type='number'],
 				select {
 					margin-bottom: 0;
+					margin-left: 0;
 				}
 			}
 		}
@@ -4194,6 +4364,18 @@ button.everest-forms-btn {
 		}
 	}
 
+	.evf-connection-form {
+		input {
+			width: 100%;
+			margin-right: 15px;
+			margin-bottom: 15px;
+
+			@media screen and (min-width: 1200px) {
+				width: calc(33% - 20px);
+			}
+		}
+	}
+
 	.everest-forms-integration-content {
 		display: flex;
 		background-color: $color-white;
@@ -4263,15 +4445,6 @@ button.everest-forms-btn {
 
 				h3 {
 					margin-top: 0;
-				}
-
-				.evf-connection-form {
-					margin: 20px 0;
-
-					input {
-						width: 350px;
-						margin-right: 15px;
-					}
 				}
 
 				.everest-forms-btn {
@@ -4408,72 +4581,9 @@ button.everest-forms-btn {
 /**
  * List Table.
  */
-.tablenav {
-	#delete_all {
-		margin: 1px;
-	}
-
-	#export-csv-submit {
-		margin: 1px 8px 0 0;
-	}
-}
-
 table.wp-list-table {
 	span.na {
 		color: #999;
-	}
-
-	.everest-forms-toggle-form {
-		width: 28px;
-		height: 16px;
-		float: left;
-		margin-top: 3px;
-		margin-right: 16px;
-		position: relative;
-
-		input[type='checkbox'] {
-			display: none;
-
-			&:checked {
-				+ .slider {
-					background-color: $green;
-
-					&::before {
-						transform: translateX(100%);
-					}
-				}
-			}
-		}
-
-		.slider {
-			cursor: pointer;
-			position: absolute;
-			top: 0;
-			left: 0;
-			right: 0;
-			bottom: 0;
-			transition: 0.4s;
-			background-color: #cdd0d2;
-
-			&::before {
-				content: '';
-				width: 12px;
-				height: 12px;
-				position: absolute;
-				left: 2px;
-				bottom: 2px;
-				transition: 0.4s;
-				background-color: $color-white;
-			}
-
-			&.round {
-				border-radius: 16px;
-
-				&::before {
-					border-radius: 50%;
-				}
-			}
-		}
 	}
 
 	.row-actions {
@@ -4956,6 +5066,32 @@ img.ui-datepicker-trigger {
 /**
  * Select2 elements.
  */
+.select2-container {
+	width: 100%;
+
+	.select2-selection--multiple {
+		.select2-selection__rendered {
+			display: block;
+		}
+
+		input {
+			&.select2-search__field {
+				min-width: 10px;
+				margin-top: 0 !important;
+				margin-bottom: 4px !important;
+			}
+		}
+	}
+
+	&.select2-container--focus {
+		.select2-selection--multiple {
+			border-color: #5b9dd9;
+			box-shadow: 0 0 2px rgba(30, 140, 190, 0.8);
+			outline: 2px solid transparent;
+		}
+	}
+}
+
 .select2-drop,
 .select2-dropdown {
 	z-index: 999999 !important;
@@ -5185,18 +5321,6 @@ img.ui-datepicker-trigger {
 
 			.select2-container {
 				min-width: 350px !important;
-
-				ul {
-					&.select2-selection__rendered {
-						display: block;
-					}
-				}
-
-				input {
-					&.select2-search__field {
-						min-width: 50px;
-					}
-				}
 			}
 		}
 	}
@@ -5255,21 +5379,6 @@ img.ui-datepicker-trigger {
 		.everest-forms-integration-content {
 			.integration-addon-detail {
 				width: 280px;
-			}
-
-			.integration-connection-detail {
-				.evf-account-connect {
-					.evf-connection-form {
-						input {
-							width: 100%;
-							margin-bottom: 15px;
-
-							&:last-child {
-								margin-bottom: 0;
-							}
-						}
-					}
-				}
 			}
 		}
 	}
@@ -5392,6 +5501,21 @@ img.ui-datepicker-trigger {
 				}
 			}
 		}
+	}
+}
+
+/**
+ * Optimisation for screens 768px.
+ */
+@media screen and (min-width: 768px) {
+	.evf-form-col-6 {
+		flex: 0 0 50%;
+		max-width: 50%;
+	}
+
+	.evf-form-col-4 {
+		flex: 0 0 33.333%;
+		max-width: 33.333%;
 	}
 }
 

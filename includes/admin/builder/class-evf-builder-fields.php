@@ -163,6 +163,12 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		$form_id   = absint( $form_data['id'] );
 		$fields    = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
 		$structure = isset( $form_data['structure'] ) ? $form_data['structure'] : array( 'row_1' => array() );
+		$row_ids   = array_map(
+			function( $row_id ) {
+				return str_replace( 'row_', '', $row_id );
+			},
+			array_keys( $structure )
+		);
 
 		/**
 		 * BW compatiable for multi-parts form.
@@ -293,7 +299,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 
 		echo '</div>';
 		echo '<div class="clear evf-clear"></div>';
-		echo '<div class="evf-add-row" data-total-rows="' . count( $structure ) . '"><span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-plus-alt">' . esc_html__( 'Add Row', 'everest-forms' ) . '</span></div>';
+		echo '<div class="evf-add-row" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) max( $row_ids ) . '"><span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-plus-alt">' . esc_html__( 'Add Row', 'everest-forms' ) . '</span></div>';
 		echo '</div >';
 	}
 

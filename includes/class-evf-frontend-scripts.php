@@ -174,7 +174,7 @@ class EVF_Frontend_Scripts {
 			'jquery-validate'               => array(
 				'src'     => self::get_asset_url( 'assets/js/jquery-validate/jquery.validate' . $suffix . '.js' ),
 				'deps'    => array( 'jquery' ),
-				'version' => '1.17.0',
+				'version' => '1.19.2',
 			),
 			'everest-forms'                 => array(
 				'src'     => self::get_asset_url( 'assets/js/frontend/everest-forms' . $suffix . '.js' ),

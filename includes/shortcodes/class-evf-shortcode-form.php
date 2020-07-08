@@ -641,8 +641,8 @@ class EVF_Shortcode_Form {
 					'primary' => array(
 						'attr'     => array(
 							'name'        => "everest_forms[form_fields][{$field_id}]",
-							'value'       => ! empty( $field['default_value'] ) ? apply_filters( 'everest_forms_process_smart_tags', $field['default_value'], $form_data ) : $defaults,
-							'placeholder' => ! empty( $field['placeholder'] ) ? evf_string_translation( $form_data['id'], $field['id'], $field['placeholder'], '-placeholder' ) : '',
+							'value'       => isset( $field['default_value'] ) ? apply_filters( 'everest_forms_process_smart_tags', $field['default_value'], $form_data ) : $defaults,
+							'placeholder' => isset( $field['placeholder'] ) ? evf_string_translation( $form_data['id'], $field['id'], $field['placeholder'], '-placeholder' ) : '',
 						),
 						'class'    => $attributes['input_class'],
 						'data'     => $attributes['input_data'],
@@ -761,15 +761,15 @@ class EVF_Shortcode_Form {
 		// Before output hook.
 		do_action( 'everest_forms_frontend_output_before', $form_data, $form );
 
-		// Allow filter to return early if some condition is not meet.
-		if ( ! apply_filters( 'everest_forms_frontend_load', true, $form_data ) ) {
-			do_action( 'everest_forms_frontend_not_loaded', $form_data, $form );
-			return;
-		}
-
 		$success = apply_filters( 'everest_forms_success', false, $form_id );
 		if ( $success && ! empty( $form_data ) ) {
 			do_action( 'everest_forms_frontend_output_success', $form_data );
+			return;
+		}
+
+		// Allow filter to return early if some condition is not meet.
+		if ( ! apply_filters( 'everest_forms_frontend_load', true, $form_data ) ) {
+			do_action( 'everest_forms_frontend_not_loaded', $form_data, $form );
 			return;
 		}
 
