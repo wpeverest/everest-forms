@@ -481,9 +481,9 @@
 	}
 
 	a.button,
-	button.button,
 	input[type='submit'],
 	button[type='submit'],
+	button.button:not(.button-large),
 	.everest-forms-part-button {
 		color: #555;
 		height: auto;
