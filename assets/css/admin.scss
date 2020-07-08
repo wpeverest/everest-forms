@@ -4720,6 +4720,12 @@ table.wp-list-table {
 						}
 					}
 
+					label.evf-error {
+						cursor: default;
+						color: #900;
+						margin: 5px 0 0 0;
+					}
+
 					&.everest-forms-entry-field-required {
 						.field-name::after {
 							content: '*';
