@@ -4677,7 +4677,6 @@ table.wp-list-table {
 				padding: 0;
 
 				.everest-forms-edit-entry-field {
-
 					.evf-field {
 						input[type='text'],
 						input[type='date'],
@@ -4752,12 +4751,8 @@ table.wp-list-table {
 				#major-publishing-actions {
 					outline: inherit;
 
-					.spinner {
-						margin: 4px 4px 0;
-					}
-
 					a.button-secondary {
-						margin-left: 4px;
+						margin-left: 5px;
 					}
 				}
 			}
