@@ -225,7 +225,7 @@
 			}
 		},
 
-		/**
+		/*
 		 * Initialize date pickers like min/max date, disable dates etc.
 		 *
 		 * @since 1.6.6

@@ -297,7 +297,9 @@ jQuery( function ( $ ) {
 					errorClass: 'evf-error',
 					validClass: 'evf-valid',
 					errorPlacement: function( error, element ) {
-						if ( element.closest( '.evf-field' ).is( '.evf-field-range-slider' ) ) {
+						if ( element.closest( '.evf-field' ).is( '.evf-field-privacy-policy' ) ) {
+							element.closest( '.evf-field' ).append( error );
+						} else if ( element.closest( '.evf-field' ).is( '.evf-field-range-slider' ) ) {
 							if ( element.closest( '.evf-field' ).find( '.evf-field-description' ).length ) {
 								element.closest( '.evf-field' ).find( '.evf-field-description' ).before( error );
 							} else {

@@ -521,7 +521,7 @@ class EVF_Emails {
 				}
 
 				$field_item  = str_replace( '{field_name}', $field_name, $field_item );
-				$field_value = apply_filters( 'everest_forms_html_field_value', evf_decode_string( $field_val ), $field['value'], $this->form_data, 'email-html' );
+				$field_value = apply_filters( 'everest_forms_html_field_value', evf_decode_string( $field_val ), $field['value'], $this->form_data, 'email-html', $field );
 				$field_item  = str_replace( '{field_value}', $field_value, $field_item );
 
 				$message .= wpautop( $field_item );
