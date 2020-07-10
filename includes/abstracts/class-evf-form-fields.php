@@ -1384,11 +1384,7 @@ abstract class EVF_Form_Fields {
 	 * @param array $form_data   Form data and settings.
 	 */
 	public function edit_form_field_display( $entry_field, $field, $form_data ) {
-		if ( is_array( $entry_field['value'] ) ) {
-			$value = isset( $entry_field['value']['label'] ) ? $entry_field['value']['label'] : '';
-		} else {
-			$value = isset( $entry_field['value'] ) ? $entry_field['value'] : '';
-		}
+		$value = isset( $entry_field['value'] ) ? $entry_field['value'] : '';
 
 		if ( '' !== $value ) {
 			$field['properties'] = $this->get_single_field_property_value( $value, 'primary', $field['properties'], $field );
@@ -1444,7 +1440,7 @@ abstract class EVF_Form_Fields {
 	protected function get_single_field_property_value_choices( $get_value, $properties, $field ) {
 		$default_key = null;
 
-		// For fields that have normal choices we need to add extra logic.
+		// For fields with normal choices, we need dafault key.
 		foreach ( $field['choices'] as $choice_key => $choice_arr ) {
 			$choice_value_key = isset( $field['show_values'] ) ? 'value' : 'label';
 			if (
@@ -1452,12 +1448,11 @@ abstract class EVF_Form_Fields {
 				strtoupper( sanitize_text_field( $choice_arr[ $choice_value_key ] ) ) === strtoupper( $get_value )
 			) {
 				$default_key = $choice_key;
-				// Stop iterating over choices.
 				break;
 			}
 		}
 
-		// Redefine default choice only if population value has changed anything.
+		// Redefine selected choice.
 		if ( null !== $default_key ) {
 			foreach ( $field['choices'] as $choice_key => $choice_arr ) {
 				if ( $choice_key === $default_key ) {
