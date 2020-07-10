@@ -137,6 +137,30 @@ abstract class EVF_Form_Fields {
 	}
 
 	/**
+	 * Removes all choice-related fields defaults from prefill value.
+	 *
+	 * @since 1.7.0
+	 *
+	 * @param array $field      Field data and settings.
+	 * @param array $properties Properties we are modifying.
+	 */
+	public function field_prefill_remove_choices_defaults( $field, &$properties ) {
+		if ( ! empty( $field['choices'] ) ) {
+			array_walk_recursive(
+				$properties['inputs'],
+				function ( &$value, $key ) {
+					if ( 'default' === $key ) {
+						$value = false;
+					}
+					if ( 'everest-forms-selected' === $value ) {
+						$value = '';
+					}
+				}
+			);
+		}
+	}
+
+	/**
 	 * Get the form fields after they are initialized.
 	 *
 	 * @return array of options
@@ -1358,29 +1382,32 @@ abstract class EVF_Form_Fields {
 	 * @param array $form_data   Form data and settings.
 	 */
 	public function edit_form_field_display( $entry_field, $field, $form_data ) {
-		$value = isset( $entry_field['value'] ) ? $entry_field['value'] : '';
+		if ( is_array( $entry_field['value'] ) ) {
+			$value = isset( $entry_field['value']['label'] ) ? $entry_field['value']['label'] : '';
+		} else {
+			$value = isset( $entry_field['value'] ) ? $entry_field['value'] : '';
+		}
 
 		if ( '' !== $value ) {
-			$field['properties'] = $this->get_field_populated_single_property_value( (string) $value, 'primary', $field['properties'], $field );
+			$field['properties'] = $this->get_single_field_property_value( $value, 'primary', $field['properties'], $field );
 		}
 
 		$this->field_display( $field, null, $form_data );
 	}
 
 	/**
-	 * Get the value, that is used to prefill via dynamic or fallback population.
-	 * Based on field data and current properties.
+	 * Get the value to prefill, based on field data and current properties.
 	 *
 	 * @since 1.7.0
 	 *
-	 * @param string $raw_value  Value from a GET param, always a string.
-	 * @param string $input      Represent a subfield inside the field. May be empty.
+	 * @param string $raw_value  Raw Value, always a string.
+	 * @param string $input      Subfield inside the field.
 	 * @param array  $properties Field properties.
 	 * @param array  $field      Current field specific data.
 	 *
 	 * @return array Modified field properties.
 	 */
-	public function get_field_populated_single_property_value( $raw_value, $input, $properties, $field ) {
+	public function get_single_field_property_value( $raw_value, $input, $properties, $field ) {
 		if ( ! is_string( $raw_value ) ) {
 			return $properties;
 		}
@@ -1388,12 +1415,9 @@ abstract class EVF_Form_Fields {
 		$get_value = stripslashes( sanitize_text_field( $raw_value ) );
 
 		if ( ! empty( $field['choices'] ) && is_array( $field['choices'] ) ) {
-			$properties = $this->get_field_populated_single_property_value_choices( $get_value, $properties, $field );
+			$properties = $this->get_single_field_property_value_choices( $get_value, $properties, $field );
 		} else {
-			/*
-			* For other types of fields we need to check that
-			* the key is registered for the defined field in inputs array.
-			*/
+			// For other field types, check if key is registered for the defined field in inputs array.
 			if (
 				! empty( $input ) &&
 				isset( $properties['inputs'][ $input ] )
@@ -1406,11 +1430,9 @@ abstract class EVF_Form_Fields {
 	}
 
 	/**
-	 * Get the value, that is used to prefill via dynamic or fallback population.
-	 * Based on field data and current properties.
-	 * Normal choices section.
+	 * Get the value to prefill for choices section, based on field data and current properties.
 	 *
-	 * @since 1.6.0
+	 * @since 1.7.0
 	 *
 	 * @param string $get_value  Value from a GET param, always a string, sanitized.
 	 * @param array  $properties Field properties.
@@ -1418,7 +1440,7 @@ abstract class EVF_Form_Fields {
 	 *
 	 * @return array Modified field properties.
 	 */
-	protected function get_field_populated_single_property_value_choices( $get_value, $properties, $field ) {
+	protected function get_single_field_property_value_choices( $get_value, $properties, $field ) {
 		$default_key = null;
 
 		// For fields that have normal choices we need to add extra logic.
@@ -1439,7 +1461,7 @@ abstract class EVF_Form_Fields {
 			foreach ( $field['choices'] as $choice_key => $choice_arr ) {
 				if ( $choice_key === $default_key ) {
 					$properties['inputs'][ $choice_key ]['default']              = true;
-					$properties['inputs'][ $choice_key ]['container']['class'][] = 'wpforms-selected';
+					$properties['inputs'][ $choice_key ]['container']['class'][] = 'everest-forms-selected';
 					break;
 				}
 			}
