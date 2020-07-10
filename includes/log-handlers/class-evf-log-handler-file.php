@@ -9,7 +9,7 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * EVF_Log_Handler_File class.
+ * Handles log entries by writing to a file.
  */
 class EVF_Log_Handler_File extends EVF_Log_Handler {
 
@@ -360,7 +360,7 @@ class EVF_Log_Handler_File extends EVF_Log_Handler {
 			$hash_suffix = wp_hash( $handle );
 			return sanitize_file_name( implode( '-', array( $handle, $date_suffix, $hash_suffix ) ) . '.log' );
 		} else {
-			evf_doing_it_wrong( __METHOD__, __( 'This method should not be called before plugins_loaded.', 'everest-forms' ), '1.2' );
+			evf_doing_it_wrong( __METHOD__, esc_html__( 'This method should not be called before plugins_loaded.', 'everest-forms' ), '1.2' );
 			return false;
 		}
 	}

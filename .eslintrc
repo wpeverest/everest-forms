@@ -13,5 +13,6 @@
 		"indent": 0,
 		"max-len": [ 2, { "code": 350 } ],
 		"no-console": 1
-	}
+	},
+	"parser": "babel-eslint"
 }

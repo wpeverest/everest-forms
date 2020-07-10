@@ -636,3 +636,33 @@ function evf_flatten_array( $value = array() ) {
 	array_walk_recursive( $value, function( $a ) use ( &$return ) { $return[] = $a; } ); // @codingStandardsIgnoreLine.
 	return $return;
 }
+
+/**
+ * An `array_splice` which does preverse the keys of the replacement array
+ *
+ * The argument list is identical to `array_splice`
+ *
+ * @since 1.6.5
+ *
+ * @link https://github.com/lode/gaps/blob/master/src/gaps.php
+ *
+ * @param  array $input       The input array.
+ * @param  int   $offset      The offeset to start.
+ * @param  int   $length      Optional length.
+ * @param  array $replacement The replacement array.
+ *
+ * @return array the array consisting of the extracted elements.
+ */
+function evf_array_splice_preserve_keys( &$input, $offset, $length = null, $replacement = array() ) {
+	if ( empty( $replacement ) ) {
+		return array_splice( $input, $offset, $length );
+	}
+
+	$part_before  = array_slice( $input, 0, $offset, true );
+	$part_removed = array_slice( $input, $offset, $length, true );
+	$part_after   = array_slice( $input, $offset + $length, null, true );
+
+	$input = $part_before + $replacement + $part_after;
+
+	return $part_removed;
+}

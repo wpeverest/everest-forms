@@ -116,7 +116,6 @@ class EVF_Form_Task {
 
 				// Prepare fields for entry_save.
 				foreach ( $this->form_data['form_fields'] as $field ) {
-
 					if ( '' === isset( $this->form_data['form_fields']['meta-key'] ) ) {
 						continue;
 					}
@@ -129,7 +128,7 @@ class EVF_Form_Task {
 						$field_submit = isset( $field_submit['signature_image'] ) ? $field_submit['signature_image'] : '';
 					}
 
-					$exclude = array( 'title', 'html', 'captcha' );
+					$exclude = array( 'title', 'html', 'captcha', 'image-upload', 'file-upload' );
 
 					if ( ! in_array( $field_type, $exclude, true ) ) {
 						$this->form_fields[ $field_id ] = array(
@@ -160,6 +159,7 @@ class EVF_Form_Task {
 					update_option( 'evf_validation_error', '' );
 				}
 			}
+
 			// If validation issues occur, send the results accordingly.
 			if ( $ajax_form_submission && count( $this->ajax_err ) ) {
 				$response_data['error']    = $this->ajax_err;
@@ -178,28 +178,34 @@ class EVF_Form_Task {
 			} elseif ( 'v2' === $recaptcha_type && 'yes' === $invisible_recaptcha ) {
 				$site_key   = get_option( 'everest_forms_recaptcha_v2_invisible_site_key' );
 				$secret_key = get_option( 'everest_forms_recaptcha_v2_invisible_secret_key' );
-			} else {
+			} elseif ( 'v3' === $recaptcha_type ) {
 				$site_key   = get_option( 'everest_forms_recaptcha_v3_site_key' );
 				$secret_key = get_option( 'everest_forms_recaptcha_v3_secret_key' );
 			}
 
 			if ( ! empty( $site_key ) && ! empty( $secret_key ) && isset( $this->form_data['settings']['recaptcha_support'] ) && '1' === $this->form_data['settings']['recaptcha_support'] ) {
-				if ( ( 'v2' === $recaptcha_type && ! empty( $_POST['g-recaptcha-response'] ) ) || ( 'v3' === $recaptcha_type && ! empty( $_POST['g-recaptcha-hidden'] ) ) ) {
-					$response = 'v2' === $recaptcha_type ? evf_clean( wp_unslash( $_POST['g-recaptcha-response'] ) ) : evf_clean( wp_unslash( $_POST['g-recaptcha-hidden'] ) ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-					$raw_data = wp_safe_remote_get( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $response );
+				$error = esc_html__( 'Google reCAPTCHA verification failed, please try again later.', 'everest-forms' );
+				$token = ! empty( $_POST['g-recaptcha-response'] ) ? evf_clean( wp_unslash( $_POST['g-recaptcha-response'] ) ) : false;
 
-					if ( ! is_wp_error( $raw_data ) ) {
-						$data = json_decode( wp_remote_retrieve_body( $raw_data ) );
+				if ( 'v3' === $recaptcha_type ) {
+					$token = ! empty( $_POST['everest_forms']['recaptcha'] ) ? evf_clean( wp_unslash( $_POST['everest_forms']['recaptcha'] ) ) : false;
+				}
 
-						// Check reCAPTCHA response.
-						if ( empty( $data->success ) || ( isset( $data->hostname ) && evf_clean( wp_unslash( $_SERVER['SERVER_NAME'] ) ) !== $data->hostname ) || ( isset( $data->action, $data->score ) && ( 'everest_form' !== $data->action && 0.5 > floatval( $data->score ) ) ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-							$this->errors[ $form_id ]['header'] = esc_html__( 'Incorrect reCAPTCHA, please try again.', 'everest-forms' );
-							return $this->errors;
+				$raw_response = wp_safe_remote_get( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $token );
+
+				if ( ! is_wp_error( $raw_response ) ) {
+					$response = json_decode( wp_remote_retrieve_body( $raw_response ) );
+
+					// Check reCAPTCHA response.
+					if ( empty( $response->success ) || ( 'v3' === $recaptcha_type && $response->score <= apply_filters( 'everest_forms_recaptcha_v3_threshold', '0.5' ) ) ) {
+						if ( 'v3' === $recaptcha_type ) {
+							if ( isset( $response->score ) ) {
+								$error .= ' (' . esc_html( $response->score ) . ')';
+							}
 						}
+						$this->errors[ $form_id ]['header'] = $error;
+						return $this->errors;
 					}
-				} else {
-					// @todo This error message is not delivered in frontend. Need to fix :)
-					$this->errors[ $form_id ]['recaptcha'] = esc_html__( 'reCAPTCHA is required.', 'everest-forms' );
 				}
 			}
 
@@ -589,7 +595,12 @@ class EVF_Form_Task {
 			$emails->__set( 'from_name', $email['sender_name'] );
 			$emails->__set( 'from_address', $email['sender_address'] );
 			$emails->__set( 'reply_to', $email['reply_to'] );
-			$emails->__set( 'attachments', apply_filters( 'everest_forms_email_file_attachments', $attachments, $entry, $form_data, 'entry-email', $connection_id, $entry_id ) );
+
+			/**
+			 *  This filter relies on consistent data being passed for the resultant filters to function.
+			 *  The third param passed for the filter, $fields, is derived from validation routine, not the DB.
+			 */
+			$emails->__set( 'attachments', apply_filters( 'everest_forms_email_file_attachments', $attachment, $fields, $form_data, 'entry-email', $connection_id, $entry_id ) );
 
 			// Maybe include Cc and Bcc email addresses.
 			if ( 'yes' === get_option( 'everest_forms_enable_email_copies' ) ) {

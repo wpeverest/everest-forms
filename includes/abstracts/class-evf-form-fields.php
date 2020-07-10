@@ -100,12 +100,38 @@ abstract class EVF_Form_Fields {
 		add_action( 'everest_forms_display_field_' . $this->type, array( $this, 'field_display' ), 10, 3 );
 		add_action( 'everest_forms_process_validate_' . $this->type, array( $this, 'validate' ), 10, 3 );
 		add_action( 'everest_forms_process_format_' . $this->type, array( $this, 'format' ), 10, 4 );
+		add_filter( 'everest_forms_field_properties', array( $this, 'field_prefill_value_property' ), 10, 3 );
+		add_filter( 'everest_forms_field_exporter_' . $this->type, array( $this, 'field_exporter' ) );
 	}
 
 	/**
 	 * Hook in tabs.
 	 */
 	public function init_hooks() {}
+
+	/**
+	 * Prefill field value with either fallback or dynamic data.
+	 * Needs to be public (although internal) to be used in WordPress hooks.
+	 *
+	 * @since 1.6.5
+	 *
+	 * @param array $properties Field properties.
+	 * @param array $field      Current field specific data.
+	 * @param array $form_data  Prepared form data/settings.
+	 *
+	 * @return array Modified field properties.
+	 */
+	public function field_prefill_value_property( $properties, $field, $form_data ) {
+		// Process only for current field.
+		if ( $this->type !== $field['type'] ) {
+			return $properties;
+		}
+
+		// Set the form data, so we can reuse it later, even on front-end.
+		$this->form_data = $form_data;
+
+		return $properties;
+	}
 
 	/**
 	 * Get the form fields after they are initialized.
@@ -155,7 +181,8 @@ abstract class EVF_Form_Fields {
 	 * Field preview inside the builder.
 	 *
 	 * @since 1.0.0
-	 * @param array $field Field settings.
+	 *
+	 * @param array $field Field data and settings.
 	 */
 	public function field_preview( $field ) {}
 
@@ -217,7 +244,7 @@ abstract class EVF_Form_Fields {
 
 			// Row.
 			case 'row':
-				$output = sprintf( '<div class="everest-forms-field-option-row everest-forms-field-option-row-%s %s" id="everest-forms-field-option-row-%s-%s" data-field-id="%s">%s</div>', $slug, $class, $id, $slug, $id, $args['content'] );
+				$output = sprintf( '<div class="everest-forms-field-option-row everest-forms-field-option-row-%s %s" id="everest-forms-field-option-row-%s-%s" data-field-id="%s" %s>%s</div>', $slug, $class, $id, $slug, $id, $data, $args['content'] );
 				break;
 
 			// Icon.
@@ -817,7 +844,7 @@ abstract class EVF_Form_Fields {
 			 * Default value.
 			 */
 			case 'default_value':
-				$value   = ! empty( $field['default_value'] ) ? esc_attr( $field['default_value'] ) : '';
+				$value   = ! empty( $field['default_value'] ) || ( isset( $field['default_value'] ) && '0' === (string) $field['default_value'] ) ? esc_attr( $field['default_value'] ) : '';
 				$tooltip = esc_html__( 'Enter text for the default form field value.', 'everest-forms' );
 				$toggle  = '';
 				$output  = $this->field_element(
@@ -842,7 +869,9 @@ abstract class EVF_Form_Fields {
 				);
 
 				// Smart tag for default value.
-				if ( 'rating' !== $field['type'] ) {
+				$exclude_fields = array( 'rating', 'number', 'range-slider' );
+
+				if ( ! in_array( $field['type'], $exclude_fields, true ) ) {
 					$output .= '<a href="#" class="evf-toggle-smart-tag-display" data-type="other"><span class="dashicons dashicons-editor-code"></span></a>';
 					$output .= '<div class="evf-smart-tag-lists" style="display: none">';
 					$output .= '<div class="smart-tag-title other-tag-title">Others</div><ul class="evf-others"></ul></div>';
@@ -854,6 +883,7 @@ abstract class EVF_Form_Fields {
 					array(
 						'slug'    => 'default_value',
 						'content' => $output,
+						'class'   => in_array( $field['type'], $exclude_fields, true ) ? '' : 'evf_smart_tag',
 					),
 					false
 				);
@@ -879,7 +909,7 @@ abstract class EVF_Form_Fields {
 			 * Placeholder.
 			 */
 			case 'placeholder':
-				$value   = ! empty( $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : '';
+				$value   = ! empty( $field['placeholder'] ) || ( isset( $field['placeholder'] ) && '0' === (string) $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : '';
 				$tooltip = esc_html__( 'Enter text for the form field placeholder.', 'everest-forms' );
 				$output  = $this->field_element(
 					'label',
@@ -1114,7 +1144,7 @@ abstract class EVF_Form_Fields {
 
 		switch ( $option ) {
 			case 'label':
-				$label  = isset( $field['label'] ) && ! empty( $field['label'] ) ? esc_html( $field['label'] ) : '';
+				$label  = isset( $field['label'] ) && ! empty( $field['label'] ) ? $field['label'] : '';
 				$output = sprintf( '<label class="label-title %s"><span class="text">%s</span><span class="required">*</span></label>', $class, $label );
 				break;
 
@@ -1365,7 +1395,7 @@ abstract class EVF_Form_Fields {
 			esc_attr( $field['properties']['inputs'][ $key ]['id'] ),
 			sanitize_html_class( $pos ),
 			$hidden, // phpcs:ignore WordPress.Security.EscapeOutput
-			$field['properties']['inputs'][ $key ]['sublabel']['value'] // phpcs:ignore WordPress.Security.EscapeOutput
+			evf_string_translation( (int) $this->form_data['id'], $field['id'], $field['properties']['inputs'][ $key ]['sublabel']['value'], '-sublabel-' . $key ) // phpcs:ignore WordPress.Security.EscapeOutput
 		);
 	}
 
@@ -1435,7 +1465,7 @@ abstract class EVF_Form_Fields {
 			$field_submit = implode( "\r\n", $field_submit );
 		}
 
-		$name = ! empty( $form_data['form_fields'][ $field_id ]['label'] ) ? sanitize_text_field( $form_data['form_fields'][ $field_id ]['label'] ) : '';
+		$name = ! empty( $form_data['form_fields'][ $field_id ]['label'] ) ? make_clickable( $form_data['form_fields'][ $field_id ]['label'] ) : '';
 
 		// Sanitize but keep line breaks.
 		$value = evf_sanitize_textarea_field( $field_submit );
@@ -1459,5 +1489,76 @@ abstract class EVF_Form_Fields {
 		if ( in_array( $field['type'], array( 'text', 'textarea' ), true ) ) {
 			return isset( $field['limit_enabled'] ) && ! empty( $field['limit_count'] );
 		}
+	}
+
+	/**
+	 * Filter callback for outputting formatted data.
+	 *
+	 * @param array $field Field Data.
+	 */
+	public function field_exporter( $field ) {
+		$export = array();
+
+		switch ( $this->type ) {
+			case 'radio':
+			case 'payment-multiple':
+				$value  = '';
+				$image  = ! empty( $field['value']['image'] ) ? sprintf( '<img src="%s" style="width:75px;height:75px;max-height:75px;max-width:75px;"  /><br>', $field['value']['image'] ) : '';
+				$value  = ! empty( $field['value']['label'] ) ? $image . $field['value']['label'] : '';
+				$export = array(
+					'label' => ! empty( $field['value']['name'] ) ? $field['value']['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
+					'value' => ! empty( $value ) ? $value : false,
+				);
+				break;
+			case 'checkbox':
+			case 'payment-checkbox':
+				$value = array();
+
+				if ( count( $field['value'] ) ) {
+					foreach ( $field['value']['label'] as $key => $choice ) {
+						$image = ! empty( $field['value']['images'][ $key ] ) ? sprintf( '<img src="%s" style="width:75px;height:75px;max-height:75px;max-width:75px;"  /><br>', $field['value']['images'][ $key ] ) : '';
+
+						if ( ! empty( $choice ) ) {
+							$value[ $key ] = $image . $choice;
+						}
+					}
+				}
+				$export = array(
+					'label' => ! empty( $field['value']['name'] ) ? $field['value']['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
+					'value' => is_array( $value ) ? implode( '<br>', array_values( $value ) ) : false,
+				);
+				break;
+			default:
+				$export = array(
+					'label' => ! empty( $field['name'] ) ? $field['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
+					'value' => ! empty( $field['value'] ) ? is_array( $field['value'] ) ? $this->implode_recursive( $field['value'] ) : $field['value'] : false,
+				);
+		}
+
+		return $export;
+	}
+
+	/**
+	 * Recursively process an array with an implosion.
+	 *
+	 * @since 1.6.6
+	 *
+	 * @param  array  $array     Array that needs to be recursively imploded.
+	 * @param  string $delimiter Delimiter for the implosion - defaults to <br>.
+	 *
+	 * @return string $output Imploded array.
+	 */
+	protected function implode_recursive( $array, $delimiter = '<br>' ) {
+		$output = '';
+
+		foreach ( $array as $tuple ) {
+			if ( is_array( $tuple ) ) {
+				$output .= $this->implode_recursive( $tuple, ' ' );
+			} elseif ( ! empty( $tuple ) ) {
+				$output .= $delimiter . $tuple;
+			}
+		}
+
+		return $output;
 	}
 }

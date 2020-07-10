@@ -125,7 +125,7 @@ function evf_update_120_db_rename_options() {
  * Update email settings adding connection data.
  */
 function evf_update_140_db_multiple_email() {
-	$forms = evf()->form->get( '', array( 'order' => 'DESC' ) );
+	$forms = evf()->form->get_multiple( array( 'order' => 'DESC' ) );
 
 	// Loop through each forms.
 	foreach ( $forms as $form ) {
@@ -269,7 +269,7 @@ function evf_update_149_db_version() {
  * Update date field type for all forms.
  */
 function evf_update_150_field_datetime_type() {
-	$forms = evf()->form->get( '', array( 'order' => 'DESC' ) );
+	$forms = evf()->form->get_multiple( array( 'order' => 'DESC' ) );
 
 	// Loop through each forms.
 	foreach ( $forms as $form ) {

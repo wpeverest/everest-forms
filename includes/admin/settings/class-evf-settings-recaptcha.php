@@ -120,7 +120,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 					'title'      => esc_html__( 'Secret Key', 'everest-forms' ),
 					'type'       => 'text',
 					/* translators: %1$s - Google reCAPTCHA docs url */
-					'desc'       => sprintf( esc_html__( 'Please enter your secret key for your reCAPTCHA v2. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/tutorials/how-to-integrate-google-recaptcha/' ) ),
+					'desc'       => sprintf( esc_html__( 'Please enter your secret key for your reCAPTCHA v3. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/tutorials/how-to-integrate-google-recaptcha/' ) ),
 					'id'         => 'everest_forms_recaptcha_v3_secret_key',
 					'is_visible' => 'v3' === $recaptcha_type,
 					'default'    => '',

@@ -158,58 +158,6 @@ module.exports = function( grunt ){
 			}
 		},
 
-		// Generate POT files.
-		makepot: {
-			options: {
-				type: 'wp-plugin',
-				domainPath: 'languages',
-				potHeaders: {
-					'report-msgid-bugs-to': 'https://github.com/wpeverest/everest-forms/issues',
-					'language-team': 'LANGUAGE <EMAIL@ADDRESS>'
-				}
-			},
-			dist: {
-				options: {
-					potFilename: 'everest-forms.pot',
-					exclude: [
-						'vendor/.*'
-					]
-				}
-			}
-		},
-
-		// Check textdomain errors.
-		checktextdomain: {
-			options: {
-				text_domain: 'everest-forms',
-				keywords: [
-					'__:1,2d',
-					'_e:1,2d',
-					'_x:1,2c,3d',
-					'esc_html__:1,2d',
-					'esc_html_e:1,2d',
-					'esc_html_x:1,2c,3d',
-					'esc_attr__:1,2d',
-					'esc_attr_e:1,2d',
-					'esc_attr_x:1,2c,3d',
-					'_ex:1,2c,3d',
-					'_n:1,2,4d',
-					'_nx:1,2,4c,5d',
-					'_n_noop:1,2,3d',
-					'_nx_noop:1,2,3c,4d'
-				]
-			},
-			files: {
-				src: [
-					'**/*.php',               // Include all files
-					'!includes/libraries/**', // Exclude libraries/
-					'!node_modules/**',       // Exclude node_modules/
-					'!vendor/**'              // Exclude vendor/
-				],
-				expand: true
-			}
-		},
-
 		// PHP Code Sniffer.
 		phpcs: {
 			options: {
@@ -281,8 +229,6 @@ module.exports = function( grunt ){
 	grunt.loadNpmTasks( 'grunt-rtlcss' );
 	grunt.loadNpmTasks( 'grunt-postcss' );
 	grunt.loadNpmTasks( 'grunt-stylelint' );
-	grunt.loadNpmTasks( 'grunt-wp-i18n' );
-	grunt.loadNpmTasks( 'grunt-checktextdomain' );
 	grunt.loadNpmTasks( 'grunt-contrib-jshint' );
 	grunt.loadNpmTasks( 'grunt-contrib-uglify' );
 	grunt.loadNpmTasks( 'grunt-contrib-cssmin' );
@@ -293,8 +239,7 @@ module.exports = function( grunt ){
 	// Register tasks
 	grunt.registerTask( 'default', [
 		'js',
-		'css',
-		'i18n'
+		'css'
 	]);
 
 	grunt.registerTask( 'js', [
@@ -318,10 +263,5 @@ module.exports = function( grunt ){
 	grunt.registerTask( 'zip', [
 		'dev',
 		'compress'
-	]);
-
-	grunt.registerTask( 'i18n', [
-		'checktextdomain',
-		'makepot'
 	]);
 };

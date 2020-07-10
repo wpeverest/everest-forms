@@ -195,7 +195,7 @@ class EVF_AJAX {
 			die( esc_html__( 'No data provided', 'everest-forms' ) );
 		}
 
-		$form_post = json_decode( stripslashes( wp_unslash( $_POST['form_data'] ) ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$form_post = json_decode( stripslashes( $_POST['form_data'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 
 		$data = array();
 
@@ -231,9 +231,26 @@ class EVF_AJAX {
 		// Check for empty meta key.
 		$empty_meta_data = array();
 		if ( ! empty( $data['form_fields'] ) ) {
-			foreach ( $data['form_fields'] as $field ) {
-				// Register string for translation.
-				if ( isset( $field['label'] ) ) {
+			foreach ( $data['form_fields'] as $field_key => $field ) {
+				if ( ! empty( $field['label'] ) ) {
+					// Only allow specific html in label.
+					$data['form_fields'][ $field_key ]['label'] = wp_kses(
+						$field['label'],
+						array(
+							'a'      => array(
+								'href'  => array(),
+								'class' => array(),
+							),
+							'span'   => array(
+								'class' => array(),
+							),
+							'em'     => array(),
+							'small'  => array(),
+							'strong' => array(),
+						)
+					);
+
+					// Register string for translation.
 					evf_string_translation( $data['id'], $field['id'], $field['label'] );
 				}
 
@@ -614,7 +631,7 @@ class EVF_AJAX {
 		);
 
 		/* translators: %1$s - deactivation reason page; %2$d - deactivation url. */
-		$deactivation_notice = sprintf( esc_html__( 'Before we deactivate Everest Forms, would you care to <a href="%1$s" target="_blank">let us know why</a> so we can improve it for you? <a href="%2$s">No, deactivate now</a>.', 'everest-forms' ), 'https://wpeverest.com/deactivation/everest-forms/', $deactivate_url );
+		$deactivation_notice = sprintf( __( 'Before we deactivate Everest Forms, would you care to <a href="%1$s" target="_blank">let us know why</a> so we can improve it for you? <a href="%2$s">No, deactivate now</a>.', 'everest-forms' ), 'https://wpeverest.com/deactivation/everest-forms/', $deactivate_url );
 
 		wp_send_json(
 			array(
