@@ -308,8 +308,10 @@ class EVF_Field_Select extends EVF_Form_Fields {
 
 		$this->field_prefill_remove_choices_defaults( $field, $field['properties'] );
 
-		foreach ( $value_choices as $input => $single_value ) {
-			$field['properties'] = $this->get_single_field_property_value( $single_value, sanitize_key( $input ), $field['properties'], $field );
+		if ( is_array( $value_choices ) ) {
+			foreach ( $value_choices as $input => $single_value ) {
+				$field['properties'] = $this->get_single_field_property_value( $single_value, sanitize_key( $input ), $field['properties'], $field );
+			}
 		}
 
 		$this->field_display( $field, null, $form_data );

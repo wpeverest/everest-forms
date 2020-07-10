@@ -1377,6 +1377,8 @@ abstract class EVF_Form_Fields {
 	/**
 	 * Edit form field display on the entry back-end.
 	 *
+	 * @since 1.7.0
+	 *
 	 * @param array $entry_field Entry field data.
 	 * @param array $field       Field data.
 	 * @param array $form_data   Form data and settings.
@@ -1403,7 +1405,7 @@ abstract class EVF_Form_Fields {
 	 * @param string $raw_value  Raw Value, always a string.
 	 * @param string $input      Subfield inside the field.
 	 * @param array  $properties Field properties.
-	 * @param array  $field      Current field specific data.
+	 * @param array  $field      Field specific data.
 	 *
 	 * @return array Modified field properties.
 	 */
@@ -1433,9 +1435,9 @@ abstract class EVF_Form_Fields {
 	 *
 	 * @since 1.7.0
 	 *
-	 * @param string $get_value  Value from a GET param, always a string, sanitized.
+	 * @param string $get_value  Requested value.
 	 * @param array  $properties Field properties.
-	 * @param array  $field      Current field specific data.
+	 * @param array  $field      Field specific data.
 	 *
 	 * @return array Modified field properties.
 	 */
