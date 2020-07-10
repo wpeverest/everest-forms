@@ -171,11 +171,9 @@ class EVF_Field_Textarea extends EVF_Form_Fields {
 		$value   = '';
 		$primary = $field['properties']['inputs']['primary'];
 
-		if ( ! empty( $primary['attr']['value'] ) ) {
-			$value = $primary['attr']['value'];
+		if ( isset( $primary['attr']['value'] ) ) {
+			$value = evf_sanitize_textarea_field( $primary['attr']['value'] );
 			unset( $primary['attr']['value'] );
-
-			$value = evf_sanitize_textarea_field( $value );
 		}
 
 		// Limit length.

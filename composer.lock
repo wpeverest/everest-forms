@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4e238fda056e41871ae5ad82d39b486c",
+    "content-hash": "6aa708a973a5f11bd1ad009eadba8b5e",
     "packages": [
         {
             "name": "composer/installers",
@@ -336,16 +336,16 @@
         },
         {
             "name": "mck89/peast",
-            "version": "v1.10.3",
+            "version": "v1.10.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mck89/peast.git",
-                "reference": "6d1100f39f684c9e004f808b27f6c824b083d8d8"
+                "reference": "e11664ef53ba2a4ca1d16d8bc73fcc317cd65d3d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mck89/peast/zipball/6d1100f39f684c9e004f808b27f6c824b083d8d8",
-                "reference": "6d1100f39f684c9e004f808b27f6c824b083d8d8",
+                "url": "https://api.github.com/repos/mck89/peast/zipball/e11664ef53ba2a4ca1d16d8bc73fcc317cd65d3d",
+                "reference": "e11664ef53ba2a4ca1d16d8bc73fcc317cd65d3d",
                 "shasum": ""
             },
             "require": {
@@ -357,7 +357,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.10.3-dev"
+                    "dev-master": "1.10.4-dev"
                 }
             },
             "autoload": {
@@ -377,7 +377,7 @@
                 }
             ],
             "description": "Peast is PHP library that generates AST for JavaScript code",
-            "time": "2020-04-03T09:06:20+00:00"
+            "time": "2020-06-21T17:16:08+00:00"
         },
         {
             "name": "mustache/mustache",
@@ -687,25 +687,25 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v5.0.7",
+            "version": "v5.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "600a52c29afc0d1caa74acbec8d3095ca7e9910d"
+                "reference": "4298870062bfc667cb78d2b379be4bf5dec5f187"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/600a52c29afc0d1caa74acbec8d3095ca7e9910d",
-                "reference": "600a52c29afc0d1caa74acbec8d3095ca7e9910d",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/4298870062bfc667cb78d2b379be4bf5dec5f187",
+                "reference": "4298870062bfc667cb78d2b379be4bf5dec5f187",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2.5"
+                "php": ">=7.2.5"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.0-dev"
+                    "dev-master": "5.1-dev"
                 }
             },
             "autoload": {
@@ -746,20 +746,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-03-27T16:56:45+00:00"
+            "time": "2020-05-20T17:43:50+00:00"
         },
         {
             "name": "wp-cli/i18n-command",
-            "version": "v2.2.2",
+            "version": "v2.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-cli/i18n-command.git",
-                "reference": "2804c5246d9338da59951737b03c54d257be8e47"
+                "reference": "9784ff2c074d1765442b618e6d3a43fee2093a05"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-cli/i18n-command/zipball/2804c5246d9338da59951737b03c54d257be8e47",
-                "reference": "2804c5246d9338da59951737b03c54d257be8e47",
+                "url": "https://api.github.com/repos/wp-cli/i18n-command/zipball/9784ff2c074d1765442b618e6d3a43fee2093a05",
+                "reference": "9784ff2c074d1765442b618e6d3a43fee2093a05",
                 "shasum": ""
             },
             "require": {
@@ -803,7 +803,7 @@
             ],
             "description": "Provides internationalization tools for WordPress projects.",
             "homepage": "https://github.com/wp-cli/i18n-command",
-            "time": "2019-12-13T09:00:43+00:00"
+            "time": "2020-06-12T00:17:09+00:00"
         },
         {
             "name": "wp-cli/mustangostang-spyc",

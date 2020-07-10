@@ -331,6 +331,29 @@ class EVF_Admin_Entries {
 				array( '%d' )
 			);
 		} else {
+			$entry = evf_get_entry( $entry_id );
+
+			// Preseve entry status.
+			if ( 'trash' === $status ) {
+				$wpdb->insert(
+					$wpdb->prefix . 'evf_entrymeta',
+					array(
+						'entry_id'   => $entry_id,
+						'meta_key'   => '_evf_trash_entry_status',
+						'meta_value' => sanitize_text_field( $entry->status ), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value
+					)
+				);
+			} elseif ( 'publish' === $status ) {
+				$status = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM {$wpdb->prefix}evf_entrymeta WHERE entry_id = %d AND meta_key = '_evf_trash_entry_status'", $entry_id ) );
+				$wpdb->delete(
+					$wpdb->prefix . 'evf_entrymeta',
+					array(
+						'entry_id' => $entry_id,
+						'meta_key' => '_evf_trash_entry_status',
+					)
+				);
+			}
+
 			$update = $wpdb->update(
 				$wpdb->prefix . 'evf_entries',
 				array( 'status' => $status ),

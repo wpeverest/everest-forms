@@ -29,6 +29,3 @@ Thumbs.db
 
 # Build
 build/
-
-# Language files
-languages/everest-forms.pot
