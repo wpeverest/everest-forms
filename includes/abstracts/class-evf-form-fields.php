@@ -1417,7 +1417,6 @@ abstract class EVF_Form_Fields {
 		if ( ! empty( $field['choices'] ) && is_array( $field['choices'] ) ) {
 			$properties = $this->get_single_field_property_value_choices( $get_value, $properties, $field );
 		} else {
-			// For other field types, check if key is registered for the defined field in inputs array.
 			if (
 				! empty( $input ) &&
 				isset( $properties['inputs'][ $input ] )
