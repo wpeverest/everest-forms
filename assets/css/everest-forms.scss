@@ -196,10 +196,17 @@
 
 	.evf-field-container {
 		.evf-frontend-row {
-			display: flex;
-			flex-wrap: wrap;
-			margin-left: -15px;
-			margin-right: -15px;
+			//Prevents style conflict on entries table
+			&:not(.wp-list-table) {
+				display: flex;
+				flex-wrap: wrap;
+				margin-left: -15px;
+				margin-right: -15px;
+
+				select {
+					appearance: menulist;
+				}
+			}
 
 			.everest-forms-one-half {
 				width: 48%;
@@ -454,10 +461,6 @@
 				&::placeholder {
 					color: $color_gray-light;
 				}
-			}
-
-			select {
-				appearance: menulist;
 			}
 
 			textarea {
