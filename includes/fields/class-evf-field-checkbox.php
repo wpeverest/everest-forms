@@ -415,7 +415,7 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 	public function edit_form_field_display( $entry_field, $field, $form_data ) {
 		$value_choices = ! empty( $entry_field['value_raw'] ) ? $entry_field['value_raw'] : array();
 
-		$this->field_prefill_remove_choices_defaults( $field, $field['properties'] );
+		$this->remove_field_choices_defaults( $field, $field['properties'] );
 
 		foreach ( $value_choices as $input => $single_value ) {
 			$field['properties'] = $this->get_single_field_property_value( $single_value, sanitize_key( $input ), $field['properties'], $field );

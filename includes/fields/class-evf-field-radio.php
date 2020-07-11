@@ -346,6 +346,8 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 	public function edit_form_field_display( $entry_field, $field, $form_data ) {
 		$value = isset( $entry_field['value_raw'] ) ? $entry_field['value_raw'] : '';
 
+		$this->remove_field_choices_defaults( $field, $field['properties'] );
+
 		if ( '' !== $value ) {
 			$field['properties'] = $this->get_single_field_property_value( $value, 'primary', $field['properties'], $field );
 		}

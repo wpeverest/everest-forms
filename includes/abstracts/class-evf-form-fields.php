@@ -137,30 +137,6 @@ abstract class EVF_Form_Fields {
 	}
 
 	/**
-	 * Removes all choice-related fields defaults from prefill value.
-	 *
-	 * @since 1.7.0
-	 *
-	 * @param array $field      Field data and settings.
-	 * @param array $properties Properties we are modifying.
-	 */
-	public function field_prefill_remove_choices_defaults( $field, &$properties ) {
-		if ( ! empty( $field['choices'] ) ) {
-			array_walk_recursive(
-				$properties['inputs'],
-				function ( &$value, $key ) {
-					if ( 'default' === $key ) {
-						$value = false;
-					}
-					if ( 'everest-forms-selected' === $value ) {
-						$value = '';
-					}
-				}
-			);
-		}
-	}
-
-	/**
 	 * Get the form fields after they are initialized.
 	 *
 	 * @return array of options
@@ -1464,6 +1440,30 @@ abstract class EVF_Form_Fields {
 		}
 
 		return $properties;
+	}
+
+	/**
+	 * Remove all admin-defined defaults from choices-related fields only.
+	 *
+	 * @since 1.7.0
+	 *
+	 * @param array $field      Field data and settings.
+	 * @param array $properties Field Properties to be modified.
+	 */
+	protected function remove_field_choices_defaults( $field, &$properties ) {
+		if ( ! empty( $field['choices'] ) ) {
+			array_walk_recursive(
+				$properties['inputs'],
+				function ( &$value, $key ) {
+					if ( 'default' === $key ) {
+						$value = false;
+					}
+					if ( 'everest-forms-selected' === $value ) {
+						$value = '';
+					}
+				}
+			);
+		}
 	}
 
 	/**
