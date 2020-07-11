@@ -1396,6 +1396,11 @@ abstract class EVF_Form_Fields {
 				isset( $properties['inputs'][ $input ] )
 			) {
 				$properties['inputs'][ $input ]['attr']['value'] = $get_value;
+
+				// Update data attributes depending on the field type.
+				if ( isset( $field['type'] ) && 'range-slider' === $field['type'] ) {
+					$properties['inputs'][ $input ]['data']['from'] = $get_value;
+				}
 			}
 		}
 
