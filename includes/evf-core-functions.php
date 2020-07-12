@@ -2000,6 +2000,89 @@ function evf_cleanup_logs() {
 }
 add_action( 'everest_forms_cleanup_logs', 'evf_cleanup_logs' );
 
+
+/**
+ * Check whether it device is table or not from HTTP user agent
+ *
+ * @since 1.7.0
+ *
+ * @return bool
+ */
+function evf_is_tablet() {
+	$useragent = $_SERVER['HTTP_USER_AGENT'];
+	return false !== stripos( $useragent, 'tablet' ) || false !== stripos( $useragent, 'tab' );
+}
+
+
+/**
+ * Get user device from user agent from HTTP user agent.
+ *
+ * @since 1.7.0
+ *
+ * @return string
+ */
+function evf_get_user_device() {
+	if ( evf_is_tablet() ) {
+		return 'Tablet';
+	} elseif ( wp_is_mobile() ) {
+		return 'Mobile';
+	} else {
+		return 'Desktop';
+	}
+}
+
+
+/**
+ * A wp_parse_args() for multi-dimensional array.
+ *
+ * @see https://developer.wordpress.org/reference/functions/wp_parse_args/
+ *
+ * @since 1.7.0
+ *
+ * @param array $args       Value to merge with $defaults.
+ * @param array $defaults   Array that serves as the defaults.
+ *
+ * @return array    Merged user defined values with defaults.
+ */
+function evf_parse_args( &$args, $defaults ) {
+	$args     = (array) $args;
+	$defaults = (array) $defaults;
+	$result   = $defaults;
+	foreach ( $args as $k => &$v ) {
+		if ( is_array( $v ) && isset( $result[ $k ] ) ) {
+			$result[ $k ] = evf_parse_args( $v, $result[ $k ] );
+		} else {
+			$result[ $k ] = $v;
+		}
+	}
+	return $result;
+}
+
+/**
+ * Get date of ranges.
+ *
+ * @since 1.7.0
+ *
+ * @param string $first Starting date.
+ * @param string $last  End date.
+ * @param string $step Date step.
+ * @param string $format Date format.
+ *
+ * @return array Range dates.
+ */
+function evf_date_range( $first, $last = '', $step = '+1 day', $format = 'Y/m/d' ) {
+	$dates   = array();
+	$current = strtotime( $first );
+	$last    = strtotime( $last );
+
+	while ( $current <= $last ) {
+		$dates[] = date( $format, $current );
+		$current = strtotime( $step, $current );
+	}
+
+	return $dates;
+}
+
 /**
  * Process syntaxes in a text.
  *

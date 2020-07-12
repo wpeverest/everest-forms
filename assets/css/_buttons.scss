@@ -1,0 +1,139 @@
+/**
+ * Buttons
+ */
+.everest-forms-btn,
+a.everest-forms-btn,
+button.everest-forms-btn {
+	border: none;
+	cursor: pointer;
+	overflow: hidden;
+	font-family: inherit;
+	padding: 10px 15px;
+	border-radius: 3px;
+	line-height: 1.25;
+	position: relative;
+	display: inline-block;
+	text-decoration: none;
+	color: $color_gray-base;
+	background: $color_gray-lighten;
+	transition: all 0.2s ease 0s;
+	z-index: 1;
+
+	.evf-loading {
+		width: 14px;
+		height: 14px;
+		background-size: 14px 14px;
+	}
+
+	.everest-forms-btn-primary {
+		background-color: $everestforms;
+		color: $color-white;
+
+		&:hover {
+			color: $color-white;
+			background-color: darken($everestforms, 10%);
+		}
+	}
+
+	&.everest-forms-btn-small {
+		font-size: 12px;
+		padding: 5px 10px;
+	}
+
+	&.everest-forms-btn-link {
+		font-weight: 600;
+		color: $everestforms;
+		background: transparent;
+
+		&:hover {
+			color: darken($everestforms, 10%);
+			background: transparent;
+		}
+
+		&:focus {
+			box-shadow: none;
+			text-decoration: underline;
+		}
+	}
+
+	&.everest-forms-btn-icon {
+		background: $color_gray-more-lighten;
+		color: $color_gray-normal;
+		padding: 6px;
+
+		svg {
+			display: flex;
+			fill: currentColor;
+			height: 20px;
+			width: 20px;
+		}
+	}
+
+	&.dashicons {
+		padding: 8px 15px;
+
+		&::before {
+			width: 20px;
+			height: 20px;
+			line-height: 1;
+			font-size: 20px;
+			margin-right: 10px;
+			font-family: dashicons;
+			vertical-align: middle;
+			padding: 2px 12px 2px 0;
+			border-right: 1px solid transparentize($color_gray-base, 0.7);
+		}
+	}
+
+	&:hover {
+		background-color: darken($color_gray-lighten, 10%);
+	}
+
+	&:active,
+	&.is-active {
+		background: $everestforms;
+		color: $color-white;
+	}
+
+	&:focus {
+		outline: none;
+		box-shadow: 0 0 0 2px lighten($everestforms, 35%);
+	}
+}
+
+.everest-forms-btn-group {
+	display: inline-flex;
+
+	button,
+	.everest-forms-btn {
+		margin: 0 4px;
+
+		&:first-child {
+			margin-left: 0;
+		}
+
+		&:last-child {
+			margin-right: 0;
+		}
+	}
+
+	&.everest-forms-btn-group--inline {
+		background: $color_gray-lighten;
+		padding: 4px;
+		border-radius: 4px;
+		position: relative;
+		vertical-align: middle;
+
+		button,
+		.everest-forms-btn {
+			padding: 4px 6px;
+			margin: 0 2px;
+
+			&:active,
+			&.is-active {
+				background: $color-white;
+				color: $color_gray-base;
+			}
+		}
+	}
+}

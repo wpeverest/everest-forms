@@ -3,6 +3,7 @@
  */
 /*=====  Primary Color  ======*/
 $everestforms:					#7e3bd0;
+$everestforms-soft:				lighten($everestforms, 40%);
 
 /*=====  Semantic Color  ======*/
 // Colors for notifications
@@ -24,10 +25,11 @@ $color_gray-light-skin:			#f6f7f9;
 // White color
 $color-white:					#fff;
 
+
+$body-text:						$color_gray-base;
+$border-color: 					$color_gray-lighten;
 /**
  * Font Size Variables
  */
-
 $font_size-base: 14px;
-
 $font_size-label: $font_size-base;
