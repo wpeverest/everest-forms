@@ -731,20 +731,37 @@ abstract class EVF_Form_Fields {
 					$class[] = 'show-images';
 				}
 
+				// Add bulk options toggle handle.
+				$bulk_add_enabled           = apply_filters( 'evf_bulk_add_enabled', true );
+				$licensed                   = ( false === evf_get_license_plan() ) ? false : true;
+				$upgradable_feature_class   = ( true === $licensed ) ? '' : 'evf-upgradable-feature';
+				$bulk_options_toggle_handle = sprintf( '<a class="evf-toggle-bulk-options %s" href="#">%s</a>', esc_attr( $upgradable_feature_class ), esc_html__( 'Bulk Add', 'everest-forms' ) );
+
 				// Field label.
-				$field_label = $this->field_element(
+				$field_label   = $this->field_element(
 					'label',
 					$field,
 					array(
 						'slug'          => 'choices',
 						'value'         => $label,
 						'tooltip'       => esc_html__( 'Add choices for the form field.', 'everest-forms' ),
-						'after_tooltip' => '', // @todo Bulk import and export for choices.
+						'after_tooltip' => $bulk_options_toggle_handle, // @todo Bulk import and export for choices.
 					)
 				);
+				$field_content = '';
+
+				if ( true === $bulk_add_enabled && true === $licensed ) {
+					$field_content = $this->field_option(
+						'add_bulk_options',
+						$field,
+						array(
+							'class' => 'everest-forms-hidden',
+						)
+					);
+				}
 
 				// Field contents.
-				$field_content = sprintf(
+				$field_content .= sprintf(
 					'<ul data-next-id="%s" class="evf-choices-list %s" data-field-id="%s" data-field-type="%s">',
 					max( array_keys( $choices ) ) + 1,
 					evf_sanitize_classes( $class, true ),
@@ -832,6 +849,164 @@ abstract class EVF_Form_Fields {
 					array(
 						'slug'    => 'choices_images',
 						'content' => $field_content,
+					),
+					false
+				);
+				break;
+
+			/**
+			 * Add bulk options.
+			 */
+			case 'add_bulk_options':
+				$class = ! empty( $args['class'] ) ? esc_attr( $args['class'] ) : '';
+				$label = ! empty( $args['label'] ) ? esc_html( $args['label'] ) : esc_html__( 'Add Bulk Options', 'everest-forms' );
+
+				// Field label.
+				$field_label = $this->field_element(
+					'label',
+					$field,
+					array(
+						'slug'          => 'add_bulk_options',
+						'value'         => $label,
+						'tooltip'       => esc_html__( 'Add multiple options at once.', 'everest-forms' ),
+						'after_tooltip' => sprintf( '<a class="evf-toggle-presets-list" href="#">%s</a>', esc_html__( 'Presets', 'everest-forms' ) ),
+					),
+					false
+				);
+
+				// Preset contents.
+				$presets      = array(
+					array(
+						'label'   => esc_html__( 'Months', 'everest-forms' ),
+						'class'   => 'evf-options-preset-months',
+						'options' => array(
+							esc_html__( 'January', 'everest-forms' ),
+							esc_html__( 'February', 'everest-forms' ),
+							esc_html__( 'March', 'everest-forms' ),
+							esc_html__( 'April', 'everest-forms' ),
+							esc_html__( 'May', 'everest-forms' ),
+							esc_html__( 'June', 'everest-forms' ),
+							esc_html__( 'July', 'everest-forms' ),
+							esc_html__( 'August', 'everest-forms' ),
+							esc_html__( 'September', 'everest-forms' ),
+							esc_html__( 'October', 'everest-forms' ),
+							esc_html__( 'November', 'everest-forms' ),
+							esc_html__( 'December', 'everest-forms' ),
+						),
+					),
+					array(
+						'label'   => esc_html__( 'Week Days', 'everest-forms' ),
+						'class'   => 'evf-options-preset-week-days',
+						'options' => array(
+							esc_html__( 'Sunday', 'everest-forms' ),
+							esc_html__( 'Monday', 'everest-forms' ),
+							esc_html__( 'Tuesday', 'everest-forms' ),
+							esc_html__( 'Wednesday', 'everest-forms' ),
+							esc_html__( 'Thursday', 'everest-forms' ),
+							esc_html__( 'Friday', 'everest-forms' ),
+							esc_html__( 'Saturday', 'everest-forms' ),
+						),
+					),
+					array(
+						'label'   => esc_html__( 'Countries', 'everest-forms' ),
+						'class'   => 'evf-options-preset-countries',
+						'options' => array_values( evf_get_countries() ),
+					),
+					array(
+						'label'   => esc_html__( 'Countries Postal Code', 'everest-forms' ),
+						'class'   => 'evf-options-preset-countries-postal-code',
+						'options' => array_keys( evf_get_countries() ),
+					),
+					array(
+						'label'   => esc_html__( 'U.S. States', 'everest-forms' ),
+						'class'   => 'evf-options-preset-states',
+						'options' => array_values( evf_get_states() ),
+					),
+					array(
+						'label'   => esc_html__( 'U.S. States Postal Code', 'everest-forms' ),
+						'class'   => 'evf-options-preset-states-postal-code',
+						'options' => array_keys( evf_get_states() ),
+					),
+					array(
+						'label'   => esc_html__( 'Age Groups', 'everest-forms' ),
+						'class'   => 'evf-options-preset-age-groups',
+						'options' => array(
+							esc_html__( 'Under 18', 'everest-forms' ),
+							esc_html__( '18-24', 'everest-forms' ),
+							esc_html__( '25-34', 'everest-forms' ),
+							esc_html__( '35-44', 'everest-forms' ),
+							esc_html__( '45-54', 'everest-forms' ),
+							esc_html__( '55-64', 'everest-forms' ),
+							esc_html__( '65 or Above', 'everest-forms' ),
+							esc_html__( 'Prefer Not to Answer', 'everest-forms' ),
+						),
+					),
+					array(
+						'label'   => esc_html__( 'Satisfaction', 'everest-forms' ),
+						'class'   => 'evf-options-preset-satisfaction',
+						'options' => array(
+							esc_html__( 'Very Satisfied', 'everest-forms' ),
+							esc_html__( 'Satisfied', 'everest-forms' ),
+							esc_html__( 'Neutral', 'everest-forms' ),
+							esc_html__( 'Unsatisfied', 'everest-forms' ),
+							esc_html__( 'Very Unsatisfied', 'everest-forms' ),
+							esc_html__( 'N/A', 'everest-forms' ),
+						),
+					),
+					array(
+						'label'   => esc_html__( 'Importance', 'everest-forms' ),
+						'class'   => 'evf-options-preset-importance',
+						'options' => array(
+							esc_html__( 'Very Important', 'everest-forms' ),
+							esc_html__( 'Important', 'everest-forms' ),
+							esc_html__( 'Neutral', 'everest-forms' ),
+							esc_html__( 'Somewhat Important', 'everest-forms' ),
+							esc_html__( 'Not at all Important', 'everest-forms' ),
+							esc_html__( 'N/A', 'everest-forms' ),
+						),
+					),
+					array(
+						'label'   => esc_html__( 'Agreement', 'everest-forms' ),
+						'class'   => 'evf-options-preset-agreement',
+						'options' => array(
+							esc_html__( 'Strongly Agree', 'everest-forms' ),
+							esc_html__( 'Agree', 'everest-forms' ),
+							esc_html__( 'Neutral', 'everest-forms' ),
+							esc_html__( 'Disagree', 'everest-forms' ),
+							esc_html__( 'Strongly Disagree', 'everest-forms' ),
+							esc_html__( 'N/A', 'everest-forms' ),
+						),
+					),
+				);
+				$presets_html = '<div class="evf-options-presets" hidden>';
+				foreach ( $presets as $preset ) {
+					$presets_html .= sprintf( '<div class="evf-options-preset %s">', esc_attr( $preset['class'] ) );
+					$presets_html .= sprintf( '<a class="evf-options-preset-label" href="#">%s</a>', $preset['label'] );
+					$presets_html .= sprintf( '<textarea hidden class="evf-options-preset-value">%s</textarea>', implode( "\n", $preset['options'] ) );
+					$presets_html .= '</div>';
+				}
+				$presets_html .= '</div>';
+
+				// Field contents.
+				$field_content  = $this->field_element(
+					'textarea',
+					$field,
+					array(
+						'slug'  => 'add_bulk_options',
+						'value' => '',
+					),
+					false
+				);
+				$field_content .= sprintf( '<a class="button button-small evf-add-bulk-options" href="#">%s</a>', esc_html__( 'Add New Choices', 'everest-forms' ) );
+
+				// Final field output.
+				$output = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'add_bulk_options',
+						'content' => $field_label . $presets_html . $field_content,
+						'class'   => $class,
 					),
 					false
 				);

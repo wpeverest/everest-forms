@@ -215,6 +215,7 @@
 			EVFPanelBuilder.bindToggleHandleActions();
 			EVFPanelBuilder.bindLabelEditInputActions();
 			EVFPanelBuilder.bindSyncedInputActions();
+			EVFPanelBuilder.bindBulkOptionActions();
 			EVFPanelBuilder.init_datepickers();
 
 			// Fields Panel.
@@ -225,7 +226,7 @@
 			}
 		},
 
-		/*
+		/**
 		 * Initialize date pickers like min/max date, disable dates etc.
 		 *
 		 * @since 1.6.6
@@ -730,8 +731,10 @@
 		 *
 		 * @since 1.6.0
 		 */
-		choiceAdd: function( event, el ) {
-			event.preventDefault();
+		choiceAdd: function( event, el, value ) {
+			if ( event && event.preventDefault ) {
+				event.preventDefault();
+			}
 
 			var $this   = $( el ),
 				$parent = $this.parent(),
@@ -742,8 +745,8 @@
 				$choice = $parent.clone().insertAfter( $parent );
 
 			$choice.attr( 'data-key', nextID );
-			$choice.find( 'input.label' ).val( '' ).attr( 'name', 'form_fields[' + fieldID + '][choices][' + nextID + '][label]' );
-			$choice.find( 'input.value' ).val( '' ).attr( 'name', 'form_fields[' + fieldID + '][choices][' + nextID + '][value]' );
+			$choice.find( 'input.label' ).val( value ).attr( 'name', 'form_fields[' + fieldID + '][choices][' + nextID + '][label]' );
+			$choice.find( 'input.value' ).val( value ).attr( 'name', 'form_fields[' + fieldID + '][choices][' + nextID + '][value]' );
 			$choice.find( 'input.source' ).val( '' ).attr( 'name', 'form_fields[' + fieldID + '][choices][' + nextID + '][image]' );
 			$choice.find( 'input.default').attr( 'name', 'form_fields[' + fieldID + '][choices][' + nextID + '][default]' ).prop( 'checked', false );
 			$choice.find( '.attachment-thumb' ).remove();
