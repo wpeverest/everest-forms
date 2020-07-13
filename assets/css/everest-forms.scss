@@ -196,7 +196,7 @@
 
 	.evf-field-container {
 		.evf-frontend-row {
-			//Prevents style conflict on entries table
+			// Prevents style conflict on entries list-table.
 			&:not(.wp-list-table) {
 				display: flex;
 				flex-wrap: wrap;
