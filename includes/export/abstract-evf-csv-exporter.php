@@ -61,6 +61,11 @@ abstract class EVF_CSV_Exporter {
 	abstract public function prepare_data_to_export();
 
 	/**
+	 * Get quiz report in CSV format.
+	 */
+	abstract public function get_quiz_report();
+
+	/**
 	 * Return the delimiter to use in CSV file
 	 *
 	 * @since  1.7.0
@@ -149,6 +154,15 @@ abstract class EVF_CSV_Exporter {
 		$this->prepare_data_to_export();
 		$this->send_headers();
 		$this->send_content( chr( 239 ) . chr( 187 ) . chr( 191 ) . $this->export_column_headers() . $this->get_csv_data() );
+		die();
+	}
+
+	/**
+	 * Export quiz report.
+	 */
+	public function export_quiz_report() {
+		$this->send_headers();
+		$this->send_content( $this->get_quiz_report() );
 		die();
 	}
 
