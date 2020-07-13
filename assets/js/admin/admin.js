@@ -2,9 +2,7 @@
 ( function( $, params ) {
 
 	// Colorpicker.
-	$( document ).ready(function() {
-		$( '.evf-colorpicker' ).wpColorPicker();
-	});
+	$( '.evf-colorpicker' ).wpColorPicker();
 
 	// Enable Perfect Scrollbar.
 	$( document ).on( 'init_perfect_scrollbar', function() {
