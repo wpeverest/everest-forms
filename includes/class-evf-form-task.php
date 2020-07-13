@@ -646,12 +646,13 @@ class EVF_Form_Task {
 
 		do_action( 'everest_forms_process_entry_save', $fields, $entry, $form_id, $form_data );
 
-		$fields     = apply_filters( 'everest_forms_entry_save_data', $fields, $entry, $form_data );
-		$browser    = evf_get_browser();
-		$user_ip    = evf_get_ip_address();
-		$user_agent = $browser['name'] . '/' . $browser['platform'];
-		$referer    = ! empty( $_SERVER['HTTP_REFERER'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_REFERER'] ) ) : '';
-		$entry_id   = false;
+		$fields      = apply_filters( 'everest_forms_entry_save_data', $fields, $entry, $form_data );
+		$browser     = evf_get_browser();
+		$user_ip     = evf_get_ip_address();
+		$user_device = evf_get_user_device();
+		$user_agent  = $browser['name'] . '/' . $browser['platform'] . '/' . $user_device;
+		$referer     = ! empty( $_SERVER['HTTP_REFERER'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_REFERER'] ) ) : '';
+		$entry_id    = false;
 
 		// GDPR enhancements - If user details are disabled globally discard the IP and UA.
 		if ( 'yes' === get_option( 'everest_forms_disable_user_details' ) ) {

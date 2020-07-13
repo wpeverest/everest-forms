@@ -279,4 +279,11 @@
 			}
 		});
 	});
+
+	// Adding active class for button group
+	$('.everest-forms-btn-group .everest-forms-btn').on('click', function() {
+		$(this).siblings().removeClass('is-active')
+		$(this).addClass('is-active');
+	})
+
 })( jQuery, everest_forms_admin );
