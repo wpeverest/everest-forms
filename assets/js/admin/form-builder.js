@@ -216,6 +216,7 @@
 			EVFPanelBuilder.bindLabelEditInputActions();
 			EVFPanelBuilder.bindSyncedInputActions();
 			EVFPanelBuilder.init_datepickers();
+			EVFPanelBuilder.bindBulkOptionActions();
 
 			// Fields Panel.
 			EVFPanelBuilder.bindUIActionsFields();
@@ -223,6 +224,61 @@
 			if ( evf_data.tab === 'field-options' ) {
 				$( '.evf-panel-field-options-button' ).trigger( 'click' );
 			}
+		},
+
+		/**
+		 * Bind user action handlers for the Add Bulk Options feature.
+		 */
+		bindBulkOptionActions: function() {
+			// Toggle `Bulk Add` option.
+			$( document.body ).on( 'click', '.evf-toggle-bulk-options', function( e ) {
+				$( this ).closest( '.everest-forms-field-option' ).find( '.everest-forms-field-option-row-add_bulk_options' ).slideToggle();
+			});
+			// Toggle presets list.
+			$( document.body ).on( 'click', '.evf-toggle-presets-list', function( e ) {
+				$( this ).closest( '.everest-forms-field-option' ).find( '.everest-forms-field-option-row .evf-options-presets' ).slideToggle();
+			});
+			// Add custom list of options.
+			$( document.body ).on( 'click', '.evf-add-bulk-options', function( e ) {
+				var $option_row = $( this ).closest( '.everest-forms-field-option-row' );
+				var field_id = $option_row.data( 'field-id' );
+
+				if ( $option_row.length ) {
+					var $choices = $option_row.closest( '.everest-forms-field-option' ).find( '.everest-forms-field-option-row-choices .evf-choices-list' );
+					var $bulk_options_container = $option_row.find( 'textarea#everest-forms-field-option-' + field_id + '-add_bulk_options' );
+					var options_texts = $bulk_options_container.val().split( '\n' );
+
+					EVFPanelBuilder.addBulkOptions( options_texts, $choices );
+					$bulk_options_container.val('');
+				}
+			});
+			// Add presets of options.
+			$( document.body ).on( 'click', '.evf-options-preset-label', function( e ) {
+				var $option_row = $( this ).closest( '.everest-forms-field-option-row' );
+				var field_id = $option_row.data( 'field-id' );
+
+				if ( $option_row.length ) {
+					var options_texts = $( this ).closest( '.evf-options-preset' ).find( '.evf-options-preset-value' ).val();
+
+					$option_row.find( 'textarea#everest-forms-field-option-' + field_id + '-add_bulk_options' ).val( options_texts );
+					$( this ).closest( '.evf-options-presets' ).slideUp();
+				}
+			});
+		},
+
+		/**
+		 * Add a list of options at once.
+		 *
+		 * @param {Array<string>} options_texts List of options to add.
+		 * @param {object} $choices_container Options container where the options should be added.
+		 */
+		addBulkOptions: function( options_texts, $choices_container ) {
+			options_texts.forEach( function( option_text ) {
+				if ( '' !== option_text ) {
+					var $add_button = $choices_container.find( 'li' ).last().find( 'a.add' );
+					EVFPanelBuilder.choiceAdd( null, $add_button, option_text.trim() );
+				}
+			});
 		},
 
 		/**
