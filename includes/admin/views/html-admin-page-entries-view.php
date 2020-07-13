@@ -44,7 +44,7 @@ $trash_link = wp_nonce_url(
 							</span>
 							<?php do_action( 'everest_forms_after_entry_details_hndle', $entry ); ?>
 							<a href="#" class="everest-forms-empty-field-toggle">
-								<?php echo $hide_empty ? esc_html__( 'Show Empty Fields', 'everest-forms' ) : esc_html__( 'Hide Empty Fields', 'everest-forms' ); ?>
+								<?php $hide_empty ? esc_html_e( 'Show Empty Fields', 'everest-forms' ) : esc_html_e( 'Hide Empty Fields', 'everest-forms' ); ?>
 							</a>
 						</h2>
 						<div class="inside">
@@ -162,6 +162,14 @@ $trash_link = wp_nonce_url(
 									<strong><?php echo date_i18n( esc_html__( 'M j, Y @ g:ia', 'everest-forms' ), strtotime( $entry->date_created ) + ( get_option( 'gmt_offset' ) * 3600 ) ); // phpcs:ignore WordPress.Security.EscapeOutput ?> </strong>
 								</p>
 
+								<?php if ( ! empty( $entry->date_modified ) ) : ?>
+									<p class="everest-forms-entry-modified">
+										<span class="dashicons dashicons-calendar"></span>
+										<?php esc_html_e( 'Modified:', 'everest-forms' ); ?>
+										<strong><?php echo date_i18n( esc_html__( 'M j, Y @ g:ia', 'everest-forms' ), strtotime( $entry->date_modified ) + ( get_option( 'gmt_offset' ) * 3600 ) ); // phpcs:ignore WordPress.Security.EscapeOutput ?> </strong>
+									</p>
+								<?php endif; ?>
+
 								<?php if ( ! empty( $entry->user_id ) && 0 !== $entry->user_id ) : ?>
 									<p class="everest-forms-entry-user">
 										<span class="dashicons dashicons-admin-users"></span>
@@ -209,6 +217,7 @@ $trash_link = wp_nonce_url(
 							</div>
 
 							<div id="major-publishing-actions">
+								<?php do_action( 'everest_forms_entry_details_sidebar_action', $entry, $form_data ); ?>
 								<div id="delete-action">
 									<a class="submitdelete" aria-label="<?php echo esc_attr__( 'Move to trash', 'everest-forms' ); ?>" href="<?php echo esc_url( $trash_link ); ?>"><?php esc_html_e( 'Move to trash', 'everest-forms' ); ?></a>
 								</div>

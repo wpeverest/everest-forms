@@ -2009,10 +2009,8 @@ add_action( 'everest_forms_cleanup_logs', 'evf_cleanup_logs' );
  * @return bool
  */
 function evf_is_tablet() {
-	$useragent = $_SERVER['HTTP_USER_AGENT'];
-	return false !== stripos( $useragent, 'tablet' ) || false !== stripos( $useragent, 'tab' );
+	return false !== stripos( evf_get_user_agent(), 'tablet' ) || false !== stripos( evf_get_user_agent(), 'tab' );
 }
-
 
 /**
  * Get user device from user agent from HTTP user agent.
@@ -2023,11 +2021,11 @@ function evf_is_tablet() {
  */
 function evf_get_user_device() {
 	if ( evf_is_tablet() ) {
-		return 'Tablet';
+		return esc_html_e( 'Tablet', 'everest-forms' );
 	} elseif ( wp_is_mobile() ) {
-		return 'Mobile';
+		return esc_html_e( 'Mobile', 'everest-forms' );
 	} else {
-		return 'Desktop';
+		return esc_html_e( 'Desktop', 'everest-forms' );
 	}
 }
 
@@ -2076,7 +2074,7 @@ function evf_date_range( $first, $last = '', $step = '+1 day', $format = 'Y/m/d'
 	$last    = strtotime( $last );
 
 	while ( $current <= $last ) {
-		$dates[] = date( $format, $current );
+		$dates[] = date_i18n( $format, $current );
 		$current = strtotime( $step, $current );
 	}
 

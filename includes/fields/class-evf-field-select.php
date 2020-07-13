@@ -69,6 +69,78 @@ class EVF_Field_Select extends EVF_Form_Fields {
 	 */
 	public function init_hooks() {
 		add_action( 'everest_forms_shortcode_scripts', array( $this, 'load_assets' ) );
+		add_filter( 'everest_forms_field_properties_' . $this->type, array( $this, 'field_properties' ), 5, 3 );
+	}
+
+	/**
+	 * Define additional field properties.
+	 *
+	 * @since 1.7.0
+	 *
+	 * @param array $properties Field properties.
+	 * @param array $field      Field settings.
+	 * @param array $form_data  Form data and settings.
+	 *
+	 * @return array of additional field properties.
+	 */
+	public function field_properties( $properties, $field, $form_data ) {
+		// Define data.
+		$form_id  = absint( $form_data['id'] );
+		$field_id = $field['id'];
+		$choices  = $field['choices'];
+
+		// Remove primary input.
+		unset( $properties['inputs']['primary'] );
+
+		// Set input container (ul) properties.
+		$properties['input_container'] = array(
+			'class' => array( ! empty( $field['random'] ) ? 'everest-forms-randomize' : '' ),
+			'data'  => array(),
+			'id'    => "evf-{$form_id}-field_{$field_id}",
+			'attr'  => array(
+				'name' => "everest_forms[form_fields][{$field_id}]",
+			),
+		);
+
+		// Set input properties.
+		foreach ( $choices as $key => $choice ) {
+			$depth = isset( $choice['depth'] ) ? absint( $choice['depth'] ) : 1;
+
+			$properties['inputs'][ $key ] = array(
+				'container' => array(
+					'attr'  => array(),
+					'class' => array( "choice-{$key}", "depth-{$depth}" ),
+					'data'  => array(),
+					'id'    => '',
+				),
+				'label'     => array(
+					'attr'  => array(
+						'for' => "evf-{$form_id}-field_{$field_id}_{$key}",
+					),
+					'class' => array( 'everest-forms-field-label-inline' ),
+					'data'  => array(),
+					'id'    => '',
+					'text'  => evf_string_translation( $form_id, $field_id, $choice['label'], '-choice-' . $key ),
+				),
+				'attr'      => array(
+					'name'  => "everest_forms[form_fields][{$field_id}][]",
+					'value' => isset( $field['show_values'] ) ? $choice['value'] : $choice['label'],
+				),
+				'class'     => array( 'input-text' ),
+				'data'      => array(),
+				'id'        => "evf-{$form_id}-field_{$field_id}_{$key}",
+				'image'     => isset( $choice['image'] ) ? $choice['image'] : '',
+				'required'  => ! empty( $field['required'] ) ? 'required' : '',
+				'default'   => isset( $choice['default'] ),
+			);
+		}
+
+		// Required class for validation.
+		if ( ! empty( $field['required'] ) ) {
+			$properties['input_container']['class'][] = 'evf-field-required';
+		}
+
+		return $properties;
 	}
 
 	/**
@@ -160,17 +232,21 @@ class EVF_Field_Select extends EVF_Form_Fields {
 	 * @param array $form_data All Form Data.
 	 */
 	public function field_display( $field, $field_atts, $form_data ) {
-		// Setup and sanitize the necessary data.
-		$primary           = $field['properties']['inputs']['primary'];
+		// Define data.
+		$container         = $field['properties']['input_container'];
+		$choices           = $field['properties']['inputs'];
 		$field             = apply_filters( 'everest_forms_select_field_display', $field, $field_atts, $form_data );
 		$field_placeholder = ! empty( $field['placeholder'] ) ? evf_string_translation( $form_data['id'], $field['id'], $field['placeholder'], '-placeholder' ) : '';
-		$choices           = $field['choices'];
 		$has_default       = false;
+
+		if ( ! empty( $field['required'] ) ) {
+			$container['attr']['required'] = 'required';
+		}
 
 		// Enable enhanced select.
 		$plan = evf_get_license_plan();
 		if ( false !== $plan && ! empty( $field['enhanced_select'] ) && '1' === $field['enhanced_select'] ) {
-			$primary['class'][] = 'evf-enhanced-select';
+			$container['class'][] = 'evf-enhanced-select';
 		}
 
 		// Check to see if any of the options have selected by default.
@@ -183,9 +259,8 @@ class EVF_Field_Select extends EVF_Form_Fields {
 
 		// Primary select field.
 		printf(
-			"<select type='select' %s %s>",
-			evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			$primary['required'] // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			'<select %s>',
+			evf_html_attributes( $container['id'], $container['class'], $container['data'], $container['attr'] ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		);
 
 		// Optional placeholder.
@@ -194,17 +269,52 @@ class EVF_Field_Select extends EVF_Form_Fields {
 		}
 
 		// Build the select options.
-		foreach ( $choices as $key => $choice ) {
-			// Register string for translation.
-			$choice['label'] = evf_string_translation( $form_data['id'], $field['id'], $choice['label'], '-choices-' . $key );
+		foreach ( $choices as $choice ) {
+			if ( empty( $choice['container'] ) ) {
+				continue;
+			}
 
-			$selected = isset( $choice['default'] ) && empty( $field_placeholder ) ? '1' : '0';
-			$val      = isset( $field['show_values'] ) ? esc_attr( $choice['value'] ) : esc_attr( $choice['label'] );
+			// Conditional logic.
+			if ( isset( $choices['primary'] ) ) {
+				$choice['attr']['conditional_id'] = $choices['primary']['attr']['conditional_id'];
 
-			printf( '<option value="%s" %s>%s</option>', esc_attr( $val ), selected( '1', $selected, false ), esc_html( $choice['label'] ) );
+				if ( isset( $choices['primary']['attr']['conditional_rules'] ) ) {
+					$choice['attr']['conditional_rules'] = $choices['primary']['attr']['conditional_rules'];
+				}
+			}
+
+			printf(
+				'<option value="%s" %s>%s</option>',
+				esc_attr( $choice['attr']['value'] ),
+				selected( true, ! empty( $choice['default'] ) && empty( $field_placeholder ), false ),
+				esc_html( $choice['label']['text'] )
+			);
 		}
 
 		echo '</select>';
+	}
+
+	/**
+	 * Edit form field display on the entry back-end.
+	 *
+	 * @since 1.7.0
+	 *
+	 * @param array $entry_field Entry field data.
+	 * @param array $field       Field data.
+	 * @param array $form_data   Form data and settings.
+	 */
+	public function edit_form_field_display( $entry_field, $field, $form_data ) {
+		$value_choices = ! empty( $entry_field['value_raw'] ) ? $entry_field['value_raw'] : array();
+
+		$this->remove_field_choices_defaults( $field, $field['properties'] );
+
+		if ( is_array( $value_choices ) ) {
+			foreach ( $value_choices as $input => $single_value ) {
+				$field['properties'] = $this->get_single_field_property_value( $single_value, sanitize_key( $input ), $field['properties'], $field );
+			}
+		}
+
+		$this->field_display( $field, null, $form_data );
 	}
 
 	/**
@@ -218,10 +328,16 @@ class EVF_Field_Select extends EVF_Form_Fields {
 	 * @param string $meta_key     Field meta key.
 	 */
 	public function format( $field_id, $field_submit, $form_data, $meta_key ) {
-		$field     = $form_data['form_fields'][ $field_id ];
-		$name      = make_clickable( $field['label'] );
-		$value_raw = sanitize_text_field( $field_submit );
-		$value     = '';
+		$field = $form_data['form_fields'][ $field_id ];
+		$name  = make_clickable( $field['label'] );
+		$value = array();
+
+		// Convert field value into to array.
+		if ( ! is_array( $field_submit ) ) {
+			$field_submit = array( $field_submit );
+		}
+
+		$value_raw = evf_sanitize_array_combine( $field_submit );
 
 		$data = array(
 			'name'      => $name,
@@ -236,14 +352,16 @@ class EVF_Field_Select extends EVF_Form_Fields {
 		// If show_values is true, that means values posted are the raw values
 		// and not the labels. So we need to get the label values.
 		if ( ! empty( $field['show_values'] ) && '1' === $field['show_values'] ) {
-			foreach ( $field['choices'] as $choice ) {
-				if ( $choice['value'] === $field_submit ) {
-					$value = $choice['label'];
-					break;
+			foreach ( $field_submit as $item ) {
+				foreach ( $field['choices'] as $choice ) {
+					if ( $item === $choice['value'] ) {
+						$value[] = $choice['label'];
+						break;
+					}
 				}
 			}
 
-			$data['value'] = sanitize_text_field( $value );
+			$data['value'] = ! empty( $value ) ? evf_sanitize_array_combine( $value ) : '';
 		} else {
 			$data['value'] = $value_raw;
 		}

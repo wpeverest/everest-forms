@@ -202,17 +202,17 @@ function evf_get_count_entries_by_last_entry( $form_id, $last_entry ) {
  *
  * @since 1.7.0
  *
- * @param int $form_id			Form ID.
- * @param string $start_date	Start date.
- * @param string $end_date		End date.
+ * @param int    $form_id    Form ID.
+ * @param string $start_date Start date.
+ * @param string $end_date   End date.
  *
- * @return array				Entries.
+ * @return array of entries by form ID.
  */
 function evf_get_entries_by_form_id( $form_id, $start_date = '', $end_date = '' ) {
 	global $wpdb;
 
-	$query = array();
-	$query[] = "SELECT * FROM {$wpdb->prefix}evf_entries WHERE form_id={$form_id}";
+	$query   = array();
+	$query[] = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}evf_entries WHERE form_id=%s", $form_id );
 
 	if ( ! empty( $start_date ) ) {
 		$query[] = $wpdb->prepare( 'AND date_created  >= %s', $start_date );
@@ -222,6 +222,7 @@ function evf_get_entries_by_form_id( $form_id, $start_date = '', $end_date = '' 
 		$query[] = $wpdb->prepare( 'AND date_created  <= %s', $end_date );
 	}
 
+	// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 	$results = $wpdb->get_results( implode( ' ', $query ), ARRAY_A );
 
 	return $results;

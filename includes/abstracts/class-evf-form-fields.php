@@ -98,6 +98,7 @@ abstract class EVF_Form_Fields {
 		add_action( 'everest_forms_builder_fields_preview_' . $this->type, array( $this, 'field_preview' ) );
 		add_action( 'wp_ajax_everest_forms_new_field_' . $this->type, array( $this, 'field_new' ) );
 		add_action( 'everest_forms_display_field_' . $this->type, array( $this, 'field_display' ), 10, 3 );
+		add_action( 'everest_forms_display_edit_form_field_' . $this->type, array( $this, 'edit_form_field_display' ), 10, 3 );
 		add_action( 'everest_forms_process_validate_' . $this->type, array( $this, 'validate' ), 10, 3 );
 		add_action( 'everest_forms_process_format_' . $this->type, array( $this, 'format' ), 10, 4 );
 		add_filter( 'everest_forms_field_properties', array( $this, 'field_prefill_value_property' ), 10, 3 );
@@ -1346,6 +1347,127 @@ abstract class EVF_Form_Fields {
 	 * @param array $form_data All Form Data.
 	 */
 	public function field_display( $field, $field_atts, $form_data ) {}
+
+	/**
+	 * Edit form field display on the entry back-end.
+	 *
+	 * @since 1.7.0
+	 *
+	 * @param array $entry_field Entry field data.
+	 * @param array $field       Field data.
+	 * @param array $form_data   Form data and settings.
+	 */
+	public function edit_form_field_display( $entry_field, $field, $form_data ) {
+		$value = isset( $entry_field['value'] ) ? $entry_field['value'] : '';
+
+		if ( '' !== $value ) {
+			$field['properties'] = $this->get_single_field_property_value( $value, 'primary', $field['properties'], $field );
+		}
+
+		$this->field_display( $field, null, $form_data );
+	}
+
+	/**
+	 * Get the value to prefill, based on field data and current properties.
+	 *
+	 * @since 1.7.0
+	 *
+	 * @param string $raw_value  Raw Value, always a string.
+	 * @param string $input      Subfield inside the field.
+	 * @param array  $properties Field properties.
+	 * @param array  $field      Field specific data.
+	 *
+	 * @return array Modified field properties.
+	 */
+	public function get_single_field_property_value( $raw_value, $input, $properties, $field ) {
+		if ( ! is_string( $raw_value ) ) {
+			return $properties;
+		}
+
+		$get_value = stripslashes( sanitize_text_field( $raw_value ) );
+
+		if ( ! empty( $field['choices'] ) && is_array( $field['choices'] ) ) {
+			$properties = $this->get_single_field_property_value_choices( $get_value, $properties, $field );
+		} else {
+			if (
+				! empty( $input ) &&
+				isset( $properties['inputs'][ $input ] )
+			) {
+				$properties['inputs'][ $input ]['attr']['value'] = $get_value;
+
+				// Update data attributes depending on the field type.
+				if ( isset( $field['type'] ) && 'range-slider' === $field['type'] ) {
+					$properties['inputs'][ $input ]['data']['from'] = $get_value;
+				}
+			}
+		}
+
+		return $properties;
+	}
+
+	/**
+	 * Get the value to prefill for choices section, based on field data and current properties.
+	 *
+	 * @since 1.7.0
+	 *
+	 * @param string $get_value  Requested value.
+	 * @param array  $properties Field properties.
+	 * @param array  $field      Field specific data.
+	 *
+	 * @return array Modified field properties.
+	 */
+	protected function get_single_field_property_value_choices( $get_value, $properties, $field ) {
+		$default_key = null;
+
+		// For fields with normal choices, we need dafault key.
+		foreach ( $field['choices'] as $choice_key => $choice_arr ) {
+			$choice_value_key = isset( $field['show_values'] ) ? 'value' : 'label';
+			if (
+				isset( $choice_arr[ $choice_value_key ] ) &&
+				strtoupper( sanitize_text_field( $choice_arr[ $choice_value_key ] ) ) === strtoupper( $get_value )
+			) {
+				$default_key = $choice_key;
+				break;
+			}
+		}
+
+		// Redefine selected choice.
+		if ( null !== $default_key ) {
+			foreach ( $field['choices'] as $choice_key => $choice_arr ) {
+				if ( $choice_key === $default_key ) {
+					$properties['inputs'][ $choice_key ]['default']              = true;
+					$properties['inputs'][ $choice_key ]['container']['class'][] = 'everest-forms-selected';
+					break;
+				}
+			}
+		}
+
+		return $properties;
+	}
+
+	/**
+	 * Remove all admin-defined defaults from choices-related fields only.
+	 *
+	 * @since 1.7.0
+	 *
+	 * @param array $field      Field data and settings.
+	 * @param array $properties Field Properties to be modified.
+	 */
+	protected function remove_field_choices_defaults( $field, &$properties ) {
+		if ( ! empty( $field['choices'] ) ) {
+			array_walk_recursive(
+				$properties['inputs'],
+				function ( &$value, $key ) {
+					if ( 'default' === $key ) {
+						$value = false;
+					}
+					if ( 'everest-forms-selected' === $value ) {
+						$value = '';
+					}
+				}
+			);
+		}
+	}
 
 	/**
 	 * Display field input errors if present.

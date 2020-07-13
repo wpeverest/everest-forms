@@ -404,6 +404,27 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 	}
 
 	/**
+	 * Edit form field display on the entry back-end.
+	 *
+	 * @since 1.7.0
+	 *
+	 * @param array $entry_field Entry field data.
+	 * @param array $field       Field data.
+	 * @param array $form_data   Form data and settings.
+	 */
+	public function edit_form_field_display( $entry_field, $field, $form_data ) {
+		$value_choices = ! empty( $entry_field['value_raw'] ) ? $entry_field['value_raw'] : array();
+
+		$this->remove_field_choices_defaults( $field, $field['properties'] );
+
+		foreach ( $value_choices as $input => $single_value ) {
+			$field['properties'] = $this->get_single_field_property_value( $single_value, sanitize_key( $input ), $field['properties'], $field );
+		}
+
+		$this->field_display( $field, null, $form_data );
+	}
+
+	/**
 	 * Validates field on form submit.
 	 *
 	 * @since 1.6.0

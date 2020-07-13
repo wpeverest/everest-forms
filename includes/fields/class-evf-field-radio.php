@@ -335,6 +335,27 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 	}
 
 	/**
+	 * Edit form field display on the entry back-end.
+	 *
+	 * @since 1.7.0
+	 *
+	 * @param array $entry_field Entry field data.
+	 * @param array $field       Field data.
+	 * @param array $form_data   Form data and settings.
+	 */
+	public function edit_form_field_display( $entry_field, $field, $form_data ) {
+		$value = isset( $entry_field['value_raw'] ) ? $entry_field['value_raw'] : '';
+
+		$this->remove_field_choices_defaults( $field, $field['properties'] );
+
+		if ( '' !== $value ) {
+			$field['properties'] = $this->get_single_field_property_value( $value, 'primary', $field['properties'], $field );
+		}
+
+		$this->field_display( $field, null, $form_data );
+	}
+
+	/**
 	 * Formats and sanitizes field.
 	 *
 	 * @since 1.0.0
