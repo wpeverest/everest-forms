@@ -27,7 +27,7 @@
     "babel-preset-env": "1.7.0",
     "cross-env": "7.0.2",
     "eslint": "7.4.0",
-    "grunt": "1.2.0",
+    "grunt": "1.2.1",
     "grunt-contrib-compress": "1.6.0",
     "grunt-contrib-concat": "1.0.1",
     "grunt-contrib-cssmin": "3.0.0",
