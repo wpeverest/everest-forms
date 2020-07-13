@@ -215,7 +215,6 @@
 			EVFPanelBuilder.bindToggleHandleActions();
 			EVFPanelBuilder.bindLabelEditInputActions();
 			EVFPanelBuilder.bindSyncedInputActions();
-			EVFPanelBuilder.bindBulkOptionActions();
 			EVFPanelBuilder.init_datepickers();
 
 			// Fields Panel.

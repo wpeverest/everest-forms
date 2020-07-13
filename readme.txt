@@ -4,7 +4,7 @@ Tags: contact form, forms, form builder, contact, custom form
 Requires at least: 5.0
 Tested up to: 5.4
 Requires PHP: 5.4
-Stable tag: 1.6.7
+Stable tag: 1.7.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -148,6 +148,24 @@ Yes, we do. Check out this [Getting Started Videos](https://docs.wpeverest.com/d
 Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/everest-forms/) :)
 
 == Changelog ==
+
+= 1.7.0 - 13-07-2020 =
+* Enhancement - Add support for form restriction addon.
+* Added - Support for bulk options to Checkbox, Multiple Choice and Dropdown fields.
+* Added - Introduce `get_multiple` method in `EVF_Form_Handler` to fetch multiple forms.
+* Fix - Number Field validation issue with conditional logic.
+* Fix - Modify logic for fetching unread and starred entries.
+* Fix - Date/Time field to use local date instead of default UTC.
+* Fix - Export of field data with HTML encoded special characters.
+* Fix - The field placeholder & default value 0 (zero) does not display on the frontend.
+* Tweak - Updated jQuery Validation JS library to v1.19.2.
+* Tweak - Parameters for reCAPTCHA URL filter to change language code in v2 type.
+* Tweak - Preserve entry status so they are restored correctly after moving to trash.
+* Tweak - Add trigger `everest_forms_loaded` to notify plugins that the core was loaded.
+* Tweak - Introduced `everest_forms_logged_in_user_recaptcha_disabled` filter to disable reCAPTCHA check for logged-in user.
+* Tweak - Modify duplicated action hook `everest_forms_general_settings` to `everest_forms_inline_general_settings` for builder general settings.
+* Dev - Introduced `everest_forms_total_entries_count` filter to update total entries count in list table views.
+* Dev - Introduced `everest_forms_{$export_type}_export_delimiter` filter to change separator string while exporting CSV files.
 
 = 1.6.7 - 17-05-2020 =
 * Feature - Added a new Pro field Range Slider.

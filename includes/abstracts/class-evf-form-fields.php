@@ -735,7 +735,7 @@ abstract class EVF_Form_Fields {
 				$bulk_add_enabled           = apply_filters( 'evf_bulk_add_enabled', true );
 				$licensed                   = ( false === evf_get_license_plan() ) ? false : true;
 				$upgradable_feature_class   = ( true === $licensed ) ? '' : 'evf-upgradable-feature';
-				$bulk_options_toggle_handle = sprintf( '<a class="evf-toggle-bulk-options %s" href="#">%s</a>', esc_attr( $upgradable_feature_class ), esc_html__( 'Bulk Add', 'everest-forms' ) );
+				$bulk_options_toggle_handle = sprintf( '<a href="#" class="evf-toggle-bulk-options after-label-description %s">%s</a>', esc_attr( $upgradable_feature_class ), esc_html__( 'Bulk Add', 'everest-forms' ) );
 
 				// Field label.
 				$field_label   = $this->field_element(
