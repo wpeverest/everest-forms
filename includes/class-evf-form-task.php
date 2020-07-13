@@ -586,7 +586,7 @@ class EVF_Form_Task {
 			$email['message']        = ! empty( $notification['evf_email_message'] ) ? $notification['evf_email_message'] : '{all_fields}';
 			$email                   = apply_filters( 'everest_forms_entry_email_atts', $email, $fields, $entry, $form_data );
 
-			$attachments = array();
+			$attachment = '';
 
 			// Create new email.
 			$emails = new EVF_Emails();
