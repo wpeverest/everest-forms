@@ -2085,11 +2085,11 @@ function evf_is_tablet() {
  */
 function evf_get_user_device() {
 	if ( evf_is_tablet() ) {
-		return esc_html_e( 'Tablet', 'everest-forms' );
+		return esc_html__( 'Tablet', 'everest-forms' );
 	} elseif ( wp_is_mobile() ) {
-		return esc_html_e( 'Mobile', 'everest-forms' );
+		return esc_html__( 'Mobile', 'everest-forms' );
 	} else {
-		return esc_html_e( 'Desktop', 'everest-forms' );
+		return esc_html__( 'Desktop', 'everest-forms' );
 	}
 }
 
