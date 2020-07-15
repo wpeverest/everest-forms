@@ -1,6 +1,6 @@
 == Changelog ==
 
-= 1.7.0 - 13-07-2020 =
+= 1.7.0 - 15-07-2020 =
 * Enhancement - Add support for form restriction addon.
 * Added - Support for bulk options to Checkbox, Multiple Choice and Dropdown fields.
 * Added - Introduce `get_multiple` method in `EVF_Form_Handler` to fetch multiple forms.

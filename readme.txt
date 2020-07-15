@@ -55,11 +55,15 @@ Check [documentation](http://docs.wpeverest.com/docs/everest-forms/)
 
 ### Premium Features and Addons
 
-* 11 Advanced fields: **Image upload, File upload, Hidden Field, Phone, Password, Custom HTML, Section Title, Signature, Address, Country, Rating**
+* 13 Advanced fields: **Image upload, File upload, Hidden Field, Phone, Password, Custom HTML, Section Title, Signature, Address, Country, Rating, Range Slider, Privacy policy**
 
 * [Style Customizer](https://wpeverest.com/wordpress-plugins/everest-forms/style-customizer/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) - Allows you to make form design changes like color, fonts, spacing, background, borders, alignments and much more without touching any code.
 
-* [MailChimp](https://wpeverest.com/wordpress-plugins/everest-forms/mailchimp/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) - Allows your users to subscribe to MailChimp through form submission via Everest Forms.
+* [MailChimp](https://wpeverest.com/wordpress-plugins/everest-forms/mailchimp/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) - Allows your users to subscribe to MailerLite through form submission via Everest Forms.
+
+* [MailerLite](https://wpeverest.com/wordpress-plugins/everest-forms/mailerlite/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) - Allows your users to subscribe to MailChimp through form submission via Everest Forms.
+
+* [ActiveCampaign](https://wpeverest.com/wordpress-plugins/everest-forms/activecampaign/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) - Allows your users to subscribe to ActiveCampaign through form submission via Everest Forms.
 
 * [ConvertKit](https://wpeverest.com/wordpress-plugins/everest-forms/convertkit/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) - Allows you to connect your form with ConvertKit to efficiently grow your business by generating more leads.
 
@@ -74,6 +78,8 @@ Check [documentation](http://docs.wpeverest.com/docs/everest-forms/)
 * [Multi-Part Forms](https://wpeverest.com/wordpress-plugins/everest-forms/multi-part-forms/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) - Allows you to make a stepwise form by breaking long or complex forms up into multiple parts/pages. Check [Detail guide](https://wpeverest.com/blog/wordpress-multi-step-form/)
 
 * [Custom Captcha](https://wpeverest.com/wordpress-plugins/everest-forms/captcha/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) - Allows you to add custom questions or math captcha to your form and fight back against spam form submissions.
+
+* [Form Restriction](https://wpeverest.com/wordpress-plugins/everest-forms/form-restriction/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) - Allows you to easily control and restrict by limiting entries, scheduling submission dates, password protection for the form submissions.
 
 * [Conditional Logic](https://wpeverest.com/wordpress-plugins/everest-forms/conditional-logic/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) - Allows you to conditionally hide or show form fields based on user's interaction with other form fields.
 
@@ -149,7 +155,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 1.7.0 - 13-07-2020 =
+= 1.7.0 - 15-07-2020 =
 * Enhancement - Add support for form restriction addon.
 * Added - Support for bulk options to Checkbox, Multiple Choice and Dropdown fields.
 * Added - Introduce `get_multiple` method in `EVF_Form_Handler` to fetch multiple forms.
