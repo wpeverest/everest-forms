@@ -82,6 +82,8 @@ class EVF_Smart_Tags {
 						}
 					} elseif ( isset( $value['number_of_rating'], $value['value'] ) ) {
 						$value = (string) $value['value'] . '/' . (string) $value['number_of_rating'];
+					} else {
+						$value = $value[0];
 					}
 
 					$content = str_replace( '{field_id="' . $field_id . '"}', $value, $content );
