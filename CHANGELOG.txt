@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 1.7.0.1 - 20-07-2020 =
+* Fix - Form status {de}active toggle button.
+* Fix - reCAPTCHA working only for logged in user.
+* Tweak - Modified `everest_forms_logged_in_user_recaptcha_disabled` with `everest_forms_recaptcha_disabled` hook.
+
 = 1.7.0 - 15-07-2020 =
 * Enhancement - Add support for form restriction addon.
 * Added - Support for bulk options to Checkbox, Multiple Choice and Dropdown fields.
