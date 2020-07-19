@@ -4,7 +4,7 @@ Tags: contact form, forms, form builder, contact, custom form
 Requires at least: 5.0
 Tested up to: 5.4
 Requires PHP: 5.4
-Stable tag: 1.7.0
+Stable tag: 1.7.0.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -154,6 +154,13 @@ Yes, we do. Check out this [Getting Started Videos](https://docs.wpeverest.com/d
 Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/everest-forms/) :)
 
 == Changelog ==
+
+= 1.7.0.1 - 20-07-2020 =
+* Fix - Form status {de}active toggle button.
+* Fix - reCAPTCHA working only for logged in user.
+* Fix - Email subject while using select field smart tag.
+* Fix - Select field placeholder not displayed in enhanced select and not selected in default select.
+* Tweak - Modified `everest_forms_logged_in_user_recaptcha_disabled` with `everest_forms_recaptcha_disabled` hook.
 
 = 1.7.0 - 15-07-2020 =
 * Enhancement - Add support for form restriction addon.

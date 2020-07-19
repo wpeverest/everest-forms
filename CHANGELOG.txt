@@ -4,6 +4,7 @@
 * Fix - Form status {de}active toggle button.
 * Fix - reCAPTCHA working only for logged in user.
 * Fix - Email subject while using select field smart tag.
+* Fix - Select field placeholder not displayed in enhanced select and not selected in default select.
 * Tweak - Modified `everest_forms_logged_in_user_recaptcha_disabled` with `everest_forms_recaptcha_disabled` hook.
 
 = 1.7.0 - 15-07-2020 =
