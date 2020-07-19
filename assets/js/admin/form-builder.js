@@ -2043,7 +2043,7 @@ jQuery( function ( $ ) {
 	});
 
 	// Toggle form status.
-	$( document.body ).on( 'change', '.everest-forms_page_evf-builder .everest-forms-toggle-form input', function(e) {
+	$( document ).on( 'change', '.everest-forms_page_evf-builder .everest-forms-toggle-form input', function(e) {
 		e.stopPropagation();
 		$.post( evf_data.ajax_url, {
 			action: 'everest_forms_enabled_form',
