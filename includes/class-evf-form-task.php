@@ -169,7 +169,7 @@ class EVF_Form_Task {
 			}
 
 			// reCAPTCHA check.
-			if ( is_user_logged_in() && ! apply_filters( 'everest_forms_logged_in_user_recaptcha_disabled', false ) ) {
+			if ( ! apply_filters( 'everest_forms_logged_in_user_recaptcha_disabled', false ) ) {
 				$recaptcha_type      = get_option( 'everest_forms_recaptcha_type', 'v2' );
 				$invisible_recaptcha = get_option( 'everest_forms_recaptcha_v2_invisible', 'no' );
 
