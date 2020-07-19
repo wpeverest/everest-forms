@@ -2042,17 +2042,6 @@ jQuery( function ( $ ) {
 		get_all_available_field( allowed_field, type , $( this ) );
 	});
 
-	// Toggle form status.
-	$( document ).on( 'change', '.everest-forms_page_evf-builder .everest-forms-toggle-form input', function(e) {
-		e.stopPropagation();
-		$.post( evf_data.ajax_url, {
-			action: 'everest_forms_enabled_form',
-			security: evf_data.evf_enabled_form,
-			form_id: $( this ).data( 'form_id' ),
-			enabled: $( this ).attr( 'checked' ) ? 1 : 0
-		});
-	});
-
 	$( document.body ).on('click', '.smart-tag-field', function(e) {
 
 		var field_id    = $( this ).data('field_id'),
@@ -2084,6 +2073,18 @@ jQuery( function ( $ ) {
 		}
 	});
 
+	// Toggle form status.
+	$( document ).on( 'change', '.everest-forms_page_evf-builder .everest-forms-toggle-form input', function(e) {
+		e.stopPropagation();
+		$.post( evf_data.ajax_url, {
+			action: 'everest_forms_enabled_form',
+			security: evf_data.evf_enabled_form,
+			form_id: $( this ).data( 'form_id' ),
+			enabled: $( this ).attr( 'checked' ) ? 1 : 0
+		});
+	});
+
+	// Toggle email notification.
 	$( document ).on( 'change', '.evf-content-email-settings .evf-toggle-switch input', function(e) {
 		var $this = $( this ),
 			value = $this.prop( 'checked' );
