@@ -251,7 +251,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 
 		// Check to see if any of the options have selected by default.
 		foreach ( $choices as $choice ) {
-			if ( isset( $choice['default'] ) ) {
+			if ( ! empty( $choice['default'] ) ) {
 				$has_default = true;
 				break;
 			}
