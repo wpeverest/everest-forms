@@ -3,6 +3,7 @@
 = 1.7.0.1 - 20-07-2020 =
 * Fix - Form status {de}active toggle button.
 * Fix - reCAPTCHA working only for logged in user.
+* Fix - Email subject while using select field smart tag.
 * Tweak - Modified `everest_forms_logged_in_user_recaptcha_disabled` with `everest_forms_recaptcha_disabled` hook.
 
 = 1.7.0 - 15-07-2020 =
