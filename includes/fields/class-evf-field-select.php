@@ -92,9 +92,9 @@ class EVF_Field_Select extends EVF_Form_Fields {
 		// Remove primary input.
 		unset( $properties['inputs']['primary'] );
 
-		// Set input container (ul) properties.
+		// Set input container (<select>) properties.
 		$properties['input_container'] = array(
-			'class' => array( ! empty( $field['random'] ) ? 'everest-forms-randomize' : '' ),
+			'class' => array(),
 			'data'  => array(),
 			'id'    => "evf-{$form_id}-field_{$field_id}",
 			'attr'  => array(
@@ -247,6 +247,11 @@ class EVF_Field_Select extends EVF_Form_Fields {
 		$plan = evf_get_license_plan();
 		if ( false !== $plan && ! empty( $field['enhanced_select'] ) && '1' === $field['enhanced_select'] ) {
 			$container['class'][] = 'evf-enhanced-select';
+
+			// Set placeholder for select2.
+			if ( ! empty( $field_placeholder ) ) {
+				$container['data']['placeholder'] = esc_attr( $field_placeholder );
+			}
 		}
 
 		// Check to see if any of the options have selected by default.
