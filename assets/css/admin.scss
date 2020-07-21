@@ -4457,17 +4457,25 @@ body.everest-forms-builder {
 
 	.everest-forms-file-upload {
 		margin: 1em 0;
+		position: relative;
+		z-index: 1;
 
 		input {
-			display: none;
+			opacity: 0;
+			z-index: 2;
+			width: 400px;
+			height: 46px;
 		}
 
 		label {
 			display: inline-block;
 			padding: 4px;
 			min-width: 400px;
+			position: absolute;
+			left: 0;
 			border-radius: 4px;
 			border: 1px solid $color_gray-lighten;
+			z-index: -1;
 		}
 
 		.everest-forms-btn {
