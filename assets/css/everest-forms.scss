@@ -741,11 +741,21 @@ div.evf-gutenberg-form-selector .evf-frontend-row button[type='submit']:disabled
 
 /* Small devices */
 @media only screen and (max-width: 600px) {
-	.evf-container .evf-field > * {
-		max-width: 100%;
-	}
-	.evf-container .evf-field:not(.evf-field-phone) {
-		overflow-x: hidden;
+	.evf-container {
+		.evf-field {
+			> * {
+				max-width: 100%;
+			}
+
+			&:not(.evf-field-phone) {
+				overflow-x: hidden;
+			}
+
+			&.evf-field,
+			&.evf-field-likert {
+				overflow: auto;
+			}
+		}
 	}
 }
 
