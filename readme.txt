@@ -4,7 +4,7 @@ Tags: contact form, forms, form builder, contact, custom form
 Requires at least: 5.0
 Tested up to: 5.4
 Requires PHP: 5.4
-Stable tag: 1.7.0.1
+Stable tag: 1.7.0.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -154,6 +154,12 @@ Yes, we do. Check out this [Getting Started Videos](https://docs.wpeverest.com/d
 Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/everest-forms/) :)
 
 == Changelog ==
+
+= 1.7.0.2 - 03-08-2020 =
+* Fix - Conditional logic on select field.
+* Fix - Likert table scroll in responsive.
+* Fix - Drag and drop issue in tools page import form area.
+* Tweak - Upgrade URL to redirect to pricing page rather than product page.
 
 = 1.7.0.1 - 20-07-2020 =
 * Fix - Form status {de}active toggle button.
