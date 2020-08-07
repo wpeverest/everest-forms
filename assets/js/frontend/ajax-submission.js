@@ -53,9 +53,10 @@ jQuery( function( $ ) {
 						data: data
 					})
 					.done( function ( xhr, textStatus, errorThrown ) {
-						if ( 'undefined' !== typeof xhr.data.redirect_url ) {
+						var redirect_url = ( xhr.data && xhr.data.redirect_url ) ? xhr.data.redirect_url : '';
+						if ( redirect_url ) {
 							formTuple.trigger( 'reset' );
-							window.location = xhr.data.redirect_url;
+							window.location = redirect_url;
 							return;
 						}
 						if ( 'success' === xhr.data.response || true === xhr.success ) {
@@ -146,7 +147,8 @@ jQuery( function( $ ) {
 						formTuple.closest( '.everest-forms' ).prepend( '<div class="everest-forms-notice everest-forms-notice--error" role="alert">'+ everest_forms_ajax_submission_params.error  +'</div>' ).focus();
 					})
 					.always( function( xhr ) {
-						if ( 'undefined' === typeof xhr.data.redirect_url ) {
+						var redirect_url = ( xhr.data && xhr.data.redirect_url ) ? xhr.data.redirect_url : '';
+						if ( ! redirect_url && $( '.everest-forms-notice' ).length ) {
 							$( [document.documentElement, document.body] ).animate({
 								scrollTop: $( '.everest-forms-notice' ).offset().top
 							}, 800 );
