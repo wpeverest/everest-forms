@@ -33,7 +33,7 @@ $trash_link = wp_nonce_url(
 			<div id="post-body" class="metabox-holder columns-2">
 				<!-- Entry Fields metabox -->
 				<div id="post-body-content" style="position: relative;">
-					<div id="everest-forms-entry-fields" class="postbox">
+					<div id="everest-forms-entry-fields" class="stuffbox">
 						<h2 class="hndle">
 							<?php do_action( 'everest_forms_before_entry_details_hndle', $entry ); ?>
 							<span>
@@ -144,84 +144,84 @@ $trash_link = wp_nonce_url(
 				</div>
 				<!-- Entry Details metabox -->
 				<div id="postbox-container-1" class="postbox-container">
-					<div id="everest-forms-entry-details" class="postbox">
-						<h2 class="hndle">
-							<span><?php esc_html_e( 'Entry Details', 'everest-forms' ); ?></span>
-						</h2>
+					<div id="everest-forms-entry-details" class="stuffbox">
+						<h2><?php esc_html_e( 'Entry Details', 'everest-forms' ); ?></h2>
 						<div class="inside">
-							<div class="everest-forms-entry-details-meta">
-								<p class="everest-forms-entry-id">
-									<span class="dashicons dashicons-admin-network"></span>
-									<?php esc_html_e( 'Entry ID:', 'everest-forms' ); ?>
-									<strong><?php echo absint( $entry_id ); ?></strong>
-								</p>
+							<div id="submitbox" class="submitbox">
+								<div class="everest-forms-entry-details-meta">
+									<p class="everest-forms-entry-id">
+										<span class="dashicons dashicons-admin-network"></span>
+										<?php esc_html_e( 'Entry ID:', 'everest-forms' ); ?>
+										<strong><?php echo absint( $entry_id ); ?></strong>
+									</p>
 
-								<p class="everest-forms-entry-date">
-									<span class="dashicons dashicons-calendar"></span>
-									<?php esc_html_e( 'Submitted:', 'everest-forms' ); ?>
-									<strong><?php echo date_i18n( esc_html__( 'M j, Y @ g:ia', 'everest-forms' ), strtotime( $entry->date_created ) + ( get_option( 'gmt_offset' ) * 3600 ) ); // phpcs:ignore WordPress.Security.EscapeOutput ?> </strong>
-								</p>
-
-								<?php if ( ! empty( $entry->date_modified ) ) : ?>
-									<p class="everest-forms-entry-modified">
+									<p class="everest-forms-entry-date">
 										<span class="dashicons dashicons-calendar"></span>
-										<?php esc_html_e( 'Modified:', 'everest-forms' ); ?>
-										<strong><?php echo date_i18n( esc_html__( 'M j, Y @ g:ia', 'everest-forms' ), strtotime( $entry->date_modified ) + ( get_option( 'gmt_offset' ) * 3600 ) ); // phpcs:ignore WordPress.Security.EscapeOutput ?> </strong>
+										<?php esc_html_e( 'Submitted:', 'everest-forms' ); ?>
+										<strong><?php echo date_i18n( esc_html__( 'M j, Y @ g:ia', 'everest-forms' ), strtotime( $entry->date_created ) + ( get_option( 'gmt_offset' ) * 3600 ) ); // phpcs:ignore WordPress.Security.EscapeOutput ?> </strong>
 									</p>
-								<?php endif; ?>
 
-								<?php if ( ! empty( $entry->user_id ) && 0 !== $entry->user_id ) : ?>
-									<p class="everest-forms-entry-user">
-										<span class="dashicons dashicons-admin-users"></span>
-										<?php
-										esc_html_e( 'User:', 'everest-forms' );
-										$user      = get_userdata( $entry->user_id );
-										$user_name = ! empty( $user->display_name ) ? $user->display_name : $user->user_login;
-										// phpcs:ignore WordPress.WP.GlobalVariablesOverride
-										$user_url = add_query_arg(
-											array(
-												'user_id' => absint( $user->ID ),
-											),
-											admin_url( 'user-edit.php' )
-										);
-										?>
-										<strong><a href="<?php echo esc_url( $user_url ); ?>"><?php echo esc_html( $user_name ); ?></a></strong>
-									</p>
-								<?php endif; ?>
+									<?php if ( ! empty( $entry->date_modified ) ) : ?>
+										<p class="everest-forms-entry-modified">
+											<span class="dashicons dashicons-calendar"></span>
+											<?php esc_html_e( 'Modified:', 'everest-forms' ); ?>
+											<strong><?php echo date_i18n( esc_html__( 'M j, Y @ g:ia', 'everest-forms' ), strtotime( $entry->date_modified ) + ( get_option( 'gmt_offset' ) * 3600 ) ); // phpcs:ignore WordPress.Security.EscapeOutput ?> </strong>
+										</p>
+									<?php endif; ?>
 
-								<?php if ( ! empty( $entry->user_ip_address ) ) : ?>
-									<p class="everest-forms-entry-ip">
-										<span class="dashicons dashicons-location"></span>
-										<?php esc_html_e( 'User IP:', 'everest-forms' ); ?>
-										<strong><?php echo esc_html( $entry->user_ip_address ); ?></strong>
-									</p>
-								<?php endif; ?>
+									<?php if ( ! empty( $entry->user_id ) && 0 !== $entry->user_id ) : ?>
+										<p class="everest-forms-entry-user">
+											<span class="dashicons dashicons-admin-users"></span>
+											<?php
+											esc_html_e( 'User:', 'everest-forms' );
+											$user      = get_userdata( $entry->user_id );
+											$user_name = ! empty( $user->display_name ) ? $user->display_name : $user->user_login;
+											// phpcs:ignore WordPress.WP.GlobalVariablesOverride
+											$user_url = add_query_arg(
+												array(
+													'user_id' => absint( $user->ID ),
+												),
+												admin_url( 'user-edit.php' )
+											);
+											?>
+											<strong><a href="<?php echo esc_url( $user_url ); ?>"><?php echo esc_html( $user_name ); ?></a></strong>
+										</p>
+									<?php endif; ?>
 
-								<?php if ( ! empty( $entry->referer ) ) : ?>
-									<p class="everest-forms-entry-referer">
-										<span class="dashicons dashicons-admin-links"></span>
-										<?php esc_html_e( 'Referer Link:', 'everest-forms' ); ?>
-										<strong><a href="<?php echo esc_url( $entry->referer ); ?>" target="_blank"><?php esc_html_e( 'View', 'everest-forms' ); ?></a></strong>
-									</p>
-								<?php endif; ?>
+									<?php if ( ! empty( $entry->user_ip_address ) ) : ?>
+										<p class="everest-forms-entry-ip">
+											<span class="dashicons dashicons-location"></span>
+											<?php esc_html_e( 'User IP:', 'everest-forms' ); ?>
+											<strong><?php echo esc_html( $entry->user_ip_address ); ?></strong>
+										</p>
+									<?php endif; ?>
 
-								<?php if ( apply_filters( 'everest_forms_entry_details_sidebar_details_status', false, $entry, $form_data ) ) : ?>
-									<p class="everest-forms-entry-status">
-										<span class="dashicons dashicons-category"></span>
-										<?php esc_html_e( 'Status:', 'everest-forms' ); ?>
-										<strong><?php echo ! empty( $entry->status ) ? ucwords( sanitize_text_field( $entry->status ) ) : esc_html__( 'Completed', 'everest-forms' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></strong>
-									</p>
-								<?php endif; ?>
+									<?php if ( ! empty( $entry->referer ) ) : ?>
+										<p class="everest-forms-entry-referer">
+											<span class="dashicons dashicons-admin-links"></span>
+											<?php esc_html_e( 'Referer Link:', 'everest-forms' ); ?>
+											<strong><a href="<?php echo esc_url( $entry->referer ); ?>" target="_blank"><?php esc_html_e( 'View', 'everest-forms' ); ?></a></strong>
+										</p>
+									<?php endif; ?>
 
-								<?php do_action( 'everest_forms_entry_details_sidebar_details', $entry, $entry_meta, $form_data ); ?>
-							</div>
+									<?php if ( apply_filters( 'everest_forms_entry_details_sidebar_details_status', false, $entry, $form_data ) ) : ?>
+										<p class="everest-forms-entry-status">
+											<span class="dashicons dashicons-category"></span>
+											<?php esc_html_e( 'Status:', 'everest-forms' ); ?>
+											<strong><?php echo ! empty( $entry->status ) ? ucwords( sanitize_text_field( $entry->status ) ) : esc_html__( 'Completed', 'everest-forms' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></strong>
+										</p>
+									<?php endif; ?>
 
-							<div id="major-publishing-actions">
-								<?php do_action( 'everest_forms_entry_details_sidebar_action', $entry, $form_data ); ?>
-								<div id="delete-action">
-									<a class="submitdelete" aria-label="<?php echo esc_attr__( 'Move to trash', 'everest-forms' ); ?>" href="<?php echo esc_url( $trash_link ); ?>"><?php esc_html_e( 'Move to trash', 'everest-forms' ); ?></a>
+									<?php do_action( 'everest_forms_entry_details_sidebar_details', $entry, $entry_meta, $form_data ); ?>
 								</div>
-								<div class="clear"></div>
+
+								<div id="major-publishing-actions">
+									<?php do_action( 'everest_forms_entry_details_sidebar_action', $entry, $form_data ); ?>
+									<div id="delete-action">
+										<a class="submitdelete" aria-label="<?php echo esc_attr__( 'Move to trash', 'everest-forms' ); ?>" href="<?php echo esc_url( $trash_link ); ?>"><?php esc_html_e( 'Move to trash', 'everest-forms' ); ?></a>
+									</div>
+									<div class="clear"></div>
+								</div>
 							</div>
 						</div>
 					</div>
