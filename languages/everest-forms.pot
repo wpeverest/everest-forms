@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-08-03T10:17:54+00:00\n"
+"POT-Creation-Date: 2020-08-11T05:06:08+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: everest-forms\n"
@@ -1180,7 +1180,7 @@ msgid "Field"
 msgstr ""
 
 #: includes/admin/class-evf-admin-entries-table-list.php:297
-#: includes/admin/views/html-admin-page-entries-view.php:204
+#: includes/admin/views/html-admin-page-entries-view.php:203
 #: includes/admin/views/html-admin-page-tools-logs.php:33
 msgid "View"
 msgstr ""
@@ -1378,7 +1378,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: includes/admin/class-evf-admin-forms-table-list.php:369
-#: includes/admin/views/html-admin-page-entries-view.php:222
+#: includes/admin/views/html-admin-page-entries-view.php:221
 msgid "Move to trash"
 msgstr ""
 
@@ -1786,7 +1786,7 @@ msgstr ""
 
 #: includes/admin/settings/class-evf-settings-validation.php:97
 #: includes/class-evf-frontend-scripts.php:291
-#: includes/fields/class-evf-field-checkbox.php:444
+#: includes/fields/class-evf-field-checkbox.php:445
 msgid "You have exceeded number of allowed selections: {#}."
 msgstr ""
 
@@ -1831,7 +1831,7 @@ msgid "Add-ons list"
 msgstr ""
 
 #: includes/admin/views/html-admin-page-addons.php:77
-#: includes/admin/views/html-admin-page-entries-view.php:211
+#: includes/admin/views/html-admin-page-entries-view.php:210
 msgid "Status:"
 msgstr ""
 
@@ -1990,40 +1990,40 @@ msgstr ""
 msgid "Empty"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:149
+#: includes/admin/views/html-admin-page-entries-view.php:148
 msgid "Entry Details"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:155
+#: includes/admin/views/html-admin-page-entries-view.php:154
 msgid "Entry ID:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:161
+#: includes/admin/views/html-admin-page-entries-view.php:160
 msgid "Submitted:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:162
-#: includes/admin/views/html-admin-page-entries-view.php:169
+#: includes/admin/views/html-admin-page-entries-view.php:161
+#: includes/admin/views/html-admin-page-entries-view.php:168
 msgid "M j, Y @ g:ia"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:168
+#: includes/admin/views/html-admin-page-entries-view.php:167
 msgid "Modified:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:177
+#: includes/admin/views/html-admin-page-entries-view.php:176
 msgid "User:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:195
+#: includes/admin/views/html-admin-page-entries-view.php:194
 msgid "User IP:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:203
+#: includes/admin/views/html-admin-page-entries-view.php:202
 msgid "Referer Link:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:212
+#: includes/admin/views/html-admin-page-entries-view.php:211
 msgid "Completed"
 msgstr ""
 
