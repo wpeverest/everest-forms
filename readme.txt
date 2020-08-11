@@ -155,10 +155,11 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 1.7.0.2 - 03-08-2020 =
+= 1.7.0.2 - 11-08-2020 =
 * Fix - Conditional logic on select field.
 * Fix - Likert table scroll in responsive.
 * Fix - Drag and drop issue in tools page import form area.
+* Fix - Conditional logic required message while using on the checkbox.
 * Tweak - Upgrade URL to redirect to pricing page rather than product page.
 
 = 1.7.0.1 - 20-07-2020 =
