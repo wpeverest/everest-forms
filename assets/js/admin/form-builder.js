@@ -152,7 +152,7 @@
 			// Enable Perfect Scrollbar.
 			if ( 'undefined' !== typeof PerfectScrollbar ) {
 				var tab_content   = $( '.everest-forms-tab-content' ),
-					panel_setting = $( '#everest-forms-panel-settings .everest-forms-panel-sidebar' );
+					evf_panel = $( '.everest-forms-panel' );
 
 				if ( tab_content.length >= 1 ) {
 					window.evf_tab_scroller = new PerfectScrollbar( tab_content.selector, {
@@ -160,9 +160,14 @@
 					});
 				}
 
-				if ( panel_setting.length >= 1 ) {
-					window.evf_setting_scroller = new PerfectScrollbar( panel_setting.selector );
-				}
+				evf_panel.each(function(){
+					var section_panel = $(this);
+					var panel_id = section_panel.attr('id');
+
+					if (section_panel.find('.everest-forms-panel-sidebar').length >= 1) {
+						window.evf_setting_scroller = new PerfectScrollbar( $('#' + panel_id + ' .everest-forms-panel-sidebar ').selector );
+					}
+				});
 			}
 
 			// Enable Limit length.
