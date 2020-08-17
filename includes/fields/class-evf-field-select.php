@@ -94,7 +94,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 
 		// Set input container (<select>) properties.
 		$properties['input_container'] = array(
-			'class' => array(),
+			'class' => array( 'input-text' ),
 			'data'  => array(),
 			'id'    => "evf-{$form_id}-field_{$field_id}",
 			'attr'  => array(
@@ -126,10 +126,9 @@ class EVF_Field_Select extends EVF_Form_Fields {
 					'name'  => "everest_forms[form_fields][{$field_id}][]",
 					'value' => isset( $field['show_values'] ) ? $choice['value'] : $choice['label'],
 				),
-				'class'     => array( 'input-text' ),
+				'class'     => array(),
 				'data'      => array(),
 				'id'        => "evf-{$form_id}-field_{$field_id}_{$key}",
-				'image'     => isset( $choice['image'] ) ? $choice['image'] : '',
 				'required'  => ! empty( $field['required'] ) ? 'required' : '',
 				'default'   => isset( $choice['default'] ),
 			);
@@ -262,11 +261,19 @@ class EVF_Field_Select extends EVF_Form_Fields {
 			}
 		}
 
+		// Conditional logic.
+		if ( isset( $choices['primary'] ) ) {
+			$container['attr']['conditional_id'] = $choices['primary']['attr']['conditional_id'];
+
+			if ( isset( $choices['primary']['attr']['conditional_rules'] ) ) {
+				$container['attr']['conditional_rules'] = $choices['primary']['attr']['conditional_rules'];
+			}
+		}
+
 		// Primary select field.
 		printf(
-			'<select %s conditional_id="%s">',
-			evf_html_attributes( $container['id'], $container['class'], $container['data'], $container['attr'] ),
-			$field['id'] // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			'<select %s>',
+			evf_html_attributes( $container['id'], $container['class'], $container['data'], $container['attr'] ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		);
 
 		// Optional placeholder.
@@ -278,15 +285,6 @@ class EVF_Field_Select extends EVF_Form_Fields {
 		foreach ( $choices as $choice ) {
 			if ( empty( $choice['container'] ) ) {
 				continue;
-			}
-
-			// Conditional logic.
-			if ( isset( $choices['primary'] ) ) {
-				$choice['attr']['conditional_id'] = $choices['primary']['attr']['conditional_id'];
-
-				if ( isset( $choices['primary']['attr']['conditional_rules'] ) ) {
-					$choice['attr']['conditional_rules'] = $choices['primary']['attr']['conditional_rules'];
-				}
 			}
 
 			printf(
