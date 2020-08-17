@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 1.7.0.3 - 17-08-2020 =
+* Fix - Referral URL unicode support.
+* Fix - Conditional logic for dropdown broken.
+* Fix - PerfectScrollbar issue in builder integration.
+
 = 1.7.0.2 - 11-08-2020 =
 * Fix - Conditional logic on select field.
 * Fix - Likert table scroll in responsive.

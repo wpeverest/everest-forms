@@ -4,7 +4,7 @@ Tags: contact form, forms, form builder, contact, custom form
 Requires at least: 5.0
 Tested up to: 5.5
 Requires PHP: 5.4
-Stable tag: 1.7.0.2
+Stable tag: 1.7.0.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -155,6 +155,11 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
+= 1.7.0.3 - 17-08-2020 =
+* Fix - Referral URL unicode support.
+* Fix - Conditional logic for dropdown broken.
+* Fix - PerfectScrollbar issue in builder integration.
+
 = 1.7.0.2 - 11-08-2020 =
 * Fix - Conditional logic on select field.
 * Fix - Likert table scroll in responsive.
@@ -281,4 +286,4 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Tweak - Display empty field value so users can toggle them in single entry view.
 * Tweak - Hide confirm placeholder text & sub-label option accordingly for email and password field.
 
-[See changelog for all versions](https://github.com/wpeverest/everest-forms/raw/master/CHANGELOG.txt).
+[See changelog for all versions](https://github.com/wpeverest/everest-forms/raw/master/changelog.txt).

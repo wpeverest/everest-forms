@@ -5,7 +5,7 @@
 *.lock
 bin/
 build/
-CHANGELOG.txt
+changelog.txt
 composer.*
 Gruntfile.js
 webpack.config.js

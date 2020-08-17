@@ -2,19 +2,25 @@
 # This file is distributed under the same license as the Everest Forms plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Everest Forms 1.7.0.2\n"
+"Project-Id-Version: Everest Forms 1.7.0.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/everest-forms\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-08-11T05:06:08+00:00\n"
+"POT-Creation-Date: 2020-08-17T12:21:35+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.4.0\n"
+"X-Generator: WP-CLI 2.5.0-alpha\n"
 "X-Domain: everest-forms\n"
 
 #. Plugin Name of the plugin
+#: build/everest-forms/includes/admin/class-evf-admin-menus.php:62
+#: build/everest-forms/includes/admin/class-evf-admin.php:189
+#: build/everest-forms/includes/admin/evf-admin-functions.php:17
+#: build/everest-forms/includes/class-evf-form-block.php:78
+#: build/everest-forms/includes/class-evf-post-types.php:112
+#: build/everest-forms/includes/class-evf-privacy.php:31
 #: includes/admin/class-evf-admin-menus.php:62
 #: includes/admin/class-evf-admin.php:189
 #: includes/admin/evf-admin-functions.php:17
@@ -41,52 +47,72 @@ msgid "https://wpeverest.com"
 msgstr ""
 
 #. translators: %d: interval
+#: build/everest-forms/includes/abstracts/class-evf-background-process.php:172
 #: includes/abstracts/class-evf-background-process.php:172
 msgid "Every %d minutes"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:304
 #: includes/abstracts/class-evf-form-fields.php:304
 msgid "On"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:304
 #: includes/abstracts/class-evf-form-fields.php:304
 msgid "Off"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:389
+#: build/everest-forms/includes/evf-core-functions.php:1916
 #: includes/abstracts/class-evf-form-fields.php:389
 #: includes/evf-core-functions.php:1916
 msgid "Enter text for the form field label. This is recommended and can be hidden in the Advanced Settings."
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:395
+#: build/everest-forms/includes/evf-core-functions.php:1915
 #: includes/abstracts/class-evf-form-fields.php:395
 #: includes/evf-core-functions.php:1915
 msgid "Label"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:425
+#: build/everest-forms/includes/evf-core-functions.php:1924
 #: includes/abstracts/class-evf-form-fields.php:425
 #: includes/evf-core-functions.php:1924
 msgid "Enter meta key to be stored in database."
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:431
+#: build/everest-forms/includes/evf-core-functions.php:1923
 #: includes/abstracts/class-evf-form-fields.php:431
 #: includes/evf-core-functions.php:1923
 msgid "Meta Key"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:462
+#: build/everest-forms/includes/evf-core-functions.php:1933
 #: includes/abstracts/class-evf-form-fields.php:462
 #: includes/evf-core-functions.php:1933
 msgid "Enter text for the form field description."
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:468
+#: build/everest-forms/includes/evf-core-functions.php:1931
 #: includes/abstracts/class-evf-form-fields.php:468
 #: includes/evf-core-functions.php:1931
 msgid "Description"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:499
 #: includes/abstracts/class-evf-form-fields.php:499
 msgid "Check this option to mark the field required. A form will not submit unless all required fields are provided."
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:506
+#: build/everest-forms/includes/admin/settings/class-evf-settings-validation.php:46
+#: build/everest-forms/includes/evf-core-functions.php:1939
+#: build/everest-forms/includes/shortcodes/class-evf-shortcode-form.php:189
 #: includes/abstracts/class-evf-form-fields.php:506
 #: includes/admin/settings/class-evf-settings-validation.php:46
 #: includes/evf-core-functions.php:1939
@@ -94,434 +120,561 @@ msgstr ""
 msgid "Required"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:542
 #: includes/abstracts/class-evf-form-fields.php:542
 msgid "Enter a message to show for this row if it's required."
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:554
 #: includes/abstracts/class-evf-form-fields.php:554
 msgid "Address Line 1"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:555
 #: includes/abstracts/class-evf-form-fields.php:555
 msgid "Enter a message to show for Address Line 1 if it's required."
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:563
 #: includes/abstracts/class-evf-form-fields.php:563
 msgid "City"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:564
 #: includes/abstracts/class-evf-form-fields.php:564
 msgid "Enter a message to show for City if it's required."
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:572
 #: includes/abstracts/class-evf-form-fields.php:572
 msgid "State / Province / Region"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:573
 #: includes/abstracts/class-evf-form-fields.php:573
 msgid "Enter a message to show for State/Province/Region if it's required."
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:581
 #: includes/abstracts/class-evf-form-fields.php:581
 msgid "Zip / Postal Code"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:582
 #: includes/abstracts/class-evf-form-fields.php:582
 msgid "Enter a message to show for Zip/Postal Code if it's required."
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:590
+#: build/everest-forms/includes/fields/class-evf-field-country.php:20
 #: includes/abstracts/class-evf-form-fields.php:590
 #: includes/fields/class-evf-field-country.php:20
 msgid "Country"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:591
 #: includes/abstracts/class-evf-form-fields.php:591
 msgid "Enter a message to show for Country if it's required."
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:604
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:649
 #: includes/abstracts/class-evf-form-fields.php:604
 #: includes/abstracts/class-evf-form-fields.php:649
 msgid "Enter a message to show for this field if it's required."
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:655
 #: includes/abstracts/class-evf-form-fields.php:655
 msgid "Required Field Message"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:687
 #: includes/abstracts/class-evf-form-fields.php:687
 msgid "Enter code for the form field."
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:693
 #: includes/abstracts/class-evf-form-fields.php:693
 msgid "Code"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:723
+#: build/everest-forms/includes/evf-core-functions.php:1947
 #: includes/abstracts/class-evf-form-fields.php:723
 #: includes/evf-core-functions.php:1947
 msgid "Choices"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:738
 #: includes/abstracts/class-evf-form-fields.php:738
 msgid "Bulk Add"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:747
+#: build/everest-forms/includes/evf-core-functions.php:1948
 #: includes/abstracts/class-evf-form-fields.php:747
 #: includes/evf-core-functions.php:1948
 msgid "Add choices for the form field."
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:796
 #: includes/abstracts/class-evf-form-fields.php:796
 msgid "Upload Image"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:803
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:104
 #: includes/abstracts/class-evf-form-fields.php:803
 #: includes/admin/builder/class-evf-builder-settings.php:104
 msgid "Remove"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:804
 #: includes/abstracts/class-evf-form-fields.php:804
 msgid "Change image"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:830
 #: includes/abstracts/class-evf-form-fields.php:830
 msgid "For best results, images should be square and at least 200 × 160 pixels or smaller."
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:839
 #: includes/abstracts/class-evf-form-fields.php:839
 msgid "Use image choices"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:840
 #: includes/abstracts/class-evf-form-fields.php:840
 msgid "Check this option to enable using images with the choices."
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:862
 #: includes/abstracts/class-evf-form-fields.php:862
 msgid "Add Bulk Options"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:871
 #: includes/abstracts/class-evf-form-fields.php:871
 msgid "Add multiple options at once."
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:872
 #: includes/abstracts/class-evf-form-fields.php:872
 msgid "Presets"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:880
 #: includes/abstracts/class-evf-form-fields.php:880
 msgid "Months"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:883
 #: includes/abstracts/class-evf-form-fields.php:883
 msgid "January"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:884
 #: includes/abstracts/class-evf-form-fields.php:884
 msgid "February"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:885
 #: includes/abstracts/class-evf-form-fields.php:885
 msgid "March"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:886
 #: includes/abstracts/class-evf-form-fields.php:886
 msgid "April"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:887
 #: includes/abstracts/class-evf-form-fields.php:887
 msgid "May"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:888
 #: includes/abstracts/class-evf-form-fields.php:888
 msgid "June"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:889
 #: includes/abstracts/class-evf-form-fields.php:889
 msgid "July"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:890
 #: includes/abstracts/class-evf-form-fields.php:890
 msgid "August"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:891
 #: includes/abstracts/class-evf-form-fields.php:891
 msgid "September"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:892
 #: includes/abstracts/class-evf-form-fields.php:892
 msgid "October"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:893
 #: includes/abstracts/class-evf-form-fields.php:893
 msgid "November"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:894
 #: includes/abstracts/class-evf-form-fields.php:894
 msgid "December"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:898
 #: includes/abstracts/class-evf-form-fields.php:898
 msgid "Week Days"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:901
 #: includes/abstracts/class-evf-form-fields.php:901
 msgid "Sunday"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:902
 #: includes/abstracts/class-evf-form-fields.php:902
 msgid "Monday"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:903
 #: includes/abstracts/class-evf-form-fields.php:903
 msgid "Tuesday"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:904
 #: includes/abstracts/class-evf-form-fields.php:904
 msgid "Wednesday"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:905
 #: includes/abstracts/class-evf-form-fields.php:905
 msgid "Thursday"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:906
 #: includes/abstracts/class-evf-form-fields.php:906
 msgid "Friday"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:907
 #: includes/abstracts/class-evf-form-fields.php:907
 msgid "Saturday"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:911
 #: includes/abstracts/class-evf-form-fields.php:911
 msgid "Countries"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:916
 #: includes/abstracts/class-evf-form-fields.php:916
 msgid "Countries Postal Code"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:921
 #: includes/abstracts/class-evf-form-fields.php:921
 msgid "U.S. States"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:926
 #: includes/abstracts/class-evf-form-fields.php:926
 msgid "U.S. States Postal Code"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:931
 #: includes/abstracts/class-evf-form-fields.php:931
 msgid "Age Groups"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:934
 #: includes/abstracts/class-evf-form-fields.php:934
 msgid "Under 18"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:935
 #: includes/abstracts/class-evf-form-fields.php:935
 msgid "18-24"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:936
 #: includes/abstracts/class-evf-form-fields.php:936
 msgid "25-34"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:937
 #: includes/abstracts/class-evf-form-fields.php:937
 msgid "35-44"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:938
 #: includes/abstracts/class-evf-form-fields.php:938
 msgid "45-54"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:939
 #: includes/abstracts/class-evf-form-fields.php:939
 msgid "55-64"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:940
 #: includes/abstracts/class-evf-form-fields.php:940
 msgid "65 or Above"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:941
 #: includes/abstracts/class-evf-form-fields.php:941
 msgid "Prefer Not to Answer"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:945
 #: includes/abstracts/class-evf-form-fields.php:945
 msgid "Satisfaction"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:948
 #: includes/abstracts/class-evf-form-fields.php:948
 msgid "Very Satisfied"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:949
 #: includes/abstracts/class-evf-form-fields.php:949
 msgid "Satisfied"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:950
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:962
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:974
 #: includes/abstracts/class-evf-form-fields.php:950
 #: includes/abstracts/class-evf-form-fields.php:962
 #: includes/abstracts/class-evf-form-fields.php:974
 msgid "Neutral"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:951
 #: includes/abstracts/class-evf-form-fields.php:951
 msgid "Unsatisfied"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:952
 #: includes/abstracts/class-evf-form-fields.php:952
 msgid "Very Unsatisfied"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:953
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:965
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:977
 #: includes/abstracts/class-evf-form-fields.php:953
 #: includes/abstracts/class-evf-form-fields.php:965
 #: includes/abstracts/class-evf-form-fields.php:977
 msgid "N/A"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:957
 #: includes/abstracts/class-evf-form-fields.php:957
 msgid "Importance"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:960
 #: includes/abstracts/class-evf-form-fields.php:960
 msgid "Very Important"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:961
 #: includes/abstracts/class-evf-form-fields.php:961
 msgid "Important"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:963
 #: includes/abstracts/class-evf-form-fields.php:963
 msgid "Somewhat Important"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:964
 #: includes/abstracts/class-evf-form-fields.php:964
 msgid "Not at all Important"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:969
 #: includes/abstracts/class-evf-form-fields.php:969
 msgid "Agreement"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:972
 #: includes/abstracts/class-evf-form-fields.php:972
 msgid "Strongly Agree"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:973
 #: includes/abstracts/class-evf-form-fields.php:973
 msgid "Agree"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:975
 #: includes/abstracts/class-evf-form-fields.php:975
 msgid "Disagree"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:976
 #: includes/abstracts/class-evf-form-fields.php:976
 msgid "Strongly Disagree"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:1000
 #: includes/abstracts/class-evf-form-fields.php:1000
 msgid "Add New Choices"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:1024
 #: includes/abstracts/class-evf-form-fields.php:1024
 msgid "Enter text for the default form field value."
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:1031
 #: includes/abstracts/class-evf-form-fields.php:1031
 msgid "Default Value"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:1077
 #: includes/abstracts/class-evf-form-fields.php:1077
 msgid "Advanced Options"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:1089
+#: build/everest-forms/includes/evf-core-functions.php:1960
 #: includes/abstracts/class-evf-form-fields.php:1089
 #: includes/evf-core-functions.php:1960
 msgid "Enter text for the form field placeholder."
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:1095
+#: build/everest-forms/includes/evf-core-functions.php:1959
 #: includes/abstracts/class-evf-form-fields.php:1095
 #: includes/evf-core-functions.php:1959
 msgid "Placeholder Text"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:1125
 #: includes/abstracts/class-evf-form-fields.php:1125
 msgid "Enter CSS class names for this field container. Multiple class names should be separated with spaces."
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:1134
+#: build/everest-forms/includes/evf-core-functions.php:1967
 #: includes/abstracts/class-evf-form-fields.php:1134
 #: includes/evf-core-functions.php:1967
 msgid "CSS Classes"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:1165
+#: build/everest-forms/includes/evf-core-functions.php:1977
 #: includes/abstracts/class-evf-form-fields.php:1165
 #: includes/evf-core-functions.php:1977
 msgid "Check this option to hide the form field label."
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:1174
+#: build/everest-forms/includes/evf-core-functions.php:1975
 #: includes/abstracts/class-evf-form-fields.php:1174
 #: includes/evf-core-functions.php:1975
 msgid "Hide Label"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:1195
+#: build/everest-forms/includes/evf-core-functions.php:1985
 #: includes/abstracts/class-evf-form-fields.php:1195
 #: includes/evf-core-functions.php:1985
 msgid "Check this option to hide the form field sub-label."
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:1204
+#: build/everest-forms/includes/evf-core-functions.php:1983
 #: includes/abstracts/class-evf-form-fields.php:1204
 #: includes/evf-core-functions.php:1983
 msgid "Hide Sub-Labels"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:1225
 #: includes/abstracts/class-evf-form-fields.php:1225
 msgid "Select the column layout for displaying field choices."
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:1227
 #: includes/abstracts/class-evf-form-fields.php:1227
 msgid "One Column"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:1228
 #: includes/abstracts/class-evf-form-fields.php:1228
 msgid "Two Columns"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:1229
 #: includes/abstracts/class-evf-form-fields.php:1229
 msgid "Three Columns"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:1230
 #: includes/abstracts/class-evf-form-fields.php:1230
 msgid "Inline"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:1239
 #: includes/abstracts/class-evf-form-fields.php:1239
 msgid "Layout"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:1340
+#: build/everest-forms/includes/class-evf-emails.php:434
+#: build/everest-forms/includes/class-evf-emails.php:539
 #: includes/abstracts/class-evf-form-fields.php:1340
 #: includes/class-evf-emails.php:434
 #: includes/class-evf-emails.php:539
 msgid "(empty)"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:1445
 #: includes/abstracts/class-evf-form-fields.php:1445
 msgid "You do no have permission."
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:1450
 #: includes/abstracts/class-evf-form-fields.php:1450
 msgid "No form ID found"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:1455
 #: includes/abstracts/class-evf-form-fields.php:1455
 msgid "No field type found"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:1484
+#: build/everest-forms/includes/admin/builder/class-evf-builder-fields.php:323
 #: includes/abstracts/class-evf-form-fields.php:1484
 #: includes/admin/builder/class-evf-builder-fields.php:323
 msgid "Duplicate Field"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:1485
+#: build/everest-forms/includes/admin/builder/class-evf-builder-fields.php:324
 #: includes/abstracts/class-evf-form-fields.php:1485
 #: includes/admin/builder/class-evf-builder-fields.php:324
 msgid "Delete Field"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:1486
+#: build/everest-forms/includes/admin/builder/class-evf-builder-fields.php:325
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:25
+#: build/everest-forms/includes/admin/class-evf-admin-menus.php:164
+#: build/everest-forms/includes/class-evf-install.php:637
 #: includes/abstracts/class-evf-form-fields.php:1486
 #: includes/admin/builder/class-evf-builder-fields.php:325
 #: includes/admin/builder/class-evf-builder-settings.php:25
@@ -530,64 +683,87 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:1723
 #: includes/abstracts/class-evf-form-fields.php:1723
 msgid "Please enter a valid url"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:1733
 #: includes/abstracts/class-evf-form-fields.php:1733
 msgid "Please enter a valid email address"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-form-fields.php:1738
 #: includes/abstracts/class-evf-form-fields.php:1738
 msgid "Please enter a valid number"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-settings-api.php:674
 #: includes/abstracts/class-evf-settings-api.php:674
 msgid "Select all"
 msgstr ""
 
+#: build/everest-forms/includes/abstracts/class-evf-settings-api.php:674
 #: includes/abstracts/class-evf-settings-api.php:674
 msgid "Select none"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-fields.php:38
 #: includes/admin/builder/class-evf-builder-fields.php:38
 msgid "Fields"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-fields.php:61
 #: includes/admin/builder/class-evf-builder-fields.php:61
 msgid "Add Fields"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-fields.php:62
 #: includes/admin/builder/class-evf-builder-fields.php:62
 msgid "Field Options"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-fields.php:85
 #: includes/admin/builder/class-evf-builder-fields.php:85
 msgid "Form not found."
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-fields.php:154
 #: includes/admin/builder/class-evf-builder-fields.php:154
 msgid "You don't have any fields yet."
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-fields.php:243
 #: includes/admin/builder/class-evf-builder-fields.php:243
 msgid "Row Settings"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-fields.php:244
 #: includes/admin/builder/class-evf-builder-fields.php:244
 msgid "Select the type of row"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-fields.php:302
 #: includes/admin/builder/class-evf-builder-fields.php:302
 msgid "Add Row"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:40
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:128
+#: build/everest-forms/includes/admin/settings/class-evf-settings-general.php:25
 #: includes/admin/builder/class-evf-builder-settings.php:40
 #: includes/admin/builder/class-evf-builder-settings.php:128
 #: includes/admin/settings/class-evf-settings-general.php:25
 msgid "General"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:41
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:379
+#: build/everest-forms/includes/admin/settings/class-evf-settings-email.php:25
+#: build/everest-forms/includes/admin/settings/class-evf-settings-validation.php:64
+#: build/everest-forms/includes/fields/class-evf-field-email.php:20
+#: build/everest-forms/includes/fields/class-evf-field-email.php:93
+#: build/everest-forms/includes/fields/class-evf-field-email.php:265
 #: includes/admin/builder/class-evf-builder-settings.php:41
 #: includes/admin/builder/class-evf-builder-settings.php:379
 #: includes/admin/settings/class-evf-settings-email.php:25
@@ -598,6 +774,12 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:77
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:349
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:405
+#: build/everest-forms/includes/class-evf-form-task.php:558
+#: build/everest-forms/includes/evf-update-functions.php:140
+#: build/everest-forms/includes/templates/contact.php:71
 #: includes/admin/builder/class-evf-builder-settings.php:77
 #: includes/admin/builder/class-evf-builder-settings.php:349
 #: includes/admin/builder/class-evf-builder-settings.php:405
@@ -607,117 +789,152 @@ msgstr ""
 msgid "Admin Notification"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:85
 #: includes/admin/builder/class-evf-builder-settings.php:85
 msgid "Add New Email"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:89
 #: includes/admin/builder/class-evf-builder-settings.php:89
 msgid "Email Notifications"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:135
+#: build/everest-forms/includes/class-evf-smart-tags.php:37
 #: includes/admin/builder/class-evf-builder-settings.php:135
 #: includes/class-evf-smart-tags.php:37
 msgid "Form Name"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:138
 #: includes/admin/builder/class-evf-builder-settings.php:138
 msgid "Give a name to this form"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:146
 #: includes/admin/builder/class-evf-builder-settings.php:146
 msgid "Form description"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:150
 #: includes/admin/builder/class-evf-builder-settings.php:150
 msgid "Give the description to this form"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:158
 #: includes/admin/builder/class-evf-builder-settings.php:158
 msgid "Form disabled message"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:161
+#: build/everest-forms/includes/shortcodes/class-evf-shortcode-form.php:745
 #: includes/admin/builder/class-evf-builder-settings.php:161
 #: includes/shortcodes/class-evf-shortcode-form.php:745
 msgid "This form is disabled."
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:162
 #: includes/admin/builder/class-evf-builder-settings.php:162
 msgid "Message that shows up if the form is disabled."
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:170
 #: includes/admin/builder/class-evf-builder-settings.php:170
 msgid "Successful form submission message"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:173
 #: includes/admin/builder/class-evf-builder-settings.php:173
 msgid "Thanks for contacting us! We will be in touch with you shortly"
 msgstr ""
 
 #. translators: %1$s - general settings docs url
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:175
 #: includes/admin/builder/class-evf-builder-settings.php:175
 msgid "Success message that shows up after submitting form. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:183
 #: includes/admin/builder/class-evf-builder-settings.php:183
 msgid "Automatically scroll to the submission message"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:193
 #: includes/admin/builder/class-evf-builder-settings.php:193
 msgid "Redirect To"
 msgstr ""
 
 #. translators: %1$s - general settings docs url
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:197
 #: includes/admin/builder/class-evf-builder-settings.php:197
 msgid "Choose where to redirect after form submission. <a href=\"%s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:199
 #: includes/admin/builder/class-evf-builder-settings.php:199
 msgid "Same Page"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:200
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:210
 #: includes/admin/builder/class-evf-builder-settings.php:200
 #: includes/admin/builder/class-evf-builder-settings.php:210
 msgid "Custom Page"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:201
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:221
 #: includes/admin/builder/class-evf-builder-settings.php:201
 #: includes/admin/builder/class-evf-builder-settings.php:221
 msgid "External URL"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:231
 #: includes/admin/builder/class-evf-builder-settings.php:231
 msgid "Layout Design"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:234
 #: includes/admin/builder/class-evf-builder-settings.php:234
 msgid "Choose design template for the Form"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:236
 #: includes/admin/builder/class-evf-builder-settings.php:236
 msgid "Default"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:237
 #: includes/admin/builder/class-evf-builder-settings.php:237
 msgid "Classic Layout"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:246
 #: includes/admin/builder/class-evf-builder-settings.php:246
 msgid "Form Class"
 msgstr ""
 
 #. translators: %1$s - general settings docs url
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:250
 #: includes/admin/builder/class-evf-builder-settings.php:250
 msgid "Enter CSS class names for the form wrapper. Multiple class names should be separated with spaces. <a href=\"%s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:253
 #: includes/admin/builder/class-evf-builder-settings.php:253
 msgid "Submit Button"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:259
 #: includes/admin/builder/class-evf-builder-settings.php:259
 msgid "Submit button text"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:261
+#: build/everest-forms/includes/class-evf-frontend-scripts.php:282
+#: build/everest-forms/includes/class-evf-frontend-scripts.php:309
+#: build/everest-forms/includes/shortcodes/class-evf-shortcode-form.php:62
+#: build/everest-forms/includes/templates/contact.php:67
 #: includes/admin/builder/class-evf-builder-settings.php:261
 #: includes/class-evf-frontend-scripts.php:282
 #: includes/class-evf-frontend-scripts.php:309
@@ -726,170 +943,217 @@ msgstr ""
 msgid "Submit"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:262
 #: includes/admin/builder/class-evf-builder-settings.php:262
 msgid "Enter desired text for submit button."
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:270
 #: includes/admin/builder/class-evf-builder-settings.php:270
 msgid "Submit button processing text"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:272
+#: build/everest-forms/includes/shortcodes/class-evf-shortcode-form.php:74
 #: includes/admin/builder/class-evf-builder-settings.php:272
 #: includes/shortcodes/class-evf-shortcode-form.php:74
 msgid "Processing&hellip;"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:273
 #: includes/admin/builder/class-evf-builder-settings.php:273
 msgid "Enter the submit button text that you would like the button to display while the form submission is processing."
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:281
 #: includes/admin/builder/class-evf-builder-settings.php:281
 msgid "Submit button class"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:284
 #: includes/admin/builder/class-evf-builder-settings.php:284
 msgid "Enter CSS class names for submit button. Multiple class names should be separated with spaces."
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:294
 #: includes/admin/builder/class-evf-builder-settings.php:294
 msgid "Enable anti-spam honeypot"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:308
 #: includes/admin/builder/class-evf-builder-settings.php:308
 msgid "Enable Google reCAPTCHA v3"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:308
 #: includes/admin/builder/class-evf-builder-settings.php:308
 msgid "Enable Google Invisible reCAPTCHA v2"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:308
 #: includes/admin/builder/class-evf-builder-settings.php:308
 msgid "Enable Google Checkbox reCAPTCHA v2"
 msgstr ""
 
 #. translators: %1$s - general settings docs url
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:312
 #: includes/admin/builder/class-evf-builder-settings.php:312
 msgid "Enable Google reCaptcha. Make sure the site key and secret key is set in settings page. <a href=\"%s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:321
 #: includes/admin/builder/class-evf-builder-settings.php:321
 msgid "Enable Ajax Form Submission"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:324
 #: includes/admin/builder/class-evf-builder-settings.php:324
 msgid "Enables form submission without reloading the page."
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:332
 #: includes/admin/builder/class-evf-builder-settings.php:332
 msgid "Disable storing entry information"
 msgstr ""
 
 #. translators: %1$s - general settings docs url
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:336
 #: includes/admin/builder/class-evf-builder-settings.php:336
 msgid "Disable storing form entries. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
 #. translators: %s: Form Name
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:355
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:528
+#: build/everest-forms/includes/templates/contact.php:77
 #: includes/admin/builder/class-evf-builder-settings.php:355
 #: includes/admin/builder/class-evf-builder-settings.php:528
 #: includes/templates/contact.php:77
 msgid "New Form Entry %s"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:366
+#: build/everest-forms/includes/evf-update-functions.php:156
 #: includes/admin/builder/class-evf-builder-settings.php:366
 #: includes/evf-update-functions.php:156
 msgid "User Notification"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:391
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:148
 #: includes/admin/builder/class-evf-builder-settings.php:391
 #: includes/admin/class-evf-admin-assets.php:148
 msgid "Turn on Email settings to manage your email notifications."
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:417
 #: includes/admin/builder/class-evf-builder-settings.php:417
 msgid "To Address"
 msgstr ""
 
 #. translators: %1$s - general settings docs url
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:421
 #: includes/admin/builder/class-evf-builder-settings.php:421
 msgid "Enter the recipient's email address (comma separated) to receive form entry notifications. <a href=\"%s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:436
 #: includes/admin/builder/class-evf-builder-settings.php:436
 msgid "Cc Address"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:439
 #: includes/admin/builder/class-evf-builder-settings.php:439
 msgid "Enter Cc recipient's email address (comma separated) to receive form entry notifications."
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:453
 #: includes/admin/builder/class-evf-builder-settings.php:453
 msgid "Bcc Address"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:456
 #: includes/admin/builder/class-evf-builder-settings.php:456
 msgid "Enter Bcc recipient's email address (comma separated) to receive form entry notifications."
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:471
 #: includes/admin/builder/class-evf-builder-settings.php:471
 msgid "From Name"
 msgstr ""
 
 #. translators: %1$s - general settings docs url
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:475
 #: includes/admin/builder/class-evf-builder-settings.php:475
 msgid "Enter the From Name to be displayed in Email. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:489
 #: includes/admin/builder/class-evf-builder-settings.php:489
 msgid "From Address"
 msgstr ""
 
 #. translators: %1$s - general settings docs url
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:493
 #: includes/admin/builder/class-evf-builder-settings.php:493
 msgid "Enter the Email address from which you want to send Email. <a href=\"%s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:507
 #: includes/admin/builder/class-evf-builder-settings.php:507
 msgid "Reply To"
 msgstr ""
 
 #. translators: %1$s - general settings docs url
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:511
 #: includes/admin/builder/class-evf-builder-settings.php:511
 msgid "Enter the reply to email address where you want the email to be received when this email is replied. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:525
 #: includes/admin/builder/class-evf-builder-settings.php:525
 msgid "Email Subject"
 msgstr ""
 
 #. translators: %1$s - General Settings docs url
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:530
 #: includes/admin/builder/class-evf-builder-settings.php:530
 msgid "Enter the subject of the email. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:544
 #: includes/admin/builder/class-evf-builder-settings.php:544
 msgid "Email Message"
 msgstr ""
 
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:546
 #: includes/admin/builder/class-evf-builder-settings.php:546
 msgid "{all_fields}"
 msgstr ""
 
 #. translators: %1$s - general settings docs url
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:548
 #: includes/admin/builder/class-evf-builder-settings.php:548
 msgid "Enter the message of the email. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
 #. translators: %s - all fields smart tag.
+#: build/everest-forms/includes/admin/builder/class-evf-builder-settings.php:556
 #: includes/admin/builder/class-evf-builder-settings.php:556
 msgid "To display all form fields, use the %s Smart Tag."
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:94
+#: build/everest-forms/includes/admin/views/html-admin-page-builder-setup.php:80
 #: includes/admin/class-evf-admin-assets.php:94
 #: includes/admin/views/html-admin-page-builder-setup.php:80
 msgid "Get Started"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:95
+#: build/everest-forms/includes/admin/class-evf-admin-forms-table-list.php:142
+#: build/everest-forms/includes/admin/views/html-admin-page-builder-setup.php:81
+#: build/everest-forms/includes/admin/views/html-admin-page-builder.php:55
 #: includes/admin/class-evf-admin-assets.php:95
 #: includes/admin/class-evf-admin-forms-table-list.php:142
 #: includes/admin/views/html-admin-page-builder-setup.php:81
@@ -897,288 +1161,367 @@ msgstr ""
 msgid "Preview"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:96
+#: build/everest-forms/includes/admin/views/html-admin-page-builder-setup.php:57
 #: includes/admin/class-evf-admin-assets.php:96
 #: includes/admin/views/html-admin-page-builder-setup.php:57
 msgid "Pro"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:97
 #: includes/admin/class-evf-admin-assets.php:97
 msgid "Updating Templates"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:104
+#: build/everest-forms/includes/class-evf-frontend-scripts.php:293
 #: includes/admin/class-evf-admin-assets.php:104
 #: includes/class-evf-frontend-scripts.php:293
 msgctxt "enhanced select"
 msgid "No matches found"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:105
 #: includes/admin/class-evf-admin-assets.php:105
 msgctxt "enhanced select"
 msgid "Loading failed"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:106
 #: includes/admin/class-evf-admin-assets.php:106
 msgctxt "enhanced select"
 msgid "Please enter 1 or more characters"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:107
 #: includes/admin/class-evf-admin-assets.php:107
 msgctxt "enhanced select"
 msgid "Please enter %qty% or more characters"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:108
 #: includes/admin/class-evf-admin-assets.php:108
 msgctxt "enhanced select"
 msgid "Please delete 1 character"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:109
 #: includes/admin/class-evf-admin-assets.php:109
 msgctxt "enhanced select"
 msgid "Please delete %qty% characters"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:110
 #: includes/admin/class-evf-admin-assets.php:110
 msgctxt "enhanced select"
 msgid "You can only select 1 item"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:111
 #: includes/admin/class-evf-admin-assets.php:111
 msgctxt "enhanced select"
 msgid "You can only select %qty% items"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:112
 #: includes/admin/class-evf-admin-assets.php:112
 msgctxt "enhanced select"
 msgid "Loading more results&hellip;"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:113
 #: includes/admin/class-evf-admin-assets.php:113
 msgctxt "enhanced select"
 msgid "Searching&hellip;"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:131
 #: includes/admin/class-evf-admin-assets.php:131
 msgid "field"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:132
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:191
 #: includes/admin/class-evf-admin-assets.php:132
 #: includes/admin/class-evf-admin-assets.php:191
 msgid "OK"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:133
 #: includes/admin/class-evf-admin-assets.php:133
 msgid "Installing"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:134
 #: includes/admin/class-evf-admin-assets.php:134
 msgid "Activating"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:135
 #: includes/admin/class-evf-admin-assets.php:135
 msgid "Install & Activate"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:136
 #: includes/admin/class-evf-admin-assets.php:136
 msgid "Activate Plugins"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:137
 #: includes/admin/class-evf-admin-assets.php:137
 msgid "(copy)"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:138
+#: build/everest-forms/includes/admin/class-evf-admin-editor.php:63
 #: includes/admin/class-evf-admin-assets.php:138
 #: includes/admin/class-evf-admin-editor.php:63
 msgid "Close"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:139
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:194
+#: build/everest-forms/includes/admin/class-evf-admin-editor.php:98
 #: includes/admin/class-evf-admin-assets.php:139
 #: includes/admin/class-evf-admin-assets.php:194
 #: includes/admin/class-evf-admin-editor.php:98
 msgid "Cancel"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:140
 #: includes/admin/class-evf-admin-assets.php:140
 msgid "Row Locked"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:141
 #: includes/admin/class-evf-admin-assets.php:141
 msgid "Single row cannot be deleted."
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:142
 #: includes/admin/class-evf-admin-assets.php:142
 msgid "Field Locked"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:143
 #: includes/admin/class-evf-admin-assets.php:143
 msgid "This field cannot be deleted or duplicated."
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:144
 #: includes/admin/class-evf-admin-assets.php:144
 msgid "This item must contain at least one choice."
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:145
 #: includes/admin/class-evf-admin-assets.php:145
 msgid "Are you sure you want to delete this row?"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:146
 #: includes/admin/class-evf-admin-assets.php:146
 msgid "Are you sure you want to delete this field?"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:147
 #: includes/admin/class-evf-admin-assets.php:147
 msgid "Are you sure you want to duplicate this field?"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:149
 #: includes/admin/class-evf-admin-assets.php:149
 msgid "Choose an image"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:150
 #: includes/admin/class-evf-admin-assets.php:150
 msgid "Use Image"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:151
 #: includes/admin/class-evf-admin-assets.php:151
 msgid "Remove Image"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:152
 #: includes/admin/class-evf-admin-assets.php:152
 msgid "Empty Form Name"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:153
 #: includes/admin/class-evf-admin-assets.php:153
 msgid "Form name can't be empty."
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:167
 #: includes/admin/class-evf-admin-assets.php:167
 msgid "is a PRO Feature"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:168
 #: includes/admin/class-evf-admin-assets.php:168
 msgid "We're sorry, the %name% is not available on your plan.<br>Please upgrade to the PRO plan to unlock all these awesome features."
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:169
 #: includes/admin/class-evf-admin-assets.php:169
 msgid "Upgrade to PRO"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:171
 #: includes/admin/class-evf-admin-assets.php:171
 msgid "Please enable Stripe"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:172
 #: includes/admin/class-evf-admin-assets.php:172
 msgid "Enable Stripe Payment gateway in payments section to use this field."
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:188
 #: includes/admin/class-evf-admin-assets.php:188
 msgid "Enter a Email nickname"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:189
 #: includes/admin/class-evf-admin-assets.php:189
 msgid "Eg: Support Email"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:190
 #: includes/admin/class-evf-admin-assets.php:190
 msgid "You must provide a Email nickname"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:197
 #: includes/admin/class-evf-admin-assets.php:197
 msgid "New Form Entry"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:207
 #: includes/admin/class-evf-admin-assets.php:207
 msgid "Please enter in meta key with alphanumeric characters, dashes and underscores."
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:208
 #: includes/admin/class-evf-admin-assets.php:208
 msgid "Minimum value is greater than Maximum value."
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:209
 #: includes/admin/class-evf-admin-assets.php:209
 msgid "Maximum value is smaller than Minimum value."
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:210
 #: includes/admin/class-evf-admin-assets.php:210
 msgid "Please select a form which you want to export."
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:232
 #: includes/admin/class-evf-admin-assets.php:232
 msgid "Give it a name."
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:233
 #: includes/admin/class-evf-admin-assets.php:233
 msgid "You must provide a Form name"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:235
+#: build/everest-forms/includes/admin/views/html-admin-page-addons.php:133
 #: includes/admin/class-evf-admin-assets.php:235
 #: includes/admin/views/html-admin-page-addons.php:133
 msgid "Upgrade Plan"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:236
 #: includes/admin/class-evf-admin-assets.php:236
 msgid "This template requires premium addons. Please upgrade to the Premium plan to unlock all these awesome Templates."
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:237
 #: includes/admin/class-evf-admin-assets.php:237
 msgid "is a Premium Template"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:238
 #: includes/admin/class-evf-admin-assets.php:238
 msgid "Continue"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:239
 #: includes/admin/class-evf-admin-assets.php:239
 msgid "Untitled Form"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:240
 #: includes/admin/class-evf-admin-assets.php:240
 msgid "Uplift your form experience to the next level."
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-assets.php:254
 #: includes/admin/class-evf-admin-assets.php:254
 msgid "Are you sure you want to delete this log?"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-editor.php:42
 #: includes/admin/class-evf-admin-editor.php:42
 msgid "Add Everest Form"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-editor.php:44
+#: build/everest-forms/includes/admin/class-evf-admin-editor.php:102
 #: includes/admin/class-evf-admin-editor.php:44
 #: includes/admin/class-evf-admin-editor.php:102
 msgid "Add Form"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-editor.php:62
 #: includes/admin/class-evf-admin-editor.php:62
 msgid "Insert Form"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-editor.php:71
 #: includes/admin/class-evf-admin-editor.php:71
 msgid "Select a form below to insert"
 msgstr ""
 
 #. translators: %s - Everest Builder page.
+#: build/everest-forms/includes/admin/class-evf-admin-editor.php:82
 #: includes/admin/class-evf-admin-editor.php:82
 msgid "Whoops, you haven't created a form yet. Want to <a href=\"%s\">give it a go</a>?"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-entries-table-list.php:94
+#: build/everest-forms/includes/admin/class-evf-admin-entries.php:83
 #: includes/admin/class-evf-admin-entries-table-list.php:94
 #: includes/admin/class-evf-admin-entries.php:83
 msgid "Whoops, it appears you do not have any form entries yet."
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-entries-table-list.php:106
+#: build/everest-forms/includes/export/class-evf-entry-csv-exporter.php:80
 #: includes/admin/class-evf-admin-entries-table-list.php:106
 #: includes/export/class-evf-entry-csv-exporter.php:80
 msgid "Date Created"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-entries-table-list.php:107
 #: includes/admin/class-evf-admin-entries-table-list.php:107
 msgid "Actions"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-entries-table-list.php:175
+#: build/everest-forms/includes/admin/class-evf-admin-entries-table-list.php:186
 #: includes/admin/class-evf-admin-entries-table-list.php:175
 #: includes/admin/class-evf-admin-entries-table-list.php:186
 msgid "Field"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-entries-table-list.php:297
+#: build/everest-forms/includes/admin/views/html-admin-page-entries-view.php:203
+#: build/everest-forms/includes/admin/views/html-admin-page-tools-logs.php:33
 #: includes/admin/class-evf-admin-entries-table-list.php:297
 #: includes/admin/views/html-admin-page-entries-view.php:203
 #: includes/admin/views/html-admin-page-tools-logs.php:33
@@ -1186,20 +1529,29 @@ msgid "View"
 msgstr ""
 
 #. translators: %s: entry name
+#: build/everest-forms/includes/admin/class-evf-admin-entries-table-list.php:299
 #: includes/admin/class-evf-admin-entries-table-list.php:299
 msgid "Trash form entry"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-entries-table-list.php:310
+#: build/everest-forms/includes/admin/class-evf-admin-forms-table-list.php:124
+#: build/everest-forms/includes/evf-entry-functions.php:83
 #: includes/admin/class-evf-admin-entries-table-list.php:310
 #: includes/admin/class-evf-admin-forms-table-list.php:124
 #: includes/evf-entry-functions.php:83
 msgid "Trash"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-entries-table-list.php:314
 #: includes/admin/class-evf-admin-entries-table-list.php:314
 msgid "Restore form entry from trash"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-entries-table-list.php:325
+#: build/everest-forms/includes/admin/class-evf-admin-entries-table-list.php:413
+#: build/everest-forms/includes/admin/class-evf-admin-forms-table-list.php:122
+#: build/everest-forms/includes/admin/class-evf-admin-forms-table-list.php:363
 #: includes/admin/class-evf-admin-entries-table-list.php:325
 #: includes/admin/class-evf-admin-entries-table-list.php:413
 #: includes/admin/class-evf-admin-forms-table-list.php:122
@@ -1207,16 +1559,20 @@ msgstr ""
 msgid "Restore"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-entries-table-list.php:326
 #: includes/admin/class-evf-admin-entries-table-list.php:326
 msgid "Delete form entry permanently"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-entries-table-list.php:337
+#: build/everest-forms/includes/admin/class-evf-admin-entries-table-list.php:414
 #: includes/admin/class-evf-admin-entries-table-list.php:337
 #: includes/admin/class-evf-admin-entries-table-list.php:414
 msgid "Delete Permanently"
 msgstr ""
 
 #. translators: %s: count
+#: build/everest-forms/includes/admin/class-evf-admin-entries-table-list.php:384
 #: includes/admin/class-evf-admin-entries-table-list.php:384
 msgctxt "entries"
 msgid "All <span class=\"count\">(%s)</span>"
@@ -1224,11 +1580,13 @@ msgid_plural "All <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-entries-table-list.php:418
 #: includes/admin/class-evf-admin-entries-table-list.php:418
 msgid "Move to Trash"
 msgstr ""
 
 #. translators: %d: number of entries, %s: entries status
+#: build/everest-forms/includes/admin/class-evf-admin-entries-table-list.php:463
 #: includes/admin/class-evf-admin-entries-table-list.php:463
 msgid "%1$d entry successfully %2$s."
 msgid_plural "%1$d entries successfully %2$s."
@@ -1236,6 +1594,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d: number of entries, %s: entries status
+#: build/everest-forms/includes/admin/class-evf-admin-entries-table-list.php:479
 #: includes/admin/class-evf-admin-entries-table-list.php:479
 msgid "%1$d entry successfully marked as %2$s."
 msgid_plural "%1$d entries successfully marked as %2$s."
@@ -1243,6 +1602,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d: number of entries
+#: build/everest-forms/includes/admin/class-evf-admin-entries-table-list.php:494
 #: includes/admin/class-evf-admin-entries-table-list.php:494
 msgid "%d entry moved to the Trash."
 msgid_plural "%d entries moved to the Trash."
@@ -1250,6 +1610,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d: number of entries
+#: build/everest-forms/includes/admin/class-evf-admin-entries-table-list.php:509
 #: includes/admin/class-evf-admin-entries-table-list.php:509
 msgid "%d entry restored from the Trash."
 msgid_plural "%d entries restored from the Trash."
@@ -1257,6 +1618,8 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d: number of entries
+#: build/everest-forms/includes/admin/class-evf-admin-entries-table-list.php:524
+#: build/everest-forms/includes/admin/class-evf-admin-entries.php:257
 #: includes/admin/class-evf-admin-entries-table-list.php:524
 #: includes/admin/class-evf-admin-entries.php:257
 msgid "%d entry permanently deleted."
@@ -1264,24 +1627,34 @@ msgid_plural "%d entries permanently deleted."
 msgstr[0] ""
 msgstr[1] ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-entries-table-list.php:557
+#: build/everest-forms/includes/admin/class-evf-admin-entries.php:94
 #: includes/admin/class-evf-admin-entries-table-list.php:557
 #: includes/admin/class-evf-admin-entries.php:94
 msgid "Filter"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-entries-table-list.php:561
 #: includes/admin/class-evf-admin-entries-table-list.php:561
 msgid "Export CSV"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-entries-table-list.php:567
+#: build/everest-forms/includes/admin/class-evf-admin-forms-table-list.php:446
 #: includes/admin/class-evf-admin-entries-table-list.php:567
 #: includes/admin/class-evf-admin-forms-table-list.php:446
 msgid "Empty Trash"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-entries-table-list.php:581
 #: includes/admin/class-evf-admin-entries-table-list.php:581
 msgid "Filter by form"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-entries.php:59
+#: build/everest-forms/includes/admin/class-evf-admin-forms-table-list.php:53
+#: build/everest-forms/includes/admin/class-evf-admin-forms-table-list.php:117
+#: build/everest-forms/includes/admin/class-evf-admin-menus.php:134
 #: includes/admin/class-evf-admin-entries.php:59
 #: includes/admin/class-evf-admin-forms-table-list.php:53
 #: includes/admin/class-evf-admin-forms-table-list.php:117
@@ -1289,87 +1662,110 @@ msgstr ""
 msgid "Entries"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-entries.php:76
 #: includes/admin/class-evf-admin-entries.php:76
 msgid "Search Entries"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-entries.php:99
 #: includes/admin/class-evf-admin-entries.php:99
 msgid "Learn more about entries"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-entries.php:100
 #: includes/admin/class-evf-admin-entries.php:100
 msgid "Create your first form!"
 msgstr ""
 
 #. translators: %d - New form entries count.
+#: build/everest-forms/includes/admin/class-evf-admin-entries.php:389
 #: includes/admin/class-evf-admin-entries.php:389
 msgid "%d new entry since you last checked."
 msgid_plural "%d new entries since you last checked."
 msgstr[0] ""
 msgstr[1] ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-forms-table-list.php:37
 #: includes/admin/class-evf-admin-forms-table-list.php:37
 msgid "No Forms found."
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-forms-table-list.php:49
 #: includes/admin/class-evf-admin-forms-table-list.php:49
 msgid "Title"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-forms-table-list.php:50
 #: includes/admin/class-evf-admin-forms-table-list.php:50
 msgid "Shortcode"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-forms-table-list.php:51
 #: includes/admin/class-evf-admin-forms-table-list.php:51
 msgid "Author"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-forms-table-list.php:52
+#: build/everest-forms/includes/fields/class-evf-field-date-time.php:82
+#: build/everest-forms/includes/fields/class-evf-field-date-time.php:121
 #: includes/admin/class-evf-admin-forms-table-list.php:52
 #: includes/fields/class-evf-field-date-time.php:82
 #: includes/fields/class-evf-field-date-time.php:121
 msgid "Date"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-forms-table-list.php:116
+#: build/everest-forms/includes/class-evf-post-types.php:50
 #: includes/admin/class-evf-admin-forms-table-list.php:116
 #: includes/class-evf-post-types.php:50
 msgid "Edit"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-forms-table-list.php:122
 #: includes/admin/class-evf-admin-forms-table-list.php:122
 msgid "Restore this item from the Trash"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-forms-table-list.php:124
 #: includes/admin/class-evf-admin-forms-table-list.php:124
 msgid "Move this item to the Trash"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-forms-table-list.php:127
 #: includes/admin/class-evf-admin-forms-table-list.php:127
 msgid "Delete this item permanently"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-forms-table-list.php:127
+#: build/everest-forms/includes/admin/class-evf-admin-forms-table-list.php:364
 #: includes/admin/class-evf-admin-forms-table-list.php:127
 #: includes/admin/class-evf-admin-forms-table-list.php:364
 msgid "Delete permanently"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-forms-table-list.php:146
 #: includes/admin/class-evf-admin-forms-table-list.php:146
 msgid "Duplicate"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-forms-table-list.php:214
 #: includes/admin/class-evf-admin-forms-table-list.php:214
 msgid "Y/m/d g:i:s A"
 msgstr ""
 
 #. translators: %s: Time
+#: build/everest-forms/includes/admin/class-evf-admin-forms-table-list.php:226
 #: includes/admin/class-evf-admin-forms-table-list.php:226
 msgid "%s ago"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-forms-table-list.php:230
 #: includes/admin/class-evf-admin-forms-table-list.php:230
 msgid "Y/m/d"
 msgstr ""
 
 #. translators: %s: count
+#: build/everest-forms/includes/admin/class-evf-admin-forms-table-list.php:279
 #: includes/admin/class-evf-admin-forms-table-list.php:279
 msgctxt "posts"
 msgid "All <span class=\"count\">(%s)</span>"
@@ -1377,12 +1773,15 @@ msgid_plural "All <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-forms-table-list.php:369
+#: build/everest-forms/includes/admin/views/html-admin-page-entries-view.php:221
 #: includes/admin/class-evf-admin-forms-table-list.php:369
 #: includes/admin/views/html-admin-page-entries-view.php:221
 msgid "Move to trash"
 msgstr ""
 
 #. translators: %d: number of forms
+#: build/everest-forms/includes/admin/class-evf-admin-forms-table-list.php:399
 #: includes/admin/class-evf-admin-forms-table-list.php:399
 msgid "%d form moved to the Trash."
 msgid_plural "%d forms moved to the Trash."
@@ -1390,6 +1789,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d: number of forms
+#: build/everest-forms/includes/admin/class-evf-admin-forms-table-list.php:414
 #: includes/admin/class-evf-admin-forms-table-list.php:414
 msgid "%d form restored from the Trash."
 msgid_plural "%d forms restored from the Trash."
@@ -1397,6 +1797,8 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d: number of forms
+#: build/everest-forms/includes/admin/class-evf-admin-forms-table-list.php:429
+#: build/everest-forms/includes/admin/class-evf-admin-forms.php:221
 #: includes/admin/class-evf-admin-forms-table-list.php:429
 #: includes/admin/class-evf-admin-forms.php:221
 msgid "%d form permanently deleted."
@@ -1404,271 +1806,351 @@ msgid_plural "%d forms permanently deleted."
 msgstr[0] ""
 msgstr[1] ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-forms.php:157
+#: build/everest-forms/includes/admin/class-evf-admin-menus.php:93
+#: build/everest-forms/includes/class-evf-post-types.php:46
 #: includes/admin/class-evf-admin-forms.php:157
 #: includes/admin/class-evf-admin-menus.php:93
 #: includes/class-evf-post-types.php:46
 msgid "All Forms"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-forms.php:158
+#: build/everest-forms/includes/admin/class-evf-admin-menus.php:95
+#: build/everest-forms/includes/class-evf-post-types.php:48
 #: includes/admin/class-evf-admin-forms.php:158
 #: includes/admin/class-evf-admin-menus.php:95
 #: includes/class-evf-post-types.php:48
 msgid "Add New"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-forms.php:167
 #: includes/admin/class-evf-admin-forms.php:167
 msgid "Search Forms"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-forms.php:231
 #: includes/admin/class-evf-admin-forms.php:231
 msgid "No form to duplicate has been supplied!"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-import-export.php:34
+#: build/everest-forms/includes/admin/class-evf-admin-notices.php:118
+#: build/everest-forms/includes/admin/class-evf-admin-tools.php:165
 #: includes/admin/class-evf-admin-import-export.php:34
 #: includes/admin/class-evf-admin-notices.php:118
 #: includes/admin/class-evf-admin-tools.php:165
 msgid "Action failed. Please refresh the page and retry."
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-import-export.php:125
 #: includes/admin/class-evf-admin-import-export.php:125
 msgid "Imported Successfully."
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-import-export.php:132
+#: build/everest-forms/includes/admin/class-evf-admin-import-export.php:139
 #: includes/admin/class-evf-admin-import-export.php:132
 #: includes/admin/class-evf-admin-import-export.php:139
 msgid "Invalid file content. Please export file from Everest Forms plugin."
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-import-export.php:146
 #: includes/admin/class-evf-admin-import-export.php:146
 msgid "Invalid file format. Only JSON File Allowed."
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-import-export.php:153
 #: includes/admin/class-evf-admin-import-export.php:153
 msgid "Please select json file to import form data."
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-menus.php:93
 #: includes/admin/class-evf-admin-menus.php:93
 msgid "Everest Forms Builder"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-menus.php:95
 #: includes/admin/class-evf-admin-menus.php:95
 msgid "Everest Forms Setup"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-menus.php:134
 #: includes/admin/class-evf-admin-menus.php:134
 msgid "Everest Forms Entries"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-menus.php:164
 #: includes/admin/class-evf-admin-menus.php:164
 msgid "Everest Forms settings"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-menus.php:203
 #: includes/admin/class-evf-admin-menus.php:203
 msgid "Everest Forms tools"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-menus.php:203
 #: includes/admin/class-evf-admin-menus.php:203
 msgid "Tools"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-menus.php:210
+#: build/everest-forms/includes/admin/views/html-admin-page-addons.php:15
 #: includes/admin/class-evf-admin-menus.php:210
 #: includes/admin/views/html-admin-page-addons.php:15
 msgid "Everest Forms Add-ons"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-menus.php:210
 #: includes/admin/class-evf-admin-menus.php:210
 msgid "Add-ons"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-notices.php:122
 #: includes/admin/class-evf-admin-notices.php:122
 msgid "You don&#8217;t have permission to do this."
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-settings.php:73
 #: includes/admin/class-evf-admin-settings.php:73
 msgid "Your settings have been saved."
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-settings.php:132
 #: includes/admin/class-evf-admin-settings.php:132
 msgid "The changes you made will be lost if you navigate away from this page."
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-settings.php:580
 #: includes/admin/class-evf-admin-settings.php:580
 msgid "Select a page&hellip;"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-settings.php:589
+#: build/everest-forms/includes/evf-formatting-functions.php:604
 #: includes/admin/class-evf-admin-settings.php:589
 #: includes/evf-formatting-functions.php:604
 msgid "Day(s)"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-settings.php:590
+#: build/everest-forms/includes/evf-formatting-functions.php:605
 #: includes/admin/class-evf-admin-settings.php:590
 #: includes/evf-formatting-functions.php:605
 msgid "Week(s)"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-settings.php:591
+#: build/everest-forms/includes/evf-formatting-functions.php:606
 #: includes/admin/class-evf-admin-settings.php:591
 #: includes/evf-formatting-functions.php:606
 msgid "Month(s)"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-settings.php:592
+#: build/everest-forms/includes/evf-formatting-functions.php:607
 #: includes/admin/class-evf-admin-settings.php:592
 #: includes/evf-formatting-functions.php:607
 msgid "Year(s)"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-welcome.php:33
+#: build/everest-forms/includes/admin/class-evf-admin-welcome.php:34
+#: build/everest-forms/includes/admin/class-evf-admin-welcome.php:80
 #: includes/admin/class-evf-admin-welcome.php:33
 #: includes/admin/class-evf-admin-welcome.php:34
 #: includes/admin/class-evf-admin-welcome.php:80
 msgid "Welcome to Everest Forms"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-welcome.php:72
 #: includes/admin/class-evf-admin-welcome.php:72
 msgid "Getting Started"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-welcome.php:81
 #: includes/admin/class-evf-admin-welcome.php:81
 msgid "Thank you for choosing Everest Forms, the most powerful and easy drag & drop WordPress form builder in the market."
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-welcome.php:84
 #: includes/admin/class-evf-admin-welcome.php:84
 msgid "Watch how to create your first form with Everest Forms"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-welcome.php:93
 #: includes/admin/class-evf-admin-welcome.php:93
 msgid "Create Your First Form"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-welcome.php:94
 #: includes/admin/class-evf-admin-welcome.php:94
 msgid "Let's get started with the first contact forms for your site."
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-welcome.php:102
 #: includes/admin/class-evf-admin-welcome.php:102
 msgid "Read The Full Guide"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin-welcome.php:103
 #: includes/admin/class-evf-admin-welcome.php:103
 msgid "Read our step by step guide on how to create your first form."
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin.php:70
+#: build/everest-forms/includes/admin/class-evf-admin.php:115
 #: includes/admin/class-evf-admin.php:70
 #: includes/admin/class-evf-admin.php:115
 msgid "Could not verify nonce"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin.php:82
 #: includes/admin/class-evf-admin.php:82
 msgid "Sorry, you are not allowed to activate this plugin."
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin.php:90
 #: includes/admin/class-evf-admin.php:90
 msgid "Sorry, you are not allowed to deactivate plugins for this site."
 msgstr ""
 
 #. translators: 1: EverestForms 2:: five stars
+#: build/everest-forms/includes/admin/class-evf-admin.php:188
 #: includes/admin/class-evf-admin.php:188
 msgid "If you like %1$s please leave us a %2$s rating. A huge thanks in advance!"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin.php:190
 #: includes/admin/class-evf-admin.php:190
 msgid "Thanks :)"
 msgstr ""
 
+#: build/everest-forms/includes/admin/class-evf-admin.php:201
 #: includes/admin/class-evf-admin.php:201
 msgid "Thank you for creating with Everest Forms."
 msgstr ""
 
+#: build/everest-forms/includes/admin/evf-admin-functions.php:354
 #: includes/admin/evf-admin-functions.php:354
 msgid "Field #"
 msgstr ""
 
+#: build/everest-forms/includes/admin/evf-admin-functions.php:422
 #: includes/admin/evf-admin-functions.php:422
 msgid "Available Fields"
 msgstr ""
 
+#: build/everest-forms/includes/admin/evf-admin-functions.php:426
 #: includes/admin/evf-admin-functions.php:426
 msgid "Others"
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-email.php:40
 #: includes/admin/settings/class-evf-settings-email.php:40
 msgid "Template Settings"
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-email.php:46
 #: includes/admin/settings/class-evf-settings-email.php:46
 msgid "Template"
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-email.php:49
 #: includes/admin/settings/class-evf-settings-email.php:49
 msgid "Determine which format of email to send. HTML Template is default."
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-email.php:53
 #: includes/admin/settings/class-evf-settings-email.php:53
 msgid "HTML Template"
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-email.php:57
 #: includes/admin/settings/class-evf-settings-email.php:57
 msgid "Plain text"
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-email.php:63
 #: includes/admin/settings/class-evf-settings-email.php:63
 msgid "Enable copies"
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-email.php:64
 #: includes/admin/settings/class-evf-settings-email.php:64
 msgid "Enable the use of Cc and Bcc email addresses"
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-email.php:65
 #: includes/admin/settings/class-evf-settings-email.php:65
 msgid "Email addresses for Cc and Bcc can be applied from the form notification settings."
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-general.php:40
 #: includes/admin/settings/class-evf-settings-general.php:40
 msgid "General Options"
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-general.php:46
 #: includes/admin/settings/class-evf-settings-general.php:46
 msgid "Disable User Details"
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-general.php:47
 #: includes/admin/settings/class-evf-settings-general.php:47
 msgid "Disable storing the IP address and User Agent on all forms."
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-integrations.php:25
 #: includes/admin/settings/class-evf-settings-integrations.php:25
 msgid "Integration"
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-integrations.php:59
 #: includes/admin/settings/class-evf-settings-integrations.php:59
 msgid "Integrations"
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-recaptcha.php:25
 #: includes/admin/settings/class-evf-settings-recaptcha.php:25
 msgid "reCAPTCHA"
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-recaptcha.php:42
 #: includes/admin/settings/class-evf-settings-recaptcha.php:42
 msgid "Google reCAPTCHA Integration"
 msgstr ""
 
 #. translators: %1$s - Google reCAPTCHA docs url
+#: build/everest-forms/includes/admin/settings/class-evf-settings-recaptcha.php:45
 #: includes/admin/settings/class-evf-settings-recaptcha.php:45
 msgid "<p>Google's reCAPTCHA is a free service that protects your website from spam and abuse while letting valid users pass through with ease.</p><p>reCAPTCHA uses an advanced risk analysis engine and adaptive challenges to keep automated software from engaging in abusive activities on your site.</p><p>Sites already using v2 reCAPTCHA will need to create new site keys before switching to the Invisible reCAPTCHA or v3 reCAPTCHA.</p><p><a href=\"%1$s\" target=\"_blank\">Read our documentation</a> for step-by-step instructions.</p>"
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-recaptcha.php:49
 #: includes/admin/settings/class-evf-settings-recaptcha.php:49
 msgid "reCAPTCHA type"
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-recaptcha.php:50
 #: includes/admin/settings/class-evf-settings-recaptcha.php:50
 msgid "Choose the type of reCAPTCHA for this site key."
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-recaptcha.php:55
 #: includes/admin/settings/class-evf-settings-recaptcha.php:55
 msgid "reCAPTCHA v2"
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-recaptcha.php:56
 #: includes/admin/settings/class-evf-settings-recaptcha.php:56
 msgid "reCAPTCHA v3"
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-recaptcha.php:62
+#: build/everest-forms/includes/admin/settings/class-evf-settings-recaptcha.php:82
+#: build/everest-forms/includes/admin/settings/class-evf-settings-recaptcha.php:110
 #: includes/admin/settings/class-evf-settings-recaptcha.php:62
 #: includes/admin/settings/class-evf-settings-recaptcha.php:82
 #: includes/admin/settings/class-evf-settings-recaptcha.php:110
@@ -1676,11 +2158,16 @@ msgid "Site Key"
 msgstr ""
 
 #. translators: %1$s - Google reCAPTCHA docs url
+#: build/everest-forms/includes/admin/settings/class-evf-settings-recaptcha.php:65
+#: build/everest-forms/includes/admin/settings/class-evf-settings-recaptcha.php:85
 #: includes/admin/settings/class-evf-settings-recaptcha.php:65
 #: includes/admin/settings/class-evf-settings-recaptcha.php:85
 msgid "Please enter your site key for your reCAPTCHA v2. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-recaptcha.php:72
+#: build/everest-forms/includes/admin/settings/class-evf-settings-recaptcha.php:92
+#: build/everest-forms/includes/admin/settings/class-evf-settings-recaptcha.php:120
 #: includes/admin/settings/class-evf-settings-recaptcha.php:72
 #: includes/admin/settings/class-evf-settings-recaptcha.php:92
 #: includes/admin/settings/class-evf-settings-recaptcha.php:120
@@ -1688,1009 +2175,1274 @@ msgid "Secret Key"
 msgstr ""
 
 #. translators: %1$s - Google reCAPTCHA docs url
+#: build/everest-forms/includes/admin/settings/class-evf-settings-recaptcha.php:75
+#: build/everest-forms/includes/admin/settings/class-evf-settings-recaptcha.php:95
 #: includes/admin/settings/class-evf-settings-recaptcha.php:75
 #: includes/admin/settings/class-evf-settings-recaptcha.php:95
 msgid "Please enter your secret key for your reCAPTCHA v2. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-recaptcha.php:102
 #: includes/admin/settings/class-evf-settings-recaptcha.php:102
 msgid "Invisible reCAPTCHA"
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-recaptcha.php:104
 #: includes/admin/settings/class-evf-settings-recaptcha.php:104
 msgid "Enable Invisible reCAPTCHA."
 msgstr ""
 
 #. translators: %1$s - Google reCAPTCHA docs url
+#: build/everest-forms/includes/admin/settings/class-evf-settings-recaptcha.php:113
 #: includes/admin/settings/class-evf-settings-recaptcha.php:113
 msgid "Please enter your site key for your reCAPTCHA v3. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
 #. translators: %1$s - Google reCAPTCHA docs url
+#: build/everest-forms/includes/admin/settings/class-evf-settings-recaptcha.php:123
 #: includes/admin/settings/class-evf-settings-recaptcha.php:123
 msgid "Please enter your secret key for your reCAPTCHA v3. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-validation.php:25
 #: includes/admin/settings/class-evf-settings-validation.php:25
 msgid "Validations"
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-validation.php:40
 #: includes/admin/settings/class-evf-settings-validation.php:40
 msgid "Validation Messages"
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-validation.php:47
 #: includes/admin/settings/class-evf-settings-validation.php:47
 msgid "Enter the message for the required form field"
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-validation.php:52
+#: build/everest-forms/includes/class-evf-frontend-scripts.php:311
+#: build/everest-forms/includes/evf-core-functions.php:1496
 #: includes/admin/settings/class-evf-settings-validation.php:52
 #: includes/class-evf-frontend-scripts.php:311
 #: includes/evf-core-functions.php:1496
 msgid "This field is required."
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-validation.php:55
 #: includes/admin/settings/class-evf-settings-validation.php:55
 msgid "Website URL"
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-validation.php:56
 #: includes/admin/settings/class-evf-settings-validation.php:56
 msgid "Enter the message for the valid website url"
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-validation.php:61
 #: includes/admin/settings/class-evf-settings-validation.php:61
 msgid "Please enter a valid URL."
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-validation.php:65
 #: includes/admin/settings/class-evf-settings-validation.php:65
 msgid "Enter the message for the valid email"
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-validation.php:70
+#: build/everest-forms/includes/fields/class-evf-field-email.php:400
 #: includes/admin/settings/class-evf-settings-validation.php:70
 #: includes/fields/class-evf-field-email.php:400
 msgid "Please enter a valid email address."
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-validation.php:73
 #: includes/admin/settings/class-evf-settings-validation.php:73
 msgid "Email Suggestion"
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-validation.php:74
 #: includes/admin/settings/class-evf-settings-validation.php:74
 msgid "Enter the message for the valid email suggestion"
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-validation.php:79
+#: build/everest-forms/includes/class-evf-frontend-scripts.php:288
 #: includes/admin/settings/class-evf-settings-validation.php:79
 #: includes/class-evf-frontend-scripts.php:288
 msgid "Did you mean {suggestion}?"
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-validation.php:82
 #: includes/admin/settings/class-evf-settings-validation.php:82
 msgid "Confirm Value"
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-validation.php:83
 #: includes/admin/settings/class-evf-settings-validation.php:83
 msgid "Enter the message for confirm field value."
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-validation.php:88
+#: build/everest-forms/includes/class-evf-frontend-scripts.php:290
 #: includes/admin/settings/class-evf-settings-validation.php:88
 #: includes/class-evf-frontend-scripts.php:290
 msgid "Field values do not match."
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-validation.php:91
 #: includes/admin/settings/class-evf-settings-validation.php:91
 msgid "Checkbox Selection Limit"
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-validation.php:92
 #: includes/admin/settings/class-evf-settings-validation.php:92
 msgid "Enter the message for the checkbox selection limit."
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-validation.php:97
+#: build/everest-forms/includes/class-evf-frontend-scripts.php:291
+#: build/everest-forms/includes/fields/class-evf-field-checkbox.php:445
 #: includes/admin/settings/class-evf-settings-validation.php:97
 #: includes/class-evf-frontend-scripts.php:291
 #: includes/fields/class-evf-field-checkbox.php:445
 msgid "You have exceeded number of allowed selections: {#}."
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-validation.php:100
+#: build/everest-forms/includes/fields/class-evf-field-number.php:20
 #: includes/admin/settings/class-evf-settings-validation.php:100
 #: includes/fields/class-evf-field-number.php:20
 msgid "Number"
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-validation.php:101
 #: includes/admin/settings/class-evf-settings-validation.php:101
 msgid "Enter the message for the valid number"
 msgstr ""
 
+#: build/everest-forms/includes/admin/settings/class-evf-settings-validation.php:106
+#: build/everest-forms/includes/fields/class-evf-field-number.php:290
 #: includes/admin/settings/class-evf-settings-validation.php:106
 #: includes/fields/class-evf-field-number.php:290
 msgid "Please enter a valid number."
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-addons.php:18
 #: includes/admin/views/html-admin-page-addons.php:18
 msgid "Refresh Add-ons"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-addons.php:22
 #: includes/admin/views/html-admin-page-addons.php:22
 msgid "Filter add-ons list"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-addons.php:38
+#: build/everest-forms/includes/admin/views/html-admin-page-addons.php:41
 #: includes/admin/views/html-admin-page-addons.php:38
 #: includes/admin/views/html-admin-page-addons.php:41
 msgid "Search Add-ons"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-addons.php:39
 #: includes/admin/views/html-admin-page-addons.php:39
 msgid "Search Add-ons..."
 msgstr ""
 
 #. translators: %s: Refresh URI
+#: build/everest-forms/includes/admin/views/html-admin-page-addons.php:49
 #: includes/admin/views/html-admin-page-addons.php:49
 msgid "Make your forms even more robust with our premium addons. Missing any addons? Click the %1$sRefresh Add-ons%2$s button above."
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-addons.php:56
 #: includes/admin/views/html-admin-page-addons.php:56
 msgid "Add-ons list"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-addons.php:77
+#: build/everest-forms/includes/admin/views/html-admin-page-entries-view.php:210
 #: includes/admin/views/html-admin-page-addons.php:77
 #: includes/admin/views/html-admin-page-entries-view.php:210
 msgid "Status:"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-addons.php:79
 #: includes/admin/views/html-admin-page-addons.php:79
 msgid "Activated"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-addons.php:81
 #: includes/admin/views/html-admin-page-addons.php:81
 msgid "Inactive"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-addons.php:83
 #: includes/admin/views/html-admin-page-addons.php:83
 msgid "Not Installed"
 msgstr ""
 
 #. translators: %s: Add-on title
+#: build/everest-forms/includes/admin/views/html-admin-page-addons.php:90
 #: includes/admin/views/html-admin-page-addons.php:90
 msgid "Deactivate %s now"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-addons.php:104
 #: includes/admin/views/html-admin-page-addons.php:104
 msgid "Deactivate"
 msgstr ""
 
 #. translators: %s: Add-on title
+#: build/everest-forms/includes/admin/views/html-admin-page-addons.php:108
 #: includes/admin/views/html-admin-page-addons.php:108
 msgid "Activate %s now"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-addons.php:122
 #: includes/admin/views/html-admin-page-addons.php:122
 msgid "Activate"
 msgstr ""
 
 #. translators: %s: Add-on title
+#: build/everest-forms/includes/admin/views/html-admin-page-addons.php:126
 #: includes/admin/views/html-admin-page-addons.php:126
 msgid "Install %s now"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-addons.php:128
 #: includes/admin/views/html-admin-page-addons.php:128
 msgid "Install Addon"
 msgstr ""
 
 #. translators: %s: Add-ons Link
+#: build/everest-forms/includes/admin/views/html-admin-page-addons.php:147
 #: includes/admin/views/html-admin-page-addons.php:147
 msgid "Our catalog of Everest Forms Add-ons/Extensions can be found on WPEverest.com here: <a href=\"%s\">Everest Forms Extensions Catalog</a>"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-builder-setup.php:23
 #: includes/admin/views/html-admin-page-builder-setup.php:23
 msgid "Add New Form"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-builder-setup.php:25
 #: includes/admin/views/html-admin-page-builder-setup.php:25
 msgid "Refresh Templates"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-builder-setup.php:30
 #: includes/admin/views/html-admin-page-builder-setup.php:30
 msgid "All"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-builder-setup.php:33
 #: includes/admin/views/html-admin-page-builder-setup.php:33
 msgid "Free"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-builder-setup.php:36
 #: includes/admin/views/html-admin-page-builder-setup.php:36
 msgid "Premium"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-builder-setup.php:43
 #: includes/admin/views/html-admin-page-builder-setup.php:43
 msgid "Couldn't connect to templates server. Please reload again."
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-builder-setup.php:49
 #: includes/admin/views/html-admin-page-builder-setup.php:49
 msgid "Something went wrong. Please refresh your templates."
 msgstr ""
 
 #. translators: %s: Template title
+#: build/everest-forms/includes/admin/views/html-admin-page-builder-setup.php:72
 #: includes/admin/views/html-admin-page-builder-setup.php:72
 msgctxt "Template name"
 msgid "%s template"
 msgstr ""
 
 #. translators: %s: Number of plugins
+#: build/everest-forms/includes/admin/views/html-admin-page-builder-setup.php:126
 #: includes/admin/views/html-admin-page-builder-setup.php:126
 msgid "%s plugin successfully installed."
 msgstr ""
 
 #. translators: %s: Number of plugins
+#: build/everest-forms/includes/admin/views/html-admin-page-builder-setup.php:133
 #: includes/admin/views/html-admin-page-builder-setup.php:133
 msgid "%s plugins successfully installed."
 msgstr ""
 
 #. translators: %s: Number of failed installs
+#: build/everest-forms/includes/admin/views/html-admin-page-builder-setup.php:143
 #: includes/admin/views/html-admin-page-builder-setup.php:143
 msgid "%s install failed."
 msgstr ""
 
 #. translators: %s: Number of failed installs
+#: build/everest-forms/includes/admin/views/html-admin-page-builder-setup.php:148
 #: includes/admin/views/html-admin-page-builder-setup.php:148
 msgid "%s installs failed."
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-builder-setup.php:151
 #: includes/admin/views/html-admin-page-builder-setup.php:151
 msgid "Show more details"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-builder.php:30
 #: includes/admin/views/html-admin-page-builder.php:30
 msgid "Loading&hellip;"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-builder.php:51
 #: includes/admin/views/html-admin-page-builder.php:51
 msgid "Copy Shortcode!"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-builder.php:51
 #: includes/admin/views/html-admin-page-builder.php:51
 msgid "Copied!"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-builder.php:52
 #: includes/admin/views/html-admin-page-builder.php:52
 msgid "Copy shortcode"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-builder.php:56
 #: includes/admin/views/html-admin-page-builder.php:56
 msgid "Save"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-entries-view.php:27
 #: includes/admin/views/html-admin-page-entries-view.php:27
 msgid "View Entry"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-entries-view.php:28
 #: includes/admin/views/html-admin-page-entries-view.php:28
 msgid "Back to All Entries"
 msgstr ""
 
 #. translators: %s: Entry ID
+#: build/everest-forms/includes/admin/views/html-admin-page-entries-view.php:42
 #: includes/admin/views/html-admin-page-entries-view.php:42
 msgid "%1$s: Entry #%2$s"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-entries-view.php:47
 #: includes/admin/views/html-admin-page-entries-view.php:47
 msgid "Show Empty Fields"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-entries-view.php:47
 #: includes/admin/views/html-admin-page-entries-view.php:47
 msgid "Hide Empty Fields"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-entries-view.php:58
 #: includes/admin/views/html-admin-page-entries-view.php:58
 msgid "This entry does not have any fields."
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-entries-view.php:90
 #: includes/admin/views/html-admin-page-entries-view.php:90
 msgid "Field ID"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-entries-view.php:131
 #: includes/admin/views/html-admin-page-entries-view.php:131
 msgid "Empty"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-entries-view.php:148
 #: includes/admin/views/html-admin-page-entries-view.php:148
 msgid "Entry Details"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-entries-view.php:154
 #: includes/admin/views/html-admin-page-entries-view.php:154
 msgid "Entry ID:"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-entries-view.php:160
 #: includes/admin/views/html-admin-page-entries-view.php:160
 msgid "Submitted:"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-entries-view.php:161
+#: build/everest-forms/includes/admin/views/html-admin-page-entries-view.php:168
 #: includes/admin/views/html-admin-page-entries-view.php:161
 #: includes/admin/views/html-admin-page-entries-view.php:168
 msgid "M j, Y @ g:ia"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-entries-view.php:167
 #: includes/admin/views/html-admin-page-entries-view.php:167
 msgid "Modified:"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-entries-view.php:176
 #: includes/admin/views/html-admin-page-entries-view.php:176
 msgid "User:"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-entries-view.php:194
 #: includes/admin/views/html-admin-page-entries-view.php:194
 msgid "User IP:"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-entries-view.php:202
 #: includes/admin/views/html-admin-page-entries-view.php:202
 msgid "Referer Link:"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-entries-view.php:211
 #: includes/admin/views/html-admin-page-entries-view.php:211
 msgid "Completed"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-export.php:12
 #: includes/admin/views/html-admin-page-export.php:12
 msgid "Export Everest Forms with Settings"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-export.php:13
 #: includes/admin/views/html-admin-page-export.php:13
 msgid "Export your forms along with their settings as JSON file."
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-export.php:18
 #: includes/admin/views/html-admin-page-export.php:18
 msgid "Select form"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-export.php:18
 #: includes/admin/views/html-admin-page-export.php:18
 msgid "Select a form"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-export.php:24
 #: includes/admin/views/html-admin-page-export.php:24
 msgid "You need to create a form before you can use form export."
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-export.php:29
+#: build/everest-forms/includes/admin/views/html-admin-page-tools.php:15
 #: includes/admin/views/html-admin-page-export.php:29
 #: includes/admin/views/html-admin-page-tools.php:15
 msgid "Export"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-import.php:12
 #: includes/admin/views/html-admin-page-import.php:12
 msgid "Import Everest Forms"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-import.php:13
 #: includes/admin/views/html-admin-page-import.php:13
 msgid "Select JSON file to import the form."
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-import.php:15
 #: includes/admin/views/html-admin-page-import.php:15
 msgid "files selected"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-import.php:16
 #: includes/admin/views/html-admin-page-import.php:16
 msgid "No file selected"
 msgstr ""
 
 #. translators: %s: File format
+#: build/everest-forms/includes/admin/views/html-admin-page-import.php:22
 #: includes/admin/views/html-admin-page-import.php:22
 msgid "Only %s file is allowed."
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-import.php:26
 #: includes/admin/views/html-admin-page-import.php:26
 msgid "Import Form"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-tools-logs.php:17
 #: includes/admin/views/html-admin-page-tools-logs.php:17
 msgid "Delete log"
 msgstr ""
 
 #. translators: 1: last access date 2: last access time
+#: build/everest-forms/includes/admin/views/html-admin-page-tools-logs.php:28
 #: includes/admin/views/html-admin-page-tools-logs.php:28
 msgid "%1$s at %2$s"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-tools-logs.php:42
 #: includes/admin/views/html-admin-page-tools-logs.php:42
 msgid "There are currently no logs to view."
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-tools.php:14
 #: includes/admin/views/html-admin-page-tools.php:14
 msgid "Import"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-page-tools.php:16
 #: includes/admin/views/html-admin-page-tools.php:16
 msgid "Logs"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-admin-settings.php:42
 #: includes/admin/views/html-admin-settings.php:42
 msgid "Save Changes"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-notice-custom.php:12
+#: build/everest-forms/includes/admin/views/html-notice-updated.php:12
 #: includes/admin/views/html-notice-custom.php:12
 #: includes/admin/views/html-notice-updated.php:12
 msgid "Dismiss"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-notice-review.php:16
 #: includes/admin/views/html-notice-review.php:16
 msgid "Please help us spread the word"
 msgstr ""
 
 #. translators: %1$s: Plugin Name, %2$s: Rating link
+#: build/everest-forms/includes/admin/views/html-notice-review.php:20
 #: includes/admin/views/html-notice-review.php:20
 msgid "Enjoying the experience with %1$s? Please take a moment to spread your love by rating us on %2$s"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-notice-review.php:24
 #: includes/admin/views/html-notice-review.php:24
 msgid "Sure, I'd love to!"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-notice-review.php:25
 #: includes/admin/views/html-notice-review.php:25
 msgid "Remind me later"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-notice-review.php:26
 #: includes/admin/views/html-notice-review.php:26
 msgid "I already did"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-notice-update.php:18
 #: includes/admin/views/html-notice-update.php:18
 msgid "Everest Forms database update required"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-notice-update.php:21
 #: includes/admin/views/html-notice-update.php:21
 msgid "Everest Forms has been updated! To keep things running smoothly, we have to update your database to the newest version. The database update process runs in the background and may take a little while, so please be patient."
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-notice-update.php:25
 #: includes/admin/views/html-notice-update.php:25
 msgid "Update Everest Forms Database"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-notice-update.php:31
 #: includes/admin/views/html-notice-update.php:31
 msgid "It is strongly recommended that you backup your database before proceeding. Are you sure you wish to run the updater now?"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-notice-updated.php:14
 #: includes/admin/views/html-notice-updated.php:14
 msgid "Everest Forms data update complete. Thank you for updating to the latest version!"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-notice-updating.php:12
 #: includes/admin/views/html-notice-updating.php:12
 msgid "Everest Forms data update"
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-notice-updating.php:12
 #: includes/admin/views/html-notice-updating.php:12
 msgid "Your database is being updated in the background."
 msgstr ""
 
+#: build/everest-forms/includes/admin/views/html-notice-updating.php:12
 #: includes/admin/views/html-notice-updating.php:12
 msgid "Taking a while? Click here to run it now."
 msgstr ""
 
+#: build/everest-forms/includes/class-everest-forms.php:101
+#: build/everest-forms/includes/class-everest-forms.php:110
 #: includes/class-everest-forms.php:101
 #: includes/class-everest-forms.php:110
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-ajax.php:125
 #: includes/class-evf-ajax.php:125
 msgid "Invalid form"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-ajax.php:155
 #: includes/class-evf-ajax.php:155
 msgid "Blank Form"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-ajax.php:177
 #: includes/class-evf-ajax.php:177
 msgid "Something went wrong, please try again later"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-ajax.php:190
 #: includes/class-evf-ajax.php:190
 msgid "You do not have permission."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-ajax.php:195
 #: includes/class-evf-ajax.php:195
 msgid "No data provided"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-ajax.php:265
 #: includes/class-evf-ajax.php:265
 msgid "Meta Key missing"
 msgstr ""
 
 #. translators: %s: empty meta data
+#: build/everest-forms/includes/class-evf-ajax.php:267
 #: includes/class-evf-ajax.php:267
 msgid "Please add Meta key for fields: %s"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-ajax.php:286
 #: includes/class-evf-ajax.php:286
 msgid "Form not found"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-ajax.php:287
 #: includes/class-evf-ajax.php:287
 msgid "An error occurred while saving the form."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-ajax.php:326
 #: includes/class-evf-ajax.php:326
 msgid "No Addon specified."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-ajax.php:337
 #: includes/class-evf-ajax.php:337
 msgid "Addon can not be activate. Please try again."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-ajax.php:358
 #: includes/class-evf-ajax.php:358
 msgid "No Plan specified."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-ajax.php:379
 #: includes/class-evf-ajax.php:379
 msgid "This form template requires the following addons."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-ajax.php:430
 #: includes/class-evf-ajax.php:430
 msgid "No plugin specified."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-ajax.php:443
 #: includes/class-evf-ajax.php:443
 msgid "Sorry, you are not allowed to install plugins on this site."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-ajax.php:507
 #: includes/class-evf-ajax.php:507
 msgid "Unable to connect to the filesystem. Please confirm your credentials."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-ajax.php:551
+#: build/everest-forms/includes/class-evf-ajax.php:591
 #: includes/class-evf-ajax.php:551
 #: includes/class-evf-ajax.php:591
 msgid "Missing data"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-ajax.php:605
 #: includes/class-evf-ajax.php:605
 msgid "Connection missing"
 msgstr ""
 
 #. translators: %1$s - deactivation reason page; %2$d - deactivation url.
+#: build/everest-forms/includes/class-evf-ajax.php:634
 #: includes/class-evf-ajax.php:634
 msgid "Before we deactivate Everest Forms, would you care to <a href=\"%1$s\" target=\"_blank\">let us know why</a> so we can improve it for you? <a href=\"%2$s\">No, deactivate now</a>."
 msgstr ""
 
 #. translators: 1: key 2: URL
+#: build/everest-forms/includes/class-evf-cache-helper.php:81
 #: includes/class-evf-cache-helper.php:81
 msgid "In order for <strong>database caching</strong> to work with Everest Forms you must add %1$s to the \"Ignored Query Strings\" option in <a href=\"%2$s\">W3 Total Cache settings</a>."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-emails.php:317
 #: includes/class-evf-emails.php:317
 msgid "You cannot send emails with EVF_Emails until init/admin_init has been reached"
 msgstr ""
 
 #. translators: %d - field ID.
+#: build/everest-forms/includes/class-evf-emails.php:513
+#: build/everest-forms/includes/class-evf-emails.php:555
 #: includes/class-evf-emails.php:513
 #: includes/class-evf-emails.php:555
 msgid "Field ID #%d"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-emails.php:567
 #: includes/class-evf-emails.php:567
 msgid "An empty form was submitted."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-fields.php:52
 #: includes/class-evf-fields.php:52
 msgid "Cloning is forbidden."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-fields.php:61
 #: includes/class-evf-fields.php:61
 msgid "Unserializing instances of this class is forbidden."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-form-block.php:79
 #: includes/class-evf-form-block.php:79
 msgid "Select and display one of your forms."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-form-block.php:81
 #: includes/class-evf-form-block.php:81
 msgid "form"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-form-block.php:82
 #: includes/class-evf-form-block.php:82
 msgid "contact"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-form-block.php:83
 #: includes/class-evf-form-block.php:83
 msgid "survey"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-form-block.php:85
 #: includes/class-evf-form-block.php:85
 msgid "Select a Form"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-form-block.php:86
 #: includes/class-evf-form-block.php:86
 msgid "Form Settings"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-form-block.php:87
+#: build/everest-forms/includes/class-evf-post-types.php:45
 #: includes/class-evf-form-block.php:87
 #: includes/class-evf-post-types.php:45
 msgid "Form"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-form-block.php:88
 #: includes/class-evf-form-block.php:88
 msgid "Show Title"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-form-block.php:89
 #: includes/class-evf-form-block.php:89
 msgid "Show Description"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-form-task.php:92
 #: includes/class-evf-form-task.php:92
 msgid "We were unable to process your form, please try again."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-form-task.php:98
 #: includes/class-evf-form-task.php:98
 msgid "Invalid form. Please check again."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-form-task.php:166
+#: build/everest-forms/includes/class-evf-form-task.php:218
+#: build/everest-forms/includes/class-evf-form-task.php:267
 #: includes/class-evf-form-task.php:166
 #: includes/class-evf-form-task.php:218
 #: includes/class-evf-form-task.php:267
 msgid "Form has not been submitted, please see the errors below."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-form-task.php:188
 #: includes/class-evf-form-task.php:188
 msgid "Google reCAPTCHA verification failed, please try again later."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-form-task.php:226
 #: includes/class-evf-form-task.php:226
 msgid "Everest Forms honeypot field triggered."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-form-task.php:300
+#: build/everest-forms/includes/templates/contact.php:61
 #: includes/class-evf-form-task.php:300
 #: includes/templates/contact.php:61
 msgid "Thanks for contacting us! We will be in touch with you shortly."
 msgstr ""
 
 #. translators: %s - form name.
+#: build/everest-forms/includes/class-evf-form-task.php:580
 #: includes/class-evf-form-task.php:580
 msgid "New %s Entry"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-form-task.php:676
 #: includes/class-evf-form-task.php:676
 msgid "No form ID was found."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-form-task.php:683
 #: includes/class-evf-form-task.php:683
 msgid "Could not create an entry"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-frontend-scripts.php:289
 #: includes/class-evf-frontend-scripts.php:289
 msgid "Click to accept this suggestion."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-frontend-scripts.php:301
 #: includes/class-evf-frontend-scripts.php:301
 msgid "{count} of {limit} max characters."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-frontend-scripts.php:302
 #: includes/class-evf-frontend-scripts.php:302
 msgid "{count} of {limit} max words."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-frontend-scripts.php:310
 #: includes/class-evf-frontend-scripts.php:310
 msgid "Sorry, something went wrong. Please try again"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-install.php:301
 #: includes/class-evf-install.php:301
 msgid "Monthly"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-install.php:575
+#: build/everest-forms/includes/templates/contact.php:12
 #: includes/class-evf-install.php:575
 #: includes/templates/contact.php:12
 msgid "Contact Form"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-install.php:637
 #: includes/class-evf-install.php:637
 msgid "View Everest Forms Settings"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-install.php:653
 #: includes/class-evf-install.php:653
 msgid "View Everest Forms documentation"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-install.php:653
 #: includes/class-evf-install.php:653
 msgid "Docs"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-install.php:654
 #: includes/class-evf-install.php:654
 msgid "Visit free customer support"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-install.php:654
 #: includes/class-evf-install.php:654
 msgid "Free support"
 msgstr ""
 
 #. translators: 1: class name 2: EVF_Log_Handler_Interface
+#: build/everest-forms/includes/class-evf-logger.php:54
 #: includes/class-evf-logger.php:54
 msgid "The provided handler %1$s does not implement %2$s."
 msgstr ""
 
 #. translators: 1: EVF_Logger::log 2: level
+#: build/everest-forms/includes/class-evf-logger.php:133
 #: includes/class-evf-logger.php:133
 msgid "%1$s was called with an invalid level \"%2$s\"."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-post-types.php:44
 #: includes/class-evf-post-types.php:44
 msgid "Forms"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-post-types.php:47
 #: includes/class-evf-post-types.php:47
 msgctxt "Admin menu name"
 msgid "Forms"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-post-types.php:49
 #: includes/class-evf-post-types.php:49
 msgid "Add new form"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-post-types.php:51
 #: includes/class-evf-post-types.php:51
 msgid "Edit form"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-post-types.php:52
 #: includes/class-evf-post-types.php:52
 msgid "New form"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-post-types.php:53
 #: includes/class-evf-post-types.php:53
 msgid "View form"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-post-types.php:54
 #: includes/class-evf-post-types.php:54
 msgid "Search forms"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-post-types.php:55
 #: includes/class-evf-post-types.php:55
 msgid "No forms found"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-post-types.php:56
 #: includes/class-evf-post-types.php:56
 msgid "No forms found in trash"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-post-types.php:57
 #: includes/class-evf-post-types.php:57
 msgid "Parent forms"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-post-types.php:58
 #: includes/class-evf-post-types.php:58
 msgid "Form image"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-post-types.php:59
 #: includes/class-evf-post-types.php:59
 msgid "Set form image"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-post-types.php:60
 #: includes/class-evf-post-types.php:60
 msgid "Remove form image"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-post-types.php:61
 #: includes/class-evf-post-types.php:61
 msgid "Use as form image"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-post-types.php:62
 #: includes/class-evf-post-types.php:62
 msgid "Insert into form"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-post-types.php:63
 #: includes/class-evf-post-types.php:63
 msgid "Uploaded to this form"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-post-types.php:64
 #: includes/class-evf-post-types.php:64
 msgid "Filter forms"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-post-types.php:65
 #: includes/class-evf-post-types.php:65
 msgid "Forms navigation"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-post-types.php:66
 #: includes/class-evf-post-types.php:66
 msgid "Forms list"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-post-types.php:70
 #: includes/class-evf-post-types.php:70
 msgid "This is where you can add new forms."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-privacy.php:45
 #: includes/class-evf-privacy.php:45
 msgid "This sample policy includes the basics around what personal data you may be collecting, storing and sharing, as well as who may have access to that data. Depending on what settings are enabled and which additional plugins are used, the specific information shared by your form will vary. We recommend consulting with a lawyer when deciding what information to disclose on your privacy policy."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-privacy.php:47
 #: includes/class-evf-privacy.php:47
 msgid "We collect information about you during the form submission process on our site."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-privacy.php:48
 #: includes/class-evf-privacy.php:48
 msgid "What we collect and store"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-privacy.php:49
 #: includes/class-evf-privacy.php:49
 msgid "While you visit our site, we’ll track:"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-privacy.php:51
 #: includes/class-evf-privacy.php:51
 msgid "Form Fields Data: Forms Fields data includes the available field types when creating a form. We’ll use this to, for example, collect informations like Name, Email and other available fields."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-privacy.php:52
 #: includes/class-evf-privacy.php:52
 msgid "Location, IP address and browser type: we’ll use this for purposes like geolocating users and reducing fraudulent activities."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-privacy.php:53
 #: includes/class-evf-privacy.php:53
 msgid "Transaction Details: we’ll ask you to enter this so we can, for instance, provide subscription packs, and keep track of your payment details for subscription packs!"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-privacy.php:55
 #: includes/class-evf-privacy.php:55
 msgid "We’ll also use cookies to keep track of form elements while you’re browsing our site."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-privacy.php:56
 #: includes/class-evf-privacy.php:56
 msgid "Note: you may want to further detail your cookie policy, and link to that section from here."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-privacy.php:57
 #: includes/class-evf-privacy.php:57
 msgid "When you fill up a form, we’ll ask you to provide information including your name, address, email, phone number, credit card/payment details and optional account information like username and password and any other form fields available in the form builder. We’ll use this information for purposes, such as, to:"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-privacy.php:59
 #: includes/class-evf-privacy.php:59
 msgid "Send you information about your account and order"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-privacy.php:60
 #: includes/class-evf-privacy.php:60
 msgid "Respond to your requests, including transaction details and complaints"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-privacy.php:61
 #: includes/class-evf-privacy.php:61
 msgid "Process payments and prevent fraud"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-privacy.php:62
 #: includes/class-evf-privacy.php:62
 msgid "Set up your account for our site"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-privacy.php:63
 #: includes/class-evf-privacy.php:63
 msgid "Comply with any legal obligations we have, such as calculating taxes"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-privacy.php:64
 #: includes/class-evf-privacy.php:64
 msgid "Improve our form offerings"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-privacy.php:65
 #: includes/class-evf-privacy.php:65
 msgid "Send you marketing messages, if you choose to receive them"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-privacy.php:66
 #: includes/class-evf-privacy.php:66
 msgid "Or any other service the built form was created to comply with and it’s necessary information"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-privacy.php:68
 #: includes/class-evf-privacy.php:68
 msgid "If you create an account, we will store your name, address, email and phone number, which will be used to populate the form fields for future submissions."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-privacy.php:69
 #: includes/class-evf-privacy.php:69
 msgid "We generally store information about you for as long as we need the information for the purposes for which we collect and use it, and we are not legally required to continue to keep it. For example, we will store form submission information for XXX years for geolocating and marketting purposes. This includes your name, address, email, phone number."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-privacy.php:70
 #: includes/class-evf-privacy.php:70
 msgid "Who on our team has access"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-privacy.php:71
 #: includes/class-evf-privacy.php:71
 msgid "Members of our team have access to the information you provide us. For example, both Administrators and Editors can access:"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-privacy.php:73
 #: includes/class-evf-privacy.php:73
 msgid "Form submission information and other details related to it"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-privacy.php:74
 #: includes/class-evf-privacy.php:74
 msgid "Customer information like your name, email and address information."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-privacy.php:76
 #: includes/class-evf-privacy.php:76
 msgid "Our team members have access to this information to help fulfill entries and support you."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-privacy.php:77
 #: includes/class-evf-privacy.php:77
 msgid "What we share with others"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-privacy.php:78
 #: includes/class-evf-privacy.php:78
 msgid "In this section you should list who you’re sharing data with, and for what purpose. This could include, but may not be limited to, analytics, marketing, payment gateways, shipping providers, and third party embeds."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-privacy.php:79
 #: includes/class-evf-privacy.php:79
 msgid "We share information with third parties who help us provide our orders and store services to you; for example --"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-privacy.php:80
 #: includes/class-evf-privacy.php:80
 msgid "Payments"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-privacy.php:81
 #: includes/class-evf-privacy.php:81
 msgid "In this subsection you should list which third party payment processors you’re using to take payments on your site since these may handle customer data. We’ve included PayPal as an example, but you should remove this if you’re not using PayPal."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-privacy.php:82
 #: includes/class-evf-privacy.php:82
 msgid "We accept payments through PayPal. When processing payments, some of your data will be passed to PayPal, including information required to process or support the payment, such as the purchase total and billing information."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-privacy.php:83
 #: includes/class-evf-privacy.php:83
 msgid "Please see the <a href=\"https://www.paypal.com/us/webapps/mpp/ua/privacy-full\">PayPal Privacy Policy</a> for more details."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-privacy.php:84
 #: includes/class-evf-privacy.php:84
 msgid "Available Modules"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-privacy.php:85
 #: includes/class-evf-privacy.php:85
 msgid "In this subsection you should list which third party modules you’re using to increase functionality on your site since these may handle customer data. We’ve included MailChimp as an example, but you should remove this if you’re not using MailChimp."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-privacy.php:86
 #: includes/class-evf-privacy.php:86
 msgid "We send beautiful email through MailChimp. When processing emails, some of your data will be passed to MailChimp, including information required to process or support the email marketing services, such as the name, email address and any other information that you intend to pass or collect including all collected information through subscription."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-privacy.php:87
 #: includes/class-evf-privacy.php:87
 msgid "Please see the <a href=\"https://mailchimp.com/legal/privacy/\">MailChimp Privacy Policy</a> for more details."
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-smart-tags.php:31
 #: includes/class-evf-smart-tags.php:31
 msgid "Site Admin Email"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-smart-tags.php:32
 #: includes/class-evf-smart-tags.php:32
 msgid "Site Name"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-smart-tags.php:33
 #: includes/class-evf-smart-tags.php:33
 msgid "Site URL"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-smart-tags.php:34
 #: includes/class-evf-smart-tags.php:34
 msgid "Page Title"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-smart-tags.php:35
 #: includes/class-evf-smart-tags.php:35
 msgid "Page URL"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-smart-tags.php:36
 #: includes/class-evf-smart-tags.php:36
 msgid "Page ID"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-smart-tags.php:38
+#: build/everest-forms/includes/export/class-evf-entry-csv-exporter.php:86
 #: includes/class-evf-smart-tags.php:38
 #: includes/export/class-evf-entry-csv-exporter.php:86
 msgid "User IP Address"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-smart-tags.php:39
 #: includes/class-evf-smart-tags.php:39
 msgid "User ID"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-smart-tags.php:40
 #: includes/class-evf-smart-tags.php:40
 msgid "User Name"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-smart-tags.php:41
 #: includes/class-evf-smart-tags.php:41
 msgid "User Email"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-smart-tags.php:42
 #: includes/class-evf-smart-tags.php:42
 msgid "Referrer URL"
 msgstr ""
 
+#: build/everest-forms/includes/class-evf-template-loader.php:65
 #: includes/class-evf-template-loader.php:65
 msgid "Edit Form"
 msgstr ""
 
 #. translators: %s - Form name.
+#: build/everest-forms/includes/class-evf-template-loader.php:193
 #: includes/class-evf-template-loader.php:193
 msgid "%s &ndash; Preview"
 msgstr ""
 
 #. translators: %s template
+#: build/everest-forms/includes/evf-core-functions.php:103
 #: includes/evf-core-functions.php:103
 msgid "%s does not exist."
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:120
 #: includes/evf-core-functions.php:120
 msgid "action_args should not be overwritten when calling evf_get_template."
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:294
+#: build/everest-forms/includes/log-handlers/class-evf-log-handler-file.php:343
+#: build/everest-forms/includes/log-handlers/class-evf-log-handler-file.php:363
 #: includes/evf-core-functions.php:294
 #: includes/log-handlers/class-evf-log-handler-file.php:343
 #: includes/log-handlers/class-evf-log-handler-file.php:363
@@ -2698,1265 +3450,1591 @@ msgid "This method should not be called before plugins_loaded."
 msgstr ""
 
 #. translators: 1: class name 2: everest_forms_logging_class 3: EVF_Logger_Interface
+#: build/everest-forms/includes/evf-core-functions.php:555
 #: includes/evf-core-functions.php:555
 msgid "The class %1$s provided by %2$s filter must implement %3$s."
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1561
 #: includes/evf-core-functions.php:1561
 msgid "Afghanistan"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1562
 #: includes/evf-core-functions.php:1562
 msgid "Åland Islands"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1563
 #: includes/evf-core-functions.php:1563
 msgid "Albania"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1564
 #: includes/evf-core-functions.php:1564
 msgid "Algeria"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1565
 #: includes/evf-core-functions.php:1565
 msgid "American Samoa"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1566
 #: includes/evf-core-functions.php:1566
 msgid "Andorra"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1567
 #: includes/evf-core-functions.php:1567
 msgid "Angola"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1568
 #: includes/evf-core-functions.php:1568
 msgid "Anguilla"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1569
 #: includes/evf-core-functions.php:1569
 msgid "Antarctica"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1570
 #: includes/evf-core-functions.php:1570
 msgid "Antigua and Barbuda"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1571
 #: includes/evf-core-functions.php:1571
 msgid "Argentina"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1572
 #: includes/evf-core-functions.php:1572
 msgid "Armenia"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1573
 #: includes/evf-core-functions.php:1573
 msgid "Aruba"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1574
 #: includes/evf-core-functions.php:1574
 msgid "Australia"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1575
 #: includes/evf-core-functions.php:1575
 msgid "Austria"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1576
 #: includes/evf-core-functions.php:1576
 msgid "Azerbaijan"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1577
 #: includes/evf-core-functions.php:1577
 msgid "Bahamas"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1578
 #: includes/evf-core-functions.php:1578
 msgid "Bahrain"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1579
 #: includes/evf-core-functions.php:1579
 msgid "Bangladesh"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1580
 #: includes/evf-core-functions.php:1580
 msgid "Barbados"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1581
 #: includes/evf-core-functions.php:1581
 msgid "Belarus"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1582
 #: includes/evf-core-functions.php:1582
 msgid "Belgium"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1583
 #: includes/evf-core-functions.php:1583
 msgid "Belize"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1584
 #: includes/evf-core-functions.php:1584
 msgid "Benin"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1585
 #: includes/evf-core-functions.php:1585
 msgid "Bermuda"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1586
 #: includes/evf-core-functions.php:1586
 msgid "Bhutan"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1587
 #: includes/evf-core-functions.php:1587
 msgid "Bolivia (Plurinational State of)"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1588
 #: includes/evf-core-functions.php:1588
 msgid "Bosnia and Herzegovina"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1589
 #: includes/evf-core-functions.php:1589
 msgid "Botswana"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1590
 #: includes/evf-core-functions.php:1590
 msgid "Bouvet Island"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1591
 #: includes/evf-core-functions.php:1591
 msgid "Brazil"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1592
 #: includes/evf-core-functions.php:1592
 msgid "British Indian Ocean Territory"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1593
 #: includes/evf-core-functions.php:1593
 msgid "Brunei Darussalam"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1594
 #: includes/evf-core-functions.php:1594
 msgid "Bulgaria"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1595
 #: includes/evf-core-functions.php:1595
 msgid "Burkina Faso"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1596
 #: includes/evf-core-functions.php:1596
 msgid "Burundi"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1597
 #: includes/evf-core-functions.php:1597
 msgid "Cabo Verde"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1598
 #: includes/evf-core-functions.php:1598
 msgid "Cambodia"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1599
 #: includes/evf-core-functions.php:1599
 msgid "Cameroon"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1600
 #: includes/evf-core-functions.php:1600
 msgid "Canada"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1601
 #: includes/evf-core-functions.php:1601
 msgid "Cayman Islands"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1602
 #: includes/evf-core-functions.php:1602
 msgid "Central African Republic"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1603
 #: includes/evf-core-functions.php:1603
 msgid "Chad"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1604
 #: includes/evf-core-functions.php:1604
 msgid "Chile"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1605
 #: includes/evf-core-functions.php:1605
 msgid "China"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1606
 #: includes/evf-core-functions.php:1606
 msgid "Christmas Island"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1607
 #: includes/evf-core-functions.php:1607
 msgid "Cocos (Keeling) Islands"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1608
 #: includes/evf-core-functions.php:1608
 msgid "Colombia"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1609
 #: includes/evf-core-functions.php:1609
 msgid "Comoros"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1610
 #: includes/evf-core-functions.php:1610
 msgid "Congo"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1611
 #: includes/evf-core-functions.php:1611
 msgid "Congo (Democratic Republic of the)"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1612
 #: includes/evf-core-functions.php:1612
 msgid "Cook Islands"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1613
 #: includes/evf-core-functions.php:1613
 msgid "Costa Rica"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1614
 #: includes/evf-core-functions.php:1614
 msgid "Côte d'Ivoire"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1615
 #: includes/evf-core-functions.php:1615
 msgid "Croatia"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1616
 #: includes/evf-core-functions.php:1616
 msgid "Cuba"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1617
 #: includes/evf-core-functions.php:1617
 msgid "Curaçao"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1618
 #: includes/evf-core-functions.php:1618
 msgid "Cyprus"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1619
 #: includes/evf-core-functions.php:1619
 msgid "Czech Republic"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1620
 #: includes/evf-core-functions.php:1620
 msgid "Denmark"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1621
 #: includes/evf-core-functions.php:1621
 msgid "Djibouti"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1622
 #: includes/evf-core-functions.php:1622
 msgid "Dominica"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1623
 #: includes/evf-core-functions.php:1623
 msgid "Dominican Republic"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1624
 #: includes/evf-core-functions.php:1624
 msgid "Ecuador"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1625
 #: includes/evf-core-functions.php:1625
 msgid "Egypt"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1626
 #: includes/evf-core-functions.php:1626
 msgid "El Salvador"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1627
 #: includes/evf-core-functions.php:1627
 msgid "Equatorial Guinea"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1628
 #: includes/evf-core-functions.php:1628
 msgid "Eritrea"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1629
 #: includes/evf-core-functions.php:1629
 msgid "Estonia"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1630
 #: includes/evf-core-functions.php:1630
 msgid "Ethiopia"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1631
 #: includes/evf-core-functions.php:1631
 msgid "Falkland Islands (Malvinas)"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1632
 #: includes/evf-core-functions.php:1632
 msgid "Faroe Islands"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1633
 #: includes/evf-core-functions.php:1633
 msgid "Fiji"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1634
 #: includes/evf-core-functions.php:1634
 msgid "Finland"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1635
 #: includes/evf-core-functions.php:1635
 msgid "France"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1636
 #: includes/evf-core-functions.php:1636
 msgid "French Guiana"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1637
 #: includes/evf-core-functions.php:1637
 msgid "French Polynesia"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1638
 #: includes/evf-core-functions.php:1638
 msgid "French Southern Territories"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1639
 #: includes/evf-core-functions.php:1639
 msgid "Gabon"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1640
 #: includes/evf-core-functions.php:1640
 msgid "Gambia"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1641
 #: includes/evf-core-functions.php:1641
 msgctxt "Country"
 msgid "Georgia"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1642
 #: includes/evf-core-functions.php:1642
 msgid "Germany"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1643
 #: includes/evf-core-functions.php:1643
 msgid "Ghana"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1644
 #: includes/evf-core-functions.php:1644
 msgid "Gibraltar"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1645
 #: includes/evf-core-functions.php:1645
 msgid "Greece"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1646
 #: includes/evf-core-functions.php:1646
 msgid "Greenland"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1647
 #: includes/evf-core-functions.php:1647
 msgid "Grenada"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1648
 #: includes/evf-core-functions.php:1648
 msgid "Guadeloupe"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1649
 #: includes/evf-core-functions.php:1649
 msgid "Guam"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1650
 #: includes/evf-core-functions.php:1650
 msgid "Guatemala"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1651
 #: includes/evf-core-functions.php:1651
 msgid "Guernsey"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1652
 #: includes/evf-core-functions.php:1652
 msgid "Guinea"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1653
 #: includes/evf-core-functions.php:1653
 msgid "Guinea-Bissau"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1654
 #: includes/evf-core-functions.php:1654
 msgid "Guyana"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1655
 #: includes/evf-core-functions.php:1655
 msgid "Haiti"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1656
 #: includes/evf-core-functions.php:1656
 msgid "Heard Island and McDonald Islands"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1657
 #: includes/evf-core-functions.php:1657
 msgid "Honduras"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1658
 #: includes/evf-core-functions.php:1658
 msgid "Hong Kong"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1659
 #: includes/evf-core-functions.php:1659
 msgid "Hungary"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1660
 #: includes/evf-core-functions.php:1660
 msgid "Iceland"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1661
 #: includes/evf-core-functions.php:1661
 msgid "India"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1662
 #: includes/evf-core-functions.php:1662
 msgid "Indonesia"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1663
 #: includes/evf-core-functions.php:1663
 msgid "Iran (Islamic Republic of)"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1664
 #: includes/evf-core-functions.php:1664
 msgid "Iraq"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1665
 #: includes/evf-core-functions.php:1665
 msgid "Ireland (Republic of)"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1666
 #: includes/evf-core-functions.php:1666
 msgid "Isle of Man"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1667
 #: includes/evf-core-functions.php:1667
 msgid "Israel"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1668
 #: includes/evf-core-functions.php:1668
 msgid "Italy"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1669
 #: includes/evf-core-functions.php:1669
 msgid "Jamaica"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1670
 #: includes/evf-core-functions.php:1670
 msgid "Japan"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1671
 #: includes/evf-core-functions.php:1671
 msgid "Jersey"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1672
 #: includes/evf-core-functions.php:1672
 msgid "Jordan"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1673
 #: includes/evf-core-functions.php:1673
 msgid "Kazakhstan"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1674
 #: includes/evf-core-functions.php:1674
 msgid "Kenya"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1675
 #: includes/evf-core-functions.php:1675
 msgid "Kiribati"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1676
 #: includes/evf-core-functions.php:1676
 msgid "Korea (Democratic People's Republic of)"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1677
 #: includes/evf-core-functions.php:1677
 msgid "Korea (Republic of)"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1678
 #: includes/evf-core-functions.php:1678
 msgid "Kuwait"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1679
 #: includes/evf-core-functions.php:1679
 msgid "Kyrgyzstan"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1680
 #: includes/evf-core-functions.php:1680
 msgid "Lao People's Democratic Republic"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1681
 #: includes/evf-core-functions.php:1681
 msgid "Latvia"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1682
 #: includes/evf-core-functions.php:1682
 msgid "Lebanon"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1683
 #: includes/evf-core-functions.php:1683
 msgid "Lesotho"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1684
 #: includes/evf-core-functions.php:1684
 msgid "Liberia"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1685
 #: includes/evf-core-functions.php:1685
 msgid "Libya"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1686
 #: includes/evf-core-functions.php:1686
 msgid "Liechtenstein"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1687
 #: includes/evf-core-functions.php:1687
 msgid "Lithuania"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1688
 #: includes/evf-core-functions.php:1688
 msgid "Luxembourg"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1689
 #: includes/evf-core-functions.php:1689
 msgid "Macao"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1690
 #: includes/evf-core-functions.php:1690
 msgid "North Macedonia (Republic of)"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1691
 #: includes/evf-core-functions.php:1691
 msgid "Madagascar"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1692
 #: includes/evf-core-functions.php:1692
 msgid "Malawi"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1693
 #: includes/evf-core-functions.php:1693
 msgid "Malaysia"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1694
 #: includes/evf-core-functions.php:1694
 msgid "Maldives"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1695
 #: includes/evf-core-functions.php:1695
 msgid "Mali"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1696
 #: includes/evf-core-functions.php:1696
 msgid "Malta"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1697
 #: includes/evf-core-functions.php:1697
 msgid "Marshall Islands"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1698
 #: includes/evf-core-functions.php:1698
 msgid "Martinique"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1699
 #: includes/evf-core-functions.php:1699
 msgid "Mauritania"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1700
 #: includes/evf-core-functions.php:1700
 msgid "Mauritius"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1701
 #: includes/evf-core-functions.php:1701
 msgid "Mayotte"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1702
 #: includes/evf-core-functions.php:1702
 msgid "Mexico"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1703
 #: includes/evf-core-functions.php:1703
 msgid "Micronesia (Federated States of)"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1704
 #: includes/evf-core-functions.php:1704
 msgid "Moldova (Republic of)"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1705
 #: includes/evf-core-functions.php:1705
 msgid "Monaco"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1706
 #: includes/evf-core-functions.php:1706
 msgid "Mongolia"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1707
 #: includes/evf-core-functions.php:1707
 msgid "Montenegro"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1708
 #: includes/evf-core-functions.php:1708
 msgid "Montserrat"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1709
 #: includes/evf-core-functions.php:1709
 msgid "Morocco"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1710
 #: includes/evf-core-functions.php:1710
 msgid "Mozambique"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1711
 #: includes/evf-core-functions.php:1711
 msgid "Myanmar"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1712
 #: includes/evf-core-functions.php:1712
 msgid "Namibia"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1713
 #: includes/evf-core-functions.php:1713
 msgid "Nauru"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1714
 #: includes/evf-core-functions.php:1714
 msgid "Nepal"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1715
 #: includes/evf-core-functions.php:1715
 msgid "Netherlands"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1716
 #: includes/evf-core-functions.php:1716
 msgid "New Caledonia"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1717
 #: includes/evf-core-functions.php:1717
 msgid "New Zealand"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1718
 #: includes/evf-core-functions.php:1718
 msgid "Nicaragua"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1719
 #: includes/evf-core-functions.php:1719
 msgid "Niger"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1720
 #: includes/evf-core-functions.php:1720
 msgid "Nigeria"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1721
 #: includes/evf-core-functions.php:1721
 msgid "Niue"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1722
 #: includes/evf-core-functions.php:1722
 msgid "Norfolk Island"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1723
 #: includes/evf-core-functions.php:1723
 msgid "Northern Mariana Islands"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1724
 #: includes/evf-core-functions.php:1724
 msgid "Norway"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1725
 #: includes/evf-core-functions.php:1725
 msgid "Oman"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1726
 #: includes/evf-core-functions.php:1726
 msgid "Pakistan"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1727
 #: includes/evf-core-functions.php:1727
 msgid "Palau"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1728
 #: includes/evf-core-functions.php:1728
 msgid "Palestine (State of)"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1729
 #: includes/evf-core-functions.php:1729
 msgid "Panama"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1730
 #: includes/evf-core-functions.php:1730
 msgid "Papua New Guinea"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1731
 #: includes/evf-core-functions.php:1731
 msgid "Paraguay"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1732
 #: includes/evf-core-functions.php:1732
 msgid "Peru"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1733
 #: includes/evf-core-functions.php:1733
 msgid "Philippines"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1734
 #: includes/evf-core-functions.php:1734
 msgid "Pitcairn"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1735
 #: includes/evf-core-functions.php:1735
 msgid "Poland"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1736
 #: includes/evf-core-functions.php:1736
 msgid "Portugal"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1737
 #: includes/evf-core-functions.php:1737
 msgid "Puerto Rico"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1738
 #: includes/evf-core-functions.php:1738
 msgid "Qatar"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1739
 #: includes/evf-core-functions.php:1739
 msgid "Réunion"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1740
 #: includes/evf-core-functions.php:1740
 msgid "Romania"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1741
 #: includes/evf-core-functions.php:1741
 msgid "Russian Federation"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1742
 #: includes/evf-core-functions.php:1742
 msgid "Rwanda"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1743
 #: includes/evf-core-functions.php:1743
 msgid "Saint Barthélemy"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1744
 #: includes/evf-core-functions.php:1744
 msgid "Saint Helena, Ascension and Tristan da Cunha"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1745
 #: includes/evf-core-functions.php:1745
 msgid "Saint Kitts and Nevis"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1746
 #: includes/evf-core-functions.php:1746
 msgid "Saint Lucia"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1747
 #: includes/evf-core-functions.php:1747
 msgid "Saint Martin (French part)"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1748
 #: includes/evf-core-functions.php:1748
 msgid "Saint Pierre and Miquelon"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1749
 #: includes/evf-core-functions.php:1749
 msgid "Saint Vincent and the Grenadines"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1750
 #: includes/evf-core-functions.php:1750
 msgid "Samoa"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1751
 #: includes/evf-core-functions.php:1751
 msgid "San Marino"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1752
 #: includes/evf-core-functions.php:1752
 msgid "Sao Tome and Principe"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1753
 #: includes/evf-core-functions.php:1753
 msgid "Saudi Arabia"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1754
 #: includes/evf-core-functions.php:1754
 msgid "Senegal"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1755
 #: includes/evf-core-functions.php:1755
 msgid "Serbia"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1756
 #: includes/evf-core-functions.php:1756
 msgid "Seychelles"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1757
 #: includes/evf-core-functions.php:1757
 msgid "Sierra Leone"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1758
 #: includes/evf-core-functions.php:1758
 msgid "Singapore"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1759
 #: includes/evf-core-functions.php:1759
 msgid "Sint Maarten (Dutch part)"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1760
 #: includes/evf-core-functions.php:1760
 msgid "Slovakia"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1761
 #: includes/evf-core-functions.php:1761
 msgid "Slovenia"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1762
 #: includes/evf-core-functions.php:1762
 msgid "Solomon Islands"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1763
 #: includes/evf-core-functions.php:1763
 msgid "Somalia"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1764
 #: includes/evf-core-functions.php:1764
 msgid "South Africa"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1765
 #: includes/evf-core-functions.php:1765
 msgid "South Georgia and the South Sandwich Islands"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1766
 #: includes/evf-core-functions.php:1766
 msgid "South Sudan"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1767
 #: includes/evf-core-functions.php:1767
 msgid "Spain"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1768
 #: includes/evf-core-functions.php:1768
 msgid "Sri Lanka"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1769
 #: includes/evf-core-functions.php:1769
 msgid "Sudan"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1770
 #: includes/evf-core-functions.php:1770
 msgid "Suriname"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1771
 #: includes/evf-core-functions.php:1771
 msgid "Svalbard and Jan Mayen"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1772
 #: includes/evf-core-functions.php:1772
 msgid "Swaziland"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1773
 #: includes/evf-core-functions.php:1773
 msgid "Sweden"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1774
 #: includes/evf-core-functions.php:1774
 msgid "Switzerland"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1775
 #: includes/evf-core-functions.php:1775
 msgid "Syrian Arab Republic"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1776
 #: includes/evf-core-functions.php:1776
 msgid "Taiwan, Province of China"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1777
 #: includes/evf-core-functions.php:1777
 msgid "Tajikistan"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1778
 #: includes/evf-core-functions.php:1778
 msgid "Tanzania (United Republic of)"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1779
 #: includes/evf-core-functions.php:1779
 msgid "Thailand"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1780
 #: includes/evf-core-functions.php:1780
 msgid "Timor-Leste"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1781
 #: includes/evf-core-functions.php:1781
 msgid "Togo"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1782
 #: includes/evf-core-functions.php:1782
 msgid "Tokelau"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1783
 #: includes/evf-core-functions.php:1783
 msgid "Tonga"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1784
 #: includes/evf-core-functions.php:1784
 msgid "Trinidad and Tobago"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1785
 #: includes/evf-core-functions.php:1785
 msgid "Tunisia"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1786
 #: includes/evf-core-functions.php:1786
 msgid "Turkey"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1787
 #: includes/evf-core-functions.php:1787
 msgid "Turkmenistan"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1788
 #: includes/evf-core-functions.php:1788
 msgid "Turks and Caicos Islands"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1789
 #: includes/evf-core-functions.php:1789
 msgid "Tuvalu"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1790
 #: includes/evf-core-functions.php:1790
 msgid "Uganda"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1791
 #: includes/evf-core-functions.php:1791
 msgid "Ukraine"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1792
 #: includes/evf-core-functions.php:1792
 msgid "United Arab Emirates"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1793
 #: includes/evf-core-functions.php:1793
 msgid "United Kingdom of Great Britain and Northern Ireland"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1794
 #: includes/evf-core-functions.php:1794
 msgid "United States of America"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1795
 #: includes/evf-core-functions.php:1795
 msgid "United States Minor Outlying Islands"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1796
 #: includes/evf-core-functions.php:1796
 msgid "Uruguay"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1797
 #: includes/evf-core-functions.php:1797
 msgid "Uzbekistan"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1798
 #: includes/evf-core-functions.php:1798
 msgid "Vanuatu"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1799
 #: includes/evf-core-functions.php:1799
 msgid "Vatican City State"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1800
 #: includes/evf-core-functions.php:1800
 msgid "Venezuela (Bolivarian Republic of)"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1801
 #: includes/evf-core-functions.php:1801
 msgid "Viet Nam"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1802
 #: includes/evf-core-functions.php:1802
 msgid "Virgin Islands (British)"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1803
 #: includes/evf-core-functions.php:1803
 msgid "Virgin Islands (U.S.)"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1804
 #: includes/evf-core-functions.php:1804
 msgid "Wallis and Futuna"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1805
 #: includes/evf-core-functions.php:1805
 msgid "Western Sahara"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1806
 #: includes/evf-core-functions.php:1806
 msgid "Yemen"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1807
 #: includes/evf-core-functions.php:1807
 msgid "Zambia"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1808
 #: includes/evf-core-functions.php:1808
 msgid "Zimbabwe"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1822
 #: includes/evf-core-functions.php:1822
 msgid "Alabama"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1823
 #: includes/evf-core-functions.php:1823
 msgid "Alaska"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1824
 #: includes/evf-core-functions.php:1824
 msgid "Arizona"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1825
 #: includes/evf-core-functions.php:1825
 msgid "Arkansas"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1826
 #: includes/evf-core-functions.php:1826
 msgid "California"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1827
 #: includes/evf-core-functions.php:1827
 msgid "Colorado"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1828
 #: includes/evf-core-functions.php:1828
 msgid "Connecticut"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1829
 #: includes/evf-core-functions.php:1829
 msgid "Delaware"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1830
 #: includes/evf-core-functions.php:1830
 msgid "District of Columbia"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1831
 #: includes/evf-core-functions.php:1831
 msgid "Florida"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1832
 #: includes/evf-core-functions.php:1832
 msgid "Georgia"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1833
 #: includes/evf-core-functions.php:1833
 msgid "Hawaii"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1834
 #: includes/evf-core-functions.php:1834
 msgid "Idaho"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1835
 #: includes/evf-core-functions.php:1835
 msgid "Illinois"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1836
 #: includes/evf-core-functions.php:1836
 msgid "Indiana"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1837
 #: includes/evf-core-functions.php:1837
 msgid "Iowa"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1838
 #: includes/evf-core-functions.php:1838
 msgid "Kansas"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1839
 #: includes/evf-core-functions.php:1839
 msgid "Kentucky"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1840
 #: includes/evf-core-functions.php:1840
 msgid "Louisiana"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1841
 #: includes/evf-core-functions.php:1841
 msgid "Maine"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1842
 #: includes/evf-core-functions.php:1842
 msgid "Maryland"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1843
 #: includes/evf-core-functions.php:1843
 msgid "Massachusetts"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1844
 #: includes/evf-core-functions.php:1844
 msgid "Michigan"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1845
 #: includes/evf-core-functions.php:1845
 msgid "Minnesota"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1846
 #: includes/evf-core-functions.php:1846
 msgid "Mississippi"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1847
 #: includes/evf-core-functions.php:1847
 msgid "Missouri"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1848
 #: includes/evf-core-functions.php:1848
 msgid "Montana"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1849
 #: includes/evf-core-functions.php:1849
 msgid "Nebraska"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1850
 #: includes/evf-core-functions.php:1850
 msgid "Nevada"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1851
 #: includes/evf-core-functions.php:1851
 msgid "New Hampshire"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1852
 #: includes/evf-core-functions.php:1852
 msgid "New Jersey"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1853
 #: includes/evf-core-functions.php:1853
 msgid "New Mexico"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1854
 #: includes/evf-core-functions.php:1854
 msgid "New York"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1855
 #: includes/evf-core-functions.php:1855
 msgid "North Carolina"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1856
 #: includes/evf-core-functions.php:1856
 msgid "North Dakota"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1857
 #: includes/evf-core-functions.php:1857
 msgid "Ohio"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1858
 #: includes/evf-core-functions.php:1858
 msgid "Oklahoma"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1859
 #: includes/evf-core-functions.php:1859
 msgid "Oregon"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1860
 #: includes/evf-core-functions.php:1860
 msgid "Pennsylvania"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1861
 #: includes/evf-core-functions.php:1861
 msgid "Rhode Island"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1862
 #: includes/evf-core-functions.php:1862
 msgid "South Carolina"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1863
 #: includes/evf-core-functions.php:1863
 msgid "South Dakota"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1864
 #: includes/evf-core-functions.php:1864
 msgid "Tennessee"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1865
 #: includes/evf-core-functions.php:1865
 msgid "Texas"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1866
 #: includes/evf-core-functions.php:1866
 msgid "Utah"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1867
 #: includes/evf-core-functions.php:1867
 msgid "Vermont"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1868
 #: includes/evf-core-functions.php:1868
 msgid "Virginia"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1869
 #: includes/evf-core-functions.php:1869
 msgid "Washington"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1870
 #: includes/evf-core-functions.php:1870
 msgid "West Virginia"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1871
 #: includes/evf-core-functions.php:1871
 msgid "Wisconsin"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1872
 #: includes/evf-core-functions.php:1872
 msgid "Wyoming"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1887
 #: includes/evf-core-functions.php:1887
 msgid "General Fields"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1888
 #: includes/evf-core-functions.php:1888
 msgid "Advanced Fields"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1889
 #: includes/evf-core-functions.php:1889
 msgid "Payment Fields"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1890
 #: includes/evf-core-functions.php:1890
 msgid "Survey Fields"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1941
 #: includes/evf-core-functions.php:1941
 msgid "Check this option to mark the field required."
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1952
+#: build/everest-forms/includes/fields/class-evf-field-checkbox.php:27
+#: build/everest-forms/includes/fields/class-evf-field-radio.php:27
 #: includes/evf-core-functions.php:1952
 #: includes/fields/class-evf-field-checkbox.php:27
 #: includes/fields/class-evf-field-radio.php:27
 msgid "First Choice"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1953
+#: build/everest-forms/includes/fields/class-evf-field-checkbox.php:33
+#: build/everest-forms/includes/fields/class-evf-field-radio.php:33
 #: includes/evf-core-functions.php:1953
 #: includes/fields/class-evf-field-checkbox.php:33
 #: includes/fields/class-evf-field-radio.php:33
 msgid "Second Choice"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1954
+#: build/everest-forms/includes/fields/class-evf-field-checkbox.php:39
+#: build/everest-forms/includes/fields/class-evf-field-radio.php:39
 #: includes/evf-core-functions.php:1954
 #: includes/fields/class-evf-field-checkbox.php:39
 #: includes/fields/class-evf-field-radio.php:39
 msgid "Third Choice"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:1968
 #: includes/evf-core-functions.php:1968
 msgid "Enter CSS class for this field container. Class names should be separated with spaces."
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:2088
 #: includes/evf-core-functions.php:2088
 msgid "Tablet"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:2090
 #: includes/evf-core-functions.php:2090
 msgid "Mobile"
 msgstr ""
 
+#: build/everest-forms/includes/evf-core-functions.php:2092
 #: includes/evf-core-functions.php:2092
 msgid "Desktop"
 msgstr ""
 
+#: build/everest-forms/includes/evf-entry-functions.php:82
 #: includes/evf-entry-functions.php:82
 msgid "Published"
 msgstr ""
 
+#: build/everest-forms/includes/evf-notice-functions.php:23
+#: build/everest-forms/includes/evf-notice-functions.php:54
+#: build/everest-forms/includes/evf-notice-functions.php:73
+#: build/everest-forms/includes/evf-notice-functions.php:97
+#: build/everest-forms/includes/evf-notice-functions.php:110
+#: build/everest-forms/includes/evf-notice-functions.php:125
+#: build/everest-forms/includes/evf-notice-functions.php:185
 #: includes/evf-notice-functions.php:23
 #: includes/evf-notice-functions.php:54
 #: includes/evf-notice-functions.php:73
@@ -3967,409 +5045,520 @@ msgstr ""
 msgid "This function should not be called before everest_forms_init."
 msgstr ""
 
+#: build/everest-forms/includes/export/class-evf-entry-csv-exporter.php:67
 #: includes/export/class-evf-entry-csv-exporter.php:67
 msgid "ID"
 msgstr ""
 
+#: build/everest-forms/includes/export/class-evf-entry-csv-exporter.php:79
 #: includes/export/class-evf-entry-csv-exporter.php:79
 msgid "Status"
 msgstr ""
 
+#: build/everest-forms/includes/export/class-evf-entry-csv-exporter.php:81
 #: includes/export/class-evf-entry-csv-exporter.php:81
 msgid "Date Created GMT"
 msgstr ""
 
+#: build/everest-forms/includes/export/class-evf-entry-csv-exporter.php:85
 #: includes/export/class-evf-entry-csv-exporter.php:85
 msgid "User Device"
 msgstr ""
 
 #. translators: 1: entry date 2: entry time
+#: build/everest-forms/includes/export/class-evf-entry-csv-exporter.php:325
+#: build/everest-forms/includes/export/class-evf-entry-csv-exporter.php:342
 #: includes/export/class-evf-entry-csv-exporter.php:325
 #: includes/export/class-evf-entry-csv-exporter.php:342
 msgid "%1$s %2$s"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-address.php:20
 #: includes/fields/class-evf-field-address.php:20
 msgid "Address"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-captcha.php:20
 #: includes/fields/class-evf-field-captcha.php:20
 msgid "Captcha"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-checkbox.php:20
+#: build/everest-forms/includes/fields/class-evf-field-payment-checkbox.php:20
 #: includes/fields/class-evf-field-checkbox.php:20
 #: includes/fields/class-evf-field-payment-checkbox.php:20
 msgid "Checkboxes"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-checkbox.php:170
 #: includes/fields/class-evf-field-checkbox.php:170
 msgid "Checked"
 msgstr ""
 
 #. translators: %s - Choice Number.
+#: build/everest-forms/includes/fields/class-evf-field-checkbox.php:173
 #: includes/fields/class-evf-field-checkbox.php:173
 msgid "Choice %s"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-checkbox.php:250
+#: build/everest-forms/includes/fields/class-evf-field-radio.php:216
 #: includes/fields/class-evf-field-checkbox.php:250
 #: includes/fields/class-evf-field-radio.php:216
 msgid "Randomize Choices"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-checkbox.php:251
+#: build/everest-forms/includes/fields/class-evf-field-radio.php:217
 #: includes/fields/class-evf-field-checkbox.php:251
 #: includes/fields/class-evf-field-radio.php:217
 msgid "Check this option to randomize the order of the choices."
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-checkbox.php:271
 #: includes/fields/class-evf-field-checkbox.php:271
 msgid "Choice Limit"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-checkbox.php:272
 #: includes/fields/class-evf-field-checkbox.php:272
 msgid "Check this option to limit the number of checkboxes a user can select."
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-checkbox.php:310
+#: build/everest-forms/includes/fields/class-evf-field-radio.php:241
 #: includes/fields/class-evf-field-checkbox.php:310
 #: includes/fields/class-evf-field-radio.php:241
 msgid "Show Values"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-checkbox.php:311
+#: build/everest-forms/includes/fields/class-evf-field-radio.php:242
 #: includes/fields/class-evf-field-checkbox.php:311
 #: includes/fields/class-evf-field-radio.php:242
 msgid "Check this to manually set form field values."
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-credit-card.php:20
 #: includes/fields/class-evf-field-credit-card.php:20
 msgid "Credit Card"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-date-time.php:20
 #: includes/fields/class-evf-field-date-time.php:20
 msgid "Date / Time"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-date-time.php:70
 #: includes/fields/class-evf-field-date-time.php:70
 msgid "Format"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-date-time.php:71
 #: includes/fields/class-evf-field-date-time.php:71
 msgid "Select a format for the date field."
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-date-time.php:83
+#: build/everest-forms/includes/fields/class-evf-field-date-time.php:354
 #: includes/fields/class-evf-field-date-time.php:83
 #: includes/fields/class-evf-field-date-time.php:354
 msgid "Time"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-date-time.php:84
 #: includes/fields/class-evf-field-date-time.php:84
 msgid "Both"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-date-time.php:113
 #: includes/fields/class-evf-field-date-time.php:113
 msgid "Date & Time Format"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-date-time.php:114
 #: includes/fields/class-evf-field-date-time.php:114
 msgid "Advanced date and time formatting options."
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-date-time.php:128
 #: includes/fields/class-evf-field-date-time.php:128
 msgid "Date Format"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-date-time.php:129
 #: includes/fields/class-evf-field-date-time.php:129
 msgid "Choose a desire date format to display."
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-date-time.php:152
 #: includes/fields/class-evf-field-date-time.php:152
 msgid "Clear"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-date-time.php:158
 #: includes/fields/class-evf-field-date-time.php:158
 msgid "Disable Dates"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-date-time.php:159
 #: includes/fields/class-evf-field-date-time.php:159
 msgid "Select which dates you want to disable."
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-date-time.php:184
 #: includes/fields/class-evf-field-date-time.php:184
 msgid "Date Mode"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-date-time.php:185
 #: includes/fields/class-evf-field-date-time.php:185
 msgid "Select your desire date mode."
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-date-time.php:200
 #: includes/fields/class-evf-field-date-time.php:200
 msgid "Date Localization"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-date-time.php:201
 #: includes/fields/class-evf-field-date-time.php:201
 msgid "Choose a desire date localization to display."
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-date-time.php:283
 #: includes/fields/class-evf-field-date-time.php:283
 msgid "Default to current date."
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-date-time.php:284
 #: includes/fields/class-evf-field-date-time.php:284
 msgid "Check this option to set current date as default."
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-date-time.php:295
 #: includes/fields/class-evf-field-date-time.php:295
 msgid "Enable Min Max date."
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-date-time.php:296
 #: includes/fields/class-evf-field-date-time.php:296
 msgid "Check this option to set min max date."
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-date-time.php:306
 #: includes/fields/class-evf-field-date-time.php:306
 msgid "Minimum Date"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-date-time.php:307
 #: includes/fields/class-evf-field-date-time.php:307
 msgid "Select minium date."
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-date-time.php:328
 #: includes/fields/class-evf-field-date-time.php:328
 msgid "Maximum Date"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-date-time.php:329
 #: includes/fields/class-evf-field-date-time.php:329
 msgid "Select maximum date."
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-date-time.php:361
 #: includes/fields/class-evf-field-date-time.php:361
 msgid "Time interval and format"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-date-time.php:362
 #: includes/fields/class-evf-field-date-time.php:362
 msgid "Choose time interval and format to display."
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-date-time.php:376
 #: includes/fields/class-evf-field-date-time.php:376
 msgid "15 minutes"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-date-time.php:377
 #: includes/fields/class-evf-field-date-time.php:377
 msgid "30 minutes"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-date-time.php:390
 #: includes/fields/class-evf-field-date-time.php:390
 msgid "12 H"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-date-time.php:391
 #: includes/fields/class-evf-field-date-time.php:391
 msgid "24 H"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-email.php:117
+#: build/everest-forms/includes/fields/class-evf-field-email.php:270
 #: includes/fields/class-evf-field-email.php:117
 #: includes/fields/class-evf-field-email.php:270
 msgid "Confirm Email"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-email.php:203
 #: includes/fields/class-evf-field-email.php:203
 msgid "Enable Email Confirmation"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-email.php:204
 #: includes/fields/class-evf-field-email.php:204
 msgid "Check to enable email confirmation."
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-email.php:226
 #: includes/fields/class-evf-field-email.php:226
 msgid "Confirmation Placeholder Text"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-email.php:227
 #: includes/fields/class-evf-field-email.php:227
 msgid "Enter text for the confirmation field placeholder."
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-email.php:408
 #: includes/fields/class-evf-field-email.php:408
 msgid "Confirmation Email do not match."
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-file-upload.php:20
 #: includes/fields/class-evf-field-file-upload.php:20
 msgid "File Upload"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-first-name.php:20
 #: includes/fields/class-evf-field-first-name.php:20
 msgid "First Name"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-hidden.php:20
 #: includes/fields/class-evf-field-hidden.php:20
 msgid "Hidden Field"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-html.php:20
 #: includes/fields/class-evf-field-html.php:20
 msgid "Custom HTML"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-image-upload.php:20
 #: includes/fields/class-evf-field-image-upload.php:20
 msgid "Image Upload"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-last-name.php:20
 #: includes/fields/class-evf-field-last-name.php:20
 msgid "Last Name"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-likert.php:20
 #: includes/fields/class-evf-field-likert.php:20
 msgid "Likert"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-number.php:70
 #: includes/fields/class-evf-field-number.php:70
 msgid "Step"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-number.php:71
 #: includes/fields/class-evf-field-number.php:71
 msgid "Allows users to enter specific legal number intervals."
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-number.php:108
 #: includes/fields/class-evf-field-number.php:108
 msgid "Min Value"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-number.php:109
 #: includes/fields/class-evf-field-number.php:109
 msgid "Minimum value user is allowed to enter."
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-number.php:146
 #: includes/fields/class-evf-field-number.php:146
 msgid "Max Value"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-number.php:147
 #: includes/fields/class-evf-field-number.php:147
 msgid "Maximum value user is allowed to enter."
 msgstr ""
 
 #. translators: %s - minimum value.
+#: build/everest-forms/includes/fields/class-evf-field-number.php:297
 #: includes/fields/class-evf-field-number.php:297
 msgid "Please enter a value greater than or equal to %s"
 msgstr ""
 
 #. translators: %s - maximum value.
+#: build/everest-forms/includes/fields/class-evf-field-number.php:301
 #: includes/fields/class-evf-field-number.php:301
 msgid "Please enter a value less than or equal to %s"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-password.php:20
 #: includes/fields/class-evf-field-password.php:20
 msgid "Password"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-payment-quantity.php:19
+#: build/everest-forms/includes/fields/class-evf-field-payment-total.php:20
 #: includes/fields/class-evf-field-payment-quantity.php:19
 #: includes/fields/class-evf-field-payment-total.php:20
 msgid "Total"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-payment-radio.php:20
+#: build/everest-forms/includes/fields/class-evf-field-radio.php:20
 #: includes/fields/class-evf-field-payment-radio.php:20
 #: includes/fields/class-evf-field-radio.php:20
 msgid "Multiple Choice"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-payment-single.php:20
 #: includes/fields/class-evf-field-payment-single.php:20
 msgid "Single Item"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-phone.php:20
 #: includes/fields/class-evf-field-phone.php:20
 msgid "Phone"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-privacy-policy.php:20
 #: includes/fields/class-evf-field-privacy-policy.php:20
 msgid "Privacy Policy"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-range-slider.php:20
 #: includes/fields/class-evf-field-range-slider.php:20
 msgid "Range Slider"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-rating.php:20
 #: includes/fields/class-evf-field-rating.php:20
 msgid "Rating"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-scale-rating.php:20
 #: includes/fields/class-evf-field-scale-rating.php:20
 msgid "Scale Rating"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-select.php:20
 #: includes/fields/class-evf-field-select.php:20
 msgid "Dropdown"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-select.php:27
 #: includes/fields/class-evf-field-select.php:27
 msgid "Option 1"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-select.php:32
 #: includes/fields/class-evf-field-select.php:32
 msgid "Option 2"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-select.php:37
 #: includes/fields/class-evf-field-select.php:37
 msgid "Option 3"
 msgstr ""
 
-#: includes/fields/class-evf-field-select.php:178
+#: build/everest-forms/includes/fields/class-evf-field-select.php:177
+#: includes/fields/class-evf-field-select.php:177
 msgid "Check this option to enable enhanced select. It enables you to search items in the dropdown field."
 msgstr ""
 
-#: includes/fields/class-evf-field-select.php:188
+#: build/everest-forms/includes/fields/class-evf-field-select.php:187
+#: includes/fields/class-evf-field-select.php:187
 msgid "Enable Enhanced Select"
 msgstr ""
 
-#: includes/fields/class-evf-field-select.php:201
+#: build/everest-forms/includes/fields/class-evf-field-select.php:200
+#: includes/fields/class-evf-field-select.php:200
 msgid "Enhanced select"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-signature.php:20
 #: includes/fields/class-evf-field-signature.php:20
 msgid "Signature"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-text.php:20
 #: includes/fields/class-evf-field-text.php:20
 msgid "Single Line Text"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-text.php:73
+#: build/everest-forms/includes/fields/class-evf-field-textarea.php:72
 #: includes/fields/class-evf-field-text.php:73
 #: includes/fields/class-evf-field-textarea.php:72
 msgid "Limit Length"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-text.php:74
+#: build/everest-forms/includes/fields/class-evf-field-textarea.php:73
 #: includes/fields/class-evf-field-text.php:74
 #: includes/fields/class-evf-field-textarea.php:73
 msgid "Check this option to limit text length by characters or words count."
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-text.php:107
+#: build/everest-forms/includes/fields/class-evf-field-textarea.php:106
 #: includes/fields/class-evf-field-text.php:107
 #: includes/fields/class-evf-field-textarea.php:106
 msgid "Characters"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-text.php:108
+#: build/everest-forms/includes/fields/class-evf-field-textarea.php:107
 #: includes/fields/class-evf-field-text.php:108
 #: includes/fields/class-evf-field-textarea.php:107
 msgid "Words Count"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-text.php:133
 #: includes/fields/class-evf-field-text.php:133
 msgid "Input Mask"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-text.php:134
 #: includes/fields/class-evf-field-text.php:134
 msgid "Enter your custom input mask."
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-text.php:135
 #: includes/fields/class-evf-field-text.php:135
 msgid "See Examples & Docs"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-textarea.php:20
 #: includes/fields/class-evf-field-textarea.php:20
 msgid "Paragraph Text"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-title.php:20
 #: includes/fields/class-evf-field-title.php:20
 msgid "Section Title"
 msgstr ""
 
+#: build/everest-forms/includes/fields/class-evf-field-url.php:20
 #: includes/fields/class-evf-field-url.php:20
 msgid "Website / URL"
 msgstr ""
 
 #. translators: %s - link to a site.
+#: build/everest-forms/templates/emails/footer-default.php:45
 #: templates/emails/footer-default.php:45
 msgid "Sent from %s"
 msgstr ""
