@@ -652,7 +652,7 @@ class EVF_Form_Task {
 		$user_ip     = evf_get_ip_address();
 		$user_device = evf_get_user_device();
 		$user_agent  = $browser['name'] . '/' . $browser['platform'] . '/' . $user_device;
-		$referer     = ! empty( $_SERVER['HTTP_REFERER'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_REFERER'] ) ) : '';
+		$referer     = ! empty( $_SERVER['HTTP_REFERER'] ) ? esc_url_raw( wp_unslash( $_SERVER['HTTP_REFERER'] ) ) : '';
 		$entry_id    = false;
 
 		// GDPR enhancements - If user details are disabled globally discard the IP and UA.
