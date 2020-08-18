@@ -12,12 +12,15 @@
 @import 'animation';
 @import 'clearings';
 @import 'confirm';
-@import 'badge';
-@import 'buttons';
+
+// Components
+@import 'components/badge',
+	'components/buttons',
+		'components/card',
+		'components/table';
+
 @import 'colors';
 @import 'grid';
-@import 'card';
-@import 'table';
 
 //Utilities
 @import
