@@ -54,7 +54,7 @@ defined( 'ABSPATH' ) || exit;
 					$preview_link  = isset( $template->preview_link ) ? $template->preview_link : '';
 					$click_class   = '';
 					if ( ! in_array( 'free', $template->plan, true ) ) {
-						$badge = '<span class="everest-forms-badge everest-forms-badge-success">' . esc_html__( 'Pro', 'everest-forms' ) . '</span>';
+						$badge = '<span class="everest-forms-badge everest-forms-badge--success">' . esc_html__( 'Pro', 'everest-forms' ) . '</span>';
 					}
 
 					if ( 'blank' === $template->slug ) {
