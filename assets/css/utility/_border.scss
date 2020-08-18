@@ -1,0 +1,35 @@
+//
+// Border utilities
+//
+
+.evf-border {
+	border: $border-width solid $border-color !important;
+}
+.evf-border-top {
+	border-top: $border-width solid $border-color !important;
+}
+.evf-border-right {
+	border-right: $border-width solid $border-color !important;
+}
+.evf-border-bottom {
+	border-bottom: $border-width solid $border-color !important;
+}
+.evf-border-left {
+	border-left: $border-width solid $border-color !important;
+}
+
+.evf-border-0 {
+	border: 0 !important;
+}
+.evf-border-top-0 {
+	border-top: 0 !important;
+}
+.evf-border-right-0 {
+	border-right: 0 !important;
+}
+.evf-border-bottom-0 {
+	border-bottom: 0 !important;
+}
+.evf-border-left-0 {
+	border-left: 0 !important;
+}

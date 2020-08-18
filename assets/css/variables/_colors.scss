@@ -1,3 +1,18 @@
+/**
+ * EverestForms CSS Variables
+ */
+/*=====  Primary Color  ======*/
+$everestforms:					#7e3bd0;
+$everestforms-soft:				lighten($everestforms, 40%);
+
+/*=====  Semantic Color  ======*/
+// Colors for notifications
+$green:							#4bce61;
+$red:							#fa5252;
+$orange:						#ffba00;
+$blue:							#0095ff;
+
+/*=====  Neutral colors  ======*/
 // Gray shades
 $color_gray-dark:				#23282d;
 $color_gray-base:				#494d50;
@@ -12,6 +27,9 @@ $color-white:					#fff;
 
 
 $body-text:						$color_gray-base;
+
+// Border variables
+$border-width:				1px;
 $border-color: 					$color_gray-lighten;
 /**
  * Font Size Variables

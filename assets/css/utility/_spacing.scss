@@ -1,141 +1,77 @@
-/**
- * Margins
- **/
-.evf-m-0 {
-	margin: 0;
-}
-// Margin Bottom
-.evf-mb-0,
-.evf-my-0 {
-	margin-bottom: 0;
-}
+// Margin and Padding
 
-.evf-mb-1,
-.evf-my-1 {
-	margin-bottom: 8px;
-}
+@each $breakpoint in map-keys($grid-breakpoints) {
+	@include media-breakpoint-up($breakpoint) {
+		$infix: breakpoint-infix($breakpoint, $grid-breakpoints);
 
-.evf-mb-2,
-.evf-my-2 {
-	margin-bottom: 16px;
-}
+		@each $prop, $abbrev in (margin: m, padding: p) {
+			@each $size, $length in $grid-spacers {
+				.evf-#{$abbrev}#{$infix}-#{$size} {
+					#{$prop}: $length !important;
+				}
+				.evf-#{$abbrev}t#{$infix}-#{$size},
+				.evf-#{$abbrev}y#{$infix}-#{$size} {
+					#{$prop}-top: $length !important;
+				}
+				.evf-#{$abbrev}r#{$infix}-#{$size},
+				.evf-#{$abbrev}x#{$infix}-#{$size} {
+					#{$prop}-right: $length !important;
+				}
+				.evf-#{$abbrev}b#{$infix}-#{$size},
+				.evf-#{$abbrev}y#{$infix}-#{$size} {
+					#{$prop}-bottom: $length !important;
+				}
+				.evf-#{$abbrev}l#{$infix}-#{$size},
+				.evf-#{$abbrev}x#{$infix}-#{$size} {
+					#{$prop}-left: $length !important;
+				}
+			}
+		}
 
-// Margin Top
-.evf-mt-0,
-.evf-my-0 {
-	margin-top: 0;
-}
+		// Negative margins (e.g., where `.evf-mb-n1` is negative version of `.evf-mb-1`)
+		@each $size, $length in $grid-spacers {
+			@if $size != 0 {
+				.evf-m#{$infix}-n#{$size} {
+					margin: -$length !important;
+				}
+				.evf-mt#{$infix}-n#{$size},
+				.evf-my#{$infix}-n#{$size} {
+					margin-top: -$length !important;
+				}
+				.evf-mr#{$infix}-n#{$size},
+				.evf-mx#{$infix}-n#{$size} {
+					margin-right: -$length !important;
+				}
+				.evf-mb#{$infix}-n#{$size},
+				.evf-my#{$infix}-n#{$size} {
+					margin-bottom: -$length !important;
+				}
+				.evf-ml#{$infix}-n#{$size},
+				.evf-mx#{$infix}-n#{$size} {
+					margin-left: -$length !important;
+				}
+			}
+		}
 
-.evf-mt-1,
-.evf-my-1 {
-	margin-top: 8px;
+		// Some special margin utils
+		.evf-m#{$infix}-auto {
+			margin: auto !important;
+		}
+		.evf-mt#{$infix}-auto,
+		.evf-my#{$infix}-auto {
+			margin-top: auto !important;
+		}
+		.evf-mr#{$infix}-auto,
+		.evf-mx#{$infix}-auto {
+			margin-right: auto !important;
+		}
+		.evf-mb#{$infix}-auto,
+		.evf-my#{$infix}-auto {
+			margin-bottom: auto !important;
+		}
+		.evf-ml#{$infix}-auto,
+		.evf-mx#{$infix}-auto {
+			margin-left: auto !important;
+		}
+	}
 }
-
-.evf-mt-2,
-.evf-my-2 {
-	margin-top: 16px;
-}
-
-// Margin Left
-.evf-ml-0,
-.evf-mx-0 {
-	margin-left: 0;
-}
-
-.evf-ml-1,
-.evf-mx-1 {
-	margin-left: 8px;
-}
-
-.evf-ml-2,
-.evf-mx-2 {
-	margin-left: 16px;
-}
-
-// Margin Right
-.evf-mr-0,
-.evf-mx-0 {
-	margin-right: 0;
-}
-
-.evf-mr-1,
-.evf-mx-1 {
-	margin-right: 8px;
-}
-
-.evf-mr-2,
-.evf-mx-2 {
-	margin-right: 16px;
-}
-
-/**
- * Paddings
- **/
-.evf-p-0 {
-	padding: 0;
-}
-
-// Padding Bottom
-.evf-pb-0,
-.evf-py-0 {
-	padding-bottom: 0;
-}
-
-.evf-pb-1,
-.evf-py-1 {
-	padding-bottom: 8px;
-}
-
-.evf-pb-2,
-.evf-py-2 {
-	padding-bottom: 16px;
-}
-
-// Padding Top
-.evf-pt-0,
-.evf-py-0 {
-	padding-top: 0;
-}
-
-.evf-pt-1,
-.evf-py-1 {
-	padding-top: 8px;
-}
-
-.evf-pt-2,
-.evf-py-2 {
-	padding-top: 16px;
-}
-
-// Padding Left
-.evf-pl-0,
-.evf-px-0 {
-	padding-left: 0;
-}
-
-.evf-pl-1,
-.evf-px-1 {
-	padding-left: 8px;
-}
-
-.evf-pl-2,
-.evf-px-2 {
-	padding-left: 16px;
-}
-
-// Padding Right
-.evf-pr-0,
-.evf-px-0 {
-	padding-right: 0;
-}
-
-.evf-pr-1,
-.evf-px-1 {
-	padding-right: 8px;
-}
-
-.evf-pr-2,
-.evf-px-2 {
-	padding-right: 16px;
-}
-
