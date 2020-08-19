@@ -10,9 +10,10 @@
   "license": "GPL-3.0+",
   "main": "Gruntfile.js",
   "scripts": {
-    "build": "grunt && npm run makepot && cross-env BABEL_ENV=default NODE_ENV=production webpack",
+    "build": "cross-env ./bin/build-zip.sh",
+    "build:core": "grunt && npm run makepot && cross-env BABEL_ENV=default NODE_ENV=production webpack",
+    "build:zip": "npm run build && composer install && npm run build:core",
     "watch": "cross-env BABEL_ENV=default webpack --watch",
-    "build:zip": "./bin/build-zip.sh",
     "lint:js": "eslint assets/js --ext=js",
     "makepot": "composer run-script makepot",
     "git:update-hooks": "node ./node_modules/husky/husky.js install"
