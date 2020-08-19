@@ -2,13 +2,14 @@
  * Media of at least the minimum breakpoint width. No query for the smallest breakpoint.
  * Makes the @content apply to the given breakpoint and wider.
  **/
- @mixin media-breakpoint-up($name, $breakpoints: $grid-breakpoints) {
+@mixin media-breakpoint-up($name, $breakpoints: $grid-breakpoints) {
 	$min: breakpoint-min($name, $breakpoints);
 	@if $min {
 		@media (min-width: $min) {
-		@content;
+			@content;
 		}
-	} @else {
+	}
+	@else {
 		@content;
 	}
 }
@@ -25,7 +26,9 @@
 	margin-right: auto;
 	margin-left: auto;
 
-	*, ::before, ::after {
+	*,
+	::before,
+	::after {
 		box-sizing: border-box;
 	}
 }
@@ -90,50 +93,50 @@
 		@if $columns > 0 {
 			// Allow columns to stretch full width below their breakpoints
 			@for $i from 1 through $columns {
-			.ur-col#{$infix}-#{$i} {
-				@extend %grid-column;
-			}
+				.evf-col#{$infix}-#{$i} {
+					@extend %grid-column;
+				}
 			}
 		}
 
-		.ur-col#{$infix},
-		.ur-col#{$infix}-auto {
+		.evf-col#{$infix},
+		.evf-col#{$infix}-auto {
 			@extend %grid-column;
 		}
 
 		@include media-breakpoint-up($breakpoint, $breakpoints) {
 			// Provide basic `.col-{bp}` classes for equal-width flexbox columns
-			.ur-col#{$infix} {
+			.evf-col#{$infix} {
 				flex: 1 0 0%; // Flexbugs #4: https://github.com/philipwalton/flexbugs#flexbug-4
 			}
 
-			.ur-row-cols#{$infix}-auto > * {
+			.evf-row-cols#{$infix}-auto > * {
 				@include make-col-auto();
 			}
 
 			@if $grid-row-columns > 0 {
 				@for $i from 1 through $grid-row-columns {
-					.ur-row-cols#{$infix}-#{$i} {
+					.evf-row-cols#{$infix}-#{$i} {
 						@include row-cols($i);
 					}
 				}
 			}
 
-			.ur-col#{$infix}-auto {
+			.evf-col#{$infix}-auto {
 				@include make-col-auto();
 			}
 
 			@if $columns > 0 {
 				@for $i from 1 through $columns {
-					.ur-col#{$infix}-#{$i} {
+					.evf-col#{$infix}-#{$i} {
 						@include make-col($i, $columns);
 					}
 				}
 
 				// `$columns - 1` because offsetting by the width of an entire row isn't possible
 				@for $i from 0 through ($columns - 1) {
-					@if not ($infix == "" and $i == 0) { // Avoid emitting useless .offset-0
-						.ur-offset#{$infix}-#{$i} {
+					@if not ($infix == '' and $i == 0) { // Avoid emitting useless .offset-0
+						.evf-offset#{$infix}-#{$i} {
 							@include make-col-offset($i, $columns);
 						}
 					}
@@ -144,13 +147,13 @@
 			//
 			// Make use of `.g-*`, `.gx-*` or `.gy-*` utilities to change spacing between the columns.
 			@each $key, $value in $grid-spacers {
-				.ur-g#{$infix}-#{$key},
-				.ur-gx#{$infix}-#{$key} {
+				.evf-g#{$infix}-#{$key},
+				.evf-gx#{$infix}-#{$key} {
 					--bs-gutter-x: #{$value};
 				}
 
-				.ur-g#{$infix}-#{$key},
-				.ur-gy#{$infix}-#{$key} {
+				.evf-g#{$infix}-#{$key},
+				.evf-gy#{$infix}-#{$key} {
 					--bs-gutter-y: #{$value};
 				}
 			}
