@@ -1741,12 +1741,15 @@ body.everest-forms-builder {
 
 		.everest-forms-nav-wrapper {
 			background-color: $everestforms;
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			justify-content: space-between;
 
 			nav.evf-nav-tab-wrapper {
 				margin: 0;
-				float: left;
-				padding-right: 30px;
-				width: calc(100% - 505px);
+				padding-right: 24px;
+				flex: 1;
 			}
 
 			.everest-forms-btn {
@@ -1756,9 +1759,6 @@ body.everest-forms-builder {
 			}
 
 			.evf-forms-nav-right {
-				float: right;
-				width: 505px;
-				text-align: right;
 				padding: 21px 30px 19px;
 
 				.evf-shortcode-field {
@@ -1802,7 +1802,7 @@ body.everest-forms-builder {
 				}
 
 				.everest-forms-save-button {
-					width: 75px;
+					min-width: 75px;
 					cursor: pointer;
 					min-height: 36px;
 					color: $color-white;
