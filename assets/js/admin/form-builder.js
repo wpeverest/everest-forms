@@ -2085,7 +2085,7 @@ jQuery( function ( $ ) {
 			action: 'everest_forms_enabled_form',
 			security: evf_data.evf_enabled_form,
 			form_id: $( this ).data( 'form_id' ),
-			enabled: $( this ).attr( 'checked' ) ? 1 : 0
+			enabled: $( this ).prop( 'checked' ) ? 1 : 0
 		});
 	});
 

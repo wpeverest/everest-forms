@@ -155,6 +155,10 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
+= 1.7.0.4 - xx-08-2020 =
+* Fix - Form status toggle compatiable with WP 5.5+.
+* Fix - Navbar design while switching to another language.
+
 = 1.7.0.3 - 17-08-2020 =
 * Fix - Referral URL unicode support.
 * Fix - Conditional logic for dropdown broken.
