@@ -94,3 +94,67 @@ div.jconfirm {
 		}
 	}
 }
+
+// Customize jsconfirm styles
+.everest-forms-jsconfirm {
+	&.jconfirm-modern {
+		.jconfirm-box {
+			width: 500px !important;
+			padding: 20px 30px 15px !important;
+			border-radius: 4px !important;
+
+			.jconfirm-title-c {
+				font-size: 20px !important;
+				font-weight: 400 !important;;
+				padding-bottom: 0 !important;
+				line-height: 1.4 !important;
+
+				.jconfirm-icon-c {
+					margin: 0 !important;
+				}
+			}
+
+			.jconfirm-content {
+				margin-bottom: 0 !important;
+
+				input[type='text'] {
+					margin: 5px 2px 2px;
+					padding: 5px 10px;
+
+					&:focus {
+						border-color: #007cba;
+						box-shadow: 0 0 0 1px #007cba;
+					}
+				}
+			}
+
+			.jconfirm-buttons {
+				text-align: right;
+
+				.everest-forms-btn {
+					font-weight: 400;
+					text-transform: none;
+				}
+			}
+		}
+	}
+
+	&--align-left {
+		&.jconfirm-modern {
+			.jconfirm-box {
+				.jconfirm-title-c {
+					text-align: left !important;
+				}
+
+				.jconfirm-content {
+					text-align: left !important;
+				}
+
+				.jconfirm-buttons {
+					text-align: right !important;
+				}
+			}
+		}
+	}
+}
+
