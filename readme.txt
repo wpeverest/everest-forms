@@ -158,7 +158,9 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 = 1.7.0.4 - xx-08-2020 =
 * Fix - Form status toggle compatiable with WP 5.5+.
 * Fix - Navbar design while switching to another language.
+* Fix - Enhanced select not working in Multi-part.
 * Tweak - Updated selectWoo JS library to v1.0.8.
+* Dev - Introduced `evf-frontend-enhanced-select-init` trigger in frontend JS.
 
 = 1.7.0.3 - 17-08-2020 =
 * Fix - Referral URL unicode support.
