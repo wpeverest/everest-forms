@@ -487,14 +487,21 @@ jQuery( function ( $ ) {
 		},
 		init_enhanced_select: function() {
 			// Only continue if SelectWoo library exists.
-			if ( 'undefined' !== typeof $.fn.selectWoo ) {
-				$( 'select.evf-enhanced-select:visible' ).each( function() {
-					var select2_args = $.extend({
-						placeholder: $( this ).attr( 'placeholder' ) || '',
-					}, getEnhancedSelectFormatString() );
+			try {
+				$( document.body ).on( 'evf-frontend-enhanced-select-init', function() {
+					if ( 'undefined' !== typeof $.fn.selectWoo ) {
+						$( 'select.evf-enhanced-select:visible' ).filter( ':not(.evf-enhanced)' ).each( function() {
+							var select2_args = $.extend({
+								placeholder: $( this ).attr( 'placeholder' ) || '',
+							}, getEnhancedSelectFormatString() );
 
-					$( this ).selectWoo( select2_args );
-				});
+							$( this ).selectWoo( select2_args ).addClass( 'evf-enhanced' );
+						});
+					}
+				}).trigger( 'evf-frontend-enhanced-select-init' );
+			} catch( err ) {
+				// If select2 failed (conflict?) log the error but don't stop other scripts breaking.
+				window.console.log( err );
 			}
 		}
 	};
