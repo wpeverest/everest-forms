@@ -46,6 +46,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 					'meta',
 					'choices',
 					'enhanced_select',
+					'multiple_choices',
 					'description',
 					'required',
 					'required_field_message',
@@ -198,6 +199,43 @@ class EVF_Field_Select extends EVF_Form_Fields {
 				'class'   => ( false === $plan ) ? 'upgrade-modal' : '',
 				'data'    => array(
 					'feature' => esc_html__( 'Enhanced select', 'everest-forms' ),
+				),
+			)
+		);
+	}
+
+	/**
+	 * Enable multiple options selection field option.
+	 *
+	 * @param array $field Field Data.
+	 */
+	public function multiple_choices( $field ) {
+		$plan    = evf_get_license_plan();
+		$value   = isset( $field['multiple_choices'] ) && false !== $plan ? $field['multiple_choices'] : '0';
+		$tooltip = esc_html__( 'Check this option to allow users to select multiple choices.', 'everest-forms' );
+
+		// Enable multiple choices selection.
+		$multiple_choices = $this->field_element(
+			'checkbox',
+			$field,
+			array(
+				'slug'    => 'multiple_choices',
+				'value'   => $value,
+				'class'   => ( false === $plan ) ? 'disabled' : '',
+				'desc'    => esc_html__( 'Enable Multiple Choices', 'everest-forms' ),
+				'tooltip' => $tooltip,
+			),
+			false
+		);
+		$this->field_element(
+			'row',
+			$field,
+			array(
+				'slug'    => 'multiple_choices',
+				'content' => $multiple_choices,
+				'class'   => ( false === $plan ) ? 'upgrade-modal' : '',
+				'data'    => array(
+					'feature' => esc_html__( 'Multiple Choices', 'everest-forms' ),
 				),
 			)
 		);
