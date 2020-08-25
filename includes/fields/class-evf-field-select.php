@@ -274,20 +274,32 @@ class EVF_Field_Select extends EVF_Form_Fields {
 		$choices           = $field['properties']['inputs'];
 		$field             = apply_filters( 'everest_forms_select_field_display', $field, $field_atts, $form_data );
 		$field_placeholder = ! empty( $field['placeholder'] ) ? evf_string_translation( $form_data['id'], $field['id'], $field['placeholder'], '-placeholder' ) : '';
+		$plan              = evf_get_license_plan();
 		$has_default       = false;
+		$is_multiple       = false;
 
 		if ( ! empty( $field['required'] ) ) {
 			$container['attr']['required'] = 'required';
 		}
 
 		// Enable enhanced select.
-		$plan = evf_get_license_plan();
 		if ( false !== $plan && ! empty( $field['enhanced_select'] ) && '1' === $field['enhanced_select'] ) {
 			$container['class'][] = 'evf-enhanced-select';
 
 			// Set placeholder for select2.
 			if ( ! empty( $field_placeholder ) ) {
 				$container['data']['placeholder'] = esc_attr( $field_placeholder );
+			}
+		}
+
+		// Enable multiple choices selection.
+		if ( false !== $plan && ! empty( $field['multiple_choices'] ) && '1' === $field['multiple_choices'] ) {
+			$is_multiple                   = true;
+			$container['attr']['multiple'] = 'multiple';
+
+			// Change a name attribute.
+			if ( ! empty( $container['attr']['name'] ) ) {
+				$container['attr']['name'] .= '[]';
 			}
 		}
 
@@ -316,7 +328,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 
 		// Optional placeholder.
 		if ( ! empty( $field_placeholder ) ) {
-			printf( '<option value="" class="placeholder" disabled %s>%s</option>', selected( false, $has_default, false ), esc_html( $field_placeholder ) );
+			printf( '<option value="" class="placeholder" disabled %s>%s</option>', selected( false, $has_default || $is_multiple, false ), esc_html( $field_placeholder ) );
 		}
 
 		// Build the select options.
