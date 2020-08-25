@@ -13,7 +13,8 @@ jQuery( function( $ ) {
 		},
 		feature_upgrade: function( e ) {
 			e.preventDefault();
-			evf_upgrade_actions.upgrade_modal( $(this).text() );
+
+			evf_upgrade_actions.upgrade_modal( $( this ).data( 'feature' ) ? $( this ).data( 'feature' ) : $( this ).text() );
 		},
 		field_upgrade: function( e ) {
 			e.preventDefault();
