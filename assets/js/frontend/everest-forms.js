@@ -318,6 +318,10 @@ jQuery( function ( $ ) {
 							if ( element.parent().find( 'label.evf-error:visible' ).length === 0 ) {
 								element.parent().find( 'select:last' ).after( error );
 							}
+						} else if ( element.is( 'select' ) && element.hasClass( 'evf-enhanced-select' ) ) {
+							if ( element.parent().find( 'label.evf-error:visible' ).length === 0 ) {
+								element.parent().find( '.select2' ).after( error );
+							}
 						} else if ( element.hasClass( 'evf-smart-phone-field' ) || element.hasClass( 'everest-forms-field-password-primary' ) || element.hasClass( 'everest-forms-field-password-secondary' ) ) {
 							element.parent().after( error );
 						} else {
