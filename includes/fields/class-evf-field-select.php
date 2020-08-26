@@ -46,7 +46,6 @@ class EVF_Field_Select extends EVF_Form_Fields {
 					'meta',
 					'choices',
 					'enhanced_select',
-					'multiple_choices',
 					'description',
 					'required',
 					'required_field_message',

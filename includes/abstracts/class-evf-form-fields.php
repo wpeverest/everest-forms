@@ -777,7 +777,9 @@ abstract class EVF_Form_Fields {
 					}
 
 					$field_content .= sprintf(
-						'<div class="everest-forms-btn-group everest-forms-btn-group--inline">%s</div>',
+						'<div class="everest-forms-btn-group everest-forms-btn-group--inline"><input type="hidden" id="everest-forms-field-option-%1$s-multiple_choices" name="form_fields[%1$s][multiple_choices]" value="%2$s" />%3$s</div>',
+						esc_attr( $field['id'] ),
+						! empty( $field['multiple_choices'] ) && '1' === $field['multiple_choices'] ? 1 : 0,
 						implode( '', $selection_btn )
 					);
 				}

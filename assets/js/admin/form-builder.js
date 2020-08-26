@@ -180,6 +180,12 @@
 				EVFPanelBuilder.updateDropdownFieldMultiple( $( event.target ).parents( '.everest-forms-field-option-row-multiple_choices' ).data().fieldId, event.target.checked );
 			} );
 
+			$builder.on( 'click', '.everest-forms-field-option-row-choices .everest-forms-btn-group span', function( event ) {
+				$(this).parent().find( 'span' ).removeClass( 'is-active' );
+				$(this).addClass( 'is-active' );
+				EVFPanelBuilder.updateDropdownFieldMultiple( $( event.target ).parents( '.everest-forms-field-option-row-choices' ).data().fieldId, 'multiple' === $( this ).data( 'selection') );
+			} );
+
 			// Action available for each binding.
 			$( document ).trigger( 'everest_forms_ready' );
 		},
@@ -210,8 +216,12 @@
 		 */
 		updateDropdownFieldMultiple: function( fieldId, isMultiple ) {
 			var $primary            = $( '#everest-forms-field-' + fieldId + ' .primary-input' ),
+				$hiddenField        = $( '#everest-forms-field-option-' + fieldId + '-multiple_choices' ),
 				$optionChoicesItems = $( '#everest-forms-field-option-row-' + fieldId + '-choices input.default' ),
 				selectedChoices     = $optionChoicesItems.filter( ':checked' );
+
+			// Update hidden field value.
+			$hiddenField.val( isMultiple ? 1 : 0 );
 
 			// Add/remove a `multiple` attribute.
 			$primary.prop( 'multiple', isMultiple );
