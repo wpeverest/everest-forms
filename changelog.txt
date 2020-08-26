@@ -2,7 +2,7 @@
 
 = 1.7.1 - xx-09-2020 =
 * Enhancement - Add support for multiple option selection in Pro plan.
-* Fix - Default value for dropdown field not set.
+* Fix - The default value for a dropdown field not set.
 * Fix - Enhanced select required message shown above field.
 
 = 1.7.0.4 - xx-08-2020 =
