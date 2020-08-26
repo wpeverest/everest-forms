@@ -92,6 +92,7 @@
 
 .select2-results__option {
 	padding: 6px;
+	outline: none;
 	user-select: none;
 	-webkit-user-select: none;
 }
@@ -398,7 +399,6 @@
 
 .select2-container--default .select2-results__option--highlighted[data-selected],
 .select2-container--default .select2-results__option--highlighted[aria-selected] {
-	outline: none;
 	color: white;
 	background-color: #0073aa;
 }
