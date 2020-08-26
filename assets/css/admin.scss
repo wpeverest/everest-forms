@@ -2848,10 +2848,14 @@ body.everest-forms-builder {
 						}
 					}
 
-					option,
 					select,
 					textarea {
 						margin-bottom: 5px;
+					}
+
+					select[multiple] {
+						padding: 6px 8px;
+						box-shadow: none;
 					}
 
 					canvas {
