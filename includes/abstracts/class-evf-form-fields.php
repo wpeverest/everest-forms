@@ -727,6 +727,7 @@ abstract class EVF_Form_Fields {
 				if ( ! empty( $field['show_values'] ) ) {
 					$class[] = 'show-values';
 				}
+
 				if ( ! empty( $field['choices_images'] ) ) {
 					$class[] = 'show-images';
 				}
@@ -1373,8 +1374,9 @@ abstract class EVF_Form_Fields {
 				}
 
 				if ( 'select' === $type ) {
+					$multiple    = ! empty( $field['multiple_choices'] ) ? ' multiple' : '';
 					$placeholder = ! empty( $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : '';
-					$output      = sprintf( '<select class="%s" disabled>', evf_sanitize_classes( $list_class, true ) );
+					$output      = sprintf( '<select class="%s" %s disabled>', evf_sanitize_classes( $list_class, true ), esc_attr( $multiple ) );
 
 					// Optional placeholder.
 					if ( ! empty( $placeholder ) ) {
@@ -1384,7 +1386,7 @@ abstract class EVF_Form_Fields {
 					// Build the select options (even though user can only see 1st option).
 					foreach ( $values as $value ) {
 						$default  = isset( $value['default'] ) ? (bool) $value['default'] : false;
-						$selected = ! empty( $placeholder ) ? '' : selected( true, $default, false );
+						$selected = ! empty( $placeholder ) && empty( $multiple ) ? '' : selected( true, $default, false );
 						$output  .= sprintf( '<option %s>%s</option>', $selected, esc_html( $value['label'] ) );
 					}
 
