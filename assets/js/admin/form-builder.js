@@ -149,9 +149,6 @@
 				columnClass: 'evf-responsive-class'
 			};
 
-			// Dropdown field actions.
-			EVFPanelBuilder.dropdownField.init();
-
 			// Enable Perfect Scrollbar.
 			if ( 'undefined' !== typeof PerfectScrollbar ) {
 				var tab_content   = $( '.everest-forms-tab-content' ),
@@ -178,42 +175,13 @@
 				EVFPanelBuilder.updateTextFieldsLimitControls( $( event.target ).parents( '.everest-forms-field-option-row-limit_enabled' ).data().fieldId, event.target.checked );
 			} );
 
+			// Enable Multiple options.
+			$builder.on( 'change', '.everest-forms-field-option-row-multiple_choices input', function( event ) {
+				EVFPanelBuilder.updateDropdownFieldMultiple( $( event.target ).parents( '.everest-forms-field-option-row-multiple_choices' ).data().fieldId, event.target.checked );
+			} );
+
 			// Action available for each binding.
 			$( document ).trigger( 'everest_forms_ready' );
-		},
-
-		/**
-		 * Dropdown field component.
-		 *
-		 * @since 1.7.1
-		 */
-		dropdownField: {
-			init: function() {
-				// Multiple options.
-				$builder.on(
-					'change',
-					'.everest-forms-field-option-select .everest-forms-field-option-row-multiple_choices input',
-					EVFPanelBuilder.dropdownField.multiple
-				);
-			},
-
-			multiple: function( event ) {
-				var fieldId             = $( this ).closest( '.everest-forms-field-option-row-multiple_choices' ).data().fieldId,
-					$primary            = $( '#everest-forms-field-' + fieldId + ' .primary-input' ),
-					$optionChoicesItems = $( '#everest-forms-field-option-row-' + fieldId + '-choices input.default' ),
-					$placeholder        = $primary.find( '.placeholder' ),
-					isMultiple          = event.target.checked,
-					choicesType         = isMultiple ? 'checkbox' : 'radio',
-					selectedChoices;
-
-				// Add/remove a `multiple` attribute.
-				$primary.prop( 'multiple', isMultiple );
-
-				// Change a `Choices` fields type:
-				//    checkbox - needed for multiple selection
-				//    radio - needed for single selection
-				$optionChoicesItems.prop( 'type', choicesType );
-			}
 		},
 
 		/**
@@ -229,6 +197,39 @@
 				$( '#everest-forms-field-option-row-' + fieldId + '-limit_controls' ).addClass( 'everest-forms-hidden' );
 			} else {
 				$( '#everest-forms-field-option-row-' + fieldId + '-limit_controls' ).removeClass( 'everest-forms-hidden' );
+			}
+		},
+
+		/**
+		 * Update dropdown field component.
+		 *
+		 * @since 1.7.1
+		 *
+		 * @param {number} fieldId Field ID.
+		 * @param {bool} isMultiple Whether an option is multiple or not.
+		 */
+		updateDropdownFieldMultiple: function( fieldId, isMultiple ) {
+			var $primary            = $( '#everest-forms-field-' + fieldId + ' .primary-input' ),
+				$optionChoicesItems = $( '#everest-forms-field-option-row-' + fieldId + '-choices input.default' ),
+				selectedChoices     = $optionChoicesItems.filter( ':checked' );
+
+			// Add/remove a `multiple` attribute.
+			$primary.prop( 'multiple', isMultiple );
+
+			// Change a `Choices` fields type:
+			//    radio - needed for single selection
+			//    checkbox - needed for multiple selection
+			$optionChoicesItems.prop( 'type', isMultiple ? 'checkbox' : 'radio' );
+
+			// For single selection we can choose only one.
+			if ( ! isMultiple && selectedChoices.length ) {
+				$optionChoicesItems.prop( 'checked', false );
+				$( selectedChoices.get( 0 ) ).prop( 'checked', true );
+			}
+
+			// Toggle selection for a placeholder.
+			if ( $primary.find( '.placeholder' ).length ) {
+				$primary.find( '.placeholder' ).prop( 'selected', ! isMultiple );
 			}
 		},
 
