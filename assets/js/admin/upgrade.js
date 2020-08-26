@@ -7,9 +7,9 @@ jQuery( function( $ ) {
 	var evf_upgrade_actions = {
 		init: function() {
 			$( document.body ).on( 'click dragstart', '.evf-registered-item.upgrade-modal', this.field_upgrade );
-			$( document.body ).on( 'click dragstart', '.evf-upgradable-feature', this.feature_upgrade );
 			$( document.body ).on( 'click dragstart', '.evf-registered-item.enable-stripe-model', this.enable_stripe_model );
 			$( document.body ).on( 'click dragstart', '.everest-forms-field-option-row.upgrade-modal', this.feature_upgrade );
+			$( document.body ).on( 'click dragstart', '.evf-upgradable-feature, .everest-forms-btn-group span.upgrade-modal', this.feature_upgrade );
 		},
 		feature_upgrade: function( e ) {
 			e.preventDefault();

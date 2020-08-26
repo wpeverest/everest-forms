@@ -180,7 +180,7 @@
 				EVFPanelBuilder.updateDropdownFieldMultiple( $( event.target ).parents( '.everest-forms-field-option-row-multiple_choices' ).data().fieldId, event.target.checked );
 			} );
 
-			$builder.on( 'click', '.everest-forms-field-option-row-choices .everest-forms-btn-group span', function( event ) {
+			$builder.on( 'click', '.everest-forms-field-option-row-choices .everest-forms-btn-group span:not(".upgrade-modal")', function( event ) {
 				$(this).parent().find( 'span' ).removeClass( 'is-active' );
 				$(this).addClass( 'is-active' );
 				EVFPanelBuilder.updateDropdownFieldMultiple( $( event.target ).parents( '.everest-forms-field-option-row-choices' ).data().fieldId, 'multiple' === $( this ).data( 'selection') );
