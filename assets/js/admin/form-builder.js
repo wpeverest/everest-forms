@@ -176,10 +176,6 @@
 			} );
 
 			// Enable Multiple options.
-			$builder.on( 'change', '.everest-forms-field-option-row-multiple_choices input', function( event ) {
-				EVFPanelBuilder.updateDropdownFieldMultiple( $( event.target ).parents( '.everest-forms-field-option-row-multiple_choices' ).data().fieldId, event.target.checked );
-			} );
-
 			$builder.on( 'click', '.everest-forms-field-option-row-choices .everest-forms-btn-group span', function( event ) {
 				if ( $( this).hasClass( 'upgrade-modal' ) && 'checkbox' === $(this).data('type') ) {
 					$(this).parent().find( 'span' ).addClass( 'is-active' );
