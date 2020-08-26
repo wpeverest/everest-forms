@@ -2853,9 +2853,19 @@ body.everest-forms-builder {
 						margin-bottom: 5px;
 					}
 
-					select[multiple] {
-						padding: 6px 8px;
-						box-shadow: none;
+					select {
+						option {
+							color: inherit;
+
+							&.placeholder {
+								opacity: 0.5;
+							}
+						}
+
+						&[multiple] {
+							padding: 6px 8px;
+							box-shadow: none;
+						}
 					}
 
 					canvas {
