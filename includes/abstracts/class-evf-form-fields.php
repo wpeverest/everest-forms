@@ -722,13 +722,17 @@ abstract class EVF_Form_Fields {
 				$class      = array();
 				$label      = ! empty( $args['label'] ) ? esc_html( $args['label'] ) : esc_html__( 'Choices', 'everest-forms' );
 				$choices    = ! empty( $field['choices'] ) ? $field['choices'] : $this->defaults;
-				$input_type = in_array( $field['type'], array( 'radio', 'payment-multiple' ), true ) ? 'radio' : 'checkbox';
+				$input_type = in_array( $field['type'], array( 'radio', 'select', 'payment-multiple' ), true ) ? 'radio' : 'checkbox';
 
 				if ( ! empty( $field['show_values'] ) ) {
 					$class[] = 'show-values';
 				}
 				if ( ! empty( $field['choices_images'] ) ) {
 					$class[] = 'show-images';
+				}
+
+				if ( ! empty( $field['multiple_choices'] ) ) {
+					$input_type = 'checkbox';
 				}
 
 				// Add bulk options toggle handle.

@@ -286,10 +286,13 @@ class EVF_Field_Select extends EVF_Form_Fields {
 		if ( false !== $plan && ! empty( $field['enhanced_select'] ) && '1' === $field['enhanced_select'] ) {
 			$container['class'][] = 'evf-enhanced-select';
 
-			// Set placeholder for select2.
-			if ( ! empty( $field_placeholder ) ) {
-				$container['data']['placeholder'] = esc_attr( $field_placeholder );
+			if ( empty( $field_placeholder ) ) {
+				$first_choices     = reset( $choices );
+				$field_placeholder = $first_choices['label']['text'];
 			}
+
+			// Set placeholder for select2.
+			$container['data']['placeholder'] = esc_attr( $field_placeholder );
 		}
 
 		// Enable multiple choices selection.
@@ -340,7 +343,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 			printf(
 				'<option value="%s" %s>%s</option>',
 				esc_attr( $choice['attr']['value'] ),
-				selected( true, ! empty( $choice['default'] ) && empty( $field_placeholder ), false ),
+				selected( true, ! empty( $choice['default'] ), false ),
 				esc_html( $choice['label']['text'] )
 			);
 		}
