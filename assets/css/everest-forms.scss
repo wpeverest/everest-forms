@@ -147,8 +147,20 @@
 	.select2-container {
 		margin-bottom: 10px;
 
-		.select2-selection--single {
-			height: 32px;
+		.select2-selection {
+			&.select2-selection--single {
+				height: auto;
+			}
+
+			&.select2-selection--multiple {
+				.select2-selection__rendered {
+					display: block;
+
+					li {
+						margin: 4px 4px 4px 0
+					}
+				}
+			}
 		}
 	}
 
