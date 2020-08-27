@@ -981,6 +981,10 @@
 
 				$( '#everest-forms-field-' + id + ' .primary-input' ).append( choice );
 
+				if ( ! label ) {
+					return;
+				}
+
 				if ( true === selected ) {
 					switch ( type ) {
 						case 'select':
