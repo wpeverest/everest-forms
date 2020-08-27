@@ -213,7 +213,10 @@ class EVF_Field_Select extends EVF_Form_Fields {
 	public function field_preview( $field ) {
 		$args = array();
 
-		if ( ! empty( $field['enhanced_select'] ) ) {
+		if (
+			! empty( $field['enhanced_select'] )
+			&& ! empty( $field['multiple_choices'] ) && '1' === $field['multiple_choices']
+		) {
 			$args['class'] = 'evf-enhanced-select';
 		}
 
