@@ -796,6 +796,12 @@
 						} else {
 							$primary.prepend( '<option class="placeholder" selected>' + value + '</option>' );
 						}
+
+						$primary.data( 'placeholder', value );
+
+						if ( $primary.hasClass( 'enhanced' ) ) {
+							$primary.parent().find( '.select2-search__field' ).prop( 'placeholder', value );
+						}
 					}
 				} else {
 					$primary.attr( 'placeholder', value );
