@@ -1399,6 +1399,10 @@ abstract class EVF_Form_Fields {
 					$list_class[] = 'everest-forms-image-choices';
 				}
 
+				if ( ! empty( $class ) ) {
+					$list_class[] = $class;
+				}
+
 				if ( 'select' === $type ) {
 					$multiple    = ! empty( $field['multiple_choices'] ) ? ' multiple' : '';
 					$placeholder = ! empty( $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : '';

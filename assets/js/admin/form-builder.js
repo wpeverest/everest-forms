@@ -175,6 +175,11 @@
 				EVFPanelBuilder.updateTextFieldsLimitControls( $( event.target ).parents( '.everest-forms-field-option-row-limit_enabled' ).data().fieldId, event.target.checked );
 			} );
 
+			// Enable enhanced select.
+			$builder.on( 'change', '.everest-forms-field-option-select .everest-forms-field-option-row-enhanced_select input', function( event ) {
+				EVFPanelBuilder.updateEnhancedDropdownField( $( event.target ).parents( '.everest-forms-field-option-row-enhanced_select' ).data().fieldId, event.target.checked );
+			} );
+
 			// Enable Multiple options.
 			$builder.on( 'click', '.everest-forms-field-option-row-choices .everest-forms-btn-group span', function( event ) {
 				if ( $( this).hasClass( 'upgrade-modal' ) && 'checkbox' === $(this).data('type') ) {
@@ -205,6 +210,24 @@
 				$( '#everest-forms-field-option-row-' + fieldId + '-limit_controls' ).addClass( 'everest-forms-hidden' );
 			} else {
 				$( '#everest-forms-field-option-row-' + fieldId + '-limit_controls' ).removeClass( 'everest-forms-hidden' );
+			}
+		},
+
+		/**
+		 * Update select fields enhanced controls.
+		 *
+		 * @since 1.7.1
+		 *
+		 * @param {number} fieldId Field ID.
+		 * @param {bool} checked Whether an option is checked or not.
+		 */
+		updateEnhancedDropdownField: function( fieldId, checked ) {
+			var $primary = $( '#everest-forms-field-' + fieldId + ' .primary-input' );
+
+			if ( checked ) {
+				$primary.selectWoo();
+			} else {
+				$primary.selectWoo( 'destroy' );
 			}
 		},
 
@@ -243,6 +266,9 @@
 			if ( $primary.find( '.placeholder' ).length ) {
 				$primary.find( '.placeholder' ).prop( 'selected', ! isMultiple );
 			}
+
+			// Update enhanced select.
+			EVFPanelBuilder.updateEnhancedDropdownField( fieldId, isMultiple );
 		},
 
 		/**

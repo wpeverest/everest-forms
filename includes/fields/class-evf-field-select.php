@@ -211,11 +211,17 @@ class EVF_Field_Select extends EVF_Form_Fields {
 	 * @param array $field Field data and settings.
 	 */
 	public function field_preview( $field ) {
+		$args = array();
+
+		if ( ! empty( $field['enhanced_select'] ) ) {
+			$args['class'] = 'evf-enhanced-select';
+		}
+
 		// Label.
 		$this->field_preview_option( 'label', $field );
 
 		// Choices.
-		$this->field_preview_option( 'choices', $field );
+		$this->field_preview_option( 'choices', $field, $args );
 
 		// Description.
 		$this->field_preview_option( 'description', $field );
