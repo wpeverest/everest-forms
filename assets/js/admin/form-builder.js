@@ -224,9 +224,11 @@
 		enhancedSelectFieldStyle: function( fieldId, checked ) {
 			var $primary = $( '#everest-forms-field-' + fieldId + ' .primary-input' );
 
-			if ( checked ) {
+			if ( checked && $primary.prop( 'multiple') ) {
+				$primary.addClass( 'evf-enhanced-select' );
 				$( document.body ).trigger( 'evf-enhanced-select-init' );
 			} else {
+				$primary.removeClass( 'evf-enhanced-select enhanced' );
 				$primary.filter( '.select2-hidden-accessible' ).selectWoo( 'destroy' );
 			}
 		},
@@ -268,10 +270,7 @@
 			}
 
 			// Update a primary field.
-			if ( ! isMultiple ) {
-				$primary.filter( '.select2-hidden-accessible' ).removeClass( 'enhanced' ).selectWoo( 'destroy' );
-				$( document.body ).trigger( 'evf-enhanced-select-init' );
-			}
+			EVFPanelBuilder.enhancedSelectFieldStyle( fieldId, isMultiple );
 		},
 
 		/**
