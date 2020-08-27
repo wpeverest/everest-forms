@@ -1406,7 +1406,7 @@ abstract class EVF_Form_Fields {
 				if ( 'select' === $type ) {
 					$multiple    = ! empty( $field['multiple_choices'] ) ? ' multiple' : '';
 					$placeholder = ! empty( $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : '';
-					$output      = sprintf( '<select class="%s" %s disabled>', evf_sanitize_classes( $list_class, true ), esc_attr( $multiple ) );
+					$output      = sprintf( '<select class="%s" %s data-placeholder="%s" disabled>', evf_sanitize_classes( $list_class, true ), esc_attr( $multiple ), esc_attr( $placeholder ) );
 
 					// Optional placeholder.
 					if ( ! empty( $placeholder ) ) {
