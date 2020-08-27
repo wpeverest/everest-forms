@@ -243,6 +243,7 @@
 		 */
 		updateEnhandedSelectField: function( fieldId, isMultiple ) {
 			var $primary            = $( '#everest-forms-field-' + fieldId + ' .primary-input' ),
+				$placeholder        = $primary.find( '.placeholder' ),
 				$hiddenField        = $( '#everest-forms-field-option-' + fieldId + '-multiple_choices' ),
 				$optionChoicesItems = $( '#everest-forms-field-option-row-' + fieldId + '-choices input.default' ),
 				selectedChoices     = $optionChoicesItems.filter( ':checked' );
@@ -265,8 +266,8 @@
 			}
 
 			// Toggle selection for a placeholder.
-			if ( $primary.find( '.placeholder' ).length ) {
-				$primary.find( '.placeholder' ).prop( 'selected', ! isMultiple );
+			if ( $placeholder.length && isMultiple ) {
+				$placeholder.prop( 'selected', ! isMultiple );
 			}
 
 			// Update a primary field.
