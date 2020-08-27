@@ -765,6 +765,32 @@ abstract class EVF_Form_Fields {
 					);
 				}
 
+				if ( 'select' === $field['type'] ) {
+					$selection_btn   = array();
+					$selection_types = array(
+						'single'   => array(
+							'type'  => 'radio',
+							'label' => esc_html__( 'Single Selection', 'everest-forms' ),
+						),
+						'multiple' => array(
+							'type'  => 'checkbox',
+							'label' => esc_html__( 'Multiple Selection', 'everest-forms' ),
+						),
+					);
+
+					$active_type = ! empty( $field['multiple_choices'] ) && '1' === $field['multiple_choices'] ? 'multiple' : 'single';
+					foreach ( $selection_types as $key => $selection_type ) {
+						$selection_btn[ $key ] = '<span data-selection="' . esc_attr( $key ) . '" data-type="' . esc_attr( $selection_type['type'] ) . '" class="everest-forms-btn flex ' . ( $active_type === $key ? 'is-active' : '' ) . ' ' . ( false === $licensed && 'multiple' === $key ? 'upgrade-modal' : '' ) . '" data-feature="' . esc_html__( 'Multiple selection', 'everest-forms' ) . '">' . esc_html( $selection_type['label'] ) . '</span>';
+					}
+
+					$field_content .= sprintf(
+						'<div class="everest-forms-btn-group flex everest-forms-btn-group--inline"><input type="hidden" id="everest-forms-field-option-%1$s-multiple_choices" name="form_fields[%1$s][multiple_choices]" value="%2$s" />%3$s</div>',
+						esc_attr( $field['id'] ),
+						! empty( $field['multiple_choices'] ) && '1' === $field['multiple_choices'] ? 1 : 0,
+						implode( '', $selection_btn )
+					);
+				}
+
 				// Field contents.
 				$field_content .= sprintf(
 					'<ul data-next-id="%s" class="evf-choices-list %s" data-field-id="%s" data-field-type="%s">',
@@ -812,32 +838,6 @@ abstract class EVF_Form_Fields {
 					$field_content .= '</li>';
 				}
 				$field_content .= '</ul>';
-
-				if ( 'select' === $field['type'] ) {
-					$selection_btn   = array();
-					$selection_types = array(
-						'single'   => array(
-							'type'  => 'radio',
-							'label' => esc_html__( 'Single Selection', 'everest-forms' ),
-						),
-						'multiple' => array(
-							'type'  => 'checkbox',
-							'label' => esc_html__( 'Multiple Selection', 'everest-forms' ),
-						),
-					);
-
-					$active_type = ! empty( $field['multiple_choices'] ) && '1' === $field['multiple_choices'] ? 'multiple' : 'single';
-					foreach ( $selection_types as $key => $selection_type ) {
-						$selection_btn[ $key ] = '<span data-selection="' . esc_attr( $key ) . '" data-type="' . esc_attr( $selection_type['type'] ) . '" class="everest-forms-btn flex ' . ( $active_type === $key ? 'is-active' : '' ) . ' ' . ( false === $licensed && 'multiple' === $key ? 'upgrade-modal' : '' ) . '" data-feature="' . esc_html__( 'Multiple selection', 'everest-forms' ) . '">' . esc_html( $selection_type['label'] ) . '</span>';
-					}
-
-					$field_content .= sprintf(
-						'<div class="everest-forms-btn-group flex everest-forms-btn-group--inline"><input type="hidden" id="everest-forms-field-option-%1$s-multiple_choices" name="form_fields[%1$s][multiple_choices]" value="%2$s" />%3$s</div>',
-						esc_attr( $field['id'] ),
-						! empty( $field['multiple_choices'] ) && '1' === $field['multiple_choices'] ? 1 : 0,
-						implode( '', $selection_btn )
-					);
-				}
 
 				// Final field output.
 				$output = $this->field_element(
