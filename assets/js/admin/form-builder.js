@@ -941,6 +941,7 @@
 		 */
 		choiceUpdate: function( type, id ) {
 			var $fieldOptions = $( '#everest-forms-field-option-' + id );
+				$primary      = $( '#everest-forms-field-' + id + ' .primary-input' );
 
 			// Radio and Checkbox use _ template.
 			if ( 'radio' === type || 'checkbox' === type || 'payment-multiple' === type || 'payment-checkbox' === type ) {
@@ -969,8 +970,8 @@
 			var new_choice;
 
 			if ( 'select' === type ) {
-				$( '#everest-forms-field-' + id + ' .primary-input option' ).not( '.placeholder' ).remove();
 				new_choice = '<option>{label}</option>';
+				$primary.find( 'option' ).not( '.placeholder' ).remove();
 			}
 
 			$( '#everest-forms-field-option-row-' + id + '-choices .evf-choices-list li' ).each( function( index ) {
