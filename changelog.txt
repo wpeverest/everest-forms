@@ -4,6 +4,7 @@
 * Enhancement - Add support for multiple option selection in Pro plan.
 * Fix - The default value for a dropdown field not set.
 * Fix - Enhanced select required message shown above field.
+* Fix - Dropdown single selection for choices should have a radio type.
 
 = 1.7.0.4 - xx-08-2020 =
 * Fix - Form status toggle compatiable with WP 5.5+.
