@@ -178,14 +178,14 @@
 			// Enable Multiple options.
 			$builder.on( 'click', '.everest-forms-field-option-row-choices .everest-forms-btn-group span', function( event ) {
 				if ( $( this).hasClass( 'upgrade-modal' ) && 'checkbox' === $(this).data('type') ) {
-					$(this).parent().find( 'span' ).addClass( 'is-active' );
-					$(this).removeClass( 'is-active' );
-					return;
+					$( this ).parent().find( 'span' ).addClass( 'is-active' );
+					$( this ).removeClass( 'is-active' );
+					EVFPanelBuilder.updateDropdownFieldMultiple( $( event.target ).parents( '.everest-forms-field-option-row-choices' ).data().fieldId, false );
 				} else {
-					$(this).parent().find( 'span' ).removeClass( 'is-active' );
-					$(this).addClass( 'is-active' );
+					$( this ).parent().find( 'span' ).removeClass( 'is-active' );
+					$( this ).addClass( 'is-active' );
+					EVFPanelBuilder.updateDropdownFieldMultiple( $( event.target ).parents( '.everest-forms-field-option-row-choices' ).data().fieldId, 'multiple' === $( this ).data( 'selection') );
 				}
-				EVFPanelBuilder.updateDropdownFieldMultiple( $( event.target ).parents( '.everest-forms-field-option-row-choices' ).data().fieldId, 'multiple' === $( this ).data( 'selection') );
 			} );
 
 			// Action available for each binding.
