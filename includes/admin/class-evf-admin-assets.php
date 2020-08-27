@@ -113,7 +113,7 @@ class EVF_Admin_Assets {
 				'i18n_searching'            => _x( 'Searching&hellip;', 'enhanced select', 'everest-forms' ),
 			)
 		);
-		wp_register_script( 'evf-form-builder', evf()->plugin_url() . '/assets/js/admin/form-builder' . $suffix . '.js', array( 'jquery', 'jquery-blockui', 'tooltipster', 'jquery-ui-sortable', 'jquery-ui-widget', 'jquery-ui-core', 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-datepicker', 'jquery-confirm', 'evf-clipboard', 'flatpickr', 'evf-enhanced-select' ), EVF_VERSION, true );
+		wp_register_script( 'evf-form-builder', evf()->plugin_url() . '/assets/js/admin/form-builder' . $suffix . '.js', array( 'jquery', 'jquery-blockui', 'tooltipster', 'jquery-ui-sortable', 'jquery-ui-widget', 'jquery-ui-core', 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-datepicker', 'jquery-confirm', 'evf-clipboard', 'flatpickr' ), EVF_VERSION, true );
 		wp_localize_script(
 			'evf-form-builder',
 			'evf_data',

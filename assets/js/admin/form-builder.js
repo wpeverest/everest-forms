@@ -177,7 +177,7 @@
 
 			// Enable enhanced select.
 			$builder.on( 'change', '.everest-forms-field-option-select .everest-forms-field-option-row-enhanced_select input', function( event ) {
-				EVFPanelBuilder.updateEnhancedDropdownField( $( event.target ).parents( '.everest-forms-field-option-row-enhanced_select' ).data().fieldId, event.target.checked );
+				EVFPanelBuilder.enhancedSelectFieldStyle( $( event.target ).parents( '.everest-forms-field-option-row-enhanced_select' ).data().fieldId, event.target.checked );
 			} );
 
 			// Enable Multiple options.
@@ -185,11 +185,11 @@
 				if ( $( this).hasClass( 'upgrade-modal' ) && 'checkbox' === $(this).data('type') ) {
 					$( this ).parent().find( 'span' ).addClass( 'is-active' );
 					$( this ).removeClass( 'is-active' );
-					EVFPanelBuilder.updateDropdownFieldMultiple( $( event.target ).parents( '.everest-forms-field-option-row-choices' ).data().fieldId, false );
+					EVFPanelBuilder.updateEnhandedSelectField( $( event.target ).parents( '.everest-forms-field-option-row-choices' ).data().fieldId, false );
 				} else {
 					$( this ).parent().find( 'span' ).removeClass( 'is-active' );
 					$( this ).addClass( 'is-active' );
-					EVFPanelBuilder.updateDropdownFieldMultiple( $( event.target ).parents( '.everest-forms-field-option-row-choices' ).data().fieldId, 'multiple' === $( this ).data( 'selection') );
+					EVFPanelBuilder.updateEnhandedSelectField( $( event.target ).parents( '.everest-forms-field-option-row-choices' ).data().fieldId, 'multiple' === $( this ).data( 'selection') );
 				}
 			} );
 
@@ -214,32 +214,34 @@
 		},
 
 		/**
-		 * Update select fields enhanced controls.
+		 * Enhanced select fields style.
 		 *
 		 * @since 1.7.1
 		 *
 		 * @param {number} fieldId Field ID.
 		 * @param {bool} checked Whether an option is checked or not.
 		 */
-		updateEnhancedDropdownField: function( fieldId, checked ) {
+		enhancedSelectFieldStyle: function( fieldId, checked ) {
 			var $primary = $( '#everest-forms-field-' + fieldId + ' .primary-input' );
 
+			$primary.filter( '.select2-hidden-accessible' ).removeClass( 'enhanced' ).selectWoo( 'destroy' );
+
 			if ( checked ) {
-				$primary.selectWoo();
+				$( document.body ).trigger( 'evf-enhanced-select-init' );
 			} else {
-				$primary.selectWoo( 'destroy' );
+				// $primary.filter( '.select2-hidden-accessible' ).selectWoo( 'destroy' );
 			}
 		},
 
 		/**
-		 * Update dropdown field component.
+		 * Update enhanced select field component.
 		 *
 		 * @since 1.7.1
 		 *
 		 * @param {number} fieldId Field ID.
 		 * @param {bool} isMultiple Whether an option is multiple or not.
 		 */
-		updateDropdownFieldMultiple: function( fieldId, isMultiple ) {
+		updateEnhandedSelectField: function( fieldId, isMultiple ) {
 			var $primary            = $( '#everest-forms-field-' + fieldId + ' .primary-input' ),
 				$hiddenField        = $( '#everest-forms-field-option-' + fieldId + '-multiple_choices' ),
 				$optionChoicesItems = $( '#everest-forms-field-option-row-' + fieldId + '-choices input.default' ),
@@ -267,8 +269,9 @@
 				$primary.find( '.placeholder' ).prop( 'selected', ! isMultiple );
 			}
 
-			// Update enhanced select.
-			EVFPanelBuilder.updateEnhancedDropdownField( fieldId, isMultiple );
+			// Update a primary field.
+			$primary.filter( '.select2-hidden-accessible' ).removeClass( 'enhanced' ).selectWoo( 'destroy' );
+			$( document.body ).trigger( 'evf-enhanced-select-init' );
 		},
 
 		/**
