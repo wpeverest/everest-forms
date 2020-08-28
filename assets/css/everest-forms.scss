@@ -157,7 +157,15 @@
 					display: block;
 
 					li {
-						margin: 4px 4px 4px 0
+						margin: 4px 0;
+
+						.select2-search__field {
+							padding-left: 4px;
+						}
+					}
+
+					.select2-selection__choice {
+						margin-right: 4px;
 					}
 				}
 			}
