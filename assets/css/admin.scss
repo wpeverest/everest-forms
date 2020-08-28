@@ -2872,6 +2872,30 @@ body.everest-forms-builder {
 						border: 1px solid rgba(222, 222, 222, 0.75);
 					}
 
+					&.everest-forms-field-select {
+						select {
+							height: 35px;
+						}
+					}
+
+					.select2-container {
+						width: 100% !important;
+						margin-bottom: 5px;
+
+						.select2-selection--multiple {
+							border-color: $color_gray-lighten;
+						}
+
+						.select2-selection__choice {
+							margin: 4px 4px 0 0;
+						}
+
+						.select2-search__field {
+							min-height: 24px;
+							line-height: 1.4;
+						}
+					}
+
 					.evf-field-action {
 						position: absolute;
 						top: 15px;
