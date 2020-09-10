@@ -155,6 +155,13 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
+= 1.7.0.4 - xx-08-2020 =
+* Fix - Form status toggle compatiable with WP 5.5+.
+* Fix - Navbar design while switching to another language.
+* Fix - Enhanced select not working in Multi-part.
+* Tweak - Updated selectWoo JS library to v1.0.8.
+* Dev - Introduced `evf-frontend-enhanced-select-init` trigger in frontend JS.
+
 = 1.7.0.3 - 17-08-2020 =
 * Fix - Referral URL unicode support.
 * Fix - Conditional logic for dropdown broken.
@@ -201,7 +208,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Fix - Sanitization of CSV exported field values.
 * Fix - Conflict within WooCommerce checkout page.
 * Fix - Flatpickr Calendar does not open on Android Chrome.
-* Tweak - Updated selectWoo JS library to v1.6.0.
+* Tweak - Updated selectWoo JS library to v1.0.6.
 * Tweak - Updated flatpickr JS library to v4.6.3.
 
 = 1.6.6 - 01-05-2020 =
