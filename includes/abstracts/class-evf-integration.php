@@ -96,7 +96,7 @@ abstract class EVF_Integration extends EVF_Settings_API {
 	 *
 	 * @return bool
 	 */
-	protected function is_integration_page() {
+	public function is_integration_page() {
 		return isset( $_GET['page'], $_GET['tab'], $_GET['section'] ) && 'evf-settings' === $_GET['page'] && 'integration' === $_GET['tab'] && (string) $this->id === $_GET['section']; // phpcs:ignore WordPress.Security.NonceVerification
 	}
 }
