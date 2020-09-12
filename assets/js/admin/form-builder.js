@@ -189,7 +189,7 @@
 				} else {
 					$( this ).parent().find( 'span' ).removeClass( 'is-active' );
 					$( this ).addClass( 'is-active' );
-					EVFPanelBuilder.updateEnhandedSelectField( $( event.target ).parents( '.everest-forms-field-option-row-choices' ).data().fieldId, 'multiple' === $( this ).data( 'selection') );
+					EVFPanelBuilder.updateEnhandedSelectField( $( event.target ).parents( '.everest-forms-field-option-row-choices' ).data().fieldId, 'multiple' === $( this ).data( 'selection' ) );
 				}
 			} );
 
@@ -222,9 +222,10 @@
 		 * @param {bool} checked Whether an option is checked or not.
 		 */
 		enhancedSelectFieldStyle: function( fieldId, checked ) {
-			var $primary = $( '#everest-forms-field-' + fieldId + ' .primary-input' );
+			var $primary   = $( '#everest-forms-field-' + fieldId + ' .primary-input' ),
+				isEnhanced = $( '#everest-forms-field-option-' + fieldId + '-enhanced_select' ).is(':checked');
 
-			if ( checked && $primary.prop( 'multiple') ) {
+			if ( checked && isEnhanced && $primary.prop( 'multiple' ) ) {
 				$primary.addClass( 'evf-enhanced-select' );
 				$( document.body ).trigger( 'evf-enhanced-select-init' );
 			} else {

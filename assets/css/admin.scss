@@ -17,7 +17,7 @@
 @import 'components/badge',
 	'components/buttons',
 	'components/card',
-		'components/table';
+	'components/table';
 
 @import 'colors';
 @import 'grid';
@@ -2886,13 +2886,14 @@ body.everest-forms-builder {
 					}
 
 					&.everest-forms-field-select {
-						select {
+						select:not([multiple]) {
 							height: 35px;
 						}
 					}
 
 					.select2-container {
 						margin-bottom: 5px;
+						width: 100% !important;
 
 						span.selection {
 							width: 100% !important;
