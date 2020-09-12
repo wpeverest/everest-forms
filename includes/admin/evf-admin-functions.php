@@ -23,6 +23,7 @@ function evf_get_screen_ids() {
 		$evf_screen_id . '_page_evf-settings',
 		$evf_screen_id . '_page_evf-tools',
 		$evf_screen_id . '_page_evf-addons',
+		$evf_screen_id . '_page_evf-email-templates',
 	);
 
 	return apply_filters( 'everest_forms_screen_ids', $screen_ids );

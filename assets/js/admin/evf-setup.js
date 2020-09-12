@@ -5,7 +5,7 @@ jQuery( function( $ ) {
 	 * Setup actions.
 	 */
 	var evf_setup_actions = {
-		$setup_form: $( '.everest-forms-setup' ),
+		$setup_form: $( '.everest-forms-setup--form' ),
 		$button_install: evf_data.i18n_activating,
 		init: function() {
 			this.title_focus();
@@ -145,7 +145,7 @@ jQuery( function( $ ) {
 			var $this       = $(this),
 				previewLink = $this.data('preview-link');
 
-			$this.closest( '.everest-forms-setup' ).find( '.evf-template-preview-iframe #frame' ).attr( 'src', previewLink );
+			$this.closest( '.everest-forms-setup--form' ).find( '.evf-template-preview-iframe #frame' ).attr( 'src', previewLink );
 		},
 		template_select: function( event ) {
 			var $this        = $( this ),
