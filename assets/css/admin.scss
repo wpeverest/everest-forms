@@ -15,8 +15,8 @@
 
 // Components
 @import 'components/badge',
-		'components/buttons',
-		'components/card',
+	'components/buttons',
+	'components/card',
 		'components/table';
 
 @import 'colors';
@@ -25,8 +25,8 @@
 
 //Utilities
 @import	'utility/display',
-		'utility/spacing',
-		'utility/border';
+	'utility/spacing',
+	'utility/border';
 
 /**
  * Styling begins
@@ -2892,8 +2892,11 @@ body.everest-forms-builder {
 					}
 
 					.select2-container {
-						width: 100% !important;
 						margin-bottom: 5px;
+
+						span.selection {
+							width: 100% !important;
+						}
 
 						.select2-selection--multiple {
 							border-color: $color_gray-lighten;
