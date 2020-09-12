@@ -4,7 +4,7 @@ Tags: contact form, forms, form builder, contact, custom form
 Requires at least: 5.0
 Tested up to: 5.5
 Requires PHP: 5.4
-Stable tag: 1.7.0.3
+Stable tag: 1.7.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -155,7 +155,9 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 1.7.0.4 - xx-08-2020 =
+= 1.7.1 - xx-09-2020 =
+* Feature - Supports Email Templates Addon.
+* Feature - Supports Google Sheets integration Addon.
 * Fix - Form status toggle compatiable with WP 5.5+.
 * Fix - Navbar design while switching to another language.
 * Fix - Enhanced select not working in Multi-part.
