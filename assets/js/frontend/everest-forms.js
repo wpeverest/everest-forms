@@ -403,12 +403,14 @@ jQuery( function ( $ ) {
 						}
 					},
 					onclick: function( element ) {
-						var validate = false;
+						var validate = false,
+							type = ( element || {} ).type,
+							$el = $( element );
 
-						if ( 'checkbox' === ( element || {} ).type ) {
-							$( element ).closest( '.evf-field-checkbox' ).find( 'label.evf-error' ).remove();
+						if ( 'checkbox' === type ) {
+							$el.closest( '.evf-field-checkbox' ).find( 'label.evf-error' ).remove();
 							validate = true;
-						} else {
+						} else if ( ! 'select-multiple' === type ) {
 							$( element ).valid();
 						}
 
