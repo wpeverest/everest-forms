@@ -45,6 +45,17 @@ abstract class EVF_Integration extends EVF_Settings_API {
 	public $method_description = '';
 
 	/**
+	 * Get integration ID
+	 *
+	 * @return array Integration stored data.
+	 */
+	public function get_integration() {
+		$integrations = get_option( 'everest_forms_integrations', array() );
+
+		return in_array( $this->id, array_keys( $integrations ), true ) ? $integrations[ $this->id ] : array();
+	}
+
+	/**
 	 * Return the title for admin screens.
 	 *
 	 * @return string
@@ -78,5 +89,14 @@ abstract class EVF_Integration extends EVF_Settings_API {
 	public function init_settings() {
 		parent::init_settings();
 		$this->enabled = ! empty( $this->settings['enabled'] ) && 'yes' === $this->settings['enabled'] ? 'yes' : 'no';
+	}
+
+	/**
+	 * Check if is integration page.
+	 *
+	 * @return bool
+	 */
+	public function is_integration_page() {
+		return isset( $_GET['page'], $_GET['tab'], $_GET['section'] ) && 'evf-settings' === $_GET['page'] && 'integration' === $_GET['tab'] && (string) $this->id === $_GET['section']; // phpcs:ignore WordPress.Security.NonceVerification
 	}
 }
