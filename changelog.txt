@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 1.7.1 - xx-09-2020 =
+* Feature - Supports Email Templates Addon.
+
 = 1.7.0.4 - xx-08-2020 =
 * Fix - Form status toggle compatiable with WP 5.5+.
 * Fix - Navbar design while switching to another language.
