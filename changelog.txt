@@ -1,6 +1,7 @@
 == Changelog ==
 
 = 1.7.1 - xx-09-2020 =
+* Enhancement - Add supports for email Templates Addon.
 * Enhancement - Add support for multiple option selection in Pro plan.
 * Fix - The default value for a dropdown field not set.
 * Fix - Enhanced select required message shown above field.

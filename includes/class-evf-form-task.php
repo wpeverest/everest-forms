@@ -617,7 +617,7 @@ class EVF_Form_Task {
 
 			// Send entry email.
 			foreach ( $email['address'] as $address ) {
-				$emails->send( trim( $address ), $email['subject'], $email['message'] );
+				$emails->send( trim( $address ), $email['subject'], $email['message'], '', $connection_id );
 			}
 
 		endforeach;

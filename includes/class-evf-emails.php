@@ -309,10 +309,11 @@ class EVF_Emails {
 	 * @param string $subject The subject line of the email.
 	 * @param string $message The body of the email.
 	 * @param array  $attachments Attachments to the email.
+	 * @param string $connection_id Connection ID of the email.
 	 *
 	 * @return bool
 	 */
-	public function send( $to, $subject, $message, $attachments = '' ) {
+	public function send( $to, $subject, $message, $attachments = '', $connection_id = '' ) {
 		if ( ! did_action( 'init' ) && ! did_action( 'admin_init' ) ) {
 			evf_doing_it_wrong( __FUNCTION__, __( 'You cannot send emails with EVF_Emails until init/admin_init has been reached', 'everest-forms' ), null );
 			return false;
@@ -331,7 +332,14 @@ class EVF_Emails {
 		// Hooks before email is sent.
 		do_action( 'everest_forms_email_send_before', $this );
 
-		$message           = $this->build_email( $message );
+		// Email Template Enabled or not checked.
+		$email_template_included = ! empty( $this->form_data['settings']['email'][ $connection_id ]['choose_template'] ) ? true : false;
+
+		if ( $email_template_included && true === $this->html ) {
+			$message = apply_filters( 'everest_forms_email_template_message', $message, $this );
+		} else {
+			$message = $this->build_email( $message );
+		}
 		$this->attachments = apply_filters( 'everest_forms_email_attachments', $this->attachments, $this );
 		$subject           = evf_decode_string( $this->process_tag( $subject ) );
 
