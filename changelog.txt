@@ -8,7 +8,6 @@
 * Fix - Enhanced select required message shown above field.
 * Fix - Dropdown single selection for choices should have a radio type.
 
-= 1.7.0.4 - xx-08-2020 =
 * Fix - Form status toggle compatiable with WP 5.5+.
 * Fix - Navbar design while switching to another language.
 * Fix - Enhanced select not working in Multi-part.
