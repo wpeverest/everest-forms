@@ -11,7 +11,7 @@
 defined( 'ABSPATH' ) || exit;
 
 ?>
-<div class="wrap everest-forms evf_addons_wrap">
+<div class="wrap evf_addons_wrap">
 	<h1 class="wp-heading-inline"><?php esc_html_e( 'Everest Forms Add-ons', 'everest-forms' ); ?></h1>
 
 	<?php if ( apply_filters( 'everest_forms_refresh_addons', true ) ) : ?>
