@@ -147,8 +147,28 @@
 	.select2-container {
 		margin-bottom: 10px;
 
-		.select2-selection--single {
-			height: 32px;
+		.select2-selection {
+			&.select2-selection--single {
+				height: auto;
+			}
+
+			&.select2-selection--multiple {
+				.select2-selection__rendered {
+					display: block;
+
+					li {
+						margin: 4px 0;
+
+						.select2-search__field {
+							padding-left: 4px;
+						}
+					}
+
+					.select2-selection__choice {
+						margin-right: 4px;
+					}
+				}
+			}
 		}
 	}
 
@@ -248,7 +268,7 @@
 						}
 					}
 
-					ul {
+					ul:not(.select2-selection__rendered) {
 						margin-bottom: 10px;
 						padding: 0;
 						list-style: none;

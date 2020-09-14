@@ -15,9 +15,9 @@
 
 // Components
 @import 'components/badge',
-		'components/buttons',
-		'components/card',
-		'components/table';
+	'components/buttons',
+	'components/card',
+	'components/table';
 
 @import 'colors';
 @import 'grid';
@@ -25,8 +25,8 @@
 
 //Utilities
 @import	'utility/display',
-		'utility/spacing',
-		'utility/border';
+	'utility/spacing',
+	'utility/border';
 
 /**
  * Styling begins
@@ -2861,14 +2861,56 @@ body.everest-forms-builder {
 						}
 					}
 
-					option,
 					select,
 					textarea {
 						margin-bottom: 5px;
 					}
 
+					select {
+						option {
+							color: inherit;
+
+							&.placeholder {
+								opacity: 0.5;
+							}
+						}
+
+						&[multiple] {
+							padding: 6px 8px;
+							box-shadow: none;
+						}
+					}
+
 					canvas {
 						border: 1px solid rgba(222, 222, 222, 0.75);
+					}
+
+					&.everest-forms-field-select {
+						select:not([multiple]) {
+							height: 35px;
+						}
+					}
+
+					.select2-container {
+						margin-bottom: 5px;
+						width: 100% !important;
+
+						span.selection {
+							width: 100% !important;
+						}
+
+						.select2-selection--multiple {
+							border-color: $color_gray-lighten;
+						}
+
+						.select2-selection__choice {
+							margin: 4px 4px 0 0;
+						}
+
+						.select2-search__field {
+							min-height: 24px;
+							line-height: 1.4;
+						}
 					}
 
 					.evf-field-action {

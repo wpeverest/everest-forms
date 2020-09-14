@@ -175,6 +175,24 @@
 				EVFPanelBuilder.updateTextFieldsLimitControls( $( event.target ).parents( '.everest-forms-field-option-row-limit_enabled' ).data().fieldId, event.target.checked );
 			} );
 
+			// Enable enhanced select.
+			$builder.on( 'change', '.everest-forms-field-option-select .everest-forms-field-option-row-enhanced_select input', function( event ) {
+				EVFPanelBuilder.enhancedSelectFieldStyle( $( event.target ).parents( '.everest-forms-field-option-row-enhanced_select' ).data().fieldId, event.target.checked );
+			} );
+
+			// Enable Multiple options.
+			$builder.on( 'click', '.everest-forms-field-option-row-choices .everest-forms-btn-group span', function( event ) {
+				if ( $( this).hasClass( 'upgrade-modal' ) && 'checkbox' === $(this).data('type') ) {
+					$( this ).parent().find( 'span' ).addClass( 'is-active' );
+					$( this ).removeClass( 'is-active' );
+					EVFPanelBuilder.updateEnhandedSelectField( $( event.target ).parents( '.everest-forms-field-option-row-choices' ).data().fieldId, false );
+				} else {
+					$( this ).parent().find( 'span' ).removeClass( 'is-active' );
+					$( this ).addClass( 'is-active' );
+					EVFPanelBuilder.updateEnhandedSelectField( $( event.target ).parents( '.everest-forms-field-option-row-choices' ).data().fieldId, 'multiple' === $( this ).data( 'selection' ) );
+				}
+			} );
+
 			// Action available for each binding.
 			$( document ).trigger( 'everest_forms_ready' );
 		},
@@ -193,6 +211,68 @@
 			} else {
 				$( '#everest-forms-field-option-row-' + fieldId + '-limit_controls' ).removeClass( 'everest-forms-hidden' );
 			}
+		},
+
+		/**
+		 * Enhanced select fields style.
+		 *
+		 * @since 1.7.1
+		 *
+		 * @param {number} fieldId Field ID.
+		 * @param {bool} checked Whether an option is checked or not.
+		 */
+		enhancedSelectFieldStyle: function( fieldId, checked ) {
+			var $primary   = $( '#everest-forms-field-' + fieldId + ' .primary-input' ),
+				isEnhanced = $( '#everest-forms-field-option-' + fieldId + '-enhanced_select' ).is(':checked');
+
+			if ( checked && isEnhanced && $primary.prop( 'multiple' ) ) {
+				$primary.addClass( 'evf-enhanced-select' );
+				$( document.body ).trigger( 'evf-enhanced-select-init' );
+			} else {
+				$primary.removeClass( 'evf-enhanced-select enhanced' );
+				$primary.filter( '.select2-hidden-accessible' ).selectWoo( 'destroy' );
+			}
+		},
+
+		/**
+		 * Update enhanced select field component.
+		 *
+		 * @since 1.7.1
+		 *
+		 * @param {number} fieldId Field ID.
+		 * @param {bool} isMultiple Whether an option is multiple or not.
+		 */
+		updateEnhandedSelectField: function( fieldId, isMultiple ) {
+			var $primary            = $( '#everest-forms-field-' + fieldId + ' .primary-input' ),
+				$placeholder        = $primary.find( '.placeholder' ),
+				$hiddenField        = $( '#everest-forms-field-option-' + fieldId + '-multiple_choices' ),
+				$optionChoicesItems = $( '#everest-forms-field-option-row-' + fieldId + '-choices input.default' ),
+				selectedChoices     = $optionChoicesItems.filter( ':checked' );
+
+			// Update hidden field value.
+			$hiddenField.val( isMultiple ? 1 : 0 );
+
+			// Add/remove a `multiple` attribute.
+			$primary.prop( 'multiple', isMultiple );
+
+			// Change a `Choices` fields type:
+			//    radio - needed for single selection
+			//    checkbox - needed for multiple selection
+			$optionChoicesItems.prop( 'type', isMultiple ? 'checkbox' : 'radio' );
+
+			// For single selection we can choose only one.
+			if ( ! isMultiple && selectedChoices.length ) {
+				$optionChoicesItems.prop( 'checked', false );
+				$( selectedChoices.get( 0 ) ).prop( 'checked', true );
+			}
+
+			// Toggle selection for a placeholder.
+			if ( $placeholder.length && isMultiple ) {
+				$placeholder.prop( 'selected', ! isMultiple );
+			}
+
+			// Update a primary field.
+			EVFPanelBuilder.enhancedSelectFieldStyle( fieldId, isMultiple );
 		},
 
 		/**
@@ -717,6 +797,12 @@
 						} else {
 							$primary.prepend( '<option class="placeholder" selected>' + value + '</option>' );
 						}
+
+						$primary.data( 'placeholder', value );
+
+						if ( $primary.hasClass( 'enhanced' ) ) {
+							$primary.parent().find( '.select2-search__field' ).prop( 'placeholder', value );
+						}
 					}
 				} else {
 					$primary.attr( 'placeholder', value );
@@ -862,6 +948,7 @@
 		 */
 		choiceUpdate: function( type, id ) {
 			var $fieldOptions = $( '#everest-forms-field-option-' + id );
+				$primary      = $( '#everest-forms-field-' + id + ' .primary-input' );
 
 			// Radio and Checkbox use _ template.
 			if ( 'radio' === type || 'checkbox' === type || 'payment-multiple' === type || 'payment-checkbox' === type ) {
@@ -890,8 +977,8 @@
 			var new_choice;
 
 			if ( 'select' === type ) {
-				$( '#everest-forms-field-' + id + ' .primary-input option' ).not( '.placeholder' ).remove();
 				new_choice = '<option>{label}</option>';
+				$primary.find( 'option' ).not( '.placeholder' ).remove();
 			}
 
 			$( '#everest-forms-field-option-row-' + id + '-choices .evf-choices-list li' ).each( function( index ) {
@@ -901,6 +988,10 @@
 					choice 	 = $( new_choice.replace( '{label}', label ) );
 
 				$( '#everest-forms-field-' + id + ' .primary-input' ).append( choice );
+
+				if ( ! label ) {
+					return;
+				}
 
 				if ( true === selected ) {
 					switch ( type ) {

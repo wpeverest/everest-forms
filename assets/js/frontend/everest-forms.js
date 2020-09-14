@@ -318,6 +318,10 @@ jQuery( function ( $ ) {
 							if ( element.parent().find( 'label.evf-error:visible' ).length === 0 ) {
 								element.parent().find( 'select:last' ).after( error );
 							}
+						} else if ( element.is( 'select' ) && element.hasClass( 'evf-enhanced-select' ) ) {
+							if ( element.parent().find( 'label.evf-error:visible' ).length === 0 ) {
+								element.parent().find( '.select2' ).after( error );
+							}
 						} else if ( element.hasClass( 'evf-smart-phone-field' ) || element.hasClass( 'everest-forms-field-password-primary' ) || element.hasClass( 'everest-forms-field-password-secondary' ) ) {
 							element.parent().after( error );
 						} else {
@@ -399,12 +403,14 @@ jQuery( function ( $ ) {
 						}
 					},
 					onclick: function( element ) {
-						var validate = false;
+						var validate = false,
+							type = ( element || {} ).type,
+							$el = $( element );
 
-						if ( 'checkbox' === ( element || {} ).type ) {
-							$( element ).closest( '.evf-field-checkbox' ).find( 'label.evf-error' ).remove();
+						if ( 'checkbox' === type ) {
+							$el.closest( '.evf-field-checkbox' ).find( 'label.evf-error' ).remove();
 							validate = true;
-						} else {
+						} else if ( ! 'select-multiple' === type ) {
 							$( element ).valid();
 						}
 
@@ -492,7 +498,9 @@ jQuery( function ( $ ) {
 					if ( 'undefined' !== typeof $.fn.selectWoo ) {
 						$( 'select.evf-enhanced-select:visible' ).filter( ':not(.evf-enhanced)' ).each( function() {
 							var select2_args = $.extend({
+								minimumResultsForSearch: 10,
 								placeholder: $( this ).attr( 'placeholder' ) || '',
+								allowClear: $( this ).prop( 'multiple' ) ? false : true,
 							}, getEnhancedSelectFormatString() );
 
 							$( this ).selectWoo( select2_args ).addClass( 'evf-enhanced' );

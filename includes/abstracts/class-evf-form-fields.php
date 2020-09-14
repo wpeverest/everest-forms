@@ -722,13 +722,18 @@ abstract class EVF_Form_Fields {
 				$class      = array();
 				$label      = ! empty( $args['label'] ) ? esc_html( $args['label'] ) : esc_html__( 'Choices', 'everest-forms' );
 				$choices    = ! empty( $field['choices'] ) ? $field['choices'] : $this->defaults;
-				$input_type = in_array( $field['type'], array( 'radio', 'payment-multiple' ), true ) ? 'radio' : 'checkbox';
+				$input_type = in_array( $field['type'], array( 'radio', 'select', 'payment-multiple' ), true ) ? 'radio' : 'checkbox';
 
 				if ( ! empty( $field['show_values'] ) ) {
 					$class[] = 'show-values';
 				}
+
 				if ( ! empty( $field['choices_images'] ) ) {
 					$class[] = 'show-images';
+				}
+
+				if ( ! empty( $field['multiple_choices'] ) ) {
+					$input_type = 'checkbox';
 				}
 
 				// Add bulk options toggle handle.
@@ -751,12 +756,38 @@ abstract class EVF_Form_Fields {
 				$field_content = '';
 
 				if ( true === $bulk_add_enabled && true === $licensed ) {
-					$field_content = $this->field_option(
+					$field_content .= $this->field_option(
 						'add_bulk_options',
 						$field,
 						array(
 							'class' => 'everest-forms-hidden',
 						)
+					);
+				}
+
+				if ( 'select' === $field['type'] ) {
+					$selection_btn   = array();
+					$selection_types = array(
+						'single'   => array(
+							'type'  => 'radio',
+							'label' => esc_html__( 'Single Selection', 'everest-forms' ),
+						),
+						'multiple' => array(
+							'type'  => 'checkbox',
+							'label' => esc_html__( 'Multiple Selection', 'everest-forms' ),
+						),
+					);
+
+					$active_type = ! empty( $field['multiple_choices'] ) && '1' === $field['multiple_choices'] ? 'multiple' : 'single';
+					foreach ( $selection_types as $key => $selection_type ) {
+						$selection_btn[ $key ] = '<span data-selection="' . esc_attr( $key ) . '" data-type="' . esc_attr( $selection_type['type'] ) . '" class="everest-forms-btn flex ' . ( $active_type === $key ? 'is-active' : '' ) . ' ' . ( false === $licensed && 'multiple' === $key ? 'upgrade-modal' : '' ) . '" data-feature="' . esc_html__( 'Multiple selection', 'everest-forms' ) . '">' . esc_html( $selection_type['label'] ) . '</span>';
+					}
+
+					$field_content .= sprintf(
+						'<div class="everest-forms-btn-group flex everest-forms-btn-group--inline"><input type="hidden" id="everest-forms-field-option-%1$s-multiple_choices" name="form_fields[%1$s][multiple_choices]" value="%2$s" />%3$s</div>',
+						esc_attr( $field['id'] ),
+						! empty( $field['multiple_choices'] ) && '1' === $field['multiple_choices'] ? 1 : 0,
+						implode( '', $selection_btn )
 					);
 				}
 
@@ -1368,9 +1399,14 @@ abstract class EVF_Form_Fields {
 					$list_class[] = 'everest-forms-image-choices';
 				}
 
+				if ( ! empty( $class ) ) {
+					$list_class[] = $class;
+				}
+
 				if ( 'select' === $type ) {
+					$multiple    = ! empty( $field['multiple_choices'] ) ? ' multiple' : '';
 					$placeholder = ! empty( $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : '';
-					$output      = sprintf( '<select class="%s" disabled>', evf_sanitize_classes( $list_class, true ) );
+					$output      = sprintf( '<select class="%s" %s data-placeholder="%s" disabled>', evf_sanitize_classes( $list_class, true ), esc_attr( $multiple ), esc_attr( $placeholder ) );
 
 					// Optional placeholder.
 					if ( ! empty( $placeholder ) ) {
@@ -1380,7 +1416,7 @@ abstract class EVF_Form_Fields {
 					// Build the select options (even though user can only see 1st option).
 					foreach ( $values as $value ) {
 						$default  = isset( $value['default'] ) ? (bool) $value['default'] : false;
-						$selected = ! empty( $placeholder ) ? '' : selected( true, $default, false );
+						$selected = ! empty( $placeholder ) && empty( $multiple ) ? '' : selected( true, $default, false );
 						$output  .= sprintf( '<option %s>%s</option>', $selected, esc_html( $value['label'] ) );
 					}
 
