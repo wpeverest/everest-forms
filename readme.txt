@@ -155,9 +155,13 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 1.7.1 - xx-09-2020 =
-* Feature - Supports Email Templates Addon.
-* Feature - Supports Google Sheets integration Addon.
+= 1.7.1 - 14-09-2020 =
+* Enhancement - Add supports for email Templates Addon.
+* Enhancement - Add supports Google Sheets integration Addon.
+* Enhancement - Add support for multiple option selection in Pro plan.
+* Fix - The default value for a dropdown field not set.
+* Fix - Enhanced select required message shown above field.
+* Fix - Dropdown single selection for choices should have a radio type.
 * Fix - Form status toggle compatiable with WP 5.5+.
 * Fix - Navbar design while switching to another language.
 * Fix - Enhanced select not working in Multi-part.
