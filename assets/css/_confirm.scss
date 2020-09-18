@@ -29,6 +29,7 @@ div.jconfirm {
 
 				.jconfirm-content {
 					overflow: initial;
+					white-space: pre-line;
 				}
 			}
 
@@ -43,7 +44,7 @@ div.jconfirm {
 				}
 			}
 
-			input[type="text"] {
+			input[type='text'] {
 				width: 99%;
 				padding: 10px;
 				box-shadow: none;
@@ -105,7 +106,7 @@ div.jconfirm {
 
 			.jconfirm-title-c {
 				font-size: 20px !important;
-				font-weight: 400 !important;;
+				font-weight: 400 !important;
 				padding-bottom: 0 !important;
 				line-height: 1.4 !important;
 
@@ -157,4 +158,3 @@ div.jconfirm {
 		}
 	}
 }
-
