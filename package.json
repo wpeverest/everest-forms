@@ -46,7 +46,7 @@
     "node-sass": "4.14.1",
     "stylelint": "13.7.1",
     "stylelint-config-wordpress": "17.0.0",
-    "webpack": "4.44.1",
+    "webpack": "4.44.2",
     "webpack-cli": "3.3.12"
   },
   "engines": {
