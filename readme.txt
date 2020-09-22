@@ -155,6 +155,9 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
+= 1.x.x - xx-xx-2020 =
+* Fix - Message for required file upload field.
+
 = 1.7.1 - 14-09-2020 =
 * Enhancement - Add supports for email Templates Addon.
 * Enhancement - Add supports Google Sheets integration Addon.
