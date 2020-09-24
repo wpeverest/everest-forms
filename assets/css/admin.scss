@@ -15,9 +15,10 @@
 
 // Components
 @import 'components/badge',
-	'components/buttons',
-	'components/card',
-	'components/table';
+		'components/forms',
+		'components/buttons',
+		'components/card',
+		'components/table';
 
 @import 'colors';
 @import 'grid';
@@ -25,8 +26,8 @@
 
 //Utilities
 @import	'utility/display',
-	'utility/spacing',
-	'utility/border';
+		'utility/spacing',
+		'utility/border';
 
 /**
  * Styling begins
@@ -1997,6 +1998,32 @@ body.everest-forms-builder {
 					position: relative;
 					background-color: $color_gray-light-skin;
 					border-right: 1px solid $color_gray-lighten;
+
+					.everest-forms-input-group {
+						background-color: $color-white;
+						border: 1px solid $input-border-color;
+						border-radius: 4px;
+
+						.everest-forms-input-control {
+							background: none;
+							border-color: transparent !important;
+							box-shadow: none;
+
+							&:focus {
+								border-color: none;
+							}
+						}
+
+						&__text {
+							background: none;
+							border:none;
+						}
+
+						&:focus-within {
+							border: 1px solid $everestforms;
+							box-shadow: 0 0 0 1px $everestforms;
+						}
+					}
 
 					.everest-forms-add-fields-heading {
 						display: block;
