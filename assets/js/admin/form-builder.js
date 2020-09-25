@@ -195,9 +195,9 @@
 
 			// Search fields input.
 			$builder.on( 'input', '.everest-forms-search-fields', function() {
-				var search_string = $(this).val().toLowerCase();
+				var search_string = $( this ).val().toLowerCase();
 
-				// Show/Hide fields.
+				// Show/hide fields.
 				$( '.evf-registered-item' ).each( function() {
 					var field_label = $( this ).text().toLowerCase();
 
@@ -210,7 +210,7 @@
 					}
 				});
 
-				// Show/Hide field group.
+				// Show/hide field group.
 				$( '.everest-forms-add-fields-group' ).each( function() {
 					var count = $( this ).find( '.evf-registered-item.evf-searched-item' ).length;
 
@@ -221,11 +221,11 @@
 					}
 				});
 
-				// Show/Hide fields not found indicator.
+				// Show/hide fields not found indicator.
 				if ( $( '.evf-registered-item.evf-searched-item' ).length ) {
-					$( '.everest-forms-fields-not-found' ).hide();
+					$( '.everest-forms-fields-not-found' ).addClass( 'hidden' );
 				} else {
-					$( '.everest-forms-fields-not-found' ).show();
+					$( '.everest-forms-fields-not-found' ).removeClass( 'hidden' );
 				}
 			});
 
