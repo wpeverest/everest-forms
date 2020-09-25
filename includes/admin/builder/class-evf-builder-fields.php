@@ -72,6 +72,11 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 						</div>
 					</div>
 				</div>
+				<div class="everest-forms-fields-not-found hidden">
+					<img src="<?php echo esc_attr( plugin_dir_url( EVF_PLUGIN_FILE ) . 'assets/images/not-found.png' ); ?>" />
+					<h3 class="everest-forms-fields-not-found__title"><?php esc_html_e( 'Whoops!', 'everest-forms' ); ?></h3>
+					<span><?php esc_html_e( 'There is not any field that you were searching for.', 'everest-forms' ); ?></span>
+				</div>
 				<?php do_action( 'everest_forms_builder_fields', $this->form ); ?>
 			</div>
 			<div class="everest-forms-field-options">

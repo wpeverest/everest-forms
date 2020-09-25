@@ -34,14 +34,11 @@ $border-width:					1px;
 $border-color: 					$color_gray-lighten;
 
 // Input variables
-$input-border-color: 					$border-color;
-$input-border-focus-color:				$everestforms;
+$input-border-color:            $border-color;
+$input-border-focus-color:      $everestforms;
 
 /**
  * Font Size Variables
  */
 $font_size-base: 14px;
 $font_size-label: $font_size-base;
-
-
-

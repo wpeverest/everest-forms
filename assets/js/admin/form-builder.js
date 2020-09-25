@@ -209,6 +209,24 @@
 						$( this ).hide();
 					}
 				});
+
+				// Show/Hide field group.
+				$( '.everest-forms-add-fields-group' ).each( function() {
+					var count = $( this ).find( '.evf-registered-item.evf-searched-item' ).length;
+
+					if ( 0 >= count ) {
+						$( this ).hide();
+					} else {
+						$( this ).show();
+					}
+				});
+
+				// Show/Hide fields not found indicator.
+				if ( $( '.evf-registered-item.evf-searched-item' ).length ) {
+					$( '.everest-forms-fields-not-found' ).hide();
+				} else {
+					$( '.everest-forms-fields-not-found' ).show();
+				}
 			});
 
 			// Action available for each binding.
