@@ -54,7 +54,16 @@ defined( 'ABSPATH' ) || exit;
 					$preview_link  = isset( $template->preview_link ) ? $template->preview_link : '';
 					$click_class   = '';
 					if ( ! in_array( 'free', $template->plan, true ) ) {
-						$badge = '<span class="everest-forms-badge everest-forms-badge--success">' . esc_html__( 'Pro', 'everest-forms' ) . '</span>';
+						if ( in_array( 'personal', $template->plan, true ) ) {
+							$badge_text = esc_html( 'Personal' );
+						} elseif ( in_array( 'plus', $template->plan, true ) ) {
+							$badge_text = esc_html( 'Plus' );
+						} elseif ( in_array( 'professional', $template->plan, true ) ) {
+							$badge_text = esc_html( 'Professional' );
+						} else {
+							$badge_text = esc_html( 'Agency' );
+						}
+						$badge = '<span class="everest-forms-badge everest-forms-badge--success">' . $badge_text . '</span>';
 					}
 
 					if ( 'blank' === $template->slug ) {
@@ -68,8 +77,8 @@ defined( 'ABSPATH' ) || exit;
 						$upgrade_class = 'upgrade-modal';
 					}
 
-					/* translators: %s: Template title */
-					$template_name = sprintf( esc_attr_x( '%s template', 'Template name', 'everest-forms' ), esc_attr( $template->title ) );
+						/* translators: %s: Template title */
+						$template_name = sprintf( esc_attr_x( '%s template', 'Template name', 'everest-forms' ), esc_attr( $template->title ) );
 					?>
 					<div class="everest-forms-template-wrap evf-template"  id="everest-forms-template-<?php echo esc_attr( $template->slug ); ?>">
 						<figure class="everest-forms-screenshot <?php echo esc_attr( $click_class ); ?>" data-template-name-raw="<?php echo esc_attr( $template->title ); ?>" data-template="<?php echo esc_attr( $template->slug ); ?>" data-template-name="<?php echo esc_attr( $template_name ); ?>">
