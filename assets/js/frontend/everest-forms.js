@@ -217,7 +217,7 @@ jQuery( function ( $ ) {
 						}
 					} else if ( $( this ).is( '.evf-field-checkbox, .evf-field-payment-checkbox' ) ) {
 						key = key + '[]';
-					} else if ( $( this ).is( '.evf-field-file-upload, .evf-field-image-upload' ) ) {
+					} else if ( $( this ).is( '.evf-field-image-upload' ) ) {
 						key = 'evf_' + form_id + '_' + field_id;
 					} else if ( $( this ).is( '.evf-field-signature' ) ) {
 						key = 'everest_forms[form_fields][' + field_id + '][signature_image]';
@@ -278,6 +278,8 @@ jQuery( function ( $ ) {
 							}
 						}
 						error_message = null;
+					} else if ( $( this ).is( '.evf-field-file-upload' ) ) {
+						key = 'everest_forms_' + form_id + '_' + field_id;
 					}
 
 					/**
