@@ -193,6 +193,43 @@
 				}
 			} );
 
+			// Search fields input.
+			$builder.on( 'keyup', '.everest-forms-search-fields', function() {
+				var searchTerm = $( this ).val().toLowerCase();
+
+				// Show/hide fields.
+				$( '.evf-registered-item' ).each( function() {
+					var $this       = $( this );
+						fieldSearch = searchTerm.includes( $this.data( 'field-type' ) ) ? $this.data( 'field-type' ) : $this.text().toLowerCase();
+
+					if ( fieldSearch.search( searchTerm ) > -1 ) {
+						$this.addClass( 'evf-searched-item' );
+						$this.show();
+					} else {
+						$this.removeClass( 'evf-searched-item' );
+						$this.hide();
+					}
+				});
+
+				// Show/hide field group.
+				$( '.everest-forms-add-fields-group' ).each( function() {
+					var count = $( this ).find( '.evf-registered-item.evf-searched-item' ).length;
+
+					if ( 0 >= count ) {
+						$( this ).hide();
+					} else {
+						$( this ).show();
+					}
+				});
+
+				// Show/hide fields not found indicator.
+				if ( $( '.evf-registered-item.evf-searched-item' ).length ) {
+					$( '.everest-forms-fields-not-found' ).addClass( 'hidden' );
+				} else {
+					$( '.everest-forms-fields-not-found' ).removeClass( 'hidden' );
+				}
+			});
+
 			// Action available for each binding.
 			$( document ).trigger( 'everest_forms_ready' );
 		},

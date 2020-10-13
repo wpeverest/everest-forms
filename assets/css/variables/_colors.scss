@@ -27,10 +27,16 @@ $color-white:					#fff;
 
 
 $body-text:						$color_gray-base;
+$muted-text: 					$color_gray-light;
 
 // Border variables
-$border-width:				1px;
+$border-width:					1px;
 $border-color: 					$color_gray-lighten;
+
+// Input variables
+$input-border-color:            $border-color;
+$input-border-focus-color:      $everestforms;
+
 /**
  * Font Size Variables
  */

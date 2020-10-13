@@ -64,6 +64,19 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		</div>
 		<div class="everest-forms-tab-content">
 			<div class="everest-forms-add-fields">
+				<div class="everest-forms-input-group everest-forms-search-input evf-mb-3">
+					<input id="everest-forms-search-fields" class="everest-forms-input-control everest-forms-search-fields" type="text" placeholder="<?php esc_attr_e( 'Search fields&hellip;', 'everest-forms' ); ?>" />
+					<div class="everest-forms-input-group__append">
+						<div class="everest-forms-input-group__text">
+							<svg xmlns="http://www.w3.org/2000/svg" height="20px" width="20px" viewBox="0 0 24 24" fill="#a1a4b9"><path d="M21.71,20.29,18,16.61A9,9,0,1,0,16.61,18l3.68,3.68a1,1,0,0,0,1.42,0A1,1,0,0,0,21.71,20.29ZM11,18a7,7,0,1,1,7-7A7,7,0,0,1,11,18Z"/></svg>
+						</div>
+					</div>
+				</div>
+				<div class="everest-forms-fields-not-found hidden">
+					<img src="<?php echo esc_attr( plugin_dir_url( EVF_PLUGIN_FILE ) . 'assets/images/fields-not-found.png' ); ?>" />
+					<h3 class="everest-forms-fields-not-found__title"><?php esc_html_e( 'Oops!', 'everest-forms' ); ?></h3>
+					<span><?php esc_html_e( 'There is not such field that you are searching for.', 'everest-forms' ); ?></span>
+				</div>
 				<?php do_action( 'everest_forms_builder_fields', $this->form ); ?>
 			</div>
 			<div class="everest-forms-field-options">
