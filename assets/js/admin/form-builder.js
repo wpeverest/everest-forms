@@ -200,11 +200,13 @@
 				// Show/hide fields.
 				$( '.evf-registered-item' ).each( function() {
 					var $this       = $( this );
-						field_label = $this.text().toLowerCase(),
 						field_type  = $this.data( 'field-type' ),
-						is_matched  = field_type.search( searchTerm ) > -1 || field_label.search( searchTerm ) > -1;
+						field_label = $this.text().toLowerCase();
 
-					if ( is_matched ) {
+					if (
+						field_type.search( searchTerm ) > -1
+						|| field_label.search( searchTerm ) > -1
+					) {
 						$this.addClass( 'evf-searched-item' );
 						$this.show();
 					} else {
