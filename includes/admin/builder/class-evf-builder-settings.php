@@ -286,6 +286,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		);
 		do_action( 'everest_forms_inline_submit_settings', $this, 'submit', 'connection_1' );
 		echo '</div>';
+		do_action( 'everest_forms_inline_integrations_settings', $this->form_data, $settings );
 		everest_forms_panel_field(
 			'checkbox',
 			'settings',
