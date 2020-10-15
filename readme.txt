@@ -155,6 +155,10 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
+= 1.7.2 - xx-10-2020 =
+* Enhancement - Add search fields on builder page.
+* Fix - Message for the required file upload field.
+
 = 1.7.1 - 14-09-2020 =
 * Enhancement - Add supports for email Templates Addon.
 * Enhancement - Add supports Google Sheets integration Addon.

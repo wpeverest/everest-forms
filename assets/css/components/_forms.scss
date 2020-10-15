@@ -1,0 +1,64 @@
+// Global naming class `everest-forms-input-control` to control all typable input types.
+.everest-forms-input-control {
+	border: 1px solid $input-border-color;
+
+	&:focus {
+		border-color: $input-border-focus-color;
+	}
+}
+
+// Input group
+.everest-forms-input-group {
+	$self: &;
+	position: relative;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: stretch;
+	width: 100%;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+
+	> .everest-forms-input-group__append {
+		> #{$self}__text {
+			.input-group-text {
+				border-top-left-radius: 0;
+				border-bottom-left-radius: 0;
+			}
+		}
+	}
+
+	input,
+	.everest-forms-input-control {
+		flex: 1;
+		width: 1%;
+	}
+
+	&__prepend,
+	&__append {
+		display: flex;
+	}
+
+	&__prepend {
+		margin-right: -1px;
+	}
+
+	&__append {
+		margin-left: -1px;
+	}
+
+	&__text {
+		display: flex;
+		align-items: center;
+		padding: 3px 8px;
+		margin-bottom: 0;
+		font-size: 1rem;
+		font-weight: 400;
+		line-height: 1.5;
+		color: $muted-text;
+		text-align: center;
+		white-space: nowrap;
+		background-color: #e9ecef;
+		border: 1px solid $input-border-color;
+		border-radius: .4rem;
+	}
+}
