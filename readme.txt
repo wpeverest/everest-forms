@@ -156,10 +156,11 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 == Changelog ==
 
 = 1.7.2 - 16-10-2020 =
-* Enhancement - Add supports for Campaign Monitor Addon.
 * Enhancement - Add search fields on builder page.
+* Enhancement - Add supports for Campaign Monitor Addon.
 * Enhancement - Add Plan name instead of PRO label on form templates.
 * Fix - Message for the required file upload field.
+* Tweak - Improve Jconfirm content for new lines with some css.
 
 = 1.7.1 - 14-09-2020 =
 * Enhancement - Add supports for email Templates Addon.
