@@ -9,7 +9,7 @@ jQuery( function( $ ) {
 			$( document ).ready( function() {
 				var formTuple = $( v ),
 					btn = formTuple.find( '.evf-submit' ),
-					stripeForms = formTuple.find( "[data-gateway*='stripe']:visible" )
+					stripeForms = formTuple.find( "[data-gateway*='stripe']" );
 
 				// If it's an ajax form containing a stripe gateway, donot latch into the button.
 				if ( stripeForms.length > 0 ) {
