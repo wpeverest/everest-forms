@@ -155,6 +155,9 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
+= 1.7.3 - xx-11-2020 =
+* Fix - AJAX submission conflict with stripe addon in multi-part form.
+
 = 1.7.2 - 16-10-2020 =
 * Enhancement - Add search fields on builder page.
 * Enhancement - Add supports for Campaign Monitor Addon.
