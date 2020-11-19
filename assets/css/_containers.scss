@@ -6,14 +6,14 @@
 	// Single container class with breakpoint max-widths
 	.evf-container,
 	// 100% wide container at all breakpoints
-	.evf-container-full {
+	.evf-container-fluid {
 		@include create-container();
 	}
 
 	// Responsive containers that are 100% wide until a breakpoint
 	@each $breakpoint, $container-max-width in $container-max-widths {
 		.evf-container-#{$breakpoint} {
-			@extend .evf-container-full;
+			@extend .evf-container-fluid;
 		}
 
 		@include media-breakpoint-up($breakpoint, $grid-breakpoints) {
