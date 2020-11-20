@@ -19,12 +19,12 @@
     "git:update-hooks": "node ./node_modules/husky/husky.js install"
   },
   "devDependencies": {
-    "@babel/core": "7.12.3",
+    "@babel/core": "7.12.7",
     "@wordpress/babel-preset-default": "4.19.0",
     "@wordpress/browserslist-config": "2.7.0",
     "autoprefixer": "9.8.6",
     "babel-eslint": "10.1.0",
-    "babel-loader": "8.1.0",
+    "babel-loader": "8.2.1",
     "babel-plugin-transform-react-jsx": "6.24.1",
     "babel-preset-env": "1.7.0",
     "cross-env": "7.0.2",
