@@ -1113,10 +1113,6 @@ body.everest-forms-builder {
 		box-sizing: border-box;
 	}
 
-	span {
-		display: inline-block;
-	}
-
 	.everest-forms-loader-overlay {
 		background: transparentize($color_gray-dark, 0.25);
 		position: fixed;
