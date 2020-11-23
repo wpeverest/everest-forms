@@ -584,7 +584,6 @@
 		background-color: $blue;
 		color: $color-white;
 		border-radius: 5px;
-		@include clearfix();
 
 		&::before {
 			font-family: dashicons;
