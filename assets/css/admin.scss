@@ -10,7 +10,6 @@
 @import 'mixins/mixins';
 @import 'fonts';
 @import 'animation';
-@import 'clearings';
 @import 'confirm';
 
 // Components
@@ -578,10 +577,6 @@ body.everest-forms-builder {
 .everest-forms_page_evf-entries {
 	select {
 		max-width: inherit;
-	}
-
-	.clearfix {
-		height: auto;
 	}
 
 	// Toggle switch.
@@ -2438,12 +2433,8 @@ body.everest-forms-builder {
 				.everest-forms-field-option-address {
 					.default,
 					.placeholder {
-						width: 44%;
-						float: left;
-						margin-right: 2%;
-
 						input {
-							width: 99%;
+							width: 100%;
 						}
 
 						label {

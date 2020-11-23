@@ -35,7 +35,7 @@ $preview_link = add_query_arg(
 		<input type="hidden" name="form_enabled" value="<?php echo absint( $form_data['form_enabled'] ); ?>">
 		<input type="hidden" value="<?php echo absint( $form_data['form_field_id'] ); ?>" name="form_field_id" id="everest-forms-field-id">
 
-		<div class="everest-forms-nav-wrapper clearfix">
+		<div class="everest-forms-nav-wrapper">
 			<nav class="nav-tab-wrapper evf-nav-tab-wrapper">
 				<?php
 				foreach ( $tabs as $slug => $tab ) { // phpcs:ignore WordPress.WP.GlobalVariablesOverride
