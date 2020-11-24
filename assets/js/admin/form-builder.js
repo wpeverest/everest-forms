@@ -854,8 +854,8 @@
 			$builder.on( 'input', '.everest-forms-field-option-address input.placeholder', function(e) {
 				var $this    = $(this),
 					value    = $this.val(),
-					id       = $this.parent().parent().data( 'field-id' ),
-					subfield = $this.parent().parent().data( 'subfield' );
+					id       = $this.parent().closest('.everest-forms-field-option-row').data( 'field-id' ),
+					subfield = $this.parent().closest('.everest-forms-field-option-row').data( 'subfield' );
 				$( '#everest-forms-field-' + id ).find( '.everest-forms-' + subfield + ' input' ).attr( 'placeholder', value );
 			});
 
