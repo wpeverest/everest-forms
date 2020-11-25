@@ -366,6 +366,22 @@ img.help_tip {
 /**
  * Core Styling
  */
+.everest-forms_page_evf-builder {
+	.evf-shortcode-field {
+		display: flex;
+
+		.widefat {
+			width: 100%;
+		}
+
+		.evf-copy-shortcode {
+			margin-left: 4px;
+			padding: 0px 4px;
+			line-height: 1;
+		}
+	}
+}
+
 body.everest-forms-builder {
 	&.everest-forms_page_evf-builder {
 		#wpcontent {

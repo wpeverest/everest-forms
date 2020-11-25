@@ -43,10 +43,19 @@
 				}
 		 	});
 
-		 	$( document.body )
-				.on( 'click', '#copy-shortcode', this.copyShortcode )
-				.on( 'aftercopy', '#copy-shortcode', this.copySuccess )
-				.on( 'aftercopyfailure', '#copy-shortcode', this.copyFail );
+		 	$(document.body).find('#copy-shortcode' )
+				.on( 'click', this.copyShortcode )
+				.on( 'aftercopy', this.copySuccess )
+				.on( 'aftercopyfailure', this.copyFail );
+
+			// Copy shortcode from list table.
+			$(document.body).find('.evf-copy-shortcode').each( function() {
+				var $el = $( this );
+
+				$el.on( 'click', EVFPanelBuilder.copyShortcode )
+					.on( 'aftercopy', EVFPanelBuilder.copySuccess )
+					.on( 'aftercopyfailure', EVFPanelBuilder.copyFail );
+			});
 
 			// Document ready.
 			$( document ).ready( EVFPanelBuilder.ready );
@@ -89,7 +98,7 @@
 		 */
 		copyShortcode: function( evt ) {
 			evfClearClipboard();
-			evfSetClipboard( $( '.evf-shortcode-field' ).find( 'input' ).val(), $( this ) );
+			evfSetClipboard( $(this).closest( '.evf-shortcode-field' ).find( 'input' ).val(), $( this ) );
 			evt.preventDefault();
 		},
 
@@ -97,7 +106,7 @@
 		 * Display a "Copied!" tip when success copying.
 		 */
 		copySuccess: function() {
-			$( '#copy-shortcode' ).tooltipster( 'content', $( this ).attr( 'data-copied' ) ).trigger( 'mouseenter' ).on( 'mouseleave', function() {
+			$( this ).tooltipster( 'content', $( this ).attr( 'data-copied' ) ).trigger( 'mouseenter' ).on( 'mouseleave', function() {
 				var $this = $( this );
 
 				setTimeout( function() {
@@ -110,7 +119,7 @@
 		 * Displays the copy error message when failure copying.
 		 */
 		copyFail: function() {
-			$( '.evf-shortcode-field' ).find( 'input' ).focus().select();
+			$(this).closest( '.evf-shortcode-field' ).find( 'input' ).focus().select();
 		},
 
 		/**
