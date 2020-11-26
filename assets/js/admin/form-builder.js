@@ -43,16 +43,16 @@
 				}
 		 	});
 
-		 	$(document.body).find('#copy-shortcode' )
+			// Copy shortcode from the builder.
+		 	$( document.body ).find('#copy-shortcode' )
 				.on( 'click', this.copyShortcode )
 				.on( 'aftercopy', this.copySuccess )
 				.on( 'aftercopyfailure', this.copyFail );
 
-			// Copy shortcode from list table.
-			$(document.body).find('.evf-copy-shortcode').each( function() {
-				var $el = $( this );
-
-				$el.on( 'click', EVFPanelBuilder.copyShortcode )
+			// Copy shortcode from form list table.
+			$( document.body ).find('.evf-copy-shortcode').each( function() {
+				$( this )
+					.on( 'click', EVFPanelBuilder.copyShortcode )
 					.on( 'aftercopy', EVFPanelBuilder.copySuccess )
 					.on( 'aftercopyfailure', EVFPanelBuilder.copyFail );
 			});
@@ -98,7 +98,7 @@
 		 */
 		copyShortcode: function( evt ) {
 			evfClearClipboard();
-			evfSetClipboard( $(this).closest( '.evf-shortcode-field' ).find( 'input' ).val(), $( this ) );
+			evfSetClipboard( $( this ).closest( '.evf-shortcode-field' ).find( 'input' ).val(), $( this ) );
 			evt.preventDefault();
 		},
 
@@ -119,7 +119,7 @@
 		 * Displays the copy error message when failure copying.
 		 */
 		copyFail: function() {
-			$(this).closest( '.evf-shortcode-field' ).find( 'input' ).focus().select();
+			$( this ).closest( '.evf-shortcode-field' ).find( 'input' ).focus().select();
 		},
 
 		/**
