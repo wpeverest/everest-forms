@@ -162,7 +162,6 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 	 * Return shortcode column.
 	 *
 	 * @param object $posts Form object.
-	 * @return string Shortcode column markup.
 	 */
 	public function column_shortcode( $posts ) {
 		?>
