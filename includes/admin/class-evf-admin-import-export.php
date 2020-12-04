@@ -57,7 +57,7 @@ class EVF_Admin_Import_Export {
 		// Export form styles if found.
 		$form_styles = get_option( 'everest_forms_styles', array() );
 		if ( ! empty( $form_styles[ $form_id ] ) ) {
-			$export_data['form_styles'] = ( $form_styles[ $form_id ] );
+			$export_data['form_styles'] = wp_json_encode( $form_styles[ $form_id ] );
 		}
 
 		if ( ob_get_contents() ) {
@@ -121,14 +121,17 @@ class EVF_Admin_Import_Export {
 						wp_update_post( $form );
 
 						// Import form styles if present.
+						$style_needed = false;
 						if ( ! empty( $form_data->form_styles ) ) {
+							$style_needed            = true;
 							$form_styles             = get_option( 'everest_forms_styles', array() );
 							$form_styles[ $post_id ] = evf_decode( $form_data->form_styles );
 
-							error_log( print_r( $form_styles, true ) );
-
-							// update_option( 'everest_forms_styles', $form_styles );
+							// Update forms styles.
+							update_option( 'everest_forms_styles', $form_styles );
 						}
+
+						do_action( 'everest_forms_import_form', $post_id, $form, array(), $style_needed );
 
 						// Check for any error while inserting.
 						if ( is_wp_error( $post_id ) ) {
