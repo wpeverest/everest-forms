@@ -298,6 +298,17 @@ class EVF_Form_Handler {
 		$form    = apply_filters( 'everest_forms_save_form_args', $form, $data, $args );
 		$form_id = wp_update_post( $form );
 
+		// Import form styles if present.
+		$style_needed = false;
+		if ( ! empty( $data['form_styles'] ) ) {
+			$style_needed            = true;
+			$form_styles             = get_option( 'everest_forms_styles', array() );
+			$form_styles[ $form_id ] = evf_decode( $data['form_styles'] );
+
+			// Update forms styles.
+			update_option( 'everest_forms_styles', $form_styles );
+		}
+
 		// Restore removed content filters.
 		if ( $has_kses ) {
 			kses_init_filters();
@@ -306,7 +317,7 @@ class EVF_Form_Handler {
 			wp_init_targeted_link_rel_filters();
 		}
 
-		do_action( 'everest_forms_save_form', $form_id, $form );
+		do_action( 'everest_forms_save_form', $form_id, $form, array(), $style_needed );
 
 		return $form_id;
 	}
@@ -344,6 +355,12 @@ class EVF_Form_Handler {
 
 			// Get the form data.
 			$new_form_data = evf_decode( $form->post_content );
+
+			// Get the form styles.
+			$form_styles = get_option( 'everest_forms_styles', array() );
+			if ( ! empty( $form_styles[ $id ] ) ) {
+				$new_form_data['form_styles'] = wp_json_encode( $form_styles[ $id ] );
+			}
 
 			// Remove form ID from title if present.
 			$new_form_data['settings']['form_title'] = str_replace( '(ID #' . absint( $id ) . ')', '', $new_form_data['settings']['form_title'] );
