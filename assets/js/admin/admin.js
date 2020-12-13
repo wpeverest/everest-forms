@@ -9,7 +9,7 @@
 		var nav_wrapper = $( 'nav.evf-nav-tab-wrapper' );
 
 		if ( nav_wrapper.length >= 1 ) {
-			window.evf_nav_ps = new PerfectScrollbar( nav_wrapper.selector, {
+			window.evf_nav_ps = new PerfectScrollbar( 'nav.evf-nav-tab-wrapper', {
 				suppressScrollY : true,
 				useBothWheelAxes: true,
 				wheelPropagation: true

@@ -164,17 +164,17 @@
 					evf_panel = $( '.everest-forms-panel' );
 
 				if ( tab_content.length >= 1 ) {
-					window.evf_tab_scroller = new PerfectScrollbar( tab_content.selector, {
+					window.evf_tab_scroller = new PerfectScrollbar( '.everest-forms-tab-content', {
 						suppressScrollX: true,
 					});
 				}
 
-				evf_panel.each(function(){
+				evf_panel.each( function(){
 					var section_panel = $(this);
-					var panel_id = section_panel.attr('id');
+					var panel_id = section_panel.attr( 'id' );
 
-					if (section_panel.find('.everest-forms-panel-sidebar').length >= 1) {
-						window.evf_setting_scroller = new PerfectScrollbar( $('#' + panel_id + ' .everest-forms-panel-sidebar ').selector );
+					if ( section_panel.find( '.everest-forms-panel-sidebar' ).length >= 1 ) {
+						window.evf_setting_scroller = new PerfectScrollbar( '#' + panel_id + ' .everest-forms-panel-sidebar' );
 					}
 				});
 			}
