@@ -157,6 +157,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 = 1.7.2.1 - 13-12-2020 =
 * Enhancement - Add copy shortcode button in form list table.
+* Fix - Form styles not being cloned on import and duplication.
 * Fix - AJAX submission conflict with stripe addon in multi-part form.
 * Fix - PerfectScrollbar jQuery selector issue in the form builder page.
 
