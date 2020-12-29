@@ -4,7 +4,7 @@ Tags: contact form, forms, form builder, contact, custom form
 Requires at least: 5.0
 Tested up to: 5.6
 Requires PHP: 5.4
-Stable tag: 1.7.2.1
+Stable tag: 1.7.2.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -154,6 +154,9 @@ Yes, we do. Check out this [Getting Started Videos](https://docs.wpeverest.com/d
 Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/everest-forms/) :)
 
 == Changelog ==
+
+= 1.7.2.2 - 29-12-2020 =
+* Fix - Form builder not loading in Firefox.
 
 = 1.7.2.1 - 13-12-2020 =
 * Enhancement - Add copy shortcode button in form list table.

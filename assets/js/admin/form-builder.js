@@ -128,7 +128,6 @@
 		 * @since 1.0.0
 		 */
 		load: function () {
-			debugger;
 			$( '.everest-forms-overlay' ).fadeOut();
 		},
 
@@ -2085,7 +2084,6 @@
 	};
 
 	EVFPanelBuilder.init();
-
 })(jQuery, window.evf_data);
 
 jQuery(function () {
