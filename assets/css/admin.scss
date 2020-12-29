@@ -377,7 +377,7 @@ img.help_tip {
 
 		.evf-copy-shortcode {
 			margin-left: 4px;
-			padding: 0px 4px;
+			padding: 0 4px;
 			line-height: 1;
 		}
 	}
@@ -1453,6 +1453,7 @@ body.everest-forms-builder {
 				}
 
 				.jconfirm-content {
+					white-space: initial !important; // to avoid spacing issue on notice while installing addons
 					text-align: left;
 					margin-bottom: 0;
 
