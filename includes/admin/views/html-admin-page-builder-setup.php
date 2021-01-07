@@ -73,12 +73,12 @@ defined( 'ABSPATH' ) || exit;
 					// Upgrade checks.
 					if ( empty( $license_plan ) && ! in_array( 'free', $template->plan, true ) ) {
 						$upgrade_class = 'upgrade-modal';
-					} elseif ( ! in_array( $license_plan, $template->plan, true ) && ! in_array( 'free', $template->plan, true ) ) {
+					} elseif ( ! in_array( str_replace( '-lifetime', '', $license_plan ), $template->plan, true ) && ! in_array( 'free', $template->plan, true ) ) {
 						$upgrade_class = 'upgrade-modal';
 					}
 
-						/* translators: %s: Template title */
-						$template_name = sprintf( esc_attr_x( '%s template', 'Template name', 'everest-forms' ), esc_attr( $template->title ) );
+					/* translators: %s: Template title */
+					$template_name = sprintf( esc_attr_x( '%s template', 'Template name', 'everest-forms' ), esc_attr( $template->title ) );
 					?>
 					<div class="everest-forms-template-wrap evf-template"  id="everest-forms-template-<?php echo esc_attr( $template->slug ); ?>">
 						<figure class="everest-forms-screenshot <?php echo esc_attr( $click_class ); ?>" data-template-name-raw="<?php echo esc_attr( $template->title ); ?>" data-template="<?php echo esc_attr( $template->slug ); ?>" data-template-name="<?php echo esc_attr( $template_name ); ?>">
