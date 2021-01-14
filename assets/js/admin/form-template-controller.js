@@ -107,7 +107,18 @@ jQuery( function( $ ) {
 			}
 
 			if ( ! template.plan.includes( 'free' ) ) {
-				html +=	'<span class="everest-forms-badge everest-forms-badge-success">' + evf_templates.i18n_pro_feature + '</span>';
+				var $badge_text = '';
+					if ( template.plan.includes( 'personal' ) ) {
+						$badge_text = 'Personal';
+					} else if ( template.plan.includes( 'plus' ) ) {
+						$badge_text = 'Plus';
+					} else if ( template.plan.includes( 'professional' ) ) {
+						$badge_text = 'Professional';
+					} else {
+						$badge_text = 'Agency';
+					}
+
+				html +=	'<span class="everest-forms-badge everest-forms-badge--success">' + $badge_text + '</span>';
 			}
 
 			html += '</figure><div class="everest-forms-form-id-container">';
