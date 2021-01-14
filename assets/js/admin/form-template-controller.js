@@ -84,8 +84,7 @@ jQuery( function( $ ) {
 		template_snippet: function( template, plan, data_plan ) {
 			var html      = '',
 				modal     = 'evf-template-select';
-				data_plan = ( '' === data_plan ) ? 'free' : data_plan;
-
+				data_plan = ( '' === data_plan ) ? 'free' : data_plan.replace('-lifetime','');
 			if ( ! template.plan.includes( 'free' ) && ! template.plan.includes( data_plan ) ) {
 				modal = 'upgrade-modal';
 			}
