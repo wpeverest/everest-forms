@@ -5178,7 +5178,6 @@ img.ui-datepicker-trigger {
  * Select2 elements.
  */
 .select2-container {
-	width: 100%;
 
 	.select2-selection--multiple {
 		.select2-selection__rendered {
@@ -5256,9 +5255,12 @@ img.ui-datepicker-trigger {
 		bottom: -1px;
 	}
 }
-
+.select2-container--open{
+	.select2-dropdown--below{
+		margin-top: -15px;
+	}
+}
 .select2-container {
-
 	@media only screen and (max-width: 782px) {
 		font-size: 16px;
 	}
@@ -5266,7 +5268,9 @@ img.ui-datepicker-trigger {
 	&:focus {
 		outline: none;
 	}
-
+	span.selection{
+		display: block;
+	}
 	.select2-selection__rendered.ui-sortable li {
 		cursor: move;
 	}
