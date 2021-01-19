@@ -218,6 +218,9 @@ class EVF_Admin_Assets {
 			wp_enqueue_script( 'evf-upgrade' );
 			wp_enqueue_script( 'evf-form-builder' );
 
+			// De-register scripts.
+			wp_dequeue_script( 'colorpick' );
+
 			// EverestForms builder setup page.
 			if ( isset( $_GET['create-form'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 				wp_register_script( 'evf-setup', evf()->plugin_url() . '/assets/js/admin/evf-setup' . $suffix . '.js', array( 'jquery', 'everest-forms-extensions', 'evf-template-controller' ), EVF_VERSION, true );
