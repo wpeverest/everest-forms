@@ -41,7 +41,7 @@ final class EverestForms {
 	/**
 	 * The form data handler instance.
 	 *
-	 * @var object everest_forms_Form_Handler
+	 * @var EVF_Form_Handler
 	 */
 	public $form;
 
