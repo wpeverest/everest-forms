@@ -4,7 +4,7 @@ Tags: contact form, forms, form builder, contact, custom form
 Requires at least: 5.0
 Tested up to: 5.6
 Requires PHP: 5.4
-Stable tag: 1.7.2.2
+Stable tag: 1.7.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -154,6 +154,14 @@ Yes, we do. Check out this [Getting Started Videos](https://docs.wpeverest.com/d
 Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/everest-forms/) :)
 
 == Changelog ==
+
+= 1.7.3 - 26-01-2021 =
+* Fix - Form Templates plan name not displayed properly on navigation tab switch.
+* Fix - On AJAX form save, don't compile form stylesheet if it was not previously generated.
+* Fix - Lifetime plan displaying upgrade plan and not allowing to import form from templates.
+* Fix - Image Projector plugin conflicting with multi-part add-on with `colorpick` script handle.
+* Tweak - Spacing issue on multi select in admin pages.
+* Tweak - Add support for User Display in smart tag filter list.
 
 = 1.7.2.2 - 29-12-2020 =
 * Fix - Form builder not loading in Firefox.
