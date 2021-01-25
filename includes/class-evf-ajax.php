@@ -278,7 +278,7 @@ class EVF_AJAX {
 
 		$form_id = evf()->form->update( $data['id'], $data );
 
-		do_action( 'everest_forms_save_form', $form_id, $data );
+		do_action( 'everest_forms_save_form', $form_id, $data, array(), true );
 
 		if ( ! $form_id ) {
 			wp_send_json_error(
