@@ -156,6 +156,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 == Changelog ==
 
 = 1.7.3 - 26-01-2021 =
+* Fix - Uppercase meta key in form field display empty entry list table column.
 * Fix - Form Templates plan name not displayed properly on navigation tab switch.
 * Fix - On AJAX form save, don't compile form stylesheet if it was not previously generated.
 * Fix - Lifetime plan displaying upgrade plan and not allowing to import form from templates.
