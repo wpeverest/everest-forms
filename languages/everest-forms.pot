@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Everest Forms plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Everest Forms 1.7.2.2\n"
+"Project-Id-Version: Everest Forms 1.7.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/everest-forms\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-01-14T11:05:07+00:00\n"
+"POT-Creation-Date: 2021-01-26T12:03:03+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: everest-forms\n"
@@ -508,7 +508,7 @@ msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:1371
 #: includes/class-evf-emails.php:442
-#: includes/class-evf-emails.php:547
+#: includes/class-evf-emails.php:551
 msgid "(empty)"
 msgstr ""
 
@@ -1124,40 +1124,40 @@ msgstr ""
 msgid "Please select a form which you want to export."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:232
+#: includes/admin/class-evf-admin-assets.php:235
 msgid "Give it a name."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:233
+#: includes/admin/class-evf-admin-assets.php:236
 msgid "You must provide a Form name"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:235
+#: includes/admin/class-evf-admin-assets.php:238
 #: includes/admin/views/html-admin-page-addons.php:133
 msgid "Upgrade Plan"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:236
+#: includes/admin/class-evf-admin-assets.php:239
 msgid "This template requires premium addons. Please upgrade to the Premium plan to unlock all these awesome Templates."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:237
+#: includes/admin/class-evf-admin-assets.php:240
 msgid "is a Premium Template"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:238
+#: includes/admin/class-evf-admin-assets.php:241
 msgid "Continue"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:239
+#: includes/admin/class-evf-admin-assets.php:242
 msgid "Untitled Form"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:240
+#: includes/admin/class-evf-admin-assets.php:243
 msgid "Uplift your form experience to the next level."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:254
+#: includes/admin/class-evf-admin-assets.php:257
 msgid "Are you sure you want to delete this log?"
 msgstr ""
 
@@ -2219,53 +2219,53 @@ msgstr ""
 msgid "Please add Meta key for fields: %s"
 msgstr ""
 
-#: includes/class-evf-ajax.php:286
+#: includes/class-evf-ajax.php:287
 msgid "Form not found"
 msgstr ""
 
-#: includes/class-evf-ajax.php:287
+#: includes/class-evf-ajax.php:288
 msgid "An error occurred while saving the form."
 msgstr ""
 
-#: includes/class-evf-ajax.php:326
+#: includes/class-evf-ajax.php:327
 msgid "No Addon specified."
 msgstr ""
 
-#: includes/class-evf-ajax.php:337
+#: includes/class-evf-ajax.php:338
 msgid "Addon can not be activate. Please try again."
 msgstr ""
 
-#: includes/class-evf-ajax.php:358
+#: includes/class-evf-ajax.php:359
 msgid "No Plan specified."
 msgstr ""
 
-#: includes/class-evf-ajax.php:379
+#: includes/class-evf-ajax.php:380
 msgid "This form template requires the following addons."
 msgstr ""
 
-#: includes/class-evf-ajax.php:430
+#: includes/class-evf-ajax.php:431
 msgid "No plugin specified."
 msgstr ""
 
-#: includes/class-evf-ajax.php:443
+#: includes/class-evf-ajax.php:444
 msgid "Sorry, you are not allowed to install plugins on this site."
 msgstr ""
 
-#: includes/class-evf-ajax.php:507
+#: includes/class-evf-ajax.php:508
 msgid "Unable to connect to the filesystem. Please confirm your credentials."
 msgstr ""
 
-#: includes/class-evf-ajax.php:551
-#: includes/class-evf-ajax.php:591
+#: includes/class-evf-ajax.php:552
+#: includes/class-evf-ajax.php:592
 msgid "Missing data"
 msgstr ""
 
-#: includes/class-evf-ajax.php:607
+#: includes/class-evf-ajax.php:608
 msgid "Connection missing"
 msgstr ""
 
 #. translators: %1$s - deactivation reason page; %2$d - deactivation url.
-#: includes/class-evf-ajax.php:636
+#: includes/class-evf-ajax.php:637
 msgid "Before we deactivate Everest Forms, would you care to <a href=\"%1$s\" target=\"_blank\">let us know why</a> so we can improve it for you? <a href=\"%2$s\">No, deactivate now</a>."
 msgstr ""
 
@@ -2279,12 +2279,12 @@ msgid "You cannot send emails with EVF_Emails until init/admin_init has been rea
 msgstr ""
 
 #. translators: %d - field ID.
-#: includes/class-evf-emails.php:521
-#: includes/class-evf-emails.php:563
+#: includes/class-evf-emails.php:525
+#: includes/class-evf-emails.php:567
 msgid "Field ID #%d"
 msgstr ""
 
-#: includes/class-evf-emails.php:575
+#: includes/class-evf-emails.php:579
 msgid "An empty form was submitted."
 msgstr ""
 
@@ -2691,10 +2691,14 @@ msgid "User Name"
 msgstr ""
 
 #: includes/class-evf-smart-tags.php:41
-msgid "User Email"
+msgid "User Display Name"
 msgstr ""
 
 #: includes/class-evf-smart-tags.php:42
+msgid "User Email"
+msgstr ""
+
+#: includes/class-evf-smart-tags.php:43
 msgid "Referrer URL"
 msgstr ""
 
