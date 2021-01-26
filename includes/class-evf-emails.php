@@ -443,11 +443,15 @@ class EVF_Emails {
 
 			$field_iterator = 1;
 			foreach ( $this->fields as $meta_id => $field ) {
-
 				if (
 					! apply_filters( 'everest_forms_email_display_empty_fields', false ) &&
 					( empty( $field['value'] ) && '0' !== $field['value'] )
 				) {
+					continue;
+				}
+
+				// If empty value is provided for select field, don't send email.
+				if ( 'select' === $field['type'] && empty( $field['value'][0] ) ) {
 					continue;
 				}
 
