@@ -65,6 +65,15 @@ $trash_link = wp_nonce_url(
 										}
 
 										$meta_value = is_serialized( $meta_value ) ? $meta_value : wp_strip_all_tags( $meta_value );
+
+										// Check for empty serialized value.
+										if ( is_serialized( $meta_value ) ) {
+											$raw_meta_val = unserialize( $meta_value ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
+											if ( empty( $raw_meta_val[0] ) ) {
+												$meta_value = '';
+											}
+										}
+
 										if ( evf_is_json( $meta_value ) ) {
 											$meta_value = json_decode( $meta_value, true );
 											$meta_value = $meta_value['value'];
