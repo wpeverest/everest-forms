@@ -975,6 +975,7 @@ body.everest-forms-builder {
 			}
 		}
 
+		.everest-forms-tools,
 		.everest-forms-settings {
 			padding-left: 20px;
 			padding-right: 20px;
@@ -1027,11 +1028,6 @@ body.everest-forms-builder {
 					}
 				}
 			}
-		}
-		.everest-forms-import-form,
-		#message{
-			margin-left: 20px;
-			margin-right: 20px;
 		}
 	}
 }
@@ -5262,8 +5258,8 @@ img.ui-datepicker-trigger {
 		bottom: -1px;
 	}
 }
-.select2-container--open{
-	.select2-dropdown--below{
+.select2-container--open {
+	.select2-dropdown--below {
 		margin-top: -15px;
 	}
 }
@@ -5275,7 +5271,7 @@ img.ui-datepicker-trigger {
 	&:focus {
 		outline: none;
 	}
-	span.selection{
+	span.selection {
 		display: block;
 	}
 	.select2-selection__rendered.ui-sortable li {
