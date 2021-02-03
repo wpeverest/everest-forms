@@ -1460,10 +1460,30 @@ abstract class EVF_Form_Fields {
 				break;
 		}
 
-		if ( $echo ) {
-			echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		} else {
+		if ( ! $echo ) {
 			return $output;
+		}
+
+		if ( in_array( $option, array( 'basic-options', 'advanced-options' ), true ) ) {
+			if ( 'open' === $markup ) {
+				do_action( "everest_forms_field_options_before_{$option}", $field, $this );
+			}
+
+			if ( 'close' === $markup ) {
+				do_action( "everest_forms_field_options_bottom_{$option}", $field, $this );
+			}
+
+			echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+
+			if ( 'open' === $markup ) {
+				do_action( "everest_forms_field_options_top_{$option}", $field, $this );
+			}
+
+			if ( 'close' === $markup ) {
+				do_action( "everest_forms_field_options_after_{$option}", $field, $this );
+			}
+		} else {
+			echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
 	}
 
