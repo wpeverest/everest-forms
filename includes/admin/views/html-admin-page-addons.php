@@ -72,7 +72,7 @@ defined( 'ABSPATH' ) || exit;
 									</div>
 								</a>
 								<div class="plugin-card-bottom">
-									<?php if ( in_array( $license_plan, $addon->plan, true ) ) : ?>
+									<?php if ( in_array( str_replace( '-lifetime', '', $license_plan ), $addon->plan, true ) ) : ?>
 										<div class="status column-status">
 											<strong><?php esc_html_e( 'Status:', 'everest-forms' ); ?></strong>
 											<?php if ( is_plugin_active( $addon->slug . '/' . $addon->slug . '.php' ) ) : ?>

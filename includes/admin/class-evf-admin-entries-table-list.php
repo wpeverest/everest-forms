@@ -209,7 +209,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 */
 	public function column_form_field( $entry, $column_name ) {
 		$field_id = str_replace( 'evf_field_', '', $column_name );
-		$meta_key = isset( $this->form_data['form_fields'][ $field_id ]['meta-key'] ) ? $this->form_data['form_fields'][ $field_id ]['meta-key'] : $field_id;
+		$meta_key = isset( $this->form_data['form_fields'][ $field_id ]['meta-key'] ) ? strtolower( $this->form_data['form_fields'][ $field_id ]['meta-key'] ) : $field_id;
 
 		if ( ! empty( $entry->meta[ $meta_key ] ) ) { // phpcs:ignore WordPress.Security.EscapeOutput
 			$value = $entry->meta[ $meta_key ];

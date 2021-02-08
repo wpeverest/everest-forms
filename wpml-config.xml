@@ -10,5 +10,6 @@
 		<key name="everest_forms_phone_validation" />
 		<key name="everest_forms_fileextension_validation" />
 		<key name="everest_forms_filesize_validation" />
+		<key name="everest_forms_no_duplicates_validation" />
 	</admin-texts>
 </wpml-config>

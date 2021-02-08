@@ -276,9 +276,10 @@ class EVF_AJAX {
 			$data['form_fields'] = array_merge( array_intersect_key( array_flip( $structure ), $data['form_fields'] ), $data['form_fields'] );
 		}
 
-		$form_id = evf()->form->update( $data['id'], $data );
+		$form_id     = evf()->form->update( $data['id'], $data );
+		$form_styles = get_option( 'everest_forms_styles', array() );
 
-		do_action( 'everest_forms_save_form', $form_id, $data );
+		do_action( 'everest_forms_save_form', $form_id, $data, array(), ! empty( $form_styles[ $form_id ] ) );
 
 		if ( ! $form_id ) {
 			wp_send_json_error(
