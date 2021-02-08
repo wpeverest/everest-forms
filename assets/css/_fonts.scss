@@ -2,17 +2,18 @@
  * _fonts.scss
  * Custom EverestForms fonts.
  */
-  @font-face {
+@font-face {
 	font-family: 'EverestForms';
-	src:  url('../fonts/EverestForms.eot?br8sbm');
+	src: url('../fonts/EverestForms.eot?br8sbm');
 	src:  url('../fonts/EverestForms.eot?br8sbm#iefix') format('embedded-opentype'),
-	  url('../fonts/EverestForms.ttf?br8sbm') format('truetype'),
-	  url('../fonts/EverestForms.woff?br8sbm') format('woff'),
-	  url('../fonts/EverestForms.svg?br8sbm#EverestForms') format('svg');
+		url('../fonts/EverestForms.ttf?br8sbm') format('truetype'),
+		url('../fonts/EverestForms.woff?br8sbm') format('woff'),
+		url('../fonts/EverestForms.svg?br8sbm#EverestForms') format('svg');
 	font-weight: normal;
 	font-style: normal;
 	font-display: block;
-  }
+}
+
 /**
  * Icons
  * Icon size should be 24dp.
