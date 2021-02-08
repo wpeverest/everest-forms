@@ -953,6 +953,17 @@ body.everest-forms-builder {
 								content: '\e01e';
 							}
 						}
+							&.logs::before {
+							content: '\e02d';
+						}
+
+						&.import::before {
+							content: '\e02e';
+						}
+
+						&.export::before {
+							content: '\e02f';
+						}
 					}
 				}
 
