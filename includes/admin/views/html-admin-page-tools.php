@@ -23,29 +23,31 @@ $current_tab = ! empty( $_REQUEST['tab'] ) ? sanitize_title( wp_unslash( $_REQUE
 	<nav class="nav-tab-wrapper evf-nav-tab-wrapper">
 		<?php
 		foreach ( $tabs as $slug => $label ) {
-			echo '<a href="' . esc_html( admin_url( 'admin.php?page=evf-tools&tab=' . esc_attr( $slug ) ) ) . '" class="nav-tab ' . ( $current_tab === $slug ? 'nav-tab-active' : '' ) . '">' . esc_html( $label ) . '</a>';
+			echo '<a href="' . esc_html( admin_url( 'admin.php?page=evf-tools&tab=' . esc_attr( $slug ) ) ) . '" class="nav-tab ' . ( $current_tab === $slug ? 'nav-tab-active' : '' ) . '"><span class="evf-nav-icon ' . esc_attr( $slug ) . '"></span>' . esc_html( $label ) . '</a>';
 		}
 		?>
 	</nav>
-	<h1 class="screen-reader-text"><?php echo esc_html( $tabs[ $current_tab ] ); ?></h1>
-	<?php
-	switch ( $current_tab ) {
-		case 'logs':
-			EVF_Admin_Tools::status_logs();
-			break;
-		case 'import':
-			EVF_Admin_Tools::import();
-			break;
-		case 'export':
-			EVF_Admin_Tools::export();
-			break;
-		default:
-			if ( array_key_exists( $current_tab, $tabs ) && has_action( 'everest_forms_admin_status_content_' . $current_tab ) ) {
-				do_action( 'everest_forms_admin_status_content_' . $current_tab );
-			} else {
+	<div class="everest-forms-tools">
+		<h1 class="screen-reader-text"><?php echo esc_html( $tabs[ $current_tab ] ); ?></h1>
+		<?php
+		switch ( $current_tab ) {
+			case 'logs':
+				EVF_Admin_Tools::status_logs();
+				break;
+			case 'import':
 				EVF_Admin_Tools::import();
-			}
-			break;
-	}
-	?>
+				break;
+			case 'export':
+				EVF_Admin_Tools::export();
+				break;
+			default:
+				if ( array_key_exists( $current_tab, $tabs ) && has_action( 'everest_forms_admin_status_content_' . $current_tab ) ) {
+					do_action( 'everest_forms_admin_status_content_' . $current_tab );
+				} else {
+					EVF_Admin_Tools::import();
+				}
+				break;
+		}
+		?>
+	</div>
 </div>
