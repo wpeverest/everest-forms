@@ -26,7 +26,7 @@
 			clearTimeout( resizeTimer );
 			resizeTimer = setTimeout( function() {
 				window.evf_nav_ps.update();
-			}, 250 );
+			}, 400 );
 		}
 	});
 
