@@ -222,7 +222,7 @@
 	});
 
 	// Change span with file name when user selects a file.
-	$( '#everest-forms-import' ).change( function(e) {
+	$( '#everest-forms-import' ).on( 'change', function(e) {
 		var file = $( '#everest-forms-import' ).prop( 'files' )[0];
 
 		$( '#import-file-name' ).html( file.name );

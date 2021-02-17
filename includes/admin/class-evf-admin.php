@@ -191,7 +191,7 @@ class EVF_Admin {
 				);
 				evf_enqueue_js(
 					"
-					jQuery( 'a.evf-rating-link' ).click( function() {
+					jQuery( 'a.evf-rating-link' ).on( 'click', function() {
 						jQuery.post( '" . evf()->ajax_url() . "', { action: 'everest_forms_rated' } );
 						jQuery( this ).parent().text( jQuery( this ).data( 'rated' ) );
 					});
