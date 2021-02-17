@@ -1623,7 +1623,12 @@ body.everest-forms-builder {
 		}
 	}
 }
-
+#evf-dashboard-analytisc-body {
+	&::after,
+	&::before {
+		display: none;
+	}
+}
 /**
  * Form Builder
  **/
