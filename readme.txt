@@ -59,9 +59,9 @@ Check [documentation](http://docs.wpeverest.com/docs/everest-forms/)
 
 * [Style Customizer](https://wpeverest.com/wordpress-plugins/everest-forms/style-customizer/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) - Allows you to make form design changes like color, fonts, spacing, background, borders, alignments and much more without touching any code.
 
-* [MailChimp](https://wpeverest.com/wordpress-plugins/everest-forms/mailchimp/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) - Allows your users to subscribe to MailerLite through form submission via Everest Forms.
+* [MailChimp](https://wpeverest.com/wordpress-plugins/everest-forms/mailchimp/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) - Allows your users to subscribe to MailChimp through form submission via Everest Forms.
 
-* [MailerLite](https://wpeverest.com/wordpress-plugins/everest-forms/mailerlite/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) - Allows your users to subscribe to MailChimp through form submission via Everest Forms.
+* [MailerLite](https://wpeverest.com/wordpress-plugins/everest-forms/mailerlite/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) - Allows your users to subscribe to MailerLite through form submission via Everest Forms.
 
 * [ActiveCampaign](https://wpeverest.com/wordpress-plugins/everest-forms/activecampaign/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) - Allows your users to subscribe to ActiveCampaign through form submission via Everest Forms.
 
