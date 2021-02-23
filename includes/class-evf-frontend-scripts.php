@@ -167,7 +167,7 @@ class EVF_Frontend_Scripts {
 				'version' => '1.1.2',
 			),
 			'selectWoo'                     => array(
-				'src'     => self::get_asset_url( 'assets/js/selectWoo/selectWoo' . $suffix . '.js' ),
+				'src'     => self::get_asset_url( 'assets/js/selectWoo/selectWoo.full' . $suffix . '.js' ),
 				'deps'    => array( 'jquery' ),
 				'version' => '1.0.8',
 			),
