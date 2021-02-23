@@ -1623,6 +1623,24 @@ body.everest-forms-builder {
 		}
 	}
 }
+// Entries page
+#evf-dashboard-analytisc-body {
+	&::after,
+	&::before {
+		display: none;
+	}
+}
+p.search-box {
+	margin-top: 15px;
+}
+
+#evf-dashboard-analytics {
+	.evf-container {
+		margin-left: 0;
+		margin-right: 0;
+		max-width: 100%;
+	}
+}
 
 /**
  * Form Builder
