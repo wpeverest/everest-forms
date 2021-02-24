@@ -4717,7 +4717,8 @@ table.wp-list-table {
 	#poststuff {
 		#everest-forms-entry-fields,
 		#everest-forms-entry-details,
-		#everest-forms-entry-actions {
+		#everest-forms-entry-actions,
+		#everest-forms-entry-payment {
 			h2.hndle {
 				cursor: inherit;
 
@@ -4812,7 +4813,8 @@ table.wp-list-table {
 				}
 
 				.everest-forms-entry-details-meta,
-				.everest-forms-entry-actions-meta {
+				.everest-forms-entry-actions-meta,
+				.everest-forms-entry-payment-meta {
 					padding: 6px 0 0;
 
 					p {
@@ -4872,12 +4874,7 @@ table.wp-list-table {
 		}
 	}
 }
-#everest-forms-entry-payment {
-	.inside {
-		padding-left: 10px;
-		padding-right: 10px;
-	}
-}
+
 /**
  * DB log viewer.
  **/
