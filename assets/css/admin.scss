@@ -4872,7 +4872,12 @@ table.wp-list-table {
 		}
 	}
 }
-
+#everest-forms-entry-payment {
+	.inside {
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+}
 /**
  * DB log viewer.
  **/
