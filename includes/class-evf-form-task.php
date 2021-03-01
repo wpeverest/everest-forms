@@ -49,7 +49,7 @@ class EVF_Form_Task {
 	/**
 	 * Is hash validation?
 	 *
-	 * @since 1.7.4
+	 * @var 1.7.4
 	 */
 	public $is_valid_hash = false;
 
@@ -304,11 +304,11 @@ class EVF_Form_Task {
 			}
 		}
 
-		$message = isset( $this->form_data['settings']['successful_form_submission_message'] ) ? $this->form_data['settings']['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
 		if ( '1' === $ajax_form_submission ) {
+			$settings                  = $this->form_data['settings'];
+			$message                   = isset( $settings['successful_form_submission_message'] ) ? $settings['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
 			$response_data['message']  = $message;
 			$response_data['response'] = 'success';
-			$settings                  = $this->form_data['settings'];
 
 			// Backward Compatibility Check.
 			switch ( $settings['redirect_to'] ) {
@@ -338,7 +338,6 @@ class EVF_Form_Task {
 
 			return $response_data;
 		}
-		evf_add_notice( $message, 'success' );
 
 		do_action( 'everest_forms_after_success_message', $this->form_data, $entry );
 
@@ -530,6 +529,9 @@ class EVF_Form_Task {
 			do_action( "everest_forms_process_redirect_{$form_id}", $form_id );
 			exit;
 		}
+
+		// Output frontend success message if no redirection happened.
+		evf_add_notice( isset( $this->form_data['settings']['successful_form_submission_message'] ) ? $this->form_data['settings']['successful_form_submission_message'] : esc_html__( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' ), 'success' );
 	}
 
 	/**
