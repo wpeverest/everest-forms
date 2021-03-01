@@ -529,9 +529,6 @@ class EVF_Form_Task {
 			do_action( "everest_forms_process_redirect_{$form_id}", $form_id );
 			exit;
 		}
-
-		// Output frontend success message if no redirection happened.
-		evf_add_notice( isset( $this->form_data['settings']['successful_form_submission_message'] ) ? $this->form_data['settings']['successful_form_submission_message'] : esc_html__( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' ), 'success' );
 	}
 
 	/**
