@@ -763,6 +763,16 @@ class EVF_Shortcode_Form {
 		// Before output hook.
 		do_action( 'everest_forms_frontend_output_before', $form_data, $form );
 
+		// Check for return hash.
+		if (
+			! empty( $_GET['everest_forms_return'] ) // phpcs:ignore WordPress.Security.NonceVerification
+			&& evf()->task->is_valid_hash
+			&& absint( evf()->task->form_data['id'] ) === $form_id
+		) {
+			do_action( 'everest_forms_frontend_output_success', evf()->task->form_data, evf()->task->form_fields, evf()->task->entry_id );
+			return;
+		}
+
 		$success = apply_filters( 'everest_forms_success', false, $form_id );
 		if ( $success && ! empty( $form_data ) ) {
 			do_action( 'everest_forms_frontend_output_success', $form_data );

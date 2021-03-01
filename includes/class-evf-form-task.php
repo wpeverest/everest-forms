@@ -47,6 +47,13 @@ class EVF_Form_Task {
 	public $form_data = array();
 
 	/**
+	 * Is hash validation?
+	 *
+	 * @since 1.7.4
+	 */
+	public $is_valid_hash = false;
+
+	/**
 	 * Primary class constructor.
 	 *
 	 * @since 1.0.0
@@ -394,9 +401,10 @@ class EVF_Form_Task {
 	/**
 	 * Validate the form return hash.
 	 *
-	 * @since  1.0.0
-	 * @param  string $hash Hash data.
-	 * @return mixed false for invalid or form id.
+	 * @since 1.0.0
+	 *
+	 * @param string $hash Base64-encoded hash of form and entry IDs.
+	 * @return array|false False for invalid or form id.
 	 */
 	public function validate_return_hash( $hash = '' ) {
 		$query_args = base64_decode( $hash );
@@ -409,13 +417,21 @@ class EVF_Form_Task {
 		}
 
 		// Get lead and verify it is attached to the form we received with it.
-		$entry = evf()->entry->get( $output['entry_id'] );
+		$entry = evf_get_entry( $output['entry_id'] );
+
+		if ( empty( $entry->form_id ) ) {
+			return false;
+		}
 
 		if ( $output['form_id'] !== $entry->form_id ) {
 			return false;
 		}
 
-		return absint( $output['form_id'] );
+		return array(
+			'form_id'  => absint( $output['form_id'] ),
+			'entry_id' => absint( $output['form_id'] ),
+			'fields'   => null !== $entry && isset( $entry->fields ) ? $entry->fields : array(),
+		);
 	}
 
 	/**
@@ -424,21 +440,24 @@ class EVF_Form_Task {
 	 * @since 1.0.0
 	 *
 	 * @param array  $form_data Form data and settings.
-	 * @param string $hash      Hash data.
+	 * @param string $hash      Base64-encoded hash of form and entry IDs.
 	 */
 	public function entry_confirmation_redirect( $form_data = '', $hash = '' ) {
-		$_POST = array(); // clear fields after successful form submission.
+		$_POST = array(); // Clear fields after successful form submission.
 
+		// Process return hash.
 		if ( ! empty( $hash ) ) {
-			$form_id = $this->validate_return_hash( $hash );
+			$hash_data = $this->validate_return_hash( $hash );
 
-			if ( ! $form_id ) {
+			if ( ! $hash_data || ! is_array( $hash_data ) ) {
 				return;
 			}
 
-			// Get form.
-			$this->form_data = evf()->form->get(
-				$form_id,
+			$this->is_valid_hash = true;
+			$this->entry_id      = absint( $hash_data['entry_id'] );
+			$this->form_fields   = json_decode( $hash_data['fields'], true );
+			$this->form_data     = evf()->form->get(
+				absint( $hash_data['form_id'] ),
 				array(
 					'content_only' => true,
 				)
