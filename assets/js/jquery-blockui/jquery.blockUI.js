@@ -24,8 +24,6 @@
 		// confusing userAgent strings on Vista)
 		var msie = /MSIE/.test(navigator.userAgent);
 		var ie6  = /MSIE 6.0/.test(navigator.userAgent) && ! /MSIE 8.0/.test(navigator.userAgent);
-		var mode = document.documentMode || 0;
-		var setExpr = $.isFunction( document.createElement('div').style.setExpression );
 
 		// global $ methods for blocking/unblocking the entire page
 		$.blockUI   = function(opts) { install(window, opts); };
@@ -357,7 +355,7 @@
 			}
 
 			// ie7 must use absolute positioning in quirks mode and to account for activex issues (when scrolling)
-			var expr = setExpr && (!$.support.boxModel || $('object,embed', full ? null : el).length > 0);
+			var expr = typeof document.createElement('div').style.setExpression === "function" && (!$.support.boxModel || $('object,embed', full ? null : el).length > 0);
 			if (ie6 || expr) {
 				// give body 100% height
 				if (full && opts.allowBodyStretch && $.support.boxModel)
