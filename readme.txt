@@ -2,9 +2,9 @@
 Contributors: WPEverest
 Tags: contact form, forms, form builder, contact, custom form
 Requires at least: 5.0
-Tested up to: 5.6
+Tested up to: 5.7
 Requires PHP: 5.4
-Stable tag: 1.7.3
+Stable tag: 1.7.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -154,6 +154,20 @@ Yes, we do. Check out this [Getting Started Videos](https://docs.wpeverest.com/d
 Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/everest-forms/) :)
 
 == Changelog ==
+
+= 1.7.4 - 11-03-2021 =
+* Fix - Hide empty select data field from entry view.
+* Fix - Undefined variable `form_id` on form restriction.
+* Fix - Heartbeat notification mangled with display inline-block.
+* Fix - Display successful form submission message in preview mode.
+* Fix - Entries pictorial design issue and top spacing of search field.
+* Fix - Perfect scrollbar throwing uncaught update property due to timeout.
+* Fix - Check valid hash and process custom redirection or success notice after PayPal Payment.
+* Tweak - Added navigation design for tools page.
+* Tweak - Payment Detail spacing on premium feature.
+* Tweak - Adapt WPML config for no duplicates validation.
+* Tweak - Implement hooks for field option output so they can be mangled with setting choice.
+* Tweak - Load full version of `selectWoo` so if other plugin overloads it provides features.
 
 = 1.7.3 - 26-01-2021 =
 * Fix - Dropdown field empty value should not be send in email.

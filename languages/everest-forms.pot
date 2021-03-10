@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Everest Forms plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Everest Forms 1.7.3\n"
+"Project-Id-Version: Everest Forms 1.7.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/everest-forms\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-01-26T12:03:03+00:00\n"
+"POT-Creation-Date: 2021-03-10T09:01:54+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: everest-forms\n"
@@ -512,29 +512,29 @@ msgstr ""
 msgid "(empty)"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:1481
+#: includes/abstracts/class-evf-form-fields.php:1501
 msgid "You do no have permission."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:1486
+#: includes/abstracts/class-evf-form-fields.php:1506
 msgid "No form ID found"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:1491
+#: includes/abstracts/class-evf-form-fields.php:1511
 msgid "No field type found"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:1520
+#: includes/abstracts/class-evf-form-fields.php:1540
 #: includes/admin/builder/class-evf-builder-fields.php:336
 msgid "Duplicate Field"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:1521
+#: includes/abstracts/class-evf-form-fields.php:1541
 #: includes/admin/builder/class-evf-builder-fields.php:337
 msgid "Delete Field"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:1522
+#: includes/abstracts/class-evf-form-fields.php:1542
 #: includes/admin/builder/class-evf-builder-fields.php:338
 #: includes/admin/builder/class-evf-builder-settings.php:25
 #: includes/admin/class-evf-admin-menus.php:164
@@ -542,15 +542,15 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:1759
+#: includes/abstracts/class-evf-form-fields.php:1779
 msgid "Please enter a valid url"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:1769
+#: includes/abstracts/class-evf-form-fields.php:1789
 msgid "Please enter a valid email address"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields.php:1774
+#: includes/abstracts/class-evf-form-fields.php:1794
 msgid "Please enter a valid number"
 msgstr ""
 
@@ -625,7 +625,7 @@ msgstr ""
 #: includes/admin/builder/class-evf-builder-settings.php:77
 #: includes/admin/builder/class-evf-builder-settings.php:350
 #: includes/admin/builder/class-evf-builder-settings.php:406
-#: includes/class-evf-form-task.php:558
+#: includes/class-evf-form-task.php:576
 #: includes/evf-update-functions.php:140
 #: includes/templates/contact.php:71
 msgid "Admin Notification"
@@ -1203,7 +1203,7 @@ msgid "Field"
 msgstr ""
 
 #: includes/admin/class-evf-admin-entries-table-list.php:297
-#: includes/admin/views/html-admin-page-entries-view.php:203
+#: includes/admin/views/html-admin-page-entries-view.php:212
 #: includes/admin/views/html-admin-page-tools-logs.php:33
 msgid "View"
 msgstr ""
@@ -1411,7 +1411,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: includes/admin/class-evf-admin-forms-table-list.php:375
-#: includes/admin/views/html-admin-page-entries-view.php:221
+#: includes/admin/views/html-admin-page-entries-view.php:230
 msgid "Move to trash"
 msgstr ""
 
@@ -1864,7 +1864,7 @@ msgid "Add-ons list"
 msgstr ""
 
 #: includes/admin/views/html-admin-page-addons.php:77
-#: includes/admin/views/html-admin-page-entries-view.php:210
+#: includes/admin/views/html-admin-page-entries-view.php:219
 msgid "Status:"
 msgstr ""
 
@@ -2007,48 +2007,48 @@ msgstr ""
 msgid "This entry does not have any fields."
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:90
+#: includes/admin/views/html-admin-page-entries-view.php:99
 msgid "Field ID"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:131
+#: includes/admin/views/html-admin-page-entries-view.php:140
 msgid "Empty"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:148
+#: includes/admin/views/html-admin-page-entries-view.php:157
 msgid "Entry Details"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:154
+#: includes/admin/views/html-admin-page-entries-view.php:163
 msgid "Entry ID:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:160
+#: includes/admin/views/html-admin-page-entries-view.php:169
 msgid "Submitted:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:161
-#: includes/admin/views/html-admin-page-entries-view.php:168
+#: includes/admin/views/html-admin-page-entries-view.php:170
+#: includes/admin/views/html-admin-page-entries-view.php:177
 msgid "M j, Y @ g:ia"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:167
+#: includes/admin/views/html-admin-page-entries-view.php:176
 msgid "Modified:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:176
+#: includes/admin/views/html-admin-page-entries-view.php:185
 msgid "User:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:194
+#: includes/admin/views/html-admin-page-entries-view.php:203
 msgid "User IP:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:202
+#: includes/admin/views/html-admin-page-entries-view.php:211
 msgid "Referer Link:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:211
+#: includes/admin/views/html-admin-page-entries-view.php:220
 msgid "Completed"
 msgstr ""
 
@@ -2333,43 +2333,44 @@ msgstr ""
 msgid "Show Description"
 msgstr ""
 
-#: includes/class-evf-form-task.php:92
+#: includes/class-evf-form-task.php:99
 msgid "We were unable to process your form, please try again."
 msgstr ""
 
-#: includes/class-evf-form-task.php:98
+#: includes/class-evf-form-task.php:105
 msgid "Invalid form. Please check again."
 msgstr ""
 
-#: includes/class-evf-form-task.php:166
-#: includes/class-evf-form-task.php:218
-#: includes/class-evf-form-task.php:267
+#: includes/class-evf-form-task.php:173
+#: includes/class-evf-form-task.php:225
+#: includes/class-evf-form-task.php:274
 msgid "Form has not been submitted, please see the errors below."
 msgstr ""
 
-#: includes/class-evf-form-task.php:188
+#: includes/class-evf-form-task.php:195
 msgid "Google reCAPTCHA verification failed, please try again later."
 msgstr ""
 
-#: includes/class-evf-form-task.php:226
+#: includes/class-evf-form-task.php:233
 msgid "Everest Forms honeypot field triggered."
 msgstr ""
 
-#: includes/class-evf-form-task.php:300
+#: includes/class-evf-form-task.php:309
+#: includes/shortcodes/class-evf-shortcode-form.php:774
 #: includes/templates/contact.php:61
 msgid "Thanks for contacting us! We will be in touch with you shortly."
 msgstr ""
 
 #. translators: %s - form name.
-#: includes/class-evf-form-task.php:580
+#: includes/class-evf-form-task.php:598
 msgid "New %s Entry"
 msgstr ""
 
-#: includes/class-evf-form-task.php:676
+#: includes/class-evf-form-task.php:694
 msgid "No form ID was found."
 msgstr ""
 
-#: includes/class-evf-form-task.php:683
+#: includes/class-evf-form-task.php:701
 msgid "Could not create an entry"
 msgstr ""
 
@@ -4285,8 +4286,7 @@ msgid "Password"
 msgstr ""
 
 #: includes/fields/class-evf-field-payment-quantity.php:19
-#: includes/fields/class-evf-field-payment-total.php:20
-msgid "Total"
+msgid "Quantity"
 msgstr ""
 
 #: includes/fields/class-evf-field-payment-radio.php:20
@@ -4296,6 +4296,10 @@ msgstr ""
 
 #: includes/fields/class-evf-field-payment-single.php:20
 msgid "Single Item"
+msgstr ""
+
+#: includes/fields/class-evf-field-payment-total.php:20
+msgid "Total"
 msgstr ""
 
 #: includes/fields/class-evf-field-phone.php:20
