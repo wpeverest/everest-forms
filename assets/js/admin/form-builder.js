@@ -491,7 +491,7 @@
 				});
 
 			// In case the user goes out of focus from title edit state.
-			$( document ).not( $( '.everest-forms-title-desc' ) ).click( function( e ) {
+			$( document ).not( $( '.everest-forms-title-desc' ) ).on( 'click', function( e ) {
 				var field = $( '#evf-edit-form-name' );
 
 				e.stopPropagation();
@@ -1753,7 +1753,7 @@
 		 		EVFPanelBuilder.checkEmptyGrid();
 		 		$(this).closest('.evf-toggle-row').find('.evf-toggle-row-content').stop(true).slideToggle(200);
 		 	});
-		 	$(document).click(function () {
+			$(document).on( 'click', function () {
 		 		EVFPanelBuilder.checkEmptyGrid();
 		 		$('.evf-show-grid').closest('.evf-toggle-row').find('.evf-toggle-row-content').stop(true).slideUp(200);
 		 	});
@@ -2169,7 +2169,7 @@ jQuery( function ( $ ) {
 		});
 	} ).trigger( 'init_field_options_toggle' );
 
-	$( document ).click(function() {
+	$( document ).on( 'click', function() {
 		$( '.evf-smart-tag-lists' ).hide();
 	});
 
