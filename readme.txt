@@ -158,6 +158,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 = 1.7.4 - 11-03-2021 =
 * Fix - Hide empty select data field from entry view.
 * Fix - Undefined variable `form_id` on form restriction.
+* Fix - jQuery deprecated shorthands shown by jQuery Migrate.
 * Fix - Heartbeat notification mangled with display inline-block.
 * Fix - Display successful form submission message in preview mode.
 * Fix - Entries pictorial design issue and top spacing of search field.
