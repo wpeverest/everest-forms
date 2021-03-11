@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-03-10T11:54:43+00:00\n"
+"POT-Creation-Date: 2021-03-11T09:51:17+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: everest-forms\n"
@@ -625,7 +625,7 @@ msgstr ""
 #: includes/admin/builder/class-evf-builder-settings.php:77
 #: includes/admin/builder/class-evf-builder-settings.php:350
 #: includes/admin/builder/class-evf-builder-settings.php:406
-#: includes/class-evf-form-task.php:576
+#: includes/class-evf-form-task.php:580
 #: includes/evf-update-functions.php:140
 #: includes/templates/contact.php:71
 msgid "Admin Notification"
@@ -2355,22 +2355,22 @@ msgstr ""
 msgid "Everest Forms honeypot field triggered."
 msgstr ""
 
-#: includes/class-evf-form-task.php:309
+#: includes/class-evf-form-task.php:308
 #: includes/shortcodes/class-evf-shortcode-form.php:774
 #: includes/templates/contact.php:61
 msgid "Thanks for contacting us! We will be in touch with you shortly."
 msgstr ""
 
 #. translators: %s - form name.
-#: includes/class-evf-form-task.php:598
+#: includes/class-evf-form-task.php:602
 msgid "New %s Entry"
 msgstr ""
 
-#: includes/class-evf-form-task.php:694
+#: includes/class-evf-form-task.php:698
 msgid "No form ID was found."
 msgstr ""
 
-#: includes/class-evf-form-task.php:701
+#: includes/class-evf-form-task.php:705
 msgid "Could not create an entry"
 msgstr ""
 
