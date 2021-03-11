@@ -304,9 +304,10 @@ class EVF_Form_Task {
 			}
 		}
 
+		$settings = $this->form_data['settings'];
+		$message  = isset( $settings['successful_form_submission_message'] ) ? $settings['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
+
 		if ( '1' === $ajax_form_submission ) {
-			$settings                  = $this->form_data['settings'];
-			$message                   = isset( $settings['successful_form_submission_message'] ) ? $settings['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
 			$response_data['message']  = $message;
 			$response_data['response'] = 'success';
 
@@ -337,6 +338,8 @@ class EVF_Form_Task {
 			}
 
 			return $response_data;
+		} elseif ( 'same' === $this->form_data['settings']['redirect_to'] ) {
+			evf_add_notice( $message, 'success' );
 		}
 
 		do_action( 'everest_forms_after_success_message', $this->form_data, $entry );
