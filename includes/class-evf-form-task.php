@@ -337,6 +337,8 @@ class EVF_Form_Task {
 				evf_add_notice( $message, 'success' );
 			}
 
+			$this->entry_confirmation_redirect( $this->form_data );
+
 			return $response_data;
 		} elseif ( 'same' === $this->form_data['settings']['redirect_to'] ) {
 			evf_add_notice( $message, 'success' );
@@ -368,7 +370,6 @@ class EVF_Form_Task {
 	 * @param string $url Redirect URL.
 	 */
 	public function ajax_process_redirect( $url ) {
-
 		$form_id = isset( $_POST['everest_forms']['id'] ) ? absint( $_POST['everest_forms']['id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification
 
 		if ( empty( $form_id ) ) {

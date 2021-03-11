@@ -163,6 +163,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Fix - Display successful form submission message in preview mode.
 * Fix - Entries pictorial design issue and top spacing of search field.
 * Fix - Perfect scrollbar throwing uncaught update property due to timeout.
+* Fix - Custom and external redirect when Stripe payment form is AJAX enabled.
 * Fix - Check valid hash and process custom redirection or success notice after PayPal Payment.
 * Tweak - Added navigation design for tools page.
 * Tweak - Payment Detail spacing on premium feature.
