@@ -1,24 +1,22 @@
 /* global everest_forms_ajax_submission_params */
 jQuery( function( $ ) {
 	'use strict';
-
 	var evf_ajax_submission_init = function(){
 		var form = $( 'form[data-ajax_submission="1"]' );
-
+		
 		form.each( function( i, v ) {
 			$( document ).ready( function() {
 				var formTuple = $( v ),
 					btn = formTuple.find( '.evf-submit' ),
 					stripeForms = formTuple.find( "[data-gateway*='stripe']" );
-
 				// If it's an ajax form containing a stripe gateway, donot latch into the button.
-				if ( stripeForms.length > 0 ) {
+	
+				if ( stripeForms.length > 0  && 0 === stripeForms.children.length ) {
 					return;
 				}
 
 				btn.on( 'click', function( e ) {
 					var data = formTuple.serializeArray();
-
 					e.preventDefault();
 
 					// We let the bubbling events in form play itself out.
@@ -51,6 +49,7 @@ jQuery( function( $ ) {
 						url: everest_forms_ajax_submission_params.ajax_url,
 						type: 'POST',
 						data: data
+	
 					})
 					.done( function ( xhr, textStatus, errorThrown ) {
 						var redirect_url = ( xhr.data && xhr.data.redirect_url ) ? xhr.data.redirect_url : '';

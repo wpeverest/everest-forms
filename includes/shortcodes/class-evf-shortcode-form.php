@@ -179,6 +179,7 @@ class EVF_Shortcode_Form {
 	 * @param array $form_data Form data.
 	 */
 	public static function label( $field, $form_data ) {
+		
 		$label = $field['properties']['label'];
 
 		// If the label is empty or disabled don't proceed.
@@ -326,6 +327,12 @@ class EVF_Shortcode_Form {
 					if ( empty( $field ) || in_array( $field['type'], evf()->form_fields->get_pro_form_field_types(), true ) ) {
 						continue;
 					}
+
+					$should_display_field = apply_filters( "everest_forms_should_display_field_{$field['type']}", true, $field, $form_data );
+                    
+					if ( true !== $should_display_field ) {
+                        continue;
+                    }
 
 					// Get field attributes.
 					$attributes = self::get_field_attributes( $field, $form_data );
