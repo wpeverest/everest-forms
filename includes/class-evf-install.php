@@ -151,7 +151,7 @@ class EVF_Install {
 		self::create_cron_jobs();
 		self::create_files();
 		self::create_forms();
-		self::maybe_enable_setup_wizard();
+		self::maybe_set_activation_transients();
 		self::update_evf_version();
 		self::maybe_update_db_version();
 		self::maybe_add_activated_date();
@@ -201,10 +201,10 @@ class EVF_Install {
 	}
 
 	/**
-	 * See if we need the wizard or not.
+	 * See if we need to set redirect transients for activation or not.
 	 */
-	private static function maybe_enable_setup_wizard() {
-		if ( apply_filters( 'everest_forms_enable_setup_wizard', self::is_new_install() ) ) {
+	private static function maybe_set_activation_transients() {
+		if ( self::is_new_install() ) {
 			set_transient( '_evf_activation_redirect', 1, 30 );
 		}
 	}
