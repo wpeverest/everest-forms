@@ -8,13 +8,19 @@
 
 /* global evf_form_block_data, wp */
 const { __ } = wp.i18n;
-const { createElement } = wp.element;
+const { createElement  } = wp.element;
 const { registerBlockType } = wp.blocks;
 const { InspectorControls } = wp.blockEditor;
 const { serverSideRender: ServerSideRender } = wp;
 const {
 	PanelBody, SelectControl, ToggleControl, Placeholder
 } = wp.components;
+
+window.testEVF = function() {
+	setTimeout(()=>{
+		window.initializeForm();
+	}, 10);
+};
 
 const EverestFormIcon = createElement( 'svg', { width: 24, height: 24, viewBox: '0 0 24 24' },
 	createElement( 'path', { fill: 'currentColor', d: 'M18.1 4h-3.8l1.2 2h3.9zM20.6 8h-3.9l1.2 2h3.9zM20.6 18H5.8L12 7.9l2.5 4.1H12l-1.2 2h7.3L12 4.1 2.2 20h19.6z' } )
@@ -89,6 +95,9 @@ registerBlockType( 'everest-forms/form-selector', {
 					attributes={ props.attributes }
 				/>
 			);
+		
+			
+		
 		} else {
 			jsx.push(
 				<Placeholder

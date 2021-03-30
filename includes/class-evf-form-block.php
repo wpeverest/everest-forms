@@ -100,7 +100,7 @@ class EVF_Form_Block {
 	 */
 	public function get_form_html( $attr ) {
 		$form_id = ! empty( $attr['formId'] ) ? absint( $attr['formId'] ) : 0;
-
+		
 		if ( empty( $form_id ) ) {
 			return '';
 		}
