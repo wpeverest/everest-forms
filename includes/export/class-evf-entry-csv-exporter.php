@@ -275,11 +275,31 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 				$value     = $this->{"get_column_value_{$column_id}"}( $entry );
 				$raw_value = $value;
 			}
-
-			$row[ $column_id ] = apply_filters( 'everest_forms_format_csv_field_data', sanitize_text_field( $value ), $raw_value, $column_id, $column_name, $columns, $entry );
+			$column_type       = $this->get_entry_type( $column_id, $entry );
+			$row[ $column_id ] = apply_filters( 'everest_forms_format_csv_field_data', preg_match( '/textarea/', $column_type ) ? sanitize_textarea_field( $value ) : sanitize_text_field( $value ), $raw_value, $column_id, $column_name, $columns, $entry );
 		}
 
 		return apply_filters( 'everest_forms_entry_export_row_data', $row, $entry );
+	}
+
+	/**
+	 * Get entry type.
+	 *
+	 * @param  string $column_id meta key of the column.
+	 * @param  object $entry Entry being exported.
+	 * @return string
+	 */
+	protected function get_entry_type( $column_id, $entry ) {
+		$fields = json_decode( $entry->fields, 1 );
+		if ( is_null( $fields ) || ! is_array( $fields ) ) {
+			return false; // Conditional false with fake values.
+		}
+		foreach ( $fields as $field ) {
+			if ( $column_id === $field['meta_key'] ) {
+				return $field['type'];
+			}
+		}
+		return false;
 	}
 
 	/**
