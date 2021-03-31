@@ -338,6 +338,7 @@
 			EVFPanelBuilder.bindGridSwitcher();
 			EVFPanelBuilder.bindFieldSettings();
 			EVFPanelBuilder.bindFieldDelete();
+			EVFPanelBuilder.bindFieldDeleteWithKeyEvent();
 			EVFPanelBuilder.bindCloneField();
 			EVFPanelBuilder.bindSaveOption();
 			EVFPanelBuilder.bindAddNewRow();
@@ -1394,6 +1395,73 @@
 							}
 						}
 					} );
+				}
+			});
+		},
+		bindFieldDeleteWithKeyEvent: function () {
+			$( 'body' ).on( 'keyup', function( e ) {
+				var $field = $( '.everest-forms-preview .everest-forms-field.active' );
+				if( 46 === e.which && true === $field.hasClass( 'active' ) && false === $field.hasClass( 'evf-delete-event-active' ) ) {
+					$field.addClass( 'evf-delete-event-active' );
+					var field_id     = $field.attr( 'data-field-id' );
+					var option_field = $( '#everest-forms-field-option-' + field_id );
+					if ( $field.hasClass( 'no-delete' ) ) {
+						$.alert({
+							title: evf_data.i18n_field_locked,
+							content: evf_data.i18n_field_locked_msg,
+							icon: 'dashicons dashicons-info',
+							type: 'blue',
+							buttons : {
+								confirm : {
+									text: evf_data.i18n_close,
+									btnClass: 'btn-confirm',
+									keys: ['enter'],
+									action: function () {
+										$field.removeClass( 'evf-delete-event-active' );
+									}
+								}
+							}
+						});
+					} else {
+						$.confirm({
+							title: false,
+							content: evf_data.i18n_delete_field_confirm,
+							type: 'red',
+							closeIcon: false,
+							backgroundDismiss: false,
+							icon: 'dashicons dashicons-warning',
+							buttons: {
+								confirm: {
+									text: evf_data.i18n_ok,
+									btnClass: 'btn-confirm',
+									keys: ['enter'],
+									action: function () {
+										$( '.evf-panel-fields-button' ).trigger( 'click' );
+										$field.fadeOut( 'slow', function () {
+											var removed_el_id = $field.attr('data-field-id');
+											$( document.body ).trigger( 'evf_before_field_deleted', [ removed_el_id] );
+											$field.remove();
+											option_field.remove();
+											EVFPanelBuilder.checkEmptyGrid();
+											$( '.everest-forms-fields-tab' ).find( 'a' ).removeClass( 'active' );
+											$( '.everest-forms-fields-tab' ).find( 'a' ).first().addClass( 'active' );
+											$( '.everest-forms-add-fields' ).show();
+											EVFPanelBuilder.conditionalLogicRemoveField(removed_el_id);
+											EVFPanelBuilder.conditionalLogicRemoveFieldIntegration(removed_el_id);
+											EVFPanelBuilder.paymentFieldRemoveFromQuantity(removed_el_id);
+										});
+										$field.removeClass( 'evf-delete-event-active' );
+									}
+								},
+								cancel: {
+									text: evf_data.i18n_cancel,
+									action: function () {
+										$field.removeClass( 'evf-delete-event-active' );
+									}
+								}
+							}
+						} );
+					}
 				}
 			});
 		},
