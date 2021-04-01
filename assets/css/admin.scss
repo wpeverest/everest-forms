@@ -965,6 +965,9 @@ body.everest-forms-builder {
 						&.export::before {
 							content: '\e02f';
 						}
+						&.permission::before {
+							content: '\e030';
+						}
 					}
 				}
 
