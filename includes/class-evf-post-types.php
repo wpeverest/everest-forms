@@ -41,7 +41,7 @@ class EVF_Post_Types {
 				'everest_forms_register_post_type_product',
 				array(
 					'labels'              => array(
-						'name'                  => __( 'Forms', 'everest-forms' ),
+						'name'                  => __( 'Everest Forms', 'everest-forms' ),
 						'singular_name'         => __( 'Form', 'everest-forms' ),
 						'all_items'             => __( 'All Forms', 'everest-forms' ),
 						'menu_name'             => _x( 'Forms', 'Admin menu name', 'everest-forms' ),
@@ -68,8 +68,8 @@ class EVF_Post_Types {
 					'public'              => false,
 					'show_ui'             => true,
 					'description'         => __( 'This is where you can add new forms.', 'everest-forms' ),
-					'capability_type'     => 'everest_form',
-					'map_meta_cap'        => true,
+					'capability_type'     => 'everest_forms', // Not using 'capability_type' anywhere. It just has to be custom for security reasons.
+					'map_meta_cap'        => false, // Don't let WP to map meta caps to have a granular control over this process via 'map_meta_cap' filter.
 					'publicly_queryable'  => false,
 					'exclude_from_search' => true,
 					'show_in_rest'        => true,

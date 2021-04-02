@@ -89,7 +89,7 @@ class EVF_Form_Handler {
 		$forms = get_posts( $args );
 
 		if ( $content_only ) {
-			$forms = array_map( array( $this, 'prpare_post_content' ), $forms );
+			$forms = array_map( array( $this, 'prepare_post_content' ), $forms );
 		}
 
 		return $forms;
@@ -100,7 +100,7 @@ class EVF_Form_Handler {
 	 *
 	 * @param object $post Post object.
 	 */
-	public function prpare_post_content( $post ) {
+	public function prepare_post_content( $post ) {
 		return ! empty( $post->post_content ) ? evf_decode( $post->post_content ) : false;
 	}
 
