@@ -255,10 +255,10 @@ class EVF_Admin_Notices {
 				return;
 			}
 		}
-			include 'views/html-notice-review.php';
 
 		// Ask for some love.
 		if ( $load && ( is_super_admin() || current_user_can( 'manage_everest_forms' ) ) ) {
+			include 'views/html-notice-review.php';
 		}
 	}
 
