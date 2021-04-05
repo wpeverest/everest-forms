@@ -82,21 +82,22 @@ class EVF_AJAX {
 	 */
 	public static function add_ajax_events() {
 		$ajax_events = array(
-			'save_form'               => false,
-			'create_form'             => false,
-			'get_next_id'             => false,
-			'install_extension'       => false,
-			'integration_connect'     => false,
-			'new_email_add'           => false,
-			'integration_disconnect'  => false,
-			'deactivation_notice'     => false,
-			'rated'                   => false,
-			'review_dismiss'          => false,
-			'enabled_form'            => false,
-			'import_form_action'      => false,
-			'template_licence_check'  => false,
-			'template_activate_addon' => false,
-			'ajax_form_submission'    => true,
+			'save_form'                     => false,
+			'create_form'                   => false,
+			'get_next_id'                   => false,
+			'install_extension'             => false,
+			'integration_connect'           => false,
+			'new_email_add'                 => false,
+			'integration_disconnect'        => false,
+			'deactivation_notice'           => false,
+			'rated'                         => false,
+			'review_dismiss'                => false,
+			'enabled_form'                  => false,
+			'import_form_action'            => false,
+			'import_global_settings_action' => false,
+			'template_licence_check'        => false,
+			'template_activate_addon'       => false,
+			'ajax_form_submission'          => true,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -701,6 +702,22 @@ class EVF_AJAX {
 		try {
 			check_ajax_referer( 'process-import-ajax-nonce', 'security' );
 			EVF_Admin_Import_Export::import_form();
+		} catch ( Exception $e ) {
+			wp_send_json_error(
+				array(
+					'message' => $e->getMessage(),
+				)
+			);
+		}
+	}
+
+	/**
+	 * Import EVF Global Settings
+	 */
+	public static function import_global_settings_action() {
+		try {
+			check_ajax_referer( 'process-import-ajax-nonce', 'security' );
+			EVF_Admin_Import_Export::import_global_settings();
 		} catch ( Exception $e ) {
 			wp_send_json_error(
 				array(

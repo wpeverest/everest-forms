@@ -780,6 +780,37 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 
 			return true;
 		}
+
+		/**
+		 * Get Global Settings.
+		 */
+		public static function get_global_settings() {
+			$global_settings = array();
+			$defalt_settings = self::get_settings_pages();
+			foreach ( $defalt_settings as $setting_obj ) {
+				// Setting option for specific setting page/UI.
+				$setting = $setting_obj->get_settings();
+				foreach ( $setting as $set ) {
+					$global_settings[ $set['id'] ] = self::get_option( $set['id'], $set['default'] );
+				}
+			}
+			return $global_settings;
+		}
+
+		/**
+		 * Save Global Settings.
+		 *
+		 * @param array $settings Imported setting array.
+		 */
+		public static function save_global_settings( $settings ) {
+			$defalt_settings = self::get_settings_pages();
+			$options         = array();
+			foreach ( $defalt_settings as $setting_obj ) {
+				$setting = $setting_obj->get_settings();
+				$options = array_merge( $options, $setting );
+			}
+			return self::save_fields( $options, $settings );
+		}
 	}
 
 endif;
