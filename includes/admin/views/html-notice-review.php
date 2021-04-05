@@ -25,7 +25,7 @@ defined( 'ABSPATH' ) || exit;
 			<a href="https://wordpress.org/support/plugin/everest-forms/reviews?rate=5#new-post" class="button button-primary evf-dismiss-review-notice evf-review-received" target="_blank" rel="noopener noreferrer"><span class="dashicons dashicons-external"></span><?php esc_html_e( 'Sure, I\'d love to!', 'everest-forms' ); ?></a>
 			<a href="#" class="button button-secondary evf-dismiss-review-notice" target="_blank" rel="noopener noreferrer"><span  class="dashicons dashicons-smiley"></span><?php esc_html_e( 'Remind me later', 'everest-forms' ); ?></a>
 			<a href="#" class="button button-secondary evf-dismiss-review-notice" target="_blank" rel="noopener noreferrer"><span class="dashicons dashicons-dismiss"></span><?php esc_html_e( 'I already did', 'everest-forms' ); ?></a>
-			<a href="https://wordpress.org/support/plugin/everest-forms/" class="button button-secondary evf-have-query" target="_blank" rel="noopener noreferrer"><span class="dashicons dashicons-testimonial"></span><?php esc_html_e( 'I have a query', 'everest-forms' ); ?></a>
+			<a href="https://wpeverest.com/support-forum/" class="button button-secondary evf-have-query" target="_blank" rel="noopener noreferrer"><span class="dashicons dashicons-testimonial"></span><?php esc_html_e( 'I have a query', 'everest-forms' ); ?></a>
 		</p>
 	</div>
 </div>
