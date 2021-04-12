@@ -142,6 +142,8 @@
 		padding: 6px 12px;
 		color: $color_gray-base;
 		border: 1px solid $color_gray-light;
+		margin-left: 0;
+		margin-right: 0;
 	}
 
 	.select2-container {
@@ -215,6 +217,8 @@
 	}
 
 	.evf-field-container {
+		  padding-left: 15px;
+          padding-right: 15px;
 		.evf-frontend-row {
 			// Prevents style conflict on entries list-table.
 			&:not(.wp-list-table) {
