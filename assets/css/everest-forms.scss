@@ -215,10 +215,14 @@
 			margin: 0 0 10px 0;
 		}
 	}
+  .evf-field-container,
+  .evf-honeypot-container,
+  .evf-submit-container  {
+	padding-left: 15px;
+	padding-right: 15px;
 
+   }
 	.evf-field-container {
-		  padding-left: 15px;
-          padding-right: 15px;
 		.evf-frontend-row {
 			// Prevents style conflict on entries list-table.
 			&:not(.wp-list-table) {
