@@ -2373,3 +2373,21 @@ function evf_process_line_breaks( $text ) {
 function evf_get_manage_capability() {
 	return apply_filters( 'everest_forms_manage_cap', 'manage_everest_forms' );
 }
+
+/**
+ * Check permissions for currently logged in user.
+ *
+ * @since 1.7.6
+ *
+ * @param array|string $caps Capability name(s).
+ * @param int          $id   ID of the specific object to check against if `$capability` is a "meta" cap.
+ *                           "Meta" capabilities, e.g. 'edit_post', 'edit_user', etc., are capabilities used
+ *                           by map_meta_cap() to map to other "primitive" capabilities, e.g. 'edit_posts',
+ *                           'edit_others_posts', etc. Accessed via func_get_args() and passed to WP_User::has_cap(),
+ *                           then map_meta_cap().
+ *
+ * @return bool
+ */
+function evf_current_user_can( $caps, $id = 0 ) {
+	return apply_filters( 'everest_forms_current_user_can', current_user_can( evf_get_manage_capability() ), $caps, $id );
+}
