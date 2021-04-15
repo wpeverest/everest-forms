@@ -79,11 +79,19 @@ class EVF_Admin_Menus {
 	 * Add menu items.
 	 */
 	public function builder_menu() {
-		$builder_page = add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Builder', 'everest-forms' ), esc_html__( 'All Forms', 'everest-forms' ), $this->get_menu_cap( 'create_forms', 'edit_forms', 'view_forms' ), 'evf-builder', array( $this, 'builder_page' ) );
+		$builder_page = add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Builder', 'everest-forms' ), esc_html__( 'All Forms', 'everest-forms' ), $this->get_menu_cap( evf_current_user_can( 'create_forms' ) ? array( 'create_forms' ) : array( 'view_forms' ) ), 'evf-builder', array( $this, 'builder_page' ) );
 
 		add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Setup', 'everest-forms' ), esc_html__( 'Add New', 'everest-forms' ), $this->get_menu_cap( array( 'create_forms', 'edit_forms' ) ), 'evf-builder&create-form=1', array( $this, 'builder_page' ) );
 
 		add_action( 'load-' . $builder_page, array( $this, 'builder_page_init' ) );
+
+		// Page redirects based on user's capability as 'All Forms' and 'Add New' both have same handle.
+		if ( ! evf_current_user_can( evf_get_manage_capability() ) && ! evf_current_user_can( 'view_forms' ) ) {
+			if ( ! isset( $_GET['create-form'] ) && ( ! empty( $_GET['page'] ) && 'evf-builder' === $_GET['page'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+				wp_safe_redirect( admin_url( 'admin.php?page=evf-builder&create-form=1' ) );
+				exit;
+			}
+		}
 	}
 
 	/**
