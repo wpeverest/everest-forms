@@ -85,11 +85,23 @@ class EVF_Admin_Menus {
 
 		add_action( 'load-' . $builder_page, array( $this, 'builder_page_init' ) );
 
-		// Page redirects based on user's capability as 'All Forms' and 'Add New' both have same handle.
-		if ( ! evf_current_user_can( evf_get_manage_capability() ) && ! evf_current_user_can( 'view_forms' ) ) {
-			if ( ! isset( $_GET['create-form'] ) && ( ! empty( $_GET['page'] ) && 'evf-builder' === $_GET['page'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-				wp_safe_redirect( admin_url( 'admin.php?page=evf-builder&create-form=1' ) );
-				exit;
+		/*
+		 * Page redirects based on user's capability as 'All Forms' and 'Add New' both have same handle.
+		 *
+		 * - If only `create_forms` roles - dont show view all forms list table.
+		 * - If only `view_forms` roles - dont show create new template selection.
+		 */
+		if ( ! evf_current_user_can( evf_get_manage_capability() ) ) {
+			if ( ! evf_current_user_can( 'create_forms' ) ) {
+				if ( isset( $_GET['page'], $_GET['create-form'] ) && 'evf-builder' === $_GET['page'] ) { // phpcs:ignore WordPress.Security.NonceVerification
+					wp_safe_redirect( admin_url( 'admin.php?page=evf-builder' ) );
+					exit;
+				}
+			} elseif ( ! evf_current_user_can( 'view_forms' ) ) {
+				if ( ! isset( $_GET['create-form'] ) && ( ! empty( $_GET['page'] ) && 'evf-builder' === $_GET['page'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+					wp_safe_redirect( admin_url( 'admin.php?page=evf-builder&create-form=1' ) );
+					exit;
+				}
 			}
 		}
 	}
