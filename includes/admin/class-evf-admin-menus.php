@@ -34,8 +34,8 @@ class EVF_Admin_Menus {
 		}
 
 		add_action( 'admin_head', array( $this, 'menu_highlight' ) );
-		add_action( 'admin_head', array( $this, 'hide_menu_items' ) );
 		add_action( 'admin_head', array( $this, 'custom_menu_count' ) );
+		add_action( 'admin_head', array( $this, 'hide_submenu_items' ) );
 		add_filter( 'custom_menu_order', array( $this, 'custom_menu_order' ) );
 		add_filter( 'set-screen-option', array( $this, 'set_screen_option' ), 11, 3 );
 	}
@@ -79,7 +79,7 @@ class EVF_Admin_Menus {
 	 * Add menu items.
 	 */
 	public function builder_menu() {
-		$builder_page = add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Builder', 'everest-forms' ), esc_html__( 'All Forms', 'everest-forms' ), $this->get_menu_cap( 'view_forms' ), 'evf-builder', array( $this, 'builder_page' ) );
+		$builder_page = add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Builder', 'everest-forms' ), esc_html__( 'All Forms', 'everest-forms' ), $this->get_menu_cap( 'create_forms', 'edit_forms', 'view_forms' ), 'evf-builder', array( $this, 'builder_page' ) );
 
 		add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Setup', 'everest-forms' ), esc_html__( 'Add New', 'everest-forms' ), $this->get_menu_cap( array( 'create_forms', 'edit_forms' ) ), 'evf-builder&create-form=1', array( $this, 'builder_page' ) );
 
@@ -216,11 +216,25 @@ class EVF_Admin_Menus {
 	}
 
 	/**
-	 * Hide admin menu item if a user can't access.
+	 * Adds the custom count to the menu.
+	 */
+	public function custom_menu_count() {
+		global $submenu;
+
+		// Add count if user has access.
+		if ( isset( $submenu['everest-forms'] ) ) {
+			if ( apply_filters( 'everest_forms_include_count_in_menu', true ) && current_user_can( 'manage_everest_forms' ) ) { // Todo: Use in entries so we can modifief user can for entries.
+				do_action( 'everest_forms_custom_menu_count' );
+			}
+		}
+	}
+
+	/**
+	 * Hide submenu menu item if a user can't access.
 	 *
 	 * @since 1.7.6
 	 */
-	public function hide_menu_items() {
+	public function hide_submenu_items() {
 		global $submenu;
 
 		if ( ! isset( $submenu['everest-forms'] ) ) {
@@ -235,6 +249,16 @@ class EVF_Admin_Menus {
 			}
 		}
 
+		// Remove 'All Forms' sub menu item if a user can't create forms.
+		if ( ! evf_current_user_can( 'view_forms' ) ) {
+			foreach ( $submenu['everest-forms'] as $key => $item ) {
+				if ( isset( $item[2] ) && 'evf-builder' === $item[2] ) {
+					unset( $submenu['everest-forms'][ $key ] );
+					break;
+				}
+			}
+		}
+
 		// Remove 'Add New' sub menu item if a user can't create forms.
 		if ( ! evf_current_user_can( 'create_forms' ) ) {
 			foreach ( $submenu['everest-forms'] as $key => $item ) {
@@ -242,20 +266,6 @@ class EVF_Admin_Menus {
 					unset( $submenu['everest-forms'][ $key ] );
 					break;
 				}
-			}
-		}
-	}
-
-	/**
-	 * Adds the custom count to the menu.
-	 */
-	public function custom_menu_count() {
-		global $submenu;
-
-		// Add count if user has access.
-		if ( isset( $submenu['everest-forms'] ) ) {
-			if ( apply_filters( 'everest_forms_include_count_in_menu', true ) && current_user_can( 'manage_everest_forms' ) ) { // Todo: Use in entries so we can modifief user can for entries.
-				do_action( 'everest_forms_custom_menu_count' );
 			}
 		}
 	}
