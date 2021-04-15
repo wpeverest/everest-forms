@@ -155,7 +155,9 @@ class EVF_Admin_Forms {
 		?>
 		<div class="wrap">
 			<h1 class="wp-heading-inline"><?php esc_html_e( 'All Forms', 'everest-forms' ); ?></h1>
-			<a href="<?php echo esc_url( admin_url( 'admin.php?page=evf-builder&create-form=1' ) ); ?>" class="page-title-action"><?php esc_html_e( 'Add New', 'everest-forms' ); ?></a>
+			<?php if ( evf_current_user_can( 'create_forms' ) ) : ?>
+				<a href="<?php echo esc_url( admin_url( 'admin.php?page=evf-builder&create-form=1' ) ); ?>" class="page-title-action"><?php esc_html_e( 'Add New', 'everest-forms' ); ?></a>
+			<?php endif; ?>
 			<hr class="wp-header-end">
 
 			<?php settings_errors(); ?>
