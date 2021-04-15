@@ -5,6 +5,7 @@
 * Fix - Welcome page redirection on every plugin updates.
 * Fix - CSV textarea contents line break issue.
 * Fix - Form Field deletion with delete button.
+* Enhancement - Added Global Settings Import/Export.
 
 
 = 1.7.4 - 11-03-2021 =
