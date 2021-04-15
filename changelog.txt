@@ -6,7 +6,6 @@
 * Fix - CSV textarea contents line break issue.
 * Fix - Form Field deletion with delete button.
 
-
 = 1.7.4 - 11-03-2021 =
 * Fix - Hide empty select data field from entry view.
 * Fix - Undefined variable `form_id` on form restriction.

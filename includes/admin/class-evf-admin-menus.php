@@ -40,6 +40,18 @@ class EVF_Admin_Menus {
 	}
 
 	/**
+	 * Get a first valid capability from an array of capabilities.
+	 *
+	 * @since 1.7.6
+	 *
+	 * @param string|array $caps Capabilities to check.
+	 * @return string
+	 */
+	public function get_menu_cap( $caps ) {
+		return apply_filters( 'everest_forms_menu_cap', evf_get_manage_capability(), $caps );
+	}
+
+	/**
 	 * Returns a base64 URL for the SVG for use in the menu.
 	 *
 	 * @param  bool $base64 Whether or not to return base64-encoded SVG.
@@ -59,40 +71,16 @@ class EVF_Admin_Menus {
 	 * Add menu items.
 	 */
 	public function admin_menu() {
-		add_menu_page( esc_html__( 'Everest Forms', 'everest-forms' ), esc_html__( 'Everest Forms', 'everest-forms' ), 'manage_everest_forms', 'everest-forms', null, $this->get_icon_svg(), '55.5' );
-
-		// Backward compatibility for builder page redirects.
-		if ( ! empty( $_GET['page'] ) && in_array( wp_unslash( $_GET['page'] ), array( 'everest-forms', 'edit-evf-form', 'evf-status' ), true ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-			if ( 'edit-evf-form' === $_GET['page'] ) { // phpcs:ignore WordPress.Security.NonceVerification
-				$redirect_url = admin_url( 'admin.php?page=evf-builder&create-form=1' );
-
-				if ( isset( $_GET['tab'], $_GET['form_id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-					$redirect_url = add_query_arg(
-						array(
-							'tab'     => evf_clean( wp_unslash( $_GET['tab'] ) ), // phpcs:ignore WordPress.Security.NonceVerification
-							'form_id' => absint( wp_unslash( $_GET['form_id'] ) ), // phpcs:ignore WordPress.Security.NonceVerification
-						),
-						admin_url( 'admin.php?page=evf-builder' )
-					);
-				}
-			} elseif ( 'evf-status' === $_GET['page'] ) { // phpcs:ignore WordPress.Security.NonceVerification
-				$redirect_url = str_replace( sanitize_text_field( wp_unslash( $_GET['page'] ) ), 'evf-tools', wp_unslash( $_SERVER['REQUEST_URI'] ) ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
-			} else {
-				$redirect_url = str_replace( sanitize_text_field( wp_unslash( $_GET['page'] ) ), 'evf-builder', wp_unslash( $_SERVER['REQUEST_URI'] ) ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
-			}
-
-			wp_safe_redirect( $redirect_url );
-			exit;
-		}
+		add_menu_page( esc_html__( 'Everest Forms', 'everest-forms' ), esc_html__( 'Everest Forms', 'everest-forms' ), $this->get_menu_cap( 'view_forms' ), 'everest-forms', null, $this->get_icon_svg(), '55.5' );
 	}
 
 	/**
 	 * Add menu items.
 	 */
 	public function builder_menu() {
-		$builder_page = add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Builder', 'everest-forms' ), esc_html__( 'All Forms', 'everest-forms' ), 'manage_everest_forms', 'evf-builder', array( $this, 'builder_page' ) );
+		$builder_page = add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Builder', 'everest-forms' ), esc_html__( 'All Forms', 'everest-forms' ), $this->get_menu_cap( 'view_forms' ), 'evf-builder', array( $this, 'builder_page' ) );
 
-		add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Setup', 'everest-forms' ), esc_html__( 'Add New', 'everest-forms' ), 'manage_everest_forms', 'evf-builder&create-form=1', array( $this, 'builder_page' ) );
+		add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Setup', 'everest-forms' ), esc_html__( 'Add New', 'everest-forms' ), $this->get_menu_cap( array( 'create_forms', 'edit_forms' ) ), 'evf-builder&create-form=1', array( $this, 'builder_page' ) );
 
 		add_action( 'load-' . $builder_page, array( $this, 'builder_page_init' ) );
 	}
@@ -131,7 +119,7 @@ class EVF_Admin_Menus {
 	 * Add menu item.
 	 */
 	public function entries_menu() {
-		$entries_page = add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Entries', 'everest-forms' ), esc_html__( 'Entries', 'everest-forms' ), 'manage_everest_forms', 'evf-entries', array( $this, 'entries_page' ) );
+		$entries_page = add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Entries', 'everest-forms' ), esc_html__( 'Entries', 'everest-forms' ), $this->get_menu_cap( 'view_entries' ), 'evf-entries', array( $this, 'entries_page' ) );
 		add_action( 'load-' . $entries_page, array( $this, 'entries_page_init' ) );
 	}
 
@@ -161,7 +149,7 @@ class EVF_Admin_Menus {
 	 * Add menu item.
 	 */
 	public function settings_menu() {
-		$settings_page = add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms settings', 'everest-forms' ), esc_html__( 'Settings', 'everest-forms' ), 'manage_everest_forms', 'evf-settings', array( $this, 'settings_page' ) );
+		$settings_page = add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms settings', 'everest-forms' ), esc_html__( 'Settings', 'everest-forms' ), evf_get_manage_capability(), 'evf-settings', array( $this, 'settings_page' ) );
 
 		add_action( 'load-' . $settings_page, array( $this, 'settings_page_init' ) );
 	}
@@ -200,14 +188,14 @@ class EVF_Admin_Menus {
 	 * Add menu item.
 	 */
 	public function tools_menu() {
-		add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms tools', 'everest-forms' ), esc_html__( 'Tools', 'everest-forms' ), 'manage_everest_forms', 'evf-tools', array( $this, 'tools_page' ) );
+		add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms tools', 'everest-forms' ), esc_html__( 'Tools', 'everest-forms' ), $this->get_menu_cap( array( 'create_forms', 'view_forms', 'view_entries' ) ), 'evf-tools', array( $this, 'tools_page' ) );
 	}
 
 	/**
 	 * Addons menu item.
 	 */
 	public function addons_menu() {
-		add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Add-ons', 'everest-forms' ), esc_html__( 'Add-ons', 'everest-forms' ), 'manage_everest_forms', 'evf-addons', array( $this, 'addons_page' ) );
+		add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Add-ons', 'everest-forms' ), esc_html__( 'Add-ons', 'everest-forms' ), evf_get_manage_capability(), 'evf-addons', array( $this, 'addons_page' ) );
 	}
 
 	/**

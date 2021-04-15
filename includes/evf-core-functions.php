@@ -2362,3 +2362,14 @@ function evf_process_underline_syntax( $text ) {
 function evf_process_line_breaks( $text ) {
 	return str_replace( "\n", '<br/>', $text );
 }
+
+/**
+ * Get the default capability to manage everything for Everest Forms.
+ *
+ * @since 1.7.6
+ *
+ * @return string
+ */
+function evf_get_manage_capability() {
+	return apply_filters( 'everest_forms_manage_cap', 'manage_everest_forms' );
+}
