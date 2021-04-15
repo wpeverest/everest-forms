@@ -5,6 +5,7 @@
 * Fix - Welcome page redirection on every plugin updates.
 * Fix - CSV textarea contents line break issue.
 * Fix - Form Field deletion with delete button.
+* Fix - Email Setting glitches, show hide pdf issue.
 
 
 = 1.7.4 - 11-03-2021 =
