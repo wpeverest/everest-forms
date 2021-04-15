@@ -272,8 +272,57 @@
 					message_string = '<div id="message" class="error inline everest-froms-import_notice"><p><strong>' + response.responseJSON.data.message + '</strong></p></div>';
 				}
 
-				$( '.everest-forms-import-form' ).find( 'h3' ).after( message_string );
+				$( '.everest-forms-import-form-settings' ).find( 'h3' ).after( message_string );
 				$( '#everest-forms-import' ).val( '' );
+				$( '#import-file-name' ).html( '' );
+			}
+		});
+	});
+
+	// Change span with file name when user selects a file.
+	$( '#everest-forms-global-settings-import' ).on( 'change', function(e) {
+		var file = $( '#everest-forms-global-settings-import' ).prop( 'files' )[0];
+
+		$( '#import-settings-file-name' ).html( file.name );
+	});
+	
+	// Global Settings import actions.
+	$( '.everest_forms_global_settings_import_action' ).on( 'click', function() {
+		var file_data = $( '#everest-forms-global-settings-import' ).prop( 'files' )[0],
+		form_data = new FormData();
+
+		form_data.append( 'jsonfile', file_data );
+		form_data.append( 'action', 'everest_forms_import_global_settings_action' );
+		form_data.append( 'security', everest_forms_admin.ajax_import_nonce );
+
+		$.ajax({
+			url: evf_email_params.ajax_url,
+			dataType: 'json', // JSON type is expected back from the PHP script.
+			cache: false,
+			contentType: false,
+			processData: false,
+			data: form_data,
+			type: 'POST',
+			beforeSend: function () {
+				var spinner = '<i class="evf-loading evf-loading-active"></i>';
+				$( '.everest_forms_global_settings_import_action' ).closest( '.everest_forms_global_settings_import_action' ).append( spinner );
+				$( '.everest-froms-import_notice' ).remove();
+			},
+			complete: function( response ) {
+				var message_string = '';
+
+				$( '.everest_forms_global_settings_import_action' ).closest( '.everest_forms_global_settings_import_action' ).find( '.evf-loading' ).remove();
+				$( '.everest-froms-import_notice' ).remove();
+
+				if ( true === response.responseJSON.success ) {
+					message_string = '<div id="message" class="updated inline everest-froms-import_notice"><p><strong>' + response.responseJSON.data.message + '</strong></p></div>';
+				} else {
+					message_string = '<div id="message" class="error inline everest-froms-import_notice"><p><strong>' + response.responseJSON.data.message + '</strong></p></div>';
+				}
+
+				$( '.everest-forms-import-global-settings' ).find( 'h3' ).after( message_string );
+				$( '#everest-forms-global-settings-import' ).val( '' );
+				$( '#import-settings-file-name' ).html( '' );
 			}
 		});
 	});

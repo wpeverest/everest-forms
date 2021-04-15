@@ -24,6 +24,38 @@ class EVF_Admin_Import_Export {
 	 * Exports form data along with settings in JSON format.
 	 */
 	public function export_json() {
+
+		// Global Setting
+		// Check for non empty $_POST.
+		if ( isset( $_POST['everest-forms-global-setting-export'] ) && isset( $_POST['everest-forms-global-export-nonce'] ) ) {
+
+			// Nonce check.
+			if ( ! wp_verify_nonce( wp_unslash( $_POST['everest-forms-global-export-nonce'] ), 'everest_forms_global_export_nonce' ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+				wp_die( esc_html__( 'Action failed. Please refresh the page and retry.', 'everest-forms' ) );
+			}
+
+			if ( current_user_can( 'export' ) ) {
+
+				$settings = EVF_Admin_Settings::get_global_settings();
+				if ( ! empty( $settings ) ) {
+
+					if ( ob_get_contents() ) {
+						ob_clean();
+					}
+
+					$export_json = wp_json_encode( $settings );
+					$file_name   = 'evf-global-settings-' . time() . '.json';
+					// Force download.
+					header( 'Content-Type: application/force-download' );
+					// Disposition / Encoding on response body.
+					header( "Content-Disposition: attachment;filename={$file_name}; charset=utf-8" );
+					header( 'Content-type: application/json' );
+					echo $export_json; // phpcs:ignore WordPress.Security.EscapeOutput
+				}
+			}
+			exit;
+		}
+
 		// Check for non empty $_POST.
 		if ( ! isset( $_POST['everest-forms-export-form'] ) || ! isset( $_POST['everest-forms-export-nonce'] ) ) {
 			return;
@@ -152,6 +184,49 @@ class EVF_Admin_Import_Export {
 							)
 						);
 					}
+				} else {
+					wp_send_json_error(
+						array(
+							'message' => esc_html__( 'Invalid file content. Please export file from Everest Forms plugin.', 'everest-forms' ),
+						)
+					);
+				}
+			} else {
+				wp_send_json_error(
+					array(
+						'message' => esc_html__( 'Invalid file format. Only JSON File Allowed.', 'everest-forms' ),
+					)
+				);
+			}
+		} else {
+			wp_send_json_error(
+				array(
+					'message' => esc_html__( 'Please select json file to import form data.', 'everest-forms' ),
+				)
+			);
+		}
+	}
+
+	/**
+	 * Import Global Settings from backend.
+	 */
+	public static function import_global_settings() {
+		// Check for $_FILES set or not.
+		if ( isset( $_FILES['jsonfile']['name'], $_FILES['jsonfile']['tmp_name'] ) ) {
+			$filename  = esc_html( sanitize_text_field( wp_unslash( $_FILES['jsonfile']['name'] ) ) );
+			$extension = pathinfo( $filename, PATHINFO_EXTENSION );
+			// Check for file format.
+			if ( 'json' === $extension ) {
+				$settings = json_decode( file_get_contents( $_FILES['jsonfile']['tmp_name'] ), 1 ); // @codingStandardsIgnoreLine
+				// Check for non-empty JSON file.
+				if ( ! empty( $settings ) && array_key_exists( 'general_options', $settings ) ) {
+					// Save Global Settings.
+					EVF_Admin_Settings::save_global_settings( $settings );
+					wp_send_json_success(
+						array(
+							'message' => esc_html__( 'Global Settings Imported Successfully.', 'everest-forms' ),
+						)
+					);
 				} else {
 					wp_send_json_error(
 						array(
