@@ -402,16 +402,23 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 	 * @return array
 	 */
 	protected function get_bulk_actions() {
+		$actions = array();
+
 		if ( isset( $_GET['status'] ) && 'trash' === $_GET['status'] ) { // phpcs:ignore WordPress.Security.NonceVerification
-			return array(
-				'untrash' => __( 'Restore', 'everest-forms' ),
-				'delete'  => __( 'Delete permanently', 'everest-forms' ),
+			if ( evf_current_user_can( 'delete_entries' ) ) {
+				$actions['untrash'] = esc_html__( 'Restore', 'everest-forms' );
+			}
+
+			if ( evf_current_user_can( 'edit_entries' ) ) {
+				$actions['delete'] = esc_html__( 'Delete permanently', 'everest-forms' );
+			}
+		} elseif ( evf_current_user_can( 'delete_entries' ) ) {
+			$actions = array(
+				'trash' => esc_html__( 'Move to trash', 'everest-forms' ),
 			);
 		}
 
-		return array(
-			'trash' => __( 'Move to trash', 'everest-forms' ),
-		);
+		return $actions;
 	}
 
 	/**
@@ -485,7 +492,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 	protected function extra_tablenav( $which ) {
 		$num_posts = wp_count_posts( 'everest_form', 'readable' );
 
-		if ( $num_posts->trash && isset( $_GET['status'] ) && 'trash' === $_GET['status'] && current_user_can( 'delete_posts' ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+		if ( $num_posts->trash && isset( $_GET['status'] ) && 'trash' === $_GET['status'] && evf_current_user_can( 'delete_forms' ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			echo '<div class="alignleft actions">';
 				submit_button( __( 'Empty Trash', 'everest-forms' ), 'apply', 'delete_all', false );
 			echo '</div>';
@@ -499,12 +506,19 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 		$per_page     = $this->get_items_per_page( 'evf_forms_per_page' );
 		$current_page = $this->get_pagenum();
 
+		// Get total.
+		if ( evf_current_user_can( 'everest_forms_view_others_forms' ) ) {
+			$total = wp_count_posts( 'everest_form' )->publish;
+		} else {
+			$total = count_user_posts( get_current_user_id(), 'everest_form', true );
+		}
+
 		// Query args.
 		$args = array(
-			'post_type'           => 'everest_form',
 			'posts_per_page'      => $per_page,
-			'ignore_sticky_posts' => true,
 			'paged'               => $current_page,
+			'no_found_rows'       => false,
+			'ignore_sticky_posts' => true,
 		);
 
 		// Handle the status query.
@@ -526,9 +540,9 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 		// Set the pagination.
 		$this->set_pagination_args(
 			array(
-				'total_items' => $posts->found_posts,
+				'total_items' => $total,
 				'per_page'    => $per_page,
-				'total_pages' => $posts->max_num_pages,
+				'total_pages' => ceil( $total / $per_page ),
 			)
 		);
 	}
