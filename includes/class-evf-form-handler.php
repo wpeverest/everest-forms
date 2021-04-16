@@ -31,6 +31,14 @@ class EVF_Form_Handler {
 			return false;
 		}
 
+		if ( ! isset( $args['cap'] ) ) { // TODO: Init allowed need to be added.
+			$args['cap'] = 'view_form_single';
+		}
+
+		if ( ! empty( $args['cap'] ) && ! evf_current_user_can( $args['cap'], $id ) ) {
+			return false;
+		}
+
 		if ( ! empty( $id ) ) {
 			$the_post = get_post( absint( $id ) );
 
@@ -242,17 +250,21 @@ class EVF_Form_Handler {
 	 * @internal param string $title
 	 */
 	public function update( $form_id = '', $data = array(), $args = array() ) {
-		// Check for permissions.
-		if ( ! current_user_can( apply_filters( 'everest_forms_manage_cap', 'manage_options' ) ) ) {
-			return false;
-		}
-
 		if ( empty( $data ) ) {
 			return false;
 		}
 
 		if ( empty( $form_id ) ) {
 			$form_id = $data['form_id'];
+		}
+
+		if ( ! isset( $args['cap'] ) ) {
+			$args['cap'] = 'edit_form_single';
+		}
+
+		// Check for permissions.
+		if ( ! empty( $args['cap'] ) && ! evf_current_user_can( $args['cap'], $form_id ) ) {
+			return false;
 		}
 
 		$data = wp_unslash( $data );
@@ -333,7 +345,7 @@ class EVF_Form_Handler {
 	 */
 	public function duplicate( $ids = array() ) {
 		// Check for permissions.
-		if ( ! current_user_can( apply_filters( 'everest_forms_manage_cap', 'manage_options' ) ) ) {
+		if ( ! evf_current_user_can( 'create_forms' ) ) {
 			return false;
 		}
 

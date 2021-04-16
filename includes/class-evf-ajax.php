@@ -680,7 +680,7 @@ class EVF_AJAX {
 		// Run a security check.
 		check_ajax_referer( 'everest_forms_enabled_form', 'security' );
 
-		if ( ! current_user_can( 'manage_everest_forms' ) ) {
+		if ( ! evf_current_user_can( 'edit_form_single' ) ) {
 			wp_die( -1 );
 		}
 

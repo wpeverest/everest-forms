@@ -91,7 +91,7 @@ class EVF_Admin_Menus {
 		 * - If only `create_forms` roles - dont show view all forms list table.
 		 * - If only `view_forms` roles - dont show create new template selection.
 		 */
-		if ( ! evf_current_user_can( evf_get_manage_capability() ) ) {
+		if ( ! evf_current_user_can() ) {
 			if ( ! evf_current_user_can( 'create_forms' ) ) {
 				if ( isset( $_GET['page'], $_GET['create-form'] ) && 'evf-builder' === $_GET['page'] ) { // phpcs:ignore WordPress.Security.NonceVerification
 					wp_safe_redirect( admin_url( 'admin.php?page=evf-builder' ) );
@@ -297,7 +297,7 @@ class EVF_Admin_Menus {
 	 * @return bool
 	 */
 	public function custom_menu_order( $enabled ) {
-		return $enabled || current_user_can( 'manage_everest_forms' );
+		return $enabled || evf_current_user_can();
 	}
 
 	/**

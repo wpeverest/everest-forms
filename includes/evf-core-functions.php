@@ -2388,6 +2388,6 @@ function evf_get_manage_capability() {
  *
  * @return bool
  */
-function evf_current_user_can( $caps, $id = 0 ) {
+function evf_current_user_can( $caps = array(), $id = 0 ) {
 	return apply_filters( 'everest_forms_current_user_can', current_user_can( evf_get_manage_capability() ), $caps, $id );
 }
