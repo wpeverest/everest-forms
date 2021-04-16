@@ -301,18 +301,11 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 	 * @return array
 	 */
 	protected function get_views() {
+		$class        = '';
 		$status_links = array();
-		$num_posts    = wp_count_posts( 'everest_form', 'readable' );
-		$total_posts  = array_sum( (array) $num_posts );
+		$num_posts    = array();
+		$total_posts  = count( $this->items );
 		$all_args     = array( 'page' => 'evf-builder' );
-
-		$class = '';
-
-		// Subtract post types that are not included in the admin all list.
-		$post_stati = get_post_stati( array( 'show_in_admin_all_list' => false ) );
-		foreach ( $post_stati as $state ) {
-			$total_posts -= $num_posts->$state;
-		}
 
 		if ( empty( $class ) && empty( $_REQUEST['status'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			$class = 'current';
@@ -333,10 +326,11 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 		$status_links['all'] = $this->get_edit_link( $all_args, $all_inner_html, $class );
 
 		foreach ( get_post_stati( array( 'show_in_admin_status_list' => true ), 'objects' ) as $status ) {
-			$class       = '';
-			$status_name = $status->name;
+			$class                     = '';
+			$status_name               = $status->name;
+			$num_posts[ $status_name ] = count( evf()->form->get_multiple( array( 'post_status' => $status_name ) ) );
 
-			if ( ! in_array( $status_name, array( 'publish', 'draft', 'pending', 'trash', 'future', 'private', 'auto-draft' ), true ) || empty( $num_posts->$status_name ) ) {
+			if ( ! in_array( $status_name, array( 'publish', 'draft', 'pending', 'trash', 'future', 'private', 'auto-draft' ), true ) || empty( $num_posts[ $status_name ] ) ) {
 				continue;
 			}
 
@@ -350,8 +344,8 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 			);
 
 			$status_label = sprintf(
-				translate_nooped_plural( $status->label_count, $num_posts->$status_name ),
-				number_format_i18n( $num_posts->$status_name )
+				translate_nooped_plural( $status->label_count, $num_posts[ $status_name ] ),
+				number_format_i18n( $num_posts[ $status_name ] )
 			);
 
 			$status_links[ $status_name ] = $this->get_edit_link( $status_args, $status_label, $class );
