@@ -19,6 +19,7 @@ class EVF_Admin_Forms {
 	public function __construct() {
 		add_action( 'admin_init', array( $this, 'actions' ) );
 		add_action( 'deleted_post', array( $this, 'delete_entries' ) );
+		add_filter( 'wp_untrash_post_status', array( $this, 'untrash_form_status' ), 10, 2 );
 	}
 
 	/**
@@ -263,6 +264,17 @@ class EVF_Admin_Forms {
 				$wpdb->delete( $wpdb->prefix . 'evf_entrymeta', array( 'entry_id' => $entry_id ), array( '%d' ) );
 			}
 		}
+	}
+
+	/**
+	 * Untrash form status.
+	 *
+	 * @param string $new_status      The new status of the post being restored.
+	 * @param int    $post_id         The ID of the post being restored.
+	 * @return string
+	 */
+	public function untrash_form_status( $new_status, $post_id ) {
+		return evf_current_user_can( 'edit_forms', $post_id ) ? 'publish' : $new_status;
 	}
 }
 
