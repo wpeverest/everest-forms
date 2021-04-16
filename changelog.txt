@@ -6,6 +6,7 @@
 * Fix - CSV textarea contents line break issue.
 * Fix - Form Field deletion with delete button.
 * Fix - During Form restore set the status to Publish instead of Draft.
+* Fix - Mobile container margin issue.
 
 = 1.7.4 - 11-03-2021 =
 * Fix - Hide empty select data field from entry view.
