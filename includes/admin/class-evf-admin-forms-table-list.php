@@ -521,8 +521,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 		$args['order']   = isset( $_REQUEST['order'] ) && 'ASC' === strtoupper( evf_clean( wp_unslash( $_REQUEST['order'] ) ) ) ? 'ASC' : 'DESC'; // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
 		// Get the forms.
-		$posts       = new WP_Query( $args );
-		$this->items = $posts->posts;
+		$this->items = evf()->form->get_multiple( $args );
 
 		// Set the pagination.
 		$this->set_pagination_args(
