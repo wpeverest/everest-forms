@@ -145,7 +145,15 @@
 		margin-left: 0;
 		margin-right: 0;
 	}
-
+	input[type='checkbox'],
+	input[type='radio'] {
+		&:after{
+		display: none;
+		}
+	}
+	select{
+		background-image: none;
+	}
 	.select2-container {
 		margin-bottom: 10px;
 
