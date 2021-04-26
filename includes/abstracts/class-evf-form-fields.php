@@ -1425,7 +1425,8 @@ abstract class EVF_Form_Fields {
 					$output = sprintf( '<ul class="%s">', evf_sanitize_classes( $list_class, true ) );
 
 					// Individual checkbox/radio options.
-					foreach ( $values as $value ) {
+					foreach ( $values as $key => $value ) {
+
 						$default     = isset( $value['default'] ) ? $value['default'] : '';
 						$selected    = checked( '1', $default, false );
 						$placeholder = evf()->plugin_url() . '/assets/images/everest-forms-placeholder.png';
@@ -1449,7 +1450,9 @@ abstract class EVF_Form_Fields {
 							$output .= '<span class="everest-forms-image-choices-label">' . wp_kses_post( $value['label'] ) . '</span>';
 							$output .= '</label>';
 						} else {
-							$output .= sprintf( '<input type="%s" %s disabled>%s', $type, $selected, $value['label'] );
+							// Modified by Jack Rourke
+							$form_id = (isset($_GET['form_id']) && !empty($_GET['form_id']))?$_GET['form_id']:'';
+							$output .= sprintf( '<input type="%s" %s disabled>%s - %s', $type, $selected, evf_string_translation( $form_id, $field['id'], $value['label'], '-choice-' . $key ),  evf_format_amount( evf_sanitize_amount( $value['value'] ), true ) );
 						}
 
 						$output .= '</li>';
