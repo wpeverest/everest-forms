@@ -101,7 +101,7 @@ $preview_link = add_query_arg(
 		<ul class="widefat primary-input">
 			<# _.each( data.order, function( choiceID, key ) {  #>
 				<li>
-					<input type="{{ data.type }}" disabled<# if ( 1 === data.settings.choices[choiceID].default ) { print( ' checked' ); } #>>{{{ data.settings.choices[choiceID].label }}}
+					<input type="{{ data.type }}" disabled<# if ( 1 === data.settings.choices[choiceID].default ) { print( ' checked' ); } #>>{{{ data.settings.choices[choiceID].label + ' - '+ data.amountFilter( evf_data, data.settings.choices[choiceID].value ) }}}
 				</li>
 			<# }) #>
 		</ul>
