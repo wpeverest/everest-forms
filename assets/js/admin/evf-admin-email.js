@@ -112,14 +112,14 @@
 										cloned_email.find('.evf_conditional_logic_container input[type="checkbox"]').prop('checked', false);
 										cloned_email.find('.everest-forms-attach-pdf-to-admin-email input[type="checkbox"]').prop('checked', false);
 										cloned_email.find('.everest-forms-show-header-in-attachment-pdf-file input[type="checkbox"]').prop('checked', false);
-										
+
 										cloned_email.find('.everest-forms-show-header-in-attachment-pdf-file').hide();
 										cloned_email.find('.everest-forms-show-pdf-file-name').hide();
 										cloned_email.find('.evf-field-conditional-container').hide();
 										cloned_email.find('.evf-field-conditional-wrapper li:not(:first)').remove();
 										cloned_email.find('.conditional_or:not(:first)').remove();
 										cloned_email.find('.everest-forms-email-name input').val(name);
-										
+
 										setTimeout(function() {
 											cloned_email.find('.evf-field-conditional-input').val('');
 										}, 2000);
@@ -145,14 +145,14 @@
 										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-attach_pdf_to_admin_email').val(1);
 										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-attach_pdf_to_admin_email').attr('id', 'everest-forms-panel-field-settingsemail'+response.data.connection_id+'-attach_pdf_to_admin_email');
 										cloned_email.find('label[for="everest-forms-panel-field-settingsemailconnection_1-attach_pdf_to_admin_email"]').attr('for', 'everest-forms-panel-field-settingsemail'+response.data.connection_id+'-attach_pdf_to_admin_email');
-										cloned_email.find('input[name="settings[email][connection_1][attach_pdf_to_admin_email]"]').remove();	
-																			
+										cloned_email.find('input[name="settings[email][connection_1][attach_pdf_to_admin_email]"]').remove();
+
 										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-show_header_in_attachment_pdf_file').attr('name', 'settings[email]['+response.data.connection_id+'][show_header_in_attachment_pdf_file]');
 										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-show_header_in_attachment_pdf_file').val(1);
 										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-show_header_in_attachment_pdf_file').attr('id', 'everest-forms-panel-field-settingsemail'+response.data.connection_id+'-show_header_in_attachment_pdf_file');
 										cloned_email.find('label[for="everest-forms-panel-field-settingsemailconnection_1-show_header_in_attachment_pdf_file"]').attr('for', 'everest-forms-panel-field-settingsemail'+response.data.connection_id+'-show_header_in_attachment_pdf_file');
-										cloned_email.find('input[name="settings[email][connection_1][show_header_in_attachment_pdf_file]"]').remove();										
-										
+										cloned_email.find('input[name="settings[email][connection_1][show_header_in_attachment_pdf_file]"]').remove();
+
 										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-pdf_name').attr('name', 'settings[email]['+response.data.connection_id+'][pdf_name]');
 										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-pdf_name').val(form_title);
 										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-pdf_name').attr("id", 'everest-forms-panel-field-settingsemail' + response.data.connection_id + '-pdf_name');
