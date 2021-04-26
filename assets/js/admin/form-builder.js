@@ -1019,8 +1019,7 @@
 						type:     type,
 						order:    choices,
 						settings: settings,
-						amountFormat: EVFPanelBuilder.amountFormat,
-						amountSanitize: EVFPanelBuilder.amountSanitize,
+						amountFilter: EVFPanelBuilder.amountFilter,
 					};
 
 				$( '#everest-forms-field-' + id ).find( 'ul.primary-input' ).replaceWith( tmpl( data ) );
@@ -1061,86 +1060,13 @@
 			} );
 		},
 
-		/**
-		 * Sanitize amount and convert to standard format for calculations.
-		 *
-		 * @since 1.3.0
-		 */
-		 amountSanitize: function(data, amount) {
-			amount = amount.replace( /[^0-9.,]/g, '' );
-
-			if ( ',' === data.currency_decimal && ( -1 !== amount.indexOf( data.currency_decimal ) ) ) {
-				if ( '.' === data.currency_thousands && -1 !== amount.indexOf( data.currency_thousands ) ) {;
-					amount = amount.replace( data.currency_thousands, '' );
-				} else if ( '' === data.currency_thousands && -1 !== amount.indexOf( '.' ) ) {
-					amount = amount.replace( '.', '' );
-				}
-				amount = amount.replace( data.currency_decimal, '.' );
-			} else if ( ',' === data.currency_thousands && ( -1 !== amount.indexOf( data.currency_thousands ) ) ) {
-				amount = amount.replace( data.currency_thousands, '' );
+		amountFilter: function(data, amount){
+			if ( 'right' === data.currency_symbol_pos ) {
+				singleItem = amount + ' ' + data.currency_symbol;
+			} else {
+				singleItem = data.currency_symbol + ' ' + amount;
 			}
-
-			return EVFPanelBuilder.numberFormat( amount, 2, '.', '' );
-		},
-
-		/**
-		 * Format amount.
-		 *
-		 * @since 1.3.0
-		 */
-		amountFormat: function(data, amount ) {
-			amount = String( amount );
-
-			// Format the amount.
-			if ( ',' === data.currency_decimal && ( -1 !== amount.indexOf( data.currency_decimal ) ) ) {
-				var sepFound = amount.indexOf( data.currency_decimal );
-					whole    = amount.substr( 0, sepFound );
-					part     = amount.substr( sepFound+1, amount.strlen - 1 );
-					amount   = whole + '.' + part;
-			}
-
-			// Strip ',' from the amount (if set as the thousands separator).
-			if ( ',' === data.currency_thousands && ( -1 !== amount.indexOf( data.currency_thousands ) ) ) {
-				amount = amount.replace( ',', '' );
-			}
-
-			if ( ! amount ) {
-				amount = 0;
-			}
-
-			return EVFPanelBuilder.numberFormat( amount, 2, data.currency_decimal, data.currency_thousands );
-		},
-
-		/**
-		 * Format number.
-		 *
-		 * @link http://locutus.io/php/number_format/
-		 * @since 1.3.0
-		 */
-		numberFormat: function ( number, decimals, decimalSep, thousandsSep ) {
-			number   = (number + '').replace(/[^0-9+\-Ee.]/g, '');
-			var n    = ! isFinite( +number ) ? 0 : +number;
-			var prec = ! isFinite( +decimals ) ? 0 : Math.abs(decimals);
-			var sep  = ( 'undefined' === typeof thousandsSep ) ? ',' : thousandsSep;
-			var dec  = ( 'undefined' === typeof decimalSep ) ? '.' : decimalSep;
-			var s    = '';
-
-			var toFixedFix = function ( n, prec ) {
-				var k = Math.pow( 10, prec );
-				return '' + ( Math.round(n * k) / k ).toFixed( prec )
-			};
-
-			// @todo: for IE parseFloat(0.55).toFixed(0) = 0;
-			s = ( prec ? toFixedFix( n, prec ) : '' + Math.round(n) ).split( '.' );
-			if ( s[0].length > 3 ) {
-				s[0] = s[0].replace( /\B(?=(?:\d{3})+(?!\d))/g, sep )
-			}
-			if ( (s[1] || '' ).length < prec ) {
-				s[1]  = s[1] || '';
-				s[1] += new Array( prec - s[1].length + 1 ).join( '0' );
-			}
-
-			return s.join( dec )
+			return singleItem;
 		},
 
 		bindFormSettings: function () {
