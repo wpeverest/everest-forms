@@ -92,7 +92,7 @@ $preview_link = add_query_arg(
 							<# } #>
 						</span>
 						<input type="{{ data.type }}" disabled<# if ( 1 === data.settings.choices[choiceID].default ) { print( ' checked' ); } #>>
-						<span class="everest-forms-image-choices-label">{{{ data.settings.choices[choiceID].label }}}</span>
+						<span class="everest-forms-image-choices-label">{{{ data.settings.choices[choiceID].label + ' - '+ data.amountFilter( evf_data, data.settings.choices[choiceID].value ) }}}</span>
 					</label>
 				</li>
 			<# }) #>

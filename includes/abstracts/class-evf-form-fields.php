@@ -1431,6 +1431,7 @@ abstract class EVF_Form_Fields {
 						$placeholder = evf()->plugin_url() . '/assets/images/everest-forms-placeholder.png';
 						$image_src   = ! empty( $value['image'] ) ? esc_url( $value['image'] ) : $placeholder;
 						$item_class  = array();
+						$form_id = (isset($_GET['form_id']) && !empty($_GET['form_id']))?$_GET['form_id']:'';
 
 						if ( ! empty( $value['default'] ) ) {
 							$item_class[] = 'everest-forms-selected';
@@ -1445,12 +1446,9 @@ abstract class EVF_Form_Fields {
 						if ( $choices_images ) {
 							$output .= '<label>';
 							$output .= sprintf( '<span class="everest-forms-image-choices-image"><img src="%s" alt="%s"%s></span>', $image_src, esc_attr( $value['label'] ), ! empty( $value['label'] ) ? ' title="' . esc_attr( $value['label'] ) . '"' : '' );
-							$output .= sprintf( '<input type="%s" %s disabled>', $type, $selected );
-							$output .= '<span class="everest-forms-image-choices-label">' . wp_kses_post( $value['label'] ) . '</span>';
+							$output .= sprintf( '<input type="%s" %s disabled>%s - %s', $type, $selected, evf_string_translation( $form_id, $field['id'], '<span class="everest-forms-image-choices-label">' . wp_kses_post( $value['label'] ) . '</span>', '-choice-' . $key ),  evf_format_amount( evf_sanitize_amount( $value['value'] ), true ) );
 							$output .= '</label>';
 						} else {
-							// Modified by Jack Rourke
-							$form_id = (isset($_GET['form_id']) && !empty($_GET['form_id']))?$_GET['form_id']:'';
 							$output .= sprintf( '<input type="%s" %s disabled>%s - %s', $type, $selected, evf_string_translation( $form_id, $field['id'], $value['label'], '-choice-' . $key ),  evf_format_amount( evf_sanitize_amount( $value['value'] ), true ) );
 						}
 

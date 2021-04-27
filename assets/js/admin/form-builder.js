@@ -644,7 +644,7 @@
 			});
 
 			// Updates field choices text in almost real time.
-			$builder.on( 'keyup paste focusout', '.everest-forms-field-option-row-choices input.label , .everest-forms-field-option-row-choices input.value', function(e) {
+			$builder.on( 'keyup paste focusout', '.everest-forms-field-option-row-choices input.label, .everest-forms-field-option-row-choices input.value', function(e) {
 				var list = $(this).parent().parent().parent();
 				EVFPanelBuilder.choiceUpdate( list.data( 'field-type' ), list.data( 'field-id' ) );
 			});
@@ -1061,11 +1061,10 @@
 
 		amountFilter: function(data, amount){
 			if ( 'right' === data.currency_symbol_pos ) {
-				singleItem = amount + ' ' + data.currency_symbol;
+				return amount + ' ' + data.currency_symbol;
 			} else {
-				singleItem = data.currency_symbol + ' ' + amount;
+				return data.currency_symbol + ' ' + amount;
 			}
-			return singleItem;
 		},
 
 		bindFormSettings: function () {
