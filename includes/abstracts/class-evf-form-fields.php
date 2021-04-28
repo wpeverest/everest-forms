@@ -1426,15 +1426,12 @@ abstract class EVF_Form_Fields {
 
 					// Individual checkbox/radio options.
 					foreach ( $values as $key => $value ) {
+						$form_id     = isset( $_GET['form_id'] ) ? (int) $_GET['form_id'] : ''; // phpcs:ignore WordPress.Security.NonceVerification
 						$default     = isset( $value['default'] ) ? $value['default'] : '';
 						$selected    = checked( '1', $default, false );
 						$placeholder = evf()->plugin_url() . '/assets/images/everest-forms-placeholder.png';
 						$image_src   = ! empty( $value['image'] ) ? esc_url( $value['image'] ) : $placeholder;
 						$item_class  = array();
-
-						// @codingStandardsIgnoreStart
-						$form_id     = ( isset( $_GET['form_id'] ) && ! empty( $_GET['form_id'] ) ) ? $_GET['form_id'] : '';
-						// @codingStandardsIgnoreEnd
 
 						if ( ! empty( $value['default'] ) ) {
 							$item_class[] = 'everest-forms-selected';
