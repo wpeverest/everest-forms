@@ -383,6 +383,14 @@
 								.everest-forms-field-label-inline{
 									width: calc(100% - 28px);
 								}
+								&.everest-forms-image-choices-item .everest-forms-field-label-inline{
+									width: 100%;
+									display: flex;
+									flex-wrap: wrap;
+								}
+								.everest-forms-image-choices-image{
+									margin-right: 10px;
+								}
 							}
 
 							&.everest-forms-image-choices label {
