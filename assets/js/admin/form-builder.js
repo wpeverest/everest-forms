@@ -644,7 +644,7 @@
 			});
 
 			// Updates field choices text in almost real time.
-			$builder.on( 'keyup paste focusout', '.everest-forms-field-option-row-choices input.label', function(e) {
+			$builder.on( 'keyup paste focusout', '.everest-forms-field-option-row-choices input.label, .everest-forms-field-option-row-choices input.value', function(e) {
 				var list = $(this).parent().parent().parent();
 				EVFPanelBuilder.choiceUpdate( list.data( 'field-type' ), list.data( 'field-id' ) );
 			});
@@ -1018,6 +1018,7 @@
 						type:     type,
 						order:    choices,
 						settings: settings,
+						amountFilter: EVFPanelBuilder.amountFilter,
 					};
 
 				$( '#everest-forms-field-' + id ).find( 'ul.primary-input' ).replaceWith( tmpl( data ) );
@@ -1057,6 +1058,15 @@
 				}
 			} );
 		},
+
+		amountFilter: function(data, amount){
+			if ( 'right' === data.currency_symbol_pos ) {
+				return amount + ' ' + data.currency_symbol;
+			} else {
+				return data.currency_symbol + ' ' + amount;
+			}
+		},
+
 		bindFormSettings: function () {
 			$( 'body' ).on( 'click', '.evf-setting-panel', function( e ) {
 				var data_setting_section = $(this).attr('data-section');

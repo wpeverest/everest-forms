@@ -92,7 +92,7 @@ $preview_link = add_query_arg(
 							<# } #>
 						</span>
 						<input type="{{ data.type }}" disabled<# if ( 1 === data.settings.choices[choiceID].default ) { print( ' checked' ); } #>>
-						<span class="everest-forms-image-choices-label">{{{ data.settings.choices[choiceID].label }}}</span>
+						<span class="everest-forms-image-choices-label">{{{ data.settings.choices[choiceID].label }}} <# if(( 'payment-checkbox' === data.settings.type ) || ( 'payment-multiple' === data.settings.type )) { print ( ' - ' + data.amountFilter( evf_data, data.settings.choices[choiceID].value )) }#></span>
 					</label>
 				</li>
 			<# }) #>
@@ -101,7 +101,7 @@ $preview_link = add_query_arg(
 		<ul class="widefat primary-input">
 			<# _.each( data.order, function( choiceID, key ) {  #>
 				<li>
-					<input type="{{ data.type }}" disabled<# if ( 1 === data.settings.choices[choiceID].default ) { print( ' checked' ); } #>>{{{ data.settings.choices[choiceID].label }}}
+					<input type="{{ data.type }}" disabled<# if ( 1 === data.settings.choices[choiceID].default ) { print( ' checked' ); } #>>{{{ data.settings.choices[choiceID].label }}} <# if(( 'payment-checkbox' === data.settings.type ) || ( 'payment-multiple' === data.settings.type )) { print ( ' - ' + data.amountFilter( evf_data, data.settings.choices[choiceID].value )) }#>
 				</li>
 			<# }) #>
 		</ul>
