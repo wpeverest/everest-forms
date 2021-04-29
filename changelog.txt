@@ -1,12 +1,13 @@
 == Changelog ==
 
 = 1.7.5 - xx-xx-2021 =
-* Fix - PayPal standard Redirection Issue
-* Fix - Welcome page redirection on every plugin updates.
-* Fix - CSV textarea contents line break issue.
+* Fix - Mobile container margin issue.
+* Fix - PayPal standard Redirection Issue.
 * Fix - Form Field deletion with delete button.
-* Fix - Mobile container margin issue
-
+* Fix - CSV textarea contents line break issue.
+* Fix - Welcome page redirection on every plugin updates.
+* Fix - New Email Notifications not being saved on reload.
+* Fix - New Email Notifications cloned blank for assigned values.
 
 = 1.7.4 - 11-03-2021 =
 * Fix - Hide empty select data field from entry view.
