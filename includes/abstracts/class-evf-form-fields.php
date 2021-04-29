@@ -780,11 +780,11 @@ abstract class EVF_Form_Fields {
 
 					$active_type = ! empty( $field['multiple_choices'] ) && '1' === $field['multiple_choices'] ? 'multiple' : 'single';
 					foreach ( $selection_types as $key => $selection_type ) {
-						$selection_btn[ $key ] = '<span data-selection="' . esc_attr( $key ) . '" data-type="' . esc_attr( $selection_type['type'] ) . '" class="everest-forms-btn flex ' . ( $active_type === $key ? 'is-active' : '' ) . ' ' . ( false === $licensed && 'multiple' === $key ? 'upgrade-modal' : '' ) . '" data-feature="' . esc_html__( 'Multiple selection', 'everest-forms' ) . '">' . esc_html( $selection_type['label'] ) . '</span>';
+						$selection_btn[ $key ] = '<span data-selection="' . esc_attr( $key ) . '" data-type="' . esc_attr( $selection_type['type'] ) . '" class="flex everest-forms-btn ' . ( $active_type === $key ? 'is-active' : '' ) . ' ' . ( false === $licensed && 'multiple' === $key ? 'upgrade-modal' : '' ) . '" data-feature="' . esc_html__( 'Multiple selection', 'everest-forms' ) . '">' . esc_html( $selection_type['label'] ) . '</span>';
 					}
 
 					$field_content .= sprintf(
-						'<div class="everest-forms-btn-group flex everest-forms-btn-group--inline"><input type="hidden" id="everest-forms-field-option-%1$s-multiple_choices" name="form_fields[%1$s][multiple_choices]" value="%2$s" />%3$s</div>',
+						'<div class="flex everest-forms-btn-group everest-forms-btn-group--inline"><input type="hidden" id="everest-forms-field-option-%1$s-multiple_choices" name="form_fields[%1$s][multiple_choices]" value="%2$s" />%3$s</div>',
 						esc_attr( $field['id'] ),
 						! empty( $field['multiple_choices'] ) && '1' === $field['multiple_choices'] ? 1 : 0,
 						implode( '', $selection_btn )
@@ -1425,8 +1425,7 @@ abstract class EVF_Form_Fields {
 					$output = sprintf( '<ul class="%s">', evf_sanitize_classes( $list_class, true ) );
 
 					// Individual checkbox/radio options.
-					foreach ( $values as $key => $value ) {
-						$form_id     = isset( $_GET['form_id'] ) ? (int) $_GET['form_id'] : ''; // phpcs:ignore WordPress.Security.NonceVerification
+					foreach ( $values as $value ) {
 						$default     = isset( $value['default'] ) ? $value['default'] : '';
 						$selected    = checked( '1', $default, false );
 						$placeholder = evf()->plugin_url() . '/assets/images/everest-forms-placeholder.png';
@@ -1446,16 +1445,16 @@ abstract class EVF_Form_Fields {
 						if ( $choices_images ) {
 							$output .= '<label>';
 							$output .= sprintf( '<span class="everest-forms-image-choices-image"><img src="%s" alt="%s"%s></span>', $image_src, esc_attr( $value['label'] ), ! empty( $value['label'] ) ? ' title="' . esc_attr( $value['label'] ) . '"' : '' );
+							$output .= sprintf( '<input type="%s" %s disabled>', $type, $selected );
 							if ( ( 'payment-checkbox' === $field['type'] ) || ( 'payment-multiple' === $field['type'] ) ) {
-								$output .= sprintf( '<input type="%s" %s disabled>%s - %s', $type, $selected, evf_string_translation( $form_id, $field['id'], '<span class="everest-forms-image-choices-label">' . wp_kses_post( $value['label'] ) . '</span>', '-choice-' . $key ), evf_format_amount( evf_sanitize_amount( $value['value'] ), true ) );
+								$output .= '<span class="everest-forms-image-choices-label">' . wp_kses_post( $value['label'] ) . '-' . evf_format_amount( evf_sanitize_amount( $value['value'] ), true ) . '</span>';
 							} else {
-								$output .= sprintf( '<input type="%s" %s disabled>', $type, $selected );
 								$output .= '<span class="everest-forms-image-choices-label">' . wp_kses_post( $value['label'] ) . '</span>';
 							}
 							$output .= '</label>';
 						} else {
 							if ( ( 'payment-checkbox' === $field['type'] ) || ( 'payment-multiple' === $field['type'] ) ) {
-								$output .= sprintf( '<input type="%s" %s disabled>%s - %s', $type, $selected, evf_string_translation( $form_id, $field['id'], $value['label'], '-choice-' . $key ), evf_format_amount( evf_sanitize_amount( $value['value'] ), true ) );
+								$output .= sprintf( '<input type="%s" %s disabled>%s - %s', $type, $selected, $value['label'], evf_format_amount( evf_sanitize_amount( $value['value'] ), true ) );
 							} else {
 								$output .= sprintf( '<input type="%s" %s disabled>%s', $type, $selected, $value['label'] );
 							}
