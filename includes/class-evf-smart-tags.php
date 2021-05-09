@@ -65,11 +65,29 @@ class EVF_Smart_Tags {
 		if ( ! empty( $ids[1] ) && ! empty( $fields ) ) {
 
 			foreach ( $ids[1] as $key => $field_id ) {
+				$mixed_field_id = explode( '_', $field_id );
+
 				if ( 'fullname' !== $field_id && 'email' !== $field_id && 'subject' !== $field_id && 'message' !== $field_id ) {
-					$mixed_field_id = explode( '_', $field_id );
-					$value          = ! empty( $fields[ $mixed_field_id[1] ]['value'] ) ? evf_sanitize_textarea_field( $fields[ $mixed_field_id[1] ]['value'] ) : '';
+					$value = ! empty( $fields[ $mixed_field_id[1] ]['value'] ) ? evf_sanitize_textarea_field( $fields[ $mixed_field_id[1] ]['value'] ) : '';
 				} else {
 					$value = ! empty( $fields[ $field_id ]['value'] ) ? evf_sanitize_textarea_field( $fields[ $field_id ]['value'] ) : '';
+				}
+
+				// Properly display signature field in smart tag.
+				if ( ! empty( $fields[ $mixed_field_id[1] ] ) ) {
+					if ( 'signature' === $fields[ $mixed_field_id[1] ]['type'] ) {
+						$uploads = wp_upload_dir();
+						if ( ! is_array( $value ) && false !== strpos( $value, $uploads['basedir'] ) ) {
+							$value = trailingslashit( content_url() ) . str_replace( str_replace( 'uploads', '', $uploads['basedir'] ), '', $value );
+						}
+
+						if ( ! empty( $value ) ) {
+							$value = sprintf(
+								'<img src="%s" style="width:150px;height:80px;max-height:200px;max-width:100px;"/>',
+								$value
+							);
+						}
+					}
 				}
 
 				if ( ! is_array( $value ) ) {
