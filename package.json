@@ -19,7 +19,7 @@
     "git:update-hooks": "node ./node_modules/husky/husky.js install"
   },
   "devDependencies": {
-    "@babel/core": "7.13.16",
+    "@babel/core": "7.14.0",
     "@wordpress/babel-preset-default": "5.1.0",
     "@wordpress/browserslist-config": "3.0.1",
     "autoprefixer": "9.8.6",
@@ -44,9 +44,9 @@
     "husky": "5.2.0",
     "lint-staged": "10.5.4",
     "node-sass": "5.0.0",
-    "stylelint": "13.13.0",
+    "stylelint": "13.13.1",
     "stylelint-config-wordpress": "17.0.0",
-    "webpack": "5.35.1",
+    "webpack": "5.36.2",
     "webpack-cli": "4.5.0"
   },
   "engines": {

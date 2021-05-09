@@ -145,7 +145,19 @@
 		margin-left: 0;
 		margin-right: 0;
 	}
-
+	input[type='checkbox'],
+	input[type='radio'] {
+		&:after,
+		&:before{
+		display: none;
+		}
+		&:checked::before{
+			display: none;
+		}
+	}
+	select{
+		background-image: none;
+	}
 	.select2-container {
 		margin-bottom: 10px;
 
@@ -293,8 +305,9 @@
 							input[type='checkbox'],
 							input[type='radio'] {
 								padding: 0;
-								margin-top: 6px;
+								margin-top: 4px;
 								margin-right: 8px;
+								width: 20px;
 							}
 						}
 					}
@@ -360,11 +373,23 @@
 							li {
 								display: flex;
 								margin-bottom: 5px;
+								flex-wrap: wrap;
 
 								&.everest-forms-image-choices-item {
 									input {
 										margin-top: 0;
 									}
+								}
+								.everest-forms-field-label-inline{
+									width: calc(100% - 28px);
+								}
+								&.everest-forms-image-choices-item .everest-forms-field-label-inline{
+									width: 100%;
+									display: flex;
+									flex-wrap: wrap;
+								}
+								.everest-forms-image-choices-image{
+									margin-right: 10px;
 								}
 							}
 
