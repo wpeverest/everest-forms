@@ -400,6 +400,19 @@
 					$( this ).closest( '.evf-options-presets' ).slideUp();
 				}
 			});
+			//Add toggle option for password validation and strength meter.
+			$(document.body).on( 'click', '.everest-forms-field-option-row-password_strength', function(){
+				if( $(this).find('[type="checkbox"]:first').prop( 'checked' ) ) {
+					$(this).next().find('[type="checkbox"]:first').prop('checked', false);
+					// $(this).prev().find('.everest-forms-inner-options').hide();
+				}
+			});
+			$(document.body).on( 'click', '.everest-forms-field-option-row-password_validation', function(){
+				if( $(this).find('[type="checkbox"]:first').prop( 'checked' ) ) {
+					$(this).prev().find('[type="checkbox"]:first').prop('checked', false);
+					$(this).prev().find('.everest-forms-inner-options').addClass('everest-forms-hidden');
+				}
+			});
 		},
 
 		/**
