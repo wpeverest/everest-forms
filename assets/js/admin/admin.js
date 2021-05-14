@@ -282,6 +282,210 @@
 	$('.everest-forms-btn-group .everest-forms-btn').on('click', function() {
 		$(this).siblings().removeClass('is-active')
 		$(this).addClass('is-active');
-	})
+	});
+
+	// Entries Column Management by Drag and Drop Feature and Sortable.
+	$('.everest-forms-entries-setting').on( 'click', function(e) {
+		e.preventDefault();
+
+		// Initialization of values for Active and Inactive Columns and Column Names.
+		var activeColumns = [];
+		var activeColumnNames = [];
+		var inactiveColumns = [];
+		var inactiveColumnNames = [];
+
+		// Initialization of form data to add security and action in the field.
+		var form_data = new FormData();
+		form_data.append( 'action', 'everest_forms_get_column_names' );
+		form_data.append( 'security', evf_entries_params.ajax_entries_nonce );
+		form_data.append('evf_entries_form_id' , $(this).attr('data-evf_entry_id'));
+		// Get Active and Inactive columns to display in the modal.
+		var contents = function () {
+			var self = this;
+			return $.post({
+				url: evf_entries_params.ajax_url,
+				dataType: 'json',
+				cache: true,
+				contentType: false,
+				processData: false,
+				data: form_data,
+				type: 'POST',
+				complete: function (response) {
+					var responseResult = response.responseJSON;
+					var result = '';
+
+					result += '<span class="error" id="notice-error"></span>' +
+						'<div class="wrapper_entries">' +
+						'<form class="evf_entries_setting_form">' +
+						'<div class="evf-row">' +
+						'<div class="evf-col-5">' +
+						'<label><strong>'+evf_entries_params.i18n_entries_active_column_name+'</strong></label>' +
+						'<div><ul class="evf_entries_sortableList" id="evf_entries_active_columns">';
+
+					$.each(responseResult.active_columns, function(index, value){
+						delete responseResult.active_columns['indicators'];
+						result += '<div><li id="'+index+'"><input type="hidden" name="evf_entries_active_columns['+index+']" value="'+value+'"><label>'+value+'</label></li><button type="button" class="evf_single_btn_inactivate" id="'+index+'" value="'+value+'"><i class="btn-info dashicons dashicons-minus"></i></button></div>';
+					});
+
+					result += '</ul></div></div><div class="evf-col-2"><ul><li><button type="button" id="evf_entries_active_button">'+evf_entries_params.i18n_entries_active_column_button+'</button></li>' +
+						'<li><button type="button" id="evf_entries_inactive_button">'+evf_entries_params.i18n_entries_inactive_column_button+'</i></button</li></ul>' +
+						'</div><div class="evf-col-5"><label><strong>'+evf_entries_params.i18n_entries_inactive_column_name+'</strong></label>' +
+						'<div><div><ul class="evf_entries_sortableList" id="evf_entries_inactive_columns">';
+
+					$.each(responseResult.all_columns, function(index, value){
+						delete responseResult.all_columns['indicators'];
+						if(responseResult.all_columns[index]!=responseResult.active_columns[index]){
+							result += '<div><button type="button" class="evf_single_btn_activate" id="'+index+'" value="'+value+'"><i class="btn-info dashicons dashicons-plus"></i></button><li id="'+index+'"><input type="hidden" name="evf_entries_inactive_columns['+index+']" value="'+value+'"><label>'+value+'</label></li></div>';
+						}
+					});
+					result += '</ul><input type="hidden" id="evf_entries_form_id" name="evf_entries_form_id" value="'+responseResult.evf_entries_form_id+'"></div></div></div></form</div>';
+					self.setContentAppend(result);
+				},
+			});
+		};
+
+		// Pop Modal box to show list of Active and Inactive Columns.
+		$.confirm({
+			title: evf_entries_params.i18n_entries_entries_title,
+			content: contents,
+			useBootstrap: false,
+			escapeKey: true,
+			theme: "modern",
+			boxWidth: "800px",
+			buttons: {
+				formSubmit: {
+					text: evf_entries_params.i18n_entries_submit,
+					btnClass: "btn-blue evf_entries_save_action",
+					action: function () {
+						var form_data = new FormData();
+						var form_inputs = $('#evf_entries_active_columns li :input').serializeArray();
+
+						form_data.append( 'action', 'everest_forms_column_entries_submission' );
+						form_data.append( 'security', evf_entries_params.ajax_entries_nonce );
+						form_data.append('evf_entries_form_id' , $('#evf_entries_form_id').val());
+						$.each(form_inputs, function (i, field_value) {
+							form_data.append(field_value.name, field_value.value);
+						});
+						$.ajax({
+							url: evf_entries_params.ajax_url,
+							dataType: 'json',
+							cache: false,
+							contentType: false,
+							processData: false,
+							data: form_data,
+							type: 'POST',
+							beforeSend: function () {
+								var spinner = '<i class="evf-loading evf-loading-active"></i>';
+								$( '.evf_entries_save_action' ).closest( '.evf_entries_save_action' ).append( spinner );
+							},
+							complete: function( response ) {
+								location.reload();
+							}
+						});
+					},
+				},
+				cancel: {
+					text: evf_entries_params.i18n_entries_cancel,
+					action: function () {
+						location.reload();
+					}
+				},
+			},
+			onContentReady: function(){
+				// Load sortable for drag and drop only after content is ready.
+				$('.evf_entries_sortableList').sortable();
+			}
+		});
+
+		// Events for Managing Column movement to Active and Inactive Columns.
+		$('body').on('click', '#evf_entries_inactive_columns li', function(event){
+			var arrayInactiveColumns = [];
+			// Convert Object to array.
+			arrayInactiveColumns = $.map($(this), function(value, index){
+				return [value.id];
+			});
+
+			// If the column does not exist in the array, pushes the column into the array else remove it if the column name clicked again.
+			if($.inArray(arrayInactiveColumns.toString(), inactiveColumns) === -1){
+				inactiveColumns.push(arrayInactiveColumns.toString());
+				inactiveColumnNames.push($(this).text());
+				$(this).css('background-color', '#EFEFEF');
+			}else{
+				inactiveColumns = inactiveColumns.filter(index => index !== arrayInactiveColumns.toString());
+				inactiveColumnNames = inactiveColumnNames.filter(index => index !== $(this).text());
+				$(this).css('background-color', '');
+			}
+		});
+
+		// Click event when active column lists are clicked to select the required column name.
+		$('body').on('click', '#evf_entries_active_columns li', function(event){
+			var arrayActiveColumns = [];
+			// Convert Object to array.
+			arrayActiveColumns = $.map($(this), function(value, index){
+				return [value.id];
+			});
+
+			// If the column does not exist in the array, pushes the column into the array else remove it if the column name clicked again.
+			if($.inArray(arrayActiveColumns.toString(), activeColumns) === -1){
+				activeColumns.push(arrayActiveColumns.toString());
+				activeColumnNames.push($(this).text());
+				$(this).css('background-color', '#EFEFEF');
+			}else{
+				activeColumns = activeColumns.filter(index => index !== arrayActiveColumns.toString());
+				activeColumnNames = activeColumnNames.filter(index => index !== $(this).text());
+				$(this).css('background-color', '');
+			}
+		});
+
+		// Click button event to transfer inactive columns to active columns.
+		$('body').on('click', '#evf_entries_active_button', function(){
+			$active_columns = $('#evf_entries_active_columns');
+			$inactive_columns = $('#evf_entries_inactive_columns');
+
+			$.each(inactiveColumns, function(i, obj){
+				$active_columns.append('<div><li id="'+inactiveColumns[i]+'"><label><input type="hidden" name="evf_entries_active_columns['+inactiveColumns[i]+']" value="'+inactiveColumnNames[i]+'"/><label>'+inactiveColumnNames[i]+'</label></li><button type="button" class="evf_single_btn_inactivate" id="'+inactiveColumns[i]+'" value="'+inactiveColumnNames[i]+'"><i class="btn-info dashicons dashicons-minus"></i></button></div>');
+				$inactive_columns.find('#'+inactiveColumns[i]).remove();
+			});
+			inactiveColumns = [];
+			inactiveColumnNames = [];
+		});
+
+		// Click button event to transfer active columns to inactive columns.
+		$('body').on('click', '#evf_entries_inactive_button', function(){
+			$inactive_columns = $('#evf_entries_inactive_columns');
+			$active_columns = $('#evf_entries_active_columns');
+
+			$.each(activeColumns, function(i, obj){
+				$inactive_columns.append('<div><button type="button" class="evf_single_btn_activate" id="'+activeColumns[i]+'" value="'+activeColumnNames[i]+'"><i class="btn-info dashicons dashicons-plus"></i></button><li id="'+activeColumns[i]+'"><label><input type="hidden" name="evf_entries_inactive_columns['+activeColumns[i]+']" value="'+activeColumnNames[i]+'"/><label>'+activeColumnNames[i]+'</label></li></div>');
+				$active_columns.find('#'+activeColumns[i]).remove();
+			});
+			activeColumns = [];
+			activeColumnNames = [];
+		});
+
+		// Click button event for single lists to inactivate.
+		$('body').on('click', '.evf_single_btn_inactivate', function(){
+			var active_list_id = $(this).attr('id');
+			var active_list_value = $(this).attr('value');
+
+			$inactive_columns = $('#evf_entries_inactive_columns');
+			$active_columns = $('#evf_entries_active_columns');
+
+			$inactive_columns.append('<div><button type="button" class="evf_single_btn_activate" id="'+active_list_id+'" value="'+active_list_value+'"><i class="btn-info dashicons dashicons-plus"></i></button><li id="'+active_list_id+'"><label><input type="hidden" name="evf_entries_inactive_columns['+active_list_id+']" value="'+active_list_value+'"/><label>'+active_list_value+'</label></li></div>');
+			$active_columns.find('#'+active_list_id).remove();
+		});
+
+		// Click button event for single lists to inactivate.
+		$('body').on('click', '.evf_single_btn_activate', function(){
+			var inactive_list_id = $(this).attr('id');
+			var inactive_list_value = $(this).attr('value');
+
+			$active_columns = $('#evf_entries_active_columns');
+			$inactive_columns = $('#evf_entries_inactive_columns');
+
+			$active_columns.append('<div><li id="'+inactive_list_id+'"><label><input type="hidden" name="evf_entries_active_columns['+inactive_list_id+']" value="'+inactive_list_value+'"/><label>'+inactive_list_value+'</label></li><button type="button" class="evf_single_btn_inactivate" id="'+inactive_list_id+'" value="'+inactive_list_value+'"><i class="btn-info dashicons dashicons-minus"></i></button></div>');
+			$inactive_columns.find('#'+inactive_list_id).remove();
+		});
+	});
 
 })( jQuery, everest_forms_admin );

@@ -82,21 +82,23 @@ class EVF_AJAX {
 	 */
 	public static function add_ajax_events() {
 		$ajax_events = array(
-			'save_form'               => false,
-			'create_form'             => false,
-			'get_next_id'             => false,
-			'install_extension'       => false,
-			'integration_connect'     => false,
-			'new_email_add'           => false,
-			'integration_disconnect'  => false,
-			'deactivation_notice'     => false,
-			'rated'                   => false,
-			'review_dismiss'          => false,
-			'enabled_form'            => false,
-			'import_form_action'      => false,
-			'template_licence_check'  => false,
-			'template_activate_addon' => false,
-			'ajax_form_submission'    => true,
+			'save_form'                 => false,
+			'create_form'               => false,
+			'get_next_id'               => false,
+			'install_extension'         => false,
+			'integration_connect'       => false,
+			'new_email_add'             => false,
+			'integration_disconnect'    => false,
+			'deactivation_notice'       => false,
+			'rated'                     => false,
+			'review_dismiss'            => false,
+			'enabled_form'              => false,
+			'import_form_action'        => false,
+			'template_licence_check'    => false,
+			'template_activate_addon'   => false,
+			'get_column_names'          => false,
+			'column_entries_submission' => false,
+			'ajax_form_submission'      => true,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -701,6 +703,84 @@ class EVF_AJAX {
 		try {
 			check_ajax_referer( 'process-import-ajax-nonce', 'security' );
 			EVF_Admin_Import_Export::import_form();
+		} catch ( Exception $e ) {
+			wp_send_json_error(
+				array(
+					'message' => $e->getMessage(),
+				)
+			);
+		}
+	}
+
+	/**
+	 * Get Column Names Dynamically to show in the Modal
+	 */
+	public static function get_column_names() {
+		try {
+			// check nonce security of form after submission.
+			check_ajax_referer( 'process-entries-ajax-nonce', 'security' );
+
+			// get form_id, form_data and column names.
+			$form_id   = isset( $_POST['evf_entries_form_id'] ) ? absint( $_POST['evf_entries_form_id'] ) : 0;
+			$form_data = evf()->form->get( absint( $form_id ), array( 'content_only' => true ) );
+
+			// get the column list to show in the form.
+			$all_columns    = EVF_Admin_Entries_Table_List::get_all_columns( $form_id, $form_data );
+			$active_columns = EVF_Admin_Entries_Table_List::get_active_columns( $form_id, $form_data );
+			wp_send_json(
+				array(
+					'all_columns'         => $all_columns,
+					'active_columns'      => $active_columns,
+					'evf_entries_form_id' => $form_id,
+				)
+			);
+		} catch ( Exception $e ) {
+			wp_send_json_error(
+				array(
+					'message' => $e->getMessage(),
+				)
+			);
+		}
+	}
+
+	/**
+	 * Sortable Column Submission Form ajax.
+	 */
+	public static function column_entries_submission() {
+		try {
+			if ( ! isset( $_POST['evf_entries_active_columns'] ) ) {
+				wp_die( -1 );
+			}
+			// Check nonce security of form after submission.
+			check_ajax_referer( 'process-entries-ajax-nonce', 'security' );
+
+			// Get form_id, form_data and column names.
+			$form_id   = isset( $_POST['evf_entries_form_id'] ) ? absint( $_POST['evf_entries_form_id'] ) : 0;
+			$form_data = evf()->form->get( absint( $form_id ), array( 'content_only' => true ) );
+			$columns   = EVF_Admin_Entries_Table_List::get_all_columns( $form_id, $form_data );
+
+			// Get the column value to update in the field.
+			$active_column_value = str_replace( 'evf_field_', '', array_flip( wp_unslash( $_POST['evf_entries_active_columns'] ) ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			$active_column_value = array_keys( array_flip( $active_column_value ) );
+
+			// Get post_content of the form for the column name updates.
+			$form_columns = get_post_field( 'post_content', $form_id );
+			$result       = 0;
+			if ( evf_is_json( $form_columns ) ) {
+				$field_value = json_decode( $form_columns, true );
+				unset( $field_value['entry_column_meta'] );
+				$form_columns                        = $field_value;
+				$active_columns['entry_column_meta'] = $active_column_value;
+				$form_new_data                       = array_merge( $form_columns, $active_columns );
+				$result                              = evf()->form->update( $form_id, $form_new_data );
+			}
+			if ( $form_id === $result ) {
+				wp_send_json_success(
+					array(
+						'message' => esc_html__( 'Columns has been updated Successfully.', 'everest-forms' ),
+					)
+				);
+			}
 		} catch ( Exception $e ) {
 			wp_send_json_error(
 				array(

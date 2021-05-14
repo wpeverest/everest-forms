@@ -210,6 +210,23 @@ class EVF_Admin_Assets {
 					'i18n_form_export_action_error' => esc_html__( 'Please select a form which you want to export.', 'everest-forms' ),
 				)
 			);
+
+			// Localize scripts for entries table for sortable modal box.
+			wp_localize_script(
+				'everest-forms-admin',
+				'evf_entries_params',
+				array(
+					'i18n_entries_entries_title'          => esc_html__( 'Adjust Columns in Entries Table', 'everest-forms' ),
+					'i18n_entries_submit'                 => esc_html__( 'Submit', 'everest-forms' ),
+					'i18n_entries_cancel'                 => esc_html__( 'Cancel', 'everest-forms' ),
+					'i18n_entries_active_column_name'     => esc_html__( 'Active Column', 'everest-forms' ),
+					'i18n_entries_inactive_column_name'   => esc_html__( 'InActive Column', 'everest-forms' ),
+					'i18n_entries_active_column_button'   => esc_html__( '<i class="dashicons dashicons-arrow-left-alt"></i> Active', 'everest-forms' ),
+					'i18n_entries_inactive_column_button' => esc_html__( 'InActive <i class="dashicons dashicons-arrow-right-alt"></i>', 'everest-forms' ),
+					'ajax_entries_nonce'                  => wp_create_nonce( 'process-entries-ajax-nonce' ),
+					'ajax_url'                            => admin_url( 'admin-ajax.php', 'relative' ),
+				)
+			);
 		}
 
 		// EverestForms builder pages.

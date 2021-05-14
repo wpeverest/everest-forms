@@ -100,13 +100,140 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 * @return array
 	 */
 	public function get_columns() {
-		$columns            = array();
-		$columns['cb']      = '<input type="checkbox" />';
-		$columns            = apply_filters( 'everest_forms_entries_table_form_fields_columns', $this->get_columns_form_fields( $columns ), $this->form_id, $this->form_data );
+		$columns       = array();
+		$columns['cb'] = '<input type="checkbox" />';
+		/**
+		 * Check if meta value for everest_form CPT in post_content column.
+		 * If the value exists, show below code for apply_filters('everest_forms_entries_table_form_fields_columns').
+		 * Else Show columns from meta value for everest_form CPT in post_content column.
+		 */
+		$form_columns = get_post_field( 'post_content', $this->form_id );
+		if ( evf_is_json( $form_columns ) ) {
+			$field_value  = json_decode( $form_columns, true );
+			$form_columns = isset( $field_value['entry_column_meta'] ) ? $field_value['entry_column_meta'] : '';
+		}
+		// Check if the columns are sorted or not. (Check array key in post_content if exists or not).
+		if ( ! empty( $form_columns ) ) {
+			$columns = apply_filters( 'everest_forms_entries_table_form_fields_columns', self::get_sorted_columns_form_fields( $columns, $form_columns, $this->form_id, $this->form_data ) );
+		} else {
+			$columns = apply_filters( 'everest_forms_entries_table_form_fields_columns', self::get_entries_columns_form_fields( $columns, $this->form_id, $this->form_data ) );
+		}
 		$columns['date']    = esc_html__( 'Date Created', 'everest-forms' );
 		$columns['actions'] = esc_html__( 'Actions', 'everest-forms' );
+		$columns['more']    = __( '<a href="#" data-evf_entry_id = ' . $this->form_id . ' class="everest-forms-entries-setting" title="More Options"><i class="dashicons dashicons-admin-generic"></i></a>', 'everest-forms' ); // @codingStandardsIgnoreLine
 
 		return apply_filters( 'everest_forms_entries_table_columns', $columns, $this->form_data );
+	}
+
+	/**
+	 * Get More Options to alter the columns
+	 *
+	 * @param int   $form_id Get Form ID.
+	 * @param mixed $form_data Get form Data.
+	 */
+	public static function get_all_columns( $form_id, $form_data ) {
+		$columns = array();
+		$columns = apply_filters( 'everest_forms_entries_table_form_fields_columns', self::get_entries_columns_form_fields( $columns, $form_id, $form_data, 99 ) );
+		return apply_filters( 'everest_forms_entries_table_columns', $columns, $form_data );
+	}
+
+	/**
+	 * Get all active columns
+	 *
+	 * @param int   $form_id Get Form ID.
+	 * @param mixed $form_data Get Form Data.
+	 */
+	public static function get_active_columns( $form_id, $form_data ) {
+		$columns      = array();
+		$form_columns = get_post_field( 'post_content', $form_id );
+		if ( evf_is_json( $form_columns ) ) {
+			$field_value  = json_decode( $form_columns, true );
+			$form_columns = isset( $field_value['entry_column_meta'] ) ? $field_value['entry_column_meta'] : '';
+		}
+		if ( ! empty( $form_columns ) ) {
+			$columns = apply_filters( 'everest_forms_entries_table_form_fields_columns', self::get_sorted_columns_form_fields( $columns, $form_columns, $form_id, $form_data ) );
+		} else {
+			$columns = apply_filters( 'everest_forms_entries_table_form_fields_columns', self::get_entries_columns_form_fields( $columns, $form_id, $form_data ) );
+		}
+		return apply_filters( 'everest_forms_entries_table_columns', $columns, $form_data );
+	}
+
+	/**
+	 * Logic to determine which fields are displayed in the table columns.
+	 *
+	 * @param array $columns Get Columns List.
+	 * @param int   $form_id Get Form ID.
+	 * @param mixed $form_data Get Form Data.
+	 * @param int   $display Parameter to show max number of columns.
+	 *
+	 * @return array
+	 */
+	public static function get_entries_columns_form_fields( $columns = array(), $form_id, $form_data, $display = 3 ) {
+		$entry_columns = evf()->form->get_meta( $form_id, 'entry_columns' );
+
+		if ( ! $entry_columns && ! empty( $form_data['form_fields'] ) ) {
+			$x = 0;
+			foreach ( $form_data['form_fields'] as $id => $field ) {
+				if ( ! in_array( $field['type'], self::get_columns_form_disallowed_fields(), true ) && $x < $display ) {
+					$columns[ 'evf_field_' . $id ] = ! empty( $field['label'] ) ? wp_strip_all_tags( $field['label'] ) : esc_html__( 'Field', 'everest-forms' );
+					$x++;
+				}
+			}
+		} elseif ( ! empty( $entry_columns ) ) {
+			foreach ( $entry_columns as $id ) {
+				// Check to make sure the field as not been removed.
+				if ( empty( $form_data['form_fields'][ $id ] ) ) {
+					continue;
+				}
+
+				$columns[ 'evf_field_' . $id ] = ! empty( $form_data['form_fields'][ $id ]['label'] ) ? wp_strip_all_tags( $form_data['form_fields'][ $id ]['label'] ) : esc_html__( 'Field', 'everest-forms' );
+			}
+		}
+
+		return $columns;
+	}
+
+	/**
+	 * Logic to determine which fields are displayed in the table columns.
+	 *
+	 * @param array $columns Gets all the columns list.
+	 * @param array $form_columns Column names for the filter to show on the table.
+	 * @param int   $form_id Get Form ID.
+	 * @param mixed $form_data Get Form Data.
+	 */
+	public static function get_sorted_columns_form_fields( $columns = array(), $form_columns, $form_id, $form_data ) {
+		$entry_columns = evf()->form->get_meta( $form_id, 'entry_columns' );
+
+		if ( ! $entry_columns && ! empty( $form_data['form_fields'] ) ) {
+			$x         = 0;
+			$form_data = $form_data['form_fields'];
+
+			// Select only Activated Columns with values from all Columns after filtered.
+			$form_columns = array_reduce(
+				$form_columns,
+				function( $previous, $current ) use ( $form_data ) {
+					$previous[ $current ] = $form_data[ $current ];
+					return $previous;
+				}
+			);
+			// Loop through only Activated Columns to show in the Table.
+			foreach ( $form_columns as $id => $field ) {
+				if ( ! in_array( $field['type'], self::get_columns_form_disallowed_fields(), true ) ) {
+					$columns[ 'evf_field_' . $id ] = ! empty( $field['label'] ) ? wp_strip_all_tags( $field['label'] ) : esc_html__( 'Field', 'everest-forms' );
+					$x++;
+				}
+			}
+		} elseif ( ! empty( $entry_columns ) ) {
+			foreach ( $entry_columns as $id ) {
+				// Check to make sure the field as not been removed.
+				if ( empty( $form_data['form_fields'][ $id ] ) ) {
+					continue;
+				}
+
+				$columns[ 'evf_field_' . $id ] = ! empty( $form_data['form_fields'][ $id ]['label'] ) ? wp_strip_all_tags( $form_data['form_fields'][ $id ]['label'] ) : esc_html__( 'Field', 'everest-forms' );
+			}
+		}
+		return $columns;
 	}
 
 	/**
