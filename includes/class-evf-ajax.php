@@ -725,12 +725,14 @@ class EVF_AJAX {
 			$form_data = evf()->form->get( absint( $form_id ), array( 'content_only' => true ) );
 
 			// get the column list to show in the form.
-			$all_columns    = EVF_Admin_Entries_Table_List::get_all_columns( $form_id, $form_data );
-			$active_columns = EVF_Admin_Entries_Table_List::get_active_columns( $form_id, $form_data );
+			$all_columns      = EVF_Admin_Entries_Table_List::get_all_columns( $form_id, $form_data );
+			$active_columns   = EVF_Admin_Entries_Table_List::get_active_columns( $form_id, $form_data );
+			$inactive_columns = array_diff( $all_columns, $active_columns );
+
 			wp_send_json(
 				array(
-					'all_columns'         => $all_columns,
-					'active_columns'      => $active_columns,
+					'inactive_columns'    => array_filter( $inactive_columns ),
+					'active_columns'      => array_filter( $active_columns ),
 					'evf_entries_form_id' => $form_id,
 				)
 			);
