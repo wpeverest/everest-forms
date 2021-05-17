@@ -443,7 +443,7 @@
 		$inactive_columns = $( '#evf_entries_inactive_columns' );
 
 		$.each( inactiveColumns, function( i, obj ){
-			$active_columns.append( '<div><li id="' + inactiveColumns[ i ] + '"><label><input type="hidden" name="evf_entries_active_columns[' + inactiveColumns[ i ] + ']" value="' + inactiveColumnNames[ i ] + '"/><label>' + inactiveColumnNames[ i ] + '</label></li><button type="button" class="evf_single_btn_inactivate" id="' + inactiveColumns[ i ] + '" value="' + inactiveColumnNames[ i ] + '"><i class="btn-info dashicons dashicons-minus"></i></button></div>' );
+			$active_columns.append( '<div><li id="' + inactiveColumns[ i ] + '"><input type="hidden" name="evf_entries_active_columns[' + inactiveColumns[ i ] + ']" value="' + inactiveColumnNames[ i ] + '"/><label>' + inactiveColumnNames[ i ] + '</label></li><button type="button" class="evf_single_btn_inactivate" id="' + inactiveColumns[ i ] + '" value="' + inactiveColumnNames[ i ] + '"><i class="btn-info dashicons dashicons-minus"></i></button></div>' );
 			$inactive_columns.find( '#' + inactiveColumns[ i ] ).remove();
 		});
 		inactiveColumns = [];
@@ -456,7 +456,7 @@
 		$active_columns = $('#evf_entries_active_columns');
 
 		$.each(activeColumns, function(i, obj){
-			$inactive_columns.append( '<div><button type="button" class="evf_single_btn_activate" id="' + activeColumns[ i ] + '" value="' + activeColumnNames[ i ] + '"><i class="btn-info dashicons dashicons-plus"></i></button><li id="' + activeColumns[ i ] + '"><label><input type="hidden" name="evf_entries_inactive_columns[' + activeColumns[ i ] + ']" value="' + activeColumnNames[ i ] + '"/><label>' + activeColumnNames[ i ] + '</label></li></div>' );
+			$inactive_columns.append( '<div><button type="button" class="evf_single_btn_activate" id="' + activeColumns[ i ] + '" value="' + activeColumnNames[ i ] + '"><i class="btn-info dashicons dashicons-plus"></i></button><li id="' + activeColumns[ i ] + '"><input type="hidden" name="evf_entries_inactive_columns[' + activeColumns[ i ] + ']" value="' + activeColumnNames[ i ] + '"/><label>' + activeColumnNames[ i ] + '</label></li></div>' );
 			$active_columns.find( '#' + activeColumns[ i ] ).remove();
 		});
 		activeColumns = [];
@@ -471,11 +471,12 @@
 		$inactive_columns = $( '#evf_entries_inactive_columns' );
 		$active_columns = $( '#evf_entries_active_columns' );
 
-		$inactive_columns.append( '<div><button type="button" class="evf_single_btn_activate" id="' + active_list_id + '" value="' + active_list_value + '"><i class="btn-info dashicons dashicons-plus"></i></button><li id="' + active_list_id + '"><label><input type="hidden" name="evf_entries_inactive_columns[' + active_list_id + ']" value="' + active_list_value + '"/><label>' + active_list_value + '</label></li></div>' );
-		$active_columns.find( '#' + active_list_id ).remove();
+		$inactive_columns.append( '<div><button type="button" class="evf_single_btn_activate" id="' + active_list_id + '" value="' + active_list_value + '"><i class="btn-info dashicons dashicons-plus"></i></button><li id="' + active_list_id + '"><input type="hidden" name="evf_entries_inactive_columns[' + active_list_id + ']" value="' + active_list_value + '"/><label>' + active_list_value + '</label></li></div>' );
+		$active_columns.find( 'li#' + active_list_id ).remove();
+		$active_columns.find( 'button#' + active_list_id ).remove();
 	});
 
-	// Click button event for single lists to inactivate.
+	// Click li event for single lists to inactivate.
 	$( 'body' ).on( 'click', '.evf_single_btn_activate', function() {
 		var inactive_list_id = $( this ).attr( 'id' );
 		var inactive_list_value = $( this ).attr( 'value' );
@@ -483,8 +484,9 @@
 		$active_columns = $( '#evf_entries_active_columns' );
 		$inactive_columns = $( '#evf_entries_inactive_columns' );
 
-		$active_columns.append( '<div><li id="' + inactive_list_id + '"><label><input type="hidden" name="evf_entries_active_columns[' + inactive_list_id + ']" value="' + inactive_list_value + '"/><label>' + inactive_list_value + '</label></li><button type="button" class="evf_single_btn_inactivate" id="' + inactive_list_id + '" value="' + inactive_list_value + '"><i class="btn-info dashicons dashicons-minus"></i></button></div>' );
-		$inactive_columns.find( '#' + inactive_list_id ).remove();
+		$active_columns.append( '<div><li id="' + inactive_list_id + '"><input type="hidden" name="evf_entries_active_columns[' + inactive_list_id + ']" value="' + inactive_list_value + '"/><label>' + inactive_list_value + '</label></li><button type="button" class="evf_single_btn_inactivate" id="' + inactive_list_id + '" value="' + inactive_list_value + '"><i class="btn-info dashicons dashicons-minus"></i></button></div>' );
+		$inactive_columns.find( 'li#' + inactive_list_id ).remove();
+		$inactive_columns.find( 'button#' + inactive_list_id ).remove();
 	});
 
 })( jQuery, everest_forms_admin );
