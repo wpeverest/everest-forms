@@ -2,13 +2,14 @@
  * _fonts.scss
  * Custom EverestForms fonts.
  */
-@font-face {
+
+  @font-face {
 	font-family: 'EverestForms';
-	src:  url('../fonts/EverestForms.eot?te5e0w');
-	src:  url('../fonts/EverestForms.eot?te5e0w#iefix') format('embedded-opentype'),
-	  url('../fonts/EverestForms.ttf?te5e0w') format('truetype'),
-	  url('../fonts/EverestForms.woff?te5e0w') format('woff'),
-	  url('../fonts/EverestForms.svg?te5e0w#EverestForms') format('svg');
+	src:  url('../fonts/EverestForms.eot?mlgtdc');
+	src:  url('../fonts/EverestForms.eot?mlgtdc#iefix') format('embedded-opentype'),
+	  url('../fonts/EverestForms.ttf?mlgtdc') format('truetype'),
+	  url('../fonts/EverestForms.woff?mlgtdc') format('woff'),
+	  url('../fonts/EverestForms.svg?mlgtdc#EverestForms') format('svg');
 	font-weight: normal;
 	font-style: normal;
 	font-display: block;
