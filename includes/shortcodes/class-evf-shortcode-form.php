@@ -179,7 +179,7 @@ class EVF_Shortcode_Form {
 	 * @param array $form_data Form data.
 	 */
 	public static function label( $field, $form_data ) {
-		
+
 		$label = $field['properties']['label'];
 
 		// If the label is empty or disabled don't proceed.
@@ -187,7 +187,22 @@ class EVF_Shortcode_Form {
 			return;
 		}
 
-		$required    = $label['required'] ? apply_filters( 'everest_forms_field_required_label', '<abbr class="required" title="' . esc_attr__( 'Required', 'everest-forms' ) . '">*</abbr>' ) : '';
+		switch ( $field['required-field-type'] ) {
+			case 'default':
+				$required_type = 'Required';
+				break;
+			case 'asterisk':
+				$required_type = '*';
+				break;
+			case 'custom_text':
+				$required_type = $field['required-field-type-text'];
+				break;
+			default:
+				$required_type = '*';
+				break;
+		}
+
+		$required    = $label['required'] ? apply_filters( 'everest_forms_field_required_label', '<abbr class="required" title="' . esc_attr__( 'Required', 'everest-forms' ) . '">' . $required_type . '</abbr>' ) : '';
 		$custom_tags = apply_filters( 'everest_forms_field_custom_tags', false, $field, $form_data );
 
 		printf(
@@ -329,10 +344,10 @@ class EVF_Shortcode_Form {
 					}
 
 					$should_display_field = apply_filters( "everest_forms_should_display_field_{$field['type']}", true, $field, $form_data );
-                    
+
 					if ( true !== $should_display_field ) {
-                        continue;
-                    }
+						continue;
+					}
 
 					// Get field attributes.
 					$attributes = self::get_field_attributes( $field, $form_data );
