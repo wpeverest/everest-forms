@@ -20,7 +20,7 @@ class EVF_Field_Divider extends EVF_Form_Fields {
 		$this->name   = esc_html__( 'Divider', 'everest-forms' );
 		$this->type   = 'divider';
 		$this->icon   = 'evf-icon evf-icon-divider';
-		$this->order  = 85;
+		$this->order  = 87;
 		$this->group  = 'advanced';
 		$this->is_pro = true;
 
