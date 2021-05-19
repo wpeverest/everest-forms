@@ -3,7 +3,7 @@
  * Divider field.
  *
  * @package EverestForms\Fields
- * @since   1.2.0
+ * @since   1.7.5
  */
 
 defined( 'ABSPATH' ) || exit;
