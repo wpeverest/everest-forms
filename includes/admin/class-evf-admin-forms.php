@@ -184,6 +184,10 @@ class EVF_Admin_Forms {
 				$this->empty_trash();
 			}
 
+			if ( isset( $_REQUEST['action'] ) && 'delete_permanently' === $_REQUEST['action'] ) { // phpcs:ignore WordPress.Security.NonceVerification
+				$this->delete_permanently();
+			}
+
 			// Duplicate form.
 			if ( isset( $_REQUEST['action'] ) && 'duplicate_form' === $_REQUEST['action'] ) { // phpcs:ignore WordPress.Security.NonceVerification
 				$this->duplicate_form();
@@ -221,6 +225,24 @@ class EVF_Admin_Forms {
 			sprintf( _n( '%d form permanently deleted.', '%d forms permanently deleted.', $count, 'everest-forms' ), $count ),
 			'updated'
 		);
+	}
+	/**
+	 * Empty Trash.
+	 */
+	private function delete_permanently() {
+		if ( empty( $_REQUEST['form_id'] ) ) {
+			wp_die( esc_html__( 'No form to duplicate has been supplied!', 'everest-forms' ) );
+		}
+
+		$form_id = isset( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : '';
+
+		check_admin_referer( 'everest-forms-delete-form_' . $form_id );
+
+		$deleted_id = evf()->form->delete( $form_id );
+
+		// Redirect to the edit screen for the new form page.
+		wp_safe_redirect( admin_url( 'admin.php?page=evf-builder' ) );
+		exit;
 	}
 
 	/**
