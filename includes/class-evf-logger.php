@@ -29,6 +29,13 @@ class EVF_Logger implements EVF_Logger_Interface {
 	protected $threshold;
 
 	/**
+	 * Enabled/Disabled Log.
+	 *
+	 * @var string yes/no options for log enable.
+	 */
+	protected $status;
+
+	/**
 	 * Constructor for the logger.
 	 *
 	 * @param array  $handlers Optional. Array of log handlers. If $handlers is not provided, the filter 'everest_forms_register_log_handlers' will be used to define the handlers. If $handlers is provided, the filter will not be applied and the handlers will be used directly.
@@ -71,6 +78,7 @@ class EVF_Logger implements EVF_Logger_Interface {
 
 		$this->handlers  = $register_handlers;
 		$this->threshold = $threshold;
+		$this->status    = get_option( 'everest_forms_enable_log', 'no' );
 	}
 
 	/**
@@ -128,6 +136,11 @@ class EVF_Logger implements EVF_Logger_Interface {
 	 * @param array  $context Optional. Additional information for log handlers.
 	 */
 	public function log( $level, $message, $context = array() ) {
+		// Check Log is disabled.
+		if ( 'no' === $this->status ) {
+			return false;
+		}
+
 		if ( ! EVF_Log_Levels::is_valid_level( $level ) ) {
 			/* translators: 1: EVF_Logger::log 2: level */
 			evf_doing_it_wrong( __METHOD__, sprintf( __( '%1$s was called with an invalid level "%2$s".', 'everest-forms' ), '<code>EVF_Logger::log</code>', $level ), '1.2' );
