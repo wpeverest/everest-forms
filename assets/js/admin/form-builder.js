@@ -353,6 +353,7 @@
 			EVFPanelBuilder.bindSyncedInputActions();
 			EVFPanelBuilder.init_datepickers();
 			EVFPanelBuilder.bindBulkOptionActions();
+			EVFPanelBuilder.bindChangeDateStyles();
 
 			// Fields Panel.
 			EVFPanelBuilder.bindUIActionsFields();
@@ -2158,6 +2159,62 @@
 					$( sync_targets ).text( changed_value );
 				}
 			});
+		},
+
+		/** 
+		 * Change Date Styles.
+		 * Show date settings based on selected date style.
+		 */
+		bindChangeDateStyles: function() {
+			EVFPanelBuilder.changeDateTimeSetting( $( '.everest-forms-field-option-row-datetime_style select' ) );
+			EVFPanelBuilder.changeTimeInterval( $( '.everest-forms-field-option-row-time_interval_format [id*=enable_min_max_time]' ) );
+			
+			$( 'body' ).on( 'change', '.everest-forms-field-option-row-datetime_style select', function(){
+				EVFPanelBuilder.changeDateTimeSetting( this );
+			});
+
+			$( 'body' ).on( 'click', '.everest-forms-field-option-row-time_interval_format [id*=enable_min_max_time]', function() {
+				EVFPanelBuilder.changeTimeInterval(this);
+			} )
+		},
+
+		changeDateTimeSetting: function ( el ) {
+			if( $( el ).val() == 'picker' ) {
+				// Dropdown Date Setting Control
+				$('.everest-forms-field-option-row-placeholder').show();
+				$('.everest-forms-field-option-row-date_format .everest-forms-disable-dates' ).show();
+				$('label[for=' + $('.everest-forms-field-option-row-date_format .everest-forms-disable-dates' ).attr('id') + ']').show();
+				$('.everest-forms-field-option-row-date_format .everest-forms-checklist' ).show();
+				$('.everest-forms-field-option-row-date_format .time_interval' ).show();	
+				$('.everest-forms-field-option-row-date_format [id*=date_localization]' ).show();	
+				$('.everest-forms-field-option-row-date_format [for*=date_localization]' ).show();	
+			} else {
+				// Dropdown Date Setting Control
+				$('.everest-forms-field-option-row-placeholder').hide();
+				$('.everest-forms-field-option-row-date_format .everest-forms-disable-dates' ).hide();
+				$('label[for=' + $('.everest-forms-field-option-row-date_format .everest-forms-disable-dates' ).attr('id') + ']').hide();
+				$('.everest-forms-field-option-row-date_format .everest-forms-checklist' ).hide();
+				$('.everest-forms-field-option-row-time_interval_format  .time_interval' ).hide();
+				$('.everest-forms-field-option-row-date_format [id*=date_localization]' ).hide();	
+				$('.everest-forms-field-option-row-date_format [for*=date_localization]' ).hide();
+			}
+		},
+		changeTimeInterval: function( el ) {
+			if( $( el ).prop('checked') ) {
+				$( '.everest-forms-field-option-row-time_interval_format [id*=min_time_hour]' ).show();
+				$( '.everest-forms-field-option-row-time_interval_format [id*=min_time_minute]' ).show();
+				$( '.everest-forms-field-option-row-time_interval_format [id*=max_time_hour]' ).show();
+				$( '.everest-forms-field-option-row-time_interval_format [id*=max_time_minute]' ).show();
+				$( '.everest-forms-field-option-row-time_interval_format [for*=select_min_time]' ).show();
+				$( '.everest-forms-field-option-row-time_interval_format [for*=select_max_time]' ).show();
+			} else {
+				$( '.everest-forms-field-option-row-time_interval_format [id*=min_time_hour]' ).hide();
+				$( '.everest-forms-field-option-row-time_interval_format [id*=min_time_minute]' ).hide();
+				$( '.everest-forms-field-option-row-time_interval_format [id*=max_time_hour]' ).hide();
+				$( '.everest-forms-field-option-row-time_interval_format [id*=max_time_minute]' ).hide();
+				$( '.everest-forms-field-option-row-time_interval_format [for*=select_min_time]' ).hide();
+				$( '.everest-forms-field-option-row-time_interval_format [for*=select_max_time]' ).hide();
+			}
 		}
 	};
 

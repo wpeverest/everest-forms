@@ -151,42 +151,47 @@ class EVF_Frontend_Scripts {
 	private static function register_scripts() {
 		$suffix           = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		$register_scripts = array(
-			'inputmask'                     => array(
+			'inputmask'                       => array(
 				'src'     => self::get_asset_url( 'assets/js/inputmask/jquery.inputmask.bundle' . $suffix . '.js' ),
 				'deps'    => array( 'jquery' ),
 				'version' => '4.0.0-beta.58',
 			),
-			'flatpickr'                     => array(
+			'flatpickr'                       => array(
 				'src'     => self::get_asset_url( 'assets/js/flatpickr/flatpickr' . $suffix . '.js' ),
 				'deps'    => array( 'jquery' ),
 				'version' => '4.6.3',
 			),
-			'mailcheck'                     => array(
+			'mailcheck'                       => array(
 				'src'     => self::get_asset_url( 'assets/js/mailcheck/mailcheck' . $suffix . '.js' ),
 				'deps'    => array( 'jquery' ),
 				'version' => '1.1.2',
 			),
-			'selectWoo'                     => array(
+			'selectWoo'                       => array(
 				'src'     => self::get_asset_url( 'assets/js/selectWoo/selectWoo.full' . $suffix . '.js' ),
 				'deps'    => array( 'jquery' ),
 				'version' => '1.0.8',
 			),
-			'jquery-validate'               => array(
+			'jquery-validate'                 => array(
 				'src'     => self::get_asset_url( 'assets/js/jquery-validate/jquery.validate' . $suffix . '.js' ),
 				'deps'    => array( 'jquery' ),
 				'version' => '1.19.2',
 			),
-			'everest-forms'                 => array(
+			'everest-forms'                   => array(
 				'src'     => self::get_asset_url( 'assets/js/frontend/everest-forms' . $suffix . '.js' ),
 				'deps'    => array( 'jquery', 'inputmask', 'jquery-validate' ),
 				'version' => EVF_VERSION,
 			),
-			'everest-forms-text-limit'      => array(
+			'everest-forms-text-limit'        => array(
 				'src'     => self::get_asset_url( 'assets/js/frontend/text-limit' . $suffix . '.js' ),
 				'deps'    => array(),
 				'version' => EVF_VERSION,
 			),
-			'everest-forms-ajax-submission' => array(
+			'everest-forms-dropdown-calendar' => array(
+				'src'     => self::get_asset_url( 'assets/js/dropdown-calendar/dropdown-calendar' . $suffix . '.js' ),
+				'deps'    => array(),
+				'version' => EVF_VERSION,
+			),
+			'everest-forms-ajax-submission'   => array(
 				'src'     => self::get_asset_url( 'assets/js/frontend/ajax-submission' . $suffix . '.js' ),
 				'deps'    => array( 'jquery', 'inputmask', 'jquery-validate' ),
 				'version' => EVF_VERSION,
@@ -202,14 +207,20 @@ class EVF_Frontend_Scripts {
 	 */
 	private static function register_styles() {
 		$register_styles = array(
-			'select2'   => array(
+			'select2'           => array(
 				'src'     => self::get_asset_url( 'assets/css/select2.css' ),
 				'deps'    => array(),
 				'version' => EVF_VERSION,
 				'has_rtl' => false,
 			),
-			'flatpickr' => array(
+			'flatpickr'         => array(
 				'src'     => self::get_asset_url( 'assets/css/flatpickr.css' ),
+				'deps'    => array(),
+				'version' => EVF_VERSION,
+				'has_rtl' => false,
+			),
+			'dropdown-calendar' => array(
+				'src'     => self::get_asset_url( 'assets/css/dropdown-calendar.css' ),
 				'deps'    => array(),
 				'version' => EVF_VERSION,
 				'has_rtl' => false,
