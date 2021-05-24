@@ -4,7 +4,8 @@ jQuery( function ( $ ) {
 	'use strict';
     var evf_calender = {
         init: function() {
-            $( '.date-dropdown-field' ).each( function() {
+            $( '.date-dropdown-field').each( function() {
+               
                 evf_calender.create_select($(this));
             });
 
@@ -15,34 +16,34 @@ jQuery( function ( $ ) {
         },
 
         create_select: function (el) {
-            el.hide();
+            //el.hide();
             var inputData  	 = $( el ).data();
             var maxYear = new Date().getFullYear(), minYear = maxYear-100;
             var maxMonth, minMonth, maxDay, minDay;
             var minMinute, minHour, maxMinute, maxHour;
             var id = el.attr('id');
-
+            el.parent().append('<div class="evf-calendar-dropdown-wrap"> <div class="evf-calendar-dropdown-list-wrap"></div> </div>');
             if( inputData.dateTime == 'date' || inputData.dateTime == 'date-time' ) {
                 //Load Default
-                var years = '<select id="evf-calander-select-years-' + id + '">' + evf_calender.years( 'option', minYear, maxYear) + '</select>';
-                el.parent().append(years);
-
-                var months = '<select id="evf-calander-select-months-' + id + '">' + evf_calender.months( 'option', minMonth, minYear, maxMonth, maxYear, el) + '</select>';
-                el.parent().append(months);
-
-                var days = '<select id="evf-calander-select-days-' + id + '">' + evf_calender.days( 'option', minDay, minMonth, minYear, maxDay, maxMonth, maxYear, el) + '</select>';
-                el.parent().append(days);
+                var years = '<ul id="evf-calander-select-years-' + id + '">' + evf_calender.years( 'li', minYear, maxYear) + '</ul>';
+                el.parent().find('.evf-calendar-dropdown-list-wrap').append(years);
+                
+                var months = '<ul id="evf-calander-select-months-' + id + '">' + evf_calender.months( 'li', minMonth, minYear, maxMonth, maxYear, el) + '</ul>';
+                el.parent().find('.evf-calendar-dropdown-list-wrap').append(months);
+                
+                var days = '<ul id="evf-calander-select-days-' + id + '">' + evf_calender.days( 'li', minDay, minMonth, minYear, maxDay, maxMonth, maxYear, el) + '</ul>';
+                el.parent().find('.evf-calendar-dropdown-list-wrap').append(days);
             }
 
             if( inputData.dateTime == 'time' || inputData.dateTime == 'date-time' ) {
                 //Load Default
                 var timeFormat = inputData.timeFormat;
-                var hours = '<select id="evf-calander-select-hours-' + id + '">' + evf_calender.hours( 'option', minHour, maxHour, timeFormat) + '</select>';
-                el.parent().append(hours);
-                var minutes = '<select id="evf-calander-select-minutes-' + id + '">' + evf_calender.minutes( 'option', minMinute, maxMinute, minHour, maxHour, el) + '</select>';
-                el.parent().append(minutes);
+                var hours = '<ul id="evf-calander-select-hours-' + id + '">' + evf_calender.hours( 'li', minHour, maxHour, timeFormat) + '</ul>';
+                el.parent().find('.evf-calendar-dropdown-list-wrap').append(hours);
+                var minutes = '<ul id="evf-calander-select-minutes-' + id + '">' + evf_calender.minutes( 'li', minMinute, maxMinute, minHour, maxHour, el) + '</ul>';
+                el.parent().find('.evf-calendar-dropdown-list-wrap').append(minutes);
             }
-
+            el.parent().find('.evf-calendar-dropdown-wrap').append('<button class='evf-btn-calendar'>ok</button>');
             evf_calender.refresh_select(el, null);
             //Chack Options
 
@@ -92,11 +93,11 @@ jQuery( function ( $ ) {
 
                     var dateDefault = inputData.dateDefault;
 
-                    el.parent().find( '[id*=evf-calander-select-years]' ).html( evf_calender.years( 'option', minYear, maxYear ) );
+                    el.parent().find( '[id*=evf-calander-select-years]' ).html( evf_calender.years( 'li', minYear, maxYear ) );
 
-                    el.parent().find( '[id*=evf-calander-select-months]' ).html( evf_calender.months( 'option', minMonth, minYear, maxMonth, maxYear, el ) );
+                    el.parent().find( '[id*=evf-calander-select-months]' ).html( evf_calender.months( 'li', minMonth, minYear, maxMonth, maxYear, el ) );
         
-                    el.parent().find('[id*=evf-calander-select-days]').html( evf_calender.days( 'option', minDay, minMonth, minYear, maxDay, maxMonth, maxYear, el ) );    
+                    el.parent().find('[id*=evf-calander-select-days]').html( evf_calender.days( 'li', minDay, minMonth, minYear, maxDay, maxMonth, maxYear, el ) );    
                 
                     if( dateDefault == true ) {
                         el.parent().find( '[id*=evf-calander-select-years]' ).val( new Date().getFullYear() )
@@ -105,11 +106,11 @@ jQuery( function ( $ ) {
                     }
 
                 } else if (select.match(/select-years/)) {
-                    el.parent().find( '[id*=evf-calander-select-months]' ).html( evf_calender.months( 'option', minMonth, minYear, maxMonth, maxYear, el ) );
+                    el.parent().find( '[id*=evf-calander-select-months]' ).html( evf_calender.months( 'li', minMonth, minYear, maxMonth, maxYear, el ) );
         
-                    el.parent().find('[id*=evf-calander-select-days]').html( evf_calender.days( 'option', minDay, minMonth, minYear, maxDay, maxMonth, maxYear, el ) );    
+                    el.parent().find('[id*=evf-calander-select-days]').html( evf_calender.days( 'li', minDay, minMonth, minYear, maxDay, maxMonth, maxYear, el ) );    
                 } else if (select.match(/select-months/)) {   
-                    el.parent().find('[id*=evf-calander-select-days]').html( evf_calender.days( 'option', minDay, minMonth, minYear, maxDay, maxMonth, maxYear, el ) );    
+                    el.parent().find('[id*=evf-calander-select-days]').html( evf_calender.days( 'li', minDay, minMonth, minYear, maxDay, maxMonth, maxYear, el ) );    
                 }
 
                 selectedYear = el.parent().find( '[id*=evf-calander-select-years]' ).val();
@@ -122,10 +123,10 @@ jQuery( function ( $ ) {
             if( inputData.dateTime == 'time' || inputData.dateTime == 'date-time' ) {
                 
                 if(select == null) {
-                    el.parent().find('[id*=evf-calander-select-hours]').html( evf_calender.hours( 'option', minHour, maxHour, timeFormat ) );
-                    el.parent().find('[id*=evf-calander-select-minutes]').html( evf_calender.minutes( 'option', minMinute, maxMinute, minHour, maxHour, el ) );
+                    el.parent().find('[id*=evf-calander-select-hours]').html( evf_calender.hours( 'li', minHour, maxHour, timeFormat ) );
+                    el.parent().find('[id*=evf-calander-select-minutes]').html( evf_calender.minutes( 'li', minMinute, maxMinute, minHour, maxHour, el ) );
                 } else if (select.match(/select-hours/)) {
-                    el.parent().find('[id*=evf-calander-select-minutes]').html( evf_calender.minutes( 'option', minMinute, maxMinute, minHour, maxHour, el ) );
+                    el.parent().find('[id*=evf-calander-select-minutes]').html( evf_calender.minutes( 'li', minMinute, maxMinute, minHour, maxHour, el ) );
                 }
                 selectedHour = el.parent().find( '[id*=evf-calander-select-hours]' ).val();
                 selectedMinute = el.parent().find( '[id*=evf-calander-select-minutes]' ).val();
@@ -199,7 +200,7 @@ jQuery( function ( $ ) {
             }		
             return years;
         },
-
+        
         hours: function( tag = '', start = 0, end = 23, format = 'g:i A' ) {
             var hours = '', i, hour, period;
             if(format == 'g:i A') {

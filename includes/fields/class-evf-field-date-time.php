@@ -825,6 +825,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 		}
 
 		if ( ! wp_script_is( 'dropdown-calendar' ) ) {
+			wp_enqueue_style( 'everest-forms-dropdown-calendar' );
 			wp_enqueue_script( 'everest-forms-dropdown-calendar' );
 		}
 	}

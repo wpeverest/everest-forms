@@ -219,7 +219,7 @@ class EVF_Frontend_Scripts {
 				'version' => EVF_VERSION,
 				'has_rtl' => false,
 			),
-			'dropdown-calendar' => array(
+			'everest-forms-dropdown-calendar' => array(
 				'src'     => self::get_asset_url( 'assets/css/dropdown-calendar.css' ),
 				'deps'    => array(),
 				'version' => EVF_VERSION,
