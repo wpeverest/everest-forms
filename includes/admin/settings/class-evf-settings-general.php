@@ -51,7 +51,7 @@ class EVF_Settings_General extends EVF_Settings_Page {
 				),
 				array(
 					'title'   => esc_html__( 'Enable Log', 'everest-forms' ),
-					'desc'    => esc_html__( 'Enable storing the logs for all forms.', 'everest-forms' ),
+					'desc'    => esc_html__( 'Enable storing the logs.', 'everest-forms' ),
 					'id'      => 'everest_forms_enable_log',
 					'default' => 'no',
 					'type'    => 'checkbox',
