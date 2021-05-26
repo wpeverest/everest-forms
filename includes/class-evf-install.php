@@ -564,9 +564,9 @@ CREATE TABLE {$wpdb->prefix}evf_sessions (
 	 * Create default contact form.
 	 */
 	public static function create_forms() {
-		$form_count = wp_count_posts( 'everest_form' );
+		$forms_count = wp_count_posts( 'everest_form' );
 
-		if ( empty( $form_count->publish ) ) {
+		if ( empty( $forms_count->publish ) ) {
 			include_once dirname( __FILE__ ) . '/templates/contact.php';
 
 			// Create a form.
