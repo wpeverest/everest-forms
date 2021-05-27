@@ -112,6 +112,8 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 		$output .= '</strong>';
 
 		// Get actions.
+		$actions = array();
+
 		if ( current_user_can( $post_type_object->cap->edit_post, $posts->ID ) && 'trash' !== $post_status ) {
 			$actions['edit']    = '<a href="' . esc_url( $edit_link ) . '">' . __( 'Edit', 'everest-forms' ) . '</a>';
 			$actions['entries'] = '<a href="' . esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $posts->ID ) ) . '">' . __( 'Entries', 'everest-forms' ) . '</a>';

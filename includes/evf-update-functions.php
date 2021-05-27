@@ -302,3 +302,59 @@ function evf_update_150_db_version() {
 function evf_update_160_db_version() {
 	EVF_Install::update_db_version( '1.6.0' );
 }
+
+/**
+ * Update core capabilities.
+ */
+function evf_update_175_remove_capabilities() {
+	global $wp_roles;
+
+	if ( ! class_exists( 'WP_Roles' ) ) {
+		return;
+	}
+
+	if ( ! isset( $wp_roles ) ) {
+		$wp_roles = new WP_Roles(); // @codingStandardsIgnoreLine
+	}
+
+	$capability_types = array( 'everest_form' );
+
+	foreach ( $capability_types as $capability_type ) {
+		$capabilities[ $capability_type ] = array(
+			// Post type.
+			"edit_{$capability_type}",
+			"read_{$capability_type}",
+			"delete_{$capability_type}",
+			"edit_{$capability_type}s",
+			"edit_others_{$capability_type}s",
+			"publish_{$capability_type}s",
+			"read_private_{$capability_type}s",
+			"delete_{$capability_type}s",
+			"delete_private_{$capability_type}s",
+			"delete_published_{$capability_type}s",
+			"delete_others_{$capability_type}s",
+			"edit_private_{$capability_type}s",
+			"edit_published_{$capability_type}s",
+
+			// Terms.
+			"manage_{$capability_type}_terms",
+			"edit_{$capability_type}_terms",
+			"delete_{$capability_type}_terms",
+			"assign_{$capability_type}_terms",
+		);
+	}
+
+	// Remove unused core capabilities.
+	foreach ( $capabilities as $cap_group ) {
+		foreach ( $cap_group as $cap ) {
+			$wp_roles->remove_cap( 'administrator', $cap );
+		}
+	}
+}
+
+/**
+ * Update DB Version.
+ */
+function evf_update_175_db_version() {
+	EVF_Install::update_db_version( '1.7.5' );
+}
