@@ -128,6 +128,11 @@ class EVF_Logger implements EVF_Logger_Interface {
 	 * @param array  $context Optional. Additional information for log handlers.
 	 */
 	public function log( $level, $message, $context = array() ) {
+		// Check Log is disabled.
+		if ( 'no' === get_option( 'everest_forms_enable_log', 'no' ) ) {
+			return false;
+		}
+
 		if ( ! EVF_Log_Levels::is_valid_level( $level ) ) {
 			/* translators: 1: EVF_Logger::log 2: level */
 			evf_doing_it_wrong( __METHOD__, sprintf( __( '%1$s was called with an invalid level "%2$s".', 'everest-forms' ), '<code>EVF_Logger::log</code>', $level ), '1.2' );

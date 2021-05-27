@@ -12,6 +12,7 @@
 * Fix - Empty checkboxes value in view entry form details.
 * Fix - Stop default form creation when ThemeGrill Demo Importer plugin is active.
 * Fix - Payment Multiple choices and checkboxes fields amount preview in form builder area.
+* Enhancement - Enable/Disable log.
 
 = 1.7.4 - 11-03-2021 =
 * Fix - Hide empty select data field from entry view.
