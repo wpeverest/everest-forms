@@ -223,7 +223,7 @@
 }
 .evf-icon{
 	&.evf-icon-{
-	&-captcha::before {
+	&captcha::before {
 		content: '\e004';
 	}
 	&password::before {
@@ -238,7 +238,7 @@
 	&flag::before {
 		content: '\e00a';
 	}
-	first-name::before {
+	&first-name::before {
 		content: '\e00d';
 	}
 	&last-name::before {
@@ -321,3 +321,4 @@
 	}
   }
 }
+

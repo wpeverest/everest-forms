@@ -2,7 +2,7 @@
  * _fonts.scss
  * Custom EverestForms fonts.
  */
-  @font-face {
+@font-face {
 	font-family: 'EverestForms';
 	src:  url('../fonts/EverestForms.eot?q9mcqj');
 	src:  url('../fonts/EverestForms.eot?q9mcqj#iefix') format('embedded-opentype'),
@@ -26,8 +26,6 @@
 		display: block;
 	}
 }
-
-
 /**
  * Headings
  **/
