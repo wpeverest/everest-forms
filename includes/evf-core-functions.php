@@ -1143,7 +1143,7 @@ function evf_get_all_forms( $skip_disabled_entries = false ) {
 			$entries   = evf_get_entries_ids( $form_id );
 			$form_data = ! empty( $form->post_content ) ? evf_decode( $form->post_content ) : '';
 
-			if ( ( $skip_disabled_entries && count( $entries ) < 1 ) && ( isset( $form_data['settings']['disabled_entries'] ) && '1' === $form_data['settings']['disabled_entries'] ) ) {
+			if ( ! $form || ( $skip_disabled_entries && count( $entries ) < 1 ) && ( isset( $form_data['settings']['disabled_entries'] ) && '1' === $form_data['settings']['disabled_entries'] ) ) {
 				continue;
 			}
 

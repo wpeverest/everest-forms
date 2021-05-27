@@ -35,6 +35,7 @@ class EVF_Admin_Menus {
 
 		add_action( 'admin_head', array( $this, 'menu_highlight' ) );
 		add_action( 'admin_head', array( $this, 'custom_menu_count' ) );
+		add_action( 'admin_head', array( $this, 'hide_submenu_items' ) );
 		add_filter( 'custom_menu_order', array( $this, 'custom_menu_order' ) );
 		add_filter( 'set-screen-option', array( $this, 'set_screen_option' ), 11, 3 );
 	}
@@ -59,42 +60,38 @@ class EVF_Admin_Menus {
 	 * Add menu items.
 	 */
 	public function admin_menu() {
-		add_menu_page( esc_html__( 'Everest Forms', 'everest-forms' ), esc_html__( 'Everest Forms', 'everest-forms' ), 'manage_everest_forms', 'everest-forms', null, $this->get_icon_svg(), '55.5' );
-
-		// Backward compatibility for builder page redirects.
-		if ( ! empty( $_GET['page'] ) && in_array( wp_unslash( $_GET['page'] ), array( 'everest-forms', 'edit-evf-form', 'evf-status' ), true ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-			if ( 'edit-evf-form' === $_GET['page'] ) { // phpcs:ignore WordPress.Security.NonceVerification
-				$redirect_url = admin_url( 'admin.php?page=evf-builder&create-form=1' );
-
-				if ( isset( $_GET['tab'], $_GET['form_id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-					$redirect_url = add_query_arg(
-						array(
-							'tab'     => evf_clean( wp_unslash( $_GET['tab'] ) ), // phpcs:ignore WordPress.Security.NonceVerification
-							'form_id' => absint( wp_unslash( $_GET['form_id'] ) ), // phpcs:ignore WordPress.Security.NonceVerification
-						),
-						admin_url( 'admin.php?page=evf-builder' )
-					);
-				}
-			} elseif ( 'evf-status' === $_GET['page'] ) { // phpcs:ignore WordPress.Security.NonceVerification
-				$redirect_url = str_replace( sanitize_text_field( wp_unslash( $_GET['page'] ) ), 'evf-tools', wp_unslash( $_SERVER['REQUEST_URI'] ) ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
-			} else {
-				$redirect_url = str_replace( sanitize_text_field( wp_unslash( $_GET['page'] ) ), 'evf-builder', wp_unslash( $_SERVER['REQUEST_URI'] ) ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
-			}
-
-			wp_safe_redirect( $redirect_url );
-			exit;
-		}
+		add_menu_page( esc_html__( 'Everest Forms', 'everest-forms' ), esc_html__( 'Everest Forms', 'everest-forms' ), 'everest_forms_read_forms', 'everest-forms', null, $this->get_icon_svg(), '55.5' );
 	}
 
 	/**
 	 * Add menu items.
 	 */
 	public function builder_menu() {
-		$builder_page = add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Builder', 'everest-forms' ), esc_html__( 'All Forms', 'everest-forms' ), 'manage_everest_forms', 'evf-builder', array( $this, 'builder_page' ) );
+		$builder_page = add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Builder', 'everest-forms' ), esc_html__( 'All Forms', 'everest-forms' ), current_user_can( 'everest_forms_create_forms' ) ? 'everest_forms_create_forms' : 'everest_forms_read_forms', 'evf-builder', array( $this, 'builder_page' ) );
 
-		add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Setup', 'everest-forms' ), esc_html__( 'Add New', 'everest-forms' ), 'manage_everest_forms', 'evf-builder&create-form=1', array( $this, 'builder_page' ) );
+		add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Setup', 'everest-forms' ), esc_html__( 'Add New', 'everest-forms' ), current_user_can( 'everest_forms_create_forms' ) ? 'everest_forms_create_forms' : 'everest_forms_edit_forms', 'evf-builder&create-form=1', array( $this, 'builder_page' ) );
 
 		add_action( 'load-' . $builder_page, array( $this, 'builder_page_init' ) );
+
+		/*
+		 * Page redirects based on user's capability as 'All Forms' and 'Add New' both have same handle.
+		 *
+		 * - If only `everest_forms_create_forms` roles - dont show view all forms list table.
+		 * - If only `everest_forms_read_forms` roles - dont show create new template selection.
+		 */
+		if ( ! current_user_can( 'manage_everest_forms' ) ) {
+			if ( ! current_user_can( 'everest_forms_create_forms' ) ) {
+				if ( isset( $_GET['page'], $_GET['create-form'] ) && 'evf-builder' === $_GET['page'] ) { // phpcs:ignore WordPress.Security.NonceVerification
+					wp_safe_redirect( admin_url( 'admin.php?page=evf-builder' ) );
+					exit;
+				}
+			} elseif ( ! current_user_can( 'everest_forms_read_forms' ) ) {
+				if ( ! isset( $_GET['create-form'] ) && ( ! empty( $_GET['page'] ) && 'evf-builder' === $_GET['page'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+					wp_safe_redirect( admin_url( 'admin.php?page=evf-builder&create-form=1' ) );
+					exit;
+				}
+			}
+		}
 	}
 
 	/**
@@ -131,7 +128,7 @@ class EVF_Admin_Menus {
 	 * Add menu item.
 	 */
 	public function entries_menu() {
-		$entries_page = add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Entries', 'everest-forms' ), esc_html__( 'Entries', 'everest-forms' ), 'manage_everest_forms', 'evf-entries', array( $this, 'entries_page' ) );
+		$entries_page = add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Entries', 'everest-forms' ), esc_html__( 'Entries', 'everest-forms' ), 'everest_forms_read_entries', 'evf-entries', array( $this, 'entries_page' ) );
 		add_action( 'load-' . $entries_page, array( $this, 'entries_page_init' ) );
 	}
 
@@ -232,13 +229,51 @@ class EVF_Admin_Menus {
 	public function custom_menu_count() {
 		global $submenu;
 
+		// Add count if user has access.
 		if ( isset( $submenu['everest-forms'] ) ) {
-			// Remove 'Everest Forms' sub menu item.
-			unset( $submenu['everest-forms'][0] );
-
-			// Add count if user has access.
 			if ( apply_filters( 'everest_forms_include_count_in_menu', true ) && current_user_can( 'manage_everest_forms' ) ) {
 				do_action( 'everest_forms_custom_menu_count' );
+			}
+		}
+	}
+
+	/**
+	 * Hide submenu menu item if a user can't access.
+	 *
+	 * @since 1.7.5
+	 */
+	public function hide_submenu_items() {
+		global $submenu;
+
+		if ( ! isset( $submenu['everest-forms'] ) ) {
+			return;
+		}
+
+		// Remove 'Everest Forms' sub menu item.
+		foreach ( $submenu['everest-forms'] as $key => $item ) {
+			if ( isset( $item[2] ) && 'everest-forms' === $item[2] ) {
+				unset( $submenu['everest-forms'][ $key ] );
+				break;
+			}
+		}
+
+		// Remove 'All Forms' sub menu item if a user can't read forms.
+		if ( ! current_user_can( 'everest_forms_read_forms' ) ) {
+			foreach ( $submenu['everest-forms'] as $key => $item ) {
+				if ( isset( $item[2] ) && 'evf-builder' === $item[2] ) {
+					unset( $submenu['everest-forms'][ $key ] );
+					break;
+				}
+			}
+		}
+
+		// Remove 'Add New' sub menu item if a user can't create forms.
+		if ( ! current_user_can( 'everest_forms_create_forms' ) ) {
+			foreach ( $submenu['everest-forms'] as $key => $item ) {
+				if ( isset( $item[2] ) && 'evf-builder&create-form=1' === $item[2] ) {
+					unset( $submenu['everest-forms'][ $key ] );
+					break;
+				}
 			}
 		}
 	}

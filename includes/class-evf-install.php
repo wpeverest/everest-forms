@@ -640,14 +640,14 @@ class EVF_Install {
 			case 'everest_forms_edit_form':
 			case 'everest_forms_read_form':
 			case 'everest_forms_delete_form':
-				$form = evf()->form->get( (int) $args[0] );
+				$form = evf()->form->get( $args[0], array( 'cap' => false ) );
 				if ( ! $form ) {
 					$required_caps[] = 'do_not_allow';
 					break;
 				}
 
 				// If the form author is set and the user is the author...
-				if ( $form->form_author && $user_id === $form->form_author ) {
+				if ( $form->post_author && $user_id === (int) $form->post_author ) {
 					if ( 'everest_forms_edit_form' === $cap ) {
 						$required_caps[] = 'everest_forms_edit_forms';
 					} elseif ( 'everest_forms_read_form' === $cap ) {
