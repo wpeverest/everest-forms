@@ -68,19 +68,7 @@ class EVF_Post_Types {
 					'public'              => false,
 					'show_ui'             => true,
 					'description'         => __( 'This is where you can add new forms.', 'everest-forms' ),
-					'capability_type'     => 'form', // Not using 'form' anywhere. It just has to be custom for security reasons.
-					'capabilities'        => array(
-						// Meta capabilities.
-						'edit_post'          => 'everest_forms_edit_form',
-						'read_post'          => 'everest_forms_read_form',
-						'delete_post'        => 'everest_forms_delete_form',
-						// Primitive capabilities used outside of map_meta_cap().
-						'edit_posts'         => 'everest_forms_edit_forms',
-						'edit_others_posts'  => 'everest_forms_edit_others_forms',
-						'delete_posts'       => 'everest_forms_delete_forms',
-						'publish_posts'      => 'everest_forms_create_forms',
-						'read_private_posts' => 'everest_forms_read_forms',
-					),
+					'capability_type'     => 'everest_form', // Not using 'everest_form' anywhere. It just has to be custom for security reasons.
 					'map_meta_cap'        => false, // Don't let WP to map meta caps to have a granular control over this process via 'map_meta_cap' filter.
 					'publicly_queryable'  => false,
 					'exclude_from_search' => true,
