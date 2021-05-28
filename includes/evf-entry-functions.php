@@ -11,12 +11,21 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Get entry.
  *
- * @param  int|EVF_Entry $id Entry ID or object.
- * @param  bool          $with_fields True if empty data should be present.
+ * @param int|EVF_Entry $id Entry ID or object.
+ * @param bool          $with_fields True if empty data should be present.
+ * @param array         $args    Additional arguments.
  * @return EVF_Entry|null
  */
-function evf_get_entry( $id, $with_fields = false ) {
+function evf_get_entry( $id, $with_fields = false, $args = array() ) {
 	global $wpdb;
+
+	if ( ! isset( $args['cap'] ) ) {
+		$args['cap'] = 'everest_forms_view_entry';
+	}
+
+	if ( ! empty( $args['cap'] ) && ! current_user_can( $args['cap'], $id ) ) {
+		return false;
+	}
 
 	$entry = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}evf_entries WHERE entry_id = %d LIMIT 1;", $id ) ); // WPCS: cache ok, DB call ok.
 

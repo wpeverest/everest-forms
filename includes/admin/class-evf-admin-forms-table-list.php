@@ -143,7 +143,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 				$name = '<a href="' . esc_url( $preview_link ) . '" title="' . esc_html__( 'View Preview', 'everest-forms' ) . '" class="row-title" target="_blank" rel="noopener noreferrer">' . esc_html( $title ) . '</a>';
 			}
 
-			if ( current_user_can( 'everest_forms_read_entry', $posts->ID ) ) {
+			if ( current_user_can( 'everest_forms_view_form_entries', $posts->ID ) ) {
 				$name = '<a href="' . esc_url( esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $posts->ID ) ) ) . '" title="' . esc_html__( 'View Entries', 'everest-forms' ) . '" class="row-title">' . esc_html( $title ) . '</a>';
 			}
 
@@ -162,7 +162,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 			$actions['edit'] = '<a href="' . esc_url( $edit_link ) . '" title="' . esc_html__( 'Edit this Form', 'everest-forms' ) . '">' . __( 'Edit', 'everest-forms' ) . '</a>';
 		}
 
-		if ( current_user_can( 'everest_forms_read_entry', $posts->ID ) && 'trash' !== $post_status ) {
+		if ( current_user_can( 'everest_forms_view_form_entries', $posts->ID ) && 'trash' !== $post_status ) {
 			$actions['entries'] = '<a href="' . esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $posts->ID ) ) . '" title="' . esc_html__( 'View Entries', 'everest-forms' ) . '">' . __( 'Entries', 'everest-forms' ) . '</a>';
 		}
 

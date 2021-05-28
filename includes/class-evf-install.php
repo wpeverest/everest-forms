@@ -667,6 +667,54 @@ class EVF_Install {
 					}
 				}
 				break;
+			case 'everest_forms_view_form_entries':
+				$form = evf()->form->get( $args[0], array( 'cap' => false ) );
+				if ( ! $form ) {
+					$required_caps[] = 'do_not_allow';
+					break;
+				}
+
+				// If the form author is set and the user is the author...
+				if ( $form->post_author && $user_id === (int) $form->post_author ) {
+					$required_caps[] = 'everest_forms_view_entries';
+				} else {
+					$required_caps[] = 'everest_forms_view_others_entries';
+				}
+				break;
+			case 'everest_forms_view_entry_':
+			case 'everest_forms_edit_entry_':
+			case 'everest_forms_delete_entry_':
+				$entry = evf_get_entry( $args[0], false, array( 'cap' => false ) );
+				if ( ! $entry ) {
+					$required_caps[] = 'do_not_allow';
+					break;
+				}
+
+				$form = evf()->form->get( $entry->form_id, array( 'cap' => false ) );
+				if ( ! $form && ! is_a( $form, 'WP_Post' ) ) {
+					$required_caps[] = 'do_not_allow';
+				}
+
+				// If the form author is set and the user is the author...
+				if ( $form->post_author && $user_id === (int) $form->user_id ) {
+					if ( 'everest_forms_view_entry' === $cap ) {
+						$required_caps[] = 'everest_forms_view_entries';
+					} elseif ( 'everest_forms_edit_entry' === $cap ) {
+						$required_caps[] = 'everest_forms_edit_entries';
+					} else {
+						$required_caps[] = 'everest_forms_delete_entries';
+					}
+				} else {
+					// The user is trying someone else's form.
+					if ( 'everest_forms_view_entry' === $cap ) {
+						$required_caps[] = 'everest_forms_view_others_entries';
+					} elseif ( 'everest_forms_edit_entry' === $cap ) {
+						$required_caps[] = 'everest_forms_edit_others_entries';
+					} else {
+						$required_caps[] = 'everest_forms_delete_others_entries';
+					}
+				}
+				break;
 		}
 
 		if ( ! empty( $required_caps ) ) {
