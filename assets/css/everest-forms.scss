@@ -147,15 +147,15 @@
 	}
 	input[type='checkbox'],
 	input[type='radio'] {
-		&:after,
-		&:before{
-		display: none;
+		&::after,
+		&::before {
+			display: none;
 		}
-		&:checked::before{
+		&:checked::before {
 			display: none;
 		}
 	}
-	select{
+	select {
 		background-image: none;
 	}
 	.select2-container {
@@ -227,13 +227,13 @@
 			margin: 0 0 10px 0;
 		}
 	}
-  .evf-field-container,
-  .evf-honeypot-container,
-  .evf-submit-container  {
-	padding-left: 15px;
-	padding-right: 15px;
+	.evf-field-container,
+	.evf-honeypot-container,
+	.evf-submit-container {
+		padding-left: 15px;
+		padding-right: 15px;
 
-   }
+	}
 	.evf-field-container {
 		.evf-frontend-row {
 			// Prevents style conflict on entries list-table.
@@ -380,15 +380,15 @@
 										margin-top: 0;
 									}
 								}
-								.everest-forms-field-label-inline{
+								.everest-forms-field-label-inline {
 									width: calc(100% - 28px);
 								}
-								&.everest-forms-image-choices-item .everest-forms-field-label-inline{
+								&.everest-forms-image-choices-item .everest-forms-field-label-inline {
 									width: 100%;
 									display: flex;
 									flex-wrap: wrap;
 								}
-								.everest-forms-image-choices-image{
+								.everest-forms-image-choices-image {
 									margin-right: 10px;
 								}
 							}
@@ -792,6 +792,39 @@ div.evf-gutenberg-form-selector .evf-frontend-row button[type='submit']:disabled
 	}
 }
 
+/**
+ * Date time design
+ */
+.evf-field-date-time {
+	.date-time-container {
+		display: -webkit-box;
+		display: -moz-box;
+		display: -ms-flexbox;
+		display: -webkit-flex;
+		display: flex;
+		flex-wrap: wrap;
+		margin: 0 -5px;
+		input.date-dropdown-field {
+			width: 100%;
+			margin: 0 5px;
+		}
+		select {
+			width: calc(20% - 14px);
+			padding: 10px;
+			margin: 10px 5px 0 5px;
+			@media (max-width: 767px) {
+				width: calc(33.33% - 10px);
+			}
+		}
+		.date-time-space-filler {
+			width: 20px;
+			@media (max-width: 767px) {
+				width: 100%;
+
+			}
+		}
+	}
+}
 /* Small devices */
 @media only screen and (max-width: 600px) {
 	.evf-container {
