@@ -520,7 +520,8 @@ class EVF_Install {
 
 		foreach ( $capability_types as $capability_type ) {
 			$capabilities[ $capability_type ] = array(
-				"everest_forms_read_{$capability_type}",
+				"everest_forms_view_{$capability_type}",
+				"everest_forms_view_others{$capability_type}",
 				"everest_forms_edit_{$capability_type}",
 				"everest_forms_edit_others_{$capability_type}",
 				"everest_forms_delete_{$capability_type}",
@@ -637,8 +638,8 @@ class EVF_Install {
 		$required_caps = array();
 
 		switch ( $cap ) {
+			case 'everest_forms_view_form':
 			case 'everest_forms_edit_form':
-			case 'everest_forms_read_form':
 			case 'everest_forms_delete_form':
 				$form = evf()->form->get( $args[0], array( 'cap' => false ) );
 				if ( ! $form ) {
@@ -648,19 +649,19 @@ class EVF_Install {
 
 				// If the form author is set and the user is the author...
 				if ( $form->post_author && $user_id === (int) $form->post_author ) {
-					if ( 'everest_forms_edit_form' === $cap ) {
+					if ( 'everest_forms_view_form' === $cap ) {
+						$required_caps[] = 'everest_forms_view_forms';
+					} elseif ( 'everest_forms_edit_form' === $cap ) {
 						$required_caps[] = 'everest_forms_edit_forms';
-					} elseif ( 'everest_forms_read_form' === $cap ) {
-						$required_caps[] = 'everest_forms_read_forms';
 					} else {
 						$required_caps[] = 'everest_forms_delete_forms';
 					}
 				} else {
 					// The user is trying someone else's form.
-					if ( 'everest_forms_edit_form' === $cap ) {
+					if ( 'everest_forms_view_form' === $cap ) {
+						$required_caps[] = 'everest_forms_view_others_forms';
+					} elseif ( 'everest_forms_edit_form' === $cap ) {
 						$required_caps[] = 'everest_forms_edit_others_forms';
-					} elseif ( 'everest_forms_read_form' === $cap ) {
-						$required_caps = map_meta_cap( 'everest_forms_edit_form', $user_id, $form->ID );
 					} else {
 						$required_caps[] = 'everest_forms_delete_others_forms';
 					}

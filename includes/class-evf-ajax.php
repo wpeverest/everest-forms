@@ -126,9 +126,12 @@ class EVF_AJAX {
 				)
 			);
 		}
-		if ( ! current_user_can( apply_filters( 'everest_forms_manage_cap', 'manage_options' ) ) ) {
+
+		// Check permisssions.
+		if ( ! current_user_can( 'everest_forms_edit_form', $form_id ) ) {
 			wp_send_json_error();
 		}
+
 		$field_key      = evf()->form->field_unique_key( $form_id );
 		$field_id_array = explode( '-', $field_key );
 		$new_field_id   = ( $field_id_array[ count( $field_id_array ) - 1 ] + 1 );
@@ -148,7 +151,8 @@ class EVF_AJAX {
 
 		check_ajax_referer( 'everest_forms_create_form', 'security' );
 
-		if ( ! current_user_can( 'edit_everest_forms' ) ) {
+		// Check permissions.
+		if ( ! current_user_can( 'everest_forms_create_forms' ) ) {
 			wp_die( -1 );
 		}
 
@@ -185,8 +189,8 @@ class EVF_AJAX {
 	public static function save_form() {
 		check_ajax_referer( 'everest_forms_save_form', 'security' );
 
-		// Check for permissions.
-		if ( ! current_user_can( apply_filters( 'everest_forms_manage_cap', 'manage_options' ) ) ) {
+		// Check permissions.
+		if ( ! current_user_can( 'everest_forms_edit_forms' ) ) {
 			die( esc_html__( 'You do not have permission.', 'everest-forms' ) );
 		}
 
@@ -541,8 +545,8 @@ class EVF_AJAX {
 	public static function integration_connect() {
 		check_ajax_referer( 'process-ajax-nonce', 'security' );
 
-		// Checking permission.
-		if ( ! current_user_can( 'manage_everest_forms' ) ) {
+		// Check permissions.
+		if ( ! current_user_can( 'everest_forms_edit_forms' ) ) {
 			wp_die( -1 );
 		}
 
@@ -563,9 +567,11 @@ class EVF_AJAX {
 	public static function new_email_add() {
 		check_ajax_referer( 'process-ajax-nonce', 'security' );
 
-		if ( ! current_user_can( 'manage_everest_forms' ) ) {
+		// Check permissions.
+		if ( ! current_user_can( 'everest_forms_edit_forms' ) ) {
 			wp_die( -1 );
 		}
+
 		$connection_id = 'connection_' . uniqid();
 
 		wp_send_json_success(
@@ -581,8 +587,8 @@ class EVF_AJAX {
 	public static function integration_disconnect() {
 		check_ajax_referer( 'process-ajax-nonce', 'security' );
 
-		// Checking permission.
-		if ( ! current_user_can( 'manage_everest_forms' ) ) {
+		// Check permissions.
+		if ( ! current_user_can( 'everest_forms_edit_forms' ) ) {
 			wp_die( -1 );
 		}
 

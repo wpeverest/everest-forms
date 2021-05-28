@@ -212,7 +212,7 @@ class EVF_Template_Loader {
 		// Remove the filter we're in to avoid nested calls.
 		remove_filter( 'the_content', array( __CLASS__, 'form_preview_content_filter' ) );
 
-		if ( current_user_can( 'everest_forms_read_forms', self::$form_id ) ) {
+		if ( current_user_can( 'everest_forms_view_forms', self::$form_id ) ) {
 			$content = apply_shortcodes( '[everest_form id="' . absint( self::$form_id ) . '"]' );
 		}
 

@@ -139,7 +139,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 		} else {
 			$name = '';
 
-			if ( current_user_can( 'everest_forms_read_form', $posts->ID ) ) {
+			if ( current_user_can( 'everest_forms_view_form', $posts->ID ) ) {
 				$name = '<a href="' . esc_url( $preview_link ) . '" title="' . esc_html__( 'View Preview', 'everest-forms' ) . '" class="row-title" target="_blank" rel="noopener noreferrer">' . esc_html( $title ) . '</a>';
 			}
 
@@ -177,7 +177,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 			}
 		}
 
-		if ( current_user_can( 'everest_forms_read_form', $posts->ID ) ) {
+		if ( current_user_can( 'everest_forms_view_form', $posts->ID ) ) {
 			$preview_link   = add_query_arg(
 				array(
 					'form_id'     => absint( $posts->ID ),

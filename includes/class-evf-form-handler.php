@@ -32,7 +32,7 @@ class EVF_Form_Handler {
 		}
 
 		if ( ! isset( $args['cap'] ) ) {
-			$args['cap'] = 'everest_forms_read_form';
+			$args['cap'] = 'everest_forms_view_form';
 		}
 
 		if ( ! empty( $id ) ) {
@@ -95,16 +95,16 @@ class EVF_Form_Handler {
 
 		$args['post_type'] = 'everest_form';
 
-		// Can user interact?
-		if ( current_user_can( 'everest_forms_read_forms' ) && ! current_user_can( 'everest_forms_edit_others_forms' ) ) {
+		// Can user interact, lets check the view capabilities?
+		if ( current_user_can( 'everest_forms_view_forms' ) && ! current_user_can( 'everest_forms_view_others_forms' ) ) {
 			$args['author'] = $user_id;
 		}
 
-		if ( ! current_user_can( 'everest_forms_read_forms' ) && current_user_can( 'everest_forms_edit_others_forms' ) ) {
+		if ( ! current_user_can( 'everest_forms_view_forms' ) && current_user_can( 'everest_forms_view_others_forms' ) ) {
 			$args['author__not_in'] = $user_id;
 		}
 
-		if ( ! current_user_can( 'everest_forms_read_forms' ) && ! current_user_can( 'everest_forms_edit_others_forms' ) ) {
+		if ( ! current_user_can( 'everest_forms_view_forms' ) && ! current_user_can( 'everest_forms_view_others_forms' ) ) {
 			$args['post__in'] = array( 0 );
 		}
 
@@ -135,11 +135,6 @@ class EVF_Form_Handler {
 	 * @return boolean
 	 */
 	public function delete( $ids = array() ) {
-		// Check for permissions.
-		if ( ! current_user_can( apply_filters( 'everest_forms_manage_cap', 'manage_options' ) ) ) {
-			return false;
-		}
-
 		if ( ! is_array( $ids ) ) {
 			$ids = array( $ids );
 		}
@@ -147,12 +142,20 @@ class EVF_Form_Handler {
 		$ids = array_map( 'absint', $ids );
 
 		foreach ( $ids as $id ) {
+
+			// Check for permissions.
+			if ( ! current_user_can( 'everest_forms_delete', $id ) ) {
+				return false;
+			}
+
 			$form = wp_delete_post( $id, true );
 
 			if ( ! $form ) {
 				return false;
 			}
 		}
+
+		do_action( 'everest_forms_delete_form', $ids );
 
 		return true;
 	}
@@ -168,7 +171,7 @@ class EVF_Form_Handler {
 	 * @return int|bool Form ID on successful creation else false.
 	 */
 	public function create( $title = '', $template = 'blank', $args = array(), $data = array() ) {
-		if ( empty( $title ) || ! current_user_can( 'manage_everest_forms' ) ) {
+		if ( empty( $title ) || ! current_user_can( 'everest_forms_create_forms' ) ) {
 			return false;
 		}
 
@@ -375,6 +378,10 @@ class EVF_Form_Handler {
 			// Get original entry.
 			$form = get_post( $id );
 
+			if ( ! current_user_can( 'everest_forms_view_form', $id ) ) {
+				return false;
+			}
+
 			// Confirm form exists.
 			if ( ! $form || empty( $form ) ) {
 				return false;
@@ -433,12 +440,17 @@ class EVF_Form_Handler {
 	 *
 	 * @param int    $form_id Form ID.
 	 * @param string $field   Field.
+	 * @param array  $args    Additional arguments.
 	 *
 	 * @return false|array
 	 */
-	public function get_meta( $form_id, $field = '' ) {
+	public function get_meta( $form_id, $field = '', $args = array() ) {
 		if ( empty( $form_id ) ) {
 			return false;
+		}
+
+		if ( isset( $args['cap'] ) ) {
+			$defaults['cap'] = $args['cap'];
 		}
 
 		$data = $this->get(
@@ -467,7 +479,7 @@ class EVF_Form_Handler {
 	 * @return mixed int or false
 	 */
 	public function field_unique_key( $form_id ) {
-		if ( ! current_user_can( apply_filters( 'everest_forms_manage_cap', 'manage_options' ) ) ) {
+		if ( ! current_user_can( 'everest_forms_edit_form', $form_id ) ) {
 			return false;
 		}
 
@@ -504,13 +516,17 @@ class EVF_Form_Handler {
 	 *
 	 * @param int    $form_id  Form ID.
 	 * @param string $field_id Field ID.
+	 * @param array  $args     Additional arguments.
 	 *
 	 * @return array|bool
 	 */
-	public function get_field( $form_id, $field_id = '' ) {
-
+	public function get_field( $form_id, $field_id = '', $args = array() ) {
 		if ( empty( $form_id ) ) {
 			return false;
+		}
+
+		if ( isset( $args['cap'] ) ) {
+			$defaults['cap'] = $args['cap'];
 		}
 
 		$data = $this->get(
@@ -530,12 +546,12 @@ class EVF_Form_Handler {
 	 *
 	 * @param int    $form_id Form ID.
 	 * @param string $field   Field.
+	 * @param array  $args    Additional arguments.
 	 *
 	 * @return bool
 	 */
-	public function get_field_meta( $form_id, $field = '' ) {
-
-		$field = $this->get_field( $form_id, $field );
+	public function get_field_meta( $form_id, $field_id = '', $args = array() ) {
+		$field = $this->get_field( $form_id, $field_id, $args );
 		if ( ! $field ) {
 			return false;
 		}
