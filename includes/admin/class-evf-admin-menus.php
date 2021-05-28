@@ -43,11 +43,12 @@ class EVF_Admin_Menus {
 	/**
 	 * Returns a base64 URL for the SVG for use in the menu.
 	 *
-	 * @param  bool $base64 Whether or not to return base64-encoded SVG.
+	 * @param  string $fill   SVG Fill color code. Default: '#82878c'.
+	 * @param  bool   $base64 Whether or not to return base64-encoded SVG.
 	 * @return string
 	 */
-	private function get_icon_svg( $base64 = true ) {
-		$svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path fill="#82878c" d="M18.1 4h-3.8l1.2 2h3.9zM20.6 8h-3.9l1.2 2h3.9zM20.6 18H5.8L12 7.9l2.5 4.1H12l-1.2 2h7.3L12 4.1 2.2 20h19.6z"/></g></svg>';
+	public static function get_icon_svg( $fill = '#82878c', $base64 = true ) {
+		$svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path fill="' . $fill . '" d="M18.1 4h-3.8l1.2 2h3.9zM20.6 8h-3.9l1.2 2h3.9zM20.6 18H5.8L12 7.9l2.5 4.1H12l-1.2 2h7.3L12 4.1 2.2 20h19.6z"/></g></svg>';
 
 		if ( $base64 ) {
 			return 'data:image/svg+xml;base64,' . base64_encode( $svg );
@@ -60,7 +61,7 @@ class EVF_Admin_Menus {
 	 * Add menu items.
 	 */
 	public function admin_menu() {
-		add_menu_page( esc_html__( 'Everest Forms', 'everest-forms' ), esc_html__( 'Everest Forms', 'everest-forms' ), 'everest_forms_read_forms', 'everest-forms', null, $this->get_icon_svg(), '55.5' );
+		add_menu_page( esc_html__( 'Everest Forms', 'everest-forms' ), esc_html__( 'Everest Forms', 'everest-forms' ), 'everest_forms_read_forms', 'everest-forms', null, self::get_icon_svg(), '55.5' );
 	}
 
 	/**
