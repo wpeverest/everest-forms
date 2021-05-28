@@ -28,6 +28,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 					'label',
 					'meta',
 					'choose_format',
+					'choose_style',
 					'description',
 					'required',
 					'required_field_message',
@@ -89,6 +90,44 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 		$args          = array(
 			'slug'    => 'datetime_format',
 			'content' => $format_label . $format_select,
+		);
+		$this->field_element( 'row', $field, $args );
+	}
+
+	/**
+	 * Date field style option.
+	 *
+	 * @since 1.7.5
+	 * @param array $field Field Data.
+	 */
+	public function choose_style( $field ) {
+		$style        = ! empty( $field['datetime_style'] ) ? esc_attr( $field['datetime_style'] ) : 'Date Picker';
+		$style_label  = $this->field_element(
+			'label',
+			$field,
+			array(
+				'slug'    => 'datetime_style',
+				'value'   => esc_html__( 'Style', 'everest-forms' ),
+				'tooltip' => esc_html__( 'Select a style for the date field.', 'everest-forms' ),
+			),
+			false
+		);
+		$style_select = $this->field_element(
+			'select',
+			$field,
+			array(
+				'slug'    => 'datetime_style',
+				'value'   => $style,
+				'options' => array(
+					'picker'   => esc_html__( 'Date Picker', 'everest-forms' ),
+					'dropdown' => esc_html__( 'Date Dropdown', 'everest-forms' ),
+				),
+			),
+			false
+		);
+		$args         = array(
+			'slug'    => 'datetime_style',
+			'content' => $style_label . $style_select,
 		);
 		$this->field_element( 'row', $field, $args );
 	}
@@ -286,6 +325,18 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				false
 			);
 
+			$disable_past_date = $this->field_element(
+				'checkbox',
+				$field,
+				array(
+					'slug'    => 'disable_past_date',
+					'value'   => isset( $field['disable_past_date'] ) ? $field['disable_past_date'] : '',
+					'desc'    => esc_html__( 'Disable past dates.', 'everest-forms' ),
+					'tooltip' => esc_html__( 'Check this option to disable past dates.', 'everest-forms' ),
+				),
+				false
+			);
+
 			$enable_min_max = $this->field_element(
 				'checkbox',
 				$field,
@@ -344,7 +395,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 
 			$args = array(
 				'slug'    => 'date_format',
-				'content' => $date_format_label . $date_format_select . $disable_dates_label . $disable_dates . $date_localization_label . $date_localization_select . '<div class="everest-forms-checklist everest-forms-checklist-inline">' . $current_date_mode . '</div><div class="everest-forms-current-date-format">' . $current_date_default . '</div><div class="everest-forms-min-max-date-format">' . $enable_min_max . '</div><div class="everest-forms-min-max-date-option ' . $class_name . '">' . $min_date_label . $min_date . $max_date_label . $max_date . '</div>',
+				'content' => $date_format_label . $date_format_select . $disable_dates_label . $disable_dates . $date_localization_label . $date_localization_select . '<div class="everest-forms-checklist everest-forms-checklist-inline">' . $current_date_mode . '</div><div class="everest-forms-current-date-format">' . $current_date_default . '</div><div class="everest-forms-current-date-format">' . $disable_past_date . '</div><div class="everest-forms-min-max-date-format">' . $enable_min_max . '</div><div class="everest-forms-min-max-date-option ' . $class_name . '">' . $min_date_label . $min_date . $max_date_label . $max_date . '</div>',
 			);
 			$this->field_element( 'row', $field, $args );
 
@@ -395,14 +446,221 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			);
 			$time_format_select   .= '</div>';
 
-			$args = array(
-				'slug'    => 'time_interval_format',
-				'content' => $time_format_label . $time_interval_select . $time_format_select,
-			);
-			$this->field_element( 'row', $field, $args );
+			$time_format = isset( $field['time_format'] ) ? $field['time_format'] : 'g:i A';
 
-			echo '</div>';
-			echo '</div>';
+		if ( 'g:i A' === $time_format ) {
+			$hours_array = array(
+				0  => esc_html__( '12 AM', 'everest-forms' ),
+				1  => esc_html__( '01 AM', 'everest-forms' ),
+				2  => esc_html__( '02 AM', 'everest-forms' ),
+				3  => esc_html__( '03 AM', 'everest-forms' ),
+				4  => esc_html__( '04 AM', 'everest-forms' ),
+				5  => esc_html__( '05 AM', 'everest-forms' ),
+				6  => esc_html__( '06 AM', 'everest-forms' ),
+				7  => esc_html__( '07 AM', 'everest-forms' ),
+				8  => esc_html__( '08 AM', 'everest-forms' ),
+				9  => esc_html__( '09 AM', 'everest-forms' ),
+				10 => esc_html__( '10 AM', 'everest-forms' ),
+				11 => esc_html__( '11 AM', 'everest-forms' ),
+				12 => esc_html__( '12 PM', 'everest-forms' ),
+				13 => esc_html__( '01 PM', 'everest-forms' ),
+				14 => esc_html__( '02 PM', 'everest-forms' ),
+				15 => esc_html__( '03 PM', 'everest-forms' ),
+				16 => esc_html__( '04 PM', 'everest-forms' ),
+				17 => esc_html__( '05 PM', 'everest-forms' ),
+				18 => esc_html__( '06 PM', 'everest-forms' ),
+				19 => esc_html__( '07 PM', 'everest-forms' ),
+				20 => esc_html__( '08 PM', 'everest-forms' ),
+				21 => esc_html__( '09 PM', 'everest-forms' ),
+				22 => esc_html__( '10 PM', 'everest-forms' ),
+				23 => esc_html__( '11 PM', 'everest-forms' ),
+			);
+		} else {
+			$hours_array = array(
+				'-' => esc_html__( 'Hours', 'everest-forms' ),
+				0   => esc_html__( '0', 'everest-forms' ),
+				1   => esc_html__( '1', 'everest-forms' ),
+				2   => esc_html__( '2', 'everest-forms' ),
+				3   => esc_html__( '3', 'everest-forms' ),
+				4   => esc_html__( '4', 'everest-forms' ),
+				5   => esc_html__( '5', 'everest-forms' ),
+				6   => esc_html__( '6', 'everest-forms' ),
+				7   => esc_html__( '7', 'everest-forms' ),
+				8   => esc_html__( '8', 'everest-forms' ),
+				9   => esc_html__( '9', 'everest-forms' ),
+				10  => esc_html__( '10', 'everest-forms' ),
+				11  => esc_html__( '11', 'everest-forms' ),
+				12  => esc_html__( '12', 'everest-forms' ),
+				13  => esc_html__( '13', 'everest-forms' ),
+				14  => esc_html__( '14', 'everest-forms' ),
+				15  => esc_html__( '15', 'everest-forms' ),
+				16  => esc_html__( '16', 'everest-forms' ),
+				17  => esc_html__( '17', 'everest-forms' ),
+				18  => esc_html__( '18', 'everest-forms' ),
+				19  => esc_html__( '19', 'everest-forms' ),
+				20  => esc_html__( '20', 'everest-forms' ),
+				21  => esc_html__( '21', 'everest-forms' ),
+				22  => esc_html__( '22', 'everest-forms' ),
+				23  => esc_html__( '23', 'everest-forms' ),
+			);
+		}
+		$minutes_array = array(
+			0  => esc_html__( '00', 'everest-forms' ),
+			1  => esc_html__( '01', 'everest-forms' ),
+			2  => esc_html__( '02', 'everest-forms' ),
+			3  => esc_html__( '03', 'everest-forms' ),
+			4  => esc_html__( '04', 'everest-forms' ),
+			5  => esc_html__( '05', 'everest-forms' ),
+			6  => esc_html__( '06', 'everest-forms' ),
+			7  => esc_html__( '07', 'everest-forms' ),
+			8  => esc_html__( '08', 'everest-forms' ),
+			9  => esc_html__( '09', 'everest-forms' ),
+			10 => esc_html__( '10', 'everest-forms' ),
+			11 => esc_html__( '11', 'everest-forms' ),
+			12 => esc_html__( '12', 'everest-forms' ),
+			13 => esc_html__( '13', 'everest-forms' ),
+			14 => esc_html__( '14', 'everest-forms' ),
+			15 => esc_html__( '15', 'everest-forms' ),
+			16 => esc_html__( '16', 'everest-forms' ),
+			17 => esc_html__( '17', 'everest-forms' ),
+			18 => esc_html__( '18', 'everest-forms' ),
+			19 => esc_html__( '19', 'everest-forms' ),
+			20 => esc_html__( '20', 'everest-forms' ),
+			21 => esc_html__( '21', 'everest-forms' ),
+			22 => esc_html__( '22', 'everest-forms' ),
+			23 => esc_html__( '23', 'everest-forms' ),
+			24 => esc_html__( '24', 'everest-forms' ),
+			25 => esc_html__( '25', 'everest-forms' ),
+			26 => esc_html__( '26', 'everest-forms' ),
+			27 => esc_html__( '27', 'everest-forms' ),
+			28 => esc_html__( '28', 'everest-forms' ),
+			29 => esc_html__( '29', 'everest-forms' ),
+			30 => esc_html__( '30', 'everest-forms' ),
+			31 => esc_html__( '31', 'everest-forms' ),
+			32 => esc_html__( '32', 'everest-forms' ),
+			33 => esc_html__( '33', 'everest-forms' ),
+			34 => esc_html__( '34', 'everest-forms' ),
+			35 => esc_html__( '35', 'everest-forms' ),
+			36 => esc_html__( '36', 'everest-forms' ),
+			37 => esc_html__( '37', 'everest-forms' ),
+			38 => esc_html__( '38', 'everest-forms' ),
+			39 => esc_html__( '39', 'everest-forms' ),
+			40 => esc_html__( '40', 'everest-forms' ),
+			41 => esc_html__( '41', 'everest-forms' ),
+			42 => esc_html__( '42', 'everest-forms' ),
+			43 => esc_html__( '43', 'everest-forms' ),
+			44 => esc_html__( '44', 'everest-forms' ),
+			45 => esc_html__( '45', 'everest-forms' ),
+			46 => esc_html__( '46', 'everest-forms' ),
+			47 => esc_html__( '47', 'everest-forms' ),
+			48 => esc_html__( '48', 'everest-forms' ),
+			49 => esc_html__( '49', 'everest-forms' ),
+			50 => esc_html__( '50', 'everest-forms' ),
+			51 => esc_html__( '51', 'everest-forms' ),
+			52 => esc_html__( '52', 'everest-forms' ),
+			53 => esc_html__( '53', 'everest-forms' ),
+			54 => esc_html__( '54', 'everest-forms' ),
+			55 => esc_html__( '55', 'everest-forms' ),
+			56 => esc_html__( '56', 'everest-forms' ),
+			57 => esc_html__( '57', 'everest-forms' ),
+			58 => esc_html__( '58', 'everest-forms' ),
+			59 => esc_html__( '59', 'everest-forms' ),
+		);
+
+		$min_time_select  = '<div class="input-group-col-2">';
+		$min_time_select .= $this->field_element(
+			'select',
+			$field,
+			array(
+				'slug'    => 'min_time_hour',
+				'value'   => isset( $field['min_time_hour'] ) ? $field['min_time_hour'] : 9,
+				'class'   => 'min_time_hour',
+				'options' => $hours_array,
+			),
+			false
+		);
+		$min_time_select .= $this->field_element(
+			'select',
+			$field,
+			array(
+				'slug'    => 'min_time_minute',
+				'value'   => isset( $field['min_time_minute'] ) ? $field['min_time_minute'] : 30,
+				'class'   => 'min_time_minute',
+				'options' => $minutes_array,
+			),
+			false
+		);
+		$min_time_select .= '</div>';
+
+		$max_time_select  = '<div class="input-group-col-2">';
+		$max_time_select .= $this->field_element(
+			'select',
+			$field,
+			array(
+				'slug'    => 'max_time_hour',
+				'value'   => isset( $field['max_time_hour'] ) ? $field['max_time_hour'] : 18,
+				'class'   => 'max_time_hour',
+				'options' => $hours_array,
+			),
+			false
+		);
+		$max_time_select .= $this->field_element(
+			'select',
+			$field,
+			array(
+				'slug'    => 'max_time_minute',
+				'value'   => isset( $field['max_time_minute'] ) ? $field['max_time_minute'] : 30,
+				'class'   => 'max_time_minute',
+				'options' => $minutes_array,
+			),
+			false
+		);
+		$max_time_select .= '</div>';
+
+		$enable_min_max_time  = '<div class="input-group-col-2">';
+		$enable_min_max_time .= $this->field_element(
+			'checkbox',
+			$field,
+			array(
+				'slug'    => 'enable_min_max_time',
+				'value'   => isset( $field['enable_min_max_time'] ) ? $field['enable_min_max_time'] : '',
+				'desc'    => esc_html__( 'Enable Min Max Time.', 'everest-forms' ),
+				'tooltip' => esc_html__( 'Check this option to set min max time.', 'everest-forms' ),
+			),
+			false
+		);
+		$enable_min_max_time .= '</div>';
+
+		$select_min_time = $this->field_element(
+			'label',
+			$field,
+			array(
+				'slug'    => 'select_min_time',
+				'value'   => esc_html__( 'Minimum Time', 'everest-forms' ),
+				'tooltip' => esc_html__( 'Select minium time.', 'everest-forms' ),
+			),
+			false
+		);
+
+		$select_max_time = $this->field_element(
+			'label',
+			$field,
+			array(
+				'slug'    => 'select_max_time',
+				'value'   => esc_html__( 'Maximum Time', 'everest-forms' ),
+				'tooltip' => esc_html__( 'Select maximum time.', 'everest-forms' ),
+			),
+			false
+		);
+
+		$args = array(
+			'slug'    => 'time_interval_format',
+			'content' => $time_format_label . $time_interval_select . $time_format_select . $enable_min_max_time . $select_min_time . $min_time_select . $select_max_time . $max_time_select,
+		);
+		$this->field_element( 'row', $field, $args );
+
+		echo '</div>';
+		echo '</div>';
 	}
 
 	/**
@@ -422,9 +680,24 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			$properties['inputs']['primary']['attr']['data-time-interval'] = esc_attr( $field['time_interval'] );
 		}
 
+		// Input primary: data-time-format.
+		if ( ! empty( $field['time_format'] ) ) {
+			$properties['inputs']['primary']['attr']['data-time-format'] = esc_attr( $field['time_format'] );
+		}
+
 		// Input primary: Disabled dates data.
 		if ( ! empty( $field['disable_dates'] ) ) {
 			$properties['inputs']['primary']['attr']['data-disable-dates'] = esc_attr( $field['disable_dates'] );
+		}
+
+		// Input primry: style.
+		if ( ! empty( $field['datetime_style'] ) ) {
+			$properties['inputs']['primary']['attr']['datetime_style'] = esc_attr( $field['datetime_style'] );
+		}
+
+		// Input primary: disable_past_date.
+		if ( ! empty( $field['disable_past_date'] ) ) {
+			$properties['inputs']['primary']['attr']['disable_past_date'] = esc_attr( $field['disable_past_date'] );
 		}
 
 		// Input primary: data-date-time.
@@ -443,6 +716,13 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				$properties['inputs']['primary']['attr']['data-max-date'] = isset( $field['enable_min_max'], $field['max_date'] ) ? $field['max_date'] : '';
 			}
 
+			if ( 'date' !== $field['datetime_format'] ) {
+				$properties['inputs']['primary']['attr']['data-min-hour']   = isset( $field['enable_min_max_time'], $field['min_time_hour'] ) ? $field['min_time_hour'] : '';
+				$properties['inputs']['primary']['attr']['data-min-minute'] = isset( $field['enable_min_max_time'], $field['min_time_minute'] ) ? $field['min_time_minute'] : '';
+				$properties['inputs']['primary']['attr']['data-max-hour']   = isset( $field['enable_min_max_time'], $field['max_time_hour'] ) ? $field['max_time_hour'] : '';
+				$properties['inputs']['primary']['attr']['data-max-minute'] = isset( $field['enable_min_max_time'], $field['max_time_minute'] ) ? $field['max_time_minute'] : '';
+			}
+
 			// Input primary: data-date-format and value.
 			switch ( $field['datetime_format'] ) {
 				case 'date':
@@ -454,6 +734,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 					$properties['inputs']['primary']['attr']['data-date-format'] = ! empty( $field['time_format'] ) ? str_replace( 'g:i A', 'h:i K', esc_attr( $field['time_format'] ) ) : 'g:i A';
 					break;
 				case 'date-time':
+					$properties['inputs']['primary']['attr']['data-date-default'] = isset( $field['date_default'] ) ? isset( $field['date_default'] ) : '';
 					if ( ! empty( $field['time_format'] ) ) {
 						$date_format                                      = esc_attr( $field['date_format'] ) . ' ' . esc_attr( $field['time_format'] );
 						$properties['inputs']['primary']['attr']['value'] = isset( $field['date_default'] ) ? esc_attr( date_i18n( $date_format ) ) : '';
@@ -505,12 +786,120 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 
 		$class = array_merge( array( 'flatpickr-field' ), $primary['class'] );
 
-		// Primary field.
-		printf(
-			'<input type="text" %s %s >',
-			evf_html_attributes( $primary['id'], $class, $primary['data'], $primary['attr'] ),
-			esc_attr( $primary['required'] )
-		);
+		if ( 'picker' === $field['datetime_style'] ) {
+			$class = array_merge( array( 'flatpickr-field' ), $primary['class'] );
+			// Primary field.
+			printf(
+				'<input type="text" %s %s >',
+				evf_html_attributes( $primary['id'], $class, $primary['data'], $primary['attr'] ),
+				esc_attr( $primary['required'] )
+			);
+		} else {
+			$class = array_merge( array( 'date-dropdown-field' ), $primary['class'] );
+			echo '<div class="date-time-container">';
+
+			if ( 'date-time' === $field['datetime_format'] || 'date' === $field['datetime_format'] ) {
+				printf(
+					'<input type="text" %s %s >',
+					evf_html_attributes( $primary['id'], $class, $primary['data'], $primary['attr'] ),
+					esc_attr( $primary['required'] )
+				);
+				// Primary select field.
+
+				printf(
+					'<select %s>',
+					evf_html_attributes( 'year-select-' . $primary['id'] ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				);
+				// Build the select options.
+				for ( $i = gmdate( 'Y' ); $i >= ( gmdate( 'Y' ) - 100 ); $i-- ) {
+					printf(
+						'<option value="%s">%s</option>',
+						esc_attr( $i ),
+						esc_html( $i )
+					);
+				}
+				echo '</select>';
+
+				printf(
+					'<select %s>',
+					evf_html_attributes( 'year-select-' . $primary['id'] ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				);
+				// Build the select options.
+				for ( $i = 1; $i <= 12; $i++ ) {
+					printf(
+						'<option value="%s">%s</option>',
+						esc_attr( $i ),
+						esc_html( ( $i < 10 ) ? '0' . $i : $i )
+					);
+				}
+				echo '</select>';
+				printf(
+					'<select %s>',
+					evf_html_attributes( 'year-select-' . $primary['id'] ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				);
+				// Build the select options.
+				for ( $i = 1; $i <= 32; $i++ ) {
+					printf(
+						'<option value="%s">%s</option>',
+						esc_attr( $i ),
+						esc_html( ( $i < 10 ) ? '0' . $i : $i )
+					);
+				}
+				echo '</select>';
+			}
+
+			if ( 'date-time' === $field['datetime_format'] ) {
+				echo '<span class="date-time-space-filler"></span>';
+			}
+
+			if ( 'time' === $field['datetime_format'] || 'date-time' === $field['datetime_format'] ) {
+				printf(
+					'<select %s>',
+					evf_html_attributes( 'year-select-' . $primary['id'] ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				);
+				for ( $i = 0; $i <= 23; $i++ ) {
+					$p = '';
+					if ( 'H:i' !== $field['time_format'] ) {
+						if ( $i < 12 ) {
+							$p = 'AM';
+						} else {
+							$p = 'PM';
+						}
+
+						if ( $i == 0 ) {
+							$hour = 12;
+						} elseif ( $i > 12 ) {
+							$hour = $i - 12;
+						} else {
+							$hour = $i;
+						}
+					}
+					printf(
+						'<option value="%s">%s</option>',
+						esc_attr( $i ),
+						esc_html( ( ( $hour < 10 ) ? '0' . $hour : $hour ) . ' ' . $p )
+					);
+				}
+				echo '</select>';
+				$time_interval = isset( $field['time_interval'] ) ? $field['time_interval'] : 1;
+				printf(
+					'<select %s>',
+					evf_html_attributes( 'year-select-' . $primary['id'] ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				);
+
+				for ( $i = 0; $i < 59; $i = ( $i + $time_interval ) ) {
+					printf(
+						'<option value="%s">%s</option>',
+						esc_attr( $i ),
+						esc_html( ( $i < 10 ) ? '0' . $i : $i )
+					);
+				}
+				echo '</select>';
+			}
+
+			echo '</div>';
+		}
+
 	}
 
 	/**
