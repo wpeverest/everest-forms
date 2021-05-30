@@ -14,8 +14,8 @@
 @import 'clearings';
 
 /**
- * Global styles
- */
+  * Global styles
+  */
 .screen-reader-text {
 	clip: rect(1px, 1px, 1px, 1px);
 	height: 1px;
@@ -26,15 +26,15 @@
 }
 
 /**
- * Utility classes
- */
+  * Utility classes
+  */
 .clear {
 	clear: both;
 }
 
 /**
- * Main EverestForms styles
- */
+  * Main EverestForms styles
+  */
 .everest-forms {
 	*,
 	*::before,
@@ -609,8 +609,8 @@
 	}
 
 	/**
-	 * Notices.
-	 */
+	  * Notices.
+	  */
 	.everest-forms-notice {
 		padding: 1em 3em;
 		margin: 0 0 2em;
@@ -722,8 +722,8 @@
 }
 
 /**
- * Gutenberg Block
- */
+  * Gutenberg Block
+  */
 
 .edit-post-visual-editor {
 	.everest-form-gutenberg-form-selector-wrap {
@@ -762,8 +762,8 @@ div.evf-gutenberg-form-selector .evf-frontend-row button[type='submit']:disabled
 }
 
 /**
- * Anti-spam Honeypot and reCAPTCHA Area
- */
+  * Anti-spam Honeypot and reCAPTCHA Area
+  */
 .evf-honeypot-container {
 	display: none !important;
 	position: absolute !important;
@@ -793,8 +793,8 @@ div.evf-gutenberg-form-selector .evf-frontend-row button[type='submit']:disabled
 }
 
 /**
- * Date time design
- */
+  * Date time design
+  */
 .evf-field-date-time {
 	.date-time-container {
 		display: -webkit-box;
@@ -808,19 +808,18 @@ div.evf-gutenberg-form-selector .evf-frontend-row button[type='submit']:disabled
 			width: 100%;
 			margin: 0 5px;
 		}
+		.date-time-space-filler {
+			width: 20px;
+			@media (max-width: 767px) {
+				width: 100%;
+			}
+		}
 		select {
 			width: calc(20% - 14px);
 			padding: 10px;
 			margin: 10px 5px 0 5px;
 			@media (max-width: 767px) {
 				width: calc(33.33% - 10px);
-			}
-		}
-		.date-time-space-filler {
-			width: 20px;
-			@media (max-width: 767px) {
-				width: 100%;
-
 			}
 		}
 	}
@@ -859,7 +858,6 @@ div.evf-gutenberg-form-selector .evf-frontend-row button[type='submit']:disabled
 		}
 	}
 }
-
 @media screen and (max-width: 768px) {
 	.everest-forms {
 		.evf-field-container {
@@ -882,7 +880,6 @@ div.evf-gutenberg-form-selector .evf-frontend-row button[type='submit']:disabled
 				}
 			}
 		}
-
 		.evf-recaptcha-container {
 			margin: 25px 0;
 		}
