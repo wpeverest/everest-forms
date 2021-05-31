@@ -271,8 +271,6 @@ class EVF_Admin_Forms {
 	 * @param int $form_id Form ID to get required form data and remove files.
 	 */
 	public function delete_pdf_submission( $form_id ) {
-		global $wpdb;
-
 		$form_data = evf()->form->get( absint( $form_id ), array( 'content_only' => true ) );
 		$settings  = isset( $form_data['settings']['email'] ) ? $form_data['settings']['email'] : array();
 		$results   = array_filter(
