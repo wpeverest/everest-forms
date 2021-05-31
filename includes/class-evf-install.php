@@ -540,7 +540,7 @@ class EVF_Install {
 	 *
 	 * @return array $meta_caps Meta capabilities.
 	 */
-	public function get_meta_caps() {
+	private static function get_meta_caps() {
 		$meta_caps      = array();
 		$meta_cap_types = array( 'form', 'form_entries', 'entry' );
 
@@ -648,7 +648,7 @@ class EVF_Install {
 	/**
 	 * Filter user's capabilities for the given primitive or meta capability.
 	 *
-	 * @since 1.7.0
+	 * @since 1.7.5
 	 *
 	 * @param  string[] $caps    Array of the user's capabilities.
 	 * @param  string   $cap     Capability being checked.
@@ -658,90 +658,42 @@ class EVF_Install {
 	 * @return string[] Array of required capabilities for the requested action.
 	 */
 	public static function filter_map_meta_cap( $caps, $cap, $user_id, $args ) {
-		$required_caps = array();
+		$meta_caps = self::get_meta_caps();
 
-		switch ( $cap ) {
-			case 'everest_forms_view_form':
-			case 'everest_forms_edit_form':
-			case 'everest_forms_delete_form':
-				$form = evf()->form->get( $args[0], array( 'cap' => false ) );
-				if ( ! $form ) {
-					$required_caps[] = 'do_not_allow';
-					break;
-				}
+		// Check if meta cap is valid to proceed.
+		if ( in_array( $cap, array_keys( $meta_caps ), true ) ) {
+			$id = isset( $args[0] ) ? (int) $args[0] : 0;
 
-				// If the form author is set and the user is the author...
-				if ( $form->post_author && $user_id === (int) $form->post_author ) {
-					if ( 'everest_forms_view_form' === $cap ) {
-						$required_caps[] = 'everest_forms_view_forms';
-					} elseif ( 'everest_forms_edit_form' === $cap ) {
-						$required_caps[] = 'everest_forms_edit_forms';
-					} else {
-						$required_caps[] = 'everest_forms_delete_forms';
-					}
-				} else {
-					// The user is trying someone else's form.
-					if ( 'everest_forms_view_form' === $cap ) {
-						$required_caps[] = 'everest_forms_view_others_forms';
-					} elseif ( 'everest_forms_edit_form' === $cap ) {
-						$required_caps[] = 'everest_forms_edit_others_forms';
-					} else {
-						$required_caps[] = 'everest_forms_delete_others_forms';
-					}
-				}
-				break;
-			case 'everest_forms_view_form_entries':
-				$form = evf()->form->get( $args[0], array( 'cap' => false ) );
-				if ( ! $form ) {
-					$required_caps[] = 'do_not_allow';
-					break;
-				}
-
-				// If the form author is set and the user is the author...
-				if ( $form->post_author && $user_id === (int) $form->post_author ) {
-					$required_caps[] = 'everest_forms_view_entries';
-				} else {
-					$required_caps[] = 'everest_forms_view_others_entries';
-				}
-				break;
-			case 'everest_forms_view_entry_':
-			case 'everest_forms_edit_entry_':
-			case 'everest_forms_delete_entry_':
-				$entry = evf_get_entry( $args[0], false, array( 'cap' => false ) );
+			// Check if meta cap requires form ID from entry.
+			if ( in_array( $cap, array( 'view_entry', 'edit_entry', 'delete_entry' ), true ) ) {
+				$entry = evf_get_entry( $id, false, array( 'cap' => false ) );
 				if ( ! $entry ) {
-					$required_caps[] = 'do_not_allow';
-					break;
+					return $caps;
 				}
 
-				$form = evf()->form->get( $entry->form_id, array( 'cap' => false ) );
-				if ( ! $form && ! is_a( $form, 'WP_Post' ) ) {
-					$required_caps[] = 'do_not_allow';
-				}
+				$id = isset( $entry->form_id ) ? (int) $entry->form_id : 0;
+			}
 
-				// If the form author is set and the user is the author...
-				if ( $form->post_author && $user_id === (int) $form->user_id ) {
-					if ( 'everest_forms_view_entry' === $cap ) {
-						$required_caps[] = 'everest_forms_view_entries';
-					} elseif ( 'everest_forms_edit_entry' === $cap ) {
-						$required_caps[] = 'everest_forms_edit_entries';
-					} else {
-						$required_caps[] = 'everest_forms_delete_entries';
-					}
-				} else {
-					// The user is trying someone else's form.
-					if ( 'everest_forms_view_entry' === $cap ) {
-						$required_caps[] = 'everest_forms_view_others_entries';
-					} elseif ( 'everest_forms_edit_entry' === $cap ) {
-						$required_caps[] = 'everest_forms_edit_others_entries';
-					} else {
-						$required_caps[] = 'everest_forms_delete_others_entries';
-					}
-				}
-				break;
-		}
+			$form = evf()->form->get( $id, array( 'cap' => false ) );
+			if ( ! $form ) {
+				return $caps;
+			}
 
-		if ( ! empty( $required_caps ) ) {
-			return $required_caps;
+			if ( ! is_a( $form, 'WP_Post' ) ) {
+				return $caps;
+			}
+
+			if ( 'everest_form' !== $form->post_type ) {
+				return $caps;
+			}
+
+			// If the form author is set and the user is the author...
+			if ( $form->form_author && $user_id === (int) $form->form_author ) {
+				$caps = isset( $meta_caps[ $cap ]['own'] ) ? array( $meta_caps[ $cap ]['own'] ) : array( 'do_not_allow' );
+			} else {
+				// The user is trying someone else's form.
+				$caps = isset( $meta_caps[ $cap ]['others'] ) ? array( $meta_caps[ $cap ]['others'] ) : array( 'do_not_allow' );
+			}
 		}
 
 		return $caps;
