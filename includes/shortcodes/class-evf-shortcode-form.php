@@ -180,26 +180,29 @@ class EVF_Shortcode_Form {
 	 */
 	public static function label( $field, $form_data ) {
 
-		$label = $field['properties']['label'];
-
+		$label         = $field['properties']['label'];
+		$required_type = '*';
 		// If the label is empty or disabled don't proceed.
 		if ( empty( $label['value'] ) || $label['disabled'] ) {
 			return;
 		}
 
-		switch ( $field['required-field-type'] ) {
-			case 'default':
-				$required_type = 'Required';
-				break;
-			case 'asterisk':
-				$required_type = '*';
-				break;
-			case 'custom_text':
-				$required_type = $field['required-field-type-text'];
-				break;
-			default:
-				$required_type = '*';
-				break;
+		$settings = isset( $form_data['settings'] ) ? $form_data['settings'] : array();
+		if ( isset( $field['required'] ) && isset( $settings['required_indicators'] ) ) {
+			switch ( $settings['required_indicators'] ) {
+				case 'text':
+					$required_type = 'Required';
+					break;
+				case 'asterisk':
+					$required_type = '*';
+					break;
+				case 'custom_text':
+					$required_type = $settings['custom_text'];
+					break;
+				default:
+					$required_type = '*';
+					break;
+			}
 		}
 
 		$required    = $label['required'] ? apply_filters( 'everest_forms_field_required_label', '<abbr class="required" title="' . esc_attr__( 'Required', 'everest-forms' ) . '">' . $required_type . '</abbr>' ) : '';

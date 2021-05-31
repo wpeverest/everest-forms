@@ -286,6 +286,37 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		);
 		do_action( 'everest_forms_inline_submit_settings', $this, 'submit', 'connection_1' );
 		echo '</div>';
+
+		echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'Required Indicators', 'everest-forms' ) . '</h4>';
+		everest_forms_panel_field(
+			'select',
+			'settings',
+			'required_indicators',
+			$this->form_data,
+			esc_html__( 'Required Indicators Type', 'everest-forms' ),
+			array(
+				'default' => 'asterisk',
+				/* translators: %1$s - general settings docs url */
+				'tooltip' => sprintf( esc_html__( 'Choose how to display required indicator type. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/general-settings/#required_indicators' ) ),
+				'options' => array(
+					'asterisk'    => esc_html__( 'Asterisk (*)', 'everest-forms' ),
+					'text'        => esc_html__( 'Required', 'everest-forms' ),
+					'custom_text' => esc_html__( 'Custom Text', 'everest-forms' ),
+				),
+			)
+		);
+		everest_forms_panel_field(
+			'text',
+			'settings',
+			'custom_text',
+			$this->form_data,
+			esc_html__( 'Custom Text', 'everest-forms' ),
+			array(
+				'default' => isset( $settings['custom_text'] ) ? $settings['custom_text'] : __( '*', 'everest-forms' ),
+			)
+		);
+		echo '</div>';
+
 		do_action( 'everest_forms_inline_integrations_settings', $this->form_data, $settings );
 		everest_forms_panel_field(
 			'checkbox',

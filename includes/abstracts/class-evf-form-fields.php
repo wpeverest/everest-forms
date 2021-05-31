@@ -523,17 +523,8 @@ abstract class EVF_Form_Fields {
 			 * Required Field Message.
 			 */
 			case 'required_field_message':
-				$has_sub_fields        = false;
-				$sub_fields            = array();
-				$required_type_value   = isset( $field['required-field-type'] ) ? esc_attr( $field['required-field-type'] ) : '';
-				$required_type_text    = isset( $field['required-field-type-text'] ) ? esc_attr( $field['required-field-type-text'] ) : '*';
-				$required_type_tooltip = esc_html__( 'Select a required type field to show for this field how it will show.', 'everest-forms' );
-
-				$options = array(
-					'default'     => esc_html__( 'Text: (Required)', 'everest-forms' ),
-					'asterisk'    => esc_html__( 'Asterisk: (*)', 'everest-forms' ),
-					'custom_text' => esc_html__( 'Custom Text', 'everest-forms' ),
-				);
+				$has_sub_fields = false;
+				$sub_fields     = array();
 
 				$required_validation = get_option( 'everest_forms_required_validation' );
 				if ( in_array( $field['type'], array( 'number', 'email', 'url', 'phone' ), true ) ) {
@@ -642,39 +633,9 @@ abstract class EVF_Form_Fields {
 
 						$sub_field_output_array[] = $output;
 					}
-					$output  = $this->field_element(
-						'label',
-						$field,
-						array(
-							'slug'    => 'required-field-type',
-							'value'   => esc_html__( 'Required Field Type', 'everest-forms' ),
-							'tooltip' => $required_type_tooltip,
-						),
-						false
-					);
-					$output .= $this->field_element(
-						'select',
-						$field,
-						array(
-							'slug'    => 'required-field-type',
-							'value'   => $required_type_value,
-							'options' => $options,
-							'class'   => 'everest-forms-field-option-row everest-forms-field-option-required-type',
-						),
-						false
-					);
-					$output .= $this->field_element(
-						'text',
-						$field,
-						array(
-							'slug'  => 'required-field-type-text',
-							'value' => $required_type_text,
-							'class' => ( 'custom_text' !== $field['required-field-type'] ) ? 'everest-forms-field-option-row everest-forms-field-option-required-type-text hidden' : 'everest-forms-field-option-row everest-forms-field-option-required-type-text',
-						),
-						false
-					);
-					$output .= implode( '', $sub_field_output_array );
-					$output  = $this->field_element(
+
+					$output = implode( '', $sub_field_output_array );
+					$output = $this->field_element(
 						'row',
 						$field,
 						array(
@@ -705,37 +666,6 @@ abstract class EVF_Form_Fields {
 							'slug'  => 'required-field-message',
 							'value' => $value,
 							'class' => 'everest-forms-field-option-row',
-						),
-						false
-					);
-					$output .= $this->field_element(
-						'label',
-						$field,
-						array(
-							'slug'    => 'required-field-type',
-							'value'   => esc_html__( 'Required Field Type', 'everest-forms' ),
-							'tooltip' => $required_type_tooltip,
-						),
-						false
-					);
-					$output .= $this->field_element(
-						'select',
-						$field,
-						array(
-							'slug'    => 'required-field-type',
-							'value'   => $required_type_value,
-							'options' => $options,
-							'class'   => 'everest-forms-field-option-row everest-forms-field-option-required-type',
-						),
-						false
-					);
-					$output .= $this->field_element(
-						'text',
-						$field,
-						array(
-							'slug'  => 'required-field-type-text',
-							'value' => $required_type_text,
-							'class' => ( 'custom_text' !== $field['required-field-type'] ) ? 'everest-forms-field-option-row everest-forms-field-option-required-type-text hidden' : 'everest-forms-field-option-row everest-forms-field-option-required-type-text',
 						),
 						false
 					);
@@ -1419,15 +1349,29 @@ abstract class EVF_Form_Fields {
 	 * @return mixed Print or return a string.
 	 */
 	public function field_preview_option( $option, $field, $args = array(), $echo = true ) {
-		$output = '';
-		$class  = ! empty( $args['class'] ) ? evf_sanitize_classes( $args['class'] ) : '';
+		$output        = '';
+		$required_type = '*';
+		$class         = ! empty( $args['class'] ) ? evf_sanitize_classes( $args['class'] ) : '';
 
-		if ( 'default' === $field['required-field-type'] ) {
-			$required_type = 'Required';
-		} elseif ( 'custom_text' === $field['required-field-type'] ) {
-			$required_type = $field['required-field-type-text'];
-		} else {
-			$required_type = '*';
+		$form_id   = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification
+		$form_data = evf()->form->get( absint( $form_id ), array( 'content_only' => true ) );
+		$settings  = isset( $form_data['settings'] ) ? $form_data['settings'] : array();
+
+		if ( isset( $field['required'] ) && isset( $settings['required_indicators'] ) ) {
+			switch ( $settings['required_indicators'] ) {
+				case 'text':
+					$required_type = 'Required';
+					break;
+				case 'asterisk':
+					$required_type = '*';
+					break;
+				case 'custom_text':
+					$required_type = $settings['custom_text'];
+					break;
+				default:
+					$required_type = '*';
+					break;
+			}
 		}
 
 		switch ( $option ) {
