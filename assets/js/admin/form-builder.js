@@ -818,51 +818,6 @@
 				}
 			});
 
-			// Real-time updates for "Required Type Option" field option.
-			$builder.on( 'change', '.everest-forms-field-option-required-type', function( event ) {
-				var id = $( this ).parent().data( 'field-id' );
-
-				var $this  = $(this),
-					value  = $this.val(),
-					$label = $( '#everest-forms-field-' + id ).find( '.label-title .required' );
-
-				if(value == 'default'){
-					$required_type = 'Required';
-				}else if(value == 'custom_text'){
-					$required_type = $('#everest-forms-field-option-' + id + '-required-field-type-text').val();
-				}else{
-					$required_type = '*';
-				}
-
-				if ( $label.hasClass( 'nl2br' ) ) {
-					$label.html( $required_type.replace( /\n/g, '<br>') );
-				} else {
-					$label.html( $required_type );
-				}
-
-				// Toggle "Required Type Field Message" option.
-				if ( $( '#everest-forms-field-option-' + id + '-required-field-type option:selected' ).val() == 'custom_text' ) {
-					$( '#everest-forms-field-option-' + id + '-required-field-type-text' ).show();
-				} else {
-					$( '#everest-forms-field-option-' + id + '-required-field-type-text' ).hide();
-				}
-			});
-
-			// Real-time updates for "Show Required Field Type" option.
-			$builder.on( 'input', '.everest-forms-field-option-required-type-text', function() {
-				var $this  = $(this),
-					value  = $this.val(),
-					id     = $this.parent().data( 'field-id' );
-					$label = $( '#everest-forms-field-' + id ).find( '.label-title .required' );
-
-				if ( $label.hasClass( 'nl2br' ) ) {
-					$label.html(value.replace( /\n/g, '<br>') );
-				} else {
-					$label.html( value );
-				}
-
-			});
-
 			// Real-time updates for "Confirmation" field option.
 			$builder.on( 'change', '.everest-forms-field-option-row-confirmation input', function( event ) {
 				var id = $( this ).parent().data( 'field-id' );
