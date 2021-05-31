@@ -325,18 +325,6 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				false
 			);
 
-			$disable_past_date = $this->field_element(
-				'checkbox',
-				$field,
-				array(
-					'slug'    => 'disable_past_date',
-					'value'   => isset( $field['disable_past_date'] ) ? $field['disable_past_date'] : '',
-					'desc'    => esc_html__( 'Disable past dates.', 'everest-forms' ),
-					'tooltip' => esc_html__( 'Check this option to disable past dates.', 'everest-forms' ),
-				),
-				false
-			);
-
 			$enable_min_max = $this->field_element(
 				'checkbox',
 				$field,
@@ -395,7 +383,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 
 			$args = array(
 				'slug'    => 'date_format',
-				'content' => $date_format_label . $date_format_select . $disable_dates_label . $disable_dates . $date_localization_label . $date_localization_select . '<div class="everest-forms-checklist everest-forms-checklist-inline">' . $current_date_mode . '</div><div class="everest-forms-current-date-format">' . $current_date_default . '</div><div class="everest-forms-current-date-format">' . $disable_past_date . '</div><div class="everest-forms-min-max-date-format">' . $enable_min_max . '</div><div class="everest-forms-min-max-date-option ' . $class_name . '">' . $min_date_label . $min_date . $max_date_label . $max_date . '</div>',
+				'content' => $date_format_label . $date_format_select . $disable_dates_label . $disable_dates . $date_localization_label . $date_localization_select . '<div class="everest-forms-checklist everest-forms-checklist-inline">' . $current_date_mode . '</div><div class="everest-forms-current-date-format">' . $current_date_default . '</div><div class="everest-forms-min-max-date-format">' . $enable_min_max . '</div><div class="everest-forms-min-max-date-option ' . $class_name . '">' . $min_date_label . $min_date . $max_date_label . $max_date . '</div>',
 			);
 			$this->field_element( 'row', $field, $args );
 
@@ -695,11 +683,6 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			$properties['inputs']['primary']['attr']['datetime_style'] = esc_attr( $field['datetime_style'] );
 		}
 
-		// Input primary: disable_past_date.
-		if ( ! empty( $field['disable_past_date'] ) ) {
-			$properties['inputs']['primary']['attr']['disable_past_date'] = esc_attr( $field['disable_past_date'] );
-		}
-
 		// Input primary: data-date-time.
 		if ( ! empty( $field['datetime_format'] ) ) {
 			$properties['inputs']['primary']['attr']['data-date-time'] = esc_attr( $field['datetime_format'] );
@@ -734,7 +717,6 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 					$properties['inputs']['primary']['attr']['data-date-format'] = ! empty( $field['time_format'] ) ? str_replace( 'g:i A', 'h:i K', esc_attr( $field['time_format'] ) ) : 'g:i A';
 					break;
 				case 'date-time':
-					$properties['inputs']['primary']['attr']['data-date-default'] = isset( $field['date_default'] ) ? isset( $field['date_default'] ) : '';
 					if ( ! empty( $field['time_format'] ) ) {
 						$date_format                                      = esc_attr( $field['date_format'] ) . ' ' . esc_attr( $field['time_format'] );
 						$properties['inputs']['primary']['attr']['value'] = isset( $field['date_default'] ) ? esc_attr( date_i18n( $date_format ) ) : '';
@@ -798,20 +780,24 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			$class = array_merge( array( 'date-dropdown-field' ), $primary['class'] );
 			echo '<div class="date-time-container">';
 
-			if ( 'date-time' === $field['datetime_format'] || 'date' === $field['datetime_format'] ) {
-				printf(
-					'<input type="text" %s %s >',
-					evf_html_attributes( $primary['id'], $class, $primary['data'], $primary['attr'] ),
-					esc_attr( $primary['required'] )
-				);
-				// Primary select field.
+			printf(
+				'<input type="text" %s %s >',
+				evf_html_attributes( $primary['id'], $class, $primary['data'], $primary['attr'] ),
+				esc_attr( $primary['required'] )
+			);
 
+			if ( 'date-time' === $field['datetime_format'] || 'date' === $field['datetime_format'] ) {
+
+				// For Years.
 				printf(
 					'<select %s>',
 					evf_html_attributes( 'year-select-' . $primary['id'] ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				);
 				// Build the select options.
-				for ( $i = gmdate( 'Y' ); $i >= ( gmdate( 'Y' ) - 100 ); $i-- ) {
+				$end_date   = gmdate( 'Y' );
+				$start_date = $end_date - 100;
+
+				for ( $i = $end_date; $i >= $start_date; $i-- ) {
 					printf(
 						'<option value="%s">%s</option>',
 						esc_attr( $i ),
@@ -820,29 +806,34 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				}
 				echo '</select>';
 
+				// For Months.
 				printf(
 					'<select %s>',
-					evf_html_attributes( 'year-select-' . $primary['id'] ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					evf_html_attributes( 'month-select-' . $primary['id'] ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				);
 				// Build the select options.
 				for ( $i = 1; $i <= 12; $i++ ) {
+					$month = ( $i < 10 ) ? '0' . $i : $i;
 					printf(
 						'<option value="%s">%s</option>',
 						esc_attr( $i ),
-						esc_html( ( $i < 10 ) ? '0' . $i : $i )
+						esc_html( $month )
 					);
 				}
 				echo '</select>';
+
+				// For Days.
 				printf(
 					'<select %s>',
-					evf_html_attributes( 'year-select-' . $primary['id'] ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					evf_html_attributes( 'day-select-' . $primary['id'] ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				);
 				// Build the select options.
 				for ( $i = 1; $i <= 32; $i++ ) {
+					$day = $i < 10 ? '0' . $i : $i;
 					printf(
 						'<option value="%s">%s</option>',
 						esc_attr( $i ),
-						esc_html( ( $i < 10 ) ? '0' . $i : $i )
+						esc_html( $day )
 					);
 				}
 				echo '</select>';
@@ -853,47 +844,48 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			}
 
 			if ( 'time' === $field['datetime_format'] || 'date-time' === $field['datetime_format'] ) {
+
+				$min_hour = isset( $field['min_time_hour'] ) ? $field['min_time_hour'] : 0;
+				$max_hour = isset( $field['max_time_hour'] ) ? $field['max_time_hour'] : 23;
+
+				// For Hours.
 				printf(
 					'<select %s>',
-					evf_html_attributes( 'year-select-' . $primary['id'] ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					evf_html_attributes( 'hour-select-' . $primary['id'] ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				);
-				for ( $i = 0; $i <= 23; $i++ ) {
-					$p = '';
+
+				for ( $i = $min_hour; $i <= $max_hour; $i++ ) {
+					$p    = '';
+					$hour = $i;
 					if ( 'H:i' !== $field['time_format'] ) {
 						if ( $i < 12 ) {
-							$p = 'AM';
+							$p = ' AM';
+							if ( 0 === $i ) {
+								$hour = 12;
+							}
 						} else {
-							$p = 'PM';
-						}
-
-						if ( $i == 0 ) {
-							$hour = 12;
-						} elseif ( $i > 12 ) {
-							$hour = $i - 12;
-						} else {
-							$hour = $i;
+							$p = ' PM';
+							if ( $i > 12 ) {
+								$hour = $i - 12;
+							}
 						}
 					}
+					$hour = ( $hour < 10 ? ( '0' . $hour ) : $hour ) . $p;
 					printf(
 						'<option value="%s">%s</option>',
 						esc_attr( $i ),
-						esc_html( ( ( $hour < 10 ) ? '0' . $hour : $hour ) . ' ' . $p )
+						esc_html( $hour )
 					);
 				}
 				echo '</select>';
+
 				$time_interval = isset( $field['time_interval'] ) ? $field['time_interval'] : 1;
+
+				// For Minutes.
 				printf(
 					'<select %s>',
-					evf_html_attributes( 'year-select-' . $primary['id'] ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					evf_html_attributes( 'minute-select-' . $primary['id'] ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				);
-
-				for ( $i = 0; $i < 59; $i = ( $i + $time_interval ) ) {
-					printf(
-						'<option value="%s">%s</option>',
-						esc_attr( $i ),
-						esc_html( ( $i < 10 ) ? '0' . $i : $i )
-					);
-				}
 				echo '</select>';
 			}
 
