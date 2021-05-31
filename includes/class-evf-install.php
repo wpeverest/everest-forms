@@ -501,35 +501,59 @@ class EVF_Install {
 	}
 
 	/**
-	 * Get capabilities for EverestForms - these are assigned to admin during installation or reset.
+	 * Get the core capabilities.
 	 *
-	 * @return array
+	 * Core capabilities are assigned to admin during installation or reset.
+	 *
+	 * @since 1.0.0
+	 * @since 1.7.5 Removed unused post type capabilities and added supported ones.
+	 *
+	 * @return array $capabilities Core capabilities.
 	 */
 	private static function get_core_capabilities() {
-		$capabilities         = array();
-		$default_capabilities = array(
-			'core'  => array(
-				'manage_everest_forms',
-			),
-			'forms' => array(
-				'everest_forms_create_forms',
-			),
+		$capabilities = array();
+
+		$capabilities['core'] = array(
+			'manage_everest_forms',
 		);
 
 		$capability_types = array( 'forms', 'entries' );
 
 		foreach ( $capability_types as $capability_type ) {
-			$capabilities[ $capability_type ] = array(
-				"everest_forms_view_{$capability_type}",
-				"everest_forms_view_others{$capability_type}",
-				"everest_forms_edit_{$capability_type}",
-				"everest_forms_edit_others_{$capability_type}",
-				"everest_forms_delete_{$capability_type}",
-				"everest_forms_delete_others_{$capability_type}",
-			);
+			if ( 'forms' === $capability_type ) {
+				$capabilities[ $capability_type ][] = "everest_forms_create_{$capability_type}";
+			}
+
+			foreach ( array( 'view', 'edit', 'delete' ) as $context ) {
+				$capabilities[ $capability_type ][] = "everest_forms_{$context}_{$capability_type}";
+				$capabilities[ $capability_type ][] = "everest_forms_{$context}_others_{$capability_type}";
+			}
 		}
 
-		return array_merge_recursive( $default_capabilities, $capabilities );
+		return $capabilities;
+	}
+
+	/**
+	 * Get the meta capabilities.
+	 *
+	 * @since 1.7.5
+	 *
+	 * @return array $meta_caps Meta capabilities.
+	 */
+	public function get_meta_caps() {
+		$meta_caps      = array();
+		$meta_cap_types = array( 'form', 'form_entries', 'entry' );
+
+		foreach ( $meta_cap_types as $meta_cap_type ) {
+			foreach ( array( 'view', 'edit', 'delete' ) as $context ) {
+				$meta_caps[ "everest_forms_{$context}_{$meta_cap_type}" ] = array(
+					'own'    => 'form' === $meta_cap_type ? "everest_forms_{$context}_forms" : "everest_forms_{$context}_entries",
+					'others' => 'form' === $meta_cap_type ? "everest_forms_{$context}_others_forms" : "everest_forms_{$context}_others_entries",
+				);
+			}
+		}
+
+		return $meta_caps;
 	}
 
 	/**
@@ -622,15 +646,14 @@ class EVF_Install {
 	}
 
 	/**
-	 * Filters user's primitive capabilities for the given meta capability.
+	 * Filter user's capabilities for the given primitive or meta capability.
 	 *
-	 * @since 1.7.5
+	 * @since 1.7.0
 	 *
-	 * @param  string[] $caps    Primitive capabilities required of the user.
+	 * @param  string[] $caps    Array of the user's capabilities.
 	 * @param  string   $cap     Capability being checked.
 	 * @param  int      $user_id The user ID.
-	 * @param  array    $args    Adds context to the capability check, typically
-	 *                           starting with an object ID.
+	 * @param  array    $args    Adds context to the capability check, typically the object ID.
 	 *
 	 * @return string[] Array of required capabilities for the requested action.
 	 */
