@@ -19,6 +19,7 @@ class EVF_Admin_Forms {
 	public function __construct() {
 		add_action( 'admin_init', array( $this, 'actions' ) );
 		add_action( 'deleted_post', array( $this, 'delete_entries' ) );
+		add_action( 'after_delete_post', array( $this, 'delete_pdf_submission' ) );
 	}
 
 	/**
@@ -184,10 +185,6 @@ class EVF_Admin_Forms {
 				$this->empty_trash();
 			}
 
-			if ( isset( $_REQUEST['action'] ) && 'delete_permanently' === $_REQUEST['action'] ) { // phpcs:ignore WordPress.Security.NonceVerification
-				$this->delete_permanently();
-			}
-
 			// Duplicate form.
 			if ( isset( $_REQUEST['action'] ) && 'duplicate_form' === $_REQUEST['action'] ) { // phpcs:ignore WordPress.Security.NonceVerification
 				$this->duplicate_form();
@@ -226,24 +223,6 @@ class EVF_Admin_Forms {
 			'updated'
 		);
 	}
-	/**
-	 * Empty Trash.
-	 */
-	private function delete_permanently() {
-		if ( empty( $_REQUEST['form_id'] ) ) {
-			wp_die( esc_html__( 'No form to duplicate has been supplied!', 'everest-forms' ) );
-		}
-
-		$form_id = isset( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : '';
-
-		check_admin_referer( 'everest-forms-delete-form_' . $form_id );
-
-		$deleted_id = evf()->form->delete( $form_id );
-
-		// Redirect to the edit screen for the new form page.
-		wp_safe_redirect( admin_url( 'admin.php?page=evf-builder' ) );
-		exit;
-	}
 
 	/**
 	 * Duplicate form.
@@ -279,8 +258,35 @@ class EVF_Admin_Forms {
 		// Delete entry.
 		if ( ! empty( $entries ) ) {
 			foreach ( $entries as $entry_id ) {
+				do_action( 'everest_forms_after_delete_post', EVF_Admin_Entries::delete_files( $entry_id ) );
 				$wpdb->delete( $wpdb->prefix . 'evf_entries', array( 'entry_id' => $entry_id ), array( '%d' ) );
 				$wpdb->delete( $wpdb->prefix . 'evf_entrymeta', array( 'entry_id' => $entry_id ), array( '%d' ) );
+			}
+		}
+	}
+
+	/**
+	 * Remove PDF Files Attached to the Email of the Form.
+	 *
+	 * @param int $form_id Form ID to get required form data and remove files.
+	 */
+	public function delete_pdf_submission( $form_id ) {
+		global $wpdb;
+
+		$form_data = evf()->form->get( absint( $form_id ), array( 'content_only' => true ) );
+		$settings  = isset( $form_data['settings']['email'] ) ? $form_data['settings']['email'] : array();
+		$results   = array_filter(
+			$settings,
+			function( $value ) {
+				return is_array( $value ) ? $value : array();
+			}
+		);
+		if ( ! empty( $results ) ) {
+			foreach ( $results as $key => $value ) {
+				$pdf_uploaded_files = WP_CONTENT_DIR . '/uploads/Everest-Froms-PDF-Entries/' . $value['pdf_name'] . '.pdf';
+				if ( file_exists( $pdf_uploaded_files ) ) {
+					wp_delete_file( $pdf_uploaded_files );
+				}
 			}
 		}
 	}

@@ -118,14 +118,13 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 		}
 
 		if ( current_user_can( $post_type_object->cap->delete_post, $posts->ID ) ) {
-			$delete_permanently_link = wp_nonce_url( admin_url( 'admin.php?page=evf-builder&action=delete_permanently&form_id=' . absint( $posts->ID ) ), 'everest-forms-delete-form_' . $posts->ID );
 			if ( 'trash' === $post_status ) {
 				$actions['untrash'] = '<a aria-label="' . esc_attr__( 'Restore this item from the Trash', 'everest-forms' ) . '" href="' . wp_nonce_url( admin_url( sprintf( $post_type_object->_edit_link . '&amp;action=untrash', $posts->ID ) ), 'untrash-post_' . $posts->ID ) . '">' . esc_html__( 'Restore', 'everest-forms' ) . '</a>';
 			} elseif ( EMPTY_TRASH_DAYS ) {
 				$actions['trash'] = '<a class="submitdelete" aria-label="' . esc_attr__( 'Move this item to the Trash', 'everest-forms' ) . '" href="' . get_delete_post_link( $posts->ID ) . '">' . esc_html__( 'Trash', 'everest-forms' ) . '</a>';
 			}
 			if ( 'trash' === $post_status || ! EMPTY_TRASH_DAYS ) {
-				$actions['delete'] = '<a class="submitdelete" aria-label="' . esc_attr__( 'Delete this item permanently', 'everest-forms' ) . '" href="' . esc_url( $delete_permanently_link ) . '">' . esc_html__( 'Delete permanently', 'everest-forms' ) . '</a>';
+				$actions['delete'] = '<a class="submitdelete" aria-label="' . esc_attr__( 'Delete this item permanently', 'everest-forms' ) . '" href="' . get_delete_post_link( $posts->ID, '', true ) . '">' . esc_html__( 'Delete permanently', 'everest-forms' ) . '</a>';
 			}
 		}
 

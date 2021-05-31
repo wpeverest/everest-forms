@@ -292,25 +292,8 @@ class EVF_Admin_Entries {
 	public static function remove_entry( $entry_id ) {
 		global $wpdb;
 
-		// Remove the particular file attached with the entry while deleting them.
-		$base_url           = wp_upload_dir()['basedir'];
-		$entry_meta_details = $wpdb->get_results( $wpdb->prepare( 'SELECT meta_value FROM ' . $wpdb->prefix . 'evf_entrymeta WHERE entry_id = %d', $entry_id ) );
-		foreach ( $entry_meta_details as $entry_key => $entry_value ) {
-			$file_uploads = explode( '/', $entry_value->meta_value );
-			$folder_name  = $base_url . '/' . $file_uploads[5] . '/' . $file_uploads[6];
-			foreach ( $file_uploads as $file_key => $file_value ) {
-				// Check if meta data consists of files and contains foldername like 'uploads' and 'everest_forms_uploads'.
-				if ( in_array( 'uploads', $file_uploads, true ) || in_array( 'everest_forms_uploads', $file_uploads, true ) ) {
-					$file_name       = untrailingslashit( $folder_name . '/' . $file_uploads[7] );
-					$index_file_name = untrailingslashit( $folder_name . '/index.html' );
-					if ( file_exists( $file_name ) ) {
-						wp_delete_file( $file_name );
-						wp_delete_file( $index_file_name );
-						rmdir( untrailingslashit( $folder_name ) ); // Removes folder if there is no file exists in the folder.
-					}
-				}
-			}
-		}
+		do_action( 'everest_forms_after_delete_post', self::delete_files( $entry_id ) );
+
 		$delete = $wpdb->delete( $wpdb->prefix . 'evf_entries', array( 'entry_id' => $entry_id ), array( '%d' ) );
 
 		if ( apply_filters( 'everest_forms_delete_entrymeta', true ) ) {
@@ -318,6 +301,23 @@ class EVF_Admin_Entries {
 		}
 
 		return $delete;
+	}
+
+	/**
+	 * Delete Attachment after removing Entry.
+	 *
+	 * @param int $entry_id Entry ID for which file should be removed.
+	 */
+	public static function delete_files( $entry_id ) {
+		$get_entry = evf_get_entry( $entry_id, 'meta' );
+		if ( ! empty( $get_entry->meta ) ) {
+			foreach ( $get_entry->meta as $meta_key => $meta_value ) {
+				$uploaded_file = get_home_path() . wp_parse_url( $meta_value, PHP_URL_PATH );
+				if ( file_exists( $uploaded_file ) ) {
+					wp_delete_file( $uploaded_file );
+				}
+			}
+		}
 	}
 
 	/**

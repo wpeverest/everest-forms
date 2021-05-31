@@ -112,8 +112,6 @@ class EVF_Form_Handler {
 	 * @return boolean
 	 */
 	public function delete( $ids = array() ) {
-		global $wpdb;
-
 		// Check for permissions.
 		if ( ! current_user_can( apply_filters( 'everest_forms_manage_cap', 'manage_options' ) ) ) {
 			return false;
@@ -123,59 +121,16 @@ class EVF_Form_Handler {
 			$ids = array( $ids );
 		}
 
-		$ids      = array_map( 'absint', $ids );
-		$base_url = wp_upload_dir()['basedir'];
+		$ids = array_map( 'absint', $ids );
 
-		foreach ( $ids as $key => $id ) {
-			// Get Post Contents for PDF File after usage of Add-ons.
-			$get_post_content = get_post_field( 'post_content', $id );
-			if ( evf_is_json( $get_post_content ) ) {
-				$get_pdf_file = json_decode( $get_post_content, true );
-			}
-			$pdf_file = $get_pdf_file['settings']['email'];
-			foreach ( $pdf_file as $pdf_file_value ) {
-				if ( is_array( $pdf_file_value ) ) {
-					$pdf_file_name[] = untrailingslashit( $base_url . '/Everest-Froms-PDF-Entries/' . $pdf_file_value['pdf_name'] . '.pdf' );
-				}
-			}
-
-			// Get Entries Details and remove files and folder if required and exists in given path.
-			$entries_details    = $wpdb->get_results( $wpdb->prepare( 'SELECT entry_id FROM ' . $wpdb->prefix . 'evf_entries WHERE form_id = %d', $id ) );
-			$entry_id           = $entries_details[ $key ]->entry_id;
-			$entry_meta_details = $wpdb->get_results( $wpdb->prepare( 'SELECT meta_value FROM ' . $wpdb->prefix . 'evf_entrymeta WHERE entry_id = %d', $entry_id ) );
-
-			foreach ( $entry_meta_details as $entry_key => $entry_value ) {
-				$file_uploads = explode( '/', $entry_value->meta_value );
-				$folder_name  = $base_url . '/' . $file_uploads[5] . '/' . $file_uploads[6];
-				foreach ( $file_uploads as $file_key => $file_value ) {
-					// Check if meta data consists of files and contains foldername like 'uploads' and 'everest_forms_uploads'.
-					if ( in_array( 'uploads', $file_uploads, true ) || in_array( 'everest_forms_uploads', $file_uploads, true ) ) {
-						$file_name       = untrailingslashit( $folder_name . '/' . $file_uploads[7] );
-						$index_file_name = untrailingslashit( $folder_name . '/index.html' );
-						if ( file_exists( $file_name ) ) {
-							wp_delete_file( $file_name );
-							wp_delete_file( $index_file_name );
-							rmdir( untrailingslashit( $folder_name ) );
-						}
-					}
-				}
-			}
-
-			// Remove PDF File if Exists after usage of PDF File Submission Add-ons.
-			if ( is_array( $pdf_file_name ) && ! empty( $pdf_file_name ) ) {
-				foreach ( $pdf_file_name as $file_name ) {
-					if ( file_exists( $file_name ) ) {
-						wp_delete_file( untrailingslashit( $file_name ) );
-					}
-					rmdir( untrailingslashit( $base_url . '/Everest-Froms-PDF-Entries' ) );
-				}
-			}
-			// Remove entry post data after removing all files exists in uploads folder.
+		foreach ( $ids as $id ) {
 			$form = wp_delete_post( $id, true );
+
 			if ( ! $form ) {
 				return false;
 			}
 		}
+
 		return true;
 	}
 
