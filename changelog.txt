@@ -10,7 +10,9 @@
 * Fix - New Email Notifications not being saved on reload.
 * Fix - New Email Notifications cloned blank for assigned values.
 * Fix - Empty checkboxes value in view entry form details.
+* Fix - Stop default form creation when ThemeGrill Demo Importer plugin is active.
 * Fix - Payment Multiple choices and checkboxes fields amount preview in form builder area.
+* Enhancement - Enable/Disable log.
 * Fix - Delete uploaded files after removing Forms or Entries.
 
 = 1.7.4 - 11-03-2021 =
