@@ -790,11 +790,12 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 
 				// For Years.
 				printf(
-					'<select %s>',
+					'<select value="%s" %s>',
+					esc_attr( gmdate( 'Y' ) ),
 					evf_html_attributes( 'year-select-' . $primary['id'] ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				);
 				// Build the select options.
-				$end_date   = gmdate( 'Y' );
+				$end_date   = gmdate( 'Y' ) + 100;
 				$start_date = $end_date - 100;
 
 				for ( $i = $end_date; $i >= $start_date; $i-- ) {
