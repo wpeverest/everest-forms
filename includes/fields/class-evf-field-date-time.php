@@ -152,7 +152,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			} else {
 				$a = __( 'PM', 'everest-forms' );
 			}
-			if ( 'g:i A' === $time_format ) {
+			if ( 'g:i A' === $field['time_format'] ) {
 				$h = $i;
 				if ( 0 === $i ) {
 					$h = 12;
@@ -548,9 +548,14 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			false
 		);
 
+		$min_max_time_select = '';
+		if ( 'dropdown' === $field['style'] ) {
+			$min_max_time_select = $enable_min_max_time . $select_min_time . $min_time_select . $select_max_time . $max_time_select;
+		}
+
 		$args = array(
 			'slug'    => 'time_interval_format',
-			'content' => $time_format_label . $time_interval_select . $time_format_select . $enable_min_max_time . $select_min_time . $min_time_select . $select_max_time . $max_time_select,
+			'content' => $time_format_label . $time_interval_select . $time_format_select . $min_max_time_select,
 		);
 		$this->field_element( 'row', $field, $args );
 
@@ -573,11 +578,6 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 		// Input primary: data-time-interval.
 		if ( ! empty( $field['time_interval'] ) ) {
 			$properties['inputs']['primary']['attr']['data-time-interval'] = esc_attr( $field['time_interval'] );
-		}
-
-		// Input primary: data-time-format.
-		if ( ! empty( $field['time_format'] ) ) {
-			$properties['inputs']['primary']['attr']['data-time-format'] = esc_attr( $field['time_format'] );
 		}
 
 		// Input primary: Disabled dates data.
@@ -766,7 +766,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				// For Hours.
 				printf(
 					'<select value = "%s" %s>',
-					esc_attr( gmdate( 'H' ) ),
+					esc_attr( ( gmdate( 'H' ) >= $min_hour && ( gmdate( 'H' ) <= $max_hour ) ) ? gmdate( 'H' ) : $min_hour ),
 					evf_html_attributes( 'hour-select-' . $primary['id'] ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				);
 

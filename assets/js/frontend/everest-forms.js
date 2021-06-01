@@ -198,6 +198,7 @@ jQuery( function ( $ ) {
 				}
 				// alert(options);	
 				$this.siblings( '#minute-select-'+id ).html( options );
+				$this.siblings( '#minute-select-'+id ).attr('value', $this.siblings( '#minute-select-'+id ).find('option:first').val());
 			}
 			$this.val( everest_forms.format_dropdown_date( $this ) );
 		},
@@ -211,7 +212,6 @@ jQuery( function ( $ ) {
 				selected_minute: $this.siblings( '#minute-select-' + id ).val()
 			}
 			var setting = {
-				time_format: $this.attr( 'data-time-format' ),
 				date_format: $this.attr( 'data-date-format' ),
 				date_time: $this.attr( 'data-date-time' )
 			}
@@ -247,7 +247,10 @@ jQuery( function ( $ ) {
 			}
 			if( setting.date_time == 'time' || setting.date_time == 'date-time' ) {
 				selectd_date.selected_minute = ( selectd_date.selected_minute < 10) ? '0' + selectd_date.selected_minute : selectd_date.selected_minute;
-				if( setting.time_format == 'g:i A' ) {
+				if( setting.date_format.match( /H:i/ ) ) {
+					selectd_date.selected_hour  = ( selectd_date.selected_hour  < 10 ) ? '0' + selectd_date.selected_hour : selectd_date.selected_hour;
+					formatted_date += ' ' + selectd_date.selected_hour + ":" + selectd_date.selected_minute;
+				} else {
 					var period = 'PM';
 					if( selectd_date.selected_hour < 12 ) {
 						period = 'AM'
@@ -257,11 +260,8 @@ jQuery( function ( $ ) {
 					} else {
 						selectd_date.selected_hour = selectd_date.selected_hour - 12;
 					}
-					selectd_date.selected_hour  = ( selectd_date.selected_hour  < 10 ) ? '0' + selectd_date.selected_hour : selectd_date.selected_hour;
+					selectd_date.selected_hour  = selectd_date.selected_hour;
 					formatted_date += ' ' + selectd_date.selected_hour + ":" + selectd_date.selected_minute + ' ' + period;
-				} else {
-					selectd_date.selected_hour  = ( selectd_date.selected_hour  < 10 ) ? '0' + selectd_date.selected_hour : selectd_date.selected_hour;
-					formatted_date += ' ' + selectd_date.selected_hour + ":" + selectd_date.selected_minute;
 				}
 			}
 			return formatted_date.trim();
