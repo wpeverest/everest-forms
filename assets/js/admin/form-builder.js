@@ -468,8 +468,8 @@
 			});
 
 			$( 'body' ).on( 'change', '.everest-forms-field-option-row-datetime_style select', function(){
-				EVFPanelBuilder.changeDateTimeSetting( $( this ) );
 				EVFPanelBuilder.changeTimeInterval( $( '#everest-forms-field-option-'+  $( this ).parent().attr( 'data-field-id' ) +'-enable_min_max_time' ) );
+				EVFPanelBuilder.changeDateTimeSetting( $( this ) );
 			});
 
 			$('.everest-forms-field-option-row-time_interval_format [id*=enable_min_max_time]').each(function() {
@@ -495,13 +495,15 @@
 				$('#everest-forms-field-option-' + id + '-date_default' ).parent().show();
 				$('#everest-forms-field-option-' + id + '-enable_min_max').parent().show();
 				$('#everest-forms-field-option-' + id + '-time_interval' ).show();
+
+
 				$('#everest-forms-field-option-' + id + '-enable_min_max_time').hide();
 				$('label[for=everest-forms-field-option-' + id + '-enable_min_max_time]').hide();
-				$('label[for=everest-forms-field-option-' + id + '-enable_min_max_time]').hide();
 				$('label[for=everest-forms-field-option-' + id + '-select_min_time]').hide();
+				$('label[for=everest-forms-field-option-' + id + '-select_max_time]').hide();
+
 				$('#everest-forms-field-option-' + id + '-min_time_hour').parent().hide();
 				$('#everest-forms-field-option-' + id + '-max_time_hour').parent().hide();
-				$('label[for=everest-forms-field-option-' + id + '-select_max_time]').hide();
 
 			} else {
 				// Dropdown Date Setting Control

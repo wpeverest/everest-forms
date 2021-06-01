@@ -152,7 +152,7 @@ jQuery( function ( $ ) {
 			//Dropdown logic here
 			$( '.date-dropdown-field' ).each( function() {
 				var $this = $ (this );
-				$this.hide();
+				// $this.hide();
 				everest_forms.change_minutes( $this );
 			});
 
@@ -203,6 +203,7 @@ jQuery( function ( $ ) {
 		},
 
 		format_dropdown_date: function ( $this ) {
+			alert($this.attr( 'data-date-format' ));
 			var id = $this.attr( 'id' );
 			var selectd_date = {
 				selected_year: $this.siblings( '#year-select-' + id ).val(),
@@ -233,13 +234,13 @@ jQuery( function ( $ ) {
 			var formatted_date = '';
 			if( setting.date_time == 'date' || setting.date_time == 'date-time' ) {
 				selectd_date.selected_day = (selectd_date.selected_day < 10 ) ? '0' + selectd_date.selected_day : selectd_date.selected_day;
-				if ( setting.date_format == 'Fj, Y' ) {
+				if ( setting.date_format.match( /F j, Y/ ) ) {
 					formatted_date = list_months[ parseInt( selectd_date.selected_month ) - 1 ] + ' ' + selectd_date.selected_day + ', ' + selectd_date.selected_year;
 				} else {
 					selectd_date.selected_month = (selectd_date.selected_month < 10 ) ? '0' + selectd_date.selected_month : selectd_date.selected_month;
-					if(setting.date_format == 'Y-m-d' ) {
+					if(setting.date_format.match( /Y-m-d/ ) ) {
 						formatted_date = selectd_date.selected_year + '-' + selectd_date.selected_month + '-' + selectd_date.selected_day;
-					} else if ( setting.date_format == 'm/d/Y' ) {
+					} else if ( setting.date_format.match( /m\/d\/Y/ ) ) {
 						formatted_date = selectd_date.selected_month + '/' + selectd_date.selected_day + '/' + selectd_date.selected_month;
 					} else {
 						formatted_date = selectd_date.selected_day + '/' + selectd_date.selected_month + '/' + selectd_date.selected_year;
