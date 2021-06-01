@@ -152,7 +152,7 @@ jQuery( function ( $ ) {
 			//Dropdown logic here
 			$( '.date-dropdown-field' ).each( function() {
 				var $this = $ (this );
-				// $this.hide();
+				$this.hide();
 				everest_forms.change_minutes( $this );
 			});
 
@@ -201,9 +201,7 @@ jQuery( function ( $ ) {
 			}
 			$this.val( everest_forms.format_dropdown_date( $this ) );
 		},
-
 		format_dropdown_date: function ( $this ) {
-			alert($this.attr( 'data-date-format' ));
 			var id = $this.attr( 'id' );
 			var selectd_date = {
 				selected_year: $this.siblings( '#year-select-' + id ).val(),
@@ -268,7 +266,6 @@ jQuery( function ( $ ) {
 			}
 			return formatted_date.trim();
 		},
-
 		load_validation: function() {
 			if ( typeof $.fn.validate === 'undefined' ) {
 				return false;

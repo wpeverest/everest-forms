@@ -144,6 +144,31 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 		$field['date_mode'] = isset( $field['date_mode'] ) ? $field['date_mode'] : 'single';
 		$field['date_mode'] = isset( $field['date_range'] ) && '1' === $field['date_range'] ? 'range' : $field['date_mode'];
 
+		// Hours Array.
+		$hours_array = array();
+		for ( $i = 0; $i <= 23; $i++ ) {
+			if ( $i < 12 ) {
+				$a = __( 'AM', 'everest-forms' );
+			} else {
+				$a = __( 'PM', 'everest-forms' );
+			}
+			if ( 'g:i A' === $time_format ) {
+				$h = $i;
+				if ( 0 === $i ) {
+					$h = 12;
+				}
+				$hours_array [] = ( $h < 10 ? '0' . $h : $h ) . $a;
+			} else {
+				$hours_array [] = ( $i < 10 ? '0' . $i : $i ) . $a;
+			}
+		}
+
+		// Minutes Array.
+		$minutes_array = array();
+		for ( $i = 0; $i <= 59; $i++ ) {
+			$minutes_array [] = ( $i < 10 ) ? '0' . $i : $i;
+		}
+
 		$this->field_element(
 			'label',
 			$field,
@@ -436,125 +461,6 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 
 			$time_format = isset( $field['time_format'] ) ? $field['time_format'] : 'g:i A';
 
-		if ( 'g:i A' === $time_format ) {
-			$hours_array = array(
-				0  => esc_html__( '12 AM', 'everest-forms' ),
-				1  => esc_html__( '01 AM', 'everest-forms' ),
-				2  => esc_html__( '02 AM', 'everest-forms' ),
-				3  => esc_html__( '03 AM', 'everest-forms' ),
-				4  => esc_html__( '04 AM', 'everest-forms' ),
-				5  => esc_html__( '05 AM', 'everest-forms' ),
-				6  => esc_html__( '06 AM', 'everest-forms' ),
-				7  => esc_html__( '07 AM', 'everest-forms' ),
-				8  => esc_html__( '08 AM', 'everest-forms' ),
-				9  => esc_html__( '09 AM', 'everest-forms' ),
-				10 => esc_html__( '10 AM', 'everest-forms' ),
-				11 => esc_html__( '11 AM', 'everest-forms' ),
-				12 => esc_html__( '12 PM', 'everest-forms' ),
-				13 => esc_html__( '01 PM', 'everest-forms' ),
-				14 => esc_html__( '02 PM', 'everest-forms' ),
-				15 => esc_html__( '03 PM', 'everest-forms' ),
-				16 => esc_html__( '04 PM', 'everest-forms' ),
-				17 => esc_html__( '05 PM', 'everest-forms' ),
-				18 => esc_html__( '06 PM', 'everest-forms' ),
-				19 => esc_html__( '07 PM', 'everest-forms' ),
-				20 => esc_html__( '08 PM', 'everest-forms' ),
-				21 => esc_html__( '09 PM', 'everest-forms' ),
-				22 => esc_html__( '10 PM', 'everest-forms' ),
-				23 => esc_html__( '11 PM', 'everest-forms' ),
-			);
-		} else {
-			$hours_array = array(
-				'-' => esc_html__( 'Hours', 'everest-forms' ),
-				0   => esc_html__( '0', 'everest-forms' ),
-				1   => esc_html__( '1', 'everest-forms' ),
-				2   => esc_html__( '2', 'everest-forms' ),
-				3   => esc_html__( '3', 'everest-forms' ),
-				4   => esc_html__( '4', 'everest-forms' ),
-				5   => esc_html__( '5', 'everest-forms' ),
-				6   => esc_html__( '6', 'everest-forms' ),
-				7   => esc_html__( '7', 'everest-forms' ),
-				8   => esc_html__( '8', 'everest-forms' ),
-				9   => esc_html__( '9', 'everest-forms' ),
-				10  => esc_html__( '10', 'everest-forms' ),
-				11  => esc_html__( '11', 'everest-forms' ),
-				12  => esc_html__( '12', 'everest-forms' ),
-				13  => esc_html__( '13', 'everest-forms' ),
-				14  => esc_html__( '14', 'everest-forms' ),
-				15  => esc_html__( '15', 'everest-forms' ),
-				16  => esc_html__( '16', 'everest-forms' ),
-				17  => esc_html__( '17', 'everest-forms' ),
-				18  => esc_html__( '18', 'everest-forms' ),
-				19  => esc_html__( '19', 'everest-forms' ),
-				20  => esc_html__( '20', 'everest-forms' ),
-				21  => esc_html__( '21', 'everest-forms' ),
-				22  => esc_html__( '22', 'everest-forms' ),
-				23  => esc_html__( '23', 'everest-forms' ),
-			);
-		}
-		$minutes_array = array(
-			0  => esc_html__( '00', 'everest-forms' ),
-			1  => esc_html__( '01', 'everest-forms' ),
-			2  => esc_html__( '02', 'everest-forms' ),
-			3  => esc_html__( '03', 'everest-forms' ),
-			4  => esc_html__( '04', 'everest-forms' ),
-			5  => esc_html__( '05', 'everest-forms' ),
-			6  => esc_html__( '06', 'everest-forms' ),
-			7  => esc_html__( '07', 'everest-forms' ),
-			8  => esc_html__( '08', 'everest-forms' ),
-			9  => esc_html__( '09', 'everest-forms' ),
-			10 => esc_html__( '10', 'everest-forms' ),
-			11 => esc_html__( '11', 'everest-forms' ),
-			12 => esc_html__( '12', 'everest-forms' ),
-			13 => esc_html__( '13', 'everest-forms' ),
-			14 => esc_html__( '14', 'everest-forms' ),
-			15 => esc_html__( '15', 'everest-forms' ),
-			16 => esc_html__( '16', 'everest-forms' ),
-			17 => esc_html__( '17', 'everest-forms' ),
-			18 => esc_html__( '18', 'everest-forms' ),
-			19 => esc_html__( '19', 'everest-forms' ),
-			20 => esc_html__( '20', 'everest-forms' ),
-			21 => esc_html__( '21', 'everest-forms' ),
-			22 => esc_html__( '22', 'everest-forms' ),
-			23 => esc_html__( '23', 'everest-forms' ),
-			24 => esc_html__( '24', 'everest-forms' ),
-			25 => esc_html__( '25', 'everest-forms' ),
-			26 => esc_html__( '26', 'everest-forms' ),
-			27 => esc_html__( '27', 'everest-forms' ),
-			28 => esc_html__( '28', 'everest-forms' ),
-			29 => esc_html__( '29', 'everest-forms' ),
-			30 => esc_html__( '30', 'everest-forms' ),
-			31 => esc_html__( '31', 'everest-forms' ),
-			32 => esc_html__( '32', 'everest-forms' ),
-			33 => esc_html__( '33', 'everest-forms' ),
-			34 => esc_html__( '34', 'everest-forms' ),
-			35 => esc_html__( '35', 'everest-forms' ),
-			36 => esc_html__( '36', 'everest-forms' ),
-			37 => esc_html__( '37', 'everest-forms' ),
-			38 => esc_html__( '38', 'everest-forms' ),
-			39 => esc_html__( '39', 'everest-forms' ),
-			40 => esc_html__( '40', 'everest-forms' ),
-			41 => esc_html__( '41', 'everest-forms' ),
-			42 => esc_html__( '42', 'everest-forms' ),
-			43 => esc_html__( '43', 'everest-forms' ),
-			44 => esc_html__( '44', 'everest-forms' ),
-			45 => esc_html__( '45', 'everest-forms' ),
-			46 => esc_html__( '46', 'everest-forms' ),
-			47 => esc_html__( '47', 'everest-forms' ),
-			48 => esc_html__( '48', 'everest-forms' ),
-			49 => esc_html__( '49', 'everest-forms' ),
-			50 => esc_html__( '50', 'everest-forms' ),
-			51 => esc_html__( '51', 'everest-forms' ),
-			52 => esc_html__( '52', 'everest-forms' ),
-			53 => esc_html__( '53', 'everest-forms' ),
-			54 => esc_html__( '54', 'everest-forms' ),
-			55 => esc_html__( '55', 'everest-forms' ),
-			56 => esc_html__( '56', 'everest-forms' ),
-			57 => esc_html__( '57', 'everest-forms' ),
-			58 => esc_html__( '58', 'everest-forms' ),
-			59 => esc_html__( '59', 'everest-forms' ),
-		);
-
 		$min_time_select  = '<div class="input-group-col-2">';
 		$min_time_select .= $this->field_element(
 			'select',
@@ -605,7 +511,8 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 		);
 		$max_time_select .= '</div>';
 
-		$enable_min_max_time  = '<div class="input-group-col-2">';
+		$enable_min_max_time = '<div class="input-group-col-2">';
+
 		$enable_min_max_time .= $this->field_element(
 			'checkbox',
 			$field,
@@ -700,10 +607,12 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			}
 
 			if ( 'date' !== $field['datetime_format'] ) {
-				$properties['inputs']['primary']['attr']['data-min-hour']   = isset( $field['enable_min_max_time'], $field['min_time_hour'] ) ? $field['min_time_hour'] : '';
-				$properties['inputs']['primary']['attr']['data-min-minute'] = isset( $field['enable_min_max_time'], $field['min_time_minute'] ) ? $field['min_time_minute'] : '';
-				$properties['inputs']['primary']['attr']['data-max-hour']   = isset( $field['enable_min_max_time'], $field['max_time_hour'] ) ? $field['max_time_hour'] : '';
-				$properties['inputs']['primary']['attr']['data-max-minute'] = isset( $field['enable_min_max_time'], $field['max_time_minute'] ) ? $field['max_time_minute'] : '';
+				if ( isset( $field['enable_min_max_time'] ) ) {
+					$properties['inputs']['primary']['attr']['data-min-hour']   = isset( $field['min_time_hour'] ) ? $field['min_time_hour'] : '';
+					$properties['inputs']['primary']['attr']['data-min-minute'] = isset( $field['min_time_minute'] ) ? $field['min_time_minute'] : '';
+					$properties['inputs']['primary']['attr']['data-max-hour']   = isset( $field['max_time_hour'] ) ? $field['max_time_hour'] : '';
+					$properties['inputs']['primary']['attr']['data-max-minute'] = isset( $field['max_time_minute'] ) ? $field['max_time_minute'] : '';
+				}
 			}
 
 			// Input primary: data-date-format and value.
@@ -851,8 +760,8 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 
 			if ( 'time' === $field['datetime_format'] || 'date-time' === $field['datetime_format'] ) {
 
-				$min_hour = ( isset( $field['min_time_hour'] ) && isset( $field['enable_min_max_time'] ) && true === $field['enable_min_max_time'] ) ? $field['min_time_hour'] : 0;
-				$max_hour = ( isset( $field['min_time_hour'] ) && isset( $field['enable_min_max_time'] ) && true === $field['enable_min_max_time'] ) ? $field['max_time_hour'] : 23;
+				$min_hour = isset( $field['min_time_hour'], $field['enable_min_max_time'] ) ? $field['min_time_hour'] : 0;
+				$max_hour = isset( $field['min_time_hour'], $field['enable_min_max_time'] ) ? $field['max_time_hour'] : 23;
 
 				// For Hours.
 				printf(
