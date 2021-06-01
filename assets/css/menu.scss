@@ -68,7 +68,8 @@
 
 			&:focus {
 				outline: 0;
-				box-shadow: 0 0 0 1px #5b9dd9, 0 0 2px 1px rgba(30, 140, 190, 0.8);
+				box-shadow: 0 0 0 1px #5b9dd9,
+					0 0 2px 1px rgba(30, 140, 190, 0.8);
 			}
 
 			&::before {
@@ -221,97 +222,101 @@
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
-
-.evf-icon-captcha::before {
-	content: '\e004';
-}
-.evf-icon-password::before {
-	content: '\e004';
-}
-.evf-icon-email::before {
-	content: '\e005';
-}
-.evf-icon-map-marker::before {
-	content: '\e007';
-}
-.evf-icon-flag::before {
-	content: '\e00a';
-}
-.evf-icon-first-name::before {
-	content: '\e00d';
-}
-.evf-icon-last-name::before {
-	content: '\e00e';
-}
-.evf-icon-text::before {
-	content: '\e00f';
-}
-.evf-icon-paragraph::before {
-	content: '\e010';
-}
-.evf-icon-dropdown::before {
-	content: '\e011';
-}
-.evf-icon-checkbox::before {
-	content: '\e012';
-}
-.evf-icon-multiple-choices::before {
-	content: '\e013';
-}
-.evf-icon-multiple-choices-radio::before {
-	content: '\e014';
-}
-.evf-icon-number::before {
-	content: '\e015';
-}
-.evf-icon-website::before {
-	content: '\e016';
-}
-.evf-icon-calendar::before {
-	content: '\e017';
-}
-.evf-icon-single-item::before {
-	content: '\e018';
-}
-.evf-icon-file-upload::before {
-	content: '\e019';
-}
-.evf-icon-hidden::before {
-	content: '\e01a';
-}
-.evf-icon-phone::before {
-	content: '\e01b';
-}
-.evf-icon-custom-html::before {
-	content: '\e01c';
-}
-.evf-icon-section-divider::before {
-	content: '\e01d';
-}
-.evf-icon-payment::before {
-	content: '\e01f';
-}
-.evf-icon-total::before {
-	content: '\e020';
-}
-.evf-icon-img-upload::before {
-	content: '\e022';
-}
-.evf-icon-star::before {
-	content: '\e024';
-}
-.evf-icon-likert::before {
-	content: '\e025';
-}
-.evf-icon-scale-rating::before {
-	content: '\e026';
-}
-.evf-icon-signature::before {
-	content: '\e028';
-}
-.evf-icon-privacy-policy::before {
-	content: '\e02c';
-}
-.evf-icon-range-slider::before {
-	content: '\e02b';
+.evf-icon- {
+	&captcha::before {
+		content: '\e004';
+	}
+	&password::before {
+		content: '\e004';
+	}
+	&email::before {
+		content: '\e005';
+	}
+	&map-marker::before {
+		content: '\e007';
+	}
+	&flag::before {
+		content: '\e00a';
+	}
+	&first-name::before {
+		content: '\e00d';
+	}
+	&last-name::before {
+		content: '\e00e';
+	}
+	&text::before {
+		content: '\e00f';
+	}
+	&paragraph::before {
+		content: '\e010';
+	}
+	&dropdown::before {
+		content: '\e011';
+	}
+	&checkbox::before {
+		content: '\e012';
+	}
+	&multiple-choices::before {
+		content: '\e013';
+	}
+	&multiple-choices-radio::before {
+		content: '\e014';
+	}
+	&number::before {
+		content: '\e015';
+	}
+	&website::before {
+		content: '\e016';
+	}
+	&calendar::before {
+		content: '\e017';
+	}
+	&single-item::before {
+		content: '\e018';
+	}
+	&file-upload::before {
+		content: '\e019';
+	}
+	&hidden::before {
+		content: '\e01a';
+	}
+	&phone::before {
+		content: '\e01b';
+	}
+	&custom-html::before {
+		content: '\e01c';
+	}
+	&section-divider::before {
+		content: '\e01d';
+	}
+	&payment::before {
+		content: '\e01f';
+	}
+	&total::before {
+		content: '\e020';
+	}
+	&img-upload::before {
+		content: '\e022';
+	}
+	&star::before {
+		content: '\e024';
+	}
+	&likert::before {
+		content: '\e025';
+	}
+	&scale-rating::before {
+		content: '\e026';
+	}
+	&signature::before {
+		content: '\e028';
+	}
+	&privacy-policy::before {
+		content: '\e02c';
+	}
+	&range-slider::before {
+		content: '\e02b';
+	}
+	&divider::before {
+		content: '\e031';
+	}
 }
