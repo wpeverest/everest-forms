@@ -549,7 +549,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 		);
 
 		$min_max_time_select = '';
-		if ( 'dropdown' === $field['style'] ) {
+		if ( 'dropdown' === $field['datetime_style'] ) {
 			$min_max_time_select = $enable_min_max_time . $select_min_time . $min_time_select . $select_max_time . $max_time_select;
 		}
 
