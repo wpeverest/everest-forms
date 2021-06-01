@@ -474,13 +474,44 @@
 
 			$('.everest-forms-field-option-row-time_interval_format [id*=enable_min_max_time]').each(function() {
 				EVFPanelBuilder.changeTimeInterval( $( this ) );
-			})
+			});
 
 			$( 'body' ).on( 'click', '.everest-forms-field-option-row-time_interval_format [id*=enable_min_max_time]', function() {
 				EVFPanelBuilder.changeTimeInterval( $( this ) );
-			} )
-		},
+			} );
 
+			$( 'body' ).on( 'change', '.everest-forms-field-option-row-time_interval_format .time_format', function() {
+				EVFPanelBuilder. change_date_format($( this ) );
+			} );
+		},
+		change_date_format: function( e ) {
+			min_hour = e.parent().siblings( '.input-group-col-2' ).find( '[id*=min_time_hour]' );
+			max_hour = e.parent().siblings( '.input-group-col-2' ).find( '[id*=max_time_hour]' );
+			var selected_min = min_hour.find( 'option:selected' ).val();
+			var selected_max = max_hour.find( 'option:selected' ).val();
+			var options = '', a, h;
+			for( i = 0; i<= 23; i++ ) {
+				if( e.val() === 'H:i' ) {
+					options += '<option value = "' + i + '">' + ( ( i < 10 ) ? ( '0' + i ) : i )+ '</option>';
+				} else {
+					a = ' PM';
+					if( i < 12 ) {
+						a = ' AM';
+						h = i;
+					} else {
+						h = i - 12;
+					}
+					if( h == 0 ) {
+						h = 12;
+					} 
+					options += '<option value = "' + i + '">' + h + a + '</option>';
+				}
+			}
+			min_hour.html(options);
+			max_hour.html(options);
+			min_hour.find( 'option[value=' + selected_min + ']' ).prop( 'selected', true );
+			max_hour.find( 'option[value=' + selected_max + ']' ).prop( 'selected', true );
+		},
 		changeDateTimeSetting: function ( el ) {
 			var id = el.parent().attr( 'data-field-id' );
 			if( $( el ).val() == 'picker' ) {
