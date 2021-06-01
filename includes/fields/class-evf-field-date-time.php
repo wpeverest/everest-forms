@@ -101,7 +101,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	 * @param array $field Field Data.
 	 */
 	public function choose_style( $field ) {
-		$style        = ! empty( $field['datetime_style'] ) ? esc_attr( $field['datetime_style'] ) : 'Date Picker';
+		$style        = ! empty( $field['datetime_style'] ) ? esc_attr( $field['datetime_style'] ) : 'picker';
 		$style_label  = $this->field_element(
 			'label',
 			$field,
