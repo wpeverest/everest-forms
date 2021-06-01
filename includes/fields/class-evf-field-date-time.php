@@ -845,8 +845,8 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 
 			if ( 'time' === $field['datetime_format'] || 'date-time' === $field['datetime_format'] ) {
 
-				$min_hour = isset( $field['min_time_hour'] ) ? $field['min_time_hour'] : 0;
-				$max_hour = isset( $field['max_time_hour'] ) ? $field['max_time_hour'] : 23;
+				$min_hour = ( isset( $field['min_time_hour'] ) && isset( $field['enable_min_max_time'] ) && true === $field['enable_min_max_time'] ) ? $field['min_time_hour'] : 0;
+				$max_hour = ( isset( $field['min_time_hour'] ) && isset( $field['enable_min_max_time'] ) && true === $field['enable_min_max_time'] ) ? $field['max_time_hour'] : 23;
 
 				// For Hours.
 				printf(
