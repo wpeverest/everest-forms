@@ -796,12 +796,13 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				);
 				// Build the select options.
 				$end_date   = gmdate( 'Y' ) + 100;
-				$start_date = $end_date - 100;
+				$start_date = $end_date - 200;
 
 				for ( $i = $end_date; $i >= $start_date; $i-- ) {
 					printf(
-						'<option value="%s">%s</option>',
+						'<option value="%s" %s>%s</option>',
 						esc_attr( $i ),
+						(int) gmdate( 'Y' ) === $i ? 'selected' : '',
 						esc_html( $i )
 					);
 				}
@@ -809,15 +810,17 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 
 				// For Months.
 				printf(
-					'<select %s>',
+					'<select value="%s" %s>',
+					esc_attr( gmdate( 'm' ) ),
 					evf_html_attributes( 'month-select-' . $primary['id'] ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				);
 				// Build the select options.
 				for ( $i = 1; $i <= 12; $i++ ) {
 					$month = ( $i < 10 ) ? '0' . $i : $i;
 					printf(
-						'<option value="%s">%s</option>',
+						'<option value="%s" %s>%s</option>',
 						esc_attr( $i ),
+						(int) gmdate( 'm' ) === $i ? 'selected' : '',
 						esc_html( $month )
 					);
 				}
@@ -825,15 +828,17 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 
 				// For Days.
 				printf(
-					'<select %s>',
+					'<select value="%s" %s>',
+					esc_attr( gmdate( 'd' ) ),
 					evf_html_attributes( 'day-select-' . $primary['id'] ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				);
 				// Build the select options.
 				for ( $i = 1; $i <= 32; $i++ ) {
 					$day = $i < 10 ? '0' . $i : $i;
 					printf(
-						'<option value="%s">%s</option>',
+						'<option value="%s" %s>%s</option>',
 						esc_attr( $i ),
+						(int) gmdate( 'd' ) === $i ? 'selected' : '',
 						esc_html( $day )
 					);
 				}
@@ -851,7 +856,8 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 
 				// For Hours.
 				printf(
-					'<select %s>',
+					'<select value = "%s" %s>',
+					esc_attr( gmdate( 'H' ) ),
 					evf_html_attributes( 'hour-select-' . $primary['id'] ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				);
 
@@ -873,8 +879,9 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 					}
 					$hour = ( $hour < 10 ? ( '0' . $hour ) : $hour ) . $p;
 					printf(
-						'<option value="%s">%s</option>',
+						'<option value="%s" %s>%s</option>',
 						esc_attr( $i ),
+						(int) gmdate( 'H' ) === $i ? 'selected' : '',
 						esc_html( $hour )
 					);
 				}
