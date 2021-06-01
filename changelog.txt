@@ -13,6 +13,7 @@
 * Fix - Stop default form creation when ThemeGrill Demo Importer plugin is active.
 * Fix - Payment Multiple choices and checkboxes fields amount preview in form builder area.
 * Enhancement - Enable/Disable log.
+* Feature - Divider field added.
 * Enhancement - Required Indicators for Field Types.
 
 = 1.7.4 - 11-03-2021 =
