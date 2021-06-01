@@ -146,16 +146,20 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 
 		// Hours Array.
 		$hours_array = array();
+		$a           = '';
 		for ( $i = 0; $i <= 23; $i++ ) {
-			if ( $i < 12 ) {
-				$a = __( 'AM', 'everest-forms' );
-			} else {
-				$a = __( 'PM', 'everest-forms' );
-			}
 			if ( 'g:i A' === $field['time_format'] ) {
+				if ( $i < 12 ) {
+					$a = __( 'AM', 'everest-forms' );
+				} else {
+					$a = __( 'PM', 'everest-forms' );
+				}
 				$h = $i;
 				if ( 0 === $i ) {
 					$h = 12;
+				}
+				if ( $h > 12 ) {
+					$h = $i - 12;
 				}
 				$hours_array [] = ( $h < 10 ? '0' . $h : $h ) . $a;
 			} else {
