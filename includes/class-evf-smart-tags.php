@@ -41,6 +41,8 @@ class EVF_Smart_Tags {
 				'display_name'    => esc_html__( 'User Display Name', 'everest-forms' ),
 				'user_email'      => esc_html__( 'User Email', 'everest-forms' ),
 				'referrer_url'    => esc_html__( 'Referrer URL', 'everest-forms' ),
+				'date'            => esc_html__( 'Date', 'everest-forms' ),
+				'time'            => esc_html__( 'Time', 'everest-forms' ),
 			)
 		);
 
@@ -200,6 +202,16 @@ class EVF_Smart_Tags {
 					case 'referrer_url':
 						$referer = ! empty( $_SERVER['HTTP_REFERER'] ) ? $_SERVER['HTTP_REFERER'] : ''; // @codingStandardsIgnoreLine
 						$content = str_replace( '{' . $other_tag . '}', sanitize_text_field( $referer ), $content );
+						break;
+
+					case 'date':
+						$date    = get_the_date( get_option( 'date_format' ) );
+						$content = str_replace( '{' . $other_tag . '}', sanitize_text_field( $date ), $content );
+						break;
+
+					case 'time':
+						$time    = current_time( get_option( 'time_format' ) );
+						$content = str_replace( '{' . $other_tag . '}', sanitize_text_field( $time ), $content );
 						break;
 
 				}
