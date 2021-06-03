@@ -19,7 +19,6 @@
 
 			$('.everest-forms-active-email-connections-list li').first().addClass('active-user');
 			$('.evf-content-email-settings-inner').first().addClass('active-connection');
-
 			EverestFormsEmail.bindUIActions();
 		},
 
@@ -103,7 +102,7 @@
 
 									success: function( response ){
 										var form_title = $('#everest-forms-panel-field-settings-form_title:first').val() + '-' + Date.now();
-										var cloned_email = $('.evf-content-email-settings-inner').first().clone();
+										var cloned_email = $('.evf-content-email-settings').first().clone();
 										$('.evf-content-email-settings-inner').removeClass('active-connection');
 										cloned_email.find('input:not(#qt_everest_forms_panel_field_email_connection_1_evf_email_message_toolbar input[type="button"], .evf_conditional_logic_container input)').val('');
 
@@ -122,7 +121,25 @@
 											cloned_email.find('.evf-field-conditional-input').val('');
 										}, 2000);
 
-										cloned_email.attr('data-connection_id',response.data.connection_id);
+										cloned_email.find('.evf-content-email-settings-inner').attr('data-connection_id',response.data.connection_id);
+										cloned_email.find('.evf-content-email-settings-inner').removeClass( 'everest-forms-hidden' );
+										
+										//Email toggle options.
+										cloned_email.find( '.evf-toggle-switch input' ).attr( 'name', 'settings[email][' + response.data.connection_id + '][enable_email_notification]' );
+										cloned_email.find( '.evf-toggle-switch input:checkbox' ).attr( 'data-connection-id',  response.data.connection_id );
+										cloned_email.find( '.evf-toggle-switch input:checkbox' ).prop( 'checked', true );
+										cloned_email.find( '.evf-toggle-switch input:checkbox' ).val( '1' );
+
+										// Hiding Toggle for Prevous Email Setting.
+										$('.evf-content-section-title').css( 'display', 'none' );
+										// Removing email-disable-message;
+										$( '.email-disable-message' ).remove();
+										// Removing Cloned email-disable-message;
+										cloned_email.find( '.email-disable-message' ).remove();
+										// Showing Toggle for Current Email Setting.
+										cloned_email.find( '.evf-toggle-switch' ).parents( '.evf-content-section-title' ).css( 'display', 'flex' );
+
+
 										cloned_email.find('.evf-field-conditional-container').attr('data-connection_id',response.data.connection_id);
 										cloned_email.find('#everest-forms-panel-field-email-connection_1-connection_name').attr('name', 'settings[email]['+response.data.connection_id+'][connection_name]');
 										cloned_email.find('#everest-forms-panel-field-email-connection_1-evf_to_email').attr('name', 'settings[email]['+response.data.connection_id+'][evf_to_email]');
@@ -163,7 +180,7 @@
 										cloned_email.find('.evf-field-conditional-input').attr('name', 'settings[email]['+response.data.connection_id+'][conditionals][1][1][value]');
 										$cloned_email = cloned_email.append('<input type="hidden" name="settings[email]['+response.data.connection_id+'][connection_name]" value="'+name+'">');
 
-										$('.evf-content-email-settings').append(cloned_email);
+										$('.evf-email-settings-wrapper').append(cloned_email);
 										$connections.find('.evf-content-email-settings-inner').last().addClass('active-connection');
 										$this.parent().find('.everest-forms-active-email-connections-list li').removeClass('active-user');
 										$this.closest('.everest-forms-active-email.active').children('.everest-forms-active-email-connections-list').removeClass('empty-list');
@@ -189,13 +206,24 @@
 			lengthOfActiveBlock = $(active_block).length;
 
 			$('.evf-content-email-settings').find('.evf-content-email-settings-inner').removeClass('active-connection');
+
+			// Hiding Email Notificaton Trigger (Previous).
+			$( '.evf-content-section-title' ).has('[data-connection-id=' + $this.siblings('.active-user').attr( 'data-connection-id' ) +']').css( 'display', 'none' );
 			$this.siblings().removeClass('active-user');
 			$this.addClass('active-user');
-
+			
 			if( lengthOfActiveBlock ){
 				$( active_block ).addClass('active-connection');
 			}
 
+			// Removing Emial Notification Turn On Message.
+			$('.email-disable-message').remove();
+			if( $( 'input[data-connection-id=' + $this.attr( 'data-connection-id' ) +']:last' ).prop( 'checked' ) == false ) {
+				$( '<p class="email-disable-message everest-forms-notice everest-forms-notice-info">' + evf_data.i18n_email_disable_message + '</p>' ).insertAfter( $( '.evf-content-section-title' ).has('[data-connection-id=' + $this.attr( 'data-connection-id' ) +']') );
+			}
+
+			// Displaying Email Notificaton Trigger (Current).
+			$( '.evf-content-section-title' ).has('[data-connection-id=' + $this.attr( 'data-connection-id' ) +']').css( 'display', 'flex' );
 		},
 
 		removeAccount: function(el, e) {
@@ -228,7 +256,7 @@
 										toBeRemoved.next('.connection-list').trigger('click');
 									}
 
-									$( active_block ).remove();
+									$( active_block ).parent().remove();
 									toBeRemoved.remove();
 								}
 							}
