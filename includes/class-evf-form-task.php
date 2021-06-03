@@ -562,11 +562,6 @@ class EVF_Form_Task {
 			return;
 		}
 
-		// Don't proceed if email notification is not enabled.
-		if ( isset( $form_data['settings']['email']['enable_email_notification'] ) && '1' !== $form_data['settings']['email']['enable_email_notification'] ) {
-			return;
-		}
-
 		// Make sure we have an entry id.
 		if ( empty( $this->entry_id ) ) {
 			$this->entry_id = (int) $entry_id;
@@ -588,6 +583,12 @@ class EVF_Form_Task {
 		$notifications = isset( $form_data['settings']['email'] ) ? $form_data['settings']['email'] : array();
 
 		foreach ( $notifications as $connection_id => $notification ) :
+
+			// Don't proceed if email notification is not enabled.
+			if ( isset( $notification['enable_email_notification'] ) && '1' !== $notification['enable_email_notification'] ) {
+				continue;
+			}
+
 			$process_email = apply_filters( 'everest_forms_entry_email_process', true, $fields, $form_data, $context, $connection_id );
 
 			if ( ! $process_email ) {

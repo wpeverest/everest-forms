@@ -19,6 +19,7 @@
 
 			$('.everest-forms-active-email-connections-list li').first().addClass('active-user');
 			$('.evf-content-email-settings-inner').first().addClass('active-connection');
+
 			EverestFormsEmail.bindUIActions();
 		},
 
@@ -139,7 +140,6 @@
 										// Showing Toggle for Current Email Setting.
 										cloned_email.find( '.evf-toggle-switch' ).parents( '.evf-content-section-title' ).css( 'display', 'flex' );
 
-
 										cloned_email.find('.evf-field-conditional-container').attr('data-connection_id',response.data.connection_id);
 										cloned_email.find('#everest-forms-panel-field-email-connection_1-connection_name').attr('name', 'settings[email]['+response.data.connection_id+'][connection_name]');
 										cloned_email.find('#everest-forms-panel-field-email-connection_1-evf_to_email').attr('name', 'settings[email]['+response.data.connection_id+'][evf_to_email]');
@@ -211,7 +211,7 @@
 			$( '.evf-content-section-title' ).has('[data-connection-id=' + $this.siblings('.active-user').attr( 'data-connection-id' ) +']').css( 'display', 'none' );
 			$this.siblings().removeClass('active-user');
 			$this.addClass('active-user');
-			
+
 			if( lengthOfActiveBlock ){
 				$( active_block ).addClass('active-connection');
 			}
