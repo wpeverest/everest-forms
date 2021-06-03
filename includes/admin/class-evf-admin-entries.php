@@ -292,7 +292,7 @@ class EVF_Admin_Entries {
 	public static function remove_entry( $entry_id ) {
 		global $wpdb;
 
-		do_action( 'everest_forms_after_delete_post', self::delete_files( $entry_id ) );
+		do_action( 'everest_forms_after_delete_post', $entry_id );
 
 		$delete = $wpdb->delete( $wpdb->prefix . 'evf_entries', array( 'entry_id' => $entry_id ), array( '%d' ) );
 
@@ -301,23 +301,6 @@ class EVF_Admin_Entries {
 		}
 
 		return $delete;
-	}
-
-	/**
-	 * Delete Attachment after removing Entry.
-	 *
-	 * @param int $entry_id Entry ID for which file should be removed.
-	 */
-	public static function delete_files( $entry_id ) {
-		$get_entry = evf_get_entry( $entry_id, 'meta' );
-		if ( ! empty( $get_entry->meta ) ) {
-			foreach ( $get_entry->meta as $meta_key => $meta_value ) {
-				$uploaded_file = get_home_path() . wp_parse_url( $meta_value, PHP_URL_PATH );
-				if ( file_exists( $uploaded_file ) ) {
-					wp_delete_file( $uploaded_file );
-				}
-			}
-		}
 	}
 
 	/**
