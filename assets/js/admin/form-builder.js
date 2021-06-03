@@ -2210,25 +2210,6 @@ jQuery(function () {
 	});
 	jQuery( '.evf-panel-field-options-button.evf-disabled-tab' ).hide();
 
-	// Required Indicators
-	var requiredSelect = jQuery('#everest-forms-panel-field-settings-required_indicators option:selected').val();
-
-	if ( 'asterisk' == requiredSelect || 'text' == requiredSelect ) {
-		jQuery('#everest-forms-panel-field-settings-custom_text-wrap').hide();
-	}
-	else{
-		jQuery('#everest-forms-panel-field-settings-custom_text-wrap').show();
-	}
-
-	jQuery( '#everest-forms-panel-field-settings-required_indicators' ).on( 'change', function () {
-		if ( 'asterisk' == this.value || 'text' == this.value ) {
-			jQuery('#everest-forms-panel-field-settings-custom_text-wrap').hide();
-		}
-		else{
-			jQuery('#everest-forms-panel-field-settings-custom_text-wrap').show();
-		}
-	});
-
 });
 
 jQuery( function ( $ ) {

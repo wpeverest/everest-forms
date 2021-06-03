@@ -1357,7 +1357,7 @@ abstract class EVF_Form_Fields {
 		$form_data = evf()->form->get( absint( $form_id ), array( 'content_only' => true ) );
 		$settings  = isset( $form_data['settings'] ) ? $form_data['settings'] : array();
 
-		if ( isset( $field['required'] ) && isset( $settings['required_indicators'] ) ) {
+		if ( isset( $field['required'] ) && isset( $settings['required_indicators'] ) && false !== evf_get_license_plan() ) {
 			switch ( $settings['required_indicators'] ) {
 				case 'text':
 					$required_type = 'Required';
