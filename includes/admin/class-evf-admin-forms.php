@@ -19,7 +19,6 @@ class EVF_Admin_Forms {
 	public function __construct() {
 		add_action( 'admin_init', array( $this, 'actions' ) );
 		add_action( 'deleted_post', array( $this, 'delete_entries' ) );
-
 	}
 
 	/**
