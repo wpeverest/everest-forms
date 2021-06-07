@@ -925,7 +925,7 @@
 			} );
 
 			// Time interval changes.
-			$builder.on( 'change', '.everest-forms-field-option-row-time_interval_format select', function() {
+			$builder.on( 'change', '.everest-forms-field-option-row-time_interval_format select[id*=time_format]', function() {
 				min_hour = $( this ).parent().siblings( '.input-group-col-2' ).find( '[id*=min_time_hour]' );
 				max_hour = $( this ).parent().siblings( '.input-group-col-2' ).find( '[id*=max_time_hour]' );
 				var selected_min = min_hour.find( 'option:selected' ).val();
