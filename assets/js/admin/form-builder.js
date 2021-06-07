@@ -1348,7 +1348,7 @@
 							$('#everest-forms-field-id').val(field_id);
 							field = row_clone.find( '.everest-forms-field' ).eq( index );
 							var element_field_id = field.attr('data-field-id');
-							EVFPanelBuilder.render_node( field, element_field_id, field_key, index == 0 ? true : false );
+							EVFPanelBuilder.render_node( field, element_field_id, field_key );
 							field.remove();
 							$( document.body ).trigger( 'init_field_options_toggle' );
 						});
