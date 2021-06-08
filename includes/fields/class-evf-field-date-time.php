@@ -442,7 +442,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				'slug'    => 'min_time_hour',
 				'value'   => isset( $field['min_time_hour'] ) ? $field['min_time_hour'] : 9,
 				'class'   => 'min_time_hour',
-				'options' => $this->get_minute_hours( 'hours' ),
+				'options' => $this->get_minute_hours( $field, 'hours' ),
 			),
 			false
 		);
@@ -453,7 +453,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				'slug'    => 'min_time_minute',
 				'value'   => isset( $field['min_time_minute'] ) ? $field['min_time_minute'] : 30,
 				'class'   => 'min_time_minute',
-				'options' => $this->get_minute_hours( 'minutes' ),
+				'options' => $this->get_minute_hours( $field, 'minutes' ),
 			),
 			false
 		);
@@ -467,7 +467,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				'slug'    => 'max_time_hour',
 				'value'   => isset( $field['max_time_hour'] ) ? $field['max_time_hour'] : 18,
 				'class'   => 'max_time_hour',
-				'options' => $this->get_minute_hours( 'hours' ),
+				'options' => $this->get_minute_hours( $field, 'hours' ),
 			),
 			false
 		);
@@ -478,7 +478,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				'slug'    => 'max_time_minute',
 				'value'   => isset( $field['max_time_minute'] ) ? $field['max_time_minute'] : 30,
 				'class'   => 'max_time_minute',
-				'options' => $this->get_minute_hours( 'minutes' ),
+				'options' => $this->get_minute_hours( $field, 'minutes' ),
 			),
 			false
 		);
@@ -535,9 +535,10 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	 * Time Hours/Minutes Provider.
 	 *
 	 * @since 1.7.5
+	 * @param mixed  $field field data.
 	 * @param string $required required type.
 	 */
-	public function get_minute_hours( $required = 'hours' ) {
+	public function get_minute_hours( $field, $required = 'hours' ) {
 		$required_array = array();
 		if ( 'hours' === $required ) {
 			// Hours Array.
@@ -777,7 +778,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 						'<option value="%s" %s>%s</option>',
 						esc_attr( $i ),
 						(int) gmdate( 'H' ) === $i ? 'selected' : '',
-						esc_html( $this->get_minute_hours( 'hours' )[ $i ] )
+						esc_html( $this->get_minute_hours( $field, 'hours' )[ $i ] )
 					);
 				}
 
