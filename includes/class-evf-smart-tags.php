@@ -74,7 +74,7 @@ class EVF_Smart_Tags {
 					$value = ! empty( $fields[ $field_id ]['value'] ) ? evf_sanitize_textarea_field( $fields[ $field_id ]['value'] ) : '';
 				}
 
-				if ( ! empty( $fields[ $mixed_field_id[1] ] ) ) {
+				if ( count( $mixed_field_id ) > 1 && ! empty( $fields[ $mixed_field_id[1] ] ) ) {
 					// Properly display signature field in smart tag.
 					if ( 'signature' === $fields[ $mixed_field_id[1] ]['type'] ) {
 						if ( ! is_array( $value ) && false !== strpos( $value, $uploads['basedir'] ) ) {
