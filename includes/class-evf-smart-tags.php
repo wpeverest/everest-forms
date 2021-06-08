@@ -153,7 +153,7 @@ class EVF_Smart_Tags {
 						if ( in_array( $value['type'], array( 'radio', 'payment-multiple' ), true ) ) {
 							$value = $value['label'];
 						} elseif ( in_array( $value['type'], array( 'checkbox', 'payment-checkbox' ), true ) ) {
-							$value = implode( ',', $value['label'] );
+							$value = implode( ', ', $value['label'] );
 						}
 					} elseif ( isset( $value['number_of_rating'], $value['value'] ) ) {
 						$value = (string) $value['value'] . '/' . (string) $value['number_of_rating'];
