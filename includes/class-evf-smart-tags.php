@@ -66,6 +66,7 @@ class EVF_Smart_Tags {
 
 			foreach ( $ids[1] as $key => $field_id ) {
 				$mixed_field_id = explode( '_', $field_id );
+				$uploads        = wp_upload_dir();
 
 				if ( 'fullname' !== $field_id && 'email' !== $field_id && 'subject' !== $field_id && 'message' !== $field_id ) {
 					$value = ! empty( $fields[ $mixed_field_id[1] ]['value'] ) ? evf_sanitize_textarea_field( $fields[ $mixed_field_id[1] ]['value'] ) : '';
@@ -73,10 +74,9 @@ class EVF_Smart_Tags {
 					$value = ! empty( $fields[ $field_id ]['value'] ) ? evf_sanitize_textarea_field( $fields[ $field_id ]['value'] ) : '';
 				}
 
-				// Properly display signature field in smart tag.
 				if ( ! empty( $fields[ $mixed_field_id[1] ] ) ) {
+					// Properly display signature field in smart tag.
 					if ( 'signature' === $fields[ $mixed_field_id[1] ]['type'] ) {
-						$uploads = wp_upload_dir();
 						if ( ! is_array( $value ) && false !== strpos( $value, $uploads['basedir'] ) ) {
 							$value = trailingslashit( content_url() ) . str_replace( str_replace( 'uploads', '', $uploads['basedir'] ), '', $value );
 						}
@@ -88,6 +88,62 @@ class EVF_Smart_Tags {
 							);
 						}
 					}
+
+					// Properly display Radio field in smart tag.
+					if ( isset( $value['image'] ) && 'radio' === $fields[ $mixed_field_id[1] ]['type'] ) {
+						if ( ! is_array( $value ) && false !== strpos( $value['image'], $uploads['basedir'] ) ) {
+							$value = trailingslashit( content_url() ) . str_replace( str_replace( 'uploads', '', $uploads['basedir'] ), '', $value['image'] );
+						}
+
+						if ( ! empty( $value ) ) {
+							$value = sprintf(
+								'<br> <img src="%s" style="width:150px;height:80px;max-height:200px;max-width:100px;"/> <br>%s',
+								$value['image'],
+								$value['label']
+							);
+						}
+					}
+
+					// Properly display Checkboxes field in smart tag.
+					if ( isset( $value['images'] ) && ( 'checkbox' === $fields[ $mixed_field_id[1] ]['type'] || 'payment-checkbox' === $fields[ $mixed_field_id[1] ]['type'] ) ) {
+						$checkbox_images = '';
+						foreach ( $value['images'] as $image_key => $image_value ) {
+							if ( ! is_array( $image_value ) && false !== strpos( $image_value, $uploads['basedir'] ) ) {
+								$value = trailingslashit( content_url() ) . str_replace( str_replace( 'uploads', '', $uploads['basedir'] ), '', $image_value );
+							}
+
+							if ( ! empty( $value ) ) {
+								$checkbox_images .= sprintf(
+									'<br> <img src="%s" style="width:150px;height:80px;max-height:200px;max-width:100px;"/> <br>%s',
+									$image_value,
+									$value['label'][ $image_key ]
+								);
+							}
+						}
+						$value = $checkbox_images;
+					}
+
+					// Properly display Files and Image Upload field in smart tag.
+					if ( 'image-upload' === $fields[ $mixed_field_id[1] ]['type'] || 'file-upload' === $fields[ $mixed_field_id[1] ]['type'] ) {
+						$files = '';
+
+						if ( ! empty( $fields[ $mixed_field_id[1] ]['value_raw'] ) ) {
+							foreach ( $fields[ $mixed_field_id[1] ]['value_raw'] as $files_key => $files_value ) {
+								if ( ! is_array( $files_value['value'] ) && false !== strpos( $files_value['value'], $uploads['basedir'] ) ) {
+									$value = trailingslashit( content_url() ) . str_replace( str_replace( 'uploads', '', $uploads['basedir'] ), '', $files_value['value'] );
+								}
+
+								if ( ! empty( $value ) ) {
+									$files .= sprintf(
+										'<a href="%s">%s</a> <br>',
+										$files_value['value'],
+										$files_value['name']
+									);
+								}
+							}
+							$value = $files;
+						}
+					}
 				}
 
 				if ( ! is_array( $value ) ) {
@@ -97,7 +153,7 @@ class EVF_Smart_Tags {
 						if ( in_array( $value['type'], array( 'radio', 'payment-multiple' ), true ) ) {
 							$value = $value['label'];
 						} elseif ( in_array( $value['type'], array( 'checkbox', 'payment-checkbox' ), true ) ) {
-							$value = implode( ', ', $value['label'] );
+							$value = implode( ',', $value['label'] );
 						}
 					} elseif ( isset( $value['number_of_rating'], $value['value'] ) ) {
 						$value = (string) $value['value'] . '/' . (string) $value['number_of_rating'];
