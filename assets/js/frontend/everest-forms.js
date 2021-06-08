@@ -257,10 +257,10 @@ jQuery( function ( $ ) {
 						if( selectd_date.selected_hour == 0 ){
 							selectd_date.selected_hour = 12;
 						}
-					} else {
+					} else if ( selectd_date.selected_hour > 12 ) {
 						selectd_date.selected_hour = selectd_date.selected_hour - 12;
 					}
-					selectd_date.selected_hour  = selectd_date.selected_hour;
+
 					formatted_date += ' ' + selectd_date.selected_hour + ":" + selectd_date.selected_minute + ' ' + period;
 				}
 			}

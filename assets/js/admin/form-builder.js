@@ -910,12 +910,26 @@
 			} );
 
 			// Enable Min Max Toggler.
-			$builder.on( 'click', '.everest-forms-field-option-row-time_interval_format [id*=enable_min_max_time]', function() {
+			$( '.everest-forms-field-option-row-time_interval_format [id*=enable_min_max_time]' ).each ( function() {
 				if( $( this ).prop('checked') ) {
 					$( this ).parent().parent().find( '.input-group-col-2').has(' [id*=min_time_hour]' ).show();
 					$( this ).parent().parent().find( '.input-group-col-2').has(' [id*=max_time_hour]').show();
 					$( this ).parent().parent().find( '.input-group-col-2').has(' [for*=select_min_time]' ).show();
 					$( this ).parent().parent().find( '.input-group-col-2').has( '[for*=select_max_time]' ).show();
+				} else {
+					$( this ).parent().parent().find( '.input-group-col-2').has( '[id*=min_time_hour]' ).hide();
+					$( this ).parent().parent().find( '.input-group-col-2').has( '[id*=max_time_hour]' ).hide();
+					$( this ).parent().parent().find( '[for*=select_min_time]' ).hide();
+					$( this ).parent().parent().find( '[for*=select_max_time]' ).hide();
+				}
+			} );
+
+			$builder.on( 'click', '.everest-forms-field-option-row-time_interval_format [id*=enable_min_max_time]', function() {
+				if( $( this ).prop('checked') ) {
+					$( this ).parent().parent().find( '.input-group-col-2').has(' [id*=min_time_hour]' ).show();
+					$( this ).parent().parent().find( '.input-group-col-2').has(' [id*=max_time_hour]').show();
+					$( this ).parent().parent().find( '[for*=select_min_time]' ).show();
+					$( this ).parent().parent().find( '[for*=select_max_time]' ).show();
 				} else {
 					$( this ).parent().parent().find( '.input-group-col-2').has( '[id*=min_time_hour]' ).hide();
 					$( this ).parent().parent().find( '.input-group-col-2').has( '[id*=max_time_hour]' ).hide();
