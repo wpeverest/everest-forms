@@ -239,7 +239,7 @@ jQuery( function ( $ ) {
 					if(setting.date_format.match( /Y-m-d/ ) ) {
 						formatted_date = selectd_date.selected_year + '-' + selectd_date.selected_month + '-' + selectd_date.selected_day;
 					} else if ( setting.date_format.match( /m\/d\/Y/ ) ) {
-						formatted_date = selectd_date.selected_month + '/' + selectd_date.selected_day + '/' + selectd_date.selected_month;
+						formatted_date = selectd_date.selected_month + '/' + selectd_date.selected_day + '/' + selectd_date.selected_year;
 					} else {
 						formatted_date = selectd_date.selected_day + '/' + selectd_date.selected_month + '/' + selectd_date.selected_year;
 					}
