@@ -108,6 +108,7 @@ function evf_search_entries( $args ) {
 		$args,
 		array(
 			'limit'   => 10,
+			'form_id' => 0,
 			'offset'  => 0,
 			'order'   => 'DESC',
 			'orderby' => 'entry_id',
