@@ -538,13 +538,18 @@ class EVF_Install {
 	 *
 	 * @since 1.7.5
 	 *
+	 * @param string $cap Capability name to get.
 	 * @return array $meta_caps Meta capabilities.
 	 */
-	private static function get_meta_caps() {
+	private static function get_meta_caps( $cap = '' ) {
 		$meta_caps      = array();
 		$meta_cap_types = array( 'form', 'form_entries', 'entry' );
 
 		foreach ( $meta_cap_types as $meta_cap_type ) {
+			if ( $cap && $cap !== $meta_cap_type ) {
+				continue;
+			}
+
 			foreach ( array( 'view', 'edit', 'delete' ) as $context ) {
 				$meta_caps[ "everest_forms_{$context}_{$meta_cap_type}" ] = array(
 					'own'    => 'form' === $meta_cap_type ? "everest_forms_{$context}_forms" : "everest_forms_{$context}_entries",
@@ -658,14 +663,15 @@ class EVF_Install {
 	 * @return string[] Array of required capabilities for the requested action.
 	 */
 	public static function filter_map_meta_cap( $caps, $cap, $user_id, $args ) {
-		$meta_caps = self::get_meta_caps();
+		$meta_caps  = self::get_meta_caps();
+		$entry_caps = self::get_meta_caps( 'entry' );
 
 		// Check if meta cap is valid to proceed.
 		if ( in_array( $cap, array_keys( $meta_caps ), true ) ) {
 			$id = isset( $args[0] ) ? (int) $args[0] : 0;
 
 			// Check if meta cap requires form ID from entry.
-			if ( in_array( $cap, array( 'everest_forms_view_entry', 'everest_forms_edit_entry', 'everest_forms_delete_entry' ), true ) ) {
+			if ( in_array( $cap, array_keys( $entry_caps ), true ) ) {
 				$entry = evf_get_entry( $id, false, array( 'cap' => false ) );
 				if ( ! $entry ) {
 					return $caps;
