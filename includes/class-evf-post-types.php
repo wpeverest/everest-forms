@@ -68,8 +68,7 @@ class EVF_Post_Types {
 					'public'              => false,
 					'show_ui'             => true,
 					'description'         => __( 'This is where you can add new forms.', 'everest-forms' ),
-					'capability_type'     => 'everest_form', // Not using 'everest_form' anywhere. It just has to be custom for security reasons.
-					'map_meta_cap'        => false, // Don't let WP to map meta caps to have a granular control over this process via 'map_meta_cap' filter.
+					'capability_type'     => 'post',
 					'publicly_queryable'  => false,
 					'exclude_from_search' => true,
 					'show_in_rest'        => true,

@@ -52,12 +52,19 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 			'date'      => esc_html__( 'Date', 'everest-forms' ),
 		);
 
-		if ( current_user_can( 'everest_forms_read_entries' ) ) {
+		// Hide form enabled toggle if in trash page.
+		if ( isset( $_GET['status'] ) && 'trash' === $_GET['status'] ) { // phpcs:ignore WordPress.Security.NonceVerification
+			unset( $forms_columns['enabled'] );
+		}
+
+		// Only show entries column if the user can view entries.
+		if ( current_user_can( 'everest_forms_view_entries' ) || current_user_can( 'everest_forms_view_others_entries' ) ) {
 			$forms_columns['entries'] = esc_html__( 'Entries', 'everest-forms' );
 		}
 
-		if ( ! current_user_can( 'everest_forms_edit_forms' ) ) {
-			unset( $forms_columns['enabled'] );
+		// Only "Move to trash" bulk action exist, lets hide cb if the user cannot delete forms.
+		if ( isset( $_GET['status'] ) && 'trash' !== $_GET['status'] && ! current_user_can( 'everest_forms_delete_forms' ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			unset( $forms_columns['cb'] );
 		}
 
 		return $forms_columns;
@@ -83,7 +90,8 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 	 * @return string
 	 */
 	public function column_cb( $form ) {
-		$show = current_user_can( 'everest_forms_edit_form', $form->ID );
+		$show   = current_user_can( 'everest_forms_edit_form', $form->ID );
+		$delete = current_user_can( 'everest_forms_delete_form', $form->ID );
 
 		/**
 		 * Filters whether to show the bulk edit checkbox for a form in its list table.
@@ -95,7 +103,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 		 * @param bool    $show Whether to show the checkbox.
 		 * @param WP_Post $post The current WP_Post object.
 		 */
-		if ( apply_filters( 'everest_forms_list_table_show_form_checkbox', $show, $form ) ) {
+		if ( apply_filters( 'everest_forms_list_table_show_form_checkbox', $show, $form ) || apply_filters( 'everest_forms_list_table_delete_form_checkbox', $delete, $form ) ) {
 			return sprintf( '<input type="checkbox" name="form_id[]" value="%1$s" />', esc_attr( $form->ID ) );
 		}
 	}
@@ -110,7 +118,9 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 		$form_data    = evf()->form->get( absint( $posts->ID ), array( 'content_only' => true ) );
 		$form_enabled = isset( $form_data['form_enabled'] ) ? $form_data['form_enabled'] : 1;
 
-		return '<label class="everest-forms-toggle-form form-enabled"><input type="checkbox" data-form_id="' . absint( $posts->ID ) . '" value="1" ' . checked( 1, $form_enabled, false ) . '/><span class="slider round"></span></label>';
+		if ( current_user_can( 'everest_forms_edit_form', $posts->ID ) ) {
+			return '<label class="everest-forms-toggle-form form-enabled"><input type="checkbox" data-form_id="' . absint( $posts->ID ) . '" value="1" ' . checked( 1, $form_enabled, false ) . '/><span class="slider round"></span></label>';
+		}
 	}
 
 	/**
@@ -137,7 +147,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 		if ( 'trash' === $post_status ) {
 			$output .= esc_html( $title );
 		} else {
-			$name = '';
+			$name = esc_html( $title );
 
 			if ( current_user_can( 'everest_forms_view_form', $posts->ID ) ) {
 				$name = '<a href="' . esc_url( $preview_link ) . '" title="' . esc_html__( 'View Preview', 'everest-forms' ) . '" class="row-title" target="_blank" rel="noopener noreferrer">' . esc_html( $title ) . '</a>';
@@ -297,7 +307,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 	public function column_entries( $posts ) {
 		global $wpdb;
 
-		if ( ! current_user_can( 'everest_forms_read_entries', $posts->ID ) ) {
+		if ( ! current_user_can( 'everest_forms_view_form_entries', $posts->ID ) ) {
 			return '-';
 		}
 

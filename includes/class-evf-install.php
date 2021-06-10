@@ -665,7 +665,7 @@ class EVF_Install {
 			$id = isset( $args[0] ) ? (int) $args[0] : 0;
 
 			// Check if meta cap requires form ID from entry.
-			if ( in_array( $cap, array( 'view_entry', 'edit_entry', 'delete_entry' ), true ) ) {
+			if ( in_array( $cap, array( 'everest_forms_view_entry', 'everest_forms_edit_entry', 'everest_forms_delete_entry' ), true ) ) {
 				$entry = evf_get_entry( $id, false, array( 'cap' => false ) );
 				if ( ! $entry ) {
 					return $caps;
@@ -687,8 +687,8 @@ class EVF_Install {
 				return $caps;
 			}
 
-			// If the form author is set and the user is the author...
-			if ( $form->form_author && $user_id === (int) $form->form_author ) {
+			// If the post author is set and the user is the author...
+			if ( $form->post_author && $user_id === (int) $form->post_author ) {
 				$caps = isset( $meta_caps[ $cap ]['own'] ) ? array( $meta_caps[ $cap ]['own'] ) : array( 'do_not_allow' );
 			} else {
 				// The user is trying someone else's form.

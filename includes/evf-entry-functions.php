@@ -24,7 +24,7 @@ function evf_get_entry( $id, $with_fields = false, $args = array() ) {
 	}
 
 	if ( ! empty( $args['cap'] ) && ! current_user_can( $args['cap'], $id ) ) {
-		return false;
+		return null;
 	}
 
 	$entry = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}evf_entries WHERE entry_id = %d LIMIT 1;", $id ) ); // WPCS: cache ok, DB call ok.
@@ -56,7 +56,7 @@ function evf_get_entry( $id, $with_fields = false, $args = array() ) {
 			}
 		}
 	} elseif ( apply_filters( 'everest_forms_get_entry_metadata', true ) ) {
-		$results     = $wpdb->get_results( $wpdb->prepare( "SELECT meta_key,meta_value FROM {$wpdb->prefix}evf_entrymeta WHERE entry_id = %d", $id ), ARRAY_A );
+		$results     = $wpdb->get_results( $wpdb->prepare( "SELECT meta_key, meta_value FROM {$wpdb->prefix}evf_entrymeta WHERE entry_id = %d", $id ), ARRAY_A );
 		$entry->meta = wp_list_pluck( $results, 'meta_value', 'meta_key' );
 	}
 
@@ -115,13 +115,53 @@ function evf_search_entries( $args ) {
 		)
 	);
 
+	if ( ! isset( $args['cap'] ) ) {
+		$args['cap'] = 'everest_forms_view_form_entries';
+	}
+
 	// Check if form ID is valid for entries.
 	if ( ! array_key_exists( $args['form_id'], evf_get_all_forms() ) ) {
 		return array();
 	}
 
+	// Check permission if we can view form entries.
+	if ( ! empty( $args['cap'] ) && ! current_user_can( $args['cap'], $args['form_id'] ) ) {
+		return array();
+	}
+
+	// WHERE clause.
+	$where = array(
+		'default' => "{$wpdb->prefix}evf_entries.entry_id = {$wpdb->prefix}evf_entrymeta.entry_id",
+	);
+
+	$allowed_forms = implode(
+		',',
+		array_map(
+			'intval',
+			evf()->form->get(
+				'',
+				array(
+					'fields' => 'ids',
+					'cap'    => $args['cap'],
+				)
+			)
+		)
+	);
+
+	// Check if forms are allowed.
+	if ( ! empty( $allowed_forms ) ) {
+		$where['arg_form_id'] = "{$wpdb->prefix}evf_entries.form_id IN ( {$allowed_forms} )";
+	} else {
+		$where = array( 'return_empty' => '1=0' );
+	}
+
+	// Give developers an ability to modify WHERE (unset clauses, add new, etc).
+	$where     = (array) apply_filters( 'everest_forms_search_entries_where', $where, $args );
+	$where_sql = implode( ' AND ', $where );
+
+	// Query object.
 	$query   = array();
-	$query[] = "SELECT DISTINCT {$wpdb->prefix}evf_entries.entry_id FROM {$wpdb->prefix}evf_entries INNER JOIN {$wpdb->prefix}evf_entrymeta WHERE {$wpdb->prefix}evf_entries.entry_id = {$wpdb->prefix}evf_entrymeta.entry_id";
+	$query[] = "SELECT DISTINCT {$wpdb->prefix}evf_entries.entry_id FROM {$wpdb->prefix}evf_entries INNER JOIN {$wpdb->prefix}evf_entrymeta WHERE {$where_sql}";
 
 	if ( ! empty( $args['search'] ) ) {
 		$like    = '%' . $wpdb->esc_like( $args['search'] ) . '%';

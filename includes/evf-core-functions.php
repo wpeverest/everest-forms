@@ -1127,12 +1127,12 @@ function evf_get_random_string( $length = 10 ) {
 function evf_get_all_forms( $skip_disabled_entries = false ) {
 	$forms    = array();
 	$form_ids = wp_parse_id_list(
-		get_posts(
+		evf()->form->get_multiple(
 			array(
-				'post_type'   => 'everest_form',
-				'numberposts' => -1, // @codingStandardsIgnoreLine
-				'status'      => 'publish',
 				'fields'      => 'ids',
+				'status'      => 'publish',
+				'order'       => 'DESC',
+				'numberposts' => -1, // @codingStandardsIgnoreLine
 			)
 		)
 	);
@@ -1147,7 +1147,10 @@ function evf_get_all_forms( $skip_disabled_entries = false ) {
 				continue;
 			}
 
-			$forms[ $form_id ] = $form->post_title;
+			// Check permissions for forms with viewable.
+			if ( current_user_can( 'everest_forms_view_form_entries', $form_id ) ) {
+				$forms[ $form_id ] = $form->post_title;
+			}
 		}
 	}
 

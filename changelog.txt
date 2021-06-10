@@ -15,6 +15,7 @@
 * Fix - Payment Multiple choices and checkboxes fields amount preview in form builder area.
 * Enhancement - Enable/Disable log.
 * Feature - Divider field added.
+* Fix - Success message issue with default form due to redirection.
 
 = 1.7.4 - 11-03-2021 =
 * Fix - Hide empty select data field from entry view.
