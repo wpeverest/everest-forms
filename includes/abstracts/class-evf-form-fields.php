@@ -1194,13 +1194,14 @@ abstract class EVF_Form_Fields {
 
 				if ( 'likert' === $field['type'] ) {
 					$has_sub_fields = true;
-					$likert_rows    = isset( $field['parameter-name'] ) ? $field['parameter-name'] : array();
+					$likert_rows    = isset( $field['likert_rows'] ) ? $field['likert_rows'] : array();
 					foreach ( $likert_rows as $row_number => $row_label ) {
-						$row_slug                = 'parameter-name-' . $row_number;
+						$row_label               = str_replace( ' ', '', $row_label );
+						$row_slug                = 'parameter-name-' . strtolower( str_replace( '#', '-', $row_label ) );
 						$sub_fields[ $row_slug ] = array(
 							'label' => array(
-								'value'   => $row_label,
-								'tooltip' => esc_html__( 'Enter a message to show for this row if it\'s required.', 'everest-forms' ),
+								'value'   => esc_html__( 'Parameter Name - ', 'everest-forms' ) . $row_label,
+								'tooltip' => esc_html__( 'Enter Parameter name for '.$row_label.' to dynamically populate', 'everest-forms' ), // @codingStandardsIgnoreLine
 							),
 							'text'  => array(
 								'value' => isset( $field[ $row_slug ] ) ? esc_attr( $field[ $row_slug ] ) : esc_attr( $field_default ),
@@ -1271,7 +1272,7 @@ abstract class EVF_Form_Fields {
 					$sub_field_output_array = array();
 					foreach ( $sub_fields as $sub_field_slug => $sub_field_data ) {
 						$value   = isset( $field['parameter-name'] ) ? esc_attr( $field['parameter-name'] ) : esc_attr( $field_default );
-						$tooltip = esc_html__( 'Enter a message to show for this field if it\'s required.', 'everest-forms' );
+						$tooltip = esc_html__( 'Enter a Parameter name to dynamically populate .', 'everest-forms' );
 						$output  = $this->field_element(
 							'label',
 							$field,
@@ -1309,7 +1310,7 @@ abstract class EVF_Form_Fields {
 						$field,
 						array(
 							'slug'    => 'parameter-name',
-							'class'   => isset( $field['required'] ) ? '' : 'hidden',
+							'class'   => isset( $field['allow-query-var'] ) ? '' : 'hidden',
 							'content' => $output,
 						),
 						false

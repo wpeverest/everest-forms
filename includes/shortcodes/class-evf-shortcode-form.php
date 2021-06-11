@@ -29,6 +29,12 @@ class EVF_Shortcode_Form {
 	 */
 	public static $parts = array();
 
+	/**
+	 * Contains information about attributes of shortcode values passed from the
+	 * post or page.
+	 *
+	 * @var array
+	 */
 	public static $field_values = array();
 
 	/**
@@ -45,7 +51,7 @@ class EVF_Shortcode_Form {
 		add_action( 'everest_forms_display_field_after', array( 'EVF_Shortcode_Form', 'description' ), 5, 2 );
 		add_action( 'everest_forms_display_field_after', array( 'EVF_Shortcode_Form', 'wrapper_end' ), 15, 2 );
 		add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'honeypot' ), 15, 3 );
-		add_filter( 'everest_forms_get_query_variables', array( 'EVF_Shortcode_Form', 'get_query_variables' ), 10, 1);
+		add_filter( 'everest_forms_get_query_variables', array( 'EVF_Shortcode_Form', 'get_query_variables' ), 10, 1 );
 		if ( ! apply_filters( 'everest_forms_recaptcha_disabled', false ) ) {
 			add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'recaptcha' ), 20, 3 );
 		}
@@ -285,7 +291,7 @@ class EVF_Shortcode_Form {
 	 * @param bool  $title       Whether to display form title.
 	 * @param bool  $description Whether to display form description.
 	 */
-	public static function fields( $form_data, $title, $description, $field_values ) {
+	public static function fields( $form_data, $title, $description ) {
 		$structure = isset( $form_data['structure'] ) ? $form_data['structure'] : array();
 
 		// Bail if empty form fields.
@@ -341,7 +347,7 @@ class EVF_Shortcode_Form {
 					$attributes = self::get_field_attributes( $field, $form_data );
 
 					// Get field properties.
-					$properties = self::get_field_properties( $field, $form_data, $attributes, $field_values );
+					$properties = self::get_field_properties( $field, $form_data, $attributes );
 
 					// Add properties to the field so it's available everywhere.
 					$field['properties'] = $properties;
@@ -568,7 +574,7 @@ class EVF_Shortcode_Form {
 	 *
 	 * @return array
 	 */
-	public static function get_field_properties( $field, $form_data, $attributes = array(), $field_values = array() ) {
+	public static function get_field_properties( $field, $form_data, $attributes = array() ) {
 		if ( empty( $attributes ) ) {
 			$attributes = self::get_field_attributes( $field, $form_data );
 		}
@@ -584,8 +590,7 @@ class EVF_Shortcode_Form {
 
 		// Field container data.
 		$container_data = array();
-		$query_var = array();
-
+		$query_var      = array();
 
 		// Embed required-field-message to the container if the field is required.
 		if ( isset( $field['required'] ) && ( '1' === $field['required'] || true === $field['required'] ) ) {
@@ -627,7 +632,7 @@ class EVF_Shortcode_Form {
 			}
 		}
 
-		$query_var = apply_filters('everest_forms_get_query_variables', $field);
+		$query_var = apply_filters( 'everest_forms_get_query_variables', $field );
 
 		$errors     = isset( evf()->task->errors[ $form_id ][ $field_id ] ) ? evf()->task->errors[ $form_id ][ $field_id ] : '';
 		$defaults   = isset( $_POST['everest_forms']['form_fields'][ $field_id ] ) && ( ! is_array( $_POST['everest_forms']['form_fields'][ $field_id ] ) && ! empty( $_POST['everest_forms']['form_fields'][ $field_id ] ) ) ? $_POST['everest_forms']['form_fields'][ $field_id ] : ''; // @codingStandardsIgnoreLine
@@ -658,7 +663,7 @@ class EVF_Shortcode_Form {
 					'primary' => array(
 						'attr'     => array(
 							'name'        => "everest_forms[form_fields][{$field_id}]",
-							'value'       => ( !empty( $query_var ) && ! empty( $field['parameter-name'] ) ) ? $query_var[$field['parameter-name']] : ( isset( $field['default_value'] ) ? apply_filters( 'everest_forms_process_smart_tags', $field['default_value'], $form_data ) : $defaults ),
+							'value'       => ( ! empty( $query_var ) && ! empty( $field['parameter-name'] ) ) ? $query_var[ $field['parameter-name'] ] : ( isset( $field['default_value'] ) ? apply_filters( 'everest_forms_process_smart_tags', $field['default_value'], $form_data ) : $defaults ),
 							'placeholder' => isset( $field['placeholder'] ) ? evf_string_translation( $form_data['id'], $field['id'], $field['placeholder'], '-placeholder' ) : '',
 						),
 						'class'    => $attributes['input_class'],
@@ -692,24 +697,38 @@ class EVF_Shortcode_Form {
 		return apply_filters( 'everest_forms_field_properties', $properties, $field, $form_data );
 	}
 
-	public static function set_field_values( $field_attr ){
+	/**
+	 * Set Field Attributes Parameters Obtained from Shortcode.
+	 *
+	 * @param mixed $field_attr Field Attributes Parameter.
+	 */
+	public static function set_field_values( $field_attr ) {
 		self::$field_values = $field_attr;
 	}
 
-	public static function get_field_values(){
+	/**
+	 * Get Field Attributes Parameter.
+	 */
+	public static function get_field_values() {
 		return self::$field_values;
 	}
 
-	public static function get_query_variables( $field ){
-		$meta_keys      = array();
-		$query_var      = array();
+	/**
+	 * Get Query Variables from Field Values Shortcode.
+	 *
+	 * @param mixed $field Field Options to pass into the function.
+	 * @return array
+	 */
+	public static function get_query_variables( $field ) {
+		$meta_keys = array();
+		$query_var = array();
 
 		$field_values = self::get_field_values();
 
-		if( !isset( $field_values ) ){
+		if ( ! isset( $field_values ) ) {
 			return;
 		}
-		if ( false === evf_get_license_plan()){
+		if ( false === evf_get_license_plan() ) {
 			return;
 		}
 
@@ -724,27 +743,36 @@ class EVF_Shortcode_Form {
 			}
 
 			if ( isset( $meta_keys ) && isset( $field['allow-query-var'] ) ) {
-				if( 'address' !== $field['type'] ){
-					if ( isset($field['parameter-name']) && ! empty( $meta_keys [ $field ['parameter-name'] ] ) ) {
-						$query_var[$field['parameter-name']] = $meta_keys[ $field['parameter-name'] ];
+				if ( 'address' !== $field['type'] && 'likert' !== $field['type'] ) {
+					if ( isset( $field['parameter-name'] ) && ! empty( $meta_keys [ $field ['parameter-name'] ] ) ) {
+						$query_var[ $field['parameter-name'] ] = $meta_keys[ $field['parameter-name'] ];
 					}
-				}else{
-					if ( isset($field['parameter-name-address1']) && ! empty( $meta_keys [ $field ['parameter-name-address1'] ] ) ) {
+				} elseif ( 'address' !== $field['type'] && 'likert' === $field['type'] ) {
+					$likert_rows = isset( $field['likert_rows'] ) ? $field['likert_rows'] : array();
+					foreach ( $likert_rows as $row_number => $row_label ) {
+						$row_label = str_replace( ' ', '', $row_label );
+						$row_slug  = 'parameter-name-' . strtolower( str_replace( '#', '-', $row_label ) );
+						if ( isset( $field [ $row_slug ] ) && ! empty( $meta_keys [ $field [ $row_slug ] ] ) ) {
+							$query_var[ $field[ $row_slug ] ] = $meta_keys[ $field[ $row_slug ] ];
+						}
+					}
+				} else {
+					if ( isset( $field['parameter-name-address1'] ) && ! empty( $meta_keys [ $field ['parameter-name-address1'] ] ) ) {
 						$query_var['address1'] = $meta_keys[ $field['parameter-name-address1'] ];
 					}
-					if ( isset($field['parameter-name-address2']) && ! empty( $meta_keys [ $field ['parameter-name-address2'] ] ) ) {
+					if ( isset( $field['parameter-name-address2'] ) && ! empty( $meta_keys [ $field ['parameter-name-address2'] ] ) ) {
 						$query_var['address2'] = $meta_keys[ $field['parameter-name-address2'] ];
 					}
-					if ( isset($field['parameter-name-city']) && ! empty( $meta_keys [ $field ['parameter-name-city'] ] ) ) {
+					if ( isset( $field['parameter-name-city'] ) && ! empty( $meta_keys [ $field ['parameter-name-city'] ] ) ) {
 						$query_var['city'] = $meta_keys[ $field['parameter-name-city'] ];
 					}
-					if ( isset($field['parameter-name-state']) && ! empty( $meta_keys [ $field ['parameter-name-state'] ] ) ) {
+					if ( isset( $field['parameter-name-state'] ) && ! empty( $meta_keys [ $field ['parameter-name-state'] ] ) ) {
 						$query_var['state'] = $meta_keys[ $field['parameter-name-state'] ];
 					}
-					if ( isset($field['parameter-name-postal']) && ! empty( $meta_keys [ $field ['parameter-name-postal'] ] ) ) {
+					if ( isset( $field['parameter-name-postal'] ) && ! empty( $meta_keys [ $field ['parameter-name-postal'] ] ) ) {
 						$query_var['postal'] = $meta_keys[ $field['parameter-name-postal'] ];
 					}
-					if ( isset($field['parameter-name-country']) && ! empty( $meta_keys [ $field ['parameter-name-country'] ] ) ) {
+					if ( isset( $field['parameter-name-country'] ) && ! empty( $meta_keys [ $field ['parameter-name-country'] ] ) ) {
 						$query_var['country'] = $meta_keys[ $field['parameter-name-country'] ];
 					}
 				}
@@ -799,7 +827,7 @@ class EVF_Shortcode_Form {
 	 * @param bool $title Whether to display form title.
 	 * @param bool $description Whether to display form description.
 	 */
-	private static function view( $id, $title = false, $description = false, $field_values = false ) {
+	private static function view( $id, $title = false, $description = false ) {
 		if ( empty( $id ) ) {
 			return;
 		}
@@ -950,7 +978,7 @@ class EVF_Shortcode_Form {
 
 		echo '<form ' . evf_html_attributes( $form_atts['id'], $form_atts['class'], $form_atts['data'], $form_atts['atts'] ) . '>';
 
-		do_action( 'everest_forms_frontend_output', $form_data, $title, $description, $field_values, $errors );
+		do_action( 'everest_forms_frontend_output', $form_data, $title, $description, $errors );
 
 		echo '</form>';
 

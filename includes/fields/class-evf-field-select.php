@@ -250,7 +250,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 		$plan              = evf_get_license_plan();
 		$has_default       = false;
 		$is_multiple       = false;
-		$checklist = array();
+		$checklist         = array();
 
 		if ( ! empty( $field['required'] ) ) {
 			$container['attr']['required'] = 'required';
