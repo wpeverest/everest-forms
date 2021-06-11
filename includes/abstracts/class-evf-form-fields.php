@@ -1149,6 +1149,207 @@ abstract class EVF_Form_Fields {
 				break;
 
 			/*
+			 * Field Allow Query Vars toggle.
+			 */
+			case 'allow_query_var':
+				if ( false === evf_get_license_plan() ) {
+					return;
+				}
+				$default = ! empty( $args['default'] ) ? $args['default'] : '0';
+				$value   = isset( $field['allow-query-var'] ) ? $field['allow-query-var'] : $default;
+				$tooltip = esc_html__( 'Check this option to allow field to be populated dynamically. Parameters can not be passed using shortcode unless this field is enabled.', 'everest-forms' );
+				$output  = $this->field_element(
+					'checkbox',
+					$field,
+					array(
+						'slug'    => 'allow-query-var',
+						'value'   => $value,
+						'desc'    => esc_html__( 'Allow fields to be populated dynamically', 'everest-forms' ),
+						'tooltip' => $tooltip,
+					),
+					false
+				);
+				$output  = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'allow-query-var',
+						'content' => $output,
+					),
+					false
+				);
+				break;
+
+			/*
+			 * Query Vars.
+			 */
+			case 'query_var':
+				if ( false === evf_get_license_plan() ) {
+					return;
+				}
+				$has_sub_fields = false;
+				$sub_fields     = array();
+
+				$field_default = '';
+
+				if ( 'likert' === $field['type'] ) {
+					$has_sub_fields = true;
+					$likert_rows    = isset( $field['parameter-name'] ) ? $field['parameter-name'] : array();
+					foreach ( $likert_rows as $row_number => $row_label ) {
+						$row_slug                = 'parameter-name-' . $row_number;
+						$sub_fields[ $row_slug ] = array(
+							'label' => array(
+								'value'   => $row_label,
+								'tooltip' => esc_html__( 'Enter a message to show for this row if it\'s required.', 'everest-forms' ),
+							),
+							'text'  => array(
+								'value' => isset( $field[ $row_slug ] ) ? esc_attr( $field[ $row_slug ] ) : esc_attr( $field_default ),
+							),
+						);
+					}
+				} elseif ( 'address' === $field['type'] ) {
+					$has_sub_fields = true;
+					$sub_fields     = array(
+						'parameter-name-address1' => array(
+							'label' => array(
+								'value'   => esc_html__( 'Parameter Name - Address Line 1', 'everest-forms' ),
+								'tooltip' => esc_html__( 'Enter Parameter name for Address Line 1 to dynamically populate.', 'everest-forms' ),
+							),
+							'text'  => array(
+								'value' => isset( $field['parameter-name-address1'] ) ? esc_attr( $field['parameter-name-address1'] ) : esc_attr( $field_default ),
+							),
+						),
+						'parameter-name-address2' => array(
+							'label' => array(
+								'value'   => esc_html__( 'Parameter Name - Address Line 2', 'everest-forms' ),
+								'tooltip' => esc_html__( 'Enter Parameter name for Address Line 1 to dynamically populate.', 'everest-forms' ),
+							),
+							'text'  => array(
+								'value' => isset( $field['parameter-name-address2'] ) ? esc_attr( $field['parameter-name-address2'] ) : esc_attr( $field_default ),
+							),
+						),
+						'parameter-name-city'     => array(
+							'label' => array(
+								'value'   => esc_html__( 'Parameter Name - City', 'everest-forms' ),
+								'tooltip' => esc_html__( 'Enter Parameter name for City to dynamically populate.', 'everest-forms' ),
+							),
+							'text'  => array(
+								'value' => isset( $field['parameter-name-city'] ) ? esc_attr( $field['parameter-name-city'] ) : esc_attr( $field_default ),
+							),
+						),
+						'parameter-name-state'    => array(
+							'label' => array(
+								'value'   => esc_html__( 'Parameter Name - State / Province / Region', 'everest-forms' ),
+								'tooltip' => esc_html__( 'Enter Parameter name for State/Province/Region to dynamically populate.', 'everest-forms' ),
+							),
+							'text'  => array(
+								'value' => isset( $field['parameter-name-state'] ) ? esc_attr( $field['parameter-name-state'] ) : esc_attr( $field_default ),
+							),
+						),
+						'parameter-name-postal'   => array(
+							'label' => array(
+								'value'   => esc_html__( 'Parameter Name - Zip / Postal Code', 'everest-forms' ),
+								'tooltip' => esc_html__( 'Enter Parameter name for Zip/Postal Code to dynamically populate.', 'everest-forms' ),
+							),
+							'text'  => array(
+								'value' => isset( $field['parameter-name-postal'] ) ? esc_attr( $field['parameter-name-postal'] ) : esc_attr( $field_default ),
+							),
+						),
+						'parameter-name-country'  => array(
+							'label' => array(
+								'value'   => esc_html__( 'Parameter Name - Country', 'everest-forms' ),
+								'tooltip' => esc_html__( 'Enter Parameter name for Country to dynamically populate.', 'everest-forms' ),
+							),
+							'text'  => array(
+								'value' => isset( $field['parameter-name-country'] ) ? esc_attr( $field['parameter-name-country'] ) : esc_attr( $field_default ),
+							),
+						),
+					);
+				}
+
+				if ( true === $has_sub_fields ) {
+					$sub_field_output_array = array();
+					foreach ( $sub_fields as $sub_field_slug => $sub_field_data ) {
+						$value   = isset( $field['parameter-name'] ) ? esc_attr( $field['parameter-name'] ) : esc_attr( $field_default );
+						$tooltip = esc_html__( 'Enter a message to show for this field if it\'s required.', 'everest-forms' );
+						$output  = $this->field_element(
+							'label',
+							$field,
+							array(
+								'slug'    => $sub_field_slug,
+								'value'   => $sub_field_data['label']['value'],
+								'tooltip' => $sub_field_data['label']['tooltip'],
+							),
+							false
+						);
+						$output .= $this->field_element(
+							'text',
+							$field,
+							array(
+								'slug'  => $sub_field_slug,
+								'value' => $sub_field_data['text']['value'],
+							),
+							false
+						);
+						$output  = $this->field_element(
+							'row',
+							$field,
+							array(
+								'slug'    => $sub_field_slug,
+								'content' => $output,
+							),
+							false
+						);
+
+						$sub_field_output_array[] = $output;
+					}
+					$output = implode( '', $sub_field_output_array );
+					$output = $this->field_element(
+						'row',
+						$field,
+						array(
+							'slug'    => 'parameter-name',
+							'class'   => isset( $field['required'] ) ? '' : 'hidden',
+							'content' => $output,
+						),
+						false
+					);
+				} else {
+					$value   = ! empty( $field['parameter-name'] ) || ( isset( $field['parameter-name'] ) && '0' === (string) $field['parameter-name'] ) ? esc_attr( $field['parameter-name'] ) : '';
+					$tooltip = esc_html__( 'Enter name of the Parameter which is used in shortcode variables.', 'everest-forms' );
+					$output  = $this->field_element(
+						'label',
+						$field,
+						array(
+							'slug'    => 'parameter-name',
+							'value'   => esc_html__( 'Parameter Name', 'everest-forms' ),
+							'tooltip' => $tooltip,
+						),
+						false
+					);
+					$output .= $this->field_element(
+						'text',
+						$field,
+						array(
+							'slug'  => 'parameter-name',
+							'value' => $value,
+						),
+						false
+					);
+					$output  = $this->field_element(
+						'row',
+						$field,
+						array(
+							'slug'    => 'parameter-name',
+							'class'   => isset( $field['allow-query-var'] ) ? '' : 'hidden',
+							'content' => $output,
+						),
+						false
+					);
+				}
+				break;
+
+			/*
 			 * CSS classes.
 			 */
 			case 'css':

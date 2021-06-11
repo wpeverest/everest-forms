@@ -818,6 +818,20 @@
 				}
 			});
 
+			// Real-time updates for "Query Var" field option.
+			$builder.on( 'change', '.everest-forms-field-option-row-allow-query-var input', function( event ) {
+				var id = $( this ).parent().data( 'field-id' );
+
+				$( '#everest-forms-field-' + id ).toggleClass( 'parameter-name' );
+
+				// Toggle "Required Field Message" option.
+				if ( $( event.target ).is( ':checked' ) ) {
+					$( '#everest-forms-field-option-row-' + id + '-parameter-name' ).show();
+				} else {
+					$( '#everest-forms-field-option-row-' + id + '-parameter-name' ).hide();
+				}
+			});
+
 			// Real-time updates for "Confirmation" field option.
 			$builder.on( 'change', '.everest-forms-field-option-row-confirmation input', function( event ) {
 				var id = $( this ).parent().data( 'field-id' );

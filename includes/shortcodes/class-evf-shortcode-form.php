@@ -29,13 +29,15 @@ class EVF_Shortcode_Form {
 	 */
 	public static $parts = array();
 
+	public static $field_values = array();
+
 	/**
 	 * Hooks in tab.
 	 */
 	public static function hooks() {
 		add_action( 'everest_forms_frontend_output_success', 'evf_print_notices', 10, 2 );
 		add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'header' ), 5, 4 );
-		add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'fields' ), 10, 3 );
+		add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'fields' ), 10, 4 );
 		add_action( 'everest_forms_display_field_before', array( 'EVF_Shortcode_Form', 'wrapper_start' ), 5, 2 );
 		add_action( 'everest_forms_display_field_before', array( 'EVF_Shortcode_Form', 'label' ), 15, 2 );
 		add_action( 'everest_forms_display_field_before', array( 'EVF_Shortcode_Form', 'description' ), 20, 2 );
@@ -43,6 +45,7 @@ class EVF_Shortcode_Form {
 		add_action( 'everest_forms_display_field_after', array( 'EVF_Shortcode_Form', 'description' ), 5, 2 );
 		add_action( 'everest_forms_display_field_after', array( 'EVF_Shortcode_Form', 'wrapper_end' ), 15, 2 );
 		add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'honeypot' ), 15, 3 );
+		add_filter( 'everest_forms_get_query_variables', array( 'EVF_Shortcode_Form', 'get_query_variables' ), 10, 1);
 		if ( ! apply_filters( 'everest_forms_recaptcha_disabled', false ) ) {
 			add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'recaptcha' ), 20, 3 );
 		}
@@ -179,7 +182,7 @@ class EVF_Shortcode_Form {
 	 * @param array $form_data Form data.
 	 */
 	public static function label( $field, $form_data ) {
-		
+
 		$label = $field['properties']['label'];
 
 		// If the label is empty or disabled don't proceed.
@@ -282,7 +285,7 @@ class EVF_Shortcode_Form {
 	 * @param bool  $title       Whether to display form title.
 	 * @param bool  $description Whether to display form description.
 	 */
-	public static function fields( $form_data, $title, $description ) {
+	public static function fields( $form_data, $title, $description, $field_values ) {
 		$structure = isset( $form_data['structure'] ) ? $form_data['structure'] : array();
 
 		// Bail if empty form fields.
@@ -329,16 +332,16 @@ class EVF_Shortcode_Form {
 					}
 
 					$should_display_field = apply_filters( "everest_forms_should_display_field_{$field['type']}", true, $field, $form_data );
-                    
+
 					if ( true !== $should_display_field ) {
-                        continue;
-                    }
+						continue;
+					}
 
 					// Get field attributes.
 					$attributes = self::get_field_attributes( $field, $form_data );
 
 					// Get field properties.
-					$properties = self::get_field_properties( $field, $form_data, $attributes );
+					$properties = self::get_field_properties( $field, $form_data, $attributes, $field_values );
 
 					// Add properties to the field so it's available everywhere.
 					$field['properties'] = $properties;
@@ -565,7 +568,7 @@ class EVF_Shortcode_Form {
 	 *
 	 * @return array
 	 */
-	public static function get_field_properties( $field, $form_data, $attributes = array() ) {
+	public static function get_field_properties( $field, $form_data, $attributes = array(), $field_values = array() ) {
 		if ( empty( $attributes ) ) {
 			$attributes = self::get_field_attributes( $field, $form_data );
 		}
@@ -581,6 +584,8 @@ class EVF_Shortcode_Form {
 
 		// Field container data.
 		$container_data = array();
+		$query_var = array();
+
 
 		// Embed required-field-message to the container if the field is required.
 		if ( isset( $field['required'] ) && ( '1' === $field['required'] || true === $field['required'] ) ) {
@@ -621,6 +626,9 @@ class EVF_Shortcode_Form {
 				$container_data['required-field-message'] = isset( $field['required-field-message'] ) && '' !== $field['required-field-message'] ? evf_string_translation( $form_data['id'], $field['id'], $field['required-field-message'], '-required-field-message' ) : $required_validation;
 			}
 		}
+
+		$query_var = apply_filters('everest_forms_get_query_variables', $field);
+
 		$errors     = isset( evf()->task->errors[ $form_id ][ $field_id ] ) ? evf()->task->errors[ $form_id ][ $field_id ] : '';
 		$defaults   = isset( $_POST['everest_forms']['form_fields'][ $field_id ] ) && ( ! is_array( $_POST['everest_forms']['form_fields'][ $field_id ] ) && ! empty( $_POST['everest_forms']['form_fields'][ $field_id ] ) ) ? $_POST['everest_forms']['form_fields'][ $field_id ] : ''; // @codingStandardsIgnoreLine
 		$properties = apply_filters(
@@ -650,7 +658,7 @@ class EVF_Shortcode_Form {
 					'primary' => array(
 						'attr'     => array(
 							'name'        => "everest_forms[form_fields][{$field_id}]",
-							'value'       => isset( $field['default_value'] ) ? apply_filters( 'everest_forms_process_smart_tags', $field['default_value'], $form_data ) : $defaults,
+							'value'       => ( !empty( $query_var ) && ! empty( $field['parameter-name'] ) ) ? $query_var[$field['parameter-name']] : ( isset( $field['default_value'] ) ? apply_filters( 'everest_forms_process_smart_tags', $field['default_value'], $form_data ) : $defaults ),
 							'placeholder' => isset( $field['placeholder'] ) ? evf_string_translation( $form_data['id'], $field['id'], $field['placeholder'], '-placeholder' ) : '',
 						),
 						'class'    => $attributes['input_class'],
@@ -684,6 +692,67 @@ class EVF_Shortcode_Form {
 		return apply_filters( 'everest_forms_field_properties', $properties, $field, $form_data );
 	}
 
+	public static function set_field_values( $field_attr ){
+		self::$field_values = $field_attr;
+	}
+
+	public static function get_field_values(){
+		return self::$field_values;
+	}
+
+	public static function get_query_variables( $field ){
+		$meta_keys      = array();
+		$query_var      = array();
+
+		$field_values = self::get_field_values();
+
+		if( !isset( $field_values ) ){
+			return;
+		}
+		if ( false === evf_get_license_plan()){
+			return;
+		}
+
+		$field_values = str_replace( 'amp;', '', explode( '&', $field_values ) );
+
+		if ( ! empty( $field_values ) ) {
+			foreach ( $field_values as $key => $field_value ) {
+				$meta_key_array = explode( '=', $field_value );
+				if ( ! empty( $meta_key_array[1] ) ) {
+					$meta_keys[ $meta_key_array[0] ] = $meta_key_array[1];
+				}
+			}
+
+			if ( isset( $meta_keys ) && isset( $field['allow-query-var'] ) ) {
+				if( 'address' !== $field['type'] ){
+					if ( isset($field['parameter-name']) && ! empty( $meta_keys [ $field ['parameter-name'] ] ) ) {
+						$query_var[$field['parameter-name']] = $meta_keys[ $field['parameter-name'] ];
+					}
+				}else{
+					if ( isset($field['parameter-name-address1']) && ! empty( $meta_keys [ $field ['parameter-name-address1'] ] ) ) {
+						$query_var['address1'] = $meta_keys[ $field['parameter-name-address1'] ];
+					}
+					if ( isset($field['parameter-name-address2']) && ! empty( $meta_keys [ $field ['parameter-name-address2'] ] ) ) {
+						$query_var['address2'] = $meta_keys[ $field['parameter-name-address2'] ];
+					}
+					if ( isset($field['parameter-name-city']) && ! empty( $meta_keys [ $field ['parameter-name-city'] ] ) ) {
+						$query_var['city'] = $meta_keys[ $field['parameter-name-city'] ];
+					}
+					if ( isset($field['parameter-name-state']) && ! empty( $meta_keys [ $field ['parameter-name-state'] ] ) ) {
+						$query_var['state'] = $meta_keys[ $field['parameter-name-state'] ];
+					}
+					if ( isset($field['parameter-name-postal']) && ! empty( $meta_keys [ $field ['parameter-name-postal'] ] ) ) {
+						$query_var['postal'] = $meta_keys[ $field['parameter-name-postal'] ];
+					}
+					if ( isset($field['parameter-name-country']) && ! empty( $meta_keys [ $field ['parameter-name-country'] ] ) ) {
+						$query_var['country'] = $meta_keys[ $field['parameter-name-country'] ];
+					}
+				}
+			}
+		}
+		return $query_var;
+	}
+
 	/**
 	 * Output the shortcode.
 	 *
@@ -705,9 +774,10 @@ class EVF_Shortcode_Form {
 
 		$atts = shortcode_atts(
 			array(
-				'id'          => false,
-				'title'       => false,
-				'description' => false,
+				'id'           => false,
+				'title'        => false,
+				'description'  => false,
+				'field_values' => false,
 			),
 			$atts,
 			'output'
@@ -716,8 +786,9 @@ class EVF_Shortcode_Form {
 		// Scripts load action.
 		do_action( 'everest_forms_shortcode_scripts', $atts );
 
+		self::set_field_values( $atts['field_values'] );
 		ob_start();
-		self::view( $atts['id'], $atts['title'], $atts['description'] );
+		self::view( $atts['id'], $atts['title'], $atts['description'], $atts['field_values'] );
 		echo ob_get_clean(); // phpcs:ignore WordPress.Security.EscapeOutput
 	}
 
@@ -728,7 +799,7 @@ class EVF_Shortcode_Form {
 	 * @param bool $title Whether to display form title.
 	 * @param bool $description Whether to display form description.
 	 */
-	private static function view( $id, $title = false, $description = false ) {
+	private static function view( $id, $title = false, $description = false, $field_values = false ) {
 		if ( empty( $id ) ) {
 			return;
 		}
@@ -879,7 +950,7 @@ class EVF_Shortcode_Form {
 
 		echo '<form ' . evf_html_attributes( $form_atts['id'], $form_atts['class'], $form_atts['data'], $form_atts['atts'] ) . '>';
 
-		do_action( 'everest_forms_frontend_output', $form_data, $title, $description, $errors );
+		do_action( 'everest_forms_frontend_output', $form_data, $title, $description, $field_values, $errors );
 
 		echo '</form>';
 

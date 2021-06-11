@@ -57,6 +57,8 @@ class EVF_Field_Select extends EVF_Form_Fields {
 					'placeholder',
 					'label_hide',
 					'css',
+					'allow_query_var',
+					'query_var',
 				),
 			),
 		);
@@ -248,9 +250,15 @@ class EVF_Field_Select extends EVF_Form_Fields {
 		$plan              = evf_get_license_plan();
 		$has_default       = false;
 		$is_multiple       = false;
+		$checklist = array();
 
 		if ( ! empty( $field['required'] ) ) {
 			$container['attr']['required'] = 'required';
+		}
+
+		$query_var = apply_filters( 'everest_forms_get_query_variables', $field );
+		if ( ! empty( $query_var ) ) {
+			$checklist = explode( ',', $query_var[ $field['parameter-name'] ] );
 		}
 
 		// Enable enhanced select.
@@ -309,6 +317,13 @@ class EVF_Field_Select extends EVF_Form_Fields {
 		foreach ( $choices as $choice ) {
 			if ( empty( $choice['container'] ) ) {
 				continue;
+			}
+
+			if ( ! empty( $checklist ) ) {
+				$choice['default'] = 0;
+			}
+			if ( in_array( $choice['attr']['value'], array_map( 'trim', $checklist ), true ) ) {
+				$choice['default'] = 1;
 			}
 
 			printf(

@@ -39,6 +39,8 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 					'datetime_options',
 					'label_hide',
 					'css',
+					'allow_query_var',
+					'query_var',
 				),
 			),
 		);
@@ -504,6 +506,15 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 		$primary = $field['properties']['inputs']['primary'];
 
 		$class = array_merge( array( 'flatpickr-field' ), $primary['class'] );
+
+		$query_var = apply_filters( 'everest_forms_get_query_variables', $field );
+		if ( ! empty( $query_var ) ) {
+			$checklist = explode( ',', trim( $query_var[ $field['parameter-name'] ] ) );
+		}
+
+		if ( ! empty( $checklist ) ) {
+			$primary['attr']['value'] = trim( $checklist[ max( array_keys( array_filter( $checklist ) ) ) ] );
+		}
 
 		// Primary field.
 		printf(

@@ -42,6 +42,8 @@ class EVF_Field_Email extends EVF_Form_Fields {
 					'sublabel_hide',
 					'default_value',
 					'css',
+					'allow_query_var',
+					'query_var',
 				),
 			),
 		);
