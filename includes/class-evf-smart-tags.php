@@ -76,7 +76,7 @@ class EVF_Smart_Tags {
 				}
 
 				// Properly display signature field in smart tag.
-				if ( ! empty( $fields[ $mixed_field_id[1] ] ) ) {
+				if ( count( $mixed_field_id ) > 1 && ! empty( $fields[ $mixed_field_id[1] ] ) ) {
 					if ( 'signature' === $fields[ $mixed_field_id[1] ]['type'] ) {
 						$uploads = wp_upload_dir();
 						if ( ! is_array( $value ) && false !== strpos( $value, $uploads['basedir'] ) ) {
