@@ -43,7 +43,7 @@ class EVF_Shortcode_Form {
 	public static function hooks() {
 		add_action( 'everest_forms_frontend_output_success', 'evf_print_notices', 10, 2 );
 		add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'header' ), 5, 4 );
-		add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'fields' ), 10, 4 );
+		add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'fields' ), 10, 3 );
 		add_action( 'everest_forms_display_field_before', array( 'EVF_Shortcode_Form', 'wrapper_start' ), 5, 2 );
 		add_action( 'everest_forms_display_field_before', array( 'EVF_Shortcode_Form', 'label' ), 15, 2 );
 		add_action( 'everest_forms_display_field_before', array( 'EVF_Shortcode_Form', 'description' ), 20, 2 );
