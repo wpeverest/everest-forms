@@ -68,6 +68,7 @@ class EVF_Install {
 		),
 		'1.7.5' => array(
 			'evf_update_175_remove_capabilities',
+			'evf_update_175_restore_draft_forms',
 			'evf_update_175_db_version',
 		),
 	);

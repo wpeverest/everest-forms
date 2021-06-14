@@ -353,6 +353,29 @@ function evf_update_175_remove_capabilities() {
 }
 
 /**
+ * Restore draft forms to publish.
+ */
+function evf_update_175_restore_draft_forms() {
+	$form_ids = get_posts(
+		array(
+			'post_type'   => 'everest_form',
+			'post_status' => 'draft',
+			'fields'      => 'ids',
+			'numberposts' => - 1,
+		)
+	);
+
+	foreach ( $form_ids as $form_id ) {
+		wp_update_post(
+			array(
+				'ID'          => $form_id,
+				'post_status' => 'publish',
+			)
+		);
+	}
+}
+
+/**
  * Update DB Version.
  */
 function evf_update_175_db_version() {
