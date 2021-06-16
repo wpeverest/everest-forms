@@ -1349,30 +1349,13 @@ abstract class EVF_Form_Fields {
 	 * @return mixed Print or return a string.
 	 */
 	public function field_preview_option( $option, $field, $args = array(), $echo = true ) {
-		$output        = '';
-		$required_type = '*';
-		$class         = ! empty( $args['class'] ) ? evf_sanitize_classes( $args['class'] ) : '';
+		$output = '';
+		$class  = ! empty( $args['class'] ) ? evf_sanitize_classes( $args['class'] ) : '';
 
 		$form_id   = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification
 		$form_data = evf()->form->get( absint( $form_id ), array( 'content_only' => true ) );
-		$settings  = isset( $form_data['settings'] ) ? $form_data['settings'] : array();
 
-		if ( isset( $field['required'] ) && isset( $settings['required_indicators'] ) && false !== evf_get_license_plan() ) {
-			switch ( $settings['required_indicators'] ) {
-				case 'text':
-					$required_type = 'Required';
-					break;
-				case 'asterisk':
-					$required_type = '*';
-					break;
-				case 'custom_text':
-					$required_type = $settings['custom_text'];
-					break;
-				default:
-					$required_type = '*';
-					break;
-			}
-		}
+		$required_type = apply_filters( 'everest_form_get_required_type', '*', $field, $form_data );
 
 		switch ( $option ) {
 			case 'label':
