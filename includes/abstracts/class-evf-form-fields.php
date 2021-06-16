@@ -1509,14 +1509,14 @@ abstract class EVF_Form_Fields {
 		// Run a security check.
 		check_ajax_referer( 'everest_forms_field_drop', 'security' );
 
-		// Check for permissions.
-		if ( ! current_user_can( apply_filters( 'everest_forms_manage_cap', 'manage_options' ) ) ) {
-			die( esc_html__( 'You do no have permission.', 'everest-forms' ) );
-		}
-
 		// Check for form ID.
 		if ( ! isset( $_POST['form_id'] ) || empty( $_POST['form_id'] ) ) {
 			die( esc_html__( 'No form ID found', 'everest-forms' ) );
+		}
+
+		// Check for permissions.
+		if ( ! current_user_can( 'everest_forms_edit_form', (int) $_POST['form_id'] ) ) {
+			die( esc_html__( 'You do no have permission.', 'everest-forms' ) );
 		}
 
 		// Check for field type to add.
