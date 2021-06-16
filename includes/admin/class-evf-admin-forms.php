@@ -19,6 +19,7 @@ class EVF_Admin_Forms {
 	public function __construct() {
 		add_action( 'admin_init', array( $this, 'actions' ) );
 		add_action( 'deleted_post', array( $this, 'delete_entries' ) );
+		add_filter( 'wp_untrash_post_status', array( $this, 'untrash_form_status' ), 10, 2 );
 	}
 
 	/**
@@ -155,7 +156,9 @@ class EVF_Admin_Forms {
 		?>
 		<div class="wrap">
 			<h1 class="wp-heading-inline"><?php esc_html_e( 'All Forms', 'everest-forms' ); ?></h1>
-			<a href="<?php echo esc_url( admin_url( 'admin.php?page=evf-builder&create-form=1' ) ); ?>" class="page-title-action"><?php esc_html_e( 'Add New', 'everest-forms' ); ?></a>
+			<?php if ( current_user_can( 'everest_forms_create_forms' ) ) : ?>
+				<a href="<?php echo esc_url( admin_url( 'admin.php?page=evf-builder&create-form=1' ) ); ?>" class="page-title-action"><?php esc_html_e( 'Add New', 'everest-forms' ); ?></a>
+			<?php endif; ?>
 			<hr class="wp-header-end">
 
 			<?php settings_errors(); ?>
@@ -262,6 +265,19 @@ class EVF_Admin_Forms {
 			}
 		}
 		do_action( 'everest_forms_after_delete_form', $postid );
+	}
+
+	/**
+	 * Untrash form status.
+	 *
+	 * @since 1.7.5
+	 *
+	 * @param string $new_status The new status of the post being restored.
+	 * @param int    $post_id    The ID of the post being restored.
+	 * @return string
+	 */
+	public function untrash_form_status( $new_status, $post_id ) {
+		return current_user_can( 'everest_forms_edit_forms', $post_id ) ? 'publish' : $new_status;
 	}
 }
 

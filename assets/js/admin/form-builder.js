@@ -1265,6 +1265,98 @@
 					} );
 				}
 			} );
+
+			$( 'body' ).on( 'click', '.evf-admin-row .evf-duplicate-row', function() {
+				var $row 		= $( this ).closest( '.evf-admin-row' );
+				if( $row.find( '.everest-forms-field' ).hasClass( 'no-duplicate' ) ) {
+					$.alert({
+						title: evf_data.i18n_field_locked,
+						content: evf_data.i18n_row_locked_msg,
+						icon: 'dashicons dashicons-info',
+						type: 'blue',
+						buttons : {
+							confirm : {
+								text: evf_data.i18n_close,
+								btnClass: 'btn-confirm',
+								keys: ['enter']
+							}
+						}
+					});
+				} else {
+					$.confirm({
+						title: false,
+						content: evf_data.i18n_duplicate_row_confirm,
+						type: 'orange',
+						closeIcon: false,
+						backgroundDismiss: false,
+						icon: 'dashicons dashicons-warning',
+						buttons: {
+							confirm: {
+								text: evf_data.i18n_ok,
+								btnClass: 'btn-confirm',
+								keys: ['enter'],
+								action: function () {
+									EVFPanelBuilder.cloneRowAction( $row );	
+								}
+							},
+							cancel: {
+								text: evf_data.i18n_cancel
+							}
+						}
+					} );		
+				}
+			} );
+		},
+		cloneRowAction: function ( row ) {				
+			row_ids     = $( '.evf-admin-row' ).map( function() {
+				return $( this ).data( 'row-id' );
+			} ).get(),
+			max_row_id  = Math.max.apply( Math, row_ids ),
+			row_clone   = row.clone(),
+			total_rows  = $( '.evf-add-row' ).attr( 'data-total-rows' );
+			max_row_id++;
+			total_rows++;
+
+			// New row ID.
+			row_clone.attr( 'data-row-id', max_row_id );
+			// Initialize fields UI.
+			$( '.evf-add-row' ).attr( 'data-total-rows', total_rows );
+			$( '.evf-add-row' ).attr( 'data-next-row-id', max_row_id );
+
+			var data = {
+				action	: 'everest_forms_get_next_id',
+				security: evf_data.evf_get_next_id,
+				form_id	: evf_data.form_id,
+				fields	:  row_clone.find( '.everest-forms-field' ).length
+			};
+
+			$.ajax({
+				url: evf_data.ajax_url,
+				data: data,
+				type: 'POST',
+				beforeSend: function() {
+					$( document.body ).trigger( 'init_field_options_toggle' );
+				},
+				success: function ( response ) {
+					if ( typeof response.success === 'boolean' && response.success === true ) {
+						// Row append.
+						row.after( row_clone );
+						// Duplicating Fields
+						$.each( response.data, function( index, data ) {
+							var field_id = data.field_id;
+							var field_key = data.field_key;
+							$('#everest-forms-field-id').val(field_id);
+							field = row_clone.find( '.everest-forms-field' ).eq( index );
+							var element_field_id = field.attr('data-field-id');
+							EVFPanelBuilder.render_node( field, element_field_id, field_key );
+							field.remove();
+							$( document.body ).trigger( 'init_field_options_toggle' );
+						});
+						// Binding fields.
+						EVFPanelBuilder.bindFields();
+					}
+				}
+			});
 		},
 		cloneFieldAction: function ( field ) {
 			var element_field_id = field.attr('data-field-id');
@@ -2312,12 +2404,12 @@ jQuery( function ( $ ) {
 			value = $this.prop( 'checked' );
 
 		if ( false === value ) {
-			$( this ).closest( '#everest-forms-panel-settings' ).find( '.everest-forms-active-email' ).addClass( 'everest-forms-hidden' );
+			$this.val('');
 			$this.closest( '.evf-content-email-settings' ).find( '.email-disable-message' ).remove();
 			$this.closest( '.evf-content-section-title' ).siblings( '.evf-content-email-settings-inner' ).addClass( 'everest-forms-hidden' );
 			$( '<p class="email-disable-message everest-forms-notice everest-forms-notice-info">' + evf_data.i18n_email_disable_message + '</p>' ).insertAfter( $this.closest( '.evf-content-section-title' ) );
 		} else if ( true === value ) {
-			$( this ).closest( '#everest-forms-panel-settings' ).find( '.everest-forms-active-email' ).removeClass( 'everest-forms-hidden' );
+			$this.val('1');
 			$this.closest( '.evf-content-section-title' ).siblings( '.evf-content-email-settings-inner' ).removeClass( 'everest-forms-hidden' );
 			$this.closest( '.evf-content-email-settings' ).find( '.email-disable-message' ).remove();
 		}

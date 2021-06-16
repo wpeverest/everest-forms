@@ -66,6 +66,11 @@ class EVF_Install {
 		'1.6.0' => array(
 			'evf_update_160_db_version',
 		),
+		'1.7.5' => array(
+			'evf_update_175_remove_capabilities',
+			'evf_update_175_restore_draft_forms',
+			'evf_update_175_db_version',
+		),
 	);
 
 	/**
@@ -82,6 +87,7 @@ class EVF_Install {
 		add_action( 'init', array( __CLASS__, 'check_version' ), 5 );
 		add_action( 'init', array( __CLASS__, 'init_background_updater' ), 5 );
 		add_action( 'admin_init', array( __CLASS__, 'install_actions' ) );
+		add_filter( 'map_meta_cap', array( __CLASS__, 'filter_map_meta_cap' ), 10, 4 );
 		add_filter( 'plugin_action_links_' . EVF_PLUGIN_BASENAME, array( __CLASS__, 'plugin_action_links' ) );
 		add_filter( 'plugin_row_meta', array( __CLASS__, 'plugin_row_meta' ), 10, 2 );
 		add_filter( 'wpmu_drop_tables', array( __CLASS__, 'wpmu_drop_tables' ) );
@@ -394,38 +400,38 @@ class EVF_Install {
 		}
 
 		$tables = "
-CREATE TABLE {$wpdb->prefix}evf_entries (
-  entry_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  form_id BIGINT UNSIGNED NOT NULL,
-  user_id BIGINT UNSIGNED NOT NULL,
-  user_device varchar(100) NOT NULL,
-  user_ip_address VARCHAR(100) NULL DEFAULT '',
-  referer text NOT NULL,
-  fields longtext NULL,
-  status varchar(20) NOT NULL,
-  viewed tinyint(1) NOT NULL DEFAULT '0',
-  starred tinyint(1) NOT NULL DEFAULT '0',
-  date_created datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY  (entry_id),
-  KEY form_id (form_id)
-) $charset_collate;
-CREATE TABLE {$wpdb->prefix}evf_entrymeta (
-  meta_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  entry_id BIGINT UNSIGNED NOT NULL,
-  meta_key varchar(255) default NULL,
-  meta_value longtext NULL,
-  PRIMARY KEY  (meta_id),
-  KEY entry_id (entry_id),
-  KEY meta_key (meta_key(32))
-) $charset_collate;
-CREATE TABLE {$wpdb->prefix}evf_sessions (
-  session_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  session_key char(32) NOT NULL,
-  session_value longtext NOT NULL,
-  session_expiry BIGINT UNSIGNED NOT NULL,
-  PRIMARY KEY  (session_id),
-  UNIQUE KEY session_key (session_key)
-) $charset_collate;
+			CREATE TABLE {$wpdb->prefix}evf_entries (
+				entry_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+				form_id BIGINT UNSIGNED NOT NULL,
+				user_id BIGINT UNSIGNED NOT NULL,
+				user_device varchar(100) NOT NULL,
+				user_ip_address VARCHAR(100) NULL DEFAULT '',
+				referer text NOT NULL,
+				fields longtext NULL,
+				status varchar(20) NOT NULL,
+				viewed tinyint(1) NOT NULL DEFAULT '0',
+				starred tinyint(1) NOT NULL DEFAULT '0',
+				date_created datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+				PRIMARY KEY  (entry_id),
+				KEY form_id (form_id)
+			) $charset_collate;
+			CREATE TABLE {$wpdb->prefix}evf_entrymeta (
+				meta_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+				entry_id BIGINT UNSIGNED NOT NULL,
+				meta_key varchar(255) default NULL,
+				meta_value longtext NULL,
+				PRIMARY KEY  (meta_id),
+				KEY entry_id (entry_id),
+				KEY meta_key (meta_key(32))
+			) $charset_collate;
+			CREATE TABLE {$wpdb->prefix}evf_sessions (
+				session_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+				session_key char(32) NOT NULL,
+				session_value longtext NOT NULL,
+				session_expiry BIGINT UNSIGNED NOT NULL,
+				PRIMARY KEY  (session_id),
+				UNIQUE KEY session_key (session_key)
+			) $charset_collate;
 		";
 
 		return $tables;
@@ -496,9 +502,14 @@ CREATE TABLE {$wpdb->prefix}evf_sessions (
 	}
 
 	/**
-	 * Get capabilities for EverestForms - these are assigned to admin during installation or reset.
+	 * Get the core capabilities.
 	 *
-	 * @return array
+	 * Core capabilities are assigned to admin during installation or reset.
+	 *
+	 * @since 1.0.0
+	 * @since 1.7.5 Removed unused post type capabilities and added supported ones.
+	 *
+	 * @return array $capabilities Core capabilities.
 	 */
 	private static function get_core_capabilities() {
 		$capabilities = array();
@@ -507,34 +518,48 @@ CREATE TABLE {$wpdb->prefix}evf_sessions (
 			'manage_everest_forms',
 		);
 
-		$capability_types = array( 'everest_form' );
+		$capability_types = array( 'forms', 'entries' );
 
 		foreach ( $capability_types as $capability_type ) {
-			$capabilities[ $capability_type ] = array(
-				// Post type.
-				"edit_{$capability_type}",
-				"read_{$capability_type}",
-				"delete_{$capability_type}",
-				"edit_{$capability_type}s",
-				"edit_others_{$capability_type}s",
-				"publish_{$capability_type}s",
-				"read_private_{$capability_type}s",
-				"delete_{$capability_type}s",
-				"delete_private_{$capability_type}s",
-				"delete_published_{$capability_type}s",
-				"delete_others_{$capability_type}s",
-				"edit_private_{$capability_type}s",
-				"edit_published_{$capability_type}s",
+			if ( 'forms' === $capability_type ) {
+				$capabilities[ $capability_type ][] = "everest_forms_create_{$capability_type}";
+			}
 
-				// Terms.
-				"manage_{$capability_type}_terms",
-				"edit_{$capability_type}_terms",
-				"delete_{$capability_type}_terms",
-				"assign_{$capability_type}_terms",
-			);
+			foreach ( array( 'view', 'edit', 'delete' ) as $context ) {
+				$capabilities[ $capability_type ][] = "everest_forms_{$context}_{$capability_type}";
+				$capabilities[ $capability_type ][] = "everest_forms_{$context}_others_{$capability_type}";
+			}
 		}
 
 		return $capabilities;
+	}
+
+	/**
+	 * Get the meta capabilities.
+	 *
+	 * @since 1.7.5
+	 *
+	 * @param string $cap Capability name to get.
+	 * @return array $meta_caps Meta capabilities.
+	 */
+	private static function get_meta_caps( $cap = '' ) {
+		$meta_caps      = array();
+		$meta_cap_types = array( 'form', 'form_entries', 'entry' );
+
+		foreach ( $meta_cap_types as $meta_cap_type ) {
+			if ( $cap && $cap !== $meta_cap_type ) {
+				continue;
+			}
+
+			foreach ( array( 'view', 'edit', 'delete' ) as $context ) {
+				$meta_caps[ "everest_forms_{$context}_{$meta_cap_type}" ] = array(
+					'own'    => 'form' === $meta_cap_type ? "everest_forms_{$context}_forms" : "everest_forms_{$context}_entries",
+					'others' => 'form' === $meta_cap_type ? "everest_forms_{$context}_others_forms" : "everest_forms_{$context}_others_entries",
+				);
+			}
+		}
+
+		return $meta_caps;
 	}
 
 	/**
@@ -624,6 +649,61 @@ CREATE TABLE {$wpdb->prefix}evf_sessions (
 				}
 			}
 		}
+	}
+
+	/**
+	 * Filter user's capabilities for the given primitive or meta capability.
+	 *
+	 * @since 1.7.5
+	 *
+	 * @param  string[] $caps    Array of the user's capabilities.
+	 * @param  string   $cap     Capability being checked.
+	 * @param  int      $user_id The user ID.
+	 * @param  array    $args    Adds context to the capability check, typically the object ID.
+	 *
+	 * @return string[] Array of required capabilities for the requested action.
+	 */
+	public static function filter_map_meta_cap( $caps, $cap, $user_id, $args ) {
+		$meta_caps  = self::get_meta_caps();
+		$entry_caps = self::get_meta_caps( 'entry' );
+
+		// Check if meta cap is valid to proceed.
+		if ( in_array( $cap, array_keys( $meta_caps ), true ) ) {
+			$id = isset( $args[0] ) ? (int) $args[0] : 0;
+
+			// Check if meta cap requires form ID from entry.
+			if ( in_array( $cap, array_keys( $entry_caps ), true ) ) {
+				$entry = evf_get_entry( $id, false, array( 'cap' => false ) );
+				if ( ! $entry ) {
+					return $caps;
+				}
+
+				$id = isset( $entry->form_id ) ? (int) $entry->form_id : 0;
+			}
+
+			$form = evf()->form->get( $id, array( 'cap' => false ) );
+			if ( ! $form ) {
+				return $caps;
+			}
+
+			if ( ! is_a( $form, 'WP_Post' ) ) {
+				return $caps;
+			}
+
+			if ( 'everest_form' !== $form->post_type ) {
+				return $caps;
+			}
+
+			// If the post author is set and the user is the author...
+			if ( $form->post_author && $user_id === (int) $form->post_author ) {
+				$caps = isset( $meta_caps[ $cap ]['own'] ) ? array( $meta_caps[ $cap ]['own'] ) : array( 'do_not_allow' );
+			} else {
+				// The user is trying someone else's form.
+				$caps = isset( $meta_caps[ $cap ]['others'] ) ? array( $meta_caps[ $cap ]['others'] ) : array( 'do_not_allow' );
+			}
+		}
+
+		return $caps;
 	}
 
 	/**

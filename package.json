@@ -19,16 +19,16 @@
     "git:update-hooks": "node ./node_modules/husky/husky.js install"
   },
   "devDependencies": {
-    "@babel/core": "7.14.3",
-    "@wordpress/babel-preset-default": "5.2.2",
-    "@wordpress/browserslist-config": "3.0.3",
+    "@babel/core": "7.14.5",
+    "@wordpress/babel-preset-default": "6.2.0",
+    "@wordpress/browserslist-config": "4.0.1",
     "autoprefixer": "9.8.6",
     "babel-eslint": "10.1.0",
     "babel-loader": "8.2.2",
     "babel-plugin-transform-react-jsx": "6.24.1",
     "babel-preset-env": "1.7.0",
     "cross-env": "7.0.3",
-    "eslint": "7.27.0",
+    "eslint": "7.28.0",
     "grunt": "1.4.1",
     "grunt-contrib-compress": "2.0.0",
     "grunt-contrib-concat": "1.0.1",
@@ -42,12 +42,12 @@
     "grunt-sass": "3.1.0",
     "grunt-stylelint": "0.16.0",
     "husky": "6.0.0",
-    "lint-staged": "10.5.4",
-    "node-sass": "5.0.0",
+    "lint-staged": "11.0.0",
+    "node-sass": "6.0.0",
     "stylelint": "13.13.1",
     "stylelint-config-wordpress": "17.0.0",
-    "webpack": "5.37.1",
-    "webpack-cli": "4.7.0"
+    "webpack": "5.38.1",
+    "webpack-cli": "4.7.2"
   },
   "engines": {
     "node": ">=8.9.3",
