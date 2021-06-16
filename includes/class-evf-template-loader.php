@@ -212,13 +212,8 @@ class EVF_Template_Loader {
 		// Remove the filter we're in to avoid nested calls.
 		remove_filter( 'the_content', array( __CLASS__, 'form_preview_content_filter' ) );
 
-		if ( current_user_can( 'manage_everest_forms' ) ) {
-			if ( function_exists( 'apply_shortcodes' ) ) {
-				$content = apply_shortcodes( '[everest_form id="' . absint( self::$form_id ) . '"]' );
-			} else {
-				// @todo Remove when start supporting WP 5.4 or later.
-				$content = do_shortcode( '[everest_form id="' . absint( self::$form_id ) . '"]' );
-			}
+		if ( current_user_can( 'everest_forms_view_forms', self::$form_id ) ) {
+			$content = apply_shortcodes( '[everest_form id="' . absint( self::$form_id ) . '"]' );
 		}
 
 		self::$in_content_filter = false;
