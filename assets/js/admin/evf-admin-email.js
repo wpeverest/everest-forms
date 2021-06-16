@@ -216,7 +216,7 @@
 				$( active_block ).addClass('active-connection');
 			}
 
-			// Removing Emial Notification Turn On Message.
+			// Removing Email Notification Turn On Message.
 			$('.email-disable-message').remove();
 			if( $( 'input[data-connection-id=' + $this.attr( 'data-connection-id' ) +']:last' ).prop( 'checked' ) == false ) {
 				$( '<p class="email-disable-message everest-forms-notice everest-forms-notice-info">' + evf_data.i18n_email_disable_message + '</p>' ).insertAfter( $( '.evf-content-section-title' ).has('[data-connection-id=' + $this.attr( 'data-connection-id' ) +']') );
