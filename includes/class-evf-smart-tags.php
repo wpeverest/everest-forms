@@ -97,7 +97,7 @@ class EVF_Smart_Tags {
 
 						if ( ! empty( $value ) ) {
 							$value = sprintf(
-								'<br> <img src="%s" style="width:150px;height:80px;max-height:200px;max-width:100px;"/> <br>%s',
+								"\n" . '<img src="%s" style="width:150px;height:80px;max-height:200px;max-width:100px;"/>' . "\n" . '%s',
 								$value['image'],
 								$value['label']
 							);
@@ -114,7 +114,7 @@ class EVF_Smart_Tags {
 
 							if ( ! empty( $value ) ) {
 								$checkbox_images .= sprintf(
-									'<br> <img src="%s" style="width:150px;height:80px;max-height:200px;max-width:100px;"/> <br>%s',
+									"\n" . '<img src="%s" style="width:150px;height:80px;max-height:200px;max-width:100px;"/>' . "\n" . '%s',
 									$image_value,
 									$value['label'][ $image_key ]
 								);
@@ -135,7 +135,7 @@ class EVF_Smart_Tags {
 
 								if ( ! empty( $value ) ) {
 									$files .= sprintf(
-										'<a href="%s">%s</a> <br>',
+										'<a href="%s">%s</a> ' . "\n",
 										$files_value['value'],
 										$files_value['name']
 									);
