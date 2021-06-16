@@ -74,7 +74,7 @@ class EVF_Smart_Tags {
 				}
 
 				// Properly display signature field in smart tag.
-				if ( ! empty( $fields[ $mixed_field_id[1] ] ) ) {
+				if ( count( $mixed_field_id ) > 1 && ! empty( $fields[ $mixed_field_id[1] ] ) ) {
 					if ( 'signature' === $fields[ $mixed_field_id[1] ]['type'] ) {
 						$uploads = wp_upload_dir();
 						if ( ! is_array( $value ) && false !== strpos( $value, $uploads['basedir'] ) ) {
@@ -134,17 +134,17 @@ class EVF_Smart_Tags {
 						break;
 
 					case 'page_title':
-						$page_title = get_the_ID() ? get_the_title( get_the_ID() ) : '';
+						$page_title = isset( $form_data ) ? get_the_title( $form_data['id'] ) : '';
 						$content    = str_replace( '{' . $other_tag . '}', $page_title, $content );
 						break;
 
 					case 'page_url':
-						$page_url = get_the_ID() ? get_permalink( get_the_ID() ) : '';
+						$page_url = isset( $form_data ) ? get_permalink( $form_data['id'] ) : '';
 						$content  = str_replace( '{' . $other_tag . '}', $page_url, $content );
 						break;
 
 					case 'page_id':
-						$page_id = get_the_ID() ? get_the_ID() : '';
+						$page_id = isset( $form_data ) ? $form_data['id'] : '';
 						$content = str_replace( '{' . $other_tag . '}', $page_id, $content );
 						break;
 
