@@ -633,6 +633,7 @@ abstract class EVF_Form_Fields {
 
 						$sub_field_output_array[] = $output;
 					}
+
 					$output = implode( '', $sub_field_output_array );
 					$output = $this->field_element(
 						'row',
@@ -647,6 +648,7 @@ abstract class EVF_Form_Fields {
 				} else {
 					$value   = isset( $field['required-field-message'] ) ? esc_attr( $field['required-field-message'] ) : esc_attr( $required_validation );
 					$tooltip = esc_html__( 'Enter a message to show for this field if it\'s required.', 'everest-forms' );
+
 					$output  = $this->field_element(
 						'label',
 						$field,
@@ -663,6 +665,7 @@ abstract class EVF_Form_Fields {
 						array(
 							'slug'  => 'required-field-message',
 							'value' => $value,
+							'class' => 'everest-forms-field-option-row',
 						),
 						false
 					);
@@ -1346,13 +1349,15 @@ abstract class EVF_Form_Fields {
 	 * @return mixed Print or return a string.
 	 */
 	public function field_preview_option( $option, $field, $args = array(), $echo = true ) {
-		$output = '';
-		$class  = ! empty( $args['class'] ) ? evf_sanitize_classes( $args['class'] ) : '';
+		$output    = '';
+		$class     = ! empty( $args['class'] ) ? evf_sanitize_classes( $args['class'] ) : '';
+		$form_id   = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification
+		$form_data = evf()->form->get( absint( $form_id ), array( 'content_only' => true ) );
 
 		switch ( $option ) {
 			case 'label':
 				$label  = isset( $field['label'] ) && ! empty( $field['label'] ) ? $field['label'] : '';
-				$output = sprintf( '<label class="label-title %s"><span class="text">%s</span><span class="required">*</span></label>', $class, $label );
+				$output = sprintf( '<label class="label-title %s"><span class="text">%s</span><span class="required">%s</span></label>', $class, $label, apply_filters( 'everest_form_get_required_type', '*', $field, $form_data ) );
 				break;
 
 			case 'description':
