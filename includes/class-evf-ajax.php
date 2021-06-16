@@ -129,15 +129,32 @@ class EVF_AJAX {
 		if ( ! current_user_can( apply_filters( 'everest_forms_manage_cap', 'manage_options' ) ) ) {
 			wp_send_json_error();
 		}
-		$field_key      = evf()->form->field_unique_key( $form_id );
-		$field_id_array = explode( '-', $field_key );
-		$new_field_id   = ( $field_id_array[ count( $field_id_array ) - 1 ] + 1 );
-		wp_send_json_success(
-			array(
-				'field_id'  => $new_field_id,
-				'field_key' => $field_key,
-			)
-		);
+
+		if ( isset( $_POST['fields'] ) ) {
+			$fields_data = array();
+			for ( $i = 0; $i < $_POST['fields']; $i++ ) {
+				$field_key      = evf()->form->field_unique_key( $form_id );
+				$field_id_array = explode( '-', $field_key );
+				$new_field_id   = ( $field_id_array[ count( $field_id_array ) - 1 ] + 1 );
+				$fields_data [] = array(
+					'field_id'  => $new_field_id,
+					'field_key' => $field_key,
+				);
+			}
+			wp_send_json_success(
+				$fields_data
+			);
+		} else {
+			$field_key      = evf()->form->field_unique_key( $form_id );
+			$field_id_array = explode( '-', $field_key );
+			$new_field_id   = ( $field_id_array[ count( $field_id_array ) - 1 ] + 1 );
+			wp_send_json_success(
+				array(
+					'field_id'  => $new_field_id,
+					'field_key' => $field_key,
+				)
+			);
+		}
 	}
 
 	/**

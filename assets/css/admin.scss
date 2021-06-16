@@ -2569,7 +2569,6 @@ p.search-box {
 						.evf-delete-row {
 							span {
 								&.dashicons {
-									border-radius: 0 0 0 3px;
 									border-right: 1px solid
 										transparentize($color-white, 0.8);
 								}
@@ -2579,6 +2578,24 @@ p.search-box {
 								span {
 									&.dashicons {
 										background-color: $red;
+									}
+								}
+							}
+						}
+
+						.evf-duplicate-row {
+							span {
+								&.dashicons {
+									border-radius: 0 0 0 3px;
+									border-right: 1px solid
+										transparentize($color-white, 0.8);
+								}
+							}
+
+							&:hover {
+								span {
+									&.dashicons {
+										background-color: $blue;
 									}
 								}
 							}
