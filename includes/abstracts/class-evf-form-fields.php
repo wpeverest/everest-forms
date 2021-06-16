@@ -1867,6 +1867,7 @@ abstract class EVF_Form_Fields {
 
 		switch ( $this->type ) {
 			case 'radio':
+			case 'signature':
 			case 'payment-multiple':
 				$value  = '';
 				$image  = ! empty( $field['value']['image'] ) ? sprintf( '<img src="%s" style="width:75px;height:75px;max-height:75px;max-width:75px;"  /><br>', $field['value']['image'] ) : '';
