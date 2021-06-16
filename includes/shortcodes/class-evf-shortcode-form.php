@@ -180,15 +180,13 @@ class EVF_Shortcode_Form {
 	 */
 	public static function label( $field, $form_data ) {
 
-		$label         = $field['properties']['label'];
+		$label = $field['properties']['label'];
 		// If the label is empty or disabled don't proceed.
 		if ( empty( $label['value'] ) || $label['disabled'] ) {
 			return;
 		}
 
-		$required_type = apply_filters('everest_form_get_required_type', '*', $field, $form_data);
-
-		$required    = $label['required'] ? apply_filters( 'everest_forms_field_required_label', '<abbr class="required" title="' . esc_attr__( 'Required', 'everest-forms' ) . '">' . $required_type . '</abbr>' ) : '';
+		$required    = $label['required'] ? apply_filters( 'everest_forms_field_required_label', '<abbr class="required" title="' . esc_attr__( 'Required', 'everest-forms' ) . '">' . apply_filters( 'everest_form_get_required_type', '*', $field, $form_data ) . '</abbr>' ) : '';
 		$custom_tags = apply_filters( 'everest_forms_field_custom_tags', false, $field, $form_data );
 
 		printf(
