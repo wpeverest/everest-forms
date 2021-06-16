@@ -247,6 +247,9 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				'tooltip' => sprintf( esc_html__( 'Enter CSS class names for the form wrapper. Multiple class names should be separated with spaces. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/general-settings/#form-class' ) ),
 			)
 		);
+
+		do_action( 'everest_forms_field_required_indicators', $this->form_data, $settings );
+
 		echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'Submit Button', 'everest-forms' ) . '</h4>';
 		everest_forms_panel_field(
 			'text',
