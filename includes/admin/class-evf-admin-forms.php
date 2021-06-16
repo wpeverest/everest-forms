@@ -264,6 +264,7 @@ class EVF_Admin_Forms {
 				$wpdb->delete( $wpdb->prefix . 'evf_entrymeta', array( 'entry_id' => $entry_id ), array( '%d' ) );
 			}
 		}
+		do_action( 'everest_forms_after_delete_form', $postid );
 	}
 
 	/**
