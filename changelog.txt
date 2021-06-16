@@ -14,12 +14,12 @@
 * Fix - Payment Multiple choices and checkboxes fields amount preview in form builder area.
 * Enhancement - Enable/Disable log.
 * Feature - Divider field added.
+* Enhancement - Required Indicators for Field Types.
 * Fix - Success message issue with default form due to redirection.
 * Fix - Missing Default values for fields in form builder area.
 * Fix - Ajax Form Submission Smart Tag Not Working.
 * Enhancement - Row clone option added.
 * Fix - Format Email Message Content for Images and Files uploads.
-* Enhancement - Required Indicators for Field Types.
 
 = 1.7.4 - 11-03-2021 =
 * Fix - Hide empty select data field from entry view.
