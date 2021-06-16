@@ -19,7 +19,10 @@ class EVF_Admin_Welcome {
 	 * Hook in methods.
 	 */
 	public static function init() {
-		if ( apply_filters( 'everest_forms_show_welcome_page', true ) && current_user_can( 'manage_everest_forms' ) ) {
+		if (
+			apply_filters( 'everest_forms_show_welcome_page', true )
+			&& current_user_can( 'manage_everest_forms' )
+		) {
 			add_action( 'admin_menu', array( __CLASS__, 'add_menu' ) );
 			add_action( 'admin_head', array( __CLASS__, 'hide_menu' ) );
 		}
@@ -32,7 +35,7 @@ class EVF_Admin_Welcome {
 		$welcome_page = add_dashboard_page(
 			esc_html__( 'Welcome to Everest Forms', 'everest-forms' ),
 			esc_html__( 'Welcome to Everest Forms', 'everest-forms' ),
-			apply_filters( 'evf_welcome_cap', 'manage_options' ),
+			'manage_everest_forms',
 			'evf-welcome',
 			array( __CLASS__, 'welcome_page' )
 		);

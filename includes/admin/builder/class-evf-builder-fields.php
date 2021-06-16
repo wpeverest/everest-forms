@@ -250,7 +250,8 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 
 			echo '<div class="evf-admin-row" data-row-id="' . absint( $row ) . '">';
 			echo '<div class="evf-toggle-row">';
-			echo '<div class="evf-delete-row"><span class="dashicons dashicons-trash" title="Delete"></span></div>';
+			echo '<div class="evf-duplicate-row"><span class="dashicons dashicons-media-default" title="Duplicate Row"></span></div>';
+			echo '<div class="evf-delete-row"><span class="dashicons dashicons-trash" title="Delete Row"></span></div>';
 			echo '<div class="evf-show-grid"><span class="dashicons dashicons-edit" title="Edit"></span></div>';
 			echo '<div class="evf-toggle-row-content">';
 			echo '<span>' . esc_html__( 'Row Settings', 'everest-forms' ) . '</span>';
