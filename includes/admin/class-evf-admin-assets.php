@@ -147,7 +147,7 @@ class EVF_Admin_Assets {
 					'i18n_delete_field_confirm'    => esc_html__( 'Are you sure you want to delete this field?', 'everest-forms' ),
 					'i18n_duplicate_field_confirm' => esc_html__( 'Are you sure you want to duplicate this field?', 'everest-forms' ),
 					'i18n_duplicate_row_confirm'   => esc_html__( 'Are you sure you want to duplicate this row?', 'everest-forms' ),
-					'i18n_email_disable_message'   => esc_html__( 'Turn on Email settings to manage your email notifications.', 'everest-forms' ),
+					'i18n_email_disable_message'   => esc_html__( 'Turn on Email settings to manage your email notification.', 'everest-forms' ),
 					'i18n_upload_image_title'      => esc_html__( 'Choose an image', 'everest-forms' ),
 					'i18n_upload_image_button'     => esc_html__( 'Use Image', 'everest-forms' ),
 					'i18n_upload_image_remove'     => esc_html__( 'Remove Image', 'everest-forms' ),

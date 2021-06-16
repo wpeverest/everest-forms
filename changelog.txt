@@ -19,6 +19,7 @@
 * Fix - Ajax Form Submission Smart Tag Not Working.
 * Enhancement - Row clone option added.
 * Fix - Format Email Message Content for Images and Files uploads.
+* Enhancement - Email Toggle Notification to individual connection.
 
 = 1.7.4 - 11-03-2021 =
 * Fix - Hide empty select data field from entry view.
