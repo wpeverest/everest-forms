@@ -36,6 +36,7 @@ class EVF_Field_Last_Name extends EVF_Form_Fields {
 				'field_options' => array(
 					'placeholder',
 					'label_hide',
+					'default_value',
 					'css',
 					'allow_query_var',
 					'query_var',
