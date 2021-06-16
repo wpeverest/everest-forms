@@ -190,17 +190,17 @@ class EVF_Smart_Tags {
 						break;
 
 					case 'page_title':
-						$page_title = get_the_ID() ? get_the_title( get_the_ID() ) : '';
+						$page_title = isset( $form_data ) ? get_the_title( $form_data['id'] ) : '';
 						$content    = str_replace( '{' . $other_tag . '}', $page_title, $content );
 						break;
 
 					case 'page_url':
-						$page_url = get_the_ID() ? get_permalink( get_the_ID() ) : '';
+						$page_url = isset( $form_data ) ? get_permalink( $form_data['id'] ) : '';
 						$content  = str_replace( '{' . $other_tag . '}', $page_url, $content );
 						break;
 
 					case 'page_id':
-						$page_id = get_the_ID() ? get_the_ID() : '';
+						$page_id = isset( $form_data ) ? $form_data['id'] : '';
 						$content = str_replace( '{' . $other_tag . '}', $page_id, $content );
 						break;
 
