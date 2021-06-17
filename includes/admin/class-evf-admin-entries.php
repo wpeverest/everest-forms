@@ -292,6 +292,8 @@ class EVF_Admin_Entries {
 	public static function remove_entry( $entry_id ) {
 		global $wpdb;
 
+		do_action( 'everest_forms_before_delete_entries', $entry_id );
+
 		$delete = $wpdb->delete( $wpdb->prefix . 'evf_entries', array( 'entry_id' => $entry_id ), array( '%d' ) );
 
 		if ( apply_filters( 'everest_forms_delete_entrymeta', true ) ) {

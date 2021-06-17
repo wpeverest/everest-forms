@@ -24,6 +24,7 @@ jQuery( function ( $ ) {
 			this.init_inputMask();
 			this.init_mailcheck();
 			this.init_datepicker();
+			this.init_datedropdown();
 			this.load_validation();
 			this.submission_scroll();
 			this.randomize_elements();
@@ -146,6 +147,124 @@ jQuery( function ( $ ) {
 					}
 				});
 			}
+		},
+		init_datedropdown: function () {
+			//Dropdown logic here
+			$( '.date-dropdown-field' ).each( function() {
+				var $this = $ (this );
+				$this.hide();
+				everest_forms.change_minutes( $this );
+			});
+
+			$( 'body' ).on( 'change', '.date-time-container [id*=hour-select]', function() {
+				var $this = $( this ).siblings( 'input.date-dropdown-field' );
+				everest_forms.change_minutes( $this );
+			})
+
+			$( 'body' ).on( 'change', '.date-time-container [id*=-select]', function() {
+				var $this = $( this ).siblings( 'input.date-dropdown-field' );
+				$this.val( everest_forms.format_dropdown_date( $this ) );
+			})
+		},
+		change_minutes: function( $this ) {
+			//Changes minutes as per hours selected, Time limit option.
+			var id = $this.attr( 'id' );
+			if( typeof( $this.siblings( '#minute-select-' + id ).attr( 'id' ) ) != 'undefined' ) {
+				var max_hour = $this.attr( 'data-max-hour' );
+				var min_hour = $this.attr( 'data-min-hour' );
+				var max_minute = $this.attr( 'data-max-minute' );
+				var min_minute = $this.attr( 'data-min-minute' );
+				if( typeof( min_hour ) == 'undefined' || min_hour == '' ) {
+					min_hour = 0;
+				}
+				if( typeof (max_hour ) == 'undefined' || max_hour == '' ) {
+					min_hour = 23;
+				}
+				if( typeof( min_minute ) == 'undefined' || min_minute == '' ) {
+					min_minute = 0;
+				}
+				if( typeof( max_minute ) == 'undefined' || max_minute == '' ) {
+					max_minute = 59;
+				}
+				var options = '';
+				for( var i = 0; i<= 59; i++ ) {
+					if( $this.siblings( '#hour-select-' + id ).val() == min_hour && i < min_minute ) {
+						continue;
+					}
+					if( $this.siblings( '#hour-select-' + id ).val() == max_hour && i > max_minute ) {
+						break;
+					}
+					options += '<option value = "' + i + '"> ' + ( ( i< 10 ) ? '0' + i : i ) + '</option>';
+				}
+				// alert(options);	
+				$this.siblings( '#minute-select-'+id ).html( options );
+				$this.siblings( '#minute-select-'+id ).attr('value', $this.siblings( '#minute-select-'+id ).find('option:first').val());
+			}
+			$this.val( everest_forms.format_dropdown_date( $this ) );
+		},
+		format_dropdown_date: function ( $this ) {
+			var id = $this.attr( 'id' );
+			var selectd_date = {
+				selected_year: $this.siblings( '#year-select-' + id ).val(),
+				selected_month: $this.siblings( '#month-select-' + id ).val(),
+				selected_day: $this.siblings( '#day-select-' + id ).val(),
+				selected_hour: $this.siblings( '#hour-select-' + id ).val(),
+				selected_minute: $this.siblings( '#minute-select-' + id ).val()
+			}
+			var setting = {
+				date_format: $this.attr( 'data-date-format' ),
+				date_time: $this.attr( 'data-date-time' )
+			}
+			var list_months = [
+				'January',
+				'Febuary',
+				'March',
+				'April',
+				'May',
+				'June',
+				'July',
+				'August',
+				'September',
+				'October',
+				'November',
+				'December'
+			];            
+			var formatted_date = '';
+			if( setting.date_time == 'date' || setting.date_time == 'date-time' ) {
+				selectd_date.selected_day = (selectd_date.selected_day < 10 ) ? '0' + selectd_date.selected_day : selectd_date.selected_day;
+				if ( setting.date_format.match( /F j, Y/ ) ) {
+					formatted_date = list_months[ parseInt( selectd_date.selected_month ) - 1 ] + ' ' + selectd_date.selected_day + ', ' + selectd_date.selected_year;
+				} else {
+					selectd_date.selected_month = (selectd_date.selected_month < 10 ) ? '0' + selectd_date.selected_month : selectd_date.selected_month;
+					if(setting.date_format.match( /Y-m-d/ ) ) {
+						formatted_date = selectd_date.selected_year + '-' + selectd_date.selected_month + '-' + selectd_date.selected_day;
+					} else if ( setting.date_format.match( /m\/d\/Y/ ) ) {
+						formatted_date = selectd_date.selected_month + '/' + selectd_date.selected_day + '/' + selectd_date.selected_year;
+					} else {
+						formatted_date = selectd_date.selected_day + '/' + selectd_date.selected_month + '/' + selectd_date.selected_year;
+					}
+				}
+			}
+			if( setting.date_time == 'time' || setting.date_time == 'date-time' ) {
+				selectd_date.selected_minute = ( selectd_date.selected_minute < 10) ? '0' + selectd_date.selected_minute : selectd_date.selected_minute;
+				if( setting.date_format.match( /H:i/ ) ) {
+					selectd_date.selected_hour  = ( selectd_date.selected_hour  < 10 ) ? '0' + selectd_date.selected_hour : selectd_date.selected_hour;
+					formatted_date += ' ' + selectd_date.selected_hour + ":" + selectd_date.selected_minute;
+				} else {
+					var period = 'PM';
+					if( selectd_date.selected_hour < 12 ) {
+						period = 'AM'
+						if( selectd_date.selected_hour == 0 ){
+							selectd_date.selected_hour = 12;
+						}
+					} else if ( selectd_date.selected_hour > 12 ) {
+						selectd_date.selected_hour = selectd_date.selected_hour - 12;
+					}
+
+					formatted_date += ' ' + selectd_date.selected_hour + ":" + selectd_date.selected_minute + ' ' + period;
+				}
+			}
+			return formatted_date.trim();
 		},
 		load_validation: function() {
 			if ( typeof $.fn.validate === 'undefined' ) {

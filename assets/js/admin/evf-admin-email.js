@@ -47,14 +47,12 @@
 		 	});
 		 	$(document).on('input', '.everest-forms-email-name input', function(e) {
 		 		EverestFormsEmail.renameConnection(this, e);
-			 });
-			 $(document).on('focusin', '.everest-forms-email-name input', function(e) {
+			});
+			$(document).on('focusin', '.everest-forms-email-name input', function(e) {
 				EverestFormsEmail.focusConnectionName(this, e);
 			});
-
-		 },
-
-		 connectionAdd: function(el, e) {
+		},
+		connectionAdd: function(el, e) {
 		 	e.preventDefault();
 
 		 	var $this    = $(el),
@@ -104,11 +102,17 @@
 									type: 'POST',
 
 									success: function( response ){
-										var cloned_email = $('.evf-content-email-settings-inner').first().clone();
+										var form_title = $('#everest-forms-panel-field-settings-form_title:first').val() + '-' + Date.now();
+										var cloned_email = $('.evf-content-email-settings').first().clone();
 										$('.evf-content-email-settings-inner').removeClass('active-connection');
 										cloned_email.find('input:not(#qt_everest_forms_panel_field_email_connection_1_evf_email_message_toolbar input[type="button"], .evf_conditional_logic_container input)').val('');
 
-										cloned_email.find('.evf_conditional_logic_container input[type="checkbox"]').attr('checked', false);
+										cloned_email.find('.evf_conditional_logic_container input[type="checkbox"]').prop('checked', false);
+										cloned_email.find('.everest-forms-attach-pdf-to-admin-email input[type="checkbox"]').prop('checked', false);
+										cloned_email.find('.everest-forms-show-header-in-attachment-pdf-file input[type="checkbox"]').prop('checked', false);
+
+										cloned_email.find('.everest-forms-show-header-in-attachment-pdf-file').hide();
+										cloned_email.find('.everest-forms-show-pdf-file-name').hide();
 										cloned_email.find('.evf-field-conditional-container').hide();
 										cloned_email.find('.evf-field-conditional-wrapper li:not(:first)').remove();
 										cloned_email.find('.conditional_or:not(:first)').remove();
@@ -118,24 +122,55 @@
 											cloned_email.find('.evf-field-conditional-input').val('');
 										}, 2000);
 
-										cloned_email.attr('data-connection_id',response.data.connection_id);
+										cloned_email.find('.evf-content-email-settings-inner').attr('data-connection_id',response.data.connection_id);
+										cloned_email.find('.evf-content-email-settings-inner').removeClass( 'everest-forms-hidden' );
+										
+										//Email toggle options.
+										cloned_email.find( '.evf-toggle-switch input' ).attr( 'name', 'settings[email][' + response.data.connection_id + '][enable_email_notification]' );
+										cloned_email.find( '.evf-toggle-switch input:checkbox' ).attr( 'data-connection-id',  response.data.connection_id );
+										cloned_email.find( '.evf-toggle-switch input:checkbox' ).prop( 'checked', true );
+										cloned_email.find( '.evf-toggle-switch input:checkbox' ).val( '1' );
+
+										// Hiding Toggle for Prevous Email Setting.
+										$('.evf-content-section-title').css( 'display', 'none' );
+										// Removing email-disable-message;
+										$( '.email-disable-message' ).remove();
+										// Removing Cloned email-disable-message;
+										cloned_email.find( '.email-disable-message' ).remove();
+										// Showing Toggle for Current Email Setting.
+										cloned_email.find( '.evf-toggle-switch' ).parents( '.evf-content-section-title' ).css( 'display', 'flex' );
+
 										cloned_email.find('.evf-field-conditional-container').attr('data-connection_id',response.data.connection_id);
 										cloned_email.find('#everest-forms-panel-field-email-connection_1-connection_name').attr('name', 'settings[email]['+response.data.connection_id+'][connection_name]');
 										cloned_email.find('#everest-forms-panel-field-email-connection_1-evf_to_email').attr('name', 'settings[email]['+response.data.connection_id+'][evf_to_email]');
-										cloned_email.find('#everest-forms-panel-field-email-connection_1-evf_to_email').attr('value', '{admin_email}');
+										cloned_email.find('#everest-forms-panel-field-email-connection_1-evf_to_email').val( '{admin_email}' );
 										cloned_email.find('#everest-forms-panel-field-email-connection_1-evf_carboncopy').attr('name', 'settings[email]['+response.data.connection_id+'][evf_carboncopy]');
 										cloned_email.find('#everest-forms-panel-field-email-connection_1-evf_blindcarboncopy').attr('name', 'settings[email]['+response.data.connection_id+'][evf_blindcarboncopy]');
 										cloned_email.find('#everest-forms-panel-field-email-connection_1-evf_from_name').attr('name', 'settings[email]['+response.data.connection_id+'][evf_from_name]');
-										cloned_email.find('#everest-forms-panel-field-email-connection_1-evf_from_name').attr('value', evf_email_params.from_name );
+										cloned_email.find('#everest-forms-panel-field-email-connection_1-evf_from_name').val( evf_email_params.from_name );
 										cloned_email.find('#everest-forms-panel-field-email-connection_1-evf_from_email').attr('name', 'settings[email]['+response.data.connection_id+'][evf_from_email]');
-										cloned_email.find('#everest-forms-panel-field-email-connection_1-evf_from_email').attr('value', '{admin_email}');
+										cloned_email.find('#everest-forms-panel-field-email-connection_1-evf_from_email').val( '{admin_email}' );
 										cloned_email.find('#everest-forms-panel-field-email-connection_1-evf_reply_to').attr('name', 'settings[email]['+response.data.connection_id+'][evf_reply_to]');
 										cloned_email.find('#everest-forms-panel-field-email-connection_1-evf_email_subject').attr('name', 'settings[email]['+response.data.connection_id+'][evf_email_subject]');
-										cloned_email.find('#everest-forms-panel-field-email-connection_1-evf_email_subject').attr('value', evf_email_params.email_subject );
+										cloned_email.find('#everest-forms-panel-field-email-connection_1-evf_email_subject').val( evf_email_params.email_subject );
 										cloned_email.find('#everest_forms_panel_field_email_connection_1_evf_email_message').attr('name', 'settings[email]['+response.data.connection_id+'][evf_email_message]');
-										cloned_email.find('#everest_forms_panel_field_email_connection_1_evf_email_message').attr('value', '{all_fields}');
+										cloned_email.find('#everest_forms_panel_field_email_connection_1_evf_email_message').val( '{all_fields}' );
+
 										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-attach_pdf_to_admin_email').attr('name', 'settings[email]['+response.data.connection_id+'][attach_pdf_to_admin_email]');
+										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-attach_pdf_to_admin_email').val(1);
+										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-attach_pdf_to_admin_email').attr('id', 'everest-forms-panel-field-settingsemail'+response.data.connection_id+'-attach_pdf_to_admin_email');
+										cloned_email.find('label[for="everest-forms-panel-field-settingsemailconnection_1-attach_pdf_to_admin_email"]').attr('for', 'everest-forms-panel-field-settingsemail'+response.data.connection_id+'-attach_pdf_to_admin_email');
+										cloned_email.find('input[name="settings[email][connection_1][attach_pdf_to_admin_email]"]').remove();
+
 										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-show_header_in_attachment_pdf_file').attr('name', 'settings[email]['+response.data.connection_id+'][show_header_in_attachment_pdf_file]');
+										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-show_header_in_attachment_pdf_file').val(1);
+										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-show_header_in_attachment_pdf_file').attr('id', 'everest-forms-panel-field-settingsemail'+response.data.connection_id+'-show_header_in_attachment_pdf_file');
+										cloned_email.find('label[for="everest-forms-panel-field-settingsemailconnection_1-show_header_in_attachment_pdf_file"]').attr('for', 'everest-forms-panel-field-settingsemail'+response.data.connection_id+'-show_header_in_attachment_pdf_file');
+										cloned_email.find('input[name="settings[email][connection_1][show_header_in_attachment_pdf_file]"]').remove();
+
+										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-pdf_name').attr('name', 'settings[email]['+response.data.connection_id+'][pdf_name]');
+										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-pdf_name').val(form_title);
+										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-pdf_name').attr("id", 'everest-forms-panel-field-settingsemail' + response.data.connection_id + '-pdf_name');
 
 										cloned_email.find('#everest-forms-panel-field-email-connection_1-conditional_logic_status').attr('name', 'settings[email]['+response.data.connection_id+'][conditional_logic_status]');
 										cloned_email.find('.evf_conditional_logic_container input[type="hidden"]').attr('name', 'settings[email]['+response.data.connection_id+'][conditional_logic_status]');
@@ -145,7 +180,7 @@
 										cloned_email.find('.evf-field-conditional-input').attr('name', 'settings[email]['+response.data.connection_id+'][conditionals][1][1][value]');
 										$cloned_email = cloned_email.append('<input type="hidden" name="settings[email]['+response.data.connection_id+'][connection_name]" value="'+name+'">');
 
-										$('.evf-content-email-settings').append(cloned_email);
+										$('.evf-email-settings-wrapper').append(cloned_email);
 										$connections.find('.evf-content-email-settings-inner').last().addClass('active-connection');
 										$this.parent().find('.everest-forms-active-email-connections-list li').removeClass('active-user');
 										$this.closest('.everest-forms-active-email.active').children('.everest-forms-active-email-connections-list').removeClass('empty-list');
@@ -171,6 +206,9 @@
 			lengthOfActiveBlock = $(active_block).length;
 
 			$('.evf-content-email-settings').find('.evf-content-email-settings-inner').removeClass('active-connection');
+
+			// Hiding Email Notificaton Trigger (Previous).
+			$( '.evf-content-section-title' ).has('[data-connection-id=' + $this.siblings('.active-user').attr( 'data-connection-id' ) +']').css( 'display', 'none' );
 			$this.siblings().removeClass('active-user');
 			$this.addClass('active-user');
 
@@ -178,6 +216,14 @@
 				$( active_block ).addClass('active-connection');
 			}
 
+			// Removing Email Notification Turn On Message.
+			$('.email-disable-message').remove();
+			if( $( 'input[data-connection-id=' + $this.attr( 'data-connection-id' ) +']:last' ).prop( 'checked' ) == false ) {
+				$( '<p class="email-disable-message everest-forms-notice everest-forms-notice-info">' + evf_data.i18n_email_disable_message + '</p>' ).insertAfter( $( '.evf-content-section-title' ).has('[data-connection-id=' + $this.attr( 'data-connection-id' ) +']') );
+			}
+
+			// Displaying Email Notificaton Trigger (Current).
+			$( '.evf-content-section-title' ).has('[data-connection-id=' + $this.attr( 'data-connection-id' ) +']').css( 'display', 'flex' );
 		},
 
 		removeAccount: function(el, e) {
@@ -210,7 +256,7 @@
 										toBeRemoved.next('.connection-list').trigger('click');
 									}
 
-									$( active_block ).remove();
+									$( active_block ).parent().remove();
 									toBeRemoved.remove();
 								}
 							}

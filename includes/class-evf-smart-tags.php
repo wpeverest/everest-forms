@@ -65,11 +65,85 @@ class EVF_Smart_Tags {
 		if ( ! empty( $ids[1] ) && ! empty( $fields ) ) {
 
 			foreach ( $ids[1] as $key => $field_id ) {
+				$mixed_field_id = explode( '_', $field_id );
+				$uploads        = wp_upload_dir();
+
 				if ( 'fullname' !== $field_id && 'email' !== $field_id && 'subject' !== $field_id && 'message' !== $field_id ) {
-					$mixed_field_id = explode( '_', $field_id );
-					$value          = ! empty( $fields[ $mixed_field_id[1] ]['value'] ) ? evf_sanitize_textarea_field( $fields[ $mixed_field_id[1] ]['value'] ) : '';
+					$value = ! empty( $fields[ $mixed_field_id[1] ]['value'] ) ? evf_sanitize_textarea_field( $fields[ $mixed_field_id[1] ]['value'] ) : '';
 				} else {
 					$value = ! empty( $fields[ $field_id ]['value'] ) ? evf_sanitize_textarea_field( $fields[ $field_id ]['value'] ) : '';
+				}
+
+				if ( count( $mixed_field_id ) > 1 && ! empty( $fields[ $mixed_field_id[1] ] ) ) {
+					// Properly display signature field in smart tag.
+					if ( 'signature' === $fields[ $mixed_field_id[1] ]['type'] ) {
+						if ( ! is_array( $value ) && false !== strpos( $value, $uploads['basedir'] ) ) {
+							$value = trailingslashit( content_url() ) . str_replace( str_replace( 'uploads', '', $uploads['basedir'] ), '', $value );
+						}
+
+						if ( ! empty( $value ) ) {
+							$value = sprintf(
+								'<img src="%s" style="width:150px;height:80px;max-height:200px;max-width:100px;"/>',
+								$value
+							);
+						}
+					}
+
+					// Properly display Radio field in smart tag.
+					if ( isset( $value['image'] ) && 'radio' === $fields[ $mixed_field_id[1] ]['type'] ) {
+						if ( ! is_array( $value ) && false !== strpos( $value['image'], $uploads['basedir'] ) ) {
+							$value = trailingslashit( content_url() ) . str_replace( str_replace( 'uploads', '', $uploads['basedir'] ), '', $value['image'] );
+						}
+
+						if ( ! empty( $value ) ) {
+							$value = sprintf(
+								"\n" . '<img src="%s" style="width:150px;height:80px;max-height:200px;max-width:100px;"/>' . "\n" . '%s',
+								$value['image'],
+								$value['label']
+							);
+						}
+					}
+
+					// Properly display Checkboxes field in smart tag.
+					if ( isset( $value['images'] ) && ( 'checkbox' === $fields[ $mixed_field_id[1] ]['type'] || 'payment-checkbox' === $fields[ $mixed_field_id[1] ]['type'] ) ) {
+						$checkbox_images = '';
+						foreach ( $value['images'] as $image_key => $image_value ) {
+							if ( ! is_array( $image_value ) && false !== strpos( $image_value, $uploads['basedir'] ) ) {
+								$value = trailingslashit( content_url() ) . str_replace( str_replace( 'uploads', '', $uploads['basedir'] ), '', $image_value );
+							}
+
+							if ( ! empty( $value ) ) {
+								$checkbox_images .= sprintf(
+									"\n" . '<img src="%s" style="width:150px;height:80px;max-height:200px;max-width:100px;"/>' . "\n" . '%s',
+									$image_value,
+									$value['label'][ $image_key ]
+								);
+							}
+						}
+						$value = $checkbox_images;
+					}
+
+					// Properly display Files and Image Upload field in smart tag.
+					if ( 'image-upload' === $fields[ $mixed_field_id[1] ]['type'] || 'file-upload' === $fields[ $mixed_field_id[1] ]['type'] ) {
+						$files = '';
+
+						if ( ! empty( $fields[ $mixed_field_id[1] ]['value_raw'] ) ) {
+							foreach ( $fields[ $mixed_field_id[1] ]['value_raw'] as $files_key => $files_value ) {
+								if ( ! is_array( $files_value['value'] ) && false !== strpos( $files_value['value'], $uploads['basedir'] ) ) {
+									$value = trailingslashit( content_url() ) . str_replace( str_replace( 'uploads', '', $uploads['basedir'] ), '', $files_value['value'] );
+								}
+
+								if ( ! empty( $value ) ) {
+									$files .= sprintf(
+										'<a href="%s">%s</a> ' . "\n",
+										$files_value['value'],
+										$files_value['name']
+									);
+								}
+							}
+							$value = $files;
+						}
+					}
 				}
 
 				if ( ! is_array( $value ) ) {
@@ -116,17 +190,17 @@ class EVF_Smart_Tags {
 						break;
 
 					case 'page_title':
-						$page_title = get_the_ID() ? get_the_title( get_the_ID() ) : '';
+						$page_title = isset( $form_data ) ? get_the_title( $form_data['id'] ) : '';
 						$content    = str_replace( '{' . $other_tag . '}', $page_title, $content );
 						break;
 
 					case 'page_url':
-						$page_url = get_the_ID() ? get_permalink( get_the_ID() ) : '';
+						$page_url = isset( $form_data ) ? get_permalink( $form_data['id'] ) : '';
 						$content  = str_replace( '{' . $other_tag . '}', $page_url, $content );
 						break;
 
 					case 'page_id':
-						$page_id = get_the_ID() ? get_the_ID() : '';
+						$page_id = isset( $form_data ) ? $form_data['id'] : '';
 						$content = str_replace( '{' . $other_tag . '}', $page_id, $content );
 						break;
 

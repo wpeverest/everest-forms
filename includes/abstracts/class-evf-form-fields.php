@@ -633,6 +633,7 @@ abstract class EVF_Form_Fields {
 
 						$sub_field_output_array[] = $output;
 					}
+
 					$output = implode( '', $sub_field_output_array );
 					$output = $this->field_element(
 						'row',
@@ -647,6 +648,7 @@ abstract class EVF_Form_Fields {
 				} else {
 					$value   = isset( $field['required-field-message'] ) ? esc_attr( $field['required-field-message'] ) : esc_attr( $required_validation );
 					$tooltip = esc_html__( 'Enter a message to show for this field if it\'s required.', 'everest-forms' );
+
 					$output  = $this->field_element(
 						'label',
 						$field,
@@ -663,6 +665,7 @@ abstract class EVF_Form_Fields {
 						array(
 							'slug'  => 'required-field-message',
 							'value' => $value,
+							'class' => 'everest-forms-field-option-row',
 						),
 						false
 					);
@@ -780,11 +783,11 @@ abstract class EVF_Form_Fields {
 
 					$active_type = ! empty( $field['multiple_choices'] ) && '1' === $field['multiple_choices'] ? 'multiple' : 'single';
 					foreach ( $selection_types as $key => $selection_type ) {
-						$selection_btn[ $key ] = '<span data-selection="' . esc_attr( $key ) . '" data-type="' . esc_attr( $selection_type['type'] ) . '" class="everest-forms-btn flex ' . ( $active_type === $key ? 'is-active' : '' ) . ' ' . ( false === $licensed && 'multiple' === $key ? 'upgrade-modal' : '' ) . '" data-feature="' . esc_html__( 'Multiple selection', 'everest-forms' ) . '">' . esc_html( $selection_type['label'] ) . '</span>';
+						$selection_btn[ $key ] = '<span data-selection="' . esc_attr( $key ) . '" data-type="' . esc_attr( $selection_type['type'] ) . '" class="flex everest-forms-btn ' . ( $active_type === $key ? 'is-active' : '' ) . ' ' . ( false === $licensed && 'multiple' === $key ? 'upgrade-modal' : '' ) . '" data-feature="' . esc_html__( 'Multiple selection', 'everest-forms' ) . '">' . esc_html( $selection_type['label'] ) . '</span>';
 					}
 
 					$field_content .= sprintf(
-						'<div class="everest-forms-btn-group flex everest-forms-btn-group--inline"><input type="hidden" id="everest-forms-field-option-%1$s-multiple_choices" name="form_fields[%1$s][multiple_choices]" value="%2$s" />%3$s</div>',
+						'<div class="flex everest-forms-btn-group everest-forms-btn-group--inline"><input type="hidden" id="everest-forms-field-option-%1$s-multiple_choices" name="form_fields[%1$s][multiple_choices]" value="%2$s" />%3$s</div>',
 						esc_attr( $field['id'] ),
 						! empty( $field['multiple_choices'] ) && '1' === $field['multiple_choices'] ? 1 : 0,
 						implode( '', $selection_btn )
@@ -1346,13 +1349,15 @@ abstract class EVF_Form_Fields {
 	 * @return mixed Print or return a string.
 	 */
 	public function field_preview_option( $option, $field, $args = array(), $echo = true ) {
-		$output = '';
-		$class  = ! empty( $args['class'] ) ? evf_sanitize_classes( $args['class'] ) : '';
+		$output    = '';
+		$class     = ! empty( $args['class'] ) ? evf_sanitize_classes( $args['class'] ) : '';
+		$form_id   = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification
+		$form_data = evf()->form->get( absint( $form_id ), array( 'content_only' => true ) );
 
 		switch ( $option ) {
 			case 'label':
 				$label  = isset( $field['label'] ) && ! empty( $field['label'] ) ? $field['label'] : '';
-				$output = sprintf( '<label class="label-title %s"><span class="text">%s</span><span class="required">*</span></label>', $class, $label );
+				$output = sprintf( '<label class="label-title %s"><span class="text">%s</span><span class="required">%s</span></label>', $class, $label, apply_filters( 'everest_form_get_required_type', '*', $field, $form_data ) );
 				break;
 
 			case 'description':
@@ -1446,10 +1451,18 @@ abstract class EVF_Form_Fields {
 							$output .= '<label>';
 							$output .= sprintf( '<span class="everest-forms-image-choices-image"><img src="%s" alt="%s"%s></span>', $image_src, esc_attr( $value['label'] ), ! empty( $value['label'] ) ? ' title="' . esc_attr( $value['label'] ) . '"' : '' );
 							$output .= sprintf( '<input type="%s" %s disabled>', $type, $selected );
-							$output .= '<span class="everest-forms-image-choices-label">' . wp_kses_post( $value['label'] ) . '</span>';
+							if ( ( 'payment-checkbox' === $field['type'] ) || ( 'payment-multiple' === $field['type'] ) ) {
+								$output .= '<span class="everest-forms-image-choices-label">' . wp_kses_post( $value['label'] ) . '-' . evf_format_amount( evf_sanitize_amount( $value['value'] ), true ) . '</span>';
+							} else {
+								$output .= '<span class="everest-forms-image-choices-label">' . wp_kses_post( $value['label'] ) . '</span>';
+							}
 							$output .= '</label>';
 						} else {
-							$output .= sprintf( '<input type="%s" %s disabled>%s', $type, $selected, $value['label'] );
+							if ( ( 'payment-checkbox' === $field['type'] ) || ( 'payment-multiple' === $field['type'] ) ) {
+								$output .= sprintf( '<input type="%s" %s disabled>%s - %s', $type, $selected, $value['label'], evf_format_amount( evf_sanitize_amount( $value['value'] ), true ) );
+							} else {
+								$output .= sprintf( '<input type="%s" %s disabled>%s', $type, $selected, $value['label'] );
+							}
 						}
 
 						$output .= '</li>';
@@ -1496,14 +1509,14 @@ abstract class EVF_Form_Fields {
 		// Run a security check.
 		check_ajax_referer( 'everest_forms_field_drop', 'security' );
 
-		// Check for permissions.
-		if ( ! current_user_can( apply_filters( 'everest_forms_manage_cap', 'manage_options' ) ) ) {
-			die( esc_html__( 'You do no have permission.', 'everest-forms' ) );
-		}
-
 		// Check for form ID.
 		if ( ! isset( $_POST['form_id'] ) || empty( $_POST['form_id'] ) ) {
 			die( esc_html__( 'No form ID found', 'everest-forms' ) );
+		}
+
+		// Check for permissions.
+		if ( ! current_user_can( 'everest_forms_edit_form', (int) $_POST['form_id'] ) ) {
+			die( esc_html__( 'You do no have permission.', 'everest-forms' ) );
 		}
 
 		// Check for field type to add.
@@ -1854,6 +1867,7 @@ abstract class EVF_Form_Fields {
 
 		switch ( $this->type ) {
 			case 'radio':
+			case 'signature':
 			case 'payment-multiple':
 				$value  = '';
 				$image  = ! empty( $field['value']['image'] ) ? sprintf( '<img src="%s" style="width:75px;height:75px;max-height:75px;max-width:75px;"  /><br>', $field['value']['image'] ) : '';

@@ -28,6 +28,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 					'label',
 					'meta',
 					'choose_format',
+					'choose_style',
 					'description',
 					'required',
 					'required_field_message',
@@ -89,6 +90,44 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 		$args          = array(
 			'slug'    => 'datetime_format',
 			'content' => $format_label . $format_select,
+		);
+		$this->field_element( 'row', $field, $args );
+	}
+
+	/**
+	 * Date field style option.
+	 *
+	 * @since 1.7.5
+	 * @param array $field Field Data.
+	 */
+	public function choose_style( $field ) {
+		$style        = ! empty( $field['datetime_style'] ) ? esc_attr( $field['datetime_style'] ) : 'picker';
+		$style_label  = $this->field_element(
+			'label',
+			$field,
+			array(
+				'slug'    => 'datetime_style',
+				'value'   => esc_html__( 'Style', 'everest-forms' ),
+				'tooltip' => esc_html__( 'Select a style for the date field.', 'everest-forms' ),
+			),
+			false
+		);
+		$style_select = $this->field_element(
+			'select',
+			$field,
+			array(
+				'slug'    => 'datetime_style',
+				'value'   => $style,
+				'options' => array(
+					'picker'   => esc_html__( 'Date Picker', 'everest-forms' ),
+					'dropdown' => esc_html__( 'Date Dropdown', 'everest-forms' ),
+				),
+			),
+			false
+		);
+		$args         = array(
+			'slug'    => 'datetime_style',
+			'content' => $style_label . $style_select,
 		);
 		$this->field_element( 'row', $field, $args );
 	}
@@ -395,14 +434,141 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			);
 			$time_format_select   .= '</div>';
 
-			$args = array(
-				'slug'    => 'time_interval_format',
-				'content' => $time_format_label . $time_interval_select . $time_format_select,
-			);
-			$this->field_element( 'row', $field, $args );
+		$min_time_select  = '<div class="input-group-col-2">';
+		$min_time_select .= $this->field_element(
+			'select',
+			$field,
+			array(
+				'slug'    => 'min_time_hour',
+				'value'   => isset( $field['min_time_hour'] ) ? $field['min_time_hour'] : 9,
+				'class'   => 'min_time_hour',
+				'options' => $this->get_minute_hours( $field, 'hours' ),
+			),
+			false
+		);
+		$min_time_select .= $this->field_element(
+			'select',
+			$field,
+			array(
+				'slug'    => 'min_time_minute',
+				'value'   => isset( $field['min_time_minute'] ) ? $field['min_time_minute'] : 30,
+				'class'   => 'min_time_minute',
+				'options' => $this->get_minute_hours( $field, 'minutes' ),
+			),
+			false
+		);
+		$min_time_select .= '</div>';
 
-			echo '</div>';
-			echo '</div>';
+		$max_time_select  = '<div class="input-group-col-2">';
+		$max_time_select .= $this->field_element(
+			'select',
+			$field,
+			array(
+				'slug'    => 'max_time_hour',
+				'value'   => isset( $field['max_time_hour'] ) ? $field['max_time_hour'] : 18,
+				'class'   => 'max_time_hour',
+				'options' => $this->get_minute_hours( $field, 'hours' ),
+			),
+			false
+		);
+		$max_time_select .= $this->field_element(
+			'select',
+			$field,
+			array(
+				'slug'    => 'max_time_minute',
+				'value'   => isset( $field['max_time_minute'] ) ? $field['max_time_minute'] : 30,
+				'class'   => 'max_time_minute',
+				'options' => $this->get_minute_hours( $field, 'minutes' ),
+			),
+			false
+		);
+		$max_time_select .= '</div>';
+
+		$enable_min_max_time = '<div class="input-group-col-2">';
+
+		$enable_min_max_time .= $this->field_element(
+			'checkbox',
+			$field,
+			array(
+				'slug'    => 'enable_min_max_time',
+				'value'   => isset( $field['enable_min_max_time'] ) ? $field['enable_min_max_time'] : '',
+				'desc'    => esc_html__( 'Enable Min Max Time.', 'everest-forms' ),
+				'tooltip' => esc_html__( 'Check this option to set min max time.', 'everest-forms' ),
+			),
+			false
+		);
+		$enable_min_max_time .= '</div>';
+
+		$select_min_time = $this->field_element(
+			'label',
+			$field,
+			array(
+				'slug'    => 'select_min_time',
+				'value'   => esc_html__( 'Minimum Time', 'everest-forms' ),
+				'tooltip' => esc_html__( 'Select minium time.', 'everest-forms' ),
+			),
+			false
+		);
+
+		$select_max_time = $this->field_element(
+			'label',
+			$field,
+			array(
+				'slug'    => 'select_max_time',
+				'value'   => esc_html__( 'Maximum Time', 'everest-forms' ),
+				'tooltip' => esc_html__( 'Select maximum time.', 'everest-forms' ),
+			),
+			false
+		);
+
+		$args = array(
+			'slug'    => 'time_interval_format',
+			'content' => $time_format_label . $time_interval_select . $time_format_select . $enable_min_max_time . $select_min_time . $min_time_select . $select_max_time . $max_time_select,
+		);
+		$this->field_element( 'row', $field, $args );
+
+		echo '</div>';
+		echo '</div>';
+	}
+
+	/**
+	 * Time Hours/Minutes Provider.
+	 *
+	 * @since 1.7.5
+	 * @param mixed  $field field data.
+	 * @param string $required required type.
+	 */
+	public function get_minute_hours( $field, $required = 'hours' ) {
+		$required_array = array();
+		if ( 'hours' === $required ) {
+			// Hours Array.
+			$period = '';
+			for ( $i = 0; $i <= 23; $i++ ) {
+				if ( isset( $field['time_format'] ) && 'H:i' === $field['time_format'] ) {
+					$required_array [] = ( $i < 10 ? '0' . $i : $i ) . $period;
+				} else {
+					if ( $i < 12 ) {
+						$period = ' AM';
+					} else {
+						$period = ' PM';
+					}
+					$hour = $i;
+					if ( 0 === $i ) {
+						$hour = 12;
+					}
+					if ( $hour > 12 ) {
+						$hour = $i - 12;
+					}
+					$required_array [] = $hour . $period;
+				}
+			}
+		} else {
+			// Minutes Array.
+			for ( $i = 0; $i <= 59; $i++ ) {
+				$required_array [] = ( $i < 10 ) ? '0' . $i : $i;
+			}
+		}
+		return $required_array;
 	}
 
 	/**
@@ -441,6 +607,15 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				$properties['inputs']['primary']['attr']['data-locale']   = isset( $field['date_localization'] ) ? $field['date_localization'] : 'en';
 				$properties['inputs']['primary']['attr']['data-min-date'] = isset( $field['enable_min_max'], $field['min_date'] ) ? $field['min_date'] : '';
 				$properties['inputs']['primary']['attr']['data-max-date'] = isset( $field['enable_min_max'], $field['max_date'] ) ? $field['max_date'] : '';
+			}
+
+			if ( 'date' !== $field['datetime_format'] ) {
+				if ( isset( $field['enable_min_max_time'] ) ) {
+					$properties['inputs']['primary']['attr']['data-min-hour']   = isset( $field['min_time_hour'] ) ? $field['min_time_hour'] : '';
+					$properties['inputs']['primary']['attr']['data-min-minute'] = isset( $field['min_time_minute'] ) ? $field['min_time_minute'] : '';
+					$properties['inputs']['primary']['attr']['data-max-hour']   = isset( $field['max_time_hour'] ) ? $field['max_time_hour'] : '';
+					$properties['inputs']['primary']['attr']['data-max-minute'] = isset( $field['max_time_minute'] ) ? $field['max_time_minute'] : '';
+				}
 			}
 
 			// Input primary: data-date-format and value.
@@ -505,12 +680,123 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 
 		$class = array_merge( array( 'flatpickr-field' ), $primary['class'] );
 
-		// Primary field.
-		printf(
-			'<input type="text" %s %s >',
-			evf_html_attributes( $primary['id'], $class, $primary['data'], $primary['attr'] ),
-			esc_attr( $primary['required'] )
-		);
+		if ( 'picker' === $field['datetime_style'] ) {
+			$class = array_merge( array( 'flatpickr-field' ), $primary['class'] );
+			// Primary field.
+			printf(
+				'<input type="text" %s %s >',
+				evf_html_attributes( $primary['id'], $class, $primary['data'], $primary['attr'] ),
+				esc_attr( $primary['required'] )
+			);
+		} else {
+			$class = array_merge( array( 'date-dropdown-field' ), $primary['class'] );
+			echo '<div class="date-time-container">';
+
+			printf(
+				'<input type="text" %s %s >',
+				evf_html_attributes( $primary['id'], $class, $primary['data'], $primary['attr'] ),
+				esc_attr( $primary['required'] )
+			);
+
+			if ( 'date-time' === $field['datetime_format'] || 'date' === $field['datetime_format'] ) {
+
+				// For Years.
+				printf(
+					'<select value="%s" %s>',
+					esc_attr( gmdate( 'Y' ) ),
+					evf_html_attributes( 'year-select-' . $primary['id'] ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				);
+				// Build the select options.
+				$end_date   = gmdate( 'Y' ) + 100;
+				$start_date = $end_date - 200;
+
+				for ( $i = $end_date; $i >= $start_date; $i-- ) {
+					printf(
+						'<option value="%s" %s>%s</option>',
+						esc_attr( $i ),
+						(int) gmdate( 'Y' ) === $i ? 'selected' : '',
+						esc_html( $i )
+					);
+				}
+				echo '</select>';
+
+				// For Months.
+				printf(
+					'<select value="%s" %s>',
+					esc_attr( gmdate( 'm' ) ),
+					evf_html_attributes( 'month-select-' . $primary['id'] ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				);
+				// Build the select options.
+				for ( $i = 1; $i <= 12; $i++ ) {
+					$month = ( $i < 10 ) ? '0' . $i : $i;
+					printf(
+						'<option value="%s" %s>%s</option>',
+						esc_attr( $i ),
+						(int) gmdate( 'm' ) === $i ? 'selected' : '',
+						esc_html( $month )
+					);
+				}
+				echo '</select>';
+
+				// For Days.
+				printf(
+					'<select value="%s" %s>',
+					esc_attr( gmdate( 'd' ) ),
+					evf_html_attributes( 'day-select-' . $primary['id'] ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				);
+				// Build the select options.
+				for ( $i = 1; $i <= 32; $i++ ) {
+					$day = $i < 10 ? '0' . $i : $i;
+					printf(
+						'<option value="%s" %s>%s</option>',
+						esc_attr( $i ),
+						(int) gmdate( 'd' ) === $i ? 'selected' : '',
+						esc_html( $day )
+					);
+				}
+				echo '</select>';
+			}
+
+			if ( 'date-time' === $field['datetime_format'] ) {
+				echo '<span class="date-time-space-filler"></span>';
+			}
+
+			if ( 'time' === $field['datetime_format'] || 'date-time' === $field['datetime_format'] ) {
+
+				$min_hour = isset( $field['min_time_hour'], $field['enable_min_max_time'] ) ? $field['min_time_hour'] : 0;
+				$max_hour = isset( $field['min_time_hour'], $field['enable_min_max_time'] ) ? $field['max_time_hour'] : 23;
+
+				// For Hours.
+				printf(
+					'<select value = "%s" %s>',
+					esc_attr( ( gmdate( 'H' ) >= $min_hour && ( gmdate( 'H' ) <= $max_hour ) ) ? gmdate( 'H' ) : $min_hour ),
+					evf_html_attributes( 'hour-select-' . $primary['id'] ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				);
+
+				for ( $i = $min_hour; $i <= $max_hour; $i++ ) {
+					printf(
+						'<option value="%s" %s>%s</option>',
+						esc_attr( $i ),
+						(int) gmdate( 'H' ) === $i ? 'selected' : '',
+						esc_html( $this->get_minute_hours( $field, 'hours' )[ $i ] )
+					);
+				}
+
+				echo '</select>';
+
+				$time_interval = isset( $field['time_interval'] ) ? $field['time_interval'] : 1;
+
+				// For Minutes.
+				printf(
+					'<select %s>',
+					evf_html_attributes( 'minute-select-' . $primary['id'] ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				);
+				echo '</select>';
+			}
+
+			echo '</div>';
+		}
+
 	}
 
 	/**

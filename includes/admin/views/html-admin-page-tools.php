@@ -13,10 +13,13 @@ $tabs        = apply_filters(
 	array(
 		'import' => __( 'Import', 'everest-forms' ),
 		'export' => __( 'Export', 'everest-forms' ),
-		'logs'   => __( 'Logs', 'everest-forms' ),
 	)
 );
 $current_tab = ! empty( $_REQUEST['tab'] ) ? sanitize_title( wp_unslash( $_REQUEST['tab'] ) ) : 'import'; // phpcs:ignore WordPress.Security.NonceVerification
+
+if ( 'yes' === get_option( 'everest_forms_enable_log', 'no' ) ) {
+	$tabs['logs'] = __( 'Logs', 'everest-forms' ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+}
 
 ?>
 <div class="wrap everest-forms">

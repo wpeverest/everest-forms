@@ -69,7 +69,7 @@ $trash_link = wp_nonce_url(
 										// Check for empty serialized value.
 										if ( is_serialized( $meta_value ) ) {
 											$raw_meta_val = unserialize( $meta_value ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
-											if ( empty( $raw_meta_val[0] ) ) {
+											if ( empty( $raw_meta_val['label'][0] ) ) {
 												$meta_value = '';
 											}
 										}
@@ -224,13 +224,17 @@ $trash_link = wp_nonce_url(
 									<?php do_action( 'everest_forms_entry_details_sidebar_details', $entry, $entry_meta, $form_data ); ?>
 								</div>
 
-								<div id="major-publishing-actions">
-									<?php do_action( 'everest_forms_entry_details_sidebar_action', $entry, $form_data ); ?>
-									<div id="delete-action">
-										<a class="submitdelete" aria-label="<?php echo esc_attr__( 'Move to trash', 'everest-forms' ); ?>" href="<?php echo esc_url( $trash_link ); ?>"><?php esc_html_e( 'Move to trash', 'everest-forms' ); ?></a>
+								<?php if ( current_user_can( 'everest_forms_edit_entry', $entry->entry_id ) || current_user_can( 'everest_forms_delete_entry', $entry->entry_id ) ) : ?>
+									<div id="major-publishing-actions">
+										<?php do_action( 'everest_forms_entry_details_sidebar_action', $entry, $form_data ); ?>
+										<?php if ( current_user_can( 'everest_forms_delete_entry', $entry->entry_id ) ) : ?>
+											<div id="delete-action">
+												<a class="submitdelete" aria-label="<?php echo esc_attr__( 'Move to trash', 'everest-forms' ); ?>" href="<?php echo esc_url( $trash_link ); ?>"><?php esc_html_e( 'Move to trash', 'everest-forms' ); ?></a>
+											</div>
+										<?php endif; ?>
+										<div class="clear"></div>
 									</div>
-									<div class="clear"></div>
-								</div>
+								<?php endif; ?>
 							</div>
 						</div>
 					</div>

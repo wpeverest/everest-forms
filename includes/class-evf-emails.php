@@ -456,8 +456,7 @@ class EVF_Emails {
 				}
 
 				// If there's the export data filter, utilize that and re-loop promptly.
-				if ( has_filter( "everest_forms_field_exporter_{$field['type']}" ) && 'signature' !== $field['type'] ) {
-
+				if ( has_filter( "everest_forms_field_exporter_{$field['type']}" ) ) {
 					$formatted_string          = apply_filters( "everest_forms_field_exporter_{$field['type']}", $field, 'email-html', 2 );
 					$formatted_string['value'] = false === $formatted_string['value'] ? $empty_message : $formatted_string['value'];
 
