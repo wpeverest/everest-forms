@@ -680,7 +680,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 
 		$class = array_merge( array( 'flatpickr-field' ), $primary['class'] );
 
-		if ( 'picker' === $field['datetime_style'] ) {
+		if ( ! array_key_exists( 'datetime_style', $field ) || 'picker' === $field['datetime_style'] ) {
 			$class = array_merge( array( 'flatpickr-field' ), $primary['class'] );
 			// Primary field.
 			printf(
