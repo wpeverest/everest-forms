@@ -22,19 +22,19 @@ div.everest-forms-message {
 		align-items: center;
 
 		.everest-forms-logo {
-			height: 80px;
-			width: 80px;
+			height: 120px;
+			width: 120px;
 			border-radius: 4px;
-			margin-right: 16px;
-			flex: 0 0 80px;
+			margin-right: 20px;
+			flex: 0 0 120px;
 			display: flex;
 			align-items: center;
 			justify-content: center;
 			background: $everestforms;
 
 			svg {
-				height: 64px;
-				width: 64px;
+				height: 80px;
+				width: 80px;
 				fill: $color-white;
 			}
 		}
@@ -42,7 +42,8 @@ div.everest-forms-message {
 		.everest-forms-message--content {
 			h3 {
 				margin: 0;
-				font-size: 14px;
+				font-size: 20px;
+				line-height:1.5;
 			}
 
 			p {
@@ -88,5 +89,31 @@ div.everest-forms-message {
 	.button-primary,
 	.button-secondary {
 		text-decoration: none !important;
+	}
+	.everest-forms-message__action.submit .button-primary {
+    background: #7e3bd0;
+    border-color: #7e3bd0;
+	}
+	a.button.button-secondary.evf-dismiss-review-notice,
+	a.button.button-secondary.evf-have-query {
+	    color: #7e3bd0;
+	    border-color: #7e3bd0;
+	}
+	.everest-forms-message__action.submit .button-primary.focus, 
+	.everest-forms-message__action.submit .button-primary.hover, 
+	.everest-forms-message__action.submit .button-primary:focus, 
+	.everest-forms-message__action.submit .button-primary:hover {
+	    background: #532986;
+	    border-color: #532986;
+	    color: #fff;
+	}
+	.everest-forms-message--content span.dashicons {
+	    margin: 3px 4px 0 0px;
+	}
+	.smile-icon {
+	    background: #e7e94b;
+	    padding: 2px;
+	    font-size: 18px;
+	    border-radius: 50%;
 	}
 }
