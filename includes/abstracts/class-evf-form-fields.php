@@ -1155,7 +1155,7 @@ abstract class EVF_Form_Fields {
 			 * Field Allow Query Vars toggle.
 			 */
 			case 'allow_query_var':
-				if ( false === evf_get_license_plan() ) {
+				if ( ! defined( 'EFP_VERSION' ) ) {
 					return;
 				}
 				$default = ! empty( $args['default'] ) ? $args['default'] : '0';
@@ -1187,7 +1187,7 @@ abstract class EVF_Form_Fields {
 			 * Query Vars.
 			 */
 			case 'query_var':
-				if ( false === evf_get_license_plan() ) {
+				if ( ! defined( 'EFP_VERSION' ) ) {
 					return;
 				}
 				$has_sub_fields = false;

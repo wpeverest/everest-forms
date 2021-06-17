@@ -699,6 +699,8 @@ class EVF_Shortcode_Form {
 	/**
 	 * Set Field Attributes Parameters Obtained from Shortcode.
 	 *
+	 * @since 1.7.5
+	 *
 	 * @param mixed $field_attr Field Attributes Parameter.
 	 */
 	public static function set_field_values( $field_attr ) {
@@ -707,6 +709,8 @@ class EVF_Shortcode_Form {
 
 	/**
 	 * Get Field Attributes Parameter.
+	 *
+	 * @since 1.7.5
 	 */
 	public static function get_field_values() {
 		return self::$field_values;
@@ -715,21 +719,20 @@ class EVF_Shortcode_Form {
 	/**
 	 * Get Query Variables from Field Values Shortcode.
 	 *
+	 * @since 1.7.5
+	 *
 	 * @param mixed $field Field Options to pass into the function.
 	 * @return array
 	 */
 	public static function get_query_variables( $field ) {
+		if ( ! defined( 'EFP_VERSION' ) ) {
+			return;
+		}
 		$meta_keys = array();
 		$query_var = array();
+		$get_query = $_GET; // phpcs:ignore WordPress.Security.NonceVerification
 
 		$field_values = self::get_field_values();
-
-		if ( ! isset( $field_values ) ) {
-			return;
-		}
-		if ( false === evf_get_license_plan() ) {
-			return;
-		}
 
 		$field_values = str_replace( 'amp;', '', explode( '&', $field_values ) );
 
@@ -774,6 +777,42 @@ class EVF_Shortcode_Form {
 					if ( isset( $field['parameter-name-country'] ) && ! empty( $meta_keys [ $field ['parameter-name-country'] ] ) ) {
 						$query_var['country'] = $meta_keys[ $field['parameter-name-country'] ];
 					}
+				}
+			}
+		}
+
+		if ( isset( $field['allow-query-var'] ) ) {
+			if ( 'address' !== $field['type'] && 'likert' !== $field['type'] ) {
+				if ( ! empty( $get_query[ $field['parameter-name'] ] ) ) {
+					$query_var[ $field['parameter-name'] ] = $get_query[ $field['parameter-name'] ];
+				}
+			} elseif ( 'address' !== $field['type'] && 'likert' === $field['type'] ) {
+				$likert_rows = isset( $field['likert_rows'] ) ? $field['likert_rows'] : array();
+				foreach ( $likert_rows as $row_number => $row_label ) {
+					$row_label = str_replace( ' ', '', $row_label );
+					$row_slug  = 'parameter-name-' . strtolower( str_replace( '#', '-', $row_label ) );
+					if ( isset( $field [ $row_slug ] ) && ! empty( $get_query [ $field [ $row_slug ] ] ) ) {
+						$query_var[ $field[ $row_slug ] ] = $get_query[ $field[ $row_slug ] ];
+					}
+				}
+			} else {
+				if ( isset( $field['parameter-name-address1'] ) && ! empty( $get_query [ $field ['parameter-name-address1'] ] ) ) {
+					$query_var['address1'] = $get_query[ $field['parameter-name-address1'] ];
+				}
+				if ( isset( $field['parameter-name-address2'] ) && ! empty( $get_query [ $field ['parameter-name-address2'] ] ) ) {
+					$query_var['address2'] = $get_query[ $field['parameter-name-address2'] ];
+				}
+				if ( isset( $field['parameter-name-city'] ) && ! empty( $get_query [ $field ['parameter-name-city'] ] ) ) {
+					$query_var['city'] = $get_query[ $field['parameter-name-city'] ];
+				}
+				if ( isset( $field['parameter-name-state'] ) && ! empty( $get_query [ $field ['parameter-name-state'] ] ) ) {
+					$query_var['state'] = $get_query[ $field['parameter-name-state'] ];
+				}
+				if ( isset( $field['parameter-name-postal'] ) && ! empty( $get_query [ $field ['parameter-name-postal'] ] ) ) {
+					$query_var['postal'] = $get_query[ $field['parameter-name-postal'] ];
+				}
+				if ( isset( $field['parameter-name-country'] ) && ! empty( $get_query [ $field ['parameter-name-country'] ] ) ) {
+					$query_var['country'] = $get_query[ $field['parameter-name-country'] ];
 				}
 			}
 		}
