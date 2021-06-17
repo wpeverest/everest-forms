@@ -1155,9 +1155,6 @@ abstract class EVF_Form_Fields {
 			 * Field Allow Query Vars toggle.
 			 */
 			case 'allow_query_var':
-				if ( ! defined( 'EFP_VERSION' ) ) {
-					break;
-				}
 				apply_filters( 'everest_forms_allow_query_var', $args, $field );
 				break;
 
@@ -1165,9 +1162,6 @@ abstract class EVF_Form_Fields {
 			 * Query Vars.
 			 */
 			case 'query_var':
-				if ( ! defined( 'EFP_VERSION' ) ) {
-					break;
-				}
 				apply_filters( 'everest_forms_query_var', $field );
 				break;
 
