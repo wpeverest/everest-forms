@@ -51,7 +51,6 @@ class EVF_Shortcode_Form {
 		add_action( 'everest_forms_display_field_after', array( 'EVF_Shortcode_Form', 'description' ), 5, 2 );
 		add_action( 'everest_forms_display_field_after', array( 'EVF_Shortcode_Form', 'wrapper_end' ), 15, 2 );
 		add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'honeypot' ), 15, 3 );
-		add_filter( 'everest_forms_get_query_variables', array( 'EVF_Shortcode_Form', 'get_query_variables' ), 10, 1 );
 		if ( ! apply_filters( 'everest_forms_recaptcha_disabled', false ) ) {
 			add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'recaptcha' ), 20, 3 );
 		}
@@ -715,109 +714,6 @@ class EVF_Shortcode_Form {
 	 */
 	public static function get_field_values() {
 		return self::$field_values;
-	}
-
-	/**
-	 * Get Query Variables from Field Values Shortcode.
-	 *
-	 * @since 1.7.5
-	 *
-	 * @param mixed $field Field Options to pass into the function.
-	 * @return array
-	 */
-	public static function get_query_variables( $field ) {
-		if ( ! defined( 'EFP_VERSION' ) ) {
-			return;
-		}
-		$meta_keys = array();
-		$query_var = array();
-		$get_query = $_GET; // phpcs:ignore WordPress.Security.NonceVerification
-
-		$field_values = self::get_field_values();
-
-		$field_values = str_replace( 'amp;', '', explode( '&', $field_values ) );
-
-		if ( ! empty( $field_values ) ) {
-			foreach ( $field_values as $key => $field_value ) {
-				$meta_key_array = explode( '=', $field_value );
-				if ( ! empty( $meta_key_array[1] ) ) {
-					$meta_keys[ $meta_key_array[0] ] = $meta_key_array[1];
-				}
-			}
-
-			if ( isset( $meta_keys ) && isset( $field['allow-query-var'] ) ) {
-				if ( 'address' !== $field['type'] && 'likert' !== $field['type'] ) {
-					if ( isset( $field['parameter-name'] ) && ! empty( $meta_keys [ $field ['parameter-name'] ] ) ) {
-						$query_var[ $field['parameter-name'] ] = $meta_keys[ $field['parameter-name'] ];
-					}
-				} elseif ( 'address' !== $field['type'] && 'likert' === $field['type'] ) {
-					$likert_rows = isset( $field['likert_rows'] ) ? $field['likert_rows'] : array();
-					foreach ( $likert_rows as $row_number => $row_label ) {
-						$row_label = str_replace( ' ', '', $row_label );
-						$row_slug  = 'parameter-name-' . strtolower( str_replace( '#', '-', $row_label ) );
-						if ( isset( $field [ $row_slug ] ) && ! empty( $meta_keys [ $field [ $row_slug ] ] ) ) {
-							$query_var[ $field[ $row_slug ] ] = $meta_keys[ $field[ $row_slug ] ];
-						}
-					}
-				} else {
-					if ( isset( $field['parameter-name-address1'] ) && ! empty( $meta_keys [ $field ['parameter-name-address1'] ] ) ) {
-						$query_var['address1'] = $meta_keys[ $field['parameter-name-address1'] ];
-					}
-					if ( isset( $field['parameter-name-address2'] ) && ! empty( $meta_keys [ $field ['parameter-name-address2'] ] ) ) {
-						$query_var['address2'] = $meta_keys[ $field['parameter-name-address2'] ];
-					}
-					if ( isset( $field['parameter-name-city'] ) && ! empty( $meta_keys [ $field ['parameter-name-city'] ] ) ) {
-						$query_var['city'] = $meta_keys[ $field['parameter-name-city'] ];
-					}
-					if ( isset( $field['parameter-name-state'] ) && ! empty( $meta_keys [ $field ['parameter-name-state'] ] ) ) {
-						$query_var['state'] = $meta_keys[ $field['parameter-name-state'] ];
-					}
-					if ( isset( $field['parameter-name-postal'] ) && ! empty( $meta_keys [ $field ['parameter-name-postal'] ] ) ) {
-						$query_var['postal'] = $meta_keys[ $field['parameter-name-postal'] ];
-					}
-					if ( isset( $field['parameter-name-country'] ) && ! empty( $meta_keys [ $field ['parameter-name-country'] ] ) ) {
-						$query_var['country'] = $meta_keys[ $field['parameter-name-country'] ];
-					}
-				}
-			}
-		}
-
-		if ( isset( $field['allow-query-var'] ) ) {
-			if ( 'address' !== $field['type'] && 'likert' !== $field['type'] ) {
-				if ( ! empty( $get_query[ $field['parameter-name'] ] ) ) {
-					$query_var[ $field['parameter-name'] ] = $get_query[ $field['parameter-name'] ];
-				}
-			} elseif ( 'address' !== $field['type'] && 'likert' === $field['type'] ) {
-				$likert_rows = isset( $field['likert_rows'] ) ? $field['likert_rows'] : array();
-				foreach ( $likert_rows as $row_number => $row_label ) {
-					$row_label = str_replace( ' ', '', $row_label );
-					$row_slug  = 'parameter-name-' . strtolower( str_replace( '#', '-', $row_label ) );
-					if ( isset( $field [ $row_slug ] ) && ! empty( $get_query [ $field [ $row_slug ] ] ) ) {
-						$query_var[ $field[ $row_slug ] ] = $get_query[ $field[ $row_slug ] ];
-					}
-				}
-			} else {
-				if ( isset( $field['parameter-name-address1'] ) && ! empty( $get_query [ $field ['parameter-name-address1'] ] ) ) {
-					$query_var['address1'] = $get_query[ $field['parameter-name-address1'] ];
-				}
-				if ( isset( $field['parameter-name-address2'] ) && ! empty( $get_query [ $field ['parameter-name-address2'] ] ) ) {
-					$query_var['address2'] = $get_query[ $field['parameter-name-address2'] ];
-				}
-				if ( isset( $field['parameter-name-city'] ) && ! empty( $get_query [ $field ['parameter-name-city'] ] ) ) {
-					$query_var['city'] = $get_query[ $field['parameter-name-city'] ];
-				}
-				if ( isset( $field['parameter-name-state'] ) && ! empty( $get_query [ $field ['parameter-name-state'] ] ) ) {
-					$query_var['state'] = $get_query[ $field['parameter-name-state'] ];
-				}
-				if ( isset( $field['parameter-name-postal'] ) && ! empty( $get_query [ $field ['parameter-name-postal'] ] ) ) {
-					$query_var['postal'] = $get_query[ $field['parameter-name-postal'] ];
-				}
-				if ( isset( $field['parameter-name-country'] ) && ! empty( $get_query [ $field ['parameter-name-country'] ] ) ) {
-					$query_var['country'] = $get_query[ $field['parameter-name-country'] ];
-				}
-			}
-		}
-		return $query_var;
 	}
 
 	/**

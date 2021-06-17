@@ -1156,7 +1156,7 @@ abstract class EVF_Form_Fields {
 			 */
 			case 'allow_query_var':
 				if ( ! defined( 'EFP_VERSION' ) ) {
-					return;
+					break;
 				}
 				$default = ! empty( $args['default'] ) ? $args['default'] : '0';
 				$value   = isset( $field['allow-query-var'] ) ? $field['allow-query-var'] : $default;
@@ -1188,7 +1188,7 @@ abstract class EVF_Form_Fields {
 			 */
 			case 'query_var':
 				if ( ! defined( 'EFP_VERSION' ) ) {
-					return;
+					break;
 				}
 				$has_sub_fields = false;
 				$sub_fields     = array();
