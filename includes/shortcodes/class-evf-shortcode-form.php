@@ -30,6 +30,14 @@ class EVF_Shortcode_Form {
 	public static $parts = array();
 
 	/**
+	 * Contains information about attributes of shortcode values passed from the
+	 * post or page.
+	 *
+	 * @var array
+	 */
+	public static $field_values = array();
+
+	/**
 	 * Hooks in tab.
 	 */
 	public static function hooks() {
@@ -181,6 +189,7 @@ class EVF_Shortcode_Form {
 	public static function label( $field, $form_data ) {
 
 		$label = $field['properties']['label'];
+
 		// If the label is empty or disabled don't proceed.
 		if ( empty( $label['value'] ) || $label['disabled'] ) {
 			return;
@@ -580,6 +589,7 @@ class EVF_Shortcode_Form {
 
 		// Field container data.
 		$container_data = array();
+		$query_var      = array();
 
 		// Embed required-field-message to the container if the field is required.
 		if ( isset( $field['required'] ) && ( '1' === $field['required'] || true === $field['required'] ) ) {
@@ -620,6 +630,9 @@ class EVF_Shortcode_Form {
 				$container_data['required-field-message'] = isset( $field['required-field-message'] ) && '' !== $field['required-field-message'] ? evf_string_translation( $form_data['id'], $field['id'], $field['required-field-message'], '-required-field-message' ) : $required_validation;
 			}
 		}
+
+		$query_var = apply_filters( 'everest_forms_get_query_variables', $field );
+
 		$errors     = isset( evf()->task->errors[ $form_id ][ $field_id ] ) ? evf()->task->errors[ $form_id ][ $field_id ] : '';
 		$defaults   = isset( $_POST['everest_forms']['form_fields'][ $field_id ] ) && ( ! is_array( $_POST['everest_forms']['form_fields'][ $field_id ] ) && ! empty( $_POST['everest_forms']['form_fields'][ $field_id ] ) ) ? $_POST['everest_forms']['form_fields'][ $field_id ] : ''; // @codingStandardsIgnoreLine
 		$properties = apply_filters(
@@ -649,7 +662,7 @@ class EVF_Shortcode_Form {
 					'primary' => array(
 						'attr'     => array(
 							'name'        => "everest_forms[form_fields][{$field_id}]",
-							'value'       => isset( $field['default_value'] ) ? apply_filters( 'everest_forms_process_smart_tags', $field['default_value'], $form_data ) : $defaults,
+							'value'       => ( ! empty( $query_var ) && ! empty( $field['parameter-name'] ) ) ? $query_var[ $field['parameter-name'] ] : ( isset( $field['default_value'] ) ? apply_filters( 'everest_forms_process_smart_tags', $field['default_value'], $form_data ) : $defaults ),
 							'placeholder' => isset( $field['placeholder'] ) ? evf_string_translation( $form_data['id'], $field['id'], $field['placeholder'], '-placeholder' ) : '',
 						),
 						'class'    => $attributes['input_class'],
@@ -684,6 +697,26 @@ class EVF_Shortcode_Form {
 	}
 
 	/**
+	 * Set Field Attributes Parameters Obtained from Shortcode.
+	 *
+	 * @since 1.7.5
+	 *
+	 * @param mixed $field_attr Field Attributes Parameter.
+	 */
+	public static function set_field_values( $field_attr ) {
+		self::$field_values = $field_attr;
+	}
+
+	/**
+	 * Get Field Attributes Parameter.
+	 *
+	 * @since 1.7.5
+	 */
+	public static function get_field_values() {
+		return self::$field_values;
+	}
+
+	/**
 	 * Output the shortcode.
 	 *
 	 * @param array $atts Attributes.
@@ -704,9 +737,10 @@ class EVF_Shortcode_Form {
 
 		$atts = shortcode_atts(
 			array(
-				'id'          => false,
-				'title'       => false,
-				'description' => false,
+				'id'           => false,
+				'title'        => false,
+				'description'  => false,
+				'field_values' => false,
 			),
 			$atts,
 			'output'
@@ -715,6 +749,7 @@ class EVF_Shortcode_Form {
 		// Scripts load action.
 		do_action( 'everest_forms_shortcode_scripts', $atts );
 
+		self::set_field_values( $atts['field_values'] );
 		ob_start();
 		self::view( $atts['id'], $atts['title'], $atts['description'] );
 		echo ob_get_clean(); // phpcs:ignore WordPress.Security.EscapeOutput

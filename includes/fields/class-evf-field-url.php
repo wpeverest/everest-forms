@@ -38,6 +38,8 @@ class EVF_Field_URL extends EVF_Form_Fields {
 					'label_hide',
 					'default_value',
 					'css',
+					'allow_query_var',
+					'query_var',
 				),
 			),
 		);

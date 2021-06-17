@@ -40,6 +40,8 @@ class EVF_Field_Text extends EVF_Form_Fields {
 					'default_value',
 					'css',
 					'input_mask',
+					'allow_query_var',
+					'query_var',
 				),
 			),
 		);

@@ -40,6 +40,8 @@ class EVF_Field_Textarea extends EVF_Form_Fields {
 					'limit_length',
 					'default_value',
 					'css',
+					'allow_query_var',
+					'query_var',
 				),
 			),
 		);

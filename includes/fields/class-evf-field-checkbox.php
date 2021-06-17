@@ -62,6 +62,8 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 					'choice_limit',
 					'label_hide',
 					'css',
+					'allow_query_var',
+					'query_var',
 				),
 			),
 		);
@@ -348,6 +350,12 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 		// Define data.
 		$container = $field['properties']['input_container'];
 		$choices   = $field['properties']['inputs'];
+		$checklist = array();
+
+		$query_var = apply_filters( 'everest_forms_get_query_variables', $field );
+		if ( ! empty( $query_var ) ) {
+			$checklist = explode( ',', $query_var[ $field['parameter-name'] ] );
+		}
 
 		// List.
 		printf( '<ul %s>', evf_html_attributes( $container['id'], $container['class'], $container['data'], $container['attr'] ) );
@@ -355,6 +363,13 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 		foreach ( $choices as $choice ) {
 			if ( empty( $choice['container'] ) ) {
 				continue;
+			}
+
+			if ( ! empty( $checklist ) ) {
+				$choice['default'] = 0;
+			}
+			if ( in_array( $choice['attr']['value'], array_map( 'trim', $checklist ), true ) ) {
+				$choice['default'] = 1;
 			}
 
 			// Conditional logic.
