@@ -292,11 +292,16 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 * @return string
 	 */
 	public function column_actions( $entry ) {
+		$actions = array();
+
 		if ( 'trash' !== $entry->status ) {
-			$actions = array(
-				'view'  => '<a href="' . esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $entry->form_id . '&amp;view-entry=' . $entry->entry_id ) ) . '">' . esc_html__( 'View', 'everest-forms' ) . '</a>',
+			if ( current_user_can( 'everest_forms_view_entry', $entry->entry_id ) ) {
+				$actions['view'] = '<a href="' . esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $entry->form_id . '&amp;view-entry=' . $entry->entry_id ) ) . '">' . esc_html__( 'View', 'everest-forms' ) . '</a>';
+			}
+
+			if ( current_user_can( 'everest_forms_delete_entry', $entry->entry_id ) ) {
 				/* translators: %s: entry name */
-				'trash' => '<a class="submitdelete" aria-label="' . esc_attr__( 'Trash form entry', 'everest-forms' ) . '" href="' . esc_url(
+				$actions['trash'] = '<a class="submitdelete" aria-label="' . esc_attr__( 'Trash form entry', 'everest-forms' ) . '" href="' . esc_url(
 					wp_nonce_url(
 						add_query_arg(
 							array(
@@ -307,11 +312,11 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 						),
 						'trash-entry'
 					)
-				) . '">' . esc_html__( 'Trash', 'everest-forms' ) . '</a>',
-			);
+				) . '">' . esc_html__( 'Trash', 'everest-forms' ) . '</a>';
+			}
 		} else {
-			$actions = array(
-				'untrash' => '<a aria-label="' . esc_attr__( 'Restore form entry from trash', 'everest-forms' ) . '" href="' . esc_url(
+			if ( current_user_can( 'everest_forms_edit_entry', $entry->entry_id ) ) {
+				$actions['untrash'] = '<a aria-label="' . esc_attr__( 'Restore form entry from trash', 'everest-forms' ) . '" href="' . esc_url(
 					wp_nonce_url(
 						add_query_arg(
 							array(
@@ -322,8 +327,12 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 						),
 						'untrash-entry'
 					)
-				) . '">' . esc_html__( 'Restore', 'everest-forms' ) . '</a>',
-				'delete'  => '<a class="submitdelete" aria-label="' . esc_attr__( 'Delete form entry permanently', 'everest-forms' ) . '" href="' . esc_url(
+				) . '">' . esc_html__( 'Restore', 'everest-forms' ) . '</a>';
+			}
+
+			if ( current_user_can( 'everest_forms_delete_entry', $entry->entry_id ) ) {
+				/* translators: %s: entry name */
+				$actions['delete'] = '<a class="submitdelete" aria-label="' . esc_attr__( 'Delete form entry permanently', 'everest-forms' ) . '" href="' . esc_url(
 					wp_nonce_url(
 						add_query_arg(
 							array(
@@ -334,8 +343,8 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 						),
 						'delete-entry'
 					)
-				) . '">' . esc_html__( 'Delete Permanently', 'everest-forms' ) . '</a>',
-			);
+				) . '">' . esc_html__( 'Delete Permanently', 'everest-forms' ) . '</a>';
+			}
 		}
 
 		return implode( ' <span class="sep">|</span> ', apply_filters( 'everest_forms_entry_table_actions', $actions, $entry ) );

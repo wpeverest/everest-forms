@@ -4,15 +4,17 @@
  */
 @font-face {
 	font-family: 'EverestForms';
-	src:  url('../fonts/EverestForms.eot?te5e0w');
-	src:  url('../fonts/EverestForms.eot?te5e0w#iefix') format('embedded-opentype'),
-	  url('../fonts/EverestForms.ttf?te5e0w') format('truetype'),
-	  url('../fonts/EverestForms.woff?te5e0w') format('woff'),
-	  url('../fonts/EverestForms.svg?te5e0w#EverestForms') format('svg');
+	src: url('../fonts/EverestForms.eot?q9mcqj');
+	src: url('../fonts/EverestForms.eot?q9mcqj#iefix')
+		format('embedded-opentype'),
+		url('../fonts/EverestForms.ttf?q9mcqj') format('truetype'),
+		url('../fonts/EverestForms.woff?q9mcqj') format('woff'),
+		url('../fonts/EverestForms.svg?q9mcqj#EverestForms') format('svg');
 	font-weight: normal;
 	font-style: normal;
 	font-display: block;
-  }
+}
+
 /**
  * Icons
  * Icon size should be 24dp.
@@ -25,8 +27,6 @@
 		display: block;
 	}
 }
-
-
 /**
  * Headings
  **/
