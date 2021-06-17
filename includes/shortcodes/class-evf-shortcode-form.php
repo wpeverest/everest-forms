@@ -188,6 +188,7 @@ class EVF_Shortcode_Form {
 	 * @param array $form_data Form data.
 	 */
 	public static function label( $field, $form_data ) {
+
 		$label = $field['properties']['label'];
 
 		// If the label is empty or disabled don't proceed.
