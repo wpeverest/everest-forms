@@ -20,16 +20,13 @@
 * Enhancement - Enable/Disable log.
 * Feature - Divider field added.
 * Fix - Success message issue with default form due to redirection.
-<<<<<<< HEAD
-* Enhancement - Smart Tag Improvement Add Query Strings.
-=======
 * Fix - Missing Default values for fields in form builder area.
 * Fix - Ajax Form Submission Smart Tag Not Working.
 * Fix - Email Toggle Notification to individual connection.
 * Fix - Format Email Message Content for Images and Files uploads.
 * Enhancement - Required Indicators for Field Types.
 * Fix - Delete uploaded files after removing Forms or Entries.
->>>>>>> develop
+* Enhancement - Smart Tag Improvement Add Query Strings.
 
 = 1.7.4 - 11-03-2021 =
 * Fix - Hide empty select data field from entry view.
