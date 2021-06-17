@@ -4,7 +4,7 @@ Tags: contact form, forms, form builder, contact, custom form
 Requires at least: 5.0
 Tested up to: 5.7
 Requires PHP: 5.4
-Stable tag: 1.7.4
+Stable tag: 1.7.5
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -154,6 +154,32 @@ Yes, we do. Check out this [Getting Started Videos](https://docs.wpeverest.com/d
 Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/everest-forms/) :)
 
 == Changelog ==
+
+= 1.7.5 - 17-06-2021 =
+* Feature - Divider field added.
+* Feature - User capabilities added.
+* Enhancement - Enable or Disable logs.
+* Enhancement - Row clone option added.
+* Fix - Mobile container margin issue.
+* Fix - PayPal standard Redirection Issue.
+* Fix - Form Field deletion with delete button.
+* Fix - CSV textarea contents line break issue.
+* Fix - Signature field display with smart tags.
+* Fix - Password Validation show hide logic added.
+* Fix - Welcome page redirection on every plugin updates.
+* Fix - New Email Notifications not being saved on reload.
+* Fix - New Email Notifications cloned blank for assigned values.
+* Fix - During Form restore set the status to Publish instead of Draft.
+* Fix - Empty checkboxes value in view entry form details.
+* Fix - Stop default form creation when ThemeGrill Demo Importer plugin is active.
+* Fix - Payment Multiple choices and checkboxes fields amount preview in form builder area.
+* Fix - Success message issue with default form due to redirection.
+* Fix - Missing Default values for fields in form builder area.
+* Fix - Ajax Form Submission Smart Tag Not Working.
+* Fix - Format Email Message Content For Signature field.
+* Fix - Email Toggle Notification to individual connection.
+* Fix - Format Email Message Content for Images and Files uploads.
+* Fix - Delete uploaded files after removing Forms or Entries.
 
 = 1.7.4 - 11-03-2021 =
 * Fix - Hide empty select data field from entry view.

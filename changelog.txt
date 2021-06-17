@@ -1,6 +1,6 @@
 == Changelog ==
 
-= 1.7.5 - xx-xx-2021 =
+= 1.7.5 - 17-06-2021 =
 * Feature - Divider field added.
 * Feature - User capabilities added.
 * Enhancement - Enable or Disable logs.
