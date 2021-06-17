@@ -10,6 +10,7 @@
 * Fix - Form Field deletion with delete button.
 * Fix - CSV textarea contents line break issue.
 * Fix - Signature field display with smart tags.
+* Fix - Password Validation show hide logic added.
 * Fix - Welcome page redirection on every plugin updates.
 * Fix - New Email Notifications not being saved on reload.
 * Fix - New Email Notifications cloned blank for assigned values.
