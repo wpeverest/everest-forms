@@ -35,6 +35,7 @@ class EVF_Forms_Features {
 			'EVF_Field_Password',
 			'EVF_Field_HTML',
 			'EVF_Field_Title',
+			'EVF_Field_Divider',
 			'EVF_Field_Signature',
 			'EVF_Field_Address',
 			'EVF_Field_Country',
