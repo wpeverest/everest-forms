@@ -1504,6 +1504,9 @@
 			$( 'body' ).on( 'keyup', function( e ) {
 				var $field = $( '.everest-forms-preview .everest-forms-field.active' );
 				if( 46 === e.which && true === $field.hasClass( 'active' ) && false === $field.hasClass( 'evf-delete-event-active' ) ) {
+					if( false == $( '.evf-admin-row' ).hasClass( 'evf-hover' ) ) {
+						return;
+					}
 					$field.addClass( 'evf-delete-event-active' );
 					var field_id     = $field.attr( 'data-field-id' );
 					var option_field = $( '#everest-forms-field-option-' + field_id );
