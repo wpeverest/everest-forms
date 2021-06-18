@@ -31,7 +31,7 @@ class EVF_Form_Handler {
 			return false;
 		}
 
-		if ( ! isset( $args['cap'] ) ) {
+		if ( ! isset( $args['cap'] ) && is_admin() ) {
 			$args['cap'] = 'everest_forms_view_form';
 		}
 
