@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 1.7.5.1 - 18-06-2021 =
+* Fix - Permission issue with forms visibility on frontend.
+
 = 1.7.5 - 17-06-2021 =
 * Feature - Divider field added.
 * Feature - User capabilities added.
