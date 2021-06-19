@@ -2,6 +2,7 @@
 
 = 1.7.5.2 - 19-06-2021 =
 * Fix - Permission issue with file upload on frontend.
+* Fix - Dropdown field value not displayed on view entry page.
 
 = 1.7.5.1 - 18-06-2021 =
 * Fix - Permission issue with forms visibility on frontend.

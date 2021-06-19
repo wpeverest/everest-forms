@@ -69,7 +69,9 @@ $trash_link = wp_nonce_url(
 										// Check for empty serialized value.
 										if ( is_serialized( $meta_value ) ) {
 											$raw_meta_val = unserialize( $meta_value ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
-											if ( empty( $raw_meta_val['label'][0] ) ) {
+											if ( preg_match( '/dropdown_/', $meta_key ) && empty( $raw_meta_val[0] ) ) {
+												$meta_value = '';
+											} elseif ( ! preg_match( '/dropdown_/', $meta_key ) && empty( $raw_meta_val['label'][0] ) ) {
 												$meta_value = '';
 											}
 										}
