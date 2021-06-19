@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Everest Forms plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Everest Forms 1.7.5.1\n"
+"Project-Id-Version: Everest Forms 1.7.5.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/everest-forms\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-06-18T08:27:15+00:00\n"
+"POT-Creation-Date: 2021-06-19T09:55:58+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.5.0\n"
 "X-Domain: everest-forms\n"
@@ -1211,7 +1211,7 @@ msgid "Field"
 msgstr ""
 
 #: includes/admin/class-evf-admin-entries-table-list.php:299
-#: includes/admin/views/html-admin-page-entries-view.php:212
+#: includes/admin/views/html-admin-page-entries-view.php:214
 #: includes/admin/views/html-admin-page-tools-logs.php:33
 msgid "View"
 msgstr ""
@@ -1434,7 +1434,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: includes/admin/class-evf-admin-forms-table-list.php:436
-#: includes/admin/views/html-admin-page-entries-view.php:232
+#: includes/admin/views/html-admin-page-entries-view.php:234
 msgid "Move to trash"
 msgstr ""
 
@@ -1895,7 +1895,7 @@ msgid "Add-ons list"
 msgstr ""
 
 #: includes/admin/views/html-admin-page-addons.php:77
-#: includes/admin/views/html-admin-page-entries-view.php:219
+#: includes/admin/views/html-admin-page-entries-view.php:221
 msgid "Status:"
 msgstr ""
 
@@ -2038,48 +2038,48 @@ msgstr ""
 msgid "This entry does not have any fields."
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:99
+#: includes/admin/views/html-admin-page-entries-view.php:101
 msgid "Field ID"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:140
+#: includes/admin/views/html-admin-page-entries-view.php:142
 msgid "Empty"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:157
+#: includes/admin/views/html-admin-page-entries-view.php:159
 msgid "Entry Details"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:163
+#: includes/admin/views/html-admin-page-entries-view.php:165
 msgid "Entry ID:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:169
+#: includes/admin/views/html-admin-page-entries-view.php:171
 msgid "Submitted:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:170
-#: includes/admin/views/html-admin-page-entries-view.php:177
+#: includes/admin/views/html-admin-page-entries-view.php:172
+#: includes/admin/views/html-admin-page-entries-view.php:179
 msgid "M j, Y @ g:ia"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:176
+#: includes/admin/views/html-admin-page-entries-view.php:178
 msgid "Modified:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:185
+#: includes/admin/views/html-admin-page-entries-view.php:187
 msgid "User:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:203
+#: includes/admin/views/html-admin-page-entries-view.php:205
 msgid "User IP:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:211
+#: includes/admin/views/html-admin-page-entries-view.php:213
 msgid "Referer Link:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:220
+#: includes/admin/views/html-admin-page-entries-view.php:222
 msgid "Completed"
 msgstr ""
 
