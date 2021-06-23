@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 1.7.6 - xx-xx-xxxx =
+* Fix - Attach pdf to email glitches.
+
 = 1.7.5.2 - 19-06-2021 =
 * Fix - Permission issue with file upload on frontend.
 * Fix - Dropdown field value not displayed on view entry page.
