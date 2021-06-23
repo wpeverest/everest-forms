@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
 function evf_get_entry( $id, $with_fields = false, $args = array() ) {
 	global $wpdb;
 
-	if ( ! isset( $args['cap'] ) ) {
+	if ( ! isset( $args['cap'] ) && is_admin() ) {
 		$args['cap'] = 'everest_forms_view_entry';
 	}
 
