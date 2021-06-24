@@ -14,6 +14,7 @@ node_modules/
 none
 package-lock.json
 package.json
-phpcs.xml
+phpcs.xml.dist
+phpunit.xml.dist
 README.md
 renovate.json
