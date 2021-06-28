@@ -12,6 +12,11 @@
     "wpeverest/wpeverest-sniffs": "0.1.0",
     "phpunit/phpunit": "9.5"
   },
+  "autoload-dev": {
+    "psr-4": {
+      "EverestForms\\Tests\\": "tests/"
+    }
+  },
   "scripts": {
     "test": [
       "phpunit"
