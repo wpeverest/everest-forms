@@ -4,18 +4,25 @@
   "homepage": "https://wpeverest.com/plugins/everest-forms/",
   "type": "wordpress-plugin",
   "license": "GPL-3.0-or-later",
+  "config": {
+    "process-timeout": 0
+  },
   "require": {
     "composer/installers": "1.11.0"
   },
   "require-dev": {
     "wp-cli/i18n-command": "2.2.8",
     "wpeverest/wpeverest-sniffs": "0.1.0",
-    "phpunit/phpunit": "8.5.17",
-    "wp-phpunit/wp-phpunit": "5.7.2"
+    "phpunit/phpunit": "^7.5",
+    "wp-phpunit/wp-phpunit": "^5.7",
+    "spatie/phpunit-watcher": "^1.23"
   },
   "scripts": {
     "test": [
       "phpunit"
+    ],
+    "test:watch": [
+      "phpunit-watcher watch < /dev/tty"
     ],
     "phpcs": [
       "phpcs -s -p"
@@ -26,19 +33,20 @@
     "phpcbf": [
       "phpcbf -p"
     ],
-    "makepot-audit": [
+    "makepot:audit": [
       "wp --allow-root i18n make-pot . --exclude=\".github,.wordpress-org,bin,node_modules,vendor\" --slug=everest-forms"
     ],
     "makepot": [
-      "@makepot-audit --skip-audit"
+      "@makepot:audit --skip-audit"
     ]
   },
   "extra": {
     "scripts-description": {
       "test": "Run unit tests",
+			"test:watch": "Re-run unit tests automatically when files change",
       "phpcs": "Analyze code against the WordPress coding standard with PHP_CodeSniffer",
       "phpcbf": "Fix coding standards warnings/errors automatically with PHP Code Beautifier",
-      "makepot-audit": "Generate langauges/everest-forms.pot file and run audit",
+      "makepot:audit": "Generate langauges/everest-forms.pot file and run audit",
       "makepot": "Generate langauges/everest-forms.pot file"
     }
   }
