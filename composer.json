@@ -9,9 +9,13 @@
   },
   "require-dev": {
     "wp-cli/i18n-command": "2.2.8",
-    "wpeverest/wpeverest-sniffs": "0.1.0"
+    "wpeverest/wpeverest-sniffs": "0.1.0",
+    "phpunit/phpunit": "9.5"
   },
   "scripts": {
+    "test": [
+      "phpunit"
+    ],
     "phpcs": [
       "phpcs -s -p"
     ],
@@ -30,6 +34,7 @@
   },
   "extra": {
     "scripts-description": {
+      "test": "Run unit tests",
       "phpcs": "Analyze code against the WordPress coding standard with PHP_CodeSniffer",
       "phpcbf": "Fix coding standards warnings/errors automatically with PHP Code Beautifier",
       "makepot-audit": "Generate langauges/everest-forms.pot file and run audit",

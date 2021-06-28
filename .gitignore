@@ -27,6 +27,10 @@ Thumbs.db
 # Composer
 /vendor/
 
+# PHPUnit
+/.phpunit.cache
+.phpunit.result.cache
+
 # Build
 build/
 everest-forms.zip
