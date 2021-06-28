@@ -10,7 +10,8 @@
   "require-dev": {
     "wp-cli/i18n-command": "2.2.8",
     "wpeverest/wpeverest-sniffs": "0.1.0",
-    "phpunit/phpunit": "7.5.20"
+    "phpunit/phpunit": "8.5.17",
+    "wp-phpunit/wp-phpunit": "5.7.2"
   },
   "scripts": {
     "test": [
