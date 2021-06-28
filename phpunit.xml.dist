@@ -16,4 +16,7 @@
 			<group>ms-required</group>
 		</exclude>
 	</groups>
+    <php>
+        <env name="WP_PHPUNIT__TESTS_CONFIG" value="tests/phpunit/wp-config.php" />
+    </php>
 </phpunit>

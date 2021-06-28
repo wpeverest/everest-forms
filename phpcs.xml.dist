@@ -6,7 +6,7 @@
 	<exclude-pattern>includes/libraries/</exclude-pattern>
 	<exclude-pattern>includes/evf-deprecated-functions.php</exclude-pattern>
 	<exclude-pattern>includes/abstracts/legacy/</exclude-pattern>
-	<exclude-pattern>tests/phpunit/wp-test-config.php</exclude-pattern>
+	<exclude-pattern>tests/phpunit/phpunit-wp-config.php</exclude-pattern>
 	<exclude-pattern>*/node_modules/*</exclude-pattern>
 	<exclude-pattern>*/vendor/*</exclude-pattern>
 
