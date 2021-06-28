@@ -31,12 +31,15 @@ Thumbs.db
 /.phpunit.cache
 .phpunit.result.cache
 
+# Docker
+/wordpress/
+
 # Build
 build/
 everest-forms.zip
 
 # Local overrides
 .wp-env.override.json
-phpcs.xml.dist
-phpunit.xml.dist
+phpcs.xml
+phpunit.xml
 phpunit-watcher.yml

@@ -1,7 +1,7 @@
 <?php
 
 /* Path to the WordPress codebase you'd like to test. Add a forward slash in the end. */
-define( 'ABSPATH', dirname( dirname( __FILE__ ) ) . getenv( 'LOCAL_DIR' ) ?: '/public/' );
+define( 'ABSPATH', dirname( dirname( __FILE__ ) ) . '/wordpress/' );
 
 /*
  * Path to the theme to test with.
@@ -39,7 +39,7 @@ define( 'WP_DEBUG', true );
 
 define( 'DB_NAME', getenv( 'WP_DB_NAME' ) ?: 'wp_phpunit_tests' );
 define( 'DB_USER', getenv( 'WP_DB_USER' ) ?: 'root' );
-define( 'DB_PASSWORD', getenv( 'WP_DB_PASS' ) ?: 'root' );
+define( 'DB_PASSWORD', getenv( 'WP_DB_PASS' ) ?: 'password' );
 define( 'DB_HOST', 'localhost' );
 define( 'DB_CHARSET', 'utf8' );
 define( 'DB_COLLATE', '' );
