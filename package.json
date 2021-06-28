@@ -43,7 +43,7 @@
     "grunt-stylelint": "0.16.0",
     "husky": "6.0.0",
     "lint-staged": "11.0.0",
-    "node-sass": "6.0.0",
+    "node-sass": "6.0.1",
     "stylelint": "13.13.1",
     "stylelint-config-wordpress": "17.0.0",
     "webpack": "5.39.1",
