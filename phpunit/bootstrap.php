@@ -68,7 +68,7 @@ function fail_if_died( $message ) {
 tests_add_filter( 'wp_die_handler', 'fail_if_died' );
 
 // Start up the WP testing environment.
-require $tests_dir . '/includes/bootstrap.php';
+require $_tests_dir . '/includes/bootstrap.php';
 
 // Use existing behavior for wp_die during actual test execution.
 remove_filter( 'wp_die_handler', 'handle_wp_setup_failure' );

@@ -21,7 +21,7 @@
     "prephp-install": "wp-env start",
     "php-install": "wp-env run composer 'composer --ignore-platform-req=php install'",
     "pretest-unit-php": "npm run php-install",
-    "test-unit-php": "wp-env run phpunit 'phpunit --configuration=/var/www/html/wp-content/plugins/everest-forms/phpunit.xml.dist'"
+    "test-unit-php": "wp-env run phpunit 'phpunit --configuration=/var/www/html/wp-content/plugins/everest-forms/phpunit.xml.dist --verbose'"
   },
   "devDependencies": {
     "@babel/core": "7.14.6",
