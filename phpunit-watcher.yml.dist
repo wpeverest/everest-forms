@@ -1,8 +1,8 @@
 watch:
-	directories:
-		- ./includes/
-		- ./tests/phpunit/
+  directories:
+    - ./includes/
+    - ./tests/phpunit/
 
 notifications:
-	passingTests: false
-	failingTests: false
+  passingTests: false
+  failingTests: false

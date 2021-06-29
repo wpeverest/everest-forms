@@ -22,7 +22,7 @@
       "phpunit"
     ],
     "test:watch": [
-      "phpunit-watcher watch < /dev/tty"
+      "phpunit-watcher watch"
     ],
     "phpcs": [
       "phpcs -s -p"
