@@ -39,6 +39,7 @@
 		<exclude-pattern>includes/class-everest-forms.php</exclude-pattern>
 	</rule>
 
+	<!-- Custom rule properties -->
 	<rule ref="WordPress.WP.I18n">
 		<properties>
 			<property name="text_domain" type="array" value="everest-forms" />

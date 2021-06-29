@@ -1,17 +1,14 @@
 <phpunit
-	bootstrap="tests/phpunit/bootstrap.php"
+	bootstrap="tests/phpunit/includes/bootstrap.php"
 	backupGlobals="false"
 	colors="true"
 	convertErrorsToExceptions="true"
 	convertNoticesToExceptions="true"
 	convertWarningsToExceptions="true"
 	>
-    <php>
-        <env name="WP_PHPUNIT__TESTS_CONFIG" value="tests/wp-tests-config.php" />
-    </php>
 	<testsuites>
 		<testsuite name="default">
-			<directory suffix="-test.php">./tests/</directory>
+			<directory suffix="-test.php">./tests/phpunit/</directory>
 		</testsuite>
 	</testsuites>
 	<groups>

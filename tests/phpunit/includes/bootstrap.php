@@ -6,7 +6,10 @@
  */
 
 // Require composer dependencies.
-require_once dirname( dirname( __DIR__ ) ) . '/vendor/autoload.php';
+require_once dirname( dirname( dirname( __DIR__ ) ) ) . '/vendor/autoload.php';
+
+// Load tests environment variables.
+Dotenv\Dotenv::createUnsafeImmutable( dirname( dirname( __DIR__ ) ) )->safeLoad();
 
 // Determine the tests directory (from a WP dev checkout).
 // Try the WP_TESTS_DIR environment variable first.
@@ -29,7 +32,7 @@ require_once $_tests_dir . '/includes/functions.php';
  * Manually load the plugin being tested.
  */
 function _manually_load_plugin() {
-	require dirname( dirname( __DIR__ ) ) . '/everest-forms.php';
+	require dirname( dirname( dirname( __DIR__ ) ) ) . '/everest-forms.php';
 }
 
 tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
