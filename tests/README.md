@@ -4,6 +4,10 @@ TODO: Implement testing process docs.
 
 PHPUnit 8.x is unsupported and Ticket is raised in core: https://core.trac.wordpress.org/ticket/46149
 
+## Developing on a local environment
+
+Any WAMP/MAMP/LAMP local environment with a WordPress installation will be suited for local development.
+
 ### Running PHP unit tests
 
 **Warning**: For running tests, you need a **dedicated test database**. This is important to separate it from your production databases because the tests will drop the complete database each time they are run!
@@ -22,10 +26,16 @@ You also need a local installation of [Composer](https://getcomposer.org/doc/00-
 composer install
 ```
 
-And you can run the tests from the PHPUnit package:
+And you can run the PHP tests locally using this command:
 
 ```bash
-composer run phpunit
+composer run test
+```
+
+To re-run tests automatically when files change (similar to Jest), run:
+
+```
+composer run test:watch
 ```
 
 ## Developing with wp-env

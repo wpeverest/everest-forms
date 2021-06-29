@@ -43,7 +43,7 @@
   "extra": {
     "scripts-description": {
       "test": "Run unit tests",
-			"test:watch": "Re-run unit tests automatically when files change",
+      "test:watch": "Re-run unit tests automatically when files change",
       "phpcs": "Analyze code against the WordPress coding standard with PHP_CodeSniffer",
       "phpcbf": "Fix coding standards warnings/errors automatically with PHP Code Beautifier",
       "makepot:audit": "Generate langauges/everest-forms.pot file and run audit",

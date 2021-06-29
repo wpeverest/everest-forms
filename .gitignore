@@ -27,13 +27,6 @@ Thumbs.db
 # Composer
 /vendor/
 
-# PHPUnit
-/.phpunit.cache
-.phpunit.result.cache
-
-# Docker
-/wordpress/
-
 # Build
 build/
 everest-forms.zip

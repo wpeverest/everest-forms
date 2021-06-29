@@ -6,7 +6,7 @@
  */
 
 // Require composer dependencies.
-require_once dirname( dirname( dirname( __DIR__ ) ) ) . '/vendor/autoload.php';
+require_once dirname( dirname( __DIR__ ) ) . '/vendor/autoload.php';
 
 // Determine the tests directory (from a WP dev checkout).
 // Try the WP_TESTS_DIR environment variable first.
@@ -31,6 +31,7 @@ require_once $_tests_dir . '/includes/functions.php';
 function _manually_load_plugin() {
 	require dirname( dirname( __DIR__ ) ) . '/everest-forms.php';
 }
+
 tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
 
 /**
@@ -52,6 +53,7 @@ function fail_if_died( $message ) {
 
 	throw new Exception( 'WordPress died: ' . $message );
 }
+
 tests_add_filter( 'wp_die_handler', 'fail_if_died' );
 
 // Start up the WP testing environment.

@@ -17,7 +17,6 @@
     "lint:js": "eslint assets/js --ext=js",
     "makepot": "composer run-script makepot",
     "git:update-hooks": "node ./node_modules/husky/husky.js install",
-    "wp-env": "wp-env",
     "prephp-install": "wp-env start",
     "php-install": "wp-env run composer 'composer --ignore-platform-req=php install'",
     "pretest-unit-php": "npm run php-install",
