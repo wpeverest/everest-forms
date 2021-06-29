@@ -33,11 +33,12 @@ require_once $_tests_dir . '/includes/functions.php';
 /**
  * Manually load the plugin being tested.
  */
-function _manually_load_plugin() {
-	require $_plugin_dir . '/everest-forms.php';
-}
-
-tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
+tests_add_filter(
+	'muplugins_loaded',
+	function() use ( $_plugin_dir ) {
+		require_once $_plugin_dir . '/everest-forms.php';
+	}
+);
 
 /**
  * Adds a wp_die handler for use during tests.
