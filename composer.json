@@ -13,9 +13,10 @@
   "require-dev": {
     "wp-cli/i18n-command": "2.2.8",
     "wpeverest/wpeverest-sniffs": "0.1.0",
-    "phpunit/phpunit": "^7.5",
+    "phpunit/phpunit": "^7.5 || ^8.5",
     "wp-phpunit/wp-phpunit": "^5.7",
-    "spatie/phpunit-watcher": "^1.23"
+    "spatie/phpunit-watcher": "^1.23",
+    "vlucas/phpdotenv": "^5.3"
   },
   "scripts": {
     "test": [

@@ -6,6 +6,9 @@
 	convertNoticesToExceptions="true"
 	convertWarningsToExceptions="true"
 	>
+    <php>
+        <env name="WP_PHPUNIT__TESTS_CONFIG" value="tests/wp-tests-config.php" />
+    </php>
 	<testsuites>
 		<testsuite name="default">
 			<directory suffix="-test.php">./tests/</directory>
@@ -16,7 +19,4 @@
 			<group>ms-required</group>
 		</exclude>
 	</groups>
-    <php>
-        <env name="WP_PHPUNIT__TESTS_CONFIG" value="tests/phpunit/wp-config.php" />
-    </php>
 </phpunit>

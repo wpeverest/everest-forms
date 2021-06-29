@@ -5,6 +5,7 @@ project.properties
 .buildpath
 .project
 .settings*
+.env
 .idea
 .vscode
 *.sublime-project
