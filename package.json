@@ -10,6 +10,7 @@
   "license": "GPL-3.0+",
   "main": "Gruntfile.js",
   "scripts": {
+    "prepare": "husky install",
     "build": "cross-env ./bin/build-zip.sh",
     "build:core": "grunt && npm run makepot && cross-env BABEL_ENV=default NODE_ENV=production webpack",
     "build:zip": "npm run build && composer install && npm run build:core",
@@ -41,7 +42,7 @@
     "grunt-rtlcss": "2.0.2",
     "grunt-sass": "3.1.0",
     "grunt-stylelint": "0.16.0",
-    "husky": "6.0.0",
+    "husky": "7.0.0",
     "lint-staged": "11.0.0",
     "node-sass": "6.0.1",
     "stylelint": "13.13.1",
@@ -52,12 +53,6 @@
   "engines": {
     "node": ">=8.9.3",
     "npm": ">=5.5.1"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "post-merge": "./bin/post-merge.sh"
-    }
   },
   "lint-staged": {
     "*.php": [
