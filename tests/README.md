@@ -4,6 +4,8 @@ TODO: Implement testing process docs.
 
 PHPUnit 8.x is unsupported and Ticket is raised in core: https://core.trac.wordpress.org/ticket/46149
 
+Also in Docker setup to use with `wp-env` we have to upgrade composer PHPUnit package to "^8.5" because of this issue https://github.com/WordPress/gutenberg/issues/29323
+
 ## Developing on a local environment
 
 Any WAMP/MAMP/LAMP local environment with a WordPress installation will be suited for local development.
@@ -12,12 +14,13 @@ Any WAMP/MAMP/LAMP local environment with a WordPress installation will be suite
 
 **Warning**: For running tests, you need a **dedicated test database**. This is important to separate it from your production databases because the tests will drop the complete database each time they are run!
 
-You will then need to add a `WP_LOCAL_DIR` environment variable that points to the local WordPress directory. Also adapt the DB related environment variable in `wp-config.php` to match your test database:
+You will then need to adapt the DB related environment variable in `.env` to match your test database. If `tests/.env` is not added then run `composer update` which basically adds the
 
 ```php
-define( 'DB_NAME', getenv( 'WP_DB_NAME' ) ?: 'tests' );
-define( 'DB_USER', getenv( 'WP_DB_USER' ) ?: 'root' );
-define( 'DB_PASSWORD', getenv( 'WP_DB_PASS' ) ?: 'root' );
+define( 'DB_NAME', getenv( 'WP_TESTS_DB_NAME' ) ?: 'tests' );
+define( 'DB_USER', getenv( 'WP_TESTS_DB_USER' ) ?: 'root' );
+define( 'DB_PASSWORD', getenv( 'WP_TESTS_DB_PASS' ) ?: '' );
+define( 'DB_HOST', getenv( 'WP_TESTS_DB_HOST' ) ?: 'localhost' );
 ```
 
 You also need a local installation of [Composer](https://getcomposer.org/doc/00-intro.md). This will let you install the development dependencies, including [PHPUnit](https://phpunit.de/).
