@@ -18,8 +18,11 @@
     "makepot": "composer run-script makepot",
     "git:update-hooks": "node ./node_modules/husky/husky.js install",
     "prephp-install": "wp-env start",
-    "php-install": "wp-env run composer 'composer --ignore-platform-req=php install'",
-    "pretest-unit-php": "npm run php-install",
+    "prelint-php": "wp-env run composer 'install --no-interaction'",
+    "lint-php": "wp-env composer run-script phpcs",
+    "test-php": "npm run lint-php && npm run test-unit-php",
+    "test-php:watch": "wp-env run composer run-script test:watch",
+    "pretest-unit-php": "wp-env start",
     "test-unit-php": "wp-env run phpunit 'phpunit --configuration=/var/www/html/wp-content/plugins/everest-forms/phpunit.xml.dist --verbose'"
   },
   "devDependencies": {
