@@ -5,13 +5,11 @@
  * @package EverestForms
  */
 
-$_plugin_dir = getcwd();
-
 // Require composer dependencies.
-require_once $_plugin_dir . '/vendor/autoload.php';
+require_once dirname( __FILE__ ) . '/../../vendor/autoload.php';
 
 // Load tests environment variables.
-Dotenv\Dotenv::createUnsafeImmutable( $_plugin_dir )->safeLoad();
+Dotenv\Dotenv::createUnsafeImmutable( dirname( __DIR__ ) )->safeLoad();
 
 // Determine the tests directory (from a WP dev checkout).
 // Try the WP_TESTS_DIR environment variable first.
@@ -33,12 +31,11 @@ require_once $_tests_dir . '/includes/functions.php';
 /**
  * Manually load the plugin being tested.
  */
-tests_add_filter(
-	'muplugins_loaded',
-	function() use ( $_plugin_dir ) {
-		require_once $_plugin_dir . '/everest-forms.php';
-	}
-);
+function _manually_load_plugin() {
+	require_once dirname( __FILE__ ) . '/../../everest-forms.php';
+}
+
+tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
 
 /**
  * Adds a wp_die handler for use during tests.

@@ -5,7 +5,6 @@ project.properties
 .buildpath
 .project
 .settings*
-.env
 .idea
 .vscode
 *.sublime-project
@@ -32,8 +31,12 @@ Thumbs.db
 build/
 everest-forms.zip
 
+# Unit tests
+/tests/.env
+/tests/wordpress
+
 # Local overrides
-.wp-env.override.json
 phpcs.xml
 phpunit.xml
 phpunit-watcher.yml
+.wp-env.override.json

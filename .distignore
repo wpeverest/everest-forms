@@ -16,5 +16,6 @@ package-lock.json
 package.json
 phpcs.xml.dist
 phpunit.xml.dist
+phpunit-watcher.yml.dist
 README.md
 renovate.json

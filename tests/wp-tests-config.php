@@ -1,7 +1,10 @@
-<?php
+<?php // phpcs:ignoreFile
 
-/* Path to the WordPress codebase you'd like to test. Add a forward slash in the end. */
-define( 'ABSPATH', dirname( dirname( __FILE__ ) ) . '/' . ( getenv( 'WP_LOCAL_DIR' ) ? getenv( 'WP_LOCAL_DIR' ) : 'wordpress/' ) );
+$root     = dirname( __DIR__ );
+$composer = json_decode( file_get_contents( $root . '/composer.json' ), true );
+
+// Path to the WordPress codebase to test.
+define( 'ABSPATH', $root . '/' . $composer['extra']['wordpress-install-dir'] . '/' );
 
 // Path to the theme to test with.
 define( 'WP_DEFAULT_THEME', 'default' );
@@ -32,4 +35,3 @@ define( 'WP_TESTS_DOMAIN', 'example.org' );
 define( 'WP_TESTS_EMAIL', 'admin@example.org' );
 define( 'WP_TESTS_TITLE', 'Test Blog' );
 define( 'WP_PHP_BINARY', 'php' );
-define( 'WPLANG', '' );
