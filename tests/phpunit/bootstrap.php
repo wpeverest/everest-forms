@@ -10,6 +10,13 @@ $_plugin_dir = getcwd();
 // Require composer dependencies.
 require_once $_plugin_dir . '/vendor/autoload.php';
 
+WP_Mock::setUsePatchwork( true );
+WP_Mock::bootstrap( array(
+	'mock_constants' => false,
+	'mock_functions' => false,
+	'mock_hooks'     => false,
+));
+
 // Load tests environment variables.
 Dotenv\Dotenv::createUnsafeImmutable( $_plugin_dir )->safeLoad();
 

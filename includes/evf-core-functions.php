@@ -2040,7 +2040,7 @@ function evf_debug_data( $expression, $return = false ) {
  */
 function evf_string_translation( $form_id, $field_id, $value, $suffix = '' ) {
 	$context = isset( $form_id ) ? 'everest_forms_' . absint( $form_id ) : 0;
-	$name    = isset( $field_id ) ? evf_clean( $field_id . $suffix ) : '';
+	$name    = isset( $field_id ) ? ( $field_id . $suffix ) : '';
 
 	if ( function_exists( 'icl_register_string' ) ) {
 		icl_register_string( $context, $name, $value );
