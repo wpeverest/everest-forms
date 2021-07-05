@@ -4,6 +4,14 @@
   "homepage": "https://wpeverest.com/plugins/everest-forms/",
   "type": "wordpress-plugin",
   "license": "GPL-3.0-or-later",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "authors": [
+    {
+      "name": "wpeverest",
+      "email": "support@wpeverest.com"
+    }
+  ],
   "config": {
     "process-timeout": 0
   },
@@ -17,9 +25,16 @@
     "phpunit/phpunit": "7.5.20",
     "wp-phpunit/wp-phpunit": "5.7.2",
     "spatie/phpunit-watcher": "1.23.2",
-    "vlucas/phpdotenv": "5.3.0",
+    "vlucas/phpdotenv": "^5.3",
+    "10up/wp_mock": "dev-enhance/allow-to-enable-disable-mock-constants-functions",
     "roots/wordpress": "5.7.2"
   },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "git@github.com:mi5t4n/wp_mock.git"
+    }
+  ],
   "scripts": {
     "phpcs": [
       "phpcs -s -p"

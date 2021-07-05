@@ -8,6 +8,13 @@
 // Require composer dependencies.
 require_once dirname( __FILE__ ) . '/../../vendor/autoload.php';
 
+WP_Mock::setUsePatchwork( true );
+WP_Mock::bootstrap( array(
+	'mock_constants' => false,
+	'mock_functions' => false,
+	'mock_hooks'     => false,
+));
+
 // Load tests environment variables.
 Dotenv\Dotenv::createUnsafeImmutable( dirname( __DIR__ ) )->safeLoad();
 
