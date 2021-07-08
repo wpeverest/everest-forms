@@ -1366,6 +1366,12 @@ abstract class EVF_Form_Fields {
 				$output      = sprintf( '<div class="description %s">%s</div>', $class, $description );
 				break;
 
+			case 'repeater_button_add_remove_label':
+				$add_new_label = isset( $field['repeater_button_add_new_label'] ) && ! empty( $field['repeater_button_add_new_label'] ) ? $field['repeater_button_add_new_label'] : 'Add';
+				$remove_label  = isset( $field['repeater_button_remove_label'] ) && ! empty( $field['repeater_button_remove_label'] ) ? $field['repeater_button_remove_label'] : 'Remove';
+				$output        = sprintf( '<div style="margin-right: %s" class="evf-add-row repeater_button_add_remove_label %s"><span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-plus">%s</span>&nbsp;<span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-minus">%s</span></div>', '65%', $class, $add_new_label, $remove_label );
+				break;
+
 			case 'choices':
 				$values         = ! empty( $field['choices'] ) ? $field['choices'] : $this->defaults;
 				$choices_fields = array( 'select', 'radio', 'checkbox', 'payment-multiple', 'payment-checkbox' );
