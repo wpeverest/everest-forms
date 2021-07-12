@@ -30,3 +30,13 @@ Thumbs.db
 # Build
 build/
 everest-forms.zip
+
+# Unit tests
+/tests/.env
+/tests/wordpress
+
+# Local overrides
+phpcs.xml
+phpunit.xml
+phpunit-watcher.yml
+.wp-env.override.json
