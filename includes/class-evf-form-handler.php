@@ -109,7 +109,11 @@ class EVF_Form_Handler {
 		}
 
 		// Fetch posts.
-		$forms = get_posts( $args );
+		$forms = wp_cache_get( 'evf_get_multiple_forms' );
+		if ( false === $forms ) {
+			$forms = get_posts( $args );
+			wp_cache_add( 'evf_get_multiple_forms', $forms, 'everest-forms' );
+		}
 
 		if ( $content_only ) {
 			$forms = array_map( array( $this, 'prepare_post_content' ), $forms );
