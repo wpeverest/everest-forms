@@ -308,6 +308,51 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						</tr>
 						<?php
 						break;
+					case 'image':
+						$option_value = $value['value'];
+						if ( empty( $option_value ) ) {
+							$option_value = $value['default'];
+						}
+
+						if ( empty( $option_value ) ) {
+							// To be replaced before merge.
+							$option_value = 'https://upload.wikimedia.org/wikipedia/en/thumb/4/41/SELECT_logo.svg/522px-SELECT_logo.svg.png';
+						}
+
+						$visibility_class = array();
+
+						if ( isset( $value['is_visible'] ) ) {
+							$visibility_class[] = $value['is_visible'] ? 'everest-forms-visible' : 'everest-forms-hidden';
+						}
+
+						?>
+						<tr valign="top">
+							<th scope="row" class="titledesc">
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></label>
+							</th>
+							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">&lrm;
+							<img src="<?php echo esc_attr( $option_value ); ?>" alt="<?php echo esc_attr__( 'Header Logo', 'everest-forms' ); ?>" class="evf-image-uploader" height="100" width="120">
+							<input
+									name="<?php echo esc_attr( $value['id'] ); ?>"
+									id="<?php echo esc_attr( $value['id'] ); ?>"
+									value="<?php echo esc_attr( $option_value ); ?>"
+									type="hidden"
+							>
+						<?php
+						// Adding scripts.
+						$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+						wp_register_script( 'evf-file-uploader', evf()->plugin_url() . '/assets/js/admin/evf-file-uploader' . $suffix . '.js', array(), EVF_VERSION, true );
+						wp_localize_script(
+							'evf-file-uploader',
+							'evf_file_uploader',
+							array(
+								'upload_file' => __( 'Upload Image', 'everest-forms' ),
+							)
+						);
+						wp_enqueue_script( 'jquery' );
+						wp_enqueue_media();
+						wp_enqueue_script( 'evf-file-uploader' );
+						break;
 
 					// Color picker.
 					case 'color':
