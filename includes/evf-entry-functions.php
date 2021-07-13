@@ -72,7 +72,11 @@ function evf_get_entry( $id, $with_fields = false, $args = array() ) {
 function evf_get_entries_ids( $form_id ) {
 	global $wpdb;
 
-	$results = $wpdb->get_results( $wpdb->prepare( "SELECT entry_id FROM {$wpdb->prefix}evf_entries WHERE form_id = %d", $form_id ) ); // WPCS: cache ok, DB call ok.
+	$results = wp_cache_get( $form_id, 'evf-entries-ids' );
+	if ( false === $results ) {
+		$results = $wpdb->get_results( $wpdb->prepare( "SELECT entry_id FROM {$wpdb->prefix}evf_entries WHERE form_id = %d", $form_id ) ); // WPCS: cache ok, DB call ok.
+		wp_cache_add( $form_id, $results, 'evf-entries-ids' );
+	}
 
 	return array_map( 'intval', wp_list_pluck( $results, 'entry_id' ) );
 }
