@@ -27,7 +27,11 @@ function evf_get_entry( $id, $with_fields = false, $args = array() ) {
 		return null;
 	}
 
-	$entry = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}evf_entries WHERE entry_id = %d LIMIT 1;", $id ) ); // WPCS: cache ok, DB call ok.
+	$entry = wp_cache_get( $id, 'evf-entry' );
+	if ( false === $entry ) {
+		$entry = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}evf_entries WHERE entry_id = %d LIMIT 1;", $id ) ); // WPCS: cache ok, DB call ok.
+		wp_cache_add( $id, $entry, 'evf-entry' );
+	}
 
 	// BW: Mark entry as read for older entries.
 	if ( is_null( $entry->fields ) && empty( $entry->viewed ) ) {
@@ -56,7 +60,13 @@ function evf_get_entry( $id, $with_fields = false, $args = array() ) {
 			}
 		}
 	} elseif ( apply_filters( 'everest_forms_get_entry_metadata', true ) ) {
-		$results     = $wpdb->get_results( $wpdb->prepare( "SELECT meta_key, meta_value FROM {$wpdb->prefix}evf_entrymeta WHERE entry_id = %d", $id ), ARRAY_A );
+		$results = wp_cache_get( $id, 'evf-entrymeta' );
+
+		if ( false === $results ) {
+			$results = $wpdb->get_results( $wpdb->prepare( "SELECT meta_key, meta_value FROM {$wpdb->prefix}evf_entrymeta WHERE entry_id = %d", $id ), ARRAY_A );
+			wp_cache_add( $id, $results, 'evf-entrymeta' );
+		}
+
 		$entry->meta = wp_list_pluck( $results, 'meta_value', 'meta_key' );
 	}
 
@@ -200,8 +210,12 @@ function evf_search_entries( $args ) {
 		$query[] = $wpdb->prepare( 'OFFSET %d', absint( $args['offset'] ) );
 	}
 
-	// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-	$results = $wpdb->get_results( implode( ' ', $query ), ARRAY_A );
+	$results = wp_cache_get( $args['form_id'], 'evf-search-entries' );
+
+	if ( false === $results ) {
+		$results = $wpdb->get_results( implode( ' ', $query ), ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		wp_cache_add( $args['form_id'], $results, 'evf-search-entries' );
+	}
 
 	$ids = wp_list_pluck( $results, 'entry_id' );
 
@@ -276,8 +290,12 @@ function evf_get_entries_by_form_id( $form_id, $start_date = '', $end_date = '' 
 		$query[] = $wpdb->prepare( 'AND date_created  <= %s', $end_date );
 	}
 
-	// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-	$results = $wpdb->get_results( implode( ' ', $query ), ARRAY_A );
+	$results = wp_cache_get( $form_id, 'evf-search-entries' );
+
+	if ( false === $results ) {
+		$results = $wpdb->get_results( implode( ' ', $query ), ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		wp_cache_add( $form_id, $results, 'evf-search-entries' );
+	}
 
 	return $results;
 }
