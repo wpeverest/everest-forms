@@ -40,7 +40,12 @@ class EVF_Form_Handler {
 				return false;
 			}
 
-			$the_post = get_post( absint( $id ) );
+			// Check the cache.
+			$the_post = wp_cache_get( $id, 'evf_form' );
+			if ( false === $the_post ) {
+				$the_post = get_post( absint( $id ) );
+				wp_cache_add( $id, $the_post, 'evf_form' );
+			}
 
 			if ( $the_post && 'everest_form' === $the_post->post_type ) {
 				$forms = empty( $args['content_only'] ) ? $the_post : evf_decode( $the_post->post_content );
