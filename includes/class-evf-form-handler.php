@@ -40,11 +40,7 @@ class EVF_Form_Handler {
 				return false;
 			}
 
-			$the_post = wp_cache_get( $id, 'evf-get-form' );
-			if ( false === $the_post ) {
-				$the_post = get_post( absint( $id ) );
-				wp_cache_add( $id, $the_post, 'evf-get-form' );
-			}
+			$the_post = get_post( absint( $id ) );
 
 			if ( $the_post && 'everest_form' === $the_post->post_type ) {
 				$forms = empty( $args['content_only'] ) ? $the_post : evf_decode( $the_post->post_content );
@@ -62,11 +58,17 @@ class EVF_Form_Handler {
 
 			$args['post_type'] = 'everest_form';
 
-			$forms = wp_cache_get( 'evf_get_multiple_forms' );
-			if ( false === $forms ) {
-				$forms = get_posts( $args );
-				wp_cache_add( 'evf_get_multiple_forms', $forms, 'everest-forms' );
+			// Check for cache.
+			$cache_key   = EVF_Cache_Helper::get_cache_prefix( 'forms' ) . 'get_forms_' . md5( implode( ',', $args ) );
+			$cache_value = wp_cache_get( $cache_key, 'form_get_results' );
+
+			if ( $cache_value ) {
+				return $cache_value;
 			}
+
+			$forms = get_posts( $args );
+
+			wp_cache_set( $cache_key, $forms, 'form_get_results' );
 		}
 
 		if ( empty( $forms ) ) {
@@ -116,16 +118,22 @@ class EVF_Form_Handler {
 			$args['post__in'] = array( 0 );
 		}
 
-		// Fetch posts.
-		$forms = wp_cache_get( 'evf_get_multiple_forms' );
-		if ( false === $forms ) {
-			$forms = get_posts( $args );
-			wp_cache_add( 'evf_get_multiple_forms', $forms, 'everest-forms' );
+		// Check for cache.
+		$cache_key   = EVF_Cache_Helper::get_cache_prefix( 'forms' ) . 'get_multiple_forms_' . md5( implode( ',', $args ) );
+		$cache_value = wp_cache_get( $cache_key, 'form_get_multiple_results' );
+
+		if ( $cache_value && empty( $id ) ) {
+			return $cache_value;
 		}
+
+		// Fetch posts.
+		$forms = get_posts( $args );
 
 		if ( $content_only ) {
 			$forms = array_map( array( $this, 'prepare_post_content' ), $forms );
 		}
+
+		wp_cache_set( $cache_key, $forms, 'form_get_multiple_results' );
 
 		return $forms;
 	}
