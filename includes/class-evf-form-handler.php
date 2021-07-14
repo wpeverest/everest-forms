@@ -41,10 +41,10 @@ class EVF_Form_Handler {
 			}
 
 			// Check the cache.
-			$the_post = wp_cache_get( $id, 'evf_form' );
+			$the_post = wp_cache_get( $id, 'forms' );
 			if ( false === $the_post ) {
 				$the_post = get_post( absint( $id ) );
-				wp_cache_add( $id, $the_post, 'evf_form' );
+				wp_cache_add( $id, $the_post, 'forms' );
 			}
 
 			if ( $the_post && 'everest_form' === $the_post->post_type ) {
@@ -113,7 +113,7 @@ class EVF_Form_Handler {
 		$cache_key   = EVF_Cache_Helper::get_cache_prefix( 'forms' ) . 'get_multiple_forms_' . md5( implode( ',', $args ) );
 		$cache_value = wp_cache_get( $cache_key, 'form_get_multiple_results' );
 
-		if ( $cache_value && empty( $id ) ) {
+		if ( $cache_value ) {
 			return $cache_value;
 		}
 
