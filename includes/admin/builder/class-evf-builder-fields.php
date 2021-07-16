@@ -248,7 +248,36 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			 */
 			do_action( 'everest_forms_display_builder_row_before', $row_id, $form_data, $form_id );
 
-			echo '<div class="evf-admin-row" data-row-id="' . absint( $row ) . '">';
+			$is_repeater        = '';
+			$grid_1             = isset( $row_grid['grid_1'] ) ? $row_grid['grid_1'] : array();
+			$grid_2             = isset( $row_grid['grid_2'] ) ? $row_grid['grid_2'] : array();
+			$grid_1_field_types = array();
+			$grid_2_field_types = array();
+
+			if ( is_array( $grid_1 ) ) {
+				$grid_1_field_types = array_map(
+					function( $field_id ) use ( $fields ) {
+						return $fields[ $field_id ]['type'];
+					},
+					$grid_1
+				);
+			}
+			if ( is_array( $grid_2 ) ) {
+				$grid_2_field_types = array_map(
+					function( $field_id ) use ( $fields ) {
+						return $fields[ $field_id ]['type'];
+					},
+					$grid_2
+				);
+			}
+
+			$field_type = array_merge( $grid_1_field_types, $grid_2_field_types );
+
+			if ( in_array( 'repeater-fields', $field_type, true ) ) {
+				$is_repeater = ' data-field-type = "repeater-fields"';
+			}
+
+			echo '<div class="evf-admin-row" data-row-id="' . absint( $row ) . '"' . $is_repeater . '>'; // @codingStandardsIgnoreLine
 			echo '<div class="evf-toggle-row">';
 			echo '<div class="evf-duplicate-row"><span class="dashicons dashicons-media-default" title="Duplicate Row"></span></div>';
 			echo '<div class="evf-delete-row"><span class="dashicons dashicons-trash" title="Delete Row"></span></div>';
@@ -334,9 +363,9 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 
 		printf( '<div class="everest-forms-field everest-forms-field-%1$s %2$s" id="everest-forms-field-%3$s" data-field-id="%3$s" data-field-type="%4$s">', esc_attr( $field['type'] ), esc_attr( $css ), esc_attr( $field['id'] ), esc_attr( $field['type'] ) );
 		printf( '<div class="evf-field-action">' );
-			printf( '<a href="#" class="everest-forms-field-duplicate" title="%s"><span class="dashicons dashicons-media-default"></span></a>', esc_html__( 'Duplicate Field', 'everest-forms' ) );
-			printf( '<a href="#" class="everest-forms-field-delete" title="%s"><span class="dashicons dashicons-trash"></span></a>', esc_html__( 'Delete Field', 'everest-forms' ) );
-			printf( '<a href="#" class="everest-forms-field-setting" title="%s"><span class="dashicons dashicons-admin-generic"></span></a>', esc_html__( 'Settings', 'everest-forms' ) );
+		printf( '<a href="#" class="everest-forms-field-duplicate" title="%s"><span class="dashicons dashicons-media-default"></span></a>', esc_html__( 'Duplicate Field', 'everest-forms' ) );
+		printf( '<a href="#" class="everest-forms-field-delete" title="%s"><span class="dashicons dashicons-trash"></span></a>', esc_html__( 'Delete Field', 'everest-forms' ) );
+		printf( '<a href="#" class="everest-forms-field-setting" title="%s"><span class="dashicons dashicons-admin-generic"></span></a>', esc_html__( 'Settings', 'everest-forms' ) );
 		printf( '</div>' );
 
 		do_action( 'everest_forms_builder_fields_preview_' . $field['type'], $field );

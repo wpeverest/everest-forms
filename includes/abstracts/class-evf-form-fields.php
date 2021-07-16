@@ -1366,6 +1366,11 @@ abstract class EVF_Form_Fields {
 				$output      = sprintf( '<div class="description %s">%s</div>', $class, $description );
 				break;
 
+			case 'repeater_fields':
+				$repeater_fields = isset( $field['repeater_fields'] ) && ! empty( $field['repeater_fields'] ) ? $field['repeater_fields'] : '';
+				$output          = sprintf( '<div>%s</div>', $repeater_fields );
+				break;
+
 			case 'repeater_button_add_remove_label':
 				$add_new_label = isset( $field['repeater_button_add_new_label'] ) && ! empty( $field['repeater_button_add_new_label'] ) ? $field['repeater_button_add_new_label'] : 'Add';
 				$remove_label  = isset( $field['repeater_button_remove_label'] ) && ! empty( $field['repeater_button_remove_label'] ) ? $field['repeater_button_remove_label'] : 'Remove';
