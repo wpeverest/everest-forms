@@ -307,9 +307,22 @@ class EVF_Form_Task {
 		$settings = $this->form_data['settings'];
 		$message  = isset( $settings['successful_form_submission_message'] ) ? $settings['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
 
+		if ( 'yes' === get_option( 'everest_forms_pdf_download_after_submit', 'no' ) ) {
+			global $__everest_form_id;
+			global $__everest_form_entry_id;
+			$__everest_form_id       = $form_id;
+			$__everest_form_entry_id = $entry_id;
+		}
+
 		if ( '1' === $ajax_form_submission ) {
 			$response_data['message']  = $message;
 			$response_data['response'] = 'success';
+			$response_data['form_id']  = $form_id;
+			$response_data['entry_id'] = $entry_id;
+
+			if ( 'yes' === get_option( 'everest_forms_pdf_download_after_submit', 'no' ) ) {
+				$response_data['pdf_download'] = true;
+			}
 
 			// Backward Compatibility Check.
 			switch ( $settings['redirect_to'] ) {

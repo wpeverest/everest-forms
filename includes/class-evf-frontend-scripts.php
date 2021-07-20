@@ -309,6 +309,7 @@ class EVF_Frontend_Scripts {
 					'submit'              => esc_html__( 'Submit', 'everest-forms' ),
 					'error'               => esc_html__( 'Sorry, something went wrong. Please try again', 'everest-forms' ),
 					'required'            => esc_html__( 'This field is required.', 'everest-forms' ),
+					'pdf_download'        => esc_html__( 'Click here to download your pdf submission', 'everest-forms' ),
 				);
 				break;
 			default:

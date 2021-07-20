@@ -59,8 +59,12 @@ jQuery( function( $ ) {
 							return;
 						}
 						if ( 'success' === xhr.data.response || true === xhr.success ) {
+							let pdf_download = '';
+							if(xhr.data.form_id !== undefined && xhr.data.entry_id !== undefined && xhr.data.pdf_download !== undefined && xhr.data.pdf_download === true){
+								pdf_download = '<br><small><a href="/?page=evf-entries-pdf&form_id='+ xhr.data.form_id+'&entry_id='+xhr.data.entry_id+'">' + everest_forms_ajax_submission_params.pdf_download + '</a></small>';
+							}
 							formTuple.trigger( 'reset' );
-							formTuple.closest( '.everest-forms' ).html( '<div class="everest-forms-notice everest-forms-notice--success" role="alert">' + xhr.data.message + '</div>' ).focus();
+							formTuple.closest( '.everest-forms' ).html( '<div class="everest-forms-notice everest-forms-notice--success" role="alert">' + xhr.data.message + pdf_download + '</div>' ).focus();
 						} else {
 							var	form_id = formTuple.data( 'formid' ),
 								error   =  everest_forms_ajax_submission_params.error,
