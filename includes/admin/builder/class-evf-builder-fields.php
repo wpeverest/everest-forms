@@ -248,34 +248,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			 */
 			do_action( 'everest_forms_display_builder_row_before', $row_id, $form_data, $form_id );
 
-			$is_repeater        = '';
-			$grid_1             = isset( $row_grid['grid_1'] ) ? $row_grid['grid_1'] : array();
-			$grid_2             = isset( $row_grid['grid_2'] ) ? $row_grid['grid_2'] : array();
-			$grid_1_field_types = array();
-			$grid_2_field_types = array();
-
-			if ( is_array( $grid_1 ) ) {
-				$grid_1_field_types = array_map(
-					function( $field_id ) use ( $fields ) {
-						return $fields[ $field_id ]['type'];
-					},
-					$grid_1
-				);
-			}
-			if ( is_array( $grid_2 ) ) {
-				$grid_2_field_types = array_map(
-					function( $field_id ) use ( $fields ) {
-						return $fields[ $field_id ]['type'];
-					},
-					$grid_2
-				);
-			}
-
-			$field_type = array_merge( $grid_1_field_types, $grid_2_field_types );
-
-			if ( in_array( 'repeater-fields', $field_type, true ) ) {
-				$is_repeater = ' data-field-type = "repeater-fields"';
-			}
+			$is_repeater = ( ! is_array( apply_filters( 'everest_forms_display_repeater_fields', $row_grid, $fields ) ) ) ? apply_filters( 'everest_forms_display_repeater_fields', $row_grid, $fields ) : '';
 
 			echo '<div class="evf-admin-row" data-row-id="' . absint( $row ) . '"' . $is_repeater . '>'; // @codingStandardsIgnoreLine
 			echo '<div class="evf-toggle-row">';
