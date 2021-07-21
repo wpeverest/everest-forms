@@ -274,7 +274,14 @@ function evf_get_count_entries_by_status( $form_id ) {
 function evf_get_count_entries_by_last_entry( $form_id, $last_entry ) {
 	global $wpdb;
 
-	return $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(entry_id) FROM {$wpdb->prefix}evf_entries WHERE form_id = %d AND entry_id > %d", $form_id, $last_entry ) );
+	$results = wp_cache_get( $form_id, 'evf-last-entries-count' );
+
+	if ( false === $results ) {
+		$results = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(entry_id) FROM {$wpdb->prefix}evf_entries WHERE form_id = %d AND entry_id > %d", $form_id, $last_entry ) );
+		wp_cache_add( $form_id, $results, 'evf-last-entries-count' );
+	}
+
+	return $results;
 }
 
 /**
