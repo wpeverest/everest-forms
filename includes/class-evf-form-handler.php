@@ -90,6 +90,8 @@ class EVF_Form_Handler {
 			'order'         => 'ASC',
 			'no_found_rows' => true,
 			'nopaging'      => true,
+			'status'        => 'publish',
+			'numberposts'   => -1,
 		);
 
 		$args = wp_parse_args( $args, $defaults );
@@ -109,6 +111,7 @@ class EVF_Form_Handler {
 			$args['post__in'] = array( 0 );
 		}
 
+		unset( $args['cap'] );
 		// Check for cache.
 		$cache_key   = EVF_Cache_Helper::get_cache_prefix( 'forms' ) . 'get_multiple_forms_' . md5( implode( ',', $args ) );
 		$cache_value = wp_cache_get( $cache_key, 'form_get_multiple_results' );
