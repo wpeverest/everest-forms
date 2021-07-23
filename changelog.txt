@@ -3,6 +3,7 @@
 = 1.7.6 - xx-xx-xxxx =
 * Fix - Attach pdf to email glitches.
 * Fix - Get entries permission issue.
+* Fix - Smart Tag Page Issues.
 
 = 1.7.5.2 - 19-06-2021 =
 * Fix - Permission issue with file upload on frontend.
