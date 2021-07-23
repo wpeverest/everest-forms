@@ -111,7 +111,7 @@ class EVF_Form_Task {
 
 			// Pre-process/validate hooks and filter. Data is not validated or cleaned yet so use with caution.
 			$entry                      = apply_filters( 'everest_forms_process_before_filter', $entry, $this->form_data );
-			$this->form_data['page_id'] = $entry['post_id'];
+			$this->form_data['page_id'] = array_key_exists( 'post_id', $entry ) ? $entry['post_id'] : $form_id;
 
 			do_action( 'everest_forms_process_before', $entry, $this->form_data );
 			do_action( "everest_forms_process_before_{$form_id}", $entry, $this->form_data );
