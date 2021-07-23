@@ -91,6 +91,7 @@ class EVF_Form_Handler {
 			'no_found_rows' => true,
 			'nopaging'      => true,
 			'status'        => 'publish',
+			'post_status'   => 'publish',
 			'numberposts'   => -1,
 		);
 
