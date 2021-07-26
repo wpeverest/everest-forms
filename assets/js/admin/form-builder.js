@@ -2022,7 +2022,6 @@
 			}
 		},
 		bindFields: function () {
-			var is_received = false;
 			$( '.evf-admin-field-wrapper' ).sortable({
 				items: '.evf-admin-row',
 				axis: 'y',
@@ -2057,27 +2056,14 @@
 					$( event.target ).removeClass( 'evf-item-hover' );
 					$( event.target ).closest( '.evf-admin-row' ).removeClass( 'evf-hover' );
 					EVFPanelBuilder.checkEmptyGrid();
-					if ( false == is_received){
-						$('[data-field-type="repeater-fields"]').has('.evf-empty-grid').remove();
-					}
-					else if( $('[data-field-type="repeater-fields"]').has('.evf-empty-grid').length == 0){
-						EVFPanelBuilder.bindAddNewRepeaterRow();
-					}
 				},
 				over: function( event, ui ) {
 					$( '.evf-admin-grid' ).addClass( 'evf-hover' );
 					$( event.target ).addClass( 'evf-item-hover' );
 					$( event.target ).closest( '.evf-admin-row' ).addClass( 'evf-hover' );
 					EVFPanelBuilder.checkEmptyGrid();
-					if( $('[data-field-type="repeater-fields"]').has('.evf-empty-grid').length == 0){
-						EVFPanelBuilder.bindAddNewRepeaterRow();
-					}
 				},
 				receive: function( event, ui ) {
-					is_received = true;
-					if ('repeater-fields' === ui.helper.parent().parent().attr('data-field-type') ){
-						is_repeater = true;
-					}
 					if ( ui.sender.is( 'button' ) ) {
 						if( ui.helper.parent().parent().find('#add_remove_button').length === 0 && (undefined !== ui.helper.parent().parent().attr('data-field-type') || 'repeater-fields' === ui.helper.parent().parent().attr('data-field-type') ) ){
 							ui.helper.parent().append('<div id="add_remove_button" style="margin-right: 65%" class="evf-add-row repeater_button_add_remove_label"><span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-plus">Add</span>&nbsp;<span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-minus">Remove</span></div>');
@@ -2099,8 +2085,9 @@
 				scrollSensitivity: 40,
 				forcePlaceholderSize: true,
 				helper: function(event) {
-					if ( 'evf-icon evf-icon-custom-html' === event.target.className ){
+					if ( 'evf-icon evf-icon-custom-html' == event.target.className ){
 						EVFPanelBuilder.bindAddNewRepeaterRow();
+						console.log('this is called');
 					}
 					return $( this ).clone().insertAfter( $( this ).closest( '.everest-forms-tab-content' ).siblings( '.everest-forms-fields-tab' ) );
 				},
