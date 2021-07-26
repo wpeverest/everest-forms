@@ -27,7 +27,11 @@ function evf_get_entry( $id, $with_fields = false, $args = array() ) {
 		return null;
 	}
 
-	$entry = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}evf_entries WHERE entry_id = %d LIMIT 1;", $id ) ); // WPCS: cache ok, DB call ok.
+	$entry = wp_cache_get( $id, 'evf-entry' );
+	if ( false === $entry ) {
+		$entry = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}evf_entries WHERE entry_id = %d LIMIT 1;", $id ) ); // WPCS: cache ok, DB call ok.
+		wp_cache_add( $id, $entry, 'evf-entry' );
+	}
 
 	// BW: Mark entry as read for older entries.
 	if ( is_null( $entry->fields ) && empty( $entry->viewed ) ) {
@@ -56,7 +60,13 @@ function evf_get_entry( $id, $with_fields = false, $args = array() ) {
 			}
 		}
 	} elseif ( apply_filters( 'everest_forms_get_entry_metadata', true ) ) {
-		$results     = $wpdb->get_results( $wpdb->prepare( "SELECT meta_key, meta_value FROM {$wpdb->prefix}evf_entrymeta WHERE entry_id = %d", $id ), ARRAY_A );
+		$results = wp_cache_get( $id, 'evf-entrymeta' );
+
+		if ( false === $results ) {
+			$results = $wpdb->get_results( $wpdb->prepare( "SELECT meta_key, meta_value FROM {$wpdb->prefix}evf_entrymeta WHERE entry_id = %d", $id ), ARRAY_A );
+			wp_cache_add( $id, $results, 'evf-entrymeta' );
+		}
+
 		$entry->meta = wp_list_pluck( $results, 'meta_value', 'meta_key' );
 	}
 
@@ -72,7 +82,11 @@ function evf_get_entry( $id, $with_fields = false, $args = array() ) {
 function evf_get_entries_ids( $form_id ) {
 	global $wpdb;
 
-	$results = $wpdb->get_results( $wpdb->prepare( "SELECT entry_id FROM {$wpdb->prefix}evf_entries WHERE form_id = %d", $form_id ) ); // WPCS: cache ok, DB call ok.
+	$results = wp_cache_get( $form_id, 'evf-entries-ids' );
+	if ( false === $results ) {
+		$results = $wpdb->get_results( $wpdb->prepare( "SELECT entry_id FROM {$wpdb->prefix}evf_entries WHERE form_id = %d", $form_id ) ); // WPCS: cache ok, DB call ok.
+		wp_cache_add( $form_id, $results, 'evf-entries-ids' );
+	}
 
 	return array_map( 'intval', wp_list_pluck( $results, 'entry_id' ) );
 }
@@ -159,6 +173,14 @@ function evf_search_entries( $args ) {
 	$where     = (array) apply_filters( 'everest_forms_search_entries_where', $where, $args );
 	$where_sql = implode( ' AND ', $where );
 
+	// Check for cache.
+	$cache_key   = EVF_Cache_Helper::get_cache_prefix( 'entries' ) . 'search_entries' . md5( implode( ',', $args ) );
+	$cache_value = wp_cache_get( $cache_key, 'entry_search_results' );
+
+	if ( $cache_value ) {
+		return $cache_value;
+	}
+
 	// Query object.
 	$query   = array();
 	$query[] = "SELECT DISTINCT {$wpdb->prefix}evf_entries.entry_id FROM {$wpdb->prefix}evf_entries INNER JOIN {$wpdb->prefix}evf_entrymeta WHERE {$where_sql}";
@@ -196,10 +218,11 @@ function evf_search_entries( $args ) {
 		$query[] = $wpdb->prepare( 'OFFSET %d', absint( $args['offset'] ) );
 	}
 
-	// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-	$results = $wpdb->get_results( implode( ' ', $query ), ARRAY_A );
+	$results = $wpdb->get_results( implode( ' ', $query ), ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
 	$ids = wp_list_pluck( $results, 'entry_id' );
+
+	wp_cache_set( $cache_key, $ids, 'entry_search_results' );
 
 	return $ids;
 }
@@ -216,15 +239,22 @@ function evf_get_count_entries_by_status( $form_id ) {
 	$counts    = array();
 
 	foreach ( $statuses as $status ) {
-		$count = count(
-			evf_search_entries(
-				array(
-					'limit'   => -1,
-					'status'  => $status,
-					'form_id' => $form_id,
+		$cache_key = EVF_Cache_Helper::get_cache_prefix( 'entries' ) . $status . '_count';
+		$count     = wp_cache_get( $cache_key, 'entries' );
+
+		if ( false === $count ) {
+			$count = count(
+				evf_search_entries(
+					array(
+						'limit'   => -1,
+						'status'  => $status,
+						'form_id' => $form_id,
+					)
 				)
-			)
-		);
+			);
+
+			wp_cache_add( $cache_key, $count, 'entries' );
+		}
 
 		$counts[ $status ] = $count;
 	}
@@ -244,7 +274,14 @@ function evf_get_count_entries_by_status( $form_id ) {
 function evf_get_count_entries_by_last_entry( $form_id, $last_entry ) {
 	global $wpdb;
 
-	return $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(entry_id) FROM {$wpdb->prefix}evf_entries WHERE form_id = %d AND entry_id > %d", $form_id, $last_entry ) );
+	$results = wp_cache_get( $form_id, 'evf-last-entries-count' );
+
+	if ( false === $results ) {
+		$results = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(entry_id) FROM {$wpdb->prefix}evf_entries WHERE form_id = %d AND entry_id > %d", $form_id, $last_entry ) );
+		wp_cache_add( $form_id, $results, 'evf-last-entries-count' );
+	}
+
+	return $results;
 }
 
 /**
@@ -272,8 +309,12 @@ function evf_get_entries_by_form_id( $form_id, $start_date = '', $end_date = '' 
 		$query[] = $wpdb->prepare( 'AND date_created  <= %s', $end_date );
 	}
 
-	// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-	$results = $wpdb->get_results( implode( ' ', $query ), ARRAY_A );
+	$results = wp_cache_get( $form_id, 'evf-search-entries' );
+
+	if ( false === $results ) {
+		$results = $wpdb->get_results( implode( ' ', $query ), ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		wp_cache_add( $form_id, $results, 'evf-search-entries' );
+	}
 
 	return $results;
 }

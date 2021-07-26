@@ -1,6 +1,7 @@
 == Changelog ==
 
-= 1.7.6 - xx-xx-xxxx =
+= 1.7.6 - xx-xx-2021 =
+* Enhancement - Cache the form and entries results for better performance.
 * Fix - Attach pdf to email glitches.
 * Fix - Get entries permission issue.
 * Enhancement - PDF Image logo upload.
