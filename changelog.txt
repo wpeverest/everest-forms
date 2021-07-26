@@ -2,9 +2,10 @@
 
 = 1.7.6 - xx-xx-2021 =
 * Enhancement - Cache the form and entries results for better performance.
+* Enhancement - PDF Image logo upload.
+* Fix - Smart Tag Page Issues.
 * Fix - Attach pdf to email glitches.
 * Fix - Get entries permission issue.
-* Enhancement - PDF Image logo upload.
 
 = 1.7.5.2 - 19-06-2021 =
 * Fix - Permission issue with file upload on frontend.
