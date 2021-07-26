@@ -2065,10 +2065,17 @@
 				},
 				receive: function( event, ui ) {
 					if ( ui.sender.is( 'button' ) ) {
-						if( ui.helper.parent().parent().find('#add_remove_button').length === 0 && (undefined !== ui.helper.parent().parent().attr('data-field-type') || 'repeater-fields' === ui.helper.parent().parent().attr('data-field-type') ) ){
+						if( ui.helper.parent().parent().find('#add_remove_button').length === 0 && (undefined !== ui.helper.parent().parent().attr('data-field-type') && 'repeater-fields' === ui.helper.parent().parent().attr('data-field-type') ) ){
 							ui.helper.parent().append('<div id="add_remove_button" style="margin-right: 65%" class="evf-add-row repeater_button_add_remove_label"><span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-plus">Add</span>&nbsp;<span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-minus">Remove</span></div>');
 						}
 						EVFPanelBuilder.fieldDrop( ui.helper );
+					}
+				},
+				update: function(event, ui) {
+					// gets the sorted item.
+					if( $( event.target ).closest( '.evf-admin-row' ).attr('data-field-type') != "repeater-fields" ) {
+						var dragged_field_id = ui.item.attr('data-field-id');
+						$( '#everest-forms-field-option-basic-' + dragged_field_id ).find('#everest-forms-field-option-'+ dragged_field_id +'-repeater-fields').remove();
 					}
 				},
 				stop: function( event, ui ) {
@@ -2242,7 +2249,9 @@
 						$( '#everest-forms-field-option-' + dragged_field_id + '-quiz_status' ).prop( 'checked', true );
 						$( '#everest-forms-field-option-' + dragged_field_id + '-quiz_status' ).closest( '.everest-forms-field-option-row-quiz_status' ).siblings( '.everst-forms-field-quiz-settings' ).removeClass( 'everest-forms-hidden' ).addClass( 'everest-forms-show' );
 					}
-
+					if( field.closest('.evf-admin-row').attr('data-field-type') == "repeater-fields" ) {
+						$('#everest-forms-field-option-basic-' + dragged_field_id ).append('<div class="everest-forms-field-option-row everest-forms-field-option-row-label " id="everest-forms-field-option-row-' +dragged_field_id+ '-repeater-fields" data-field-id="'+ dragged_field_id +'"><input type="text" class="widefat " id="everest-forms-field-option-'+ dragged_field_id +'-repeater-fields" name="form_fields['+ dragged_field_id +'][repeater-fields]" value="yes"></div>');
+					}
 					field.remove();
 					EVFPanelBuilder.checkEmptyGrid();
 
@@ -2555,6 +2564,11 @@ jQuery( function ( $ ) {
 			$( this ).find( '.evf-registered-buttons' ).hide();
 		});
 	} ).trigger( 'init_add_fields_toogle' );
+
+	$('.evf-admin-row[data-field-type="repeater-fields"] .everest-forms-field').each(function() {
+		var field_id = $(this).attr('data-field-id'); 
+		$('#everest-forms-field-option-basic-' + field_id ).append('<div class="everest-forms-field-option-row everest-forms-field-option-row-label " id="everest-forms-field-option-row-' +field_id+ '-repeater-fields" data-field-id="'+ field_id +'"><input type="text" class="widefat " id="everest-forms-field-option-'+ field_id +'-repeater-fields" name="form_fields['+ field_id +'][repeater-fields]" value="yes"></div>');
+	});
 
 	// Fields Options - Open/close.
 	$( document.body ).on( 'click', '.everest-forms-field-option .everest-forms-field-option-group > a', function( event ) {

@@ -151,11 +151,15 @@ class EVF_Form_Task {
 
 			// Validate fields.
 			foreach ( $this->form_data['form_fields'] as $field ) {
-				$field_id     = $field['id'];
-				$field_type   = $field['type'];
+				$field_id        = $field['id'];
+				$field_type      = $field['type'];
+				$repeater_fields = array_key_exists( 'repeater-fields', $field ) ? $field['repeater-fields'] : 'no';
+
 				$field_submit = isset( $entry['form_fields'][ $field_id ] ) ? $entry['form_fields'][ $field_id ] : '';
 
-				do_action( "everest_forms_process_validate_{$field_type}", $field_id, $field_submit, $this->form_data, $field_type );
+				if ( 'no' === $repeater_fields ) {
+					do_action( "everest_forms_process_validate_{$field_type}", $field_id, $field_submit, $this->form_data, $field_type );
+				}
 
 				if ( 'credit-card' === $field_type ) {
 					$this->evf_notice_print = true;
