@@ -2087,7 +2087,6 @@
 				helper: function(event) {
 					if ( 'evf-icon evf-icon-custom-html' == event.target.className ){
 						EVFPanelBuilder.bindAddNewRepeaterRow();
-						console.log('this is called');
 					}
 					return $( this ).clone().insertAfter( $( this ).closest( '.everest-forms-tab-content' ).siblings( '.everest-forms-fields-tab' ) );
 				},
