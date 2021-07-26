@@ -9,9 +9,9 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * EVF_Repeater_Fields Class.
+ * EVF_Field_Repeater Class.
  */
-class EVF_Repeater_Fields extends EVF_Form_Fields {
+class EVF_Field_Repeater extends EVF_Form_Fields {
 
 	/**
 	 * Constructor.
