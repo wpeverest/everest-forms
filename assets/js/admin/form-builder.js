@@ -1345,6 +1345,8 @@
 				row_clone    = $( '.evf-admin-row' ).eq(0).clone(),
 				total_rows   = $this.parent().attr( 'data-total-rows' ),
 				current_part = $this.parents( '.evf-admin-field-container' ).attr( 'data-current-part' );
+				row_clone.find('.evf-admin-grid:gt(0)').remove();
+				row_clone.find('.evf-admin-grid').removeClass('evf-grid-2').addClass('evf-grid-1');
 
 			max_row_id++;
 			total_rows++;
@@ -2020,6 +2022,7 @@
 			}
 		},
 		bindFields: function () {
+			var is_received = false;
 			$( '.evf-admin-field-wrapper' ).sortable({
 				items: '.evf-admin-row',
 				axis: 'y',
@@ -2041,7 +2044,7 @@
 			}).disableSelection();
 
 			$( '.evf-admin-grid' ).sortable({
-				items: '> .everest-forms-field',
+				items: '> .everest-forms-field[data-field-type!="repeater-fields"]',
 				delay  : 100,
 				opacity: 0.65,
 				cursor: 'move',
@@ -2054,14 +2057,27 @@
 					$( event.target ).removeClass( 'evf-item-hover' );
 					$( event.target ).closest( '.evf-admin-row' ).removeClass( 'evf-hover' );
 					EVFPanelBuilder.checkEmptyGrid();
+					if ( false == is_received){
+						$('[data-field-type="repeater-fields"]').has('.evf-empty-grid').remove();
+					}
+					else if( $('[data-field-type="repeater-fields"]').has('.evf-empty-grid').length == 0){
+						EVFPanelBuilder.bindAddNewRepeaterRow();
+					}
 				},
 				over: function( event, ui ) {
 					$( '.evf-admin-grid' ).addClass( 'evf-hover' );
 					$( event.target ).addClass( 'evf-item-hover' );
 					$( event.target ).closest( '.evf-admin-row' ).addClass( 'evf-hover' );
 					EVFPanelBuilder.checkEmptyGrid();
+					if( $('[data-field-type="repeater-fields"]').has('.evf-empty-grid').length == 0){
+						EVFPanelBuilder.bindAddNewRepeaterRow();
+					}
 				},
 				receive: function( event, ui ) {
+					is_received = true;
+					if ('repeater-fields' === ui.helper.parent().parent().attr('data-field-type') ){
+						is_repeater = true;
+					}
 					if ( ui.sender.is( 'button' ) ) {
 						if( ui.helper.parent().parent().find('#add_remove_button').length === 0 && (undefined !== ui.helper.parent().parent().attr('data-field-type') || 'repeater-fields' === ui.helper.parent().parent().attr('data-field-type') ) ){
 							ui.helper.parent().append('<div id="add_remove_button" style="margin-right: 65%" class="evf-add-row repeater_button_add_remove_label"><span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-plus">Add</span>&nbsp;<span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-minus">Remove</span></div>');
@@ -2187,6 +2203,11 @@
 		fieldDrop: function ( field ) {
 			var field_type = field.attr( 'data-field-type' );
 
+			if( 'repeater-fields' == field_type && (( field.parents('.evf-admin-row').attr('data-field-type') != "repeater-fields") || field.parents('.evf-admin-row').has('.everest-forms-field-repeater-fields').length > 0 )){
+				$('.evf-admin-row[data-field-type="repeater-fields"]').has('.evf-empty-grid').remove();
+				field.remove();
+				return;
+			}
 			field.css({
 				'left': '0',
 				'width': '100%'
