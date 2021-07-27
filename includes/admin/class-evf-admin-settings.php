@@ -340,15 +340,6 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 							>
 						<?php
 						// Adding scripts.
-						$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-						wp_register_script( 'evf-file-uploader', evf()->plugin_url() . '/assets/js/admin/evf-file-uploader' . $suffix . '.js', array(), EVF_VERSION, true );
-						wp_localize_script(
-							'evf-file-uploader',
-							'evf_file_uploader',
-							array(
-								'upload_file' => __( 'Upload Image', 'everest-forms' ),
-							)
-						);
 						wp_enqueue_script( 'jquery' );
 						wp_enqueue_media();
 						wp_enqueue_script( 'evf-file-uploader' );
