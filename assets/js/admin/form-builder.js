@@ -1371,39 +1371,6 @@
 
 		},
 
-		bindRemoveNewRepeaterRow: function() {
-				var $this    = $( '.evf-delete-row' ),
-				wrapper      = $( '.evf-admin-field-wrapper' ),
-				row_ids      = $( '.evf-admin-row' ).map( function() {
-					return $( this ).data( 'row-id' );
-				} ).get(),
-				max_row_id   = Math.max.apply( Math, row_ids ),
-				row_clone    = $( '.evf-admin-row' ).eq(0).clone(),
-				total_rows   = $this.parent().attr( 'data-total-rows' ),
-				current_part = $this.parents( '.evf-admin-field-container' ).attr( 'data-current-part' );
-
-			max_row_id++;
-			total_rows++;
-
-			if ( current_part ) {
-				wrapper = $( '.evf-admin-field-wrapper' ).find( '#part_' + current_part );
-			}
-
-			// Row clone.
-			row_clone.find( '.evf-admin-grid' ).html( '' );
-			row_clone.attr( 'data-row-id', max_row_id );
-			$this.parent().attr( 'data-total-rows', total_rows );
-			$this.parent().attr( 'data-next-row-id', max_row_id );
-
-			// Row append.
-			wrapper.append( row_clone );
-
-			// Initialize fields UI.
-			EVFPanelBuilder.bindFields();
-			EVFPanelBuilder.checkEmptyGrid();
-
-		},
-
 		bindAddNewRow: function() {
 			$( 'body' ).on( 'click', '.evf-add-row span', function() {
 				var $this        = $( this ),
@@ -1426,6 +1393,8 @@
 				// Row clone.
 				row_clone.find( '.evf-admin-grid' ).html( '' );
 				row_clone.attr( 'data-row-id', max_row_id );
+				row_clone.removeAttr('data-field-type');
+				row_clone.removeAttr('data-repeater-field-id');
 				$this.parent().attr( 'data-total-rows', total_rows );
 				$this.parent().attr( 'data-next-row-id', max_row_id );
 
@@ -2566,7 +2535,7 @@ jQuery( function ( $ ) {
 	} ).trigger( 'init_add_fields_toogle' );
 
 	$('.evf-admin-row[data-field-type="repeater-fields"] .everest-forms-field').each(function() {
-		var field_id = $(this).attr('data-field-id'); 
+		var field_id = $(this).attr('data-field-id');
 		$('#everest-forms-field-option-basic-' + field_id ).append('<div class="everest-forms-field-option-row everest-forms-field-option-row-label " id="everest-forms-field-option-row-' +field_id+ '-repeater-fields" data-field-id="'+ field_id +'"><input type="text" class="widefat " id="everest-forms-field-option-'+ field_id +'-repeater-fields" name="form_fields['+ field_id +'][repeater-fields]" value="yes"></div>');
 	});
 
