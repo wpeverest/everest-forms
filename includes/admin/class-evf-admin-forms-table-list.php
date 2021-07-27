@@ -534,6 +534,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 
 		// Query args.
 		$args = array(
+			'post_type' => 'everest_form',
 			'posts_per_page'      => $per_page,
 			'paged'               => $current_page,
 			'no_found_rows'       => false,
@@ -554,14 +555,16 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 		$args['order']   = isset( $_REQUEST['order'] ) && 'ASC' === strtoupper( evf_clean( wp_unslash( $_REQUEST['order'] ) ) ) ? 'ASC' : 'DESC'; // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
 		// Get the forms.
-		$this->items = evf()->form->get_multiple( $args );
+		// $this->items = evf()->form->get_multiple( $args );
+		$posts       = new WP_Query( $args );
+		$this->items = $posts->posts;
 
 		// Set the pagination.
 		$this->set_pagination_args(
 			array(
-				'total_items' => $total,
+				'total_items' => $posts->found_posts,
 				'per_page'    => $per_page,
-				'total_pages' => ceil( $total / $per_page ),
+				'total_pages' => $posts->max_num_pages,
 			)
 		);
 	}
