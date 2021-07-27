@@ -2,6 +2,7 @@
 
 = 1.7.6 - xx-xx-2021 =
 * Enhancement - Cache the form and entries results for better performance.
+* Fix - Pagination not working in admin forms list table.
 * Fix - Attach pdf to email glitches.
 * Fix - Get entries permission issue.
 * Fix - Smart Tag Page Issues.
