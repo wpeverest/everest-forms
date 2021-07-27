@@ -18,10 +18,10 @@ jQuery(document).ready(function($){
             // Let's assign the url value to the input field
             evf_uploader.attr('src', image_url);
             if( evf_uploader.hasClass( 'evf-button' ) ) {
-                evf_uploader.addClass( 'everest-forms-hidden' );
                 evf_uploader.prev().removeClass( 'everest-forms-hidden' );
                 evf_uploader.prev().attr('src', image_url);
                 evf_uploader.next().val(image_url);
+                evf_uploader.remove();
             } else {
                 evf_uploader.attr('src', image_url);
                 evf_uploader.next().next().val(image_url);
