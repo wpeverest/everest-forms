@@ -251,12 +251,15 @@ class EVF_Form_Task {
 
 			// Format fields.
 			foreach ( (array) $this->form_data['form_fields'] as $field ) {
-				$field_id     = $field['id'];
-				$field_key    = isset( $field['meta-key'] ) ? $field['meta-key'] : '';
-				$field_type   = $field['type'];
-				$field_submit = isset( $entry['form_fields'][ $field_id ] ) ? $entry['form_fields'][ $field_id ] : '';
+				$field_id        = $field['id'];
+				$field_key       = isset( $field['meta-key'] ) ? $field['meta-key'] : '';
+				$field_type      = $field['type'];
+				$field_submit    = isset( $entry['form_fields'][ $field_id ] ) ? $entry['form_fields'][ $field_id ] : '';
+				$repeater_fields = array_key_exists( 'repeater-fields', $field ) ? $field['repeater-fields'] : 'no';
 
-				do_action( "everest_forms_process_format_{$field_type}", $field_id, $field_submit, $this->form_data, $field_key );
+				if ( 'no' === $repeater_fields ) {
+					do_action( "everest_forms_process_format_{$field_type}", $field_id, $field_submit, $this->form_data, $field_key );
+				}
 			}
 
 			// This hook is for internal purposes and should not be leveraged.
