@@ -157,7 +157,7 @@ class EVF_Form_Task {
 
 				$field_submit = isset( $entry['form_fields'][ $field_id ] ) ? $entry['form_fields'][ $field_id ] : '';
 
-				if ( 'no' === $repeater_fields ) {
+				if ( 'no' === $repeater_fields || 'repeater-fields' === $field_type ) {
 					do_action( "everest_forms_process_validate_{$field_type}", $field_id, $field_submit, $this->form_data, $field_type );
 				}
 
@@ -257,7 +257,7 @@ class EVF_Form_Task {
 				$field_submit    = isset( $entry['form_fields'][ $field_id ] ) ? $entry['form_fields'][ $field_id ] : '';
 				$repeater_fields = array_key_exists( 'repeater-fields', $field ) ? $field['repeater-fields'] : 'no';
 
-				if ( 'no' === $repeater_fields ) {
+				if ( 'no' === $repeater_fields || 'repeater-fields' === $field_type ) {
 					do_action( "everest_forms_process_format_{$field_type}", $field_id, $field_submit, $this->form_data, $field_key );
 				}
 			}
