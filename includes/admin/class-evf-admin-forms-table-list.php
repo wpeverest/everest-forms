@@ -522,19 +522,13 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 	 * Prepare table list items.
 	 */
 	public function prepare_items() {
+		$user_id      = get_current_user_id();
 		$per_page     = $this->get_items_per_page( 'evf_forms_per_page' );
 		$current_page = $this->get_pagenum();
 
-		// Get total.
-		if ( current_user_can( 'everest_forms_edit_others_forms' ) ) {
-			$total = wp_count_posts( 'everest_form' )->publish;
-		} else {
-			$total = count_user_posts( get_current_user_id(), 'everest_form', true );
-		}
-
 		// Query args.
 		$args = array(
-			'post_type' => 'everest_form',
+			'post_type'           => 'everest_form',
 			'posts_per_page'      => $per_page,
 			'paged'               => $current_page,
 			'no_found_rows'       => false,
@@ -554,8 +548,20 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 		$args['orderby'] = isset( $_REQUEST['orderby'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['orderby'] ) ) : 'date_created'; // phpcs:ignore WordPress.Security.NonceVerification
 		$args['order']   = isset( $_REQUEST['order'] ) && 'ASC' === strtoupper( evf_clean( wp_unslash( $_REQUEST['order'] ) ) ) ? 'ASC' : 'DESC'; // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
+		// Can user interact, lets check the view capabilities?
+		if ( current_user_can( 'everest_forms_view_forms' ) && ! current_user_can( 'everest_forms_view_others_forms' ) ) {
+			$args['author'] = $user_id;
+		}
+
+		if ( ! current_user_can( 'everest_forms_view_forms' ) && current_user_can( 'everest_forms_view_others_forms' ) ) {
+			$args['author__not_in'] = $user_id;
+		}
+
+		if ( ! current_user_can( 'everest_forms_view_forms' ) && ! current_user_can( 'everest_forms_view_others_forms' ) ) {
+			$args['post__in'] = array( 0 );
+		}
+
 		// Get the forms.
-		// $this->items = evf()->form->get_multiple( $args );
 		$posts       = new WP_Query( $args );
 		$this->items = $posts->posts;
 
