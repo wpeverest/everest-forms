@@ -316,7 +316,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 
 						if ( empty( $option_value ) ) {
 							// To be replaced before merge.
-							$option_value = 'https://upload.wikimedia.org/wikipedia/en/thumb/4/41/SELECT_logo.svg/522px-SELECT_logo.svg.png';
+							$option_value = plugins_url( 'assets/images/upload-image.png', EVF_PLUGIN_FILE );
 						}
 
 						$visibility_class = array();
@@ -331,7 +331,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></label>
 							</th>
 							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">&lrm;
-							<img src="<?php echo esc_attr( $option_value ); ?>" alt="<?php echo esc_attr__( 'Header Logo', 'everest-forms' ); ?>" class="evf-image-uploader" height="100" width="120">
+							<img src="<?php echo esc_attr( $option_value ); ?>" alt="<?php echo esc_attr__( 'Header Logo', 'everest-forms' ); ?>" class="evf-image-uploader" height="100" width="auto">
 							<input
 									name="<?php echo esc_attr( $value['id'] ); ?>"
 									id="<?php echo esc_attr( $value['id'] ); ?>"
