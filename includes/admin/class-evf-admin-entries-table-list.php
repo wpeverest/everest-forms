@@ -221,26 +221,19 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 			if ( is_serialized( $value ) ) {
 				$field_html  = array();
 				$field_value = maybe_unserialize( $value );
-				// print_r($field_value);
-				// die;
 
 				$field_label = ! empty( $field_value['label'] ) ? evf_clean( $field_value['label'] ) : $field_value;
-				print_r( $field_label );
 				if ( is_array( $field_label ) ) {
 					foreach ( $field_label as $value ) {
 						$field_html[] = esc_html( $value );
 					}
 
 					$value = implode( ' | ', $field_html );
-					die;
 				} else {
-					echo $field_label;
-					die;
 					$value = esc_html( $field_label );
 				}
 			}
-			print_r( $value );
-			die;
+
 			// Limit to 5 lines.
 			if ( false === strpos( $value, 'http' ) ) {
 				$lines = explode( "\n", $value );
@@ -255,8 +248,6 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 
 				$value = nl2br( wp_strip_all_tags( trim( $value ) ) );
 			}
-			print_r( $value );
-			die;
 			return apply_filters( 'everest_forms_html_field_value', $value, $entry->meta[ $meta_key ], $entry, 'entry-table' );
 		} else {
 			return '<span class="na">&mdash;</span>';
