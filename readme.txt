@@ -155,6 +155,16 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
+= 1.7.6 - 28-07-2021 =
+* Enhancement - Cache the form and entries results for better performance.
+* Enhancement - Add support for PDF Image logo upload.
+* Fix - Smart Tag Page ID issues.
+* Fix - Attach pdf to email glitches.
+* Fix - Permission issue with entries visibiity.
+* Fix - Pagination not working in admin forms list table.
+* Fix - Settings field label UI alignment issues in PDF addon.
+* Fix - Refined countries list and added missing kosovo country.
+
 = 1.7.5.2 - 19-06-2021 =
 * Fix - Permission issue with file upload on frontend.
 * Fix - Dropdown field value not displayed on view entry page.

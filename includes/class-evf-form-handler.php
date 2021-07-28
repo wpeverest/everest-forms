@@ -112,7 +112,9 @@ class EVF_Form_Handler {
 			$args['post__in'] = array( 0 );
 		}
 
+		// For cache lets unset the cap args.
 		unset( $args['cap'] );
+
 		// Check for cache.
 		$cache_key   = EVF_Cache_Helper::get_cache_prefix( 'forms' ) . 'get_multiple_forms_' . md5( wp_json_encode( $args ) );
 		$cache_value = wp_cache_get( $cache_key, 'form_get_multiple_results' );
