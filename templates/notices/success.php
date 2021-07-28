@@ -23,6 +23,10 @@ $classes = apply_filters(
 		'everest-forms-notice--success',
 	)
 );
+
+global $__everest_form_id;
+global $__everest_form_entry_id;
+
 ?>
 
 <?php if ( $messages ) : ?>
@@ -51,6 +55,15 @@ $classes = apply_filters(
 					),
 				)
 			);
+
+		if ( ! empty( $__everest_form_id ) && ! empty( $__everest_form_entry_id ) ) {
+			printf(
+				'%s%s%s',
+				'<br><small><a href="?page=evf-entries-pdf&form_id=' . esc_attr( $__everest_form_id ) . '&entry_id=' . esc_attr( $__everest_form_entry_id ) . '">',
+				esc_html__( 'Click here to download your pdf submission', 'everest-forms' ),
+				'</a></small>'
+			);
+		}
 		?>
 	</div>
 	<?php endforeach; ?>

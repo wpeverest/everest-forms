@@ -308,7 +308,36 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						</tr>
 						<?php
 						break;
+					case 'image':
+						$option_value = $value['value'];
+						if ( empty( $option_value ) ) {
+							$option_value = $value['default'];
+						}
+						$visibility_class = array();
+						if ( isset( $value['is_visible'] ) ) {
+							$visibility_class[] = $value['is_visible'] ? 'everest-forms-visible' : 'everest-forms-hidden';
+						}
 
+						?>
+						<tr valign="top">
+							<th scope="row" class="titledesc">
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></label>
+							</th>
+							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">&lrm;
+							<img src="<?php echo esc_attr( $option_value ); ?>" alt="<?php echo esc_attr__( 'Header Logo', 'everest-forms' ); ?>" class="evf-image-uploader <?php echo empty( $option_value ) ? 'everest-forms-hidden' : ''; ?>" height="100" width="auto">
+							<button class="evf-image-uploader evf-button button-secondary" <?php echo empty( $option_value ) ? '' : 'style="display:none"'; ?> ><?php echo esc_html__( 'Upload Logo', 'everest-forms' ); ?></button>
+							<input
+								name="<?php echo esc_attr( $value['id'] ); ?>"
+								id="<?php echo esc_attr( $value['id'] ); ?>"
+								value="<?php echo esc_attr( $option_value ); ?>"
+								type="hidden"
+							>
+						<?php
+						// Adding scripts.
+						wp_enqueue_script( 'jquery' );
+						wp_enqueue_media();
+						wp_enqueue_script( 'evf-file-uploader' );
+						break;
 					// Color picker.
 					case 'color':
 						$option_value = $value['value'];

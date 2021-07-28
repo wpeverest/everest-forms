@@ -86,6 +86,14 @@ class EVF_Admin_Assets {
 		wp_register_script( 'evf-enhanced-select', evf()->plugin_url() . '/assets/js/admin/evf-enhanced-select' . $suffix . '.js', array( 'jquery', 'selectWoo' ), EVF_VERSION, true );
 		wp_register_script( 'evf-template-controller', evf()->plugin_url() . '/assets/js/admin/form-template-controller' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true );
 		wp_register_script( 'flatpickr', evf()->plugin_url() . '/assets/js/flatpickr/flatpickr' . $suffix . '.js', array( 'jquery' ), '4.6.3', true );
+		wp_register_script( 'evf-file-uploader', evf()->plugin_url() . '/assets/js/admin/evf-file-uploader' . $suffix . '.js', array(), EVF_VERSION, true );
+		wp_localize_script(
+			'evf-file-uploader',
+			'evf_file_uploader',
+			array(
+				'upload_file' => __( 'Upload Image', 'everest-forms' ),
+			)
+		);
 		wp_localize_script(
 			'evf-template-controller',
 			'evf_templates',

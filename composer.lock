@@ -288,11 +288,6 @@
                 "po",
                 "translation"
             ],
-            "support": {
-                "email": "oom@oscarotero.com",
-                "issues": "https://github.com/oscarotero/Gettext/issues",
-                "source": "https://github.com/php-gettext/Gettext/tree/v4.8.5"
-            },
             "funding": [
                 {
                     "url": "https://paypal.me/oscarotero",
@@ -367,10 +362,6 @@
                 "translations",
                 "unicode"
             ],
-            "support": {
-                "issues": "https://github.com/php-gettext/Languages/issues",
-                "source": "https://github.com/php-gettext/Languages/tree/2.8.1"
-            },
             "funding": [
                 {
                     "url": "https://paypal.me/mlocati",
@@ -426,10 +417,6 @@
                 }
             ],
             "description": "Peast is PHP library that generates AST for JavaScript code",
-            "support": {
-                "issues": "https://github.com/mck89/peast/issues",
-                "source": "https://github.com/mck89/peast/tree/v1.13.4"
-            },
             "time": "2021-07-24T11:42:37+00:00"
         },
         {
@@ -889,10 +876,6 @@
             ],
             "description": "Provides internationalization tools for WordPress projects.",
             "homepage": "https://github.com/wp-cli/i18n-command",
-            "support": {
-                "issues": "https://github.com/wp-cli/i18n-command/issues",
-                "source": "https://github.com/wp-cli/i18n-command/tree/v2.2.9"
-            },
             "time": "2021-07-20T21:25:54+00:00"
         },
         {
@@ -994,10 +977,6 @@
                 "cli",
                 "console"
             ],
-            "support": {
-                "issues": "https://github.com/wp-cli/php-cli-tools/issues",
-                "source": "https://github.com/wp-cli/php-cli-tools/tree/v0.11.13"
-            },
             "time": "2021-07-01T15:08:16+00:00"
         },
         {
@@ -1174,5 +1153,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "1.1.0"
 }
