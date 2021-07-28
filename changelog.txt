@@ -4,6 +4,7 @@
 * Enhancement - Cache the form and entries results for better performance.
 * Enhancement - PDF Image logo upload.
 * Fix - Smart Tag Page Issues.
+* Fix - Pagination not working in admin forms list table.
 * Fix - Attach pdf to email glitches.
 * Fix - Get entries permission issue.
 
