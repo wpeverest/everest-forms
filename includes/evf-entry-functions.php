@@ -174,7 +174,7 @@ function evf_search_entries( $args ) {
 	$where_sql = implode( ' AND ', $where );
 
 	// Check for cache.
-	$cache_key   = EVF_Cache_Helper::get_cache_prefix( 'entries' ) . 'search_entries' . md5( implode( ',', $args ) );
+	$cache_key   = EVF_Cache_Helper::get_cache_prefix( 'entries' ) . 'search_entries' . md5( wp_json_encode( $args ) );
 	$cache_value = wp_cache_get( $cache_key, 'entry_search_results' );
 
 	if ( $cache_value ) {

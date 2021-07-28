@@ -114,7 +114,7 @@ class EVF_Form_Handler {
 
 		unset( $args['cap'] );
 		// Check for cache.
-		$cache_key   = EVF_Cache_Helper::get_cache_prefix( 'forms' ) . 'get_multiple_forms_' . md5( implode( ',', $args ) );
+		$cache_key   = EVF_Cache_Helper::get_cache_prefix( 'forms' ) . 'get_multiple_forms_' . md5( wp_json_encode( $args ) );
 		$cache_value = wp_cache_get( $cache_key, 'form_get_multiple_results' );
 
 		if ( $cache_value ) {
