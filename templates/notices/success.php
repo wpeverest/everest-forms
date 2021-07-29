@@ -66,7 +66,7 @@ global $__everest_form_entry_id;
 			printf(
 				'%s%s%s',
 				'<br><small><a href="?page=evf-entries-pdf&form_id=' . esc_attr( $__everest_form_id ) . '&entry_id=' . esc_attr( $__everest_form_entry_id ) . '">',
-				esc_html( $message ),
+				esc_html( $pdf_download_message ),
 				'</a></small>'
 			);
 		}
