@@ -289,6 +289,10 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 							$visibility_class[] = $value['is_visible'] ? 'everest-forms-visible' : 'everest-forms-hidden';
 						}
 
+						if ( empty( $option_value ) ) {
+							$option_value = $value['default'];
+						}
+
 						?><tr valign="top" class="<?php echo esc_attr( implode( ' ', $visibility_class ) ); ?>">
 							<th scope="row" class="titledesc">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></label>
