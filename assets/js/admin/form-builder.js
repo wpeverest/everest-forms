@@ -9,13 +9,6 @@
 		 * Start the panel builder.
 		 */
 		init: function () {
-			$('.evf-admin-row').each(function(i, obj){
-				if ('repeater-fields' === $(this).attr('data-field-type') || undefined !== $(this).attr('data-field-type') ){
-					$(this).parent().find('.everest-forms-field-repeater-fields .everest-forms-field-duplicate').remove();
-					$(this).parent().find('.everest-forms-field-repeater-fields .everest-forms-field-delete').remove();
-					$(this).find('.evf-admin-grid').append('<div id="add_remove_button" style="margin-right: 65%" class="evf-add-row repeater_button_add_remove_label"><span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-plus">Add</span>&nbsp;<span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-minus">Remove</span></div>');
-				}
-			});
 		 	$( document ).ready( function( $ ) {
 		 		if ( ! $( 'evf-panel-integrations-button a' ).hasClass('active') ) {
 		 			$( '#everest-forms-panel-integrations' ).find( '.everest-forms-panel-sidebar a' ).first().addClass( 'active' );
