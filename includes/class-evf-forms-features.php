@@ -42,6 +42,7 @@ class EVF_Forms_Features {
 			'EVF_Field_Privacy_Policy',
 			'EVF_Field_Range_Slider',
 			'EVF_Field_Captcha',
+			'EVF_Field_Repeater',
 			'EVF_Field_Payment_Single',
 			'EVF_Field_Payment_Radio',
 			'EVF_Field_Payment_Checkbox',
@@ -55,6 +56,9 @@ class EVF_Forms_Features {
 
 		include_once ABSPATH . 'wp-admin/includes/plugin.php';
 		if ( is_plugin_active( 'everest-forms-repeater-fields/everest-forms-repeater-fields.php' ) ) {
+			if ( false !== ( $key = array_search( 'EVF_Field_Repeater', $pro_fields, true ) ) ) { // @codingStandardsIgnoreLine
+				unset( $pro_fields[ $key ] );
+			}
 			$pro_fields = array_merge( $pro_fields, array( 'EverestForms\Repeater_Fields\Fields\EVF_Repeater_Fields' ) );
 		}
 
