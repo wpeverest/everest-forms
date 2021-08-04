@@ -54,14 +54,6 @@ class EVF_Forms_Features {
 			'EVF_Field_Scale_Rating',
 		);
 
-		include_once ABSPATH . 'wp-admin/includes/plugin.php';
-		if ( is_plugin_active( 'everest-forms-repeater-fields/everest-forms-repeater-fields.php' ) ) {
-			if ( false !== ( $key = array_search( 'EVF_Field_Repeater', $pro_fields, true ) ) ) { // @codingStandardsIgnoreLine
-				unset( $pro_fields[ $key ] );
-			}
-			$pro_fields = array_merge( $pro_fields, array( 'EverestForms\Repeater_Fields\Fields\EVF_Repeater_Fields' ) );
-		}
-
 		return array_merge( $fields, $pro_fields );
 	}
 }
