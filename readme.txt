@@ -2,9 +2,9 @@
 Contributors: WPEverest
 Tags: contact form, forms, form builder, contact, custom form
 Requires at least: 5.0
-Tested up to: 5.7
+Tested up to: 5.8
 Requires PHP: 5.4
-Stable tag: 1.7.5.2
+Stable tag: 1.7.6
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -154,6 +154,16 @@ Yes, we do. Check out this [Getting Started Videos](https://docs.wpeverest.com/d
 Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/everest-forms/) :)
 
 == Changelog ==
+
+= 1.7.6 - 28-07-2021 =
+* Enhancement - Cache the form and entries results for better performance.
+* Enhancement - Add support for PDF Image logo upload.
+* Fix - Smart Tag Page ID issues.
+* Fix - Attach pdf to email glitches.
+* Fix - Permission issue with entries visibiity.
+* Fix - Pagination not working in admin forms list table.
+* Fix - Settings field label UI alignment issues in PDF addon.
+* Fix - Refined countries list and added missing kosovo country.
 
 = 1.7.5.2 - 19-06-2021 =
 * Fix - Permission issue with file upload on frontend.
