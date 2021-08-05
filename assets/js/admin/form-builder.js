@@ -2060,7 +2060,7 @@
 				scrollSensitivity: 40,
 				forcePlaceholderSize: true,
 				helper: function(event) {
-					if ( 'evf-icon evf-icon-repeater-fields' == event.target.className ){
+					if ( 'evf-icon evf-icon-repeater' == event.target.className ){
 						EVFPanelBuilder.bindAddNewRepeaterRow();
 					}
 					return $( this ).clone().insertAfter( $( this ).closest( '.everest-forms-tab-content' ).siblings( '.everest-forms-fields-tab' ) );
