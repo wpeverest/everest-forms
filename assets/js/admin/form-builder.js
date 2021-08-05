@@ -2052,7 +2052,7 @@
 				}
 			}).disableSelection();
 
-			$( '.evf-registered-buttons button.evf-registered-item' ).draggable({
+			$( '.evf-registered-buttons .evf-registered-item' ).draggable({
 				delay: 200,
 				cancel: false,
 				scroll: false,
