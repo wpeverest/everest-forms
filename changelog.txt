@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 1.7.7 - xx-xx-2021 =
+* Tweak - Spacing issue on upgrade modal dialogues.
+
 = 1.7.6 - 28-07-2021 =
 * Enhancement - Cache the form and entries results for better performance.
 * Enhancement - Add support for PDF Image logo upload.
