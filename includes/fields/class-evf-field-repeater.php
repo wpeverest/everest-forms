@@ -19,8 +19,8 @@ class EVF_Field_Repeater extends EVF_Form_Fields {
 	public function __construct() {
 		$this->name   = esc_html__( 'Repeater Fields', 'everest-forms' );
 		$this->type   = 'repeater-fields';
-		$this->icon   = 'evf-icon evf-icon-repeater-fields';
-		$this->order  = 16500;
+		$this->icon   = 'evf-icon evf-icon-repeater';
+		$this->order  = 190;
 		$this->group  = 'advanced';
 		$this->is_pro = true;
 
