@@ -1,9 +1,6 @@
 {
   "core": null,
-  "phpVersion": "7.4",
-  "plugins": [
-    "."
-  ],
+  "plugins": ["."],
   "config": {
     "EVF_DEBUG": true,
     "WP_DEBUG_LOG": true,
