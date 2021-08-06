@@ -172,6 +172,9 @@
 										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-pdf_name').val(form_title);
 										cloned_email.find('#everest-forms-panel-field-settingsemailconnection_1-pdf_name').attr("id", 'everest-forms-panel-field-settingsemail' + response.data.connection_id + '-pdf_name');
 
+										cloned_email.find('.everest-forms-attach-pdf-to-admin-email').attr('id', 'everest-forms-panel-field-settingsemailconnection_' + response.data.connection_id + '-attach_pdf_to_admin_email-wrap');
+										cloned_email.find('.everest-forms-show-header-in-attachment-pdf-file ').attr('id', 'everest-forms-panel-field-settingsemailconnection_' + response.data.connection_id + '-show_header_in_attachment_pdf_file-wrap');
+
 										cloned_email.find('#everest-forms-panel-field-email-connection_1-conditional_logic_status').attr('name', 'settings[email]['+response.data.connection_id+'][conditional_logic_status]');
 										cloned_email.find('.evf_conditional_logic_container input[type="hidden"]').attr('name', 'settings[email]['+response.data.connection_id+'][conditional_logic_status]');
 										cloned_email.find('.evf-field-show-hide').attr('name', 'settings[email]['+response.data.connection_id+'][conditional_option]');

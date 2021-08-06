@@ -110,7 +110,8 @@ class EVF_Form_Task {
 			$this->form_data = apply_filters( 'everest_forms_process_before_form_data', evf_decode( $form->post_content ), $entry );
 
 			// Pre-process/validate hooks and filter. Data is not validated or cleaned yet so use with caution.
-			$entry = apply_filters( 'everest_forms_process_before_filter', $entry, $this->form_data );
+			$entry                      = apply_filters( 'everest_forms_process_before_filter', $entry, $this->form_data );
+			$this->form_data['page_id'] = array_key_exists( 'post_id', $entry ) ? $entry['post_id'] : $form_id;
 
 			do_action( 'everest_forms_process_before', $entry, $this->form_data );
 			do_action( "everest_forms_process_before_{$form_id}", $entry, $this->form_data );
@@ -307,9 +308,22 @@ class EVF_Form_Task {
 		$settings = $this->form_data['settings'];
 		$message  = isset( $settings['successful_form_submission_message'] ) ? $settings['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
 
+		if ( defined( 'EVF_PDF_SUBMISSION_VERSION' ) && 'yes' === get_option( 'everest_forms_pdf_download_after_submit', 'no' ) ) {
+			global $__everest_form_id;
+			global $__everest_form_entry_id;
+			$__everest_form_id       = $form_id;
+			$__everest_form_entry_id = $entry_id;
+		}
+
 		if ( '1' === $ajax_form_submission ) {
 			$response_data['message']  = $message;
 			$response_data['response'] = 'success';
+			$response_data['form_id']  = $form_id;
+			$response_data['entry_id'] = $entry_id;
+
+			if ( defined( 'EVF_PDF_SUBMISSION_VERSION' ) && 'yes' === get_option( 'everest_forms_pdf_download_after_submit', 'no' ) ) {
+				$response_data['pdf_download'] = true;
+			}
 
 			// Backward Compatibility Check.
 			switch ( $settings['redirect_to'] ) {
