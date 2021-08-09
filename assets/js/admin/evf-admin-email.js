@@ -54,7 +54,7 @@
 				EverestFormsEmail.focusConnectionName(this, e);
 			});
 			$(document).on('createEmailConnection', '.everest-forms-email-add', function(e, data){
-				EverestFormsEmail.addNewEmailConnection(this, data);
+				EverestFormsEmail.addNewEmailConnection($(this), data);
 			});
 		},
 		
@@ -105,7 +105,7 @@
 									data: data,
 									type: 'POST',
 									success: function(response) {
-										$(document).find('.everest-forms-email-add').trigger('createEmailConnection', {response:response, name:name});
+										EverestFormsEmail.addNewEmailConnection($this, {response:response, name:name});
 									}
 								});
 							}
@@ -119,7 +119,7 @@
 		},
 
 		addNewEmailConnection: function( el, data ){
-			var $this= $(el);
+			var $this= el;
 			var response = data.response;
 			var name = data.name;
 			var $connections = $this.closest('.everest-forms-panel-sidebar-content');
