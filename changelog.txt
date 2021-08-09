@@ -2,6 +2,7 @@
 
 = 1.7.7 - xx-xx-2021 =
 * Tweak - Spacing issue on upgrade modal dialogues.
+* Fix - Default Field for Payment Quantity.
 
 = 1.7.6 - 28-07-2021 =
 * Enhancement - Cache the form and entries results for better performance.
