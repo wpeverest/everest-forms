@@ -182,6 +182,9 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				'default' => '1',
 			)
 		);
+
+		// Allow Submission Redirection.
+		echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'Submission Redirection', 'everest-forms' ) . '</h4>';
 		everest_forms_panel_field(
 			'select',
 			'settings',
@@ -220,6 +223,8 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				'default' => isset( $this->form->external_url ) ? $this->form->external_url : '',
 			)
 		);
+		do_action( 'everest_forms_submission_redirection_settings', $this, 'submission_redirection', 'connection_1' );
+		echo '</div>';
 		everest_forms_panel_field(
 			'select',
 			'settings',
