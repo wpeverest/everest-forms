@@ -18,7 +18,6 @@
 		 	s = this.settings;
 
 			$(document)
-
 			$('.everest-forms-active-email-connections-list li').first().addClass('active-user');
 			$('.evf-content-email-settings-inner').first().addClass('active-connection');
 
