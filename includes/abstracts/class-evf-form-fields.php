@@ -1079,7 +1079,7 @@ abstract class EVF_Form_Fields {
 				);
 
 				// Smart tag for default value.
-				$exclude_fields = array( 'rating', 'number', 'range-slider' );
+				$exclude_fields = array( 'rating', 'number', 'range-slider', 'payment-quantity' );
 
 				if ( ! in_array( $field['type'], $exclude_fields, true ) ) {
 					$output .= '<a href="#" class="evf-toggle-smart-tag-display" data-type="other"><span class="dashicons dashicons-editor-code"></span></a>';
