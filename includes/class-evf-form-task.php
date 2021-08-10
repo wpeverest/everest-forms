@@ -471,6 +471,7 @@ class EVF_Form_Task {
 	/**
 	 * Redirects user to a page or URL specified in the form confirmation settings.
 	 *
+	 * @since 1.0.0
 	 * @param string $form_data Form Data and Settings.
 	 * @param string $hash Base64-encoded hash of form and entry IDs.
 	 * @param string $submission_process Check if Submission Redirection is allowed.
