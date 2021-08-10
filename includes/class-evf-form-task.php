@@ -315,6 +315,14 @@ class EVF_Form_Task {
 			$__everest_form_entry_id = $entry_id;
 		}
 
+		// Check Conditional Logic and get the redirection URL.
+		$form_data          = apply_filters( 'everest_forms_process_before_form_data', evf_decode( $form->post_content ), $entry );
+		$notifications      = isset( $form_data['settings']['submission_redirection'] ) ? $form_data['settings']['submission_redirection'] : array();
+		$submission_process = array();
+		foreach ( $notifications as $connection_id => $notification ) {
+			$submission_process = apply_filters( 'everest_forms_submission_redirection_process', false, $this->form_fields, $this->form_data, '', $connection_id );
+		}
+
 		if ( '1' === $ajax_form_submission ) {
 			$response_data['message']  = $message;
 			$response_data['response'] = 'success';
@@ -340,10 +348,15 @@ class EVF_Form_Task {
 					break;
 			}
 
-			if ( isset( $settings['redirect_to'] ) && 'external_url' === $settings['redirect_to'] ) {
-				$response_data['redirect_url'] = isset( $settings['external_url'] ) ? esc_url( $settings['external_url'] ) : 'undefined';
-			} elseif ( isset( $settings['redirect_to'] ) && 'custom_page' === $settings['redirect_to'] ) {
-				$response_data['redirect_url'] = isset( $settings['custom_page'] ) ? get_page_link( absint( $settings['custom_page'] ) ) : 'undefined';
+			// Check for Submission Redirection in Ajax Submission.
+			if ( empty( $submission_process ) ) {
+				if ( isset( $settings['redirect_to'] ) && 'external_url' === $settings['redirect_to'] ) {
+					$response_data['redirect_url'] = isset( $settings['external_url'] ) ? esc_url( $settings['external_url'] ) : 'undefined';
+				} elseif ( isset( $settings['redirect_to'] ) && 'custom_page' === $settings['redirect_to'] ) {
+					$response_data['redirect_url'] = isset( $settings['custom_page'] ) ? get_page_link( absint( $settings['custom_page'] ) ) : 'undefined';
+				}
+			} else {
+				$response_data['redirect_url'] = isset( $submission_process ) ? $submission_process['redirect_url'] : '';
 			}
 
 			// Add notice only if credit card is populated in form fields.
@@ -351,7 +364,9 @@ class EVF_Form_Task {
 				evf_add_notice( $message, 'success' );
 			}
 
-			$this->entry_confirmation_redirect( $this->form_data );
+			if ( empty( $response_data['redirect_url'] ) ) {
+				$this->entry_confirmation_redirect( $this->form_data );
+			}
 
 			return $response_data;
 		} elseif ( 'same' === $this->form_data['settings']['redirect_to'] ) {
@@ -360,7 +375,9 @@ class EVF_Form_Task {
 
 		do_action( 'everest_forms_after_success_message', $this->form_data, $entry );
 
-		$this->entry_confirmation_redirect( $this->form_data );
+		// Applied values for Submission Redirection to check for
+		// Conditional Logic as a additional parameter.
+		$this->entry_confirmation_redirect( $this->form_data, '', $submission_process );
 	}
 
 	/**
@@ -454,12 +471,11 @@ class EVF_Form_Task {
 	/**
 	 * Redirects user to a page or URL specified in the form confirmation settings.
 	 *
-	 * @since 1.0.0
-	 *
-	 * @param array  $form_data Form data and settings.
-	 * @param string $hash      Base64-encoded hash of form and entry IDs.
+	 * @param string $form_data Form Data and Settings.
+	 * @param string $hash Base64-encoded hash of form and entry IDs.
+	 * @param string $submission_process Check if Submission Redirection is allowed.
 	 */
-	public function entry_confirmation_redirect( $form_data = '', $hash = '' ) {
+	public function entry_confirmation_redirect( $form_data = '', $hash = '', $submission_process = '' ) {
 		$_POST = array(); // Clear fields after successful form submission.
 
 		// Process return hash.
@@ -500,7 +516,7 @@ class EVF_Form_Task {
 				break;
 		}
 
-		if ( isset( $settings['redirect_to'] ) && 'custom_page' === $settings['redirect_to'] ) {
+		if ( ( isset( $settings['redirect_to'] ) && 'custom_page' === $settings['redirect_to'] ) && empty( $submission_process ) ) {
 			?>
 				<script>
 				var redirect = '<?php echo esc_url( get_page_link( $settings['custom_page'] ) ); ?>';
@@ -509,11 +525,19 @@ class EVF_Form_Task {
 				})
 				</script>
 			<?php
-		} elseif ( isset( $settings['redirect_to'] ) && 'external_url' === $settings['redirect_to'] ) {
+		} elseif ( ( isset( $settings['redirect_to'] ) && 'external_url' === $settings['redirect_to'] ) && empty( $submission_process ) ) {
 			?>
 			<script>
 				window.setTimeout( function () {
 					window.location.href = '<?php echo esc_url( $settings['external_url'] ); ?>';
+				})
+				</script>
+			<?php
+		} elseif ( ! empty( $submission_process ) ) {
+			?>
+			<script>
+				window.setTimeout( function () {
+					window.location.href = '<?php echo esc_url( $submission_process['redirect_url'] ); ?>';
 				})
 				</script>
 			<?php
@@ -540,11 +564,14 @@ class EVF_Form_Task {
 			add_filter( 'everest_forms_success_notice_class', array( $this, 'add_scroll_notice_class' ) );
 		}
 
-		if ( ! empty( $url ) ) {
+		if ( ! empty( $url ) && empty( $submission_process ) ) {
 			$url = apply_filters( 'everest_forms_process_redirect_url', $url, $form_id, $this->form_fields );
 			wp_safe_redirect( esc_url_raw( $url ) );
 			do_action( 'everest_forms_process_redirect', $form_id );
 			do_action( "everest_forms_process_redirect_{$form_id}", $form_id );
+			exit;
+		} elseif ( ! empty( $submission_process ) ) {
+			wp_safe_redirect( esc_url_raw( $submission_process['redirect_url'] ) );
 			exit;
 		}
 	}

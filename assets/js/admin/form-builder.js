@@ -971,7 +971,7 @@
 						}
 						if( h == 0 ) {
 							h = 12;
-						} 
+						}
 						options += '<option value = "' + i + '">' + h + a + '</option>';
 					}
 				}
@@ -992,9 +992,9 @@
 				$( '#everest-forms-field-option-' + id + '-disable_dates' ).show();
 				$( 'label[for=everest-forms-field-option-' + id + '-disable_dates]' ).show();
 				$( '#everest-forms-field-option-' + id + '-date_mode-range' ).parents().find( 'everest-forms-checklist' ).show();
-				$( '.everest-forms-field-option-row-date_format .time_interval' ).show();	
-				$( '#everest-forms-field-option-' + id + '-date_localization' ).show();	
-				$( 'label[for=everest-forms-field-option-' + id + '-date_localization]' ).show();	
+				$( '.everest-forms-field-option-row-date_format .time_interval' ).show();
+				$( '#everest-forms-field-option-' + id + '-date_localization' ).show();
+				$( 'label[for=everest-forms-field-option-' + id + '-date_localization]' ).show();
 				$( '#everest-forms-field-option-' + id + '-date_default' ).parent().show();
 				$( '#everest-forms-field-option-' + id + '-enable_min_max' ).parent().show();
 				//Check if min max date enabled.
@@ -1019,9 +1019,9 @@
 				$('#everest-forms-field-option-' + id + '-disable_dates' ).hide();
 				$('label[for=everest-forms-field-option-' + id + '-disable_dates]').hide();
 				$('.everest-forms-field-option-row-date_format .everest-forms-checklist' ).hide();
-				$('.everest-forms-field-option-row-date_format .time_interval' ).hide();	
-				$('#everest-forms-field-option-' + id + '-date_localization' ).hide();	
-				$('label[for=everest-forms-field-option-' + id + '-date_localization]' ).hide();	
+				$('.everest-forms-field-option-row-date_format .time_interval' ).hide();
+				$('#everest-forms-field-option-' + id + '-date_localization' ).hide();
+				$('label[for=everest-forms-field-option-' + id + '-date_localization]' ).hide();
 				$('#everest-forms-field-option-' + id + '-time_interval' ).hide();
 				$('#everest-forms-field-option-' + id + '-enable_min_max_time').show();
 				$('label[for=everest-forms-field-option-' + id + '-enable_min_max_time]').show();
@@ -1433,18 +1433,18 @@
 								btnClass: 'btn-confirm',
 								keys: ['enter'],
 								action: function () {
-									EVFPanelBuilder.cloneRowAction( $row );	
+									EVFPanelBuilder.cloneRowAction( $row );
 								}
 							},
 							cancel: {
 								text: evf_data.i18n_cancel
 							}
 						}
-					} );		
+					} );
 				}
 			} );
 		},
-		cloneRowAction: function ( row ) {				
+		cloneRowAction: function ( row ) {
 			row_ids     = $( '.evf-admin-row' ).map( function() {
 				return $( this ).data( 'row-id' );
 			} ).get(),
@@ -2449,6 +2449,29 @@ jQuery(function () {
 		}
 	});
 	jQuery( '.evf-panel-field-options-button.evf-disabled-tab' ).hide();
+
+	// Conditional Logic fields for General Settings in Form for Submission Redirection.
+	var conditional_rule_selection = jQuery('#everest-forms-conditional-field-settings-redirect_to option:selected').val();
+
+	if ( 'custom_page' == conditional_rule_selection ) {
+		jQuery('#everest-forms-conditional-field-settings-custom_page').show();
+		jQuery('#everest-forms-conditional-field-settings-external_url').hide();
+	}
+	else {
+		jQuery('#everest-forms-conditional-field-settings-custom_page').hide();
+		jQuery('#everest-forms-conditional-field-settings-external_url').show();
+	}
+
+	jQuery( '#everest-forms-conditional-field-settings-redirect_to' ).on( 'change', function () {
+		if ( 'custom_page' == this.value ) {
+			jQuery('#everest-forms-conditional-field-settings-custom_page').show();
+			jQuery('#everest-forms-conditional-field-settings-external_url').hide();
+		}
+		else {
+			jQuery('#everest-forms-conditional-field-settings-custom_page').hide();
+			jQuery('#everest-forms-conditional-field-settings-external_url').show();
+		}
+	});
 
 });
 
