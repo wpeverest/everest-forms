@@ -2028,7 +2028,15 @@
 				receive: function( event, ui ) {
 					if ( ui.sender.is( 'button' ) ) {
 						if( ui.helper.parent().parent().find('#add_remove_button').length === 0 && (undefined !== ui.helper.parent().parent().attr('data-field-type') && 'repeater-fields' === ui.helper.parent().parent().attr('data-field-type') ) ){
-							ui.helper.parent().append('<div id="add_remove_button" class="evf-add-row-repeater repeater_button_add_remove_label"><span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-plus">Add</span>&nbsp;<span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-minus">Remove</span></div>');
+							ui.helper
+								.parent()
+								.append(
+									'<div id="add_remove_button" class="evf-add-row-repeater"><span class="everest-forms-btn everest-forms-btn-repeater-add everest-forms-btn-primary dashicons dashicons-plus">' +
+										everest_forms_repeater_fields_params.i18n_repeater_field_add_button +
+										'</span>&nbsp;<span class="everest-forms-btn everest-forms-btn-repeater-remove everest-forms-btn-primary dashicons dashicons-minus">' +
+										everest_forms_repeater_fields_params.i18n_repeater_field_remove_button +
+										"</span></div>"
+								);
 						}
 						EVFPanelBuilder.fieldDrop( ui.helper );
 					}
