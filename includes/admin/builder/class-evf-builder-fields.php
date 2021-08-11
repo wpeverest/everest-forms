@@ -72,7 +72,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 						</div>
 					</div>
 				</div>
-				<div class="everest-forms-fields-not-found hidden">
+				<div class="hidden everest-forms-fields-not-found">
 					<img src="<?php echo esc_attr( plugin_dir_url( EVF_PLUGIN_FILE ) . 'assets/images/fields-not-found.png' ); ?>" />
 					<h3 class="everest-forms-fields-not-found__title"><?php esc_html_e( 'Oops!', 'everest-forms' ); ?></h3>
 					<span><?php esc_html_e( 'There is not such field that you are searching for.', 'everest-forms' ); ?></span>
@@ -248,9 +248,9 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			 */
 			do_action( 'everest_forms_display_builder_row_before', $row_id, $form_data, $form_id );
 
-			$is_repeater = ( ! is_array( apply_filters( 'everest_forms_display_repeater_fields', $row_grid, $fields ) ) ) ? apply_filters( 'everest_forms_display_repeater_fields', $row_grid, $fields ) : '';
+			$repeater_field = apply_filters( 'everest_forms_display_repeater_fields', $row_grid, $fields );
 
-			echo '<div class="evf-admin-row" data-row-id="' . absint( $row ) . '"' . $is_repeater . '>'; // @codingStandardsIgnoreLine
+			echo '<div class="evf-admin-row" data-row-id="' . absint( $row ) . '"' . ( ! is_array( $repeater_field ) ? $repeater_field : '' ) . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo '<div class="evf-toggle-row">';
 			echo '<div class="evf-duplicate-row"><span class="dashicons dashicons-media-default" title="Duplicate Row"></span></div>';
 			echo '<div class="evf-delete-row"><span class="dashicons dashicons-trash" title="Delete Row"></span></div>';
