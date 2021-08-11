@@ -3940,8 +3940,7 @@ p.search-box {
 					span {
 						width: auto;
 						height: auto;
-						padding: 0;
-						padding: 7px;
+						padding: 10px;
 						font-size: 13px;
 						background: #51cf66;
 						color: $color-white;
@@ -3953,13 +3952,13 @@ p.search-box {
 								height: 20px;
 								line-height: 1;
 								font-size: 16px;
-								margin-right: 10px;
+								margin: 0 10px 0 10px;
 								font-family: dashicons;
+								text-align: center;
 								vertical-align: middle;
-								padding: 2px 12px 2px 0;
+								padding: 10px;
 								cursor: text;
-								border-right: 1px solid
-									transparentize($color-white, 0.7);
+								border-right: none;
 							}
 						}
 
