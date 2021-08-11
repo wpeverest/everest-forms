@@ -3932,6 +3932,42 @@ p.search-box {
 						}
 					}
 				}
+				.evf-add-row-repeater {
+					margin: 20px auto;
+					text-align: left;
+					pointer-events: none;
+
+					span {
+						width: auto;
+						height: auto;
+						padding: 0;
+						padding: 7px;
+						font-size: 13px;
+						background: #51cf66;
+						color: $color-white;
+						font-family: inherit;
+
+						&.dashicons {
+							&::before {
+								width: 20px;
+								height: 20px;
+								line-height: 1;
+								font-size: 16px;
+								margin-right: 10px;
+								font-family: dashicons;
+								vertical-align: middle;
+								padding: 2px 12px 2px 0;
+								cursor: text;
+								border-right: 1px solid
+									transparentize($color-white, 0.7);
+							}
+						}
+
+						&:hover {
+							background: #33ba4a;
+						}
+					}
+				}
 			}
 		}
 
