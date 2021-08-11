@@ -1360,11 +1360,9 @@
 			// Initialize fields UI.
 			EVFPanelBuilder.bindFields();
 			EVFPanelBuilder.checkEmptyGrid();
-
 		},
-
 		bindAddNewRow: function() {
-			$( 'body' ).on( 'click', '.evf-add-row span', function() {
+			$( 'body' ).on( 'click', '.evf-add-row span, i.evf-icon-repeater', function() {
 				var $this        = $( this ),
 					wrapper      = $( '.evf-admin-field-wrapper' ),
 					row_ids      = $( '.evf-admin-row' ).map( function() {
@@ -2003,7 +2001,7 @@
 				}
 			}).disableSelection();
 
-			$( '.evf-admin-grid' ).sortable({
+			$( '.evf-admin-grid--' ).sortable({
 				items: '> .everest-forms-field[data-field-type!="repeater-fields"]',
 				delay  : 100,
 				opacity: 0.65,
@@ -2066,7 +2064,7 @@
 				revert: 'invalid',
 				scrollSensitivity: 40,
 				forcePlaceholderSize: true,
-				helper: function(event) {
+				helper: function( event ) {
 					if ( 'repeater-fields' == $( event.target.parentNode ).attr( 'data-field-type' ) ) {
 						EVFPanelBuilder.bindAddNewRepeaterRow();
 					}
@@ -2074,7 +2072,7 @@
 				},
 				opacity: 0.75,
 				containment: '#everest-forms-builder',
-				connectToSortable: '.evf-admin-grid'
+				connectToSortable: 'repeater-fields' === $(this).data( 'field-type' ) ? console.log('shiva'): '.evf-admin-grid'
 			}).disableSelection();
 
 			// Adapt hover behaviour on mouse event.
