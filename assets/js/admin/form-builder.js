@@ -1327,9 +1327,8 @@
 				}
 			});
 		},
-
 		bindAddNewRepeaterRow: function() {
-				var $this    = $( '.evf-add-row span' ),
+			var $this        = $( '.evf-add-row span' ),
 				wrapper      = $( '.evf-admin-field-wrapper' ),
 				row_ids      = $( '.evf-admin-row' ).map( function() {
 					return $( this ).data( 'row-id' );
@@ -2068,7 +2067,7 @@
 				scrollSensitivity: 40,
 				forcePlaceholderSize: true,
 				helper: function(event) {
-					if ( 'evf-icon evf-icon-repeater' == event.target.className ){
+					if ( 'repeater-fields' == $( event.target.parentNode ).attr( 'data-field-type' ) ) {
 						EVFPanelBuilder.bindAddNewRepeaterRow();
 					}
 					return $( this ).clone().insertAfter( $( this ).closest( '.everest-forms-tab-content' ).siblings( '.everest-forms-fields-tab' ) );
