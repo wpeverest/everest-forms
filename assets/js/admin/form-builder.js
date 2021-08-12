@@ -2011,7 +2011,7 @@
 						if( ui.helper.parent().parent().find('#add_remove_button').length === 0 && (undefined !== ui.helper.parent().parent().attr('data-field-type') && 'repeater-fields' === ui.helper.parent().parent().attr('data-field-type') ) ){
 							ui.helper
 								.parent()
-								.append(
+								.after(
 									'<div id="add_remove_button" class="evf-add-row-repeater"><span class="everest-forms-btn everest-forms-btn-repeater-add everest-forms-btn-primary dashicons dashicons-plus">' +
 										everest_forms_repeater_fields_params.i18n_repeater_field_add_button +
 										'</span>&nbsp;<span class="everest-forms-btn everest-forms-btn-repeater-remove everest-forms-btn-primary dashicons dashicons-minus">' +
