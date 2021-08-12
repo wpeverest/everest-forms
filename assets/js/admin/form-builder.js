@@ -1329,11 +1329,10 @@
 		},
 		addNewRow: function( row, is_repeatable ) {
 			var $this        = $( row ),
-				wrapper = $( '.evf-admin-field-wrapper' ),
-				row_ids      = $( '.evf-admin-row' ).map( function() {
+				wrapper      = $( '.evf-admin-field-wrapper' ),
+				max_row_id   = Math.max.apply( Math, $( '.evf-admin-row' ).map( function() {
 					return $( this ).data( 'row-id' );
-				} ).get(),
-				max_row_id   = Math.max.apply( Math, row_ids ),
+				} ).get() ),
 				row_clone    = $( '.evf-admin-row' ).eq(0).clone(),
 				total_rows   = $this.parent().attr( 'data-total-rows' ),
 				current_part = $this.parents( '.evf-admin-field-container' ).attr( 'data-current-part' );
@@ -1345,8 +1344,8 @@
 				wrapper = $( '.evf-admin-field-wrapper' ).find( '#part_' + current_part );
 			}
 
+			// Don't allow grid edit for repeatable fields.
 			if ( is_repeatable ) {
-				// Don't allow grid edit for repeatable fields.
 				row_clone.find( '.evf-show-grid' ).remove();
 				row_clone.find( '.evf-admin-grid:gt(0)' ).remove();
 				row_clone.find( '.evf-admin-grid' ).removeClass( 'evf-grid-2' ).addClass( 'evf-grid-1' );
@@ -1355,10 +1354,11 @@
 			// Row clone.
 			row_clone.find( '.evf-admin-grid' ).html( '' );
 			row_clone.attr( 'data-row-id', max_row_id );
-			row_clone.removeAttr('data-field-type');
 
-			if ( ! is_repeatable ) {
-				row_clone.removeAttr( 'data-repeater-field-id' );
+			if ( is_repeatable ) {
+				row_clone.attr( 'data-field-type', 'repeater-fields' );
+			} else {
+				row_clone.removeAttr( 'data-field-type' );
 			}
 
 			// Row infos.
