@@ -1361,39 +1361,52 @@
 			EVFPanelBuilder.bindFields();
 			EVFPanelBuilder.checkEmptyGrid();
 		},
-		bindAddNewRow: function() {
-			$( 'body' ).on( 'click', '.evf-add-row span, i.evf-icon-repeater', function() {
-				var $this        = $( this ),
-					wrapper      = $( '.evf-admin-field-wrapper' ),
-					row_ids      = $( '.evf-admin-row' ).map( function() {
-						return $( this ).data( 'row-id' );
-					} ).get(),
-					max_row_id   = Math.max.apply( Math, row_ids ),
-					row_clone    = $( '.evf-admin-row' ).eq(0).clone(),
-					total_rows   = $this.parent().attr( 'data-total-rows' ),
-					current_part = $this.parents( '.evf-admin-field-container' ).attr( 'data-current-part' );
+		addNewRow: function( row, is_repeatable ) {
+			var $this        = $( row ),
+				wrapper = $( '.evf-admin-field-wrapper' ),
+				row_ids      = $( '.evf-admin-row' ).map( function() {
+					return $( this ).data( 'row-id' );
+				} ).get(),
+				max_row_id   = Math.max.apply( Math, row_ids ),
+				row_clone    = $( '.evf-admin-row' ).eq(0).clone(),
+				total_rows   = $this.parent().attr( 'data-total-rows' ),
+				current_part = $this.parents( '.evf-admin-field-container' ).attr( 'data-current-part' );
 
-				max_row_id++;
-				total_rows++;
+			max_row_id++;
+			total_rows++;
 
-				if ( current_part ) {
-					wrapper = $( '.evf-admin-field-wrapper' ).find( '#part_' + current_part );
-				}
+			if ( current_part ) {
+				wrapper = $( '.evf-admin-field-wrapper' ).find( '#part_' + current_part );
+			}
 
-				// Row clone.
-				row_clone.find( '.evf-admin-grid' ).html( '' );
-				row_clone.attr( 'data-row-id', max_row_id );
-				row_clone.removeAttr('data-field-type');
+			if ( is_repeatable ) {
+				row_clone.find('.evf-admin-grid:gt(0)').remove();
+				row_clone.find('.evf-admin-grid').removeClass('evf-grid-2').addClass('evf-grid-1');
+			}
+
+			// Row clone.
+			row_clone.find( '.evf-admin-grid' ).html( '' );
+			row_clone.attr( 'data-row-id', max_row_id );
+			row_clone.removeAttr('data-field-type');
+
+			if ( ! is_repeatable ) {
 				row_clone.removeAttr('data-repeater-field-id');
-				$this.parent().attr( 'data-total-rows', total_rows );
-				$this.parent().attr( 'data-next-row-id', max_row_id );
+			}
 
-				// Row append.
-				wrapper.append( row_clone );
+			$this.parent().attr( 'data-total-rows', total_rows );
+			$this.parent().attr( 'data-next-row-id', max_row_id );
 
-				// Initialize fields UI.
-				EVFPanelBuilder.bindFields();
-				EVFPanelBuilder.checkEmptyGrid();
+			// Row append.
+			wrapper.append( row_clone );
+
+			// Initialize fields UI.
+			EVFPanelBuilder.bindFields();
+			EVFPanelBuilder.checkEmptyGrid();
+		},
+		bindAddNewRow: function() {
+			$( 'body' ).on( 'click', '.evf-add-row span, i.evf-icon-repeater', function(e) {
+				var is_repeatable = $(e.target).is( 'button' );
+				EVFPanelBuilder.removeRow( this, is_repeatable );
 			});
 		},
 		bindCloneField: function () {
@@ -2072,7 +2085,7 @@
 				},
 				opacity: 0.75,
 				containment: '#everest-forms-builder',
-				connectToSortable: 'repeater-fields' === $(this).data( 'field-type' ) ? console.log('shiva'): '.evf-admin-grid'
+				connectToSortable: '.evf-admin-grid'
 			}).disableSelection();
 
 			// Adapt hover behaviour on mouse event.
