@@ -1317,6 +1317,9 @@
 								keys: ['enter'],
 								action: function () {
 									EVFPanelBuilder.removeRow( current_row );
+									$( '.everest-forms-fields-tab' ).find( 'a' ).removeClass( 'active' );
+									$( '.everest-forms-fields-tab' ).find( 'a' ).first().addClass( 'active' );
+									$( '.everest-forms-add-fields' ).show();
 								}
 							},
 							cancel: {
@@ -1328,14 +1331,13 @@
 			});
 		},
 		addNewRow: function( row, is_repeatable ) {
-			var $this        = $( row ),
-				wrapper      = $( '.evf-admin-field-wrapper' ),
+			var wrapper      = $( '.evf-admin-field-wrapper' ),
 				max_row_id   = Math.max.apply( Math, $( '.evf-admin-row' ).map( function() {
 					return $( this ).data( 'row-id' );
 				} ).get() ),
 				row_clone    = $( '.evf-admin-row' ).eq(0).clone(),
-				total_rows   = $this.parent().attr( 'data-total-rows' ),
-				current_part = $this.parents( '.evf-admin-field-container' ).attr( 'data-current-part' );
+				total_rows   = row.parent().attr( 'data-total-rows' ),
+				current_part = row.parents( '.evf-admin-field-container' ).attr( 'data-current-part' );
 
 			max_row_id++;
 			total_rows++;
@@ -1363,8 +1365,8 @@
 			}
 
 			// Row infos.
-			$this.parent().attr( 'data-total-rows', total_rows );
-			$this.parent().attr( 'data-next-row-id', max_row_id );
+			row.parent().attr( 'data-total-rows', total_rows );
+			row.parent().attr( 'data-next-row-id', max_row_id );
 
 			// Row append.
 			wrapper.append( row_clone );
@@ -1374,8 +1376,8 @@
 			EVFPanelBuilder.checkEmptyGrid();
 		},
 		bindAddNewRow: function() {
-			$( 'body' ).on( 'click', '.evf-add-row span', function(e) {
-				EVFPanelBuilder.addNewRow( this, false );
+			$( 'body' ).on( 'click', '.evf-add-row span, i.evf-icon-repeater', function( event ) {
+				EVFPanelBuilder.addNewRow( $( this ), 'repeater-fields' == $( event.target.parentNode ).attr( 'data-field-type' ) );
 			});
 		},
 		bindCloneField: function () {
@@ -2048,7 +2050,7 @@
 				forcePlaceholderSize: true,
 				helper: function( event ) {
 					if ( 'repeater-fields' == $( event.target.parentNode ).attr( 'data-field-type' ) ) {
-						EVFPanelBuilder.addNewRow( '.evf-add-row span', true );
+						EVFPanelBuilder.addNewRow( $( '.evf-add-row span' ), true );
 					}
 					return $( this ).clone().insertAfter( $( this ).closest( '.everest-forms-tab-content' ).siblings( '.everest-forms-fields-tab' ) );
 				},
