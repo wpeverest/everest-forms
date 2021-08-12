@@ -1356,6 +1356,7 @@
 			row_clone.attr( 'data-row-id', max_row_id );
 
 			if ( is_repeatable ) {
+				row_clone.addClass('evf-repeater-fields');
 				row_clone.attr( 'data-field-type', 'repeater-fields' );
 			} else {
 				row_clone.removeAttr( 'data-field-type' );
