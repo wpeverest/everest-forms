@@ -1982,7 +1982,7 @@
 				}
 			}).disableSelection();
 
-			$( '.evf-admin-grid--' ).sortable({
+			$( '.evf-admin-grid' ).sortable({
 				items: '> .everest-forms-field[data-field-type!="repeater-fields"]',
 				delay  : 100,
 				opacity: 0.65,
