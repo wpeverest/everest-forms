@@ -1317,6 +1317,9 @@
 								keys: ['enter'],
 								action: function () {
 									EVFPanelBuilder.removeRow( current_row );
+									$( '.everest-forms-fields-tab' ).find( 'a' ).removeClass( 'active' );
+									$( '.everest-forms-fields-tab' ).find( 'a' ).first().addClass( 'active' );
+									$( '.everest-forms-add-fields' ).show();
 								}
 							},
 							cancel: {
