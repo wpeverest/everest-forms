@@ -1327,42 +1327,6 @@
 				}
 			});
 		},
-		bindAddNewRepeaterRow: function() {
-			var $this        = $( '.evf-add-row span' ),
-				wrapper      = $( '.evf-admin-field-wrapper' ),
-				row_ids      = $( '.evf-admin-row' ).map( function() {
-					return $( this ).data( 'row-id' );
-				} ).get(),
-				max_row_id   = Math.max.apply( Math, row_ids ),
-				row_clone    = $( '.evf-admin-row' ).eq(0).clone(),
-				total_rows   = $this.parent().attr( 'data-total-rows' ),
-				current_part = $this.parents( '.evf-admin-field-container' ).attr( 'data-current-part' );
-
-				row_clone.find('.evf-show-grid').remove();
-				row_clone.find('.evf-admin-grid:gt(0)').remove();
-				row_clone.find('.evf-admin-grid').removeClass('evf-grid-2').addClass('evf-grid-1');
-
-			max_row_id++;
-			total_rows++;
-
-			if ( current_part ) {
-				wrapper = $( '.evf-admin-field-wrapper' ).find( '#part_' + current_part );
-			}
-
-			// Row clone.
-			row_clone.find( '.evf-admin-grid' ).html( '' );
-			row_clone.attr( 'data-row-id', max_row_id );
-			row_clone.attr( 'data-field-type', 'repeater-fields' );
-			$this.parent().attr( 'data-total-rows', total_rows );
-			$this.parent().attr( 'data-next-row-id', max_row_id );
-
-			// Row append.
-			wrapper.append( row_clone );
-
-			// Initialize fields UI.
-			EVFPanelBuilder.bindFields();
-			EVFPanelBuilder.checkEmptyGrid();
-		},
 		addNewRow: function( row, is_repeatable ) {
 			var $this        = $( row ),
 				wrapper = $( '.evf-admin-field-wrapper' ),
@@ -1382,8 +1346,10 @@
 			}
 
 			if ( is_repeatable ) {
-				row_clone.find('.evf-admin-grid:gt(0)').remove();
-				row_clone.find('.evf-admin-grid').removeClass('evf-grid-2').addClass('evf-grid-1');
+				// Don't allow grid edit for repeatable fields.
+				row_clone.find( '.evf-show-grid' ).remove();
+				row_clone.find( '.evf-admin-grid:gt(0)' ).remove();
+				row_clone.find( '.evf-admin-grid' ).removeClass( 'evf-grid-2' ).addClass( 'evf-grid-1' );
 			}
 
 			// Row clone.
@@ -1392,9 +1358,10 @@
 			row_clone.removeAttr('data-field-type');
 
 			if ( ! is_repeatable ) {
-				row_clone.removeAttr('data-repeater-field-id');
+				row_clone.removeAttr( 'data-repeater-field-id' );
 			}
 
+			// Row infos.
 			$this.parent().attr( 'data-total-rows', total_rows );
 			$this.parent().attr( 'data-next-row-id', max_row_id );
 
@@ -1406,9 +1373,8 @@
 			EVFPanelBuilder.checkEmptyGrid();
 		},
 		bindAddNewRow: function() {
-			$( 'body' ).on( 'click', '.evf-add-row span, i.evf-icon-repeater', function(e) {
-				var is_repeatable = $(e.target).is( 'button' );
-				EVFPanelBuilder.removeRow( this, is_repeatable );
+			$( 'body' ).on( 'click', '.evf-add-row span', function(e) {
+				EVFPanelBuilder.addNewRow( this, false );
 			});
 		},
 		bindCloneField: function () {
@@ -2081,7 +2047,7 @@
 				forcePlaceholderSize: true,
 				helper: function( event ) {
 					if ( 'repeater-fields' == $( event.target.parentNode ).attr( 'data-field-type' ) ) {
-						EVFPanelBuilder.bindAddNewRepeaterRow();
+						EVFPanelBuilder.addNewRow( '.evf-add-row span', true );
 					}
 					return $( this ).clone().insertAfter( $( this ).closest( '.everest-forms-tab-content' ).siblings( '.everest-forms-fields-tab' ) );
 				},
