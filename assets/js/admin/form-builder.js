@@ -1337,6 +1337,8 @@
 				row_clone    = $( '.evf-admin-row' ).eq(0).clone(),
 				total_rows   = $this.parent().attr( 'data-total-rows' ),
 				current_part = $this.parents( '.evf-admin-field-container' ).attr( 'data-current-part' );
+
+				row_clone.find('.evf-show-grid').remove();
 				row_clone.find('.evf-admin-grid:gt(0)').remove();
 				row_clone.find('.evf-admin-grid').removeClass('evf-grid-2').addClass('evf-grid-1');
 
