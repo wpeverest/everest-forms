@@ -1306,18 +1306,27 @@ function evf_get_day_period_date( $period, $timestamp = '', $format = 'Y-m-d H:i
  *
  * @param int    $form_id  Form ID.
  * @param string $meta_key Field's meta key.
+ * @param array  $fields Entry Field Data.
  *
  * @return string|false True if field label exists in form.
  */
-function evf_get_form_data_by_meta_key( $form_id, $meta_key ) {
+function evf_get_form_data_by_meta_key( $form_id, $meta_key, $fields = array() ) {
 	$get_post     = get_post( $form_id );
 	$post_content = json_decode( $get_post->post_content, true );
 	$form_fields  = isset( $post_content['form_fields'] ) ? $post_content['form_fields'] : array();
 
-	if ( ! empty( $form_fields ) ) {
-		foreach ( $form_fields as $field ) {
-			if ( isset( $field['meta-key'] ) && $meta_key === $field['meta-key'] ) {
-				return $field['label'];
+	if ( ! empty( $fields ) ) {
+		foreach ( $fields as $field ) {
+			if ( isset( $field->meta_key ) && $meta_key === $field->meta_key ) {
+				return isset( $field->name ) ? $field->name : $field->value->name;
+			}
+		}
+	} else {
+		if ( ! empty( $form_fields ) ) {
+			foreach ( $form_fields as $field ) {
+				if ( isset( $field['meta-key'] ) && $meta_key === $field['meta-key'] ) {
+					return $field['label'];
+				}
 			}
 		}
 	}
