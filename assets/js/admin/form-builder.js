@@ -1350,7 +1350,7 @@
 			if ( is_repeatable ) {
 				row_clone.find( '.evf-show-grid' ).remove();
 				row_clone.find( '.evf-admin-grid:gt(0)' ).remove();
-				row_clone.find( '.evf-admin-grid' ).removeClass( 'evf-grid-2' ).addClass( 'evf-grid-1' );
+				row_clone.find( '.evf-admin-grid' ).addClass( 'evf-repeatable-grid evf-grid-1' ).removeClass( 'evf-grid-2' );
 			}
 
 			// Row clone.
@@ -2058,6 +2058,9 @@
 				containment: '#everest-forms-builder',
 				connectToSortable: '.evf-admin-grid'
 			}).disableSelection();
+
+			// Repeatable grid connect to sortable setter.
+			$( ".evf-registered-item.evf-repeater-field" ).draggable( "option", "connectToSortable", ".evf-repeatable-grid" );
 
 			// Adapt hover behaviour on mouse event.
 			$( '.evf-admin-row' ).on( 'mouseenter mouseleave', function( event ) {
