@@ -248,7 +248,9 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			 */
 			do_action( 'everest_forms_display_builder_row_before', $row_id, $form_data, $form_id );
 
-			echo '<div class="evf-admin-row" data-row-id="' . absint( $row ) . '">';
+			$repeater_field = apply_filters( 'everest_forms_display_repeater_fields', $row_grid, $fields );
+
+			echo '<div class="evf-admin-row" data-row-id="' . absint( $row ) . ( ! is_array( $repeater_field ) ? $repeater_field : '' ) . '">'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo '<div class="evf-toggle-row">';
 			echo '<div class="evf-duplicate-row"><span class="dashicons dashicons-media-default" title="Duplicate Row"></span></div>';
 			echo '<div class="evf-delete-row"><span class="dashicons dashicons-trash" title="Delete Row"></span></div>';
@@ -313,7 +315,12 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 
 		echo '</div>';
 		echo '<div class="clear evf-clear"></div>';
+		echo '<div class="evf-show-add-buttons">';
 		echo '<div class="evf-add-row" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) max( $row_ids ) . '"><span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-plus-alt">' . esc_html__( 'Add Row', 'everest-forms' ) . '</span></div>';
+		if ( ! is_array( $repeater_field ) ) {
+			echo '<div class="evf-add-repeater-row" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) max( $row_ids ) . '"><span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-plus-alt">' . esc_html__( 'Add Repeater Row', 'everest-forms' ) . '</span></div>';
+		}
+		echo '</div >';
 		echo '</div >';
 	}
 

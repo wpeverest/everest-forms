@@ -7,7 +7,7 @@
   padding: 0;
   -webkit-animation: none;
   animation: none;
-  direction: ltr;
+  direction: rtl;
   border: 0;
   font-size: 14px;
   line-height: 24px;
@@ -19,8 +19,8 @@
   -ms-touch-action: manipulation;
   touch-action: manipulation;
   background: #fff;
-  -webkit-box-shadow: 1px 0 0 #e6e6e6, -1px 0 0 #e6e6e6, 0 1px 0 #e6e6e6, 0 -1px 0 #e6e6e6, 0 3px 13px rgba(0, 0, 0, 0.08);
-  box-shadow: 1px 0 0 #e6e6e6, -1px 0 0 #e6e6e6, 0 1px 0 #e6e6e6, 0 -1px 0 #e6e6e6, 0 3px 13px rgba(0, 0, 0, 0.08); }
+  -webkit-box-shadow: -1px 0 0 #e6e6e6, 1px 0 0 #e6e6e6, 0 1px 0 #e6e6e6, 0 -1px 0 #e6e6e6, 0 3px 13px rgba(0, 0, 0, 0.08);
+  box-shadow: -1px 0 0 #e6e6e6, 1px 0 0 #e6e6e6, 0 1px 0 #e6e6e6, 0 -1px 0 #e6e6e6, 0 3px 13px rgba(0, 0, 0, 0.08); }
 
 .flatpickr-calendar.open,
 .flatpickr-calendar.inline {
@@ -60,17 +60,17 @@
 .flatpickr-days
 .dayContainer:nth-child(n + 2)
 .flatpickr-day.inRange:nth-child(7n + 1) {
-  -webkit-box-shadow: -2px 0 0 #e6e6e6, 5px 0 0 #e6e6e6;
-  box-shadow: -2px 0 0 #e6e6e6, 5px 0 0 #e6e6e6; }
+  -webkit-box-shadow: 2px 0 0 #e6e6e6, -5px 0 0 #e6e6e6;
+  box-shadow: 2px 0 0 #e6e6e6, -5px 0 0 #e6e6e6; }
 
 .flatpickr-calendar .hasWeeks .dayContainer,
 .flatpickr-calendar .hasTime .dayContainer {
   border-bottom: 0;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0; }
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0; }
 
 .flatpickr-calendar .hasWeeks .dayContainer {
-  border-left: 0; }
+  border-right: 0; }
 
 .flatpickr-calendar.showTimeInput.hasTime .flatpickr-time {
   height: 40px;
@@ -88,12 +88,12 @@
   content: '';
   height: 0;
   width: 0;
-  left: 22px; }
+  right: 22px; }
 
 .flatpickr-calendar.rightMost::before,
 .flatpickr-calendar.rightMost::after {
-  left: auto;
-  right: 22px; }
+  right: auto;
+  left: 22px; }
 
 .flatpickr-calendar::before {
   border-width: 5px;
@@ -180,7 +180,7 @@
 		/*rtl:begin:ignore*/
   /*
 		*/
-  left: 0;
+  right: 0;
   /*
 		/*rtl:end:ignore*/
   /*
@@ -196,7 +196,7 @@
 		/*rtl:begin:ignore*/
   /*
 		*/
-  right: 0;
+  left: 0;
   /*
 		/*rtl:end:ignore*/
   /*
@@ -246,9 +246,9 @@
 
 .numInputWrapper span {
   position: absolute;
-  right: 0;
+  left: 0;
   width: 14px;
-  padding: 0 4px 0 2px;
+  padding: 0 2px 0 4px;
   height: 50%;
   line-height: 50%;
   opacity: 0;
@@ -273,8 +273,8 @@
   border-bottom: 0; }
 
 .numInputWrapper span.arrowUp::after {
-  border-left: 4px solid transparent;
   border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
   border-bottom: 4px solid rgba(57, 57, 57, 0.6);
   top: 26%; }
 
@@ -282,8 +282,8 @@
   top: 50%; }
 
 .numInputWrapper span.arrowDown::after {
-  border-left: 4px solid transparent;
   border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
   border-top: 4px solid rgba(57, 57, 57, 0.6);
   top: 40%; }
 
@@ -307,7 +307,7 @@
   color: inherit;
   position: absolute;
   width: 75%;
-  left: 12.5%;
+  right: 12.5%;
   padding: 7.48px 0 0 0;
   line-height: 1;
   height: 34px;
@@ -321,7 +321,7 @@
   font-weight: 700;
   color: inherit;
   display: inline-block;
-  margin-left: 0.5ch;
+  margin-right: 0.5ch;
   padding: 0; }
 
 .flatpickr-current-month span.cur-month:hover {
@@ -344,7 +344,7 @@
   box-sizing: border-box;
   color: inherit;
   cursor: text;
-  padding: 0 0 0 0.5ch;
+  padding: 0 0.5ch 0 0;
   margin: 0;
   display: inline-block;
   font-size: inherit;
@@ -384,7 +384,7 @@
   line-height: inherit;
   margin: -1px 0 0 0;
   outline: none;
-  padding: 0 0 0 0.5ch;
+  padding: 0 0.5ch 0 0;
   position: relative;
   vertical-align: initial;
   -webkit-box-sizing: border-box;
@@ -469,7 +469,7 @@ span.flatpickr-weekday {
 .dayContainer {
   padding: 0;
   outline: 0;
-  text-align: left;
+  text-align: right;
   width: 307.875px;
   min-width: 307.875px;
   max-width: 307.875px;
@@ -491,8 +491,8 @@ span.flatpickr-weekday {
   opacity: 1; }
 
 .dayContainer + .dayContainer {
-  -webkit-box-shadow: -1px 0 0 #e6e6e6;
-  box-shadow: -1px 0 0 #e6e6e6; }
+  -webkit-box-shadow: 1px 0 0 #e6e6e6;
+  box-shadow: 1px 0 0 #e6e6e6; }
 
 .flatpickr-day {
   background: none;
@@ -572,18 +572,18 @@ span.flatpickr-weekday {
 .flatpickr-day.selected.startRange,
 .flatpickr-day.startRange.startRange,
 .flatpickr-day.endRange.startRange {
-  border-radius: 50px 0 0 50px; }
+  border-radius: 0 50px 50px 0; }
 
 .flatpickr-day.selected.endRange,
 .flatpickr-day.startRange.endRange,
 .flatpickr-day.endRange.endRange {
-  border-radius: 0 50px 50px 0; }
+  border-radius: 50px 0 0 50px; }
 
 .flatpickr-day.selected.startRange + .endRange:not(:nth-child(7n + 1)),
 .flatpickr-day.startRange.startRange + .endRange:not(:nth-child(7n + 1)),
 .flatpickr-day.endRange.startRange + .endRange:not(:nth-child(7n + 1)) {
-  -webkit-box-shadow: -10px 0 0 #569ff7;
-  box-shadow: -10px 0 0 #569ff7; }
+  -webkit-box-shadow: 10px 0 0 #569ff7;
+  box-shadow: 10px 0 0 #569ff7; }
 
 .flatpickr-day.selected.startRange.endRange,
 .flatpickr-day.startRange.startRange.endRange,
@@ -592,8 +592,8 @@ span.flatpickr-weekday {
 
 .flatpickr-day.inRange {
   border-radius: 0;
-  -webkit-box-shadow: -5px 0 0 #e6e6e6, 5px 0 0 #e6e6e6;
-  box-shadow: -5px 0 0 #e6e6e6, 5px 0 0 #e6e6e6; }
+  -webkit-box-shadow: 5px 0 0 #e6e6e6, -5px 0 0 #e6e6e6;
+  box-shadow: 5px 0 0 #e6e6e6, -5px 0 0 #e6e6e6; }
 
 .flatpickr-day.flatpickr-disabled,
 .flatpickr-day.flatpickr-disabled:hover,
@@ -614,8 +614,8 @@ span.flatpickr-weekday {
 
 .flatpickr-day.week.selected {
   border-radius: 0;
-  -webkit-box-shadow: -5px 0 0 #569ff7, 5px 0 0 #569ff7;
-  box-shadow: -5px 0 0 #569ff7, 5px 0 0 #569ff7; }
+  -webkit-box-shadow: 5px 0 0 #569ff7, -5px 0 0 #569ff7;
+  box-shadow: 5px 0 0 #569ff7, -5px 0 0 #569ff7; }
 
 .flatpickr-day.hidden {
   visibility: hidden; }
@@ -624,12 +624,12 @@ span.flatpickr-weekday {
   margin-top: 1px; }
 
 .flatpickr-weekwrapper {
-  float: left; }
+  float: right; }
 
 .flatpickr-weekwrapper .flatpickr-weeks {
   padding: 0 12px;
-  -webkit-box-shadow: 1px 0 0 #e6e6e6;
-  box-shadow: 1px 0 0 #e6e6e6; }
+  -webkit-box-shadow: -1px 0 0 #e6e6e6;
+  box-shadow: -1px 0 0 #e6e6e6; }
 
 .flatpickr-weekwrapper .flatpickr-weekday {
   float: none;
@@ -689,7 +689,7 @@ span.flatpickr-weekday {
   flex: 1;
   width: 40%;
   height: 40px;
-  float: left; }
+  float: right; }
 
 .flatpickr-time .numInputWrapper span.arrowUp::after {
   border-bottom-color: #393939; }
@@ -737,7 +737,7 @@ span.flatpickr-weekday {
 .flatpickr-time .flatpickr-time-separator,
 .flatpickr-time .flatpickr-am-pm {
   height: inherit;
-  float: left;
+  float: right;
   line-height: inherit;
   color: #393939;
   font-weight: bold;

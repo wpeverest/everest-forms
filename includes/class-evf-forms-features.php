@@ -42,6 +42,7 @@ class EVF_Forms_Features {
 			'EVF_Field_Range_Slider',
 			'EVF_Field_Privacy_Policy',
 			'EVF_Field_Captcha',
+			'EVF_Field_Repeater',
 			'EVF_Field_Payment_Single',
 			'EVF_Field_Payment_Radio',
 			'EVF_Field_Payment_Checkbox',
