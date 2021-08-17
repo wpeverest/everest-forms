@@ -1372,6 +1372,10 @@
 			// Initialize fields UI.
 			EVFPanelBuilder.bindFields();
 			EVFPanelBuilder.checkEmptyGrid();
+
+			if ( is_repeatable ) {
+				return row_clone;
+			}
 		},
 		bindAddNewRow: function() {
 			$( 'body' ).on( 'click', '.evf-add-row span', function( event ) {
@@ -1379,9 +1383,8 @@
 			});
 		},
 		bindAddNewRepeaterRow: function() {
-			$( 'body' ).on( 'click', '.evf-add-repeater-row span, i.evf-icon-repeater', function( event ) {
-				EVFPanelBuilder.addNewRow( $( this ), true );
-				// EVFPanelBuilder.fieldDrop($('#everest-forms-add-fields-repeater-fields'));
+			$( 'body' ).on( 'click', '.evf-add-repeater-row span', function( event ) {
+				EVFPanelBuilder.fieldDrop($('.evf-registered-item[data-field-type="repeater-fields"]').clone());
 			});
 		},
 		bindCloneField: function () {
@@ -1990,7 +1993,7 @@
 			}).disableSelection();
 
 			$( '.evf-admin-grid' ).sortable({
-				items: '> .everest-forms-field',
+				items: '> .everest-forms-field[data-field-type!="repeater-fields"]',
 				delay  : 100,
 				opacity: 0.65,
 				cursor: 'move',
@@ -2179,7 +2182,7 @@
 						$( '#everest-forms-field-option-' + dragged_field_id + '-quiz_status' ).closest( '.everest-forms-field-option-row-quiz_status' ).siblings( '.everst-forms-field-quiz-settings' ).removeClass( 'everest-forms-hidden' ).addClass( 'everest-forms-show' );
 					}
 
-					if( field.closest('.evf-admin-row').attr('data-field-type') == "repeater-fields" ) {
+					if( $(document).find('.evf-repeater-fields').last().attr('data-field-type') == "repeater-fields" ) {
 						$(
 							"#everest-forms-field-option-basic-" +
 								dragged_field_id
@@ -2223,6 +2226,20 @@
 
 					// Trigger an event indicating completion of field_drop action.
 					$( document.body ).trigger( 'evf_field_drop_complete', [ field_type, dragged_field_id, field_preview, field_options ] );
+					if ('repeater-fields' == field_type ) {
+						var row_clone_repeater = EVFPanelBuilder.addNewRow( $( '.evf-add-repeater-row span' ), true );
+						$( document.body ).trigger( 'evf_repeater_row_drop_complete', [ field_preview ] );
+						if( row_clone_repeater.find('#add_remove_button').length === 0 && (undefined !== row_clone_repeater.attr('data-field-type') && 'repeater-fields' === row_clone_repeater.attr('data-field-type') ) ){
+							row_clone_repeater
+								.append(
+									'<div id="add_remove_button" class="evf-add-row-repeater"><span class="everest-forms-btn everest-forms-btn-repeater-add everest-forms-btn-primary dashicons dashicons-plus">' +
+										everest_forms_repeater_fields_params.i18n_repeater_field_add_button +
+										'</span>&nbsp;<span class="everest-forms-btn everest-forms-btn-repeater-remove everest-forms-btn-primary dashicons dashicons-minus">' +
+										everest_forms_repeater_fields_params.i18n_repeater_field_remove_button +
+										"</span></div>"
+								);
+						}
+					}
 		 		}
 		 	});
 		},
