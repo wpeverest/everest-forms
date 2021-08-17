@@ -1349,7 +1349,8 @@
 
 			// Don't allow grid edit for repeatable fields.
 			if ( is_repeatable ) {
-				row_clone.find( '.evf-toggle-row' ).remove();
+				row_clone.find( '.evf-duplicate-row' ).remove();
+				row_clone.find( '.evf-delete-row' ).remove();
 				row_clone.find( '.evf-admin-grid:gt(0)' ).remove();
 				row_clone.find( '.evf-admin-grid' ).addClass( 'evf-repeatable-grid evf-grid-1' ).removeClass( 'evf-grid-2' );
 			}
@@ -2250,7 +2251,7 @@
 					if ('repeater-fields' == field_type ) {
 						var row_clone_repeater = EVFPanelBuilder.addNewRow( $( '.evf-add-repeater-row span' ), true );
 						$( document.body ).trigger( 'evf_repeater_row_drop_complete', [ field_preview ] );
-						if( row_clone_repeater.find('#add_remove_button').length === 0 && (undefined !== row_clone_repeater.attr('data-field-type') && 'repeater-fields' === row_clone_repeater.attr('data-field-type') ) ){
+						if( row_clone_repeater.closest('.evf-repeater-wrapper').length === 0 && (undefined !== row_clone_repeater.attr('data-field-type') && 'repeater-fields' === row_clone_repeater.attr('data-field-type') ) ){
 							row_clone_repeater
 								.append(
 									'<div id="add_remove_button" class="evf-add-row-repeater"><span class="everest-forms-btn everest-forms-btn-repeater-add everest-forms-btn-primary dashicons dashicons-plus">' +
@@ -2477,7 +2478,7 @@
 					$( sync_targets ).text( changed_value );
 				}
 			});
-		}
+		},
 	};
 
 	EVFPanelBuilder.init();

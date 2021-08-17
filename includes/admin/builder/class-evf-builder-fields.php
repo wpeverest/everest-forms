@@ -252,7 +252,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 
 			echo '<div class="evf-admin-row" data-row-id="' . absint( $row ) . '"' . ( ! is_array( $repeater_field ) ? $repeater_field : '' ) . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo '<div class="evf-toggle-row">';
-			if ( empty( $repeater_field ) ) {
+			if ( ! is_array( $repeater_field ) ) {
 				echo '<div class="evf-duplicate-row"><span class="dashicons dashicons-media-default" title="Duplicate Row"></span></div>';
 				echo '<div class="evf-delete-row"><span class="dashicons dashicons-trash" title="Delete Row"></span></div>';
 			}
@@ -285,7 +285,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			echo '</div>';
 			echo '</div>';
 			echo '<div class="clear evf-clear"></div>';
-			echo ( ! empty( $repeater_field ) ) ? '<div class="evf-repeater-wrapper">' : '';
+			echo ( ! is_array( $repeater_field ) && ! empty( $repeater_field ) ) ? '<div class="evf-repeater-wrapper">' : '';
 			$grid_class = 'evf-admin-grid evf-grid-' . ( $active_grid );
 			for ( $grid_start = 1; $grid_start <= $active_grid; $grid_start ++ ) {
 				echo '<div class="' . esc_attr( $grid_class ) . ' " data-grid-id="' . absint( $grid_start ) . '">';
@@ -297,7 +297,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 				}
 				echo '</div>';
 			}
-			echo ( ! empty( $repeater_field ) ) ? '</div>' : '';
+			echo ( ! is_array( $repeater_field ) && ! empty( $repeater_field ) ) ? '</div>' : '';
 			echo '<div class="clear evf-clear"></div>';
 			echo '</div >';
 
