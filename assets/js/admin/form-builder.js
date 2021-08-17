@@ -1349,8 +1349,6 @@
 
 			// Don't allow grid edit for repeatable fields.
 			if ( is_repeatable ) {
-				row_clone.find( '.evf-duplicate-row' ).remove();
-				row_clone.find( '.evf-delete-row' ).remove();
 				row_clone.find( '.evf-admin-grid:gt(0)' ).remove();
 				row_clone.find( '.evf-admin-grid' ).addClass( 'evf-repeatable-grid evf-grid-1' ).removeClass( 'evf-grid-2' );
 			}
