@@ -285,7 +285,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			echo '</div>';
 			echo '</div>';
 			echo '<div class="clear evf-clear"></div>';
-
+			echo ( ! empty( $repeater_field ) ) ? '<div class="evf-repeater-wrapper">' : '';
 			$grid_class = 'evf-admin-grid evf-grid-' . ( $active_grid );
 			for ( $grid_start = 1; $grid_start <= $active_grid; $grid_start ++ ) {
 				echo '<div class="' . esc_attr( $grid_class ) . ' " data-grid-id="' . absint( $grid_start ) . '">';
@@ -297,6 +297,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 				}
 				echo '</div>';
 			}
+			echo ( ! empty( $repeater_field ) ) ? '</div>' : '';
 			echo '<div class="clear evf-clear"></div>';
 			echo '</div >';
 

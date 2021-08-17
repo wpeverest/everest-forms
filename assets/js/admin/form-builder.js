@@ -1318,6 +1318,9 @@
 								keys: ['enter'],
 								action: function () {
 									EVFPanelBuilder.removeRow( current_row );
+									$( '.everest-forms-fields-tab' ).find( 'a' ).removeClass( 'active' );
+									$( '.everest-forms-fields-tab' ).find( 'a' ).first().addClass( 'active' );
+									$( '.everest-forms-add-fields' ).show();
 								}
 							},
 							cancel: {
@@ -2016,6 +2019,24 @@
 				receive: function( event, ui ) {
 					if ( ui.sender.is( 'button' ) ) {
 						EVFPanelBuilder.fieldDrop( ui.helper );
+					}
+				},
+				update: function(event, ui) {
+					// gets the sorted item.
+					var dragged_field_id = ui.item.attr('data-field-id');
+					if( $( event.target ).closest( '.evf-admin-row' ).attr('data-field-type') != "repeater-fields" ) {
+						$( '#everest-forms-field-option-basic-' + dragged_field_id ).find('#everest-forms-field-option-row-' +dragged_field_id+ '-repeater-fields').remove();
+					}else{
+						if ( $( '#everest-forms-field-option-basic-' + dragged_field_id ).find('#everest-forms-field-option-'+ dragged_field_id +'-repeater-fields').length > 0){
+							$( '#everest-forms-field-option-basic-' + dragged_field_id ).find('#everest-forms-field-option-'+ dragged_field_id +'-repeater-fields').val('yes');
+						}else{
+							$('#everest-forms-field-option-basic-' + dragged_field_id ).
+							append('<div class="everest-forms-field-option-row everest-forms-field-option-row-label " id="everest-forms-field-option-row-'
+							+ dragged_field_id + '-repeater-fields" data-field-id="' + dragged_field_id
+							+ '"><input type="hidden" class="widefat" id="everest-forms-field-option-'
+							+ dragged_field_id + '-repeater-fields" name="form_fields[' + dragged_field_id
+							+ '][repeater-fields]" value="yes"></div>');
+						}
 					}
 				},
 				stop: function( event, ui ) {
