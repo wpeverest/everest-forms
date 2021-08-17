@@ -1983,7 +1983,7 @@
 				containment: '.everest-forms-panel-content',
 				start: function( event, ui ) {
 					ui.item.css({
-						'background-color': '#f7fafc',
+						'backgroundColor': '#f7fafc',
 						'border': '1px dashed #5d96ee'
 					});
 				},
