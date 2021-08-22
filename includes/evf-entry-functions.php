@@ -299,7 +299,7 @@ function evf_get_entries_by_form_id( $form_id, $start_date = '', $end_date = '' 
 	global $wpdb;
 
 	$query   = array();
-	$query[] = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}evf_entries WHERE form_id=%s", $form_id );
+	$query[] = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}evf_entries WHERE form_id=%s AND status != 'draft'", $form_id );
 
 	if ( ! empty( $start_date ) ) {
 		$query[] = $wpdb->prepare( 'AND date_created  >= %s', $start_date );
