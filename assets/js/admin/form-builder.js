@@ -1376,8 +1376,8 @@
 			EVFPanelBuilder.checkEmptyGrid();
 		},
 		bindAddNewRow: function() {
-			$( 'body' ).on( 'click', '.evf-add-row span, i.evf-icon-repeater', function( event ) {
-				EVFPanelBuilder.addNewRow( $( this ), 'repeater-fields' == $( event.target.parentNode ).attr( 'data-field-type' ) );
+			$( 'body' ).on( 'click', '.evf-add-row span', function() {
+				EVFPanelBuilder.addNewRow( $( this ), false );
 			});
 		},
 		bindCloneField: function () {
