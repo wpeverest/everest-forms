@@ -1,8 +1,11 @@
 == Changelog ==
 
 = 1.7.7 - xx-xx-2021 =
+* Tweak - Download text input option added.
 * Tweak - Spacing issue on upgrade modal dialogues.
 * Tweak - On forms row delete, switch back to "Add Fields" tab.
+* Fix - Default Value for Payment Quantity Field.
+* Fix - Upload image button click issue on inputs.
 
 = 1.7.6 - 28-07-2021 =
 * Enhancement - Cache the form and entries results for better performance.
