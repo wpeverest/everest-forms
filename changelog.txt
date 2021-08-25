@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 1.7.7 - xx-xx-2021 =
+* Tweak - Spacing issue on upgrade modal dialogues.
+* Fix - Default Value for Payment Quantity Field.
+
 = 1.7.6 - 28-07-2021 =
 * Tweak - Download text input option added.
 * Fix - Upload image button click issue on inputs. 
