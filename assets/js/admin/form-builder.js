@@ -2004,17 +2004,6 @@
 				},
 				receive: function( event, ui ) {
 					if ( ui.sender.is( 'button' ) ) {
-						if( ui.helper.parent().parent().find('#add_remove_button').length === 0 && (undefined !== ui.helper.parent().parent().attr('data-field-type') && 'repeater-fields' === ui.helper.parent().parent().attr('data-field-type') ) ){
-							ui.helper
-								.parent()
-								.after(
-									'<div id="add_remove_button" class="evf-add-row-repeater"><span class="everest-forms-btn everest-forms-btn-repeater-add everest-forms-btn-primary dashicons dashicons-plus">' +
-										everest_forms_repeater_fields_params.i18n_repeater_field_add_button +
-										'</span>&nbsp;<span class="everest-forms-btn everest-forms-btn-repeater-remove everest-forms-btn-primary dashicons dashicons-minus">' +
-										everest_forms_repeater_fields_params.i18n_repeater_field_remove_button +
-										"</span></div>"
-								);
-						}
 						EVFPanelBuilder.fieldDrop( ui.helper );
 					}
 				},
@@ -2045,9 +2034,6 @@
 				scrollSensitivity: 40,
 				forcePlaceholderSize: true,
 				helper: function( event ) {
-					if ( 'repeater-fields' == $( event.target.parentNode ).attr( 'data-field-type' ) ) {
-						EVFPanelBuilder.addNewRow( $( '.evf-add-row span' ), true );
-					}
 					return $( this ).clone().insertAfter( $( this ).closest( '.everest-forms-tab-content' ).siblings( '.everest-forms-fields-tab' ) );
 				},
 				opacity: 0.75,
