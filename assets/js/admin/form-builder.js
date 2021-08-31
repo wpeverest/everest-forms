@@ -360,6 +360,10 @@
 			if ( evf_data.tab === 'field-options' ) {
 				$( '.evf-panel-field-options-button' ).trigger( 'click' );
 			}
+
+			$(document.body).on('everest-forms-field-drop','.evf-registered-buttons .evf-registered-item', function() {
+				EVFPanelBuilder.fieldDrop($(this).clone());
+			} )
 		},
 
 		/**
@@ -1330,14 +1334,14 @@
 				}
 			});
 		},
-		addNewRow: function( row, is_repeatable ) {
+		addNewRow: function( row ) {
 			var wrapper      = $( '.evf-admin-field-wrapper' ),
 				max_row_id   = Math.max.apply( Math, $( '.evf-admin-row' ).map( function() {
 					return $( this ).data( 'row-id' );
 				} ).get() ),
 				row_clone    = $( '.evf-admin-row' ).eq(0).clone(),
 				total_rows   = row.parent().attr( 'data-total-rows' ),
-				current_part = row.parents( '.evf-admin-field-container' ).attr( 'data-current-part' );
+				current_part = row.parents( '.evf-admin-field-container' ).attr( 'data-current-part' )
 
 			max_row_id++;
 			total_rows++;
@@ -1346,23 +1350,13 @@
 				wrapper = $( '.evf-admin-field-wrapper' ).find( '#part_' + current_part );
 			}
 
-			// Don't allow grid edit for repeatable fields.
-			if ( is_repeatable ) {
-				row_clone.find( '.evf-toggle-row' ).remove();
-				row_clone.find( '.evf-admin-grid:gt(0)' ).remove();
-				row_clone.find( '.evf-admin-grid' ).addClass( 'evf-repeatable-grid evf-grid-1' ).removeClass( 'evf-grid-2' );
-			}
+
 
 			// Row clone.
 			row_clone.find( '.evf-admin-grid' ).html( '' );
 			row_clone.attr( 'data-row-id', max_row_id );
 
-			if ( is_repeatable ) {
-				row_clone.addClass('evf-repeater-fields');
-				row_clone.attr( 'data-field-type', 'repeater-fields' );
-			} else {
-				row_clone.removeAttr( 'data-field-type' );
-			}
+
 
 			// Row infos.
 			row.parent().attr( 'data-total-rows', total_rows );
@@ -1374,10 +1368,12 @@
 			// Initialize fields UI.
 			EVFPanelBuilder.bindFields();
 			EVFPanelBuilder.checkEmptyGrid();
+
+			row.trigger('everest-forms-after-add-row', row_clone);
 		},
 		bindAddNewRow: function() {
 			$( 'body' ).on( 'click', '.evf-add-row span', function() {
-				EVFPanelBuilder.addNewRow( $( this ), false );
+				EVFPanelBuilder.addNewRow( $( this ) );
 			});
 		},
 		bindCloneField: function () {
@@ -2155,12 +2151,6 @@
 		},
 		fieldDrop: function ( field ) {
 			var field_type = field.attr( 'data-field-type' );
-
-			if( 'repeater-fields' == field_type && (( field.parents('.evf-admin-row').attr('data-field-type') != "repeater-fields") || field.parents('.evf-admin-row').has('.everest-forms-field-repeater-fields').length > 0 )){
-				$('.evf-admin-row[data-field-type="repeater-fields"]').has('.evf-empty-grid').remove();
-				field.remove();
-				return;
-			}
 			field.css({
 				'left': '0',
 				'width': '100%'
@@ -2213,7 +2203,6 @@
 						$('#everest-forms-field-option-basic-' + dragged_field_id ).append('<div class="everest-forms-field-option-row everest-forms-field-option-row-label " id="everest-forms-field-option-row-' +dragged_field_id+ '-repeater-fields" data-field-id="'+ dragged_field_id +'"><input type="hidden" class="widefat" id="everest-forms-field-option-'+ dragged_field_id +'-repeater-fields" name="form_fields['+ dragged_field_id +'][repeater-fields]" value="yes"></div>');
 					}
 					field.remove();
-					EVFPanelBuilder.checkEmptyGrid();
 
 					// Triggers.
 					$( document.body ).trigger( 'init_tooltips' );
@@ -2239,7 +2228,9 @@
 
 					// Trigger an event indicating completion of field_drop action.
 					$( document.body ).trigger( 'evf_field_drop_complete', [ field_type, dragged_field_id, field_preview, field_options ] );
-		 		}
+					EVFPanelBuilder.checkEmptyGrid();
+
+				}
 		 	});
 		},
 
