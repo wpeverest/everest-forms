@@ -1,9 +1,9 @@
-name: Coding Standards
-on:
-  push:
-    branches:
-      - "develop"
-      - "implement/php-unit-test"
+name: Run code sniff on PR
+# on:
+#   push:
+#     branches:
+#       - "develop"
+#       - "implement/php-unit-test"
 jobs:
   test:
     name: PHP Coding Standards
