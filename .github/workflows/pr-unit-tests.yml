@@ -1,14 +1,23 @@
 name: Run unit tests on PR
 on:
+  pull_request:
   push:
     branches:
       - "develop"
-      - "implement/php-unit-test"
+
+# Cancels all previous workflow runs for pull requests that have not completed.
+concurrency:
+  # The concurrency group contains the workflow name and the branch name for pull requests
+  # or the commit hash for any other events.
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.head_ref || github.sha }}
+  cancel-in-progress: true
+
 jobs:
-  test:
+  unit-php:
     name: PHP ${{ matrix.php }} WP ${{ matrix.wp }}
     timeout-minutes: 15
     runs-on: ubuntu-latest
+    if: ${{ github.repository == 'wpeverest/everest-forms' || github.event_name == 'pull_request' }}
     continue-on-error: ${{ matrix.wp == 'nightly' }}
     strategy:
       fail-fast: false
@@ -22,6 +31,14 @@ jobs:
             php: 7.2
           - wp: "5.6"
             php: 7.2
+    services:
+      database:
+        image: mysql:5.6
+        env:
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=5
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -47,7 +64,6 @@ jobs:
 
       - name: Setup and install composer
         run: |
-          sudo systemctl start mysql.service
           composer install --prefer-dist
           composer require --dev --update-with-dependencies --prefer-dist roots/wordpress="${{ matrix.wp }} || *" wp-phpunit/wp-phpunit="${{ matrix.wp }} || *"
 
