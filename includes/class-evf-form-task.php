@@ -703,15 +703,19 @@ class EVF_Form_Task {
 			$user_ip    = '';
 		}
 
-		$entry_data = array(
-			'form_id'         => $form_id,
-			'user_id'         => get_current_user_id(),
-			'user_device'     => sanitize_text_field( $user_agent ),
-			'user_ip_address' => sanitize_text_field( $user_ip ),
-			'status'          => 'publish',
-			'referer'         => $referer,
-			'fields'          => wp_json_encode( $fields ),
-			'date_created'    => current_time( 'mysql', true ),
+		$entry_data = apply_filters(
+			'everest_forms_entry_data',
+			array(
+				'form_id'         => $form_id,
+				'user_id'         => get_current_user_id(),
+				'user_device'     => sanitize_text_field( $user_agent ),
+				'user_ip_address' => sanitize_text_field( $user_ip ),
+				'status'          => 'publish',
+				'referer'         => $referer,
+				'fields'          => wp_json_encode( $fields ),
+				'date_created'    => current_time( 'mysql', true ),
+			),
+			$entry
 		);
 
 		if ( ! $entry_data['form_id'] ) {
