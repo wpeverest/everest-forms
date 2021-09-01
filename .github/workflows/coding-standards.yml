@@ -9,11 +9,11 @@ on:
       - "**"
 
 jobs:
-  build:
+  test:
     name: PHP Coding Standards
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v1
 
       - name: Composer cache

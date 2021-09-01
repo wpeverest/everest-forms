@@ -1,52 +1,52 @@
-name: Test
-on:
-  push:
-    branches:
-      - "develop"
-      - "implement/php-unit-test"
-  pull_request:
-    branches:
-      - "**"
-
+name: Run unit tests on PR
+on: pull_request
 jobs:
-  build:
+  test:
+    name: PHP ${{ matrix.php }} WP ${{ matrix.wp }}
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.wp == 'nightly' }}
     strategy:
-      matrix:
-        php: ["7.3", "5.6"]
-        wp: ["*", "dev-nightly"]
       fail-fast: false
-    name: WP ${{ matrix.wp }} / PHP ${{ matrix.php }}
-    runs-on: ubuntu-18.04
+      matrix:
+        php: ["7.0", "7.1", "7.2", "7.3", "7.4", "8.0"]
+        wp: ["latest"]
+        include:
+          - wp: nightly
+            php: "7.4"
+          - wp: "5.7"
+            php: 7.2
+          - wp: "5.6"
+            php: 7.2
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v1
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: Composer cache
-        uses: actions/cache@v1
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer
+          extensions: mysql
+          coverage: none
+
+      - name: Tool versions
+        run: |
+          php --version
+          composer --version
+
+      - name: Get cached composer directories
+        uses: actions/cache@v2
         with:
           path: ~/.composer/cache
           key: ${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
 
-      - name: Install PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php }}
-          extensions: mysqli, xmlwriter
-          coverage: none
-        env:
-          fail-fast: true
-
-      - name: Debugging
-        run: |
-          php --version
-          php -m
-          composer --version
-          mysql --version
-      - name: Install dependencies
+      - name: Setup and install composer
         run: |
           sudo systemctl start mysql.service
           composer install --prefer-dist
           composer require --dev --update-with-dependencies --prefer-dist roots/wordpress="${{ matrix.wp }} || *" wp-phpunit/wp-phpunit="${{ matrix.wp }} || *"
+
       - name: Run unit tests
         run: composer test
         env:
