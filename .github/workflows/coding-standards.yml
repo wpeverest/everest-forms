@@ -32,7 +32,7 @@ jobs:
           key: phpcs-${{ hashFiles('everest-forms.php') }}
 
       - name: Install PHP
-        uses: shivammathur/setup-php@2.7.0
+        uses: shivammathur/setup-php@v2
         with:
           php-version: "7.3"
           coverage: none
