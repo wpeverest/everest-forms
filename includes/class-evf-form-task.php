@@ -323,6 +323,11 @@ class EVF_Form_Task {
 
 			if ( defined( 'EVF_PDF_SUBMISSION_VERSION' ) && 'yes' === get_option( 'everest_forms_pdf_download_after_submit', 'no' ) ) {
 				$response_data['pdf_download'] = true;
+				$pdf_download_message          = get_option( 'everest_forms_pdf_custom_download_text', '' );
+				if ( empty( $pdf_download_message ) ) {
+					$pdf_download_message = __( 'Download your form submission in PDF format', 'everest-forms' );
+				}
+				$response_data['pdf_download_message'] = $pdf_download_message;
 			}
 
 			// Backward Compatibility Check.

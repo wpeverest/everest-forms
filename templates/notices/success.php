@@ -57,13 +57,20 @@ global $__everest_form_entry_id;
 			);
 
 		if ( ! empty( $__everest_form_id ) && ! empty( $__everest_form_entry_id ) ) {
+			$pdf_download_message = get_option( 'everest_forms_pdf_custom_download_text', '' );
+
+			if ( empty( $pdf_download_message ) ) {
+				$pdf_download_message = __( 'Download your form submission in PDF format', 'everest-forms' );
+			}
+
 			printf(
 				'%s%s%s',
 				'<br><small><a href="?page=evf-entries-pdf&form_id=' . esc_attr( $__everest_form_id ) . '&entry_id=' . esc_attr( $__everest_form_entry_id ) . '">',
-				esc_html__( 'Click here to download your pdf submission', 'everest-forms' ),
+				esc_html( $pdf_download_message ),
 				'</a></small>'
 			);
 		}
+
 		?>
 	</div>
 	<?php endforeach; ?>
