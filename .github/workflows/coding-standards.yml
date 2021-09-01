@@ -53,5 +53,5 @@ jobs:
 
       - name: Run code sniffer
         run: |
-          composer require staabm/annotate-pull-request-from-checkstyle="^1.4"
+          composer require staabm/annotate-pull-request-from-checkstyle="^1.6"
           composer test:cs2pr
