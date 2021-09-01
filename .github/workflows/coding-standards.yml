@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - "develop"
-      - "master"
       - "implement/php-unit-test"
   pull_request:
     branches:
