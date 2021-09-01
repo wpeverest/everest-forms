@@ -16,8 +16,8 @@
     "process-timeout": 0
   },
   "require": {
-    "php": ">=7.0",
-    "composer/installers": "~1.7"
+    "php": "^7.2 || ^8.0",
+    "composer/installers": "~2.0"
   },
   "require-dev": {
     "wp-cli/db-command": "2.0.13",
@@ -56,9 +56,9 @@
     "test:reset": [
       "wp db reset --yes --path=tests/wordpress --color"
     ],
-    "test:cs2pr": [
-      "phpcs -nsq --report=checkstyle --cache=tests/cache/phpcs . | cs2pr"
-    ],
+		"test:cs2pr": [
+			"phpcs -nsq --report=checkstyle --cache=tests/cache/phpcs . | cs2pr"
+		],
     "makepot": [
       "@makepot:audit --skip-audit"
     ],
