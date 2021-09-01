@@ -1,13 +1,5 @@
 name: Coding Standards
-on:
-  push:
-    branches:
-      - "develop"
-      - "implement/php-unit-test"
-  pull_request:
-    branches:
-      - "**"
-
+on: pull_request
 jobs:
   test:
     name: PHP Coding Standards
@@ -23,7 +15,7 @@ jobs:
           key: phpcs-composer-${{ hashFiles('composer.json') }}
 
       - name: PHPCS cache
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: tests/cache
           # This uses the hash of everest-forms.php in its cache key because Actions doesn't support
