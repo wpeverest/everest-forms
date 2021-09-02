@@ -1334,46 +1334,41 @@
 				}
 			});
 		},
-		addNewRow: function( row ) {
-			var wrapper      = $( '.evf-admin-field-wrapper' ),
-				max_row_id   = Math.max.apply( Math, $( '.evf-admin-row' ).map( function() {
-					return $( this ).data( 'row-id' );
-				} ).get() ),
-				row_clone    = $( '.evf-admin-row' ).eq(0).clone(),
-				total_rows   = row.parent().attr( 'data-total-rows' ),
-				current_part = row.parents( '.evf-admin-field-container' ).attr( 'data-current-part' )
-
-			max_row_id++;
-			total_rows++;
-
-			if ( current_part ) {
-				wrapper = $( '.evf-admin-field-wrapper' ).find( '#part_' + current_part );
-			}
-
-
-
-			// Row clone.
-			row_clone.find( '.evf-admin-grid' ).html( '' );
-			row_clone.attr( 'data-row-id', max_row_id );
-
-
-
-			// Row infos.
-			row.parent().attr( 'data-total-rows', total_rows );
-			row.parent().attr( 'data-next-row-id', max_row_id );
-
-			// Row append.
-			wrapper.append( row_clone );
-
-			// Initialize fields UI.
-			EVFPanelBuilder.bindFields();
-			EVFPanelBuilder.checkEmptyGrid();
-
-			row.trigger('everest-forms-after-add-row', row_clone);
-		},
 		bindAddNewRow: function() {
 			$( 'body' ).on( 'click', '.evf-add-row span', function() {
-				EVFPanelBuilder.addNewRow( $( this ) );
+				var $this        = $( this ),
+					wrapper      = $( '.evf-admin-field-wrapper' ),
+					row_ids      = $( '.evf-admin-row' ).map( function() {
+						return $( this ).data( 'row-id' );
+					} ).get(),
+					max_row_id   = Math.max.apply( Math, row_ids ),
+					row_clone    = $( '.evf-admin-row' ).eq(0).clone(),
+					total_rows   = $this.parent().attr( 'data-total-rows' ),
+					current_part = $this.parents( '.evf-admin-field-container' ).attr( 'data-current-part' );
+
+				max_row_id++;
+				total_rows++;
+
+				if ( current_part ) {
+					wrapper = $( '.evf-admin-field-wrapper' ).find( '#part_' + current_part );
+				}
+
+				// Row clone.
+				row_clone.find( '.evf-admin-grid' ).html( '' );
+				row_clone.attr( 'data-row-id', max_row_id );
+
+				// Row infos.
+				$this.parent().attr( 'data-total-rows', total_rows );
+				$this.parent().attr( 'data-next-row-id', max_row_id );
+
+				// Row append.
+				wrapper.append( row_clone );
+
+				// Initialize fields UI.
+				EVFPanelBuilder.bindFields();
+				EVFPanelBuilder.checkEmptyGrid();
+				// Trigger event after row add.
+				$this.trigger('everest-forms-after-add-row', row_clone);
 			});
 		},
 		bindCloneField: function () {
@@ -2016,14 +2011,14 @@
 				}
 			}).disableSelection();
 
-			$( '.evf-registered-buttons .evf-registered-item' ).draggable({
+			$( '.evf-registered-buttons button.evf-registered-item' ).draggable({
 				delay: 200,
 				cancel: false,
 				scroll: false,
 				revert: 'invalid',
 				scrollSensitivity: 40,
 				forcePlaceholderSize: true,
-				helper: function( event ) {
+				helper: function() {
 					return $( this ).clone().insertAfter( $( this ).closest( '.everest-forms-tab-content' ).siblings( '.everest-forms-fields-tab' ) );
 				},
 				opacity: 0.75,
@@ -2175,9 +2170,7 @@
 						$( '#everest-forms-field-option-' + dragged_field_id + '-quiz_status' ).prop( 'checked', true );
 						$( '#everest-forms-field-option-' + dragged_field_id + '-quiz_status' ).closest( '.everest-forms-field-option-row-quiz_status' ).siblings( '.everst-forms-field-quiz-settings' ).removeClass( 'everest-forms-hidden' ).addClass( 'everest-forms-show' );
 					}
-					if( field.closest('.evf-admin-row').attr('data-field-type') == "repeater-fields" ) {
-						$('#everest-forms-field-option-basic-' + dragged_field_id ).append('<div class="everest-forms-field-option-row everest-forms-field-option-row-label " id="everest-forms-field-option-row-' +dragged_field_id+ '-repeater-fields" data-field-id="'+ dragged_field_id +'"><input type="hidden" class="widefat" id="everest-forms-field-option-'+ dragged_field_id +'-repeater-fields" name="form_fields['+ dragged_field_id +'][repeater-fields]" value="yes"></div>');
-					}
+
 					field.remove();
 
 					// Triggers.
@@ -2205,7 +2198,6 @@
 					// Trigger an event indicating completion of field_drop action.
 					$( document.body ).trigger( 'evf_field_drop_complete', [ field_type, dragged_field_id, field_preview, field_options ] );
 					EVFPanelBuilder.checkEmptyGrid();
-
 				}
 		 	});
 		},
@@ -2491,11 +2483,6 @@ jQuery( function ( $ ) {
 			$( this ).find( '.evf-registered-buttons' ).hide();
 		});
 	} ).trigger( 'init_add_fields_toogle' );
-
-	$('.evf-admin-row[data-field-type="repeater-fields"] .everest-forms-field').each(function() {
-		var field_id = $(this).attr('data-field-id');
-		$('#everest-forms-field-option-basic-' + field_id ).append('<div class="everest-forms-field-option-row everest-forms-field-option-row-label " id="everest-forms-field-option-row-' +field_id+ '-repeater-fields" data-field-id="'+ field_id +'"><input type="hidden" class="widefat" id="everest-forms-field-option-'+ field_id +'-repeater-fields" name="form_fields['+ field_id +'][repeater-fields]" value="yes"></div>');
-	});
 
 	// Fields Options - Open/close.
 	$( document.body ).on( 'click', '.everest-forms-field-option .everest-forms-field-option-group > a', function( event ) {
