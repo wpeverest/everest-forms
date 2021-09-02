@@ -22,7 +22,7 @@ jobs:
       fail-fast: false
       matrix:
         php: ["5.6", "7.0", "7.1", "7.2", "7.3", "7.4", "8.0"]
-        wp: ["latest"]
+        wp: [latest: { name: "latest", "version": "*" }]
         include:
           - wp: "dev-nightly"
             php: 7.4
@@ -65,10 +65,7 @@ jobs:
       - name: Setup and install composer
         run: |
           composer install --prefer-dist
-          if [${{ matrix.wp }} == "latest" ]; then
-            latest_wp = "*"
-          fi
-          composer require --dev --update-with-dependencies --prefer-dist roots/wordpress="${{latest_wp}} || *" wp-phpunit/wp-phpunit="${{latest_wp}} || *"
+          composer require --dev --update-with-dependencies --prefer-dist roots/wordpress="${{ matrix.wp.latest.version }} || ${{ matrix.wp }} || *" wp-phpunit/wp-phpunit="${{ matrix.wp.latest.version }} || ${{ matrix.wp }} || *"
 
       - name: Run unit tests
         run: composer test
