@@ -76,3 +76,4 @@ jobs:
         env:
           MYSQL_DATABASE: wordpress
           WP_TESTS_DB_PASS: root
+          WP_TESTS_DB_HOST: "127.0.0.1"
