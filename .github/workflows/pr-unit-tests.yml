@@ -66,7 +66,7 @@ jobs:
         run: |
           composer install --prefer-dist
           if [${{ matrix.wp }} == "latest" ]; then
-            local latest_wp = "*"
+            latest_wp = "*"
           fi
           composer require --dev --update-with-dependencies --prefer-dist roots/wordpress="${{latest_wp}} || *" wp-phpunit/wp-phpunit="${{latest_wp}} || *"
 
