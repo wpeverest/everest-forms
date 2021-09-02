@@ -50,15 +50,11 @@ jobs:
           tools: composer
           extensions: mysqli
           coverage: none
-        env:
-          fail-fast: true
 
       - name: Tool versions
         run: |
           php --version
-          php -m
           composer --version
-          mysql --version
 
       - name: Get cached composer directories
         uses: actions/cache@v2
