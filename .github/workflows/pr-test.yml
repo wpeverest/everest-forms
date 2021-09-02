@@ -19,9 +19,5 @@ jobs:
       - name: "Checkout Repository"
         uses: actions/checkout@v2
 
-      - name: "Set flag from Matrix"
-        env:
-          LATEST_VAR: "${{ contains(matrix.wp, 'latest') }} === true ? '*' : ${{ matrix.wp }}"
-
-      - name: "Use flag if true"
-        run: echo "set flag to ${ LATEST_VAR }"
+      - name: Set env
+        run: echo $(if contains( matrix.wp, 'latest' ) === true ; then echo "*"; else echo ${{ matrix.wp }}; fi )
