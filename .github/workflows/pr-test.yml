@@ -22,13 +22,12 @@ jobs:
       - name: "Set flag from Matrix"
         env:
           LATEST_VAR: ${{ contains(matrix.wp, 'latest') }}
-          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
         run: |
           if ${LATEST_VAR} == true; then
-            echo "::set-env name=version::*"
+            echo "::set-env name=flag::*"
           else
-            echo "::set-env name=version::${{ matrix.wp }}"
+            echo "::set-env name=flag::${{ matrix.wp }}"
           fi
 
       - name: "Use flag if true"
-        run: echo "set version to ${ env.version }"
+        run: echo "set flag to ${ LATEST_VAR }"
