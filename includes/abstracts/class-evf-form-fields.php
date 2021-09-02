@@ -1618,6 +1618,11 @@ abstract class EVF_Form_Fields {
 	 * @param array $form_data   Form data and settings.
 	 */
 	public function edit_form_field_display( $entry_field, $field, $form_data ) {
+
+		if ( 'repeater_fields' === $field['type'] ) {
+			return;
+		}
+
 		$value = isset( $entry_field['value'] ) ? $entry_field['value'] : '';
 
 		if ( '' !== $value ) {
