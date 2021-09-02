@@ -38,7 +38,6 @@ jobs:
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=5
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -64,13 +63,8 @@ jobs:
 
       - name: Setup and install composer
         run: |
-          if ${{ contains( matrix.wp, 'latest' ) }} == true; then
-            echo "::set-env name=version::*"
-          else
-            echo "::set-env name=version::${{ matrix.wp }}"
-          fi
           composer install --prefer-dist
-          composer require --dev --update-with-dependencies --prefer-dist roots/wordpress="${{ env.version }} || *" wp-phpunit/wp-phpunit="${{ env.version }} || *"
+          composer require --dev --update-with-dependencies --prefer-dist roots/wordpress="${{ matrix.wp == 'latest' && '*' || matrix.wp }} || *" wp-phpunit/wp-phpunit="${{ matrix.wp == 'latest' && '*' || matrix.wp }} || *"
 
       - name: Run unit tests
         run: composer test
