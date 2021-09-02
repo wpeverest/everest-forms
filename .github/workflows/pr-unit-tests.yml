@@ -65,10 +65,10 @@ jobs:
       - name: Setup and install composer
         run: |
           composer install --prefer-dist
-          if [[${{ matrix.wp }} == "latest" ]]; then
-            ${{ matrix.wp }} = "*"
+          if [${{ matrix.wp }} == "latest" ]; then
+            local latest_wp = "*"
           fi
-          composer require --dev --update-with-dependencies --prefer-dist roots/wordpress="${{ matrix.wp }} || *" wp-phpunit/wp-phpunit="${{ matrix.wp }} || *"
+          composer require --dev --update-with-dependencies --prefer-dist roots/wordpress="${{latest_wp}} || *" wp-phpunit/wp-phpunit="${{latest_wp}} || *"
 
       - name: Run unit tests
         run: composer test
