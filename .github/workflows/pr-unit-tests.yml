@@ -2,7 +2,7 @@ name: Run unit tests on PR
 on:
   pull_request:
     branches:
-      - "develop"
+      - "implement/php-unit-test"
 
 # Cancels all previous workflow runs for pull requests that have not completed.
 concurrency:
@@ -21,7 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: ["7.0", "7.1", "7.2", "7.3", "7.4", "8.0"]
+        php: ["7.2", "7.3", "7.4"]
         wp: ["latest"]
         include:
           - wp: "dev-nightly"
