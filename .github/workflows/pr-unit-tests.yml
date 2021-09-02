@@ -1,7 +1,6 @@
 name: Run unit tests on PR
 on:
   pull_request:
-  push:
     branches:
       - "develop"
 
