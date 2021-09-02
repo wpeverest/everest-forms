@@ -3,7 +3,6 @@ on:
   pull_request:
     branches:
       - "develop"
-      - "implement/php-unit-test"
 
 # Cancels all previous workflow runs for pull requests that have not completed.
 concurrency:
@@ -16,7 +15,7 @@ jobs:
   unit-php:
     name: PHP ${{ matrix.php }} WP ${{ matrix.wp }}
     timeout-minutes: 15
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     if: ${{ github.repository == 'wpeverest/everest-forms' || github.event_name == 'pull_request' }}
     continue-on-error: ${{ matrix.wp == 'dev-nightly' }}
     strategy:
