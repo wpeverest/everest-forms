@@ -13,10 +13,12 @@
     }
   ],
   "config": {
-    "process-timeout": 0
+    "process-timeout": 0,
+    "sort-packages": true,
+    "preferred-install": "dist"
   },
   "require": {
-    "php": ">=7.2",
+    "php": ">=5.3.6",
     "composer/installers": "~2.0.0"
   },
   "require-dev": {
