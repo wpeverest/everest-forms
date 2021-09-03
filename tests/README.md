@@ -14,7 +14,7 @@ Any WAMP/MAMP/LAMP local environment with a WordPress installation will be suite
 
 **Warning**: For running tests, you need a **dedicated test database**. This is important to separate it from your production databases because the tests will drop the complete database each time they are run!
 
-You will then need to adapt the DB related environment variable in `.env` to match your test database. If `tests/.env` is not added then run `composer update` which basically adds the
+You will then need to adapt the DB related environment variable in `tests/.env` file to match your test database. If `tests/.env` is not added then run `composer update` which basically adds the
 
 ```php
 define( 'DB_NAME', getenv( 'WP_TESTS_DB_NAME' ) ?: 'tests' );
