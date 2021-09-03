@@ -3,14 +3,13 @@ jQuery( function( $ ) {
 	'use strict';
 	var evf_ajax_submission_init = function(){
 		var form = $( 'form[data-ajax_submission="1"]' );
-		
 		form.each( function( i, v ) {
 			$( document ).ready( function() {
 				var formTuple = $( v ),
 					btn = formTuple.find( '.evf-submit' ),
 					stripeForms = formTuple.find( "[data-gateway*='stripe']" );
 				// If it's an ajax form containing a stripe gateway, donot latch into the button.
-	
+
 				if ( stripeForms.length > 0  && 0 === stripeForms.children.length ) {
 					return;
 				}
@@ -49,7 +48,6 @@ jQuery( function( $ ) {
 						url: everest_forms_ajax_submission_params.ajax_url,
 						type: 'POST',
 						data: data
-	
 					})
 					.done( function ( xhr, textStatus, errorThrown ) {
 						var redirect_url = ( xhr.data && xhr.data.redirect_url ) ? xhr.data.redirect_url : '';
@@ -65,6 +63,7 @@ jQuery( function( $ ) {
 							}
 							formTuple.trigger( 'reset' );
 							formTuple.closest( '.everest-forms' ).html( '<div class="everest-forms-notice everest-forms-notice--success" role="alert">' + xhr.data.message + pdf_download_message + '</div>' ).focus();
+							localStorage.removeItem(formTuple.attr('id'));
 						} else {
 							var	form_id = formTuple.data( 'formid' ),
 								error   =  everest_forms_ajax_submission_params.error,
