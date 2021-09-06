@@ -365,6 +365,8 @@ class EVF_Form_Task {
 
 		do_action( 'everest_forms_after_success_message', $this->form_data, $entry );
 
+		echo '<script>localStorage.removeItem("evf-form-' . esc_html( $form_id ) . '");</script>';
+
 		$this->entry_confirmation_redirect( $this->form_data );
 	}
 
