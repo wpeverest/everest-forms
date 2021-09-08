@@ -22,7 +22,7 @@
     "composer/installers": "2.0.0"
   },
   "require-dev": {
-    "wp-cli/db-command": "2.0.13",
+    "wp-cli/db-command": "2.0.16",
     "wp-cli/i18n-command": "2.2.9",
     "wpeverest/wpeverest-sniffs": "0.1.0",
     "phpunit/phpunit": "^5 || ^7",
