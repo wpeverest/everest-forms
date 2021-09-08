@@ -5,6 +5,7 @@
 * Tweak - Spacing issue on upgrade modal dialogues.
 * Fix - Default Value for Payment Quantity Field.
 * Fix - Upload image button click issue on inputs.
+* Fix - PHP notice about enqueue script thrown in widgets page.
 
 = 1.7.6 - 28-07-2021 =
 * Enhancement - Cache the form and entries results for better performance.
