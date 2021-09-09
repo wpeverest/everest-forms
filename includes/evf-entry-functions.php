@@ -205,7 +205,9 @@ function evf_search_entries( $args ) {
 	}
 
 	// Removing Draft Entry (Save and Contd Add-on).
-	$query[] = $wpdb->prepare( 'AND `status` <> %s', 'draft' );
+	if ( 'draft' !== $args['status'] ) {
+		$query[] = $wpdb->prepare( 'AND `status` <> %s', 'draft' );
+	}
 
 	$valid_fields = array( 'date', 'form_id', 'title', 'status' );
 	$orderby      = in_array( $args['orderby'], $valid_fields, true ) ? $args['orderby'] : 'entry_id';
