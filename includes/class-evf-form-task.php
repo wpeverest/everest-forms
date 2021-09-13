@@ -323,6 +323,11 @@ class EVF_Form_Task {
 
 			if ( defined( 'EVF_PDF_SUBMISSION_VERSION' ) && 'yes' === get_option( 'everest_forms_pdf_download_after_submit', 'no' ) ) {
 				$response_data['pdf_download'] = true;
+				$pdf_download_message          = get_option( 'everest_forms_pdf_custom_download_text', '' );
+				if ( empty( $pdf_download_message ) ) {
+					$pdf_download_message = __( 'Download your form submission in PDF format', 'everest-forms' );
+				}
+				$response_data['pdf_download_message'] = $pdf_download_message;
 			}
 
 			// Backward Compatibility Check.
@@ -698,15 +703,19 @@ class EVF_Form_Task {
 			$user_ip    = '';
 		}
 
-		$entry_data = array(
-			'form_id'         => $form_id,
-			'user_id'         => get_current_user_id(),
-			'user_device'     => sanitize_text_field( $user_agent ),
-			'user_ip_address' => sanitize_text_field( $user_ip ),
-			'status'          => 'publish',
-			'referer'         => $referer,
-			'fields'          => wp_json_encode( $fields ),
-			'date_created'    => current_time( 'mysql', true ),
+		$entry_data = apply_filters(
+			'everest_forms_entry_data',
+			array(
+				'form_id'         => $form_id,
+				'user_id'         => get_current_user_id(),
+				'user_device'     => sanitize_text_field( $user_agent ),
+				'user_ip_address' => sanitize_text_field( $user_ip ),
+				'status'          => 'publish',
+				'referer'         => $referer,
+				'fields'          => wp_json_encode( $fields ),
+				'date_created'    => current_time( 'mysql', true ),
+			),
+			$entry
 		);
 
 		if ( ! $entry_data['form_id'] ) {

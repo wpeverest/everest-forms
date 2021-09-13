@@ -207,7 +207,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			esc_html__( 'Custom Page', 'everest-forms' ),
 			array(
 				'default' => '0',
-				'options' => $this->evf_get_all_pages(),
+				'options' => $this->get_all_pages(),
 			)
 		);
 		everest_forms_panel_field(
@@ -576,7 +576,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 	/**
 	 * Get all pages.
 	 */
-	public function evf_get_all_pages() {
+	public function get_all_pages() {
 		$pages = array();
 		foreach ( get_pages() as $page ) {
 			$pages[ $page->ID ] = $page->post_title;

@@ -204,6 +204,11 @@ function evf_search_entries( $args ) {
 		}
 	}
 
+	// Removing Draft Entry (Save and Contd Add-on).
+	if ( 'draft' !== $args['status'] ) {
+		$query[] = $wpdb->prepare( 'AND `status` <> %s', 'draft' );
+	}
+
 	$valid_fields = array( 'date', 'form_id', 'title', 'status' );
 	$orderby      = in_array( $args['orderby'], $valid_fields, true ) ? $args['orderby'] : 'entry_id';
 	$order        = 'DESC' === strtoupper( $args['order'] ) ? 'DESC' : 'ASC';
@@ -308,6 +313,8 @@ function evf_get_entries_by_form_id( $form_id, $start_date = '', $end_date = '' 
 	if ( ! empty( $end_date ) ) {
 		$query[] = $wpdb->prepare( 'AND date_created  <= %s', $end_date );
 	}
+
+	$query[] = $wpdb->prepare( 'AND status != %s', 'draft' );
 
 	$results = wp_cache_get( $form_id, 'evf-search-entries' );
 

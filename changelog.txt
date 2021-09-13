@@ -1,7 +1,11 @@
 == Changelog ==
 
 = 1.7.7 - xx-xx-2021 =
+* Tweak - Download text input option added.
 * Tweak - Spacing issue on upgrade modal dialogues.
+* Fix - Default Value for Payment Quantity Field.
+* Fix - Upload image button click issue on inputs.
+* Fix - PHP notice about enqueue script thrown in widgets page.
 * Fix - Deleted Field Entries are shown in Single Entry.
 
 = 1.7.6 - 28-07-2021 =

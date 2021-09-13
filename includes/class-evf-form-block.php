@@ -67,7 +67,7 @@ class EVF_Form_Block {
 		wp_register_script(
 			'everest-forms-block-editor',
 			evf()->plugin_url() . '/assets/js/admin/gutenberg/form-block.min.js',
-			array( 'wp-blocks', 'wp-element', 'wp-i18n', 'wp-editor', 'wp-components' ),
+			array( 'wp-blocks', 'wp-element', 'wp-i18n', 'wp-components' ),
 			defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( evf()->plugin_path() . '/assets/js/admin/gutenberg/form-block.min.js' ) : EVF_VERSION,
 			true
 		);
