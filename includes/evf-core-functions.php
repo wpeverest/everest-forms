@@ -1315,18 +1315,18 @@ function evf_get_form_data_by_meta_key( $form_id, $meta_key, $fields = array() )
 	$post_content = json_decode( $get_post->post_content, true );
 	$form_fields  = isset( $post_content['form_fields'] ) ? $post_content['form_fields'] : array();
 
+	if ( ! empty( $form_fields ) ) {
+		foreach ( $form_fields as $field ) {
+			if ( isset( $field['meta-key'] ) && $meta_key === $field['meta-key'] ) {
+				return $field['label'];
+			}
+		}
+	}
+
 	if ( ! empty( $fields ) ) {
 		foreach ( $fields as $field ) {
 			if ( isset( $field->meta_key ) && $meta_key === $field->meta_key ) {
 				return isset( $field->name ) ? $field->name : $field->value->name;
-			}
-		}
-	} else {
-		if ( ! empty( $form_fields ) ) {
-			foreach ( $form_fields as $field ) {
-				if ( isset( $field['meta-key'] ) && $meta_key === $field['meta-key'] ) {
-					return $field['label'];
-				}
 			}
 		}
 	}
