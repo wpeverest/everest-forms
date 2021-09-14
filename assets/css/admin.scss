@@ -5925,5 +5925,13 @@ img.ui-datepicker-trigger {
 	}
 }
 .evf-repeater-fields {
-	padding: 20px;
+	padding: 0 20px 20px;
+	.everest-forms-field-repeater-fields {
+		width: calc(100% + 60px);
+		margin-left: -30px;
+		margin-top: -1px;
+	}
+	div.evf-admin-grid.evf-repeatable-grid {
+		padding: 0 10px 10px !important;
+	}
 }
