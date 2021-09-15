@@ -2122,6 +2122,31 @@
 		},
 		fieldDrop: function ( field ) {
 			var field_type = field.attr( 'data-field-type' );
+			var invalid_fields = ["file-upload", "payment-total", "image-upload"];
+			if (
+				invalid_fields.includes(
+					field_type
+				)
+			) {
+				$.confirm({
+					title: false,
+					content:'This field cannot be added to Repeater Fields',
+					type: 'red',
+					closeIcon: false,
+					backgroundDismiss: false,
+					icon: 'dashicons dashicons-warning',
+					buttons: {
+						cancel: {
+							text: evf_data.i18n_close,
+							btnClass: 'btn-default',
+						},
+					}
+				} );
+
+				field.remove();
+				return false;
+			}
+
 			field.css({
 				'left': '0',
 				'width': '100%'
