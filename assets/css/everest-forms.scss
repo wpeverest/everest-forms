@@ -885,3 +885,11 @@ div.evf-gutenberg-form-selector .evf-frontend-row button[type='submit']:disabled
 		}
 	}
 }
+.evf-field-repeater-fields {
+	display: none !important;
+}
+.wp-admin {
+	.evf-field-repeater-fields {
+		display: block !important;
+	}
+}
