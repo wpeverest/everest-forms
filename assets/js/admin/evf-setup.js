@@ -177,7 +177,7 @@ jQuery( function( $ ) {
 					if ( $target.closest( '.evf-template' ).find( 'span.everest-forms-badge' ).length ) {
 						var data =  {
 							action: 'everest_forms_template_licence_check',
-							plan: $this.attr( 'data-licence-plan' ),
+							plan: $this.attr( 'data-licence-plan' ).replace('-lifetime',''),
 							slug: $this.attr( 'data-template' ),
 							security: evf_setup_params.template_licence_check_nonce
 						};
