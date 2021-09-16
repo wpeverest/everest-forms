@@ -6,6 +6,7 @@
 * Fix - Default Value for Payment Quantity Field.
 * Fix - Upload image button click issue on inputs.
 * Fix - PHP notice about enqueue script thrown in widgets page.
+* Fix - Deleted Field Entries are shown in Single Entry.
 
 = 1.7.6 - 28-07-2021 =
 * Enhancement - Cache the form and entries results for better performance.

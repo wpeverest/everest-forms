@@ -89,7 +89,7 @@ $trash_link = wp_nonce_url(
 										// Field name.
 										echo '<tr class="everest-forms-entry-field field-name' . $field_class . '" style="' . esc_attr( $field_style ) . '"><th>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
-										$value = evf_get_form_data_by_meta_key( $form_id, $meta_key );
+										$value = evf_get_form_data_by_meta_key( $form_id, $meta_key, json_decode( $entry->fields ) );
 
 										if ( $value ) {
 											if ( apply_filters( 'everest_forms_html_field_label', false ) ) {
