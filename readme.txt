@@ -4,7 +4,7 @@ Tags: contact form, forms, form builder, contact, custom form
 Requires at least: 5.0
 Tested up to: 5.8
 Requires PHP: 5.4
-Stable tag: 1.7.6
+Stable tag: 1.7.7
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -154,6 +154,14 @@ Yes, we do. Check out this [Getting Started Videos](https://docs.wpeverest.com/d
 Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/everest-forms/) :)
 
 == Changelog ==
+
+= 1.7.7 - 16-09-2021 =
+* Tweak - Download text input option added.
+* Tweak - Spacing issue on upgrade modal dialogues.
+* Fix - Default Value for Payment Quantity Field.
+* Fix - Upload image button click issue on inputs.
+* Fix - PHP notice about enqueue script thrown in widgets page.
+* Fix - Deleted Field Entries are shown in Single Entry.
 
 = 1.7.6 - 28-07-2021 =
 * Enhancement - Cache the form and entries results for better performance.
