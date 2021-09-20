@@ -10,4 +10,4 @@
 # See https://help.github.com/en/articles/about-code-owners for details on the format of this file
 
 # Root level files and configuration
-/*.* @shivapoudel
+/*.* @milan1750
