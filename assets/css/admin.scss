@@ -5930,41 +5930,10 @@ img.ui-datepicker-trigger {
 		width: calc(100% + 60px) !important;
 		margin-left: -30px !important;
 		margin-top: -1px !important;
-		padding: 0 !important;
-		label.label-title {
-			padding: 15px;
-			.everest-forms-field {
-				.label-title {
-					padding: 0;
-				}
-			}
-			span {
-				position: relative;
-				z-index: 1;
-			}
-
-			&::after {
-				display: block;
-				content: '';
-				height: 48px;
-				position: absolute;
-				background: #e2ceff !important;
-				left: -31px;
-				top: -1px;
-				pointer-events: none;
-			}
-		}
+		min-height: 48px;
 	}
 	div.evf-admin-grid.evf-repeatable-grid {
 		padding: 0 10px 10px !important;
 	}
-	.evf-field-action {
-		z-index: 1;
-		color: $color-white;
-	}
-	.evf-admin-grid {
-		margin-top: 20px !important;
-	}
-
 }
 
