@@ -12,7 +12,7 @@ Drag and Drop contact form builder to easily create simple to complex forms for 
 
 == Description ==
 
-Everest Forms: #1 Form Building Solution for WordPress Website
+**Everest Forms: #1 Form Building Solution for WordPress Website**
 
 Everest Forms is the best WordPress form builder, meticulously designed by our team of experts to take your form-building experience to the next level. It’s a lightweight, fast, and extensible plugin for all, i.e., from the absolute beginners with zero coding skills to the advanced users. 
 
@@ -241,8 +241,8 @@ Everest Forms has a long list of top-notch features, making it the best WordPres
 * Reliable and friendly user support 
 
 ### Getting Started: 
-* https://docs.wpeverest.com/everest-forms/docs/watch-video-guide/ 
-* https://docs.wpeverest.com/everest-forms/docs/how-to-create-a-form-with-everest-forms/ 
+* [Watch our video tutorials](https://docs.wpeverest.com/everest-forms/docs/watch-video-guide/)
+* [Follow our getting started documentation](https://docs.wpeverest.com/everest-forms/docs/how-to-create-a-form-with-everest-forms/)
 
 ### Hands-On Everest Forms Tutorials for Your Ease 
 * [How to Create a WordPress Contact Form: Ultimate Guide for Beginners](https://wpeverest.com/blog/create-wordpress-contact-form/)
