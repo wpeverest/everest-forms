@@ -30,7 +30,7 @@
     "@babel/core": "7.15.5",
     "@wordpress/babel-preset-default": "6.3.2",
     "@wordpress/browserslist-config": "4.1.0",
-    "autoprefixer": "9.8.6",
+    "autoprefixer": "9.8.7",
     "babel-eslint": "10.1.0",
     "babel-loader": "8.2.2",
     "babel-plugin-transform-react-jsx": "6.24.1",
