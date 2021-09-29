@@ -28,6 +28,7 @@ class EVF_Admin_Notices {
 	private static $core_notices = array(
 		'update' => 'update_notice',
 		'review' => 'review_notice',
+		'survey' => 'survey_notice',
 	);
 
 	/**
@@ -78,6 +79,7 @@ class EVF_Admin_Notices {
 			self::add_notice( 'deprecated_payment_charge' );
 		}
 		self::add_notice( 'review' );
+		self::add_notice( 'survey' );
 	}
 
 	/**
@@ -260,6 +262,33 @@ class EVF_Admin_Notices {
 		if ( $load && ( is_super_admin() || current_user_can( 'manage_everest_forms' ) ) ) {
 			include 'views/html-notice-review.php';
 		}
+	}
+
+	/**
+	 * If we need survey, include a message requesting survey.
+	 */
+	public static function survey_notice() {
+
+		$time        = time();
+		$survey      = get_option( 'everest_forms_survey' );
+		$activated   = get_option( 'everest_forms_activated' );
+		$license_key = trim( get_option( 'everest-forms-pro_license_key' ) );
+
+		if ( $survey['dismissed'] ) {
+			return;
+		}
+
+		// Only continue if plugin has been installed for at least 10 days.
+		if ( ( $activated + ( DAY_IN_SECONDS * 10 ) ) > $time ) {
+			return;
+		}
+
+		if ( $license_key && ( is_super_admin() || current_user_can( 'manage_everest_forms' ) ) ) {
+				include 'views/html-notice-survey.php';
+		} else {
+			return;
+		}
+
 	}
 
 	/**

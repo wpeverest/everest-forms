@@ -6,7 +6,7 @@
 /**
  * Imports
  */
-@import 'variables/variables';
+@import "variables/variables";
 
 /**
  * Styling begins
@@ -43,7 +43,58 @@ div.everest-forms-message {
 			h3 {
 				margin: 0;
 				font-size: 20px;
-				line-height:1.5;
+				line-height: 1.5;
+			}
+
+			p {
+				margin-top: 4px;
+				padding: 0;
+
+				&.submit {
+					margin-top: 9px;
+					margin-bottom: 0;
+
+					.button {
+						margin-right: 5px;
+					}
+
+					.evf-button-link {
+						padding: 0 2px 0;
+						box-shadow: none;
+					}
+				}
+			}
+		}
+	}
+
+	&.evf-survey-notice {
+		padding: 16px;
+		display: flex;
+		align-items: center;
+
+		.everest-forms-logo {
+			height: 120px;
+			width: 120px;
+			border-radius: 4px;
+			margin-right: 20px;
+			flex: 0 0 120px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: $everestforms;
+
+			svg {
+				height: 80px;
+				width: 80px;
+				fill: $color-white;
+			}
+		}
+
+		.everest-forms-message--content {
+			h3 {
+				margin: 0;
+				font-size: 20px;
+				line-height: 1.5;
 			}
 
 			p {
@@ -82,7 +133,7 @@ div.everest-forms-message {
 			position: relative;
 			top: 18px;
 			left: -20px;
-			transition: all .1s ease-in-out;
+			transition: all 0.1s ease-in-out;
 		}
 	}
 
@@ -91,29 +142,29 @@ div.everest-forms-message {
 		text-decoration: none !important;
 	}
 	.everest-forms-message__action.submit .button-primary {
-    background: #7e3bd0;
-    border-color: #7e3bd0;
+		background: #7e3bd0;
+		border-color: #7e3bd0;
 	}
 	a.button.button-secondary.evf-dismiss-review-notice,
 	a.button.button-secondary.evf-have-query {
-	    color: #7e3bd0;
-	    border-color: #7e3bd0;
+		color: #7e3bd0;
+		border-color: #7e3bd0;
 	}
-	.everest-forms-message__action.submit .button-primary.focus, 
-	.everest-forms-message__action.submit .button-primary.hover, 
-	.everest-forms-message__action.submit .button-primary:focus, 
+	.everest-forms-message__action.submit .button-primary.focus,
+	.everest-forms-message__action.submit .button-primary.hover,
+	.everest-forms-message__action.submit .button-primary:focus,
 	.everest-forms-message__action.submit .button-primary:hover {
-	    background: #532986;
-	    border-color: #532986;
-	    color: #fff;
+		background: #532986;
+		border-color: #532986;
+		color: #fff;
 	}
 	.everest-forms-message--content span.dashicons {
-	    margin: 3px 4px 0 0px;
+		margin: 3px 4px 0 0px;
 	}
 	.smile-icon {
-	    background: #e7e94b;
-	    padding: 2px;
-	    font-size: 18px;
-	    border-radius: 50%;
+		background: #e7e94b;
+		padding: 2px;
+		font-size: 18px;
+		border-radius: 50%;
 	}
 }
