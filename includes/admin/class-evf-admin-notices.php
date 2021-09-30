@@ -287,7 +287,7 @@ class EVF_Admin_Notices {
 			return;
 		}
 
-		if ( !$status && ( is_super_admin() || current_user_can( 'manage_everest_forms' ) ) ) {
+		if ( ! $status && $license_key && ( is_super_admin() || current_user_can( 'manage_everest_forms' ) ) ) {
 				include 'views/html-notice-survey.php';
 		}
 
