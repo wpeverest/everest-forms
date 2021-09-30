@@ -224,6 +224,10 @@ class EVF_Admin_Notices {
 	public static function review_notice() {
 		global $wpdb;
 
+		if( self::survey_notice( true ) ) {
+			return ;
+		}
+
 		$load      = false;
 		$time      = time();
 		$review    = get_option( 'everest_forms_review' );
@@ -267,7 +271,7 @@ class EVF_Admin_Notices {
 	/**
 	 * If we need survey, include a message requesting survey.
 	 */
-	public static function survey_notice() {
+	public static function survey_notice( $status = false ) {
 
 		$time        = time();
 		$survey      = get_option( 'everest_forms_survey' );
@@ -283,11 +287,11 @@ class EVF_Admin_Notices {
 			return;
 		}
 
-		if ( $license_key && ( is_super_admin() || current_user_can( 'manage_everest_forms' ) ) ) {
+		if ( !$status && ( is_super_admin() || current_user_can( 'manage_everest_forms' ) ) ) {
 				include 'views/html-notice-survey.php';
-		} else {
-			return;
 		}
+
+		return $status;
 
 	}
 
