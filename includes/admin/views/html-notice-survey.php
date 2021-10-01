@@ -1,6 +1,6 @@
 <?php
 /**
- * Admin View: Notice - Review
+ * Admin View: Notice - Survey
  *
  * @package EverestForms\Admin\Notice
  */
@@ -35,7 +35,7 @@ defined( 'ABSPATH' ) || exit;
 		</p>
 		</p>
 		<p class="everest-forms-message__action submit">
-			<a href="https://forms.office.com/pages/responsepage.aspx?id=c04iBAejyEWvNQDb6GzDCILyv8m6NoBDvJVtRTCcOvBUNk5OSTA4OEs1SlRPTlhFSFZXRFA0UFEwRCQlQCN0PWcu" class="button button-primary evf-dismiss-review-notice evf-survey-received" target="_blank" rel="noopener noreferrer"><span class="dashicons dashicons-external"></span><?php esc_html_e( 'Sure, I\'d love to!', 'everest-forms' ); ?></a>
+			<a href="https://survey.wpeverest.com/everest-forms/" class="button button-primary evf-dismiss-review-notice evf-survey-received" target="_blank" rel="noopener noreferrer"><span class="dashicons dashicons-external"></span><?php esc_html_e( 'Sure, I\'d love to!', 'everest-forms' ); ?></a>
 			<a href="#" class="button button-secondary evf-dismiss-survey-notice" target="_blank" rel="noopener noreferrer"><span  class="dashicons dashicons-smiley"></span><?php esc_html_e( 'I already did', 'everest-forms' ); ?></a>
 			<a href="#" class="button button-secondary evf-dismiss-survey-notice" target="_blank" rel="noopener noreferrer"><span class="dashicons dashicons-dismiss"></span><?php esc_html_e( 'Never show again  ', 'everest-forms' ); ?></a>
 			<a href="https://wpeverest.com/support-forum/" class="button button-secondary evf-have-query" target="_blank" rel="noopener noreferrer"><span class="dashicons dashicons-testimonial"></span><?php esc_html_e( 'I have a query', 'everest-forms' ); ?></a>

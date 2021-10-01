@@ -224,8 +224,9 @@ class EVF_Admin_Notices {
 	public static function review_notice() {
 		global $wpdb;
 
-		if( self::survey_notice( true ) ) {
-			return ;
+		// Check if another notice is showing.
+		if ( self::survey_notice( true ) ) {
+			return;
 		}
 
 		$load      = false;
@@ -270,6 +271,9 @@ class EVF_Admin_Notices {
 
 	/**
 	 * If we need survey, include a message requesting survey.
+	 *
+	 * @param boolean $status Twice notice to check.
+	 * @return boolean
 	 */
 	public static function survey_notice( $status = false ) {
 
