@@ -282,7 +282,7 @@ class EVF_Admin_Notices {
 		$activated   = get_option( 'everest_forms_activated' );
 		$license_key = trim( get_option( 'everest-forms-pro_license_key' ) );
 
-		if ( $survey['dismissed'] ) {
+		if ( ! empty( $survey['dismissed'] ) ) {
 			return;
 		}
 

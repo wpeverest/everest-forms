@@ -17,20 +17,20 @@ defined( 'ABSPATH' ) || exit;
 		<p class="everest-forms-message__description">
 		<p>
 		<?php
-		_e(
-			'Hey there!<br>
-			<p>We would be grateful if you could spare a moment and help us fill this survey<p>
-			<p>This survey will take approximately 4 minutes to complete.<p>',
-			'everest-forms'
+		printf(
+			'%s<br><p>%s<p><p>%s<p>',
+			esc_html__( 'Hey there!', 'everest-forms' ),
+			esc_html__( 'We would be grateful if you could spare a moment and help us fill this survey', 'everest-forms' ),
+			esc_html__( 'This survey will take approximately 4 minutes to complete.', 'everest-forms' )
 		);
 		?>
 		</p>
 		<p class="extra-pad">
 		<?php
-		_e(
-			'<strong>What benefit would you have?</strong><br>
-			We will take your feedback from the survey which will eventually help to improve the Everest Forms plugin. Thank you in advance for participating. <span class="dashicons dashicons-smiley smile-icon"></span><br>',
-			'everest-forms'
+		printf(
+			'<strong>%s</strong><br>%s<span class="dashicons dashicons-smiley smile-icon"></span><br>',
+			esc_html__( 'What benefit would you have?', 'everest-forms' ),
+			esc_html__( 'We will take your feedback from the survey which will eventually help to improve the Everest Forms plugin. Thank you in advance for participating.', 'everest-forms' )
 		);
 		?>
 		</p>
