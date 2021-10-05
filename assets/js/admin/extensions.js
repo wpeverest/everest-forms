@@ -1,5 +1,8 @@
 ( function( $, wp ) {
 	var $document = $( document );
+	__ = wp.i18n.__,
+	_x = wp.i18n._x,
+	sprintf = wp.i18n.sprintf;
 
 	/**
 	 * Sends an Ajax request to the server to install a extension.
@@ -22,16 +25,23 @@
 			error: wp.updates.installExtensionError
 		}, args );
 
-		if ( $message.html() !== wp.updates.l10n.installing ) {
+		if ( $message.html() !== __( 'Installing...' ) ) {
 			$message.data( 'originaltext', $message.html() );
 		}
 
 		$message
 			.addClass( 'updating-message' )
-			.attr( 'aria-label', wp.updates.l10n.pluginInstallingLabel.replace( '%s', $message.data( 'name' ) ) )
-			.text( wp.updates.l10n.installing );
+			.attr(
+				'aria-label',
+				sprintf(
+					/* translators: %s: Plugin name and version. */
+					_x( 'Installing %s...', 'everest-forms' ),
+					$message.data( 'name' )
+				)
+			)
+			.text( __( 'Installing...' ) );
 
-		wp.a11y.speak( wp.updates.l10n.installingMsg, 'polite' );
+		wp.a11y.speak( __( 'Installing... please wait.' ), 'polite' );
 
 		// Remove previous error messages, if any.
 		$card.removeClass( 'plugin-card-install-failed' ).find( '.notice.notice-error' ).remove();
@@ -60,10 +70,18 @@
 			$updateMessage
 				.removeClass( 'updating-message install-now' )
 				.addClass( 'updated-message active' )
-				.attr( 'aria-label', wp.updates.l10n.pluginInstalledLabel.replace( '%s', response.pluginName ) )
-				.text( wp.updates.l10n.pluginInstalled );
+				.attr(
+					'aria-label',
+					sprintf(
+						/* translators: %s: Plugin name and version. */
+					    _x( '%s installed!', 'everest-forms' ),
+				        response.pluginName
+					 )
+				)
+			    .text( _x( 'Installed!', 'plugin' ) );
 
-			wp.a11y.speak( wp.updates.l10n.installedMsg, 'polite' );
+			 wp.a11y.speak( __( 'Installation completed successfully.' ), 'polite' );
+
 
 			$document.trigger( 'wp-plugin-bulk-install-success', response );
 
@@ -74,10 +92,17 @@
 			$message
 				.removeClass( 'updating-message' )
 				.addClass( 'updated-message installed button-disabled' )
-				.attr( 'aria-label', wp.updates.l10n.pluginInstalledLabel.replace( '%s', response.pluginName ) )
-				.text( wp.updates.l10n.pluginInstalled );
+				.attr(
+					'aria-label',
+					sprintf(
+						/* translators: %s: Plugin name and version. */
+					    _x( '%s installed!', 'everest-forms' ),
+				        response.pluginName
+					 )
+				)
+			    .text( _x( 'Installed!', 'everest-forms' ) );
 
-			wp.a11y.speak( wp.updates.l10n.installedMsg, 'polite' );
+			 wp.a11y.speak( __( 'Installation completed successfully.' ), 'polite' );
 
 			$document.trigger( 'wp-plugin-install-success', response );
 
@@ -86,10 +111,33 @@
 					$status.removeClass( 'status-install-now' ).addClass( 'status-active' ).text( wp.updates.l10n.pluginInstalled );
 
 					// Transform the 'Install' button into an 'Activate' button.
-					$message.removeClass( 'install-now installed button-disabled updated-message' ).addClass( 'activate-now button-primary' )
-						.attr( 'href', response.activateUrl )
-						.attr( 'aria-label', wp.updates.l10n.activatePluginLabel.replace( '%s', response.pluginName ) )
-						.text( wp.updates.l10n.activatePlugin );
+					$message.removeClass( 'install-now installed button-disabled updated-message' )
+					.addClass( 'activate-now button-primary' )
+					.attr( 'href', response.activateUrl );
+
+					if ( 'plugins-network' === pagenow ) {
+						$message
+							.attr(
+								'aria-label',
+								 sprintf(
+									 /* translators: %s: Plugin name. */
+									 _x( 'Network Activate %s', 'everest-forms' ),
+									 response.pluginName
+								)
+							)
+							.text( __( 'Network Activate' ) );
+					} else {
+						$message
+							.attr(
+								'aria-label',
+								sprintf(
+									/* translators: %s: Plugin name. */
+									_x( 'Activate %s', 'everest-forms' ),
+									response.pluginName
+								)
+							)
+							.text( __( 'Activate' ) );
+					}
 				}, 1000 );
 			}
 		}
@@ -121,13 +169,24 @@
 				return;
 			}
 
-			errorMessage = wp.updates.l10n.installFailed.replace( '%s', response.errorMessage );
+			errorMessage = sprintf(
+				  /* translators: %s: Error string for a failed installation. */
+				  __( 'Installation failed: %s' ),
+				  response.errorMessage
+				);
 
 			$updateMessage
 				.removeClass( 'updating-message' )
 				.addClass( 'updated-message' )
-				.attr( 'aria-label', wp.updates.l10n.pluginInstallFailedLabel.replace( '%s', $pluginRow.data( 'name' ) ) )
-				.text( wp.updates.l10n.installFailedShort );
+				.attr(
+					'aria-label',
+					sprintf(
+					   /* translators: %s: Plugin name and version. */
+					   _x( '%s installation failed', 'everest-forms' ),
+					   $button.data( 'name' )
+					)
+				)
+				.text( __( 'Installation Failed!' ) );
 
 			wp.a11y.speak( errorMessage, 'assertive' );
 
@@ -145,7 +204,11 @@
 				return;
 			}
 
-			errorMessage = wp.updates.l10n.installFailed.replace( '%s', response.errorMessage );
+			errorMessage = sprintf(
+				  /* translators: %s: Error string for a failed installation. */
+				  __( 'Installation failed: %s' ),
+				  response.errorMessage
+				);
 
 			$card
 				.addClass( 'plugin-card-update-failed' )
@@ -163,8 +226,15 @@
 
 			$button
 				.removeClass( 'updating-message' ).addClass( 'button-disabled' )
-				.attr( 'aria-label', wp.updates.l10n.pluginInstallFailedLabel.replace( '%s', $button.data( 'name' ) ) )
-				.text( wp.updates.l10n.installFailedShort );
+				.attr(
+					'aria-label',
+					sprintf(
+					   /* translators: %s: Plugin name and version. */
+					   _x( '%s installation failed', 'everest-forms' ),
+					   $button.data( 'name' )
+					)
+				)
+				.text( __( 'Installation Failed!' ) );
 
 			wp.a11y.speak( errorMessage, 'assertive' );
 
@@ -225,10 +295,17 @@
 
 					$message
 						.removeClass( 'updating-message' )
-						.text( wp.updates.l10n.installNow )
-						.attr( 'aria-label', wp.updates.l10n.pluginInstallNowLabel.replace( '%s', pluginName ) );
+						.attr(
+							'aria-label',
+							sprintf(
+								  /* translators: %s: Plugin name. */
+								  _x( 'Install %s now', 'everest-forms' ),
+								  pluginName
+							)
+						)
+						.text( __( 'Install Now' ) );
 
-					wp.a11y.speak( wp.updates.l10n.updateCancel, 'polite' );
+					wp.a11y.speak( __( 'Update canceled.' ), 'polite' );
 				} );
 			}
 
