@@ -28,6 +28,7 @@ class EVF_Admin_Notices {
 	private static $core_notices = array(
 		'update' => 'update_notice',
 		'review' => 'review_notice',
+		'survey' => 'survey_notice',
 	);
 
 	/**
@@ -78,6 +79,7 @@ class EVF_Admin_Notices {
 			self::add_notice( 'deprecated_payment_charge' );
 		}
 		self::add_notice( 'review' );
+		self::add_notice( 'survey' );
 	}
 
 	/**
@@ -222,6 +224,11 @@ class EVF_Admin_Notices {
 	public static function review_notice() {
 		global $wpdb;
 
+		// Check if another notice is showing.
+		if ( self::survey_notice( true ) ) {
+			return;
+		}
+
 		$load      = false;
 		$time      = time();
 		$review    = get_option( 'everest_forms_review' );
@@ -260,6 +267,36 @@ class EVF_Admin_Notices {
 		if ( $load && ( is_super_admin() || current_user_can( 'manage_everest_forms' ) ) ) {
 			include 'views/html-notice-review.php';
 		}
+	}
+
+	/**
+	 * If we need survey, include a message requesting survey.
+	 *
+	 * @param boolean $status Twice notice to check.
+	 * @return boolean
+	 */
+	public static function survey_notice( $status = false ) {
+
+		$time        = time();
+		$survey      = get_option( 'everest_forms_survey' );
+		$activated   = get_option( 'everest_forms_activated' );
+		$license_key = trim( get_option( 'everest-forms-pro_license_key' ) );
+
+		if ( ! empty( $survey['dismissed'] ) ) {
+			return;
+		}
+
+		// Only continue if plugin has been installed for at least 10 days.
+		if ( ( $activated + ( DAY_IN_SECONDS * 10 ) ) > $time ) {
+			return;
+		}
+
+		if ( ! $status && $license_key && ( is_super_admin() || current_user_can( 'manage_everest_forms' ) ) ) {
+				include 'views/html-notice-survey.php';
+		}
+
+		return $status;
+
 	}
 
 	/**
