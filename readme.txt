@@ -4,7 +4,7 @@ Tags: contact form, forms, form builder, contact, custom form
 Requires at least: 5.0
 Tested up to: 5.8
 Requires PHP: 5.4
-Stable tag: 1.7.7.1
+Stable tag: 1.7.7.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -302,7 +302,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 1.7.7.1 - 05-10-2021 =
+= 1.7.7.2 - 05-10-2021 =
 * Fix - Form save issue due to caching.
 * Tweak - Removed unnecessary localization code.
 * Enhancement - Survey notice.
