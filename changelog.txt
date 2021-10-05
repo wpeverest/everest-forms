@@ -1,4 +1,6 @@
 == Changelog ==
+= 1.7.7.1 - 05-10-2021 =
+* Fix - Form save issue due to caching.
 
 = 1.7.7 - 16-09-2021 =
 * Tweak - Download text input option added.
