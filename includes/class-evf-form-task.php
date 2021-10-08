@@ -315,6 +315,9 @@ class EVF_Form_Task {
 			$__everest_form_entry_id = $entry_id;
 		}
 
+		// Check Conditional Logic and get the redirection URL.
+		$submission_redirection_process = apply_filters( 'everest_forms_submission_redirection_process', array(), $this->form_fields, $this->form_data );
+
 		if ( '1' === $ajax_form_submission ) {
 			$response_data['message']  = $message;
 			$response_data['response'] = 'success';
@@ -345,10 +348,15 @@ class EVF_Form_Task {
 					break;
 			}
 
-			if ( isset( $settings['redirect_to'] ) && 'external_url' === $settings['redirect_to'] ) {
-				$response_data['redirect_url'] = isset( $settings['external_url'] ) ? esc_url( $settings['external_url'] ) : 'undefined';
-			} elseif ( isset( $settings['redirect_to'] ) && 'custom_page' === $settings['redirect_to'] ) {
-				$response_data['redirect_url'] = isset( $settings['custom_page'] ) ? get_page_link( absint( $settings['custom_page'] ) ) : 'undefined';
+			// Check for Submission Redirection in Ajax Submission.
+			if ( empty( $submission_redirection_process ) ) {
+				if ( isset( $settings['redirect_to'] ) && 'external_url' === $settings['redirect_to'] ) {
+					$response_data['redirect_url'] = isset( $settings['external_url'] ) ? esc_url( $settings['external_url'] ) : 'undefined';
+				} elseif ( isset( $settings['redirect_to'] ) && 'custom_page' === $settings['redirect_to'] ) {
+					$response_data['redirect_url'] = isset( $settings['custom_page'] ) ? get_page_link( absint( $settings['custom_page'] ) ) : 'undefined';
+				}
+			} else {
+				$response_data['redirect_url'] = $submission_redirection_process['external_url'];
 			}
 
 			// Add notice only if credit card is populated in form fields.
@@ -360,6 +368,8 @@ class EVF_Form_Task {
 
 			return $response_data;
 		} elseif ( 'same' === $this->form_data['settings']['redirect_to'] ) {
+			evf_add_notice( $message, 'success' );
+		} elseif ( ! empty( $submission_redirection_process ) && 'same_page' == $submission_redirection_process['redirect_to'] ) {
 			evf_add_notice( $message, 'success' );
 		}
 
@@ -505,6 +515,13 @@ class EVF_Form_Task {
 				break;
 		}
 
+		$submission_redirect_process = apply_filters( 'everest_forms_submission_redirection_process', array(), $this->form_fields, $this->form_data );
+
+		if ( ! empty( $submission_redirect_process ) ) {
+			$settings['redirect_to']  = $submission_redirect_process['redirect_to'];
+			$settings['external_url'] = $submission_redirect_process['external_url'];
+		}
+
 		if ( isset( $settings['redirect_to'] ) && 'custom_page' === $settings['redirect_to'] ) {
 			?>
 				<script>
@@ -540,7 +557,6 @@ class EVF_Form_Task {
 		} else {
 			return;
 		}
-
 		if ( isset( $settings['submission_message_scroll'] ) && $settings['submission_message_scroll'] ) {
 			add_filter( 'everest_forms_success_notice_class', array( $this, 'add_scroll_notice_class' ) );
 		}
