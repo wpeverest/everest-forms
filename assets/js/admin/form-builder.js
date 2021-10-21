@@ -2126,7 +2126,7 @@
 			if (
 				invalid_fields.includes(
 					field_type
-				)
+				) && field.closest('.evf-admin-row').hasClass('evf-repeater-fields')
 			) {
 				$.confirm({
 					title: false,
