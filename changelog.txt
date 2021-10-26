@@ -1,11 +1,21 @@
 == Changelog ==
 
-= 1.7.7 - xx-xx-2021 =
+= 1.7.8 xx-xx-2021 =
+* Enhancement - Conditional logic for for submission redirection.
+
+= 1.7.7.2 - 05-10-2021 =
+* Fix - Form save issue due to caching.
+* Tweak - Removed unnecessary localization code.
+* Enhancement - Survey notice.
+
+= 1.7.7 - 16-09-2021 =
 * Tweak - Download text input option added.
 * Tweak - Spacing issue on upgrade modal dialogues.
 * Tweak - On forms row delete, switch back to "Add Fields" tab.
 * Fix - Default Value for Payment Quantity Field.
 * Fix - Upload image button click issue on inputs.
+* Fix - PHP notice about enqueue script thrown in widgets page.
+* Fix - Deleted Field Entries are shown in Single Entry.
 
 = 1.7.6 - 28-07-2021 =
 * Enhancement - Cache the form and entries results for better performance.

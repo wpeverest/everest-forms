@@ -92,6 +92,7 @@ class EVF_AJAX {
 			'deactivation_notice'     => false,
 			'rated'                   => false,
 			'review_dismiss'          => false,
+			'survey_dismiss'          => false,
 			'enabled_form'            => false,
 			'import_form_action'      => false,
 			'template_licence_check'  => false,
@@ -692,6 +693,20 @@ class EVF_AJAX {
 		$review['time']      = current_time( 'timestamp' ); // phpcs:ignore WordPress.DateTime.CurrentTimeTimestamp.Requested
 		$review['dismissed'] = true;
 		update_option( 'everest_forms_review', $review );
+		wp_die();
+	}
+
+	/**
+	 * Triggered when clicking the survey notice button.
+	 */
+	public static function survey_dismiss() {
+
+		if ( ! current_user_can( 'manage_everest_forms' ) ) {
+			wp_die( -1 );
+		}
+		$survey              = get_option( 'everest_forms_survey', array() );
+		$survey['dismissed'] = true;
+		update_option( 'everest_forms_survey', $survey );
 		wp_die();
 	}
 

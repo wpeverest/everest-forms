@@ -1,7 +1,7 @@
 {
   "name": "everest-forms",
   "title": "Everest Forms",
-  "version": "1.7.6",
+  "version": "1.7.7",
   "homepage": "https://github.com/wpeverest/everest-forms/",
   "repository": {
     "type": "git",
@@ -17,13 +17,20 @@
     "watch": "cross-env BABEL_ENV=default webpack --watch",
     "lint:js": "eslint assets/js --ext=js",
     "makepot": "composer run-script makepot",
-    "git:update-hooks": "node ./node_modules/husky/husky.js install"
+    "git:update-hooks": "node ./node_modules/husky/husky.js install",
+    "prephp-install": "wp-env start",
+    "prelint-php": "wp-env run composer 'install --no-interaction'",
+    "lint-php": "wp-env composer run-script phpcs",
+    "test-php": "npm run lint-php && npm run test-unit-php",
+    "test-php:watch": "wp-env run composer run-script test:watch",
+    "pretest-unit-php": "wp-env start",
+    "test-unit-php": "wp-env run phpunit 'phpunit --configuration=/var/www/html/wp-content/plugins/everest-forms/phpunit.xml.dist --verbose'"
   },
   "devDependencies": {
-    "@babel/core": "7.15.0",
-    "@wordpress/babel-preset-default": "6.3.1",
+    "@babel/core": "7.15.8",
+    "@wordpress/babel-preset-default": "6.3.2",
     "@wordpress/browserslist-config": "4.1.0",
-    "autoprefixer": "9.8.6",
+    "autoprefixer": "9.8.8",
     "babel-eslint": "10.1.0",
     "babel-loader": "8.2.2",
     "babel-plugin-transform-react-jsx": "6.24.1",
@@ -34,7 +41,7 @@
     "grunt-contrib-compress": "2.0.0",
     "grunt-contrib-concat": "1.0.1",
     "grunt-contrib-cssmin": "4.0.0",
-    "grunt-contrib-jshint": "3.0.0",
+    "grunt-contrib-jshint": "3.1.1",
     "grunt-contrib-uglify": "5.0.1",
     "grunt-contrib-watch": "1.1.0",
     "grunt-phpcs": "0.4.0",
@@ -42,13 +49,13 @@
     "grunt-rtlcss": "2.0.2",
     "grunt-sass": "3.1.0",
     "grunt-stylelint": "0.16.0",
-    "husky": "7.0.1",
-    "lint-staged": "11.1.2",
+    "husky": "7.0.2",
+    "lint-staged": "11.2.3",
     "node-sass": "6.0.1",
     "stylelint": "13.13.1",
     "stylelint-config-wordpress": "17.0.0",
-    "webpack": "5.47.1",
-    "webpack-cli": "4.7.2"
+    "webpack": "5.58.2",
+    "webpack-cli": "4.8.0"
   },
   "engines": {
     "node": ">=8.9.3",

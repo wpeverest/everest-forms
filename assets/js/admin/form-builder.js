@@ -2491,6 +2491,35 @@ jQuery(function () {
 	});
 	jQuery( '.evf-panel-field-options-button.evf-disabled-tab' ).hide();
 
+	// Conditional Logic fields for General Settings in Form for Submission Redirection.
+	var conditional_rule_selection = jQuery('#everest-forms-conditional-field-settings-redirect_to option:selected').val();
+
+	if ( 'custom_page' == conditional_rule_selection ) {
+		jQuery('#everest-forms-conditional-field-settings-custom_page').show();
+		jQuery('#everest-forms-conditional-field-settings-external_url').hide();
+	}
+	else if( 'external_url' == conditional_rule_selection ) {
+		jQuery('#everest-forms-conditional-field-settings-custom_page').hide();
+		jQuery('#everest-forms-conditional-field-settings-external_url').show();
+	} else {
+		jQuery('#everest-forms-conditional-field-settings-custom_page').hide();
+		jQuery('#everest-forms-conditional-field-settings-external_url').hide();
+	}
+
+	jQuery( '#everest-forms-conditional-field-settings-redirect_to' ).on( 'change', function () {
+		if ( 'custom_page' == this.value ) {
+			jQuery('#everest-forms-conditional-field-settings-custom_page').show();
+			jQuery('#everest-forms-conditional-field-settings-external_url').hide();
+		}
+		else if( 'external_url' == this.value ) {
+			jQuery('#everest-forms-conditional-field-settings-custom_page').hide();
+			jQuery('#everest-forms-conditional-field-settings-external_url').show();
+		} else {
+			jQuery('#everest-forms-conditional-field-settings-custom_page').hide();
+			jQuery('#everest-forms-conditional-field-settings-external_url').hide();
+		}
+	});
+
 });
 
 jQuery( function ( $ ) {

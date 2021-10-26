@@ -4,7 +4,7 @@ Tags: contact form, forms, form builder, contact, custom form
 Requires at least: 5.0
 Tested up to: 5.8
 Requires PHP: 5.4
-Stable tag: 1.7.6
+Stable tag: 1.7.7.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -12,84 +12,250 @@ Drag and Drop contact form builder to easily create simple to complex forms for 
 
 == Description ==
 
-Everest Forms plugin provides you with an easy way to create any kind of forms including contact forms. Drag and Drop fields make ordering and creating forms so easy that even a beginner to WordPress can create beautiful forms within minutes. The plugin is lightweight, fast, extendible and 100% mobile responsive.
+**Everest Forms: #1 Form Building Solution for WordPress Website**
 
-Everest Forms is specially designed keeping the usability, simplicity in mind. The form settings, admin panels are highly intuitive with a clean design.
+Everest Forms is the best WordPress form builder, meticulously designed by our team of experts to take your form-building experience to the next level. It’s a lightweight, fast, and extensible plugin for all, i.e., from the absolute beginners with zero coding skills to the advanced users. 
 
-Multiple column forms can be designed with a click. Pre-built templates and design layouts allow you to create forms that look different yet beautiful.
+Creating WordPress forms has never been so easy. All thanks to highly intuitive and clean admin panels and form setting options. You can easily drag and drop fields to create any types of forms imaginable without any restrictions. Multiple column forms can also be designed with a click. 
 
-View [All features](https://wpeverest.com/wordpress-plugins/everest-forms/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)
-
-View [Demo](http://demo.wpeverest.com/everest-forms/)
-
-Check [documentation](http://docs.wpeverest.com/docs/everest-forms/)
-
-= Everest Forms Plugin in action: =
+No time to create forms from the ground? No worries! Choose from beautifully designed form templates and save your time to get professional-looking forms ready in minutes. Every form designed using Everest Forms is 100% responsive. So, your form is displayed perfectly on any device (mobile, laptop, tablet, etc.).
 
 [youtube https://www.youtube.com/watch?v=-yE0C_Yq_qQ]
 
-### Features And Options:
+[All features](https://wpeverest.com/wordpress-plugins/everest-forms/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) | [Demo](http://demo.wpeverest.com/everest-forms/) | [Documentation](http://docs.wpeverest.com/docs/everest-forms/)
 
-* Create unlimited forms without any restrictions
-* Drag and Drop Form fields
-* Supports all commonly used form fields including radio, dropdowns, checkboxes, date and more
-* 100% responsive form template
-* Supports multiple column layout
-* Shortcode support
-* Multiple email recipient
-* Mulitple email notifications
-* Smart Tags for dynamic email message, subject and more.
-* View Form entries from your dashboard
-* Quick Form Preview option
-* CSV exporter for entries
-* Form Import Export
-* Prebuilt Form templates
-* AJAX form submission
-* Google Recaptcha V2 and V3 Supported
-* Spam protection via honeypot
-* Editable successful form submission message
-* Redirect option after submission
-* Editable Email Settings
-* Editable form validation message
-* Translation ready and WPML compatible
+[Try Everest Forms Premium ](https://wpeverest.com/wordpress-plugins/everest-forms/?utm_source=wporg&utm_medium=link&utm_campaign=ur-upgrade-to-pro)
 
-### Premium Features and Addons
 
-* 13 Advanced fields: **Image upload, File upload, Hidden Field, Phone, Password, Custom HTML, Section Title, Signature, Address, Country, Rating, Range Slider, Privacy policy**
+**Build Great Forms like a Pro with Everest Forms Awesome Features**
 
-* [Style Customizer](https://wpeverest.com/wordpress-plugins/everest-forms/style-customizer/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) - Allows you to make form design changes like color, fonts, spacing, background, borders, alignments and much more without touching any code.
+You'll be delighted to know that Everest Forms lets you create great forms like a pro without prior experience of using such WordPress form plugins. So, ready to explore the awe-striking features of Everest Forms? Here we go! 
 
-* [MailChimp](https://wpeverest.com/wordpress-plugins/everest-forms/mailchimp/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) - Allows your users to subscribe to MailChimp through form submission via Everest Forms.
+* **Drag and Drop Form Builder:** Drag and drop necessary form fields and rearrange them to create captivating WordPress forms without coding in no time. As easy as that! 
 
-* [MailerLite](https://wpeverest.com/wordpress-plugins/everest-forms/mailerlite/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) - Allows your users to subscribe to MailerLite through form submission via Everest Forms.
+* **Huge Library of Pre-Built Templates:** No need to build a form from scratch. Choose a suitable form template and get going. You also have complete freedom to add, delete, and rearrange fields as you see fit. 
 
-* [ActiveCampaign](https://wpeverest.com/wordpress-plugins/everest-forms/activecampaign/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) - Allows your users to subscribe to ActiveCampaign through form submission via Everest Forms.
+* **Build Unlimited Number of Forms:** Make as many forms as you want. Frankly, there are no limitations and no restrictions with this fantastic WordPress contact form plugin. 
 
-* [ConvertKit](https://wpeverest.com/wordpress-plugins/everest-forms/convertkit/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) - Allows you to connect your form with ConvertKit to efficiently grow your business by generating more leads.
+* **Form Entries Management:** All the submitted forms are listed in entries, so no need to fear losing leads. Additionally, you can easily manage (view, edit, delete, restore) all your form entries right from your WordPress dashboard. 
 
-* [PDF Form Submission](https://wpeverest.com/wordpress-plugins/everest-forms/pdf-form-submission/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) - Allows you to generate digital PDF documents of any form submission to export or send a PDF copy of it via email attachment.
+* **CSV Data Export for Form Entries:** Everest Forms allows all the form entries listed in your dashboard to export as CSV file with a push of a button. Amazing, isn't it? 
 
-* [PayPal Standard](https://wpeverest.com/wordpress-plugins/everest-forms/paypal-standard/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) - Allows you to connect your forms with PayPal to easily collect payments, donations, and online orders. Check our article on [accepting PayPal payment via WordPress Forms](https://wpeverest.com/blog/wordpress-form-payment-option-paypal/)
+* **Real-Time Email Notification and Auto Responders:** Get real-time email notifications upon form submission. You can also send the customized welcome email or confirmation email after successfully receiving forms from your users. 
 
-* [Stripe](https://wpeverest.com/wordpress-plugins/everest-forms/stripe/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) - Allows you to connect your forms with Stripe to easily collect credit card payments, donations, and online orders.
+* **Form Submission without Reload (Ajax Submission):** Users can quickly submit the forms without reloading the page with the Ajax form submission feature. 
 
-* [Geolocation](https://wpeverest.com/wordpress-plugins/everest-forms/geolocation/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) - Allows you to collect geolocation data like IP, Country, Postal/Zip code along with the form submission.
+* **[Premium] Integrations with Email Marketing Services:** Ensure the success of your marketing campaigns with effective email marketing services like [MailChimp](https://wpeverest.com/wordpress-plugins/everest-forms/mailchimp/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro), [ConvertKit](https://wpeverest.com/wordpress-plugins/everest-forms/convertkit/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro), [MailerLite](https://wpeverest.com/wordpress-plugins/everest-forms/mailerlite/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro), [ActiveCampaign](https://wpeverest.com/wordpress-plugins/everest-forms/activecampaign/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro), and [Campaign Monitor](https://wpeverest.com/wordpress-plugins/everest-forms/campaign-monitor/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro). 
 
-* [Multi-Part Forms](https://wpeverest.com/wordpress-plugins/everest-forms/multi-part-forms/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) - Allows you to make a stepwise form by breaking long or complex forms up into multiple parts/pages. Check [Detail guide](https://wpeverest.com/blog/wordpress-multi-step-form/)
+* **[Premium] [Multi-Step Form with Progress Bar:](https://wpeverest.com/wordpress-plugins/everest-forms/multi-part-forms/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Break your complex or overwhelming forms into multi-steps for providing a better user experience. A progress bar in your multi-part forms will guide your users to navigate through your form successively. 
 
-* [Custom Captcha](https://wpeverest.com/wordpress-plugins/everest-forms/captcha/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) - Allows you to add custom questions or math captcha to your form and fight back against spam form submissions.
+* **[Premium] [Front End Post Submissions:]((https://wpeverest.com/wordpress-plugins/everest-forms/post-submission/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro))** Create post submission forms to allow your users to submit their blog posts directly from the front end without any hassle. Prevents accessing users to your WordPress dashboard.     
 
-* [Form Restriction](https://wpeverest.com/wordpress-plugins/everest-forms/form-restriction/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) - Allows you to easily control and restrict by limiting entries, scheduling submission dates, password protection for the form submissions.
+* **[Premium] [User Registration:](https://wpeverest.com/wordpress-plugins/everest-forms/user-registration/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Build and embed the custom user registration forms and register new users on your WordPress site easily. Avoids the necessity of adding each user to your dashboard manually. 
 
-* [Conditional Logic](https://wpeverest.com/wordpress-plugins/everest-forms/conditional-logic/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) - Allows you to conditionally hide or show form fields based on user's interaction with other form fields.
+* **[Premium] Assign User Roles and Capabilities:** No need to assign roles after registering a new user each time manually. Simply choose from default user roles like Subscriber, Contributor, Author, Editor, and Administrator directly on the form to control your users’ actions. 
 
-* [Survey, Polls and Quiz](https://wpeverest.com/wordpress-plugins/everest-forms/survey-polls-and-quiz/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) - Allows you to create intuitive survey, poll and quiz forms within a minute. It also provides admin reporting for data-driven decisions.
+* **[Premium] [Collect Form submission to Google Sheets:](https://wpeverest.com/wordpress-plugins/everest-forms/google-sheets/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Integrate Everest Forms with Google Sheet add-on to extract all your form submission data to Google Spreadsheets. Easily edit, organize, and analyze all your user information data.
 
-* [User Registration](https://wpeverest.com/wordpress-plugins/everest-forms/user-registration/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) - Allows you to create a custom WordPress user registration form instantly in few simple steps and collect payments.
+* **[Premium] [Integrate with thousands of web applications:](https://wpeverest.com/wordpress-plugins/everest-forms/zapier/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Zapier allows our forms to be connected with thousands of web applications. Automate the data transfer from your form. For example, posting the form data to google docs, posting to twitter, trello, slack, facebook and hundred of other apps.
 
-* [Post Submission](https://wpeverest.com/wordpress-plugins/everest-forms/post-submission/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) - Allows your users to submit their blogs posts from front-end without the hassle of logging into the admin dashboard.
 
-* [Zapier](https://wpeverest.com/wordpress-plugins/everest-forms/zapier/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) - Allows you to connect your forms with over 1500+ popular web applications without any hassle. It makes integrating forms and apps buttery-smooth.
+### Get All the Essential Form Fields under the Roof of Everest Forms 
+Everest Forms is loaded with all the crucial form field elements required for creating comprehensive WordPress contact forms to appeal to your visitors. These form fields are as follows: 
+* **Form Field Options in Free Plugin**
+    * First Name 
+    * Last Name 
+    * Single Line Text 
+    * Paragraph Text 
+    * Dropdown 
+    * Multiple Choice 
+    * Checkboxes 
+    * Number  
+    * Email 
+    * Website/URL 
+    * Date/Time  
+* **Advanced Form Field Options in Pro**
+    * Image Upload 
+    * File Upload 
+    * Hidden Field 
+    * Phone 
+    * Password 
+    * Custom HTML 
+    * Section Title 
+    * Divider 
+    * Signature 
+    * Address 
+    * Country 
+    * Range Slider 
+    * Captcha 
+    * Privacy Policy 
+    * Rating 
+    * Likert 
+    * Scale Rating 
+
+* **Payment Fields**
+    * Single Item 
+    * Multiple Items 
+    * CheckBoxes 
+    * Quantity 
+    * Credit Card 
+    * Total 
+
+### Why Everest Forms is the Best Form Builder from the Rest?
+Everest Forms has a long list of top-notch features, making it the best WordPress form builder plugin known so far. Below we've listed those features:
+
+* **User-friendly Interface and Beautiful:** Large part of WordPress users today are non-tech savvy. So, we believe that creating a form shouldn't be hefty. Everest Forms aims to provide a working interface that isn't only user-friendly but beautiful as well. 
+
+* **Drag and Drop Form Fields:** Adding form fields is just like magic with Everest Forms. Simply drag the essential form field from one corner and drop it to the other. That's it. You can also order and rearrange form fields to the desired location in a similar fashion. 
+
+* **Easy Form Field Settings:** Make necessary form field settings with the live preview option offered by Everest Forms. Easily add field labels and descriptions, make a field required, and more advanced options to explore.
+
+* **Create Multi-column Form Layout:** Tired of lengthy forms that are making your users abandon them? Create efficient and user-friendly forms with two columns using Everest Forms. This also provides better structure to your forms.
+
+* **Multiple Spam Protection Technique:** Spams won't trouble you anymore. Get the spams controlled with smart integrations like Google reCAPTCHA, HoneyPot, [Math Captcha](https://wpeverest.com/wordpress-plugins/everest-forms/captcha/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro), and let your mind be at peace.
+
+* **One-Click Form Import Export:** Save your precious time using the import/export tool. Just one click, and you can instantly import or export the forms from one site to another. The supported file format is JSON. 
+
+* **Easily Create GDPR Compliant Forms:** Everest Forms is a GDPR compliant plugin. Thus, it allows you to enable or disable certain features (form entries, storing IP address, and user agent) that are required to make your WordPress forms 100% GDPR compliant. 
+
+* **[Premium] [Live Form Designer Tool:](https://wpeverest.com/wordpress-plugins/everest-forms/style-customizer/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Your forms won't appear dull or bland anymore. Build captivating forms that look and feel great without touching any code. Play around with color, fonts, background, spacing, etc., with an excellent live form designer tool aka Style Customizer. 
+
+* **[Premium] [Email Templates Designer:](https://wpeverest.com/wordpress-plugins/everest-forms/email-templates/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Design beautiful email templates to impress your users. Customize color, fonts, spacing, header & footer, etc., of email template in real-time without coding. You've got an option to start from scratch or choose from carefully designed templates to get started. 
+
+* **[Premium] Collect Payments:** Need to collect payments from customers on your forms? With our [PayPal](https://wpeverest.com/wordpress-plugins/everest-forms/paypal-standard/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) and [Stripe](https://wpeverest.com/wordpress-plugins/everest-forms/stripe/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) addon one can easily collect payment. Accept PayPal payments and even credit cards via Stripe. Can be useful for collect single item payment, multiple item payment, donation payment and more.
+
+* **[Premium] [Smart Conditional Logic:](https://wpeverest.com/wordpress-plugins/everest-forms/conditional-logic/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Choose to show/hide specific form fields based on your users' interaction with previous fields. Collect all the necessary information from the users without making your form appear overwhelming and complex. 
+
+* **[Premium] Drag and Drop File Upload:** Collect files from your users with an intuitive drag and drop file upload field. Not to mention, you also get the power to limit the maximum no. of file uploads, limit maximum file size, allow specific file extensions, and so on. 
+
+* **[Premium] [Create Smart Survey, Polls, and Quiz with Beautiful Reports:](https://wpeverest.com/wordpress-plugins/everest-forms/survey-polls-and-quiz/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Get to know your website better and enhance user engagement with an interactive survey, polls, and quiz forms. Also, get the detailed survey and polls stats presented in graphs, charts, etc., which can be easily understood.
+
+* **[Premium] [Form Restriction:](https://wpeverest.com/wordpress-plugins/everest-forms/form-restriction/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** The power to control and restrict the form submission on your site is now at your fingertips. You can limit the form submission entries, set form submission dates, restrict forms for users who aren't logged in, and password protection for form submission. 
+
+* **[Premium] [PDF Form Submission:](https://wpeverest.com/wordpress-plugins/everest-forms/pdf-form-submission/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** PDF is the widely used document format for storing and sharing files. Using this add-on, you can now download and send the form submissions in PDF format effortlessly. 
+
+* **[Premium] [Smart Geolocation:](https://wpeverest.com/wordpress-plugins/everest-forms/geolocation/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** This add-on enables you to track the geolocation data of your users submitting the form. You can collect and save their exact geolocation details like IP address country, city, postal /Zip code, etc. 
+
+* **[Premium] Collect Digital Signatures:** Need to collect signatures from customers on an online form? Or, make them sign an important contract? With the E-Signature form field exclusively available on Everest Forms pro, it's easy as ABC. 
+
+* **[Premium] [Save and Continue:](https://wpeverest.com/wordpress-plugins/everest-forms/save-and-continue/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Worried that user will abandon long form in the middle. No worries, we have you covered. Save and Continue addon will allows users to save their partially filled information and continue to work on it later.
+
+**Create Different Form Types without Any Coding Skills**
+* [Contact Form](https://demo.wpeverest.com/everest-forms/)
+* [Request Form](https://demo.wpeverest.com/everest-forms/design-agency-request-a-quote/)
+* [Support Request Form](https://demo.wpeverest.com/everest-forms/support-request-form/)
+* [Booking Form](https://demo.wpeverest.com/everest-forms/hotel-booking/)
+* [Job Application Form](https://demo.wpeverest.com/everest-forms/job-application-form/)
+* [Multi-step Form](https://demo.wpeverest.com/everest-forms/multi-step-form/)
+* [Quiz Form](https://demo.wpeverest.com/everest-forms/quiz-form/)   
+* [Customer Survey Form](https://demo.wpeverest.com/everest-forms/customer-survey/)
+* [Payment Submission Form](https://demo.wpeverest.com/everest-forms/paypal-payment-form/)
+* [Simple Registration Form](https://demo.wpeverest.com/everest-forms/simple-registration/)
+* [Request a Call Form](https://demo.wpeverest.com/everest-forms/request-a-call-form/) 
+* [Conditional Form](https://demo.wpeverest.com/everest-forms/conditional-form/) 
+* Poll Form
+* Signature Form
+* Donation Form
+* Medical Appointment Form
+* Newsletter Signup Form
+
+### Everest Forms Full Features List 
+* Clean and beginner-friendly user interface 
+* Intuitive drag and drop form builder 
+* Huge library of form templates to get started 
+* Create unlimited forms without any restrictions 
+* Multiple column layouts option 
+* Form field options 
+* General, advanced, and payment form fields to create any type of WordPress forms 
+* Unlimited form field. Use desired form field as many times as you want with no restrictions. 
+* Supports all commonly used form fields, including radio, dropdowns, checkboxes, date, and more. 
+* Image Upload 
+* Multiple file extension (jpg, png, BMP, gif, etc.) support 
+* Set maximum file size limit 
+* Set maximum file upload number limit 
+* Save the image in the WordPress media library 
+* Drag and drop file upload 
+* Multiple file upload option 
+* Multiple file extension (PDF, Docx, etc.) support 
+* Set maximum file size limit 
+* Set maximum file upload number limit 
+* Save file uploads to Google Drive and Dropbox 
+* Form field setting option 
+* Easy labeling of form field 
+* Form field description 
+* Mark the field as required 
+* Editable form validation message 
+* General setting option 
+* Editable successful form submission message 
+* Redirect form to any Page or URL after Submission 
+* Editable submit button text 
+* AJAX form submission, no reload needed 
+* Spam protection via honeypot 
+* Support for Google reCAPTCHA V2 and V3 
+* Email setting option 
+* Multiple email recipient 
+* Multiple email notifications 
+* Smart Tags for dynamic messages like email message, subject, and more 
+* Form Entry Management 
+* View Form entries directly from your dashboard 
+* Filter form entries by form 
+* Export form entries as CSV 
+* Hide Empty fields 
+* Delete or restore form entries 
+* Star form entries 
+* Resend notifications for individual form entries 
+* Quick Form Preview option to check forms before publishing 
+* Smart Conditional logic to conditionally hide/show specific fields 
+* One-click form Import/Export option 
+* Fill out forms automatically for logged in users 
+* Create custom email templates to send emails to users 
+* Create survey, polls, and quiz without coding and get a detailed report 
+* Design stylish forms using live Style Customizer 
+* Grow your business with powerful Email Marketing Services integration 
+* MailChimp 
+* ConvertKit 
+* MailerLite 
+* ActiveCampaign 
+* Campaign Monitor 
+* Download form submission data in PDF document format 
+* Form restriction option 
+* Restrict non logged in user 
+* Limit form entries 
+* Schedule form submission date 
+* Password protection for form submission 
+* Allow users to submit post submissions from the front-end without accessing the WordPress dashboard 
+* Create custom user registration forms 
+* Collect the digital signatures with ease 
+* Accept payments via PayPal and Stripe 
+* Add custom questions and math captcha to prevent spam form submission 
+* Collect geolocation data from your users along with the form submissions 
+* Send form submissions to Google Sheets for easy data analysis 
+* Forms integration with 1500+ popular web applications via Zapier 
+* 100% responsive Design that fits beautifully with any devices 
+* 100% GDPR Compliant forms 
+* Translation ready and WPML compatible 
+* Custom CSS 
+* Shortcode Support 
+* Detailed documentation for easy navigation through the plugin 
+* Frequent updates 
+* Reliable and friendly user support 
+
+### Getting Started: 
+* [Watch our video tutorials](https://docs.wpeverest.com/everest-forms/docs/watch-video-guide/)
+* [Follow our getting started documentation](https://docs.wpeverest.com/everest-forms/docs/how-to-create-a-form-with-everest-forms/)
+
+### Hands-On Everest Forms Tutorials for Your Ease 
+* [How to Create a WordPress Contact Form: Ultimate Guide for Beginners](https://wpeverest.com/blog/create-wordpress-contact-form/)
+* [How to Create a WordPress Online Booking Form for Hotels?](https://wpeverest.com/blog/wordpress-online-booking-form/) 
+* [How to Create a Job Application Form in WordPress?](https://wpeverest.com/blog/wordpress-online-booking-form/)
+* [How to Create a Signup Form in WordPress?](https://wpeverest.com/blog/wordpress-user-registration-form/)
+* [How to Create a Donation Form in WordPress?](https://wpeverest.com/blog/how-to-create-a-donation-form-in-wordpress/)
+* [How to Create a WordPress Multi-step Form: A Beginner’s Guide](https://wpeverest.com/blog/wordpress-multi-step-form/)
+* [How to Accept E Signatures with WordPress Forms?](https://wpeverest.com/blog/wordpress-e-signature-plugin/)
+* [How to Add a Payment Option with WordPress Forms?](https://wpeverest.com/blog/wordpress-form-payment-option-paypal/)
+* [How to Export Form Entries to CSV File in WordPress?](https://wpeverest.com/blog/export-wordpress-form-entries/)
+* [How to Convert WordPress Form Submission to PDF?](https://wpeverest.com/blog/convert-wordpress-form-submissions-to-pdf/)
+* [How to create GDPR Compliant Forms](https://wpeverest.com/blog/how-to-create-gdpr-compliant-forms/#everest-forms)
 
 ### What's Next
 
@@ -126,25 +292,6 @@ No, you don't need any coding skills. One can simply drag and drop fields, arran
 
 Yes, Everest Forms is designed to work with any themes that have been coded following WordPress guidelines.
 
-= What type of form can I build with Everest Forms?
-
-The drag and drop builder allows you to create a variety of WordPress forms, not limited to just a contact form. Combined with our premium addons, you can create forms like
-* Contact Form
-* Support Request Form
-* Suggestion Form
-* Job Application Form
-* Multi-step Form
-* Conditional Form
-* Registration Form
-* Customer Survey Form
-* Poll Form
-* Quiz Form
-* Paypal Payment Form
-* Stripe Payment Form
-* Signature Form
-* Post Submission Form
-* Newsletter Signup Forms
-
 = Do you have a quick get started video for Everest Form?
 
 Yes, we do. Check out this [Getting Started Videos](https://docs.wpeverest.com/docs/everest-forms/getting-started/watch-video-guide/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)
@@ -154,6 +301,19 @@ Yes, we do. Check out this [Getting Started Videos](https://docs.wpeverest.com/d
 Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/everest-forms/) :)
 
 == Changelog ==
+
+= 1.7.7.2 - 05-10-2021 =
+* Fix - Form save issue due to caching.
+* Tweak - Removed unnecessary localization code.
+* Enhancement - Survey notice.
+
+= 1.7.7 - 16-09-2021 =
+* Tweak - Download text input option added.
+* Tweak - Spacing issue on upgrade modal dialogues.
+* Fix - Default Value for Payment Quantity Field.
+* Fix - Upload image button click issue on inputs.
+* Fix - PHP notice about enqueue script thrown in widgets page.
+* Fix - Deleted Field Entries are shown in Single Entry.
 
 = 1.7.6 - 28-07-2021 =
 * Enhancement - Cache the form and entries results for better performance.
@@ -289,99 +449,5 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Tweak - Modify duplicated action hook `everest_forms_general_settings` to `everest_forms_inline_general_settings` for builder general settings.
 * Dev - Introduced `everest_forms_total_entries_count` filter to update total entries count in list table views.
 * Dev - Introduced `everest_forms_{$export_type}_export_delimiter` filter to change separator string while exporting CSV files.
-
-= 1.6.7 - 17-05-2020 =
-* Feature - Added a new Pro field Range Slider.
-* Fix - JS error while removing list from choice field.
-* Tweak - Add support for next max value of row ID.
-
-= 1.6.6.1 - 10-05-2020 =
-* Fix - Sanitization of CSV exported field values.
-* Fix - Conflict within WooCommerce checkout page.
-* Fix - Flatpickr Calendar does not open on Android Chrome.
-* Tweak - Updated selectWoo JS library to v1.0.6.
-* Tweak - Updated flatpickr JS library to v4.6.3.
-
-= 1.6.6 - 01-05-2020 =
-* Fix - Log file deletion.
-* Fix - Field Options getting freezed for the first field.
-* Fix - Perfect Scrollbar library updated to fix RTL issue.
-* Fix - Undefined PHP notice thrown if confirmation email didn't match.
-* Fix - False-positive required message displayed upon email validation.
-* Enhancement - Email attachment workflow.
-* Enhancement - Added enhanced select feature to the Dropdown field.
-* Enhancement - Added option to disable certain dates in the Date/Time field.
-
-= 1.6.5 - 10-04-2020 =
-* Fix - Shortcode design issue in list table.
-* Fix - Form block deprecated notices in console.
-* Fix - Selective html tag support in field label.
-* Fix - Placeholder live update broken for fields.
-* Fix - Set the default threshold received from reCAPTCHA.
-* Fix - Empty form fields within form throwing PHP warnings.
-* Fix - Placeholder components design issue with our form block.
-* Fix - Image and file not being submitted with enable AJAX form submission.
-* Tweak - RTL design issue for font-weight.
-* Tweak - Google reCAPTCHA v3 threshhold default to `0.5`.
-* Tweak - Custom Captcha field now shown as part of pro fields.
-* Tweak - Prefill field value so it can be used to modify data.
-* Tweak - Removed unnecessary height for input on classic layout.
-* Tweak - Use `apply_shortocodes()` as an alias for `do_shortcode()` for better semantics.
-* Tweak - Improve WPML compatibility for form fields and its settings. Thanks @mebishalnapit!
-* Enhancement - Added Formatting function `evf_array_splice_preserve_keys`.
-* Dev - Linting fix for SCSS files and added some rules for stylelint.
-
-= 1.6.4 - 17-03-2020 =
-* Fix - Google reCAPTCHA issue with the version changes.
-* Tweak - Remove smart tags icon from default value option for Number and Rating fields.
-* Dev - Use WP-CLI to generate .pot file.
-
-= 1.6.3 - 02-03-2020 =
-* Fix - Form not saved while using smart tag.
-* Fix - Deactivation notice.
-* Fix - Invalid argument in entries view.
-* Fix - Import export file name.
-
-= 1.6.2 - 29-02-2020 =
-* Fix - Cloning not working for some fields.
-* Fix - Error thrown for star rating field when using smart tags.
-* Fix - Conditional logic for Checkbox and Multiple Choice field.
-* Fix - Smart tags of Multiple Choice and Checkbox are not working in email.
-* Fix - Redirection parameter delegated to frontend for AJAX form submission.
-* Tweak - Implement log cleanup cron job.
-* Tweak - PHPCS fixes.
-
-= 1.6.1 - 13-02-2020 =
-* Fix - Form submission error while processing on frontend.
-
-= 1.6.0 - 11-02-2020 =
-* Feature - Add support for form template.
-* Feature - Import Export of Everest Forms.
-* Feature - Add support for AJAX form submission.
-* Feature - Required field message are made editable.
-* Enhancement - Improve choice field with image support.
-* Enhancement - Randomize the order of the choice field support.
-* Enhancement - Limit the number of options to be checked in checkboxes field.
-* Enhancement - Robust the layout for displaying field choice i.e inline or {one|two|three} columns.
-* Enhancement - Single Line Text/Paragraph fields limitation options (limit by character or word count).
-* Enhancement - Added a filter `everest_forms_builder_field_option_class` to support field option class.
-* Enhancement - Added a settings for confirm field validation message to support email confirmation error.
-* Fix - Error handling in AJAX handler for endpoint.
-* Fix - Choice default value not rendered on frontend.
-* Fix - Correctly closes label if no desc arg is passed.
-* Fix - Checks if only string is provided for JSON content.
-* Fix - Specific form submission notice display in another.
-* Fix - Select2 style and admin screen button alignments in WP 5.3+.
-* Fix - reCAPTCHA when running on localhost with port different from 80.
-* Fix - Show/Hide empty fields action inside the single entry view.
-* Fix - Show forms with disabled entries if they have previous entries count.
-* Fix - Use brackets instead of braces to avoid deprecation notices in PHP 5.6.
-* Tweak - Sortable design issue and smooth choices.
-* Tweak - Store entry ID in property of task handler.
-* Tweak - Editable Form name from the form builder title.
-* Tweak - Admin notice design conflicted due to review notice.
-* Tweak - Referal in admin panel for origination of form entry.
-* Tweak - Display empty field value so users can toggle them in single entry view.
-* Tweak - Hide confirm placeholder text & sub-label option accordingly for email and password field.
 
 [See changelog for all versions](https://github.com/wpeverest/everest-forms/raw/master/changelog.txt).

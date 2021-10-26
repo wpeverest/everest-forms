@@ -42,7 +42,7 @@ class EVF_Form_Handler {
 
 			// Check the cache.
 			$the_post = wp_cache_get( $id, 'forms' );
-			if ( false === $the_post ) {
+			if ( false === $the_post || empty( $the_post->post_content ) ) {
 				$the_post = get_post( absint( $id ) );
 				wp_cache_add( $id, $the_post, 'forms' );
 			}

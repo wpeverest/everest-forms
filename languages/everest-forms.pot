@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Everest Forms plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Everest Forms 1.7.6\n"
+"Project-Id-Version: Everest Forms 1.7.7\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/everest-forms\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-07-28T04:50:06+00:00\n"
+"POT-Creation-Date: 2021-10-05T09:02:04+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.5.0\n"
 "X-Domain: everest-forms\n"
@@ -55,32 +55,32 @@ msgid "Off"
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:389
-#: includes/evf-core-functions.php:1921
+#: includes/evf-core-functions.php:1930
 msgid "Enter text for the form field label. This is recommended and can be hidden in the Advanced Settings."
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:395
-#: includes/evf-core-functions.php:1920
+#: includes/evf-core-functions.php:1929
 msgid "Label"
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:425
-#: includes/evf-core-functions.php:1929
+#: includes/evf-core-functions.php:1938
 msgid "Enter meta key to be stored in database."
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:431
-#: includes/evf-core-functions.php:1928
+#: includes/evf-core-functions.php:1937
 msgid "Meta Key"
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:462
-#: includes/evf-core-functions.php:1938
+#: includes/evf-core-functions.php:1947
 msgid "Enter text for the form field description."
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:468
-#: includes/evf-core-functions.php:1936
+#: includes/evf-core-functions.php:1945
 msgid "Description"
 msgstr ""
 
@@ -90,7 +90,7 @@ msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:506
 #: includes/admin/settings/class-evf-settings-validation.php:46
-#: includes/evf-core-functions.php:1944
+#: includes/evf-core-functions.php:1953
 #: includes/shortcodes/class-evf-shortcode-form.php:189
 msgid "Required"
 msgstr ""
@@ -158,7 +158,7 @@ msgid "Code"
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:726
-#: includes/evf-core-functions.php:1952
+#: includes/evf-core-functions.php:1961
 msgid "Choices"
 msgstr ""
 
@@ -167,7 +167,7 @@ msgid "Bulk Add"
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:755
-#: includes/evf-core-functions.php:1953
+#: includes/evf-core-functions.php:1962
 msgid "Add choices for the form field."
 msgstr ""
 
@@ -446,12 +446,12 @@ msgid "Advanced Options"
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:1123
-#: includes/evf-core-functions.php:1965
+#: includes/evf-core-functions.php:1974
 msgid "Enter text for the form field placeholder."
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:1129
-#: includes/evf-core-functions.php:1964
+#: includes/evf-core-functions.php:1973
 msgid "Placeholder Text"
 msgstr ""
 
@@ -460,27 +460,27 @@ msgid "Enter CSS class names for this field container. Multiple class names shou
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:1168
-#: includes/evf-core-functions.php:1972
+#: includes/evf-core-functions.php:1981
 msgid "CSS Classes"
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:1199
-#: includes/evf-core-functions.php:1982
+#: includes/evf-core-functions.php:1991
 msgid "Check this option to hide the form field label."
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:1208
-#: includes/evf-core-functions.php:1980
+#: includes/evf-core-functions.php:1989
 msgid "Hide Label"
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:1229
-#: includes/evf-core-functions.php:1990
+#: includes/evf-core-functions.php:1999
 msgid "Check this option to hide the form field sub-label."
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:1238
-#: includes/evf-core-functions.php:1988
+#: includes/evf-core-functions.php:1997
 msgid "Hide Sub-Labels"
 msgstr ""
 
@@ -627,7 +627,7 @@ msgstr ""
 #: includes/admin/builder/class-evf-builder-settings.php:77
 #: includes/admin/builder/class-evf-builder-settings.php:350
 #: includes/admin/builder/class-evf-builder-settings.php:410
-#: includes/class-evf-form-task.php:589
+#: includes/class-evf-form-task.php:594
 #: includes/evf-update-functions.php:140
 #: includes/templates/contact.php:71
 msgid "Admin Notification"
@@ -1486,7 +1486,7 @@ msgid "No form to duplicate has been supplied!"
 msgstr ""
 
 #: includes/admin/class-evf-admin-import-export.php:34
-#: includes/admin/class-evf-admin-notices.php:118
+#: includes/admin/class-evf-admin-notices.php:120
 #: includes/admin/class-evf-admin-tools.php:165
 msgid "Action failed. Please refresh the page and retry."
 msgstr ""
@@ -1541,7 +1541,7 @@ msgstr ""
 msgid "Add-ons"
 msgstr ""
 
-#: includes/admin/class-evf-admin-notices.php:122
+#: includes/admin/class-evf-admin-notices.php:124
 msgid "You don&#8217;t have permission to do this."
 msgstr ""
 
@@ -1553,34 +1553,34 @@ msgstr ""
 msgid "The changes you made will be lost if you navigate away from this page."
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:327
+#: includes/admin/class-evf-admin-settings.php:331
 msgid "Header Logo"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:328
+#: includes/admin/class-evf-admin-settings.php:332
 msgid "Upload Logo"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:609
+#: includes/admin/class-evf-admin-settings.php:613
 msgid "Select a page&hellip;"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:618
+#: includes/admin/class-evf-admin-settings.php:622
 #: includes/evf-formatting-functions.php:604
 msgid "Day(s)"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:619
+#: includes/admin/class-evf-admin-settings.php:623
 #: includes/evf-formatting-functions.php:605
 msgid "Week(s)"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:620
+#: includes/admin/class-evf-admin-settings.php:624
 #: includes/evf-formatting-functions.php:606
 msgid "Month(s)"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:621
+#: includes/admin/class-evf-admin-settings.php:625
 #: includes/evf-formatting-functions.php:607
 msgid "Year(s)"
 msgstr ""
@@ -1804,7 +1804,7 @@ msgstr ""
 
 #: includes/admin/settings/class-evf-settings-validation.php:52
 #: includes/class-evf-frontend-scripts.php:311
-#: includes/evf-core-functions.php:1499
+#: includes/evf-core-functions.php:1508
 msgid "This field is required."
 msgstr ""
 
@@ -2198,11 +2198,40 @@ msgid "Remind me later"
 msgstr ""
 
 #: includes/admin/views/html-notice-review.php:27
+#: includes/admin/views/html-notice-survey.php:40
 msgid "I already did"
 msgstr ""
 
 #: includes/admin/views/html-notice-review.php:28
 msgid "I have a query"
+msgstr ""
+
+#: includes/admin/views/html-notice-survey.php:16
+msgid "Everest Forms Survey!"
+msgstr ""
+
+#: includes/admin/views/html-notice-survey.php:22
+msgid "Hey there!"
+msgstr ""
+
+#: includes/admin/views/html-notice-survey.php:23
+msgid "We would be grateful if you could spare a moment and help us fill this survey"
+msgstr ""
+
+#: includes/admin/views/html-notice-survey.php:24
+msgid "This survey will take approximately 4 minutes to complete."
+msgstr ""
+
+#: includes/admin/views/html-notice-survey.php:32
+msgid "What benefit would you have?"
+msgstr ""
+
+#: includes/admin/views/html-notice-survey.php:33
+msgid "We will take your feedback from the survey which will eventually help to improve the Everest Forms plugin. Thank you in advance for participating."
+msgstr ""
+
+#: includes/admin/views/html-notice-survey.php:39
+msgid "Start Survey"
 msgstr ""
 
 #: includes/admin/views/html-notice-update.php:18
@@ -2242,82 +2271,82 @@ msgstr ""
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
-#: includes/class-evf-ajax.php:125
+#: includes/class-evf-ajax.php:126
 msgid "Invalid form"
 msgstr ""
 
-#: includes/class-evf-ajax.php:175
+#: includes/class-evf-ajax.php:176
 msgid "Blank Form"
 msgstr ""
 
-#: includes/class-evf-ajax.php:197
+#: includes/class-evf-ajax.php:198
 msgid "Something went wrong, please try again later"
 msgstr ""
 
-#: includes/class-evf-ajax.php:210
+#: includes/class-evf-ajax.php:211
 msgid "You do not have permission."
 msgstr ""
 
-#: includes/class-evf-ajax.php:215
+#: includes/class-evf-ajax.php:216
 msgid "No data provided"
 msgstr ""
 
-#: includes/class-evf-ajax.php:285
+#: includes/class-evf-ajax.php:286
 msgid "Meta Key missing"
 msgstr ""
 
 #. translators: %s: empty meta data
-#: includes/class-evf-ajax.php:287
+#: includes/class-evf-ajax.php:288
 msgid "Please add Meta key for fields: %s"
 msgstr ""
 
-#: includes/class-evf-ajax.php:307
+#: includes/class-evf-ajax.php:308
 msgid "Form not found"
 msgstr ""
 
-#: includes/class-evf-ajax.php:308
+#: includes/class-evf-ajax.php:309
 msgid "An error occurred while saving the form."
 msgstr ""
 
-#: includes/class-evf-ajax.php:347
+#: includes/class-evf-ajax.php:348
 msgid "No Addon specified."
 msgstr ""
 
-#: includes/class-evf-ajax.php:358
+#: includes/class-evf-ajax.php:359
 msgid "Addon can not be activate. Please try again."
 msgstr ""
 
-#: includes/class-evf-ajax.php:379
+#: includes/class-evf-ajax.php:380
 msgid "No Plan specified."
 msgstr ""
 
-#: includes/class-evf-ajax.php:400
+#: includes/class-evf-ajax.php:401
 msgid "This form template requires the following addons."
 msgstr ""
 
-#: includes/class-evf-ajax.php:451
+#: includes/class-evf-ajax.php:452
 msgid "No plugin specified."
 msgstr ""
 
-#: includes/class-evf-ajax.php:464
+#: includes/class-evf-ajax.php:465
 msgid "Sorry, you are not allowed to install plugins on this site."
 msgstr ""
 
-#: includes/class-evf-ajax.php:528
+#: includes/class-evf-ajax.php:529
 msgid "Unable to connect to the filesystem. Please confirm your credentials."
 msgstr ""
 
-#: includes/class-evf-ajax.php:572
-#: includes/class-evf-ajax.php:614
+#: includes/class-evf-ajax.php:573
+#: includes/class-evf-ajax.php:615
 msgid "Missing data"
 msgstr ""
 
-#: includes/class-evf-ajax.php:630
+#: includes/class-evf-ajax.php:631
 msgid "Connection missing"
 msgstr ""
 
 #. translators: %1$s - deactivation reason page; %2$d - deactivation url.
-#: includes/class-evf-ajax.php:659
+#: includes/class-evf-ajax.php:660
 msgid "Before we deactivate Everest Forms, would you care to <a href=\"%1$s\" target=\"_blank\">let us know why</a> so we can improve it for you? <a href=\"%2$s\">No, deactivate now</a>."
 msgstr ""
 
@@ -2414,16 +2443,21 @@ msgstr ""
 msgid "Thanks for contacting us! We will be in touch with you shortly."
 msgstr ""
 
+#: includes/class-evf-form-task.php:328
+#: templates/notices/success.php:63
+msgid "Download your form submission in PDF format"
+msgstr ""
+
 #. translators: %s - form name.
-#: includes/class-evf-form-task.php:617
+#: includes/class-evf-form-task.php:622
 msgid "New %s Entry"
 msgstr ""
 
-#: includes/class-evf-form-task.php:713
+#: includes/class-evf-form-task.php:722
 msgid "No form ID was found."
 msgstr ""
 
-#: includes/class-evf-form-task.php:720
+#: includes/class-evf-form-task.php:729
 msgid "Could not create an entry"
 msgstr ""
 
@@ -2444,7 +2478,6 @@ msgid "Sorry, something went wrong. Please try again"
 msgstr ""
 
 #: includes/class-evf-frontend-scripts.php:312
-#: templates/notices/success.php:63
 msgid "Click here to download your pdf submission"
 msgstr ""
 
@@ -2786,1258 +2819,1258 @@ msgstr ""
 msgid "The class %1$s provided by %2$s filter must implement %3$s."
 msgstr ""
 
-#: includes/evf-core-functions.php:1564
+#: includes/evf-core-functions.php:1573
 msgid "Afghanistan"
 msgstr ""
 
-#: includes/evf-core-functions.php:1565
+#: includes/evf-core-functions.php:1574
 msgid "Åland Islands"
 msgstr ""
 
-#: includes/evf-core-functions.php:1566
+#: includes/evf-core-functions.php:1575
 msgid "Albania"
 msgstr ""
 
-#: includes/evf-core-functions.php:1567
+#: includes/evf-core-functions.php:1576
 msgid "Algeria"
 msgstr ""
 
-#: includes/evf-core-functions.php:1568
+#: includes/evf-core-functions.php:1577
 msgid "American Samoa"
 msgstr ""
 
-#: includes/evf-core-functions.php:1569
+#: includes/evf-core-functions.php:1578
 msgid "Andorra"
 msgstr ""
 
-#: includes/evf-core-functions.php:1570
+#: includes/evf-core-functions.php:1579
 msgid "Angola"
 msgstr ""
 
-#: includes/evf-core-functions.php:1571
+#: includes/evf-core-functions.php:1580
 msgid "Anguilla"
 msgstr ""
 
-#: includes/evf-core-functions.php:1572
+#: includes/evf-core-functions.php:1581
 msgid "Antarctica"
 msgstr ""
 
-#: includes/evf-core-functions.php:1573
+#: includes/evf-core-functions.php:1582
 msgid "Antigua and Barbuda"
 msgstr ""
 
-#: includes/evf-core-functions.php:1574
+#: includes/evf-core-functions.php:1583
 msgid "Argentina"
 msgstr ""
 
-#: includes/evf-core-functions.php:1575
+#: includes/evf-core-functions.php:1584
 msgid "Armenia"
 msgstr ""
 
-#: includes/evf-core-functions.php:1576
+#: includes/evf-core-functions.php:1585
 msgid "Aruba"
 msgstr ""
 
-#: includes/evf-core-functions.php:1577
+#: includes/evf-core-functions.php:1586
 msgid "Australia"
 msgstr ""
 
-#: includes/evf-core-functions.php:1578
+#: includes/evf-core-functions.php:1587
 msgid "Austria"
 msgstr ""
 
-#: includes/evf-core-functions.php:1579
+#: includes/evf-core-functions.php:1588
 msgid "Azerbaijan"
 msgstr ""
 
-#: includes/evf-core-functions.php:1580
+#: includes/evf-core-functions.php:1589
 msgid "Bahamas"
 msgstr ""
 
-#: includes/evf-core-functions.php:1581
+#: includes/evf-core-functions.php:1590
 msgid "Bahrain"
 msgstr ""
 
-#: includes/evf-core-functions.php:1582
+#: includes/evf-core-functions.php:1591
 msgid "Bangladesh"
 msgstr ""
 
-#: includes/evf-core-functions.php:1583
+#: includes/evf-core-functions.php:1592
 msgid "Barbados"
 msgstr ""
 
-#: includes/evf-core-functions.php:1584
+#: includes/evf-core-functions.php:1593
 msgid "Belarus"
 msgstr ""
 
-#: includes/evf-core-functions.php:1585
+#: includes/evf-core-functions.php:1594
 msgid "Belgium"
 msgstr ""
 
-#: includes/evf-core-functions.php:1586
+#: includes/evf-core-functions.php:1595
 msgid "Belau"
 msgstr ""
 
-#: includes/evf-core-functions.php:1587
+#: includes/evf-core-functions.php:1596
 msgid "Belize"
 msgstr ""
 
-#: includes/evf-core-functions.php:1588
+#: includes/evf-core-functions.php:1597
 msgid "Benin"
 msgstr ""
 
-#: includes/evf-core-functions.php:1589
+#: includes/evf-core-functions.php:1598
 msgid "Bermuda"
 msgstr ""
 
-#: includes/evf-core-functions.php:1590
+#: includes/evf-core-functions.php:1599
 msgid "Bhutan"
 msgstr ""
 
-#: includes/evf-core-functions.php:1591
+#: includes/evf-core-functions.php:1600
 msgid "Bolivia"
 msgstr ""
 
-#: includes/evf-core-functions.php:1592
+#: includes/evf-core-functions.php:1601
 msgid "Bonaire, Saint Eustatius and Saba"
 msgstr ""
 
-#: includes/evf-core-functions.php:1593
+#: includes/evf-core-functions.php:1602
 msgid "Bosnia and Herzegovina"
 msgstr ""
 
-#: includes/evf-core-functions.php:1594
+#: includes/evf-core-functions.php:1603
 msgid "Botswana"
 msgstr ""
 
-#: includes/evf-core-functions.php:1595
+#: includes/evf-core-functions.php:1604
 msgid "Bouvet Island"
 msgstr ""
 
-#: includes/evf-core-functions.php:1596
+#: includes/evf-core-functions.php:1605
 msgid "Brazil"
 msgstr ""
 
-#: includes/evf-core-functions.php:1597
+#: includes/evf-core-functions.php:1606
 msgid "British Indian Ocean Territory"
 msgstr ""
 
-#: includes/evf-core-functions.php:1598
+#: includes/evf-core-functions.php:1607
 msgid "Brunei"
 msgstr ""
 
-#: includes/evf-core-functions.php:1599
+#: includes/evf-core-functions.php:1608
 msgid "Bulgaria"
 msgstr ""
 
-#: includes/evf-core-functions.php:1600
+#: includes/evf-core-functions.php:1609
 msgid "Burkina Faso"
 msgstr ""
 
-#: includes/evf-core-functions.php:1601
+#: includes/evf-core-functions.php:1610
 msgid "Burundi"
 msgstr ""
 
-#: includes/evf-core-functions.php:1602
+#: includes/evf-core-functions.php:1611
 msgid "Cambodia"
 msgstr ""
 
-#: includes/evf-core-functions.php:1603
+#: includes/evf-core-functions.php:1612
 msgid "Cameroon"
 msgstr ""
 
-#: includes/evf-core-functions.php:1604
+#: includes/evf-core-functions.php:1613
 msgid "Canada"
 msgstr ""
 
-#: includes/evf-core-functions.php:1605
+#: includes/evf-core-functions.php:1614
 msgid "Cape Verde"
 msgstr ""
 
-#: includes/evf-core-functions.php:1606
+#: includes/evf-core-functions.php:1615
 msgid "Cayman Islands"
 msgstr ""
 
-#: includes/evf-core-functions.php:1607
+#: includes/evf-core-functions.php:1616
 msgid "Central African Republic"
 msgstr ""
 
-#: includes/evf-core-functions.php:1608
+#: includes/evf-core-functions.php:1617
 msgid "Chad"
 msgstr ""
 
-#: includes/evf-core-functions.php:1609
+#: includes/evf-core-functions.php:1618
 msgid "Chile"
 msgstr ""
 
-#: includes/evf-core-functions.php:1610
+#: includes/evf-core-functions.php:1619
 msgid "China"
 msgstr ""
 
-#: includes/evf-core-functions.php:1611
+#: includes/evf-core-functions.php:1620
 msgid "Christmas Island"
 msgstr ""
 
-#: includes/evf-core-functions.php:1612
+#: includes/evf-core-functions.php:1621
 msgid "Cocos (Keeling) Islands"
 msgstr ""
 
-#: includes/evf-core-functions.php:1613
+#: includes/evf-core-functions.php:1622
 msgid "Colombia"
 msgstr ""
 
-#: includes/evf-core-functions.php:1614
+#: includes/evf-core-functions.php:1623
 msgid "Comoros"
 msgstr ""
 
-#: includes/evf-core-functions.php:1615
+#: includes/evf-core-functions.php:1624
 msgid "Congo (Brazzaville)"
 msgstr ""
 
-#: includes/evf-core-functions.php:1616
+#: includes/evf-core-functions.php:1625
 msgid "Congo (Kinshasa)"
 msgstr ""
 
-#: includes/evf-core-functions.php:1617
+#: includes/evf-core-functions.php:1626
 msgid "Cook Islands"
 msgstr ""
 
-#: includes/evf-core-functions.php:1618
+#: includes/evf-core-functions.php:1627
 msgid "Costa Rica"
 msgstr ""
 
-#: includes/evf-core-functions.php:1619
+#: includes/evf-core-functions.php:1628
 msgid "Croatia"
 msgstr ""
 
-#: includes/evf-core-functions.php:1620
+#: includes/evf-core-functions.php:1629
 msgid "Cuba"
 msgstr ""
 
-#: includes/evf-core-functions.php:1621
+#: includes/evf-core-functions.php:1630
 msgid "Cura&ccedil;ao"
 msgstr ""
 
-#: includes/evf-core-functions.php:1622
+#: includes/evf-core-functions.php:1631
 msgid "Cyprus"
 msgstr ""
 
-#: includes/evf-core-functions.php:1623
+#: includes/evf-core-functions.php:1632
 msgid "Czech Republic"
 msgstr ""
 
-#: includes/evf-core-functions.php:1624
+#: includes/evf-core-functions.php:1633
 msgid "Denmark"
 msgstr ""
 
-#: includes/evf-core-functions.php:1625
+#: includes/evf-core-functions.php:1634
 msgid "Djibouti"
 msgstr ""
 
-#: includes/evf-core-functions.php:1626
+#: includes/evf-core-functions.php:1635
 msgid "Dominica"
 msgstr ""
 
-#: includes/evf-core-functions.php:1627
+#: includes/evf-core-functions.php:1636
 msgid "Dominican Republic"
 msgstr ""
 
-#: includes/evf-core-functions.php:1628
+#: includes/evf-core-functions.php:1637
 msgid "Ecuador"
 msgstr ""
 
-#: includes/evf-core-functions.php:1629
+#: includes/evf-core-functions.php:1638
 msgid "Egypt"
 msgstr ""
 
-#: includes/evf-core-functions.php:1630
+#: includes/evf-core-functions.php:1639
 msgid "El Salvador"
 msgstr ""
 
-#: includes/evf-core-functions.php:1631
+#: includes/evf-core-functions.php:1640
 msgid "Equatorial Guinea"
 msgstr ""
 
-#: includes/evf-core-functions.php:1632
+#: includes/evf-core-functions.php:1641
 msgid "Eritrea"
 msgstr ""
 
-#: includes/evf-core-functions.php:1633
+#: includes/evf-core-functions.php:1642
 msgid "Estonia"
 msgstr ""
 
-#: includes/evf-core-functions.php:1634
+#: includes/evf-core-functions.php:1643
 msgid "Ethiopia"
 msgstr ""
 
-#: includes/evf-core-functions.php:1635
+#: includes/evf-core-functions.php:1644
 msgid "Falkland Islands"
 msgstr ""
 
-#: includes/evf-core-functions.php:1636
+#: includes/evf-core-functions.php:1645
 msgid "Faroe Islands"
 msgstr ""
 
-#: includes/evf-core-functions.php:1637
+#: includes/evf-core-functions.php:1646
 msgid "Fiji"
 msgstr ""
 
-#: includes/evf-core-functions.php:1638
+#: includes/evf-core-functions.php:1647
 msgid "Finland"
 msgstr ""
 
-#: includes/evf-core-functions.php:1639
+#: includes/evf-core-functions.php:1648
 msgid "France"
 msgstr ""
 
-#: includes/evf-core-functions.php:1640
+#: includes/evf-core-functions.php:1649
 msgid "French Guiana"
 msgstr ""
 
-#: includes/evf-core-functions.php:1641
+#: includes/evf-core-functions.php:1650
 msgid "French Polynesia"
 msgstr ""
 
-#: includes/evf-core-functions.php:1642
+#: includes/evf-core-functions.php:1651
 msgid "French Southern Territories"
 msgstr ""
 
-#: includes/evf-core-functions.php:1643
+#: includes/evf-core-functions.php:1652
 msgid "Gabon"
 msgstr ""
 
-#: includes/evf-core-functions.php:1644
+#: includes/evf-core-functions.php:1653
 msgid "Gambia"
 msgstr ""
 
-#: includes/evf-core-functions.php:1645
-#: includes/evf-core-functions.php:1837
+#: includes/evf-core-functions.php:1654
+#: includes/evf-core-functions.php:1846
 msgid "Georgia"
 msgstr ""
 
-#: includes/evf-core-functions.php:1646
+#: includes/evf-core-functions.php:1655
 msgid "Germany"
 msgstr ""
 
-#: includes/evf-core-functions.php:1647
+#: includes/evf-core-functions.php:1656
 msgid "Ghana"
 msgstr ""
 
-#: includes/evf-core-functions.php:1648
+#: includes/evf-core-functions.php:1657
 msgid "Gibraltar"
 msgstr ""
 
-#: includes/evf-core-functions.php:1649
+#: includes/evf-core-functions.php:1658
 msgid "Greece"
 msgstr ""
 
-#: includes/evf-core-functions.php:1650
+#: includes/evf-core-functions.php:1659
 msgid "Greenland"
 msgstr ""
 
-#: includes/evf-core-functions.php:1651
+#: includes/evf-core-functions.php:1660
 msgid "Grenada"
 msgstr ""
 
-#: includes/evf-core-functions.php:1652
+#: includes/evf-core-functions.php:1661
 msgid "Guadeloupe"
 msgstr ""
 
-#: includes/evf-core-functions.php:1653
+#: includes/evf-core-functions.php:1662
 msgid "Guam"
 msgstr ""
 
-#: includes/evf-core-functions.php:1654
+#: includes/evf-core-functions.php:1663
 msgid "Guatemala"
 msgstr ""
 
-#: includes/evf-core-functions.php:1655
+#: includes/evf-core-functions.php:1664
 msgid "Guernsey"
 msgstr ""
 
-#: includes/evf-core-functions.php:1656
+#: includes/evf-core-functions.php:1665
 msgid "Guinea"
 msgstr ""
 
-#: includes/evf-core-functions.php:1657
+#: includes/evf-core-functions.php:1666
 msgid "Guinea-Bissau"
 msgstr ""
 
-#: includes/evf-core-functions.php:1658
+#: includes/evf-core-functions.php:1667
 msgid "Guyana"
 msgstr ""
 
-#: includes/evf-core-functions.php:1659
+#: includes/evf-core-functions.php:1668
 msgid "Haiti"
 msgstr ""
 
-#: includes/evf-core-functions.php:1660
+#: includes/evf-core-functions.php:1669
 msgid "Heard Island and McDonald Islands"
 msgstr ""
 
-#: includes/evf-core-functions.php:1661
+#: includes/evf-core-functions.php:1670
 msgid "Honduras"
 msgstr ""
 
-#: includes/evf-core-functions.php:1662
+#: includes/evf-core-functions.php:1671
 msgid "Hong Kong"
 msgstr ""
 
-#: includes/evf-core-functions.php:1663
+#: includes/evf-core-functions.php:1672
 msgid "Hungary"
 msgstr ""
 
-#: includes/evf-core-functions.php:1664
+#: includes/evf-core-functions.php:1673
 msgid "Iceland"
 msgstr ""
 
-#: includes/evf-core-functions.php:1665
+#: includes/evf-core-functions.php:1674
 msgid "India"
 msgstr ""
 
-#: includes/evf-core-functions.php:1666
+#: includes/evf-core-functions.php:1675
 msgid "Indonesia"
 msgstr ""
 
-#: includes/evf-core-functions.php:1667
+#: includes/evf-core-functions.php:1676
 msgid "Iran"
 msgstr ""
 
-#: includes/evf-core-functions.php:1668
+#: includes/evf-core-functions.php:1677
 msgid "Iraq"
 msgstr ""
 
-#: includes/evf-core-functions.php:1669
+#: includes/evf-core-functions.php:1678
 msgid "Ireland"
 msgstr ""
 
-#: includes/evf-core-functions.php:1670
+#: includes/evf-core-functions.php:1679
 msgid "Isle of Man"
 msgstr ""
 
-#: includes/evf-core-functions.php:1671
+#: includes/evf-core-functions.php:1680
 msgid "Israel"
 msgstr ""
 
-#: includes/evf-core-functions.php:1672
+#: includes/evf-core-functions.php:1681
 msgid "Italy"
 msgstr ""
 
-#: includes/evf-core-functions.php:1673
+#: includes/evf-core-functions.php:1682
 msgid "Ivory Coast"
 msgstr ""
 
-#: includes/evf-core-functions.php:1674
+#: includes/evf-core-functions.php:1683
 msgid "Jamaica"
 msgstr ""
 
-#: includes/evf-core-functions.php:1675
+#: includes/evf-core-functions.php:1684
 msgid "Japan"
 msgstr ""
 
-#: includes/evf-core-functions.php:1676
+#: includes/evf-core-functions.php:1685
 msgid "Jersey"
 msgstr ""
 
-#: includes/evf-core-functions.php:1677
+#: includes/evf-core-functions.php:1686
 msgid "Jordan"
 msgstr ""
 
-#: includes/evf-core-functions.php:1678
+#: includes/evf-core-functions.php:1687
 msgid "Kazakhstan"
 msgstr ""
 
-#: includes/evf-core-functions.php:1679
+#: includes/evf-core-functions.php:1688
 msgid "Kenya"
 msgstr ""
 
-#: includes/evf-core-functions.php:1680
+#: includes/evf-core-functions.php:1689
 msgid "Kiribati"
 msgstr ""
 
-#: includes/evf-core-functions.php:1681
+#: includes/evf-core-functions.php:1690
 msgid "Kuwait"
 msgstr ""
 
-#: includes/evf-core-functions.php:1682
+#: includes/evf-core-functions.php:1691
 msgid "Kosovo"
 msgstr ""
 
-#: includes/evf-core-functions.php:1683
+#: includes/evf-core-functions.php:1692
 msgid "Kyrgyzstan"
 msgstr ""
 
-#: includes/evf-core-functions.php:1684
+#: includes/evf-core-functions.php:1693
 msgid "Laos"
 msgstr ""
 
-#: includes/evf-core-functions.php:1685
+#: includes/evf-core-functions.php:1694
 msgid "Latvia"
 msgstr ""
 
-#: includes/evf-core-functions.php:1686
+#: includes/evf-core-functions.php:1695
 msgid "Lebanon"
 msgstr ""
 
-#: includes/evf-core-functions.php:1687
+#: includes/evf-core-functions.php:1696
 msgid "Lesotho"
 msgstr ""
 
-#: includes/evf-core-functions.php:1688
+#: includes/evf-core-functions.php:1697
 msgid "Liberia"
 msgstr ""
 
-#: includes/evf-core-functions.php:1689
+#: includes/evf-core-functions.php:1698
 msgid "Libya"
 msgstr ""
 
-#: includes/evf-core-functions.php:1690
+#: includes/evf-core-functions.php:1699
 msgid "Liechtenstein"
 msgstr ""
 
-#: includes/evf-core-functions.php:1691
+#: includes/evf-core-functions.php:1700
 msgid "Lithuania"
 msgstr ""
 
-#: includes/evf-core-functions.php:1692
+#: includes/evf-core-functions.php:1701
 msgid "Luxembourg"
 msgstr ""
 
-#: includes/evf-core-functions.php:1693
+#: includes/evf-core-functions.php:1702
 msgid "Macao"
 msgstr ""
 
-#: includes/evf-core-functions.php:1694
+#: includes/evf-core-functions.php:1703
 msgid "North Macedonia"
 msgstr ""
 
-#: includes/evf-core-functions.php:1695
+#: includes/evf-core-functions.php:1704
 msgid "Madagascar"
 msgstr ""
 
-#: includes/evf-core-functions.php:1696
+#: includes/evf-core-functions.php:1705
 msgid "Malawi"
 msgstr ""
 
-#: includes/evf-core-functions.php:1697
+#: includes/evf-core-functions.php:1706
 msgid "Malaysia"
 msgstr ""
 
-#: includes/evf-core-functions.php:1698
+#: includes/evf-core-functions.php:1707
 msgid "Maldives"
 msgstr ""
 
-#: includes/evf-core-functions.php:1699
+#: includes/evf-core-functions.php:1708
 msgid "Mali"
 msgstr ""
 
-#: includes/evf-core-functions.php:1700
+#: includes/evf-core-functions.php:1709
 msgid "Malta"
 msgstr ""
 
-#: includes/evf-core-functions.php:1701
+#: includes/evf-core-functions.php:1710
 msgid "Marshall Islands"
 msgstr ""
 
-#: includes/evf-core-functions.php:1702
+#: includes/evf-core-functions.php:1711
 msgid "Martinique"
 msgstr ""
 
-#: includes/evf-core-functions.php:1703
+#: includes/evf-core-functions.php:1712
 msgid "Mauritania"
 msgstr ""
 
-#: includes/evf-core-functions.php:1704
+#: includes/evf-core-functions.php:1713
 msgid "Mauritius"
 msgstr ""
 
-#: includes/evf-core-functions.php:1705
+#: includes/evf-core-functions.php:1714
 msgid "Mayotte"
 msgstr ""
 
-#: includes/evf-core-functions.php:1706
+#: includes/evf-core-functions.php:1715
 msgid "Mexico"
 msgstr ""
 
-#: includes/evf-core-functions.php:1707
+#: includes/evf-core-functions.php:1716
 msgid "Micronesia"
 msgstr ""
 
-#: includes/evf-core-functions.php:1708
+#: includes/evf-core-functions.php:1717
 msgid "Moldova"
 msgstr ""
 
-#: includes/evf-core-functions.php:1709
+#: includes/evf-core-functions.php:1718
 msgid "Monaco"
 msgstr ""
 
-#: includes/evf-core-functions.php:1710
+#: includes/evf-core-functions.php:1719
 msgid "Mongolia"
 msgstr ""
 
-#: includes/evf-core-functions.php:1711
+#: includes/evf-core-functions.php:1720
 msgid "Montenegro"
 msgstr ""
 
-#: includes/evf-core-functions.php:1712
+#: includes/evf-core-functions.php:1721
 msgid "Montserrat"
 msgstr ""
 
-#: includes/evf-core-functions.php:1713
+#: includes/evf-core-functions.php:1722
 msgid "Morocco"
 msgstr ""
 
-#: includes/evf-core-functions.php:1714
+#: includes/evf-core-functions.php:1723
 msgid "Mozambique"
 msgstr ""
 
-#: includes/evf-core-functions.php:1715
+#: includes/evf-core-functions.php:1724
 msgid "Myanmar"
 msgstr ""
 
-#: includes/evf-core-functions.php:1716
+#: includes/evf-core-functions.php:1725
 msgid "Namibia"
 msgstr ""
 
-#: includes/evf-core-functions.php:1717
+#: includes/evf-core-functions.php:1726
 msgid "Nauru"
 msgstr ""
 
-#: includes/evf-core-functions.php:1718
+#: includes/evf-core-functions.php:1727
 msgid "Nepal"
 msgstr ""
 
-#: includes/evf-core-functions.php:1719
+#: includes/evf-core-functions.php:1728
 msgid "Netherlands"
 msgstr ""
 
-#: includes/evf-core-functions.php:1720
+#: includes/evf-core-functions.php:1729
 msgid "New Caledonia"
 msgstr ""
 
-#: includes/evf-core-functions.php:1721
+#: includes/evf-core-functions.php:1730
 msgid "New Zealand"
 msgstr ""
 
-#: includes/evf-core-functions.php:1722
+#: includes/evf-core-functions.php:1731
 msgid "Nicaragua"
 msgstr ""
 
-#: includes/evf-core-functions.php:1723
+#: includes/evf-core-functions.php:1732
 msgid "Niger"
 msgstr ""
 
-#: includes/evf-core-functions.php:1724
+#: includes/evf-core-functions.php:1733
 msgid "Nigeria"
 msgstr ""
 
-#: includes/evf-core-functions.php:1725
+#: includes/evf-core-functions.php:1734
 msgid "Niue"
 msgstr ""
 
-#: includes/evf-core-functions.php:1726
+#: includes/evf-core-functions.php:1735
 msgid "Norfolk Island"
 msgstr ""
 
-#: includes/evf-core-functions.php:1727
+#: includes/evf-core-functions.php:1736
 msgid "Northern Mariana Islands"
 msgstr ""
 
-#: includes/evf-core-functions.php:1728
+#: includes/evf-core-functions.php:1737
 msgid "North Korea"
 msgstr ""
 
-#: includes/evf-core-functions.php:1729
+#: includes/evf-core-functions.php:1738
 msgid "Norway"
 msgstr ""
 
-#: includes/evf-core-functions.php:1730
+#: includes/evf-core-functions.php:1739
 msgid "Oman"
 msgstr ""
 
-#: includes/evf-core-functions.php:1731
+#: includes/evf-core-functions.php:1740
 msgid "Pakistan"
 msgstr ""
 
-#: includes/evf-core-functions.php:1732
+#: includes/evf-core-functions.php:1741
 msgid "Palestinian Territory"
 msgstr ""
 
-#: includes/evf-core-functions.php:1733
+#: includes/evf-core-functions.php:1742
 msgid "Panama"
 msgstr ""
 
-#: includes/evf-core-functions.php:1734
+#: includes/evf-core-functions.php:1743
 msgid "Papua New Guinea"
 msgstr ""
 
-#: includes/evf-core-functions.php:1735
+#: includes/evf-core-functions.php:1744
 msgid "Paraguay"
 msgstr ""
 
-#: includes/evf-core-functions.php:1736
+#: includes/evf-core-functions.php:1745
 msgid "Peru"
 msgstr ""
 
-#: includes/evf-core-functions.php:1737
+#: includes/evf-core-functions.php:1746
 msgid "Philippines"
 msgstr ""
 
-#: includes/evf-core-functions.php:1738
+#: includes/evf-core-functions.php:1747
 msgid "Pitcairn"
 msgstr ""
 
-#: includes/evf-core-functions.php:1739
+#: includes/evf-core-functions.php:1748
 msgid "Poland"
 msgstr ""
 
-#: includes/evf-core-functions.php:1740
+#: includes/evf-core-functions.php:1749
 msgid "Portugal"
 msgstr ""
 
-#: includes/evf-core-functions.php:1741
+#: includes/evf-core-functions.php:1750
 msgid "Puerto Rico"
 msgstr ""
 
-#: includes/evf-core-functions.php:1742
+#: includes/evf-core-functions.php:1751
 msgid "Qatar"
 msgstr ""
 
-#: includes/evf-core-functions.php:1743
+#: includes/evf-core-functions.php:1752
 msgid "Reunion"
 msgstr ""
 
-#: includes/evf-core-functions.php:1744
+#: includes/evf-core-functions.php:1753
 msgid "Romania"
 msgstr ""
 
-#: includes/evf-core-functions.php:1745
+#: includes/evf-core-functions.php:1754
 msgid "Russia"
 msgstr ""
 
-#: includes/evf-core-functions.php:1746
+#: includes/evf-core-functions.php:1755
 msgid "Rwanda"
 msgstr ""
 
-#: includes/evf-core-functions.php:1747
+#: includes/evf-core-functions.php:1756
 msgid "Saint Barth&eacute;lemy"
 msgstr ""
 
-#: includes/evf-core-functions.php:1748
+#: includes/evf-core-functions.php:1757
 msgid "Saint Helena"
 msgstr ""
 
-#: includes/evf-core-functions.php:1749
+#: includes/evf-core-functions.php:1758
 msgid "Saint Kitts and Nevis"
 msgstr ""
 
-#: includes/evf-core-functions.php:1750
+#: includes/evf-core-functions.php:1759
 msgid "Saint Lucia"
 msgstr ""
 
-#: includes/evf-core-functions.php:1751
+#: includes/evf-core-functions.php:1760
 msgid "Saint Martin (French part)"
 msgstr ""
 
-#: includes/evf-core-functions.php:1752
+#: includes/evf-core-functions.php:1761
 msgid "Saint Martin (Dutch part)"
 msgstr ""
 
-#: includes/evf-core-functions.php:1753
+#: includes/evf-core-functions.php:1762
 msgid "Saint Pierre and Miquelon"
 msgstr ""
 
-#: includes/evf-core-functions.php:1754
+#: includes/evf-core-functions.php:1763
 msgid "Saint Vincent and the Grenadines"
 msgstr ""
 
-#: includes/evf-core-functions.php:1755
+#: includes/evf-core-functions.php:1764
 msgid "San Marino"
 msgstr ""
 
-#: includes/evf-core-functions.php:1756
+#: includes/evf-core-functions.php:1765
 msgid "S&atilde;o Tom&eacute; and Pr&iacute;ncipe"
 msgstr ""
 
-#: includes/evf-core-functions.php:1757
+#: includes/evf-core-functions.php:1766
 msgid "Saudi Arabia"
 msgstr ""
 
-#: includes/evf-core-functions.php:1758
+#: includes/evf-core-functions.php:1767
 msgid "Senegal"
 msgstr ""
 
-#: includes/evf-core-functions.php:1759
+#: includes/evf-core-functions.php:1768
 msgid "Serbia"
 msgstr ""
 
-#: includes/evf-core-functions.php:1760
+#: includes/evf-core-functions.php:1769
 msgid "Seychelles"
 msgstr ""
 
-#: includes/evf-core-functions.php:1761
+#: includes/evf-core-functions.php:1770
 msgid "Sierra Leone"
 msgstr ""
 
-#: includes/evf-core-functions.php:1762
+#: includes/evf-core-functions.php:1771
 msgid "Singapore"
 msgstr ""
 
-#: includes/evf-core-functions.php:1763
+#: includes/evf-core-functions.php:1772
 msgid "Slovakia"
 msgstr ""
 
-#: includes/evf-core-functions.php:1764
+#: includes/evf-core-functions.php:1773
 msgid "Slovenia"
 msgstr ""
 
-#: includes/evf-core-functions.php:1765
+#: includes/evf-core-functions.php:1774
 msgid "Solomon Islands"
 msgstr ""
 
-#: includes/evf-core-functions.php:1766
+#: includes/evf-core-functions.php:1775
 msgid "Somalia"
 msgstr ""
 
-#: includes/evf-core-functions.php:1767
+#: includes/evf-core-functions.php:1776
 msgid "South Africa"
 msgstr ""
 
-#: includes/evf-core-functions.php:1768
+#: includes/evf-core-functions.php:1777
 msgid "South Georgia/Sandwich Islands"
 msgstr ""
 
-#: includes/evf-core-functions.php:1769
+#: includes/evf-core-functions.php:1778
 msgid "South Korea"
 msgstr ""
 
-#: includes/evf-core-functions.php:1770
+#: includes/evf-core-functions.php:1779
 msgid "South Sudan"
 msgstr ""
 
-#: includes/evf-core-functions.php:1771
+#: includes/evf-core-functions.php:1780
 msgid "Spain"
 msgstr ""
 
-#: includes/evf-core-functions.php:1772
+#: includes/evf-core-functions.php:1781
 msgid "Sri Lanka"
 msgstr ""
 
-#: includes/evf-core-functions.php:1773
+#: includes/evf-core-functions.php:1782
 msgid "Sudan"
 msgstr ""
 
-#: includes/evf-core-functions.php:1774
+#: includes/evf-core-functions.php:1783
 msgid "Suriname"
 msgstr ""
 
-#: includes/evf-core-functions.php:1775
+#: includes/evf-core-functions.php:1784
 msgid "Svalbard and Jan Mayen"
 msgstr ""
 
-#: includes/evf-core-functions.php:1776
+#: includes/evf-core-functions.php:1785
 msgid "Swaziland"
 msgstr ""
 
-#: includes/evf-core-functions.php:1777
+#: includes/evf-core-functions.php:1786
 msgid "Sweden"
 msgstr ""
 
-#: includes/evf-core-functions.php:1778
+#: includes/evf-core-functions.php:1787
 msgid "Switzerland"
 msgstr ""
 
-#: includes/evf-core-functions.php:1779
+#: includes/evf-core-functions.php:1788
 msgid "Syria"
 msgstr ""
 
-#: includes/evf-core-functions.php:1780
+#: includes/evf-core-functions.php:1789
 msgid "Taiwan"
 msgstr ""
 
-#: includes/evf-core-functions.php:1781
+#: includes/evf-core-functions.php:1790
 msgid "Tajikistan"
 msgstr ""
 
-#: includes/evf-core-functions.php:1782
+#: includes/evf-core-functions.php:1791
 msgid "Tanzania"
 msgstr ""
 
-#: includes/evf-core-functions.php:1783
+#: includes/evf-core-functions.php:1792
 msgid "Thailand"
 msgstr ""
 
-#: includes/evf-core-functions.php:1784
+#: includes/evf-core-functions.php:1793
 msgid "Timor-Leste"
 msgstr ""
 
-#: includes/evf-core-functions.php:1785
+#: includes/evf-core-functions.php:1794
 msgid "Togo"
 msgstr ""
 
-#: includes/evf-core-functions.php:1786
+#: includes/evf-core-functions.php:1795
 msgid "Tokelau"
 msgstr ""
 
-#: includes/evf-core-functions.php:1787
+#: includes/evf-core-functions.php:1796
 msgid "Tonga"
 msgstr ""
 
-#: includes/evf-core-functions.php:1788
+#: includes/evf-core-functions.php:1797
 msgid "Trinidad and Tobago"
 msgstr ""
 
-#: includes/evf-core-functions.php:1789
+#: includes/evf-core-functions.php:1798
 msgid "Tunisia"
 msgstr ""
 
-#: includes/evf-core-functions.php:1790
+#: includes/evf-core-functions.php:1799
 msgid "Turkey"
 msgstr ""
 
-#: includes/evf-core-functions.php:1791
+#: includes/evf-core-functions.php:1800
 msgid "Turkmenistan"
 msgstr ""
 
-#: includes/evf-core-functions.php:1792
+#: includes/evf-core-functions.php:1801
 msgid "Turks and Caicos Islands"
 msgstr ""
 
-#: includes/evf-core-functions.php:1793
+#: includes/evf-core-functions.php:1802
 msgid "Tuvalu"
 msgstr ""
 
-#: includes/evf-core-functions.php:1794
+#: includes/evf-core-functions.php:1803
 msgid "Uganda"
 msgstr ""
 
-#: includes/evf-core-functions.php:1795
+#: includes/evf-core-functions.php:1804
 msgid "Ukraine"
 msgstr ""
 
-#: includes/evf-core-functions.php:1796
+#: includes/evf-core-functions.php:1805
 msgid "United Arab Emirates"
 msgstr ""
 
-#: includes/evf-core-functions.php:1797
+#: includes/evf-core-functions.php:1806
 msgid "United Kingdom (UK)"
 msgstr ""
 
-#: includes/evf-core-functions.php:1798
+#: includes/evf-core-functions.php:1807
 msgid "United States (US)"
 msgstr ""
 
-#: includes/evf-core-functions.php:1799
+#: includes/evf-core-functions.php:1808
 msgid "United States (US) Minor Outlying Islands"
 msgstr ""
 
-#: includes/evf-core-functions.php:1800
+#: includes/evf-core-functions.php:1809
 msgid "Uruguay"
 msgstr ""
 
-#: includes/evf-core-functions.php:1801
+#: includes/evf-core-functions.php:1810
 msgid "Uzbekistan"
 msgstr ""
 
-#: includes/evf-core-functions.php:1802
+#: includes/evf-core-functions.php:1811
 msgid "Vanuatu"
 msgstr ""
 
-#: includes/evf-core-functions.php:1803
+#: includes/evf-core-functions.php:1812
 msgid "Vatican"
 msgstr ""
 
-#: includes/evf-core-functions.php:1804
+#: includes/evf-core-functions.php:1813
 msgid "Venezuela"
 msgstr ""
 
-#: includes/evf-core-functions.php:1805
+#: includes/evf-core-functions.php:1814
 msgid "Vietnam"
 msgstr ""
 
-#: includes/evf-core-functions.php:1806
+#: includes/evf-core-functions.php:1815
 msgid "Virgin Islands (British)"
 msgstr ""
 
-#: includes/evf-core-functions.php:1807
+#: includes/evf-core-functions.php:1816
 msgid "Virgin Islands (US)"
 msgstr ""
 
-#: includes/evf-core-functions.php:1808
+#: includes/evf-core-functions.php:1817
 msgid "Wallis and Futuna"
 msgstr ""
 
-#: includes/evf-core-functions.php:1809
+#: includes/evf-core-functions.php:1818
 msgid "Western Sahara"
 msgstr ""
 
-#: includes/evf-core-functions.php:1810
+#: includes/evf-core-functions.php:1819
 msgid "Samoa"
 msgstr ""
 
-#: includes/evf-core-functions.php:1811
+#: includes/evf-core-functions.php:1820
 msgid "Yemen"
 msgstr ""
 
-#: includes/evf-core-functions.php:1812
+#: includes/evf-core-functions.php:1821
 msgid "Zambia"
 msgstr ""
 
-#: includes/evf-core-functions.php:1813
+#: includes/evf-core-functions.php:1822
 msgid "Zimbabwe"
 msgstr ""
 
-#: includes/evf-core-functions.php:1827
+#: includes/evf-core-functions.php:1836
 msgid "Alabama"
 msgstr ""
 
-#: includes/evf-core-functions.php:1828
+#: includes/evf-core-functions.php:1837
 msgid "Alaska"
 msgstr ""
 
-#: includes/evf-core-functions.php:1829
+#: includes/evf-core-functions.php:1838
 msgid "Arizona"
 msgstr ""
 
-#: includes/evf-core-functions.php:1830
+#: includes/evf-core-functions.php:1839
 msgid "Arkansas"
 msgstr ""
 
-#: includes/evf-core-functions.php:1831
+#: includes/evf-core-functions.php:1840
 msgid "California"
 msgstr ""
 
-#: includes/evf-core-functions.php:1832
+#: includes/evf-core-functions.php:1841
 msgid "Colorado"
 msgstr ""
 
-#: includes/evf-core-functions.php:1833
+#: includes/evf-core-functions.php:1842
 msgid "Connecticut"
 msgstr ""
 
-#: includes/evf-core-functions.php:1834
+#: includes/evf-core-functions.php:1843
 msgid "Delaware"
 msgstr ""
 
-#: includes/evf-core-functions.php:1835
+#: includes/evf-core-functions.php:1844
 msgid "District of Columbia"
 msgstr ""
 
-#: includes/evf-core-functions.php:1836
+#: includes/evf-core-functions.php:1845
 msgid "Florida"
 msgstr ""
 
-#: includes/evf-core-functions.php:1838
+#: includes/evf-core-functions.php:1847
 msgid "Hawaii"
 msgstr ""
 
-#: includes/evf-core-functions.php:1839
+#: includes/evf-core-functions.php:1848
 msgid "Idaho"
 msgstr ""
 
-#: includes/evf-core-functions.php:1840
+#: includes/evf-core-functions.php:1849
 msgid "Illinois"
 msgstr ""
 
-#: includes/evf-core-functions.php:1841
+#: includes/evf-core-functions.php:1850
 msgid "Indiana"
 msgstr ""
 
-#: includes/evf-core-functions.php:1842
+#: includes/evf-core-functions.php:1851
 msgid "Iowa"
 msgstr ""
 
-#: includes/evf-core-functions.php:1843
+#: includes/evf-core-functions.php:1852
 msgid "Kansas"
 msgstr ""
 
-#: includes/evf-core-functions.php:1844
+#: includes/evf-core-functions.php:1853
 msgid "Kentucky"
 msgstr ""
 
-#: includes/evf-core-functions.php:1845
+#: includes/evf-core-functions.php:1854
 msgid "Louisiana"
 msgstr ""
 
-#: includes/evf-core-functions.php:1846
+#: includes/evf-core-functions.php:1855
 msgid "Maine"
 msgstr ""
 
-#: includes/evf-core-functions.php:1847
+#: includes/evf-core-functions.php:1856
 msgid "Maryland"
 msgstr ""
 
-#: includes/evf-core-functions.php:1848
+#: includes/evf-core-functions.php:1857
 msgid "Massachusetts"
 msgstr ""
 
-#: includes/evf-core-functions.php:1849
+#: includes/evf-core-functions.php:1858
 msgid "Michigan"
 msgstr ""
 
-#: includes/evf-core-functions.php:1850
+#: includes/evf-core-functions.php:1859
 msgid "Minnesota"
 msgstr ""
 
-#: includes/evf-core-functions.php:1851
+#: includes/evf-core-functions.php:1860
 msgid "Mississippi"
 msgstr ""
 
-#: includes/evf-core-functions.php:1852
+#: includes/evf-core-functions.php:1861
 msgid "Missouri"
 msgstr ""
 
-#: includes/evf-core-functions.php:1853
+#: includes/evf-core-functions.php:1862
 msgid "Montana"
 msgstr ""
 
-#: includes/evf-core-functions.php:1854
+#: includes/evf-core-functions.php:1863
 msgid "Nebraska"
 msgstr ""
 
-#: includes/evf-core-functions.php:1855
+#: includes/evf-core-functions.php:1864
 msgid "Nevada"
 msgstr ""
 
-#: includes/evf-core-functions.php:1856
+#: includes/evf-core-functions.php:1865
 msgid "New Hampshire"
 msgstr ""
 
-#: includes/evf-core-functions.php:1857
+#: includes/evf-core-functions.php:1866
 msgid "New Jersey"
 msgstr ""
 
-#: includes/evf-core-functions.php:1858
+#: includes/evf-core-functions.php:1867
 msgid "New Mexico"
 msgstr ""
 
-#: includes/evf-core-functions.php:1859
+#: includes/evf-core-functions.php:1868
 msgid "New York"
 msgstr ""
 
-#: includes/evf-core-functions.php:1860
+#: includes/evf-core-functions.php:1869
 msgid "North Carolina"
 msgstr ""
 
-#: includes/evf-core-functions.php:1861
+#: includes/evf-core-functions.php:1870
 msgid "North Dakota"
 msgstr ""
 
-#: includes/evf-core-functions.php:1862
+#: includes/evf-core-functions.php:1871
 msgid "Ohio"
 msgstr ""
 
-#: includes/evf-core-functions.php:1863
+#: includes/evf-core-functions.php:1872
 msgid "Oklahoma"
 msgstr ""
 
-#: includes/evf-core-functions.php:1864
+#: includes/evf-core-functions.php:1873
 msgid "Oregon"
 msgstr ""
 
-#: includes/evf-core-functions.php:1865
+#: includes/evf-core-functions.php:1874
 msgid "Pennsylvania"
 msgstr ""
 
-#: includes/evf-core-functions.php:1866
+#: includes/evf-core-functions.php:1875
 msgid "Rhode Island"
 msgstr ""
 
-#: includes/evf-core-functions.php:1867
+#: includes/evf-core-functions.php:1876
 msgid "South Carolina"
 msgstr ""
 
-#: includes/evf-core-functions.php:1868
+#: includes/evf-core-functions.php:1877
 msgid "South Dakota"
 msgstr ""
 
-#: includes/evf-core-functions.php:1869
+#: includes/evf-core-functions.php:1878
 msgid "Tennessee"
 msgstr ""
 
-#: includes/evf-core-functions.php:1870
+#: includes/evf-core-functions.php:1879
 msgid "Texas"
 msgstr ""
 
-#: includes/evf-core-functions.php:1871
+#: includes/evf-core-functions.php:1880
 msgid "Utah"
 msgstr ""
 
-#: includes/evf-core-functions.php:1872
+#: includes/evf-core-functions.php:1881
 msgid "Vermont"
 msgstr ""
 
-#: includes/evf-core-functions.php:1873
+#: includes/evf-core-functions.php:1882
 msgid "Virginia"
 msgstr ""
 
-#: includes/evf-core-functions.php:1874
+#: includes/evf-core-functions.php:1883
 msgid "Washington"
 msgstr ""
 
-#: includes/evf-core-functions.php:1875
+#: includes/evf-core-functions.php:1884
 msgid "West Virginia"
 msgstr ""
 
-#: includes/evf-core-functions.php:1876
+#: includes/evf-core-functions.php:1885
 msgid "Wisconsin"
 msgstr ""
 
-#: includes/evf-core-functions.php:1877
+#: includes/evf-core-functions.php:1886
 msgid "Wyoming"
 msgstr ""
 
-#: includes/evf-core-functions.php:1892
+#: includes/evf-core-functions.php:1901
 msgid "General Fields"
 msgstr ""
 
-#: includes/evf-core-functions.php:1893
+#: includes/evf-core-functions.php:1902
 msgid "Advanced Fields"
 msgstr ""
 
-#: includes/evf-core-functions.php:1894
+#: includes/evf-core-functions.php:1903
 msgid "Payment Fields"
 msgstr ""
 
-#: includes/evf-core-functions.php:1895
+#: includes/evf-core-functions.php:1904
 msgid "Survey Fields"
 msgstr ""
 
-#: includes/evf-core-functions.php:1946
+#: includes/evf-core-functions.php:1955
 msgid "Check this option to mark the field required."
 msgstr ""
 
-#: includes/evf-core-functions.php:1957
+#: includes/evf-core-functions.php:1966
 #: includes/fields/class-evf-field-checkbox.php:27
 #: includes/fields/class-evf-field-radio.php:27
 msgid "First Choice"
 msgstr ""
 
-#: includes/evf-core-functions.php:1958
+#: includes/evf-core-functions.php:1967
 #: includes/fields/class-evf-field-checkbox.php:33
 #: includes/fields/class-evf-field-radio.php:33
 msgid "Second Choice"
 msgstr ""
 
-#: includes/evf-core-functions.php:1959
+#: includes/evf-core-functions.php:1968
 #: includes/fields/class-evf-field-checkbox.php:39
 #: includes/fields/class-evf-field-radio.php:39
 msgid "Third Choice"
 msgstr ""
 
-#: includes/evf-core-functions.php:1973
+#: includes/evf-core-functions.php:1982
 msgid "Enter CSS class for this field container. Class names should be separated with spaces."
 msgstr ""
 
-#: includes/evf-core-functions.php:2093
+#: includes/evf-core-functions.php:2102
 msgid "Tablet"
 msgstr ""
 
-#: includes/evf-core-functions.php:2095
+#: includes/evf-core-functions.php:2104
 msgid "Mobile"
 msgstr ""
 
-#: includes/evf-core-functions.php:2097
+#: includes/evf-core-functions.php:2106
 msgid "Desktop"
 msgstr ""
 
@@ -4508,4 +4541,189 @@ msgstr ""
 #. translators: %s - link to a site.
 #: templates/emails/footer-default.php:45
 msgid "Sent from %s"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Font size name"
+msgid "Small"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Font size name"
+msgid "Normal"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Font size name"
+msgid "Medium"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Font size name"
+msgid "Large"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Font size name"
+msgid "Huge"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Color name"
+msgid "Black"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Color name"
+msgid "Cyan bluish gray"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Color name"
+msgid "White"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Color name"
+msgid "Pale pink"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Color name"
+msgid "Vivid red"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Color name"
+msgid "Luminous vivid orange"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Color name"
+msgid "Luminous vivid amber"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Color name"
+msgid "Light green cyan"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Color name"
+msgid "Vivid green cyan"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Color name"
+msgid "Pale cyan blue"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Color name"
+msgid "Vivid cyan blue"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Color name"
+msgid "Vivid purple"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Gradient name"
+msgid "Vivid cyan blue to vivid purple"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Gradient name"
+msgid "Light green cyan to vivid green cyan"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Gradient name"
+msgid "Luminous vivid amber to luminous vivid orange"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Gradient name"
+msgid "Luminous vivid orange to vivid red"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Gradient name"
+msgid "Very light gray to cyan bluish gray"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Gradient name"
+msgid "Cool to warm spectrum"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Gradient name"
+msgid "Blush light purple"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Gradient name"
+msgid "Blush bordeaux"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Gradient name"
+msgid "Luminous dusk"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Gradient name"
+msgid "Pale ocean"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Gradient name"
+msgid "Electric grass"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Gradient name"
+msgid "Midnight"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Duotone name"
+msgid "Dark grayscale"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Duotone name"
+msgid "Grayscale"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Duotone name"
+msgid "Purple and yellow"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Duotone name"
+msgid "Blue and red"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Duotone name"
+msgid "Midnight"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Duotone name"
+msgid "Magenta and yellow"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Duotone name"
+msgid "Purple and green"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Duotone name"
+msgid "Blue and orange"
 msgstr ""
