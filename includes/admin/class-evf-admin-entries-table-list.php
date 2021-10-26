@@ -154,7 +154,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 * @return array
 	 */
 	public static function get_columns_form_disallowed_fields() {
-		return (array) apply_filters( 'everest_forms_entries_table_fields_disallow', array( 'html', 'title', 'captcha' ) );
+		return (array) apply_filters( 'everest_forms_entries_table_fields_disallow', array( 'html', 'title', 'captcha', 'repeater-fields' ) );
 	}
 
 	/**
@@ -213,7 +213,6 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 
 		if ( ! empty( $entry->meta[ $meta_key ] ) ) { // phpcs:ignore WordPress.Security.EscapeOutput
 			$value = $entry->meta[ $meta_key ];
-
 			if ( evf_is_json( $value ) ) {
 				$field_value = json_decode( $value, true );
 				$value       = $field_value['value'];
@@ -222,8 +221,8 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 			if ( is_serialized( $value ) ) {
 				$field_html  = array();
 				$field_value = maybe_unserialize( $value );
-				$field_label = ! empty( $field_value['label'] ) ? evf_clean( $field_value['label'] ) : $field_value;
 
+				$field_label = ! empty( $field_value['label'] ) ? evf_clean( $field_value['label'] ) : $field_value;
 				if ( is_array( $field_label ) ) {
 					foreach ( $field_label as $value ) {
 						$field_html[] = esc_html( $value );
@@ -249,7 +248,6 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 
 				$value = nl2br( wp_strip_all_tags( trim( $value ) ) );
 			}
-
 			return apply_filters( 'everest_forms_html_field_value', $value, $entry->meta[ $meta_key ], $entry, 'entry-table' );
 		} else {
 			return '<span class="na">&mdash;</span>';

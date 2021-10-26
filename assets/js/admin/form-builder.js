@@ -360,6 +360,10 @@
 			if ( evf_data.tab === 'field-options' ) {
 				$( '.evf-panel-field-options-button' ).trigger( 'click' );
 			}
+
+			$(document.body).on('everest-forms-field-drop','.evf-registered-buttons .evf-registered-item', function() {
+				EVFPanelBuilder.fieldDrop($(this).clone());
+			} )
 		},
 
 		/**
@@ -1317,6 +1321,9 @@
 								keys: ['enter'],
 								action: function () {
 									EVFPanelBuilder.removeRow( current_row );
+									$( '.everest-forms-fields-tab' ).find( 'a' ).removeClass( 'active' );
+									$( '.everest-forms-fields-tab' ).find( 'a' ).first().addClass( 'active' );
+									$( '.everest-forms-add-fields' ).show();
 								}
 							},
 							cancel: {
@@ -1349,6 +1356,8 @@
 				// Row clone.
 				row_clone.find( '.evf-admin-grid' ).html( '' );
 				row_clone.attr( 'data-row-id', max_row_id );
+
+				// Row infos.
 				$this.parent().attr( 'data-total-rows', total_rows );
 				$this.parent().attr( 'data-next-row-id', max_row_id );
 
@@ -1358,6 +1367,8 @@
 				// Initialize fields UI.
 				EVFPanelBuilder.bindFields();
 				EVFPanelBuilder.checkEmptyGrid();
+				// Trigger event after row add.
+				$this.trigger('everest-forms-after-add-row', row_clone);
 			});
 		},
 		bindCloneField: function () {
@@ -1956,7 +1967,7 @@
 				containment: '.everest-forms-panel-content',
 				start: function( event, ui ) {
 					ui.item.css({
-						'background-color': '#f7fafc',
+						'backgroundColor': '#f7fafc',
 						'border': '1px dashed #5d96ee'
 					});
 				},
@@ -1966,7 +1977,7 @@
 			}).disableSelection();
 
 			$( '.evf-admin-grid' ).sortable({
-				items: '> .everest-forms-field',
+				items: '> .everest-forms-field[data-field-type!="repeater-fields"]',
 				delay  : 100,
 				opacity: 0.65,
 				cursor: 'move',
@@ -1991,6 +2002,9 @@
 						EVFPanelBuilder.fieldDrop( ui.helper );
 					}
 				},
+				update: function(event, ui) {
+					$(document).trigger('evf_sort_update_complete',{event: event,ui:  ui});
+				},
 				stop: function( event, ui ) {
 					ui.item.removeAttr( 'style' );
 					EVFPanelBuilder.checkEmptyGrid();
@@ -2011,6 +2025,9 @@
 				containment: '#everest-forms-builder',
 				connectToSortable: '.evf-admin-grid'
 			}).disableSelection();
+
+			// Repeatable grid connect to sortable setter.
+			$( ".evf-registered-item.evf-repeater-field" ).draggable( "option", "connectToSortable", ".evf-repeatable-grid" );
 
 			// Adapt hover behaviour on mouse event.
 			$( '.evf-admin-row' ).on( 'mouseenter mouseleave', function( event ) {
@@ -2105,6 +2122,30 @@
 		},
 		fieldDrop: function ( field ) {
 			var field_type = field.attr( 'data-field-type' );
+			var invalid_fields = ["file-upload", "payment-total", "image-upload", "signature"];
+			if (
+				invalid_fields.includes(
+					field_type
+				) && field.closest('.evf-admin-row').hasClass('evf-repeater-fields')
+			) {
+				$.confirm({
+					title: false,
+					content:'This field cannot be added to Repeater Fields',
+					type: 'red',
+					closeIcon: false,
+					backgroundDismiss: false,
+					icon: 'dashicons dashicons-warning',
+					buttons: {
+						cancel: {
+							text: evf_data.i18n_close,
+							btnClass: 'btn-default',
+						},
+					}
+				} );
+
+				field.remove();
+				return false;
+			}
 
 			field.css({
 				'left': '0',
@@ -2156,7 +2197,6 @@
 					}
 
 					field.remove();
-					EVFPanelBuilder.checkEmptyGrid();
 
 					// Triggers.
 					$( document.body ).trigger( 'init_tooltips' );
@@ -2182,7 +2222,8 @@
 
 					// Trigger an event indicating completion of field_drop action.
 					$( document.body ).trigger( 'evf_field_drop_complete', [ field_type, dragged_field_id, field_preview, field_options ] );
-		 		}
+					EVFPanelBuilder.checkEmptyGrid();
+				}
 		 	});
 		},
 

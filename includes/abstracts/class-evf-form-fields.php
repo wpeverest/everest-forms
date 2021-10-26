@@ -87,7 +87,7 @@ abstract class EVF_Form_Fields {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->class   = $this->is_pro ? 'upgrade-modal' : '';
+		$this->class   = $this->is_pro ? 'upgrade-modal' : $this->class;
 		$this->form_id = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : false; // phpcs:ignore WordPress.Security.NonceVerification
 
 		// Init hooks.
@@ -1366,6 +1366,17 @@ abstract class EVF_Form_Fields {
 				$output      = sprintf( '<div class="description %s">%s</div>', $class, $description );
 				break;
 
+			case 'repeater_fields':
+				$repeater_fields = isset( $field['repeater_fields'] ) && ! empty( $field['repeater_fields'] ) ? $field['repeater_fields'] : '';
+				$output          = sprintf( '<div>%s</div>', $repeater_fields );
+				break;
+
+			case 'repeater_button_add_remove_label':
+				$add_new_label = isset( $field['repeater_button_add_new_label'] ) && ! empty( $field['repeater_button_add_new_label'] ) ? $field['repeater_button_add_new_label'] : 'Add';
+				$remove_label  = isset( $field['repeater_button_remove_label'] ) && ! empty( $field['repeater_button_remove_label'] ) ? $field['repeater_button_remove_label'] : 'Remove';
+				$output        = sprintf( '<div style="margin-right: %s" class="evf-add-row repeater_button_add_remove_label %s"><span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-plus">%s</span>&nbsp;<span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-minus">%s</span></div>', '65%', $class, $add_new_label, $remove_label );
+				break;
+
 			case 'choices':
 				$values         = ! empty( $field['choices'] ) ? $field['choices'] : $this->defaults;
 				$choices_fields = array( 'select', 'radio', 'checkbox', 'payment-multiple', 'payment-checkbox' );
@@ -1548,14 +1559,19 @@ abstract class EVF_Form_Fields {
 		// Build Preview.
 		ob_start();
 		$this->field_preview( $field );
-		$preview      = sprintf( '<div class="everest-forms-field everest-forms-field-%s %s %s" id="everest-forms-field-%s" data-field-id="%s" data-field-type="%s">', $field_type, $field_required, $field_class, $field['id'], $field['id'], $field_type );
-			$preview .= sprintf( '<div class="evf-field-action">' );
+		$preview  = sprintf( '<div class="everest-forms-field everest-forms-field-%s %s %s" id="everest-forms-field-%s" data-field-id="%s" data-field-type="%s">', $field_type, $field_required, $field_class, $field['id'], $field['id'], $field_type );
+		$preview .= sprintf( '<div class="evf-field-action">' );
+		if ( 'repeater-fields' !== $field_type ) {
 			$preview .= sprintf( '<a href="#" class="everest-forms-field-duplicate" title="%s"><span class="dashicons dashicons-media-default"></span></a>', __( 'Duplicate Field', 'everest-forms' ) );
 			$preview .= sprintf( '<a href="#" class="everest-forms-field-delete" title="%s"><span class="dashicons dashicons-trash"></span></a>', __( 'Delete Field', 'everest-forms' ) );
 			$preview .= sprintf( '<a href="#" class="everest-forms-field-setting" title="%s"><span class="dashicons dashicons-admin-generic"></span></a>', __( 'Settings', 'everest-forms' ) );
-			$preview .= sprintf( '</div>' );
-			$preview .= ob_get_clean();
-		$preview     .= '</div>';
+		} else {
+			$preview .= sprintf( '<a href="#" class="evf-duplicate-row" title="%s"><span class="dashicons dashicons-media-default"></span></a>', esc_html__( 'Duplicate Field', 'everest-forms' ) );
+			$preview .= sprintf( '<a href="#" class="evf-delete-row" title="%s"><span class="dashicons dashicons-trash"></span></a>', esc_html__( 'Delete Field', 'everest-forms' ) );
+		}
+		$preview .= sprintf( '</div>' );
+		$preview .= ob_get_clean();
+		$preview .= '</div>';
 
 		// Build Options.
 		$options      = sprintf( '<div class="everest-forms-field-option everest-forms-field-option-%s" id="everest-forms-field-option-%s" data-field-id="%s">', esc_attr( $field['type'] ), $field['id'], $field['id'] );
@@ -1602,6 +1618,11 @@ abstract class EVF_Form_Fields {
 	 * @param array $form_data   Form data and settings.
 	 */
 	public function edit_form_field_display( $entry_field, $field, $form_data ) {
+
+		if ( 'repeater_fields' === $field['type'] ) {
+			return;
+		}
+
 		$value = isset( $entry_field['value'] ) ? $entry_field['value'] : '';
 
 		if ( '' !== $value ) {

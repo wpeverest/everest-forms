@@ -11,6 +11,7 @@
 = 1.7.7 - 16-09-2021 =
 * Tweak - Download text input option added.
 * Tweak - Spacing issue on upgrade modal dialogues.
+* Tweak - On forms row delete, switch back to "Add Fields" tab.
 * Fix - Default Value for Payment Quantity Field.
 * Fix - Upload image button click issue on inputs.
 * Fix - PHP notice about enqueue script thrown in widgets page.

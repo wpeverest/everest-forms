@@ -302,13 +302,19 @@ class EVF_Shortcode_Form {
 		do_action( 'everest_forms_display_fields_before', $form_data );
 
 		foreach ( $structure as $row_key => $row ) {
+			/**
+			 * Hook: everest_forms_display_repeater_fields.
+			 *
+			 * @hooked EVF_Repeater_Fields->display_repeater_fields() Display Repeater Fields.
+			 */
+			$is_repeater = ( ! is_array( apply_filters( 'everest_forms_display_repeater_fields', $row, $form_data, true ) ) ) ? apply_filters( 'everest_forms_display_repeater_fields', $row, $form_data, true ) : '';
 
 			/**
 			 * Hook: everest_forms_display_row_before.
 			 */
 			do_action( 'everest_forms_display_row_before', $row_key, $form_data );
 
-			echo '<div class="evf-frontend-row" data-row="' . esc_attr( $row_key ) . '">';
+			echo '<div class="evf-frontend-row" data-row="' . esc_attr( $row_key ) . '"' . $is_repeater . '>'; // @codingStandardsIgnoreLine
 
 			foreach ( $row as $grid_key => $grid ) {
 				$number_of_grid = count( $row );
@@ -351,6 +357,13 @@ class EVF_Shortcode_Form {
 
 				echo '</div>';
 			}
+
+			/**
+			 * Hook: everest_forms_add_remove_buttons.
+			 *
+			 * @hooked EVF_Repeater_Fields->add_remove_buttons() Show Add and Remove buttons.
+			 */
+			do_action( 'everest_forms_add_remove_buttons', $row, $form_data, $is_repeater );
 
 			echo '</div>';
 

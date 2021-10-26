@@ -11,7 +11,12 @@
 	"rules": {
 		"camelcase": 0,
 		"indent": 0,
-		"max-len": [ 2, { "code": 350 } ],
+		"max-len": [
+			2,
+			{
+				"code": 485
+			}
+		],
 		"no-console": 1
 	},
 	"parser": "babel-eslint"

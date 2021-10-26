@@ -313,6 +313,9 @@
 	&privacy-policy::before {
 		content: '\e02c';
 	}
+	&repeater::before {
+		content: '\e032';
+	}
 	&range-slider::before {
 		content: '\e02b';
 	}
