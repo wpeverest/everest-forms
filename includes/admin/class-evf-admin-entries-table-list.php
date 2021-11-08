@@ -105,7 +105,10 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		$columns            = apply_filters( 'everest_forms_entries_table_form_fields_columns', $this->get_columns_form_fields( $columns ), $this->form_id, $this->form_data );
 		$columns['date']    = esc_html__( 'Date Created', 'everest-forms' );
 		$columns['actions'] = esc_html__( 'Actions', 'everest-forms' );
-
+		// Columns Adjustment Settings.
+		if ( defined( 'EFP_VERSION' ) ) {
+			$columns['more'] = '<a href="#" class="everest-forms-entries-setting" title="' . esc_attr__( 'More Options', 'everest-forms' ) . '" data-evf-form_id="' . $this->form_id . '"><i class="dashicons dashicons-admin-generic"></i></a>';
+		}
 		return apply_filters( 'everest_forms_entries_table_columns', $columns, $this->form_data );
 	}
 
