@@ -27,12 +27,12 @@
     "test-unit-php": "wp-env run phpunit 'phpunit --configuration=/var/www/html/wp-content/plugins/everest-forms/phpunit.xml.dist --verbose'"
   },
   "devDependencies": {
-    "@babel/core": "7.15.8",
+    "@babel/core": "7.16.0",
     "@wordpress/babel-preset-default": "6.3.4",
     "@wordpress/browserslist-config": "4.1.0",
     "autoprefixer": "9.8.8",
     "babel-eslint": "10.1.0",
-    "babel-loader": "8.2.2",
+    "babel-loader": "8.2.3",
     "babel-plugin-transform-react-jsx": "6.24.1",
     "babel-preset-env": "1.7.0",
     "cross-env": "7.0.3",
