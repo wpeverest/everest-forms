@@ -24,7 +24,6 @@
 				 if( '1' === $( '.everest-forms-min-max-date-format input' ).val() ) {
 					$('.everest-forms-min-date').addClass('flatpickr-field').flatpickr({
 						disableMobile : true,
-						static        : true,
 						onChange      : function(selectedDates, dateStr, instance) {
 							$('.everest-forms-min-date').val(dateStr);
 						},
@@ -35,7 +34,6 @@
 
 					$('.everest-forms-max-date').addClass('flatpickr-field').flatpickr({
 						disableMobile : true,
-						static        : true,
 						onChange      : function(selectedDates, dateStr, instance) {
 							$('.everest-forms-max-date').val(dateStr);
 						},
@@ -2652,7 +2650,6 @@ jQuery( function ( $ ) {
 				if( '' === minDate ){
 					$('.everest-forms-min-date').addClass('flatpickr-field').flatpickr({
 						disableMobile : true,
-						static        : true,
 						onChange      : function(selectedDates, dateStr, instance) {
 							$( '.everest-forms-min-date' ).val(dateStr);
 						},
@@ -2664,7 +2661,6 @@ jQuery( function ( $ ) {
 				if('' === maxDate ){
 					$( '.everest-forms-max-date' ).addClass( 'flatpickr-field' ).flatpickr({
 						disableMobile : true,
-						static        : true,
 						onChange      : function(selectedDates, dateStr, instance) {
 							$( '.everest-forms-max-date' ).val(dateStr);
 						},
