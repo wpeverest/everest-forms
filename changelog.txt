@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 1.7.9 - xx-xx-2021 =
+* Fix - Datepicker glitches in form builder.
+
 = 1.7.8 - 26-10-2021 =
 * Enhancement - Conditional logic for for submission redirection.
 * Feature - Repeater Fields. 
