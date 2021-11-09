@@ -307,7 +307,7 @@ class EVF_Shortcode_Form {
 			 *
 			 * @hooked EVF_Repeater_Fields->display_repeater_fields() Display Repeater Fields.
 			 */
-			$is_repeater = ( ! is_array( apply_filters( 'everest_forms_display_repeater_fields', $row, $form_data, true ) ) ) ? apply_filters( 'everest_forms_display_repeater_fields', $row, $form_data, true ) : '';
+			$is_repeater = apply_filters( 'everest_forms_display_repeater_fields', false, $row, $form_data, true );
 
 			/**
 			 * Hook: everest_forms_display_row_before.
