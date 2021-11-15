@@ -1353,7 +1353,7 @@ abstract class EVF_Form_Fields {
 		$class     = ! empty( $args['class'] ) ? evf_sanitize_classes( $args['class'] ) : '';
 		$form_id   = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification
 		$form_data = evf()->form->get( absint( $form_id ), array( 'content_only' => true ) );
-
+		$markup    = '';
 		switch ( $option ) {
 			case 'label':
 				$label  = isset( $field['label'] ) && ! empty( $field['label'] ) ? $field['label'] : '';
@@ -1536,9 +1536,9 @@ abstract class EVF_Form_Fields {
 		}
 
 		// Grab field data.
-		$field_args     = ! empty( $_POST['defaults'] ) ? (array) wp_unslash( $_POST['defaults'] ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-		$field_type     = esc_attr( wp_unslash( $_POST['field_type'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-		$field_id       = evf()->form->field_unique_key( wp_unslash( $_POST['form_id'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$field_args     = ! empty( $_POST['defaults'] ) ? (array) sanitize_text_field( wp_unslash( $_POST['defaults'] ) ) : array();
+		$field_type     = esc_attr( sanitize_text_field( wp_unslash( $_POST['field_type'] ) ) );
+		$field_id       = evf()->form->field_unique_key( sanitize_text_field( wp_unslash( $_POST['form_id'] ) ) );
 		$field          = array(
 			'id'          => $field_id,
 			'type'        => $field_type,
@@ -1781,8 +1781,8 @@ abstract class EVF_Form_Fields {
 			'<label for="%s" class="everest-forms-field-sublabel %s %s">%s</label>',
 			esc_attr( $field['properties']['inputs'][ $key ]['id'] ),
 			sanitize_html_class( $pos ),
-			$hidden, // phpcs:ignore WordPress.Security.EscapeOutput
-			evf_string_translation( (int) $this->form_data['id'], $field['id'], $field['properties']['inputs'][ $key ]['sublabel']['value'], '-sublabel-' . $key ) // phpcs:ignore WordPress.Security.EscapeOutput
+			esc_html( $hidden ),
+			evf_string_translation( (int) $this->form_data['id'], $field['id'], $field['properties']['inputs'][ $key ]['sublabel']['value'], '-sublabel-' . $key ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		);
 	}
 
@@ -1919,7 +1919,7 @@ abstract class EVF_Form_Fields {
 			default:
 				$export = array(
 					'label' => ! empty( $field['name'] ) ? $field['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
-					'value' => ! empty( $field['value'] ) ? is_array( $field['value'] ) ? $this->implode_recursive( $field['value'] ) : $field['value'] : false,
+					'value' => ! empty( $field['value'] ) ? ( is_array( $field['value'] ) ? $this->implode_recursive( $field['value'] ) : $field['value'] ) : false,
 				);
 		}
 

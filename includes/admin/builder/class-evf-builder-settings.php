@@ -79,7 +79,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 
 		?>
 			<div class="everest-forms-active-email">
-				<button class="everest-forms-btn everest-forms-btn-primary everest-forms-email-add" data-form_id="<?php echo absint( $_GET['form_id'] ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotValidated ?>" data-source="email" data-type="<?php echo esc_attr( 'connection' ); ?>">
+				<button class="everest-forms-btn everest-forms-btn-primary everest-forms-email-add" data-form_id="<?php echo isset( $_GET['form_id'] ) ? absint( sanitize_text_field( wp_unslash( $_GET['form_id'] ) ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification ?>" data-source="email" data-type="<?php echo esc_attr( 'connection' ); ?>">
 					<?php printf( esc_html__( 'Add New Email', 'everest-forms' ) ); ?>
 				</button>
 					<ul class="everest-forms-active-email-connections-list">

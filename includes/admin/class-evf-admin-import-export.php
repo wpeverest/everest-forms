@@ -30,7 +30,7 @@ class EVF_Admin_Import_Export {
 		}
 
 		// Nonce check.
-		if ( ! wp_verify_nonce( wp_unslash( $_POST['everest-forms-export-nonce'] ), 'everest_forms_export_nonce' ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['everest-forms-export-nonce'] ), 'everest_forms_export_nonce' ) ) ) {
 			wp_die( esc_html__( 'Action failed. Please refresh the page and retry.', 'everest-forms' ) );
 		}
 

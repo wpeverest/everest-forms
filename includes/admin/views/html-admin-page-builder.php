@@ -47,7 +47,7 @@ $preview_link = add_query_arg(
 			</nav>
 			<div class="evf-forms-nav-right">
 				<div class="evf-shortcode-field">
-					<input type="text" class="large-text code" onfocus="this.select();" value="<?php printf( esc_html( '[everest_form id="%s"]' ), absint( wp_unslash( $_GET['form_id'] ) ) ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotValidated ?>" id="evf-form-shortcode" readonly="readonly" />
+					<input type="text" class="large-text code" onfocus="this.select();" value="<?php printf( esc_html( '[everest_form id="%s"]' ), isset( $_GET['form_id'] ) ? absint( sanitize_text_field( wp_unslash( $_GET['form_id'] ) ) ) : 0 ); // phpcs:ignore WordPress.Security.NonceVerification ?>" id="evf-form-shortcode" readonly="readonly" />
 					<button id="copy-shortcode" class="everest-forms-btn help_tip dashicons copy-shortcode" href="#" data-tip="<?php esc_attr_e( 'Copy Shortcode!', 'everest-forms' ); ?>" data-copied="<?php esc_attr_e( 'Copied!', 'everest-forms' ); ?>">
 						<span class="screen-reader-text"><?php esc_html_e( 'Copy shortcode', 'everest-forms' ); ?></span>
 					</button>
