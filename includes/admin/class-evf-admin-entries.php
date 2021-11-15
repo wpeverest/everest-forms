@@ -67,10 +67,10 @@ class EVF_Admin_Entries {
 				<form id="entries-list" method="get" data-form-id="<?php echo absint( $entries_table_list->form_id ); ?>" data-last-entry-id="<?php echo absint( end( $entry_ids ) ); ?>">
 					<input type="hidden" name="page" value="evf-entries" />
 					<?php if ( ! empty( $_REQUEST['form_id'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification ?>
-						<input type="hidden" name="form_id" value="<?php echo esc_attr( absint( $_REQUEST['form_id'] ) ); // phpcs:ignore WordPress.Security.NonceVerification ?>" />
+						<input type="hidden" name="form_id" value="<?php echo absint( $_REQUEST['form_id'] ); // phpcs:ignore WordPress.Security.NonceVerification ?>" />
 					<?php endif; ?>
 					<?php if ( ! empty( $_REQUEST['status'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification ?>
-						<input type="hidden" name="status" value="<?php echo esc_attr( sanitize_text_field( wp_unslash( $_REQUEST['status'] ) ) ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.EscapeOutput ?>" />
+						<input type="hidden" name="status" value="<?php echo sanitize_text_field( wp_unslash( $_REQUEST['status'] ) ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.EscapeOutput ?>" />
 					<?php endif; ?>
 					<?php
 						$entries_table_list->search_box( esc_html__( 'Search Entries', 'everest-forms' ), 'everest-forms' );
