@@ -4,7 +4,7 @@ Tags: contact form, forms, form builder, contact, custom form
 Requires at least: 5.0
 Tested up to: 5.8
 Requires PHP: 5.4
-Stable tag: 1.7.8
+Stable tag: 1.7.9
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -301,6 +301,10 @@ Yes, we do. Check out this [Getting Started Videos](https://docs.wpeverest.com/d
 Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/everest-forms/) :)
 
 == Changelog ==
+
+= 1.7.9 - 12-11-2021 =
+* fix 			- Row setting hidden issue. 
+* Enhancement 	- Datepicker glitches in builder page.
 
 = 1.7.8 - 26-10-2021 =
 * Enhancement - Conditional logic for for submission redirection.
