@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 1.8.0 - xx-xx-2021 =
+* fix - Security issue. 
+
 = 1.7.9 - 12-11-2021 =
 * fix 			- Row setting hidden issue. 
 * Enhancement 	- Datepicker glitches in builder page.
