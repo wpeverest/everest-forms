@@ -542,13 +542,16 @@ class EVF_AJAX {
 			if ( isset( $_POST['page'] ) && 'everest-forms_page_evf-builder' === $_POST['page'] ) {
 				activate_plugin( $install_status['file'] );
 			} else {
-				$status['activateUrl'] = add_query_arg(
-					array(
-						'action'   => 'activate',
-						'plugin'   => $install_status['file'],
-						'_wpnonce' => wp_create_nonce( 'activate-plugin_' . $install_status['file'] ),
-					),
-					admin_url( 'admin.php?page=evf-addons' )
+				$status['activateUrl'] =
+				esc_url_raw(
+					add_query_arg(
+						array(
+							'action'   => 'activate',
+							'plugin'   => $install_status['file'],
+							'_wpnonce' => wp_create_nonce( 'activate-plugin_' . $install_status['file'] ),
+						),
+						admin_url( 'admin.php?page=evf-addons' )
+					)
 				);
 			}
 		}
@@ -642,18 +645,20 @@ class EVF_AJAX {
 
 		check_ajax_referer( 'deactivation-notice', 'security' );
 
-		$deactivate_url = wp_nonce_url(
-			add_query_arg(
-				array(
-					'action'        => 'deactivate',
-					'plugin'        => EVF_PLUGIN_BASENAME,
-					'plugin_status' => $status,
-					'paged'         => $page,
-					's'             => $s,
+		$deactivate_url = esc_url(
+			wp_nonce_url(
+				add_query_arg(
+					array(
+						'action'        => 'deactivate',
+						'plugin'        => EVF_PLUGIN_BASENAME,
+						'plugin_status' => $status,
+						'paged'         => $page,
+						's'             => $s,
+					),
+					admin_url( 'plugins.php' )
 				),
-				admin_url( 'plugins.php' )
-			),
-			'deactivate-plugin_' . EVF_PLUGIN_BASENAME
+				'deactivate-plugin_' . EVF_PLUGIN_BASENAME
+			)
 		);
 
 		/* translators: %1$s - deactivation reason page; %2$d - deactivation url. */
