@@ -1536,7 +1536,7 @@ abstract class EVF_Form_Fields {
 		}
 
 		// Grab field data.
-		$field_args     = ! empty( $_POST['defaults'] ) ? (array) sanitize_text_field( wp_unslash( $_POST['defaults'] ) ) : array();
+		$field_args     = ! empty( $_POST['defaults'] ) ? (array) wp_unslash( $_POST['defaults'] ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		$field_type     = esc_attr( sanitize_text_field( wp_unslash( $_POST['field_type'] ) ) );
 		$field_id       = evf()->form->field_unique_key( sanitize_text_field( wp_unslash( $_POST['form_id'] ) ) );
 		$field          = array(
@@ -1782,7 +1782,7 @@ abstract class EVF_Form_Fields {
 			esc_attr( $field['properties']['inputs'][ $key ]['id'] ),
 			sanitize_html_class( $pos ),
 			esc_html( $hidden ),
-			evf_string_translation( (int) $this->form_data['id'], $field['id'], $field['properties']['inputs'][ $key ]['sublabel']['value'], '-sublabel-' . $key ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			evf_string_translation( (int) $this->form_data['id'], $field['id'], $field['properties']['inputs'][ $key ]['sublabel']['value'], '-sublabel-' . $key ) // phpcs:ignore WordPress.Security.EscapeOutput
 		);
 	}
 
