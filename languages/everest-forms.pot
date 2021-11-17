@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Everest Forms plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Everest Forms 1.7.9\n"
+"Project-Id-Version: Everest Forms 1.8.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/everest-forms\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-11-12T09:28:45+00:00\n"
+"POT-Creation-Date: 2021-11-17T05:37:58+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.5.0\n"
 "X-Domain: everest-forms\n"
@@ -641,7 +641,7 @@ msgstr ""
 #: includes/admin/builder/class-evf-builder-settings.php:77
 #: includes/admin/builder/class-evf-builder-settings.php:360
 #: includes/admin/builder/class-evf-builder-settings.php:420
-#: includes/class-evf-form-task.php:616
+#: includes/class-evf-form-task.php:619
 #: includes/evf-update-functions.php:140
 #: includes/templates/contact.php:71
 msgid "Admin Notification"
@@ -1226,84 +1226,88 @@ msgstr ""
 msgid "Actions"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:175
-#: includes/admin/class-evf-admin-entries-table-list.php:186
+#: includes/admin/class-evf-admin-entries-table-list.php:110
+msgid "More Options"
+msgstr ""
+
+#: includes/admin/class-evf-admin-entries-table-list.php:178
+#: includes/admin/class-evf-admin-entries-table-list.php:189
 msgid "Field"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:297
+#: includes/admin/class-evf-admin-entries-table-list.php:300
 #: includes/admin/views/html-admin-page-entries-view.php:214
 #: includes/admin/views/html-admin-page-tools-logs.php:33
 msgid "View"
 msgstr ""
 
 #. translators: %s: entry name
-#: includes/admin/class-evf-admin-entries-table-list.php:302
+#: includes/admin/class-evf-admin-entries-table-list.php:305
 msgid "Trash form entry"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:313
+#: includes/admin/class-evf-admin-entries-table-list.php:316
 #: includes/admin/class-evf-admin-forms-table-list.php:183
 #: includes/evf-entry-functions.php:106
 msgid "Trash"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:317
+#: includes/admin/class-evf-admin-entries-table-list.php:320
 msgid "Restore form entry from trash"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:328
-#: includes/admin/class-evf-admin-entries-table-list.php:420
+#: includes/admin/class-evf-admin-entries-table-list.php:331
+#: includes/admin/class-evf-admin-entries-table-list.php:423
 #: includes/admin/class-evf-admin-forms-table-list.php:181
 #: includes/admin/class-evf-admin-forms-table-list.php:428
 msgid "Restore"
 msgstr ""
 
 #. translators: %s: entry name
-#: includes/admin/class-evf-admin-entries-table-list.php:333
+#: includes/admin/class-evf-admin-entries-table-list.php:336
 msgid "Delete form entry permanently"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:344
-#: includes/admin/class-evf-admin-entries-table-list.php:421
+#: includes/admin/class-evf-admin-entries-table-list.php:347
+#: includes/admin/class-evf-admin-entries-table-list.php:424
 msgid "Delete Permanently"
 msgstr ""
 
 #. translators: %s: count
-#: includes/admin/class-evf-admin-entries-table-list.php:391
+#: includes/admin/class-evf-admin-entries-table-list.php:394
 msgctxt "entries"
 msgid "All <span class=\"count\">(%s)</span>"
 msgid_plural "All <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:425
+#: includes/admin/class-evf-admin-entries-table-list.php:428
 msgid "Move to Trash"
 msgstr ""
 
 #. translators: %d: number of entries, %s: entries status
-#: includes/admin/class-evf-admin-entries-table-list.php:470
+#: includes/admin/class-evf-admin-entries-table-list.php:473
 msgid "%1$d entry successfully %2$s."
 msgid_plural "%1$d entries successfully %2$s."
 msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d: number of entries, %s: entries status
-#: includes/admin/class-evf-admin-entries-table-list.php:486
+#: includes/admin/class-evf-admin-entries-table-list.php:489
 msgid "%1$d entry successfully marked as %2$s."
 msgid_plural "%1$d entries successfully marked as %2$s."
 msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d: number of entries
-#: includes/admin/class-evf-admin-entries-table-list.php:501
+#: includes/admin/class-evf-admin-entries-table-list.php:504
 msgid "%d entry moved to the Trash."
 msgid_plural "%d entries moved to the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d: number of entries
-#: includes/admin/class-evf-admin-entries-table-list.php:516
+#: includes/admin/class-evf-admin-entries-table-list.php:519
 msgid "%d entry restored from the Trash."
 msgid_plural "%d entries restored from the Trash."
 msgstr[0] ""
@@ -1311,28 +1315,28 @@ msgstr[1] ""
 
 #. translators: %d: number of entries
 #. translators: %d: number of entries
-#: includes/admin/class-evf-admin-entries-table-list.php:531
+#: includes/admin/class-evf-admin-entries-table-list.php:534
 #: includes/admin/class-evf-admin-entries.php:257
 msgid "%d entry permanently deleted."
 msgid_plural "%d entries permanently deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:564
+#: includes/admin/class-evf-admin-entries-table-list.php:567
 #: includes/admin/class-evf-admin-entries.php:94
 msgid "Filter"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:568
+#: includes/admin/class-evf-admin-entries-table-list.php:571
 msgid "Export CSV"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:574
+#: includes/admin/class-evf-admin-entries-table-list.php:577
 #: includes/admin/class-evf-admin-forms-table-list.php:516
 msgid "Empty Trash"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:588
+#: includes/admin/class-evf-admin-entries-table-list.php:591
 msgid "Filter by form"
 msgstr ""
 
@@ -2354,17 +2358,17 @@ msgstr ""
 msgid "Unable to connect to the filesystem. Please confirm your credentials."
 msgstr ""
 
-#: includes/class-evf-ajax.php:573
-#: includes/class-evf-ajax.php:615
+#: includes/class-evf-ajax.php:576
+#: includes/class-evf-ajax.php:618
 msgid "Missing data"
 msgstr ""
 
-#: includes/class-evf-ajax.php:631
+#: includes/class-evf-ajax.php:634
 msgid "Connection missing"
 msgstr ""
 
 #. translators: %1$s - deactivation reason page; %2$d - deactivation url.
-#: includes/class-evf-ajax.php:660
+#: includes/class-evf-ajax.php:665
 msgid "Before we deactivate Everest Forms, would you care to <a href=\"%1$s\" target=\"_blank\">let us know why</a> so we can improve it for you? <a href=\"%2$s\">No, deactivate now</a>."
 msgstr ""
 
@@ -2461,21 +2465,21 @@ msgstr ""
 msgid "Thanks for contacting us! We will be in touch with you shortly."
 msgstr ""
 
-#: includes/class-evf-form-task.php:338
+#: includes/class-evf-form-task.php:341
 #: templates/notices/success.php:63
 msgid "Download your form submission in PDF format"
 msgstr ""
 
 #. translators: %s - form name.
-#: includes/class-evf-form-task.php:644
+#: includes/class-evf-form-task.php:647
 msgid "New %s Entry"
 msgstr ""
 
-#: includes/class-evf-form-task.php:744
+#: includes/class-evf-form-task.php:747
 msgid "No form ID was found."
 msgstr ""
 
-#: includes/class-evf-form-task.php:751
+#: includes/class-evf-form-task.php:754
 msgid "Could not create an entry"
 msgstr ""
 
@@ -4563,4 +4567,189 @@ msgstr ""
 #. translators: %s - link to a site.
 #: templates/emails/footer-default.php:45
 msgid "Sent from %s"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Font size name"
+msgid "Small"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Font size name"
+msgid "Normal"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Font size name"
+msgid "Medium"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Font size name"
+msgid "Large"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Font size name"
+msgid "Huge"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Color name"
+msgid "Black"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Color name"
+msgid "Cyan bluish gray"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Color name"
+msgid "White"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Color name"
+msgid "Pale pink"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Color name"
+msgid "Vivid red"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Color name"
+msgid "Luminous vivid orange"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Color name"
+msgid "Luminous vivid amber"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Color name"
+msgid "Light green cyan"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Color name"
+msgid "Vivid green cyan"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Color name"
+msgid "Pale cyan blue"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Color name"
+msgid "Vivid cyan blue"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Color name"
+msgid "Vivid purple"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Gradient name"
+msgid "Vivid cyan blue to vivid purple"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Gradient name"
+msgid "Light green cyan to vivid green cyan"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Gradient name"
+msgid "Luminous vivid amber to luminous vivid orange"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Gradient name"
+msgid "Luminous vivid orange to vivid red"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Gradient name"
+msgid "Very light gray to cyan bluish gray"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Gradient name"
+msgid "Cool to warm spectrum"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Gradient name"
+msgid "Blush light purple"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Gradient name"
+msgid "Blush bordeaux"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Gradient name"
+msgid "Luminous dusk"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Gradient name"
+msgid "Pale ocean"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Gradient name"
+msgid "Electric grass"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Gradient name"
+msgid "Midnight"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Duotone name"
+msgid "Dark grayscale"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Duotone name"
+msgid "Grayscale"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Duotone name"
+msgid "Purple and yellow"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Duotone name"
+msgid "Blue and red"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Duotone name"
+msgid "Midnight"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Duotone name"
+msgid "Magenta and yellow"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Duotone name"
+msgid "Purple and green"
+msgstr ""
+
+#: tests/wordpress/wp-includes/theme.json
+msgctxt "Duotone name"
+msgid "Blue and orange"
 msgstr ""
