@@ -325,6 +325,9 @@ class EVF_Form_Task {
 		// Check Conditional Logic and get the redirection URL.
 		$submission_redirection_process = apply_filters( 'everest_forms_submission_redirection_process', array(), $this->form_fields, $this->form_data );
 
+		// Backward compatibility for evf form templates.
+		$this->form_data['settings']['redirect_to'] = '0' === $this->form_data['settings']['redirect_to'] ? 'same' : $this->form_data['settings']['redirect_to'];
+
 		if ( '1' === $ajax_form_submission ) {
 			$response_data['message']  = $message;
 			$response_data['response'] = 'success';
