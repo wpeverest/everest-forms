@@ -320,7 +320,7 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 				$choice['attr']['tabindex'] = '-1';
 
 				printf( '<input type="radio" %s %s %s>', evf_html_attributes( $choice['id'], $choice['class'], $choice['data'], $choice['attr'] ), esc_attr( $choice['required'] ), checked( '1', $choice['default'], false ) );
-				echo '<span class="everest-forms-image-choices-label">' . wp_kses_post( $choice['label']['text'] ) . '</span>';
+				echo '<label class="everest-forms-image-choices-label">' . wp_kses_post( $choice['label']['text'] ) . '</label>';
 				echo '</label>';
 			} else {
 				// Normal display.
