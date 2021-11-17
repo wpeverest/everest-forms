@@ -205,7 +205,7 @@ function evf_search_entries( $args ) {
 	}
 
 	// Removing Draft Entry (Save and Contd Add-on).
-	if ( 'draft' !== $args['status'] ) {
+	if ( empty( $args['status'] ) || 'draft' !== $args['status'] ) {
 		$query[] = $wpdb->prepare( 'AND `status` <> %s', 'draft' );
 	}
 
