@@ -161,13 +161,13 @@ class EVF_Admin_Tools {
 	 * Remove/delete the chosen file.
 	 */
 	public static function remove_log() {
-		if ( empty( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( wp_unslash( $_REQUEST['_wpnonce'] ), 'remove_log' ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		if ( empty( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ), 'remove_log' ) ) ) {
 			wp_die( esc_html__( 'Action failed. Please refresh the page and retry.', 'everest-forms' ) );
 		}
 
 		if ( ! empty( $_REQUEST['handle'] ) ) {
 			$log_handler = new EVF_Log_Handler_File();
-			$log_handler->remove( wp_unslash( $_REQUEST['handle'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			$log_handler->remove( sanitize_text_field( wp_unslash( $_REQUEST['handle'] ) ) );
 		}
 
 		wp_safe_redirect( esc_url_raw( admin_url( 'admin.php?page=evf-tools&tab=logs' ) ) );

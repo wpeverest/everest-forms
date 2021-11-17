@@ -389,7 +389,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 									class="<?php echo esc_attr( $value['class'] ); ?>"
 									placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
 									<?php echo implode( ' ', $custom_attributes ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-									><?php echo esc_textarea( $option_value ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></textarea>
+									><?php echo esc_textarea( $option_value ); ?></textarea>
 							</td>
 						</tr>
 						<?php

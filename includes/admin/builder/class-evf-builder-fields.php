@@ -250,7 +250,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 
 			$repeater_field = apply_filters( 'everest_forms_display_repeater_fields', false, $row_grid, $fields );
 
-			echo '<div class="evf-admin-row" data-row-id="' . absint( $row ) . '"' . ( ! is_array( $repeater_field ) ? $repeater_field : '' ) . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo '<div class="evf-admin-row" data-row-id="' . absint( $row ) . '"' . ( ! empty( $repeater_field ) ? $repeater_field : '' ) . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo '<div class="evf-toggle-row">';
 			if ( empty( $repeater_field ) ) {
 				echo '<div class="evf-duplicate-row"><span class="dashicons dashicons-media-default" title="Duplicate Row"></span></div>';
