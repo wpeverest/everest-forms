@@ -2,7 +2,9 @@
 ( function( $, params ) {
 
 	// Colorpicker.
-	$( '.evf-colorpicker' ).wpColorPicker();
+	$( '.evf-colorpicker' ).wpColorPicker();$( document ).on( 'click', '.everest-forms-field.everest-forms-field-rating', function() {
+		$( '.evf-colorpicker' ).wpColorPicker();
+	});
 
 	// Enable Perfect Scrollbar.
 	$( document ).on( 'init_perfect_scrollbar', function() {
