@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 1.8.0.1 - 19-11-2021 =
+* Fix - Ajax submission redirect not working.
+
 = 1.8.0 - 17-11-2021 =
 * Fix - Security issue. 
 * Enhancement - Column adjustment pro feature dependency.  
