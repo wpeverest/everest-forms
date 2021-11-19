@@ -66,7 +66,7 @@ class EVF_Admin {
 			$plugin = isset( $_REQUEST['plugin'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['plugin'] ) ) : false;
 
 			if ( 'evf-addons-refresh' === $action ) {
-				if ( empty( $_GET['evf-addons-nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['evf-addons-nonce'] ), 'refresh' ) ) ) {
+				if ( empty( $_GET['evf-addons-nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_GET['evf-addons-nonce'] ) ), 'refresh' ) ) {
 					wp_die( esc_html_e( 'Could not verify nonce', 'everest-forms' ) );
 				}
 
@@ -111,7 +111,7 @@ class EVF_Admin {
 			$raw_templates = wp_safe_remote_get( 'https://raw.githubusercontent.com/wpeverest/extensions-json/master/everest-forms/templates/all_templates.json' );
 
 			if ( 'evf-template-refresh' === $action && ! is_wp_error( $raw_templates ) ) {
-				if ( empty( $_GET['evf-template-nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['evf-template-nonce'] ), 'refresh' ) ) ) {
+				if ( empty( $_GET['evf-template-nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_GET['evf-template-nonce'] ) ), 'refresh' ) ) {
 					wp_die( esc_html_e( 'Could not verify nonce', 'everest-forms' ) );
 				}
 
