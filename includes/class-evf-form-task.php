@@ -374,7 +374,7 @@ class EVF_Form_Task {
 				evf_add_notice( $message, 'success' );
 			}
 
-			$this->entry_confirmation_redirect( $this->form_data );
+			// $this->entry_confirmation_redirect( $this->form_data );
 
 			return $response_data;
 		} elseif ( ( 'same' === $this->form_data['settings']['redirect_to'] && empty( $submission_redirection_process ) ) || ( ! empty( $submission_redirection_process ) && 'same_page' == $submission_redirection_process['redirect_to'] ) ) {
