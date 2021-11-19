@@ -2,7 +2,7 @@
 ( function( $, params ) {
 
 	// Colorpicker.
-	$( '.evf-colorpicker' ).wpColorPicker();$( document ).on( 'click', '.everest-forms-field.everest-forms-field-rating', function() {
+	$( document ).on( 'click', '.everest-forms-field.everest-forms-field-rating', function() {
 		$( '.evf-colorpicker' ).wpColorPicker();
 	});
 
