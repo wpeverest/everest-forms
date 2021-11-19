@@ -116,7 +116,7 @@ class EVF_Admin_Notices {
 	 */
 	public static function hide_notices() {
 		if ( isset( $_GET['evf-hide-notice'] ) && isset( $_GET['_evf_notice_nonce'] ) ) {
-			if ( ! wp_verify_nonce( sanitize_key( wp_unslash( $_GET['_evf_notice_nonce'] ) ), 'everest_forms_hide_notices_nonce' ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			if ( ! wp_verify_nonce( sanitize_key( wp_unslash( $_GET['_evf_notice_nonce'] ) ), 'everest_forms_hide_notices_nonce' ) ) {
 				wp_die( esc_html__( 'Action failed. Please refresh the page and retry.', 'everest-forms' ) );
 			}
 
