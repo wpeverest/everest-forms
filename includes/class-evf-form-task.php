@@ -72,9 +72,46 @@ class EVF_Form_Task {
 			$this->entry_confirmation_redirect( '', wp_unslash( $_GET['everest_forms_return'] ) ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		}
 
+		$form_id = ! empty( $_POST['everest_forms']['id'] ) ? absint( $_POST['everest_forms']['id'] ) : 0;
+
+		if ( ! $form_id ) {
+			return;
+		}
+
 		if ( ! empty( $_POST['everest_forms']['id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			$this->do_task( stripslashes_deep( $_POST['everest_forms'] ) ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		}
+
+		if (  ! evf_is_amp() ) {
+			return;
+		}
+
+		$settings = $this->form_data['settings'];
+		$success_message  = isset( $settings['successful_form_submission_message'] ) ? $settings['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
+			// Send 400 Bad Request when there are errors.
+			if ( empty( $this->errors[ $form_id ] ) ) {
+				wp_send_json(
+					[
+						'message' => $success_message,
+					],
+					200
+				);
+
+				return;
+			}
+		   $message = $this->errors[ $form_id ]['header'];
+
+			if ( ! empty( $this->errors[ $form_id ]['footer'] ) ) {
+				$message .= ' ' . $this->errors[ $form_id ]['footer'];
+			}
+
+		wp_send_json(
+			[
+				'message' => $message,
+			],
+			400
+		);
+
 	}
 
 	/**
@@ -371,14 +408,15 @@ class EVF_Form_Task {
 
 			// Add notice only if credit card is populated in form fields.
 			if ( isset( $this->evf_notice_print ) && $this->evf_notice_print ) {
-				evf_add_notice( $message, 'success' );
+				 evf_add_notice( $message, 'success' );
 			}
 
 			// $this->entry_confirmation_redirect( $this->form_data );
-
 			return $response_data;
 		} elseif ( ( 'same' === $this->form_data['settings']['redirect_to'] && empty( $submission_redirection_process ) ) || ( ! empty( $submission_redirection_process ) && 'same_page' == $submission_redirection_process['redirect_to'] ) ) {
-			evf_add_notice( $message, 'success' );
+
+				evf_add_notice( $message, 'success' );
+
 		}
 
 		do_action( 'everest_forms_after_success_message', $this->form_data, $entry );
@@ -395,7 +433,7 @@ class EVF_Form_Task {
 	 */
 	public function ajax_form_submission( $posted_data ) {
 		add_filter( 'wp_redirect', array( $this, 'ajax_process_redirect' ), 999 );
-		$process = $this->do_task( stripslashes_deep( $posted_data ) );
+		$process = $this->do_task(stripslashes_deep( $posted_data ));
 		return $process;
 	}
 
@@ -421,7 +459,6 @@ class EVF_Form_Task {
 		$response = apply_filters( 'everest_forms_ajax_submit_redirect', $response, $form_id, $url );
 
 		do_action( 'everest_forms_ajax_submit_completed', $form_id, $response );
-
 		wp_send_json_success( $response );
 	}
 

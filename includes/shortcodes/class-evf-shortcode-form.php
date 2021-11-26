@@ -50,6 +50,16 @@ class EVF_Shortcode_Form {
 	}
 
 	/**
+	 * Get the amp-state ID for a given form.
+	 *
+	 * @param int $form_id Form ID.
+	 * @return string State ID.
+	 */
+	protected static function get_form_amp_state_id( $form_id ) {
+		return sprintf( 'evf_form_state_%d', $form_id );
+	}
+
+	/**
 	 * Form footer area.
 	 *
 	 * @param array $form_data   Form data and settings.
@@ -65,6 +75,11 @@ class EVF_Shortcode_Form {
 		$classes    = isset( $form_data['settings']['submit_button_class'] ) ? evf_sanitize_classes( $form_data['settings']['submit_button_class'] ) : '';
 		$parts      = ! empty( self::$parts[ $form_id ] ) ? self::$parts[ $form_id ] : array();
 		$visible    = ! empty( $parts ) ? 'style="display:none"' : '';
+		$attrs      = [
+			'aria-live' => 'assertive'
+		];
+		$data_attrs = [];
+		$evf_amp_classes  = [];
 
 		// Visibility class.
 		$visibility_class = apply_filters( 'everest_forms_field_submit_visibility_class', array(), $parts, $form_data );
@@ -73,7 +88,16 @@ class EVF_Shortcode_Form {
 		if ( ! isset( $settings['submit_button_processing_text'] ) ) {
 			$process = 'data-process-text="' . esc_attr__( 'Processing&hellip;', 'everest-forms' ) . '"';
 		} elseif ( ! empty( $settings['submit_button_processing_text'] ) ) {
-			$process = 'data-process-text="' . esc_attr( evf_string_translation( $form_data['id'], 'processing_text', $settings['submit_button_processing_text'] ) ) . '"';
+			if ( evf_is_amp() ) {
+				$attrs['[text]'] = sprintf(
+					'%s.submitting ? %s : %s',
+					self::get_form_amp_state_id( $form_id ),
+					wp_json_encode( $settings['submit_button_processing_text'], JSON_UNESCAPED_UNICODE ),
+					wp_json_encode( $submit, JSON_UNESCAPED_UNICODE )
+				);
+			} else {
+				$process = 'data-process-text="' . esc_attr( evf_string_translation( $form_data['id'], 'processing_text', $settings['submit_button_processing_text'] ) ) . '"';
+			}
 		}
 
 		// Submit button area.
@@ -102,13 +126,19 @@ class EVF_Shortcode_Form {
 		do_action( 'everest_forms_display_submit_before', $form_data );
 
 		printf(
-			"<button type='submit' name='everest_forms[submit]' class='everest-forms-submit-button button evf-submit %s' id='evf-submit-%d' value='evf-submit' %s conditional_rules='%s' conditional_id='%s' %s>%s</button>",
+			"<button type='submit' name='everest_forms[submit]' class='everest-forms-submit-button button evf-submit %s' id='evf-submit-%d' value='evf-submit' %s conditional_rules='%s' conditional_id='%s' %s %s>%s</button>",
 			$classes, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			$form_id, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			$process, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			$conditional_rules, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			$conditional_id, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			$visible, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			evf_html_attributes(
+				sprintf( 'evf-submit-%d', absint( $form_id ) ),
+				$evf_amp_classes,
+				$data_attrs,
+				$attrs
+			),
 			$submit_btn // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		);
 
@@ -881,6 +911,40 @@ class EVF_Shortcode_Form {
 			),
 			$form_data
 		);
+		if ( evf_is_amp() ) {
+
+			// Set submitting state.
+			if ( ! isset( $form_atts['atts']['on'] ) ) {
+				$form_atts['atts']['on'] = '';
+			} else {
+				$form_atts['atts']['on'] .= ';';
+			}
+			$form_atts['atts']['on'] .= sprintf(
+				'submit:AMP.setState( %1$s ); submit-success:AMP.setState( %2$s ); submit-error:AMP.setState( %2$s );',
+				wp_json_encode(
+					array(
+						self::get_form_amp_state_id( $form_id ) => array(
+							'submitting' => true,
+						),
+					)
+				),
+				wp_json_encode(
+					array(
+						self::get_form_amp_state_id( $form_id ) => array(
+							'submitting' => false,
+						),
+					)
+				)
+			);
+
+			// Upgrade the form to be an amp-form to avoid sanitizer conversion.
+			if ( isset( $form_atts['atts']['action'] ) ) {
+				$form_atts['atts']['action-xhr'] = $form_atts['atts']['action'];
+				unset( $form_atts['atts']['action'] );
+
+				$form_atts['atts']['verify-xhr'] = $form_atts['atts']['action-xhr'];
+			}
+		}
 
 		// Begin to build the output.
 		do_action( 'everest_forms_frontend_output_container_before', $form_data, $form );
@@ -890,7 +954,16 @@ class EVF_Shortcode_Form {
 		do_action( 'everest_forms_frontend_output_form_before', $form_data, $form, $errors );
 
 		echo '<form ' . evf_html_attributes( $form_atts['id'], $form_atts['class'], $form_atts['data'], $form_atts['atts'] ) . '>';
-
+		if ( evf_is_amp() ) {
+			$state = array(
+				'submitting' => false,
+			);
+			printf(
+				'<amp-state id="%s"><script type="application/json">%s</script></amp-state>',
+				self::get_form_amp_state_id( $form_id ),
+				wp_json_encode( $state )
+			);
+		}
 		do_action( 'everest_forms_frontend_output', $form_data, $title, $description, $errors );
 
 		echo '</form>';
