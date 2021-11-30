@@ -495,7 +495,7 @@ class EVF_Shortcode_Form {
 				printf(
 					wp_kses(
 						/* translators: %1$s - CAPTCHA provider name; %2$s - URL to reCAPTCHA documentation. */
-						__( '%1$s is not supported by AMP and is currently disabled.<br><a href="%2$s" rel="noopener noreferrer" target="_blank">Upgrade to reCAPTCHA v3</a> for full AMP support. <br><em>Please note: this message is only displayed to site administrators.</em>', 'wpforms-lite' ),
+						__( '%1$s is not supported by AMP and is currently disabled.<br><a href="%2$s" rel="noopener noreferrer" target="_blank">Upgrade to reCAPTCHA v3</a> for full AMP support. <br><em>Please note: this message is only displayed to site administrators.</em>', 'everest-forms' ),
 						array(
 							'a'  => array(
 								'href'   => array(),
