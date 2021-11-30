@@ -890,3 +890,11 @@ div.evf-gutenberg-form-selector .evf-frontend-row button[type='submit']:disabled
 		display: block !important;
 	}
 }
+/*
+ * Hide the form fields upon successful submission. This may not be the best approach.
+ * Perhaps more robust: .wpforms-form.amp-form-submit-success > *:not([submit-success]) { display:none }
+ */
+ .amp-form-submit-success .evf-field-container,
+ .amp-form-submit-success .evf-submit-container {
+   display: none;
+ }

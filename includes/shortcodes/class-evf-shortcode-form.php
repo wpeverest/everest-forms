@@ -33,6 +33,7 @@ class EVF_Shortcode_Form {
 	 * Hooks in tab.
 	 */
 	public static function hooks() {
+		add_filter( 'amp_skip_post', array( 'EVF_Shortcode_Form', 'amp_skip_post' ) );
 		add_action( 'everest_forms_frontend_output_success', 'evf_print_notices', 10, 2 );
 		add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'header' ), 5, 4 );
 		add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'fields' ), 10, 3 );
@@ -60,6 +61,24 @@ class EVF_Shortcode_Form {
 	}
 
 	/**
+	 * Disable AMP if query param is detected.
+	 *
+	 * This allows the full form to be accessible for Pro users or sites
+	 * that do not have SSL.
+	 *
+	 * @since 1.5.3
+	 *
+	 * @param bool $skip Skip AMP mode, display full post.
+	 *
+	 * @return bool
+	 */
+	public static function amp_skip_post( $skip ) {
+
+		return isset( $_GET['nonamp'] ) ? true : $skip; // phpcs:ignore WordPress.Security.NonceVerification
+	}
+
+
+	/**
 	 * Form footer area.
 	 *
 	 * @param array $form_data   Form data and settings.
@@ -67,19 +86,17 @@ class EVF_Shortcode_Form {
 	 * @param bool  $description Whether to display form description.
 	 */
 	public static function footer( $form_data, $title, $description ) {
-		$form_id    = absint( $form_data['id'] );
-		$settings   = isset( $form_data['settings'] ) ? $form_data['settings'] : array();
-		$submit     = apply_filters( 'everest_forms_field_submit', isset( $settings['submit_button_text'] ) ? $settings['submit_button_text'] : __( 'Submit', 'everest-forms' ), $form_data );
-		$submit_btn = evf_string_translation( $form_data['id'], 'submit_button', $submit );
-		$process    = '';
-		$classes    = isset( $form_data['settings']['submit_button_class'] ) ? evf_sanitize_classes( $form_data['settings']['submit_button_class'] ) : '';
-		$parts      = ! empty( self::$parts[ $form_id ] ) ? self::$parts[ $form_id ] : array();
-		$visible    = ! empty( $parts ) ? 'style="display:none"' : '';
-		$attrs      = [
-			'aria-live' => 'assertive'
-		];
-		$data_attrs = [];
-		$evf_amp_classes  = [];
+		$form_id         = absint( $form_data['id'] );
+		$settings        = isset( $form_data['settings'] ) ? $form_data['settings'] : array();
+		$submit          = apply_filters( 'everest_forms_field_submit', isset( $settings['submit_button_text'] ) ? $settings['submit_button_text'] : __( 'Submit', 'everest-forms' ), $form_data );
+		$submit_btn      = evf_string_translation( $form_data['id'], 'submit_button', $submit );
+		$process         = '';
+		$classes         = isset( $form_data['settings']['submit_button_class'] ) ? evf_sanitize_classes( $form_data['settings']['submit_button_class'] ) : '';
+		$parts           = ! empty( self::$parts[ $form_id ] ) ? self::$parts[ $form_id ] : array();
+		$visible         = ! empty( $parts ) ? 'style="display:none"' : '';
+		$attrs           = array( 'aria-live' => 'assertive' );
+		$data_attrs      = array();
+		$evf_amp_classes = array();
 
 		// Visibility class.
 		$visibility_class = apply_filters( 'everest_forms_field_submit_visibility_class', array(), $parts, $form_data );
@@ -145,6 +162,11 @@ class EVF_Shortcode_Form {
 		do_action( 'everest_forms_display_submit_after', $form_data );
 
 		echo '</div>';
+
+		if ( evf_is_amp() ) {
+			printf( '<div submit-success><template type="amp-mustache"><div class=" everest-forms-notice everest-forms-notice--success {{#redirecting}}evf-redirection-message{{/redirecting}}">{{{message}}}</div></template></div>' );
+			return;
+		}
 	}
 
 	/**
@@ -809,6 +831,41 @@ class EVF_Shortcode_Form {
 			return;
 		}
 
+		// We need to stop output processing in case we are on AMP page.
+		if ( evf_is_amp( false ) && ( ! current_theme_supports( 'amp' ) || ! is_ssl() || ! defined( 'AMP__VERSION' ) || version_compare( AMP__VERSION, '1.2', '<' ) ) ) {
+
+			$full_page_url = home_url( add_query_arg( 'nonamp', '1' ) . '#wpforms-' . absint( $form->ID ) );
+
+			/**
+			 * Allow modifying the text or url for the full page on the AMP pages.
+			 *
+			 * @since 1.4.1.1
+			 * @since 1.7.1 Added $form_id, $full_page_url, and $form_data arguments.
+			 *
+			 * @param int   $form_id   Form id.
+			 * @param array $form_data Form data and settings.
+			 *
+			 * @return string
+			 */
+			$text = (string) apply_filters(
+				'evf_frontend_shortcode_amp_text',
+				sprintf( /* translators: %s - URL to a non-amp version of a page with the form. */
+					__( '<a href="%s">Go to the full page</a> to view and submit the form.', 'everest-forms' ),
+					esc_url( $full_page_url )
+				),
+				$form_id,
+				$full_page_url,
+				$form_data
+			);
+
+			printf(
+				'<p class="evf-shortcode-amp-text">%s</p>',
+				wp_kses_post( $text )
+			);
+
+			return;
+		}
+
 		// Before output hook.
 		do_action( 'everest_forms_frontend_output_before', $form_data, $form );
 
@@ -894,23 +951,20 @@ class EVF_Shortcode_Form {
 		}
 		$classes = evf_sanitize_classes( $classes, true );
 
-		$form_atts = apply_filters(
-			'everest_forms_frontend_form_atts',
-			array(
-				'id'    => sprintf( 'evf-form-%d', absint( $form_id ) ),
-				'class' => array( 'everest-form' ),
-				'data'  => array(
-					'formid'          => absint( $form_id ),
-					'ajax_submission' => $ajax_form_submission,
-				),
-				'atts'  => array(
-					'method'  => 'post',
-					'enctype' => 'multipart/form-data',
-					'action'  => esc_url( $action ),
-				),
+		$form_atts = array(
+			'id'    => sprintf( 'evf-form-%d', absint( $form_id ) ),
+			'class' => array( 'everest-form' ),
+			'data'  => array(
+				'formid'          => absint( $form_id ),
+				'ajax_submission' => $ajax_form_submission,
 			),
-			$form_data
+			'atts'  => array(
+				'method'  => 'post',
+				'enctype' => 'multipart/form-data',
+				'action'  => esc_url( $action ),
+			),
 		);
+
 		if ( evf_is_amp() ) {
 
 			// Set submitting state.
@@ -946,6 +1000,7 @@ class EVF_Shortcode_Form {
 			}
 		}
 
+		$form_atts = apply_filters( 'everest_forms_frontend_form_atts', $form_atts, $form_data );
 		// Begin to build the output.
 		do_action( 'everest_forms_frontend_output_container_before', $form_data, $form );
 
@@ -960,7 +1015,7 @@ class EVF_Shortcode_Form {
 			);
 			printf(
 				'<amp-state id="%s"><script type="application/json">%s</script></amp-state>',
-				self::get_form_amp_state_id( $form_id ),
+				self::get_form_amp_state_id( $form_id ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				wp_json_encode( $state )
 			);
 		}
