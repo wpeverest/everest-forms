@@ -233,12 +233,14 @@ class EVF_Form_Task {
 					$secret_key = get_option( 'everest_forms_recaptcha_v3_secret_key' );
 				}
 
-				if ( ! empty( $site_key ) && ! empty( $secret_key ) && isset( $this->form_data['settings']['recaptcha_support'] ) && '1' === $this->form_data['settings']['recaptcha_support'] ) {
+				if ( ! empty( $site_key ) && ! empty( $secret_key ) && isset( $this->form_data['settings']['recaptcha_support'] ) && '1' === $this->form_data['settings']['recaptcha_support'] &&
+				! isset( $_POST['__amp_form_verify'] ) || ! evf_is_amp() ) {
 					$error = esc_html__( 'Google reCAPTCHA verification failed, please try again later.', 'everest-forms' );
 					$token = ! empty( $_POST['g-recaptcha-response'] ) ? evf_clean( wp_unslash( $_POST['g-recaptcha-response'] ) ) : false;
 
 					if ( 'v3' === $recaptcha_type ) {
 						$token = ! empty( $_POST['everest_forms']['recaptcha'] ) ? evf_clean( wp_unslash( $_POST['everest_forms']['recaptcha'] ) ) : false;
+						error_log(print_r($token,true));
 					}
 
 					$raw_response = wp_safe_remote_get( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $token );
