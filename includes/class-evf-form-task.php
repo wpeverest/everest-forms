@@ -528,7 +528,7 @@ class EVF_Form_Task {
 		if ( ! empty( $submission_redirect_process ) ) {
 			$settings['redirect_to']  = $submission_redirect_process['redirect_to'];
 			$settings['external_url'] = $submission_redirect_process['external_url'];
-			$settings['custom_page'] = $submission_redirect_process['custom_page'];
+			$settings['custom_page']  = $submission_redirect_process['custom_page'];
 		}
 
 		if ( isset( $settings['redirect_to'] ) && 'custom_page' === $settings['redirect_to'] ) {
@@ -799,6 +799,14 @@ class EVF_Form_Task {
 		}
 
 		$this->entry_id = $entry_id;
+
+		// Removing Entries Cache.
+		wp_cache_delete( $entry_id, 'evf-entry' );
+		wp_cache_delete( $entry_id, 'evf-entrymeta' );
+		wp_cache_delete( $form_id, 'evf-entries-ids' );
+		wp_cache_delete( $form_id, 'evf-last-entries-count' );
+		wp_cache_delete( $form_id, 'evf-search-entries' );
+		wp_cache_delete( EVF_Cache_Helper::get_cache_prefix( 'entries' ) . '_unread_count', 'entries' );
 
 		do_action( 'everest_forms_complete_entry_save', $entry_id, $fields, $entry, $form_id, $form_data );
 
