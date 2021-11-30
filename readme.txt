@@ -302,6 +302,10 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
+= 1.8.1 - 30-11-2021 =
+* Fix - Style Customizer Radio/Checkbox design not working.
+* Enhancement - Object Caching plugin compatibility.
+
 = 1.8.0.1 - 19-11-2021 =
 * Fix - Ajax submission redirect not working.
 
