@@ -489,28 +489,7 @@ class EVF_Shortcode_Form {
 					esc_attr( $site_key ),
 					esc_attr( 'evf_' . $form_data['id'] )
 				);
-			} elseif ( is_super_admin() ) {
-				$captcha_provider = esc_html__( 'Google reCAPTCHA v2', 'everest-forms' );
-				echo '<div class="evf-notice evf-warning" style="margin: 20px 0;">';
-				printf(
-					wp_kses(
-						/* translators: %1$s - CAPTCHA provider name; %2$s - URL to reCAPTCHA documentation. */
-						__( '%1$s is not supported by AMP and is currently disabled.<br><a href="%2$s" rel="noopener noreferrer" target="_blank">Upgrade to reCAPTCHA v3</a> for full AMP support. <br><em>Please note: this message is only displayed to site administrators.</em>', 'everest-forms' ),
-						array(
-							'a'  => array(
-								'href'   => array(),
-								'rel'    => array(),
-								'target' => array(),
-							),
-							'br' => array(),
-							'em' => array(),
-						)
-					),
-					$captcha_provider, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-				);
-				echo '</div>';
-			}
-
+			} 
 			return; // Only v3 is supported in AMP.
 		}
 

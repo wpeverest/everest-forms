@@ -240,7 +240,6 @@ class EVF_Form_Task {
 
 					if ( 'v3' === $recaptcha_type ) {
 						$token = ! empty( $_POST['everest_forms']['recaptcha'] ) ? evf_clean( wp_unslash( $_POST['everest_forms']['recaptcha'] ) ) : false;
-						error_log(print_r($token,true));
 					}
 
 					$raw_response = wp_safe_remote_get( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $token );
