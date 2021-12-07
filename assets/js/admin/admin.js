@@ -3,8 +3,17 @@
 
 	// Colorpicker.
 	$( document ).on( 'click', '.everest-forms-field.everest-forms-field-rating', function() {
-		$( '.evf-colorpicker' ).wpColorPicker();
+		$( '.everest-forms-field-option-row-icon_color input.evf-colorpicker' ).wpColorPicker({
+			change: function( event ) {
+				var $this     = $( this ),
+					value     = $this.val(),
+					id        = $this.closest( '.everest-forms-field-option-row' ).data( 'field-id' ),
+					$icons    = $( '#everest-forms-field-'+id +' .rating-icon svg' );
+				$icons.css( 'fill', value );
+			}
+		});
 	});
+
 
 	// Enable Perfect Scrollbar.
 	$( document ).on( 'init_perfect_scrollbar', function() {
