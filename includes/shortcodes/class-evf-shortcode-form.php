@@ -489,7 +489,7 @@ class EVF_Shortcode_Form {
 					esc_attr( $site_key ),
 					esc_attr( 'evf_' . $form_data['id'] )
 				);
-			} 
+			}
 			return; // Only v3 is supported in AMP.
 		}
 

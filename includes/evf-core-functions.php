@@ -997,7 +997,7 @@ function evf_html_attributes( $id = '', $class = array(), $datas = array(), $att
 	if ( ! empty( $atts ) ) {
 		foreach ( $atts as $att => $val ) {
 			if ( '0' === $val || ! empty( $val ) ) {
-				if ( $att[0] === '[' ) {
+				if ( $att[0] === '[' ) { //phpcs:ignore
 					// Handle special case for bound attributes in AMP.
 					$escaped_att = '[' . sanitize_html_class( trim( $att, '[]' ) ) . ']';
 				} else {
@@ -2383,6 +2383,16 @@ function evf_process_line_breaks( $text ) {
 	return str_replace( "\n", '<br/>', $text );
 }
 
+/**
+ * Check whether the current page is in AMP mode or not.
+ * We need to check for specific functions, as there is no special AMP header.
+ *
+ * @since 1.8.1
+ *
+ * @param bool $check_theme_support Whether theme support should be checked. Defaults to true.
+ *
+ * @return bool
+ */
 function evf_is_amp( $check_theme_support = true ) {
 
 	$is_amp = false;
