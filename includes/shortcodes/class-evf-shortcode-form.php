@@ -292,7 +292,7 @@ class EVF_Shortcode_Form {
 		// Form fields area.
 		echo '<div class="evf-field-container">';
 
-		wp_nonce_field( 'everest-forms_process_submit' );
+		wp_nonce_field( 'everest-forms_process_submit', '_wpnonce' . $form_data['id'] );
 
 		/**
 		 * Hook: everest_forms_display_fields_before.
