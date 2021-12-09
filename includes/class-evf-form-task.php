@@ -234,7 +234,7 @@ class EVF_Form_Task {
 				}
 
 				if ( ! empty( $site_key ) && ! empty( $secret_key ) && isset( $this->form_data['settings']['recaptcha_support'] ) && '1' === $this->form_data['settings']['recaptcha_support'] &&
-				! isset( $_POST['__amp_form_verify'] ) || ! evf_is_amp() ) {
+				! isset( $_POST['__amp_form_verify'] ) && ( 'v3' === $recaptcha_type || ! evf_is_amp() ) ) {
 					$error = esc_html__( 'Google reCAPTCHA verification failed, please try again later.', 'everest-forms' );
 					$token = ! empty( $_POST['g-recaptcha-response'] ) ? evf_clean( wp_unslash( $_POST['g-recaptcha-response'] ) ) : false;
 

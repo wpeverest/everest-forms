@@ -481,7 +481,13 @@ class EVF_Shortcode_Form {
 		if ( ! $site_key || ! $secret_key ) {
 			return;
 		}
-
+		// Check that the CAPTCHA is configured for the specific form.
+		if (
+			! isset( $form_data['settings']['recaptcha_support'] ) ||
+			'1' !== $form_data['settings']['recaptcha_support']
+		) {
+			return;
+		}
 		if ( evf_is_amp() ) {
 			if ( 'v3' === $recaptcha_type ) {
 				printf(
