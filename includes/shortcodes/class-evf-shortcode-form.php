@@ -845,7 +845,7 @@ class EVF_Shortcode_Form {
 		// We need to stop output processing in case we are on AMP page.
 		if ( evf_is_amp( false ) && ( ! current_theme_supports( 'amp' ) || ! is_ssl() || ! defined( 'AMP__VERSION' ) || version_compare( AMP__VERSION, '1.2', '<' ) ) ) {
 
-			$full_page_url = home_url( add_query_arg( 'nonamp', '1' ) . '#wpforms-' . absint( $form->ID ) );
+			$full_page_url = home_url( add_query_arg( 'nonamp', '1' ) . '#evfforms-' . absint( $form->ID ) );
 
 			/**
 			 * Allow modifying the text or url for the full page on the AMP pages.
