@@ -173,14 +173,6 @@ function evf_search_entries( $args ) {
 	$where     = (array) apply_filters( 'everest_forms_search_entries_where', $where, $args );
 	$where_sql = implode( ' AND ', $where );
 
-	// Check for cache.
-	$cache_key   = EVF_Cache_Helper::get_cache_prefix( 'entries' ) . 'search_entries' . md5( wp_json_encode( $args ) );
-	$cache_value = wp_cache_get( $cache_key, 'entry_search_results' );
-
-	if ( $cache_value ) {
-		return $cache_value;
-	}
-
 	// Query object.
 	$query   = array();
 	$query[] = "SELECT DISTINCT {$wpdb->prefix}evf_entries.entry_id FROM {$wpdb->prefix}evf_entries INNER JOIN {$wpdb->prefix}evf_entrymeta WHERE {$where_sql}";
@@ -227,8 +219,6 @@ function evf_search_entries( $args ) {
 
 	$ids = wp_list_pluck( $results, 'entry_id' );
 
-	wp_cache_set( $cache_key, $ids, 'entry_search_results' );
-
 	return $ids;
 }
 
@@ -244,22 +234,15 @@ function evf_get_count_entries_by_status( $form_id ) {
 	$counts    = array();
 
 	foreach ( $statuses as $status ) {
-		$cache_key = EVF_Cache_Helper::get_cache_prefix( 'entries' ) . $status . '_count';
-		$count     = wp_cache_get( $cache_key, 'entries' );
-
-		if ( false === $count ) {
-			$count = count(
-				evf_search_entries(
-					array(
-						'limit'   => -1,
-						'status'  => $status,
-						'form_id' => $form_id,
-					)
+		$count = count(
+			evf_search_entries(
+				array(
+					'limit'   => -1,
+					'status'  => $status,
+					'form_id' => $form_id,
 				)
-			);
-
-			wp_cache_add( $cache_key, $count, 'entries' );
-		}
+			)
+		);
 
 		$counts[ $status ] = $count;
 	}
