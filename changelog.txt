@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 1.8.2 - xx-xx-2021 =
+* Fix - Color Picker in Icon Color of Ratings field.
+
 = 1.8.1 - 30-11-2021 =
 * Fix - Style Customizer Radio/Checkbox design not working.
 * Enhancement - Object Caching plugin compatibility.
@@ -8,16 +11,16 @@
 * Fix - Ajax submission redirect not working.
 
 = 1.8.0 - 17-11-2021 =
-* Fix - Security issue. 
-* Enhancement - Column adjustment pro feature dependency.  
+* Fix - Security issue.
+* Enhancement - Column adjustment pro feature dependency.
 
 = 1.7.9 - 12-11-2021 =
-* Fix 			- Row setting hidden issue. 
+* Fix 			- Row setting hidden issue.
 * Enhancement 	- Datepicker glitches in builder page.
 
 = 1.7.8 - 26-10-2021 =
 * Enhancement - Conditional logic for submission redirection.
-* Feature - Repeater Fields. 
+* Feature - Repeater Fields.
 
 = 1.7.7.2 - 05-10-2021 =
 * Fix - Form save issue due to caching.
