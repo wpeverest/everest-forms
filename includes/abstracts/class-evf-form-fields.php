@@ -681,6 +681,34 @@ abstract class EVF_Form_Fields {
 					);
 				}
 				break;
+			/**
+			 * No Duplicates.
+			 */
+			case 'no_duplicates':
+				$default = ! empty( $args['default'] ) ? $args['default'] : '0';
+				$value   = ! empty( $field['no_duplicates'] ) ? esc_attr( $field['no_duplicates'] ) : '';
+				$tooltip = esc_html__( 'Select this option to limit user input to unique values only. This will require that a value entered in a field does not currently exist in the entry database for that field..', 'everest-forms' );
+				$output  = $this->field_element(
+					'checkbox',
+					$field,
+					array(
+						'slug'    => 'no_duplicates',
+						'value'   => $value,
+						'desc'    => esc_html__( 'No Duplicates', 'everest-forms' ),
+						'tooltip' => $tooltip,
+					),
+					false
+				);
+				$output  = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'no_duplicates',
+						'content' => $output,
+					),
+					false
+				);
+				break;
 
 			/*
 			 * Code Block.
