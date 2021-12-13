@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "@babel/core": "7.16.0",
-    "@wordpress/babel-preset-default": "6.3.4",
+    "@wordpress/babel-preset-default": "6.4.1",
     "@wordpress/browserslist-config": "4.1.0",
     "autoprefixer": "9.8.8",
     "babel-eslint": "10.1.0",
@@ -48,14 +48,14 @@
     "grunt-postcss": "0.9.0",
     "grunt-rtlcss": "2.0.2",
     "grunt-sass": "3.1.0",
-    "grunt-stylelint": "0.16.0",
+    "grunt-stylelint": "0.17.0",
     "husky": "7.0.4",
     "lint-staged": "11.2.6",
     "node-sass": "6.0.1",
     "stylelint": "13.13.1",
     "stylelint-config-wordpress": "17.0.0",
-    "webpack": "5.58.2",
-    "webpack-cli": "4.8.0"
+    "webpack": "5.64.4",
+    "webpack-cli": "4.9.1"
   },
   "engines": {
     "node": ">=8.9.3",
