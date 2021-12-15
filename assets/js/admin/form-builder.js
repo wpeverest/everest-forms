@@ -343,12 +343,15 @@
 			EVFPanelBuilder.checkEmptyGrid();
 			EVFPanelBuilder.bindFields();
 			EVFPanelBuilder.bindFormPreview();
+			EVFPanelBuilder.bindFormPreviewWithKeyEvent();
+			EVFPanelBuilder.bindFormEntriesWithKeyEvent();
 			EVFPanelBuilder.bindGridSwitcher();
 			EVFPanelBuilder.bindFieldSettings();
 			EVFPanelBuilder.bindFieldDelete();
 			EVFPanelBuilder.bindFieldDeleteWithKeyEvent();
 			EVFPanelBuilder.bindCloneField();
 			EVFPanelBuilder.bindSaveOption();
+			EVFPanelBuilder.bindSaveOptionWithKeyEvent();
 			EVFPanelBuilder.bindAddNewRow();
 			EVFPanelBuilder.bindRemoveRow();
 			EVFPanelBuilder.bindFormSettings();
@@ -1826,6 +1829,114 @@
 				});
 			});
 		},
+		bindSaveOptionWithKeyEvent:function() {
+			$('body').on("keydown", function (e) {
+				if (e.ctrlKey || e.metaKey) {
+					if (
+						"s" ===
+						String.fromCharCode(e.which).toLowerCase() || 83 === e.which
+					) {
+						e.preventDefault();
+						var $this      = $( this );
+						var $form      = $( 'form#everest-forms-builder-form' );
+						var structure  = EVFPanelBuilder.getStructure();
+						var form_data  = $form.serializeArray();
+						var form_title = $( '#evf-edit-form-name' ).val().trim();
+
+						if ( '' === form_title ) {
+							$.alert({
+								title: evf_data.i18n_field_title_empty,
+								content: evf_data.i18n_field_title_payload,
+								icon: 'dashicons dashicons-warning',
+								type: 'red',
+								buttons: {
+									ok: {
+										text: evf_data.i18n_ok,
+										btnClass: 'btn-confirm',
+										keys: [ 'enter' ]
+									}
+								}
+							});
+							return;
+						}
+
+						// Trigger a handler to let addon manipulate the form data if needed.
+						if ( $form.triggerHandler( 'everest_forms_process_ajax_data', [ $this, form_data ] ) ) {
+							form_data = $form.triggerHandler( 'everest_forms_process_ajax_data', [ $this, form_data ] );
+						}
+
+						$( '.everest-forms-panel-content-wrap' ).block({
+							message: null,
+							overlayCSS: {
+								background: '#fff',
+								opacity: 0.6
+							}
+						});
+
+						/* DB unwanted data erase start */
+						var rfields_ids = [];
+						$( '.everest-forms-field[data-field-id]' ).each( function() {
+							rfields_ids.push( $( this ).attr( 'data-field-id' ) );
+						});
+
+						var form_data_length = form_data.length;
+						while ( form_data_length-- ) {
+							if ( form_data[ form_data_length ].name.startsWith( 'form_fields' ) ) {
+								var idflag = false;
+								rfields_ids.forEach( function( element ) {
+									if ( form_data[ form_data_length ].name.startsWith( 'form_fields[' + element + ']' ) ) {
+										idflag = true;
+									}
+								});
+								if ( form_data_length > -1 && idflag === false )  {
+									form_data.splice( form_data_length, 1 );
+								}
+							}
+						}
+						/* DB fix end */
+
+						var new_form_data = form_data.concat( structure );
+						var data = {
+							action: 'everest_forms_save_form',
+							security: evf_data.evf_save_form,
+							form_data: JSON.stringify( new_form_data )
+						};
+						$.ajax({
+							url: evf_data.ajax_url,
+							data: data,
+							type: 'POST',
+							beforeSend: function () {
+								$this.addClass( 'processing' );
+								$this.find( '.loading-dot' ).remove();
+								$this.append( '<span class="loading-dot"></span>' );
+							},
+							success: function ( response ) {
+								$this.removeClass( 'processing' );
+								$this.find( '.loading-dot' ).remove();
+
+								if ( ! response.success ) {
+									$.alert({
+										title: response.data.errorTitle,
+										content: response.data.errorMessage,
+										icon: 'dashicons dashicons-warning',
+										type: 'red',
+										buttons: {
+											ok: {
+												text: evf_data.i18n_ok,
+												btnClass: 'btn-confirm',
+												keys: [ 'enter' ]
+											}
+										}
+									});
+								}
+
+								$( '.everest-forms-panel-content-wrap' ).unblock();
+							}
+						});
+					}
+				}
+			});
+		},
 		getStructure: function () {
 			var wrapper   = $( '.evf-admin-field-wrapper' );
 			var structure = [];
@@ -2082,6 +2193,34 @@
 			}
 		},
 		bindFormPreview: function () {},
+		bindFormPreviewWithKeyEvent:function (){
+			$( 'body' ).on( 'keydown', function( e ) {
+				if (e.ctrlKey || e.metaKey) {
+					if ( (
+						"p" ===
+						String.fromCharCode(e.which).toLowerCase() || 80 === e.which )
+					) {
+						e.preventDefault();
+						 window.open( evf_data.preview_url );
+					}
+				}
+
+			});
+		},
+		bindFormEntriesWithKeyEvent:function (){
+			$( 'body' ).on( 'keydown', function( e ) {
+				if (e.ctrlKey || e.metaKey) {
+					if ( (
+						"e" ===
+						String.fromCharCode(e.which).toLowerCase() || 69 === e.which )
+					) {
+						e.preventDefault();
+						window.open( evf_data.entries_url );
+					}
+				}
+
+			});
+		},
 		bindGridSwitcher: function () {
 		 	$('body').on('click', '.evf-show-grid', function (e) {
 		 		e.stopPropagation();
