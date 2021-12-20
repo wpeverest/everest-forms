@@ -821,6 +821,19 @@
 				}
 			});
 
+			$builder.on( 'change', '.everest-forms-field-option-row-enable_prepopulate input', function( event ) {
+				var id = $( this ).parent().data( 'field-id' );
+
+				$( '#everest-forms-field-' + id ).toggleClass( 'parameter_name' );
+
+				// Toggle "Parameter Name" option.
+				if ( $( event.target ).is( ':checked' ) ) {
+					$( '#everest-forms-field-option-row-' + id + '-parameter_name' ).show();
+				} else {
+					$( '#everest-forms-field-option-row-' + id + '-parameter_name' ).hide();
+				}
+			});
+
 			// Real-time updates for "Description" field option.
 			$builder.on( 'input', '.everest-forms-field-option-row-description textarea', function() {
 				var $this = $( this ),
