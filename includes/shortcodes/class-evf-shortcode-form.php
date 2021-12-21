@@ -451,7 +451,7 @@ class EVF_Shortcode_Form {
 						$recaptcha_inline = 'var EVFRecaptchaLoad = function(){jQuery(".g-recaptcha").each(function(index, el){var recaptchaID = grecaptcha.render(el,{callback:function(){EVFRecaptchaCallback(el);}},true);   el.closest("form").querySelector("button[type=submit]").recaptchaID = recaptchaID;});};
 						var EVFRecaptchaCallback = function (el) {
 							var $form = el.closest("form");
-							if( typeof jQuery !== "undefined" ){
+							if( typeof jQuery !==  "undefined" ){
 								$form.submit();
 								grecaptcha.reset( recaptchaID );
 							}

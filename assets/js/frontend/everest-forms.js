@@ -486,7 +486,7 @@ jQuery( function ( $ ) {
 						}
 
 						if (  recaptchaID === 0 ) {
-							grecaptcha.execute( recaptchaID );
+							 grecaptcha.execute( recaptchaID );
 							return false;
 						}
 
