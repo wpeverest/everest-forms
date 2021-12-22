@@ -69,6 +69,7 @@ jQuery( function( $ ) {
 								error   =  everest_forms_ajax_submission_params.error,
 								err     =  JSON.parse( errorThrown.responseText ),
 								fields  = err.data.error;
+								error =  err.data[form_id].header
 
 								if ( 'string' === typeof err.data.message ) {
 									error =  err.data.message;
