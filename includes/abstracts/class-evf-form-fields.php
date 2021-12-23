@@ -1178,6 +1178,68 @@ abstract class EVF_Form_Fields {
 					false
 				);
 				break;
+			case 'enable_prepopulate':
+				$default = ! empty( $args['default'] ) ? $args['default'] : '0';
+				$value   = ! empty( $field['enable_prepopulate'] ) ? esc_attr( $field['enable_prepopulate'] ) : '';
+				$tooltip = esc_html__( 'Enable this option to allow field to be populated dynamically', 'everest-forms' );
+				$output  = $this->field_element(
+					'checkbox',
+					$field,
+					array(
+						'slug'    => 'enable_prepopulate',
+						'value'   => $value,
+						'desc'    => esc_html__( 'Enable Autopoupulate ', 'everest-forms' ),
+						'tooltip' => $tooltip,
+					),
+					false
+				);
+				$output  = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'enable_prepopulate',
+						'content' => $output,
+					),
+					false
+				);
+				break;
+			case 'parameter_name':
+					$toggle  = '';
+					$tooltip = esc_html__( 'Enter name of the parameter to populate the field.', 'everest-forms' );
+					$value   = ! empty( $field['parameter_name'] ) ? esc_attr( $field['parameter_name'] ) : '';
+
+					// Build output.
+					$output  = $this->field_element(
+						'label',
+						$field,
+						array(
+							'slug'          => 'parameter_name',
+							'value'         => esc_html__( 'Parameter Name', 'everest-forms' ),
+							'tooltip'       => $tooltip,
+							'after_tooltip' => $toggle,
+						),
+						false
+					);
+					$output .= $this->field_element(
+						'text',
+						$field,
+						array(
+							'slug'  => 'parameter_name',
+							'value' => $value,
+						),
+						false
+					);
+					$output  = $this->field_element(
+						'row',
+						$field,
+						array(
+							'slug'    => 'parameter_name',
+							'content' => $output,
+							'class'   => isset( $field['parameter_name'] ) ? '' : 'hidden',
+						),
+						false
+					);
+				break;
 
 			/*
 			 * CSS classes.
