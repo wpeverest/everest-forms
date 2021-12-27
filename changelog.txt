@@ -3,8 +3,9 @@
 = 1.8.2 - xx-xx-2021 =
 * Fix - Color Picker in Icon Color of Ratings field.
 * Enhancement - No Duplicate field option added.
-* Enhancement - Keyboard Shortcut in Form Builder
-* Feature - Populate form field via query string
+* Enhancement - Keyboard Shortcut in Form Builder.
+* Enhancement - Conditional logic conditional redirection.
+* Feature - Populate form field via query string.
 
 = 1.8.1 - 30-11-2021 =
 * Fix - Style Customizer Radio/Checkbox design not working.
