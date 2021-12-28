@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 1.8.2.1 - 28-12-2021 =
+* Fix - Sanitization and escaping issues.
+* Tweak - Images/Json files locally added.
+
 = 1.8.2 - 27-12-2021 =
 * Fix - Color Picker in Icon Color of Ratings field.
 * Enhancement - No Duplicate field option added.

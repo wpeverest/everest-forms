@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Everest Forms plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Everest Forms 1.8.2\n"
+"Project-Id-Version: Everest Forms 1.8.2.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/everest-forms\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-12-27T04:23:03+00:00\n"
+"POT-Creation-Date: 2021-12-28T13:06:07+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.5.0\n"
 "X-Domain: everest-forms\n"
@@ -968,269 +968,269 @@ msgstr ""
 msgid "Updating Templates"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:112
+#: includes/admin/class-evf-admin-assets.php:113
 #: includes/class-evf-frontend-scripts.php:293
 msgctxt "enhanced select"
 msgid "No matches found"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:113
+#: includes/admin/class-evf-admin-assets.php:114
 msgctxt "enhanced select"
 msgid "Loading failed"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:114
+#: includes/admin/class-evf-admin-assets.php:115
 msgctxt "enhanced select"
 msgid "Please enter 1 or more characters"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:115
+#: includes/admin/class-evf-admin-assets.php:116
 msgctxt "enhanced select"
 msgid "Please enter %qty% or more characters"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:116
+#: includes/admin/class-evf-admin-assets.php:117
 msgctxt "enhanced select"
 msgid "Please delete 1 character"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:117
+#: includes/admin/class-evf-admin-assets.php:118
 msgctxt "enhanced select"
 msgid "Please delete %qty% characters"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:118
+#: includes/admin/class-evf-admin-assets.php:119
 msgctxt "enhanced select"
 msgid "You can only select 1 item"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:119
+#: includes/admin/class-evf-admin-assets.php:120
 msgctxt "enhanced select"
 msgid "You can only select %qty% items"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:120
+#: includes/admin/class-evf-admin-assets.php:121
 msgctxt "enhanced select"
 msgid "Loading more results&hellip;"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:121
+#: includes/admin/class-evf-admin-assets.php:122
 msgctxt "enhanced select"
 msgid "Searching&hellip;"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:139
+#: includes/admin/class-evf-admin-assets.php:140
 msgid "field"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:140
-#: includes/admin/class-evf-admin-assets.php:211
+#: includes/admin/class-evf-admin-assets.php:141
+#: includes/admin/class-evf-admin-assets.php:212
 msgid "OK"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:141
+#: includes/admin/class-evf-admin-assets.php:142
 msgid "Installing"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:142
+#: includes/admin/class-evf-admin-assets.php:143
 msgid "Activating"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:143
+#: includes/admin/class-evf-admin-assets.php:144
 msgid "Install & Activate"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:144
+#: includes/admin/class-evf-admin-assets.php:145
 msgid "Activate Plugins"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:145
+#: includes/admin/class-evf-admin-assets.php:146
 msgid "(copy)"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:146
-#: includes/admin/class-evf-admin-editor.php:63
+#: includes/admin/class-evf-admin-assets.php:147
+#: includes/admin/class-evf-admin-editor.php:62
 msgid "Close"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:147
-#: includes/admin/class-evf-admin-assets.php:214
-#: includes/admin/class-evf-admin-editor.php:98
+#: includes/admin/class-evf-admin-assets.php:148
+#: includes/admin/class-evf-admin-assets.php:215
+#: includes/admin/class-evf-admin-editor.php:97
 msgid "Cancel"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:148
+#: includes/admin/class-evf-admin-assets.php:149
 msgid "Row Locked"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:149
+#: includes/admin/class-evf-admin-assets.php:150
 msgid "Single row cannot be deleted."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:150
+#: includes/admin/class-evf-admin-assets.php:151
 msgid "Field Locked"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:151
+#: includes/admin/class-evf-admin-assets.php:152
 msgid "This field cannot be deleted or duplicated."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:152
+#: includes/admin/class-evf-admin-assets.php:153
 msgid "This row cannot be deleted or duplicated."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:153
+#: includes/admin/class-evf-admin-assets.php:154
 msgid "This item must contain at least one choice."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:154
+#: includes/admin/class-evf-admin-assets.php:155
 msgid "Are you sure you want to delete this row?"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:155
+#: includes/admin/class-evf-admin-assets.php:156
 msgid "Are you sure you want to delete this field?"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:156
+#: includes/admin/class-evf-admin-assets.php:157
 msgid "Are you sure you want to duplicate this field?"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:157
+#: includes/admin/class-evf-admin-assets.php:158
 msgid "Are you sure you want to duplicate this row?"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:158
+#: includes/admin/class-evf-admin-assets.php:159
 msgid "Turn on Email settings to manage your email notification."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:159
+#: includes/admin/class-evf-admin-assets.php:160
 msgid "Choose an image"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:160
+#: includes/admin/class-evf-admin-assets.php:161
 msgid "Use Image"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:161
+#: includes/admin/class-evf-admin-assets.php:162
 msgid "Remove Image"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:162
+#: includes/admin/class-evf-admin-assets.php:163
 msgid "Empty Form Name"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:163
+#: includes/admin/class-evf-admin-assets.php:164
 msgid "Form name can't be empty."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:187
+#: includes/admin/class-evf-admin-assets.php:188
 msgid "is a PRO Feature"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:188
+#: includes/admin/class-evf-admin-assets.php:189
 msgid "We're sorry, the %name% is not available on your plan.<br>Please upgrade to the PRO plan to unlock all these awesome features."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:189
+#: includes/admin/class-evf-admin-assets.php:190
 msgid "Upgrade to PRO"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:191
+#: includes/admin/class-evf-admin-assets.php:192
 msgid "Please enable Stripe"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:192
+#: includes/admin/class-evf-admin-assets.php:193
 msgid "Enable Stripe Payment gateway in payments section to use this field."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:208
+#: includes/admin/class-evf-admin-assets.php:209
 msgid "Enter a Email nickname"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:209
+#: includes/admin/class-evf-admin-assets.php:210
 msgid "Eg: Support Email"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:210
+#: includes/admin/class-evf-admin-assets.php:211
 msgid "You must provide a Email nickname"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:217
+#: includes/admin/class-evf-admin-assets.php:218
 msgid "New Form Entry"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:227
+#: includes/admin/class-evf-admin-assets.php:228
 msgid "Please enter in meta key with alphanumeric characters, dashes and underscores."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:228
+#: includes/admin/class-evf-admin-assets.php:229
 msgid "Minimum value is greater than Maximum value."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:229
+#: includes/admin/class-evf-admin-assets.php:230
 msgid "Maximum value is smaller than Minimum value."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:230
+#: includes/admin/class-evf-admin-assets.php:231
 msgid "Please select a form which you want to export."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:255
+#: includes/admin/class-evf-admin-assets.php:256
 msgid "Give it a name."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:256
+#: includes/admin/class-evf-admin-assets.php:257
 msgid "You must provide a Form name"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:258
+#: includes/admin/class-evf-admin-assets.php:259
 #: includes/admin/views/html-admin-page-addons.php:133
 msgid "Upgrade Plan"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:259
+#: includes/admin/class-evf-admin-assets.php:260
 msgid "This template requires premium addons. Please upgrade to the Premium plan to unlock all these awesome Templates."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:260
+#: includes/admin/class-evf-admin-assets.php:261
 msgid "is a Premium Template"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:261
+#: includes/admin/class-evf-admin-assets.php:262
 msgid "Continue"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:262
+#: includes/admin/class-evf-admin-assets.php:263
 msgid "Untitled Form"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:263
+#: includes/admin/class-evf-admin-assets.php:264
 msgid "Uplift your form experience to the next level."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:277
+#: includes/admin/class-evf-admin-assets.php:278
 msgid "Are you sure you want to delete this log?"
 msgstr ""
 
-#: includes/admin/class-evf-admin-editor.php:42
+#: includes/admin/class-evf-admin-editor.php:41
 msgid "Add Everest Form"
 msgstr ""
 
-#: includes/admin/class-evf-admin-editor.php:44
-#: includes/admin/class-evf-admin-editor.php:102
+#: includes/admin/class-evf-admin-editor.php:43
+#: includes/admin/class-evf-admin-editor.php:101
 msgid "Add Form"
 msgstr ""
 
-#: includes/admin/class-evf-admin-editor.php:62
+#: includes/admin/class-evf-admin-editor.php:61
 msgid "Insert Form"
 msgstr ""
 
-#: includes/admin/class-evf-admin-editor.php:71
+#: includes/admin/class-evf-admin-editor.php:70
 msgid "Select a form below to insert"
 msgstr ""
 
 #. translators: %s - Everest Builder page.
-#: includes/admin/class-evf-admin-editor.php:82
+#: includes/admin/class-evf-admin-editor.php:81
 msgid "Whoops, you haven't created a form yet. Want to <a href=\"%s\">give it a go</a>?"
 msgstr ""
 
@@ -1595,35 +1595,35 @@ msgstr ""
 msgid "The changes you made will be lost if you navigate away from this page."
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:331
+#: includes/admin/class-evf-admin-settings.php:337
 msgid "Header Logo"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:332
+#: includes/admin/class-evf-admin-settings.php:338
 msgid "Upload Logo"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:613
+#: includes/admin/class-evf-admin-settings.php:656
 msgid "Select a page&hellip;"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:622
-#: includes/evf-formatting-functions.php:604
+#: includes/admin/class-evf-admin-settings.php:665
+#: includes/evf-formatting-functions.php:576
 msgid "Day(s)"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:623
-#: includes/evf-formatting-functions.php:605
+#: includes/admin/class-evf-admin-settings.php:666
+#: includes/evf-formatting-functions.php:577
 msgid "Week(s)"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:624
-#: includes/evf-formatting-functions.php:606
+#: includes/admin/class-evf-admin-settings.php:667
+#: includes/evf-formatting-functions.php:578
 msgid "Month(s)"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:625
-#: includes/evf-formatting-functions.php:607
+#: includes/admin/class-evf-admin-settings.php:668
+#: includes/evf-formatting-functions.php:579
 msgid "Year(s)"
 msgstr ""
 
