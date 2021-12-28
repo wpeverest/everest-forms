@@ -1,0 +1,18 @@
+[
+  {
+    "slug": "_all",
+    "label": "All"
+  },
+  {
+    "slug": "marketing-addons",
+    "label": "Marketing"
+  },
+  {
+    "slug": "payment-gateways",
+    "label": "Payments"
+  },
+  {
+    "slug": "operations",
+    "label": "Form Management"
+  }
+]
