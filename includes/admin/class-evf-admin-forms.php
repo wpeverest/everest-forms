@@ -106,7 +106,7 @@ class EVF_Admin_Forms {
 		$template_data = get_transient( 'evf_template_section' );
 
 		if ( false === $template_data ) {
-			$raw_templates = wp_remote_get(  evf()->plugin_url() . '/assets/extensions-json/templates/all_templates.json' );
+			$raw_templates = wp_remote_get( evf()->plugin_url() . '/assets/extensions-json/templates/all_templates.json' );
 
 			error_log( print_r( $raw_templates, true ) );
 			if ( ! is_wp_error( $raw_templates ) ) {
