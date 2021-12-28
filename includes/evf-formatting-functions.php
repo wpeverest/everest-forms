@@ -263,7 +263,6 @@ function evf_time_format() {
 	return apply_filters( 'everest_forms_time_format', get_option( 'time_format' ) );
 }
 
-
 /**
  * Callback which can flatten post meta (gets the first value if it's an array).
  *
