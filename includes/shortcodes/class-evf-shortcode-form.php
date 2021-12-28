@@ -398,9 +398,9 @@ class EVF_Shortcode_Form {
 		if ( isset( $form_data['settings']['honeypot'] ) && '1' === $form_data['settings']['honeypot'] ) {
 			echo '<div class="evf-honeypot-container evf-field-hp">';
 
-				echo '<label for="evf-' . $form_data['id'] . '-field-hp" class="evf-field-label">' . $names[ array_rand( $names ) ] . '</label>'; // phpcs:ignore
+				echo '<label for="evf-' . esc_attr( $form_data['id'] ) . '-field-hp" class="evf-field-label">' . esc_attr( $names[ array_rand( $names ) ] ) . '</label>';
 
-				echo '<input type="text" name="everest_forms[hp]" id="evf-' . $form_data['id'] . '-field-hp" class="input-text">';  // phpcs:ignore
+				echo '<input type="text" name="everest_forms[hp]" id="evf-' . esc_attr( $form_data['id'] ) . '-field-hp" class="input-text">';
 
 			echo '</div>';
 		}

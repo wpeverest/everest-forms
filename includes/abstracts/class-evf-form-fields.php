@@ -1872,7 +1872,7 @@ abstract class EVF_Form_Fields {
 			esc_attr( $field['properties']['inputs'][ $key ]['id'] ),
 			sanitize_html_class( $pos ),
 			esc_html( $hidden ),
-			evf_string_translation( (int) $this->form_data['id'], $field['id'], $field['properties']['inputs'][ $key ]['sublabel']['value'], '-sublabel-' . $key ) // phpcs:ignore WordPress.Security.EscapeOutput
+			esc_html( evf_string_translation( (int) $this->form_data['id'], $field['id'], $field['properties']['inputs'][ $key ]['sublabel']['value'], '-sublabel-' . $key ) )
 		);
 	}
 

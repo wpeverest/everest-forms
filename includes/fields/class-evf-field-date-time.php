@@ -704,7 +704,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				printf(
 					'<select value="%s" %s>',
 					esc_attr( gmdate( 'Y' ) ),
-					evf_html_attributes( 'year-select-' . $primary['id'] ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					evf_html_attributes( 'year-select-' . esc_attr( primary['id'] ) )
 				);
 				// Build the select options.
 				$end_date   = gmdate( 'Y' ) + 100;
@@ -724,7 +724,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				printf(
 					'<select value="%s" %s>',
 					esc_attr( gmdate( 'm' ) ),
-					evf_html_attributes( 'month-select-' . $primary['id'] ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					evf_html_attributes( 'month-select-' . esc_attr( $primary['id'] ) )
 				);
 				// Build the select options.
 				for ( $i = 1; $i <= 12; $i++ ) {
@@ -742,7 +742,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				printf(
 					'<select value="%s" %s>',
 					esc_attr( gmdate( 'd' ) ),
-					evf_html_attributes( 'day-select-' . $primary['id'] ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					evf_html_attributes( 'day-select-' . esc_attr( $primary['id'] ) )
 				);
 				// Build the select options.
 				for ( $i = 1; $i <= 32; $i++ ) {
@@ -770,7 +770,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				printf(
 					'<select value = "%s" %s>',
 					esc_attr( ( gmdate( 'H' ) >= $min_hour && ( gmdate( 'H' ) <= $max_hour ) ) ? gmdate( 'H' ) : $min_hour ),
-					evf_html_attributes( 'hour-select-' . $primary['id'] ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					evf_html_attributes( 'hour-select-' . esc_attr( $primary['id'] ) )
 				);
 
 				for ( $i = $min_hour; $i <= $max_hour; $i++ ) {
@@ -789,7 +789,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				// For Minutes.
 				printf(
 					'<select %s>',
-					evf_html_attributes( 'minute-select-' . $primary['id'] ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					evf_html_attributes( 'minute-select-' . esc_attr( $primary['id'] ) )
 				);
 				echo '</select>';
 			}
