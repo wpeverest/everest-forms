@@ -90,7 +90,7 @@ class EVF_Admin_Entries {
 								$output = ob_get_clean();
 
 							if ( ! empty( $output ) ) {
-								echo $output; // @codingStandardsIgnoreLine
+								echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 								submit_button( __( 'Filter', 'everest-forms' ), '', '', false, array( 'id' => 'post-query-submit' ) );
 							}
 							?>

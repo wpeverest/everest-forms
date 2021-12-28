@@ -443,7 +443,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 
 	// Wash our hands.
 	if ( $echo ) {
-		echo $output; // phpcs:ignore WordPress.Security.EscapeOutput
+		echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	} else {
 		return $output;
 	}
