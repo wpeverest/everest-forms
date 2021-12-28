@@ -306,7 +306,13 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 									value="<?php echo esc_attr( $option_value ); ?>"
 									class="<?php echo esc_attr( $value['class'] ); ?>"
 									placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
-									<?php echo implode( ' ', $custom_attributes ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+									<?php
+									if ( ! empty( $value['custom_attributes'] ) && is_array( $value['custom_attributes'] ) ) {
+										foreach ( $value['custom_attributes'] as $attribute => $attribute_value ) {
+											echo esc_attr( $attribute ) . '="' . esc_attr( $attribute_value ) . '"';
+										}
+									}
+									?>
 									/><?php echo esc_html( $value['suffix'] ); ?> <?php echo wp_kses_post( $description ); ?>
 							</td>
 						</tr>
@@ -362,7 +368,13 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 									value="<?php echo esc_attr( $option_value ); ?>"
 									class="<?php echo esc_attr( $value['class'] ); ?>colorpick"
 									placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
-									<?php echo implode( ' ', $custom_attributes ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+									<?php
+									if ( ! empty( $value['custom_attributes'] ) && is_array( $value['custom_attributes'] ) ) {
+										foreach ( $value['custom_attributes'] as $attribute => $attribute_value ) {
+											echo esc_attr( $attribute ) . '="' . esc_attr( $attribute_value ) . '"';
+										}
+									}
+									?>
 									/>&lrm; <?php echo wp_kses_post( $description ); ?>
 									<div id="colorPickerDiv_<?php echo esc_attr( $value['id'] ); ?>" class="colorpickdiv" style="z-index: 100;background:#eee;border:1px solid #ccc;position:absolute;display:none;"></div>
 							</td>
@@ -388,7 +400,13 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 									style="<?php echo esc_attr( $value['css'] ); ?>"
 									class="<?php echo esc_attr( $value['class'] ); ?>"
 									placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
-									<?php echo implode( ' ', $custom_attributes ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+									<?php
+									if ( ! empty( $value['custom_attributes'] ) && is_array( $value['custom_attributes'] ) ) {
+										foreach ( $value['custom_attributes'] as $attribute => $attribute_value ) {
+											echo esc_attr( $attribute ) . '="' . esc_attr( $attribute_value ) . '"';
+										}
+									}
+									?>
 									><?php echo esc_textarea( $option_value ); ?></textarea>
 							</td>
 						</tr>
@@ -411,7 +429,13 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 									id="<?php echo esc_attr( $value['id'] ); ?>"
 									style="<?php echo esc_attr( $value['css'] ); ?>"
 									class="<?php echo esc_attr( $value['class'] ); ?>"
-									<?php echo implode( ' ', $custom_attributes ); //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+									<?php
+									if ( ! empty( $value['custom_attributes'] ) && is_array( $value['custom_attributes'] ) ) {
+										foreach ( $value['custom_attributes'] as $attribute => $attribute_value ) {
+											echo esc_attr( $attribute ) . '="' . esc_attr( $attribute_value ) . '"';
+										}
+									}
+									?>
 									<?php echo 'multiselect' === $value['type'] ? 'multiple="multiple"' : ''; ?>
 									>
 									<?php
@@ -462,8 +486,14 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 												type="radio"
 												style="<?php echo esc_attr( $value['css'] ); ?>"
 												class="<?php echo esc_attr( $value['class'] ); ?>"
-												<?php echo implode( ' ', $custom_attributes ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-												<?php checked( $key, $option_value ); ?>
+												<?php
+												if ( ! empty( $value['custom_attributes'] ) && is_array( $value['custom_attributes'] ) ) {
+													foreach ( $value['custom_attributes'] as $attribute => $attribute_value ) {
+														echo esc_attr( $attribute ) . '="' . esc_attr( $attribute_value ) . '"';
+													}
+												}
+												?>
+																								<?php checked( $key, $option_value ); ?>
 												/> <?php echo esc_html( $val ); ?></label>
 										</li>
 										<?php
@@ -500,7 +530,13 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 												type="radio"
 												style="<?php echo esc_attr( $value['css'] ); ?>"
 												class="<?php echo esc_attr( $value['class'] ); ?>"
-												<?php echo implode( ' ', $custom_attributes ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+												<?php
+												if ( ! empty( $value['custom_attributes'] ) && is_array( $value['custom_attributes'] ) ) {
+													foreach ( $value['custom_attributes'] as $attribute => $attribute_value ) {
+														echo esc_attr( $attribute ) . '="' . esc_attr( $attribute_value ) . '"';
+													}
+												}
+												?>
 												<?php checked( $key, $option_value ); ?>
 												/>
 												<?php echo esc_html( $val['name'] ); ?></label>
@@ -568,8 +604,15 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 									class="<?php echo esc_attr( isset( $value['class'] ) ? $value['class'] : '' ); ?>"
 									value="1"
 									<?php checked( $option_value, 'yes' ); ?>
-									<?php echo implode( ' ', $custom_attributes ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-								/> <?php echo wp_kses_post( $description ); ?>
+									<?php
+									if ( ! empty( $value['custom_attributes'] ) && is_array( $value['custom_attributes'] ) ) {
+										foreach ( $value['custom_attributes'] as $attribute => $attribute_value ) {
+											echo esc_attr( $attribute ) . '="' . esc_attr( $attribute_value ) . '"';
+										}
+									}
+									?>
+									/>
+									<?php echo wp_kses_post( $description ); ?>
 							</label> <?php echo wp_kses_post( $tooltip_html ); ?>
 						<?php
 
@@ -641,8 +684,14 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 									placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
 									step="1"
 									min="1"
-									<?php echo implode( ' ', $custom_attributes ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-								/>&nbsp;
+									<?php
+									if ( ! empty( $value['custom_attributes'] ) && is_array( $value['custom_attributes'] ) ) {
+										foreach ( $value['custom_attributes'] as $attribute => $attribute_value ) {
+											echo esc_attr( $attribute ) . '="' . esc_attr( $attribute_value ) . '"';
+										}
+									}
+									?>
+									/>&nbsp;
 								<select name="<?php echo esc_attr( $value['id'] ); ?>[unit]" style="width: auto;">
 									<?php
 									foreach ( $periods as $value => $label ) {
