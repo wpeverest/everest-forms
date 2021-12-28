@@ -80,7 +80,7 @@ class EVF_Admin_Import_Export {
 	public static function import_form() {
 		// Check for $_FILES set or not.
 		if ( isset( $_FILES['jsonfile']['name'], $_FILES['jsonfile']['tmp_name'] ) ) {
-			$filename  = esc_html( sanitize_text_field( wp_unslash( $_FILES['jsonfile']['name'] ) ) );
+			$filename  = sanitize_file_name( wp_unslash( $_FILES['jsonfile']['name'] ) );
 			$extension = pathinfo( $filename, PATHINFO_EXTENSION );
 
 			// Check for file format.
