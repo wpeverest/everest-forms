@@ -103,6 +103,7 @@ class EVF_Admin_Assets {
 				'i18n_get_preview' => esc_html__( 'Preview', 'everest-forms' ),
 				'i18n_pro_feature' => esc_html__( 'Pro', 'everest-forms' ),
 				'template_refresh' => esc_html__( 'Updating Templates', 'everest-forms' ),
+				'evf_plugin_url'   => esc_url( evf()->plugin_url() ),
 			)
 		);
 		wp_localize_script(
