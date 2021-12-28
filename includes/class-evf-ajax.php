@@ -491,7 +491,7 @@ class EVF_AJAX {
 			EVF_Updater_Key_API::version(
 				array(
 					'license'   => get_option( 'everest-forms-pro_license_key' ),
-					'item_name' => sanitize_text_field( wp_unslash( $_POST['name'] ) ), // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
+					'item_name' => ! empty( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '',
 				)
 			)
 		);
