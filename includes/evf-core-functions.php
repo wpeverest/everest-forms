@@ -608,7 +608,7 @@ function evf_print_r( $expression, $return = false ) {
 				return $res;
 			}
 
-			echo $res; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo wp_kses_post( $res );
 			return true;
 		}
 	}
@@ -1005,7 +1005,7 @@ function evf_html_attributes( $id = '', $class = array(), $datas = array(), $att
 	$output = implode( ' ', $parts );
 
 	if ( $echo ) {
-		echo trim( $output ); // @codingStandardsIgnoreLine
+		echo esc_html( trim( $output ) );
 	} else {
 		return trim( $output );
 	}
@@ -1193,7 +1193,7 @@ function evf_get_ip_address() {
  * @return array
  */
 function evf_get_browser() {
-	$u_agent  = sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
+	$u_agent  = ! empty( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) ) : '';
 	$bname    = 'Unknown';
 	$platform = 'Unknown';
 	$version  = '';
@@ -2032,7 +2032,7 @@ function evf_debug_data( $expression, $return = false ) {
 		if ( $return ) {
 			return $output;
 		} else {
-			echo $output; // phpcs:ignore
+			echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
 	}
 }

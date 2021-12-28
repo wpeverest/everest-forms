@@ -87,7 +87,7 @@ $trash_link = wp_nonce_url(
 										$correct_answers = false;
 
 										// Field name.
-										echo '<tr class="everest-forms-entry-field field-name' . $field_class . '" style="' . esc_attr( $field_style ) . '"><th>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+										echo '<tr class="everest-forms-entry-field field-name' . esc_attr( $field_class ) . '" style="' . esc_attr( $field_style ) . '"><th>';
 
 										$value = evf_get_form_data_by_meta_key( $form_id, $meta_key, json_decode( $entry->fields ) );
 
@@ -95,7 +95,7 @@ $trash_link = wp_nonce_url(
 											if ( apply_filters( 'everest_forms_html_field_label', false ) ) {
 												$correct_answers = apply_filters( 'everest_forms_single_entry_label', $value, $meta_key, $field_value );
 											} else {
-												echo '<strong>' . make_clickable( $value ) . '</strong>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+												echo '<strong>' . esc_html( make_clickable( $value ) ) . '</strong>';
 											}
 										} else {
 											echo '<strong>' . esc_html__( 'Field ID', 'everest-forms' ) . '</strong>';
@@ -104,7 +104,7 @@ $trash_link = wp_nonce_url(
 										echo '</th></tr>';
 
 										// Field value.
-										echo '<tr class="everest-forms-entry-field field-value' . $field_class . '" style="' . $field_style . '"><td>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+										echo '<tr class="everest-forms-entry-field field-value' . esc_attr( $field_class ) . '" style="' . esc_attr( $field_style ) . '"><td>';
 
 										if ( ! empty( $field_value ) ) {
 											if ( is_serialized( $field_value ) ) {
@@ -121,7 +121,7 @@ $trash_link = wp_nonce_url(
 																$answer_class = 'wrong_answer';
 															}
 														}
-														echo '<span class="list ' . $answer_class . '">' . esc_html( wp_strip_all_tags( $value ) ) . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+														echo '<span class="list ' . esc_attr( $answer_class ) . '">' . esc_html( wp_strip_all_tags( $value ) ) . '</span>';
 													}
 												} else {
 													echo nl2br( make_clickable( $field_label ) ); // @codingStandardsIgnoreLine
@@ -133,7 +133,7 @@ $trash_link = wp_nonce_url(
 													} else {
 														$answer_class = 'wrong_answer';
 													}
-													echo '<span class="list ' . $answer_class . '">' . esc_html( wp_strip_all_tags( $field_value ) ) . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+													echo '<span class="list ' . esc_attr( $answer_class ) . '">' . esc_html( wp_strip_all_tags( $field_value ) ) . '</span>';
 												} else {
 													echo nl2br( make_clickable( $field_value ) ); // @codingStandardsIgnoreLine
 												}
@@ -169,14 +169,14 @@ $trash_link = wp_nonce_url(
 									<p class="everest-forms-entry-date">
 										<span class="dashicons dashicons-calendar"></span>
 										<?php esc_html_e( 'Submitted:', 'everest-forms' ); ?>
-										<strong><?php echo date_i18n( esc_html__( 'M j, Y @ g:ia', 'everest-forms' ), strtotime( $entry->date_created ) + ( get_option( 'gmt_offset' ) * 3600 ) ); // phpcs:ignore WordPress.Security.EscapeOutput ?> </strong>
+										<strong><?php echo esc_html( date_i18n( esc_html__( 'M j, Y @ g:ia', 'everest-forms' ), strtotime( $entry->date_created ) + ( get_option( 'gmt_offset' ) * 3600 ) ) ); ?> </strong>
 									</p>
 
 									<?php if ( ! empty( $entry->date_modified ) ) : ?>
 										<p class="everest-forms-entry-modified">
 											<span class="dashicons dashicons-calendar"></span>
 											<?php esc_html_e( 'Modified:', 'everest-forms' ); ?>
-											<strong><?php echo date_i18n( esc_html__( 'M j, Y @ g:ia', 'everest-forms' ), strtotime( $entry->date_modified ) + ( get_option( 'gmt_offset' ) * 3600 ) ); // phpcs:ignore WordPress.Security.EscapeOutput ?> </strong>
+											<strong><?php echo esc_html( date_i18n( esc_html__( 'M j, Y @ g:ia', 'everest-forms' ), strtotime( $entry->date_modified ) + ( get_option( 'gmt_offset' ) * 3600 ) ) ); ?> </strong>
 										</p>
 									<?php endif; ?>
 
@@ -219,7 +219,7 @@ $trash_link = wp_nonce_url(
 										<p class="everest-forms-entry-status">
 											<span class="dashicons dashicons-category"></span>
 											<?php esc_html_e( 'Status:', 'everest-forms' ); ?>
-											<strong><?php echo ! empty( $entry->status ) ? ucwords( sanitize_text_field( $entry->status ) ) : esc_html__( 'Completed', 'everest-forms' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></strong>
+											<strong><?php echo ! empty( $entry->status ) ? esc_html( ucwords( sanitize_text_field( $entry->status ) ) ) : esc_html__( 'Completed', 'everest-forms' ); ?></strong>
 										</p>
 									<?php endif; ?>
 
