@@ -1534,7 +1534,7 @@ abstract class EVF_Form_Fields {
 					foreach ( $values as $value ) {
 						$default     = isset( $value['default'] ) ? $value['default'] : '';
 						$selected    = checked( '1', $default, false );
-						$placeholder = evf()->plugin_url() . '/assets/images/everest-forms-placeholder.png';
+						$placeholder = wp_remote_get( evf()->plugin_url() . '/assets/images/everest-forms-placeholder.png' );
 						$image_src   = ! empty( $value['image'] ) ? esc_url( $value['image'] ) : $placeholder;
 						$item_class  = array();
 
@@ -1872,7 +1872,7 @@ abstract class EVF_Form_Fields {
 			esc_attr( $field['properties']['inputs'][ $key ]['id'] ),
 			sanitize_html_class( $pos ),
 			esc_html( $hidden ),
-			evf_string_translation( (int) $this->form_data['id'], $field['id'], $field['properties']['inputs'][ $key ]['sublabel']['value'], '-sublabel-' . $key ) // phpcs:ignore WordPress.Security.EscapeOutput
+			esc_html( evf_string_translation( (int) $this->form_data['id'], $field['id'], $field['properties']['inputs'][ $key ]['sublabel']['value'], '-sublabel-' . $key ) )
 		);
 	}
 
