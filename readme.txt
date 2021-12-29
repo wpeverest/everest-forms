@@ -302,7 +302,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 1.8.2.1 - 28-12-2021 =
+= 1.8.2.1 - 29-12-2021 =
 * Fix - Sanitization and escaping issues.
 * Tweak - Images/Json files locally added.
 
