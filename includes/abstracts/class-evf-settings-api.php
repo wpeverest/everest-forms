@@ -326,7 +326,7 @@ abstract class EVF_Settings_API {
 		}
 
 		if ( $echo ) {
-			echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo wp_kses( $output, evf_get_allowed_html_tags( 'builder' ) );
 		} else {
 			return $html;
 		}

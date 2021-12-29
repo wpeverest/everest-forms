@@ -340,7 +340,7 @@ abstract class EVF_Form_Fields {
 		}
 
 		if ( $echo ) {
-			echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo wp_kses( $output, evf_get_allowed_html_tags( 'builder' ) );
 		} else {
 			return $output;
 		}
@@ -1408,7 +1408,7 @@ abstract class EVF_Form_Fields {
 					do_action( "everest_forms_field_options_bottom_{$option}", $field, $this );
 				}
 
-				echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo wp_kses( $output, evf_get_allowed_html_tags( 'builder' ) );
 
 				if ( 'open' === $markup ) {
 					do_action( "everest_forms_field_options_top_{$option}", $field, $this );
@@ -1418,7 +1418,7 @@ abstract class EVF_Form_Fields {
 					do_action( "everest_forms_field_options_after_{$option}", $field, $this );
 				}
 			} else {
-				echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo wp_kses( $output, evf_get_allowed_html_tags( 'builder' ) );
 			}
 		} else {
 			return $output;
@@ -1587,7 +1587,7 @@ abstract class EVF_Form_Fields {
 				do_action( "everest_forms_field_options_bottom_{$option}", $field, $this );
 			}
 
-			echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo wp_kses( $output, evf_get_allowed_html_tags( 'builder' ) );
 
 			if ( 'open' === $markup ) {
 				do_action( "everest_forms_field_options_top_{$option}", $field, $this );
@@ -1597,7 +1597,7 @@ abstract class EVF_Form_Fields {
 				do_action( "everest_forms_field_options_after_{$option}", $field, $this );
 			}
 		} else {
-			echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo wp_kses( $output, evf_get_allowed_html_tags( 'builder' ) );
 		}
 	}
 
