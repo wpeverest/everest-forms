@@ -563,7 +563,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 			$output = ob_get_clean();
 
 			if ( ! empty( $output ) ) {
-				echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo wp_kses( $output, evf_get_allowed_html_tags( 'form_dropdown' ) );
 				submit_button( __( 'Filter', 'everest-forms' ), '', 'filter_action', false, array( 'id' => 'post-query-submit' ) );
 
 				// Export CSV submit button.

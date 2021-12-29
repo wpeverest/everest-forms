@@ -1,0 +1,285 @@
+{
+  "div": {
+    "id": true,
+    "class": true,
+    "style": true,
+    "tabindex": true,
+    "data-field-id": true,
+    "data-part-id": true,
+    "data-current-part": true,
+    "data-row-id": true,
+    "data-evf-grid": true,
+    "data-grid-id": true,
+    "data-field-type": true,
+    "data-total-rows": true,
+    "data-next-row-id": true,
+    "data-tip": true,
+    "data-next-id": true,
+    "data-key": true,
+    "data-provider": true,
+    "data-source": true,
+    "role": true,
+    "aria-labelledby": true,
+    "hidden": true,
+    "data-feature": true,
+    "data-subfield": true
+  },
+  "svg": {
+    "xmlns": true,
+    "id": true,
+    "viewBox": true,
+    "height": true,
+    "width": true,
+    "fill": true,
+    "role": true,
+    "aria-hidden": true,
+    "focusable": true,
+    "style": true
+  },
+  "g": {
+    "id": true,
+    "data-name": true,
+    "fill": true,
+    "fill-rule": true,
+    "class": true,
+    "transform": true
+  },
+  "path": {
+    "fill": true,
+    "style": true,
+    "d": true,
+    "opacity": true,
+    "class": true,
+    "id": true
+  },
+  "span": {
+    "class": true,
+    "id": true,
+    "title": true,
+    "style": true,
+    "data-selection": true,
+    "data-type": true,
+    "data-feature": true,
+    "aria-hidden": true,
+    "role": true,
+    "data-setting": true,
+    "tabindex": true
+  },
+  "form": {
+    "id": true,
+    "name": true,
+    "method": true,
+    "data-id": true,
+    "style": true
+  },
+  "input": {
+    "type": true,
+    "name": true,
+    "value": true,
+    "id": true,
+    "class": true,
+    "onfocus": true,
+    "readonly": true,
+    "placeholder": true,
+    "checked": true,
+    "data-panel-source": true,
+    "data-key": true,
+    "disabled": true,
+    "autocomplete": true,
+    "required": true,
+    "style": true,
+    "data-connection-id": true,
+    "aria-label": true,
+    "title": true,
+    "min": true,
+    "data-default-color": true,
+    "max": true,
+    "data-name": true,
+    "Entry": true,
+    "data-setting": true,
+    "aria-describedby": true,
+    "step": true,
+    "pattern": true,
+    "data-date-format": true,
+    "data-sync-targets": true,
+    "data-label": true,
+    "data-min": true,
+    "data-max": true,
+    "data-from": true,
+    "data-disable": true,
+    "data-skin": true,
+    "data-grid": true,
+    "data-hide-min-max": true,
+    "data-grid-snap": true,
+    "tabindex": true
+  },
+  "nav": {
+    "class": true
+  },
+  "a": {
+    "href": true,
+    "class": true,
+    "data-panel": true,
+    "rel": true,
+    "target": true,
+    "id": true,
+    "style": true,
+    "data-group": true,
+    "data-type": true,
+    "data-panel-source": true,
+    "title": true,
+    "data-section": true,
+    "data-fields": true,
+    "data-rated": true,
+    "aria-current": true,
+    "tabindex": true
+  },
+  "button": {
+    "id": true,
+    "class": true,
+    "href": true,
+    "data-tip": true,
+    "data-copied": true,
+    "name": true,
+    "type": true,
+    "value": true,
+    "data-field-type": true,
+    "data-total-parts": true,
+    "data-source": true,
+    "data-type": true,
+    "aria-expanded": true,
+    "aria-labelledby": true,
+    "data-clipboard-target": true,
+    "tabindex": true,
+    "data-mime": true
+  },
+  "img": {
+    "src": true,
+    "alt": true,
+    "class": true,
+    "draggable": true
+  },
+  "h3": {
+    "class": true
+  },
+  "i": {
+    "class": true,
+    "title": true,
+    "href": true,
+    "target": true,
+    "data-label": true,
+    "data-input": true
+  },
+  "label": {
+    "for": true,
+    "class": true,
+    "style": true,
+    "data-label": true,
+    "data-input": true
+  },
+  "textarea": {
+    "class": true,
+    "id": true,
+    "name": true,
+    "rows": true,
+    "placeholder": true,
+    "cols": true,
+    "disabled": true,
+    "style": true,
+    "readonly": true,
+    "data-setting": true,
+    "hidden": true
+  },
+  "ul": {
+    "class": true,
+    "data-group": true,
+    "data-field-id": true,
+    "data-next-id": true,
+    "data-field-type": true,
+    "data-choice-type": true,
+    "data-tax": true,
+    "data-rule": true
+  },
+  "select": {
+    "class": true,
+    "name": true,
+    "data-panel-source": true,
+    "id": true,
+    "style": true,
+    "data-source": true,
+    "data-field-map-allowed": true,
+    "data-field-map-placeholder": true,
+    "data-name": true,
+    "data-setting": true,
+    "data-placeholder": true,
+    "disabled": true
+  },
+  "option": {
+    "value": true,
+    "selected": true,
+    "class": true
+  },
+  "li": {
+    "class": true,
+    "data-key": true,
+    "data-part-id": true,
+    "data-connection-id": true
+  },
+  "h4": {
+    "class": true
+  },
+  "link": {
+    "rel": true,
+    "id": true,
+    "href": true,
+    "media": true
+  },
+  "p": {
+    "class": true,
+    "id": true
+  },
+  "optgroup": {
+    "label": true
+  },
+  "figure": {
+    "class": true
+  },
+  "table": {
+    "class": true
+  },
+  "th": {
+    "scope": true,
+    "class": true
+  },
+  "tbody": {
+    "id": true
+  },
+  "td": {
+    "class": true
+  },
+  "h2": {
+    "class": true
+  },
+  "audio": {
+    "style": true,
+    "class": true,
+    "width": true,
+    "preload": true
+  },
+  "fieldset": {
+    "class": true
+  },
+  "legend": {
+    "class": true
+  },
+  "source": {
+    "type": true,
+    "src": true
+  },
+  "hr": {
+    "class": true
+  },
+  "canvas": {
+    "style": true
+  }
+}
