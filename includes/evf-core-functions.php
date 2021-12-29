@@ -2032,7 +2032,7 @@ function evf_debug_data( $expression, $return = false ) {
 		if ( $return ) {
 			return $output;
 		} else {
-			echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo wp_kses( $output, evf_get_allowed_html_tags() );
 		}
 	}
 }
@@ -2375,4 +2375,37 @@ function evf_process_underline_syntax( $text ) {
  */
 function evf_process_line_breaks( $text ) {
 	return str_replace( "\n", '<br/>', $text );
+}
+
+/**
+ * EVF KSES.
+ *
+ * @since 1.8.2.1
+ *
+ * @param string $context Context.
+ */
+function evf_get_allowed_html_tags( $context = '' ) {
+	$post_tags = wp_kses_allowed_html( 'post' );
+	return wp_parse_args(
+		$post_tags,
+		array(
+			'input'    => array(
+				'type'  => true,
+				'name'  => true,
+				'value' => true,
+			),
+			'select'   => array(
+				'name' => true,
+				'id'   => true,
+			),
+			'option'   => array(
+				'value'    => true,
+				'selected' => true,
+			),
+			'textarea' => array(
+				'style' => true,
+			),
+		)
+	);
+
 }
