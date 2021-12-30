@@ -2387,7 +2387,7 @@ function evf_get_allowed_html_tags( $context = '' ) {
 	$post_tags = wp_kses_allowed_html( 'post' );
 	if ( 'builder' === $context ) {
 		$response = wp_safe_remote_get( evf()->plugin_url() . '/assets/allowed_tags/allowed_tags.json' );
-		if ( 200 === $response['response']['code'] ) {
+		if ( $response && 200 === $response['response']['code'] ) {
 			$json = wp_remote_retrieve_body( $response );
 			if ( ! empty( $json ) ) {
 				$allowed_tags = json_decode( $json, true );
