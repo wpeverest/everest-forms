@@ -64,13 +64,12 @@ class EVF_Admin_Import_Export {
 			ob_clean();
 		}
 
-		$export_json = wp_json_encode( $export_data );
 		// Force download.
 		header( 'Content-Type: application/force-download' );
 		// Disposition / Encoding on response body.
 		header( "Content-Disposition: attachment;filename={$file_name}; charset=utf-8" );
 		header( 'Content-type: application/json' );
-		echo $export_json; // phpcs:ignore WordPress.Security.EscapeOutput
+		echo wp_json_encode( $export_data );
 		exit();
 	}
 

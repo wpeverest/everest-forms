@@ -239,7 +239,7 @@ function evf_print_js() {
 		 * @since 1.0.0
 		 * @param string $js JavaScript code.
 		 */
-		echo apply_filters( 'everest_forms_queued_js', $js ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo apply_filters( 'everest_forms_queued_js', $js );
 
 		unset( $evf_queued_js );
 	}
