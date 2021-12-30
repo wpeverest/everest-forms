@@ -239,7 +239,7 @@ function evf_print_js() {
 		 * @since 1.0.0
 		 * @param string $js JavaScript code.
 		 */
-		echo apply_filters( 'everest_forms_queued_js', $js );
+		echo wp_kses( apply_filters( 'everest_forms_queued_js', $js ), array( 'script' => array( 'type' => true ) ) );
 
 		unset( $evf_queued_js );
 	}
