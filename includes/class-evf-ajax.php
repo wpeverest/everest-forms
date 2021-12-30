@@ -578,7 +578,7 @@ class EVF_AJAX {
 			);
 		}
 
-		do_action( 'everest_forms_integration_account_connect_' . sanitize_text_field( wp_unslash( $_POST['source'] ) ), $_POST ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
+		do_action( 'everest_forms_integration_account_connect_' . isset( $_POST['source'] ) ? sanitize_text_field( wp_unslash( $_POST['source'] ) ) : '', $_POST );
 	}
 
 	/**
@@ -620,7 +620,7 @@ class EVF_AJAX {
 			);
 		}
 
-		do_action( 'everest_forms_integration_account_disconnect_' . sanitize_text_field( wp_unslash( $_POST['source'] ) ), $_POST ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
+		do_action( 'everest_forms_integration_account_disconnect_' . isset( $_POST['source'] ) ? sanitize_text_field( wp_unslash( $_POST['source'] ) ) : '', $_POST );
 
 		$connected_accounts = get_option( 'everest_forms_integrations', false );
 
