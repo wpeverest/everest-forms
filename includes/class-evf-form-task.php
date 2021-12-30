@@ -395,7 +395,7 @@ class EVF_Form_Task {
 	 */
 	public function ajax_form_submission( $posted_data ) {
 		add_filter( 'wp_redirect', array( $this, 'ajax_process_redirect' ), 999 );
-		$process = $this->do_task( evf_sanitize_entry( wp_unslash( $posted_data ) ) );
+		$process = $this->do_task( $posted_data );
 		return $process;
 	}
 

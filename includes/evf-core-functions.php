@@ -2484,7 +2484,7 @@ function evf_sanitize_entry( $entry = array() ) {
 	$form_fields = $form_data['form_fields'];
 
 	if ( empty( $form_fields ) ) {
-		return arraay();
+		return array();
 	}
 
 	foreach ( $form_fields as $key => $field ) {
