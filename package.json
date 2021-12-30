@@ -74,5 +74,8 @@
       "eslint --fix",
       "git add"
     ]
+  },
+  "dependencies": {
+    "grunt-cli": "1.4.3"
   }
 }
