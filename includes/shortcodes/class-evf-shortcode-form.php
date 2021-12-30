@@ -225,7 +225,7 @@ class EVF_Shortcode_Form {
 					'strong' => array(),
 				)
 			),
-			esc_attr( $required ),
+			wp_kses( $required, evf_get_allowed_html_tags( 'builder' ) ),
 			wp_kses( $custom_tags, evf_get_allowed_html_tags( 'builder' ) )
 		);
 	}
@@ -743,7 +743,7 @@ class EVF_Shortcode_Form {
 
 		ob_start();
 		self::view( $atts['id'], $atts['title'], $atts['description'] );
-		echo wp_kses( ob_get_clean(), evf_get_allowed_html_tags( 'builder' ) );
+		echo ob_get_clean(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
