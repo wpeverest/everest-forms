@@ -109,7 +109,7 @@ class EVF_Shortcode_Form {
 			esc_attr( $conditional_rules ),
 			esc_attr( $conditional_id ),
 			esc_attr( $visible ),
-			esc_attr( $submit_btn )
+			esc_html( $submit_btn )
 		);
 
 		do_action( 'everest_forms_display_submit_after', $form_data );
