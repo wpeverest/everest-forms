@@ -239,8 +239,7 @@ function evf_print_js() {
 		 * @since 1.0.0
 		 * @param string $js JavaScript code.
 		 */
-		echo apply_filters( 'everest_forms_queued_js', $js ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.EscapeOutput.OutputNotEscaped
-
+		echo wp_kses( apply_filters( 'everest_forms_queued_js', $js ), array( 'script' => array( 'type' => true ) ) );
 		unset( $evf_queued_js );
 	}
 }
@@ -287,7 +286,7 @@ function evf_get_log_file_path( $handle ) {
  */
 function evf_get_csv_file_name( $handle ) {
 	if ( function_exists( 'wp_hash' ) ) {
-		$date_suffix = date( 'Y-m-d', time() ); // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
+		$date_suffix = date_i18n( 'Y-m-d', time() );
 		$hash_suffix = wp_hash( $handle );
 		return sanitize_file_name( implode( '-', array( 'evf-entry-export', $handle, $date_suffix, $hash_suffix ) ) . '.csv' );
 	} else {
@@ -2430,4 +2429,30 @@ function evf_get_allowed_html_tags( $context = '' ) {
 			),
 		)
 	);
+}
+
+/**
+ * Parse Builder Post Data.
+ *
+ * @param mixed $post_data Post Data.
+ *
+ * @since 1.8.2.2
+ */
+function evf_sanitize_builder( $post_data = array() ) {
+	if ( empty( $post_data ) || ! is_array( $post_data ) ) {
+		return array();
+	}
+
+	$form_data = array();
+	foreach ( $post_data as $data_key => $data ) {
+		$name = sanitize_text_field( $data->name );
+		if ( preg_match( '/\<.*\>/', $data->value ) ) {
+			$value = wp_kses_post( $data->value );
+		} else {
+			$value = sanitize_text_field( $data->value );
+		}
+		$form_data[ $data_key ]->name  = $name;
+		$form_data[ $data_key ]->value = $value;
+	}
+	return $form_data;
 }

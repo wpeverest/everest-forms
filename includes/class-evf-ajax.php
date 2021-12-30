@@ -216,7 +216,7 @@ class EVF_AJAX {
 			die( esc_html__( 'No data provided', 'everest-forms' ) );
 		}
 
-		$form_post = json_decode( stripslashes( $_POST['form_data'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+		$form_post = evf_sanitize_builder( json_decode( wp_unslash( $_POST['form_data'] ) ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 
 		$data = array();
 
@@ -326,7 +326,7 @@ class EVF_AJAX {
 		check_ajax_referer( 'everest_forms_ajax_form_submission', 'security' );
 
 		if ( ! empty( $_POST['everest_forms']['id'] ) ) {
-			$process = evf()->task->ajax_form_submission( stripslashes_deep( $_POST['everest_forms'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			$process = evf()->task->ajax_form_submission( wp_unslash( $_POST['everest_forms'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 			if ( 'success' === $process['response'] ) {
 				wp_send_json_success( $process );
 			}
@@ -578,7 +578,7 @@ class EVF_AJAX {
 			);
 		}
 
-		do_action( 'everest_forms_integration_account_connect_' . sanitize_text_field( wp_unslash( $_POST['source'] ) ), $_POST ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
+		do_action( 'everest_forms_integration_account_connect_' . isset( $_POST['source'] ) ? sanitize_text_field( wp_unslash( $_POST['source'] ) ) : '', $_POST );
 	}
 
 	/**
@@ -620,7 +620,7 @@ class EVF_AJAX {
 			);
 		}
 
-		do_action( 'everest_forms_integration_account_disconnect_' . sanitize_text_field( wp_unslash( $_POST['source'] ) ), $_POST ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
+		do_action( 'everest_forms_integration_account_disconnect_' . isset( $_POST['source'] ) ? sanitize_text_field( wp_unslash( $_POST['source'] ) ) : '', $_POST );
 
 		$connected_accounts = get_option( 'everest_forms_integrations', false );
 

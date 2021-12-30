@@ -1626,7 +1626,7 @@ abstract class EVF_Form_Fields {
 		}
 
 		// Grab field data.
-		$field_args     = ! empty( $_POST['defaults'] ) ? (array) wp_unslash( $_POST['defaults'] ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$field_args     = ! empty( $_POST['defaults'] ) && is_array( $_POST['defaults'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['defaults'] ) ) : array();
 		$field_type     = esc_attr( sanitize_text_field( wp_unslash( $_POST['field_type'] ) ) );
 		$field_id       = evf()->form->field_unique_key( sanitize_text_field( wp_unslash( $_POST['form_id'] ) ) );
 		$field          = array(
@@ -1739,7 +1739,7 @@ abstract class EVF_Form_Fields {
 			return $properties;
 		}
 
-		$get_value = stripslashes( sanitize_text_field( $raw_value ) );
+		$get_value = wp_unslash( sanitize_text_field( $raw_value ) );
 
 		if ( ! empty( $field['choices'] ) && is_array( $field['choices'] ) ) {
 			$properties = $this->get_single_field_property_value_choices( $get_value, $properties, $field );

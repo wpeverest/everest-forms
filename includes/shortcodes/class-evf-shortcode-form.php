@@ -103,13 +103,13 @@ class EVF_Shortcode_Form {
 
 		printf(
 			"<button type='submit' name='everest_forms[submit]' class='everest-forms-submit-button button evf-submit %s' id='evf-submit-%d' value='evf-submit' %s conditional_rules='%s' conditional_id='%s' %s>%s</button>",
-			$classes, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			$form_id, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			$process, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			$conditional_rules, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			$conditional_id, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			$visible, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			$submit_btn // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			esc_attr( $classes ),
+			esc_attr( $form_id ),
+			! isset( $settings['submit_button_processing_text'] ) ? 'data-process-text="' . esc_attr__( 'Processing&hellip;', 'everest-forms' ) . '"' : ( ! empty( $settings['submit_button_processing_text'] ) ? 'data-process-text="' . esc_attr( evf_string_translation( $form_data['id'], 'processing_text', $settings['submit_button_processing_text'] ) ) . '"' : '' ),
+			esc_attr( $conditional_rules ),
+			esc_attr( $conditional_id ),
+			esc_attr( $visible ),
+			esc_html( $submit_btn )
 		);
 
 		do_action( 'everest_forms_display_submit_after', $form_data );
@@ -168,7 +168,7 @@ class EVF_Shortcode_Form {
 		printf(
 			'<div %s>%s</div>',
 			evf_html_attributes( $description['id'], $description['class'], $description['data'], $description['attr'] ),
-			evf_string_translation( $form_data['id'], $field['id'], $description['value'], '-description' ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			wp_kses( evf_string_translation( $form_data['id'], $field['id'], $description['value'], '-description' ), evf_get_allowed_html_tags( 'builder' ) )
 		);
 	}
 
@@ -192,28 +192,41 @@ class EVF_Shortcode_Form {
 		printf(
 			'<label %s><span class="evf-label">%s</span> %s</label>',
 			evf_html_attributes( $label['id'], $label['class'], $label['data'], $label['attr'] ),
-			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			evf_string_translation(
-				$form_data['id'],
-				$field['id'],
-				wp_kses(
-					$label['value'],
-					array(
-						'a'      => array(
-							'href'  => array(),
-							'class' => array(),
-						),
-						'span'   => array(
-							'class' => array(),
-						),
-						'em'     => array(),
-						'small'  => array(),
-						'strong' => array(),
+			wp_kses(
+				evf_string_translation(
+					$form_data['id'],
+					$field['id'],
+					wp_kses(
+						$label['value'],
+						array(
+							'a'      => array(
+								'href'  => array(),
+								'class' => array(),
+							),
+							'span'   => array(
+								'class' => array(),
+							),
+							'em'     => array(),
+							'small'  => array(),
+							'strong' => array(),
+						)
 					)
+				),
+				array(
+					'a'      => array(
+						'href'  => array(),
+						'class' => array(),
+					),
+					'span'   => array(
+						'class' => array(),
+					),
+					'em'     => array(),
+					'small'  => array(),
+					'strong' => array(),
 				)
 			),
-			$required, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			$custom_tags // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			wp_kses( $required, evf_get_allowed_html_tags( 'builder' ) ),
+			wp_kses( $custom_tags, evf_get_allowed_html_tags( 'builder' ) )
 		);
 	}
 
@@ -730,7 +743,7 @@ class EVF_Shortcode_Form {
 
 		ob_start();
 		self::view( $atts['id'], $atts['title'], $atts['description'] );
-		echo ob_get_clean(); // phpcs:ignore WordPress.Security.EscapeOutput
+		echo ob_get_clean(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**

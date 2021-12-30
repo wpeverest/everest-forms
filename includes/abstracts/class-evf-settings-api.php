@@ -721,7 +721,7 @@ abstract class EVF_Settings_API {
 	 */
 	public function validate_text_field( $key, $value ) {
 		$value = is_null( $value ) ? '' : $value;
-		return wp_kses_post( trim( stripslashes( $value ) ) );
+		return wp_kses_post( trim( wp_unslash( $value ) ) );
 	}
 
 	/**
@@ -733,7 +733,7 @@ abstract class EVF_Settings_API {
 	 */
 	public function validate_password_field( $key, $value ) {
 		$value = is_null( $value ) ? '' : $value;
-		return trim( stripslashes( $value ) );
+		return trim( wp_unslash( $value ) );
 	}
 
 	/**
@@ -746,7 +746,7 @@ abstract class EVF_Settings_API {
 	public function validate_textarea_field( $key, $value ) {
 		$value = is_null( $value ) ? '' : $value;
 		return wp_kses(
-			trim( stripslashes( $value ) ),
+			trim( wp_unslash( $value ) ),
 			array_merge(
 				array(
 					'iframe' => array(
@@ -783,7 +783,7 @@ abstract class EVF_Settings_API {
 	 */
 	public function validate_select_field( $key, $value ) {
 		$value = is_null( $value ) ? '' : $value;
-		return evf_clean( stripslashes( $value ) );
+		return evf_clean( wp_unslash( $value ) );
 	}
 
 	/**
