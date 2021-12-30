@@ -2451,8 +2451,71 @@ function evf_sanitize_builder( $post_data = array() ) {
 		} else {
 			$value = sanitize_text_field( $data->value );
 		}
-		$form_data[ $data_key ]->name  = $name;
-		$form_data[ $data_key ]->value = $value;
+		$form_data[ sanitize_text_field( $data_key ) ] = (object) array(
+			'name'  => $name,
+			'value' => $value,
+		);
 	}
 	return $form_data;
+}
+
+
+/**
+ * Entry Post Data.
+ *
+ * @param mixed $entry Post Data.
+ *
+ * @since 1.8.2.2
+ */
+function evf_sanitize_entry( $entry = array() ) {
+	if ( empty( $entry ) || ! is_array( $entry ) || empty( $entry['form_fields'] ) ) {
+		return array();
+	}
+
+	$form_id   = absint( $entry['id'] );
+	$form_data = evf()->form->get( $form_id, array( 'contents_only' => true ) );
+
+	if ( ! $form_data ) {
+		return array();
+	}
+
+	$form_data = evf_decode( $form_data->post_content );
+
+	$form_fields = $form_data['form_fields'];
+
+	if ( empty( $form_fields ) ) {
+		return arraay();
+	}
+
+	foreach ( $form_fields as $key => $field ) {
+		$key = sanitize_text_field( $key );
+		if ( array_key_exists( $key, $entry['form_fields'] ) ) {
+			switch ( $field['type'] ) {
+				case 'email':
+					$entry['form_fields'][ $key ] = sanitize_email( $entry['form_fields'][ $key ] );
+					break;
+				case 'file-upload':
+				case 'signature':
+				case 'image-upload':
+					$entry['form_fields'][ $key ] = esc_url_raw( $entry['form_fields'][ $key ] );
+					break;
+				case 'textarea':
+				case 'html':
+				case 'privacy-policy':
+					$entry['form_fields'][ $key ] = wp_kses_post( $entry['form_fields'][ $key ] );
+					break;
+				default:
+					if ( is_array( $entry['form_fields'][ $key ] ) ) {
+						foreach ( $entry['form_fields'][ $key ] as $field_key => $value ) {
+							$field_key = sanitize_text_field( $field_key );
+							$entry['form_fields'][ $key ][ $field_key ] = sanitize_text_field( $value );
+						}
+					} else {
+						$entry['form_fields'][ $key ] = sanitize_text_field( $entry['form_fields'][ $key ] );
+					}
+			}
+		}
+		return $entry;
+	}
+
 }

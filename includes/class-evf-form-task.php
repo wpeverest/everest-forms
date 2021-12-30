@@ -73,7 +73,7 @@ class EVF_Form_Task {
 		}
 
 		if ( ! empty( $_POST['everest_forms']['id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-			$this->do_task( wp_unslash( $_POST['everest_forms'] ) ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			$this->do_task( evf_sanitize_entry( wp_unslash( $_POST['everest_forms'] ) ) ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		}
 	}
 
@@ -250,7 +250,7 @@ class EVF_Form_Task {
 			// Pass the form created date into the form data.
 			$this->form_data['created'] = $form->post_date;
 
-			// Format fields.
+			// Format and Sanitize inputs.
 			foreach ( (array) $this->form_data['form_fields'] as $field ) {
 				$field_id        = $field['id'];
 				$field_key       = isset( $field['meta-key'] ) ? $field['meta-key'] : '';
@@ -395,7 +395,7 @@ class EVF_Form_Task {
 	 */
 	public function ajax_form_submission( $posted_data ) {
 		add_filter( 'wp_redirect', array( $this, 'ajax_process_redirect' ), 999 );
-		$process = $this->do_task( wp_unslash( $posted_data ) );
+		$process = $this->do_task( evf_sanitize_entry( wp_unslash( $posted_data ) ) );
 		return $process;
 	}
 
