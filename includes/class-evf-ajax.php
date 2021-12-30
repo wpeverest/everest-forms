@@ -216,7 +216,7 @@ class EVF_AJAX {
 			die( esc_html__( 'No data provided', 'everest-forms' ) );
 		}
 
-		$form_post = json_decode( stripslashes( $_POST['form_data'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+		$form_post = evf_sanitize_builder( json_decode( wp_unslash( $_POST['form_data'] ) ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 
 		$data = array();
 
@@ -326,7 +326,7 @@ class EVF_AJAX {
 		check_ajax_referer( 'everest_forms_ajax_form_submission', 'security' );
 
 		if ( ! empty( $_POST['everest_forms']['id'] ) ) {
-			$process = evf()->task->ajax_form_submission( stripslashes_deep( $_POST['everest_forms'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			$process = evf()->task->ajax_form_submission( wp_unslash( $_POST['everest_forms'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 			if ( 'success' === $process['response'] ) {
 				wp_send_json_success( $process );
 			}

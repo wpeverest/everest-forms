@@ -73,7 +73,7 @@ class EVF_Form_Task {
 		}
 
 		if ( ! empty( $_POST['everest_forms']['id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-			$this->do_task( stripslashes_deep( $_POST['everest_forms'] ) ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			$this->do_task( wp_unslash( $_POST['everest_forms'] ) ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		}
 	}
 
@@ -395,7 +395,7 @@ class EVF_Form_Task {
 	 */
 	public function ajax_form_submission( $posted_data ) {
 		add_filter( 'wp_redirect', array( $this, 'ajax_process_redirect' ), 999 );
-		$process = $this->do_task( stripslashes_deep( $posted_data ) );
+		$process = $this->do_task( wp_unslash( $posted_data ) );
 		return $process;
 	}
 

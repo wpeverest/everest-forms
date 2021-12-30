@@ -1739,7 +1739,7 @@ abstract class EVF_Form_Fields {
 			return $properties;
 		}
 
-		$get_value = stripslashes( sanitize_text_field( $raw_value ) );
+		$get_value = wp_unslash( sanitize_text_field( $raw_value ) );
 
 		if ( ! empty( $field['choices'] ) && is_array( $field['choices'] ) ) {
 			$properties = $this->get_single_field_property_value_choices( $get_value, $properties, $field );
