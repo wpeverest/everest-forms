@@ -2442,15 +2442,17 @@ function evf_sanitize_builder( $post_data = array() ) {
 	if ( empty( $post_data ) || ! is_array( $post_data ) ) {
 		return array();
 	}
+
 	$form_data = array();
-	foreach ( $post_data as $data ) {
-		$key = sanitize_text_field( $data['name'] );
-		if ( preg_match( '/\<.*\>/', $data['value'] ) ) {
-			$value = wp_kses_post( $data['value'] );
+	foreach ( $post_data as $data_key => $data ) {
+		$name = sanitize_text_field( $data->name );
+		if ( preg_match( '/\<.*\>/', $data->value ) ) {
+			$value = wp_kses_post( $data->value );
 		} else {
-			$vvalue = sanitize_text_field( $data['value'] );
+			$value = sanitize_text_field( $data->value );
 		}
-		$form_data [] = array( $key => $value );
+		$form_data[ $data_key ]->name  = $name;
+		$form_data[ $data_key ]->value = $value;
 	}
 	return $form_data;
 }
