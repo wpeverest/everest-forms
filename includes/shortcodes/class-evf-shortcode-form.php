@@ -849,7 +849,7 @@ class EVF_Shortcode_Form {
 		}
 
 		// We need to stop output processing in case we are on AMP page.
-		if ( evf_is_amp( false ) && ( ! current_theme_supports( 'amp' ) || ! is_ssl() || ! defined( 'AMP__VERSION' ) || version_compare( AMP__VERSION, '1.2', '<' ) ) ) {
+		if ( evf_is_amp( false ) && ( ! current_theme_supports( 'amp' ) || apply_filters( 'evfforms_amp_pro', class_exists( 'EverestForms_Pro' ) ) || ! is_ssl() || ! defined( 'AMP__VERSION' ) || version_compare( AMP__VERSION, '1.2', '<' ) ) ) {
 
 			$full_page_url = home_url( add_query_arg( 'nonamp', '1' ) . '#evfforms-' . absint( $form->ID ) );
 
