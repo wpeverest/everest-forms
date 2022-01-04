@@ -1,6 +1,6 @@
 == Changelog ==
 
-= 1.8.2.3 - 30-12-2021 =
+= 1.8.2.3 - 04-01-2022 =
 * Fix - Account Integration issues with addons.
 
 = 1.8.2.2 - 30-12-2021 =
