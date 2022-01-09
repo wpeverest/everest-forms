@@ -30,7 +30,7 @@
     "10up/wp_mock": "dev-enhance/allow-to-enable-disable-mock-constants-functions",
     "phpunit/phpunit": "^5 || ^7",
     "roots/wordpress": "5.8.2",
-    "spatie/phpunit-watcher": "1.23.2",
+    "spatie/phpunit-watcher": "1.23.4",
     "vlucas/phpdotenv": "5.4.1",
     "wp-cli/db-command": "2.0.17",
     "wp-cli/i18n-command": "2.2.10",
