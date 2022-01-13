@@ -83,10 +83,10 @@ class EVF_Admin_Forms {
 		$template_sections = get_transient( 'evf_template_sections' );
 
 		if ( false === $template_sections ) {
-			$raw_sections = wp_safe_remote_get( evf()->plugin_url() . '/assets/extensions-json/templates/template-sections.json' );
+			$raw_sections = file_get_contents( plugin_dir_path( EVF_PLUGIN_FILE ) . 'assets\extensions-json\templates\template-sections.json' );
 
-			if ( ! is_wp_error( $raw_sections ) ) {
-				$template_sections = json_decode( wp_remote_retrieve_body( $raw_sections ) );
+			if ( $raw_sections ) {
+				$template_sections = json_decode( $raw_sections );
 
 				if ( $template_sections ) {
 					set_transient( 'evf_template_sections', $template_sections, WEEK_IN_SECONDS );
@@ -106,10 +106,10 @@ class EVF_Admin_Forms {
 		$template_data = get_transient( 'evf_template_section' );
 
 		if ( false === $template_data ) {
-			$raw_templates = wp_safe_remote_get( evf()->plugin_url() . '/assets/extensions-json/templates/all_templates.json' );
+			$raw_templates = file_get_contents( plugin_dir_path( EVF_PLUGIN_FILE ) . 'assets\extensions-json\templates\all_templates.json' );
 
-			if ( ! is_wp_error( $raw_templates ) ) {
-				$template_data = json_decode( wp_remote_retrieve_body( $raw_templates ) );
+			if ( $raw_templates ) {
+				$template_data = json_decode( $raw_templates );
 
 				// Removing directory so the templates can be reinitialized.
 				$folder_path = untrailingslashit( plugin_dir_path( EVF_PLUGIN_FILE ) . '/assets/images/templates' );

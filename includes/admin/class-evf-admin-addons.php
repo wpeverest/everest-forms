@@ -22,10 +22,10 @@ class EVF_Admin_Addons {
 		$addon_sections = get_transient( 'evf_addons_sections' );
 
 		if ( false === $addon_sections ) {
-			$raw_sections = wp_safe_remote_get( evf()->plugin_url() . '/assets/extensions-json/addon-sections.json' );
+			$raw_sections = file_get_contents( plugin_dir_path( EVF_PLUGIN_FILE ) . 'assets\extensions-json\addon-sections.json' );
 
-			if ( ! is_wp_error( $raw_sections ) ) {
-				$addon_sections = json_decode( wp_remote_retrieve_body( $raw_sections ) );
+			if ( $raw_sections ) {
+				$addon_sections = json_decode( $raw_sections );
 
 				if ( $addon_sections ) {
 					set_transient( 'evf_addons_sections', $addon_sections, WEEK_IN_SECONDS );
@@ -45,10 +45,10 @@ class EVF_Admin_Addons {
 		$extension_data = get_transient( 'evf_extensions_section' );
 
 		if ( false === $extension_data ) {
-			$raw_extensions = wp_safe_remote_get( evf()->plugin_url() . '/assets/extensions-json/sections/all_extensions.json' );
+			$raw_extensions = file_get_contents( plugin_dir_path( EVF_PLUGIN_FILE ) . 'assets\extensions-json\sections\all_extensions.json' );
 
-			if ( ! is_wp_error( $raw_extensions ) ) {
-				$extension_data = json_decode( wp_remote_retrieve_body( $raw_extensions ) );
+			if ( $raw_extensions ) {
+				$extension_data = json_decode( $raw_extensions );
 
 				if ( ! empty( $extension_data->products ) ) {
 					set_transient( 'evf_extensions_section', $extension_data, WEEK_IN_SECONDS );

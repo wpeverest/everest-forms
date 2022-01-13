@@ -208,10 +208,10 @@ class EVF_Form_Handler {
 			)
 		);
 
-		$raw_templates = wp_safe_remote_get( evf()->plugin_url() . '/assets/extensions-json/templates/all_templates.json' );
-		$templates     = json_decode( wp_remote_retrieve_body( $raw_templates ) );
+		$raw_templates     = file_get_contents( plugin_dir_path( EVF_PLUGIN_FILE ) . 'assets\extensions-json\templates\all_templates.json' );
 
-		if ( ! empty( $templates ) ) {
+		if ( $raw_templates ) {
+			$templates     = json_decode( $raw_templates );
 			foreach ( $templates->templates as $template_data ) {
 				if ( $template_data->slug === $template && 'blank' !== $template_data->slug ) {
 					$form_content = json_decode( base64_decode( $template_data->settings ), true );

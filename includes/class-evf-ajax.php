@@ -383,10 +383,10 @@ class EVF_AJAX {
 		}
 
 		$addons        = array();
-		$raw_templates = wp_safe_remote_get( evf()->plugin_url() . '/assets/extensions-json/templates/all_templates.json' );
+		$templates     = file_get_contents( plugin_dir_path( EVF_PLUGIN_FILE ) . 'assets\extensions-json\templates\all_templates.json' );
 
-		if ( ! is_wp_error( $raw_templates ) ) {
-			$template_data = json_decode( wp_remote_retrieve_body( $raw_templates ) );
+		if ( $templates ) {
+			$template_data = json_decode( $templates );
 
 			if ( ! empty( $template_data->templates ) ) {
 				foreach ( $template_data->templates as $template ) {

@@ -108,9 +108,9 @@ class EVF_Admin {
 	public function template_actions() {
 		if ( isset( $_GET['page'], $_REQUEST['action'] ) && 'evf-builder' === $_GET['page'] ) {
 			$action        = sanitize_text_field( wp_unslash( $_REQUEST['action'] ) );
-			$raw_templates = wp_safe_remote_get( evf()->plugin_url() . '/assets/extensions-json/templates/all_templates.json' );
+			$raw_templates = file_get_contents( plugin_dir_path( EVF_PLUGIN_FILE ) . 'assets\extensions-json\templates\all_templates.json' );
 
-			if ( 'evf-template-refresh' === $action && ! is_wp_error( $raw_templates ) ) {
+			if ( 'evf-template-refresh' === $action && $raw_templates ) {
 				if ( empty( $_GET['evf-template-nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_GET['evf-template-nonce'] ) ), 'refresh' ) ) {
 					wp_die( esc_html_e( 'Could not verify nonce', 'everest-forms' ) );
 				}
