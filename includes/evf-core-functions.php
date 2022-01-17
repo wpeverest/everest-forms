@@ -2386,8 +2386,11 @@ function evf_process_line_breaks( $text ) {
 function evf_get_allowed_html_tags( $context = '' ) {
 	$post_tags = wp_kses_allowed_html( 'post' );
 	if ( 'builder' === $context ) {
-		$response = wp_safe_remote_get( evf()->plugin_url() . '/assets/allowed_tags/allowed_tags.json' );
-
+		$builder_tags = get_transient( 'evf-builder-tags' );
+		if ( ! empty( $builder_tags ) ) {
+			return $builder_tags;
+		}
+		$response = wp_remote_get( evf()->plugin_url( 'assets/allowed_tags/allowed_tags.json' ), array( 'sslverify' => false ) );
 		if ( ! is_wp_error( $response ) ) {
 			$json = wp_remote_retrieve_body( $response );
 			if ( ! empty( $json ) ) {
@@ -2406,6 +2409,7 @@ function evf_get_allowed_html_tags( $context = '' ) {
 					}
 				}
 			}
+			set_transient( 'evf-builder-tags', $post_tags, DAY_IN_SECONDS );
 		}
 		return $post_tags;
 	}

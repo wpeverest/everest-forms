@@ -108,7 +108,7 @@ class EVF_Admin {
 	public function template_actions() {
 		if ( isset( $_GET['page'], $_REQUEST['action'] ) && 'evf-builder' === $_GET['page'] ) {
 			$action        = sanitize_text_field( wp_unslash( $_REQUEST['action'] ) );
-			$raw_templates = wp_safe_remote_get( evf()->plugin_url() . '/assets/extensions-json/templates/all_templates.json' );
+			$raw_templates = wp_remote_get( evf()->plugin_url( 'assets/extensions-json/templates/all_templates.json' ), array( 'sslverify' => false ) );
 
 			if ( 'evf-template-refresh' === $action && ! is_wp_error( $raw_templates ) ) {
 				if ( empty( $_GET['evf-template-nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_GET['evf-template-nonce'] ) ), 'refresh' ) ) {
