@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 1.8.2.4 - 17-01-2022 =
+* Fix - Repeater fields not working.
+* Fix - Wp_remote_get issues ssl issues.
+
 = 1.8.2.3 - 04-01-2022 =
 * Fix - Account Integration issues with addons.
 
