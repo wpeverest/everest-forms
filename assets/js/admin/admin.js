@@ -149,7 +149,7 @@
 		  }
 		})
 
-		.on(' click','.everest-forms-field-number', function(e) {
+		.on('click','.everest-forms-field-number', function(e) {
 			var $this = $(this);
 			var id = $this.data('field-id');
 			$(document).on('keydown click',"#everest-forms-field-option-"+ id +"-default_value",function(e){
@@ -161,7 +161,7 @@
 			})
 		})
 
-		.on(' click','.everest-forms-field-payment-quantity', function(e) {
+		.on('click','.everest-forms-field-payment-quantity', function(e) {
 			var $this = $(this);
 			var id = $this.data('field-id');
 			$(document).on('keydown click',"#everest-forms-field-option-"+ id +"-default_value",function(e){
