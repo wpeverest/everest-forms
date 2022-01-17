@@ -2505,6 +2505,9 @@ function evf_sanitize_entry( $entry = array() ) {
 				case 'privacy-policy':
 					$entry['form_fields'][ $key ] = wp_kses_post( $entry['form_fields'][ $key ] );
 					break;
+				case 'repeater-fields':
+					$entry['form_fields'][ $key ] = $entry['form_fields'][ $key ];
+					break;
 				default:
 					if ( is_array( $entry['form_fields'][ $key ] ) ) {
 						foreach ( $entry['form_fields'][ $key ] as $field_key => $value ) {
