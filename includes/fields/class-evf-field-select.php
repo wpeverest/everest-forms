@@ -297,7 +297,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 		// Primary select field.
 		printf(
 			'<select %s>',
-			evf_html_attributes( $container['id'], $container['class'], $container['data'], $container['attr'] ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			evf_html_attributes( $container['id'], $container['class'], $container['data'], $container['attr'] )
 		);
 
 		// Optional placeholder.

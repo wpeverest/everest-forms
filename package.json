@@ -27,7 +27,7 @@
     "test-unit-php": "wp-env run phpunit 'phpunit --configuration=/var/www/html/wp-content/plugins/everest-forms/phpunit.xml.dist --verbose'"
   },
   "devDependencies": {
-    "@babel/core": "7.16.5",
+    "@babel/core": "7.16.7",
     "@wordpress/babel-preset-default": "6.4.1",
     "@wordpress/browserslist-config": "4.1.0",
     "autoprefixer": "9.8.8",
@@ -36,10 +36,10 @@
     "babel-plugin-transform-react-jsx": "6.24.1",
     "babel-preset-env": "1.7.0",
     "cross-env": "7.0.3",
-    "eslint": "7.32.0",
+    "eslint": "8.6.0",
     "grunt": "1.4.1",
     "grunt-contrib-compress": "2.0.0",
-    "grunt-contrib-concat": "1.0.1",
+    "grunt-contrib-concat": "2.0.0",
     "grunt-contrib-cssmin": "4.0.0",
     "grunt-contrib-jshint": "3.1.1",
     "grunt-contrib-uglify": "5.0.1",
@@ -50,11 +50,11 @@
     "grunt-sass": "3.1.0",
     "grunt-stylelint": "0.17.0",
     "husky": "7.0.4",
-    "lint-staged": "11.2.6",
-    "node-sass": "6.0.1",
+    "lint-staged": "12.1.7",
+    "node-sass": "7.0.1",
     "stylelint": "13.13.1",
     "stylelint-config-wordpress": "17.0.0",
-    "webpack": "5.64.4",
+    "webpack": "5.65.0",
     "webpack-cli": "4.9.1"
   },
   "engines": {
@@ -74,5 +74,8 @@
       "eslint --fix",
       "git add"
     ]
+  },
+  "dependencies": {
+    "grunt-cli": "1.4.3"
   }
 }

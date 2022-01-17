@@ -117,7 +117,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			foreach ( $form_fields as $group => $form_field ) {
 				?>
 				<div class="everest-forms-add-fields-group open">
-					<a href="#" class="everest-forms-add-fields-heading" data-group="<?php echo esc_attr( $group ); ?>"><?php echo evf_get_fields_group( $group ); // phpcs:ignore WordPress.Security.EscapeOutput ?><i class="handlediv"></i></a>
+					<a href="#" class="everest-forms-add-fields-heading" data-group="<?php echo esc_attr( $group ); ?>"><?php echo esc_html( evf_get_fields_group( $group ) ); ?><i class="handlediv"></i></a>
 					<div class="evf-registered-buttons">
 						<?php foreach ( $form_field as $field ) : ?>
 							<button type="button" id="everest-forms-add-fields-<?php echo esc_attr( $field->type ); ?>" class="evf-registered-item <?php echo sanitize_html_class( $field->class ); ?>" data-field-type="<?php echo esc_attr( $field->type ); ?>">
@@ -250,7 +250,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 
 			$repeater_field = apply_filters( 'everest_forms_display_repeater_fields', false, $row_grid, $fields );
 
-			echo '<div class="evf-admin-row" data-row-id="' . absint( $row ) . '"' . ( ! empty( $repeater_field ) ? $repeater_field : '' ) . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo '<div class="evf-admin-row" data-row-id="' . absint( $row ) . '"' . ( ! empty( $repeater_field ) ? esc_attr( $repeater_field ) : '' ) . '>';
 			echo '<div class="evf-toggle-row">';
 			if ( empty( $repeater_field ) ) {
 				echo '<div class="evf-duplicate-row"><span class="dashicons dashicons-media-default" title="Duplicate Row"></span></div>';

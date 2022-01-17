@@ -239,8 +239,7 @@ function evf_print_js() {
 		 * @since 1.0.0
 		 * @param string $js JavaScript code.
 		 */
-		echo apply_filters( 'everest_forms_queued_js', $js ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.EscapeOutput.OutputNotEscaped
-
+		echo wp_kses( apply_filters( 'everest_forms_queued_js', $js ), array( 'script' => array( 'type' => true ) ) );
 		unset( $evf_queued_js );
 	}
 }
@@ -287,7 +286,7 @@ function evf_get_log_file_path( $handle ) {
  */
 function evf_get_csv_file_name( $handle ) {
 	if ( function_exists( 'wp_hash' ) ) {
-		$date_suffix = date( 'Y-m-d', time() ); // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
+		$date_suffix = date_i18n( 'Y-m-d', time() );
 		$hash_suffix = wp_hash( $handle );
 		return sanitize_file_name( implode( '-', array( 'evf-entry-export', $handle, $date_suffix, $hash_suffix ) ) . '.csv' );
 	} else {
@@ -608,7 +607,7 @@ function evf_print_r( $expression, $return = false ) {
 				return $res;
 			}
 
-			echo $res; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo wp_kses_post( $res );
 			return true;
 		}
 	}
@@ -1005,7 +1004,7 @@ function evf_html_attributes( $id = '', $class = array(), $datas = array(), $att
 	$output = implode( ' ', $parts );
 
 	if ( $echo ) {
-		echo trim( $output ); // @codingStandardsIgnoreLine
+		echo esc_html( trim( $output ) );
 	} else {
 		return trim( $output );
 	}
@@ -1193,7 +1192,7 @@ function evf_get_ip_address() {
  * @return array
  */
 function evf_get_browser() {
-	$u_agent  = sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
+	$u_agent  = ! empty( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) ) : '';
 	$bname    = 'Unknown';
 	$platform = 'Unknown';
 	$version  = '';
@@ -2032,7 +2031,7 @@ function evf_debug_data( $expression, $return = false ) {
 		if ( $return ) {
 			return $output;
 		} else {
-			echo $output; // phpcs:ignore
+			echo wp_kses( $output, evf_get_allowed_html_tags() );
 		}
 	}
 }
@@ -2375,4 +2374,156 @@ function evf_process_underline_syntax( $text ) {
  */
 function evf_process_line_breaks( $text ) {
 	return str_replace( "\n", '<br/>', $text );
+}
+
+/**
+ * EVF KSES.
+ *
+ * @since 1.8.2.1
+ *
+ * @param string $context Context.
+ */
+function evf_get_allowed_html_tags( $context = '' ) {
+	$post_tags = wp_kses_allowed_html( 'post' );
+	if ( 'builder' === $context ) {
+		$builder_tags = get_transient( 'evf-builder-tags' );
+		if ( ! empty( $builder_tags ) ) {
+			return $builder_tags;
+		}
+		$response = wp_remote_get( evf()->plugin_url( 'assets/allowed_tags/allowed_tags.json' ), array( 'sslverify' => false ) );
+		if ( ! is_wp_error( $response ) ) {
+			$json = wp_remote_retrieve_body( $response );
+			if ( ! empty( $json ) ) {
+				$allowed_tags = json_decode( $json, true );
+				if ( $allowed_tags ) {
+					foreach ( $allowed_tags as $tag => $args ) {
+						if ( array_key_exists( $tag, $post_tags ) ) {
+							foreach ( $args as $arg => $value ) {
+								if ( ! array_key_exists( $arg, $post_tags[ $tag ] ) ) {
+									$post_tags[ $tag ][ $arg ] = true;
+								}
+							}
+						} else {
+							$post_tags[ $tag ] = $args;
+						}
+					}
+				}
+			}
+			set_transient( 'evf-builder-tags', $post_tags, DAY_IN_SECONDS );
+		}
+		return $post_tags;
+	}
+	return wp_parse_args(
+		$post_tags,
+		array(
+			'input'    => array(
+				'type'  => true,
+				'name'  => true,
+				'value' => true,
+			),
+			'select'   => array(
+				'name' => true,
+				'id'   => true,
+			),
+			'option'   => array(
+				'value'    => true,
+				'selected' => true,
+			),
+			'textarea' => array(
+				'style' => true,
+			),
+		)
+	);
+}
+
+/**
+ * Parse Builder Post Data.
+ *
+ * @param mixed $post_data Post Data.
+ *
+ * @since 1.8.2.2
+ */
+function evf_sanitize_builder( $post_data = array() ) {
+	if ( empty( $post_data ) || ! is_array( $post_data ) ) {
+		return array();
+	}
+
+	$form_data = array();
+	foreach ( $post_data as $data_key => $data ) {
+		$name = sanitize_text_field( $data->name );
+		if ( preg_match( '/\<.*\>/', $data->value ) ) {
+			$value = wp_kses_post( $data->value );
+		} else {
+			$value = sanitize_text_field( $data->value );
+		}
+		$form_data[ sanitize_text_field( $data_key ) ] = (object) array(
+			'name'  => $name,
+			'value' => $value,
+		);
+	}
+	return $form_data;
+}
+
+
+/**
+ * Entry Post Data.
+ *
+ * @param mixed $entry Post Data.
+ *
+ * @since 1.8.2.2
+ */
+function evf_sanitize_entry( $entry = array() ) {
+	if ( empty( $entry ) || ! is_array( $entry ) || empty( $entry['form_fields'] ) ) {
+		return array();
+	}
+
+	$form_id   = absint( $entry['id'] );
+	$form_data = evf()->form->get( $form_id, array( 'contents_only' => true ) );
+
+	if ( ! $form_data ) {
+		return array();
+	}
+
+	$form_data = evf_decode( $form_data->post_content );
+
+	$form_fields = $form_data['form_fields'];
+
+	if ( empty( $form_fields ) ) {
+		return array();
+	}
+
+	foreach ( $form_fields as $key => $field ) {
+		$key = sanitize_text_field( $key );
+		if ( array_key_exists( $key, $entry['form_fields'] ) ) {
+			switch ( $field['type'] ) {
+				case 'email':
+					$entry['form_fields'][ $key ] = sanitize_email( $entry['form_fields'][ $key ] );
+					break;
+				case 'file-upload':
+				case 'signature':
+				case 'image-upload':
+					$entry['form_fields'][ $key ] = esc_url_raw( $entry['form_fields'][ $key ] );
+					break;
+				case 'textarea':
+				case 'html':
+				case 'privacy-policy':
+					$entry['form_fields'][ $key ] = wp_kses_post( $entry['form_fields'][ $key ] );
+					break;
+				case 'repeater-fields':
+					$entry['form_fields'][ $key ] = $entry['form_fields'][ $key ];
+					break;
+				default:
+					if ( is_array( $entry['form_fields'][ $key ] ) ) {
+						foreach ( $entry['form_fields'][ $key ] as $field_key => $value ) {
+							$field_key = sanitize_text_field( $field_key );
+							$entry['form_fields'][ $key ][ $field_key ] = sanitize_text_field( $value );
+						}
+					} else {
+						$entry['form_fields'][ $key ] = sanitize_text_field( $entry['form_fields'][ $key ] );
+					}
+			}
+		}
+		return $entry;
+	}
+
 }

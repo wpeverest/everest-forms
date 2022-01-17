@@ -63,7 +63,7 @@ defined( 'ABSPATH' ) || exit;
 										<div class="name column-name">
 											<h3 class="plugin-name">
 												<?php echo esc_html( $addon->title ); ?>
-												<img src="<?php echo esc_url( $addon->image ); ?>" class="plugin-icon" alt="" />
+												<img src="<?php echo esc_url( evf()->plugin_url() . '/assets/' . $addon->image ); ?>" class="plugin-icon" alt="" />
 											</h3>
 										</div>
 										<div class="desc column-description">

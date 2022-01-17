@@ -69,11 +69,11 @@ class EVF_Form_Task {
 	 */
 	public function listen_task() {
 		if ( ! empty( $_GET['everest_forms_return'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-			$this->entry_confirmation_redirect( '', wp_unslash( $_GET['everest_forms_return'] ) ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			$this->entry_confirmation_redirect( '', sanitize_text_field( wp_unslash( $_GET['everest_forms_return'] ) ) ); // phpcs:ignore WordPress.Security.NonceVerification
 		}
 
 		if ( ! empty( $_POST['everest_forms']['id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-			$this->do_task( stripslashes_deep( $_POST['everest_forms'] ) ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			$this->do_task( evf_sanitize_entry( wp_unslash( $_POST['everest_forms'] ) ) ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		}
 	}
 
@@ -95,7 +95,7 @@ class EVF_Form_Task {
 			$this->evf_notice_print = false;
 
 			// Check nonce for form submission.
-			if ( empty( $_POST['_wpnonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['_wpnonce'] ), 'everest-forms_process_submit' ) ) { // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			if ( empty( $_POST['_wpnonce'] ) || ! wp_verify_nonce( wp_unslash( sanitize_key( $_POST['_wpnonce'] ) ), 'everest-forms_process_submit' ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 				$this->errors[ $form_id ]['header'] = esc_html__( 'We were unable to process your form, please try again.', 'everest-forms' );
 				return $this->errors;
 			}
@@ -136,9 +136,10 @@ class EVF_Form_Task {
 						$field_submit = isset( $field_submit['signature_image'] ) ? $field_submit['signature_image'] : '';
 					}
 
-					$exclude = array( 'title', 'html', 'captcha', 'image-upload', 'file-upload' );
+					$exclude = array( 'title', 'html', 'captcha', 'image-upload', 'file-upload', 'divider' );
 
 					if ( ! in_array( $field_type, $exclude, true ) ) {
+
 						$this->form_fields[ $field_id ] = array(
 							'id'       => $field_id,
 							'name'     => sanitize_text_field( $field['label'] ),
@@ -250,7 +251,7 @@ class EVF_Form_Task {
 			// Pass the form created date into the form data.
 			$this->form_data['created'] = $form->post_date;
 
-			// Format fields.
+			// Format and Sanitize inputs.
 			foreach ( (array) $this->form_data['form_fields'] as $field ) {
 				$field_id        = $field['id'];
 				$field_key       = isset( $field['meta-key'] ) ? $field['meta-key'] : '';
@@ -395,7 +396,7 @@ class EVF_Form_Task {
 	 */
 	public function ajax_form_submission( $posted_data ) {
 		add_filter( 'wp_redirect', array( $this, 'ajax_process_redirect' ), 999 );
-		$process = $this->do_task( stripslashes_deep( $posted_data ) );
+		$process = $this->do_task( $posted_data );
 		return $process;
 	}
 

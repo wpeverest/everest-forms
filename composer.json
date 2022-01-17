@@ -15,7 +15,12 @@
   "config": {
     "process-timeout": 0,
     "sort-packages": true,
-    "preferred-install": "dist"
+    "preferred-install": "dist",
+    "allow-plugins": {
+      "composer/installers": true,
+      "roots/wordpress-core-installer": true,
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
   },
   "require": {
     "php": ">=5.6.20",
@@ -25,7 +30,7 @@
     "10up/wp_mock": "dev-enhance/allow-to-enable-disable-mock-constants-functions",
     "phpunit/phpunit": "^5 || ^7",
     "roots/wordpress": "5.8.2",
-    "spatie/phpunit-watcher": "1.23.2",
+    "spatie/phpunit-watcher": "^1.23.2",
     "vlucas/phpdotenv": "5.4.1",
     "wp-cli/db-command": "2.0.17",
     "wp-cli/i18n-command": "2.2.10",
@@ -63,7 +68,7 @@
       "@makepot:audit --skip-audit"
     ],
     "makepot:audit": [
-      "wp --allow-root i18n make-pot . --exclude=\".github,.wordpress-org,bin,node_modules,vendor\" --slug=everest-forms"
+      "wp --allow-root i18n make-pot . --exclude=\".github,.wordpress-org,bin,node_modules,vendor,tests\" --slug=everest-forms"
     ],
     "post-update-cmd": [
       "@php -r \"! file_exists( 'tests/.env' ) && copy( 'tests/.env.example', 'tests/.env' );\""

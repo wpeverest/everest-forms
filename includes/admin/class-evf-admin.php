@@ -108,7 +108,7 @@ class EVF_Admin {
 	public function template_actions() {
 		if ( isset( $_GET['page'], $_REQUEST['action'] ) && 'evf-builder' === $_GET['page'] ) {
 			$action        = sanitize_text_field( wp_unslash( $_REQUEST['action'] ) );
-			$raw_templates = wp_safe_remote_get( 'https://raw.githubusercontent.com/wpeverest/extensions-json/master/everest-forms/templates/all_templates.json' );
+			$raw_templates = wp_remote_get( evf()->plugin_url( 'assets/extensions-json/templates/all_templates.json' ), array( 'sslverify' => false ) );
 
 			if ( 'evf-template-refresh' === $action && ! is_wp_error( $raw_templates ) ) {
 				if ( empty( $_GET['evf-template-nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_GET['evf-template-nonce'] ) ), 'refresh' ) ) {
@@ -134,7 +134,7 @@ class EVF_Admin {
 	public function admin_redirects() {
 		// Nonced plugin install redirects (whitelisted).
 		if ( ! empty( $_GET['evf-install-plugin-redirect'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-			$plugin_slug = evf_clean( wp_unslash( $_GET['evf-install-plugin-redirect'] ) ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			$plugin_slug = evf_clean( esc_url_raw( wp_unslash( $_GET['evf-install-plugin-redirect'] ) ) ); // phpcs:ignore WordPress.Security.NonceVerification.
 
 			$url = admin_url( 'plugin-install.php?tab=search&type=term&s=' . $plugin_slug );
 			wp_safe_redirect( $url );
@@ -144,7 +144,7 @@ class EVF_Admin {
 		// Setup wizard redirect.
 		if ( get_transient( '_evf_activation_redirect' ) && apply_filters( 'everest_forms_show_welcome_page', true ) ) {
 			$do_redirect  = true;
-			$current_page = isset( $_GET['page'] ) ? evf_clean( wp_unslash( $_GET['page'] ) ) : false; // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			$current_page = isset( $_GET['page'] ) ? evf_clean( sanitize_text_field( wp_unslash( $_GET['page'] ) ) ) : false; // phpcs:ignore WordPress.Security.NonceVerification
 
 			// On these pages, or during these events, postpone the redirect.
 			if ( wp_doing_ajax() || is_network_admin() || ! current_user_can( 'manage_everest_forms' ) ) {

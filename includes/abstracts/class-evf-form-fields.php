@@ -340,7 +340,7 @@ abstract class EVF_Form_Fields {
 		}
 
 		if ( $echo ) {
-			echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo wp_kses( $output, evf_get_allowed_html_tags( 'builder' ) );
 		} else {
 			return $output;
 		}
@@ -1408,7 +1408,7 @@ abstract class EVF_Form_Fields {
 					do_action( "everest_forms_field_options_bottom_{$option}", $field, $this );
 				}
 
-				echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo wp_kses( $output, evf_get_allowed_html_tags( 'builder' ) );
 
 				if ( 'open' === $markup ) {
 					do_action( "everest_forms_field_options_top_{$option}", $field, $this );
@@ -1418,7 +1418,7 @@ abstract class EVF_Form_Fields {
 					do_action( "everest_forms_field_options_after_{$option}", $field, $this );
 				}
 			} else {
-				echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo wp_kses( $output, evf_get_allowed_html_tags( 'builder' ) );
 			}
 		} else {
 			return $output;
@@ -1534,7 +1534,7 @@ abstract class EVF_Form_Fields {
 					foreach ( $values as $value ) {
 						$default     = isset( $value['default'] ) ? $value['default'] : '';
 						$selected    = checked( '1', $default, false );
-						$placeholder = evf()->plugin_url() . '/assets/images/everest-forms-placeholder.png';
+						$placeholder = wp_remote_get( evf()->plugin_url() . '/assets/images/everest-forms-placeholder.png' );
 						$image_src   = ! empty( $value['image'] ) ? esc_url( $value['image'] ) : $placeholder;
 						$item_class  = array();
 
@@ -1587,7 +1587,7 @@ abstract class EVF_Form_Fields {
 				do_action( "everest_forms_field_options_bottom_{$option}", $field, $this );
 			}
 
-			echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo wp_kses( $output, evf_get_allowed_html_tags( 'builder' ) );
 
 			if ( 'open' === $markup ) {
 				do_action( "everest_forms_field_options_top_{$option}", $field, $this );
@@ -1597,7 +1597,7 @@ abstract class EVF_Form_Fields {
 				do_action( "everest_forms_field_options_after_{$option}", $field, $this );
 			}
 		} else {
-			echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo wp_kses( $output, evf_get_allowed_html_tags( 'builder' ) );
 		}
 	}
 
@@ -1626,7 +1626,7 @@ abstract class EVF_Form_Fields {
 		}
 
 		// Grab field data.
-		$field_args     = ! empty( $_POST['defaults'] ) ? (array) wp_unslash( $_POST['defaults'] ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$field_args     = ! empty( $_POST['defaults'] ) && is_array( $_POST['defaults'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['defaults'] ) ) : array();
 		$field_type     = esc_attr( sanitize_text_field( wp_unslash( $_POST['field_type'] ) ) );
 		$field_id       = evf()->form->field_unique_key( sanitize_text_field( wp_unslash( $_POST['form_id'] ) ) );
 		$field          = array(
@@ -1739,7 +1739,7 @@ abstract class EVF_Form_Fields {
 			return $properties;
 		}
 
-		$get_value = stripslashes( sanitize_text_field( $raw_value ) );
+		$get_value = wp_unslash( sanitize_text_field( $raw_value ) );
 
 		if ( ! empty( $field['choices'] ) && is_array( $field['choices'] ) ) {
 			$properties = $this->get_single_field_property_value_choices( $get_value, $properties, $field );
@@ -1872,7 +1872,7 @@ abstract class EVF_Form_Fields {
 			esc_attr( $field['properties']['inputs'][ $key ]['id'] ),
 			sanitize_html_class( $pos ),
 			esc_html( $hidden ),
-			evf_string_translation( (int) $this->form_data['id'], $field['id'], $field['properties']['inputs'][ $key ]['sublabel']['value'], '-sublabel-' . $key ) // phpcs:ignore WordPress.Security.EscapeOutput
+			esc_html( evf_string_translation( (int) $this->form_data['id'], $field['id'], $field['properties']['inputs'][ $key ]['sublabel']['value'], '-sublabel-' . $key ) )
 		);
 	}
 
