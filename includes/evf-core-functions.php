@@ -2390,7 +2390,7 @@ function evf_get_allowed_html_tags( $context = '' ) {
 		if ( ! empty( $builder_tags ) ) {
 			return $builder_tags;
 		}
-		$response = wp_remote_get( evf()->plugin_url( 'assets/allowed_tags/allowed_tags.json' ) );
+		$response = wp_remote_get( evf()->plugin_url( 'assets/allowed_tags/allowed_tags.json' ), array( 'sslverify' => false ) );
 		if ( ! is_wp_error( $response ) ) {
 			$json = wp_remote_retrieve_body( $response );
 			if ( ! empty( $json ) ) {
