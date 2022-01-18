@@ -108,7 +108,7 @@ class EVF_Shortcode_Form {
 			! isset( $settings['submit_button_processing_text'] ) ? 'data-process-text="' . esc_attr__( 'Processing&hellip;', 'everest-forms' ) . '"' : ( ! empty( $settings['submit_button_processing_text'] ) ? 'data-process-text="' . esc_attr( evf_string_translation( $form_data['id'], 'processing_text', $settings['submit_button_processing_text'] ) ) . '"' : '' ),
 			esc_attr( $conditional_rules ),
 			esc_attr( $conditional_id ),
-			esc_attr( $visible ),
+			! empty( self::$parts[ $form_id ] ) ? 'style="display:none;"' : '',
 			esc_html( $submit_btn )
 		);
 
@@ -489,7 +489,7 @@ class EVF_Shortcode_Form {
 
 				// Output the reCAPTCHA container.
 				$class = ( 'v3' === $recaptcha_type || ( 'v2' === $recaptcha_type && 'yes' === $invisible_recaptcha ) ) ? 'recaptcha-hidden' : '';
-				echo '<div class="evf-recaptcha-container ' . esc_attr($class) . '" ' . esc_attr($visible) . '>'; // @codingStandardsIgnoreLine
+				echo '<div class="evf-recaptcha-container ' . esc_attr($class) . '" ' .  (! empty( self::$parts[ $form_id ] ) ? 'style="display:none;"' : ''). '>'; // @codingStandardsIgnoreLine
 
 				if ( 'v2' === $recaptcha_type ) {
 					echo '<div ' . evf_html_attributes( '', array( 'g-recaptcha' ), $data ) . '></div>';
