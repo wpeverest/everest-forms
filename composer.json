@@ -31,6 +31,7 @@
     "phpunit/phpunit": "^5 || ^7",
     "roots/wordpress": "^5.8.2",
     "spatie/phpunit-watcher": "1.8.3",
+    "jolicode/jolinotif": "2.3.0",
     "vlucas/phpdotenv": "5.4.1",
     "wp-cli/db-command": "^2.0.17",
     "wp-cli/i18n-command": "^2.2.10",
