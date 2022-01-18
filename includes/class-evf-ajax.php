@@ -218,7 +218,8 @@ class EVF_AJAX {
 
 		$form_post = evf_sanitize_builder( json_decode( wp_unslash( $_POST['form_data'] ) ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 
-		$data = array();
+		$data         = array();
+		$choose_field = array();
 
 		if ( ! is_null( $form_post ) && $form_post ) {
 			foreach ( $form_post as $post_input_data ) {
@@ -244,11 +245,14 @@ class EVF_AJAX {
 						);
 					}
 				}
-
+				$choose_field_data = isset( $new_post_data['settings']['choose_pdf_fields'] ) ? $new_post_data['settings']['choose_pdf_fields'] : array();
+				if ( ! empty( $choose_field_data ) ) {
+					 array_push( $choose_field, $choose_field_data );
+				}
 				$data = array_replace_recursive( $data, $new_post_data );
 			}
 		}
-
+		$data['settings']['choose_pdf_fields'] = $choose_field;
 		// Check for empty meta key.
 		$empty_meta_data = array();
 		if ( ! empty( $data['form_fields'] ) ) {
@@ -299,7 +303,6 @@ class EVF_AJAX {
 
 		$form_id     = evf()->form->update( $data['id'], $data );
 		$form_styles = get_option( 'everest_forms_styles', array() );
-
 		do_action( 'everest_forms_save_form', $form_id, $data, array(), ! empty( $form_styles[ $form_id ] ) );
 
 		if ( ! $form_id ) {
