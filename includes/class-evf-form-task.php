@@ -136,9 +136,10 @@ class EVF_Form_Task {
 						$field_submit = isset( $field_submit['signature_image'] ) ? $field_submit['signature_image'] : '';
 					}
 
-					$exclude = array( 'title', 'html', 'captcha', 'image-upload', 'file-upload' );
+					$exclude = array( 'title', 'html', 'captcha', 'image-upload', 'file-upload', 'divider' );
 
 					if ( ! in_array( $field_type, $exclude, true ) ) {
+
 						$this->form_fields[ $field_id ] = array(
 							'id'       => $field_id,
 							'name'     => sanitize_text_field( $field['label'] ),
