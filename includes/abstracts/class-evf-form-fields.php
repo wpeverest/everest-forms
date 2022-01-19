@@ -709,6 +709,34 @@ abstract class EVF_Form_Fields {
 					false
 				);
 				break;
+				/**
+			 * No Duplicates.
+			 */
+			case 'autocomplete_address':
+				$default = ! empty( $args['default'] ) ? $args['default'] : '0';
+				$value   = ! empty( $field['autocomplete_address'] ) ? esc_attr( $field['autocomplete_address'] ) : '';
+				$tooltip = esc_html__( 'Check this option to autofill address field.', 'everest-forms' );
+				$output  = $this->field_element(
+					'checkbox',
+					$field,
+					array(
+						'slug'    => 'autocomplete_address',
+						'value'   => $value,
+						'desc'    => esc_html__( 'Enable Autocomplete Address Field', 'everest-forms' ),
+						'tooltip' => $tooltip,
+					),
+					false
+				);
+				$output  = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'autocomplete_address',
+						'content' => $output,
+					),
+					false
+				);
+				break;
 
 			/*
 			 * Code Block.
