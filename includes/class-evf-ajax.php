@@ -759,8 +759,9 @@ class EVF_AJAX {
 	public static function send_test_email() {
 		try {
 			check_ajax_referer( 'process-ajax-nonce', 'security' );
-			$from    = esc_attr( get_bloginfo( 'name', 'display' ) );
-			$email   = sanitize_email( isset( $_POST['email'] ) ? wp_unslash( $_POST['email'] ) : '' );
+			$from  = esc_attr( get_bloginfo( 'name', 'display' ) );
+			$email = sanitize_email( isset( $_POST['email'] ) ? wp_unslash( $_POST['email'] ) : '' );
+			/* translators: %s: from address */
 			$subject = 'Everest Form: ' . sprintf( esc_html__( 'Test email from %s', 'everest-forms' ), $from );
 			$header  = "Reply-To: {{from}} \r\n";
 			$header .= 'Content-Type: text/html; charset=UTF-8';
