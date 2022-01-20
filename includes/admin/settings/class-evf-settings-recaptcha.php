@@ -127,6 +127,21 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 					'desc_tip'   => true,
 				),
 				array(
+					'title'             => esc_html__( 'Threshold Score', 'everest-forms' ),
+					'type'              => 'number',
+					/* translators: %1$s - Google reCAPTCHA docs url */
+					'desc'              => esc_html__( 'reCAPTCHA v3 returns a score (1.0 is very likely a good interaction, 0.0 is very likely a bot). If the score less than or equal to this threshold', 'everest-forms' ),
+					'id'                => 'everest_forms_recaptcha_v3_threshold_score',
+					'is_visible'        => 'v3' === $recaptcha_type,
+					'custom_attributes' => array(
+						'step' => '0.1',
+						'min'  => '0.0',
+						'max'  => '1.0',
+					),
+					'default'           => '0.4',
+					'desc_tip'          => true,
+				),
+				array(
 					'type' => 'sectionend',
 					'id'   => 'integration_options',
 				),

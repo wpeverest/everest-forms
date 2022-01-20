@@ -209,9 +209,8 @@ class EVF_Form_Task {
 
 					if ( ! is_wp_error( $raw_response ) ) {
 						$response = json_decode( wp_remote_retrieve_body( $raw_response ) );
-
 						// Check reCAPTCHA response.
-						if ( empty( $response->success ) || ( 'v3' === $recaptcha_type && $response->score <= apply_filters( 'everest_forms_recaptcha_v3_threshold', '0.5' ) ) ) {
+						if ( empty( $response->success ) || ( 'v3' === $recaptcha_type && $response->score <= get_option( 'everest_forms_recaptcha_v3_threshold_score', '0.5' ) ) ) {
 							if ( 'v3' === $recaptcha_type ) {
 								if ( isset( $response->score ) ) {
 									$error .= ' (' . esc_html( $response->score ) . ')';
