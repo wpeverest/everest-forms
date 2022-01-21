@@ -123,12 +123,12 @@ class EVF_Form_Task {
 			$this->form_data['page_id'] = array_key_exists( 'post_id', $entry ) ? $entry['post_id'] : $form_id;
 
 			$logger->info(
-				__( 'Everest Forms Process Before', 'everest-forms' ),
+				__( 'Everest Forms Process Before.', 'everest-forms' ),
 				array( 'source' => 'form-submission' )
 			);
 			do_action( 'everest_forms_process_before', $entry, $this->form_data );
 			$logger->info(
-				__( 'Everest Forms Process Before Form ID', 'everest-forms' ),
+				__( 'Everest Forms Process Before Form ID.', 'everest-forms' ),
 				array( 'source' => 'form-submission' )
 			);
 			do_action( "everest_forms_process_before_{$form_id}", $entry, $this->form_data );
@@ -178,7 +178,7 @@ class EVF_Form_Task {
 
 				if ( 'no' === $repeater_fields || 'repeater-fields' === $field_type ) {
 					$logger->info(
-						"Everest Forms Process Before validate {$field_type}",
+						"Everest Forms Process Before validate {$field_type}.",
 						array( 'source' => 'form-submission' )
 					);
 					do_action( "everest_forms_process_validate_{$field_type}", $field_id, $field_submit, $this->form_data, $field_type );
@@ -298,7 +298,7 @@ class EVF_Form_Task {
 
 				if ( 'no' === $repeater_fields || 'repeater-fields' === $field_type ) {
 					$logger->info(
-						sprintf( 'Everest Forms Process Format %s', $field_type ),
+						sprintf( 'Everest Forms Process Format %s.', $field_type ),
 						array( 'source' => 'form-submission' )
 					);
 					do_action( "everest_forms_process_format_{$field_type}", $field_id, $field_submit, $this->form_data, $field_key );
@@ -307,7 +307,7 @@ class EVF_Form_Task {
 
 			// This hook is for internal purposes and should not be leveraged.
 			$logger->info(
-				'Everest Forms Process Format After',
+				'Everest Forms Process Format After.',
 				array( 'source' => 'form-submission' )
 			);
 			do_action( 'everest_forms_process_format_after', $this->form_data );
@@ -318,12 +318,12 @@ class EVF_Form_Task {
 			$this->form_fields = apply_filters( 'everest_forms_process_filter', $this->form_fields, $entry, $this->form_data );
 
 			$logger->info(
-				'Everest Forms Process',
+				'Everest Forms Process.',
 				array( 'source' => 'form-submission' )
 			);
 			do_action( 'everest_forms_process', $this->form_fields, $entry, $this->form_data );
 			$logger->info(
-				"Everest Forms Process {$form_id}",
+				"Everest Forms Process {$form_id}.",
 				array( 'source' => 'form-submission' )
 			);
 			do_action( "everest_forms_process_{$form_id}", $this->form_fields, $entry, $this->form_data );
@@ -372,7 +372,7 @@ class EVF_Form_Task {
 			);
 			do_action( 'everest_forms_process_complete', $this->form_fields, $entry, $this->form_data, $entry_id );
 			$logger->info(
-				"Everest Forms Process Completed {$form_id}",
+				"Everest Forms Process Completed {$form_id}.",
 				array( 'source' => 'form-submission' )
 			);
 			do_action( "everest_forms_process_complete_{$form_id}", $this->form_fields, $entry, $this->form_data, $entry_id );
@@ -459,7 +459,7 @@ class EVF_Form_Task {
 			evf_add_notice( $message, 'success' );
 		}
 		$logger->info(
-			'Everest Forms After success Message',
+			'Everest Forms After success Message.',
 			array( 'source' => 'form-submission' )
 		);
 		do_action( 'everest_forms_after_success_message', $this->form_data, $entry );

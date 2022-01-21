@@ -210,7 +210,7 @@ class EVF_AJAX {
 
 		// Check permissions.
 		$logger->info(
-			__( 'checking permissions.', 'everest-forms' ),
+			__( 'Checking permissions.', 'everest-forms' ),
 			array( 'source' => 'form-save' )
 		);
 		if ( ! current_user_can( 'everest_forms_edit_forms' ) ) {
@@ -223,7 +223,7 @@ class EVF_AJAX {
 
 		// Check for form data.
 		$logger->info(
-			__( 'checking for form data.', 'everest-forms' ),
+			__( 'Checking for form data.', 'everest-forms' ),
 			array( 'source' => 'form-save' )
 		);
 		if ( empty( $_POST['form_data'] ) ) {
