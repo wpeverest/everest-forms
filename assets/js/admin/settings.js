@@ -119,6 +119,8 @@
 
 			} else if ('hcaptcha' === $( this ).val()) {
 				recaptcha_v2_invisible.hide();
+				recaptcha_v2_invisible_site_key.hide();
+				recaptcha_v2_invisible_secret_key.hide();
 				recaptcha_v3_site_key.hide();
 				recaptcha_v3_secret_key.hide();
 				recaptcha_v2_site_key.hide();
