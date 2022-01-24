@@ -15,9 +15,9 @@ jQuery( function( $ ) {
 				}
 
 				btn.on( 'click', function( e ) {
+					tinyMCE.triggerSave();
 					var data = formTuple.serializeArray();
 					e.preventDefault();
-
 					// We let the bubbling events in form play itself out.
 					formTuple.trigger( 'focusout' ).trigger( 'change' ).trigger( 'submit' );
 
