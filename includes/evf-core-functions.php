@@ -2384,35 +2384,31 @@ function evf_process_line_breaks( $text ) {
  * @param string $context Context.
  */
 function evf_get_allowed_html_tags( $context = '' ) {
+
 	$post_tags = wp_kses_allowed_html( 'post' );
 	if ( 'builder' === $context ) {
-		$builder_tags = get_transient( 'evf-builder-tags' );
+		$builder_tags = get_transient( 'evf-builder-tags-list' );
 		if ( ! empty( $builder_tags ) ) {
 			return $builder_tags;
 		}
-		$response = wp_remote_get( evf()->plugin_url( 'assets/allowed_tags/allowed_tags.json' ), array( 'sslverify' => false ) );
-		if ( ! is_wp_error( $response ) ) {
-			$json = wp_remote_retrieve_body( $response );
-			if ( ! empty( $json ) ) {
-				$allowed_tags = json_decode( $json, true );
-				if ( $allowed_tags ) {
-					foreach ( $allowed_tags as $tag => $args ) {
-						if ( array_key_exists( $tag, $post_tags ) ) {
-							foreach ( $args as $arg => $value ) {
-								if ( ! array_key_exists( $arg, $post_tags[ $tag ] ) ) {
-									$post_tags[ $tag ][ $arg ] = true;
-								}
-							}
-						} else {
-							$post_tags[ $tag ] = $args;
+		$allowed_tags = evf_get_json_content( 'assets/allowed_tags/allowed_tags.json', true );
+		if ( ! empty( $allowed_tags ) ) {
+			foreach ( $allowed_tags as $tag => $args ) {
+				if ( array_key_exists( $tag, $post_tags ) ) {
+					foreach ( $args as $arg => $value ) {
+						if ( ! array_key_exists( $arg, $post_tags[ $tag ] ) ) {
+							$post_tags[ $tag ][ $arg ] = true;
 						}
 					}
+				} else {
+					$post_tags[ $tag ] = $args;
 				}
 			}
-			set_transient( 'evf-builder-tags', $post_tags, DAY_IN_SECONDS );
+			set_transient( 'evf-builder-tags-list', $post_tags, DAY_IN_SECONDS );
 		}
 		return $post_tags;
 	}
+
 	return wp_parse_args(
 		$post_tags,
 		array(
@@ -2463,7 +2459,6 @@ function evf_sanitize_builder( $post_data = array() ) {
 	}
 	return $form_data;
 }
-
 
 /**
  * Entry Post Data.
@@ -2525,5 +2520,28 @@ function evf_sanitize_entry( $entry = array() ) {
 		}
 		return $entry;
 	}
+}
 
+/**
+ * Get evf json file content.
+ *
+ * @param mixed $file File path.
+ * @param mixed $to_array Returned data in array.
+ */
+function evf_get_json_content( $file, $to_array = false ) {
+	if ( $file ) {
+		global $wp_filesystem;
+		require_once( ABSPATH . '/wp-admin/includes/file.php' );
+		WP_Filesystem();
+		$local_file = preg_replace( '/\\\\|\/\//', '/', plugin_dir_path( EVF_PLUGIN_FILE ) . $file );
+		if ( $wp_filesystem->exists( $local_file ) ) {
+			if ( $to_array ) {
+				$response = json_decode( $wp_filesystem->get_contents( $local_file ), true );
+				return $response;
+			}
+			$response = json_decode( $wp_filesystem->get_contents( $local_file ) );
+			return $response;
+		}
+	}
+	return false;
 }
