@@ -452,8 +452,13 @@ class EVF_Shortcode_Form {
 						var EVFRecaptchaCallback = function (el) {
 							var $form = el.closest("form");
 							if( typeof jQuery !==  "undefined" ){
-								$form.submit();
-								grecaptcha.reset( recaptchaID );
+								if( "1" === jQuery( $form ).attr( "data-ajax_submission" ) ) {
+									el.closest( "form" ).querySelector( "button[type=submit]" ).recaptchaID = "verified";
+									jQuery( $form ).find( ".evf-submit" ).trigger( "click" );
+								} else {
+									$form.submit();
+								}
+								grecaptcha.reset();
 							}
 						};
 						';
