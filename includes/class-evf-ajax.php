@@ -383,7 +383,7 @@ class EVF_AJAX {
 		}
 
 		$addons        = array();
-		$template_data = evf_get_json_content( 'assets/extensions-json/templates/all_templates.json' );
+		$template_data = evf_get_json_file_contents( 'assets/extensions-json/templates/all_templates.json' );
 
 		if ( ! empty( $template_data->templates ) ) {
 			foreach ( $template_data->templates as $template ) {
