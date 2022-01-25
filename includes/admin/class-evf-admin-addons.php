@@ -22,7 +22,7 @@ class EVF_Admin_Addons {
 		$addon_sections = get_transient( 'evf_addons_sections_list' );
 
 		if ( false === $addon_sections ) {
-			$addon_sections = evf_get_json_content( 'assets/extensions-json/addon-sections.json' );
+			$addon_sections = evf_get_json_file_contents( 'assets/extensions-json/addon-sections.json' );
 
 			if ( $addon_sections ) {
 				set_transient( 'evf_addons_sections_list', $addon_sections, WEEK_IN_SECONDS );
@@ -41,7 +41,7 @@ class EVF_Admin_Addons {
 		$extension_data = get_transient( 'evf_extensions_section_list' );
 
 		if ( false === $extension_data ) {
-			$extension_data = evf_get_json_content( 'assets/extensions-json/sections/all_extensions.json' );
+			$extension_data = evf_get_json_file_contents( 'assets/extensions-json/sections/all_extensions.json' );
 
 			if ( ! empty( $extension_data->products ) ) {
 				set_transient( 'evf_extensions_section_list', $extension_data, WEEK_IN_SECONDS );

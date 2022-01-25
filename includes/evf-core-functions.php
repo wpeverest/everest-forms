@@ -2391,7 +2391,7 @@ function evf_get_allowed_html_tags( $context = '' ) {
 		if ( ! empty( $builder_tags ) ) {
 			return $builder_tags;
 		}
-		$allowed_tags = evf_get_json_content( 'assets/allowed_tags/allowed_tags.json', true );
+		$allowed_tags = evf_get_json_file_contents( 'assets/allowed_tags/allowed_tags.json', true );
 		if ( ! empty( $allowed_tags ) ) {
 			foreach ( $allowed_tags as $tag => $args ) {
 				if ( array_key_exists( $tag, $post_tags ) ) {
@@ -2523,25 +2523,33 @@ function evf_sanitize_entry( $entry = array() ) {
 }
 
 /**
- * Get evf json file content.
+ * EVF Get json file contents.
  *
  * @param mixed $file File path.
  * @param mixed $to_array Returned data in array.
  */
-function evf_get_json_content( $file, $to_array = false ) {
+function evf_get_json_file_contents( $file, $to_array = false ) {
+	if ( $to_array ) {
+		return json_decode( evf_file_get_contents( $file ), true );
+	}
+	return json_decode( evf_file_get_contents( $file ) );
+}
+
+/**
+ * EVF file get contents.
+ *
+ * @param mixed $file File path.
+ */
+function evf_file_get_contents( $file ) {
 	if ( $file ) {
 		global $wp_filesystem;
 		require_once( ABSPATH . '/wp-admin/includes/file.php' );
 		WP_Filesystem();
 		$local_file = preg_replace( '/\\\\|\/\//', '/', plugin_dir_path( EVF_PLUGIN_FILE ) . $file );
 		if ( $wp_filesystem->exists( $local_file ) ) {
-			if ( $to_array ) {
-				$response = json_decode( $wp_filesystem->get_contents( $local_file ), true );
-				return $response;
-			}
-			$response = json_decode( $wp_filesystem->get_contents( $local_file ) );
+			$response = $wp_filesystem->get_contents( $local_file );
 			return $response;
 		}
 	}
-	return false;
+	return;
 }

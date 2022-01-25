@@ -83,7 +83,7 @@ class EVF_Admin_Forms {
 		$template_sections = get_transient( 'evf_template_sections_list' );
 
 		if ( false === $template_sections ) {
-			$template_sections = evf_get_json_content( 'assets/extensions-json/templates/template-sections.json' );
+			$template_sections = evf_get_json_file_contents( 'assets/extensions-json/templates/template-sections.json' );
 
 			if ( $template_sections ) {
 				set_transient( 'evf_template_sections_list', $template_sections, WEEK_IN_SECONDS );
@@ -102,7 +102,7 @@ class EVF_Admin_Forms {
 		$template_data = get_transient( 'evf_template_section_list' );
 
 		if ( false === $template_data ) {
-			$template_data     = evf_get_json_content( 'assets/extensions-json/templates/all_templates.json' );
+			$template_data     = evf_get_json_file_contents( 'assets/extensions-json/templates/all_templates.json' );
 			// Removing directory so the templates can be reinitialized.
 			$folder_path = untrailingslashit( plugin_dir_path( EVF_PLUGIN_FILE ) . '/assets/images/templates' );
 

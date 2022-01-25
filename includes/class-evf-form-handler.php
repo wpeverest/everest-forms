@@ -208,7 +208,7 @@ class EVF_Form_Handler {
 			)
 		);
 
-		$templates     = evf_get_json_content( 'assets/extensions-json/templates/all_templates.json' );
+		$templates     = evf_get_json_file_contents( 'assets/extensions-json/templates/all_templates.json' );
 
 		if ( ! empty( $templates ) ) {
 			foreach ( $templates->templates as $template_data ) {
