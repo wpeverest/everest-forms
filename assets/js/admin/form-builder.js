@@ -2786,7 +2786,7 @@ jQuery( function ( $ ) {
 		}
 
 		if ( 'payments' === type ) {
-			var payments = [ 'number', 'payment-total', 'single-item', 'payment-quantity' ]
+			var payments = [ 'number', 'payment-total', 'payment-single', 'payment-quantity', 'hidden' ]
 			$(document).find('.everest-forms-field').each(function() {
 				if( payments.includes($(this).attr('data-field-type')) && $(el).parents('.everest-forms-field-option-row-calculation_field').attr('data-field-id') !== $(this).attr('data-field-id')) {
 					$(el).parent().find('.evf-smart-tag-lists .payments').append('<li class = "smart-tag-field" data-type="field" data-field_id="'+$(this).attr('data-field-id')+'">'+$(this).find('.label-title .text').text()+'</li>');
