@@ -737,6 +737,34 @@ abstract class EVF_Form_Fields {
 					false
 				);
 				break;
+			case 'address_style':
+				$default = ! empty( $args['default'] ) ? $args['default'] : '0';
+				$value   = ! empty( $field['address_style'] ) ? esc_attr( $field['address_style'] ) : '';
+				$tooltip = esc_html__( 'Check this option to autofill address field.', 'everest-forms' );
+				$output  = $this->field_element(
+					'select',
+					$field,
+					array(
+						'slug'    => 'address_style',
+						'value'   => $value,
+						'tooltip' => $tooltip,
+						'options' => array(
+							'allow' => esc_html__( 'Allowed', 'everest-forms' ),
+							'deny'  => esc_html__( 'Denied', 'everest-forms' ),
+						),
+					),
+					false
+				);
+				$output  = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'address_style',
+						'content' => $output,
+					),
+					false
+				);
+				break;
 
 			/*
 			 * Code Block.
