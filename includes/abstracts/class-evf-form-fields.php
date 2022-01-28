@@ -733,24 +733,36 @@ abstract class EVF_Form_Fields {
 					array(
 						'slug'    => 'autocomplete_address',
 						'content' => $output,
+						'class'   => isset( $field['autocomplete_address'] ) ? '' : 'hidden',
 					),
 					false
 				);
 				break;
 			case 'address_style':
-				$default = ! empty( $args['default'] ) ? $args['default'] : '0';
-				$value   = ! empty( $field['address_style'] ) ? esc_attr( $field['address_style'] ) : '';
-				$tooltip = esc_html__( 'Check this option to autofill address field.', 'everest-forms' );
+				$default = ! empty( $args['default'] ) ? $args['default'] : 'none';
+				$tooltip = esc_html__( 'Select the style', 'everest-forms' );
 				$output  = $this->field_element(
+					'label',
+					$field,
+					array(
+						'slug'    => 'address_style',
+						'value'   => esc_html__( 'Style', 'everest-forms' ),
+						'tooltip' => $tooltip,
+					),
+					false
+				);
+				$output .= $this->field_element(
 					'select',
 					$field,
 					array(
 						'slug'    => 'address_style',
-						'value'   => $value,
+						'value'   => esc_html__( 'style', 'everest-forms' ),
 						'tooltip' => $tooltip,
 						'options' => array(
-							'allow' => esc_html__( 'Allowed', 'everest-forms' ),
-							'deny'  => esc_html__( 'Denied', 'everest-forms' ),
+							'none'             => esc_html__( 'None', 'everest-forms' ),
+							'address'          => esc_html__( 'Address', 'everest-forms' ),
+							'map'              => esc_html__( 'Map', 'everest-forms' ),
+							'address_with_map' => esc_html( 'Address With Map' ),
 						),
 					),
 					false
