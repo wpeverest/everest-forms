@@ -323,7 +323,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				$recaptcha_label = esc_html__( 'Enable hCaptcha', 'everest-forms' );
 				break;
 		}
-		$recaptcha_label = 'yes' === get_option( 'everest_forms_recaptcha_v2_invisible' ) ? esc_html__( 'Enable Google Invisible reCAPTCHA v2', 'everest-forms' ) : $recaptcha_label;
+		$recaptcha_label = 'yes' === get_option( 'everest_forms_recaptcha_v2_invisible' ) && 'v2' === $recaptcha_type ? esc_html__( 'Enable Google Invisible reCAPTCHA v2', 'everest-forms' ) : $recaptcha_label;
 
 		if ( ! empty( $recaptcha_key ) && ! empty( $recaptcha_secret ) ) {
 			everest_forms_panel_field(

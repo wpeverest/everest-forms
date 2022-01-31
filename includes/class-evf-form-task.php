@@ -201,7 +201,12 @@ class EVF_Form_Task {
 				}
 
 				if ( ! empty( $site_key ) && ! empty( $secret_key ) && isset( $this->form_data['settings']['recaptcha_support'] ) && '1' === $this->form_data['settings']['recaptcha_support'] ) {
-					$error = esc_html__( 'Google reCAPTCHA verification failed, please try again later.', 'everest-forms' );
+					if ( 'hcaptcha' === $recaptcha_type ) {
+						$error = esc_html__( 'hCaptcha verification failed, please try again later.', 'everest-forms' );
+					} else {
+						$error = esc_html__( 'Google reCAPTCHA verification failed, please try again later.', 'everest-forms' );
+					}
+
 					$token = ! empty( $_POST['g-recaptcha-response'] ) ? evf_clean( wp_unslash( $_POST['g-recaptcha-response'] ) ) : false;
 
 					if ( 'v3' === $recaptcha_type ) {
