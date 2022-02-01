@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 1.8.4 - xx-xx-2022 =
+* Fix - Date Time $ missing form variable name.
+* Enhancement - Recaptcha v3 Threshold.
+
 = 1.8.3 - 17-01-2022 =
 * Fix - Repeater fields not working.
 * Fix - Wp_remote_get issues ssl issues.

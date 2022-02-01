@@ -116,6 +116,7 @@
 				recaptcha_v3_secret_key.hide();
 				hcaptcha_site_key.hide();
 				hcaptcha_secret_key.hide();
+				recaptcha_v3_threshold_score.hide();
 
 			} else if ('hcaptcha' === $( this ).val()) {
 				recaptcha_v2_invisible.hide();
@@ -127,7 +128,7 @@
 				recaptcha_v2_secret_key.hide();
 				hcaptcha_site_key.show();
 				hcaptcha_secret_key.show();
-			 } else {
+			 }  else {
 				recaptcha_v2_site_key.hide();
 				recaptcha_v2_secret_key.hide();
 				recaptcha_v2_invisible.hide();
@@ -137,6 +138,7 @@
 				hcaptcha_secret_key.hide();
 				recaptcha_v3_site_key.show();
 				recaptcha_v3_secret_key.show();
+				recaptcha_v3_threshold_score.show();
 			}
 
 

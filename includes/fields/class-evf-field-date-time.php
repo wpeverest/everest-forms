@@ -704,7 +704,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				printf(
 					'<select value="%s" %s>',
 					esc_attr( gmdate( 'Y' ) ),
-					evf_html_attributes( 'year-select-' . esc_attr( primary['id'] ) )
+					evf_html_attributes( 'year-select-' . esc_attr( $primary['id'] ) )
 				);
 				// Build the select options.
 				$end_date   = gmdate( 'Y' ) + 100;
