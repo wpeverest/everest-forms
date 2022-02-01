@@ -40,3 +40,4 @@ function evf() {
 
 // Global for backwards compatibility.
 $GLOBALS['everest-forms'] = evf();
+

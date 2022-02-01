@@ -15,6 +15,14 @@ jQuery( function( $ ) {
 				}
 
 				btn.on( 'click', function( e ) {
+
+					var	recaptchaID = btn.get( 0 ).recaptchaID;
+
+					if (  recaptchaID === 0 ) {
+						grecaptcha.execute( recaptchaID );
+						return false;
+					}
+
 					var data = formTuple.serializeArray();
 					e.preventDefault();
 
