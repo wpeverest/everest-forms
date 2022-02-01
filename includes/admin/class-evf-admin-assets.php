@@ -103,6 +103,7 @@ class EVF_Admin_Assets {
 				'i18n_get_preview' => esc_html__( 'Preview', 'everest-forms' ),
 				'i18n_pro_feature' => esc_html__( 'Pro', 'everest-forms' ),
 				'template_refresh' => esc_html__( 'Updating Templates', 'everest-forms' ),
+				'evf_plugin_url'   => esc_url( evf()->plugin_url() ),
 			)
 		);
 		wp_localize_script(
@@ -130,7 +131,7 @@ class EVF_Admin_Assets {
 				array(
 					'post_id'                      => isset( $post->ID ) ? $post->ID : '',
 					'ajax_url'                     => admin_url( 'admin-ajax.php' ),
-					'tab'                          => isset( $_GET['tab'] ) ? evf_clean( wp_unslash( $_GET['tab'] ) ) : '', // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+					'tab'                          => isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : '', // phpcs:ignore WordPress.Security.NonceVerification.
 					'evf_field_drop_nonce'         => wp_create_nonce( 'everest_forms_field_drop' ),
 					'evf_save_form'                => wp_create_nonce( 'everest_forms_save_form' ),
 					'evf_get_next_id'              => wp_create_nonce( 'everest_forms_get_next_id' ),
@@ -164,6 +165,16 @@ class EVF_Admin_Assets {
 					'email_fields'                 => evf_get_all_email_fields_by_form_id( isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0 ), // phpcs:ignore WordPress.Security.NonceVerification
 					'all_fields'                   => evf_get_all_form_fields_by_form_id( isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0 ), // phpcs:ignore WordPress.Security.NonceVerification
 					'smart_tags_other'             => evf()->smart_tags->other_smart_tags(),
+					'entries_url'                  => ! empty( $_GET['form_id'] ) ? esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . absint( $_GET['form_id'] ) ) ) : '', // phpcs:ignore WordPress.Security.NonceVerification
+					'preview_url'                  => ! empty( $_GET['form_id'] ) ? esc_url( // phpcs:ignore WordPress.Security.NonceVerification
+						add_query_arg(
+							array(
+								'form_id'     => absint( $_GET['form_id'] ), // phpcs:ignore WordPress.Security.NonceVerification
+								'evf_preview' => 'true',
+								),
+							home_url()
+						)
+					) : '',
 				)
 			)
 		);

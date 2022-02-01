@@ -343,12 +343,15 @@
 			EVFPanelBuilder.checkEmptyGrid();
 			EVFPanelBuilder.bindFields();
 			EVFPanelBuilder.bindFormPreview();
+			EVFPanelBuilder.bindFormPreviewWithKeyEvent();
+			EVFPanelBuilder.bindFormEntriesWithKeyEvent();
 			EVFPanelBuilder.bindGridSwitcher();
 			EVFPanelBuilder.bindFieldSettings();
 			EVFPanelBuilder.bindFieldDelete();
 			EVFPanelBuilder.bindFieldDeleteWithKeyEvent();
 			EVFPanelBuilder.bindCloneField();
 			EVFPanelBuilder.bindSaveOption();
+			EVFPanelBuilder.bindSaveOptionWithKeyEvent();
 			EVFPanelBuilder.bindAddNewRow();
 			EVFPanelBuilder.bindRemoveRow();
 			EVFPanelBuilder.bindFormSettings();
@@ -818,6 +821,19 @@
 					$label.html( value.replace( /\n/g, '<br>') );
 				} else {
 					$label.html( value );
+				}
+			});
+
+			$builder.on( 'change', '.everest-forms-field-option-row-enable_prepopulate input', function( event ) {
+				var id = $( this ).parent().data( 'field-id' );
+
+				$( '#everest-forms-field-' + id ).toggleClass( 'parameter_name' );
+
+				// Toggle "Parameter Name" option.
+				if ( $( event.target ).is( ':checked' ) ) {
+					$( '#everest-forms-field-option-row-' + id + '-parameter_name' ).show();
+				} else {
+					$( '#everest-forms-field-option-row-' + id + '-parameter_name' ).hide();
 				}
 			});
 
@@ -1826,6 +1842,19 @@
 				});
 			});
 		},
+		bindSaveOptionWithKeyEvent:function() {
+			$('body').on("keydown", function (e) {
+				if (e.ctrlKey || e.metaKey) {
+					if (
+						"s" ===
+						String.fromCharCode(e.which).toLowerCase() || 83 === e.which
+					) {
+						e.preventDefault();
+						$('.everest-forms-save-button').trigger('click');
+					}
+				}
+			});
+		},
 		getStructure: function () {
 			var wrapper   = $( '.evf-admin-field-wrapper' );
 			var structure = [];
@@ -2082,6 +2111,34 @@
 			}
 		},
 		bindFormPreview: function () {},
+		bindFormPreviewWithKeyEvent:function (){
+			$( 'body' ).on( 'keydown', function( e ) {
+				if (e.ctrlKey || e.metaKey) {
+					if ( (
+						"p" ===
+						String.fromCharCode(e.which).toLowerCase() || 80 === e.which )
+					) {
+						e.preventDefault();
+						 window.open( evf_data.preview_url );
+					}
+				}
+
+			});
+		},
+		bindFormEntriesWithKeyEvent:function (){
+			$( 'body' ).on( 'keydown', function( e ) {
+				if (e.ctrlKey || e.metaKey) {
+					if ( (
+						"e" ===
+						String.fromCharCode(e.which).toLowerCase() || 69 === e.which )
+					) {
+						e.preventDefault();
+						window.open( evf_data.entries_url );
+					}
+				}
+
+			});
+		},
 		bindGridSwitcher: function () {
 		 	$('body').on('click', '.evf-show-grid', function (e) {
 		 		e.stopPropagation();
@@ -2500,31 +2557,34 @@ jQuery(function () {
 	jQuery( '.evf-panel-field-options-button.evf-disabled-tab' ).hide();
 
 	// Conditional Logic fields for General Settings in Form for Submission Redirection.
-	var conditional_rule_selection = jQuery('#everest-forms-conditional-field-settings-redirect_to option:selected').val();
 
-	if ( 'custom_page' == conditional_rule_selection ) {
-		jQuery('#everest-forms-conditional-field-settings-custom_page').show();
-		jQuery('#everest-forms-conditional-field-settings-external_url').hide();
-	}
-	else if( 'external_url' == conditional_rule_selection ) {
-		jQuery('#everest-forms-conditional-field-settings-custom_page').hide();
-		jQuery('#everest-forms-conditional-field-settings-external_url').show();
-	} else {
-		jQuery('#everest-forms-conditional-field-settings-custom_page').hide();
-		jQuery('#everest-forms-conditional-field-settings-external_url').hide();
-	}
+	jQuery( '.everest-forms-conditional-field-settings-redirect_to').each(function() {
+		var conditional_rule_selection =this.value;
+		if ( 'custom_page' == conditional_rule_selection ) {
+			jQuery(this).parents('.evf-field-conditional-container').find('.everest-forms-conditional-field-settings-custom_page').show();
+			jQuery(this).parents('.evf-field-conditional-container').find('.everest-forms-conditional-field-settings-external_url').hide();
+		}
+		else if( 'external_url' == conditional_rule_selection ) {
+			jQuery(this).parents('.evf-field-conditional-container').find('.everest-forms-conditional-field-settings-custom_page').hide();
+			jQuery(this).parents('.evf-field-conditional-container').find('.everest-forms-conditional-field-settings-external_url').show();
+		} else {
+			jQuery(this).parents('.evf-field-conditional-container').find('.everest-forms-conditional-field-settings-custom_page').hide();
+			jQuery(this).parents('.evf-field-conditional-container').find('.everest-forms-conditional-field-settings-external_url').hide();
+		}
 
-	jQuery( '#everest-forms-conditional-field-settings-redirect_to' ).on( 'change', function () {
+	})
+
+	jQuery( document ).on( 'change', '.everest-forms-conditional-field-settings-redirect_to', function () {
 		if ( 'custom_page' == this.value ) {
-			jQuery('#everest-forms-conditional-field-settings-custom_page').show();
-			jQuery('#everest-forms-conditional-field-settings-external_url').hide();
+				jQuery(this).parents('.evf-field-conditional-container').find('.everest-forms-conditional-field-settings-custom_page').show();
+				jQuery(this).parents('.evf-field-conditional-container').find('.everest-forms-conditional-field-settings-external_url').hide();
 		}
 		else if( 'external_url' == this.value ) {
-			jQuery('#everest-forms-conditional-field-settings-custom_page').hide();
-			jQuery('#everest-forms-conditional-field-settings-external_url').show();
+				jQuery(this).parents('.evf-field-conditional-container').find('.everest-forms-conditional-field-settings-custom_page').hide();
+				jQuery(this).parents('.evf-field-conditional-container').find('.everest-forms-conditional-field-settings-external_url').show();
 		} else {
-			jQuery('#everest-forms-conditional-field-settings-custom_page').hide();
-			jQuery('#everest-forms-conditional-field-settings-external_url').hide();
+				jQuery(this).parents('.evf-field-conditional-container').find('.everest-forms-conditional-field-settings-custom_page').hide();
+				jQuery(this).parents('.evf-field-conditional-container').find('.everest-forms-conditional-field-settings-external_url').hide();
 		}
 	});
 

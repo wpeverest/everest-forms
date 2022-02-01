@@ -199,7 +199,7 @@ class EVF_Field_Textarea extends EVF_Form_Fields {
 			'<textarea %s %s>%s</textarea>',
 			evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ),
 			esc_attr( $primary['required'] ),
-			$value // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			esc_html( $value )
+		);
 	}
 }

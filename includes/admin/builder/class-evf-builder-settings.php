@@ -310,17 +310,32 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		$recaptcha_type   = get_option( 'everest_forms_recaptcha_type', 'v2' );
 		$recaptcha_key    = get_option( 'everest_forms_recaptcha_' . $recaptcha_type . '_site_key' );
 		$recaptcha_secret = get_option( 'everest_forms_recaptcha_' . $recaptcha_type . '_secret_key' );
+		switch ( $recaptcha_type ) {
+			case 'v2':
+				$recaptcha_label = esc_html__( 'Enable Google Invisible reCAPTCHA v2', 'everest-forms' );
+				break;
+
+			case 'v3':
+				$recaptcha_label = esc_html__( 'Enable Google reCAPTCHA v3', 'everest-forms' );
+				break;
+
+			case 'hcaptcha':
+				$recaptcha_label = esc_html__( 'Enable hCaptcha', 'everest-forms' );
+				break;
+		}
+		$recaptcha_label = 'yes' === get_option( 'everest_forms_recaptcha_v2_invisible' ) && 'v2' === $recaptcha_type ? esc_html__( 'Enable Google Invisible reCAPTCHA v2', 'everest-forms' ) : $recaptcha_label;
+
 		if ( ! empty( $recaptcha_key ) && ! empty( $recaptcha_secret ) ) {
 			everest_forms_panel_field(
 				'checkbox',
 				'settings',
 				'recaptcha_support',
 				$this->form_data,
-				'v3' === $recaptcha_type ? esc_html__( 'Enable Google reCAPTCHA v3', 'everest-forms' ) : ( 'yes' === get_option( 'everest_forms_recaptcha_v2_invisible' ) ? esc_html__( 'Enable Google Invisible reCAPTCHA v2', 'everest-forms' ) : esc_html__( 'Enable Google Checkbox reCAPTCHA v2', 'everest-forms' ) ),
+				$recaptcha_label,
 				array(
 					'default' => '0',
 					/* translators: %1$s - general settings docs url */
-					'tooltip' => sprintf( esc_html__( 'Enable Google reCaptcha. Make sure the site key and secret key is set in settings page. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/general-settings/#enable-recaptcha-support' ) ),
+					'tooltip' => sprintf( esc_html__( 'Enable reCaptcha. Make sure the site key and secret key is set in settings page. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/general-settings/#enable-recaptcha-support' ) ),
 				)
 			);
 		}

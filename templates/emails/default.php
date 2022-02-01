@@ -267,7 +267,7 @@ defined( 'ABSPATH' ) || exit;
 						<?php
 						if ( ! empty( $header_image ) ) {
 							echo '<tr><td valign="top" align="center" id="templateHeader" style="padding-bottom:20px;text-align:center;">';
-								echo '<img src="' . esc_url( $header_image ) . '" alt="' . get_bloginfo( 'name' ) . '" />';
+								echo '<img src="' . esc_url( $header_image ) . '" alt="' . esc_attr( get_bloginfo( 'name' ) ) . '" />';
 							echo '</td></tr>';
 						}
 						?>

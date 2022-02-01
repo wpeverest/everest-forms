@@ -137,26 +137,26 @@ class EVF_Shortcode_Form {
 		echo '<input type="hidden" name="everest_forms[author]" value="' . absint( get_the_author_meta( 'ID' ) ) . '">';
 
 		if ( is_singular() ) {
-			echo '<input type="hidden" name="everest_forms[post_id]" value="' . get_the_ID() . '">';
+			echo '<input type="hidden" name="everest_forms[post_id]" value="' . absint( get_the_ID() ) . '">';
 		}
 
 		do_action( 'everest_forms_display_submit_before', $form_data );
 
 		printf(
 			"<button type='submit' name='everest_forms[submit]' class='everest-forms-submit-button button evf-submit %s' id='evf-submit-%d' value='evf-submit' %s conditional_rules='%s' conditional_id='%s' %s %s>%s</button>",
-			$classes, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			$form_id, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			$process, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			$conditional_rules, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			$conditional_id, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			$visible, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			esc_attr( $classes ),
+			esc_attr( $form_id ),
+			! isset( $settings['submit_button_processing_text'] ) ? 'data-process-text="' . esc_attr__( 'Processing&hellip;', 'everest-forms' ) . '"' : ( ! empty( $settings['submit_button_processing_text'] ) ? 'data-process-text="' . esc_attr( evf_string_translation( $form_data['id'], 'processing_text', $settings['submit_button_processing_text'] ) ) . '"' : '' ),
+			esc_attr( $conditional_rules ),
+			esc_attr( $conditional_id ),
+			'style="display:' . ( ! empty( self::$parts[ $form_id ] ) ? 'none' : 'block' ) . '"',
 			evf_html_attributes(
 				sprintf( 'evf-submit-%d', absint( $form_id ) ),
 				$evf_amp_classes,
 				$data_attrs,
 				$attrs
 			),
-			$submit_btn // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			esc_html( $submit_btn )
 		);
 
 		do_action( 'everest_forms_display_submit_after', $form_data );
@@ -220,7 +220,7 @@ class EVF_Shortcode_Form {
 		printf(
 			'<div %s>%s</div>',
 			evf_html_attributes( $description['id'], $description['class'], $description['data'], $description['attr'] ),
-			evf_string_translation( $form_data['id'], $field['id'], $description['value'], '-description' ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			wp_kses( evf_string_translation( $form_data['id'], $field['id'], $description['value'], '-description' ), evf_get_allowed_html_tags( 'builder' ) )
 		);
 	}
 
@@ -244,28 +244,41 @@ class EVF_Shortcode_Form {
 		printf(
 			'<label %s><span class="evf-label">%s</span> %s</label>',
 			evf_html_attributes( $label['id'], $label['class'], $label['data'], $label['attr'] ),
-			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			evf_string_translation(
-				$form_data['id'],
-				$field['id'],
-				wp_kses(
-					$label['value'],
-					array(
-						'a'      => array(
-							'href'  => array(),
-							'class' => array(),
-						),
-						'span'   => array(
-							'class' => array(),
-						),
-						'em'     => array(),
-						'small'  => array(),
-						'strong' => array(),
+			wp_kses(
+				evf_string_translation(
+					$form_data['id'],
+					$field['id'],
+					wp_kses(
+						$label['value'],
+						array(
+							'a'      => array(
+								'href'  => array(),
+								'class' => array(),
+							),
+							'span'   => array(
+								'class' => array(),
+							),
+							'em'     => array(),
+							'small'  => array(),
+							'strong' => array(),
+						)
 					)
+				),
+				array(
+					'a'      => array(
+						'href'  => array(),
+						'class' => array(),
+					),
+					'span'   => array(
+						'class' => array(),
+					),
+					'em'     => array(),
+					'small'  => array(),
+					'strong' => array(),
 				)
 			),
-			$required, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			$custom_tags // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			wp_kses( $required, evf_get_allowed_html_tags( 'builder' ) ),
+			wp_kses( $custom_tags, evf_get_allowed_html_tags( 'builder' ) )
 		);
 	}
 
@@ -366,7 +379,7 @@ class EVF_Shortcode_Form {
 			 */
 			do_action( 'everest_forms_display_row_before', $row_key, $form_data );
 
-			echo '<div class="evf-frontend-row" data-row="' . esc_attr( $row_key ) . '"' . $is_repeater . '>'; // @codingStandardsIgnoreLine
+			echo '<div class="evf-frontend-row" data-row="' . esc_attr( $row_key ) . '"' . esc_attr( $is_repeater ) . '>'; // @codingStandardsIgnoreLine
 
 			foreach ( $row as $grid_key => $grid ) {
 				$number_of_grid = count( $row );
@@ -450,9 +463,9 @@ class EVF_Shortcode_Form {
 		if ( isset( $form_data['settings']['honeypot'] ) && '1' === $form_data['settings']['honeypot'] ) {
 			echo '<div class="evf-honeypot-container evf-field-hp">';
 
-				echo '<label for="evf-' . $form_data['id'] . '-field-hp" class="evf-field-label">' . $names[ array_rand( $names ) ] . '</label>'; // phpcs:ignore
+				echo '<label for="evf-' . esc_attr( $form_data['id'] ) . '-field-hp" class="evf-field-label">' . esc_attr( $names[ array_rand( $names ) ] ) . '</label>';
 
-				echo '<input type="text" name="everest_forms[hp]" id="evf-' . $form_data['id'] . '-field-hp" class="input-text">';  // phpcs:ignore
+				echo '<input type="text" name="everest_forms[hp]" id="evf-' . esc_attr( $form_data['id'] ) . '-field-hp" class="input-text">';
 
 			echo '</div>';
 		}
@@ -476,6 +489,9 @@ class EVF_Shortcode_Form {
 		} elseif ( 'v3' === $recaptcha_type ) {
 			$site_key   = get_option( 'everest_forms_recaptcha_v3_site_key' );
 			$secret_key = get_option( 'everest_forms_recaptcha_v3_secret_key' );
+		} elseif ( 'hcaptcha' === $recaptcha_type ) {
+			$site_key   = get_option( 'everest_forms_recaptcha_hcaptcha_site_key' );
+			$secret_key = get_option( 'everest_forms_recaptcha_hcaptcha_secret_key' );
 		}
 
 		if ( ! $site_key || ! $secret_key ) {
@@ -519,12 +535,16 @@ class EVF_Shortcode_Form {
 						$data['size']     = 'invisible';
 						$recaptcha_inline = 'var EVFRecaptchaLoad = function(){jQuery(".g-recaptcha").each(function(index,el){var recaptchaID = grecaptcha.render(el,{},true); grecaptcha.execute(recaptchaID);});};';
 					} else {
-						$recaptcha_inline  = 'var EVFRecaptchaLoad = function(){jQuery(".g-recaptcha").each(function(index, el){var recaptchaID = grecaptcha.render(el,{callback:function(){EVFRecaptchaCallback(el);}},true);jQuery(el).attr( "data-recaptcha-id", recaptchaID);});};';
+						$recaptcha_inline  = 'var EVFRecaptchaLoad = function(){jQuery(".g-recaptcha").each(function(index, el){var recaptchaID =  grecaptcha.render(el,{callback:function(){EVFRecaptchaCallback(el);}},true);jQuery(el).attr( "data-recaptcha-id", recaptchaID);});};';
 						$recaptcha_inline .= 'var EVFRecaptchaCallback = function(el){jQuery(el).parent().find(".evf-recaptcha-hidden").val("1").trigger("change").valid();};';
 					}
 				} elseif ( 'v3' === $recaptcha_type ) {
 					$recaptcha_api    = apply_filters( 'everest_forms_frontend_recaptcha_url', 'https://www.google.com/recaptcha/api.js?render=' . $site_key, $recaptcha_type, $form_id );
 					$recaptcha_inline = 'grecaptcha.ready(function(){grecaptcha.execute("' . esc_html( $site_key ) . '",{action:"everest_form"}).then(function(token){var f=document.getElementsByName("everest_forms[recaptcha]");for(var i=0;i<f.length;i++){f[i].value = token;}});});';
+				} elseif ( 'hcaptcha' === $recaptcha_type ) {
+						$recaptcha_api     = apply_filters( 'everest_forms_frontend_recaptcha_url', 'https://hcaptcha.com/1/api.js??onload=EVFRecaptchaLoad&render=explicit', $recaptcha_type, $form_id );
+						$recaptcha_inline  = 'var EVFRecaptchaLoad = function(){jQuery(".g-recaptcha").each(function(index, el){var recaptchaID =  hcaptcha.render(el,{callback:function(){EVFRecaptchaCallback(el);}},true);jQuery(el).attr( "data-recaptcha-id", recaptchaID);});};';
+						$recaptcha_inline .= 'var EVFRecaptchaCallback = function(el){jQuery(el).parent().find(".evf-recaptcha-hidden").val("1").trigger("change").valid();};';
 				}
 
 				// Enqueue reCaptcha scripts.
@@ -545,12 +565,12 @@ class EVF_Shortcode_Form {
 
 				// Output the reCAPTCHA container.
 				$class = ( 'v3' === $recaptcha_type || ( 'v2' === $recaptcha_type && 'yes' === $invisible_recaptcha ) ) ? 'recaptcha-hidden' : '';
-				echo '<div class="evf-recaptcha-container ' . $class . '" ' . $visible . '>'; // @codingStandardsIgnoreLine
+				echo '<div class="evf-recaptcha-container ' . esc_attr( $class ) . '" style="display:' . ( ! empty( self::$parts[ $form_id ] ) ? 'none' : 'block' ) . '>';
 
-				if ( 'v2' === $recaptcha_type ) {
+				if ( 'v2' === $recaptcha_type || 'hcaptcha' === $recaptcha_type ) {
 					echo '<div ' . evf_html_attributes( '', array( 'g-recaptcha' ), $data ) . '></div>';
 
-					if ( 'no' === $invisible_recaptcha ) {
+					if ( 'hcaptcha' === $recaptcha_type && 'no' === $invisible_recaptcha ) {
 						echo '<input type="text" name="g-recaptcha-hidden" class="evf-recaptcha-hidden" style="position:absolute!important;clip:rect(0,0,0,0)!important;height:1px!important;width:1px!important;border:0!important;overflow:hidden!important;padding:0!important;margin:0!important;" required>';
 					}
 				} else {
@@ -799,7 +819,7 @@ class EVF_Shortcode_Form {
 
 		ob_start();
 		self::view( $atts['id'], $atts['title'], $atts['description'] );
-		echo ob_get_clean(); // phpcs:ignore WordPress.Security.EscapeOutput
+		echo ob_get_clean(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**

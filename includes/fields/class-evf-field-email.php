@@ -408,6 +408,8 @@ class EVF_Field_Email extends EVF_Form_Fields {
 			evf()->task->errors[ $form_id ][ $field_id ]['secondary'] = esc_html__( 'Confirmation Email do not match.', 'everest-forms' );
 			update_option( 'evf_validation_error', 'yes' );
 		}
+
+		do_action( 'everest_forms_email_validation', $field_id, $field_submit, $form_data );
 	}
 
 	/**
