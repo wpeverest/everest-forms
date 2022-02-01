@@ -2,8 +2,6 @@
 
 = 1.8.4 - xx-xx-2022 =
 * Fix - Date Time $ missing form variable name.
-
-= 1.8.3 - 17-01-2022 =
 * Enhancement - Recaptcha v3 Threshold.
 
 = 1.8.3 - 17-01-2022 =
