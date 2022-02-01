@@ -383,16 +383,12 @@ class EVF_AJAX {
 		}
 
 		$addons        = array();
-		$raw_templates = wp_remote_get( evf()->plugin_url( 'assets/extensions-json/templates/all_templates.json' ), array( 'sslverify' => false ) );
+		$template_data = evf_get_json_file_contents( 'assets/extensions-json/templates/all_templates.json' );
 
-		if ( ! is_wp_error( $raw_templates ) ) {
-			$template_data = json_decode( wp_remote_retrieve_body( $raw_templates ) );
-
-			if ( ! empty( $template_data->templates ) ) {
-				foreach ( $template_data->templates as $template ) {
-					if ( isset( $_POST['slug'] ) && $template->slug === $_POST['slug'] && in_array( $_POST['plan'], $template->plan, true ) ) {
-						$addons = $template->addons;
-					}
+		if ( ! empty( $template_data->templates ) ) {
+			foreach ( $template_data->templates as $template ) {
+				if ( isset( $_POST['slug'] ) && $template->slug === $_POST['slug'] && in_array( $_POST['plan'], $template->plan, true ) ) {
+					$addons = $template->addons;
 				}
 			}
 		}
