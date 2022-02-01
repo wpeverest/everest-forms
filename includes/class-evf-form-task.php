@@ -72,9 +72,46 @@ class EVF_Form_Task {
 			$this->entry_confirmation_redirect( '', sanitize_text_field( wp_unslash( $_GET['everest_forms_return'] ) ) ); // phpcs:ignore WordPress.Security.NonceVerification
 		}
 
+		$form_id = ! empty( $_POST['everest_forms']['id'] ) ? absint( $_POST['everest_forms']['id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification
+
+		if ( ! $form_id ) {
+			return;
+		}
+
 		if ( ! empty( $_POST['everest_forms']['id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			$this->do_task( evf_sanitize_entry( wp_unslash( $_POST['everest_forms'] ) ) ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		}
+
+		if ( ! evf_is_amp() ) {
+			return;
+		}
+
+		$settings        = $this->form_data['settings'];
+		$success_message = isset( $settings['successful_form_submission_message'] ) ? $settings['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
+			// Send 400 Bad Request when there are errors.
+		if ( empty( $this->errors[ $form_id ] ) ) {
+			wp_send_json(
+				array(
+					'message' => $success_message,
+				),
+				200
+			);
+
+			return;
+		}
+		$message = $this->errors[ $form_id ]['header'];
+
+		if ( ! empty( $this->errors[ $form_id ]['footer'] ) ) {
+			$message .= ' ' . $this->errors[ $form_id ]['footer'];
+		}
+
+		wp_send_json(
+			array(
+				'message' => $message,
+			),
+			400
+		);
+
 	}
 
 	/**
@@ -200,7 +237,8 @@ class EVF_Form_Task {
 					$secret_key = get_option( 'everest_forms_recaptcha_hcaptcha_secret_key' );
 				}
 
-				if ( ! empty( $site_key ) && ! empty( $secret_key ) && isset( $this->form_data['settings']['recaptcha_support'] ) && '1' === $this->form_data['settings']['recaptcha_support'] ) {
+				if ( ! empty( $site_key ) && ! empty( $secret_key ) && isset( $this->form_data['settings']['recaptcha_support'] ) && '1' === $this->form_data['settings']['recaptcha_support'] &&
+				! isset( $_POST['__amp_form_verify'] ) && ( 'v3' === $recaptcha_type || ! evf_is_amp() ) ) {
 					if ( 'hcaptcha' === $recaptcha_type ) {
 						$error = esc_html__( 'hCaptcha verification failed, please try again later.', 'everest-forms' );
 					} else {
@@ -236,7 +274,53 @@ class EVF_Form_Task {
 			}
 			// Initial error check.
 			$errors = apply_filters( 'everest_forms_process_initial_errors', $this->errors, $this->form_data );
+			if ( isset( $_POST['__amp_form_verify'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+				if ( empty( $errors[ $form_id ] ) ) {
+					wp_send_json( array(), 200 );
+				} else {
+					$verify_errors = array();
 
+					foreach ( $errors[ $form_id ] as $field_id => $error_fields ) {
+						$field            = $this->form_data['fields'][ $field_id ];
+						$field_properties = EVF_Shortcode_Form::get_field_properties( $field, $this->form_data );
+
+						if ( is_string( $error_fields ) ) {
+
+							if ( 'checkbox' === $field['type'] || 'radio' === $field['type'] || 'select' === $field['type'] ) {
+								$first = current( $field_properties['inputs'] );
+								$name  = $first['attr']['name'];
+							} elseif ( isset( $field_properties['inputs']['primary']['attr']['name'] ) ) {
+								$name = $field_properties['inputs']['primary']['attr']['name'];
+							}
+
+							$verify_errors[] = array(
+								'name'    => $name,
+								'message' => $error_fields,
+							);
+						} else {
+							foreach ( $error_fields as $error_field => $error_message ) {
+
+								if ( isset( $field_properties['inputs'][ $error_field ]['attr']['name'] ) ) {
+									$name = $field_properties['inputs'][ $error_field ]['attr']['name'];
+								}
+
+								$verify_errors[] = array(
+									'name'    => $name,
+									'message' => $error_message,
+								);
+							}
+						}
+					}
+
+					wp_send_json(
+						array(
+							'verifyErrors' => $verify_errors,
+						),
+						400
+					);
+				}
+				return;
+			}
 			if ( ! empty( $errors[ $form_id ] ) ) {
 				if ( empty( $errors[ $form_id ]['header'] ) ) {
 					$errors[ $form_id ]['header'] = __( 'Form has not been submitted, please see the errors below.', 'everest-forms' );
@@ -387,15 +471,15 @@ class EVF_Form_Task {
 			}
 
 			// $this->entry_confirmation_redirect( $this->form_data );
-
 			return $response_data;
 		} elseif ( ( 'same' === $this->form_data['settings']['redirect_to'] && empty( $submission_redirection_process ) ) || ( ! empty( $submission_redirection_process ) && 'same_page' == $submission_redirection_process['redirect_to'] ) ) {
-			evf_add_notice( $message, 'success' );
+				evf_add_notice( $message, 'success' );
 		}
 
 		do_action( 'everest_forms_after_success_message', $this->form_data, $entry );
 
 		$this->entry_confirmation_redirect( $this->form_data );
+
 	}
 
 	/**
@@ -433,7 +517,6 @@ class EVF_Form_Task {
 		$response = apply_filters( 'everest_forms_ajax_submit_redirect', $response, $form_id, $url );
 
 		do_action( 'everest_forms_ajax_submit_completed', $form_id, $response );
-
 		wp_send_json_success( $response );
 	}
 
