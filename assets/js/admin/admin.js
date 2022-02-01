@@ -131,16 +131,6 @@
 			}
 		})
 
-		.on( 'keydown click','.evf-input-number-step[type=number]', function(e) {
-			if( !( ( e.keyCode > 95 && e.keyCode < 106 )
-    		  || ( e.keyCode > 47 && e.keyCode < 58 )
-     		 || e.keyCode == 8 ) ) {
-     		   return false;
-    		}
-		})
-
-
-
 		.on('keydown click','.evf-max-file-number[type=number]', function(e) {
 			if( !( ( e.keyCode > 95 && e.keyCode < 106 )
 			|| ( e.keyCode > 47 && e.keyCode < 58 )
