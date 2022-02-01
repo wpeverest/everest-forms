@@ -208,8 +208,7 @@ class EVF_Form_Handler {
 			)
 		);
 
-		$raw_templates = wp_safe_remote_get( 'https://raw.githubusercontent.com/wpeverest/extensions-json/master/everest-forms/templates/all_templates.json' );
-		$templates     = json_decode( wp_remote_retrieve_body( $raw_templates ) );
+		$templates     = evf_get_json_file_contents( 'assets/extensions-json/templates/all_templates.json' );
 
 		if ( ! empty( $templates ) ) {
 			foreach ( $templates->templates as $template_data ) {

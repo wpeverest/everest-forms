@@ -64,13 +64,12 @@ class EVF_Admin_Import_Export {
 			ob_clean();
 		}
 
-		$export_json = wp_json_encode( $export_data );
 		// Force download.
 		header( 'Content-Type: application/force-download' );
 		// Disposition / Encoding on response body.
 		header( "Content-Disposition: attachment;filename={$file_name}; charset=utf-8" );
 		header( 'Content-type: application/json' );
-		echo $export_json; // phpcs:ignore WordPress.Security.EscapeOutput
+		echo wp_json_encode( $export_data );
 		exit();
 	}
 
@@ -80,7 +79,7 @@ class EVF_Admin_Import_Export {
 	public static function import_form() {
 		// Check for $_FILES set or not.
 		if ( isset( $_FILES['jsonfile']['name'], $_FILES['jsonfile']['tmp_name'] ) ) {
-			$filename  = esc_html( sanitize_text_field( wp_unslash( $_FILES['jsonfile']['name'] ) ) );
+			$filename  = sanitize_file_name( wp_unslash( $_FILES['jsonfile']['name'] ) );
 			$extension = pathinfo( $filename, PATHINFO_EXTENSION );
 
 			// Check for file format.

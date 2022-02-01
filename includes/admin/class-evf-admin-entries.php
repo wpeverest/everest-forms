@@ -90,7 +90,10 @@ class EVF_Admin_Entries {
 								$output = ob_get_clean();
 
 							if ( ! empty( $output ) ) {
-								echo $output; // @codingStandardsIgnoreLine
+								echo wp_kses(
+									$output,
+									evf_get_allowed_html_tags( 'form_dropdown' )
+								);
 								submit_button( __( 'Filter', 'everest-forms' ), '', '', false, array( 'id' => 'post-query-submit' ) );
 							}
 							?>

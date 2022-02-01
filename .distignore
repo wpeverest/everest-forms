@@ -9,6 +9,7 @@ changelog.txt
 composer.*
 Gruntfile.js
 webpack.config.js
+tests/
 vendor/
 node_modules/
 none

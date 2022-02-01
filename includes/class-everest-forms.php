@@ -21,7 +21,7 @@ final class EverestForms {
 	 *
 	 * @var string
 	 */
-	public $version = '1.8.1';
+	public $version = '1.8.3';
 
 	/**
 	 * The single instance of the class.
@@ -365,10 +365,12 @@ final class EverestForms {
 	/**
 	 * Get the plugin url.
 	 *
+	 * @param String $path Path.
+	 *
 	 * @return string
 	 */
-	public function plugin_url() {
-		return untrailingslashit( plugins_url( '/', EVF_PLUGIN_FILE ) );
+	public function plugin_url( $path = '/' ) {
+		return untrailingslashit( plugins_url( $path, EVF_PLUGIN_FILE ) );
 	}
 
 	/**

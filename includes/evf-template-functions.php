@@ -32,6 +32,9 @@ function evf_body_class( $classes ) {
  * @since 1.2.0
  */
 function evf_no_js() {
+	if ( evf_is_amp() ) {
+		return;
+	}
 	?>
 	<script type="text/javascript">
 		var c = document.body.className;

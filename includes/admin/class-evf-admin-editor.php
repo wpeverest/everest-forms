@@ -35,12 +35,11 @@ class EVF_Admin_Editor {
 		}
 
 		// Setup the svg icon.
-		$svg_icon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path fill="#82878c" d="M18.1 4h-3.8l1.2 2h3.9zM20.6 8h-3.9l1.2 2h3.9zM20.6 18H5.8L12 7.9l2.5 4.1H12l-1.2 2h7.3L12 4.1 2.2 20h19.6z"/></g></svg>';
 		printf(
 			'<a href="#" class="button evf-insert-form-button" data-editor="%s" title="%s"><span class="wp-media-buttons-icon">%s</span> %s</a>',
 			esc_attr( $editor_id ),
 			esc_attr__( 'Add Everest Form', 'everest-forms' ),
-			$svg_icon, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path fill="#82878c" d="M18.1 4h-3.8l1.2 2h3.9zM20.6 8h-3.9l1.2 2h3.9zM20.6 18H5.8L12 7.9l2.5 4.1H12l-1.2 2h7.3L12 4.1 2.2 20h19.6z"/></g></svg>',
 			esc_html__( 'Add Form', 'everest-forms' )
 		);
 
