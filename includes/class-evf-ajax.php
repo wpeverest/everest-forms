@@ -766,12 +766,14 @@ class EVF_AJAX {
 			$subject = 'Everest Form: ' . sprintf( esc_html__( 'Test email from %s', 'everest-forms' ), $from );
 			$header  = "Reply-To: {{from}} \r\n";
 			$header .= 'Content-Type: text/html; charset=UTF-8';
-			$message =
-			'Congratulations,<br>
-			Your test email has been received successfully.<br>
-			We thank you for trying out Everest Forms and joining our mission to make sure you get your emails delivered.<br>
-			Regards,<br>
-			Everest Forms Team';
+			$message = sprintf(
+				'%s <br /> %s <br /> %s <br /> %s <br /> %s',
+				__( 'Congratulations,', 'everest-forms' ),
+				__( 'Your test email has been received successfully.', 'everest-forms' ),
+				__( 'We thank you for trying out Everest Forms and joining our mission to make sure you get your emails delivered.', 'everest-forms' ),
+				__( 'Regards,', 'everest-forms' ),
+				__( 'Everest Forms Team', 'everest-forms' )
+			);
 			$status  = wp_mail( $email, $subject, $message, $header );
 			if ( $status ) {
 				wp_send_json_success( array( 'message' => __( 'Test email was sent successfully! Please check your inbox to make sure it is delivered.', 'everest-forms' ) ) );
