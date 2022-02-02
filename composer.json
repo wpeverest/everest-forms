@@ -29,11 +29,13 @@
   "require-dev": {
     "10up/wp_mock": "dev-enhance/allow-to-enable-disable-mock-constants-functions",
     "phpunit/phpunit": "^5 || ^7",
-    "roots/wordpress": "5.8.2",
-    "spatie/phpunit-watcher": "1.23.2",
+    "roots/wordpress": "5.8.3",
+    "spatie/phpunit-watcher": "1.8.3",
+    "psr/container": "1.0.0",
+    "jolicode/jolinotif": "2.3.0",
     "vlucas/phpdotenv": "5.4.1",
-    "wp-cli/db-command": "2.0.17",
-    "wp-cli/i18n-command": "2.2.10",
+    "wp-cli/db-command": "2.0.19",
+    "wp-cli/i18n-command": "2.2.13",
     "wp-phpunit/wp-phpunit": "5.8.2",
     "wpeverest/wpeverest-sniffs": "0.1.0",
     "yoast/phpunit-polyfills": "1.0.3"

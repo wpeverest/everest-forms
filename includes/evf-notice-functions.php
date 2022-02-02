@@ -73,6 +73,9 @@ function evf_add_notice( $message, $notice_type = 'success' ) {
 		evf_doing_it_wrong( __FUNCTION__, __( 'This function should not be called before everest_forms_init.', 'everest-forms' ), '1.0' );
 		return;
 	}
+	if ( evf_is_amp() ) {
+		return;
+	}
 
 	$notices = evf()->session->get( 'evf_notices', array() );
 

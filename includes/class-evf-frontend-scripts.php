@@ -149,6 +149,10 @@ class EVF_Frontend_Scripts {
 	 * Register all EVF scripts.
 	 */
 	private static function register_scripts() {
+		if ( evf_is_amp() ) {
+			return;
+		}
+
 		$suffix           = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		$register_scripts = array(
 			'inputmask'                     => array(
