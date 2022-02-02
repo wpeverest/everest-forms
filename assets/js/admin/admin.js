@@ -457,7 +457,6 @@
 					templateSelection: function(data) {
 						if (!data.id) { return data.text; }
 						var selected = ($this.val() || []).length;
-						var total = $('option', $this).length - 1;
 						return "Selected " + selected + " Country(s) ";
 					}
 				});
@@ -490,7 +489,7 @@
 					var $pr = $('#' + event.params.data._resultId).parent();
 					$pr.prop('scrollTop', scrollTop);
 
-					var country = $this.val() ? $this.val() : [];
+					var country = $(this).val() ? $(this).val() : [];
 					var country_diff = arr_diff(country_all, country);
 					country_diff.map(function(i) {
 						$("#evf_select2_country_chk" + i + index).prop('checked', false);
