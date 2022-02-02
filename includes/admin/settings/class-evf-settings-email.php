@@ -68,6 +68,29 @@ class EVF_Settings_Email extends EVF_Settings_Page {
 					'type'     => 'checkbox',
 				),
 				array(
+					'title'       => esc_html__( 'Send Test Email To', 'everest-forms' ),
+					'desc'        => esc_html__( 'Enter email address where test email will be sent.', 'everest-forms' ),
+					'id'          => 'everest_forms_email_send_to',
+					'type'        => 'email',
+					'placeholder' => 'eg. testemail@gmail.com',
+					'value'       => esc_attr( get_bloginfo( 'admin_email' ) ),
+					'desc_tip'    => true,
+				),
+				array(
+					'title'    => __( 'Send Test Email', 'everest-forms' ),
+					'desc'     => __( 'Click to send test email.', 'everest-forms' ),
+					'id'       => 'everest_forms_email_test',
+					'type'     => 'link',
+					'buttons'  => array(
+						array(
+							'title' => __( 'Send Test Email', 'everest-forms' ),
+							'href'  => 'javascript:;',
+							'class' => 'everest_forms_send_email_test',
+						),
+					),
+					'desc_tip' => true,
+				),
+				array(
 					'type' => 'sectionend',
 					'id'   => 'email_template_options',
 				),
