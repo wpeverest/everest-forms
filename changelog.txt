@@ -1,4 +1,6 @@
 == Changelog ==
+= 1.8.4	- xx-xx-2022
+* Feature - Send Test Email
 
 = 1.8.2.4 - 17-01-2022 =
 * Fix - Repeater fields not working.
