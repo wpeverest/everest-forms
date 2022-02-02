@@ -1,6 +1,4 @@
 == Changelog ==
-= 1.8.4	- xx-xx-2022
-* Feature - Send Test Email
 
 = 1.8.4 - xx-xx-2022 =
 * Fix - Attribute issue in Multipart.
@@ -10,6 +8,7 @@
 * Enhancement - Amp plugin compatibility.
 * Fix - Recaptcha v3 and V2 invisible timeout issue.
 * Enhancement - Four column Form.
+* Feature - Send Test Email
 
 = 1.8.3 - 17-01-2022 =
 * Fix - Repeater fields not working.
