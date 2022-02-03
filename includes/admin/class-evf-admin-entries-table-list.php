@@ -541,7 +541,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 			wp_safe_redirect( $sendback );
 			exit();
 		} elseif ( ! empty( $_REQUEST['_wp_http_referer'] ) && isset( $_SERVER['REQUEST_URI'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-			wp_safe_redirect( remove_query_arg( array( '_wp_http_referer', '_wpnonce' ), wp_unslash( $_SERVER['REQUEST_URI'] ) ) ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			wp_safe_redirect( remove_query_arg( array( '_wp_http_referer', '_wpnonce' ), esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ) ); // phpcs:ignore WordPress.Security.NonceVerification
 			exit();
 		}
 	}
@@ -563,7 +563,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 			$output = ob_get_clean();
 
 			if ( ! empty( $output ) ) {
-				echo $output; // @codingStandardsIgnoreLine
+				echo wp_kses( $output, evf_get_allowed_html_tags( 'form_dropdown' ) );
 				submit_button( __( 'Filter', 'everest-forms' ), '', 'filter_action', false, array( 'id' => 'post-query-submit' ) );
 
 				// Export CSV submit button.

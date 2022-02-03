@@ -48,12 +48,11 @@ class EVF_Shortcodes {
 	) {
 		ob_start();
 
-		// @codingStandardsIgnoreStart
-		echo empty( $wrapper['before'] ) ? '<div class="' . esc_attr( $wrapper['class'] ) . '">' : $wrapper['before'];
+		$wrap_before = empty( $wrapper['before'] ) ? '<div class="' . esc_attr( $wrapper['class'] ) . '">' : $wrapper['before'];
+		echo wp_kses_post( $wrap_before );
 		call_user_func( $function, $atts );
-		echo empty( $wrapper['after'] ) ? '</div>' : $wrapper['after'];
-
-		// @codingStandardsIgnoreEnd
+		$wrap_after = empty( $wrapper['after'] ) ? '</div>' : $wrapper['after'];
+		echo wp_kses_post( $wrap_after );
 
 		return ob_get_clean();
 	}

@@ -215,7 +215,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 		$this->field_preview_option( 'label', $field );
 
 		// Primary input.
-		echo '<input type="number" placeholder="' . $placeholder . '" class="widefat" disabled>'; // @codingStandardsIgnoreLine.
+		echo '<input type="number" placeholder="' . esc_attr($placeholder) . '" class="widefat" disabled>'; // @codingStandardsIgnoreLine.
 
 		// Description.
 		$this->field_preview_option( 'description', $field );
@@ -292,11 +292,11 @@ class EVF_Field_Number extends EVF_Form_Fields {
 		}
 
 		// Check if minimum and maximum value is valid.
-		if ( ! empty( $form_data['form_fields'][ $field_id ]['min_value'] ) && floatval( $field_submit ) < $min_value ) {
+		if ( ! empty( $form_data['form_fields'][ $field_id ]['min_value'] ) && ! empty( $field_submit ) && floatval( $field_submit ) < $min_value ) {
 			/* translators: %s - minimum value. */
 			evf()->task->errors[ $form_id ][ $field_id ] = sprintf( esc_html__( 'Please enter a value greater than or equal to %s', 'everest-forms' ), absint( $min_value ) );
 			update_option( 'evf_validation_error', 'yes' );
-		} elseif ( ! empty( $form_data['form_fields'][ $field_id ]['max_value'] ) && floatval( $field_submit ) > $max_value ) {
+		} elseif ( ! empty( $form_data['form_fields'][ $field_id ]['max_value'] ) && ! empty( $field_submit ) && floatval( $field_submit ) > $max_value ) {
 			/* translators: %s - maximum value. */
 			evf()->task->errors[ $form_id ][ $field_id ] = sprintf( esc_html__( 'Please enter a value less than or equal to %s', 'everest-forms' ), absint( $max_value ) );
 			update_option( 'evf_validation_error', 'yes' );

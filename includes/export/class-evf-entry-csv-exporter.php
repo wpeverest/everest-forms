@@ -226,9 +226,9 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 		}
 
 		ob_start();
-		echo implode( ', ', $columns );
+		echo esc_html( implode( ', ', $columns ) );
 		echo "\n";
-		echo implode( ', ', $row );
+		echo esc_html( implode( ', ', $row ) );
 
 		return ob_get_clean();
 	}

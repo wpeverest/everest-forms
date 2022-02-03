@@ -264,34 +264,6 @@ function evf_time_format() {
 }
 
 /**
- * Convert mysql datetime to PHP timestamp, forcing UTC. Wrapper for strtotime.
- *
- * Based on wcs_strtotime_dark_knight() from WC Subscriptions by Prospress.
- *
- * @since  3.0.0
- * @param  string   $time_string    Time string.
- * @param  int|null $from_timestamp Timestamp to convert from.
- * @return int
- */
-function evf_string_to_timestamp( $time_string, $from_timestamp = null ) {
-	$original_timezone = date_default_timezone_get();
-
-	// @codingStandardsIgnoreStart
-	date_default_timezone_set( 'UTC' );
-
-	if ( null === $from_timestamp ) {
-		$next_timestamp = strtotime( $time_string );
-	} else {
-		$next_timestamp = strtotime( $time_string, $from_timestamp );
-	}
-
-	date_default_timezone_set( $original_timezone );
-	// @codingStandardsIgnoreEnd
-
-	return $next_timestamp;
-}
-
-/**
  * Callback which can flatten post meta (gets the first value if it's an array).
  *
  * @param  array $value Value to flatten.
