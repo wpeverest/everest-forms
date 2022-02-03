@@ -60,6 +60,7 @@ class EVF_Form_Task {
 	 */
 	public function __construct() {
 		add_action( 'wp', array( $this, 'listen_task' ) );
+		add_filter( 'everest_forms_field_properties', array( $this, 'load_previous_field_value' ), 99, 3 );
 	}
 
 	/**
@@ -994,5 +995,45 @@ class EVF_Form_Task {
 		do_action( 'everest_forms_complete_entry_save', $entry_id, $fields, $entry, $form_id, $form_data );
 
 		return $this->entry_id;
+	}
+
+	/**
+	 * Load Previous Field Value.
+	 *
+	 * @param string $properties Value.
+	 * @param mixed  $field Field.
+	 * @param mixed  $form_data Form Data.
+	 * @return $properties Properties.
+	 */
+	public function load_previous_field_value( $properties, $field, $form_data ) {
+
+		if ( ! isset( $_POST['everest_forms'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			return $properties;
+		}
+		$data = ! empty( $_POST['everest_forms']['form_fields'][ $field['id'] ] ) ? wp_unslash( $_POST['everest_forms']['form_fields'][ $field['id'] ] ) : array(); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+
+		if ( 'checkbox' === $field['type'] ) {
+			foreach ( $field['choices'] as $key => $option_value ) {
+				$selected = ! empty( $option_value['default'] ) ? $option_value['default'] : '';
+				foreach ( $data  as $value ) {
+					if ( $value === $option_value['label'] ) {
+						$selected                                = 1;
+						$properties['inputs'][ $key ]['default'] = $selected;
+					}
+				}
+			}
+		} elseif ( 'radio' === $field['type'] || 'select' === $field['type'] ) {
+			foreach ( $field['choices'] as $key => $option_value ) {
+				if ( $data === $option_value['label'] ) { // phpcs:ignore WordPress.Security.NonceVerification
+					$selected                                = 1;
+					$properties['inputs'][ $key ]['default'] = $selected;
+				}
+			}
+		} else {
+			if ( ! is_array( $data ) ) {
+				$properties['inputs']['primary']['attr']['value'] = esc_attr( $data );
+			}
+		}
+		return $properties;
 	}
 }
