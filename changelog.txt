@@ -11,6 +11,8 @@
 * Enhancement - Four column Form.
 * Feature - Send Test Email.
 * Tweak - Nonce ID aligned with Form ID.
+* Tweak - Preserve form field values while error in normal form submission
+
 
 = 1.8.3 - 17-01-2022 =
 * Fix - Repeater fields not working.
