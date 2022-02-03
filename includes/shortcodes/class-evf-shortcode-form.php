@@ -579,7 +579,7 @@ class EVF_Shortcode_Form {
 
 				// Output the reCAPTCHA container.
 				$class = ( 'v3' === $recaptcha_type || ( 'v2' === $recaptcha_type && 'yes' === $invisible_recaptcha ) ) ? 'recaptcha-hidden' : '';
-				echo '<div class="evf-recaptcha-container ' . esc_attr( $class ) . '" style="display:' . ( ! empty( self::$parts[ $form_id ] ) ? 'none' : 'block' ) . '>';
+				echo '<div class="evf-recaptcha-container ' . esc_attr( $class ) . '" style="display:' . ( ! empty( self::$parts[ $form_id ] ) ? 'none' : 'block' ) . '">';
 
 				if ( 'v2' === $recaptcha_type || 'hcaptcha' === $recaptcha_type ) {
 					echo '<div ' . evf_html_attributes( '', array( 'g-recaptcha' ), $data ) . '></div>';
