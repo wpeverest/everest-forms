@@ -8,7 +8,8 @@
 * Enhancement - Amp plugin compatibility.
 * Fix - Recaptcha v3 and V2 invisible timeout issue.
 * Enhancement - Four column Form.
-* Feature - Send Test Email
+* Feature - Send Test Email.
+* Tweak - Nonce ID aligned with Form ID.
 
 = 1.8.3 - 17-01-2022 =
 * Fix - Repeater fields not working.
