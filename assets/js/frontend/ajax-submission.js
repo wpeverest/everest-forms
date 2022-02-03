@@ -74,8 +74,8 @@ jQuery( function( $ ) {
 							localStorage.removeItem(formTuple.attr('id'));
 						} else {
 							var	form_id = formTuple.data( 'formid' ),
-								error   =  everest_forms_ajax_submission_params.error,
 								err     =  JSON.parse( errorThrown.responseText ),
+								error =  err.data[form_id].header,
 								fields  = err.data.error;
 
 								if ( 'string' === typeof err.data.message ) {

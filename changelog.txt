@@ -3,10 +3,11 @@
 = 1.8.4 - xx-xx-2022 =
 * Fix - Attribute issue in Multipart.
 * Fix - Date Time $ missing form variable name.
+* Fix - Recaptcha v3 and V2 invisible timeout issue.
 * Enhancement - Recaptcha v3 Threshold.
 * Enhancement - hCaptcha.
 * Enhancement - Amp plugin compatibility.
-* Fix - Recaptcha v3 and V2 invisible timeout issue.
+* Enhancement - Form builder validation.
 * Enhancement - Four column Form.
 * Feature - Send Test Email.
 * Tweak - Nonce ID aligned with Form ID.
