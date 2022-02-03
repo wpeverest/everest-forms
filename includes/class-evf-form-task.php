@@ -121,6 +121,7 @@ class EVF_Form_Task {
 	 * @param array $entry $_POST object.
 	 */
 	public function do_task( $entry ) {
+		$logger = evf_get_logger();
 		try {
 			$this->errors           = array();
 			$this->form_fields      = array();
@@ -135,12 +136,20 @@ class EVF_Form_Task {
 			// Check nonce for form submission.
 			if ( empty( $_POST['_wpnonce'] ) || ! wp_verify_nonce( wp_unslash( sanitize_key( $_POST['_wpnonce'] ) ), 'everest-forms_process_submit' ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 				$this->errors[ $form_id ]['header'] = esc_html__( 'We were unable to process your form, please try again.', 'everest-forms' );
+				$logger->error(
+					$this->errors[ $form_id ]['header'],
+					array( 'source' => 'form-submission' )
+				);
 				return $this->errors;
 			}
 
 			// Validate form is real and active (published).
 			if ( ! $form || 'publish' !== $form->post_status ) {
 				$this->errors[ $form_id ]['header'] = esc_html__( 'Invalid form. Please check again.', 'everest-forms' );
+				$logger->error(
+					$this->errors[ $form_id ]['header'],
+					array( 'source' => 'form-submission' )
+				);
 				return $this->errors;
 			}
 
@@ -151,7 +160,15 @@ class EVF_Form_Task {
 			$entry                      = apply_filters( 'everest_forms_process_before_filter', $entry, $this->form_data );
 			$this->form_data['page_id'] = array_key_exists( 'post_id', $entry ) ? $entry['post_id'] : $form_id;
 
+			$logger->info(
+				__( 'Everest Forms Process Before.', 'everest-forms' ),
+				array( 'source' => 'form-submission' )
+			);
 			do_action( 'everest_forms_process_before', $entry, $this->form_data );
+			$logger->info(
+				__( 'Everest Forms Process Before Form ID.', 'everest-forms' ),
+				array( 'source' => 'form-submission' )
+			);
 			do_action( "everest_forms_process_before_{$form_id}", $entry, $this->form_data );
 
 			$ajax_form_submission = isset( $this->form_data['settings']['ajax_form_submission'] ) ? $this->form_data['settings']['ajax_form_submission'] : 0;
@@ -198,6 +215,10 @@ class EVF_Form_Task {
 				$field_submit = isset( $entry['form_fields'][ $field_id ] ) ? $entry['form_fields'][ $field_id ] : '';
 
 				if ( 'no' === $repeater_fields || 'repeater-fields' === $field_type ) {
+					$logger->info(
+						"Everest Forms Process Before validate {$field_type}.",
+						array( 'source' => 'form-submission' )
+					);
 					do_action( "everest_forms_process_validate_{$field_type}", $field_id, $field_submit, $this->form_data, $field_type );
 				}
 
@@ -216,6 +237,10 @@ class EVF_Form_Task {
 				$response_data['error']    = $this->ajax_err;
 				$response_data['message']  = __( 'Form has not been submitted, please see the errors below.', 'everest-forms' );
 				$response_data['response'] = 'error';
+				$logger->error(
+					__( 'Form has not been submitted.', 'everest-forms' ),
+					array( 'source' => 'form-submission' )
+				);
 				return $response_data;
 			}
 
@@ -246,6 +271,11 @@ class EVF_Form_Task {
 						$error = esc_html__( 'Google reCAPTCHA verification failed, please try again later.', 'everest-forms' );
 					}
 
+					$logger->error(
+						$error,
+						array( 'source' => 'Google reCAPTCHA' )
+					);
+
 					$token = ! empty( $_POST['g-recaptcha-response'] ) ? evf_clean( wp_unslash( $_POST['g-recaptcha-response'] ) ) : false;
 
 					if ( 'v3' === $recaptcha_type ) {
@@ -268,6 +298,10 @@ class EVF_Form_Task {
 								}
 							}
 							$this->errors[ $form_id ]['header'] = $error;
+							$logger->error(
+								$error,
+								array( 'source' => 'Google reCAPTCHA' )
+							);
 							return $this->errors;
 						}
 					}
@@ -325,6 +359,10 @@ class EVF_Form_Task {
 			if ( ! empty( $errors[ $form_id ] ) ) {
 				if ( empty( $errors[ $form_id ]['header'] ) ) {
 					$errors[ $form_id ]['header'] = __( 'Form has not been submitted, please see the errors below.', 'everest-forms' );
+					$logger->error(
+						$errors[ $form_id ]['header'],
+						array( 'source' => 'form-submission' )
+					);
 				}
 				$this->errors = $errors;
 				return $this->errors;
@@ -356,11 +394,19 @@ class EVF_Form_Task {
 				$repeater_fields = array_key_exists( 'repeater-fields', $field ) ? $field['repeater-fields'] : 'no';
 
 				if ( 'no' === $repeater_fields || 'repeater-fields' === $field_type ) {
+					$logger->info(
+						sprintf( 'Everest Forms Process Format %s.', $field_type ),
+						array( 'source' => 'form-submission' )
+					);
 					do_action( "everest_forms_process_format_{$field_type}", $field_id, $field_submit, $this->form_data, $field_key );
 				}
 			}
 
 			// This hook is for internal purposes and should not be leveraged.
+			$logger->info(
+				'Everest Forms Process Format After.',
+				array( 'source' => 'form-submission' )
+			);
 			do_action( 'everest_forms_process_format_after', $this->form_data );
 
 			// Process hooks/filter - this is where most addons should hook
@@ -369,7 +415,15 @@ class EVF_Form_Task {
 			$this->form_fields = apply_filters( 'everest_forms_process_filter', $this->form_fields, $entry, $this->form_data );
 			$logger->notice( sprintf( 'Everest Form Process: %s', evf_print_r( $this->form_fields, true ) ) );
 
+			$logger->info(
+				'Everest Forms Process.',
+				array( 'source' => 'form-submission' )
+			);
 			do_action( 'everest_forms_process', $this->form_fields, $entry, $this->form_data );
+			$logger->info(
+				"Everest Forms Process {$form_id}.",
+				array( 'source' => 'form-submission' )
+			);
 			do_action( "everest_forms_process_{$form_id}", $this->form_fields, $entry, $this->form_data );
 
 			$this->form_fields = apply_filters( 'everest_forms_process_after_filter', $this->form_fields, $entry, $this->form_data );
@@ -380,16 +434,28 @@ class EVF_Form_Task {
 				if ( empty( $this->errors[ $form_id ]['header'] ) ) {
 					$this->errors[ $form_id ]['header'] = esc_html__( 'Form has not been submitted, please see the errors below.', 'everest-forms' );
 				}
+				$logger->error(
+					__( 'Form has not been submitted', 'everest-forms' ),
+					array( 'source' => 'form-submission' )
+				);
 				return $this->errors;
 			}
 
 			$logger->notice( sprintf( 'Entry is Saving to DataBase' ) );
 			// Success - add entry to database.
+			$logger->info(
+				__( 'Entry Added to Database.', 'everest-forms' ),
+				array( 'source' => 'form-submission' )
+			);
 			$entry_id = $this->entry_save( $this->form_fields, $entry, $this->form_data['id'], $this->form_data );
 			$logger->notice( sprintf( 'Entry is Saved to DataBase' ) );
 
 			$logger->notice( sprintf( 'Sending Email' ) );
 			// Success - send email notification.
+			$logger->info(
+				__( 'Sent Email Notification.', 'everest-forms' ),
+				array( 'source' => 'form-submission' )
+			);
 			$this->entry_email( $this->form_fields, $entry, $this->form_data, $entry_id, 'entry' );
 			$logger->notice( sprintf( 'Successfully Send the email' ) );
 
@@ -403,10 +469,22 @@ class EVF_Form_Task {
 			$_POST['everest-forms']['entry_id'] = $entry_id;
 
 			// Post-process hooks.
+			$logger->info(
+				__( 'Everest Forms Process Completed.', 'everest-forms' ),
+				array( 'source' => 'form-submission' )
+			);
 			do_action( 'everest_forms_process_complete', $this->form_fields, $entry, $this->form_data, $entry_id );
+			$logger->info(
+				"Everest Forms Process Completed {$form_id}.",
+				array( 'source' => 'form-submission' )
+			);
 			do_action( "everest_forms_process_complete_{$form_id}", $this->form_fields, $entry, $this->form_data, $entry_id );
 		} catch ( Exception $e ) {
 			evf_add_notice( $e->getMessage(), 'error' );
+			$logger->error(
+				$e->getMessage(),
+				array( 'source' => 'form-submission' )
+			);
 			if ( '1' === $ajax_form_submission ) {
 				$this->errors[]            = $e->getMessage();
 				$response_data['message']  = $this->errors;
@@ -482,7 +560,10 @@ class EVF_Form_Task {
 		} elseif ( ( 'same' === $this->form_data['settings']['redirect_to'] && empty( $submission_redirection_process ) ) || ( ! empty( $submission_redirection_process ) && 'same_page' == $submission_redirection_process['redirect_to'] ) ) {
 				evf_add_notice( $message, 'success' );
 		}
-
+		$logger->info(
+			'Everest Forms After success Message.',
+			array( 'source' => 'form-submission' )
+		);
 		do_action( 'everest_forms_after_success_message', $this->form_data, $entry );
 
 		$this->entry_confirmation_redirect( $this->form_data );
