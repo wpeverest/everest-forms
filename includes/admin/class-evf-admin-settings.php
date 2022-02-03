@@ -703,6 +703,39 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						</tr>
 						<?php
 						break;
+					// For anchor tag.
+					case 'link':
+						?>
+						<tr valign="top">
+							<th scope="row" class="titledesc">
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
+							</th>
+							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
+								<?php
+								if ( isset( $value['buttons'] ) && is_array( $value['buttons'] ) ) {
+									foreach ( $value['buttons'] as $button ) {
+										?>
+										<a href="<?php echo esc_url( $button['href'] ); ?>" class="button <?php echo esc_attr( $button['class'] ); ?>"
+										style="<?php echo esc_attr( $value['css'] ); ?>"
+										<?php
+										if ( ! empty( $value['custom_attributes'] ) && is_array( $value['custom_attributes'] ) ) {
+											foreach ( $value['custom_attributes'] as $attribute => $attribute_value ) {
+												echo esc_attr( $attribute ) . '="' . esc_attr( $attribute_value ) . '"';
+											}
+										}
+										?>
+										>
+											<?php echo esc_html( $button['title'] ); ?>
+										</a>
+										<?php
+									}
+								}
+								?>
+								<?php echo esc_html( $value['suffix'] ); ?> <?php echo wp_kses_post( $description ); ?>
+							</td>
+						</tr>
+						<?php
+						break;
 
 					// Default: run an action.
 					default:

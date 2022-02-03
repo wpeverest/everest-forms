@@ -996,7 +996,13 @@ function evf_html_attributes( $id = '', $class = array(), $datas = array(), $att
 	if ( ! empty( $atts ) ) {
 		foreach ( $atts as $att => $val ) {
 			if ( '0' === $val || ! empty( $val ) ) {
-				$parts[] = sanitize_html_class( $att ) . '="' . esc_attr( $val ) . '"';
+				if ( $att[0] === '[' ) { //phpcs:ignore
+					// Handle special case for bound attributes in AMP.
+					$escaped_att = '[' . sanitize_html_class( trim( $att, '[]' ) ) . ']';
+				} else {
+					$escaped_att = sanitize_html_class( $att );
+				}
+				$parts[] = $escaped_att . '="' . esc_attr( $val ) . '"';
 			}
 		}
 	}
@@ -2377,6 +2383,36 @@ function evf_process_line_breaks( $text ) {
 }
 
 /**
+ * Check whether the current page is in AMP mode or not.
+ * We need to check for specific functions, as there is no special AMP header.
+ *
+ * @since 1.8.4
+ *
+ * @param bool $check_theme_support Whether theme support should be checked. Defaults to true.
+ *
+ * @return bool
+ */
+function evf_is_amp( $check_theme_support = true ) {
+
+	$is_amp = false;
+
+	if (
+	   // AMP by Automattic.
+	   ( function_exists( 'amp_is_request' ) && amp_is_request() ) ||
+	   // Better AMP.
+	   ( function_exists( 'is_better_amp' ) && is_better_amp() )
+	) {
+		$is_amp = true;
+	}
+
+	if ( $is_amp && $check_theme_support ) {
+		$is_amp = current_theme_supports( 'amp' );
+	}
+
+	return apply_filters( 'evf_is_amp', $is_amp );
+}
+
+/**
  * EVF KSES.
  *
  * @since 1.8.2.1
@@ -2384,35 +2420,31 @@ function evf_process_line_breaks( $text ) {
  * @param string $context Context.
  */
 function evf_get_allowed_html_tags( $context = '' ) {
+
 	$post_tags = wp_kses_allowed_html( 'post' );
 	if ( 'builder' === $context ) {
-		$builder_tags = get_transient( 'evf-builder-tags' );
+		$builder_tags = get_transient( 'evf-builder-tags-list' );
 		if ( ! empty( $builder_tags ) ) {
 			return $builder_tags;
 		}
-		$response = wp_remote_get( evf()->plugin_url( 'assets/allowed_tags/allowed_tags.json' ), array( 'sslverify' => false ) );
-		if ( ! is_wp_error( $response ) ) {
-			$json = wp_remote_retrieve_body( $response );
-			if ( ! empty( $json ) ) {
-				$allowed_tags = json_decode( $json, true );
-				if ( $allowed_tags ) {
-					foreach ( $allowed_tags as $tag => $args ) {
-						if ( array_key_exists( $tag, $post_tags ) ) {
-							foreach ( $args as $arg => $value ) {
-								if ( ! array_key_exists( $arg, $post_tags[ $tag ] ) ) {
-									$post_tags[ $tag ][ $arg ] = true;
-								}
-							}
-						} else {
-							$post_tags[ $tag ] = $args;
+		$allowed_tags = evf_get_json_file_contents( 'assets/allowed_tags/allowed_tags.json', true );
+		if ( ! empty( $allowed_tags ) ) {
+			foreach ( $allowed_tags as $tag => $args ) {
+				if ( array_key_exists( $tag, $post_tags ) ) {
+					foreach ( $args as $arg => $value ) {
+						if ( ! array_key_exists( $arg, $post_tags[ $tag ] ) ) {
+							$post_tags[ $tag ][ $arg ] = true;
 						}
 					}
+				} else {
+					$post_tags[ $tag ] = $args;
 				}
 			}
-			set_transient( 'evf-builder-tags', $post_tags, DAY_IN_SECONDS );
+			set_transient( 'evf-builder-tags-list', $post_tags, DAY_IN_SECONDS );
 		}
 		return $post_tags;
 	}
+
 	return wp_parse_args(
 		$post_tags,
 		array(
@@ -2464,7 +2496,6 @@ function evf_sanitize_builder( $post_data = array() ) {
 	return $form_data;
 }
 
-
 /**
  * Entry Post Data.
  *
@@ -2515,7 +2546,7 @@ function evf_sanitize_entry( $entry = array() ) {
 				default:
 					if ( is_array( $entry['form_fields'][ $key ] ) ) {
 						foreach ( $entry['form_fields'][ $key ] as $field_key => $value ) {
-							$field_key = sanitize_text_field( $field_key );
+							$field_key                                  = sanitize_text_field( $field_key );
 							$entry['form_fields'][ $key ][ $field_key ] = sanitize_text_field( $value );
 						}
 					} else {
@@ -2525,5 +2556,36 @@ function evf_sanitize_entry( $entry = array() ) {
 		}
 		return $entry;
 	}
+}
 
+/**
+ * EVF Get json file contents.
+ *
+ * @param mixed $file File path.
+ * @param mixed $to_array Returned data in array.
+ */
+function evf_get_json_file_contents( $file, $to_array = false ) {
+	if ( $to_array ) {
+		return json_decode( evf_file_get_contents( $file ), true );
+	}
+	return json_decode( evf_file_get_contents( $file ) );
+}
+
+/**
+ * EVF file get contents.
+ *
+ * @param mixed $file File path.
+ */
+function evf_file_get_contents( $file ) {
+	if ( $file ) {
+		global $wp_filesystem;
+		require_once ABSPATH . '/wp-admin/includes/file.php';
+		WP_Filesystem();
+		$local_file = preg_replace( '/\\\\|\/\//', '/', plugin_dir_path( EVF_PLUGIN_FILE ) . $file );
+		if ( $wp_filesystem->exists( $local_file ) ) {
+			$response = $wp_filesystem->get_contents( $local_file );
+			return $response;
+		}
+	}
+	return;
 }
