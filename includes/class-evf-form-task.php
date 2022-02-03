@@ -130,6 +130,7 @@ class EVF_Form_Task {
 			$response_data          = array();
 			$this->ajax_err         = array();
 			$this->evf_notice_print = false;
+			$logger                 = evf_get_logger();
 
 			// Check nonce for form submission.
 			if ( empty( $_POST['_wpnonce'] ) || ! wp_verify_nonce( wp_unslash( sanitize_key( $_POST['_wpnonce'] ) ), 'everest-forms_process_submit' ) ) { // phpcs:ignore WordPress.Security.NonceVerification
@@ -366,11 +367,13 @@ class EVF_Form_Task {
 			// because at this point we have completed all field validation and
 			// formatted the data.
 			$this->form_fields = apply_filters( 'everest_forms_process_filter', $this->form_fields, $entry, $this->form_data );
+			$logger->notice( sprintf( 'Everest Form Process: %s', evf_print_r( $this->form_fields, true ) ) );
 
 			do_action( 'everest_forms_process', $this->form_fields, $entry, $this->form_data );
 			do_action( "everest_forms_process_{$form_id}", $this->form_fields, $entry, $this->form_data );
 
 			$this->form_fields = apply_filters( 'everest_forms_process_after_filter', $this->form_fields, $entry, $this->form_data );
+			$logger->notice( sprintf( 'Everest Form Process After: %s', evf_print_r( $this->form_fields, true ) ) );
 
 			// One last error check - don't proceed if there are any errors.
 			if ( ! empty( $this->errors[ $form_id ] ) ) {
@@ -380,11 +383,15 @@ class EVF_Form_Task {
 				return $this->errors;
 			}
 
+			$logger->notice( sprintf( 'Entry is Saving to DataBase' ) );
 			// Success - add entry to database.
 			$entry_id = $this->entry_save( $this->form_fields, $entry, $this->form_data['id'], $this->form_data );
+			$logger->notice( sprintf( 'Entry is Saved to DataBase' ) );
 
+			$logger->notice( sprintf( 'Sending Email' ) );
 			// Success - send email notification.
 			$this->entry_email( $this->form_fields, $entry, $this->form_data, $entry_id, 'entry' );
+			$logger->notice( sprintf( 'Successfully Send the email' ) );
 
 			// @todo remove this way of printing notices.
 			add_filter( 'everest_forms_success', array( $this, 'check_success_message' ), 10, 2 );
