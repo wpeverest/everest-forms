@@ -3,16 +3,16 @@
 = 1.8.4 - xx-xx-2022 =
 * Fix - Attribute issue in Multipart.
 * Fix - Date Time $ missing form variable name.
+* Fix - Recaptcha v3 and V2 invisible timeout issue.
 * Enhancement - Recaptcha v3 Threshold.
 * Enhancement - hCaptcha.
 * Enhancement - Amp plugin compatibility.
-* Fix - Recaptcha v3 and V2 invisible timeout issue.
-* Enhancement - Four column Form.
-* Feature - Send Test Email
 * Enhancement - Form builder validation.
+* Enhancement - Four column Form.
+* Feature - Send Test Email.
+* Tweak - Nonce ID aligned with Form ID.
 
 = 1.8.3 - 17-01-2022 =
->>>>>>> develop
 * Fix - Repeater fields not working.
 * Fix - Wp_remote_get issues ssl issues.
 * Fix - Form submission issues with Min Max value and Conditional Logic.
