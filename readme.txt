@@ -4,7 +4,7 @@ Tags: contact form, forms, form builder, contact, custom form
 Requires at least: 5.0
 Tested up to: 5.8.2
 Requires PHP: 5.4
-Stable tag: 1.8.2.3
+Stable tag: 1.8.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -301,6 +301,11 @@ Yes, we do. Check out this [Getting Started Videos](https://docs.wpeverest.com/d
 Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/everest-forms/) :)
 
 == Changelog ==
+
+= 1.8.3 - 17-01-2022 =
+* Fix - Repeater fields not working.
+* Fix - Wp_remote_get issues ssl issues.
+* Fix - Form submission issues with Min Max value and Conditional Logic.
 
 = 1.8.2.3 - 04-01-2022 =
 * Fix - Account Integration issues with addons.

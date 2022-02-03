@@ -98,6 +98,7 @@ class EVF_AJAX {
 			'template_licence_check'  => false,
 			'template_activate_addon' => false,
 			'ajax_form_submission'    => true,
+			'send_test_email'         => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -383,16 +384,12 @@ class EVF_AJAX {
 		}
 
 		$addons        = array();
-		$raw_templates = wp_remote_get( evf()->plugin_url( 'assets/extensions-json/templates/all_templates.json' ), array( 'sslverify' => false ) );
+		$template_data = evf_get_json_file_contents( 'assets/extensions-json/templates/all_templates.json' );
 
-		if ( ! is_wp_error( $raw_templates ) ) {
-			$template_data = json_decode( wp_remote_retrieve_body( $raw_templates ) );
-
-			if ( ! empty( $template_data->templates ) ) {
-				foreach ( $template_data->templates as $template ) {
-					if ( isset( $_POST['slug'] ) && $template->slug === $_POST['slug'] && in_array( $_POST['plan'], $template->plan, true ) ) {
-						$addons = $template->addons;
-					}
+		if ( ! empty( $template_data->templates ) ) {
+			foreach ( $template_data->templates as $template ) {
+				if ( isset( $_POST['slug'] ) && $template->slug === $_POST['slug'] && in_array( $_POST['plan'], $template->plan, true ) ) {
+					$addons = $template->addons;
 				}
 			}
 		}
@@ -743,6 +740,42 @@ class EVF_AJAX {
 		try {
 			check_ajax_referer( 'process-import-ajax-nonce', 'security' );
 			EVF_Admin_Import_Export::import_form();
+		} catch ( Exception $e ) {
+			wp_send_json_error(
+				array(
+					'message' => $e->getMessage(),
+				)
+			);
+		}
+	}
+
+	/**
+	 * Send test email.
+	 */
+	public static function send_test_email() {
+		try {
+			check_ajax_referer( 'process-ajax-nonce', 'security' );
+			$from  = esc_attr( get_bloginfo( 'name', 'display' ) );
+			$email = sanitize_email( isset( $_POST['email'] ) ? wp_unslash( $_POST['email'] ) : '' );
+
+			/* translators: %s: from address */
+			$subject = 'Everest Form: ' . sprintf( esc_html__( 'Test email from %s', 'everest-forms' ), $from );
+			$header  = "Reply-To: {{from}} \r\n";
+			$header .= 'Content-Type: text/html; charset=UTF-8';
+			$message = sprintf(
+				'%s <br /> %s <br /> %s <br /> %s <br /> %s',
+				__( 'Congratulations,', 'everest-forms' ),
+				__( 'Your test email has been received successfully.', 'everest-forms' ),
+				__( 'We thank you for trying out Everest Forms and joining our mission to make sure you get your emails delivered.', 'everest-forms' ),
+				__( 'Regards,', 'everest-forms' ),
+				__( 'Everest Forms Team', 'everest-forms' )
+			);
+			$status  = wp_mail( $email, $subject, $message, $header );
+			if ( $status ) {
+				wp_send_json_success( array( 'message' => __( 'Test email was sent successfully! Please check your inbox to make sure it is delivered.', 'everest-forms' ) ) );
+			} else {
+				wp_send_json_error( array( 'message' => __( 'Test email was unsuccessful! Something went wrong.', 'everest-forms' ) ) );
+			}
 		} catch ( Exception $e ) {
 			wp_send_json_error(
 				array(
