@@ -20,7 +20,7 @@
 		 	});
 
 
-			 $(document).ready( function( $ ) {
+			$( document ).ready( function( $ ) {
 				 if( '1' === $( '.everest-forms-min-max-date-format input' ).val() ) {
 					$('.everest-forms-min-date').addClass('flatpickr-field').flatpickr({
 						disableMobile : true,
@@ -45,10 +45,10 @@
 			});
 
 
-		 		if ( ! $( 'evf-panel-payments-button a' ).hasClass( 'active' ) ) {
-		 			$( '#everest-forms-panel-payments' ).find( '.everest-forms-panel-sidebar a' ).first().addClass( 'active' );
-					$( '.everest-forms-panel-content' ).find( '.evf-payment-setting-content' ).first().addClass( 'active' );
-				}
+			if ( ! $( 'evf-panel-payments-button a' ).hasClass( 'active' ) ) {
+				$( '#everest-forms-panel-payments' ).find( '.everest-forms-panel-sidebar a' ).first().addClass( 'active' );
+				$( '.everest-forms-panel-content' ).find( '.evf-payment-setting-content' ).first().addClass( 'active' );
+			}
 
 
 			// Copy shortcode from the builder.
@@ -801,6 +801,14 @@
 				e.preventDefault();
 				EVFPanelBuilder.fieldTabChoice( $(this).attr( 'id' ) );
 			});
+
+
+			// Dragged field and hover over tab buttons - multipart.
+			$( '.everest-forms-tabs li[class*="part_"]' ).hover( function() {
+				if ( false === $( this ).hasClass( 'active' ) && ( $( document ).find( '.everest-forms-field' ).hasClass( 'ui-sortable-helper' ) || $( document ).find( '.evf-registered-buttons button.evf-registered-item' ).hasClass( 'field-dragged' ) || $(document).find('.evf-admin-row').hasClass('ui-sortable-helper') ) ) {
+					$( this ).find( 'a' ).trigger( 'click' );
+				}
+			} );
 
 			// Display toggle for "Address" field hidden option.
 			$builder.on( 'change', '.everest-forms-field-option-address input.hide', function() {
@@ -2002,6 +2010,8 @@
 				forcePlaceholderSize: true,
 				placeholder: 'evf-sortable-placeholder',
 				containment: '.everest-forms-panel-content',
+				appendTo: document.body,
+
 				start: function( event, ui ) {
 					ui.item.css({
 						'backgroundColor': '#f7fafc',
@@ -2021,7 +2031,9 @@
 				scrollSensitivity: 40,
 				forcePlaceholderSize: true,
 				connectWith: '.evf-admin-grid',
+				appendTo: document.body,
 				containment: '.everest-forms-field-wrap',
+
 				out: function( event ) {
 					$( '.evf-admin-grid' ).removeClass( 'evf-hover' );
 					$( event.target ).removeClass( 'evf-item-hover' );
@@ -2055,8 +2067,14 @@
 				revert: 'invalid',
 				scrollSensitivity: 40,
 				forcePlaceholderSize: true,
+				start: function() {
+					$( this ).addClass( 'field-dragged' );
+				},
 				helper: function() {
 					return $( this ).clone().insertAfter( $( this ).closest( '.everest-forms-tab-content' ).siblings( '.everest-forms-fields-tab' ) );
+				},
+				stop: function() {
+					$( this ).removeClass( 'field-dragged' );
 				},
 				opacity: 0.75,
 				containment: '#everest-forms-builder',
