@@ -275,7 +275,7 @@ final class EverestForms {
 		 * Elementor classes.
 		 */
 		if ( class_exists( '\Elementor\Plugin' ) ) {
-			include_once EVF_ABSPATH . 'includes/elementor/Elementor.php';
+			include_once EVF_ABSPATH . 'includes/elementor/class-evf-elementor.php';
 		}
 
 		if ( $this->is_request( 'admin' ) ) {
