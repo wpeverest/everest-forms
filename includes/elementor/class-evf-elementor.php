@@ -13,7 +13,7 @@ use Elementor\Plugin as ElementorPlugin;
 /**
  * Elementor class.
  */
-class Elementor {
+class EVF_Elementor {
 
 	/**
 	 * Initialize.
@@ -69,4 +69,4 @@ class Elementor {
 	}
 }
 
-new Elementor();
+new EVF_Elementor();

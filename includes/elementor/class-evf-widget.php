@@ -1,4 +1,10 @@
 <?php
+/**
+ * Everest Forms for Elementor.
+ *
+ * @package EverstForms\Class
+ * @version 1.8.5
+ */
 
 use Elementor\Plugin;
 use Elementor\Widget_Base;
@@ -9,7 +15,7 @@ use Elementor\Controls_Manager;
  *
  * @since 1.8.5
  */
-class Widget extends Widget_Base {
+class EVF_Widget extends Widget_Base {
 
 	/**
 	 * Get widget name.
