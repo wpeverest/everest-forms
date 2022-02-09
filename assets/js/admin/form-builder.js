@@ -97,6 +97,9 @@
 					$( document.body ).trigger( 'adjust_builder_width' );
 				}, 250 );
 			}).trigger( 'resize' );
+
+			// By Default hide the Select All Checkbox in checkboxes field.
+			$(document.body).find('.everest-forms-field-option-row, .everest-forms-field-option-row-select_all').find('.evf-select-all-chk').parent().hide();
 		},
 
 		/**
@@ -286,9 +289,11 @@
 			if ( checked && isEnhanced && $primary.prop( 'multiple' ) ) {
 				$primary.addClass( 'evf-enhanced-select' );
 				$( document.body ).trigger( 'evf-enhanced-select-init' );
+				$(document.body).find('.everest-forms-field-option-row, .everest-forms-field-option-row-select_all').find('.evf-select-all-chk').parent().show();
 			} else {
 				$primary.removeClass( 'evf-enhanced-select enhanced' );
 				$primary.filter( '.select2-hidden-accessible' ).selectWoo( 'destroy' );
+				$(document.body).find('.everest-forms-field-option-row, .everest-forms-field-option-row-select_all').find('.evf-select-all-chk').parent().hide();
 			}
 		},
 
