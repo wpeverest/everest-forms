@@ -1447,6 +1447,36 @@ abstract class EVF_Form_Fields {
 				);
 				break;
 
+			/**
+			 * Select All.
+			 */
+			case 'select_all':
+				$value   = isset( $field['select_all'] ) ? '1' : '0';
+				$tooltip = esc_html__( 'Check this option to hide the form field label.', 'everest-forms' );
+
+				$output = $this->field_element(
+					'checkbox',
+					$field,
+					array(
+						'slug'    => 'select_all',
+						'value'   => $value,
+						'class'   => 'evf-select-all-chk',
+						'desc'    => esc_html__( 'Select All', 'everest-forms' ),
+						'tooltip' => esc_html__( 'Check this option to select all the options.', 'everest-forms' ),
+					),
+					false
+				);
+				$output = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'select_all',
+						'content' => $output,
+					),
+					false
+				);
+				break;
+
 			/*
 			 * Default.
 			 */

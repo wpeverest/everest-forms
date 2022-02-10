@@ -46,7 +46,6 @@ class EVF_Field_Select extends EVF_Form_Fields {
 					'meta',
 					'choices',
 					'enhanced_select',
-					'select_all',
 					'description',
 					'required',
 					'required_field_message',
@@ -202,33 +201,6 @@ class EVF_Field_Select extends EVF_Form_Fields {
 				),
 			)
 		);
-	}
-
-	/**
-	 * Select All checkbox.
-	 *
-	 * @since 1.8.4
-	 * @param array $field Field data.
-	 */
-	public function select_all( $field ) {
-		$fld = $this->field_element(
-			'checkbox',
-			$field,
-			array(
-				'slug'    => 'select_all',
-				'value'   => isset( $field['select_all'] ) ? '1' : '0',
-				'class'   => 'evf-select-all-chk',
-				'desc'    => esc_html__( 'Select All', 'everest-forms' ),
-				'tooltip' => esc_html__( 'Check this option to select all the options.', 'everest-forms' ),
-			),
-			false
-		);
-
-		$args = array(
-			'slug'    => 'select_all',
-			'content' => $fld,
-		);
-		$this->field_element( 'row', $field, $args );
 	}
 
 	/**

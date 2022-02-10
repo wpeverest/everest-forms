@@ -634,62 +634,6 @@ jQuery( function ( $ ) {
 						});
 					}
 				}).trigger( 'evf-frontend-enhanced-select-init' );
-
-				// Adding select all and unselect all button
-				$.fn.select2.amd.require([
-					'select2/utils',
-					'select2/dropdown',
-					'select2/dropdown/attachBody'
-				], function (Utils, Dropdown, AttachBody) {
-					function SelectAll() {}
-					SelectAll.prototype.render = function (decorated) {
-						var $rendered = decorated.call(this);
-						var self = this;
-
-						var $selectAll = $('<a/>').addClass('evf-btn-select-all').text('Select all');
-						var $unselectAll = $('<a/>').addClass('evf-btn-unselect-all').text('Unselect All');
-						var $btnContainer = $("<div>")
-						.append($selectAll)
-						.append($unselectAll)
-						.addClass('ev-btn-container');
-
-						var $dropdown = $rendered.find('.select2-dropdown');
-
-						$dropdown.prepend($btnContainer);
-
-						$selectAll.on('click', function (e) {
-							var $options = self.$element.find('option').not(':disabled');
-							var values = [];
-
-							$options.each(function () {
-								values.push($(this).val());
-							});
-							self.$element.val(values);
-							self.$element.trigger("change");
-							self.trigger("close");
-
-							self.trigger('close');
-						});
-
-						$unselectAll.on('click', function (e) {
-							self.$element.val([]);
-							self.$element.trigger("change");
-							self.trigger("close");
-						});
-
-						return $rendered;
-					};
-
-					$("select[select_all_unselect_all=true]").select2({
-						dropdownAdapter: Utils.Decorate(
-							Utils.Decorate(
-								Dropdown,
-								AttachBody
-							),
-							SelectAll
-						),
-					});
-				});
 			} catch( err ) {
 				// If select2 failed (conflict?) log the error but don't stop other scripts breaking.
 				window.console.log( err );

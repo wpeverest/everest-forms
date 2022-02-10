@@ -97,9 +97,6 @@
 					$( document.body ).trigger( 'adjust_builder_width' );
 				}, 250 );
 			}).trigger( 'resize' );
-
-			// By Default hide the Select All Checkbox in checkboxes field.
-			$(document.body).find('.everest-forms-field-option-row, .everest-forms-field-option-row-select_all').find('.evf-select-all-chk').parent().hide();
 		},
 
 		/**
@@ -211,7 +208,29 @@
 					$( this ).addClass( 'is-active' );
 					EVFPanelBuilder.updateEnhandedSelectField( $( event.target ).parents( '.everest-forms-field-option-row-choices' ).data().fieldId, 'multiple' === $( this ).data( 'selection' ) );
 				}
+
+				// Show 'Select All' Checkbox for Dropdown field only if multiple selection is active
+				if( 'multiple' === $(this).data('selection') && 'checkbox' === $(this).data('type') && $( this).hasClass( 'is-active' ) ) {
+					var $field_id = $(this).parent().parent().data('field-id');
+					$('#everest-forms-field-option-row-'+$field_id+'-select_all').show();
+				} else {
+					var $field_id = $(this).parent().parent().data('field-id');
+					$('#everest-forms-field-option-row-'+$field_id+'-select_all').hide();
+				}
 			} );
+
+			// By default hide the 'Select All' checkbox for Dropdown field
+			$(document.body).on('click', '.everest-forms-field, .everest-forms-field-select[data-field-type="select"]', function () {
+				$builder.find('.everest-forms-field-option-row-choices .everest-forms-btn-group span').each(function () {
+					var $field_id = $(this).parent().parent().data('field-id');
+
+					if( 'multiple' === $(this).data('selection') && 'checkbox' === $(this).data('type') && $( this).hasClass( 'is-active' ) ) {
+						$('#everest-forms-field-option-'+$field_id+'-select_all').parent().show();
+					} else {
+						$('#everest-forms-field-option-'+$field_id+'-select_all').parent().hide();
+					}
+				});
+			});
 
 			// Search fields input.
 			$builder.on( 'keyup', '.everest-forms-search-fields', function() {
@@ -289,11 +308,9 @@
 			if ( checked && isEnhanced && $primary.prop( 'multiple' ) ) {
 				$primary.addClass( 'evf-enhanced-select' );
 				$( document.body ).trigger( 'evf-enhanced-select-init' );
-				$(document.body).find('.everest-forms-field-option-row, .everest-forms-field-option-row-select_all').find('.evf-select-all-chk').parent().show();
 			} else {
 				$primary.removeClass( 'evf-enhanced-select enhanced' );
 				$primary.filter( '.select2-hidden-accessible' ).selectWoo( 'destroy' );
-				$(document.body).find('.everest-forms-field-option-row, .everest-forms-field-option-row-select_all').find('.evf-select-all-chk').parent().hide();
 			}
 		},
 
