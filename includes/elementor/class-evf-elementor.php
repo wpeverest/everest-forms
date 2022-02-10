@@ -46,9 +46,9 @@ class EVF_Elementor {
 	 */
 	public function register_widget() {
 			// Include Widget files.
-			require_once EVF_ABSPATH . 'includes/elementor/widget.php';
+			require_once EVF_ABSPATH . 'includes/elementor/class-evf-widget.php';
 
-			ElementorPlugin::instance()->widgets_manager->register( new Widget() );
+			ElementorPlugin::instance()->widgets_manager->register( new EVF_Widget() );
 	}
 
 	/**
