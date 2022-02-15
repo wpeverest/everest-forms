@@ -66,11 +66,15 @@ jQuery( function( $ ) {
 						}
 						if ( 'success' === xhr.data.response || true === xhr.success ) {
 							let pdf_download_message = '';
+							let quiz_reporting = '';
 							if(xhr.data.form_id !== undefined && xhr.data.entry_id !== undefined && xhr.data.pdf_download == true){
 								pdf_download_message = '<br><small><a href="/?page=evf-entries-pdf&form_id='+ xhr.data.form_id+'&entry_id='+xhr.data.entry_id+'">' + xhr.data.pdf_download_message + '</a></small>';
 							}
+							if( xhr.data.quiz_result_shown == true){
+								quiz_reporting = xhr.data.quiz_reporting;
+							}
 							formTuple.trigger( 'reset' );
-							formTuple.closest( '.everest-forms' ).html( '<div class="everest-forms-notice everest-forms-notice--success" role="alert">' + xhr.data.message + pdf_download_message + '</div>' ).focus();
+							formTuple.closest( '.everest-forms' ).html( '<div class="everest-forms-notice everest-forms-notice--success" role="alert">' + xhr.data.message + pdf_download_message + '</div>' + quiz_reporting ).focus();
 							localStorage.removeItem(formTuple.attr('id'));
 						} else {
 							var	form_id = formTuple.data( 'formid' );
