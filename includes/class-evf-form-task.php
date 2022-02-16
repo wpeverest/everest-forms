@@ -228,7 +228,11 @@ class EVF_Form_Task {
 				}
 
 				if ( 'yes' === get_option( 'evf_validation_error' ) && $ajax_form_submission ) {
-					$this->ajax_err[] = array( $field_type => $field_id );
+					if ( count( $this->errors ) ) {
+						foreach ( $this->errors as $_error ) {
+							$this->ajax_err [] = $_error;
+						}
+					}
 					update_option( 'evf_validation_error', '' );
 				}
 			}
