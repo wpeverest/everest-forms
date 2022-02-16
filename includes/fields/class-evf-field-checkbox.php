@@ -382,7 +382,7 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 
 		// Select All Checkbox.
 		if ( '1' === $select_all ) {
-			printf( '<li class="evf-select-all-checkbox-li"><input type="checkbox" id="evfCheckAll" class="evf-select-all-checkbox"><label for="evfCheckAll">Select All</label></li>' );
+			printf( '<li class="evf-select-all-checkbox-li"><input type="checkbox" id="evfCheckAll" class="evf-select-all-checkbox"><label for="evfCheckAll">' . esc_html__( 'Select All', 'everest-forms' ) . '</label></li>' );
 		}
 
 		foreach ( $choices as $choice ) {
