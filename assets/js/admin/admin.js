@@ -473,8 +473,13 @@
 
 					var $pr = $('#' + event.params.data._resultId).parent();
 					$pr.prop('scrollTop', scrollTop);
-					$this.val().map(function(i) {
-						$("#evf_select2_country_chk" + i + index).prop('checked', true);
+
+					$(this).val().map(function(i) {
+						$('#' + event.params.data._resultId).parent().find("#evf_select2_country_chk" + i + index).on('click', function () {
+							$(this).prop('checked', true);
+						});
+
+						$('#' + event.params.data._resultId).parent().find("#evf_select2_country_chk" + i + index).prop('checked', true);
 					});
 				});
 
@@ -491,10 +496,16 @@
 
 					var country = $(this).val() ? $(this).val() : [];
 					var country_diff = arr_diff(country_all, country);
+
 					country_diff.map(function(i) {
-						$("#evf_select2_country_chk" + i + index).prop('checked', false);
+						$('#' + event.params.data._resultId).parent().find("#evf_select2_country_chk" + i + index).on('click', function () {
+							$(this).prop('checked', false);
+						});
+
+						$('#' + event.params.data._resultId).parent().find("#evf_select2_country_chk" + i + index).prop('checked', false);
 					});
 				});
+
 			});
 		});
 	}
