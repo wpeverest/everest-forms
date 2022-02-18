@@ -413,7 +413,6 @@
 			}
 
 			allSelect2.each( function(index) {
-				var country_all = [];
 				var $this = $(this);
 
 				// Removing option with empty value
@@ -422,32 +421,13 @@
 				}).remove();
 
 				function formatResult(state) {
-					country_all.push(state.id);
-					var id = 'evf_select2_country_chk' + state.id + index;
-					var checkbox = $('<div class="checkbox"><input id="' + id + '" type="checkbox" ' + (state.selected ? 'checked' : '') + '><label for="checkbox1">' + state.text + '</label></div>', { id: id });
+					var id = 'evf_select2_country_chk-' + state.id + '-' + index;
+					var checkbox = $('<div class="checkbox"><input id="'+ id +'"  type="checkbox" ' + (state.selected ? 'checked' : '') + '><label for="'+id+'">' + state.text + '</label></div>', { id: id });
 					return checkbox;
 				}
 
-				function arr_diff(a1, a2) {
-					var a = [],
-						diff = [];
-					for (var i = 0; i < a1.length; i++) {
-						a[a1[i]] = true;
-					}
-					for (var i = 0; i < a2.length; i++) {
-						if (a[a2[i]]) {
-							delete a[a2[i]];
-						} else {
-							a[a2[i]] = true;
-						}
-					}
-					for (var k in a) {
-						diff.push(k);
-					}
-					return diff;
-				}
 
-				$(this).select2({
+				var $select2 = $this.select2({
 					templateResult: formatResult,
 					closeOnSelect: false,
 					placeholder: "Select Country(s)",
@@ -463,47 +443,41 @@
 
 				var scrollTop;
 
-				$this.on("select2:selecting", function(event) {
+				$select2.on("select2:selecting", function(event) {
 					var $pr = $('#' + event.params.args.data._resultId).parent();
 					scrollTop = $pr.prop('scrollTop');
 				});
 
-				$this.on("select2:select", function(event) {
+				$select2.on("select2:select", function(event) {
 					$(window).scroll();
 
 					var $pr = $('#' + event.params.data._resultId).parent();
 					$pr.prop('scrollTop', scrollTop);
 
-					$(this).val().map(function(i) {
-						$('#' + event.params.data._resultId).parent().find("#evf_select2_country_chk" + i + index).on('click', function () {
-							$(this).prop('checked', true);
-						});
-
-						$('#' + event.params.data._resultId).parent().find("#evf_select2_country_chk" + i + index).prop('checked', true);
+					$('#' + event.params.data._resultId).find('input[type="checkbox"]').on('click', function () {
+						$(this).prop('checked', true);
 					});
+
+					$('#' + event.params.data._resultId).find('input[type="checkbox"]').prop('checked', true);
 				});
 
-				$this.on("select2:unselecting", function(event) {
+				$select2.on("select2:unselecting", function(event) {
 					var $pr = $('#' + event.params.args.data._resultId).parent();
 					scrollTop = $pr.prop('scrollTop');
 				});
 
-				$this.on("select2:unselect", function(event) {
+				$select2.on("select2:unselect", function(event) {
 					$(window).scroll();
-
 					var $pr = $('#' + event.params.data._resultId).parent();
 					$pr.prop('scrollTop', scrollTop);
 
-					var country = $(this).val() ? $(this).val() : [];
-					var country_diff = arr_diff(country_all, country);
 
-					country_diff.map(function(i) {
-						$('#' + event.params.data._resultId).parent().find("#evf_select2_country_chk" + i + index).on('click', function () {
-							$(this).prop('checked', false);
-						});
-
-						$('#' + event.params.data._resultId).parent().find("#evf_select2_country_chk" + i + index).prop('checked', false);
+					$('#' + event.params.data._resultId).find('input[type="checkbox"]').on('click', function () {
+						$(this).prop('checked', false);
 					});
+
+					$('#' + event.params.data._resultId).find('input[type="checkbox"]').prop('checked', false);
+
 				});
 
 			});
