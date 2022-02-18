@@ -963,6 +963,9 @@ body.everest-forms-builder {
 						&.permission::before {
 							content: '\e030';
 						}
+						&.evf-widget::before {
+							content: '\e902';
+						}
 					}
 				}
 
