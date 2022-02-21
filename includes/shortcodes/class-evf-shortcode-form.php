@@ -822,6 +822,8 @@ class EVF_Shortcode_Form {
 			array(
 				'id'          => false,
 				'type'        => false,
+				'size'        => false,
+				'button_text' => false,
 				'title'       => false,
 				'description' => false,
 			),
@@ -846,6 +848,8 @@ class EVF_Shortcode_Form {
 		$id          = isset( $atts['id'] ) ? $atts['id'] : false;
 		$title       = isset( $atts['title'] ) ? $atts['title'] : false;
 		$description = isset( $atts['description'] ) ? $atts['description'] : false;
+		$popup_type  = isset( $atts['type'] ) ? $atts['type'] : false;
+		$popup_text  = isset( $atts['button_text'] ) ? $atts['button_text'] : false;
 		if ( empty( $id ) ) {
 			return;
 		}
@@ -1060,14 +1064,14 @@ class EVF_Shortcode_Form {
 		printf( '<div class="evf-container %s" id="evf-%d">', esc_attr( $classes ), absint( $form_id ) );
 
 		do_action( 'everest_forms_frontend_output_form_before', $form_data, $form, $errors );
-		if ( isset( $atts['type'] ) && 'button' === $atts['type'] ) {
-			echo '<button class="evf-modal-link">Click Me</button>';
-			do_action( 'everest_form_popup', $form_data );
-		} elseif ( isset( $atts['type'] ) && 'link' === $atts['type'] ) {
-			echo '<a href="javascript:void(0); " class="evf-modal-link">Click Me</a>';
-			do_action( 'everest_form_popup', $form_data );
-		} elseif ( isset( $atts['type'] ) && 'default' === $atts['type'] ) {
-			do_action( 'everest_form_popup', $form_data );
+		if ( isset( $atts['type'] ) && 'popup-button' === $popup_type ) {
+			printf( "<button class='everest-forms-modal-link everest-forms-modal-link-%s'>%s</button>", esc_attr( $atts['id'] ), esc_html( $popup_text ) );
+			do_action( 'everest_form_popup', $atts );
+		} elseif ( isset( $atts['type'] ) && 'popup-link' === $popup_type ) {
+			printf( "<a href='javascript:void(0);' class='everest-forms-modal-link everest-forms-modal-link-%s'>%s</a>", esc_attr( $atts['id'] ), esc_html( $popup_text ) );
+			do_action( 'everest_form_popup', $atts );
+		} elseif ( isset( $atts['type'] ) && 'popup' === $popup_type ) {
+			do_action( 'everest_form_popup', $atts );
 		} else {
 			echo '<form ' . evf_html_attributes( $form_atts['id'], $form_atts['class'], $form_atts['data'], $form_atts['atts'] ) . '>';
 			if ( evf_is_amp() ) {
