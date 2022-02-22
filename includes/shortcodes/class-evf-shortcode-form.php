@@ -823,7 +823,7 @@ class EVF_Shortcode_Form {
 				'id'          => false,
 				'type'        => false,
 				'size'        => false,
-				'button_text' => false,
+				'text' 		  => false,
 				'title'       => false,
 				'description' => false,
 			),
@@ -849,7 +849,7 @@ class EVF_Shortcode_Form {
 		$title       = isset( $atts['title'] ) ? $atts['title'] : false;
 		$description = isset( $atts['description'] ) ? $atts['description'] : false;
 		$popup_type  = isset( $atts['type'] ) ? $atts['type'] : false;
-		$popup_text  = isset( $atts['button_text'] ) ? $atts['button_text'] : false;
+		$popup_text  = isset( $atts['text'] ) ? $atts['text'] : false;
 		if ( empty( $id ) ) {
 			return;
 		}
