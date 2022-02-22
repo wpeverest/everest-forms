@@ -2667,6 +2667,7 @@ jQuery( function ( $ ) {
 		if ( 'field' === type ) {
 			$input.val( $input.val() + '{field_id="'+field_id+'"}' );
 			$textarea.val($textarea.val()+'{field_id="'+field_id+'"}' );
+			$textarea.trigger('change');
 		} else if ( 'other' === type ) {
 			$input.val( $input.val() + '{'+field_id+'}' );
 			$textarea.val($textarea.val() + '{'+field_id+'}' );
