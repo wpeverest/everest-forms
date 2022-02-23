@@ -805,7 +805,7 @@
 
 			// Dragged field and hover over tab buttons - multipart.
 			$( '.everest-forms-tabs li[class*="part_"]' ).hover( function() {
-				if ( false === $( this ).hasClass( 'active' ) && ( $( document ).find( '.everest-forms-field' ).hasClass( 'ui-sortable-helper' ) || $( document ).find( '.evf-registered-buttons button.evf-registered-item' ).hasClass( 'field-dragged' ) || $(document).find('.evf-admin-row').hasClass('ui-sortable-helper') ) ) {
+				if ( false === $( this ).hasClass( 'active' ) && ( $( document ).find( '.everest-forms-field' ).hasClass( 'ui-sortable-helper' ) || $( document ).find( '.evf-registered-buttons button.evf-registered-item' ).hasClass( 'field-dragged' ) ) ) {
 					$( this ).find( 'a' ).trigger( 'click' );
 				}
 			} );
@@ -2010,8 +2010,6 @@
 				forcePlaceholderSize: true,
 				placeholder: 'evf-sortable-placeholder',
 				containment: '.everest-forms-panel-content',
-				appendTo: document.body,
-
 				start: function( event, ui ) {
 					ui.item.css({
 						'backgroundColor': '#f7fafc',
