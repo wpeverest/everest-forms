@@ -5966,7 +5966,7 @@ img.ui-datepicker-trigger {
 
 .everest-forms-builder {
 	.evf-registered-item.ui-draggable.ui-draggable-handle.ui-draggable-dragging  {
-		font-size: 16px !important;
+		font-size: 12px !important;
 		background-color: #fff;
 		border: 1px solid #cdd0d8;
 		color: #6c7680;
@@ -5975,6 +5975,7 @@ img.ui-datepicker-trigger {
 			padding: 0 8px;
 			border-radius: 4px;
 			font-size: 24px;
+			vertical-align: middle;
 		}
 	}
 }
