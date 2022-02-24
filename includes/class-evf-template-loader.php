@@ -70,9 +70,11 @@ class EVF_Template_Loader {
 	}
 
 	/**
-	 * Limit page templates to singular pages only.
+	 *  A list of template candidates.
 	 *
-	 * @return string
+	 * @param array $templates A list of template candidates, in descending order of priority.
+	 *
+	 * @return array
 	 */
 	public static function template_include( $templates ) {
 		return array( 'page.php', 'single.php', 'index.php' );
