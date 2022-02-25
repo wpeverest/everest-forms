@@ -556,7 +556,7 @@ class EVF_Form_Task {
 				evf_add_notice( $message, 'success' );
 			}
 			// $this->entry_confirmation_redirect( $this->form_data );
-			$response_data = apply_filters( 'everest_forms_after_success_ajax_message', $this->form_data, $entry, $response_data );
+			$response_data = apply_filters( 'everest_forms_after_success_ajax_message', $response_data, $this->form_data, $entry );
 			return $response_data;
 		} elseif ( ( 'same' === $this->form_data['settings']['redirect_to'] && empty( $submission_redirection_process ) ) || ( ! empty( $submission_redirection_process ) && 'same_page' == $submission_redirection_process['redirect_to'] ) ) {
 				evf_add_notice( $message, 'success' );
