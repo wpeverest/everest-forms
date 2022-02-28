@@ -201,6 +201,7 @@
     "data-rule": true
   },
   "select": {
+    "multiple" : true,
     "class": true,
     "name": true,
     "data-panel-source": true,
