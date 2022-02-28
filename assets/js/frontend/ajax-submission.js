@@ -15,7 +15,10 @@ jQuery( function( $ ) {
 				}
 
 				btn.on( 'click', function( e ) {
-					tinyMCE.triggerSave();
+
+					if ( typeof tinyMCE !== 'undefined' ) {
+						tinyMCE.triggerSave();
+					}
 
 					var	recaptchaID = btn.get( 0 ).recaptchaID;
 
