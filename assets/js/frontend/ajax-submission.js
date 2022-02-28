@@ -95,66 +95,59 @@ jQuery( function( $ ) {
 
 								// Begin fixing the tamper.
 								$( fields ).each( function( index, fieldTuple ) {
-									var tuple = Object.values(fieldTuple)[0],
-										type  = Object.keys(fieldTuple)[0],
+									var err_msg = Object.values(fieldTuple)[0],
+										fld_id  = Object.keys(fieldTuple)[0],
 										err_field, fid, lbl = true;
 
-									switch ( type ) {
-										case 'signature':
-											fid       = 'evf-signature-img-input-' + tuple;
-											err_field = $( '#' + fid );
-											break;
+									var fld_container_id = 'evf'-+ form_id +'-field_' + fld_id +'-container';
 
-										case 'likert':
-											fid       = 'everest_forms-' + form_id + '-field_' + tuple + '_';
-											err_field = $( '[id^="' + fid + '"]' );
-											lbl       = false;
+									if($('#'+fld_container_id).hasClass('evf-field-signature')) { //When field type is signature
+										fid       = 'evf-signature-img-input-' + fld_id;
+										err_field = $( '#' + fid );
+									} else if ($('#'+fld_container_id).hasClass('evf-field-likert')) { //When field type is likert
+										fid       = 'everest_forms-' + form_id + '-field_' + fld_id + '_';
+										err_field = $( '[id^="' + fid + '"]' );
+										lbl       = false;
 
-											err_field.each( function( index, element ) {
-												var tbl_header = $( element ).closest( 'tr.evf-' + form_id +'-field_' + tuple ).find( 'th' ),
-													id         = 'everest_forms[form_fields][' + tuple + '][' + ( parseInt( tbl_header.closest( 'tr' ).index() ) + 1 ) + ']';
+										err_field.each( function( index, element ) {
+											var tbl_header = $( element ).closest( 'tr.evf-' + form_id +'-field_' + fld_id ).find( 'th' ),
+												id         = 'everest_forms[form_fields][' + fld_id + '][' + ( parseInt( tbl_header.closest( 'tr' ).index() ) + 1 ) + ']';
 
-												if ( ! tbl_header.children().is( 'label' ) ) {
-													tbl_header.append( '<label id="' + id + '" for="' + id + '" class="evf-error">' + everest_forms_ajax_submission_params.required + '</label>' );
-												} else {
-													tbl_header.children().find( '#' + id ).show();
-												}
-											});
-											break;
+											if ( ! tbl_header.children().is( 'label' ) ) {
+												tbl_header.append( '<label id="' + id + '" for="' + id + '" class="evf-error">' + everest_forms_ajax_submission_params.required + '</label>' );
+											} else {
+												tbl_header.children().find( '#' + id ).show();
+											}
+										});
+									} else if ($('#'+fld_container_id).hasClass('evf-field-address')) { //When field type is address
+										fid       = 'evf-' + form_id + '-field_' + fld_id;
+										err_field = $( '[id^="' + fid + '"]' );
 
-										case 'address':
-											fid       = 'evf-' + form_id + '-field_' + tuple;
-											err_field = $( '[id^="' + fid + '"]' );
+										err_field.each( function ( index, element ) {
+											var fieldId =  String( $( element ).attr( 'id' ) );
 
-											err_field.each( function ( index, element ) {
-												var fieldId =  String( $( element ).attr( 'id' ) );
-
-												if ( fieldId.includes( '-container' ) || fieldId.includes( '-address2' ) ) {
+											if ( fieldId.includes( '-container' ) || fieldId.includes( '-address2' ) ) {
+												err_field.splice( index, 1 );
+											} else  {
+												if ( 'undefined' !== typeof $( element ).val() ) {
 													err_field.splice( index, 1 );
-												} else  {
-													if ( 'undefined' !== typeof $( element ).val() ) {
-														err_field.splice( index, 1 );
-													};
-												}
-											});
-											break;
-
-										default:
-											fid       = 'evf-' + form_id + '-field_' + tuple;
-											err_field = $( '#' + fid );
-											break;
+												};
+											}
+										});
+									} else {
+										fid       = 'evf-' + form_id + '-field_' + fld_id;
+										err_field = $( '#' + fid );
 									}
 
 									err_field.addClass( 'evf-error' );
-									err_field.attr( 'required', true );
 									err_field.attr( 'aria-invalid', true );
 									err_field.first().closest( '.evf-field' ).addClass( 'everest-forms-invalid evf-has-error' );
 
 									if ( true === lbl && ! err_field.is( 'label' ) ) {
-										err_field.after( '<label id="' + err_field.attr( 'id' ) + '-error" class="evf-error" for="' + err_field.attr( 'id' ) + '">' + everest_forms_ajax_submission_params.required + '</label>' ).show();
+										err_field.after( '<label id="' + err_field.attr( 'id' ) + '-error" class="evf-error" for="' + err_field.attr( 'id' ) + '">' + err_msg + '</label>' ).show();
 									}
 								});
-
+								
 							btn.attr( 'disabled', false ).html( everest_forms_ajax_submission_params.submit );
 						}
 					})
