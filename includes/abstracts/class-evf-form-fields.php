@@ -733,7 +733,6 @@ abstract class EVF_Form_Fields {
 					array(
 						'slug'    => 'autocomplete_address',
 						'content' => $output,
-						'class'   => isset( $field['autocomplete_address'] ) ? '' : 'hidden',
 					),
 					false
 				);
