@@ -15,6 +15,7 @@ jQuery( function( $ ) {
 				}
 
 				btn.on( 'click', function( e ) {
+					tinyMCE.triggerSave();
 
 					var	recaptchaID = btn.get( 0 ).recaptchaID;
 
@@ -25,7 +26,6 @@ jQuery( function( $ ) {
 
 					var data = formTuple.serializeArray();
 					e.preventDefault();
-
 					// We let the bubbling events in form play itself out.
 					formTuple.trigger( 'focusout' ).trigger( 'change' ).trigger( 'submit' );
 
@@ -147,7 +147,7 @@ jQuery( function( $ ) {
 										err_field.after( '<label id="' + err_field.attr( 'id' ) + '-error" class="evf-error" for="' + err_field.attr( 'id' ) + '">' + err_msg + '</label>' ).show();
 									}
 								});
-								
+
 							btn.attr( 'disabled', false ).html( everest_forms_ajax_submission_params.submit );
 						}
 					})
