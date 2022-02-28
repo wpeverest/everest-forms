@@ -149,6 +149,10 @@ class EVF_Frontend_Scripts {
 	 * Register all EVF scripts.
 	 */
 	private static function register_scripts() {
+		if ( evf_is_amp() ) {
+			return;
+		}
+
 		$suffix           = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		$register_scripts = array(
 			'inputmask'                     => array(
@@ -307,7 +311,7 @@ class EVF_Frontend_Scripts {
 					'ajax_url'            => admin_url( 'admin-ajax.php' ),
 					'evf_ajax_submission' => wp_create_nonce( 'everest_forms_ajax_form_submission' ),
 					'submit'              => esc_html__( 'Submit', 'everest-forms' ),
-					'error'               => esc_html__( 'Sorry, something went wrong. Please try again', 'everest-forms' ),
+					'error'               => esc_html__( 'Something went wrong while making an AJAX submission', 'everest-forms' ),
 					'required'            => esc_html__( 'This field is required.', 'everest-forms' ),
 					'pdf_download'        => esc_html__( 'Click here to download your pdf submission', 'everest-forms' ),
 				);

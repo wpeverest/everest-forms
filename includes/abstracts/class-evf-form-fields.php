@@ -1386,6 +1386,67 @@ abstract class EVF_Form_Fields {
 				);
 				break;
 
+			/**
+			* Whitelisted Domain.
+			*/
+			case 'whitelist_domain':
+				$default = ! empty( $args['default'] ) ? $args['default'] : '0';
+				$value   = ! empty( $field['whitelist_domain'] ) ? esc_attr( $field['whitelist_domain'] ) : '';
+				$style   = ! empty( $field['select_whitelist'] ) ? esc_attr( $field['select_whitelist'] ) : 'Allowed Domains';
+				$tooltip = esc_html__( 'You can list the email domains in the Whitelisted Domains', 'everest-forms' );
+				$output  = $this->field_element(
+					'label',
+					$field,
+					array(
+						'slug'    => 'whitelist_domain',
+						'value'   => esc_html__( 'Whitelisted Domains', 'everest-forms' ),
+						'tooltip' => $tooltip,
+					),
+					false
+				);
+				$output .= $this->field_element(
+					'select',
+					$field,
+					array(
+						'slug'    => 'select_whitelist',
+						'value'   => $style,
+						'options' => array(
+							'allow' => esc_html__( 'Allowed Domains', 'everest-forms' ),
+							'deny'  => esc_html__( 'Denied Domains', 'everest-forms' ),
+						),
+					),
+					false
+				);
+				$output  = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'whitelist_domain',
+						'content' => $output,
+					),
+					false
+				);
+
+				$output .= $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'whitelist_domain',
+						'content' => $this->field_element(
+							'text',
+							$field,
+							array(
+								'slug'        => 'whitelist_domain',
+								'value'       => esc_attr( $value ),
+								'placeholder' => esc_attr__( 'for eg. gmail.com', 'everest-forms' ),
+							),
+							false
+						),
+					),
+					false
+				);
+				break;
+
 			/*
 			 * Default.
 			 */
@@ -1534,7 +1595,7 @@ abstract class EVF_Form_Fields {
 					foreach ( $values as $value ) {
 						$default     = isset( $value['default'] ) ? $value['default'] : '';
 						$selected    = checked( '1', $default, false );
-						$placeholder = wp_remote_get( evf()->plugin_url() . '/assets/images/everest-forms-placeholder.png' );
+						$placeholder = wp_remote_get( evf()->plugin_url( 'assets/images/everest-forms-placeholder.png' ), array( 'sslverify' => false ) );
 						$image_src   = ! empty( $value['image'] ) ? esc_url( $value['image'] ) : $placeholder;
 						$item_class  = array();
 

@@ -15,6 +15,14 @@ jQuery( function( $ ) {
 				}
 
 				btn.on( 'click', function( e ) {
+
+					var	recaptchaID = btn.get( 0 ).recaptchaID;
+
+					if (  recaptchaID === 0 ) {
+						grecaptcha.execute( recaptchaID );
+						return false;
+					}
+
 					var data = formTuple.serializeArray();
 					e.preventDefault();
 
@@ -65,10 +73,14 @@ jQuery( function( $ ) {
 							formTuple.closest( '.everest-forms' ).html( '<div class="everest-forms-notice everest-forms-notice--success" role="alert">' + xhr.data.message + pdf_download_message + '</div>' ).focus();
 							localStorage.removeItem(formTuple.attr('id'));
 						} else {
-							var	form_id = formTuple.data( 'formid' ),
-								error   =  everest_forms_ajax_submission_params.error,
-								err     =  JSON.parse( errorThrown.responseText ),
-								fields  = err.data.error;
+							var	form_id = formTuple.data( 'formid' );
+							var err     =  JSON.parse( errorThrown.responseText );
+							if( 'undefined' !== typeof err.data[form_id] ) {
+								var error =  err.data[form_id].header;
+							} else{
+								var	error   =  everest_forms_ajax_submission_params.error;
+							}
+							var fields  = err.data.error;
 
 								if ( 'string' === typeof err.data.message ) {
 									error =  err.data.message;

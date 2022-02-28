@@ -196,7 +196,7 @@ jQuery( function ( $ ) {
 					}
 					options += '<option value = "' + i + '"> ' + ( ( i< 10 ) ? '0' + i : i ) + '</option>';
 				}
-				// alert(options);	
+				// alert(options);
 				$this.siblings( '#minute-select-'+id ).html( options );
 				$this.siblings( '#minute-select-'+id ).attr('value', $this.siblings( '#minute-select-'+id ).find('option:first').val());
 			}
@@ -228,7 +228,7 @@ jQuery( function ( $ ) {
 				'October',
 				'November',
 				'December'
-			];            
+			];
 			var formatted_date = '';
 			if( setting.date_time == 'date' || setting.date_time == 'date-time' ) {
 				selectd_date.selected_day = (selectd_date.selected_day < 10 ) ? '0' + selectd_date.selected_day : selectd_date.selected_day;
@@ -479,10 +479,15 @@ jQuery( function ( $ ) {
 						var $form       = $( form ),
 							$submit     = $form.find( '.evf-submit' ),
 							processText = $submit.data( 'process-text' );
-
+							var	recaptchaID = $submit.get( 0 ).recaptchaID;
 						// Process form.
 						if ( processText ) {
 							$submit.text( processText ).prop( 'disabled', true );
+						}
+
+						if (  recaptchaID === 0 ) {
+							 grecaptcha.execute( recaptchaID );
+							return false;
 						}
 
 						if ( 1 !== $form.data( 'ajax_submission' ) ) {
@@ -636,4 +641,5 @@ jQuery( function ( $ ) {
 	};
 
 	everest_forms.init();
+
 });
