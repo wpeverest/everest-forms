@@ -804,7 +804,7 @@
 
 
 			// Dragged field and hover over tab buttons - multipart.
-			$( '.everest-forms-tabs li[class*="part_"]' ).hover( function() {
+			$(document).on( 'mouseenter', '.everest-forms-tabs li[class*="part_"]', function() {
 				if ( false === $( this ).hasClass( 'active' ) && ( $( document ).find( '.everest-forms-field' ).hasClass( 'ui-sortable-helper' ) || $( document ).find( '.evf-registered-buttons button.evf-registered-item' ).hasClass( 'field-dragged' ) ) ) {
 					$( this ).find( 'a' ).trigger( 'click' );
 				}
