@@ -80,17 +80,13 @@ class EVF_Admin_Forms {
 	 * @return array of objects
 	 */
 	public static function get_sections() {
-		$template_sections = get_transient( 'evf_template_sections' );
+		$template_sections = get_transient( 'evf_template_sections_list' );
 
 		if ( false === $template_sections ) {
-			$raw_sections = wp_remote_get( evf()->plugin_url( 'assets/extensions-json/templates/template-sections.json' ), array( 'sslverify' => false ) );
+			$template_sections = evf_get_json_file_contents( 'assets/extensions-json/templates/template-sections.json' );
 
-			if ( ! is_wp_error( $raw_sections ) ) {
-				$template_sections = json_decode( wp_remote_retrieve_body( $raw_sections ) );
-
-				if ( $template_sections ) {
-					set_transient( 'evf_template_sections', $template_sections, WEEK_IN_SECONDS );
-				}
+			if ( $template_sections ) {
+				set_transient( 'evf_template_sections_list', $template_sections, WEEK_IN_SECONDS );
 			}
 		}
 
@@ -103,40 +99,35 @@ class EVF_Admin_Forms {
 	 * @return array
 	 */
 	public static function get_template_data() {
-		$template_data = get_transient( 'evf_template_section' );
+		$template_data = get_transient( 'evf_template_section_list' );
 
 		if ( false === $template_data ) {
-			$raw_templates = wp_remote_get( evf()->plugin_url( 'assets/extensions-json/templates/all_templates.json' ), array( 'sslverify' => false ) );
+			$template_data     = evf_get_json_file_contents( 'assets/extensions-json/templates/all_templates.json' );
+			// Removing directory so the templates can be reinitialized.
+			$folder_path = untrailingslashit( plugin_dir_path( EVF_PLUGIN_FILE ) . '/assets/images/templates' );
 
-			if ( ! is_wp_error( $raw_templates ) ) {
-				$template_data = json_decode( wp_remote_retrieve_body( $raw_templates ) );
+			foreach ( $template_data->templates as $template_tuple ) {
+				// We retrieve the image, then use them instead of the remote server.
+				$image = wp_remote_get( $template_tuple->image );
+				$type  = wp_remote_retrieve_header( $image, 'content-type' );
 
-				// Removing directory so the templates can be reinitialized.
-				$folder_path = untrailingslashit( plugin_dir_path( EVF_PLUGIN_FILE ) . '/assets/images/templates' );
-
-				foreach ( $template_data->templates as $template_tuple ) {
-					// We retrieve the image, then use them instead of the remote server.
-					$image = wp_remote_get( $template_tuple->image );
-					$type  = wp_remote_retrieve_header( $image, 'content-type' );
-
-					// Remote file check failed, we'll fallback to remote image.
-					if ( ! $type ) {
-						continue;
-					}
-
-					$temp_name     = explode( '/', $template_tuple->image );
-					$relative_path = $folder_path . '/' . end( $temp_name );
-					$exists        = file_exists( $relative_path );
-
-					// If it exists, utilize this file instead of remote file.
-					if ( $exists ) {
-						$template_tuple->image = plugin_dir_url( EVF_PLUGIN_FILE ) . 'assets/images/templates/' . end( $temp_name );
-					}
+				// Remote file check failed, we'll fallback to remote image.
+				if ( ! $type ) {
+					continue;
 				}
 
-				if ( ! empty( $template_data->templates ) ) {
-					set_transient( 'evf_template_section', $template_data, WEEK_IN_SECONDS );
+				$temp_name     = explode( '/', $template_tuple->image );
+				$relative_path = $folder_path . '/' . end( $temp_name );
+				$exists        = file_exists( $relative_path );
+
+				// If it exists, utilize this file instead of remote file.
+				if ( $exists ) {
+					$template_tuple->image = plugin_dir_url( EVF_PLUGIN_FILE ) . 'assets/images/templates/' . end( $temp_name );
 				}
+			}
+
+			if ( ! empty( $template_data->templates ) ) {
+				set_transient( 'evf_template_section_list', $template_data, WEEK_IN_SECONDS );
 			}
 		}
 

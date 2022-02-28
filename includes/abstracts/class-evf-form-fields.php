@@ -1437,8 +1437,8 @@ abstract class EVF_Form_Fields {
 							$field,
 							array(
 								'slug'        => 'whitelist_domain',
-								'value'       => $value,
-								'placeholder' => 'for eg. gmail.com',
+								'value'       => esc_attr( $value ),
+								'placeholder' => esc_attr__( 'for eg. gmail.com', 'everest-forms' ),
 							),
 							false
 						),

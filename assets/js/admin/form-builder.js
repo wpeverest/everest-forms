@@ -20,7 +20,7 @@
 		 	});
 
 
-			 $(document).ready( function( $ ) {
+			$( document ).ready( function( $ ) {
 				 if( '1' === $( '.everest-forms-min-max-date-format input' ).val() ) {
 					$('.everest-forms-min-date').addClass('flatpickr-field').flatpickr({
 						disableMobile : true,
@@ -45,10 +45,10 @@
 			});
 
 
-		 		if ( ! $( 'evf-panel-payments-button a' ).hasClass( 'active' ) ) {
-		 			$( '#everest-forms-panel-payments' ).find( '.everest-forms-panel-sidebar a' ).first().addClass( 'active' );
-					$( '.everest-forms-panel-content' ).find( '.evf-payment-setting-content' ).first().addClass( 'active' );
-				}
+			if ( ! $( 'evf-panel-payments-button a' ).hasClass( 'active' ) ) {
+				$( '#everest-forms-panel-payments' ).find( '.everest-forms-panel-sidebar a' ).first().addClass( 'active' );
+				$( '.everest-forms-panel-content' ).find( '.evf-payment-setting-content' ).first().addClass( 'active' );
+			}
 
 
 			// Copy shortcode from the builder.
@@ -801,6 +801,14 @@
 				e.preventDefault();
 				EVFPanelBuilder.fieldTabChoice( $(this).attr( 'id' ) );
 			});
+
+
+			// Dragged field and hover over tab buttons - multipart.
+			$(document).on( 'mouseenter', '.everest-forms-tabs li[class*="part_"]', function() {
+				if ( false === $( this ).hasClass( 'active' ) && ( $( document ).find( '.everest-forms-field' ).hasClass( 'ui-sortable-helper' ) || $( document ).find( '.evf-registered-buttons button.evf-registered-item' ).hasClass( 'field-dragged' ) ) ) {
+					$( this ).find( 'a' ).trigger( 'click' );
+				}
+			} );
 
 			// Display toggle for "Address" field hidden option.
 			$builder.on( 'change', '.everest-forms-field-option-address input.hide', function() {
@@ -2021,7 +2029,9 @@
 				scrollSensitivity: 40,
 				forcePlaceholderSize: true,
 				connectWith: '.evf-admin-grid',
+				appendTo: document.body,
 				containment: '.everest-forms-field-wrap',
+
 				out: function( event ) {
 					$( '.evf-admin-grid' ).removeClass( 'evf-hover' );
 					$( event.target ).removeClass( 'evf-item-hover' );
@@ -2055,8 +2065,14 @@
 				revert: 'invalid',
 				scrollSensitivity: 40,
 				forcePlaceholderSize: true,
+				start: function() {
+					$( this ).addClass( 'field-dragged' );
+				},
 				helper: function() {
 					return $( this ).clone().insertAfter( $( this ).closest( '.everest-forms-tab-content' ).siblings( '.everest-forms-fields-tab' ) );
+				},
+				stop: function() {
+					$( this ).removeClass( 'field-dragged' );
 				},
 				opacity: 0.75,
 				containment: '#everest-forms-builder',
@@ -2149,7 +2165,7 @@
 		 		EVFPanelBuilder.checkEmptyGrid();
 		 		$('.evf-show-grid').closest('.evf-toggle-row').find('.evf-toggle-row-content').stop(true).slideUp(200);
 		 	});
-		 	var max_number_of_grid = 2;
+		 	var max_number_of_grid = 4;
 		 	$('body').on('click', '.evf-grid-selector', function () {
 		 		var $this_single_row = $(this).closest('.evf-admin-row');
 		 		if ( $(this).hasClass('active') ) {
@@ -2369,10 +2385,19 @@
 
 		paymentFieldAppendToDropdown: function( dragged_field_id, field_type ){
 			if('payment-quantity' === field_type ) {
-				var match_fields = [ 'payment-checkbox', 'payment-multiple', 'payment-single' ],
+				var match_fields = [ 'payment-checkbox', 'payment-multiple', 'payment-single', 'range-slider' ],
 					qty_dropdown = $('#everest-forms-field-option-' + dragged_field_id + '-map_field');
 				match_fields.forEach(function(single_field){
 					$('.everest-forms-field-'+single_field).each(function(){
+						if( 'range-slider' === $(this).attr('data-field-type')) {
+							if('true' === ($(this).find('.evf-range-slider-preview').attr('data-enable-payment-slider'))) {
+								var id = $(this).attr('data-field-id'),
+									label = $(this).find( ".label-title .text" ).text();
+								var el_to_append = '<option value="'+id+'">'+label+'</option>';
+							}else{
+								return;
+							}
+						}
 						var id = $(this).attr('data-field-id'),
 							label = $(this).find( ".label-title .text" ).text();
 						var el_to_append = '<option value="'+id+'">'+label+'</option>';

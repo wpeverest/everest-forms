@@ -180,7 +180,6 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 	if ( empty( $option ) || empty( $panel ) || empty( $field ) ) {
 		return '';
 	}
-
 	// Setup basic vars.
 	$panel       = esc_attr( $panel );
 	$field       = esc_attr( $field );
@@ -207,6 +206,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 			$value      = isset( $form_data[ $parent ][ $panel ][ $field ] ) ? $form_data[ $parent ][ $panel ][ $field ] : $default;
 		}
 	} else {
+
 		$field_name = sprintf( '%s[%s]', $panel, $field );
 		$value      = isset( $form_data[ $panel ][ $field ] ) ? $form_data[ $panel ][ $field ] : $default;
 	}
@@ -343,6 +343,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 
 		// Select.
 		case 'select':
+			$is_multiple = isset( $args['multiple'] ) && true === $args['multiple'];
 			if ( empty( $args['options'] ) && empty( $args['field_map'] ) ) {
 				return '';
 			}
@@ -365,8 +366,14 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 				$options = $args['options'];
 			}
 
+			if ( true === $is_multiple ) {
+				$multiple = 'multiple';
+			} else {
+				$multiple = '';
+			}
+
 			$output = sprintf(
-				'<select id="everest-forms-panel-field-%s-%s" name="%s" class="widefat %s" %s>',
+				'<select id="everest-forms-panel-field-%s-%s" name="%s" class="widefat %s" %s ' . $multiple . '>',
 				sanitize_html_class( $panel_id ),
 				sanitize_html_class( $field ),
 				$field_name,
@@ -379,9 +386,12 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 			}
 
 			foreach ( $options as $key => $item ) {
-				$output .= sprintf( '<option value="%s" %s>%s</option>', esc_attr( $key ), selected( $key, $value, false ), $item );
+				if ( true === $is_multiple && is_array( $value ) ) {
+					 $output .= sprintf( '<option value="%s" %s>%s</option>', esc_attr( $key ), selected( in_array( $key, $value, true ), true, false ), $item );
+				} else {
+					$output .= sprintf( '<option value="%s" %s>%s</option>', esc_attr( $key ), selected( $key, $value, false ), $item );
+				}
 			}
-
 			$output .= '</select>';
 			break;
 	}
