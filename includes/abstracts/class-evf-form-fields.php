@@ -759,7 +759,6 @@ abstract class EVF_Form_Fields {
 						'value'   => esc_html__( 'style', 'everest-forms' ),
 						'tooltip' => $tooltip,
 						'options' => array(
-							'none'             => esc_html__( 'None', 'everest-forms' ),
 							'address'          => esc_html__( 'Address', 'everest-forms' ),
 							'map'              => esc_html__( 'Map', 'everest-forms' ),
 							'address_with_map' => esc_html( 'Address With Map' ),
