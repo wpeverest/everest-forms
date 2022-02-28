@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 1.8.5 - xx-xx-2022 =
+Fix - reCAPTCHA v3 threshold display glitch.
+* Fix - Preview issue in twenty twenty two theme.
+
 = 1.8.4 - 03-02-2022 =
 * Fix - Attribute issue in multipart.
 * Fix - Date Time $ missing form variable name.
