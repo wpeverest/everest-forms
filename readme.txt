@@ -2,9 +2,9 @@
 Contributors: WPEverest
 Tags: contact form, forms, form builder, contact, custom form
 Requires at least: 5.0
-Tested up to: 5.8.2
+Tested up to: 5.9
 Requires PHP: 5.4
-Stable tag: 1.8.3
+Stable tag: 1.8.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -301,6 +301,20 @@ Yes, we do. Check out this [Getting Started Videos](https://docs.wpeverest.com/d
 Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/everest-forms/) :)
 
 == Changelog ==
+
+= 1.8.4 - 03-02-2022 =
+* Fix - Attribute issue in multipart.
+* Fix - Date Time $ missing form variable name.
+* Fix - Recaptcha v3 and V2 invisible timeout issue.
+* Enhancement - Recaptcha v3 Threshold.
+* Enhancement - Amp plugin compatibility.
+* Enhancement - Form builder validation.
+* Enhancement - Four column Form.
+* Feature - hCaptcha.
+* Feature - Send Test Email.
+* Feature - Entries table sorting based on column values.
+* Tweak - Nonce ID aligned with Form ID.
+* Tweak - Preserve form field values while error in normal form submission.
 
 = 1.8.3 - 17-01-2022 =
 * Fix - Repeater fields not working.

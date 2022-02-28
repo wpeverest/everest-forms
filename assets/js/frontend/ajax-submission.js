@@ -15,6 +15,14 @@ jQuery( function( $ ) {
 				}
 
 				btn.on( 'click', function( e ) {
+
+					var	recaptchaID = btn.get( 0 ).recaptchaID;
+
+					if (  recaptchaID === 0 ) {
+						grecaptcha.execute( recaptchaID );
+						return false;
+					}
+
 					var data = formTuple.serializeArray();
 					e.preventDefault();
 
@@ -58,17 +66,25 @@ jQuery( function( $ ) {
 						}
 						if ( 'success' === xhr.data.response || true === xhr.success ) {
 							let pdf_download_message = '';
+							let quiz_reporting = '';
 							if(xhr.data.form_id !== undefined && xhr.data.entry_id !== undefined && xhr.data.pdf_download == true){
 								pdf_download_message = '<br><small><a href="/?page=evf-entries-pdf&form_id='+ xhr.data.form_id+'&entry_id='+xhr.data.entry_id+'">' + xhr.data.pdf_download_message + '</a></small>';
 							}
+							if( xhr.data.quiz_result_shown == true){
+								quiz_reporting = xhr.data.quiz_reporting;
+							}
 							formTuple.trigger( 'reset' );
-							formTuple.closest( '.everest-forms' ).html( '<div class="everest-forms-notice everest-forms-notice--success" role="alert">' + xhr.data.message + pdf_download_message + '</div>' ).focus();
+							formTuple.closest( '.everest-forms' ).html( '<div class="everest-forms-notice everest-forms-notice--success" role="alert">' + xhr.data.message + pdf_download_message + '</div>' + quiz_reporting ).focus();
 							localStorage.removeItem(formTuple.attr('id'));
 						} else {
-							var	form_id = formTuple.data( 'formid' ),
-								error   =  everest_forms_ajax_submission_params.error,
-								err     =  JSON.parse( errorThrown.responseText ),
-								fields  = err.data.error;
+							var	form_id = formTuple.data( 'formid' );
+							var err     =  JSON.parse( errorThrown.responseText );
+							if( 'undefined' !== typeof err.data[form_id] ) {
+								var error =  err.data[form_id].header;
+							} else{
+								var	error   =  everest_forms_ajax_submission_params.error;
+							}
+							var fields  = err.data.error;
 
 								if ( 'string' === typeof err.data.message ) {
 									error =  err.data.message;

@@ -36,7 +36,8 @@ class EVF_Template_Loader {
 		if ( ! is_admin() && isset( $_GET['evf_preview'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			add_action( 'pre_get_posts', array( __CLASS__, 'pre_get_posts' ) );
 			add_filter( 'edit_post_link', array( __CLASS__, 'edit_form_link' ) );
-			add_filter( 'template_include', array( __CLASS__, 'template_include' ) );
+			add_filter( 'home_template_hierarchy', array( __CLASS__, 'template_include' ) );
+			add_filter( 'frontpage_template_hierarchy', array( __CLASS__, 'template_include' ) );
 			add_action( 'template_redirect', array( __CLASS__, 'form_preview_init' ) );
 		} else {
 			add_filter( 'template_include', array( __CLASS__, 'template_loader' ) );
@@ -69,12 +70,14 @@ class EVF_Template_Loader {
 	}
 
 	/**
-	 * Limit page templates to singular pages only.
+	 *  A list of template candidates.
 	 *
-	 * @return string
+	 * @param array $templates A list of template candidates, in descending order of priority.
+	 *
+	 * @return array
 	 */
-	public static function template_include() {
-		return locate_template( array( 'page.php', 'single.php', 'index.php' ) );
+	public static function template_include( $templates ) {
+		return array( 'page.php', 'single.php', 'index.php' );
 	}
 
 	/**

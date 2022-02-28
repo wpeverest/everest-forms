@@ -996,7 +996,13 @@ function evf_html_attributes( $id = '', $class = array(), $datas = array(), $att
 	if ( ! empty( $atts ) ) {
 		foreach ( $atts as $att => $val ) {
 			if ( '0' === $val || ! empty( $val ) ) {
-				$parts[] = sanitize_html_class( $att ) . '="' . esc_attr( $val ) . '"';
+				if ( $att[0] === '[' ) { //phpcs:ignore
+					// Handle special case for bound attributes in AMP.
+					$escaped_att = '[' . sanitize_html_class( trim( $att, '[]' ) ) . ']';
+				} else {
+					$escaped_att = sanitize_html_class( $att );
+				}
+				$parts[] = $escaped_att . '="' . esc_attr( $val ) . '"';
 			}
 		}
 	}
@@ -2377,6 +2383,36 @@ function evf_process_line_breaks( $text ) {
 }
 
 /**
+ * Check whether the current page is in AMP mode or not.
+ * We need to check for specific functions, as there is no special AMP header.
+ *
+ * @since 1.8.4
+ *
+ * @param bool $check_theme_support Whether theme support should be checked. Defaults to true.
+ *
+ * @return bool
+ */
+function evf_is_amp( $check_theme_support = true ) {
+
+	$is_amp = false;
+
+	if (
+	   // AMP by Automattic.
+	   ( function_exists( 'amp_is_request' ) && amp_is_request() ) ||
+	   // Better AMP.
+	   ( function_exists( 'is_better_amp' ) && is_better_amp() )
+	) {
+		$is_amp = true;
+	}
+
+	if ( $is_amp && $check_theme_support ) {
+		$is_amp = current_theme_supports( 'amp' );
+	}
+
+	return apply_filters( 'evf_is_amp', $is_amp );
+}
+
+/**
  * EVF KSES.
  *
  * @since 1.8.2.1
@@ -2440,6 +2476,7 @@ function evf_get_allowed_html_tags( $context = '' ) {
  * @since 1.8.2.2
  */
 function evf_sanitize_builder( $post_data = array() ) {
+
 	if ( empty( $post_data ) || ! is_array( $post_data ) ) {
 		return array();
 	}
@@ -2452,6 +2489,7 @@ function evf_sanitize_builder( $post_data = array() ) {
 		} else {
 			$value = sanitize_text_field( $data->value );
 		}
+
 		$form_data[ sanitize_text_field( $data_key ) ] = (object) array(
 			'name'  => $name,
 			'value' => $value,
@@ -2510,7 +2548,7 @@ function evf_sanitize_entry( $entry = array() ) {
 				default:
 					if ( is_array( $entry['form_fields'][ $key ] ) ) {
 						foreach ( $entry['form_fields'][ $key ] as $field_key => $value ) {
-							$field_key = sanitize_text_field( $field_key );
+							$field_key                                  = sanitize_text_field( $field_key );
 							$entry['form_fields'][ $key ][ $field_key ] = sanitize_text_field( $value );
 						}
 					} else {
@@ -2523,7 +2561,7 @@ function evf_sanitize_entry( $entry = array() ) {
 }
 
 /**
- * Get evf json file contents.
+ * EVF Get json file contents.
  *
  * @param mixed $file File path.
  * @param mixed $to_array Returned data in array.
@@ -2536,14 +2574,14 @@ function evf_get_json_file_contents( $file, $to_array = false ) {
 }
 
 /**
- * Vvf file get contents.
+ * EVF file get contents.
  *
  * @param mixed $file File path.
  */
 function evf_file_get_contents( $file ) {
 	if ( $file ) {
 		global $wp_filesystem;
-		require_once( ABSPATH . '/wp-admin/includes/file.php' );
+		require_once ABSPATH . '/wp-admin/includes/file.php';
 		WP_Filesystem();
 		$local_file = preg_replace( '/\\\\|\/\//', '/', plugin_dir_path( EVF_PLUGIN_FILE ) . $file );
 		if ( $wp_filesystem->exists( $local_file ) ) {

@@ -98,6 +98,7 @@ class EVF_AJAX {
 			'template_licence_check'  => false,
 			'template_activate_addon' => false,
 			'ajax_form_submission'    => true,
+			'send_test_email'         => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -206,19 +207,38 @@ class EVF_AJAX {
 	public static function save_form() {
 		check_ajax_referer( 'everest_forms_save_form', 'security' );
 
+		$logger = evf_get_logger();
+
 		// Check permissions.
+		$logger->info(
+			__( 'Checking permissions.', 'everest-forms' ),
+			array( 'source' => 'form-save' )
+		);
 		if ( ! current_user_can( 'everest_forms_edit_forms' ) ) {
+			$logger->critical(
+				__( 'You do not have permission.', 'everest-forms' ),
+				array( 'source' => 'form-save' )
+			);
 			die( esc_html__( 'You do not have permission.', 'everest-forms' ) );
 		}
 
 		// Check for form data.
+		$logger->info(
+			__( 'Checking for form data.', 'everest-forms' ),
+			array( 'source' => 'form-save' )
+		);
 		if ( empty( $_POST['form_data'] ) ) {
+			$logger->critical(
+				__( 'No data provided.', 'everest-forms' ),
+				array( 'source' => 'form-save' )
+			);
 			die( esc_html__( 'No data provided', 'everest-forms' ) );
 		}
 
 		$form_post = evf_sanitize_builder( json_decode( wp_unslash( $_POST['form_data'] ) ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 
-		$data = array();
+		$data         = array();
+		$choose_field = array();
 
 		if ( ! is_null( $form_post ) && $form_post ) {
 			foreach ( $form_post as $post_input_data ) {
@@ -244,12 +264,19 @@ class EVF_AJAX {
 						);
 					}
 				}
-
+				$choose_field_data = isset( $new_post_data['settings']['choose_pdf_fields'] ) ? $new_post_data['settings']['choose_pdf_fields'] : array();
+				if ( ! empty( $choose_field_data ) ) {
+					 array_push( $choose_field, $choose_field_data );
+				}
 				$data = array_replace_recursive( $data, $new_post_data );
 			}
 		}
-
+		$data['settings']['choose_pdf_fields'] = $choose_field;
 		// Check for empty meta key.
+		$logger->info(
+			__( 'Check for empty meta key.', 'everest-forms' ),
+			array( 'source' => 'form-save' )
+		);
 		$empty_meta_data = array();
 		if ( ! empty( $data['form_fields'] ) ) {
 			foreach ( $data['form_fields'] as $field_key => $field ) {
@@ -281,6 +308,10 @@ class EVF_AJAX {
 			}
 
 			if ( ! empty( $empty_meta_data ) ) {
+				$logger->error(
+					__( 'Meta Key missing.', 'everest-forms' ),
+					array( 'source' => 'form-save' )
+				);
 				wp_send_json_error(
 					array(
 						'errorTitle'   => esc_html__( 'Meta Key missing', 'everest-forms' ),
@@ -292,6 +323,10 @@ class EVF_AJAX {
 		}
 
 		// Fix for sorting field ordering.
+		$logger->info(
+			__( 'Fix for sorting field ordering.', 'everest-forms' ),
+			array( 'source' => 'form-save' )
+		);
 		if ( isset( $data['structure'], $data['form_fields'] ) ) {
 			$structure           = evf_flatten_array( $data['structure'] );
 			$data['form_fields'] = array_merge( array_intersect_key( array_flip( $structure ), $data['form_fields'] ), $data['form_fields'] );
@@ -299,10 +334,17 @@ class EVF_AJAX {
 
 		$form_id     = evf()->form->update( $data['id'], $data );
 		$form_styles = get_option( 'everest_forms_styles', array() );
-
+		$logger->info(
+			__( 'Saving form.', 'everest-forms' ),
+			array( 'source' => 'form-save' )
+		);
 		do_action( 'everest_forms_save_form', $form_id, $data, array(), ! empty( $form_styles[ $form_id ] ) );
 
 		if ( ! $form_id ) {
+			$logger->error(
+				__( 'An error occurred while saving the form.', 'everest-forms' ),
+				array( 'source' => 'form-save' )
+			);
 			wp_send_json_error(
 				array(
 					'errorTitle'   => esc_html__( 'Form not found', 'everest-forms' ),
@@ -310,6 +352,10 @@ class EVF_AJAX {
 				)
 			);
 		} else {
+			$logger->info(
+				__( 'Form Saved successfully.', 'everest-forms' ),
+				array( 'source' => 'form-save' )
+			);
 			wp_send_json_success(
 				array(
 					'form_name'    => esc_html( $data['settings']['form_title'] ),
@@ -739,6 +785,42 @@ class EVF_AJAX {
 		try {
 			check_ajax_referer( 'process-import-ajax-nonce', 'security' );
 			EVF_Admin_Import_Export::import_form();
+		} catch ( Exception $e ) {
+			wp_send_json_error(
+				array(
+					'message' => $e->getMessage(),
+				)
+			);
+		}
+	}
+
+	/**
+	 * Send test email.
+	 */
+	public static function send_test_email() {
+		try {
+			check_ajax_referer( 'process-ajax-nonce', 'security' );
+			$from  = esc_attr( get_bloginfo( 'name', 'display' ) );
+			$email = sanitize_email( isset( $_POST['email'] ) ? wp_unslash( $_POST['email'] ) : '' );
+
+			/* translators: %s: from address */
+			$subject = 'Everest Form: ' . sprintf( esc_html__( 'Test email from %s', 'everest-forms' ), $from );
+			$header  = "Reply-To: {{from}} \r\n";
+			$header .= 'Content-Type: text/html; charset=UTF-8';
+			$message = sprintf(
+				'%s <br /> %s <br /> %s <br /> %s <br /> %s',
+				__( 'Congratulations,', 'everest-forms' ),
+				__( 'Your test email has been received successfully.', 'everest-forms' ),
+				__( 'We thank you for trying out Everest Forms and joining our mission to make sure you get your emails delivered.', 'everest-forms' ),
+				__( 'Regards,', 'everest-forms' ),
+				__( 'Everest Forms Team', 'everest-forms' )
+			);
+			$status  = wp_mail( $email, $subject, $message, $header );
+			if ( $status ) {
+				wp_send_json_success( array( 'message' => __( 'Test email was sent successfully! Please check your inbox to make sure it is delivered.', 'everest-forms' ) ) );
+			} else {
+				wp_send_json_error( array( 'message' => __( 'Test email was unsuccessful! Something went wrong.', 'everest-forms' ) ) );
+			}
 		} catch ( Exception $e ) {
 			wp_send_json_error(
 				array(

@@ -95,6 +95,8 @@
 			recaptcha_v2_invisible            = $( '#everest_forms_recaptcha_v2_invisible' ).parents( 'tr' ).eq( 0 ),
 			recaptcha_v3_site_key             = $( '#everest_forms_recaptcha_v3_site_key' ).parents( 'tr' ).eq( 0 ),
 			recaptcha_v3_secret_key           = $( '#everest_forms_recaptcha_v3_secret_key' ).parents( 'tr' ).eq( 0 );
+			hcaptcha_site_key            	  = $( '#everest_forms_recaptcha_hcaptcha_site_key' ).parents( 'tr' ).eq( 0 ),
+			hcaptcha_secret_key               = $( '#everest_forms_recaptcha_hcaptcha_secret_key' ).parents( 'tr' ).eq( 0 );
 
 		if ( $( this ).is( ':checked' ) ) {
 			if ( 'v2' === $( this ).val() ) {
@@ -112,15 +114,34 @@
 				recaptcha_v2_invisible.show();
 				recaptcha_v3_site_key.hide();
 				recaptcha_v3_secret_key.hide();
-			} else {
+				hcaptcha_site_key.hide();
+				hcaptcha_secret_key.hide();
+				recaptcha_v3_threshold_score.hide();
+
+			} else if ('hcaptcha' === $( this ).val()) {
+				recaptcha_v2_invisible.hide();
+				recaptcha_v2_invisible_site_key.hide();
+				recaptcha_v2_invisible_secret_key.hide();
+				recaptcha_v3_site_key.hide();
+				recaptcha_v3_secret_key.hide();
+				recaptcha_v2_site_key.hide();
+				recaptcha_v2_secret_key.hide();
+				hcaptcha_site_key.show();
+				hcaptcha_secret_key.show();
+			 }  else {
 				recaptcha_v2_site_key.hide();
 				recaptcha_v2_secret_key.hide();
 				recaptcha_v2_invisible.hide();
 				recaptcha_v2_invisible_site_key.hide();
 				recaptcha_v2_invisible_secret_key.hide();
+				hcaptcha_site_key.hide();
+				hcaptcha_secret_key.hide();
 				recaptcha_v3_site_key.show();
 				recaptcha_v3_secret_key.show();
+				recaptcha_v3_threshold_score.show();
 			}
+
+
 		}
 	}).change();
 
@@ -137,5 +158,51 @@
 			$( '#everest_forms_recaptcha_v2_invisible_secret_key' ).parents( 'tr' ).eq( 0 ).hide();
 		}
 	});
+
+	// Send Test Email.
+    $(".everest_forms_send_email_test").on("click", function(e) {
+        e.preventDefault();
+        let email = $("#everest_forms_email_send_to").val();
+        let data = {
+            action: "everest_forms_send_test_email",
+            email: email,
+            security: evf_email_params.ajax_email_nonce,
+        };
+        $.ajax({
+            url: evf_email_params.ajax_url,
+            data: data,
+            type: "post",
+            beforeSend: function() {
+                var spinner = '<i class="evf-loading evf-loading-active"></i>';
+                $(".everest_forms_send_email_test")
+                    .closest(".everest_forms_send_email_test")
+                    .append(spinner);
+                $(".everest-froms-send_test_email_notice").remove();
+            },
+            complete: function(response) {
+                var message_string = "";
+
+                $(".everest_forms_send_email_test")
+                    .closest(".everest_forms_send_email_test")
+                    .find(".evf-loading")
+                    .remove();
+                $(".everest-froms-send_test_email_notice").remove();
+                if (true === response.responseJSON.success) {
+                    $("#everest_forms_email_send_to").val("");
+                    message_string =
+                        '<div id="message" class="updated inline everest-froms-send_test_email_notice"><p><strong>' +
+                        response.responseJSON.data.message +
+                        "</strong></p></div>";
+                } else {
+                    message_string =
+                        '<div id="message" class="error inline everest-froms-send_test_email_notice"><p><strong>' +
+                        response.responseJSON.data.message +
+                        "</strong></p></div>";
+                }
+
+                $(".everest-forms-settings").find("h2").after(message_string);
+            },
+        });
+    });
 
 })( jQuery, everest_forms_settings_params );
