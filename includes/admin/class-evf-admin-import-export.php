@@ -140,7 +140,7 @@ class EVF_Admin_Import_Export {
 						if ( $post_id ) {
 							wp_send_json_success(
 								array(
-									'message' => esc_html__( 'Imported Successfully.', 'everest-forms' ),
+									'message' => esc_html__( 'Imported Successfully. ', 'everest-forms' ) . '<a href="' . esc_url( admin_url( 'admin.php?page=evf-builder&tab=fields&form_id=' . $new_form_data['id'] ) ) . '">' . esc_html__( 'View Form', 'everest-forms' ) . '</a>',
 								)
 							);
 						}
