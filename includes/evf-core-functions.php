@@ -2507,6 +2507,7 @@ function evf_sanitize_entry( $entry = array() ) {
 				case 'textarea':
 				case 'html':
 				case 'privacy-policy':
+				case 'wysiwug':
 					$entry['form_fields'][ $key ] = wp_kses_post( $entry['form_fields'][ $key ] );
 					break;
 				case 'repeater-fields':
