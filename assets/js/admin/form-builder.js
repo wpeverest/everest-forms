@@ -2385,10 +2385,19 @@
 
 		paymentFieldAppendToDropdown: function( dragged_field_id, field_type ){
 			if('payment-quantity' === field_type ) {
-				var match_fields = [ 'payment-checkbox', 'payment-multiple', 'payment-single' ],
+				var match_fields = [ 'payment-checkbox', 'payment-multiple', 'payment-single', 'range-slider' ],
 					qty_dropdown = $('#everest-forms-field-option-' + dragged_field_id + '-map_field');
 				match_fields.forEach(function(single_field){
 					$('.everest-forms-field-'+single_field).each(function(){
+						if( 'range-slider' === $(this).attr('data-field-type')) {
+							if('true' === ($(this).find('.evf-range-slider-preview').attr('data-enable-payment-slider'))) {
+								var id = $(this).attr('data-field-id'),
+									label = $(this).find( ".label-title .text" ).text();
+								var el_to_append = '<option value="'+id+'">'+label+'</option>';
+							}else{
+								return;
+							}
+						}
 						var id = $(this).attr('data-field-id'),
 							label = $(this).find( ".label-title .text" ).text();
 						var el_to_append = '<option value="'+id+'">'+label+'</option>';
