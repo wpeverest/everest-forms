@@ -2476,6 +2476,7 @@ function evf_get_allowed_html_tags( $context = '' ) {
  * @since 1.8.2.2
  */
 function evf_sanitize_builder( $post_data = array() ) {
+
 	if ( empty( $post_data ) || ! is_array( $post_data ) ) {
 		return array();
 	}
@@ -2488,6 +2489,7 @@ function evf_sanitize_builder( $post_data = array() ) {
 		} else {
 			$value = sanitize_text_field( $data->value );
 		}
+
 		$form_data[ sanitize_text_field( $data_key ) ] = (object) array(
 			'name'  => $name,
 			'value' => $value,
