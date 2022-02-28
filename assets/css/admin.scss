@@ -963,6 +963,9 @@ body.everest-forms-builder {
 						&.permission::before {
 							content: '\e030';
 						}
+						&.geolocation::before {
+							content: '\e900';
+						}
 					}
 				}
 

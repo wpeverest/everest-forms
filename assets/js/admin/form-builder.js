@@ -2692,6 +2692,7 @@ jQuery( function ( $ ) {
 		if ( 'field' === type ) {
 			$input.val( $input.val() + '{field_id="'+field_id+'"}' );
 			$textarea.val($textarea.val()+'{field_id="'+field_id+'"}' );
+			$textarea.trigger('change');
 		} else if ( 'other' === type ) {
 			$input.val( $input.val() + '{'+field_id+'}' );
 			$textarea.val($textarea.val() + '{'+field_id+'}' );
@@ -2808,6 +2809,15 @@ jQuery( function ( $ ) {
 					$(el).parent().find('.evf-smart-tag-lists .evf-fields').append('<li class = "smart-tag-field" data-type="field" data-field_id="'+meta+'">'+all_fields[meta]+'</li>');
 				}
 			}
+		}
+
+		if ( 'calculations' === type ) {
+			var calculations = [ 'number' ]
+			$(document).find('.everest-forms-field').each(function() {
+				if( calculations.includes($(this).attr('data-field-type')) && $(el).parents('.everest-forms-field-option-row-calculation_field').attr('data-field-id') !== $(this).attr('data-field-id')) {
+					$(el).parent().find('.evf-smart-tag-lists .calculations').append('<li class = "smart-tag-field" data-type="field" data-field_id="'+$(this).attr('data-field-id')+'">'+$(this).find('.label-title .text').text()+'</li>');
+				}
+			})
 		}
 	}
 });
