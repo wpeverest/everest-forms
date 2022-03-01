@@ -963,6 +963,9 @@ body.everest-forms-builder {
 						&.permission::before {
 							content: '\e030';
 						}
+						&.geolocation::before {
+							content: '\e900';
+						}
 					}
 				}
 
@@ -2059,7 +2062,7 @@ p.search-box {
 							box-shadow: none;
 
 							&:focus {
-								border-color: none;
+								border-color: transparent;
 							}
 						}
 
@@ -2728,7 +2731,11 @@ p.search-box {
 						}
 
 						&.evf-grid-3 {
-							width: 30%;
+							width: 33%;
+						}
+
+						&.evf-grid-4 {
+							width: 25%;
 						}
 
 						.evf-registered-item {
@@ -5796,7 +5803,8 @@ img.ui-datepicker-trigger {
 						.evf-admin-grid {
 							&.evf-grid-1,
 							&.evf-grid-2,
-							&.evf-grid-3 {
+							&.evf-grid-3,
+							&.evf-grid-4 {
 								width: auto;
 							}
 						}
@@ -5937,3 +5945,40 @@ img.ui-datepicker-trigger {
 	}
 }
 
+.everest-forms-field.ui-sortable-helper .evf-field-action {
+	display: none;
+}
+
+.everest-forms-builder .everest-forms-field.ui-sortable-helper {
+	padding: 15px 15px 0 15px;
+	border: 1px solid #cdd0d8;
+	border-radius: 3px;
+
+	label {
+			display: block;
+			font-size: 13px;
+			font-weight: 600;
+			margin-bottom: 10px;
+
+			.required {
+				vertical-align: middle;
+				padding-left: 6px;
+			}
+	}
+}
+
+.everest-forms-builder {
+	.evf-registered-item.ui-draggable.ui-draggable-handle.ui-draggable-dragging  {
+		font-size: 12px !important;
+		background-color: #fff;
+		border: 1px solid #cdd0d8;
+		color: #6c7680;
+	
+		.evf-icon {
+			padding: 0 8px;
+			border-radius: 4px;
+			font-size: 24px;
+			vertical-align: middle;
+		}
+	}
+}

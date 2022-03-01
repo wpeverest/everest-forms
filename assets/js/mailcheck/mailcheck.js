@@ -28,7 +28,7 @@ var Mailcheck = {
 
   defaultSecondLevelDomains: ["yahoo", "hotmail", "mail", "live", "outlook", "gmx"],
 
-  defaultTopLevelDomains: ["com", "com.au", "com.tw", "ca", "co.nz", "co.uk", "de",
+  defaultTopLevelDomains: ["com", "edu.au", "com.au", "com.tw", "ca", "co.nz", "co.uk", "de",
     "fr", "it", "ru", "net", "org", "edu", "gov", "jp", "nl", "kr", "se", "eu",
     "ie", "co.il", "us", "at", "be", "dk", "hk", "es", "gr", "ch", "no", "cz",
     "in", "net", "net.au", "info", "biz", "mil", "co.jp", "sg", "hu", "uk"],
@@ -204,10 +204,10 @@ var Mailcheck = {
                 c1=c2=Math.min(c1,c2);  //using min allows the computation of transpositions
             }
             //if matching characters are found, remove 1 from both cursors (they get incremented at the end of the loop)
-            //so that we can have only one code block handling matches 
+            //so that we can have only one code block handling matches
             for (var j = 0; j < maxOffset && (c1+j<l1 || c2+j<l2); j++) {
                 if ((c1 + j < l1) && (s1.charAt(c1 + j) == s2.charAt(c2))) {
-                    c1+= j-1; 
+                    c1+= j-1;
                     c2--;
                     break;
                 }

@@ -482,6 +482,22 @@
 				}
 			}
 
+			.evf-grid-1 {
+				width: 100%;
+			}
+
+			.evf-grid-2 {
+				width: 50%;
+			}
+
+			.evf-grid-3 {
+				width: 33.33%;
+			}
+
+			.evf-grid-4 {
+				width: 25%;
+			}
+
 			input {
 				&[type='checkbox'],
 				&[type='radio'] {
@@ -873,7 +889,8 @@ div.evf-gutenberg-form-selector .evf-frontend-row button[type='submit']:disabled
 					}
 
 					&.evf-grid-2,
-					&.evf-grid-3 {
+					&.evf-grid-3,
+					&.evf-grid-4 {
 						width: 100%;
 						max-width: 100%;
 					}
@@ -890,3 +907,11 @@ div.evf-gutenberg-form-selector .evf-frontend-row button[type='submit']:disabled
 		display: block !important;
 	}
 }
+/*
+ * Hide the form fields upon successful submission.
+ * Perhaps more robust: .everest-forms.amp-form-submit-success > *:not([submit-success]) { display:none }
+ */
+ .amp-form-submit-success .evf-field-container,
+ .amp-form-submit-success .evf-submit-container {
+   display: none;
+ }

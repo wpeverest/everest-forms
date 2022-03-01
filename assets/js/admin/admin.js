@@ -131,6 +131,38 @@
 			}
 		})
 
+		.on('keydown click','.evf-max-file-number[type=number]', function(e) {
+			if( !( ( e.keyCode > 95 && e.keyCode < 106 )
+			|| ( e.keyCode > 47 && e.keyCode < 58 )
+			|| e.keyCode == 8 ) ) {
+			  return false;
+		  }
+		})
+
+		.on('click','.everest-forms-field-number', function(e) {
+			var $this = $(this);
+			var id = $this.data('field-id');
+			$(document).on('keydown click',"#everest-forms-field-option-"+ id +"-default_value",function(e){
+				if( !( ( e.keyCode > 95 && e.keyCode < 106 )
+				|| ( e.keyCode > 47 && e.keyCode < 58 )
+				|| e.keyCode == 8 ) ) {
+				  return false;
+				}
+			})
+		})
+
+		.on('click','.everest-forms-field-payment-quantity', function(e) {
+			var $this = $(this);
+			var id = $this.data('field-id');
+			$(document).on('keydown click',"#everest-forms-field-option-"+ id +"-default_value",function(e){
+				if( !( ( e.keyCode > 95 && e.keyCode < 106 )
+				|| ( e.keyCode > 47 && e.keyCode < 58 )
+				|| e.keyCode == 8 ) ) {
+				  return false;
+				}
+			})
+		})
+
 		.on( 'init_tooltips', function() {
 			$( '.tips, .help_tip, .everest-forms-help-tip, .everest-forms-help-tooltip, .everest-forms-icon' ).tooltipster( {
 				maxWidth: 200,

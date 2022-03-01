@@ -709,6 +709,72 @@ abstract class EVF_Form_Fields {
 					false
 				);
 				break;
+				/**
+			 * No Duplicates.
+			 */
+			case 'autocomplete_address':
+				$default = ! empty( $args['default'] ) ? $args['default'] : '0';
+				$value   = ! empty( $field['autocomplete_address'] ) ? esc_attr( $field['autocomplete_address'] ) : '';
+				$tooltip = esc_html__( 'Check this option to autofill address field.', 'everest-forms' );
+				$output  = $this->field_element(
+					'checkbox',
+					$field,
+					array(
+						'slug'    => 'autocomplete_address',
+						'value'   => $value,
+						'desc'    => esc_html__( 'Enable Autocomplete Address Field', 'everest-forms' ),
+						'tooltip' => $tooltip,
+					),
+					false
+				);
+				$output  = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'autocomplete_address',
+						'content' => $output,
+					),
+					false
+				);
+				break;
+			case 'address_style':
+				$default = ! empty( $args['default'] ) ? $args['default'] : 'none';
+				$tooltip = esc_html__( 'Select the style', 'everest-forms' );
+				$output  = $this->field_element(
+					'label',
+					$field,
+					array(
+						'slug'    => 'address_style',
+						'value'   => esc_html__( 'Style', 'everest-forms' ),
+						'tooltip' => $tooltip,
+					),
+					false
+				);
+				$output .= $this->field_element(
+					'select',
+					$field,
+					array(
+						'slug'    => 'address_style',
+						'value'   => esc_html__( 'style', 'everest-forms' ),
+						'tooltip' => $tooltip,
+						'options' => array(
+							'address'          => esc_html__( 'Address', 'everest-forms' ),
+							'map'              => esc_html__( 'Map', 'everest-forms' ),
+							'address_with_map' => esc_html( 'Address With Map' ),
+						),
+					),
+					false
+				);
+				$output  = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'address_style',
+						'content' => $output,
+					),
+					false
+				);
+				break;
 
 			/*
 			 * Code Block.
@@ -1381,6 +1447,67 @@ abstract class EVF_Form_Fields {
 					array(
 						'slug'    => 'input_columns',
 						'content' => $output,
+					),
+					false
+				);
+				break;
+
+			/**
+			* Whitelisted Domain.
+			*/
+			case 'whitelist_domain':
+				$default = ! empty( $args['default'] ) ? $args['default'] : '0';
+				$value   = ! empty( $field['whitelist_domain'] ) ? esc_attr( $field['whitelist_domain'] ) : '';
+				$style   = ! empty( $field['select_whitelist'] ) ? esc_attr( $field['select_whitelist'] ) : 'Allowed Domains';
+				$tooltip = esc_html__( 'You can list the email domains in the Whitelisted Domains', 'everest-forms' );
+				$output  = $this->field_element(
+					'label',
+					$field,
+					array(
+						'slug'    => 'whitelist_domain',
+						'value'   => esc_html__( 'Whitelisted Domains', 'everest-forms' ),
+						'tooltip' => $tooltip,
+					),
+					false
+				);
+				$output .= $this->field_element(
+					'select',
+					$field,
+					array(
+						'slug'    => 'select_whitelist',
+						'value'   => $style,
+						'options' => array(
+							'allow' => esc_html__( 'Allowed Domains', 'everest-forms' ),
+							'deny'  => esc_html__( 'Denied Domains', 'everest-forms' ),
+						),
+					),
+					false
+				);
+				$output  = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'whitelist_domain',
+						'content' => $output,
+					),
+					false
+				);
+
+				$output .= $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'whitelist_domain',
+						'content' => $this->field_element(
+							'text',
+							$field,
+							array(
+								'slug'        => 'whitelist_domain',
+								'value'       => esc_attr( $value ),
+								'placeholder' => esc_attr__( 'for eg. gmail.com', 'everest-forms' ),
+							),
+							false
+						),
 					),
 					false
 				);
