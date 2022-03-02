@@ -220,7 +220,7 @@ class EVF_Shortcode_Form {
 		printf(
 			'<div %s>%s</div>',
 			evf_html_attributes( $description['id'], $description['class'], $description['data'], $description['attr'] ),
-			wp_kses( evf_string_translation( $form_data['id'], $field['id'], $description['value'], '-description' ), evf_get_allowed_html_tags( 'builder' ) )
+			wp_kses_post( evf_string_translation( $form_data['id'], $field['id'], $description['value'], '-description' ) )
 		);
 	}
 
@@ -277,8 +277,8 @@ class EVF_Shortcode_Form {
 					'strong' => array(),
 				)
 			),
-			wp_kses( $required, evf_get_allowed_html_tags( 'builder' ) ),
-			wp_kses( $custom_tags, evf_get_allowed_html_tags( 'builder' ) )
+			wp_kses_post( $required ),
+			wp_kses_post( $custom_tags )
 		);
 	}
 
@@ -552,8 +552,8 @@ class EVF_Shortcode_Form {
 						$recaptcha_inline .= 'var EVFRecaptchaCallback = function(el){jQuery(el).parent().find(".evf-recaptcha-hidden").val("1").trigger("change").valid();};';
 					}
 				} elseif ( 'v3' === $recaptcha_type ) {
-					$recaptcha_api    = apply_filters( 'everest_forms_frontend_recaptcha_url', 'https://www.google.com/recaptcha/api.js?render=' . $site_key, $recaptcha_type, $form_id );
-					$recaptcha_inline = 'var EVFRecaptchaLoad = function(){grecaptcha.execute("' . esc_html( $site_key ) . '",{action:"everest_form"}).then(function(token){var f=document.getElementsByName("everest_forms[recaptcha]");for(var i=0;i<f.length;i++){f[i].value = token;}});};grecaptcha.ready(EVFRecaptchaLoad);setInterval(EVFRecaptchaLoad, 110000);';
+					$recaptcha_api     = apply_filters( 'everest_forms_frontend_recaptcha_url', 'https://www.google.com/recaptcha/api.js?render=' . $site_key, $recaptcha_type, $form_id );
+					$recaptcha_inline  = 'var EVFRecaptchaLoad = function(){grecaptcha.execute("' . esc_html( $site_key ) . '",{action:"everest_form"}).then(function(token){var f=document.getElementsByName("everest_forms[recaptcha]");for(var i=0;i<f.length;i++){f[i].value = token;}});};grecaptcha.ready(EVFRecaptchaLoad);setInterval(EVFRecaptchaLoad, 110000);';
 					$recaptcha_inline .= 'grecaptcha.ready(function(){grecaptcha.execute("' . esc_html( $site_key ) . '",{action:"everest_form"}).then(function(token){var f=document.getElementsByName("everest_forms[recaptcha]");for(var i=0;i<f.length;i++){f[i].value = token;}});});';
 				} elseif ( 'hcaptcha' === $recaptcha_type ) {
 						$recaptcha_api     = apply_filters( 'everest_forms_frontend_recaptcha_url', 'https://hcaptcha.com/1/api.js??onload=EVFRecaptchaLoad&render=explicit', $recaptcha_type, $form_id );
