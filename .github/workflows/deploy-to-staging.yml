@@ -1,0 +1,75 @@
+name: Deploy to staging server
+
+on:
+  # push:
+  #   branches:
+  #     - master
+  #     - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use PHP7
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "7.4"
+
+      - name: Get npm directory path
+        id: npm-dir-path
+        run: echo "::set-output name=dir::$(npm config get cacheFolder)"
+      - uses: actions/cache@v2
+        id: npm # use this to check for `cache-hit` (`steps.npm.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.npm-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      - name: Install javascript dependencies
+        run: npm install
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install php dependencies
+        run: composer install --no-dev --optimize-autoloader
+
+      - name: Checking code and formattings
+        run: |
+          yarn lint
+          yarn prettier
+
+      - name: Build and generate zip of application
+        run: npm run build:zip
+
+      - name: Deploy to staging server
+        uses: wlixcc/SFTP-Deploy-Action@v1.0
+        with:
+          server: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          ssh_private_key: ${{ secrets.SSH_KEY }}
+          local_path: "./build/*.zip"
+          remote_path: "public_html/"
+          args: "-o ConnectTimeout=10"
+
+      - name: Install the plugin
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            rm -rf ~/public_html/wp-content/plugins/everest-forms
+            cd public_html
+            wp plugin install everest-forms.zip --force --activate
