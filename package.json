@@ -1,7 +1,7 @@
 {
   "name": "everest-forms",
   "title": "Everest Forms",
-  "version": "1.8.4",
+  "version": "1.8.5",
   "homepage": "https://github.com/wpeverest/everest-forms/",
   "repository": {
     "type": "git",
@@ -28,10 +28,10 @@
     "test-unit-php": "wp-env run phpunit 'phpunit --configuration=/var/www/html/wp-content/plugins/everest-forms/phpunit.xml.dist --verbose'"
   },
   "devDependencies": {
-    "@babel/core": "7.17.2",
-    "@wordpress/babel-preset-default": "6.5.0",
-    "@wordpress/browserslist-config": "4.1.0",
-    "autoprefixer": "10.0.0",
+    "@babel/core": "7.17.5",
+    "@wordpress/babel-preset-default": "6.5.1",
+    "@wordpress/browserslist-config": "4.1.1",
+    "autoprefixer": "^9.8.6",
     "babel-eslint": "10.1.0",
     "babel-loader": "8.2.3",
     "babel-plugin-transform-react-jsx": "6.24.1",

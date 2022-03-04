@@ -228,7 +228,11 @@ class EVF_Form_Task {
 				}
 
 				if ( 'yes' === get_option( 'evf_validation_error' ) && $ajax_form_submission ) {
-					$this->ajax_err[] = array( $field_type => $field_id );
+					if ( count( $this->errors ) ) {
+						foreach ( $this->errors as $_error ) {
+							$this->ajax_err [] = $_error;
+						}
+					}
 					update_option( 'evf_validation_error', '' );
 				}
 			}
@@ -555,8 +559,8 @@ class EVF_Form_Task {
 			if ( isset( $this->evf_notice_print ) && $this->evf_notice_print ) {
 				evf_add_notice( $message, 'success' );
 			}
-
 			// $this->entry_confirmation_redirect( $this->form_data );
+			$response_data = apply_filters( 'everest_forms_after_success_ajax_message', $response_data, $this->form_data, $entry );
 			return $response_data;
 		} elseif ( ( 'same' === $this->form_data['settings']['redirect_to'] && empty( $submission_redirection_process ) ) || ( ! empty( $submission_redirection_process ) && 'same_page' == $submission_redirection_process['redirect_to'] ) ) {
 				evf_add_notice( $message, 'success' );
@@ -565,8 +569,8 @@ class EVF_Form_Task {
 			'Everest Forms After success Message.',
 			array( 'source' => 'form-submission' )
 		);
-		do_action( 'everest_forms_after_success_message', $this->form_data, $entry );
 
+		do_action( 'everest_forms_after_success_message', $this->form_data, $entry );
 		$this->entry_confirmation_redirect( $this->form_data );
 
 	}

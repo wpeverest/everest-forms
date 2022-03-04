@@ -2476,6 +2476,7 @@ function evf_get_allowed_html_tags( $context = '' ) {
  * @since 1.8.2.2
  */
 function evf_sanitize_builder( $post_data = array() ) {
+
 	if ( empty( $post_data ) || ! is_array( $post_data ) ) {
 		return array();
 	}
@@ -2488,6 +2489,7 @@ function evf_sanitize_builder( $post_data = array() ) {
 		} else {
 			$value = sanitize_text_field( $data->value );
 		}
+
 		$form_data[ sanitize_text_field( $data_key ) ] = (object) array(
 			'name'  => $name,
 			'value' => $value,
@@ -2533,11 +2535,12 @@ function evf_sanitize_entry( $entry = array() ) {
 				case 'file-upload':
 				case 'signature':
 				case 'image-upload':
-					$entry['form_fields'][ $key ] = esc_url_raw( $entry['form_fields'][ $key ] );
+					$entry['form_fields'][ $key ] = is_array( $entry['form_fields'][ $key ] ) ? $entry['form_fields'][ $key ] : esc_url_raw( $entry['form_fields'][ $key ] );
 					break;
 				case 'textarea':
 				case 'html':
 				case 'privacy-policy':
+				case 'wysiwug':
 					$entry['form_fields'][ $key ] = wp_kses_post( $entry['form_fields'][ $key ] );
 					break;
 				case 'repeater-fields':
