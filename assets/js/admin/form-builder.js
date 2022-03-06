@@ -1758,21 +1758,8 @@
 				var form_data  = $form.serializeArray();
 				var form_title = $( '#evf-edit-form-name' ).val().trim();
 
-				// WebHook Headers.
-				var webhook_headers = {};
-
-				$(document).find('.everest-forms-panel-field.evf-field-webhook-headers-container.everest-forms-border-container').find('div.evf-webhook-header').filter(function(){
-					var $this = $(this);
-
-					if( '' !== $this.find('.evf-webhook-header-value').val() && '' !== $this.find('.evf-webhook-header-key').val() ){
-						webhook_headers[$this.find('.evf-webhook-header-key').val()] = $this.find('.evf-webhook-header-value').val();
-					}
-
-					return webhook_headers;
-				});
-				if( ( Object.keys(webhook_headers).length ) > 0 ){
-					form_data.push({name: 'settings[webhook_headers]', value: JSON.stringify(webhook_headers)});
-				}
+				// Set WebHook Request Headers key-Value pair.
+				$(document).trigger('setEvfProWebHookRequestHeaders', [form_data]);
 
 				if ( '' === form_title ) {
 					$.alert({
