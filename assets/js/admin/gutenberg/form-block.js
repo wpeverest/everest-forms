@@ -35,21 +35,9 @@ registerBlockType( 'everest-forms/form-selector', {
 		displayDescription: {
 			type: 'boolean',
 		},
-		displayPopup: {
-			type: 'boolean',
-		},
-		displayPopupType: {
-			type: 'string',
-		},
-		displayPopupText: {
-			type: 'string',
-		},
-		displayPopupSize: {
-			type: 'string',
-		},
 	},
 	edit( props ) {
-		const { attributes: { formId = '', displayTitle = false, displayDescription = false, displayPopup=false,displayPopupType='',displayPopupText='',displayPopupSize='' }, setAttributes } = props;
+		const { attributes: { formId = '', displayTitle = false, displayDescription = false }, setAttributes } = props;
 		const formOptions = evf_form_block_data.forms.map( value => (
 			{ value: value.ID, label: value.post_title }
 		) );
@@ -67,18 +55,6 @@ registerBlockType( 'everest-forms/form-selector', {
 
 		function toggleDisplayDescription( value ) {
 			setAttributes( { displayDescription: value } );
-		}
-		function toggleDisplayPopup( value ) {
-			setAttributes( { displayPopup: value } );
-		}
-		function selectPopupType(value) {
-			setAttributes( { displayPopupType: value } );
-		}
-		function enterPopupText(value) {
-			setAttributes( { displayPopupText: value } );
-		}
-		function selectPopupSize(value) {
-			setAttributes( { displayPopupSize: value } );
 		}
 
 		jsx = [
@@ -100,58 +76,6 @@ registerBlockType( 'everest-forms/form-selector', {
 						checked={ displayDescription }
 						onChange={ toggleDisplayDescription }
 					/>
-					<ToggleControl
-						label={ evf_form_block_data.i18n.show_Popup }
-						checked={ displayPopup }
-						onChange={ toggleDisplayPopup }
-					/>
-					{displayPopup === true ?
-						[<RadioControl
-						key="evf-gutenberg-form-selector-radio-control"
-						label={ evf_form_block_data.i18n.popup_type }
-						options={[
-							{
-								label: "popup",
-								value: "popup",
-							},
-							{
-								label: "button",
-								value: "popup-button",
-							},
-							{
-								label: "link",
-								value: "popup-link",
-							},
-						]}
-						onChange={selectPopupType}
-					/>,
-					<RadioControl
-						key="evf-size-gutenberg-form-selector-radio-control"
-						label={ evf_form_block_data.i18n.popup_size }
-						options={[
-							{
-								label: "Default",
-								value: "default",
-							},
-							{
-								label: "Medium",
-								value: "medium",
-							},
-							{
-								label: "Large",
-								value: "large",
-							},
-						]}
-						onChange={selectPopupSize}
-					/>,
-					<TextControl
-					key="evf-gutenberg-form-selector-text"
-					label="Text"
-					value={displayPopupText}
-					onChange={enterPopupText}
-				/>,
-			] : ''
-				}
 				</PanelBody>
 			</InspectorControls>
 		];

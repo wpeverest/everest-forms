@@ -76,13 +76,23 @@ class EVF_Form_Block {
 			defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( evf()->plugin_path() . '/assets/css/everest-forms.css' ) : EVF_VERSION
 		);
 
-		wp_register_script(
-			'everest-forms-block-editor',
-			evf()->plugin_url() . '/assets/js/admin/gutenberg/form-block.min.js',
-			array( 'wp-blocks', 'wp-element', 'wp-i18n', 'wp-components' ),
-			defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( evf()->plugin_path() . '/assets/js/admin/gutenberg/form-block.min.js' ) : EVF_VERSION,
-			true
-		);
+		if ( defined( 'EFP_PLUGIN_FILE' ) ) {
+			wp_register_script(
+				'everest-forms-block-editor',
+				plugins_url( '/assets/js/admin/gutenberg/form-block.min.js', EFP_PLUGIN_FILE ),
+				array( 'wp-blocks', 'wp-element', 'wp-i18n', 'wp-components' ),
+				defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( plugin_dir_path( EFP_PLUGIN_FILE ) . '/assets/js/admin/gutenberg/form-block.min.js' ) : EFP_VERSION,
+				true
+			);
+		} else {
+			wp_register_script(
+				'everest-forms-block-editor',
+				evf()->plugin_url() . '/assets/js/admin/gutenberg/form-block.min.js',
+				array( 'wp-blocks', 'wp-element', 'wp-i18n', 'wp-components' ),
+				defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( evf()->plugin_path() . '/assets/js/admin/gutenberg/form-block.min.js' ) : EVF_VERSION,
+				true
+			);
+		}
 
 		$form_block_data = array(
 			'forms' => evf()->form->get_multiple( array( 'order' => 'DESC' ) ),
