@@ -823,7 +823,7 @@ class EVF_Shortcode_Form {
 				'id'          => false,
 				'type'        => false,
 				'size'        => false,
-				'text' 		  => false,
+				'text'        => false,
 				'title'       => false,
 				'description' => false,
 			),
