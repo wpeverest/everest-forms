@@ -37,6 +37,7 @@ class EVF_Elementor {
 
 		add_action( 'elementor/widgets/register', array( $this, 'register_widget' ) );
 		add_action( 'elementor/elements/categories_registered', array( $this, 'evf_elementor_widget_categories' ) );
+		add_action( 'elementor/editor/after_enqueue_styles', array( $this, 'editor_assets' ) );
 	}
 
 	/**
@@ -66,6 +67,14 @@ class EVF_Elementor {
 				'icon'  => 'fa fa-plug',
 			)
 		);
+	}
+
+		/**
+		 * Load assets in the elementor document.
+		 */
+	public function editor_assets() {
+		wp_register_style( 'everest-forms-admin', evf()->plugin_url() . '/assets/css/admin.css', array(), EVF_VERSION );
+		wp_enqueue_style( 'everest-forms-admin' );
 	}
 }
 
