@@ -52,7 +52,6 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 					'description',
 					'required',
 					'required_field_message',
-					'readonly',
 				),
 			),
 			'advanced-options' => array(
@@ -292,6 +291,7 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 			// Conditional logic.
 			if ( isset( $choices['primary'] ) ) {
 				$choice['attr']['conditional_id'] = $choices['primary']['attr']['conditional_id'];
+				$choice['attr']['disabled'] = $choices['primary']['attr']['disabled'];
 
 				if ( isset( $choices['primary']['attr']['conditional_rules'] ) ) {
 					$choice['attr']['conditional_rules'] = $choices['primary']['attr']['conditional_rules'];
@@ -320,12 +320,12 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 
 				$choice['attr']['tabindex'] = '-1';
 
-				printf( '<input type="radio" %s %s %s %s>', evf_html_attributes( $choice['id'], $choice['class'], $choice['data'], $choice['attr'] ), esc_attr( $choice['required'] ), esc_attr( isset( $field['readonly'] ) ? 'disabled' : '' ), checked( '1', $choice['default'], false ) );
+				printf( '<input type="radio" %s %s %s %s>', evf_html_attributes( $choice['id'], $choice['class'], $choice['data'], $choice['attr'] ), esc_attr( $choice['required'] ), checked( '1', $choice['default'], false ) );
 				echo '<label class="everest-forms-image-choices-label">' . wp_kses_post( $choice['label']['text'] ) . '</label>';
 				echo '</label>';
 			} else {
 				// Normal display.
-				printf( '<input type="radio" %s %s %s %s>', evf_html_attributes( $choice['id'], $choice['class'], $choice['data'], $choice['attr'] ), esc_attr( $choice['required'] ),esc_attr( isset( $field['readonly'] ) ? 'disabled' : '' ), checked( '1', $choice['default'], false ) );
+				printf( '<input type="radio" %s %s %s>', evf_html_attributes( $choice['id'], $choice['class'], $choice['data'], $choice['attr'] ), esc_attr( $choice['required'] ), checked( '1', $choice['default'], false ) );
 				printf( '<label %s>%s</label>', evf_html_attributes( $choice['label']['id'], $choice['label']['class'], $choice['label']['data'], $choice['label']['attr'] ), wp_kses_post( $choice['label']['text'] ) );
 			}
 

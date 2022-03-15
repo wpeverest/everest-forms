@@ -49,7 +49,6 @@ class EVF_Field_Select extends EVF_Form_Fields {
 					'description',
 					'required',
 					'required_field_message',
-					'readonly',
 				),
 			),
 			'advanced-options' => array(
@@ -297,9 +296,8 @@ class EVF_Field_Select extends EVF_Form_Fields {
 
 		// Primary select field.
 		printf(
-			'<select %s %s>',
+			'<select %s >',
 			evf_html_attributes( $container['id'], $container['class'], $container['data'], $container['attr'] ),
-			esc_attr( isset( $field['readonly'] ) ? 'disabled' : '' )
 		);
 
 		// Optional placeholder.

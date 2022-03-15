@@ -30,7 +30,6 @@ class EVF_Field_Email extends EVF_Form_Fields {
 					'description',
 					'required',
 					'required_field_message',
-					'readonly',
 					'confirmation',
 				),
 			),
@@ -323,10 +322,9 @@ class EVF_Field_Email extends EVF_Form_Fields {
 			// Secondary field.
 			echo '<div ' . evf_html_attributes( false, $secondary['block'] ) . '>';
 			printf(
-				'<input type="email" %s %s %s>',
+				'<input type="email" %s %s>',
 				evf_html_attributes( $secondary['id'], $secondary['class'], $secondary['data'], $secondary['attr'] ),
-				esc_attr( $secondary['required'] ),
-				esc_attr( isset( $field['readonly'] ) ? 'disabled' : '' )
+				esc_attr( $secondary['required'] )
 			);
 			$this->field_display_sublabel( 'secondary', 'after', $field );
 			$this->field_display_error( 'secondary', $field );
