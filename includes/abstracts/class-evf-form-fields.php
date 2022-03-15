@@ -519,6 +519,35 @@ abstract class EVF_Form_Fields {
 				);
 				break;
 
+					/*
+			 * Field Required toggle.
+			 */
+			case 'readonly':
+				$default = ! empty( $args['default'] ) ? $args['default'] : '0';
+				$value   = isset( $field['readonly'] ) ? $field['readonly'] : $default;
+				$tooltip = esc_html__( 'Check this option to mark the field only. Field cannot editable', 'everest-forms' );
+				$output  = $this->field_element(
+					'checkbox',
+					$field,
+					array(
+						'slug'    => 'readonly',
+						'value'   => $value,
+						'desc'    => esc_html__( 'Readonly', 'everest-forms' ),
+						'tooltip' => $tooltip,
+					),
+					false
+				);
+				$output  = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'readonly',
+						'content' => $output,
+					),
+					false
+				);
+				break;
+
 			/*
 			 * Required Field Message.
 			 */

@@ -32,6 +32,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 					'description',
 					'required',
 					'required_field_message',
+					'readonly',
 				),
 			),
 			'advanced-options' => array(
@@ -684,9 +685,10 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			$class = array_merge( array( 'flatpickr-field' ), $primary['class'] );
 			// Primary field.
 			printf(
-				'<input type="text" %s %s >',
+				'<input type="text" %s %s %s >',
 				evf_html_attributes( $primary['id'], $class, $primary['data'], $primary['attr'] ),
-				esc_attr( $primary['required'] )
+				esc_attr( $primary['required'] ),
+				esc_attr( isset( $field['readonly'] ) ? 'disabled' : '' )
 			);
 		} else {
 			$class = array_merge( array( 'date-dropdown-field' ), $primary['class'] );
@@ -702,9 +704,10 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 
 				// For Years.
 				printf(
-					'<select value="%s" %s>',
+					'<select value="%s" %s %s>',
 					esc_attr( gmdate( 'Y' ) ),
-					evf_html_attributes( 'year-select-' . esc_attr( $primary['id'] ) )
+					evf_html_attributes( 'year-select-' . esc_attr( $primary['id'] ) ),
+					esc_attr( isset( $field['readonly'] ) ? 'disabled' : '' )
 				);
 				// Build the select options.
 				$end_date   = gmdate( 'Y' ) + 100;
@@ -722,9 +725,10 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 
 				// For Months.
 				printf(
-					'<select value="%s" %s>',
+					'<select value="%s" %s %s>',
 					esc_attr( gmdate( 'm' ) ),
-					evf_html_attributes( 'month-select-' . esc_attr( $primary['id'] ) )
+					evf_html_attributes( 'month-select-' . esc_attr( $primary['id'] ) ),
+					esc_attr( isset( $field['readonly'] ) ? 'disabled' : '' )
 				);
 				// Build the select options.
 				for ( $i = 1; $i <= 12; $i++ ) {
@@ -740,9 +744,10 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 
 				// For Days.
 				printf(
-					'<select value="%s" %s>',
+					'<select value="%s" %s %s>',
 					esc_attr( gmdate( 'd' ) ),
-					evf_html_attributes( 'day-select-' . esc_attr( $primary['id'] ) )
+					evf_html_attributes( 'day-select-' . esc_attr( $primary['id'] ) ),
+					esc_attr( isset( $field['readonly'] ) ? 'disabled' : '' )
 				);
 				// Build the select options.
 				for ( $i = 1; $i <= 32; $i++ ) {
