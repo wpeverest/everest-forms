@@ -39,10 +39,10 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 			'everest_forms_recaptcha_settings',
 			array(
 				array(
-					'title' => esc_html__( 'Google reCAPTCHA Integration', 'everest-forms' ),
+					'title' => esc_html__( 'Need help with integrating reCAPTCHA or hCAPTCHA for Everest Forms?', 'everest-forms' ),
 					'type'  => 'title',
-					/* translators: %1$s - Google reCAPTCHA docs url */
-					'desc'  => sprintf( __( '<p>Google\'s reCAPTCHA is a free service that protects your website from spam and abuse while letting valid users pass through with ease.</p><p>reCAPTCHA uses an advanced risk analysis engine and adaptive challenges to keep automated software from engaging in abusive activities on your site.</p><p>Sites already using v2 reCAPTCHA will need to create new site keys before switching to the Invisible reCAPTCHA or v3 reCAPTCHA.</p><p><a href="%1$s" target="_blank">Read our documentation</a> for step-by-step instructions.</p>', 'everest-forms' ), 'https://docs.wpeverest.com/docs/everest-forms/tutorials/how-to-integrate-google-recaptcha/' ),
+					/* translators: %1$s - reCAPTCHA Integration Doc URL, %2$s - hCAPTCHA Integration Doc URL */
+					'desc'  => sprintf( __( 'Go through our detailed documentation on <a href="%1$s" target="_blank"> integrating reCAPTCHA </a> and <a href="%2$s" target="_blank"> integrating hCAPTCHA </a> for your custom forms.', 'everest-forms' ), 'https://docs.wpeverest.com/everest-forms/docs/how-to-integrate-google-recaptcha/', 'https://docs.wpeverest.com/everest-forms/docs/how-to-integrate-hcaptcha/' ),
 					'id'    => 'integration_options',
 				),
 				array(
