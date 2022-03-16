@@ -53,7 +53,7 @@ class EVF_Widget extends Widget_Base {
 	 * @return string Widget icon.
 	 */
 	public function get_icon() {
-		return 'fas fa-mountains';
+		return 'everest-icon';
 	}
 
 
