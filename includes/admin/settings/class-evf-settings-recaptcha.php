@@ -22,7 +22,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 	 */
 	public function __construct() {
 		$this->id    = 'recaptcha';
-		$this->label = esc_html__( 'reCAPTCHA', 'everest-forms' );
+		$this->label = esc_html__( 'CAPTCHA', 'everest-forms' );
 
 		parent::__construct();
 	}
@@ -39,10 +39,10 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 			'everest_forms_recaptcha_settings',
 			array(
 				array(
-					'title' => esc_html__( 'Need help with integrating reCAPTCHA or hCaptcha for Everest Forms?', 'everest-forms' ),
+					'title' => esc_html__( 'CAPTCHA Integration', 'everest-forms' ),
 					'type'  => 'title',
 					/* translators: %1$s - reCAPTCHA Integration Doc URL, %2$s - hCaptcha Integration Doc URL */
-					'desc'  => sprintf( __( 'Go through our detailed documentation on <a href="%1$s" target="_blank"> integrating reCAPTCHA </a> and <a href="%2$s" target="_blank"> integrating hCaptcha </a> for your custom forms.', 'everest-forms' ), 'https://docs.wpeverest.com/everest-forms/docs/how-to-integrate-google-recaptcha/', 'https://docs.wpeverest.com/everest-forms/docs/how-to-integrate-hcaptcha/' ),
+					'desc'  => sprintf( __( 'Get detailed documentation on <a href="%1$s" target="_blank">integrating reCAPTCHA</a> and <a href="%2$s" target="_blank">integrating hCaptcha</a> with Everest forms.', 'everest-forms' ), 'https://docs.wpeverest.com/everest-forms/docs/how-to-integrate-google-recaptcha/', 'https://docs.wpeverest.com/everest-forms/docs/how-to-integrate-hcaptcha/' ),
 					'id'    => 'integration_options',
 				),
 				array(
