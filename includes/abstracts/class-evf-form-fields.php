@@ -704,7 +704,7 @@ abstract class EVF_Form_Fields {
 					array(
 						'slug'  => 'readonly_field_visibility',
 						'value' => $readonly_value,
-						'class'	=> 'field_visibility_readonly',
+						'class' => 'field_visibility_readonly',
 						'desc'  => esc_html__( 'Readonly ', 'everest-forms' ),
 					),
 					false
@@ -715,7 +715,7 @@ abstract class EVF_Form_Fields {
 					array(
 						'slug'  => 'hidden_field_visibility',
 						'value' => $hidden_value,
-						'class'	=> 'field_visibility_hidden',
+						'class' => 'field_visibility_hidden',
 						'desc'  => esc_html__( 'Hidden', 'everest-forms' ),
 					),
 					false
