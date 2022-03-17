@@ -30,7 +30,6 @@ class EVF_Field_URL extends EVF_Form_Fields {
 					'description',
 					'required',
 					'required_field_message',
-					'readonly',
 				),
 			),
 			'advanced-options' => array(
@@ -82,10 +81,9 @@ class EVF_Field_URL extends EVF_Form_Fields {
 
 		// Primary field.
 		printf(
-			'<input type="url" %s %s %s>',
+			'<input type="url" %s %s >',
 			evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ),
-			esc_attr( $primary['required'] ),
-			esc_attr( isset( $field['readonly'] ) ? 'readonly' : '' )
+			esc_attr( $primary['required'] )
 		);
 	}
 }

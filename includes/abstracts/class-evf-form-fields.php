@@ -685,15 +685,15 @@ abstract class EVF_Form_Fields {
 			 */
 			case 'field_visiblity':
 				$default        = ! empty( $args['default'] ) ? $args['default'] : '0';
-				$readonly_value = isset( $field['readonly_field_visiblity'] ) ? $field['readonly_field_visiblity'] : $default;
-				$hidden_value   = isset( $field['hidden_field_visiblity'] ) ? $field['hidden_field_visiblity'] : $default;
+				$readonly_value = isset( $field['readonly_field_visibility'] ) ? $field['readonly_field_visibility'] : $default;
+				$hidden_value   = isset( $field['hidden_field_visibility'] ) ? $field['hidden_field_visibility'] : $default;
 				$tooltip        = esc_html__( 'Check this option to mark the field readonly and hidden.', 'everest-forms' );
 				$label          = $this->field_element(
 					'label',
 					$field,
 					array(
-						'slug'    => 'field_visiblity',
-						'value'   => esc_html__( 'Field Visibilty', 'everest-forms' ),
+						'slug'    => 'field_visibility',
+						'value'   => esc_html__( 'Field Visibility', 'everest-forms' ),
 						'tooltip' => $tooltip,
 					),
 					false
@@ -702,8 +702,9 @@ abstract class EVF_Form_Fields {
 					'checkbox',
 					$field,
 					array(
-						'slug'  => 'readonly_field_visiblity',
+						'slug'  => 'readonly_field_visibility',
 						'value' => $readonly_value,
+						'class'	=> 'field_visibility_readonly',
 						'desc'  => esc_html__( 'Readonly ', 'everest-forms' ),
 					),
 					false
@@ -712,8 +713,9 @@ abstract class EVF_Form_Fields {
 					'checkbox',
 					$field,
 					array(
-						'slug'  => 'hidden_field_visiblity',
+						'slug'  => 'hidden_field_visibility',
 						'value' => $hidden_value,
+						'class'	=> 'field_visibility_hidden',
 						'desc'  => esc_html__( 'Hidden', 'everest-forms' ),
 					),
 					false

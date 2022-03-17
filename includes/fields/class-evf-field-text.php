@@ -30,7 +30,6 @@ class EVF_Field_Text extends EVF_Form_Fields {
 					'description',
 					'required',
 					'required_field_message',
-					'readonly',
 				),
 			),
 			'advanced-options' => array(
@@ -267,7 +266,7 @@ class EVF_Field_Text extends EVF_Form_Fields {
 		printf(
 			'<input type="text" %s %s>',
 			evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ),
-			esc_attr( isset( $field['readonly'] ) ? 'readonly' : '' )
+			esc_attr( $primary['required'] )
 		);
 	}
 }
