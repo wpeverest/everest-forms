@@ -46,8 +46,8 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 					'id'    => 'integration_options',
 				),
 				array(
-					'title'    => esc_html__( 'reCAPTCHA type', 'everest-forms' ),
-					'desc'     => esc_html__( 'Choose the type of reCAPTCHA for this site key.', 'everest-forms' ),
+					'title'    => esc_html__( 'CAPTCHA Type', 'everest-forms' ),
+					'desc'     => esc_html__( 'Choose the type of CAPTCHA for this site key.', 'everest-forms' ),
 					'id'       => 'everest_forms_recaptcha_type',
 					'default'  => 'v2',
 					'type'     => 'radio',
