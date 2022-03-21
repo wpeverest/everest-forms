@@ -741,7 +741,7 @@ abstract class EVF_Form_Fields {
 					array(
 						'slug'    => 'validate_message',
 						'content' => $output,
-						 'class'   => isset( $field['no_duplicates'] ) ? '' : 'hidden',
+						'class'   => isset( $field['no_duplicates'] ) ? '' : 'hidden',
 					),
 					false
 				);
