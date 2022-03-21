@@ -694,7 +694,7 @@ abstract class EVF_Form_Fields {
 					array(
 						'slug'    => 'no_duplicates',
 						'value'   => $value,
-						'desc'    => esc_html__( 'No Duplicates', 'everest-forms' ),
+						'desc'    => esc_html__( 'Validate as unique', 'everest-forms' ),
 						'tooltip' => $tooltip,
 					),
 					false
@@ -705,6 +705,43 @@ abstract class EVF_Form_Fields {
 					array(
 						'slug'    => 'no_duplicates',
 						'content' => $output,
+					),
+					false
+				);
+				break;
+			case 'validate_message':
+				$toggle  = '';
+				$tooltip = esc_html__( 'if the form submission failed it will show this message.', 'everest-forms' );
+				$value   = ! empty( $field['validate_message'] ) ? esc_attr( $field['validate_message'] ) : '';
+
+				// Build output.
+				$output  = $this->field_element(
+					'label',
+					$field,
+					array(
+						'slug'          => 'validate_message',
+						'value'         => esc_html__( 'Validation Message for Duplicate', 'everest-forms' ),
+						'tooltip'       => $tooltip,
+						'after_tooltip' => $toggle,
+					),
+					false
+				);
+				$output .= $this->field_element(
+					'text',
+					$field,
+					array(
+						'slug'  => 'validate_message',
+						'value' => $value,
+					),
+					false
+				);
+				$output  = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'validate_message',
+						'content' => $output,
+						 'class'   => isset( $field['no_duplicates'] ) ? '' : 'hidden',
 					),
 					false
 				);
