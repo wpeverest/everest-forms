@@ -16,6 +16,15 @@ jQuery( function( $ ) {
 
 				btn.on( 'click', function( e ) {
 
+					var paymentMethod = formTuple.find( ".everest-forms-stripe-gateways-tabs .evf-tab" ).has( 'a.active' ).data( 'gateway' );
+					if(undefined === paymentMethod) {
+						paymentMethod = formTuple.find( ".everest-forms-gateway[data-gateway='stripe']" ).data( 'gateway' );
+					}
+
+					if( 'stripe' === paymentMethod  ) {
+						return;
+					}
+
 					if ( typeof tinyMCE !== 'undefined' ) {
 						tinyMCE.triggerSave();
 					}
