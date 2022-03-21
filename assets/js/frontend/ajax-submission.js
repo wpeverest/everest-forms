@@ -53,7 +53,6 @@ jQuery( function( $ ) {
 						name: 'security',
 						value: everest_forms_ajax_submission_params.evf_ajax_submission
 					});
-
 					// Fire the ajax request.
 					$.ajax({
 						url: everest_forms_ajax_submission_params.ajax_url,
@@ -75,6 +74,16 @@ jQuery( function( $ ) {
 							}
 							if( xhr.data.quiz_result_shown == true){
 								quiz_reporting = xhr.data.quiz_reporting;
+							}
+
+							var paymentMethod = formTuple.find( ".everest-forms-stripe-gateways-tabs .evf-tab" ).has( 'a.active' ).data( 'gateway' );
+							if(undefined === paymentMethod) {
+								paymentMethod = formTuple.find( ".everest-forms-gateway[data-gateway='ideal']" ).data( 'gateway' );
+							}
+
+							if( 'ideal' === paymentMethod  ) {
+								formTuple.trigger( 'evf_process_payment', xhr.data );
+								return;
 							}
 							formTuple.trigger( 'reset' );
 							formTuple.closest( '.everest-forms' ).html( '<div class="everest-forms-notice everest-forms-notice--success" role="alert">' + xhr.data.message + pdf_download_message + '</div>' + quiz_reporting ).focus();
