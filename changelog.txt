@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 1.9.0 - 28-02-2022 =
+* Tweak - CAPTCHA text change.
+* Enhancement - CAPTCHA language.
+
 = 1.8.5 - 28-02-2022 =
 * Fix - reCAPTCHA v3 threshold display glitch.
 * Fix - Preview issue in twenty twenty two theme.
