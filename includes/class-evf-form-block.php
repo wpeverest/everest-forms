@@ -141,7 +141,7 @@ class EVF_Form_Block {
 		$description  = ! empty( $attr['displayDescription'] ) ? true : false;
 		$popup        = ! empty( $attr['displayPopup'] ) ? true : false;
 		$popup_type   = ! empty( $attr['displayPopupType'] ) ? $attr['displayPopupType'] : false;
-		$popup_text   = ! empty( $attr['displayPopupText'] ) ? $attr['displayPopupText'] : false;
+		$popup_text   = ! empty( $attr['displayPopupText'] ) ? $attr['displayPopupText'] : 'View Form';
 		$popup_size   = ! empty( $attr['displayPopupSize'] ) ? $attr['displayPopupSize'] : false;
 
 		// Disable form fields if called from the Gutenberg editor.
