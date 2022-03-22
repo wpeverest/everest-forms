@@ -506,6 +506,39 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						<?php
 						break;
 
+					// Toggle input.
+					case 'toggle':
+						$option_value = $value['value'];
+
+						if ( empty( $option_value ) ) {
+							$option_value = $value['default'];
+						}
+						?>
+						<tr valign="top">
+							<th scope="row" class="titledesc">
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
+							</th>
+							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
+								<?php echo wp_kses_post( $description ); ?>
+								<div class="evf-toggle-section">
+									<span class="everest-forms-toggle-form">
+										<input
+											type="checkbox"
+											name="<?php echo esc_attr( $value['id'] ); ?>"
+											id="<?php echo esc_attr( $value['id'] ); ?>"
+											style="<?php echo esc_attr( $value['css'] ); ?>"
+											class="<?php echo esc_attr( $value['class'] ); ?>"
+											value="yes"
+											<?php checked( 'yes', $option_value, true ); ?>
+										>
+										<span class="slider round"></span>
+									</span>
+								</div>
+							</td>
+						</tr>
+						<?php
+						break;
+
 					// Radio image inputs.
 					case 'radio-image':
 						$option_value = $value['value'];
@@ -828,6 +861,9 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 				// Format the value based on option type.
 				switch ( $option['type'] ) {
 					case 'checkbox':
+						$value = '1' === $raw_value || 'yes' === $raw_value ? 'yes' : 'no';
+						break;
+					case 'toggle':
 						$value = '1' === $raw_value || 'yes' === $raw_value ? 'yes' : 'no';
 						break;
 					case 'textarea':
