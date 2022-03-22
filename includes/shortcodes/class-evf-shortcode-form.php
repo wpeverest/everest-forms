@@ -48,6 +48,9 @@ class EVF_Shortcode_Form {
 			add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'recaptcha' ), 20, 3 );
 		}
 		add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'footer' ), 25, 3 );
+
+		// reCaptcha Language.
+		add_filter( 'everest_forms_frontend_recaptcha_url', array( __CLASS__, 'evf_recaptcha_language' ), 10, 1 );
 	}
 
 	/**
@@ -1085,5 +1088,18 @@ class EVF_Shortcode_Form {
 		if ( is_super_admin() ) {
 			evf_debug_data( $form_data );
 		}
+	}
+
+	/**
+	 * ReCaptcha Langauge.
+	 *
+	 * @param url $url  Recaptcha URL.
+	 *
+	 *  @return $url
+	 */
+	public static function evf_recaptcha_language( $url ) {
+
+		return esc_url_raw( add_query_arg( array( 'hl' => get_option( 'everest_forms_recaptcha_recaptcha_language', 'en-GB' ) ), $url ) );
+
 	}
 }
