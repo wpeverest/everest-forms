@@ -294,6 +294,24 @@ function evf_get_csv_file_name( $handle ) {
 		return false;
 	}
 }
+/**
+ * File names consist of the handle, followed by the date, followed by a hash.
+ *
+ * @since 1.8.6
+ *
+ * @param  string $handle Name.
+ * @return bool|string The file name or false if cannot be determined.
+ */
+function evf_get_export_entry_file_name( $handle ) {
+	if ( function_exists( 'wp_hash' ) ) {
+		$date_suffix = date_i18n( 'Y-m-d', time() );
+		$hash_suffix = wp_hash( $handle );
+		return sanitize_file_name( implode( '-', array( 'evf-entry-export', $handle, $date_suffix, $hash_suffix ) ) );
+	} else {
+		evf_doing_it_wrong( __METHOD__, __( 'This method should not be called before plugins_loaded.', 'everest-forms' ), '1.3.0' );
+		return false;
+	}
+}
 
 /**
  * Recursively get page children.

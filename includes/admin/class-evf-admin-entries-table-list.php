@@ -76,7 +76,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 * @return string|false The action name or False if no action was selected.
 	 */
 	public function current_action() {
-		if ( isset( $_REQUEST['export_action'] ) && ! empty( $_REQUEST['export_action'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+		if ( isset( $_REQUEST['export_entry_action'] ) && ! empty( $_REQUEST['export_entry_action'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			return false;
 		}
 
@@ -566,10 +566,9 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 				echo wp_kses( $output, evf_get_allowed_html_tags( 'form_dropdown' ) );
 				submit_button( __( 'Filter', 'everest-forms' ), '', 'filter_action', false, array( 'id' => 'post-query-submit' ) );
 
-				// Export CSV submit button.
-				if ( apply_filters( 'everest_forms_enable_csv_export', $show_export ) && current_user_can( 'export' ) ) {
-					submit_button( __( 'Export CSV', 'everest-forms' ), '', 'export_action', false, array( 'id' => 'export-csv-submit' ) );
-				}
+				// Export Form Entry.
+				$this->export_forms_entry_dropdown();
+				submit_button( __( 'Export', 'everest-forms' ), '', 'export_entry_action', false, array( 'id' => 'export-form-entry' ) );
 			}
 		}
 
@@ -592,6 +591,27 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		<select name="form_id" id="filter-by-form">
 			<?php foreach ( $forms as $id => $form ) : ?>
 				<option value="<?php echo esc_attr( $id ); ?>" <?php selected( $form_id, $id ); ?>><?php echo esc_html( $form ); ?></option>
+			<?php endforeach; ?>
+		</select>
+		<?php
+	}
+
+	/**
+	 * Display a form entry export  dropdown.
+	 */
+	public function export_forms_entry_dropdown() {
+		$formats   = array(
+			'csv'  => 'Export as CSV',
+			'json' => 'Export as JSON',
+			'ods'  => 'Export as ODS',
+			'xlsx' => 'Export as XLSX',
+		);
+		$format_id = isset( $_REQUEST['format_id'] ) ? absint( $_REQUEST['format_id'] ) : $this->format_id; // phpcs:ignore WordPress.Security.NonceVerification
+		?>
+		<label for="export-form-entry" class="screen-reader-text"><?php esc_html_e( 'Export Form Entry', 'everest-forms' ); ?></label>
+		<select name="format_id" id="export-form-entry">
+			<?php foreach ( $formats as $id => $format ) : ?>
+				<option value="<?php echo esc_attr( $id ); ?>" <?php selected( $format_id, $id ); ?>><?php echo esc_html( $format ); ?></option>
 			<?php endforeach; ?>
 		</select>
 		<?php

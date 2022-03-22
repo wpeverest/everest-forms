@@ -129,9 +129,9 @@ class EVF_Admin_Entries {
 				$this->delete_entry();
 			}
 
-			// Export CSV.
-			if ( isset( $_REQUEST['export_action'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-				$this->export_csv();
+			// Export Entry.
+			if ( isset( $_REQUEST['export_entry_action'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+				$this->export_entry();
 			}
 
 			// Empty Trash.
@@ -269,20 +269,41 @@ class EVF_Admin_Entries {
 	 *
 	 * @since 1.3.0
 	 */
-	public function export_csv() {
+	public function export_entry() {
 		check_admin_referer( 'bulk-entries' );
 
 		if ( isset( $_REQUEST['form_id'] ) && current_user_can( 'export' ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-			include_once EVF_ABSPATH . 'includes/export/class-evf-entry-csv-exporter.php';
+			include_once EVF_ABSPATH . 'includes/export/class-evf-entry-spreadsheet-exporter.php';
 			$form_id   = absint( $_REQUEST['form_id'] ); // phpcs:ignore WordPress.Security.NonceVerification
 			$form_name = strtolower( get_the_title( $form_id ) );
+			$format    = isset( $_REQUEST['format_id'] ) ? $_REQUEST['format_id'] : ''; // phpcs:ignore
 
 			if ( $form_name ) {
-				$exporter = new EVF_Entry_CSV_Exporter( $form_id );
-				$exporter->set_filename( evf_get_csv_file_name( $form_name ) );
-			}
 
-			$exporter->export();
+				switch ( $format ) {
+					case 'csv':
+						$exporter = new EVF_Entry_Spreadsheet_Exporter( $form_id );
+						$exporter->set_filename( evf_get_export_entry_file_name( $form_name ), '.csv' );
+						$exporter->export( 'text/csv' );
+						break;
+					case 'json':
+						$this->export_as_json( $form_id, $form_name );
+						break;
+					case 'ods':
+						$exporter = new EVF_Entry_Spreadsheet_Exporter( $form_id );
+						$exporter->set_filename( evf_get_export_entry_file_name( $form_name ), '.ods' );
+						$exporter->export( 'application/vnd.oasis.opendocument.spreadsheet' );
+						break;
+					case 'xlsx':
+						$exporter = new EVF_Entry_Spreadsheet_Exporter( $form_id );
+						$exporter->set_filename( evf_get_export_entry_file_name( $form_name ), '.xlsx' );
+						$exporter->export( 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' );
+						break;
+					default:
+						new Exception( 'Invalid Requested Format ' . $format );
+						break;
+				}
+			}
 		}
 	}
 
@@ -397,6 +418,113 @@ class EVF_Admin_Entries {
 
 		return $response;
 	}
+
+	/**
+	 * Export entries to JSON file.
+	 *
+	 * @since 1.8.6
+	 *
+	 * @param  int    $form_id Form ID.
+	 * @param  string $form_name Form Name.
+	 */
+	public function export_as_json( $form_id, $form_name ) {
+		$entries     = evf_get_entries_ids( $form_id );
+		$export_data = array();
+
+		if ( count( $entries ) ) {
+			foreach ( $entries as $entry_id ) {
+				$export_entry = array();
+				$entry        = evf_get_entry( $entry_id );
+				$fields       = json_decode( $entry->fields, true );
+
+				foreach ( $fields as $field ) {
+					if ( ! in_array( $field['type'], array( 'html', 'title', 'captcha' ), true ) ) {
+						if ( isset( $field['name'] ) ) {
+							$export_entry[ $field['name'] ] = $field['value'];
+						}
+					}
+				}
+
+				// Status.
+				$export_entry['Status'] = $this->get_column_value_status( $entry );
+
+				// Date Created.
+				$export_entry['Date Created'] = $this->get_column_value_date_created( $entry );
+
+				// Date Created GMT.
+				$export_entry['Date Created GMT'] = $this->get_column_value_date_created_gmt( $entry );
+
+				// If user details are disabled globally discard the IP and UA.
+				if ( 'yes' !== get_option( 'everest_forms_disable_user_details' ) ) {
+					$export_entry['User Device']     = sanitize_text_field( $entry->user_device );
+					$export_entry['User IP Address'] = sanitize_text_field( $entry->user_ip_address );
+				}
+
+				$export_data [] = $export_entry;
+			}
+		}
+
+		$file_name = evf_get_export_entry_file_name( $form_name );
+
+		if ( false !== $file_name ) {
+
+			header( 'Content-disposition: attachment; filename=' . $file_name . '.json' );
+			header( 'Content-type: application/json' );
+			echo wp_json_encode( $export_data );
+		}
+		exit();
+	}
+
+	/**
+	 * Get entry status value.
+	 *
+	 * @param  object $entry Entry being exported.
+	 * @return string
+	 */
+	private function get_column_value_status( $entry ) {
+		$statuses = evf_get_entry_statuses();
+
+		if ( isset( $statuses[ $entry->status ] ) ) {
+			return $statuses[ $entry->status ];
+		}
+
+		return $entry->status;
+	}
+
+	/**
+	 * Get date created value.
+	 *
+	 * @param  object $entry Entry being exported.
+	 * @return string
+	 */
+	private function get_column_value_date_created( $entry ) {
+		$timestamp = false;
+
+		if ( isset( $entry->date_created ) ) {
+			$timestamp = strtotime( $entry->date_created );
+		}
+
+		/* translators: 1: entry date 2: entry time */
+		return sprintf( esc_html__( '%1$s %2$s', 'everest-forms' ), date_i18n( evf_date_format(), $timestamp ), date_i18n( evf_time_format(), $timestamp ) );
+	}
+
+	/**
+	 * Get GMT date created value.
+	 *
+	 * @param  object $entry Entry being exported.
+	 * @return string
+	 */
+	private function get_column_value_date_created_gmt( $entry ) {
+		$timestamp = false;
+
+		if ( isset( $entry->date_created ) ) {
+			$timestamp = strtotime( $entry->date_created ) + ( get_option( 'gmt_offset' ) * 3600 );
+		}
+
+		/* translators: 1: entry date 2: entry time */
+		return sprintf( esc_html__( '%1$s %2$s', 'everest-forms' ), date_i18n( evf_date_format(), $timestamp ), date_i18n( evf_time_format(), $timestamp ) );
+	}
+
 }
 
 new EVF_Admin_Entries();
