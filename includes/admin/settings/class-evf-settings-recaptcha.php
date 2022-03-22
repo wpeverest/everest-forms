@@ -21,7 +21,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->id    = 'recaptcha';
+		$this->id    = 'captcha';
 		$this->label = esc_html__( 'CAPTCHA', 'everest-forms' );
 
 		parent::__construct();
@@ -42,7 +42,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 					'title' => esc_html__( 'CAPTCHA Integration', 'everest-forms' ),
 					'type'  => 'title',
 					/* translators: %1$s - reCAPTCHA Integration Doc URL, %2$s - hCaptcha Integration Doc URL */
-					'desc'  => sprintf( __( 'Get detailed documentation on <a href="%1$s" target="_blank">integrating reCAPTCHA</a> and <a href="%2$s" target="_blank">integrating hCaptcha</a> with Everest forms.', 'everest-forms' ), 'https://docs.wpeverest.com/everest-forms/docs/how-to-integrate-google-recaptcha/', 'https://docs.wpeverest.com/everest-forms/docs/how-to-integrate-hcaptcha/' ),
+					'desc'  => sprintf( __( 'Get detailed documentation on integrating <a href="%1$s" target="_blank">reCAPTCHA</a> and <a href="%2$s" target="_blank">hCaptcha</a> with Everest forms.', 'everest-forms' ), 'https://docs.wpeverest.com/everest-forms/docs/how-to-integrate-google-recaptcha/', 'https://docs.wpeverest.com/everest-forms/docs/how-to-integrate-hcaptcha/' ),
 					'id'    => 'integration_options',
 				),
 				array(
