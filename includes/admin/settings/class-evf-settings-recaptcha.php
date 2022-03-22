@@ -21,8 +21,8 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->id    = 'recaptcha';
-		$this->label = esc_html__( 'reCAPTCHA', 'everest-forms' );
+		$this->id    = 'captcha';
+		$this->label = esc_html__( 'CAPTCHA', 'everest-forms' );
 
 		parent::__construct();
 	}
@@ -39,15 +39,15 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 			'everest_forms_recaptcha_settings',
 			array(
 				array(
-					'title' => esc_html__( 'Google reCAPTCHA Integration', 'everest-forms' ),
+					'title' => esc_html__( 'CAPTCHA Integration', 'everest-forms' ),
 					'type'  => 'title',
-					/* translators: %1$s - Google reCAPTCHA docs url */
-					'desc'  => sprintf( __( '<p>Google\'s reCAPTCHA is a free service that protects your website from spam and abuse while letting valid users pass through with ease.</p><p>reCAPTCHA uses an advanced risk analysis engine and adaptive challenges to keep automated software from engaging in abusive activities on your site.</p><p>Sites already using v2 reCAPTCHA will need to create new site keys before switching to the Invisible reCAPTCHA or v3 reCAPTCHA.</p><p><a href="%1$s" target="_blank">Read our documentation</a> for step-by-step instructions.</p>', 'everest-forms' ), 'https://docs.wpeverest.com/docs/everest-forms/tutorials/how-to-integrate-google-recaptcha/' ),
+					/* translators: %1$s - reCAPTCHA Integration Doc URL, %2$s - hCaptcha Integration Doc URL */
+					'desc'  => sprintf( __( 'Get detailed documentation on integrating <a href="%1$s" target="_blank">reCAPTCHA</a> and <a href="%2$s" target="_blank">hCaptcha</a> with Everest forms.', 'everest-forms' ), 'https://docs.wpeverest.com/everest-forms/docs/how-to-integrate-google-recaptcha/', 'https://docs.wpeverest.com/everest-forms/docs/how-to-integrate-hcaptcha/' ),
 					'id'    => 'integration_options',
 				),
 				array(
-					'title'    => esc_html__( 'reCAPTCHA type', 'everest-forms' ),
-					'desc'     => esc_html__( 'Choose the type of reCAPTCHA for this site key.', 'everest-forms' ),
+					'title'    => esc_html__( 'CAPTCHA Type', 'everest-forms' ),
+					'desc'     => esc_html__( 'Choose the type of CAPTCHA for this site key.', 'everest-forms' ),
 					'id'       => 'everest_forms_recaptcha_type',
 					'default'  => 'v2',
 					'type'     => 'radio',
