@@ -301,7 +301,6 @@ class EVF_Admin_Entries {
 						break;
 					default:
 						new Exception( 'Invalid Requested Format ' . $format );
-						break;
 				}
 			}
 		}

@@ -3,7 +3,7 @@
  * Handles Spreadsheet export.
  *
  * @package EverestForms/Export
- * @version 1.3.0
+ * @version 1.8.6
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -61,14 +61,9 @@ abstract class EVF_Spreadsheet_Exporter {
 	abstract public function prepare_data_to_export();
 
 	/**
-	 * Get quiz report in Spreadsheet format.
-	 */
-	abstract public function get_quiz_report();
-
-	/**
 	 * Return the delimiter to use in Spreadsheet file
 	 *
-	 * @since  1.7.0
+	 * @since  1.8.6
 	 * @return string
 	 */
 	public function get_delimiter() {
@@ -160,19 +155,6 @@ abstract class EVF_Spreadsheet_Exporter {
 	}
 
 	/**
-	 * Export quiz report.
-	 *
-	 * @since 1.8.6
-	 *
-	 * @param  string $content_type Content-Type.
-	 */
-	public function export_quiz_report( $content_type ) {
-		$this->send_headers( $content_type );
-		$this->send_content( $this->get_quiz_report() );
-		die();
-	}
-
-	/**
 	 * Set the export headers.
 	 *
 	 * @since 1.8.6
@@ -184,11 +166,6 @@ abstract class EVF_Spreadsheet_Exporter {
 		header( 'Content-Disposition: attachment; filename=' . $this->get_filename() );
 	}
 
-	/**
-	 * Set filename to export to.
-	 *
-	 * @param  string $filename Filename to export to.
-	 */
 	/**
 	 * Set filename to export to.
 	 *
@@ -231,7 +208,7 @@ abstract class EVF_Spreadsheet_Exporter {
 	/**
 	 * Export column headers in Spreadsheet format.
 	 *
-	 * @since 3.1.0
+	 * @since 1.8.6
 	 * @return string
 	 */
 	protected function export_column_headers() {
