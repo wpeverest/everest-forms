@@ -308,11 +308,25 @@ abstract class EVF_Form_Fields {
 
 			// Select.
 			case 'select':
-				$options = $args['options'];
-				$value   = isset( $args['value'] ) ? $args['value'] : '';
-				$output  = sprintf( '<select class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" %s>', $class, $id, $slug, $id, $slug, $data );
-				foreach ( $options as $key => $option ) {
-					$output .= sprintf( '<option value="%s" %s>%s</option>', esc_attr( $key ), selected( $key, $value, false ), $option );
+				$options     = $args['options'];
+				$value       = isset( $args['value'] ) ? $args['value'] : '';
+				$is_multiple = isset( $args['multiple'] ) && true === $args['multiple'];
+
+				if ( true === $is_multiple ) {
+					$output = sprintf( '<select class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" %s multiple>', $class, $id, $slug, $id, $slug, $data );
+
+				} else {
+					$output = sprintf( '<select class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" %s >', $class, $id, $slug, $id, $slug, $data );
+				}
+
+				foreach ( $options as $key => $option_value ) {
+
+					if ( true === $is_multiple && is_array( $value ) ) {
+						$selected_value = in_array( $key, $value, true ) ? 'selected="selected"' : '';
+					} else {
+						$selected_value = ( $value === $key ) ? 'selected="selected"' : '';
+					}
+					$output .= sprintf( '<option value="%s" %s>%s</option>', esc_attr( $key ), $selected_value, $option_value );
 				}
 				$output .= '</select>';
 				break;
