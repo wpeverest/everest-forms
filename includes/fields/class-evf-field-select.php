@@ -248,6 +248,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 		$plan              = evf_get_license_plan();
 		$has_default       = false;
 		$is_multiple       = false;
+		$select_all        = isset( $field['select_all'] ) ? $field['select_all'] : '0';
 
 		if ( ! empty( $field['required'] ) ) {
 			$container['attr']['required'] = 'required';
@@ -291,6 +292,13 @@ class EVF_Field_Select extends EVF_Form_Fields {
 
 			if ( isset( $choices['primary']['attr']['conditional_rules'] ) ) {
 				$container['attr']['conditional_rules'] = $choices['primary']['attr']['conditional_rules'];
+			}
+		}
+
+		// Select All checkbox.
+		if ( '1' === $select_all ) {
+			if ( isset( $container['attr']['multiple'] ) && 'multiple' === $container['attr']['multiple'] ) {
+				$container['attr']['select_all_unselect_all'] = 'true';
 			}
 		}
 

@@ -322,4 +322,7 @@
 	&divider::before {
 		content: '\e031';
 	}
+	&wysiwyg::before {
+		content: '\e900';
+	}
 }

@@ -1,7 +1,15 @@
 == Changelog ==
 
-= 1.8.5 - xx-xx-2022 =
+= 1.9.0 - 28-02-2022 =
+* Tweak - CAPTCHA text change.
+* Enhancement - CAPTCHA language.
+* Enhancement - Select/Unselect All options in checkboxes field.
+
+= 1.8.5 - 28-02-2022 =
+* Fix - reCAPTCHA v3 threshold display glitch.
 * Fix - Preview issue in twenty twenty two theme.
+* Enhancement - View Form in Import Success Message.
+* Fix - Exact Error Message issue in ajax submission.
 
 = 1.8.4 - 03-02-2022 =
 * Fix - Attribute issue in multipart.

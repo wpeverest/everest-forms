@@ -20,7 +20,7 @@
 		 	});
 
 
-			 $(document).ready( function( $ ) {
+			$( document ).ready( function( $ ) {
 				 if( '1' === $( '.everest-forms-min-max-date-format input' ).val() ) {
 					$('.everest-forms-min-date').addClass('flatpickr-field').flatpickr({
 						disableMobile : true,
@@ -45,10 +45,10 @@
 			});
 
 
-		 		if ( ! $( 'evf-panel-payments-button a' ).hasClass( 'active' ) ) {
-		 			$( '#everest-forms-panel-payments' ).find( '.everest-forms-panel-sidebar a' ).first().addClass( 'active' );
-					$( '.everest-forms-panel-content' ).find( '.evf-payment-setting-content' ).first().addClass( 'active' );
-				}
+			if ( ! $( 'evf-panel-payments-button a' ).hasClass( 'active' ) ) {
+				$( '#everest-forms-panel-payments' ).find( '.everest-forms-panel-sidebar a' ).first().addClass( 'active' );
+				$( '.everest-forms-panel-content' ).find( '.evf-payment-setting-content' ).first().addClass( 'active' );
+			}
 
 
 			// Copy shortcode from the builder.
@@ -208,7 +208,29 @@
 					$( this ).addClass( 'is-active' );
 					EVFPanelBuilder.updateEnhandedSelectField( $( event.target ).parents( '.everest-forms-field-option-row-choices' ).data().fieldId, 'multiple' === $( this ).data( 'selection' ) );
 				}
+
+				// Show 'Select All' Checkbox for Dropdown field only if multiple selection is active
+				if( 'multiple' === $(this).data('selection') && 'checkbox' === $(this).data('type') && $( this).hasClass( 'is-active' ) ) {
+					var $field_id = $(this).parent().parent().data('field-id');
+					$('#everest-forms-field-option-row-'+$field_id+'-select_all').show();
+				} else {
+					var $field_id = $(this).parent().parent().data('field-id');
+					$('#everest-forms-field-option-row-'+$field_id+'-select_all').hide();
+				}
 			} );
+
+			// By default hide the 'Select All' checkbox for Dropdown field
+			$(document.body).on('click', '.everest-forms-field, .everest-forms-field-select[data-field-type="select"]', function () {
+				$builder.find('.everest-forms-field-option-row-choices .everest-forms-btn-group span').each(function () {
+					var $field_id = $(this).parent().parent().data('field-id');
+
+					if( 'multiple' === $(this).data('selection') && 'checkbox' === $(this).data('type') && $( this).hasClass( 'is-active' ) ) {
+						$('#everest-forms-field-option-'+$field_id+'-select_all').parent().show();
+					} else {
+						$('#everest-forms-field-option-'+$field_id+'-select_all').parent().hide();
+					}
+				});
+			});
 
 			// Search fields input.
 			$builder.on( 'keyup', '.everest-forms-search-fields', function() {
@@ -801,6 +823,14 @@
 				e.preventDefault();
 				EVFPanelBuilder.fieldTabChoice( $(this).attr( 'id' ) );
 			});
+
+
+			// Dragged field and hover over tab buttons - multipart.
+			$(document).on( 'mouseenter', '.everest-forms-tabs li[class*="part_"]', function() {
+				if ( false === $( this ).hasClass( 'active' ) && ( $( document ).find( '.everest-forms-field' ).hasClass( 'ui-sortable-helper' ) || $( document ).find( '.evf-registered-buttons button.evf-registered-item' ).hasClass( 'field-dragged' ) ) ) {
+					$( this ).find( 'a' ).trigger( 'click' );
+				}
+			} );
 
 			// Display toggle for "Address" field hidden option.
 			$builder.on( 'change', '.everest-forms-field-option-address input.hide', function() {
@@ -2043,7 +2073,9 @@
 				scrollSensitivity: 40,
 				forcePlaceholderSize: true,
 				connectWith: '.evf-admin-grid',
+				appendTo: document.body,
 				containment: '.everest-forms-field-wrap',
+
 				out: function( event ) {
 					$( '.evf-admin-grid' ).removeClass( 'evf-hover' );
 					$( event.target ).removeClass( 'evf-item-hover' );
@@ -2077,8 +2109,14 @@
 				revert: 'invalid',
 				scrollSensitivity: 40,
 				forcePlaceholderSize: true,
+				start: function() {
+					$( this ).addClass( 'field-dragged' );
+				},
 				helper: function() {
 					return $( this ).clone().insertAfter( $( this ).closest( '.everest-forms-tab-content' ).siblings( '.everest-forms-fields-tab' ) );
+				},
+				stop: function() {
+					$( this ).removeClass( 'field-dragged' );
 				},
 				opacity: 0.75,
 				containment: '#everest-forms-builder',
@@ -2391,10 +2429,19 @@
 
 		paymentFieldAppendToDropdown: function( dragged_field_id, field_type ){
 			if('payment-quantity' === field_type ) {
-				var match_fields = [ 'payment-checkbox', 'payment-multiple', 'payment-single' ],
+				var match_fields = [ 'payment-checkbox', 'payment-multiple', 'payment-single', 'range-slider' ],
 					qty_dropdown = $('#everest-forms-field-option-' + dragged_field_id + '-map_field');
 				match_fields.forEach(function(single_field){
 					$('.everest-forms-field-'+single_field).each(function(){
+						if( 'range-slider' === $(this).attr('data-field-type')) {
+							if('true' === ($(this).find('.evf-range-slider-preview').attr('data-enable-payment-slider'))) {
+								var id = $(this).attr('data-field-id'),
+									label = $(this).find( ".label-title .text" ).text();
+								var el_to_append = '<option value="'+id+'">'+label+'</option>';
+							}else{
+								return;
+							}
+						}
 						var id = $(this).attr('data-field-id'),
 							label = $(this).find( ".label-title .text" ).text();
 						var el_to_append = '<option value="'+id+'">'+label+'</option>';
@@ -2689,6 +2736,7 @@ jQuery( function ( $ ) {
 		if ( 'field' === type ) {
 			$input.val( $input.val() + '{field_id="'+field_id+'"}' );
 			$textarea.val($textarea.val()+'{field_id="'+field_id+'"}' );
+			$textarea.trigger('change');
 		} else if ( 'other' === type ) {
 			$input.val( $input.val() + '{'+field_id+'}' );
 			$textarea.val($textarea.val() + '{'+field_id+'}' );
@@ -2805,6 +2853,15 @@ jQuery( function ( $ ) {
 					$(el).parent().find('.evf-smart-tag-lists .evf-fields').append('<li class = "smart-tag-field" data-type="field" data-field_id="'+meta+'">'+all_fields[meta]+'</li>');
 				}
 			}
+		}
+
+		if ( 'calculations' === type ) {
+			var calculations = [ 'number', 'payment-single', 'range-slider' ]
+			$(document).find('.everest-forms-field').each(function() {
+				if( calculations.includes($(this).attr('data-field-type')) && $(el).parents('.everest-forms-field-option-row-calculation_field').attr('data-field-id') !== $(this).attr('data-field-id')) {
+					$(el).parent().find('.evf-smart-tag-lists .calculations').append('<li class = "smart-tag-field" data-type="field" data-field_id="'+$(this).attr('data-field-id')+'">'+$(this).find('.label-title .text').text()+'</li>');
+				}
+			})
 		}
 	}
 });

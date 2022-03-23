@@ -29,6 +29,7 @@ jQuery( function ( $ ) {
 			this.submission_scroll();
 			this.randomize_elements();
 			this.init_enhanced_select();
+			this.checkUncheckAllcheckbox();
 
 			// Inline validation.
 			this.$everest_form.on( 'input validate change', '.input-text, select, input:checkbox, input:radio', this.validate_field );
@@ -637,7 +638,36 @@ jQuery( function ( $ ) {
 				// If select2 failed (conflict?) log the error but don't stop other scripts breaking.
 				window.console.log( err );
 			}
-		}
+		},
+		checkUncheckAllcheckbox: function () {
+			// To check and uncheck all the option in checkbox.
+			var all_select_all_chk = $('form.everest-form').find('.evf-field, .evf-field-checkbox, .form-row').find('ul').find('li.evf-select-all-checkbox-li').find('#evfCheckAll');
+			if (all_select_all_chk.length){
+
+				all_select_all_chk.each(function () {
+					var $this = $(this);
+
+					$this.on('click', function () {
+						if($(this).prop("checked") == true){
+							$this.parent().parent().find('li').find('input:checkbox').not($this).prop('checked', true);
+						}else if($(this).prop("checked") == false){
+							$this.parent().parent().find('li').find('input:checkbox').not($this).prop('checked', false);
+						}
+					});
+
+					$this.parent().parent().find('li').find('input:checkbox').not($this).on('change', function () {
+						var checked = ($this.parent().parent().find('li').find('input:checkbox:checked').not($this)).length;
+						var chck_len = ($this.parent().parent().find('li').find('input:checkbox').not($this)).length;
+
+						if (checked === chck_len) {
+							$this.prop('checked', true);
+						} else if (checked < chck_len) {
+							$this.prop('checked', false);
+						}
+					});
+				});
+			}
+		},
 	};
 
 	everest_forms.init();
