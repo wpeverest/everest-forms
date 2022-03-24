@@ -152,7 +152,7 @@ class EVF_Shortcode_Form {
 			! isset( $settings['submit_button_processing_text'] ) ? 'data-process-text="' . esc_attr__( 'Processing&hellip;', 'everest-forms' ) . '"' : ( ! empty( $settings['submit_button_processing_text'] ) ? 'data-process-text="' . esc_attr( evf_string_translation( $form_data['id'], 'processing_text', $settings['submit_button_processing_text'] ) ) . '"' : '' ),
 			esc_attr( $conditional_rules ),
 			esc_attr( $conditional_id ),
-			'style="display:' . ( ! empty( self::$parts[ $form_id ] ) ? 'none' : 'block' ) . '"',
+			( ! empty( self::$parts[ $form_id ] ) ? 'style="display:none"' : ""),
 			evf_html_attributes(
 				sprintf( 'evf-submit-%d', absint( $form_id ) ),
 				$evf_amp_classes,
