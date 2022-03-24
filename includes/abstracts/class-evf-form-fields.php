@@ -532,8 +532,7 @@ abstract class EVF_Form_Fields {
 					false
 				);
 				break;
-
-			/*
+			/**
 			 * Required Field Message.
 			 */
 			case 'required_field_message':
@@ -695,7 +694,59 @@ abstract class EVF_Form_Fields {
 					);
 				}
 				break;
+
 			/**
+			 * Field Visibilty.
+			 */
+			case 'field_visiblity':
+				$default        = ! empty( $args['default'] ) ? $args['default'] : '0';
+				$readonly_value = isset( $field['readonly_field_visibility'] ) ? $field['readonly_field_visibility'] : $default;
+				$hidden_value   = isset( $field['hidden_field_visibility'] ) ? $field['hidden_field_visibility'] : $default;
+				$tooltip        = esc_html__( 'Check this option to mark the field readonly and hidden.', 'everest-forms' );
+				$label          = $this->field_element(
+					'label',
+					$field,
+					array(
+						'slug'    => 'field_visibility',
+						'value'   => esc_html__( 'Field Visibility', 'everest-forms' ),
+						'tooltip' => $tooltip,
+					),
+					false
+				);
+				$readonly       = $this->field_element(
+					'checkbox',
+					$field,
+					array(
+						'slug'  => 'readonly_field_visibility',
+						'value' => $readonly_value,
+						'class' => 'field_visibility_readonly',
+						'desc'  => esc_html__( 'Readonly ', 'everest-forms' ),
+					),
+					false
+				);
+				$hidden         = $this->field_element(
+					'checkbox',
+					$field,
+					array(
+						'slug'  => 'hidden_field_visibility',
+						'value' => $hidden_value,
+						'class' => 'field_visibility_hidden',
+						'desc'  => esc_html__( 'Hidden', 'everest-forms' ),
+					),
+					false
+				);
+				$output         = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'field_visiblity',
+						'content' => $label . '' . $readonly . ' ' . $hidden,
+					),
+					false
+				);
+				break;
+
+				/**
 			 * No Duplicates.
 			 */
 			case 'no_duplicates':

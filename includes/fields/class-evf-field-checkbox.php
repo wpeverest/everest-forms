@@ -393,7 +393,6 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 			// Conditional logic.
 			if ( isset( $choices['primary'] ) ) {
 				$choice['attr']['conditional_id'] = $choices['primary']['attr']['conditional_id'];
-
 				if ( isset( $choices['primary']['attr']['conditional_rules'] ) ) {
 					$choice['attr']['conditional_rules'] = $choices['primary']['attr']['conditional_rules'];
 				}
@@ -420,7 +419,6 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 				echo '<br>';
 
 				$choice['attr']['tabindex'] = '-1';
-
 				printf( '<input type="checkbox" %s %s %s>', evf_html_attributes( $choice['id'], $choice['class'], $choice['data'], $choice['attr'] ), esc_attr( $choice['required'] ), checked( '1', $choice['default'], false ) );
 				echo '<label class="everest-forms-image-choices-label">' . wp_kses_post( $choice['label']['text'] ) . '</label>';
 				echo '</label>';

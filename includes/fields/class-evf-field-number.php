@@ -236,7 +236,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 
 		// Primary field.
 		printf(
-			'<input type="number" %s %s />',
+			'<input type="number" %s %s/>',
 			evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ),
 			esc_attr( $primary['required'] )
 		);

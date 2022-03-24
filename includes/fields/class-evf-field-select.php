@@ -304,7 +304,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 
 		// Primary select field.
 		printf(
-			'<select %s>',
+			'<select %s >',
 			evf_html_attributes( $container['id'], $container['class'], $container['data'], $container['attr'] )
 		);
 
