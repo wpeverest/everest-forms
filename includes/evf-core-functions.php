@@ -2507,7 +2507,7 @@ function evf_sanitize_builder( $post_data = array() ) {
  */
 function evf_sanitize_entry( $entry = array() ) {
 	if ( empty( $entry ) || ! is_array( $entry ) || empty( $entry['form_fields'] ) ) {
-		return array();
+		return $entry;
 	}
 
 	$form_id   = absint( $entry['id'] );
