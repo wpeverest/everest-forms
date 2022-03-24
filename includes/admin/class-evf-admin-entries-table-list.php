@@ -567,8 +567,10 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 				submit_button( __( 'Filter', 'everest-forms' ), '', 'filter_action', false, array( 'id' => 'post-query-submit' ) );
 
 				// Export Form Entry.
-				$this->export_forms_entry_dropdown();
-				submit_button( __( 'Export', 'everest-forms' ), '', 'export_entry_action', false, array( 'id' => 'export-form-entry' ) );
+				if ( apply_filters( 'everest_forms_enable_csv_export', $show_export ) && current_user_can( 'export' ) ) {
+					$this->export_forms_entry_dropdown();
+					submit_button( __( 'Export', 'everest-forms' ), '', 'export_entry_action', false, array( 'id' => 'export-form-entry' ) );
+				}
 			}
 		}
 

@@ -437,9 +437,37 @@ class EVF_Admin_Entries {
 				$fields       = json_decode( $entry->fields, true );
 
 				foreach ( $fields as $field ) {
-					if ( ! in_array( $field['type'], array( 'html', 'title', 'captcha' ), true ) ) {
+					if ( in_array( $field['type'], array( 'html', 'title', 'captcha' ), true ) ) {
+						continue;
+					} elseif ( in_array( $field['type'], array( 'checkbox', 'radio', 'payment-multiple', 'payment-checkbox' ), true ) ) {
+						if ( array_key_exists( $field['value']['name'], $export_entry ) ) {
+							if ( is_array( $export_entry[ $field['value']['name'] ] ) ) {
+								$export_entry[ $field['value']['name'] ] [] = $field['value']['label'];
+							} else {
+								$values    = array();
+								$values [] = $export_entry[ $field['value']['name'] ];
+								$values [] = $field['value']['label'];
+
+								$export_entry[ $field['value']['name'] ] = $values;
+							}
+						} else {
+							$export_entry[ $field['value']['name'] ] = $field['value']['label'];
+						}
+					} else {
 						if ( isset( $field['name'] ) ) {
-							$export_entry[ $field['name'] ] = $field['value'];
+							if ( array_key_exists( $field['name'], $export_entry ) ) {
+								if ( is_array( $export_entry[ $field['name'] ] ) ) {
+									$export_entry[ $field['name'] ] [] = $field['value'];
+								} else {
+									$values    = array();
+									$values [] = $export_entry[ $field['name'] ];
+									$values [] = $field['value'];
+
+									$export_entry[ $field['name'] ] = $values;
+								}
+							} else {
+								$export_entry[ $field['name'] ] = $field['value'];
+							}
 						}
 					}
 				}
