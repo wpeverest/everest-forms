@@ -271,6 +271,13 @@ final class EverestForms {
 		include_once EVF_ABSPATH . 'includes/class-evf-forms-features.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-privacy.php';
 
+		/**
+		 * Elementor classes.
+		 */
+		if ( class_exists( '\Elementor\Plugin' ) ) {
+			include_once EVF_ABSPATH . 'includes/elementor/class-evf-elementor.php';
+		}
+
 		if ( $this->is_request( 'admin' ) ) {
 			include_once EVF_ABSPATH . 'includes/admin/class-evf-admin.php';
 		}

@@ -24,6 +24,19 @@
 //Utilities
 @import 'utility/display', 'utility/spacing', 'utility/border';
 
+//Everest-forms icon
+@font-face {
+	font-family: 'EverestForms';
+	src:  url('fonts/EverestForms.eot?5c6kq4');
+	src:  url('fonts/EverestForms.eot?5c6kq4#iefix') format('embedded-opentype'),
+	url('fonts/EverestForms.ttf?5c6kq4') format('truetype'),
+	url('fonts/EverestForms.woff?5c6kq4') format('woff'),
+	url('fonts/EverestForms.svg?5c6kq4#EverestForms') format('svg');
+	font-weight: normal;
+	font-style: normal;
+	font-display: block;
+}
+
 /**
    * Styling begins
    */
@@ -962,6 +975,9 @@ body.everest-forms-builder {
 						}
 						&.permission::before {
 							content: '\e030';
+						}
+						&.evf-widget::before {
+							content: '\e902';
 						}
 						&.geolocation::before {
 							content: '\e900';
@@ -5945,6 +5961,15 @@ img.ui-datepicker-trigger {
 	}
 }
 
+#elementor-editor-wrapper .everest-icon:before,
+.elementor-edit-area .everest-icon:before {
+	content: '\e902';
+	font-family: "EverestForms";
+	font-weight: normal;
+	font-style: normal;
+	font-display: block;
+}
+
 .everest-forms-field.ui-sortable-helper .evf-field-action {
 	display: none;
 }
@@ -5973,7 +5998,7 @@ img.ui-datepicker-trigger {
 		background-color: #fff;
 		border: 1px solid #cdd0d8;
 		color: #6c7680;
-	
+
 		.evf-icon {
 			padding: 0 8px;
 			border-radius: 4px;
