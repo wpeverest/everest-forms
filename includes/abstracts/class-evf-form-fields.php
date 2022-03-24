@@ -308,11 +308,25 @@ abstract class EVF_Form_Fields {
 
 			// Select.
 			case 'select':
-				$options = $args['options'];
-				$value   = isset( $args['value'] ) ? $args['value'] : '';
-				$output  = sprintf( '<select class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" %s>', $class, $id, $slug, $id, $slug, $data );
-				foreach ( $options as $key => $option ) {
-					$output .= sprintf( '<option value="%s" %s>%s</option>', esc_attr( $key ), selected( $key, $value, false ), $option );
+				$options     = $args['options'];
+				$value       = isset( $args['value'] ) ? $args['value'] : '';
+				$is_multiple = isset( $args['multiple'] ) && true === $args['multiple'];
+
+				if ( true === $is_multiple ) {
+					$output = sprintf( '<select class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" %s multiple>', $class, $id, $slug, $id, $slug, $data );
+
+				} else {
+					$output = sprintf( '<select class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" %s >', $class, $id, $slug, $id, $slug, $data );
+				}
+
+				foreach ( $options as $key => $option_value ) {
+
+					if ( true === $is_multiple && is_array( $value ) ) {
+						$selected_value = in_array( $key, $value, true ) ? 'selected="selected"' : '';
+					} else {
+						$selected_value = ( $value === $key ) ? 'selected="selected"' : '';
+					}
+					$output .= sprintf( '<option value="%s" %s>%s</option>', esc_attr( $key ), $selected_value, $option_value );
 				}
 				$output .= '</select>';
 				break;
@@ -704,6 +718,72 @@ abstract class EVF_Form_Fields {
 					$field,
 					array(
 						'slug'    => 'no_duplicates',
+						'content' => $output,
+					),
+					false
+				);
+				break;
+				/**
+			 * No Duplicates.
+			 */
+			case 'autocomplete_address':
+				$default = ! empty( $args['default'] ) ? $args['default'] : '0';
+				$value   = ! empty( $field['autocomplete_address'] ) ? esc_attr( $field['autocomplete_address'] ) : '';
+				$tooltip = esc_html__( 'Check this option to autofill address field.', 'everest-forms' );
+				$output  = $this->field_element(
+					'checkbox',
+					$field,
+					array(
+						'slug'    => 'autocomplete_address',
+						'value'   => $value,
+						'desc'    => esc_html__( 'Enable Autocomplete Address Field', 'everest-forms' ),
+						'tooltip' => $tooltip,
+					),
+					false
+				);
+				$output  = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'autocomplete_address',
+						'content' => $output,
+					),
+					false
+				);
+				break;
+			case 'address_style':
+				$default = ! empty( $args['default'] ) ? $args['default'] : 'none';
+				$tooltip = esc_html__( 'Select the style', 'everest-forms' );
+				$output  = $this->field_element(
+					'label',
+					$field,
+					array(
+						'slug'    => 'address_style',
+						'value'   => esc_html__( 'Style', 'everest-forms' ),
+						'tooltip' => $tooltip,
+					),
+					false
+				);
+				$output .= $this->field_element(
+					'select',
+					$field,
+					array(
+						'slug'    => 'address_style',
+						'value'   => esc_html__( 'style', 'everest-forms' ),
+						'tooltip' => $tooltip,
+						'options' => array(
+							'address'          => esc_html__( 'Address', 'everest-forms' ),
+							'map'              => esc_html__( 'Map', 'everest-forms' ),
+							'address_with_map' => esc_html( 'Address With Map' ),
+						),
+					),
+					false
+				);
+				$output  = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'address_style',
 						'content' => $output,
 					),
 					false
@@ -1442,6 +1522,36 @@ abstract class EVF_Form_Fields {
 							),
 							false
 						),
+					),
+					false
+				);
+				break;
+
+			/**
+			 * Select All.
+			 */
+			case 'select_all':
+				$value   = isset( $field['select_all'] ) ? '1' : '0';
+				$tooltip = esc_html__( 'Check this option to hide the form field label.', 'everest-forms' );
+
+				$output = $this->field_element(
+					'checkbox',
+					$field,
+					array(
+						'slug'    => 'select_all',
+						'value'   => $value,
+						'class'   => 'evf-select-all-chk',
+						'desc'    => esc_html__( 'Select All', 'everest-forms' ),
+						'tooltip' => esc_html__( 'Check this option to select all the options.', 'everest-forms' ),
+					),
+					false
+				);
+				$output = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'select_all',
+						'content' => $output,
 					),
 					false
 				);
