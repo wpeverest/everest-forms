@@ -21,7 +21,7 @@ jQuery( function( $ ) {
 						paymentMethod = formTuple.find( ".everest-forms-gateway[data-gateway='stripe']" ).data( 'gateway' );
 					}
 
-					if( 'stripe' === paymentMethod  ) {
+					if( 'stripe' === paymentMethod && 'none' !== formTuple.find( ".everest-forms-gateway[data-gateway='ideal']" ).closest( '.evf-field' ).css( 'display' ) ) {
 						return;
 					}
 
@@ -90,7 +90,7 @@ jQuery( function( $ ) {
 								paymentMethod = formTuple.find( ".everest-forms-gateway[data-gateway='ideal']" ).data( 'gateway' );
 							}
 
-							if( 'ideal' === paymentMethod  ) {
+							if( 'ideal' === paymentMethod && 'none' !== formTuple.find( ".everest-forms-gateway[data-gateway='ideal']" ).closest( '.evf-field' ).css( 'display' )  ) {
 								formTuple.trigger( 'evf_process_payment', xhr.data );
 								return;
 							}
