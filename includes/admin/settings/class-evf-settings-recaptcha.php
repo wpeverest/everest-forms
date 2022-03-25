@@ -172,9 +172,9 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 					'desc_tip'          => true,
 				),
 				array(
-					'title'    => esc_html__( 'Choose reCAPTCHA Language', 'everest-forms' ),
+					'title'    => esc_html__( 'Choose CAPTCHA Language', 'everest-forms' ),
 					'type'     => 'select',
-					'desc'     => esc_html__( 'Choose reCAPTCHA Language.', 'everest-forms' ),
+					'desc'     => esc_html__( 'Choose CAPTCHA Language.', 'everest-forms' ),
 					'id'       => 'everest_forms_recaptcha_recaptcha_language',
 					'options'  => $lang_options,
 					'class'    => 'evf-enhanced-select',
