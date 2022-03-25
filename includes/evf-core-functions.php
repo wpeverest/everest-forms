@@ -1480,7 +1480,7 @@ function evf_size_to_megabytes( $bytes ) {
 	if ( $bytes < 1048676 ) {
 		return number_format( $bytes / 1024, 1 ) . ' KB';
 	} else {
-		return round( number_format( $bytes / 1048576, 1 ) ) . ' MB';
+		return round( (float) number_format( $bytes / 1048576, 1 ) ) . ' MB';
 	}
 }
 
