@@ -160,7 +160,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 			);
 
 			if ( ! empty( $is_enhanced_select ) ) {
-				wp_enqueue_style( 'select2' );
+				wp_enqueue_style( 'evf_select2' );
 				wp_enqueue_script( 'selectWoo' );
 			}
 		}
