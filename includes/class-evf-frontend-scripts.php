@@ -206,7 +206,7 @@ class EVF_Frontend_Scripts {
 	 */
 	private static function register_styles() {
 		$register_styles = array(
-			'select2'   => array(
+			'evf_select2'   => array(
 				'src'     => self::get_asset_url( 'assets/css/select2.css' ),
 				'deps'    => array(),
 				'version' => EVF_VERSION,
