@@ -223,7 +223,7 @@ class EVF_Shortcode_Form {
 		printf(
 			'<div %s>%s</div>',
 			evf_html_attributes( $description['id'], $description['class'], $description['data'], $description['attr'] ),
-			wp_kses( evf_string_translation( $form_data['id'], $field['id'], $description['value'], '-description' ), evf_get_allowed_html_tags( 'builder' ) )
+			wp_kses_post( evf_string_translation( $form_data['id'], $field['id'], $description['value'], '-description' ) )
 		);
 	}
 
@@ -280,8 +280,8 @@ class EVF_Shortcode_Form {
 					'strong' => array(),
 				)
 			),
-			wp_kses( $required, evf_get_allowed_html_tags( 'builder' ) ),
-			wp_kses( $custom_tags, evf_get_allowed_html_tags( 'builder' ) )
+			wp_kses_post( $required ),
+			wp_kses_post( $custom_tags )
 		);
 	}
 
