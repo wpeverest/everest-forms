@@ -758,7 +758,7 @@ abstract class EVF_Form_Fields {
 						'slug'    => 'field_visiblity',
 						'content' => $label . '' . $readonly . ' ' . $hidden,
 					),
-					false
+					$echo
 				);
 				break;
 
@@ -1583,7 +1583,7 @@ abstract class EVF_Form_Fields {
 						'slug'    => 'whitelist_domain',
 						'content' => $output,
 					),
-					false
+					$echo
 				);
 
 				$output .= $this->field_element(
@@ -1632,7 +1632,7 @@ abstract class EVF_Form_Fields {
 						'slug'    => 'select_all',
 						'content' => $output,
 					),
-					false
+					$echo
 				);
 				break;
 
