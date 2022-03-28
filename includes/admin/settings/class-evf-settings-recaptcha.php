@@ -21,7 +21,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->id    = 'captcha';
+		$this->id    = 'recaptcha';
 		$this->label = esc_html__( 'CAPTCHA', 'everest-forms' );
 
 		parent::__construct();

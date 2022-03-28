@@ -1394,7 +1394,7 @@ abstract class EVF_Form_Fields {
 						array(
 							'slug'    => 'parameter_name',
 							'content' => $output,
-							'class'   => isset( $field['parameter_name'] ) ? '' : 'hidden',
+							'class'   => isset( $field['enable_prepopulate'] ) ? '' : 'hidden',
 						),
 						$echo
 					);

@@ -95,7 +95,7 @@ class EVF_Widget extends Widget_Base {
 	 *
 	 * @since 1.8.5
 	 */
-	protected function _register_controls() { // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+	protected function register_controls() { // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
 
 		$this->start_controls_section(
 			'section_content_layout',
