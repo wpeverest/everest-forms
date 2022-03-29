@@ -2541,7 +2541,12 @@ function evf_sanitize_entry( $entry = array() ) {
 		if ( array_key_exists( $key, $entry['form_fields'] ) ) {
 			switch ( $field['type'] ) {
 				case 'email':
-					$entry['form_fields'][ $key ] = sanitize_email( $entry['form_fields'][ $key ] );
+					if ( isset( $entry['form_fields'][ $key ]['primary'] ) ) {
+						$entry['form_fields'][ $key ]['primary']   = sanitize_email( $entry['form_fields'][ $key ]['primary'] );
+						$entry['form_fields'][ $key ]['secondary'] = sanitize_email( $entry['form_fields'][ $key ]['secondary'] );
+					} else {
+						$entry['form_fields'][ $key ] = sanitize_email( $entry['form_fields'][ $key ] );
+					}
 					break;
 				case 'file-upload':
 				case 'signature':
