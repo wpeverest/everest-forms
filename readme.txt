@@ -302,7 +302,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 1.8.6 - 28-03-2022 =
+= 1.8.6 - 29-03-2022 =
 * Tweak - CAPTCHA text change.
 * Enhancement - CAPTCHA language.
 * Enhancement - Select/Unselect All options in checkboxes field.
