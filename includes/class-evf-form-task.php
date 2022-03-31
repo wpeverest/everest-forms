@@ -223,7 +223,7 @@ class EVF_Form_Task {
 					do_action( "everest_forms_process_validate_{$field_type}", $field_id, $field_submit, $this->form_data, $field_type );
 				}
 
-				if ( 'credit-card' === $field_type ) {
+				if ( 'credit-card' === $field_type && isset( $_POST['everest_form_stripe_payment_intent_id'] ) ) {
 					$this->evf_notice_print = true;
 				}
 

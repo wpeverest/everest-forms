@@ -4,7 +4,7 @@ Tags: contact form, forms, form builder, contact, custom form
 Requires at least: 5.0
 Tested up to: 5.9
 Requires PHP: 5.4
-Stable tag: 1.8.5
+Stable tag: 1.8.6
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -301,6 +301,12 @@ Yes, we do. Check out this [Getting Started Videos](https://docs.wpeverest.com/d
 Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/everest-forms/) :)
 
 == Changelog ==
+
+= 1.8.6 - 29-03-2022 =
+* Tweak - CAPTCHA text change.
+* Enhancement - CAPTCHA language.
+* Enhancement - Select/Unselect All options in checkboxes field.
+* Feature - Elementor widget.
 
 = 1.8.5 - 28-02-2022 =
 * Fix - reCAPTCHA v3 threshold display glitch.

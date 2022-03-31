@@ -5,7 +5,6 @@
  */
 
 'use strict';
-
 /* global evf_form_block_data, wp */
 const { __ } = wp.i18n;
 const { createElement } = wp.element;
@@ -13,7 +12,7 @@ const { registerBlockType } = wp.blocks;
 const { InspectorControls } = wp.blockEditor;
 const { serverSideRender: ServerSideRender } = wp;
 const {
-	PanelBody, SelectControl, ToggleControl, Placeholder
+	PanelBody, SelectControl, ToggleControl,TextControl,RadioControl, Placeholder
 } = wp.components;
 
 const EverestFormIcon = createElement( 'svg', { width: 24, height: 24, viewBox: '0 0 24 24' },

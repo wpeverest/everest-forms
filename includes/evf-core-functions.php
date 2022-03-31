@@ -1480,7 +1480,7 @@ function evf_size_to_megabytes( $bytes ) {
 	if ( $bytes < 1048676 ) {
 		return number_format( $bytes / 1024, 1 ) . ' KB';
 	} else {
-		return round( number_format( $bytes / 1048576, 1 ) ) . ' MB';
+		return round( (float) number_format( $bytes / 1048576, 1 ) ) . ' MB';
 	}
 }
 
@@ -2022,22 +2022,33 @@ function evf_get_all_fields_settings() {
  */
 function evf_debug_data( $expression, $return = false ) {
 	if ( defined( 'EVF_DEBUG' ) && true === EVF_DEBUG ) {
-		$output = '<textarea style="color:#666;background:#fff;margin: 20px 0;width:100%;height:500px;font-size:12px;font-family: Consolas,Monaco,Lucida Console,monospace;direction: ltr;unicode-bidi: embed;line-height: 1.4;padding: 4px 6px 1px;" readonly>';
 
-		$output .= "==================== Everest Forms Debugging ====================\n\n";
+		if ( ! $return ) {
+			echo '<textarea style="color:#666;background:#fff;margin: 20px 0;width:100%;height:500px;font-size:12px;font-family: Consolas,Monaco,Lucida Console,monospace;direction: ltr;unicode-bidi: embed;line-height: 1.4;padding: 4px 6px 1px;" readonly>';
 
-		if ( is_array( $expression ) || is_object( $expression ) ) {
-			$output .= evf_print_r( $expression, true );
+			echo "==================== Everest Forms Debugging ====================\n\n";
+
+			if ( is_array( $expression ) || is_object( $expression ) ) {
+				echo esc_html( evf_print_r( $expression, true ) );
+			} else {
+				echo esc_html( $expression );
+			}
+			echo '</textarea>';
+
 		} else {
-			$output .= $expression;
-		}
+			$output = '<textarea style="color:#666;background:#fff;margin: 20px 0;width:100%;height:500px;font-size:12px;font-family: Consolas,Monaco,Lucida Console,monospace;direction: ltr;unicode-bidi: embed;line-height: 1.4;padding: 4px 6px 1px;" readonly>';
 
-		$output .= '</textarea>';
+			$output .= "==================== Everest Forms Debugging ====================\n\n";
 
-		if ( $return ) {
+			if ( is_array( $expression ) || is_object( $expression ) ) {
+				$output .= evf_print_r( $expression, true );
+			} else {
+				$output .= $expression;
+			}
+
+			$output .= '</textarea>';
+
 			return $output;
-		} else {
-			echo wp_kses( $output, evf_get_allowed_html_tags() );
 		}
 	}
 }
@@ -2507,7 +2518,7 @@ function evf_sanitize_builder( $post_data = array() ) {
  */
 function evf_sanitize_entry( $entry = array() ) {
 	if ( empty( $entry ) || ! is_array( $entry ) || empty( $entry['form_fields'] ) ) {
-		return array();
+		return $entry;
 	}
 
 	$form_id   = absint( $entry['id'] );
@@ -2530,7 +2541,12 @@ function evf_sanitize_entry( $entry = array() ) {
 		if ( array_key_exists( $key, $entry['form_fields'] ) ) {
 			switch ( $field['type'] ) {
 				case 'email':
-					$entry['form_fields'][ $key ] = sanitize_email( $entry['form_fields'][ $key ] );
+					if ( isset( $entry['form_fields'][ $key ]['primary'] ) ) {
+						$entry['form_fields'][ $key ]['primary']   = sanitize_email( $entry['form_fields'][ $key ]['primary'] );
+						$entry['form_fields'][ $key ]['secondary'] = sanitize_email( $entry['form_fields'][ $key ]['secondary'] );
+					} else {
+						$entry['form_fields'][ $key ] = sanitize_email( $entry['form_fields'][ $key ] );
+					}
 					break;
 				case 'file-upload':
 				case 'signature':

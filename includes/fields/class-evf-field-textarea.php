@@ -30,6 +30,7 @@ class EVF_Field_Textarea extends EVF_Form_Fields {
 					'description',
 					'required',
 					'required_field_message',
+					'readonly',
 				),
 			),
 			'advanced-options' => array(
@@ -196,7 +197,7 @@ class EVF_Field_Textarea extends EVF_Form_Fields {
 
 		// Primary field.
 		printf(
-			'<textarea %s %s>%s</textarea>',
+			'<textarea %s %s >%s</textarea>',
 			evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ),
 			esc_attr( $primary['required'] ),
 			esc_html( $value )

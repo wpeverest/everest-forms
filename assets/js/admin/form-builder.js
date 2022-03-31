@@ -208,7 +208,29 @@
 					$( this ).addClass( 'is-active' );
 					EVFPanelBuilder.updateEnhandedSelectField( $( event.target ).parents( '.everest-forms-field-option-row-choices' ).data().fieldId, 'multiple' === $( this ).data( 'selection' ) );
 				}
+
+				// Show 'Select All' Checkbox for Dropdown field only if multiple selection is active
+				if( 'multiple' === $(this).data('selection') && 'checkbox' === $(this).data('type') && $( this).hasClass( 'is-active' ) ) {
+					var $field_id = $(this).parent().parent().data('field-id');
+					$('#everest-forms-field-option-row-'+$field_id+'-select_all').show();
+				} else {
+					var $field_id = $(this).parent().parent().data('field-id');
+					$('#everest-forms-field-option-row-'+$field_id+'-select_all').hide();
+				}
 			} );
+
+			// By default hide the 'Select All' checkbox for Dropdown field
+			$(document.body).on('click', '.everest-forms-field, .everest-forms-field-select[data-field-type="select"]', function () {
+				$builder.find('.everest-forms-field-option-row-choices .everest-forms-btn-group span').each(function () {
+					var $field_id = $(this).parent().parent().data('field-id');
+
+					if( 'multiple' === $(this).data('selection') && 'checkbox' === $(this).data('type') && $( this).hasClass( 'is-active' ) ) {
+						$('#everest-forms-field-option-'+$field_id+'-select_all').parent().show();
+					} else {
+						$('#everest-forms-field-option-'+$field_id+'-select_all').parent().hide();
+					}
+				});
+			});
 
 			// Search fields input.
 			$builder.on( 'keyup', '.everest-forms-search-fields', function() {
@@ -1758,6 +1780,28 @@
 				var form_data  = $form.serializeArray();
 				var form_title = $( '#evf-edit-form-name' ).val().trim();
 
+				var select_id_name = {};
+
+				$('.everest-forms-field-option-row').find('.evf-select2-multiple').filter(function(){
+					var this_id 	   = $(this).attr('id');
+					var this_name 	   = $(this).attr('name');
+					var this_parent_id = $(this).parent().attr('id');
+					if(this_id.split("-option-")[1] === this_parent_id.split("-option-row-")[1]){
+						select_id_name[this_id] = this_name;
+					}
+					return select_id_name;
+				});
+
+				if((Object.keys(select_id_name).length) > 0){
+					$.each(select_id_name, function (id, name) {
+						var countries  = [];
+						$.each($('#'+id+' option:selected'), function () {
+							countries.push($(this).val());
+						});
+						form_data.push({name: name, value: countries.toString()});
+					});
+				}
+
 				if ( '' === form_title ) {
 					$.alert({
 						title: evf_data.i18n_field_title_empty,
@@ -2812,7 +2856,7 @@ jQuery( function ( $ ) {
 		}
 
 		if ( 'calculations' === type ) {
-			var calculations = [ 'number' ]
+			var calculations = [ 'number', 'payment-single', 'range-slider' ]
 			$(document).find('.everest-forms-field').each(function() {
 				if( calculations.includes($(this).attr('data-field-type')) && $(el).parents('.everest-forms-field-option-row-calculation_field').attr('data-field-id') !== $(this).attr('data-field-id')) {
 					$(el).parent().find('.evf-smart-tag-lists .calculations').append('<li class = "smart-tag-field" data-type="field" data-field_id="'+$(this).attr('data-field-id')+'">'+$(this).find('.label-title .text').text()+'</li>');
