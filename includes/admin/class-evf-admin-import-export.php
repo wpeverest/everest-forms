@@ -175,10 +175,16 @@ class EVF_Admin_Import_Export {
 			} else {
 				wp_send_json_error(
 					array(
-						'message' => esc_html__( 'Please select json file to import form data.', 'everest-forms' ),
+						'message' => esc_html__( 'Invalid file format. Only JSON File Allowed.', 'everest-forms' ),
 					)
 				);
 			}
+		} else {
+			wp_send_json_error(
+				array(
+					'message' => esc_html__( 'Please select json file to import form data.', 'everest-forms' ),
+				)
+			);
 		}
 	}
 
