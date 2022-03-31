@@ -283,10 +283,13 @@
 	});
 
 	$( '.everest_forms_import_action' ).on( 'click', function() {
-		var file_data = $( '#everest-forms-import' ).prop( 'files' )[0],
+		var file_data = $( '#everest-forms-import' ).prop( 'files' ),
 			form_data = new FormData();
 
-		form_data.append( 'jsonfile', file_data );
+		for ( let i = 0; i < file_data.length; i++ ) {
+			form_data.append( 'jsonfiles[]', file_data[i] );
+		}
+
 		form_data.append( 'action', 'everest_forms_import_form_action' );
 		form_data.append( 'security', everest_forms_admin.ajax_import_nonce );
 
