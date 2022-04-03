@@ -261,11 +261,10 @@ class EVF_Log_Handler_File extends EVF_Log_Handler {
 	 * @return bool
 	 */
 	public function remove_all() {
-
 		$removed = false;
 		$logs    = $this->get_log_files();
 
-		if ( count( logs ) ) {
+		if ( count( $logs ) ) {
 			foreach ( $logs as $key => $log ) {
 				$file = realpath( trailingslashit( EVF_LOG_DIR ) . $log );
 				if ( 0 === stripos( $file, realpath( trailingslashit( EVF_LOG_DIR ) ) ) && is_file( $file ) && is_writable( $file ) ) { // phpcs:ignore WordPress.VIP.FileSystemWritesDisallow.file_ops_is_writable
@@ -274,7 +273,6 @@ class EVF_Log_Handler_File extends EVF_Log_Handler {
 				}
 			}
 		}
-
 		return $removed;
 	}
 
