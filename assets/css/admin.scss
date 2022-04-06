@@ -2367,7 +2367,7 @@ p.search-box {
 					}
 
 					.everest-forms-active-connections,
-					.everest-forms-active-email {
+					.everest-forms-active-email,.everest-forms-active-twilio {
 						display: none;
 						padding: 0 20px;
 						margin-top: -2px;
@@ -2391,7 +2391,8 @@ p.search-box {
 						}
 
 						.everest-forms-active-connections-list,
-						.everest-forms-active-email-connections-list {
+						.everest-forms-active-email-connections-list,
+						.everest-forms-active-twilio-connections-list {
 							width: 100%;
 							padding: 20px;
 							display: flex;
@@ -3671,7 +3672,23 @@ p.search-box {
 				}
 			}
 
-			.evf-content-email-settings-inner {
+			.evf-content-email-settings-inner{
+				display: none;
+				-webkit-animation: fadeIn 0.5s;
+				animation: fadeIn 0.5s;
+				margin: 20px 0;
+				border-radius: 4px;
+
+				&.active-connection {
+					display: block;
+
+					&.everest-forms-hidden {
+						display: none;
+					}
+				}
+			}
+
+			.evf-content-twilio-settings-inner{
 				display: none;
 				-webkit-animation: fadeIn 0.5s;
 				animation: fadeIn 0.5s;
@@ -3818,6 +3835,32 @@ p.search-box {
 						background: $color-white;
 					}
 				}
+
+				.evf-content-twilio-settings {
+					.evf-content-twilio-settings-inner {
+						padding: 20px 20px 0;
+						border: 1px solid $color_gray-lighten;
+
+						.everest-forms-twilio-name {
+							background: $color_gray-light-skin;
+							margin-left: -20px;
+							margin-top: -20px;
+							margin-right: -20px;
+							padding: 20px;
+							border-radius: 4px 4px 0 0;
+							border-bottom: 1px solid $color_gray-lighten;
+
+							input[type='text'] {
+								font-weight: 600;
+							}
+
+							.everest-forms-text-danger {
+								margin: 10px 0 0;
+							}
+						}
+					}
+				}
+
 
 				.evf-content-email-settings {
 					.evf-content-email-settings-inner {

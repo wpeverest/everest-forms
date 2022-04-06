@@ -88,6 +88,7 @@ class EVF_AJAX {
 			'install_extension'       => false,
 			'integration_connect'     => false,
 			'new_email_add'           => false,
+			'new_twilio_add'          => false,
 			'integration_disconnect'  => false,
 			'deactivation_notice'     => false,
 			'rated'                   => false,
@@ -642,6 +643,27 @@ class EVF_AJAX {
 			)
 		);
 	}
+
+	/**
+	 * AJAX Email Add.
+	 */
+	public static function new_twilio_add() {
+		check_ajax_referer( 'process-ajax-nonce', 'security' );
+
+		// Check permissions.
+		if ( ! current_user_can( 'everest_forms_edit_forms' ) ) {
+			wp_die( -1 );
+		}
+
+		$connection_id = 'connection_' . uniqid();
+
+		wp_send_json_success(
+			array(
+				'connection_id' => $connection_id,
+			)
+		);
+	}
+
 
 	/**
 	 * AJAX Integration disconnect.

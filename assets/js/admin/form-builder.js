@@ -378,6 +378,7 @@
 			EVFPanelBuilder.bindRemoveRow();
 			EVFPanelBuilder.bindFormSettings();
 			EVFPanelBuilder.bindFormEmail();
+			EVFPanelBuilder.bindFormTwilio();
 			EVFPanelBuilder.bindFormIntegrations();
 			EVFPanelBuilder.bindFormPayment();
 			EVFPanelBuilder.choicesInit();
@@ -1267,6 +1268,7 @@
 				var data_setting_section = $(this).attr('data-section');
 				$('.evf-setting-panel').removeClass('active');
 				$('.everest-forms-active-email').removeClass('active');
+				$('.everest-forms-active-twilio').removeClass('active');
 				$('.evf-content-section').removeClass('active');
 				$(this).addClass('active');
 				$('.evf-content-' + data_setting_section + '-settings').addClass('active');
@@ -1278,8 +1280,21 @@
 		bindFormEmail: function () {
 			$('body').on('click', '.everest-forms-panel-sidebar-section-email', function ( e ) {
 				$(this).siblings('.everest-forms-active-email').removeClass('active');
-				$(this).next('.everest-forms-active-email').addClass('active');
+				 $(this).next('.everest-forms-active-email').addClass('active');
 				var container = $( this ).siblings('.everest-forms-active-email.active').find('.everest-forms-active-email-connections-list li');
+
+				if( container.length ){
+					container.children('.user-nickname').first().trigger('click');
+				}
+				e.preventDefault();
+			});
+		},
+
+		bindFormTwilio: function () {
+			$('body').on('click', '.everest-forms-panel-sidebar-section-twilio', function ( e ) {
+				$(this).siblings('.everest-forms-active-twilio').removeClass('active');
+				$(this).next('.everest-forms-active-twilio').addClass('active');
+				var container = $( this ).siblings('.everest-forms-active-twilio.active').find('.everest-forms-active-twilio-connections-list li');
 
 				if( container.length ){
 					container.children('.user-nickname').first().trigger('click');
