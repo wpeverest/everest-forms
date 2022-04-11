@@ -5612,6 +5612,8 @@ img.ui-datepicker-trigger {
 	}
 }
 
+
+
 /**
    * Optimisation for screens 782px and smaller.
    **/
@@ -5727,6 +5729,20 @@ img.ui-datepicker-trigger {
 				a {
 					width: 200px;
 				}
+			}
+		}
+	}
+}
+
+.evf-content-section {
+	.everest-forms-panel-field {
+		.evf-webhook-headers-wrapper {
+			margin-bottom: 16px;
+
+			.evf-webhook-header {
+				display: flex;
+				align-items: center;
+				column-gap: 24px;
 			}
 		}
 	}
