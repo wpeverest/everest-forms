@@ -4665,7 +4665,11 @@ p.search-box {
 		margin: 0;
 		font-size: 20px;
 		padding-bottom: 16px;
-		border-bottom: 2px solid $color_gray-more-lighten;
+		border-bottom: 2px solid $color_gray-more-lighten; 
+	}
+
+	h4 {
+		margin: 16px 0 8px
 	}
 
 	p {
@@ -4725,6 +4729,14 @@ p.search-box {
 		padding-top: 20px;
 		text-align: right;
 		border-top: 2px solid $color_gray-more-lighten;
+	}
+
+	#evf-tools-entries-export-options-date {
+		margin-bottom: 16px;
+		
+		label:nth-child(3) {
+			margin-left: 14px;
+		}
 	}
 }
 
@@ -5330,6 +5342,10 @@ img.ui-datepicker-trigger {
 .select2-drop,
 .select2-dropdown {
 	z-index: 999999 !important;
+
+	.everest-forms-btn {
+		margin: 8px 4px;
+	}
 }
 
 .select2-results {
