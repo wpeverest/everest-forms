@@ -282,6 +282,7 @@ function evf_get_log_file_path( $handle ) {
  * @since 1.3.0
  *
  * @param  string $handle Name.
+ * @param  string $extension Extension Type.
  * @return bool|string The csv file name or false if cannot be determined.
  */
 function evf_get_csv_file_name( $handle, $extension = 'csv' ) {
