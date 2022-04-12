@@ -96,11 +96,7 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 			$columns['user_ip_address'] = esc_html__( 'User IP Address', 'everest-forms' );
 		}
 
-		if ( ! empty( $this->request_data ) ) {
-			return apply_filters( "everest_forms_export_{$this->export_type}_default_columns", $columns, $this->request_data );
-		} else {
-			return apply_filters( "everest_forms_export_{$this->export_type}_default_columns", $columns );
-		}
+		return apply_filters( "everest_forms_export_{$this->export_type}_default_columns", $columns, $this->request_data );
 	}
 
 	/**
@@ -293,11 +289,7 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 			$row[ $column_id ] = apply_filters( 'everest_forms_format_csv_field_data', preg_match( '/textarea/', $column_type ) ? sanitize_textarea_field( $value ) : sanitize_text_field( $value ), $raw_value, $column_id, $column_name, $columns, $entry );
 		}
 
-		if ( ! empty( $this->request_data ) ) {
-			return apply_filters( 'everest_forms_entry_export_row_data', $row, $entry, $this->request_data );
-		} else {
-			return apply_filters( 'everest_forms_entry_export_row_data', $row, $entry );
-		}
+		return apply_filters( 'everest_forms_entry_export_row_data', $row, $entry, $this->request_data );
 	}
 
 	/**
