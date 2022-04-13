@@ -8,9 +8,10 @@ jQuery( function( $ ) {
 				var formTuple = $( v ),
 					btn = formTuple.find( '.evf-submit' ),
 					stripeForms = formTuple.find( "[data-gateway*='stripe']" );
-				// If it's an ajax form containing a stripe gateway, donot latch into the button.
+				  var  razorpayForms = formTuple.find( "[data-gateway='razorpay']" );
+				// If it's an ajax form containing a stripe gateway, do not latch into the button.
 
-				if ( stripeForms.length > 0  && 0 === stripeForms.children.length ) {
+				if ( stripeForms.length > 0  && 0 === stripeForms.children.length || razorpayForms.length > 0  ) {
 					return;
 				}
 
@@ -86,11 +87,15 @@ jQuery( function( $ ) {
 							}
 
 							var paymentMethod = formTuple.find( ".everest-forms-stripe-gateways-tabs .evf-tab" ).has( 'a.active' ).data( 'gateway' );
+							var razorpay_paymentMethod = formTuple.find( ".everest-forms-razorpay[data-gateway='razorpay']" ).data( 'gateway' );
+
+
 							if(undefined === paymentMethod) {
 								paymentMethod = formTuple.find( ".everest-forms-gateway[data-gateway='ideal']" ).data( 'gateway' );
 							}
 
-							if( 'ideal' === paymentMethod && 'none' !== formTuple.find( ".everest-forms-gateway[data-gateway='ideal']" ).closest( '.evf-field' ).css( 'display' )  ) {
+
+							if( 'ideal' === paymentMethod && 'none' !== formTuple.find( ".everest-forms-gateway[data-gateway='ideal']" ).closest( '.evf-field' ).css( 'display' ) ||  'razorpay' === razorpay_paymentMethod  ) {
 								formTuple.trigger( 'evf_process_payment', xhr.data );
 								return;
 							}
