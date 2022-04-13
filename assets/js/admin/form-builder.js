@@ -374,6 +374,7 @@
 			EVFPanelBuilder.bindCloneField();
 			EVFPanelBuilder.bindSaveOption();
 			EVFPanelBuilder.bindSaveOptionWithKeyEvent();
+			EVFPanelBuilder.bindOpenShortcutKeysModalWithKeyEvent();
 			EVFPanelBuilder.bindAddNewRow();
 			EVFPanelBuilder.bindRemoveRow();
 			EVFPanelBuilder.bindFormSettings();
@@ -1903,6 +1904,34 @@
 					) {
 						e.preventDefault();
 						$('.everest-forms-save-button').trigger('click');
+					}
+				}
+			});
+		},
+		bindOpenShortcutKeysModalWithKeyEvent: function() {
+			$('body').on("keydown", function (e) {
+				if ( e.ctrlKey || e.metaKey ) {
+					if( 'h' === String.fromCharCode(e.which).toLowerCase() || 72 === e.which ) {
+						e.preventDefault();
+						var shortcut_keys_html = '';
+
+						$.each(evf_data.i18n_shortcut_keys, function (key, value) {
+							shortcut_keys_html += `<span>${key} : ${value}</span><br />`;
+						});
+
+						$.alert({
+							title: evf_data.i18n_shortcut_key_title,
+							content: shortcut_keys_html,
+							icon: 'dashicons dashicons-info',
+							type: 'blue',
+							buttons : {
+								confirm : {
+									text: evf_data.i18n_close,
+									btnClass: 'btn-confirm',
+									keys: ['enter']
+								}
+							}
+						});
 					}
 				}
 			});
