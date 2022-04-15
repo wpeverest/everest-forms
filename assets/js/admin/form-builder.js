@@ -1916,7 +1916,7 @@
 						var shortcut_keys_html = '';
 
 						$.each(evf_data.i18n_shortcut_keys, function (key, value) {
-							shortcut_keys_html += `<span>${key} : ${value}</span><br />`;
+							shortcut_keys_html += `<span>${key} : ${value}</span>`;
 						});
 
 						$.alert({
