@@ -24,19 +24,6 @@
 //Utilities
 @import 'utility/display', 'utility/spacing', 'utility/border';
 
-//Everest-forms icon
-@font-face {
-	font-family: 'EverestForms';
-	src:  url('fonts/EverestForms.eot?5c6kq4');
-	src:  url('fonts/EverestForms.eot?5c6kq4#iefix') format('embedded-opentype'),
-	url('fonts/EverestForms.ttf?5c6kq4') format('truetype'),
-	url('fonts/EverestForms.woff?5c6kq4') format('woff'),
-	url('fonts/EverestForms.svg?5c6kq4#EverestForms') format('svg');
-	font-weight: normal;
-	font-style: normal;
-	font-display: block;
-}
-
 /**
    * Styling begins
    */
@@ -976,9 +963,6 @@ body.everest-forms-builder {
 						&.permission::before {
 							content: '\e030';
 						}
-						&.evf-widget::before {
-							content: '\e902';
-						}
 						&.geolocation::before {
 							content: '\e900';
 						}
@@ -1637,6 +1621,27 @@ body.everest-forms-builder {
 		}
 	}
 }
+
+.jconfirm-box-container {
+	.jconfirm-box {
+		.jconfirm-title-c {
+			.jconfirm-title {
+				text-transform: capitalize;
+			}
+		}
+		.jconfirm-content-pane {
+			.jconfirm-content {
+				 div {
+					display: flex;
+					flex-direction: column;
+					row-gap: 8px;
+					font-weight: 500;
+				}
+			}
+		}
+	}
+}
+
 // Entries page
 #evf-dashboard-analytisc-body {
 	&::after,
@@ -5628,6 +5633,8 @@ img.ui-datepicker-trigger {
 	}
 }
 
+
+
 /**
    * Optimisation for screens 782px and smaller.
    **/
@@ -5743,6 +5750,20 @@ img.ui-datepicker-trigger {
 				a {
 					width: 200px;
 				}
+			}
+		}
+	}
+}
+
+.evf-content-section {
+	.everest-forms-panel-field {
+		.evf-webhook-headers-wrapper {
+			margin-bottom: 16px;
+
+			.evf-webhook-header {
+				display: flex;
+				align-items: center;
+				column-gap: 24px;
 			}
 		}
 	}
@@ -5961,15 +5982,6 @@ img.ui-datepicker-trigger {
 	}
 }
 
-#elementor-editor-wrapper .everest-icon:before,
-.elementor-edit-area .everest-icon:before {
-	content: '\e902';
-	font-family: "EverestForms";
-	font-weight: normal;
-	font-style: normal;
-	font-display: block;
-}
-
 .everest-forms-field.ui-sortable-helper .evf-field-action {
 	display: none;
 }
@@ -5998,7 +6010,7 @@ img.ui-datepicker-trigger {
 		background-color: #fff;
 		border: 1px solid #cdd0d8;
 		color: #6c7680;
-
+	
 		.evf-icon {
 			padding: 0 8px;
 			border-radius: 4px;
