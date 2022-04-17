@@ -5737,12 +5737,15 @@ img.ui-datepicker-trigger {
 .evf-content-section {
 	.everest-forms-panel-field {
 		.evf-webhook-headers-wrapper {
+			display: flex;
+			flex-direction: column;
+			row-gap: 16px;
 			margin-bottom: 16px;
 
 			.evf-webhook-header {
 				display: flex;
 				align-items: center;
-				column-gap: 24px;
+				column-gap: 16px;
 			}
 		}
 	}
