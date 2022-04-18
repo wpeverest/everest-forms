@@ -1621,27 +1621,6 @@ body.everest-forms-builder {
 		}
 	}
 }
-
-.jconfirm-box-container {
-	.jconfirm-box {
-		.jconfirm-title-c {
-			.jconfirm-title {
-				text-transform: capitalize;
-			}
-		}
-		.jconfirm-content-pane {
-			.jconfirm-content {
-				 div {
-					display: flex;
-					flex-direction: column;
-					row-gap: 8px;
-					font-weight: 500;
-				}
-			}
-		}
-	}
-}
-
 // Entries page
 #evf-dashboard-analytisc-body {
 	&::after,
@@ -5758,12 +5737,15 @@ img.ui-datepicker-trigger {
 .evf-content-section {
 	.everest-forms-panel-field {
 		.evf-webhook-headers-wrapper {
+			display: flex;
+			flex-direction: column;
+			row-gap: 16px;
 			margin-bottom: 16px;
 
 			.evf-webhook-header {
 				display: flex;
 				align-items: center;
-				column-gap: 24px;
+				column-gap: 16px;
 			}
 		}
 	}
@@ -6016,6 +5998,37 @@ img.ui-datepicker-trigger {
 			border-radius: 4px;
 			font-size: 24px;
 			vertical-align: middle;
+		}
+	}
+}
+
+.jconfirm-content-pane {
+	height: auto !important;
+	max-height: unset;
+
+	.evf-shortcut-keyword {
+		margin-bottom: 18px;
+
+		.evf-shortcut-title {
+			flex: 3;
+		}
+
+		li {
+			display: flex;
+			align-items: center;
+
+			.evf-key {
+				display: flex;
+				flex: 2;
+				column-gap: 8px;
+
+				span {
+					border: 1px solid black;
+					padding: 4px 0;
+					width: 40px;
+					border-radius: 2px;
+				}
+			}
 		}
 	}
 }
