@@ -6004,7 +6004,6 @@ img.ui-datepicker-trigger {
 
 .jconfirm-content-pane {
 	height: auto !important;
-	max-height: unset;
 
 	.evf-shortcut-keyword {
 		margin-bottom: 18px;
@@ -6021,9 +6020,11 @@ img.ui-datepicker-trigger {
 				display: flex;
 				flex: 2;
 				column-gap: 8px;
+				color: #3498DB;
 
 				span {
-					border: 1px solid black;
+					border: 1px solid #3498DB;
+					background-color: #3498db13;
 					padding: 4px 0;
 					width: 40px;
 					border-radius: 2px;
