@@ -1916,7 +1916,17 @@
 						var shortcut_keys_html = '';
 
 						$.each(evf_data.i18n_shortcut_keys, function (key, value) {
-							shortcut_keys_html += `<span>${key} : ${value}</span>`;
+							shortcut_keys_html += `
+								<ul class="evf-shortcut-keyword">
+									<li>
+										<div class="evf-shortcut-title">${value}</div>
+									<div class="evf-key">
+										<span>${key.split('+')[0]}</span>
+										<span>${key.split('+')[1]}</span>
+									</div>
+									</li>
+								</ul>
+							`;
 						});
 
 						$.alert({
