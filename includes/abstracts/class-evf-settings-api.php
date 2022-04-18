@@ -314,20 +314,26 @@ abstract class EVF_Settings_API {
 			$form_fields = $this->get_form_fields();
 		}
 
-		$html = '';
-		foreach ( $form_fields as $k => $v ) {
-			$type = $this->get_field_type( $v );
-
-			if ( method_exists( $this, 'generate_' . $type . '_html' ) ) {
-				$html .= $this->{'generate_' . $type . '_html'}( $k, $v );
-			} else {
-				$html .= $this->generate_text_html( $k, $v );
-			}
-		}
-
 		if ( $echo ) {
-			echo wp_kses( $output, evf_get_allowed_html_tags( 'builder' ) );
+			foreach ( $form_fields as $k => $v ) {
+				$type = $this->get_field_type( $v );
+				if ( method_exists( $this, 'generate_' . $type . '_html' ) ) {
+					echo $this->{'generate_' . $type . '_html'}( $k, $v ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				} else {
+					echo $this->generate_text_html( $k, $v ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				}
+			}
 		} else {
+			$html = '';
+			foreach ( $form_fields as $k => $v ) {
+				$type = $this->get_field_type( $v );
+
+				if ( method_exists( $this, 'generate_' . $type . '_html' ) ) {
+					$html .= $this->{'generate_' . $type . '_html'}( $k, $v );
+				} else {
+					$html .= $this->generate_text_html( $k, $v );
+				}
+			}
 			return $html;
 		}
 	}

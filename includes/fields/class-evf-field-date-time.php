@@ -702,7 +702,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 
 				// For Years.
 				printf(
-					'<select value="%s" %s>',
+					'<select value="%s" %s >',
 					esc_attr( gmdate( 'Y' ) ),
 					evf_html_attributes( 'year-select-' . esc_attr( $primary['id'] ) )
 				);
@@ -722,7 +722,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 
 				// For Months.
 				printf(
-					'<select value="%s" %s>',
+					'<select value="%s" %s >',
 					esc_attr( gmdate( 'm' ) ),
 					evf_html_attributes( 'month-select-' . esc_attr( $primary['id'] ) )
 				);
@@ -740,7 +740,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 
 				// For Days.
 				printf(
-					'<select value="%s" %s>',
+					'<select value="%s" %s >',
 					esc_attr( gmdate( 'd' ) ),
 					evf_html_attributes( 'day-select-' . esc_attr( $primary['id'] ) )
 				);

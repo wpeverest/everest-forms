@@ -62,6 +62,7 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 					'choice_limit',
 					'label_hide',
 					'css',
+					'select_all',
 				),
 			),
 		);
@@ -318,6 +319,32 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 	}
 
 	/**
+	 * Select All checkbox.
+	 *
+	 * @since 1.8.4
+	 * @param array $field Field data.
+	 */
+	public function select_all( $field ) {
+		$fld = $this->field_element(
+			'checkbox',
+			$field,
+			array(
+				'slug'    => 'select_all',
+				'value'   => isset( $field['select_all'] ) ? '1' : '0',
+				'desc'    => esc_html__( 'Select All', 'everest-forms' ),
+				'tooltip' => esc_html__( 'Check this option to select all the options.', 'everest-forms' ),
+			),
+			false
+		);
+
+		$args = array(
+			'slug'    => 'select_all',
+			'content' => $fld,
+		);
+		$this->field_element( 'row', $field, $args );
+	}
+
+	/**
 	 * Field preview inside the builder.
 	 *
 	 * @since 1.0.0
@@ -346,11 +373,17 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 	 */
 	public function field_display( $field, $field_atts, $form_data ) {
 		// Define data.
-		$container = $field['properties']['input_container'];
-		$choices   = $field['properties']['inputs'];
+		$container  = $field['properties']['input_container'];
+		$choices    = $field['properties']['inputs'];
+		$select_all = isset( $field['select_all'] ) ? $field['select_all'] : '0';
 
 		// List.
 		printf( '<ul %s>', evf_html_attributes( $container['id'], $container['class'], $container['data'], $container['attr'] ) );
+
+		// Select All Checkbox.
+		if ( '1' === $select_all ) {
+			printf( '<li class="evf-select-all-checkbox-li"><input type="checkbox" id="evfCheckAll" class="evf-select-all-checkbox"><label for="evfCheckAll">' . esc_html__( 'Select All', 'everest-forms' ) . '</label></li>' );
+		}
 
 		foreach ( $choices as $choice ) {
 			if ( empty( $choice['container'] ) ) {
@@ -360,7 +393,6 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 			// Conditional logic.
 			if ( isset( $choices['primary'] ) ) {
 				$choice['attr']['conditional_id'] = $choices['primary']['attr']['conditional_id'];
-
 				if ( isset( $choices['primary']['attr']['conditional_rules'] ) ) {
 					$choice['attr']['conditional_rules'] = $choices['primary']['attr']['conditional_rules'];
 				}
@@ -387,7 +419,6 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 				echo '<br>';
 
 				$choice['attr']['tabindex'] = '-1';
-
 				printf( '<input type="checkbox" %s %s %s>', evf_html_attributes( $choice['id'], $choice['class'], $choice['data'], $choice['attr'] ), esc_attr( $choice['required'] ), checked( '1', $choice['default'], false ) );
 				echo '<label class="everest-forms-image-choices-label">' . wp_kses_post( $choice['label']['text'] ) . '</label>';
 				echo '</label>';

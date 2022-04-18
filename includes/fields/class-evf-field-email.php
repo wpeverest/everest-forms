@@ -296,7 +296,7 @@ class EVF_Field_Email extends EVF_Form_Fields {
 
 			// Primary field.
 			printf(
-				'<input type="email" %s %s>',
+				'<input type="email" %s %s >',
 				evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ),
 				esc_attr( $primary['required'] )
 			);

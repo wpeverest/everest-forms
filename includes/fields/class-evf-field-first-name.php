@@ -79,7 +79,6 @@ class EVF_Field_First_Name extends EVF_Form_Fields {
 	public function field_display( $field, $field_atts, $form_data ) {
 		// Define data.
 		$primary = $field['properties']['inputs']['primary'];
-
 		// Primary field.
 		printf(
 			'<input type="text" %s %s>',

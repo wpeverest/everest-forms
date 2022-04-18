@@ -48,6 +48,9 @@ class EVF_Shortcode_Form {
 			add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'recaptcha' ), 20, 3 );
 		}
 		add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'footer' ), 25, 3 );
+
+		// reCaptcha Language.
+		add_filter( 'everest_forms_frontend_recaptcha_url', array( __CLASS__, 'evf_recaptcha_language' ), 10, 1 );
 	}
 
 	/**
@@ -149,7 +152,7 @@ class EVF_Shortcode_Form {
 			! isset( $settings['submit_button_processing_text'] ) ? 'data-process-text="' . esc_attr__( 'Processing&hellip;', 'everest-forms' ) . '"' : ( ! empty( $settings['submit_button_processing_text'] ) ? 'data-process-text="' . esc_attr( evf_string_translation( $form_data['id'], 'processing_text', $settings['submit_button_processing_text'] ) ) . '"' : '' ),
 			esc_attr( $conditional_rules ),
 			esc_attr( $conditional_id ),
-			'style="display:' . ( ! empty( self::$parts[ $form_id ] ) ? 'none' : 'block' ) . '"',
+			( ! empty( self::$parts[ $form_id ] ) ? 'style="display:none"' : '' ),
 			evf_html_attributes(
 				sprintf( 'evf-submit-%d', absint( $form_id ) ),
 				$evf_amp_classes,
@@ -220,7 +223,7 @@ class EVF_Shortcode_Form {
 		printf(
 			'<div %s>%s</div>',
 			evf_html_attributes( $description['id'], $description['class'], $description['data'], $description['attr'] ),
-			wp_kses( evf_string_translation( $form_data['id'], $field['id'], $description['value'], '-description' ), evf_get_allowed_html_tags( 'builder' ) )
+			wp_kses_post( evf_string_translation( $form_data['id'], $field['id'], $description['value'], '-description' ) )
 		);
 	}
 
@@ -277,8 +280,8 @@ class EVF_Shortcode_Form {
 					'strong' => array(),
 				)
 			),
-			wp_kses( $required, evf_get_allowed_html_tags( 'builder' ) ),
-			wp_kses( $custom_tags, evf_get_allowed_html_tags( 'builder' ) )
+			wp_kses_post( $required ),
+			wp_kses_post( $custom_tags )
 		);
 	}
 
@@ -463,9 +466,9 @@ class EVF_Shortcode_Form {
 		if ( isset( $form_data['settings']['honeypot'] ) && '1' === $form_data['settings']['honeypot'] ) {
 			echo '<div class="evf-honeypot-container evf-field-hp">';
 
-				echo '<label for="evf-' . esc_attr( $form_data['id'] ) . '-field-hp" class="evf-field-label">' . esc_attr( $names[ array_rand( $names ) ] ) . '</label>';
+			echo '<label for="evf-' . esc_attr( $form_data['id'] ) . '-field-hp" class="evf-field-label">' . esc_attr( $names[ array_rand( $names ) ] ) . '</label>';
 
-				echo '<input type="text" name="everest_forms[hp]" id="evf-' . esc_attr( $form_data['id'] ) . '-field-hp" class="input-text">';
+			echo '<input type="text" name="everest_forms[hp]" id="evf-' . esc_attr( $form_data['id'] ) . '-field-hp" class="input-text">';
 
 			echo '</div>';
 		}
@@ -499,8 +502,8 @@ class EVF_Shortcode_Form {
 		}
 		// Check that the CAPTCHA is configured for the specific form.
 		if (
-			! isset( $form_data['settings']['recaptcha_support'] ) ||
-			'1' !== $form_data['settings']['recaptcha_support']
+		! isset( $form_data['settings']['recaptcha_support'] ) ||
+		'1' !== $form_data['settings']['recaptcha_support']
 		) {
 			return;
 		}
@@ -552,13 +555,13 @@ class EVF_Shortcode_Form {
 						$recaptcha_inline .= 'var EVFRecaptchaCallback = function(el){jQuery(el).parent().find(".evf-recaptcha-hidden").val("1").trigger("change").valid();};';
 					}
 				} elseif ( 'v3' === $recaptcha_type ) {
-					$recaptcha_api    = apply_filters( 'everest_forms_frontend_recaptcha_url', 'https://www.google.com/recaptcha/api.js?render=' . $site_key, $recaptcha_type, $form_id );
-					$recaptcha_inline = 'var EVFRecaptchaLoad = function(){grecaptcha.execute("' . esc_html( $site_key ) . '",{action:"everest_form"}).then(function(token){var f=document.getElementsByName("everest_forms[recaptcha]");for(var i=0;i<f.length;i++){f[i].value = token;}});};grecaptcha.ready(EVFRecaptchaLoad);setInterval(EVFRecaptchaLoad, 110000);';
+					$recaptcha_api     = apply_filters( 'everest_forms_frontend_recaptcha_url', 'https://www.google.com/recaptcha/api.js?render=' . $site_key, $recaptcha_type, $form_id );
+					$recaptcha_inline  = 'var EVFRecaptchaLoad = function(){grecaptcha.execute("' . esc_html( $site_key ) . '",{action:"everest_form"}).then(function(token){var f=document.getElementsByName("everest_forms[recaptcha]");for(var i=0;i<f.length;i++){f[i].value = token;}});};grecaptcha.ready(EVFRecaptchaLoad);setInterval(EVFRecaptchaLoad, 110000);';
 					$recaptcha_inline .= 'grecaptcha.ready(function(){grecaptcha.execute("' . esc_html( $site_key ) . '",{action:"everest_form"}).then(function(token){var f=document.getElementsByName("everest_forms[recaptcha]");for(var i=0;i<f.length;i++){f[i].value = token;}});});';
 				} elseif ( 'hcaptcha' === $recaptcha_type ) {
-						$recaptcha_api     = apply_filters( 'everest_forms_frontend_recaptcha_url', 'https://hcaptcha.com/1/api.js??onload=EVFRecaptchaLoad&render=explicit', $recaptcha_type, $form_id );
-						$recaptcha_inline  = 'var EVFRecaptchaLoad = function(){jQuery(".g-recaptcha").each(function(index, el){var recaptchaID =  hcaptcha.render(el,{callback:function(){EVFRecaptchaCallback(el);}},true);jQuery(el).attr( "data-recaptcha-id", recaptchaID);});};';
-						$recaptcha_inline .= 'var EVFRecaptchaCallback = function(el){jQuery(el).parent().find(".evf-recaptcha-hidden").val("1").trigger("change").valid();};';
+					$recaptcha_api     = apply_filters( 'everest_forms_frontend_recaptcha_url', 'https://hcaptcha.com/1/api.js??onload=EVFRecaptchaLoad&render=explicit', $recaptcha_type, $form_id );
+					$recaptcha_inline  = 'var EVFRecaptchaLoad = function(){jQuery(".g-recaptcha").each(function(index, el){var recaptchaID =  hcaptcha.render(el,{callback:function(){EVFRecaptchaCallback(el);}},true);jQuery(el).attr( "data-recaptcha-id", recaptchaID);});};';
+					$recaptcha_inline .= 'var EVFRecaptchaCallback = function(el){jQuery(el).parent().find(".evf-recaptcha-hidden").val("1").trigger("change").valid();};';
 				}
 
 				// Enqueue reCaptcha scripts.
@@ -573,8 +576,8 @@ class EVF_Shortcode_Form {
 				// Load reCaptcha callback once.
 				static $count = 1;
 				if ( 1 === $count ) {
-					wp_add_inline_script( 'evf-recaptcha', $recaptcha_inline );
-					$count++;
+						wp_add_inline_script( 'evf-recaptcha', $recaptcha_inline );
+						$count++;
 				}
 
 				// Output the reCAPTCHA container.
@@ -821,6 +824,9 @@ class EVF_Shortcode_Form {
 		$atts = shortcode_atts(
 			array(
 				'id'          => false,
+				'type'        => false,
+				'size'        => false,
+				'text'        => false,
 				'title'       => false,
 				'description' => false,
 			),
@@ -832,18 +838,21 @@ class EVF_Shortcode_Form {
 		do_action( 'everest_forms_shortcode_scripts', $atts );
 
 		ob_start();
-		self::view( $atts['id'], $atts['title'], $atts['description'] );
+		self::view( $atts );
 		echo ob_get_clean(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
 	 * Form view.
 	 *
-	 * @param int  $id Form ID.
-	 * @param bool $title Whether to display form title.
-	 * @param bool $description Whether to display form description.
+	 * @param array $atts Attributes.
 	 */
-	private static function view( $id, $title = false, $description = false ) {
+	private static function view( $atts ) {
+		$id          = isset( $atts['id'] ) ? $atts['id'] : false;
+		$title       = isset( $atts['title'] ) ? $atts['title'] : false;
+		$description = isset( $atts['description'] ) ? $atts['description'] : false;
+		$popup_type  = isset( $atts['type'] ) ? $atts['type'] : false;
+		$popup_text  = isset( $atts['text'] ) ? $atts['text'] : false;
 		if ( empty( $id ) ) {
 			return;
 		}
@@ -922,9 +931,9 @@ class EVF_Shortcode_Form {
 
 		// Check for return hash.
 		if (
-			! empty( $_GET['everest_forms_return'] ) // phpcs:ignore WordPress.Security.NonceVerification
-			&& evf()->task->is_valid_hash
-			&& absint( evf()->task->form_data['id'] ) === $form_id
+		! empty( $_GET['everest_forms_return'] ) // phpcs:ignore WordPress.Security.NonceVerification
+		&& evf()->task->is_valid_hash
+		&& absint( evf()->task->form_data['id'] ) === $form_id
 		) {
 			// Output success message if no redirection happened.
 			if ( 'same' === $form_data['settings']['redirect_to'] ) {
@@ -1058,21 +1067,30 @@ class EVF_Shortcode_Form {
 		printf( '<div class="evf-container %s" id="evf-%d">', esc_attr( $classes ), absint( $form_id ) );
 
 		do_action( 'everest_forms_frontend_output_form_before', $form_data, $form, $errors );
+		if ( isset( $atts['type'] ) && 'popup-button' === $popup_type ) {
+			printf( "<button class='everest-forms-modal-link everest-forms-modal-link-%s'>%s</button>", esc_attr( $atts['id'] ), esc_html( $popup_text ) );
+			do_action( 'everest_form_popup', $atts );
+		} elseif ( isset( $atts['type'] ) && 'popup-link' === $popup_type ) {
+			printf( "<a href='javascript:void(0);' class='everest-forms-modal-link everest-forms-modal-link-%s'>%s</a>", esc_attr( $atts['id'] ), esc_html( $popup_text ) );
+			do_action( 'everest_form_popup', $atts );
+		} elseif ( isset( $atts['type'] ) && 'popup' === $popup_type ) {
+			do_action( 'everest_form_popup', $atts );
+		} else {
+			echo '<form ' . evf_html_attributes( $form_atts['id'], $form_atts['class'], $form_atts['data'], $form_atts['atts'] ) . '>';
+			if ( evf_is_amp() ) {
+				$state = array(
+					'submitting' => false,
+				);
+				printf(
+					'<amp-state id="%s"><script type="application/json">%s</script></amp-state>',
+					self::get_form_amp_state_id( $form_id ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					wp_json_encode( $state )
+				);
+			}
+			do_action( 'everest_forms_frontend_output', $form_data, $title, $description, $errors );
 
-		echo '<form ' . evf_html_attributes( $form_atts['id'], $form_atts['class'], $form_atts['data'], $form_atts['atts'] ) . '>';
-		if ( evf_is_amp() ) {
-			$state = array(
-				'submitting' => false,
-			);
-			printf(
-				'<amp-state id="%s"><script type="application/json">%s</script></amp-state>',
-				self::get_form_amp_state_id( $form_id ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-				wp_json_encode( $state )
-			);
+			echo '</form>';
 		}
-		do_action( 'everest_forms_frontend_output', $form_data, $title, $description, $errors );
-
-		echo '</form>';
 
 		do_action( 'everest_forms_frontend_output_form_after', $form_data, $form );
 
@@ -1085,5 +1103,18 @@ class EVF_Shortcode_Form {
 		if ( is_super_admin() ) {
 			evf_debug_data( $form_data );
 		}
+	}
+
+	/**
+	 * ReCaptcha Langauge.
+	 *
+	 * @param url $url  Recaptcha URL.
+	 *
+	 *  @return $url
+	 */
+	public static function evf_recaptcha_language( $url ) {
+
+		return esc_url_raw( add_query_arg( array( 'hl' => get_option( 'everest_forms_recaptcha_recaptcha_language', 'en-GB' ) ), $url ) );
+
 	}
 }

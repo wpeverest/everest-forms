@@ -21,7 +21,7 @@ final class EverestForms {
 	 *
 	 * @var string
 	 */
-	public $version = '1.8.5';
+	public $version = '1.8.6';
 
 	/**
 	 * The single instance of the class.
@@ -270,6 +270,13 @@ final class EverestForms {
 		include_once EVF_ABSPATH . 'includes/class-evf-deprecated-filter-hooks.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-forms-features.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-privacy.php';
+
+		/**
+		 * Elementor classes.
+		 */
+		if ( class_exists( '\Elementor\Plugin' ) ) {
+			include_once EVF_ABSPATH . 'includes/elementor/class-evf-elementor.php';
+		}
 
 		if ( $this->is_request( 'admin' ) ) {
 			include_once EVF_ABSPATH . 'includes/admin/class-evf-admin.php';
