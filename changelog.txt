@@ -3,6 +3,7 @@
 = 1.8.6 - 29-03-2022 =
 * Fix - Meta Key Translation issue.
 * Enhancement - Delete all logs at a time.
+* Enhancement - Export/Import multiple forms at a time. 
 
 = 1.8.6 - 29-03-2022 =
 * Tweak - CAPTCHA text change.
