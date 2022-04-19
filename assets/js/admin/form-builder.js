@@ -1780,6 +1780,9 @@
 				var form_data  = $form.serializeArray();
 				var form_title = $( '#evf-edit-form-name' ).val().trim();
 
+				// Set WebHook Request Headers key-Value pair.
+				$(document).trigger('setEvfProWebHookRequestHeaders', [form_data]);
+
 				var select_id_name = {};
 
 				$('.everest-forms-field-option-row').find('.evf-select2-multiple').filter(function(){
