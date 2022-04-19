@@ -275,7 +275,8 @@ class EVF_Admin_Assets {
 				'evf-admin-tools',
 				'everest_forms_admin_tools',
 				array(
-					'delete_log_confirmation' => esc_js( esc_html__( 'Are you sure you want to delete this log?', 'everest-forms' ) ),
+					'delete_log_confirmation'     => esc_js( esc_html__( 'Are you sure you want to delete this log?', 'everest-forms' ) ),
+					'delete_all_log_confirmation' => esc_js( esc_html__( 'Are you sure you want to delete all logs?', 'everest-forms' ) ),
 				)
 			);
 		}
