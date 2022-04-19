@@ -4652,6 +4652,7 @@ p.search-box {
 /**
    * Import and Export
    */
+.evf-tools-export-entries,
 .everest-forms-import-form,
 .everest-forms-export-form {
 	background: $color-white;
@@ -4665,11 +4666,7 @@ p.search-box {
 		margin: 0;
 		font-size: 20px;
 		padding-bottom: 16px;
-		border-bottom: 2px solid $color_gray-more-lighten; 
-	}
-
-	h4 {
-		margin: 16px 0 8px
+		border-bottom: 2px solid $color_gray-more-lighten;
 	}
 
 	p {
@@ -4729,14 +4726,6 @@ p.search-box {
 		padding-top: 20px;
 		text-align: right;
 		border-top: 2px solid $color_gray-more-lighten;
-	}
-
-	#evf-tools-entries-export-options-date {
-		margin-bottom: 16px;
-		
-		label:nth-child(3) {
-			margin-left: 14px;
-		}
 	}
 }
 
