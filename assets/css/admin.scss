@@ -5612,8 +5612,6 @@ img.ui-datepicker-trigger {
 	}
 }
 
-
-
 /**
    * Optimisation for screens 782px and smaller.
    **/
@@ -5729,23 +5727,6 @@ img.ui-datepicker-trigger {
 				a {
 					width: 200px;
 				}
-			}
-		}
-	}
-}
-
-.evf-content-section {
-	.everest-forms-panel-field {
-		.evf-webhook-headers-wrapper {
-			display: flex;
-			flex-direction: column;
-			row-gap: 16px;
-			margin-bottom: 16px;
-
-			.evf-webhook-header {
-				display: flex;
-				align-items: center;
-				column-gap: 16px;
 			}
 		}
 	}
@@ -5992,7 +5973,7 @@ img.ui-datepicker-trigger {
 		background-color: #fff;
 		border: 1px solid #cdd0d8;
 		color: #6c7680;
-	
+
 		.evf-icon {
 			padding: 0 8px;
 			border-radius: 4px;

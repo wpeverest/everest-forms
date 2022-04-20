@@ -1934,6 +1934,7 @@
 							content: shortcut_keys_html,
 							icon: 'dashicons dashicons-info',
 							type: 'blue',
+							boxWidth: '550px',
 							buttons : {
 								confirm : {
 									text: evf_data.i18n_close,
