@@ -26,6 +26,8 @@ No time to create forms from the ground? No worries! Choose from beautifully des
 
 [Try Everest Forms Premium ](https://wpeverest.com/wordpress-plugins/everest-forms/?utm_source=wporg&utm_medium=link&utm_campaign=ur-upgrade-to-pro)
 
+[Try Live Demo ](https://demo.tastewp.com/everest-forms)
+
 
 **Build Great Forms like a Pro with Everest Forms Awesome Features**
 
