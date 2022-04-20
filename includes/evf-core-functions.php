@@ -1169,7 +1169,7 @@ function evf_get_all_forms( $skip_disabled_entries = false ) {
  * @return string
  */
 function evf_get_meta_key_field_option( $field ) {
-	return preg_replace( '/[^a-zA-Z0-9\s`_]/', '', $field['label'] ) . '_' . rand( pow( 10, 3 ), pow( 10, 4 ) - 1 ); // phpcs:ignore WordPress.WP.AlternativeFunctions.rand_rand
+	return str_replace( ' ', '_', preg_replace( '/[^a-zA-Z0-9\s`_]/', '', strtolower( $field['label'] ) ) ) . '_' . rand( pow( 10, 3 ), pow( 10, 4 ) - 1 ); // phpcs:ignore WordPress.WP.AlternativeFunctions.rand_rand.
 }
 
 /**
