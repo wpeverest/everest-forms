@@ -3,7 +3,8 @@
 = 1.8.6 - 29-03-2022 =
 * Fix - Meta Key Translation issue.
 * Enhancement - Delete all logs at a time.
-* Fix - Load user filled value in likert field in form submission when error is occurred. 
+* Fix - Load user filled value in likert field in form submission when error is occurred.
+* Enhancement - Keyboard shortcut key (Ctrl+h) for showing keyboard shortcut keys in modal.
 
 = 1.8.6 - 29-03-2022 =
 * Tweak - CAPTCHA text change.
