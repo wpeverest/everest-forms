@@ -92,6 +92,7 @@ Everest Forms is loaded with all the crucial form field elements required for cr
     * Rating
     * Likert
     * Scale Rating
+    * WYSIWYG 
 
 * **Payment Fields**
     * Single Item
@@ -110,9 +111,9 @@ Everest Forms has a long list of top-notch features, making it the best WordPres
 
 * **Easy Form Field Settings:** Make necessary form field settings with the live preview option offered by Everest Forms. Easily add field labels and descriptions, make a field required, and more advanced options to explore.
 
-* **Create Multi-column Form Layout:** Tired of lengthy forms that are making your users abandon them? Create efficient and user-friendly forms with two columns using Everest Forms. This also provides better structure to your forms.
+* **Create Multi-column Form Layout:** Tired of lengthy forms that are making your users abandon them? Create efficient and user-friendly forms that supports up to four columns using Everest Forms. This also provides better structure to your forms.
 
-* **Multiple Spam Protection Technique:** Spams won't trouble you anymore. Get the spams controlled with smart integrations like Google reCAPTCHA, HoneyPot, [Math Captcha](https://wpeverest.com/wordpress-plugins/everest-forms/captcha/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro), and let your mind be at peace.
+* **Multiple Spam Protection Technique:** Spams won't trouble you anymore. Get the spams controlled with smart integrations like Google reCAPTCHA, HoneyPot, [Math Captcha](https://wpeverest.com/wordpress-plugins/everest-forms/captcha/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro), hCaptcha, and let your mind be at peace.
 
 * **One-Click Form Import Export:** Save your precious time using the import/export tool. Just one click, and you can instantly import or export the forms from one site to another. The supported file format is JSON.
 
@@ -122,7 +123,7 @@ Everest Forms has a long list of top-notch features, making it the best WordPres
 
 * **[Premium] [Email Templates Designer:](https://wpeverest.com/wordpress-plugins/everest-forms/email-templates/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Design beautiful email templates to impress your users. Customize color, fonts, spacing, header & footer, etc., of email template in real-time without coding. You've got an option to start from scratch or choose from carefully designed templates to get started.
 
-* **[Premium] Collect Payments:** Need to collect payments from customers on your forms? With our [PayPal](https://wpeverest.com/wordpress-plugins/everest-forms/paypal-standard/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) and [Stripe](https://wpeverest.com/wordpress-plugins/everest-forms/stripe/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) addon one can easily collect payment. Accept PayPal payments and even credit cards via Stripe. Can be useful for collect single item payment, multiple item payment, donation payment and more.
+* **[Premium] Collect Payments:** Need to collect payments from customers on your forms? With our [PayPal](https://wpeverest.com/wordpress-plugins/everest-forms/paypal-standard/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) and [Stripe](https://wpeverest.com/wordpress-plugins/everest-forms/stripe/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) addon one can easily collect payment. Accept PayPal payments and even credit cards and bank payments(iDeal) via Stripe. Can be useful for collect single item payment, multiple item payment, donation payment and more.
 
 * **[Premium] [Smart Conditional Logic:](https://wpeverest.com/wordpress-plugins/everest-forms/conditional-logic/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Choose to show/hide specific form fields based on your users' interaction with previous fields. Collect all the necessary information from the users without making your form appear overwhelming and complex.
 
@@ -139,6 +140,13 @@ Everest Forms has a long list of top-notch features, making it the best WordPres
 * **[Premium] Collect Digital Signatures:** Need to collect signatures from customers on an online form? Or, make them sign an important contract? With the E-Signature form field exclusively available on Everest Forms pro, it's easy as ABC.
 
 * **[Premium] [Save and Continue:](https://wpeverest.com/wordpress-plugins/everest-forms/save-and-continue/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Worried that user will abandon long form in the middle. No worries, we have you covered. Save and Continue addon will allows users to save their partially filled information and continue to work on it later.
+
+* **[Premium] [Repeater Fields:](https://wpeverest.com/wordpress-plugins/everest-forms/repeater-fields/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Allow users to repeatedly add a set of form fields within the form. Users can create as many subfields as they wish and enter all necessary data. This helps you create short, concise, and user-friendly forms for your website. 
+
+* **Elementor Widget:** Everest Forms comes with an inbuilt Elementor widget that you can easily drag and drop in your Elementor builder. Hence, you can get full advantage of all the styles and customization options that Elementor provides.
+
+* **[Premium] [Calculation Fields:](https://wpeverest.com/wordpress-plugins/everest-forms/calculations/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Calculations addon makes it quite simple to calculate field values that are updated in real-time. It can handle from simple additions, subtractions, or multiplication to complicated geometric operations. 
+
 
 **Create Different Form Types without Any Coding Skills**
 * [Contact Form](https://demo.wpeverest.com/everest-forms/)
