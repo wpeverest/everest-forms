@@ -1033,6 +1033,15 @@ class EVF_Form_Task {
 					$properties['inputs'][ $key ]['default'] = $selected;
 				}
 			}
+		} elseif ( 'likert' === $field['type'] ) {
+			if ( count( $data ) ) {
+				foreach ( $data as $row => $col ) {
+					foreach ( (array) $col as $col_selected ) {
+						$index = sprintf( 'rows%d_columns%d', (int) $row, (int) $col_selected );
+						$properties['inputs'][ $index ]['attr']['checked'] = true;
+					}
+				}
+			}
 		} else {
 			if ( ! is_array( $data ) ) {
 				$properties['inputs']['primary']['attr']['value'] = esc_attr( $data );

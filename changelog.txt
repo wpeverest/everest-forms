@@ -1,6 +1,11 @@
 == Changelog ==
 
 = 1.8.6 - 29-03-2022 =
+* Fix - Meta Key Translation issue.
+* Enhancement - Delete all logs at a time.
+* Fix - Load user filled value in likert field in form submission when error is occurred. 
+
+= 1.8.6 - 29-03-2022 =
 * Tweak - CAPTCHA text change.
 * Enhancement - CAPTCHA language.
 * Enhancement - Select/Unselect All options in checkboxes field.
