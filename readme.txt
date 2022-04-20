@@ -4,7 +4,7 @@ Tags: contact form, forms, form builder, contact, custom form
 Requires at least: 5.0
 Tested up to: 5.9
 Requires PHP: 5.4
-Stable tag: 1.8.6
+Stable tag: 1.8.7
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -94,7 +94,7 @@ Everest Forms is loaded with all the crucial form field elements required for cr
     * Rating
     * Likert
     * Scale Rating
-    * WYSIWYG 
+    * WYSIWYG
 
 * **Payment Fields**
     * Single Item
@@ -143,11 +143,11 @@ Everest Forms has a long list of top-notch features, making it the best WordPres
 
 * **[Premium] [Save and Continue:](https://wpeverest.com/wordpress-plugins/everest-forms/save-and-continue/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Worried that user will abandon long form in the middle. No worries, we have you covered. Save and Continue addon will allows users to save their partially filled information and continue to work on it later.
 
-* **[Premium] [Repeater Fields:](https://wpeverest.com/wordpress-plugins/everest-forms/repeater-fields/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Allow users to repeatedly add a set of form fields within the form. Users can create as many subfields as they wish and enter all necessary data. This helps you create short, concise, and user-friendly forms for your website. 
+* **[Premium] [Repeater Fields:](https://wpeverest.com/wordpress-plugins/everest-forms/repeater-fields/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Allow users to repeatedly add a set of form fields within the form. Users can create as many subfields as they wish and enter all necessary data. This helps you create short, concise, and user-friendly forms for your website.
 
 * **Elementor Widget:** Everest Forms comes with an inbuilt Elementor widget that you can easily drag and drop in your Elementor builder. Hence, you can get full advantage of all the styles and customization options that Elementor provides.
 
-* **[Premium] [Calculation Fields:](https://wpeverest.com/wordpress-plugins/everest-forms/calculations/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Calculations addon makes it quite simple to calculate field values that are updated in real-time. It can handle from simple additions, subtractions, or multiplication to complicated geometric operations. 
+* **[Premium] [Calculation Fields:](https://wpeverest.com/wordpress-plugins/everest-forms/calculations/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Calculations addon makes it quite simple to calculate field values that are updated in real-time. It can handle from simple additions, subtractions, or multiplication to complicated geometric operations.
 
 
 **Create Different Form Types without Any Coding Skills**
@@ -311,6 +311,12 @@ Yes, we do. Check out this [Getting Started Videos](https://docs.wpeverest.com/d
 Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/everest-forms/) :)
 
 == Changelog ==
+
+= 1.8.7 - 20-04-2022 =
+* Fix - Meta Key Translation issue.
+* Enhancement - Delete all logs at a time.
+* Fix - Filled value in likert field missing in form submission when error is occurred.
+* Enhancement - Keyboard shortcut key (Ctrl+h) for showing keyboard shortcut keys in modal.
 
 = 1.8.6 - 29-03-2022 =
 * Tweak - CAPTCHA text change.
