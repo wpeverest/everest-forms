@@ -285,7 +285,7 @@ function evf_get_log_file_path( $handle ) {
  * @param  string $extension Extension Type.
  * @return bool|string The csv file name or false if cannot be determined.
  */
-function evf_get_csv_file_name( $handle, $extension = 'csv' ) {
+function evf_get_entry_export_file_name( $handle, $extension = 'csv' ) {
 	if ( function_exists( 'wp_hash' ) ) {
 		$date_suffix = date_i18n( 'Y-m-d', time() );
 		$hash_suffix = wp_hash( $handle );
