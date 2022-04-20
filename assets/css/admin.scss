@@ -27,11 +27,11 @@
 //Everest-forms icon
 @font-face {
 	font-family: 'EverestForms';
-	src:  url('fonts/EverestForms.eot?5c6kq4');
-	src:  url('fonts/EverestForms.eot?5c6kq4#iefix') format('embedded-opentype'),
-	url('fonts/EverestForms.ttf?5c6kq4') format('truetype'),
-	url('fonts/EverestForms.woff?5c6kq4') format('woff'),
-	url('fonts/EverestForms.svg?5c6kq4#EverestForms') format('svg');
+	src:  url('../fonts/EverestForms.eot?5c6kq4');
+	src:  url('../fonts/EverestForms.eot?5c6kq4#iefix') format('embedded-opentype'),
+	url('../fonts/EverestForms.ttf?5c6kq4') format('truetype'),
+	url('../fonts/EverestForms.woff?5c6kq4') format('woff'),
+	url('../fonts/EverestForms.svg?5c6kq4#EverestForms') format('svg');
 	font-weight: normal;
 	font-style: normal;
 	font-display: block;
@@ -6004,6 +6004,38 @@ img.ui-datepicker-trigger {
 			border-radius: 4px;
 			font-size: 24px;
 			vertical-align: middle;
+		}
+	}
+}
+
+.jconfirm-content-pane {
+	height: auto !important;
+
+	.evf-shortcut-keyword {
+		margin-bottom: 18px;
+
+		.evf-shortcut-title {
+			flex: 3;
+		}
+
+		li {
+			display: flex;
+			align-items: center;
+
+			.evf-key {
+				display: flex;
+				flex: 2;
+				column-gap: 8px;
+				color: #3498DB;
+
+				span {
+					border: 1px solid #3498DB;
+					background-color: #3498db13;
+					padding: 4px 0;
+					width: 40px;
+					border-radius: 2px;
+				}
+			}
 		}
 	}
 }
