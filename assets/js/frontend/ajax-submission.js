@@ -87,7 +87,6 @@ jQuery( function( $ ) {
 							}
 
 							var paymentMethod = formTuple.find( ".everest-forms-stripe-gateways-tabs .evf-tab" ).has( 'a.active' ).data( 'gateway' );
-							var razorpay_paymentMethod = formTuple.find( ".everest-forms-razorpay[data-gateway='razorpay']" ).data( 'gateway' );
 
 
 							if(undefined === paymentMethod) {
@@ -95,7 +94,7 @@ jQuery( function( $ ) {
 							}
 
 
-							if( 'ideal' === paymentMethod && 'none' !== formTuple.find( ".everest-forms-gateway[data-gateway='ideal']" ).closest( '.evf-field' ).css( 'display' ) ||  'razorpay' === razorpay_paymentMethod  ) {
+							if( 'ideal' === paymentMethod && 'none' !== formTuple.find( ".everest-forms-gateway[data-gateway='ideal']" ).closest( '.evf-field' ).css( 'display' )  ) {
 								formTuple.trigger( 'evf_process_payment', xhr.data );
 								return;
 							}
