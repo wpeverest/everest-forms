@@ -2367,7 +2367,7 @@ p.search-box {
 					}
 
 					.everest-forms-active-connections,
-					.everest-forms-active-email,.everest-forms-active-twilio {
+					.everest-forms-active-email,.everest-forms-active-sms-notifications {
 						display: none;
 						padding: 0 20px;
 						margin-top: -2px;
@@ -2392,7 +2392,7 @@ p.search-box {
 
 						.everest-forms-active-connections-list,
 						.everest-forms-active-email-connections-list,
-						.everest-forms-active-twilio-connections-list {
+						.everest-forms-active-sms-notifications-connections-list {
 							width: 100%;
 							padding: 20px;
 							display: flex;
@@ -3688,7 +3688,7 @@ p.search-box {
 				}
 			}
 
-			.evf-content-twilio-settings-inner{
+			.evf-content-sms-notifications-settings-inner{
 				display: none;
 				-webkit-animation: fadeIn 0.5s;
 				animation: fadeIn 0.5s;
@@ -3703,6 +3703,7 @@ p.search-box {
 					}
 				}
 			}
+			
 		}
 
 		.evf-registered-item {
@@ -3836,12 +3837,12 @@ p.search-box {
 					}
 				}
 
-				.evf-content-twilio-settings {
-					.evf-content-twilio-settings-inner {
+				.evf-content-sms-notifications-settings {
+					.evf-content-sms-notifications-settings-inner {
 						padding: 20px 20px 0;
 						border: 1px solid $color_gray-lighten;
 
-						.everest-forms-twilio-name {
+						.everest-forms-sms-notfications-name {
 							background: $color_gray-light-skin;
 							margin-left: -20px;
 							margin-top: -20px;

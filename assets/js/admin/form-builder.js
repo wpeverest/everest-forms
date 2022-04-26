@@ -378,7 +378,7 @@
 			EVFPanelBuilder.bindRemoveRow();
 			EVFPanelBuilder.bindFormSettings();
 			EVFPanelBuilder.bindFormEmail();
-			EVFPanelBuilder.bindFormTwilio();
+			EVFPanelBuilder.bindFormSmsNotifications();
 			EVFPanelBuilder.bindFormIntegrations();
 			EVFPanelBuilder.bindFormPayment();
 			EVFPanelBuilder.choicesInit();
@@ -1268,7 +1268,7 @@
 				var data_setting_section = $(this).attr('data-section');
 				$('.evf-setting-panel').removeClass('active');
 				$('.everest-forms-active-email').removeClass('active');
-				$('.everest-forms-active-twilio').removeClass('active');
+				$('.everest-forms-active-sms-notifications').removeClass('active');
 				$('.evf-content-section').removeClass('active');
 				$(this).addClass('active');
 				$('.evf-content-' + data_setting_section + '-settings').addClass('active');
@@ -1290,11 +1290,11 @@
 			});
 		},
 
-		bindFormTwilio: function () {
-			$('body').on('click', '.everest-forms-panel-sidebar-section-twilio', function ( e ) {
-				$(this).siblings('.everest-forms-active-twilio').removeClass('active');
-				$(this).next('.everest-forms-active-twilio').addClass('active');
-				var container = $( this ).siblings('.everest-forms-active-twilio.active').find('.everest-forms-active-twilio-connections-list li');
+		bindFormSmsNotifications: function () {
+			$('body').on('click', '.everest-forms-panel-sidebar-section-sms-notifications', function ( e ) {
+				$(this).siblings('.everest-forms-active-sms-notifications').removeClass('active');
+				$(this).next('.everest-forms-active-sms-notifications').addClass('active');
+				var container = $( this ).siblings('.everest-forms-active-sms-notifications.active').find('.everest-forms-active-sms-notifications-connections-list li');
 
 				if( container.length ){
 					container.children('.user-nickname').first().trigger('click');
