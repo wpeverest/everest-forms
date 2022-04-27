@@ -1347,7 +1347,7 @@ abstract class EVF_Form_Fields {
 					array(
 						'slug'    => 'enable_prepopulate',
 						'value'   => $value,
-						'desc'    => esc_html__( 'Enable Autopoupulate ', 'everest-forms' ),
+						'desc'    => esc_html__( 'Enable Autopopulate ', 'everest-forms' ),
 						'tooltip' => $tooltip,
 					),
 					false
