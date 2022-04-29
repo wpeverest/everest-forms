@@ -712,7 +712,7 @@ abstract class EVF_Form_Fields {
 			case 'validate_message':
 				$toggle  = '';
 				$tooltip = esc_html__( 'if the form submission failed it will show this message.', 'everest-forms' );
-				$value   = ! empty( $field['validate_message'] ) ? esc_attr( $field['validate_message'] ) : '';
+				$value   = ! empty( $field['validate_message'] ) ? esc_attr( $field['validate_message'] ) : 'This field value need to be unique.';
 
 				// Build output.
 				$output  = $this->field_element(
