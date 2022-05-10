@@ -53,6 +53,7 @@ class EVF_Forms_Features {
 			'EVF_Field_Rating',
 			'EVF_Field_Likert',
 			'EVF_Field_Scale_Rating',
+			'EVF_Field_Thumb_Rating',
 		);
 
 		return array_merge( $fields, $pro_fields );
