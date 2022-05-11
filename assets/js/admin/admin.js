@@ -14,31 +14,6 @@
 		});
 	});
 
-	// Thumb Rating Colorpicker.
-	$( document ).on( 'click', '.everest-forms-field-thumb-rating', function() {
-		$( '.everest-forms-field-option-row-thumb_up_icon_color input.evf-colorpicker' ).wpColorPicker({
-			change: function( event ) {
-				var $this     = $( this ),
-					value     = $this.val(),
-					id        = $this.closest( '.everest-forms-field-option-row' ).data( 'field-id' ),
-					$icons    = $( '#everest-forms-field-'+id +' .thumb-up svg' );
-				$icons.css( 'fill', value );
-			}
-		});
-	});
-
-	$( document ).on( 'click', '.everest-forms-field-thumb-rating', function() {
-		$( '.everest-forms-field-option-row-thumb_down_icon_color input.evf-colorpicker' ).wpColorPicker({
-			change: function( event ) {
-				var $this     = $( this ),
-					value     = $this.val(),
-					id        = $this.closest( '.everest-forms-field-option-row' ).data( 'field-id' ),
-					$icons    = $( '#everest-forms-field-'+id +' .thumb-down svg' );
-				$icons.css( 'fill', value );
-			}
-		});
-	});
-
 	// Enable Perfect Scrollbar.
 	$( document ).on( 'init_perfect_scrollbar', function() {
 		var nav_wrapper = $( 'nav.evf-nav-tab-wrapper' );
