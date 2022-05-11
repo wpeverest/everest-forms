@@ -223,7 +223,7 @@ class EVF_Form_Task {
 					do_action( "everest_forms_process_validate_{$field_type}", $field_id, $field_submit, $this->form_data, $field_type );
 				}
 
-				if ( 'credit-card' === $field_type ) {
+				if ( 'credit-card' === $field_type && isset( $_POST['everest_form_stripe_payment_intent_id'] ) ) {
 					$this->evf_notice_print = true;
 				}
 
@@ -1031,6 +1031,15 @@ class EVF_Form_Task {
 				if ( $data === $option_value['label'] ) { // phpcs:ignore WordPress.Security.NonceVerification
 					$selected                                = 1;
 					$properties['inputs'][ $key ]['default'] = $selected;
+				}
+			}
+		} elseif ( 'likert' === $field['type'] ) {
+			if ( count( $data ) ) {
+				foreach ( $data as $row => $col ) {
+					foreach ( (array) $col as $col_selected ) {
+						$index = sprintf( 'rows%d_columns%d', (int) $row, (int) $col_selected );
+						$properties['inputs'][ $index ]['attr']['checked'] = true;
+					}
 				}
 			}
 		} else {

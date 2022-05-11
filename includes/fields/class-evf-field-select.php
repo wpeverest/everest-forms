@@ -160,7 +160,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 			);
 
 			if ( ! empty( $is_enhanced_select ) ) {
-				wp_enqueue_style( 'select2' );
+				wp_enqueue_style( 'evf_select2' );
 				wp_enqueue_script( 'selectWoo' );
 			}
 		}
@@ -248,6 +248,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 		$plan              = evf_get_license_plan();
 		$has_default       = false;
 		$is_multiple       = false;
+		$select_all        = isset( $field['select_all'] ) ? $field['select_all'] : '0';
 
 		if ( ! empty( $field['required'] ) ) {
 			$container['attr']['required'] = 'required';
@@ -294,9 +295,16 @@ class EVF_Field_Select extends EVF_Form_Fields {
 			}
 		}
 
+		// Select All checkbox.
+		if ( '1' === $select_all ) {
+			if ( isset( $container['attr']['multiple'] ) && 'multiple' === $container['attr']['multiple'] ) {
+				$container['attr']['select_all_unselect_all'] = 'true';
+			}
+		}
+
 		// Primary select field.
 		printf(
-			'<select %s>',
+			'<select %s >',
 			evf_html_attributes( $container['id'], $container['class'], $container['data'], $container['attr'] )
 		);
 

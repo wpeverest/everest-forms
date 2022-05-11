@@ -85,17 +85,8 @@ class EVF_Admin_Entries {
 						<form id="entries-list" method="get">
 							<input type="hidden" name="page" value="evf-entries" />
 							<?php
-								ob_start();
 								$entries_table_list->forms_dropdown();
-								$output = ob_get_clean();
-
-							if ( ! empty( $output ) ) {
-								echo wp_kses(
-									$output,
-									evf_get_allowed_html_tags( 'form_dropdown' )
-								);
 								submit_button( __( 'Filter', 'everest-forms' ), '', '', false, array( 'id' => 'post-query-submit' ) );
-							}
 							?>
 						</form>
 					<?php else : ?>

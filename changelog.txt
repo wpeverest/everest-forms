@@ -1,5 +1,17 @@
 == Changelog ==
 
+= 1.8.7 - 20-04-2022 =
+* Fix - Meta Key Translation issue.
+* Enhancement - Delete all logs at a time.
+* Fix - Filled value in likert field missing in form submission when error is occurred.
+* Enhancement - Keyboard shortcut key (Ctrl+h) for showing keyboard shortcut keys in modal.
+
+= 1.8.6 - 29-03-2022 =
+* Tweak - CAPTCHA text change.
+* Enhancement - CAPTCHA language.
+* Enhancement - Select/Unselect All options in checkboxes field.
+* Feature - Elementor widget.
+
 = 1.8.5 - 28-02-2022 =
 * Fix - reCAPTCHA v3 threshold display glitch.
 * Fix - Preview issue in twenty twenty two theme.

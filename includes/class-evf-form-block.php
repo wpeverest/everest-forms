@@ -45,6 +45,18 @@ class EVF_Form_Block {
 					'displayDescription' => array(
 						'type' => 'boolean',
 					),
+					'displayPopup'       => array(
+						'type' => 'boolean',
+					),
+					'displayPopupType'   => array(
+						'type' => 'string',
+					),
+					'displayPopupText'   => array(
+						'type' => 'string',
+					),
+					'displayPopupSize'   => array(
+						'type' => 'string',
+					),
 				),
 				'editor_style'    => 'everest-forms-block-editor',
 				'editor_script'   => 'everest-forms-block-editor',
@@ -64,13 +76,23 @@ class EVF_Form_Block {
 			defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( evf()->plugin_path() . '/assets/css/everest-forms.css' ) : EVF_VERSION
 		);
 
-		wp_register_script(
-			'everest-forms-block-editor',
-			evf()->plugin_url() . '/assets/js/admin/gutenberg/form-block.min.js',
-			array( 'wp-blocks', 'wp-element', 'wp-i18n', 'wp-components' ),
-			defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( evf()->plugin_path() . '/assets/js/admin/gutenberg/form-block.min.js' ) : EVF_VERSION,
-			true
-		);
+		if ( defined( 'EFP_PLUGIN_FILE' ) ) {
+			wp_register_script(
+				'everest-forms-block-editor',
+				plugins_url( '/assets/js/admin/gutenberg/form-block.min.js', EFP_PLUGIN_FILE ),
+				array( 'wp-blocks', 'wp-element', 'wp-i18n', 'wp-components' ),
+				defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( plugin_dir_path( EFP_PLUGIN_FILE ) . '/assets/js/admin/gutenberg/form-block.min.js' ) : EFP_VERSION,
+				true
+			);
+		} else {
+			wp_register_script(
+				'everest-forms-block-editor',
+				evf()->plugin_url() . '/assets/js/admin/gutenberg/form-block.min.js',
+				array( 'wp-blocks', 'wp-element', 'wp-i18n', 'wp-components' ),
+				defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( evf()->plugin_path() . '/assets/js/admin/gutenberg/form-block.min.js' ) : EVF_VERSION,
+				true
+			);
+		}
 
 		$form_block_data = array(
 			'forms' => evf()->form->get_multiple( array( 'order' => 'DESC' ) ),
@@ -87,6 +109,9 @@ class EVF_Form_Block {
 				'form_selected'    => esc_html__( 'Form', 'everest-forms' ),
 				'show_title'       => esc_html__( 'Show Title', 'everest-forms' ),
 				'show_description' => esc_html__( 'Show Description', 'everest-forms' ),
+				'show_Popup'       => esc_html__( 'Show Popup', 'everest-forms' ),
+				'popup_type'       => esc_html__( 'Popup Type', 'everest-forms' ),
+				'popup_size'       => esc_html__( 'Popup Size', 'everest-forms' ),
 			),
 		);
 		wp_localize_script( 'everest-forms-block-editor', 'evf_form_block_data', $form_block_data );
@@ -114,6 +139,10 @@ class EVF_Form_Block {
 		$is_gb_editor = defined( 'REST_REQUEST' ) && REST_REQUEST && ! empty( $_REQUEST['context'] ) && 'edit' === $_REQUEST['context']; // phpcs:ignore WordPress.Security.NonceVerification
 		$title        = ! empty( $attr['displayTitle'] ) ? true : false;
 		$description  = ! empty( $attr['displayDescription'] ) ? true : false;
+		$popup        = ! empty( $attr['displayPopup'] ) ? true : false;
+		$popup_type   = ! empty( $attr['displayPopupType'] ) ? $attr['displayPopupType'] : false;
+		$popup_text   = ! empty( $attr['displayPopupText'] ) ? $attr['displayPopupText'] : 'View Form';
+		$popup_size   = ! empty( $attr['displayPopupSize'] ) ? $attr['displayPopupSize'] : false;
 
 		// Disable form fields if called from the Gutenberg editor.
 		if ( $is_gb_editor ) {
@@ -147,6 +176,9 @@ class EVF_Form_Block {
 				'id'          => $form_id,
 				'title'       => $title,
 				'description' => $description,
+				'type'        => $popup_type,
+				'text'        => $popup_text,
+				'size'        => $popup_size,
 			),
 			array(
 				'class' => evf_sanitize_classes( $classes ),

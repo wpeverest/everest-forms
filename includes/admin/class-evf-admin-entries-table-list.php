@@ -558,18 +558,13 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		<div class="alignleft actions">
 		<?php
 		if ( ! empty( $this->forms ) && 'top' === $which ) {
-			ob_start();
+
 			$this->forms_dropdown();
-			$output = ob_get_clean();
+			submit_button( __( 'Filter', 'everest-forms' ), '', 'filter_action', false, array( 'id' => 'post-query-submit' ) );
 
-			if ( ! empty( $output ) ) {
-				echo wp_kses( $output, evf_get_allowed_html_tags( 'form_dropdown' ) );
-				submit_button( __( 'Filter', 'everest-forms' ), '', 'filter_action', false, array( 'id' => 'post-query-submit' ) );
-
-				// Export CSV submit button.
-				if ( apply_filters( 'everest_forms_enable_csv_export', $show_export ) && current_user_can( 'export' ) ) {
-					submit_button( __( 'Export CSV', 'everest-forms' ), '', 'export_action', false, array( 'id' => 'export-csv-submit' ) );
-				}
+			// Export CSV submit button.
+			if ( apply_filters( 'everest_forms_enable_csv_export', $show_export ) && current_user_can( 'export' ) ) {
+				submit_button( __( 'Export CSV', 'everest-forms' ), '', 'export_action', false, array( 'id' => 'export-csv-submit' ) );
 			}
 		}
 
