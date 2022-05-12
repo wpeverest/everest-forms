@@ -643,6 +643,7 @@ class EVF_AJAX {
 		);
 	}
 
+
 	/**
 	 * AJAX Integration disconnect.
 	 */
