@@ -317,6 +317,7 @@
 
 				$( '.everest-forms-import-form' ).find( 'h3' ).after( message_string );
 				$( '#everest-forms-import' ).val( '' );
+				$( '#import-file-name' ).html( 'No file selected' );
 			}
 		});
 	});
