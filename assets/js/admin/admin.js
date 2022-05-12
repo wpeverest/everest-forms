@@ -29,7 +29,7 @@
 	});
 
 	// Update Perfect Scrollbar.
-	$( window ).on( 'resize orientationchange', function() {
+	window.addEventListener( 'resize orientationchange', function() {
 		var resizeTimer,
 			nav_wrapper = $( 'nav.evf-nav-tab-wrapper' );
 

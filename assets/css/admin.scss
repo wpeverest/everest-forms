@@ -27,11 +27,11 @@
 //Everest-forms icon
 @font-face {
 	font-family: 'EverestForms';
-	src:  url('fonts/EverestForms.eot?5c6kq4');
-	src:  url('fonts/EverestForms.eot?5c6kq4#iefix') format('embedded-opentype'),
-	url('fonts/EverestForms.ttf?5c6kq4') format('truetype'),
-	url('fonts/EverestForms.woff?5c6kq4') format('woff'),
-	url('fonts/EverestForms.svg?5c6kq4#EverestForms') format('svg');
+	src:  url('../fonts/EverestForms.eot?5c6kq4');
+	src:  url('../fonts/EverestForms.eot?5c6kq4#iefix') format('embedded-opentype'),
+	url('../fonts/EverestForms.ttf?5c6kq4') format('truetype'),
+	url('../fonts/EverestForms.woff?5c6kq4') format('woff'),
+	url('../fonts/EverestForms.svg?5c6kq4#EverestForms') format('svg');
 	font-weight: normal;
 	font-style: normal;
 	font-display: block;
@@ -2367,7 +2367,7 @@ p.search-box {
 					}
 
 					.everest-forms-active-connections,
-					.everest-forms-active-email {
+					.everest-forms-active-email,.everest-forms-active-sms-notifications {
 						display: none;
 						padding: 0 20px;
 						margin-top: -2px;
@@ -2391,7 +2391,8 @@ p.search-box {
 						}
 
 						.everest-forms-active-connections-list,
-						.everest-forms-active-email-connections-list {
+						.everest-forms-active-email-connections-list,
+						.everest-forms-active-sms-notifications-connections-list {
 							width: 100%;
 							padding: 20px;
 							display: flex;
@@ -3671,7 +3672,7 @@ p.search-box {
 				}
 			}
 
-			.evf-content-email-settings-inner {
+			.evf-content-email-settings-inner{
 				display: none;
 				-webkit-animation: fadeIn 0.5s;
 				animation: fadeIn 0.5s;
@@ -3686,6 +3687,23 @@ p.search-box {
 					}
 				}
 			}
+
+			.evf-content-sms-notifications-settings-inner{
+				display: none;
+				-webkit-animation: fadeIn 0.5s;
+				animation: fadeIn 0.5s;
+				margin: 20px 0;
+				border-radius: 4px;
+
+				&.active-connection {
+					display: block;
+
+					&.everest-forms-hidden {
+						display: none;
+					}
+				}
+			}
+			
 		}
 
 		.evf-registered-item {
@@ -3818,6 +3836,32 @@ p.search-box {
 						background: $color-white;
 					}
 				}
+
+				.evf-content-sms-notifications-settings {
+					.evf-content-sms-notifications-settings-inner {
+						padding: 20px 20px 0;
+						border: 1px solid $color_gray-lighten;
+
+						.everest-forms-sms-notfications-name {
+							background: $color_gray-light-skin;
+							margin-left: -20px;
+							margin-top: -20px;
+							margin-right: -20px;
+							padding: 20px;
+							border-radius: 4px 4px 0 0;
+							border-bottom: 1px solid $color_gray-lighten;
+
+							input[type='text'] {
+								font-weight: 600;
+							}
+
+							.everest-forms-text-danger {
+								margin: 10px 0 0;
+							}
+						}
+					}
+				}
+
 
 				.evf-content-email-settings {
 					.evf-content-email-settings-inner {
@@ -6004,6 +6048,38 @@ img.ui-datepicker-trigger {
 			border-radius: 4px;
 			font-size: 24px;
 			vertical-align: middle;
+		}
+	}
+}
+
+.jconfirm-content-pane {
+	height: auto !important;
+
+	.evf-shortcut-keyword {
+		margin-bottom: 18px;
+
+		.evf-shortcut-title {
+			flex: 3;
+		}
+
+		li {
+			display: flex;
+			align-items: center;
+
+			.evf-key {
+				display: flex;
+				flex: 2;
+				column-gap: 8px;
+				color: #3498DB;
+
+				span {
+					border: 1px solid #3498DB;
+					background-color: #3498db13;
+					padding: 4px 0;
+					width: 40px;
+					border-radius: 2px;
+				}
+			}
 		}
 	}
 }

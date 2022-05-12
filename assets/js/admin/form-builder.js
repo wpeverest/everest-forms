@@ -374,10 +374,12 @@
 			EVFPanelBuilder.bindCloneField();
 			EVFPanelBuilder.bindSaveOption();
 			EVFPanelBuilder.bindSaveOptionWithKeyEvent();
+			EVFPanelBuilder.bindOpenShortcutKeysModalWithKeyEvent();
 			EVFPanelBuilder.bindAddNewRow();
 			EVFPanelBuilder.bindRemoveRow();
 			EVFPanelBuilder.bindFormSettings();
 			EVFPanelBuilder.bindFormEmail();
+			EVFPanelBuilder.bindFormSmsNotifications();
 			EVFPanelBuilder.bindFormIntegrations();
 			EVFPanelBuilder.bindFormPayment();
 			EVFPanelBuilder.choicesInit();
@@ -1267,6 +1269,7 @@
 				var data_setting_section = $(this).attr('data-section');
 				$('.evf-setting-panel').removeClass('active');
 				$('.everest-forms-active-email').removeClass('active');
+				$('.everest-forms-active-sms-notifications').removeClass('active');
 				$('.evf-content-section').removeClass('active');
 				$(this).addClass('active');
 				$('.evf-content-' + data_setting_section + '-settings').addClass('active');
@@ -1278,8 +1281,21 @@
 		bindFormEmail: function () {
 			$('body').on('click', '.everest-forms-panel-sidebar-section-email', function ( e ) {
 				$(this).siblings('.everest-forms-active-email').removeClass('active');
-				$(this).next('.everest-forms-active-email').addClass('active');
+				 $(this).next('.everest-forms-active-email').addClass('active');
 				var container = $( this ).siblings('.everest-forms-active-email.active').find('.everest-forms-active-email-connections-list li');
+
+				if( container.length ){
+					container.children('.user-nickname').first().trigger('click');
+				}
+				e.preventDefault();
+			});
+		},
+
+		bindFormSmsNotifications: function () {
+			$('body').on('click', '.everest-forms-panel-sidebar-section-sms-notifications', function ( e ) {
+				$(this).siblings('.everest-forms-active-sms-notifications').removeClass('active');
+				$(this).next('.everest-forms-active-sms-notifications').addClass('active');
+				var container = $( this ).siblings('.everest-forms-active-sms-notifications.active').find('.everest-forms-active-sms-notifications-connections-list li');
 
 				if( container.length ){
 					container.children('.user-nickname').first().trigger('click');
@@ -1906,6 +1922,45 @@
 					) {
 						e.preventDefault();
 						$('.everest-forms-save-button').trigger('click');
+					}
+				}
+			});
+		},
+		bindOpenShortcutKeysModalWithKeyEvent: function() {
+			$('body').on("keydown", function (e) {
+				if ( e.ctrlKey || e.metaKey ) {
+					if( 'h' === String.fromCharCode(e.which).toLowerCase() || 72 === e.which ) {
+						e.preventDefault();
+						var shortcut_keys_html = '';
+
+						$.each(evf_data.i18n_shortcut_keys, function (key, value) {
+							shortcut_keys_html += `
+								<ul class="evf-shortcut-keyword">
+									<li>
+										<div class="evf-shortcut-title">${value}</div>
+									<div class="evf-key">
+										<span>${key.split('+')[0]}</span>
+										<span>${key.split('+')[1]}</span>
+									</div>
+									</li>
+								</ul>
+							`;
+						});
+
+						$.alert({
+							title: evf_data.i18n_shortcut_key_title,
+							content: shortcut_keys_html,
+							icon: 'dashicons dashicons-info',
+							type: 'blue',
+							boxWidth: '550px',
+							buttons : {
+								confirm : {
+									text: evf_data.i18n_close,
+									btnClass: 'btn-confirm',
+									keys: ['enter']
+								}
+							}
+						});
 					}
 				}
 			});
@@ -2811,13 +2866,18 @@ jQuery( function ( $ ) {
 		var all_fields_without_email = [];
 		var all_fields = [];
 		var email_field = [];
+		var phone_field = [];
 		$('.evf-admin-row .evf-admin-grid .everest-forms-field').each( function(){
 			var field_type = $( this ).data('field-type');
 			var field_id = $( this ).data('field-id');
-				if ( allowed_field === field_type ){
+					if ( 'email' === field_type ){
 					var e_field_label = $( this ).find('.label-title span').first().text();
 					var e_field_id = field_id;
 					email_field[ e_field_id ] = e_field_label;
+				} else if( 'phone' === field_type){
+					var e_field_label = $( this ).find('.label-title span').first().text();
+					var e_field_id = field_id;
+					phone_field[ e_field_id ] = e_field_label;
 				} else {
 					var field_label = $( this ).find('.label-title span').first().text();
 					all_fields_without_email[ field_id ] = field_label;
@@ -2845,6 +2905,17 @@ jQuery( function ( $ ) {
 				$(el).parent().find('.evf-smart-tag-lists .evf-others').append('<li class="smart-tag-field" data-type="other" data-field_id="admin_email">Site Admin Email</li><li class="smart-tag-field" data-type="other" data-field_id="user_email">User Email</li>');
 				for (var key in email_field ) {
 					$(el).parent().find('.evf-smart-tag-lists .evf-fields').append('<li class = "smart-tag-field" data-type="field" data-field_id="'+key+'">'+email_field[key]+'</li>');
+				}
+			} else if ( allowed_field === 'phone' ) {
+				if ( Object.keys(phone_field).length < 1 ){
+					$(el).parent().find('.evf-smart-tag-lists .smart-tag-title:not(".other-tag-title")').addClass('everest-forms-hidden');
+				} else {
+					$(el).parent().find('.evf-smart-tag-lists .smart-tag-title:not(".other-tag-title")').removeClass('everest-forms-hidden');
+				}
+				$(el).parent().find('.evf-smart-tag-lists .other-tag-title').remove();
+				$(el).parent().find('.evf-smart-tag-lists .evf-others').remove();
+				for (var key in phone_field ) {
+					$(el).parent().find('.evf-smart-tag-lists .evf-fields').append('<li class = "smart-tag-field" data-type="field" data-field_id="'+key+'">'+phone_field[key]+'</li>');
 				}
 			} else {
 				if ( Object.keys(all_fields).length < 1 ){

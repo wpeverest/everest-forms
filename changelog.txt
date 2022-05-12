@@ -1,9 +1,13 @@
 == Changelog ==
 
-= 1.8.6 - 29-03-2022 =
+= 1.8.8 - xx-xx-2022
+* Enhancement - Export/Import multiple forms at a time.
+
+= 1.8.7 - 20-04-2022 =
 * Fix - Meta Key Translation issue.
 * Enhancement - Delete all logs at a time.
-* Enhancement - Export/Import multiple forms at a time. 
+* Fix - Filled value in likert field missing in form submission when error is occurred.
+* Enhancement - Keyboard shortcut key (Ctrl+h) for showing keyboard shortcut keys in modal.
 
 = 1.8.6 - 29-03-2022 =
 * Tweak - CAPTCHA text change.
