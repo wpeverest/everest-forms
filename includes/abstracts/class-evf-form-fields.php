@@ -151,7 +151,7 @@ abstract class EVF_Form_Fields {
 	 * @param array $field Field data.
 	 */
 	public function field_options( $field ) {
-		$settings = $this->get_field_settings();
+		$settings = apply_filters( 'everest_forms_builder_fields_option', $this->get_field_settings() );
 
 		foreach ( $settings as $option_key => $option ) {
 			$this->field_option(
@@ -762,7 +762,7 @@ abstract class EVF_Form_Fields {
 				);
 				break;
 
-				/**
+			/**
 			 * No Duplicates.
 			 */
 			case 'no_duplicates':
@@ -775,7 +775,7 @@ abstract class EVF_Form_Fields {
 					array(
 						'slug'    => 'no_duplicates',
 						'value'   => $value,
-						'desc'    => esc_html__( 'No Duplicates', 'everest-forms' ),
+						'desc'    => esc_html__( 'Validate as unique', 'everest-forms' ),
 						'tooltip' => $tooltip,
 					),
 					false
@@ -790,7 +790,58 @@ abstract class EVF_Form_Fields {
 					$echo
 				);
 				break;
-				/**
+			/**
+			 * No Duplicates.
+			 */
+			case 'show_tooltip':
+				$default           = ! empty( $args['default'] ) ? $args['default'] : '0';
+				$value             = ! empty( $field['show_tooltip'] ) ? esc_attr( $field['show_tooltip'] ) : '';
+				$output            = $this->field_element(
+					'checkbox',
+					$field,
+					array(
+						'slug'    => 'show_tooltip',
+						'value'   => $value,
+						'desc'    => esc_html__( 'Enable Tooltip', 'everest-forms' ),
+						'tooltip' => esc_html__( 'Check this option to show the form field tooltip.', 'everest-forms' ),
+					),
+					false
+				);
+				$output            = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'show_tooltip',
+						'content' => $output,
+					),
+					$echo
+				);
+				$description_value = ! empty( $field['tooltip_description'] ) ? esc_attr( $field['tooltip_description'] ) : '';
+				$output            = $this->field_element(
+					'textarea',
+					$field,
+					array(
+						'slug'  => 'tooltip_description',
+						'value' => $description_value,
+						'desc'  => esc_html__( 'Enable Tooltip', 'everest-forms' ),
+						'attrs' => array(
+							'placeholder' => esc_html__( 'Enter the text for tooltip description.', 'everest-forms' ),
+						),
+					),
+					false
+				);
+
+				$output = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'tooltip_description',
+						'content' => $output,
+					),
+					$echo
+				);
+				break;
+			/**
 			 * No Duplicates.
 			 */
 			case 'autocomplete_address':
@@ -1347,7 +1398,7 @@ abstract class EVF_Form_Fields {
 					array(
 						'slug'    => 'enable_prepopulate',
 						'value'   => $value,
-						'desc'    => esc_html__( 'Enable Autopoupulate ', 'everest-forms' ),
+						'desc'    => esc_html__( 'Enable Autopopulate ', 'everest-forms' ),
 						'tooltip' => $tooltip,
 					),
 					false

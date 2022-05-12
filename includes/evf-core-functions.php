@@ -1169,8 +1169,7 @@ function evf_get_all_forms( $skip_disabled_entries = false ) {
  * @return string
  */
 function evf_get_meta_key_field_option( $field ) {
-	$random_number = rand( pow( 10, 3 ), pow( 10, 4 ) - 1 ); // phpcs:ignore WordPress.WP.AlternativeFunctions.rand_rand
-	return strtolower( str_replace( array( ' ', '/_' ), array( '_', '' ), $field['label'] ) ) . '_' . $random_number;
+	return str_replace( ' ', '_', preg_replace( '/[^a-zA-Z0-9\s`_]/', '', strtolower( $field['label'] ) ) ) . '_' . rand( pow( 10, 3 ), pow( 10, 4 ) - 1 ); // phpcs:ignore WordPress.WP.AlternativeFunctions.rand_rand.
 }
 
 /**
@@ -2497,6 +2496,8 @@ function evf_sanitize_builder( $post_data = array() ) {
 		$name = sanitize_text_field( $data->name );
 		if ( preg_match( '/\<.*\>/', $data->value ) ) {
 			$value = wp_kses_post( $data->value );
+		} elseif ( 'settings[external_url]' === $data->name ) {
+			$value = esc_url_raw( $data->value );
 		} else {
 			$value = sanitize_text_field( $data->value );
 		}

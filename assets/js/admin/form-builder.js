@@ -374,6 +374,7 @@
 			EVFPanelBuilder.bindCloneField();
 			EVFPanelBuilder.bindSaveOption();
 			EVFPanelBuilder.bindSaveOptionWithKeyEvent();
+			EVFPanelBuilder.bindOpenShortcutKeysModalWithKeyEvent();
 			EVFPanelBuilder.bindAddNewRow();
 			EVFPanelBuilder.bindRemoveRow();
 			EVFPanelBuilder.bindFormSettings();
@@ -1795,6 +1796,9 @@
 				var form_data  = $form.serializeArray();
 				var form_title = $( '#evf-edit-form-name' ).val().trim();
 
+				// Set WebHook Request Headers key-Value pair.
+				$(document).trigger('setEvfProWebHookRequestHeaders', [form_data]);
+
 				var select_id_name = {};
 
 				$('.everest-forms-field-option-row').find('.evf-select2-multiple').filter(function(){
@@ -1918,6 +1922,45 @@
 					) {
 						e.preventDefault();
 						$('.everest-forms-save-button').trigger('click');
+					}
+				}
+			});
+		},
+		bindOpenShortcutKeysModalWithKeyEvent: function() {
+			$('body').on("keydown", function (e) {
+				if ( e.ctrlKey || e.metaKey ) {
+					if( 'h' === String.fromCharCode(e.which).toLowerCase() || 72 === e.which ) {
+						e.preventDefault();
+						var shortcut_keys_html = '';
+
+						$.each(evf_data.i18n_shortcut_keys, function (key, value) {
+							shortcut_keys_html += `
+								<ul class="evf-shortcut-keyword">
+									<li>
+										<div class="evf-shortcut-title">${value}</div>
+									<div class="evf-key">
+										<span>${key.split('+')[0]}</span>
+										<span>${key.split('+')[1]}</span>
+									</div>
+									</li>
+								</ul>
+							`;
+						});
+
+						$.alert({
+							title: evf_data.i18n_shortcut_key_title,
+							content: shortcut_keys_html,
+							icon: 'dashicons dashicons-info',
+							type: 'blue',
+							boxWidth: '550px',
+							buttons : {
+								confirm : {
+									text: evf_data.i18n_close,
+									btnClass: 'btn-confirm',
+									keys: ['enter']
+								}
+							}
+						});
 					}
 				}
 			});
