@@ -775,7 +775,7 @@ abstract class EVF_Form_Fields {
 					array(
 						'slug'    => 'no_duplicates',
 						'value'   => $value,
-						'desc'    => esc_html__( 'No Duplicates', 'everest-forms' ),
+						'desc'    => esc_html__( 'Validate as unique', 'everest-forms' ),
 						'tooltip' => $tooltip,
 					),
 					false
