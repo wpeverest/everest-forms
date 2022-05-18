@@ -1,6 +1,6 @@
 == Changelog ==
 
-= 1.8.8 - xx-xx-2022
+= 1.8.8 - 19-05-2022
 * Enhancement - Export/Import multiple forms at a time.
 
 = 1.8.7 - 20-04-2022 =
