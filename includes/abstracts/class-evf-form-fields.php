@@ -790,6 +790,43 @@ abstract class EVF_Form_Fields {
 					$echo
 				);
 				break;
+			case 'validate_message':
+				$toggle  = '';
+				$tooltip = esc_html__( 'if the form submission failed it will show this message.', 'everest-forms' );
+				$value   = ! empty( $field['validate_message'] ) ? esc_attr( $field['validate_message'] ) : 'This field value needs to be unique.';
+
+				// Build output.
+				$output  = $this->field_element(
+					'label',
+					$field,
+					array(
+						'slug'          => 'validate_message',
+						'value'         => esc_html__( 'Validation Message for Duplicate', 'everest-forms' ),
+						'tooltip'       => $tooltip,
+						'after_tooltip' => $toggle,
+					),
+					false
+				);
+				$output .= $this->field_element(
+					'text',
+					$field,
+					array(
+						'slug'  => 'validate_message',
+						'value' => $value,
+					),
+					false
+				);
+				$output  = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'validate_message',
+						'content' => $output,
+						'class'   => isset( $field['no_duplicates'] ) ? '' : 'hidden',
+					),
+					$echo
+				);
+				break;
 			/**
 			 * No Duplicates.
 			 */
