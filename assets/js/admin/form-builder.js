@@ -2486,7 +2486,7 @@
 		},
 
 		paymentFieldAppendToDropdown: function( dragged_field_id, field_type ){
-			if('payment-quantity' === field_type ) {
+			if('payment-quantity' === field_type || 'payment-coupon' === field_type ) {
 				var match_fields = [ 'payment-checkbox', 'payment-multiple', 'payment-single', 'range-slider' ],
 					qty_dropdown = $('#everest-forms-field-option-' + dragged_field_id + '-map_field');
 				match_fields.forEach(function(single_field){
