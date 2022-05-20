@@ -2498,6 +2498,8 @@ function evf_sanitize_builder( $post_data = array() ) {
 			$value = wp_kses_post( $data->value );
 		} elseif ( 'settings[external_url]' === $data->name ) {
 			$value = esc_url_raw( $data->value );
+		} elseif ( 'settings[email][connection_1][evf_email_message]' === $data->name ) {
+			$value = wp_kses_post( $data->value );
 		} else {
 			$value = sanitize_text_field( $data->value );
 		}
