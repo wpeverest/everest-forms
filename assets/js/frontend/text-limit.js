@@ -53,6 +53,51 @@ jQuery( function() {
 			event.addEventListener( 'keydown', self.checkWords( hint, limit ) );
 			event.addEventListener( 'paste', self.pasteWords( limit ) );
 		} );
+
+		// Minimum length by characters.
+		Array.prototype.slice.call( document.querySelectorAll( '.everest-forms-min-characters-length-enabled' ) ).map( function( event ) {
+			var minLength   = parseInt( event.dataset.textMinLength, 10 ) || 0;
+
+			 var hint = document.createElement( 'div' );
+
+			 hint.classList.add( 'everest-forms-field-limit-text' );
+			 hint.id = 'everest-forms-field-limit-text-' + event.dataset.formId + '-' + event.dataset.fieldId;
+			 hint.textContent = everest_forms_text_limit_params.i18n_messages_min_length_characters.replace( '{minLength}', minLength );
+	 
+			event.parentNode.appendChild( hint );
+
+			jQuery.extend(jQuery.validator.messages, {
+				minlength: jQuery.validator.format( everest_forms_text_limit_params.i18n_messages_min_length_characters.replace( '{minLength}', minLength ) ),
+			});
+		} );
+
+		// Minimum length by words count.
+		Array.prototype.slice.call( document.querySelectorAll( '.everest-forms-min-words-length-enabled' ) ).map( function( event ) {
+			var minWords    = parseInt( event.dataset.textMinLength, 10 ) || 0;
+
+			var hint = document.createElement( 'div' );
+
+			hint.classList.add( 'everest-forms-field-limit-text' );
+			hint.id = 'everest-forms-field-limit-text-' + event.dataset.formId + '-' + event.dataset.fieldId;
+			hint.textContent = everest_forms_text_limit_params.i18n_messages_min_length_words.replace( '{minLength}', minWords );
+
+			event.parentNode.appendChild( hint );
+			  
+			// Add the custom validation method.
+			jQuery.validator.addMethod( 'minWordLength',
+				function(value, element, params) {
+					var wordsCount = value.trim().split( ' ' ).length;
+
+					return wordsCount >= params[0];
+				},
+				jQuery.validator.format( everest_forms_text_limit_params.i18n_messages_min_length_words.replace( '{minLength}', minWords ) )
+			);
+
+			jQuery( '#'+event.id ).each( function() {
+				jQuery( this ).rules( 'add', { minWordLength: [minWords] });
+			});
+
+		} );
 	};
 
 	/**
