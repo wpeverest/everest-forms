@@ -72,7 +72,7 @@ class EVF_Field_Textarea extends EVF_Form_Fields {
 					'slug'    => 'limit_enabled',
 					'value'   => isset( $field['limit_enabled'] ),
 					'desc'    => esc_html__( 'Limit Length', 'everest-forms' ),
-					'tooltip' => esc_html__( 'Check this option to limit text length by characters or words count.', 'everest-forms' ),
+					'tooltip' => esc_html__( 'Check this option to specify maximum text length by characters or word count.', 'everest-forms' ),
 				),
 				false
 			),
@@ -125,7 +125,7 @@ class EVF_Field_Textarea extends EVF_Form_Fields {
 	 * @param array $field Field settings.
 	 */
 	public function min_length( $field ) {
-		// Limit length.
+		// Minimum length.
 		$args = array(
 			'slug'    => 'min_length_enabled',
 			'content' => $this->field_element(
@@ -135,14 +135,14 @@ class EVF_Field_Textarea extends EVF_Form_Fields {
 					'slug'    => 'min_length_enabled',
 					'value'   => isset( $field['min_length_enabled'] ),
 					'desc'    => esc_html__( 'Minimum Length', 'everest-forms' ),
-					'tooltip' => esc_html__( 'Check this option to limit text length by characters or words count.', 'everest-forms' ),
+					'tooltip' => esc_html__( 'Check this option to specify minimum text length by characters or word count.', 'everest-forms' ),
 				),
 				false
 			),
 		);
 		$this->field_element( 'row', $field, $args );
 
-		// Limit controls.
+		// Minimum length controls.
 		$count = $this->field_element(
 			'text',
 			$field,
