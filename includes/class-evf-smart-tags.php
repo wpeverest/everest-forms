@@ -191,8 +191,7 @@ class EVF_Smart_Tags {
 
 					case 'page_title':
 						$page_title = get_the_title( get_the_ID() );
-						echo 'this is page id' . get_the_ID();
-						$content = str_replace( '{' . $other_tag . '}', $page_title, $content );
+						$content    = str_replace( '{' . $other_tag . '}', $page_title, $content );
 						break;
 
 					case 'page_url':
