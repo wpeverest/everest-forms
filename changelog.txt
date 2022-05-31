@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 1.8.9 - xx-xx-2022
+* Fix - Hidden Field default value.
+
 = 1.8.8 - 19-05-2022
 * Enhancement - Export/Import multiple forms at a time.
 
