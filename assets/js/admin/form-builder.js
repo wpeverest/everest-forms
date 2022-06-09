@@ -192,6 +192,10 @@
 				EVFPanelBuilder.updateTextFieldsLimitControls( $( event.target ).parents( '.everest-forms-field-option-row-limit_enabled' ).data().fieldId, event.target.checked );
 			} );
 
+			$builder.on( 'change', '.everest-forms-field-option-row-min_length_enabled input', function( event ) {
+				EVFPanelBuilder.updateTextFieldsMinLengthControls( $( event.target ).parents( '.everest-forms-field-option-row-min_length_enabled' ).data().fieldId, event.target.checked );
+			} );
+
 			// Enable enhanced select.
 			$builder.on( 'change', '.everest-forms-field-option-select .everest-forms-field-option-row-enhanced_select input', function( event ) {
 				EVFPanelBuilder.enhancedSelectFieldStyle( $( event.target ).parents( '.everest-forms-field-option-row-enhanced_select' ).data().fieldId, event.target.checked );
@@ -290,6 +294,22 @@
 				$( '#everest-forms-field-option-row-' + fieldId + '-limit_controls' ).addClass( 'everest-forms-hidden' );
 			} else {
 				$( '#everest-forms-field-option-row-' + fieldId + '-limit_controls' ).removeClass( 'everest-forms-hidden' );
+			}
+		},
+
+		/**
+		 * Update text fields min length controls.
+		 *
+		 * @since 1.5.10
+		 *
+		 * @param {number} fieldId Field ID.
+		 * @param {bool} checked Whether an option is checked or not.
+		 */
+		 updateTextFieldsMinLengthControls: function( fieldId, checked ) {
+			if ( ! checked ) {
+				$( '#everest-forms-field-option-row-' + fieldId + '-min_length_controls' ).addClass( 'everest-forms-hidden' );
+			} else {
+				$( '#everest-forms-field-option-row-' + fieldId + '-min_length_controls' ).removeClass( 'everest-forms-hidden' );
 			}
 		},
 

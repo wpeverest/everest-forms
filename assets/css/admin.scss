@@ -2267,7 +2267,8 @@ p.search-box {
 								margin-bottom: 14px;
 							}
 
-							&.everest-forms-field-option-row-limit_controls {
+							&.everest-forms-field-option-row-limit_controls, 
+							&.everest-forms-field-option-row-min_length_controls {
 								display: flex;
 								align-items: center;
 
