@@ -8,9 +8,10 @@ jQuery( function( $ ) {
 				var formTuple = $( v ),
 					btn = formTuple.find( '.evf-submit' ),
 					stripeForms = formTuple.find( "[data-gateway*='stripe']" );
-				// If it's an ajax form containing a stripe gateway, donot latch into the button.
+				  var  razorpayForms = formTuple.find( "[data-gateway='razorpay']" );
+				// If it's an ajax form containing a stripe gateway, do not latch into the button.
 
-				if ( stripeForms.length > 0  && 0 === stripeForms.children.length ) {
+				if ( stripeForms.length > 0  && 0 === stripeForms.children.length || razorpayForms.length > 0  ) {
 					return;
 				}
 
@@ -86,9 +87,12 @@ jQuery( function( $ ) {
 							}
 
 							var paymentMethod = formTuple.find( ".everest-forms-stripe-gateways-tabs .evf-tab" ).has( 'a.active' ).data( 'gateway' );
+
+
 							if(undefined === paymentMethod) {
 								paymentMethod = formTuple.find( ".everest-forms-gateway[data-gateway='ideal']" ).data( 'gateway' );
 							}
+
 
 							if( 'ideal' === paymentMethod && 'none' !== formTuple.find( ".everest-forms-gateway[data-gateway='ideal']" ).closest( '.evf-field' ).css( 'display' )  ) {
 								formTuple.trigger( 'evf_process_payment', xhr.data );
@@ -135,7 +139,11 @@ jQuery( function( $ ) {
 												id         = 'everest_forms[form_fields][' + fld_id + '][' + ( parseInt( tbl_header.closest( 'tr' ).index() ) + 1 ) + ']';
 
 											if ( ! tbl_header.children().is( 'label' ) ) {
-												tbl_header.append( '<label id="' + id + '" for="' + id + '" class="evf-error">' + everest_forms_ajax_submission_params.required + '</label>' );
+												if( tbl_header.parents( 'span.input-wrapper' ).length ) {
+													tbl_header.parents( 'span.input-wrapper' ).append( '<label id="' + id + '" for="' + id + '" class="evf-error">' + everest_forms_ajax_submission_params.required + '</label>' );
+												} else {
+													tbl_header.append( '<label id="' + id + '" for="' + id + '" class="evf-error">' + everest_forms_ajax_submission_params.required + '</label>' );
+												}
 											} else {
 												tbl_header.children().find( '#' + id ).show();
 											}
@@ -165,7 +173,11 @@ jQuery( function( $ ) {
 									err_field.first().closest( '.evf-field' ).addClass( 'everest-forms-invalid evf-has-error' );
 
 									if ( true === lbl && ! err_field.is( 'label' ) ) {
-										err_field.after( '<label id="' + err_field.attr( 'id' ) + '-error" class="evf-error" for="' + err_field.attr( 'id' ) + '">' + err_msg + '</label>' ).show();
+										if( err_field.parents( 'span.input-wrapper' ).length ){
+											err_field.parents( 'span.input-wrapper' ).after( '<label id="' + err_field.attr( 'id' ) + '-error" class="evf-error" for="' + err_field.attr( 'id' ) + '">' + err_msg + '</label>' ).show();
+										} else {
+											err_field.after( '<label id="' + err_field.attr( 'id' ) + '-error" class="evf-error" for="' + err_field.attr( 'id' ) + '">' + err_msg + '</label>' ).show();
+										}
 									}
 								});
 

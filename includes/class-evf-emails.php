@@ -455,6 +455,18 @@ class EVF_Emails {
 					continue;
 				}
 
+				if ( 'radio' === $field['type'] && empty( $field['value']['label'] ) ) {
+
+					continue;
+
+				}
+
+				if ( 'checkbox' === $field['type'] && empty( $field['value']['label'][0] ) ) {
+
+					continue;
+
+				}
+
 				// If there's the export data filter, utilize that and re-loop promptly.
 				if ( has_filter( "everest_forms_field_exporter_{$field['type']}" ) ) {
 					$formatted_string          = apply_filters( "everest_forms_field_exporter_{$field['type']}", $field, 'email-html', 2 );

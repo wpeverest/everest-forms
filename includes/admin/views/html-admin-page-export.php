@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || exit;
 		<?php
 		$forms = evf_get_all_forms( true );
 		if ( ! empty( $forms ) ) {
-			echo '<select id="everest-forms-form-export" style="min-width: 350px;" name="form_id" data-placeholder="' . esc_attr__( 'Select form', 'everest-forms' ) . '"><option value="">' . esc_html__( 'Select a form', 'everest-forms' ) . '</option>';
+			echo '<select id="everest-forms-form-export" class="evf-enhanced-select" style="min-width: 350px;" name="form_ids[]" data-placeholder="' . esc_attr__( 'Select Form(s)', 'everest-forms' ) . '" multiple>';
 			foreach ( $forms as $id => $form ) { // phpcs:ignore WordPress.WP.GlobalVariablesOverride
 				echo '<option value="' . esc_attr( $id ) . '">' . esc_html( $form ) . '</option>';
 			}
