@@ -314,7 +314,6 @@ abstract class EVF_Form_Fields {
 
 				if ( true === $is_multiple ) {
 					$output = sprintf( '<select class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" %s multiple>', $class, $id, $slug, $id, $slug, $data );
-
 				} else {
 					$output = sprintf( '<select class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" %s >', $class, $id, $slug, $id, $slug, $data );
 				}
