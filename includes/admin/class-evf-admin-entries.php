@@ -270,7 +270,7 @@ class EVF_Admin_Entries {
 
 			if ( $form_name ) {
 				$exporter = new EVF_Entry_CSV_Exporter( $form_id );
-				$exporter->set_filename( evf_get_csv_file_name( $form_name ) );
+				$exporter->set_filename( evf_get_entry_export_file_name( $form_name ) );
 			}
 
 			$exporter->export();

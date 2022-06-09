@@ -4697,6 +4697,7 @@ p.search-box {
 /**
    * Import and Export
    */
+.evf-tools-export-entries,
 .everest-forms-import-form,
 .everest-forms-export-form {
 	background: $color-white;
@@ -5375,6 +5376,10 @@ img.ui-datepicker-trigger {
 .select2-drop,
 .select2-dropdown {
 	z-index: 999999 !important;
+
+	.everest-forms-btn {
+		margin: 8px 4px;
+	}
 }
 
 .select2-results {

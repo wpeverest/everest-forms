@@ -30,3 +30,6 @@ defined( 'ABSPATH' ) || exit;
 		</div>
 	</form>
 </div>
+<?php
+	do_action( 'html_admin_page_export_entries' );
+?>
