@@ -2359,7 +2359,7 @@ abstract class EVF_Form_Fields {
 	 */
 	protected function field_is_limit( $field ) {
 		if ( in_array( $field['type'], array( 'text', 'textarea' ), true ) ) {
-			return isset( $field['limit_enabled'] ) && ! empty( $field['limit_count'] );
+			return ( isset( $field['limit_enabled'] ) && ! empty( $field['limit_count'] ) ) || ( isset( $field['min_length_enabled'] ) && ! empty( $field['min_length_count'] ) );
 		}
 	}
 
