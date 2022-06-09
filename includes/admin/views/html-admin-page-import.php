@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
 	<h3><?php esc_html_e( 'Import Everest Forms', 'everest-forms' ); ?></h3>
 	<p><?php esc_html_e( 'Select JSON file to import the form.', 'everest-forms' ); ?></p>
 	<div class="everest-forms-file-upload">
-		<input type="file" name="file" id="everest-forms-import" <?php esc_attr_e( 'files selected', 'everest-forms' ); ?>" accept=".json" />
+	<input type="file" name="file" id="everest-forms-import" <?php esc_attr_e( 'files selected', 'everest-forms' ); ?>" accept=".json" />
 		<label for="everest-forms-import"><span class="everest-forms-btn dashicons dashicons-upload">Choose File</span><span id="import-file-name"><?php esc_html_e( 'No file selected', 'everest-forms' ); ?></span></label>
 	</div>
 	<p class="description">
