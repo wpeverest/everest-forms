@@ -139,7 +139,11 @@ jQuery( function( $ ) {
 												id         = 'everest_forms[form_fields][' + fld_id + '][' + ( parseInt( tbl_header.closest( 'tr' ).index() ) + 1 ) + ']';
 
 											if ( ! tbl_header.children().is( 'label' ) ) {
-												tbl_header.append( '<label id="' + id + '" for="' + id + '" class="evf-error">' + everest_forms_ajax_submission_params.required + '</label>' );
+												if( tbl_header.parents( 'span.input-wrapper' ).length ) {
+													tbl_header.parents( 'span.input-wrapper' ).append( '<label id="' + id + '" for="' + id + '" class="evf-error">' + everest_forms_ajax_submission_params.required + '</label>' );
+												} else {
+													tbl_header.append( '<label id="' + id + '" for="' + id + '" class="evf-error">' + everest_forms_ajax_submission_params.required + '</label>' );
+												}
 											} else {
 												tbl_header.children().find( '#' + id ).show();
 											}
@@ -169,7 +173,11 @@ jQuery( function( $ ) {
 									err_field.first().closest( '.evf-field' ).addClass( 'everest-forms-invalid evf-has-error' );
 
 									if ( true === lbl && ! err_field.is( 'label' ) ) {
-										err_field.after( '<label id="' + err_field.attr( 'id' ) + '-error" class="evf-error" for="' + err_field.attr( 'id' ) + '">' + err_msg + '</label>' ).show();
+										if( err_field.parents( 'span.input-wrapper' ).length ){
+											err_field.parents( 'span.input-wrapper' ).after( '<label id="' + err_field.attr( 'id' ) + '-error" class="evf-error" for="' + err_field.attr( 'id' ) + '">' + err_msg + '</label>' ).show();
+										} else {
+											err_field.after( '<label id="' + err_field.attr( 'id' ) + '-error" class="evf-error" for="' + err_field.attr( 'id' ) + '">' + err_msg + '</label>' ).show();
+										}
 									}
 								});
 

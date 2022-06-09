@@ -68,7 +68,11 @@ jQuery( function ( $ ) {
 					suggested: function( el, suggestion ) {
 						$( '#' + id + '_suggestion' ).remove();
 						var suggestion_msg = everest_forms_params.i18n_messages_email_suggestion.replace( '{suggestion}', '<a href="#" class="mailcheck-suggestion" data-id="' + id + '" title="' + everest_forms_params.i18n_messages_email_suggestion_title + '">' + suggestion.full + '</a>' );
-						$( el ).after( '<label class="evf-error mailcheck-error" id="' + id + '_suggestion">' + suggestion_msg + '</label>' );
+						if( el.parents( 'span.input-wrapper' ).length ) {
+							$( el ).parents( 'span.input-wrapper' ).after( '<label class="evf-error mailcheck-error" id="' + id + '_suggestion">' + suggestion_msg + '</label>' );
+						}else {
+							$( el ).after( '<label class="evf-error mailcheck-error" id="' + id + '_suggestion">' + suggestion_msg + '</label>' );
+						}
 					},
 					empty: function() {
 						$( '#' + id + '_suggestion' ).remove();
@@ -445,9 +449,17 @@ jQuery( function ( $ ) {
 								element.parent().find( '.select2' ).after( error );
 							}
 						} else if ( element.hasClass( 'evf-smart-phone-field' ) || element.hasClass( 'everest-forms-field-password-primary' ) || element.hasClass( 'everest-forms-field-password-secondary' ) ) {
-							element.parent().after( error );
+							if( element.parents('span.input-wrapper').length ) {
+								element.parents('span.input-wrapper').after( error );
+							} else {
+								element.parent().after( error );
+							}
 						} else {
-							error.insertAfter( element );
+							if( element.parents('span.input-wrapper').length ) {
+								element.parents('span.input-wrapper').after( error );
+							} else {
+								error.insertAfter( element );
+							}
 						}
 					},
 					highlight: function( element, errorClass, validClass ) {
