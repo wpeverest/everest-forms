@@ -70,8 +70,7 @@ jQuery( function() {
 			// Add the custom validation method.
 			jQuery.validator.addMethod( 'minWordLength',
 				function(value, element, params) {
-					var wordsCount = value.trim().split( ' ' ).length;
-
+					var wordsCount = value.trim().split( /\s+/ ).length;
 					return wordsCount >= params[0];
 				},
 				jQuery.validator.format( everest_forms_text_limit_params.i18n_messages_min_length_words.replace( '{minLength}', minWords ) )
