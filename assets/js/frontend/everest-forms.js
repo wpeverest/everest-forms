@@ -30,6 +30,7 @@ jQuery( function ( $ ) {
 			this.randomize_elements();
 			this.init_enhanced_select();
 			this.checkUncheckAllcheckbox();
+			this.validateMinimumWordLength();
 
 			// Inline validation.
 			this.$everest_form.on( 'input validate change', '.input-text, select, input:checkbox, input:radio', this.validate_field );
@@ -684,6 +685,24 @@ jQuery( function ( $ ) {
 					});
 				});
 			}
+		},
+		validateMinimumWordLength: function() {
+			Array.prototype.slice.call( document.querySelectorAll( '.everest-forms-min-words-length-enabled' ) ).map( function( event ) {
+				var minWords    = parseInt( event.dataset.textMinLength, 10 ) || 0;
+		
+				// Add the custom validation method.
+				jQuery.validator.addMethod( 'minWordLength',
+					function(value, element, params) {
+						var wordsCount = value.trim().split( /\s+/ ).length;
+						return wordsCount >= params[0];
+					}
+				);
+		
+				jQuery( '#'+event.id ).each( function() {
+					jQuery( this ).rules( 'add', { minWordLength: [minWords] });
+				});
+		
+			} );
 		},
 	};
 

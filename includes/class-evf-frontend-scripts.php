@@ -302,10 +302,8 @@ class EVF_Frontend_Scripts {
 				break;
 			case 'everest-forms-text-limit':
 				$params = array(
-					'i18n_messages_limit_characters'      => esc_html__( '{count} of {limit} max characters.', 'everest-forms' ),
-					'i18n_messages_limit_words'           => esc_html__( '{count} of {limit} max words.', 'everest-forms' ),
-					'i18n_messages_min_length_characters' => esc_html__( 'Please enter at least {minLength} character(s).', 'everest-forms' ),
-					'i18n_messages_min_length_words'      => esc_html__( 'Please enter at least {minLength} word(s).', 'everest-forms' ),
+					'i18n_messages_limit_characters' => esc_html__( '{count} of {limit} max characters.', 'everest-forms' ),
+					'i18n_messages_limit_words'      => esc_html__( '{count} of {limit} max words.', 'everest-forms' ),
 				);
 				break;
 			case 'everest-forms-ajax-submission':
