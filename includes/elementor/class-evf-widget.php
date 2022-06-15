@@ -171,7 +171,7 @@ class EVF_Widget extends Widget_Base {
 					$everest_forms[ $evf_form->ID ] = $evf_form->post_title;
 				}
 			} else {
-				$everest_forms[0] = esc_html__( 'Yo have not created a form, Please Create a form first', 'everest-forms' );
+				$everest_forms[0] = esc_html__( 'You have not created a form, Please Create a form first', 'everest-forms' );
 			}
 
 			return $everest_forms;

@@ -30,6 +30,7 @@ jQuery( function ( $ ) {
 			this.randomize_elements();
 			this.init_enhanced_select();
 			this.checkUncheckAllcheckbox();
+			this.validateMinimumWordLength();
 
 			// Inline validation.
 			this.$everest_form.on( 'input validate change', '.input-text, select, input:checkbox, input:radio', this.validate_field );
@@ -68,7 +69,11 @@ jQuery( function ( $ ) {
 					suggested: function( el, suggestion ) {
 						$( '#' + id + '_suggestion' ).remove();
 						var suggestion_msg = everest_forms_params.i18n_messages_email_suggestion.replace( '{suggestion}', '<a href="#" class="mailcheck-suggestion" data-id="' + id + '" title="' + everest_forms_params.i18n_messages_email_suggestion_title + '">' + suggestion.full + '</a>' );
-						$( el ).after( '<label class="evf-error mailcheck-error" id="' + id + '_suggestion">' + suggestion_msg + '</label>' );
+						if( el.parents( 'span.input-wrapper' ).length ) {
+							$( el ).parents( 'span.input-wrapper' ).after( '<label class="evf-error mailcheck-error" id="' + id + '_suggestion">' + suggestion_msg + '</label>' );
+						}else {
+							$( el ).after( '<label class="evf-error mailcheck-error" id="' + id + '_suggestion">' + suggestion_msg + '</label>' );
+						}
 					},
 					empty: function() {
 						$( '#' + id + '_suggestion' ).remove();
@@ -445,9 +450,17 @@ jQuery( function ( $ ) {
 								element.parent().find( '.select2' ).after( error );
 							}
 						} else if ( element.hasClass( 'evf-smart-phone-field' ) || element.hasClass( 'everest-forms-field-password-primary' ) || element.hasClass( 'everest-forms-field-password-secondary' ) ) {
-							element.parent().after( error );
+							if( element.parents('span.input-wrapper').length ) {
+								element.parents('span.input-wrapper').after( error );
+							} else {
+								element.parent().after( error );
+							}
 						} else {
-							error.insertAfter( element );
+							if( element.parents('span.input-wrapper').length ) {
+								element.parents('span.input-wrapper').after( error );
+							} else {
+								error.insertAfter( element );
+							}
 						}
 					},
 					highlight: function( element, errorClass, validClass ) {
@@ -481,6 +494,7 @@ jQuery( function ( $ ) {
 							$submit     = $form.find( '.evf-submit' ),
 							processText = $submit.data( 'process-text' );
 							var	recaptchaID = $submit.get( 0 ).recaptchaID;
+							var  razorpayForms = $form.find( "[data-gateway='razorpay']" );
 						// Process form.
 						if ( processText ) {
 							$submit.text( processText ).prop( 'disabled', true );
@@ -489,6 +503,10 @@ jQuery( function ( $ ) {
 						if (  recaptchaID === 0 ) {
 							 grecaptcha.execute( recaptchaID );
 							return false;
+						}
+
+						if( razorpayForms.length > 0 ){
+							return;
 						}
 
 						if ( 1 !== $form.data( 'ajax_submission' ) ) {
@@ -667,6 +685,24 @@ jQuery( function ( $ ) {
 					});
 				});
 			}
+		},
+		validateMinimumWordLength: function() {
+			Array.prototype.slice.call( document.querySelectorAll( '.everest-forms-min-words-length-enabled' ) ).map( function( event ) {
+				var minWords    = parseInt( event.dataset.textMinLength, 10 ) || 0;
+		
+				// Add the custom validation method.
+				jQuery.validator.addMethod( 'minWordLength',
+					function(value, element, params) {
+						var wordsCount = value.trim().split( /\s+/ ).length;
+						return wordsCount >= params[0];
+					}
+				);
+		
+				jQuery( '#'+event.id ).each( function() {
+					jQuery( this ).rules( 'add', { minWordLength: [minWords] });
+				});
+		
+			} );
 		},
 	};
 

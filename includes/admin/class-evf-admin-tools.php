@@ -57,6 +57,11 @@ class EVF_Admin_Tools {
 			self::remove_log();
 		}
 
+		// Remove All Logs.
+		if ( ! empty( $_REQUEST['handle_all'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			self::remove_all_logs();
+		}
+
 		include_once 'views/html-admin-page-tools-logs.php';
 	}
 
@@ -173,4 +178,22 @@ class EVF_Admin_Tools {
 		wp_safe_redirect( esc_url_raw( admin_url( 'admin.php?page=evf-tools&tab=logs' ) ) );
 		exit();
 	}
+
+	/**
+	 * Remove/delete all logs.
+	 */
+	public static function remove_all_logs() {
+		if ( empty( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ), 'remove_all_logs' ) ) {
+			wp_die( esc_html__( 'Action failed. Please refresh the page and retry.', 'everest-forms' ) );
+		}
+
+		if ( ! empty( $_REQUEST['handle_all'] ) ) {
+			$log_handler = new EVF_Log_Handler_File();
+			$log_handler->remove_all();
+		}
+
+		wp_safe_redirect( esc_url_raw( admin_url( 'admin.php?page=evf-tools&tab=logs' ) ) );
+		exit();
+	}
+
 }

@@ -29,7 +29,7 @@
 	});
 
 	// Update Perfect Scrollbar.
-	$( window ).on( 'resize orientationchange', function() {
+	window.addEventListener( 'resize orientationchange', function() {
 		var resizeTimer,
 			nav_wrapper = $( 'nav.evf-nav-tab-wrapper' );
 
@@ -317,6 +317,7 @@
 
 				$( '.everest-forms-import-form' ).find( 'h3' ).after( message_string );
 				$( '#everest-forms-import' ).val( '' );
+				$( '#import-file-name' ).html( 'No file selected' );
 			}
 		});
 	});

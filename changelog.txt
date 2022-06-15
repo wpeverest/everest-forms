@@ -1,5 +1,18 @@
 == Changelog ==
 
+= 1.8.9 - 15-06-2022
+* Fix - Hidden Field default value.
+* Enhancement - Minimum length feature on the Paragraph/Single Line Text field.
+
+= 1.8.8 - 19-05-2022
+* Enhancement - Export/Import multiple forms at a time.
+
+= 1.8.7 - 20-04-2022 =
+* Fix - Meta Key Translation issue.
+* Enhancement - Delete all logs at a time.
+* Fix - Filled value in likert field missing in form submission when error is occurred.
+* Enhancement - Keyboard shortcut key (Ctrl+h) for showing keyboard shortcut keys in modal.
+
 = 1.8.6 - 29-03-2022 =
 * Tweak - CAPTCHA text change.
 * Enhancement - CAPTCHA language.

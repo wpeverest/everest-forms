@@ -643,6 +643,7 @@ class EVF_AJAX {
 		);
 	}
 
+
 	/**
 	 * AJAX Integration disconnect.
 	 */
@@ -784,7 +785,7 @@ class EVF_AJAX {
 	public static function import_form_action() {
 		try {
 			check_ajax_referer( 'process-import-ajax-nonce', 'security' );
-			EVF_Admin_Import_Export::import_form();
+			EVF_Admin_Import_Export::import_forms();
 		} catch ( Exception $e ) {
 			wp_send_json_error(
 				array(
