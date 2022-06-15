@@ -2011,7 +2011,7 @@ abstract class EVF_Form_Fields {
 
 		// Check for permissions.
 		if ( ! current_user_can( 'everest_forms_edit_form', (int) $_POST['form_id'] ) ) {
-			die( esc_html__( 'You do no have permission.', 'everest-forms' ) );
+			die( esc_html__( 'You don\'t have permission.', 'everest-forms' ) );
 		}
 
 		// Check for field type to add.
