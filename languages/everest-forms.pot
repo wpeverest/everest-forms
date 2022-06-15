@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-06-09T11:41:53+02:00\n"
+"POT-Creation-Date: 2022-06-15T07:16:05+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: everest-forms\n"
@@ -645,7 +645,7 @@ msgid "No form ID found"
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:2014
-msgid "You do no have permission."
+msgid "You don't have permission."
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:2019
@@ -890,7 +890,7 @@ msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:271
 #: includes/class-evf-frontend-scripts.php:286
-#: includes/class-evf-frontend-scripts.php:315
+#: includes/class-evf-frontend-scripts.php:313
 #: includes/shortcodes/class-evf-shortcode-form.php:94
 #: includes/templates/contact.php:67
 msgid "Submit"
@@ -2036,7 +2036,7 @@ msgid "Enter the message for the required form field"
 msgstr ""
 
 #: includes/admin/settings/class-evf-settings-validation.php:52
-#: includes/class-evf-frontend-scripts.php:317
+#: includes/class-evf-frontend-scripts.php:315
 #: includes/evf-core-functions.php:1513
 msgid "This field is required."
 msgstr ""
@@ -2818,19 +2818,11 @@ msgstr ""
 msgid "{count} of {limit} max words."
 msgstr ""
 
-#: includes/class-evf-frontend-scripts.php:307
-msgid "Please enter at least {minLength} character(s)."
-msgstr ""
-
-#: includes/class-evf-frontend-scripts.php:308
-msgid "Please enter at least {minLength} word(s)."
-msgstr ""
-
-#: includes/class-evf-frontend-scripts.php:316
+#: includes/class-evf-frontend-scripts.php:314
 msgid "Something went wrong while making an AJAX submission"
 msgstr ""
 
-#: includes/class-evf-frontend-scripts.php:318
+#: includes/class-evf-frontend-scripts.php:316
 msgid "Click here to download your pdf submission"
 msgstr ""
 
@@ -3161,7 +3153,7 @@ msgid "Please select a Everest Forms."
 msgstr ""
 
 #: includes/elementor/class-evf-widget.php:174
-msgid "Yo have not created a form, Please Create a form first"
+msgid "You have not created a form, Please Create a form first"
 msgstr ""
 
 #. translators: %s template
