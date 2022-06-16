@@ -325,6 +325,18 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				false
 			);
 
+			$enable_past_date_disable = $this->field_element(
+				'checkbox',
+				$field,
+				array(
+					'slug'    => 'past_date_disable',
+					'value'   => isset( $field['past_date_disable'] ) ? $field['past_date_disable'] : '',
+					'desc'    => esc_html__( 'Disable the past date', 'everest-forms' ),
+					'tooltip' => esc_html__( 'Check this option to disable the past date', 'everest-forms' ),
+				),
+				false
+			);
+
 			$enable_min_max = $this->field_element(
 				'checkbox',
 				$field,
@@ -383,7 +395,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 
 			$args = array(
 				'slug'    => 'date_format',
-				'content' => $date_format_label . $date_format_select . $disable_dates_label . $disable_dates . $date_localization_label . $date_localization_select . '<div class="everest-forms-checklist everest-forms-checklist-inline">' . $current_date_mode . '</div><div class="everest-forms-current-date-format">' . $current_date_default . '</div><div class="everest-forms-min-max-date-format">' . $enable_min_max . '</div><div class="everest-forms-min-max-date-option ' . $class_name . '">' . $min_date_label . $min_date . $max_date_label . $max_date . '</div>',
+				'content' => $date_format_label . $date_format_select . $disable_dates_label . $disable_dates . $date_localization_label . $date_localization_select . '<div class="everest-forms-checklist everest-forms-checklist-inline">' . $current_date_mode . '</div><div class="everest-forms-current-date-format">' . $current_date_default . '</div><div class="everest-forms-past-date-disable-format">' . $enable_past_date_disable . '</div><div class="everest-forms-min-max-date-format">' . $enable_min_max . '</div><div class="everest-forms-min-max-date-option ' . $class_name . '">' . $min_date_label . $min_date . $max_date_label . $max_date . '</div>',
 			);
 			$this->field_element( 'row', $field, $args );
 
@@ -621,8 +633,9 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			// Input primary: data-date-format and value.
 			switch ( $field['datetime_format'] ) {
 				case 'date':
-					$properties['inputs']['primary']['attr']['value']            = isset( $field['date_default'] ) ? esc_attr( date_i18n( $field['date_format'] ) ) : '';
-					$properties['inputs']['primary']['attr']['data-date-format'] = ! empty( $field['date_format'] ) ? str_replace( 'g:i A', 'h:i K', esc_attr( $field['date_format'] ) ) : '';
+					$properties['inputs']['primary']['attr']['value']             = isset( $field['date_default'] ) ? esc_attr( date_i18n( $field['date_format'] ) ) : '';
+					$properties['inputs']['primary']['attr']['data-date-format']  = ! empty( $field['date_format'] ) ? str_replace( 'g:i A', 'h:i K', esc_attr( $field['date_format'] ) ) : '';
+					$properties['inputs']['primary']['attr']['data-past-disable-date'] = isset( $field['past_date_disable'] ) ? esc_attr( date_i18n( $field['date_format'] ) ) : '';
 					break;
 				case 'time':
 					$properties['inputs']['primary']['attr']['value']            = '';

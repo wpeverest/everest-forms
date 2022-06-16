@@ -103,13 +103,19 @@ jQuery( function ( $ ) {
 						disableDates = inputData.disableDates.split( ',' );
 					}
 
+					if(inputData.pastDisableDate){
+						var pastDisableDate = inputData.pastDisableDate;
+					} else {
+						var pastDisableDate = '';
+					}
+
 					switch( inputData.dateTime ) {
 						case 'date':
 							// Apply flatpicker to field.
 							$( this ).flatpickr({
 								disableMobile : true,
 								mode          : inputData.mode,
-								minDate       : inputData.minDate,
+								minDate       : inputData.minDate ? inputData.minDate : pastDisableDate,
 								maxDate       : inputData.maxDate,
 								dateFormat    : inputData.dateFormat,
 								disable       : disableDates,
@@ -689,7 +695,7 @@ jQuery( function ( $ ) {
 		validateMinimumWordLength: function() {
 			Array.prototype.slice.call( document.querySelectorAll( '.everest-forms-min-words-length-enabled' ) ).map( function( event ) {
 				var minWords    = parseInt( event.dataset.textMinLength, 10 ) || 0;
-		
+
 				// Add the custom validation method.
 				jQuery.validator.addMethod( 'minWordLength',
 					function(value, element, params) {
@@ -697,11 +703,11 @@ jQuery( function ( $ ) {
 						return wordsCount >= params[0];
 					}
 				);
-		
+
 				jQuery( '#'+event.id ).each( function() {
 					jQuery( this ).rules( 'add', { minWordLength: [minWords] });
 				});
-		
+
 			} );
 		},
 	};
