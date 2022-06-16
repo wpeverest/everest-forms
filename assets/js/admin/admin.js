@@ -117,6 +117,10 @@
 			var maxVal   = maxField.val();
 			var minVal   = minField.val();
 
+			if( 0 !== maxField.parents( '.everest-forms-field-option-row-min_max_values' ).length ) {
+				return;
+			}
+
 			if ( 0 !== minVal.length && 0 !== maxVal.length ) {
 				if ( parseFloat( minVal ) > parseFloat( maxVal ) ) {
 					if( $( this ).attr( 'id' ).indexOf( 'min_value' ) !== -1 ) {
@@ -139,7 +143,7 @@
 		  }
 		})
 
-		.on('click','.everest-forms-field-number', function(e) {
+		.on('click','.everest-forms-field-number, .everest-forms-field-range-slider', function(e) {
 			var $this = $(this);
 			var id = $this.data('field-id');
 			$(document).on('keydown click',"#everest-forms-field-option-"+ id +"-default_value",function(e){
@@ -147,6 +151,33 @@
 				|| ( e.keyCode > 47 && e.keyCode < 58 )
 				|| e.keyCode == 8 ) ) {
 				  return false;
+				}
+			})
+
+			$(document).on( 'keyup focus',"#everest-forms-field-option-"+ id +"-default_value",function( e ){
+				var fieldId  = $( this ).parent().data( 'fieldId' ) ? $( this ).parent().data( 'fieldId' ) : $( this ).closest( '.everest-forms-field-option-row' ).data( 'field-id' );
+				var maxField = $( "input#everest-forms-field-option-"+fieldId+"-max_value" );
+				var minField = $( "input#everest-forms-field-option-"+fieldId+"-min_value" );
+				var maxVal   = maxField.val();
+				var minVal   = minField.val();
+				var defVal   = e.target.value;
+				var $this 	 = $( this );
+
+				if ( 0 !== minVal.length  ) {
+
+					if( 0 !== maxVal.length && parseFloat( defVal ) > parseFloat( maxVal ) ) {
+						$( document.body ).triggerHandler( 'evf_remove_error_tip', [ $this, 'i18n_field_def_value_smaller' ] );
+						$( document.body ).triggerHandler( 'evf_add_error_tip', [ $this, 'i18n_field_def_value_greater', params ] );
+					} else  {
+						$( document.body ).triggerHandler( 'evf_remove_error_tip', [ $this, 'i18n_field_def_value_greater' ] );
+					} 
+
+					if( 0 !== defVal.length && parseFloat( defVal ) < parseFloat( minVal ) ) {
+						$( document.body ).triggerHandler( 'evf_remove_error_tip', [ $this, 'i18n_field_def_value_greater' ] );
+						$( document.body ).triggerHandler( 'evf_add_error_tip', [ $this, 'i18n_field_def_value_smaller', params ] );
+					} else {
+						$( document.body ).triggerHandler( 'evf_remove_error_tip', [ $this, 'i18n_field_def_value_smaller' ] );
+					}
 				}
 			})
 		})
