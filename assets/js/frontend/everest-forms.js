@@ -147,7 +147,7 @@ jQuery( function ( $ ) {
 								noCalendar   	: false,
 								disableMobile	: true,
 								mode            : inputData.mode,
-								minDate         : inputData.minDate,
+								minDate         : inputData.minDate ? inputData.minDate : pastDisableDate,
 								maxDate         : inputData.maxDate,
 								minuteIncrement : timeInterval,
 								dateFormat      : inputData.dateFormat,
