@@ -28,19 +28,29 @@ class EVF_Smart_Tags {
 		$smart_tags = apply_filters(
 			'everest_forms_smart_tags',
 			array(
-				'admin_email'     => esc_html__( 'Site Admin Email', 'everest-forms' ),
-				'site_name'       => esc_html__( 'Site Name', 'everest-forms' ),
-				'site_url'        => esc_html__( 'Site URL', 'everest-forms' ),
-				'page_title'      => esc_html__( 'Page Title', 'everest-forms' ),
-				'page_url'        => esc_html__( 'Page URL', 'everest-forms' ),
-				'page_id'         => esc_html__( 'Page ID', 'everest-forms' ),
-				'form_name'       => esc_html__( 'Form Name', 'everest-forms' ),
-				'user_ip_address' => esc_html__( 'User IP Address', 'everest-forms' ),
-				'user_id'         => esc_html__( 'User ID', 'everest-forms' ),
-				'user_name'       => esc_html__( 'User Name', 'everest-forms' ),
-				'display_name'    => esc_html__( 'User Display Name', 'everest-forms' ),
-				'user_email'      => esc_html__( 'User Email', 'everest-forms' ),
-				'referrer_url'    => esc_html__( 'Referrer URL', 'everest-forms' ),
+				'current_date'           => esc_html__( 'Current Date', 'everest-forms' ),
+				'current_time'           => esc_html__( 'Current Time', 'everest-forms' ),
+				'admin_email'            => esc_html__( 'Site Admin Email', 'everest-forms' ),
+				'site_name'              => esc_html__( 'Site Name', 'everest-forms' ),
+				'site_url'               => esc_html__( 'Site URL', 'everest-forms' ),
+				'page_title'             => esc_html__( 'Page Title', 'everest-forms' ),
+				'page_url'               => esc_html__( 'Page URL', 'everest-forms' ),
+				'page_id'                => esc_html__( 'Page ID', 'everest-forms' ),
+				'post_title'             => esc_html__( 'Post Title', 'everest-forms' ),
+				'post_meta key=whatever' => esc_html__( 'Post Meta', 'everest-forms' ),
+				'author_email'           => esc_html__( 'Author Email', 'everest-forms' ),
+				'author_name'            => esc_html__( 'Author Name', 'everest-forms' ),
+				'form_name'              => esc_html__( 'Form Name', 'everest-forms' ),
+				'user_ip_address'        => esc_html__( 'User IP Address', 'everest-forms' ),
+				'user_id'                => esc_html__( 'User ID', 'everest-forms' ),
+				'user_meta key=whatever' => esc_html__( 'User Meta', 'everest-forms' ),
+				'user_name'              => esc_html__( 'User Name', 'everest-forms' ),
+				'display_name'           => esc_html__( 'User Display Name', 'everest-forms' ),
+				'first_name'             => esc_html__( 'First Name', 'everest-forms' ),
+				'last_name'              => esc_html__( 'Last Name', 'everest-forms' ),
+				'user_email'             => esc_html__( 'User Email', 'everest-forms' ),
+				'user_role'              => esc_html__( 'User Role', 'everest-forms' ),
+				'referrer_url'           => esc_html__( 'Referrer URL', 'everest-forms' ),
 			)
 		);
 
@@ -171,8 +181,8 @@ class EVF_Smart_Tags {
 
 		if ( ! empty( $other_tags[1] ) ) {
 
-			foreach ( $other_tags[1] as $key => $other_tag ) {
-
+			foreach ( $other_tags[1] as $key => $tag ) {
+				$other_tag = explode( ' ', $tag )[0];
 				switch ( $other_tag ) {
 					case 'admin_email':
 						$admin_email = sanitize_email( get_option( 'admin_email' ) );
@@ -257,7 +267,46 @@ class EVF_Smart_Tags {
 						$referer = ! empty( $_SERVER['HTTP_REFERER'] ) ? $_SERVER['HTTP_REFERER'] : ''; // @codingStandardsIgnoreLine
 						$content = str_replace( '{' . $other_tag . '}', sanitize_text_field( $referer ), $content );
 						break;
-
+					case 'current_date':
+						$current_date = get_the_date();
+						$content      = str_replace( '{' . $other_tag . '}', sanitize_text_field( $current_date ), $content );
+						break;
+					case 'current_time':
+						$current_time = get_the_time();
+						$content      = str_replace( '{' . $other_tag . '}', sanitize_text_field( $current_time ), $content );
+						break;
+					case 'post_title':
+						$post_title = get_the_title();
+						$content    = str_replace( '{' . $other_tag . '}', sanitize_text_field( $post_title ), $content );
+						break;
+					case 'post_meta':
+						preg_match_all( '/key\=(.*?)$/', $tag, $meta );
+						if ( is_array( $meta ) && ! empty( $meta[1][0] ) ) {
+							$key     = $meta[1][0];
+							$value   = get_post_meta( get_the_ID(), $key, true );
+							$content = str_replace( '{' . $tag . '}', wp_kses_post( $value ), $content );
+						} else {
+							$content = str_replace( '{' . $tag . '}', '', $content );
+						}
+						break;
+					case 'author_email':
+						$author  = get_the_author_meta( 'user_email' );
+						$content = str_replace( '{' . $other_tag . '}', sanitize_text_field( $author ), $content );
+						break;
+					case 'author_name':
+						$author  = get_the_author_meta( 'display_name' );
+						$content = str_replace( '{' . $other_tag . '}', sanitize_text_field( $author ), $content );
+						break;
+					case 'user_meta':
+						preg_match_all( '/key\=(.*?)$/', $tag, $meta );
+						if ( is_array( $meta ) && ! empty( $meta[1][0] ) ) {
+							$key     = $meta[1][0];
+							$value   = get_user_meta( get_current_user_id(), $key, true );
+							$content = str_replace( '{' . $tag . '}', wp_kses_post( $value ), $content );
+						} else {
+							$content = str_replace( '{' . $tag . '}', '', $content );
+						}
+						break;
 				}
 			}
 		}
