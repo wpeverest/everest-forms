@@ -1076,6 +1076,7 @@
 				$( '#everest-forms-field-option-' + id + '-date_localization' ).show();
 				$( 'label[for=everest-forms-field-option-' + id + '-date_localization]' ).show();
 				$( '#everest-forms-field-option-' + id + '-date_default' ).parent().show();
+				$('#everest-forms-field-option-' + id + '-past_date_disable' ).parent().show();
 				$( '#everest-forms-field-option-' + id + '-enable_min_max' ).parent().show();
 				//Check if min max date enabled.
 				if( $('#everest-forms-field-option-' + id + '-enable_min_max' ).prop( 'checked' ) ) {
@@ -1093,6 +1094,7 @@
 				// Dropdown Date Setting Control
 				$('#everest-forms-field-option-' + id + '-date_mode-range').parents().find('everest-forms-checklist').hide();
 				$('#everest-forms-field-option-' + id + '-date_default' ).parent().hide();
+				$('#everest-forms-field-option-' + id + '-past_date_disable' ).parent().hide();
 				$('#everest-forms-field-option-row-' + id + '-placeholder').hide();
 				$('#everest-forms-field-option-' + id + '-enable_min_max').parent().hide();
 				$('#everest-forms-field-option-row-' + id + '-date_format .everest-forms-min-max-date-option').addClass( 'everest-forms-hidden' );

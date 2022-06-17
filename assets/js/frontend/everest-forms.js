@@ -208,7 +208,7 @@ jQuery( function ( $ ) {
 					}
 					options += '<option value = "' + i + '"> ' + ( ( i< 10 ) ? '0' + i : i ) + '</option>';
 				}
-				// alert(options);
+	
 				$this.siblings( '#minute-select-'+id ).html( options );
 				$this.siblings( '#minute-select-'+id ).attr('value', $this.siblings( '#minute-select-'+id ).find('option:first').val());
 			}
