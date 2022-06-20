@@ -201,6 +201,31 @@
 				EVFPanelBuilder.enhancedSelectFieldStyle( $( event.target ).parents( '.everest-forms-field-option-row-enhanced_select' ).data().fieldId, event.target.checked );
 			} );
 
+			// Rangel Slider Append in Quantity Field.
+			$builder.on( 'change', '.everest-forms-field-option-row-enable_payment_slider input', function(event) {
+				var $this = $(this),
+				value = $this.val(),
+				id    = $this.parent().data( 'field-id' ),
+				$quantity_field_setting = $('.everest-forms-field-options');
+				var label = $quantity_field_setting.find('#everest-forms-field-option-row-'+id+'-label input').val();
+
+				$quantity_field_setting.find('.everest-forms-field-option-row-map_field  select').each( function( index, element ) {
+					var $element = $( element );
+					if ( $( event.target ).is( ':checked' ) ) {
+					var option = '<option value="' + id +  '">' + label + '</option>' ;
+					$element.append( option );
+					} else {
+						$element.find( 'option' ).each( function( index, option ) {
+							var $option = $( option );
+							if( id === $option.val() ) {
+								$option.remove();
+							}
+						});
+					}
+				});
+
+			});
+
 			// Enable Multiple options.
 			$builder.on( 'click', '.everest-forms-field-option-row-choices .everest-forms-btn-group span', function( event ) {
 				if ( $( this).hasClass( 'upgrade-modal' ) && 'checkbox' === $(this).data('type') ) {
