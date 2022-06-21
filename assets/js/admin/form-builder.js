@@ -201,7 +201,7 @@
 				EVFPanelBuilder.enhancedSelectFieldStyle( $( event.target ).parents( '.everest-forms-field-option-row-enhanced_select' ).data().fieldId, event.target.checked );
 			} );
 
-			// Rangel Slider Append in Quantity Field.
+			// Rangel Slider live changes in Quantity Field.
 			$builder.on( 'change', '.everest-forms-field-option-row-enable_payment_slider input', function(event) {
 				var $this = $(this),
 				value = $this.val(),
@@ -223,7 +223,15 @@
 						});
 					}
 				});
+			});
 
+			// Live label changes of payment items in Quantity Field.
+			$builder.on('input','.everest-forms-field-option-row-label input', function() {
+				var $this = $(this);
+				 value = $this.val();
+				 id = $this.parent().data('field-id'),
+				 $quantity_field_setting = $('.everest-forms-field-options');
+				 $quantity_field_setting.find( '.everest-forms-field-option-row-map_field  select option[value="' + id + '"]').text( value );
 			});
 
 			// Enable Multiple options.
