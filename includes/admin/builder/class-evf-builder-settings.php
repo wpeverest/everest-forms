@@ -250,7 +250,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					'type'        => 'all',
 					'form_fields' => 'all',
 				),
-				'after'      => '<p class="desc">' . sprintf( esc_html__( 'Example: name= {field_id="name_ys0GeZISRs-1"}&email={field_id="email_LbH5NxasXM-2"}', 'everest-forms' )) . '</p>',
+				'after'     => '<p class="desc">' . sprintf( esc_html__( 'Example: firstname= {field_id="name_ys0GeZISRs-1"}&email={field_id="email_LbH5NxasXM-2"}', 'everest-forms' ) ) . '</p>',
 			)
 		);
 

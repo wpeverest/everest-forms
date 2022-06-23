@@ -734,7 +734,7 @@ class EVF_Form_Task {
 
 			?>
 				<script>
-				var redirect = '<?php echo esc_url( $redirect_url ); ?>';
+				var redirect = '<?php echo esc_url_raw( $redirect_url ); ?>';
 				window.setTimeout( function () {
 					window.location.href = redirect;
 				})
