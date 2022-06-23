@@ -382,7 +382,11 @@ class EVF_Shortcode_Form {
 			 */
 			do_action( 'everest_forms_display_row_before', $row_key, $form_data );
 
-			echo '<div class="evf-frontend-row" data-row="' . esc_attr( $row_key ) . '"' . esc_attr( $is_repeater ) . '>'; // @codingStandardsIgnoreLine
+			if ( ! empty( $form_data['settings']['form_rows'][ 'connection_' . $row_key ] ) && ! empty( $form_data['settings']['form_rows'][ 'connection_' . $row_key ]['conditional_logic_status'] ) ) {
+				$conditions = ! empty( $form_data['settings']['form_rows'][ 'connection_' . $row_key ] ) ? $form_data['settings']['form_rows'][ 'connection_' . $row_key ] : array();
+			}
+
+			echo '<div class="evf-frontend-row" data-row="' . esc_attr( $row_key ) . '"' . esc_attr( $is_repeater ) . ' conditional_rules="' . ( isset( $conditions ) ? esc_attr( wp_json_encode( $conditions ) ) : '' ) . '">'; // @codingStandardsIgnoreLine
 
 			foreach ( $row as $grid_key => $grid ) {
 				$number_of_grid = count( $row );
