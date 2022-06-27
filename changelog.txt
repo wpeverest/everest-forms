@@ -1,6 +1,9 @@
 == Changelog ==
 
 = 1.8.9 - 15-06-2022
+* Enhancement - Past date disable.
+
+= 1.8.9 - 15-06-2022
 * Fix - Hidden Field default value.
 * Enhancement - Minimum length feature on the Paragraph/Single Line Text field.
 
