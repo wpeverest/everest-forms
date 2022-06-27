@@ -117,10 +117,6 @@
 			var maxVal   = maxField.val();
 			var minVal   = minField.val();
 
-			if( 0 !== maxField.parents( '.everest-forms-field-option-row-min_max_values' ).length ) {
-				return;
-			}
-
 			if ( 0 !== minVal.length && 0 !== maxVal.length ) {
 				if ( parseFloat( minVal ) > parseFloat( maxVal ) ) {
 					if( $( this ).attr( 'id' ).indexOf( 'min_value' ) !== -1 ) {
