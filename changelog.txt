@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 1.8.9 - xx-xx-2022
+* Enhancement - Export selected entries.
+
 = 1.8.9 - 15-06-2022
 * Fix - Hidden Field default value.
 * Enhancement - Minimum length feature on the Paragraph/Single Line Text field.
