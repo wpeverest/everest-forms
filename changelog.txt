@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 1.9.0 - xx-xx-2022
+* Enhancement - Pass field data to query string..
+
+
 = 1.8.9 - 15-06-2022
 * Fix - Hidden Field default value.
 * Enhancement - Minimum length feature on the Paragraph/Single Line Text field.
