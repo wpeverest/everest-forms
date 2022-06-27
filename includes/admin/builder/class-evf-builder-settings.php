@@ -231,7 +231,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			'settings',
 			'enable_redirect_query_string',
 			$this->form_data,
-			esc_html__( 'Redirect Query String', 'everest-forms' ),
+			esc_html__( ' Append Query String', 'everest-forms' ),
 			array(
 				'default' => '0',
 			)
@@ -242,7 +242,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			'settings',
 			'query_string',
 			$this->form_data,
-			esc_html__( 'Redirect Query String', 'everest-forms' ),
+			esc_html__( 'Query String', 'everest-forms' ),
 			array(
 				'default'   => isset( $settings['query_string'] ) ? $settings['query_string'] : '',
 				'class'     => isset( $settings['enable_redirect_query_string'] ) && '1' === $settings['enable_redirect_query_string'] ? '' : 'everest-forms-hidden',
