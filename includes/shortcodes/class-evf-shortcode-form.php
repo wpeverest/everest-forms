@@ -382,6 +382,8 @@ class EVF_Shortcode_Form {
 			 */
 			do_action( 'everest_forms_display_row_before', $row_key, $form_data );
 
+			$conditions = array();
+
 			if ( ! empty( $form_data['settings']['form_rows'][ 'connection_' . $row_key ] ) && ! empty( $form_data['settings']['form_rows'][ 'connection_' . $row_key ]['conditional_logic_status'] ) ) {
 				$conditions = ! empty( $form_data['settings']['form_rows'][ 'connection_' . $row_key ] ) ? $form_data['settings']['form_rows'][ 'connection_' . $row_key ] : array();
 			}
