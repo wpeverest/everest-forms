@@ -268,11 +268,11 @@ class EVF_Smart_Tags {
 						$content = str_replace( '{' . $other_tag . '}', sanitize_text_field( $referer ), $content );
 						break;
 					case 'current_date':
-						$current_date = get_the_date();
+						$current_date = date_i18n( get_option( 'date_format' ) );
 						$content      = str_replace( '{' . $other_tag . '}', sanitize_text_field( $current_date ), $content );
 						break;
 					case 'current_time':
-						$current_time = get_the_time();
+						$current_time = date_i18n( get_option( 'time_format' ) );
 						$content      = str_replace( '{' . $other_tag . '}', sanitize_text_field( $current_time ), $content );
 						break;
 					case 'post_title':
