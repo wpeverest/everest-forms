@@ -276,7 +276,7 @@
 			"title": "Calculations",
 			"slug": "everest-forms-calculations",
 			"name": "Everest Forms Calculations",
-			"image": "extensions-json/sections/images/calculations.jpg",
+			"image": "extensions-json/sections/images/calculations.png",
 			"excerpt": "Calculations add-on allows you to perform calculations on the number/range fields within the form.",
 			"link": "https://wpeverest.com/wordpress-plugins/everest-forms/calculations/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=calculations",
 			"plan": [
@@ -300,7 +300,7 @@
 			"title": "SMS Notifications",
 			"slug": "everest-forms-sms-notifications",
 			"name": "Everest Forms SMS Notifications",
-			"image": "extensions-json/sections/images/twilio.png",
+			"image": "extensions-json/sections/images/sms-notifications.png",
 			"excerpt": "Using the Everest Forms SMS Notifications Add-on, you can now easily configure any online form to receive an SMS notification when a form is being submitted.",
 			"link": "https://wpeverest.com/wordpress-plugins/everest-forms/sms-notifications/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=sms-notifications",
 			"plan": [
