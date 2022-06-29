@@ -3,6 +3,7 @@
 = 1.9.0 - xx-xx-2022
 * Enhancement - Pass field data to query string.
 * Enhancement - New add-ons listing in the add-ons page.
+* Fix - Prevent more than one keyboard shortcut keys pop-up modal opening at a time.
 
 = 1.8.9 - 15-06-2022
 * Fix - Hidden Field default value.
