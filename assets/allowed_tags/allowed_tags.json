@@ -213,7 +213,7 @@
     "data-name": true,
     "data-setting": true,
     "data-placeholder": true,
-    "disabled": true
+    "data-*": true
   },
   "option": {
     "value": true,
