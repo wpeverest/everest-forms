@@ -1979,6 +1979,13 @@
 									btnClass: 'btn-confirm',
 									keys: ['enter']
 								}
+							},
+							onContentReady: function(){
+								$('body').on("keydown", function (e) { 
+									if( e.ctrlKey || e.metaKey && 'h' === String.fromCharCode(e.which).toLowerCase() || 72 === e.which ) {
+										$( '.btn-confirm' ).trigger( 'click' );
+									}
+								});
 							}
 						});
 					}
