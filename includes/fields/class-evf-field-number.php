@@ -79,7 +79,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 				'type'  => 'number',
 				'slug'  => 'step',
 				'class' => 'evf-input-number-step',
-				'value' => isset( $field['step'] ) ? $field['step'] : 1,
+				'value' => isset( $field['step'] ) ? $field['step'] : 0,
 			),
 			false
 		);
