@@ -220,7 +220,7 @@ class EVF_Form_Task {
 						"Everest Forms Process Before validate {$field_type}.",
 						array( 'source' => 'form-submission' )
 					);
-					do_action( "everest_forms_process_validate_{$field_type}", $field_id, $field_submit, $this->form_data, $field_type );
+					do_action( "everest_forms_process_validate_{$field_type}", $field_id, $field_submit, $this->form_data, $field_type, $entry );
 				}
 
 				if ( 'credit-card' === $field_type && isset( $_POST['everest_form_stripe_payment_intent_id'] ) ) {
