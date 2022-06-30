@@ -1802,7 +1802,7 @@ p.search-box {
 
 		.input-group-col-2 {
 			display: flex;
-			flex-wrap: wrap;
+			flex-wrap: nowrap;
 
 			input[type='text'],
 			input[type='number'],
