@@ -6,7 +6,8 @@
 * Enhancement - New add-ons listing in the add-ons page.
 * Fix - Prevent more than one keyboard shortcut keys pop-up modal opening at a time.
 * Enhancement - Past date disable.
-* Enhancement - Smart tags added
+* Enhancement - Smart tags added.
+* Fix - Conditional logic field required issue.
 
 = 1.8.9 - 15-06-2022
 * Fix - Hidden Field default value.
