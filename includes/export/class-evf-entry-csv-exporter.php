@@ -120,9 +120,14 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 			);
 
 			// Get the entries.
-			$entries = array_map( 'evf_get_entry', $entry_ids );
-
+			$entries          = array_map( 'evf_get_entry', $entry_ids );
+			$checked_entry_id = isset( $_REQUEST['entry'] ) ? wp_parse_id_list( wp_unslash( $_REQUEST['entry'] ) ) : array(); // phpcs:ignore WordPress.Security.NonceVerification
 			foreach ( $entries as $entry ) {
+
+				if ( ! empty( $checked_entry_id ) && ! in_array( absint( $entry->entry_id ), $checked_entry_id, true ) ) {
+					continue;
+				}
+
 				$this->row_data[] = $this->generate_row_data( $entry );
 			}
 		}
