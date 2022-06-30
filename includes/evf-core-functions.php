@@ -282,13 +282,14 @@ function evf_get_log_file_path( $handle ) {
  * @since 1.3.0
  *
  * @param  string $handle Name.
+ * @param  string $extension Extension Type.
  * @return bool|string The csv file name or false if cannot be determined.
  */
-function evf_get_csv_file_name( $handle ) {
+function evf_get_entry_export_file_name( $handle, $extension = 'csv' ) {
 	if ( function_exists( 'wp_hash' ) ) {
 		$date_suffix = date_i18n( 'Y-m-d', time() );
 		$hash_suffix = wp_hash( $handle );
-		return sanitize_file_name( implode( '-', array( 'evf-entry-export', $handle, $date_suffix, $hash_suffix ) ) . '.csv' );
+		return sanitize_file_name( implode( '-', array( 'evf-entry-export', $handle, $date_suffix, $hash_suffix ) ) . '.' . $extension );
 	} else {
 		evf_doing_it_wrong( __METHOD__, __( 'This method should not be called before plugins_loaded.', 'everest-forms' ), '1.3.0' );
 		return false;
@@ -1169,8 +1170,7 @@ function evf_get_all_forms( $skip_disabled_entries = false ) {
  * @return string
  */
 function evf_get_meta_key_field_option( $field ) {
-	$random_number = rand( pow( 10, 3 ), pow( 10, 4 ) - 1 ); // phpcs:ignore WordPress.WP.AlternativeFunctions.rand_rand
-	return strtolower( str_replace( array( ' ', '/_' ), array( '_', '' ), $field['label'] ) ) . '_' . $random_number;
+	return str_replace( ' ', '_', preg_replace( '/[^a-zA-Z0-9\s`_]/', '', strtolower( $field['label'] ) ) ) . '_' . rand( pow( 10, 3 ), pow( 10, 4 ) - 1 ); // phpcs:ignore WordPress.WP.AlternativeFunctions.rand_rand.
 }
 
 /**
@@ -2496,6 +2496,10 @@ function evf_sanitize_builder( $post_data = array() ) {
 	foreach ( $post_data as $data_key => $data ) {
 		$name = sanitize_text_field( $data->name );
 		if ( preg_match( '/\<.*\>/', $data->value ) ) {
+			$value = wp_kses_post( $data->value );
+		} elseif ( 'settings[external_url]' === $data->name ) {
+			$value = esc_url_raw( $data->value );
+		} elseif ( 'settings[email][connection_1][evf_email_message]' === $data->name ) {
 			$value = wp_kses_post( $data->value );
 		} else {
 			$value = sanitize_text_field( $data->value );

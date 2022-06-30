@@ -151,7 +151,7 @@ abstract class EVF_Form_Fields {
 	 * @param array $field Field data.
 	 */
 	public function field_options( $field ) {
-		$settings = $this->get_field_settings();
+		$settings = apply_filters( 'everest_forms_builder_fields_option', $this->get_field_settings() );
 
 		foreach ( $settings as $option_key => $option ) {
 			$this->field_option(
@@ -314,7 +314,6 @@ abstract class EVF_Form_Fields {
 
 				if ( true === $is_multiple ) {
 					$output = sprintf( '<select class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" %s multiple>', $class, $id, $slug, $id, $slug, $data );
-
 				} else {
 					$output = sprintf( '<select class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" %s >', $class, $id, $slug, $id, $slug, $data );
 				}
@@ -762,7 +761,7 @@ abstract class EVF_Form_Fields {
 				);
 				break;
 
-				/**
+			/**
 			 * No Duplicates.
 			 */
 			case 'no_duplicates':
@@ -775,7 +774,7 @@ abstract class EVF_Form_Fields {
 					array(
 						'slug'    => 'no_duplicates',
 						'value'   => $value,
-						'desc'    => esc_html__( 'No Duplicates', 'everest-forms' ),
+						'desc'    => esc_html__( 'Validate as unique', 'everest-forms' ),
 						'tooltip' => $tooltip,
 					),
 					false
@@ -790,7 +789,95 @@ abstract class EVF_Form_Fields {
 					$echo
 				);
 				break;
-				/**
+			case 'validate_message':
+				$toggle  = '';
+				$tooltip = esc_html__( 'if the form submission failed it will show this message.', 'everest-forms' );
+				$value   = ! empty( $field['validate_message'] ) ? esc_attr( $field['validate_message'] ) : 'This field value needs to be unique.';
+
+				// Build output.
+				$output  = $this->field_element(
+					'label',
+					$field,
+					array(
+						'slug'          => 'validate_message',
+						'value'         => esc_html__( 'Validation Message for Duplicate', 'everest-forms' ),
+						'tooltip'       => $tooltip,
+						'after_tooltip' => $toggle,
+					),
+					false
+				);
+				$output .= $this->field_element(
+					'text',
+					$field,
+					array(
+						'slug'  => 'validate_message',
+						'value' => $value,
+					),
+					false
+				);
+				$output  = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'validate_message',
+						'content' => $output,
+						'class'   => isset( $field['no_duplicates'] ) ? '' : 'hidden',
+					),
+					$echo
+				);
+				break;
+			/**
+			 * No Duplicates.
+			 */
+			case 'show_tooltip':
+				$default           = ! empty( $args['default'] ) ? $args['default'] : '0';
+				$value             = ! empty( $field['show_tooltip'] ) ? esc_attr( $field['show_tooltip'] ) : '';
+				$output            = $this->field_element(
+					'checkbox',
+					$field,
+					array(
+						'slug'    => 'show_tooltip',
+						'value'   => $value,
+						'desc'    => esc_html__( 'Enable Tooltip', 'everest-forms' ),
+						'tooltip' => esc_html__( 'Check this option to show the form field tooltip.', 'everest-forms' ),
+					),
+					false
+				);
+				$output            = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'show_tooltip',
+						'content' => $output,
+					),
+					$echo
+				);
+				$description_value = ! empty( $field['tooltip_description'] ) ? esc_attr( $field['tooltip_description'] ) : '';
+				$output            = $this->field_element(
+					'textarea',
+					$field,
+					array(
+						'slug'  => 'tooltip_description',
+						'value' => $description_value,
+						'desc'  => esc_html__( 'Enable Tooltip', 'everest-forms' ),
+						'attrs' => array(
+							'placeholder' => esc_html__( 'Enter the text for tooltip description.', 'everest-forms' ),
+						),
+					),
+					false
+				);
+
+				$output = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'tooltip_description',
+						'content' => $output,
+					),
+					$echo
+				);
+				break;
+			/**
 			 * No Duplicates.
 			 */
 			case 'autocomplete_address':
@@ -1347,7 +1434,7 @@ abstract class EVF_Form_Fields {
 					array(
 						'slug'    => 'enable_prepopulate',
 						'value'   => $value,
-						'desc'    => esc_html__( 'Enable Autopoupulate ', 'everest-forms' ),
+						'desc'    => esc_html__( 'Enable Autopopulate ', 'everest-forms' ),
 						'tooltip' => $tooltip,
 					),
 					false
@@ -1924,7 +2011,7 @@ abstract class EVF_Form_Fields {
 
 		// Check for permissions.
 		if ( ! current_user_can( 'everest_forms_edit_form', (int) $_POST['form_id'] ) ) {
-			die( esc_html__( 'You do no have permission.', 'everest-forms' ) );
+			die( esc_html__( 'You don\'t have permission.', 'everest-forms' ) );
 		}
 
 		// Check for field type to add.
@@ -2273,7 +2360,7 @@ abstract class EVF_Form_Fields {
 	 */
 	protected function field_is_limit( $field ) {
 		if ( in_array( $field['type'], array( 'text', 'textarea' ), true ) ) {
-			return isset( $field['limit_enabled'] ) && ! empty( $field['limit_count'] );
+			return ( isset( $field['limit_enabled'] ) && ! empty( $field['limit_count'] ) ) || ( isset( $field['min_length_enabled'] ) && ! empty( $field['min_length_count'] ) );
 		}
 	}
 

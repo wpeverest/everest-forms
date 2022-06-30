@@ -161,6 +161,14 @@ class EVF_Admin_Assets {
 					'i18n_upload_image_button'     => esc_html__( 'Use Image', 'everest-forms' ),
 					'i18n_upload_image_remove'     => esc_html__( 'Remove Image', 'everest-forms' ),
 					'i18n_field_title_empty'       => esc_html__( 'Empty Form Name', 'everest-forms' ),
+					'i18n_shortcut_key_title'      => esc_html__( 'keyboard Shortcut Keys', 'everest-forms' ),
+					'i18n_shortcut_keys'           => array(
+						'Ctrl+S' => esc_html__( 'Save Builder', 'everest-forms' ),
+						'Ctrl+W' => esc_html__( 'Close Builder', 'everest-forms' ),
+						'Ctrl+P' => esc_html__( 'Preview Form', 'everest-forms' ),
+						'Ctrl+E' => esc_html__( 'Go to Entries', 'everest-forms' ),
+						'Ctrl+H' => esc_html__( 'Open Help', 'everest-forms' ),
+					),
 					'i18n_field_title_payload'     => esc_html__( 'Form name can\'t be empty.', 'everest-forms' ),
 					'email_fields'                 => evf_get_all_email_fields_by_form_id( isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0 ), // phpcs:ignore WordPress.Security.NonceVerification
 					'all_fields'                   => evf_get_all_form_fields_by_form_id( isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0 ), // phpcs:ignore WordPress.Security.NonceVerification
@@ -275,7 +283,8 @@ class EVF_Admin_Assets {
 				'evf-admin-tools',
 				'everest_forms_admin_tools',
 				array(
-					'delete_log_confirmation' => esc_js( esc_html__( 'Are you sure you want to delete this log?', 'everest-forms' ) ),
+					'delete_log_confirmation'     => esc_js( esc_html__( 'Are you sure you want to delete this log?', 'everest-forms' ) ),
+					'delete_all_log_confirmation' => esc_js( esc_html__( 'Are you sure you want to delete all logs?', 'everest-forms' ) ),
 				)
 			);
 		}

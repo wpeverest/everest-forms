@@ -5,13 +5,13 @@ on:
 jobs:
   build:
     name: Build release asset
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Build
         id: build
-        uses: wpeverest/action-build@master
+        uses: wpeverest/action-build@3.0.0
         with:
           generate-zip: true
       - name: Upload release asset

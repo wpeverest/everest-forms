@@ -720,9 +720,20 @@ class EVF_Form_Task {
 		}
 
 		if ( isset( $settings['redirect_to'] ) && 'custom_page' === $settings['redirect_to'] ) {
+			if ( isset( $settings['enable_redirect_query_string'] ) && '1' === $settings['enable_redirect_query_string'] ) {
+				parse_str( $settings['query_string'], $output );
+				$query_redirect_url = array();
+				foreach ( $output as $key => $value ) {
+					$query_redirect_url[ $key ] = apply_filters( 'everest_forms_process_smart_tags', $value, $this->form_data, $this->form_fields );
+				}
+				$redirect_url = add_query_arg( $query_redirect_url, esc_url( get_page_link( $settings['custom_page'] ) ) );
+			} else {
+				$redirect_url = get_page_link( $settings['custom_page'] );
+			}
+
 			?>
 				<script>
-				var redirect = '<?php echo esc_url( get_page_link( $settings['custom_page'] ) ); ?>';
+				var redirect = '<?php echo esc_url_raw( $redirect_url ); ?>';
 				window.setTimeout( function () {
 					window.location.href = redirect;
 				})
@@ -1031,6 +1042,15 @@ class EVF_Form_Task {
 				if ( $data === $option_value['label'] ) { // phpcs:ignore WordPress.Security.NonceVerification
 					$selected                                = 1;
 					$properties['inputs'][ $key ]['default'] = $selected;
+				}
+			}
+		} elseif ( 'likert' === $field['type'] ) {
+			if ( count( $data ) ) {
+				foreach ( $data as $row => $col ) {
+					foreach ( (array) $col as $col_selected ) {
+						$index = sprintf( 'rows%d_columns%d', (int) $row, (int) $col_selected );
+						$properties['inputs'][ $index ]['attr']['checked'] = true;
+					}
 				}
 			}
 		} else {
