@@ -2723,7 +2723,7 @@ jQuery(function () {
 			jQuery('#everest-forms-panel-field-settings-external_url-wrap').hide();
 
 			if(jQuery('#everest-forms-panel-field-settings-enable_redirect_query_string').is(':checked')){
-				jQuery('#everest-forms-panel-field-settings-enable_redirect_query_string-wrap').show();
+				jQuery('#everest-forms-panel-field-settings-query_string-wrap').show();
 			} else{
 				jQuery('#everest-forms-panel-field-settings-query_string-wrap').hide();
 			}
