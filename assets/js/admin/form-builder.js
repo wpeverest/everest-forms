@@ -1983,7 +1983,7 @@
 								}
 							},
 							onContentReady: function(){
-								$('body').on("keydown", function (e) { 
+								$('body').on("keydown", function (e) {
 									if( e.ctrlKey || e.metaKey && 'h' === String.fromCharCode(e.which).toLowerCase() || 72 === e.which ) {
 										$( '.btn-confirm' ).trigger( 'click' );
 									}
@@ -2715,12 +2715,18 @@ jQuery(function () {
 			jQuery('#everest-forms-panel-field-settings-custom_page-wrap').hide();
 			jQuery('#everest-forms-panel-field-settings-external_url-wrap').hide();
 			jQuery('#everest-forms-panel-field-settings-enable_redirect_query_string-wrap').hide();
+			jQuery('#everest-forms-panel-field-settings-query_string-wrap').hide();
 		}
 		else if ( this.value == 'custom_page') {
 			jQuery('#everest-forms-panel-field-settings-custom_page-wrap').show();
 			jQuery('#everest-forms-panel-field-settings-enable_redirect_query_string-wrap').show();
-			jQuery('#everest-forms-panel-field-settings-query_string-wrap').hide();
 			jQuery('#everest-forms-panel-field-settings-external_url-wrap').hide();
+
+			if(jQuery('#everest-forms-panel-field-settings-enable_redirect_query_string').is(':checked')){
+				jQuery('#everest-forms-panel-field-settings-enable_redirect_query_string-wrap').show();
+			} else{
+				jQuery('#everest-forms-panel-field-settings-query_string-wrap').hide();
+			}
 		}
 		else if ( this.value == 'external_url') {
 			jQuery('#everest-forms-panel-field-settings-custom_page-wrap').hide();
@@ -2803,7 +2809,7 @@ jQuery( function ( $ ) {
 	$( document ).on( 'click', function() {
 		$( '.evf-smart-tag-lists' ).hide();
 	});
-	
+
 	$( '.evf-smart-tag-lists' ).hide();
 
 	// Toggle Smart Tags.
