@@ -314,7 +314,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 == Changelog ==
 
 
-= 1.9.0 - 05-07-2022
+= 1.9.0 - 06-07-2022
 * Enhancement - Export selected entries.
 * Enhancement - Pass field data to query string.
 * Enhancement - New add-ons listing in the add-ons page.
