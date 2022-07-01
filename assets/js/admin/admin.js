@@ -117,7 +117,7 @@
 			var maxVal   = maxField.val();
 			var minVal   = minField.val();
 
-			if ( 0 !== minVal.length && 0 !== maxVal.length ) {
+			if ( 0 !== minVal.length && 0 !== maxVal.length ) { 
 				if ( parseFloat( minVal ) > parseFloat( maxVal ) ) {
 					if( $( this ).attr( 'id' ).indexOf( 'min_value' ) !== -1 ) {
 						$( document.body ).triggerHandler( 'evf_add_error_tip', [ $( this ), 'i18n_field_min_value_greater', params ] );
@@ -137,6 +137,18 @@
 			|| e.keyCode == 8 ) ) {
 			  return false;
 		  }
+		})
+
+		.on( 'focusout','.evf-input-number[type=number]', function(e) {
+			var fieldId  = $( this ).parent().data( 'fieldId' ) ? $( this ).parent().data( 'fieldId' ) : $( this ).closest( '.everest-forms-field-option-row' ).data( 'field-id' );
+			var maxField = $( "input#everest-forms-field-option-"+fieldId+"-max_value" );
+			var minField = $( "input#everest-forms-field-option-"+fieldId+"-min_value" );
+			var maxVal   = parseFloat( maxField.val() );
+			var minVal   = parseFloat( minField.val() );
+
+			if ( minVal > maxVal ||  ( '' === maxField.val() && '' !== minField.val() ) ) {
+				maxField.val( minVal + 1 );
+			} 
 		})
 
 		.on('click','.everest-forms-field-number, .everest-forms-field-range-slider', function(e) {
@@ -175,6 +187,19 @@
 						$( document.body ).triggerHandler( 'evf_remove_error_tip', [ $this, 'i18n_field_def_value_smaller' ] );
 					}
 				}
+			})
+
+			.on( 'focusout', "#everest-forms-field-option-"+ id +"-default_value", function(e) {
+				var fieldId  = $( this ).parent().data( 'fieldId' ) ? $( this ).parent().data( 'fieldId' ) : $( this ).closest( '.everest-forms-field-option-row' ).data( 'field-id' );
+				var maxField = $( "input#everest-forms-field-option-"+fieldId+"-max_value" );
+				var minField = $( "input#everest-forms-field-option-"+fieldId+"-min_value" );
+				var maxVal   = parseFloat( maxField.val() );
+				var minVal   = parseFloat( minField.val() );
+				var defVal   = parseFloat( e.target.value );
+	
+				if ( minVal > defVal || maxVal < defVal  ) {
+					e.target.value = '';
+				} 
 			})
 		})
 
