@@ -4,7 +4,7 @@ Tags: contact form, forms, form builder, contact, custom form
 Requires at least: 5.0
 Tested up to: 6.0
 Requires PHP: 5.4
-Stable tag: 1.8.9
+Stable tag: 1.9.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -310,9 +310,19 @@ Yes, we do. Check out this [Getting Started Videos](https://docs.wpeverest.com/d
 
 Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/everest-forms/) :)
 
-== Changelog ==
 
 == Changelog ==
+
+
+= 1.9.0 - 05-07-2022
+* Enhancement - Export selected entries.
+* Enhancement - Pass field data to query string.
+* Enhancement - New add-ons listing in the add-ons page.
+* Fix - Prevent more than one keyboard shortcut keys pop-up modal opening at a time.
+* Enhancement - Past date disable.
+* Enhancement - Smart tags added.
+* Fix - Conditional logic field required issue.
+* Fix - Number field min/max value glitch and default value validation.
 
 = 1.8.9 - 15-06-2022
 * Fix - Hidden Field default value.

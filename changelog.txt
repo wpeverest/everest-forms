@@ -1,6 +1,6 @@
 == Changelog ==
 
-= 1.9.0 - xx-xx-2022
+= 1.9.0 - 05-07-2022
 * Enhancement - Export selected entries.
 * Enhancement - Pass field data to query string.
 * Enhancement - New add-ons listing in the add-ons page.
@@ -8,7 +8,7 @@
 * Enhancement - Past date disable.
 * Enhancement - Smart tags added.
 * Fix - Conditional logic field required issue.
-* Fix - Number field min/max value glitch and default value validation. 
+* Fix - Number field min/max value glitch and default value validation.
 
 = 1.8.9 - 15-06-2022
 * Fix - Hidden Field default value.
