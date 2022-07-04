@@ -315,14 +315,13 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 
 = 1.9.0 - 06-07-2022
-* Enhancement - Export selected entries.
-* Enhancement - Pass field data to query string.
-* Enhancement - New add-ons listing in the add-ons page.
-* Fix - Prevent more than one keyboard shortcut keys pop-up modal opening at a time.
-* Enhancement - Past date disable.
-* Enhancement - Smart tags added.
+* Enhancement - PDF send to Google Drive or Dropbox.
+* Enhancement - Select/Unselect on Select2.
+* Fix - Dynamic mapping issue in form builder.
 * Fix - Conditional logic field required issue.
-* Fix - Number field min/max value glitch and default value validation.
+* Fix - Range Slider field min/max value glitch and default value validation.
+* Fix - Toggle PayPal and Stripe recurring subscription payments glitch.
+* Fix - Toggle Enable PayPal Standard.
 
 = 1.8.9 - 15-06-2022
 * Fix - Hidden Field default value.
