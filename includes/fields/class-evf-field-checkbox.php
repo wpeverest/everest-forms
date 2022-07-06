@@ -466,7 +466,7 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 	 * @param array $field_type Field Type.
 	 * @param array $entry Entry.
 	 */
-	public function validate( $field_id, $field_submit, $form_data, $field_type, $entry ) {
+	public function validate( $field_id, $field_submit, $form_data, $field_type = '', $entry = '' ) {
 		$field_submit       = (array) $field_submit;
 		$form_id            = $form_data['id'];
 		$fields             = $form_data['form_fields'];

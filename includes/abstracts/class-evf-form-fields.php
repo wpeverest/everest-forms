@@ -2281,7 +2281,7 @@ abstract class EVF_Form_Fields {
 	 * @param array  $field_type Field Type.
 	 * @param array  $entry Entry.
 	 */
-	public function validate( $field_id, $field_submit, $form_data, $field_type, $entry ) {
+	public function validate( $field_id, $field_submit, $form_data, $field_type = '', $entry = '' ) {
 		$field_type         = isset( $form_data['form_fields'][ $field_id ]['type'] ) ? $form_data['form_fields'][ $field_id ]['type'] : '';
 		$required_field     = isset( $form_data['form_fields'][ $field_id ]['required'] ) ? $form_data['form_fields'][ $field_id ]['required'] : false;
 		$conditional_status = isset( $form_data['form_fields'][ $field_id ]['conditional_logic_status'] ) ? $form_data['form_fields'][ $field_id ]['conditional_logic_status'] : 0;

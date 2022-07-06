@@ -275,7 +275,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 	 * @param array  $field_type Field Type.
 	 * @param array  $entry Entry.
 	 */
-	public function validate( $field_id, $field_submit, $form_data, $field_type, $entry ) {
+	public function validate( $field_id, $field_submit, $form_data, $field_type = '', $entry = '' ) {
 		$form_id            = absint( $form_data['id'] );
 		$min_value          = isset( $form_data['form_fields'][ $field_id ]['min_value'] ) ? floatval( $form_data['form_fields'][ $field_id ]['min_value'] ) : 0;
 		$max_value          = isset( $form_data['form_fields'][ $field_id ]['max_value'] ) ? floatval( $form_data['form_fields'][ $field_id ]['max_value'] ) : 0;

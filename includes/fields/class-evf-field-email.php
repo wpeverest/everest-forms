@@ -363,7 +363,7 @@ class EVF_Field_Email extends EVF_Form_Fields {
 	 * @param array $field_type Field Type.
 	 * @param array $entry Entry.
 	 */
-	public function validate( $field_id, $field_submit, $form_data, $field_type, $entry ) {
+	public function validate( $field_id, $field_submit, $form_data, $field_type = '', $entry = '' ) {
 		$form_id            = (int) $form_data['id'];
 		$conditional_status = isset( $form_data['form_fields'][ $field_id ]['conditional_logic_status'] ) ? $form_data['form_fields'][ $field_id ]['conditional_logic_status'] : 0;
 
