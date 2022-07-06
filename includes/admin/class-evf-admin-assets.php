@@ -133,6 +133,7 @@ class EVF_Admin_Assets {
 					'ajax_url'                     => admin_url( 'admin-ajax.php' ),
 					'tab'                          => isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : '', // phpcs:ignore WordPress.Security.NonceVerification.
 					'evf_field_drop_nonce'         => wp_create_nonce( 'everest_forms_field_drop' ),
+					'evf_add_row_nonce'            => wp_create_nonce( 'everest_forms_add_row' ),
 					'evf_save_form'                => wp_create_nonce( 'everest_forms_save_form' ),
 					'evf_get_next_id'              => wp_create_nonce( 'everest_forms_get_next_id' ),
 					'evf_enabled_form'             => wp_create_nonce( 'everest_forms_enabled_form' ),
