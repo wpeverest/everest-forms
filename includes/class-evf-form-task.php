@@ -220,7 +220,7 @@ class EVF_Form_Task {
 						"Everest Forms Process Before validate {$field_type}.",
 						array( 'source' => 'form-submission' )
 					);
-					if ( definedf( 'EFP_VERSION' ) && version_compare( EFP_VERSION, '1.5.4', '>=' ) ) {
+					if ( defined( 'EFP_VERSION' ) && version_compare( EFP_VERSION, '1.5.4', '>=' ) ) {
 						do_action( "everest_forms_process_validate_{$field_type}", $field_id, $field_submit, $this->form_data, $field_type, $entry );
 					} else {
 						do_action( "everest_forms_process_validate_{$field_type}", $field_id, $field_submit, $this->form_data );
