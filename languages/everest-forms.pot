@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-07-01T09:55:58+02:00\n"
+"POT-Creation-Date: 2022-07-06T05:44:35+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: everest-forms\n"
@@ -2438,7 +2438,7 @@ msgstr ""
 #. translators: %1$s: Plugin Name, %2$s: Rating link
 #: includes/admin/views/html-notice-review.php:20
 msgid ""
-"Hope you are having nice experience with %1$s plugin. Please provide this plugin a nice review. %3$s %2$s\r\n"
+"Hope you are having nice experience with %1$s plugin. Please provide this plugin a nice review. %3$s %2$s\n"
 "\t\t\t\tBasically, it would encourage us to release updates regularly with new features & bug fixes so that you can keep on using the plugin without any issues and also to provide free support like we have been doing. %4$s"
 msgstr ""
 
