@@ -463,16 +463,13 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 	 * @param int   $field_id     Field ID.
 	 * @param array $field_submit Submitted data.
 	 * @param array $form_data    Form data.
-	 * @param array $field_type Field Type.
-	 * @param array $entry Entry.
 	 */
-	public function validate( $field_id, $field_submit, $form_data, $field_type, $entry ) {
+	public function validate( $field_id, $field_submit, $form_data ) {
 		$field_submit       = (array) $field_submit;
 		$form_id            = $form_data['id'];
 		$fields             = $form_data['form_fields'];
 		$choice_limit       = empty( $fields[ $field_id ]['choice_limit'] ) ? 0 : (int) $fields[ $field_id ]['choice_limit'];
 		$conditional_status = isset( $form_data['form_fields'][ $field_id ]['conditional_logic_status'] ) ? $form_data['form_fields'][ $field_id ]['conditional_logic_status'] : 0;
-		$visible            = apply_filters( 'everest_forms_visible_fields', true, $form_data['form_fields'][ $field_id ], $entry, $form_data );
 
 		// Generating the error.
 		if ( $choice_limit > 0 && $choice_limit < count( $field_submit ) ) {
@@ -481,7 +478,7 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 		}
 
 		// Basic required check.
-		if ( ! empty( $fields[ $field_id ]['required'] ) && ( '1' !== $conditional_status || $visible ) && ( empty( $field_submit ) || ( 1 === count( $field_submit ) && empty( $field_submit[0] ) ) ) ) {
+		if ( ! empty( $fields[ $field_id ]['required'] ) && '1' !== $conditional_status && ( empty( $field_submit ) || ( 1 === count( $field_submit ) && empty( $field_submit[0] ) ) ) ) {
 			$error = evf_get_required_label();
 		}
 
