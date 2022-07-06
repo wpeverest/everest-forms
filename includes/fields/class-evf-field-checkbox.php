@@ -463,10 +463,8 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 	 * @param int   $field_id     Field ID.
 	 * @param array $field_submit Submitted data.
 	 * @param array $form_data    Form data.
-	 * @param array $field_type Field Type.
-	 * @param array $entry Entry.
 	 */
-	public function validate( $field_id, $field_submit, $form_data, $field_type = '', $entry = '' ) {
+	public function validate( $field_id, $field_submit, $form_data ) {
 		$field_submit       = (array) $field_submit;
 		$form_id            = $form_data['id'];
 		$fields             = $form_data['form_fields'];
@@ -481,7 +479,7 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 		}
 
 		// Basic required check.
-		if ( ! empty( $fields[ $field_id ]['required'] ) && ( '1' !== $conditional_status || $visible ) && ( empty( $field_submit ) || ( 1 === count( $field_submit ) && empty( $field_submit[0] ) ) ) ) {
+		if ( ! empty( $fields[ $field_id ]['required'] ) && '1' !== $conditional_status && ( empty( $field_submit ) || ( 1 === count( $field_submit ) && empty( $field_submit[0] ) ) ) ) {
 			$error = evf_get_required_label();
 		}
 
