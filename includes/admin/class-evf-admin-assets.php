@@ -237,6 +237,8 @@ class EVF_Admin_Assets {
 					'i18n_field_meta_key_error'     => esc_html__( 'Please enter in meta key with alphanumeric characters, dashes and underscores.', 'everest-forms' ),
 					'i18n_field_min_value_greater'  => esc_html__( 'Minimum value is greater than Maximum value.', 'everest-forms' ),
 					'i18n_field_max_value_smaller'  => esc_html__( 'Maximum value is smaller than Minimum value.', 'everest-forms' ),
+					'i18n_field_def_value_greater'  => esc_html__( 'Default value is greater than Maximum value.', 'everest-forms' ),
+					'i18n_field_def_value_smaller'  => esc_html__( 'Default value is smaller than Minimum value.', 'everest-forms' ),
 					'i18n_form_export_action_error' => esc_html__( 'Please select a form which you want to export.', 'everest-forms' ),
 				)
 			);

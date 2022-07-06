@@ -220,7 +220,7 @@ class EVF_Form_Task {
 						"Everest Forms Process Before validate {$field_type}.",
 						array( 'source' => 'form-submission' )
 					);
-					do_action( "everest_forms_process_validate_{$field_type}", $field_id, $field_submit, $this->form_data, $field_type );
+					do_action( "everest_forms_process_validate_{$field_type}", $field_id, $field_submit, $this->form_data, $field_type, $entry );
 				}
 
 				if ( 'credit-card' === $field_type && isset( $_POST['everest_form_stripe_payment_intent_id'] ) ) {
@@ -720,9 +720,20 @@ class EVF_Form_Task {
 		}
 
 		if ( isset( $settings['redirect_to'] ) && 'custom_page' === $settings['redirect_to'] ) {
+			if ( isset( $settings['enable_redirect_query_string'] ) && '1' === $settings['enable_redirect_query_string'] ) {
+				parse_str( $settings['query_string'], $output );
+				$query_redirect_url = array();
+				foreach ( $output as $key => $value ) {
+					$query_redirect_url[ $key ] = apply_filters( 'everest_forms_process_smart_tags', $value, $this->form_data, $this->form_fields );
+				}
+				$redirect_url = add_query_arg( $query_redirect_url, esc_url( get_page_link( $settings['custom_page'] ) ) );
+			} else {
+				$redirect_url = get_page_link( $settings['custom_page'] );
+			}
+
 			?>
 				<script>
-				var redirect = '<?php echo esc_url( get_page_link( $settings['custom_page'] ) ); ?>';
+				var redirect = '<?php echo esc_url_raw( $redirect_url ); ?>';
 				window.setTimeout( function () {
 					window.location.href = redirect;
 				})

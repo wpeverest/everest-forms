@@ -4,7 +4,7 @@ Tags: contact form, forms, form builder, contact, custom form
 Requires at least: 5.0
 Tested up to: 6.0
 Requires PHP: 5.4
-Stable tag: 1.8.9
+Stable tag: 1.9.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -310,9 +310,18 @@ Yes, we do. Check out this [Getting Started Videos](https://docs.wpeverest.com/d
 
 Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/everest-forms/) :)
 
-== Changelog ==
 
 == Changelog ==
+
+
+= 1.9.0 - 06-07-2022
+* Enhancement - PDF send to Google Drive or Dropbox.
+* Enhancement - Select/Unselect on Select2.
+* Fix - Dynamic mapping issue in form builder.
+* Fix - Conditional logic field required issue.
+* Fix - Range Slider field min/max value glitch and default value validation.
+* Fix - Toggle PayPal and Stripe recurring subscription payments glitch.
+* Fix - Toggle Enable PayPal Standard.
 
 = 1.8.9 - 15-06-2022
 * Fix - Hidden Field default value.

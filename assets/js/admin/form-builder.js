@@ -1076,6 +1076,7 @@
 				$( '#everest-forms-field-option-' + id + '-date_localization' ).show();
 				$( 'label[for=everest-forms-field-option-' + id + '-date_localization]' ).show();
 				$( '#everest-forms-field-option-' + id + '-date_default' ).parent().show();
+				$('#everest-forms-field-option-' + id + '-past_date_disable' ).parent().show();
 				$( '#everest-forms-field-option-' + id + '-enable_min_max' ).parent().show();
 				//Check if min max date enabled.
 				if( $('#everest-forms-field-option-' + id + '-enable_min_max' ).prop( 'checked' ) ) {
@@ -1093,6 +1094,7 @@
 				// Dropdown Date Setting Control
 				$('#everest-forms-field-option-' + id + '-date_mode-range').parents().find('everest-forms-checklist').hide();
 				$('#everest-forms-field-option-' + id + '-date_default' ).parent().hide();
+				$('#everest-forms-field-option-' + id + '-past_date_disable' ).parent().hide();
 				$('#everest-forms-field-option-row-' + id + '-placeholder').hide();
 				$('#everest-forms-field-option-' + id + '-enable_min_max').parent().hide();
 				$('#everest-forms-field-option-row-' + id + '-date_format .everest-forms-min-max-date-option').addClass( 'everest-forms-hidden' );
@@ -1979,6 +1981,13 @@
 									btnClass: 'btn-confirm',
 									keys: ['enter']
 								}
+							},
+							onContentReady: function(){
+								$('body').on("keydown", function (e) {
+									if( e.ctrlKey || e.metaKey && 'h' === String.fromCharCode(e.which).toLowerCase() || 72 === e.which ) {
+										$( '.btn-confirm' ).trigger( 'click' );
+									}
+								});
 							}
 						});
 					}
@@ -2672,10 +2681,22 @@ jQuery(function () {
 		}
 	});
 
+		// Query String Toogle.
+		jQuery( '#everest-forms-panel-field-settings-enable_redirect_query_string-wrap input' ).on( 'change', function () {
+			var $this = jQuery( this );
+			if ( ! $this.is( ':checked' ) ) {
+				jQuery('#everest-forms-panel-field-settings-query_string-wrap').hide();
+			} else {
+				jQuery('#everest-forms-panel-field-settings-query_string-wrap').show();
+			}
+		});
+
 	var mySelect = jQuery('#everest-forms-panel-field-settings-redirect_to option:selected').val();
 
 	if ( mySelect == 'same' ) {
 		jQuery('#everest-forms-panel-field-settings-custom_page-wrap').hide();
+		jQuery('#everest-forms-panel-field-settings-enable_redirect_query_string-wrap').hide();
+		jQuery('#everest-forms-panel-field-settings-query_string-wrap').hide();
 		jQuery('#everest-forms-panel-field-settings-external_url-wrap').hide();
 	}
 	else if(mySelect == 'custom_page') {
@@ -2685,19 +2706,32 @@ jQuery(function () {
 	else if(mySelect == 'external_url'){
 		jQuery('#everest-forms-panel-field-settings-external_url-wrap').show();
 		jQuery('#everest-forms-panel-field-settings-custom_page-wrap').hide();
+		jQuery('#everest-forms-panel-field-settings-enable_redirect_query_string-wrap').hide();
+		jQuery('#everest-forms-panel-field-settings-query_string-wrap').hide();
 	}
 
 	jQuery( '#everest-forms-panel-field-settings-redirect_to' ).on( 'change', function () {
 		if ( this.value == 'same' ) {
 			jQuery('#everest-forms-panel-field-settings-custom_page-wrap').hide();
 			jQuery('#everest-forms-panel-field-settings-external_url-wrap').hide();
+			jQuery('#everest-forms-panel-field-settings-enable_redirect_query_string-wrap').hide();
+			jQuery('#everest-forms-panel-field-settings-query_string-wrap').hide();
 		}
 		else if ( this.value == 'custom_page') {
 			jQuery('#everest-forms-panel-field-settings-custom_page-wrap').show();
+			jQuery('#everest-forms-panel-field-settings-enable_redirect_query_string-wrap').show();
 			jQuery('#everest-forms-panel-field-settings-external_url-wrap').hide();
+
+			if(jQuery('#everest-forms-panel-field-settings-enable_redirect_query_string').is(':checked')){
+				jQuery('#everest-forms-panel-field-settings-query_string-wrap').show();
+			} else{
+				jQuery('#everest-forms-panel-field-settings-query_string-wrap').hide();
+			}
 		}
 		else if ( this.value == 'external_url') {
 			jQuery('#everest-forms-panel-field-settings-custom_page-wrap').hide();
+			jQuery('#everest-forms-panel-field-settings-enable_redirect_query_string-wrap').hide();
+			jQuery('#everest-forms-panel-field-settings-query_string-wrap').hide();
 			jQuery('#everest-forms-panel-field-settings-external_url-wrap').show();
 		}
 	});
@@ -2775,6 +2809,8 @@ jQuery( function ( $ ) {
 	$( document ).on( 'click', function() {
 		$( '.evf-smart-tag-lists' ).hide();
 	});
+
+	$( '.evf-smart-tag-lists' ).hide();
 
 	// Toggle Smart Tags.
 	$( document.body ).on('click', '.evf-toggle-smart-tag-display', function(e) {
