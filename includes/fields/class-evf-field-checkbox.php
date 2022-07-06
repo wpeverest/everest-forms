@@ -470,7 +470,6 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 		$fields             = $form_data['form_fields'];
 		$choice_limit       = empty( $fields[ $field_id ]['choice_limit'] ) ? 0 : (int) $fields[ $field_id ]['choice_limit'];
 		$conditional_status = isset( $form_data['form_fields'][ $field_id ]['conditional_logic_status'] ) ? $form_data['form_fields'][ $field_id ]['conditional_logic_status'] : 0;
-		$visible            = apply_filters( 'everest_forms_visible_fields', true, $form_data['form_fields'][ $field_id ], $entry, $form_data );
 
 		// Generating the error.
 		if ( $choice_limit > 0 && $choice_limit < count( $field_submit ) ) {
