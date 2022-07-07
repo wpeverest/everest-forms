@@ -1456,48 +1456,58 @@
 				$this.parent().attr( 'data-total-rows', total_rows );
 				$this.parent().attr( 'data-next-row-id', max_row_id );
 
-				row_clone.find( 'div' ).hide();
+				if( 0 < $( '.everest-forms-row-options' ).length && false === $this.closest( '.evf-add-row' ).hasClass('repeater-row') ) {
 
-				row_clone.css({
-					'padding': '40px'
-				}).append( '<i class="spinner is-active" style="margin:0px auto;"></i>' );
+					row_clone.find( 'div' ).hide();
 
-				// Row append.
-				wrapper.append( row_clone );
+					row_clone.css({
+						'padding': '40px'
+					}).append( '<i class="spinner is-active" style="margin:0px auto;"></i>' );
 
-				var row_id = row_clone.attr('data-row-id'),
-				evf_data =  window.evf_data;
-				$.ajax({
-					url: evf_data.ajax_url,
-					type: 'POST',
-					data: {
-						action: 'everest_forms_new_row',
-						security: evf_data.evf_add_row_nonce,
-						form_id: evf_data.form_id,
-						row_id: row_id
-					},
-					success: function( xhr ) {
-						if( true === xhr.success ) {
-							if( 'undefined' !== typeof xhr.data.html ) {
-								$( document ).find( '.everest-forms-row-option-group' ).append( xhr.data.html );
-								EVFPanelBuilder.conditionalLogicAppendRow( row_id );
+					// Row append.
+					wrapper.append( row_clone );
+					var row_id = row_clone.attr('data-row-id'),
+					evf_data =  window.evf_data;
+					$.ajax({
+						url: evf_data.ajax_url,
+						type: 'POST',
+						data: {
+							action: 'everest_forms_new_row',
+							security: evf_data.evf_add_row_nonce,
+							form_id: evf_data.form_id,
+							row_id: row_id
+						},
+						success: function( xhr ) {
+							if( true === xhr.success ) {
+								if( 'undefined' !== typeof xhr.data.html ) {
+									$( document ).find( '.everest-forms-row-option-group' ).append( xhr.data.html );
+									EVFPanelBuilder.conditionalLogicAppendRow( row_id );
+								}
 							}
 						}
-					}
-				}).always( function() {
+					}).always( function() {
 
-					row_clone.css( {'padding':0 } );
+						row_clone.css( {'padding':0 } );
 
-					row_clone.find( 'div' ).show();
+						row_clone.find( 'div' ).show();
 
-					row_clone.find( 'i' ).remove();
+						row_clone.find( 'i' ).remove();
 
+						// Initialize fields UI.
+						EVFPanelBuilder.bindFields();
+						EVFPanelBuilder.checkEmptyGrid();
+						// Trigger event after row add.
+						$this.trigger('everest-forms-after-add-row', row_clone);
+					} );
+				} else {
+					// Row append.
+					wrapper.append( row_clone );
 					// Initialize fields UI.
 					EVFPanelBuilder.bindFields();
 					EVFPanelBuilder.checkEmptyGrid();
 					// Trigger event after row add.
 					$this.trigger('everest-forms-after-add-row', row_clone);
-				} );
+				}
 			});
 
 		},
