@@ -99,7 +99,7 @@ abstract class EVF_Form_Fields {
 		add_action( 'wp_ajax_everest_forms_new_field_' . $this->type, array( $this, 'field_new' ) );
 		add_action( 'everest_forms_display_field_' . $this->type, array( $this, 'field_display' ), 10, 3 );
 		add_action( 'everest_forms_display_edit_form_field_' . $this->type, array( $this, 'edit_form_field_display' ), 10, 3 );
-		add_action( 'everest_forms_process_validate_' . $this->type, array( $this, 'validate' ), 10, 5 );
+		add_action( 'everest_forms_process_validate_' . $this->type, array( $this, 'validate' ), 10, 3 );
 		add_action( 'everest_forms_process_format_' . $this->type, array( $this, 'format' ), 10, 4 );
 		add_filter( 'everest_forms_field_properties', array( $this, 'field_prefill_value_property' ), 10, 3 );
 		add_filter( 'everest_forms_field_exporter_' . $this->type, array( $this, 'field_exporter' ) );
@@ -2278,16 +2278,13 @@ abstract class EVF_Form_Fields {
 	 * @param string $field_id Field Id.
 	 * @param array  $field_submit Submitted Data.
 	 * @param array  $form_data All Form Data.
-	 * @param array  $field_type Field Type.
-	 * @param array  $entry Entry.
 	 */
-	public function validate( $field_id, $field_submit, $form_data, $field_type, $entry ) {
+	public function validate( $field_id, $field_submit, $form_data ) {
 		$field_type         = isset( $form_data['form_fields'][ $field_id ]['type'] ) ? $form_data['form_fields'][ $field_id ]['type'] : '';
 		$required_field     = isset( $form_data['form_fields'][ $field_id ]['required'] ) ? $form_data['form_fields'][ $field_id ]['required'] : false;
 		$conditional_status = isset( $form_data['form_fields'][ $field_id ]['conditional_logic_status'] ) ? $form_data['form_fields'][ $field_id ]['conditional_logic_status'] : 0;
-		$visible            = apply_filters( 'everest_forms_visible_fields', true, $form_data['form_fields'][ $field_id ], $entry, $form_data );
 		// Basic required check - If field is marked as required, check for entry data.
-		if ( false !== $required_field && ( '1' !== $conditional_status || $visible ) && ( empty( $field_submit ) && '0' !== $field_submit ) ) {
+		if ( false !== $required_field && '1' !== $conditional_status && ( empty( $field_submit ) && '0' !== $field_submit ) ) {
 			evf()->task->errors[ $form_data['id'] ][ $field_id ] = evf_get_required_label();
 			update_option( 'evf_validation_error', 'yes' );
 		}
