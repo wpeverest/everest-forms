@@ -1466,6 +1466,12 @@
 
 					// Row append.
 					wrapper.append( row_clone );
+
+
+					// Initialize fields UI.
+					EVFPanelBuilder.bindFields();
+					EVFPanelBuilder.checkEmptyGrid();
+
 					var row_id = row_clone.attr('data-row-id'),
 					evf_data =  window.evf_data;
 					$.ajax({
@@ -1486,16 +1492,14 @@
 							}
 						}
 					}).always( function() {
-
 						row_clone.css( {'padding':0 } );
 
 						row_clone.find( 'div' ).show();
 
+						row_clone.find( '.evf-toggle-row-content' ).css( 'display', 'none' );
+
 						row_clone.find( 'i' ).remove();
 
-						// Initialize fields UI.
-						EVFPanelBuilder.bindFields();
-						EVFPanelBuilder.checkEmptyGrid();
 						// Trigger event after row add.
 						$this.trigger('everest-forms-after-add-row', row_clone);
 					} );
