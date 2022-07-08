@@ -1,5 +1,8 @@
 #!/bin/sh
 
+echo "EVF build-zip.sh"
+
+
 PLUGIN_SLUG="everest-forms"
 PROJECT_PATH=$(pwd)
 BUILD_PATH="${PROJECT_PATH}/build"

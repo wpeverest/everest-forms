@@ -1,7 +1,10 @@
 name: Build release asset
-on:
-  release:
-    types: [published]
+
+on: [push]
+
+# on:
+#   release:
+#     types: [published]
 jobs:
   build:
     name: Build release asset
