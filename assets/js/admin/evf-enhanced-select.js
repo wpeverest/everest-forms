@@ -107,7 +107,7 @@ jQuery( function( $ ) {
 						var self = this;
 						var $rendered = decorated.call(this);
 						var $unSelectAllButton = $(
-							'<button class="btn btn-default evf-select2-unselect-all-btn" type="button">Unselect All</button>'
+							'<button class="btn btn-default evf-select2-unselect-all-btn" type="button">' + evf_enhanced_select_params.i18n_unselect_all + '</button>'
 						);
 	
 						$unSelectAllButton.on("click", function () {
@@ -130,7 +130,7 @@ jQuery( function( $ ) {
 						var self 			 = this;
 						var $rendered 		 = decorated.call(this);
 						var $selectAllButton = $(
-							'<button class="btn btn-default evf-select2-select-all-btn" type="button">Select All</button>'
+							'<button class="btn btn-default evf-select2-select-all-btn" type="button">' + evf_enhanced_select_params.i18n_select_all + '</button>'
 						);
 	
 						$selectAllButton.on("click", function () {
