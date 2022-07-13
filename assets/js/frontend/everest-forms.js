@@ -654,7 +654,7 @@ jQuery( function ( $ ) {
 								allowClear: $( this ).prop( 'multiple' ) ? false : true,
 							}, getEnhancedSelectFormatString() );
 
-							$( this ).selectWoo( select2_args ).addClass( 'evf-enhanced' ); 
+							$( this ).selectWoo( select2_args ).addClass( 'evf-enhanced' );
 						});
 					}
 				}).trigger( 'evf-frontend-enhanced-select-init' );
