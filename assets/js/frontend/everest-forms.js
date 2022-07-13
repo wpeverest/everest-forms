@@ -649,7 +649,7 @@ jQuery( function ( $ ) {
 					if ( 'undefined' !== typeof $.fn.selectWoo ) {
 						$( 'select.evf-enhanced-select:visible' ).filter( ':not(.evf-enhanced)' ).each( function() {
 							var select2_args = $.extend({
-								minimumResultsForSearch: 10,
+								minimumResultsForSearch: 10 < $( this ).find( 'option' ).length ? 10 : null,
 								placeholder: $( this ).attr( 'placeholder' ) || '',
 								allowClear: $( this ).prop( 'multiple' ) ? false : true,
 							}, getEnhancedSelectFormatString() );
