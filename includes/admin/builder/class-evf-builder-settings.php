@@ -226,8 +226,35 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			)
 		);
 
-		do_action( 'everest_forms_submission_redirection_settings', $this, 'submission_redirection' );
+		everest_forms_panel_field(
+			'checkbox',
+			'settings',
+			'enable_redirect_query_string',
+			$this->form_data,
+			esc_html__( ' Append Query String', 'everest-forms' ),
+			array(
+				'default' => '0',
+			)
+		);
 
+		everest_forms_panel_field(
+			'text',
+			'settings',
+			'query_string',
+			$this->form_data,
+			esc_html__( 'Query String', 'everest-forms' ),
+			array(
+				'default'   => isset( $settings['query_string'] ) ? $settings['query_string'] : '',
+				'class'     => isset( $settings['enable_redirect_query_string'] ) && '1' === $settings['enable_redirect_query_string'] ? '' : 'everest-forms-hidden',
+				'smarttags' => array(
+					'type'        => 'all',
+					'form_fields' => 'all',
+				),
+				'after'     => '<p class="desc">' . sprintf( esc_html__( 'Example: firstname= {field_id="name_ys0GeZISRs-1"}&email={field_id="email_LbH5NxasXM-2"}', 'everest-forms' ) ) . '</p>',
+			)
+		);
+
+		do_action( 'everest_forms_submission_redirection_settings', $this, 'submission_redirection' );
 		echo '</div>';
 
 		everest_forms_panel_field(

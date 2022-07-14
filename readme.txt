@@ -1,18 +1,20 @@
-=== Contact Form, Drag and Drop Form Builder for WordPress - Everest Forms ===
+=== Contact Form Plugin - Easy Drag and Drop Form Builder for WordPress - Everest Forms ===
 Contributors: WPEverest
 Tags: contact form, forms, form builder, contact, custom form
 Requires at least: 5.0
-Tested up to: 5.9
+Tested up to: 6.0
 Requires PHP: 5.4
-Stable tag: 1.8.7
+Stable tag: 1.9.0.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Drag and Drop contact form builder to easily create simple to complex forms for any purpose. Lightweight, Beautiful design, responsive and more.
+Fast, Lightweight & Secure Contact Form plugin. Beautiful & Responsive Pre-Built Templates. Create Contact, Booking, Payment, Quiz, Survey, Multi-Step, Registration and any type of forms.
 
 == Description ==
 
 **Everest Forms: #1 Form Building Solution for WordPress Website**
+
+👉 [Give a Try](https://demo.tastewp.com/everest-forms) (Clicking this link creates a demo where you can test Everest Forms.)
 
 Everest Forms is the best WordPress form builder, meticulously designed by our team of experts to take your form-building experience to the next level. It’s a lightweight, fast, and extensible plugin for all, i.e., from the absolute beginners with zero coding skills to the advanced users.
 
@@ -25,9 +27,6 @@ No time to create forms from the ground? No worries! Choose from beautifully des
 [All features](https://wpeverest.com/wordpress-plugins/everest-forms/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) | [Demo](http://demo.wpeverest.com/everest-forms/) | [Documentation](http://docs.wpeverest.com/docs/everest-forms/)
 
 [Try Everest Forms Premium ](https://wpeverest.com/wordpress-plugins/everest-forms/?utm_source=wporg&utm_medium=link&utm_campaign=ur-upgrade-to-pro)
-
-[Try Live Demo ](https://demo.tastewp.com/everest-forms)
-
 
 **Build Great Forms like a Pro with Everest Forms Awesome Features**
 
@@ -310,7 +309,27 @@ Yes, we do. Check out this [Getting Started Videos](https://docs.wpeverest.com/d
 
 Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/everest-forms/) :)
 
+
 == Changelog ==
+
+= 1.9.0.1 - 06-07-2022
+* Fix - Field validation params miss match.
+
+= 1.9.0 - 06-07-2022
+* Enhancement - PDF send to Google Drive or Dropbox.
+* Enhancement - Select/Unselect on Select2.
+* Fix - Dynamic mapping issue in form builder.
+* Fix - Conditional logic field required issue.
+* Fix - Range Slider field min/max value glitch and default value validation.
+* Fix - Toggle PayPal and Stripe recurring subscription payments glitch.
+* Fix - Toggle Enable PayPal Standard.
+
+= 1.8.9 - 15-06-2022
+* Fix - Hidden Field default value.
+* Enhancement - Minimum length feature on the Paragraph/Single Line Text field.
+
+= 1.8.8 - 19-05-2022
+* Enhancement - Export/Import multiple forms at a time.
 
 = 1.8.7 - 20-04-2022 =
 * Fix - Meta Key Translation issue.

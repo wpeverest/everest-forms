@@ -1802,7 +1802,7 @@ p.search-box {
 
 		.input-group-col-2 {
 			display: flex;
-			flex-wrap: wrap;
+			flex-wrap: nowrap;
 
 			input[type='text'],
 			input[type='number'],
@@ -2263,11 +2263,13 @@ p.search-box {
 							}
 
 							.everest-forms-current-date-format,
+							.everest-forms-past-date-disable-format,
 							.everest-forms-min-max-date-format {
 								margin-bottom: 14px;
 							}
 
-							&.everest-forms-field-option-row-limit_controls {
+							&.everest-forms-field-option-row-limit_controls,
+							&.everest-forms-field-option-row-min_length_controls {
 								display: flex;
 								align-items: center;
 
@@ -2367,7 +2369,7 @@ p.search-box {
 					}
 
 					.everest-forms-active-connections,
-					.everest-forms-active-email {
+					.everest-forms-active-email,.everest-forms-active-sms-notifications {
 						display: none;
 						padding: 0 20px;
 						margin-top: -2px;
@@ -2391,7 +2393,8 @@ p.search-box {
 						}
 
 						.everest-forms-active-connections-list,
-						.everest-forms-active-email-connections-list {
+						.everest-forms-active-email-connections-list,
+						.everest-forms-active-sms-notifications-connections-list {
 							width: 100%;
 							padding: 20px;
 							display: flex;
@@ -3671,7 +3674,7 @@ p.search-box {
 				}
 			}
 
-			.evf-content-email-settings-inner {
+			.evf-content-email-settings-inner{
 				display: none;
 				-webkit-animation: fadeIn 0.5s;
 				animation: fadeIn 0.5s;
@@ -3686,6 +3689,23 @@ p.search-box {
 					}
 				}
 			}
+
+			.evf-content-sms-notifications-settings-inner{
+				display: none;
+				-webkit-animation: fadeIn 0.5s;
+				animation: fadeIn 0.5s;
+				margin: 20px 0;
+				border-radius: 4px;
+
+				&.active-connection {
+					display: block;
+
+					&.everest-forms-hidden {
+						display: none;
+					}
+				}
+			}
+
 		}
 
 		.evf-registered-item {
@@ -3818,6 +3838,32 @@ p.search-box {
 						background: $color-white;
 					}
 				}
+
+				.evf-content-sms-notifications-settings {
+					.evf-content-sms-notifications-settings-inner {
+						padding: 20px 20px 0;
+						border: 1px solid $color_gray-lighten;
+
+						.everest-forms-sms-notfications-name {
+							background: $color_gray-light-skin;
+							margin-left: -20px;
+							margin-top: -20px;
+							margin-right: -20px;
+							padding: 20px;
+							border-radius: 4px 4px 0 0;
+							border-bottom: 1px solid $color_gray-lighten;
+
+							input[type='text'] {
+								font-weight: 600;
+							}
+
+							.everest-forms-text-danger {
+								margin: 10px 0 0;
+							}
+						}
+					}
+				}
+
 
 				.evf-content-email-settings {
 					.evf-content-email-settings-inner {
@@ -4652,6 +4698,7 @@ p.search-box {
 /**
    * Import and Export
    */
+.evf-tools-export-entries,
 .everest-forms-import-form,
 .everest-forms-export-form {
 	background: $color-white;
@@ -5330,6 +5377,10 @@ img.ui-datepicker-trigger {
 .select2-drop,
 .select2-dropdown {
 	z-index: 999999 !important;
+
+	.everest-forms-btn {
+		margin: 8px 4px;
+	}
 }
 
 .select2-results {
@@ -6037,5 +6088,27 @@ img.ui-datepicker-trigger {
 				}
 			}
 		}
+	}
+}
+
+.evf-btn-container {
+	a {
+		display: inline-block;
+		padding: 4px 8px;
+		border: 1px solid #3498DB;
+		margin-bottom: 8px;
+		border-radius: 2px;
+		background-color: #f5fbff;
+		line-height: 1.8em;
+
+		&:hover {
+			background-color: #3498DB;
+			color: #fff;
+			cursor: pointer;
+		}
+	}
+
+	.evf-btn-unselect-all {
+		margin-left: 8px;
 	}
 }
