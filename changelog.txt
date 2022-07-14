@@ -1,7 +1,8 @@
 == Changelog ==
 
 = 1.9.1 - xx-xx-2022
-* Fix - Dropdown field with enhanced select automatic close for single selection.
+* Fix - Enhanced select issue in single select.
+* Dev - Row Setting compatibility.
 
 = 1.9.0.1 - 06-07-2022
 * Fix - Field validation params miss match.
