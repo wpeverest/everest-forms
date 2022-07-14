@@ -1377,6 +1377,7 @@
 				var $this            = $( this ),
 					total_rows       = $( '.evf-admin-row' ).length,
 					current_row      = $this.closest( '.evf-admin-row' ),
+					row_id           = current_row.attr('data-row-id'),
 					current_part     = $this.parents( '.evf-admin-field-container' ).attr( 'data-current-part' ),
 					multipart_active = $( '#everest-forms-builder' ).hasClass( 'multi-part-activated' );
 
@@ -1416,6 +1417,7 @@
 									$( '.everest-forms-fields-tab' ).find( 'a' ).removeClass( 'active' );
 									$( '.everest-forms-fields-tab' ).find( 'a' ).first().addClass( 'active' );
 									$( '.everest-forms-add-fields' ).show();
+									$( '#everest-forms-row-option-row_' + row_id ).remove();
 								}
 							},
 							cancel: {
@@ -1428,6 +1430,7 @@
 		},
 		bindAddNewRow: function() {
 			$( 'body' ).on( 'click', '.evf-add-row span', function() {
+				$( '#add-fields').trigger( 'click' );
 				var $this        = $( this ),
 					wrapper      = $( '.evf-admin-field-wrapper' ),
 					row_ids      = $( '.evf-admin-row' ).map( function() {
@@ -1453,15 +1456,64 @@
 				$this.parent().attr( 'data-total-rows', total_rows );
 				$this.parent().attr( 'data-next-row-id', max_row_id );
 
-				// Row append.
-				wrapper.append( row_clone );
+				if( 0 < $( '.everest-forms-row-options' ).length && false === $this.closest( '.evf-add-row' ).hasClass('repeater-row') ) {
 
-				// Initialize fields UI.
-				EVFPanelBuilder.bindFields();
-				EVFPanelBuilder.checkEmptyGrid();
-				// Trigger event after row add.
-				$this.trigger('everest-forms-after-add-row', row_clone);
+					row_clone.find( 'div' ).hide();
+
+					row_clone.css({
+						'padding': '40px'
+					}).append( '<i class="spinner is-active" style="margin:0px auto;"></i>' );
+
+					// Row append.
+					wrapper.append( row_clone );
+
+
+					// Initialize fields UI.
+					EVFPanelBuilder.bindFields();
+					EVFPanelBuilder.checkEmptyGrid();
+
+					var row_id = row_clone.attr('data-row-id'),
+					evf_data =  window.evf_data;
+					$.ajax({
+						url: evf_data.ajax_url,
+						type: 'POST',
+						data: {
+							action: 'everest_forms_new_row',
+							security: evf_data.evf_add_row_nonce,
+							form_id: evf_data.form_id,
+							row_id: row_id
+						},
+						success: function( xhr ) {
+							if( true === xhr.success ) {
+								if( 'undefined' !== typeof xhr.data.html ) {
+									$( document ).find( '.everest-forms-row-option-group' ).append( xhr.data.html );
+									EVFPanelBuilder.conditionalLogicAppendRow( row_id );
+								}
+							}
+						}
+					}).always( function() {
+						row_clone.css( {'padding':0 } );
+
+						row_clone.find( 'div' ).show();
+
+						row_clone.find( '.evf-toggle-row-content' ).css( 'display', 'none' );
+
+						row_clone.find( 'i' ).remove();
+
+						// Trigger event after row add.
+						$this.trigger('everest-forms-after-add-row', row_clone);
+					} );
+				} else {
+					// Row append.
+					wrapper.append( row_clone );
+					// Initialize fields UI.
+					EVFPanelBuilder.bindFields();
+					EVFPanelBuilder.checkEmptyGrid();
+					// Trigger event after row add.
+					$this.trigger('everest-forms-after-add-row', row_clone);
+				}
 			});
+
 		},
 		bindCloneField: function () {
 			$( 'body' ).on( 'click', '.everest-forms-preview .everest-forms-field .everest-forms-field-duplicate', function() {
@@ -2499,6 +2551,29 @@
 					}
 				}
 			});
+		},
+		conditionalLogicAppendRow: function( id ){
+
+			var new_row_option = $('#everest-forms-row-option-row_' + id);
+
+			var fields = $( '.everest-forms-field' );
+
+			fields.each( function() {
+				var field = $(this),
+					field_id = field.attr( 'data-field-id' ),
+					field_type = field.attr( 'data-field-type' ),
+					field_label = '';
+
+
+				field.find( '.required').remove()
+				field_label = field.find( '.label-title').html();
+
+				var el_to_append = '<option class="evf-conditional-fields" data-field_type="'+field_type+'" data-field_id="'+field_id+'" value="'+field_id+'">'+field_label+'</option>';
+
+				if( 0 === $( document ).find( '.evf-admin-row[data-row-id="'+ id +'"] #everest-forms-field-' + field_id ).length && 0 === new_row_option.find( '.evf-field-conditional-field-select option[data-field_id="'+ field_id +'"]').length && 'html' !== field_type && 'title' !== field_type && 'address' !== field_type && 'image-upload' !== field_type && 'file-upload' !== field_type && 'date-time' !== field_type && 'hidden' !== field_type && 'likert' !== field_type && 'scale-rating' !== field_type ) {
+					new_row_option.find( '.evf-field-conditional-field-select' ).append( el_to_append );
+				}
+			})
 		},
 
 		paymentFieldAppendToQuantity: function( id ) {
