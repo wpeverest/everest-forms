@@ -1,4 +1,4 @@
-=== Contact Form, Drag and Drop Form Builder for WordPress - Everest Forms ===
+=== Contact Form Plugin - Easy Drag and Drop Form Builder for WordPress - Everest Forms ===
 Contributors: WPEverest
 Tags: contact form, forms, form builder, contact, custom form
 Requires at least: 5.0
@@ -8,11 +8,13 @@ Stable tag: 1.9.0.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Drag and Drop contact form builder to easily create simple to complex forms for any purpose. Lightweight, Beautiful design, responsive and more.
+Fast, Lightweight & Secure Contact Form plugin. Beautiful & Responsive Pre-Built Templates. Create Contact, Booking, Payment, Quiz, Survey, Multi-Step, Registration and any type of forms.
 
 == Description ==
 
 **Everest Forms: #1 Form Building Solution for WordPress Website**
+
+👉 [Give a Try](https://demo.tastewp.com/everest-forms) (Clicking this link creates a demo where you can test Everest Forms.)
 
 Everest Forms is the best WordPress form builder, meticulously designed by our team of experts to take your form-building experience to the next level. It’s a lightweight, fast, and extensible plugin for all, i.e., from the absolute beginners with zero coding skills to the advanced users.
 
@@ -25,9 +27,6 @@ No time to create forms from the ground? No worries! Choose from beautifully des
 [All features](https://wpeverest.com/wordpress-plugins/everest-forms/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) | [Demo](http://demo.wpeverest.com/everest-forms/) | [Documentation](http://docs.wpeverest.com/docs/everest-forms/)
 
 [Try Everest Forms Premium ](https://wpeverest.com/wordpress-plugins/everest-forms/?utm_source=wporg&utm_medium=link&utm_campaign=ur-upgrade-to-pro)
-
-[Try Live Demo ](https://demo.tastewp.com/everest-forms)
-
 
 **Build Great Forms like a Pro with Everest Forms Awesome Features**
 
