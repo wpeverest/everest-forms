@@ -256,6 +256,9 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 				echo '<div class="evf-duplicate-row"><span class="dashicons dashicons-media-default" title="Duplicate Row"></span></div>';
 				echo '<div class="evf-delete-row"><span class="dashicons dashicons-trash" title="Delete Row"></span></div>';
 				echo '<div class="evf-show-grid"><span class="dashicons dashicons-edit" title="Edit"></span></div>';
+				if ( defined( 'EFP_VERSION' ) ) {
+					echo '<div class="evf-row-setting"><span class="dashicons dashicons-admin-settings" title="Row Setting"></span></div>';
+				}
 			}
 			echo '<div class="evf-toggle-row-content">';
 			echo '<span>' . esc_html__( 'Row Settings', 'everest-forms' ) . '</span>';
