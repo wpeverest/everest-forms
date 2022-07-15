@@ -1,6 +1,6 @@
 == Changelog ==
 
-= 1.9.1 - 17-07-2022
+= 1.9.1 - 18-07-2022
 * Fix - Enhanced select issue in single select.
 * Dev - Yes/No field.
 * Dev - Row setting compatibility.
