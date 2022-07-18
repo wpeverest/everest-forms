@@ -46,7 +46,7 @@ You'll be delighted to know that Everest Forms lets you create great forms like 
 
 * **Form Submission without Reload (Ajax Submission):** Users can quickly submit the forms without reloading the page with the Ajax form submission feature.
 
-* **[Premium] Integrations with Email Marketing Services:** Ensure the success of your marketing campaigns with effective email marketing services like [MailChimp](https://wpeverest.com/wordpress-plugins/everest-forms/mailchimp/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro), [ConvertKit](https://wpeverest.com/wordpress-plugins/everest-forms/convertkit/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro), [MailerLite](https://wpeverest.com/wordpress-plugins/everest-forms/mailerlite/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro), [ActiveCampaign](https://wpeverest.com/wordpress-plugins/everest-forms/activecampaign/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro), [Campaign Monitor](https://wpeverest.com/wordpress-plugins/everest-forms/campaign-monitor/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro), [Drip](https://wpeverest.com/wordpress-plugins/everest-forms/drip/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro).
+* **[Premium] Integrations with Email Marketing Services:** Ensure the success of your marketing campaigns with effective email marketing services like [MailChimp](https://wpeverest.com/wordpress-plugins/everest-forms/mailchimp/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro), [ConvertKit](https://wpeverest.com/wordpress-plugins/everest-forms/convertkit/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro), [MailerLite](https://wpeverest.com/wordpress-plugins/everest-forms/mailerlite/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro), [ActiveCampaign](https://wpeverest.com/wordpress-plugins/everest-forms/activecampaign/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro), [Campaign Monitor](https://wpeverest.com/wordpress-plugins/everest-forms/campaign-monitor/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) and [Drip](https://wpeverest.com/wordpress-plugins/everest-forms/drip/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro).
 
 * **[Premium] [Multi-Step Form with Progress Bar:](https://wpeverest.com/wordpress-plugins/everest-forms/multi-part-forms/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Break your complex or overwhelming forms into multi-steps for providing a better user experience. A progress bar in your multi-part forms will guide your users to navigate through your form successively.
 
@@ -59,6 +59,11 @@ You'll be delighted to know that Everest Forms lets you create great forms like 
 * **[Premium] [Collect Form submission to Google Sheets:](https://wpeverest.com/wordpress-plugins/everest-forms/google-sheets/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Integrate Everest Forms with Google Sheet add-on to extract all your form submission data to Google Spreadsheets. Easily edit, organize, and analyze all your user information data.
 
 * **[Premium] [Integrate with thousands of web applications:](https://wpeverest.com/wordpress-plugins/everest-forms/zapier/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Zapier allows our forms to be connected with thousands of web applications. Automate the data transfer from your form. For example, posting the form data to google docs, posting to twitter, trello, slack, facebook and hundred of other apps.
+
+* **[Premium] CRM Integration:** Easily connect Everest Forms with popular CRM softwares like [Pipedrive](https://wpeverest.com/wordpress-plugins/everest-forms/pipedrive/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) and [Hubspot](https://wpeverest.com/wordpress-plugins/everest-forms/hubspot/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro). Send form data to your CRM platform to manage, and track activity, contacts and more.
+
+* **[Premium] [Frontend Listing:](https://wpeverest.com/wordpress-plugins/everest-forms/frontend-listing/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** List form entries submitted by your users to any post or page. Visitors can view and check the user entries of any particular form on the frontend. 
+
 
 
 ### Get All the Essential Form Fields under the Roof of Everest Forms
@@ -149,6 +154,10 @@ Everest Forms has a long list of top-notch features, making it the best WordPres
 
 * **[Premium] [Calculation Fields:](https://wpeverest.com/wordpress-plugins/everest-forms/calculations/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Calculations addon makes it quite simple to calculate field values that are updated in real-time. It can handle from simple additions, subtractions, or multiplication to complicated geometric operations.
 
+* **[Premium] [Coupons:](https://wpeverest.com/wordpress-plugins/everest-forms/coupons/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Quickly create and add coupon code to encourage users to purchase via your form. Everest Forms plugin enables you to create both the fixed and percentage-based coupons.
+
+* **[Premium] [SMS Notifications:](https://wpeverest.com/wordpress-plugins/everest-forms/sms-notifications/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Want to be notified whenever a form is submitted? Everest Forms supports Twilio SMS integration that  allows you to receive SMS notification easily whenever a form is submitted. 
+
 
 **Create Different Form Types without Any Coding Skills**
 * [Contact Form](https://demo.wpeverest.com/everest-forms/)
@@ -202,6 +211,7 @@ Everest Forms has a long list of top-notch features, making it the best WordPres
 * AJAX form submission, no reload needed
 * Spam protection via honeypot
 * Support for Google reCAPTCHA V2 and V3
+* Validate field as unique
 * Email setting option
 * Multiple email recipient
 * Multiple email notifications
@@ -227,6 +237,7 @@ Everest Forms has a long list of top-notch features, making it the best WordPres
 * MailerLite
 * ActiveCampaign
 * Campaign Monitor
+* Drip
 * Download form submission data in PDF document format
 * Form restriction option
 * Restrict non logged in user
