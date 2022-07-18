@@ -46,7 +46,7 @@ You'll be delighted to know that Everest Forms lets you create great forms like 
 
 * **Form Submission without Reload (Ajax Submission):** Users can quickly submit the forms without reloading the page with the Ajax form submission feature.
 
-* **[Premium] Integrations with Email Marketing Services:** Ensure the success of your marketing campaigns with effective email marketing services like [MailChimp](https://wpeverest.com/wordpress-plugins/everest-forms/mailchimp/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro), [ConvertKit](https://wpeverest.com/wordpress-plugins/everest-forms/convertkit/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro), [MailerLite](https://wpeverest.com/wordpress-plugins/everest-forms/mailerlite/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro), [ActiveCampaign](https://wpeverest.com/wordpress-plugins/everest-forms/activecampaign/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro), and [Campaign Monitor](https://wpeverest.com/wordpress-plugins/everest-forms/campaign-monitor/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro).
+* **[Premium] Integrations with Email Marketing Services:** Ensure the success of your marketing campaigns with effective email marketing services like [MailChimp](https://wpeverest.com/wordpress-plugins/everest-forms/mailchimp/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro), [ConvertKit](https://wpeverest.com/wordpress-plugins/everest-forms/convertkit/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro), [MailerLite](https://wpeverest.com/wordpress-plugins/everest-forms/mailerlite/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro), [ActiveCampaign](https://wpeverest.com/wordpress-plugins/everest-forms/activecampaign/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro), [Campaign Monitor](https://wpeverest.com/wordpress-plugins/everest-forms/campaign-monitor/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro), [Drip](https://wpeverest.com/wordpress-plugins/everest-forms/drip/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro).
 
 * **[Premium] [Multi-Step Form with Progress Bar:](https://wpeverest.com/wordpress-plugins/everest-forms/multi-part-forms/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Break your complex or overwhelming forms into multi-steps for providing a better user experience. A progress bar in your multi-part forms will guide your users to navigate through your form successively.
 
@@ -93,6 +93,7 @@ Everest Forms is loaded with all the crucial form field elements required for cr
     * Rating
     * Likert
     * Scale Rating
+    * Yes/No or Like/Dislike
     * WYSIWYG
 
 * **Payment Fields**
@@ -124,7 +125,7 @@ Everest Forms has a long list of top-notch features, making it the best WordPres
 
 * **[Premium] [Email Templates Designer:](https://wpeverest.com/wordpress-plugins/everest-forms/email-templates/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Design beautiful email templates to impress your users. Customize color, fonts, spacing, header & footer, etc., of email template in real-time without coding. You've got an option to start from scratch or choose from carefully designed templates to get started.
 
-* **[Premium] Collect Payments:** Need to collect payments from customers on your forms? With our [PayPal](https://wpeverest.com/wordpress-plugins/everest-forms/paypal-standard/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) and [Stripe](https://wpeverest.com/wordpress-plugins/everest-forms/stripe/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) addon one can easily collect payment. Accept PayPal payments and even credit cards and bank payments(iDeal) via Stripe. Can be useful for collect single item payment, multiple item payment, donation payment and more.
+* **[Premium] Collect Payments:** Need to collect payments from customers on your forms? With our [PayPal](https://wpeverest.com/wordpress-plugins/everest-forms/paypal-standard/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) and [Stripe](https://wpeverest.com/wordpress-plugins/everest-forms/stripe/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) addon one can easily collect payment globally. Accept PayPal payments and even credit cards and bank payments(iDeal) via Stripe. Also, support [RazorPay](https://wpeverest.com/wordpress-plugins/everest-forms/razorpay/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) for Indian customers. Can be useful for collect single item payment, multiple item payment, donation payment and more.
 
 * **[Premium] [Smart Conditional Logic:](https://wpeverest.com/wordpress-plugins/everest-forms/conditional-logic/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Choose to show/hide specific form fields based on your users' interaction with previous fields. Collect all the necessary information from the users without making your form appear overwhelming and complex.
 
@@ -134,7 +135,7 @@ Everest Forms has a long list of top-notch features, making it the best WordPres
 
 * **[Premium] [Form Restriction:](https://wpeverest.com/wordpress-plugins/everest-forms/form-restriction/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** The power to control and restrict the form submission on your site is now at your fingertips. You can limit the form submission entries, set form submission dates, restrict forms for users who aren't logged in, and password protection for form submission.
 
-* **[Premium] [PDF Form Submission:](https://wpeverest.com/wordpress-plugins/everest-forms/pdf-form-submission/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** PDF is the widely used document format for storing and sharing files. Using this add-on, you can now download and send the form submissions in PDF format effortlessly.
+* **[Premium] [PDF Form Submission:](https://wpeverest.com/wordpress-plugins/everest-forms/pdf-form-submission/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** PDF is the widely used document format for storing and sharing files. Using this add-on, you can now download and send the form submissions in PDF format effortlessly. Also, PDF can be stored directly to cloud storage like Google Drive or Dropbox.
 
 * **[Premium] [Smart Geolocation:](https://wpeverest.com/wordpress-plugins/everest-forms/geolocation/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** This add-on enables you to track the geolocation data of your users submitting the form. You can collect and save their exact geolocation details like IP address country, city, postal /Zip code, etc.
 
@@ -173,7 +174,7 @@ Everest Forms has a long list of top-notch features, making it the best WordPres
 * Intuitive drag and drop form builder
 * Huge library of form templates to get started
 * Create unlimited forms without any restrictions
-* Multiple column layouts option
+* Multiple column layouts option. Supports 2,3 and 4 column layout.
 * Form field options
 * General, advanced, and payment form fields to create any type of WordPress forms
 * Unlimited form field. Use desired form field as many times as you want with no restrictions.
