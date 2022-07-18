@@ -313,7 +313,6 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 == Changelog ==
 
 = 1.9.1 - 18-07-2022
-* Fix - Dropdown field with enhanced select automatic close for single selection.
 * Fix - Enhanced select issue in single select.
 * Dev - Yes/No field.
 * Dev - Row setting compatibility.
