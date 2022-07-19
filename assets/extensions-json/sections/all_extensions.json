@@ -271,6 +271,116 @@
 				"professional",
 				"agency"
 			]
+		},
+		{
+			"title": "Calculations",
+			"slug": "everest-forms-calculations",
+			"name": "Everest Forms Calculations",
+			"image": "extensions-json/sections/images/calculations.png",
+			"excerpt": "Calculations add-on allows you to perform calculations on the number/range fields within the form.",
+			"link": "https://wpeverest.com/wordpress-plugins/everest-forms/calculations/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=calculations",
+			"plan": [
+				"professional",
+				"agency"
+			]
+		},
+		{
+			"title": "Razorpay",
+			"slug": "everest-forms-razorpay",
+			"name": "Everest Forms Razorpay",
+			"image": "extensions-json/sections/images/razorpay.png",
+			"excerpt": "Razor Pay add-on for Everest Forms allows you to accept/collect payment via your form all over India.",
+			"link": "https://wpeverest.com/wordpress-plugins/everest-forms/razorpay/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=razorpay",
+			"plan": [
+				"professional",
+				"agency"
+			]
+		},
+		{
+			"title": "SMS Notifications",
+			"slug": "everest-forms-sms-notifications",
+			"name": "Everest Forms SMS Notifications",
+			"image": "extensions-json/sections/images/sms-notifications.png",
+			"excerpt": "Using the Everest Forms SMS Notifications Add-on, you can now easily configure any online form to receive an SMS notification when a form is being submitted.",
+			"link": "https://wpeverest.com/wordpress-plugins/everest-forms/sms-notifications/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=sms-notifications",
+			"plan": [
+				"professional",
+				"agency"
+			]
+		},
+		{
+			"title": "Coupons",
+			"slug": "everest-forms-coupons",
+			"name": "Everest Forms Coupons",
+			"image": "extensions-json/sections/images/coupons.png",
+			"excerpt": "With the Everest Forms Coupon add-on, you can quickly create or add a coupon code on a form to encourage users to purchase the products.",
+			"link": "https://wpeverest.com/wordpress-plugins/everest-forms/coupons/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=coupons",
+			"plan": [
+				"professional",
+				"agency"
+			]
+		},
+		{
+			"title": "Frontend Listing",
+			"slug": "everest-forms-frontend-listing",
+			"name": "Everest Forms Frontend Listing",
+			"image": "extensions-json/sections/images/frontend-listing.png",
+			"excerpt": "The Frontend Listing add-on for Everest Forms allows you to list your entries in your site’s posts or pages. Visitors can view and check user entries of a particular form.",
+			"link": "https://wpeverest.com/wordpress-plugins/everest-forms/frontend-listing/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=frontend-listing",
+			"plan": [
+				"plus",
+				"professional",
+				"agency"
+			]
+		},
+		{
+			"title": "Drip",
+			"slug": "everest-forms-drip",
+			"name": "Everest Forms Drip",
+			"image": "extensions-json/sections/images/drip.png",
+			"excerpt": "With the Everest Forms Drip add-on, you can effortlessly create an unlimited number of newsletter signup forms and connect them to Drip.",
+			"link": "https://wpeverest.com/wordpress-plugins/everest-forms/drip/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=drip",
+			"plan": [
+				"plus",
+				"professional",
+				"agency"
+			]
+		},
+		{
+			"title": "Hubspot",
+			"slug": "everest-forms-hubspot",
+			"name": "Everest Forms Hubspot",
+			"image": "extensions-json/sections/images/hubspot.png",
+			"excerpt": "With the Everest Forms HubSpot add-On, you can smoothly integrate your lead generation forms with HubSpot.",
+			"link": "https://wpeverest.com/wordpress-plugins/everest-forms/hubspot/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=hubspot",
+			"plan": [
+				"professional",
+				"agency"
+			]
+		},
+		{
+			"title": "Pipedrive",
+			"slug": "everest-forms-pipedrive",
+			"name": "Everest Forms Pipedrive",
+			"image": "extensions-json/sections/images/pipedrive.png",
+			"excerpt": "Everest Forms Pipedrive CRM add-on is a WordPress Pipedrive CRM integration plugin that allows you to easily send Everest Forms entries directly to your Pipedrive CRM account. ",
+			"link": "https://wpeverest.com/wordpress-plugins/everest-forms/pipedrive/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=pipedrive",
+			"plan": [
+				"professional",
+				"agency"
+			]
+		},
+		{
+			"title": "Zoho",
+			"slug": "everest-forms-zoho",
+			"name": "Everest Forms Zoho",
+			"image": "extensions-json/sections/images/zoho.png",
+			"excerpt": "Everest Forms Zoho CRM add-on is a WordPress Zoho CRM integration plugin that allows you to easily send Everest Forms entries directly to your Zoho CRM account. ",
+			"link": "https://wpeverest.com/wordpress-plugins/everest-forms/zoho-crm/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=zoho-crm",
+			"plan": [
+				"professional",
+				"agency"
+			]
 		}
 	]
 }

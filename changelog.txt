@@ -1,5 +1,23 @@
 == Changelog ==
 
+= 1.9.1 - 19-07-2022
+* Fix - Enhanced select issue in single select.
+* Dev - Yes/No field.
+* Dev - Row setting compatibility.
+* Enhancement - Zoho CRM listing in add-ons page.
+
+= 1.9.0.1 - 06-07-2022
+* Fix - Field validation params miss match.
+
+= 1.9.0 - 06-07-2022
+* Enhancement - Export selected entries.
+* Enhancement - Pass field data to query string.
+* Enhancement - New add-ons listing in the add-ons page.
+* Enhancement - Past date disable.
+* Enhancement - Smart tags added.
+* Fix - Prevent more than one keyboard shortcut keys pop-up modal opening at a time.
+* Fix - Number field min/max value glitch and default value validation.
+
 = 1.8.9 - 15-06-2022
 * Fix - Hidden Field default value.
 * Enhancement - Minimum length feature on the Paragraph/Single Line Text field.

@@ -133,6 +133,7 @@ class EVF_Admin_Assets {
 					'ajax_url'                     => admin_url( 'admin-ajax.php' ),
 					'tab'                          => isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : '', // phpcs:ignore WordPress.Security.NonceVerification.
 					'evf_field_drop_nonce'         => wp_create_nonce( 'everest_forms_field_drop' ),
+					'evf_add_row_nonce'            => wp_create_nonce( 'everest_forms_add_row' ),
 					'evf_save_form'                => wp_create_nonce( 'everest_forms_save_form' ),
 					'evf_get_next_id'              => wp_create_nonce( 'everest_forms_get_next_id' ),
 					'evf_enabled_form'             => wp_create_nonce( 'everest_forms_enabled_form' ),
@@ -236,6 +237,8 @@ class EVF_Admin_Assets {
 					'i18n_field_meta_key_error'     => esc_html__( 'Please enter in meta key with alphanumeric characters, dashes and underscores.', 'everest-forms' ),
 					'i18n_field_min_value_greater'  => esc_html__( 'Minimum value is greater than Maximum value.', 'everest-forms' ),
 					'i18n_field_max_value_smaller'  => esc_html__( 'Maximum value is smaller than Minimum value.', 'everest-forms' ),
+					'i18n_field_def_value_greater'  => esc_html__( 'Default value is greater than Maximum value.', 'everest-forms' ),
+					'i18n_field_def_value_smaller'  => esc_html__( 'Default value is smaller than Minimum value.', 'everest-forms' ),
 					'i18n_form_export_action_error' => esc_html__( 'Please select a form which you want to export.', 'everest-forms' ),
 				)
 			);

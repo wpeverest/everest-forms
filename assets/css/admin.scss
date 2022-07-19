@@ -1802,7 +1802,7 @@ p.search-box {
 
 		.input-group-col-2 {
 			display: flex;
-			flex-wrap: wrap;
+			flex-wrap: nowrap;
 
 			input[type='text'],
 			input[type='number'],
@@ -2263,11 +2263,12 @@ p.search-box {
 							}
 
 							.everest-forms-current-date-format,
+							.everest-forms-past-date-disable-format,
 							.everest-forms-min-max-date-format {
 								margin-bottom: 14px;
 							}
 
-							&.everest-forms-field-option-row-limit_controls, 
+							&.everest-forms-field-option-row-limit_controls,
 							&.everest-forms-field-option-row-min_length_controls {
 								display: flex;
 								align-items: center;
@@ -3704,7 +3705,7 @@ p.search-box {
 					}
 				}
 			}
-			
+
 		}
 
 		.evf-registered-item {
@@ -6087,5 +6088,27 @@ img.ui-datepicker-trigger {
 				}
 			}
 		}
+	}
+}
+
+.evf-btn-container {
+	a {
+		display: inline-block;
+		padding: 4px 8px;
+		border: 1px solid #3498DB;
+		margin-bottom: 8px;
+		border-radius: 2px;
+		background-color: #f5fbff;
+		line-height: 1.8em;
+
+		&:hover {
+			background-color: #3498DB;
+			color: #fff;
+			cursor: pointer;
+		}
+	}
+
+	.evf-btn-unselect-all {
+		margin-left: 8px;
 	}
 }
