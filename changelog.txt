@@ -1,10 +1,10 @@
 == Changelog ==
 
-= 1.9.1 - 18-07-2022
+= 1.9.1 - 19-07-2022
 * Fix - Enhanced select issue in single select.
 * Dev - Yes/No field.
 * Dev - Row setting compatibility.
-* Enhancement - Zoho CRM listing in add-ons page. 
+* Enhancement - Zoho CRM listing in add-ons page.
 
 = 1.9.0.1 - 06-07-2022
 * Fix - Field validation params miss match.

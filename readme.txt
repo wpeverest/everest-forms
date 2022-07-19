@@ -62,7 +62,7 @@ You'll be delighted to know that Everest Forms lets you create great forms like 
 
 * **[Premium] CRM Integration:** Easily connect Everest Forms with popular CRM softwares like [Pipedrive](https://wpeverest.com/wordpress-plugins/everest-forms/pipedrive/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) and [Hubspot](https://wpeverest.com/wordpress-plugins/everest-forms/hubspot/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro). Send form data to your CRM platform to manage, and track activity, contacts and more.
 
-* **[Premium] [Frontend Listing:](https://wpeverest.com/wordpress-plugins/everest-forms/frontend-listing/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** List form entries submitted by your users to any post or page. Visitors can view and check the user entries of any particular form on the frontend. 
+* **[Premium] [Frontend Listing:](https://wpeverest.com/wordpress-plugins/everest-forms/frontend-listing/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** List form entries submitted by your users to any post or page. Visitors can view and check the user entries of any particular form on the frontend.
 
 
 
@@ -156,7 +156,7 @@ Everest Forms has a long list of top-notch features, making it the best WordPres
 
 * **[Premium] [Coupons:](https://wpeverest.com/wordpress-plugins/everest-forms/coupons/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Quickly create and add coupon code to encourage users to purchase via your form. Everest Forms plugin enables you to create both the fixed and percentage-based coupons.
 
-* **[Premium] [SMS Notifications:](https://wpeverest.com/wordpress-plugins/everest-forms/sms-notifications/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Want to be notified whenever a form is submitted? Everest Forms supports Twilio SMS integration that  allows you to receive SMS notification easily whenever a form is submitted. 
+* **[Premium] [SMS Notifications:](https://wpeverest.com/wordpress-plugins/everest-forms/sms-notifications/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Want to be notified whenever a form is submitted? Everest Forms supports Twilio SMS integration that  allows you to receive SMS notification easily whenever a form is submitted.
 
 
 **Create Different Form Types without Any Coding Skills**
@@ -324,7 +324,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 1.9.1 - 18-07-2022
+= 1.9.1 - 19-07-2022
 * Fix - Enhanced select issue in single select.
 * Dev - Yes/No field.
 * Dev - Row setting compatibility.
