@@ -366,8 +366,12 @@ class EVF_Field_Email extends EVF_Form_Fields {
 		$entry   = $form_data['entry'];
 		$visible = apply_filters( 'everest_forms_visible_fields', true, $form_data['form_fields'][ $field_id ], $entry, $form_data );
 
+		if ( false === $visible ) {
+			return;
+		}
+
 		// Required check.
-		if ( ! empty( $form_data['form_fields'][ $field_id ]['required'] ) && true === $visible ) {
+		if ( ! empty( $form_data['form_fields'][ $field_id ]['required'] ) ) {
 			$required = evf_get_required_label();
 
 			// Standard configuration, confirmation disabled.

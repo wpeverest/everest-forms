@@ -472,6 +472,10 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 		$entry        = $form_data['entry'];
 		$visible      = apply_filters( 'everest_forms_visible_fields', true, $form_data['form_fields'][ $field_id ], $entry, $form_data );
 
+		if ( false === $visible ) {
+			return;
+		}
+
 		// Generating the error.
 		if ( $choice_limit > 0 && $choice_limit < count( $field_submit ) ) {
 			$error = get_option( 'everest_forms_check_limit_validation', esc_html__( 'You have exceeded number of allowed selections: {#}.', 'everest-forms' ) );
@@ -479,7 +483,7 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 		}
 
 		// Basic required check.
-		if ( ! empty( $fields[ $field_id ]['required'] ) && true === $visible && ( empty( $field_submit ) || ( 1 === count( $field_submit ) && empty( $field_submit[0] ) ) ) ) {
+		if ( ! empty( $fields[ $field_id ]['required'] ) && ( empty( $field_submit ) || ( 1 === count( $field_submit ) && empty( $field_submit[0] ) ) ) ) {
 			$error = evf_get_required_label();
 		}
 

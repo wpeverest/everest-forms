@@ -2284,8 +2284,12 @@ abstract class EVF_Form_Fields {
 		$required_field = isset( $form_data['form_fields'][ $field_id ]['required'] ) ? $form_data['form_fields'][ $field_id ]['required'] : false;
 		$entry          = $form_data['entry'];
 		$visible        = apply_filters( 'everest_forms_visible_fields', true, $form_data['form_fields'][ $field_id ], $entry, $form_data );
+
+		if ( false === $visible ) {
+			return;
+		}
 		// Basic required check - If field is marked as required, check for entry data.
-		if ( false !== $required_field && true === $visible && ( empty( $field_submit ) && '0' !== $field_submit ) ) {
+		if ( false !== $required_field && ( empty( $field_submit ) && '0' !== $field_submit ) ) {
 			evf()->task->errors[ $form_data['id'] ][ $field_id ] = evf_get_required_label();
 			update_option( 'evf_validation_error', 'yes' );
 		}
