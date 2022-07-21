@@ -1488,6 +1488,8 @@
 								if( 'undefined' !== typeof xhr.data.html ) {
 									$( document ).find( '.everest-forms-row-option-group' ).append( xhr.data.html );
 									EVFPanelBuilder.conditionalLogicAppendRow( row_id );
+									// Disable conditional logc by default.
+									$( '#everest-forms-panel-field-form_rows-connection_row_' + row_id + '-conditional_logic_status' ).prop( 'checked', false );
 								}
 							}
 						}
