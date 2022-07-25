@@ -2386,7 +2386,7 @@
 		},
 		fieldDrop: function ( field ) {
 			var field_type = field.attr( 'data-field-type' );
-			var invalid_fields = ["file-upload", "payment-total", "image-upload", "signature"];
+			var invalid_fields = ["payment-total", "image-upload", "signature"];
 			if (
 				invalid_fields.includes(
 					field_type
