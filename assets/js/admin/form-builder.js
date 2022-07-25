@@ -19,9 +19,8 @@
 		 		}
 		 	});
 
-
 			$( document ).ready( function( $ ) {
-				 if( '1' === $( '.everest-forms-min-max-date-format input' ).val() ) {
+				if( '1' === $( '.everest-forms-min-max-date-format input' ).val() ) {
 					$('.everest-forms-min-date').addClass('flatpickr-field').flatpickr({
 						disableMobile : true,
 						onChange      : function(selectedDates, dateStr, instance) {
@@ -42,6 +41,9 @@
 						},
 					});
 				}
+				$( '.everest-forms-row-option select.evf-field-show-hide' ).each( function() {
+					$(this).find( '[selected="selected"]').prop( 'selected', true );
+				});
 			});
 
 
