@@ -225,6 +225,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 	switch ( $option ) {
 
 		// Text input.
+		case 'number':
 		case 'text':
 			$type   = ! empty( $args['type'] ) ? esc_attr( $args['type'] ) : 'text';
 			$output = sprintf(
@@ -348,6 +349,10 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 				return '';
 			}
 
+			if ( true === $is_multiple ) {
+				$value = ! empty( $value ) && is_string( $value ) ? json_decode( $value, true ) : array();
+			}
+
 			if ( ! empty( $args['field_map'] ) ) {
 				$options          = array();
 				$available_fields = evf_get_form_fields( $form_data, $args['field_map'] );
@@ -393,6 +398,70 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 				}
 			}
 			$output .= '</select>';
+			break;
+		// Toggle input.
+		case 'toggle':
+			$output = sprintf(
+				'<div class="evf-toggle-section"><span class="everest-forms-toggle-form"><input type="checkbox" id="everest-forms-panel-field-%s-%s" name="%s" value="yes" placeholder="%s" class="widefat %s" %s %s><span class="slider round"></span></span></div>',
+				sanitize_html_class( $panel_id ),
+				sanitize_html_class( $field ),
+				$field_name,
+				$placeholder,
+				$input_class,
+				$data_attr,
+				checked( 'yes', $value, false )
+			);
+			break;
+
+		// Radio image inputs.
+		case 'radio-image':
+			$options = $args['options'];
+			$x       = 1;
+			$output  = '';
+			foreach ( $options as $key => $item ) {
+				$checked = checked( $key, $value, false );
+				$output .= sprintf(
+					'<img src="%s"><span class="row"><input type="radio" id="everest-forms-panel-field-%s-%s-%d" name="%s" value="%s" class="widefat %s" %s %s>',
+					esc_html( $item['image'] ),
+					sanitize_html_class( $panel_id ),
+					sanitize_html_class( $field ),
+					$x,
+					$field_name,
+					$key,
+					$input_class,
+					$checked,
+					$data_attr
+				);
+				$output .= sprintf(
+					'<label for="everest-forms-panel-field-%s-%s-%d" class="inline">%s',
+					sanitize_html_class( $panel_id ),
+					sanitize_html_class( $field ),
+					$x,
+					$item['name']
+				);
+				if ( ! empty( $item['tooltip'] ) ) {
+					$output .= sprintf( ' <i class="dashicons dashicons-editor-help everest-forms-help-tooltip" title="%s"></i>', esc_attr( $item['tooltip'] ) );
+				}
+				$output .= '</label></span>';
+				$x ++;
+			}
+			break;
+		case 'image':
+			$output  = sprintf( '<img src="%s" alt="%s" class="evf-image-uploader %s" height="100" width="auto">', esc_attr( $value ), esc_attr__( 'Header Logo', 'everest-forms' ), ( empty( $value ) ? 'everest-forms-hidden' : '' ) );
+			$output .= sprintf( '<button type="button" class="evf-image-uploader evf-button button-secondary %s">%s</button>', ( empty( $value ) ? '' : 'everest-forms-hidden' ), esc_html__( 'Upload Logo', 'everest-forms' ) );
+			$output .= sprintf(
+				'<input type="hidden" id="everest-forms-panel-field-%s-%s" name="%s" value="%s" placeholder="%s" class="widefat %s" %s>',
+				sanitize_html_class( $panel_id ),
+				sanitize_html_class( $field ),
+				$field_name,
+				esc_attr( $value ),
+				$placeholder,
+				$input_class,
+				$data_attr
+			);
+			wp_enqueue_script( 'jquery' );
+			wp_enqueue_media();
+			wp_enqueue_script( 'evf-file-uploader' );
 			break;
 	}
 
