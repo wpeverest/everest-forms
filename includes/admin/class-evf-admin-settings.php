@@ -335,7 +335,12 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 							</th>
 							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
 							<img src="<?php echo esc_attr( $option_value ); ?>" alt="<?php echo esc_attr__( 'Header Logo', 'everest-forms' ); ?>" class="evf-image-uploader <?php echo empty( $option_value ) ? 'everest-forms-hidden' : ''; ?>" height="100" width="auto">
-							<button type="button" class="evf-image-uploader evf-button button-secondary" <?php echo empty( $option_value ) ? '' : 'style="display:none"'; ?> ><?php echo esc_html__( 'Upload Logo', 'everest-forms' ); ?></button>
+							<button type="button" class="evf-image-uploader evf-button button-secondary" <?php echo empty( $option_value ) ? '' : 'style="display:none"'; ?> >
+							<?php
+								$upload_text = 'everest_forms_pdf_background_image' === $value['id'] ? __( 'Upload Image', 'everest-forms' ) : __( 'Upload Logo', 'everest-forms' );
+								echo esc_html( $upload_text );
+							?>
+							</button>
 							<input
 								name="<?php echo esc_attr( $value['id'] ); ?>"
 								id="<?php echo esc_attr( $value['id'] ); ?>"
