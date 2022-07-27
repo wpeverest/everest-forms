@@ -349,8 +349,8 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 				return '';
 			}
 
-			if ( true === $is_multiple ) {
-				$value = ! empty( $value ) && is_string( $value ) ? json_decode( $value, true ) : array();
+			if ( true === $is_multiple && is_string( $value ) ) {
+				$value = ! empty( $value ) ? json_decode( $value, true ) : array();
 			}
 
 			if ( ! empty( $args['field_map'] ) ) {
