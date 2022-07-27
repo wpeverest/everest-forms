@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 1.9.2 - xx-xx-2022
+* Fix - Enhanced select issue in single select.
+
 = 1.9.1 - 19-07-2022
 * Fix - Enhanced select issue in single select.
 * Dev - Yes/No field.
