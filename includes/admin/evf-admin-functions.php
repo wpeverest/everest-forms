@@ -447,6 +447,13 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 			}
 			break;
 		case 'image':
+			if ( '' !== $value ) {
+				$headers = get_headers( $value, 1 );
+				if ( strpos( $headers['Content-Type'], 'image/' ) === false ) {
+					$value = '';
+				}
+			}
+
 			$output  = sprintf( '<img src="%s" alt="%s" class="evf-image-uploader %s" height="100" width="auto">', esc_attr( $value ), esc_attr__( 'Header Logo', 'everest-forms' ), ( empty( $value ) ? 'everest-forms-hidden' : '' ) );
 			$output .= sprintf( '<button type="button" class="evf-image-uploader evf-button button-secondary %s">%s</button>', ( empty( $value ) ? '' : 'everest-forms-hidden' ), esc_html__( 'Upload Logo', 'everest-forms' ) );
 			$output .= sprintf(
