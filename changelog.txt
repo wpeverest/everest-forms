@@ -1,7 +1,7 @@
 == Changelog ==
 
 = 1.9.2 - xx-xx-2022
-* Fix - Enhanced select issue in single select.
+* Fix - Flatpickr localization issue.
 
 = 1.9.1 - 19-07-2022
 * Fix - Enhanced select issue in single select.
