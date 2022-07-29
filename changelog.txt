@@ -1,6 +1,6 @@
 == Changelog ==
 
-= 1.9.2 - xx-xx-2022
+= 1.9.2 - 02-08-2022
 * Fix - Flatpickr localization issue.
 * Fix - Auto address selected value not rendering issue in style dropdown after change.
 * Fix - Required issue in multipart/row conditional.
