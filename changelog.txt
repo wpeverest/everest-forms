@@ -1,5 +1,12 @@
 == Changelog ==
 
+= 1.9.2 - xx-xx-2022
+* Fix - Flatpickr localization issue.
+* Fix - Auto address selected value not rendering issue in style dropdown after change.
+* Fix - Required issue in multipart/row conditional.
+* Dev - Replace Enable Google invisible reCAPTCHA v2 to Enable Google reCAPTCHA v2 for label showing wrong issue.
+* Dev - Background Image in PDF.
+
 = 1.9.1 - 19-07-2022
 * Fix - Enhanced select issue in single select.
 * Dev - Yes/No field.
