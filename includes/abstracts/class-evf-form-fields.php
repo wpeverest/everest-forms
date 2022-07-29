@@ -908,6 +908,7 @@ abstract class EVF_Form_Fields {
 			case 'address_style':
 				$default = ! empty( $args['default'] ) ? $args['default'] : 'none';
 				$tooltip = esc_html__( 'Select the style', 'everest-forms' );
+				$value   = ! empty( $field['address_style'] ) ? esc_attr( $field['address_style'] ) : '';
 				$output  = $this->field_element(
 					'label',
 					$field,
@@ -923,7 +924,7 @@ abstract class EVF_Form_Fields {
 					$field,
 					array(
 						'slug'    => 'address_style',
-						'value'   => esc_html__( 'style', 'everest-forms' ),
+						'value'   => $value,
 						'tooltip' => $tooltip,
 						'options' => array(
 							'address'          => esc_html__( 'Address', 'everest-forms' ),
