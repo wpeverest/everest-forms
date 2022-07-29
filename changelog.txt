@@ -6,7 +6,7 @@
 * Fix - Required issue in multipart/row conditional.
 * Dev - Replace Enable Google invisible reCAPTCHA v2 to Enable Google reCAPTCHA v2 for label showing wrong issue.
 * Dev - Background Image in PDF.
-* Dev - File/Image Uplodas supports for repeater.
+* Dev - File/Image Uploads supports for repeater.
 
 = 1.9.1 - 19-07-2022
 * Fix - Enhanced select issue in single select.
