@@ -207,6 +207,8 @@ class EVF_Form_Task {
 				}
 			}
 
+			$this->form_data['entry'] = $entry;
+
 			// Validate fields.
 			foreach ( $this->form_data['form_fields'] as $field ) {
 				$field_id        = $field['id'];
