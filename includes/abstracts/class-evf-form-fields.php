@@ -323,7 +323,7 @@ abstract class EVF_Form_Fields {
 					if ( true === $is_multiple && is_array( $value ) ) {
 						$selected_value = in_array( $key, $value, true ) ? 'selected="selected"' : '';
 					} else {
-						$selected_value = ( $value === $key ) ? 'selected="selected"' : '';
+						$selected_value = ( $value == $key ) ? 'selected="selected"' : '';
 					}
 					$output .= sprintf( '<option value="%s" %s>%s</option>', esc_attr( $key ), $selected_value, $option_value );
 				}
