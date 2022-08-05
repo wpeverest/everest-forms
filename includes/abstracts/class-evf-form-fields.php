@@ -547,13 +547,43 @@ abstract class EVF_Form_Fields {
 					$echo
 				);
 				break;
+
+			/*
+			 * Field Required toggle.
+			 */
+			case 'required_field_message_setting':
+				$default = ! empty( $args['default'] ) ? $args['default'] : 'global';
+				$value   = isset( $field['required_field_message_setting'] ) ? $field['required_field_message_setting'] : $default;
+				$output  = $this->field_element(
+					'radio',
+					$field,
+					array(
+						'slug'    => 'required_field_message_setting',
+						'default' => isset( $field['required-field-message'] ) ? 'individual' : $value,
+						'options' => array(
+							'global'     => esc_html__( 'Show required message from Global Setting', 'everest-forms' ),
+							'individual' => esc_html__( 'Custom Required message', 'everest-forms' ),
+						),
+					),
+					false
+				);
+				$output  = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'required_field_message_setting',
+						'class'   => isset( $field['required'] ) ? '' : 'hidden',
+						'content' => $output,
+					),
+					$echo
+				);
+				break;
 			/**
 			 * Required Field Message.
 			 */
 			case 'required_field_message':
-				$has_sub_fields = false;
-				$sub_fields     = array();
-
+				$has_sub_fields      = false;
+				$sub_fields          = array();
 				$required_validation = get_option( 'everest_forms_required_validation' );
 				if ( in_array( $field['type'], array( 'number', 'email', 'url', 'phone' ), true ) ) {
 					$required_validation = get_option( 'everest_forms_' . $field['type'] . '_validation' );
@@ -628,7 +658,7 @@ abstract class EVF_Form_Fields {
 				if ( true === $has_sub_fields ) {
 					$sub_field_output_array = array();
 					foreach ( $sub_fields as $sub_field_slug => $sub_field_data ) {
-						$value   = isset( $field['required-field-message'] ) ? esc_attr( $field['required-field-message'] ) : esc_attr( $required_validation );
+						$value   = isset( $field['required-field-message'] ) ? esc_attr( $field['required-field-message'] ) : '';
 						$tooltip = esc_html__( 'Enter a message to show for this field if it\'s required.', 'everest-forms' );
 						$output  = $this->field_element(
 							'label',
@@ -674,7 +704,7 @@ abstract class EVF_Form_Fields {
 						$echo
 					);
 				} else {
-					$value   = isset( $field['required-field-message'] ) ? esc_attr( $field['required-field-message'] ) : esc_attr( $required_validation );
+					$value   = isset( $field['required-field-message'] ) ? esc_attr( $field['required-field-message'] ) : '';
 					$tooltip = esc_html__( 'Enter a message to show for this field if it\'s required.', 'everest-forms' );
 
 					$output  = $this->field_element(
@@ -702,7 +732,7 @@ abstract class EVF_Form_Fields {
 						$field,
 						array(
 							'slug'    => 'required-field-message',
-							'class'   => isset( $field['required'] ) ? '' : 'hidden',
+							'class'   => isset( $field['required_field_message_setting'] ) && 'individual' === $field['required_field_message_setting'] || $field['required-field-message'] ? '' : 'hidden',
 							'content' => $output,
 						),
 						$echo
