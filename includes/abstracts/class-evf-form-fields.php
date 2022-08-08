@@ -597,7 +597,7 @@ abstract class EVF_Form_Fields {
 				if ( in_array( $field['type'], array( 'number', 'email', 'url', 'phone' ), true ) ) {
 					$required_validation = get_option( 'everest_forms_' . $field['type'] . '_validation' );
 				}
-
+				error_log( print_r( $field['required_field_message_setting'], true ) );
 				if ( 'likert' === $field['type'] ) {
 					$has_sub_fields = true;
 					$likert_rows    = isset( $field['likert_rows'] ) ? $field['likert_rows'] : array();
@@ -741,7 +741,7 @@ abstract class EVF_Form_Fields {
 						$field,
 						array(
 							'slug'    => 'required-field-message',
-							'class'   => isset( $field['required_field_message_setting'] ) && 'individual' === $field['required_field_message_setting'] || isset( $field['required'] ) && ! empty( $field['required-field-message'] ) && ! isset( $field['required_field_message_setting'] ) ? '' : 'hidden',
+							'class'   => isset( $field['required_field_message_setting'] ) && 'individual' === $field['required_field_message_setting'] ? '' : 'hidden',
 							'content' => $output,
 						),
 						$echo
