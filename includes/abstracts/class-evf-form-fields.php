@@ -599,17 +599,17 @@ abstract class EVF_Form_Fields {
 				if ( in_array( $field['type'], array( 'number', 'email', 'url', 'phone' ), true ) ) {
 					$required_validation = get_option( 'everest_forms_' . $field['type'] . '_validation' );
 				}
-				$hidden = true;
+				$hidden = false;
 				if ( isset( $field['required_field_message_setting'] ) ) {
 					if ( 'global' === $field['required_field_message_setting'] ) {
-						$hidden = false;
-					} elseif ( 'individual' === $field['required_field_message_setting'] ) {
 						$hidden = true;
+					} elseif ( 'individual' === $field['required_field_message_setting'] ) {
+						$hidden = false;
 					}
 				} elseif ( ! empty( $field['required-field-message'] ) ) {
-					$hidden = true;
-				} else {
 					$hidden = false;
+				} else {
+					$hidden = true;
 				}
 
 				if ( 'likert' === $field['type'] ) {
@@ -721,7 +721,7 @@ abstract class EVF_Form_Fields {
 						$field,
 						array(
 							'slug'    => 'required-field-message',
-							'class'   => isset( $field['required_field_message_setting'] ) && 'individual' === $field['required_field_message_setting'] || isset( $field['required'] ) && ! empty( $field['required-field-message'] ) ? '' : 'hidden',
+							'class'   => false === $hidden ? '' : 'hidden',
 							'content' => $output,
 						),
 						$echo
@@ -755,7 +755,7 @@ abstract class EVF_Form_Fields {
 						$field,
 						array(
 							'slug'    => 'required-field-message',
-							'class'   => true === $hidden ? '' : 'hidden',
+							'class'   => false === $hidden ? '' : 'hidden',
 							'content' => $output,
 						),
 						$echo
