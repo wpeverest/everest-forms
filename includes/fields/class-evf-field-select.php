@@ -46,6 +46,9 @@ class EVF_Field_Select extends EVF_Form_Fields {
 					'meta',
 					'choices',
 					'enhanced_select',
+					'enable_search',
+					'enable_select_all',
+					'enable_checkbox',
 					'description',
 					'required',
 					'required_field_message',
@@ -174,7 +177,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 	public function enhanced_select( $field ) {
 		$plan    = evf_get_license_plan();
 		$value   = isset( $field['enhanced_select'] ) && false !== $plan ? $field['enhanced_select'] : '0';
-		$tooltip = esc_html__( 'Check this option to enable enhanced select. It enables you to search items in the dropdown field.', 'everest-forms' );
+		$tooltip = esc_html__( 'Check this option to enable enhanced select.', 'everest-forms' );
 
 		// Enable enhanced select toggle field.
 		$enhanced_select = $this->field_element(
@@ -198,6 +201,117 @@ class EVF_Field_Select extends EVF_Form_Fields {
 				'class'   => ( false === $plan ) ? 'upgrade-modal' : '',
 				'data'    => array(
 					'feature' => esc_html__( 'Enhanced select', 'everest-forms' ),
+				),
+			)
+		);
+	}
+
+	/**
+	 * Enable search field option.
+	 *
+	 * @param array $field Field Data.
+	 */
+	public function enable_search( $field ) {
+		$plan    = evf_get_license_plan();
+		$value   = isset( $field['enable_search'] ) && false !== $plan ? $field['enable_search'] : '0';
+		$tooltip = esc_html__( 'Check this option to enable search items in the dropdown field.', 'everest-forms' );
+
+		// Enable enhanced search toggle field.
+		$enable_search = $this->field_element(
+			'checkbox',
+			$field,
+			array(
+				'slug'    => 'enable_search',
+				'value'   => $value,
+				'class'   => ( false === $plan ) ? 'disabled' : '',
+				'desc'    => esc_html__( 'Enable Search', 'everest-forms' ),
+				'tooltip' => $tooltip,
+			),
+			false
+		);
+		$this->field_element(
+			'row',
+			$field,
+			array(
+				'slug'    => 'enable_search',
+				'content' => $enable_search,
+				'class'   => ( false === $plan ) ? 'upgrade-modal' : '',
+				'data'    => array(
+					'feature' => esc_html__( 'Enable Search in Enhanced Select', 'everest-forms' ),
+				),
+			)
+		);
+	}
+
+	/**
+	 * Enable select_all field option.
+	 *
+	 * @param array $field Field Data.
+	 */
+	public function enable_select_all( $field ) {
+		$plan    = evf_get_license_plan();
+		$value   = isset( $field['enable_select_all'] ) && false !== $plan ? $field['enable_select_all'] : '0';
+		$tooltip = esc_html__( 'Check this option to enable select all items in the dropdown field.', 'everest-forms' );
+
+		// Enable enhanced select_all toggle field.
+		$enable_select_all = $this->field_element(
+			'checkbox',
+			$field,
+			array(
+				'slug'    => 'enable_select_all',
+				'value'   => $value,
+				'class'   => ( false === $plan ) ? 'disabled' : '',
+				'desc'    => esc_html__( 'Enable Select All', 'everest-forms' ),
+				'tooltip' => $tooltip,
+			),
+			false
+		);
+		$this->field_element(
+			'row',
+			$field,
+			array(
+				'slug'    => 'enable_select_all',
+				'content' => $enable_select_all,
+				'class'   => ( false === $plan ) ? 'upgrade-modal' : '',
+				'data'    => array(
+					'feature' => esc_html__( 'Enable Select All in Enhanced Select', 'everest-forms' ),
+				),
+			)
+		);
+	}
+
+	/**
+	 * Enable checkbox field option.
+	 *
+	 * @param array $field Field Data.
+	 */
+	public function enable_checkbox( $field ) {
+		$plan    = evf_get_license_plan();
+		$value   = isset( $field['enable_checkbox'] ) && false !== $plan ? $field['enable_checkbox'] : '0';
+		$tooltip = esc_html__( 'Check this option to enable checkbox in the dropdown field.', 'everest-forms' );
+
+		// Enable enhanced checkbox toggle field.
+		$enable_checkbox = $this->field_element(
+			'checkbox',
+			$field,
+			array(
+				'slug'    => 'enable_checkbox',
+				'value'   => $value,
+				'class'   => ( false === $plan ) ? 'disabled' : '',
+				'desc'    => esc_html__( 'Enable Checkbox', 'everest-forms' ),
+				'tooltip' => $tooltip,
+			),
+			false
+		);
+		$this->field_element(
+			'row',
+			$field,
+			array(
+				'slug'    => 'enable_checkbox',
+				'content' => $enable_checkbox,
+				'class'   => ( false === $plan ) ? 'upgrade-modal' : '',
+				'data'    => array(
+					'feature' => esc_html__( 'Enable Checkbox in Enhanced Select', 'everest-forms' ),
 				),
 			)
 		);
@@ -248,7 +362,10 @@ class EVF_Field_Select extends EVF_Form_Fields {
 		$plan              = evf_get_license_plan();
 		$has_default       = false;
 		$is_multiple       = false;
-		$select_all        = isset( $field['select_all'] ) ? $field['select_all'] : '0';
+		$enable_select_all = isset( $field['enable_select_all'] ) ? $field['enable_select_all'] : '0';
+		$enhanced_select   = isset( $field['enhanced_select'] ) ? $field['enhanced_select'] : '0';
+		$enable_search     = isset( $field['enable_search'] ) ? $field['enable_search'] : '0';
+		$enable_checkbox   = isset( $field['enable_checkbox'] ) ? $field['enable_checkbox'] : '0';
 
 		if ( ! empty( $field['required'] ) ) {
 			$container['attr']['required'] = 'required';
@@ -256,7 +373,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 
 		// Enable enhanced select.
 		if ( false !== $plan && ! empty( $field['enhanced_select'] ) && '1' === $field['enhanced_select'] ) {
-			$container['class'][] = 'evf-enhanced-select';
+			// $container['class'][] = 'evf-enhanced-select';
 
 			if ( empty( $field_placeholder ) ) {
 				$first_choices     = reset( $choices );
@@ -295,10 +412,20 @@ class EVF_Field_Select extends EVF_Form_Fields {
 			}
 		}
 
-		// Select All checkbox.
-		if ( '1' === $select_all ) {
+		// Enhanced multi-select options.
+		if ( $is_multiple && '1' === $enhanced_select ) {
+			$container['class'][] = 'evf-enhanced-multi-select2';
+
 			if ( isset( $container['attr']['multiple'] ) && 'multiple' === $container['attr']['multiple'] ) {
-				$container['attr']['select_all_unselect_all'] = 'true';
+				if ( '1' === $enable_select_all ) {
+					$container['attr']['enable_select_all'] = 'true';
+				}
+				if ( '1' === $enable_search ) {
+					$container['attr']['enable_search'] = 'true';
+				}
+				if ( '1' === $enable_checkbox ) {
+					$container['attr']['enable_checkbox'] = 'true';
+				}
 			}
 		}
 
