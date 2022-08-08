@@ -559,6 +559,8 @@ abstract class EVF_Form_Fields {
 					} elseif ( 'individual' === $field['required_field_message_setting'] ) {
 						$value = $field['required_field_message_setting'];
 					}
+				} elseif ( ! empty( $field['required-field-message'] ) ) {
+					$value = 'individual';
 				} else {
 					$value = $default;
 				}
@@ -597,7 +599,19 @@ abstract class EVF_Form_Fields {
 				if ( in_array( $field['type'], array( 'number', 'email', 'url', 'phone' ), true ) ) {
 					$required_validation = get_option( 'everest_forms_' . $field['type'] . '_validation' );
 				}
-				error_log( print_r( $field['required_field_message_setting'], true ) );
+				$hidden = true;
+				if ( isset( $field['required_field_message_setting'] ) ) {
+					if ( 'global' === $field['required_field_message_setting'] ) {
+						$hidden = false;
+					} elseif ( 'individual' === $field['required_field_message_setting'] ) {
+						$hidden = true;
+					}
+				} elseif ( ! empty( $field['required-field-message'] ) ) {
+					$hidden = true;
+				} else {
+					$hidden = false;
+				}
+
 				if ( 'likert' === $field['type'] ) {
 					$has_sub_fields = true;
 					$likert_rows    = isset( $field['likert_rows'] ) ? $field['likert_rows'] : array();
@@ -707,7 +721,7 @@ abstract class EVF_Form_Fields {
 						$field,
 						array(
 							'slug'    => 'required-field-message',
-							'class'   => isset( $field['required_field_message_setting'] ) && 'individual' === $field['required_field_message_setting'] ? '' : 'hidden',
+							'class'   => isset( $field['required_field_message_setting'] ) && 'individual' === $field['required_field_message_setting'] || isset( $field['required'] ) && ! empty( $field['required-field-message'] ) ? '' : 'hidden',
 							'content' => $output,
 						),
 						$echo
@@ -741,7 +755,7 @@ abstract class EVF_Form_Fields {
 						$field,
 						array(
 							'slug'    => 'required-field-message',
-							'class'   => isset( $field['required_field_message_setting'] ) && 'individual' === $field['required_field_message_setting'] ? '' : 'hidden',
+							'class'   => true === $hidden ? '' : 'hidden',
 							'content' => $output,
 						),
 						$echo
