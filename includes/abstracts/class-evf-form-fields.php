@@ -2276,13 +2276,14 @@ abstract class EVF_Form_Fields {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $field_id Field Id.
-	 * @param array  $field_submit Submitted Data.
-	 * @param array  $form_data All Form Data.
+	 * @param string       $field_id Field Id.
+	 * @param string|array $field_submit Submitted Data.
+	 * @param array        $form_data All Form Data.
 	 */
 	public function validate( $field_id, $field_submit, $form_data ) {
 		$field_type     = isset( $form_data['form_fields'][ $field_id ]['type'] ) ? $form_data['form_fields'][ $field_id ]['type'] : '';
 		$required_field = isset( $form_data['form_fields'][ $field_id ]['required'] ) ? $form_data['form_fields'][ $field_id ]['required'] : false;
+		$field          = isset( $form_data['form_fields'][ $field_id ] ) ? $form_data['form_fields'][ $field_id ] : '';
 		$entry          = $form_data['entry'];
 		$visible        = apply_filters( 'everest_forms_visible_fields', true, $form_data['form_fields'][ $field_id ], $entry, $form_data );
 
@@ -2315,6 +2316,33 @@ abstract class EVF_Form_Fields {
 			case 'number':
 				if ( ! empty( $_POST['everest_forms']['form_fields'][ $field_id ] ) && ! is_numeric( $field_submit ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 					$validation_text = get_option( 'evf_' . $field_type . '_validation', esc_html__( 'Please enter a valid number', 'everest-forms' ) );
+				}
+				break;
+			case 'textarea':
+			case 'text':
+				if ( ! empty( $_POST['everest_forms']['form_fields'][ $field_id ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+
+					// Limit Length.
+					if ( isset( $field['limit_enabled'], $field['limit_mode'], $field['limit_count'] ) && '1' === $field['limit_enabled'] && in_array( $field['limit_mode'], array( 'characters', 'words' ), true ) && ! empty( $field['limit_count'] ) ) {
+						if ( 'words' === $field['limit_mode'] && $field['limit_count'] < str_word_count( $field_submit ) ) {
+							/* translators: %s Number of max words. */
+							$validation_text = sprintf( esc_html__( 'This field contains at most %s words', 'everest-forms' ), $field['limit_count'] );
+						} elseif ( 'characters' === $field['limit_mode'] && $field['limit_count'] < strlen( $field_submit ) ) {
+							/* translators: %s Number of max characters. */
+							$validation_text = sprintf( esc_html__( 'This field contains at most %s characters', 'everest-forms' ), $field['limit_count'] );
+						}
+					}
+
+					// Min Length.
+					if ( isset( $field['min_length_enabled'], $field['min_length_mode'], $field['min_length_count'] ) && '1' === $field['min_length_enabled'] && in_array( $field['min_length_mode'], array( 'characters', 'words' ), true ) && ! empty( $field['min_length_count'] ) ) {
+						if ( 'words' === $field['min_length_mode'] && $field['min_length_count'] > str_word_count( $field_submit ) ) {
+							/* translators: %s Number of max words. */
+							$validation_text = sprintf( esc_html__( 'This field contains at least %s words', 'everest-forms' ), $field['min_length_count'] );
+						} elseif ( 'characters' === $field['min_length_mode'] && $field['min_length_count'] > strlen( $field_submit ) ) {
+							/* translators: %s Number of max characters. */
+							$validation_text = sprintf( esc_html__( 'This field contains at least %s characters', 'everest-forms' ), $field['min_length_count'] );
+						}
+					}
 				}
 				break;
 		}
