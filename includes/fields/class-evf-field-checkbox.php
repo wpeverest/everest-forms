@@ -466,12 +466,13 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 	 * @param array $form_data    Form data.
 	 */
 	public function validate( $field_id, $field_submit, $form_data ) {
-		$field_submit = (array) $field_submit;
-		$form_id      = $form_data['id'];
-		$fields       = $form_data['form_fields'];
-		$choice_limit = empty( $fields[ $field_id ]['choice_limit'] ) ? 0 : (int) $fields[ $field_id ]['choice_limit'];
-		$entry        = $form_data['entry'];
-		$visible      = apply_filters( 'everest_forms_visible_fields', true, $form_data['form_fields'][ $field_id ], $entry, $form_data );
+		$field_submit     = (array) $field_submit;
+		$form_id          = $form_data['id'];
+		$fields           = $form_data['form_fields'];
+		$choice_limit     = empty( $fields[ $field_id ]['choice_limit'] ) ? 0 : (int) $fields[ $field_id ]['choice_limit'];
+		$entry            = $form_data['entry'];
+		$visible          = apply_filters( 'everest_forms_visible_fields', true, $form_data['form_fields'][ $field_id ], $entry, $form_data );
+		$required_message = isset( $form_data['form_fields'][ $field_id ]['required-field-message'] ) ? $form_data['form_fields'][ $field_id ]['required-field-message'] : '';
 
 		if ( false === $visible ) {
 			return;
@@ -485,7 +486,7 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 
 		// Basic required check.
 		if ( ! empty( $fields[ $field_id ]['required'] ) && ( empty( $field_submit ) || ( 1 === count( $field_submit ) && empty( $field_submit[0] ) ) ) ) {
-			$error = evf_get_required_label();
+			$error = $required_message;
 		}
 
 		if ( ! empty( $error ) ) {

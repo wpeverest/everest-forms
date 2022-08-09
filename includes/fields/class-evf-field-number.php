@@ -275,19 +275,19 @@ class EVF_Field_Number extends EVF_Form_Fields {
 	 * @param array  $form_data All Form Data.
 	 */
 	public function validate( $field_id, $field_submit, $form_data ) {
-		$form_id   = absint( $form_data['id'] );
-		$min_value = isset( $form_data['form_fields'][ $field_id ]['min_value'] ) ? floatval( $form_data['form_fields'][ $field_id ]['min_value'] ) : 0;
-		$max_value = isset( $form_data['form_fields'][ $field_id ]['max_value'] ) ? floatval( $form_data['form_fields'][ $field_id ]['max_value'] ) : 0;
-		$entry     = $form_data['entry'];
-		$visible   = apply_filters( 'everest_forms_visible_fields', true, $form_data['form_fields'][ $field_id ], $entry, $form_data );
-
+		$form_id          = absint( $form_data['id'] );
+		$min_value        = isset( $form_data['form_fields'][ $field_id ]['min_value'] ) ? floatval( $form_data['form_fields'][ $field_id ]['min_value'] ) : 0;
+		$max_value        = isset( $form_data['form_fields'][ $field_id ]['max_value'] ) ? floatval( $form_data['form_fields'][ $field_id ]['max_value'] ) : 0;
+		$entry            = $form_data['entry'];
+		$visible          = apply_filters( 'everest_forms_visible_fields', true, $form_data['form_fields'][ $field_id ], $entry, $form_data );
+		$required_message = isset( $form_data['form_fields'][ $field_id ]['required-field-message'] ) ? $form_data['form_fields'][ $field_id ]['required-field-message'] : '';
 		if ( false === $visible ) {
 			return;
 		}
 
 		// Basic required check - If field is marked as required, check for entry data.
 		if ( ! empty( $form_data['form_fields'][ $field_id ]['required'] ) && empty( $field_submit ) && '0' !== $field_submit ) {
-			evf()->task->errors[ $form_id ][ $field_id ] = evf_get_required_label();
+			evf()->task->errors[ $form_id ][ $field_id ] = $required_message;
 			update_option( 'evf_validation_error', 'yes' );
 		}
 

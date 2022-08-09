@@ -363,17 +363,17 @@ class EVF_Field_Email extends EVF_Form_Fields {
 	 * @param array $form_data    Form data.
 	 */
 	public function validate( $field_id, $field_submit, $form_data ) {
-		$form_id = (int) $form_data['id'];
-		$entry   = $form_data['entry'];
-		$visible = apply_filters( 'everest_forms_visible_fields', true, $form_data['form_fields'][ $field_id ], $entry, $form_data );
-
+		$form_id          = (int) $form_data['id'];
+		$entry            = $form_data['entry'];
+		$visible          = apply_filters( 'everest_forms_visible_fields', true, $form_data['form_fields'][ $field_id ], $entry, $form_data );
+		$required_message = isset( $form_data['form_fields'][ $field_id ]['required-field-message'] ) ? $form_data['form_fields'][ $field_id ]['required-field-message'] : '';
 		if ( false === $visible ) {
 			return;
 		}
 
 		// Required check.
 		if ( ! empty( $form_data['form_fields'][ $field_id ]['required'] ) ) {
-			$required = evf_get_required_label();
+			$required = $required_message;
 
 			// Standard configuration, confirmation disabled.
 			if ( empty( $form_data['form_fields'][ $field_id ]['confirmation'] ) ) {
