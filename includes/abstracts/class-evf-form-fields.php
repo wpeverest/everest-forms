@@ -599,17 +599,15 @@ abstract class EVF_Form_Fields {
 				if ( in_array( $field['type'], array( 'number', 'email', 'url', 'phone' ), true ) ) {
 					$required_validation = get_option( 'everest_forms_' . $field['type'] . '_validation' );
 				}
-				$hidden = false;
-				if ( isset( $field['required_field_message_setting'] ) ) {
+				$hidden = true;
+				if ( isset( $field['required_field_message_setting'], $field['required'] ) ) {
 					if ( 'global' === $field['required_field_message_setting'] ) {
 						$hidden = true;
 					} elseif ( 'individual' === $field['required_field_message_setting'] ) {
 						$hidden = false;
 					}
-				} elseif ( ! empty( $field['required-field-message'] ) ) {
+				} elseif ( ! empty( $field['required-field-message'] ) && isset( $field['required'] ) ) {
 					$hidden = false;
-				} else {
-					$hidden = true;
 				}
 
 				if ( 'likert' === $field['type'] ) {
