@@ -221,6 +221,17 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 		}
 	}
 
+	// Check for the custom attributes.
+	$custom_attributes = '';
+	if ( ! empty( $args['custom_attributes'] ) ) {
+		foreach ( $args['custom_attributes'] as $attribute => $attribute_value ) {
+			if ( is_array( $attribute_value ) ) {
+				$attribute_value = wp_json_encode( $attribute_value );
+			}
+			$custom_attributes .= ' ' . $attribute . '=\'' . $attribute_value . '\'';
+		}
+	}
+
 	// Determine what field type to output.
 	switch ( $option ) {
 
@@ -229,7 +240,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 		case 'text':
 			$type   = ! empty( $args['type'] ) ? esc_attr( $args['type'] ) : 'text';
 			$output = sprintf(
-				'<input type="%s" id="everest-forms-panel-field-%s-%s" name="%s" value="%s" placeholder="%s" class="widefat %s" %s>',
+				'<input type="%s" id="everest-forms-panel-field-%s-%s" name="%s" value="%s" placeholder="%s" class="widefat %s" %s %s>',
 				$type,
 				sanitize_html_class( $panel_id ),
 				sanitize_html_class( $field ),
@@ -237,7 +248,8 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 				esc_attr( $value ),
 				$placeholder,
 				$input_class,
-				$data_attr
+				$data_attr,
+				$custom_attributes
 			);
 			break;
 
