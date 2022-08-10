@@ -362,7 +362,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 		$plan              = evf_get_license_plan();
 		$has_default       = false;
 		$is_multiple       = false;
-		$enable_select_all = isset( $field['enable_select_all'] ) ? $field['enable_select_all'] : '0';
+		$enable_select_all = isset( $field['select_all'] ) ? $field['select_all'] : '0';
 		$enhanced_select   = isset( $field['enhanced_select'] ) ? $field['enhanced_select'] : '0';
 		$enable_search     = isset( $field['enable_search'] ) ? $field['enable_search'] : '0';
 		$enable_checkbox   = isset( $field['enable_checkbox'] ) ? $field['enable_checkbox'] : '0';
@@ -414,17 +414,17 @@ class EVF_Field_Select extends EVF_Form_Fields {
 
 		// Enhanced multi-select options.
 		if ( $is_multiple && '1' === $enhanced_select ) {
-			$container['class'][] = 'evf-enhanced-multi-select2';
+			$container['class'][] = 'evf-enhanced-select2';
 
 			if ( isset( $container['attr']['multiple'] ) && 'multiple' === $container['attr']['multiple'] ) {
 				if ( '1' === $enable_select_all ) {
-					$container['attr']['enable_select_all'] = 'true';
+					$container['attr']['enable_select_all'] = $enable_select_all;
 				}
 				if ( '1' === $enable_search ) {
-					$container['attr']['enable_search'] = 'true';
+					$container['attr']['enable_search'] = $enable_search;
 				}
 				if ( '1' === $enable_checkbox ) {
-					$container['attr']['enable_checkbox'] = 'true';
+					$container['attr']['enable_checkbox'] = $enable_checkbox;
 				}
 			}
 		}
