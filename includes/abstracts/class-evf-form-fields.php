@@ -1708,7 +1708,7 @@ abstract class EVF_Form_Fields {
 						'slug'    => 'select_all',
 						'value'   => $value,
 						'class'   => 'evf-select-all-chk',
-						'desc'    => esc_html__( 'Select All', 'everest-forms' ),
+						'desc'    => esc_html__( 'Enable Select All', 'everest-forms' ),
 						'tooltip' => esc_html__( 'Check this option to select all the options.', 'everest-forms' ),
 					),
 					false
@@ -1723,7 +1723,6 @@ abstract class EVF_Form_Fields {
 					$echo
 				);
 				break;
-
 
 			/*
 			 * Default.
