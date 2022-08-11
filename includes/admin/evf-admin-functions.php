@@ -531,6 +531,9 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 		}
 
 		$field_label .= '</label>';
+		if ( ! empty( $args['after_label'] ) ) {
+			$field_label .= $args['after_label'];
+		}
 	} else {
 		$field_label = '';
 		$smart_tag   = '';
