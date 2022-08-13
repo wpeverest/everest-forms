@@ -357,9 +357,14 @@ class EVF_AJAX {
 				array( 'source' => 'form-save' )
 			);
 			wp_send_json_success(
-				array(
-					'form_name'    => esc_html( $data['settings']['form_title'] ),
-					'redirect_url' => admin_url( 'admin.php?page=evf-builder' ),
+				apply_filters(
+					'everest_forms_save_form_data',
+					array(
+						'form_name'    => esc_html( $data['settings']['form_title'] ),
+						'redirect_url' => admin_url( 'admin.php?page=evf-builder' ),
+					),
+					$form_id,
+					$data
 				)
 			);
 		}

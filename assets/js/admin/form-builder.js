@@ -1966,6 +1966,9 @@
 						$this.removeClass( 'processing' );
 						$this.find( '.loading-dot' ).remove();
 
+						//Response data of ajax.
+						$(document).trigger('everest_forms_save_data',response.data);
+
 						if ( ! response.success ) {
 							$.alert({
 								title: response.data.errorTitle,
