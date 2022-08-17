@@ -473,9 +473,10 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 					$value = '';
 				}
 			}
-
-			$output  = sprintf( '<img src="%s" alt="%s" class="evf-image-uploader %s" height="100" width="auto">', esc_attr( $value ), esc_attr__( 'Header Logo', 'everest-forms' ), ( empty( $value ) ? 'everest-forms-hidden' : '' ) );
-			$output .= sprintf( '<button type="button" class="evf-image-uploader evf-button button-secondary %s">%s</button>', ( empty( $value ) ? '' : 'everest-forms-hidden' ), esc_html__( 'Upload Logo', 'everest-forms' ) );
+			$alt =  isset($args['image']['alt']) ? $args['image']['alt'] : 'Unknown';
+			$button_text =  isset($args['image']['button-text']) ? $args['image']['button-text'] : 'Upload Image';
+			$output  = sprintf( '<img src="%s" alt="%s" class="evf-image-uploader %s" height="100" width="auto">', esc_attr( $value ), esc_attr__( $alt, 'everest-forms' ), ( empty( $value ) ? 'everest-forms-hidden' : '' ) );
+			$output .= sprintf( '<button type="button" class="evf-image-uploader evf-button button-secondary %s">%s</button>', ( empty( $value ) ? '' : 'everest-forms-hidden' ), esc_html__( $button_text, 'everest-forms' ) );
 			$output .= sprintf(
 				'<input type="hidden" id="everest-forms-panel-field-%s-%s" name="%s" value="%s" placeholder="%s" class="widefat %s" %s>',
 				sanitize_html_class( $panel_id ),
