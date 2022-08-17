@@ -441,7 +441,17 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 			foreach ( $options as $key => $item ) {
 				$checked = checked( $key, $value, false );
 				$output .= sprintf(
-					'<img src="%s"><span class="row"><input type="radio" id="everest-forms-panel-field-%s-%s-%d" name="%s" value="%s" class="widefat %s" %s %s>',
+					'<label for="everest-forms-panel-field-%s-%s-%d" class="inline">%s',
+					sanitize_html_class( $panel_id ),
+					sanitize_html_class( $field ),
+					$x,
+					$item['name']
+				);
+				if ( ! empty( $item['tooltip'] ) ) {
+					$output .= sprintf( ' <i class="dashicons dashicons-editor-help everest-forms-help-tooltip" title="%s"></i>', esc_attr( $item['tooltip'] ) );
+				}
+				$output .= sprintf(
+					'<img src="%s"><input type="radio" id="everest-forms-panel-field-%s-%s-%d" name="%s" value="%s" class="widefat %s" %s %s>',
 					esc_html( $item['image'] ),
 					sanitize_html_class( $panel_id ),
 					sanitize_html_class( $field ),
@@ -452,17 +462,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 					$checked,
 					$data_attr
 				);
-				$output .= sprintf(
-					'<label for="everest-forms-panel-field-%s-%s-%d" class="inline">%s',
-					sanitize_html_class( $panel_id ),
-					sanitize_html_class( $field ),
-					$x,
-					$item['name']
-				);
-				if ( ! empty( $item['tooltip'] ) ) {
-					$output .= sprintf( ' <i class="dashicons dashicons-editor-help everest-forms-help-tooltip" title="%s"></i>', esc_attr( $item['tooltip'] ) );
-				}
-				$output .= '</label></span>';
+				$output .= '</label>';
 				$x ++;
 			}
 			break;
