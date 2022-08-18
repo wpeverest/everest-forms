@@ -452,7 +452,6 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 				}
 				$output .= sprintf(
 					'<input type="radio" id="everest-forms-panel-field-%s-%s-%d" name="%s" value="%s" class="widefat %s" %s %s><img src="%s">',
-					esc_html( $item['image'] ),
 					sanitize_html_class( $panel_id ),
 					sanitize_html_class( $field ),
 					$x,
@@ -460,7 +459,8 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 					$key,
 					$input_class,
 					$checked,
-					$data_attr
+					$data_attr,
+					esc_html( $item['image'] )
 				);
 				$output .= '</label>';
 				$x ++;
