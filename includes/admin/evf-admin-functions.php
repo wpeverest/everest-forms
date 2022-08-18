@@ -414,7 +414,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 		// Toggle input.
 		case 'toggle':
 			$checked = checked( 'yes', $value, false );
-			$output = sprintf(
+			$output  = sprintf(
 				'<div class="evf-toggle-section"><span class="everest-forms-toggle-form"><input type="hidden" name="%s" value="no" class="widefat %s" %s %s>',
 				$field_name,
 				$input_class,
@@ -451,7 +451,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 					$output .= sprintf( ' <i class="dashicons dashicons-editor-help everest-forms-help-tooltip" title="%s"></i>', esc_attr( $item['tooltip'] ) );
 				}
 				$output .= sprintf(
-					'<img src="%s"><input type="radio" id="everest-forms-panel-field-%s-%s-%d" name="%s" value="%s" class="widefat %s" %s %s>',
+					'<input type="radio" id="everest-forms-panel-field-%s-%s-%d" name="%s" value="%s" class="widefat %s" %s %s><img src="%s">',
 					esc_html( $item['image'] ),
 					sanitize_html_class( $panel_id ),
 					sanitize_html_class( $field ),
@@ -474,11 +474,11 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 					$value = '';
 				}
 			}
-			$alt =  isset($args['image']['alt']) ? $args['image']['alt'] : 'Unknown';
-			$button_text =  isset($args['image']['button-text']) ? $args['image']['button-text'] : 'Upload Image';
-			$output  = sprintf( '<img src="%s" alt="%s" class="evf-image-uploader %s" height="100" width="auto">', esc_attr( $value ), esc_attr__( $alt, 'everest-forms' ), ( empty( $value ) ? 'everest-forms-hidden' : '' ) );
-			$output .= sprintf( '<button type="button" class="evf-image-uploader evf-button button-secondary %s">%s</button>', ( empty( $value ) ? '' : 'everest-forms-hidden' ), esc_html__( $button_text, 'everest-forms' ) );
-			$output .= sprintf(
+			$alt         = isset( $args['image']['alt'] ) ? $args['image']['alt'] : 'Unknown';
+			$button_text = isset( $args['image']['button-text'] ) ? $args['image']['button-text'] : 'Upload Image';
+			$output      = sprintf( '<img src="%s" alt="%s" class="evf-image-uploader %s" height="100" width="auto">', esc_attr( $value ), esc_attr__( $alt, 'everest-forms' ), ( empty( $value ) ? 'everest-forms-hidden' : '' ) );
+			$output     .= sprintf( '<button type="button" class="evf-image-uploader evf-button button-secondary %s">%s</button>', ( empty( $value ) ? '' : 'everest-forms-hidden' ), esc_html__( $button_text, 'everest-forms' ) );
+			$output     .= sprintf(
 				'<input type="hidden" id="everest-forms-panel-field-%s-%s" name="%s" value="%s" placeholder="%s" class="widefat %s" %s>',
 				sanitize_html_class( $panel_id ),
 				sanitize_html_class( $field ),
