@@ -437,7 +437,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 		case 'radio-image':
 			$options = $args['options'];
 			$x       = 1;
-			$output  = '';
+			$output  = '<div class="everest-forms-layout">';
 			foreach ( $options as $key => $item ) {
 				$checked = checked( $key, $value, false );
 				$output .= sprintf(
@@ -465,6 +465,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 				$output .= '</label>';
 				$x ++;
 			}
+			$output .= '</div>';
 			break;
 		case 'image':
 			if ( '' !== $value ) {
