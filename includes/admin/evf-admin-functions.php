@@ -476,10 +476,12 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 			$alt         = isset( $args['image']['alt'] ) ? $args['image']['alt'] : 'Unknown';
 			$button_text = isset( $args['image']['button-text'] ) ? $args['image']['button-text'] : 'Upload Image';
 			$output      = sprintf( '<div class="everest-forms-custom-image-container">' );
-			$output     .= sprintf( '<a href="#" class="everest-forms-custom-image-delete"><img src="%s" alt="%s" class="evf-custom-image-uploader %s" height="100" width="auto">', esc_attr( $value ), esc_attr__( $alt, 'everest-forms' ), ( empty( $value ) ? 'everest-forms-hidden' : '' ) );
-			$output     .= sprintf( 'x</a></div>' );
-			$output     .= sprintf( '<button type="button" class="evf-custom-image-uploader-button evf-custom-image-button %s">%s</button>', ( empty( $value ) ? 'button-secondary' : 'everest-forms-hidden' ), esc_html__( $button_text, 'everest-forms' ) );
-			$output     .= sprintf(
+			/* translators: %2$s : Image Alt Text. */
+			$output .= sprintf( '<a href="#" class="everest-forms-custom-image-delete"><img src="%1$s" alt="' . __( '%2$s', 'everest-forms' ) . '" class="evf-custom-image-uploader %3$s" height="100" width="auto">', esc_attr( $value ), esc_attr( $alt ), ( empty( $value ) ? 'everest-forms-hidden' : '' ) );
+			$output .= sprintf( '</a></div>' );
+			/* translators: %2$s : Uload Image buttton Text. */
+			$output .= sprintf( '<button type="button" class="evf-custom-image-uploader-button evf-custom-image-button %1$s">' . __( '%2$s', 'everest-forms' ) . '</button>', ( empty( $value ) ? 'button-secondary' : 'everest-forms-hidden' ), esc_html( $button_text ) );
+			$output .= sprintf(
 				'<input type="hidden" id="everest-forms-panel-field-%s-%s" name="%s" value="%s" placeholder="%s" class="widefat %s" %s>',
 				sanitize_html_class( $panel_id ),
 				sanitize_html_class( $field ),
