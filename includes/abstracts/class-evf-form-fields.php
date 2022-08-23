@@ -2332,9 +2332,13 @@ abstract class EVF_Form_Fields {
 	 * @param array  $form_data All Form Data.
 	 */
 	public function validate( $field_id, $field_submit, $form_data ) {
-		$field_type       = isset( $form_data['form_fields'][ $field_id ]['type'] ) ? $form_data['form_fields'][ $field_id ]['type'] : '';
-		$required_field   = isset( $form_data['form_fields'][ $field_id ]['required'] ) ? $form_data['form_fields'][ $field_id ]['required'] : false;
-		$required_message = isset( $form_data['form_fields'][ $field_id ]['required-field-message'] ) && ! empty( $form_data['form_fields'][ $field_id ]['required-field-message'] ) ? $form_data['form_fields'][ $field_id ]['required-field-message'] : get_option( 'everest_forms_required_validation' );
+		$field_type          = isset( $form_data['form_fields'][ $field_id ]['type'] ) ? $form_data['form_fields'][ $field_id ]['type'] : '';
+		$required_field      = isset( $form_data['form_fields'][ $field_id ]['required'] ) ? $form_data['form_fields'][ $field_id ]['required'] : false;
+		$required_validation = get_option( 'everest_forms_required_validation' );
+		if ( in_array( $field_type, array( 'number', 'email', 'url', 'phone' ), true ) ) {
+			$required_validation = get_option( 'everest_forms_' . $field['type'] . '_validation' );
+		}
+		$required_message = isset( $form_data['form_fields'][ $field_id ]['required-field-message'] ) && ! empty( $form_data['form_fields'][ $field_id ]['required-field-message'] ) ? $form_data['form_fields'][ $field_id ]['required-field-message'] : $required_validation;
 		$entry            = $form_data['entry'];
 		$visible          = apply_filters( 'everest_forms_visible_fields', true, $form_data['form_fields'][ $field_id ], $entry, $form_data );
 
