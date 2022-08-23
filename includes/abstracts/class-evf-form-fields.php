@@ -572,8 +572,8 @@ abstract class EVF_Form_Fields {
 						'default' => $value,
 						'desc'    => '',
 						'options' => array(
-							'global'     => esc_html__( 'Show required message from Global Setting', 'everest-forms' ),
-							'individual' => esc_html__( 'Custom Required message', 'everest-forms' ),
+							'global'     => esc_html__( 'Show Required Message From Global Setting', 'everest-forms' ),
+							'individual' => esc_html__( 'Custom Required Message', 'everest-forms' ),
 						),
 					),
 					false
