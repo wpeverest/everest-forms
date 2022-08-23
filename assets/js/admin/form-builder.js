@@ -2552,8 +2552,22 @@
 					});
 				} else {
 					var el_to_append = '<option class="evf-conditional-fields" data-field_type="'+field_type+'" data-field_id="'+field_id+'" value="'+field_id+'">'+field_label+'</option>';
-					if( 'html' !== field_type && 'title' !== field_type && 'address' !== field_type && 'image-upload' !== field_type && 'file-upload' !== field_type && 'date-time' !== field_type && 'hidden' !== field_type && 'likert' !== field_type && 'scale-rating' !== field_type && 'yes-no' !== field_type ) {
-						fields.eq(index).insertAt( el_to_append, dragged_index, selected_id );
+					if (
+						"html" !== field_type &&
+						"title" !== field_type &&
+						"address" !== field_type &&
+						"image-upload" !== field_type &&
+						"file-upload" !== field_type &&
+						"date-time" !== field_type &&
+						"hidden" !== field_type &&
+						"likert" !== field_type &&
+						"scale-rating" !== field_type &&
+						"yes-no" !== field_type &&
+						"divider" !== field_type
+					) {
+						fields
+							.eq(index)
+							.insertAt(el_to_append, dragged_index, selected_id);
 					}
 				}
 				if( fields.eq( index ).find( 'option:not(.evf-conditional-fields)').length > 1 ) {
@@ -2579,8 +2593,34 @@
 
 				var el_to_append = '<option class="evf-conditional-fields" data-field_type="'+field_type+'" data-field_id="'+field_id+'" value="'+field_id+'">'+field_label+'</option>';
 
-				if( 0 === $( document ).find( '.evf-admin-row[data-row-id="'+ id +'"] #everest-forms-field-' + field_id ).length && 0 === new_row_option.find( '.evf-field-conditional-field-select option[data-field_id="'+ field_id +'"]').length && 'html' !== field_type && 'title' !== field_type && 'address' !== field_type && 'image-upload' !== field_type && 'file-upload' !== field_type && 'date-time' !== field_type && 'hidden' !== field_type && 'likert' !== field_type && 'scale-rating' !== field_type ) {
-					new_row_option.find( '.evf-field-conditional-field-select' ).append( el_to_append );
+				if (
+					0 ===
+						$(document).find(
+							'.evf-admin-row[data-row-id="' +
+								id +
+								'"] #everest-forms-field-' +
+								field_id
+						).length &&
+					0 ===
+						new_row_option.find(
+							'.evf-field-conditional-field-select option[data-field_id="' +
+								field_id +
+								'"]'
+						).length &&
+					"html" !== field_type &&
+					"title" !== field_type &&
+					"address" !== field_type &&
+					"image-upload" !== field_type &&
+					"file-upload" !== field_type &&
+					"date-time" !== field_type &&
+					"hidden" !== field_type &&
+					"likert" !== field_type &&
+					"scale-rating" !== field_type &&
+					"divider" !== field_type
+				) {
+					new_row_option
+						.find(".evf-field-conditional-field-select")
+						.append(el_to_append);
 				}
 				if( new_row_option.find( '.evf-field-conditional-field-select option:not(.evf-conditional-fields)').length > 1 ) {
 					new_row_option.find( '.evf-field-conditional-field-select option:not(.evf-conditional-fields):gt(0)').remove();
@@ -2657,17 +2697,19 @@
 							field_label = $( this ).find('.label-title span').first().text();
 							field_to_be_restricted =[];
 							field_to_be_restricted = [
-								'html',
-								'title',
-								'address',
-								'image-upload',
-								'file-upload',
-								'date-time',
-								'hidden',
-								'scale-rating',
-								'likert',
-								'yes-no',
-								dragged_el.attr('data-field-type'),
+								"html",
+								"title",
+								"address",
+								"image-upload",
+								"file-upload",
+								"signature",
+								"divider",
+								"date-time",
+								"hidden",
+								"scale-rating",
+								"likert",
+								"yes-no",
+								dragged_el.attr("data-field-type"),
 							];
 
 						if( $.inArray( field_type, field_to_be_restricted ) === -1 ){
@@ -3075,7 +3117,13 @@ jQuery( function ( $ ) {
 		}
 
 		if ( 'calculations' === type ) {
-			var calculations = [ 'number', 'payment-single', 'range-slider' ]
+			var calculations = [
+				"number",
+				"payment-single",
+				"range-slider",
+				"payment-checkbox",
+				"payment-multiple",
+			];
 			$(document).find('.everest-forms-field').each(function() {
 				if( calculations.includes($(this).attr('data-field-type')) && $(el).parents('.everest-forms-field-option-row-calculation_field').attr('data-field-id') !== $(this).attr('data-field-id')) {
 					$(el).parent().find('.evf-smart-tag-lists .calculations').append('<li class = "smart-tag-field" data-type="field" data-field_id="'+$(this).attr('data-field-id')+'">'+$(this).find('.label-title .text').text()+'</li>');
