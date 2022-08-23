@@ -280,7 +280,8 @@ class EVF_Field_Number extends EVF_Form_Fields {
 		$max_value        = isset( $form_data['form_fields'][ $field_id ]['max_value'] ) ? floatval( $form_data['form_fields'][ $field_id ]['max_value'] ) : 0;
 		$entry            = $form_data['entry'];
 		$visible          = apply_filters( 'everest_forms_visible_fields', true, $form_data['form_fields'][ $field_id ], $entry, $form_data );
-		$required_message = isset( $form_data['form_fields'][ $field_id ]['required-field-message'] ) ? $form_data['form_fields'][ $field_id ]['required-field-message'] : '';
+		$field_type       = isset( $form_data['form_fields'][ $field_id ]['type'] ) ? $form_data['form_fields'][ $field_id ]['type'] : '';
+		$required_message = isset( $form_data['form_fields'][ $field_id ]['required-field-message'] ) && ! empty( $form_data['form_fields'][ $field_id ]['required-field-message'] ) ? $form_data['form_fields'][ $field_id ]['required-field-message'] : $required_validation = get_option( 'everest_forms_' . $field_type . '_validation' );
 		if ( false === $visible ) {
 			return;
 		}
