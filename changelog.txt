@@ -1,9 +1,10 @@
 == Changelog ==
 
-= 1.9.x - xx-xx-2022
+= 1.9.3 - xx-xx-2022
 * Fix - apply_shortocodes functions undefined in WordPress lower version.
 * Fix - undefined __ in __wp.i18n.__  in extension js file.
 * Added - When the constant EVF_REMOVE_ALL_DATA is true the delete the options and usermeta staring with everest_forms.
+* Enhancement - Multiple select supports in builder.
 
 = 1.9.2 - 02-08-2022
 * Fix - Flatpickr localization issue.
