@@ -443,7 +443,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 					'<label for="everest-forms-panel-field-%s-%s-%d" class="inline">',
 					sanitize_html_class( $panel_id ),
 					sanitize_html_class( $field ),
-					$x,
+					$x
 				);
 				if ( ! empty( $item['tooltip'] ) ) {
 					$output .= sprintf( ' <i class="dashicons dashicons-editor-help everest-forms-help-tooltip" title="%s"></i>', esc_attr( $item['tooltip'] ) );
