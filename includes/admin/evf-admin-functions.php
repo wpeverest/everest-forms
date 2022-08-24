@@ -440,11 +440,10 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 			foreach ( $options as $key => $item ) {
 				$checked = checked( $key, $value, false );
 				$output .= sprintf(
-					'<label for="everest-forms-panel-field-%s-%s-%d" class="inline">%s',
+					'<label for="everest-forms-panel-field-%s-%s-%d" class="inline">',
 					sanitize_html_class( $panel_id ),
 					sanitize_html_class( $field ),
 					$x,
-					$item['name']
 				);
 				if ( ! empty( $item['tooltip'] ) ) {
 					$output .= sprintf( ' <i class="dashicons dashicons-editor-help everest-forms-help-tooltip" title="%s"></i>', esc_attr( $item['tooltip'] ) );
