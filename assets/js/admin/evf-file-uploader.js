@@ -2,10 +2,10 @@ jQuery(document).ready(function($){
     $('.evf-image-uploader').click(function(e) {
         evf_uploader = $(this);
         e.preventDefault();
-        var image = wp.media({ 
+        var image = wp.media({
             library: {
                 type: [ 'image' ]
-            },            
+            },
             title: evf_uploader.upload_file,
             // multiple: true if you want to upload multiple files at once
             multiple: false
@@ -49,8 +49,9 @@ jQuery(document).ready(function($){
             // Let's assign the url value to the input field
 			evf_uploader.addClass('everest-forms-hidden').removeClass('button-secondary');
             if( evf_uploader.hasClass( 'evf-custom-image-button' ) ) {
-                evf_uploader.prev().find('img.evf-custom-image-uploader').removeClass( 'everest-forms-hidden' );
-                evf_uploader.prev().find('img.evf-custom-image-uploader').attr('src', image_url);
+                evf_uploader.parent().prev().find('img.evf-custom-image-uploader').removeClass( 'everest-forms-hidden' );
+				evf_uploader.parent().prev().removeClass( 'everest-forms-hidden' );
+                evf_uploader.parent().prev().find('img.evf-custom-image-uploader').attr('src', image_url);
                 evf_uploader.next().val(image_url);
 
             } else {
@@ -64,8 +65,9 @@ jQuery(document).ready(function($){
         evf_uploader_remove = $(this);
         e.preventDefault();
 		evf_uploader_remove.find( 'img' ).addClass('everest-forms-hidden');
-		evf_uploader_remove.closest(".everest-forms-custom-image-container").next().addClass('button-secondary').removeClass('everest-forms-hidden');
-		evf_uploader_remove.closest(".everest-forms-custom-image-container").next().next().val('');
+		evf_uploader_remove.closest(".everest-forms-custom-image-container").next().children(".evf-custom-image-uploader-button").addClass('button-secondary').removeClass('everest-forms-hidden');
+		evf_uploader_remove.closest(".everest-forms-custom-image-container").next().children("input[type='hidden']").val('');
+		evf_uploader_remove.parent().addClass( 'everest-forms-hidden' );
 
     });
 });
