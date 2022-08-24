@@ -2336,10 +2336,10 @@ abstract class EVF_Form_Fields {
 					// Min Length.
 					if ( isset( $field['min_length_enabled'], $field['min_length_mode'], $field['min_length_count'] ) && '1' === $field['min_length_enabled'] && in_array( $field['min_length_mode'], array( 'characters', 'words' ), true ) && ! empty( $field['min_length_count'] ) ) {
 						if ( 'words' === $field['min_length_mode'] && $field['min_length_count'] > str_word_count( $field_submit ) ) {
-							/* translators: %s Number of max words. */
+							/* translators: %s Number of minimum words. */
 							$validation_text = sprintf( esc_html__( 'This field contains at least %s words', 'everest-forms' ), $field['min_length_count'] );
 						} elseif ( 'characters' === $field['min_length_mode'] && $field['min_length_count'] > strlen( $field_submit ) ) {
-							/* translators: %s Number of max characters. */
+							/* translators: %s Number of minimum characters. */
 							$validation_text = sprintf( esc_html__( 'This field contains at least %s characters', 'everest-forms' ), $field['min_length_count'] );
 						}
 					}
