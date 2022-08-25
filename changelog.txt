@@ -7,6 +7,7 @@
 * Enhancement - Multiple select supports in builder.
 * Fix - Server-side validation for limit length and minimum length features on single line text and paragraph fields.
 * Enhancement - Required field validation(global setting, Individual setting).
+* Dev - PDF global to individual form setting.
 
 
 = 1.9.2 - 02-08-2022
