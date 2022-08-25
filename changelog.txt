@@ -5,6 +5,7 @@
 * Fix - undefined __ in __wp.i18n.__  in extension js file.
 * Added - When EVF_REMOVE_ALL_DATA is true, delete options and user meta starting with Everest Forms.
 * Enhancement - Multiple select supports in builder.
+* Fix - Server-side validation for limit length and minimum length features on single line text and paragraph fields.
 
 
 = 1.9.2 - 02-08-2022
