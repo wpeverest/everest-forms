@@ -472,8 +472,7 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 		$choice_limit        = empty( $fields[ $field_id ]['choice_limit'] ) ? 0 : (int) $fields[ $field_id ]['choice_limit'];
 		$entry               = $form_data['entry'];
 		$visible             = apply_filters( 'everest_forms_visible_fields', true, $form_data['form_fields'][ $field_id ], $entry, $form_data );
-		$required_validation = get_option( 'everest_forms_required_validation' );
-		$required_message    = isset( $form_data['form_fields'][ $field_id ]['required-field-message'] ) && 'individual' == $form_data['form_fields'][ $field_id ]['required_field_message_setting'] ? $form_data['form_fields'][ $field_id ]['required-field-message'] : $required_validation;
+		$required_message    = isset( $form_data['form_fields'][ $field_id ]['required-field-message'] ) && 'individual' == $form_data['form_fields'][ $field_id ]['required_field_message_setting'] ? $form_data['form_fields'][ $field_id ]['required-field-message'] : get_option( 'everest_forms_required_validation' );
 
 		if ( false === $visible ) {
 			return;
