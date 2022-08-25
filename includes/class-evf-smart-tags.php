@@ -84,6 +84,8 @@ class EVF_Smart_Tags {
 					$value = ! empty( $fields[ $field_id ]['value'] ) ? evf_sanitize_textarea_field( $fields[ $field_id ]['value'] ) : '';
 				}
 
+				$value = apply_filters( 'everest_forms_smart_tags_value', $value, $field_id, $fields, $form_data );
+
 				if ( count( $mixed_field_id ) > 1 && ! empty( $fields[ $mixed_field_id[1] ] ) ) {
 					// Properly display signature field in smart tag.
 					if ( 'signature' === $fields[ $mixed_field_id[1] ]['type'] ) {

@@ -31,6 +31,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 					'choose_style',
 					'description',
 					'required',
+					'required_field_message_setting',
 					'required_field_message',
 				),
 			),
@@ -833,8 +834,9 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			}
 		}
 
-		if ( wp_script_is( 'flatpickr' ) && 'en' !== $data_i10n ) {
-			wp_enqueue_script( 'flatpickr-localization', 'https://npmcdn.com/flatpickr/dist/l10n/' . $data_i10n . '.js', array(), EVF_VERSION, true );
+		if ( wp_script_is( 'flatpickr' ) && 'en' !== $data_i10n && 'picker' === $form_field['datetime_style'] ) {
+			wp_enqueue_script( 'flatpickr-localization', evf()->plugin_url() . '/assets/js/flatpickr/dist/I10n/' . $data_i10n . '.js', array(), EVF_VERSION, true );
 		}
+
 	}
 }

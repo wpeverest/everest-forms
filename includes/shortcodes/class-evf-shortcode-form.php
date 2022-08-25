@@ -708,10 +708,9 @@ class EVF_Shortcode_Form {
 
 		// Embed required-field-message to the container if the field is required.
 		if ( isset( $field['required'] ) && ( '1' === $field['required'] || true === $field['required'] ) ) {
-			$has_sub_fields     = false;
-			$sub_field_messages = array();
-
-			$required_validation = get_option( 'everest_forms_required_validation' );
+			$has_sub_fields          = false;
+			$sub_field_messages      = array();
+				$required_validation = get_option( 'everest_forms_required_validation' );
 			if ( in_array( $field['type'], array( 'number', 'email', 'url', 'phone' ), true ) ) {
 				$required_validation = get_option( 'everest_forms_' . $field['type'] . '_validation' );
 			}
@@ -729,11 +728,11 @@ class EVF_Shortcode_Form {
 			} elseif ( 'address' === $field['type'] ) {
 				$has_sub_fields     = true;
 				$sub_field_messages = array(
-					'address1' => isset( $field['required-field-message-address1'] ) ? evf_string_translation( $form_data['id'], $field['id'], $field['required-field-message-address1'], '-required-field-message-address1' ) : '',
-					'city'     => isset( $field['required-field-message-city'] ) ? evf_string_translation( $form_data['id'], $field['id'], $field['required-field-message-city'], '-required-field-message-city' ) : '',
-					'state'    => isset( $field['required-field-message-state'] ) ? evf_string_translation( $form_data['id'], $field['id'], $field['required-field-message-state'], '-required-field-message-state' ) : '',
-					'postal'   => isset( $field['required-field-message-postal'] ) ? evf_string_translation( $form_data['id'], $field['id'], $field['required-field-message-postal'], '-required-field-message-postal' ) : '',
-					'country'  => isset( $field['required-field-message-country'] ) ? evf_string_translation( $form_data['id'], $field['id'], $field['required-field-message-country'], '-required-field-message-country' ) : '',
+					'address1' => isset( $field['required_field_message_setting'] ) && 'global' === $field['required_field_message_setting'] ? $required_validation : evf_string_translation( $form_data['id'], $field['id'], $field['required-field-message-address1'], '-required-field-message-address1' ),
+					'city'     => isset( $field['required_field_message_setting'] ) && 'global' === $field['required_field_message_setting'] ? $required_validation : evf_string_translation( $form_data['id'], $field['id'], $field['required-field-message-city'], '-required-field-message-city' ),
+					'state'    => isset( $field['required_field_message_setting'] ) && 'global' === $field['required_field_message_setting'] ? $required_validation : evf_string_translation( $form_data['id'], $field['id'], $field['required-field-message-state'], '-required-field-message-state' ),
+					'postal'   => isset( $field['required_field_message_setting'] ) && 'global' === $field['required_field_message_setting'] ? $required_validation : evf_string_translation( $form_data['id'], $field['id'], $field['required-field-message-postal'], '-required-field-message-postal' ),
+					'country'  => isset( $field['required_field_message_setting'] ) && 'global' === $field['required_field_message_setting'] ? $required_validation : evf_string_translation( $form_data['id'], $field['id'], $field['required-field-message-country'], '-required-field-message-country' ),
 				);
 			}
 
@@ -742,7 +741,7 @@ class EVF_Shortcode_Form {
 					$container_data[ 'required-field-message-' . $sub_field_type ] = $error_message;
 				}
 			} else {
-				$container_data['required-field-message'] = isset( $field['required-field-message'] ) && '' !== $field['required-field-message'] ? evf_string_translation( $form_data['id'], $field['id'], $field['required-field-message'], '-required-field-message' ) : $required_validation;
+				$container_data['required-field-message'] = isset( $field['required_field_message_setting'] ) && 'global' === $field['required_field_message_setting'] ? $required_validation : evf_string_translation( $form_data['id'], $field['id'], $field['required-field-message'], '-required-field-message' );
 			}
 		}
 		$errors     = isset( evf()->task->errors[ $form_id ][ $field_id ] ) ? evf()->task->errors[ $form_id ][ $field_id ] : '';

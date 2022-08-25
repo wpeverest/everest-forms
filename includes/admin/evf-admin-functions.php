@@ -384,6 +384,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 
 			if ( true === $is_multiple ) {
 				$multiple = 'multiple';
+				$field_name    .= '[]';
 			} else {
 				$multiple = '';
 			}

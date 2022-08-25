@@ -48,6 +48,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 					'enhanced_select',
 					'description',
 					'required',
+					'required_field_message_setting',
 					'required_field_message',
 				),
 			),

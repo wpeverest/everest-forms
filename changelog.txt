@@ -1,5 +1,22 @@
 == Changelog ==
 
+= 1.9.3 - xx-xx-2022
+* Fix - apply_shortocodes functions undefined in WordPress lower version.
+* Fix - undefined __ in __wp.i18n.__  in extension js file.
+* Added - When EVF_REMOVE_ALL_DATA is true, delete options and user meta starting with Everest Forms.
+* Enhancement - Multiple select supports in builder.
+* Fix - Server-side validation for limit length and minimum length features on single line text and paragraph fields.
+* Enhancement - Required field validation(global setting, Individual setting).
+
+
+= 1.9.2 - 02-08-2022
+* Fix - Flatpickr localization issue.
+* Fix - Auto address selected value not rendering issue in style dropdown after change.
+* Fix - Required issue in multipart/row conditional.
+* Dev - Replace Enable Google invisible reCAPTCHA v2 to Enable Google reCAPTCHA v2 for label showing wrong issue.
+* Dev - Background Image in PDF.
+* Dev - File/Image Uploads supports for repeater.
+
 = 1.9.1 - 19-07-2022
 * Fix - Enhanced select issue in single select.
 * Dev - Yes/No field.
