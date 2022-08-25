@@ -50,6 +50,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 					'enable_checkbox',
 					'description',
 					'required',
+					'required_field_message_setting',
 					'required_field_message',
 				),
 			),

@@ -237,11 +237,10 @@ class EVF_AJAX {
 
 		$form_post = evf_sanitize_builder( json_decode( wp_unslash( $_POST['form_data'] ) ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 
-		$data         = array();
-		$choose_field = array();
+		$data = array();
 
 		if ( ! is_null( $form_post ) && $form_post ) {
-			foreach ( $form_post as $post_input_data ) {
+			foreach ( $form_post as $post_index => $post_input_data ) {
 				// For input names that are arrays (e.g. `menu-item-db-id[3][4][5]`),
 				// derive the array path keys via regex and set the value in $_POST.
 				preg_match( '#([^\[]*)(\[(.+)\])?#', $post_input_data->name, $matches );
@@ -257,21 +256,20 @@ class EVF_AJAX {
 				// Build the new array value from leaf to trunk.
 				for ( $i = count( $array_bits ) - 1; $i >= 0; $i -- ) {
 					if ( count( $array_bits ) - 1 === $i ) {
-						$new_post_data[ $array_bits[ $i ] ] = wp_slash( $post_input_data->value );
+						if ( '' === $array_bits[ $i ] ) {
+							$new_post_data [ $post_index ] = wp_slash( $post_input_data->value );
+						} else {
+							$new_post_data[ $array_bits[ $i ] ] = wp_slash( $post_input_data->value );
+						}
 					} else {
 						$new_post_data = array(
 							$array_bits[ $i ] => $new_post_data,
 						);
 					}
 				}
-				$choose_field_data = isset( $new_post_data['settings']['choose_pdf_fields'] ) ? $new_post_data['settings']['choose_pdf_fields'] : array();
-				if ( ! empty( $choose_field_data ) ) {
-					 array_push( $choose_field, $choose_field_data );
-				}
 				$data = array_replace_recursive( $data, $new_post_data );
 			}
 		}
-		$data['settings']['choose_pdf_fields'] = $choose_field;
 		// Check for empty meta key.
 		$logger->info(
 			__( 'Check for empty meta key.', 'everest-forms' ),
@@ -357,9 +355,14 @@ class EVF_AJAX {
 				array( 'source' => 'form-save' )
 			);
 			wp_send_json_success(
-				array(
-					'form_name'    => esc_html( $data['settings']['form_title'] ),
-					'redirect_url' => admin_url( 'admin.php?page=evf-builder' ),
+				apply_filters(
+					'everest_forms_save_form_data',
+					array(
+						'form_name'    => esc_html( $data['settings']['form_title'] ),
+						'redirect_url' => admin_url( 'admin.php?page=evf-builder' ),
+					),
+					$form_id,
+					$data
 				)
 			);
 		}

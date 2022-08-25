@@ -402,6 +402,7 @@
 			EVFPanelBuilder.bindFormSettings();
 			EVFPanelBuilder.bindFormEmail();
 			EVFPanelBuilder.bindFormSmsNotifications();
+			EVFPanelBuilder.bindFormConversational();
 			EVFPanelBuilder.bindFormIntegrations();
 			EVFPanelBuilder.bindFormPayment();
 			EVFPanelBuilder.choicesInit();
@@ -911,8 +912,25 @@
 
 				$( '#everest-forms-field-' + id ).toggleClass( 'required' );
 
-				// Toggle "Required Field Message" option.
+				// Toggle "Required Field Message Setting" option.
 				if ( $( event.target ).is( ':checked' ) ) {
+					$( '#everest-forms-field-option-row-' + id + '-required_field_message_setting' ).show();
+					if($('#everest-forms-field-option-' + id + '-required_field_message_setting-individual').is(':checked')) {
+						$( '#everest-forms-field-option-row-' + id + '-required-field-message' ).show();
+					}
+				} else {
+					$( '#everest-forms-field-option-row-' + id + '-required_field_message_setting' ).hide();
+					$( '#everest-forms-field-option-row-' + id + '-required-field-message' ).hide();
+				}
+			});
+
+			$builder.on( 'change', '.everest-forms-field-option-row-required_field_message_setting input', function( event ) {
+				var id = $( this ).parent().parent().parent().parent().data( 'field-id' );
+
+				$( '#everest-forms-field-' + id ).toggleClass( 'required_field_message_setting' );
+
+				// Toggle "Required Field Message" option.
+				if ( 'individual' === $(this).val()  ) {
 					$( '#everest-forms-field-option-row-' + id + '-required-field-message' ).show();
 				} else {
 					$( '#everest-forms-field-option-row-' + id + '-required-field-message' ).hide();
@@ -1294,6 +1312,7 @@
 				$('.evf-setting-panel').removeClass('active');
 				$('.everest-forms-active-email').removeClass('active');
 				$('.everest-forms-active-sms-notifications').removeClass('active');
+				$('.everest-forms-active-conversational-forms').removeClass('active');
 				$('.evf-content-section').removeClass('active');
 				$(this).addClass('active');
 				$('.evf-content-' + data_setting_section + '-settings').addClass('active');
@@ -1314,7 +1333,6 @@
 				e.preventDefault();
 			});
 		},
-
 		bindFormSmsNotifications: function () {
 			$('body').on('click', '.everest-forms-panel-sidebar-section-sms-notifications', function ( e ) {
 				$(this).siblings('.everest-forms-active-sms-notifications').removeClass('active');
@@ -1326,6 +1344,19 @@
 				}
 				e.preventDefault();
 			});
+		},
+		bindFormConversational: function () {
+			$("body").on("click",".everest-forms-panel-sidebar-section-conversational-forms ", function (e) {
+				  var $this = $(this);
+				  $(this).siblings(".everest-forms-active-conversational-forms").removeClass("active");
+				  $(this).next(".everest-forms-active-conversational-forms").addClass("active");
+					var container = $( this ).siblings('.everest-forms-active-conversational-forms.active');
+
+						if( container.length ){
+							container.children('.evf-content-tab ').trigger('click');
+						}
+					e.preventDefault();
+				});
 		},
 		bindFormIntegrations: function () {
 			$('body').on('click', '.evf-integrations-panel', function ( e ) {
@@ -1874,8 +1905,8 @@
 				var form_data  = $form.serializeArray();
 				var form_title = $( '#evf-edit-form-name' ).val().trim();
 
-				// Set WebHook Request Headers key-Value pair.
-				$(document).trigger('setEvfProWebHookRequestHeaders', [form_data]);
+				// Save form args.
+				$(document).trigger('everest_forms_save_args', [form_data]);
 
 				var select_id_name = {};
 
@@ -1969,6 +2000,9 @@
 					success: function ( response ) {
 						$this.removeClass( 'processing' );
 						$this.find( '.loading-dot' ).remove();
+
+						//Response data of ajax.
+						$(document).trigger('everest_forms_save_data',response.data);
 
 						if ( ! response.success ) {
 							$.alert({
@@ -2552,8 +2586,22 @@
 					});
 				} else {
 					var el_to_append = '<option class="evf-conditional-fields" data-field_type="'+field_type+'" data-field_id="'+field_id+'" value="'+field_id+'">'+field_label+'</option>';
-					if( 'html' !== field_type && 'title' !== field_type && 'address' !== field_type && 'image-upload' !== field_type && 'file-upload' !== field_type && 'date-time' !== field_type && 'hidden' !== field_type && 'likert' !== field_type && 'scale-rating' !== field_type && 'yes-no' !== field_type ) {
-						fields.eq(index).insertAt( el_to_append, dragged_index, selected_id );
+					if (
+						"html" !== field_type &&
+						"title" !== field_type &&
+						"address" !== field_type &&
+						"image-upload" !== field_type &&
+						"file-upload" !== field_type &&
+						"date-time" !== field_type &&
+						"hidden" !== field_type &&
+						"likert" !== field_type &&
+						"scale-rating" !== field_type &&
+						"yes-no" !== field_type &&
+						"divider" !== field_type
+					) {
+						fields
+							.eq(index)
+							.insertAt(el_to_append, dragged_index, selected_id);
 					}
 				}
 				if( fields.eq( index ).find( 'option:not(.evf-conditional-fields)').length > 1 ) {
@@ -2579,8 +2627,34 @@
 
 				var el_to_append = '<option class="evf-conditional-fields" data-field_type="'+field_type+'" data-field_id="'+field_id+'" value="'+field_id+'">'+field_label+'</option>';
 
-				if( 0 === $( document ).find( '.evf-admin-row[data-row-id="'+ id +'"] #everest-forms-field-' + field_id ).length && 0 === new_row_option.find( '.evf-field-conditional-field-select option[data-field_id="'+ field_id +'"]').length && 'html' !== field_type && 'title' !== field_type && 'address' !== field_type && 'image-upload' !== field_type && 'file-upload' !== field_type && 'date-time' !== field_type && 'hidden' !== field_type && 'likert' !== field_type && 'scale-rating' !== field_type ) {
-					new_row_option.find( '.evf-field-conditional-field-select' ).append( el_to_append );
+				if (
+					0 ===
+						$(document).find(
+							'.evf-admin-row[data-row-id="' +
+								id +
+								'"] #everest-forms-field-' +
+								field_id
+						).length &&
+					0 ===
+						new_row_option.find(
+							'.evf-field-conditional-field-select option[data-field_id="' +
+								field_id +
+								'"]'
+						).length &&
+					"html" !== field_type &&
+					"title" !== field_type &&
+					"address" !== field_type &&
+					"image-upload" !== field_type &&
+					"file-upload" !== field_type &&
+					"date-time" !== field_type &&
+					"hidden" !== field_type &&
+					"likert" !== field_type &&
+					"scale-rating" !== field_type &&
+					"divider" !== field_type
+				) {
+					new_row_option
+						.find(".evf-field-conditional-field-select")
+						.append(el_to_append);
 				}
 				if( new_row_option.find( '.evf-field-conditional-field-select option:not(.evf-conditional-fields)').length > 1 ) {
 					new_row_option.find( '.evf-field-conditional-field-select option:not(.evf-conditional-fields):gt(0)').remove();
@@ -2657,17 +2731,19 @@
 							field_label = $( this ).find('.label-title span').first().text();
 							field_to_be_restricted =[];
 							field_to_be_restricted = [
-								'html',
-								'title',
-								'address',
-								'image-upload',
-								'file-upload',
-								'date-time',
-								'hidden',
-								'scale-rating',
-								'likert',
-								'yes-no',
-								dragged_el.attr('data-field-type'),
+								"html",
+								"title",
+								"address",
+								"image-upload",
+								"file-upload",
+								"signature",
+								"divider",
+								"date-time",
+								"hidden",
+								"scale-rating",
+								"likert",
+								"yes-no",
+								dragged_el.attr("data-field-type"),
 							];
 
 						if( $.inArray( field_type, field_to_be_restricted ) === -1 ){
@@ -3075,7 +3151,13 @@ jQuery( function ( $ ) {
 		}
 
 		if ( 'calculations' === type ) {
-			var calculations = [ 'number', 'payment-single', 'range-slider' ]
+			var calculations = [
+				"number",
+				"payment-single",
+				"range-slider",
+				"payment-checkbox",
+				"payment-multiple",
+			];
 			$(document).find('.everest-forms-field').each(function() {
 				if( calculations.includes($(this).attr('data-field-type')) && $(el).parents('.everest-forms-field-option-row-calculation_field').attr('data-field-id') !== $(this).attr('data-field-id')) {
 					$(el).parent().find('.evf-smart-tag-lists .calculations').append('<li class = "smart-tag-field" data-type="field" data-field_id="'+$(this).attr('data-field-id')+'">'+$(this).find('.label-title .text').text()+'</li>');

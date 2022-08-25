@@ -29,6 +29,7 @@ class EVF_Field_Textarea extends EVF_Form_Fields {
 					'meta',
 					'description',
 					'required',
+					'required_field_message_setting',
 					'required_field_message',
 					'readonly',
 				),

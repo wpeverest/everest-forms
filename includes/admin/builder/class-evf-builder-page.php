@@ -24,7 +24,7 @@ if ( ! class_exists( 'EVF_Builder_Page', false ) ) :
 		 *
 		 * @var object
 		 */
-		protected $form;
+		public $form;
 
 		/**
 		 * Builder page id.
