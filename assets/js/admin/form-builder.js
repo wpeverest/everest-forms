@@ -402,6 +402,7 @@
 			EVFPanelBuilder.bindFormSettings();
 			EVFPanelBuilder.bindFormEmail();
 			EVFPanelBuilder.bindFormSmsNotifications();
+			EVFPanelBuilder.bindFormConversational();
 			EVFPanelBuilder.bindFormIntegrations();
 			EVFPanelBuilder.bindFormPayment();
 			EVFPanelBuilder.choicesInit();
@@ -1311,6 +1312,7 @@
 				$('.evf-setting-panel').removeClass('active');
 				$('.everest-forms-active-email').removeClass('active');
 				$('.everest-forms-active-sms-notifications').removeClass('active');
+				$('.everest-forms-active-conversational-forms').removeClass('active');
 				$('.evf-content-section').removeClass('active');
 				$(this).addClass('active');
 				$('.evf-content-' + data_setting_section + '-settings').addClass('active');
@@ -1331,7 +1333,6 @@
 				e.preventDefault();
 			});
 		},
-
 		bindFormSmsNotifications: function () {
 			$('body').on('click', '.everest-forms-panel-sidebar-section-sms-notifications', function ( e ) {
 				$(this).siblings('.everest-forms-active-sms-notifications').removeClass('active');
@@ -1343,6 +1344,19 @@
 				}
 				e.preventDefault();
 			});
+		},
+		bindFormConversational: function () {
+			$("body").on("click",".everest-forms-panel-sidebar-section-conversational-forms ", function (e) {
+				  var $this = $(this);
+				  $(this).siblings(".everest-forms-active-conversational-forms").removeClass("active");
+				  $(this).next(".everest-forms-active-conversational-forms").addClass("active");
+					var container = $( this ).siblings('.everest-forms-active-conversational-forms.active');
+
+						if( container.length ){
+							container.children('.evf-content-tab ').trigger('click');
+						}
+					e.preventDefault();
+				});
 		},
 		bindFormIntegrations: function () {
 			$('body').on('click', '.evf-integrations-panel', function ( e ) {
@@ -1891,8 +1905,8 @@
 				var form_data  = $form.serializeArray();
 				var form_title = $( '#evf-edit-form-name' ).val().trim();
 
-				// Set WebHook Request Headers key-Value pair.
-				$(document).trigger('setEvfProWebHookRequestHeaders', [form_data]);
+				// Save form args.
+				$(document).trigger('everest_forms_save_args', [form_data]);
 
 				var select_id_name = {};
 
@@ -1986,6 +2000,9 @@
 					success: function ( response ) {
 						$this.removeClass( 'processing' );
 						$this.find( '.loading-dot' ).remove();
+
+						//Response data of ajax.
+						$(document).trigger('everest_forms_save_data',response.data);
 
 						if ( ! response.success ) {
 							$.alert({
