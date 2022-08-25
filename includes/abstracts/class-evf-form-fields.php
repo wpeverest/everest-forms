@@ -2334,7 +2334,7 @@ abstract class EVF_Form_Fields {
 	public function validate( $field_id, $field_submit, $form_data ) {
 		$field_type          = isset( $form_data['form_fields'][ $field_id ]['type'] ) ? $form_data['form_fields'][ $field_id ]['type'] : '';
 		$required_field      = isset( $form_data['form_fields'][ $field_id ]['required'] ) ? $form_data['form_fields'][ $field_id ]['required'] : false;
-		$field            = isset( $form_data['form_fields'][ $field_id ] ) ? $form_data['form_fields'][ $field_id ] : '';
+		$field               = isset( $form_data['form_fields'][ $field_id ] ) ? $form_data['form_fields'][ $field_id ] : '';
 		$required_validation = get_option( 'everest_forms_required_validation' );
 		if ( in_array( $field_type, array( 'number', 'email', 'url', 'phone' ), true ) ) {
 			$required_validation = get_option( 'everest_forms_' . $field['type'] . '_validation' );
