@@ -479,7 +479,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 			$button_text  = isset( $args['image']['button-text'] ) ? $args['image']['button-text'] : 'Upload Image';
 			$output       = sprintf( '<div class="everest-forms-custom-image-container ' . esc_attr( $hidden_class ) . '">' );
 			/* translators: %2$s : Image Alt Text. */
-			$output .= sprintf( '<a href="#" class="everest-forms-custom-image-delete"><img src="%1$s" alt="' . __( ' %2$s', 'everest-forms' ) . '" class="evf-custom-image-uploader %3$s" height="100" width="auto">', esc_attr( $value ), esc_attr( $alt ), ( empty( $value ) ? 'everest-forms-hidden' : '' ) ); // phpcs:ignore
+			$output .= sprintf( '<a href="#" class="everest-forms-custom-image-delete"><i class="evf-icon evf-icon-delete"></i><img src="%1$s" alt="' . __( ' %2$s', 'everest-forms' ) . '" class="evf-custom-image-uploader %3$s" height="100" width="auto">', esc_attr( $value ), esc_attr( $alt ), ( empty( $value ) ? 'everest-forms-hidden' : '' ) ); // phpcs:ignore
 			$output .= sprintf( '</a></div>' );
 			/* translators: %2$s : Upload Image button Text. */
 			$output .= sprintf( '<div class="everest-forms-custom-image-button"><button type="button" class="evf-custom-image-uploader-button evf-custom-image-button %1$s">' . __( '%2$s', 'everest-forms' ) . '</button>', ( empty( $value ) ? 'button-secondary' : 'everest-forms-hidden' ), esc_html( $button_text ) ); // phpcs:ignore
