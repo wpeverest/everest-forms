@@ -383,8 +383,8 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 			}
 
 			if ( true === $is_multiple ) {
-				$multiple = 'multiple';
-				$field_name    .= '[]';
+				$multiple    = 'multiple';
+				$field_name .= '[]';
 			} else {
 				$multiple = '';
 			}
@@ -473,9 +473,11 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 					$value = '';
 				}
 			}
-			$alt         = isset( $args['image']['alt'] ) ? $args['image']['alt'] : 'Unknown';
-			$button_text = isset( $args['image']['button-text'] ) ? $args['image']['button-text'] : 'Upload Image';
-			$output      = sprintf( '<div class="everest-forms-custom-image-container everest-forms-hidden">' );
+
+			$hidden_class = empty( $value ) ? 'everest-forms-hidden' : '';
+			$alt          = isset( $args['image']['alt'] ) ? $args['image']['alt'] : 'Unknown';
+			$button_text  = isset( $args['image']['button-text'] ) ? $args['image']['button-text'] : 'Upload Image';
+			$output       = sprintf( '<div class="everest-forms-custom-image-container ' . esc_attr( $hidden_class ) . '">' );
 			/* translators: %2$s : Image Alt Text. */
 			$output .= sprintf( '<a href="#" class="everest-forms-custom-image-delete"><img src="%1$s" alt="' . __( ' %2$s', 'everest-forms' ) . '" class="evf-custom-image-uploader %3$s" height="100" width="auto">', esc_attr( $value ), esc_attr( $alt ), ( empty( $value ) ? 'everest-forms-hidden' : '' ) ); // phpcs:ignore
 			$output .= sprintf( '</a></div>' );
