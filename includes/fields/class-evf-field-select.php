@@ -294,7 +294,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 			! empty( $field['enhanced_select'] )
 			&& ! empty( $field['multiple_choices'] ) && '1' === $field['multiple_choices']
 		) {
-			$args['class'] = 'evf-enhanced-select';
+			$args['class'] = 'evf-enhanced-select2';
 		}
 
 		// Label.
@@ -336,7 +336,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 
 		// Enable enhanced select.
 		if ( false !== $plan && ! empty( $field['enhanced_select'] ) && '1' === $field['enhanced_select'] ) {
-			$container['class'][] = 'evf-enhanced-select';
+			$container['class'][] = 'evf-enhanced-select2';
 
 			if ( empty( $field_placeholder ) ) {
 				$first_choices     = reset( $choices );
