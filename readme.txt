@@ -4,7 +4,7 @@ Tags: contact form, forms, form builder, contact, custom form
 Requires at least: 5.0
 Tested up to: 6.0
 Requires PHP: 5.4
-Stable tag: 1.9.2
+Stable tag: 1.9.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -323,6 +323,15 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 
 == Changelog ==
+
+= 1.9.3 - 31-08-2022
+* Enhancement - When EVF_REMOVE_ALL_DATA is true, delete options and user meta starting with Everest Forms.
+* Enhancement - Required field validation(Global setting, Individual setting).
+* Fix - apply_shortcodes functions undefined in WordPress lower version.
+* Fix - undefined __ in __wp.i18n.__ in extension js file.
+* Fix - Server-side validation for limit length and minimum length features on single line text and paragraph fields.
+* Dev - PDF global to individual form setting.
+* Dev - Multiple select supports in builder.
 
 = 1.9.2 - 02-08-2022
 * Fix - Flatpickr localization issue.
