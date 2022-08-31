@@ -120,8 +120,8 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				'slug'    => 'datetime_style',
 				'value'   => $style,
 				'options' => array(
-					'picker'   => esc_html__( 'Date Picker', 'everest-forms' ),
-					'dropdown' => esc_html__( 'Date Dropdown', 'everest-forms' ),
+					'picker'   => esc_html__( 'Picker', 'everest-forms' ),
+					'dropdown' => esc_html__( 'Dropdown', 'everest-forms' ),
 				),
 			),
 			false
