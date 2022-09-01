@@ -381,6 +381,45 @@
 				"professional",
 				"agency"
 			]
+		},
+		{
+			"title": "Salesforce",
+			"slug": "everest-forms-salesforce",
+			"name": "Everest Forms Salesforce",
+			"image": "extensions-json/sections/images/salesforce.jpg",
+			"excerpt": "Everest Forms Salesforce add-on is a WordPress Salesforce integration plugin that allows you to easily send Everest Forms entries directly to your Salesforce account. ",
+			"link": "https://wpeverest.com/wordpress-plugins/everest-forms/salesforce/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=salesforce",
+			"plan": [
+				"professional",
+				"agency"
+			]
+		},
+		{
+			"title": "Constant Contact",
+			"slug": "everest-forms-constant-contact",
+			"name": "Everest Forms Constant Contact",
+			"image": "extensions-json/sections/images/constant-contact.jpg",
+			"excerpt": "Everest Forms Constant Contact add-on is a WordPress Constant Contact integration plugin that allows you to easily send Everest Forms entries directly to your Constant Contact account. ",
+			"link": "https://wpeverest.com/wordpress-plugins/everest-forms/constant-contact/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=constant-contact",
+			"plan": [
+				"plus",
+				"professional",
+				"agency"
+			]
+		},
+		{
+			"title": "Cloud Storage",
+			"slug": "everest-forms-cloud-storage",
+			"name": "Everest Forms Cloud Storage",
+			"image": "extensions-json/sections/images/cloud-storage.jpg",
+			"excerpt": "Everest Forms Cloud Storage add-on is a WordPress Cloud Storage integration plugin that allows you to easily send Everest Forms files directly to your Cloud Storage account. ",
+			"link": "https://wpeverest.com/wordpress-plugins/everest-forms/cloud-storage/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=cloud-storage",
+			"plan": [
+				"personal",
+				"plus",
+				"professional",
+				"agency"
+			]
 		}
 	]
 }
