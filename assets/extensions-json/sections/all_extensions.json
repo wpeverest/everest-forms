@@ -402,6 +402,7 @@
 			"excerpt": "Everest Forms Constant Contact add-on is a WordPress Constant Contact integration plugin that allows you to easily send Everest Forms entries directly to your Constant Contact account. ",
 			"link": "https://wpeverest.com/wordpress-plugins/everest-forms/constant-contact/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=constant-contact",
 			"plan": [
+				"plus",
 				"professional",
 				"agency"
 			]
@@ -414,6 +415,8 @@
 			"excerpt": "Everest Forms Cloud Storage add-on is a WordPress Cloud Storage integration plugin that allows you to easily send Everest Forms files directly to your Cloud Storage account. ",
 			"link": "https://wpeverest.com/wordpress-plugins/everest-forms/cloud-storage/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=cloud-storage",
 			"plan": [
+				"personal",
+				"plus",
 				"professional",
 				"agency"
 			]
