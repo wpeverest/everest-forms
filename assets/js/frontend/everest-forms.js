@@ -24,6 +24,7 @@ jQuery( function ( $ ) {
 			this.init_inputMask();
 			this.init_mailcheck();
 			this.init_datepicker();
+			this.init_colorpicker();
 			this.init_datedropdown();
 			this.load_validation();
 			this.submission_scroll();
@@ -159,6 +160,49 @@ jQuery( function ( $ ) {
 					}
 				});
 			}
+		},
+		init_colorpicker: function () {	
+			$( '.evf-color-picker' ).each(function() {
+				var $colorInputContainer = $(this);
+	
+				Inputmask({
+					"mask": "\\#******",
+					"definitions": {
+						'*': {
+							validator: "[0-9A-Fa-f]"
+						}
+					}
+				}).mask($(this).find( 'input[type=text]' ));
+
+				$colorInputContainer.find( 'input[type=text]' )
+					.attr({
+						'autocomplete': 'off',
+						'placeholder': '#______'
+					});
+	
+				var $colorInput = $(this).find( '.evf-cp-input' );
+	
+				$colorInput.on( 'input', function() {
+					$(this).parent().css({
+						background: $(this).val()
+					});
+					$colorInputContainer.find( 'input[type=text]' ).val($(this).val().toUpperCase()).toggleClass( 'evf-error', false);
+					$colorInputContainer.find( 'label:last-child' ).hide();
+					$colorInput.attr( 'value', $(this).val());
+				});
+	
+				$(this).find( 'input[type=text]' ).on( 'change paste keyup', function() {
+					$colorInputContainer.find( '.evf-color-picker-bg' ).css({
+						background: $(this).val(),
+					});
+	
+					$colorInput.attr( 'value', $(this).val()).change();
+				});
+
+				$(this).find( 'input[type=text]' ).on( 'click', function() {
+					$colorInput.trigger( 'click' );
+				});
+			});
 		},
 		init_datedropdown: function () {
 			//Dropdown logic here

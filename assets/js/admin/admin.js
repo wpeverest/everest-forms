@@ -378,6 +378,23 @@
 	$('.everest-forms-btn-group .everest-forms-btn').on('click', function() {
 		$(this).siblings().removeClass('is-active')
 		$(this).addClass('is-active');
-	})
+	});
+
+	// Color field default value validation.
+	$( '.everest-forms-field-color' ).on( 'click', function (){
+		var $field_container = $( this );
+		$( '#everest-forms-field-option-' + $( this ).data( 'field-id' ) + '-default_value' ).on( 'change mouseleave', function () {
+			var input_color = $( this ).val(),
+				$color = '#000000',
+				$matches_color = input_color.match(/#[0-9A-F]{3,6}/ig );
+
+			if( $matches_color ){
+				$color = $matches_color[0];
+			}
+
+			$( this ).val(  $color  );
+			$field_container.find( '.evf-color-picker-bg' ).css( 'backgroundColor', $color );
+		} );
+	} );
 
 })( jQuery, everest_forms_admin );

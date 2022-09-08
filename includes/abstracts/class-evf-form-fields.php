@@ -1370,6 +1370,11 @@ abstract class EVF_Form_Fields {
 			case 'default_value':
 				$value   = ! empty( $field['default_value'] ) || ( isset( $field['default_value'] ) && '0' === (string) $field['default_value'] ) ? esc_attr( $field['default_value'] ) : '';
 				$tooltip = esc_html__( 'Enter text for the default form field value.', 'everest-forms' );
+
+				if ( 'color' === $field['type'] ) {
+					$tooltip = esc_html__( 'Enter hexadecimal color code(e.g. #7e3bd0) for the default color selected in the field.', 'everest-forms' );
+				}
+
 				$toggle  = '';
 				$output  = $this->field_element(
 					'label',
@@ -1393,7 +1398,7 @@ abstract class EVF_Form_Fields {
 				);
 
 				// Smart tag for default value.
-				$exclude_fields = array( 'rating', 'number', 'range-slider', 'payment-quantity' );
+				$exclude_fields = array( 'rating', 'number', 'range-slider', 'payment-quantity', 'color' );
 
 				if ( ! in_array( $field['type'], $exclude_fields, true ) ) {
 					$output .= '<a href="#" class="evf-toggle-smart-tag-display" data-type="other"><span class="dashicons dashicons-editor-code"></span></a>';
