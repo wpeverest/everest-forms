@@ -88,7 +88,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 		// Define data.
 		$form_id  = absint( $form_data['id'] );
 		$field_id = $field['id'];
-		$choices  = $field['choices'];
+		$choices  = apply_filters( 'everest_forms_dropdown_options', $field['choices'] );
 
 		// Remove primary input.
 		unset( $properties['inputs']['primary'] );
