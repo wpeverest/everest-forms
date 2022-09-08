@@ -416,6 +416,8 @@ class EVF_Shortcode_Form {
 					// Get field attributes.
 					$attributes = self::get_field_attributes( $field, $form_data );
 
+					do_action( 'everest_forms_display_before_field_wrapper', $field, $form_data );
+
 					// Get field properties.
 					$properties = self::get_field_properties( $field, $form_data, $attributes );
 
@@ -427,6 +429,8 @@ class EVF_Shortcode_Form {
 					do_action( "everest_forms_display_field_{$field['type']}", $field, $attributes, $form_data );
 
 					do_action( 'everest_forms_display_field_after', $field, $form_data );
+
+					do_action( 'everest_forms_display_after_field_wrapper', $field, $form_data );
 				}
 
 				echo '</div>';
