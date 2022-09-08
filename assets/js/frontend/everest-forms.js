@@ -163,7 +163,7 @@ jQuery( function ( $ ) {
 		},
 		init_colorpicker: function () {	
 			$( '.evf-color-picker' ).each(function() {
-				var $colorInputContainer = $(this);
+				var $color_input_container = $(this);
 	
 				Inputmask({
 					"mask": "\\#******",
@@ -174,33 +174,32 @@ jQuery( function ( $ ) {
 					}
 				}).mask($(this).find( 'input[type=text]' ));
 
-				$colorInputContainer.find( 'input[type=text]' )
+				$color_input_container.find( 'input[type=text]' )
 					.attr({
 						'autocomplete': 'off',
 						'placeholder': '#______'
 					});
 	
-				var $colorInput = $(this).find( '.evf-cp-input' );
+				var $color_input = $(this).find( '.evf-cp-input' );
 	
-				$colorInput.on( 'input', function() {
+				$color_input.on( 'input', function() {
 					$(this).parent().css({
 						background: $(this).val()
 					});
-					$colorInputContainer.find( 'input[type=text]' ).val($(this).val().toUpperCase()).toggleClass( 'evf-error', false);
-					$colorInputContainer.find( 'label:last-child' ).hide();
-					$colorInput.attr( 'value', $(this).val());
+					$color_input_container.find( 'input[type=text]' ).val($(this).val()).toggleClass( 'evf-error', false);
+					$color_input.attr( 'value', $(this).val());
 				});
 	
 				$(this).find( 'input[type=text]' ).on( 'change paste keyup', function() {
-					$colorInputContainer.find( '.evf-color-picker-bg' ).css({
+					$color_input_container.find( '.evf-color-picker-bg' ).css({
 						background: $(this).val(),
 					});
 	
-					$colorInput.attr( 'value', $(this).val()).change();
+					$color_input.attr( 'value', $(this).val()).change();
 				});
 
 				$(this).find( 'input[type=text]' ).on( 'click', function() {
-					$colorInput.trigger( 'click' );
+					$color_input.trigger( 'click' );
 				});
 			});
 		},
