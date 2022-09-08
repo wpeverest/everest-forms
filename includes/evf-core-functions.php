@@ -1837,7 +1837,7 @@ function evf_get_countries() {
  * @return array
  */
 function evf_get_states() {
-	$states =  array(
+	$states = array(
 		'AF' => array(),
 		'AL' => array( // Albanian states.
 			'AL-01' => __( 'Berat', 'everest-forms' ),

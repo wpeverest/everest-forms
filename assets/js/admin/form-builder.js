@@ -1910,7 +1910,7 @@
 
 				var select_id_name = {};
 
-				$('.everest-forms-field-option-row').find('.evf-select2-multiple').filter(function(){
+				$('.everest-forms-field-option-row').find('.evf-select2-country').filter(function(){
 					var this_id 	   = $(this).attr('id');
 					var this_name 	   = $(this).attr('name');
 					var this_parent_id = $(this).parent().attr('id');
