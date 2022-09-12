@@ -58,6 +58,12 @@ global $__everest_form_entry_id;
 
 		if ( ! empty( $__everest_form_id ) && ! empty( $__everest_form_entry_id ) ) {
 			$pdf_download_message = get_option( 'everest_forms_pdf_custom_download_text', '' );
+			$form                 = json_decode( evf()->form->get( $__everest_form_id )->post_content, true );
+			$pdf_submission       = isset( $form['settings']['pdf_submission']['enable_pdf_submission'] ) && 0 !== $form['settings']['pdf_submission']['enable_pdf_submission'] ? $form['settings']['pdf_submission'] : '';
+
+			if ( isset( $pdf_submission['everest_forms_pdf_custom_download_text'] ) ) {
+				$pdf_download_message = $pdf_submission['everest_forms_pdf_custom_download_text'];
+			}
 
 			if ( empty( $pdf_download_message ) ) {
 				$pdf_download_message = __( 'Download your form submission in PDF format', 'everest-forms' );

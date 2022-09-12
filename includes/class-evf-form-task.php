@@ -207,6 +207,8 @@ class EVF_Form_Task {
 				}
 			}
 
+			$this->form_data['entry'] = $entry;
+
 			// Validate fields.
 			foreach ( $this->form_data['form_fields'] as $field ) {
 				$field_id        = $field['id'];
@@ -498,10 +500,11 @@ class EVF_Form_Task {
 			}
 		}
 
-		$settings = $this->form_data['settings'];
-		$message  = isset( $settings['successful_form_submission_message'] ) ? $settings['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
+		$settings       = $this->form_data['settings'];
+		$message        = isset( $settings['successful_form_submission_message'] ) ? $settings['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
+		$pdf_submission = isset( $settings['pdf_submission']['enable_pdf_submission'] ) && 0 !== $settings['pdf_submission']['enable_pdf_submission'] ? $settings['pdf_submission'] : '';
 
-		if ( defined( 'EVF_PDF_SUBMISSION_VERSION' ) && 'yes' === get_option( 'everest_forms_pdf_download_after_submit', 'no' ) ) {
+		if ( defined( 'EVF_PDF_SUBMISSION_VERSION' ) && ( 'yes' === get_option( 'everest_forms_pdf_download_after_submit', 'no' ) || ( isset( $pdf_submission['everest_forms_pdf_download_after_submit'] ) && 'yes' === $pdf_submission['everest_forms_pdf_download_after_submit'] ) ) ) {
 			global $__everest_form_id;
 			global $__everest_form_entry_id;
 			$__everest_form_id       = $form_id;
@@ -520,9 +523,14 @@ class EVF_Form_Task {
 			$response_data['form_id']  = $form_id;
 			$response_data['entry_id'] = $entry_id;
 
-			if ( defined( 'EVF_PDF_SUBMISSION_VERSION' ) && 'yes' === get_option( 'everest_forms_pdf_download_after_submit', 'no' ) ) {
+			if ( defined( 'EVF_PDF_SUBMISSION_VERSION' ) && ( 'yes' === get_option( 'everest_forms_pdf_download_after_submit', 'no' ) || ( isset( $pdf_submission['everest_forms_pdf_download_after_submit'] ) && 'yes' === $pdf_submission['everest_forms_pdf_download_after_submit'] ) ) ) {
 				$response_data['pdf_download'] = true;
 				$pdf_download_message          = get_option( 'everest_forms_pdf_custom_download_text', '' );
+
+				if ( isset( $pdf_submission['everest_forms_pdf_custom_download_text'] ) ) {
+					$pdf_download_message = $pdf_submission['everest_forms_pdf_custom_download_text'];
+				}
+
 				if ( empty( $pdf_download_message ) ) {
 					$pdf_download_message = __( 'Download your form submission in PDF format', 'everest-forms' );
 				}

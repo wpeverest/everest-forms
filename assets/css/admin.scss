@@ -982,6 +982,9 @@ body.everest-forms-builder {
 						&.geolocation::before {
 							content: '\e900';
 						}
+						&.delete::before {
+							content: '\e906';
+						}
 					}
 				}
 

@@ -34,9 +34,11 @@ if ( defined( 'EVF_REMOVE_ALL_DATA' ) && true === EVF_REMOVE_ALL_DATA ) {
 
 	// Delete options.
 	$wpdb->query( "DELETE FROM $wpdb->options WHERE option_name LIKE 'evf\_%';" );
+	$wpdb->query( "DELETE FROM $wpdb->options WHERE option_name LIKE 'everest_forms\_%';" );
 
 	// Delete usermeta.
 	$wpdb->query( "DELETE FROM $wpdb->usermeta WHERE meta_key LIKE 'evf\_%';" );
+	$wpdb->query( "DELETE FROM $wpdb->usermeta WHERE meta_key LIKE 'everest_forms\_%';" );
 
 	// Delete posts + data.
 	$wpdb->query( "DELETE FROM {$wpdb->posts} WHERE post_type IN ( 'everest_form' );" );

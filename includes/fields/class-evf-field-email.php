@@ -29,6 +29,7 @@ class EVF_Field_Email extends EVF_Form_Fields {
 					'meta',
 					'description',
 					'required',
+					'required_field_message_setting',
 					'required_field_message',
 					'confirmation',
 				),
@@ -362,12 +363,18 @@ class EVF_Field_Email extends EVF_Form_Fields {
 	 * @param array $form_data    Form data.
 	 */
 	public function validate( $field_id, $field_submit, $form_data ) {
-		$form_id            = (int) $form_data['id'];
-		$conditional_status = isset( $form_data['form_fields'][ $field_id ]['conditional_logic_status'] ) ? $form_data['form_fields'][ $field_id ]['conditional_logic_status'] : 0;
+		$form_id          = (int) $form_data['id'];
+		$entry            = $form_data['entry'];
+		$visible          = apply_filters( 'everest_forms_visible_fields', true, $form_data['form_fields'][ $field_id ], $entry, $form_data );
+		$field_type       = isset( $form_data['form_fields'][ $field_id ]['type'] ) ? $form_data['form_fields'][ $field_id ]['type'] : '';
+		$required_message = isset( $form_data['form_fields'][ $field_id ]['required-field-message'], $form_data['form_fields'][ $field_id ]['required_field_message_setting'] ) && ! empty( $form_data['form_fields'][ $field_id ]['required-field-message'] ) && 'individual' == $form_data['form_fields'][ $field_id ]['required_field_message_setting'] ? $form_data['form_fields'][ $field_id ]['required-field-message'] : get_option( 'everest_forms_' . $field_type . '_validation' );
+		if ( false === $visible ) {
+			return;
+		}
 
 		// Required check.
-		if ( ! empty( $form_data['form_fields'][ $field_id ]['required'] ) && '1' !== $conditional_status ) {
-			$required = evf_get_required_label();
+		if ( ! empty( $form_data['form_fields'][ $field_id ]['required'] ) ) {
+			$required = $required_message;
 
 			// Standard configuration, confirmation disabled.
 			if ( empty( $form_data['form_fields'][ $field_id ]['confirmation'] ) ) {
