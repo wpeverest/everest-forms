@@ -70,7 +70,9 @@ jQuery( function( $ ) {
 				$( this ).selectWoo( select2_args ).addClass( 'enhanced' );
 			});
 
-		// Setup multi-select2 with Select/Unselect All buttons.
+
+		$(document.body).on('click', '.everest-forms-field', function () {
+			// Setup multi-select2 with Select/Unselect All buttons.
 		var SelectionAdapter, DropdownAdapter;
 		$.fn.select2.amd.require(
 			[
@@ -135,7 +137,6 @@ jQuery( function( $ ) {
 
 					$selectAllButton.on("click", function () {
 						var $options = self.$element.find("option");
-						console.log($options, $options.length);
 						var values = [];
 
 						$options.each(function () {
@@ -185,8 +186,8 @@ jQuery( function( $ ) {
 						width: '100%',
 						templateSelection: function(data) {
 
-							if ( ! data.id ) { 
-								return data.text; 
+							if ( ! data.id ) {
+								return data.text;
 							}
 
 							var selected_len = ($this.val() || []).length;
@@ -198,7 +199,7 @@ jQuery( function( $ ) {
 				});
 			}
 		);
-
+		});
 
 		}).trigger( 'evf-enhanced-select-init' );
 
