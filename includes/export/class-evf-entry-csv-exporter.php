@@ -279,22 +279,31 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 				// Filter for entry meta data.
 				$field_type = $fields[ $column_id ]['type'];
 
-				if ( 'checkbox' === $field_type || 'payment-checkbox' === $field_type ) {
-					$value = $fields[ $column_id ]['value']['label'];
-					$value = implode( ', ', $value );
-				} elseif ( 'radio' === $field_type || 'payment-multiple' === $field_type ) {
-					$value = $fields[ $column_id ]['value']['label'];
-				} elseif ( 'select' === $field_type ) {
-					$value = $fields[ $column_id ]['value'];
-					$value = implode( ', ', $value );
-				} elseif ( 'rating' === $field_type ) {
-					$value           = ! empty( $fields[ $column_id ]['value']['value'] ) ? $fields[ $column_id ]['value']['value'] : 0;
-					$number_of_stars = ! empty( $fields[ $column_id ]['number_of_rating'] ) ? $fields[ $column_id ]['number_of_rating'] : 5;
-					$value           = $value . '/' . $number_of_stars;
-				} elseif ( 'country' === $field_type ) {
-					$value = apply_filters( 'everest_forms_plaintext_field_value', $fields[ $column_id ]['value']['country_code'], $fields[ $column_id ]['value'], $entry, 'email-plain' );
-				} else {
-					$value = apply_filters( 'everest_forms_html_field_value', $fields[ $column_id ]['value'], $fields[ $column_id ], $entry, 'export-csv' );
+				switch ( $field_type ) {
+					case 'checkbox':
+					case 'payment-checkbox':
+						$value = $fields[ $column_id ]['value']['label'];
+						$value = implode( ', ', $value );
+						break;
+					case 'radio':
+					case 'payment-multiple':
+						$value = $fields[ $column_id ]['value']['label'];
+						break;
+					case 'select':
+						$value = $fields[ $column_id ]['value'];
+						$value = implode( ', ', $value );
+						break;
+					case 'rating':
+						$value           = ! empty( $fields[ $column_id ]['value']['value'] ) ? $fields[ $column_id ]['value']['value'] : 0;
+						$number_of_stars = ! empty( $fields[ $column_id ]['number_of_rating'] ) ? $fields[ $column_id ]['number_of_rating'] : 5;
+						$value           = $value . '/' . $number_of_stars;
+						break;
+					case 'country':
+						$value = apply_filters( 'everest_forms_plaintext_field_value', $fields[ $column_id ]['value']['country_code'], $fields[ $column_id ]['value'], $entry, 'email-plain' );
+						break;
+					default:
+						$value = apply_filters( 'everest_forms_html_field_value', $fields[ $column_id ]['value'], $fields[ $column_id ], $entry, 'export-csv' );
+						break;
 				}
 			} elseif ( is_callable( array( $this, "get_column_value_{$column_id}" ) ) ) {
 				// Handle special columns which don't map 1:1 to entry data.
