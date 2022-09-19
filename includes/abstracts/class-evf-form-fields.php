@@ -1370,7 +1370,6 @@ abstract class EVF_Form_Fields {
 			case 'default_value':
 				$value   = ! empty( $field['default_value'] ) || ( isset( $field['default_value'] ) && '0' === (string) $field['default_value'] ) ? esc_attr( $field['default_value'] ) : '';
 				$tooltip = esc_html__( 'Enter text for the default form field value.', 'everest-forms' );
-
 				$toggle  = '';
 				$output  = $this->field_element(
 					'label',
