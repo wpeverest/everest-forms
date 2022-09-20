@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 1.9.4 - xx-xx-2022
+* Enhacnement - Filter added for dropdown options. 
+
 = 1.9.3 - 31-08-2022
 * Enhancement - When EVF_REMOVE_ALL_DATA is true, delete options and user meta starting with Everest Forms.
 * Enhancement - Required field validation(Global setting, Individual setting).
