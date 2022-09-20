@@ -4,6 +4,7 @@
 * Enhacnement - Filter added for dropdown options. 
 * Fix - Empty field values in exported CSV file while changing meta key.
 * Enhancement - Submit form name form by pressing the enter key while adding a new form.
+* Refactor - Multi-select value code in the builder.
 
 = 1.9.3 - 31-08-2022
 * Enhancement - When EVF_REMOVE_ALL_DATA is true, delete options and user meta starting with Everest Forms.

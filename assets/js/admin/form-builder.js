@@ -1908,28 +1908,6 @@
 				// Save form args.
 				$(document).trigger('everest_forms_save_args', [form_data]);
 
-				var select_id_name = {};
-
-				$('.everest-forms-field-option-row').find('.evf-select2-multiple').filter(function(){
-					var this_id 	   = $(this).attr('id');
-					var this_name 	   = $(this).attr('name');
-					var this_parent_id = $(this).parent().attr('id');
-					if(this_id.split("-option-")[1] === this_parent_id.split("-option-row-")[1]){
-						select_id_name[this_id] = this_name;
-					}
-					return select_id_name;
-				});
-
-				if((Object.keys(select_id_name).length) > 0){
-					$.each(select_id_name, function (id, name) {
-						var countries  = [];
-						$.each($('#'+id+' option:selected'), function () {
-							countries.push($(this).val());
-						});
-						form_data.push({name: name, value: countries.toString()});
-					});
-				}
-
 				if ( '' === form_title ) {
 					$.alert({
 						title: evf_data.i18n_field_title_empty,
