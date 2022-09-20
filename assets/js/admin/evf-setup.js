@@ -20,6 +20,14 @@ jQuery( function( $ ) {
 
 			// Prevent <ENTER> key for setup actions.
 			$( document.body ).on( 'keypress', '.everest-forms-setup-form-name input', this.input_keypress );
+			
+			// <ENTER> key for setup actions.
+			$( document.body ).on( 'keypress', 'input#everest-forms-setup-name', function ( event ) {
+				if( event.key === "Enter" ) {
+					event.preventDefault();
+					$( this ).parents( 'div.jconfirm-content-pane' ).next( 'div.jconfirm-buttons' ).find( 'button.everest-forms-btn.everest-forms-btn-primary' ).trigger( 'click' );
+				}
+			} );
 		},
 		title_focus: function() {
 			setTimeout( function (){
