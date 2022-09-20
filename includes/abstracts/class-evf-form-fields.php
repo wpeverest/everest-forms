@@ -1268,12 +1268,12 @@ abstract class EVF_Form_Fields {
 					array(
 						'label'   => esc_html__( 'U.S. States', 'everest-forms' ),
 						'class'   => 'evf-options-preset-states',
-						'options' => array_values( evf_get_states() ),
+						'options' => array_values( evf_get_states()['US'] ),
 					),
 					array(
 						'label'   => esc_html__( 'U.S. States Postal Code', 'everest-forms' ),
 						'class'   => 'evf-options-preset-states-postal-code',
-						'options' => array_keys( evf_get_states() ),
+						'options' => array_keys( evf_get_states()['US'] ),
 					),
 					array(
 						'label'   => esc_html__( 'Age Groups', 'everest-forms' ),
