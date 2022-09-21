@@ -1,5 +1,13 @@
 == Changelog ==
 
+= 1.9.4 - xx-xx-2022
+* Fix - Empty field values in exported CSV file while changing meta key.
+* Enhancement - Submit the form template name by pressing enter key.
+* Refactor - Multi-select value code in the builder.
+* Dev - Filter added for dropdown options.
+* Dev - Dynamic country wise state dropdown.
+* Dev - Progress field.
+
 = 1.9.3 - 31-08-2022
 * Enhancement - When EVF_REMOVE_ALL_DATA is true, delete options and user meta starting with Everest Forms.
 * Enhancement - Required field validation(Global setting, Individual setting).

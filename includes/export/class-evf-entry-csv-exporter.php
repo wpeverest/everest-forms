@@ -80,7 +80,7 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 		if ( ! empty( $form_data['form_fields'] ) ) {
 			foreach ( $form_data['form_fields'] as $field ) {
 				if ( ! in_array( $field['type'], array( 'html', 'title', 'captcha' ), true ) ) {
-					$columns[ $field['meta-key'] ] = evf_clean( $field['label'] );
+					$columns[ $field['id'] ] = evf_clean( $field['label'] );
 				}
 			}
 		}
@@ -269,22 +269,42 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 	protected function generate_row_data( $entry ) {
 		$columns = $this->get_column_names();
 		$row     = array();
+		$fields  = json_decode( $entry->fields, true );
 		foreach ( $columns as $column_id => $column_name ) {
 			$column_id = strstr( $column_id, ':' ) ? current( explode( ':', $column_id ) ) : $column_id;
 			$value     = '';
 			$raw_value = '';
 
-			if ( isset( $entry->meta[ $column_id ] ) ) {
+			if ( isset( $fields[ $column_id ] ) ) {
 				// Filter for entry meta data.
-				$value     = $entry->meta[ $column_id ];
-				$raw_value = $entry->meta[ $column_id ];
+				$field_type = $fields[ $column_id ]['type'];
 
-				if ( is_serialized( $value ) ) {
-					$value = $this->implode_values( maybe_unserialize( $value ) );
+				switch ( $field_type ) {
+					case 'checkbox':
+					case 'payment-checkbox':
+						$value = $fields[ $column_id ]['value']['label'];
+						$value = implode( ', ', $value );
+						break;
+					case 'radio':
+					case 'payment-multiple':
+						$value = $fields[ $column_id ]['value']['label'];
+						break;
+					case 'select':
+						$value = $fields[ $column_id ]['value'];
+						$value = implode( ', ', $value );
+						break;
+					case 'rating':
+						$value           = ! empty( $fields[ $column_id ]['value']['value'] ) ? $fields[ $column_id ]['value']['value'] : 0;
+						$number_of_stars = ! empty( $fields[ $column_id ]['number_of_rating'] ) ? $fields[ $column_id ]['number_of_rating'] : 5;
+						$value           = $value . '/' . $number_of_stars;
+						break;
+					case 'country':
+						$value = apply_filters( 'everest_forms_plaintext_field_value', $fields[ $column_id ]['value']['country_code'], $fields[ $column_id ]['value'], $entry, 'email-plain' );
+						break;
+					default:
+						$value = apply_filters( 'everest_forms_html_field_value', $fields[ $column_id ]['value'], $fields[ $column_id ], $entry, 'export-csv' );
+						break;
 				}
-
-				$value = apply_filters( 'everest_forms_html_field_value', $value, $entry->meta[ $column_id ], $entry, 'export-csv', $column_id );
-
 			} elseif ( is_callable( array( $this, "get_column_value_{$column_id}" ) ) ) {
 				// Handle special columns which don't map 1:1 to entry data.
 				$value     = $this->{"get_column_value_{$column_id}"}( $entry );
@@ -310,7 +330,7 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 			return false; // Conditional false with fake values.
 		}
 		foreach ( $fields as $field ) {
-			if ( $column_id === $field['meta_key'] ) {
+			if ( $column_id === $field['id'] ) {
 				return $field['type'];
 			}
 		}
