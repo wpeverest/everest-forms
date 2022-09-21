@@ -2,6 +2,8 @@
 
 = 1.9.4 - xx-xx-2022
 * Fix - Empty field values in exported CSV file while changing meta key.
+* Fix - undefined array_key issue while preview the form without saving.
+* Fix - Form Preview issue.
 * Enhancement - Submit the form template name by pressing enter key.
 * Refactor - Multi-select value code in the builder.
 * Dev - Filter added for dropdown options.
