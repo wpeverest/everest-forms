@@ -7,6 +7,7 @@
 * Dev - Filter added for dropdown options.
 * Dev - Dynamic country wise state dropdown.
 * Dev - Progress field.
+* Dev - Reset field.
 
 = 1.9.3 - 31-08-2022
 * Enhancement - When EVF_REMOVE_ALL_DATA is true, delete options and user meta starting with Everest Forms.
