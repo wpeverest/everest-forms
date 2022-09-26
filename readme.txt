@@ -324,10 +324,10 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 1.9.4 - xx-xx-2022
+= 1.9.4 - 26-09-2022
 * Fix - Empty field values in exported CSV file while changing meta key.
 * Fix - undefined array_key issue while preview the form without saving.
-* Fix - Form Preview issue.
+* Fix - Form Preview issue in some themes.
 * Enhancement - Submit the form template name by pressing enter key.
 * Refactor - Multi-select value code in the builder.
 * Dev - Filter added for dropdown options.
