@@ -426,7 +426,7 @@
 			"slug": "everest-forms-getresponse",
 			"name": "Everest Forms GetResponse",
 			"image": "extensions-json/sections/images/getresponse.jpg",
-			"excerpt": "Everest Forms GetResponse add-on is a WordPress GetResponse integration plugin that allows you to easily send Everest Forms entries directly to your GetResponse account. ",
+			"excerpt": "Allows your users to subscribe to GetResponse through form submissions. Users filling up the forms can be directly added to your subscribers list in GetResponse.",
 			"link": "https://wpeverest.com/wordpress-plugins/everest-forms/getresponse/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=getresponse",
 			"plan": [
 				"plus",
@@ -439,7 +439,7 @@
 			"slug": "everest-forms-sendinblue",
 			"name": "Everest Forms Sendinblue",
 			"image": "extensions-json/sections/images/sendinblue.jpg",
-			"excerpt": "Everest Forms Sendinblue add-on is a WordPress Sendinblue integration plugin that allows you to easily send Everest Forms entries directly to your Sendinblue account. ",
+			"excerpt": "Allows your users to subscribe to Sendinblue through form submissions. Users filling up the forms can be directly added to your subscribers list in Sendinblue.",
 			"link": "https://wpeverest.com/wordpress-plugins/everest-forms/sendinblue/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=sendinblue",
 			"plan": [
 				"plus",
