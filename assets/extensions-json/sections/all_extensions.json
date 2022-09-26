@@ -29,11 +29,11 @@
 			]
 		},
 		{
-			"title": "MailChimp",
+			"title": "Mailchimp",
 			"slug": "everest-forms-mailchimp",
-			"name": "Everest Forms MailChimp",
+			"name": "Everest Forms Mailchimp",
 			"image": "extensions-json/sections/images/mailchimp.png",
-			"excerpt": "Allows your users to subscribe to MailChimp through form submissions. Users filling up the forms can be directly added to your subscribers list in MailChimp.",
+			"excerpt": "Allows your users to subscribe to Mailchimp through form submissions. Users filling up the forms can be directly added to your subscribers list in Mailchimp.",
 			"link": "https://wpeverest.com/wordpress-plugins/everest-forms/mailchimp/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=mailchimp",
 			"plan": [
 				"personal",
@@ -416,6 +416,32 @@
 			"link": "https://wpeverest.com/wordpress-plugins/everest-forms/cloud-storage/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=cloud-storage",
 			"plan": [
 				"personal",
+				"plus",
+				"professional",
+				"agency"
+			]
+		},
+		{
+			"title": "GetResponse",
+			"slug": "everest-forms-getresponse",
+			"name": "Everest Forms GetResponse",
+			"image": "extensions-json/sections/images/getresponse.jpg",
+			"excerpt": "Everest Forms GetResponse add-on is a WordPress GetResponse integration plugin that allows you to easily send Everest Forms entries directly to your GetResponse account. ",
+			"link": "https://wpeverest.com/wordpress-plugins/everest-forms/getresponse/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=getresponse",
+			"plan": [
+				"plus",
+				"professional",
+				"agency"
+			]
+		},
+		{
+			"title": "Sendinblue",
+			"slug": "everest-forms-sendinblue",
+			"name": "Everest Forms Sendinblue",
+			"image": "extensions-json/sections/images/sendinblue.jpg",
+			"excerpt": "Everest Forms Sendinblue add-on is a WordPress Sendinblue integration plugin that allows you to easily send Everest Forms entries directly to your Sendinblue account. ",
+			"link": "https://wpeverest.com/wordpress-plugins/everest-forms/sendinblue/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=sendinblue",
+			"plan": [
 				"plus",
 				"professional",
 				"agency"
