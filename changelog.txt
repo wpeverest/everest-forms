@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 1.9.4.1 - 27-09-2022
+* Fix - Progress field order issue in repeater fields.
+* Fix - Everest Forms version mismatch issue.
+
 = 1.9.4 - 26-09-2022
 * Fix - Empty field values in exported CSV file while changing meta key.
 * Fix - undefined array_key issue while preview the form without saving.
