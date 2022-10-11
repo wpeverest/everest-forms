@@ -104,7 +104,7 @@ class EVF_Form_Handler {
 		}
 
 		if ( ! current_user_can( 'everest_forms_view_forms' ) && ! current_user_can( 'everest_forms_view_others_forms' ) ) {
-			if ( $args['cap'] !== 'everest_forms_view_conversational_forms' ) {
+			if ( isset($args['cap']) && $args['cap'] !== 'everest_forms_view_conversational_forms' ) {
 				$args['post__in'] = array( 0 );
 			}
 		}
