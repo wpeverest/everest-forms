@@ -334,4 +334,13 @@
 	&yes-no::before {
 		content: '\e905';
 	}
+	&reset::before {
+		content: '\e907';
+	}
+	&progress::before {
+		content: '\e908';
+	}
+	&color::before {
+		content: '\e909';
+	}
 }

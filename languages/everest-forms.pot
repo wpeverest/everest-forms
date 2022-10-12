@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-09-01T09:05:28+00:00\n"
+"POT-Creation-Date: 2022-09-26T08:40:47+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: everest-forms\n"
@@ -57,32 +57,32 @@ msgid "Off"
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:418
-#: includes/evf-core-functions.php:1935
+#: includes/evf-core-functions.php:3950
 msgid "Enter text for the form field label. This is recommended and can be hidden in the Advanced Settings."
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:424
-#: includes/evf-core-functions.php:1934
+#: includes/evf-core-functions.php:3949
 msgid "Label"
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:454
-#: includes/evf-core-functions.php:1943
+#: includes/evf-core-functions.php:3958
 msgid "Enter meta key to be stored in database."
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:460
-#: includes/evf-core-functions.php:1942
+#: includes/evf-core-functions.php:3957
 msgid "Meta Key"
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:491
-#: includes/evf-core-functions.php:1952
+#: includes/evf-core-functions.php:3967
 msgid "Enter text for the form field description."
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:497
-#: includes/evf-core-functions.php:1950
+#: includes/evf-core-functions.php:3965
 msgid "Description"
 msgstr ""
 
@@ -92,7 +92,7 @@ msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:535
 #: includes/admin/settings/class-evf-settings-validation.php:46
-#: includes/evf-core-functions.php:1958
+#: includes/evf-core-functions.php:3973
 #: includes/shortcodes/class-evf-shortcode-form.php:244
 msgid "Required"
 msgstr ""
@@ -239,7 +239,7 @@ msgid "Code"
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:1040
-#: includes/evf-core-functions.php:1966
+#: includes/evf-core-functions.php:3981
 msgid "Choices"
 msgstr ""
 
@@ -248,7 +248,7 @@ msgid "Bulk Add"
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:1069
-#: includes/evf-core-functions.php:1967
+#: includes/evf-core-functions.php:3982
 msgid "Add choices for the form field."
 msgstr ""
 
@@ -529,12 +529,12 @@ msgid "Advanced Options"
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:1449
-#: includes/evf-core-functions.php:1979
+#: includes/evf-core-functions.php:3994
 msgid "Enter text for the form field placeholder."
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:1455
-#: includes/evf-core-functions.php:1978
+#: includes/evf-core-functions.php:3993
 msgid "Placeholder Text"
 msgstr ""
 
@@ -559,28 +559,28 @@ msgid "Enter CSS class names for this field container. Multiple class names shou
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:1556
-#: includes/evf-core-functions.php:1986
+#: includes/evf-core-functions.php:4001
 msgid "CSS Classes"
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:1587
 #: includes/abstracts/class-evf-form-fields.php:1753
-#: includes/evf-core-functions.php:1996
+#: includes/evf-core-functions.php:4011
 msgid "Check this option to hide the form field label."
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:1596
-#: includes/evf-core-functions.php:1994
+#: includes/evf-core-functions.php:4009
 msgid "Hide Label"
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:1617
-#: includes/evf-core-functions.php:2004
+#: includes/evf-core-functions.php:4019
 msgid "Check this option to hide the form field sub-label."
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:1626
-#: includes/evf-core-functions.php:2002
+#: includes/evf-core-functions.php:4017
 msgid "Hide Sub-Labels"
 msgstr ""
 
@@ -828,7 +828,7 @@ msgid "Form disabled message"
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:158
-#: includes/shortcodes/class-evf-shortcode-form.php:882
+#: includes/shortcodes/class-evf-shortcode-form.php:889
 msgid "This form is disabled."
 msgstr ""
 
@@ -1163,232 +1163,242 @@ msgctxt "enhanced select"
 msgid "Searching&hellip;"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:141
-msgid "field"
+#: includes/admin/class-evf-admin-assets.php:123
+msgctxt "enhanced select"
+msgid "Select All"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:142
-#: includes/admin/class-evf-admin-assets.php:221
-msgid "OK"
+#: includes/admin/class-evf-admin-assets.php:124
+msgctxt "enhanced select"
+msgid "Unselect All"
 msgstr ""
 
 #: includes/admin/class-evf-admin-assets.php:143
-msgid "Installing"
+msgid "field"
 msgstr ""
 
 #: includes/admin/class-evf-admin-assets.php:144
-msgid "Activating"
+#: includes/admin/class-evf-admin-assets.php:223
+msgid "OK"
 msgstr ""
 
 #: includes/admin/class-evf-admin-assets.php:145
-msgid "Install & Activate"
+msgid "Installing"
 msgstr ""
 
 #: includes/admin/class-evf-admin-assets.php:146
-msgid "Activate Plugins"
+msgid "Activating"
 msgstr ""
 
 #: includes/admin/class-evf-admin-assets.php:147
-msgid "(copy)"
+msgid "Install & Activate"
 msgstr ""
 
 #: includes/admin/class-evf-admin-assets.php:148
+msgid "Activate Plugins"
+msgstr ""
+
+#: includes/admin/class-evf-admin-assets.php:149
+msgid "(copy)"
+msgstr ""
+
+#: includes/admin/class-evf-admin-assets.php:150
 #: includes/admin/class-evf-admin-editor.php:62
 msgid "Close"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:149
-#: includes/admin/class-evf-admin-assets.php:224
+#: includes/admin/class-evf-admin-assets.php:151
+#: includes/admin/class-evf-admin-assets.php:226
 #: includes/admin/class-evf-admin-editor.php:97
 msgid "Cancel"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:150
+#: includes/admin/class-evf-admin-assets.php:152
 msgid "Row Locked"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:151
+#: includes/admin/class-evf-admin-assets.php:153
 msgid "Single row cannot be deleted."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:152
+#: includes/admin/class-evf-admin-assets.php:154
 msgid "Field Locked"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:153
+#: includes/admin/class-evf-admin-assets.php:155
 msgid "This field cannot be deleted or duplicated."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:154
+#: includes/admin/class-evf-admin-assets.php:156
 msgid "This row cannot be deleted or duplicated."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:155
+#: includes/admin/class-evf-admin-assets.php:157
 msgid "This item must contain at least one choice."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:156
+#: includes/admin/class-evf-admin-assets.php:158
 msgid "Are you sure you want to delete this row?"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:157
+#: includes/admin/class-evf-admin-assets.php:159
 msgid "Are you sure you want to delete this field?"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:158
+#: includes/admin/class-evf-admin-assets.php:160
 msgid "Are you sure you want to duplicate this field?"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:159
+#: includes/admin/class-evf-admin-assets.php:161
 msgid "Are you sure you want to duplicate this row?"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:160
+#: includes/admin/class-evf-admin-assets.php:162
 msgid "Turn on Email settings to manage your email notification."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:161
+#: includes/admin/class-evf-admin-assets.php:163
 msgid "Choose an image"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:162
+#: includes/admin/class-evf-admin-assets.php:164
 msgid "Use Image"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:163
+#: includes/admin/class-evf-admin-assets.php:165
 msgid "Remove Image"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:164
+#: includes/admin/class-evf-admin-assets.php:166
 msgid "Empty Form Name"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:165
+#: includes/admin/class-evf-admin-assets.php:167
 msgid "keyboard Shortcut Keys"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:167
+#: includes/admin/class-evf-admin-assets.php:169
 msgid "Save Builder"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:168
+#: includes/admin/class-evf-admin-assets.php:170
 msgid "Close Builder"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:169
+#: includes/admin/class-evf-admin-assets.php:171
 msgid "Preview Form"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:170
+#: includes/admin/class-evf-admin-assets.php:172
 msgid "Go to Entries"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:171
+#: includes/admin/class-evf-admin-assets.php:173
 msgid "Open Help"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:173
+#: includes/admin/class-evf-admin-assets.php:175
 msgid "Form name can't be empty."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:197
+#: includes/admin/class-evf-admin-assets.php:199
 msgid "is a PRO Feature"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:198
+#: includes/admin/class-evf-admin-assets.php:200
 msgid "We're sorry, the %name% is not available on your plan.<br>Please upgrade to the PRO plan to unlock all these awesome features."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:199
+#: includes/admin/class-evf-admin-assets.php:201
 msgid "Upgrade to PRO"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:201
+#: includes/admin/class-evf-admin-assets.php:203
 msgid "Please enable Stripe"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:202
+#: includes/admin/class-evf-admin-assets.php:204
 msgid "Enable Stripe Payment gateway in payments section to use this field."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:218
+#: includes/admin/class-evf-admin-assets.php:220
 msgid "Enter a Email nickname"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:219
+#: includes/admin/class-evf-admin-assets.php:221
 msgid "Eg: Support Email"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:220
+#: includes/admin/class-evf-admin-assets.php:222
 msgid "You must provide a Email nickname"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:227
+#: includes/admin/class-evf-admin-assets.php:229
 msgid "New Form Entry"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:237
+#: includes/admin/class-evf-admin-assets.php:239
 msgid "Please enter in meta key with alphanumeric characters, dashes and underscores."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:238
+#: includes/admin/class-evf-admin-assets.php:240
 msgid "Minimum value is greater than Maximum value."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:239
+#: includes/admin/class-evf-admin-assets.php:241
 msgid "Maximum value is smaller than Minimum value."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:240
+#: includes/admin/class-evf-admin-assets.php:242
 msgid "Default value is greater than Maximum value."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:241
+#: includes/admin/class-evf-admin-assets.php:243
 msgid "Default value is smaller than Minimum value."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:242
+#: includes/admin/class-evf-admin-assets.php:244
 msgid "Please select a form which you want to export."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:267
+#: includes/admin/class-evf-admin-assets.php:269
 msgid "Give it a name."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:268
+#: includes/admin/class-evf-admin-assets.php:270
 msgid "You must provide a Form name"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:270
+#: includes/admin/class-evf-admin-assets.php:272
 #: includes/admin/views/html-admin-page-addons.php:133
 msgid "Upgrade Plan"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:271
+#: includes/admin/class-evf-admin-assets.php:273
 msgid "This template requires premium addons. Please upgrade to the Premium plan to unlock all these awesome Templates."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:272
+#: includes/admin/class-evf-admin-assets.php:274
 msgid "is a Premium Template"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:273
+#: includes/admin/class-evf-admin-assets.php:275
 msgid "Continue"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:274
+#: includes/admin/class-evf-admin-assets.php:276
 msgid "Untitled Form"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:275
+#: includes/admin/class-evf-admin-assets.php:277
 msgid "Uplift your form experience to the next level."
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:289
+#: includes/admin/class-evf-admin-assets.php:291
 msgid "Are you sure you want to delete this log?"
 msgstr ""
 
-#: includes/admin/class-evf-admin-assets.php:290
+#: includes/admin/class-evf-admin-assets.php:292
 msgid "Are you sure you want to delete all logs?"
 msgstr ""
 
@@ -2791,7 +2801,7 @@ msgstr ""
 
 #: includes/class-evf-form-task.php:91
 #: includes/class-evf-form-task.php:504
-#: includes/shortcodes/class-evf-shortcode-form.php:946
+#: includes/shortcodes/class-evf-shortcode-form.php:953
 #: includes/templates/contact.php:61
 msgid "Thanks for contacting us! We will be in touch with you shortly."
 msgstr ""
@@ -3605,7 +3615,6 @@ msgid "Gambia"
 msgstr ""
 
 #: includes/evf-core-functions.php:1659
-#: includes/evf-core-functions.php:1851
 msgid "Georgia"
 msgstr ""
 
@@ -3642,6 +3651,7 @@ msgid "Guam"
 msgstr ""
 
 #: includes/evf-core-functions.php:1668
+#: includes/evf-core-functions.php:2475
 msgid "Guatemala"
 msgstr ""
 
@@ -3918,6 +3928,7 @@ msgid "Nicaragua"
 msgstr ""
 
 #: includes/evf-core-functions.php:1737
+#: includes/evf-core-functions.php:3090
 msgid "Niger"
 msgstr ""
 
@@ -4281,257 +4292,7583 @@ msgstr ""
 msgid "Zimbabwe"
 msgstr ""
 
-#: includes/evf-core-functions.php:1841
-msgid "Alabama"
-msgstr ""
-
-#: includes/evf-core-functions.php:1842
-msgid "Alaska"
-msgstr ""
-
 #: includes/evf-core-functions.php:1843
-msgid "Arizona"
+msgid "Berat"
 msgstr ""
 
 #: includes/evf-core-functions.php:1844
-msgid "Arkansas"
+msgid "Dibër"
 msgstr ""
 
 #: includes/evf-core-functions.php:1845
-msgid "California"
+msgid "Durrës"
 msgstr ""
 
 #: includes/evf-core-functions.php:1846
-msgid "Colorado"
+msgid "Elbasan"
 msgstr ""
 
 #: includes/evf-core-functions.php:1847
-msgid "Connecticut"
+msgid "Fier"
 msgstr ""
 
 #: includes/evf-core-functions.php:1848
-msgid "Delaware"
+msgid "Gjirokastër"
 msgstr ""
 
 #: includes/evf-core-functions.php:1849
-msgid "District of Columbia"
+msgid "Korçë"
 msgstr ""
 
 #: includes/evf-core-functions.php:1850
-msgid "Florida"
+msgid "Kukës"
+msgstr ""
+
+#: includes/evf-core-functions.php:1851
+msgid "Lezhë"
 msgstr ""
 
 #: includes/evf-core-functions.php:1852
-msgid "Hawaii"
+msgid "Shkodër"
 msgstr ""
 
 #: includes/evf-core-functions.php:1853
-msgid "Idaho"
+msgid "Tirana"
 msgstr ""
 
 #: includes/evf-core-functions.php:1854
-msgid "Illinois"
-msgstr ""
-
-#: includes/evf-core-functions.php:1855
-msgid "Indiana"
-msgstr ""
-
-#: includes/evf-core-functions.php:1856
-msgid "Iowa"
+msgid "Vlorë"
 msgstr ""
 
 #: includes/evf-core-functions.php:1857
-msgid "Kansas"
+msgid "Bengo"
 msgstr ""
 
 #: includes/evf-core-functions.php:1858
-msgid "Kentucky"
+msgid "Benguela"
 msgstr ""
 
 #: includes/evf-core-functions.php:1859
-msgid "Louisiana"
+msgid "Bié"
 msgstr ""
 
 #: includes/evf-core-functions.php:1860
-msgid "Maine"
+msgid "Cabinda"
 msgstr ""
 
 #: includes/evf-core-functions.php:1861
-msgid "Maryland"
+msgid "Cunene"
 msgstr ""
 
 #: includes/evf-core-functions.php:1862
-msgid "Massachusetts"
+msgid "Huambo"
 msgstr ""
 
 #: includes/evf-core-functions.php:1863
-msgid "Michigan"
+msgid "Huíla"
 msgstr ""
 
 #: includes/evf-core-functions.php:1864
-msgid "Minnesota"
+msgid "Kuando Kubango"
 msgstr ""
 
 #: includes/evf-core-functions.php:1865
-msgid "Mississippi"
+msgid "Kwanza-Norte"
 msgstr ""
 
 #: includes/evf-core-functions.php:1866
-msgid "Missouri"
+msgid "Kwanza-Sul"
 msgstr ""
 
 #: includes/evf-core-functions.php:1867
-msgid "Montana"
+msgid "Luanda"
 msgstr ""
 
 #: includes/evf-core-functions.php:1868
-msgid "Nebraska"
+msgid "Lunda-Norte"
 msgstr ""
 
 #: includes/evf-core-functions.php:1869
-msgid "Nevada"
+msgid "Lunda-Sul"
 msgstr ""
 
 #: includes/evf-core-functions.php:1870
-msgid "New Hampshire"
+msgid "Malanje"
 msgstr ""
 
 #: includes/evf-core-functions.php:1871
-msgid "New Jersey"
+msgid "Moxico"
 msgstr ""
 
 #: includes/evf-core-functions.php:1872
-msgid "New Mexico"
+msgid "Namibe"
 msgstr ""
 
 #: includes/evf-core-functions.php:1873
-msgid "New York"
+msgid "Uíge"
 msgstr ""
 
 #: includes/evf-core-functions.php:1874
-msgid "North Carolina"
-msgstr ""
-
-#: includes/evf-core-functions.php:1875
-msgid "North Dakota"
-msgstr ""
-
-#: includes/evf-core-functions.php:1876
-msgid "Ohio"
+msgid "Zaire"
 msgstr ""
 
 #: includes/evf-core-functions.php:1877
-msgid "Oklahoma"
+msgid "Ciudad Autónoma de Buenos Aires"
 msgstr ""
 
 #: includes/evf-core-functions.php:1878
-msgid "Oregon"
+msgid "Buenos Aires"
 msgstr ""
 
 #: includes/evf-core-functions.php:1879
-msgid "Pennsylvania"
+msgid "Catamarca"
 msgstr ""
 
 #: includes/evf-core-functions.php:1880
-msgid "Rhode Island"
+msgid "Chaco"
 msgstr ""
 
 #: includes/evf-core-functions.php:1881
-msgid "South Carolina"
+msgid "Chubut"
 msgstr ""
 
 #: includes/evf-core-functions.php:1882
-msgid "South Dakota"
+#: includes/evf-core-functions.php:2175
+#: includes/evf-core-functions.php:2394
+msgid "Córdoba"
 msgstr ""
 
 #: includes/evf-core-functions.php:1883
-msgid "Tennessee"
+msgid "Corrientes"
 msgstr ""
 
 #: includes/evf-core-functions.php:1884
-msgid "Texas"
+msgid "Entre Ríos"
 msgstr ""
 
 #: includes/evf-core-functions.php:1885
-msgid "Utah"
+msgid "Formosa"
 msgstr ""
 
 #: includes/evf-core-functions.php:1886
-msgid "Vermont"
+msgid "Jujuy"
 msgstr ""
 
 #: includes/evf-core-functions.php:1887
-msgid "Virginia"
+msgid "La Pampa"
 msgstr ""
 
 #: includes/evf-core-functions.php:1888
-msgid "Washington"
+#: includes/evf-core-functions.php:2403
+msgid "La Rioja"
 msgstr ""
 
 #: includes/evf-core-functions.php:1889
-msgid "West Virginia"
+msgid "Mendoza"
 msgstr ""
 
 #: includes/evf-core-functions.php:1890
-msgid "Wisconsin"
+#: includes/evf-core-functions.php:3306
+msgid "Misiones"
 msgstr ""
 
 #: includes/evf-core-functions.php:1891
-msgid "Wyoming"
+msgid "Neuquén"
+msgstr ""
+
+#: includes/evf-core-functions.php:1892
+#: includes/evf-core-functions.php:3846
+msgid "Río Negro"
+msgstr ""
+
+#: includes/evf-core-functions.php:1893
+msgid "Salta"
+msgstr ""
+
+#: includes/evf-core-functions.php:1894
+#: includes/evf-core-functions.php:2260
+msgid "San Juan"
+msgstr ""
+
+#: includes/evf-core-functions.php:1895
+msgid "San Luis"
+msgstr ""
+
+#: includes/evf-core-functions.php:1896
+#: includes/evf-core-functions.php:2035
+msgid "Santa Cruz"
+msgstr ""
+
+#: includes/evf-core-functions.php:1897
+msgid "Santa Fe"
+msgstr ""
+
+#: includes/evf-core-functions.php:1898
+msgid "Santiago del Estero"
+msgstr ""
+
+#: includes/evf-core-functions.php:1899
+msgid "Tierra del Fuego"
+msgstr ""
+
+#: includes/evf-core-functions.php:1900
+msgid "Tucumán"
+msgstr ""
+
+#: includes/evf-core-functions.php:1904
+msgid "Australian Capital Territory"
+msgstr ""
+
+#: includes/evf-core-functions.php:1905
+msgid "New South Wales"
 msgstr ""
 
 #: includes/evf-core-functions.php:1906
-msgid "General Fields"
+msgid "Northern Territory"
 msgstr ""
 
 #: includes/evf-core-functions.php:1907
-msgid "Advanced Fields"
+msgid "Queensland"
 msgstr ""
 
 #: includes/evf-core-functions.php:1908
-msgid "Payment Fields"
+msgid "South Australia"
 msgstr ""
 
 #: includes/evf-core-functions.php:1909
-msgid "Survey Fields"
+msgid "Tasmania"
+msgstr ""
+
+#: includes/evf-core-functions.php:1910
+msgid "Victoria"
+msgstr ""
+
+#: includes/evf-core-functions.php:1911
+msgid "Western Australia"
+msgstr ""
+
+#: includes/evf-core-functions.php:1915
+msgid "Bagerhat"
+msgstr ""
+
+#: includes/evf-core-functions.php:1916
+msgid "Bandarban"
+msgstr ""
+
+#: includes/evf-core-functions.php:1917
+msgid "Barguna"
+msgstr ""
+
+#: includes/evf-core-functions.php:1918
+msgid "Barishal"
+msgstr ""
+
+#: includes/evf-core-functions.php:1919
+msgid "Bhola"
+msgstr ""
+
+#: includes/evf-core-functions.php:1920
+msgid "Bogura"
+msgstr ""
+
+#: includes/evf-core-functions.php:1921
+msgid "Brahmanbaria"
+msgstr ""
+
+#: includes/evf-core-functions.php:1922
+msgid "Chandpur"
+msgstr ""
+
+#: includes/evf-core-functions.php:1923
+msgid "Chattogram"
+msgstr ""
+
+#: includes/evf-core-functions.php:1924
+msgid "Chuadanga"
+msgstr ""
+
+#: includes/evf-core-functions.php:1925
+msgid "Cox's Bazar"
+msgstr ""
+
+#: includes/evf-core-functions.php:1926
+msgid "Cumilla"
+msgstr ""
+
+#: includes/evf-core-functions.php:1927
+msgid "Dhaka"
+msgstr ""
+
+#: includes/evf-core-functions.php:1928
+msgid "Dinajpur"
+msgstr ""
+
+#: includes/evf-core-functions.php:1929
+msgid "Faridpur "
+msgstr ""
+
+#: includes/evf-core-functions.php:1930
+msgid "Feni"
+msgstr ""
+
+#: includes/evf-core-functions.php:1931
+msgid "Gaibandha"
+msgstr ""
+
+#: includes/evf-core-functions.php:1932
+msgid "Gazipur"
+msgstr ""
+
+#: includes/evf-core-functions.php:1933
+msgid "Gopalganj"
+msgstr ""
+
+#: includes/evf-core-functions.php:1934
+msgid "Habiganj"
+msgstr ""
+
+#: includes/evf-core-functions.php:1935
+msgid "Jamalpur"
+msgstr ""
+
+#: includes/evf-core-functions.php:1936
+msgid "Jashore"
+msgstr ""
+
+#: includes/evf-core-functions.php:1937
+msgid "Jhalokati"
+msgstr ""
+
+#: includes/evf-core-functions.php:1938
+msgid "Jhenaidah"
+msgstr ""
+
+#: includes/evf-core-functions.php:1939
+msgid "Joypurhat"
+msgstr ""
+
+#: includes/evf-core-functions.php:1940
+msgid "Khagrachhari"
+msgstr ""
+
+#: includes/evf-core-functions.php:1941
+msgid "Khulna"
+msgstr ""
+
+#: includes/evf-core-functions.php:1942
+msgid "Kishoreganj"
+msgstr ""
+
+#: includes/evf-core-functions.php:1943
+msgid "Kurigram"
+msgstr ""
+
+#: includes/evf-core-functions.php:1944
+msgid "Kushtia"
+msgstr ""
+
+#: includes/evf-core-functions.php:1945
+msgid "Lakshmipur"
+msgstr ""
+
+#: includes/evf-core-functions.php:1946
+msgid "Lalmonirhat"
+msgstr ""
+
+#: includes/evf-core-functions.php:1947
+msgid "Madaripur"
+msgstr ""
+
+#: includes/evf-core-functions.php:1948
+msgid "Magura"
+msgstr ""
+
+#: includes/evf-core-functions.php:1949
+msgid "Manikganj "
+msgstr ""
+
+#: includes/evf-core-functions.php:1950
+msgid "Meherpur"
+msgstr ""
+
+#: includes/evf-core-functions.php:1951
+msgid "Moulvibazar"
+msgstr ""
+
+#: includes/evf-core-functions.php:1952
+msgid "Munshiganj"
+msgstr ""
+
+#: includes/evf-core-functions.php:1953
+msgid "Mymensingh"
+msgstr ""
+
+#: includes/evf-core-functions.php:1954
+msgid "Naogaon"
+msgstr ""
+
+#: includes/evf-core-functions.php:1955
+msgid "Narail"
+msgstr ""
+
+#: includes/evf-core-functions.php:1956
+msgid "Narayanganj"
+msgstr ""
+
+#: includes/evf-core-functions.php:1957
+msgid "Narsingdi"
+msgstr ""
+
+#: includes/evf-core-functions.php:1958
+msgid "Natore"
+msgstr ""
+
+#: includes/evf-core-functions.php:1959
+msgid "Nawabganj"
 msgstr ""
 
 #: includes/evf-core-functions.php:1960
-msgid "Check this option to mark the field required."
+msgid "Netrakona"
+msgstr ""
+
+#: includes/evf-core-functions.php:1961
+msgid "Nilphamari"
+msgstr ""
+
+#: includes/evf-core-functions.php:1962
+msgid "Noakhali"
+msgstr ""
+
+#: includes/evf-core-functions.php:1963
+msgid "Pabna"
+msgstr ""
+
+#: includes/evf-core-functions.php:1964
+msgid "Panchagarh"
+msgstr ""
+
+#: includes/evf-core-functions.php:1965
+msgid "Patuakhali"
+msgstr ""
+
+#: includes/evf-core-functions.php:1966
+msgid "Pirojpur"
+msgstr ""
+
+#: includes/evf-core-functions.php:1967
+msgid "Rajbari"
+msgstr ""
+
+#: includes/evf-core-functions.php:1968
+msgid "Rajshahi"
+msgstr ""
+
+#: includes/evf-core-functions.php:1969
+msgid "Rangamati"
+msgstr ""
+
+#: includes/evf-core-functions.php:1970
+msgid "Rangpur"
 msgstr ""
 
 #: includes/evf-core-functions.php:1971
+msgid "Satkhira"
+msgstr ""
+
+#: includes/evf-core-functions.php:1972
+msgid "Shariatpur"
+msgstr ""
+
+#: includes/evf-core-functions.php:1973
+msgid "Sherpur"
+msgstr ""
+
+#: includes/evf-core-functions.php:1974
+msgid "Sirajganj"
+msgstr ""
+
+#: includes/evf-core-functions.php:1975
+msgid "Sunamganj"
+msgstr ""
+
+#: includes/evf-core-functions.php:1976
+msgid "Sylhet"
+msgstr ""
+
+#: includes/evf-core-functions.php:1977
+msgid "Tangail"
+msgstr ""
+
+#: includes/evf-core-functions.php:1978
+msgid "Thakurgaon"
+msgstr ""
+
+#: includes/evf-core-functions.php:1982
+msgid "Blagoevgrad"
+msgstr ""
+
+#: includes/evf-core-functions.php:1983
+msgid "Burgas"
+msgstr ""
+
+#: includes/evf-core-functions.php:1984
+msgid "Dobrich"
+msgstr ""
+
+#: includes/evf-core-functions.php:1985
+msgid "Gabrovo"
+msgstr ""
+
+#: includes/evf-core-functions.php:1986
+msgid "Haskovo"
+msgstr ""
+
+#: includes/evf-core-functions.php:1987
+msgid "Kardzhali"
+msgstr ""
+
+#: includes/evf-core-functions.php:1988
+msgid "Kyustendil"
+msgstr ""
+
+#: includes/evf-core-functions.php:1989
+msgid "Lovech"
+msgstr ""
+
+#: includes/evf-core-functions.php:1990
+#: includes/evf-core-functions.php:3805
+msgid "Montana"
+msgstr ""
+
+#: includes/evf-core-functions.php:1991
+msgid "Pazardzhik"
+msgstr ""
+
+#: includes/evf-core-functions.php:1992
+msgid "Pernik"
+msgstr ""
+
+#: includes/evf-core-functions.php:1993
+msgid "Pleven"
+msgstr ""
+
+#: includes/evf-core-functions.php:1994
+msgid "Plovdiv"
+msgstr ""
+
+#: includes/evf-core-functions.php:1995
+msgid "Razgrad"
+msgstr ""
+
+#: includes/evf-core-functions.php:1996
+msgid "Ruse"
+msgstr ""
+
+#: includes/evf-core-functions.php:1997
+msgid "Shumen"
+msgstr ""
+
+#: includes/evf-core-functions.php:1998
+msgid "Silistra"
+msgstr ""
+
+#: includes/evf-core-functions.php:1999
+msgid "Sliven"
+msgstr ""
+
+#: includes/evf-core-functions.php:2000
+msgid "Smolyan"
+msgstr ""
+
+#: includes/evf-core-functions.php:2001
+msgid "Sofia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2002
+msgid "Sofia-Grad"
+msgstr ""
+
+#: includes/evf-core-functions.php:2003
+msgid "Stara Zagora"
+msgstr ""
+
+#: includes/evf-core-functions.php:2004
+msgid "Targovishte"
+msgstr ""
+
+#: includes/evf-core-functions.php:2005
+msgid "Varna"
+msgstr ""
+
+#: includes/evf-core-functions.php:2006
+msgid "Veliko Tarnovo"
+msgstr ""
+
+#: includes/evf-core-functions.php:2007
+msgid "Vidin"
+msgstr ""
+
+#: includes/evf-core-functions.php:2008
+msgid "Vratsa"
+msgstr ""
+
+#: includes/evf-core-functions.php:2009
+msgid "Yambol"
+msgstr ""
+
+#: includes/evf-core-functions.php:2014
+msgid "Alibori"
+msgstr ""
+
+#: includes/evf-core-functions.php:2015
+msgid "Atakora"
+msgstr ""
+
+#: includes/evf-core-functions.php:2016
+msgid "Atlantique"
+msgstr ""
+
+#: includes/evf-core-functions.php:2017
+msgid "Borgou"
+msgstr ""
+
+#: includes/evf-core-functions.php:2018
+msgid "Collines"
+msgstr ""
+
+#: includes/evf-core-functions.php:2019
+msgid "Kouffo"
+msgstr ""
+
+#: includes/evf-core-functions.php:2020
+msgid "Donga"
+msgstr ""
+
+#: includes/evf-core-functions.php:2021
+msgid "Littoral"
+msgstr ""
+
+#: includes/evf-core-functions.php:2022
+msgid "Mono"
+msgstr ""
+
+#: includes/evf-core-functions.php:2023
+msgid "Ouémé"
+msgstr ""
+
+#: includes/evf-core-functions.php:2024
+#: includes/evf-core-functions.php:3095
+msgid "Plateau"
+msgstr ""
+
+#: includes/evf-core-functions.php:2025
+msgid "Zou"
+msgstr ""
+
+#: includes/evf-core-functions.php:2028
+msgid "Beni"
+msgstr ""
+
+#: includes/evf-core-functions.php:2029
+msgid "Chuquisaca"
+msgstr ""
+
+#: includes/evf-core-functions.php:2030
+msgid "Cochabamba"
+msgstr ""
+
+#: includes/evf-core-functions.php:2031
+#: includes/evf-core-functions.php:2510
+#: includes/evf-core-functions.php:3372
+msgid "La Paz"
+msgstr ""
+
+#: includes/evf-core-functions.php:2032
+msgid "Oruro"
+msgstr ""
+
+#: includes/evf-core-functions.php:2033
+msgid "Pando"
+msgstr ""
+
+#: includes/evf-core-functions.php:2034
+msgid "Potosí"
+msgstr ""
+
+#: includes/evf-core-functions.php:2036
+msgid "Tarija"
+msgstr ""
+
+#: includes/evf-core-functions.php:2039
+msgid "Acre"
+msgstr ""
+
+#: includes/evf-core-functions.php:2040
+msgid "Alagoas"
+msgstr ""
+
+#: includes/evf-core-functions.php:2041
+msgid "Amapá"
+msgstr ""
+
+#: includes/evf-core-functions.php:2042
+#: includes/evf-core-functions.php:2163
+#: includes/evf-core-functions.php:3175
+#: includes/evf-core-functions.php:3880
+msgid "Amazonas"
+msgstr ""
+
+#: includes/evf-core-functions.php:2043
+msgid "Bahia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2044
+msgid "Ceará"
+msgstr ""
+
+#: includes/evf-core-functions.php:2045
+msgid "Distrito Federal"
+msgstr ""
+
+#: includes/evf-core-functions.php:2046
+msgid "Espírito Santo"
+msgstr ""
+
+#: includes/evf-core-functions.php:2047
+msgid "Goiás"
+msgstr ""
+
+#: includes/evf-core-functions.php:2048
+msgid "Maranhão"
+msgstr ""
+
+#: includes/evf-core-functions.php:2049
+msgid "Mato Grosso"
+msgstr ""
+
+#: includes/evf-core-functions.php:2050
+msgid "Mato Grosso do Sul"
+msgstr ""
+
+#: includes/evf-core-functions.php:2051
+msgid "Minas Gerais"
+msgstr ""
+
+#: includes/evf-core-functions.php:2052
+msgid "Pará"
+msgstr ""
+
+#: includes/evf-core-functions.php:2053
+msgid "Paraíba"
+msgstr ""
+
+#: includes/evf-core-functions.php:2054
+msgid "Paraná"
+msgstr ""
+
+#: includes/evf-core-functions.php:2055
+msgid "Pernambuco"
+msgstr ""
+
+#: includes/evf-core-functions.php:2056
+msgid "Piauí"
+msgstr ""
+
+#: includes/evf-core-functions.php:2057
+msgid "Rio de Janeiro"
+msgstr ""
+
+#: includes/evf-core-functions.php:2058
+msgid "Rio Grande do Norte"
+msgstr ""
+
+#: includes/evf-core-functions.php:2059
+msgid "Rio Grande do Sul"
+msgstr ""
+
+#: includes/evf-core-functions.php:2060
+msgid "Rondônia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2061
+msgid "Roraima"
+msgstr ""
+
+#: includes/evf-core-functions.php:2062
+msgid "Santa Catarina"
+msgstr ""
+
+#: includes/evf-core-functions.php:2063
+msgid "São Paulo"
+msgstr ""
+
+#: includes/evf-core-functions.php:2064
+msgid "Sergipe"
+msgstr ""
+
+#: includes/evf-core-functions.php:2065
+msgid "Tocantins"
+msgstr ""
+
+#: includes/evf-core-functions.php:2068
+msgid "Alberta"
+msgstr ""
+
+#: includes/evf-core-functions.php:2069
+msgid "British Columbia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2070
+msgid "Manitoba"
+msgstr ""
+
+#: includes/evf-core-functions.php:2071
+msgid "New Brunswick"
+msgstr ""
+
+#: includes/evf-core-functions.php:2072
+msgid "Newfoundland and Labrador"
+msgstr ""
+
+#: includes/evf-core-functions.php:2073
+msgid "Northwest Territories"
+msgstr ""
+
+#: includes/evf-core-functions.php:2074
+msgid "Nova Scotia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2075
+msgid "Nunavut"
+msgstr ""
+
+#: includes/evf-core-functions.php:2076
+msgid "Ontario"
+msgstr ""
+
+#: includes/evf-core-functions.php:2077
+msgid "Prince Edward Island"
+msgstr ""
+
+#: includes/evf-core-functions.php:2078
+msgid "Quebec"
+msgstr ""
+
+#: includes/evf-core-functions.php:2079
+msgid "Saskatchewan"
+msgstr ""
+
+#: includes/evf-core-functions.php:2080
+msgid "Yukon Territory"
+msgstr ""
+
+#: includes/evf-core-functions.php:2083
+msgid "Aargau"
+msgstr ""
+
+#: includes/evf-core-functions.php:2084
+msgid "Appenzell Ausserrhoden"
+msgstr ""
+
+#: includes/evf-core-functions.php:2085
+msgid "Appenzell Innerrhoden"
+msgstr ""
+
+#: includes/evf-core-functions.php:2086
+msgid "Basel-Landschaft"
+msgstr ""
+
+#: includes/evf-core-functions.php:2087
+msgid "Basel-Stadt"
+msgstr ""
+
+#: includes/evf-core-functions.php:2088
+msgid "Bern"
+msgstr ""
+
+#: includes/evf-core-functions.php:2089
+msgid "Fribourg"
+msgstr ""
+
+#: includes/evf-core-functions.php:2090
+msgid "Geneva"
+msgstr ""
+
+#: includes/evf-core-functions.php:2091
+msgid "Glarus"
+msgstr ""
+
+#: includes/evf-core-functions.php:2092
+msgid "Graubünden"
+msgstr ""
+
+#: includes/evf-core-functions.php:2093
+msgid "Jura"
+msgstr ""
+
+#: includes/evf-core-functions.php:2094
+msgid "Luzern"
+msgstr ""
+
+#: includes/evf-core-functions.php:2095
+msgid "Neuchâtel"
+msgstr ""
+
+#: includes/evf-core-functions.php:2096
+msgid "Nidwalden"
+msgstr ""
+
+#: includes/evf-core-functions.php:2097
+msgid "Obwalden"
+msgstr ""
+
+#: includes/evf-core-functions.php:2098
+msgid "Schaffhausen"
+msgstr ""
+
+#: includes/evf-core-functions.php:2099
+msgid "Schwyz"
+msgstr ""
+
+#: includes/evf-core-functions.php:2100
+msgid "Solothurn"
+msgstr ""
+
+#: includes/evf-core-functions.php:2101
+msgid "St. Gallen"
+msgstr ""
+
+#: includes/evf-core-functions.php:2102
+msgid "Thurgau"
+msgstr ""
+
+#: includes/evf-core-functions.php:2103
+msgid "Ticino"
+msgstr ""
+
+#: includes/evf-core-functions.php:2104
+msgid "Uri"
+msgstr ""
+
+#: includes/evf-core-functions.php:2105
+msgid "Valais"
+msgstr ""
+
+#: includes/evf-core-functions.php:2106
+msgid "Vaud"
+msgstr ""
+
+#: includes/evf-core-functions.php:2107
+msgid "Zug"
+msgstr ""
+
+#: includes/evf-core-functions.php:2108
+msgid "Zürich"
+msgstr ""
+
+#: includes/evf-core-functions.php:2111
+msgid "Aisén del General Carlos Ibañez del Campo"
+msgstr ""
+
+#: includes/evf-core-functions.php:2112
+msgid "Antofagasta"
+msgstr ""
+
+#: includes/evf-core-functions.php:2113
+msgid "Arica y Parinacota"
+msgstr ""
+
+#: includes/evf-core-functions.php:2114
+msgid "La Araucanía"
+msgstr ""
+
+#: includes/evf-core-functions.php:2115
+msgid "Atacama"
+msgstr ""
+
+#: includes/evf-core-functions.php:2116
+msgid "Biobío"
+msgstr ""
+
+#: includes/evf-core-functions.php:2117
+msgid "Coquimbo"
+msgstr ""
+
+#: includes/evf-core-functions.php:2118
+msgid "Libertador General Bernardo O'Higgins"
+msgstr ""
+
+#: includes/evf-core-functions.php:2119
+msgid "Los Lagos"
+msgstr ""
+
+#: includes/evf-core-functions.php:2120
+#: includes/evf-core-functions.php:2334
+msgid "Los Ríos"
+msgstr ""
+
+#: includes/evf-core-functions.php:2121
+msgid "Magallanes"
+msgstr ""
+
+#: includes/evf-core-functions.php:2122
+msgid "Maule"
+msgstr ""
+
+#: includes/evf-core-functions.php:2123
+msgid "Ñuble"
+msgstr ""
+
+#: includes/evf-core-functions.php:2124
+msgid "Región Metropolitana de Santiago"
+msgstr ""
+
+#: includes/evf-core-functions.php:2125
+msgid "Tarapacá"
+msgstr ""
+
+#: includes/evf-core-functions.php:2126
+msgid "Valparaíso"
+msgstr ""
+
+#: includes/evf-core-functions.php:2129
+msgid "Yunnan / 云南"
+msgstr ""
+
+#: includes/evf-core-functions.php:2130
+msgid "Beijing / 北京"
+msgstr ""
+
+#: includes/evf-core-functions.php:2131
+msgid "Tianjin / 天津"
+msgstr ""
+
+#: includes/evf-core-functions.php:2132
+msgid "Hebei / 河北"
+msgstr ""
+
+#: includes/evf-core-functions.php:2133
+msgid "Shanxi / 山西"
+msgstr ""
+
+#: includes/evf-core-functions.php:2134
+msgid "Inner Mongolia / 內蒙古"
+msgstr ""
+
+#: includes/evf-core-functions.php:2135
+msgid "Liaoning / 辽宁"
+msgstr ""
+
+#: includes/evf-core-functions.php:2136
+msgid "Jilin / 吉林"
+msgstr ""
+
+#: includes/evf-core-functions.php:2137
+msgid "Heilongjiang / 黑龙江"
+msgstr ""
+
+#: includes/evf-core-functions.php:2138
+msgid "Shanghai / 上海"
+msgstr ""
+
+#: includes/evf-core-functions.php:2139
+msgid "Jiangsu / 江苏"
+msgstr ""
+
+#: includes/evf-core-functions.php:2140
+msgid "Zhejiang / 浙江"
+msgstr ""
+
+#: includes/evf-core-functions.php:2141
+msgid "Anhui / 安徽"
+msgstr ""
+
+#: includes/evf-core-functions.php:2142
+msgid "Fujian / 福建"
+msgstr ""
+
+#: includes/evf-core-functions.php:2143
+msgid "Jiangxi / 江西"
+msgstr ""
+
+#: includes/evf-core-functions.php:2144
+msgid "Shandong / 山东"
+msgstr ""
+
+#: includes/evf-core-functions.php:2145
+msgid "Henan / 河南"
+msgstr ""
+
+#: includes/evf-core-functions.php:2146
+msgid "Hubei / 湖北"
+msgstr ""
+
+#: includes/evf-core-functions.php:2147
+msgid "Hunan / 湖南"
+msgstr ""
+
+#: includes/evf-core-functions.php:2148
+msgid "Guangdong / 广东"
+msgstr ""
+
+#: includes/evf-core-functions.php:2149
+msgid "Guangxi Zhuang / 广西壮族"
+msgstr ""
+
+#: includes/evf-core-functions.php:2150
+msgid "Hainan / 海南"
+msgstr ""
+
+#: includes/evf-core-functions.php:2151
+msgid "Chongqing / 重庆"
+msgstr ""
+
+#: includes/evf-core-functions.php:2152
+msgid "Sichuan / 四川"
+msgstr ""
+
+#: includes/evf-core-functions.php:2153
+msgid "Guizhou / 贵州"
+msgstr ""
+
+#: includes/evf-core-functions.php:2154
+msgid "Shaanxi / 陕西"
+msgstr ""
+
+#: includes/evf-core-functions.php:2155
+msgid "Gansu / 甘肃"
+msgstr ""
+
+#: includes/evf-core-functions.php:2156
+msgid "Qinghai / 青海"
+msgstr ""
+
+#: includes/evf-core-functions.php:2157
+msgid "Ningxia Hui / 宁夏"
+msgstr ""
+
+#: includes/evf-core-functions.php:2158
+msgid "Macao / 澳门"
+msgstr ""
+
+#: includes/evf-core-functions.php:2159
+msgid "Tibet / 西藏"
+msgstr ""
+
+#: includes/evf-core-functions.php:2160
+msgid "Xinjiang / 新疆"
+msgstr ""
+
+#: includes/evf-core-functions.php:2164
+msgid "Antioquia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2165
+msgid "Arauca"
+msgstr ""
+
+#: includes/evf-core-functions.php:2166
+msgid "Atlántico"
+msgstr ""
+
+#: includes/evf-core-functions.php:2167
+#: includes/evf-core-functions.php:2323
+#: includes/evf-core-functions.php:3861
+msgid "Bolívar"
+msgstr ""
+
+#: includes/evf-core-functions.php:2168
+msgid "Boyacá"
+msgstr ""
+
+#: includes/evf-core-functions.php:2169
+msgid "Caldas"
+msgstr ""
+
+#: includes/evf-core-functions.php:2170
+msgid "Caquetá"
+msgstr ""
+
+#: includes/evf-core-functions.php:2171
+msgid "Casanare"
+msgstr ""
+
+#: includes/evf-core-functions.php:2172
+msgid "Cauca"
+msgstr ""
+
+#: includes/evf-core-functions.php:2173
+msgid "Cesar"
+msgstr ""
+
+#: includes/evf-core-functions.php:2174
+msgid "Chocó"
+msgstr ""
+
+#: includes/evf-core-functions.php:2176
+msgid "Cundinamarca"
+msgstr ""
+
+#: includes/evf-core-functions.php:2177
+msgid "Capital District"
+msgstr ""
+
+#: includes/evf-core-functions.php:2178
+msgid "Guainía"
+msgstr ""
+
+#: includes/evf-core-functions.php:2179
+msgid "Guaviare"
+msgstr ""
+
+#: includes/evf-core-functions.php:2180
+msgid "Huila"
+msgstr ""
+
+#: includes/evf-core-functions.php:2181
+msgid "La Guajira"
+msgstr ""
+
+#: includes/evf-core-functions.php:2182
+msgid "Magdalena"
+msgstr ""
+
+#: includes/evf-core-functions.php:2183
+msgid "Meta"
+msgstr ""
+
+#: includes/evf-core-functions.php:2184
+msgid "Nariño"
+msgstr ""
+
+#: includes/evf-core-functions.php:2185
+msgid "Norte de Santander"
+msgstr ""
+
+#: includes/evf-core-functions.php:2186
+msgid "Putumayo"
+msgstr ""
+
+#: includes/evf-core-functions.php:2187
+msgid "Quindío"
+msgstr ""
+
+#: includes/evf-core-functions.php:2188
+msgid "Risaralda"
+msgstr ""
+
+#: includes/evf-core-functions.php:2189
+msgid "Santander"
+msgstr ""
+
+#: includes/evf-core-functions.php:2190
+msgid "San Andrés & Providencia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2191
+#: includes/evf-core-functions.php:3872
+msgid "Sucre"
+msgstr ""
+
+#: includes/evf-core-functions.php:2192
+msgid "Tolima"
+msgstr ""
+
+#: includes/evf-core-functions.php:2193
+msgid "Valle del Cauca"
+msgstr ""
+
+#: includes/evf-core-functions.php:2194
+msgid "Vaupés"
+msgstr ""
+
+#: includes/evf-core-functions.php:2195
+msgid "Vichada"
+msgstr ""
+
+#: includes/evf-core-functions.php:2198
+msgid "Alajuela"
+msgstr ""
+
+#: includes/evf-core-functions.php:2199
+msgid "Cartago"
+msgstr ""
+
+#: includes/evf-core-functions.php:2200
+msgid "Guanacaste"
+msgstr ""
+
+#: includes/evf-core-functions.php:2201
+msgid "Heredia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2202
+msgid "Limón"
+msgstr ""
+
+#: includes/evf-core-functions.php:2203
+msgid "Puntarenas"
+msgstr ""
+
+#: includes/evf-core-functions.php:2204
+#: includes/evf-core-functions.php:3850
+msgid "San José"
+msgstr ""
+
+#: includes/evf-core-functions.php:2208
+msgid "Baden-Württemberg"
+msgstr ""
+
+#: includes/evf-core-functions.php:2209
+msgid "Bavaria"
+msgstr ""
+
+#: includes/evf-core-functions.php:2210
+msgid "Berlin"
+msgstr ""
+
+#: includes/evf-core-functions.php:2211
+msgid "Brandenburg"
+msgstr ""
+
+#: includes/evf-core-functions.php:2212
+msgid "Bremen"
+msgstr ""
+
+#: includes/evf-core-functions.php:2213
+msgid "Hamburg"
+msgstr ""
+
+#: includes/evf-core-functions.php:2214
+msgid "Hesse"
+msgstr ""
+
+#: includes/evf-core-functions.php:2215
+msgid "Mecklenburg-Vorpommern"
+msgstr ""
+
+#: includes/evf-core-functions.php:2216
+msgid "Lower Saxony"
+msgstr ""
+
+#: includes/evf-core-functions.php:2217
+msgid "North Rhine-Westphalia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2218
+msgid "Rhineland-Palatinate"
+msgstr ""
+
+#: includes/evf-core-functions.php:2219
+msgid "Saarland"
+msgstr ""
+
+#: includes/evf-core-functions.php:2220
+msgid "Saxony"
+msgstr ""
+
+#: includes/evf-core-functions.php:2221
+msgid "Saxony-Anhalt"
+msgstr ""
+
+#: includes/evf-core-functions.php:2222
+msgid "Schleswig-Holstein"
+msgstr ""
+
+#: includes/evf-core-functions.php:2223
+msgid "Thuringia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2227
+msgid "Distrito Nacional"
+msgstr ""
+
+#: includes/evf-core-functions.php:2228
+msgid "Azua"
+msgstr ""
+
+#: includes/evf-core-functions.php:2229
+msgid "Baoruco"
+msgstr ""
+
+#: includes/evf-core-functions.php:2230
+msgid "Barahona"
+msgstr ""
+
+#: includes/evf-core-functions.php:2231
+msgid "Cibao Nordeste"
+msgstr ""
+
+#: includes/evf-core-functions.php:2232
+msgid "Cibao Noroeste"
+msgstr ""
+
+#: includes/evf-core-functions.php:2233
+msgid "Cibao Norte"
+msgstr ""
+
+#: includes/evf-core-functions.php:2234
+msgid "Cibao Sur"
+msgstr ""
+
+#: includes/evf-core-functions.php:2235
+msgid "Dajabón"
+msgstr ""
+
+#: includes/evf-core-functions.php:2236
+msgid "Duarte"
+msgstr ""
+
+#: includes/evf-core-functions.php:2237
+msgid "El Seibo"
+msgstr ""
+
+#: includes/evf-core-functions.php:2238
+msgid "El Valle"
+msgstr ""
+
+#: includes/evf-core-functions.php:2239
+msgid "Elías Piña"
+msgstr ""
+
+#: includes/evf-core-functions.php:2240
+msgid "Enriquillo"
+msgstr ""
+
+#: includes/evf-core-functions.php:2241
+msgid "Espaillat"
+msgstr ""
+
+#: includes/evf-core-functions.php:2242
+msgid "Hato Mayor"
+msgstr ""
+
+#: includes/evf-core-functions.php:2243
+msgid "Hermanas Mirabal"
+msgstr ""
+
+#: includes/evf-core-functions.php:2244
+msgid "Higüamo"
+msgstr ""
+
+#: includes/evf-core-functions.php:2245
+msgid "Independencia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2246
+msgid "La Altagracia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2247
+msgid "La Romana"
+msgstr ""
+
+#: includes/evf-core-functions.php:2248
+msgid "La Vega"
+msgstr ""
+
+#: includes/evf-core-functions.php:2249
+msgid "María Trinidad Sánchez"
+msgstr ""
+
+#: includes/evf-core-functions.php:2250
+msgid "Monseñor Nouel"
+msgstr ""
+
+#: includes/evf-core-functions.php:2251
+msgid "Monte Cristi"
+msgstr ""
+
+#: includes/evf-core-functions.php:2252
+msgid "Monte Plata"
+msgstr ""
+
+#: includes/evf-core-functions.php:2253
+msgid "Ozama"
+msgstr ""
+
+#: includes/evf-core-functions.php:2254
+msgid "Pedernales"
+msgstr ""
+
+#: includes/evf-core-functions.php:2255
+msgid "Peravia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2256
+msgid "Puerto Plata"
+msgstr ""
+
+#: includes/evf-core-functions.php:2257
+msgid "Samaná"
+msgstr ""
+
+#: includes/evf-core-functions.php:2258
+msgid "San Cristóbal"
+msgstr ""
+
+#: includes/evf-core-functions.php:2259
+msgid "San José de Ocoa"
+msgstr ""
+
+#: includes/evf-core-functions.php:2261
+msgid "San Pedro de Macorís"
+msgstr ""
+
+#: includes/evf-core-functions.php:2262
+msgid "Sánchez Ramírez"
+msgstr ""
+
+#: includes/evf-core-functions.php:2263
+msgid "Santiago"
+msgstr ""
+
+#: includes/evf-core-functions.php:2264
+msgid "Santiago Rodríguez"
+msgstr ""
+
+#: includes/evf-core-functions.php:2265
+msgid "Santo Domingo"
+msgstr ""
+
+#: includes/evf-core-functions.php:2266
+msgid "Valdesia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2267
+msgid "Valverde"
+msgstr ""
+
+#: includes/evf-core-functions.php:2268
+msgid "Yuma"
+msgstr ""
+
+#: includes/evf-core-functions.php:2271
+msgid "Adrar"
+msgstr ""
+
+#: includes/evf-core-functions.php:2272
+msgid "Chlef"
+msgstr ""
+
+#: includes/evf-core-functions.php:2273
+msgid "Laghouat"
+msgstr ""
+
+#: includes/evf-core-functions.php:2274
+msgid "Oum El Bouaghi"
+msgstr ""
+
+#: includes/evf-core-functions.php:2275
+msgid "Batna"
+msgstr ""
+
+#: includes/evf-core-functions.php:2276
+msgid "Béjaïa"
+msgstr ""
+
+#: includes/evf-core-functions.php:2277
+msgid "Biskra"
+msgstr ""
+
+#: includes/evf-core-functions.php:2278
+msgid "Béchar"
+msgstr ""
+
+#: includes/evf-core-functions.php:2279
+msgid "Blida"
+msgstr ""
+
+#: includes/evf-core-functions.php:2280
+msgid "Bouira"
+msgstr ""
+
+#: includes/evf-core-functions.php:2281
+msgid "Tamanghasset"
+msgstr ""
+
+#: includes/evf-core-functions.php:2282
+msgid "Tébessa"
+msgstr ""
+
+#: includes/evf-core-functions.php:2283
+msgid "Tlemcen"
+msgstr ""
+
+#: includes/evf-core-functions.php:2284
+msgid "Tiaret"
+msgstr ""
+
+#: includes/evf-core-functions.php:2285
+msgid "Tizi Ouzou"
+msgstr ""
+
+#: includes/evf-core-functions.php:2286
+msgid "Algiers"
+msgstr ""
+
+#: includes/evf-core-functions.php:2287
+msgid "Djelfa"
+msgstr ""
+
+#: includes/evf-core-functions.php:2288
+msgid "Jijel"
+msgstr ""
+
+#: includes/evf-core-functions.php:2289
+msgid "Sétif"
+msgstr ""
+
+#: includes/evf-core-functions.php:2290
+msgid "Saïda"
+msgstr ""
+
+#: includes/evf-core-functions.php:2291
+msgid "Skikda"
+msgstr ""
+
+#: includes/evf-core-functions.php:2292
+msgid "Sidi Bel Abbès"
+msgstr ""
+
+#: includes/evf-core-functions.php:2293
+msgid "Annaba"
+msgstr ""
+
+#: includes/evf-core-functions.php:2294
+msgid "Guelma"
+msgstr ""
+
+#: includes/evf-core-functions.php:2295
+msgid "Constantine"
+msgstr ""
+
+#: includes/evf-core-functions.php:2296
+msgid "Médéa"
+msgstr ""
+
+#: includes/evf-core-functions.php:2297
+msgid "Mostaganem"
+msgstr ""
+
+#: includes/evf-core-functions.php:2298
+msgid "M’Sila"
+msgstr ""
+
+#: includes/evf-core-functions.php:2299
+msgid "Mascara"
+msgstr ""
+
+#: includes/evf-core-functions.php:2300
+msgid "Ouargla"
+msgstr ""
+
+#: includes/evf-core-functions.php:2301
+msgid "Oran"
+msgstr ""
+
+#: includes/evf-core-functions.php:2302
+msgid "El Bayadh"
+msgstr ""
+
+#: includes/evf-core-functions.php:2303
+msgid "Illizi"
+msgstr ""
+
+#: includes/evf-core-functions.php:2304
+msgid "Bordj Bou Arréridj"
+msgstr ""
+
+#: includes/evf-core-functions.php:2305
+msgid "Boumerdès"
+msgstr ""
+
+#: includes/evf-core-functions.php:2306
+msgid "El Tarf"
+msgstr ""
+
+#: includes/evf-core-functions.php:2307
+msgid "Tindouf"
+msgstr ""
+
+#: includes/evf-core-functions.php:2308
+msgid "Tissemsilt"
+msgstr ""
+
+#: includes/evf-core-functions.php:2309
+msgid "El Oued"
+msgstr ""
+
+#: includes/evf-core-functions.php:2310
+msgid "Khenchela"
+msgstr ""
+
+#: includes/evf-core-functions.php:2311
+msgid "Souk Ahras"
+msgstr ""
+
+#: includes/evf-core-functions.php:2312
+msgid "Tipasa"
+msgstr ""
+
+#: includes/evf-core-functions.php:2313
+msgid "Mila"
+msgstr ""
+
+#: includes/evf-core-functions.php:2314
+msgid "Aïn Defla"
+msgstr ""
+
+#: includes/evf-core-functions.php:2315
+msgid "Naama"
+msgstr ""
+
+#: includes/evf-core-functions.php:2316
+msgid "Aïn Témouchent"
+msgstr ""
+
+#: includes/evf-core-functions.php:2317
+msgid "Ghardaïa"
+msgstr ""
+
+#: includes/evf-core-functions.php:2318
+msgid "Relizane"
+msgstr ""
+
+#: includes/evf-core-functions.php:2322
+msgid "Azuay"
+msgstr ""
+
+#: includes/evf-core-functions.php:2324
+msgid "Cañar"
+msgstr ""
+
+#: includes/evf-core-functions.php:2325
+msgid "Carchi"
+msgstr ""
+
+#: includes/evf-core-functions.php:2326
+msgid "Chimborazo"
+msgstr ""
+
+#: includes/evf-core-functions.php:2327
+msgid "Cotopaxi"
+msgstr ""
+
+#: includes/evf-core-functions.php:2328
+msgid "El Oro"
+msgstr ""
+
+#: includes/evf-core-functions.php:2329
+msgid "Esmeraldas"
+msgstr ""
+
+#: includes/evf-core-functions.php:2330
+msgid "Galápagos"
+msgstr ""
+
+#: includes/evf-core-functions.php:2331
+msgid "Guayas"
+msgstr ""
+
+#: includes/evf-core-functions.php:2332
+msgid "Imbabura"
+msgstr ""
+
+#: includes/evf-core-functions.php:2333
+msgid "Loja"
+msgstr ""
+
+#: includes/evf-core-functions.php:2335
+msgid "Manabí"
+msgstr ""
+
+#: includes/evf-core-functions.php:2336
+msgid "Morona-Santiago"
+msgstr ""
+
+#: includes/evf-core-functions.php:2337
+msgid "Napo"
+msgstr ""
+
+#: includes/evf-core-functions.php:2338
+msgid "Orellana"
+msgstr ""
+
+#: includes/evf-core-functions.php:2339
+msgid "Pastaza"
+msgstr ""
+
+#: includes/evf-core-functions.php:2340
+msgid "Pichincha"
+msgstr ""
+
+#: includes/evf-core-functions.php:2341
+msgid "Santa Elena"
+msgstr ""
+
+#: includes/evf-core-functions.php:2342
+msgid "Santo Domingo de los Tsáchilas"
+msgstr ""
+
+#: includes/evf-core-functions.php:2343
+msgid "Sucumbíos"
+msgstr ""
+
+#: includes/evf-core-functions.php:2344
+msgid "Tungurahua"
+msgstr ""
+
+#: includes/evf-core-functions.php:2345
+msgid "Zamora-Chinchipe"
+msgstr ""
+
+#: includes/evf-core-functions.php:2348
+msgid "Alexandria"
+msgstr ""
+
+#: includes/evf-core-functions.php:2349
+msgid "Aswan"
+msgstr ""
+
+#: includes/evf-core-functions.php:2350
+msgid "Asyut"
+msgstr ""
+
+#: includes/evf-core-functions.php:2351
+msgid "Red Sea"
+msgstr ""
+
+#: includes/evf-core-functions.php:2352
+msgid "Beheira"
+msgstr ""
+
+#: includes/evf-core-functions.php:2353
+msgid "Beni Suef"
+msgstr ""
+
+#: includes/evf-core-functions.php:2354
+msgid "Cairo"
+msgstr ""
+
+#: includes/evf-core-functions.php:2355
+msgid "Dakahlia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2356
+msgid "Damietta"
+msgstr ""
+
+#: includes/evf-core-functions.php:2357
+msgid "Faiyum"
+msgstr ""
+
+#: includes/evf-core-functions.php:2358
+msgid "Gharbia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2359
+msgid "Giza"
+msgstr ""
+
+#: includes/evf-core-functions.php:2360
+msgid "Ismailia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2361
+msgid "South Sinai"
+msgstr ""
+
+#: includes/evf-core-functions.php:2362
+msgid "Qalyubia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2363
+msgid "Kafr el-Sheikh"
+msgstr ""
+
+#: includes/evf-core-functions.php:2364
+msgid "Qena"
+msgstr ""
+
+#: includes/evf-core-functions.php:2365
+msgid "Luxor"
+msgstr ""
+
+#: includes/evf-core-functions.php:2366
+msgid "Minya"
+msgstr ""
+
+#: includes/evf-core-functions.php:2367
+msgid "Monufia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2368
+msgid "Matrouh"
+msgstr ""
+
+#: includes/evf-core-functions.php:2369
+msgid "Port Said"
+msgstr ""
+
+#: includes/evf-core-functions.php:2370
+msgid "Sohag"
+msgstr ""
+
+#: includes/evf-core-functions.php:2371
+msgid "Al Sharqia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2372
+msgid "North Sinai"
+msgstr ""
+
+#: includes/evf-core-functions.php:2373
+msgid "Suez"
+msgstr ""
+
+#: includes/evf-core-functions.php:2374
+msgid "New Valley"
+msgstr ""
+
+#: includes/evf-core-functions.php:2377
+msgid "A Coruña"
+msgstr ""
+
+#: includes/evf-core-functions.php:2378
+msgid "Araba/Álava"
+msgstr ""
+
+#: includes/evf-core-functions.php:2379
+msgid "Albacete"
+msgstr ""
+
+#: includes/evf-core-functions.php:2380
+msgid "Alicante"
+msgstr ""
+
+#: includes/evf-core-functions.php:2381
+msgid "Almería"
+msgstr ""
+
+#: includes/evf-core-functions.php:2382
+msgid "Asturias"
+msgstr ""
+
+#: includes/evf-core-functions.php:2383
+msgid "Ávila"
+msgstr ""
+
+#: includes/evf-core-functions.php:2384
+msgid "Badajoz"
+msgstr ""
+
+#: includes/evf-core-functions.php:2385
+msgid "Baleares"
+msgstr ""
+
+#: includes/evf-core-functions.php:2386
+msgid "Barcelona"
+msgstr ""
+
+#: includes/evf-core-functions.php:2387
+msgid "Burgos"
+msgstr ""
+
+#: includes/evf-core-functions.php:2388
+msgid "Cáceres"
+msgstr ""
+
+#: includes/evf-core-functions.php:2389
+msgid "Cádiz"
+msgstr ""
+
+#: includes/evf-core-functions.php:2390
+msgid "Cantabria"
+msgstr ""
+
+#: includes/evf-core-functions.php:2391
+msgid "Castellón"
+msgstr ""
+
+#: includes/evf-core-functions.php:2392
+msgid "Ceuta"
+msgstr ""
+
+#: includes/evf-core-functions.php:2393
+msgid "Ciudad Real"
+msgstr ""
+
+#: includes/evf-core-functions.php:2395
+msgid "Cuenca"
+msgstr ""
+
+#: includes/evf-core-functions.php:2396
+msgid "Girona"
+msgstr ""
+
+#: includes/evf-core-functions.php:2397
+#: includes/evf-core-functions.php:3128
+msgid "Granada"
+msgstr ""
+
+#: includes/evf-core-functions.php:2398
+msgid "Guadalajara"
+msgstr ""
+
+#: includes/evf-core-functions.php:2399
+msgid "Gipuzkoa"
+msgstr ""
+
+#: includes/evf-core-functions.php:2400
+msgid "Huelva"
+msgstr ""
+
+#: includes/evf-core-functions.php:2401
+msgid "Huesca"
+msgstr ""
+
+#: includes/evf-core-functions.php:2402
+msgid "Jaén"
+msgstr ""
+
+#: includes/evf-core-functions.php:2404
+msgid "Las Palmas"
+msgstr ""
+
+#: includes/evf-core-functions.php:2405
+#: includes/evf-core-functions.php:3130
+msgid "León"
+msgstr ""
+
+#: includes/evf-core-functions.php:2406
+msgid "Lleida"
+msgstr ""
+
+#: includes/evf-core-functions.php:2407
+msgid "Lugo"
+msgstr ""
+
+#: includes/evf-core-functions.php:2408
+msgid "Madrid"
+msgstr ""
+
+#: includes/evf-core-functions.php:2409
+msgid "Málaga"
+msgstr ""
+
+#: includes/evf-core-functions.php:2410
+msgid "Melilla"
+msgstr ""
+
+#: includes/evf-core-functions.php:2411
+msgid "Murcia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2412
+msgid "Navarra"
+msgstr ""
+
+#: includes/evf-core-functions.php:2413
+msgid "Ourense"
+msgstr ""
+
+#: includes/evf-core-functions.php:2414
+msgid "Palencia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2415
+msgid "Pontevedra"
+msgstr ""
+
+#: includes/evf-core-functions.php:2416
+msgid "Salamanca"
+msgstr ""
+
+#: includes/evf-core-functions.php:2417
+msgid "Santa Cruz de Tenerife"
+msgstr ""
+
+#: includes/evf-core-functions.php:2418
+msgid "Segovia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2419
+msgid "Sevilla"
+msgstr ""
+
+#: includes/evf-core-functions.php:2420
+msgid "Soria"
+msgstr ""
+
+#: includes/evf-core-functions.php:2421
+msgid "Tarragona"
+msgstr ""
+
+#: includes/evf-core-functions.php:2422
+msgid "Teruel"
+msgstr ""
+
+#: includes/evf-core-functions.php:2423
+msgid "Toledo"
+msgstr ""
+
+#: includes/evf-core-functions.php:2424
+msgid "Valencia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2425
+msgid "Valladolid"
+msgstr ""
+
+#: includes/evf-core-functions.php:2426
+msgid "Biscay"
+msgstr ""
+
+#: includes/evf-core-functions.php:2427
+msgid "Zamora"
+msgstr ""
+
+#: includes/evf-core-functions.php:2428
+msgid "Zaragoza"
+msgstr ""
+
+#: includes/evf-core-functions.php:2434
+msgid "Ahafo"
+msgstr ""
+
+#: includes/evf-core-functions.php:2435
+msgid "Ashanti"
+msgstr ""
+
+#: includes/evf-core-functions.php:2436
+msgid "Brong-Ahafo"
+msgstr ""
+
+#: includes/evf-core-functions.php:2437
+msgid "Bono"
+msgstr ""
+
+#: includes/evf-core-functions.php:2438
+msgid "Bono East"
+msgstr ""
+
+#: includes/evf-core-functions.php:2439
+#: includes/evf-core-functions.php:3309
+#: includes/evf-core-functions.php:3897
+msgid "Central"
+msgstr ""
+
+#: includes/evf-core-functions.php:2440
+#: includes/evf-core-functions.php:3898
+msgid "Eastern"
+msgstr ""
+
+#: includes/evf-core-functions.php:2441
+msgid "Greater Accra"
+msgstr ""
+
+#: includes/evf-core-functions.php:2442
+msgid "North East"
+msgstr ""
+
+#: includes/evf-core-functions.php:2443
+#: includes/evf-core-functions.php:3900
+msgid "Northern"
+msgstr ""
+
+#: includes/evf-core-functions.php:2444
+msgid "Oti"
+msgstr ""
+
+#: includes/evf-core-functions.php:2445
+msgid "Savannah"
+msgstr ""
+
+#: includes/evf-core-functions.php:2446
+msgid "Upper East"
+msgstr ""
+
+#: includes/evf-core-functions.php:2447
+msgid "Upper West"
+msgstr ""
+
+#: includes/evf-core-functions.php:2448
+msgid "Volta"
+msgstr ""
+
+#: includes/evf-core-functions.php:2449
+#: includes/evf-core-functions.php:3896
+msgid "Western"
+msgstr ""
+
+#: includes/evf-core-functions.php:2450
+msgid "Western North"
+msgstr ""
+
+#: includes/evf-core-functions.php:2454
+msgid "Attica"
+msgstr ""
+
+#: includes/evf-core-functions.php:2455
+msgid "East Macedonia and Thrace"
+msgstr ""
+
+#: includes/evf-core-functions.php:2456
+msgid "Central Macedonia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2457
+msgid "West Macedonia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2458
+msgid "Epirus"
+msgstr ""
+
+#: includes/evf-core-functions.php:2459
+msgid "Thessaly"
+msgstr ""
+
+#: includes/evf-core-functions.php:2460
+msgid "Ionian Islands"
+msgstr ""
+
+#: includes/evf-core-functions.php:2461
+msgid "West Greece"
+msgstr ""
+
+#: includes/evf-core-functions.php:2462
+msgid "Central Greece"
+msgstr ""
+
+#: includes/evf-core-functions.php:2463
+msgid "Peloponnese"
+msgstr ""
+
+#: includes/evf-core-functions.php:2464
+msgid "North Aegean"
+msgstr ""
+
+#: includes/evf-core-functions.php:2465
+msgid "South Aegean"
+msgstr ""
+
+#: includes/evf-core-functions.php:2466
+msgid "Crete"
+msgstr ""
+
+#: includes/evf-core-functions.php:2469
+msgid "Alta Verapaz"
+msgstr ""
+
+#: includes/evf-core-functions.php:2470
+msgid "Baja Verapaz"
+msgstr ""
+
+#: includes/evf-core-functions.php:2471
+msgid "Chimaltenango"
+msgstr ""
+
+#: includes/evf-core-functions.php:2472
+msgid "Chiquimula"
+msgstr ""
+
+#: includes/evf-core-functions.php:2473
+msgid "El Progreso"
+msgstr ""
+
+#: includes/evf-core-functions.php:2474
+msgid "Escuintla"
+msgstr ""
+
+#: includes/evf-core-functions.php:2476
+msgid "Huehuetenango"
+msgstr ""
+
+#: includes/evf-core-functions.php:2477
+msgid "Izabal"
+msgstr ""
+
+#: includes/evf-core-functions.php:2478
+msgid "Jalapa"
+msgstr ""
+
+#: includes/evf-core-functions.php:2479
+msgid "Jutiapa"
+msgstr ""
+
+#: includes/evf-core-functions.php:2480
+msgid "Petén"
+msgstr ""
+
+#: includes/evf-core-functions.php:2481
+msgid "Quetzaltenango"
+msgstr ""
+
+#: includes/evf-core-functions.php:2482
+msgid "Quiché"
+msgstr ""
+
+#: includes/evf-core-functions.php:2483
+msgid "Retalhuleu"
+msgstr ""
+
+#: includes/evf-core-functions.php:2484
+msgid "Sacatepéquez"
+msgstr ""
+
+#: includes/evf-core-functions.php:2485
+msgid "San Marcos"
+msgstr ""
+
+#: includes/evf-core-functions.php:2486
+msgid "Santa Rosa"
+msgstr ""
+
+#: includes/evf-core-functions.php:2487
+msgid "Sololá"
+msgstr ""
+
+#: includes/evf-core-functions.php:2488
+msgid "Suchitepéquez"
+msgstr ""
+
+#: includes/evf-core-functions.php:2489
+msgid "Totonicapán"
+msgstr ""
+
+#: includes/evf-core-functions.php:2490
+msgid "Zacapa"
+msgstr ""
+
+#: includes/evf-core-functions.php:2493
+msgid "Hong Kong Island"
+msgstr ""
+
+#: includes/evf-core-functions.php:2494
+msgid "Kowloon"
+msgstr ""
+
+#: includes/evf-core-functions.php:2495
+msgid "New Territories"
+msgstr ""
+
+#: includes/evf-core-functions.php:2498
+msgid "Atlántida"
+msgstr ""
+
+#: includes/evf-core-functions.php:2499
+msgid "Bay Islands"
+msgstr ""
+
+#: includes/evf-core-functions.php:2500
+msgid "Choluteca"
+msgstr ""
+
+#: includes/evf-core-functions.php:2501
+#: includes/evf-core-functions.php:3160
+msgid "Colón"
+msgstr ""
+
+#: includes/evf-core-functions.php:2502
+msgid "Comayagua"
+msgstr ""
+
+#: includes/evf-core-functions.php:2503
+msgid "Copán"
+msgstr ""
+
+#: includes/evf-core-functions.php:2504
+msgid "Cortés"
+msgstr ""
+
+#: includes/evf-core-functions.php:2505
+msgid "El Paraíso"
+msgstr ""
+
+#: includes/evf-core-functions.php:2506
+msgid "Francisco Morazán"
+msgstr ""
+
+#: includes/evf-core-functions.php:2507
+msgid "Gracias a Dios"
+msgstr ""
+
+#: includes/evf-core-functions.php:2508
+msgid "Intibucá"
+msgstr ""
+
+#: includes/evf-core-functions.php:2509
+msgid "Lempira"
+msgstr ""
+
+#: includes/evf-core-functions.php:2511
+msgid "Ocotepeque"
+msgstr ""
+
+#: includes/evf-core-functions.php:2512
+msgid "Olancho"
+msgstr ""
+
+#: includes/evf-core-functions.php:2513
+msgid "Santa Bárbara"
+msgstr ""
+
+#: includes/evf-core-functions.php:2514
+msgid "Valle"
+msgstr ""
+
+#: includes/evf-core-functions.php:2515
+msgid "Yoro"
+msgstr ""
+
+#: includes/evf-core-functions.php:2518
+msgid "Bács-Kiskun"
+msgstr ""
+
+#: includes/evf-core-functions.php:2519
+msgid "Békés"
+msgstr ""
+
+#: includes/evf-core-functions.php:2520
+msgid "Baranya"
+msgstr ""
+
+#: includes/evf-core-functions.php:2521
+msgid "Borsod-Abaúj-Zemplén"
+msgstr ""
+
+#: includes/evf-core-functions.php:2522
+msgid "Budapest"
+msgstr ""
+
+#: includes/evf-core-functions.php:2523
+msgid "Csongrád-Csanád"
+msgstr ""
+
+#: includes/evf-core-functions.php:2524
+msgid "Fejér"
+msgstr ""
+
+#: includes/evf-core-functions.php:2525
+msgid "Győr-Moson-Sopron"
+msgstr ""
+
+#: includes/evf-core-functions.php:2526
+msgid "Hajdú-Bihar"
+msgstr ""
+
+#: includes/evf-core-functions.php:2527
+msgid "Heves"
+msgstr ""
+
+#: includes/evf-core-functions.php:2528
+msgid "Jász-Nagykun-Szolnok"
+msgstr ""
+
+#: includes/evf-core-functions.php:2529
+msgid "Komárom-Esztergom"
+msgstr ""
+
+#: includes/evf-core-functions.php:2530
+msgid "Nógrád"
+msgstr ""
+
+#: includes/evf-core-functions.php:2531
+msgid "Pest"
+msgstr ""
+
+#: includes/evf-core-functions.php:2532
+msgid "Somogy"
+msgstr ""
+
+#: includes/evf-core-functions.php:2533
+msgid "Szabolcs-Szatmár-Bereg"
+msgstr ""
+
+#: includes/evf-core-functions.php:2534
+msgid "Tolna"
+msgstr ""
+
+#: includes/evf-core-functions.php:2535
+msgid "Vas"
+msgstr ""
+
+#: includes/evf-core-functions.php:2536
+msgid "Veszprém"
+msgstr ""
+
+#: includes/evf-core-functions.php:2537
+msgid "Zala"
+msgstr ""
+
+#: includes/evf-core-functions.php:2540
+msgid "Daerah Istimewa Aceh"
+msgstr ""
+
+#: includes/evf-core-functions.php:2541
+msgid "Sumatera Utara"
+msgstr ""
+
+#: includes/evf-core-functions.php:2542
+msgid "Sumatera Barat"
+msgstr ""
+
+#: includes/evf-core-functions.php:2543
+msgid "Riau"
+msgstr ""
+
+#: includes/evf-core-functions.php:2544
+msgid "Kepulauan Riau"
+msgstr ""
+
+#: includes/evf-core-functions.php:2545
+msgid "Jambi"
+msgstr ""
+
+#: includes/evf-core-functions.php:2546
+msgid "Sumatera Selatan"
+msgstr ""
+
+#: includes/evf-core-functions.php:2547
+msgid "Bangka Belitung"
+msgstr ""
+
+#: includes/evf-core-functions.php:2548
+msgid "Bengkulu"
+msgstr ""
+
+#: includes/evf-core-functions.php:2549
+msgid "Lampung"
+msgstr ""
+
+#: includes/evf-core-functions.php:2550
+msgid "DKI Jakarta"
+msgstr ""
+
+#: includes/evf-core-functions.php:2551
+msgid "Jawa Barat"
+msgstr ""
+
+#: includes/evf-core-functions.php:2552
+msgid "Banten"
+msgstr ""
+
+#: includes/evf-core-functions.php:2553
+msgid "Jawa Tengah"
+msgstr ""
+
+#: includes/evf-core-functions.php:2554
+msgid "Jawa Timur"
+msgstr ""
+
+#: includes/evf-core-functions.php:2555
+msgid "Daerah Istimewa Yogyakarta"
+msgstr ""
+
+#: includes/evf-core-functions.php:2556
+msgid "Bali"
+msgstr ""
+
+#: includes/evf-core-functions.php:2557
+msgid "Nusa Tenggara Barat"
+msgstr ""
+
+#: includes/evf-core-functions.php:2558
+msgid "Nusa Tenggara Timur"
+msgstr ""
+
+#: includes/evf-core-functions.php:2559
+msgid "Kalimantan Barat"
+msgstr ""
+
+#: includes/evf-core-functions.php:2560
+msgid "Kalimantan Tengah"
+msgstr ""
+
+#: includes/evf-core-functions.php:2561
+msgid "Kalimantan Timur"
+msgstr ""
+
+#: includes/evf-core-functions.php:2562
+msgid "Kalimantan Selatan"
+msgstr ""
+
+#: includes/evf-core-functions.php:2563
+msgid "Kalimantan Utara"
+msgstr ""
+
+#: includes/evf-core-functions.php:2564
+msgid "Sulawesi Utara"
+msgstr ""
+
+#: includes/evf-core-functions.php:2565
+msgid "Sulawesi Tengah"
+msgstr ""
+
+#: includes/evf-core-functions.php:2566
+msgid "Sulawesi Tenggara"
+msgstr ""
+
+#: includes/evf-core-functions.php:2567
+msgid "Sulawesi Barat"
+msgstr ""
+
+#: includes/evf-core-functions.php:2568
+msgid "Sulawesi Selatan"
+msgstr ""
+
+#: includes/evf-core-functions.php:2569
+msgid "Gorontalo"
+msgstr ""
+
+#: includes/evf-core-functions.php:2570
+msgid "Maluku"
+msgstr ""
+
+#: includes/evf-core-functions.php:2571
+msgid "Maluku Utara"
+msgstr ""
+
+#: includes/evf-core-functions.php:2572
+msgid "Papua"
+msgstr ""
+
+#: includes/evf-core-functions.php:2573
+msgid "Papua Barat"
+msgstr ""
+
+#: includes/evf-core-functions.php:2576
+msgid "Carlow"
+msgstr ""
+
+#: includes/evf-core-functions.php:2577
+msgid "Cavan"
+msgstr ""
+
+#: includes/evf-core-functions.php:2578
+msgid "Clare"
+msgstr ""
+
+#: includes/evf-core-functions.php:2579
+msgid "Cork"
+msgstr ""
+
+#: includes/evf-core-functions.php:2580
+msgid "Donegal"
+msgstr ""
+
+#: includes/evf-core-functions.php:2581
+msgid "Dublin"
+msgstr ""
+
+#: includes/evf-core-functions.php:2582
+msgid "Galway"
+msgstr ""
+
+#: includes/evf-core-functions.php:2583
+msgid "Kerry"
+msgstr ""
+
+#: includes/evf-core-functions.php:2584
+msgid "Kildare"
+msgstr ""
+
+#: includes/evf-core-functions.php:2585
+msgid "Kilkenny"
+msgstr ""
+
+#: includes/evf-core-functions.php:2586
+msgid "Laois"
+msgstr ""
+
+#: includes/evf-core-functions.php:2587
+msgid "Leitrim"
+msgstr ""
+
+#: includes/evf-core-functions.php:2588
+msgid "Limerick"
+msgstr ""
+
+#: includes/evf-core-functions.php:2589
+msgid "Longford"
+msgstr ""
+
+#: includes/evf-core-functions.php:2590
+msgid "Louth"
+msgstr ""
+
+#: includes/evf-core-functions.php:2591
+msgid "Mayo"
+msgstr ""
+
+#: includes/evf-core-functions.php:2592
+msgid "Meath"
+msgstr ""
+
+#: includes/evf-core-functions.php:2593
+msgid "Monaghan"
+msgstr ""
+
+#: includes/evf-core-functions.php:2594
+msgid "Offaly"
+msgstr ""
+
+#: includes/evf-core-functions.php:2595
+msgid "Roscommon"
+msgstr ""
+
+#: includes/evf-core-functions.php:2596
+msgid "Sligo"
+msgstr ""
+
+#: includes/evf-core-functions.php:2597
+msgid "Tipperary"
+msgstr ""
+
+#: includes/evf-core-functions.php:2598
+msgid "Waterford"
+msgstr ""
+
+#: includes/evf-core-functions.php:2599
+msgid "Westmeath"
+msgstr ""
+
+#: includes/evf-core-functions.php:2600
+msgid "Wexford"
+msgstr ""
+
+#: includes/evf-core-functions.php:2601
+msgid "Wicklow"
+msgstr ""
+
+#: includes/evf-core-functions.php:2604
+msgid "Andhra Pradesh"
+msgstr ""
+
+#: includes/evf-core-functions.php:2605
+msgid "Arunachal Pradesh"
+msgstr ""
+
+#: includes/evf-core-functions.php:2606
+msgid "Assam"
+msgstr ""
+
+#: includes/evf-core-functions.php:2607
+msgid "Bihar"
+msgstr ""
+
+#: includes/evf-core-functions.php:2608
+msgid "Chhattisgarh"
+msgstr ""
+
+#: includes/evf-core-functions.php:2609
+msgid "Goa"
+msgstr ""
+
+#: includes/evf-core-functions.php:2610
+msgid "Gujarat"
+msgstr ""
+
+#: includes/evf-core-functions.php:2611
+msgid "Haryana"
+msgstr ""
+
+#: includes/evf-core-functions.php:2612
+msgid "Himachal Pradesh"
+msgstr ""
+
+#: includes/evf-core-functions.php:2613
+msgid "Jammu and Kashmir"
+msgstr ""
+
+#: includes/evf-core-functions.php:2614
+msgid "Jharkhand"
+msgstr ""
+
+#: includes/evf-core-functions.php:2615
+msgid "Karnataka"
+msgstr ""
+
+#: includes/evf-core-functions.php:2616
+msgid "Kerala"
+msgstr ""
+
+#: includes/evf-core-functions.php:2617
+msgid "Ladakh"
+msgstr ""
+
+#: includes/evf-core-functions.php:2618
+msgid "Madhya Pradesh"
+msgstr ""
+
+#: includes/evf-core-functions.php:2619
+msgid "Maharashtra"
+msgstr ""
+
+#: includes/evf-core-functions.php:2620
+msgid "Manipur"
+msgstr ""
+
+#: includes/evf-core-functions.php:2621
+msgid "Meghalaya"
+msgstr ""
+
+#: includes/evf-core-functions.php:2622
+msgid "Mizoram"
+msgstr ""
+
+#: includes/evf-core-functions.php:2623
+msgid "Nagaland"
+msgstr ""
+
+#: includes/evf-core-functions.php:2624
+msgid "Odisha"
+msgstr ""
+
+#: includes/evf-core-functions.php:2625
+#: includes/evf-core-functions.php:3291
+msgid "Punjab"
+msgstr ""
+
+#: includes/evf-core-functions.php:2626
+msgid "Rajasthan"
+msgstr ""
+
+#: includes/evf-core-functions.php:2627
+msgid "Sikkim"
+msgstr ""
+
+#: includes/evf-core-functions.php:2628
+msgid "Tamil Nadu"
+msgstr ""
+
+#: includes/evf-core-functions.php:2629
+msgid "Telangana"
+msgstr ""
+
+#: includes/evf-core-functions.php:2630
+msgid "Tripura"
+msgstr ""
+
+#: includes/evf-core-functions.php:2631
+msgid "Uttarakhand"
+msgstr ""
+
+#: includes/evf-core-functions.php:2632
+msgid "Uttar Pradesh"
+msgstr ""
+
+#: includes/evf-core-functions.php:2633
+msgid "West Bengal"
+msgstr ""
+
+#: includes/evf-core-functions.php:2634
+msgid "Andaman and Nicobar Islands"
+msgstr ""
+
+#: includes/evf-core-functions.php:2635
+msgid "Chandigarh"
+msgstr ""
+
+#: includes/evf-core-functions.php:2636
+msgid "Dadra and Nagar Haveli"
+msgstr ""
+
+#: includes/evf-core-functions.php:2637
+msgid "Daman and Diu"
+msgstr ""
+
+#: includes/evf-core-functions.php:2638
+msgid "Delhi"
+msgstr ""
+
+#: includes/evf-core-functions.php:2639
+msgid "Lakshadeep"
+msgstr ""
+
+#: includes/evf-core-functions.php:2640
+msgid "Pondicherry (Puducherry)"
+msgstr ""
+
+#: includes/evf-core-functions.php:2643
+msgid "Khuzestan (خوزستان)"
+msgstr ""
+
+#: includes/evf-core-functions.php:2644
+msgid "Tehran (تهران)"
+msgstr ""
+
+#: includes/evf-core-functions.php:2645
+msgid "Ilaam (ایلام)"
+msgstr ""
+
+#: includes/evf-core-functions.php:2646
+msgid "Bushehr (بوشهر)"
+msgstr ""
+
+#: includes/evf-core-functions.php:2647
+msgid "Ardabil (اردبیل)"
+msgstr ""
+
+#: includes/evf-core-functions.php:2648
+msgid "Isfahan (اصفهان)"
+msgstr ""
+
+#: includes/evf-core-functions.php:2649
+msgid "Yazd (یزد)"
+msgstr ""
+
+#: includes/evf-core-functions.php:2650
+msgid "Kermanshah (کرمانشاه)"
+msgstr ""
+
+#: includes/evf-core-functions.php:2651
+msgid "Kerman (کرمان)"
+msgstr ""
+
+#: includes/evf-core-functions.php:2652
+msgid "Hamadan (همدان)"
+msgstr ""
+
+#: includes/evf-core-functions.php:2653
+msgid "Ghazvin (قزوین)"
+msgstr ""
+
+#: includes/evf-core-functions.php:2654
+msgid "Zanjan (زنجان)"
+msgstr ""
+
+#: includes/evf-core-functions.php:2655
+msgid "Luristan (لرستان)"
+msgstr ""
+
+#: includes/evf-core-functions.php:2656
+msgid "Alborz (البرز)"
+msgstr ""
+
+#: includes/evf-core-functions.php:2657
+msgid "East Azarbaijan (آذربایجان شرقی)"
+msgstr ""
+
+#: includes/evf-core-functions.php:2658
+msgid "West Azarbaijan (آذربایجان غربی)"
+msgstr ""
+
+#: includes/evf-core-functions.php:2659
+msgid "Chaharmahal and Bakhtiari (چهارمحال و بختیاری)"
+msgstr ""
+
+#: includes/evf-core-functions.php:2660
+msgid "South Khorasan (خراسان جنوبی)"
+msgstr ""
+
+#: includes/evf-core-functions.php:2661
+msgid "Razavi Khorasan (خراسان رضوی)"
+msgstr ""
+
+#: includes/evf-core-functions.php:2662
+msgid "North Khorasan (خراسان شمالی)"
+msgstr ""
+
+#: includes/evf-core-functions.php:2663
+msgid "Semnan (سمنان)"
+msgstr ""
+
+#: includes/evf-core-functions.php:2664
+msgid "Fars (فارس)"
+msgstr ""
+
+#: includes/evf-core-functions.php:2665
+msgid "Qom (قم)"
+msgstr ""
+
+#: includes/evf-core-functions.php:2666
+msgid "Kurdistan / کردستان)"
+msgstr ""
+
+#: includes/evf-core-functions.php:2667
+msgid "Kohgiluyeh and BoyerAhmad (کهگیلوییه و بویراحمد)"
+msgstr ""
+
+#: includes/evf-core-functions.php:2668
+msgid "Golestan (گلستان)"
+msgstr ""
+
+#: includes/evf-core-functions.php:2669
+msgid "Gilan (گیلان)"
+msgstr ""
+
+#: includes/evf-core-functions.php:2670
+msgid "Mazandaran (مازندران)"
+msgstr ""
+
+#: includes/evf-core-functions.php:2671
+msgid "Markazi (مرکزی)"
+msgstr ""
+
+#: includes/evf-core-functions.php:2672
+msgid "Hormozgan (هرمزگان)"
+msgstr ""
+
+#: includes/evf-core-functions.php:2673
+msgid "Sistan and Baluchestan (سیستان و بلوچستان)"
+msgstr ""
+
+#: includes/evf-core-functions.php:2677
+msgid "Agrigento"
+msgstr ""
+
+#: includes/evf-core-functions.php:2678
+msgid "Alessandria"
+msgstr ""
+
+#: includes/evf-core-functions.php:2679
+msgid "Ancona"
+msgstr ""
+
+#: includes/evf-core-functions.php:2680
+msgid "Aosta"
+msgstr ""
+
+#: includes/evf-core-functions.php:2681
+msgid "Arezzo"
+msgstr ""
+
+#: includes/evf-core-functions.php:2682
+msgid "Ascoli Piceno"
+msgstr ""
+
+#: includes/evf-core-functions.php:2683
+msgid "Asti"
+msgstr ""
+
+#: includes/evf-core-functions.php:2684
+msgid "Avellino"
+msgstr ""
+
+#: includes/evf-core-functions.php:2685
+msgid "Bari"
+msgstr ""
+
+#: includes/evf-core-functions.php:2686
+msgid "Barletta-Andria-Trani"
+msgstr ""
+
+#: includes/evf-core-functions.php:2687
+msgid "Belluno"
+msgstr ""
+
+#: includes/evf-core-functions.php:2688
+msgid "Benevento"
+msgstr ""
+
+#: includes/evf-core-functions.php:2689
+msgid "Bergamo"
+msgstr ""
+
+#: includes/evf-core-functions.php:2690
+msgid "Biella"
+msgstr ""
+
+#: includes/evf-core-functions.php:2691
+msgid "Bologna"
+msgstr ""
+
+#: includes/evf-core-functions.php:2692
+msgid "Bolzano"
+msgstr ""
+
+#: includes/evf-core-functions.php:2693
+msgid "Brescia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2694
+msgid "Brindisi"
+msgstr ""
+
+#: includes/evf-core-functions.php:2695
+msgid "Cagliari"
+msgstr ""
+
+#: includes/evf-core-functions.php:2696
+msgid "Caltanissetta"
+msgstr ""
+
+#: includes/evf-core-functions.php:2697
+msgid "Campobasso"
+msgstr ""
+
+#: includes/evf-core-functions.php:2698
+msgid "Caserta"
+msgstr ""
+
+#: includes/evf-core-functions.php:2699
+msgid "Catania"
+msgstr ""
+
+#: includes/evf-core-functions.php:2700
+msgid "Catanzaro"
+msgstr ""
+
+#: includes/evf-core-functions.php:2701
+msgid "Chieti"
+msgstr ""
+
+#: includes/evf-core-functions.php:2702
+msgid "Como"
+msgstr ""
+
+#: includes/evf-core-functions.php:2703
+msgid "Cosenza"
+msgstr ""
+
+#: includes/evf-core-functions.php:2704
+msgid "Cremona"
+msgstr ""
+
+#: includes/evf-core-functions.php:2705
+msgid "Crotone"
+msgstr ""
+
+#: includes/evf-core-functions.php:2706
+msgid "Cuneo"
+msgstr ""
+
+#: includes/evf-core-functions.php:2707
+msgid "Enna"
+msgstr ""
+
+#: includes/evf-core-functions.php:2708
+msgid "Fermo"
+msgstr ""
+
+#: includes/evf-core-functions.php:2709
+msgid "Ferrara"
+msgstr ""
+
+#: includes/evf-core-functions.php:2710
+msgid "Firenze"
+msgstr ""
+
+#: includes/evf-core-functions.php:2711
+msgid "Foggia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2712
+msgid "Forlì-Cesena"
+msgstr ""
+
+#: includes/evf-core-functions.php:2713
+msgid "Frosinone"
+msgstr ""
+
+#: includes/evf-core-functions.php:2714
+msgid "Genova"
+msgstr ""
+
+#: includes/evf-core-functions.php:2715
+msgid "Gorizia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2716
+msgid "Grosseto"
+msgstr ""
+
+#: includes/evf-core-functions.php:2717
+msgid "Imperia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2718
+msgid "Isernia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2719
+msgid "La Spezia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2720
+msgid "L'Aquila"
+msgstr ""
+
+#: includes/evf-core-functions.php:2721
+msgid "Latina"
+msgstr ""
+
+#: includes/evf-core-functions.php:2722
+msgid "Lecce"
+msgstr ""
+
+#: includes/evf-core-functions.php:2723
+msgid "Lecco"
+msgstr ""
+
+#: includes/evf-core-functions.php:2724
+msgid "Livorno"
+msgstr ""
+
+#: includes/evf-core-functions.php:2725
+msgid "Lodi"
+msgstr ""
+
+#: includes/evf-core-functions.php:2726
+msgid "Lucca"
+msgstr ""
+
+#: includes/evf-core-functions.php:2727
+msgid "Macerata"
+msgstr ""
+
+#: includes/evf-core-functions.php:2728
+msgid "Mantova"
+msgstr ""
+
+#: includes/evf-core-functions.php:2729
+msgid "Massa-Carrara"
+msgstr ""
+
+#: includes/evf-core-functions.php:2730
+msgid "Matera"
+msgstr ""
+
+#: includes/evf-core-functions.php:2731
+msgid "Messina"
+msgstr ""
+
+#: includes/evf-core-functions.php:2732
+msgid "Milano"
+msgstr ""
+
+#: includes/evf-core-functions.php:2733
+msgid "Modena"
+msgstr ""
+
+#: includes/evf-core-functions.php:2734
+msgid "Monza e della Brianza"
+msgstr ""
+
+#: includes/evf-core-functions.php:2735
+msgid "Napoli"
+msgstr ""
+
+#: includes/evf-core-functions.php:2736
+msgid "Novara"
+msgstr ""
+
+#: includes/evf-core-functions.php:2737
+msgid "Nuoro"
+msgstr ""
+
+#: includes/evf-core-functions.php:2738
+msgid "Oristano"
+msgstr ""
+
+#: includes/evf-core-functions.php:2739
+msgid "Padova"
+msgstr ""
+
+#: includes/evf-core-functions.php:2740
+msgid "Palermo"
+msgstr ""
+
+#: includes/evf-core-functions.php:2741
+msgid "Parma"
+msgstr ""
+
+#: includes/evf-core-functions.php:2742
+msgid "Pavia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2743
+msgid "Perugia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2744
+msgid "Pesaro e Urbino"
+msgstr ""
+
+#: includes/evf-core-functions.php:2745
+msgid "Pescara"
+msgstr ""
+
+#: includes/evf-core-functions.php:2746
+msgid "Piacenza"
+msgstr ""
+
+#: includes/evf-core-functions.php:2747
+msgid "Pisa"
+msgstr ""
+
+#: includes/evf-core-functions.php:2748
+msgid "Pistoia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2749
+msgid "Pordenone"
+msgstr ""
+
+#: includes/evf-core-functions.php:2750
+msgid "Potenza"
+msgstr ""
+
+#: includes/evf-core-functions.php:2751
+msgid "Prato"
+msgstr ""
+
+#: includes/evf-core-functions.php:2752
+msgid "Ragusa"
+msgstr ""
+
+#: includes/evf-core-functions.php:2753
+msgid "Ravenna"
+msgstr ""
+
+#: includes/evf-core-functions.php:2754
+msgid "Reggio Calabria"
+msgstr ""
+
+#: includes/evf-core-functions.php:2755
+msgid "Reggio Emilia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2756
+msgid "Rieti"
+msgstr ""
+
+#: includes/evf-core-functions.php:2757
+msgid "Rimini"
+msgstr ""
+
+#: includes/evf-core-functions.php:2758
+msgid "Roma"
+msgstr ""
+
+#: includes/evf-core-functions.php:2759
+msgid "Rovigo"
+msgstr ""
+
+#: includes/evf-core-functions.php:2760
+msgid "Salerno"
+msgstr ""
+
+#: includes/evf-core-functions.php:2761
+msgid "Sassari"
+msgstr ""
+
+#: includes/evf-core-functions.php:2762
+msgid "Savona"
+msgstr ""
+
+#: includes/evf-core-functions.php:2763
+msgid "Siena"
+msgstr ""
+
+#: includes/evf-core-functions.php:2764
+msgid "Siracusa"
+msgstr ""
+
+#: includes/evf-core-functions.php:2765
+msgid "Sondrio"
+msgstr ""
+
+#: includes/evf-core-functions.php:2766
+msgid "Sud Sardegna"
+msgstr ""
+
+#: includes/evf-core-functions.php:2767
+msgid "Taranto"
+msgstr ""
+
+#: includes/evf-core-functions.php:2768
+msgid "Teramo"
+msgstr ""
+
+#: includes/evf-core-functions.php:2769
+msgid "Terni"
+msgstr ""
+
+#: includes/evf-core-functions.php:2770
+msgid "Torino"
+msgstr ""
+
+#: includes/evf-core-functions.php:2771
+msgid "Trapani"
+msgstr ""
+
+#: includes/evf-core-functions.php:2772
+msgid "Trento"
+msgstr ""
+
+#: includes/evf-core-functions.php:2773
+msgid "Treviso"
+msgstr ""
+
+#: includes/evf-core-functions.php:2774
+msgid "Trieste"
+msgstr ""
+
+#: includes/evf-core-functions.php:2775
+msgid "Udine"
+msgstr ""
+
+#: includes/evf-core-functions.php:2776
+msgid "Varese"
+msgstr ""
+
+#: includes/evf-core-functions.php:2777
+msgid "Venezia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2778
+msgid "Verbano-Cusio-Ossola"
+msgstr ""
+
+#: includes/evf-core-functions.php:2779
+msgid "Vercelli"
+msgstr ""
+
+#: includes/evf-core-functions.php:2780
+msgid "Verona"
+msgstr ""
+
+#: includes/evf-core-functions.php:2781
+msgid "Vibo Valentia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2782
+msgid "Vicenza"
+msgstr ""
+
+#: includes/evf-core-functions.php:2783
+msgid "Viterbo"
+msgstr ""
+
+#: includes/evf-core-functions.php:2788
+msgid "Kingston"
+msgstr ""
+
+#: includes/evf-core-functions.php:2789
+msgid "Saint Andrew"
+msgstr ""
+
+#: includes/evf-core-functions.php:2790
+msgid "Saint Thomas"
+msgstr ""
+
+#: includes/evf-core-functions.php:2791
+msgid "Portland"
+msgstr ""
+
+#: includes/evf-core-functions.php:2792
+msgid "Saint Mary"
+msgstr ""
+
+#: includes/evf-core-functions.php:2793
+msgid "Saint Ann"
+msgstr ""
+
+#: includes/evf-core-functions.php:2794
+msgid "Trelawny"
+msgstr ""
+
+#: includes/evf-core-functions.php:2795
+msgid "Saint James"
+msgstr ""
+
+#: includes/evf-core-functions.php:2796
+msgid "Hanover"
+msgstr ""
+
+#: includes/evf-core-functions.php:2797
+msgid "Westmoreland"
+msgstr ""
+
+#: includes/evf-core-functions.php:2798
+msgid "Saint Elizabeth"
+msgstr ""
+
+#: includes/evf-core-functions.php:2799
+msgid "Manchester"
+msgstr ""
+
+#: includes/evf-core-functions.php:2800
+msgid "Clarendon"
+msgstr ""
+
+#: includes/evf-core-functions.php:2801
+msgid "Saint Catherine"
+msgstr ""
+
+#: includes/evf-core-functions.php:2805
+msgid "Hokkaido"
+msgstr ""
+
+#: includes/evf-core-functions.php:2806
+msgid "Aomori"
+msgstr ""
+
+#: includes/evf-core-functions.php:2807
+msgid "Iwate"
+msgstr ""
+
+#: includes/evf-core-functions.php:2808
+msgid "Miyagi"
+msgstr ""
+
+#: includes/evf-core-functions.php:2809
+msgid "Akita"
+msgstr ""
+
+#: includes/evf-core-functions.php:2810
+msgid "Yamagata"
+msgstr ""
+
+#: includes/evf-core-functions.php:2811
+msgid "Fukushima"
+msgstr ""
+
+#: includes/evf-core-functions.php:2812
+msgid "Ibaraki"
+msgstr ""
+
+#: includes/evf-core-functions.php:2813
+msgid "Tochigi"
+msgstr ""
+
+#: includes/evf-core-functions.php:2814
+msgid "Gunma"
+msgstr ""
+
+#: includes/evf-core-functions.php:2815
+msgid "Saitama"
+msgstr ""
+
+#: includes/evf-core-functions.php:2816
+msgid "Chiba"
+msgstr ""
+
+#: includes/evf-core-functions.php:2817
+msgid "Tokyo"
+msgstr ""
+
+#: includes/evf-core-functions.php:2818
+msgid "Kanagawa"
+msgstr ""
+
+#: includes/evf-core-functions.php:2819
+msgid "Niigata"
+msgstr ""
+
+#: includes/evf-core-functions.php:2820
+msgid "Toyama"
+msgstr ""
+
+#: includes/evf-core-functions.php:2821
+msgid "Ishikawa"
+msgstr ""
+
+#: includes/evf-core-functions.php:2822
+msgid "Fukui"
+msgstr ""
+
+#: includes/evf-core-functions.php:2823
+msgid "Yamanashi"
+msgstr ""
+
+#: includes/evf-core-functions.php:2824
+msgid "Nagano"
+msgstr ""
+
+#: includes/evf-core-functions.php:2825
+msgid "Gifu"
+msgstr ""
+
+#: includes/evf-core-functions.php:2826
+msgid "Shizuoka"
+msgstr ""
+
+#: includes/evf-core-functions.php:2827
+msgid "Aichi"
+msgstr ""
+
+#: includes/evf-core-functions.php:2828
+msgid "Mie"
+msgstr ""
+
+#: includes/evf-core-functions.php:2829
+msgid "Shiga"
+msgstr ""
+
+#: includes/evf-core-functions.php:2830
+msgid "Kyoto"
+msgstr ""
+
+#: includes/evf-core-functions.php:2831
+msgid "Osaka"
+msgstr ""
+
+#: includes/evf-core-functions.php:2832
+msgid "Hyogo"
+msgstr ""
+
+#: includes/evf-core-functions.php:2833
+msgid "Nara"
+msgstr ""
+
+#: includes/evf-core-functions.php:2834
+msgid "Wakayama"
+msgstr ""
+
+#: includes/evf-core-functions.php:2835
+msgid "Tottori"
+msgstr ""
+
+#: includes/evf-core-functions.php:2836
+msgid "Shimane"
+msgstr ""
+
+#: includes/evf-core-functions.php:2837
+msgid "Okayama"
+msgstr ""
+
+#: includes/evf-core-functions.php:2838
+msgid "Hiroshima"
+msgstr ""
+
+#: includes/evf-core-functions.php:2839
+msgid "Yamaguchi"
+msgstr ""
+
+#: includes/evf-core-functions.php:2840
+msgid "Tokushima"
+msgstr ""
+
+#: includes/evf-core-functions.php:2841
+msgid "Kagawa"
+msgstr ""
+
+#: includes/evf-core-functions.php:2842
+msgid "Ehime"
+msgstr ""
+
+#: includes/evf-core-functions.php:2843
+msgid "Kochi"
+msgstr ""
+
+#: includes/evf-core-functions.php:2844
+msgid "Fukuoka"
+msgstr ""
+
+#: includes/evf-core-functions.php:2845
+msgid "Saga"
+msgstr ""
+
+#: includes/evf-core-functions.php:2846
+msgid "Nagasaki"
+msgstr ""
+
+#: includes/evf-core-functions.php:2847
+msgid "Kumamoto"
+msgstr ""
+
+#: includes/evf-core-functions.php:2848
+msgid "Oita"
+msgstr ""
+
+#: includes/evf-core-functions.php:2849
+msgid "Miyazaki"
+msgstr ""
+
+#: includes/evf-core-functions.php:2850
+msgid "Kagoshima"
+msgstr ""
+
+#: includes/evf-core-functions.php:2851
+msgid "Okinawa"
+msgstr ""
+
+#: includes/evf-core-functions.php:2854
+msgid "Baringo"
+msgstr ""
+
+#: includes/evf-core-functions.php:2855
+msgid "Bomet"
+msgstr ""
+
+#: includes/evf-core-functions.php:2856
+msgid "Bungoma"
+msgstr ""
+
+#: includes/evf-core-functions.php:2857
+#: includes/evf-core-functions.php:3662
+msgid "Busia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2858
+msgid "Elgeyo-Marakwet"
+msgstr ""
+
+#: includes/evf-core-functions.php:2859
+msgid "Embu"
+msgstr ""
+
+#: includes/evf-core-functions.php:2860
+msgid "Garissa"
+msgstr ""
+
+#: includes/evf-core-functions.php:2861
+msgid "Homa Bay"
+msgstr ""
+
+#: includes/evf-core-functions.php:2862
+msgid "Isiolo"
+msgstr ""
+
+#: includes/evf-core-functions.php:2863
+msgid "Kajiado"
+msgstr ""
+
+#: includes/evf-core-functions.php:2864
+msgid "Kakamega"
+msgstr ""
+
+#: includes/evf-core-functions.php:2865
+msgid "Kericho"
+msgstr ""
+
+#: includes/evf-core-functions.php:2866
+msgid "Kiambu"
+msgstr ""
+
+#: includes/evf-core-functions.php:2867
+msgid "Kilifi"
+msgstr ""
+
+#: includes/evf-core-functions.php:2868
+msgid "Kirinyaga"
+msgstr ""
+
+#: includes/evf-core-functions.php:2869
+msgid "Kisii"
+msgstr ""
+
+#: includes/evf-core-functions.php:2870
+msgid "Kisumu"
+msgstr ""
+
+#: includes/evf-core-functions.php:2871
+msgid "Kitui"
+msgstr ""
+
+#: includes/evf-core-functions.php:2872
+msgid "Kwale"
+msgstr ""
+
+#: includes/evf-core-functions.php:2873
+msgid "Laikipia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2874
+msgid "Lamu"
+msgstr ""
+
+#: includes/evf-core-functions.php:2875
+msgid "Machakos"
+msgstr ""
+
+#: includes/evf-core-functions.php:2876
+msgid "Makueni"
+msgstr ""
+
+#: includes/evf-core-functions.php:2877
+msgid "Mandera"
+msgstr ""
+
+#: includes/evf-core-functions.php:2878
+msgid "Marsabit"
+msgstr ""
+
+#: includes/evf-core-functions.php:2879
+msgid "Meru"
+msgstr ""
+
+#: includes/evf-core-functions.php:2880
+msgid "Migori"
+msgstr ""
+
+#: includes/evf-core-functions.php:2881
+msgid "Mombasa"
+msgstr ""
+
+#: includes/evf-core-functions.php:2882
+msgid "Murang’a"
+msgstr ""
+
+#: includes/evf-core-functions.php:2883
+msgid "Nairobi County"
+msgstr ""
+
+#: includes/evf-core-functions.php:2884
+msgid "Nakuru"
+msgstr ""
+
+#: includes/evf-core-functions.php:2885
+msgid "Nandi"
+msgstr ""
+
+#: includes/evf-core-functions.php:2886
+msgid "Narok"
+msgstr ""
+
+#: includes/evf-core-functions.php:2887
+msgid "Nyamira"
+msgstr ""
+
+#: includes/evf-core-functions.php:2888
+msgid "Nyandarua"
+msgstr ""
+
+#: includes/evf-core-functions.php:2889
+msgid "Nyeri"
+msgstr ""
+
+#: includes/evf-core-functions.php:2890
+msgid "Samburu"
+msgstr ""
+
+#: includes/evf-core-functions.php:2891
+msgid "Siaya"
+msgstr ""
+
+#: includes/evf-core-functions.php:2892
+msgid "Taita-Taveta"
+msgstr ""
+
+#: includes/evf-core-functions.php:2893
+msgid "Tana River"
+msgstr ""
+
+#: includes/evf-core-functions.php:2894
+msgid "Tharaka-Nithi"
+msgstr ""
+
+#: includes/evf-core-functions.php:2895
+msgid "Trans Nzoia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2896
+msgid "Turkana"
+msgstr ""
+
+#: includes/evf-core-functions.php:2897
+msgid "Uasin Gishu"
+msgstr ""
+
+#: includes/evf-core-functions.php:2898
+msgid "Vihiga"
+msgstr ""
+
+#: includes/evf-core-functions.php:2899
+msgid "Wajir"
+msgstr ""
+
+#: includes/evf-core-functions.php:2900
+msgid "West Pokot"
+msgstr ""
+
+#: includes/evf-core-functions.php:2905
+msgid "Attapeu"
+msgstr ""
+
+#: includes/evf-core-functions.php:2906
+msgid "Bokeo"
+msgstr ""
+
+#: includes/evf-core-functions.php:2907
+msgid "Bolikhamsai"
+msgstr ""
+
+#: includes/evf-core-functions.php:2908
+msgid "Champasak"
+msgstr ""
+
+#: includes/evf-core-functions.php:2909
+msgid "Houaphanh"
+msgstr ""
+
+#: includes/evf-core-functions.php:2910
+msgid "Khammouane"
+msgstr ""
+
+#: includes/evf-core-functions.php:2911
+msgid "Luang Namtha"
+msgstr ""
+
+#: includes/evf-core-functions.php:2912
+msgid "Luang Prabang"
+msgstr ""
+
+#: includes/evf-core-functions.php:2913
+msgid "Oudomxay"
+msgstr ""
+
+#: includes/evf-core-functions.php:2914
+msgid "Phongsaly"
+msgstr ""
+
+#: includes/evf-core-functions.php:2915
+msgid "Salavan"
+msgstr ""
+
+#: includes/evf-core-functions.php:2916
+msgid "Savannakhet"
+msgstr ""
+
+#: includes/evf-core-functions.php:2917
+msgid "Vientiane Province"
+msgstr ""
+
+#: includes/evf-core-functions.php:2918
+msgid "Vientiane"
+msgstr ""
+
+#: includes/evf-core-functions.php:2919
+msgid "Sainyabuli"
+msgstr ""
+
+#: includes/evf-core-functions.php:2920
+msgid "Sekong"
+msgstr ""
+
+#: includes/evf-core-functions.php:2921
+msgid "Xiangkhouang"
+msgstr ""
+
+#: includes/evf-core-functions.php:2922
+msgid "Xaisomboun"
+msgstr ""
+
+#: includes/evf-core-functions.php:2926
+msgid "Bomi"
+msgstr ""
+
+#: includes/evf-core-functions.php:2927
+msgid "Bong"
+msgstr ""
+
+#: includes/evf-core-functions.php:2928
+msgid "Gbarpolu"
+msgstr ""
+
+#: includes/evf-core-functions.php:2929
+msgid "Grand Bassa"
+msgstr ""
+
+#: includes/evf-core-functions.php:2930
+msgid "Grand Cape Mount"
+msgstr ""
+
+#: includes/evf-core-functions.php:2931
+msgid "Grand Gedeh"
+msgstr ""
+
+#: includes/evf-core-functions.php:2932
+msgid "Grand Kru"
+msgstr ""
+
+#: includes/evf-core-functions.php:2933
+msgid "Lofa"
+msgstr ""
+
+#: includes/evf-core-functions.php:2934
+msgid "Margibi"
+msgstr ""
+
+#: includes/evf-core-functions.php:2935
+#: includes/evf-core-functions.php:3799
+msgid "Maryland"
+msgstr ""
+
+#: includes/evf-core-functions.php:2936
+msgid "Montserrado"
+msgstr ""
+
+#: includes/evf-core-functions.php:2937
+msgid "Nimba"
+msgstr ""
+
+#: includes/evf-core-functions.php:2938
+msgid "Rivercess"
+msgstr ""
+
+#: includes/evf-core-functions.php:2939
+msgid "River Gee"
+msgstr ""
+
+#: includes/evf-core-functions.php:2940
+msgid "Sinoe"
+msgstr ""
+
+#: includes/evf-core-functions.php:2944
+msgid "Chișinău"
+msgstr ""
+
+#: includes/evf-core-functions.php:2945
+msgid "Bălți"
+msgstr ""
+
+#: includes/evf-core-functions.php:2946
+msgid "Anenii Noi"
+msgstr ""
+
+#: includes/evf-core-functions.php:2947
+msgid "Basarabeasca"
+msgstr ""
+
+#: includes/evf-core-functions.php:2948
+msgid "Briceni"
+msgstr ""
+
+#: includes/evf-core-functions.php:2949
+msgid "Cahul"
+msgstr ""
+
+#: includes/evf-core-functions.php:2950
+msgid "Cantemir"
+msgstr ""
+
+#: includes/evf-core-functions.php:2951
+#: includes/evf-core-functions.php:3330
+msgid "Călărași"
+msgstr ""
+
+#: includes/evf-core-functions.php:2952
+msgid "Căușeni"
+msgstr ""
+
+#: includes/evf-core-functions.php:2953
+msgid "Cimișlia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2954
+msgid "Criuleni"
+msgstr ""
+
+#: includes/evf-core-functions.php:2955
+msgid "Dondușeni"
+msgstr ""
+
+#: includes/evf-core-functions.php:2956
+msgid "Drochia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2957
+msgid "Dubăsari"
+msgstr ""
+
+#: includes/evf-core-functions.php:2958
+msgid "Edineț"
+msgstr ""
+
+#: includes/evf-core-functions.php:2959
+msgid "Fălești"
+msgstr ""
+
+#: includes/evf-core-functions.php:2960
+msgid "Florești"
+msgstr ""
+
+#: includes/evf-core-functions.php:2961
+msgid "UTA Găgăuzia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2962
+msgid "Glodeni"
+msgstr ""
+
+#: includes/evf-core-functions.php:2963
+msgid "Hîncești"
+msgstr ""
+
+#: includes/evf-core-functions.php:2964
+msgid "Ialoveni"
+msgstr ""
+
+#: includes/evf-core-functions.php:2965
+msgid "Leova"
+msgstr ""
+
+#: includes/evf-core-functions.php:2966
+msgid "Nisporeni"
+msgstr ""
+
+#: includes/evf-core-functions.php:2967
+msgid "Ocnița"
+msgstr ""
+
+#: includes/evf-core-functions.php:2968
+msgid "Orhei"
+msgstr ""
+
+#: includes/evf-core-functions.php:2969
+msgid "Rezina"
+msgstr ""
+
+#: includes/evf-core-functions.php:2970
+msgid "Rîșcani"
+msgstr ""
+
+#: includes/evf-core-functions.php:2971
+msgid "Sîngerei"
+msgstr ""
+
+#: includes/evf-core-functions.php:2972
+msgid "Soroca"
+msgstr ""
+
+#: includes/evf-core-functions.php:2973
+msgid "Strășeni"
+msgstr ""
+
+#: includes/evf-core-functions.php:2974
+msgid "Șoldănești"
+msgstr ""
+
+#: includes/evf-core-functions.php:2975
+msgid "Ștefan Vodă"
+msgstr ""
+
+#: includes/evf-core-functions.php:2976
+msgid "Taraclia"
+msgstr ""
+
+#: includes/evf-core-functions.php:2977
+msgid "Telenești"
+msgstr ""
+
+#: includes/evf-core-functions.php:2978
+msgid "Ungheni"
+msgstr ""
+
+#: includes/evf-core-functions.php:2983
+msgid "Ciudad de México"
+msgstr ""
+
+#: includes/evf-core-functions.php:2984
+msgid "Jalisco"
+msgstr ""
+
+#: includes/evf-core-functions.php:2985
+msgid "Nuevo León"
+msgstr ""
+
+#: includes/evf-core-functions.php:2986
+msgid "Aguascalientes"
+msgstr ""
+
+#: includes/evf-core-functions.php:2987
+msgid "Baja California"
+msgstr ""
+
+#: includes/evf-core-functions.php:2988
+msgid "Baja California Sur"
+msgstr ""
+
+#: includes/evf-core-functions.php:2989
+msgid "Campeche"
+msgstr ""
+
+#: includes/evf-core-functions.php:2990
+msgid "Chiapas"
+msgstr ""
+
+#: includes/evf-core-functions.php:2991
+msgid "Chihuahua"
+msgstr ""
+
+#: includes/evf-core-functions.php:2992
+msgid "Coahuila"
+msgstr ""
+
+#: includes/evf-core-functions.php:2993
+msgid "Colima"
+msgstr ""
+
+#: includes/evf-core-functions.php:2994
+msgid "Durango"
+msgstr ""
+
+#: includes/evf-core-functions.php:2995
+msgid "Guanajuato"
+msgstr ""
+
+#: includes/evf-core-functions.php:2996
+msgid "Guerrero"
+msgstr ""
+
+#: includes/evf-core-functions.php:2997
+msgid "Hidalgo"
+msgstr ""
+
+#: includes/evf-core-functions.php:2998
+msgid "Estado de México"
+msgstr ""
+
+#: includes/evf-core-functions.php:2999
+msgid "Michoacán"
+msgstr ""
+
+#: includes/evf-core-functions.php:3000
+msgid "Morelos"
+msgstr ""
+
+#: includes/evf-core-functions.php:3001
+msgid "Nayarit"
+msgstr ""
+
+#: includes/evf-core-functions.php:3002
+msgid "Oaxaca"
+msgstr ""
+
+#: includes/evf-core-functions.php:3003
+msgid "Puebla"
+msgstr ""
+
+#: includes/evf-core-functions.php:3004
+msgid "Querétaro"
+msgstr ""
+
+#: includes/evf-core-functions.php:3005
+msgid "Quintana Roo"
+msgstr ""
+
+#: includes/evf-core-functions.php:3006
+msgid "San Luis Potosí"
+msgstr ""
+
+#: includes/evf-core-functions.php:3007
+msgid "Sinaloa"
+msgstr ""
+
+#: includes/evf-core-functions.php:3008
+msgid "Sonora"
+msgstr ""
+
+#: includes/evf-core-functions.php:3009
+msgid "Tabasco"
+msgstr ""
+
+#: includes/evf-core-functions.php:3010
+msgid "Tamaulipas"
+msgstr ""
+
+#: includes/evf-core-functions.php:3011
+msgid "Tlaxcala"
+msgstr ""
+
+#: includes/evf-core-functions.php:3012
+msgid "Veracruz"
+msgstr ""
+
+#: includes/evf-core-functions.php:3013
+msgid "Yucatán"
+msgstr ""
+
+#: includes/evf-core-functions.php:3014
+msgid "Zacatecas"
+msgstr ""
+
+#: includes/evf-core-functions.php:3017
+msgid "Johor"
+msgstr ""
+
+#: includes/evf-core-functions.php:3018
+msgid "Kedah"
+msgstr ""
+
+#: includes/evf-core-functions.php:3019
+msgid "Kelantan"
+msgstr ""
+
+#: includes/evf-core-functions.php:3020
+msgid "Labuan"
+msgstr ""
+
+#: includes/evf-core-functions.php:3021
+msgid "Malacca (Melaka)"
+msgstr ""
+
+#: includes/evf-core-functions.php:3022
+msgid "Negeri Sembilan"
+msgstr ""
+
+#: includes/evf-core-functions.php:3023
+msgid "Pahang"
+msgstr ""
+
+#: includes/evf-core-functions.php:3024
+msgid "Penang (Pulau Pinang)"
+msgstr ""
+
+#: includes/evf-core-functions.php:3025
+msgid "Perak"
+msgstr ""
+
+#: includes/evf-core-functions.php:3026
+msgid "Perlis"
+msgstr ""
+
+#: includes/evf-core-functions.php:3027
+msgid "Sabah"
+msgstr ""
+
+#: includes/evf-core-functions.php:3028
+msgid "Sarawak"
+msgstr ""
+
+#: includes/evf-core-functions.php:3029
+msgid "Selangor"
+msgstr ""
+
+#: includes/evf-core-functions.php:3030
+msgid "Terengganu"
+msgstr ""
+
+#: includes/evf-core-functions.php:3031
+msgid "Putrajaya"
+msgstr ""
+
+#: includes/evf-core-functions.php:3032
+msgid "Kuala Lumpur"
+msgstr ""
+
+#: includes/evf-core-functions.php:3035
+msgid "Cabo Delgado"
+msgstr ""
+
+#: includes/evf-core-functions.php:3036
+msgid "Gaza"
+msgstr ""
+
+#: includes/evf-core-functions.php:3037
+msgid "Inhambane"
+msgstr ""
+
+#: includes/evf-core-functions.php:3038
+msgid "Manica"
+msgstr ""
+
+#: includes/evf-core-functions.php:3039
+msgid "Maputo Province"
+msgstr ""
+
+#: includes/evf-core-functions.php:3040
+msgid "Maputo"
+msgstr ""
+
+#: includes/evf-core-functions.php:3041
+msgid "Nampula"
+msgstr ""
+
+#: includes/evf-core-functions.php:3042
+msgid "Niassa"
+msgstr ""
+
+#: includes/evf-core-functions.php:3043
+msgid "Sofala"
+msgstr ""
+
+#: includes/evf-core-functions.php:3044
+msgid "Tete"
+msgstr ""
+
+#: includes/evf-core-functions.php:3045
+msgid "Zambézia"
+msgstr ""
+
+#: includes/evf-core-functions.php:3048
+msgid "Erongo"
+msgstr ""
+
+#: includes/evf-core-functions.php:3049
+msgid "Hardap"
+msgstr ""
+
+#: includes/evf-core-functions.php:3050
+msgid "Karas"
+msgstr ""
+
+#: includes/evf-core-functions.php:3051
+msgid "Kavango East"
+msgstr ""
+
+#: includes/evf-core-functions.php:3052
+msgid "Kavango West"
+msgstr ""
+
+#: includes/evf-core-functions.php:3053
+msgid "Khomas"
+msgstr ""
+
+#: includes/evf-core-functions.php:3054
+msgid "Kunene"
+msgstr ""
+
+#: includes/evf-core-functions.php:3055
+msgid "Ohangwena"
+msgstr ""
+
+#: includes/evf-core-functions.php:3056
+msgid "Omaheke"
+msgstr ""
+
+#: includes/evf-core-functions.php:3057
+msgid "Omusati"
+msgstr ""
+
+#: includes/evf-core-functions.php:3058
+msgid "Oshana"
+msgstr ""
+
+#: includes/evf-core-functions.php:3059
+msgid "Oshikoto"
+msgstr ""
+
+#: includes/evf-core-functions.php:3060
+msgid "Otjozondjupa"
+msgstr ""
+
+#: includes/evf-core-functions.php:3061
+msgid "Zambezi"
+msgstr ""
+
+#: includes/evf-core-functions.php:3064
+msgid "Abia"
+msgstr ""
+
+#: includes/evf-core-functions.php:3065
+msgid "Abuja"
+msgstr ""
+
+#: includes/evf-core-functions.php:3066
+msgid "Adamawa"
+msgstr ""
+
+#: includes/evf-core-functions.php:3067
+msgid "Akwa Ibom"
+msgstr ""
+
+#: includes/evf-core-functions.php:3068
+msgid "Anambra"
+msgstr ""
+
+#: includes/evf-core-functions.php:3069
+msgid "Bauchi"
+msgstr ""
+
+#: includes/evf-core-functions.php:3070
+msgid "Bayelsa"
+msgstr ""
+
+#: includes/evf-core-functions.php:3071
+msgid "Benue"
+msgstr ""
+
+#: includes/evf-core-functions.php:3072
+msgid "Borno"
+msgstr ""
+
+#: includes/evf-core-functions.php:3073
+msgid "Cross River"
+msgstr ""
+
+#: includes/evf-core-functions.php:3074
+msgid "Delta"
+msgstr ""
+
+#: includes/evf-core-functions.php:3075
+msgid "Ebonyi"
+msgstr ""
+
+#: includes/evf-core-functions.php:3076
+msgid "Edo"
+msgstr ""
+
+#: includes/evf-core-functions.php:3077
+msgid "Ekiti"
+msgstr ""
+
+#: includes/evf-core-functions.php:3078
+msgid "Enugu"
+msgstr ""
+
+#: includes/evf-core-functions.php:3079
+msgid "Gombe"
+msgstr ""
+
+#: includes/evf-core-functions.php:3080
+msgid "Imo"
+msgstr ""
+
+#: includes/evf-core-functions.php:3081
+msgid "Jigawa"
+msgstr ""
+
+#: includes/evf-core-functions.php:3082
+msgid "Kaduna"
+msgstr ""
+
+#: includes/evf-core-functions.php:3083
+msgid "Kano"
+msgstr ""
+
+#: includes/evf-core-functions.php:3084
+msgid "Katsina"
+msgstr ""
+
+#: includes/evf-core-functions.php:3085
+msgid "Kebbi"
+msgstr ""
+
+#: includes/evf-core-functions.php:3086
+msgid "Kogi"
+msgstr ""
+
+#: includes/evf-core-functions.php:3087
+msgid "Kwara"
+msgstr ""
+
+#: includes/evf-core-functions.php:3088
+msgid "Lagos"
+msgstr ""
+
+#: includes/evf-core-functions.php:3089
+msgid "Nasarawa"
+msgstr ""
+
+#: includes/evf-core-functions.php:3091
+msgid "Ogun"
+msgstr ""
+
+#: includes/evf-core-functions.php:3092
+msgid "Ondo"
+msgstr ""
+
+#: includes/evf-core-functions.php:3093
+msgid "Osun"
+msgstr ""
+
+#: includes/evf-core-functions.php:3094
+msgid "Oyo"
+msgstr ""
+
+#: includes/evf-core-functions.php:3096
+msgid "Rivers"
+msgstr ""
+
+#: includes/evf-core-functions.php:3097
+msgid "Sokoto"
+msgstr ""
+
+#: includes/evf-core-functions.php:3098
+msgid "Taraba"
+msgstr ""
+
+#: includes/evf-core-functions.php:3099
+msgid "Yobe"
+msgstr ""
+
+#: includes/evf-core-functions.php:3100
+msgid "Zamfara"
+msgstr ""
+
+#: includes/evf-core-functions.php:3105
+msgid "Bagmati"
+msgstr ""
+
+#: includes/evf-core-functions.php:3106
+msgid "Bheri"
+msgstr ""
+
+#: includes/evf-core-functions.php:3107
+msgid "Dhaulagiri"
+msgstr ""
+
+#: includes/evf-core-functions.php:3108
+msgid "Gandaki"
+msgstr ""
+
+#: includes/evf-core-functions.php:3109
+msgid "Janakpur"
+msgstr ""
+
+#: includes/evf-core-functions.php:3110
+msgid "Karnali"
+msgstr ""
+
+#: includes/evf-core-functions.php:3111
+msgid "Koshi"
+msgstr ""
+
+#: includes/evf-core-functions.php:3112
+msgid "Lumbini"
+msgstr ""
+
+#: includes/evf-core-functions.php:3113
+msgid "Mahakali"
+msgstr ""
+
+#: includes/evf-core-functions.php:3114
+msgid "Mechi"
+msgstr ""
+
+#: includes/evf-core-functions.php:3115
+msgid "Narayani"
+msgstr ""
+
+#: includes/evf-core-functions.php:3116
+msgid "Rapti"
+msgstr ""
+
+#: includes/evf-core-functions.php:3117
+msgid "Sagarmatha"
+msgstr ""
+
+#: includes/evf-core-functions.php:3118
+msgid "Seti"
+msgstr ""
+
+#: includes/evf-core-functions.php:3121
+msgid "Atlántico Norte"
+msgstr ""
+
+#: includes/evf-core-functions.php:3122
+msgid "Atlántico Sur"
+msgstr ""
+
+#: includes/evf-core-functions.php:3123
+msgid "Boaco"
+msgstr ""
+
+#: includes/evf-core-functions.php:3124
+msgid "Carazo"
+msgstr ""
+
+#: includes/evf-core-functions.php:3125
+msgid "Chinandega"
+msgstr ""
+
+#: includes/evf-core-functions.php:3126
+msgid "Chontales"
+msgstr ""
+
+#: includes/evf-core-functions.php:3127
+msgid "Estelí"
+msgstr ""
+
+#: includes/evf-core-functions.php:3129
+msgid "Jinotega"
+msgstr ""
+
+#: includes/evf-core-functions.php:3131
+msgid "Madriz"
+msgstr ""
+
+#: includes/evf-core-functions.php:3132
+msgid "Managua"
+msgstr ""
+
+#: includes/evf-core-functions.php:3133
+msgid "Masaya"
+msgstr ""
+
+#: includes/evf-core-functions.php:3134
+msgid "Matagalpa"
+msgstr ""
+
+#: includes/evf-core-functions.php:3135
+msgid "Nueva Segovia"
+msgstr ""
+
+#: includes/evf-core-functions.php:3136
+msgid "Rivas"
+msgstr ""
+
+#: includes/evf-core-functions.php:3137
+msgid "Río San Juan"
+msgstr ""
+
+#: includes/evf-core-functions.php:3140
+msgid "Northland"
+msgstr ""
+
+#: includes/evf-core-functions.php:3141
+msgid "Auckland"
+msgstr ""
+
+#: includes/evf-core-functions.php:3142
+msgid "Waikato"
+msgstr ""
+
+#: includes/evf-core-functions.php:3143
+msgid "Bay of Plenty"
+msgstr ""
+
+#: includes/evf-core-functions.php:3144
+msgid "Taranaki"
+msgstr ""
+
+#: includes/evf-core-functions.php:3145
+msgid "Gisborne"
+msgstr ""
+
+#: includes/evf-core-functions.php:3146
+msgid "Hawke’s Bay"
+msgstr ""
+
+#: includes/evf-core-functions.php:3147
+msgid "Manawatu-Wanganui"
+msgstr ""
+
+#: includes/evf-core-functions.php:3148
+msgid "Wellington"
+msgstr ""
+
+#: includes/evf-core-functions.php:3149
+msgid "Nelson"
+msgstr ""
+
+#: includes/evf-core-functions.php:3150
+msgid "Marlborough"
+msgstr ""
+
+#: includes/evf-core-functions.php:3151
+msgid "Tasman"
+msgstr ""
+
+#: includes/evf-core-functions.php:3152
+msgid "West Coast"
+msgstr ""
+
+#: includes/evf-core-functions.php:3153
+msgid "Canterbury"
+msgstr ""
+
+#: includes/evf-core-functions.php:3154
+msgid "Otago"
+msgstr ""
+
+#: includes/evf-core-functions.php:3155
+msgid "Southland"
+msgstr ""
+
+#: includes/evf-core-functions.php:3158
+msgid "Bocas del Toro"
+msgstr ""
+
+#: includes/evf-core-functions.php:3159
+msgid "Coclé"
+msgstr ""
+
+#: includes/evf-core-functions.php:3161
+msgid "Chiriquí"
+msgstr ""
+
+#: includes/evf-core-functions.php:3162
+msgid "Darién"
+msgstr ""
+
+#: includes/evf-core-functions.php:3163
+msgid "Herrera"
+msgstr ""
+
+#: includes/evf-core-functions.php:3164
+msgid "Los Santos"
+msgstr ""
+
+#: includes/evf-core-functions.php:3165
+msgid "Panamá"
+msgstr ""
+
+#: includes/evf-core-functions.php:3166
+msgid "Veraguas"
+msgstr ""
+
+#: includes/evf-core-functions.php:3167
+msgid "West Panamá"
+msgstr ""
+
+#: includes/evf-core-functions.php:3168
+msgid "Emberá"
+msgstr ""
+
+#: includes/evf-core-functions.php:3169
+msgid "Guna Yala"
+msgstr ""
+
+#: includes/evf-core-functions.php:3170
+msgid "Ngöbe-Buglé"
+msgstr ""
+
+#: includes/evf-core-functions.php:3173
+msgid "El Callao"
+msgstr ""
+
+#: includes/evf-core-functions.php:3174
+msgid "Municipalidad Metropolitana de Lima"
+msgstr ""
+
+#: includes/evf-core-functions.php:3176
+msgid "Ancash"
+msgstr ""
+
+#: includes/evf-core-functions.php:3177
+msgid "Apurímac"
+msgstr ""
+
+#: includes/evf-core-functions.php:3178
+msgid "Arequipa"
+msgstr ""
+
+#: includes/evf-core-functions.php:3179
+msgid "Ayacucho"
+msgstr ""
+
+#: includes/evf-core-functions.php:3180
+msgid "Cajamarca"
+msgstr ""
+
+#: includes/evf-core-functions.php:3181
+msgid "Cusco"
+msgstr ""
+
+#: includes/evf-core-functions.php:3182
+msgid "Huancavelica"
+msgstr ""
+
+#: includes/evf-core-functions.php:3183
+msgid "Huánuco"
+msgstr ""
+
+#: includes/evf-core-functions.php:3184
+msgid "Ica"
+msgstr ""
+
+#: includes/evf-core-functions.php:3185
+msgid "Junín"
+msgstr ""
+
+#: includes/evf-core-functions.php:3186
+#: includes/evf-core-functions.php:3370
+msgid "La Libertad"
+msgstr ""
+
+#: includes/evf-core-functions.php:3187
+msgid "Lambayeque"
+msgstr ""
+
+#: includes/evf-core-functions.php:3188
+msgid "Lima"
+msgstr ""
+
+#: includes/evf-core-functions.php:3189
+msgid "Loreto"
+msgstr ""
+
+#: includes/evf-core-functions.php:3190
+msgid "Madre de Dios"
+msgstr ""
+
+#: includes/evf-core-functions.php:3191
+msgid "Moquegua"
+msgstr ""
+
+#: includes/evf-core-functions.php:3192
+msgid "Pasco"
+msgstr ""
+
+#: includes/evf-core-functions.php:3193
+msgid "Piura"
+msgstr ""
+
+#: includes/evf-core-functions.php:3194
+msgid "Puno"
+msgstr ""
+
+#: includes/evf-core-functions.php:3195
+msgid "San Martín"
+msgstr ""
+
+#: includes/evf-core-functions.php:3196
+msgid "Tacna"
+msgstr ""
+
+#: includes/evf-core-functions.php:3197
+msgid "Tumbes"
+msgstr ""
+
+#: includes/evf-core-functions.php:3198
+msgid "Ucayali"
+msgstr ""
+
+#: includes/evf-core-functions.php:3201
+msgid "Abra"
+msgstr ""
+
+#: includes/evf-core-functions.php:3202
+msgid "Agusan del Norte"
+msgstr ""
+
+#: includes/evf-core-functions.php:3203
+msgid "Agusan del Sur"
+msgstr ""
+
+#: includes/evf-core-functions.php:3204
+msgid "Aklan"
+msgstr ""
+
+#: includes/evf-core-functions.php:3205
+msgid "Albay"
+msgstr ""
+
+#: includes/evf-core-functions.php:3206
+msgid "Antique"
+msgstr ""
+
+#: includes/evf-core-functions.php:3207
+msgid "Apayao"
+msgstr ""
+
+#: includes/evf-core-functions.php:3208
+msgid "Aurora"
+msgstr ""
+
+#: includes/evf-core-functions.php:3209
+msgid "Basilan"
+msgstr ""
+
+#: includes/evf-core-functions.php:3210
+msgid "Bataan"
+msgstr ""
+
+#: includes/evf-core-functions.php:3211
+msgid "Batanes"
+msgstr ""
+
+#: includes/evf-core-functions.php:3212
+msgid "Batangas"
+msgstr ""
+
+#: includes/evf-core-functions.php:3213
+msgid "Benguet"
+msgstr ""
+
+#: includes/evf-core-functions.php:3214
+msgid "Biliran"
+msgstr ""
+
+#: includes/evf-core-functions.php:3215
+msgid "Bohol"
+msgstr ""
+
+#: includes/evf-core-functions.php:3216
+msgid "Bukidnon"
+msgstr ""
+
+#: includes/evf-core-functions.php:3217
+msgid "Bulacan"
+msgstr ""
+
+#: includes/evf-core-functions.php:3218
+msgid "Cagayan"
+msgstr ""
+
+#: includes/evf-core-functions.php:3219
+msgid "Camarines Norte"
+msgstr ""
+
+#: includes/evf-core-functions.php:3220
+msgid "Camarines Sur"
+msgstr ""
+
+#: includes/evf-core-functions.php:3221
+msgid "Camiguin"
+msgstr ""
+
+#: includes/evf-core-functions.php:3222
+msgid "Capiz"
+msgstr ""
+
+#: includes/evf-core-functions.php:3223
+msgid "Catanduanes"
+msgstr ""
+
+#: includes/evf-core-functions.php:3224
+msgid "Cavite"
+msgstr ""
+
+#: includes/evf-core-functions.php:3225
+msgid "Cebu"
+msgstr ""
+
+#: includes/evf-core-functions.php:3226
+msgid "Compostela Valley"
+msgstr ""
+
+#: includes/evf-core-functions.php:3227
+msgid "Cotabato"
+msgstr ""
+
+#: includes/evf-core-functions.php:3228
+msgid "Davao del Norte"
+msgstr ""
+
+#: includes/evf-core-functions.php:3229
+msgid "Davao del Sur"
+msgstr ""
+
+#: includes/evf-core-functions.php:3230
+msgid "Davao Occidental"
+msgstr ""
+
+#: includes/evf-core-functions.php:3231
+msgid "Davao Oriental"
+msgstr ""
+
+#: includes/evf-core-functions.php:3232
+msgid "Dinagat Islands"
+msgstr ""
+
+#: includes/evf-core-functions.php:3233
+msgid "Eastern Samar"
+msgstr ""
+
+#: includes/evf-core-functions.php:3234
+msgid "Guimaras"
+msgstr ""
+
+#: includes/evf-core-functions.php:3235
+msgid "Ifugao"
+msgstr ""
+
+#: includes/evf-core-functions.php:3236
+msgid "Ilocos Norte"
+msgstr ""
+
+#: includes/evf-core-functions.php:3237
+msgid "Ilocos Sur"
+msgstr ""
+
+#: includes/evf-core-functions.php:3238
+msgid "Iloilo"
+msgstr ""
+
+#: includes/evf-core-functions.php:3239
+msgid "Isabela"
+msgstr ""
+
+#: includes/evf-core-functions.php:3240
+msgid "Kalinga"
+msgstr ""
+
+#: includes/evf-core-functions.php:3241
+msgid "La Union"
+msgstr ""
+
+#: includes/evf-core-functions.php:3242
+msgid "Laguna"
+msgstr ""
+
+#: includes/evf-core-functions.php:3243
+msgid "Lanao del Norte"
+msgstr ""
+
+#: includes/evf-core-functions.php:3244
+msgid "Lanao del Sur"
+msgstr ""
+
+#: includes/evf-core-functions.php:3245
+msgid "Leyte"
+msgstr ""
+
+#: includes/evf-core-functions.php:3246
+msgid "Maguindanao"
+msgstr ""
+
+#: includes/evf-core-functions.php:3247
+msgid "Marinduque"
+msgstr ""
+
+#: includes/evf-core-functions.php:3248
+msgid "Masbate"
+msgstr ""
+
+#: includes/evf-core-functions.php:3249
+msgid "Misamis Occidental"
+msgstr ""
+
+#: includes/evf-core-functions.php:3250
+msgid "Misamis Oriental"
+msgstr ""
+
+#: includes/evf-core-functions.php:3251
+msgid "Mountain Province"
+msgstr ""
+
+#: includes/evf-core-functions.php:3252
+msgid "Negros Occidental"
+msgstr ""
+
+#: includes/evf-core-functions.php:3253
+msgid "Negros Oriental"
+msgstr ""
+
+#: includes/evf-core-functions.php:3254
+msgid "Northern Samar"
+msgstr ""
+
+#: includes/evf-core-functions.php:3255
+msgid "Nueva Ecija"
+msgstr ""
+
+#: includes/evf-core-functions.php:3256
+msgid "Nueva Vizcaya"
+msgstr ""
+
+#: includes/evf-core-functions.php:3257
+msgid "Occidental Mindoro"
+msgstr ""
+
+#: includes/evf-core-functions.php:3258
+msgid "Oriental Mindoro"
+msgstr ""
+
+#: includes/evf-core-functions.php:3259
+msgid "Palawan"
+msgstr ""
+
+#: includes/evf-core-functions.php:3260
+msgid "Pampanga"
+msgstr ""
+
+#: includes/evf-core-functions.php:3261
+msgid "Pangasinan"
+msgstr ""
+
+#: includes/evf-core-functions.php:3262
+msgid "Quezon"
+msgstr ""
+
+#: includes/evf-core-functions.php:3263
+msgid "Quirino"
+msgstr ""
+
+#: includes/evf-core-functions.php:3264
+msgid "Rizal"
+msgstr ""
+
+#: includes/evf-core-functions.php:3265
+msgid "Romblon"
+msgstr ""
+
+#: includes/evf-core-functions.php:3266
+msgid "Samar"
+msgstr ""
+
+#: includes/evf-core-functions.php:3267
+msgid "Sarangani"
+msgstr ""
+
+#: includes/evf-core-functions.php:3268
+msgid "Siquijor"
+msgstr ""
+
+#: includes/evf-core-functions.php:3269
+msgid "Sorsogon"
+msgstr ""
+
+#: includes/evf-core-functions.php:3270
+msgid "South Cotabato"
+msgstr ""
+
+#: includes/evf-core-functions.php:3271
+msgid "Southern Leyte"
+msgstr ""
+
+#: includes/evf-core-functions.php:3272
+msgid "Sultan Kudarat"
+msgstr ""
+
+#: includes/evf-core-functions.php:3273
+msgid "Sulu"
+msgstr ""
+
+#: includes/evf-core-functions.php:3274
+msgid "Surigao del Norte"
+msgstr ""
+
+#: includes/evf-core-functions.php:3275
+msgid "Surigao del Sur"
+msgstr ""
+
+#: includes/evf-core-functions.php:3276
+msgid "Tarlac"
+msgstr ""
+
+#: includes/evf-core-functions.php:3277
+msgid "Tawi-Tawi"
+msgstr ""
+
+#: includes/evf-core-functions.php:3278
+msgid "Zambales"
+msgstr ""
+
+#: includes/evf-core-functions.php:3279
+msgid "Zamboanga del Norte"
+msgstr ""
+
+#: includes/evf-core-functions.php:3280
+msgid "Zamboanga del Sur"
+msgstr ""
+
+#: includes/evf-core-functions.php:3281
+msgid "Zamboanga Sibugay"
+msgstr ""
+
+#: includes/evf-core-functions.php:3282
+msgid "Metro Manila"
+msgstr ""
+
+#: includes/evf-core-functions.php:3285
+msgid "Azad Kashmir"
+msgstr ""
+
+#: includes/evf-core-functions.php:3286
+msgid "Balochistan"
+msgstr ""
+
+#: includes/evf-core-functions.php:3287
+msgid "FATA"
+msgstr ""
+
+#: includes/evf-core-functions.php:3288
+msgid "Gilgit Baltistan"
+msgstr ""
+
+#: includes/evf-core-functions.php:3289
+msgid "Islamabad Capital Territory"
+msgstr ""
+
+#: includes/evf-core-functions.php:3290
+msgid "Khyber Pakhtunkhwa"
+msgstr ""
+
+#: includes/evf-core-functions.php:3292
+msgid "Sindh"
+msgstr ""
+
+#: includes/evf-core-functions.php:3298
+msgid "Asunción"
+msgstr ""
+
+#: includes/evf-core-functions.php:3299
+msgid "Concepción"
+msgstr ""
+
+#: includes/evf-core-functions.php:3300
+msgid "San Pedro"
+msgstr ""
+
+#: includes/evf-core-functions.php:3301
+msgid "Cordillera"
+msgstr ""
+
+#: includes/evf-core-functions.php:3302
+msgid "Guairá"
+msgstr ""
+
+#: includes/evf-core-functions.php:3303
+msgid "Caaguazú"
+msgstr ""
+
+#: includes/evf-core-functions.php:3304
+msgid "Caazapá"
+msgstr ""
+
+#: includes/evf-core-functions.php:3305
+msgid "Itapúa"
+msgstr ""
+
+#: includes/evf-core-functions.php:3307
+msgid "Paraguarí"
+msgstr ""
+
+#: includes/evf-core-functions.php:3308
+msgid "Alto Paraná"
+msgstr ""
+
+#: includes/evf-core-functions.php:3310
+msgid "Ñeembucú"
+msgstr ""
+
+#: includes/evf-core-functions.php:3311
+msgid "Amambay"
+msgstr ""
+
+#: includes/evf-core-functions.php:3312
+msgid "Canindeyú"
+msgstr ""
+
+#: includes/evf-core-functions.php:3313
+msgid "Presidente Hayes"
+msgstr ""
+
+#: includes/evf-core-functions.php:3314
+msgid "Alto Paraguay"
+msgstr ""
+
+#: includes/evf-core-functions.php:3315
+msgid "Boquerón"
+msgstr ""
+
+#: includes/evf-core-functions.php:3319
+msgid "Alba"
+msgstr ""
+
+#: includes/evf-core-functions.php:3320
+msgid "Arad"
+msgstr ""
+
+#: includes/evf-core-functions.php:3321
+msgid "Argeș"
+msgstr ""
+
+#: includes/evf-core-functions.php:3322
+msgid "Bacău"
+msgstr ""
+
+#: includes/evf-core-functions.php:3323
+msgid "Bihor"
+msgstr ""
+
+#: includes/evf-core-functions.php:3324
+msgid "Bistrița-Năsăud"
+msgstr ""
+
+#: includes/evf-core-functions.php:3325
+msgid "Botoșani"
+msgstr ""
+
+#: includes/evf-core-functions.php:3326
+msgid "Brăila"
+msgstr ""
+
+#: includes/evf-core-functions.php:3327
+msgid "Brașov"
+msgstr ""
+
+#: includes/evf-core-functions.php:3328
+msgid "București"
+msgstr ""
+
+#: includes/evf-core-functions.php:3329
+msgid "Buzău"
+msgstr ""
+
+#: includes/evf-core-functions.php:3331
+msgid "Caraș-Severin"
+msgstr ""
+
+#: includes/evf-core-functions.php:3332
+msgid "Cluj"
+msgstr ""
+
+#: includes/evf-core-functions.php:3333
+msgid "Constanța"
+msgstr ""
+
+#: includes/evf-core-functions.php:3334
+msgid "Covasna"
+msgstr ""
+
+#: includes/evf-core-functions.php:3335
+msgid "Dâmbovița"
+msgstr ""
+
+#: includes/evf-core-functions.php:3336
+msgid "Dolj"
+msgstr ""
+
+#: includes/evf-core-functions.php:3337
+msgid "Galați"
+msgstr ""
+
+#: includes/evf-core-functions.php:3338
+msgid "Giurgiu"
+msgstr ""
+
+#: includes/evf-core-functions.php:3339
+msgid "Gorj"
+msgstr ""
+
+#: includes/evf-core-functions.php:3340
+msgid "Harghita"
+msgstr ""
+
+#: includes/evf-core-functions.php:3341
+msgid "Hunedoara"
+msgstr ""
+
+#: includes/evf-core-functions.php:3342
+msgid "Ialomița"
+msgstr ""
+
+#: includes/evf-core-functions.php:3343
+msgid "Iași"
+msgstr ""
+
+#: includes/evf-core-functions.php:3344
+msgid "Ilfov"
+msgstr ""
+
+#: includes/evf-core-functions.php:3345
+msgid "Maramureș"
+msgstr ""
+
+#: includes/evf-core-functions.php:3346
+msgid "Mehedinți"
+msgstr ""
+
+#: includes/evf-core-functions.php:3347
+msgid "Mureș"
+msgstr ""
+
+#: includes/evf-core-functions.php:3348
+msgid "Neamț"
+msgstr ""
+
+#: includes/evf-core-functions.php:3349
+msgid "Olt"
+msgstr ""
+
+#: includes/evf-core-functions.php:3350
+msgid "Prahova"
+msgstr ""
+
+#: includes/evf-core-functions.php:3351
+msgid "Sălaj"
+msgstr ""
+
+#: includes/evf-core-functions.php:3352
+msgid "Satu Mare"
+msgstr ""
+
+#: includes/evf-core-functions.php:3353
+msgid "Sibiu"
+msgstr ""
+
+#: includes/evf-core-functions.php:3354
+msgid "Suceava"
+msgstr ""
+
+#: includes/evf-core-functions.php:3355
+msgid "Teleorman"
+msgstr ""
+
+#: includes/evf-core-functions.php:3356
+msgid "Timiș"
+msgstr ""
+
+#: includes/evf-core-functions.php:3357
+msgid "Tulcea"
+msgstr ""
+
+#: includes/evf-core-functions.php:3358
+msgid "Vâlcea"
+msgstr ""
+
+#: includes/evf-core-functions.php:3359
+msgid "Vaslui"
+msgstr ""
+
+#: includes/evf-core-functions.php:3360
+msgid "Vrancea"
+msgstr ""
+
+#: includes/evf-core-functions.php:3366
+msgid "Ahuachapán"
+msgstr ""
+
+#: includes/evf-core-functions.php:3367
+msgid "Cabañas"
+msgstr ""
+
+#: includes/evf-core-functions.php:3368
+msgid "Chalatenango"
+msgstr ""
+
+#: includes/evf-core-functions.php:3369
+msgid "Cuscatlán"
+msgstr ""
+
+#: includes/evf-core-functions.php:3371
+msgid "Morazán"
+msgstr ""
+
+#: includes/evf-core-functions.php:3373
+msgid "Santa Ana"
+msgstr ""
+
+#: includes/evf-core-functions.php:3374
+msgid "San Miguel"
+msgstr ""
+
+#: includes/evf-core-functions.php:3375
+msgid "Sonsonate"
+msgstr ""
+
+#: includes/evf-core-functions.php:3376
+msgid "San Salvador"
+msgstr ""
+
+#: includes/evf-core-functions.php:3377
+msgid "San Vicente"
+msgstr ""
+
+#: includes/evf-core-functions.php:3378
+msgid "La Unión"
+msgstr ""
+
+#: includes/evf-core-functions.php:3379
+msgid "Usulután"
+msgstr ""
+
+#: includes/evf-core-functions.php:3382
+msgid "Amnat Charoen"
+msgstr ""
+
+#: includes/evf-core-functions.php:3383
+msgid "Ang Thong"
+msgstr ""
+
+#: includes/evf-core-functions.php:3384
+msgid "Ayutthaya"
+msgstr ""
+
+#: includes/evf-core-functions.php:3385
+msgid "Bangkok"
+msgstr ""
+
+#: includes/evf-core-functions.php:3386
+msgid "Bueng Kan"
+msgstr ""
+
+#: includes/evf-core-functions.php:3387
+msgid "Buri Ram"
+msgstr ""
+
+#: includes/evf-core-functions.php:3388
+msgid "Chachoengsao"
+msgstr ""
+
+#: includes/evf-core-functions.php:3389
+msgid "Chai Nat"
+msgstr ""
+
+#: includes/evf-core-functions.php:3390
+msgid "Chaiyaphum"
+msgstr ""
+
+#: includes/evf-core-functions.php:3391
+msgid "Chanthaburi"
+msgstr ""
+
+#: includes/evf-core-functions.php:3392
+msgid "Chiang Mai"
+msgstr ""
+
+#: includes/evf-core-functions.php:3393
+msgid "Chiang Rai"
+msgstr ""
+
+#: includes/evf-core-functions.php:3394
+msgid "Chonburi"
+msgstr ""
+
+#: includes/evf-core-functions.php:3395
+msgid "Chumphon"
+msgstr ""
+
+#: includes/evf-core-functions.php:3396
+msgid "Kalasin"
+msgstr ""
+
+#: includes/evf-core-functions.php:3397
+msgid "Kamphaeng Phet"
+msgstr ""
+
+#: includes/evf-core-functions.php:3398
+msgid "Kanchanaburi"
+msgstr ""
+
+#: includes/evf-core-functions.php:3399
+msgid "Khon Kaen"
+msgstr ""
+
+#: includes/evf-core-functions.php:3400
+msgid "Krabi"
+msgstr ""
+
+#: includes/evf-core-functions.php:3401
+msgid "Lampang"
+msgstr ""
+
+#: includes/evf-core-functions.php:3402
+msgid "Lamphun"
+msgstr ""
+
+#: includes/evf-core-functions.php:3403
+msgid "Loei"
+msgstr ""
+
+#: includes/evf-core-functions.php:3404
+msgid "Lopburi"
+msgstr ""
+
+#: includes/evf-core-functions.php:3405
+msgid "Mae Hong Son"
+msgstr ""
+
+#: includes/evf-core-functions.php:3406
+msgid "Maha Sarakham"
+msgstr ""
+
+#: includes/evf-core-functions.php:3407
+msgid "Mukdahan"
+msgstr ""
+
+#: includes/evf-core-functions.php:3408
+msgid "Nakhon Nayok"
+msgstr ""
+
+#: includes/evf-core-functions.php:3409
+msgid "Nakhon Pathom"
+msgstr ""
+
+#: includes/evf-core-functions.php:3410
+msgid "Nakhon Phanom"
+msgstr ""
+
+#: includes/evf-core-functions.php:3411
+msgid "Nakhon Ratchasima"
+msgstr ""
+
+#: includes/evf-core-functions.php:3412
+msgid "Nakhon Sawan"
+msgstr ""
+
+#: includes/evf-core-functions.php:3413
+msgid "Nakhon Si Thammarat"
+msgstr ""
+
+#: includes/evf-core-functions.php:3414
+msgid "Nan"
+msgstr ""
+
+#: includes/evf-core-functions.php:3415
+msgid "Narathiwat"
+msgstr ""
+
+#: includes/evf-core-functions.php:3416
+msgid "Nong Bua Lam Phu"
+msgstr ""
+
+#: includes/evf-core-functions.php:3417
+msgid "Nong Khai"
+msgstr ""
+
+#: includes/evf-core-functions.php:3418
+msgid "Nonthaburi"
+msgstr ""
+
+#: includes/evf-core-functions.php:3419
+msgid "Pathum Thani"
+msgstr ""
+
+#: includes/evf-core-functions.php:3420
+msgid "Pattani"
+msgstr ""
+
+#: includes/evf-core-functions.php:3421
+msgid "Phang Nga"
+msgstr ""
+
+#: includes/evf-core-functions.php:3422
+msgid "Phatthalung"
+msgstr ""
+
+#: includes/evf-core-functions.php:3423
+msgid "Phayao"
+msgstr ""
+
+#: includes/evf-core-functions.php:3424
+msgid "Phetchabun"
+msgstr ""
+
+#: includes/evf-core-functions.php:3425
+msgid "Phetchaburi"
+msgstr ""
+
+#: includes/evf-core-functions.php:3426
+msgid "Phichit"
+msgstr ""
+
+#: includes/evf-core-functions.php:3427
+msgid "Phitsanulok"
+msgstr ""
+
+#: includes/evf-core-functions.php:3428
+msgid "Phrae"
+msgstr ""
+
+#: includes/evf-core-functions.php:3429
+msgid "Phuket"
+msgstr ""
+
+#: includes/evf-core-functions.php:3430
+msgid "Prachin Buri"
+msgstr ""
+
+#: includes/evf-core-functions.php:3431
+msgid "Prachuap Khiri Khan"
+msgstr ""
+
+#: includes/evf-core-functions.php:3432
+msgid "Ranong"
+msgstr ""
+
+#: includes/evf-core-functions.php:3433
+msgid "Ratchaburi"
+msgstr ""
+
+#: includes/evf-core-functions.php:3434
+msgid "Rayong"
+msgstr ""
+
+#: includes/evf-core-functions.php:3435
+msgid "Roi Et"
+msgstr ""
+
+#: includes/evf-core-functions.php:3436
+msgid "Sa Kaeo"
+msgstr ""
+
+#: includes/evf-core-functions.php:3437
+msgid "Sakon Nakhon"
+msgstr ""
+
+#: includes/evf-core-functions.php:3438
+msgid "Samut Prakan"
+msgstr ""
+
+#: includes/evf-core-functions.php:3439
+msgid "Samut Sakhon"
+msgstr ""
+
+#: includes/evf-core-functions.php:3440
+msgid "Samut Songkhram"
+msgstr ""
+
+#: includes/evf-core-functions.php:3441
+msgid "Saraburi"
+msgstr ""
+
+#: includes/evf-core-functions.php:3442
+msgid "Satun"
+msgstr ""
+
+#: includes/evf-core-functions.php:3443
+msgid "Sing Buri"
+msgstr ""
+
+#: includes/evf-core-functions.php:3444
+msgid "Sisaket"
+msgstr ""
+
+#: includes/evf-core-functions.php:3445
+msgid "Songkhla"
+msgstr ""
+
+#: includes/evf-core-functions.php:3446
+msgid "Sukhothai"
+msgstr ""
+
+#: includes/evf-core-functions.php:3447
+msgid "Suphan Buri"
+msgstr ""
+
+#: includes/evf-core-functions.php:3448
+msgid "Surat Thani"
+msgstr ""
+
+#: includes/evf-core-functions.php:3449
+msgid "Surin"
+msgstr ""
+
+#: includes/evf-core-functions.php:3450
+msgid "Tak"
+msgstr ""
+
+#: includes/evf-core-functions.php:3451
+msgid "Trang"
+msgstr ""
+
+#: includes/evf-core-functions.php:3452
+msgid "Trat"
+msgstr ""
+
+#: includes/evf-core-functions.php:3453
+msgid "Ubon Ratchathani"
+msgstr ""
+
+#: includes/evf-core-functions.php:3454
+msgid "Udon Thani"
+msgstr ""
+
+#: includes/evf-core-functions.php:3455
+msgid "Uthai Thani"
+msgstr ""
+
+#: includes/evf-core-functions.php:3456
+msgid "Uttaradit"
+msgstr ""
+
+#: includes/evf-core-functions.php:3457
+msgid "Yala"
+msgstr ""
+
+#: includes/evf-core-functions.php:3458
+msgid "Yasothon"
+msgstr ""
+
+#: includes/evf-core-functions.php:3461
+msgid "Adana"
+msgstr ""
+
+#: includes/evf-core-functions.php:3462
+msgid "Adıyaman"
+msgstr ""
+
+#: includes/evf-core-functions.php:3463
+msgid "Afyon"
+msgstr ""
+
+#: includes/evf-core-functions.php:3464
+msgid "Ağrı"
+msgstr ""
+
+#: includes/evf-core-functions.php:3465
+msgid "Amasya"
+msgstr ""
+
+#: includes/evf-core-functions.php:3466
+msgid "Ankara"
+msgstr ""
+
+#: includes/evf-core-functions.php:3467
+msgid "Antalya"
+msgstr ""
+
+#: includes/evf-core-functions.php:3468
+msgid "Artvin"
+msgstr ""
+
+#: includes/evf-core-functions.php:3469
+msgid "Aydın"
+msgstr ""
+
+#: includes/evf-core-functions.php:3470
+msgid "Balıkesir"
+msgstr ""
+
+#: includes/evf-core-functions.php:3471
+msgid "Bilecik"
+msgstr ""
+
+#: includes/evf-core-functions.php:3472
+msgid "Bingöl"
+msgstr ""
+
+#: includes/evf-core-functions.php:3473
+msgid "Bitlis"
+msgstr ""
+
+#: includes/evf-core-functions.php:3474
+msgid "Bolu"
+msgstr ""
+
+#: includes/evf-core-functions.php:3475
+msgid "Burdur"
+msgstr ""
+
+#: includes/evf-core-functions.php:3476
+msgid "Bursa"
+msgstr ""
+
+#: includes/evf-core-functions.php:3477
+msgid "Çanakkale"
+msgstr ""
+
+#: includes/evf-core-functions.php:3478
+msgid "Çankırı"
+msgstr ""
+
+#: includes/evf-core-functions.php:3479
+msgid "Çorum"
+msgstr ""
+
+#: includes/evf-core-functions.php:3480
+msgid "Denizli"
+msgstr ""
+
+#: includes/evf-core-functions.php:3481
+msgid "Diyarbakır"
+msgstr ""
+
+#: includes/evf-core-functions.php:3482
+msgid "Edirne"
+msgstr ""
+
+#: includes/evf-core-functions.php:3483
+msgid "Elazığ"
+msgstr ""
+
+#: includes/evf-core-functions.php:3484
+msgid "Erzincan"
+msgstr ""
+
+#: includes/evf-core-functions.php:3485
+msgid "Erzurum"
+msgstr ""
+
+#: includes/evf-core-functions.php:3486
+msgid "Eskişehir"
+msgstr ""
+
+#: includes/evf-core-functions.php:3487
+msgid "Gaziantep"
+msgstr ""
+
+#: includes/evf-core-functions.php:3488
+msgid "Giresun"
+msgstr ""
+
+#: includes/evf-core-functions.php:3489
+msgid "Gümüşhane"
+msgstr ""
+
+#: includes/evf-core-functions.php:3490
+msgid "Hakkari"
+msgstr ""
+
+#: includes/evf-core-functions.php:3491
+msgid "Hatay"
+msgstr ""
+
+#: includes/evf-core-functions.php:3492
+msgid "Isparta"
+msgstr ""
+
+#: includes/evf-core-functions.php:3493
+msgid "İçel"
+msgstr ""
+
+#: includes/evf-core-functions.php:3494
+msgid "İstanbul"
+msgstr ""
+
+#: includes/evf-core-functions.php:3495
+msgid "İzmir"
+msgstr ""
+
+#: includes/evf-core-functions.php:3496
+msgid "Kars"
+msgstr ""
+
+#: includes/evf-core-functions.php:3497
+msgid "Kastamonu"
+msgstr ""
+
+#: includes/evf-core-functions.php:3498
+msgid "Kayseri"
+msgstr ""
+
+#: includes/evf-core-functions.php:3499
+msgid "Kırklareli"
+msgstr ""
+
+#: includes/evf-core-functions.php:3500
+msgid "Kırşehir"
+msgstr ""
+
+#: includes/evf-core-functions.php:3501
+msgid "Kocaeli"
+msgstr ""
+
+#: includes/evf-core-functions.php:3502
+msgid "Konya"
+msgstr ""
+
+#: includes/evf-core-functions.php:3503
+msgid "Kütahya"
+msgstr ""
+
+#: includes/evf-core-functions.php:3504
+msgid "Malatya"
+msgstr ""
+
+#: includes/evf-core-functions.php:3505
+msgid "Manisa"
+msgstr ""
+
+#: includes/evf-core-functions.php:3506
+msgid "Kahramanmaraş"
+msgstr ""
+
+#: includes/evf-core-functions.php:3507
+msgid "Mardin"
+msgstr ""
+
+#: includes/evf-core-functions.php:3508
+msgid "Muğla"
+msgstr ""
+
+#: includes/evf-core-functions.php:3509
+msgid "Muş"
+msgstr ""
+
+#: includes/evf-core-functions.php:3510
+msgid "Nevşehir"
+msgstr ""
+
+#: includes/evf-core-functions.php:3511
+msgid "Niğde"
+msgstr ""
+
+#: includes/evf-core-functions.php:3512
+msgid "Ordu"
+msgstr ""
+
+#: includes/evf-core-functions.php:3513
+msgid "Rize"
+msgstr ""
+
+#: includes/evf-core-functions.php:3514
+msgid "Sakarya"
+msgstr ""
+
+#: includes/evf-core-functions.php:3515
+msgid "Samsun"
+msgstr ""
+
+#: includes/evf-core-functions.php:3516
+msgid "Siirt"
+msgstr ""
+
+#: includes/evf-core-functions.php:3517
+msgid "Sinop"
+msgstr ""
+
+#: includes/evf-core-functions.php:3518
+msgid "Sivas"
+msgstr ""
+
+#: includes/evf-core-functions.php:3519
+msgid "Tekirdağ"
+msgstr ""
+
+#: includes/evf-core-functions.php:3520
+msgid "Tokat"
+msgstr ""
+
+#: includes/evf-core-functions.php:3521
+msgid "Trabzon"
+msgstr ""
+
+#: includes/evf-core-functions.php:3522
+msgid "Tunceli"
+msgstr ""
+
+#: includes/evf-core-functions.php:3523
+msgid "Şanlıurfa"
+msgstr ""
+
+#: includes/evf-core-functions.php:3524
+msgid "Uşak"
+msgstr ""
+
+#: includes/evf-core-functions.php:3525
+msgid "Van"
+msgstr ""
+
+#: includes/evf-core-functions.php:3526
+msgid "Yozgat"
+msgstr ""
+
+#: includes/evf-core-functions.php:3527
+msgid "Zonguldak"
+msgstr ""
+
+#: includes/evf-core-functions.php:3528
+msgid "Aksaray"
+msgstr ""
+
+#: includes/evf-core-functions.php:3529
+msgid "Bayburt"
+msgstr ""
+
+#: includes/evf-core-functions.php:3530
+msgid "Karaman"
+msgstr ""
+
+#: includes/evf-core-functions.php:3531
+msgid "Kırıkkale"
+msgstr ""
+
+#: includes/evf-core-functions.php:3532
+msgid "Batman"
+msgstr ""
+
+#: includes/evf-core-functions.php:3533
+msgid "Şırnak"
+msgstr ""
+
+#: includes/evf-core-functions.php:3534
+msgid "Bartın"
+msgstr ""
+
+#: includes/evf-core-functions.php:3535
+msgid "Ardahan"
+msgstr ""
+
+#: includes/evf-core-functions.php:3536
+msgid "Iğdır"
+msgstr ""
+
+#: includes/evf-core-functions.php:3537
+msgid "Yalova"
+msgstr ""
+
+#: includes/evf-core-functions.php:3538
+msgid "Karabük"
+msgstr ""
+
+#: includes/evf-core-functions.php:3539
+msgid "Kilis"
+msgstr ""
+
+#: includes/evf-core-functions.php:3540
+msgid "Osmaniye"
+msgstr ""
+
+#: includes/evf-core-functions.php:3541
+msgid "Düzce"
+msgstr ""
+
+#: includes/evf-core-functions.php:3544
+msgid "Arusha"
+msgstr ""
+
+#: includes/evf-core-functions.php:3545
+msgid "Dar es Salaam"
+msgstr ""
+
+#: includes/evf-core-functions.php:3546
+msgid "Dodoma"
+msgstr ""
+
+#: includes/evf-core-functions.php:3547
+msgid "Iringa"
+msgstr ""
+
+#: includes/evf-core-functions.php:3548
+msgid "Kagera"
+msgstr ""
+
+#: includes/evf-core-functions.php:3549
+msgid "Pemba North"
+msgstr ""
+
+#: includes/evf-core-functions.php:3550
+msgid "Zanzibar North"
+msgstr ""
+
+#: includes/evf-core-functions.php:3551
+msgid "Kigoma"
+msgstr ""
+
+#: includes/evf-core-functions.php:3552
+msgid "Kilimanjaro"
+msgstr ""
+
+#: includes/evf-core-functions.php:3553
+msgid "Pemba South"
+msgstr ""
+
+#: includes/evf-core-functions.php:3554
+msgid "Zanzibar South"
+msgstr ""
+
+#: includes/evf-core-functions.php:3555
+msgid "Lindi"
+msgstr ""
+
+#: includes/evf-core-functions.php:3556
+msgid "Mara"
+msgstr ""
+
+#: includes/evf-core-functions.php:3557
+msgid "Mbeya"
+msgstr ""
+
+#: includes/evf-core-functions.php:3558
+msgid "Zanzibar West"
+msgstr ""
+
+#: includes/evf-core-functions.php:3559
+msgid "Morogoro"
+msgstr ""
+
+#: includes/evf-core-functions.php:3560
+msgid "Mtwara"
+msgstr ""
+
+#: includes/evf-core-functions.php:3561
+msgid "Mwanza"
+msgstr ""
+
+#: includes/evf-core-functions.php:3562
+msgid "Coast"
+msgstr ""
+
+#: includes/evf-core-functions.php:3563
+msgid "Rukwa"
+msgstr ""
+
+#: includes/evf-core-functions.php:3564
+msgid "Ruvuma"
+msgstr ""
+
+#: includes/evf-core-functions.php:3565
+msgid "Shinyanga"
+msgstr ""
+
+#: includes/evf-core-functions.php:3566
+msgid "Singida"
+msgstr ""
+
+#: includes/evf-core-functions.php:3567
+msgid "Tabora"
+msgstr ""
+
+#: includes/evf-core-functions.php:3568
+msgid "Tanga"
+msgstr ""
+
+#: includes/evf-core-functions.php:3569
+msgid "Manyara"
+msgstr ""
+
+#: includes/evf-core-functions.php:3570
+msgid "Geita"
+msgstr ""
+
+#: includes/evf-core-functions.php:3571
+msgid "Katavi"
+msgstr ""
+
+#: includes/evf-core-functions.php:3572
+msgid "Njombe"
+msgstr ""
+
+#: includes/evf-core-functions.php:3573
+msgid "Simiyu"
+msgstr ""
+
+#: includes/evf-core-functions.php:3577
+msgctxt "district"
+msgid "Belgrade"
+msgstr ""
+
+#: includes/evf-core-functions.php:3578
+msgctxt "district"
+msgid "Bor"
+msgstr ""
+
+#: includes/evf-core-functions.php:3579
+msgctxt "district"
+msgid "Braničevo"
+msgstr ""
+
+#: includes/evf-core-functions.php:3580
+msgctxt "district"
+msgid "Central Banat"
+msgstr ""
+
+#: includes/evf-core-functions.php:3581
+msgctxt "district"
+msgid "Danube"
+msgstr ""
+
+#: includes/evf-core-functions.php:3582
+msgctxt "district"
+msgid "Jablanica"
+msgstr ""
+
+#: includes/evf-core-functions.php:3583
+msgctxt "district"
+msgid "Kolubara"
+msgstr ""
+
+#: includes/evf-core-functions.php:3584
+msgctxt "district"
+msgid "Mačva"
+msgstr ""
+
+#: includes/evf-core-functions.php:3585
+msgctxt "district"
+msgid "Morava"
+msgstr ""
+
+#: includes/evf-core-functions.php:3586
+msgctxt "district"
+msgid "Nišava"
+msgstr ""
+
+#: includes/evf-core-functions.php:3587
+msgctxt "district"
+msgid "North Bačka"
+msgstr ""
+
+#: includes/evf-core-functions.php:3588
+msgctxt "district"
+msgid "North Banat"
+msgstr ""
+
+#: includes/evf-core-functions.php:3589
+msgctxt "district"
+msgid "Pčinja"
+msgstr ""
+
+#: includes/evf-core-functions.php:3590
+msgctxt "district"
+msgid "Pirot"
+msgstr ""
+
+#: includes/evf-core-functions.php:3591
+msgctxt "district"
+msgid "Pomoravlje"
+msgstr ""
+
+#: includes/evf-core-functions.php:3592
+msgctxt "district"
+msgid "Rasina"
+msgstr ""
+
+#: includes/evf-core-functions.php:3593
+msgctxt "district"
+msgid "Raška"
+msgstr ""
+
+#: includes/evf-core-functions.php:3594
+msgctxt "district"
+msgid "South Bačka"
+msgstr ""
+
+#: includes/evf-core-functions.php:3595
+msgctxt "district"
+msgid "South Banat"
+msgstr ""
+
+#: includes/evf-core-functions.php:3596
+msgctxt "district"
+msgid "Srem"
+msgstr ""
+
+#: includes/evf-core-functions.php:3597
+msgctxt "district"
+msgid "Šumadija"
+msgstr ""
+
+#: includes/evf-core-functions.php:3598
+msgctxt "district"
+msgid "Toplica"
+msgstr ""
+
+#: includes/evf-core-functions.php:3599
+msgctxt "district"
+msgid "West Bačka"
+msgstr ""
+
+#: includes/evf-core-functions.php:3600
+msgctxt "district"
+msgid "Zaječar"
+msgstr ""
+
+#: includes/evf-core-functions.php:3601
+msgctxt "district"
+msgid "Zlatibor"
+msgstr ""
+
+#: includes/evf-core-functions.php:3602
+msgctxt "district"
+msgid "Kosovo"
+msgstr ""
+
+#: includes/evf-core-functions.php:3603
+msgctxt "district"
+msgid "Peć"
+msgstr ""
+
+#: includes/evf-core-functions.php:3604
+msgctxt "district"
+msgid "Prizren"
+msgstr ""
+
+#: includes/evf-core-functions.php:3605
+msgctxt "district"
+msgid "Kosovska Mitrovica"
+msgstr ""
+
+#: includes/evf-core-functions.php:3606
+msgctxt "district"
+msgid "Kosovo-Pomoravlje"
+msgstr ""
+
+#: includes/evf-core-functions.php:3607
+msgctxt "district"
+msgid "Kosovo-Metohija"
+msgstr ""
+
+#: includes/evf-core-functions.php:3608
+msgctxt "district"
+msgid "Vojvodina"
+msgstr ""
+
+#: includes/evf-core-functions.php:3612
+msgid "Vinnytsia Oblast"
+msgstr ""
+
+#: includes/evf-core-functions.php:3613
+msgid "Volyn Oblast"
+msgstr ""
+
+#: includes/evf-core-functions.php:3614
+msgid "Dnipropetrovsk Oblast"
+msgstr ""
+
+#: includes/evf-core-functions.php:3615
+msgid "Donetsk Oblast"
+msgstr ""
+
+#: includes/evf-core-functions.php:3616
+msgid "Zhytomyr Oblast"
+msgstr ""
+
+#: includes/evf-core-functions.php:3617
+msgid "Zakarpattia Oblast"
+msgstr ""
+
+#: includes/evf-core-functions.php:3618
+msgid "Zaporizhzhia Oblast"
+msgstr ""
+
+#: includes/evf-core-functions.php:3619
+msgid "Ivano-Frankivsk Oblast"
+msgstr ""
+
+#: includes/evf-core-functions.php:3620
+msgid "Kyiv Oblast"
+msgstr ""
+
+#: includes/evf-core-functions.php:3621
+msgid "Kirovohrad Oblast"
+msgstr ""
+
+#: includes/evf-core-functions.php:3622
+msgid "Luhansk Oblast"
+msgstr ""
+
+#: includes/evf-core-functions.php:3623
+msgid "Lviv Oblast"
+msgstr ""
+
+#: includes/evf-core-functions.php:3624
+msgid "Mykolaiv Oblast"
+msgstr ""
+
+#: includes/evf-core-functions.php:3625
+msgid "Odessa Oblast"
+msgstr ""
+
+#: includes/evf-core-functions.php:3626
+msgid "Poltava Oblast"
+msgstr ""
+
+#: includes/evf-core-functions.php:3627
+msgid "Rivne Oblast"
+msgstr ""
+
+#: includes/evf-core-functions.php:3628
+msgid "Sumy Oblast"
+msgstr ""
+
+#: includes/evf-core-functions.php:3629
+msgid "Ternopil Oblast"
+msgstr ""
+
+#: includes/evf-core-functions.php:3630
+msgid "Kharkiv Oblast"
+msgstr ""
+
+#: includes/evf-core-functions.php:3631
+msgid "Kherson Oblast"
+msgstr ""
+
+#: includes/evf-core-functions.php:3632
+msgid "Khmelnytskyi Oblast"
+msgstr ""
+
+#: includes/evf-core-functions.php:3633
+msgid "Cherkasy Oblast"
+msgstr ""
+
+#: includes/evf-core-functions.php:3634
+msgid "Chernihiv Oblast"
+msgstr ""
+
+#: includes/evf-core-functions.php:3635
+msgid "Chernivtsi Oblast"
+msgstr ""
+
+#: includes/evf-core-functions.php:3638
+msgid "Abim"
+msgstr ""
+
+#: includes/evf-core-functions.php:3639
+msgid "Adjumani"
+msgstr ""
+
+#: includes/evf-core-functions.php:3640
+msgid "Agago"
+msgstr ""
+
+#: includes/evf-core-functions.php:3641
+msgid "Alebtong"
+msgstr ""
+
+#: includes/evf-core-functions.php:3642
+msgid "Amolatar"
+msgstr ""
+
+#: includes/evf-core-functions.php:3643
+msgid "Amudat"
+msgstr ""
+
+#: includes/evf-core-functions.php:3644
+msgid "Amuria"
+msgstr ""
+
+#: includes/evf-core-functions.php:3645
+msgid "Amuru"
+msgstr ""
+
+#: includes/evf-core-functions.php:3646
+msgid "Apac"
+msgstr ""
+
+#: includes/evf-core-functions.php:3647
+msgid "Arua"
+msgstr ""
+
+#: includes/evf-core-functions.php:3648
+msgid "Budaka"
+msgstr ""
+
+#: includes/evf-core-functions.php:3649
+msgid "Bududa"
+msgstr ""
+
+#: includes/evf-core-functions.php:3650
+msgid "Bugiri"
+msgstr ""
+
+#: includes/evf-core-functions.php:3651
+msgid "Bugweri"
+msgstr ""
+
+#: includes/evf-core-functions.php:3652
+msgid "Buhweju"
+msgstr ""
+
+#: includes/evf-core-functions.php:3653
+msgid "Buikwe"
+msgstr ""
+
+#: includes/evf-core-functions.php:3654
+msgid "Bukedea"
+msgstr ""
+
+#: includes/evf-core-functions.php:3655
+msgid "Bukomansimbi"
+msgstr ""
+
+#: includes/evf-core-functions.php:3656
+msgid "Bukwa"
+msgstr ""
+
+#: includes/evf-core-functions.php:3657
+msgid "Bulambuli"
+msgstr ""
+
+#: includes/evf-core-functions.php:3658
+msgid "Buliisa"
+msgstr ""
+
+#: includes/evf-core-functions.php:3659
+msgid "Bundibugyo"
+msgstr ""
+
+#: includes/evf-core-functions.php:3660
+msgid "Bunyangabu"
+msgstr ""
+
+#: includes/evf-core-functions.php:3661
+msgid "Bushenyi"
+msgstr ""
+
+#: includes/evf-core-functions.php:3663
+msgid "Butaleja"
+msgstr ""
+
+#: includes/evf-core-functions.php:3664
+msgid "Butambala"
+msgstr ""
+
+#: includes/evf-core-functions.php:3665
+msgid "Butebo"
+msgstr ""
+
+#: includes/evf-core-functions.php:3666
+msgid "Buvuma"
+msgstr ""
+
+#: includes/evf-core-functions.php:3667
+msgid "Buyende"
+msgstr ""
+
+#: includes/evf-core-functions.php:3668
+msgid "Dokolo"
+msgstr ""
+
+#: includes/evf-core-functions.php:3669
+msgid "Gomba"
+msgstr ""
+
+#: includes/evf-core-functions.php:3670
+msgid "Gulu"
+msgstr ""
+
+#: includes/evf-core-functions.php:3671
+msgid "Hoima"
+msgstr ""
+
+#: includes/evf-core-functions.php:3672
+msgid "Ibanda"
+msgstr ""
+
+#: includes/evf-core-functions.php:3673
+msgid "Iganga"
+msgstr ""
+
+#: includes/evf-core-functions.php:3674
+msgid "Isingiro"
+msgstr ""
+
+#: includes/evf-core-functions.php:3675
+msgid "Jinja"
+msgstr ""
+
+#: includes/evf-core-functions.php:3676
+msgid "Kaabong"
+msgstr ""
+
+#: includes/evf-core-functions.php:3677
+msgid "Kabale"
+msgstr ""
+
+#: includes/evf-core-functions.php:3678
+msgid "Kabarole"
+msgstr ""
+
+#: includes/evf-core-functions.php:3679
+msgid "Kaberamaido"
+msgstr ""
+
+#: includes/evf-core-functions.php:3680
+msgid "Kagadi"
+msgstr ""
+
+#: includes/evf-core-functions.php:3681
+msgid "Kakumiro"
+msgstr ""
+
+#: includes/evf-core-functions.php:3682
+msgid "Kalangala"
+msgstr ""
+
+#: includes/evf-core-functions.php:3683
+msgid "Kaliro"
+msgstr ""
+
+#: includes/evf-core-functions.php:3684
+msgid "Kalungu"
+msgstr ""
+
+#: includes/evf-core-functions.php:3685
+msgid "Kampala"
+msgstr ""
+
+#: includes/evf-core-functions.php:3686
+msgid "Kamuli"
+msgstr ""
+
+#: includes/evf-core-functions.php:3687
+msgid "Kamwenge"
+msgstr ""
+
+#: includes/evf-core-functions.php:3688
+msgid "Kanungu"
+msgstr ""
+
+#: includes/evf-core-functions.php:3689
+msgid "Kapchorwa"
+msgstr ""
+
+#: includes/evf-core-functions.php:3690
+msgid "Kapelebyong"
+msgstr ""
+
+#: includes/evf-core-functions.php:3691
+msgid "Kasanda"
+msgstr ""
+
+#: includes/evf-core-functions.php:3692
+msgid "Kasese"
+msgstr ""
+
+#: includes/evf-core-functions.php:3693
+msgid "Katakwi"
+msgstr ""
+
+#: includes/evf-core-functions.php:3694
+msgid "Kayunga"
+msgstr ""
+
+#: includes/evf-core-functions.php:3695
+msgid "Kibaale"
+msgstr ""
+
+#: includes/evf-core-functions.php:3696
+msgid "Kiboga"
+msgstr ""
+
+#: includes/evf-core-functions.php:3697
+msgid "Kibuku"
+msgstr ""
+
+#: includes/evf-core-functions.php:3698
+msgid "Kikuube"
+msgstr ""
+
+#: includes/evf-core-functions.php:3699
+msgid "Kiruhura"
+msgstr ""
+
+#: includes/evf-core-functions.php:3700
+msgid "Kiryandongo"
+msgstr ""
+
+#: includes/evf-core-functions.php:3701
+msgid "Kisoro"
+msgstr ""
+
+#: includes/evf-core-functions.php:3702
+msgid "Kitgum"
+msgstr ""
+
+#: includes/evf-core-functions.php:3703
+msgid "Koboko"
+msgstr ""
+
+#: includes/evf-core-functions.php:3704
+msgid "Kole"
+msgstr ""
+
+#: includes/evf-core-functions.php:3705
+msgid "Kotido"
+msgstr ""
+
+#: includes/evf-core-functions.php:3706
+msgid "Kumi"
+msgstr ""
+
+#: includes/evf-core-functions.php:3707
+msgid "Kwania"
+msgstr ""
+
+#: includes/evf-core-functions.php:3708
+msgid "Kween"
+msgstr ""
+
+#: includes/evf-core-functions.php:3709
+msgid "Kyankwanzi"
+msgstr ""
+
+#: includes/evf-core-functions.php:3710
+msgid "Kyegegwa"
+msgstr ""
+
+#: includes/evf-core-functions.php:3711
+msgid "Kyenjojo"
+msgstr ""
+
+#: includes/evf-core-functions.php:3712
+msgid "Kyotera"
+msgstr ""
+
+#: includes/evf-core-functions.php:3713
+msgid "Lamwo"
+msgstr ""
+
+#: includes/evf-core-functions.php:3714
+msgid "Lira"
+msgstr ""
+
+#: includes/evf-core-functions.php:3715
+msgid "Luuka"
+msgstr ""
+
+#: includes/evf-core-functions.php:3716
+msgid "Luwero"
+msgstr ""
+
+#: includes/evf-core-functions.php:3717
+msgid "Lwengo"
+msgstr ""
+
+#: includes/evf-core-functions.php:3718
+msgid "Lyantonde"
+msgstr ""
+
+#: includes/evf-core-functions.php:3719
+msgid "Manafwa"
+msgstr ""
+
+#: includes/evf-core-functions.php:3720
+msgid "Maracha"
+msgstr ""
+
+#: includes/evf-core-functions.php:3721
+msgid "Masaka"
+msgstr ""
+
+#: includes/evf-core-functions.php:3722
+msgid "Masindi"
+msgstr ""
+
+#: includes/evf-core-functions.php:3723
+msgid "Mayuge"
+msgstr ""
+
+#: includes/evf-core-functions.php:3724
+msgid "Mbale"
+msgstr ""
+
+#: includes/evf-core-functions.php:3725
+msgid "Mbarara"
+msgstr ""
+
+#: includes/evf-core-functions.php:3726
+msgid "Mitooma"
+msgstr ""
+
+#: includes/evf-core-functions.php:3727
+msgid "Mityana"
+msgstr ""
+
+#: includes/evf-core-functions.php:3728
+msgid "Moroto"
+msgstr ""
+
+#: includes/evf-core-functions.php:3729
+msgid "Moyo"
+msgstr ""
+
+#: includes/evf-core-functions.php:3730
+msgid "Mpigi"
+msgstr ""
+
+#: includes/evf-core-functions.php:3731
+msgid "Mubende"
+msgstr ""
+
+#: includes/evf-core-functions.php:3732
+msgid "Mukono"
+msgstr ""
+
+#: includes/evf-core-functions.php:3733
+msgid "Nabilatuk"
+msgstr ""
+
+#: includes/evf-core-functions.php:3734
+msgid "Nakapiripirit"
+msgstr ""
+
+#: includes/evf-core-functions.php:3735
+msgid "Nakaseke"
+msgstr ""
+
+#: includes/evf-core-functions.php:3736
+msgid "Nakasongola"
+msgstr ""
+
+#: includes/evf-core-functions.php:3737
+msgid "Namayingo"
+msgstr ""
+
+#: includes/evf-core-functions.php:3738
+msgid "Namisindwa"
+msgstr ""
+
+#: includes/evf-core-functions.php:3739
+msgid "Namutumba"
+msgstr ""
+
+#: includes/evf-core-functions.php:3740
+msgid "Napak"
+msgstr ""
+
+#: includes/evf-core-functions.php:3741
+msgid "Nebbi"
+msgstr ""
+
+#: includes/evf-core-functions.php:3742
+msgid "Ngora"
+msgstr ""
+
+#: includes/evf-core-functions.php:3743
+msgid "Ntoroko"
+msgstr ""
+
+#: includes/evf-core-functions.php:3744
+msgid "Ntungamo"
+msgstr ""
+
+#: includes/evf-core-functions.php:3745
+msgid "Nwoya"
+msgstr ""
+
+#: includes/evf-core-functions.php:3746
+msgid "Omoro"
+msgstr ""
+
+#: includes/evf-core-functions.php:3747
+msgid "Otuke"
+msgstr ""
+
+#: includes/evf-core-functions.php:3748
+msgid "Oyam"
+msgstr ""
+
+#: includes/evf-core-functions.php:3749
+msgid "Pader"
+msgstr ""
+
+#: includes/evf-core-functions.php:3750
+msgid "Pakwach"
+msgstr ""
+
+#: includes/evf-core-functions.php:3751
+msgid "Pallisa"
+msgstr ""
+
+#: includes/evf-core-functions.php:3752
+msgid "Rakai"
+msgstr ""
+
+#: includes/evf-core-functions.php:3753
+msgid "Rubanda"
+msgstr ""
+
+#: includes/evf-core-functions.php:3754
+msgid "Rubirizi"
+msgstr ""
+
+#: includes/evf-core-functions.php:3755
+msgid "Rukiga"
+msgstr ""
+
+#: includes/evf-core-functions.php:3756
+msgid "Rukungiri"
+msgstr ""
+
+#: includes/evf-core-functions.php:3757
+msgid "Sembabule"
+msgstr ""
+
+#: includes/evf-core-functions.php:3758
+msgid "Serere"
+msgstr ""
+
+#: includes/evf-core-functions.php:3759
+msgid "Sheema"
+msgstr ""
+
+#: includes/evf-core-functions.php:3760
+msgid "Sironko"
+msgstr ""
+
+#: includes/evf-core-functions.php:3761
+msgid "Soroti"
+msgstr ""
+
+#: includes/evf-core-functions.php:3762
+msgid "Tororo"
+msgstr ""
+
+#: includes/evf-core-functions.php:3763
+msgid "Wakiso"
+msgstr ""
+
+#: includes/evf-core-functions.php:3764
+msgid "Yumbe"
+msgstr ""
+
+#: includes/evf-core-functions.php:3765
+msgid "Zombo"
+msgstr ""
+
+#: includes/evf-core-functions.php:3768
+msgid "Baker Island"
+msgstr ""
+
+#: includes/evf-core-functions.php:3769
+msgid "Howland Island"
+msgstr ""
+
+#: includes/evf-core-functions.php:3770
+msgid "Jarvis Island"
+msgstr ""
+
+#: includes/evf-core-functions.php:3771
+msgid "Johnston Atoll"
+msgstr ""
+
+#: includes/evf-core-functions.php:3772
+msgid "Kingman Reef"
+msgstr ""
+
+#: includes/evf-core-functions.php:3773
+msgid "Midway Atoll"
+msgstr ""
+
+#: includes/evf-core-functions.php:3774
+msgid "Navassa Island"
+msgstr ""
+
+#: includes/evf-core-functions.php:3775
+msgid "Palmyra Atoll"
+msgstr ""
+
+#: includes/evf-core-functions.php:3776
+msgid "Wake Island"
+msgstr ""
+
+#: includes/evf-core-functions.php:3779
+msgid "Alabama"
+msgstr ""
+
+#: includes/evf-core-functions.php:3780
+msgid "Alaska"
+msgstr ""
+
+#: includes/evf-core-functions.php:3781
+msgid "Arizona"
+msgstr ""
+
+#: includes/evf-core-functions.php:3782
+msgid "Arkansas"
+msgstr ""
+
+#: includes/evf-core-functions.php:3783
+msgid "California"
+msgstr ""
+
+#: includes/evf-core-functions.php:3784
+msgid "Colorado"
+msgstr ""
+
+#: includes/evf-core-functions.php:3785
+msgid "Connecticut"
+msgstr ""
+
+#: includes/evf-core-functions.php:3786
+msgid "Delaware"
+msgstr ""
+
+#: includes/evf-core-functions.php:3787
+msgid "District Of Columbia"
+msgstr ""
+
+#: includes/evf-core-functions.php:3788
+#: includes/evf-core-functions.php:3841
+msgid "Florida"
+msgstr ""
+
+#: includes/evf-core-functions.php:3789
+msgctxt "US state of Georgia"
+msgid "Georgia"
+msgstr ""
+
+#: includes/evf-core-functions.php:3790
+msgid "Hawaii"
+msgstr ""
+
+#: includes/evf-core-functions.php:3791
+msgid "Idaho"
+msgstr ""
+
+#: includes/evf-core-functions.php:3792
+msgid "Illinois"
+msgstr ""
+
+#: includes/evf-core-functions.php:3793
+msgid "Indiana"
+msgstr ""
+
+#: includes/evf-core-functions.php:3794
+msgid "Iowa"
+msgstr ""
+
+#: includes/evf-core-functions.php:3795
+msgid "Kansas"
+msgstr ""
+
+#: includes/evf-core-functions.php:3796
+msgid "Kentucky"
+msgstr ""
+
+#: includes/evf-core-functions.php:3797
+msgid "Louisiana"
+msgstr ""
+
+#: includes/evf-core-functions.php:3798
+msgid "Maine"
+msgstr ""
+
+#: includes/evf-core-functions.php:3800
+msgid "Massachusetts"
+msgstr ""
+
+#: includes/evf-core-functions.php:3801
+msgid "Michigan"
+msgstr ""
+
+#: includes/evf-core-functions.php:3802
+msgid "Minnesota"
+msgstr ""
+
+#: includes/evf-core-functions.php:3803
+msgid "Mississippi"
+msgstr ""
+
+#: includes/evf-core-functions.php:3804
+msgid "Missouri"
+msgstr ""
+
+#: includes/evf-core-functions.php:3806
+msgid "Nebraska"
+msgstr ""
+
+#: includes/evf-core-functions.php:3807
+msgid "Nevada"
+msgstr ""
+
+#: includes/evf-core-functions.php:3808
+msgid "New Hampshire"
+msgstr ""
+
+#: includes/evf-core-functions.php:3809
+msgid "New Jersey"
+msgstr ""
+
+#: includes/evf-core-functions.php:3810
+msgid "New Mexico"
+msgstr ""
+
+#: includes/evf-core-functions.php:3811
+msgid "New York"
+msgstr ""
+
+#: includes/evf-core-functions.php:3812
+msgid "North Carolina"
+msgstr ""
+
+#: includes/evf-core-functions.php:3813
+msgid "North Dakota"
+msgstr ""
+
+#: includes/evf-core-functions.php:3814
+msgid "Ohio"
+msgstr ""
+
+#: includes/evf-core-functions.php:3815
+msgid "Oklahoma"
+msgstr ""
+
+#: includes/evf-core-functions.php:3816
+msgid "Oregon"
+msgstr ""
+
+#: includes/evf-core-functions.php:3817
+msgid "Pennsylvania"
+msgstr ""
+
+#: includes/evf-core-functions.php:3818
+msgid "Rhode Island"
+msgstr ""
+
+#: includes/evf-core-functions.php:3819
+msgid "South Carolina"
+msgstr ""
+
+#: includes/evf-core-functions.php:3820
+msgid "South Dakota"
+msgstr ""
+
+#: includes/evf-core-functions.php:3821
+msgid "Tennessee"
+msgstr ""
+
+#: includes/evf-core-functions.php:3822
+msgid "Texas"
+msgstr ""
+
+#: includes/evf-core-functions.php:3823
+msgid "Utah"
+msgstr ""
+
+#: includes/evf-core-functions.php:3824
+msgid "Vermont"
+msgstr ""
+
+#: includes/evf-core-functions.php:3825
+msgid "Virginia"
+msgstr ""
+
+#: includes/evf-core-functions.php:3826
+msgid "Washington"
+msgstr ""
+
+#: includes/evf-core-functions.php:3827
+msgid "West Virginia"
+msgstr ""
+
+#: includes/evf-core-functions.php:3828
+msgid "Wisconsin"
+msgstr ""
+
+#: includes/evf-core-functions.php:3829
+msgid "Wyoming"
+msgstr ""
+
+#: includes/evf-core-functions.php:3830
+msgid "Armed Forces (AA)"
+msgstr ""
+
+#: includes/evf-core-functions.php:3831
+msgid "Armed Forces (AE)"
+msgstr ""
+
+#: includes/evf-core-functions.php:3832
+msgid "Armed Forces (AP)"
+msgstr ""
+
+#: includes/evf-core-functions.php:3835
+msgid "Artigas"
+msgstr ""
+
+#: includes/evf-core-functions.php:3836
+msgid "Canelones"
+msgstr ""
+
+#: includes/evf-core-functions.php:3837
+msgid "Cerro Largo"
+msgstr ""
+
+#: includes/evf-core-functions.php:3838
+msgid "Colonia"
+msgstr ""
+
+#: includes/evf-core-functions.php:3839
+msgid "Durazno"
+msgstr ""
+
+#: includes/evf-core-functions.php:3840
+msgid "Flores"
+msgstr ""
+
+#: includes/evf-core-functions.php:3842
+msgid "Lavalleja"
+msgstr ""
+
+#: includes/evf-core-functions.php:3843
+msgid "Maldonado"
+msgstr ""
+
+#: includes/evf-core-functions.php:3844
+msgid "Montevideo"
+msgstr ""
+
+#: includes/evf-core-functions.php:3845
+msgid "Paysandú"
+msgstr ""
+
+#: includes/evf-core-functions.php:3847
+msgid "Rivera"
+msgstr ""
+
+#: includes/evf-core-functions.php:3848
+msgid "Rocha"
+msgstr ""
+
+#: includes/evf-core-functions.php:3849
+msgid "Salto"
+msgstr ""
+
+#: includes/evf-core-functions.php:3851
+msgid "Soriano"
+msgstr ""
+
+#: includes/evf-core-functions.php:3852
+msgid "Tacuarembó"
+msgstr ""
+
+#: includes/evf-core-functions.php:3853
+msgid "Treinta y Tres"
+msgstr ""
+
+#: includes/evf-core-functions.php:3856
+msgid "Capital"
+msgstr ""
+
+#: includes/evf-core-functions.php:3857
+msgid "Anzoátegui"
+msgstr ""
+
+#: includes/evf-core-functions.php:3858
+msgid "Apure"
+msgstr ""
+
+#: includes/evf-core-functions.php:3859
+msgid "Aragua"
+msgstr ""
+
+#: includes/evf-core-functions.php:3860
+msgid "Barinas"
+msgstr ""
+
+#: includes/evf-core-functions.php:3862
+msgid "Carabobo"
+msgstr ""
+
+#: includes/evf-core-functions.php:3863
+msgid "Cojedes"
+msgstr ""
+
+#: includes/evf-core-functions.php:3864
+msgid "Falcón"
+msgstr ""
+
+#: includes/evf-core-functions.php:3865
+msgid "Guárico"
+msgstr ""
+
+#: includes/evf-core-functions.php:3866
+msgid "Lara"
+msgstr ""
+
+#: includes/evf-core-functions.php:3867
+msgid "Mérida"
+msgstr ""
+
+#: includes/evf-core-functions.php:3868
+msgid "Miranda"
+msgstr ""
+
+#: includes/evf-core-functions.php:3869
+msgid "Monagas"
+msgstr ""
+
+#: includes/evf-core-functions.php:3870
+msgid "Nueva Esparta"
+msgstr ""
+
+#: includes/evf-core-functions.php:3871
+msgid "Portuguesa"
+msgstr ""
+
+#: includes/evf-core-functions.php:3873
+msgid "Táchira"
+msgstr ""
+
+#: includes/evf-core-functions.php:3874
+msgid "Trujillo"
+msgstr ""
+
+#: includes/evf-core-functions.php:3875
+msgid "Yaracuy"
+msgstr ""
+
+#: includes/evf-core-functions.php:3876
+msgid "Zulia"
+msgstr ""
+
+#: includes/evf-core-functions.php:3877
+msgid "Federal Dependencies"
+msgstr ""
+
+#: includes/evf-core-functions.php:3878
+msgid "La Guaira (Vargas)"
+msgstr ""
+
+#: includes/evf-core-functions.php:3879
+msgid "Delta Amacuro"
+msgstr ""
+
+#: includes/evf-core-functions.php:3885
+msgid "Eastern Cape"
+msgstr ""
+
+#: includes/evf-core-functions.php:3886
+msgid "Free State"
+msgstr ""
+
+#: includes/evf-core-functions.php:3887
+msgid "Gauteng"
+msgstr ""
+
+#: includes/evf-core-functions.php:3888
+msgid "KwaZulu-Natal"
+msgstr ""
+
+#: includes/evf-core-functions.php:3889
+msgid "Limpopo"
+msgstr ""
+
+#: includes/evf-core-functions.php:3890
+msgid "Mpumalanga"
+msgstr ""
+
+#: includes/evf-core-functions.php:3891
+msgid "Northern Cape"
+msgstr ""
+
+#: includes/evf-core-functions.php:3892
+msgid "North West"
+msgstr ""
+
+#: includes/evf-core-functions.php:3893
+msgid "Western Cape"
+msgstr ""
+
+#: includes/evf-core-functions.php:3899
+msgid "Luapula"
+msgstr ""
+
+#: includes/evf-core-functions.php:3901
+msgid "North-Western"
+msgstr ""
+
+#: includes/evf-core-functions.php:3902
+msgid "Southern"
+msgstr ""
+
+#: includes/evf-core-functions.php:3903
+msgid "Copperbelt"
+msgstr ""
+
+#: includes/evf-core-functions.php:3904
+msgid "Lusaka"
+msgstr ""
+
+#: includes/evf-core-functions.php:3905
+msgid "Muchinga"
+msgstr ""
+
+#: includes/evf-core-functions.php:3921
+msgid "General Fields"
+msgstr ""
+
+#: includes/evf-core-functions.php:3922
+msgid "Advanced Fields"
+msgstr ""
+
+#: includes/evf-core-functions.php:3923
+msgid "Payment Fields"
+msgstr ""
+
+#: includes/evf-core-functions.php:3924
+msgid "Survey Fields"
+msgstr ""
+
+#: includes/evf-core-functions.php:3975
+msgid "Check this option to mark the field required."
+msgstr ""
+
+#: includes/evf-core-functions.php:3986
 #: includes/fields/class-evf-field-checkbox.php:27
 #: includes/fields/class-evf-field-radio.php:27
 msgid "First Choice"
 msgstr ""
 
-#: includes/evf-core-functions.php:1972
+#: includes/evf-core-functions.php:3987
 #: includes/fields/class-evf-field-checkbox.php:33
 #: includes/fields/class-evf-field-radio.php:33
 msgid "Second Choice"
 msgstr ""
 
-#: includes/evf-core-functions.php:1973
+#: includes/evf-core-functions.php:3988
 #: includes/fields/class-evf-field-checkbox.php:39
 #: includes/fields/class-evf-field-radio.php:39
 msgid "Third Choice"
 msgstr ""
 
-#: includes/evf-core-functions.php:1987
+#: includes/evf-core-functions.php:4002
 msgid "Enter CSS class for this field container. Class names should be separated with spaces."
 msgstr ""
 
-#: includes/evf-core-functions.php:2118
+#: includes/evf-core-functions.php:4133
 msgid "Tablet"
 msgstr ""
 
-#: includes/evf-core-functions.php:2120
+#: includes/evf-core-functions.php:4135
 msgid "Mobile"
 msgstr ""
 
-#: includes/evf-core-functions.php:2122
+#: includes/evf-core-functions.php:4137
 msgid "Desktop"
 msgstr ""
 
@@ -4566,8 +11903,8 @@ msgid "User Device"
 msgstr ""
 
 #. translators: 1: entry date 2: entry time
-#: includes/export/class-evf-entry-csv-exporter.php:360
-#: includes/export/class-evf-entry-csv-exporter.php:377
+#: includes/export/class-evf-entry-csv-exporter.php:380
+#: includes/export/class-evf-entry-csv-exporter.php:397
 msgid "%1$s %2$s"
 msgstr ""
 
@@ -4903,6 +12240,10 @@ msgstr ""
 msgid "Privacy Policy"
 msgstr ""
 
+#: includes/fields/class-evf-field-progress.php:20
+msgid "Progress"
+msgstr ""
+
 #: includes/fields/class-evf-field-range-slider.php:20
 msgid "Range Slider"
 msgstr ""
@@ -4913,6 +12254,10 @@ msgstr ""
 
 #: includes/fields/class-evf-field-repeater.php:20
 msgid "Repeater Fields"
+msgstr ""
+
+#: includes/fields/class-evf-field-reset.php:20
+msgid "Reset"
 msgstr ""
 
 #: includes/fields/class-evf-field-scale-rating.php:20
@@ -4931,15 +12276,15 @@ msgstr ""
 msgid "Option 3"
 msgstr ""
 
-#: includes/fields/class-evf-field-select.php:178
+#: includes/fields/class-evf-field-select.php:179
 msgid "Check this option to enable enhanced select. It enables you to search items in the dropdown field."
 msgstr ""
 
-#: includes/fields/class-evf-field-select.php:188
+#: includes/fields/class-evf-field-select.php:189
 msgid "Enable Enhanced Select"
 msgstr ""
 
-#: includes/fields/class-evf-field-select.php:201
+#: includes/fields/class-evf-field-select.php:202
 msgid "Enhanced select"
 msgstr ""
 
@@ -5018,7 +12363,7 @@ msgid "Yes/No"
 msgstr ""
 
 #. translators: %s - URL to a non-amp version of a page with the form.
-#: includes/shortcodes/class-evf-shortcode-form.php:919
+#: includes/shortcodes/class-evf-shortcode-form.php:926
 msgid "<a href=\"%s\">Go to the full page</a> to view and submit the form."
 msgstr ""
 
