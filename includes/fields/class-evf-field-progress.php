@@ -20,7 +20,7 @@ class EVF_Field_Progress extends EVF_Form_Fields {
 		$this->name   = esc_html__( 'Progress', 'everest-forms' );
 		$this->type   = 'progress';
 		$this->icon   = 'evf-icon evf-icon-progress';
-		$this->order  = 190;
+		$this->order  = 200;
 		$this->group  = 'advanced';
 		$this->is_pro = true;
 
