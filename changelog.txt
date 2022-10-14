@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 1.9.5 - xx-xx-2022
+* Enhancement - Form ID smart tag.​.
+
 = 1.9.4.1 - 27-09-2022
 * Fix - Progress field order issue in repeater fields.
 * Fix - Everest Forms version mismatch issue.
