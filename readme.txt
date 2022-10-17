@@ -4,7 +4,7 @@ Tags: contact form, forms, form builder, contact, custom form
 Requires at least: 5.0
 Tested up to: 6.0
 Requires PHP: 5.4
-Stable tag: 1.9.4.1
+Stable tag: 1.9.5
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -323,6 +323,10 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 
 == Changelog ==
+
+= 1.9.5 - xx-xx-2022
+* Enhancement - Form ID smart tag.​
+* Fix - Date format not working issue in the Date/Time field.
 
 = 1.9.4.1 - 27-09-2022
 * Fix - Progress field order issue in repeater fields.
