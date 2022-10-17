@@ -181,7 +181,7 @@ jQuery( function( $ ) {
 							placeholder: $( this ).data( 'placeholder' ) || '',
 							selectionAdapter: SelectionAdapter,
 							dropdownAdapter:  DropdownAdapter,
-							width: $this.css( 'width' ) ? $this.css( 'width' ) : '100%',
+							width: typeof $( this ).attr( 'style' ) !== 'undefined' &&  -1 !== $( this ).attr( 'style' ).indexOf( 'width' ) ? $( this ).css( 'width' ) : '100%',
 							templateSelection: function(data) {
 
 								if ( ! data.id ) {
