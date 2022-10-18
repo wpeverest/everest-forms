@@ -324,7 +324,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 1.9.5 - xx-xx-2022
+= 1.9.5 - 18-10-2022
 * Enhancement - Form ID smart tag.​
 * Fix - Date format not working issue in the Date/Time field.
 
