@@ -446,6 +446,19 @@
 				"professional",
 				"agency"
 			]
+		},
+		{
+			"title": "Conversational Forms",
+			"slug": "everest-forms-conversational-forms",
+			"name": "Everest Forms Conversational Forms",
+			"image": "extensions-json/sections/images/conversational-forms.png",
+			"excerpt": "Allow you to make your form submission more interactive. The Everest Forms Conversational Forms Add-on will assist you in modernizing your questionnaires, contact forms, and application forms. It enhances your form to the next level and beyond!",
+			"link": "https://wpeverest.com/wordpress-plugins/everest-forms/conversational-forms/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=conversational-forms",
+			"plan": [
+				"plus",
+				"professional",
+				"agency"
+			]
 		}
 	]
 }
