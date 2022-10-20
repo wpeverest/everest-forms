@@ -783,18 +783,26 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 		$form_id   = isset( $atts['id'] ) ? wp_unslash( $atts['id'] ) : ''; // WPCS: CSRF ok, input var ok, sanitization ok.
 		$form_obj  = evf()->form->get( $form_id );
 		$form_data = ! empty( $form_obj->post_content ) ? evf_decode( $form_obj->post_content ) : '';
-		$data_i10n = 'en';
 
 		if ( ! empty( $form_data['form_fields'] ) ) {
+			$data_i10ns = array();
 			foreach ( $form_data['form_fields'] as $form_field ) {
-				if ( 'date-time' === $form_field['type'] ) {
+				if ( 'date-time' === $form_field['type'] && 'picker' === $form_field['datetime_style'] ) {
 					$data_i10n = isset( $form_field['date_localization'] ) ? $form_field['date_localization'] : 'en';
+
+					if ( ! in_array( $data_i10n, $data_i10ns, true ) && 'en' !== $data_i10n ) {
+						$data_i10ns[] = $data_i10n;
+					}
 				}
 			}
-		}
 
-		if ( wp_script_is( 'flatpickr' ) && 'en' !== $data_i10n && 'picker' === $form_field['datetime_style'] ) {
-			wp_enqueue_script( 'flatpickr-localization', evf()->plugin_url() . '/assets/js/flatpickr/dist/I10n/' . $data_i10n . '.js', array(), EVF_VERSION, true );
+			if ( ! empty( $data_i10ns ) ) {
+				foreach ( $data_i10ns as $data_i10n ) {
+					if ( wp_script_is( 'flatpickr' ) ) {
+						wp_enqueue_script( 'flatpickr-localization-' . $data_i10n, evf()->plugin_url() . '/assets/js/flatpickr/dist/I10n/' . $data_i10n . '.js', array(), EVF_VERSION, true );
+					}
+				}
+			}
 		}
 
 	}
