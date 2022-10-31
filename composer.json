@@ -28,7 +28,7 @@
   },
   "require-dev": {
     "10up/wp_mock": "dev-enhance/allow-to-enable-disable-mock-constants-functions",
-    "phpunit/phpunit": "^5 || ^7 || ^8",
+    "phpunit/phpunit": "^5 || ^7 || ^8 || ^9",
     "roots/wordpress": "5.9.5",
     "spatie/phpunit-watcher": "^1.8",
     "psr/container": "1.0.0",
@@ -36,7 +36,7 @@
     "vlucas/phpdotenv": "5.4.1",
     "wp-cli/db-command": "2.0.19",
     "wp-cli/i18n-command": "2.2.13",
-    "wp-phpunit/wp-phpunit": "5.8.2",
+    "wp-phpunit/wp-phpunit": "6.0.3",
     "wpeverest/wpeverest-sniffs": "0.1.0",
     "yoast/phpunit-polyfills": "1.0.3"
   },
