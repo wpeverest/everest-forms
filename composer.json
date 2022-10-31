@@ -28,8 +28,8 @@
   },
   "require-dev": {
     "10up/wp_mock": "dev-enhance/allow-to-enable-disable-mock-constants-functions",
-    "phpunit/phpunit": "^5 || ^7 || ^8 || ^9",
-    "roots/wordpress": "5.9.4",
+    "phpunit/phpunit": "^5 || ^7 || ^8 ",
+    "roots/wordpress": "5.9.5",
     "spatie/phpunit-watcher": "^1.8",
     "psr/container": "1.0.0",
     "jolicode/jolinotif": "2.3.0",
