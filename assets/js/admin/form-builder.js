@@ -41,6 +41,17 @@
 						},
 					});
 				}
+
+				$( '.everest-forms-min-max-date-range-format' ).each( function () {
+					if( $( this ).find( 'input[type="checkbox"]' ).is( ':checked' ) ) { 
+						$( this ).next( '.everest-forms-min-max-date-range-option' ).removeClass( 'everest-forms-hidden' );
+					} else {
+						console.log($(this),'ganesh failure');
+						$( this ).next( '.everest-forms-min-max-date-range-option' ).addClass( 'everest-forms-hidden' );
+					}
+					
+				});
+
 				$( '.everest-forms-row-option select.evf-field-show-hide' ).each( function() {
 					$(this).find( '[selected="selected"]').prop( 'selected', true );
 				});
@@ -3029,10 +3040,15 @@ jQuery( function ( $ ) {
 	});
 
 
-	$( document ).on( 'click', '.everest-forms-min-max-date-format input', function() {
+$( document ).on( 'click', '.everest-forms-min-max-date-format input', function() {
 		var minDate = $( this ).closest( '.everest-forms-date' ).find( '.everest-forms-min-date' ).val();
 		var maxDate = $(this).closest('.everest-forms-date').find('.everest-forms-min-date').val();
 		if ( $( this ).is( ':checked' ) ) {
+			var setDateRange = $( this ).parent().next().next( '.everest-forms-min-max-date-range-format' ).find( 'input[type="checkbox"]' );
+			
+			if( setDateRange.is( ':checked' ) ) {
+				setDateRange.trigger( 'click' );
+			}
 			$( '.everest-forms-min-max-date-option' ).removeClass( 'everest-forms-hidden' );
 				if( '' === minDate ){
 					$('.everest-forms-min-date').addClass('flatpickr-field').flatpickr({
@@ -3058,6 +3074,20 @@ jQuery( function ( $ ) {
 				}
 		} else {
 			 $( '.everest-forms-min-max-date-option' ).addClass( 'everest-forms-hidden' );
+		}
+	});
+
+	$( document ).on( 'click', '.everest-forms-min-max-date-range-format input[type="checkbox"]', function() {
+		if ( $( this ).is( ':checked' ) ) {
+			var enableMinMax = $( this ).parent().prev().prev( '.everest-forms-min-max-date-format' ).find( 'input[type="checkbox"]' );
+			
+			if( enableMinMax.is( ':checked' ) ) {
+				enableMinMax.trigger( 'click' );
+			}
+
+			$( this ).parent().next( '.everest-forms-min-max-date-range-option' ).removeClass( 'everest-forms-hidden' );
+		} else {
+			$( this ).parent().next( '.everest-forms-min-max-date-range-option' ).addClass( 'everest-forms-hidden' );
 		}
 	});
 

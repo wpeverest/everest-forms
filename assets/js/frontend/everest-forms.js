@@ -98,6 +98,32 @@ jQuery( function ( $ ) {
 						inputData  	 = $( this ).data(),
 						disableDates = [];
 
+					var minDateRange = '';
+					if( inputData.minDateRange ) {
+						minDateRange = 'today';
+						if( 'today' === inputData.minDateRange ) {
+							minDateRange = minDateRange
+						} else if ( /^\s*[-+]?\d+\s*d/i.test( inputData.minDateRange ) ) {
+							minDateRange = inputData.minDateRange.match( /^\s*[-+]?\d+\s*d/i )[0].replace( 'd', '' );
+							minDateRange = new Date().fp_incr( minDateRange );
+						} else {
+							minDateRange = 'today';
+						}
+					}
+
+					var maxDateRange = '';
+					if( inputData.maxDateRange ) {
+						maxDateRange = 'today';
+						if( 'today' === inputData.maxDateRange ) {
+							maxDateRange = maxDateRange
+						} else if ( /^\s*[-+]?\d+\s*d/i.test( inputData.maxDateRange ) ) {
+							maxDateRange = inputData.maxDateRange.match( /^\s*[-+]?\d+\s*d/i )[0].replace( 'd', '' );
+							maxDateRange = new Date().fp_incr( maxDateRange );
+						} else {
+							maxDateRange = '';
+						}
+					}
+
 					// Extract list of disabled dates.
 					if ( inputData.disableDates ) {
 						disableDates = inputData.disableDates.split( ',' );
@@ -108,15 +134,14 @@ jQuery( function ( $ ) {
 					} else {
 						var pastDisableDate = '';
 					}
-
 					switch( inputData.dateTime ) {
 						case 'date':
 							// Apply flatpicker to field.
 							$( this ).flatpickr({
 								disableMobile : true,
 								mode          : inputData.mode,
-								minDate       : inputData.minDate ? inputData.minDate : pastDisableDate,
-								maxDate       : inputData.maxDate,
+								minDate       : inputData.minDate ? inputData.minDate : ( minDateRange ? minDateRange : pastDisableDate ),
+								maxDate       : inputData.maxDate ? inputData.maxDate : ( maxDateRange ? maxDateRange : '' ),
 								dateFormat    : inputData.dateFormat,
 								disable       : disableDates,
 							});
