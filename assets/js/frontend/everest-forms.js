@@ -141,8 +141,8 @@ jQuery( function ( $ ) {
 							$( this ).flatpickr({
 								disableMobile : true,
 								mode          : inputData.mode,
-								minDate       : inputData.minDate ? inputData.minDate : ( minDateRange ? minDateRange : pastDisableDate ),
-								maxDate       : inputData.maxDate ? inputData.maxDate : ( maxDateRange ? maxDateRange : '' ),
+								minDate       : minDateRange ? minDateRange : ( inputData.minDate ? inputData.minDate : pastDisableDate ),
+								maxDate       : maxDateRange ? maxDateRange : inputData.maxDate,
 								dateFormat    : inputData.dateFormat,
 								disable       : disableDates,
 							});
@@ -173,8 +173,8 @@ jQuery( function ( $ ) {
 								noCalendar   	: false,
 								disableMobile	: true,
 								mode            : inputData.mode,
-								minDate         : inputData.minDate ? inputData.minDate : pastDisableDate,
-								maxDate         : inputData.maxDate,
+								minDate       : minDateRange ? minDateRange : ( inputData.minDate ? inputData.minDate : pastDisableDate ),
+								maxDate       : maxDateRange ? maxDateRange : inputData.maxDate,
 								minuteIncrement : timeInterval,
 								dateFormat      : inputData.dateFormat,
 								time_24hr		: inputData.dateFormat.includes( 'H:i' ),
