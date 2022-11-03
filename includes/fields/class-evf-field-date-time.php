@@ -401,8 +401,8 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				array(
 					'slug'    => 'set_date_range',
 					'value'   => isset( $field['set_date_range'] ) ? $field['set_date_range'] : '',
-					'desc'    => esc_html__( 'Set Date Range.', 'everest-forms' ),
-					'tooltip' => esc_html__( 'Check this option to set min max date.', 'everest-forms' ),
+					'desc'    => esc_html__( 'Set Date Range', 'everest-forms' ),
+					'tooltip' => esc_html__( "Check this option to set date range 'x' days after today.", 'everest-forms' ),
 				),
 				false
 			);
@@ -412,8 +412,8 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				$field,
 				array(
 					'slug'    => 'min_date_range',
-					'value'   => esc_html__( 'Minimum Date Range', 'everest-forms' ),
-					'tooltip' => esc_html__( 'Select minium date.', 'everest-forms' ),
+					'value'   => esc_html__( 'Minimum Date', 'everest-forms' ),
+					'tooltip' => esc_html__( 'Number of days after today or before for negative numbers. Example: today or +14 days or -5 days.', 'everest-forms' ),
 				),
 				false
 			);
@@ -435,8 +435,8 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				$field,
 				array(
 					'slug'    => 'max_date_range',
-					'value'   => esc_html__( 'Maximum Date Range', 'everest-forms' ),
-					'tooltip' => esc_html__( 'Select maximum date.', 'everest-forms' ),
+					'value'   => esc_html__( 'Maximum Date', 'everest-forms' ),
+					'tooltip' => esc_html__( 'Number of days after today or before for negative numbers. Example: today or +14 days or -5 days.', 'everest-forms' ),
 				),
 				false
 			);

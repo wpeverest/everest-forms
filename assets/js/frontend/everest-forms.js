@@ -134,6 +134,7 @@ jQuery( function ( $ ) {
 					} else {
 						var pastDisableDate = '';
 					}
+
 					switch( inputData.dateTime ) {
 						case 'date':
 							// Apply flatpicker to field.

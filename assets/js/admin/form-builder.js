@@ -46,10 +46,8 @@
 					if( $( this ).find( 'input[type="checkbox"]' ).is( ':checked' ) ) { 
 						$( this ).next( '.everest-forms-min-max-date-range-option' ).removeClass( 'everest-forms-hidden' );
 					} else {
-						console.log($(this),'ganesh failure');
 						$( this ).next( '.everest-forms-min-max-date-range-option' ).addClass( 'everest-forms-hidden' );
 					}
-					
 				});
 
 				$( '.everest-forms-row-option select.evf-field-show-hide' ).each( function() {
@@ -3040,7 +3038,7 @@ jQuery( function ( $ ) {
 	});
 
 
-$( document ).on( 'click', '.everest-forms-min-max-date-format input', function() {
+	$( document ).on( 'click', '.everest-forms-min-max-date-format input', function() {
 		var minDate = $( this ).closest( '.everest-forms-date' ).find( '.everest-forms-min-date' ).val();
 		var maxDate = $(this).closest('.everest-forms-date').find('.everest-forms-min-date').val();
 		if ( $( this ).is( ':checked' ) ) {
