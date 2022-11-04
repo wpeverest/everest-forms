@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fb5a1b7e5a6196fa0dc745d156b90d8a",
+    "content-hash": "5e3fcd5a777f8f1b43a3cac0f286031e",
     "packages": [
         {
             "name": "composer/installers",
@@ -4633,16 +4633,16 @@
         },
         {
             "name": "wp-cli/php-cli-tools",
-            "version": "v0.11.15",
+            "version": "v0.11.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-cli/php-cli-tools.git",
-                "reference": "b6edd35988892ea1451392eb7a26d9dbe98c836d"
+                "reference": "c32e51a5c9993ad40591bc426b21f5422a5ed293"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-cli/php-cli-tools/zipball/b6edd35988892ea1451392eb7a26d9dbe98c836d",
-                "reference": "b6edd35988892ea1451392eb7a26d9dbe98c836d",
+                "url": "https://api.github.com/repos/wp-cli/php-cli-tools/zipball/c32e51a5c9993ad40591bc426b21f5422a5ed293",
+                "reference": "c32e51a5c9993ad40591bc426b21f5422a5ed293",
                 "shasum": ""
             },
             "require": {
@@ -4681,9 +4681,9 @@
             ],
             "support": {
                 "issues": "https://github.com/wp-cli/php-cli-tools/issues",
-                "source": "https://github.com/wp-cli/php-cli-tools/tree/v0.11.15"
+                "source": "https://github.com/wp-cli/php-cli-tools/tree/v0.11.16"
             },
-            "time": "2022-08-15T10:15:55+00:00"
+            "time": "2022-11-03T15:19:26+00:00"
         },
         {
             "name": "wp-cli/wp-cli",
@@ -4809,16 +4809,16 @@
         },
         {
             "name": "wp-phpunit/wp-phpunit",
-            "version": "5.8.2",
+            "version": "6.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-phpunit/wp-phpunit.git",
-                "reference": "0cefcc49fd8a7e8c2f8d755e314532441618aee5"
+                "reference": "88c786f68c6abe1061f9e40f5e8b299e41a50287"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-phpunit/wp-phpunit/zipball/0cefcc49fd8a7e8c2f8d755e314532441618aee5",
-                "reference": "0cefcc49fd8a7e8c2f8d755e314532441618aee5",
+                "url": "https://api.github.com/repos/wp-phpunit/wp-phpunit/zipball/88c786f68c6abe1061f9e40f5e8b299e41a50287",
+                "reference": "88c786f68c6abe1061f9e40f5e8b299e41a50287",
                 "shasum": ""
             },
             "type": "library",
@@ -4853,7 +4853,7 @@
                 "issues": "https://github.com/wp-phpunit/issues",
                 "source": "https://github.com/wp-phpunit/wp-phpunit"
             },
-            "time": "2021-11-10T19:49:29+00:00"
+            "time": "2022-08-30T21:14:52+00:00"
         },
         {
             "name": "wpeverest/wpeverest-sniffs",
