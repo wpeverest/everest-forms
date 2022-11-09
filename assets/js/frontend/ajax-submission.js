@@ -7,24 +7,18 @@ jQuery( function( $ ) {
 			$( document ).ready( function() {
 				var formTuple = $( v ),
 					btn = formTuple.find( '.evf-submit' ),
-					stripeForms = formTuple.find( "[data-gateway*='stripe']" );
-				  var  razorpayForms = formTuple.find( "[data-gateway='razorpay']" );
-				// If it's an ajax form containing a stripe gateway, do not latch into the button.
+				 	 razorpayForms = formTuple.find( "[data-gateway='razorpay']" );
 
-				if ( stripeForms.length > 0  && 0 === stripeForms.children.length || razorpayForms.length > 0  ) {
-					return;
-				}
 
 				btn.on( 'click', function( e ) {
+					// var paymentMethod = formTuple.find( ".everest-forms-stripe-gateways-tabs .evf-tab" ).has( 'a.active' ).data( 'gateway' );
+					// if(undefined === paymentMethod) {
+					// 	paymentMethod = formTuple.find( ".everest-forms-gateway[data-gateway='stripe']" ).data( 'gateway' );
+					// }
 
-					var paymentMethod = formTuple.find( ".everest-forms-stripe-gateways-tabs .evf-tab" ).has( 'a.active' ).data( 'gateway' );
-					if(undefined === paymentMethod) {
-						paymentMethod = formTuple.find( ".everest-forms-gateway[data-gateway='stripe']" ).data( 'gateway' );
-					}
-
-					if( 'stripe' === paymentMethod && 'none' !== formTuple.find( ".everest-forms-gateway[data-gateway='ideal']" ).closest( '.evf-field' ).css( 'display' ) ) {
-						return;
-					}
+					// if( 'stripe' === paymentMethod && 'none' !== formTuple.find( ".everest-forms-gateway[data-gateway='ideal']" ).closest( '.evf-field' ).css( 'display' ) ) {
+					// 	return;
+					// }
 
 					if ( typeof tinyMCE !== 'undefined' ) {
 						tinyMCE.triggerSave();
@@ -88,6 +82,20 @@ jQuery( function( $ ) {
 
 							var paymentMethod = formTuple.find( ".everest-forms-stripe-gateways-tabs .evf-tab" ).has( 'a.active' ).data( 'gateway' );
 
+
+							if(undefined === paymentMethod) {
+								paymentMethod = formTuple.find( ".everest-forms-gateway[data-gateway='ideal']" ).data( 'gateway' );
+								if ('ideal' === paymentMethod ){
+									paymentMethod = 'ideal';
+								}else{
+									paymentMethod = formTuple.find( ".everest-forms-gateway[data-gateway='stripe']" ).data( 'gateway' );
+								}
+							}
+							
+							if( 'stripe' === paymentMethod && 'none' !== formTuple.find( ".everest-forms-gateway[data-gateway='stripe']" ).closest( '.evf-field' ).css( 'display' ) ) {
+								formTuple.trigger( 'everest_forms_frontend_before_ajax_complete_success_message', xhr.data );
+								return;
+							}
 
 							if(undefined === paymentMethod) {
 								paymentMethod = formTuple.find( ".everest-forms-gateway[data-gateway='ideal']" ).data( 'gateway' );

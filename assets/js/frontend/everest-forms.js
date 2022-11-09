@@ -208,7 +208,7 @@ jQuery( function ( $ ) {
 					}
 					options += '<option value = "' + i + '"> ' + ( ( i< 10 ) ? '0' + i : i ) + '</option>';
 				}
-	
+
 				$this.siblings( '#minute-select-'+id ).html( options );
 				$this.siblings( '#minute-select-'+id ).attr('value', $this.siblings( '#minute-select-'+id ).find('option:first').val());
 			}
@@ -501,6 +501,7 @@ jQuery( function ( $ ) {
 							processText = $submit.data( 'process-text' );
 							var	recaptchaID = $submit.get( 0 ).recaptchaID;
 							var  razorpayForms = $form.find( "[data-gateway='razorpay']" );
+							var stripeForms = $form.find( "[data-gateway*='stripe']" );
 						// Process form.
 						if ( processText ) {
 							$submit.text( processText ).prop( 'disabled', true );
@@ -515,8 +516,8 @@ jQuery( function ( $ ) {
 							return;
 						}
 
-						if ( 1 !== $form.data( 'ajax_submission' ) ) {
-							form.submit();
+						if ( 1 !== $form.data( 'ajax_submission' ) || (stripeForms.length < 0  && 0 !== stripeForms.children.length) ) {
+							// form.submit();
 						} else {
 							return;
 						}
