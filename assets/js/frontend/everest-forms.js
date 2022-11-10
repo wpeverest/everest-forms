@@ -517,7 +517,7 @@ jQuery( function ( $ ) {
 						}
 
 						if ( 1 !== $form.data( 'ajax_submission' ) || (stripeForms.length < 0  && 0 !== stripeForms.children.length) ) {
-							// form.submit();
+							 form.submit();
 						} else {
 							return;
 						}
