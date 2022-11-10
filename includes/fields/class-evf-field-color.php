@@ -3,7 +3,7 @@
  * Color field
  *
  * @package EverestForms\Fields
- * @since   1.9.4
+ * @since   1.9.6
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -20,7 +20,7 @@ class EVF_Field_Color extends EVF_Form_Fields {
 		$this->name   = esc_html__( 'Color', 'everest-forms' );
 		$this->type   = 'color';
 		$this->icon   = 'evf-icon evf-icon-color';
-		$this->order  = 180;
+		$this->order  = 210;
 		$this->group  = 'advanced';
 		$this->is_pro = true;
 
