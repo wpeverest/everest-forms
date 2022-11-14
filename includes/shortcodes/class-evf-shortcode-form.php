@@ -416,6 +416,8 @@ class EVF_Shortcode_Form {
 					// Get field attributes.
 					$attributes = self::get_field_attributes( $field, $form_data );
 
+					do_action( 'everest_forms_display_before_field_wrapper', $field, $form_data );
+
 					// Get field properties.
 					$properties = self::get_field_properties( $field, $form_data, $attributes );
 
@@ -427,6 +429,8 @@ class EVF_Shortcode_Form {
 					do_action( "everest_forms_display_field_{$field['type']}", $field, $attributes, $form_data );
 
 					do_action( 'everest_forms_display_field_after', $field, $form_data );
+
+					do_action( 'everest_forms_display_after_field_wrapper', $field, $form_data );
 				}
 
 				echo '</div>';
@@ -741,7 +745,14 @@ class EVF_Shortcode_Form {
 					$container_data[ 'required-field-message-' . $sub_field_type ] = $error_message;
 				}
 			} else {
-				$container_data['required-field-message'] = isset( $field['required_field_message_setting'] ) && 'global' === $field['required_field_message_setting'] ? $required_validation : evf_string_translation( $form_data['id'], $field['id'], $field['required-field-message'], '-required-field-message' );
+
+				if ( isset( $field['required_field_message_setting'] ) && 'global' === $field['required_field_message_setting'] ) {
+					$container_data['required-field-message'] = $required_validation;
+				} elseif ( isset( $field['required-field-message'] ) && '' !== $field['required-field-message'] ) {
+					$container_data['required-field-message'] = evf_string_translation( $form_data['id'], $field['id'], $field['required-field-message'], '-required-field-message' );
+				} else {
+					$container_data['required-field-message'] = $required_validation;
+				}
 			}
 		}
 		$errors     = isset( evf()->task->errors[ $form_id ][ $field_id ] ) ? evf()->task->errors[ $form_id ][ $field_id ] : '';

@@ -166,9 +166,9 @@ class EVF_Template_Loader {
 		}
 
 		if ( 0 < self::$form_id ) {
-			add_filter( 'the_title', array( __CLASS__, 'form_preview_title_filter' ) );
-			add_filter( 'the_content', array( __CLASS__, 'form_preview_content_filter' ) );
-			add_filter( 'get_the_excerpt', array( __CLASS__, 'form_preview_content_filter' ) );
+			add_filter( 'the_title', array( __CLASS__, 'form_preview_title_filter' ), 100, 1 );
+			add_filter( 'the_content', array( __CLASS__, 'form_preview_content_filter' ),999 );
+			add_filter( 'get_the_excerpt', array( __CLASS__, 'form_preview_content_filter' ),999 );
 			add_filter( 'post_thumbnail_html', '__return_empty_string' );
 		}
 	}

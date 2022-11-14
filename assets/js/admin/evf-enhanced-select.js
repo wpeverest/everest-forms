@@ -70,6 +70,134 @@ jQuery( function( $ ) {
 				$( this ).selectWoo( select2_args ).addClass( 'enhanced' );
 			});
 
+			// Setup multi-select2 with Select/Unselect All buttons.
+			var SelectionAdapter, DropdownAdapter;
+			$.fn.select2.amd.require(
+				[
+					"select2/selection/single",
+					"select2/selection/placeholder",
+					"select2/dropdown",
+					"select2/dropdown/search",
+					"select2/dropdown/attachBody",
+					"select2/utils",
+					"select2/selection/eventRelay",
+				],
+				function (
+					SingleSelection,
+					Placeholder,
+					Dropdown,
+					DropdownSearch,
+					AttachBody,
+					Utils,
+					EventRelay
+				) {
+				// Add placeholder which shows current number of selections
+				SelectionAdapter = Utils.Decorate(SingleSelection, Placeholder);
+
+				// Allow to flow/fire events
+				SelectionAdapter = Utils.Decorate(SelectionAdapter, EventRelay);
+
+				// Add search box in dropdown
+				DropdownAdapter = Utils.Decorate(Dropdown, DropdownSearch);
+
+				// Add attach-body in dropdown
+				DropdownAdapter = Utils.Decorate(DropdownAdapter, AttachBody);
+				function UnselectAll() {}
+					UnselectAll.prototype.render = function (decorated) {
+						var self = this;
+						var $rendered = decorated.call(this);
+						var $unSelectAllButton = $(
+							'<button class="btn btn-default evf-select2-unselect-all-btn" type="button">' + evf_enhanced_select_params.i18n_unselect_all + '</button>'
+						);
+
+						$unSelectAllButton.on("click", function () {
+							self.$element.val([]);
+							self.$element.trigger("change");
+							self.trigger("close");
+						});
+						$rendered
+							.find(".select2-dropdown")
+							.prepend($unSelectAllButton);
+
+						return $rendered;
+					};
+
+					// Add unselect all button in dropdown
+					DropdownAdapter = Utils.Decorate(DropdownAdapter, UnselectAll);
+
+					function SelectAll() {}
+					SelectAll.prototype.render = function (decorated) {
+						var self 			 = this;
+						var $rendered 		 = decorated.call(this);
+						var $selectAllButton = $(
+							'<button class="btn btn-default evf-select2-select-all-btn" type="button">' + evf_enhanced_select_params.i18n_select_all + '</button>'
+						);
+
+						$selectAllButton.on("click", function () {
+							var $options = self.$element.find("option");
+							var values = [];
+
+							$options.each(function () {
+								values.push($(this).val());
+							});
+							self.$element.val(values);
+							self.$element.trigger("change");
+							self.trigger("close");
+						});
+						$rendered
+							.find(".select2-dropdown")
+							.prepend($selectAllButton);
+
+						return $rendered;
+					};
+
+					// Add select all button in dropdown
+					DropdownAdapter = Utils.Decorate(DropdownAdapter, SelectAll);
+
+					var allSelect2 = $( "select.evf-select2-multiple" );
+
+
+					if(0 === allSelect2.length){
+						return;
+					}
+
+					allSelect2.each( function() {
+						var $this = $( this );
+
+						$this.find('option').filter(function() {
+							return ( ( $(this).val() ).length == 0);
+						}).remove();
+
+						function formatResult(state) {
+							if ( ! state.id ) {
+								return state.text;
+							}
+							return $( '<div></div>' ).text( state.text ).addClass( 'wrap' );
+						}
+
+						var select2_args = $.extend({
+							templateResult: formatResult,
+							closeOnSelect: false,
+							placeholder: $( this ).data( 'placeholder' ) || '',
+							selectionAdapter: SelectionAdapter,
+							dropdownAdapter:  DropdownAdapter,
+							width: typeof $( this ).attr( 'style' ) !== 'undefined' &&  -1 !== $( this ).attr( 'style' ).indexOf( 'width' ) ? $( this ).css( 'width' ) : '100%',
+							templateSelection: function(data) {
+
+								if ( ! data.id ) {
+									return data.text;
+								}
+
+								var selected_len = ($this.val() || []).length;
+								return $this.data( 'selected_msg' ) ? $this.data( 'selected_msg' ).replace( '%qty%', selected_len ) : '';
+							}
+						}, getEnhancedSelectFormatString() );
+
+						$this.selectWoo( select2_args );
+					});
+				}
+			);
+
 		}).trigger( 'evf-enhanced-select-init' );
 
 		$( 'html' ).on( 'click', function( event ) {

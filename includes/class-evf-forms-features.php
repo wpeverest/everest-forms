@@ -44,6 +44,7 @@ class EVF_Forms_Features {
 			'EVF_Field_Captcha',
 			'EVF_Field_Repeater',
 			'EVF_Field_Wysiwyg',
+			'EVF_Field_Progress',
 			'EVF_Field_Payment_Single',
 			'EVF_Field_Payment_Radio',
 			'EVF_Field_Payment_Checkbox',
@@ -56,6 +57,7 @@ class EVF_Forms_Features {
 			'EVF_Field_Likert',
 			'EVF_Field_Scale_Rating',
 			'EVF_Field_Yes_No',
+			'EVF_Field_Reset',
 		);
 
 		return array_merge( $fields, $pro_fields );
