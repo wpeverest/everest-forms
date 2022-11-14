@@ -3,6 +3,7 @@
 = 1.9.6 - xx-xx-2022
 * Enhancement - Entry ID smart tag in the email message.
 * Fix - Flatpickr date localization not working while the form has more than date one field.
+* Enhancement - Set date range x days after or before.
 
 = 1.9.5 - 18-10-2022
 * Enhancement - Form ID smart tag.​
