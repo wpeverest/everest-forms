@@ -394,9 +394,67 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				false
 			);
 
+			$set_date_range = $this->field_element(
+				'checkbox',
+				$field,
+				array(
+					'slug'    => 'set_date_range',
+					'value'   => isset( $field['set_date_range'] ) ? $field['set_date_range'] : '',
+					'desc'    => esc_html__( 'Enable Custom Input', 'everest-forms' ),
+					'tooltip' => esc_html__( "Check this option to set date range 'x' days after today.", 'everest-forms' ),
+				),
+				false
+			);
+
+			$min_date_range_level = $this->field_element(
+				'label',
+				$field,
+				array(
+					'slug'    => 'min_date_range',
+					'value'   => esc_html__( 'Minimum Date', 'everest-forms' ),
+					'tooltip' => esc_html__( 'Number of days after today or before for negative numbers. Example: today or +14 days or -5 days.', 'everest-forms' ),
+				),
+				false
+			);
+
+			$min_date_range = $this->field_element(
+				'text',
+				$field,
+				array(
+					'slug'        => 'min_date_range',
+					'value'       => isset( $field['min_date_range'] ) ? $field['min_date_range'] : '',
+					'class'       => 'everest-forms-min-date-range',
+					'placeholder' => 'e.g. today',
+				),
+				false
+			);
+
+			$max_date_range_label = $this->field_element(
+				'label',
+				$field,
+				array(
+					'slug'    => 'max_date_range',
+					'value'   => esc_html__( 'Maximum Date', 'everest-forms' ),
+					'tooltip' => esc_html__( 'Number of days after today or before for negative numbers. Example: today or +14 days or -5 days.', 'everest-forms' ),
+				),
+				false
+			);
+
+			$max_date_range = $this->field_element(
+				'text',
+				$field,
+				array(
+					'slug'        => 'max_date_range',
+					'value'       => isset( $field['max_date_range'] ) ? $field['max_date_range'] : '',
+					'class'       => 'everest-forms-max-date-range',
+					'placeholder' => 'e.g. +14 days',
+				),
+				false
+			);
+
 			$args = array(
 				'slug'    => 'date_format',
-				'content' => $date_format_label . $date_format_select . $disable_dates_label . $disable_dates . $date_localization_label . $date_localization_select . '<div class="everest-forms-checklist everest-forms-checklist-inline">' . $current_date_mode . '</div><div class="everest-forms-current-date-format">' . $current_date_default . '</div><div class="everest-forms-past-date-disable-format">' . $enable_past_date_disable . '</div><div class="everest-forms-min-max-date-format">' . $enable_min_max . '</div><div class="everest-forms-min-max-date-option ' . $class_name . '">' . $min_date_label . $min_date . $max_date_label . $max_date . '</div>',
+				'content' => $date_format_label . $date_format_select . $disable_dates_label . $disable_dates . $date_localization_label . $date_localization_select . '<div class="everest-forms-checklist everest-forms-checklist-inline">' . $current_date_mode . '</div><div class="everest-forms-current-date-format">' . $current_date_default . '</div><div class="everest-forms-past-date-disable-format">' . $enable_past_date_disable . '</div><div class="everest-forms-min-max-date-format">' . $enable_min_max . '</div><div class="everest-forms-min-max-date-range-format ' . $class_name . '">' . $set_date_range . '</div><div class="everest-forms-min-max-date-option ' . $class_name . '">' . $min_date_label . $min_date . $max_date_label . $max_date . '</div><div class="everest-forms-min-max-date-range-option ' . $class_name . '">' . $min_date_range_level . $min_date_range . $max_date_range_label . $max_date_range . '</div>',
 			);
 			$this->field_element( 'row', $field, $args );
 
@@ -617,9 +675,11 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				} else {
 					$properties['inputs']['primary']['attr']['data-mode'] = isset( $field['date_mode'] ) ? $field['date_mode'] : 'single';
 				}
-				$properties['inputs']['primary']['attr']['data-locale']   = isset( $field['date_localization'] ) ? $field['date_localization'] : 'en';
-				$properties['inputs']['primary']['attr']['data-min-date'] = isset( $field['enable_min_max'], $field['min_date'] ) ? $field['min_date'] : '';
-				$properties['inputs']['primary']['attr']['data-max-date'] = isset( $field['enable_min_max'], $field['max_date'] ) ? $field['max_date'] : '';
+				$properties['inputs']['primary']['attr']['data-locale']         = isset( $field['date_localization'] ) ? $field['date_localization'] : 'en';
+				$properties['inputs']['primary']['attr']['data-min-date']       = isset( $field['enable_min_max'], $field['min_date'] ) && ! isset( $field['set_date_range'] ) ? $field['min_date'] : '';
+				$properties['inputs']['primary']['attr']['data-max-date']       = isset( $field['enable_min_max'], $field['max_date'] ) && ! isset( $field['set_date_range'] ) ? $field['max_date'] : '';
+				$properties['inputs']['primary']['attr']['data-min-date-range'] = isset( $field['set_date_range'], $field['enable_min_max'], $field['min_date_range'] ) ? $field['min_date_range'] : '';
+				$properties['inputs']['primary']['attr']['data-max-date-range'] = isset( $field['set_date_range'], $field['enable_min_max'], $field['max_date_range'] ) ? $field['max_date_range'] : '';
 			}
 
 			if ( 'date' !== $field['datetime_format'] ) {
