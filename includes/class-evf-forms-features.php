@@ -50,6 +50,7 @@ class EVF_Forms_Features {
 			'EVF_Field_Payment_Checkbox',
 			'EVF_Field_Payment_Quantity',
 			'EVF_Field_Payment_Total',
+			'EVF_Field_Payment_Subtotal',
 			'EVF_Field_Payment_Coupon',
 			'EVF_Field_Credit_Card',
 			'EVF_Field_Rating',
