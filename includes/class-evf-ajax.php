@@ -300,7 +300,7 @@ class EVF_AJAX {
 					evf_string_translation( $data['id'], $field['id'], $field['label'] );
 				}
 
-				if ( empty( $field['meta-key'] ) && ! in_array( $field['type'], array( 'html', 'title', 'captcha', 'divider' ), true ) ) {
+				if ( empty( $field['meta-key'] ) && ! in_array( $field['type'], array( 'html', 'title', 'captcha', 'divider', 'reset' ), true ) ) {
 					$empty_meta_data[] = $field['label'];
 				}
 			}

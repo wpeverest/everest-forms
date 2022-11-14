@@ -28,7 +28,7 @@
     "test-unit-php": "wp-env run phpunit 'phpunit --configuration=/var/www/html/wp-content/plugins/everest-forms/phpunit.xml.dist --verbose'"
   },
   "devDependencies": {
-    "@babel/core": "7.18.13",
+    "@babel/core": "7.19.1",
     "@wordpress/babel-preset-default": "6.5.1",
     "@wordpress/browserslist-config": "4.1.1",
     "autoprefixer": "9.8.8",
@@ -52,7 +52,7 @@
     "grunt-stylelint": "0.18.0",
     "husky": "7.0.4",
     "lint-staged": "12.5.0",
-    "node-sass": "7.0.1",
+    "node-sass": "7.0.3",
     "stylelint": "14.11.0",
     "stylelint-config-wordpress": "17.0.0",
     "webpack": "5.74.0",

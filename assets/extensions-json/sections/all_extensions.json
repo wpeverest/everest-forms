@@ -29,11 +29,11 @@
 			]
 		},
 		{
-			"title": "MailChimp",
+			"title": "Mailchimp",
 			"slug": "everest-forms-mailchimp",
-			"name": "Everest Forms MailChimp",
+			"name": "Everest Forms Mailchimp",
 			"image": "extensions-json/sections/images/mailchimp.png",
-			"excerpt": "Allows your users to subscribe to MailChimp through form submissions. Users filling up the forms can be directly added to your subscribers list in MailChimp.",
+			"excerpt": "Allows your users to subscribe to Mailchimp through form submissions. Users filling up the forms can be directly added to your subscribers list in Mailchimp.",
 			"link": "https://wpeverest.com/wordpress-plugins/everest-forms/mailchimp/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=mailchimp",
 			"plan": [
 				"personal",
@@ -416,6 +416,45 @@
 			"link": "https://wpeverest.com/wordpress-plugins/everest-forms/cloud-storage/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=cloud-storage",
 			"plan": [
 				"personal",
+				"plus",
+				"professional",
+				"agency"
+			]
+		},
+		{
+			"title": "GetResponse",
+			"slug": "everest-forms-getresponse",
+			"name": "Everest Forms GetResponse",
+			"image": "extensions-json/sections/images/getresponse.jpg",
+			"excerpt": "Allows your users to subscribe to GetResponse through form submissions. Users filling up the forms can be directly added to your subscribers list in GetResponse.",
+			"link": "https://wpeverest.com/wordpress-plugins/everest-forms/getresponse/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=getresponse",
+			"plan": [
+				"plus",
+				"professional",
+				"agency"
+			]
+		},
+		{
+			"title": "Sendinblue",
+			"slug": "everest-forms-sendinblue",
+			"name": "Everest Forms Sendinblue",
+			"image": "extensions-json/sections/images/sendinblue.jpg",
+			"excerpt": "Allows your users to subscribe to Sendinblue through form submissions. Users filling up the forms can be directly added to your subscribers list in Sendinblue.",
+			"link": "https://wpeverest.com/wordpress-plugins/everest-forms/sendinblue/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=sendinblue",
+			"plan": [
+				"plus",
+				"professional",
+				"agency"
+			]
+		},
+		{
+			"title": "Conversational Forms",
+			"slug": "everest-forms-conversational-forms",
+			"name": "Everest Forms Conversational Forms",
+			"image": "extensions-json/sections/images/conversational-forms.png",
+			"excerpt": "Allow you to make your form submission more interactive. The Everest Forms Conversational Forms Add-on will assist you in modernizing your questionnaires, contact forms, and application forms. It enhances your form to the next level and beyond!",
+			"link": "https://wpeverest.com/wordpress-plugins/everest-forms/conversational-forms/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=conversational-forms",
+			"plan": [
 				"plus",
 				"professional",
 				"agency"

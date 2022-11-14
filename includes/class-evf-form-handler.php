@@ -104,7 +104,9 @@ class EVF_Form_Handler {
 		}
 
 		if ( ! current_user_can( 'everest_forms_view_forms' ) && ! current_user_can( 'everest_forms_view_others_forms' ) ) {
-			$args['post__in'] = array( 0 );
+			if ( isset( $args['cap'] ) && 'everest_forms_view_conversational_forms' !== $args['cap'] ) {
+				$args['post__in'] = array( 0 );
+			}
 		}
 
 		// For cache lets unset the cap args.
@@ -208,7 +210,7 @@ class EVF_Form_Handler {
 			)
 		);
 
-		$templates     = evf_get_json_file_contents( 'assets/extensions-json/templates/all_templates.json' );
+		$templates = evf_get_json_file_contents( 'assets/extensions-json/templates/all_templates.json' );
 
 		if ( ! empty( $templates ) ) {
 			foreach ( $templates->templates as $template_data ) {

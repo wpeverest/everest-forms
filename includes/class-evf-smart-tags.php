@@ -51,6 +51,7 @@ class EVF_Smart_Tags {
 				'user_email'             => esc_html__( 'User Email', 'everest-forms' ),
 				'user_role'              => esc_html__( 'User Role', 'everest-forms' ),
 				'referrer_url'           => esc_html__( 'Referrer URL', 'everest-forms' ),
+				'form_id'                => esc_html__( 'Form ID', 'everest-forms' ),
 			)
 		);
 
@@ -308,6 +309,14 @@ class EVF_Smart_Tags {
 						} else {
 							$content = str_replace( '{' . $tag . '}', '', $content );
 						}
+						break;
+					case 'form_id':
+						if ( isset( $form_data['id'] ) && ! empty( $form_data['id'] ) ) {
+							$form_id = $form_data['id'];
+						} else {
+							$form_id = '';
+						}
+						$content = str_replace( '{' . $other_tag . '}', $form_id, $content );
 						break;
 				}
 			}
