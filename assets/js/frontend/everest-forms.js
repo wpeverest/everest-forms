@@ -92,8 +92,8 @@ jQuery( function ( $ ) {
 		},
 		init_datepicker: function () {
 			var evfDateField = $( '.evf-field-date-time' );
-			if ( evfDateField.length > 0 ) {
-				$( '.flatpickr-field' ).each( function() {
+			if ( evfDateField.length && evfDateField.find( '.flatpickr-field' ).length ) {
+				evfDateField.find( '.flatpickr-field' ).each( function () {
 					var timeInterval = 5,
 						inputData  	 = $( this ).data(),
 						disableDates = [];
@@ -183,7 +183,7 @@ jQuery( function ( $ ) {
 						break;
 						default:
 					}
-				});
+				} );
 			}
 		},
 		init_datedropdown: function () {
