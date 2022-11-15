@@ -2,9 +2,9 @@
 Contributors: WPEverest
 Tags: contact form, forms, form builder, contact, custom form
 Requires at least: 5.0
-Tested up to: 6.0
+Tested up to: 6.1
 Requires PHP: 5.4
-Stable tag: 1.9.5
+Stable tag: 1.9.6
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -323,6 +323,11 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 
 == Changelog ==
+
+= 1.9.6       - 17-11-2022
+* Fix         - Flatpickr date localization not working while the form has more than one date field.
+* Enhancement - Entry ID smart tag in the email message.
+* Enhancement - Set date range x days after or before.
 
 = 1.9.5 - 18-10-2022
 * Enhancement - Form ID smart tag.​

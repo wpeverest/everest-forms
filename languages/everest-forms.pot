@@ -2,16 +2,16 @@
 # This file is distributed under the same license as the Everest Forms plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Everest Forms 1.9.5\n"
+"Project-Id-Version: Everest Forms 1.9.6\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/everest-forms\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-10-18T10:04:53+00:00\n"
+"POT-Creation-Date: 2022-11-15T06:06:06+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.6.0\n"
+"X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: everest-forms\n"
 
 #. Plugin Name of the plugin
@@ -640,8 +640,8 @@ msgid "Check this option to select all the options."
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:1873
-#: includes/class-evf-emails.php:442
-#: includes/class-evf-emails.php:562
+#: includes/class-evf-emails.php:444
+#: includes/class-evf-emails.php:564
 msgid "(empty)"
 msgstr ""
 
@@ -792,7 +792,7 @@ msgstr ""
 #: includes/admin/builder/class-evf-builder-settings.php:77
 #: includes/admin/builder/class-evf-builder-settings.php:402
 #: includes/admin/builder/class-evf-builder-settings.php:462
-#: includes/class-evf-form-task.php:826
+#: includes/class-evf-form-task.php:828
 #: includes/evf-update-functions.php:140
 #: includes/templates/contact.php:71
 msgid "Admin Notification"
@@ -2736,12 +2736,12 @@ msgid "You cannot send emails with EVF_Emails until init/admin_init has been rea
 msgstr ""
 
 #. translators: %d - field ID.
-#: includes/class-evf-emails.php:536
-#: includes/class-evf-emails.php:578
+#: includes/class-evf-emails.php:538
+#: includes/class-evf-emails.php:580
 msgid "Field ID #%d"
 msgstr ""
 
-#: includes/class-evf-emails.php:590
+#: includes/class-evf-emails.php:592
 msgid "An empty form was submitted."
 msgstr ""
 
@@ -2804,8 +2804,8 @@ msgid "Popup Size"
 msgstr ""
 
 #: includes/class-evf-form-task.php:91
-#: includes/class-evf-form-task.php:504
-#: includes/shortcodes/class-evf-shortcode-form.php:957
+#: includes/class-evf-form-task.php:506
+#: includes/shortcodes/class-evf-shortcode-form.php:961
 #: includes/templates/contact.php:61
 msgid "Thanks for contacting us! We will be in touch with you shortly."
 msgstr ""
@@ -2826,59 +2826,59 @@ msgstr ""
 msgid "Everest Forms Process Before Form ID."
 msgstr ""
 
-#: includes/class-evf-form-task.php:245
-#: includes/class-evf-form-task.php:368
-#: includes/class-evf-form-task.php:442
+#: includes/class-evf-form-task.php:247
+#: includes/class-evf-form-task.php:370
+#: includes/class-evf-form-task.php:444
 msgid "Form has not been submitted, please see the errors below."
 msgstr ""
 
-#: includes/class-evf-form-task.php:248
+#: includes/class-evf-form-task.php:250
 msgid "Form has not been submitted."
 msgstr ""
 
-#: includes/class-evf-form-task.php:276
+#: includes/class-evf-form-task.php:278
 msgid "hCaptcha verification failed, please try again later."
 msgstr ""
 
-#: includes/class-evf-form-task.php:278
+#: includes/class-evf-form-task.php:280
 msgid "Google reCAPTCHA verification failed, please try again later."
 msgstr ""
 
-#: includes/class-evf-form-task.php:380
+#: includes/class-evf-form-task.php:382
 msgid "Everest Forms honeypot field triggered."
 msgstr ""
 
-#: includes/class-evf-form-task.php:445
+#: includes/class-evf-form-task.php:447
 msgid "Form has not been submitted"
 msgstr ""
 
-#: includes/class-evf-form-task.php:454
+#: includes/class-evf-form-task.php:456
 msgid "Entry Added to Database."
 msgstr ""
 
-#: includes/class-evf-form-task.php:463
+#: includes/class-evf-form-task.php:465
 msgid "Sent Email Notification."
 msgstr ""
 
-#: includes/class-evf-form-task.php:480
+#: includes/class-evf-form-task.php:482
 msgid "Everest Forms Process Completed."
 msgstr ""
 
-#: includes/class-evf-form-task.php:535
+#: includes/class-evf-form-task.php:537
 #: templates/notices/success.php:69
 msgid "Download your form submission in PDF format"
 msgstr ""
 
 #. translators: %s - form name.
-#: includes/class-evf-form-task.php:854
+#: includes/class-evf-form-task.php:856
 msgid "New %s Entry"
 msgstr ""
 
-#: includes/class-evf-form-task.php:955
+#: includes/class-evf-form-task.php:956
 msgid "No form ID was found."
 msgstr ""
 
-#: includes/class-evf-form-task.php:962
+#: includes/class-evf-form-task.php:963
 msgid "Could not create an entry"
 msgstr ""
 
@@ -11962,6 +11962,10 @@ msgstr ""
 msgid "Check this to manually set form field values."
 msgstr ""
 
+#: includes/fields/class-evf-field-color.php:20
+msgid "Color"
+msgstr ""
+
 #: includes/fields/class-evf-field-credit-card.php:20
 msgid "Credit Card"
 msgstr ""
@@ -11979,7 +11983,7 @@ msgid "Select a format for the date field."
 msgstr ""
 
 #: includes/fields/class-evf-field-date-time.php:85
-#: includes/fields/class-evf-field-date-time.php:406
+#: includes/fields/class-evf-field-date-time.php:464
 msgid "Time"
 msgstr ""
 
@@ -12069,6 +12073,7 @@ msgid "Check this option to set min max date."
 msgstr ""
 
 #: includes/fields/class-evf-field-date-time.php:358
+#: includes/fields/class-evf-field-date-time.php:414
 msgid "Minimum Date"
 msgstr ""
 
@@ -12077,6 +12082,7 @@ msgid "Select minium date."
 msgstr ""
 
 #: includes/fields/class-evf-field-date-time.php:380
+#: includes/fields/class-evf-field-date-time.php:437
 msgid "Maximum Date"
 msgstr ""
 
@@ -12084,51 +12090,64 @@ msgstr ""
 msgid "Select maximum date."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:413
+#: includes/fields/class-evf-field-date-time.php:403
+msgid "Enable Custom Input"
+msgstr ""
+
+#: includes/fields/class-evf-field-date-time.php:404
+msgid "Check this option to set date range 'x' days after today."
+msgstr ""
+
+#: includes/fields/class-evf-field-date-time.php:415
+#: includes/fields/class-evf-field-date-time.php:438
+msgid "Number of days after today or before for negative numbers. Example: today or +14 days or -5 days."
+msgstr ""
+
+#: includes/fields/class-evf-field-date-time.php:471
 msgid "Time interval and format"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:414
+#: includes/fields/class-evf-field-date-time.php:472
 msgid "Choose time interval and format to display."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:428
+#: includes/fields/class-evf-field-date-time.php:486
 msgid "15 minutes"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:429
+#: includes/fields/class-evf-field-date-time.php:487
 msgid "30 minutes"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:442
+#: includes/fields/class-evf-field-date-time.php:500
 msgid "12 H"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:443
+#: includes/fields/class-evf-field-date-time.php:501
 msgid "24 H"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:508
+#: includes/fields/class-evf-field-date-time.php:566
 msgid "Enable Min Max Time."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:509
+#: includes/fields/class-evf-field-date-time.php:567
 msgid "Check this option to set min max time."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:520
+#: includes/fields/class-evf-field-date-time.php:578
 msgid "Minimum Time"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:521
+#: includes/fields/class-evf-field-date-time.php:579
 msgid "Select minium time."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:531
+#: includes/fields/class-evf-field-date-time.php:589
 msgid "Maximum Time"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:532
+#: includes/fields/class-evf-field-date-time.php:590
 msgid "Select maximum time."
 msgstr ""
 
@@ -12234,6 +12253,10 @@ msgstr ""
 
 #: includes/fields/class-evf-field-payment-single.php:20
 msgid "Single Item"
+msgstr ""
+
+#: includes/fields/class-evf-field-payment-subtotal.php:20
+msgid "Subtotal"
 msgstr ""
 
 #: includes/fields/class-evf-field-payment-total.php:20
@@ -12371,7 +12394,7 @@ msgid "Yes/No"
 msgstr ""
 
 #. translators: %s - URL to a non-amp version of a page with the form.
-#: includes/shortcodes/class-evf-shortcode-form.php:930
+#: includes/shortcodes/class-evf-shortcode-form.php:934
 msgid "<a href=\"%s\">Go to the full page</a> to view and submit the form."
 msgstr ""
 

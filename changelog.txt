@@ -1,8 +1,8 @@
 == Changelog ==
 
-= 1.9.6 - xx-xx-2022
+= 1.9.6       - 17-11-2022
+* Fix         - Flatpickr date localization not working while the form has more than one date field.
 * Enhancement - Entry ID smart tag in the email message.
-* Fix - Flatpickr date localization not working while the form has more than date one field.
 * Enhancement - Set date range x days after or before.
 
 = 1.9.5 - 18-10-2022
