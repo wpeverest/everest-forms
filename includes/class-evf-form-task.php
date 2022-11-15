@@ -173,8 +173,10 @@ class EVF_Form_Task {
 			do_action( "everest_forms_process_before_{$form_id}", $entry, $this->form_data );
 
 			$ajax_form_submission = isset( $this->form_data['settings']['ajax_form_submission'] ) ? $this->form_data['settings']['ajax_form_submission'] : 0;
+			if ( isset( $this->form_data['payments']['stripe']['enable_stripe'] ) && '1' === $this->form_data['payments']['stripe']['enable_stripe'] ) {
+				$ajax_form_submission = '1';
+			}
 			if ( '1' === $ajax_form_submission ) {
-
 				// For the sake of validation we completely remove the validator option.
 				update_option( 'evf_validation_error', '' );
 
@@ -859,7 +861,6 @@ class EVF_Form_Task {
 			$email['reply_to']       = ! empty( $notification['evf_reply_to'] ) ? $notification['evf_reply_to'] : $email['sender_address'];
 			$email['message']        = ! empty( $notification['evf_email_message'] ) ? $notification['evf_email_message'] : '{all_fields}';
 			$email                   = apply_filters( 'everest_forms_entry_email_atts', $email, $fields, $entry, $form_data );
-			
 
 			$attachment = '';
 
