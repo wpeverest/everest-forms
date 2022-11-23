@@ -134,14 +134,16 @@ class EVF_Form_Task {
 			$this->evf_notice_print = false;
 			$logger                 = evf_get_logger();
 
-			// Check nonce for form submission.
-			if ( empty( $_POST[ '_wpnonce' . $form_id ] ) || ! wp_verify_nonce( wp_unslash( sanitize_key( $_POST[ '_wpnonce' . $form_id ] ) ), 'everest-forms_process_submit' ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-				$this->errors[ $form_id ]['header'] = esc_html__( 'We were unable to process your form, please try again.', 'everest-forms' );
-				$logger->error(
-					$this->errors[ $form_id ]['header'],
-					array( 'source' => 'form-submission' )
-				);
-				return $this->errors;
+			if ( ! defined( 'EVF_REMOVE_NONCE_VERIFICATION' ) ) {
+				// Check nonce for form submission.
+				if ( empty( $_POST[ '_wpnonce' . $form_id ] ) || ! wp_verify_nonce( wp_unslash( sanitize_key( $_POST[ '_wpnonce' . $form_id ] ) ), 'everest-forms_process_submit' ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+					$this->errors[ $form_id ]['header'] = esc_html__( 'We were unable to process your form, please try again.', 'everest-forms' );
+					$logger->error(
+						$this->errors[ $form_id ]['header'],
+						array( 'source' => 'form-submission' )
+					);
+					return $this->errors;
+				}
 			}
 
 			// Validate form is real and active (published).
