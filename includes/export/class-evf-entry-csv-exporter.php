@@ -291,7 +291,12 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 						break;
 					case 'select':
 						$value = $fields[ $column_id ]['value'];
-						$value = implode( ', ', $value );
+						if ( is_array( $value ) ) {
+							$value = implode( ',', $value );
+						} else {
+							$value = $value;
+						}
+
 						break;
 					case 'rating':
 						$value           = ! empty( $fields[ $column_id ]['value']['value'] ) ? $fields[ $column_id ]['value']['value'] : 0;
