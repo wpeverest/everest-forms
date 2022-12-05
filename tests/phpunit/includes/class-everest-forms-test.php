@@ -18,7 +18,7 @@ class Core_Class_Tests extends WP_UnitTestCase {
 	 *
 	 * @since 1.8
 	 */
-	public function setUp() {
+	public function setUp() : void {
 		$this->evf = evf();
 	}
 
@@ -27,7 +27,7 @@ class Core_Class_Tests extends WP_UnitTestCase {
 	 *
 	 * @since 1.8
 	 */
-	public function test_evf_instance() {
+	public function test_evf_instance() : void {
 		$this->assertClassHasStaticAttribute( 'instance', 'EverestForms' );
 	}
 
@@ -36,7 +36,7 @@ class Core_Class_Tests extends WP_UnitTestCase {
 	 *
 	 * @since 1.8
 	 */
-	public function test_constants() {
+	public function test_constants() : void {
 		// $this->assertEquals( plugin_dir_path( __FILE__ ) . 'everest-forms.php', EVF_PLUGIN_FILE );
 		// $this->assertEquals( plugin_basename( EVF_PLUGIN_FILE ), EVF_PLUGIN_FILE );
 		$this->assertEquals( $this->evf->version, EVF_VERSION );
@@ -48,7 +48,7 @@ class Core_Class_Tests extends WP_UnitTestCase {
 	 *
 	 * @since 1.8
 	 */
-	public function test_evf_class_instances() {
+	public function test_evf_class_instances() : void {
 		$this->assertInstanceOf( 'EverestForms', $this->evf );
 		$this->assertInstanceOf( 'EVF_Integrations', $this->evf->integrations );
 		$this->assertInstanceOf( 'EVF_Deprecated_Action_Hooks', $this->evf->deprecated_hook_handlers['actions'] );
