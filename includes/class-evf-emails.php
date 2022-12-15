@@ -332,13 +332,13 @@ class EVF_Emails {
 		// Hooks before email is sent.
 		do_action( 'everest_forms_email_send_before', $this );
 
-		$message = apply_filters( 'everest_forms_entry_email__message', str_replace( '{entry_id}', $this->entry_id, $message ), $this );
+		$message = apply_filters( 'everest_forms_entry_email__message', str_replace( '{entry_id}', absint( $this->entry_id ), $message ), $this );
 
 		// Email Template Enabled or not checked.
 		$email_template_included = ! empty( $this->form_data['settings']['email'][ $connection_id ]['choose_template'] ) ? true : false;
 
 		if ( $email_template_included && true === $this->html ) {
-			$message = apply_filters( 'everest_forms_email_template_message', $message, $this );
+			$message = apply_filters( 'everest_forms_email_template_message', $message, $this, $connection_id );
 		} else {
 			$message = $this->build_email( $message );
 		}
