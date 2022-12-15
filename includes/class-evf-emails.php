@@ -338,7 +338,7 @@ class EVF_Emails {
 		$email_template_included = ! empty( $this->form_data['settings']['email'][ $connection_id ]['choose_template'] ) ? true : false;
 
 		if ( $email_template_included && true === $this->html ) {
-			$message = apply_filters( 'everest_forms_email_template_message', $message, $this );
+			$message = apply_filters( 'everest_forms_email_template_message', $message, $this, $connection_id );
 		} else {
 			$message = $this->build_email( $message );
 		}
