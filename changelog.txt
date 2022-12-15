@@ -2,6 +2,7 @@
 
 = 1.9.7       - xx-xx-2022
 * Fix         - Empty for zero value in the number field.
+* Fix         - Entry ID wp error object.
 
 = 1.9.6       - 17-11-2022
 * Fix         - Flatpickr date localization not working while the form has more than one date field.
