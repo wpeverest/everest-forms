@@ -106,7 +106,7 @@ $trash_link = wp_nonce_url(
 										// Field value.
 										echo '<tr class="everest-forms-entry-field field-value' . esc_attr( $field_class ) . '" style="' . esc_attr( $field_style ) . '"><td>';
 
-										if ( ! empty( $field_value ) ) {
+										if ( ! empty( $field_value ) || is_numeric( $field_value ) ) {
 											if ( is_serialized( $field_value ) ) {
 												$field_value = maybe_unserialize( $field_value );
 												$field_label = isset( $field_value['label'] ) ? $field_value['label'] : $field_value;
