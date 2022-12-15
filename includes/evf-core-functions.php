@@ -25,7 +25,7 @@ require EVF_ABSPATH . 'includes/evf-entry-functions.php';
  */
 function evf_maybe_define_constant( $name, $value ) {
 	if ( ! defined( $name ) ) {
-		define( $name, $value );
+		 define( $name, $value );
 	}
 }
 
