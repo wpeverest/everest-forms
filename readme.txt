@@ -4,7 +4,7 @@ Tags: contact form, forms, form builder, contact, custom form
 Requires at least: 5.0
 Tested up to: 6.1
 Requires PHP: 5.4
-Stable tag: 1.9.6
+Stable tag: 1.9.7
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -323,6 +323,11 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 
 == Changelog ==
+
+= 1.9.7       - 21-12-2022
+* Fix         - Empty for zero value in the number field.
+* Fix         - Entry ID wp error object.
+* Fix 		  - CSV export issue with the dropdown field.
 
 = 1.9.6       - 17-11-2022
 * Fix         - Flatpickr date localization not working while the form has more than one date field.

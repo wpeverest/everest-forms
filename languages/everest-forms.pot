@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Everest Forms plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Everest Forms 1.9.6\n"
+"Project-Id-Version: Everest Forms 1.9.7\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/everest-forms\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-11-17T07:43:03+00:00\n"
+"POT-Creation-Date: 2022-12-19T03:55:57+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: everest-forms\n"
@@ -2188,7 +2188,7 @@ msgid "Enter the message for the valid number"
 msgstr ""
 
 #: includes/admin/settings/class-evf-settings-validation.php:106
-#: includes/fields/class-evf-field-number.php:297
+#: includes/fields/class-evf-field-number.php:311
 msgid "Please enter a valid number."
 msgstr ""
 
@@ -11911,8 +11911,8 @@ msgid "User Device"
 msgstr ""
 
 #. translators: 1: entry date 2: entry time
-#: includes/export/class-evf-entry-csv-exporter.php:380
-#: includes/export/class-evf-entry-csv-exporter.php:397
+#: includes/export/class-evf-entry-csv-exporter.php:385
+#: includes/export/class-evf-entry-csv-exporter.php:402
 msgid "%1$s %2$s"
 msgstr ""
 
@@ -12200,37 +12200,37 @@ msgstr ""
 msgid "Likert"
 msgstr ""
 
-#: includes/fields/class-evf-field-number.php:71
+#: includes/fields/class-evf-field-number.php:72
 msgid "Step"
 msgstr ""
 
-#: includes/fields/class-evf-field-number.php:72
+#: includes/fields/class-evf-field-number.php:73
 msgid "Allows users to enter specific legal number intervals."
 msgstr ""
 
-#: includes/fields/class-evf-field-number.php:109
+#: includes/fields/class-evf-field-number.php:110
 msgid "Min Value"
 msgstr ""
 
-#: includes/fields/class-evf-field-number.php:110
+#: includes/fields/class-evf-field-number.php:111
 msgid "Minimum value user is allowed to enter."
 msgstr ""
 
-#: includes/fields/class-evf-field-number.php:147
+#: includes/fields/class-evf-field-number.php:148
 msgid "Max Value"
 msgstr ""
 
-#: includes/fields/class-evf-field-number.php:148
+#: includes/fields/class-evf-field-number.php:149
 msgid "Maximum value user is allowed to enter."
 msgstr ""
 
 #. translators: %s - minimum value.
-#: includes/fields/class-evf-field-number.php:304
+#: includes/fields/class-evf-field-number.php:318
 msgid "Please enter a value greater than or equal to %s"
 msgstr ""
 
 #. translators: %s - maximum value.
-#: includes/fields/class-evf-field-number.php:308
+#: includes/fields/class-evf-field-number.php:322
 msgid "Please enter a value less than or equal to %s"
 msgstr ""
 
