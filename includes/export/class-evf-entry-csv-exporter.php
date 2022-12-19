@@ -79,7 +79,7 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 		// Add whitelisted fields to export columns.
 		if ( ! empty( $form_data['form_fields'] ) ) {
 			foreach ( $form_data['form_fields'] as $field ) {
-				if ( ! in_array( $field['type'], array( 'html', 'title', 'captcha' ), true ) ) {
+				if ( ! in_array( $field['type'], array( 'html', 'title', 'captcha', 'divider' ), true ) ) {
 					$columns[ $field['id'] ] = evf_clean( $field['label'] );
 				}
 			}
