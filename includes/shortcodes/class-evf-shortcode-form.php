@@ -416,6 +416,8 @@ class EVF_Shortcode_Form {
 					// Get field attributes.
 					$attributes = self::get_field_attributes( $field, $form_data );
 
+					do_action( 'everest_forms_display_before_field_wrapper', $field, $form_data );
+
 					// Get field properties.
 					$properties = self::get_field_properties( $field, $form_data, $attributes );
 
@@ -427,6 +429,8 @@ class EVF_Shortcode_Form {
 					do_action( "everest_forms_display_field_{$field['type']}", $field, $attributes, $form_data );
 
 					do_action( 'everest_forms_display_field_after', $field, $form_data );
+
+					do_action( 'everest_forms_display_after_field_wrapper', $field, $form_data );
 				}
 
 				echo '</div>';
@@ -741,7 +745,14 @@ class EVF_Shortcode_Form {
 					$container_data[ 'required-field-message-' . $sub_field_type ] = $error_message;
 				}
 			} else {
-				$container_data['required-field-message'] = isset( $field['required_field_message_setting'] ) && 'global' === $field['required_field_message_setting'] ? $required_validation : evf_string_translation( $form_data['id'], $field['id'], $field['required-field-message'], '-required-field-message' );
+
+				if ( isset( $field['required_field_message_setting'] ) && 'global' === $field['required_field_message_setting'] ) {
+					$container_data['required-field-message'] = $required_validation;
+				} elseif ( isset( $field['required-field-message'] ) && '' !== $field['required-field-message'] ) {
+					$container_data['required-field-message'] = evf_string_translation( $form_data['id'], $field['id'], $field['required-field-message'], '-required-field-message' );
+				} else {
+					$container_data['required-field-message'] = $required_validation;
+				}
 			}
 		}
 		$errors     = isset( evf()->task->errors[ $form_id ][ $field_id ] ) ? evf()->task->errors[ $form_id ][ $field_id ] : '';
@@ -870,17 +881,21 @@ class EVF_Shortcode_Form {
 		}
 
 		// Basic form information.
-		$form_data            = apply_filters( 'everest_forms_frontend_form_data', evf_decode( $form->post_content ) );
-		$form_id              = absint( $form->ID );
-		$settings             = $form_data['settings'];
-		$action               = esc_url_raw( remove_query_arg( 'evf-forms' ) );
-		$title                = filter_var( $title, FILTER_VALIDATE_BOOLEAN );
-		$description          = filter_var( $description, FILTER_VALIDATE_BOOLEAN );
-		$errors               = isset( evf()->task->errors[ $form_id ] ) ? evf()->task->errors[ $form_id ] : array();
-		$form_enabled         = isset( $form_data['form_enabled'] ) ? absint( $form_data['form_enabled'] ) : 1;
-		$kff_enabled          = isset( $settings['keyboard_friendly_form'] ) ? absint( $settings['keyboard_friendly_form'] ) : 0;
-		$disable_message      = isset( $form_data['settings']['form_disable_message'] ) ? evf_string_translation( $form_data['id'], 'form_disable_message', $form_data['settings']['form_disable_message'] ) : __( 'This form is disabled.', 'everest-forms' );
-		$ajax_form_submission = isset( $settings['ajax_form_submission'] ) ? $settings['ajax_form_submission'] : 0;
+		$form_data       = apply_filters( 'everest_forms_frontend_form_data', evf_decode( $form->post_content ) );
+		$form_id         = absint( $form->ID );
+		$settings        = $form_data['settings'];
+		$action          = esc_url_raw( remove_query_arg( 'evf-forms' ) );
+		$title           = filter_var( $title, FILTER_VALIDATE_BOOLEAN );
+		$description     = filter_var( $description, FILTER_VALIDATE_BOOLEAN );
+		$errors          = isset( evf()->task->errors[ $form_id ] ) ? evf()->task->errors[ $form_id ] : array();
+		$form_enabled    = isset( $form_data['form_enabled'] ) ? absint( $form_data['form_enabled'] ) : 1;
+		$kff_enabled     = isset( $settings['keyboard_friendly_form'] ) ? absint( $settings['keyboard_friendly_form'] ) : 0;
+		$disable_message = isset( $form_data['settings']['form_disable_message'] ) ? evf_string_translation( $form_data['id'], 'form_disable_message', $form_data['settings']['form_disable_message'] ) : __( 'This form is disabled.', 'everest-forms' );
+		if ( isset( $form_data['payments']['stripe']['enable_stripe'] ) && '1' === $form_data['payments']['stripe']['enable_stripe'] ) {
+			$ajax_form_submission = isset( $settings['ajax_form_submission'] ) ? 1 : 0;
+		} else {
+			$ajax_form_submission = isset( $settings['ajax_form_submission'] ) ? $settings['ajax_form_submission'] : 0;
+		}
 
 		if ( 0 !== $ajax_form_submission ) {
 			wp_enqueue_script( 'everest-forms-ajax-submission' );

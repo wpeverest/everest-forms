@@ -173,8 +173,10 @@ class EVF_Form_Task {
 			do_action( "everest_forms_process_before_{$form_id}", $entry, $this->form_data );
 
 			$ajax_form_submission = isset( $this->form_data['settings']['ajax_form_submission'] ) ? $this->form_data['settings']['ajax_form_submission'] : 0;
+			if ( isset( $this->form_data['payments']['stripe']['enable_stripe'] ) && '1' === $this->form_data['payments']['stripe']['enable_stripe'] ) {
+				$ajax_form_submission = '1';
+			}
 			if ( '1' === $ajax_form_submission ) {
-
 				// For the sake of validation we completely remove the validator option.
 				update_option( 'evf_validation_error', '' );
 
@@ -192,7 +194,7 @@ class EVF_Form_Task {
 						$field_submit = isset( $field_submit['signature_image'] ) ? $field_submit['signature_image'] : '';
 					}
 
-					$exclude = array( 'title', 'html', 'captcha', 'image-upload', 'file-upload', 'divider' );
+					$exclude = array( 'title', 'html', 'captcha', 'image-upload', 'file-upload', 'divider', 'reset' );
 
 					if ( ! in_array( $field_type, $exclude, true ) ) {
 

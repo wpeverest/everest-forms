@@ -313,7 +313,7 @@ abstract class EVF_Form_Fields {
 				$is_multiple = isset( $args['multiple'] ) && true === $args['multiple'];
 
 				if ( true === $is_multiple ) {
-					$output = sprintf( '<select class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" %s multiple>', $class, $id, $slug, $id, $slug, $data );
+					$output = sprintf( '<select class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s][]" %s multiple>', $class, $id, $slug, $id, $slug, $data );
 				} else {
 					$output = sprintf( '<select class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" %s >', $class, $id, $slug, $id, $slug, $data );
 				}
@@ -1268,12 +1268,12 @@ abstract class EVF_Form_Fields {
 					array(
 						'label'   => esc_html__( 'U.S. States', 'everest-forms' ),
 						'class'   => 'evf-options-preset-states',
-						'options' => array_values( evf_get_states() ),
+						'options' => array_values( evf_get_states()['US'] ),
 					),
 					array(
 						'label'   => esc_html__( 'U.S. States Postal Code', 'everest-forms' ),
 						'class'   => 'evf-options-preset-states-postal-code',
-						'options' => array_keys( evf_get_states() ),
+						'options' => array_keys( evf_get_states()['US'] ),
 					),
 					array(
 						'label'   => esc_html__( 'Age Groups', 'everest-forms' ),
@@ -1393,7 +1393,7 @@ abstract class EVF_Form_Fields {
 				);
 
 				// Smart tag for default value.
-				$exclude_fields = array( 'rating', 'number', 'range-slider', 'payment-quantity' );
+				$exclude_fields = array( 'rating', 'number', 'range-slider', 'payment-quantity', 'reset' );
 
 				if ( ! in_array( $field['type'], $exclude_fields, true ) ) {
 					$output .= '<a href="#" class="evf-toggle-smart-tag-display" data-type="other"><span class="dashicons dashicons-editor-code"></span></a>';
