@@ -17,6 +17,8 @@
 		 			}
 		 			$( '.everest-forms-panel-content' ).find( '.evf-panel-content-section' ).first().addClass( 'active' );
 		 		}
+
+
 		 	});
 
 			$( document ).ready( function( $ ) {
@@ -43,10 +45,10 @@
 				}
 
 				$( '.everest-forms-min-max-date-format' ).each( function () {
-					if( $( this ).find( 'input[type="checkbox"]' ).is( ':checked' ) ) { 
+					if( $( this ).find( 'input[type="checkbox"]' ).is( ':checked' ) ) {
 						$( this ).next( '.everest-forms-min-max-date-range-format' ).removeClass( 'everest-forms-hidden' );
 						$( this ).next().next( '.everest-forms-min-max-date-option' ).removeClass( 'everest-forms-hidden' );
-						if( $( this ).next( '.everest-forms-min-max-date-range-format' ).find( 'input[type="checkbox"]' ).is( ':checked' ) ) { 
+						if( $( this ).next( '.everest-forms-min-max-date-range-format' ).find( 'input[type="checkbox"]' ).is( ':checked' ) ) {
 							$( this ).next().next().next( '.everest-forms-min-max-date-range-option' ).removeClass( 'everest-forms-hidden' );
 							$( this ).next().next( '.everest-forms-min-max-date-option' ).addClass( 'everest-forms-hidden' );
 						}
@@ -439,7 +441,6 @@
 				EVFPanelBuilder.fieldDrop($(this).clone());
 			} )
 		},
-
 		/**
 		 * Bind user action handlers for the Add Bulk Options feature.
 		 */
@@ -890,8 +891,10 @@
 
 				if ( $label.hasClass( 'nl2br' ) ) {
 					$label.html( value.replace( /\n/g, '<br>') );
+					$label.html( value.replace( /<script/gi, '') );
 				} else {
 					$label.html( value );
+					$label.html( value.replace( /<script/gi, '') );
 				}
 			});
 
@@ -917,8 +920,10 @@
 
 				if ( $desc.hasClass( 'nl2br' ) ) {
 					$desc.html( value.replace( /\n/g, '<br>') );
+					$desc.html( value.replace( /<script/gi, '') );
 				} else {
 					$desc.html( value );
+					$desc.html( value.replace( /<script/gi, '') );
 				}
 			});
 
@@ -1118,7 +1123,7 @@
 				if( $('#everest-forms-field-option-' + id + '-enable_min_max' ).prop( 'checked' ) ) {
 					$('#everest-forms-field-option-' + id + '-set_date_range' ).parent().show();
 					if ( $('#everest-forms-field-option-' + id + '-set_date_range' ).prop( 'checked' ) ) {
-						$('#everest-forms-field-option-row-' + id + '-date_format .everest-forms-min-max-date-range-option').removeClass('everest-forms-hidden');	
+						$('#everest-forms-field-option-row-' + id + '-date_format .everest-forms-min-max-date-range-option').removeClass('everest-forms-hidden');
 					} else  {
 						$('#everest-forms-field-option-row-' + id + '-date_format .everest-forms-min-max-date-option').removeClass('everest-forms-hidden');
 					}
@@ -3056,8 +3061,8 @@ jQuery( function ( $ ) {
 		var minDate = $( this ).closest( '.everest-forms-date' ).find( '.everest-forms-min-date' ).val();
 		var maxDate = $(this).closest('.everest-forms-date').find('.everest-forms-min-date').val();
 
-		if ( $( this ).is( ':checked' ) ) {		
-			var setDateRange = $( this ).parent().next( '.everest-forms-min-max-date-range-format' );	
+		if ( $( this ).is( ':checked' ) ) {
+			var setDateRange = $( this ).parent().next( '.everest-forms-min-max-date-range-format' );
 			if( setDateRange.find( 'input[type="checkbox"]' ).is( ':checked' ) ) {
 				setDateRange.next( '.everest-forms-min-max-date-option' ).addClass( 'everest-forms-hidden' );
 				setDateRange.next().next( '.everest-forms-min-max-date-range-option' ).removeClass( 'everest-forms-hidden' );
