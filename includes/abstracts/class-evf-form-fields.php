@@ -1688,11 +1688,12 @@ abstract class EVF_Form_Fields {
 			* Whitelisted Domain.
 			*/
 			case 'whitelist_domain':
-				$default = ! empty( $args['default'] ) ? $args['default'] : '0';
-				$value   = ! empty( $field['whitelist_domain'] ) ? esc_attr( $field['whitelist_domain'] ) : '';
-				$style   = ! empty( $field['select_whitelist'] ) ? esc_attr( $field['select_whitelist'] ) : 'Allowed Domains';
-				$tooltip = esc_html__( 'You can list the email domains in the Whitelisted Domains', 'everest-forms' );
-				$output  = $this->field_element(
+				$default         = ! empty( $args['default'] ) ? $args['default'] : '0';
+				$allowed_domains = ! empty( $field['allowed_domains'] ) ? esc_attr( $field['allowed_domains'] ) : '';
+				$denied_domains  = ! empty( $field['denied_domains'] ) ? esc_attr( $field['denied_domains'] ) : '';
+				$style           = ! empty( $field['select_whitelist'] ) ? esc_attr( $field['select_whitelist'] ) : 'Allowed Domains';
+				$tooltip         = esc_html__( 'You can list the email domains in the Whitelisted Domains', 'everest-forms' );
+				$output          = $this->field_element(
 					'label',
 					$field,
 					array(
@@ -1702,7 +1703,7 @@ abstract class EVF_Form_Fields {
 					),
 					false
 				);
-				$output .= $this->field_element(
+				$output         .= $this->field_element(
 					'select',
 					$field,
 					array(
@@ -1715,7 +1716,7 @@ abstract class EVF_Form_Fields {
 					),
 					false
 				);
-				$output  = $this->field_element(
+				$output          = $this->field_element(
 					'row',
 					$field,
 					array(
@@ -1729,14 +1730,32 @@ abstract class EVF_Form_Fields {
 					'row',
 					$field,
 					array(
-						'slug'    => 'whitelist_domain',
+						'slug'    => 'allowed_domains',
 						'content' => $this->field_element(
 							'text',
 							$field,
 							array(
-								'slug'        => 'whitelist_domain',
-								'value'       => esc_attr( $value ),
+								'slug'        => 'allowed_domains',
+								'value'       => esc_attr( $allowed_domains ),
 								'placeholder' => esc_attr__( 'for eg. gmail.com', 'everest-forms' ),
+							),
+							false
+						),
+					),
+					$echo
+				);
+				$output .= $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'denied_domains',
+						'content' => $this->field_element(
+							'text',
+							$field,
+							array(
+								'slug'        => 'denied_domains',
+								'value'       => esc_attr( $denied_domains ),
+								'placeholder' => esc_attr__( 'for eg. mailinator.com', 'everest-forms' )
 							),
 							false
 						),
