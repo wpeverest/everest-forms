@@ -18,6 +18,12 @@
 		 			$( '.everest-forms-panel-content' ).find( '.evf-panel-content-section' ).first().addClass( 'active' );
 		 		}
 
+				//To remove script tag.
+				$(document).on('input','.everest-forms-field-option-row-choices input[name$="[label]"]',function (e) {
+					var $value =  $(this).val();
+					$(this).val($value.replace( /<script/gi, ''));
+				});
+
 
 		 	});
 
@@ -461,7 +467,7 @@
 				if ( $option_row.length ) {
 					var $choices = $option_row.closest( '.everest-forms-field-option' ).find( '.everest-forms-field-option-row-choices .evf-choices-list' );
 					var $bulk_options_container = $option_row.find( 'textarea#everest-forms-field-option-' + field_id + '-add_bulk_options' );
-					var options_texts = $bulk_options_container.val().split( '\n' );
+					var options_texts = $bulk_options_container.val().replace( /<script/gi, '').split( '\n' );
 
 					EVFPanelBuilder.addBulkOptions( options_texts, $choices );
 					$bulk_options_container.val('');
@@ -885,16 +891,14 @@
 			// Real-time updates for "Show Label" field option.
 			$builder.on( 'input', '.everest-forms-field-option-row-label input', function() {
 				var $this  = $(this),
-					value  = $this.val(),
-					id     = $this.parent().data( 'field-id' );
+					value  = $this.val().replace( /<script/gi, ''),
+					id     = $this.parent().data( 'field-id' ),
 					$label = $( '#everest-forms-field-' + id ).find( '.label-title .text' );
 
 				if ( $label.hasClass( 'nl2br' ) ) {
 					$label.html( value.replace( /\n/g, '<br>') );
-					$label.html( value.replace( /<script/gi, '') );
 				} else {
 					$label.html( value );
-					$label.html( value.replace( /<script/gi, '') );
 				}
 			});
 
@@ -914,16 +918,14 @@
 			// Real-time updates for "Description" field option.
 			$builder.on( 'input', '.everest-forms-field-option-row-description textarea', function() {
 				var $this = $( this ),
-					value = $this.val(),
+					value = $this.val().replace( /<script/gi, ''),
 					id    = $this.parent().data( 'field-id' ),
 					$desc = $( '#everest-forms-field-' + id ).find( '.description' );
 
 				if ( $desc.hasClass( 'nl2br' ) ) {
 					$desc.html( value.replace( /\n/g, '<br>') );
-					$desc.html( value.replace( /<script/gi, '') );
 				} else {
 					$desc.html( value );
-					$desc.html( value.replace( /<script/gi, '') );
 				}
 			});
 
@@ -1302,7 +1304,7 @@
 
 			$( '#everest-forms-field-option-row-' + id + '-choices .evf-choices-list li' ).each( function( index ) {
 				var $this    = $( this ),
-					label    = $this.find( 'input.label' ).val(),
+					label    = $this.find( 'input.label' ).val().replace( /<script/gi, ''),
 					selected = $this.find( 'input.default' ).is( ':checked' ),
 					choice 	 = $( new_choice.replace( '{label}', label ) );
 
