@@ -1,6 +1,6 @@
 == Changelog ==
 
-- 1.9.8       - xx-xx-2022
+- 1.9.8       - 23-01-2023
 * Fix 		  - Stripe issue with credit card field empty.
 * Enhancement - CSV export for repeater field.
 * Enhancement - Field validation in Builder.
