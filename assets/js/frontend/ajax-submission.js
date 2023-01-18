@@ -16,6 +16,11 @@ jQuery( function( $ ) {
 						paymentMethod = formTuple.find( ".everest-forms-gateway[data-gateway='stripe']" ).data( 'gateway' );
 					}
 
+					if (formTuple.find( ".everest-forms-gateway[data-gateway='stripe']").hasClass('StripeElement--empty') && $(".evf-field-credit-card ").is(':visible') ){
+						$( '#card-errors' ).html( 'This field is required' ).show();
+						return false;
+					}
+
 					if ( typeof tinyMCE !== 'undefined' ) {
 						tinyMCE.triggerSave();
 					}
