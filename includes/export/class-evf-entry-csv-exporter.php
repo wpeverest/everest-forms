@@ -277,7 +277,7 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 
 			if ( isset( $fields[ $column_id ] ) ) {
 				// Filter for entry meta data.
-				$field_type = $fields[ $column_id ]['type'];
+				$field_type = isset( $fields[ $column_id ]['type'] ) ? $fields[ $column_id ]['type'] : '';
 
 				switch ( $field_type ) {
 					case 'checkbox':
@@ -305,6 +305,33 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 						break;
 					case 'country':
 						$value = apply_filters( 'everest_forms_plaintext_field_value', $fields[ $column_id ]['value']['country_code'], $fields[ $column_id ]['value'], $entry, 'email-plain' );
+						break;
+					case 'repeater-fields':
+						$labels          = array();
+						$repeater_fields = array();
+
+						foreach ( $fields[ $column_id ]['value_raw'] as $field_value ) {
+							foreach ( $field_value as $key => $val ) {
+								if ( isset( $repeater_fields[ $val['id'] ] ) ) {
+									$repeater_fields[ $val['id'] ]['value'] .= ', ' . $val['value'];
+								} else {
+									$repeater_fields[ $val['id'] ] = $val;
+								}
+								$fields[ $key ]['value'] = $repeater_fields[ $val['id'] ]['value'];
+								$labels []               = $val['name'];
+							}
+						}
+
+						$labels = array_unique( $labels );
+						$value  = '';
+
+						foreach ( $labels as $val ) {
+							if ( end( $labels ) === $val ) {
+								$value .= $val;
+							} else {
+								$value .= $val . ' ,';
+							}
+						}
 						break;
 					default:
 						$value = apply_filters( 'everest_forms_html_field_value', $fields[ $column_id ]['value'], $fields[ $column_id ], $entry, 'export-csv' );
