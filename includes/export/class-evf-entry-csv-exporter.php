@@ -307,15 +307,29 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 						$value = apply_filters( 'everest_forms_plaintext_field_value', $fields[ $column_id ]['value']['country_code'], $fields[ $column_id ]['value'], $entry, 'email-plain' );
 						break;
 					case 'repeater-fields':
-						$value = '';
+						$labels          = array();
+						$repeater_fields = array();
+
 						foreach ( $fields[ $column_id ]['value_raw'] as $field_value ) {
 							foreach ( $field_value as $key => $val ) {
-								$fields[ $key ]['value'] = $val['value'];
-								if ( end( $field_value )['id'] === $val['id'] ) {
-									$value .= $val['name'];
+								if ( isset( $repeater_fields[ $val['id'] ] ) ) {
+									$repeater_fields[ $val['id'] ]['value'] .= ', ' . $val['value'];
 								} else {
-									$value .= $val['name'] . ', ';
+									$repeater_fields[ $val['id'] ] = $val;
 								}
+								$fields[ $key ]['value'] = $repeater_fields[ $val['id'] ]['value'];
+								$labels []               = $val['name'];
+							}
+						}
+
+						$labels = array_unique( $labels );
+						$value  = '';
+
+						foreach ( $labels as $val ) {
+							if ( end( $labels ) === $val ) {
+								$value .= $val;
+							} else {
+								$value .= $val . ' ,';
 							}
 						}
 						break;
