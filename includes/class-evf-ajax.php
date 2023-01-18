@@ -89,7 +89,6 @@ class EVF_AJAX {
 			'integration_connect'     => false,
 			'new_email_add'           => false,
 			'integration_disconnect'  => false,
-			'deactivation_notice'     => false,
 			'rated'                   => false,
 			'review_dismiss'          => false,
 			'survey_dismiss'          => false,
@@ -681,45 +680,6 @@ class EVF_AJAX {
 				)
 			);
 		}
-	}
-
-	/**
-	 * AJAX plugin deactivation notice.
-	 */
-	public static function deactivation_notice() {
-		global $status, $page, $s;
-
-		check_ajax_referer( 'deactivation-notice', 'security' );
-
-		$deactivate_url = esc_url(
-			wp_nonce_url(
-				add_query_arg(
-					array(
-						'action'        => 'deactivate',
-						'plugin'        => EVF_PLUGIN_BASENAME,
-						'plugin_status' => $status,
-						'paged'         => $page,
-						's'             => $s,
-					),
-					admin_url( 'plugins.php' )
-				),
-				'deactivate-plugin_' . EVF_PLUGIN_BASENAME
-			)
-		);
-
-		/* translators: %1$s - deactivation reason page; %2$d - deactivation url. */
-		$deactivation_notice = sprintf( __( 'Before we deactivate Everest Forms, would you care to <a href="%1$s" target="_blank">let us know why</a> so we can improve it for you? <a href="%2$s">No, deactivate now</a>.', 'everest-forms' ), 'https://wpeverest.com/deactivation/everest-forms/', $deactivate_url );
-
-		wp_send_json(
-			array(
-				'fragments' => apply_filters(
-					'everest_forms_deactivation_notice_fragments',
-					array(
-						'deactivation_notice' => '<tr class="plugin-update-tr active updated" data-slug="everest-forms" data-plugin="everest-forms/everest-forms.php"><td colspan ="3" class="plugin-update colspanchange"><div class="notice inline notice-warning notice-alt"><p>' . $deactivation_notice . '</p></div></td></tr>',
-					)
-				),
-			)
-		);
 	}
 
 	/**
