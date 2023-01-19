@@ -8,7 +8,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-if ( ! class_exists( 'EVF_Admin_Builder', false ) ) :
+if ( ! class_exists( 'EVF_Admin_Deactivation_Feedback', false ) ) :
 
 	/**
 	 * EVF_Admin_Deactivation_Feedback Class
