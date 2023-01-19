@@ -20,7 +20,7 @@ wp_clear_scheduled_hook( 'everest_forms_cleanup_sessions' );
  * wp-config.php. This is to prevent data loss when deleting the plugin from the backend
  * and to ensure only the site owner can perform this action.
  */
-if ( ( defined( 'EVF_REMOVE_ALL_DATA' ) && true === EVF_REMOVE_ALL_DATA ) || 'yes' === get_option( 'everest_forms_misc_setting_uninstall_option' ) ) {
+if ( ( defined( 'EVF_REMOVE_ALL_DATA' ) && true === EVF_REMOVE_ALL_DATA ) || 'yes' === get_option( 'everest_forms_uninstall_option' ) ) {
 	include_once dirname( __FILE__ ) . '/includes/class-evf-install.php';
 
 	// Roles + caps.
