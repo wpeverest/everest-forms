@@ -1690,10 +1690,10 @@ abstract class EVF_Form_Fields {
 			case 'whitelist_domain':
 				$default = ! empty( $args['default'] ) ? $args['default'] : '0';
 				// $value for just backward compatibility.
-				$value           = ! empty( $field['whitelist_domain'] ) ? esc_attr( $field['whitelist_domain'] ) : '';
-				$allowed_domains = ( isset( $field['allowed_domains'] ) && ! empty( $field['allowed_domains'] ) ) ? esc_attr( $field['allowed_domains'] ) : ( 'allow' === $field['select_whitelist'] ? $value : '' );
-				$denied_domains  = ( isset( $field['denied_domains'] ) && ! empty( $field['denied_domains'] ) ) ? esc_attr( $field['denied_domains'] ) : ( 'deny' === $field['select_whitelist'] ? $value : '' );
-				$style           = ! empty( $field['select_whitelist'] ) ? esc_attr( $field['select_whitelist'] ) : 'Allowed Domains';
+				$value           = ( isset( $field['whitelist_domain'] ) && ! empty( $field['whitelist_domain'] ) ) ? esc_attr( $field['whitelist_domain'] ) : '';
+				$allowed_domains = ( isset( $field['allowed_domains'] ) && ! empty( $field['allowed_domains'] ) ) ? esc_attr( $field['allowed_domains'] ) : ( ( isset( $field['select_whitelist'] ) && 'allow' === $field['select_whitelist'] ) ? $value : '' );
+				$denied_domains  = ( isset( $field['denied_domains'] ) && ! empty( $field['denied_domains'] ) ) ? esc_attr( $field['denied_domains'] ) : ( ( isset( $field['select_whitelist'] ) && 'deny' === $field['select_whitelist'] ) ? $value : '' );
+				$style           = ( isset( $field['select_whitelist'] ) && ! empty( $field['select_whitelist'] ) ) ? esc_attr( $field['select_whitelist'] ) : 'allow';
 				$tooltip         = esc_html__( 'Please enter valid allowed or denied domains, separated by commas. For example: google.com, yahoo.com', 'everest-forms' );
 				$output          = $this->field_element(
 					'label',
