@@ -226,8 +226,9 @@ class EVF_Form_Handler {
 		}
 
 		if ( $form_id ) {
-			$form_content['id']                     = $form_id;
-			$form_content['settings']['form_title'] = $title;
+			$form_content['id']                      = $form_id;
+			$form_content['settings']['form_title']  = $title;
+			$form_content['imported_form_templates'] = $template;
 
 			$form_data = wp_parse_args(
 				$args,
