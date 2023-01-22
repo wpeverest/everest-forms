@@ -6,6 +6,7 @@ jQuery(function ($) {
 		},
 		event_init: function () {
 			var _that = this;
+
 			$(document.body).on(
 				"click",
 				'tr[data-plugin="everest-forms/everest-forms.php"] span.deactivate a',
@@ -16,6 +17,7 @@ jQuery(function ($) {
 					);
 				}
 			);
+
 			$("#evf-deactivate-feedback-popup-wrapper").click(function (event) {
 				var $target = $(event.target);
 				if (
@@ -27,9 +29,14 @@ jQuery(function ($) {
 					);
 				}
 			});
+
 			$("form.evf-deactivate-feedback-form").on("submit", function (e) {
 				e.preventDefault();
 				_that.send_data($(this));
+			});
+
+			$('#evf-deactivate-feedback-popup-wrapper').on('click', '.close-deactivate-feedback-popup', function(){
+				$('#evf-deactivate-feedback-popup-wrapper').removeClass('active');
 			});
 		},
 		send_data: function (form) {
@@ -71,7 +78,6 @@ jQuery(function ($) {
 					);
 				},
 			}).done(function () {
-				//use this
 				window.location = form.find("a.skip").attr("href");
 			});
 		},

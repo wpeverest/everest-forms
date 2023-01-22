@@ -59,7 +59,7 @@ if ( ! class_exists( 'EVF_Admin_Deactivation_Feedback', false ) ) :
 
 			wp_enqueue_style(
 				'evf-admin-deactivation-feedback',
-				evf()->plugin_url() . '/assets/css/deactivation-feedback' . $suffix . '.css',
+				evf()->plugin_url() . '/assets/css/deactivation-feedback.css',
 				array(),
 				EVF_VERSION
 			);
@@ -140,7 +140,7 @@ if ( ! class_exists( 'EVF_Admin_Deactivation_Feedback', false ) ) :
 			$deactivation_data = array(
 				'reason_slug'  => $reason_slug,
 				'reason_text'  => $reason_text,
-				'admin_email'  => esc_url_raw( get_bloginfo( 'admin_email' ) ),
+				'admin_email'  => get_bloginfo( 'admin_email' ),
 				'website_url'  => esc_url_raw( get_bloginfo( 'url' ) ),
 				'base_product' => 'everest-forms/everest-forms.php',
 			);
