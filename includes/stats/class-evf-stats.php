@@ -22,7 +22,7 @@ if ( ! class_exists( 'EVF_Stats' ) ) {
 		/**
 		 * Remote URl Constant.
 		 */
-		const REMOTE_URL = 'http://localhost/index.php/wp-json/tgreporting/v1/process-free/';
+		const REMOTE_URL = 'https://stats.wpeverest.com/wp-json/tgreporting/v1/process-free/';
 
 		const LAST_RUN_STAMP = 'everest_forms_send_usage_last_run';
 
