@@ -50,12 +50,11 @@ class EVF_Settings_Misc extends EVF_Settings_Page {
 					'type'    => 'checkbox',
 				),
 				array(
-					'title'    => esc_html__( 'Allow Usage Tracking', 'everest-forms' ),
-					'desc'     => esc_html__( 'Tracking usage data enables us to optimize our support by identifying popular WordPress configurations, themes, and plugins. This allows us to focus our testing on areas that will benefit the most users.', 'everest-forms' ),
-					'desc_tip' => esc_html__( 'By gathering usage data, we can improve the support we provide to our users by gaining insight into which WordPress configurations, themes, and plugins are most commonly used. This knowledge allows us to focus our testing efforts on the areas that will have the greatest impact on our users\' experience.', 'everest-forms' ),
-					'id'       => 'everest_forms_allow_usage_tracking',
-					'type'     => 'checkbox',
-					'default'  => 'no',
+					'title'   => esc_html__( 'Allow Usage Tracking', 'everest-forms' ),
+					'desc'    => esc_html__( 'Get improved features by sharing non-sensitive plugin data and receive occasional email updates. Get a discount code emailed immediately.', 'everest-forms' ),
+					'id'      => 'everest_forms_allow_usage_tracking',
+					'type'    => 'checkbox',
+					'default' => 'no',
 				),
 				array(
 					'type' => 'sectionend',
