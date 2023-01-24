@@ -76,13 +76,16 @@ defined( 'ABSPATH' ) || exit;
 					} elseif ( ! in_array( str_replace( '-lifetime', '', $license_plan ), $template->plan, true ) && ! in_array( 'free', $template->plan, true ) ) {
 						$upgrade_class = 'upgrade-modal';
 					}
+					$fallback_image = untrailingslashit(plugin_dir_url(UR_PLUGIN_FILE)) . '/assets/images/templates/placeholder.png';
 
 					/* translators: %s: Template title */
 					$template_name = sprintf( esc_attr_x( '%s template', 'Template name', 'everest-forms' ), esc_attr( $template->title ) );
 					?>
 					<div class="everest-forms-template-wrap evf-template"  id="everest-forms-template-<?php echo esc_attr( $template->slug ); ?>">
 						<figure class="everest-forms-screenshot <?php echo esc_attr( $click_class ); ?>" data-template-name-raw="<?php echo esc_attr( $template->title ); ?>" data-template="<?php echo esc_attr( $template->slug ); ?>" data-template-name="<?php echo esc_attr( $template_name ); ?>">
-							<img src="<?php echo esc_url( evf()->plugin_url() . '/assets/' . $template->image ); ?>"/>
+							<img src="<?php echo esc_url( $template->image ); ?>"
+								 data-failover="<?php echo esc_url( $fallback_image ); ?>"
+							/>
 							<?php echo wp_kses_post( $badge ); ?>
 							<?php if ( 'blank' !== $template->slug ) : ?>
 								<div class="form-action">

@@ -98,7 +98,7 @@ class EVF_Admin_Assets {
 			'evf-template-controller',
 			'evf_templates',
 			array(
-				'evf_template_all' => EVF_Admin_Forms::get_template_data(),
+				'evf_template_all' => EVF_Admin_Form_Templates::get_template_data(),
 				'i18n_get_started' => esc_html__( 'Get Started', 'everest-forms' ),
 				'i18n_get_preview' => esc_html__( 'Preview', 'everest-forms' ),
 				'i18n_pro_feature' => esc_html__( 'Pro', 'everest-forms' ),

@@ -108,15 +108,14 @@ class EVF_Admin {
 	public function template_actions() {
 		if ( isset( $_GET['page'], $_REQUEST['action'] ) && 'evf-builder' === $_GET['page'] ) {
 			$action        = sanitize_text_field( wp_unslash( $_REQUEST['action'] ) );
-			$templatres = evf_get_json_file_contents( 'assets/extensions-json/templates/all_templates.json' );
 
-			if ( 'evf-template-refresh' === $action && ! empty( $templatres ) ) {
+			if ( 'evf-template-refresh' === $action) {
 				if ( empty( $_GET['evf-template-nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_GET['evf-template-nonce'] ) ), 'refresh' ) ) {
 					wp_die( esc_html_e( 'Could not verify nonce', 'everest-forms' ) );
 				}
 
-				foreach ( array( 'evf_pro_license_plan', 'evf_template_sections', 'evf_template_section' ) as $transient ) {
-					delete_transient( $transient );
+				foreach ( array( 'evf_pro_license_plan', 'evf_template_sections', 'evf_template_section', 'evf_template_section_list' ) as $transient ) {
+ 					delete_transient( $transient );
 				}
 
 				// Redirect to the builder page normally.
