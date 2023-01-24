@@ -9,14 +9,14 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-01-18T08:53:39+00:00\n"
+"POT-Creation-Date: 2023-01-24T06:54:26+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: everest-forms\n"
 
 #. Plugin Name of the plugin
 #: includes/admin/class-evf-admin-menus.php:64
-#: includes/admin/class-evf-admin.php:189
+#: includes/admin/class-evf-admin.php:190
 #: includes/admin/evf-admin-functions.php:17
 #: includes/class-evf-form-block.php:100
 #: includes/class-evf-post-types.php:44
@@ -266,7 +266,7 @@ msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:1144
 #: includes/admin/class-evf-admin-assets.php:94
-#: includes/admin/class-evf-admin-settings.php:334
+#: includes/admin/class-evf-admin-settings.php:335
 msgid "Upload Image"
 msgstr ""
 
@@ -525,6 +525,7 @@ msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:1427
 #: includes/abstracts/class-evf-form-fields.php:1431
+#: includes/admin/settings/class-evf-settings-misc.php:40
 msgid "Advanced Options"
 msgstr ""
 
@@ -1406,6 +1407,45 @@ msgstr ""
 msgid "Are you sure you want to delete all logs?"
 msgstr ""
 
+#: includes/admin/class-evf-admin-deactivation-feedback.php:86
+msgid "I didn’t find the feature I was looking for"
+msgstr ""
+
+#: includes/admin/class-evf-admin-deactivation-feedback.php:87
+#: includes/admin/class-evf-admin-deactivation-feedback.php:91
+#: includes/admin/class-evf-admin-deactivation-feedback.php:95
+#: includes/admin/class-evf-admin-deactivation-feedback.php:111
+msgid "If possible, please elaborate on this"
+msgstr ""
+
+#: includes/admin/class-evf-admin-deactivation-feedback.php:90
+msgid "I found the plugin complex to use"
+msgstr ""
+
+#: includes/admin/class-evf-admin-deactivation-feedback.php:94
+msgid "I couldn't build the form"
+msgstr ""
+
+#: includes/admin/class-evf-admin-deactivation-feedback.php:98
+msgid "I found better alternative"
+msgstr ""
+
+#: includes/admin/class-evf-admin-deactivation-feedback.php:99
+msgid "If possible, please mention the alternatives"
+msgstr ""
+
+#: includes/admin/class-evf-admin-deactivation-feedback.php:102
+msgid "Temporary deactivation"
+msgstr ""
+
+#: includes/admin/class-evf-admin-deactivation-feedback.php:106
+msgid "I no longer need the plugin"
+msgstr ""
+
+#: includes/admin/class-evf-admin-deactivation-feedback.php:110
+msgid "Other"
+msgstr ""
+
 #: includes/admin/class-evf-admin-editor.php:41
 msgid "Add Everest Form"
 msgstr ""
@@ -1791,46 +1831,46 @@ msgstr ""
 msgid "You don&#8217;t have permission to do this."
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:73
+#: includes/admin/class-evf-admin-settings.php:74
 msgid "Your settings have been saved."
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:132
+#: includes/admin/class-evf-admin-settings.php:133
 msgid "The changes you made will be lost if you navigate away from this page."
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:331
+#: includes/admin/class-evf-admin-settings.php:332
 msgid "Upload Logo"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:332
+#: includes/admin/class-evf-admin-settings.php:333
 msgid "Header Logo"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:335
+#: includes/admin/class-evf-admin-settings.php:336
 msgid "Background Image"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:696
+#: includes/admin/class-evf-admin-settings.php:697
 msgid "Select a page&hellip;"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:705
+#: includes/admin/class-evf-admin-settings.php:706
 #: includes/evf-formatting-functions.php:576
 msgid "Day(s)"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:706
+#: includes/admin/class-evf-admin-settings.php:707
 #: includes/evf-formatting-functions.php:577
 msgid "Week(s)"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:707
+#: includes/admin/class-evf-admin-settings.php:708
 #: includes/evf-formatting-functions.php:578
 msgid "Month(s)"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:708
+#: includes/admin/class-evf-admin-settings.php:709
 #: includes/evf-formatting-functions.php:579
 msgid "Year(s)"
 msgstr ""
@@ -1869,29 +1909,29 @@ msgstr ""
 msgid "Read our step by step guide on how to create your first form."
 msgstr ""
 
-#: includes/admin/class-evf-admin.php:70
-#: includes/admin/class-evf-admin.php:115
+#: includes/admin/class-evf-admin.php:71
+#: includes/admin/class-evf-admin.php:116
 msgid "Could not verify nonce"
 msgstr ""
 
-#: includes/admin/class-evf-admin.php:82
+#: includes/admin/class-evf-admin.php:83
 msgid "Sorry, you are not allowed to activate this plugin."
 msgstr ""
 
-#: includes/admin/class-evf-admin.php:90
+#: includes/admin/class-evf-admin.php:91
 msgid "Sorry, you are not allowed to deactivate plugins for this site."
 msgstr ""
 
 #. translators: 1: EverestForms 2:: five stars
-#: includes/admin/class-evf-admin.php:188
+#: includes/admin/class-evf-admin.php:189
 msgid "If you like %1$s please leave us a %2$s rating. A huge thanks in advance!"
 msgstr ""
 
-#: includes/admin/class-evf-admin.php:190
+#: includes/admin/class-evf-admin.php:191
 msgid "Thanks :)"
 msgstr ""
 
-#: includes/admin/class-evf-admin.php:201
+#: includes/admin/class-evf-admin.php:202
 msgid "Thank you for creating with Everest Forms."
 msgstr ""
 
@@ -1992,6 +2032,26 @@ msgstr ""
 
 #: includes/admin/settings/class-evf-settings-integrations.php:59
 msgid "Integrations"
+msgstr ""
+
+#: includes/admin/settings/class-evf-settings-misc.php:25
+msgid "Misc"
+msgstr ""
+
+#: includes/admin/settings/class-evf-settings-misc.php:46
+msgid "Uninstall Everest Forms"
+msgstr ""
+
+#: includes/admin/settings/class-evf-settings-misc.php:47
+msgid "<strong>Heads Up!</strong> Check this if you would like to remove ALL Everest Forms data upon plugin deletion."
+msgstr ""
+
+#: includes/admin/settings/class-evf-settings-misc.php:53
+msgid "Allow Usage Tracking"
+msgstr ""
+
+#: includes/admin/settings/class-evf-settings-misc.php:54
+msgid "Get improved features by sharing non-sensitive plugin data and receive occasional email updates. Get a discount code emailed immediately."
 msgstr ""
 
 #: includes/admin/settings/class-evf-settings-recaptcha.php:25
@@ -2486,6 +2546,26 @@ msgstr ""
 msgid "Save Changes"
 msgstr ""
 
+#: includes/admin/views/html-deactivation-popup.php:26
+msgid "Quick Feedback"
+msgstr ""
+
+#: includes/admin/views/html-deactivation-popup.php:37
+msgid "Could you please share why you are deactivating %1$sEverest Forms%2$s plugin?"
+msgstr ""
+
+#: includes/admin/views/html-deactivation-popup.php:55
+msgid "Skip &amp; Deactivate"
+msgstr ""
+
+#: includes/admin/views/html-deactivation-popup.php:56
+msgid "Submit &amp; Deactivate"
+msgstr ""
+
+#: includes/admin/views/html-deactivation-popup.php:58
+msgid "By submitting this form, you will also be sending us your email address & website URL."
+msgstr ""
+
 #: includes/admin/views/html-notice-custom.php:12
 #: includes/admin/views/html-notice-updated.php:12
 msgid "Dismiss"
@@ -2584,155 +2664,154 @@ msgstr ""
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
-#: includes/class-evf-ajax.php:127
+#: includes/class-evf-ajax.php:126
 msgid "Invalid form"
 msgstr ""
 
-#: includes/class-evf-ajax.php:177
+#: includes/class-evf-ajax.php:176
 msgid "Blank Form"
 msgstr ""
 
-#: includes/class-evf-ajax.php:199
+#: includes/class-evf-ajax.php:198
 msgid "Something went wrong, please try again later"
 msgstr ""
 
-#: includes/class-evf-ajax.php:214
+#: includes/class-evf-ajax.php:213
 msgid "Checking permissions."
 msgstr ""
 
-#: includes/class-evf-ajax.php:219
-#: includes/class-evf-ajax.php:222
+#: includes/class-evf-ajax.php:218
+#: includes/class-evf-ajax.php:221
 msgid "You do not have permission."
 msgstr ""
 
-#: includes/class-evf-ajax.php:227
+#: includes/class-evf-ajax.php:226
 msgid "Checking for form data."
 msgstr ""
 
-#: includes/class-evf-ajax.php:232
+#: includes/class-evf-ajax.php:231
 msgid "No data provided."
 msgstr ""
 
-#: includes/class-evf-ajax.php:235
+#: includes/class-evf-ajax.php:234
 msgid "No data provided"
 msgstr ""
 
-#: includes/class-evf-ajax.php:275
+#: includes/class-evf-ajax.php:274
 msgid "Check for empty meta key."
 msgstr ""
 
-#: includes/class-evf-ajax.php:310
+#: includes/class-evf-ajax.php:309
 msgid "Meta Key missing."
 msgstr ""
 
-#: includes/class-evf-ajax.php:315
+#: includes/class-evf-ajax.php:314
 msgid "Meta Key missing"
 msgstr ""
 
 #. translators: %s: empty meta data
-#: includes/class-evf-ajax.php:317
+#: includes/class-evf-ajax.php:316
 msgid "Please add Meta key for fields: %s"
 msgstr ""
 
-#: includes/class-evf-ajax.php:325
+#: includes/class-evf-ajax.php:324
 msgid "Fix for sorting field ordering."
 msgstr ""
 
-#: includes/class-evf-ajax.php:336
+#: includes/class-evf-ajax.php:335
 msgid "Saving form."
 msgstr ""
 
-#: includes/class-evf-ajax.php:343
-#: includes/class-evf-ajax.php:349
+#: includes/class-evf-ajax.php:342
+#: includes/class-evf-ajax.php:348
 msgid "An error occurred while saving the form."
 msgstr ""
 
-#: includes/class-evf-ajax.php:348
+#: includes/class-evf-ajax.php:347
 msgid "Form not found"
 msgstr ""
 
-#: includes/class-evf-ajax.php:354
+#: includes/class-evf-ajax.php:353
 msgid "Form Saved successfully."
 msgstr ""
 
-#: includes/class-evf-ajax.php:397
+#: includes/class-evf-ajax.php:396
 msgid "No Addon specified."
 msgstr ""
 
-#: includes/class-evf-ajax.php:408
+#: includes/class-evf-ajax.php:407
 msgid "Addon can not be activate. Please try again."
 msgstr ""
 
-#: includes/class-evf-ajax.php:429
+#: includes/class-evf-ajax.php:428
 msgid "No Plan specified."
 msgstr ""
 
-#: includes/class-evf-ajax.php:446
+#: includes/class-evf-ajax.php:445
 msgid "This form template requires the following addons."
 msgstr ""
 
-#: includes/class-evf-ajax.php:497
+#: includes/class-evf-ajax.php:496
 msgid "No plugin specified."
 msgstr ""
 
-#: includes/class-evf-ajax.php:510
+#: includes/class-evf-ajax.php:509
 msgid "Sorry, you are not allowed to install plugins on this site."
 msgstr ""
 
-#: includes/class-evf-ajax.php:574
+#: includes/class-evf-ajax.php:573
 msgid "Unable to connect to the filesystem. Please confirm your credentials."
 msgstr ""
 
-#: includes/class-evf-ajax.php:621
-#: includes/class-evf-ajax.php:664
+#: includes/class-evf-ajax.php:620
+#: includes/class-evf-ajax.php:663
 msgid "Missing data"
 msgstr ""
 
-#: includes/class-evf-ajax.php:680
+#: includes/class-evf-ajax.php:679
 msgid "Connection missing"
 msgstr ""
 
-#. translators: %1$s - deactivation reason page; %2$d - deactivation url.
-#: includes/class-evf-ajax.php:711
-msgid "Before we deactivate Everest Forms, would you care to <a href=\"%1$s\" target=\"_blank\">let us know why</a> so we can improve it for you? <a href=\"%2$s\">No, deactivate now</a>."
-msgstr ""
-
 #. translators: %s: from address
-#: includes/class-evf-ajax.php:811
+#: includes/class-evf-ajax.php:771
 msgid "Test email from %s"
 msgstr ""
 
-#: includes/class-evf-ajax.php:816
+#: includes/class-evf-ajax.php:776
 msgid "Congratulations,"
 msgstr ""
 
-#: includes/class-evf-ajax.php:817
+#: includes/class-evf-ajax.php:777
 msgid "Your test email has been received successfully."
 msgstr ""
 
-#: includes/class-evf-ajax.php:818
+#: includes/class-evf-ajax.php:778
 msgid "We thank you for trying out Everest Forms and joining our mission to make sure you get your emails delivered."
 msgstr ""
 
-#: includes/class-evf-ajax.php:819
+#: includes/class-evf-ajax.php:779
 msgid "Regards,"
 msgstr ""
 
-#: includes/class-evf-ajax.php:820
+#: includes/class-evf-ajax.php:780
 msgid "Everest Forms Team"
 msgstr ""
 
-#: includes/class-evf-ajax.php:824
+#: includes/class-evf-ajax.php:784
 msgid "Test email was sent successfully! Please check your inbox to make sure it is delivered."
 msgstr ""
 
-#: includes/class-evf-ajax.php:826
+#: includes/class-evf-ajax.php:786
 msgid "Test email was unsuccessful! Something went wrong."
 msgstr ""
 
 #. translators: 1: key 2: URL
 #: includes/class-evf-cache-helper.php:81
 msgid "In order for <strong>database caching</strong> to work with Everest Forms you must add %1$s to the \"Ignored Query Strings\" option in <a href=\"%2$s\">W3 Total Cache settings</a>."
+msgstr ""
+
+#: includes/class-evf-cron.php:38
+msgid "Every 15 days"
 msgstr ""
 
 #: includes/class-evf-emails.php:318

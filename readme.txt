@@ -324,10 +324,15 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-- 1.9.8       - 23-01-2023
+- 1.9.8       - 26-01-2023
 * Fix 		  - Stripe issue with credit card field empty.
+* Fix 		  - EVF Tooltip issue with WooCommerce orders table.
 * Enhancement - CSV export for repeater field.
+* Enhancement - Form templates used for tracking usage.
+* Enhancement - Uninstall everest_forms option.
 * Enhancement - Field validation in Builder.
+* Feature     - Deactivation popup.
+* Feature     - Usage tracking implementation.
 
 = 1.9.7       - 21-12-2022
 * Fix         - Empty for zero value in the number field.
