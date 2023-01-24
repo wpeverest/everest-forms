@@ -298,20 +298,6 @@ class EVF_Admin_Assets {
 		if ( 'everest-forms_page_evf-addons' === $screen_id ) {
 			wp_enqueue_script( 'everest-forms-extensions' );
 		}
-
-		// Plugins page.
-		if ( in_array( $screen_id, array( 'plugins' ), true ) ) {
-			wp_register_script( 'evf-plugins', evf()->plugin_url() . '/assets/js/admin/plugins' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true );
-			wp_enqueue_script( 'evf-plugins' );
-			wp_localize_script(
-				'evf-plugins',
-				'evf_plugins_params',
-				array(
-					'ajax_url'           => admin_url( 'admin-ajax.php' ),
-					'deactivation_nonce' => wp_create_nonce( 'deactivation-notice' ),
-				)
-			);
-		}
 	}
 }
 
