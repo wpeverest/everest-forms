@@ -92,6 +92,7 @@ class EVF_AJAX {
 			'rated'                   => false,
 			'review_dismiss'          => false,
 			'survey_dismiss'          => false,
+			'allow_usage_dismiss'     => false,
 			'enabled_form'            => false,
 			'import_form_action'      => false,
 			'template_licence_check'  => false,
@@ -718,6 +719,27 @@ class EVF_AJAX {
 		$survey              = get_option( 'everest_forms_survey', array() );
 		$survey['dismissed'] = true;
 		update_option( 'everest_forms_survey', $survey );
+		wp_die();
+	}
+
+	/**
+	 * Triggered when clicking the allow usage notice allow or deny buttons.
+	 */
+	public static function allow_usage_dismiss() {
+		check_ajax_referer( 'allow_usage_nonce', '_wpnonce' );
+
+		if ( ! current_user_can( 'manage_everest_forms' ) ) {
+			wp_die( -1 );
+		}
+
+		$allow_usage_tracking = isset( $_POST['allow_usage_tracking'] ) ? sanitize_text_field( wp_unslash( $_POST['allow_usage_tracking'] ) ) : false;
+
+		update_option( 'everest_forms_allow_usage_notice_shown', true );
+
+		if ( 'true' === $allow_usage_tracking ) {
+			update_option( 'everest_forms_allow_usage_tracking', 'yes' );
+		}
+
 		wp_die();
 	}
 
