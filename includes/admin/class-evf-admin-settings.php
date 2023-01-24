@@ -49,6 +49,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 				$settings[] = include 'settings/class-evf-settings-recaptcha.php';
 				$settings[] = include 'settings/class-evf-settings-email.php';
 				$settings[] = include 'settings/class-evf-settings-validation.php';
+				$settings[] = include 'settings/class-evf-settings-misc.php';
 				$settings[] = include 'settings/class-evf-settings-integrations.php';
 
 				self::$settings = apply_filters( 'everest_forms_get_settings_pages', $settings );
