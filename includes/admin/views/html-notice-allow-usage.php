@@ -13,9 +13,25 @@ defined( 'ABSPATH' ) || exit;
 		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.15,4l1.23,2H15.49L14.26,4ZM20,20H2.21L12,4.09,18.1,14H10.77L12,12h2.52L12,7.91,5.79,18H20.56l1.23,2ZM17.94,10,16.71,8H20.6l1.23,2Z"/></svg>
 	</div>
 	<div class="everest-forms-message--content">
-		<h3 class="everest-forms-message__title"><?php esc_html_e( 'Unlock Features & Discount', 'everest-forms' ); ?></h3>
+		<h3 class="everest-forms-message__title">
+		<?php
+		if ( false !== evf_get_license_plan() ) {
+			esc_html_e( 'Unlock Features', 'everest-forms' );
+		} else {
+			esc_html_e( 'Unlock Features & Discount', 'everest-forms' );
+		}
+		?>
+		</h3>
 		<p class="everest-forms-message__description">
 			<?php
+			if ( false !== evf_get_license_plan() ) {
+				printf(
+					esc_html__(
+						'Get improved features by sharing non-sensitive plugin data by allowing.',
+						'everest-forms'
+					)
+				);
+			} else {
 				printf(
 					esc_html__(
 						'Get improved features by sharing non-sensitive plugin data and receiving occasional email updates. 
@@ -23,11 +39,12 @@ defined( 'ABSPATH' ) || exit;
 						'everest-forms'
 					)
 				);
-				?>
+			}
+			?>
 		</p>
 		<p class="everest-forms-message__action submit">
 			<a href="#" class="button button-primary evf-dismiss-allow-usage-notice evf-allow-data-sharing" target="_blank" rel="noopener noreferrer"><span  class="dashicons dashicons-smiley"></span><?php esc_html_e( 'Allow', 'everest-forms' ); ?></a>
-			<a href="#" class="button button-secondary evf-dismiss-allow-usage-notice evf-deny-data-sharing" target="_blank" rel="noopener noreferrer"><span class="dashicons dashicons-dismiss"></span><?php esc_html_e( 'Deny', 'everest-forms' ); ?></a>
+			<a href="#" class="button button-secondary evf-dismiss-allow-usage-notice evf-deny-data-sharing" target="_blank" rel="noopener noreferrer"><span class="dashicons dashicons-dismiss"></span><?php esc_html_e( 'No, Thanks', 'everest-forms' ); ?></a>
 		</p>
 	</div>
 </div>
