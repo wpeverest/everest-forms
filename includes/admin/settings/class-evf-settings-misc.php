@@ -33,10 +33,26 @@ class EVF_Settings_Misc extends EVF_Settings_Page {
 	 * @return array
 	 */
 	public function get_settings() {
-		$allow_usage_notice_msg = esc_html__( 'Get improved features by sharing non-sensitive plugin data and receive occasional email updates. Get a discount code emailed immediately.', 'everest-forms' );
+		$allow_usage_notice_msg = wp_kses(
+			__( ' Help us improve the plugin\'s features and receive an instant discount coupon with occasional email updates by sharing <a href="https://docs.wpeverest.com/everest-forms/docs/misc-settings/#2-toc-title" target="_blank">non-sensitive plugin data</a> with us.', 'everest-forms' ),
+			array(
+				'a' => array(
+					'href'   => array(),
+					'target' => array()
+				)
+			)
+		);
 
 		if ( false !== evf_get_license_plan() ) {
-			$allow_usage_notice_msg = esc_html__( 'Get improved features by sharing non-sensitive plugin data.', 'everest-forms' );
+			$allow_usage_notice_msg = wp_kses(
+				__( 'Help us improve the plugin\'s features by sharing <a href="https://docs.wpeverest.com/everest-forms/docs/misc-settings/#2-toc-title" target="_blank">non-sensitive plugin data</a> with us.', 'everest-forms' ),
+				array(
+					'a' => array(
+						'href'   => array(),
+						'target' => array()
+					)
+				)
+			);
 		}
 
 		$settings = apply_filters(

@@ -14,29 +14,32 @@ defined( 'ABSPATH' ) || exit;
 	</div>
 	<div class="everest-forms-message--content">
 		<h3 class="everest-forms-message__title">
-		<?php
-		if ( false !== evf_get_license_plan() ) {
-			esc_html_e( 'Unlock Features', 'everest-forms' );
-		} else {
-			esc_html_e( 'Unlock Features & Discount', 'everest-forms' );
-		}
-		?>
+		<?php esc_html_e( 'Contribute to the enhancement', 'everest-forms' ); ?>
 		</h3>
 		<p class="everest-forms-message__description">
 			<?php
 			if ( false !== evf_get_license_plan() ) {
 				printf(
-					esc_html__(
-						'Get improved features by sharing non-sensitive plugin data by allowing.',
-						'everest-forms'
+					wp_kses(
+						__( 'Help us improve the plugin\'s features by sharing <a href="https://docs.wpeverest.com/everest-forms/docs/misc-settings/#2-toc-title" target="_blank">non-sensitive plugin data</a> with us.', 'everest-forms' ),
+						array(
+							'a' => array(
+								'href'   => array(),
+								'target' => array()
+							)
+						)
 					)
 				);
 			} else {
 				printf(
-					esc_html__(
-						'Get improved features by sharing non-sensitive plugin data and receiving occasional email updates. 
-						By allowing, you will receive a discount code via email immediately.',
-						'everest-forms'
+					wp_kses(
+						__( ' Help us improve the plugin\'s features and receive an instant discount coupon with occasional email updates by sharing <a href="https://docs.wpeverest.com/everest-forms/docs/misc-settings/#2-toc-title" target="_blank">non-sensitive plugin data</a> with us.', 'everest-forms' ),
+						array(
+							'a' => array(
+								'href'   => array(),
+								'target' => array()
+							)
+						)
 					)
 				);
 			}
