@@ -110,6 +110,14 @@ jQuery( function( $ ) {
 							formTuple.trigger( 'reset' );
 							formTuple.closest( '.everest-forms' ).html( '<div class="everest-forms-notice everest-forms-notice--success" role="alert">' + xhr.data.message + pdf_download_message + '</div>' + quiz_reporting ).focus();
 							localStorage.removeItem(formTuple.attr('id'));
+
+							// Trigger for form submission success.
+							var event = new CustomEvent("everest_forms_ajax_submission_success", {
+								detail: {
+									formId: 'evf-form-' + xhr.data.form_id,
+								}
+							  });
+							document.dispatchEvent(event);
 						} else {
 							var	form_id = formTuple.data( 'formid' );
 							var err     =  JSON.parse( errorThrown.responseText );
@@ -192,6 +200,7 @@ jQuery( function( $ ) {
 
 							btn.attr( 'disabled', false ).html( everest_forms_ajax_submission_params.submit );
 						}
+
 					})
 					.fail( function () {
 						btn.attr( 'disabled', false ).html( everest_forms_ajax_submission_params.submit );
