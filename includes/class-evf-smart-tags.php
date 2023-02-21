@@ -118,7 +118,7 @@ class EVF_Smart_Tags {
 					}
 
 					// Properly display Checkboxes field in smart tag.
-					if ( isset( $value['images'] ) && ( 'checkbox' === $fields[ $mixed_field_id[1] ]['type'] || 'payment-checkbox' === $fields[ $mixed_field_id[1] ]['type'] ) ) {
+					if ( isset( $value['images'] ) && ( 'checkbox' === $fields[ $mixed_field_id[1] ]['type'] ) ) {
 						$checkbox_images = '';
 						foreach ( $value['images'] as $image_key => $image_value ) {
 							if ( ! is_array( $image_value ) && false !== strpos( $image_value, $uploads['basedir'] ) ) {
@@ -166,7 +166,8 @@ class EVF_Smart_Tags {
 						if ( in_array( $value['type'], array( 'radio', 'payment-multiple' ), true ) ) {
 							$value = $value['label'];
 						} elseif ( in_array( $value['type'], array( 'checkbox', 'payment-checkbox' ), true ) ) {
-							$value = implode( ', ', $value['label'] );
+							$value = implode( ',', $value['label'] );
+
 						}
 					} elseif ( isset( $value['number_of_rating'], $value['value'] ) ) {
 						$value = (string) $value['value'] . '/' . (string) $value['number_of_rating'];
