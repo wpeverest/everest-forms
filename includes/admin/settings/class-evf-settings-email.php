@@ -73,7 +73,7 @@ class EVF_Settings_Email extends EVF_Settings_Page {
 					'id'          => 'everest_forms_email_send_to',
 					'type'        => 'email',
 					'placeholder' => 'eg. testemail@gmail.com',
-					'value'       => esc_attr( get_bloginfo( 'admin_email' ) ),
+					'value'       => get_option( 'everest_forms_email_send_to', '' ) ? esc_attr( get_option( 'everest_forms_email_send_to', '' ) ) : esc_attr( get_bloginfo( 'admin_email' ) ),
 					'desc_tip'    => true,
 				),
 				array(
