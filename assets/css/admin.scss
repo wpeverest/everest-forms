@@ -936,8 +936,8 @@ body.everest-forms-builder {
 							content: '\e006';
 						}
 
-						&.validations::before {
-							content: '\e012';
+						&.validation::before {
+							content: '\e910';
 						}
 
 						&.pdf-submission::before {
@@ -984,6 +984,9 @@ body.everest-forms-builder {
 						}
 						&.delete::before {
 							content: '\e906';
+						}
+						&.misc::before {
+							content: '\e911';
 						}
 					}
 				}

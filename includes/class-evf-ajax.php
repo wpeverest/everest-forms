@@ -89,10 +89,10 @@ class EVF_AJAX {
 			'integration_connect'     => false,
 			'new_email_add'           => false,
 			'integration_disconnect'  => false,
-			'deactivation_notice'     => false,
 			'rated'                   => false,
 			'review_dismiss'          => false,
 			'survey_dismiss'          => false,
+			'allow_usage_dismiss'     => false,
 			'enabled_form'            => false,
 			'import_form_action'      => false,
 			'template_licence_check'  => false,
@@ -684,45 +684,6 @@ class EVF_AJAX {
 	}
 
 	/**
-	 * AJAX plugin deactivation notice.
-	 */
-	public static function deactivation_notice() {
-		global $status, $page, $s;
-
-		check_ajax_referer( 'deactivation-notice', 'security' );
-
-		$deactivate_url = esc_url(
-			wp_nonce_url(
-				add_query_arg(
-					array(
-						'action'        => 'deactivate',
-						'plugin'        => EVF_PLUGIN_BASENAME,
-						'plugin_status' => $status,
-						'paged'         => $page,
-						's'             => $s,
-					),
-					admin_url( 'plugins.php' )
-				),
-				'deactivate-plugin_' . EVF_PLUGIN_BASENAME
-			)
-		);
-
-		/* translators: %1$s - deactivation reason page; %2$d - deactivation url. */
-		$deactivation_notice = sprintf( __( 'Before we deactivate Everest Forms, would you care to <a href="%1$s" target="_blank">let us know why</a> so we can improve it for you? <a href="%2$s">No, deactivate now</a>.', 'everest-forms' ), 'https://wpeverest.com/deactivation/everest-forms/', $deactivate_url );
-
-		wp_send_json(
-			array(
-				'fragments' => apply_filters(
-					'everest_forms_deactivation_notice_fragments',
-					array(
-						'deactivation_notice' => '<tr class="plugin-update-tr active updated" data-slug="everest-forms" data-plugin="everest-forms/everest-forms.php"><td colspan ="3" class="plugin-update colspanchange"><div class="notice inline notice-warning notice-alt"><p>' . $deactivation_notice . '</p></div></td></tr>',
-					)
-				),
-			)
-		);
-	}
-
-	/**
 	 * Triggered when clicking the rating footer.
 	 */
 	public static function rated() {
@@ -758,6 +719,27 @@ class EVF_AJAX {
 		$survey              = get_option( 'everest_forms_survey', array() );
 		$survey['dismissed'] = true;
 		update_option( 'everest_forms_survey', $survey );
+		wp_die();
+	}
+
+	/**
+	 * Triggered when clicking the allow usage notice allow or deny buttons.
+	 */
+	public static function allow_usage_dismiss() {
+		check_ajax_referer( 'allow_usage_nonce', '_wpnonce' );
+
+		if ( ! current_user_can( 'manage_everest_forms' ) ) {
+			wp_die( -1 );
+		}
+
+		$allow_usage_tracking = isset( $_POST['allow_usage_tracking'] ) ? sanitize_text_field( wp_unslash( $_POST['allow_usage_tracking'] ) ) : false;
+
+		update_option( 'everest_forms_allow_usage_notice_shown', true );
+
+		if ( 'true' === $allow_usage_tracking ) {
+			update_option( 'everest_forms_allow_usage_tracking', 'yes' );
+		}
+
 		wp_die();
 	}
 
