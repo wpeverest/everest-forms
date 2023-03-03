@@ -118,7 +118,7 @@ class EVF_Smart_Tags {
 					}
 
 					// Properly display Checkboxes field in smart tag.
-					if ( isset( $value['images'] ) && ( 'checkbox' === $fields[ $mixed_field_id[1] ]['type'] ) ) {
+					if (  isset( $value['images'] ) && ( 'checkbox' === $fields[ $mixed_field_id[1] ]['type'] ) ) {
 						$checkbox_images = '';
 						foreach ( $value['images'] as $image_key => $image_value ) {
 							if ( ! is_array( $image_value ) && false !== strpos( $image_value, $uploads['basedir'] ) ) {
