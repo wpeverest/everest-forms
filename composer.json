@@ -35,7 +35,7 @@
     "jolicode/jolinotif": "2.3.0",
     "vlucas/phpdotenv": "5.4.1",
     "wp-cli/db-command": "2.0.19",
-    "wp-cli/i18n-command": "2.2.13",
+    "wp-cli/i18n-command": "2.4.2",
     "wp-phpunit/wp-phpunit": "5.8.2",
     "wpeverest/wpeverest-sniffs": "0.1.0",
     "yoast/phpunit-polyfills": "1.0.3"
