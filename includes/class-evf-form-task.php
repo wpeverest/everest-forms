@@ -859,9 +859,8 @@ class EVF_Form_Task {
 			$email['sender_name']    = ! empty( $notification['evf_from_name'] ) ? $notification['evf_from_name'] : get_bloginfo( 'name' );
 			$email['sender_address'] = ! empty( $notification['evf_from_email'] ) ? $notification['evf_from_email'] : get_option( 'admin_email' );
 			$email['reply_to']       = ! empty( $notification['evf_reply_to'] ) ? $notification['evf_reply_to'] : $email['sender_address'];
-			$email['message']        = ! empty( $notification['evf_email_message'] ) ? $notification['evf_email_message'] : '{all_fields}';
+			$email['message']        = ! empty( $notification['evf_email_message'] ) ? evf_string_translation( $form_data['id'], 'evf_email_message', $notification['evf_email_message'] ) : '{all_fields}';
 			$email                   = apply_filters( 'everest_forms_entry_email_atts', $email, $fields, $entry, $form_data );
-
 			$attachment = '';
 
 			// Create new email.
