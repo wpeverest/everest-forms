@@ -1,5 +1,8 @@
 == Changelog ==
 
+- 1.9.9       - xx-xx-2023
+* Fix 		  - Payment checkbox smart tag value is not showing email.
+
 - 1.9.8       - 30-01-2023
 * Fix 		  - Stripe issue with credit card field empty.
 * Fix 		  - EVF Tooltip issue with WooCommerce orders table.

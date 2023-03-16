@@ -4,7 +4,7 @@ Tags: contact form, forms, form builder, contact, custom form
 Requires at least: 5.0
 Tested up to: 6.1
 Requires PHP: 5.4
-Stable tag: 1.9.8
+Stable tag: 1.9.9
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -323,6 +323,9 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 
 == Changelog ==
+
+- 1.9.9       - xx-xx-2023
+* Fix 		  - Payment checkbox smart tag value is not showing email.
 
 - 1.9.8       - 30-01-2023
 * Fix 		  - Stripe issue with credit card field empty.
