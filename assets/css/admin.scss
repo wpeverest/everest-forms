@@ -1120,6 +1120,10 @@ body.everest-forms-builder {
 	.page-title-action {
 		top: 0;
 		margin-left: 16px;
+		&:active{
+			top:0;
+			margin-left:16px;
+		}
 	}
 
 	.everest-forms-setup-header {
@@ -6119,7 +6123,7 @@ img.ui-datepicker-trigger {
 	}
 }
 
-// Customize Select2 style	
+// Customize Select2 style
 .select2-results__option .wrap:before {
 	content: "\2610";
 	width: 25px;
@@ -6235,6 +6239,21 @@ img.ui-datepicker-trigger {
 			line-height: 1;
 			min-height: 26px;
 			height: 32px;
+		}
+	}
+}
+
+.everest-forms-form-template-wrapper {
+	.everest-forms-form-template {
+		&[data-filter-template="free"] {
+			.everest-forms-template-wrap[data-plan="premium"] {
+				display: none;
+			}
+		}
+		&[data-filter-template="premium"] {
+			.everest-forms-template-wrap[data-plan="free"] {
+				display: none;
+			}
 		}
 	}
 }
