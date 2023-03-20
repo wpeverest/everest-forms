@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || exit;
 	<div class="everest-forms-loader-overlay" style="display:none">
 		<div class="evf-loading evf-loading-active"></div>
 	</div>
-	<div class="everest-forms-setup everest-forms-setup--form">
+	<div class="everest-forms-setup everest-forms-setup--form everest-forms-form-template-wrapper" >
 		<div class="everest-forms-setup-header">
 			<div class="everest-forms-logo">
 				<svg xmlns="http://www.w3.org/2000/svg" height="32" width="32" viewBox="0 0 24 24"><path fill="#7e3bd0" d="M21.23,10H17.79L16.62,8h3.46ZM17.77,4l1.15,2H15.48L14.31,4Zm-15,16L12,4l5.77,10H10.85L12,12h2.31L12,8,6.23,18H20.08l1.16,2Z"/></svg>
@@ -27,13 +27,13 @@ defined( 'ABSPATH' ) || exit;
 			<nav class="everest-forms-tab">
 				<ul>
 					<li class="everest-forms-tab-nav active">
-						<a href="#" id="evf-form-all" class="everest-forms-tab-nav-link"><?php esc_html_e( 'All', 'everest-forms' ); ?></a>
+						<a href="#" id="evf-form-all" class="everest-forms-tab-nav-link"  data-plan="all"><?php esc_html_e( 'All', 'everest-forms' ); ?></a>
 					</li>
 					<li class="everest-forms-tab-nav">
-						<a href="#" id="evf-form-basic" class="everest-forms-tab-nav-link"><?php esc_html_e( 'Free', 'everest-forms' ); ?></a>
+						<a href="#" id="evf-form-basic" class="everest-forms-tab-nav-link"  data-plan="free"><?php esc_html_e( 'Free', 'everest-forms' ); ?></a>
 					</li>
 					<li class="everest-forms-tab-nav">
-						<a href="#" id="evf-form-pro" class="everest-forms-tab-nav-link"><?php esc_html_e( 'Premium', 'everest-forms' ); ?></a>
+						<a href="#" id="evf-form-pro" class="everest-forms-tab-nav-link"  data-plan="premium"><?php esc_html_e( 'Premium', 'everest-forms' ); ?></a>
 					</li>
 				</ul>
 			</nav>
@@ -77,10 +77,18 @@ defined( 'ABSPATH' ) || exit;
 						$upgrade_class = 'upgrade-modal';
 					}
 
+					// License Plan check.
+					$license_plan_string = 'free';
+					if ( empty( $license_plan ) && ! in_array( 'free', $template->plan, true ) ) {
+						$license_plan_string = 'premium';
+					} elseif ( ! empty( $license_plan ) && ! in_array( 'free', $template->plan, true ) ) {
+						$license_plan_string = 'premium';
+					}
+
 					/* translators: %s: Template title */
 					$template_name = sprintf( esc_attr_x( '%s template', 'Template name', 'everest-forms' ), esc_attr( $template->title ) );
 					?>
-					<div class="everest-forms-template-wrap evf-template"  id="everest-forms-template-<?php echo esc_attr( $template->slug ); ?>">
+					<div class="everest-forms-template-wrap evf-template"  id="everest-forms-template-<?php echo esc_attr( $template->slug ); ?>" data-plan="<?php echo esc_attr( $license_plan_string ); ?>">
 						<figure class="everest-forms-screenshot <?php echo esc_attr( $click_class ); ?>" data-template-name-raw="<?php echo esc_attr( $template->title ); ?>" data-template="<?php echo esc_attr( $template->slug ); ?>" data-template-name="<?php echo esc_attr( $template_name ); ?>">
 						<img src="<?php echo esc_url( $template->image ); ?>" alt="<?php echo esc_attr( $template->title ); ?>"/>
 							<?php echo wp_kses_post( $badge ); ?>

@@ -6239,3 +6239,18 @@ img.ui-datepicker-trigger {
 		}
 	}
 }
+
+.everest-forms-form-template-wrapper {
+	.everest-forms-form-template {
+		&[data-filter-template="free"] {
+			.everest-forms-template-wrap[data-plan="premium"] {
+				display: none;
+			}
+		}
+		&[data-filter-template="premium"] {
+			.everest-forms-template-wrap[data-plan="free"] {
+				display: none;
+			}
+		}
+	}
+}
