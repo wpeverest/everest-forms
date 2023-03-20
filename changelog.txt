@@ -9,6 +9,9 @@
 * Fix         - String length mismatch for non-English characters in the Limit Length feature.
 * Fix         - File System issue in form builder.
 * Fix         - Choose File translation issue in the import forms.
+* Enhancement - translatable email content.
+* Refactor 	  - Form Templates.
+
 
 - 1.9.8       - 30-01-2023
 * Fix 		  - Stripe issue with credit card field empty.

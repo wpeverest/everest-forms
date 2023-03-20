@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-01-30T10:35:23+00:00\n"
+"POT-Creation-Date: 2023-03-20T14:45:28+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: everest-forms\n"
@@ -1098,14 +1098,14 @@ msgid "To display all form fields, use the %s Smart Tag."
 msgstr ""
 
 #: includes/admin/class-evf-admin-assets.php:102
-#: includes/admin/views/html-admin-page-builder-setup.php:89
+#: includes/admin/views/html-admin-page-form-templates.php:97
 msgid "Get Started"
 msgstr ""
 
 #: includes/admin/class-evf-admin-assets.php:103
 #: includes/admin/class-evf-admin-forms-table-list.php:201
-#: includes/admin/views/html-admin-page-builder-setup.php:90
 #: includes/admin/views/html-admin-page-builder.php:55
+#: includes/admin/views/html-admin-page-form-templates.php:98
 msgid "Preview"
 msgstr ""
 
@@ -1621,6 +1621,10 @@ msgid_plural "%d new entries since you last checked."
 msgstr[0] ""
 msgstr[1] ""
 
+#: includes/admin/class-evf-admin-form-templates.php:24
+msgid "Start From Scratch"
+msgstr ""
+
 #: includes/admin/class-evf-admin-forms-table-list.php:37
 msgid "No Forms found."
 msgstr ""
@@ -1739,29 +1743,29 @@ msgstr[1] ""
 
 #. translators: %d: number of forms
 #: includes/admin/class-evf-admin-forms-table-list.php:503
-#: includes/admin/class-evf-admin-forms.php:215
+#: includes/admin/class-evf-admin-forms.php:130
 msgid "%d form permanently deleted."
 msgid_plural "%d forms permanently deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-evf-admin-forms.php:149
+#: includes/admin/class-evf-admin-forms.php:64
 #: includes/admin/class-evf-admin-menus.php:71
 #: includes/class-evf-post-types.php:46
 msgid "All Forms"
 msgstr ""
 
-#: includes/admin/class-evf-admin-forms.php:151
+#: includes/admin/class-evf-admin-forms.php:66
 #: includes/admin/class-evf-admin-menus.php:73
 #: includes/class-evf-post-types.php:48
 msgid "Add New"
 msgstr ""
 
-#: includes/admin/class-evf-admin-forms.php:161
+#: includes/admin/class-evf-admin-forms.php:76
 msgid "Search Forms"
 msgstr ""
 
-#: includes/admin/class-evf-admin-forms.php:225
+#: includes/admin/class-evf-admin-forms.php:140
 msgid "No form to duplicate has been supplied!"
 msgstr ""
 
@@ -2337,64 +2341,6 @@ msgstr ""
 msgid "Our catalog of Everest Forms Add-ons/Extensions can be found on WPEverest.com here: <a href=\"%s\">Everest Forms Extensions Catalog</a>"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-builder-setup.php:23
-msgid "Add New Form"
-msgstr ""
-
-#: includes/admin/views/html-admin-page-builder-setup.php:25
-msgid "Refresh Templates"
-msgstr ""
-
-#: includes/admin/views/html-admin-page-builder-setup.php:30
-msgid "All"
-msgstr ""
-
-#: includes/admin/views/html-admin-page-builder-setup.php:33
-msgid "Free"
-msgstr ""
-
-#: includes/admin/views/html-admin-page-builder-setup.php:36
-msgid "Premium"
-msgstr ""
-
-#: includes/admin/views/html-admin-page-builder-setup.php:43
-msgid "Couldn't connect to templates server. Please reload again."
-msgstr ""
-
-#: includes/admin/views/html-admin-page-builder-setup.php:49
-msgid "Something went wrong. Please refresh your templates."
-msgstr ""
-
-#. translators: %s: Template title
-#: includes/admin/views/html-admin-page-builder-setup.php:81
-msgctxt "Template name"
-msgid "%s template"
-msgstr ""
-
-#. translators: %s: Number of plugins
-#: includes/admin/views/html-admin-page-builder-setup.php:135
-msgid "%s plugin successfully installed."
-msgstr ""
-
-#. translators: %s: Number of plugins
-#: includes/admin/views/html-admin-page-builder-setup.php:142
-msgid "%s plugins successfully installed."
-msgstr ""
-
-#. translators: %s: Number of failed installs
-#: includes/admin/views/html-admin-page-builder-setup.php:152
-msgid "%s install failed."
-msgstr ""
-
-#. translators: %s: Number of failed installs
-#: includes/admin/views/html-admin-page-builder-setup.php:157
-msgid "%s installs failed."
-msgstr ""
-
-#: includes/admin/views/html-admin-page-builder-setup.php:160
-msgid "Show more details"
-msgstr ""
-
 #: includes/admin/views/html-admin-page-builder.php:30
 msgid "Loading&hellip;"
 msgstr ""
@@ -2498,6 +2444,64 @@ msgstr ""
 msgid "Export"
 msgstr ""
 
+#: includes/admin/views/html-admin-page-form-templates.php:23
+msgid "Add New Form"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-form-templates.php:25
+msgid "Refresh Templates"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-form-templates.php:30
+msgid "All"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-form-templates.php:33
+msgid "Free"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-form-templates.php:36
+msgid "Premium"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-form-templates.php:43
+msgid "Couldn't connect to templates server. Please reload again."
+msgstr ""
+
+#: includes/admin/views/html-admin-page-form-templates.php:49
+msgid "Something went wrong. Please refresh your templates."
+msgstr ""
+
+#. translators: %s: Template title
+#: includes/admin/views/html-admin-page-form-templates.php:89
+msgctxt "Template name"
+msgid "%s template"
+msgstr ""
+
+#. translators: %s: Number of plugins
+#: includes/admin/views/html-admin-page-form-templates.php:143
+msgid "%s plugin successfully installed."
+msgstr ""
+
+#. translators: %s: Number of plugins
+#: includes/admin/views/html-admin-page-form-templates.php:150
+msgid "%s plugins successfully installed."
+msgstr ""
+
+#. translators: %s: Number of failed installs
+#: includes/admin/views/html-admin-page-form-templates.php:160
+msgid "%s install failed."
+msgstr ""
+
+#. translators: %s: Number of failed installs
+#: includes/admin/views/html-admin-page-form-templates.php:165
+msgid "%s installs failed."
+msgstr ""
+
+#: includes/admin/views/html-admin-page-form-templates.php:168
+msgid "Show more details"
+msgstr ""
+
 #: includes/admin/views/html-admin-page-import.php:12
 msgid "Import Everest Forms"
 msgstr ""
@@ -2508,6 +2512,10 @@ msgstr ""
 
 #: includes/admin/views/html-admin-page-import.php:15
 msgid "files selected"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-import.php:16
+msgid "Choose File"
 msgstr ""
 
 #: includes/admin/views/html-admin-page-import.php:16
@@ -2838,11 +2846,11 @@ msgstr ""
 
 #. translators: %d - field ID.
 #: includes/class-evf-emails.php:538
-#: includes/class-evf-emails.php:580
+#: includes/class-evf-emails.php:584
 msgid "Field ID #%d"
 msgstr ""
 
-#: includes/class-evf-emails.php:592
+#: includes/class-evf-emails.php:596
 msgid "An empty form was submitted."
 msgstr ""
 
@@ -2975,11 +2983,11 @@ msgstr ""
 msgid "New %s Entry"
 msgstr ""
 
-#: includes/class-evf-form-task.php:956
+#: includes/class-evf-form-task.php:955
 msgid "No form ID was found."
 msgstr ""
 
-#: includes/class-evf-form-task.php:963
+#: includes/class-evf-form-task.php:962
 msgid "Could not create an entry"
 msgstr ""
 
