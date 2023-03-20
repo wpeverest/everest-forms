@@ -35,7 +35,7 @@ class EVF_Admin_Form_Templates {
 	 * @return array
 	 */
 	public static function get_template_data() {
-		$template_data = false;
+		$template_data = get_transient( 'evf_template_section_list' );
 
 		$template_url = 'https://d3m99fsxk070py.cloudfront.net/';
 
