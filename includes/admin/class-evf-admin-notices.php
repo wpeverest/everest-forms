@@ -26,9 +26,10 @@ class EVF_Admin_Notices {
 	 * @var array
 	 */
 	private static $core_notices = array(
-		'update' => 'update_notice',
-		'review' => 'review_notice',
-		'survey' => 'survey_notice',
+		'update'      => 'update_notice',
+		'review'      => 'review_notice',
+		'survey'      => 'survey_notice',
+		'allow_usage' => 'allow_usage_notice',
 	);
 
 	/**
@@ -80,6 +81,7 @@ class EVF_Admin_Notices {
 		}
 		self::add_notice( 'review' );
 		self::add_notice( 'survey' );
+		self::add_notice( 'allow_usage' );
 	}
 
 	/**
@@ -297,6 +299,25 @@ class EVF_Admin_Notices {
 
 		return $status;
 
+	}
+
+	/**
+	 * Include allow usage & discount notice.
+	 */
+	public static function allow_usage_notice() {
+
+		$show_notice              = true;
+		$allow_usage_notice_shown = get_option( 'everest_forms_allow_usage_notice_shown', false );
+		$allow_usage_tracking     = get_option( 'everest_forms_allow_usage_tracking' );
+		$activated                = get_option( 'everest_forms_activated' );
+
+		if ( 'yes' === $allow_usage_tracking || ( $activated + DAY_IN_SECONDS > time() ) || $allow_usage_notice_shown ) {
+			$show_notice = false;
+		}
+
+		if ( $show_notice && ( is_super_admin() || current_user_can( 'manage_everest_forms' ) ) ) {
+			include 'views/html-notice-allow-usage.php';
+		}
 	}
 
 	/**

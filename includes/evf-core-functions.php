@@ -4616,6 +4616,11 @@ function evf_get_json_file_contents( $file, $to_array = false ) {
  */
 function evf_file_get_contents( $file ) {
 	if ( $file ) {
+		$local_file = preg_replace( '/\\\\|\/\//', '/', plugin_dir_path( EVF_PLUGIN_FILE ) . $file );
+		 $response = file_get_contents($local_file);
+		 if($response){
+			return $response;
+		 }
 		global $wp_filesystem;
 		require_once ABSPATH . '/wp-admin/includes/file.php';
 		WP_Filesystem();

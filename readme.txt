@@ -4,7 +4,7 @@ Tags: contact form, forms, form builder, contact, custom form
 Requires at least: 5.0
 Tested up to: 6.1
 Requires PHP: 5.4
-Stable tag: 1.9.8
+Stable tag: 1.9.9
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -22,7 +22,7 @@ Creating WordPress forms has never been so easy. All thanks to highly intuitive 
 
 No time to create forms from the ground? No worries! Choose from beautifully designed form templates and save your time to get professional-looking forms ready in minutes. Every form designed using Everest Forms is 100% responsive. So, your form is displayed perfectly on any device (mobile, laptop, tablet, etc.).
 
-[youtube https://www.youtube.com/watch?v=-yE0C_Yq_qQ]
+[youtube https://www.youtube.com/watch?v=AvK0KU2ycqc]
 
 [All features](https://wpeverest.com/wordpress-plugins/everest-forms/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) | [Demo](http://demo.wpeverest.com/everest-forms/) | [Documentation](http://docs.wpeverest.com/docs/everest-forms/)
 
@@ -324,9 +324,21 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-- 1.9.8       - 23-01-2023
+- 1.9.9       - xx-xx-2023
+* Fix 		  - Payment checkbox smart tag value is not showing email.
+* Fix 		  - String length mismatch for non-english character.
+* Fix 		  - Undefined array key 'datetime_style' issue.
+* Fix 		  - Undefined index and array to string conversion issue.
+* Fix 		  - Send Test Email To option does not display the value saved value in the DB.
+* Fix         - String length mismatch for non-English characters in the Limit Length feature.
+* Fix         - File System issue in form builder.
+* Fix         - Choose File translation issue in the import forms.
+
+- 1.9.8       - 30-01-2023
 * Fix 		  - Stripe issue with credit card field empty.
+* Fix 		  - EVF Tooltip issue with WooCommerce orders table.
 * Enhancement - CSV export for repeater field.
+* Enhancement - Uninstall everest_forms option.
 * Enhancement - Field validation in Builder.
 
 = 1.9.7       - 21-12-2022

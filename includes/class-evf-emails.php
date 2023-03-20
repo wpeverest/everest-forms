@@ -562,7 +562,7 @@ class EVF_Emails {
 				}
 
 				$field_val  = empty( $field['value'] ) && '0' !== $field['value'] ? esc_html__( '(empty)', 'everest-forms' ) : $field['value'];
-				$field_name = $field['name'];
+				$field_name = isset( $field['name'] ) ? $field['name'] : '';
 
 				if ( is_array( $field_val ) ) {
 					$field_html = array();
@@ -571,7 +571,11 @@ class EVF_Emails {
 						$field_html[] = $meta_val;
 					}
 
-					$field_val = implode( ', ', $field_html );
+					if ( ! empty( $field_html ) && is_array( $field_html ) ) {
+						$field_val = implode( ', ', $field_html );
+					} else {
+						$field_val = '';
+					}
 				}
 
 				if ( empty( $field_name ) ) {

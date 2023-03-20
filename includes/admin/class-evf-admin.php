@@ -46,6 +46,7 @@ class EVF_Admin {
 		include_once dirname( __FILE__ ) . '/class-evf-admin-forms.php';
 		include_once dirname( __FILE__ ) . '/class-evf-admin-entries.php';
 		include_once dirname( __FILE__ ) . '/class-evf-admin-import-export.php';
+		include_once dirname( __FILE__ ) . '/class-evf-admin-deactivation-feedback.php';
 
 		// Setup/welcome.
 		if ( ! empty( $_GET['page'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
@@ -110,7 +111,6 @@ class EVF_Admin {
 			$action    = sanitize_text_field( wp_unslash( $_REQUEST['action'] ) );
 			$templates = EVF_Admin_Form_Templates::get_template_data();
 			$templates = is_array( $templates ) ? $templates : array();
-
 			if ( 'evf-template-refresh' === $action ) {
 				if ( empty( $_GET['evf-template-nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_GET['evf-template-nonce'] ) ), 'refresh' ) ) {
 					wp_die( esc_html_e( 'Could not verify nonce', 'everest-forms' ) );

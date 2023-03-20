@@ -847,7 +847,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 		if ( ! empty( $form_data['form_fields'] ) ) {
 			$data_i10ns = array();
 			foreach ( $form_data['form_fields'] as $form_field ) {
-				if ( 'date-time' === $form_field['type'] && 'picker' === $form_field['datetime_style'] ) {
+				if ( 'date-time' === $form_field['type'] && isset( $form_field['datetime_style'] ) && 'picker' === $form_field['datetime_style'] ) {
 					$data_i10n = isset( $form_field['date_localization'] ) ? $form_field['date_localization'] : 'en';
 
 					if ( ! in_array( $data_i10n, $data_i10ns, true ) && 'en' !== $data_i10n ) {
