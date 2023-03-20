@@ -80,9 +80,9 @@ class EVF_Smart_Tags {
 				$uploads        = wp_upload_dir();
 
 				if ( 'fullname' !== $field_id && 'email' !== $field_id && 'subject' !== $field_id && 'message' !== $field_id ) {
-					$value = ! empty( $fields[ $mixed_field_id[1] ]['value'] ) ? evf_sanitize_textarea_field( $fields[ $mixed_field_id[1] ]['value'] ) : '';
+					$value = isset( $fields[ $mixed_field_id[1] ]['value'] ) && ! empty( $fields[ $mixed_field_id[1] ]['value'] ) ? evf_sanitize_textarea_field( $fields[ $mixed_field_id[1] ]['value'] ) : '';
 				} else {
-					$value = ! empty( $fields[ $field_id ]['value'] ) ? evf_sanitize_textarea_field( $fields[ $field_id ]['value'] ) : '';
+					$value = isset( $fields[ $field_id ]['value'] ) && ! empty( $fields[ $field_id ]['value'] ) ? evf_sanitize_textarea_field( $fields[ $field_id ]['value'] ) : '';
 				}
 
 				$value = apply_filters( 'everest_forms_smart_tags_value', $value, $field_id, $fields, $form_data );
