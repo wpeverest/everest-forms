@@ -432,11 +432,11 @@ class EVF_AJAX {
 		}
 
 		$addons        = array();
-		$template_data = evf_get_json_file_contents( 'assets/extensions-json/templates/all_templates.json' );
-
-		if ( ! empty( $template_data->templates ) ) {
-			foreach ( $template_data->templates as $template ) {
-				if ( isset( $_POST['slug'] ) && $template->slug === $_POST['slug'] && in_array( $_POST['plan'], $template->plan, true ) ) {
+		$template_data = EVF_Admin_Form_Templates::get_template_data();
+		$template_data = is_array( $template_data ) ? $template_data : array();
+		if ( ! empty( $template_data ) ) {
+			foreach ( $template_data as $template ) {
+				if ( isset( $_POST['slug'] ) && $template->slug === $_POST['slug'] && in_array( trim( $_POST['plan'] ), $template->plan, true ) ) {
 					$addons = $template->addons;
 				}
 			}

@@ -1,8 +1,8 @@
 <?php
 /**
- * UserRegistration From Templates
+ * EverestForms Form Templates
  *
- * @package  UserRegistration/Admin/From Templates
+ * @package  EverestForms /Admin/Form Templates
  * @version  1.0.0
  */
 
@@ -21,7 +21,7 @@ class EVF_Admin_Form_Templates {
 	 */
 	private static function get_default_template() {
 		$template        = new stdClass();
-		$template->title = __( 'Start From Scratch', 'user-registration' );
+		$template->title = __( 'Start From Scratch', 'everest-forms' );
 		$template->slug  = 'blank';
 		$template->image = untrailingslashit( plugin_dir_url( EVF_PLUGIN_FILE ) ) . '/assets/images/templates/blank.png';
 		$template->plan  = array( 'free', 'premium' );
@@ -35,7 +35,7 @@ class EVF_Admin_Form_Templates {
 	 * @return array
 	 */
 	public static function get_template_data() {
-		$template_data = get_transient( 'evf_template_section_list' );
+		$template_data = false;
 
 		$template_url = 'https://d3m99fsxk070py.cloudfront.net/';
 
@@ -43,8 +43,8 @@ class EVF_Admin_Form_Templates {
 
 			$template_json_url = $template_url . 'templates.json';
 			try {
-				$content       = wp_remote_get( $template_json_url );
-				$content_json  = wp_remote_retrieve_body( $content );
+				$content      = wp_remote_get( $template_json_url );
+				$content_json = wp_remote_retrieve_body( $content );
 
 				$template_data = json_decode( $content_json );
 			} catch ( Exception $e ) {
@@ -78,6 +78,11 @@ class EVF_Admin_Form_Templates {
 		return isset( $template_data->templates ) ? apply_filters( 'everest_forms_template_section_data', $template_data->templates ) : self::get_default_template();
 	}
 
+	/**
+	 * Load the template view.
+	 *
+	 * @since 1.0.0
+	 */
 	public static function load_template_view() {
 
 		$templates       = array();
