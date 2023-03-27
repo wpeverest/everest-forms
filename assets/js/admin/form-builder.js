@@ -1019,6 +1019,22 @@
 				$( '#everest-forms-field-' + id ).find( '.secondary-input' ).attr( 'placeholder', value );
 			});
 
+			// Real-time updates for "Authorize.Net Card Number Placeholder" field option.
+			$builder.on( 'input', '.everest-forms-field-option-row-card_number_placeholder input', function() {
+				var $this   = $( this ),
+					value   = $this.val(),
+					id      = $this.parent().data( 'field-id' );
+				$( '#everest-forms-field-' + id ).find( '.everest-forms-authorize-net-card-number input' ).attr( 'placeholder', value );
+			});
+
+			// Real-time updates for "Authorize.Net CVC Placeholder" field option.
+			$builder.on( 'input', '.everest-forms-field-option-row-cvc_placeholder  input', function() {
+				var $this   = $( this ),
+					value   = $this.val(),
+					id      = $this.parent().data( 'field-id' );
+				$( '#everest-forms-field-' + id ).find( '.everest-forms-authorize-net-cvc input' ).attr( 'placeholder', value );
+			});
+
 			// Real-time updates for "Hide Label" field option.
 			$builder.on( 'change', '.everest-forms-field-option-row-label_hide input', function() {
 				var id = $(this).parent().data( 'field-id' );
