@@ -88,6 +88,8 @@ With flexible settings, you can create forms that perfectly match your brand and
 
 Upgrade your forms with Everest Forms Surveys, Polls, and Quiz Forms feature today and gather valuable feedback and insights from your users.
 
+==Create Ultimate Forms with Everest Forms' Complete Features==
+
 You'll be delighted to know that Everest Forms lets you create great forms like a pro without prior experience of using such WordPress form plugins. So, ready to explore the awe-striking features of Everest Forms? Here we go!
 
 * **Build Unlimited Number of Forms:** Make as many forms as you want. Frankly, there are no limitations and no restrictions with this fantastic WordPress contact form plugin.
@@ -313,14 +315,13 @@ Everest Forms has a long list of top-notch features, making it the best WordPres
 * Reliable and friendly user support
 
 ### Getting Started:
-* [Watch our video tutorials](Watch our video tutorials)
+* [Watch our video tutorials](https://www.youtube.com/@WPEverest)
 * [Follow our getting started documentation](https://docs.wpeverest.com/everest-forms/docs/how-to-create-a-form-with-everest-forms/)
 
 ### Hands-On Everest Forms Tutorials for Your Ease
 * [How to Create a WordPress Contact Form: Ultimate Guide for Beginners](https://wpeverest.com/blog/create-wordpress-contact-form/)
 * [How to Create a WordPress Online Booking Form for Hotels?](https://wpeverest.com/blog/wordpress-online-booking-form/)
-* [How to Create a Job Application Form in WordPress?](https://wpeverest.com/blog/wordpress-online-booking-form/)
-* [How to Create a Signup Form in WordPress?](https://wpeverest.com/blog/wordpress-user-registration-form/)
+* [How to Create a Job Application Form in WordPress?](https://wpeverest.com/blog/how-to-create-a-job-application-form-in-wordpress/)
 * [How to Create a Donation Form in WordPress?](https://wpeverest.com/blog/how-to-create-a-donation-form-in-wordpress/)
 * [How to Create a WordPress Multi-step Form: A Beginner’s Guide](https://wpeverest.com/blog/wordpress-multi-step-form/)
 * [How to Accept E Signatures with WordPress Forms?](https://wpeverest.com/blog/wordpress-e-signature-plugin/)
