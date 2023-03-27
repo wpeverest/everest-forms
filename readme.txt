@@ -336,8 +336,8 @@ Everest Forms has a long list of top-notch features, making it the best WordPres
 
 == Review (Testimonial) ==
 
->__Excellent pluggin and best support service__
-> Possibly the best form pluggin: intuitive, simple, robust, efficient, …
+>__Excellent plugin and best support service__
+> Possibly the best form plugin: intuitive, simple, robust, efficient, …
 We have the PRO version and we detected an incident that they resolved in less than 48 hours.
 - By @innobask
 
@@ -418,9 +418,8 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-- 1.9.9       - xx-xx-2023
+- 1.9.9       - 27-03-2023
 * Fix 		  - Payment checkbox smart tag value is not showing email.
-* Fix 		  - String length mismatch for non-english character.
 * Fix 		  - Undefined array key 'datetime_style' issue.
 * Fix 		  - Undefined index and array to string conversion issue.
 * Fix 		  - Send Test Email To option does not display the value saved value in the DB.
