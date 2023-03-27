@@ -211,6 +211,8 @@ Everest Forms has a long list of top-notch features, making it the best WordPres
 
 * **[Premium] [SMS Notifications:](https://wpeverest.com/wordpress-plugins/everest-forms/sms-notifications/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Want to be notified whenever a form is submitted? Everest Forms supports Twilio SMS integration that  allows you to receive SMS notification easily whenever a form is submitted.
 
+* **[Premium] [Conversational Forms :](https://wpeverest.com/wordpress-plugins/everest-forms/conversational-forms/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** The Everest Forms Conversational Forms Add-on will assist you in modernizing your questionnaires, contact, and application forms.
+
 
 ==Create Different Form Types without Any Coding Skills==
 * [Contact Form](https://demo.wpeverest.com/everest-forms/)
@@ -320,6 +322,8 @@ Everest Forms has a long list of top-notch features, making it the best WordPres
 
 ### Hands-On Everest Forms Tutorials for Your Ease
 * [How to Create a WordPress Contact Form: Ultimate Guide for Beginners](https://wpeverest.com/blog/create-wordpress-contact-form/)
+* [How to Customize WordPress Contact Forms Styles without coding: Ultimate Guide for Beginners](https://wpeverest.com/blog/customize-wordpress-forms-styles/)
+* [How to Prevent Contact Form spam in WordPress: Ultimate Guide for Beginners](https://wpeverest.com/blog/block-contact-form-spam-wordpress/)
 * [How to Create a WordPress Online Booking Form for Hotels?](https://wpeverest.com/blog/wordpress-online-booking-form/)
 * [How to Create a Job Application Form in WordPress?](https://wpeverest.com/blog/how-to-create-a-job-application-form-in-wordpress/)
 * [How to Create a Donation Form in WordPress?](https://wpeverest.com/blog/how-to-create-a-donation-form-in-wordpress/)
@@ -337,7 +341,7 @@ Everest Forms has a long list of top-notch features, making it the best WordPres
 We have the PRO version and we detected an incident that they resolved in less than 48 hours.
 - By @innobask
 
-==Get in Touch with us==
+==Get in Touch with us 👉 ==
 
 [Facebook Group](https://www.facebook.com/groups/everestforms)
 
@@ -351,6 +355,10 @@ Love Everest Forms? If you do, then you should check out more WordPress themes a
 [Masteriyo](https://masteriyo.com/) - A Powerful and Easy WordPress LMS Plugin. 
 
 [User Registration](https://wpeverest.com/wordpress-plugins/user-registration/) - #1 Best WordPress User Registration Plugin.
+
+[Gutenberg Blocks by BlockArt](https://wordpress.org/plugins/blockart-blocks/) - Free Gutenberg Custom Blocks Plugin.
+
+[Zakra](https://wordpress.org/themes/zakra/) - Best WordPress Multipurpose Theme Powering 60K+ Websites.
 
 [ThemeGrill](https://themegrill.com/wordpress-themes/free/) - Beautiful Free WordPress Themes.
 
@@ -374,7 +382,20 @@ The manual installation method involves downloading our form builder plugin and 
 
 == Frequently Asked Questions ==
 
-= What types of forms can I build with Everest Forms? =
+ Do I need to have coding skills to use the Everest Forms Plugin? =
+
+No, you don't need any coding skills. One can simply drag and drop fields, arrange them and use built-in shortcodes to display the form.
+
+= Does the plugin work with any WordPress themes?
+
+Yes, Everest Forms is designed to work with any themes that have been coded following WordPress guidelines.
+
+= Do you have a quick get started video for Everest Form?
+
+Yes, we do. Check out this [Getting Started Videos](https://docs.wpeverest.com/docs/everest-forms/getting-started/watch-video-guide/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)
+
+
+= What types of forms can I build with Everest Forms?
 
 You can build absolutely any type of form you imagine with Everest Forms. For example, you can create contact forms, online application forms, email newsletter forms, surveys, polls, quiz forms, user registration forms, feedback forms, booking forms, and more. Our plugin has advanced functionalities and tons of powerful integrations, that make it the ultimate form builder for WordPress.
 
@@ -386,9 +407,13 @@ Yes, absolutely. You can easily integrate your WordPress forms with popular emai
 
 Yes. You can easily integrate your WordPress forms with PayPal, Stripe, and Razorpay. Using them, you can create payment forms in WordPress and accept payments.
 
-= How do I protect my WordPress forms from spam?   =
+= How do I protect my WordPress forms from spam?
 
 Everest Forms comes with a set of robust spam protection features. You can easily integrate Google reCAPTCHA as well as custom CAPTCHA like math equations, custom question-answer-based CAPTCHA to protect your site from spam and bots.
+
+= Everest Forms is awesome! Can I contribute? =
+
+Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/everest-forms/) :)
 
 
 == Changelog ==
