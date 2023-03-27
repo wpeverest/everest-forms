@@ -1,6 +1,6 @@
 === Everest Forms – Build Contact Forms, Surveys, Polls, Application Forms, and more with Ease! ===
 Contributors: WPEverest
-Tags: contact form, custom forms, form builder, forms, survey
+Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.0
 Tested up to: 6.1
 Requires PHP: 5.4
@@ -12,7 +12,7 @@ Fast, Lightweight & Secure Contact Form plugin. Beautiful & Responsive Pre-Built
 
 == Description ==
 
-= Form Building Solution for WordPress Website =
+= The Best & Most User-Friendly WordPress Form Builder =
 
 👉 [Give a Try](https://demo.tastewp.com/everest-forms) (Clicking this link creates a demo where you can test Everest Forms.)
 
@@ -26,7 +26,7 @@ No time to create forms from the ground? No worries! Choose from beautifully des
 
 [Try Everest Forms Premium ](https://wpeverest.com/wordpress-plugins/everest-forms/?utm_source=wporg&utm_medium=link&utm_campaign=ur-upgrade-to-pro)
 
-== Build Great Forms like a Pro with Everest Forms Awesome Features ==
+== Create Pro-Level Forms with Everest Forms' Awesome Features ==
 
 = Drag and Drop Form Builder =
 
