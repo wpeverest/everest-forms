@@ -22,9 +22,9 @@ No time to create forms from the ground? No worries! Choose from beautifully des
 
 [youtube https://www.youtube.com/watch?v=AvK0KU2ycqc]
 
-[All features](https://wpeverest.com/wordpress-plugins/everest-forms/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) | [Demo](http://demo.wpeverest.com/everest-forms/) | [Documentation](http://docs.wpeverest.com/docs/everest-forms/)
+👉 [All features](https://wpeverest.com/wordpress-plugins/everest-forms/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) | 👉 [Demo](http://demo.wpeverest.com/everest-forms/) | 👉 [Documentation](http://docs.wpeverest.com/docs/everest-forms/)
 
-[Try Everest Forms Premium ](https://wpeverest.com/wordpress-plugins/everest-forms/?utm_source=wporg&utm_medium=link&utm_campaign=ur-upgrade-to-pro)
+👉 [Try Everest Forms Premium ](https://wpeverest.com/wordpress-plugins/everest-forms/?utm_source=wporg&utm_medium=link&utm_campaign=ur-upgrade-to-pro)
 
 == Create Pro-Level Forms with Everest Forms' Awesome Features ==
 
@@ -341,26 +341,26 @@ Everest Forms has a long list of top-notch features, making it the best WordPres
 We have the PRO version and we detected an incident that they resolved in less than 48 hours.
 - By @innobask
 
-==Get in Touch with us 👉 ==
+==Get in Touch with us  ==
 
-[Facebook Group](https://www.facebook.com/groups/everestforms)
+👉 [Facebook Group](https://www.facebook.com/groups/everestforms)
 
-[Twitter](https://twitter.com/wp_everest)
+👉 [Twitter](https://twitter.com/wp_everest)
 
-[Youtube](https://www.youtube.com/@WPEverest)
+👉 [Youtube](https://www.youtube.com/@WPEverest)
 
 ==Explore More Products from Our Team==
 Love Everest Forms? If you do, then you should check out more WordPress themes and plugins from us.
 
-[Masteriyo](https://masteriyo.com/) - A Powerful and Easy WordPress LMS Plugin. 
+* [Masteriyo](https://masteriyo.com/) - A Powerful and Easy WordPress LMS Plugin. 
 
-[User Registration](https://wpeverest.com/wordpress-plugins/user-registration/) - #1 Best WordPress User Registration Plugin.
+* [User Registration](https://wpeverest.com/wordpress-plugins/user-registration/) - #1 Best WordPress User Registration Plugin.
 
-[Gutenberg Blocks by BlockArt](https://wordpress.org/plugins/blockart-blocks/) - Free Gutenberg Custom Blocks Plugin.
+* [Gutenberg Blocks by BlockArt](https://wordpress.org/plugins/blockart-blocks/) - Free Gutenberg Custom Blocks Plugin.
 
-[Zakra](https://wordpress.org/themes/zakra/) - Best WordPress Multipurpose Theme Powering 60K+ Websites.
+* [Zakra](https://wordpress.org/themes/zakra/) - Best WordPress Multipurpose Theme Powering 60K+ Websites.
 
-[ThemeGrill](https://themegrill.com/wordpress-themes/free/) - Beautiful Free WordPress Themes.
+* [ThemeGrill](https://themegrill.com/wordpress-themes/free/) - Beautiful Free WordPress Themes.
 
 
 == Installation ==
