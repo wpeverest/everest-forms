@@ -100,9 +100,9 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 * @return array
 	 */
 	public function get_columns() {
-		$columns            = array();
-		$columns['cb']      = '<input type="checkbox" />';
-		$columns['sn']      = esc_html__( 'S.N.', 'everest-forms' );
+		$columns       = array();
+		$columns['cb'] = '<input type="checkbox" />';
+
 		$columns            = apply_filters( 'everest_forms_entries_table_form_fields_columns', $this->get_columns_form_fields( $columns ), $this->form_id, $this->form_data );
 		$columns['date']    = esc_html__( 'Date Created', 'everest-forms' );
 		$columns['actions'] = esc_html__( 'Actions', 'everest-forms' );
@@ -173,7 +173,8 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		$entry_columns = evf()->form->get_meta( $this->form_id, 'entry_columns' );
 
 		if ( ! $entry_columns && ! empty( $this->form_data['form_fields'] ) ) {
-			$x = 0;
+			$columns['sn'] = __( 'S.N.', 'everest-forms' );
+			$x             = 0;
 			foreach ( $this->form_data['form_fields'] as $id => $field ) {
 				if ( ! in_array( $field['type'], self::get_columns_form_disallowed_fields(), true ) && $x < $display ) {
 					$columns[ 'evf_field_' . $id ] = ! empty( $field['label'] ) ? wp_strip_all_tags( $field['label'] ) : esc_html__( 'Field', 'everest-forms' );
@@ -181,9 +182,20 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 				}
 			}
 		} elseif ( ! empty( $entry_columns ) ) {
+			$key = array_search( 'sn', $entry_columns, true );
+			if ( false !== $key ) {
+				unset( $entry_columns[ $key ] );
+				$entry_columns = array_merge( array( 'sn' ), $entry_columns );
+			}
 			foreach ( $entry_columns as $id ) {
 				// Check to make sure the field as not been removed.
 				if ( empty( $this->form_data['form_fields'][ $id ] ) ) {
+					if ( 'sn' === $id ) {
+						$new_column['sn'] = esc_html__( 'S.N.', 'everest-forms' );
+						$columns          = array_slice( $columns, 0, 3, true ) +
+						array( 'sn' => esc_html__( 'S.N.', 'everest-forms' ) ) +
+						array_slice( $columns, 3, count( $columns ) - 1, true );
+					}
 					continue;
 				}
 
@@ -277,7 +289,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 
 			case 'sn':
 				$position = array_search( $entry, $this->items );
-				$value = $position + 1;
+				$value    = $position + 1;
 				break;
 
 			default:
