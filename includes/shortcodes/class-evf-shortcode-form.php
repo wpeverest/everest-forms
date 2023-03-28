@@ -956,9 +956,19 @@ class EVF_Shortcode_Form {
 		&& evf()->task->is_valid_hash
 		&& absint( evf()->task->form_data['id'] ) === $form_id
 		) {
-			// Output success message if no redirection happened.
+			$query_args = base64_decode( $_GET['everest_forms_return'] ); // phpcs:ignore
+			parse_str( $query_args, $query_arg );
+			$message        = isset( $form_data['settings']['successful_form_submission_message'] ) ? $form_data['settings']['successful_form_submission_message'] : esc_html__( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
+			$pdf_submission = isset( $form_data['settings']['pdf_submission']['enable_pdf_submission'] ) && 0 !== $form_data['settings']['pdf_submission']['enable_pdf_submission'] ? $form_data['settings']['pdf_submission'] : '';
+			if ( defined( 'EVF_PDF_SUBMISSION_VERSION' ) && ( 'yes' === get_option( 'everest_forms_pdf_download_after_submit', 'no' ) || ( isset( $pdf_submission['everest_forms_pdf_download_after_submit'] ) && 'yes' === $pdf_submission['everest_forms_pdf_download_after_submit'] ) ) ) {
+				global $__everest_form_id;
+				global $__everest_form_entry_id;
+				$__everest_form_id       = $form_id;
+				$__everest_form_entry_id = isset( $query_arg['entry_id'] ) ? $query_arg['entry_id'] : 0;
+			}
+
 			if ( 'same' === $form_data['settings']['redirect_to'] ) {
-				evf_add_notice( isset( $form_data['settings']['successful_form_submission_message'] ) ? $form_data['settings']['successful_form_submission_message'] : esc_html__( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' ), 'success' );
+				evf_add_notice( $message, 'success' );
 			}
 
 			do_action( 'everest_forms_frontend_output_success', evf()->task->form_data, evf()->task->form_fields, evf()->task->entry_id );
