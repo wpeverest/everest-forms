@@ -883,7 +883,7 @@ class EVF_Shortcode_Form {
 		// Basic form information.
 		$form_data       = apply_filters( 'everest_forms_frontend_form_data', evf_decode( $form->post_content ) );
 		$form_id         = absint( $form->ID );
-		$settings        = $form_data['settings'];
+		$settings        = isset( $form_data['settings'] ) ? $form_data['settings'] : array();
 		$action          = esc_url_raw( remove_query_arg( 'evf-forms' ) );
 		$title           = filter_var( $title, FILTER_VALIDATE_BOOLEAN );
 		$description     = filter_var( $description, FILTER_VALIDATE_BOOLEAN );

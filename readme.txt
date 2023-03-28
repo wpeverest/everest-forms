@@ -418,7 +418,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-- 1.9.9       - 27-03-2023
+- 1.9.9       - 28-03-2023
 * Fix 		  - Payment checkbox smart tag value is not showing email.
 * Fix 		  - Undefined array key 'datetime_style' issue.
 * Fix 		  - Undefined index and array to string conversion issue.
