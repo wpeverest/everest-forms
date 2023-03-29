@@ -173,8 +173,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		$entry_columns = evf()->form->get_meta( $this->form_id, 'entry_columns' );
 
 		if ( ! $entry_columns && ! empty( $this->form_data['form_fields'] ) ) {
-			$columns['sn'] = __( 'S.N.', 'everest-forms' );
-			$x             = 0;
+			$x = 0;
 			foreach ( $this->form_data['form_fields'] as $id => $field ) {
 				if ( ! in_array( $field['type'], self::get_columns_form_disallowed_fields(), true ) && $x < $display ) {
 					$columns[ 'evf_field_' . $id ] = ! empty( $field['label'] ) ? wp_strip_all_tags( $field['label'] ) : esc_html__( 'Field', 'everest-forms' );
@@ -190,11 +189,11 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 			foreach ( $entry_columns as $id ) {
 				// Check to make sure the field as not been removed.
 				if ( empty( $this->form_data['form_fields'][ $id ] ) ) {
-					if ( 'sn' === $id ) {
-						$new_column['sn'] = esc_html__( 'S.N.', 'everest-forms' );
-						$columns          = array_slice( $columns, 0, 3, true ) +
-						array( 'sn' => esc_html__( 'S.N.', 'everest-forms' ) ) +
-						array_slice( $columns, 3, count( $columns ) - 1, true );
+					if ( is_plugin_active( 'everest-forms-pro/everest-forms-pro.php' ) ) {
+						if ( 'sn' === $id ) {
+							$extra_column = apply_filters( 'everest_forms_entries_table_extra_columns', array(), 0, array() );
+							$columns      = array_merge( $columns, $extra_column );
+						}
 					}
 					continue;
 				}
