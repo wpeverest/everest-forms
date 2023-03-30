@@ -361,7 +361,8 @@ class EVF_Admin_Menus {
 	 * Init the upgradetopro page.
 	 */
 	public function upgradetopro_page() {
-		header( 'location:https://wpeverest.com/wordpress-plugins/everest-forms/pricing/' );
+		$url = 'https://wpeverest.com/wordpress-plugins/everest-forms/pricing/';
+		header( sprintf( 'location:%s', esc_url_raw( $url ) ) );
 		exit;
 	}
 
