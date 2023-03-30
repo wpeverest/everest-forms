@@ -208,6 +208,10 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 			if ( 'publish' === $post_status && current_user_can( 'everest_forms_create_forms' ) ) {
 				$actions['duplicate'] = '<a href="' . esc_url( $duplicate_link ) . '">' . __( 'Duplicate', 'everest-forms' ) . '</a>';
 			}
+
+			if ( 'publish' === $post_status && current_user_can( 'everest_forms_create_forms' ) ) {
+				$actions['locate'] = '<a href="#" class="evf-form-locate" data-id= "' . esc_attr( $posts->ID ) . '">' . __( 'Locate', 'everest-forms' ) . '</a>';
+			}
 		}
 
 		$row_actions = array();

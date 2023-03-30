@@ -117,7 +117,7 @@
 			var maxVal   = maxField.val();
 			var minVal   = minField.val();
 
-			if ( 0 !== minVal.length && 0 !== maxVal.length ) { 
+			if ( 0 !== minVal.length && 0 !== maxVal.length ) {
 				if ( parseFloat( minVal ) > parseFloat( maxVal ) ) {
 					if( $( this ).attr( 'id' ).indexOf( 'min_value' ) !== -1 ) {
 						$( document.body ).triggerHandler( 'evf_add_error_tip', [ $( this ), 'i18n_field_min_value_greater', params ] );
@@ -148,7 +148,7 @@
 
 			if ( minVal > maxVal ||  ( '' === maxField.val() && '' !== minField.val() ) ) {
 				maxField.val( minVal + 1 );
-			} 
+			}
 		})
 
 		.on('click','.everest-forms-field-number, .everest-forms-field-range-slider', function(e) {
@@ -178,7 +178,7 @@
 						$( document.body ).triggerHandler( 'evf_add_error_tip', [ $this, 'i18n_field_def_value_greater', params ] );
 					} else  {
 						$( document.body ).triggerHandler( 'evf_remove_error_tip', [ $this, 'i18n_field_def_value_greater' ] );
-					} 
+					}
 
 					if( 0 !== defVal.length && parseFloat( defVal ) < parseFloat( minVal ) ) {
 						$( document.body ).triggerHandler( 'evf_remove_error_tip', [ $this, 'i18n_field_def_value_greater' ] );
@@ -196,10 +196,10 @@
 				var maxVal   = parseFloat( maxField.val() );
 				var minVal   = parseFloat( minField.val() );
 				var defVal   = parseFloat( e.target.value );
-	
+
 				if ( minVal > defVal || maxVal < defVal  ) {
 					e.target.value = '';
-				} 
+				}
 			})
 		})
 
@@ -380,4 +380,35 @@
 		$(this).addClass('is-active');
 	})
 
+	$(document).find('.evf-form-locate').on('click', function(e) {
+		var id = $(this).data('id');
+		var data = {
+			'action':'everest_forms_locate_form_action',
+			'id':id,
+			'security':everest_forms_admin_locate.ajax_locate_nonce
+		}
+		$.ajax({
+			url : everest_forms_admin_locate.ajax_url,
+			data: data,
+			type: 'POST',
+			success: function(response) {
+				var tag = e.target;
+				var target_tag = tag.closest(".row-actions");
+				var len = Object.keys(response.data).length;
+				if(len>0) {
+					var add_tag = '<span>Form found in page: </span>';
+					$.each(response.data, function(index, value) {
+						add_tag+=', <a href="'+value+'" target="_blank">'+index+'</a>';
+					});
+					add_tag +="<br>";
+					$(target_tag).find('span:first').prepend(add_tag);
+
+				} else {
+					$(this).prepend('Form not found in content');
+				}
+
+			}
+
+		})
+	});
 })( jQuery, everest_forms_admin );

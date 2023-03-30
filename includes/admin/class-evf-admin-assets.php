@@ -244,6 +244,15 @@ class EVF_Admin_Assets {
 					'i18n_form_export_action_error' => esc_html__( 'Please select a form which you want to export.', 'everest-forms' ),
 				)
 			);
+
+			wp_localize_script(
+				'everest-forms-admin',
+				'everest_forms_admin_locate',
+				array(
+					'ajax_locate_nonce' => wp_create_nonce( 'process-locate-ajax-nonce' ),
+					'ajax_url'          => admin_url( 'admin-ajax.php', 'relative' ),
+				)
+			);
 		}
 
 		// EverestForms builder pages.

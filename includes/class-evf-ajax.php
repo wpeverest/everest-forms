@@ -99,6 +99,7 @@ class EVF_AJAX {
 			'template_activate_addon' => false,
 			'ajax_form_submission'    => true,
 			'send_test_email'         => false,
+			'locate_form_action'      => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -807,6 +808,33 @@ class EVF_AJAX {
 			} else {
 				wp_send_json_error( array( 'message' => __( 'Test email was unsuccessful! Something went wrong.', 'everest-forms' ) ) );
 			}
+		} catch ( Exception $e ) {
+			wp_send_json_error(
+				array(
+					'message' => $e->getMessage(),
+				)
+			);
+		}
+	}
+
+	/**
+	 * Locate form.
+	 */
+	public static function locate_form_action() {
+		try {
+			check_ajax_referer( 'process-locate-ajax-nonce', 'security' );
+			$id        = isset( $_POST['id'] ) ? wp_unslash( $_POST['id'] ) : '';
+			$pages     = get_pages();
+			$shortcode = '[everest_form id="' . $id . '"] ';
+			$page_list = array();
+			foreach ( $pages as $page ) {
+				if ( str_contains( $page->post_content, $shortcode ) ) {
+					$page_name               = $page->post_name;
+					$page_guid               = $page->guid;
+					$page_list[ $page_name ] = $page_guid;
+				}
+			}
+			wp_send_json_success( $page_list );
 		} catch ( Exception $e ) {
 			wp_send_json_error(
 				array(
