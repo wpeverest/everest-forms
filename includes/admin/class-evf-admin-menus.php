@@ -29,8 +29,8 @@ class EVF_Admin_Menus {
 		add_action( 'admin_menu', array( $this, 'settings_menu' ), 50 );
 		add_action( 'admin_menu', array( $this, 'tools_menu' ), 60 );
 
+		add_filter( 'everest_forms_show_upgradetopro_page', array( $this, 'everest_form_pro_active_status' ), 10, 1 );
 		if ( apply_filters( 'everest_forms_show_upgradetopro_page', true ) ) {
-			add_filter( 'everest_forms_show_upgradetopro_page', array( $this, 'everest_form_pro_active_status' ), 10, 1 );
 			add_action( 'admin_menu', array( $this, 'upgradetopro_menu' ), 70 );
 		}
 
