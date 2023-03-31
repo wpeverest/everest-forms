@@ -821,14 +821,16 @@ class EVF_AJAX {
 	 * Locate form.
 	 */
 	public static function locate_form_action() {
+		global $wpdb;
 		try {
 			check_ajax_referer( 'process-locate-ajax-nonce', 'security' );
-			$id        = isset( $_POST['id'] ) ? wp_unslash( $_POST['id'] ) : '';
-			$pages     = get_pages();
-			$shortcode = '[everest_form id="' . $id . '"] ';
+			$id        = isset( $_POST['id'] ) ? sanitize_text_field( wp_unslash( $_POST['id'] ) ) : '';
+			$pattern_1 = '%[everest_form id="' . $id . '"%';
+			$pattern_2 = '%{"formId":"' . $id . '"%';
+			$pages     = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}posts WHERE post_content LIKE %s OR post_content LIKE %s", $pattern_1, $pattern_2 ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			$page_list = array();
 			foreach ( $pages as $page ) {
-				if ( str_contains( $page->post_content, $shortcode ) ) {
+				if ( '0' === $page->post_parent ) {
 					$page_name               = $page->post_name;
 					$page_guid               = $page->guid;
 					$page_list[ $page_name ] = $page_guid;

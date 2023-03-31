@@ -387,26 +387,43 @@
 			'id':id,
 			'security':everest_forms_admin_locate.ajax_locate_nonce
 		}
+		var tag = e.target;
+		var target_tag = tag.closest(".row-actions");
 		$.ajax({
 			url : everest_forms_admin_locate.ajax_url,
+			dataType: 'json', // JSON type is expected back from the PHP script.
+			cache: false,
 			data: data,
 			type: 'POST',
+			beforeSend: function () {
+				var spinner = '<i class="evf-loading evf-loading-active"></i>';
+				$(target_tag).append( spinner );
+			},
 			success: function(response) {
-				var tag = e.target;
-				var target_tag = tag.closest(".row-actions");
 				var len = Object.keys(response.data).length;
 				if(len>0) {
-					var add_tag = '<span>Form found in page: </span>';
+					var add_tag = '<div class = "locate-form"><span>'+everest_forms_admin_locate.form_found+'</span>';
+					var i = 1;
 					$.each(response.data, function(index, value) {
-						add_tag+=', <a href="'+value+'" target="_blank">'+index+'</a>';
+						if(i > 1) {
+							add_tag +=", ";
+						}
+						add_tag+=' <a href="'+value+'" target="_blank">'+index+'</a>';
+						i++;
 					});
-					add_tag +="<br>";
+					add_tag +="</div>";
+					if($(target_tag).find('.locate-form').length !=0) {
+						$(target_tag).find('.locate-form').remove();
+					}
 					$(target_tag).find('span:first').prepend(add_tag);
 
 				} else {
-					$(this).prepend('Form not found in content');
+					if($(target_tag).find('.locate-form').length !=0) {
+						$(target_tag).find('.locate-form').remove();
+					}
+					$(target_tag).find('span:first').prepend('<div class = "locate-form"><span>'+everest_forms_admin_locate.form_found_error+'</span></div>');
 				}
-
+				$(target_tag).find('.evf-loading').remove();
 			}
 
 		})

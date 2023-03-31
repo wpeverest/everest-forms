@@ -251,6 +251,8 @@ class EVF_Admin_Assets {
 				array(
 					'ajax_locate_nonce' => wp_create_nonce( 'process-locate-ajax-nonce' ),
 					'ajax_url'          => admin_url( 'admin-ajax.php', 'relative' ),
+					'form_found_error'  => esc_html__( 'Form not found in content', 'everest-forms' ),
+					'form_found'        => esc_html__( 'Form found in page:', 'everest-forms' ),
 				)
 			);
 		}
