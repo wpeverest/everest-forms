@@ -196,12 +196,14 @@ class EVF_Admin_Assets {
 			'evf-upgrade',
 			'evf_upgrade',
 			array(
-				'upgrade_title'         => esc_html__( 'is a PRO Feature', 'everest-forms' ),
-				'upgrade_message'       => esc_html__( 'We\'re sorry, the %name% is not available on your plan.<br>Please upgrade to the PRO plan to unlock all these awesome features.', 'everest-forms' ),
-				'upgrade_button'        => esc_html__( 'Upgrade to PRO', 'everest-forms' ),
-				'upgrade_url'           => apply_filters( 'everest_forms_upgrade_url', 'https://wpeverest.com/wordpress-plugins/everest-forms/pricing/?utm_source=premium-fields&utm_medium=modal-button&utm_campaign=evf-upgrade-to-pro' ),
-				'enable_stripe_title'   => esc_html__( 'Please enable Stripe', 'everest-forms' ),
-				'enable_stripe_message' => esc_html__( 'Enable Stripe Payment gateway in payments section to use this field.', 'everest-forms' ),
+				'upgrade_title'                => esc_html__( 'is a PRO Feature', 'everest-forms' ),
+				'upgrade_message'              => esc_html__( 'We\'re sorry, the %name% is not available on your plan.<br>Please upgrade to the PRO plan to unlock all these awesome features.', 'everest-forms' ),
+				'upgrade_button'               => esc_html__( 'Upgrade to PRO', 'everest-forms' ),
+				'upgrade_url'                  => apply_filters( 'everest_forms_upgrade_url', 'https://wpeverest.com/wordpress-plugins/everest-forms/pricing/?utm_source=premium-fields&utm_medium=modal-button&utm_campaign=evf-upgrade-to-pro' ),
+				'enable_stripe_title'          => esc_html__( 'Please enable Stripe', 'everest-forms' ),
+				'enable_stripe_message'        => esc_html__( 'Enable Stripe Payment gateway in payments section to use this field.', 'everest-forms' ),
+				'enable_authorize_net_title'   => esc_html__( 'Please enable Authorize.Net', 'everest-forms' ),
+				'enable_authorize_net_message' => esc_html__( 'Enable Authorize.Net Payment gateway in payments section to use this field.', 'everest-forms' ),
 			)
 		);
 
