@@ -29,8 +29,7 @@ class EVF_Admin_Menus {
 		add_action( 'admin_menu', array( $this, 'settings_menu' ), 50 );
 		add_action( 'admin_menu', array( $this, 'tools_menu' ), 60 );
 
-		add_filter( 'everest_forms_show_upgradetopro_page', array( $this, 'everest_form_pro_active_status' ), 10, 1 );
-		if ( apply_filters( 'everest_forms_show_upgradetopro_page', true ) ) {
+		if ( false === is_plugin_active( 'everest-forms-pro/everest-forms-pro.php' ) ) {
 			add_action( 'admin_menu', array( $this, 'upgradetopro_menu' ), 70 );
 		}
 
@@ -301,19 +300,6 @@ class EVF_Admin_Menus {
 		return $enabled || current_user_can( 'manage_everest_forms' );
 	}
 
-	/**
-	 * Everest form pro active status.
-	 *
-	 * @param bool $status  active status.
-	 *
-	 * @return bool
-	 */
-	public function everest_form_pro_active_status( $status ) {
-		if ( is_plugin_active( 'everest-forms-pro/everest-forms-pro.php' ) ) {
-			$status = false;
-		}
-		return $status;
-	}
 	/**
 	 * Validate screen options on update.
 	 *
