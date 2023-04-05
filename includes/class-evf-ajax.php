@@ -824,16 +824,16 @@ class EVF_AJAX {
 		global $wpdb;
 		try {
 			check_ajax_referer( 'process-locate-ajax-nonce', 'security' );
-			$id        = isset( $_POST['id'] ) ? sanitize_text_field( wp_unslash( $_POST['id'] ) ) : '';
-			$pattern_1 = '%[everest_form id="' . $id . '"%';
-			$pattern_2 = '%{"formId":"' . $id . '"%';
-			$pages     = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}posts WHERE post_content LIKE %s OR post_content LIKE %s", $pattern_1, $pattern_2 ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			$page_list = array();
+			$id                     = isset( $_POST['id'] ) ? sanitize_text_field( wp_unslash( $_POST['id'] ) ) : '';
+			$everest_form_shortcode = '%[everest_form id="' . $id . '"%';
+			$form_id_shortcode      = '%{"formId":"' . $id . '"%';
+			$pages                  = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}posts WHERE post_content LIKE %s OR post_content LIKE %s", $everest_form_shortcode, $form_id_shortcode ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$page_list              = array();
 			foreach ( $pages as $page ) {
 				if ( '0' === $page->post_parent ) {
-					$page_name               = $page->post_name;
-					$page_guid               = $page->guid;
-					$page_list[ $page_name ] = $page_guid;
+					$page_title               = $page->post_title;
+					$page_guid                = $page->guid;
+					$page_list[ $page_title ] = $page_guid;
 				}
 			}
 			wp_send_json_success( $page_list );

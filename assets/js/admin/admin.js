@@ -408,6 +408,12 @@
 						if(i > 1) {
 							add_tag +=", ";
 						}
+						let wordsArray = index.split(" ");
+						if(wordsArray.length > 4 ) {
+							let slicedArray = wordsArray.slice(0, 4);
+							index = slicedArray.join(" ");
+							index = index + "...";
+						}
 						add_tag+=' <a href="'+value+'" target="_blank">'+index+'</a>';
 						i++;
 					});
