@@ -280,6 +280,7 @@ function evf_get_count_entries_by_last_entry( $form_id, $last_entry ) {
  * @param int    $form_id    Form ID.
  * @param string $start_date Start date.
  * @param string $end_date   End date.
+ * @param bool   $hide_trashed   Exclude trashed entries.
  *
  * @return array of entries by form ID.
  */
