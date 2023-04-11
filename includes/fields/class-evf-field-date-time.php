@@ -1053,6 +1053,8 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	 * @param [string] $entry_meta Entry Meta.
 	 * @param [array]  $entry Entry.
 	 * @param [string] $type Type.
+	 * @param [string] $meta_key Meta Key.
+	 *
 	 * @return string
 	 */
 	public function entry_html( $value, $entry_meta, $entry, $type, $meta_key ) {
