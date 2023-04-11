@@ -1972,7 +1972,7 @@ abstract class EVF_Form_Fields {
 						foreach ( $values as $value ) {
 							$default     = isset( $value['default'] ) ? $value['default'] : '';
 							$selected    = checked( '1', $default, false );
-							$placeholder = wp_remote_get( evf()->plugin_url( 'assets/images/everest-forms-placeholder.png' ), array( 'sslverify' => false ) );
+							$placeholder = evf()->plugin_url( 'assets/images/everest-forms-placeholder.png' );
 							$image_src   = ! empty( $value['image'] ) ? esc_url( $value['image'] ) : $placeholder;
 							$item_class  = array();
 
