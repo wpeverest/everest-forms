@@ -29,12 +29,12 @@ class EVF_Admin_Menus {
 		add_action( 'admin_menu', array( $this, 'settings_menu' ), 50 );
 		add_action( 'admin_menu', array( $this, 'tools_menu' ), 60 );
 
-		if ( false === is_plugin_active( 'everest-forms-pro/everest-forms-pro.php' ) ) {
-			add_action( 'admin_menu', array( $this, 'upgradetopro_menu' ), 70 );
+		if ( apply_filters( 'everest_forms_show_addons_page', true ) ) {
+			add_action( 'admin_menu', array( $this, 'addons_menu' ), 70 );
 		}
 
-		if ( apply_filters( 'everest_forms_show_addons_page', true ) ) {
-			add_action( 'admin_menu', array( $this, 'addons_menu' ), 80 );
+		if ( ! evf_get_license_plan() ) {
+			add_action( 'admin_menu', array( $this, 'upgrade_to_pro_menu' ), 80 );
 		}
 
 		add_action( 'admin_head', array( $this, 'menu_highlight' ) );
@@ -208,8 +208,8 @@ class EVF_Admin_Menus {
 	/**
 	 * Add menu item.
 	 */
-	public function upgradetopro_menu() {
-		add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Upgrade to Pro', 'everest-forms' ), sprintf( '<span style="color:yellow">%s</span>', esc_html__( 'Upgrade to Pro', 'everest-forms' ) ), 'manage_everest_forms', 'evf-upgradetopro', array( $this, 'upgradetopro_page' ) );
+	public function upgrade_to_pro_menu() {
+		add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Upgrade to Pro', 'everest-forms' ), sprintf( '<span style="color:yellow; font-weight: bold; ">%s</span>', esc_html__( 'Upgrade to Pro', 'everest-forms' ) ), 'manage_everest_forms', esc_url_raw( 'https://wpeverest.com/wordpress-plugins/everest-forms/pricing/' ) );
 	}
 
 	/**
@@ -341,15 +341,6 @@ class EVF_Admin_Menus {
 	 */
 	public function tools_page() {
 		EVF_Admin_Tools::output();
-	}
-
-	/**
-	 * Init the upgradetopro page.
-	 */
-	public function upgradetopro_page() {
-		$url = 'https://wpeverest.com/wordpress-plugins/everest-forms/pricing/';
-		header( sprintf( 'location:%s', esc_url_raw( $url ) ) );
-		exit;
 	}
 
 	/**
