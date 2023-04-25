@@ -282,8 +282,12 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 				switch ( $field_type ) {
 					case 'checkbox':
 					case 'payment-checkbox':
-						$value = $fields[ $column_id ]['value']['label'];
-						$value = implode( ', ', $value );
+						$value = isset( $fields[ $column_id ]['value']['label'] ) ? $fields[ $column_id ]['value']['label'] : '';
+						if ( is_array( $value ) ) {
+							$value = implode( ',', $value );
+						} else {
+							$value = $value;
+						}
 						break;
 					case 'radio':
 					case 'payment-multiple':
