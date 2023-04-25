@@ -233,6 +233,13 @@ class EVF_Frontend_Scripts {
 		if ( ! did_action( 'before_everest_forms_init' ) ) {
 			return;
 		}
+		// Get the post content.
+		$content = $post->post_content;
+
+		// Regular expressions to check the shortcode exitst or not.
+		if ( ! preg_match( '/\[everest_form id="(\d+)"\]/', $content, $matches ) ) {
+			return;
+		}
 
 		self::register_scripts();
 		self::register_styles();
