@@ -234,10 +234,10 @@ class EVF_Frontend_Scripts {
 			return;
 		}
 		// Get the post content.
-		$content = $post->post_content;
+		$is_evf_exist = is_evf_shortcode_exist( $post );
 
-		// Regular expressions to check the shortcode exitst or not.
-		if ( ! preg_match( '/\[everest_form id="(\d+)"\]/', $content, $matches ) ) {
+		// Check shotcode exist or not.
+		if ( ! $is_evf_exist ) {
 			return;
 		}
 

@@ -4618,7 +4618,7 @@ function evf_file_get_contents( $file ) {
 	if ( $file ) {
 		$local_file = preg_replace( '/\\\\|\/\//', '/', plugin_dir_path( EVF_PLUGIN_FILE ) . $file );
 		 $response = file_get_contents($local_file);
-		 if($response){
+		 if( $response ){
 			return $response;
 		 }
 		global $wp_filesystem;
@@ -4631,4 +4631,23 @@ function evf_file_get_contents( $file ) {
 		}
 	}
 	return;
+}
+
+/**
+ * Checks if the [everest_form id="X"] shortcode exists in the given post content.
+ *
+ * @param WP_Post $post The post object to check.
+ * @since 1.0.0
+ * @return bool True if the shortcode exists in the post content, false otherwise.
+ */
+function is_evf_shortcode_exist( $post ){
+	// Get the post content.
+	$content = isset( $post->post_content ) ? $post->post_content : '';
+
+	// Regular expressions to check the shortcode exitst or not.
+	if ( preg_match( '/\[everest_form id="(\d+)"\]/', $content, $matches ) ) {
+		return true;
+	}
+
+	return false;
 }
