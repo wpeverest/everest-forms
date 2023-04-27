@@ -28,7 +28,7 @@ class EVF_Admin_Menus {
 		add_action( 'admin_menu', array( $this, 'entries_menu' ), 30 );
 		add_action( 'admin_menu', array( $this, 'settings_menu' ), 50 );
 		add_action( 'admin_menu', array( $this, 'tools_menu' ), 60 );
-		//Add admin topbar menu
+		//Add admin topbar menu.
 		add_action( 'admin_bar_menu', array( $this, 'admin_top_menu_bar' ), 100 );
 
 		if ( apply_filters( 'everest_forms_show_addons_page', true ) ) {
@@ -61,19 +61,23 @@ class EVF_Admin_Menus {
 
 	/**
 	 * Admin top menu bar.
+	 *
+	 * @param mixed $wp_admin_bar $wp_admin_bar.
 	 */
 	public function admin_top_menu_bar( WP_Admin_Bar $wp_admin_bar ) {
 		if ( ! is_admin_bar_showing() || ! current_user_can( 'manage_everest_forms' ) ) {
 			return;
 		}
 
-		$wp_admin_bar->add_menu( array(
-			'id'    => 'everest-forms-menu',
-			'parent' => null,
-			'group'  => null,
-			'title' => 'Everest Forms', //you can use img tag with image link. it will show the image icon Instead of the title.
-			'href'  => admin_url('admin.php?page=evf-builder'),
-		) );
+		$wp_admin_bar->add_menu(
+			array(
+				'id'    => 'everest-forms-menu',
+				'parent' => null,
+				'group'  => null,
+				'title' => 'Everest Forms', //you can use img tag with image link. it will show the image icon Instead of the title.
+				'href'  => admin_url( 'admin.php?page=evf-builder' ),
+			)
+		);
 
 		$wp_admin_bar->add_menu(
 			array(
@@ -81,7 +85,7 @@ class EVF_Admin_Menus {
 				'id'     => 'everest-forms-all-forms',
 				'title'  => __( 'All Forms', 'everest-forms' ),
 				'href'   => admin_url( 'admin.php?page=evf-builder' ),
-			),
+			)
 		);
 
 		$wp_admin_bar->add_menu(
@@ -90,7 +94,7 @@ class EVF_Admin_Menus {
 				'id'     => 'everest-forms-add-new',
 				'title'  => __( 'Add New', 'everest-forms' ),
 				'href'   => admin_url( 'admin.php?page=evf-builder&create-form=1' ),
-			),
+			)
 		);
 
 		$wp_admin_bar->add_menu(
@@ -99,7 +103,7 @@ class EVF_Admin_Menus {
 				'id'     => 'everest-forms-entries',
 				'title'  => __( 'Entries', 'everest-forms' ),
 				'href'   => admin_url( 'admin.php?page=evf-entries' ),
-			),
+			)
 		);
 
 		$wp_admin_bar->add_menu(
@@ -108,7 +112,7 @@ class EVF_Admin_Menus {
 				'id'     => 'everest-forms-tools',
 				'title'  => __( 'Tools', 'everest-forms' ),
 				'href'   => admin_url( 'admin.php?page=evf-tools' ),
-			),
+			)
 		);
 
 		$href = add_query_arg(
@@ -130,7 +134,7 @@ class EVF_Admin_Menus {
 					'target' => '_blank',
 					'rel'    => 'noopener noreferrer',
 				],
-			),
+			)
 		);
 
 		do_action( 'everest_forms_top_admin_bar_menu', $wp_admin_bar );
