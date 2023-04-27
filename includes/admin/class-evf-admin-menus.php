@@ -28,7 +28,7 @@ class EVF_Admin_Menus {
 		add_action( 'admin_menu', array( $this, 'entries_menu' ), 30 );
 		add_action( 'admin_menu', array( $this, 'settings_menu' ), 50 );
 		add_action( 'admin_menu', array( $this, 'tools_menu' ), 60 );
-		//Add admin topbar menu.
+		// Add admin topbar menu.
 		add_action( 'admin_bar_menu', array( $this, 'admin_top_menu_bar' ), 100 );
 
 		if ( apply_filters( 'everest_forms_show_addons_page', true ) ) {
@@ -62,7 +62,7 @@ class EVF_Admin_Menus {
 	/**
 	 * Admin top menu bar.
 	 *
-	 * @param mixed $wp_admin_bar $wp_admin_bar.
+	 * @param \WP_Admin_Bar $wp_admin_bar Instance of admin bar.
 	 */
 	public function admin_top_menu_bar( WP_Admin_Bar $wp_admin_bar ) {
 		if ( ! is_admin_bar_showing() || ! current_user_can( 'manage_everest_forms' ) ) {
@@ -74,7 +74,7 @@ class EVF_Admin_Menus {
 				'id'    => 'everest-forms-menu',
 				'parent' => null,
 				'group'  => null,
-				'title' => 'Everest Forms', //you can use img tag with image link. it will show the image icon Instead of the title.
+				'title' => 'Everest Forms', // you can use img tag with image link. it will show the image icon Instead of the title.
 				'href'  => admin_url( 'admin.php?page=evf-builder' ),
 			)
 		);
@@ -116,11 +116,11 @@ class EVF_Admin_Menus {
 		);
 
 		$href = add_query_arg(
-			[
+			array(
 				'utm_medium'   => 'admin-bar',
 				'utm_source'   => 'WordPress',
 				'utm_content'  => 'Documentation',
-			],
+			),
 			'https://docs.wpeverest.com/everest-forms/'
 		);
 
@@ -130,10 +130,10 @@ class EVF_Admin_Menus {
 				'id'     => 'everest-forms-docs',
 				'title'  => __( 'Docs', 'everest-forms' ),
 				'href'   => $href,
-				'meta'   => [
+				'meta'   => array(
 					'target' => '_blank',
 					'rel'    => 'noopener noreferrer',
-				],
+				),
 			)
 		);
 
