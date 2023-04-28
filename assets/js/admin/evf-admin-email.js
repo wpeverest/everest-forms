@@ -127,6 +127,7 @@
 
 			cloned_email.find('.evf_conditional_logic_container input[type="checkbox"]').prop('checked', false);
 			cloned_email.find('.everest-forms-attach-pdf-to-admin-email input[type="checkbox"]').prop('checked', false);
+			cloned_email.find('.everest-forms-csv-file-email-attachments input[type="checkbox"]').prop('checked', false);
 			cloned_email.find('.everest-forms-show-header-in-attachment-pdf-file input[type="checkbox"]').prop('checked', false);
 			cloned_email.find('.everest-forms-file-email-attachments  input[type="checkbox"]').prop('checked', false);
 
