@@ -267,6 +267,7 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 	 * @return array
 	 */
 	protected function generate_row_data( $entry ) {
+
 		$columns = $this->get_column_names();
 		$row     = array();
 		$fields  = json_decode( $entry->fields, true );
@@ -378,6 +379,7 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 			}
 			$column_type       = $this->get_entry_type( $column_id, $entry );
 			$row[ $column_id ] = apply_filters( 'everest_forms_format_csv_field_data', preg_match( '/textarea/', $column_type ) ? sanitize_textarea_field( $value ) : sanitize_text_field( $value ), $raw_value, $column_id, $column_name, $columns, $entry );
+			$row['status']     = isset( $entry->meta['status'] ) && ! empty( $entry->meta['status'] ) ? $entry->meta['status'] : $row['status'];
 		}
 
 		return apply_filters( 'everest_forms_entry_export_row_data', $row, $entry, $this->request_data );
