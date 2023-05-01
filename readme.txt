@@ -426,6 +426,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Fix 		  - Unnecessary JS Load on Frontend.
 * Enhancement - Send CSV in email.
 * Enhancement - Next Previous link on single entry view admin page.
+* Enhancement - Timezone selection for DateTime field.
 
 - 1.9.9       - 28-03-2023
 * Fix 		  - Payment checkbox smart tag value is not showing email.
