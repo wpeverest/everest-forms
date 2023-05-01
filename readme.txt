@@ -419,6 +419,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 - 2.0.0       - xx-xx-2023
 * Fix 		  - Repeater field issue when exporting the CSV.
+* Fix 		  - Smart tag {first_name} {last_name} are not working.
 * Fix 		  - Form not showing to export the form while storing entry information is disabled.
 * Fix 		  - CSV export issue.
 * Fix 		  - Unnecessary JS Load on Frontend.
