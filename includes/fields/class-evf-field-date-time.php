@@ -1057,12 +1057,12 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	 *
 	 * @return string
 	 */
-	public function entry_html( $value, $entry_meta, $entry, $type, $meta_key ) {
+	public function entry_html( $value, $entry_meta, $entry, $type, $meta_key = '' ) {
 
 		$field_metas  = isset( $entry->meta ) ? $entry->meta : array();
 		$timezone_key = $meta_key . '_timezone';
 
-		if ( isset( $field_metas[ $timezone_key ] ) ) {
+		if ( ! empty( $meta_key ) && isset( $field_metas[ $timezone_key ] ) ) {
 			$timezone_value = $field_metas[ $timezone_key ];
 			$all_timezones  = $this->get_timezones();
 
