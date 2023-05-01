@@ -230,7 +230,7 @@ class EVF_Frontend_Scripts {
 	public static function load_scripts() {
 		global $post;
 
-		if ( ! did_action( 'before_everest_forms_init' ) ) {
+		if ( ! did_action( 'before_everest_forms_init' ) || ! did_action( 'everest_forms_shortcode_scripts' ) ) {
 			return;
 		}
 
