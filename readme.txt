@@ -382,32 +382,31 @@ The manual installation method involves downloading our form builder plugin and 
 
 == Frequently Asked Questions ==
 
- Do I need to have coding skills to use the Everest Forms Plugin? =
+= Do I need to have coding skills to use the Everest Forms Plugin? =
 
 No, you don't need any coding skills. One can simply drag and drop fields, arrange them and use built-in shortcodes to display the form.
 
-= Does the plugin work with any WordPress themes?
+= Does the plugin work with any WordPress themes? =
 
 Yes, Everest Forms is designed to work with any themes that have been coded following WordPress guidelines.
 
-= Do you have a quick get started video for Everest Form?
+= Do you have a quick get started video for Everest Form? =
 
-Yes, we do. Check out this [Getting Started Videos](https://docs.wpeverest.com/docs/everest-forms/getting-started/watch-video-guide/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)
+Yes, we do. Check out this [Getting Started Videos](https://docs.wpeverest.com/everest-forms/docs-category/video-tutorials/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)
 
-
-= What types of forms can I build with Everest Forms?
+= What types of forms can I build with Everest Forms? =
 
 You can build absolutely any type of form you imagine with Everest Forms. For example, you can create contact forms, online application forms, email newsletter forms, surveys, polls, quiz forms, user registration forms, feedback forms, booking forms, and more. Our plugin has advanced functionalities and tons of powerful integrations, that make it the ultimate form builder for WordPress.
 
-= Can I integrate my WordPress forms with email marketing services?
+= Can I integrate my WordPress forms with email marketing services? =
 
 Yes, absolutely. You can easily integrate your WordPress forms with popular email marketing services like Mailchimp, Sendinblue, Constant Contact, Drip and more. We provide a dedicated integration addon for these. Plus, you can also integrate hundreds of more powerful services like CRMs, online tools, etc. with our Zapier addon.
 
-= Can I integrate payment services with my Everest Forms?
+= Can I integrate payment services with my Everest Forms? =
 
 Yes. You can easily integrate your WordPress forms with PayPal, Stripe, and Razorpay. Using them, you can create payment forms in WordPress and accept payments.
 
-= How do I protect my WordPress forms from spam?
+= How do I protect my WordPress forms from spam? =
 
 Everest Forms comes with a set of robust spam protection features. You can easily integrate Google reCAPTCHA as well as custom CAPTCHA like math equations, custom question-answer-based CAPTCHA to protect your site from spam and bots.
 
@@ -417,6 +416,17 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 
 == Changelog ==
+
+- 2.0.0       - xx-xx-2023
+* Fix 		  - Repeater field issue when exporting the CSV.
+* Fix 		  - Error when enabling image choices without uploading image in checkbox.
+* Fix 		  - Smart tag {first_name} {last_name} are not working.
+* Fix 		  - Form not showing to export the form while storing entry information is disabled.
+* Fix 		  - CSV export issue.
+* Fix 		  - Unnecessary JS Load on Frontend.
+* Enhancement - Send CSV in email.
+* Enhancement - Next Previous link on single entry view admin page.
+* Enhancement - Timezone selection for DateTime field.
 
 - 1.9.9       - 28-03-2023
 * Fix 		  - Payment checkbox smart tag value is not showing email.

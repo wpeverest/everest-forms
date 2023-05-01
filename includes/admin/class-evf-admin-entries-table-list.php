@@ -251,7 +251,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 
 				$value = nl2br( wp_strip_all_tags( trim( $value ) ) );
 			}
-			return apply_filters( 'everest_forms_html_field_value', $value, $entry->meta[ $meta_key ], $entry, 'entry-table' );
+			return apply_filters( 'everest_forms_html_field_value', $value, $entry->meta[ $meta_key ], $entry, 'entry-table', $meta_key );
 		} else {
 			return '<span class="na">&mdash;</span>';
 		}
