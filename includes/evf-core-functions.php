@@ -1130,7 +1130,7 @@ function evf_get_random_string( $length = 10 ) {
  * @param  bool $skip_disabled_entries True to skip disabled entries.
  * @return array of form data.
  */
-function evf_get_all_forms( $skip_disabled_entries = false ) {
+function evf_get_all_forms( $skip_disabled_entries = false, $check_disable_storing_entry_info = true ) {
 	$forms    = array();
 	$form_ids = wp_parse_id_list(
 		evf()->form->get_multiple(
@@ -1150,7 +1150,9 @@ function evf_get_all_forms( $skip_disabled_entries = false ) {
 			$form_data = ! empty( $form->post_content ) ? evf_decode( $form->post_content ) : '';
 
 			if ( ! $form || ( $skip_disabled_entries && count( $entries ) < 1 ) && ( isset( $form_data['settings']['disabled_entries'] ) && '1' === $form_data['settings']['disabled_entries'] ) ) {
-				continue;
+				if( ! $form || $check_disable_storing_entry_info ) {
+					continue;
+				}
 			}
 
 			// Check permissions for forms with viewable.
