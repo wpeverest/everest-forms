@@ -425,6 +425,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Fix 		  - CSV export issue.
 * Fix 		  - Unnecessary JS Load on Frontend.
 * Fix 		  - Payment status is not showing in CSV.
+* Fix 		  - Minimum word count error message issue
 * Enhancement - Send CSV in email.
 * Enhancement - Next Previous link on single entry view admin page.
 * Enhancement - Timezone selection for DateTime field.

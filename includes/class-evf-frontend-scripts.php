@@ -298,7 +298,7 @@ class EVF_Frontend_Scripts {
 					'mailcheck_enabled'                    => (bool) apply_filters( 'everest_forms_mailcheck_enabled', true ),
 					'mailcheck_domains'                    => array_map( 'sanitize_text_field', (array) apply_filters( 'everest_forms_mailcheck_domains', array() ) ),
 					'mailcheck_toplevel_domains'           => array_map( 'sanitize_text_field', (array) apply_filters( 'everest_forms_mailcheck_toplevel_domains', array( 'dev' ) ) ),
-					'il8n_min_word_length_err_msg'         => esc_html__( 'Please enter at least {0} words.', 'everest-forms' )
+					'il8n_min_word_length_err_msg'         => esc_html__( 'Please enter at least {0} words.', 'everest-forms' ),
 				);
 				break;
 			case 'everest-forms-text-limit':
