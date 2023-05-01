@@ -419,6 +419,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 - 2.0.0       - xx-xx-2023
 * Fix 		  - Repeater field issue when exporting the CSV.
+* Fix 		  - Unnecessary JS Load on Frontend.
 * Enhancement - Send CSV in email.
 
 - 1.9.9       - 28-03-2023
