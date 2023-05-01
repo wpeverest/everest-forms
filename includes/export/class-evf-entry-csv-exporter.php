@@ -316,13 +316,43 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 
 						foreach ( $fields[ $column_id ]['value_raw'] as $field_value ) {
 							foreach ( $field_value as $key => $val ) {
+								$repeater_field_value = '';
 								if ( isset( $repeater_fields[ $val['id'] ] ) ) {
-									$repeater_fields[ $val['id'] ]['value'] .= ', ' . $val['value'];
+									$repeater_field_type = isset( $repeater_fields[ $val['id'] ]['type'] ) ? $repeater_fields[ $val['id'] ]['type'] : '';
+									switch ( $repeater_field_type ) {
+										case 'checkbox':
+										case 'payment-checkbox':
+											$value                 = $val['value']['label'];
+											$value                 = implode( ', ', $value );
+											$repeater_field_value  = implode( ', ', $repeater_fields[ $val['id'] ]['value']['label'] );
+											$repeater_field_value .= ', ' . $value;
+											break;
+										case 'radio':
+										case 'payment-multiple':
+											$repeater_field_value  = $repeater_fields[ $val['id'] ]['value']['label'];
+											$repeater_field_value .= ', ' . $val['value']['label'];
+											break;
+										case 'select':
+											$value = $val['value'];
+											if ( is_array( $value ) ) {
+												$value = implode( ',', $value );
+											} else {
+												$value = $value;
+											}
+											$repeater_field_value  = implode( ', ', $repeater_fields[ $val['id'] ]['value'] );
+											$repeater_field_value .= ', ' . $value;
+											break;
+										default:
+											$repeater_field_value  = $repeater_fields[ $val['id'] ]['value'];
+											$repeater_field_value .= ', ' . $val['value'];
+											break;
+									}
 								} else {
 									$repeater_fields[ $val['id'] ] = $val;
 								}
-								$fields[ $key ]['value'] = $repeater_fields[ $val['id'] ]['value'];
-								$labels []               = $val['name'];
+								 $fields[ $key ]['value'] = $repeater_field_value;
+								$labels []                = isset( $val['name'] ) ? $val['name'] : $val['value']['name'];
+
 							}
 						}
 

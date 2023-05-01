@@ -4618,7 +4618,7 @@ function evf_file_get_contents( $file ) {
 	if ( $file ) {
 		$local_file = preg_replace( '/\\\\|\/\//', '/', plugin_dir_path( EVF_PLUGIN_FILE ) . $file );
 		 $response = file_get_contents($local_file);
-		 if($response){
+		 if( $response ){
 			return $response;
 		 }
 		global $wp_filesystem;
@@ -4632,3 +4632,5 @@ function evf_file_get_contents( $file ) {
 	}
 	return;
 }
+
+
