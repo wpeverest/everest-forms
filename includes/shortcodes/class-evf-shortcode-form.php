@@ -897,7 +897,7 @@ class EVF_Shortcode_Form {
 			$ajax_form_submission = isset( $settings['ajax_form_submission'] ) ? $settings['ajax_form_submission'] : 0;
 		}
 
-		if ( 0 !== $ajax_form_submission ) {
+		if ( 0 !== evf_string_to_bool( $ajax_form_submission ) ) {
 			wp_enqueue_script( 'everest-forms-ajax-submission' );
 		}
 
