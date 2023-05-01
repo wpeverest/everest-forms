@@ -883,7 +883,7 @@ class EVF_Shortcode_Form {
 		// Basic form information.
 		$form_data       = apply_filters( 'everest_forms_frontend_form_data', evf_decode( $form->post_content ) );
 		$form_id         = absint( $form->ID );
-		$settings        = $form_data['settings'];
+		$settings        = isset( $form_data['settings'] ) ? $form_data['settings'] : array();
 		$action          = esc_url_raw( remove_query_arg( 'evf-forms' ) );
 		$title           = filter_var( $title, FILTER_VALIDATE_BOOLEAN );
 		$description     = filter_var( $description, FILTER_VALIDATE_BOOLEAN );
@@ -897,7 +897,7 @@ class EVF_Shortcode_Form {
 			$ajax_form_submission = isset( $settings['ajax_form_submission'] ) ? $settings['ajax_form_submission'] : 0;
 		}
 
-		if ( 0 !== $ajax_form_submission ) {
+		if ( 0 !== evf_string_to_bool( $ajax_form_submission ) ) {
 			wp_enqueue_script( 'everest-forms-ajax-submission' );
 		}
 

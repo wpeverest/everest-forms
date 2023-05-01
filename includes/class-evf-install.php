@@ -730,7 +730,7 @@ class EVF_Install {
 	public static function plugin_row_meta( $plugin_meta, $plugin_file ) {
 		if ( EVF_PLUGIN_BASENAME === $plugin_file ) {
 			$new_plugin_meta = array(
-				'docs'    => '<a href="' . esc_url( apply_filters( 'everest_forms_docs_url', 'https://docs.wpeverest.com/documentation/plugins/everest-forms/' ) ) . '" aria-label="' . esc_attr__( 'View Everest Forms documentation', 'everest-forms' ) . '">' . esc_html__( 'Docs', 'everest-forms' ) . '</a>',
+				'docs'    => '<a href="' . esc_url( apply_filters( 'everest_forms_docs_url', 'https://docs.wpeverest.com/everest-forms' ) ) . '" aria-label="' . esc_attr__( 'View Everest Forms documentation', 'everest-forms' ) . '">' . esc_html__( 'Docs', 'everest-forms' ) . '</a>',
 				'support' => '<a href="' . esc_url( apply_filters( 'everest_forms_support_url', 'https://wordpress.org/support/plugin/everest-forms/' ) ) . '" aria-label="' . esc_attr__( 'Visit free customer support', 'everest-forms' ) . '">' . esc_html__( 'Free support', 'everest-forms' ) . '</a>',
 			);
 
