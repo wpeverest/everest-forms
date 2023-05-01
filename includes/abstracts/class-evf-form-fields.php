@@ -1757,7 +1757,7 @@ abstract class EVF_Form_Fields {
 							array(
 								'slug'        => 'denied_domains',
 								'value'       => esc_attr( $denied_domains ),
-								'placeholder' => esc_attr__( 'Denied Domain(s)', 'everest-forms' )
+								'placeholder' => esc_attr__( 'Denied Domain(s)', 'everest-forms' ),
 							),
 							false
 						),
@@ -2404,7 +2404,7 @@ abstract class EVF_Form_Fields {
 						if ( 'words' === $field['limit_mode'] && $field['limit_count'] < str_word_count( $field_submit ) ) {
 							/* translators: %s Number of max words. */
 							$validation_text = sprintf( esc_html__( 'This field contains at most %s words', 'everest-forms' ), $field['limit_count'] );
-						} elseif ( 'characters' === $field['limit_mode'] && $field['limit_count'] < mb_strlen( $field_submit ) ) {
+						} elseif ( 'characters' === $field['limit_mode'] && $field['limit_count'] < mb_strlen( $field_submit ) ) { //phpcs:ignore PHPCompatibility.ParameterValues.NewIconvMbstringCharsetDefault.NotSet
 							/* translators: %s Number of max characters. */
 							$validation_text = sprintf( esc_html__( 'This field contains at most %s characters', 'everest-forms' ), $field['limit_count'] );
 						}
@@ -2415,7 +2415,7 @@ abstract class EVF_Form_Fields {
 						if ( 'words' === $field['min_length_mode'] && $field['min_length_count'] > str_word_count( $field_submit ) ) {
 							/* translators: %s Number of minimum words. */
 							$validation_text = sprintf( esc_html__( 'This field contains at least %s words', 'everest-forms' ), $field['min_length_count'] );
-						} elseif ( 'characters' === $field['min_length_mode'] && $field['min_length_count'] > mb_strlen( $field_submit ) ) {
+						} elseif ( 'characters' === $field['min_length_mode'] && $field['min_length_count'] > mb_strlen( $field_submit ) ) { //phpcs:ignore PHPCompatibility.ParameterValues.NewIconvMbstringCharsetDefault.NotSet
 							/* translators: %s Number of minimum characters. */
 							$validation_text = sprintf( esc_html__( 'This field contains at least %s characters', 'everest-forms' ), $field['min_length_count'] );
 						}
