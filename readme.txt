@@ -430,6 +430,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Enhancement - Next Previous link on single entry view admin page.
 * Enhancement - Timezone selection for DateTime field.
 * Enhancement - Serial number on entry listing table.
+* Enhancement - Anti Spam Setting.
 * Feature     - Everest forms on top admin menu bar.
 
 - 1.9.9       - 28-03-2023
