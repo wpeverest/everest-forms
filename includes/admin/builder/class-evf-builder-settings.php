@@ -601,7 +601,6 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		);
 		do_action( 'everest_forms_inline_honeypot_settings', $this, 'honeypot', 'connection_1' );
 		echo '</div>';
-		echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'Captcha', 'everest-forms' ) . '</h4>';
 		$recaptcha_type   = get_option( 'everest_forms_recaptcha_type', 'v2' );
 		$recaptcha_key    = get_option( 'everest_forms_recaptcha_' . $recaptcha_type . '_site_key' );
 		$recaptcha_secret = get_option( 'everest_forms_recaptcha_' . $recaptcha_type . '_secret_key' );
@@ -619,8 +618,9 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				break;
 		}
 		$recaptcha_label = 'yes' === get_option( 'everest_forms_recaptcha_v2_invisible' ) && 'v2' === $recaptcha_type ? esc_html__( 'Enable Google Invisible reCAPTCHA v2', 'everest-forms' ) : $recaptcha_label;
-
 		if ( ! empty( $recaptcha_key ) && ! empty( $recaptcha_secret ) ) {
+			echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'Captcha', 'everest-forms' ) . '</h4>';
+
 			everest_forms_panel_field(
 				'checkbox',
 				'settings',
@@ -633,9 +633,10 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					'tooltip' => sprintf( esc_html__( 'Enable reCaptcha. Make sure the site key and secret key is set in settings page. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/general-settings/#enable-recaptcha-support' ) ),
 				)
 			);
+
+			do_action( 'everest_forms_inline_captcha_settings', $this, 'captcha', 'connection_1' );
+			echo '</div>';
 		}
-		do_action( 'everest_forms_inline_captcha_settings', $this, 'captcha', 'connection_1' );
-		echo '</div>';
 		do_action( 'everest_forms_inline_security_settings', $this );
 		echo '</div>';
 
