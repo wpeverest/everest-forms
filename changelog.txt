@@ -1,5 +1,48 @@
 == Changelog ==
 
+- 2.0.0       - xx-xx-2023
+* Fix 		  - Repeater field issue when exporting the CSV.
+* Fix 		  - Error when enabling image choices without uploading image in checkbox.
+* Fix 		  - Smart tag {first_name} {last_name} are not working.
+* Fix 		  - Form not showing to export the form while storing entry information is disabled.
+* Fix 		  - CSV export issue.
+* Fix 		  - Unnecessary JS Load on Frontend.
+* Fix 		  - Payment status is not showing in CSV.
+* Fix 		  - Minimum word count error message issue
+* Enhancement - Send CSV in email.
+* Enhancement - Next Previous link on single entry view admin page.
+* Enhancement - Timezone selection for DateTime field.
+* Enhancement - Serial number on entry listing table.
+
+- 1.9.9       - 28-03-2023
+* Fix 		  - Payment checkbox smart tag value is not showing email.
+* Fix 		  - Undefined array key 'datetime_style' issue.
+* Fix 		  - Undefined index and array to string conversion issue.
+* Fix 		  - Send Test Email To option does not display the value saved value in the DB.
+* Fix         - String length mismatch for non-English characters in the Limit Length feature.
+* Fix         - File System issue in form builder.
+* Fix         - Choose File translation issue in the import forms.
+* Enhancement - translatable email content.
+* Refactor 	  - Form Templates.
+
+
+- 1.9.8       - 30-01-2023
+* Fix 		  - Stripe issue with credit card field empty.
+* Fix 		  - EVF Tooltip issue with WooCommerce orders table.
+* Enhancement - CSV export for repeater field.
+* Enhancement - Uninstall everest_forms option.
+* Enhancement - Field validation in Builder.
+
+= 1.9.7       - 21-12-2022
+* Fix         - Empty for zero value in the number field.
+* Fix         - Entry ID wp error object.
+* Fix 		  - CSV export issue with the dropdown field.
+
+= 1.9.6       - 17-11-2022
+* Fix         - Flatpickr date localization not working while the form has more than one date field.
+* Enhancement - Entry ID smart tag in the email message.
+* Enhancement - Set date range x days after or before.
+
 = 1.9.5 - 18-10-2022
 * Enhancement - Form ID smart tag.​
 * Fix - Date format not working issue in the Date/Time field.

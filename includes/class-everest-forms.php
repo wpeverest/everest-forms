@@ -21,7 +21,7 @@ final class EverestForms {
 	 *
 	 * @var string
 	 */
-	public $version = '1.9.5';
+	public $version = '1.9.9';
 
 	/**
 	 * The single instance of the class.
@@ -285,6 +285,12 @@ final class EverestForms {
 		if ( $this->is_request( 'frontend' ) ) {
 			$this->frontend_includes();
 		}
+
+		/**
+		 *Usage Tracking.
+		 */
+		include_once EVF_ABSPATH . 'includes/class-evf-cron.php';
+		include_once EVF_ABSPATH . 'includes/stats/class-evf-stats.php';
 	}
 
 	/**

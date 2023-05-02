@@ -80,9 +80,9 @@ class EVF_Smart_Tags {
 				$uploads        = wp_upload_dir();
 
 				if ( 'fullname' !== $field_id && 'email' !== $field_id && 'subject' !== $field_id && 'message' !== $field_id ) {
-					$value = ! empty( $fields[ $mixed_field_id[1] ]['value'] ) ? evf_sanitize_textarea_field( $fields[ $mixed_field_id[1] ]['value'] ) : '';
+					$value = isset( $fields[ $mixed_field_id[1] ]['value'] ) && ! empty( $fields[ $mixed_field_id[1] ]['value'] ) ? evf_sanitize_textarea_field( $fields[ $mixed_field_id[1] ]['value'] ) : '';
 				} else {
-					$value = ! empty( $fields[ $field_id ]['value'] ) ? evf_sanitize_textarea_field( $fields[ $field_id ]['value'] ) : '';
+					$value = isset( $fields[ $field_id ]['value'] ) && ! empty( $fields[ $field_id ]['value'] ) ? evf_sanitize_textarea_field( $fields[ $field_id ]['value'] ) : '';
 				}
 
 				$value = apply_filters( 'everest_forms_smart_tags_value', $value, $field_id, $fields, $form_data );
@@ -118,7 +118,7 @@ class EVF_Smart_Tags {
 					}
 
 					// Properly display Checkboxes field in smart tag.
-					if ( isset( $value['images'] ) && ( 'checkbox' === $fields[ $mixed_field_id[1] ]['type'] || 'payment-checkbox' === $fields[ $mixed_field_id[1] ]['type'] ) ) {
+					if ( isset( $value['images'] ) && ( 'checkbox' === $fields[ $mixed_field_id[1] ]['type'] ) ) {
 						$checkbox_images = '';
 						foreach ( $value['images'] as $image_key => $image_value ) {
 							if ( ! is_array( $image_value ) && false !== strpos( $image_value, $uploads['basedir'] ) ) {
@@ -166,7 +166,8 @@ class EVF_Smart_Tags {
 						if ( in_array( $value['type'], array( 'radio', 'payment-multiple' ), true ) ) {
 							$value = $value['label'];
 						} elseif ( in_array( $value['type'], array( 'checkbox', 'payment-checkbox' ), true ) ) {
-							$value = implode( ', ', $value['label'] );
+							$value = implode( ',', $value['label'] );
+
 						}
 					} elseif ( isset( $value['number_of_rating'], $value['value'] ) ) {
 						$value = (string) $value['value'] . '/' . (string) $value['number_of_rating'];
@@ -260,6 +261,26 @@ class EVF_Smart_Tags {
 						if ( is_user_logged_in() ) {
 							$user = wp_get_current_user();
 							$name = sanitize_text_field( $user->display_name );
+						} else {
+							$name = '';
+						}
+						$content = str_replace( '{' . $other_tag . '}', $name, $content );
+						break;
+
+					case 'first_name':
+						if ( is_user_logged_in() ) {
+							$user = wp_get_current_user();
+							$name = sanitize_text_field( $user->user_firstname );
+						} else {
+							$name = '';
+						}
+						$content = str_replace( '{' . $other_tag . '}', $name, $content );
+						break;
+
+					case 'last_name':
+						if ( is_user_logged_in() ) {
+							$user = wp_get_current_user();
+							$name = sanitize_text_field( $user->user_lastname  );
 						} else {
 							$name = '';
 						}

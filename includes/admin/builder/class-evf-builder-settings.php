@@ -600,7 +600,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					$this->form_data,
 					esc_html__( 'Email Message', 'everest-forms' ),
 					array(
-						'default'    => isset( $settings['email'][ $connection_id ]['evf_email_message'] ) ? $settings['email'][ $connection_id ]['evf_email_message'] : __( '{all_fields}', 'everest-forms' ),
+						'default'    => isset( $settings['email'][ $connection_id ]['evf_email_message'] ) ? evf_string_translation( $this->form_data['id'], 'evf_email_message', $settings['email'][ $connection_id ]['evf_email_message'] ) : __( '{all_fields}', 'everest-forms' ),
 						/* translators: %1$s - general settings docs url */
 						'tooltip'    => sprintf( esc_html__( 'Enter the message of the email. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#email-message' ) ),
 						'smarttags'  => array(

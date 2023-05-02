@@ -7,23 +7,18 @@ jQuery( function( $ ) {
 			$( document ).ready( function() {
 				var formTuple = $( v ),
 					btn = formTuple.find( '.evf-submit' ),
-					stripeForms = formTuple.find( "[data-gateway*='stripe']" );
-				  var  razorpayForms = formTuple.find( "[data-gateway='razorpay']" );
-				// If it's an ajax form containing a stripe gateway, do not latch into the button.
+				 	 razorpayForms = formTuple.find( "[data-gateway='razorpay']" );
 
-				if ( stripeForms.length > 0  && 0 === stripeForms.children.length || razorpayForms.length > 0  ) {
-					return;
-				}
 
 				btn.on( 'click', function( e ) {
-
 					var paymentMethod = formTuple.find( ".everest-forms-stripe-gateways-tabs .evf-tab" ).has( 'a.active' ).data( 'gateway' );
 					if(undefined === paymentMethod) {
 						paymentMethod = formTuple.find( ".everest-forms-gateway[data-gateway='stripe']" ).data( 'gateway' );
 					}
 
-					if( 'stripe' === paymentMethod && 'none' !== formTuple.find( ".everest-forms-gateway[data-gateway='ideal']" ).closest( '.evf-field' ).css( 'display' ) ) {
-						return;
+					if (formTuple.find( ".everest-forms-gateway[data-gateway='stripe']").hasClass('StripeElement--empty') && $(".evf-field-credit-card ").is(':visible') ){
+						$( '#card-errors' ).html( 'This field is required' ).show();
+						return false;
 					}
 
 					if ( typeof tinyMCE !== 'undefined' ) {
@@ -91,6 +86,20 @@ jQuery( function( $ ) {
 
 							if(undefined === paymentMethod) {
 								paymentMethod = formTuple.find( ".everest-forms-gateway[data-gateway='ideal']" ).data( 'gateway' );
+								if ('ideal' === paymentMethod ){
+									paymentMethod = 'ideal';
+								}else{
+									paymentMethod = formTuple.find( ".everest-forms-gateway[data-gateway='stripe']" ).data( 'gateway' );
+								}
+							}
+
+							if( 'stripe' === paymentMethod && 'none' !== formTuple.find( ".everest-forms-gateway[data-gateway='stripe']" ).closest( '.evf-field' ).css( 'display' ) ) {
+								formTuple.trigger( 'everest_forms_frontend_before_ajax_complete_success_message', xhr.data );
+								return;
+							}
+
+							if(undefined === paymentMethod) {
+								paymentMethod = formTuple.find( ".everest-forms-gateway[data-gateway='ideal']" ).data( 'gateway' );
 							}
 
 
@@ -101,6 +110,14 @@ jQuery( function( $ ) {
 							formTuple.trigger( 'reset' );
 							formTuple.closest( '.everest-forms' ).html( '<div class="everest-forms-notice everest-forms-notice--success" role="alert">' + xhr.data.message + pdf_download_message + '</div>' + quiz_reporting ).focus();
 							localStorage.removeItem(formTuple.attr('id'));
+
+							// Trigger for form submission success.
+							var event = new CustomEvent("everest_forms_ajax_submission_success", {
+								detail: {
+									formId: 'evf-form-' + xhr.data.form_id,
+								}
+							  });
+							document.dispatchEvent(event);
 						} else {
 							var	form_id = formTuple.data( 'formid' );
 							var err     =  JSON.parse( errorThrown.responseText );
@@ -183,6 +200,7 @@ jQuery( function( $ ) {
 
 							btn.attr( 'disabled', false ).html( everest_forms_ajax_submission_params.submit );
 						}
+
 					})
 					.fail( function () {
 						btn.attr( 'disabled', false ).html( everest_forms_ajax_submission_params.submit );

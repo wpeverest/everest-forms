@@ -98,7 +98,7 @@ class EVF_Admin_Assets {
 			'evf-template-controller',
 			'evf_templates',
 			array(
-				'evf_template_all' => EVF_Admin_Forms::get_template_data(),
+				'evf_template_all' => EVF_Admin_Form_Templates::get_template_data(),
 				'i18n_get_started' => esc_html__( 'Get Started', 'everest-forms' ),
 				'i18n_get_preview' => esc_html__( 'Preview', 'everest-forms' ),
 				'i18n_pro_feature' => esc_html__( 'Pro', 'everest-forms' ),
@@ -297,20 +297,6 @@ class EVF_Admin_Assets {
 		// Add-ons/extensions page.
 		if ( 'everest-forms_page_evf-addons' === $screen_id ) {
 			wp_enqueue_script( 'everest-forms-extensions' );
-		}
-
-		// Plugins page.
-		if ( in_array( $screen_id, array( 'plugins' ), true ) ) {
-			wp_register_script( 'evf-plugins', evf()->plugin_url() . '/assets/js/admin/plugins' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true );
-			wp_enqueue_script( 'evf-plugins' );
-			wp_localize_script(
-				'evf-plugins',
-				'evf_plugins_params',
-				array(
-					'ajax_url'           => admin_url( 'admin-ajax.php' ),
-					'deactivation_nonce' => wp_create_nonce( 'deactivation-notice' ),
-				)
-			);
 		}
 	}
 }

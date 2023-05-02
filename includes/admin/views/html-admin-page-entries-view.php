@@ -22,6 +22,34 @@ $trash_link = wp_nonce_url(
 	'trash-entry'
 );
 
+$form_entries = evf_get_entries_by_form_id( $form_id, '', '', true );
+$form_entries = array_map(
+	function( $el ) {
+		return $el['entry_id'];
+	},
+	$form_entries
+);
+
+$entry_index    = array_search( $entry_id, $form_entries ); //phpcs:ignore
+$prev_entry     = '';
+$next_entry     = '';
+$prev_entry_url = '#';
+$next_entry_url = '#';
+
+if ( false !== $entry_index ) {
+	if ( isset( $form_entries[ $entry_index - 1 ] ) ) {
+		$prev_entry     = $form_entries[ $entry_index - 1 ];
+		$prev_entry_url = admin_url( sprintf( 'admin.php?page=evf-entries&amp;form_id=%d&amp;view-entry=%d', $form_id, $prev_entry ) );
+	}
+
+	if ( isset( $form_entries[ $entry_index + 1 ] ) ) {
+		$next_entry     = $form_entries[ $entry_index + 1 ];
+		$next_entry_url = admin_url( sprintf( 'admin.php?page=evf-entries&amp;form_id=%d&amp;view-entry=%d', $form_id, $next_entry ) );
+	}
+
+	$next_entry = isset( $form_entries[ $entry_index + 1 ] ) ? $form_entries[ $entry_index + 1 ] : '';
+}
+
 ?>
 <div class="wrap everest-forms">
 	<h1 class="wp-heading-inline"><?php esc_html_e( 'View Entry', 'everest-forms' ); ?></h1>
@@ -32,6 +60,14 @@ $trash_link = wp_nonce_url(
 		<div id="poststuff">
 			<div id="post-body" class="metabox-holder columns-2">
 				<!-- Entry Fields metabox -->
+				<div id="evf-entry-nav-buttons">
+					<a class="button" id="evf-prev-entry-button" href="<?php echo esc_url( $prev_entry_url ); ?>" <?php echo empty( $prev_entry ) ? esc_attr( 'disabled=disabled' ) : ''; ?> >
+						<?php esc_html_e( 'Previous', 'everest-forms' ); ?>
+					</a>
+					<a class="button" id="evf-next-entry-button" href="<?php echo esc_url( $next_entry_url ); ?>" <?php echo empty( $next_entry ) ? esc_attr( 'disabled=disabled' ) : ''; ?> >
+						<?php esc_html_e( 'Next', 'everest-forms' ); ?>
+					</a>
+				</div>
 				<div id="post-body-content" style="position: relative;">
 					<div id="everest-forms-entry-fields" class="stuffbox">
 						<h2 class="hndle">
@@ -106,7 +142,7 @@ $trash_link = wp_nonce_url(
 										// Field value.
 										echo '<tr class="everest-forms-entry-field field-value' . esc_attr( $field_class ) . '" style="' . esc_attr( $field_style ) . '"><td>';
 
-										if ( ! empty( $field_value ) ) {
+										if ( ! empty( $field_value ) || is_numeric( $field_value ) ) {
 											if ( is_serialized( $field_value ) ) {
 												$field_value = maybe_unserialize( $field_value );
 												$field_label = isset( $field_value['label'] ) ? $field_value['label'] : $field_value;

@@ -25,7 +25,7 @@ require EVF_ABSPATH . 'includes/evf-entry-functions.php';
  */
 function evf_maybe_define_constant( $name, $value ) {
 	if ( ! defined( $name ) ) {
-		define( $name, $value );
+		 define( $name, $value );
 	}
 }
 
@@ -1130,7 +1130,7 @@ function evf_get_random_string( $length = 10 ) {
  * @param  bool $skip_disabled_entries True to skip disabled entries.
  * @return array of form data.
  */
-function evf_get_all_forms( $skip_disabled_entries = false ) {
+function evf_get_all_forms( $skip_disabled_entries = false, $check_disable_storing_entry_info = true ) {
 	$forms    = array();
 	$form_ids = wp_parse_id_list(
 		evf()->form->get_multiple(
@@ -1150,7 +1150,9 @@ function evf_get_all_forms( $skip_disabled_entries = false ) {
 			$form_data = ! empty( $form->post_content ) ? evf_decode( $form->post_content ) : '';
 
 			if ( ! $form || ( $skip_disabled_entries && count( $entries ) < 1 ) && ( isset( $form_data['settings']['disabled_entries'] ) && '1' === $form_data['settings']['disabled_entries'] ) ) {
-				continue;
+				if( ! $form || $check_disable_storing_entry_info ) {
+					continue;
+				}
 			}
 
 			// Check permissions for forms with viewable.
@@ -4616,6 +4618,11 @@ function evf_get_json_file_contents( $file, $to_array = false ) {
  */
 function evf_file_get_contents( $file ) {
 	if ( $file ) {
+		$local_file = preg_replace( '/\\\\|\/\//', '/', plugin_dir_path( EVF_PLUGIN_FILE ) . $file );
+		 $response = file_get_contents($local_file);
+		 if( $response ){
+			return $response;
+		 }
 		global $wp_filesystem;
 		require_once ABSPATH . '/wp-admin/includes/file.php';
 		WP_Filesystem();
@@ -4627,3 +4634,5 @@ function evf_file_get_contents( $file ) {
 	}
 	return;
 }
+
+

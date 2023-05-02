@@ -44,95 +44,10 @@ class EVF_Admin_Forms {
 
 			include 'views/html-admin-page-builder.php';
 		} elseif ( isset( $_GET['create-form'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-			$templates       = array();
-			$refresh_url     = add_query_arg(
-				array(
-					'page'               => 'evf-builder&create-form=1',
-					'action'             => 'evf-template-refresh',
-					'evf-template-nonce' => wp_create_nonce( 'refresh' ),
-				),
-				admin_url( 'admin.php' )
-			);
-			$license_plan    = evf_get_license_plan();
-			$current_section = isset( $_GET['section'] ) ? sanitize_text_field( wp_unslash( $_GET['section'] ) ) : '_all'; // phpcs:ignore WordPress.Security.NonceVerification
 
-			if ( '_featured' !== $current_section ) {
-				$category  = isset( $_GET['section'] ) ? sanitize_text_field( wp_unslash( $_GET['section'] ) ) : 'free'; // phpcs:ignore WordPress.Security.NonceVerification
-				$templates = self::get_template_data( $category );
-			}
-
-			/**
-			 * Addon page view.
-			 *
-			 * @uses $templates
-			 * @uses $refresh_url
-			 * @uses $current_section
-			 */
-			include 'views/html-admin-page-builder-setup.php';
+			EVF_Admin_Form_Templates::load_template_view();
 		} else {
 			self::table_list_output();
-		}
-	}
-
-	/**
-	 * Get sections for the addons screen.
-	 *
-	 * @return array of objects
-	 */
-	public static function get_sections() {
-		$template_sections = get_transient( 'evf_template_sections_list' );
-
-		if ( false === $template_sections ) {
-			$template_sections = evf_get_json_file_contents( 'assets/extensions-json/templates/template-sections.json' );
-
-			if ( $template_sections ) {
-				set_transient( 'evf_template_sections_list', $template_sections, WEEK_IN_SECONDS );
-			}
-		}
-
-		return apply_filters( 'everest_forms_template_sections', $template_sections );
-	}
-
-	/**
-	 * Get section content for the template screen.
-	 *
-	 * @return array
-	 */
-	public static function get_template_data() {
-		$template_data = get_transient( 'evf_template_section_list' );
-
-		if ( false === $template_data ) {
-			$template_data     = evf_get_json_file_contents( 'assets/extensions-json/templates/all_templates.json' );
-			// Removing directory so the templates can be reinitialized.
-			$folder_path = untrailingslashit( plugin_dir_path( EVF_PLUGIN_FILE ) . '/assets/images/templates' );
-
-			foreach ( $template_data->templates as $template_tuple ) {
-				// We retrieve the image, then use them instead of the remote server.
-				$image = wp_remote_get( $template_tuple->image );
-				$type  = wp_remote_retrieve_header( $image, 'content-type' );
-
-				// Remote file check failed, we'll fallback to remote image.
-				if ( ! $type ) {
-					continue;
-				}
-
-				$temp_name     = explode( '/', $template_tuple->image );
-				$relative_path = $folder_path . '/' . end( $temp_name );
-				$exists        = file_exists( $relative_path );
-
-				// If it exists, utilize this file instead of remote file.
-				if ( $exists ) {
-					$template_tuple->image = plugin_dir_url( EVF_PLUGIN_FILE ) . 'assets/images/templates/' . end( $temp_name );
-				}
-			}
-
-			if ( ! empty( $template_data->templates ) ) {
-				set_transient( 'evf_template_section_list', $template_data, WEEK_IN_SECONDS );
-			}
-		}
-
-		if ( ! empty( $template_data->templates ) ) {
-			return apply_filters( 'everest_forms_template_section_data', $template_data->templates );
 		}
 	}
 

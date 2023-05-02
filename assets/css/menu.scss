@@ -295,6 +295,9 @@
 	&total::before {
 		content: '\e020';
 	}
+	&subtotal::before {
+		content: '\e020';
+	}
 	&img-upload::before {
 		content: '\e022';
 	}

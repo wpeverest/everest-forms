@@ -54,6 +54,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 	 */
 	public function init_hooks() {
 		add_filter( 'everest_forms_field_properties_' . $this->type, array( $this, 'field_properties' ), 5, 3 );
+		add_filter( 'everest_forms_field_exporter_' . $this->type, array( $this, 'field_exporter' ) );
 	}
 
 	/**
@@ -198,6 +199,19 @@ class EVF_Field_Number extends EVF_Form_Fields {
 		}
 
 		return $properties;
+	}
+
+	/**
+	 * Filter callback for outputting formatted data.
+	 *
+	 * @param array $field Field Data.
+	 * @return array Data for field exporter PDF or Email.
+	 */
+	public function field_exporter( $field ) {
+		return array(
+			'label' => ! empty( $field['name'] ) ? $field['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
+			'value' => ! empty( $field['value'] ) || is_numeric( $field['value'] ) ? sanitize_text_field( $field['value'] ) : false,
+		);
 	}
 
 	/**

@@ -54,6 +54,9 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	public function init_hooks() {
 		add_action( 'everest_forms_shortcode_scripts', array( $this, 'load_assets' ) );
 		add_filter( 'everest_forms_field_properties_' . $this->type, array( $this, 'field_properties' ), 5, 3 );
+		add_filter( 'everest_forms_entry_save_fields', array( $this, 'save_timezone' ), 10, 3 );
+		add_filter( 'everest_forms_html_field_value', array( $this, 'entry_html' ), 10, 5 );
+		add_filter( 'everest_forms_date_time_properties', array( $this, 'set_default_timezone' ), 10, 2 );
 	}
 
 	/**
@@ -314,6 +317,28 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				false
 			);
 
+			$date_timezone_label = $this->field_element(
+				'label',
+				$field,
+				array(
+					'slug'    => 'date_timezone',
+					'value'   => esc_html__( 'Timezone', 'everest-forms' ),
+					'tooltip' => esc_html__( 'Choose a desired timezone to save datetime in.', 'everest-forms' ),
+				),
+				false
+			);
+
+			$date_timezone_select = $this->field_element(
+				'select',
+				$field,
+				array(
+					'slug'    => 'date_timezone',
+					'value'   => isset( $field['date_timezone'] ) ? $field['date_timezone'] : '',
+					'options' => $this->get_timezones(),
+				),
+				false
+			);
+
 			$current_date_default = $this->field_element(
 				'checkbox',
 				$field,
@@ -394,9 +419,67 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				false
 			);
 
+			$set_date_range = $this->field_element(
+				'checkbox',
+				$field,
+				array(
+					'slug'    => 'set_date_range',
+					'value'   => isset( $field['set_date_range'] ) ? $field['set_date_range'] : '',
+					'desc'    => esc_html__( 'Enable Custom Input', 'everest-forms' ),
+					'tooltip' => esc_html__( "Check this option to set date range 'x' days after today.", 'everest-forms' ),
+				),
+				false
+			);
+
+			$min_date_range_level = $this->field_element(
+				'label',
+				$field,
+				array(
+					'slug'    => 'min_date_range',
+					'value'   => esc_html__( 'Minimum Date', 'everest-forms' ),
+					'tooltip' => esc_html__( 'Number of days after today or before for negative numbers. Example: today or +14 days or -5 days.', 'everest-forms' ),
+				),
+				false
+			);
+
+			$min_date_range = $this->field_element(
+				'text',
+				$field,
+				array(
+					'slug'        => 'min_date_range',
+					'value'       => isset( $field['min_date_range'] ) ? $field['min_date_range'] : '',
+					'class'       => 'everest-forms-min-date-range',
+					'placeholder' => 'e.g. today',
+				),
+				false
+			);
+
+			$max_date_range_label = $this->field_element(
+				'label',
+				$field,
+				array(
+					'slug'    => 'max_date_range',
+					'value'   => esc_html__( 'Maximum Date', 'everest-forms' ),
+					'tooltip' => esc_html__( 'Number of days after today or before for negative numbers. Example: today or +14 days or -5 days.', 'everest-forms' ),
+				),
+				false
+			);
+
+			$max_date_range = $this->field_element(
+				'text',
+				$field,
+				array(
+					'slug'        => 'max_date_range',
+					'value'       => isset( $field['max_date_range'] ) ? $field['max_date_range'] : '',
+					'class'       => 'everest-forms-max-date-range',
+					'placeholder' => 'e.g. +14 days',
+				),
+				false
+			);
+
 			$args = array(
 				'slug'    => 'date_format',
-				'content' => $date_format_label . $date_format_select . $disable_dates_label . $disable_dates . $date_localization_label . $date_localization_select . '<div class="everest-forms-checklist everest-forms-checklist-inline">' . $current_date_mode . '</div><div class="everest-forms-current-date-format">' . $current_date_default . '</div><div class="everest-forms-past-date-disable-format">' . $enable_past_date_disable . '</div><div class="everest-forms-min-max-date-format">' . $enable_min_max . '</div><div class="everest-forms-min-max-date-option ' . $class_name . '">' . $min_date_label . $min_date . $max_date_label . $max_date . '</div>',
+				'content' => $date_format_label . $date_format_select . $disable_dates_label . $disable_dates . $date_localization_label . $date_localization_select . $date_timezone_label . $date_timezone_select . '<div class="everest-forms-checklist everest-forms-checklist-inline">' . $current_date_mode . '</div><div class="everest-forms-current-date-format">' . $current_date_default . '</div><div class="everest-forms-past-date-disable-format">' . $enable_past_date_disable . '</div><div class="everest-forms-min-max-date-format">' . $enable_min_max . '</div><div class="everest-forms-min-max-date-range-format ' . $class_name . '">' . $set_date_range . '</div><div class="everest-forms-min-max-date-option ' . $class_name . '">' . $min_date_label . $min_date . $max_date_label . $max_date . '</div><div class="everest-forms-min-max-date-range-option ' . $class_name . '">' . $min_date_range_level . $min_date_range . $max_date_range_label . $max_date_range . '</div>',
 			);
 			$this->field_element( 'row', $field, $args );
 
@@ -617,9 +700,11 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				} else {
 					$properties['inputs']['primary']['attr']['data-mode'] = isset( $field['date_mode'] ) ? $field['date_mode'] : 'single';
 				}
-				$properties['inputs']['primary']['attr']['data-locale']   = isset( $field['date_localization'] ) ? $field['date_localization'] : 'en';
-				$properties['inputs']['primary']['attr']['data-min-date'] = isset( $field['enable_min_max'], $field['min_date'] ) ? $field['min_date'] : '';
-				$properties['inputs']['primary']['attr']['data-max-date'] = isset( $field['enable_min_max'], $field['max_date'] ) ? $field['max_date'] : '';
+				$properties['inputs']['primary']['attr']['data-locale']         = isset( $field['date_localization'] ) ? $field['date_localization'] : 'en';
+				$properties['inputs']['primary']['attr']['data-min-date']       = isset( $field['enable_min_max'], $field['min_date'] ) && ! isset( $field['set_date_range'] ) ? $field['min_date'] : '';
+				$properties['inputs']['primary']['attr']['data-max-date']       = isset( $field['enable_min_max'], $field['max_date'] ) && ! isset( $field['set_date_range'] ) ? $field['max_date'] : '';
+				$properties['inputs']['primary']['attr']['data-min-date-range'] = isset( $field['set_date_range'], $field['enable_min_max'], $field['min_date_range'] ) ? $field['min_date_range'] : '';
+				$properties['inputs']['primary']['attr']['data-max-date-range'] = isset( $field['set_date_range'], $field['enable_min_max'], $field['max_date_range'] ) ? $field['max_date_range'] : '';
 			}
 
 			if ( 'date' !== $field['datetime_format'] ) {
@@ -657,7 +742,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 					break;
 			}
 		}
-		return $properties;
+		return apply_filters( 'everest_forms_date_time_properties', $properties, $field );
 	}
 
 	/**
@@ -783,18 +868,26 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 		$form_id   = isset( $atts['id'] ) ? wp_unslash( $atts['id'] ) : ''; // WPCS: CSRF ok, input var ok, sanitization ok.
 		$form_obj  = evf()->form->get( $form_id );
 		$form_data = ! empty( $form_obj->post_content ) ? evf_decode( $form_obj->post_content ) : '';
-		$data_i10n = 'en';
 
 		if ( ! empty( $form_data['form_fields'] ) ) {
+			$data_i10ns = array();
 			foreach ( $form_data['form_fields'] as $form_field ) {
-				if ( 'date-time' === $form_field['type'] ) {
+				if ( 'date-time' === $form_field['type'] && isset( $form_field['datetime_style'] ) && 'picker' === $form_field['datetime_style'] ) {
 					$data_i10n = isset( $form_field['date_localization'] ) ? $form_field['date_localization'] : 'en';
+
+					if ( ! in_array( $data_i10n, $data_i10ns, true ) && 'en' !== $data_i10n ) {
+						$data_i10ns[] = $data_i10n;
+					}
 				}
 			}
-		}
 
-		if ( wp_script_is( 'flatpickr' ) && 'en' !== $data_i10n && 'picker' === $form_field['datetime_style'] ) {
-			wp_enqueue_script( 'flatpickr-localization', evf()->plugin_url() . '/assets/js/flatpickr/dist/I10n/' . $data_i10n . '.js', array(), EVF_VERSION, true );
+			if ( ! empty( $data_i10ns ) ) {
+				foreach ( $data_i10ns as $data_i10n ) {
+					if ( wp_script_is( 'flatpickr' ) ) {
+						wp_enqueue_script( 'flatpickr-localization-' . $data_i10n, evf()->plugin_url() . '/assets/js/flatpickr/dist/I10n/' . $data_i10n . '.js', array(), EVF_VERSION, true );
+					}
+				}
+			}
 		}
 
 	}
@@ -877,5 +970,147 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			);
 		}
 		echo '</select>';
+	}
+
+
+
+	/**
+	 * Returns a list of all timezones.
+	 */
+	public function get_timezones() {
+
+		$utc_timezone    = new DateTimeZone( 'UTC' );
+		$timezones       = DateTimeZone::listIdentifiers();
+		$timezones_array = array(
+			'Default' => 'Default',
+		);
+
+		foreach ( $timezones as $timezone ) {
+			$dtz    = new DateTimeZone( $timezone );
+			$offset = $dtz->getOffset( new DateTime( 'now', $utc_timezone ) );
+
+			$offset_hours   = abs( intval( $offset / 3600 ) );
+			$offset_minutes = abs( intval( ( $offset % 3600 ) / 60 ) );
+			$offset_sign    = ( $offset < 0 ) ? '-' : '+';
+
+			$offset_string = sprintf( '%s%02d:%02d', $offset_sign, $offset_hours, $offset_minutes );
+
+			$timezone_parts = explode( '/', $timezone );
+			$timezone_parts = implode( '/', array_reverse( $timezone_parts ) );
+
+			$timezones_array[ $timezone ] = $timezone_parts . " ($offset_string)";
+		}
+
+		return $timezones_array;
+	}
+
+
+
+	/**
+	 * Save timezone data for datetime field.
+	 *
+	 * @param [array] $field Field.
+	 * @param [array] $form_data Form Data.
+	 * @param [int]   $entry_id Entry Id.
+	 * @return array
+	 */
+	public function save_timezone( $field, $form_data, $entry_id ) {
+		global $wpdb;
+
+		$field_id = isset( $field['id'] ) ? $field['id'] : 0;
+
+		if ( $field_id ) {
+			$fields_settings = $form_data['form_fields'];
+			$field_settings  = isset( $fields_settings[ $field_id ] ) ? $fields_settings[ $field_id ] : array();
+
+			if ( ! empty( $field_settings ) && isset( $field_settings['date_timezone'] ) ) {
+
+				$date_timezone = $field_settings['date_timezone'];
+
+				if ( ! empty( $date_timezone ) && 'Default' !== $date_timezone ) {
+
+					$entry_metadata = array(
+						'entry_id'   => $entry_id,
+						'meta_key'   => sanitize_key( $field_settings['meta-key'] . '_timezone' ),
+						'meta_value' => maybe_serialize( $date_timezone ), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value
+					);
+
+					// Insert entry meta.
+					$wpdb->insert( $wpdb->prefix . 'evf_entrymeta', $entry_metadata );
+				}
+			}
+		}
+
+		return $field;
+	}
+
+
+
+	/**
+	 * Adds Timezone for datetime column in entries table if available.
+	 *
+	 * @param [string] $value Value.
+	 * @param [string] $entry_meta Entry Meta.
+	 * @param [array]  $entry Entry.
+	 * @param [string] $type Type.
+	 * @param [string] $meta_key Meta Key.
+	 *
+	 * @return string
+	 */
+	public function entry_html( $value, $entry_meta, $entry, $type, $meta_key = '' ) {
+
+		$field_metas  = isset( $entry->meta ) ? $entry->meta : array();
+		$timezone_key = $meta_key . '_timezone';
+
+		if ( ! empty( $meta_key ) && isset( $field_metas[ $timezone_key ] ) ) {
+			$timezone_value = $field_metas[ $timezone_key ];
+			$all_timezones  = $this->get_timezones();
+
+			if ( isset( $all_timezones[ $timezone_value ] ) ) {
+				$value .= '<p>' . $all_timezones[ $timezone_value ] . '</p>';
+			}
+		}
+
+		return $value;
+	}
+
+
+
+	/**
+	 * Set default date time in frontend if timezone set.
+	 *
+	 * @param [array] $properties Properties array.
+	 * @param [array] $field Field properties.
+	 * @return array
+	 */
+	public function set_default_timezone( $properties, $field ) {
+
+		if ( ! empty( $field['date_timezone'] ) && 'Default' !== $field['date_timezone'] ) {
+			$timezone = $field['date_timezone'];
+
+			if ( in_array( $timezone, timezone_identifiers_list(), true ) ) {
+
+				$dtz      = new DateTimeZone( $timezone );
+				$datetime = new DateTime( 'now', $dtz );
+
+				switch ( $field['datetime_format'] ) {
+					case 'date':
+						$properties['inputs']['primary']['attr']['value'] = esc_attr( $datetime->format( $field['date_format'] ) );
+						break;
+
+					case 'date-time':
+						if ( ! empty( $field['time_format'] ) ) {
+							$date_format                                      = esc_attr( $field['date_format'] ) . ' ' . esc_attr( $field['time_format'] );
+							$properties['inputs']['primary']['attr']['value'] = esc_attr( $datetime->format( $date_format ) );
+						} else {
+							$date_format                                      = esc_attr( $field['date_format'] ) . ' g:i A';
+							$properties['inputs']['primary']['attr']['value'] = esc_attr( $datetime->format( $date_format ) );
+						}
+						break;
+				}
+			}
+		}
+
+		return $properties;
 	}
 }

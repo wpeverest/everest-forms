@@ -1689,10 +1689,13 @@ abstract class EVF_Form_Fields {
 			*/
 			case 'whitelist_domain':
 				$default = ! empty( $args['default'] ) ? $args['default'] : '0';
-				$value   = ! empty( $field['whitelist_domain'] ) ? esc_attr( $field['whitelist_domain'] ) : '';
-				$style   = ! empty( $field['select_whitelist'] ) ? esc_attr( $field['select_whitelist'] ) : 'Allowed Domains';
-				$tooltip = esc_html__( 'You can list the email domains in the Whitelisted Domains', 'everest-forms' );
-				$output  = $this->field_element(
+				// $value for just backward compatibility.
+				$value           = ( isset( $field['whitelist_domain'] ) && ! empty( $field['whitelist_domain'] ) ) ? esc_attr( $field['whitelist_domain'] ) : '';
+				$allowed_domains = ( isset( $field['allowed_domains'] ) && ! empty( $field['allowed_domains'] ) ) ? esc_attr( $field['allowed_domains'] ) : ( ( isset( $field['select_whitelist'] ) && 'allow' === $field['select_whitelist'] ) ? $value : '' );
+				$denied_domains  = ( isset( $field['denied_domains'] ) && ! empty( $field['denied_domains'] ) ) ? esc_attr( $field['denied_domains'] ) : ( ( isset( $field['select_whitelist'] ) && 'deny' === $field['select_whitelist'] ) ? $value : '' );
+				$style           = ( isset( $field['select_whitelist'] ) && ! empty( $field['select_whitelist'] ) ) ? esc_attr( $field['select_whitelist'] ) : 'allow';
+				$tooltip         = esc_html__( 'Please enter valid allowed or denied domains, separated by commas. For example: google.com, yahoo.com', 'everest-forms' );
+				$output          = $this->field_element(
 					'label',
 					$field,
 					array(
@@ -1702,7 +1705,7 @@ abstract class EVF_Form_Fields {
 					),
 					false
 				);
-				$output .= $this->field_element(
+				$output         .= $this->field_element(
 					'select',
 					$field,
 					array(
@@ -1715,7 +1718,7 @@ abstract class EVF_Form_Fields {
 					),
 					false
 				);
-				$output  = $this->field_element(
+				$output          = $this->field_element(
 					'row',
 					$field,
 					array(
@@ -1729,14 +1732,32 @@ abstract class EVF_Form_Fields {
 					'row',
 					$field,
 					array(
-						'slug'    => 'whitelist_domain',
+						'slug'    => 'allowed_domains',
 						'content' => $this->field_element(
 							'text',
 							$field,
 							array(
-								'slug'        => 'whitelist_domain',
-								'value'       => esc_attr( $value ),
-								'placeholder' => esc_attr__( 'for eg. gmail.com', 'everest-forms' ),
+								'slug'        => 'allowed_domains',
+								'value'       => esc_attr( $allowed_domains ),
+								'placeholder' => esc_attr__( 'Allowed Domain(s)', 'everest-forms' ),
+							),
+							false
+						),
+					),
+					$echo
+				);
+				$output .= $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'denied_domains',
+						'content' => $this->field_element(
+							'text',
+							$field,
+							array(
+								'slug'        => 'denied_domains',
+								'value'       => esc_attr( $denied_domains ),
+								'placeholder' => esc_attr__( 'Denied Domain(s)', 'everest-forms' ),
 							),
 							false
 						),
@@ -1951,7 +1972,7 @@ abstract class EVF_Form_Fields {
 						foreach ( $values as $value ) {
 							$default     = isset( $value['default'] ) ? $value['default'] : '';
 							$selected    = checked( '1', $default, false );
-							$placeholder = wp_remote_get( evf()->plugin_url( 'assets/images/everest-forms-placeholder.png' ), array( 'sslverify' => false ) );
+							$placeholder = evf()->plugin_url( 'assets/images/everest-forms-placeholder.png' );
 							$image_src   = ! empty( $value['image'] ) ? esc_url( $value['image'] ) : $placeholder;
 							$item_class  = array();
 
@@ -2383,7 +2404,7 @@ abstract class EVF_Form_Fields {
 						if ( 'words' === $field['limit_mode'] && $field['limit_count'] < str_word_count( $field_submit ) ) {
 							/* translators: %s Number of max words. */
 							$validation_text = sprintf( esc_html__( 'This field contains at most %s words', 'everest-forms' ), $field['limit_count'] );
-						} elseif ( 'characters' === $field['limit_mode'] && $field['limit_count'] < strlen( $field_submit ) ) {
+						} elseif ( 'characters' === $field['limit_mode'] && $field['limit_count'] < mb_strlen( $field_submit ) ) { //phpcs:ignore PHPCompatibility.ParameterValues.NewIconvMbstringCharsetDefault.NotSet
 							/* translators: %s Number of max characters. */
 							$validation_text = sprintf( esc_html__( 'This field contains at most %s characters', 'everest-forms' ), $field['limit_count'] );
 						}
@@ -2394,7 +2415,7 @@ abstract class EVF_Form_Fields {
 						if ( 'words' === $field['min_length_mode'] && $field['min_length_count'] > str_word_count( $field_submit ) ) {
 							/* translators: %s Number of minimum words. */
 							$validation_text = sprintf( esc_html__( 'This field contains at least %s words', 'everest-forms' ), $field['min_length_count'] );
-						} elseif ( 'characters' === $field['min_length_mode'] && $field['min_length_count'] > strlen( $field_submit ) ) {
+						} elseif ( 'characters' === $field['min_length_mode'] && $field['min_length_count'] > mb_strlen( $field_submit ) ) { //phpcs:ignore PHPCompatibility.ParameterValues.NewIconvMbstringCharsetDefault.NotSet
 							/* translators: %s Number of minimum characters. */
 							$validation_text = sprintf( esc_html__( 'This field contains at least %s characters', 'everest-forms' ), $field['min_length_count'] );
 						}

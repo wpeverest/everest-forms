@@ -92,11 +92,37 @@ jQuery( function ( $ ) {
 		},
 		init_datepicker: function () {
 			var evfDateField = $( '.evf-field-date-time' );
-			if ( evfDateField.length > 0 ) {
-				$( '.flatpickr-field' ).each( function() {
+			if ( evfDateField.length && evfDateField.find( '.flatpickr-field' ).length ) {
+				evfDateField.find( '.flatpickr-field' ).each( function () {
 					var timeInterval = 5,
 						inputData  	 = $( this ).data(),
 						disableDates = [];
+
+					var minDateRange = '';
+					if( inputData.minDateRange ) {
+						minDateRange = 'today';
+						if( 'today' === inputData.minDateRange ) {
+							minDateRange = minDateRange
+						} else if ( /^\s*[-+]?\d+\s*d/i.test( inputData.minDateRange ) ) {
+							minDateRange = inputData.minDateRange.match( /^\s*[-+]?\d+\s*d/i )[0].replace( 'd', '' );
+							minDateRange = new Date().fp_incr( minDateRange );
+						} else {
+							minDateRange = 'today';
+						}
+					}
+
+					var maxDateRange = '';
+					if( inputData.maxDateRange ) {
+						maxDateRange = 'today';
+						if( 'today' === inputData.maxDateRange ) {
+							maxDateRange = maxDateRange
+						} else if ( /^\s*[-+]?\d+\s*d/i.test( inputData.maxDateRange ) ) {
+							maxDateRange = inputData.maxDateRange.match( /^\s*[-+]?\d+\s*d/i )[0].replace( 'd', '' );
+							maxDateRange = new Date().fp_incr( maxDateRange );
+						} else {
+							maxDateRange = '';
+						}
+					}
 
 					// Extract list of disabled dates.
 					if ( inputData.disableDates ) {
@@ -115,8 +141,8 @@ jQuery( function ( $ ) {
 							$( this ).flatpickr({
 								disableMobile : true,
 								mode          : inputData.mode,
-								minDate       : inputData.minDate ? inputData.minDate : pastDisableDate,
-								maxDate       : inputData.maxDate,
+								minDate       : minDateRange ? minDateRange : ( inputData.minDate ? inputData.minDate : pastDisableDate ),
+								maxDate       : maxDateRange ? maxDateRange : inputData.maxDate,
 								dateFormat    : inputData.dateFormat,
 								disable       : disableDates,
 							});
@@ -147,8 +173,8 @@ jQuery( function ( $ ) {
 								noCalendar   	: false,
 								disableMobile	: true,
 								mode            : inputData.mode,
-								minDate         : inputData.minDate ? inputData.minDate : pastDisableDate,
-								maxDate         : inputData.maxDate,
+								minDate         : minDateRange ? minDateRange : ( inputData.minDate ? inputData.minDate : pastDisableDate ),
+								maxDate         : maxDateRange ? maxDateRange : inputData.maxDate,
 								minuteIncrement : timeInterval,
 								dateFormat      : inputData.dateFormat,
 								time_24hr		: inputData.dateFormat.includes( 'H:i' ),
@@ -157,7 +183,7 @@ jQuery( function ( $ ) {
 						break;
 						default:
 					}
-				});
+				} );
 			}
 		},
 		init_datedropdown: function () {
@@ -208,7 +234,7 @@ jQuery( function ( $ ) {
 					}
 					options += '<option value = "' + i + '"> ' + ( ( i< 10 ) ? '0' + i : i ) + '</option>';
 				}
-	
+
 				$this.siblings( '#minute-select-'+id ).html( options );
 				$this.siblings( '#minute-select-'+id ).attr('value', $this.siblings( '#minute-select-'+id ).find('option:first').val());
 			}
@@ -501,6 +527,7 @@ jQuery( function ( $ ) {
 							processText = $submit.data( 'process-text' );
 							var	recaptchaID = $submit.get( 0 ).recaptchaID;
 							var  razorpayForms = $form.find( "[data-gateway='razorpay']" );
+							var stripeForms = $form.find( "[data-gateway*='stripe']" );
 						// Process form.
 						if ( processText ) {
 							$submit.text( processText ).prop( 'disabled', true );
@@ -515,8 +542,8 @@ jQuery( function ( $ ) {
 							return;
 						}
 
-						if ( 1 !== $form.data( 'ajax_submission' ) ) {
-							form.submit();
+						if ( 1 !== $form.data( 'ajax_submission' ) || (stripeForms.length < 0  && 0 !== stripeForms.children.length) ) {
+							 form.submit();
 						} else {
 							return;
 						}
@@ -701,7 +728,7 @@ jQuery( function ( $ ) {
 					function(value, element, params) {
 						var wordsCount = value.trim().split( /\s+/ ).length;
 						return wordsCount >= params[0];
-					}
+					}, everest_forms_params.il8n_min_word_length_err_msg
 				);
 
 				jQuery( '#'+event.id ).each( function() {
