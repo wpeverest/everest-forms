@@ -728,7 +728,7 @@ jQuery( function ( $ ) {
 					function(value, element, params) {
 						var wordsCount = value.trim().split( /\s+/ ).length;
 						return wordsCount >= params[0];
-					}
+					}, everest_forms_params.il8n_min_word_length_err_msg
 				);
 
 				jQuery( '#'+event.id ).each( function() {
