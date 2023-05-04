@@ -392,7 +392,7 @@ Yes, Everest Forms is designed to work with any themes that have been coded foll
 
 = Do you have a quick get started video for Everest Form? =
 
-Yes, we do. Check out this [Getting Started Videos](https://docs.wpeverest.com/docs/everest-forms/getting-started/watch-video-guide/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)
+Yes, we do. Check out this [Getting Started Videos](https://docs.wpeverest.com/everest-forms/docs-category/video-tutorials/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)
 
 = What types of forms can I build with Everest Forms? =
 
@@ -416,6 +416,23 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 
 == Changelog ==
+
+- 2.0.0       - xx-xx-2023
+* Fix 		  - Repeater field issue when exporting the CSV.
+* Fix 		  - Error when enabling image choices without uploading image in checkbox.
+* Fix 		  - Smart tag {first_name} {last_name} are not working.
+* Fix 		  - Form not showing to export the form while storing entry information is disabled.
+* Fix 		  - CSV export issue.
+* Fix 		  - Unnecessary JS Load on Frontend.
+* Fix 		  - Payment status is not showing in CSV.
+* Fix 		  - Minimum word count error message issue.
+* Enhancement - Send CSV in email.
+* Enhancement - Next Previous link on single entry view admin page.
+* Enhancement - Timezone selection for DateTime field.
+* Enhancement - Serial number on entry listing table.
+* Enhancement - Anti Spam Setting.
+* Enhancement - Search forms in entries select.
+* Feature     - Everest forms on top admin menu bar.
 
 - 1.9.9       - 28-03-2023
 * Fix 		  - Payment checkbox smart tag value is not showing email.
