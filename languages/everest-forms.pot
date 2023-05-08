@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-05-04T05:11:09+00:00\n"
+"POT-Creation-Date: 2023-05-08T06:40:31+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: everest-forms\n"
@@ -1787,7 +1787,7 @@ msgid "No form to duplicate has been supplied!"
 msgstr ""
 
 #: includes/admin/class-evf-admin-import-export.php:34
-#: includes/admin/class-evf-admin-notices.php:122
+#: includes/admin/class-evf-admin-notices.php:124
 #: includes/admin/class-evf-admin-tools.php:170
 #: includes/admin/class-evf-admin-tools.php:187
 msgid "Action failed. Please refresh the page and retry."
@@ -1854,7 +1854,7 @@ msgstr ""
 msgid "Add-ons"
 msgstr ""
 
-#: includes/admin/class-evf-admin-notices.php:126
+#: includes/admin/class-evf-admin-notices.php:128
 msgid "You don&#8217;t have permission to do this."
 msgstr ""
 
@@ -2628,6 +2628,14 @@ msgstr ""
 msgid "Dismiss"
 msgstr ""
 
+#: includes/admin/views/html-notice-php-deprecation.php:15
+msgid "Warning!"
+msgstr ""
+
+#: includes/admin/views/html-notice-php-deprecation.php:27
+msgid "Learn More"
+msgstr ""
+
 #: includes/admin/views/html-notice-review.php:16
 msgid "HAKUNA MATATA!"
 msgstr ""
@@ -2721,144 +2729,144 @@ msgstr ""
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
-#: includes/class-evf-ajax.php:127
+#: includes/class-evf-ajax.php:128
 msgid "Invalid form"
 msgstr ""
 
-#: includes/class-evf-ajax.php:177
+#: includes/class-evf-ajax.php:178
 msgid "Blank Form"
 msgstr ""
 
-#: includes/class-evf-ajax.php:199
+#: includes/class-evf-ajax.php:200
 msgid "Something went wrong, please try again later"
 msgstr ""
 
-#: includes/class-evf-ajax.php:214
+#: includes/class-evf-ajax.php:215
 msgid "Checking permissions."
 msgstr ""
 
-#: includes/class-evf-ajax.php:219
-#: includes/class-evf-ajax.php:222
+#: includes/class-evf-ajax.php:220
+#: includes/class-evf-ajax.php:223
 msgid "You do not have permission."
 msgstr ""
 
-#: includes/class-evf-ajax.php:227
+#: includes/class-evf-ajax.php:228
 msgid "Checking for form data."
 msgstr ""
 
-#: includes/class-evf-ajax.php:232
+#: includes/class-evf-ajax.php:233
 msgid "No data provided."
 msgstr ""
 
-#: includes/class-evf-ajax.php:235
+#: includes/class-evf-ajax.php:236
 msgid "No data provided"
 msgstr ""
 
-#: includes/class-evf-ajax.php:275
+#: includes/class-evf-ajax.php:276
 msgid "Check for empty meta key."
 msgstr ""
 
-#: includes/class-evf-ajax.php:310
+#: includes/class-evf-ajax.php:311
 msgid "Meta Key missing."
 msgstr ""
 
-#: includes/class-evf-ajax.php:315
+#: includes/class-evf-ajax.php:316
 msgid "Meta Key missing"
 msgstr ""
 
 #. translators: %s: empty meta data
-#: includes/class-evf-ajax.php:317
+#: includes/class-evf-ajax.php:318
 msgid "Please add Meta key for fields: %s"
 msgstr ""
 
-#: includes/class-evf-ajax.php:325
+#: includes/class-evf-ajax.php:326
 msgid "Fix for sorting field ordering."
 msgstr ""
 
-#: includes/class-evf-ajax.php:336
+#: includes/class-evf-ajax.php:337
 msgid "Saving form."
 msgstr ""
 
-#: includes/class-evf-ajax.php:343
-#: includes/class-evf-ajax.php:349
+#: includes/class-evf-ajax.php:344
+#: includes/class-evf-ajax.php:350
 msgid "An error occurred while saving the form."
 msgstr ""
 
-#: includes/class-evf-ajax.php:348
+#: includes/class-evf-ajax.php:349
 msgid "Form not found"
 msgstr ""
 
-#: includes/class-evf-ajax.php:354
+#: includes/class-evf-ajax.php:355
 msgid "Form Saved successfully."
 msgstr ""
 
-#: includes/class-evf-ajax.php:397
+#: includes/class-evf-ajax.php:398
 msgid "No Addon specified."
 msgstr ""
 
-#: includes/class-evf-ajax.php:408
+#: includes/class-evf-ajax.php:409
 msgid "Addon can not be activate. Please try again."
 msgstr ""
 
-#: includes/class-evf-ajax.php:429
+#: includes/class-evf-ajax.php:430
 msgid "No Plan specified."
 msgstr ""
 
-#: includes/class-evf-ajax.php:446
+#: includes/class-evf-ajax.php:447
 msgid "This form template requires the following addons."
 msgstr ""
 
-#: includes/class-evf-ajax.php:497
+#: includes/class-evf-ajax.php:498
 msgid "No plugin specified."
 msgstr ""
 
-#: includes/class-evf-ajax.php:510
+#: includes/class-evf-ajax.php:511
 msgid "Sorry, you are not allowed to install plugins on this site."
 msgstr ""
 
-#: includes/class-evf-ajax.php:574
+#: includes/class-evf-ajax.php:575
 msgid "Unable to connect to the filesystem. Please confirm your credentials."
 msgstr ""
 
-#: includes/class-evf-ajax.php:621
-#: includes/class-evf-ajax.php:664
+#: includes/class-evf-ajax.php:622
+#: includes/class-evf-ajax.php:665
 msgid "Missing data"
 msgstr ""
 
-#: includes/class-evf-ajax.php:680
+#: includes/class-evf-ajax.php:681
 msgid "Connection missing"
 msgstr ""
 
 #. translators: %s: from address
-#: includes/class-evf-ajax.php:793
+#: includes/class-evf-ajax.php:811
 msgid "Test email from %s"
 msgstr ""
 
-#: includes/class-evf-ajax.php:798
+#: includes/class-evf-ajax.php:816
 msgid "Congratulations,"
 msgstr ""
 
-#: includes/class-evf-ajax.php:799
+#: includes/class-evf-ajax.php:817
 msgid "Your test email has been received successfully."
 msgstr ""
 
-#: includes/class-evf-ajax.php:800
+#: includes/class-evf-ajax.php:818
 msgid "We thank you for trying out Everest Forms and joining our mission to make sure you get your emails delivered."
 msgstr ""
 
-#: includes/class-evf-ajax.php:801
+#: includes/class-evf-ajax.php:819
 msgid "Regards,"
 msgstr ""
 
-#: includes/class-evf-ajax.php:802
+#: includes/class-evf-ajax.php:820
 msgid "Everest Forms Team"
 msgstr ""
 
-#: includes/class-evf-ajax.php:806
+#: includes/class-evf-ajax.php:824
 msgid "Test email was sent successfully! Please check your inbox to make sure it is delivered."
 msgstr ""
 
-#: includes/class-evf-ajax.php:808
+#: includes/class-evf-ajax.php:826
 msgid "Test email was unsuccessful! Something went wrong."
 msgstr ""
 
@@ -12051,8 +12059,8 @@ msgid "User Device"
 msgstr ""
 
 #. translators: 1: entry date 2: entry time
-#: includes/export/class-evf-entry-csv-exporter.php:448
-#: includes/export/class-evf-entry-csv-exporter.php:465
+#: includes/export/class-evf-entry-csv-exporter.php:452
+#: includes/export/class-evf-entry-csv-exporter.php:469
 msgid "%1$s %2$s"
 msgstr ""
 

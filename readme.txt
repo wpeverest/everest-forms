@@ -417,7 +417,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-- 2.0.0       - xx-xx-2023
+- 2.0.0       - 08-05-2023
 * Fix 		  - Repeater field issue when exporting the CSV.
 * Fix 		  - Error when enabling image choices without uploading image in checkbox.
 * Fix 		  - Smart tag {first_name} {last_name} are not working.
