@@ -1,5 +1,8 @@
 == Changelog ==
 
+- 2.0.0.1       - 09-05-2023
+* Fix 		  - Design issue with certain themes when everest shortcode is applied.
+
 - 2.0.0       - 08-05-2023
 * Fix 		  - Repeater field issue when exporting the CSV.
 * Fix 		  - Error when enabling image choices without uploading image in checkbox.
