@@ -9,9 +9,9 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * EVF_Field_Authorize_Net Class.
+ * EVF_Field_Payment_Authorize_Net Class.
  */
-class EVF_Field_Authorize_Net extends EVF_Form_Fields {
+class EVF_Field_Payment_Authorize_Net extends EVF_Form_Fields {
 
 	/**
 	 * Constructor.
