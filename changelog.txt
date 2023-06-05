@@ -1,5 +1,8 @@
 == Changelog ==
 
+- 2.0.1       - xx-xx-2023
+* Enhancement - Upgrade to pro link.
+
 - 2.0.0.1       - 09-05-2023
 * Fix 		  - Design issue with certain themes when everest shortcode is applied.
 

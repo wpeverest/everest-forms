@@ -35,6 +35,10 @@ class EVF_Admin_Menus {
 			add_action( 'admin_menu', array( $this, 'addons_menu' ), 70 );
 		}
 
+		if ( ! evf_get_license_plan() ) {
+			add_action( 'admin_menu', array( $this, 'upgrade_to_pro_menu' ), 80 );
+		}
+
 		add_action( 'admin_head', array( $this, 'menu_highlight' ) );
 		add_action( 'admin_head', array( $this, 'custom_menu_count' ) );
 		add_action( 'admin_head', array( $this, 'hide_submenu_items' ) );
@@ -282,6 +286,22 @@ class EVF_Admin_Menus {
 	 */
 	public function tools_menu() {
 		add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms tools', 'everest-forms' ), esc_html__( 'Tools', 'everest-forms' ), 'manage_everest_forms', 'evf-tools', array( $this, 'tools_page' ) );
+	}
+
+	/**
+	 * Add menu item.
+	 */
+	public function upgrade_to_pro_menu() {
+		add_submenu_page(
+			'everest-forms',
+			esc_html__( 'Everest Forms Upgrade to Pro', 'everest-forms' ),
+			sprintf(
+				'<span style="color:#FF8C39; font-weight: 600;"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: bottom;" ><rect x="0.5" y="0.5" width="19" height="19" rx="2.5" fill="#FF8C39" stroke="#FF8C39"/><path d="M10 5L13 13H7L10 5Z" fill="#EFEFEF"/><path fill="white" fill-rule="evenodd" d="M5 7L5.71429 13H14.2857L15 7L10 11.125L5 7ZM14.2857 13.5714H5.71427V15H14.2857V13.5714Z" clip-rule="evenodd"/></svg><span style="margin-left:5px;">%s</span></span>',
+				esc_html__( 'Upgrade to Pro', 'everest-forms' )
+			),
+			'manage_everest_forms',
+			esc_url_raw( 'https://wpeverest.com/wordpress-plugins/everest-forms/pricing/' )
+		);
 	}
 
 	/**
