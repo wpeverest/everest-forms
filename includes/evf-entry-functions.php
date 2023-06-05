@@ -280,10 +280,11 @@ function evf_get_count_entries_by_last_entry( $form_id, $last_entry ) {
  * @param int    $form_id    Form ID.
  * @param string $start_date Start date.
  * @param string $end_date   End date.
+ * @param bool   $hide_trashed   Exclude trashed entries.
  *
  * @return array of entries by form ID.
  */
-function evf_get_entries_by_form_id( $form_id, $start_date = '', $end_date = '' ) {
+function evf_get_entries_by_form_id( $form_id, $start_date = '', $end_date = '', $hide_trashed = false ) {
 	global $wpdb;
 
 	$query   = array();
@@ -298,6 +299,10 @@ function evf_get_entries_by_form_id( $form_id, $start_date = '', $end_date = '' 
 	}
 
 	$query[] = $wpdb->prepare( 'AND status != %s', 'draft' );
+
+	if ( $hide_trashed ) {
+		$query[] = $wpdb->prepare( 'AND status != %s', 'trash' );
+	}
 
 	$results = wp_cache_get( $form_id, 'evf-search-entries' );
 

@@ -267,6 +267,26 @@ class EVF_Smart_Tags {
 						$content = str_replace( '{' . $other_tag . '}', $name, $content );
 						break;
 
+					case 'first_name':
+						if ( is_user_logged_in() ) {
+							$user = wp_get_current_user();
+							$name = sanitize_text_field( $user->user_firstname );
+						} else {
+							$name = '';
+						}
+						$content = str_replace( '{' . $other_tag . '}', $name, $content );
+						break;
+
+					case 'last_name':
+						if ( is_user_logged_in() ) {
+							$user = wp_get_current_user();
+							$name = sanitize_text_field( $user->user_lastname  );
+						} else {
+							$name = '';
+						}
+						$content = str_replace( '{' . $other_tag . '}', $name, $content );
+						break;
+
 					case 'referrer_url':
 						$referer = ! empty( $_SERVER['HTTP_REFERER'] ) ? $_SERVER['HTTP_REFERER'] : ''; // @codingStandardsIgnoreLine
 						$content = str_replace( '{' . $other_tag . '}', sanitize_text_field( $referer ), $content );

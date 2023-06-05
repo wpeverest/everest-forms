@@ -28,6 +28,8 @@ class EVF_Admin_Menus {
 		add_action( 'admin_menu', array( $this, 'entries_menu' ), 30 );
 		add_action( 'admin_menu', array( $this, 'settings_menu' ), 50 );
 		add_action( 'admin_menu', array( $this, 'tools_menu' ), 60 );
+		// Add admin topbar menu.
+		add_action( 'admin_bar_menu', array( $this, 'admin_top_menu_bar' ), 100 );
 
 		if ( apply_filters( 'everest_forms_show_addons_page', true ) ) {
 			add_action( 'admin_menu', array( $this, 'addons_menu' ), 70 );
@@ -59,6 +61,87 @@ class EVF_Admin_Menus {
 		}
 
 		return $svg;
+	}
+
+	/**
+	 * Admin top menu bar.
+	 *
+	 * @param \WP_Admin_Bar $wp_admin_bar Instance of admin bar.
+	 */
+	public function admin_top_menu_bar( WP_Admin_Bar $wp_admin_bar ) {
+		if ( ! is_admin_bar_showing() || ! current_user_can( 'manage_everest_forms' ) ) {
+			return;
+		}
+
+		$wp_admin_bar->add_menu(
+			array(
+				'id'    => 'everest-forms-menu',
+				'parent' => null,
+				'group'  => null,
+				'title' => 'Everest Forms', // you can use img tag with image link. it will show the image icon Instead of the title.
+				'href'  => admin_url( 'admin.php?page=evf-builder' ),
+			)
+		);
+
+		$wp_admin_bar->add_menu(
+			array(
+				'parent' => 'everest-forms-menu',
+				'id'     => 'everest-forms-all-forms',
+				'title'  => __( 'All Forms', 'everest-forms' ),
+				'href'   => admin_url( 'admin.php?page=evf-builder' ),
+			)
+		);
+
+		$wp_admin_bar->add_menu(
+			array(
+				'parent' => 'everest-forms-menu',
+				'id'     => 'everest-forms-add-new',
+				'title'  => __( 'Add New', 'everest-forms' ),
+				'href'   => admin_url( 'admin.php?page=evf-builder&create-form=1' ),
+			)
+		);
+
+		$wp_admin_bar->add_menu(
+			array(
+				'parent' => 'everest-forms-menu',
+				'id'     => 'everest-forms-entries',
+				'title'  => __( 'Entries', 'everest-forms' ),
+				'href'   => admin_url( 'admin.php?page=evf-entries' ),
+			)
+		);
+
+		$wp_admin_bar->add_menu(
+			array(
+				'parent' => 'everest-forms-menu',
+				'id'     => 'everest-forms-tools',
+				'title'  => __( 'Tools', 'everest-forms' ),
+				'href'   => admin_url( 'admin.php?page=evf-tools' ),
+			)
+		);
+
+		$href = add_query_arg(
+			array(
+				'utm_medium'   => 'admin-bar',
+				'utm_source'   => 'WordPress',
+				'utm_content'  => 'Documentation',
+			),
+			'https://docs.wpeverest.com/everest-forms/'
+		);
+
+		$wp_admin_bar->add_menu(
+			array(
+				'parent' => 'everest-forms-menu',
+				'id'     => 'everest-forms-docs',
+				'title'  => __( 'Docs', 'everest-forms' ),
+				'href'   => $href,
+				'meta'   => array(
+					'target' => '_blank',
+					'rel'    => 'noopener noreferrer',
+				),
+			)
+		);
+
+		do_action( 'everest_forms_top_admin_bar_menu', $wp_admin_bar );
 	}
 
 	/**
