@@ -2161,7 +2161,8 @@ p.search-box {
 						}
 
 						&.upgrade-modal,
-						&.enable-stripe-model {
+						&.enable-stripe-model, 
+						&.enable-authorize-net-model {
 							opacity: 0.45;
 						}
 
@@ -4993,6 +4994,14 @@ table.wp-list-table {
 						margin-left: 5px;
 					}
 				}
+			}
+		}
+
+		#evf-entry-nav-buttons {
+			padding: 5px 10px;
+
+			#evf-next-entry-button {
+				float: right;
 			}
 		}
 

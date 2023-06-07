@@ -102,6 +102,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	public function get_columns() {
 		$columns            = array();
 		$columns['cb']      = '<input type="checkbox" />';
+		$columns            = apply_filters( 'everest_forms_add_extra_columns', $columns );
 		$columns            = apply_filters( 'everest_forms_entries_table_form_fields_columns', $this->get_columns_form_fields( $columns ), $this->form_id, $this->form_data );
 		$columns['date']    = esc_html__( 'Date Created', 'everest-forms' );
 		$columns['actions'] = esc_html__( 'Actions', 'everest-forms' );
@@ -157,7 +158,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 * @return array
 	 */
 	public static function get_columns_form_disallowed_fields() {
-		return (array) apply_filters( 'everest_forms_entries_table_fields_disallow', array( 'html', 'title', 'captcha', 'repeater-fields' ) );
+		return (array) apply_filters( 'everest_forms_entries_table_fields_disallow', array( 'html', 'title', 'captcha', 'repeater-fields', 'authorize-net' ) );
 	}
 
 	/**
@@ -180,9 +181,22 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 				}
 			}
 		} elseif ( ! empty( $entry_columns ) ) {
+			$key = array_search( 'sn', $entry_columns, true );
+			if ( false !== $key ) {
+				unset( $entry_columns[ $key ] );
+				$entry_columns = array_merge( array( 'sn' ), $entry_columns );
+			}
 			foreach ( $entry_columns as $id ) {
 				// Check to make sure the field as not been removed.
+				$status = is_plugin_active( 'everest-forms-pro/everest-forms-pro.php' ) ? true : false;
+				$status = apply_filters( 'everest_forms_plugin_active_status', $status );
 				if ( empty( $this->form_data['form_fields'][ $id ] ) ) {
+					if ( $status ) {
+						if ( 'sn' === $id ) {
+							$extra_column = apply_filters( 'everest_forms_entries_table_extra_columns', array(), 0, array() );
+							$columns      = array_merge( $columns, $extra_column );
+						}
+					}
 					continue;
 				}
 
@@ -251,7 +265,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 
 				$value = nl2br( wp_strip_all_tags( trim( $value ) ) );
 			}
-			return apply_filters( 'everest_forms_html_field_value', $value, $entry->meta[ $meta_key ], $entry, 'entry-table' );
+			return apply_filters( 'everest_forms_html_field_value', $value, $entry->meta[ $meta_key ], $entry, 'entry-table', $meta_key );
 		} else {
 			return '<span class="na">&mdash;</span>';
 		}
@@ -272,6 +286,11 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 
 			case 'date':
 				$value = date_i18n( get_option( 'date_format' ), strtotime( $entry->date_created ) + ( get_option( 'gmt_offset' ) * 3600 ) );
+				break;
+
+			case 'sn':
+				$position = array_search( $entry, $this->items );
+				$value    = $position + 1;
 				break;
 
 			default:
@@ -584,7 +603,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		$form_id = isset( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : $this->form_id; // phpcs:ignore WordPress.Security.NonceVerification
 		?>
 		<label for="filter-by-form" class="screen-reader-text"><?php esc_html_e( 'Filter by form', 'everest-forms' ); ?></label>
-		<select name="form_id" id="filter-by-form">
+		<select name="form_id" id="filter-by-form" class="evf-enhanced-normal-select" style="min-width: 200px;">
 			<?php foreach ( $forms as $id => $form ) : ?>
 				<option value="<?php echo esc_attr( $id ); ?>" <?php selected( $form_id, $id ); ?>><?php echo esc_html( $form ); ?></option>
 			<?php endforeach; ?>

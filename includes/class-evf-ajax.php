@@ -93,6 +93,7 @@ class EVF_AJAX {
 			'review_dismiss'          => false,
 			'survey_dismiss'          => false,
 			'allow_usage_dismiss'     => false,
+			'php_notice_dismiss'      => false,
 			'enabled_form'            => false,
 			'import_form_action'      => false,
 			'template_licence_check'  => false,
@@ -741,6 +742,23 @@ class EVF_AJAX {
 			update_option( 'everest_forms_allow_usage_tracking', 'yes' );
 		}
 
+		wp_die();
+	}
+
+	/**
+	 * Triggered when clicking the PHP deprecation notice.
+	 */
+	public static function php_notice_dismiss() {
+		check_ajax_referer( 'php_notice_nonce', '_wpnonce' );
+
+		if ( ! current_user_can( 'manage_everest_forms' ) ) {
+			wp_die( -1 );
+		}
+		$current_date = gmdate( 'Y-m-d' );
+		$prompt_count = get_option( 'everest_forms_php_deprecated_notice_prompt_count', 0 );
+
+		update_option( 'everest_forms_php_deprecated_notice_last_prompt_date', $current_date );
+		update_option( 'everest_forms_php_deprecated_notice_prompt_count', ++$prompt_count );
 		wp_die();
 	}
 

@@ -9,8 +9,7 @@ jQuery( function( $ ) {
 					btn = formTuple.find( '.evf-submit' ),
 				 	 razorpayForms = formTuple.find( "[data-gateway='razorpay']" );
 
-
-				btn.on( 'click', function( e ) {
+				btn.on( 'click', async function( e ) {
 					var paymentMethod = formTuple.find( ".everest-forms-stripe-gateways-tabs .evf-tab" ).has( 'a.active' ).data( 'gateway' );
 					if(undefined === paymentMethod) {
 						paymentMethod = formTuple.find( ".everest-forms-gateway[data-gateway='stripe']" ).data( 'gateway' );
@@ -38,6 +37,36 @@ jQuery( function( $ ) {
 					formTuple.trigger( 'focusout' ).trigger( 'change' ).trigger( 'submit' );
 
 					var errors = formTuple.find( '.evf-error:visible' );
+
+					if( $(".everest-forms-authorize_net[data-gateway='authorize-net']").length ) {
+						const cardData =  window.EverestFormsAuthorizeNet.getCardData(formTuple);
+
+						if( ! Object.values(cardData).some(value => !value ) ) {
+
+							// Define the Promise.
+							const authorizeNetAjaxSubmitHandlerPromise = new Promise(function (resolve, reject) {
+								window.EverestFormsAuthorizeNet.authorizeNetAjaxSubmitHandler(v).then(resolve).catch(reject);
+							});
+						
+							try {
+								const response = await authorizeNetAjaxSubmitHandlerPromise;
+
+								if( "Ok" === response.messages.resultCode ) {
+									data.push(
+										{ name: 'everest_forms[authorize_net][opaque_data][descriptor]', value: response.opaqueData.dataDescriptor },
+										{ name: 'everest_forms[authorize_net][opaque_data][value]', value: response.opaqueData.dataValue }
+									);
+								}
+							} catch (error) {
+								return;
+							}
+							
+						}
+
+						if (errors.length < 1) {
+							errors = formTuple.parents('div.everest-forms').find('.everest-forms-notice.everest-forms-notice--error .evf-error');
+						}
+					}
 
 					if ( errors.length > 0 ) {
 						$( [document.documentElement, document.body] ).animate({

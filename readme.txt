@@ -2,9 +2,9 @@
 Contributors: WPEverest
 Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.0
-Tested up to: 6.1
+Tested up to: 6.2
 Requires PHP: 5.4
-Stable tag: 1.9.9
+Stable tag: 2.0.0.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -416,6 +416,26 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 
 == Changelog ==
+- 2.0.0.1       - 09-05-2023
+* Fix 		  - Design issue with certain themes when everest shortcode is applied.
+
+- 2.0.0       - 08-05-2023
+* Fix 		  - Repeater field issue when exporting the CSV.
+* Fix 		  - Error when enabling image choices without uploading image in checkbox.
+* Fix 		  - Smart tag {first_name} {last_name} are not working.
+* Fix 		  - Form not showing to export the form while storing entry information is disabled.
+* Fix 		  - CSV export issue.
+* Fix 		  - Unnecessary JS Load on Frontend.
+* Fix 		  - Payment status is not showing in CSV.
+* Fix 		  - Minimum word count error message issue.
+* Fix		  - PDF download link not showing issue with paypal.
+* Enhancement - Send CSV in email.
+* Enhancement - Next Previous link on single entry view admin page.
+* Enhancement - Timezone selection for DateTime field.
+* Enhancement - Serial number on entry listing table.
+* Enhancement - Anti Spam Setting.
+* Enhancement - Search forms in entries select.
+* Feature     - Everest forms on top admin menu bar.
 
 - 1.9.9       - 28-03-2023
 * Fix 		  - Payment checkbox smart tag value is not showing email.
