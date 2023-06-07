@@ -8,6 +8,7 @@ jQuery( function( $ ) {
 		init: function() {
 			$( document.body ).on( 'click dragstart', '.evf-registered-item.upgrade-modal', this.field_upgrade );
 			$( document.body ).on( 'click dragstart', '.evf-registered-item.enable-stripe-model', this.enable_stripe_model );
+			$( document.body ).on( 'click dragstart', '.evf-registered-item.enable-authorize-net-model', this.enable_authorize_net_model );
 			$( document.body ).on( 'click dragstart', '.everest-forms-field-option-row.upgrade-modal', this.feature_upgrade );
 			$( document.body ).on( 'click dragstart', '.evf-upgradable-feature, .everest-forms-btn-group span.upgrade-modal', this.feature_upgrade );
 		},
@@ -50,6 +51,22 @@ jQuery( function( $ ) {
 			$.alert({
 				title: evf_upgrade.enable_stripe_title,
 				content: evf_upgrade.enable_stripe_message,
+				icon: 'dashicons dashicons-info',
+				type: 'blue',
+				buttons : {
+					confirm : {
+						text: evf_data.i18n_close,
+						btnClass: 'btn-confirm',
+						keys: ['enter']
+					}
+				}
+			});
+		},
+		enable_authorize_net_model: function( e ) {
+			e.preventDefault();
+			$.alert({
+				title: evf_upgrade.enable_authorize_net_title,
+				content: evf_upgrade.enable_authorize_net_message,
 				icon: 'dashicons dashicons-info',
 				type: 'blue',
 				buttons : {
