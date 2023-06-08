@@ -378,6 +378,7 @@ class EVF_AJAX {
 
 		if ( ! empty( $_POST['everest_forms']['id'] ) ) {
 			$process = evf()->task->ajax_form_submission( evf_sanitize_entry( wp_unslash( $_POST['everest_forms'] ) ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			error_log(print_r($process,true));
 			if ( 'success' === $process['response'] ) {
 				wp_send_json_success( $process );
 			}
