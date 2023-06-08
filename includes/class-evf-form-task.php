@@ -301,11 +301,19 @@ class EVF_Form_Task {
 						$raw_response = wp_safe_remote_get( 'https://hcaptcha.com/siteverify?secret=' . $secret_key . '&response=' . $token );
 					} elseif ( 'turnstile' === $recaptcha_type ) {
 						$token        = ! empty( $_POST['cf-turnstile-response'] ) ? evf_clean( wp_unslash( $_POST['cf-turnstile-response'] ) ) : false;
-						$raw_response = wp_safe_remote_get( 'https://challenges.cloudflare.com/turnstile/v0/siteverify=' . $secret_key . '&response=' . $token );
+						$url          = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
+						$params       = array(
+							'method' => 'POST',
+							'body'   => array(
+								'secret'   => $secret_key,
+								'response' => $token,
+							),
+						);
+						$raw_response = wp_safe_remote_post( $url, $params );
 					} else {
 						$raw_response = wp_safe_remote_get( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $token );
 					}
-					
+
 					if ( ! is_wp_error( $raw_response ) ) {
 						$response = json_decode( wp_remote_retrieve_body( $raw_response ) );
 						// Check reCAPTCHA response.
