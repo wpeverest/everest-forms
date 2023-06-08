@@ -140,6 +140,8 @@
 					hcaptcha_site_key.show();
 					hcaptcha_secret_key.show();
 				 } else if ('turnstile' === $( this ).val()) {
+					recaptcha_v2_site_key.hide();
+					recaptcha_v2_secret_key.hide();
 					recaptcha_v2_invisible.hide();
 					recaptcha_v2_invisible_site_key.hide();
 					recaptcha_v2_invisible_secret_key.hide();
