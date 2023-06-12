@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-06-08T05:38:36+00:00\n"
+"POT-Creation-Date: 2023-06-12T07:33:34+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: everest-forms\n"
@@ -802,7 +802,7 @@ msgstr ""
 #: includes/admin/builder/class-evf-builder-settings.php:78
 #: includes/admin/builder/class-evf-builder-settings.php:361
 #: includes/admin/builder/class-evf-builder-settings.php:421
-#: includes/class-evf-form-task.php:828
+#: includes/class-evf-form-task.php:845
 #: includes/evf-update-functions.php:140
 #: includes/templates/contact.php:71
 msgid "Admin Notification"
@@ -838,7 +838,7 @@ msgid "Form disabled message"
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:159
-#: includes/shortcodes/class-evf-shortcode-form.php:893
+#: includes/shortcodes/class-evf-shortcode-form.php:902
 msgid "This form is disabled."
 msgstr ""
 
@@ -1097,17 +1097,21 @@ msgstr ""
 msgid "Enable hCaptcha"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:620
+#: includes/admin/builder/class-evf-builder-settings.php:621
+msgid "Enable Cloudflare Turnstile"
+msgstr ""
+
+#: includes/admin/builder/class-evf-builder-settings.php:624
 msgid "Enable Google Invisible reCAPTCHA v2"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:622
+#: includes/admin/builder/class-evf-builder-settings.php:626
 #: includes/fields/class-evf-field-captcha.php:20
 msgid "Captcha"
 msgstr ""
 
 #. translators: %1$s - general settings docs url
-#: includes/admin/builder/class-evf-builder-settings.php:633
+#: includes/admin/builder/class-evf-builder-settings.php:637
 msgid "Enable reCaptcha. Make sure the site key and secret key is set in settings page. <a href=\"%s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
@@ -2153,74 +2157,111 @@ msgstr ""
 msgid "hCaptcha"
 msgstr ""
 
-#: includes/admin/settings/class-evf-settings-recaptcha.php:72
-#: includes/admin/settings/class-evf-settings-recaptcha.php:92
-#: includes/admin/settings/class-evf-settings-recaptcha.php:120
-#: includes/admin/settings/class-evf-settings-recaptcha.php:140
+#: includes/admin/settings/class-evf-settings-recaptcha.php:67
+msgid "Cloudflare Turnstile"
+msgstr ""
+
+#: includes/admin/settings/class-evf-settings-recaptcha.php:73
+#: includes/admin/settings/class-evf-settings-recaptcha.php:93
+#: includes/admin/settings/class-evf-settings-recaptcha.php:121
+#: includes/admin/settings/class-evf-settings-recaptcha.php:141
+#: includes/admin/settings/class-evf-settings-recaptcha.php:176
 msgid "Site Key"
 msgstr ""
 
 #. translators: %1$s - Google reCAPTCHA docs url
-#: includes/admin/settings/class-evf-settings-recaptcha.php:75
-#: includes/admin/settings/class-evf-settings-recaptcha.php:95
+#: includes/admin/settings/class-evf-settings-recaptcha.php:76
+#: includes/admin/settings/class-evf-settings-recaptcha.php:96
 msgid "Please enter your site key for your reCAPTCHA v2. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
-#: includes/admin/settings/class-evf-settings-recaptcha.php:82
-#: includes/admin/settings/class-evf-settings-recaptcha.php:102
-#: includes/admin/settings/class-evf-settings-recaptcha.php:130
-#: includes/admin/settings/class-evf-settings-recaptcha.php:150
+#: includes/admin/settings/class-evf-settings-recaptcha.php:83
+#: includes/admin/settings/class-evf-settings-recaptcha.php:103
+#: includes/admin/settings/class-evf-settings-recaptcha.php:131
+#: includes/admin/settings/class-evf-settings-recaptcha.php:151
+#: includes/admin/settings/class-evf-settings-recaptcha.php:186
 msgid "Secret Key"
 msgstr ""
 
 #. translators: %1$s - Google reCAPTCHA docs url
-#: includes/admin/settings/class-evf-settings-recaptcha.php:85
-#: includes/admin/settings/class-evf-settings-recaptcha.php:105
+#: includes/admin/settings/class-evf-settings-recaptcha.php:86
+#: includes/admin/settings/class-evf-settings-recaptcha.php:106
 msgid "Please enter your secret key for your reCAPTCHA v2. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
-#: includes/admin/settings/class-evf-settings-recaptcha.php:112
+#: includes/admin/settings/class-evf-settings-recaptcha.php:113
 msgid "Invisible reCAPTCHA"
 msgstr ""
 
-#: includes/admin/settings/class-evf-settings-recaptcha.php:114
+#: includes/admin/settings/class-evf-settings-recaptcha.php:115
 msgid "Enable Invisible reCAPTCHA."
 msgstr ""
 
 #. translators: %1$s - Google reCAPTCHA docs url
-#: includes/admin/settings/class-evf-settings-recaptcha.php:123
+#: includes/admin/settings/class-evf-settings-recaptcha.php:124
 msgid "Please enter your site key for your reCAPTCHA v3. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
 #. translators: %1$s - Google reCAPTCHA docs url
-#: includes/admin/settings/class-evf-settings-recaptcha.php:133
+#: includes/admin/settings/class-evf-settings-recaptcha.php:134
 msgid "Please enter your secret key for your reCAPTCHA v3. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
 #. translators: %1$s - Google reCAPTCHA docs url
-#: includes/admin/settings/class-evf-settings-recaptcha.php:143
+#: includes/admin/settings/class-evf-settings-recaptcha.php:144
 msgid "Please enter your site key for your hCaptcha. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
 #. translators: %1$s - Google reCAPTCHA docs url
-#: includes/admin/settings/class-evf-settings-recaptcha.php:153
+#: includes/admin/settings/class-evf-settings-recaptcha.php:154
 msgid "Please enter your secret key for your hCaptcha. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
-#: includes/admin/settings/class-evf-settings-recaptcha.php:160
+#: includes/admin/settings/class-evf-settings-recaptcha.php:161
 msgid "Threshold Score"
 msgstr ""
 
 #. translators: %1$s - Google reCAPTCHA docs url
-#: includes/admin/settings/class-evf-settings-recaptcha.php:163
+#: includes/admin/settings/class-evf-settings-recaptcha.php:164
 msgid "reCAPTCHA v3 returns a score (1.0 is very likely a good interaction, 0.0 is very likely a bot). If the score less than or equal to this threshold"
 msgstr ""
 
-#: includes/admin/settings/class-evf-settings-recaptcha.php:175
+#. translators: %1$s - Cloudflare Turnstile docs url
+#: includes/admin/settings/class-evf-settings-recaptcha.php:179
+msgid "Please enter your site key for your Cloudflare Trunstile. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
+msgstr ""
+
+#. translators: %1$s - Cloudflare Trunstile docs url
+#: includes/admin/settings/class-evf-settings-recaptcha.php:189
+msgid "Please enter your secret key for your Cloudflare Turnstile. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
+msgstr ""
+
+#: includes/admin/settings/class-evf-settings-recaptcha.php:196
+msgid "Theme"
+msgstr ""
+
+#. translators: %1$s - Cloudflare Trunstile docs url
+#: includes/admin/settings/class-evf-settings-recaptcha.php:199
+msgid "Please select theme mode for your Cloudflare Turnstile. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
+msgstr ""
+
+#: includes/admin/settings/class-evf-settings-recaptcha.php:203
+msgid "Auto"
+msgstr ""
+
+#: includes/admin/settings/class-evf-settings-recaptcha.php:204
+msgid "Light"
+msgstr ""
+
+#: includes/admin/settings/class-evf-settings-recaptcha.php:205
+msgid "Dark"
+msgstr ""
+
+#: includes/admin/settings/class-evf-settings-recaptcha.php:211
 msgid "CAPTCHA Language "
 msgstr ""
 
-#: includes/admin/settings/class-evf-settings-recaptcha.php:177
+#: includes/admin/settings/class-evf-settings-recaptcha.php:213
 msgid "Choose a preferred language for displaying CAPTCHA text."
 msgstr ""
 
@@ -2980,8 +3021,8 @@ msgid "Popup Size"
 msgstr ""
 
 #: includes/class-evf-form-task.php:91
-#: includes/class-evf-form-task.php:506
-#: includes/shortcodes/class-evf-shortcode-form.php:961
+#: includes/class-evf-form-task.php:523
+#: includes/shortcodes/class-evf-shortcode-form.php:970
 #: includes/templates/contact.php:61
 msgid "Thanks for contacting us! We will be in touch with you shortly."
 msgstr ""
@@ -3003,8 +3044,8 @@ msgid "Everest Forms Process Before Form ID."
 msgstr ""
 
 #: includes/class-evf-form-task.php:247
-#: includes/class-evf-form-task.php:370
-#: includes/class-evf-form-task.php:444
+#: includes/class-evf-form-task.php:387
+#: includes/class-evf-form-task.php:461
 msgid "Form has not been submitted, please see the errors below."
 msgstr ""
 
@@ -3012,49 +3053,53 @@ msgstr ""
 msgid "Form has not been submitted."
 msgstr ""
 
-#: includes/class-evf-form-task.php:278
+#: includes/class-evf-form-task.php:282
 msgid "hCaptcha verification failed, please try again later."
 msgstr ""
 
-#: includes/class-evf-form-task.php:280
+#: includes/class-evf-form-task.php:284
+msgid "Cloudflare Turnstile verification failed, please try again later."
+msgstr ""
+
+#: includes/class-evf-form-task.php:286
 msgid "Google reCAPTCHA verification failed, please try again later."
 msgstr ""
 
-#: includes/class-evf-form-task.php:382
+#: includes/class-evf-form-task.php:399
 msgid "Everest Forms honeypot field triggered."
 msgstr ""
 
-#: includes/class-evf-form-task.php:447
+#: includes/class-evf-form-task.php:464
 msgid "Form has not been submitted"
 msgstr ""
 
-#: includes/class-evf-form-task.php:456
+#: includes/class-evf-form-task.php:473
 msgid "Entry Added to Database."
 msgstr ""
 
-#: includes/class-evf-form-task.php:465
+#: includes/class-evf-form-task.php:482
 msgid "Sent Email Notification."
 msgstr ""
 
-#: includes/class-evf-form-task.php:482
+#: includes/class-evf-form-task.php:499
 msgid "Everest Forms Process Completed."
 msgstr ""
 
-#: includes/class-evf-form-task.php:537
+#: includes/class-evf-form-task.php:554
 #: templates/notices/success.php:69
 msgid "Download your form submission in PDF format"
 msgstr ""
 
 #. translators: %s - form name.
-#: includes/class-evf-form-task.php:856
+#: includes/class-evf-form-task.php:873
 msgid "New %s Entry"
 msgstr ""
 
-#: includes/class-evf-form-task.php:956
+#: includes/class-evf-form-task.php:973
 msgid "No form ID was found."
 msgstr ""
 
-#: includes/class-evf-form-task.php:963
+#: includes/class-evf-form-task.php:980
 msgid "Could not create an entry"
 msgstr ""
 
@@ -12578,7 +12623,7 @@ msgid "Yes/No"
 msgstr ""
 
 #. translators: %s - URL to a non-amp version of a page with the form.
-#: includes/shortcodes/class-evf-shortcode-form.php:934
+#: includes/shortcodes/class-evf-shortcode-form.php:943
 msgid "<a href=\"%s\">Go to the full page</a> to view and submit the form."
 msgstr ""
 

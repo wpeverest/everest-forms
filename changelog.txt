@@ -2,6 +2,7 @@
 
 - 2.0.1       - xx-xx-2023
 * Enhancement - Upgrade to pro link.
+* Feature 	  - Cloudfare Turnstile.
 * Tweak 	  - Form locate option where form is activated.
 * Dependency  - Authorize.Net.
 

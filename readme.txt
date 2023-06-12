@@ -173,7 +173,7 @@ Everest Forms has a long list of top-notch features, making it the best WordPres
 
 * **Create Multi-column Form Layout:** Tired of lengthy forms that are making your users abandon them? Create efficient and user-friendly forms that supports up to four columns using Everest Forms. This also provides better structure to your forms.
 
-* **Multiple Spam Protection Technique:** Spams won't trouble you anymore. Get the spams controlled with smart integrations like Google reCAPTCHA, HoneyPot, [Math Captcha](https://wpeverest.com/wordpress-plugins/everest-forms/captcha/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro), hCaptcha, and let your mind be at peace.
+* **Multiple Spam Protection Technique:** Spams won't trouble you anymore. Get the spams controlled with smart integrations like Google reCAPTCHA, HoneyPot, [Math Captcha](https://wpeverest.com/wordpress-plugins/everest-forms/captcha/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro), hCaptcha, cloudfare Turnstile and let your mind be at peace.
 
 * **One-Click Form Import Export:** Save your precious time using the import/export tool. Just one click, and you can instantly import or export the forms from one site to another. The supported file format is JSON.
 
@@ -183,7 +183,7 @@ Everest Forms has a long list of top-notch features, making it the best WordPres
 
 * **[Premium] [Email Templates Designer:](https://wpeverest.com/wordpress-plugins/everest-forms/email-templates/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Design beautiful email templates to impress your users. Customize color, fonts, spacing, header & footer, etc., of email template in real-time without coding. You've got an option to start from scratch or choose from carefully designed templates to get started.
 
-* **[Premium] Collect Payments:** Need to collect payments from customers on your forms? With our [PayPal](https://wpeverest.com/wordpress-plugins/everest-forms/paypal-standard/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) and [Stripe](https://wpeverest.com/wordpress-plugins/everest-forms/stripe/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) addon one can easily collect payment globally. Accept PayPal payments and even credit cards and bank payments(iDeal) via Stripe. Also, support [RazorPay](https://wpeverest.com/wordpress-plugins/everest-forms/razorpay/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) for Indian customers. Can be useful for collect single item payment, multiple item payment, donation payment and more.
+* **[Premium] Collect Payments:** Need to collect payments from customers on your forms? With our [PayPal](https://wpeverest.com/wordpress-plugins/everest-forms/paypal-standard/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) and [Stripe](https://wpeverest.com/wordpress-plugins/everest-forms/stripe/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) addon one can easily collect payment globally and [Authorize.Net](https://wpeverest.com/wordpress-plugins/everest-forms/authorize-net/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) addon one can easily collect payment globally. Accept PayPal payments and even credit cards and bank payments(iDeal) via Stripe. Also, support [RazorPay](https://wpeverest.com/wordpress-plugins/everest-forms/razorpay/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) for Indian customers. Can be useful for collect single item payment, multiple item payment, donation payment and more.
 
 * **[Premium] [Smart Conditional Logic:](https://wpeverest.com/wordpress-plugins/everest-forms/conditional-logic/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Choose to show/hide specific form fields based on your users' interaction with previous fields. Collect all the necessary information from the users without making your form appear overwhelming and complex.
 
@@ -419,6 +419,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 - 2.0.1       - xx-xx-2023
 * Enhancement - Upgrade to pro link.
+* Feature 	  - Cloudfare Turnstile.
 * Tweak 	  - Form locate option where form is activated.
 * Dependency  - Authorize.Net.
 
