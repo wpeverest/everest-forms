@@ -61,9 +61,10 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 					'default'  => 'v2',
 					'type'     => 'radio',
 					'options'  => array(
-						'v2'       => esc_html__( 'reCAPTCHA v2', 'everest-forms' ),
-						'v3'       => esc_html__( 'reCAPTCHA v3', 'everest-forms' ),
-						'hcaptcha' => esc_html__( 'hCaptcha', 'everest-forms' ),
+						'v2'        => esc_html__( 'reCAPTCHA v2', 'everest-forms' ),
+						'v3'        => esc_html__( 'reCAPTCHA v3', 'everest-forms' ),
+						'hcaptcha'  => esc_html__( 'hCaptcha', 'everest-forms' ),
+						'turnstile' => esc_html__( 'Cloudflare Turnstile', 'everest-forms' ),
 					),
 					'class'    => 'everest-forms-recaptcha-type',
 					'desc_tip' => true,
@@ -170,6 +171,41 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 					),
 					'default'           => '0.4',
 					'desc_tip'          => true,
+				),
+				array(
+					'title'      => esc_html__( 'Site Key', 'everest-forms' ),
+					'type'       => 'text',
+					/* translators: %1$s - Cloudflare Turnstile docs url */
+					'desc'       => sprintf( esc_html__( 'Please enter your site key for your Cloudflare Trunstile. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/tutorials/how-to-integrate-google-recaptcha/' ) ),
+					'is_visible' => 'turnstile' === $recaptcha_type,
+					'id'         => 'everest_forms_recaptcha_turnstile_site_key',
+					'default'    => '',
+					'desc_tip'   => true,
+				),
+				array(
+					'title'      => esc_html__( 'Secret Key', 'everest-forms' ),
+					'type'       => 'text',
+					/* translators: %1$s - Cloudflare Trunstile docs url */
+					'desc'       => sprintf( esc_html__( 'Please enter your secret key for your Cloudflare Turnstile. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/tutorials/how-to-integrate-google-recaptcha/' ) ),
+					'id'         => 'everest_forms_recaptcha_turnstile_secret_key',
+					'is_visible' => 'turnstile' === $recaptcha_type,
+					'default'    => '',
+					'desc_tip'   => true,
+				),
+				array(
+					'title'      => esc_html__( 'Theme', 'everest-forms' ),
+					'type'       => 'select',
+					/* translators: %1$s - Cloudflare Trunstile docs url */
+					'desc'       => sprintf( esc_html__( 'Please select theme mode for your Cloudflare Turnstile. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/tutorials/how-to-integrate-google-recaptcha/' ) ),
+					'id'         => 'everest_forms_recaptcha_turnstile_theme',
+					'is_visible' => 'turnstile' === $recaptcha_type,
+					'options'    => array(
+						'auto'  => esc_html__( 'Auto', 'everest-forms' ),
+						'light' => esc_html__( 'Light', 'everest-forms' ),
+						'dark'  => esc_html__( 'Dark', 'everest-forms' ),
+					),
+					'class'      => 'evf-enhanced-select',
+					'desc_tip'   => true,
 				),
 				array(
 					'title'    => esc_html__( 'CAPTCHA Language ', 'everest-forms' ),

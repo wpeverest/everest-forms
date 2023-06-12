@@ -616,6 +616,10 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			case 'hcaptcha':
 				$recaptcha_label = esc_html__( 'Enable hCaptcha', 'everest-forms' );
 				break;
+
+			case 'turnstile':
+				$recaptcha_label = esc_html__( 'Enable Cloudflare Turnstile', 'everest-forms' );
+				break;
 		}
 		$recaptcha_label = 'yes' === get_option( 'everest_forms_recaptcha_v2_invisible' ) && 'v2' === $recaptcha_type ? esc_html__( 'Enable Google Invisible reCAPTCHA v2', 'everest-forms' ) : $recaptcha_label;
 		if ( ! empty( $recaptcha_key ) && ! empty( $recaptcha_secret ) ) {

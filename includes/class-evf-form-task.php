@@ -270,12 +270,18 @@ class EVF_Form_Task {
 				} elseif ( 'hcaptcha' === $recaptcha_type ) {
 					$site_key   = get_option( 'everest_forms_recaptcha_hcaptcha_site_key' );
 					$secret_key = get_option( 'everest_forms_recaptcha_hcaptcha_secret_key' );
+				} elseif ( 'turnstile' === $recaptcha_type ) {
+					$site_key   = get_option( 'everest_forms_recaptcha_turnstile_site_key' );
+					$secret_key = get_option( 'everest_forms_recaptcha_turnstile_secret_key' );
+					$theme_mode = get_option( 'everest_forms_recaptcha_turnstile_theme' );
 				}
 
 				if ( ! empty( $site_key ) && ! empty( $secret_key ) && isset( $this->form_data['settings']['recaptcha_support'] ) && '1' === $this->form_data['settings']['recaptcha_support'] &&
 				! isset( $_POST['__amp_form_verify'] ) && ( 'v3' === $recaptcha_type || ! evf_is_amp() ) ) {
 					if ( 'hcaptcha' === $recaptcha_type ) {
 						$error = esc_html__( 'hCaptcha verification failed, please try again later.', 'everest-forms' );
+					} elseif ( 'turnstile' === $recaptcha_type ) {
+						$error = esc_html__( 'Cloudflare Turnstile verification failed, please try again later.', 'everest-forms' );
 					} else {
 						$error = esc_html__( 'Google reCAPTCHA verification failed, please try again later.', 'everest-forms' );
 					}
@@ -293,6 +299,17 @@ class EVF_Form_Task {
 					if ( 'hcaptcha' === $recaptcha_type ) {
 						$token        = ! empty( $_POST['h-captcha-response'] ) ? evf_clean( wp_unslash( $_POST['h-captcha-response'] ) ) : false;
 						$raw_response = wp_safe_remote_get( 'https://hcaptcha.com/siteverify?secret=' . $secret_key . '&response=' . $token );
+					} elseif ( 'turnstile' === $recaptcha_type ) {
+						$token        = ! empty( $_POST['cf-turnstile-response'] ) ? evf_clean( wp_unslash( $_POST['cf-turnstile-response'] ) ) : false;
+						$url          = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
+						$params       = array(
+							'method' => 'POST',
+							'body'   => array(
+								'secret'   => $secret_key,
+								'response' => $token,
+							),
+						);
+						$raw_response = wp_safe_remote_post( $url, $params );
 					} else {
 						$raw_response = wp_safe_remote_get( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $token );
 					}

@@ -98,54 +98,80 @@
 			recaptcha_v3_threshold_score      = $( '#everest_forms_recaptcha_v3_threshold_score' ).parents( 'tr' ).eq( 0 );
 			hcaptcha_site_key            	  = $( '#everest_forms_recaptcha_hcaptcha_site_key' ).parents( 'tr' ).eq( 0 ),
 			hcaptcha_secret_key               = $( '#everest_forms_recaptcha_hcaptcha_secret_key' ).parents( 'tr' ).eq( 0 );
+			turnstile_site_key 				  = $( '#everest_forms_recaptcha_turnstile_site_key' ).parents( 'tr' ).eq( 0 ),
+			turnstile_secret_key              = $( '#everest_forms_recaptcha_turnstile_secret_key' ).parents( 'tr' ).eq( 0 );
+			turnstile_theme                   = $( '#everest_forms_recaptcha_turnstile_theme' ).parents( 'tr' ).eq( 0 );
 
-		if ( $( this ).is( ':checked' ) ) {
-			if ( 'v2' === $( this ).val() ) {
-				if( $( '#everest_forms_recaptcha_v2_invisible' ).is(':checked') ) {
-					recaptcha_v2_site_key.hide();
-					recaptcha_v2_secret_key.hide();
-					recaptcha_v2_invisible_site_key.show();
-					recaptcha_v2_invisible_secret_key.show();
-				} else {
+			if ( $( this ).is( ':checked' ) ) {
+				if ( 'v2' === $( this ).val() ) {
+					if( $( '#everest_forms_recaptcha_v2_invisible' ).is(':checked') ) {
+						recaptcha_v2_site_key.hide();
+						recaptcha_v2_secret_key.hide();
+						recaptcha_v2_invisible_site_key.show();
+						recaptcha_v2_invisible_secret_key.show();
+					} else {
+						recaptcha_v2_invisible_site_key.hide();
+						recaptcha_v2_invisible_secret_key.hide();
+						recaptcha_v2_site_key.show();
+						recaptcha_v2_secret_key.show();
+					}
+					recaptcha_v2_invisible.show();
+					recaptcha_v3_site_key.hide();
+					recaptcha_v3_secret_key.hide();
+					hcaptcha_site_key.hide();
+					hcaptcha_secret_key.hide();
+					turnstile_site_key.hide();
+					turnstile_secret_key.hide();
+					turnstile_theme.hide();
+					recaptcha_v3_threshold_score.hide();
+
+				} else if ('hcaptcha' === $( this ).val()) {
+					recaptcha_v2_invisible.hide();
 					recaptcha_v2_invisible_site_key.hide();
 					recaptcha_v2_invisible_secret_key.hide();
-					recaptcha_v2_site_key.show();
-					recaptcha_v2_secret_key.show();
+					recaptcha_v3_site_key.hide();
+					recaptcha_v3_secret_key.hide();
+					recaptcha_v3_threshold_score.hide();
+					recaptcha_v2_site_key.hide();
+					recaptcha_v2_secret_key.hide();
+					turnstile_site_key.hide();
+					turnstile_secret_key.hide();
+					turnstile_theme.hide();
+					hcaptcha_site_key.show();
+					hcaptcha_secret_key.show();
+				 } else if ('turnstile' === $( this ).val()) {
+					recaptcha_v2_site_key.hide();
+					recaptcha_v2_secret_key.hide();
+					recaptcha_v2_invisible.hide();
+					recaptcha_v2_invisible_site_key.hide();
+					recaptcha_v2_invisible_secret_key.hide();
+					recaptcha_v3_site_key.hide();
+					recaptcha_v3_secret_key.hide();
+					recaptcha_v3_threshold_score.hide();
+					hcaptcha_site_key.hide();
+					hcaptcha_secret_key.hide();
+					turnstile_site_key.show();
+					turnstile_secret_key.show();
+					turnstile_theme.show();
+				 }  else {
+					recaptcha_v2_site_key.hide();
+					recaptcha_v2_secret_key.hide();
+					recaptcha_v2_invisible.hide();
+					recaptcha_v2_invisible_site_key.hide();
+					recaptcha_v2_invisible_secret_key.hide();
+					hcaptcha_site_key.hide();
+					hcaptcha_secret_key.hide();
+					turnstile_site_key.hide();
+					turnstile_secret_key.hide();
+					turnstile_theme.hide();
+					recaptcha_v3_site_key.show();
+					recaptcha_v3_secret_key.show();
+					recaptcha_v3_threshold_score.show();
 				}
-				recaptcha_v2_invisible.show();
-				recaptcha_v3_site_key.hide();
-				recaptcha_v3_secret_key.hide();
-				hcaptcha_site_key.hide();
-				hcaptcha_secret_key.hide();
-				recaptcha_v3_threshold_score.hide();
 
-			} else if ('hcaptcha' === $( this ).val()) {
-				recaptcha_v2_invisible.hide();
-				recaptcha_v2_invisible_site_key.hide();
-				recaptcha_v2_invisible_secret_key.hide();
-				recaptcha_v3_site_key.hide();
-				recaptcha_v3_secret_key.hide();
-				recaptcha_v3_threshold_score.hide();
-				recaptcha_v2_site_key.hide();
-				recaptcha_v2_secret_key.hide();
-				hcaptcha_site_key.show();
-				hcaptcha_secret_key.show();
-			 }  else {
-				recaptcha_v2_site_key.hide();
-				recaptcha_v2_secret_key.hide();
-				recaptcha_v2_invisible.hide();
-				recaptcha_v2_invisible_site_key.hide();
-				recaptcha_v2_invisible_secret_key.hide();
-				hcaptcha_site_key.hide();
-				hcaptcha_secret_key.hide();
-				recaptcha_v3_site_key.show();
-				recaptcha_v3_secret_key.show();
-				recaptcha_v3_threshold_score.show();
+
 			}
-
-
-		}
-	}).change();
+		}).change();
 
 	$( 'input#everest_forms_recaptcha_v2_invisible' ).change( function() {
 		if ( $( this ).is( ':checked' ) ) {

@@ -505,6 +505,11 @@ class EVF_Shortcode_Form {
 		} elseif ( 'hcaptcha' === $recaptcha_type ) {
 			$site_key   = get_option( 'everest_forms_recaptcha_hcaptcha_site_key' );
 			$secret_key = get_option( 'everest_forms_recaptcha_hcaptcha_secret_key' );
+		} elseif ( 'turnstile' === $recaptcha_type ) {
+			$site_key   = get_option( 'everest_forms_recaptcha_turnstile_site_key' );
+			$secret_key = get_option( 'everest_forms_recaptcha_turnstile_secret_key' );
+			$theme      = get_option( 'everest_forms_recaptcha_turnstile_theme' );
+			$lang       = get_option( 'everest_forms_recaptcha_recaptcha_language', 'en-GB' );
 		}
 
 		if ( ! $site_key || ! $secret_key ) {
@@ -572,6 +577,10 @@ class EVF_Shortcode_Form {
 					$recaptcha_api     = apply_filters( 'everest_forms_frontend_recaptcha_url', 'https://hcaptcha.com/1/api.js??onload=EVFRecaptchaLoad&render=explicit', $recaptcha_type, $form_id );
 					$recaptcha_inline  = 'var EVFRecaptchaLoad = function(){jQuery(".g-recaptcha").each(function(index, el){var recaptchaID =  hcaptcha.render(el,{callback:function(){EVFRecaptchaCallback(el);}},true);jQuery(el).attr( "data-recaptcha-id", recaptchaID);});};';
 					$recaptcha_inline .= 'var EVFRecaptchaCallback = function(el){jQuery(el).parent().find(".evf-recaptcha-hidden").val("1").trigger("change").valid();};';
+				} elseif ( 'turnstile' === $recaptcha_type ) {
+					$recaptcha_api     = apply_filters( 'everest_forms_frontend_recaptcha_url', 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=EVFTurnstileLoad&render=explicit', $recaptcha_type, $form_id );
+					$recaptcha_inline  = 'var EVFTurnstileLoad = function(){jQuery(".g-recaptcha").each(function(index, el){var recaptchaID =  turnstile.render(el,{theme:"' . $theme . '",language:"' . $lang . '",callback:function(){EVFRecaptchaCallback(el);}},true);jQuery(el).attr( "data-recaptcha-id", recaptchaID);});};';
+					$recaptcha_inline .= 'var EVFRecaptchaCallback = function(el){jQuery(el).parent().find(".evf-recaptcha-hidden").val("1").trigger("change").valid();};';
 				}
 
 				// Enqueue reCaptcha scripts.
@@ -594,10 +603,10 @@ class EVF_Shortcode_Form {
 				$class = ( 'v3' === $recaptcha_type || ( 'v2' === $recaptcha_type && 'yes' === $invisible_recaptcha ) ) ? 'recaptcha-hidden' : '';
 				echo '<div class="evf-recaptcha-container ' . esc_attr( $class ) . '" style="display:' . ( ! empty( self::$parts[ $form_id ] ) ? 'none' : 'block' ) . '">';
 
-				if ( 'v2' === $recaptcha_type || 'hcaptcha' === $recaptcha_type ) {
+				if ( 'v2' === $recaptcha_type || 'hcaptcha' === $recaptcha_type || 'turnstile' === $recaptcha_type ) {
 					echo '<div ' . evf_html_attributes( '', array( 'g-recaptcha' ), $data ) . '></div>';
 
-					if ( 'hcaptcha' === $recaptcha_type && 'no' === $invisible_recaptcha ) {
+					if ( 'hcaptcha' === $recaptcha_type && 'no' === $invisible_recaptcha || 'turnstile' === $recaptcha_type ) {
 						echo '<input type="text" name="g-recaptcha-hidden" class="evf-recaptcha-hidden" style="position:absolute!important;clip:rect(0,0,0,0)!important;height:1px!important;width:1px!important;border:0!important;overflow:hidden!important;padding:0!important;margin:0!important;" required>';
 					}
 				} else {
