@@ -20,7 +20,7 @@ jQuery( function( $ ) {
 
 			// Prevent <ENTER> key for setup actions.
 			$( document.body ).on( 'keypress', '.everest-forms-setup-form-name input', this.input_keypress );
-			
+
 			// <ENTER> key for setup actions.
 			$( document.body ).on( 'keypress', 'input#everest-forms-setup-name', function ( event ) {
 				if( event.key === "Enter" ) {
@@ -220,9 +220,10 @@ jQuery( function( $ ) {
 						action: function () {
 							var $formName = $( '#everest-forms-setup-name' ),
 								overlay   = $( '.everest-forms-loader-overlay' );
+								console.log($formName.val());
 
 							// Check that form title is provided.
-							if ( ! $formName.val() ) {
+							if ( ! $formName.val() || "" === $formName.val().trim()  ) {
 								formName = templateName;
 								var error = this.$content.find( '.error' );
 								$( '.everest-forms-setup-name' ).addClass( 'everest-forms-required' ).focus();
