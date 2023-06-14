@@ -38,6 +38,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			'advanced-options' => array(
 				'field_options' => array(
 					'placeholder',
+					'slot_booking',
 					'datetime_options',
 					'label_hide',
 					'css',
@@ -136,6 +137,34 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 		$this->field_element( 'row', $field, $args );
 	}
 
+	/**
+	 * Use date/time field as slot booking advanced field options.
+	 *
+	 * @since 1.4.9
+	 * @param array $field Field Data.
+	 */
+	public function slot_booking( $field ) {
+
+		$slot_booking_toggle = $this->field_element(
+			'checkbox',
+			$field,
+			array(
+				'slug'    => 'slot_booking_advanced',
+				'desc'    => esc_html__( 'Slot Booking', 'everest-forms' ),
+				'value'   => isset( $field['slot_booking_advanced'] ) ? $field['slot_booking_advanced'] : false,
+				'tooltip' => esc_html__( 'Enable to use date/time field as slot booking.', 'everest-forms' ),
+				'class'   => 'evf-date-format',
+				'default' => false,
+			),
+			false
+		);
+
+		$args = array(
+			'slug'    => 'slot_booking_advanced',
+			'content' => $slot_booking_toggle,
+		);
+		$this->field_element( 'row', $field, $args );
+	}
 	/**
 	 * Date and time advanced field options.
 	 *

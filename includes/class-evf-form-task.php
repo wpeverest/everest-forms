@@ -61,6 +61,7 @@ class EVF_Form_Task {
 	public function __construct() {
 		add_action( 'wp', array( $this, 'listen_task' ) );
 		add_filter( 'everest_forms_field_properties', array( $this, 'load_previous_field_value' ), 99, 3 );
+		add_action( 'everest_forms_complete_entry_save', array( $this, 'update_slot_booking_value' ), 10, 5 );
 	}
 
 	/**
@@ -1037,6 +1038,56 @@ class EVF_Form_Task {
 		do_action( 'everest_forms_complete_entry_save', $entry_id, $fields, $entry, $form_id, $form_data );
 
 		return $this->entry_id;
+	}
+
+	/**
+	 * Insert or update the slot booking data.
+	 *
+	 * @param int   $entry_id Entry id.
+	 * @param array $fields    List of form fields.
+	 * @param array $entry     User submitted data.
+	 * @param int   $form_id   Form ID.
+	 * @param array $form_data Prepared form settings.
+	 */
+	public function update_slot_booking_value( $entry_id, $fields, $entry, $form_id, $form_data ) {
+		global $wpdb;
+		$new_slot_booking                     = array();
+		$new_slot_booking_field_meta_key_list = array();
+
+		foreach ( $form_data['form_fields'] as $field ) {
+			if ( ( 'date-time' === $field['type'] ) && isset( $field['slot_booking_advanced'] ) && evf_string_to_bool( $field['slot_booking_advanced'] ) ) {
+				$new_slot_booking_field_meta_key_list[] = $field['meta-key'];
+			}
+		}
+
+		if ( ! empty( $new_slot_booking_field_meta_key_list ) ) {
+			foreach ( $fields as $value ) {
+				if ( in_array( $value['meta_key'], $new_slot_booking_field_meta_key_list, true ) ) {
+					$new_slot_booking [] = $value['value'];
+				}
+			}
+
+			if ( ! empty( $new_slot_booking ) ) {
+				$get_booked_slot = get_option( 'evf_booked_slot', array() );
+
+				$new_booked_slot = array( $form_id => $new_slot_booking );
+				if ( empty( $get_booked_slot ) ) {
+					$all_booked_slot = maybe_serialize( $new_booked_slot );
+				} else {
+					$unserialized_booked_slot = maybe_unserialize( $get_booked_slot );
+
+					if ( array_key_exists( $form_id, $unserialized_booked_slot ) ) {
+						$booked_slot     = $unserialized_booked_slot[ $form_id ];
+						$booked_slot     = array_merge( (array) $booked_slot, $new_slot_booking );
+						$new_booked_slot = array( $form_id => $booked_slot );
+					}
+
+					$all_booked_slot = maybe_serialize( array_replace( $unserialized_booked_slot, $new_booked_slot ) );
+				}
+
+				update_option( 'evf_booked_slot', $all_booked_slot );
+			}
+		}
 	}
 
 	/**
