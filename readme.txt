@@ -417,9 +417,9 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-- 2.0.1       - xx-xx-2023
+- 2.0.1       - 14-06-2023
 * Enhancement - Upgrade to pro link.
-* Feature 	  - Cloudfare Turnstile.
+* Feature 	  - Cloudflare Turnstile.
 * Tweak 	  - Form locate option where form is activated.
 * Dependency  - Authorize.Net.
 

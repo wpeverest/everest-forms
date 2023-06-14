@@ -459,6 +459,18 @@
 				"professional",
 				"agency"
 			]
+		},
+    {
+			"title": "Authorize.Net",
+			"slug": "everest-forms-authorize-net",
+			"name": "Everest Forms Authorize.Net",
+			"image": "extensions-json/sections/images/authorize-net.png",
+			"excerpt": "Allows you to integrate online payment service to your e-commerce website. You can connect your Everest forms with Authorize.Net to easily collect payments, donations, and online orders.",
+			"link": "https://wpeverest.com/wordpress-plugins/everest-forms/authorize-net/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=authorize-net",
+			"plan": [
+				"professional",
+				"agency"
+			]
 		}
 	]
 }
