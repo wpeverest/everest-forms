@@ -1134,9 +1134,9 @@
 				$( '.everest-forms-field-option-row-date_format .time_interval' ).show();
 				$( '#everest-forms-field-option-' + id + '-date_localization' ).show();
 				$( 'label[for=everest-forms-field-option-' + id + '-date_localization]' ).show();
-				$( '#everest-forms-field-option-' + id + '-date_default' ).parent().show();
-				$('#everest-forms-field-option-' + id + '-past_date_disable' ).parent().show();
-				$( '#everest-forms-field-option-' + id + '-enable_min_max' ).parent().show();
+				$( '#everest-forms-field-option-' + id + '-date_default' ).parent().parent().parent().show();
+				$('#everest-forms-field-option-' + id + '-past_date_disable' ).parent().parent().parent().show();
+				$( '#everest-forms-field-option-' + id + '-enable_min_max' ).parent().parent().parent().show();
 				//Check if min max date enabled.
 				if( $('#everest-forms-field-option-' + id + '-enable_min_max' ).prop( 'checked' ) ) {
 					$('#everest-forms-field-option-' + id + '-set_date_range' ).parent().show();
@@ -1147,7 +1147,7 @@
 					}
 				}
 				$('#everest-forms-field-option-' + id + '-time_interval' ).show();
-				$('#everest-forms-field-option-' + id + '-enable_min_max_time').hide();
+				$('#everest-forms-field-option-' + id + '-enable_min_max_time').parent().parent().parent().hide();
 				$('label[for=everest-forms-field-option-' + id + '-enable_min_max_time]').hide();
 				$('label[for=everest-forms-field-option-' + id + '-select_min_time]').hide();
 				$('label[for=everest-forms-field-option-' + id + '-select_max_time]').hide();
@@ -1157,12 +1157,12 @@
 			} else {
 				// Dropdown Date Setting Control
 				$('#everest-forms-field-option-' + id + '-date_mode-range').parents().find('everest-forms-checklist').hide();
-				$('#everest-forms-field-option-' + id + '-date_default' ).parent().hide();
-				$('#everest-forms-field-option-' + id + '-past_date_disable' ).parent().hide();
+				$('#everest-forms-field-option-' + id + '-date_default' ).parent().parent().parent().hide();
+				$('#everest-forms-field-option-' + id + '-past_date_disable' ).parent().parent().parent().hide();
 				$('#everest-forms-field-option-row-' + id + '-placeholder').hide();
-				$('#everest-forms-field-option-' + id + '-enable_min_max').parent().hide();
+				$('#everest-forms-field-option-' + id + '-enable_min_max').parent().parent().parent().hide();
 				$('#everest-forms-field-option-row-' + id + '-date_format .everest-forms-min-max-date-option').addClass( 'everest-forms-hidden' );
-				$('#everest-forms-field-option-' + id + '-set_date_range').parent().hide();
+				$('#everest-forms-field-option-' + id + '-set_date_range').parent().parent().parent().hide();
 				$('#everest-forms-field-option-row-' + id + '-date_format .everest-forms-min-max-date-range-option').addClass( 'everest-forms-hidden' );
 				$('#everest-forms-field-option-' + id + '-disable_dates' ).hide();
 				$('label[for=everest-forms-field-option-' + id + '-disable_dates]').hide();
@@ -1171,7 +1171,7 @@
 				$('#everest-forms-field-option-' + id + '-date_localization' ).hide();
 				$('label[for=everest-forms-field-option-' + id + '-date_localization]' ).hide();
 				$('#everest-forms-field-option-' + id + '-time_interval' ).hide();
-				$('#everest-forms-field-option-' + id + '-enable_min_max_time').show();
+				$('#everest-forms-field-option-' + id + '-enable_min_max_time').parent().parent().parent().show();
 				$('label[for=everest-forms-field-option-' + id + '-enable_min_max_time]').show();
 				//Check if min max time enabled.
 				if( $('#everest-forms-field-option-' + id + '-enable_min_max_time').prop('checked') ) {
