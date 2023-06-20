@@ -962,7 +962,7 @@
 
 			// Real-time updates for "Confirmation" field option.
 			$builder.on( 'change', '.everest-forms-field-option-row-confirmation input', function( event ) {
-				var id = $( this ).parent().data( 'field-id' );
+				var id = $( this ).parent().parent().parent().data( 'field-id' );
 
 				// Toggle "Confirmation" field option.
 				if ( $( event.target ).is( ':checked' ) ) {
