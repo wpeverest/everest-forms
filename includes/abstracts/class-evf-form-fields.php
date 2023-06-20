@@ -1181,7 +1181,7 @@ abstract class EVF_Form_Fields {
 				);
 
 				$field_content .= $this->field_element(
-					'checkbox',
+					'toggle',
 					$field,
 					array(
 						'slug'    => 'choices_images',
@@ -1776,7 +1776,7 @@ abstract class EVF_Form_Fields {
 				$tooltip = esc_html__( 'Check this option to hide the form field label.', 'everest-forms' );
 
 				$output = $this->field_element(
-					'checkbox',
+					'toggle',
 					$field,
 					array(
 						'slug'    => 'select_all',
