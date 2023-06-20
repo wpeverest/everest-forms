@@ -42,6 +42,9 @@ class EVF_Field_Text extends EVF_Form_Fields {
 					'default_value',
 					'css',
 					'input_mask',
+					'regex_validation',
+					'regex_value',
+					'regex_message',
 				),
 			),
 		);
