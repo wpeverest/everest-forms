@@ -1037,7 +1037,8 @@
 
 			// Real-time updates for "Hide Label" field option.
 			$builder.on( 'change', '.everest-forms-field-option-row-label_hide input', function() {
-				var id = $(this).parent().data( 'field-id' );
+				var id = $(this).parent().parent().parent().data( 'field-id' );
+				console.log(id);
 				$( '#everest-forms-field-' + id ).toggleClass( 'label_hide' );
 			});
 

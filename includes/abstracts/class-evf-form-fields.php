@@ -822,7 +822,7 @@ abstract class EVF_Form_Fields {
 				$value   = ! empty( $field['no_duplicates'] ) ? esc_attr( $field['no_duplicates'] ) : '';
 				$tooltip = esc_html__( 'Select this option to limit user input to unique values only. This will require that a value entered in a field does not currently exist in the entry database for that field..', 'everest-forms' );
 				$output  = $this->field_element(
-					'checkbox',
+					'toggle',
 					$field,
 					array(
 						'slug'    => 'no_duplicates',
@@ -1590,7 +1590,7 @@ abstract class EVF_Form_Fields {
 
 				// Build output.
 				$output = $this->field_element(
-					'checkbox',
+					'toggle',
 					$field,
 					array(
 						'slug'    => 'label_hide',
