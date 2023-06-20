@@ -930,22 +930,22 @@
 			});
 
 			// Real-time updates for "Required" field option.
-			$builder.on( 'change', '.everest-forms-field-option-row-required input', function( event ) {
-				var id = $( this ).parent().data( 'field-id' );
+				$builder.on( 'change', '.everest-forms-field-option-row-required input', function( event ) {
+					var id = $( this ).parent().parent().parent().data( 'field-id' );
 
-				$( '#everest-forms-field-' + id ).toggleClass( 'required' );
+					$( '#everest-forms-field-' + id ).toggleClass( 'required' );
 
-				// Toggle "Required Field Message Setting" option.
-				if ( $( event.target ).is( ':checked' ) ) {
-					$( '#everest-forms-field-option-row-' + id + '-required_field_message_setting' ).show();
-					if($('#everest-forms-field-option-' + id + '-required_field_message_setting-individual').is(':checked')) {
-						$( '#everest-forms-field-option-row-' + id + '-required-field-message' ).show();
+					// Toggle "Required Field Message Setting" option.
+					if ( $( event.target ).is( ':checked' ) ) {
+						$( '#everest-forms-field-option-row-' + id + '-required_field_message_setting' ).show();
+						if($('#everest-forms-field-option-' + id + '-required_field_message_setting-individual').is(':checked')) {
+							$( '#everest-forms-field-option-row-' + id + '-required-field-message' ).show();
+						}
+					} else {
+						$( '#everest-forms-field-option-row-' + id + '-required_field_message_setting' ).hide();
+						$( '#everest-forms-field-option-row-' + id + '-required-field-message' ).hide();
 					}
-				} else {
-					$( '#everest-forms-field-option-row-' + id + '-required_field_message_setting' ).hide();
-					$( '#everest-forms-field-option-row-' + id + '-required-field-message' ).hide();
-				}
-			});
+				});
 
 			$builder.on( 'change', '.everest-forms-field-option-row-required_field_message_setting input', function( event ) {
 				var id = $( this ).parent().parent().parent().parent().data( 'field-id' );
