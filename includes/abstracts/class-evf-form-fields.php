@@ -782,7 +782,7 @@ abstract class EVF_Form_Fields {
 					false
 				);
 				$readonly       = $this->field_element(
-					'checkbox',
+					'toggle',
 					$field,
 					array(
 						'slug'  => 'readonly_field_visibility',
@@ -793,7 +793,7 @@ abstract class EVF_Form_Fields {
 					false
 				);
 				$hidden         = $this->field_element(
-					'checkbox',
+					'toggle',
 					$field,
 					array(
 						'slug'  => 'hidden_field_visibility',
@@ -1483,7 +1483,7 @@ abstract class EVF_Form_Fields {
 				$value   = ! empty( $field['enable_prepopulate'] ) ? esc_attr( $field['enable_prepopulate'] ) : '';
 				$tooltip = esc_html__( 'Enable this option to allow field to be populated dynamically', 'everest-forms' );
 				$output  = $this->field_element(
-					'checkbox',
+					'toggle',
 					$field,
 					array(
 						'slug'    => 'enable_prepopulate',

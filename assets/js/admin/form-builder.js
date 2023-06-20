@@ -903,7 +903,7 @@
 			});
 
 			$builder.on( 'change', '.everest-forms-field-option-row-enable_prepopulate input', function( event ) {
-				var id = $( this ).parent().data( 'field-id' );
+				var id = $( this ).parent().parent().parent().data( 'field-id' );
 
 				$( '#everest-forms-field-' + id ).toggleClass( 'parameter_name' );
 
