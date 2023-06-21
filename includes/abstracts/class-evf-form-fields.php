@@ -305,6 +305,10 @@ abstract class EVF_Form_Fields {
 				$output .= sprintf( '<span class="slider round"></span>' );
 				$output .= sprintf( '</span>' );
 				$output .= sprintf( '<label for="everest-forms-field-option-%s-%s" class="inline">%s', $id, $slug, $args['desc'] );
+				if ( isset( $args['tooltip'] ) && ! empty( $args['tooltip'] ) ) {
+					$output .= ' ' . sprintf( '<i class="dashicons dashicons-editor-help everest-forms-help-tooltip" title="%s"></i>', esc_attr( $args['tooltip'] ) );
+				}
+				$output .= '</label>';
 				$output .= sprintf( '</div>' );
 				break;
 
@@ -1620,7 +1624,7 @@ abstract class EVF_Form_Fields {
 
 				// Build output.
 				$output = $this->field_element(
-					'checkbox',
+					'toggle',
 					$field,
 					array(
 						'slug'    => 'sublabel_hide',
