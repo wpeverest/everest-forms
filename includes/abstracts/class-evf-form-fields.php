@@ -942,7 +942,7 @@ abstract class EVF_Form_Fields {
 				$value   = ! empty( $field['autocomplete_address'] ) ? esc_attr( $field['autocomplete_address'] ) : '';
 				$tooltip = esc_html__( 'Check this option to autofill address field.', 'everest-forms' );
 				$output  = $this->field_element(
-					'checkbox',
+					'toggle',
 					$field,
 					array(
 						'slug'    => 'autocomplete_address',
