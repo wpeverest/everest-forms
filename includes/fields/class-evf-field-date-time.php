@@ -718,6 +718,12 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			$properties['inputs']['primary']['attr']['data-disable-dates'] = esc_attr( $field['disable_dates'] );
 		}
 
+		// Input primary: Booked slot.
+		if ( isset( $field['slot_booking_advanced'] ) && evf_string_to_bool( $field['slot_booking_advanced'] ) ) {
+			$properties['inputs']['primary']['attr']['data-slot-booking'] = esc_attr( $field['slot_booking_advanced'] );
+			$properties['inputs']['primary']['attr']['data-form-id']      = esc_attr( $form_data['id'] );
+		}
+
 		// Input primary: data-date-time.
 		if ( ! empty( $field['datetime_format'] ) ) {
 			$properties['inputs']['primary']['attr']['data-date-time'] = esc_attr( $field['datetime_format'] );

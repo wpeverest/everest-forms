@@ -559,6 +559,12 @@
 				var id = $( this ).attr( 'data-field-id' );
 				EVFPanelBuilder.dateSettingToggler( id, $('#everest-forms-field-option-' + id + '-datetime_style' ).val() );
 			} );
+
+			if($('.everest-forms-field-option-row-slot_booking_advanced input').is(":checked")) {
+				disable_past_date = $(document).find('.everest-forms-past-date-disable-format input');
+				disable_past_date.attr("disabled", true);
+				disable_past_date.attr("checked", true);
+			}
 		},
 
 		/**
@@ -976,7 +982,7 @@
 			// Real-time updates for slot booking
 			$builder.on('change', '.everest-forms-field-option-row-slot_booking_advanced input', function(event) {
 				if($(this).is(":checked")) {
-					disable_past_date = $(document).find('.everest-forms-field-option-row-date_format .everest-forms-past-date-disable-format input');
+					disable_past_date = $(document).find('.everest-forms-past-date-disable-format input');
 					if(disable_past_date.is(":not(:checked)")) {
 						disable_past_date.attr("checked", true);
 					}
@@ -986,11 +992,6 @@
 				}
 			});
 
-			if($('.everest-forms-field-option-row-slot_booking_advanced input').is(":checked")) {
-				disable_past_date = $(document).find('.everest-forms-field-option-row-date_format .everest-forms-past-date-disable-format input');
-				disable_past_date.attr("disabled", true);
-				disable_past_date.attr("checked", true);
-			}
 			// Real-time updates for "Placeholder" field option.
 			$builder.on( 'input', '.everest-forms-field-option-row-placeholder input', function(e) {
 				var $this    = $( this ),

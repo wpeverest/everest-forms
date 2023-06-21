@@ -101,6 +101,7 @@ class EVF_AJAX {
 			'ajax_form_submission'    => true,
 			'send_test_email'         => false,
 			'locate_form_action'      => false,
+			'slot_booking'            => true,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -855,6 +856,127 @@ class EVF_AJAX {
 				}
 			}
 			wp_send_json_success( $page_list );
+		} catch ( Exception $e ) {
+			wp_send_json_error(
+				array(
+					'message' => $e->getMessage(),
+				)
+			);
+		}
+	}
+	/**
+	 * Slot booking.
+	 */
+	public static function slot_booking() {
+		try {
+			check_ajax_referer( 'everest_forms_slot_booking_nonce', 'security' );
+			$datetime_value  = isset( $_POST['data-time-value'] ) ? sanitize_text_field( wp_unslash( $_POST['data-time-value'] ) ) : '';
+			$datetime_format = isset( $_POST['data-time-format'] ) ? sanitize_text_field( wp_unslash( $_POST['data-time-format'] ) ) : '';
+			$date_format     = isset( $_POST['data-format'] ) ? sanitize_text_field( wp_unslash( $_POST['data-format'] ) ) : '';
+			$mode            = isset( $_POST['mode'] ) ? sanitize_text_field( wp_unslash( $_POST['mode'] ) ) : '';
+			$form_id         = isset( $_POST['form-id'] ) ? sanitize_text_field( wp_unslash( $_POST['form-id'] ) ) : '';
+			$datetime_arr    = array();
+			switch ( $datetime_format ) {
+				case 'time':
+					$current_date   = gmdate( 'Y-m-d' );
+					$datetime_start = "$current_date $datetime_value";
+					$date_time      = new DateTime( $datetime_start );
+					$date_time->modify( '+1 hour' );
+
+					$datetime_end   = $date_time->format( 'Y-m-d H:i' );
+					$datetime_arr[] = array( $datetime_start, $datetime_end );
+					break;
+				case 'date':
+					if ( 'range' === $mode ) {
+						$selected_dates = explode( ' to ', $datetime_value );
+						if ( 1 >= count( $selected_dates ) ) {
+							wp_send_json_error(
+								array(
+									'message' => __( 'Please selected Proper range.', 'everest-forms' ),
+								)
+							);
+						}
+						$datetime_start = "$selected_dates[0] 00:00";
+						$date_time      = new DateTime( $selected_dates[1] );
+						$date_time->modify( '+23 hour' );
+						$datetime_end = $date_time->format( 'Y-m-d H:i' );
+						array_push( $datetime_arr, array( $datetime_start, $datetime_end ) );
+					} else {
+						$selected_dates = explode( ', ', $datetime_value );
+
+						foreach ( $selected_dates as $selected_date ) {
+							$datetime_start = "$selected_date 00:00";
+							$date_time      = new DateTime( $datetime_start );
+							$date_time->modify( '+23 hour' );
+
+							$datetime_end = $date_time->format( 'Y-m-d H:i' );
+							array_push( $datetime_arr, array( $datetime_start, $datetime_end ) );
+						}
+					}
+					break;
+				case 'date-time':
+					if ( 'range' === $mode ) {
+						$selected_dates = explode( ' to ', $datetime_value );
+						if ( 1 >= count( $selected_dates ) ) {
+							wp_send_json_error(
+								array(
+									'message' => __( 'Please selected Proper range.', 'everest-forms' ),
+								)
+							);
+						}
+						$datetime_start = $selected_dates[0];
+						$datetime_end   = $selected_dates[1];
+						array_push( $datetime_arr, array( $datetime_start, $datetime_end ) );
+					} else {
+						$selected_dates = explode( ', ', $datetime_value );
+
+						foreach ( $selected_dates as $selected_date ) {
+							$datetime_start = $selected_date;
+							$date_time      = new DateTime( $datetime_start );
+							$date_time->modify( '+1 hour' );
+
+							$datetime_end = $date_time->format( 'Y-m-d H:i' );
+							array_push( $datetime_arr, array( $datetime_start, $datetime_end ) );
+						}
+					}
+					break;
+			}
+
+			if ( empty( $datetime_arr ) ) {
+				wp_send_json_error(
+					array(
+						'message' => __( 'Please select atleast one date time.', 'everest-forms' ),
+					)
+				);
+			}
+			$booked_slot = maybe_unserialize( get_option( 'evf_booked_slot', '' ) );
+			$is_booked   = false;
+			if ( ! empty( $booked_slot ) && array_key_exists( $form_id, $booked_slot ) ) {
+				foreach ( $datetime_arr as $arr ) {
+
+					foreach ( $booked_slot[ $form_id ] as $slot ) {
+						if ( $arr[0] >= $slot[0] && $arr[1] <= $slot[1] ) {
+							$is_booked = true;
+							break;
+						} elseif ( $arr[0] >= $slot[0] && $arr[0] < $slot[1] && $arr[1] >= $slot[1] ) {
+							$is_booked = true;
+							break;
+						}
+					}
+				}
+			}
+			if ( $is_booked ) {
+				wp_send_json_success(
+					array(
+						'message' => __( 'This slot is already booked. Please choose other slot', 'everest-forms' ),
+					)
+				);
+			}
+			wp_send_json_error(
+				array(
+					'message' => __( 'This slot is not booked.', 'everest-forms' ),
+				)
+			);
 		} catch ( Exception $e ) {
 			wp_send_json_error(
 				array(
