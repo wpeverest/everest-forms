@@ -1057,7 +1057,8 @@ class EVF_Form_Task {
 		foreach ( $form_data['form_fields'] as $field ) {
 			if ( ( 'date-time' === $field['type'] ) && isset( $field['slot_booking_advanced'] ) && evf_string_to_bool( $field['slot_booking_advanced'] ) ) {
 				$new_slot_booking_field_meta_key_list[ $field['meta-key'] ] = array( $field['datetime_format'], $field['date_format'] );
-				$mode = $field['date_mode'];
+				$mode          = $field['date_mode'];
+				$time_interval = $field['time_interval'];
 			}
 		}
 
@@ -1071,9 +1072,10 @@ class EVF_Form_Task {
 					switch ( $datetime_format ) {
 						case 'time':
 							$current_date   = gmdate( 'Y-m-d' );
+							$new_value      = gmdate( 'H:i', strtotime( $new_value ) );
 							$datetime_start = "$current_date $new_value";
 							$date_time      = new DateTime( $datetime_start );
-							$date_time->modify( '+1 hour' );
+							$date_time->modify( "+$time_interval minute" );
 
 							$datetime_end       = $date_time->format( 'Y-m-d H:i' );
 							$new_slot_booking[] = array( $datetime_start, $datetime_end );
@@ -1083,6 +1085,7 @@ class EVF_Form_Task {
 								$selected_dates = explode( 'to ', $new_value );
 								if ( 2 === count( $selected_dates ) ) {
 									$datetime_start = "$selected_dates[0] 00:00";
+									$datetime_start = gmdate( 'Y-m-d H:i', strtotime( $datetime_start ) );
 									$date_time      = new DateTime( $selected_dates[1] );
 									$date_time->modify( '+23 hour' );
 									$datetime_end = $date_time->format( 'Y-m-d H:i' );
@@ -1093,6 +1096,7 @@ class EVF_Form_Task {
 
 								foreach ( $selected_dates as $selected_date ) {
 									$datetime_start = "$selected_date 00:00";
+									$datetime_start = gmdate( 'Y-m-d H:i', strtotime( $datetime_start ) );
 									$date_time      = new DateTime( $datetime_start );
 									$date_time->modify( '+23 hour' );
 
@@ -1107,18 +1111,18 @@ class EVF_Form_Task {
 								if ( 2 === count( $selected_dates ) ) {
 									$datetime_start = $selected_dates[0];
 									$datetime_end   = $selected_dates[1];
-									array_push( $datetime_arr, array( $datetime_start, $datetime_end ) );
+									array_push( $new_slot_booking, array( $datetime_start, $datetime_end ) );
 								}
 							} else {
 								$selected_dates = explode( ', ', $new_value );
 
 								foreach ( $selected_dates as $selected_date ) {
-									$datetime_start = $selected_date;
+									$datetime_start = gmdate( 'Y-m-d H:i', strtotime( $selected_date ) );
 									$date_time      = new DateTime( $datetime_start );
-									$date_time->modify( '+1 hour' );
+									$date_time->modify( "+$time_interval minute" );
 
 									$datetime_end = $date_time->format( 'Y-m-d H:i' );
-									array_push( $datetime_arr, array( $datetime_start, $datetime_end ) );
+									array_push( $new_slot_booking, array( $datetime_start, $datetime_end ) );
 								}
 							}
 							break;

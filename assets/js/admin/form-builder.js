@@ -561,9 +561,10 @@
 			} );
 
 			if($('.everest-forms-field-option-row-slot_booking_advanced input').is(":checked")) {
+				//checked and hide past dates.
 				disable_past_date = $(document).find('.everest-forms-past-date-disable-format input');
-				disable_past_date.attr("disabled", true);
 				disable_past_date.attr("checked", true);
+				disable_past_date.parent().hide();
 			}
 		},
 
@@ -986,9 +987,9 @@
 					if(disable_past_date.is(":not(:checked)")) {
 						disable_past_date.attr("checked", true);
 					}
-					disable_past_date.attr("disabled", true);
+					disable_past_date.parent().hide();
 				} else {
-					disable_past_date.attr("disabled", false);
+					disable_past_date.parent().show();
 				}
 			});
 

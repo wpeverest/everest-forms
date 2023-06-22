@@ -187,14 +187,16 @@ jQuery( function ( $ ) {
 			}
 				$(document).find(".evf-field-date-time input").on('change', function (event) {
 					var slotBooking = $(this).data('slot-booking'),
-						targetLabel = $(this).parent().find('label');
+						targetLabel = $(this).parent(),
+						errorLabel = $(this).parent().find('.evf-error');
 					if(slotBooking === 1) {
 						var dataTimeValue = $(this).val(),
 						dateFormat = $(this).data('date-format'),
 						dateTimeFormat = $(this).data('date-time'),
 						mode = $(this).data('mode'),
 						form_id = $(this).data('form-id'),
-						data = {'action':'everest_forms_slot_booking', 'data-time-value':dataTimeValue, 'data-format': dateFormat, 'data-time-format': dateTimeFormat, 'mode': mode, 'form-id': form_id, 'security': everest_forms_params.everest_forms_slot_booking};
+						time_interval = $(this).data('time-interval'),
+						data = {'action':'everest_forms_slot_booking', 'data-time-value':dataTimeValue, 'data-format': dateFormat, 'data-time-format': dateTimeFormat, 'mode': mode, 'form-id': form_id, 'time-interval':time_interval, 'security': everest_forms_params.everest_forms_slot_booking};
 
 						$.ajax({
 							url:everest_forms_params.ajax_url,
@@ -205,6 +207,9 @@ jQuery( function ( $ ) {
 								$(submitButton).prop('disabled', true);
 							},
 							success: function (res) {
+								if($(errorLabel).length) {
+									$(errorLabel).remove();
+								}
 								if(res.success === true) {
 									var message = res.data.message;
 									$(targetLabel).append('<label class="evf-error">'+message+'</label>');

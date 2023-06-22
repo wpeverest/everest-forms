@@ -153,7 +153,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				'desc'    => esc_html__( 'Slot Booking', 'everest-forms' ),
 				'value'   => isset( $field['slot_booking_advanced'] ) ? $field['slot_booking_advanced'] : false,
 				'tooltip' => esc_html__( 'Enable to use date/time field as slot booking.', 'everest-forms' ),
-				'class'   => 'evf-date-format',
+				'class'   => 'slot-booking-advanced	',
 				'default' => false,
 			),
 			false
@@ -539,6 +539,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 					'options' => array(
 						'15' => esc_html__( '15 minutes', 'everest-forms' ),
 						'30' => esc_html__( '30 minutes', 'everest-forms' ),
+						'60' => esc_html__( '1 hour', 'everest-forms' ),
 					),
 				),
 				false
