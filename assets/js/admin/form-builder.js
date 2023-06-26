@@ -255,9 +255,9 @@
 					var $field_id = $(this).parent().parent().data('field-id');
 
 					if( 'multiple' === $(this).data('selection') && 'checkbox' === $(this).data('type') && $( this).hasClass( 'is-active' ) ) {
-						$('#everest-forms-field-option-'+$field_id+'-select_all').parent().show();
+						$('#everest-forms-field-option-'+$field_id+'-select_all').parent().parent().parent().show();
 					} else {
-						$('#everest-forms-field-option-'+$field_id+'-select_all').parent().hide();
+						$('#everest-forms-field-option-'+$field_id+'-select_all').parent().parent().parent().hide();
 					}
 				});
 			});
