@@ -174,7 +174,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			)
 		);
 		everest_forms_panel_field(
-			'checkbox',
+			'toggle',
 			'settings',
 			'submission_message_scroll',
 			$this->form_data,
@@ -228,7 +228,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		);
 
 		everest_forms_panel_field(
-			'checkbox',
+			'toggle',
 			'settings',
 			'enable_redirect_query_string',
 			$this->form_data,
