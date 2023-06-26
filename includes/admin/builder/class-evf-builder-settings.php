@@ -326,7 +326,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		echo '</div>';
 		do_action( 'everest_forms_inline_integrations_settings', $this->form_data, $settings );
 		everest_forms_panel_field(
-			'checkbox',
+			'toggle',
 			'settings',
 			'ajax_form_submission',
 			$this->form_data,
@@ -337,7 +337,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			)
 		);
 		everest_forms_panel_field(
-			'checkbox',
+			'toggle',
 			'settings',
 			'disabled_entries',
 			$this->form_data,
@@ -590,7 +590,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		echo '</div>';
 		echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'Honeypot', 'everest-forms' ) . '</h4>';
 		everest_forms_panel_field(
-			'checkbox',
+			'toggle',
 			'settings',
 			'honeypot',
 			$this->form_data,
