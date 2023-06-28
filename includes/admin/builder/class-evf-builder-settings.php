@@ -611,7 +611,6 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			$recaptcha_secret = get_option( 'everest_forms_recaptcha_' . $recaptcha_type . '_secret_key' );
 		}
 
-		lg( $recaptcha_key );
 		switch ( $recaptcha_type ) {
 			case 'v2':
 				$recaptcha_label = esc_html__( 'Enable Google reCAPTCHA v2', 'everest-forms' );
