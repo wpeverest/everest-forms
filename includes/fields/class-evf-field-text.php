@@ -67,7 +67,7 @@ class EVF_Field_Text extends EVF_Form_Fields {
 		$args = array(
 			'slug'    => 'limit_enabled',
 			'content' => $this->field_element(
-				'checkbox',
+				'toggle',
 				$field,
 				array(
 					'slug'    => 'limit_enabled',
@@ -130,7 +130,7 @@ class EVF_Field_Text extends EVF_Form_Fields {
 		$args = array(
 			'slug'    => 'min_length_enabled',
 			'content' => $this->field_element(
-				'checkbox',
+				'toggle',
 				$field,
 				array(
 					'slug'    => 'min_length_enabled',
