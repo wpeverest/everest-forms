@@ -413,7 +413,11 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 			break;
 		// Toggle input.
 		case 'toggle':
-			$checked = checked( '1', $value, false );
+			if ( 'yes' === $value ) {
+				$checked = checked( 'yes', $value, false );
+			} else {
+				$checked = checked( '1', $value, false );
+			}
 			$output  = sprintf(
 				'<div class="evf-toggle-section"><span class="everest-forms-toggle-form"><input type="hidden" name="%s" value="0" class="widefat %s" %s %s>',
 				$field_name,
