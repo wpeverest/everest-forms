@@ -846,6 +846,8 @@ class EVF_Shortcode_Form {
 			wp_enqueue_script( 'mailcheck' );
 		}
 
+		self::add_custom_css_js( $atts['id'] );
+
 		$atts = shortcode_atts(
 			array(
 				'id'          => false,
@@ -1157,5 +1159,41 @@ class EVF_Shortcode_Form {
 
 		return esc_url_raw( add_query_arg( array( 'hl' => get_option( 'everest_forms_recaptcha_recaptcha_language', 'en-GB' ) ), $url ) );
 
+	}
+
+	public static function add_custom_css_js( $form_id ) {
+
+		add_action( 'wp_head', function() use ( $form_id ) {
+			$form = evf()->form->get( (int) $form_id );
+			$form_data = apply_filters( 'everest_forms_frontend_form_data', evf_decode( $form->post_content ) );
+			$settings  = isset( $form_data['settings'] ) ? $form_data['settings'] : array();
+
+			if ( isset( $settings['evf-enable-custom-css'] ) && evf_string_to_bool( $settings['evf-enable-custom-css'] ) ) {
+				$custom_css = isset( $settings['evf-custom-css'] ) ? $settings['evf-custom-css'] : '';
+				if ( ! empty( $custom_css ) ) {
+					echo <<<EOF
+					<style>
+						$custom_css
+					</style>
+
+					EOF;
+				}
+			}
+
+			if ( isset( $settings['evf-enable-custom-js'] ) && evf_string_to_bool( $settings['evf-enable-custom-js'] ) ) {
+				$custom_js = isset( $settings['evf-custom-js'] ) ? $settings['evf-custom-js'] : '';
+				if ( ! empty( $custom_js ) ) {
+					echo <<<EOF
+					<script>
+					var $ = jQuery;
+					$(document).ready(function() {
+						$custom_js
+					});
+					</script>
+
+					EOF;
+				}
+			}
+		});
 	}
 }
