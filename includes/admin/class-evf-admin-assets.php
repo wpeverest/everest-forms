@@ -39,6 +39,7 @@ class EVF_Admin_Assets {
 		wp_register_style( 'jquery-confirm', evf()->plugin_url() . '/assets/css/jquery-confirm/jquery-confirm.min.css', array(), '3.3.0' );
 		wp_register_style( 'perfect-scrollbar', evf()->plugin_url() . '/assets/css/perfect-scrollbar/perfect-scrollbar.css', array(), '1.4.0' );
 		wp_register_style( 'flatpickr', evf()->plugin_url() . '/assets/css/flatpickr.css', array(), EVF_VERSION );
+		wp_register_style( 'ace', evf()->plugin_url() . '/assets/css/ace/ace.min.css', array(), EVF_VERSION );
 
 		// Add RTL support for admin styles.
 		wp_style_add_data( 'everest-forms-admin', 'rtl', 'replace' );
@@ -54,6 +55,7 @@ class EVF_Admin_Assets {
 			wp_enqueue_style( 'jquery-ui-style' );
 			wp_enqueue_style( 'wp-color-picker' );
 			wp_enqueue_style( 'flatpickr' );
+			wp_enqueue_style( 'ace' );
 
 			if ( 'everest-forms_page_evf-tools' !== $screen_id ) {
 				wp_enqueue_style( 'perfect-scrollbar' );
@@ -86,6 +88,7 @@ class EVF_Admin_Assets {
 		wp_register_script( 'evf-enhanced-select', evf()->plugin_url() . '/assets/js/admin/evf-enhanced-select' . $suffix . '.js', array( 'jquery', 'selectWoo' ), EVF_VERSION, true );
 		wp_register_script( 'evf-template-controller', evf()->plugin_url() . '/assets/js/admin/form-template-controller' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true );
 		wp_register_script( 'flatpickr', evf()->plugin_url() . '/assets/js/flatpickr/flatpickr' . $suffix . '.js', array( 'jquery' ), '4.6.3', true );
+		wp_register_script( 'ace', evf()->plugin_url() . '/assets/js/ace/src/ace.js', array(), EVF_VERSION, false );
 		wp_register_script( 'evf-file-uploader', evf()->plugin_url() . '/assets/js/admin/evf-file-uploader' . $suffix . '.js', array(), EVF_VERSION, true );
 		wp_localize_script(
 			'evf-file-uploader',
@@ -263,6 +266,7 @@ class EVF_Admin_Assets {
 		if ( in_array( $screen_id, array( 'everest-forms_page_evf-builder' ), true ) ) {
 			wp_enqueue_media();
 			wp_enqueue_script( 'evf-upgrade' );
+			wp_enqueue_script( 'ace' );
 			wp_enqueue_script( 'evf-form-builder' );
 
 			// De-register scripts.
