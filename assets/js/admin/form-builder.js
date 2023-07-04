@@ -3226,6 +3226,7 @@ jQuery(function ($) {
 
 		var cssEditor = ace.edit('evf-custom-css-block', {
 			mode: 'ace/mode/css',
+			theme: 'ace/theme/cobalt',
 			selectionStyle: 'text'
 		});
 
