@@ -2159,9 +2159,12 @@ p.search-box {
 							display: block;
 							margin: 0 auto;
 						}
-
+						&.evf-upgrade-addon {
+							cursor: not-allowed;
+						}
 						&.upgrade-modal,
-						&.enable-stripe-model, 
+						&.evf-upgrade-addon,
+						&.enable-stripe-model,
 						&.enable-authorize-net-model {
 							opacity: 0.45;
 						}

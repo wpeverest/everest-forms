@@ -269,7 +269,7 @@ class EVF_Admin_Assets {
 			wp_dequeue_script( 'colorpick' );
 
 			// EverestForms builder setup page.
-			if ( isset( $_GET['create-form'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			if ( isset( $_GET['create-form'] ) || isset( $_GET['form_id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 				wp_register_script( 'evf-setup', evf()->plugin_url() . '/assets/js/admin/evf-setup' . $suffix . '.js', array( 'jquery', 'everest-forms-extensions', 'evf-template-controller' ), EVF_VERSION, true );
 				wp_enqueue_script( 'evf-setup' );
 				wp_localize_script(
@@ -288,6 +288,11 @@ class EVF_Admin_Assets {
 						'i18n_form_ok'                 => esc_html__( 'Continue', 'everest-forms' ),
 						'i18n_form_placeholder'        => esc_html__( 'Untitled Form', 'everest-forms' ),
 						'i18n_form_title'              => esc_html__( 'Uplift your form experience to the next level.', 'everest-forms' ),
+						'i18n_installing'              => esc_html__( 'installing', 'everest-forms' ),
+						'save_changes_text'            => esc_html__( 'Save Changes and Reload', 'everest-forms' ),
+						'reload_text'                  => esc_html__( 'Just Reload', 'everest-forms' ),
+						'confirmation_title'           => esc_html__( 'confirmation', 'everest-forms' ),
+						'download_failed'              => esc_html__( 'Download Failed', 'everest-forms' ),
 					)
 				);
 			}

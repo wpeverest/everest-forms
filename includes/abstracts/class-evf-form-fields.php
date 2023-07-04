@@ -87,7 +87,8 @@ abstract class EVF_Form_Fields {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->class   = $this->is_pro ? 'upgrade-modal' : $this->class;
+		$get_license   = evf_get_license_plan();
+		$this->class   = $this->is_pro ? ( false === $get_license ? 'upgrade-modal' : 'evf-upgrade-addon' ) : $this->class;
 		$this->form_id = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : false; // phpcs:ignore WordPress.Security.NonceVerification
 
 		// Init hooks.

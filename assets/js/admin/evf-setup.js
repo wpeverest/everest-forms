@@ -14,6 +14,20 @@ jQuery( function( $ ) {
 			$( document ).on( 'click', '.everest-forms-template-install-addon', this.install_addon );
 			$( document ).on( 'click', '.everest-forms-builder-setup .upgrade-modal', this.message_upgrade );
 			$( document ).on( 'click', '.everest-forms-builder-setup .evf-template-preview', this.template_preview );
+			$(document).on('click', '.activate-now', function(e) {
+				e.preventDefault();
+				if(!$(this).closest('body.everest-forms_page_evf-builder').length) {
+					return;
+				}
+				evf_setup_actions.active_addon_from_buidler($(this));
+			});
+			$(document).on('click', '.install-from-builder', function(e) {
+				e.preventDefault();
+				if(!$(this).closest('body.everest-forms_page_evf-builder').length) {
+					return;
+				}
+				evf_setup_actions.install_now_from_buidler($(this));
+			});
 
 			// Select and apply a template.
 			this.$setup_form.on( 'click', '.evf-template-select', this.template_select );
@@ -268,6 +282,108 @@ jQuery( function( $ ) {
 				e.preventDefault();
 				return false;
 			}
+		},
+		active_addon_from_buidler:function( node ) {
+			var url = $(node).attr("href");
+			console.log(url);
+			$.alert({
+				title: evf_setup_params.confirmation_title,
+				content: false,
+				theme: 'jconfirm-modern jconfirm-everest-forms',
+				type:'blue',
+				backgroundDismiss: false,
+				scrollToPreviousElement: false,
+				preOpen:{
+					action:function(){
+						window.location.replace(url);
+					}
+				},
+				buttons: {
+				  confirm: {
+					text: evf_setup_params.save_changes_text,
+					btnClass:'btn-confirm',
+					action: function () {
+						$('.everest-forms-save-button').trigger('click');
+						location.reload();
+					}
+				  },
+				  cancel: {
+					text: evf_setup_params.reload_text,
+					btnClass:'btn-confirm',
+					action: function () {
+						location.reload();
+					}
+				  }
+				},
+			  });
+		},
+		install_now_from_buidler:function(event) {
+			wp.updates.maybeRequestFilesystemCredentials(event);
+			evf_setup_actions.$button_install = evf_setup_params.i18n_installing;
+			$(event)
+				.html(
+					evf_setup_actions.$button_install +
+						'<div class="ur-spinner"></div>'
+				)
+				.closest("button")
+				.prop("disabled", true);
+
+				wp.updates.queue.push({
+					action: 'everest_forms_install_extension',
+					data: {
+						page: pagenow,
+						name: $(event).data( 'name' ),
+						slug: $(event).data( 'slug' )
+					}
+				});
+
+				$(document).on(
+					"wp-plugin-install-success wp-plugin-install-error",
+					function (event, response) {
+						if (
+							typeof response.errorMessage !== "undefined" &&
+							response.errorMessage.length > 0
+						) {
+							$.alert({
+								title: response.errorMessage,
+								content: evf_setup_params.download_failed,
+								icon: "error",
+							});
+						} else {
+							if (0 === wp.updates.queue.length) {
+								$.alert({
+									title: evf_setup_params.confirmation_title,
+									content: false,
+									theme: 'jconfirm-modern jconfirm-everest-forms',
+									type:'blue',
+									backgroundDismiss: false,
+									scrollToPreviousElement: false,
+									buttons: {
+									  confirm: {
+										text: evf_setup_params.save_changes_text,
+										btnClass:'btn-confirm',
+										action: function () {
+											$('.everest-forms-save-button').trigger('click');
+											location.reload();
+										}
+									  },
+									  cancel: {
+										text: evf_setup_params.reload_text,
+										btnClass:'btn-confirm',
+										action: function () {
+											location.reload();
+										}
+									  }
+									},
+									boxWidth: '565px',
+								  });
+							}
+						}
+					}
+				);
+
+				// Check the queue, now that the event handlers have been added.
+				wp.updates.queueChecker();
 		}
 	};
 
