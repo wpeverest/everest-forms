@@ -3213,3 +3213,68 @@ jQuery( function ( $ ) {
 		}
 	}
 });
+
+jQuery(function ($) {
+	$(document).ready(function () {
+
+		/**
+		 * Custom CSS
+		 */
+		const customCssElement = $('#everest-forms-panel-field-settings-evf-custom-css');
+		$('<div id="evf-custom-css-block"></div>').insertAfter(customCssElement);
+		customCssElement.hide();
+
+		var cssEditor = ace.edit('evf-custom-css-block', {
+			mode: 'ace/mode/css',
+			selectionStyle: 'text'
+		});
+
+		cssEditor.setValue(customCssElement.text());
+
+		cssEditor.session.on('change', el => {
+			customCssElement.html(cssEditor.getValue());
+		});
+
+
+		/**
+		 * Custom JS
+		 */
+		const customJsElement = $('#everest-forms-panel-field-settings-evf-custom-js');
+		$('<div id="evf-custom-js-block"></div>').insertAfter(customJsElement);
+		customJsElement.hide();
+
+		var jsEditor = ace.edit('evf-custom-js-block', {
+			mode: 'ace/mode/javascript',
+			selectionStyle: 'text'
+		});
+
+		jsEditor.setValue(customJsElement.text());
+
+		jsEditor.session.on('change', el => {
+			customJsElement.html(jsEditor.getValue());
+		});
+
+		$('#everest-forms-panel-field-settings-evf-enable-custom-css, #everest-forms-panel-field-settings-evf-enable-custom-js').on('change', e => {
+			showHideEditors();
+		});
+
+		showHideEditors();
+
+		/**
+		 * Show/Hide the custom css and js input boxes based on the enabled/disabled state.
+		 */
+		function showHideEditors() {
+			if ($('#everest-forms-panel-field-settings-evf-enable-custom-css').is(':checked')) {
+				$('#everest-forms-panel-field-settings-evf-custom-css-wrap').show();
+			} else {
+				$('#everest-forms-panel-field-settings-evf-custom-css-wrap').hide();
+			}
+
+			if ($('#everest-forms-panel-field-settings-evf-enable-custom-js').is(':checked')) {
+				$('#everest-forms-panel-field-settings-evf-custom-js-wrap').show();
+			} else {
+				$('#everest-forms-panel-field-settings-evf-custom-js-wrap').hide();
+			}
+		}
+	});
+});
