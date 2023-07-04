@@ -27,6 +27,9 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 
 		add_action( 'everest_forms_settings_connections_email', array( $this, 'output_connections_list' ) );
 
+		add_filter( 'everest_forms_builder_settings_section', array( $this, 'add_custom_css_js_section' ), 11, 2 );
+		add_action( 'everest_forms_settings_panel_content', array( $this, 'add_custom_css_js_settings' ), 111, 1 );
+
 		parent::__construct();
 	}
 
@@ -40,7 +43,6 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				'general'  => esc_html__( 'General', 'everest-forms' ),
 				'email'    => esc_html__( 'Email', 'everest-forms' ),
 				'security' => esc_html__( 'Anti-Spam and Security', 'everest-forms' ),
-				'custom-css-js' => esc_html__( 'Custom CSS and JS', 'everest-forms' ),
 			),
 			$this->form_data
 		);
@@ -644,6 +646,32 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		}
 		do_action( 'everest_forms_inline_security_settings', $this );
 		echo '</div>';
+
+		do_action( 'everest_forms_settings_panel_content', $this );
+
+	}
+
+	/**
+	 * Add Custom CSS and JS menu item to the builder settings list.
+	 *
+	 * @param [array] $arr Setting Menu items list.
+	 * @param [array] $form_data Form Data.
+	 * @return array
+	 */
+	public function add_custom_css_js_section( $arr, $form_data ) {
+
+		$arr['custom-css-js'] = esc_html__( 'Custom CSS and JS', 'everest-forms' );
+
+		return $arr;
+	}
+
+	/**
+	 * Add Custom Css and Js settings section.
+	 *
+	 * @param [array] $form_data Form Data.
+	 * @return void
+	 */
+	public function add_custom_css_js_settings( $form_data ) {
 		// --------------------------------------------------------------------//
 		// Custom CSS and JS
 		// --------------------------------------------------------------------//
@@ -691,9 +719,6 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		echo '</div>';
 
 		echo '</div>';
-
-		do_action( 'everest_forms_settings_panel_content', $this );
-
 	}
 
 	/**
