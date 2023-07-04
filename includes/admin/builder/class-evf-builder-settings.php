@@ -40,6 +40,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				'general'  => esc_html__( 'General', 'everest-forms' ),
 				'email'    => esc_html__( 'Email', 'everest-forms' ),
 				'security' => esc_html__( 'Anti-Spam and Security', 'everest-forms' ),
+				'custom-css-js' => esc_html__( 'Custom CSS and JS', 'everest-forms' ),
 			),
 			$this->form_data
 		);
@@ -642,6 +643,53 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			echo '</div>';
 		}
 		do_action( 'everest_forms_inline_security_settings', $this );
+		echo '</div>';
+		// --------------------------------------------------------------------//
+		// Custom CSS and JS
+		// --------------------------------------------------------------------//
+		echo '<div class="evf-content-section evf-content-custom-css-js-settings">';
+		echo '<div class="evf-content-section-title">';
+		esc_html_e( 'Custom CSS and JS', 'everest-forms' );
+		echo '</div>';
+		echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'Custom CSS', 'everest-forms' ) . '</h4>';
+		everest_forms_panel_field(
+			'checkbox',
+			'settings',
+			'evf-enable-custom-css',
+			$this->form_data,
+			esc_html__( 'Enable Custom CSS', 'everest-forms' ),
+			array(
+				'default' => '0',
+			)
+		);
+		everest_forms_panel_field(
+			'textarea',
+			'settings',
+			'evf-custom-css',
+			$this->form_data,
+			esc_html__( 'Custom CSS', 'everest-forms' ),
+		);
+		echo '</div>';
+		echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'Custom JS', 'everest-forms' ) . '</h4>';
+		everest_forms_panel_field(
+			'checkbox',
+			'settings',
+			'evf-enable-custom-js',
+			$this->form_data,
+			esc_html__( 'Enable Custom JS', 'everest-forms' ),
+			array(
+				'default' => '0',
+			)
+		);
+		everest_forms_panel_field(
+			'textarea',
+			'settings',
+			'evf-custom-js',
+			$this->form_data,
+			esc_html__( 'Custom JS', 'everest-forms' ),
+		);
+		echo '</div>';
+
 		echo '</div>';
 
 		do_action( 'everest_forms_settings_panel_content', $this );
