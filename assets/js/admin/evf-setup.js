@@ -14,6 +14,8 @@ jQuery( function( $ ) {
 			$( document ).on( 'click', '.everest-forms-template-install-addon', this.install_addon );
 			$( document ).on( 'click', '.everest-forms-builder-setup .upgrade-modal', this.message_upgrade );
 			$( document ).on( 'click', '.everest-forms-builder-setup .evf-template-preview', this.template_preview );
+
+			//Active addon.
 			$(document).on('click', '.activate-now', function(e) {
 				e.preventDefault();
 				if(!$(this).closest('body.everest-forms_page_evf-builder').length) {
@@ -21,6 +23,8 @@ jQuery( function( $ ) {
 				}
 				evf_setup_actions.active_addon_from_buidler($(this));
 			});
+
+			//Install addon.
 			$(document).on('click', '.install-from-builder', function(e) {
 				e.preventDefault();
 				if(!$(this).closest('body.everest-forms_page_evf-builder').length) {
@@ -283,40 +287,66 @@ jQuery( function( $ ) {
 				return false;
 			}
 		},
+		/**
+		 *Active the addon from form builder.
+		 *
+		 * @param {any} node
+		 */
 		active_addon_from_buidler:function( node ) {
 			var url = $(node).attr("href");
-			console.log(url);
 			$.alert({
-				title: evf_setup_params.confirmation_title,
-				content: false,
+				title: evf_setup_params.active_confirmation_title,
 				theme: 'jconfirm-modern jconfirm-everest-forms',
-				type:'blue',
+				icon: 'success',
 				backgroundDismiss: false,
 				scrollToPreviousElement: false,
-				preOpen:{
-					action:function(){
-						window.location.replace(url);
-					}
-				},
+				type:'green',
+				content: evf_setup_params.active_confirmation_message,
 				buttons: {
 				  confirm: {
 					text: evf_setup_params.save_changes_text,
-					btnClass:'btn-confirm',
+					btnClass:'btn-warning',
 					action: function () {
-						$('.everest-forms-save-button').trigger('click');
-						location.reload();
+						evf_setup_actions.replaceUrlWithPromise(url)
+						.then(function() {
+							$('.everest-forms-save-button').trigger('click');
+							location.reload(true);
+						}).catch(function () {
+							// Handle error if URL replacement fails
+						});
 					}
 				  },
 				  cancel: {
 					text: evf_setup_params.reload_text,
-					btnClass:'btn-confirm',
+					btnClass:'btn-warning',
 					action: function () {
-						location.reload();
+						evf_setup_actions.replaceUrlWithPromise(url)
+						.then(function() {
+							location.reload(true);
+						}).catch(function () {
+							// Handle error if URL replacement fails
+						});
 					}
 				  }
 				},
 			  });
 		},
+		/**
+		 * Url.
+		 * @param {any} url
+		 * @returns
+		 */
+		replaceUrlWithPromise:function(url) {
+			return new Promise(function(resolve, reject) {
+			  window.location.replace(url);
+			  resolve(); // Resolve the promise.
+			});
+		  },
+		/**
+		 *Install the addon from form builder.
+		 *
+		 * @param {any} event
+		 */
 		install_now_from_buidler:function(event) {
 			wp.updates.maybeRequestFilesystemCredentials(event);
 			evf_setup_actions.$button_install = evf_setup_params.i18n_installing;
@@ -352,16 +382,16 @@ jQuery( function( $ ) {
 						} else {
 							if (0 === wp.updates.queue.length) {
 								$.alert({
-									title: evf_setup_params.confirmation_title,
-									content: false,
+									title: evf_setup_params.install_confirmation_title,
 									theme: 'jconfirm-modern jconfirm-everest-forms',
-									type:'blue',
+									icon: 'success',
 									backgroundDismiss: false,
 									scrollToPreviousElement: false,
+									content: evf_setup_params.install_confirmation_message,
 									buttons: {
 									  confirm: {
 										text: evf_setup_params.save_changes_text,
-										btnClass:'btn-confirm',
+										btnClass:'btn-warning',
 										action: function () {
 											$('.everest-forms-save-button').trigger('click');
 											location.reload();
@@ -369,13 +399,13 @@ jQuery( function( $ ) {
 									  },
 									  cancel: {
 										text: evf_setup_params.reload_text,
-										btnClass:'btn-confirm',
+										btnClass:'btn-warning',
 										action: function () {
 											location.reload();
 										}
 									  }
 									},
-									boxWidth: '565px',
+									type:'green',
 								  });
 							}
 						}

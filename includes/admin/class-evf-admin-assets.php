@@ -289,9 +289,12 @@ class EVF_Admin_Assets {
 						'i18n_form_placeholder'        => esc_html__( 'Untitled Form', 'everest-forms' ),
 						'i18n_form_title'              => esc_html__( 'Uplift your form experience to the next level.', 'everest-forms' ),
 						'i18n_installing'              => esc_html__( 'installing', 'everest-forms' ),
-						'save_changes_text'            => esc_html__( 'Save Changes and Reload', 'everest-forms' ),
+						'save_changes_text'            => esc_html__( 'Save and Reload', 'everest-forms' ),
 						'reload_text'                  => esc_html__( 'Just Reload', 'everest-forms' ),
-						'confirmation_title'           => esc_html__( 'confirmation', 'everest-forms' ),
+						'active_confirmation_title'    => esc_html__( 'Activation Successful.', 'everest-forms' ),
+						'install_confirmation_title'   => esc_html__( 'Installation Successful.', 'everest-forms' ),
+						'install_confirmation_message' => esc_html__( 'Addons have been installed and Activated. You have to reload the page', 'everest-forms' ),
+						'active_confirmation_message'  => esc_html__( 'Addons have been Activated. You have to reload the page', 'everest-forms' ),
 						'download_failed'              => esc_html__( 'Download Failed', 'everest-forms' ),
 					)
 				);
