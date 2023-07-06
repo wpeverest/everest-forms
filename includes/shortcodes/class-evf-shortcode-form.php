@@ -1171,27 +1171,26 @@ class EVF_Shortcode_Form {
 			if ( isset( $settings['evf-enable-custom-css'] ) && evf_string_to_bool( $settings['evf-enable-custom-css'] ) ) {
 				$custom_css = isset( $settings['evf-custom-css'] ) ? $settings['evf-custom-css'] : '';
 				if ( ! empty( $custom_css ) ) {
-					echo <<<EOF
+					?>
 					<style>
-						$custom_css
+						<?php echo esc_attr( $custom_css ); ?>
 					</style>
-
-					EOF;
+					<?php
 				}
 			}
 
 			if ( isset( $settings['evf-enable-custom-js'] ) && evf_string_to_bool( $settings['evf-enable-custom-js'] ) ) {
 				$custom_js = isset( $settings['evf-custom-js'] ) ? $settings['evf-custom-js'] : '';
 				if ( ! empty( $custom_js ) ) {
-					echo <<<EOF
-					<script>
-					var $ = jQuery;
-					$(document).ready(function() {
+					$custom_js = sprintf(
+							'var $ = jQuery;
+							$(document).ready( function() {
+								%s
+							});',
 						$custom_js
-					});
-					</script>
+					);
 
-					EOF;
+					wp_add_inline_script( 'everest-forms', $custom_js );
 				}
 			}
 		});
