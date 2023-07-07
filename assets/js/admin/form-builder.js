@@ -3221,18 +3221,38 @@ jQuery(function ($) {
 		 * Custom CSS
 		 */
 		const customCssElement = $('#everest-forms-panel-field-settings-evf-custom-css');
-		$('<div id="evf-custom-css-block"></div>').insertAfter(customCssElement);
-		customCssElement.hide();
+		var cssEditor = wp.CodeMirror.fromTextArea(customCssElement[0],
+			{
+				"indentUnit": 2,
+				"indentWithTabs": true,
+				"inputStyle": "contenteditable",
+				"lineNumbers": true,
+				"lineWrapping": true,
+				"styleActiveLine": true,
+				"continueComments": true,
+				"extraKeys": {
+					"Ctrl-Space": "autocomplete",
+					"Ctrl-/": "toggleComment",
+					"Cmd-/": "toggleComment",
+					"Alt-F": "findPersistent",
+					"Ctrl-F": "findPersistent",
+					"Cmd-F": "findPersistent"
+				},
+				"direction": "ltr",
+				"gutters": [],
+				"mode": "text/css",
+				"lint": false,
+				"autoCloseBrackets": true,
+				"autoCloseTags": true,
+				"autoRefresh": true,
+				"matchTags": {
+					"bothTags": true
+				},
+				"tabSize": 2,
+				"theme": 'default',
+			});
 
-		var cssEditor = ace.edit('evf-custom-css-block', {
-			mode: 'ace/mode/css',
-			theme: 'ace/theme/cobalt',
-			selectionStyle: 'text'
-		});
-
-		cssEditor.setValue(customCssElement.text());
-
-		cssEditor.session.on('change', el => {
+		cssEditor.on('change', function () {
 			customCssElement.html(cssEditor.getValue());
 		});
 
@@ -3241,17 +3261,37 @@ jQuery(function ($) {
 		 * Custom JS
 		 */
 		const customJsElement = $('#everest-forms-panel-field-settings-evf-custom-js');
-		$('<div id="evf-custom-js-block"></div>').insertAfter(customJsElement);
-		customJsElement.hide();
+		var jsEditor = wp.CodeMirror.fromTextArea(customJsElement[0],
+			{
+				"indentUnit": 2,
+				"indentWithTabs": true,
+				"inputStyle": "contenteditable",
+				"lineNumbers": true,
+				"lineWrapping": true,
+				"styleActiveLine": true,
+				"continueComments": true,
+				"extraKeys": {
+					"Ctrl-Space": "autocomplete",
+					"Ctrl-/": "toggleComment",
+					"Cmd-/": "toggleComment",
+					"Alt-F": "findPersistent",
+					"Ctrl-F": "findPersistent",
+					"Cmd-F": "findPersistent"
+				},
+				"direction": "ltr",
+				"gutters": [],
+				"mode": "javascript",
+				"lint": false,
+				"autoCloseBrackets": true,
+				"autoCloseTags": true,
+				"autoRefresh": true,
+				"matchTags": {
+					"bothTags": true
+				},
+				"tabSize": 2,
+			});
 
-		var jsEditor = ace.edit('evf-custom-js-block', {
-			mode: 'ace/mode/javascript',
-			selectionStyle: 'text'
-		});
-
-		jsEditor.setValue(customJsElement.text());
-
-		jsEditor.session.on('change', el => {
+		jsEditor.on('change', function () {
 			customJsElement.html(jsEditor.getValue());
 		});
 
@@ -3266,15 +3306,15 @@ jQuery(function ($) {
 		 */
 		function showHideEditors() {
 			if ($('#everest-forms-panel-field-settings-evf-enable-custom-css').is(':checked')) {
-				$('#everest-forms-panel-field-settings-evf-custom-css-wrap').show();
+				$('#everest-forms-panel-field-settings-evf-custom-css-wrap').show(500);
 			} else {
-				$('#everest-forms-panel-field-settings-evf-custom-css-wrap').hide();
+				$('#everest-forms-panel-field-settings-evf-custom-css-wrap').hide(500);
 			}
 
 			if ($('#everest-forms-panel-field-settings-evf-enable-custom-js').is(':checked')) {
-				$('#everest-forms-panel-field-settings-evf-custom-js-wrap').show();
+				$('#everest-forms-panel-field-settings-evf-custom-js-wrap').show(500);
 			} else {
-				$('#everest-forms-panel-field-settings-evf-custom-js-wrap').hide();
+				$('#everest-forms-panel-field-settings-evf-custom-js-wrap').hide(500);
 			}
 		}
 	});
