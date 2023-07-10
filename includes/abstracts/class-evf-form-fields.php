@@ -1568,91 +1568,91 @@ abstract class EVF_Form_Fields {
 				);
 				break;
 
-				case 'regex_value':
-					$toggle  = '';
-					$tooltip = esc_html__( 'Regular expression value is checked against.', 'everest-forms' );
-					$value   = ! empty( $field['regex_value'] ) ? esc_attr( $field['regex_value'] ) : '';
+			case 'regex_value':
+				$toggle  = '';
+				$tooltip = esc_html__( 'Regular expression value is checked against.', 'everest-forms' );
+				$value   = ! empty( $field['regex_value'] ) ? esc_attr( $field['regex_value'] ) : '';
 
-					// Build output.
-					$output  = $this->field_element(
-						'label',
-						$field,
-						array(
-							'slug'          => 'regex_value',
-							'value'         => esc_html__( 'Regex Value', 'everest-forms' ),
-							'tooltip'       => $tooltip,
-							'after_tooltip' => $toggle,
-						),
-						false
-					);
-					$output .= $this->field_element(
-						'text',
-						$field,
-						array(
-							'slug'  => 'regex_value',
-							'value' => $value,
-						),
-						false
-					);
-					// Smart tag for default value.
-					$include_fields = array( 'email', 'first-name', 'last-name', 'number', 'text', 'url' );
+				// Build output.
+				$output  = $this->field_element(
+					'label',
+					$field,
+					array(
+						'slug'          => 'regex_value',
+						'value'         => esc_html__( 'Regex Value', 'everest-forms' ),
+						'tooltip'       => $tooltip,
+						'after_tooltip' => $toggle,
+					),
+					false
+				);
+				$output .= $this->field_element(
+					'text',
+					$field,
+					array(
+						'slug'  => 'regex_value',
+						'value' => $value,
+					),
+					false
+				);
+				// Smart tag for default value.
+				$include_fields = array( 'email', 'first-name', 'last-name', 'number', 'text', 'url' );
 
-					if ( in_array( $field['type'], $include_fields, true ) ) {
-						$output .= '<a href="#" class="evf-toggle-smart-tag-display" data-type="regex"><span class="dashicons dashicons-editor-code"></span></a>';
-						$output .= '<div class="evf-smart-tag-lists" style="display: none">';
-						$output .= '<div class="smart-tag-title other-tag-title">Regular Expression</div><ul class="evf-regex"></ul></div>';
-					}
+				if ( in_array( $field['type'], $include_fields, true ) ) {
+					$output .= '<a href="#" class="evf-toggle-smart-tag-display" data-type="regex"><span class="dashicons dashicons-editor-code"></span></a>';
+					$output .= '<div class="evf-smart-tag-lists" style="display: none">';
+					$output .= '<div class="smart-tag-title other-tag-title">Regular Expression</div><ul class="evf-regex"></ul></div>';
+				}
 
-					$output = $this->field_element(
-						'row',
-						$field,
-						array(
-							'slug'    => 'regex_value',
-							'content' => $output,
-							'class'   => ! in_array( $field['type'], $include_fields, true ) && isset( $field['enable_regex_validation'] ) ? '' : ' hidden evf_smart_tag',
-						),
-						$echo
-					);
+				$output = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'regex_value',
+						'content' => $output,
+						'class'   => ! in_array( $field['type'], $include_fields, true ) && isset( $field['enable_regex_validation'] ) ? '' : ' hidden evf_smart_tag',
+					),
+					$echo
+				);
 
 				break;
 
-				case 'regex_message':
-					$toggle  = '';
-					$tooltip = esc_html__( 'if the regular expression value does not match it will show this message.', 'everest-forms' );
-					$value   = ! empty( $field['regex_message'] ) ? esc_attr( $field['regex_message'] ) : 'Please provide a valid value for this field.';
+			case 'regex_message':
+				$toggle  = '';
+				$tooltip = esc_html__( 'if the regular expression value does not match it will show this message.', 'everest-forms' );
+				$value   = ! empty( $field['regex_message'] ) ? esc_attr( $field['regex_message'] ) : 'Please provide a valid value for this field.';
 
-					// Build output.
-					$output  = $this->field_element(
-						'label',
-						$field,
-						array(
-							'slug'          => 'regex_message',
-							'value'         => esc_html__( 'Validation Message for Regular expression', 'everest-forms' ),
-							'tooltip'       => $tooltip,
-							'after_tooltip' => $toggle,
-						),
-						false
-					);
-					$output .= $this->field_element(
-						'text',
-						$field,
-						array(
-							'slug'  => 'regex_message',
-							'value' => $value,
-						),
-						false
-					);
-					$output  = $this->field_element(
-						'row',
-						$field,
-						array(
-							'slug'    => 'regex_message',
-							'content' => $output,
-							'class'   => isset( $field['enable_regex_validation'] ) ? '' : 'hidden',
-						),
-						$echo
-					);
-					break;
+				// Build output.
+				$output  = $this->field_element(
+					'label',
+					$field,
+					array(
+						'slug'          => 'regex_message',
+						'value'         => esc_html__( 'Validation Message for Regular expression', 'everest-forms' ),
+						'tooltip'       => $tooltip,
+						'after_tooltip' => $toggle,
+					),
+					false
+				);
+				$output .= $this->field_element(
+					'text',
+					$field,
+					array(
+						'slug'  => 'regex_message',
+						'value' => $value,
+					),
+					false
+				);
+				$output  = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'regex_message',
+						'content' => $output,
+						'class'   => isset( $field['enable_regex_validation'] ) ? '' : 'hidden',
+					),
+					$echo
+				);
+				break;
 
 			/*
 			 * CSS classes.
@@ -2492,7 +2492,7 @@ abstract class EVF_Form_Fields {
 		if ( isset( $form_data['form_fields'][ $field_id ]['enable_regex_validation'] ) && '1' === $form_data['form_fields'][ $field_id ]['enable_regex_validation'] ) {
 			$regex_value   = ! empty( $form_data['form_fields'][ $field_id ]['regex_value'] ) ? $form_data['form_fields'][ $field_id ]['regex_value'] : '';
 			$regex_message = ! empty( $form_data['form_fields'][ $field_id ]['regex_message'] ) ? $form_data['form_fields'][ $field_id ]['regex_message'] : esc_html__( 'Please provide a valid value for this field', 'everest-forms' );
-			$value       = '';
+			$value         = '';
 			if ( is_array( $field_submit ) ) {
 				$value = ! empty( $field_submit['primary'] ) ? $field_submit['primary'] : '';
 			} else {
@@ -2528,7 +2528,6 @@ abstract class EVF_Form_Fields {
 				break;
 			case 'textarea':
 			case 'text':
-
 				if ( ! empty( $_POST['everest_forms']['form_fields'][ $field_id ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 
 					// Limit Length.
