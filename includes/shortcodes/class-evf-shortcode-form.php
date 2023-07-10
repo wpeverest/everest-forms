@@ -1161,38 +1161,56 @@ class EVF_Shortcode_Form {
 
 	}
 
+	/**
+	 * Adds custom CSS and JavaScript code.
+	 *
+	 * @param int $form_id Form ID.
+	 * @since 2.0.2
+	 * @return void
+	 */
 	public static function add_custom_css_js( $form_id ) {
+		$form_id = absint( $form_id );
+		if ( $form_id <= 0 ) {
+			return;
+		}
 
-		add_action( 'wp_head', function() use ( $form_id ) {
-			$form = evf()->form->get( (int) $form_id );
-			$form_data = apply_filters( 'everest_forms_frontend_form_data', evf_decode( $form->post_content ) );
-			$settings  = isset( $form_data['settings'] ) ? $form_data['settings'] : array();
+		add_action(
+			'wp_head',
+			function() use ( $form_id ) {
+				$form = evf()->form->get( $form_id );
+				// Check the form_data exist or not.
+				if ( ! $form ) {
+					return;
+				}
+				$form_data = apply_filters( 'everest_forms_frontend_form_data', evf_decode( $form->post_content ) );
+				$settings  = isset( $form_data['settings'] ) ? $form_data['settings'] : array();
 
-			if ( isset( $settings['evf-enable-custom-css'] ) && evf_string_to_bool( $settings['evf-enable-custom-css'] ) ) {
-				$custom_css = isset( $settings['evf-custom-css'] ) ? $settings['evf-custom-css'] : '';
-				if ( ! empty( $custom_css ) ) {
-					?>
+				if ( isset( $settings['evf-enable-custom-css'] ) && evf_string_to_bool( $settings['evf-enable-custom-css'] ) ) {
+					$custom_css = isset( $settings['evf-custom-css'] ) ? $settings['evf-custom-css'] : '';
+					if ( ! empty( $custom_css ) ) {
+						?>
 					<style>
 						<?php echo esc_attr( $custom_css ); ?>
 					</style>
-					<?php
+						<?php
+					}
 				}
-			}
 
-			if ( isset( $settings['evf-enable-custom-js'] ) && evf_string_to_bool( $settings['evf-enable-custom-js'] ) ) {
-				$custom_js = isset( $settings['evf-custom-js'] ) ? $settings['evf-custom-js'] : '';
-				if ( ! empty( $custom_js ) ) {
-					$custom_js = sprintf(
+				if ( isset( $settings['evf-enable-custom-js'] ) && evf_string_to_bool( $settings['evf-enable-custom-js'] ) ) {
+					$custom_js = isset( $settings['evf-custom-js'] ) ? $settings['evf-custom-js'] : '';
+					if ( ! empty( $custom_js ) ) {
+						$custom_js = sprintf(
 							'var $ = jQuery;
 							$(document).ready( function() {
 								%s
 							});',
-						$custom_js
-					);
+							esc_js( $custom_js )
+						);
 
-					wp_add_inline_script( 'everest-forms', $custom_js );
+						wp_add_inline_script( 'everest-forms', $custom_js );
+					}
 				}
 			}
-		});
+		);
 	}
 }
