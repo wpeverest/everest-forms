@@ -1204,9 +1204,8 @@ class EVF_Shortcode_Form {
 							$(document).ready( function() {
 								%s
 							});',
-							esc_js( $custom_js )
+							$custom_js
 						);
-
 						wp_add_inline_script( 'everest-forms', $custom_js );
 					}
 				}
