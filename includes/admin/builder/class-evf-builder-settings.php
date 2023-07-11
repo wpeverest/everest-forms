@@ -695,7 +695,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			'settings',
 			'evf-custom-css',
 			$this->form_data,
-			esc_html__( 'Custom CSS', 'everest-forms' ),
+			esc_html__( 'Custom CSS', 'everest-forms' )
 		);
 		echo '</div>';
 		echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'Custom JS', 'everest-forms' ) . '</h4>';
@@ -714,7 +714,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			'settings',
 			'evf-custom-js',
 			$this->form_data,
-			esc_html__( 'Custom JS', 'everest-forms' ),
+			esc_html__( 'Custom JS', 'everest-forms' )
 		);
 		echo '</div>';
 
