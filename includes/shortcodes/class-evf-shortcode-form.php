@@ -1174,42 +1174,60 @@ class EVF_Shortcode_Form {
 			return;
 		}
 
-		add_action(
-			'wp_head',
-			function() use ( $form_id ) {
-				$form = evf()->form->get( $form_id );
-				// Check the form_data exist or not.
-				if ( ! $form ) {
-					return;
-				}
-				$form_data = apply_filters( 'everest_forms_frontend_form_data', evf_decode( $form->post_content ) );
-				$settings  = isset( $form_data['settings'] ) ? $form_data['settings'] : array();
+		$form = evf()->form->get( $form_id );
+		// Check the form_data exist or not.
+		if ( ! $form ) {
+			return;
+		}
 
-				if ( isset( $settings['evf-enable-custom-css'] ) && evf_string_to_bool( $settings['evf-enable-custom-css'] ) ) {
-					$custom_css = isset( $settings['evf-custom-css'] ) ? $settings['evf-custom-css'] : '';
-					if ( ! empty( $custom_css ) ) {
+		$hook = false;
+
+		if ( ! did_action( 'wp_head' ) ) {
+			$hook = 'wp_head';
+		} else if ( ! did_action( 'wp_footer' ) ) {
+			$hook = 'wp_footer';
+		}
+
+		$form_data = apply_filters( 'everest_forms_frontend_form_data', evf_decode( $form->post_content ) );
+		$settings  = isset( $form_data['settings'] ) ? $form_data['settings'] : array();
+
+		if ( isset( $settings['evf-enable-custom-css'] ) && evf_string_to_bool( $settings['evf-enable-custom-css'] ) ) {
+			$custom_css = isset( $settings['evf-custom-css'] ) ? $settings['evf-custom-css'] : '';
+			if ( ! empty( $custom_css ) ) {
+				if ( $hook ) {
+					add_action( $hook, function() use ( $custom_css, $form_id ) {
 						?>
-					<style>
-						<?php echo esc_attr( $custom_css ); ?>
-					</style>
+						<style id="<?php echo esc_attr( 'evf-custom-css-' . $form_id ); ?>">
+							<?php echo esc_attr( $custom_css ); ?>
+						</style>
 						<?php
-					}
-				}
-
-				if ( isset( $settings['evf-enable-custom-js'] ) && evf_string_to_bool( $settings['evf-enable-custom-js'] ) ) {
-					$custom_js = isset( $settings['evf-custom-js'] ) ? $settings['evf-custom-js'] : '';
-					if ( ! empty( $custom_js ) ) {
-						$custom_js = sprintf(
-							'var $ = jQuery;
-							$(document).ready( function() {
-								%s
-							});',
-							$custom_js
-						);
-						wp_add_inline_script( 'everest-forms', $custom_js );
-					}
+					});
+				} else {
+				?>
+				<style id="<?php echo esc_attr( 'evf-custom-css-' . $form_id ); ?>">
+					<?php echo esc_attr( $custom_css ); ?>
+				</style>
+				<?php
 				}
 			}
-		);
+		}
+
+		if ( isset( $settings['evf-enable-custom-js'] ) && evf_string_to_bool( $settings['evf-enable-custom-js'] ) ) {
+			$custom_js = isset( $settings['evf-custom-js'] ) ? $settings['evf-custom-js'] : '';
+			if ( ! empty( $custom_js ) ) {
+				$custom_js = sprintf(
+					'( function( $ ) {
+						$(document).ready( function() {
+							try {
+								%s
+							}
+							catch( err ) {}
+						});
+					})( jQuery )',
+					$custom_js
+				);
+				wp_add_inline_script( 'everest-forms', $custom_js );
+			}
+		}
 	}
 }
