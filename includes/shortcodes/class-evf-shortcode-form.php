@@ -1195,19 +1195,22 @@ class EVF_Shortcode_Form {
 			$custom_css = isset( $settings['evf-custom-css'] ) ? $settings['evf-custom-css'] : '';
 			if ( ! empty( $custom_css ) ) {
 				if ( $hook ) {
-					add_action( $hook, function() use ( $custom_css, $form_id ) {
-						?>
-						<style id="<?php echo esc_attr( 'evf-custom-css-' . $form_id ); ?>">
-							<?php echo esc_attr( $custom_css ); ?>
-						</style>
-						<?php
-					});
+					add_action(
+						$hook,
+						function () use ( $custom_css, $form_id ) {
+							?>
+							<style id="<?php echo esc_attr( 'evf-custom-css-' . $form_id ); ?>">
+								<?php echo esc_attr( $custom_css ); ?>
+							</style>
+							<?php
+						}
+					);
 				} else {
-				?>
-				<style id="<?php echo esc_attr( 'evf-custom-css-' . $form_id ); ?>">
-					<?php echo esc_attr( $custom_css ); ?>
-				</style>
-				<?php
+					?>
+					<style id="<?php echo esc_attr( 'evf-custom-css-' . $form_id ); ?>">
+						<?php echo esc_attr( $custom_css ); ?>
+					</style>
+					<?php
 				}
 			}
 		}
