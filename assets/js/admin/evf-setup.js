@@ -322,6 +322,7 @@ jQuery( function( $ ) {
 					action: function () {
 						evf_setup_actions.replaceUrlWithPromise(url)
 						.then(function() {
+							$('#add-fields').trigger('click');
 							location.reload(true);
 						}).catch(function () {
 							// Handle error if URL replacement fails
