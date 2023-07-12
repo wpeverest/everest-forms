@@ -1230,7 +1230,17 @@ class EVF_Shortcode_Form {
 					})( jQuery )',
 					$custom_js
 				);
-				wp_add_inline_script( 'everest-forms', $custom_js );
+
+				wp_register_script(
+					'evf-custom',
+					'',
+					array( 'jquery' ),
+					EVF_VERSION,
+					true
+				);
+
+				wp_add_inline_script( 'evf-custom', $custom_js );
+				wp_enqueue_script( 'evf-custom' );
 			}
 		}
 	}
