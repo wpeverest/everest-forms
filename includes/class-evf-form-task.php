@@ -1050,107 +1050,49 @@ class EVF_Form_Task {
 	 * @param array $form_data Prepared form settings.
 	 */
 	public function update_slot_booking_value( $entry_id, $fields, $entry, $form_id, $form_data ) {
-		global $wpdb;
 		$new_slot_booking                     = array();
 		$new_slot_booking_field_meta_key_list = array();
-		$data_format                          = array();
+		$time_interval                        = 0;
 		foreach ( $form_data['form_fields'] as $field ) {
 			if ( ( 'date-time' === $field['type'] ) && isset( $field['slot_booking_advanced'] ) && evf_string_to_bool( $field['slot_booking_advanced'] ) ) {
-				$new_slot_booking_field_meta_key_list[ $field['meta-key'] ] = array( $field['datetime_format'], $field['date_format'] );
-				$mode          = $field['date_mode'];
+				$new_slot_booking_field_meta_key_list[ $field['meta-key'] ] = array(
+					$field['datetime_format'],
+					$field['date_format'],
+				);
 				$time_interval = $field['time_interval'];
 			}
 		}
 
-		if ( ! empty( $new_slot_booking_field_meta_key_list ) ) {
-			foreach ( $fields as $key => $value ) {
-				if ( array_key_exists( $value['meta_key'], $new_slot_booking_field_meta_key_list ) ) {
-					$new_value       = $value['value'];
-					$datetime_format = $new_slot_booking_field_meta_key_list[ $value['meta_key'] ][0];
-					$date_format     = $new_slot_booking_field_meta_key_list[ $value['meta_key'] ][1];
-					$datetime_arr    = array();
-					switch ( $datetime_format ) {
-						case 'time':
-							$current_date   = gmdate( 'Y-m-d' );
-							$new_value      = gmdate( 'H:i', strtotime( $new_value ) );
-							$datetime_start = "$current_date $new_value";
-							$date_time      = new DateTime( $datetime_start );
-							$date_time->modify( "+$time_interval minute" );
-
-							$datetime_end       = $date_time->format( 'Y-m-d H:i' );
-							$new_slot_booking[] = array( $datetime_start, $datetime_end );
-							break;
-						case 'date':
-							if ( 'range' === $mode ) {
-								$selected_dates = explode( 'to ', $new_value );
-								if ( 2 === count( $selected_dates ) ) {
-									$datetime_start = "$selected_dates[0] 00:00";
-									$datetime_start = gmdate( 'Y-m-d H:i', strtotime( $datetime_start ) );
-									$date_time      = new DateTime( $selected_dates[1] );
-									$date_time->modify( '+23 hour' );
-									$datetime_end = $date_time->format( 'Y-m-d H:i' );
-									array_push( $new_slot_booking, array( $datetime_start, $datetime_end ) );
-								}
-							} else {
-								$selected_dates = explode( ', ', $new_value );
-
-								foreach ( $selected_dates as $selected_date ) {
-									$datetime_start = "$selected_date 00:00";
-									$datetime_start = gmdate( 'Y-m-d H:i', strtotime( $datetime_start ) );
-									$date_time      = new DateTime( $datetime_start );
-									$date_time->modify( '+23 hour' );
-
-									$datetime_end = $date_time->format( 'Y-m-d H:i' );
-									array_push( $new_slot_booking, array( $datetime_start, $datetime_end ) );
-								}
-							}
-							break;
-						case 'date-time':
-							if ( 'range' === $mode ) {
-								$selected_dates = explode( ' to ', $new_value );
-								if ( 2 === count( $selected_dates ) ) {
-									$datetime_start = $selected_dates[0];
-									$datetime_end   = $selected_dates[1];
-									array_push( $new_slot_booking, array( $datetime_start, $datetime_end ) );
-								}
-							} else {
-								$selected_dates = explode( ', ', $new_value );
-
-								foreach ( $selected_dates as $selected_date ) {
-									$datetime_start = gmdate( 'Y-m-d H:i', strtotime( $selected_date ) );
-									$date_time      = new DateTime( $datetime_start );
-									$date_time->modify( "+$time_interval minute" );
-
-									$datetime_end = $date_time->format( 'Y-m-d H:i' );
-									array_push( $new_slot_booking, array( $datetime_start, $datetime_end ) );
-								}
-							}
-							break;
-					}
-				}
-			}
-
-			if ( ! empty( $new_slot_booking ) ) {
-				$get_booked_slot = get_option( 'evf_booked_slot', array() );
-
-				$new_booked_slot = array( $form_id => $new_slot_booking );
-				if ( empty( $get_booked_slot ) ) {
-					$all_booked_slot = maybe_serialize( $new_booked_slot );
-				} else {
-					$unserialized_booked_slot = maybe_unserialize( $get_booked_slot );
-
-					if ( array_key_exists( $form_id, $unserialized_booked_slot ) ) {
-						$booked_slot     = $unserialized_booked_slot[ $form_id ];
-						$booked_slot     = array_merge( (array) $booked_slot, $new_slot_booking );
-						$new_booked_slot = array( $form_id => $booked_slot );
-					}
-
-					$all_booked_slot = maybe_serialize( array_replace( $unserialized_booked_slot, $new_booked_slot ) );
-				}
-
-				update_option( 'evf_booked_slot', $all_booked_slot );
+		foreach ( $fields as $key => $value ) {
+			if ( array_key_exists( $value['meta_key'], $new_slot_booking_field_meta_key_list ) ) {
+				$new_value       = $value['value'];
+				$datetime_format = $new_slot_booking_field_meta_key_list[ $value['meta_key'] ][0];
+				$date_format     = $new_slot_booking_field_meta_key_list[ $value['meta_key'] ][1];
+				$datetime_arr    = parse_datetime_values( $new_value, $datetime_format, $date_format, $mode, $time_interval );
 			}
 		}
+
+		if ( ! empty( $new_slot_booking ) ) {
+			$get_booked_slot = get_option( 'evf_booked_slot', array() );
+			$new_booked_slot = array( $form_id => $new_slot_booking );
+
+			if ( empty( $get_booked_slot ) ) {
+				$all_booked_slot = maybe_serialize( $new_booked_slot );
+			} else {
+				$unserialized_booked_slot = maybe_unserialize( $get_booked_slot );
+
+				if ( array_key_exists( $form_id, $unserialized_booked_slot ) ) {
+					$booked_slot     = $unserialized_booked_slot[ $form_id ];
+					$booked_slot     = array_merge( (array) $booked_slot, $new_slot_booking );
+					$new_booked_slot = array( $form_id => $booked_slot );
+				}
+
+				$all_booked_slot = maybe_serialize( array_replace( $unserialized_booked_slot, $new_booked_slot ) );
+			}
+
+			update_option( 'evf_booked_slot', $all_booked_slot );
+		}
+
 	}
 
 	/**
