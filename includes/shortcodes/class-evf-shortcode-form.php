@@ -1193,6 +1193,7 @@ class EVF_Shortcode_Form {
 
 		if ( isset( $settings['evf-enable-custom-css'] ) && evf_string_to_bool( $settings['evf-enable-custom-css'] ) ) {
 			$custom_css = isset( $settings['evf-custom-css'] ) ? $settings['evf-custom-css'] : '';
+			$custom_css = preg_match( '#</?\w+#', $custom_css ) ? '' : $custom_css;
 			if ( ! empty( $custom_css ) ) {
 				if ( $hook ) {
 					add_action(
