@@ -38,7 +38,6 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			'advanced-options' => array(
 				'field_options' => array(
 					'placeholder',
-					'slot_booking',
 					'datetime_options',
 					'label_hide',
 					'css',
@@ -137,34 +136,6 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 		$this->field_element( 'row', $field, $args );
 	}
 
-	/**
-	 * Use date/time field as slot booking advanced field options.
-	 *
-	 * @since 1.4.9
-	 * @param array $field Field Data.
-	 */
-	public function slot_booking( $field ) {
-
-		$slot_booking_toggle = $this->field_element(
-			'checkbox',
-			$field,
-			array(
-				'slug'    => 'slot_booking_advanced',
-				'desc'    => esc_html__( 'Slot Booking', 'everest-forms' ),
-				'value'   => isset( $field['slot_booking_advanced'] ) ? $field['slot_booking_advanced'] : false,
-				'tooltip' => esc_html__( 'Enable to use date/time field as slot booking.', 'everest-forms' ),
-				'class'   => 'slot-booking-advanced	',
-				'default' => false,
-			),
-			false
-		);
-
-		$args = array(
-			'slug'    => 'slot_booking_advanced',
-			'content' => $slot_booking_toggle,
-		);
-		$this->field_element( 'row', $field, $args );
-	}
 	/**
 	 * Date and time advanced field options.
 	 *
@@ -404,6 +375,20 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				false
 			);
 
+			$slot_booking_toggle = $this->field_element(
+				'checkbox',
+				$field,
+				array(
+					'slug'    => 'slot_booking_advanced',
+					'desc'    => esc_html__( 'Slot Booking', 'everest-forms' ),
+					'value'   => isset( $field['slot_booking_advanced'] ) ? $field['slot_booking_advanced'] : false,
+					'tooltip' => esc_html__( 'Enable to use date/time field as slot booking.', 'everest-forms' ),
+					'class'   => 'slot-booking-advanced	',
+					'default' => false,
+				),
+				false
+			);
+
 			$min_date_label = $this->field_element(
 				'label',
 				$field,
@@ -508,7 +493,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 
 			$args = array(
 				'slug'    => 'date_format',
-				'content' => $date_format_label . $date_format_select . $disable_dates_label . $disable_dates . $date_localization_label . $date_localization_select . $date_timezone_label . $date_timezone_select . '<div class="everest-forms-checklist everest-forms-checklist-inline">' . $current_date_mode . '</div><div class="everest-forms-current-date-format">' . $current_date_default . '</div><div class="everest-forms-past-date-disable-format">' . $enable_past_date_disable . '</div><div class="everest-forms-min-max-date-format">' . $enable_min_max . '</div><div class="everest-forms-min-max-date-range-format ' . $class_name . '">' . $set_date_range . '</div><div class="everest-forms-min-max-date-option ' . $class_name . '">' . $min_date_label . $min_date . $max_date_label . $max_date . '</div><div class="everest-forms-min-max-date-range-option ' . $class_name . '">' . $min_date_range_level . $min_date_range . $max_date_range_label . $max_date_range . '</div>',
+				'content' => $date_format_label . $date_format_select . $disable_dates_label . $disable_dates . $date_localization_label . $date_localization_select . $date_timezone_label . $date_timezone_select . '<div class="everest-forms-checklist everest-forms-checklist-inline">' . $current_date_mode . '</div><div class="everest-forms-current-date-format">' . $current_date_default . '</div><div class="everest-forms-past-date-disable-format">' . $enable_past_date_disable . '</div><div class="everest-forms-slot-booking">' . $slot_booking_toggle . '</div><div class="everest-forms-min-max-date-format">' . $enable_min_max . '</div><div class="everest-forms-min-max-date-range-format ' . $class_name . '">' . $set_date_range . '</div><div class="everest-forms-min-max-date-option ' . $class_name . '">' . $min_date_label . $min_date . $max_date_label . $max_date . '</div><div class="everest-forms-min-max-date-range-option ' . $class_name . '">' . $min_date_range_level . $min_date_range . $max_date_range_label . $max_date_range . '</div>',
 			);
 			$this->field_element( 'row', $field, $args );
 
@@ -646,8 +631,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			),
 			false
 		);
-
-		$args = array(
+		$args            = array(
 			'slug'    => 'time_interval_format',
 			'content' => $time_format_label . $time_interval_select . $time_format_select . $enable_min_max_time . $select_min_time . $min_time_select . $select_max_time . $max_time_select,
 		);

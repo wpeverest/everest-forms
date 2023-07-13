@@ -2422,6 +2422,36 @@ abstract class EVF_Form_Fields {
 					}
 				}
 				break;
+			case 'date-time':
+				$slot_booking = isset( $form_data['form_fields'][ $field_id ]['slot_booking_advanced'] ) ? $form_data['form_fields'][ $field_id ]['slot_booking_advanced'] : '';
+				if ( $slot_booking ) {
+					$datetime_format = isset( $form_data['form_fields'][ $field_id ]['datetime_format'] ) ? $form_data['form_fields'][ $field_id ]['datetime_format'] : '';
+					$date_format     = isset( $form_data['form_fields'][ $field_id ]['date_format'] ) ? $form_data['form_fields'][ $field_id ]['date_format'] : '';
+					$mode            = isset( $form_data['form_fields'][ $field_id ]['date_mode'] ) ? $form_data['form_fields'][ $field_id ]['date_mode'] : '';
+					$time_interval   = isset( $form_data['form_fields'][ $field_id ]['time_interval'] ) ? $form_data['form_fields'][ $field_id ]['time_interval'] : '';
+					$datetime_arr    = parse_datetime_values( $field_submit, $datetime_format, $date_format, $mode, $time_interval );
+					$booked_slot     = maybe_unserialize( get_option( 'evf_booked_slot', '' ) );
+					$form_id         = $form_data['id'];
+					$is_booked       = false;
+					if ( ! empty( $booked_slot ) && array_key_exists( $form_id, $booked_slot ) ) {
+						foreach ( $datetime_arr as $arr ) {
+
+							foreach ( $booked_slot[ $form_id ] as $slot ) {
+								if ( $arr[0] >= $slot[0] && $arr[1] <= $slot[1] ) {
+									$is_booked = true;
+									break;
+								} elseif ( $arr[0] >= $slot[0] && $arr[0] < $slot[1] && $arr[1] >= $slot[1] ) {
+									$is_booked = true;
+									break;
+								}
+							}
+						}
+					}
+					if ( $is_booked ) {
+						$validation_text = get_option( 'evf_' . $field_type . '_validation', esc_html__( 'This slot is already booked. Please choose other slot.', 'everest-forms' ) );
+					}
+				}
+				break;
 		}
 
 		if ( isset( $validation_text ) ) {

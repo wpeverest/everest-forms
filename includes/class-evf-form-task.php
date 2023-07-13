@@ -1050,7 +1050,6 @@ class EVF_Form_Task {
 	 * @param array $form_data Prepared form settings.
 	 */
 	public function update_slot_booking_value( $entry_id, $fields, $entry, $form_id, $form_data ) {
-		$new_slot_booking                     = array();
 		$new_slot_booking_field_meta_key_list = array();
 		$time_interval                        = 0;
 		foreach ( $form_data['form_fields'] as $field ) {
@@ -1058,6 +1057,7 @@ class EVF_Form_Task {
 				$new_slot_booking_field_meta_key_list[ $field['meta-key'] ] = array(
 					$field['datetime_format'],
 					$field['date_format'],
+					$field['date_mode'],
 				);
 				$time_interval = $field['time_interval'];
 			}
@@ -1068,13 +1068,14 @@ class EVF_Form_Task {
 				$new_value       = $value['value'];
 				$datetime_format = $new_slot_booking_field_meta_key_list[ $value['meta_key'] ][0];
 				$date_format     = $new_slot_booking_field_meta_key_list[ $value['meta_key'] ][1];
+				$mode            = $new_slot_booking_field_meta_key_list[ $value['meta_key'] ][2];
 				$datetime_arr    = parse_datetime_values( $new_value, $datetime_format, $date_format, $mode, $time_interval );
 			}
 		}
 
-		if ( ! empty( $new_slot_booking ) ) {
+		if ( ! empty( $datetime_arr ) ) {
 			$get_booked_slot = get_option( 'evf_booked_slot', array() );
-			$new_booked_slot = array( $form_id => $new_slot_booking );
+			$new_booked_slot = array( $form_id => $datetime_arr );
 
 			if ( empty( $get_booked_slot ) ) {
 				$all_booked_slot = maybe_serialize( $new_booked_slot );
@@ -1083,7 +1084,7 @@ class EVF_Form_Task {
 
 				if ( array_key_exists( $form_id, $unserialized_booked_slot ) ) {
 					$booked_slot     = $unserialized_booked_slot[ $form_id ];
-					$booked_slot     = array_merge( (array) $booked_slot, $new_slot_booking );
+					$booked_slot     = array_merge( (array) $booked_slot, $datetime_arr );
 					$new_booked_slot = array( $form_id => $booked_slot );
 				}
 

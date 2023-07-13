@@ -560,7 +560,7 @@
 				EVFPanelBuilder.dateSettingToggler( id, $('#everest-forms-field-option-' + id + '-datetime_style' ).val() );
 			} );
 
-			if($('.everest-forms-field-option-row-slot_booking_advanced input').is(":checked")) {
+			if($('.everest-forms-slot-booking input').is(":checked")) {
 				//checked and hide past dates.
 				disable_past_date = $(document).find('.everest-forms-past-date-disable-format input');
 				disable_past_date.attr("checked", true);
@@ -981,7 +981,7 @@
 				}
 			});
 			// Real-time updates for slot booking
-			$builder.on('change', '.everest-forms-field-option-row-slot_booking_advanced input', function(event) {
+			$builder.on('change', '.everest-forms-slot-booking input', function(event) {
 				if($(this).is(":checked")) {
 					disable_past_date = $(document).find('.everest-forms-past-date-disable-format input');
 					if(disable_past_date.is(":not(:checked)")) {

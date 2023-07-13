@@ -2161,7 +2161,7 @@ p.search-box {
 						}
 
 						&.upgrade-modal,
-						&.enable-stripe-model, 
+						&.enable-stripe-model,
 						&.enable-authorize-net-model {
 							opacity: 0.45;
 						}
@@ -2275,7 +2275,8 @@ p.search-box {
 
 							.everest-forms-current-date-format,
 							.everest-forms-past-date-disable-format,
-							.everest-forms-min-max-date-format {
+							.everest-forms-min-max-date-format,
+							.everest-forms-slot-booking {
 								margin-bottom: 14px;
 							}
 
