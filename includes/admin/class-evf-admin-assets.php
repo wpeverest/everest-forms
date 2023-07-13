@@ -278,6 +278,7 @@ class EVF_Admin_Assets {
 					array(
 						'ajax_url'                     => admin_url( 'admin-ajax.php' ),
 						'create_form_nonce'            => wp_create_nonce( 'everest_forms_create_form' ),
+						'evf_active_nonce'             => wp_create_nonce( 'evf_active_nonce' ),
 						'template_licence_check_nonce' => wp_create_nonce( 'everest_forms_template_licence_check' ),
 						'i18n_form_name'               => esc_html__( 'Give it a name.', 'everest-forms' ),
 						'i18n_form_error_name'         => esc_html__( 'You must provide a Form name', 'everest-forms' ),
@@ -297,7 +298,9 @@ class EVF_Admin_Assets {
 						'active_confirmation_message'  => esc_html__( 'Addons have been Activated. You have to reload the page', 'everest-forms' ),
 						'download_failed'              => esc_html__( 'Download Failed', 'everest-forms' ),
 						'installing_title'             => esc_html__( 'Installing...', 'everest-forms' ),
+						'activate_title'               => esc_html__( 'Activating...', 'everest-forms' ),
 						'installing_message'           => esc_html__( 'Please wait while the addon is being installed.', 'everest-forms' ),
+						'activate_message'             => esc_html__( 'Please wait while the addon is being activated.', 'everest-forms' ),
 					)
 				);
 			}

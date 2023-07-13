@@ -294,55 +294,66 @@ jQuery( function( $ ) {
 		 */
 		active_addon_from_buidler:function( node ) {
 			var url = $(node).attr("href");
-			$.alert({
-				title: evf_setup_params.active_confirmation_title,
+			var plugin = $(node).data("plugin");
+			var activating = $.alert({
+				title:evf_setup_params.activate_title,
 				theme: 'jconfirm-modern jconfirm-everest-forms',
-				icon: 'success',
-				backgroundDismiss: false,
-				scrollToPreviousElement: false,
-				type:'green',
-				content: evf_setup_params.active_confirmation_message,
-				buttons: {
-				  confirm: {
-					text: evf_setup_params.save_changes_text,
-					btnClass:'btn-warning',
-					action: function () {
-						evf_setup_actions.replaceUrlWithPromise(url)
-						.then(function() {
-							$('.everest-forms-save-button').trigger('click');
-							location.reload(true);
-						}).catch(function () {
-							// Handle error if URL replacement fails
-						});
-					}
-				  },
-				  cancel: {
-					text: evf_setup_params.reload_text,
-					btnClass:'btn-warning',
-					action: function () {
-						evf_setup_actions.replaceUrlWithPromise(url)
-						.then(function() {
-							$('#add-fields').trigger('click');
-							location.reload(true);
-						}).catch(function () {
-							// Handle error if URL replacement fails
-						});
-					}
-				  }
-				},
-			  });
-		},
-		/**
-		 * Url.
-		 * @param {any} url
-		 * @returns
-		 */
-		replaceUrlWithPromise:function(url) {
-			return new Promise(function(resolve, reject) {
-			  window.location.replace(url);
-			  resolve(); // Resolve the promise.
+				icon: 'dashicons dashicons-success',
+				buttons:false,
+				content: evf_setup_params.activate_message,
+				type: 'green',
 			});
-		  },
+			$.ajax({
+				type: 'POST',
+				url: evf_setup_params.ajax_url,
+				data: {
+					action: 'everest_forms_active_addons',
+					plugin_file : plugin,
+					security : evf_setup_params.evf_active_nonce
+				},
+				success:function(res) {
+					activating.close();
+					if(res.success === true) {
+						$.confirm({
+							title: evf_setup_params.active_confirmation_title,
+							theme: 'jconfirm-modern jconfirm-everest-forms',
+							icon: 'success',
+							backgroundDismiss: false,
+							scrollToPreviousElement: false,
+							type:'green',
+							content: evf_setup_params.active_confirmation_message,
+							buttons: {
+							  confirm: {
+								text: evf_setup_params.save_changes_text,
+								btnClass:'btn-warning',
+								action: function () {
+									$('.everest-forms-save-button').trigger('click');
+									location.reload(true);
+								}
+							  },
+							  cancel: {
+								text: evf_setup_params.reload_text,
+								btnClass:'btn-warning',
+								action: function () {
+										location.reload(true);
+								}
+							  }
+							},
+						  });
+					} else {
+						$.alert({
+							title:evf_setup_params.activate_title,
+							theme: 'jconfirm-modern jconfirm-everest-forms',
+							icon: 'dashicons dashicons-warning',
+							buttons:false,
+							content: res.data.message,
+							type: 'red',
+						});
+					}
+				}
+			})
+		},
+
 		/**
 		 *Install the addon from form builder.
 		 *
