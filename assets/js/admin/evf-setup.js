@@ -349,6 +349,13 @@ jQuery( function( $ ) {
 		 * @param {any} event
 		 */
 		install_now_from_buidler:function(event) {
+			var alertInstance = $.alert( {
+				title:evf_setup_params.installing_title,
+				icon: 'success',
+				buttons:false,
+				content: evf_setup_params.installing_message,
+				type: 'success',
+			} );
 			wp.updates.maybeRequestFilesystemCredentials(event);
 			evf_setup_actions.$button_install = evf_setup_params.i18n_installing;
 			$(event)
@@ -371,6 +378,7 @@ jQuery( function( $ ) {
 				$(document).on(
 					"wp-plugin-install-success wp-plugin-install-error",
 					function (event, response) {
+						alertInstance.close();
 						if (
 							typeof response.errorMessage !== "undefined" &&
 							response.errorMessage.length > 0

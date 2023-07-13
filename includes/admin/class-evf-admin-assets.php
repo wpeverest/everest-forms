@@ -296,6 +296,8 @@ class EVF_Admin_Assets {
 						'install_confirmation_message' => esc_html__( 'Addons have been installed and Activated. You have to reload the page', 'everest-forms' ),
 						'active_confirmation_message'  => esc_html__( 'Addons have been Activated. You have to reload the page', 'everest-forms' ),
 						'download_failed'              => esc_html__( 'Download Failed', 'everest-forms' ),
+						'installing_title'             => esc_html__( 'Installing...', 'everest-forms' ),
+						'installing_message'           => esc_html__( 'Please wait while the addon is being installed.', 'everest-forms' ),
 					)
 				);
 			}
