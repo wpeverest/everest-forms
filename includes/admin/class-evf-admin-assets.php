@@ -196,6 +196,7 @@ class EVF_Admin_Assets {
 			'evf-upgrade',
 			'evf_upgrade',
 			array(
+				'ajax_url'                     => admin_url( 'admin-ajax.php' ),
 				'upgrade_title'                => esc_html__( 'is a PRO Feature', 'everest-forms' ),
 				'upgrade_message'              => esc_html__( 'We\'re sorry, the %name% is not available on your plan.<br>Please upgrade to the PRO plan to unlock all these awesome features.', 'everest-forms' ),
 				'upgrade_button'               => esc_html__( 'Upgrade to PRO', 'everest-forms' ),
@@ -204,6 +205,11 @@ class EVF_Admin_Assets {
 				'enable_stripe_message'        => esc_html__( 'Enable Stripe Payment gateway in payments section to use this field.', 'everest-forms' ),
 				'enable_authorize_net_title'   => esc_html__( 'Please enable Authorize.Net', 'everest-forms' ),
 				'enable_authorize_net_message' => esc_html__( 'Enable Authorize.Net Payment gateway in payments section to use this field.', 'everest-forms' ),
+				'evf_install_and_active_nonce' => wp_create_nonce( 'install_and_active_nonce' ),
+				'upgrade_plan_title'                => esc_html__( 'is a Premium Addon', 'everest-forms' ),
+				'upgrade_plan_message'              => esc_html__( 'This addon requires premium plan. Please upgrade to the Premium plan to unlock all these awesome field.', 'everest-forms' ),
+				'upgrade_plan_button'               => esc_html__( 'Upgrade Plan', 'everest-forms' ),
+
 			)
 		);
 
