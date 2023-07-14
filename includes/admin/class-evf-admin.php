@@ -178,8 +178,19 @@ class EVF_Admin {
 			return $footer_text;
 		}
 		$current_screen = get_current_screen();
-		$evf_pages      = evf_get_screen_ids();
 
+		// Removing footer text from builder page.
+		if ( 'everest-forms_page_evf-builder' === $current_screen->id && isset( $_GET['form_id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			add_filter(
+				'update_footer',
+				function() {
+					return '';
+				}
+			);
+			return '';
+		}
+
+		$evf_pages = evf_get_screen_ids();
 		// Check to make sure we're on a EverestForms admin page.
 		if ( isset( $current_screen->id ) && apply_filters( 'everest_forms_display_admin_footer_text', in_array( $current_screen->id, $evf_pages, true ) ) ) {
 			// Change the footer text.
