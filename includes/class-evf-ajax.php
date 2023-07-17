@@ -868,6 +868,9 @@ class EVF_AJAX {
 	/**
 	 * Slot booking.
 	 */
+	/**
+	 * Slot booking.
+	 */
 	public static function slot_booking() {
 		try {
 			check_ajax_referer( 'everest_forms_slot_booking_nonce', 'security' );
@@ -915,6 +918,12 @@ class EVF_AJAX {
 				)
 			);
 
+		} catch ( Exception $e ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'Something went wrong.', 'everest-forms' ),
+				)
+			);
 		}
 	}
 
