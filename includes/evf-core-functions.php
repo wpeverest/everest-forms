@@ -1128,6 +1128,7 @@ function evf_get_random_string( $length = 10 ) {
  * Get all forms.
  *
  * @param  bool $skip_disabled_entries True to skip disabled entries.
+ * @param bool $check_disable_storing_entry_info Check disable storing entry.
  * @return array of form data.
  */
 function evf_get_all_forms( $skip_disabled_entries = false, $check_disable_storing_entry_info = true ) {
@@ -4620,7 +4621,7 @@ function evf_file_get_contents( $file ) {
 	if ( $file ) {
 		$local_file = preg_replace( '/\\\\|\/\//', '/', plugin_dir_path( EVF_PLUGIN_FILE ) . $file );
 		 $response = file_get_contents($local_file);
-		 if( $response ){
+		 if ( $response ) {
 			return $response;
 		 }
 		global $wp_filesystem;

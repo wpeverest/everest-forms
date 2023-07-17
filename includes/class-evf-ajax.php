@@ -877,7 +877,6 @@ class EVF_AJAX {
 			$form_id         = isset( $_POST['form-id'] ) ? sanitize_text_field( wp_unslash( $_POST['form-id'] ) ) : '';
 			$time_interval   = isset( $_POST['time-interval'] ) ? sanitize_text_field( wp_unslash( $_POST['time-interval'] ) ) : '';
 			$datetime_arr    = parse_datetime_values( $datetime_value, $datetime_format, $date_format, $mode, $time_interval );
-			
 
 			if ( empty( $datetime_arr ) ) {
 				wp_send_json_error(
