@@ -51,7 +51,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 					'title' => esc_html__( 'CAPTCHA Integration', 'everest-forms' ),
 					'type'  => 'title',
 					/* translators: %1$s - reCAPTCHA Integration Doc URL, %2$s - hCaptcha Integration Doc URL */
-					'desc'  => sprintf( __( 'Get detailed documentation on integrating <a href="%1$s" target="_blank">reCAPTCHA</a> and <a href="%2$s" target="_blank">hCaptcha</a> with Everest forms.', 'everest-forms' ), 'https://docs.wpeverest.com/everest-forms/docs/how-to-integrate-google-recaptcha/', 'https://docs.wpeverest.com/everest-forms/docs/how-to-integrate-hcaptcha/' ),
+					'desc'  => sprintf( __( 'Get detailed documentation on integrating <a href="%1$s" target="_blank">reCAPTCHA</a>, <a href="%2$s" target="_blank">hCaptcha</a> and <a href="%3$s" target="_blank">Cloudflare Turnstile</a> with Everest forms.', 'everest-forms' ), 'https://docs.wpeverest.com/everest-forms/docs/how-to-integrate-google-recaptcha/', 'https://docs.wpeverest.com/everest-forms/docs/how-to-integrate-hcaptcha/','https://docs.wpeverest.com/everest-forms/docs/how-to-integrate-cloudflare-turnstile-with-the-everest-forms/' ),
 					'id'    => 'integration_options',
 				),
 				array(
@@ -196,7 +196,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 					'title'      => esc_html__( 'Theme', 'everest-forms' ),
 					'type'       => 'select',
 					/* translators: %1$s - Cloudflare Trunstile docs url */
-					'desc'       => sprintf( esc_html__( 'Please select theme mode for your Cloudflare Turnstile. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/tutorials/how-to-integrate-google-recaptcha/' ) ),
+					'desc'       => sprintf( esc_html__( 'Please select theme mode for your Cloudflare Turnstile. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/everest-forms/docs/how-to-integrate-cloudflare-turnstile-with-the-everest-forms/' ) ),
 					'id'         => 'everest_forms_recaptcha_turnstile_theme',
 					'is_visible' => 'turnstile' === $recaptcha_type,
 					'options'    => array(

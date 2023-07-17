@@ -4,7 +4,7 @@ Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.2
 Tested up to: 6.2
 Requires PHP: 7.2
-Stable tag: 2.0.1
+Stable tag: 2.0.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -417,9 +417,12 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-- 2.0.1       - xx-xx-2023
+- 2.0.2       - xx-xx-2023
+* Feature - Regex validation for field.
+
+- 2.0.1       - 14-06-2023
 * Enhancement - Upgrade to pro link.
-* Feature 	  - Cloudfare Turnstile.
+* Feature 	  - Cloudflare Turnstile.
 * Tweak 	  - Form locate option where form is activated.
 * Dependency  - Authorize.Net.
 

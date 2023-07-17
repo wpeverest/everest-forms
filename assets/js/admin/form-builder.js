@@ -915,6 +915,21 @@
 				}
 			});
 
+			$builder.on( 'change', '.everest-forms-field-option-row-enable_regex_validation input', function( event ) {
+				var id = $( this ).parent().data( 'field-id' );
+
+				$( '#everest-forms-field-' + id ).toggleClass( 'regex_value' );
+
+				// Toggle "Parameter Name" option.
+				if ( $( event.target ).is( ':checked' ) ) {
+					$( '#everest-forms-field-option-row-' + id + '-regex_value' ).show();
+					$( '#everest-forms-field-option-row-' + id + '-regex_message' ).show();
+				} else {
+					$( '#everest-forms-field-option-row-' + id + '-regex_value' ).hide();
+					$( '#everest-forms-field-option-row-' + id + '-regex_message' ).hide();
+				}
+			});
+
 			// Real-time updates for "Description" field option.
 			$builder.on( 'input', '.everest-forms-field-option-row-description textarea', function() {
 				var $this = $( this ),
@@ -3043,6 +3058,9 @@ jQuery( function ( $ ) {
 		} else if ( 'other' === type ) {
 			$input.val( $input.val() + '{'+field_id+'}' );
 			$textarea.val($textarea.val() + '{'+field_id+'}' );
+		} else if ( 'regex' === type ) {
+			$input.val($input.val() + field_id.replace(field_label+'_','') );
+			$textarea.val( $textarea.val() + field_id.replace(field_label+'_','') );
 		}
 	});
 
@@ -3158,6 +3176,13 @@ jQuery( function ( $ ) {
 			for( var key in other_smart_tags ) {
 				$(el).parent().find('.evf-smart-tag-lists .evf-others').append('<li class = "smart-tag-field" data-type="other" data-field_id="'+key+'">'+other_smart_tags[key]+'</li>');
 			}
+		}
+
+		if( 'regex' == type ){
+			var regex_lists = evf_data.regex_expression_lists;
+			regex_lists.forEach(function(key,value) {
+				$(el).parent().find('.evf-smart-tag-lists .evf-regex').append('<li class = "smart-tag-field" data-type="regex" data-field_id="'+key.value+'">'+key.text+'</li>');
+			});
 		}
 
 		if ( 'fields' === type || 'all' === type ) {

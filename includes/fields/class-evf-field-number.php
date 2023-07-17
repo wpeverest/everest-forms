@@ -42,6 +42,9 @@ class EVF_Field_Number extends EVF_Form_Fields {
 					'placeholder',
 					'label_hide',
 					'css',
+					'regex_validation',
+					'regex_value',
+					'regex_message',
 				),
 			),
 		);

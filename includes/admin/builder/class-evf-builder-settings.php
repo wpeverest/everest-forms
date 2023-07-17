@@ -604,9 +604,16 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		);
 		do_action( 'everest_forms_inline_honeypot_settings', $this, 'honeypot', 'connection_1' );
 		echo '</div>';
-		$recaptcha_type   = get_option( 'everest_forms_recaptcha_type', 'v2' );
-		$recaptcha_key    = get_option( 'everest_forms_recaptcha_' . $recaptcha_type . '_site_key' );
-		$recaptcha_secret = get_option( 'everest_forms_recaptcha_' . $recaptcha_type . '_secret_key' );
+		if ( 'yes' === get_option( 'everest_forms_recaptcha_v2_invisible' ) ) {
+			$recaptcha_type   = get_option( 'everest_forms_recaptcha_type', 'v2' );
+			$recaptcha_key    = get_option( 'everest_forms_recaptcha_' . $recaptcha_type . '_invisible_site_key' );
+			$recaptcha_secret = get_option( 'everest_forms_recaptcha_' . $recaptcha_type . '_invisible_secret_key' );
+		} else {
+			$recaptcha_type   = get_option( 'everest_forms_recaptcha_type', 'v2' );
+			$recaptcha_key    = get_option( 'everest_forms_recaptcha_' . $recaptcha_type . '_site_key' );
+			$recaptcha_secret = get_option( 'everest_forms_recaptcha_' . $recaptcha_type . '_secret_key' );
+		}
+
 		switch ( $recaptcha_type ) {
 			case 'v2':
 				$recaptcha_label = esc_html__( 'Enable Google reCAPTCHA v2', 'everest-forms' );

@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-06-12T07:33:34+00:00\n"
+"POT-Creation-Date: 2023-06-14T06:09:41+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: everest-forms\n"
@@ -2134,7 +2134,7 @@ msgstr ""
 
 #. translators: %1$s - reCAPTCHA Integration Doc URL, %2$s - hCaptcha Integration Doc URL
 #: includes/admin/settings/class-evf-settings-recaptcha.php:54
-msgid "Get detailed documentation on integrating <a href=\"%1$s\" target=\"_blank\">reCAPTCHA</a> and <a href=\"%2$s\" target=\"_blank\">hCaptcha</a> with Everest forms."
+msgid "Get detailed documentation on integrating <a href=\"%1$s\" target=\"_blank\">reCAPTCHA</a>, <a href=\"%2$s\" target=\"_blank\">hCaptcha</a> and <a href=\"%3$s\" target=\"_blank\">Cloudflare Turnstile</a> with Everest forms."
 msgstr ""
 
 #: includes/admin/settings/class-evf-settings-recaptcha.php:58
