@@ -266,6 +266,9 @@ class EVF_Admin_Assets {
 			wp_enqueue_script( 'evf-upgrade' );
 			wp_enqueue_script( 'evf-form-builder' );
 
+			wp_enqueue_script( 'wp-codemirror' );
+			wp_enqueue_style( 'wp-codemirror' );
+
 			// De-register scripts.
 			wp_dequeue_script( 'colorpick' );
 
