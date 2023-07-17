@@ -1539,6 +1539,121 @@ abstract class EVF_Form_Fields {
 					);
 				break;
 
+			/**
+			 * Regex Validation
+			 */
+			case 'regex_validation':
+				$default = ! empty( $args['default'] ) ? $args['default'] : '0';
+				$value   = ! empty( $field['enable_regex_validation'] ) ? esc_attr( $field['enable_regex_validation'] ) : '';
+				$tooltip = esc_html__( 'Enable this option to allow regex validation for this field.', 'everest-forms' );
+				$output  = $this->field_element(
+					'checkbox',
+					$field,
+					array(
+						'slug'    => 'enable_regex_validation',
+						'value'   => $value,
+						'desc'    => esc_html__( 'Enable Regex Validation ', 'everest-forms' ),
+						'tooltip' => $tooltip,
+					),
+					false
+				);
+				$output  = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'enable_regex_validation',
+						'content' => $output,
+					),
+					$echo
+				);
+				break;
+
+			case 'regex_value':
+				$toggle  = '';
+				$tooltip = esc_html__( 'Regular expression value is checked against.', 'everest-forms' );
+				$value   = ! empty( $field['regex_value'] ) ? esc_attr( $field['regex_value'] ) : '';
+
+				// Build output.
+				$output  = $this->field_element(
+					'label',
+					$field,
+					array(
+						'slug'          => 'regex_value',
+						'value'         => esc_html__( 'Regex Value', 'everest-forms' ),
+						'tooltip'       => $tooltip,
+						'after_tooltip' => $toggle,
+					),
+					false
+				);
+				$output .= $this->field_element(
+					'text',
+					$field,
+					array(
+						'slug'  => 'regex_value',
+						'value' => $value,
+					),
+					false
+				);
+				// Smart tag for default value.
+				$include_fields = array( 'email', 'first-name', 'last-name', 'number', 'text', 'url' );
+
+				if ( in_array( $field['type'], $include_fields, true ) ) {
+					$output .= '<a href="#" class="evf-toggle-smart-tag-display" data-type="regex"><span class="dashicons dashicons-editor-code"></span></a>';
+					$output .= '<div class="evf-smart-tag-lists" style="display: none">';
+					$output .= '<div class="smart-tag-title other-tag-title">Regular Expression</div><ul class="evf-regex"></ul></div>';
+				}
+
+				$output = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'regex_value',
+						'content' => $output,
+						'class'   => ! in_array( $field['type'], $include_fields, true ) && isset( $field['enable_regex_validation'] ) ? '' : ' hidden evf_smart_tag',
+					),
+					$echo
+				);
+
+				break;
+
+			case 'regex_message':
+				$toggle  = '';
+				$tooltip = esc_html__( 'if the regular expression value does not match it will show this message.', 'everest-forms' );
+				$value   = ! empty( $field['regex_message'] ) ? esc_attr( $field['regex_message'] ) : 'Please provide a valid value for this field.';
+
+				// Build output.
+				$output  = $this->field_element(
+					'label',
+					$field,
+					array(
+						'slug'          => 'regex_message',
+						'value'         => esc_html__( 'Validation Message for Regular expression', 'everest-forms' ),
+						'tooltip'       => $tooltip,
+						'after_tooltip' => $toggle,
+					),
+					false
+				);
+				$output .= $this->field_element(
+					'text',
+					$field,
+					array(
+						'slug'  => 'regex_message',
+						'value' => $value,
+					),
+					false
+				);
+				$output  = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'regex_message',
+						'content' => $output,
+						'class'   => isset( $field['enable_regex_validation'] ) ? '' : 'hidden',
+					),
+					$echo
+				);
+				break;
+
 			/*
 			 * CSS classes.
 			 */
@@ -2373,12 +2488,28 @@ abstract class EVF_Form_Fields {
 			update_option( 'evf_validation_error', 'yes' );
 		}
 
+		// validate regex validation.
+		if ( isset( $form_data['form_fields'][ $field_id ]['enable_regex_validation'] ) && '1' === $form_data['form_fields'][ $field_id ]['enable_regex_validation'] ) {
+			$regex_value   = ! empty( $form_data['form_fields'][ $field_id ]['regex_value'] ) ? $form_data['form_fields'][ $field_id ]['regex_value'] : '';
+			$regex_message = ! empty( $form_data['form_fields'][ $field_id ]['regex_message'] ) ? $form_data['form_fields'][ $field_id ]['regex_message'] : esc_html__( 'Please provide a valid value for this field', 'everest-forms' );
+			$value         = '';
+			if ( is_array( $field_submit ) ) {
+				$value = ! empty( $field_submit['primary'] ) ? $field_submit['primary'] : '';
+			} else {
+				$value = ! empty( $field_submit ) ? $field_submit : '';
+			}
+			if ( ! preg_match( '/' . $regex_value . '/', $value ) ) {
+				evf()->task->errors[ $form_data['id'] ][ $field_id ] = $regex_message;
+				update_option( 'evf_validation_error', 'yes' );
+			}
+		}
 		// Type validations.
 		switch ( $field_type ) {
 			case 'url':
 				if ( ! empty( $_POST['everest_forms']['form_fields'][ $field_id ] ) && filter_var( $field_submit, FILTER_VALIDATE_URL ) === false ) { // phpcs:ignore WordPress.Security.NonceVerification
 					$validation_text = get_option( 'evf_' . $field_type . '_validation', esc_html__( 'Please enter a valid url', 'everest-forms' ) );
 				}
+
 				break;
 			case 'email':
 				if ( is_array( $field_submit ) ) {
@@ -2421,6 +2552,7 @@ abstract class EVF_Form_Fields {
 						}
 					}
 				}
+
 				break;
 		}
 

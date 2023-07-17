@@ -39,6 +39,9 @@ class EVF_Field_URL extends EVF_Form_Fields {
 					'label_hide',
 					'default_value',
 					'css',
+					'regex_validation',
+					'regex_value',
+					'regex_message',
 				),
 			),
 		);
