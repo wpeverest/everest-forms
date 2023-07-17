@@ -26,7 +26,6 @@ class EVF_Field_Payment_Authorize_Net extends EVF_Form_Fields {
 		$this->plan   = 'professional agency';
 		$this->addon  = 'everest-forms-authorize-net';
 
-
 		parent::__construct();
 	}
 }
