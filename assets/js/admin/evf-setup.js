@@ -15,6 +15,24 @@ jQuery( function( $ ) {
 			$( document ).on( 'click', '.everest-forms-builder-setup .upgrade-modal', this.message_upgrade );
 			$( document ).on( 'click', '.everest-forms-builder-setup .evf-template-preview', this.template_preview );
 
+			//Active addon.
+			$(document).on('click', '.activate-now', function(e) {
+				e.preventDefault();
+				if(!$(this).closest('body.everest-forms_page_evf-builder').length) {
+					return;
+				}
+				evf_setup_actions.active_addon_from_buidler($(this));
+			});
+
+			//Install addon.
+			$(document).on('click', '.install-from-builder', function(e) {
+				e.preventDefault();
+				if(!$(this).closest('body.everest-forms_page_evf-builder').length) {
+					return;
+				}
+				evf_setup_actions.install_now_from_buidler($(this));
+			});
+
 			// Select and apply a template.
 			this.$setup_form.on( 'click', '.evf-template-select', this.template_select );
 
@@ -268,6 +286,154 @@ jQuery( function( $ ) {
 				e.preventDefault();
 				return false;
 			}
+		},
+		/**
+		 *Active the addon from form builder.
+		 *
+		 * @param {any} node
+		 */
+		active_addon_from_buidler:function( node ) {
+			var url = $(node).attr("href");
+			var plugin = $(node).data("plugin");
+			var activating = $.alert({
+				title:evf_setup_params.activate_title,
+				theme: 'jconfirm-modern jconfirm-everest-forms',
+				icon: 'dashicons dashicons-success',
+				buttons:false,
+				content: evf_setup_params.activate_message,
+				type: 'green',
+			});
+			$.ajax({
+				type: 'POST',
+				url: evf_setup_params.ajax_url,
+				data: {
+					action: 'everest_forms_active_addons',
+					plugin_file : plugin,
+					security : evf_setup_params.evf_active_nonce
+				},
+				success:function(res) {
+					activating.close();
+					if(res.success === true) {
+						$.confirm({
+							title: evf_setup_params.active_confirmation_title,
+							theme: 'jconfirm-modern jconfirm-everest-forms',
+							icon: 'success',
+							backgroundDismiss: false,
+							scrollToPreviousElement: false,
+							type:'green',
+							content: evf_setup_params.active_confirmation_message,
+							buttons: {
+							  confirm: {
+								text: evf_setup_params.save_changes_text,
+								btnClass:'btn-warning',
+								action: function () {
+									$('.everest-forms-save-button').trigger('click');
+									location.reload(true);
+								}
+							  },
+							  cancel: {
+								text: evf_setup_params.reload_text,
+								btnClass:'btn-warning',
+								action: function () {
+										location.reload(true);
+								}
+							  }
+							},
+						  });
+					} else {
+						$.alert({
+							title:evf_setup_params.activate_title,
+							theme: 'jconfirm-modern jconfirm-everest-forms',
+							icon: 'dashicons dashicons-warning',
+							buttons:false,
+							content: res.data.message,
+							type: 'red',
+						});
+					}
+				}
+			})
+		},
+
+		/**
+		 *Install the addon from form builder.
+		 *
+		 * @param {any} event
+		 */
+		install_now_from_buidler:function(event) {
+			var alertInstance = $.alert( {
+				title:evf_setup_params.installing_title,
+				icon: 'success',
+				buttons:false,
+				content: evf_setup_params.installing_message,
+				type: 'success',
+			} );
+			wp.updates.maybeRequestFilesystemCredentials(event);
+			evf_setup_actions.$button_install = evf_setup_params.i18n_installing;
+			$(event)
+				.html(
+					evf_setup_actions.$button_install +
+						'<div class="ur-spinner"></div>'
+				)
+				.closest("button")
+				.prop("disabled", true);
+
+				wp.updates.queue.push({
+					action: 'everest_forms_install_extension',
+					data: {
+						page: pagenow,
+						name: $(event).data( 'name' ),
+						slug: $(event).data( 'slug' )
+					}
+				});
+
+				$(document).on(
+					"wp-plugin-install-success wp-plugin-install-error",
+					function (event, response) {
+						alertInstance.close();
+						if (
+							typeof response.errorMessage !== "undefined" &&
+							response.errorMessage.length > 0
+						) {
+							$.alert({
+								title: response.errorMessage,
+								content: evf_setup_params.download_failed,
+								icon: "error",
+							});
+						} else {
+							if (0 === wp.updates.queue.length) {
+								$.alert({
+									title: evf_setup_params.install_confirmation_title,
+									theme: 'jconfirm-modern jconfirm-everest-forms',
+									icon: 'success',
+									backgroundDismiss: false,
+									scrollToPreviousElement: false,
+									content: evf_setup_params.install_confirmation_message,
+									buttons: {
+									  confirm: {
+										text: evf_setup_params.save_changes_text,
+										btnClass:'btn-warning',
+										action: function () {
+											$('.everest-forms-save-button').trigger('click');
+											location.reload();
+										}
+									  },
+									  cancel: {
+										text: evf_setup_params.reload_text,
+										btnClass:'btn-warning',
+										action: function () {
+											location.reload();
+										}
+									  }
+									},
+									type:'green',
+								  });
+							}
+						}
+					}
+				);
+
+				// Check the queue, now that the event handlers have been added.
+				wp.updates.queueChecker();
 		}
 	};
 

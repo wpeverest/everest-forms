@@ -176,6 +176,7 @@ class EVF_Admin_Assets {
 					'email_fields'                 => evf_get_all_email_fields_by_form_id( isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0 ), // phpcs:ignore WordPress.Security.NonceVerification
 					'all_fields'                   => evf_get_all_form_fields_by_form_id( isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0 ), // phpcs:ignore WordPress.Security.NonceVerification
 					'smart_tags_other'             => evf()->smart_tags->other_smart_tags(),
+					'regex_expression_lists'       => evf()->smart_tags->regex_expression_lists(),
 					'entries_url'                  => ! empty( $_GET['form_id'] ) ? esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . absint( $_GET['form_id'] ) ) ) : '', // phpcs:ignore WordPress.Security.NonceVerification
 					'preview_url'                  => ! empty( $_GET['form_id'] ) ? esc_url( // phpcs:ignore WordPress.Security.NonceVerification
 						add_query_arg(
@@ -196,6 +197,7 @@ class EVF_Admin_Assets {
 			'evf-upgrade',
 			'evf_upgrade',
 			array(
+				'ajax_url'                     => admin_url( 'admin-ajax.php' ),
 				'upgrade_title'                => esc_html__( 'is a PRO Feature', 'everest-forms' ),
 				'upgrade_message'              => esc_html__( 'We\'re sorry, the %name% is not available on your plan.<br>Please upgrade to the PRO plan to unlock all these awesome features.', 'everest-forms' ),
 				'upgrade_button'               => esc_html__( 'Upgrade to PRO', 'everest-forms' ),
@@ -204,6 +206,11 @@ class EVF_Admin_Assets {
 				'enable_stripe_message'        => esc_html__( 'Enable Stripe Payment gateway in payments section to use this field.', 'everest-forms' ),
 				'enable_authorize_net_title'   => esc_html__( 'Please enable Authorize.Net', 'everest-forms' ),
 				'enable_authorize_net_message' => esc_html__( 'Enable Authorize.Net Payment gateway in payments section to use this field.', 'everest-forms' ),
+				'evf_install_and_active_nonce' => wp_create_nonce( 'install_and_active_nonce' ),
+				'upgrade_plan_title'           => esc_html__( 'is a Premium Addon', 'everest-forms' ),
+				'upgrade_plan_message'         => esc_html__( 'This addon requires premium plan. Please upgrade to the Premium plan to unlock all these awesome field.', 'everest-forms' ),
+				'upgrade_plan_button'          => esc_html__( 'Upgrade Plan', 'everest-forms' ),
+
 			)
 		);
 
@@ -265,11 +272,14 @@ class EVF_Admin_Assets {
 			wp_enqueue_script( 'evf-upgrade' );
 			wp_enqueue_script( 'evf-form-builder' );
 
+			wp_enqueue_script( 'wp-codemirror' );
+			wp_enqueue_style( 'wp-codemirror' );
+
 			// De-register scripts.
 			wp_dequeue_script( 'colorpick' );
 
 			// EverestForms builder setup page.
-			if ( isset( $_GET['create-form'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			if ( isset( $_GET['create-form'] ) || isset( $_GET['form_id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 				wp_register_script( 'evf-setup', evf()->plugin_url() . '/assets/js/admin/evf-setup' . $suffix . '.js', array( 'jquery', 'everest-forms-extensions', 'evf-template-controller' ), EVF_VERSION, true );
 				wp_enqueue_script( 'evf-setup' );
 				wp_localize_script(
@@ -278,6 +288,7 @@ class EVF_Admin_Assets {
 					array(
 						'ajax_url'                     => admin_url( 'admin-ajax.php' ),
 						'create_form_nonce'            => wp_create_nonce( 'everest_forms_create_form' ),
+						'evf_active_nonce'             => wp_create_nonce( 'evf_active_nonce' ),
 						'template_licence_check_nonce' => wp_create_nonce( 'everest_forms_template_licence_check' ),
 						'i18n_form_name'               => esc_html__( 'Give it a name.', 'everest-forms' ),
 						'i18n_form_error_name'         => esc_html__( 'You must provide a Form name', 'everest-forms' ),
@@ -288,6 +299,18 @@ class EVF_Admin_Assets {
 						'i18n_form_ok'                 => esc_html__( 'Continue', 'everest-forms' ),
 						'i18n_form_placeholder'        => esc_html__( 'Untitled Form', 'everest-forms' ),
 						'i18n_form_title'              => esc_html__( 'Uplift your form experience to the next level.', 'everest-forms' ),
+						'i18n_installing'              => esc_html__( 'installing', 'everest-forms' ),
+						'save_changes_text'            => esc_html__( 'Save and Reload', 'everest-forms' ),
+						'reload_text'                  => esc_html__( 'Just Reload', 'everest-forms' ),
+						'active_confirmation_title'    => esc_html__( 'Activation Successful.', 'everest-forms' ),
+						'install_confirmation_title'   => esc_html__( 'Installation Successful.', 'everest-forms' ),
+						'install_confirmation_message' => esc_html__( 'Addons have been installed and Activated. You have to reload the page', 'everest-forms' ),
+						'active_confirmation_message'  => esc_html__( 'Addons have been Activated. You have to reload the page', 'everest-forms' ),
+						'download_failed'              => esc_html__( 'Download Failed', 'everest-forms' ),
+						'installing_title'             => esc_html__( 'Installing...', 'everest-forms' ),
+						'activate_title'               => esc_html__( 'Activating...', 'everest-forms' ),
+						'installing_message'           => esc_html__( 'Please wait while the addon is being installed.', 'everest-forms' ),
+						'activate_message'             => esc_html__( 'Please wait while the addon is being activated.', 'everest-forms' ),
 					)
 				);
 			}

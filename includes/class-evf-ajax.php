@@ -102,6 +102,7 @@ class EVF_AJAX {
 			'send_test_email'         => false,
 			'locate_form_action'      => false,
 			'slot_booking'            => true,
+			'active_addons'           => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -913,6 +914,32 @@ class EVF_AJAX {
 					'message' => __( 'This slot is not booked.', 'everest-forms' ),
 				)
 			);
+
+		}
+	}
+
+	/**
+	 * Activate addons from builder.
+	 */
+	public static function active_addons() {
+		try {
+			check_ajax_referer( 'evf_active_nonce', 'security' );
+			$plugin   = isset( $_POST['plugin_file'] ) ? sanitize_text_field( wp_unslash( $_POST['plugin_file'] ) ) : '';
+			$activate = activate_plugin( $plugin );
+			if ( is_wp_error( $activate ) ) {
+				$activation_error = $activate->get_error_message();
+				wp_send_json_error(
+					array(
+						'message' => $activation_error,
+					)
+				);
+			} else {
+				wp_send_json_success(
+					array(
+						'message' => __( 'Activated successfully', 'everest-forms' ),
+					)
+				);
+			}
 		} catch ( Exception $e ) {
 			wp_send_json_error(
 				array(
