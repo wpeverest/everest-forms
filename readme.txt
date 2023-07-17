@@ -418,9 +418,10 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 == Changelog ==
 
 - 2.0.2       - xx-xx-2023
-* Feature - Regex validation for field.
-* Feature - Custom CSS and JS for form.
-* Fix - Word count issue with Cyrillic text.
+* Feature     - Regex validation for field.
+* Feature     - Custom CSS and JS for form.
+* Enhancement - Upgrade to the pro improve for dragging a field
+* Fix         - Word count issue with Cyrillic text.
 
 
 - 2.0.1       - 14-06-2023

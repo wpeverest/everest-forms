@@ -119,8 +119,12 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 				<div class="everest-forms-add-fields-group open">
 					<a href="#" class="everest-forms-add-fields-heading" data-group="<?php echo esc_attr( $group ); ?>"><?php echo esc_html( evf_get_fields_group( $group ) ); ?><i class="handlediv"></i></a>
 					<div class="evf-registered-buttons">
-						<?php foreach ( $form_field as $field ) : ?>
-							<button type="button" id="everest-forms-add-fields-<?php echo esc_attr( $field->type ); ?>" class="evf-registered-item <?php echo sanitize_html_class( $field->class ); ?>" data-field-type="<?php echo esc_attr( $field->type ); ?>">
+						<?php
+						foreach ( $form_field as $field ) :
+							$field_plan = isset( $field->plan ) ? $field->plan : '';
+							$addon_slug = isset( $field->addon ) ? $field->addon : '';
+							?>
+							<button type="button" id="everest-forms-add-fields-<?php echo esc_attr( $field->type ); ?>" class="evf-registered-item <?php echo sanitize_html_class( $field->class ); ?>" data-field-type="<?php echo esc_attr( $field->type ); ?>" data-field-plan="<?php echo esc_attr( $field_plan ); ?>" data-addon-slug="<?php echo esc_attr( $addon_slug ); ?>">
 								<?php if ( isset( $field->icon ) ) : ?>
 									<i class="<?php echo esc_attr( $field->icon ); ?>"></i>
 								<?php endif; ?>

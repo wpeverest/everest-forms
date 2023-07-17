@@ -23,6 +23,7 @@ class EVF_Field_Credit_Card extends EVF_Form_Fields {
 		$this->order  = 50;
 		$this->group  = 'payment';
 		$this->is_pro = true;
+		$this->plan   = 'plus professional agency';
 
 		parent::__construct();
 	}
