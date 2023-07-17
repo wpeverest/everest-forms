@@ -188,7 +188,7 @@ jQuery( function ( $ ) {
 				$(document).find(".evf-field-date-time input").on('change', function (event) {
 					var slotBooking = $(this).data('slot-booking'),
 						targetLabel = $(this).parent(),
-						errorLabel = $(this).parent().find('.evf-error');
+						errorLabel = $(this).parent().find('label.evf-error');
 					if(slotBooking === 1) {
 						var dataTimeValue = $(this).val(),
 						dateFormat = $(this).data('date-format'),

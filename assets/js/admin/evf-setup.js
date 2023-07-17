@@ -365,7 +365,7 @@ jQuery( function( $ ) {
 				icon: 'success',
 				buttons:false,
 				content: evf_setup_params.installing_message,
-				type: 'success',
+				type: 'green',
 			} );
 			wp.updates.maybeRequestFilesystemCredentials(event);
 			evf_setup_actions.$button_install = evf_setup_params.i18n_installing;
