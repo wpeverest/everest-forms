@@ -985,7 +985,7 @@
 				if($(this).is(":checked")) {
 					disable_past_date = $(document).find('.everest-forms-past-date-disable-format input');
 					if(disable_past_date.is(":not(:checked)")) {
-						disable_past_date.attr("checked", true);
+						disable_past_date.prop("checked", true);
 					}
 					disable_past_date.parent().hide();
 				} else {
