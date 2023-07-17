@@ -419,6 +419,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 - 2.0.2       - xx-xx-2023
 * Feature - Regex validation for field.
+* Feature - Custom CSS and JS for form.
 
 - 2.0.1       - 14-06-2023
 * Enhancement - Upgrade to pro link.
