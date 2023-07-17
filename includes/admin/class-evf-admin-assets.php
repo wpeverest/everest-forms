@@ -176,6 +176,7 @@ class EVF_Admin_Assets {
 					'email_fields'                 => evf_get_all_email_fields_by_form_id( isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0 ), // phpcs:ignore WordPress.Security.NonceVerification
 					'all_fields'                   => evf_get_all_form_fields_by_form_id( isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0 ), // phpcs:ignore WordPress.Security.NonceVerification
 					'smart_tags_other'             => evf()->smart_tags->other_smart_tags(),
+					'regex_expression_lists'       => evf()->smart_tags->regex_expression_lists(),
 					'entries_url'                  => ! empty( $_GET['form_id'] ) ? esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . absint( $_GET['form_id'] ) ) ) : '', // phpcs:ignore WordPress.Security.NonceVerification
 					'preview_url'                  => ! empty( $_GET['form_id'] ) ? esc_url( // phpcs:ignore WordPress.Security.NonceVerification
 						add_query_arg(
@@ -270,6 +271,9 @@ class EVF_Admin_Assets {
 			wp_enqueue_media();
 			wp_enqueue_script( 'evf-upgrade' );
 			wp_enqueue_script( 'evf-form-builder' );
+
+			wp_enqueue_script( 'wp-codemirror' );
+			wp_enqueue_style( 'wp-codemirror' );
 
 			// De-register scripts.
 			wp_dequeue_script( 'colorpick' );

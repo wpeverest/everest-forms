@@ -915,6 +915,21 @@
 				}
 			});
 
+			$builder.on( 'change', '.everest-forms-field-option-row-enable_regex_validation input', function( event ) {
+				var id = $( this ).parent().data( 'field-id' );
+
+				$( '#everest-forms-field-' + id ).toggleClass( 'regex_value' );
+
+				// Toggle "Parameter Name" option.
+				if ( $( event.target ).is( ':checked' ) ) {
+					$( '#everest-forms-field-option-row-' + id + '-regex_value' ).show();
+					$( '#everest-forms-field-option-row-' + id + '-regex_message' ).show();
+				} else {
+					$( '#everest-forms-field-option-row-' + id + '-regex_value' ).hide();
+					$( '#everest-forms-field-option-row-' + id + '-regex_message' ).hide();
+				}
+			});
+
 			// Real-time updates for "Description" field option.
 			$builder.on( 'input', '.everest-forms-field-option-row-description textarea', function() {
 				var $this = $( this ),
@@ -3043,6 +3058,9 @@ jQuery( function ( $ ) {
 		} else if ( 'other' === type ) {
 			$input.val( $input.val() + '{'+field_id+'}' );
 			$textarea.val($textarea.val() + '{'+field_id+'}' );
+		} else if ( 'regex' === type ) {
+			$input.val($input.val() + field_id.replace(field_label+'_','') );
+			$textarea.val( $textarea.val() + field_id.replace(field_label+'_','') );
 		}
 	});
 
@@ -3160,6 +3178,13 @@ jQuery( function ( $ ) {
 			}
 		}
 
+		if( 'regex' == type ){
+			var regex_lists = evf_data.regex_expression_lists;
+			regex_lists.forEach(function(key,value) {
+				$(el).parent().find('.evf-smart-tag-lists .evf-regex').append('<li class = "smart-tag-field" data-type="regex" data-field_id="'+key.value+'">'+key.text+'</li>');
+			});
+		}
+
 		if ( 'fields' === type || 'all' === type ) {
 			if ( allowed_field === 'email' ) {
 				if ( Object.keys(email_field).length < 1 ){
@@ -3212,4 +3237,110 @@ jQuery( function ( $ ) {
 			})
 		}
 	}
+});
+
+jQuery(function ($) {
+	$(document).ready(function () {
+
+		/**
+		 * Custom CSS
+		 */
+		const customCssElement = $('#everest-forms-panel-field-settings-evf-custom-css');
+		var cssEditor = wp.CodeMirror.fromTextArea(customCssElement[0],
+			{
+				"indentUnit": 2,
+				"indentWithTabs": true,
+				"inputStyle": "contenteditable",
+				"lineNumbers": true,
+				"lineWrapping": true,
+				"styleActiveLine": true,
+				"continueComments": true,
+				"extraKeys": {
+					"Ctrl-Space": "autocomplete",
+					"Ctrl-/": "toggleComment",
+					"Cmd-/": "toggleComment",
+					"Alt-F": "findPersistent",
+					"Ctrl-F": "findPersistent",
+					"Cmd-F": "findPersistent"
+				},
+				"direction": "ltr",
+				"gutters": [],
+				"mode": "text/css",
+				"lint": false,
+				"autoCloseBrackets": true,
+				"autoCloseTags": true,
+				"autoRefresh": true,
+				"matchTags": {
+					"bothTags": true
+				},
+				"tabSize": 2,
+				"theme": 'default',
+			});
+
+		cssEditor.on('change', function () {
+			customCssElement.html(cssEditor.getValue());
+		});
+
+
+		/**
+		 * Custom JS
+		 */
+		const customJsElement = $('#everest-forms-panel-field-settings-evf-custom-js');
+		var jsEditor = wp.CodeMirror.fromTextArea(customJsElement[0],
+			{
+				"indentUnit": 2,
+				"indentWithTabs": true,
+				"inputStyle": "contenteditable",
+				"lineNumbers": true,
+				"lineWrapping": true,
+				"styleActiveLine": true,
+				"continueComments": true,
+				"extraKeys": {
+					"Ctrl-Space": "autocomplete",
+					"Ctrl-/": "toggleComment",
+					"Cmd-/": "toggleComment",
+					"Alt-F": "findPersistent",
+					"Ctrl-F": "findPersistent",
+					"Cmd-F": "findPersistent"
+				},
+				"direction": "ltr",
+				"gutters": [],
+				"mode": "javascript",
+				"lint": false,
+				"autoCloseBrackets": true,
+				"autoCloseTags": true,
+				"autoRefresh": true,
+				"matchTags": {
+					"bothTags": true
+				},
+				"tabSize": 2,
+			});
+
+		jsEditor.on('change', function () {
+			customJsElement.html(jsEditor.getValue());
+		});
+
+		$('#everest-forms-panel-field-settings-evf-enable-custom-css, #everest-forms-panel-field-settings-evf-enable-custom-js').on('change', e => {
+			showHideEditors();
+		});
+
+		showHideEditors();
+
+		/**
+		 * Show/Hide the custom css and js input boxes based on the enabled/disabled state.
+		 */
+		function showHideEditors() {
+			if ($('#everest-forms-panel-field-settings-evf-enable-custom-css').is(':checked')) {
+				$('#everest-forms-panel-field-settings-evf-custom-css-wrap').show(500);
+			} else {
+				$('#everest-forms-panel-field-settings-evf-custom-css-wrap').hide(500);
+			}
+
+			if ($('#everest-forms-panel-field-settings-evf-enable-custom-js').is(':checked')) {
+				$('#everest-forms-panel-field-settings-evf-custom-js-wrap').show(500);
+			} else {
+				$('#everest-forms-panel-field-settings-evf-custom-js-wrap').hide(500);
+			}
+		}
+	});
 });

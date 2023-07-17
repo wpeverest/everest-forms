@@ -27,6 +27,9 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 
 		add_action( 'everest_forms_settings_connections_email', array( $this, 'output_connections_list' ) );
 
+		add_filter( 'everest_forms_builder_settings_section', array( $this, 'add_custom_css_js_section' ), 11, 2 );
+		add_action( 'everest_forms_settings_panel_content', array( $this, 'add_custom_css_js_settings' ), 111, 1 );
+
 		parent::__construct();
 	}
 
@@ -653,6 +656,76 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 
 		do_action( 'everest_forms_settings_panel_content', $this );
 
+	}
+
+	/**
+	 * Add Custom CSS and JS menu item to the builder settings list.
+	 *
+	 * @param [array] $arr Setting Menu items list.
+	 * @param [array] $form_data Form Data.
+	 * @return array
+	 */
+	public function add_custom_css_js_section( $arr, $form_data ) {
+
+		$arr['custom-css-js'] = esc_html__( 'Custom CSS and JS', 'everest-forms' );
+
+		return $arr;
+	}
+
+	/**
+	 * Add Custom Css and Js settings section.
+	 *
+	 * @param [array] $form_data Form Data.
+	 * @return void
+	 */
+	public function add_custom_css_js_settings( $form_data ) {
+		// --------------------------------------------------------------------//
+		// Custom CSS and JS
+		// --------------------------------------------------------------------//
+		echo '<div class="evf-content-section evf-content-custom-css-js-settings">';
+		echo '<div class="evf-content-section-title">';
+		esc_html_e( 'Custom CSS and JS', 'everest-forms' );
+		echo '</div>';
+		echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'Custom CSS', 'everest-forms' ) . '</h4>';
+		everest_forms_panel_field(
+			'checkbox',
+			'settings',
+			'evf-enable-custom-css',
+			$this->form_data,
+			esc_html__( 'Enable Custom CSS', 'everest-forms' ),
+			array(
+				'default' => '0',
+			)
+		);
+		everest_forms_panel_field(
+			'textarea',
+			'settings',
+			'evf-custom-css',
+			$this->form_data,
+			esc_html__( 'Custom CSS', 'everest-forms' )
+		);
+		echo '</div>';
+		echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'Custom JS', 'everest-forms' ) . '</h4>';
+		everest_forms_panel_field(
+			'checkbox',
+			'settings',
+			'evf-enable-custom-js',
+			$this->form_data,
+			esc_html__( 'Enable Custom JS', 'everest-forms' ),
+			array(
+				'default' => '0',
+			)
+		);
+		everest_forms_panel_field(
+			'textarea',
+			'settings',
+			'evf-custom-js',
+			$this->form_data,
+			esc_html__( 'Custom JS', 'everest-forms' )
+		);
+		echo '</div>';
+
+		echo '</div>';
 	}
 
 	/**
