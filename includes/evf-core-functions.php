@@ -1128,6 +1128,7 @@ function evf_get_random_string( $length = 10 ) {
  * Get all forms.
  *
  * @param  bool $skip_disabled_entries True to skip disabled entries.
+ * @param bool $check_disable_storing_entry_info Check disable storing entry.
  * @return array of form data.
  */
 function evf_get_all_forms( $skip_disabled_entries = false, $check_disable_storing_entry_info = true ) {
@@ -4620,7 +4621,7 @@ function evf_file_get_contents( $file ) {
 	if ( $file ) {
 		$local_file = preg_replace( '/\\\\|\/\//', '/', plugin_dir_path( EVF_PLUGIN_FILE ) . $file );
 		 $response = file_get_contents($local_file);
-		 if( $response ){
+		 if ( $response ) {
 			return $response;
 		 }
 		global $wp_filesystem;
@@ -4636,7 +4637,80 @@ function evf_file_get_contents( $file ) {
 }
 
 /**
- * EVF word Count
+* Parses datetime values based on the provided format and mode.
+*
+* @param string $datetime_value   The datetime value to parse.
+* @param string $datetime_format  The format of the datetime value.
+* @param string $date_format      The format of the date.
+* @param string $mode             The mode of the datetime field,
+* @param int    $time_interval    The time interval in minutes.
+* @return array
+*/
+function parse_datetime_values( $datetime_value, $datetime_format, $date_format, $mode, $time_interval ) {
+	$datetime_arr = array();
+
+	switch ($datetime_format) {
+		case 'time':
+			$current_date = gmdate('Y-m-d');
+			$datetime_value = gmdate('H:i', strtotime($datetime_value));
+			$datetime_start = "$current_date $datetime_value";
+			$date_time = new DateTime($datetime_start);
+			$date_time->modify("+$time_interval minute");
+			$datetime_end = $date_time->format('Y-m-d H:i');
+			$datetime_arr[] = array($datetime_start, $datetime_end);
+			break;
+		case 'date':
+			if ('range' === $mode) {
+				$selected_dates = explode(' to ', $datetime_value);
+				if (count($selected_dates) >= 2) {
+					$datetime_start = "$selected_dates[0] 00:00";
+					$datetime_start = gmdate('Y-m-d H:i', strtotime($datetime_start));
+					$date_time = new DateTime($selected_dates[1]);
+					$date_time->modify('+23 hour');
+					$datetime_end = $date_time->format('Y-m-d H:i');
+					$datetime_arr[] = array($datetime_start, $datetime_end);
+				}
+			} else {
+				$selected_dates = explode(', ', $datetime_value);
+
+				foreach ($selected_dates as $selected_date) {
+					$datetime_start = "$selected_date 00:00";
+					$datetime_start = gmdate('Y-m-d H:i', strtotime($datetime_start));
+					$date_time = new DateTime($datetime_start);
+					$date_time->modify('+23 hour');
+
+					$datetime_end = $date_time->format('Y-m-d H:i');
+					$datetime_arr[] = array($datetime_start, $datetime_end);
+				}
+			}
+			break;
+		case 'date-time':
+			if ('range' === $mode) {
+				$selected_dates = explode(' to ', $datetime_value);
+				if (count($selected_dates) >= 2) {
+					$datetime_start = gmdate('Y-m-d H:i', strtotime($selected_dates[0]));
+					$datetime_end = gmdate('Y-m-d H:i', strtotime($selected_dates[1]));
+					$datetime_arr[] = array($datetime_start, $datetime_end);
+				}
+			} else {
+				$selected_dates = explode(', ', $datetime_value);
+
+				foreach ($selected_dates as $selected_date) {
+					$datetime_start = gmdate('Y-m-d H:i', strtotime($selected_date));
+					$date_time = new DateTime($datetime_start);
+					$date_time->modify("+$time_interval minute");
+					$datetime_end = $date_time->format('Y-m-d H:i');
+					$datetime_arr[] = array($datetime_start, $datetime_end);
+				}
+			}
+			break;
+	}
+
+	return $datetime_arr;
+}
+
+/*
+* EVF word Count
  * @since 2.0.2
  */
 function _evf_word_count( $text, $type = 'words', $settings = array() ) {

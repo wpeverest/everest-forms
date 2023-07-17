@@ -61,6 +61,7 @@ class EVF_Form_Task {
 	public function __construct() {
 		add_action( 'wp', array( $this, 'listen_task' ) );
 		add_filter( 'everest_forms_field_properties', array( $this, 'load_previous_field_value' ), 99, 3 );
+		add_action( 'everest_forms_complete_entry_save', array( $this, 'update_slot_booking_value' ), 10, 5 );
 	}
 
 	/**
@@ -1037,6 +1038,62 @@ class EVF_Form_Task {
 		do_action( 'everest_forms_complete_entry_save', $entry_id, $fields, $entry, $form_id, $form_data );
 
 		return $this->entry_id;
+	}
+
+	/**
+	 * Insert or update the slot booking data.
+	 *
+	 * @param int   $entry_id Entry id.
+	 * @param array $fields    List of form fields.
+	 * @param array $entry     User submitted data.
+	 * @param int   $form_id   Form ID.
+	 * @param array $form_data Prepared form settings.
+	 */
+	public function update_slot_booking_value( $entry_id, $fields, $entry, $form_id, $form_data ) {
+		$new_slot_booking_field_meta_key_list = array();
+		$time_interval                        = 0;
+		foreach ( $form_data['form_fields'] as $field ) {
+			if ( ( 'date-time' === $field['type'] ) && isset( $field['slot_booking_advanced'] ) && evf_string_to_bool( $field['slot_booking_advanced'] ) ) {
+				$new_slot_booking_field_meta_key_list[ $field['meta-key'] ] = array(
+					$field['datetime_format'],
+					$field['date_format'],
+					$field['date_mode'],
+				);
+				$time_interval = $field['time_interval'];
+			}
+		}
+
+		foreach ( $fields as $key => $value ) {
+			if ( array_key_exists( $value['meta_key'], $new_slot_booking_field_meta_key_list ) ) {
+				$new_value       = $value['value'];
+				$datetime_format = $new_slot_booking_field_meta_key_list[ $value['meta_key'] ][0];
+				$date_format     = $new_slot_booking_field_meta_key_list[ $value['meta_key'] ][1];
+				$mode            = $new_slot_booking_field_meta_key_list[ $value['meta_key'] ][2];
+				$datetime_arr    = parse_datetime_values( $new_value, $datetime_format, $date_format, $mode, $time_interval );
+			}
+		}
+
+		if ( ! empty( $datetime_arr ) ) {
+			$get_booked_slot = get_option( 'evf_booked_slot', array() );
+			$new_booked_slot = array( $form_id => $datetime_arr );
+
+			if ( empty( $get_booked_slot ) ) {
+				$all_booked_slot = maybe_serialize( $new_booked_slot );
+			} else {
+				$unserialized_booked_slot = maybe_unserialize( $get_booked_slot );
+
+				if ( array_key_exists( $form_id, $unserialized_booked_slot ) ) {
+					$booked_slot     = $unserialized_booked_slot[ $form_id ];
+					$booked_slot     = array_merge( (array) $booked_slot, $datetime_arr );
+					$new_booked_slot = array( $form_id => $booked_slot );
+				}
+
+				$all_booked_slot = maybe_serialize( array_replace( $unserialized_booked_slot, $new_booked_slot ) );
+			}
+
+			update_option( 'evf_booked_slot', $all_booked_slot );
+		}
+
 	}
 
 	/**

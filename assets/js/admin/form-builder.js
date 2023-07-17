@@ -559,6 +559,13 @@
 				var id = $( this ).attr( 'data-field-id' );
 				EVFPanelBuilder.dateSettingToggler( id, $('#everest-forms-field-option-' + id + '-datetime_style' ).val() );
 			} );
+
+			if($('.everest-forms-slot-booking input').is(":checked")) {
+				//checked and hide past dates.
+				disable_past_date = $(document).find('.everest-forms-past-date-disable-format input');
+				disable_past_date.attr("checked", true);
+				disable_past_date.parent().hide();
+			}
 		},
 
 		/**
@@ -986,6 +993,18 @@
 				} else {
 					$( '#everest-forms-field-' + id ).find( '.everest-forms-confirm' ).removeClass( 'everest-forms-confirm-enabled' ).addClass( 'everest-forms-confirm-disabled' );
 					$( '#everest-forms-field-option-' + id ).removeClass( 'everest-forms-confirm-enabled' ).addClass( 'everest-forms-confirm-disabled' );
+				}
+			});
+			// Real-time updates for slot booking
+			$builder.on('change', '.everest-forms-slot-booking input', function(event) {
+				if($(this).is(":checked")) {
+					disable_past_date = $(document).find('.everest-forms-past-date-disable-format input');
+					if(disable_past_date.is(":not(:checked)")) {
+						disable_past_date.prop("checked", true);
+					}
+					disable_past_date.parent().hide();
+				} else {
+					disable_past_date.parent().show();
 				}
 			});
 
