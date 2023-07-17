@@ -2532,7 +2532,7 @@ abstract class EVF_Form_Fields {
 
 					// Limit Length.
 					if ( isset( $field['limit_enabled'], $field['limit_mode'], $field['limit_count'] ) && '1' === $field['limit_enabled'] && in_array( $field['limit_mode'], array( 'characters', 'words' ), true ) && ! empty( $field['limit_count'] ) ) {
-						if ( 'words' === $field['limit_mode'] && $field['limit_count'] < str_word_count( $field_submit ) ) {
+						if ( 'words' === $field['limit_mode'] && $field['limit_count'] < evf_word_count( $field_submit ) ) {
 							/* translators: %s Number of max words. */
 							$validation_text = sprintf( esc_html__( 'This field contains at most %s words', 'everest-forms' ), $field['limit_count'] );
 						} elseif ( 'characters' === $field['limit_mode'] && $field['limit_count'] < mb_strlen( $field_submit ) ) { //phpcs:ignore PHPCompatibility.ParameterValues.NewIconvMbstringCharsetDefault.NotSet
@@ -2543,7 +2543,8 @@ abstract class EVF_Form_Fields {
 
 					// Min Length.
 					if ( isset( $field['min_length_enabled'], $field['min_length_mode'], $field['min_length_count'] ) && '1' === $field['min_length_enabled'] && in_array( $field['min_length_mode'], array( 'characters', 'words' ), true ) && ! empty( $field['min_length_count'] ) ) {
-						if ( 'words' === $field['min_length_mode'] && $field['min_length_count'] > str_word_count( $field_submit ) ) {
+
+						if ( 'words' === $field['min_length_mode'] && $field['min_length_count'] > evf_word_count( $field_submit ) ) {
 							/* translators: %s Number of minimum words. */
 							$validation_text = sprintf( esc_html__( 'This field contains at least %s words', 'everest-forms' ), $field['min_length_count'] );
 						} elseif ( 'characters' === $field['min_length_mode'] && $field['min_length_count'] > mb_strlen( $field_submit ) ) { //phpcs:ignore PHPCompatibility.ParameterValues.NewIconvMbstringCharsetDefault.NotSet
