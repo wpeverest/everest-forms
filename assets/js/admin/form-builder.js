@@ -563,7 +563,9 @@
 			if($('.everest-forms-slot-booking input').is(":checked")) {
 				//checked and hide past dates.
 				disable_past_date = $(document).find('.everest-forms-past-date-disable-format input');
+				required = $(document).find('.everest-forms-field-option-row-required input');
 				disable_past_date.attr("checked", true);
+				required.prop("checked", true);
 				disable_past_date.parent().hide();
 			}
 		},
@@ -966,6 +968,12 @@
 				} else {
 					$( '#everest-forms-field-option-row-' + id + '-required_field_message_setting' ).hide();
 					$( '#everest-forms-field-option-row-' + id + '-required-field-message' ).hide();
+
+					//unchecked the slot booking if date is not required.
+					slot_booking = $(document).find('.everest-forms-slot-booking input');
+					slot_booking.prop('checked', false);
+					//show pass date input if hidden.
+					$(document).find('.everest-forms-past-date-disable-format input').parent().show();
 				}
 			});
 
@@ -999,6 +1007,13 @@
 			$builder.on('change', '.everest-forms-slot-booking input', function(event) {
 				if($(this).is(":checked")) {
 					disable_past_date = $(document).find('.everest-forms-past-date-disable-format input');
+					required = $(document).find('.everest-forms-field-option-row-required input');
+
+					//checked the required if it is not checked.
+					if(required.is(":not(:checked)")) {
+						required.prop("checked", true);
+					}
+
 					if(disable_past_date.is(":not(:checked)")) {
 						disable_past_date.prop("checked", true);
 					}
