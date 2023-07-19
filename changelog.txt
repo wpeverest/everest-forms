@@ -1,6 +1,6 @@
 == Changelog ==
 
-- 2.0.2       - xx-xx-2023
+- 2.0.2       - 19-07-2023
 * Feature     - Regex validation for field.
 * Feature     - Custom CSS and JS for form.
 * Enhancement - Upgrade to the pro improve for dragging a field.
