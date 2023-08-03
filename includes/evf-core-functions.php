@@ -4794,3 +4794,22 @@ function evf_word_count( $text, $type = 'words', $settings = array() ) {
 		return _evf_word_count( $text, $type = 'words', $settings = array() );
 	}
 }
+
+if ( ! function_exists( 'evf_maybe_get_local_font_url' ) ) {
+	/**
+	 * If load fonts locally option is checked in settings, we download the font
+	 * locally and return the url for download font file.
+	 *
+	 * @param [string] $font_url Remote font url
+	 * @return string
+	 */
+	function evf_maybe_get_local_font_url( $font_url ) {
+		$load_locally = get_option( 'everest_forms_load_fonts_locally', 'no' );
+
+		if ( 'yes' === $load_locally ) {
+			$font_url = wptt_get_webfont_url( $font_url );
+		}
+
+		return $font_url;
+	}
+}

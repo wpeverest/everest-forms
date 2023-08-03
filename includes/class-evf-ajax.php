@@ -103,6 +103,7 @@ class EVF_AJAX {
 			'locate_form_action'      => false,
 			'slot_booking'            => true,
 			'active_addons'           => false,
+			'get_local_font_url'      => true,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -956,6 +957,21 @@ class EVF_AJAX {
 				)
 			);
 		}
+	}
+
+	/**
+	 * Download the provided font and return the url for font file.
+	 *
+	 * @return void
+	 */
+	public static function get_local_font_url() {
+		$font_url = isset( $_POST['font_url'] ) ? wp_unslash( $_POST['font_url'] ) : '';
+
+		if ( str_contains( $font_url, 'https://fonts.googleapis.com' ) ) {
+			$font_url = evf_maybe_get_local_font_url( $font_url );
+		}
+
+		return wp_send_json_success( $font_url );
 	}
 }
 
