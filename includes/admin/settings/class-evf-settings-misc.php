@@ -38,8 +38,8 @@ class EVF_Settings_Misc extends EVF_Settings_Page {
 			array(
 				'a' => array(
 					'href'   => array(),
-					'target' => array()
-				)
+					'target' => array(),
+				),
 			)
 		);
 
@@ -49,8 +49,8 @@ class EVF_Settings_Misc extends EVF_Settings_Page {
 				array(
 					'a' => array(
 						'href'   => array(),
-						'target' => array()
-					)
+						'target' => array(),
+					),
 				)
 			);
 		}

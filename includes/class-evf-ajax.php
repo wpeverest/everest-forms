@@ -961,11 +961,9 @@ class EVF_AJAX {
 
 	/**
 	 * Download the provided font and return the url for font file.
-	 *
-	 * @return void
 	 */
 	public static function get_local_font_url() {
-		$font_url = isset( $_POST['font_url'] ) ? wp_unslash( $_POST['font_url'] ) : '';
+		$font_url = isset( $_POST['font_url'] ) ? sanitize_text_field( wp_unslash( $_POST['font_url'] ) ) : ''; //phpcs:ignore WordPress.Security.NonceVerification
 
 		if ( str_contains( $font_url, 'https://fonts.googleapis.com' ) ) {
 			$font_url = evf_maybe_get_local_font_url( $font_url );

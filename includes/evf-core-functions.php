@@ -1151,7 +1151,7 @@ function evf_get_all_forms( $skip_disabled_entries = false, $check_disable_stori
 			$form_data = ! empty( $form->post_content ) ? evf_decode( $form->post_content ) : '';
 
 			if ( ! $form || ( $skip_disabled_entries && count( $entries ) < 1 ) && ( isset( $form_data['settings']['disabled_entries'] ) && '1' === $form_data['settings']['disabled_entries'] ) ) {
-				if( ! $form || $check_disable_storing_entry_info ) {
+				if ( ! $form || $check_disable_storing_entry_info ) {
 					continue;
 				}
 			}
