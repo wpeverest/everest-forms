@@ -2650,7 +2650,12 @@ abstract class EVF_Form_Fields {
 			case 'payment-multiple':
 				$value  = '';
 				$image  = ! empty( $field['value']['image'] ) ? sprintf( '<img src="%s" style="width:75px;height:75px;max-height:75px;max-width:75px;"  /><br>', $field['value']['image'] ) : '';
-				$value  = ! empty( $field['value']['label'] ) ? $image . $field['value']['label'] : '';
+				$filtered_choice = apply_filters( 'evf_custom_choice', false );
+				if ( $filtered_choice ) {
+					$value  = ! empty( $field['value']['label'] ) ? $field['value']['label'] : '';
+				} else {
+					$value  = ! empty( $field['value']['label'] ) ? $image . $field['value']['label'] : '';
+				}
 				$export = array(
 					'label' => ! empty( $field['value']['name'] ) ? $field['value']['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
 					'value' => ! empty( $value ) ? $value : false,
@@ -2665,7 +2670,12 @@ abstract class EVF_Form_Fields {
 						$image = ! empty( $field['value']['images'][ $key ] ) ? sprintf( '<img src="%s" style="width:75px;height:75px;max-height:75px;max-width:75px;"  /><br>', $field['value']['images'][ $key ] ) : '';
 
 						if ( ! empty( $choice ) ) {
-							$value[ $key ] = $image . $choice;
+							$filtered_choice = apply_filters( 'evf_custom_choice', false );
+							if ( $filtered_choice ) {
+								$value[ $key ] = $choice;
+							} else {
+								$value[ $key ] = $image . $choice;
+							}
 						}
 					}
 				}
