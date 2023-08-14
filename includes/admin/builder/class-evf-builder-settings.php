@@ -555,36 +555,46 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 						'subsection' => $connection_id,
 					)
 				);
-				everest_forms_panel_field(
-					'checkbox',
-					'settings[email][' . $connection_id . ']',
-					'enable-ai-email-prompt',
-					$this->form_data,
-					esc_html__( 'Enable email prompt', 'everest-forms' ),
-					array(
-						'default' => ! empty( $setting['settings']['email'][ $connection_id ]['enable-ai-email-prompt'] ) ? $setting['settings']['email'][ $connection_id ]['enable-ai-email-prompt'] : '0',
-						'class'   => 'everest-forms-enable-email-prompt',
-						'tooltip' => sprintf( 'Enable the email prompt', 'everest-forms' ),
-					)
-				);
-				everest_forms_panel_field(
-					'textarea',
-					'email',
-					'evf_email_message_prompt',
-					$this->form_data,
-					esc_html__( 'Email Message Prompt', 'everest-forms' ),
-					array(
-						'default'    => isset( $settings['email'][ $connection_id ]['evf_email_message_prompt'] ) ? $settings['email'][ $connection_id ]['evf_email_message_prompt'] : '',
-						/* translators: %1$s - general settings docs url */
-						'tooltip'    => sprintf( esc_html__( 'Enter the message of the email. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#email-message' ) ),
-						'smarttags'  => array(
-							'type'        => 'all',
-							'form_fields' => 'all',
-						),
-						'parent'     => 'settings',
-						'subsection' => $connection_id,
-					)
-				);
+				// --------------------------------------------------------------------//
+				// Everest Forms AI Setting Section Start
+				// --------------------------------------------------------------------//
+				if ( ! empty( get_option( 'everest_forms_open_ai_api_key' ) ) ) {
+					everest_forms_panel_field(
+						'checkbox',
+						'email',
+						'enable_ai_email_prompt',
+						$this->form_data,
+						esc_html__( 'Enable email prompt', 'everest-forms' ),
+						array(
+							'default'    => ! empty( $settings['email'][ $connection_id ]['enable_ai_email_prompt'] ) ? $settings['email'][ $connection_id ]['enable_ai_email_prompt'] : '0',
+							'class'      => 'everest-forms-enable-email-prompt',
+							'tooltip'    => sprintf( 'Enable the email prompt', 'everest-forms' ),
+							'parent'     => 'settings',
+							'subsection' => $connection_id,
+						)
+					);
+					everest_forms_panel_field(
+						'textarea',
+						'email',
+						'evf_email_message_prompt',
+						$this->form_data,
+						esc_html__( 'Email Message Prompt', 'everest-forms' ),
+						array(
+							'default'    => isset( $settings['email'][ $connection_id ]['evf_email_message_prompt'] ) ? $settings['email'][ $connection_id ]['evf_email_message_prompt'] : '',
+							'class'      => isset( $settings['email'][ $connection_id ]['enable_ai_email_prompt'] ) && '1' === $settings['email'][ $connection_id ]['enable_ai_email_prompt'] ? 'evf-email-message-prompt' : 'evf-email-message-prompt everest-forms-hidden',
+							/* translators: %1$s - general settings docs url */
+							'tooltip'    => sprintf( esc_html__( 'Enter the message of the email. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#email-message' ) ),
+							'smarttags'  => array(
+								'type' => 'ai',
+							),
+							'parent'     => 'settings',
+							'subsection' => $connection_id,
+						)
+					);
+				}
+				// --------------------------------------------------------------------//
+				// Everest Forms AI Setting Section End
+				// --------------------------------------------------------------------//
 				everest_forms_panel_field(
 					'tinymce',
 					'email',

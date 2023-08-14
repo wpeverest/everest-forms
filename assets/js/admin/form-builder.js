@@ -3095,6 +3095,8 @@ jQuery( function ( $ ) {
 		} else if ( 'regex' === type ) {
 			$input.val($input.val() + field_id.replace(field_label+'_','') );
 			$textarea.val( $textarea.val() + field_id.replace(field_label+'_','') );
+		} else if ('ai' === type ) {
+			$textarea.val($textarea.val() + '{' + field_id.replace(field_label + '_', '') + '}');
 		}
 	});
 
@@ -3209,6 +3211,14 @@ jQuery( function ( $ ) {
 			var other_smart_tags = evf_data.smart_tags_other;
 			for( var key in other_smart_tags ) {
 				$(el).parent().find('.evf-smart-tag-lists .evf-others').append('<li class = "smart-tag-field" data-type="other" data-field_id="'+key+'">'+other_smart_tags[key]+'</li>');
+			}
+		}
+
+
+		if( 'ai' === type ){
+			var smart_tags_ai = evf_data.ai_smart_tags;
+			for( var key in smart_tags_ai ) {
+				$(el).parent().find('.evf-smart-tag-lists .evf-ai').append('<li class = "smart-tag-field" data-type="ai" data-field_id="'+key+'">'+smart_tags_ai[key]+'</li>');
 			}
 		}
 
