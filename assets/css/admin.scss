@@ -643,7 +643,8 @@
  
 			 &:checked {
 				 + .slider {
-					 background-color: $green;
+					//  background-color: $green;
+					background-color: $evf_primary-color;
  
 					 &::before {
 						 transform: translateX(100%);
@@ -1714,6 +1715,25 @@
 						 border-color: #e1e1e1;
 						 padding: 3px 10px;
 						 color: #383838;
+					 }
+
+					 &.everest-forms-panel-field-toggle {
+						display: flex;
+						align-items: center;
+						justify-content: flex-end;
+						flex-direction: row-reverse;
+						gap: 8px;
+
+						label,
+						.evf-toggle-section {
+							margin-bottom: 0;
+						}
+
+						.evf-toggle-section {
+							.everest-forms-toggle-form {
+								margin: 0;
+							}
+						}
 					 }
 				 }
 			 }
