@@ -343,11 +343,11 @@ We have the PRO version and we detected an incident that they resolved in less t
 
 ==Get in Touch with us  ==
 
-👉 [Facebook Group](https://www.facebook.com/groups/everestforms)
+👉 [Facebook Group](https://www.facebook.com/groups/themegrill)
 
-👉 [Twitter](https://twitter.com/wp_everest)
+👉 [Twitter](https://twitter.com/everestforms)
 
-👉 [Youtube](https://www.youtube.com/@WPEverest)
+👉 [Youtube](https://www.youtube.com/@EverestForms)
 
 ==Explore More Products from Our Team==
 Love Everest Forms? If you do, then you should check out more WordPress themes and plugins from us.
