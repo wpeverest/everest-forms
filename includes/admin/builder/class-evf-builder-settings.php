@@ -558,7 +558,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				// --------------------------------------------------------------------//
 				// Everest Forms AI Setting Section Start
 				// --------------------------------------------------------------------//
-				if ( ! empty( get_option( 'everest_forms_open_ai_api_key' ) ) ) {
+				if ( ! empty( get_option( 'everest_forms_ai_api_key' ) ) ) {
 					everest_forms_panel_field(
 						'checkbox',
 						'email',
