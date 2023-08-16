@@ -24,7 +24,7 @@ No time to create forms from the ground? No worries! Choose from beautifully des
 
 👉 [All features](https://everestforms.net/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) | 👉 [Demo](http://demo.wpeverest.com/everest-forms/) | 👉 [Documentation](https://docs.everestforms.net/)
 
-👉 [Try Everest Forms Premium ](https://everestforms.net/?utm_source=wporg&utm_medium=link&utm_campaign=ur-upgrade-to-pro)
+👉 [Try Everest Forms Premium ](https://everestforms.demoswp.net/?utm_source=wporg&utm_medium=link&utm_campaign=ur-upgrade-to-pro)
 
 == Create Pro-Level Forms with Everest Forms' Awesome Features ==
 
@@ -205,7 +205,7 @@ Everest Forms has a long list of top-notch features, making it the best WordPres
 
 * **Elementor Widget:** Everest Forms comes with an inbuilt Elementor widget that you can easily drag and drop in your Elementor builder. Hence, you can get full advantage of all the styles and customization options that Elementor provides.
 
-* **[Premium] [Calculation Fields:](https://everestforms.net/features/calculations/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Calculations addon makes it quite simple to calculate field values that are updated in real-time. It can handle from simple additions, subtractions, or multiplication to complicated geometric operations.
+* **[Premium] [Calculation Fields:](https://everestforms.net/features/caculations/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Calculations addon makes it quite simple to calculate field values that are updated in real-time. It can handle from simple additions, subtractions, or multiplication to complicated geometric operations.
 
 * **[Premium] [Coupons:](https://everestforms.net/features/coupons/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Quickly create and add coupon code to encourage users to purchase via your form. Everest Forms plugin enables you to create both the fixed and percentage-based coupons.
 
@@ -318,7 +318,7 @@ Everest Forms has a long list of top-notch features, making it the best WordPres
 
 ### Getting Started:
 * [Watch our video tutorials](https://www.youtube.com/@EverestForms)
-* [Follow our getting started documentation](https://docs.wpeverest.com/everest-forms/docs/how-to-create-a-form-with-everest-forms/)
+* [Follow our getting started documentation](https://docs.everestforms.net/docs/how-to-create-a-form-with-everest-forms/)
 
 ### Hands-On Everest Forms Tutorials for Your Ease
 * [How to Create a WordPress Contact Form: Ultimate Guide for Beginners](https://wpeverest.com/blog/create-wordpress-contact-form/)
