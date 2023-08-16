@@ -177,7 +177,6 @@ class EVF_Admin_Assets {
 					'all_fields'                   => evf_get_all_form_fields_by_form_id( isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0 ), // phpcs:ignore WordPress.Security.NonceVerification
 					'smart_tags_other'             => evf()->smart_tags->other_smart_tags(),
 					'regex_expression_lists'       => evf()->smart_tags->regex_expression_lists(),
-					'ai_smart_tags'                => evf()->smart_tags->ai_smart_tags(),
 					'entries_url'                  => ! empty( $_GET['form_id'] ) ? esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . absint( $_GET['form_id'] ) ) ) : '', // phpcs:ignore WordPress.Security.NonceVerification
 					'preview_url'                  => ! empty( $_GET['form_id'] ) ? esc_url( // phpcs:ignore WordPress.Security.NonceVerification
 						add_query_arg(

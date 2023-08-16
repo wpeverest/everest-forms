@@ -202,22 +202,6 @@ class EVF_Smart_Tags {
 
 
 	/**
-	 * Other AI smart tags.
-	 *
-	 * @return string|array
-	 */
-	public function ai_smart_tags() {
-		$ai_smart_tags = apply_filters(
-			'everest_forms_ai_smart_tags',
-			array(
-				'ai_email_response' => esc_html__( 'AI Email Response', 'everest-forms' ),
-			)
-		);
-		return $ai_smart_tags;
-	}
-
-
-	/**
 	 * Process and parse smart tags.
 	 *
 	 * @param string       $content The string to preprocess.

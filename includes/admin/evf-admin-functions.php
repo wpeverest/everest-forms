@@ -540,11 +540,6 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 				$smart_tag .= esc_html__( 'Others', 'everest-forms' );
 				$smart_tag .= '</div><ul class="evf-others"></ul>';
 			}
-			if ( 'ai' === $type ) {
-				$smart_tag .= '<div class="smart-tag-title ai-tag-title">';
-				$smart_tag .= esc_html__( 'AI', 'everest-forms' );
-				$smart_tag .= '</div><ul class="evf-ai"></ul>';
-			}
 			$smart_tag .= '</div>';
 		} else {
 			$smart_tag = '';

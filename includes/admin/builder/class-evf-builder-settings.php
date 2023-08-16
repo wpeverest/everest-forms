@@ -585,7 +585,8 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 							/* translators: %1$s - general settings docs url */
 							'tooltip'    => sprintf( esc_html__( 'Enter the message of the email. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#email-message' ) ),
 							'smarttags'  => array(
-								'type' => 'ai',
+								'type'        => 'all',
+								'form_fields' => 'all',
 							),
 							'parent'     => 'settings',
 							'subsection' => $connection_id,
