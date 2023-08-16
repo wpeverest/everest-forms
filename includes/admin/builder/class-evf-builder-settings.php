@@ -613,7 +613,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 						'parent'     => 'settings',
 						'subsection' => $connection_id,
 						/* translators: %s - all fields smart tag. */
-						'after'      => '<p class="desc">' . sprintf( esc_html__( 'To display all form fields, use the %s Smart Tag.', 'everest-forms' ), '<code>{all_fields}</code>' ) . '</p>',
+						'after'      => empty( get_option( 'everest_forms_ai_api_key' ) ) ? '<p class="desc">' . sprintf( esc_html__( 'To display all form fields, use the %s Smart Tag.', 'everest-forms' ), '<code>{all_fields}</code>' ) . '</p>' : '<p class="desc">' . sprintf( esc_html__( 'To display all form fields, use the %1$s Smart Tag. Use %2$s Smart Tag for AI-generated emails', 'everest-forms' ), '<code>{all_fields}</code>', '<code>{ai_email_response}</code>' ) . '</p>',
 					)
 				);
 
