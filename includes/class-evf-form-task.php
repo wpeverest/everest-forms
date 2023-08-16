@@ -871,16 +871,19 @@ class EVF_Form_Task {
 
 			// Setup email properties.
 			/* translators: %s - form name. */
-			$email['subject']           = ! empty( $notification['evf_email_subject'] ) ? $notification['evf_email_subject'] : sprintf( esc_html__( 'New %s Entry', 'everest-forms' ), $form_data['settings']['form_title'] );
-			$email['address']           = explode( ',', apply_filters( 'everest_forms_process_smart_tags', $evf_to_email, $form_data, $fields, $this->entry_id ) );
-			$email['address']           = array_map( 'sanitize_email', $email['address'] );
-			$email['sender_name']       = ! empty( $notification['evf_from_name'] ) ? $notification['evf_from_name'] : get_bloginfo( 'name' );
-			$email['sender_address']    = ! empty( $notification['evf_from_email'] ) ? $notification['evf_from_email'] : get_option( 'admin_email' );
-			$email['reply_to']          = ! empty( $notification['evf_reply_to'] ) ? $notification['evf_reply_to'] : $email['sender_address'];
-			$email['message_ai_prompt'] = ! empty( $notification['evf_email_message_prompt'] ) ? $notification['evf_email_message_prompt'] : '';
-			$email['message']           = ! empty( $notification['evf_email_message'] ) ? evf_string_translation( $form_data['id'], 'evf_email_message', $notification['evf_email_message'] ) : '{all_fields}';
-			$email                      = apply_filters( 'everest_forms_entry_email_atts', $email, $fields, $entry, $form_data );
-			$attachment                 = '';
+			$email['subject']        = ! empty( $notification['evf_email_subject'] ) ? $notification['evf_email_subject'] : sprintf( esc_html__( 'New %s Entry', 'everest-forms' ), $form_data['settings']['form_title'] );
+			$email['address']        = explode( ',', apply_filters( 'everest_forms_process_smart_tags', $evf_to_email, $form_data, $fields, $this->entry_id ) );
+			$email['address']        = array_map( 'sanitize_email', $email['address'] );
+			$email['sender_name']    = ! empty( $notification['evf_from_name'] ) ? $notification['evf_from_name'] : get_bloginfo( 'name' );
+			$email['sender_address'] = ! empty( $notification['evf_from_email'] ) ? $notification['evf_from_email'] : get_option( 'admin_email' );
+			$email['reply_to']       = ! empty( $notification['evf_reply_to'] ) ? $notification['evf_reply_to'] : $email['sender_address'];
+			if ( ! empty( get_option( 'everest_forms_open_ai_api_key' ) ) ) {
+				$email['message_ai_prompt'] = ! empty( $notification['evf_email_message_prompt'] ) ? $notification['evf_email_message_prompt'] : '';
+				$email['enable_ai_prompt']  = ! empty( $notification['enable_ai_email_prompt'] ) ? $notification['enable_ai_email_prompt'] : 0;
+			}
+			$email['message'] = ! empty( $notification['evf_email_message'] ) ? evf_string_translation( $form_data['id'], 'evf_email_message', $notification['evf_email_message'] ) : '{all_fields}';
+			$email            = apply_filters( 'everest_forms_entry_email_atts', $email, $fields, $entry, $form_data );
+			$attachment       = '';
 
 			// Create new email.
 			$emails = new EVF_Emails();

@@ -131,6 +131,8 @@
 			cloned_email.find('.everest-forms-show-header-in-attachment-pdf-file input[type="checkbox"]').prop('checked', false);
 			cloned_email.find('.everest-forms-file-email-attachments  input[type="checkbox"]').prop('checked', false);
 			cloned_email.find('.everest-forms-enable-email-prompt input[type="checkbox"]').prop('checked', false);
+			cloned_email.find('.evf-email-message-prompt textarea').val('');
+			cloned_email.find('.everest-forms-email-name input').val(name);
 
 			cloned_email.find('.everest-forms-show-header-in-attachment-pdf-file').hide();
 			cloned_email.find('.evf-email-message-prompt').hide();
