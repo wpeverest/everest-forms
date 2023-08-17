@@ -392,7 +392,7 @@ Yes, Everest Forms is designed to work with any themes that have been coded foll
 
 = Do you have a quick get started video for Everest Form? =
 
-Yes, we do. Check out this [Getting Started Videos](https://docs.wpeverest.com/everest-forms/docs-category/video-tutorials/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)
+Yes, we do. Check out this [Getting Started Videos](https://docs.everestforms.net/docs-category/video-tutorials/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)
 
 = What types of forms can I build with Everest Forms? =
 

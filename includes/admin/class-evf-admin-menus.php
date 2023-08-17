@@ -125,7 +125,7 @@ class EVF_Admin_Menus {
 				'utm_source'   => 'WordPress',
 				'utm_content'  => 'Documentation',
 			),
-			'https://docs.wpeverest.com/everest-forms/'
+			'https://docs.everestforms.net/'
 		);
 
 		$wp_admin_bar->add_menu(
@@ -300,7 +300,7 @@ class EVF_Admin_Menus {
 				esc_html__( 'Upgrade to Pro', 'everest-forms' )
 			),
 			'manage_everest_forms',
-			esc_url_raw( 'https://wpeverest.com/wordpress-plugins/everest-forms/pricing/' )
+			esc_url_raw( 'https://everestforms.net/pricing/' )
 		);
 	}
 

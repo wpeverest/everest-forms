@@ -1,7 +1,7 @@
 {
   "name": "wpeverest/everest-forms",
   "description": "Easily allows to create form.",
-  "homepage": "https://wpeverest.com/plugins/everest-forms/",
+  "homepage": "https://everestforms.net/",
   "type": "wordpress-plugin",
   "license": "GPL-3.0-or-later",
   "minimum-stability": "dev",

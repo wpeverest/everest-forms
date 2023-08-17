@@ -1,4 +1,4 @@
-<p align="center"><a href="https://wpeverest.com/wordpress-plugins/everest-forms/"><img src=".github/logo.png" alt="Everest Forms"></a></p>
+<p align="center"><a href="https://everestforms.net/"><img src=".github/logo.png" alt="Everest Forms"></a></p>
 
 <p align="center">
   <a href="https://renovateapp.com/"><img src="https://img.shields.io/badge/renovate-enabled-brightgreen.svg" alt="Renovate enabled"></a>
@@ -14,12 +14,12 @@ Welcome to the Everest Forms repository on GitHub. Here you can browse the sourc
 If you are not a developer, please use the [Everest Forms plugin page](https://wordpress.org/plugins/everest-forms/) on WordPress.org.
 
 ## Documentation
-* [Everest Forms Documentation](https://docs.wpeverest.com/docs/everest-forms/)
+* [Everest Forms Documentation](https://docs.everestforms.net/)
 
 ## Support
 This repository is not suitable for support. Please don't use our issue tracker for support requests, but for core Everest Forms issues only. Support can take place through the appropriate channels:
 
-* The [WPEverest free support portal](https://wpeverest.com/support-forum/forum/everest-forms/) for customers who have purchased addon plans.
+* The [WPEverest free support portal](https://everestforms.net/support/) for customers who have purchased addon plans.
 * [Our community forum on wp.org](https://wordpress.org/support/plugin/everest-forms) which is available for all Everest Forms users.
 
 Support requests in issues on this repository will be closed on sight.
