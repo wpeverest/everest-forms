@@ -2051,41 +2051,72 @@
 			 }
  
 			 .evf-smart-tag-lists {
-				 right: 0;
-				 z-index: 1;
-				 max-height: 123px;
-				 margin-top: -1px;
-				 width: 230px;
-				 overflow-y: auto;
-				 position: absolute;
-				 background: $color-white;
-				 border-radius: 4px;
-				 border: 1px solid $color_gray-lighten;
-				 box-shadow: 1px 3px 20px 0 transparentize($color_gray-dark, 0.8);
+				min-height: 125px;
+				max-height: 300px;
+				border: 1px solid rgb(219, 219, 219);
+				right: 0;
+				z-index: 1;
+				margin-top: -1px;
+				width: 230px;
+				overflow-y: auto;
+				position: absolute;
+				background: $color-white;
+				border-radius: 4px;
+				box-shadow: 1px 3px 20px 0 transparentize($color_gray-dark, 0.8);
+
+				&::-webkit-scrollbar {
+					width: 6px;
+				}
+					
+				/* Track */
+				&::-webkit-scrollbar-track {
+					box-shadow: inset 0 0 5px #939393; 
+					border-radius: 10px;
+				}
+					
+				/* Handle */
+				&::-webkit-scrollbar-thumb {
+					background: #787878; 
+					border-radius: 10px;
+				}
+					
+				/* Handle on hover */
+				&::-webkit-scrollbar-thumb:hover {
+					background: #3f3f3f; 
+				}
  
-				 li,
-				 .smart-tag-title {
-					 padding: 7px 10px;
-				 }
+				li,
+				.smart-tag-title {
+					padding: 7px 10px;
+				}
  
-				 .smart-tag-title {
-					 font-weight: 600;
-					 background: $color_gray-light-skin;
-					 border-bottom: 1px solid $color_gray-lighten;
-				 }
- 
-				 ul {
-					 margin: 0;
-				 }
- 
-				 li {
-					 cursor: pointer;
-					 margin-bottom: 0;
- 
-					 &:hover {
-						 background: $color_gray-light-skin;
-					 }
-				 }
+				.smart-tag-title {
+					font-size: 14px;
+					font-weight: 600;
+					padding: 10px 12px;
+					// background: $evf_primary-color;
+					background: #EEE8F7;
+					color: #8e49e2;
+					// border-bottom: 1px solid #dfdfdf;
+				}
+
+				ul {
+					margin: 0;
+					padding: 6px;
+				}
+
+				li {
+					cursor: pointer;
+					margin-bottom: 0;
+					padding: 8px;
+					border-radius: 3px;
+					font-size: 14px;
+					transition: all .3s ease-in-out;
+
+					&:hover {
+						background: #eaeaea;
+					}
+				}
 			 }
  
 			 #evf-custom-css-block, #evf-custom-js-block {
@@ -2409,6 +2440,20 @@
 								 &.everest-forms-hidden {
 									 display: none;
 								 }
+							 }
+
+							 input,
+							 select {
+								height: 36px;
+							 }
+
+							 input,
+							 select,
+							 textarea {
+								&:focus {
+									box-shadow: none;
+									border-color: $evf_primary-color;
+								}
 							 }
 						 }
  
@@ -3561,6 +3606,15 @@
 						 border-radius: 0 0 4px 4px;
 					 }
 				 }
+
+				 input,
+				 select,
+				 textarea {
+					&:focus {
+						box-shadow: none;
+						border-color: $evf_primary-color;
+					}
+				 }
  
 				 .desc {
 					 margin: 10px 0;
@@ -4149,6 +4203,7 @@
 						 pointer-events: none;
 						 background: none;
 						 z-index: 1;
+						 padding: 0 12px;
  
 						 &.everst-forms-name-editing {
 							 pointer-events: all;
@@ -4187,29 +4242,45 @@
 					 text-align: center;
  
 					 span {
-						 width: auto;
+						//  width: auto;
 						 height: auto;
-						 font-size: 13px;
-						 background: #51cf66;
+						//  font-size: 13px;
+						//  background: #51cf66;
 						 font-family: inherit;
+						 padding: 8px 16px 8px 14px;
+						 display: flex;
+						 align-items: center;
+						 justify-content: center;
+						 width: max-content;
+						 margin: 0 auto;
+						 gap: 6px;
+						 font-size: 14px;
+						 background: #7e3bd0;
+						 transition: all .3s ease-in-out;
  
 						 &.dashicons {
 							 &::before {
-								 width: 20px;
-								 height: 20px;
-								 line-height: 1;
+								//  width: 20px;
+								//  height: 20px;
+								//  line-height: 1;
 								 font-size: 16px;
-								 margin-right: 10px;
+								//  margin-right: 10px;
 								 font-family: dashicons;
 								 vertical-align: middle;
-								 padding: 2px 12px 2px 0;
-								 border-right: 1px solid
-									 transparentize($color-white, 0.7);
+								//  padding: 2px 12px 2px 0;
+								//  border-right: 1px solid
+								// 	 transparentize($color-white, 0.7);
+								width: auto;
+								height: auto;
+								margin: 0;
+								padding: 0;
+								border-right: 0;
 							 }
 						 }
  
 						 &:hover {
-							 background: #33ba4a;
+							//  background: #33ba4a;
+							background: #8d2fff;
 						 }
 					 }
 				 }
