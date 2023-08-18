@@ -564,11 +564,11 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 						'email',
 						'enable_ai_email_prompt',
 						$this->form_data,
-						esc_html__( 'Enable email prompt', 'everest-forms' ),
+						esc_html__( 'Enable Email Prompt', 'everest-forms' ),
 						array(
 							'default'    => ! empty( $settings['email'][ $connection_id ]['enable_ai_email_prompt'] ) ? $settings['email'][ $connection_id ]['enable_ai_email_prompt'] : '0',
 							'class'      => 'everest-forms-enable-email-prompt',
-							'tooltip'    => sprintf( 'Enable the email prompt', 'everest-forms' ),
+							'tooltip'    => sprintf( 'Check this option to enable the email message prompt.', 'everest-forms' ),
 							'parent'     => 'settings',
 							'subsection' => $connection_id,
 						)
@@ -583,7 +583,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 							'default'    => isset( $settings['email'][ $connection_id ]['evf_email_message_prompt'] ) ? $settings['email'][ $connection_id ]['evf_email_message_prompt'] : '',
 							'class'      => isset( $settings['email'][ $connection_id ]['enable_ai_email_prompt'] ) && '1' === $settings['email'][ $connection_id ]['enable_ai_email_prompt'] ? 'evf-email-message-prompt' : 'evf-email-message-prompt everest-forms-hidden',
 							/* translators: %1$s - general settings docs url */
-							'tooltip'    => sprintf( esc_html__( 'Enter the message of the email. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#email-message' ) ),
+							'tooltip'    => sprintf( esc_html__( 'Enter the email message prompt. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#email-message' ) ),
 							'smarttags'  => array(
 								'type'        => 'all',
 								'form_fields' => 'all',
