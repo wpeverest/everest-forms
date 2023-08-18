@@ -16,7 +16,13 @@ jQuery( function( $ ) {
 					}
 
 					if (formTuple.find( ".everest-forms-gateway[data-gateway='stripe']").hasClass('StripeElement--empty') && $(".evf-field-credit-card ").is(':visible') ){
-						$( '#card-errors' ).html( 'This field is required' ).show();
+						$(document).ready(function() {
+							$('#card-errors').html('This field is required').show();
+							$('.evf-submit').text('Submit');
+							$('.evf-submit').attr('disabled', false);
+
+						});
+						formTuple.trigger( 'focusout' ).trigger( 'change' ).trigger( 'submit' );
 						return false;
 					}
 
@@ -47,7 +53,7 @@ jQuery( function( $ ) {
 							const authorizeNetAjaxSubmitHandlerPromise = new Promise(function (resolve, reject) {
 								window.EverestFormsAuthorizeNet.authorizeNetAjaxSubmitHandler(v).then(resolve).catch(reject);
 							});
-						
+
 							try {
 								const response = await authorizeNetAjaxSubmitHandlerPromise;
 
@@ -60,7 +66,7 @@ jQuery( function( $ ) {
 							} catch (error) {
 								return;
 							}
-							
+
 						}
 
 						if (errors.length < 1) {
