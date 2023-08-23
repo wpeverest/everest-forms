@@ -101,7 +101,7 @@ jQuery( function( $ ) {
 					})
 					.done( function ( xhr, textStatus, errorThrown ) {
 						var redirect_url = ( xhr.data && xhr.data.redirect_url ) ? xhr.data.redirect_url : '';
-						if ( redirect_url ) {
+						if ( redirect_url && 'stripe' !== formTuple.find( ".everest-forms-gateway[data-gateway='stripe']" ).data( 'gateway' )) {
 							formTuple.trigger( 'reset' );
 							window.location = redirect_url;
 							return;
