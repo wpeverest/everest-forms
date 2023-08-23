@@ -464,7 +464,7 @@ class EVF_Emails {
 				if ( ( 'checkbox' === $field['type'] && empty( $field['value']['label'][0] ) ) || ( 'payment-checkbox' === $field['type'] && empty( $field['value']['label'] ) ) ) {
 					continue;
 				}
-				
+
 				// If there's the export data filter, utilize that and re-loop promptly.
 				if ( has_filter( "everest_forms_field_exporter_{$field['type']}" ) ) {
 					$formatted_string          = apply_filters( "everest_forms_field_exporter_{$field['type']}", $field, 'email-html', 2 );
@@ -546,7 +546,7 @@ class EVF_Emails {
 				$field_item  = str_replace( '{field_value}', $field_value, $field_item );
 
 				$message .= wpautop( $field_item );
-				$field_iterator ++;
+				++$field_iterator;
 			}
 		} else {
 			/*
