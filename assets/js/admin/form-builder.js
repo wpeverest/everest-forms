@@ -3207,10 +3207,12 @@ jQuery( function ( $ ) {
 
 		if( 'other' === type || 'all' === type ){
 			var other_smart_tags = evf_data.smart_tags_other;
+			console.log($(el));
 			for( var key in other_smart_tags ) {
 				$(el).parent().find('.evf-smart-tag-lists .evf-others').append('<li class = "smart-tag-field" data-type="other" data-field_id="'+key+'">'+other_smart_tags[key]+'</li>');
 			}
 		}
+
 
 		if( 'regex' == type ){
 			var regex_lists = evf_data.regex_expression_lists;
