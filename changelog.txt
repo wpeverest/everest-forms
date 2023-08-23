@@ -1,7 +1,8 @@
 == Changelog ==
 
 - 2.0.3       - xx-xx-2023
-* Dev 	  - Filter added for checkbox and radio options.
+* Dev 	      - Filter added for checkbox and radio options.
+* Fix         - Accepting numbers below 0 despite minimum limit of 0.
 
 - 2.0.2       - 19-07-2023
 * Feature     - Regex validation for field.
