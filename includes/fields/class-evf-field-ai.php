@@ -22,7 +22,6 @@ class EVF_Field_AI extends EVF_Form_Fields {
 		$this->icon   = 'evf-icon evf-icon-ai';
 		$this->order  = 240;
 		$this->group  = 'advanced';
-		$this->is_pro = true;
 
 		parent::__construct();
 	}
