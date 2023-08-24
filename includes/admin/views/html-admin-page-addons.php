@@ -130,7 +130,7 @@ defined( 'ABSPATH' ) || exit;
 										</div>
 									<?php else : ?>
 										<div class="action-buttons upgrade-plan">
-											<a class="button upgrade-now" href="https://wpeverest.com/wordpress-plugins/everest-forms/pricing/?utm_source=addons-page&utm_medium=upgrade-button&utm_campaign=evf-upgrade-to-pro" target="_blank"><?php esc_html_e( 'Upgrade Plan', 'everest-forms' ); ?></a>
+											<a class="button upgrade-now" href="https://everestforms.net/pricing/?utm_source=addons-page&utm_medium=upgrade-button&utm_campaign=evf-upgrade-to-pro" target="_blank"><?php esc_html_e( 'Upgrade Plan', 'everest-forms' ); ?></a>
 										</div>
 									<?php endif; ?>
 								</div>
@@ -144,7 +144,7 @@ defined( 'ABSPATH' ) || exit;
 		<p>
 		<?php
 		/* translators: %s: Add-ons Link */
-		printf( esc_html__( 'Our catalog of Everest Forms Add-ons/Extensions can be found on WPEverest.com here: <a href="%s">Everest Forms Extensions Catalog</a>', 'everest-forms' ), 'https://wpeverest.com/wordpress-plugins/everest-forms/' );
+		printf( esc_html__( 'Our catalog of Everest Forms Add-ons/Extensions can be found on WPEverest.com here: <a href="%s">Everest Forms Extensions Catalog</a>', 'everest-forms' ), 'https://everestforms.net/' );
 		?>
 		</p>
 	<?php endif; ?>
