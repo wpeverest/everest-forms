@@ -198,7 +198,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			array(
 				'default' => 'same',
 				/* translators: %1$s - general settings docs url */
-				'tooltip' => sprintf( esc_html__( 'Choose where to redirect after form submission. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/general-settings/#redirect-to' ) ),
+				'tooltip' => sprintf( esc_html__( 'Choose where to redirect after form submission. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/general-settings/#5-toc-title' ) ),
 				'options' => array(
 					'same'         => esc_html__( 'Same Page', 'everest-forms' ),
 					'custom_page'  => esc_html__( 'Custom Page', 'everest-forms' ),
@@ -348,7 +348,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			array(
 				'default' => isset( $settings['disabled_entries'] ) ? $settings['disabled_entries'] : 0,
 				/* translators: %1$s - general settings docs url */
-				'tooltip' => sprintf( esc_html__( 'Disable storing form entries. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/general-settings/#disable-storing-entry-information' ) ),
+				'tooltip' => sprintf( esc_html__( 'Disable storing form entries. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/general-settings/#13-toc-title' ) ),
 			)
 		);
 
@@ -605,7 +605,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					array(
 						'default'    => isset( $settings['email'][ $connection_id ]['evf_email_message'] ) ? evf_string_translation( $this->form_data['id'], 'evf_email_message', $settings['email'][ $connection_id ]['evf_email_message'] ) : __( '{all_fields}', 'everest-forms' ),
 						/* translators: %1$s - general settings docs url */
-						'tooltip'    => sprintf( esc_html__( 'Enter the message of the email. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#email-message' ) ),
+						'tooltip'    => sprintf( esc_html__( 'Enter the message of the email. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/email-settings/#6-toc-title' ) ),
 						'smarttags'  => array(
 							'type'        => 'all',
 							'form_fields' => 'all',
@@ -685,7 +685,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				array(
 					'default' => '0',
 					/* translators: %1$s - general settings docs url */
-					'tooltip' => sprintf( esc_html__( 'Enable reCaptcha. Make sure the site key and secret key is set in settings page. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/general-settings/#enable-recaptcha-support' ) ),
+					'tooltip' => sprintf( esc_html__( 'Enable reCaptcha. Make sure the site key and secret key is set in settings page. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/how-to-integrate-google-recaptcha/#7-toc-title' ) ),
 				)
 			);
 
