@@ -4,6 +4,7 @@
 * Fix         - Accepting numbers below 0 despite minimum limit of 0.
 * Fix 		  - Hide empty fields in the email.
 * Enhancement - Option to load fonts locally.
+* Tweak       - Remove rating request notification.
 * Dev 	      - Filter added for checkbox and radio options.
 
 - 2.0.2       - 19-07-2023
