@@ -23,6 +23,8 @@ class EVF_Field_Likert extends EVF_Form_Fields {
 		$this->order  = 20;
 		$this->group  = 'survey';
 		$this->is_pro = true;
+		$this->plan   = 'plus professional agency';
+		$this->addon  = 'everest-forms-survey-polls-quiz';
 
 		parent::__construct();
 	}

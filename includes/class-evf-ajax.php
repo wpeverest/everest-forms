@@ -101,6 +101,9 @@ class EVF_AJAX {
 			'ajax_form_submission'    => true,
 			'send_test_email'         => false,
 			'locate_form_action'      => false,
+			'slot_booking'            => true,
+			'active_addons'           => false,
+			'get_local_font_url'      => true,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -256,7 +259,7 @@ class EVF_AJAX {
 				$new_post_data = array();
 
 				// Build the new array value from leaf to trunk.
-				for ( $i = count( $array_bits ) - 1; $i >= 0; $i -- ) {
+				for ( $i = count( $array_bits ) - 1; $i >= 0; $i-- ) {
 					if ( count( $array_bits ) - 1 === $i ) {
 						if ( '' === $array_bits[ $i ] ) {
 							$new_post_data [ $post_index ] = wp_slash( $post_input_data->value );
@@ -862,6 +865,111 @@ class EVF_AJAX {
 				)
 			);
 		}
+	}
+	/**
+	 * Slot booking.
+	 */
+	/**
+	 * Slot booking.
+	 */
+	public static function slot_booking() {
+		try {
+			check_ajax_referer( 'everest_forms_slot_booking_nonce', 'security' );
+			$datetime_value  = isset( $_POST['data-time-value'] ) ? sanitize_text_field( wp_unslash( $_POST['data-time-value'] ) ) : '';
+			$datetime_format = isset( $_POST['data-time-format'] ) ? sanitize_text_field( wp_unslash( $_POST['data-time-format'] ) ) : '';
+			$date_format     = isset( $_POST['data-format'] ) ? sanitize_text_field( wp_unslash( $_POST['data-format'] ) ) : '';
+			$mode            = isset( $_POST['mode'] ) ? sanitize_text_field( wp_unslash( $_POST['mode'] ) ) : '';
+			$form_id         = isset( $_POST['form-id'] ) ? sanitize_text_field( wp_unslash( $_POST['form-id'] ) ) : '';
+			$time_interval   = isset( $_POST['time-interval'] ) ? sanitize_text_field( wp_unslash( $_POST['time-interval'] ) ) : '';
+			$datetime_arr    = parse_datetime_values( $datetime_value, $datetime_format, $date_format, $mode, $time_interval );
+
+			if ( empty( $datetime_arr ) ) {
+				wp_send_json_error(
+					array(
+						'message' => __( 'Please select at least one date time.', 'everest-forms' ),
+					)
+				);
+			}
+			$booked_slot = maybe_unserialize( get_option( 'evf_booked_slot', '' ) );
+			$is_booked   = false;
+			if ( ! empty( $booked_slot ) && array_key_exists( $form_id, $booked_slot ) ) {
+				foreach ( $datetime_arr as $arr ) {
+
+					foreach ( $booked_slot[ $form_id ] as $slot ) {
+						if ( $arr[0] >= $slot[0] && $arr[1] <= $slot[1] ) {
+							$is_booked = true;
+							break;
+						} elseif ( $arr[0] >= $slot[0] && $arr[0] < $slot[1] && $arr[1] >= $slot[1] ) {
+							$is_booked = true;
+							break;
+						}
+					}
+				}
+			}
+			if ( $is_booked ) {
+				wp_send_json_success(
+					array(
+						'message' => __( 'This slot is already booked. Please choose other slot', 'everest-forms' ),
+					)
+				);
+			}
+			wp_send_json_error(
+				array(
+					'message' => __( 'This slot is not booked.', 'everest-forms' ),
+				)
+			);
+
+		} catch ( Exception $e ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'Something went wrong.', 'everest-forms' ),
+				)
+			);
+		}
+	}
+
+	/**
+	 * Activate addons from builder.
+	 */
+	public static function active_addons() {
+		try {
+			check_ajax_referer( 'evf_active_nonce', 'security' );
+			$plugin   = isset( $_POST['plugin_file'] ) ? sanitize_text_field( wp_unslash( $_POST['plugin_file'] ) ) : '';
+			$activate = activate_plugin( $plugin );
+			if ( is_wp_error( $activate ) ) {
+				$activation_error = $activate->get_error_message();
+				wp_send_json_error(
+					array(
+						'message' => $activation_error,
+					)
+				);
+			} else {
+				wp_send_json_success(
+					array(
+						'message' => __( 'Activated successfully', 'everest-forms' ),
+					)
+				);
+			}
+		} catch ( Exception $e ) {
+			wp_send_json_error(
+				array(
+					'message' => $e->getMessage(),
+				)
+			);
+		}
+	}
+
+	/**
+	 * Download the provided font and return the url for font file.
+	 */
+	public static function get_local_font_url() {
+		$font_url = isset( $_POST['font_url'] ) ? sanitize_text_field( wp_unslash( $_POST['font_url'] ) ) : ''; //phpcs:ignore WordPress.Security.NonceVerification
+
+		if ( str_contains( $font_url, 'https://fonts.googleapis.com' ) ) {
+			$font_url = evf_maybe_get_local_font_url( $font_url );
+		}
+
+		return wp_send_json_success( $font_url );
 	}
 }
 

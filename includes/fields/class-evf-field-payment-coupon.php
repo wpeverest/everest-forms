@@ -23,6 +23,8 @@ class EVF_Field_Payment_Coupon extends EVF_Form_Fields {
 		$this->order  = 17;
 		$this->group  = 'payment';
 		$this->is_pro = true;
+		$this->plan   = 'professional agency';
+		$this->addon  = 'everest-forms-coupons';
 
 		parent::__construct();
 	}

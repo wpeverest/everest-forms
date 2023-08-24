@@ -846,6 +846,8 @@ class EVF_Shortcode_Form {
 			wp_enqueue_script( 'mailcheck' );
 		}
 
+		self::add_custom_css_js( $atts['id'] );
+
 		$atts = shortcode_atts(
 			array(
 				'id'          => false,
@@ -1157,5 +1159,89 @@ class EVF_Shortcode_Form {
 
 		return esc_url_raw( add_query_arg( array( 'hl' => get_option( 'everest_forms_recaptcha_recaptcha_language', 'en-GB' ) ), $url ) );
 
+	}
+
+	/**
+	 * Adds custom CSS and JavaScript code.
+	 *
+	 * @param int $form_id Form ID.
+	 * @since 2.0.2
+	 * @return void
+	 */
+	public static function add_custom_css_js( $form_id ) {
+		$form_id = absint( $form_id );
+		if ( $form_id <= 0 ) {
+			return;
+		}
+
+		$form = evf()->form->get( $form_id );
+		// Check the form_data exist or not.
+		if ( ! $form ) {
+			return;
+		}
+
+		$hook = false;
+
+		if ( ! did_action( 'wp_head' ) ) {
+			$hook = 'wp_head';
+		} else if ( ! did_action( 'wp_footer' ) ) {
+			$hook = 'wp_footer';
+		}
+
+		$form_data = apply_filters( 'everest_forms_frontend_form_data', evf_decode( $form->post_content ) );
+		$settings  = isset( $form_data['settings'] ) ? $form_data['settings'] : array();
+
+		if ( isset( $settings['evf-enable-custom-css'] ) && evf_string_to_bool( $settings['evf-enable-custom-css'] ) ) {
+			$custom_css = isset( $settings['evf-custom-css'] ) ? $settings['evf-custom-css'] : '';
+			$custom_css = preg_match( '#</?\w+#', $custom_css ) ? '' : $custom_css;
+			if ( ! empty( $custom_css ) ) {
+				if ( $hook ) {
+					add_action(
+						$hook,
+						function () use ( $custom_css, $form_id ) {
+							?>
+							<style id="<?php echo esc_attr( 'evf-custom-css-' . $form_id ); ?>">
+								<?php echo esc_attr( $custom_css ); ?>
+							</style>
+							<?php
+						}
+					);
+				} else {
+					?>
+					<style id="<?php echo esc_attr( 'evf-custom-css-' . $form_id ); ?>">
+						<?php echo esc_attr( $custom_css ); ?>
+					</style>
+					<?php
+				}
+			}
+		}
+
+		if ( isset( $settings['evf-enable-custom-js'] ) && evf_string_to_bool( $settings['evf-enable-custom-js'] ) ) {
+			$custom_js = isset( $settings['evf-custom-js'] ) ? $settings['evf-custom-js'] : '';
+			if ( ! empty( $custom_js ) ) {
+				$custom_js = sprintf(
+					'( function( $ ) {
+						$(document).ready( function() {
+							try {
+								%s
+							}
+							catch( err ) {}
+						});
+					})( jQuery )',
+					$custom_js
+				);
+
+				wp_register_script(
+					'evf-custom',
+					'',
+					array( 'jquery' ),
+					EVF_VERSION,
+					true
+				);
+
+				wp_add_inline_script( 'evf-custom', $custom_js );
+				wp_enqueue_script( 'evf-custom' );
+			}
+		}
 	}
 }

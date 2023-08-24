@@ -70,8 +70,10 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 			do_action( 'everest_forms_settings_save_' . $current_tab );
 			do_action( 'everest_forms_update_options_' . $current_tab );
 			do_action( 'everest_forms_update_options' );
-
-			self::add_message( esc_html__( 'Your settings have been saved.', 'everest-forms' ) );
+			$flag = apply_filters( 'show_everest_forms_setting_message', true );
+			if ( $flag ) {
+				self::add_message( esc_html__( 'Your settings have been saved.', 'everest-forms' ) );
+			}
 
 			// Clear any unwanted data and flush rules.
 			update_option( 'everest_forms_queue_flush_rewrite_rules', 'yes' );

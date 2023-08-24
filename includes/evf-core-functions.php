@@ -1128,6 +1128,7 @@ function evf_get_random_string( $length = 10 ) {
  * Get all forms.
  *
  * @param  bool $skip_disabled_entries True to skip disabled entries.
+ * @param bool $check_disable_storing_entry_info Check disable storing entry.
  * @return array of form data.
  */
 function evf_get_all_forms( $skip_disabled_entries = false, $check_disable_storing_entry_info = true ) {
@@ -1150,7 +1151,7 @@ function evf_get_all_forms( $skip_disabled_entries = false, $check_disable_stori
 			$form_data = ! empty( $form->post_content ) ? evf_decode( $form->post_content ) : '';
 
 			if ( ! $form || ( $skip_disabled_entries && count( $entries ) < 1 ) && ( isset( $form_data['settings']['disabled_entries'] ) && '1' === $form_data['settings']['disabled_entries'] ) ) {
-				if( ! $form || $check_disable_storing_entry_info ) {
+				if ( ! $form || $check_disable_storing_entry_info ) {
 					continue;
 				}
 			}
@@ -4620,7 +4621,7 @@ function evf_file_get_contents( $file ) {
 	if ( $file ) {
 		$local_file = preg_replace( '/\\\\|\/\//', '/', plugin_dir_path( EVF_PLUGIN_FILE ) . $file );
 		 $response = file_get_contents($local_file);
-		 if( $response ){
+		 if ( $response ) {
 			return $response;
 		 }
 		global $wp_filesystem;
@@ -4635,4 +4636,180 @@ function evf_file_get_contents( $file ) {
 	return;
 }
 
+/**
+* Parses datetime values based on the provided format and mode.
+*
+* @param string $datetime_value   The datetime value to parse.
+* @param string $datetime_format  The format of the datetime value.
+* @param string $date_format      The format of the date.
+* @param string $mode             The mode of the datetime field,
+* @param int    $time_interval    The time interval in minutes.
+* @return array
+*/
+function parse_datetime_values( $datetime_value, $datetime_format, $date_format, $mode, $time_interval ) {
+	$datetime_arr = array();
 
+	switch ($datetime_format) {
+		case 'time':
+			$current_date = gmdate('Y-m-d');
+			$datetime_value = gmdate('H:i', strtotime($datetime_value));
+			$datetime_start = "$current_date $datetime_value";
+			$date_time = new DateTime($datetime_start);
+			$date_time->modify("+$time_interval minute");
+			$datetime_end = $date_time->format('Y-m-d H:i');
+			$datetime_arr[] = array($datetime_start, $datetime_end);
+			break;
+		case 'date':
+			if ('range' === $mode) {
+				$selected_dates = explode(' to ', $datetime_value);
+				if (count($selected_dates) >= 2) {
+					$datetime_start = "$selected_dates[0] 00:00";
+					$datetime_start = gmdate('Y-m-d H:i', strtotime($datetime_start));
+					$date_time = new DateTime($selected_dates[1]);
+					$date_time->modify('+23 hour');
+					$datetime_end = $date_time->format('Y-m-d H:i');
+					$datetime_arr[] = array($datetime_start, $datetime_end);
+				}
+			} else {
+				$selected_dates = explode(', ', $datetime_value);
+
+				foreach ($selected_dates as $selected_date) {
+					$datetime_start = "$selected_date 00:00";
+					$datetime_start = gmdate('Y-m-d H:i', strtotime($datetime_start));
+					$date_time = new DateTime($datetime_start);
+					$date_time->modify('+23 hour');
+
+					$datetime_end = $date_time->format('Y-m-d H:i');
+					$datetime_arr[] = array($datetime_start, $datetime_end);
+				}
+			}
+			break;
+		case 'date-time':
+			if ('range' === $mode) {
+				$selected_dates = explode(' to ', $datetime_value);
+				if (count($selected_dates) >= 2) {
+					$datetime_start = gmdate('Y-m-d H:i', strtotime($selected_dates[0]));
+					$datetime_end = gmdate('Y-m-d H:i', strtotime($selected_dates[1]));
+					$datetime_arr[] = array($datetime_start, $datetime_end);
+				}
+			} else {
+				$selected_dates = explode(', ', $datetime_value);
+
+				foreach ($selected_dates as $selected_date) {
+					$datetime_start = gmdate('Y-m-d H:i', strtotime($selected_date));
+					$date_time = new DateTime($datetime_start);
+					$date_time->modify("+$time_interval minute");
+					$datetime_end = $date_time->format('Y-m-d H:i');
+					$datetime_arr[] = array($datetime_start, $datetime_end);
+				}
+			}
+			break;
+	}
+
+	return $datetime_arr;
+}
+
+/*
+* EVF word Count
+ * @since 2.0.2
+ */
+function _evf_word_count( $text, $type = 'words', $settings = array() ) {
+	$defaults = array(
+		'html_regexp'                        => '/<\/?[a-z][^>]*?>/i',
+		'html_comment_regexp'                => '/<!--[\s\S]*?-->/',
+		'space_regexp'                       => '/&nbsp;|&#160;/i',
+		'html_entity_regexp'                 => '/&\S+?;/',
+		'connector_regexp'                   => "/--|\x{2014}/u",
+		'remove_regexp'                      => "/[\x{0021}-\x{0040}\x{005B}-\x{0060}\x{007B}-\x{007E}\x{0080}-\x{00BF}\x{00D7}\x{00F7}\x{2000}-\x{2BFF}\x{2E00}-\x{2E7F}]/u",
+		'astral_regexp'                      => "/[\x{010000}-\x{10FFFF}]/u",
+		'words_regexp'                       => '/\S\s+/u',
+		'characters_excluding_spaces_regexp' => '/\S/u',
+		'characters_including_spaces_regexp' => "/[^\f\n\r\t\v\x{00AD}\x{2028}\x{2029}]/u",
+		'shortcodes'                         => array(),
+	);
+
+	$count = 0;
+
+	if ( '' === trim( $text ) ) {
+		return $count;
+	}
+
+	$settings = wp_parse_args( $settings, $defaults );
+
+	// If there are any shortcodes, add this as a shortcode regular expression.
+	if ( is_array( $settings['shortcodes'] ) && ! empty( $settings['shortcodes'] ) ) {
+		$settings['shortcodes_regexp'] = '/\\[\\/?(?:' . implode( '|', $settings['shortcodes'] ) . ')[^\\]]*?\\]/';
+	}
+
+	// Sanitize type to one of three possibilities: 'words', 'characters_excluding_spaces' or 'characters_including_spaces'.
+	if ( 'characters_excluding_spaces' !== $type && 'characters_including_spaces' !== $type ) {
+		$type = 'words';
+	}
+
+	$text .= "\n";
+
+	// Replace all HTML with a new-line.
+	$text = preg_replace( $settings['html_regexp'], "\n", $text );
+
+	// Remove all HTML comments.
+	$text = preg_replace( $settings['html_comment_regexp'], '', $text );
+
+	// If a shortcode regular expression has been provided use it to remove shortcodes.
+	if ( ! empty( $settings['shortcodes_regexp'] ) ) {
+		$text = preg_replace( $settings['shortcodes_regexp'], "\n", $text );
+	}
+
+	// Normalize non-breaking space to a normal space.
+	$text = preg_replace( $settings['space_regexp'], ' ', $text );
+
+	if ( 'words' === $type ) {
+		// Remove HTML Entities.
+		$text = preg_replace( $settings['html_entity_regexp'], '', $text );
+
+		// Convert connectors to spaces to count attached text as words.
+		$text = preg_replace( $settings['connector_regexp'], ' ', $text );
+
+		// Remove unwanted characters.
+		$text = preg_replace( $settings['remove_regexp'], '', $text );
+	} else {
+		// Convert HTML Entities to "a".
+		$text = preg_replace( $settings['html_entity_regexp'], 'a', $text );
+
+		// Remove surrogate points.
+		$text = preg_replace( $settings['astral_regexp'], 'a', $text );
+	}
+
+	// Match with the selected type regular expression to count the items.
+	return (int) preg_match_all( $settings[ $type . '_regexp' ], $text );
+}
+
+/**
+ * EVF word Count
+ * @since 2.0.2
+ */
+function evf_word_count( $text, $type = 'words', $settings = array() ) {
+	if( function_exists(' wp_word_count ' ) ){
+		return wp_word_count($text, $type = 'words', $settings = array());
+	} else {
+		return _evf_word_count( $text, $type = 'words', $settings = array() );
+	}
+}
+
+if ( ! function_exists( 'evf_maybe_get_local_font_url' ) ) {
+	/**
+	 * If load fonts locally option is checked in settings, we download the font
+	 * locally and return the url for download font file.
+	 *
+	 * @param [string] $font_url Remote font url
+	 * @return string
+	 */
+	function evf_maybe_get_local_font_url( $font_url ) {
+		$load_locally = get_option( 'everest_forms_load_fonts_locally', 'no' );
+
+		if ( 'yes' === $load_locally ) {
+			$font_url = wptt_get_webfont_url( $font_url );
+		}
+
+		return $font_url;
+	}
+}

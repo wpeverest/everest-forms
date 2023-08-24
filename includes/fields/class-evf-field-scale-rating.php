@@ -23,6 +23,8 @@ class EVF_Field_Scale_Rating extends EVF_Form_Fields {
 		$this->order  = 30;
 		$this->group  = 'survey';
 		$this->is_pro = true;
+		$this->plan   = 'plus professional agency';
+		$this->addon  = 'everest-forms-survey-polls-quiz';
 
 		parent::__construct();
 	}
