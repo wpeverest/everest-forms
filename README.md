@@ -14,7 +14,7 @@ Welcome to the Everest Forms repository on GitHub. Here you can browse the sourc
 If you are not a developer, please use the [Everest Forms plugin page](https://wordpress.org/plugins/everest-forms/) on WordPress.org.
 
 ## Documentation
-* [Everest Forms Documentation](https://docs.everestforms.net/)
+* [Everest Forms Documentation](https://docs.everestforms.net/docs/)
 
 ## Support
 This repository is not suitable for support. Please don't use our issue tracker for support requests, but for core Everest Forms issues only. Support can take place through the appropriate channels:

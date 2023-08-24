@@ -1,5 +1,11 @@
 == Changelog ==
 
+- 2.0.3       - xx-xx-2023
+* Fix         - Accepting numbers below 0 despite minimum limit of 0.
+* Fix 		  - Hide empty fields in the email.
+* Enhancement - Option to load fonts locally.
+* Dev 	      - Filter added for checkbox and radio options.
+
 - 2.0.2       - 19-07-2023
 * Feature     - Regex validation for field.
 * Feature     - Custom CSS and JS for form.

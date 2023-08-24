@@ -988,6 +988,9 @@ body.everest-forms-builder {
 						&.misc::before {
 							content: '\e911';
 						}
+						&.ai::before {
+							content: '\e912';
+						}
 					}
 				}
 

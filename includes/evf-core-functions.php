@@ -1151,7 +1151,7 @@ function evf_get_all_forms( $skip_disabled_entries = false, $check_disable_stori
 			$form_data = ! empty( $form->post_content ) ? evf_decode( $form->post_content ) : '';
 
 			if ( ! $form || ( $skip_disabled_entries && count( $entries ) < 1 ) && ( isset( $form_data['settings']['disabled_entries'] ) && '1' === $form_data['settings']['disabled_entries'] ) ) {
-				if( ! $form || $check_disable_storing_entry_info ) {
+				if ( ! $form || $check_disable_storing_entry_info ) {
 					continue;
 				}
 			}
@@ -4792,5 +4792,24 @@ function evf_word_count( $text, $type = 'words', $settings = array() ) {
 		return wp_word_count($text, $type = 'words', $settings = array());
 	} else {
 		return _evf_word_count( $text, $type = 'words', $settings = array() );
+	}
+}
+
+if ( ! function_exists( 'evf_maybe_get_local_font_url' ) ) {
+	/**
+	 * If load fonts locally option is checked in settings, we download the font
+	 * locally and return the url for download font file.
+	 *
+	 * @param [string] $font_url Remote font url
+	 * @return string
+	 */
+	function evf_maybe_get_local_font_url( $font_url ) {
+		$load_locally = get_option( 'everest_forms_load_fonts_locally', 'no' );
+
+		if ( 'yes' === $load_locally ) {
+			$font_url = wptt_get_webfont_url( $font_url );
+		}
+
+		return $font_url;
 	}
 }

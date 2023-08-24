@@ -38,8 +38,8 @@ class EVF_Settings_Misc extends EVF_Settings_Page {
 			array(
 				'a' => array(
 					'href'   => array(),
-					'target' => array()
-				)
+					'target' => array(),
+				),
 			)
 		);
 
@@ -49,8 +49,8 @@ class EVF_Settings_Misc extends EVF_Settings_Page {
 				array(
 					'a' => array(
 						'href'   => array(),
-						'target' => array()
-					)
+						'target' => array(),
+					),
 				)
 			);
 		}
@@ -75,6 +75,13 @@ class EVF_Settings_Misc extends EVF_Settings_Page {
 					'title'   => esc_html__( 'Allow Usage Tracking', 'everest-forms' ),
 					'desc'    => $allow_usage_notice_msg,
 					'id'      => 'everest_forms_allow_usage_tracking',
+					'type'    => 'checkbox',
+					'default' => 'no',
+				),
+				array(
+					'title'   => esc_html__( 'Load Fonts Locally', 'everest-forms' ),
+					'desc'    => __( 'Load all the necessary fonts from local server for GDPR compliance.', 'everest-forms' ),
+					'id'      => 'everest_forms_load_fonts_locally',
 					'type'    => 'checkbox',
 					'default' => 'no',
 				),

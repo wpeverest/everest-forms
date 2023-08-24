@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-07-19T08:53:12+02:00\n"
+"POT-Creation-Date: 2023-08-18T12:29:10+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: everest-forms\n"
@@ -266,7 +266,7 @@ msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:1145
 #: includes/admin/class-evf-admin-assets.php:94
-#: includes/admin/class-evf-admin-settings.php:335
+#: includes/admin/class-evf-admin-settings.php:337
 msgid "Upload Image"
 msgstr ""
 
@@ -828,7 +828,7 @@ msgid "Email"
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:45
-#: includes/admin/builder/class-evf-builder-settings.php:592
+#: includes/admin/builder/class-evf-builder-settings.php:633
 msgid "Anti-Spam and Security"
 msgstr ""
 
@@ -1092,82 +1092,100 @@ msgstr ""
 msgid "Enter the subject of the email. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:563
+#: includes/admin/builder/class-evf-builder-settings.php:567
+msgid "Enable Email Prompt"
+msgstr ""
+
+#: includes/admin/builder/class-evf-builder-settings.php:581
+msgid "Email Message Prompt"
+msgstr ""
+
+#. translators: %1$s - general settings docs url
+#: includes/admin/builder/class-evf-builder-settings.php:586
+msgid "Enter the email message prompt. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
+msgstr ""
+
+#: includes/admin/builder/class-evf-builder-settings.php:604
 msgid "Email Message"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:565
+#: includes/admin/builder/class-evf-builder-settings.php:606
 msgid "{all_fields}"
 msgstr ""
 
 #. translators: %1$s - general settings docs url
-#: includes/admin/builder/class-evf-builder-settings.php:567
+#: includes/admin/builder/class-evf-builder-settings.php:608
 msgid "Enter the message of the email. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
 #. translators: %s - all fields smart tag.
-#: includes/admin/builder/class-evf-builder-settings.php:575
+#: includes/admin/builder/class-evf-builder-settings.php:616
 msgid "To display all form fields, use the %s Smart Tag."
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:594
+#. translators: %s - all fields smart tag.
+#: includes/admin/builder/class-evf-builder-settings.php:616
+msgid "To display all form fields, use the %1$s Smart Tag. Use %2$s Smart Tag for AI-generated emails"
+msgstr ""
+
+#: includes/admin/builder/class-evf-builder-settings.php:635
 msgid "Honeypot"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:600
+#: includes/admin/builder/class-evf-builder-settings.php:641
 msgid "Enable anti-spam honeypot"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:619
+#: includes/admin/builder/class-evf-builder-settings.php:660
 msgid "Enable Google reCAPTCHA v2"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:623
+#: includes/admin/builder/class-evf-builder-settings.php:664
 msgid "Enable Google reCAPTCHA v3"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:627
+#: includes/admin/builder/class-evf-builder-settings.php:668
 msgid "Enable hCaptcha"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:631
+#: includes/admin/builder/class-evf-builder-settings.php:672
 msgid "Enable Cloudflare Turnstile"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:634
+#: includes/admin/builder/class-evf-builder-settings.php:675
 msgid "Enable Google Invisible reCAPTCHA v2"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:636
+#: includes/admin/builder/class-evf-builder-settings.php:677
 #: includes/fields/class-evf-field-captcha.php:20
 msgid "Captcha"
 msgstr ""
 
 #. translators: %1$s - general settings docs url
-#: includes/admin/builder/class-evf-builder-settings.php:647
+#: includes/admin/builder/class-evf-builder-settings.php:688
 msgid "Enable reCaptcha. Make sure the site key and secret key is set in settings page. <a href=\"%s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:670
-#: includes/admin/builder/class-evf-builder-settings.php:687
+#: includes/admin/builder/class-evf-builder-settings.php:711
+#: includes/admin/builder/class-evf-builder-settings.php:728
 msgid "Custom CSS and JS"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:689
-#: includes/admin/builder/class-evf-builder-settings.php:705
+#: includes/admin/builder/class-evf-builder-settings.php:730
+#: includes/admin/builder/class-evf-builder-settings.php:746
 msgid "Custom CSS"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:695
+#: includes/admin/builder/class-evf-builder-settings.php:736
 msgid "Enable Custom CSS"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:708
-#: includes/admin/builder/class-evf-builder-settings.php:724
+#: includes/admin/builder/class-evf-builder-settings.php:749
+#: includes/admin/builder/class-evf-builder-settings.php:765
 msgid "Custom JS"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:714
+#: includes/admin/builder/class-evf-builder-settings.php:755
 msgid "Enable Custom JS"
 msgstr ""
 
@@ -2003,46 +2021,46 @@ msgstr ""
 msgid "You don&#8217;t have permission to do this."
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:74
+#: includes/admin/class-evf-admin-settings.php:75
 msgid "Your settings have been saved."
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:133
+#: includes/admin/class-evf-admin-settings.php:135
 msgid "The changes you made will be lost if you navigate away from this page."
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:332
+#: includes/admin/class-evf-admin-settings.php:334
 msgid "Upload Logo"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:333
+#: includes/admin/class-evf-admin-settings.php:335
 msgid "Header Logo"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:336
+#: includes/admin/class-evf-admin-settings.php:338
 msgid "Background Image"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:697
+#: includes/admin/class-evf-admin-settings.php:699
 msgid "Select a page&hellip;"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:706
+#: includes/admin/class-evf-admin-settings.php:708
 #: includes/evf-formatting-functions.php:576
 msgid "Day(s)"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:707
+#: includes/admin/class-evf-admin-settings.php:709
 #: includes/evf-formatting-functions.php:577
 msgid "Week(s)"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:708
+#: includes/admin/class-evf-admin-settings.php:710
 #: includes/evf-formatting-functions.php:578
 msgid "Month(s)"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:709
+#: includes/admin/class-evf-admin-settings.php:711
 #: includes/evf-formatting-functions.php:579
 msgid "Year(s)"
 msgstr ""
@@ -3228,11 +3246,11 @@ msgstr ""
 msgid "New %s Entry"
 msgstr ""
 
-#: includes/class-evf-form-task.php:974
+#: includes/class-evf-form-task.php:978
 msgid "No form ID was found."
 msgstr ""
 
-#: includes/class-evf-form-task.php:981
+#: includes/class-evf-form-task.php:985
 msgid "Could not create an entry"
 msgstr ""
 
@@ -12393,6 +12411,10 @@ msgstr ""
 #: includes/export/class-evf-entry-csv-exporter.php:452
 #: includes/export/class-evf-entry-csv-exporter.php:469
 msgid "%1$s %2$s"
+msgstr ""
+
+#: includes/fields/class-evf-field-ai.php:20
+msgid "AI"
 msgstr ""
 
 #: includes/fields/class-evf-field-checkbox.php:20
