@@ -60,7 +60,6 @@ class EVF_Forms_Features {
 			'EVF_Field_Yes_No',
 			'EVF_Field_Color',
 			'EVF_Field_Reset',
-			'EVF_Field_AI',
 		);
 
 		return array_merge( $fields, $pro_fields );
