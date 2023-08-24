@@ -173,7 +173,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				'input_class' => 'short',
 				'default'     => isset( $this->form->successful_form_submission_message ) ? $this->form->successful_form_submission_message : __( 'Thanks for contacting us! We will be in touch with you shortly', 'everest-forms' ),
 				/* translators: %1$s - general settings docs url */
-				'tooltip'     => sprintf( esc_html__( 'Success message that shows up after submitting form. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/general-settings/#successful-form-submission-message' ) ),
+				'tooltip'     => sprintf( esc_html__( 'Success message that shows up after submitting form. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/general-settings/#4-toc-title' ) ),
 			)
 		);
 		everest_forms_panel_field(
@@ -285,7 +285,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			array(
 				'default' => isset( $this->form->form_class ) ? $this->form->form_class : '',
 				/* translators: %1$s - general settings docs url */
-				'tooltip' => sprintf( esc_html__( 'Enter CSS class names for the form wrapper. Multiple class names should be separated with spaces. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/general-settings/#form-class' ) ),
+				'tooltip' => sprintf( esc_html__( 'Enter CSS class names for the form wrapper. Multiple class names should be separated with spaces. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/general-settings/#7-toc-title' ) ),
 			)
 		);
 
