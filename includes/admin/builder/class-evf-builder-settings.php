@@ -437,7 +437,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					array(
 						'default'    => isset( $settings['email'][ $connection_id ]['evf_to_email'] ) ? $settings['email'][ $connection_id ]['evf_to_email'] : '{admin_email}',
 						/* translators: %1$s - general settings docs url */
-						'tooltip'    => sprintf( esc_html__( 'Enter the recipient\'s email address (comma separated) to receive form entry notifications. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#to-address' ) ),
+						'tooltip'    => sprintf( esc_html__( 'Enter the recipient\'s email address (comma separated) to receive form entry notifications. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/email-settings/#1-toc-title' ) ),
 						'smarttags'  => array(
 							'type'        => 'fields',
 							'form_fields' => 'email',
@@ -491,7 +491,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					array(
 						'default'    => isset( $settings['email'][ $connection_id ]['evf_from_name'] ) ? $settings['email'][ $connection_id ]['evf_from_name'] : get_bloginfo( 'name', 'display' ),
 						/* translators: %1$s - general settings docs url */
-						'tooltip'    => sprintf( esc_html__( 'Enter the From Name to be displayed in Email. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#from-name' ) ),
+						'tooltip'    => sprintf( esc_html__( 'Enter the From Name to be displayed in Email. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/email-settings/#2-toc-title' ) ),
 						'smarttags'  => array(
 							'type'        => 'all',
 							'form_fields' => 'all',
@@ -509,7 +509,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					array(
 						'default'    => isset( $settings['email'][ $connection_id ]['evf_from_email'] ) ? $settings['email'][ $connection_id ]['evf_from_email'] : '{admin_email}',
 						/* translators: %1$s - general settings docs url */
-						'tooltip'    => sprintf( esc_html__( 'Enter the Email address from which you want to send Email. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#from-address' ) ),
+						'tooltip'    => sprintf( esc_html__( 'Enter the Email address from which you want to send Email. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/email-settings/#3-toc-title' ) ),
 						'smarttags'  => array(
 							'type'        => 'fields',
 							'form_fields' => 'email',
@@ -527,7 +527,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					array(
 						'default'    => isset( $settings['email'][ $connection_id ]['evf_reply_to'] ) ? $settings['email'][ $connection_id ]['evf_reply_to'] : '',
 						/* translators: %1$s - general settings docs url */
-						'tooltip'    => sprintf( esc_html__( 'Enter the reply to email address where you want the email to be received when this email is replied. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#reply-to' ) ),
+						'tooltip'    => sprintf( esc_html__( 'Enter the reply to email address where you want the email to be received when this email is replied. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/email-settings/#4-toc-title' ) ),
 						'smarttags'  => array(
 							'type'        => 'fields',
 							'form_fields' => 'email',
@@ -546,7 +546,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 						/* translators: %s: Form Name */
 						'default'    => isset( $settings['email'][ $connection_id ]['evf_email_subject'] ) ? $settings['email'][ $connection_id ]['evf_email_subject'] : sprintf( esc_html__( 'New Form Entry %s', 'everest-forms' ), $form_name ),
 						/* translators: %1$s - General Settings docs url */
-						'tooltip'    => sprintf( esc_html__( 'Enter the subject of the email. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#email-subject' ) ),
+						'tooltip'    => sprintf( esc_html__( 'Enter the subject of the email. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/email-settings/#5-toc-title' ) ),
 						'smarttags'  => array(
 							'type'        => 'all',
 							'form_fields' => 'all',
@@ -583,7 +583,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 							'default'    => isset( $settings['email'][ $connection_id ]['evf_email_message_prompt'] ) ? $settings['email'][ $connection_id ]['evf_email_message_prompt'] : '',
 							'class'      => isset( $settings['email'][ $connection_id ]['enable_ai_email_prompt'] ) && '1' === $settings['email'][ $connection_id ]['enable_ai_email_prompt'] ? 'evf-email-message-prompt' : 'evf-email-message-prompt everest-forms-hidden',
 							/* translators: %1$s - general settings docs url */
-							'tooltip'    => sprintf( esc_html__( 'Enter the email message prompt. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#email-message' ) ),
+							'tooltip'    => sprintf( esc_html__( 'Enter the email message prompt. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/email-settings/#6-toc-title' ) ),
 							'smarttags'  => array(
 								'type'        => 'all',
 								'form_fields' => 'all',
