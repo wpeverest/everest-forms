@@ -421,8 +421,9 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Fix         - Accepting numbers below 0 despite minimum limit of 0.
 * Fix 		  - Hide empty fields in the email.
 * Enhancement - Option to load fonts locally.
-* Feature     - Lookup field
+* Feature     - Lookup field.
 * Tweak       - Remove rating request notification.
+* Tweak       - Change URL with new website URL.
 * Dev 	      - Filter added for checkbox and radio options.
 
 - 2.0.2       - 19-07-2023
