@@ -4,7 +4,7 @@ Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.2
 Tested up to: 6.2
 Requires PHP: 7.2
-Stable tag: 2.0.2
+Stable tag: 2.0.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -416,6 +416,14 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 
 == Changelog ==
+
+- 2.0.3       - xx-xx-2023
+* Fix         - Accepting numbers below 0 despite minimum limit of 0.
+* Fix 		  - Hide empty fields in the email.
+* Enhancement - Option to load fonts locally.
+* Feature     - Lookup field
+* Tweak       - Remove rating request notification.
+* Dev 	      - Filter added for checkbox and radio options.
 
 - 2.0.2       - 19-07-2023
 * Feature     - Regex validation for field.
