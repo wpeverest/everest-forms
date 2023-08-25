@@ -992,6 +992,12 @@ body.everest-forms-builder {
 						&.ai::before {
 							content: '\e912';
 						}
+						&.lookup::before {
+							content: '\e914';
+						}
+						&.analytics::before {
+							content: '\e915';
+						}
 					}
 				}
 
