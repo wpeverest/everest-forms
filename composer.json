@@ -1,7 +1,7 @@
 {
   "name": "wpeverest/everest-forms",
   "description": "Easily allows to create form.",
-  "homepage": "https://wpeverest.com/plugins/everest-forms/",
+  "homepage": "https://everestforms.net/",
   "type": "wordpress-plugin",
   "license": "GPL-3.0-or-later",
   "minimum-stability": "dev",
@@ -27,7 +27,6 @@
     "composer/installers": "2.0.1"
   },
   "require-dev": {
-    "10up/wp_mock": "dev-enhance/allow-to-enable-disable-mock-constants-functions",
     "phpunit/phpunit": "^5 || ^7",
     "roots/wordpress": "5.8.0",
     "spatie/phpunit-watcher": "1.8.3",
@@ -40,12 +39,6 @@
     "wpeverest/wpeverest-sniffs": "0.1.2",
     "yoast/phpunit-polyfills": "1.0.3"
   },
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "git@github.com:mi5t4n/wp_mock.git"
-    }
-  ],
   "scripts": {
     "phpcs": [
       "phpcs -s -p"

@@ -86,6 +86,7 @@ class EVF_Fields {
 				'EVF_Field_Email',
 				'EVF_Field_URL',
 				'EVF_Field_Date_Time',
+				'EVF_Field_AI',
 			)
 		);
 
@@ -102,7 +103,7 @@ class EVF_Fields {
 			} else {
 				// Add to end of the array.
 				$this->form_fields[ $load_field->group ][ $order_end ] = $load_field;
-				$order_end++;
+				++$order_end;
 			}
 
 			ksort( $this->form_fields[ $load_field->group ] );

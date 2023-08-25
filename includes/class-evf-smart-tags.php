@@ -200,6 +200,7 @@ class EVF_Smart_Tags {
 		return $regex_lists;
 	}
 
+
 	/**
 	 * Process and parse smart tags.
 	 *
