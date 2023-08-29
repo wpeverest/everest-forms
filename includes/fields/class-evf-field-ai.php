@@ -13,14 +13,17 @@ defined( 'ABSPATH' ) || exit;
  */
 class EVF_Field_AI extends EVF_Form_Fields {
 
-	/**
-	 * Constructor.
 
 	/**
 	 * Primary class constructor.
 	 */
 	public function __construct() {
-		$this->name     = esc_html__( 'AI', 'ai-contact-form' );
+
+		if ( ! class_exists( '\EverestForms\AI' ) ) {
+			return;
+		}
+
+		$this->name     = esc_html__( 'AI', 'everest-forms' );
 		$this->type     = 'ai';
 		$this->icon     = 'evf-icon evf-icon-ai';
 		$this->order    = 240;
@@ -53,6 +56,11 @@ class EVF_Field_AI extends EVF_Form_Fields {
 		add_filter( 'everest_forms_field_properties_' . $this->type, array( $this, 'field_properties' ), 5, 3 );
 	}
 
+	/**
+	 * AI chatbot.
+	 *
+	 * @param array $field Field data.
+	 */
 	public function ai_chatbot( $field ) {
 		$value             = ! empty( $field['ai_chatbot'] ) ? esc_attr( $field['ai_chatbot'] ) : '';
 		$ai_prompt_chatbot = $this->field_element(
@@ -61,8 +69,8 @@ class EVF_Field_AI extends EVF_Form_Fields {
 			array(
 				'slug'    => 'ai_chatbot',
 				'value'   => $value,
-				'desc'    => esc_html__( 'Enable Chatbot', 'ai-contact-form' ),
-				'tooltip' => esc_html__( 'Check this option to enable chatbot', 'ai-contact-form' ),
+				'desc'    => esc_html__( 'Enable Chatbot', 'everest-forms' ),
+				'tooltip' => esc_html__( 'Check this option to enable chatbot', 'everest-forms' ),
 			),
 			false
 		);
@@ -97,8 +105,8 @@ class EVF_Field_AI extends EVF_Form_Fields {
 			$field,
 			array(
 				'slug'    => 'ai_input',
-				'value'   => esc_html__( 'Prompt', 'ai-contact-form' ),
-				'tooltip' => esc_html__( 'Enter a question or choose a field in the prompt to generate a response', 'ai-contact-form' ),
+				'value'   => esc_html__( 'Prompt', 'everest-forms' ),
+				'tooltip' => esc_html__( 'Enter a question or choose a field in the prompt to generate a response', 'everest-forms' ),
 			),
 			false
 		);
@@ -127,8 +135,8 @@ class EVF_Field_AI extends EVF_Form_Fields {
 			$field,
 			array(
 				'slug'    => 'ai_chatbot_input',
-				'value'   => esc_html__( 'Field Mapping', 'ai-contact-form' ),
-				'tooltip' => esc_html__( 'Select the field you want to map', 'ai-contact-form' ),
+				'value'   => esc_html__( 'Field Mapping', 'everest-forms' ),
+				'tooltip' => esc_html__( 'Select the field you want to map', 'everest-forms' ),
 			),
 			false
 		);
@@ -178,7 +186,7 @@ class EVF_Field_AI extends EVF_Form_Fields {
 					'slug'    => 'ai_type',
 					'value'   => $ai_type,
 					'options' => array(
-						'hidden' => esc_html__( 'Hidden', 'ai-contact-form' ),
+						'hidden' => esc_html__( 'Hidden', 'everest-forms' ),
 					),
 				),
 				false
@@ -191,8 +199,8 @@ class EVF_Field_AI extends EVF_Form_Fields {
 					'slug'    => 'ai_type',
 					'value'   => $ai_type,
 					'options' => array(
-						'textarea' => esc_html__( 'Textarea', 'ai-contact-form' ),
-						'html'     => esc_html__( 'HTML', 'ai-contact-form' ),
+						'textarea' => esc_html__( 'Textarea', 'everest-forms' ),
+						'html'     => esc_html__( 'HTML', 'everest-forms' ),
 					),
 				),
 				false
