@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-08-28T08:10:06+02:00\n"
+"POT-Creation-Date: 2023-08-29T10:10:10+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: everest-forms\n"
@@ -172,6 +172,7 @@ msgid "Readonly "
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:801
+#: includes/fields/class-evf-field-ai.php:189
 msgid "Hidden"
 msgstr ""
 
@@ -12419,6 +12420,42 @@ msgstr ""
 #: includes/export/class-evf-entry-csv-exporter.php:452
 #: includes/export/class-evf-entry-csv-exporter.php:469
 msgid "%1$s %2$s"
+msgstr ""
+
+#: includes/fields/class-evf-field-ai.php:26
+msgid "AI"
+msgstr ""
+
+#: includes/fields/class-evf-field-ai.php:72
+msgid "Enable Chatbot"
+msgstr ""
+
+#: includes/fields/class-evf-field-ai.php:73
+msgid "Check this option to enable chatbot"
+msgstr ""
+
+#: includes/fields/class-evf-field-ai.php:108
+msgid "Prompt"
+msgstr ""
+
+#: includes/fields/class-evf-field-ai.php:109
+msgid "Enter a question or choose a field in the prompt to generate a response"
+msgstr ""
+
+#: includes/fields/class-evf-field-ai.php:138
+msgid "Field Mapping"
+msgstr ""
+
+#: includes/fields/class-evf-field-ai.php:139
+msgid "Select the field you want to map"
+msgstr ""
+
+#: includes/fields/class-evf-field-ai.php:202
+msgid "Textarea"
+msgstr ""
+
+#: includes/fields/class-evf-field-ai.php:203
+msgid "HTML"
 msgstr ""
 
 #: includes/fields/class-evf-field-checkbox.php:20
