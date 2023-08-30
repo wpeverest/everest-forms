@@ -178,7 +178,7 @@ class EVF_Field_AI extends EVF_Form_Fields {
 				'slug'    => 'ai_type',
 				'value'   => esc_html__( 'Field Type', 'everest-forms' ),
 				/* translators: %1$s -  ai settings docs url */
-				'tooltip' => sprintf( esc_html__( 'Click on <> and map the field for your question <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/ai/#5-toc-title' ) ),
+				'tooltip' => esc_html__( 'Please select the field type.', 'everest-forms' ),
 			),
 			false
 		);

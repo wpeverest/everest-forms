@@ -417,7 +417,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-- 2.0.3       - 29-08-2023
+- 2.0.3       - 30-08-2023
 * Fix         - Accepting numbers below 0 despite minimum limit of 0.
 * Fix 		  - Hide empty fields in the email.
 * Enhancement - Option to load fonts locally.

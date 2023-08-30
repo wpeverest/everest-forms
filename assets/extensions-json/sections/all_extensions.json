@@ -1,6 +1,20 @@
 {
   "products": [
     {
+      "title": "AI Contact Form",
+      "slug": "ai-contact-form",
+      "name": "AI Contact Form",
+      "image": "extensions-json/sections/images/ai.png",
+      "excerpt": "Add AI capabilities like interactive chatbox, AI generated email notifications, and more to your forms.",
+      "link": "https://everestforms.net/features/ai-contact-form/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=ai-contact-form",
+      "plan": [
+        "personal",
+        "plus",
+        "professional",
+        "agency"
+      ]
+    },
+    {
       "title": "Style Customizer",
       "slug": "everest-forms-style-customizer",
       "name": "Everest Forms Style Customizer",

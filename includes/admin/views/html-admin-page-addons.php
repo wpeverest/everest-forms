@@ -55,6 +55,11 @@ defined( 'ABSPATH' ) || exit;
 				<div class="wp-list-table widefat extension-install">
 					<h2 class="screen-reader-text"><?php esc_html_e( 'Add-ons list', 'everest-forms' ); ?></h2>
 					<div class="the-list">
+					<?php
+					$plan = evf_get_license_plan();
+					if ( false === $plan ) {
+						array_shift( $addons );
+						?>
 					<div class="plugin-card plugin-card-everest-forms-ai-contact-form">
 						<a href="<?php echo esc_url( 'https://everestforms.net/features/convertkit/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=ai-contact-form' ); ?>">
 							<div class="plugin-card-top">
@@ -70,6 +75,19 @@ defined( 'ABSPATH' ) || exit;
 							</div>
 						</a>
 						<div class="plugin-card-bottom">
+							<div class="status column-status">
+								<strong><?php esc_html_e( 'Status:', 'everest-forms' ); ?></strong>
+								<?php
+								$addon_slug = 'ai-contact-form';
+								if ( is_plugin_active( $addon_slug . '/' . $addon_slug . '.php' ) ) :
+									?>
+									<span class="status-label status-active"><?php esc_html_e( 'Activated', 'everest-forms' ); ?></span>
+								<?php elseif ( file_exists( WP_PLUGIN_DIR . '/' . $addon_slug . '/' . $addon_slug . '.php' ) ) : ?>
+									<span class="status-label status-inactive"><?php esc_html_e( 'Inactive', 'everest-forms' ); ?></span>
+								<?php else : ?>
+									<span class="status-label status-install-now"><?php esc_html_e( 'Not Installed', 'everest-forms' ); ?></span>
+								<?php endif; ?>
+							</div>
 							<div class="action-buttons upgrade-plan">
 								<?php
 								$repo_url     = 'https://api.github.com/repos/wpeverest/ai-contact-form/releases/latest';
@@ -79,11 +97,49 @@ defined( 'ABSPATH' ) || exit;
 								$latest_tag   = isset( $release['tag_name'] ) ? esc_attr( $release['tag_name'] ) : '';
 								$download_url = "https://github.com/wpeverest/ai-contact-form/archive/{$latest_tag}.zip";
 								?>
-								<a class="button evf-download" href="<?php echo esc_url( $download_url ); ?>"><?php echo esc_html( 'Download' ); ?></a>
+									<?php if ( is_plugin_active( $addon_slug . '/' . $addon_slug . '.php' ) ) : ?>
+												<?php
+													$plugin_file = plugin_basename( $addon_slug . '/' . $addon_slug . '.php' );
+													$url         = wp_nonce_url(
+														add_query_arg(
+															array(
+																'page'   => 'evf-addons',
+																'action' => 'deactivate',
+																'plugin' => $plugin_file,
+															),
+															admin_url( 'admin.php' )
+														),
+														'deactivate-plugin_' . $plugin_file
+													);
+												?>
+												<a class="button button-secondary deactivate-now" href="<?php echo esc_url( $url ); ?>"><?php esc_html_e( 'Deactivate', 'everest-forms' ); ?></a>
+											<?php elseif ( file_exists( WP_PLUGIN_DIR . '/' . $addon_slug . '/' . $addon_slug . '.php' ) ) : ?>
+												<?php
+													$plugin_file = plugin_basename( $addon_slug . '/' . $addon_slug . '.php' );
+													$url         = wp_nonce_url(
+														add_query_arg(
+															array(
+																'page'   => 'evf-addons',
+																'action' => 'activate',
+																'plugin' => $plugin_file,
+															),
+															admin_url( 'admin.php' )
+														),
+														'activate-plugin_' . $plugin_file
+													);
+												?>
+												<a class="button button-primary activate-now" href="<?php echo esc_url( $url ); ?>"><?php esc_html_e( 'Activate', 'everest-forms' ); ?></a>
+											<?php else : ?>
+												<a href="<?php echo esc_url( $download_url ); ?>" class="button install-now"><?php esc_html_e( 'Download Addon', 'everest-forms' ); ?></a>
+											<?php endif; ?>
 							</div>
 						</div>
 					</div>
-						<?php foreach ( $addons as $addon ) : ?>
+					<?php } ?>
+						<?php
+						foreach ( $addons as $addon ) :
+							?>
+
 							<div class="plugin-card plugin-card-<?php echo esc_attr( $addon->slug ); ?>">
 								<a href="<?php echo esc_url( $addon->link ); ?>">
 									<div class="plugin-card-top">
