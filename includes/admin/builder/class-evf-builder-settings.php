@@ -568,7 +568,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 						array(
 							'default'    => ! empty( $settings['email'][ $connection_id ]['enable_ai_email_prompt'] ) ? $settings['email'][ $connection_id ]['enable_ai_email_prompt'] : '0',
 							'class'      => 'everest-forms-enable-email-prompt',
-							'tooltip'    => sprintf( 'Check this option to enable the email message prompt.', 'everest-forms' ),
+							'tooltip'    => sprintf( esc_html__( 'Check this option to enable the email message prompt. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/ai/#6-toc-title' ) ),
 							'parent'     => 'settings',
 							'subsection' => $connection_id,
 						)
@@ -583,7 +583,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 							'default'    => isset( $settings['email'][ $connection_id ]['evf_email_message_prompt'] ) ? $settings['email'][ $connection_id ]['evf_email_message_prompt'] : '',
 							'class'      => isset( $settings['email'][ $connection_id ]['enable_ai_email_prompt'] ) && '1' === $settings['email'][ $connection_id ]['enable_ai_email_prompt'] ? 'evf-email-message-prompt' : 'evf-email-message-prompt everest-forms-hidden',
 							/* translators: %1$s - general settings docs url */
-							'tooltip'    => sprintf( esc_html__( 'Enter the email message prompt. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/email-settings/#6-toc-title' ) ),
+							'tooltip'    => sprintf( esc_html__( 'Enter the email message prompt. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/ai/#6-toc-title' ) ),
 							'smarttags'  => array(
 								'type'        => 'all',
 								'form_fields' => 'all',
@@ -696,7 +696,6 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		echo '</div>';
 
 		do_action( 'everest_forms_settings_panel_content', $this );
-
 	}
 
 	/**

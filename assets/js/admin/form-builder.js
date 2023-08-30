@@ -3272,6 +3272,17 @@ jQuery( function ( $ ) {
 				}
 			})
 		}
+
+		if ( 'ai-fields' === type ) {
+			var aiFields = [
+				"text",
+			];
+			$(document).find('.everest-forms-field').each(function() {
+				if( aiFields.includes($(this).attr('data-field-type')) && $(el).parents('.everest-forms-field-option-row-ai_chatbot_input').attr('data-field-id') !== $(this).attr('data-field-id')) {
+					$(el).parent().find('.evf-smart-tag-lists .evf-fields-ai').append('<li class = "smart-tag-field" data-type="field" data-field_id="'+$(this).attr('data-field-id')+'">'+$(this).find('.label-title .text').text()+'</li>');
+				}
+			})
+		}
 	}
 });
 

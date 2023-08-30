@@ -54,8 +54,35 @@ defined( 'ABSPATH' ) || exit;
 			<form id="extension-filter" method="post">
 				<div class="wp-list-table widefat extension-install">
 					<h2 class="screen-reader-text"><?php esc_html_e( 'Add-ons list', 'everest-forms' ); ?></h2>
-
 					<div class="the-list">
+					<div class="plugin-card plugin-card-everest-forms-ai-contact-form">
+						<a href="<?php echo esc_url( 'https://everestforms.net/features/convertkit/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=ai-contact-form' ); ?>">
+							<div class="plugin-card-top">
+								<div class="name column-name">
+									<h3 class="plugin-name">
+										<?php echo esc_html( 'AI Contact Form' ); ?>
+										<img src="<?php echo esc_url( evf()->plugin_url() . '/assets/extensions-json/sections/images/ai.png' ); ?>" class="plugin-icon" alt=""/>
+									</h3>
+								</div>
+								<div class="desc column-description">
+									<p class="plugin-desc"> <?php echo esc_html( 'Add AI capabilities like interactive chatbox, AI generated email notifications, and more to your forms.' ); ?></p>
+								</div>
+							</div>
+						</a>
+						<div class="plugin-card-bottom">
+							<div class="action-buttons upgrade-plan">
+								<?php
+								$repo_url     = 'https://api.github.com/repos/wpeverest/ai-contact-form/releases/latest';
+								$response     = wp_safe_remote_get( $repo_url );
+								$release      = wp_remote_retrieve_body( $response );
+								$release      = json_decode( $release, true );
+								$latest_tag   = isset( $release['tag_name'] ) ? esc_attr( $release['tag_name'] ) : '';
+								$download_url = "https://github.com/wpeverest/ai-contact-form/archive/{$latest_tag}.zip";
+								?>
+								<a class="button evf-download" href="<?php echo esc_url( $download_url ); ?>"><?php echo esc_html( 'Download' ); ?></a>
+							</div>
+						</div>
+					</div>
 						<?php foreach ( $addons as $addon ) : ?>
 							<div class="plugin-card plugin-card-<?php echo esc_attr( $addon->slug ); ?>">
 								<a href="<?php echo esc_url( $addon->link ); ?>">

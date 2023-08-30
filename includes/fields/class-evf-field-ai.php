@@ -70,7 +70,8 @@ class EVF_Field_AI extends EVF_Form_Fields {
 				'slug'    => 'ai_chatbot',
 				'value'   => $value,
 				'desc'    => esc_html__( 'Enable Chatbot', 'everest-forms' ),
-				'tooltip' => esc_html__( 'Check this option to enable chatbot', 'everest-forms' ),
+				/* translators: %1$s -  ai settings docs url */
+				'tooltip' => sprintf( esc_html__( 'Check this option to enable chatbot. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/ai/#5-toc-title' ) ),
 			),
 			false
 		);
@@ -106,7 +107,8 @@ class EVF_Field_AI extends EVF_Form_Fields {
 			array(
 				'slug'    => 'ai_input',
 				'value'   => esc_html__( 'Prompt', 'everest-forms' ),
-				'tooltip' => esc_html__( 'Enter a question or choose a field in the prompt to generate a response', 'everest-forms' ),
+				/* translators: %1$s -  ai settings docs url */
+				'tooltip' => sprintf( esc_html__( 'Enter a question or choose a field in the prompt to generate a response. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/ai/#7-toc-title' ) ),
 			),
 			false
 		);
@@ -136,7 +138,8 @@ class EVF_Field_AI extends EVF_Form_Fields {
 			array(
 				'slug'    => 'ai_chatbot_input',
 				'value'   => esc_html__( 'Field Mapping', 'everest-forms' ),
-				'tooltip' => esc_html__( 'Select the field you want to map', 'everest-forms' ),
+				/* translators: %1$s -  ai settings docs url */
+				'tooltip' => sprintf( esc_html__( 'Click on <> and map the field for your question. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/ai/#5-toc-title' ) ),
 			),
 			false
 		);
@@ -150,9 +153,9 @@ class EVF_Field_AI extends EVF_Form_Fields {
 			),
 			false
 		);
-		$ai_prompt_input .= '<a href="#" class="evf-toggle-smart-tag-display" data-type="fields"><span class="dashicons dashicons-editor-code"></span></a>';
+		$ai_prompt_input .= '<a href="#" class="evf-toggle-smart-tag-display" data-type="ai-fields"><span class="dashicons dashicons-editor-code"></span></a>';
 		$ai_prompt_input .= '<div class="evf-smart-tag-lists" style="display: none">';
-		$ai_prompt_input .= '<div class="smart-tag-title other-tag-title">Available fields</div><ul class="evf-fields"></ul></div>';
+		$ai_prompt_input .= '<div class="smart-tag-title other-tag-title">Available fields</div><ul class="evf-fields-ai"></ul></div>';
 		$args             = array(
 			'slug'    => 'ai_chatbot_input',
 			'content' => $ai_prompt_label . $ai_prompt_input,
@@ -173,8 +176,9 @@ class EVF_Field_AI extends EVF_Form_Fields {
 			$field,
 			array(
 				'slug'    => 'ai_type',
-				'value'   => esc_html__( 'Field Type', 'everest-forms-open-ai' ),
-				'tooltip' => esc_html__( 'Please select the field type.', 'everest-forms-open-ai' ),
+				'value'   => esc_html__( 'Field Type', 'everest-forms' ),
+				/* translators: %1$s -  ai settings docs url */
+				'tooltip' => sprintf( esc_html__( 'Click on <> and map the field for your question <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/ai/#5-toc-title' ) ),
 			),
 			false
 		);
