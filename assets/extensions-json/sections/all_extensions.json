@@ -487,9 +487,9 @@
       ]
     },
     {
-      "title": "Form Analytics",
+      "title": "Advanced Form Analytics",
       "slug": "everest-forms-form-analytics",
-      "name": "Everest Forms Form Analytics",
+      "name": "Everest Forms Advanced Form Analytics",
       "image": "extensions-json/sections/images/form-analytics.png",
       "excerpt": "Track user interactions efficiently by monitoring impressions, conversions, abandonments, and bounce rate.",
       "link": "https://everestforms.net/features/form-analytics/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=form-analytics",

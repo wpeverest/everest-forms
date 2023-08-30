@@ -130,7 +130,7 @@ defined( 'ABSPATH' ) || exit;
 												?>
 												<a class="button button-primary activate-now" href="<?php echo esc_url( $url ); ?>"><?php esc_html_e( 'Activate', 'everest-forms' ); ?></a>
 											<?php else : ?>
-												<a href="<?php echo esc_url( $download_url ); ?>" class="button install-now"><?php esc_html_e( 'Download Addon', 'everest-forms' ); ?></a>
+												<a href="<?php echo esc_url( $download_url ); ?>" class="button evf-download-ai"><?php esc_html_e( 'Download Addon', 'everest-forms' ); ?></a>
 											<?php endif; ?>
 							</div>
 						</div>
