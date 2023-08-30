@@ -544,6 +544,8 @@ class EVF_Shortcode_Form {
 				$form_data
 			);
 
+			$captcha_badge_position = isset( $form_data['settings']['recaptcha_badge_position'] ) ? $form_data['settings']['recaptcha_badge_position'] : 'flex-start';
+
 			// Load reCAPTCHA support if form supports it.
 			if ( $site_key && $secret_key ) {
 				if ( 'v2' === $recaptcha_type ) {
@@ -601,7 +603,7 @@ class EVF_Shortcode_Form {
 
 				// Output the reCAPTCHA container.
 				$class = ( 'v3' === $recaptcha_type || ( 'v2' === $recaptcha_type && 'yes' === $invisible_recaptcha ) ) ? 'recaptcha-hidden' : '';
-				echo '<div class="evf-recaptcha-container ' . esc_attr( $class ) . '" style="display:' . ( ! empty( self::$parts[ $form_id ] ) ? 'none' : 'block' ) . '">';
+				echo '<div class="evf-recaptcha-container ' . esc_attr( $class ) . '" style="display:' . ( ! empty( self::$parts[ $form_id ] ) ? 'none' : 'flex' ) . ';justify-content:' . esc_attr( $captcha_badge_position ) . ';">';
 
 				if ( 'v2' === $recaptcha_type || 'hcaptcha' === $recaptcha_type || 'turnstile' === $recaptcha_type ) {
 					echo '<div ' . evf_html_attributes( '', array( 'g-recaptcha' ), $data ) . '></div>';

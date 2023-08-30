@@ -3284,6 +3284,13 @@ jQuery( function ( $ ) {
 			})
 		}
 	}
+	$(document.body).on('change', '#everest-forms-panel-field-settings-recaptcha_support', function(){
+		if($(this).is(':checked')){
+			$(document.body).find('#everest-forms-panel-field-settings-recaptcha_badge_position-wrap').show();
+		}else {
+			$(document.body).find('#everest-forms-panel-field-settings-recaptcha_badge_position-wrap').hide();
+		}
+	})
 });
 
 jQuery(function ($) {

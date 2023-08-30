@@ -688,6 +688,24 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					'tooltip' => sprintf( esc_html__( 'Enable reCaptcha. Make sure the site key and secret key is set in settings page. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/how-to-integrate-google-recaptcha/#7-toc-title' ) ),
 				)
 			);
+			everest_forms_panel_field(
+				'select',
+				'settings',
+				'recaptcha_badge_position',
+				$this->form_data,
+				esc_html__( 'Select captcha badge position', 'everest-forms' ),
+				array(
+					'options' => array(
+						'flex-start' => esc_html__( 'Left', 'everest-forms' ),
+						'center'     => esc_html__( 'Center', 'everest-forms' ),
+						'flex-end'   => esc_html__( 'Right', 'everest-forms' ),
+					),
+					'default' => 'flex-start',
+					'tooltip' => esc_html__( 'Select the captcha badge position ', 'everest-forms' ),
+					'class'   => 'evf-captcha-badge-position',
+				)
+			);
+
 
 			do_action( 'everest_forms_inline_captcha_settings', $this, 'captcha', 'connection_1' );
 			echo '</div>';
