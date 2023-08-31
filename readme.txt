@@ -417,7 +417,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-- 2.0.3       - 30-08-2023
+= 2.0.3       - 30-08-2023
 * Fix         - Accepting numbers below 0 despite minimum limit of 0.
 * Fix 		  - Hide empty fields in the email.
 * Enhancement - Option to load fonts locally.
@@ -425,7 +425,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Tweak       - Remove rating request notification.
 * Tweak       - Change URL with new website URL.
 
-- 2.0.2       - 19-07-2023
+= 2.0.2       - 19-07-2023
 * Feature     - Regex validation for field.
 * Feature     - Custom CSS and JS for form.
 * Enhancement - Upgrade to the pro improve for dragging a field.
@@ -433,16 +433,16 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Fix         - Word count issue with Cyrillic text.
 
 
-- 2.0.1       - 14-06-2023
+= 2.0.1       - 14-06-2023
 * Enhancement - Upgrade to pro link.
 * Feature 	  - Cloudflare Turnstile.
 * Tweak 	  - Form locate option where form is activated.
 * Dependency  - Authorize.Net.
 
-- 2.0.0.1       - 09-05-2023
+= 2.0.0.1     - 09-05-2023
 * Fix 		  - Design issue with certain themes when everest shortcode is applied.
 
-- 2.0.0       - 08-05-2023
+= 2.0.0       - 08-05-2023
 * Fix 		  - Repeater field issue when exporting the CSV.
 * Fix 		  - Error when enabling image choices without uploading image in checkbox.
 * Fix 		  - Smart tag {first_name} {last_name} are not working.
@@ -460,7 +460,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Enhancement - Search forms in entries select.
 * Feature     - Everest forms on top admin menu bar.
 
-- 1.9.9       - 28-03-2023
+= 1.9.9       - 28-03-2023
 * Fix 		  - Payment checkbox smart tag value is not showing email.
 * Fix 		  - Undefined array key 'datetime_style' issue.
 * Fix 		  - Undefined index and array to string conversion issue.
@@ -471,7 +471,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Enhancement - translatable email content.
 * Refactor 	  - Form Templates.
 
-- 1.9.8       - 30-01-2023
+= 1.9.8       - 30-01-2023
 * Fix 		  - Stripe issue with credit card field empty.
 * Fix 		  - EVF Tooltip issue with WooCommerce orders table.
 * Enhancement - CSV export for repeater field.

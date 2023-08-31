@@ -113,7 +113,6 @@ class EVF_Form_Task {
 			),
 			400
 		);
-
 	}
 
 	/**
@@ -148,6 +147,17 @@ class EVF_Form_Task {
 			// Validate form is real and active (published).
 			if ( ! $form || 'publish' !== $form->post_status ) {
 				$this->errors[ $form_id ]['header'] = esc_html__( 'Invalid form. Please check again.', 'everest-forms' );
+				$logger->error(
+					$this->errors[ $form_id ]['header'],
+					array( 'source' => 'form-submission' )
+				);
+				return $this->errors;
+			}
+
+			// Check if the form is enabled or not.
+			$form_enabled = evf_decode( $form->post_content );
+			if ( isset( $form_enabled['form_enabled'] ) && ! $form_enabled['form_enabled'] ) {
+				$this->errors[ $form_id ]['header'] = esc_html__( 'This form is disabled.', 'everest-forms' );
 				$logger->error(
 					$this->errors[ $form_id ]['header'],
 					array( 'source' => 'form-submission' )
@@ -600,7 +610,6 @@ class EVF_Form_Task {
 
 		do_action( 'everest_forms_after_success_message', $this->form_data, $entry );
 		$this->entry_confirmation_redirect( $this->form_data );
-
 	}
 
 	/**
@@ -1097,7 +1106,6 @@ class EVF_Form_Task {
 
 			update_option( 'evf_booked_slot', $all_booked_slot );
 		}
-
 	}
 
 	/**
@@ -1141,10 +1149,8 @@ class EVF_Form_Task {
 					}
 				}
 			}
-		} else {
-			if ( ! is_array( $data ) ) {
+		} elseif ( ! is_array( $data ) ) {
 				$properties['inputs']['primary']['attr']['value'] = esc_attr( $data );
-			}
 		}
 		return $properties;
 	}
