@@ -4644,9 +4644,10 @@ function evf_file_get_contents( $file ) {
 * @param string $date_format      The format of the date.
 * @param string $mode             The mode of the datetime field,
 * @param int    $time_interval    The time interval in minutes.
+* @param int    $entry_id         The entry id.
 * @return array
 */
-function parse_datetime_values( $datetime_value, $datetime_format, $date_format, $mode, $time_interval ) {
+function parse_datetime_values( $datetime_value, $datetime_format, $date_format, $mode, $time_interval, $entry_id = 0 ) {
 	$datetime_arr = array();
 
 	switch ($datetime_format) {
@@ -4657,7 +4658,7 @@ function parse_datetime_values( $datetime_value, $datetime_format, $date_format,
 			$date_time = new DateTime($datetime_start);
 			$date_time->modify("+$time_interval minute");
 			$datetime_end = $date_time->format('Y-m-d H:i');
-			$datetime_arr[] = array($datetime_start, $datetime_end);
+			$datetime_arr[$entry_id] = array($datetime_start, $datetime_end);
 			break;
 		case 'date':
 			if ('range' === $mode) {
@@ -4668,7 +4669,7 @@ function parse_datetime_values( $datetime_value, $datetime_format, $date_format,
 					$date_time = new DateTime($selected_dates[1]);
 					$date_time->modify('+23 hour');
 					$datetime_end = $date_time->format('Y-m-d H:i');
-					$datetime_arr[] = array($datetime_start, $datetime_end);
+					$datetime_arr[$entry_id] = array($datetime_start, $datetime_end);
 				}
 			} else {
 				$selected_dates = explode(', ', $datetime_value);
@@ -4680,7 +4681,7 @@ function parse_datetime_values( $datetime_value, $datetime_format, $date_format,
 					$date_time->modify('+23 hour');
 
 					$datetime_end = $date_time->format('Y-m-d H:i');
-					$datetime_arr[] = array($datetime_start, $datetime_end);
+					$datetime_arr[$entry_id] = array($datetime_start, $datetime_end);
 				}
 			}
 			break;
@@ -4690,7 +4691,7 @@ function parse_datetime_values( $datetime_value, $datetime_format, $date_format,
 				if (count($selected_dates) >= 2) {
 					$datetime_start = gmdate('Y-m-d H:i', strtotime($selected_dates[0]));
 					$datetime_end = gmdate('Y-m-d H:i', strtotime($selected_dates[1]));
-					$datetime_arr[] = array($datetime_start, $datetime_end);
+					$datetime_arr[$entry_id] = array($datetime_start, $datetime_end);
 				}
 			} else {
 				$selected_dates = explode(', ', $datetime_value);
@@ -4700,7 +4701,7 @@ function parse_datetime_values( $datetime_value, $datetime_format, $date_format,
 					$date_time = new DateTime($datetime_start);
 					$date_time->modify("+$time_interval minute");
 					$datetime_end = $date_time->format('Y-m-d H:i');
-					$datetime_arr[] = array($datetime_start, $datetime_end);
+					$datetime_arr[$entry_id] = array($datetime_start, $datetime_end);
 				}
 			}
 			break;

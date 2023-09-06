@@ -19,7 +19,7 @@ class EVF_Admin_Entries {
 	public function __construct() {
 		add_action( 'admin_init', array( $this, 'actions' ) );
 		add_filter( 'heartbeat_received', array( $this, 'check_new_entries' ), 10, 3 );
-		add_action( 'evf_delete_booked_slot', array( $this, 'evf_delete_booked_slot' ), 10, 2 );
+		add_action( 'evf_after_delete_entries_delete_booked_slot', array( $this, 'evf_delete_booked_slot' ), 10, 2 );
 	}
 
 	/**
@@ -204,11 +204,9 @@ class EVF_Admin_Entries {
 			$entry_id = absint( $_GET['delete'] ); // phpcs:ignore WordPress.Security.NonceVerification
 
 			if ( $entry_id ) {
-				self::remove_entry( $entry_id );
+				self::remove_entry( $entry_id, $form_id );
 			}
 		}
-
-		do_action( 'evf_delete_booked_slot', $form_id, $entry_id );
 
 		wp_safe_redirect(
 			esc_url_raw(
@@ -283,9 +281,10 @@ class EVF_Admin_Entries {
 	 * Remove entry.
 	 *
 	 * @param  int $entry_id Entry ID.
+	 * @param  int $form_id Form ID.
 	 * @return bool
 	 */
-	public static function remove_entry( $entry_id ) {
+	public static function remove_entry( $entry_id, $form_id = 0 ) {
 		global $wpdb;
 
 		do_action( 'everest_forms_before_delete_entries', $entry_id );
@@ -295,6 +294,8 @@ class EVF_Admin_Entries {
 		if ( apply_filters( 'everest_forms_delete_entrymeta', true ) ) {
 			$wpdb->delete( $wpdb->prefix . 'evf_entrymeta', array( 'entry_id' => $entry_id ), array( '%d' ) );
 		}
+
+		do_action( 'evf_after_delete_entries_delete_booked_slot', $form_id, $entry_id );
 
 		return $delete;
 	}

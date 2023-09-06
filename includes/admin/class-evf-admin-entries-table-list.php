@@ -460,6 +460,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		$pagenum   = $this->get_pagenum();
 		$doaction  = $this->current_action();
 		$entry_ids = isset( $_REQUEST['entry'] ) ? wp_parse_id_list( wp_unslash( $_REQUEST['entry'] ) ) : array(); // phpcs:ignore WordPress.Security.NonceVerification
+		$form_id   = isset( $_REQUEST['form_id'] ) ? sanitize_key( wp_unslash( $_REQUEST['form_id'] ) ) : array(); // phpcs:ignore WordPress.Security.NonceVerification
 		$count     = 0;
 
 		if ( $doaction ) {
@@ -541,7 +542,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 					break;
 				case 'delete':
 					foreach ( $entry_ids as $entry_id ) {
-						if ( EVF_Admin_Entries::remove_entry( $entry_id ) ) {
+						if ( EVF_Admin_Entries::remove_entry( $entry_id, $form_id ) ) {
 							$count ++;
 						}
 					}
