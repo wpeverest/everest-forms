@@ -927,7 +927,9 @@ class EVF_Form_Task {
 			}
 
 		endforeach;
-		do_action( 'everest_forms_remove_attachments_after_send_email', $attachment, $fields, $form_data, 'entry-email', $connection_id, $entry_id );
+		if ( isset( $attachment ) ) {
+			do_action( 'everest_forms_remove_attachments_after_send_email', $attachment, $fields, $form_data, 'entry-email', $connection_id, $entry_id );
+		}
 	}
 
 	/**
