@@ -239,7 +239,7 @@ class EVF_Admin_Entries {
 				$entry_ids = array_map( 'intval', wp_list_pluck( $results, 'entry_id' ) );
 
 				foreach ( $entry_ids as $entry_id ) {
-					if ( self::remove_entry( $entry_id ) ) {
+					if ( self::remove_entry( $entry_id, $form_id ) ) {
 						$count ++;
 					}
 				}
