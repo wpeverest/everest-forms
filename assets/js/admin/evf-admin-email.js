@@ -218,7 +218,8 @@
 			$connections.find('.evf-content-email-settings-inner').last().addClass('active-connection');
 			$this.parent().find('.everest-forms-active-email-connections-list li').removeClass('active-user');
 			$this.closest('.everest-forms-active-email.active').children('.everest-forms-active-email-connections-list').removeClass('empty-list');
-			$this.parent().find('.everest-forms-active-email-connections-list ').append( '<li class="connection-list active-user" data-connection-id= "'+response.data.connection_id+'"><a class="user-nickname" href="#">'+name+'</a><a href="#"><span class="email-remove">Remove</span></a></li>' );
+			$this.parent().find('.everest-forms-active-email-connections-list ').append('<li class="connection-list active-user" data-connection-id="' + response.data.connection_id + '"><a class="user-nickname" href="#">' + name + '</a><div class="evf-email-side-section"><div class="evf-toggle-section"><span class="everest-forms-toggle-form"><input type="hidden" name="settings[email][' + response.data.connection_id + '][enable_email_notification]" value="0" class="widefat"><input type="checkbox" class="evf-email-toggle" name="settings[email][' + response.data.connection_id + '][enable_email_notification]" value="1" data-connection-id="'+response.data.connection_id+'" checked="checked" ><span class="slider round"></span></span></div></div><a href="#"><span class="email-remove">Remove</span></a></li>');
+
 		},
 
 		selectActiveAccount: function(el, e) {
@@ -254,7 +255,7 @@
 			e.preventDefault();
 
 			var $this = $(el),
-			connection_id = $this.parent().parent().data('connection-id'),
+			connection_id = $this.parent().parent().parent().data('connection-id'),
 			active_block  = $('.evf-content-email-settings').find('[data-connection_id="' + connection_id + '"]'),
 			lengthOfActiveBlock = $(active_block).length;
 				$.confirm({
@@ -271,7 +272,7 @@
 							keys: ['enter'],
 							action: function(){
 								if( lengthOfActiveBlock ){
-									var toBeRemoved = $this.parent().parent();
+									var toBeRemoved = $this.parent().parent().parent();
 									active_block_after  = $('.evf-provider-connections').find('[data-connection_id="' + connection_id + '"]'),
 									lengthOfActiveBlockAfter = $(active_block).length;
 									if( toBeRemoved.prev().length ){

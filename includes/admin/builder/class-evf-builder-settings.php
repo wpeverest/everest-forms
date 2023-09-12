@@ -113,8 +113,8 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 													<span class="slider round"></span>
 													</span>
 											</div>
+											<a href="#"><span class="<?php echo esc_attr( $remove_class ); ?>"><?php esc_html_e( 'Remove', 'everest-forms' ); ?></a>
 										</div>
-										<a href="#"><span class="<?php echo esc_attr( $remove_class ); ?>"><?php esc_html_e( 'Remove', 'everest-forms' ); ?></a>
 									</li>
 								<?php
 							}
