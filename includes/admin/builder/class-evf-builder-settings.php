@@ -105,13 +105,14 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 								?>
 									<li class="connection-list" data-connection-id="<?php echo esc_attr( $connection_id ); ?>">
 										<a class="user-nickname" href="#"><?php echo esc_html( $connection_name ); ?></a>
-										<div class="evf-toggle-section">
-											<label class="evf-toggle-switch">
-												<input type="hidden" name="settings[email][<?php echo esc_attr( $connection_id ); ?>][enable_email_notification]" value="0" class="widefat">
-												<input type="checkbox" class="evf-email-toggle" name="settings[email][<?php echo esc_attr( $connection_id ); ?>][enable_email_notification]" value="1" data-connection-id="<?php echo esc_attr( $connection_id ); ?>" <?php echo checked( '1', $email_status, false ); ?> >
-												<span class="evf-toggle-switch-wrap"></span>
-												<span class="evf-toggle-switch-control"></span>
-											</label>
+										<div class="evf-email-side-section">
+											<div class="evf-toggle-section">
+												<span class="everest-forms-toggle-form">
+													<input type="hidden" name="settings[email][<?php echo esc_attr( $connection_id ); ?>][enable_email_notification]" value="0" class="widefat">
+													<input type="checkbox" class="evf-email-toggle" name="settings[email][<?php echo esc_attr( $connection_id ); ?>][enable_email_notification]" value="1" data-connection-id="<?php echo esc_attr( $connection_id ); ?>" <?php echo checked( '1', $email_status, false ); ?> >
+													<span class="slider round"></span>
+													</span>
+											</div>
 										</div>
 										<a href="#"><span class="<?php echo esc_attr( $remove_class ); ?>"><?php esc_html_e( 'Remove', 'everest-forms' ); ?></a>
 									</li>
