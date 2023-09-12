@@ -3060,18 +3060,32 @@ jQuery( function ( $ ) {
 	// Toggle email notification.
 	$( document ).on( 'change', '.evf-content-email-settings .evf-toggle-switch input', function(e) {
 		var $this = $( this ),
-			value = $this.prop( 'checked' );
-
+			value = $this.prop( 'checked' ),
+			connection_id = $this.data('connection-id');
 		if ( false === value ) {
 			$this.val('');
 			$this.closest( '.evf-content-email-settings' ).find( '.email-disable-message' ).remove();
 			$this.closest( '.evf-content-section-title' ).siblings( '.evf-content-email-settings-inner' ).addClass( 'everest-forms-hidden' );
 			$( '<p class="email-disable-message everest-forms-notice everest-forms-notice-info">' + evf_data.i18n_email_disable_message + '</p>' ).insertAfter( $this.closest( '.evf-content-section-title' ) );
+			$('input[data-connection-id="' + connection_id + '"]').prop('checked',false);
 		} else if ( true === value ) {
 			$this.val('1');
 			$this.closest( '.evf-content-section-title' ).siblings( '.evf-content-email-settings-inner' ).removeClass( 'everest-forms-hidden' );
 			$this.closest( '.evf-content-email-settings' ).find( '.email-disable-message' ).remove();
+			$('input[data-connection-id="' + connection_id + '"]').prop('checked',true);
 		}
+	});
+
+	$( document ).on( 'change', '.evf-email-toggle', function(e) {
+		var $this = $( this ),
+			connection_id = $this.data('connection-id');
+			if($this.prop( 'checked' )){
+				$this.val('1');
+				$('.evf-content-email-settings').find('input[type="checkbox"][data-connection-id="' + connection_id + '"]').prop('checked',true).trigger('change');
+			} else {
+				$this.val('');
+				$('.evf-content-email-settings').find('input[type="checkbox"][data-connection-id="' + connection_id + '"]').prop('checked',false).trigger('change');
+			}
 	});
 
 

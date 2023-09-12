@@ -80,10 +80,10 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 
 		?>
 			<div class="everest-forms-active-email">
-					<ul class="everest-forms-active-email-connections-list">
-					<button class="everest-forms-btn everest-forms-btn-primary everest-forms-email-add" data-form_id="<?php echo isset( $_GET['form_id'] ) ? absint( sanitize_text_field( wp_unslash( $_GET['form_id'] ) ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification ?>" data-source="email" data-type="<?php echo esc_attr( 'connection' ); ?>">
+			<button class="everest-forms-btn everest-forms-btn-primary everest-forms-email-add" data-form_id="<?php echo isset( $_GET['form_id'] ) ? absint( sanitize_text_field( wp_unslash( $_GET['form_id'] ) ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification ?>" data-source="email" data-type="<?php echo esc_attr( 'connection' ); ?>">
 					<?php printf( esc_html__( 'Add New Email', 'everest-forms' ) ); ?>
 				</button>
+					<ul class="everest-forms-active-email-connections-list">
 					<?php if ( ! empty( $email ) ) { ?>
 						<h4><?php echo esc_html__( 'Email Notifications', 'everest-forms' ); ?> </h4>
 						<?php
@@ -97,9 +97,22 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 								} else {
 									$remove_class = 'email-default-remove';
 								}
+								if ( isset( $email['enable_email_notification'] ) && '0' === $email['enable_email_notification'] ) {
+									$email_status = isset( $email['enable_email_notification'] ) ? $email['enable_email_notification'] : '1';
+								} else {
+									$email_status = isset( $email[ $connection_id ]['enable_email_notification'] ) ? $email[ $connection_id ]['enable_email_notification'] : '1';
+								}
 								?>
 									<li class="connection-list" data-connection-id="<?php echo esc_attr( $connection_id ); ?>">
 										<a class="user-nickname" href="#"><?php echo esc_html( $connection_name ); ?></a>
+										<div class="evf-toggle-section">
+											<label class="evf-toggle-switch">
+												<input type="hidden" name="settings[email][<?php echo esc_attr( $connection_id ); ?>][enable_email_notification]" value="0" class="widefat">
+												<input type="checkbox" class="evf-email-toggle" name="settings[email][<?php echo esc_attr( $connection_id ); ?>][enable_email_notification]" value="1" data-connection-id="<?php echo esc_attr( $connection_id ); ?>" <?php echo checked( '1', $email_status, false ); ?> >
+												<span class="evf-toggle-switch-wrap"></span>
+												<span class="evf-toggle-switch-control"></span>
+											</label>
+										</div>
 										<a href="#"><span class="<?php echo esc_attr( $remove_class ); ?>"><?php esc_html_e( 'Remove', 'everest-forms' ); ?></a>
 									</li>
 								<?php

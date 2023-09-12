@@ -222,7 +222,7 @@
 		},
 
 		selectActiveAccount: function(el, e) {
-			e.preventDefault();
+			// e.preventDefault();
 
 			var $this         = $(el),
 			connection_id = $this.data('connection-id'),
