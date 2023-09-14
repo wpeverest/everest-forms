@@ -115,7 +115,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 											</div>
 											<span class="evf-vertical-divider"></span>
 											<a href="#">
-												
+
 												<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
 													<path fill-rule="evenodd" d="M9.293 3.293A1 1 0 0 1 10 3h4a1 1 0 0 1 1 1v1H9V4a1 1 0 0 1 .293-.707ZM7 5V4a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1h4a1 1 0 1 1 0 2h-1v13a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V7H3a1 1 0 1 1 0-2h4Zm1 2h10v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7h2Zm2 3a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0v-6a1 1 0 0 1 1-1Zm5 7v-6a1 1 0 1 0-2 0v6a1 1 0 1 0 2 0Z" clip-rule="evenodd"/>
 												</svg>
@@ -419,6 +419,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				echo '<div class="evf-content-section-title" ' . esc_attr( $toggler_hide_class ) . '>';
 				echo '<div class="evf-title">' . esc_html__( 'Email', 'everest-forms' ) . '</div>';
 				?>
+				<div class="evf-enable-email-toggle"><img src="<?php echo esc_url( plugin_dir_url( EVF_PLUGIN_FILE )  . 'assets/images/enable-email-toggle.png'  ); ?>" alt="<?php esc_attr_e( 'Click me to enable email settings', 'everest-forms' ); ?>"></div>
 				<div class="evf-toggle-section">
 					<label class="evf-toggle-switch">
 						<input type="hidden" name="settings[email][<?php echo esc_attr( $connection_id ); ?>][enable_email_notification]" value="0" class="widefat">
