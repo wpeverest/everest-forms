@@ -81,6 +81,9 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		?>
 			<div class="everest-forms-active-email">
 			<button class="everest-forms-btn everest-forms-btn-primary everest-forms-email-add" data-form_id="<?php echo isset( $_GET['form_id'] ) ? absint( sanitize_text_field( wp_unslash( $_GET['form_id'] ) ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification ?>" data-source="email" data-type="<?php echo esc_attr( 'connection' ); ?>">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+					<path d="M12 21.95c-.6 0-1-.4-1-1v-8H3.1c-.6 0-1-.4-1-1s.4-1 1-1H11v-7.9c0-.6.4-1 1-1s1 .4 1 1v7.9h7.9c.6 0 1 .4 1 1s-.4 1-1 1H13v8c0 .6-.4 1-1 1Z"/>
+			</svg>
 					<?php printf( esc_html__( 'Add New Email', 'everest-forms' ) ); ?>
 				</button>
 					<ul class="everest-forms-active-email-connections-list">
@@ -115,7 +118,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 											</div>
 											<span class="evf-vertical-divider"></span>
 											<a href="#">
-
+												<span class="<?php echo esc_attr( $remove_class ); ?>">
 												<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
 													<path fill-rule="evenodd" d="M9.293 3.293A1 1 0 0 1 10 3h4a1 1 0 0 1 1 1v1H9V4a1 1 0 0 1 .293-.707ZM7 5V4a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1h4a1 1 0 1 1 0 2h-1v13a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V7H3a1 1 0 1 1 0-2h4Zm1 2h10v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7h2Zm2 3a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0v-6a1 1 0 0 1 1-1Zm5 7v-6a1 1 0 1 0-2 0v6a1 1 0 1 0 2 0Z" clip-rule="evenodd"/>
 												</svg>
