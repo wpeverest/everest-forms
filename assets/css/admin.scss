@@ -3720,6 +3720,7 @@
 			 }
  
 			 .evf-content-section-title {
+				 position: relative;
 				 font-size: 22px;
 				 font-weight: 600;
 				 line-height: 130%;
@@ -3729,11 +3730,16 @@
 				 align-items: center;
 				 justify-content: space-between;
 				 color: #222222;
-				 // border-bottom: 1px solid $color_gray-lighten;
 				 border-bottom: 1px solid #e9e9e9;
  
 				 .evf-title {
 					 margin-right: 20px;
+				 }
+
+				 .evf-enable-email-toggle {
+					position: absolute;
+					top: 15px;
+					right: -20px;
 				 }
  
 				 .evf-toggle-section {
