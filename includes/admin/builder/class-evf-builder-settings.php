@@ -417,12 +417,13 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					$email_status = isset( $settings['email'][ $connection_id ]['enable_email_notification'] ) ? $settings['email'][ $connection_id ]['enable_email_notification'] : '1';
 				}
 				$hidden_class       = '1' !== $email_status ? 'everest-forms-hidden' : '';
+				$hidden_enable_setting_class       = '1' === $email_status ? 'everest-forms-hidden' : '';
 				$toggler_hide_class = isset( $toggler_hide_class ) ? 'style=display:none;' : '';
-				echo '<div class="evf-content-section evf-content-email-settings">';
+				echo '<div class="evf-content-section evf-content-email-settings" ' . esc_attr( $toggler_hide_class ) . '>';
 				echo '<div class="evf-content-section-title" ' . esc_attr( $toggler_hide_class ) . '>';
 				echo '<div class="evf-title">' . esc_html__( 'Email', 'everest-forms' ) . '</div>';
 				?>
-				<div class="evf-enable-email-toggle"><img src="<?php echo esc_url( plugin_dir_url( EVF_PLUGIN_FILE )  . 'assets/images/enable-email-toggle.png'  ); ?>" alt="<?php esc_attr_e( 'Click me to enable email settings', 'everest-forms' ); ?>"></div>
+				<div class="evf-enable-email-toggle <?php echo esc_attr( $hidden_enable_setting_class ); ?>"><img src="<?php echo esc_url( plugin_dir_url( EVF_PLUGIN_FILE ) . 'assets/images/enable-email-toggle.png' ); ?>" alt="<?php esc_attr_e( 'Click me to enable email settings', 'everest-forms' ); ?>"></div>
 				<div class="evf-toggle-section">
 					<label class="evf-toggle-switch">
 						<input type="hidden" name="settings[email][<?php echo esc_attr( $connection_id ); ?>][enable_email_notification]" value="0" class="widefat">

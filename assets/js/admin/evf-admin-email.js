@@ -152,12 +152,16 @@
 
 			// Hiding Toggle for Prevous Email Setting.
 			$('.evf-content-email-settings .evf-content-section-title').css( 'display', 'none' );
+			$('.evf-content-email-settings').css( 'display', 'none' );
 			// Removing email-disable-message;
 			$( '.email-disable-message' ).remove();
+			$('.evf-enable-email-toggle').addClass('everest-forms-hidden');
 			// Removing Cloned email-disable-message;
 			cloned_email.find( '.email-disable-message' ).remove();
+			cloned_email.find( '.evf-enable-email-toggle' ).addClass('everest-forms-hidden');
 			// Showing Toggle for Current Email Setting.
 			cloned_email.find( '.evf-toggle-switch' ).parents( '.evf-content-section-title' ).css( 'display', 'flex' );
+			cloned_email.find( '.evf-toggle-switch' ).parents( '.evf-content-email-settings' ).css( 'display', '' );
 
 			cloned_email.find('.evf-field-conditional-container').attr('data-connection_id',response.data.connection_id);
 			cloned_email.find('#everest-forms-panel-field-email-connection_1-connection_name').attr('name', 'settings[email]['+response.data.connection_id+'][connection_name]');
@@ -218,7 +222,28 @@
 			$connections.find('.evf-content-email-settings-inner').last().addClass('active-connection');
 			$this.parent().find('.everest-forms-active-email-connections-list li').removeClass('active-user');
 			$this.closest('.everest-forms-active-email.active').children('.everest-forms-active-email-connections-list').removeClass('empty-list');
-			$this.parent().find('.everest-forms-active-email-connections-list ').append('<li class="connection-list active-user" data-connection-id="' + response.data.connection_id + '"><a class="user-nickname" href="#">' + name + '</a><div class="evf-email-side-section"><div class="evf-toggle-section"><span class="everest-forms-toggle-form"><input type="hidden" name="settings[email][' + response.data.connection_id + '][enable_email_notification]" value="0" class="widefat"><input type="checkbox" class="evf-email-toggle" name="settings[email][' + response.data.connection_id + '][enable_email_notification]" value="1" data-connection-id="'+response.data.connection_id+'" checked="checked" ><span class="slider round"></span></span></div></div><a href="#"><span class="email-remove">Remove</span></a></li>');
+			$this.parent().find('.everest-forms-active-email-connections-list').append(
+				'<li class="connection-list active-user" data-connection-id="' + response.data.connection_id + '">' +
+					'<a class="user-nickname" href="#">' + name + '</a>' +
+					'<div class="evf-email-side-section">' +
+						'<div class="evf-toggle-section">' +
+							'<span class="everest-forms-toggle-form">' +
+								'<input type="hidden" name="settings[email][' + response.data.connection_id + '][enable_email_notification]" value="0" class="widefat">' +
+								'<input type="checkbox" class="evf-email-toggle" name="settings[email][' + response.data.connection_id + '][enable_email_notification]" value="1" data-connection-id="' + response.data.connection_id + '" checked="checked">' +
+								'<span class="slider round"></span>' +
+							'</span>' +
+						'</div>' +
+						'<span class="evf-vertical-divider"></span>' +
+						'<a href="#">' +
+							'<span class="email-remove">' +
+							'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">' +
+								'<path fill-rule="evenodd" d="M9.293 3.293A1 1 0 0 1 10 3h4a1 1 0 0 1 1 1v1H9V4a1 1 0 0 1 .293-.707ZM7 5V4a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1h4a1 1 0 1 1 0 2h-1v13a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V7H3a1 1 0 1 1 0-2h4Zm1 2h10v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7h2Zm2 3a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0v-6a1 1 0 0 1 1-1Zm5 7v-6a1 1 0 1 0-2 0v6a1 1 0 1 0 2 0Z" clip-rule="evenodd"/>' +
+							'</svg></span>' +
+						'</a>' +
+					'</div>' +
+				'</li>'
+			);
+
 
 		},
 
@@ -234,6 +259,7 @@
 
 			// Hiding Email Notificaton Trigger (Previous).
 			$( '.evf-content-section-title' ).has('[data-connection-id=' + $this.siblings('.active-user').attr( 'data-connection-id' ) +']').css( 'display', 'none' );
+			$( '.evf-content-section-title' ).has('[data-connection-id=' + $this.siblings('.active-user').attr( 'data-connection-id' ) +']').parent().css( 'display', 'none' );
 			$this.siblings().removeClass('active-user');
 			$this.addClass('active-user');
 
@@ -249,6 +275,7 @@
 
 			// Displaying Email Notificaton Trigger (Current).
 			$( '.evf-content-section-title' ).has('[data-connection-id=' + $this.attr( 'data-connection-id' ) +']').css( 'display', 'flex' );
+			$( '.evf-content-section-title' ).has('[data-connection-id=' + $this.attr( 'data-connection-id' ) +']').parent().css( 'display', '' );
 		},
 
 		removeAccount: function(el, e) {

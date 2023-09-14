@@ -3065,6 +3065,7 @@ jQuery( function ( $ ) {
 		if ( false === value ) {
 			$this.val('');
 			$this.closest( '.evf-content-email-settings' ).find( '.email-disable-message' ).remove();
+			$this.closest( '.evf-content-section-title' ).find('.evf-enable-email-toggle').removeClass('everest-forms-hidden');
 			$this.closest( '.evf-content-section-title' ).siblings( '.evf-content-email-settings-inner' ).addClass( 'everest-forms-hidden' );
 			$( '<p class="email-disable-message everest-forms-notice everest-forms-notice-info">' + evf_data.i18n_email_disable_message + '</p>' ).insertAfter( $this.closest( '.evf-content-section-title' ) );
 			$('input[data-connection-id="' + connection_id + '"]').prop('checked',false);
@@ -3072,6 +3073,7 @@ jQuery( function ( $ ) {
 			$this.val('1');
 			$this.closest( '.evf-content-section-title' ).siblings( '.evf-content-email-settings-inner' ).removeClass( 'everest-forms-hidden' );
 			$this.closest( '.evf-content-email-settings' ).find( '.email-disable-message' ).remove();
+			$this.closest( '.evf-content-section-title' ).find('.evf-enable-email-toggle').addClass('everest-forms-hidden');
 			$('input[data-connection-id="' + connection_id + '"]').prop('checked',true);
 		}
 	});
