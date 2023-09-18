@@ -241,9 +241,7 @@
 	 }
  
 	 &.everest-forms-notice-info {
-		 // background: lighten($blue, 45%);
-		 // border: 1px solid $blue;
-		 max-width: 740px;
+		 max-width: 600px;
 		 padding: 10px 14px;
 		 border: 0;
 		 border-left: 3px solid #17A2B8;
@@ -256,7 +254,6 @@
 		 gap: 12px;
  
 		 &::before {
-			 // color: $blue;
 			 color: #17A2B8;
 			 margin-right: 0;
 		 }
@@ -1724,6 +1721,30 @@
 				 border-radius: 13px;
 				 border: 1px solid #E1E1E1;
 				 box-shadow: 0px 7px 29px 0px rgba(100, 100, 111, 0.09);
+				//  height: calc(100vh - 200px);
+    			//  overflow-x: hidden !important;
+
+				//  /* width */
+				// &::-webkit-scrollbar {
+				// 	width: 6px;
+				// }
+				
+				// /* Track */
+				// &::-webkit-scrollbar-track {
+				// 	box-shadow: inset 0 0 5px grey; 
+				// 	border-radius: 10px;
+				// }
+				
+				// /* Handle */
+				// &::-webkit-scrollbar-thumb {
+				// 	background: rgb(67, 67, 67); 
+				// 	border-radius: 10px;
+				// }
+				
+				// /* Handle on hover */
+				// &::-webkit-scrollbar-thumb:hover {
+				// 	background: #808080; 
+				// }
  
 				 &-title {
 					 font-size: 22px;
@@ -2663,7 +2684,7 @@
 								font-weight: 500;
 								line-height: 150%;
 								margin-top: 4px;
-								margin-bottom: 0;
+								margin-bottom: 24px;
 							 }
  
 							 li {
@@ -2671,14 +2692,16 @@
 								 display: flex;
 								 padding: 10px;
 								 cursor: pointer;
-								 margin-bottom: -1px;
+								 margin-bottom: 2px;
 								 align-items: center;
 								 justify-content: space-between;
 								 transition: all 0.25s ease 0s;
-								//  border: 1px solid $color_gray-lighten;
  
+								 &:last-child {
+									margin-bottom: 0;
+								 }
+								 
 								 &.active-user {
-									// background: $color-white;
 									background: #F6F3FA;
 									border: 0;
 									padding: 10px;
@@ -2721,7 +2744,13 @@
 									}
 
 									a {
-										display: flex;
+										// display: flex;
+
+										span {
+											display: flex;
+											align-items: center;
+											justify-content: center;
+										}
 
 										svg {
 											width: 18px;
@@ -2778,6 +2807,10 @@
 									 }
 								 }
 							 }
+						 }
+
+						 .everest-forms-active-email-connections-list {
+							gap: 0;
 						 }
 					 }
 
@@ -6735,6 +6768,24 @@
 	&.everest-forms-panel-field-checkbox {
 		.inline {
 			padding-left: 0;
+		}
+	}
+ }
+
+ .jconfirm-scrollpane {
+	.jconfirm-row {
+		.jconfirm-box {
+			padding: 20px !important;
+
+			.jconfirm-buttons {
+				padding: 0 !important;
+
+				button {
+					&.btn-confirm {
+						margin: 0;
+					}
+				}
+			}
 		}
 	}
  }
