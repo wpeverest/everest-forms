@@ -39,6 +39,7 @@ class EVF_Template_Loader {
 			add_filter( 'home_template_hierarchy', array( __CLASS__, 'template_include' ) );
 			add_filter( 'frontpage_template_hierarchy', array( __CLASS__, 'template_include' ) );
 			add_action( 'template_redirect', array( __CLASS__, 'form_preview_init' ) );
+			add_filter( 'astra_remove_entry_header_content', '__return_true' ); // Need to remove in next version, If astra release the patches.
 		} else {
 			add_filter( 'template_include', array( __CLASS__, 'template_loader' ) );
 		}

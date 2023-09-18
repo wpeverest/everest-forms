@@ -38,21 +38,21 @@ class EVF_Admin {
 	 * Include any classes we need within admin.
 	 */
 	public function includes() {
-		include_once dirname( __FILE__ ) . '/evf-admin-functions.php';
-		include_once dirname( __FILE__ ) . '/class-evf-admin-menus.php';
-		include_once dirname( __FILE__ ) . '/class-evf-admin-notices.php';
-		include_once dirname( __FILE__ ) . '/class-evf-admin-assets.php';
-		include_once dirname( __FILE__ ) . '/class-evf-admin-editor.php';
-		include_once dirname( __FILE__ ) . '/class-evf-admin-forms.php';
-		include_once dirname( __FILE__ ) . '/class-evf-admin-entries.php';
-		include_once dirname( __FILE__ ) . '/class-evf-admin-import-export.php';
-		include_once dirname( __FILE__ ) . '/class-evf-admin-deactivation-feedback.php';
+		include_once __DIR__ . '/evf-admin-functions.php';
+		include_once __DIR__ . '/class-evf-admin-menus.php';
+		include_once __DIR__ . '/class-evf-admin-notices.php';
+		include_once __DIR__ . '/class-evf-admin-assets.php';
+		include_once __DIR__ . '/class-evf-admin-editor.php';
+		include_once __DIR__ . '/class-evf-admin-forms.php';
+		include_once __DIR__ . '/class-evf-admin-entries.php';
+		include_once __DIR__ . '/class-evf-admin-import-export.php';
+		include_once __DIR__ . '/class-evf-admin-deactivation-feedback.php';
 
 		// Setup/welcome.
 		if ( ! empty( $_GET['page'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			switch ( $_GET['page'] ) { // phpcs:ignore WordPress.Security.NonceVerification
 				case 'evf-welcome':
-					include_once dirname( __FILE__ ) . '/class-evf-admin-welcome.php';
+					include_once __DIR__ . '/class-evf-admin-welcome.php';
 					break;
 			}
 		}
@@ -178,8 +178,19 @@ class EVF_Admin {
 			return $footer_text;
 		}
 		$current_screen = get_current_screen();
-		$evf_pages      = evf_get_screen_ids();
 
+		// Removing footer text from builder page.
+		if ( 'everest-forms_page_evf-builder' === $current_screen->id && isset( $_GET['form_id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			add_filter(
+				'update_footer',
+				function () {
+					return '';
+				}
+			);
+			return '';
+		}
+
+		$evf_pages = evf_get_screen_ids();
 		// Check to make sure we're on a EverestForms admin page.
 		if ( isset( $current_screen->id ) && apply_filters( 'everest_forms_display_admin_footer_text', in_array( $current_screen->id, $evf_pages, true ) ) ) {
 			// Change the footer text.

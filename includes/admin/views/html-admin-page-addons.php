@@ -54,9 +54,92 @@ defined( 'ABSPATH' ) || exit;
 			<form id="extension-filter" method="post">
 				<div class="wp-list-table widefat extension-install">
 					<h2 class="screen-reader-text"><?php esc_html_e( 'Add-ons list', 'everest-forms' ); ?></h2>
-
 					<div class="the-list">
-						<?php foreach ( $addons as $addon ) : ?>
+					<?php
+					$plan = evf_get_license_plan();
+					if ( false === $plan ) {
+						array_shift( $addons );
+						?>
+					<div class="plugin-card plugin-card-everest-forms-ai-contact-form">
+						<a href="<?php echo esc_url( 'https://everestforms.net/features/convertkit/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=ai-contact-form' ); ?>">
+							<div class="plugin-card-top">
+								<div class="name column-name">
+									<h3 class="plugin-name">
+										<?php echo esc_html( 'AI Contact Form' ); ?>
+										<img src="<?php echo esc_url( evf()->plugin_url() . '/assets/extensions-json/sections/images/ai.png' ); ?>" class="plugin-icon" alt=""/>
+									</h3>
+								</div>
+								<div class="desc column-description">
+									<p class="plugin-desc"> <?php echo esc_html( 'Add AI capabilities like interactive chatbox, AI generated email notifications, and more to your forms.' ); ?></p>
+								</div>
+							</div>
+						</a>
+						<div class="plugin-card-bottom">
+							<div class="status column-status">
+								<strong><?php esc_html_e( 'Status:', 'everest-forms' ); ?></strong>
+								<?php
+								$addon_slug = 'ai-contact-form';
+								if ( is_plugin_active( $addon_slug . '/' . $addon_slug . '.php' ) ) :
+									?>
+									<span class="status-label status-active"><?php esc_html_e( 'Activated', 'everest-forms' ); ?></span>
+								<?php elseif ( file_exists( WP_PLUGIN_DIR . '/' . $addon_slug . '/' . $addon_slug . '.php' ) ) : ?>
+									<span class="status-label status-inactive"><?php esc_html_e( 'Inactive', 'everest-forms' ); ?></span>
+								<?php else : ?>
+									<span class="status-label status-install-now"><?php esc_html_e( 'Not Installed', 'everest-forms' ); ?></span>
+								<?php endif; ?>
+							</div>
+							<div class="action-buttons upgrade-plan">
+								<?php
+								$repo_url     = 'https://api.github.com/repos/wpeverest/ai-contact-form/releases/latest';
+								$response     = wp_safe_remote_get( $repo_url );
+								$release      = wp_remote_retrieve_body( $response );
+								$release      = json_decode( $release, true );
+								$latest_tag   = isset( $release['tag_name'] ) ? esc_attr( $release['tag_name'] ) : '';
+								$download_url = "https://github.com/wpeverest/ai-contact-form/archive/{$latest_tag}.zip";
+								?>
+									<?php if ( is_plugin_active( $addon_slug . '/' . $addon_slug . '.php' ) ) : ?>
+												<?php
+													$plugin_file = plugin_basename( $addon_slug . '/' . $addon_slug . '.php' );
+													$url         = wp_nonce_url(
+														add_query_arg(
+															array(
+																'page'   => 'evf-addons',
+																'action' => 'deactivate',
+																'plugin' => $plugin_file,
+															),
+															admin_url( 'admin.php' )
+														),
+														'deactivate-plugin_' . $plugin_file
+													);
+												?>
+												<a class="button button-secondary deactivate-now" href="<?php echo esc_url( $url ); ?>"><?php esc_html_e( 'Deactivate', 'everest-forms' ); ?></a>
+											<?php elseif ( file_exists( WP_PLUGIN_DIR . '/' . $addon_slug . '/' . $addon_slug . '.php' ) ) : ?>
+												<?php
+													$plugin_file = plugin_basename( $addon_slug . '/' . $addon_slug . '.php' );
+													$url         = wp_nonce_url(
+														add_query_arg(
+															array(
+																'page'   => 'evf-addons',
+																'action' => 'activate',
+																'plugin' => $plugin_file,
+															),
+															admin_url( 'admin.php' )
+														),
+														'activate-plugin_' . $plugin_file
+													);
+												?>
+												<a class="button button-primary activate-now" href="<?php echo esc_url( $url ); ?>"><?php esc_html_e( 'Activate', 'everest-forms' ); ?></a>
+											<?php else : ?>
+												<a href="<?php echo esc_url( $download_url ); ?>" class="button evf-download-ai"><?php esc_html_e( 'Download Addon', 'everest-forms' ); ?></a>
+											<?php endif; ?>
+							</div>
+						</div>
+					</div>
+					<?php } ?>
+						<?php
+						foreach ( $addons as $addon ) :
+							?>
+
 							<div class="plugin-card plugin-card-<?php echo esc_attr( $addon->slug ); ?>">
 								<a href="<?php echo esc_url( $addon->link ); ?>">
 									<div class="plugin-card-top">
@@ -130,7 +213,7 @@ defined( 'ABSPATH' ) || exit;
 										</div>
 									<?php else : ?>
 										<div class="action-buttons upgrade-plan">
-											<a class="button upgrade-now" href="https://wpeverest.com/wordpress-plugins/everest-forms/pricing/?utm_source=addons-page&utm_medium=upgrade-button&utm_campaign=evf-upgrade-to-pro" target="_blank"><?php esc_html_e( 'Upgrade Plan', 'everest-forms' ); ?></a>
+											<a class="button upgrade-now" href="https://everestforms.net/pricing/?utm_source=addons-page&utm_medium=upgrade-button&utm_campaign=evf-upgrade-to-pro" target="_blank"><?php esc_html_e( 'Upgrade Plan', 'everest-forms' ); ?></a>
 										</div>
 									<?php endif; ?>
 								</div>
@@ -144,7 +227,7 @@ defined( 'ABSPATH' ) || exit;
 		<p>
 		<?php
 		/* translators: %s: Add-ons Link */
-		printf( esc_html__( 'Our catalog of Everest Forms Add-ons/Extensions can be found on WPEverest.com here: <a href="%s">Everest Forms Extensions Catalog</a>', 'everest-forms' ), 'https://wpeverest.com/wordpress-plugins/everest-forms/' );
+		printf( esc_html__( 'Our catalog of Everest Forms Add-ons/Extensions can be found on WPEverest.com here: <a href="%s">Everest Forms Extensions Catalog</a>', 'everest-forms' ), 'https://everestforms.net/' );
 		?>
 		</p>
 	<?php endif; ?>

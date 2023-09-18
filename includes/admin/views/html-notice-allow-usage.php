@@ -21,7 +21,7 @@ defined( 'ABSPATH' ) || exit;
 			if ( false !== evf_get_license_plan() ) {
 				printf(
 					wp_kses(
-						__( 'Help us improve the plugin\'s features by sharing <a href="https://docs.wpeverest.com/everest-forms/docs/misc-settings/#2-toc-title" target="_blank">non-sensitive plugin data</a> with us.', 'everest-forms' ),
+						__( 'Help us improve the plugin\'s features by sharing <a href="https://docs.everestforms.net/docs/misc-settings-4/#2-toc-title" target="_blank">non-sensitive plugin data</a> with us.', 'everest-forms' ),
 						array(
 							'a' => array(
 								'href'   => array(),
@@ -33,7 +33,7 @@ defined( 'ABSPATH' ) || exit;
 			} else {
 				printf(
 					wp_kses(
-						__( ' Help us improve the plugin\'s features and receive an instant discount coupon with occasional email updates by sharing <a href="https://docs.wpeverest.com/everest-forms/docs/misc-settings/#2-toc-title" target="_blank">non-sensitive plugin data</a> with us.', 'everest-forms' ),
+						__( ' Help us improve the plugin\'s features and receive an instant discount coupon with occasional email updates by sharing <a href="https://docs.everestforms.net/docs/misc-settings-4/#2-toc-title" target="_blank">non-sensitive plugin data</a> with us.', 'everest-forms' ),
 						array(
 							'a' => array(
 								'href'   => array(),

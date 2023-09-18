@@ -64,7 +64,19 @@
 	 */
 	wp.updates.installExtensionSuccess = function( response ) {
 		if ( 'everest-forms_page_evf-builder' === pagenow ) {
-			var $pluginRow = $( 'tr[data-slug="' + response.slug + '"]' ).removeClass( 'install' ).addClass( 'installed' ),
+			if (
+				!$(document).find(".everest-forms-form-template-wrapper")
+					.length
+			) {
+				wp.a11y.speak(
+					__("Installation completed successfully."),
+					"polite"
+				);
+
+				$document.trigger("wp-plugin-install-success", response);
+				$document.trigger("ur-plugin-install-success", response);
+			} else {
+				var $pluginRow = $( 'tr[data-slug="' + response.slug + '"]' ).removeClass( 'install' ).addClass( 'installed' ),
 				$updateMessage = $pluginRow.find( '.plugin-status span' );
 
 			$updateMessage
@@ -84,7 +96,7 @@
 
 
 			$document.trigger( 'wp-plugin-bulk-install-success', response );
-
+			}
 		} else {
 			var $message = $( '.plugin-card-' + response.slug ).find( '.install-now' ),
 				$status = $( '.plugin-card-' + response.slug ).find( '.status-label' );
@@ -157,6 +169,11 @@
 	 */
 	wp.updates.installExtensionError = function( response ) {
 		if ( 'everest-forms_page_evf-builder' === pagenow ) {
+			if(!$(document).find(".everest-forms-form-template-wrapper")
+					.length
+			) {
+				return;
+			}
 			var $pluginRow     = $( 'tr[data-slug="' + response.slug + '"]' ),
 			$updateMessage = $pluginRow.find( '.plugin-status span' ),
 			errorMessage;
@@ -165,7 +182,7 @@
 				return;
 			}
 
-			if ( wp.updates.maybeHandleCredentialError( response, 'install-plugin' ) ) {
+			if ( wp.updates.maybeHandleCredentialError( response, 'install-plugin' )  ) {
 				return;
 			}
 

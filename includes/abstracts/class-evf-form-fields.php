@@ -87,7 +87,8 @@ abstract class EVF_Form_Fields {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->class   = $this->is_pro ? 'upgrade-modal' : $this->class;
+		$get_license   = evf_get_license_plan();
+		$this->class   = $this->is_pro ? ( false === $get_license ? 'upgrade-modal' : 'evf-upgrade-addon' ) : $this->class;
 		$this->form_id = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : false; // phpcs:ignore WordPress.Security.NonceVerification
 
 		// Init hooks.
@@ -1545,6 +1546,121 @@ abstract class EVF_Form_Fields {
 					);
 				break;
 
+			/**
+			 * Regex Validation
+			 */
+			case 'regex_validation':
+				$default = ! empty( $args['default'] ) ? $args['default'] : '0';
+				$value   = ! empty( $field['enable_regex_validation'] ) ? esc_attr( $field['enable_regex_validation'] ) : '';
+				$tooltip = esc_html__( 'Enable this option to allow regex validation for this field.', 'everest-forms' );
+				$output  = $this->field_element(
+					'checkbox',
+					$field,
+					array(
+						'slug'    => 'enable_regex_validation',
+						'value'   => $value,
+						'desc'    => esc_html__( 'Enable Regex Validation ', 'everest-forms' ),
+						'tooltip' => $tooltip,
+					),
+					false
+				);
+				$output  = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'enable_regex_validation',
+						'content' => $output,
+					),
+					$echo
+				);
+				break;
+
+			case 'regex_value':
+				$toggle  = '';
+				$tooltip = esc_html__( 'Regular expression value is checked against.', 'everest-forms' );
+				$value   = ! empty( $field['regex_value'] ) ? esc_attr( $field['regex_value'] ) : '';
+
+				// Build output.
+				$output  = $this->field_element(
+					'label',
+					$field,
+					array(
+						'slug'          => 'regex_value',
+						'value'         => esc_html__( 'Regex Value', 'everest-forms' ),
+						'tooltip'       => $tooltip,
+						'after_tooltip' => $toggle,
+					),
+					false
+				);
+				$output .= $this->field_element(
+					'text',
+					$field,
+					array(
+						'slug'  => 'regex_value',
+						'value' => $value,
+					),
+					false
+				);
+				// Smart tag for default value.
+				$include_fields = array( 'email', 'first-name', 'last-name', 'number', 'text', 'url' );
+
+				if ( in_array( $field['type'], $include_fields, true ) ) {
+					$output .= '<a href="#" class="evf-toggle-smart-tag-display" data-type="regex"><span class="dashicons dashicons-editor-code"></span></a>';
+					$output .= '<div class="evf-smart-tag-lists" style="display: none">';
+					$output .= '<div class="smart-tag-title other-tag-title">Regular Expression</div><ul class="evf-regex"></ul></div>';
+				}
+
+				$output = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'regex_value',
+						'content' => $output,
+						'class'   => ! in_array( $field['type'], $include_fields, true ) && isset( $field['enable_regex_validation'] ) ? '' : ' hidden evf_smart_tag',
+					),
+					$echo
+				);
+
+				break;
+
+			case 'regex_message':
+				$toggle  = '';
+				$tooltip = esc_html__( 'if the regular expression value does not match it will show this message.', 'everest-forms' );
+				$value   = ! empty( $field['regex_message'] ) ? esc_attr( $field['regex_message'] ) : 'Please provide a valid value for this field.';
+
+				// Build output.
+				$output  = $this->field_element(
+					'label',
+					$field,
+					array(
+						'slug'          => 'regex_message',
+						'value'         => esc_html__( 'Validation Message for Regular expression', 'everest-forms' ),
+						'tooltip'       => $tooltip,
+						'after_tooltip' => $toggle,
+					),
+					false
+				);
+				$output .= $this->field_element(
+					'text',
+					$field,
+					array(
+						'slug'  => 'regex_message',
+						'value' => $value,
+					),
+					false
+				);
+				$output  = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'regex_message',
+						'content' => $output,
+						'class'   => isset( $field['enable_regex_validation'] ) ? '' : 'hidden',
+					),
+					$echo
+				);
+				break;
+
 			/*
 			 * CSS classes.
 			 */
@@ -2379,12 +2495,28 @@ abstract class EVF_Form_Fields {
 			update_option( 'evf_validation_error', 'yes' );
 		}
 
+		// validate regex validation.
+		if ( isset( $form_data['form_fields'][ $field_id ]['enable_regex_validation'] ) && '1' === $form_data['form_fields'][ $field_id ]['enable_regex_validation'] ) {
+			$regex_value   = ! empty( $form_data['form_fields'][ $field_id ]['regex_value'] ) ? $form_data['form_fields'][ $field_id ]['regex_value'] : '';
+			$regex_message = ! empty( $form_data['form_fields'][ $field_id ]['regex_message'] ) ? $form_data['form_fields'][ $field_id ]['regex_message'] : esc_html__( 'Please provide a valid value for this field', 'everest-forms' );
+			$value         = '';
+			if ( is_array( $field_submit ) ) {
+				$value = ! empty( $field_submit['primary'] ) ? $field_submit['primary'] : '';
+			} else {
+				$value = ! empty( $field_submit ) ? $field_submit : '';
+			}
+			if ( ! preg_match( '/' . $regex_value . '/', $value ) ) {
+				evf()->task->errors[ $form_data['id'] ][ $field_id ] = $regex_message;
+				update_option( 'evf_validation_error', 'yes' );
+			}
+		}
 		// Type validations.
 		switch ( $field_type ) {
 			case 'url':
 				if ( ! empty( $_POST['everest_forms']['form_fields'][ $field_id ] ) && filter_var( $field_submit, FILTER_VALIDATE_URL ) === false ) { // phpcs:ignore WordPress.Security.NonceVerification
 					$validation_text = get_option( 'evf_' . $field_type . '_validation', esc_html__( 'Please enter a valid url', 'everest-forms' ) );
 				}
+
 				break;
 			case 'email':
 				if ( is_array( $field_submit ) ) {
@@ -2407,7 +2539,7 @@ abstract class EVF_Form_Fields {
 
 					// Limit Length.
 					if ( isset( $field['limit_enabled'], $field['limit_mode'], $field['limit_count'] ) && '1' === $field['limit_enabled'] && in_array( $field['limit_mode'], array( 'characters', 'words' ), true ) && ! empty( $field['limit_count'] ) ) {
-						if ( 'words' === $field['limit_mode'] && $field['limit_count'] < str_word_count( $field_submit ) ) {
+						if ( 'words' === $field['limit_mode'] && $field['limit_count'] < evf_word_count( $field_submit ) ) {
 							/* translators: %s Number of max words. */
 							$validation_text = sprintf( esc_html__( 'This field contains at most %s words', 'everest-forms' ), $field['limit_count'] );
 						} elseif ( 'characters' === $field['limit_mode'] && $field['limit_count'] < mb_strlen( $field_submit ) ) { //phpcs:ignore PHPCompatibility.ParameterValues.NewIconvMbstringCharsetDefault.NotSet
@@ -2418,13 +2550,45 @@ abstract class EVF_Form_Fields {
 
 					// Min Length.
 					if ( isset( $field['min_length_enabled'], $field['min_length_mode'], $field['min_length_count'] ) && '1' === $field['min_length_enabled'] && in_array( $field['min_length_mode'], array( 'characters', 'words' ), true ) && ! empty( $field['min_length_count'] ) ) {
-						if ( 'words' === $field['min_length_mode'] && $field['min_length_count'] > str_word_count( $field_submit ) ) {
+
+						if ( 'words' === $field['min_length_mode'] && $field['min_length_count'] > evf_word_count( $field_submit ) ) {
 							/* translators: %s Number of minimum words. */
 							$validation_text = sprintf( esc_html__( 'This field contains at least %s words', 'everest-forms' ), $field['min_length_count'] );
 						} elseif ( 'characters' === $field['min_length_mode'] && $field['min_length_count'] > mb_strlen( $field_submit ) ) { //phpcs:ignore PHPCompatibility.ParameterValues.NewIconvMbstringCharsetDefault.NotSet
 							/* translators: %s Number of minimum characters. */
 							$validation_text = sprintf( esc_html__( 'This field contains at least %s characters', 'everest-forms' ), $field['min_length_count'] );
 						}
+					}
+				}
+
+				break;
+			case 'date-time':
+				$slot_booking = isset( $form_data['form_fields'][ $field_id ]['slot_booking_advanced'] ) ? $form_data['form_fields'][ $field_id ]['slot_booking_advanced'] : '';
+				if ( $slot_booking ) {
+					$datetime_format = isset( $form_data['form_fields'][ $field_id ]['datetime_format'] ) ? $form_data['form_fields'][ $field_id ]['datetime_format'] : '';
+					$date_format     = isset( $form_data['form_fields'][ $field_id ]['date_format'] ) ? $form_data['form_fields'][ $field_id ]['date_format'] : '';
+					$mode            = isset( $form_data['form_fields'][ $field_id ]['date_mode'] ) ? $form_data['form_fields'][ $field_id ]['date_mode'] : '';
+					$time_interval   = isset( $form_data['form_fields'][ $field_id ]['time_interval'] ) ? $form_data['form_fields'][ $field_id ]['time_interval'] : '';
+					$datetime_arr    = parse_datetime_values( $field_submit, $datetime_format, $date_format, $mode, $time_interval );
+					$booked_slot     = maybe_unserialize( get_option( 'evf_booked_slot', '' ) );
+					$form_id         = $form_data['id'];
+					$is_booked       = false;
+					if ( ! empty( $booked_slot ) && array_key_exists( $form_id, $booked_slot ) ) {
+						foreach ( $datetime_arr as $arr ) {
+
+							foreach ( $booked_slot[ $form_id ] as $slot ) {
+								if ( $arr[0] >= $slot[0] && $arr[1] <= $slot[1] ) {
+									$is_booked = true;
+									break;
+								} elseif ( $arr[0] >= $slot[0] && $arr[0] < $slot[1] && $arr[1] >= $slot[1] ) {
+									$is_booked = true;
+									break;
+								}
+							}
+						}
+					}
+					if ( $is_booked ) {
+						$validation_text = get_option( 'evf_' . $field_type . '_validation', esc_html__( 'This slot is already booked. Please choose other slot.', 'everest-forms' ) );
 					}
 				}
 				break;
@@ -2490,9 +2654,14 @@ abstract class EVF_Form_Fields {
 			case 'radio':
 			case 'signature':
 			case 'payment-multiple':
-				$value  = '';
-				$image  = ! empty( $field['value']['image'] ) ? sprintf( '<img src="%s" style="width:75px;height:75px;max-height:75px;max-width:75px;"  /><br>', $field['value']['image'] ) : '';
-				$value  = ! empty( $field['value']['label'] ) ? $image . $field['value']['label'] : '';
+				$value           = '';
+				$image           = ! empty( $field['value']['image'] ) ? sprintf( '<img src="%s" style="width:75px;height:75px;max-height:75px;max-width:75px;"  /><br>', $field['value']['image'] ) : '';
+				$filtered_choice = apply_filters( 'evf_custom_choice', false );
+				if ( $filtered_choice ) {
+					$value = ! empty( $field['value']['label'] ) ? $field['value']['label'] : '';
+				} else {
+					$value = ! empty( $field['value']['label'] ) ? $image . $field['value']['label'] : '';
+				}
 				$export = array(
 					'label' => ! empty( $field['value']['name'] ) ? $field['value']['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
 					'value' => ! empty( $value ) ? $value : false,
@@ -2507,7 +2676,12 @@ abstract class EVF_Form_Fields {
 						$image = ! empty( $field['value']['images'][ $key ] ) ? sprintf( '<img src="%s" style="width:75px;height:75px;max-height:75px;max-width:75px;"  /><br>', $field['value']['images'][ $key ] ) : '';
 
 						if ( ! empty( $choice ) ) {
-							$value[ $key ] = $image . $choice;
+							$filtered_choice = apply_filters( 'evf_custom_choice', false );
+							if ( $filtered_choice ) {
+								$value[ $key ] = $choice;
+							} else {
+								$value[ $key ] = $image . $choice;
+							}
 						}
 					}
 				}

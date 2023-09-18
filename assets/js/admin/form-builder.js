@@ -559,6 +559,15 @@
 				var id = $( this ).attr( 'data-field-id' );
 				EVFPanelBuilder.dateSettingToggler( id, $('#everest-forms-field-option-' + id + '-datetime_style' ).val() );
 			} );
+
+			if($('.everest-forms-slot-booking input').is(":checked")) {
+				//checked and hide past dates.
+				disable_past_date = $(document).find('.everest-forms-past-date-disable-format input');
+				required = $(document).find('.everest-forms-field-option-row-required input');
+				disable_past_date.attr("checked", true);
+				required.prop("checked", true);
+				disable_past_date.parent().hide();
+			}
 		},
 
 		/**
@@ -915,6 +924,21 @@
 				}
 			});
 
+			$builder.on( 'change', '.everest-forms-field-option-row-enable_regex_validation input', function( event ) {
+				var id = $( this ).parent().data( 'field-id' );
+
+				$( '#everest-forms-field-' + id ).toggleClass( 'regex_value' );
+
+				// Toggle "Parameter Name" option.
+				if ( $( event.target ).is( ':checked' ) ) {
+					$( '#everest-forms-field-option-row-' + id + '-regex_value' ).show();
+					$( '#everest-forms-field-option-row-' + id + '-regex_message' ).show();
+				} else {
+					$( '#everest-forms-field-option-row-' + id + '-regex_value' ).hide();
+					$( '#everest-forms-field-option-row-' + id + '-regex_message' ).hide();
+				}
+			});
+
 			// Real-time updates for "Description" field option.
 			$builder.on( 'input', '.everest-forms-field-option-row-description textarea', function() {
 				var $this = $( this ),
@@ -944,8 +968,14 @@
 					} else {
 						$( '#everest-forms-field-option-row-' + id + '-required_field_message_setting' ).hide();
 						$( '#everest-forms-field-option-row-' + id + '-required-field-message' ).hide();
+
+						//unchecked the slot booking if date is not required.
+						slot_booking = $(document).find('.everest-forms-slot-booking input');
+						slot_booking.prop('checked', false);
+						//show pass date input if hidden.
+						$(document).find('.everest-forms-past-date-disable-format input').parent().show();
 					}
-				});
+			});
 
 			$builder.on( 'change', '.everest-forms-field-option-row-required_field_message_setting input', function( event ) {
 				var id = $( this ).parent().parent().parent().parent().data( 'field-id' );
@@ -971,6 +1001,25 @@
 				} else {
 					$( '#everest-forms-field-' + id ).find( '.everest-forms-confirm' ).removeClass( 'everest-forms-confirm-enabled' ).addClass( 'everest-forms-confirm-disabled' );
 					$( '#everest-forms-field-option-' + id ).removeClass( 'everest-forms-confirm-enabled' ).addClass( 'everest-forms-confirm-disabled' );
+				}
+			});
+			// Real-time updates for slot booking
+			$builder.on('change', '.everest-forms-slot-booking input', function(event) {
+				if($(this).is(":checked")) {
+					disable_past_date = $(document).find('.everest-forms-past-date-disable-format input');
+					required = $(document).find('.everest-forms-field-option-row-required input');
+
+					//checked the required if it is not checked.
+					if(required.is(":not(:checked)")) {
+						required.prop("checked", true);
+					}
+
+					if(disable_past_date.is(":not(:checked)")) {
+						disable_past_date.prop("checked", true);
+					}
+					disable_past_date.parent().hide();
+				} else {
+					disable_past_date.parent().show();
 				}
 			});
 
@@ -3043,6 +3092,9 @@ jQuery( function ( $ ) {
 		} else if ( 'other' === type ) {
 			$input.val( $input.val() + '{'+field_id+'}' );
 			$textarea.val($textarea.val() + '{'+field_id+'}' );
+		} else if ( 'regex' === type ) {
+			$input.val($input.val() + field_id.replace(field_label+'_','') );
+			$textarea.val( $textarea.val() + field_id.replace(field_label+'_','') );
 		}
 	});
 
@@ -3171,9 +3223,18 @@ jQuery( function ( $ ) {
 
 		if( 'other' === type || 'all' === type ){
 			var other_smart_tags = evf_data.smart_tags_other;
+			console.log($(el));
 			for( var key in other_smart_tags ) {
 				$(el).parent().find('.evf-smart-tag-lists .evf-others').append('<li class = "smart-tag-field" data-type="other" data-field_id="'+key+'">'+other_smart_tags[key]+'</li>');
 			}
+		}
+
+
+		if( 'regex' == type ){
+			var regex_lists = evf_data.regex_expression_lists;
+			regex_lists.forEach(function(key,value) {
+				$(el).parent().find('.evf-smart-tag-lists .evf-regex').append('<li class = "smart-tag-field" data-type="regex" data-field_id="'+key.value+'">'+key.text+'</li>');
+			});
 		}
 
 		if ( 'fields' === type || 'all' === type ) {
@@ -3227,5 +3288,122 @@ jQuery( function ( $ ) {
 				}
 			})
 		}
+
+		if ( 'ai-fields' === type ) {
+			var aiFields = [
+				"text",
+			];
+			$(document).find('.everest-forms-field').each(function() {
+				if( aiFields.includes($(this).attr('data-field-type')) && $(el).parents('.everest-forms-field-option-row-ai_chatbot_input').attr('data-field-id') !== $(this).attr('data-field-id')) {
+					$(el).parent().find('.evf-smart-tag-lists .evf-fields-ai').append('<li class = "smart-tag-field" data-type="field" data-field_id="'+$(this).attr('data-field-id')+'">'+$(this).find('.label-title .text').text()+'</li>');
+				}
+			})
+		}
 	}
+});
+
+jQuery(function ($) {
+	$(document).ready(function () {
+
+		/**
+		 * Custom CSS
+		 */
+		const customCssElement = $('#everest-forms-panel-field-settings-evf-custom-css');
+		var cssEditor = wp.CodeMirror.fromTextArea(customCssElement[0],
+			{
+				"indentUnit": 2,
+				"indentWithTabs": true,
+				"inputStyle": "contenteditable",
+				"lineNumbers": true,
+				"lineWrapping": true,
+				"styleActiveLine": true,
+				"continueComments": true,
+				"extraKeys": {
+					"Ctrl-Space": "autocomplete",
+					"Ctrl-/": "toggleComment",
+					"Cmd-/": "toggleComment",
+					"Alt-F": "findPersistent",
+					"Ctrl-F": "findPersistent",
+					"Cmd-F": "findPersistent"
+				},
+				"direction": "ltr",
+				"gutters": [],
+				"mode": "text/css",
+				"lint": false,
+				"autoCloseBrackets": true,
+				"autoCloseTags": true,
+				"autoRefresh": true,
+				"matchTags": {
+					"bothTags": true
+				},
+				"tabSize": 2,
+				"theme": 'default',
+			});
+
+		cssEditor.on('change', function () {
+			customCssElement.html(cssEditor.getValue());
+		});
+
+
+		/**
+		 * Custom JS
+		 */
+		const customJsElement = $('#everest-forms-panel-field-settings-evf-custom-js');
+		var jsEditor = wp.CodeMirror.fromTextArea(customJsElement[0],
+			{
+				"indentUnit": 2,
+				"indentWithTabs": true,
+				"inputStyle": "contenteditable",
+				"lineNumbers": true,
+				"lineWrapping": true,
+				"styleActiveLine": true,
+				"continueComments": true,
+				"extraKeys": {
+					"Ctrl-Space": "autocomplete",
+					"Ctrl-/": "toggleComment",
+					"Cmd-/": "toggleComment",
+					"Alt-F": "findPersistent",
+					"Ctrl-F": "findPersistent",
+					"Cmd-F": "findPersistent"
+				},
+				"direction": "ltr",
+				"gutters": [],
+				"mode": "javascript",
+				"lint": false,
+				"autoCloseBrackets": true,
+				"autoCloseTags": true,
+				"autoRefresh": true,
+				"matchTags": {
+					"bothTags": true
+				},
+				"tabSize": 2,
+			});
+
+		jsEditor.on('change', function () {
+			customJsElement.html(jsEditor.getValue());
+		});
+
+		$('#everest-forms-panel-field-settings-evf-enable-custom-css, #everest-forms-panel-field-settings-evf-enable-custom-js').on('change', e => {
+			showHideEditors();
+		});
+
+		showHideEditors();
+
+		/**
+		 * Show/Hide the custom css and js input boxes based on the enabled/disabled state.
+		 */
+		function showHideEditors() {
+			if ($('#everest-forms-panel-field-settings-evf-enable-custom-css').is(':checked')) {
+				$('#everest-forms-panel-field-settings-evf-custom-css-wrap').show(500);
+			} else {
+				$('#everest-forms-panel-field-settings-evf-custom-css-wrap').hide(500);
+			}
+
+			if ($('#everest-forms-panel-field-settings-evf-enable-custom-js').is(':checked')) {
+				$('#everest-forms-panel-field-settings-evf-custom-js-wrap').show(500);
+			} else {
+				$('#everest-forms-panel-field-settings-evf-custom-js-wrap').hide(500);
+			}
+		}
+	});
 });
