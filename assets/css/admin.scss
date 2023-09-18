@@ -901,7 +901,9 @@
 			 padding: 0;
 			 border: none;
 			 display: flex;
-			 margin: 0 0 1.5em;
+			 align-items: center;
+			 margin: 0;
+			//  margin: 0 0 1.5em;
 			 position: relative;
 			 border-bottom: none;
 			 background-color: $everestforms;
@@ -1949,6 +1951,7 @@
 
 			 .evf-forms-nav-right {
 				 padding: 21px 30px 19px;
+				 margin-left: auto;
 
 				 .evf-shortcode-field {
 					 display: inline-block;
@@ -2055,6 +2058,10 @@
 						 background: transparentize($color-white, 0.1);
 					 }
 				 }
+			 }
+
+			 .evf-nav-tab-wrapper {
+				gap: 4px;
 			 }
 		 }
 
@@ -2324,7 +2331,7 @@
 							 cursor: not-allowed;
 						 }
 
-						 &.evf-upgrade-addon,
+						//  &.evf-upgrade-addon,
 						 &.enable-stripe-model,
 						 &.enable-authorize-net-model {
 							 opacity: 0.45;
@@ -2337,6 +2344,7 @@
 							}
 						 }
 
+						 &.evf-upgrade-addon,
 						 &.upgrade-modal {
 							position: relative;
 							background: #fafbfc;
@@ -5620,7 +5628,8 @@
 			 box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 
 			 a {
-				 color: #ff7d20;
+				//  color: #ff7d20;
+				color: #967cff;
 			 }
 
 			 code {
