@@ -59,6 +59,149 @@ class EVF_Smart_Tags {
 	}
 
 	/**
+	 * Other Regex Expression Lists.
+	 *
+	 * @return string|array
+	 */
+	public function regex_expression_lists() {
+		$regex_lists = apply_filters(
+			'everest_forms_regex_expression_lists',
+			array(
+				array(
+					'text'  => __( 'Alpha', 'everest-forms' ),
+					'value' => '^[a-zA-Z]+$',
+				),
+				array(
+					'text'  => __( 'Alphanumeric', 'everest-forms' ),
+					'value' => '^[a-zA-Z0-9]+$',
+				),
+				array(
+					'text'  => __( 'Color', 'everest-forms' ),
+					'value' => '^#?([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$',
+				),
+				array(
+					'text'  => __( 'Country Code (2 Character)', 'everest-forms' ),
+					'value' => '^[A-Za-z]{2}$',
+				),
+				array(
+					'text'  => __( 'Country Code (3 Character)', 'everest-forms' ),
+					'value' => '^[A-Za-z]{3}$',
+				),
+				array(
+					'text'  => __( 'Date (mm/dd)', 'everest-forms' ),
+					'value' => '^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])$',
+				),
+				array(
+					'text'  => __( 'Date (dd/mm)', 'everest-forms' ),
+					'value' => '^(0[1-9]|1\d|2\d|3[01])\/(0[1-9]|1[0-2])$',
+				),
+				array(
+					'text'  => __( 'Date (mm.dd.yyyy)', 'everest-forms' ),
+					'value' => '^(0[1-9]|1[0-2])\.(0[1-9]|1\d|2\d|3[01])\.\d{4}$',
+				),
+				array(
+					'text'  => __( 'Date (dd.mm.yyyy)', 'everest-forms' ),
+					'value' => '^(0[1-9]|1\d|2\d|3[01])\.(0[1-9]|1[0-2])\.\d{4}$',
+				),
+				array(
+					'text'  => __( 'Date (yyyy-mm-dd)', 'everest-forms' ),
+					'value' => '^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|1\d|2\d|3[01])$',
+				),
+				array(
+					'text'  => __( 'Date (mm/dd/yyyy)', 'everest-forms' ),
+					'value' => '^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/\d{4}$',
+				),
+				array(
+					'text'  => __( 'Date (dd/mm/yyyy)', 'everest-forms' ),
+					'value' => '^(0[1-9]|1\d|2\d|3[01])\/(0[1-9]|1[0-2])\/\d{4}$',
+				),
+				array(
+					'text'  => __( 'Email', 'everest-forms' ),
+					'value' => '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$',
+				),
+				array(
+					'text'  => __( 'IP (Version 4)', 'everest-forms' ),
+					'value' => '^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$',
+				),
+				array(
+					'text'  => __( 'IP (Version 6)', 'everest-forms' ),
+					'value' => '((^|:)([0-9a-fA-F]{0,4})){1,8}$',
+				),
+				array(
+					'text'  => __( 'ISBN', 'everest-forms' ),
+					'value' => '^978(?:-[\d]+){3}-[\d]$',
+				),
+				array(
+					'text'  => __( 'Latitude or Longitude', 'everest-forms' ),
+					'value' => '-?\d{1,3}\.\d+',
+				),
+				array(
+					'text'  => __( 'Numeric', 'everest-forms' ),
+					'value' => '^[0-9]+$',
+				),
+				array(
+					'text'  => __( 'Password (Numeric, lower, upper)', 'everest-forms' ),
+					'value' => '^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$',
+				),
+				array(
+					'text'  => __( 'Password (Numeric, lower, upper, min 8)', 'everest-forms' ),
+					'value' => '(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}',
+				),
+				array(
+					'text'  => __( 'Phone - General', 'everest-forms' ),
+					'value' => '[0-9+()-. ]+',
+				),
+				array(
+					'text'  => __( 'Phone - UK', 'everest-forms' ),
+					'value' => '^\+44\d{10}$',
+				),
+				array(
+					'text'  => __( 'Phone - US: 123-456-7890', 'everest-forms' ),
+					'value' => '\d{3}[\-]\d{3}[\-]\d{4}',
+				),
+				array(
+					'text'  => __( 'Phone - US: (123)456-7890', 'everest-forms' ),
+					'value' => '\([0-9]{3}\)[0-9]{3}-[0-9]{4}',
+				),
+				array(
+					'text'  => __( 'Phone - US: (123) 456-7890', 'everest-forms' ),
+					'value' => '\([0-9]{3}\) [0-9]{3}-[0-9]{4}',
+				),
+				array(
+					'text'  => __( 'Phone - US: Flexible', 'everest-forms' ),
+					'value' => '(?:\(\d{3}\)|\d{3})[- ]?\d{3}[- ]?\d{4}',
+				),
+				array(
+					'text'  => __( 'Postal Code (UK)', 'everest-forms' ),
+					'value' => '^[A-Za-z]{1,2}\d{1,2}[A-Za-z]?\s?\d[A-Za-z]{2}$',
+				),
+				array(
+					'text'  => __( 'Price (1.23)', 'everest-forms' ),
+					'value' => '\d+(\.\d{2})?$',
+				),
+				array(
+					'text'  => __( 'Slug', 'everest-forms' ),
+					'value' => '^[a-zA-Z0-9-]+$',
+				),
+				array(
+					'text'  => __( 'Time (hh:mm:ss)', 'everest-forms' ),
+					'value' => '(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9]){2}',
+				),
+				array(
+					'text'  => __( 'URL', 'everest-forms' ),
+					'value' => '^(https?|ftp):\/\/[^\s\/$.?#].[^\s]*$',
+				),
+				array(
+					'text'  => __( 'Zip Code', 'everest-forms' ),
+					'value' => '(\d{5}([\-]\d{4})?)',
+				),
+			)
+		);
+		return $regex_lists;
+	}
+
+
+	/**
 	 * Process and parse smart tags.
 	 *
 	 * @param string       $content The string to preprocess.
@@ -280,7 +423,7 @@ class EVF_Smart_Tags {
 					case 'last_name':
 						if ( is_user_logged_in() ) {
 							$user = wp_get_current_user();
-							$name = sanitize_text_field( $user->user_lastname  );
+							$name = sanitize_text_field( $user->user_lastname );
 						} else {
 							$name = '';
 						}

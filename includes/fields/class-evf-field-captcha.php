@@ -23,6 +23,8 @@ class EVF_Field_Captcha extends EVF_Form_Fields {
 		$this->order  = 160;
 		$this->group  = 'advanced';
 		$this->is_pro = true;
+		$this->plan   = 'personal plus professional agency';
+		$this->addon  = 'everest-forms-captcha';
 
 		parent::__construct();
 	}

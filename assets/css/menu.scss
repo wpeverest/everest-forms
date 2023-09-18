@@ -346,4 +346,10 @@
 	&color::before {
 		content: '\e909';
 	}
+	&ai::before {
+		content: '\e913';
+	}
+	&lookup::before {
+        content: '\e914';
+    }
 }

@@ -457,16 +457,12 @@ class EVF_Emails {
 					continue;
 				}
 
-				if ( 'radio' === $field['type'] && empty( $field['value']['label'] ) ) {
-
+				if ( ( 'radio' === $field['type'] && empty( $field['value']['label'] ) ) || ( 'payment-multiple' === $field['type'] && empty( $field['value']['label'] ) ) ) {
 					continue;
-
 				}
 
-				if ( 'checkbox' === $field['type'] && empty( $field['value']['label'][0] ) ) {
-
+				if ( ( 'checkbox' === $field['type'] && empty( $field['value']['label'][0] ) ) || ( 'payment-checkbox' === $field['type'] && empty( $field['value']['label'] ) ) ) {
 					continue;
-
 				}
 
 				// If there's the export data filter, utilize that and re-loop promptly.
@@ -550,7 +546,7 @@ class EVF_Emails {
 				$field_item  = str_replace( '{field_value}', $field_value, $field_item );
 
 				$message .= wpautop( $field_item );
-				$field_iterator ++;
+				++$field_iterator;
 			}
 		} else {
 			/*

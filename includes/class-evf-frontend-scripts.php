@@ -286,6 +286,7 @@ class EVF_Frontend_Scripts {
 					'submit'                               => esc_html__( 'Submit', 'everest-forms' ),
 					'disable_user_details'                 => get_option( 'everest_forms_disable_user_details' ),
 					'everest_forms_data_save'              => wp_create_nonce( 'everest_forms_data_save_nonce' ),
+					'everest_forms_slot_booking'           => wp_create_nonce( 'everest_forms_slot_booking_nonce' ),
 					'i18n_messages_required'               => get_option( 'everest_forms_required_validation' ),
 					'i18n_messages_url'                    => get_option( 'everest_forms_url_validation' ),
 					'i18n_messages_email'                  => get_option( 'everest_forms_email_validation' ),
