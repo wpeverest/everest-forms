@@ -585,7 +585,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				// --------------------------------------------------------------------//
 				if ( ! empty( get_option( 'everest_forms_ai_api_key' ) ) ) {
 					everest_forms_panel_field(
-						'checkbox',
+						'toggle',
 						'email',
 						'enable_ai_email_prompt',
 						$this->form_data,
@@ -702,7 +702,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'Captcha', 'everest-forms' ) . '</h4>';
 
 			everest_forms_panel_field(
-				'checkbox',
+				'toggle',
 				'settings',
 				'recaptcha_support',
 				$this->form_data,
@@ -753,7 +753,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		echo '</div>';
 		echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'Custom CSS', 'everest-forms' ) . '</h4>';
 		everest_forms_panel_field(
-			'checkbox',
+			'toggle',
 			'settings',
 			'evf-enable-custom-css',
 			$this->form_data,
@@ -772,7 +772,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		echo '</div>';
 		echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'Custom JS', 'everest-forms' ) . '</h4>';
 		everest_forms_panel_field(
-			'checkbox',
+			'toggle',
 			'settings',
 			'evf-enable-custom-js',
 			$this->form_data,
