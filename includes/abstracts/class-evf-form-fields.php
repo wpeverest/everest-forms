@@ -1554,7 +1554,7 @@ abstract class EVF_Form_Fields {
 				$value   = ! empty( $field['enable_regex_validation'] ) ? esc_attr( $field['enable_regex_validation'] ) : '';
 				$tooltip = esc_html__( 'Enable this option to allow regex validation for this field.', 'everest-forms' );
 				$output  = $this->field_element(
-					'checkbox',
+					'toggle',
 					$field,
 					array(
 						'slug'    => 'enable_regex_validation',
