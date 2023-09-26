@@ -252,7 +252,7 @@
 		 align-items: center;
 		 margin-top: 24px;
 		 gap: 12px;
- 
+
 		 &::before {
 			 // color: $blue;
 			 color: #17A2B8;
@@ -1739,14 +1739,14 @@
 					border: 1px solid #E1E1E1;
 					box-shadow: 0px 7px 29px 0px rgba(100, 100, 111, 0.09);
 				 }
- 
+
 				 &-title {
 					 font-size: 22px;
 					 line-height: 130%;
 					 color: #222222;
 					 padding-top: 6px;
 				 }
- 
+
 				 .everest-forms-panel-field {
 					 input,
 					 textarea,
@@ -2555,7 +2555,7 @@
 								 }
 
 								 &.everest-forms-hidden {
-									 display: none;
+									 display: none !important;
 								 }
 							 }
 							 input,
@@ -2739,7 +2739,7 @@
 								 justify-content: space-between;
 								 transition: all 0.25s ease 0s;
 								//  border: 1px solid $color_gray-lighten;
- 
+
 								 &.active-user {
 									background: #F6F3FA;
 									border: 0;
@@ -4333,19 +4333,19 @@
 				&::-webkit-scrollbar {
 					width: 6px;
 				}
-				
+
 				/* Track */
 				&::-webkit-scrollbar-track {
-					box-shadow: inset 0 0 5px rgb(158, 158, 158); 
+					box-shadow: inset 0 0 5px rgb(158, 158, 158);
 					border-radius: 10px;
 				}
-				
+
 				/* Handle */
 				&::-webkit-scrollbar-thumb {
-					background: rgb(93, 93, 93); 
+					background: rgb(93, 93, 93);
 					border-radius: 10px;
 				}
-				
+
 				/* Handle on hover */
 				&::-webkit-scrollbar-thumb:hover {
 					background: #454545;
