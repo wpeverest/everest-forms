@@ -1084,10 +1084,9 @@ class EVF_Form_Task {
 				$datetime_format = $new_slot_booking_field_meta_key_list[ $value['meta_key'] ][0];
 				$date_format     = $new_slot_booking_field_meta_key_list[ $value['meta_key'] ][1];
 				$mode            = $new_slot_booking_field_meta_key_list[ $value['meta_key'] ][2];
-				$datetime_arr    = parse_datetime_values( $new_value, $datetime_format, $date_format, $mode, $time_interval );
+				$datetime_arr    = parse_datetime_values( $new_value, $datetime_format, $date_format, $mode, $time_interval, $entry_id );
 			}
 		}
-
 		if ( ! empty( $datetime_arr ) ) {
 			$get_booked_slot = get_option( 'evf_booked_slot', array() );
 			$new_booked_slot = array( $form_id => $datetime_arr );
@@ -1099,7 +1098,7 @@ class EVF_Form_Task {
 
 				if ( array_key_exists( $form_id, $unserialized_booked_slot ) ) {
 					$booked_slot     = $unserialized_booked_slot[ $form_id ];
-					$booked_slot     = array_merge( (array) $booked_slot, $datetime_arr );
+					$booked_slot     = (array) $booked_slot + $datetime_arr;
 					$new_booked_slot = array( $form_id => $booked_slot );
 				}
 

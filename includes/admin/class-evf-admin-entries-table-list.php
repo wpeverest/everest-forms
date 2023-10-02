@@ -177,7 +177,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 			foreach ( $this->form_data['form_fields'] as $id => $field ) {
 				if ( ! in_array( $field['type'], self::get_columns_form_disallowed_fields(), true ) && $x < $display ) {
 					$columns[ 'evf_field_' . $id ] = ! empty( $field['label'] ) ? wp_strip_all_tags( $field['label'] ) : esc_html__( 'Field', 'everest-forms' );
-					$x++;
+					++$x;
 				}
 			}
 		} elseif ( ! empty( $entry_columns ) ) {
@@ -460,6 +460,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		$pagenum   = $this->get_pagenum();
 		$doaction  = $this->current_action();
 		$entry_ids = isset( $_REQUEST['entry'] ) ? wp_parse_id_list( wp_unslash( $_REQUEST['entry'] ) ) : array(); // phpcs:ignore WordPress.Security.NonceVerification
+		$form_id   = isset( $_REQUEST['form_id'] ) ? sanitize_key( wp_unslash( $_REQUEST['form_id'] ) ) : array(); // phpcs:ignore WordPress.Security.NonceVerification
 		$count     = 0;
 
 		if ( $doaction ) {
@@ -481,7 +482,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 				case 'unstar':
 					foreach ( $entry_ids as $entry_id ) {
 						if ( EVF_Admin_Entries::update_status( $entry_id, $doaction ) ) {
-							$count ++;
+							++$count;
 						}
 					}
 
@@ -497,7 +498,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 				case 'unread':
 					foreach ( $entry_ids as $entry_id ) {
 						if ( EVF_Admin_Entries::update_status( $entry_id, $doaction ) ) {
-							$count ++;
+							++$count;
 						}
 					}
 
@@ -512,7 +513,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 				case 'trash':
 					foreach ( $entry_ids as $entry_id ) {
 						if ( EVF_Admin_Entries::update_status( $entry_id, 'trash' ) ) {
-							$count ++;
+							++$count;
 						}
 					}
 
@@ -527,7 +528,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 				case 'untrash':
 					foreach ( $entry_ids as $entry_id ) {
 						if ( EVF_Admin_Entries::update_status( $entry_id, 'publish' ) ) {
-							$count ++;
+							++$count;
 						}
 					}
 
@@ -541,8 +542,8 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 					break;
 				case 'delete':
 					foreach ( $entry_ids as $entry_id ) {
-						if ( EVF_Admin_Entries::remove_entry( $entry_id ) ) {
-							$count ++;
+						if ( EVF_Admin_Entries::remove_entry( $entry_id, $form_id ) ) {
+							++$count;
 						}
 					}
 
