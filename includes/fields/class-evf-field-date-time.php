@@ -628,7 +628,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 		echo '<h4 class="everest-forms-border-container-title">' . esc_html__( 'Slot Booking', 'everest-forms' ) . '</h4>'; // phpcs:ignore WordPress.Security.NonceVerification
 
 		$slot_booking_toggle = $this->field_element(
-			'checkbox',
+			'toggle',
 			$field,
 			array(
 				'slug'    => 'slot_booking_advanced',

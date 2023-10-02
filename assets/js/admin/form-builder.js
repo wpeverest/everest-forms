@@ -566,7 +566,7 @@
 				required = $(document).find('.everest-forms-field-option-row-required input');
 				disable_past_date.attr("checked", true);
 				required.prop("checked", true);
-				disable_past_date.parent().hide();
+				disable_past_date.parent().parent().parent().hide();
 			}
 		},
 
@@ -973,7 +973,7 @@
 						slot_booking = $(document).find('.everest-forms-slot-booking input');
 						slot_booking.prop('checked', false);
 						//show pass date input if hidden.
-						$(document).find('.everest-forms-past-date-disable-format input').parent().show();
+						$(document).find('.everest-forms-past-date-disable-format input').parent().parent().parent().show();
 					}
 			});
 
@@ -1017,9 +1017,9 @@
 					if(disable_past_date.is(":not(:checked)")) {
 						disable_past_date.prop("checked", true);
 					}
-					disable_past_date.parent().hide();
+					disable_past_date.parent().parent().parent().hide();
 				} else {
-					disable_past_date.parent().show();
+					disable_past_date.parent().parent().parent().show();
 				}
 			});
 
