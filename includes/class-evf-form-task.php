@@ -113,7 +113,6 @@ class EVF_Form_Task {
 			),
 			400
 		);
-
 	}
 
 	/**
@@ -600,7 +599,6 @@ class EVF_Form_Task {
 
 		do_action( 'everest_forms_after_success_message', $this->form_data, $entry );
 		$this->entry_confirmation_redirect( $this->form_data );
-
 	}
 
 	/**
@@ -1096,7 +1094,6 @@ class EVF_Form_Task {
 
 			update_option( 'evf_booked_slot', $all_booked_slot );
 		}
-
 	}
 
 	/**
@@ -1140,10 +1137,8 @@ class EVF_Form_Task {
 					}
 				}
 			}
-		} else {
-			if ( ! is_array( $data ) ) {
+		} elseif ( ! is_array( $data ) ) {
 				$properties['inputs']['primary']['attr']['value'] = esc_attr( $data );
-			}
 		}
 		return $properties;
 	}

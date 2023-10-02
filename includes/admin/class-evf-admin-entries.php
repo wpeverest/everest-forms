@@ -240,7 +240,7 @@ class EVF_Admin_Entries {
 
 				foreach ( $entry_ids as $entry_id ) {
 					if ( self::remove_entry( $entry_id, $form_id ) ) {
-						$count ++;
+						++$count;
 					}
 				}
 
