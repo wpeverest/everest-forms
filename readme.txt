@@ -417,6 +417,9 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
+= 2.0.4       - xx-xx-2023
+* Fix         - Booked Slot not deleting after entry deletion.
+
 = 2.0.3.1     - 06-09-2023
 * Fix         - Disabled Form Security Vulnerability.
 
