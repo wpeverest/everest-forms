@@ -180,7 +180,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 
 		// Enable enhanced select toggle field.
 		$enhanced_select = $this->field_element(
-			'checkbox',
+			'toggle',
 			$field,
 			array(
 				'slug'    => 'enhanced_select',

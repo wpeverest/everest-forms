@@ -83,7 +83,10 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 
 		?>
 			<div class="everest-forms-active-email">
-				<button class="everest-forms-btn everest-forms-btn-primary everest-forms-email-add" data-form_id="<?php echo isset( $_GET['form_id'] ) ? absint( sanitize_text_field( wp_unslash( $_GET['form_id'] ) ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification ?>" data-source="email" data-type="<?php echo esc_attr( 'connection' ); ?>">
+			<button class="everest-forms-btn everest-forms-btn-primary everest-forms-email-add" data-form_id="<?php echo isset( $_GET['form_id'] ) ? absint( sanitize_text_field( wp_unslash( $_GET['form_id'] ) ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification ?>" data-source="email" data-type="<?php echo esc_attr( 'connection' ); ?>">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+					<path d="M12 21.95c-.6 0-1-.4-1-1v-8H3.1c-.6 0-1-.4-1-1s.4-1 1-1H11v-7.9c0-.6.4-1 1-1s1 .4 1 1v7.9h7.9c.6 0 1 .4 1 1s-.4 1-1 1H13v8c0 .6-.4 1-1 1Z"/>
+			</svg>
 					<?php printf( esc_html__( 'Add New Email', 'everest-forms' ) ); ?>
 				</button>
 					<ul class="everest-forms-active-email-connections-list">
@@ -100,10 +103,30 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 								} else {
 									$remove_class = 'email-default-remove';
 								}
+								if ( isset( $email['enable_email_notification'] ) && '0' === $email['enable_email_notification'] ) {
+									$email_status = isset( $email['enable_email_notification'] ) ? $email['enable_email_notification'] : '1';
+								} else {
+									$email_status = isset( $email[ $connection_id ]['enable_email_notification'] ) ? $email[ $connection_id ]['enable_email_notification'] : '1';
+								}
 								?>
 									<li class="connection-list" data-connection-id="<?php echo esc_attr( $connection_id ); ?>">
 										<a class="user-nickname" href="#"><?php echo esc_html( $connection_name ); ?></a>
-										<a href="#"><span class="<?php echo esc_attr( $remove_class ); ?>"><?php esc_html_e( 'Remove', 'everest-forms' ); ?></a>
+										<div class="evf-email-side-section">
+											<div class="evf-toggle-section">
+												<span class="everest-forms-toggle-form">
+													<input type="hidden" name="settings[email][<?php echo esc_attr( $connection_id ); ?>][enable_email_notification]" value="0" class="widefat">
+													<input type="checkbox" class="evf-email-toggle" name="settings[email][<?php echo esc_attr( $connection_id ); ?>][enable_email_notification]" value="1" data-connection-id="<?php echo esc_attr( $connection_id ); ?>" <?php echo checked( '1', $email_status, false ); ?> >
+													<span class="slider round"></span>
+													</span>
+											</div>
+											<span class="evf-vertical-divider"></span>
+											<a href="#">
+												<span class="<?php echo esc_attr( $remove_class ); ?>">
+												<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+													<path fill-rule="evenodd" d="M9.293 3.293A1 1 0 0 1 10 3h4a1 1 0 0 1 1 1v1H9V4a1 1 0 0 1 .293-.707ZM7 5V4a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1h4a1 1 0 1 1 0 2h-1v13a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V7H3a1 1 0 1 1 0-2h4Zm1 2h10v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7h2Zm2 3a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0v-6a1 1 0 0 1 1-1Zm5 7v-6a1 1 0 1 0-2 0v6a1 1 0 1 0 2 0Z" clip-rule="evenodd"/>
+												</svg>
+											</a>
+										</div>
 									</li>
 								<?php
 							}
@@ -177,7 +200,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			)
 		);
 		everest_forms_panel_field(
-			'checkbox',
+			'toggle',
 			'settings',
 			'submission_message_scroll',
 			$this->form_data,
@@ -231,7 +254,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		);
 
 		everest_forms_panel_field(
-			'checkbox',
+			'toggle',
 			'settings',
 			'enable_redirect_query_string',
 			$this->form_data,
@@ -329,7 +352,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		echo '</div>';
 		do_action( 'everest_forms_inline_integrations_settings', $this->form_data, $settings );
 		everest_forms_panel_field(
-			'checkbox',
+			'toggle',
 			'settings',
 			'ajax_form_submission',
 			$this->form_data,
@@ -340,7 +363,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			)
 		);
 		everest_forms_panel_field(
-			'checkbox',
+			'toggle',
 			'settings',
 			'disabled_entries',
 			$this->form_data,
@@ -397,11 +420,13 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					$email_status = isset( $settings['email'][ $connection_id ]['enable_email_notification'] ) ? $settings['email'][ $connection_id ]['enable_email_notification'] : '1';
 				}
 				$hidden_class       = '1' !== $email_status ? 'everest-forms-hidden' : '';
+				$hidden_enable_setting_class       = '1' === $email_status ? 'everest-forms-hidden' : '';
 				$toggler_hide_class = isset( $toggler_hide_class ) ? 'style=display:none;' : '';
-				echo '<div class="evf-content-section evf-content-email-settings">';
+				echo '<div class="evf-content-section evf-content-email-settings" ' . esc_attr( $toggler_hide_class ) . '>';
 				echo '<div class="evf-content-section-title" ' . esc_attr( $toggler_hide_class ) . '>';
 				echo '<div class="evf-title">' . esc_html__( 'Email', 'everest-forms' ) . '</div>';
 				?>
+				<div class="evf-enable-email-toggle <?php echo esc_attr( $hidden_enable_setting_class ); ?>"><img src="<?php echo esc_url( plugin_dir_url( EVF_PLUGIN_FILE ) . 'assets/images/enable-email-toggle.png' ); ?>" alt="<?php esc_attr_e( 'Click me to enable email settings', 'everest-forms' ); ?>"></div>
 				<div class="evf-toggle-section">
 					<label class="evf-toggle-switch">
 						<input type="hidden" name="settings[email][<?php echo esc_attr( $connection_id ); ?>][enable_email_notification]" value="0" class="widefat">
@@ -560,7 +585,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				// --------------------------------------------------------------------//
 				if ( ! empty( get_option( 'everest_forms_ai_api_key' ) ) ) {
 					everest_forms_panel_field(
-						'checkbox',
+						'toggle',
 						'email',
 						'enable_ai_email_prompt',
 						$this->form_data,
@@ -634,7 +659,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		echo '</div>';
 		echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'Honeypot', 'everest-forms' ) . '</h4>';
 		everest_forms_panel_field(
-			'checkbox',
+			'toggle',
 			'settings',
 			'honeypot',
 			$this->form_data,
@@ -677,7 +702,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'Captcha', 'everest-forms' ) . '</h4>';
 
 			everest_forms_panel_field(
-				'checkbox',
+				'toggle',
 				'settings',
 				'recaptcha_support',
 				$this->form_data,
@@ -728,7 +753,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		echo '</div>';
 		echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'Custom CSS', 'everest-forms' ) . '</h4>';
 		everest_forms_panel_field(
-			'checkbox',
+			'toggle',
 			'settings',
 			'evf-enable-custom-css',
 			$this->form_data,
@@ -747,7 +772,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		echo '</div>';
 		echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'Custom JS', 'everest-forms' ) . '</h4>';
 		everest_forms_panel_field(
-			'checkbox',
+			'toggle',
 			'settings',
 			'evf-enable-custom-js',
 			$this->form_data,

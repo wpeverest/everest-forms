@@ -300,11 +300,17 @@ abstract class EVF_Form_Fields {
 			// Toggle.
 			case 'toggle':
 				$checked = checked( '1', $args['value'], false );
-				$icon    = $args['value'] ? 'fa-toggle-on' : 'fa-toggle-off';
-				$cls     = $args['value'] ? 'everest-forms-on' : 'everest-forms-off';
-				$status  = $args['value'] ? __( 'On', 'everest-forms' ) : __( 'Off', 'everest-forms' );
-				$output  = sprintf( '<span class="everest-forms-toggle-icon %s"><i class="fa %s" aria-hidden="true"></i> <span class="everest-forms-toggle-icon-label">%s</span>', $cls, $icon, $status );
-				$output .= sprintf( '<input type="checkbox" class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" value="1" %s %s></span>', $class, $id, $slug, $id, $slug, $checked, $data );
+				$output .= sprintf( '<div class="evf-toggle-section">' );
+				$output .= sprintf( '<span class="everest-forms-toggle-form">' );
+				$output .= sprintf( '<input type="checkbox" class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" value="1" %s %s>', $class, $id, $slug, $id, $slug, $checked, $data );
+				$output .= sprintf( '<span class="slider round"></span>' );
+				$output .= sprintf( '</span>' );
+				$output .= sprintf( '<label for="everest-forms-field-option-%s-%s" class="inline">%s', $id, $slug, $args['desc'] );
+				if ( isset( $args['tooltip'] ) && ! empty( $args['tooltip'] ) ) {
+					$output .= ' ' . sprintf( '<i class="dashicons dashicons-editor-help everest-forms-help-tooltip" title="%s"></i>', esc_attr( $args['tooltip'] ) );
+				}
+				$output .= '</label>';
+				$output .= sprintf( '</div>' );
 				break;
 
 			// Select.
@@ -528,7 +534,7 @@ abstract class EVF_Form_Fields {
 				$value   = isset( $field['required'] ) ? $field['required'] : $default;
 				$tooltip = esc_html__( 'Check this option to mark the field required. A form will not submit unless all required fields are provided.', 'everest-forms' );
 				$output  = $this->field_element(
-					'checkbox',
+					'toggle',
 					$field,
 					array(
 						'slug'    => 'required',
@@ -781,7 +787,7 @@ abstract class EVF_Form_Fields {
 					false
 				);
 				$readonly       = $this->field_element(
-					'checkbox',
+					'toggle',
 					$field,
 					array(
 						'slug'  => 'readonly_field_visibility',
@@ -792,7 +798,7 @@ abstract class EVF_Form_Fields {
 					false
 				);
 				$hidden         = $this->field_element(
-					'checkbox',
+					'toggle',
 					$field,
 					array(
 						'slug'  => 'hidden_field_visibility',
@@ -821,7 +827,7 @@ abstract class EVF_Form_Fields {
 				$value   = ! empty( $field['no_duplicates'] ) ? esc_attr( $field['no_duplicates'] ) : '';
 				$tooltip = esc_html__( 'Select this option to limit user input to unique values only. This will require that a value entered in a field does not currently exist in the entry database for that field..', 'everest-forms' );
 				$output  = $this->field_element(
-					'checkbox',
+					'toggle',
 					$field,
 					array(
 						'slug'    => 'no_duplicates',
@@ -885,7 +891,7 @@ abstract class EVF_Form_Fields {
 				$default           = ! empty( $args['default'] ) ? $args['default'] : '0';
 				$value             = ! empty( $field['show_tooltip'] ) ? esc_attr( $field['show_tooltip'] ) : '';
 				$output            = $this->field_element(
-					'checkbox',
+					'toggle',
 					$field,
 					array(
 						'slug'    => 'show_tooltip',
@@ -937,7 +943,7 @@ abstract class EVF_Form_Fields {
 				$value   = ! empty( $field['autocomplete_address'] ) ? esc_attr( $field['autocomplete_address'] ) : '';
 				$tooltip = esc_html__( 'Check this option to autofill address field.', 'everest-forms' );
 				$output  = $this->field_element(
-					'checkbox',
+					'toggle',
 					$field,
 					array(
 						'slug'    => 'autocomplete_address',
@@ -1180,7 +1186,7 @@ abstract class EVF_Form_Fields {
 				);
 
 				$field_content .= $this->field_element(
-					'checkbox',
+					'toggle',
 					$field,
 					array(
 						'slug'    => 'choices_images',
@@ -1482,7 +1488,7 @@ abstract class EVF_Form_Fields {
 				$value   = ! empty( $field['enable_prepopulate'] ) ? esc_attr( $field['enable_prepopulate'] ) : '';
 				$tooltip = esc_html__( 'Enable this option to allow field to be populated dynamically', 'everest-forms' );
 				$output  = $this->field_element(
-					'checkbox',
+					'toggle',
 					$field,
 					array(
 						'slug'    => 'enable_prepopulate',
@@ -1548,7 +1554,7 @@ abstract class EVF_Form_Fields {
 				$value   = ! empty( $field['enable_regex_validation'] ) ? esc_attr( $field['enable_regex_validation'] ) : '';
 				$tooltip = esc_html__( 'Enable this option to allow regex validation for this field.', 'everest-forms' );
 				$output  = $this->field_element(
-					'checkbox',
+					'toggle',
 					$field,
 					array(
 						'slug'    => 'enable_regex_validation',
@@ -1704,7 +1710,7 @@ abstract class EVF_Form_Fields {
 
 				// Build output.
 				$output = $this->field_element(
-					'checkbox',
+					'toggle',
 					$field,
 					array(
 						'slug'    => 'label_hide',
@@ -1734,7 +1740,7 @@ abstract class EVF_Form_Fields {
 
 				// Build output.
 				$output = $this->field_element(
-					'checkbox',
+					'toggle',
 					$field,
 					array(
 						'slug'    => 'sublabel_hide',
@@ -1890,7 +1896,7 @@ abstract class EVF_Form_Fields {
 				$tooltip = esc_html__( 'Check this option to hide the form field label.', 'everest-forms' );
 
 				$output = $this->field_element(
-					'checkbox',
+					'toggle',
 					$field,
 					array(
 						'slug'    => 'select_all',

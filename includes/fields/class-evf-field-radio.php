@@ -209,7 +209,7 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 		$args = array(
 			'slug'    => 'random',
 			'content' => $this->field_element(
-				'checkbox',
+				'toggle',
 				$field,
 				array(
 					'slug'    => 'random',

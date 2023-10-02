@@ -340,7 +340,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			);
 
 			$current_date_default = $this->field_element(
-				'checkbox',
+				'toggle',
 				$field,
 				array(
 					'slug'    => 'date_default',
@@ -352,7 +352,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			);
 
 			$enable_past_date_disable = $this->field_element(
-				'checkbox',
+				'toggle',
 				$field,
 				array(
 					'slug'    => 'past_date_disable',
@@ -364,7 +364,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			);
 
 			$enable_min_max = $this->field_element(
-				'checkbox',
+				'toggle',
 				$field,
 				array(
 					'slug'    => 'enable_min_max',
@@ -420,7 +420,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			);
 
 			$set_date_range = $this->field_element(
-				'checkbox',
+				'toggle',
 				$field,
 				array(
 					'slug'    => 'set_date_range',
@@ -584,7 +584,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 		$enable_min_max_time = '<div class="input-group-col-2">';
 
 		$enable_min_max_time .= $this->field_element(
-			'checkbox',
+			'toggle',
 			$field,
 			array(
 				'slug'    => 'enable_min_max_time',
@@ -628,7 +628,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 		echo '<h4 class="everest-forms-border-container-title">' . esc_html__( 'Slot Booking', 'everest-forms' ) . '</h4>'; // phpcs:ignore WordPress.Security.NonceVerification
 
 		$slot_booking_toggle = $this->field_element(
-			'checkbox',
+			'toggle',
 			$field,
 			array(
 				'slug'    => 'slot_booking_advanced',

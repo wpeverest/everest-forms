@@ -199,7 +199,7 @@ class EVF_Field_Email extends EVF_Form_Fields {
 	 */
 	public function confirmation( $field ) {
 		$fld  = $this->field_element(
-			'checkbox',
+			'toggle',
 			$field,
 			array(
 				'slug'    => 'confirmation',
