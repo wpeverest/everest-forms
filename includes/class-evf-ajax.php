@@ -895,7 +895,7 @@ class EVF_AJAX {
 			if ( ! empty( $booked_slot ) && array_key_exists( $form_id, $booked_slot ) ) {
 				foreach ( $datetime_arr as $arr ) {
 
-					foreach ( $booked_slot[ $form_id ] as $slot ) {
+					foreach ( $booked_slot[ $form_id ] as $key => $slot ) {
 						if ( $arr[0] >= $slot[0] && $arr[1] <= $slot[1] ) {
 							$is_booked = true;
 							break;
