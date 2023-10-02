@@ -26,8 +26,60 @@ $preview_link = add_query_arg(
 <div id="everest-forms-builder" class="everest-forms">
 	<div class="everest-forms-overlay">
 		<div class="everest-forms-overlay-content">
-			<svg xmlns="http://www.w3.org/2000/svg" id="Bk5ao7MMX" viewBox="0 0 301 154"><style>@-webkit-keyframes r1U56i7MzQ_Animation{0%,to{opacity:.5}50%{opacity:1}}@keyframes r1U56i7MzQ_Animation{0%,to{opacity:.5}50%{opacity:1}}@-webkit-keyframes HkVqTomfGX_Animation{0%,83.33%,to{opacity:.5}33.33%{opacity:1}}@keyframes HkVqTomfGX_Animation{0%,83.33%,to{opacity:.5}33.33%{opacity:1}}@-webkit-keyframes H1G56i7GGm_Animation{0%,66.67%,to{opacity:.5}16.67%{opacity:1}}@keyframes H1G56i7GGm_Animation{0%,66.67%,to{opacity:.5}16.67%{opacity:1}}#Bk5ao7MMX *{-webkit-animation-duration:.6s;animation-duration:.6s;-webkit-animation-iteration-count:infinite;animation-iteration-count:infinite;-webkit-animation-timing-function:cubic-bezier(0,0,1,1);animation-timing-function:cubic-bezier(0,0,1,1)}#H1G56i7GGm_HyOMAQfzm{-webkit-transform-origin:50% 50%;transform-origin:50% 50%;transform-box:fill-box}</style><g id="H1e9TjXff7" data-name="Layer 2"><g id="S1Wc6j7zMQ" data-name="Layer 1"><path fill="#5891ff" style="-webkit-transform-origin:50% 50%;transform-origin:50% 50%;transform-box:fill-box;-webkit-animation-name:H1G56i7GGm_Animation;animation-name:H1G56i7GGm_Animation" d="M160.12 154H12.66A12.65 12.65 0 0 1 2.4 134l74-101.9a12.64 12.64 0 0 1 20.54 0l14.79 19.82L170.4 134a12.64 12.64 0 0 1-10.28 20z"/><path d="M158.79 153.56H50.46A13.1 13.1 0 0 1 43.59 133l65.12-85.06 60.72 84.95a13.08 13.08 0 0 1-10.64 20.67z" opacity=".1"/><path fill="#50abe8" style="-webkit-transform-origin:50% 50%;transform-origin:50% 50%;transform-box:fill-box;-webkit-animation-name:HkVqTomfGX_Animation;animation-name:HkVqTomfGX_Animation" d="M261.06 154H63.29a12.65 12.65 0 0 1-10-20.33L152.49 5a12.64 12.64 0 0 1 20.1 0l45.63 59.13 52.9 69.6A12.64 12.64 0 0 1 261.06 154z"/><path d="M258.38 154.45h-81.64c-8-2.25-12.17-12.22-8.05-19.92L215.47 61l53 72.35c6.32 8.65.38 21.1-10.09 21.1z" opacity=".1"/><path fill="#65eaff" style="-webkit-transform-origin:50% 50%;transform-origin:50% 50%;transform-box:fill-box;-webkit-animation-name:r1U56i7MzQ_Animation;animation-name:r1U56i7MzQ_Animation" d="M186.49 154h102.74a12.65 12.65 0 0 0 10.57-19.58l-51.19-77.13a12.64 12.64 0 0 0-21.11 0L176 134.4a12.64 12.64 0 0 0 10.49 19.6z"/></g></g></svg>
-			<span class="loading"><?php esc_html_e( 'Loading&hellip;', 'everest-forms' ); ?></span>
+		<svg id="eUYBWjcnFJs1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 500 500" shape-rendering="geometricPrecision" text-rendering="geometricPrecision">
+			<style>
+			<![CDATA[
+			#eUYBWjcnFJs5_ts {
+			animation: eUYBWjcnFJs5_ts__ts 2000ms linear infinite normal forwards
+			}
+
+			@keyframes eUYBWjcnFJs5_ts__ts {
+			0% {
+				transform: translate(250.000015px, 185.300003px) scale(1, 1)
+			}
+
+			50% {
+				transform: translate(250.000015px, 185.300003px) scale(0.8, 0.8)
+			}
+
+			100% {
+				transform: translate(250.000015px, 185.300003px) scale(1, 1)
+			}
+			}
+			]]>
+			</style>
+			<g transform="translate(1.439678 0)">
+			<text dx="0" dy="0" font-family="&quot;eUYBWjcnFJs1:::Montserrat&quot;" font-size="72" font-weight="600" transform="translate(97.506642 430.341)">
+			<tspan y="0" font-weight="600">
+				<![CDATA[
+
+			Loading
+
+			]]>
+			</tspan>
+			</text>
+			</g>
+			<g id="eUYBWjcnFJs5_ts" transform="translate(250.000015,185.300003) scale(1,1)">
+			<g transform="translate(-250.000015,-185.300003)">
+			<path d="M249.9,324c76.7.1,138.8-62.1,138.8-138.8-.1-75.4-63.2-138.5-138.6-138.6-76.7-.1-138.8,62.1-138.8,138.8.1,75.5,63.2,138.6,138.6,138.6Z" fill="#fff" />
+			<g>
+				<path d="M294.3,127.2h-28.2l8.6,14.5h28.2l-8.6-14.5Z" fill="#5317aa" />
+				<path d="M312,156.3h-28.2l9.1,14.5h28.2L312,156.3Z" fill="#5317aa" />
+				<path d="M311.5,229h-4.1-12.7-90.4l45-73.6l18.6,30h-4.1-14.5l-8.6,14.5h8.6h5.9h38.6l-44.5-71.8-70.9,115.4h12.7h116.3h13.2L311.5,229Z" fill="#5317aa" />
+			</g>
+			</g>
+			</g>
+			<style>
+			<![CDATA[
+			@font-face {
+			font-family: 'eUYBWjcnFJs1:::Montserrat';
+			font-style: normal;
+			font-weight: 600;
+			src: url(data:font/ttf;charset=utf-8;base64,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) format('truetype');
+			}
+			]]>
+			</style>
+		</svg>
 		</div>
 	</div>
 	<form id="everest-forms-builder-form" name="everest-forms-builder" method="post" data-id="<?php echo absint( $form_id ); ?>">
