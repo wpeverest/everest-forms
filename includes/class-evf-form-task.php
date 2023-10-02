@@ -154,6 +154,17 @@ class EVF_Form_Task {
 				return $this->errors;
 			}
 
+			// Check if the form is enabled or not.
+			$form_enabled = evf_decode( $form->post_content );
+			if ( isset( $form_enabled['form_enabled'] ) && ! $form_enabled['form_enabled'] ) {
+				$this->errors[ $form_id ]['header'] = esc_html__( 'This form is disabled.', 'everest-forms' );
+				$logger->error(
+					$this->errors[ $form_id ]['header'],
+					array( 'source' => 'form-submission' )
+				);
+				return $this->errors;
+			}
+
 			// Formatted form data for hooks.
 			$this->form_data = apply_filters( 'everest_forms_process_before_form_data', evf_decode( $form->post_content ), $entry );
 
@@ -916,7 +927,9 @@ class EVF_Form_Task {
 			}
 
 		endforeach;
-		do_action( 'everest_forms_remove_attachments_after_send_email', $attachment, $fields, $form_data, 'entry-email', $connection_id, $entry_id );
+		if ( isset( $attachment ) ) {
+			do_action( 'everest_forms_remove_attachments_after_send_email', $attachment, $fields, $form_data, 'entry-email', $connection_id, $entry_id );
+		}
 	}
 
 	/**

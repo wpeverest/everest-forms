@@ -20,7 +20,7 @@ class EVF_Field_Lookup extends EVF_Form_Fields {
 		$this->name   = esc_html__( 'Lookup', 'everest-forms' );
 		$this->type   = 'lookup';
 		$this->icon   = 'evf-icon evf-icon-lookup';
-		$this->order  = 60;
+		$this->order  = 250;
 		$this->group  = 'advanced';
 		$this->is_pro = true;
 
