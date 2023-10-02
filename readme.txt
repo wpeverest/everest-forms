@@ -418,6 +418,8 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 == Changelog ==
 
 = 2.0.4       - xx-xx-2023
+* Refactor    - Form Builder Design.
+* Enhancement - Changed checkbox option to toggle.
 * Fix         - Booked Slot not deleting after entry deletion.
 
 = 2.0.3.1     - 06-09-2023
