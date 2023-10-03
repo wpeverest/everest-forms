@@ -303,6 +303,20 @@
 				}
 			});
 
+			// Collapse the form builder
+			$builder.on('click','#evf-collapse',function (event) {
+				event.preventDefault();
+				var $this  = $(this);
+
+				if ( $this.hasClass('open' ) ) {
+					$this.removeClass("open").addClass("close");
+					$this.closest(".everest-forms-panel-sidebar-content").removeClass('collapsed');
+				} else {
+					$this.removeClass("close").addClass("open");
+					$this.closest(".everest-forms-panel-sidebar-content").addClass('collapsed');
+				}
+			});
+
 			// Action available for each binding.
 			$( document ).trigger( 'everest_forms_ready' );
 		},
