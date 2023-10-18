@@ -95,7 +95,7 @@ defined( 'ABSPATH' ) || exit;
 								$release      = wp_remote_retrieve_body( $response );
 								$release      = json_decode( $release, true );
 								$latest_tag   = isset( $release['tag_name'] ) ? esc_attr( $release['tag_name'] ) : '';
-								$download_url = "https://github.com/wpeverest/ai-contact-form/archive/{$latest_tag}.zip";
+								$download_url = 'https://github.com/wpeverest/ai-contact-form/releases/latest/download/ai-contact-form.zip';
 								?>
 									<?php if ( is_plugin_active( $addon_slug . '/' . $addon_slug . '.php' ) ) : ?>
 												<?php
