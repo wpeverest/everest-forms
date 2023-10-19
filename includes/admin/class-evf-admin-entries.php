@@ -19,7 +19,7 @@ class EVF_Admin_Entries {
 	public function __construct() {
 		add_action( 'admin_init', array( $this, 'actions' ) );
 		add_filter( 'heartbeat_received', array( $this, 'check_new_entries' ), 10, 3 );
-		add_action( 'evf_after_delete_entries_delete_booked_slot', array( $this, 'evf_delete_booked_slot' ), 10, 2 );
+		add_action( 'everest_forms_after_delete_entries', array( $this, 'evf_delete_booked_slot' ), 10, 2 );
 	}
 
 	/**
@@ -295,7 +295,7 @@ class EVF_Admin_Entries {
 			$wpdb->delete( $wpdb->prefix . 'evf_entrymeta', array( 'entry_id' => $entry_id ), array( '%d' ) );
 		}
 
-		do_action( 'evf_after_delete_entries_delete_booked_slot', $form_id, $entry_id );
+		do_action( 'everest_forms_after_delete_entries', $form_id, $entry_id );
 
 		return $delete;
 	}
