@@ -4512,7 +4512,6 @@ function evf_sanitize_builder( $post_data = array() ) {
 
 	$form_data = array();
 	foreach ( $post_data as $data_key => $data ) {
-		lg( $data->name );
 		$name = sanitize_text_field( $data->name );
 		if ( preg_match( '/\<.*\>/', $data->value ) ) {
 			$value = wp_kses_post( $data->value );
