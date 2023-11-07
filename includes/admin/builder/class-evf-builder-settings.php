@@ -670,6 +670,24 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		);
 		do_action( 'everest_forms_inline_honeypot_settings', $this, 'honeypot', 'connection_1' );
 		echo '</div>';
+		/**
+		 * Akismet anit-spam protection.
+		 *
+		 * @since 2.0.4
+		 */
+		echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'Akismet', 'everest-forms' ) . '</h4>';
+		everest_forms_panel_field(
+			'toggle',
+			'settings',
+			'akismet',
+			$this->form_data,
+			esc_html__( 'Enable Akismet anti-spam protection', 'everest-forms' ),
+			array(
+				'default' => '0',
+			)
+		);
+		do_action( 'everest_forms_inline_akismet_settings', $this, 'akismet', 'connection_1' );
+		echo '</div>';
 		if ( 'yes' === get_option( 'everest_forms_recaptcha_v2_invisible' ) ) {
 			$recaptcha_type   = get_option( 'everest_forms_recaptcha_type', 'v2' );
 			$recaptcha_key    = get_option( 'everest_forms_recaptcha_' . $recaptcha_type . '_invisible_site_key' );
