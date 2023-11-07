@@ -1541,7 +1541,8 @@ function evf_get_license_plan() {
 				)
 			);
 
-			if ( ! empty( $license_data->item_plan ) ) {
+			if ( ! empty( $license_data->item_name ) ) {
+				$license_data->item_plan = strtolower( $license_data->item_name );
 				set_transient( 'evf_pro_license_plan', $license_data, WEEK_IN_SECONDS );
 			}
 		}

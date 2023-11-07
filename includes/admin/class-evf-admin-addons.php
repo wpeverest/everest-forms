@@ -39,7 +39,6 @@ class EVF_Admin_Addons {
 	 */
 	public static function get_extension_data() {
 		$extension_data = get_transient( 'evf_extensions_section_list' );
-
 		if ( false === $extension_data ) {
 			$extension_data = evf_get_json_file_contents( 'assets/extensions-json/sections/all_extensions.json' );
 
