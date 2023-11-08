@@ -419,9 +419,9 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 = 2.0.5       - 08-11-2023
 * Tweak       - Compatibility with new ThemeGrill Agency Plan's license.
-* Fix         - Sanitization issue.
-* Fix 		  - PDF download issue after form submission for individual settings.
+* Fix         - Security vulnerability from missing sanitization.
 * Fix 		  - Refresh addons button in addons page not working properly.
+* Fix 		  - PDF download issue after form submission for individual settings.
 
 = 2.0.4.1       - 18-10-2023
 * Fix         - Issue with downloading AI Contact Form addon.

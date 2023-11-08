@@ -23,7 +23,7 @@ if ( ! defined( 'EVF_PLUGIN_FILE' ) ) {
 
 // Include the main EverestForms class.
 if ( ! class_exists( 'EverestForms' ) ) {
-	include_once dirname( __FILE__ ) . '/includes/class-everest-forms.php';
+	include_once dirname( __FILE__ ) . '/includes/class-everest-forms.php'; // phpcs:ignore
 }
 
 /**
