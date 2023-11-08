@@ -4716,7 +4716,7 @@ function parse_datetime_values( $datetime_value, $datetime_format, $date_format,
  *
  * @param string $text Text.
  * @param string $type Type of text.
- * @param array $settings Settings.
+ * @param array  $settings Settings.
  *
  * @since 2.0.2
  */
@@ -4795,7 +4795,7 @@ function _evf_word_count( $text, $type = 'words', $settings = array() ) {
  *
  * @param string $text Text.
  * @param string $type Type of text.
- * @param array $settings Settings.
+ * @param array  $settings Settings.
  *
  * @since 2.0.2
  */
