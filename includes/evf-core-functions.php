@@ -1542,12 +1542,11 @@ function evf_get_license_plan() {
 			);
 
 			if ( ! empty( $license_data->item_name ) ) {
-				$license_data->item_plan = trim( str_replace( 'lifetime', '', str_replace( '-lifetime', '', strtolower( $license_data->item_name ) ) ) );
+				$license_data->item_plan = trim( str_replace('everest forms', '', str_replace( 'lifetime', '', str_replace( '-lifetime', '', strtolower( $license_data->item_name ) ) ) ) );
 				set_transient( 'evf_pro_license_plan', $license_data, WEEK_IN_SECONDS );
 			}
 		}
-
-		return isset( $license_data->item_plan ) ? trim( str_replace( 'lifetime', '', str_replace( '-lifetime', '', strtolower( $license_data->item_plan ) ) ) ) : false;
+		return isset( $license_data->item_plan ) ? trim( str_replace('everest forms', '', str_replace( 'lifetime', '', str_replace( '-lifetime', '', strtolower( $license_data->item_plan ) ) ) ) ) : false;
 	}
 
 	return false;
