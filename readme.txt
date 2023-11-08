@@ -2,9 +2,9 @@
 Contributors: WPEverest
 Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.2
-Tested up to: 6.3.2
+Tested up to: 6.4
 Requires PHP: 7.2
-Stable tag: 2.0.4.2
+Stable tag: 2.0.5
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -417,9 +417,11 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 2.0.4.2     - xx-xx-2023
+= 2.0.5       - 08-11-2023
+* Tweak       - Compatibility with new ThemeGrill Agency Plan's license.
 * Fix         - Sanitization issue.
 * Fix 		  - PDF download issue after form submission for individual settings.
+* Fix 		  - Refresh addons button in addons page not working properly.
 
 = 2.0.4.1       - 18-10-2023
 * Fix         - Issue with downloading AI Contact Form addon.
