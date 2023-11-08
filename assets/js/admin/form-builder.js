@@ -21,7 +21,7 @@
 				//To remove script tag.
 				$(document).on('input','.everest-forms-field-option-row-choices input[name$="[label]"]',function (e) {
 					var $value =  $(this).val();
-					$(this).val($value.replace( /<script/gi, ''));
+					$(this).val($value.replace(/<\s*script/gi, '').replace(/\s+on\w+\s*=/gi, ' '));
 				});
 
 
@@ -481,7 +481,7 @@
 				if ( $option_row.length ) {
 					var $choices = $option_row.closest( '.everest-forms-field-option' ).find( '.everest-forms-field-option-row-choices .evf-choices-list' );
 					var $bulk_options_container = $option_row.find( 'textarea#everest-forms-field-option-' + field_id + '-add_bulk_options' );
-					var options_texts = $bulk_options_container.val().replace( /<script/gi, '').split( '\n' );
+					var options_texts = $bulk_options_container.val().replace(/<\s*script/gi, '').replace(/\s+on\w+\s*=/gi, ' ').split( '\n' );
 
 					EVFPanelBuilder.addBulkOptions( options_texts, $choices );
 					$bulk_options_container.val('');
@@ -914,7 +914,7 @@
 			// Real-time updates for "Show Label" field option.
 			$builder.on( 'input', '.everest-forms-field-option-row-label input', function() {
 				var $this  = $(this),
-					value  = $this.val().replace( /<script/gi, ''),
+					value = $this.val().replace(/<\s*script/gi, '').replace(/\s+on\w+\s*=/gi, ' '),
 					id     = $this.parent().data( 'field-id' ),
 					$label = $( '#everest-forms-field-' + id ).find( '.label-title .text' );
 
@@ -953,17 +953,21 @@
 				}
 			});
 
-			// Real-time updates for "Description" field option.
-			$builder.on( 'input', '.everest-forms-field-option-row-description textarea', function() {
-				var $this = $( this ),
-					value = $this.val().replace( /<script/gi, ''),
-					id    = $this.parent().data( 'field-id' ),
-					$desc = $( '#everest-forms-field-' + id ).find( '.description' );
 
-				if ( $desc.hasClass( 'nl2br' ) ) {
-					$desc.html( value.replace( /\n/g, '<br>') );
+			// Real-time updates for "Description" field option.
+			$builder.on('input', '.everest-forms-field-option-row-description textarea', function () {
+				var $this = $(this);
+				var id = $this.parent().data('field-id');
+				var $desc = $('#everest-forms-field-' + id).find('.description');
+				var value = $this.val();
+
+				// Sanitize the user input to prevent script injection and remove event handlers
+				value = value.replace(/<\s*script/gi, '').replace(/\s+on\w+\s*=/gi, ' ');
+
+				if ($desc.hasClass('nl2br')) {
+					$desc.html(value.replace(/\n/g, '<br>'));
 				} else {
-					$desc.html( value );
+					$desc.html(value);
 				}
 			});
 
@@ -1383,7 +1387,7 @@
 
 			$( '#everest-forms-field-option-row-' + id + '-choices .evf-choices-list li' ).each( function( index ) {
 				var $this    = $( this ),
-					label    = $this.find( 'input.label' ).val().replace( /<script/gi, ''),
+					label    = $this.find( 'input.label' ).val().replace(/<\s*script/gi, '').replace(/\s+on\w+\s*=/gi, ' '),
 					selected = $this.find( 'input.default' ).is( ':checked' ),
 					choice 	 = $( new_choice.replace( '{label}', label ) );
 
@@ -3353,9 +3357,9 @@ jQuery(function ($) {
 				"theme": 'default',
 			});
 
-		cssEditor.on('change', function () {
-			customCssElement.html(cssEditor.getValue());
-		});
+			cssEditor.on('change', function () {
+				customCssElement.html(cssEditor.getValue().replace(/<\s*script/gi, '').replace(/\s+on\w+\s*=/gi, ' '));
+			});
 
 
 		/**
@@ -3392,9 +3396,9 @@ jQuery(function ($) {
 				"tabSize": 2,
 			});
 
-		jsEditor.on('change', function () {
-			customJsElement.html(jsEditor.getValue());
-		});
+			jsEditor.on('change', function () {
+				customJsElement.html(jsEditor.getValue().replace(/<\s*script/gi, '').replace(/\s+on\w+\s*=/gi, ' '));
+			});
 
 		$('#everest-forms-panel-field-settings-evf-enable-custom-css, #everest-forms-panel-field-settings-evf-enable-custom-js').on('change', e => {
 			showHideEditors();
