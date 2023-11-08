@@ -104,6 +104,7 @@ function evf_get_entry_statuses( $form_data = array() ) {
 		array(
 			'publish' => esc_html__( 'Published', 'everest-forms' ),
 			'trash'   => esc_html__( 'Trash', 'everest-forms' ),
+			'spam'    => esc_html__( 'Spam', 'everest-forms' ),
 		),
 		$form_data
 	);
