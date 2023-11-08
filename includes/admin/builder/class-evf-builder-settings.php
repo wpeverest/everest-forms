@@ -687,6 +687,18 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			)
 		);
 		do_action( 'everest_forms_inline_akismet_settings', $this, 'akismet', 'connection_1' );
+
+		/**
+		 * Warning message if the installtion, activation and configuration are not proper.
+		 */
+		if ( ! file_exists( WP_PLUGIN_DIR . '/akismet/akismet.php' ) ) {
+			printf( '<div class="evf-akismet"><span class="evf-akismet-warning"><span class="evf-akismet-warning-label">%s </span>%s <a href="%s" target="_blank">%s</a>%s</span> <a href="%s" target="_blank">%s</a></div>', esc_html__( 'Warning:- ', 'everest-forms' ), esc_html__( ' This feature is inactive because Akismet plugin ', 'everest-forms' ), esc_url( admin_url( 'plugins.php' ) ), esc_html__( 'has not been installed.', 'everest-forms' ), esc_html__( '  For more', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/' ), esc_html( 'information', 'everest-forms' ) );
+		} elseif ( ! is_plugin_active( 'akismet/akismet.php' ) ) {
+			printf( '<div class="evf-akismet"><span class="evf-akismet-warning"><span class="evf-akismet-warning-label">%s </span>%s <a href="%s" target="_blank">%s</a>%s</span> <a href="%s" target="_blank">%s</a></div>', esc_html__( 'Warning:- ', 'everest-forms' ), esc_html__( ' This feature is inactive because Akismet plugin ', 'everest-forms' ), esc_url( admin_url( 'plugins.php' ) ), esc_html__( 'has not been activated.', 'everest-forms' ), esc_html__( '  For more', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/' ), esc_html( 'information', 'everest-forms' ) );
+		} elseif ( ! evf_is_akismet_configured() ) {
+			printf( '<div class="evf-akismet"><span class="evf-akismet-warning"><span class="evf-akismet-warning-label">%s </span>%s <a href="%s" target="_blank">%s</a>%s</span> <a href="%s" target="_blank">%s</a></div>', esc_html__( 'Warning:- ', 'everest-forms' ), esc_html__( ' This feature is inactive because Akismet plugin ', 'everest-forms' ), esc_url( admin_url( 'plugins.php' ) ), esc_html__( 'has not been properly configured.', 'everest-forms' ), esc_html__( '  For more', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/' ), esc_html( 'information', 'everest-forms' ) );
+		}
+
 		echo '</div>';
 		if ( 'yes' === get_option( 'everest_forms_recaptcha_v2_invisible' ) ) {
 			$recaptcha_type   = get_option( 'everest_forms_recaptcha_type', 'v2' );

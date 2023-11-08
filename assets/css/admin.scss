@@ -2343,11 +2343,11 @@
 							@media screen and (max-width: 960px) {
 								left: 315px;
 							}
-	
+
 							@media screen and (max-width: 782px) {
 								left: 279px;
 							}
-	
+
 							@media screen and (max-width: 600px) {
 								display: none;
 							}
@@ -6226,7 +6226,7 @@
 			border-radius: 4px;
 			border-color: #7e8993;
 			width: 100%;
-   
+
 			.select2-selection__rendered {
 			   .select2-selection__choice {
 				   background: #ededed;
@@ -6236,20 +6236,20 @@
 				   border: 0;
 			   }
 			}
-   
+
 			li {
 				margin: 0;
 			}
-   
+
 			.select2-selection__choice {
 				padding: 2px 6px;
-   
+
 				.description {
 					display: none;
 				}
 			}
 		}
-	 }	 
+	 }
 
 	 .select2-selection__clear {
 		 color: #999;
@@ -6364,7 +6364,7 @@
 				}
 			}
 		}
-	} 
+	}
  }
 
  /**
@@ -6433,7 +6433,7 @@
 				}
 			}
 		}
-	} 
+	}
  }
 
  /**
@@ -6495,7 +6495,7 @@
 						 }
 					 }
 				 }
-			 }			 
+			 }
 
 			 .everest-forms-tab-content {
 				 height: calc(100vh - 172px);
@@ -6706,7 +6706,7 @@
 		#everest-forms-builder {
 			.evf-tab-content {
 				.everest-forms-panel {
-					.everest-forms-panel-sidebar {   
+					.everest-forms-panel-sidebar {
 						.evf-registered-buttons {
 							.evf-registered-item {
 								width: 48%;
@@ -6724,7 +6724,7 @@
 		#everest-forms-builder {
 			.evf-tab-content {
 				.everest-forms-panel {
-					.everest-forms-panel-sidebar {   
+					.everest-forms-panel-sidebar {
 						.evf-registered-buttons {
 							.evf-registered-item {
 								width: 46%;
@@ -7864,5 +7864,12 @@
 		border-bottom: none;
 		border-bottom-left-radius: 0;
 		border-bottom-right-radius: 0;
+	}
+}
+.evf-akismet{
+	.evf-akismet-warning{
+		.evf-akismet-warning-label{
+			color:#ffcc00;
+		}
 	}
 }
