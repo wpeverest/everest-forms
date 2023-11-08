@@ -3,6 +3,7 @@
 
 = 2.0.4.2     - xx-xx-2023
 * Fix         - Sanitization issue.
+* Fix 		  - PDF download issue after form submission for individual settings.
 
 = 2.0.4.1     - 18-10-2023
 * Fix         - Issue with downloading AI Contact Form addon.
