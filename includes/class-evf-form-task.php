@@ -425,16 +425,19 @@ class EVF_Form_Task {
 			 * @since 2.4.0
 			 */
 			if ( $this->get_akismet_validate( $entry, $form_id ) ) {
-				$akismet_message              = apply_filters( 'evf_akisment_validatation_error_message', sprintf( 'Akismet anti-spam verification failed, please try again later.', 'everest-forms' ) );
-				$errors[ $form_id ]['header'] = $akismet_message;
-				$this->errors                 = $errors;
-
 				$logger = evf_get_logger();
 				$logger->notice( sprintf( 'Spam entry for Form ID %d Response: %s', absint( $this->form_data['id'] ), evf_print_r( $entry, true ) ), array( 'source' => 'akismet' ) );
 
-				return $this->errors;
-			}
+				if ( isset( $this->form_data['settings']['akismet_protection_type'] ) && 'validation_failed' === $this->form_data['settings']['akismet_protection_type'] ) {
 
+					$akismet_message              = apply_filters( 'evf_akisment_validatation_error_message', sprintf( 'Akismet anti-spam verification failed, please try again later.', 'everest-forms' ) );
+					$errors[ $form_id ]['header'] = $akismet_message;
+					$this->errors                 = $errors;
+
+					return $this->errors;
+				}
+				$entry['evf_spam_status'] = 'spam';
+			}
 			// Pass the form created date into the form data.
 			$this->form_data['created'] = $form->post_date;
 
@@ -979,6 +982,7 @@ class EVF_Form_Task {
 		$user_agent  = $browser['name'] . '/' . $browser['platform'] . '/' . $user_device;
 		$referer     = ! empty( $_SERVER['HTTP_REFERER'] ) ? esc_url_raw( wp_unslash( $_SERVER['HTTP_REFERER'] ) ) : '';
 		$entry_id    = false;
+		$status      = isset( $entry['evf_spam_status'] ) ? $entry['evf_spam_status'] : 'publish';
 
 		// GDPR enhancements - If user details are disabled globally discard the IP and UA.
 		if ( 'yes' === get_option( 'everest_forms_disable_user_details' ) ) {
@@ -993,7 +997,7 @@ class EVF_Form_Task {
 				'user_id'         => get_current_user_id(),
 				'user_device'     => sanitize_text_field( $user_agent ),
 				'user_ip_address' => sanitize_text_field( $user_ip ),
-				'status'          => 'publish',
+				'status'          => $status,
 				'referer'         => $referer,
 				'fields'          => wp_json_encode( $fields ),
 				'date_created'    => current_time( 'mysql', true ),
@@ -1214,6 +1218,7 @@ class EVF_Form_Task {
 				'comment_content'      => isset( $entry_data['content'] ) ? $entry_data['content'] : '',
 				'blog_lang'            => get_locale(),
 				'blog_charset'         => get_bloginfo( 'charset' ),
+				'honypot_field_name'   => 'everest_forms[hp]',
 			);
 
 			$request = apply_filters( 'evf_akismet_request_data', $request, $this->form_data, $entry, $form_id );
