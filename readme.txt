@@ -4,7 +4,7 @@ Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.2
 Tested up to: 6.3.2
 Requires PHP: 7.2
-Stable tag: 2.0.4.1
+Stable tag: 2.0.4.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -417,7 +417,11 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 2.0.4       - 18-10-2023
+= 2.0.4.2     - xx-xx-2023
+* Fix         - Sanitization issue.
+* Fix 		  - PDF download issue after form submission for individual settings.
+
+= 2.0.4.1       - 18-10-2023
 * Fix         - Issue with downloading AI Contact Form addon.
 
 = 2.0.4       - 05-10-2023

@@ -889,7 +889,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						$value   = in_array( $raw_value, $allowed_values, true ) ? $raw_value : $default;
 						break;
 					default:
-						$value = evf_clean( $raw_value );
+						$value = evf_clean( html_entity_decode( $raw_value ) );
 						break;
 				}
 

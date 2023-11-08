@@ -530,11 +530,16 @@ class EVF_Form_Task {
 			}
 		}
 
-		$settings       = $this->form_data['settings'];
-		$message        = isset( $settings['successful_form_submission_message'] ) ? $settings['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
-		$pdf_submission = isset( $settings['pdf_submission']['enable_pdf_submission'] ) && 0 !== $settings['pdf_submission']['enable_pdf_submission'] ? $settings['pdf_submission'] : '';
+		$settings                  = $this->form_data['settings'];
+		$message                   = isset( $settings['successful_form_submission_message'] ) ? $settings['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
+		$is_pdf_submission_enabled = isset( $settings['pdf_submission']['enable_pdf_submission'] ) && ( 'yes' === $settings['pdf_submission']['enable_pdf_submission'] || '1' === $settings['pdf_submission']['enable_pdf_submission'] );
+		$pdf_submission            = $is_pdf_submission_enabled ? $settings['pdf_submission'] : '';
 
-		if ( defined( 'EVF_PDF_SUBMISSION_VERSION' ) && ( 'yes' === get_option( 'everest_forms_pdf_download_after_submit', 'no' ) || ( isset( $pdf_submission['everest_forms_pdf_download_after_submit'] ) && 'yes' === $pdf_submission['everest_forms_pdf_download_after_submit'] ) ) ) {
+		$is_pdf_download_after_submit   = isset( $pdf_submission['everest_forms_pdf_download_after_submit'] ) && ( 'yes' === $pdf_submission['everest_forms_pdf_download_after_submit'] || '1' === $pdf_submission['everest_forms_pdf_download_after_submit'] );
+		$is_global_pdf_download_enabled = 'yes' === get_option( 'everest_forms_pdf_download_after_submit', 'no' ) || '1' === get_option( 'everest_forms_pdf_download_after_submit', 'no' );
+		$should_allow_pdf_download      = $is_pdf_submission_enabled ? $is_pdf_download_after_submit : $is_global_pdf_download_enabled;
+
+		if ( defined( 'EVF_PDF_SUBMISSION_VERSION' ) && $should_allow_pdf_download ) {
 			global $__everest_form_id;
 			global $__everest_form_entry_id;
 			$__everest_form_id       = $form_id;

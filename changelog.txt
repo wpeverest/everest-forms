@@ -1,6 +1,13 @@
 == Changelog ==
 
 
+= 2.0.4.2     - xx-xx-2023
+* Fix         - Sanitization issue.
+* Fix 		  - PDF download issue after form submission for individual settings.
+
+= 2.0.4.1     - 18-10-2023
+* Fix         - Issue with downloading AI Contact Form addon.
+
 = 2.0.4       - 05-10-2023
 * Refactor    - Form Builder Design.
 * Enhancement - Changed checkbox option to toggle.
