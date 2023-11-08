@@ -23,7 +23,7 @@ class EVF_Field_Repeater extends EVF_Form_Fields {
 		$this->order  = 190;
 		$this->group  = 'advanced';
 		$this->is_pro = true;
-		$this->plan   = 'professional agency';
+		$this->plan   = 'professional agency themegrill-agency';
 		$this->addon  = ' everest-forms-repeater-fields';
 
 		parent::__construct();
