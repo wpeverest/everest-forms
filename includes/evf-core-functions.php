@@ -4643,7 +4643,7 @@ function evf_file_get_contents( $file ) {
  * @param string $datetime_value   The datetime value to parse.
  * @param string $datetime_format  The format of the datetime value.
  * @param string $date_format      The format of the date.
- * @param string $mode             The mode of the datetime field,
+ * @param string $mode             The mode of the datetime field.
  * @param int    $time_interval    The time interval in minutes.
  * @param int    $entry_id         The entry id.
  * @return array
@@ -4711,8 +4711,13 @@ function parse_datetime_values( $datetime_value, $datetime_format, $date_format,
 	return $datetime_arr;
 }
 
-/*
-* EVF word Count
+/**
+ * EVF word Count.
+ *
+ * @param string $text Text.
+ * @param string $type Type of text.
+ * @param array $settings Settings.
+ *
  * @since 2.0.2
  */
 function _evf_word_count( $text, $type = 'words', $settings = array() ) {
@@ -4788,6 +4793,10 @@ function _evf_word_count( $text, $type = 'words', $settings = array() ) {
 /**
  * EVF word Count
  *
+ * @param string $text Text.
+ * @param string $type Type of text.
+ * @param array $settings Settings.
+ *
  * @since 2.0.2
  */
 function evf_word_count( $text, $type = 'words', $settings = array() ) {
@@ -4803,7 +4812,7 @@ if ( ! function_exists( 'evf_maybe_get_local_font_url' ) ) {
 	 * If load fonts locally option is checked in settings, we download the font
 	 * locally and return the url for download font file.
 	 *
-	 * @param [string] $font_url Remote font url
+	 * @param [string] $font_url Remote font url.
 	 * @return string
 	 */
 	function evf_maybe_get_local_font_url( $font_url ) {

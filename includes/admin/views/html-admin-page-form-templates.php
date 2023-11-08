@@ -73,7 +73,7 @@ defined( 'ABSPATH' ) || exit;
 					// Upgrade checks.
 					if ( empty( $license_plan ) && ! in_array( 'free', $template->plan, true ) ) {
 						$upgrade_class = 'upgrade-modal';
-					} elseif ( ! in_array( trim( str_replace( 'lifetime', '', str_replace( '-lifetime', '', $license_plan ) ) ) , $template->plan, true ) && ! in_array( 'free', $template->plan, true ) ) {
+					} elseif ( ! in_array( trim( str_replace( 'lifetime', '', str_replace( '-lifetime', '', $license_plan ) ) ), $template->plan, true ) && ! in_array( 'free', $template->plan, true ) ) {
 						$upgrade_class = 'upgrade-modal';
 					}
 

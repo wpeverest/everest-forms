@@ -80,6 +80,6 @@ class EVF_Admin_Addons {
 		 * @uses $refresh_url
 		 * @uses $current_section
 		 */
-		include_once dirname( __FILE__ ) . '/views/html-admin-page-addons.php';
+		include_once dirname( __FILE__ ) . '/views/html-admin-page-addons.php'; // phpcs:ignore
 	}
 }
