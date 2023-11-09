@@ -106,6 +106,13 @@ jQuery( function( $ ) {
 							window.location = redirect_url;
 							return;
 						}
+					if (xhr && xhr.payment_method && xhr.payment_method === 'paypal' && xhr.redirect) {
+						if ('paypal' === xhr.payment_method) {
+							window.location.href = xhr.redirect;
+							return;
+						}
+					}
+
 						if ( 'success' === xhr.data.response || true === xhr.success ) {
 							let pdf_download_message = '';
 							let quiz_reporting = '';
@@ -117,7 +124,6 @@ jQuery( function( $ ) {
 							}
 
 							var paymentMethod = formTuple.find( ".everest-forms-stripe-gateways-tabs .evf-tab" ).has( 'a.active' ).data( 'gateway' );
-
 
 							if(undefined === paymentMethod) {
 								paymentMethod = formTuple.find( ".everest-forms-gateway[data-gateway='ideal']" ).data( 'gateway' );
