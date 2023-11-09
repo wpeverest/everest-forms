@@ -123,8 +123,9 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 						foreach ( $form_field as $field ) :
 							$field_plan = isset( $field->plan ) ? $field->plan : '';
 							$addon_slug = isset( $field->addon ) ? $field->addon : '';
+							$field_links = isset( $field->links ) ? json_encode( $field->links ) : '';
 							?>
-							<button type="button" id="everest-forms-add-fields-<?php echo esc_attr( $field->type ); ?>" class="evf-registered-item <?php echo sanitize_html_class( $field->class ); ?>" data-field-type="<?php echo esc_attr( $field->type ); ?>" data-field-plan="<?php echo esc_attr( $field_plan ); ?>" data-addon-slug="<?php echo esc_attr( $addon_slug ); ?>">
+							<button type="button" id="everest-forms-add-fields-<?php echo esc_attr( $field->type ); ?>" class="evf-registered-item <?php echo sanitize_html_class( $field->class ); ?>" data-field-type="<?php echo esc_attr( $field->type ); ?>" data-field-plan="<?php echo esc_attr( $field_plan ); ?>" data-addon-slug="<?php echo esc_attr( $addon_slug ); ?>" data-links="<?php echo esc_attr( $field_links ); ?>">
 								<?php if ( isset( $field->icon ) ) : ?>
 									<i class="<?php echo esc_attr( $field->icon ); ?>"></i>
 								<?php endif; ?>

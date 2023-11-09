@@ -21,6 +21,13 @@ abstract class EVF_Form_Fields {
 	public $name;
 
 	/**
+	 * Field links.
+	 *
+	 * @var string
+	 */
+	public $links;
+
+	/**
 	 * Field type.
 	 *
 	 * @var string

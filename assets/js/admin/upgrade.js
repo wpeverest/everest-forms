@@ -21,7 +21,7 @@ jQuery( function( $ ) {
 		field_upgrade: function( e ) {
 			e.preventDefault();
 
-			evf_upgrade_actions.upgrade_modal( $( this ).data( 'feature' ) ? $( this ).data( 'feature' ) : $( this ).text() + ' field' );
+			evf_upgrade_actions.upgrade_modal( $( this ).data( 'feature' ) ? $( this ).data( 'feature' ) : $( this ).text() + ' field', $( this ).data( 'links' ) );
 		},
 		evf_upgrade_addon:function(e){
 			e.preventDefault();
@@ -85,15 +85,27 @@ jQuery( function( $ ) {
 				}
 			})
 		},
-		upgrade_modal: function( feature ) {
+		upgrade_modal: function( feature, links = '' ) {
 			var message = evf_upgrade.upgrade_message.replace( /%name%/g, feature );
+			var boxWidth = '565px';
 
+			if('' !== links) {
+				const {image_url, vedio_url} = links;
+				boxWidth = '665px';
+
+				if(vedio_url !== '') {
+					var html = '<div><iframe width="600px" height="300px" frameborder="0" src="'+vedio_url+'" rel="1" allowfullscreen></iframe></div><br>';
+				}else{
+					var html = '<div width="420" height="315"> <img src="'+image_url+'" /></div>';
+				}
+				message = html + message;
+			}
 			$.alert({
 				title: feature + ' ' + evf_upgrade.upgrade_title,
 				icon: 'dashicons dashicons-lock',
 				content: message,
 				type: 'red',
-				boxWidth: '565px',
+				boxWidth: boxWidth,
 				buttons: {
 					confirm: {
 						text: evf_upgrade.upgrade_button,
