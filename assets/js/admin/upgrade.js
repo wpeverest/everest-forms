@@ -90,13 +90,13 @@ jQuery( function( $ ) {
 			var boxWidth = '565px';
 
 			if('' !== links) {
-				const {image_url, vedio_url} = links;
+				const {image_id, vedio_id} = links;
 				boxWidth = '665px';
 
-				if(vedio_url !== '') {
-					var html = '<div><iframe width="600px" height="300px" frameborder="0" src="'+vedio_url+'" rel="1" allowfullscreen></iframe></div><br>';
+				if(vedio_id !== '') {
+					var html = '<div><iframe width="600px" height="300px" frameborder="0" src="https://www.youtube.com/embed/'+vedio_id+'" rel="1" allowfullscreen></iframe></div><br>';
 				}else{
-					var html = '<div width="420" height="315"> <img src="'+image_url+'" /></div>';
+					var html = '<div width="420" height="315"> <img src="'+image_id+'" /></div>';
 				}
 				message = html + message;
 			}
