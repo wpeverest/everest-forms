@@ -100,6 +100,7 @@
 									id      : s.form.data('id'),
 									security: evf_email_params.ajax_email_nonce
 								}
+
 								$.ajax({
 									url: evf_email_params.ajax_url,
 									data: data,
@@ -274,12 +275,13 @@
 			e.preventDefault();
 
 			var $this    = $(el),
+			original_connection_id = $this.closest("li").data("connection-id"),
 			source       = 'email',
 			type         = $this.data('type'),
 			namePrompt   = evf_email_params.i18n_email_connection,
-			nameField    = '<input autofocus="" type="text" id="provider-connection-name" placeholder="'+evf_email_params.i18n_email_placeholder+'">',
+			connectionField = '<input type="hidden" id ="original_connection_id" value = "'+original_connection_id+'">',
 			nameError    = '<p class="error">'+evf_email_params.i18n_email_error_name+'</p>',
-			modalContent = namePrompt+nameField+nameError;
+			modalContent = namePrompt+nameField+nameError+connectionField;
 
 			modalContent = modalContent.replace(/%type%/g,type);
 			$.confirm({
@@ -310,6 +312,7 @@
 								   source  : source,
 								   name    : name,
 								   id      : s.form.data('id'),
+								   prev_connection_id : original_connection_id,
 								   security: evf_email_params.ajax_email_nonce
 							   }
 							   $.ajax({
@@ -320,7 +323,6 @@
 									   EverestFormsEmail.duplicateEmailConnection($this, {response:response, name:name});
 								   }
 							   });
-							   console.log(data);
 						   }
 					   }
 				   },

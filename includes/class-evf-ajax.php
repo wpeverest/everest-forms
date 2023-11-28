@@ -667,7 +667,8 @@ class EVF_AJAX {
 
 		wp_send_json_success(
 			array(
-				'connection_id' => $connection_id,
+				'connection_id'      => $connection_id,
+				'prev_connection_id' => $_POST['prev_connection_id'],
 			)
 		);
 	}
