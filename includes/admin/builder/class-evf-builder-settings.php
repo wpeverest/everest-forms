@@ -95,13 +95,16 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 						<?php
 					}
 					if ( ! empty( $email ) ) {
+						error_log( print_r( $email, true ) );
 						foreach ( $email as $connection_id => $connection_data ) {
 							if ( preg_match( '/connection_/', $connection_id ) ) {
 								$connection_name = ! empty( $connection_data['connection_name'] ) ? $connection_data['connection_name'] : '';
 								if ( 'connection_1' !== $connection_id ) {
-									$remove_class = 'email-remove';
+									$remove_class    = 'email-remove';
+									$duplicate_class = 'email-duplicate';
 								} else {
-									$remove_class = 'email-default-remove';
+									$remove_class    = 'email-default-remove';
+									$duplicate_class = 'email-default-duplicate';
 								}
 								if ( isset( $email['enable_email_notification'] ) && '0' === $email['enable_email_notification'] ) {
 									$email_status = isset( $email['enable_email_notification'] ) ? $email['enable_email_notification'] : '1';
@@ -124,6 +127,13 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 												<span class="<?php echo esc_attr( $remove_class ); ?>">
 												<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
 													<path fill-rule="evenodd" d="M9.293 3.293A1 1 0 0 1 10 3h4a1 1 0 0 1 1 1v1H9V4a1 1 0 0 1 .293-.707ZM7 5V4a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1h4a1 1 0 1 1 0 2h-1v13a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V7H3a1 1 0 1 1 0-2h4Zm1 2h10v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7h2Zm2 3a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0v-6a1 1 0 0 1 1-1Zm5 7v-6a1 1 0 1 0-2 0v6a1 1 0 1 0 2 0Z" clip-rule="evenodd"/>
+												</svg>
+											</a>
+											<span class="evf-vertical-divider"></span>
+											<a href="#" class="everest-forms-email-duplicate">
+												<span class="<?php echo esc_attr( $duplicate_class ); ?>">
+												<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 25">
+													<path fill-rule="evenodd" d="M3.033 3.533c.257-.257.605-.4.968-.4h9A1.368 1.368 0 0 1 14.369 4.5v1a.632.632 0 0 0 1.263 0v-1a2.632 2.632 0 0 0-2.631-2.632H4A2.632 2.632 0 0 0 1.368 4.5v9A2.631 2.631 0 0 0 4 16.131h1a.632.632 0 0 0 0-1.263H4A1.368 1.368 0 0 1 2.631 13.5v-9c0-.363.144-.711.401-.968Zm6.598 7.968A1.37 1.37 0 0 1 11 10.132h9c.756 0 1.368.613 1.368 1.369v9c0 .755-.612 1.368-1.368 1.368h-9A1.368 1.368 0 0 1 9.63 20.5v-9ZM11 8.869A2.632 2.632 0 0 0 8.368 11.5v9A2.632 2.632 0 0 0 11 23.131h9a2.632 2.632 0 0 0 2.63-2.631v-9A2.632 2.632 0 0 0 20 8.87h-9Z" clip-rule="evenodd"></path>
 												</svg>
 											</a>
 										</div>
@@ -419,9 +429,9 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				} else {
 					$email_status = isset( $settings['email'][ $connection_id ]['enable_email_notification'] ) ? $settings['email'][ $connection_id ]['enable_email_notification'] : '1';
 				}
-				$hidden_class       = '1' !== $email_status ? 'everest-forms-hidden' : '';
-				$hidden_enable_setting_class       = '1' === $email_status ? 'everest-forms-hidden' : '';
-				$toggler_hide_class = isset( $toggler_hide_class ) ? 'style=display:none;' : '';
+				$hidden_class                = '1' !== $email_status ? 'everest-forms-hidden' : '';
+				$hidden_enable_setting_class = '1' === $email_status ? 'everest-forms-hidden' : '';
+				$toggler_hide_class          = isset( $toggler_hide_class ) ? 'style=display:none;' : '';
 				echo '<div class="evf-content-section evf-content-email-settings" ' . esc_attr( $toggler_hide_class ) . '>';
 				echo '<div class="evf-content-section-title" ' . esc_attr( $toggler_hide_class ) . '>';
 				echo '<div class="evf-title">' . esc_html__( 'Email', 'everest-forms' ) . '</div>';

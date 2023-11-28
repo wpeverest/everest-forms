@@ -88,6 +88,7 @@ class EVF_AJAX {
 			'install_extension'       => false,
 			'integration_connect'     => false,
 			'new_email_add'           => false,
+			'email_duplicate'         => false,
 			'integration_disconnect'  => false,
 			'rated'                   => false,
 			'review_dismiss'          => false,
@@ -635,6 +636,26 @@ class EVF_AJAX {
 	 * AJAX Email Add.
 	 */
 	public static function new_email_add() {
+		check_ajax_referer( 'process-ajax-nonce', 'security' );
+
+		// Check permissions.
+		if ( ! current_user_can( 'everest_forms_edit_forms' ) ) {
+			wp_die( -1 );
+		}
+
+		$connection_id = 'connection_' . uniqid();
+
+		wp_send_json_success(
+			array(
+				'connection_id' => $connection_id,
+			)
+		);
+	}
+
+	/**
+	 * AJAX Email Duplicate.
+	 */
+	public static function email_duplicate() {
 		check_ajax_referer( 'process-ajax-nonce', 'security' );
 
 		// Check permissions.
