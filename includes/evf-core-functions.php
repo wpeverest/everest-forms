@@ -1173,6 +1173,19 @@ function evf_get_all_forms( $skip_disabled_entries = false, $check_disable_stori
  * @return string
  */
 function evf_get_meta_key_field_option( $field ) {
+	if (isset($field['type']) && isset($field['label'])) {
+		switch ($field['type']) {
+			case 'select':
+				$field['label'] = 'Dropdown';
+				break;
+			case 'radio':
+				$field['label'] = 'Multiple Choice';
+				break;
+			case 'checkbox':
+				$field['label'] = 'Checkboxes';
+				break;
+		}
+	}
 	return str_replace( ' ', '_', preg_replace( '/[^a-zA-Z0-9\s`_]/', '', strtolower( $field['label'] ) ) ) . '_' . rand( pow( 10, 3 ), pow( 10, 4 ) - 1 ); // phpcs:ignore WordPress.WP.AlternativeFunctions.rand_rand.
 }
 
