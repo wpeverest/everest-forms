@@ -281,6 +281,7 @@
 			namePrompt   = evf_email_params.i18n_email_connection,
 			connectionField = '<input type="hidden" id ="original_connection_id" value = "'+original_connection_id+'">',
 			nameError    = '<p class="error">'+evf_email_params.i18n_email_error_name+'</p>',
+			nameField    = '<input autofocus="" type="text" id="provider-connection-name" placeholder="'+evf_email_params.i18n_email_placeholder+'">',
 			modalContent = namePrompt+nameField+nameError+connectionField;
 
 			modalContent = modalContent.replace(/%type%/g,type);
@@ -340,6 +341,17 @@
 		   var $connections = $this.closest('.everest-forms-panel-sidebar-content');
 		   var form_title = $('#everest-forms-panel-field-settings-form_title:first').val() + '-' + Date.now();
 		   var cloned_email = $('.evf-content-email-settings').first().clone();
+		   var cloned_evf_to_email = $('#everest-forms-panel-field-email-' + response.data.prev_connection_id + '-evf_to_email').val();
+		   var cloned_evf_from_name = $('#everest-forms-panel-field-email-' + response.data.prev_connection_id + '-evf_from_name').val();
+		   var cloned_evf_from_email = $('#everest-forms-panel-field-email-' + response.data.prev_connection_id + '-evf_from_email').val();
+		   var cloned_evf_reply_to = $('#everest-forms-panel-field-email-' + response.data.prev_connection_id + '-evf_reply_to').val();
+		   var cloned_evf_email_subject = $('#everest-forms-panel-field-email-' + response.data.prev_connection_id + '-evf_email_subject').val();
+		   var cloned_evf_email_message = $('#everest_forms_panel_field_email_' + response.data.prev_connection_id + '_evf_email_message').val();
+		   var cloned_file_email_attachments = $('#everest-forms-panel-field-settingsemail' + response.data.prev_connection_id + '-file-email-attachments').prop("checked");
+		   var cloned_csv_file_email_attachments = $('#everest-forms-panel-field-settingsemail' + response.data.prev_connection_id + '-csv-file-email-attachments').prop("checked");
+		   var cloned_conditional_logic_status = $('#everest-forms-panel-field-email-' + response.data.prev_connection_id + '-conditional_logic_status').prop("checked");
+
+		   console.log(cloned_evf_to_email);
 		   $('.evf-content-email-settings-inner').removeClass('active-connection');
 		   cloned_email.find('input:not(#qt_everest_forms_panel_field_email_connection_1_evf_email_message_toolbar input[type="button"], .evf_conditional_logic_container input)').val('');
 
