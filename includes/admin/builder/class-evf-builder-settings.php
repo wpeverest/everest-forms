@@ -95,7 +95,6 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 						<?php
 					}
 					if ( ! empty( $email ) ) {
-						error_log( print_r( $email, true ) );
 						foreach ( $email as $connection_id => $connection_data ) {
 							if ( preg_match( '/connection_/', $connection_id ) ) {
 								$connection_name = ! empty( $connection_data['connection_name'] ) ? $connection_data['connection_name'] : '';
