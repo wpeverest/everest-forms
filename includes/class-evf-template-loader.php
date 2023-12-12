@@ -207,7 +207,7 @@ class EVF_Template_Loader {
 	 * @return string
 	 */
 	public static function form_preview_content_filter( $content ) {
-		if ( ! is_user_logged_in() || ! is_main_query() || ! in_the_loop() ) {
+		if ( ! is_user_logged_in() || ! is_main_query() ) {
 			return $content;
 		}
 

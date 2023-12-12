@@ -39,7 +39,6 @@ class EVF_Admin_Addons {
 	 */
 	public static function get_extension_data() {
 		$extension_data = get_transient( 'evf_extensions_section_list' );
-
 		if ( false === $extension_data ) {
 			$extension_data = evf_get_json_file_contents( 'assets/extensions-json/sections/all_extensions.json' );
 
@@ -81,6 +80,6 @@ class EVF_Admin_Addons {
 		 * @uses $refresh_url
 		 * @uses $current_section
 		 */
-		include_once dirname( __FILE__ ) . '/views/html-admin-page-addons.php';
+		include_once dirname( __FILE__ ) . '/views/html-admin-page-addons.php'; // phpcs:ignore
 	}
 }

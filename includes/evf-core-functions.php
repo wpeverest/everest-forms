@@ -25,7 +25,7 @@ require EVF_ABSPATH . 'includes/evf-entry-functions.php';
  */
 function evf_maybe_define_constant( $name, $value ) {
 	if ( ! defined( $name ) ) {
-		 define( $name, $value );
+		define( $name, $value );
 	}
 }
 
@@ -354,7 +354,7 @@ if ( ! function_exists( 'hash_equals' ) ) :
 		$result = 0;
 
 		// Do not attempt to "optimize" this.
-		for ( $i = 0; $i < $a_length; $i ++ ) {
+		for ( $i = 0; $i < $a_length; $i++ ) {
 			$result |= ord( $a[ $i ] ) ^ ord( $b[ $i ] );
 		}
 
@@ -750,7 +750,7 @@ function evf_get_var( &$var, $default = null ) {
  */
 function evf_enable_evf_plugin_headers( $headers ) {
 	if ( ! class_exists( 'EVF_Plugin_Updates' ) ) {
-		include_once dirname( __FILE__ ) . '/admin/plugin-updates/class-evf-plugin-updates.php';
+		include_once __DIR__ . '/admin/plugin-updates/class-evf-plugin-updates.php';
 	}
 
 	// EVF requires at least - allows developers to define which version of Everest Forms the plugin requires to run.
@@ -1117,7 +1117,7 @@ function evf_get_random_string( $length = 10 ) {
 	$code_alphabet .= 'abcdefghijklmnopqrstuvwxyz';
 	$code_alphabet .= '0123456789';
 	$max            = strlen( $code_alphabet );
-	for ( $i = 0; $i < $length; $i ++ ) {
+	for ( $i = 0; $i < $length; $i++ ) {
 		$string .= $code_alphabet[ evf_crypto_rand_secure( 0, $max - 1 ) ];
 	}
 
@@ -1541,12 +1541,12 @@ function evf_get_license_plan() {
 				)
 			);
 
-			if ( ! empty( $license_data->item_plan ) ) {
+			if ( ! empty( $license_data->item_name ) ) {
+				$license_data->item_plan = trim( str_replace( 'everest forms', '', str_replace( 'lifetime', '', str_replace( '-lifetime', '', strtolower( $license_data->item_name ) ) ) ) );
 				set_transient( 'evf_pro_license_plan', $license_data, WEEK_IN_SECONDS );
 			}
 		}
-
-		return isset( $license_data->item_plan ) ? $license_data->item_plan : false;
+		return isset( $license_data->item_plan ) ? trim( str_replace( 'everest forms', '', str_replace( 'lifetime', '', str_replace( '-lifetime', '', strtolower( $license_data->item_plan ) ) ) ) ) : false;
 	}
 
 	return false;
@@ -2177,7 +2177,7 @@ function evf_get_states() {
 			'CO-CHO' => __( 'Chocó', 'everest-forms' ),
 			'CO-COR' => __( 'Córdoba', 'everest-forms' ),
 			'CO-CUN' => __( 'Cundinamarca', 'everest-forms' ),
-			'CO-DC' => __( 'Capital District', 'everest-forms' ),
+			'CO-DC'  => __( 'Capital District', 'everest-forms' ),
 			'CO-GUA' => __( 'Guainía', 'everest-forms' ),
 			'CO-GUV' => __( 'Guaviare', 'everest-forms' ),
 			'CO-HUI' => __( 'Huila', 'everest-forms' ),
@@ -2198,12 +2198,12 @@ function evf_get_states() {
 			'CO-VID' => __( 'Vichada', 'everest-forms' ),
 		),
 		'CR' => array( // Costa Rican states.
-			'CR-A' => __( 'Alajuela', 'everest-forms' ),
-			'CR-C' => __( 'Cartago', 'everest-forms' ),
-			'CR-G' => __( 'Guanacaste', 'everest-forms' ),
-			'CR-H' => __( 'Heredia', 'everest-forms' ),
-			'CR-L' => __( 'Limón', 'everest-forms' ),
-			'CR-P' => __( 'Puntarenas', 'everest-forms' ),
+			'CR-A'  => __( 'Alajuela', 'everest-forms' ),
+			'CR-C'  => __( 'Cartago', 'everest-forms' ),
+			'CR-G'  => __( 'Guanacaste', 'everest-forms' ),
+			'CR-H'  => __( 'Heredia', 'everest-forms' ),
+			'CR-L'  => __( 'Limón', 'everest-forms' ),
+			'CR-P'  => __( 'Puntarenas', 'everest-forms' ),
 			'CR-SJ' => __( 'San José', 'everest-forms' ),
 		),
 		'CZ' => array(),
@@ -2322,30 +2322,30 @@ function evf_get_states() {
 		),
 		'EE' => array(),
 		'EC' => array( // Ecuadorian states.
-			'EC-A' => __( 'Azuay', 'everest-forms' ),
-			'EC-B' => __( 'Bolívar', 'everest-forms' ),
-			'EC-F' => __( 'Cañar', 'everest-forms' ),
-			'EC-C' => __( 'Carchi', 'everest-forms' ),
-			'EC-H' => __( 'Chimborazo', 'everest-forms' ),
-			'EC-X' => __( 'Cotopaxi', 'everest-forms' ),
-			'EC-O' => __( 'El Oro', 'everest-forms' ),
-			'EC-E' => __( 'Esmeraldas', 'everest-forms' ),
-			'EC-W' => __( 'Galápagos', 'everest-forms' ),
-			'EC-G' => __( 'Guayas', 'everest-forms' ),
-			'EC-I' => __( 'Imbabura', 'everest-forms' ),
-			'EC-L' => __( 'Loja', 'everest-forms' ),
-			'EC-R' => __( 'Los Ríos', 'everest-forms' ),
-			'EC-M' => __( 'Manabí', 'everest-forms' ),
-			'EC-S' => __( 'Morona-Santiago', 'everest-forms' ),
-			'EC-N' => __( 'Napo', 'everest-forms' ),
-			'EC-D' => __( 'Orellana', 'everest-forms' ),
-			'EC-Y' => __( 'Pastaza', 'everest-forms' ),
-			'EC-P' => __( 'Pichincha', 'everest-forms' ),
+			'EC-A'  => __( 'Azuay', 'everest-forms' ),
+			'EC-B'  => __( 'Bolívar', 'everest-forms' ),
+			'EC-F'  => __( 'Cañar', 'everest-forms' ),
+			'EC-C'  => __( 'Carchi', 'everest-forms' ),
+			'EC-H'  => __( 'Chimborazo', 'everest-forms' ),
+			'EC-X'  => __( 'Cotopaxi', 'everest-forms' ),
+			'EC-O'  => __( 'El Oro', 'everest-forms' ),
+			'EC-E'  => __( 'Esmeraldas', 'everest-forms' ),
+			'EC-W'  => __( 'Galápagos', 'everest-forms' ),
+			'EC-G'  => __( 'Guayas', 'everest-forms' ),
+			'EC-I'  => __( 'Imbabura', 'everest-forms' ),
+			'EC-L'  => __( 'Loja', 'everest-forms' ),
+			'EC-R'  => __( 'Los Ríos', 'everest-forms' ),
+			'EC-M'  => __( 'Manabí', 'everest-forms' ),
+			'EC-S'  => __( 'Morona-Santiago', 'everest-forms' ),
+			'EC-N'  => __( 'Napo', 'everest-forms' ),
+			'EC-D'  => __( 'Orellana', 'everest-forms' ),
+			'EC-Y'  => __( 'Pastaza', 'everest-forms' ),
+			'EC-P'  => __( 'Pichincha', 'everest-forms' ),
 			'EC-SE' => __( 'Santa Elena', 'everest-forms' ),
 			'EC-SD' => __( 'Santo Domingo de los Tsáchilas', 'everest-forms' ),
-			'EC-U' => __( 'Sucumbíos', 'everest-forms' ),
-			'EC-T' => __( 'Tungurahua', 'everest-forms' ),
-			'EC-Z' => __( 'Zamora-Chinchipe', 'everest-forms' ),
+			'EC-U'  => __( 'Sucumbíos', 'everest-forms' ),
+			'EC-T'  => __( 'Tungurahua', 'everest-forms' ),
+			'EC-Z'  => __( 'Zamora-Chinchipe', 'everest-forms' ),
 		),
 		'EG' => array( // Egyptian states.
 			'EGALX' => __( 'Alexandria', 'everest-forms' ),
@@ -3158,15 +3158,15 @@ function evf_get_states() {
 			'SL' => __( 'Southland', 'everest-forms' ),
 		),
 		'PA' => array( // Panamanian states.
-			'PA-1' => __( 'Bocas del Toro', 'everest-forms' ),
-			'PA-2' => __( 'Coclé', 'everest-forms' ),
-			'PA-3' => __( 'Colón', 'everest-forms' ),
-			'PA-4' => __( 'Chiriquí', 'everest-forms' ),
-			'PA-5' => __( 'Darién', 'everest-forms' ),
-			'PA-6' => __( 'Herrera', 'everest-forms' ),
-			'PA-7' => __( 'Los Santos', 'everest-forms' ),
-			'PA-8' => __( 'Panamá', 'everest-forms' ),
-			'PA-9' => __( 'Veraguas', 'everest-forms' ),
+			'PA-1'  => __( 'Bocas del Toro', 'everest-forms' ),
+			'PA-2'  => __( 'Coclé', 'everest-forms' ),
+			'PA-3'  => __( 'Colón', 'everest-forms' ),
+			'PA-4'  => __( 'Chiriquí', 'everest-forms' ),
+			'PA-5'  => __( 'Darién', 'everest-forms' ),
+			'PA-6'  => __( 'Herrera', 'everest-forms' ),
+			'PA-7'  => __( 'Los Santos', 'everest-forms' ),
+			'PA-8'  => __( 'Panamá', 'everest-forms' ),
+			'PA-9'  => __( 'Veraguas', 'everest-forms' ),
 			'PA-10' => __( 'West Panamá', 'everest-forms' ),
 			'PA-EM' => __( 'Emberá', 'everest-forms' ),
 			'PA-KY' => __( 'Guna Yala', 'everest-forms' ),
@@ -4426,10 +4426,10 @@ function evf_is_amp( $check_theme_support = true ) {
 	$is_amp = false;
 
 	if (
-	   // AMP by Automattic.
-	   ( function_exists( 'amp_is_request' ) && amp_is_request() ) ||
-	   // Better AMP.
-	   ( function_exists( 'is_better_amp' ) && is_better_amp() )
+		// AMP by Automattic.
+		( function_exists( 'amp_is_request' ) && amp_is_request() ) ||
+		// Better AMP.
+		( function_exists( 'is_better_amp' ) && is_better_amp() )
 	) {
 		$is_amp = true;
 	}
@@ -4517,7 +4517,7 @@ function evf_sanitize_builder( $post_data = array() ) {
 			$value = wp_kses_post( $data->value );
 		} elseif ( 'settings[external_url]' === $data->name ) {
 			$value = esc_url_raw( $data->value );
-		} elseif ( 'settings[email][connection_1][evf_email_message]' === $data->name ) {
+		} elseif ( preg_match( '/evf_email_message/', $data->name ) ) {
 			$value = wp_kses_post( $data->value );
 		} else {
 			$value = sanitize_text_field( $data->value );
@@ -4620,10 +4620,10 @@ function evf_get_json_file_contents( $file, $to_array = false ) {
 function evf_file_get_contents( $file ) {
 	if ( $file ) {
 		$local_file = preg_replace( '/\\\\|\/\//', '/', plugin_dir_path( EVF_PLUGIN_FILE ) . $file );
-		 $response = file_get_contents($local_file);
-		 if ( $response ) {
+		$response   = file_get_contents( $local_file );
+		if ( $response ) {
 			return $response;
-		 }
+		}
 		global $wp_filesystem;
 		require_once ABSPATH . '/wp-admin/includes/file.php';
 		WP_Filesystem();
@@ -4637,71 +4637,71 @@ function evf_file_get_contents( $file ) {
 }
 
 /**
-* Parses datetime values based on the provided format and mode.
-*
-* @param string $datetime_value   The datetime value to parse.
-* @param string $datetime_format  The format of the datetime value.
-* @param string $date_format      The format of the date.
-* @param string $mode             The mode of the datetime field,
-* @param int    $time_interval    The time interval in minutes.
-* @param int    $entry_id         The entry id.
-* @return array
-*/
+ * Parses datetime values based on the provided format and mode.
+ *
+ * @param string $datetime_value   The datetime value to parse.
+ * @param string $datetime_format  The format of the datetime value.
+ * @param string $date_format      The format of the date.
+ * @param string $mode             The mode of the datetime field.
+ * @param int    $time_interval    The time interval in minutes.
+ * @param int    $entry_id         The entry id.
+ * @return array
+ */
 function parse_datetime_values( $datetime_value, $datetime_format, $date_format, $mode, $time_interval, $entry_id = 0 ) {
 	$datetime_arr = array();
 
-	switch ($datetime_format) {
+	switch ( $datetime_format ) {
 		case 'time':
-			$current_date = gmdate('Y-m-d');
-			$datetime_value = gmdate('H:i', strtotime($datetime_value));
+			$current_date   = gmdate( 'Y-m-d' );
+			$datetime_value = gmdate( 'H:i', strtotime( $datetime_value ) );
 			$datetime_start = "$current_date $datetime_value";
-			$date_time = new DateTime($datetime_start);
-			$date_time->modify("+$time_interval minute");
-			$datetime_end = $date_time->format('Y-m-d H:i');
-			$datetime_arr[$entry_id] = array($datetime_start, $datetime_end);
+			$date_time      = new DateTime( $datetime_start );
+			$date_time->modify( "+$time_interval minute" );
+			$datetime_end              = $date_time->format( 'Y-m-d H:i' );
+			$datetime_arr[ $entry_id ] = array( $datetime_start, $datetime_end );
 			break;
 		case 'date':
-			if ('range' === $mode) {
-				$selected_dates = explode(' to ', $datetime_value);
-				if (count($selected_dates) >= 2) {
+			if ( 'range' === $mode ) {
+				$selected_dates = explode( ' to ', $datetime_value );
+				if ( count( $selected_dates ) >= 2 ) {
 					$datetime_start = "$selected_dates[0] 00:00";
-					$datetime_start = gmdate('Y-m-d H:i', strtotime($datetime_start));
-					$date_time = new DateTime($selected_dates[1]);
-					$date_time->modify('+23 hour');
-					$datetime_end = $date_time->format('Y-m-d H:i');
-					$datetime_arr[$entry_id] = array($datetime_start, $datetime_end);
+					$datetime_start = gmdate( 'Y-m-d H:i', strtotime( $datetime_start ) );
+					$date_time      = new DateTime( $selected_dates[1] );
+					$date_time->modify( '+23 hour' );
+					$datetime_end              = $date_time->format( 'Y-m-d H:i' );
+					$datetime_arr[ $entry_id ] = array( $datetime_start, $datetime_end );
 				}
 			} else {
-				$selected_dates = explode(', ', $datetime_value);
+				$selected_dates = explode( ', ', $datetime_value );
 
-				foreach ($selected_dates as $selected_date) {
+				foreach ( $selected_dates as $selected_date ) {
 					$datetime_start = "$selected_date 00:00";
-					$datetime_start = gmdate('Y-m-d H:i', strtotime($datetime_start));
-					$date_time = new DateTime($datetime_start);
-					$date_time->modify('+23 hour');
+					$datetime_start = gmdate( 'Y-m-d H:i', strtotime( $datetime_start ) );
+					$date_time      = new DateTime( $datetime_start );
+					$date_time->modify( '+23 hour' );
 
-					$datetime_end = $date_time->format('Y-m-d H:i');
-					$datetime_arr[$entry_id] = array($datetime_start, $datetime_end);
+					$datetime_end              = $date_time->format( 'Y-m-d H:i' );
+					$datetime_arr[ $entry_id ] = array( $datetime_start, $datetime_end );
 				}
 			}
 			break;
 		case 'date-time':
-			if ('range' === $mode) {
-				$selected_dates = explode(' to ', $datetime_value);
-				if (count($selected_dates) >= 2) {
-					$datetime_start = gmdate('Y-m-d H:i', strtotime($selected_dates[0]));
-					$datetime_end = gmdate('Y-m-d H:i', strtotime($selected_dates[1]));
-					$datetime_arr[$entry_id] = array($datetime_start, $datetime_end);
+			if ( 'range' === $mode ) {
+				$selected_dates = explode( ' to ', $datetime_value );
+				if ( count( $selected_dates ) >= 2 ) {
+					$datetime_start            = gmdate( 'Y-m-d H:i', strtotime( $selected_dates[0] ) );
+					$datetime_end              = gmdate( 'Y-m-d H:i', strtotime( $selected_dates[1] ) );
+					$datetime_arr[ $entry_id ] = array( $datetime_start, $datetime_end );
 				}
 			} else {
-				$selected_dates = explode(', ', $datetime_value);
+				$selected_dates = explode( ', ', $datetime_value );
 
-				foreach ($selected_dates as $selected_date) {
-					$datetime_start = gmdate('Y-m-d H:i', strtotime($selected_date));
-					$date_time = new DateTime($datetime_start);
-					$date_time->modify("+$time_interval minute");
-					$datetime_end = $date_time->format('Y-m-d H:i');
-					$datetime_arr[$entry_id] = array($datetime_start, $datetime_end);
+				foreach ( $selected_dates as $selected_date ) {
+					$datetime_start = gmdate( 'Y-m-d H:i', strtotime( $selected_date ) );
+					$date_time      = new DateTime( $datetime_start );
+					$date_time->modify( "+$time_interval minute" );
+					$datetime_end              = $date_time->format( 'Y-m-d H:i' );
+					$datetime_arr[ $entry_id ] = array( $datetime_start, $datetime_end );
 				}
 			}
 			break;
@@ -4710,8 +4710,13 @@ function parse_datetime_values( $datetime_value, $datetime_format, $date_format,
 	return $datetime_arr;
 }
 
-/*
-* EVF word Count
+/**
+ * EVF word Count.
+ *
+ * @param string $text Text.
+ * @param string $type Type of text.
+ * @param array  $settings Settings.
+ *
  * @since 2.0.2
  */
 function _evf_word_count( $text, $type = 'words', $settings = array() ) {
@@ -4786,11 +4791,16 @@ function _evf_word_count( $text, $type = 'words', $settings = array() ) {
 
 /**
  * EVF word Count
+ *
+ * @param string $text Text.
+ * @param string $type Type of text.
+ * @param array  $settings Settings.
+ *
  * @since 2.0.2
  */
 function evf_word_count( $text, $type = 'words', $settings = array() ) {
-	if( function_exists(' wp_word_count ' ) ){
-		return wp_word_count($text, $type = 'words', $settings = array());
+	if ( function_exists( ' wp_word_count ' ) ) {
+		return wp_word_count( $text, $type = 'words', $settings = array() );
 	} else {
 		return _evf_word_count( $text, $type = 'words', $settings = array() );
 	}
@@ -4801,7 +4811,7 @@ if ( ! function_exists( 'evf_maybe_get_local_font_url' ) ) {
 	 * If load fonts locally option is checked in settings, we download the font
 	 * locally and return the url for download font file.
 	 *
-	 * @param [string] $font_url Remote font url
+	 * @param [string] $font_url Remote font url.
 	 * @return string
 	 */
 	function evf_maybe_get_local_font_url( $font_url ) {
