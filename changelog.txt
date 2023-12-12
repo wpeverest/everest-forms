@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 2.0.6       - xx-xx-2023
+* Upgraded    - Input Mask Library.
+
 = 2.0.5       - 08-11-2023
 * Tweak       - Compatibility with new ThemeGrill Agency Plan's license.
 * Fix         - Security vulnerability from missing sanitization.
