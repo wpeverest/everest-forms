@@ -70,8 +70,7 @@ class EVF_Admin {
 				if ( empty( $_GET['evf-addons-nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_GET['evf-addons-nonce'] ) ), 'refresh' ) ) {
 					wp_die( esc_html_e( 'Could not verify nonce', 'everest-forms' ) );
 				}
-
-				foreach ( array( 'evf_pro_license_plan', 'evf_addons_sections', 'evf_extensions_section' ) as $transient ) {
+				foreach ( array( 'evf_pro_license_plan', 'evf_addons_sections_list', 'evf_extensions_section_list' ) as $transient ) {
 					delete_transient( $transient );
 				}
 			}

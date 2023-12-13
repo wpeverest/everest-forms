@@ -1173,6 +1173,19 @@ function evf_get_all_forms( $skip_disabled_entries = false, $check_disable_stori
  * @return string
  */
 function evf_get_meta_key_field_option( $field ) {
+	if (isset($field['type']) && isset($field['label'])) {
+		switch ($field['type']) {
+			case 'select':
+				$field['label'] = 'Dropdown';
+				break;
+			case 'radio':
+				$field['label'] = 'Multiple Choice';
+				break;
+			case 'checkbox':
+				$field['label'] = 'Checkboxes';
+				break;
+		}
+	}
 	return str_replace( ' ', '_', preg_replace( '/[^a-zA-Z0-9\s`_]/', '', strtolower( $field['label'] ) ) ) . '_' . rand( pow( 10, 3 ), pow( 10, 4 ) - 1 ); // phpcs:ignore WordPress.WP.AlternativeFunctions.rand_rand.
 }
 
@@ -1541,12 +1554,12 @@ function evf_get_license_plan() {
 				)
 			);
 
-			if ( ! empty( $license_data->item_plan ) ) {
+			if ( ! empty( $license_data->item_name ) ) {
+				$license_data->item_plan = trim( str_replace( 'everest forms', '', str_replace( 'lifetime', '', str_replace( '-lifetime', '', strtolower( $license_data->item_name ) ) ) ) );
 				set_transient( 'evf_pro_license_plan', $license_data, WEEK_IN_SECONDS );
 			}
 		}
-
-		return isset( $license_data->item_plan ) ? $license_data->item_plan : false;
+		return isset( $license_data->item_plan ) ? trim( str_replace( 'everest forms', '', str_replace( 'lifetime', '', str_replace( '-lifetime', '', strtolower( $license_data->item_plan ) ) ) ) ) : false;
 	}
 
 	return false;
@@ -4642,7 +4655,7 @@ function evf_file_get_contents( $file ) {
  * @param string $datetime_value   The datetime value to parse.
  * @param string $datetime_format  The format of the datetime value.
  * @param string $date_format      The format of the date.
- * @param string $mode             The mode of the datetime field,
+ * @param string $mode             The mode of the datetime field.
  * @param int    $time_interval    The time interval in minutes.
  * @param int    $entry_id         The entry id.
  * @return array
@@ -4710,8 +4723,13 @@ function parse_datetime_values( $datetime_value, $datetime_format, $date_format,
 	return $datetime_arr;
 }
 
-/*
-* EVF word Count
+/**
+ * EVF word Count.
+ *
+ * @param string $text Text.
+ * @param string $type Type of text.
+ * @param array  $settings Settings.
+ *
  * @since 2.0.2
  */
 function _evf_word_count( $text, $type = 'words', $settings = array() ) {
@@ -4787,6 +4805,10 @@ function _evf_word_count( $text, $type = 'words', $settings = array() ) {
 /**
  * EVF word Count
  *
+ * @param string $text Text.
+ * @param string $type Type of text.
+ * @param array  $settings Settings.
+ *
  * @since 2.0.2
  */
 function evf_word_count( $text, $type = 'words', $settings = array() ) {
@@ -4802,7 +4824,7 @@ if ( ! function_exists( 'evf_maybe_get_local_font_url' ) ) {
 	 * If load fonts locally option is checked in settings, we download the font
 	 * locally and return the url for download font file.
 	 *
-	 * @param [string] $font_url Remote font url
+	 * @param [string] $font_url Remote font url.
 	 * @return string
 	 */
 	function evf_maybe_get_local_font_url( $font_url ) {

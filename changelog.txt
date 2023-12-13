@@ -1,5 +1,17 @@
 == Changelog ==
 
+= 2.0.6       - xx-xx-2023
+* Upgraded    - Input mask library.
+* Fix		  - Empty values in entries for (select, checkbox, radio) fields when wordPress site is in another language.
+
+= 2.0.5       - 08-11-2023
+* Tweak       - Compatibility with new ThemeGrill Agency Plan's license.
+* Fix         - Security vulnerability from missing sanitization.
+* Fix 		  - Refresh addons button in addons page not working properly.
+* Fix 		  - PDF download issue after form submission for individual settings.
+
+= 2.0.4.1     - 18-10-2023
+* Fix         - Issue with downloading AI Contact Form addon.
 
 = 2.0.4       - 05-10-2023
 * Refactor    - Form Builder Design.
