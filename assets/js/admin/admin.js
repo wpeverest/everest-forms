@@ -260,6 +260,10 @@
 		$( '.evf-content-email-settings-inner .tooltipstered' ).tooltipster( 'destroy' );
 	});
 
+	$( document ).on( 'click', '.everest-forms-email-duplicate', function() {
+		$( '.evf-content-email-settings-inner .tooltipstered' ).tooltipster( 'destroy' );
+	});
+
 	// Tooltips
 	$( document.body ).trigger( 'init_tooltips' );
 

@@ -364,12 +364,9 @@
 		   cloned_email.find('.evf-field-conditional-field-select').attr('name', 'settings[email]['+new_connection_id+'][conditionals][1][1][field]');
 		   cloned_email.find('.evf-field-conditional-condition').attr('name', 'settings[email]['+new_connection_id+'][conditionals][1][1][operator]');
 		   cloned_email.find('.evf-field-conditional-input').attr('name', 'settings[email]['+new_connection_id+'][conditionals][1][1][value]');
-		//    $cloned_email = cloned_email.append('<input type="hidden" name="settings[email]['+new_connection_id+'][connection_name]" value="'+name+'">');
 
 		   // To display the message toolbar for the message textarea
 		   $('.evf-content-email-settings-inner').removeClass('active-connection');
-		   cloned_email.find('input:not(#qt_everest_forms_panel_field_email_' + original_connection_id + '_evf_email_message_toolbar input[type="button"], .evf_conditional_logic_container input)').val('');
-
 		   cloned_email.find('.evf_conditional_logic_container input[type="checkbox"]').prop('checked', false);
 		   cloned_email.find('.everest-forms-attach-pdf-to-admin-email input[type="checkbox"]').prop('checked', false);
 		   cloned_email.find('.everest-forms-csv-file-email-attachments input[type="checkbox"]').prop('checked', false);
