@@ -406,11 +406,13 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		$status_links  = array();
 		$num_entries   = evf_get_count_entries_by_status( $this->form_id );
 		$total_entries = apply_filters( 'everest_forms_total_entries_count', (int) $num_entries['publish'], $num_entries, $this->form_id );
+		$spam_entries = apply_filters( 'everest_forms_spam_total_entries_count', (int) $num_entries['spam'], $num_entries, $this->form_id );
 		$statuses      = array_keys( evf_get_entry_statuses( $this->form_data ) );
 		$class         = empty( $_REQUEST['status'] ) ? ' class="current"' : ''; // phpcs:ignore WordPress.Security.NonceVerification
 
 		/* translators: %s: count */
 		$status_links['all'] = "<a href='admin.php?page=evf-entries&amp;form_id=$this->form_id'$class>" . sprintf( _nx( 'All <span class="count">(%s)</span>', 'All <span class="count">(%s)</span>', $total_entries, 'entries', 'everest-forms' ), number_format_i18n( $total_entries ) ) . '</a>';
+		$status_links['spam'] = "<a href='admin.php?page=evf-entries&amp;form_id=$this->form_id &amp;status=spam'$class>" . sprintf( _nx( 'Spam <span class="count">(%s)</span>', 'Spam <span class="count">(%s)</span>', $spam_entries, 'entries', 'everest-forms' ), number_format_i18n( $spam_entries ) ) . '</a>';
 
 		foreach ( $statuses as $status_name ) {
 			$class = '';

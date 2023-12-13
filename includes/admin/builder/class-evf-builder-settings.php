@@ -670,6 +670,54 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		);
 		do_action( 'everest_forms_inline_honeypot_settings', $this, 'honeypot', 'connection_1' );
 		echo '</div>';
+		/**
+		 * Akismet anit-spam protection.
+		 *
+		 * @since 2.0.4
+		 */
+		echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'Akismet', 'everest-forms' ) . '</h4>';
+		everest_forms_panel_field(
+			'toggle',
+			'settings',
+			'akismet',
+			$this->form_data,
+			esc_html__( 'Enable Akismet anti-spam protection', 'everest-forms' ),
+			array(
+				'default' => '0',
+			)
+		);
+
+		/**
+		 * Warning message if the installtion, activation and configuration are not proper.
+		 */
+		if ( ! file_exists( WP_PLUGIN_DIR . '/akismet/akismet.php' ) ) {
+			printf( '<div class="evf-akismet"><span class="evf-akismet-warning"><span class="evf-akismet-warning-label">%s </span>%s <a href="%s" target="_blank">%s</a>%s</span> <a href="%s" target="_blank">%s</a></div>', esc_html__( 'Warning:- ', 'everest-forms' ), esc_html__( ' This feature is inactive because Akismet plugin ', 'everest-forms' ), esc_url( admin_url( 'plugins.php' ) ), esc_html__( 'has not been installed.', 'everest-forms' ), esc_html__( '  For more', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/' ), esc_html( 'information', 'everest-forms' ) );
+		} elseif ( ! is_plugin_active( 'akismet/akismet.php' ) ) {
+			printf( '<div class="evf-akismet"><span class="evf-akismet-warning"><span class="evf-akismet-warning-label">%s </span>%s <a href="%s" target="_blank">%s</a>%s</span> <a href="%s" target="_blank">%s</a></div>', esc_html__( 'Warning:- ', 'everest-forms' ), esc_html__( ' This feature is inactive because Akismet plugin ', 'everest-forms' ), esc_url( admin_url( 'plugins.php' ) ), esc_html__( 'has not been activated.', 'everest-forms' ), esc_html__( '  For more', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/' ), esc_html( 'information', 'everest-forms' ) );
+		} elseif ( ! evf_is_akismet_configured() ) {
+			printf( '<div class="evf-akismet"><span class="evf-akismet-warning"><span class="evf-akismet-warning-label">%s </span>%s <a href="%s" target="_blank">%s</a>%s</span> <a href="%s" target="_blank">%s</a></div>', esc_html__( 'Warning:- ', 'everest-forms' ), esc_html__( ' This feature is inactive because Akismet plugin ', 'everest-forms' ), esc_url( admin_url( 'plugins.php' ) ), esc_html__( 'has not been properly configured.', 'everest-forms' ), esc_html__( '  For more', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/' ), esc_html( 'information', 'everest-forms' ) );
+		}
+		echo '<div class="everest-forms-border-container everest-forms-akismet-protection-type">';
+		everest_forms_panel_field(
+			'select',
+			'settings',
+			'akismet_protection_type',
+			$this->form_data,
+			esc_html__( 'Protection type', 'everest-forms' ),
+			array(
+				'default' => 'validation_failed',
+				'tooltip' => esc_html__("Please select the protection type. Choosing 'Mark as Spam' allows the submission but marks the entry as spam, while selecting 'Make the form submission as failed' will prevent the form submission.", 'everest-forms'),
+				'options' => array(
+					'validation_failed'  => esc_html__( 'Make the form submission as failed', 'everest-forms' ),
+					'mark_as_spam'         => esc_html__( 'Mark as Spam', 'everest-forms' ),
+				),
+			)
+		);
+		do_action( 'everest_forms_inline_akismet_settings', $this, 'akismet', 'connection_1' );
+
+		do_action( 'everest_forms_inline_akismet_protection_type_settings', $this, 'akismet_protection_type', 'connection_1' );
+		echo '</div>';
+		echo '</div>';
 		if ( 'yes' === get_option( 'everest_forms_recaptcha_v2_invisible' ) ) {
 			$recaptcha_type   = get_option( 'everest_forms_recaptcha_type', 'v2' );
 			$recaptcha_key    = get_option( 'everest_forms_recaptcha_' . $recaptcha_type . '_invisible_site_key' );

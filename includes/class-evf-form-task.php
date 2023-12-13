@@ -419,6 +419,25 @@ class EVF_Form_Task {
 				return $this->errors;
 			}
 
+			/** Akismet anit-spam protection.
+			 * If spam - return early
+			 *
+			 * @since 2.4.0
+			 */
+			if ( $this->get_akismet_validate( $entry, $form_id ) ) {
+				$logger = evf_get_logger();
+				$logger->notice( sprintf( 'Spam entry for Form ID %d Response: %s', absint( $this->form_data['id'] ), evf_print_r( $entry, true ) ), array( 'source' => 'akismet' ) );
+
+				if ( isset( $this->form_data['settings']['akismet_protection_type'] ) && 'validation_failed' === $this->form_data['settings']['akismet_protection_type'] ) {
+
+					$akismet_message              = apply_filters( 'evf_akisment_validatation_error_message', sprintf( 'Akismet anti-spam verification failed, please try again later.', 'everest-forms' ) );
+					$errors[ $form_id ]['header'] = $akismet_message;
+					$this->errors                 = $errors;
+
+					return $this->errors;
+				}
+				$entry['evf_spam_status'] = 'spam';
+			}
 			// Pass the form created date into the form data.
 			$this->form_data['created'] = $form->post_date;
 
@@ -968,6 +987,7 @@ class EVF_Form_Task {
 		$user_agent  = $browser['name'] . '/' . $browser['platform'] . '/' . $user_device;
 		$referer     = ! empty( $_SERVER['HTTP_REFERER'] ) ? esc_url_raw( wp_unslash( $_SERVER['HTTP_REFERER'] ) ) : '';
 		$entry_id    = false;
+		$status      = isset( $entry['evf_spam_status'] ) ? $entry['evf_spam_status'] : 'publish';
 
 		// GDPR enhancements - If user details are disabled globally discard the IP and UA.
 		if ( 'yes' === get_option( 'everest_forms_disable_user_details' ) ) {
@@ -982,7 +1002,7 @@ class EVF_Form_Task {
 				'user_id'         => get_current_user_id(),
 				'user_device'     => sanitize_text_field( $user_agent ),
 				'user_ip_address' => sanitize_text_field( $user_ip ),
-				'status'          => 'publish',
+				'status'          => $status,
 				'referer'         => $referer,
 				'fields'          => wp_json_encode( $fields ),
 				'date_created'    => current_time( 'mysql', true ),
@@ -1159,5 +1179,135 @@ class EVF_Form_Task {
 				$properties['inputs']['primary']['attr']['value'] = esc_attr( $data );
 		}
 		return $properties;
+	}
+
+	/**
+	 * Check if a form entry should be validated by Akismet for potential spam.
+	 *
+	 * This function checks whether the Akismet plugin is installed and configured, and if the Akismet
+	 * validation option is enabled for a specific form. If validation is enabled, it prepares the
+	 * necessary data for the validation request and sends it to Akismet's 'comment-check' endpoint.
+	 *
+	 * @param array  $entry The form entry data to validate.
+	 * @param string $form_id (Optional) The identifier of the form.
+	 *
+	 * @return bool
+	 *   - true if the form entry is potentially spam according to Akismet.
+	 *   - false if Akismet validation is not enabled, the plugin is not properly configured, or the entry is not considered spam.
+	 */
+	public function get_akismet_validate( $entry, $form_id = '' ) {
+
+		if ( ! file_exists( WP_PLUGIN_DIR . '/akismet/akismet.php' ) ) {
+			return false;
+		}
+
+		if ( ! evf_is_akismet_configured() ) {
+			return false;
+		}
+
+		if ( isset( $this->form_data['settings']['akismet'] ) && '1' === $this->form_data['settings']['akismet'] ) {
+			$entry_data = $this->get_entry_data_for_akismet( $this->form_data['form_fields'], $entry );
+
+			$entry_data = apply_filters( 'evf_entry_akismet_entry_data', $entry_data, $entry, $this->form_data );
+
+			$request = array(
+				'blog'                 => get_option( 'home' ),
+				'user_ip'              => evf_get_ip_address(),
+				'user_agent'           => isset( $_SERVER['HTTP_USER_AGENT'] ) ? wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) : null,
+				'referrer'             => wp_get_referer() ? wp_get_referer() : null,
+				'permalink'            => evf_current_url(),
+				'comment_type'         => 'contact-form',
+				'comment_author'       => isset( $entry_data['name'] ) ? $entry_data['name'] : '',
+				'comment_author_email' => isset( $entry_data['email'] ) ? $entry_data['email'] : '',
+				'comment_author_url'   => isset( $entry_data['url'] ) ? $entry_data['url'] : '',
+				'comment_content'      => isset( $entry_data['content'] ) ? $entry_data['content'] : '',
+				'blog_lang'            => get_locale(),
+				'blog_charset'         => get_bloginfo( 'charset' ),
+				'honypot_field_name'   => 'everest_forms[hp]',
+			);
+
+			$request = apply_filters( 'evf_akismet_request_data', $request, $this->form_data, $entry, $form_id );
+
+			$response = Akismet::http_post( build_query( $request ), 'comment-check' );
+
+			return ! empty( $response ) && isset( $response[1] ) && 'true' === trim( $response[1] );
+		}
+
+		return false;
+	}
+
+	/**
+	 * Get the list of field types that are allowed to be sent to Akismet.
+	 *
+	 * @since 1.7.6
+	 *
+	 * @return array List of field types that are allowed to be sent to Akismet
+	 */
+	private function get_field_type_allowlist_for_akisment() {
+
+		$field_type_allowlist = array(
+			'first-name',
+			'last-name',
+			'text',
+			'textarea',
+			'email',
+			'phone',
+			'address',
+			'url',
+			'wysiwyg',
+		);
+
+		/**
+		 * Filters the field types that are allowed to be sent to Akismet.
+		 *
+		 * @since 2.4.0
+		 *
+		 * @param array $field_type_allowlist Field types allowed to be sent to Akismet.
+		 */
+		return (array) apply_filters( 'evf_forms_akismet_get_field_type_allowlist', $field_type_allowlist );
+	}
+
+	/**
+	 * Get the entry data to be sent to Akismet.
+	 *
+	 * @since 2.4.0
+	 *
+	 * @param array $fields Field data for the current form.
+	 * @param array $entry  Entry data for the current entry.
+	 *
+	 * @return array $entry_data Entry data to be sent to Akismet.
+	 */
+	private function get_entry_data_for_akismet( $fields, $entry ) {
+		$field_type_allowlist = $this->get_field_type_allowlist_for_akisment();
+		$entry_data           = array();
+		$entry_content        = array();
+
+		foreach ( $fields as $key => $field ) {
+			$field_type = $field['type'];
+
+			if ( ! in_array( $field_type, $field_type_allowlist, true ) ) {
+				continue;
+			}
+
+			$field_content = is_array( $entry['form_fields'][ $key ] ) ? implode( ' ', $entry['form_fields'][ $key ] ) : $entry['form_fields'][ $key ];
+
+			if ( ! isset( $entry_data[ $field_type ] ) && in_array( $field_type, array( 'first-name', 'last-name', 'email', 'url' ), true ) ) {
+				if ( 'first-name' === $field_type ) {
+					$entry_data['name'] = isset( $entry_data['name'] ) ? "$field_content " . $entry_data['name'] : $field_content;
+					continue;
+				} elseif ( 'last-name' === $field_type ) {
+					$entry_data['name'] = isset( $entry_data['name'] ) ? $entry_data['name'] . " $field_content" : $field_content;
+					continue;
+				}
+				$entry_data[ $field_type ] = $field_content;
+				continue;
+			}
+
+			$entry_content[] = $field_content;
+		}
+
+		$entry_data['content'] = implode( ' ', $entry_content );
+
+		return $entry_data;
 	}
 }
