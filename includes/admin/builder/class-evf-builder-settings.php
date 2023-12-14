@@ -99,9 +99,11 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 							if ( preg_match( '/connection_/', $connection_id ) ) {
 								$connection_name = ! empty( $connection_data['connection_name'] ) ? $connection_data['connection_name'] : '';
 								if ( 'connection_1' !== $connection_id ) {
-									$remove_class = 'email-remove';
+									$remove_class  = 'email-remove';
+									$preview_class = 'email-preview';
 								} else {
-									$remove_class = 'email-default-remove';
+									$remove_class  = 'email-default-remove';
+									$preview_class = 'email-default-preview';
 								}
 								if ( isset( $email['enable_email_notification'] ) && '0' === $email['enable_email_notification'] ) {
 									$email_status = isset( $email['enable_email_notification'] ) ? $email['enable_email_notification'] : '1';
@@ -125,6 +127,16 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 												<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
 													<path fill-rule="evenodd" d="M9.293 3.293A1 1 0 0 1 10 3h4a1 1 0 0 1 1 1v1H9V4a1 1 0 0 1 .293-.707ZM7 5V4a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1h4a1 1 0 1 1 0 2h-1v13a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V7H3a1 1 0 1 1 0-2h4Zm1 2h10v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7h2Zm2 3a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0v-6a1 1 0 0 1 1-1Zm5 7v-6a1 1 0 1 0-2 0v6a1 1 0 1 0 2 0Z" clip-rule="evenodd"/>
 												</svg>
+											</a>
+											<span class="evf-vertical-divider"></span>
+											<a class="evf-email-preview" target="__blank" data-connection-id="<?php echo esc_attr( $connection_id ); ?>" href="<?php echo esc_url( add_query_arg( array( 'evf_email_preview' => $connection_id ), home_url() ) ); ?>">
+												<span class="<?php echo esc_attr( $preview_class ); ?>">
+												<svg  xmlns="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/1999/svg"
+												viewBox="0 0 442.04 442.04" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+												<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+												<g id="SVGRepo_iconCarrier"> <g> <g>
+													<path d="M221.02,341.304c-49.708,0-103.206-19.44-154.71-56.22C27.808,257.59,4.044,230.351,3.051,229.203 c-4.068-4.697-4.068-11.669,0-16.367c0.993-1.146,24.756-28.387,63.259-55.881c51.505-36.777,105.003-56.219,154.71-56.219 c49.708,0,103.207,19.441,154.71,56.219c38.502,27.494,62.266,54.734,63.259,55.881c4.068,4.697,4.068,11.669,0,16.367 c-0.993,1.146-24.756,28.387-63.259,55.881C324.227,321.863,270.729,341.304,221.02,341.304z M29.638,221.021 c9.61,9.799,27.747,27.03,51.694,44.071c32.83,23.361,83.714,51.212,139.688,51.212s106.859-27.851,139.688-51.212 c23.944-17.038,42.082-34.271,51.694-44.071c-9.609-9.799-27.747-27.03-51.694-44.071 c-32.829-23.362-83.714-51.212-139.688-51.212s-106.858,27.85-139.688,51.212C57.388,193.988,39.25,211.219,29.638,221.021z"></path> </g> <g> <path d="M221.02,298.521c-42.734,0-77.5-34.767-77.5-77.5c0-42.733,34.766-77.5,77.5-77.5c18.794,0,36.924,6.814,51.048,19.188 c5.193,4.549,5.715,12.446,1.166,17.639c-4.549,5.193-12.447,5.714-17.639,1.166c-9.564-8.379-21.844-12.993-34.576-12.993 c-28.949,0-52.5,23.552-52.5,52.5s23.551,52.5,52.5,52.5c28.95,0,52.5-23.552,52.5-52.5c0-6.903,5.597-12.5,12.5-12.5 s12.5,5.597,12.5,12.5C298.521,263.754,263.754,298.521,221.02,298.521z"></path> </g> <g> <path d="M221.02,246.021c-13.785,0-25-11.215-25-25s11.215-25,25-25c13.786,0,25,11.215,25,25S234.806,246.021,221.02,246.021z"></path>
+												</g> </g> </g></svg>
 											</a>
 										</div>
 									</li>
@@ -419,9 +431,9 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				} else {
 					$email_status = isset( $settings['email'][ $connection_id ]['enable_email_notification'] ) ? $settings['email'][ $connection_id ]['enable_email_notification'] : '1';
 				}
-				$hidden_class       = '1' !== $email_status ? 'everest-forms-hidden' : '';
-				$hidden_enable_setting_class       = '1' === $email_status ? 'everest-forms-hidden' : '';
-				$toggler_hide_class = isset( $toggler_hide_class ) ? 'style=display:none;' : '';
+				$hidden_class                = '1' !== $email_status ? 'everest-forms-hidden' : '';
+				$hidden_enable_setting_class = '1' === $email_status ? 'everest-forms-hidden' : '';
+				$toggler_hide_class          = isset( $toggler_hide_class ) ? 'style=display:none;' : '';
 				echo '<div class="evf-content-section evf-content-email-settings" ' . esc_attr( $toggler_hide_class ) . '>';
 				echo '<div class="evf-content-section-title" ' . esc_attr( $toggler_hide_class ) . '>';
 				echo '<div class="evf-title">' . esc_html__( 'Email', 'everest-forms' ) . '</div>';
@@ -706,10 +718,10 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			esc_html__( 'Protection type', 'everest-forms' ),
 			array(
 				'default' => 'validation_failed',
-				'tooltip' => esc_html__("Please select the protection type. Choosing 'Mark as Spam' allows the submission but marks the entry as spam, while selecting 'Make the form submission as failed' will prevent the form submission.", 'everest-forms'),
+				'tooltip' => esc_html__( "Please select the protection type. Choosing 'Mark as Spam' allows the submission but marks the entry as spam, while selecting 'Make the form submission as failed' will prevent the form submission.", 'everest-forms' ),
 				'options' => array(
-					'validation_failed'  => esc_html__( 'Make the form submission as failed', 'everest-forms' ),
-					'mark_as_spam'         => esc_html__( 'Mark as Spam', 'everest-forms' ),
+					'validation_failed' => esc_html__( 'Make the form submission as failed', 'everest-forms' ),
+					'mark_as_spam'      => esc_html__( 'Mark as Spam', 'everest-forms' ),
 				),
 			)
 		);
