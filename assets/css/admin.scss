@@ -3030,7 +3030,14 @@
 					 }
 
 					 .format-selected-math .everest-forms-question,
-					 .format-selected-question .everest-forms-equation {
+					 .format-selected-math .everest-forms-image,
+					 .format-selected-math .everest-forms-image-question,
+					 .format-selected-question .everest-forms-image,
+					 .format-selected-question .everest-forms-equation,
+					 .format-selected-question .everest-forms-image-question,
+					 .format-selected-image .everest-forms-equation,
+					 .format-selected-image .widefat,
+					 .format-selected-image .everest-forms-question {
 						 display: none;
 					 }
 				 }
@@ -4216,7 +4223,8 @@
 			 .everest-forms-field-option-row-columns,
 			 .everest-forms-field-option-row-drop_down_choices,
 			 .everest-forms-field-option-row-choices,
-			 .everest-forms-field-option-row-questions {
+			 .everest-forms-field-option-row-questions ,
+			 .everest-forms-field-option-row-images {
 				 ul {
 					 li {
 						 clear: both;
@@ -4226,7 +4234,8 @@
 					 }
 				 }
 
-				 .evf-questions-list {
+				 .evf-questions-list ,
+				 .evf-images-list {
 					 li {
 						 padding: 10px;
 						 background: $color-white;
@@ -4273,6 +4282,14 @@
 							 border-color: $red;
 						 }
 					 }
+				 }
+
+				 .icons-wrap {
+					.add ,
+					.remove {
+						display: inline-flex;
+						width: 120px;
+					}
 				 }
 			 }
 
