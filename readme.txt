@@ -420,6 +420,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 = 2.0.6       - xx-xx-2023
 * Upgraded    - Input mask library.
 * Fix		  - Empty values in entries for (select, checkbox, radio) fields when wordPress site is in another language.
+* Fix         - XLSX export issue.
 * Feature 	  - Akismet integration.
 
 = 2.0.5       - 08-11-2023
