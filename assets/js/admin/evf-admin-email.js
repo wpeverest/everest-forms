@@ -255,7 +255,7 @@
 							'</svg></span>' +
 						'</a>' +
 						'<span class="evf-vertical-divider"></span>' +
-							'<a href="#">' +
+							'<a href="#" class="evf-email-preview">' +
 								'<span class="email-preview">' +
 								'<svg  xmlns="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/1999/svg"' +
 								'viewBox="0 0 442.04 442.04" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g>' +

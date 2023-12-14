@@ -28,8 +28,5 @@ defined( 'ABSPATH' ) || exit;
 			</style>
 		</head>
 		<body <?php body_class(); ?> >
-			<?php
-				// echo user_registration_process_email_content( $email_content, $email_template ); // phpcs:ignore.
-			?>
-		</body>
+					</body>
 	</html>
