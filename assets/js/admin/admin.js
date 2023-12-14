@@ -381,6 +381,7 @@
 	})
 
 	$(document).find('.evf-form-locate').on('click', function(e) {
+		e.preventDefault();
 		var id = $(this).data('id');
 		var data = {
 			'action':'everest_forms_locate_form_action',
