@@ -28,5 +28,29 @@ defined( 'ABSPATH' ) || exit;
 			</style>
 		</head>
 		<body <?php body_class(); ?> >
-					</body>
+			<?php
+			/**
+			 * Get email message from the specific email connection
+			 *
+			 * @return array email preview message.
+			 */
+			function form_data() {
+				$form_data = array();
+
+				$connection_id = isset( $_GET['evf_email_preview'] ) ? $_GET['evf_email_preview'] : '';
+
+				if ( ! empty( $_GET['form_id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+					$form_data             = evf()->form->get( absint( $_GET['form_id'] ), array( 'content_only' => true ) ); // phpcs:ignore WordPress.Security.NonceVerification
+					$email_preview_message = $form_data['settings']['email'][ "$connection_id" ]['evf_email_message'];
+				}
+
+				return $email_preview_message;
+			}
+
+			$email_content = form_data();
+			if ( has_filter( 'everest_forms_process_smart_tags' ) ) {
+				echo evf_process_email_content( apply_filters('everest_forms_process_smart_tags',$email_content, array(), '','') ); // phpcs:ignore.
+			}
+			?>
+		</body>
 	</html>
