@@ -210,6 +210,9 @@ class EVF_Admin_Assets {
 				'upgrade_plan_title'           => esc_html__( 'is a Premium Addon', 'everest-forms' ),
 				'upgrade_plan_message'         => esc_html__( 'This addon requires premium plan. Please upgrade to the Premium plan to unlock all these awesome field.', 'everest-forms' ),
 				'upgrade_plan_button'          => esc_html__( 'Upgrade Plan', 'everest-forms' ),
+				'vedio_links'				   => array(
+					'dropdown' => 'kDYAKElqNtM',
+				)
 
 			)
 		);

@@ -88,7 +88,12 @@ jQuery( function( $ ) {
 		upgrade_modal: function( feature, links = '' ) {
 			var message = evf_upgrade.upgrade_message.replace( /%name%/g, feature );
 			var boxWidth = '565px';
-
+			if(feature === 'Multiple selection'){
+					links = {
+					'image_id':'',
+					'vedio_id':evf_upgrade.vedio_links.dropdown
+				}
+			}
 			if('' !== links) {
 				const {image_id, vedio_id} = links;
 				boxWidth = '665px';

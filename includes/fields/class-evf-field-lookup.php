@@ -25,7 +25,7 @@ class EVF_Field_Lookup extends EVF_Form_Fields {
 		$this->is_pro = true;
 		$this->links  = array(
 			'image_id' => '',
-			'vedio_id' => '',
+			'vedio_id' => '8hFSI5-Gf_U',
 		);
 
 		parent::__construct();
