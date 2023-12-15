@@ -4892,3 +4892,36 @@ if( ! function_exists( 'evf_current_url' ) ) {
 		return esc_url_raw( $url );
 	}
 }
+
+if ( ! function_exists( 'evf_process_email_content' ) ) {
+	/**
+	 * Returns email content wrapped in email template.
+	 *
+	 * @param string $email_content Email Content.
+	 * @param string $template Email Template id.
+	 */
+	function evf_process_email_content( $email_content ) {
+		// Check if email template is selected.
+		// if ( '' !== $template && 'none' !== $template ) {
+		// $email_content = apply_filters( 'user_registration_email_template_message', $email_content, $template );
+		// } else {
+			ob_start();
+		?>
+			<div class="user-registration-email-body" style="padding: 100px 0; background-color: #ebebeb;">
+				<table class="user-registration-email" border="0" cellpadding="0" cellspacing="0" style="width: 40%; margin: 0 auto; background: #ffffff; padding: 30px 30px 26px; border: 0.4px solid #d3d3d3; border-radius: 11px; font-family: 'Segoe UI', sans-serif; ">
+					<tbody>
+						<tr>
+							<td colspan="2" style="text-align: left;">
+								<?php echo wp_kses_post( $email_content ); ?>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<?php
+			$email_content = wp_kses_post( ob_get_clean() );
+			// }
+
+			return $email_content;
+	}
+}
