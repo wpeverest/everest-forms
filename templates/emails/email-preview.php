@@ -17,18 +17,10 @@ defined( 'ABSPATH' ) || exit;
 			<title>
 				<?php get_bloginfo( 'name' ); ?>
 			</title>
-			<style>
-				html,
-				body {
-					overflow: auto;
-					-webkit-overflow-scrolling: auto;
-					margin: 0;
-					min-height: 100vh;
-				}
-			</style>
 		</head>
 		<body <?php body_class(); ?> >
 			<?php
+			$connection_id = isset( $_GET['evf_email_preview'] ) ? $_GET['evf_email_preview'] : '';
 			/**
 			 * Get email message from the specific email connection
 			 *
@@ -37,20 +29,34 @@ defined( 'ABSPATH' ) || exit;
 			function form_data() {
 				$form_data = array();
 
-				$connection_id = isset( $_GET['evf_email_preview'] ) ? $_GET['evf_email_preview'] : '';
-
 				if ( ! empty( $_GET['form_id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+					$connection_id         = isset( $_GET['evf_email_preview'] ) ? $_GET['evf_email_preview'] : '';
 					$form_data             = evf()->form->get( absint( $_GET['form_id'] ), array( 'content_only' => true ) ); // phpcs:ignore WordPress.Security.NonceVerification
 					$email_preview_message = $form_data['settings']['email'][ "$connection_id" ]['evf_email_message'];
 				}
 
-				return $email_preview_message;
+				return $form_data;
 			}
 
-			$email_content = form_data();
-			if ( has_filter( 'everest_forms_process_smart_tags' ) ) {
-				echo evf_process_email_content( apply_filters('everest_forms_process_smart_tags',$email_content, array(), '','') ); // phpcs:ignore.
+			// Email data of the specific connection.
+			$email_form_data         = form_data();
+			$email_content           = $email_form_data['settings']['email'][ "$connection_id" ]['evf_email_message'];
+			$email_template_included = $email_form_data['settings']['email'][ "$connection_id" ]['choose_template'] ? true : false;
+
+			// Initializing the EVF_Emails class to import the email template.
+			$evf_emails_obj = new EVF_Emails();
+
+			// Email Template Enabled or not checked.
+			$email_template_included = ! empty( $email_form_data['settings']['email'][ $connection_id ]['choose_template'] ) ? true : false;
+			if ( $email_template_included ) {
+
+				$email_content = apply_filters( 'everest_forms_email_template_message', $email_content, $evf_emails_obj, $connection_id );
+				echo $email_content;
+			} else {
+				$email_content = $evf_emails_obj->build_email( $email_content );
+				echo $email_content;
 			}
+
 			?>
 		</body>
 	</html>
