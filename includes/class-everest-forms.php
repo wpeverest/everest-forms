@@ -46,6 +46,21 @@ final class EverestForms {
 	public $form;
 
 	/**
+	 * The form task handler instance.
+	 *
+	 * @var EVF_Form_Task
+	 */
+	public $task;
+
+
+	/**
+	 * The smart tags handler instance.
+	 *
+	 * @var EVF_Smart_Tags
+	 */
+	public $smart_tags;
+
+	/**
 	 * The entry data handler instance.
 	 *
 	 * @var EVF_Entry_Handler
