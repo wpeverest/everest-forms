@@ -41,13 +41,16 @@ defined( 'ABSPATH' ) || exit;
 
 			// Email data of the specific connection.
 			$email_form_data         = form_data();
-			$email_content           = $email_form_data['settings']['email'][ "$connection_id" ]['evf_email_message'];
-			$email_template_included = $email_form_data['settings']['email'][ "$connection_id" ]['choose_template'];
+			$email_content           = $email_form_data['settings']['email'][ $connection_id ]['evf_email_message'];
+			$email_template_included = $email_form_data['settings']['email'][ $connection_id ]['choose_template'];
 
 			// Initializing the EVF_Emails class to import the email template.
-			$evf_emails_obj            = new EVF_Emails();
-			$evf_emails_obj->form_data = $email_form_data;
-			
+			$evf_emails_obj               = new EVF_Emails();
+			$evf_emails_obj->from_address = $email_form_data['settings']['email'][ $connection_id ]['evf_from_email'];
+			$evf_emails_obj->form_data    = $email_form_data;
+			$evf_emails_obj->from_name    = $email_form_data['settings']['email'][ $connection_id ]['evf_from_name'];
+			$evf_emails_obj->reply_to     = $email_form_data['settings']['email'][ $connection_id ]['evf_reply_to'];
+
 
 			// Email Template Enabled or not checked.
 			$email_template_included = ! empty( $email_form_data['settings']['email'][ $connection_id ]['choose_template'] ) ? $email_content : 0;
