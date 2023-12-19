@@ -118,8 +118,10 @@
 		addNewEmailConnection: function( el, data ){
 			var $this= el;
 			var response = data.response;
+			var preview_url = response.data.preview_url;
 			var name = data.name;
 			var $connections = $this.closest('.everest-forms-panel-sidebar-content');
+			var $connections_list = $connections.find('.everest-forms-panel-sidebar');
 			var form_title = $('#everest-forms-panel-field-settings-form_title:first').val() + '-' + Date.now();
 			var cloned_email = $('.evf-content-email-settings').first().clone();
 			$('.evf-content-email-settings-inner').removeClass('active-connection');
@@ -232,6 +234,9 @@
 			cloned_email.find('.evf-field-conditional-input').attr('name', 'settings[email]['+response.data.connection_id+'][conditionals][1][1][value]');
 			$cloned_email = cloned_email.append('<input type="hidden" name="settings[email]['+response.data.connection_id+'][connection_name]" value="'+name+'">');
 
+			// Grabs the address of the default connection to preview the message
+			var cloned_email_preview_link = $connections_list.find('.email-default-preview').attr('href');
+
 			$('.evf-email-settings-wrapper').append(cloned_email);
 			$connections.find('.evf-content-email-settings-inner').last().addClass('active-connection');
 			$this.parent().find('.everest-forms-active-email-connections-list li').removeClass('active-user');
@@ -255,7 +260,7 @@
 							'</svg></span>' +
 						'</a>' +
 						'<span class="evf-vertical-divider"></span>' +
-							'<a href="#" class="evf-email-preview">' +
+							'<a href="'+preview_url+'" class="evf-email-preview" target="_blank">' +
 								'<span class="email-preview">' +
 								'<svg  xmlns="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/1999/svg"' +
 								'viewBox="0 0 442.04 442.04" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g>' +

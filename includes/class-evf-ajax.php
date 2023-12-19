@@ -643,10 +643,17 @@ class EVF_AJAX {
 		}
 
 		$connection_id = 'connection_' . uniqid();
-
+		$preview_url   = add_query_arg(
+			array(
+				'evf_email_preview' => $connection_id,
+				'form_id'           => $_POST['id'],
+			),
+			home_url()
+		);
 		wp_send_json_success(
 			array(
 				'connection_id' => $connection_id,
+				'preview_url'   => $preview_url,
 			)
 		);
 	}

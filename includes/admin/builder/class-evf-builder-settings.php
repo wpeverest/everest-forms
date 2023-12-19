@@ -129,19 +129,18 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 												</svg>
 											</a>
 											<span class="evf-vertical-divider"></span>
-											<a class="evf-email-preview" target="__blank" data-connection-id="<?php echo esc_attr( $connection_id ); ?>" href="
-																														<?php
-																															echo esc_url(
-																																add_query_arg(
-																																	array(
-																																		'evf_email_preview' => $connection_id,
-																																		'form_id' => $_GET['form_id'],
-																																	),
-																																	home_url()
-																																)
-																															);
-																														?>
-																														">
+											<?php
+											$preview_url = esc_url(
+												add_query_arg(
+													array(
+														'evf_email_preview' => $connection_id,
+														'form_id' => $_GET['form_id'],
+													),
+													home_url()
+												)
+											);
+											?>
+											<a class="<?php echo $preview_class; ?>" target="__blank" data-connection-id="<?php echo esc_attr( $connection_id ); ?>" href="<?php echo esc_url( $preview_url ); ?>">
 												<span class="<?php echo esc_attr( $preview_class ); ?>">
 												<svg  xmlns="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/1999/svg"
 												viewBox="0 0 442.04 442.04" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g>
