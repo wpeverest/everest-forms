@@ -48,8 +48,15 @@ defined( 'ABSPATH' ) || exit;
 			$evf_emails_obj            = new EVF_Emails();
 			$evf_emails_obj->form_data = $email_form_data;
 
+			if ( empty( $email_content ) ) {
+				$email_content = esc_html__( '{all_fields}', 'everest-forms' );
+			}
+
+			$email_content = str_replace( '{all_fields}', evf_process_all_fields_smart_tag( $email_content ), $email_content );
+
 			// Email Template Enabled or not checked.
 			$email_template_included = ! empty( $email_form_data['settings']['email'][ $connection_id ]['choose_template'] ) ? $email_content : 0;
+
 			if ( $email_template_included ) {
 				$email_content = apply_filters( 'everest_forms_email_template_message', $email_content, $evf_emails_obj, $connection_id );
 				echo $email_content;
