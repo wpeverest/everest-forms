@@ -33,6 +33,14 @@ class EVF_Admin_Tools {
 	public static function export() {
 		include_once dirname( __FILE__ ) . '/views/html-admin-page-export.php';
 	}
+	/**
+	 * Show the Form migrator page.
+	 *
+	 * @since 2.0.6
+	 */
+	public static function form_migrator() {
+		include_once dirname( __FILE__ ) . '/views/html-admin-page-form-migrator.php';
+	}
 
 	/**
 	 * Show the logs page.
