@@ -56,6 +56,9 @@ class EVF_Admin {
 					break;
 			}
 		}
+
+		include_once __DIR__ . '/form-migrator/abstract-evf-form-migrator.php';
+		include_once __DIR__ . '/form-migrator/class-evf-fm-contactform7.php';
 	}
 
 	/**

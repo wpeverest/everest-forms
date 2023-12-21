@@ -39,12 +39,9 @@ class EVF_Admin_Tools {
 	 * @since 2.0.6
 	 */
 	public static function form_migrator() {
-		include_once dirname( __FILE__ ) . '/form-migrator/abstract-evf-form-migrator.php';
-		include_once dirname( __FILE__ ) . '/form-migrator/class-evf-fm-contactform7.php';
-
 		//Form object list.
 		$forms_object = array(
-			'contactform7'=> new EVF_Fm_Contactform7(),
+			'contactform7'=>  class_exists( 'EVF_Fm_Contactform7' ) ? new EVF_Fm_Contactform7() : '',
 		);
 		//Forms status.
 		$forms_status = [];

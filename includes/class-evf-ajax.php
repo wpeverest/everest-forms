@@ -82,28 +82,29 @@ class EVF_AJAX {
 	 */
 	public static function add_ajax_events() {
 		$ajax_events = array(
-			'save_form'               => false,
-			'create_form'             => false,
-			'get_next_id'             => false,
-			'install_extension'       => false,
-			'integration_connect'     => false,
-			'new_email_add'           => false,
-			'integration_disconnect'  => false,
-			'rated'                   => false,
-			'review_dismiss'          => false,
-			'survey_dismiss'          => false,
-			'allow_usage_dismiss'     => false,
-			'php_notice_dismiss'      => false,
-			'enabled_form'            => false,
-			'import_form_action'      => false,
-			'template_licence_check'  => false,
-			'template_activate_addon' => false,
-			'ajax_form_submission'    => true,
-			'send_test_email'         => false,
-			'locate_form_action'      => false,
-			'slot_booking'            => true,
-			'active_addons'           => false,
-			'get_local_font_url'      => true,
+			'save_form'                => false,
+			'create_form'              => false,
+			'get_next_id'              => false,
+			'install_extension'        => false,
+			'integration_connect'      => false,
+			'new_email_add'            => false,
+			'integration_disconnect'   => false,
+			'rated'                    => false,
+			'review_dismiss'           => false,
+			'survey_dismiss'           => false,
+			'allow_usage_dismiss'      => false,
+			'php_notice_dismiss'       => false,
+			'enabled_form'             => false,
+			'import_form_action'       => false,
+			'template_licence_check'   => false,
+			'template_activate_addon'  => false,
+			'ajax_form_submission'     => true,
+			'send_test_email'          => false,
+			'locate_form_action'       => false,
+			'slot_booking'             => true,
+			'active_addons'            => false,
+			'get_local_font_url'       => true,
+			'form_migrator_forms_list' => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -853,7 +854,7 @@ class EVF_AJAX {
 			foreach ( $pages as $page ) {
 				if ( 'page' === $page->post_type || 'post' === $page->post_type ) {
 					$page_title               = $page->post_title;
-					$page_guid                = get_permalink( $page->ID);
+					$page_guid                = get_permalink( $page->ID );
 					$page_list[ $page_title ] = $page_guid;
 				}
 			}
@@ -866,9 +867,6 @@ class EVF_AJAX {
 			);
 		}
 	}
-	/**
-	 * Slot booking.
-	 */
 	/**
 	 * Slot booking.
 	 */
@@ -970,6 +968,71 @@ class EVF_AJAX {
 		}
 
 		return wp_send_json_success( $font_url );
+	}
+
+	/**
+	 * Forms list for form migrator.
+	 *
+	 * @since 2.0.6
+	 */
+	public static function form_migrator_forms_list() {
+		try {
+			check_ajax_referer( 'evf_form_migrator_forms_list_nonce', 'security' );
+
+			$form_slug = isset( $_POST['form_slug'] ) ? sanitize_text_field( $_POST['form_slug'] ) : '';
+			if ( '' === $form_slug ) {
+				wp_send_json_error(
+					array(
+						'message' => __( 'Missing form slug !', 'everest-forms' ),
+					)
+				);
+			}
+
+			// Creating the form instance and getting the form list.
+			switch ( $form_slug ) {
+				case 'contact-form-7':
+					$form_instance = class_exists( 'EVF_Fm_Contactform7' ) ? new EVF_Fm_Contactform7() : '';
+					$forms_list    = $form_instance->get_forms();
+					$title         = esc_html__( 'Import Contact Form 7', 'everest-forms' );
+					break;
+			}
+			$row               = 0;
+			$form_per_page     = 2;
+			$total_page        = ceil( count( $forms_list ) / $form_per_page );
+			$forms_list_table  = '<div class="evf-fm-forms-table-wrapper">';
+			$forms_list_table .= '<h4>' . esc_html( $title ) . '</h4>';
+			$forms_list_table .= '<table class="evf-fm-forms-table" data-form-slug="' . esc_attr( $form_slug ) . '">';
+			$forms_list_table .= '<tr class="evf-th-title"><th><input id="evf-fm-select-all" type="checkbox" name="fm_select_all_form" /></th><th>' . esc_html__( 'Form	Name', 'everest-forms' ) . '</th><th>' . esc_html__( 'Imported', 'everest-forms' ) . '</th><th>' . esc_html__( 'Action' ) . '</th></tr>';
+			$hidden            = '';
+			foreach ( $forms_list as $form_id => $form_name ) {
+				++$row;
+				$forms_list_table .= '<tr class="evf-fm-row-' . esc_attr( $row ) . '" style=" display:' . esc_attr( $hidden ) . '"><td><input class="evf-fm-select-single" type="checkbox" name="fm_select_single_form" value="' . esc_attr( $form_id ) . '" /></td><td>' . esc_html__( $form_name, 'everest-forms' ) . '</td><td>' . esc_html__( 'Imported', 'everest-forms' ) . '</td><td><button class="evf-fm-import-single" data-form-id="' . esc_attr( $form_id ) . '">' . esc_html( 'Import Form' ) . '</button></td></tr>';
+				if ( $row === $form_per_page ) {
+					$hidden = 'none';
+				}
+			}
+			$forms_list_table .= '</table>';
+			$forms_list_table .= '<div data-total-page="' . esc_attr( $total_page ) . '" class="evf-fm-pagination">';
+
+			for ( $page = 1; $page <= $total_page; $page++ ) {
+				$forms_list_table .= '<button class="evf-fm-page" data-page="' . esc_attr( $page ) . '">' . esc_attr( $page ) . '</button>';
+			}
+			$forms_list_table .= '</div>';
+			$forms_list_table .= '</div>';
+			wp_send_json_success(
+				array(
+					'message'          => esc_html( 'All Forms List', 'everest-forms' ),
+					'forms_list_table' => $forms_list_table,
+				)
+			);
+
+		} catch ( Exception $e ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'Something went wrong !', 'everest-forms' ),
+				)
+			);
+		}
 	}
 }
 

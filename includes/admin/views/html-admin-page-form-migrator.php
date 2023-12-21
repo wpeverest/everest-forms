@@ -25,7 +25,7 @@ defined( 'ABSPATH' ) || exit;
 	<div class="evf-fm-select-popular-form">
 	<?php
 		if ( ! empty( $forms_status ) ) {
-			echo '<select id="everest-forms-form-export" class="evf-enhanced-select" style="min-width: 350px;" name="form_ids[]" data-placeholder="' . esc_attr__( 'Select Form To Migrate', 'everest-forms' ) . '">';
+			echo '<select id="everest-forms-form-migrator" class="evf-enhanced-select" style="min-width: 350px;" name="form_ids[]" data-placeholder="' . esc_attr__( 'Select Form To Migrate', 'everest-forms' ) . '">';
 			echo '<option value=""> '.esc_html('-- Select Form To Migrate --', 'everest-forms').'</option>';
 			foreach ( $forms_status as $id => $form_status ) { // phpcs:ignore WordPress.WP.GlobalVariablesOverride
 				$disabled ='';
@@ -47,8 +47,7 @@ defined( 'ABSPATH' ) || exit;
 		?>
 	</div>
 	<div class="evf-fm-wrapper">
-		<div class="evf-fm-form-list-wrapper">
-
+		<div id="evf-fm-forms-list-container" class="evf-fm-form-list-container">
 		</div>
 	</div>
 </div>

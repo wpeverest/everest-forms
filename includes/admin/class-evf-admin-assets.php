@@ -324,8 +324,10 @@ class EVF_Admin_Assets {
 				'evf-admin-tools',
 				'everest_forms_admin_tools',
 				array(
-					'delete_log_confirmation'     => esc_js( esc_html__( 'Are you sure you want to delete this log?', 'everest-forms' ) ),
-					'delete_all_log_confirmation' => esc_js( esc_html__( 'Are you sure you want to delete all logs?', 'everest-forms' ) ),
+					'ajax_url'                           => admin_url( 'admin-ajax.php' ),
+					'evf_form_migrator_forms_list_nonce' => wp_create_nonce( 'evf_form_migrator_forms_list_nonce' ),
+					'delete_log_confirmation'            => esc_js( esc_html__( 'Are you sure you want to delete this log?', 'everest-forms' ) ),
+					'delete_all_log_confirmation'        => esc_js( esc_html__( 'Are you sure you want to delete all logs?', 'everest-forms' ) ),
 				)
 			);
 		}
