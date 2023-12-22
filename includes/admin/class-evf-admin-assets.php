@@ -326,6 +326,7 @@ class EVF_Admin_Assets {
 				array(
 					'ajax_url'                           => admin_url( 'admin-ajax.php' ),
 					'evf_form_migrator_forms_list_nonce' => wp_create_nonce( 'evf_form_migrator_forms_list_nonce' ),
+					'evf_form_migrator_nonce' 			 => wp_create_nonce( 'evf_form_migrator_nonce' ),
 					'delete_log_confirmation'            => esc_js( esc_html__( 'Are you sure you want to delete this log?', 'everest-forms' ) ),
 					'delete_all_log_confirmation'        => esc_js( esc_html__( 'Are you sure you want to delete all logs?', 'everest-forms' ) ),
 				)

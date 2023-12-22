@@ -88,6 +88,41 @@ jQuery( function ( $ ) {
 				$(formTable).find('#evf-fm-row-'+start).removeClass('evf-fm-show-row');
 			}
 		});
+
+		//Import Single form.
+		$(document).on('click', '.evf-fm-import-single', function(e) {
+			e.preventDefault();
+			var form_id = $(this).data('form-id');
+			evf_fm_import_forms([form_id]);
+		});
+
+		function evf_fm_import_forms(form_ids) {
+			var formSlug = $(document).find('.evf-fm-forms-table').data('form-slug');
+
+			if(typeof formSlug === 'undefined' || formSlug === '') {
+				return;
+			}
+
+			var data = {
+				'action':'everest_forms_form_migrator',
+				'form_slug':formSlug,
+				'form_ids':form_ids,
+				'security':everest_forms_admin_tools.evf_form_migrator_nonce,
+			}
+
+			$.ajax({
+				url: everest_forms_admin_tools.ajax_url,
+				type:"POST",
+				dataType:'JSON',
+				data:data,
+				beforeSend:function(){
+					var spinner = '<i class="evf-loading evf-loading-active"></i>';
+				},
+				success:function(res){
+					console.log(res);
+				}
+			})
+		}
 	});
 
 });

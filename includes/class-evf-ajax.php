@@ -105,6 +105,7 @@ class EVF_AJAX {
 			'active_addons'            => false,
 			'get_local_font_url'       => true,
 			'form_migrator_forms_list' => false,
+			'form_migrator' 		   => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -1004,9 +1005,15 @@ class EVF_AJAX {
 			$forms_list_table .= '<table class="evf-fm-forms-table" data-form-slug="' . esc_attr( $form_slug ) . '">';
 			$forms_list_table .= '<tr class="evf-th-title"><th><input id="evf-fm-select-all" type="checkbox" name="fm_select_all_form" /></th><th>' . esc_html__( 'Form	Name', 'everest-forms' ) . '</th><th>' . esc_html__( 'Imported', 'everest-forms' ) . '</th><th>' . esc_html__( 'Action' ) . '</th></tr>';
 			$hidden            = '';
+			$imported = get_option( 'evf_forms_imported', [] );
 			foreach ( $forms_list as $form_id => $form_name ) {
 				++$row;
-				$forms_list_table .= '<tr id="evf-fm-row-' . esc_attr( $row ) . '" class="evf-fm-row ' . esc_attr( $hidden ) . '"><td><input class="evf-fm-select-single" type="checkbox" name="fm_select_single_form" value="' . esc_attr( $form_id ) . '" /></td><td>' . esc_html__( $form_name, 'everest-forms' ) . '</td><td>' . esc_html__( 'Imported', 'everest-forms' ) . '</td><td><button class="evf-fm-import-single" data-form-id="' . esc_attr( $form_id ) . '">' . esc_html( 'Import Form' ) . '</button></td></tr>';
+				if( in_array( $form_id, isset($imported[$form_slug]) ? $imported[$form_slug] : array() ) ) {
+					$is_imported = esc_html__( 'Yes', 'everest-forms' );
+				}else{
+					$is_imported = esc_html__( 'No', 'everest-forms' );
+				}
+				$forms_list_table .= '<tr id="evf-fm-row-' . esc_attr( $row ) . '" class="evf-fm-row ' . esc_attr( $hidden ) . '"><td><input class="evf-fm-select-single" type="checkbox" name="fm_select_single_form" value="' . esc_attr( $form_id ) . '" /></td><td>' . esc_html__( $form_name, 'everest-forms' ) . '</td><td>' . esc_attr( $is_imported ) . '</td><td><button class="evf-fm-import-single" data-form-id="' . esc_attr( $form_id ) . '">' . esc_html( 'Import Form' ) . '</button></td></tr>';
 				if ( $row === $form_per_page ) {
 					$hidden = 'evf-fm-hide-row';
 				}
@@ -1032,6 +1039,41 @@ class EVF_AJAX {
 			);
 
 		} catch ( Exception $e ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'Something went wrong !', 'everest-forms' ),
+				)
+			);
+		}
+	}
+
+	/**
+	 * Form migrator.
+	 *
+	 * @since 2.0.6
+	 */
+	public static function form_migrator() {
+		try{
+			check_ajax_referer( 'evf_form_migrator_nonce', 'security' );
+
+			$form_slug = isset( $_POST['form_slug'] ) ? $_POST['form_slug'] : '';
+			$form_ids = isset( $_POST['form_ids'] ) ? $_POST['form_ids'] : '';
+
+			switch($form_slug){
+				case 'contact-form-7':
+					$form_instance = class_exists( 'EVF_Fm_Contactform7' ) ? new EVF_Fm_Contactform7() : '';
+					$forms_data = $form_instance->get_form_sync_data( $form_ids );
+					break;
+			}
+
+
+			wp_send_json_success(
+				array(
+					'message' => __( 'Something went wrong !', 'everest-forms' ),
+				)
+			);
+
+		}catch ( Exception $e ) {
 			wp_send_json_error(
 				array(
 					'message' => __( 'Something went wrong !', 'everest-forms' ),

@@ -88,4 +88,23 @@ abstract class EVF_Admin_Form_Migrator {
 
 		return is_plugin_active( $this->path );
 	}
+
+	/**
+	 * After a form has been successfully imported we track it, so that in the
+	 * future we can alert users if they try to import a form that has already
+	 * been imported.
+	 *
+	 * @since 2.0.6
+	 *
+	 * @param int $source_id  Imported plugin form ID.
+	 * @param int $evf_forms_id WPForms form ID.
+	 */
+	public function track_import( $source_id, $evf_forms_id ) {
+
+		$imported = get_option( 'evf_forms_imported', [] );
+
+		$imported[ $this->slug ][ $evf_forms_id ] = $source_id;
+
+		update_option( 'evf_forms_imported', $imported, false );
+	}
 }
