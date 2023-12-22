@@ -997,8 +997,8 @@ class EVF_AJAX {
 					break;
 			}
 			$row               = 0;
-			$form_per_page     = 2;
-			$total_page        = ceil( count( $forms_list ) / $form_per_page );
+			$form_per_page     = 5;
+			$ceil              = ceil( count( $forms_list ) / $form_per_page );
 			$forms_list_table  = '<div class="evf-fm-forms-table-wrapper">';
 			$forms_list_table .= '<h4>' . esc_html( $title ) . '</h4>';
 			$forms_list_table .= '<table class="evf-fm-forms-table" data-form-slug="' . esc_attr( $form_slug ) . '">';
@@ -1006,16 +1006,21 @@ class EVF_AJAX {
 			$hidden            = '';
 			foreach ( $forms_list as $form_id => $form_name ) {
 				++$row;
-				$forms_list_table .= '<tr class="evf-fm-row-' . esc_attr( $row ) . '" style=" display:' . esc_attr( $hidden ) . '"><td><input class="evf-fm-select-single" type="checkbox" name="fm_select_single_form" value="' . esc_attr( $form_id ) . '" /></td><td>' . esc_html__( $form_name, 'everest-forms' ) . '</td><td>' . esc_html__( 'Imported', 'everest-forms' ) . '</td><td><button class="evf-fm-import-single" data-form-id="' . esc_attr( $form_id ) . '">' . esc_html( 'Import Form' ) . '</button></td></tr>';
+				$forms_list_table .= '<tr id="evf-fm-row-' . esc_attr( $row ) . '" class="evf-fm-row ' . esc_attr( $hidden ) . '"><td><input class="evf-fm-select-single" type="checkbox" name="fm_select_single_form" value="' . esc_attr( $form_id ) . '" /></td><td>' . esc_html__( $form_name, 'everest-forms' ) . '</td><td>' . esc_html__( 'Imported', 'everest-forms' ) . '</td><td><button class="evf-fm-import-single" data-form-id="' . esc_attr( $form_id ) . '">' . esc_html( 'Import Form' ) . '</button></td></tr>';
 				if ( $row === $form_per_page ) {
-					$hidden = 'none';
+					$hidden = 'evf-fm-hide-row';
 				}
 			}
 			$forms_list_table .= '</table>';
-			$forms_list_table .= '<div data-total-page="' . esc_attr( $total_page ) . '" class="evf-fm-pagination">';
 
-			for ( $page = 1; $page <= $total_page; $page++ ) {
-				$forms_list_table .= '<button class="evf-fm-page" data-page="' . esc_attr( $page ) . '">' . esc_attr( $page ) . '</button>';
+			$forms_list_table .= '<div data-total-page="' . esc_attr( count( $forms_list ) ) . '" data-fm-ceil="' . esc_attr( $ceil ) . '"  data-form-per-page="' . esc_attr( $form_per_page ) . '" class="evf-fm-pagination">';
+
+			for ( $page = 1; $page <= $ceil; $page++ ) {
+				$active = '';
+				if ( 1 === $page ) {
+					$active = 'evf-fm-btn-active';
+				}
+				$forms_list_table .= '<button class="evf-fm-page ' . esc_attr( $active ) . '" data-page="' . esc_attr( $page ) . '">' . esc_attr( $page ) . '</button>';
 			}
 			$forms_list_table .= '</div>';
 			$forms_list_table .= '</div>';
