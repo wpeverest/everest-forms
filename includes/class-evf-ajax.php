@@ -1069,7 +1069,8 @@ class EVF_AJAX {
 
 			wp_send_json_success(
 				array(
-					'message' => __( 'Something went wrong !', 'everest-forms' ),
+					'message' => __( 'Imported Successfully', 'everest-forms' ),
+					'form_data'=> $forms_data,
 				)
 			);
 
