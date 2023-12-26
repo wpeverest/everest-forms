@@ -105,7 +105,7 @@ class EVF_AJAX {
 			'active_addons'            => false,
 			'get_local_font_url'       => true,
 			'form_migrator_forms_list' => false,
-			'form_migrator' 		   => false,
+			'form_migrator'            => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -1005,21 +1005,21 @@ class EVF_AJAX {
 			$forms_list_table .= '<table class="evf-fm-forms-table" data-form-slug="' . esc_attr( $form_slug ) . '">';
 			$forms_list_table .= '<tr class="evf-th-title"><th><input id="evf-fm-select-all" type="checkbox" name="fm_select_all_form" /></th><th>' . esc_html__( 'Form	Name', 'everest-forms' ) . '</th><th>' . esc_html__( 'Imported', 'everest-forms' ) . '</th><th>' . esc_html__( 'Action' ) . '</th></tr>';
 			$hidden            = '';
-			$imported = get_option( 'evf_forms_imported', [] );
+			$imported          = get_option( 'evf_forms_imported', array() );
 			foreach ( $forms_list as $form_id => $form_name ) {
 				++$row;
-				if( in_array( $form_id, isset($imported[$form_slug]) ? $imported[$form_slug] : array() ) ) {
+				if ( in_array( $form_id, isset( $imported[ $form_slug ] ) ? $imported[ $form_slug ] : array() ) ) {
 					$is_imported = esc_html__( 'Yes', 'everest-forms' );
-				}else{
+				} else {
 					$is_imported = esc_html__( 'No', 'everest-forms' );
 				}
-				$forms_list_table .= '<tr id="evf-fm-row-' . esc_attr( $row ) . '" class="evf-fm-row ' . esc_attr( $hidden ) . '"><td><input class="evf-fm-select-single" type="checkbox" name="fm_select_single_form" value="' . esc_attr( $form_id ) . '" /></td><td>' . esc_html__( $form_name, 'everest-forms' ) . '</td><td>' . esc_attr( $is_imported ) . '</td><td><button class="evf-fm-import-single" data-form-id="' . esc_attr( $form_id ) . '">' . esc_html( 'Import Form' ) . '</button></td></tr>';
+				$forms_list_table .= '<tr id="evf-fm-row-' . esc_attr( $row ) . '" class="evf-fm-row ' . esc_attr( $hidden ) . '"><td><input class="evf-fm-select-single" type="checkbox" name="fm_select_single_form_'. esc_attr( $form_id ).'" data-form-id="' . esc_attr( $form_id ) . '" /></td><td>' . esc_html__( $form_name, 'everest-forms' ) . '</td><td>' . esc_attr( $is_imported ) . '</td><td><button class="evf-fm-import-single" data-form-id="' . esc_attr( $form_id ) . '">' . esc_html( 'Import Form' ) . '</button></td></tr>';
 				if ( $row === $form_per_page ) {
 					$hidden = 'evf-fm-hide-row';
 				}
 			}
 			$forms_list_table .= '</table>';
-
+			$forms_list_table .= '<div class="evf-fm-import-selected-wrapper"><button class="evf-fm-import-selected-btn">' . esc_html( 'Import Selected Forms' ) . '</button>';
 			$forms_list_table .= '<div data-total-page="' . esc_attr( count( $forms_list ) ) . '" data-fm-ceil="' . esc_attr( $ceil ) . '"  data-form-per-page="' . esc_attr( $form_per_page ) . '" class="evf-fm-pagination">';
 
 			for ( $page = 1; $page <= $ceil; $page++ ) {
@@ -1029,7 +1029,7 @@ class EVF_AJAX {
 				}
 				$forms_list_table .= '<button class="evf-fm-page ' . esc_attr( $active ) . '" data-page="' . esc_attr( $page ) . '">' . esc_attr( $page ) . '</button>';
 			}
-			$forms_list_table .= '</div>';
+			$forms_list_table .= '</div></div>';
 			$forms_list_table .= '</div>';
 			wp_send_json_success(
 				array(
@@ -1053,28 +1053,42 @@ class EVF_AJAX {
 	 * @since 2.0.6
 	 */
 	public static function form_migrator() {
-		try{
+		try {
 			check_ajax_referer( 'evf_form_migrator_nonce', 'security' );
 
 			$form_slug = isset( $_POST['form_slug'] ) ? $_POST['form_slug'] : '';
-			$form_ids = isset( $_POST['form_ids'] ) ? $_POST['form_ids'] : '';
-
-			switch($form_slug){
+			$form_ids  = isset( $_POST['form_ids'] ) ? $_POST['form_ids'] : '';
+			if('' === $form_ids ) {
+				wp_send_json_error(
+					array(
+						'message' => __( 'Something went wrong !', 'everest-forms' ),
+					)
+				);
+			}
+			switch ( $form_slug ) {
 				case 'contact-form-7':
 					$form_instance = class_exists( 'EVF_Fm_Contactform7' ) ? new EVF_Fm_Contactform7() : '';
-					$forms_data = $form_instance->get_form_sync_data( $form_ids );
+					$forms_data    = $form_instance->get_form_sync_data( $form_ids );
 					break;
 			}
 
+			if ( 1 === count( $forms_data ) ) {
+				wp_send_json_success(
+					array(
+						'message'   => sprintf( '%s <a href="%s" target="_blank">%s</a>', __( 'Imported Successfully.', 'everest-forms' ), esc_url( $forms_data[$form_ids[0]]['edit'] ), __( 'View Form', 'everest-forms' ) ),
+						'form_data' => $forms_data,
+					)
+				);
+			}else{
+				wp_send_json_success(
+					array(
+						'message'   => __( 'Imported Successfully', 'everest-forms' ),
+						'form_data' => $forms_data,
+					)
+				);
+			}
 
-			wp_send_json_success(
-				array(
-					'message' => __( 'Imported Successfully', 'everest-forms' ),
-					'form_data'=> $forms_data,
-				)
-			);
-
-		}catch ( Exception $e ) {
+		} catch ( Exception $e ) {
 			wp_send_json_error(
 				array(
 					'message' => __( 'Something went wrong !', 'everest-forms' ),

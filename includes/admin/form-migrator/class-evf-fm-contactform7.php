@@ -358,11 +358,10 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 			// Mapping Fields.
 			if ( empty( $cf7_fields ) ) {
 				// If form does not contain fields, bail.
-				wp_send_json_success(
+				wp_send_json_error(
 					array(
-						'error' => true,
-						'name'  => sanitize_text_field( $cf7_form_name ),
-						'msg'   => esc_html__( 'No form fields found.', 'everest-forms' ),
+						'form_name'  => sanitize_text_field( $cf7_form_name ),
+						'message'   => esc_html__( 'No form fields found.', 'everest-forms' ),
 					)
 				);
 			}

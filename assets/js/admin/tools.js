@@ -93,10 +93,25 @@ jQuery( function ( $ ) {
 		$(document).on('click', '.evf-fm-import-single', function(e) {
 			e.preventDefault();
 			var form_id = $(this).data('form-id');
-			evf_fm_import_forms([form_id]);
+			evf_fm_import_forms($(this), [form_id]);
+		});
+		//Import Selected form.
+		$(document).on('click', '.evf-fm-import-selected-btn', function(e) {
+			e.preventDefault();
+			var table = $(document).find('.evf-fm-forms-table'),
+			selected_forms = $(table).find('td .evf-fm-select-single:checked'),
+			formIds = [];
+			$.each(selected_forms, function(index, form){
+				var formID = $(form).data('form-id');
+				formIds.push(formID);
+			});
+			if(formIds.length === 0){
+				return;
+			}
+			evf_fm_import_forms($(this), formIds);
 		});
 
-		function evf_fm_import_forms(form_ids) {
+		function evf_fm_import_forms($this, form_ids) {
 			var formSlug = $(document).find('.evf-fm-forms-table').data('form-slug');
 
 			if(typeof formSlug === 'undefined' || formSlug === '') {
@@ -117,9 +132,19 @@ jQuery( function ( $ ) {
 				data:data,
 				beforeSend:function(){
 					var spinner = '<i class="evf-loading evf-loading-active"></i>';
+					$this.closest('td').append(spinner);
+					$( '.everest-froms-import_notice' ).remove();
 				},
 				success:function(res){
-					console.log(res);
+					$( '.everest-froms-import_notice' ).remove();
+					$( '.evf-loading' ).remove();
+					var message_string = '';
+					if ( true === res.success ) {
+						message_string = '<div id="message" class="updated inline everest-froms-import_notice"><p><strong>' + res.data.message + '</strong></p></div>';
+					} else {
+						message_string = '<div id="message" class="error inline everest-froms-import_notice"><p><strong>' + res.data.message + '</strong></p></div>';
+					}
+					$(document).find('#evf-fm-forms-list-container').prepend(message_string);
 				}
 			})
 		}
