@@ -417,7 +417,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 2.0.6       - 25-12-2023
+= 2.0.6       - 26-12-2023
 * Upgraded    - Input mask library.
 * Fix		  - Empty values in entries for (select, checkbox, radio) fields when wordPress site is in another language.
 * Fix         - XLSX export issue.
