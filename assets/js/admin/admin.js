@@ -435,4 +435,12 @@
 
 		})
 	});
+	$( '.evf-smart-phone-field' ).each( function( i, el ) {
+		var $el = $( el );
+		var field_name     = $el.attr( 'name' );
+		setTimeout(function() {
+			$('input[name="' + field_name + '"]').val($el.val());
+		}, 2000);
+	});
+
 })( jQuery, everest_forms_admin );
