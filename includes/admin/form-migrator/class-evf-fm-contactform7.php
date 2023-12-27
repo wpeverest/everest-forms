@@ -523,6 +523,7 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 							'id'                     => $field_id,
 							'type'                   => $type,
 							'label'                  => $label,
+							'meta-key'               => $cf7_field->name,
 							'choices'                => $choices,
 							'description'            => '',
 							'required'               => $cf7_field->is_required() ? '1' : '',
@@ -534,15 +535,11 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 						);
 
 						if ( 'radio' === $cf7_field->basetype || 'checkbox' === $cf7_field->basetype ) {
-							$form['form_fields'][ $field_id ] = array(
-								'input_columns' => '',
-							);
+							$form['form_fields'][ $field_id ]['input_columns'] = '';
 						}
 
 						if ( 'checkbox' === $cf7_field->basetype ) {
-							$form['form_fields'][ $field_id ] = array(
-								'choice_limit' => '',
-							);
+							$form['form_fields'][ $field_id ]['choice_limit'] = '';
 						}
 						break;
 					case 'number':
