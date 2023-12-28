@@ -18,7 +18,7 @@ defined( 'ABSPATH' ) || exit;
 		<i class="dashicons dashicons-info"></i>
 		<?php
 		/* translators: %s: Form migrator notice */
-		printf( esc_html__( 'Migrate other plugins forms into Everest Forms with ease. Please note that previously imported forms and entries will be reset and updated again.', 'everest-forms' ), '<strong>JSON</strong>' );
+		printf( esc_html__( 'Migrate forms from other plugins into Everest Forms seamlessly with just one click.', 'everest-forms' ) );
 		?>
 		</p>
 	</div>
