@@ -110,7 +110,12 @@ jQuery( function ( $ ) {
 			}
 			evf_fm_import_forms($(this), formIds);
 		});
-
+		/**
+		 *Form migrator impot forms ajax request.
+		 * @param {object} $this
+		 * @param {array} form_ids
+		 * @returns
+		 */
 		function evf_fm_import_forms($this, form_ids) {
 			var formSlug = $(document).find('.evf-fm-forms-table').data('form-slug');
 

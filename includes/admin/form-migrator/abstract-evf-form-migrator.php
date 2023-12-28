@@ -90,16 +90,15 @@ abstract class EVF_Admin_Form_Migrator {
 	}
 
 	/**
-	 * After a form has been successfully imported we track it, so that in the
-	 * future we can alert users if they try to import a form that has already
-	 * been imported.
+	 * Tracks the successful import of a form, allowing future alerts for attempts to
+	 * import a form that has already been imported.
 	 *
 	 * @since 2.0.6
 	 *
-	 * @param int $source_id  Imported plugin form ID.
-	 * @param int $evf_forms_id WPForms form ID.
+	 * @param int $source_id      Imported plugin form ID.
+	 * @param int $evf_forms_id   Form ID.
 	 */
-	public function track_import( $source_id, $evf_forms_id ) {
+	protected function track_import( $source_id, $evf_forms_id ) {
 
 		$imported = get_option( 'evf_forms_imported', array() );
 
@@ -118,7 +117,7 @@ abstract class EVF_Admin_Form_Migrator {
 	 * @param array $upgrade_plan List of fields, that are supported inside the EVF Forms Pro, but not in Free.
 	 * @param array $upgrade_omit  No field alternative in EVF.
 	 */
-	public function import_form( $form, $unsupported = array(), $upgrade_plan = array(), $upgrade_omit = array() ) {
+	protected function import_form( $form, $unsupported = array(), $upgrade_plan = array(), $upgrade_omit = array() ) {
 
 		$form_id = wp_insert_post(
 			array(

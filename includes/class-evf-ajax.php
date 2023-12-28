@@ -1068,7 +1068,7 @@ class EVF_AJAX {
 			switch ( $form_slug ) {
 				case 'contact-form-7':
 					$form_instance = class_exists( 'EVF_Fm_Contactform7' ) ? new EVF_Fm_Contactform7() : '';
-					$forms_data    = $form_instance->get_form_sync_data( $form_ids );
+					$forms_data    = $form_instance->get_fm_mapped_form_data( $form_ids );
 					break;
 			}
 

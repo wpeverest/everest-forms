@@ -87,7 +87,7 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 	 *
 	 * @return string
 	 */
-	public function get_field_label( $form, $type, $name = '' ) {
+	private function get_field_label( $form, $type, $name = '' ) {
 
 		preg_match_all( '/<label>([ \w\S\r\n\t]+?)<\/label>/', $form, $matches );
 
@@ -120,7 +120,7 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 	 *
 	 * @return string
 	 */
-	public function get_field_placeholder_default( $field, $type = 'placeholder' ) {
+	private function get_field_placeholder_default( $field, $type = 'placeholder' ) {
 
 		$placeholder   = '';
 		$default_value = (string) reset( $field->values );
@@ -140,14 +140,14 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 	/**
 	 * Replace 3rd-party form provider tags/shortcodes with our own Smart Tags.
 	 *
-	 * @since 1.6.6
+	 * @since 2.0.6
 	 *
 	 * @param string $string Text to look for Smart Tags in.
 	 * @param array  $fields List of fields to process Smart Tags in.
 	 *
 	 * @return string
 	 */
-	public function get_smarttags( $string, $fields ) {
+	private function get_smarttags( $string, $fields ) {
 
 		preg_match_all( '/\[(.+?)\]/', $string, $tags );
 
@@ -237,7 +237,7 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 	 *
 	 * @return string
 	 */
-	public function get_replyto( $headers, $fields ) {
+	private function get_replyto( $headers, $fields ) {
 
 		if ( strpos( $headers, 'Reply-To:' ) !== false ) {
 			preg_match( '/Reply-To: \[(.+?)\]/', $headers, $tag );
@@ -264,27 +264,27 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 	 *
 	 * @return bool|array
 	 */
-	public function get_sender_details( $sender, $fields ) {
+	private function get_sender_details( $sender, $fields ) {
 
 		preg_match( '/(.+?)\<(.+?)\>/', $sender, $tag );
 
 		if ( ! empty( $tag[1] ) && ! empty( $tag[2] ) ) {
-			return [
+			return array(
 				'name'    => $this->get_smarttags( $tag[1], $fields ),
 				'address' => $this->get_smarttags( $tag[2], $fields ),
-			];
+			);
 		}
 
 		return false;
 	}
 
 	/**
-	 * Sync the form datas.
+	 * Mapped the form datas.
 	 *
 	 * @since 2.0.6
 	 * @param [array] $cf7_form_ids
 	 */
-	public function get_form_sync_data( $cf7_form_ids ) {
+	public function get_fm_mapped_form_data( $cf7_form_ids ) {
 		$cf7_forms_data = array();
 		foreach ( $cf7_form_ids as $cf7_form_id ) {
 			$cf7_form = $this->get_form( $cf7_form_id );
@@ -299,22 +299,22 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 			$cf7_properties     = $cf7_form->get_properties();
 			$cf7_recaptcha      = false;
 			$fields_pro_plan    = array( 'tel' );
-			$fields_pro_omit    = [];
+			$fields_pro_omit    = array();
 			$fields_unsupported = array( 'quiz', 'hidden', 'file' );
 			$upgrade_plan       = array();
 			$upgrade_omit       = array();
 			$unsupported        = array();
 
 			$form = array(
-				'id'                                 => '',
-				'form_enabled'                       => '1',
-				'form_field_id'                      => '',
-				'form_fields'                        => [],
-				'settings'                           => [],
+				'id'            => '',
+				'form_enabled'  => '1',
+				'form_field_id' => '',
+				'form_fields'   => array(),
+				'settings'      => array(),
 			);
 			// Settings.
 			$form['settings'] = array(
-				'email' => array(
+				'email'                              => array(
 					'connection_1' => array(
 						'enable_email_notification' => '1',
 						'connection_name'           => esc_html__( 'Admin Notification', 'everest-forms' ),
@@ -326,7 +326,7 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 						'evf_email_message'         => '{all_fields}',
 					),
 				),
-				'form_title'                         => $cf7_form_name,
+				'form_title'                         => sanitize_text_field( $cf7_form_name ),
 				'form_description'                   => '',
 				'form_disable_message'               => esc_html__( 'This form is disabled.', 'everest-forms' ),
 				'successful_form_submission_message' => esc_html__( 'Thanks for contacting us! We will be in touch with you shortly', 'everest-forms' ),
@@ -351,8 +351,8 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 				'evf-custom-css'                     => '',
 				'evf-enable-custom-js'               => '0',
 				'evf-custom-js'                      => '',
-				'structure'                          => [],
-				'import_form_id'                     => $cf7_form_id,
+				'structure'                          => array(),
+				'import_form_id'                     => absint( $cf7_form_id ),
 			);
 
 			// Mapping Fields.
@@ -360,7 +360,7 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 				// If form does not contain fields, bail.
 				wp_send_json_error(
 					array(
-						'form_name'  => sanitize_text_field( $cf7_form_name ),
+						'form_name' => sanitize_text_field( $cf7_form_name ),
 						'message'   => esc_html__( 'No form fields found.', 'everest-forms' ),
 					)
 				);
@@ -400,13 +400,13 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 				}
 
 				$field_id = evf_get_random_string() . '-' . $form_field_id;
-
+				// Mapping the field type and formtting the fields settings.
 				switch ( $cf7_field->basetype ) {
 					case 'text':
 					case 'textarea':
 						$type                                   = $cf7_field->basetype;
 						$form['structure']['row_1']['grid_1'][] = $field_id;
-						$form['form_fields'][ $field_id ]            = array(
+						$form['form_fields'][ $field_id ]       = array(
 							'id'                     => $field_id,
 							'type'                   => $type,
 							'label'                  => $label,
@@ -431,7 +431,7 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 					case 'email':
 						$type                                   = $cf7_field->basetype;
 						$form['structure']['row_1']['grid_1'][] = $field_id;
-						$form['form_fields'][ $field_id ]            = array(
+						$form['form_fields'][ $field_id ]       = array(
 							'id'                     => $field_id,
 							'type'                   => $type,
 							'label'                  => $label,
@@ -451,7 +451,7 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 					case 'url':
 						$type                                   = $cf7_field->basetype;
 						$form['structure']['row_1']['grid_1'][] = $field_id;
-						$form['form_fields'][ $field_id ]            = array(
+						$form['form_fields'][ $field_id ]       = array(
 							'id'                     => $field_id,
 							'type'                   => $type,
 							'label'                  => $label,
@@ -471,7 +471,7 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 					case 'date':
 						$type                                   = 'date-time';
 						$form['structure']['row_1']['grid_1'][] = $field_id;
-						$form['form_fields'][ $field_id ]            = array(
+						$form['form_fields'][ $field_id ]       = array(
 							'id'                     => $field_id,
 							'type'                   => $type,
 							'label'                  => $label,
@@ -545,7 +545,7 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 					case 'number':
 						$type                                   = $cf7_field->basetype;
 						$form['structure']['row_1']['grid_1'][] = $field_id;
-						$form['form_fields'][ $field_id ]            = array(
+						$form['form_fields'][ $field_id ]       = array(
 							'id'                     => $field_id,
 							'type'                   => $type,
 							'label'                  => $label,
@@ -568,7 +568,7 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 					case 'tel':
 						$type                                   = 'phone';
 						$form['structure']['row_1']['grid_1'][] = $field_id;
-						$form['form_fields'][ $field_id ]            = array(
+						$form['form_fields'][ $field_id ]       = array(
 							'id'                     => $field_id,
 							'type'                   => $type,
 							'label'                  => $label,
@@ -631,7 +631,7 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 				}
 			}
 
-				// Setup email notifications.
+			// Setup email notifications.
 			if ( ! empty( $cf7_properties['mail']['subject'] ) ) {
 				$form['settings']['email']['connection_1']['evf_email_subject'] = $this->get_smarttags( $cf7_properties['mail']['subject'], $form['form_fields'] );
 			}
@@ -652,7 +652,7 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 				$sender = $this->get_sender_details( $cf7_properties['mail']['sender'], $form['form_fields'] );
 
 				if ( $sender ) {
-					$form['settings']['email']['connection_1']['evf_from_name']    = $sender['name'];
+					$form['settings']['email']['connection_1']['evf_from_name']  = $sender['name'];
 					$form['settings']['email']['connection_1']['evf_from_email'] = $sender['address'];
 				}
 			}
