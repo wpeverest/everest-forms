@@ -264,6 +264,15 @@ class EVF_Admin_Assets {
 					'form_found'        => esc_html__( 'Form found in page:', 'everest-forms' ),
 				)
 			);
+
+			wp_localize_script(
+				'everest-forms-admin',
+				'everest_forms_admin_form_migrator',
+				array(
+					'evf_fm_dismiss_notice_nonce' 	=> wp_create_nonce( 'evf_fm_dismiss_notice_nonce' ),
+					'ajax_url'          			=> admin_url( 'admin-ajax.php', 'relative' ),
+				)
+			);
 		}
 
 		// EverestForms builder pages.

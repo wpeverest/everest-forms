@@ -106,6 +106,7 @@ class EVF_AJAX {
 			'get_local_font_url'       => true,
 			'form_migrator_forms_list' => false,
 			'form_migrator'            => false,
+			'fm_dismiss_notice'        => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -1056,7 +1057,7 @@ class EVF_AJAX {
 		try {
 			check_ajax_referer( 'evf_form_migrator_nonce', 'security' );
 
-			$form_slug = isset( $_POST['form_slug'] ) ? $_POST['form_slug'] : '';
+			$form_slug = isset( $_POST['form_slug'] ) ? sanitize_text_field( $_POST['form_slug'] ) : '';
 			$form_ids  = isset( $_POST['form_ids'] ) ? $_POST['form_ids'] : '';
 			if('' === $form_ids ) {
 				wp_send_json_error(
@@ -1088,6 +1089,31 @@ class EVF_AJAX {
 				);
 			}
 
+		} catch ( Exception $e ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'Something went wrong !', 'everest-forms' ),
+				)
+			);
+		}
+	}
+	/**
+	 * Dismiss Form migrator notice.
+	 *
+	 * @since 2.0.6
+	 */
+	public static function fm_dismiss_notice() {
+		try {
+			check_ajax_referer( 'evf_fm_dismiss_notice_nonce', 'security' );
+
+			$option_id = isset($_POST['option_id']) ? sanitize_text_field($_POST['option_id']) : '';
+			update_option( $option_id, true );
+
+			wp_send_json_success(
+				array(
+					'message' => __( 'Updated !', 'everest-forms' ),
+				)
+			);
 		} catch ( Exception $e ) {
 			wp_send_json_error(
 				array(

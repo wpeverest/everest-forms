@@ -435,4 +435,26 @@
 
 		})
 	});
+	//Dismiss the form migrator notice.
+	$('.evf-fm-dismiss-notice').on('click', function(e){
+		e.preventDefault();
+		var optionId = $(this).data('option-id');
+		var data = {
+			'action':'everest_forms_fm_dismiss_notice',
+			'option_id':optionId,
+			'security':everest_forms_admin_form_migrator.evf_fm_dismiss_notice_nonce,
+		}
+
+		$.ajax({
+			url: everest_forms_admin_form_migrator.ajax_url,
+			type:"POST",
+			dataType:'JSON',
+			data:data,
+			success:function(res){
+				if(res.success){
+					$('.evf-fm-notice').hide();
+				}
+			}
+		})
+	});
 })( jQuery, everest_forms_admin );
