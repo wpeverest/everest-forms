@@ -109,6 +109,62 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 
 		return trim( $label );
 	}
+	/**
+	 * Get the field acceptance label.
+	 *
+	 * @since 2.0.6
+	 *
+	 * @param string $form Form data and settings.
+	 * @param string $name Field name.
+	 *
+	 * @return string
+	 */
+	private function get_field_acceptance_label( $form, $name ) {
+		$pattern = '/\[acceptance(?:[^]]* ' . preg_quote( $name ) . '[^]]*)?\](.*?)\[\/acceptance\]/s';
+
+		preg_match_all( $pattern, $form, $matches );
+
+		foreach ( $matches[1] as $match ) {
+			return strip_shortcodes( sanitize_text_field( $match ) );
+		}
+
+		return '';
+	}
+
+	/**
+	 * Extracts question-answer pairs from a [form] based on a specified name attribute.
+	 *
+	 * @since 2.0.6
+	 *
+	 * @param string $form The input string containing the [form].
+	 * @param string $name The name attribute to match within the [form].
+	 *
+	 * @return array An array containing question-answer pairs.
+	 */
+	private function get_quiz_questions_and_answers( $form, $name = '' ) {
+		$pattern = '/\[quiz ' . preg_quote( $name ) . '(.*?)\]/s';
+
+		preg_match_all( $pattern, $form, $matches );
+
+		$qa_pairs = array();
+
+		// If there is a match, extract question-answer pairs
+		if ( ! empty( $matches[1] ) ) {
+			preg_match_all( '/"([^"]+?)\|([^"]+?)"/', $matches[1][0], $pairs, PREG_SET_ORDER );
+
+			foreach ( $pairs as $pair ) {
+				$question = strip_shortcodes( sanitize_text_field( $pair[1] ) );
+				$answer   = strip_shortcodes( sanitize_text_field( $pair[2] ) );
+
+				$qa_pairs[] = array(
+					'question' => $question,
+					'answer'   => $answer,
+				);
+			}
+		}
+
+		return $qa_pairs;
+	}
 
 	/**
 	 * Lookup and return the placeholder or default value.
@@ -298,9 +354,9 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 			$cf7_fields         = $cf7_form->scan_form_tags();
 			$cf7_properties     = $cf7_form->get_properties();
 			$cf7_recaptcha      = false;
-			$fields_pro_plan    = array( 'tel' );
+			$fields_pro_plan    = array( 'tel', 'file', 'acceptance', 'quiz' );
 			$fields_pro_omit    = array();
-			$fields_unsupported = array( 'quiz', 'hidden', 'file' );
+			$fields_unsupported = array( 'hidden' );
 			$upgrade_plan       = array();
 			$upgrade_omit       = array();
 			$unsupported        = array();
@@ -399,6 +455,11 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 					$form['form_field_id'] = '1';
 				}
 
+				$cf7_field_classes = '';
+				if ( $cf7_field->has_option( 'class' ) ) {
+					$cf7_field_classes = implode( ' ', $cf7_field->get_option( 'class', '', false ) );
+				}
+
 				$field_id = evf_get_random_string() . '-' . $form_field_id;
 				// Mapping the field type and formtting the fields settings.
 				switch ( $cf7_field->basetype ) {
@@ -421,7 +482,7 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 							'min_length_count'       => '1',
 							'min_length_mode'        => 'characters',
 							'default_value'          => $this->get_field_placeholder_default( $cf7_field, 'default' ),
-							'css'                    => '',
+							'css'                    => $cf7_field_classes,
 							'input_mask'             => '',
 							'regex_value'            => '',
 							'regex_message'          => esc_html__( 'Please provide a valid value for this field.', 'everest-forms' ),
@@ -442,7 +503,7 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 							'required-field-message' => '',
 							'placeholder'            => $this->get_field_placeholder_default( $cf7_field ),
 							'default_value'          => $this->get_field_placeholder_default( $cf7_field, 'default' ),
-							'css'                    => '',
+							'css'                    => $cf7_field_classes,
 							'regex_value'            => '',
 							'regex_message'          => esc_html__( 'Please provide a valid value for this field.', 'everest-forms' ),
 							'cf7_name'               => $cf7_field->name,
@@ -462,7 +523,7 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 							'required-field-message' => '',
 							'placeholder'            => $this->get_field_placeholder_default( $cf7_field ),
 							'default_value'          => $this->get_field_placeholder_default( $cf7_field, 'default' ),
-							'css'                    => '',
+							'css'                    => $cf7_field_classes,
 							'regex_value'            => '',
 							'regex_message'          => esc_html__( 'Please provide a valid value for this field.', 'everest-forms' ),
 							'cf7_name'               => $cf7_field->name,
@@ -498,7 +559,7 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 							'min_time_minute'        => '30',
 							'max_time_hour'          => '18',
 							'max_time_minute'        => '30',
-							'css'                    => '',
+							'css'                    => $cf7_field_classes,
 						);
 						break;
 					// Select, radio, and checkbox fields.
@@ -510,13 +571,21 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 
 						$choices = array();
 						$options = (array) $cf7_field->labels;
-
-						foreach ( $options as $option ) {
-							$choices[] = array(
+						if ( $cf7_field->has_option( 'default' ) ) {
+							$default = $cf7_field->get_option( 'default', '', true );
+						} else {
+							$default = '';
+						}
+						foreach ( $options as $key => $option ) {
+							$choice = array(
 								'label' => $option,
 								'value' => '',
 								'image' => '',
 							);
+							if ( in_array( (string) ( $key + 1 ), explode( '_', $default ), true ) ) {
+								$choice['default'] = '1';
+							}
+							$choices[] = $choice;
 						}
 
 						$form['form_fields'][ $field_id ] = array(
@@ -530,10 +599,15 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 							'required_field_message_setting' => 'global',
 							'required-field-message' => '',
 							'placeholder'            => $this->get_field_placeholder_default( $cf7_field ),
-							'css'                    => '',
+							'css'                    => $cf7_field_classes,
 							'cf7_name'               => $cf7_field->name,
 						);
 
+						if ( 'select' === $cf7_field->basetype ) {
+							if ( $cf7_field->has_option( 'multiple' ) ) {
+								$form['form_fields'][ $field_id ]['multiple_choices'] = '1';
+							}
+						}
 						if ( 'radio' === $cf7_field->basetype || 'checkbox' === $cf7_field->basetype ) {
 							$form['form_fields'][ $field_id ]['input_columns'] = '';
 						}
@@ -554,12 +628,12 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 							'required'               => $cf7_field->is_required() ? '1' : '',
 							'required_field_message_setting' => 'global',
 							'required-field-message' => '',
-							'step'                   => '0',
-							'min_value'              => '',
-							'max_value'              => '',
+							'step'                   => $cf7_field->get_option( 'step', 'int', true ),
+							'min_value'              => $cf7_field->get_option( 'min', 'signed_int', true ),
+							'max_value'              => $cf7_field->get_option( 'max', 'signed_int', true ),
 							'placeholder'            => $this->get_field_placeholder_default( $cf7_field ),
 							'default_value'          => $this->get_field_placeholder_default( $cf7_field, 'default' ),
-							'css'                    => '',
+							'css'                    => $cf7_field_classes,
 							'regex_value'            => '',
 							'regex_message'          => esc_html__( 'Please provide a valid value for this field.', 'everest-forms' ),
 							'cf7_name'               => $cf7_field->name,
@@ -583,7 +657,104 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 							'validate_message'       => esc_html__( 'This field value needs to be unique.', 'everst-forms' ),
 							'placeholder'            => '',
 							'default_value'          => '',
-							'css'                    => '',
+							'css'                    => $cf7_field_classes,
+						);
+						break;
+					case 'file':
+						$allowed_size       = 1024; // default size 1 MB
+						$allowed_file_types = array();
+
+						if ( $file_size_a = $cf7_field->get_option( 'limit' ) ) {
+							$limit_pattern = '/^([1-9][0-9]*)([kKmM]?[bB])?$/';
+
+							foreach ( $file_size_a as $file_size ) {
+								if ( preg_match( $limit_pattern, $file_size, $matches ) ) {
+									$allowed_size = (int) $matches[1];
+
+									if ( ! empty( $matches[2] ) ) {
+										$kbmb = strtolower( $matches[2] );
+
+										if ( 'kb' == $kbmb ) {
+											$allowed_size *= 1;
+										} elseif ( 'mb' == $kbmb ) {
+											$allowed_size *= 1024;
+										}
+									}
+
+									break;
+								}
+							}
+						}
+
+						if ( $file_types_a = $cf7_field->get_option( 'filetypes' ) ) {
+							foreach ( $file_types_a as $file_types ) {
+								$file_types = explode( '|', $file_types );
+
+								foreach ( $file_types as $file_type ) {
+									$file_type = trim( $file_type, '.' );
+									$file_type = str_replace( array( '.', '+', '*', '?' ), array( '\.', '\+', '\*', '\?' ), $file_type );
+
+									if ( ! in_array( $file_type, $allowed_file_types ) ) {
+										$allowed_file_types[] = $file_type;
+									}
+								}
+							}
+						}
+
+						$type                                   = 'file-upload';
+						$form['structure']['row_1']['grid_1'][] = $field_id;
+						$form['form_fields'][ $field_id ]       = array(
+							'id'                     => $field_id,
+							'type'                   => $type,
+							'label'                  => $label,
+							'meta-key'               => $cf7_field->name,
+							'description'            => '',
+							'upload_message'         => esc_html__( 'Drop your file here or click here to upload', 'everest-forms' ),
+							'limit_message'          => esc_html__( 'You can upload up to 1 files.', 'everest-forms' ),
+							'extensions'             => implode( ',', $allowed_file_types ),
+							'max_size'               => $allowed_size,
+							'max_file_number'        => '1',
+							'required'               => $cf7_field->is_required() ? '1' : '',
+							'required_field_message_setting' => 'global',
+							'required-field-message' => '',
+							'tooltip_description'    => '',
+							'media_library'          => '',
+							'css'                    => $cf7_field_classes,
+						);
+						break;
+					case 'acceptance':
+						$type                                   = 'privacy-policy';
+						$form['structure']['row_1']['grid_1'][] = $field_id;
+						$form['form_fields'][ $field_id ]       = array(
+							'id'                     => $field_id,
+							'type'                   => $type,
+							'label'                  => $label,
+							'meta-key'               => $cf7_field->name,
+							'description'            => '',
+							'consent_message'        => $this->get_field_acceptance_label( $cf7_properties['form'], $cf7_field->name ),
+							'add_local_page'         => '',
+							'add_custom_link_label'  => '',
+							'add_custom_link_url'    => '',
+							'required'               => $cf7_field->is_required() ? '1' : '',
+							'required_field_message_setting' => 'global',
+							'required-field-message' => '',
+							'tooltip_description'    => '',
+							'css'                    => $cf7_field_classes,
+						);
+						break;
+					case 'quiz':
+						$type                                   = 'captcha';
+						$form['structure']['row_1']['grid_1'][] = $field_id;
+						$form['form_fields'][ $field_id ]       = array(
+							'id'          => $field_id,
+							'type'        => $type,
+							'label'       => $label,
+							'description' => '',
+							'required'    => '1',
+							'format'      => 'question',
+							'questions'   => $this->get_quiz_questions_and_answers( $cf7_properties['form'], $cf7_field->name ),
+							'placeholder' => '',
+							'css'         => $cf7_field_classes,
 						);
 						break;
 					// ReCAPTCHA field.
