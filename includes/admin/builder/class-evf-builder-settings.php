@@ -134,13 +134,13 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 												add_query_arg(
 													array(
 														'evf_email_preview' => $connection_id,
-														'form_id' => $_GET['form_id'],
+														'form_id' => isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0,
 													),
 													home_url()
 												)
 											);
 											?>
-											<a class="<?php echo $preview_class; ?>" target="__blank" data-connection-id="<?php echo esc_attr( $connection_id ); ?>" href="<?php echo esc_url( $preview_url ); ?>">
+											<a class="<?php echo esc_url( $preview_class ); ?>" target="__blank" data-connection-id="<?php echo esc_attr( $connection_id ); ?>" href="<?php echo esc_url( $preview_url ); ?>">
 												<span class="<?php echo esc_attr( $preview_class ); ?>">
 												<svg  xmlns="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/1999/svg"
 												viewBox="0 0 442.04 442.04" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -606,7 +606,8 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				// --------------------------------------------------------------------//
 				// Everest Forms AI Setting Section Start
 				// --------------------------------------------------------------------//
-				if ( ! empty( get_option( 'everest_forms_ai_api_key' ) ) ) {
+				$everest_forms_ai_api_key = get_option( 'everest_forms_ai_api_key', '' );
+				if ( ! empty( $everest_forms_ai_api_key ) ) {
 					everest_forms_panel_field(
 						'toggle',
 						'email',
@@ -616,6 +617,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 						array(
 							'default'    => ! empty( $settings['email'][ $connection_id ]['enable_ai_email_prompt'] ) ? $settings['email'][ $connection_id ]['enable_ai_email_prompt'] : '0',
 							'class'      => 'everest-forms-enable-email-prompt',
+							/* translators: %s: empty url */
 							'tooltip'    => sprintf( esc_html__( 'Check this option to enable the email message prompt. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/ai/#6-toc-title' ) ),
 							'parent'     => 'settings',
 							'subsection' => $connection_id,
@@ -661,7 +663,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 						'parent'     => 'settings',
 						'subsection' => $connection_id,
 						/* translators: %s - all fields smart tag. */
-						'after'      => empty( get_option( 'everest_forms_ai_api_key' ) ) ? '<p class="desc">' . sprintf( esc_html__( 'To display all form fields, use the %s Smart Tag.', 'everest-forms' ), '<code>{all_fields}</code>' ) . '</p>' : '<p class="desc">' . sprintf( esc_html__( 'To display all form fields, use the %1$s Smart Tag. Use %2$s Smart Tag for AI-generated emails', 'everest-forms' ), '<code>{all_fields}</code>', '<code>{ai_email_response}</code>' ) . '</p>',
+						'after'      => empty( $everest_forms_ai_api_key ) ? '<p class="desc">' . sprintf( esc_html__( 'To display all form fields, use the %s Smart Tag.', 'everest-forms' ), '<code>{all_fields}</code>' ) . '</p>' : '<p class="desc">' . sprintf( esc_html__( 'To display all form fields, use the %1$s Smart Tag. Use %2$s Smart Tag for AI-generated emails', 'everest-forms' ), '<code>{all_fields}</code>', '<code>{ai_email_response}</code>' ) . '</p>',
 					)
 				);
 

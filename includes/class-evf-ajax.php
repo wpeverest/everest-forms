@@ -646,7 +646,7 @@ class EVF_AJAX {
 		$preview_url   = add_query_arg(
 			array(
 				'evf_email_preview' => $connection_id,
-				'form_id'           => $_POST['id'],
+				'form_id'           => isset( $_POST['id'] ) ? absint( $_POST['id'] ) : 0,
 			),
 			home_url()
 		);
