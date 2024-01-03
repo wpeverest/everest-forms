@@ -668,7 +668,7 @@ class EVF_AJAX {
 		wp_send_json_success(
 			array(
 				'connection_id'      => $connection_id,
-				'prev_connection_id' => $_POST['prev_connection_id'],
+				'prev_connection_id' => isset( $_POST['prev_connection_id'] ) ? sanitize_text_field( wp_unslash( $_POST['prev_connection_id'] ) ) : '',
 			)
 		);
 	}
