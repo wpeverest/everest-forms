@@ -1534,7 +1534,7 @@
 				if ( total_rows < 2 ) {
 					$.alert({
 						title: evf_data.i18n_row_locked,
-						content: evf_data.i18n_row_locked_msg,
+						content: evf_data.i18n_single_row_locked_msg,
 						icon: 'dashicons dashicons-info',
 						type: 'blue',
 						buttons : {
