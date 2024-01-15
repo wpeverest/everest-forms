@@ -3240,6 +3240,15 @@ jQuery( function ( $ ) {
 			$( this ).parent().parent().parent().next().next( '.everest-forms-min-max-date-range-option' ).addClass( 'everest-forms-hidden' );
 		}
 	});
+	// Real-time updates for Google Calendar.
+	$(document).on( 'change', '.appt-sched-google-calendar-advanced', function(e) {
+		var $this = $( this );
+		if ( ! $this.is( ':checked' ) ) {
+			$( '.everest-form-appt-sched-google-event-section' ).addClass( 'everest-forms-hidden' );
+		} else {
+			$( '.everest-form-appt-sched-google-event-section' ).removeClass( 'everest-forms-hidden' );
+		}
+	});
 
 	function get_all_available_field( allowed_field, type , el ) {
 		var all_fields_without_email = [];
