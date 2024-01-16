@@ -687,13 +687,13 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			false
 		);
 
-		$appt_sched_enable_google_calendar_event_title_field = $this->field_element(
+		$appt_sched_google_calendar_event_title_field = $this->field_element(
 			'select',
 			$field,
 			array(
-				'slug'    => 'appt_sched_enable_google_calendar_event_title_field',
+				'slug'    => 'appt_sched_google_calendar_event_title_field',
 				'desc'    => esc_html__( 'Event Title', 'everest-forms' ),
-				'value'   => isset( $field['appt_sched_enable_google_calendar_event_title_field'] ) ? $field['appt_sched_enable_google_calendar_event_title_field'] : '',
+				'value'   => isset( $field['appt_sched_google_calendar_event_title_field'] ) ? $field['appt_sched_google_calendar_event_title_field'] : '',
 				'tooltip' => esc_html__( 'Choose field to sync value of it as the event title.', 'everest-forms' ),
 				'class'   => 'appt-sched-google-calendar-event-title-field',
 				'default' => '',
@@ -701,7 +701,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			),
 			false
 		);
-		$appt_sched_google_calendar_title_field_desc         = $this->field_element(
+		$appt_sched_google_calendar_title_field_desc  = $this->field_element(
 			'label',
 			$field,
 			array(
@@ -711,13 +711,13 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			),
 			false
 		);
-		$appt_sched_enable_google_calendar_event_desc_field  = $this->field_element(
+		$appt_sched_google_calendar_event_desc_field  = $this->field_element(
 			'select',
 			$field,
 			array(
-				'slug'    => 'appt_sched_enable_google_calendar_event_desc_field',
+				'slug'    => 'appt_sched_google_calendar_event_desc_field',
 				'desc'    => esc_html__( 'Choose Field Sync as Event Title', 'everest-forms' ),
-				'value'   => isset( $field['appt_sched_enable_google_calendar_event_title_field'] ) ? $field['appt_sched_enable_google_calendar_event_desc_field'] : '',
+				'value'   => isset( $field['appt_sched_google_calendar_event_desc_field'] ) ? $field['appt_sched_google_calendar_event_desc_field'] : '',
 				'tooltip' => esc_html__( 'Choose field to sync value of it as the event description.', 'everest-forms' ),
 				'class'   => 'appt-sched-google-calendar-event-desc-field',
 				'default' => '',
@@ -727,7 +727,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 		);
 		$args = array(
 			'slug'    => 'appt_sched_enable_google_calendar_advanced_setting',
-			'content' => $appt_sched_google_calendar_title_field_title . $appt_sched_enable_google_calendar_event_title_field . $appt_sched_google_calendar_title_field_desc . $appt_sched_enable_google_calendar_event_desc_field,
+			'content' => $appt_sched_google_calendar_title_field_title . $appt_sched_google_calendar_event_title_field . $appt_sched_google_calendar_title_field_desc . $appt_sched_google_calendar_event_desc_field,
 		);
 		$this->field_element( 'row', $field, $args );
 		echo '</div>';
@@ -1231,7 +1231,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	 */
 	private function get_form_fields( $form_id ) {
 		$text_field_name_option_list = array(
-			'none' => __( '---Select Field---', 'everest-forms-pro' ),
+			'' => __( '---Select Field---', 'everest-forms-pro' ),
 		);
 		if ( ! empty( $form_id ) && 'none' !== $form_id ) {
 			$form       = json_decode( get_post_field( 'post_content', $form_id ) );
