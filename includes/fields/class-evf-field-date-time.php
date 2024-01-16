@@ -650,7 +650,10 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 		echo '</div>';
 		echo '<div class="everest-forms-border-container everest-forms-appt-sched-google-calendar-advanced">';
 		echo '<h4 class="everest-forms-border-container-title">' . esc_html__( 'Appointment Scheduling', 'everest-forms' ) . '</h4>'; // phpcs:ignore WordPress.Security.NonceVerification
-		$appt_sched_enable_google_calendar_toggle_value = isset( $field['appt_sched_enable_google_calendar_advanced'] ) ? $field['appt_sched_enable_google_calendar_advanced'] : false;
+		$licensed                                       = ( false === evf_get_license_plan() ) ? false : true;
+		$upgradable_feature_class                       = ( true === $licensed ) ? '' : 'evf-upgradable-feature';
+		$appt_sched_enable_google_calendar_toggle_value = isset( $field['appt_sched_enable_google_calendar_advanced'] ) ? ( ( $licensed ) ? $field['appt_sched_enable_google_calendar_advanced'] : false ) : false;
+		$appt_sched_enable_google_calendar_toggle_class = "appt-sched-google-calendar-advanced $upgradable_feature_class";
 		$appt_sched_enable_google_calendar_toggle       = '<div class="input-group-col-2">';
 		$appt_sched_enable_google_calendar_toggle      .= $this->field_element(
 			'toggle',
@@ -660,8 +663,11 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				'desc'    => esc_html__( 'Enable Google Calendar', 'everest-forms' ),
 				'value'   => $appt_sched_enable_google_calendar_toggle_value,
 				'tooltip' => esc_html__( 'Enable to use google calendar to integrate the events for appointment scheduling.', 'everest-forms' ),
-				'class'   => 'appt-sched-google-calendar-advanced',
+				'class'   => $appt_sched_enable_google_calendar_toggle_class,
 				'default' => false,
+				'data'    => array(
+					'feature' => esc_html__( 'Google Calendar', 'everest-forms' ),
+				),
 			),
 			false
 		);
@@ -686,7 +692,6 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			),
 			false
 		);
-
 		$appt_sched_google_calendar_event_title_field = $this->field_element(
 			'select',
 			$field,
@@ -695,7 +700,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				'desc'    => esc_html__( 'Event Title', 'everest-forms' ),
 				'value'   => isset( $field['appt_sched_google_calendar_event_title_field'] ) ? $field['appt_sched_google_calendar_event_title_field'] : '',
 				'tooltip' => esc_html__( 'Choose field to sync value of it as the event title.', 'everest-forms' ),
-				'class'   => 'appt-sched-google-calendar-event-title-field',
+				'class'   => 'appt-sched-google-calendar-event-title-field ',
 				'default' => '',
 				'options' => $this->get_form_fields( $form_id ),
 			),
