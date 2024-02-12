@@ -13,6 +13,7 @@ $tabs        = apply_filters(
 	array(
 		'import' => __( 'Import', 'everest-forms' ),
 		'export' => __( 'Export', 'everest-forms' ),
+		'setting' => __( 'Setting', 'everest-forms' ),
 	)
 );
 $current_tab = ! empty( $_REQUEST['tab'] ) ? sanitize_title( wp_unslash( $_REQUEST['tab'] ) ) : 'import'; // phpcs:ignore WordPress.Security.NonceVerification
@@ -42,6 +43,9 @@ if ( 'yes' === get_option( 'everest_forms_enable_log', 'no' ) ) {
 				break;
 			case 'export':
 				EVF_Admin_Tools::export();
+				break;
+			case 'setting':
+				EVF_Admin_Tools::setting();
 				break;
 			default:
 				if ( array_key_exists( $current_tab, $tabs ) && has_action( 'everest_forms_admin_status_content_' . $current_tab ) ) {
