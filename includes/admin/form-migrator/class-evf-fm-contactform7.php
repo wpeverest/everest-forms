@@ -31,25 +31,25 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 	 */
 	public function get_forms() {
 
-		$forms_final = array();
+		$required_form_arr = array();
 
 		if ( ! $this->is_active() ) {
-			return $forms_final;
+			return $required_form_arr;
 		}
 
 		$forms = \WPCF7_ContactForm::find( array( 'posts_per_page' => - 1 ) );
 
 		if ( empty( $forms ) ) {
-			return $forms_final;
+			return $required_form_arr;
 		}
 
 		foreach ( $forms as $form ) {
 			if ( ! empty( $form ) && ( $form instanceof \WPCF7_ContactForm ) ) {
-				$forms_final[ $form->id() ] = $form->title();
+				$required_form_arr[ $form->id() ] = $form->title();
 			}
 		}
 
-		return $forms_final;
+		return $required_form_arr;
 	}
 
 	/**

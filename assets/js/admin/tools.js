@@ -33,7 +33,11 @@ jQuery( function ( $ ) {
 				$this.closest('.evf-fm-select-popular-form').append( spinner );
 			},
 			success:function(res){
-				$(document).find('#evf-fm-forms-list-container').html(res.data.forms_list_table)
+				if(res.success === true){
+					$(document).find('#evf-fm-forms-list-container').html(res.data.forms_list_table)
+				}else{
+					$(document).find('#evf-fm-forms-list-container').html(res.data.message)
+				}
 				$this.closest('.evf-fm-select-popular-form').find('.evf-loading').remove();
 			}
 		})

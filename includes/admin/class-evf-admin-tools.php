@@ -42,11 +42,12 @@ class EVF_Admin_Tools {
 		// Form object list.
 		$forms_object = array(
 			'contactform7' => class_exists( 'EVF_Fm_Contactform7' ) ? new EVF_Fm_Contactform7() : '',
+			'wpforms'      => class_exists( 'EVF_Fm_wpforms' ) ? new EVF_Fm_Wpforms() : '',
 		);
 		// Forms status.
 		$forms_status = array();
 		foreach ( $forms_object as $form_id => $form_obj ) {
-			$forms_status = $form_obj->register( array() );
+			$forms_status[] = $form_obj->register( array() );
 			// For dismiss the notification.
 			if ( ! $form_obj->is_dimissed() ) {
 				$option_id = 'evf_fm_dismiss_xnotice_' . $form_obj->slug;

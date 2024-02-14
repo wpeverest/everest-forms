@@ -67,7 +67,7 @@ abstract class EVF_Admin_Form_Migrator {
 	 */
 	public function register( $importers = array() ) {
 
-		$importers[ $this->slug ] = array(
+		$importers = array(
 			'name'      => $this->name,
 			'slug'      => $this->slug,
 			'path'      => $this->path,
@@ -184,44 +184,44 @@ abstract class EVF_Admin_Form_Migrator {
 		return apply_filters( 'evf_fm_cf7_final_response', $final_response );
 	}
 	/**
-     * Show form migrator notice in admin area of everest form if the plugin found
-     *
+	 * Show form migrator notice in admin area of everest form if the plugin found
+	 *
 	 * @since 2.0.6
 	 *
-     * @return void
-     */
+	 * @return void
+	 */
 	public function show_fm_notice() {
 		$screen    = get_current_screen();
 		$screen_id = $screen ? $screen->id : '';
 		if ( ! in_array( $screen_id, evf_get_screen_ids(), true ) ) {
 			return;
 		}
-		if ( ! file_exists( trailingslashit( WP_PLUGIN_DIR ) . $this->path )) {
-            return;
-        }
+		if ( ! file_exists( trailingslashit( WP_PLUGIN_DIR ) . $this->path ) ) {
+			return;
+		}
 
-        if ( $this->is_dimissed() || !current_user_can( 'manage_options' ) ) {
-            return;
-        }
+		if ( $this->is_dimissed() || ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
 		?>
 			<div class="notice notice-info is-dismissible evf-fm-notice">
 				<p><?php printf( wp_kses_post( 'Hey, it seems that you have <strong>%s</strong> installed. Are you interested in <strong>migrating</strong> your forms to Everest Form?', 'everest-forms' ), wp_kses_post( $this->name ) ); ?></p>
 				<p>
-					<a href="<?php printf(admin_url('admin.php?page=evf-tools&tab=form_migrator')) ?>" class="button button-primary evf-fm-<?php echo esc_attr( $this->slug ); ?>" id="evf-fm-<?php echo esc_attr( $this->slug ); ?>"><?php esc_html_e( 'Form Migrator', 'everest-forms' ); ?></a>
+					<a href="<?php printf( admin_url( 'admin.php?page=evf-tools&tab=form_migrator' ) ); ?>" class="button button-primary evf-fm-<?php echo esc_attr( $this->slug ); ?>" id="evf-fm-<?php echo esc_attr( $this->slug ); ?>"><?php esc_html_e( 'Form Migrator', 'everest-forms' ); ?></a>
 					<a href="#" class="button evf-fm-dismiss-notice" data-option-id="evf_fm_dismiss_xnotice_<?php echo esc_attr( $this->slug ); ?>" id="evf-fm-dimiss-<?php echo esc_attr( $this->slug ); ?>"><?php esc_html_e( 'No Thanks', 'everest-forms' ); ?></a>
-					<a href="<?php printf(esc_url('https://docs.everestforms.net/')) ?>" target="_blank" class="button evf-fm-<?php echo esc_attr( $this->slug ); ?>" id="evf-fm-dimiss-<?php echo esc_attr( $this->slug ); ?>"><?php esc_html_e( 'For More', 'everest-forms' ); ?></a>
+					<a href="<?php printf( esc_url( 'https://docs.everestforms.net/' ) ); ?>" target="_blank" class="button evf-fm-<?php echo esc_attr( $this->slug ); ?>" id="evf-fm-dimiss-<?php echo esc_attr( $this->slug ); ?>"><?php esc_html_e( 'For More', 'everest-forms' ); ?></a>
 				</p>
 			</div>
 		<?php
 	}
 	/**
-     * If the prompt is dismissed
-     *
+	 * If the prompt is dismissed
+	 *
 	 * @since 2.0.6
 	 *
-     * @return bool
-     */
-    public function is_dimissed() {
-        return evf_string_to_bool(get_option( 'evf_fm_dismiss_xnotice_' . $this->slug ));
-    }
+	 * @return bool
+	 */
+	public function is_dimissed() {
+		return evf_string_to_bool( get_option( 'evf_fm_dismiss_xnotice_' . $this->slug ) );
+	}
 }
