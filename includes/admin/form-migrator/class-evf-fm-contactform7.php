@@ -408,7 +408,10 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 				'evf-enable-custom-js'               => '0',
 				'evf-custom-js'                      => '',
 				'structure'                          => array(),
-				'import_form_id'                     => absint( $cf7_form_id ),
+				'imported_from'                      => array(
+					'form_id'   => absint( $cf7_form_id ),
+					'form_from' => $this->slug,
+				),,
 			);
 
 			// Mapping Fields.

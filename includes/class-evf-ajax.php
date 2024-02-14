@@ -991,16 +991,16 @@ class EVF_AJAX {
 			}
 
 			// Creating the form instance and getting the form list.
-			switch ( $form_slug ) {
-				case 'contact-form-7':
-					$form_instance = class_exists( 'EVF_Fm_Contactform7' ) ? new EVF_Fm_Contactform7() : '';
-					$forms_list    = $form_instance->get_forms();
-					break;
-				case 'wpforms':
-					$form_instance = class_exists( 'EVF_Fm_Wpforms' ) ? new EVF_Fm_Wpforms() : '';
-					$forms_list    = $form_instance->get_forms();
-					break;
+			$class_name = 'EVF_Fm_' . ucfirst( trim( str_replace( '-', '', $form_slug ) ) );
+
+			if ( ! class_exists( $class_name ) ) {
+				$except_message = sprintf( '<b><i>%s</i></b> %s', $class_name, esc_html__( 'does not exist.' ) );
+				throw new Exception( $except_message );
 			}
+
+			$form_instance = new $class_name();
+			$forms_list    = $form_instance->get_forms();
+
 			if ( empty( $forms_list ) ) {
 				wp_send_json_error(
 					array(
@@ -1012,7 +1012,7 @@ class EVF_AJAX {
 			$form_per_page     = 5;
 			$ceil              = ceil( count( $forms_list ) / $form_per_page );
 			$forms_list_table  = '<div class="evf-fm-forms-table-wrapper">';
-			$forms_list_table .= '<h4>' . sprintf("%s %s",esc_html__( 'Import', 'everest-forms' ), $form_instance->name) . '</h4>';
+			$forms_list_table .= '<h4>' . sprintf( '%s %s', esc_html__( 'Import', 'everest-forms' ), $form_instance->name ) . '</h4>';
 			$forms_list_table .= '<table class="evf-fm-forms-table" data-form-slug="' . esc_attr( $form_slug ) . '">';
 			$forms_list_table .= '<tr class="evf-th-title"><th><input id="evf-fm-select-all" type="checkbox" name="fm_select_all_form" /></th><th>' . esc_html__( 'Form	Name', 'everest-forms' ) . '</th><th>' . esc_html__( 'Imported', 'everest-forms' ) . '</th><th>' . esc_html__( 'Action' ) . '</th></tr>';
 			$hidden            = '';
@@ -1052,7 +1052,7 @@ class EVF_AJAX {
 		} catch ( Exception $e ) {
 			wp_send_json_error(
 				array(
-					'message' => __( 'Something went wrong !', 'everest-forms' ),
+					'message' => $e->getMessage(),
 				)
 			);
 		}
@@ -1072,16 +1072,20 @@ class EVF_AJAX {
 			if ( '' === $form_ids ) {
 				wp_send_json_error(
 					array(
-						'message' => __( 'Something went wrong !', 'everest-forms' ),
+						'message' => __( 'Missing Form ID !!!', 'everest-forms' ),
 					)
 				);
 			}
-			switch ( $form_slug ) {
-				case 'contact-form-7':
-					$form_instance = class_exists( 'EVF_Fm_Contactform7' ) ? new EVF_Fm_Contactform7() : '';
-					$forms_data    = $form_instance->get_fm_mapped_form_data( $form_ids );
-					break;
+
+			$class_name = 'EVF_Fm_' . ucfirst( trim( str_replace( '-', '', $form_slug ) ) );
+
+			if ( ! class_exists( $class_name ) ) {
+				$except_message = sprintf( '<b><i>%s</i></b> %s', $class_name, esc_html__( 'does not exist.' ) );
+				throw new Exception( $except_message );
 			}
+			// Create the instance of class.
+			$form_instance = new $class_name();
+			$forms_data    = $form_instance->get_fm_mapped_form_data( $form_ids );
 
 			if ( 1 === count( $forms_data ) ) {
 				wp_send_json_success(
@@ -1101,7 +1105,7 @@ class EVF_AJAX {
 		} catch ( Exception $e ) {
 			wp_send_json_error(
 				array(
-					'message' => __( 'Something went wrong !', 'everest-forms' ),
+					'message' => $e->getMessage(),
 				)
 			);
 		}
@@ -1126,7 +1130,7 @@ class EVF_AJAX {
 		} catch ( Exception $e ) {
 			wp_send_json_error(
 				array(
-					'message' => __( 'Something went wrong !', 'everest-forms' ),
+					'message' => $e->getMessage(),
 				)
 			);
 		}

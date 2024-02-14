@@ -79,6 +79,22 @@ abstract class EVF_Admin_Form_Migrator {
 	}
 
 	/**
+	 * Get all the forms
+	 *
+	 * @return array
+	 */
+	abstract protected function get_forms();
+
+	/**
+	 * Get the form id
+	 *
+	 * @param int $id Form ID.
+	 *
+	 * @return array|object|bool
+	 */
+	abstract protected function get_form( $id );
+
+	/**
 	 * If the importer source is available.
 	 *
 	 * @since 2.0.6
