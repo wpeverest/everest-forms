@@ -186,6 +186,13 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 						'F j, Y' => date_i18n( 'F j, Y' ) . ' (F j, Y)',
 						'm/d/Y'  => date_i18n( 'm/d/Y' ) . ' (m/d/Y)',
 						'd/m/Y'  => date_i18n( 'd/m/Y' ) . ' (d/m/Y)',
+						'Y.m.d'  => date_i18n( 'Y.m.d' ) . ' (Y.m.d)',
+						'Y.m.d'  => date_i18n( 'Y.m.d' ) . ' (Y.m.d)',
+						'F,Y'    => date_i18n( 'F,Y' ) . ' (F,Y)',
+						'F jS, Y'=> date_i18n( 'F jS, Y' ) . ' (F jS, Y)',
+						'M j, Y' => date_i18n( 'M j, Y' ) . ' (M j, Y)',
+						'm.d.y'  => date_i18n( 'm.d.y' ) . ' (m.d.y)',
+						'm-d-y'  => date_i18n( 'm-d-y' ) . ' (m-d-y)',
 					),
 				),
 				false
