@@ -71,7 +71,7 @@ abstract class EVF_Admin_Form_Migrator {
 			'name'      => $this->name,
 			'slug'      => $this->slug,
 			'path'      => $this->path,
-			'installed' => file_exists( trailingslashit( WP_PLUGIN_DIR ) . $this->path ),
+			'installed' => $this->is_installed(),
 			'active'    => $this->is_active(),
 		);
 
@@ -101,10 +101,16 @@ abstract class EVF_Admin_Form_Migrator {
 	 *
 	 * @return bool
 	 */
-	protected function is_active() {
+	abstract protected function is_active();
 
-		return is_plugin_active( $this->path );
-	}
+	/**
+	 * Check is the plugin installed or not.
+	 *
+	 * @since 2.0.6
+	 *
+	 * @return bool
+	 */
+	abstract protected function is_installed();
 
 	/**
 	 * Tracks the successful import of a form, allowing future alerts for attempts to
@@ -185,7 +191,7 @@ abstract class EVF_Admin_Form_Migrator {
 		}
 
 		// Make note that this form has been imported.
-		$this->track_import( $form['settings']['import_form_id'], $form_id );
+		$this->track_import( $form['settings']['imported_from']['form_id'], $form_id );
 
 		// Build and send final AJAX response!
 		$final_response = array(

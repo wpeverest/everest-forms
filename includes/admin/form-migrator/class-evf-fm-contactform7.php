@@ -23,6 +23,29 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 		$this->slug = 'contact-form-7';
 		$this->path = 'contact-form-7/wp-contact-form-7.php';
 	}
+	/**
+	 * If the importer source is available.
+	 *
+	 * @since 2.0.6
+	 *
+	 * @return bool
+	 */
+	protected function is_active() {
+
+		return is_plugin_active( $this->path );
+	}
+	/**
+	 *  Check is the plugin installed or not.
+	 *
+	 * @since 2.0.6
+	 *
+	 * @return bool
+	 */
+	protected function is_installed() {
+
+		return file_exists( trailingslashit( WP_PLUGIN_DIR ) . $this->path );
+	}
+
 
 	/**
 	 * Get all the forms.
@@ -411,7 +434,7 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 				'imported_from'                      => array(
 					'form_id'   => absint( $cf7_form_id ),
 					'form_from' => $this->slug,
-				),,
+				),
 			);
 
 			// Mapping Fields.
