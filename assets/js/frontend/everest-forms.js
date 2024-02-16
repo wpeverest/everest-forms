@@ -33,7 +33,9 @@ jQuery( function ( $ ) {
 			this.validateMinimumWordLength();
 
 			// Inline validation.
-			this.$everest_form.on( 'input validate change', '.input-text, select, input:checkbox, input:radio', this.validate_field );
+			this.$everest_form.on('input click validate change', '.input-text, select, input:checkbox, input:radio', this.validate_field, function() {
+				$('.input-text').addClass('evf-field-active');
+			});
 
 			// Notify plugins that the core was loaded.
 			$( document.body ).trigger( 'everest_forms_loaded' );
