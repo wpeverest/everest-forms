@@ -103,6 +103,62 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 		return $forms;
 	}
 	/**
+	 * Mapping the form setting.
+	 *
+	 * @since 2.0.6
+	 * @param [array] $form The form data.
+	 * @param [aray]  $wpf_settings The wpforms form settings.
+	 * @param [int]   $wpf_form_id The wpforms ID.
+	 */
+	private function get_form_settings( $form, $wpf_settings, $wpf_form_id ) {
+		$form['settings'] = array(
+			'email'                              => array(
+				'connection_1' => array(
+					'enable_email_notification' => $wpf_settings['notification_enable'],
+					'connection_name'           => esc_html__( 'Admin Notification', 'everest-forms' ),
+					'evf_to_email'              => $wpf_settings['notifications'][1]['email'],
+					'evf_from_name'             => $wpf_settings['notifications'][1]['sender_name'],
+					'evf_from_email'            => $wpf_settings['notifications'][1]['sender_address'],
+					'evf_reply_to'              => $wpf_settings['notifications'][1]['replyto'],
+					'evf_email_subject'         => $wpf_settings['notifications'][1]['subject'],
+					'evf_email_message'         => $wpf_settings['notifications'][1]['message'],
+				),
+			),
+			'form_title'                         => $wpf_settings['form_title'],
+			'form_description'                   => $wpf_settings['form_desc'],
+			'form_disable_message'               => esc_html__( 'This form is disabled.', 'everest-forms' ),
+			'successful_form_submission_message' => $wpf_settings['confirmations'][1]['message'],
+			'submission_message_scroll'          => $wpf_settings['confirmations'][1]['message_scroll'],
+			'redirect_to'                        => 'message' === $wpf_settings['confirmations'][1]['type'] ? 'same' : $wpf_settings['confirmations'][1]['type'],
+			'custom_page'                        => $wpf_settings['confirmations'][1]['page'],
+			'external_url'                       => $wpf_settings['confirmations'][1]['redirect'],
+			'enable_redirect_query_string'       => 0,
+			'query_string'                       => '',
+			'layout_class'                       => 'default',
+			'form_class'                         => $wpf_settings['form_class'],
+			'submit_button_text'                 => $wpf_settings['submit_text'],
+			'submit_button_processing_text'      => $wpf_settings['submit_text_processing'],
+			'submit_button_class'                => $wpf_settings['submit_class'],
+			'ajax_form_submission'               => $wpf_settings['ajax_submit'],
+			'disabled_entries'                   => isset( $wpf_settings['store_spam_entries'] ) ? $wpf_settings['store_spam_entries'] : '0',
+			'honeypot'                           => '1',
+			'akismet'                            => isset( $wpf_settings['akismet'] ) ? $wpf_settings['akismet'] : '0',
+			'akismet_protection_type'            => 'validation_failed',
+			'recaptcha_support'                  => isset( $wpf_settings['recaptcha'] ) ? $wpf_settings['recaptcha'] : '0',
+			'evf-enable-custom-css'              => '0',
+			'evf-custom-css'                     => '',
+			'evf-enable-custom-js'               => '0',
+			'evf-custom-js'                      => '',
+			'structure'                          => array(),
+			'imported_from'                      => array(
+				'form_id'   => absint( $wpf_form_id ),
+				'form_from' => $this->slug,
+			),
+		);
+
+		return $form;
+	}
+	/**
 	 * Mapped the form datas.
 	 *
 	 * @since 2.0.6
@@ -137,50 +193,7 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 				'settings'      => array(),
 			);
 			// Settings.
-			$form['settings'] = array(
-				'email'                              => array(
-					'connection_1' => array(
-						'enable_email_notification' => $wpf_settings['notification_enable'],
-						'connection_name'           => esc_html__( 'Admin Notification', 'everest-forms' ),
-						'evf_to_email'              => $wpf_settings['notifications'][1]['email'],
-						'evf_from_name'             => $wpf_settings['notifications'][1]['sender_name'],
-						'evf_from_email'            => $wpf_settings['notifications'][1]['sender_address'],
-						'evf_reply_to'              => $wpf_settings['notifications'][1]['replyto'],
-						'evf_email_subject'         => $wpf_settings['notifications'][1]['subject'],
-						'evf_email_message'         => $wpf_settings['notifications'][1]['message'],
-					),
-				),
-				'form_title'                         => $wpf_settings['form_title'],
-				'form_description'                   => $wpf_settings['form_desc'],
-				'form_disable_message'               => esc_html__( 'This form is disabled.', 'everest-forms' ),
-				'successful_form_submission_message' => $wpf_settings['confirmations'][1]['message'],
-				'submission_message_scroll'          => $wpf_settings['confirmations'][1]['message_scroll'],
-				'redirect_to'                        => 'message' === $wpf_settings['confirmations'][1]['type'] ? 'same' : $wpf_settings['confirmations'][1]['type'],
-				'custom_page'                        => $wpf_settings['confirmations'][1]['page'],
-				'external_url'                       => $wpf_settings['confirmations'][1]['redirect'],
-				'enable_redirect_query_string'       => 0,
-				'query_string'                       => '',
-				'layout_class'                       => 'default',
-				'form_class'                         => $wpf_settings['form_class'],
-				'submit_button_text'                 => $wpf_settings['submit_text'],
-				'submit_button_processing_text'      => $wpf_settings['submit_text_processing'],
-				'submit_button_class'                => $wpf_settings['submit_class'],
-				'ajax_form_submission'               => $wpf_settings['ajax_submit'],
-				'disabled_entries'                   => isset( $wpf_settings['store_spam_entries'] ) ? $wpf_settings['store_spam_entries'] : '0',
-				'honeypot'                           => '1',
-				'akismet'                            => isset( $wpf_settings['akismet'] ) ? $wpf_settings['akismet'] : '0',
-				'akismet_protection_type'            => 'validation_failed',
-				'recaptcha_support'                  => isset( $wpf_settings['recaptcha'] ) ? $wpf_settings['recaptcha'] : '0',
-				'evf-enable-custom-css'              => '0',
-				'evf-custom-css'                     => '',
-				'evf-enable-custom-js'               => '0',
-				'evf-custom-js'                      => '',
-				'structure'                          => array(),
-				'imported_from'                      => array(
-					'form_id'   => absint( $wpf_form_id ),
-					'form_from' => $this->slug,
-				),
-			);
+			$form = apply_filters( 'evf_fm_' . $this->slug . '_form_after_settings_mapping', $this->get_form_settings( $form, $wpf_settings, $wpf_form_id ), $wpf_form_id, $wpf_form );
 
 			// Mapping Fields.
 			if ( empty( $wpf_fields ) ) {
@@ -284,9 +297,9 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 								'required'               => isset( $wpf_field['required'] ) ? $wpf_field['required'] : '0',
 								'required_field_message_setting' => 'global',
 								'required-field-message' => '',
-								'placeholder'            => '',
+								'placeholder'            => isset( $wpf_field[ $format . '_placeholder' ] ) ? $wpf_field[ $format . '_placeholder' ] : '',
 								'label_hide'             => isset( $wpf_field['label_hide'] ) ? $wpf_field['label_hide'] : '0',
-								'default_value'          => '',
+								'default_value'          => isset( $wpf_field[ $format . '_default' ] ) ? $wpf_field[ $format . '_default' ] : '',
 								'css'                    => $wpf_field['css'],
 								'regex_value'            => '',
 								'regex_message'          => esc_html__( 'Please provide a valid value for this field.', 'everest-forms' ),
@@ -427,10 +440,67 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 							'wpf_name'               => $wpf_field['id'],
 						);
 						break;
+					case 'date-time':
+						$type = $wpf_field['type'];
+						$form['structure'][ 'row_' . $form['form_field_id'] ]['grid_1'][] = $field_id;
+						$form['form_fields'][ $field_id ]                                 = array(
+							'id'                     => $field_id,
+							'type'                   => $type,
+							'label'                  => $wpf_field['label'],
+							'meta-key'               => $wpf_field['id'],
+							'datetime_format'        => $wpf_field['format'],
+							'datetime_style'         => 'datepicker' === $wpf_field['date_type'] ? 'picker' : $wpf_field['date_type'],
+							'description'            => $wpf_field['description'],
+							'required'               => isset( $wpf_field['required'] ) ? $wpf_field['required'] : '0',
+							'required_field_message_setting' => 'global',
+							'required-field-message' => '',
+							'placeholder'            => $wpf_field['date_placeholder'],
+							'label_hide'             => isset( $wpf_field['label_hide'] ) ? $wpf_field['label_hide'] : '0',
+							'css'                    => $wpf_field['css'],
+							'date_format'            => $wpf_field['date_format'],
+							'disable_dates'          => isset( $wpf_field['date_disable_past_dates'] ) ? $wpf_field['date_disable_past_dates'] : '',
+							'date_localization'      => 'en',
+							'date_timezone'          => 'Default',
+							'date_mode'              => 'single',
+							'min_date'               => '',
+							'max_date'               => '',
+							'min_date_range'         => '',
+							'max_date_range'         => '',
+							'time_interval'          => $wpf_field['time_interval'],
+							'time_format'            => $wpf_field['time_format'],
+							'min_time_hour'          => $wpf_field['time_limit_hours_start_hour'],
+							'min_time_minute'        => $wpf_field['time_limit_hours_start_min'],
+							'max_time_hour'          => $wpf_field['time_limit_hours_end_hour'],
+							'max_time_minute'        => $wpf_field['time_limit_hours_end_min'],
+							'wpf_name'               => $wpf_field['id'],
+						);
+						break;
+					case 'url':
+						$type = $wpf_field['type'];
+						$form['structure'][ 'row_' . $form['form_field_id'] ]['grid_1'][] = $field_id;
+						$form['form_fields'][ $field_id ]                                 = array(
+							'id'                     => $field_id,
+							'type'                   => $type,
+							'label'                  => $wpf_field['label'],
+							'meta-key'               => $wpf_field['id'],
+							'description'            => $wpf_field['description'],
+							'required'               => isset( $wpf_field['required'] ) ? $wpf_field['required'] : '0',
+							'required_field_message_setting' => 'global',
+							'required-field-message' => '',
+							'placeholder'            => $wpf_field['placeholder'],
+							'label_hide'             => isset( $wpf_field['label_hide'] ) ? $wpf_field['label_hide'] : '0',
+							'default_value'          => $wpf_field['default_value'],
+							'css'                    => $wpf_field['css'],
+							'regex_value'            => '',
+							'regex_message'          => esc_html__( 'Please provide a valid value for this field.', 'everest-forms' ),
+							'wpf_name'               => $wpf_field['id'],
+						);
+						break;
 					default:
 						break;
 				}
 			}
+			$form = apply_filters( 'evf_fm_' . $this->slug . '_form_after_fields_mapping', $form, $wpf_form_id, $wpf_form );
 
 			$response = $this->import_form( $form, $unsupported, $upgrade_plan, $upgrade_omit );
 
