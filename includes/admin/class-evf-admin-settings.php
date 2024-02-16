@@ -43,7 +43,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 			if ( empty( self::$settings ) ) {
 				$settings = array();
 
-				include_once dirname( __FILE__ ) . '/settings/class-evf-settings-page.php';
+				include_once __DIR__ . '/settings/class-evf-settings-page.php';
 
 				$settings[] = include 'settings/class-evf-settings-general.php';
 				$settings[] = include 'settings/class-evf-settings-recaptcha.php';
@@ -51,6 +51,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 				$settings[] = include 'settings/class-evf-settings-validation.php';
 				$settings[] = include 'settings/class-evf-settings-misc.php';
 				$settings[] = include 'settings/class-evf-settings-integrations.php';
+				$settings[] = include 'settings/class-evf-settings-reporting.php';
 
 				self::$settings = apply_filters( 'everest_forms_get_settings_pages', $settings );
 			}
@@ -139,7 +140,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 			// Get tabs for the settings page.
 			$tabs = apply_filters( 'everest_forms_settings_tabs_array', array() );
 
-			include dirname( __FILE__ ) . '/views/html-admin-settings.php';
+			include __DIR__ . '/views/html-admin-settings.php';
 		}
 
 		/**
