@@ -25,6 +25,10 @@ class EVF_Field_Captcha extends EVF_Form_Fields {
 		$this->is_pro = true;
 		$this->plan   = 'personal plus professional agency themegrill-agency';
 		$this->addon  = 'everest-forms-captcha';
+		$this->links  = array(
+			'image_id' => '',
+			'vedio_id' => 'obScswjZ24Q',
+		);
 
 		parent::__construct();
 	}

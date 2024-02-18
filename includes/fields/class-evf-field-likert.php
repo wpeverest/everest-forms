@@ -25,6 +25,10 @@ class EVF_Field_Likert extends EVF_Form_Fields {
 		$this->is_pro = true;
 		$this->plan   = 'plus professional agency themegrill-agency';
 		$this->addon  = 'everest-forms-survey-polls-quiz';
+		$this->links  = array(
+			'image_id' => '',
+			'vedio_id' => 'lDKH45N4fPU',
+		);
 
 		parent::__construct();
 	}

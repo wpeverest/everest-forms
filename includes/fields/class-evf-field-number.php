@@ -325,5 +325,21 @@ class EVF_Field_Number extends EVF_Form_Fields {
 			evf()->task->errors[ $form_id ][ $field_id ] = sprintf( esc_html__( 'Please enter a value less than or equal to %s', 'everest-forms' ), absint( $max_value ) );
 			update_option( 'evf_validation_error', 'yes' );
 		}
+
+		// validate regex validation.
+		if ( isset( $form_data['form_fields'][ $field_id ]['enable_regex_validation'] ) && '1' === $form_data['form_fields'][ $field_id ]['enable_regex_validation'] ) {
+			$regex_value   = ! empty( $form_data['form_fields'][ $field_id ]['regex_value'] ) ? $form_data['form_fields'][ $field_id ]['regex_value'] : '';
+			$regex_message = ! empty( $form_data['form_fields'][ $field_id ]['regex_message'] ) ? $form_data['form_fields'][ $field_id ]['regex_message'] : esc_html__( 'Please provide a valid value for this field', 'everest-forms' );
+			$value         = '';
+			if ( is_array( $field_submit ) ) {
+				$value = ! empty( $field_submit['primary'] ) ? $field_submit['primary'] : '';
+			} else {
+				$value = ! empty( $field_submit ) ? $field_submit : '';
+			}
+			if ( ! preg_match( '/' . $regex_value . '/', $value ) ) {
+				evf()->task->errors[ $form_data['id'] ][ $field_id ] = $regex_message;
+				update_option( 'evf_validation_error', 'yes' );
+			}
+		}
 	}
 }

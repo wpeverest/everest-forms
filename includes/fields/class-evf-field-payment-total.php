@@ -23,6 +23,10 @@ class EVF_Field_Payment_Total extends EVF_Form_Fields {
 		$this->order  = 60;
 		$this->group  = 'payment';
 		$this->is_pro = true;
+		$this->links  = array(
+			'image_id' => '',
+			'vedio_id' => 'Pdy8qGcMnc8',
+		);
 
 		parent::__construct();
 	}
