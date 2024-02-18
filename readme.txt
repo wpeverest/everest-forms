@@ -421,6 +421,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Enhancement - Screenshot video on upgrade to pro popup.
 * Enhancement - Clone email form settings.
 * Feature     - Email preview.
+* Fix 		  - Critical error in entry file.
 
 = 2.0.6       - 26-12-2023
 * Upgraded    - Input mask library.
