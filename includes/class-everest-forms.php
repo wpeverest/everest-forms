@@ -21,7 +21,7 @@ final class EverestForms {
 	 *
 	 * @var string
 	 */
-	public $version = '2.0.5';
+	public $version = '2.0.6';
 
 	/**
 	 * The single instance of the class.
@@ -44,6 +44,21 @@ final class EverestForms {
 	 * @var EVF_Form_Handler
 	 */
 	public $form;
+
+	/**
+	 * The form task handler instance.
+	 *
+	 * @var EVF_Form_Task
+	 */
+	public $task;
+
+
+	/**
+	 * The smart tags handler instance.
+	 *
+	 * @var EVF_Smart_Tags
+	 */
+	public $smart_tags;
 
 	/**
 	 * The entry data handler instance.

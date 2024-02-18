@@ -449,6 +449,7 @@
 			EVFPanelBuilder.bindSyncedInputActions();
 			EVFPanelBuilder.init_datepickers();
 			EVFPanelBuilder.bindBulkOptionActions();
+			EVFPanelBuilder.bindAkismetInit();
 
 			// Fields Panel.
 			EVFPanelBuilder.bindUIActionsFields();
@@ -2916,6 +2917,30 @@
 					$( sync_targets ).text( changed_value );
 				}
 			});
+		},
+		/**
+		 * Akismet anti-spam protection.
+		 *
+		 * @since 2.4.0
+		 */
+		bindAkismetInit:function(){
+			var akismetEnabler = $(document).find('#everest-forms-panel-field-settings-akismet');
+			EVFPanelBuilder.akismetTogger(akismetEnabler);
+			$(document).on('change', '#everest-forms-panel-field-settings-akismet', function(){
+				EVFPanelBuilder.akismetTogger($(this));
+			})
+		},
+		/**
+		 * Akismet Toggler.
+		 *
+		 * @param {object} akismetEnabler
+		 */
+		akismetTogger:function(akismetEnabler){
+			if($(akismetEnabler).is(':checked')){
+				$(document).find('.everest-forms-akismet-protection-type').show();
+			}else{
+				$(document).find('.everest-forms-akismet-protection-type').hide();
+			}
 		}
 	};
 

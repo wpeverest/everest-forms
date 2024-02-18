@@ -35,6 +35,13 @@ abstract class EVF_Form_Fields {
 	public $type;
 
 	/**
+	 * Field Order.
+	 *
+	 * @var string
+	 */
+	public $order;
+
+	/**
 	 * Field icon.
 	 *
 	 * @var mixed
@@ -47,6 +54,20 @@ abstract class EVF_Form_Fields {
 	 * @var string
 	 */
 	public $class = '';
+
+	/**
+	 * Field addon.
+	 *
+	 * @var string
+	 */
+	public $addon;
+
+	/**
+	 * Field plan.
+	 *
+	 * @var string
+	 */
+	public $plan;
 
 	/**
 	 * Form ID.

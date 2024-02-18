@@ -381,6 +381,7 @@
 	})
 
 	$(document).find('.evf-form-locate').on('click', function(e) {
+		e.preventDefault();
 		var id = $(this).data('id');
 		var data = {
 			'action':'everest_forms_locate_form_action',
@@ -434,4 +435,12 @@
 
 		})
 	});
+	$( '.evf-smart-phone-field' ).each( function( i, el ) {
+		var $el = $( el );
+		var field_name     = $el.attr( 'name' );
+		setTimeout(function() {
+			$('input[name="' + field_name + '"]').val($el.val());
+		}, 2000);
+	});
+
 })( jQuery, everest_forms_admin );

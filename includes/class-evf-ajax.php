@@ -851,9 +851,9 @@ class EVF_AJAX {
 			$pages                  = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}posts WHERE post_content LIKE %s OR post_content LIKE %s", $everest_form_shortcode, $form_id_shortcode ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			$page_list              = array();
 			foreach ( $pages as $page ) {
-				if ( '0' === $page->post_parent ) {
+				if ( 'page' === $page->post_type || 'post' === $page->post_type ) {
 					$page_title               = $page->post_title;
-					$page_guid                = $page->guid;
+					$page_guid                = get_permalink( $page->ID);
 					$page_list[ $page_title ] = $page_guid;
 				}
 			}

@@ -1173,6 +1173,19 @@ function evf_get_all_forms( $skip_disabled_entries = false, $check_disable_stori
  * @return string
  */
 function evf_get_meta_key_field_option( $field ) {
+	if (isset($field['type']) && isset($field['label'])) {
+		switch ($field['type']) {
+			case 'select':
+				$field['label'] = 'Dropdown';
+				break;
+			case 'radio':
+				$field['label'] = 'Multiple Choice';
+				break;
+			case 'checkbox':
+				$field['label'] = 'Checkboxes';
+				break;
+		}
+	}
 	return str_replace( ' ', '_', preg_replace( '/[^a-zA-Z0-9\s`_]/', '', strtolower( $field['label'] ) ) ) . '_' . rand( pow( 10, 3 ), pow( 10, 4 ) - 1 ); // phpcs:ignore WordPress.WP.AlternativeFunctions.rand_rand.
 }
 
@@ -4822,5 +4835,60 @@ if ( ! function_exists( 'evf_maybe_get_local_font_url' ) ) {
 		}
 
 		return $font_url;
+	}
+}
+
+if( ! function_exists( 'evf_is_akismet_configured' ) ) {
+
+	/**
+	 * Has the Akismet plugin been configured wih a valid API key?
+	 *
+	 * @since 2.4.0
+	 *
+	 * @return bool
+	 */
+	function evf_is_akismet_configured() {
+
+		if (! is_plugin_active( 'akismet/akismet.php' ) ) {
+			return false;
+		}
+
+		require_once( WP_PLUGIN_DIR . '/akismet/akismet.php' );
+
+		$akismet_instance = new Akismet();
+		// Akismet will only allow an API key to be saved if it is a valid key.
+		// We can assume that if there is an API key saved, it is valid.
+		$api_key = $akismet_instance->get_api_key();
+
+		if(! empty( $api_key ) ) {
+			return true;
+		}
+
+		return false;
+	}
+}
+
+if( ! function_exists( 'evf_current_url' ) ) {
+	/**
+	 * Get the current URL.
+	 *
+	 * @since 2.4.0
+	 *
+	 * @return string
+	 */
+	function evf_current_url() {
+
+		$parsed_home_url = wp_parse_url( home_url() );
+
+		$url = $parsed_home_url['scheme'] . '://' . $parsed_home_url['host'];
+
+		if ( ! empty( $parsed_home_url['port'] ) ) {
+			$url .= ':' . $parsed_home_url['port'];
+		}
+
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$url .= wp_unslash( $_SERVER['REQUEST_URI'] );
+
+		return esc_url_raw( $url );
 	}
 }
