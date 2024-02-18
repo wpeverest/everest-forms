@@ -99,9 +99,11 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 							if ( preg_match( '/connection_/', $connection_id ) ) {
 								$connection_name = ! empty( $connection_data['connection_name'] ) ? $connection_data['connection_name'] : '';
 								if ( 'connection_1' !== $connection_id ) {
-									$remove_class = 'email-remove';
+									$remove_class    = 'email-remove';
+									$duplicate_class = 'email-duplicate';
 								} else {
-									$remove_class = 'email-default-remove';
+									$remove_class    = 'email-default-remove';
+									$duplicate_class = 'email-default-duplicate';
 								}
 								if ( isset( $email['enable_email_notification'] ) && '0' === $email['enable_email_notification'] ) {
 									$email_status = isset( $email['enable_email_notification'] ) ? $email['enable_email_notification'] : '1';
@@ -124,6 +126,13 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 												<span class="<?php echo esc_attr( $remove_class ); ?>">
 												<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
 													<path fill-rule="evenodd" d="M9.293 3.293A1 1 0 0 1 10 3h4a1 1 0 0 1 1 1v1H9V4a1 1 0 0 1 .293-.707ZM7 5V4a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1h4a1 1 0 1 1 0 2h-1v13a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V7H3a1 1 0 1 1 0-2h4Zm1 2h10v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7h2Zm2 3a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0v-6a1 1 0 0 1 1-1Zm5 7v-6a1 1 0 1 0-2 0v6a1 1 0 1 0 2 0Z" clip-rule="evenodd"/>
+												</svg>
+											</a>
+											<span class="evf-vertical-divider"></span>
+											<a href="#" class="everest-forms-email-duplicate">
+												<span class="<?php echo esc_attr( $duplicate_class ); ?>">
+												<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 25">
+													<path fill-rule="evenodd" d="M3.033 3.533c.257-.257.605-.4.968-.4h9A1.368 1.368 0 0 1 14.369 4.5v1a.632.632 0 0 0 1.263 0v-1a2.632 2.632 0 0 0-2.631-2.632H4A2.632 2.632 0 0 0 1.368 4.5v9A2.631 2.631 0 0 0 4 16.131h1a.632.632 0 0 0 0-1.263H4A1.368 1.368 0 0 1 2.631 13.5v-9c0-.363.144-.711.401-.968Zm6.598 7.968A1.37 1.37 0 0 1 11 10.132h9c.756 0 1.368.613 1.368 1.369v9c0 .755-.612 1.368-1.368 1.368h-9A1.368 1.368 0 0 1 9.63 20.5v-9ZM11 8.869A2.632 2.632 0 0 0 8.368 11.5v9A2.632 2.632 0 0 0 11 23.131h9a2.632 2.632 0 0 0 2.63-2.631v-9A2.632 2.632 0 0 0 20 8.87h-9Z" clip-rule="evenodd"></path>
 												</svg>
 											</a>
 										</div>
@@ -419,9 +428,9 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				} else {
 					$email_status = isset( $settings['email'][ $connection_id ]['enable_email_notification'] ) ? $settings['email'][ $connection_id ]['enable_email_notification'] : '1';
 				}
-				$hidden_class       = '1' !== $email_status ? 'everest-forms-hidden' : '';
-				$hidden_enable_setting_class       = '1' === $email_status ? 'everest-forms-hidden' : '';
-				$toggler_hide_class = isset( $toggler_hide_class ) ? 'style=display:none;' : '';
+				$hidden_class                = '1' !== $email_status ? 'everest-forms-hidden' : '';
+				$hidden_enable_setting_class = '1' === $email_status ? 'everest-forms-hidden' : '';
+				$toggler_hide_class          = isset( $toggler_hide_class ) ? 'style=display:none;' : '';
 				echo '<div class="evf-content-section evf-content-email-settings" ' . esc_attr( $toggler_hide_class ) . '>';
 				echo '<div class="evf-content-section-title" ' . esc_attr( $toggler_hide_class ) . '>';
 				echo '<div class="evf-title">' . esc_html__( 'Email', 'everest-forms' ) . '</div>';
@@ -583,7 +592,8 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				// --------------------------------------------------------------------//
 				// Everest Forms AI Setting Section Start
 				// --------------------------------------------------------------------//
-				if ( ! empty( get_option( 'everest_forms_ai_api_key' ) ) ) {
+				$ai_api_key = get_option( 'everest_forms_ai_api_key' );
+				if ( ! empty( $ai_api_key ) ) {
 					everest_forms_panel_field(
 						'toggle',
 						'email',
@@ -593,6 +603,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 						array(
 							'default'    => ! empty( $settings['email'][ $connection_id ]['enable_ai_email_prompt'] ) ? $settings['email'][ $connection_id ]['enable_ai_email_prompt'] : '0',
 							'class'      => 'everest-forms-enable-email-prompt',
+							/* translators: %1$s - email message prompt doc url*/
 							'tooltip'    => sprintf( esc_html__( 'Check this option to enable the email message prompt. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/ai/#6-toc-title' ) ),
 							'parent'     => 'settings',
 							'subsection' => $connection_id,
@@ -638,7 +649,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 						'parent'     => 'settings',
 						'subsection' => $connection_id,
 						/* translators: %s - all fields smart tag. */
-						'after'      => empty( get_option( 'everest_forms_ai_api_key' ) ) ? '<p class="desc">' . sprintf( esc_html__( 'To display all form fields, use the %s Smart Tag.', 'everest-forms' ), '<code>{all_fields}</code>' ) . '</p>' : '<p class="desc">' . sprintf( esc_html__( 'To display all form fields, use the %1$s Smart Tag. Use %2$s Smart Tag for AI-generated emails', 'everest-forms' ), '<code>{all_fields}</code>', '<code>{ai_email_response}</code>' ) . '</p>',
+						'after'      => empty( $ai_api_key ) ? '<p class="desc">' . sprintf( esc_html__( 'To display all form fields, use the %s Smart Tag.', 'everest-forms' ), '<code>{all_fields}</code>' ) . '</p>' : '<p class="desc">' . sprintf( esc_html__( 'To display all form fields, use the %1$s Smart Tag. Use %2$s Smart Tag for AI-generated emails', 'everest-forms' ), '<code>{all_fields}</code>', '<code>{ai_email_response}</code>' ) . '</p>',
 					)
 				);
 
@@ -706,10 +717,10 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			esc_html__( 'Protection type', 'everest-forms' ),
 			array(
 				'default' => 'validation_failed',
-				'tooltip' => esc_html__("Please select the protection type. Choosing 'Mark as Spam' allows the submission but marks the entry as spam, while selecting 'Make the form submission as failed' will prevent the form submission.", 'everest-forms'),
+				'tooltip' => esc_html__( "Please select the protection type. Choosing 'Mark as Spam' allows the submission but marks the entry as spam, while selecting 'Make the form submission as failed' will prevent the form submission.", 'everest-forms' ),
 				'options' => array(
-					'validation_failed'  => esc_html__( 'Make the form submission as failed', 'everest-forms' ),
-					'mark_as_spam'         => esc_html__( 'Mark as Spam', 'everest-forms' ),
+					'validation_failed' => esc_html__( 'Make the form submission as failed', 'everest-forms' ),
+					'mark_as_spam'      => esc_html__( 'Mark as Spam', 'everest-forms' ),
 				),
 			)
 		);
