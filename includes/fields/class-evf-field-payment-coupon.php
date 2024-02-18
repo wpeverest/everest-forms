@@ -25,6 +25,10 @@ class EVF_Field_Payment_Coupon extends EVF_Form_Fields {
 		$this->is_pro = true;
 		$this->plan   = 'professional agency themegrill-agency';
 		$this->addon  = 'everest-forms-coupons';
+		$this->links  = array(
+			'image_id' => '',
+			'vedio_id' => 'GSYQIiyntW0',
+		);
 
 		parent::__construct();
 	}

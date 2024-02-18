@@ -150,7 +150,7 @@ class EVF_Admin_Assets {
 					'i18n_close'                   => esc_html__( 'Close', 'everest-forms' ),
 					'i18n_cancel'                  => esc_html__( 'Cancel', 'everest-forms' ),
 					'i18n_row_locked'              => esc_html__( 'Row Locked', 'everest-forms' ),
-					'i18n_row_locked_msg'          => esc_html__( 'Single row cannot be deleted.', 'everest-forms' ),
+					'i18n_single_row_locked_msg'   => esc_html__( 'Single row cannot be deleted.', 'everest-forms' ),
 					'i18n_field_locked'            => esc_html__( 'Field Locked', 'everest-forms' ),
 					'i18n_field_locked_msg'        => esc_html__( 'This field cannot be deleted or duplicated.', 'everest-forms' ),
 					'i18n_row_locked_msg'          => esc_html__( 'This row cannot be deleted or duplicated.', 'everest-forms' ),
@@ -210,6 +210,9 @@ class EVF_Admin_Assets {
 				'upgrade_plan_title'           => esc_html__( 'is a Premium Addon', 'everest-forms' ),
 				'upgrade_plan_message'         => esc_html__( 'This addon requires premium plan. Please upgrade to the Premium plan to unlock all these awesome field.', 'everest-forms' ),
 				'upgrade_plan_button'          => esc_html__( 'Upgrade Plan', 'everest-forms' ),
+				'vedio_links'                  => array(
+					'dropdown' => 'kDYAKElqNtM',
+				),
 
 			)
 		);
