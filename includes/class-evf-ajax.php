@@ -875,7 +875,7 @@ class EVF_AJAX {
 			foreach ( $pages as $page ) {
 				if ( 'page' === $page->post_type || 'post' === $page->post_type ) {
 					$page_title               = $page->post_title;
-					$page_guid                = get_permalink( $page->ID);
+					$page_guid                = get_permalink( $page->ID );
 					$page_list[ $page_title ] = $page_guid;
 				}
 			}
