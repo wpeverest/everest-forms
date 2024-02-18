@@ -88,6 +88,7 @@ class EVF_AJAX {
 			'install_extension'       => false,
 			'integration_connect'     => false,
 			'new_email_add'           => false,
+			'email_duplicate'         => false,
 			'integration_disconnect'  => false,
 			'rated'                   => false,
 			'review_dismiss'          => false,
@@ -658,6 +659,27 @@ class EVF_AJAX {
 		);
 	}
 
+	/**
+	 * AJAX Email Duplicate.
+	 */
+	public static function email_duplicate() {
+		check_ajax_referer( 'process-ajax-nonce', 'security' );
+
+		// Check permissions.
+		if ( ! current_user_can( 'everest_forms_edit_forms' ) ) {
+			wp_die( -1 );
+		}
+
+		$connection_id = 'connection_' . uniqid();
+
+		wp_send_json_success(
+			array(
+				'connection_id'      => $connection_id,
+				'prev_connection_id' => isset( $_POST['prev_connection_id'] ) ? sanitize_text_field( wp_unslash( $_POST['prev_connection_id'] ) ) : '',
+			)
+		);
+	}
+
 
 	/**
 	 * AJAX Integration disconnect.
@@ -858,9 +880,9 @@ class EVF_AJAX {
 			$pages                  = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}posts WHERE post_content LIKE %s OR post_content LIKE %s", $everest_form_shortcode, $form_id_shortcode ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			$page_list              = array();
 			foreach ( $pages as $page ) {
-				if ( '0' === $page->post_parent ) {
+				if ( 'page' === $page->post_type || 'post' === $page->post_type ) {
 					$page_title               = $page->post_title;
-					$page_guid                = $page->guid;
+					$page_guid                = get_permalink( $page->ID );
 					$page_list[ $page_title ] = $page_guid;
 				}
 			}

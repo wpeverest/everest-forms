@@ -23,6 +23,10 @@ class EVF_Field_Color extends EVF_Form_Fields {
 		$this->order  = 210;
 		$this->group  = 'advanced';
 		$this->is_pro = true;
+		$this->links  = array(
+			'image_id' => '',
+			'vedio_id' => 'M9Rb0RWrf2I',
+		);
 
 		parent::__construct();
 	}

@@ -10427,3 +10427,6 @@ img.ui-datepicker-trigger {
   border-bottom: none;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0; }
+
+.evf-akismet .evf-akismet-warning .evf-akismet-warning-label {
+  color: #ffcc00; }
