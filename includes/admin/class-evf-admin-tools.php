@@ -33,6 +33,12 @@ class EVF_Admin_Tools {
 	public static function export() {
 		include_once dirname( __FILE__ ) . '/views/html-admin-page-export.php';
 	}
+	/**
+	 * Show the setting page.
+	 */
+	public static function setting() {
+		include_once dirname( __FILE__ ) . '/views/html-admin-page-setting.php';
+	}
 
 	/**
 	 * Show the logs page.
