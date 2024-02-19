@@ -422,6 +422,8 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Enhancement - Clone email form settings.
 * Feature     - Email preview.
 * Fix 		  - Critical error in entry file.
+* Fix         - Show values setting not displaying in select field.
+
 
 = 2.0.6       - 26-12-2023
 * Upgraded    - Input mask library.
