@@ -360,6 +360,77 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 	}
 
 	/**
+	 * Email notification settings.
+	 *
+	 * @since 2.0.6
+	 * @param [array]  $form The form.
+	 * @param [object] $cf7_form The contact form 7 form.
+	 */
+	private function get_email_notification_settings( $form, $cf7_form ) {
+		$cf7_form_name         = $cf7_form->title();
+		$notification_settings = array(
+			'connection_1' => array(
+				'enable_email_notification' => '1',
+				'connection_name'           => esc_html__( 'Admin Notification', 'everest-forms' ),
+				'evf_to_email'              => '{admin_email}',
+				'evf_from_name'             => esc_html__( 'Everest Forms', 'everest-forms' ),
+				'evf_from_email'            => '{admin_email}',
+				'evf_reply_to'              => '',
+				'evf_email_subject'         => sprintf( '%s - %s', esc_html__( 'New Form Entry', 'everest-forms' ), esc_attr( $cf7_form_name ) ),
+				'evf_email_message'         => '{all_fields}',
+			),
+		);
+
+		return $notification_settings;
+	}
+
+	/**
+	 * Mapping the form setting.
+	 *
+	 * @since 2.0.6
+	 * @param [array]  $form The form data.
+	 * @param [object] $cf7_form The wpforms form settings.
+	 * @param [int]    $cf7_form_id The wpforms ID.
+	 */
+	private function get_form_settings( $form, $cf7_form, $cf7_form_id ) {
+		$cf7_form_name    = $cf7_form->title();
+		$form['settings'] = array(
+			'email'                              => apply_filters( 'evf_fm_' . $this->slug . 'email_notification_settings', $this->get_email_notification_settings( $form, $cf7_form ), $form, $cf7_form ),
+			'form_title'                         => sanitize_text_field( $cf7_form_name ),
+			'form_description'                   => '',
+			'form_disable_message'               => esc_html__( 'This form is disabled.', 'everest-forms' ),
+			'successful_form_submission_message' => esc_html__( 'Thanks for contacting us! We will be in touch with you shortly', 'everest-forms' ),
+			'submission_message_scroll'          => '1',
+			'redirect_to'                        => 'same',
+			'custom_page'                        => '',
+			'external_url'                       => '',
+			'enable_redirect_query_string'       => 0,
+			'query_string'                       => '',
+			'layout_class'                       => 'default',
+			'form_class'                         => '',
+			'submit_button_text'                 => esc_html__( 'Submit', 'everest-forms' ),
+			'submit_button_processing_text'      => esc_html__( 'Processing', 'everest-forms' ),
+			'submit_button_class'                => '',
+			'ajax_form_submission'               => '0',
+			'disabled_entries'                   => '0',
+			'honeypot'                           => '1',
+			'akismet'                            => '0',
+			'akismet_protection_type'            => 'validation_failed',
+			'recaptcha_support'                  => '0',
+			'evf-enable-custom-css'              => '0',
+			'evf-custom-css'                     => '',
+			'evf-enable-custom-js'               => '0',
+			'evf-custom-js'                      => '',
+			'structure'                          => array(),
+			'imported_from'                      => array(
+				'form_id'   => absint( $cf7_form_id ),
+				'form_from' => $this->slug,
+			),
+		);
+
+		return $form;
+	}
+	/**
 	 * Mapped the form datas.
 	 *
 	 * @since 2.0.6
@@ -394,50 +465,7 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 				'settings'      => array(),
 			);
 			// Settings.
-			$form['settings'] = array(
-				'email'                              => array(
-					'connection_1' => array(
-						'enable_email_notification' => '1',
-						'connection_name'           => esc_html__( 'Admin Notification', 'everest-forms' ),
-						'evf_to_email'              => '{admin_email}',
-						'evf_from_name'             => esc_html__( 'Everest Forms', 'everest-forms' ),
-						'evf_from_email'            => '{admin_email}',
-						'evf_reply_to'              => '',
-						'evf_email_subject'         => sprintf( '%s - %s', esc_html__( 'New Form Entry', 'everest-forms' ), esc_attr( $cf7_form_name ) ),
-						'evf_email_message'         => '{all_fields}',
-					),
-				),
-				'form_title'                         => sanitize_text_field( $cf7_form_name ),
-				'form_description'                   => '',
-				'form_disable_message'               => esc_html__( 'This form is disabled.', 'everest-forms' ),
-				'successful_form_submission_message' => esc_html__( 'Thanks for contacting us! We will be in touch with you shortly', 'everest-forms' ),
-				'submission_message_scroll'          => '1',
-				'redirect_to'                        => 'same',
-				'custom_page'                        => '',
-				'external_url'                       => '',
-				'enable_redirect_query_string'       => 0,
-				'query_string'                       => '',
-				'layout_class'                       => 'default',
-				'form_class'                         => '',
-				'submit_button_text'                 => esc_html__( 'Submit', 'everest-forms' ),
-				'submit_button_processing_text'      => esc_html__( 'Processing\u2026', 'everest-forms' ),
-				'submit_button_class'                => '',
-				'ajax_form_submission'               => '0',
-				'disabled_entries'                   => '0',
-				'honeypot'                           => '1',
-				'akismet'                            => '0',
-				'akismet_protection_type'            => 'validation_failed',
-				'recaptcha_support'                  => '0',
-				'evf-enable-custom-css'              => '0',
-				'evf-custom-css'                     => '',
-				'evf-enable-custom-js'               => '0',
-				'evf-custom-js'                      => '',
-				'structure'                          => array(),
-				'imported_from'                      => array(
-					'form_id'   => absint( $cf7_form_id ),
-					'form_from' => $this->slug,
-				),
-			);
+			$form = apply_filters( 'evf_fm_' . $this->slug . '_form_after_settings_mapping', $this->get_form_settings( $form, $cf7_form, $cf7_form_id ), $cf7_form_id, $cf7_form );
 
 			// Mapping Fields.
 			if ( empty( $cf7_fields ) ) {
@@ -856,6 +884,7 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 					$form['settings']['email']['connection_1']['evf_from_email'] = $sender['address'];
 				}
 			}
+			$form = apply_filters( 'evf_fm_' . $this->slug . '_form_after_fields_mapping', $form, $cf7_form_id, $cf7_form );
 
 			$response = $this->import_form( $form, $unsupported, $upgrade_plan, $upgrade_omit );
 

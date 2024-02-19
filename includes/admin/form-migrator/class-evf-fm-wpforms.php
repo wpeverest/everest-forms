@@ -149,6 +149,29 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 
 		return $string;
 	}
+	/**
+	 * Email notification settings.
+	 *
+	 * @since 2.0.6
+	 * @param [array] $form The form.
+	 * @param [array] $wpf_settings The wpfoms settings.
+	 */
+	private function get_email_notification_settings( $form, $wpf_settings ) {
+		$notification_settings = array(
+			'connection_1' => array(
+				'enable_email_notification' => $wpf_settings['notification_enable'],
+				'connection_name'           => esc_html__( 'Admin Notification', 'everest-forms' ),
+				'evf_to_email'              => $this->get_smarttags( $wpf_settings['notifications'][1]['email'], $form['form_fields'] ),
+				'evf_from_name'             => $this->get_smarttags( $wpf_settings['notifications'][1]['sender_name'], $form['form_fields'] ),
+				'evf_from_email'            => $this->get_smarttags( $wpf_settings['notifications'][1]['sender_address'], $form['form_fields'] ),
+				'evf_reply_to'              => $this->get_smarttags( $wpf_settings['notifications'][1]['replyto'], $form['form_fields'] ),
+				'evf_email_subject'         => $this->get_smarttags( $wpf_settings['notifications'][1]['subject'], $form['form_fields'] ),
+				'evf_email_message'         => $this->get_smarttags( $wpf_settings['notifications'][1]['message'], $form['form_fields'] ),
+			),
+		);
+
+		return $notification_settings;
+	}
 
 	/**
 	 * Mapping the form setting.
@@ -160,18 +183,7 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 	 */
 	private function get_form_settings( $form, $wpf_settings, $wpf_form_id ) {
 		$form['settings'] = array(
-			'email'                              => array(
-				'connection_1' => array(
-					'enable_email_notification' => $wpf_settings['notification_enable'],
-					'connection_name'           => esc_html__( 'Admin Notification', 'everest-forms' ),
-					'evf_to_email'              => $this->get_smarttags( $wpf_settings['notifications'][1]['email'], $form['form_fields'] ),
-					'evf_from_name'             => $this->get_smarttags( $wpf_settings['notifications'][1]['sender_name'], $form['form_fields'] ),
-					'evf_from_email'            => $this->get_smarttags( $wpf_settings['notifications'][1]['sender_address'], $form['form_fields'] ),
-					'evf_reply_to'              => $this->get_smarttags( $wpf_settings['notifications'][1]['replyto'], $form['form_fields'] ),
-					'evf_email_subject'         => $this->get_smarttags( $wpf_settings['notifications'][1]['subject'], $form['form_fields'] ),
-					'evf_email_message'         => $this->get_smarttags( $wpf_settings['notifications'][1]['message'], $form['form_fields'] ),
-				),
-			),
+			'email'                              => apply_filters( 'evf_fm_' . $this->slug . 'email_notification_settings', $this->get_email_notification_settings( $form, $wpf_settings ), $form, $wpf_settings ),
 			'form_title'                         => $wpf_settings['form_title'],
 			'form_description'                   => $wpf_settings['form_desc'],
 			'form_disable_message'               => esc_html__( 'This form is disabled.', 'everest-forms' ),
