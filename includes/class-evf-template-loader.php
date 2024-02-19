@@ -40,6 +40,8 @@ class EVF_Template_Loader {
 			add_filter( 'frontpage_template_hierarchy', array( __CLASS__, 'template_include' ) );
 			add_action( 'template_redirect', array( __CLASS__, 'form_preview_init' ) );
 			add_filter( 'astra_remove_entry_header_content', '__return_true' ); // Need to remove in next version, If astra release the patches.
+		} elseif ( isset( $_GET['evf_email_preview'] ) ? sanitize_text_field( wp_unslash( $_GET['evf_email_preview'] ) ) : '' ) {
+			add_filter( 'template_include', array( __CLASS__, 'email_preview_init' ) );
 		} else {
 			add_filter( 'template_include', array( __CLASS__, 'template_loader' ) );
 		}
@@ -168,10 +170,28 @@ class EVF_Template_Loader {
 
 		if ( 0 < self::$form_id ) {
 			add_filter( 'the_title', array( __CLASS__, 'form_preview_title_filter' ), 100, 1 );
-			add_filter( 'the_content', array( __CLASS__, 'form_preview_content_filter' ),999 );
-			add_filter( 'get_the_excerpt', array( __CLASS__, 'form_preview_content_filter' ),999 );
+			add_filter( 'the_content', array( __CLASS__, 'form_preview_content_filter' ), 999 );
+			add_filter( 'get_the_excerpt', array( __CLASS__, 'form_preview_content_filter' ), 999 );
 			add_filter( 'post_thumbnail_html', '__return_empty_string' );
 		}
+	}
+
+	/*
+	|--------------------------------------------------------------------------
+	| Email Preview Handling
+	|--------------------------------------------------------------------------
+	*/
+
+	/**
+	 * Hook in methods to enhance the form preview.
+	 */
+	public static function email_preview_init() {
+		if ( ! is_user_logged_in() || is_admin() ) {
+			return;
+		}
+
+		$email_preview = evf()->plugin_path() . '/templates/emails/email-preview.php';
+		return $email_preview;
 	}
 
 	/**

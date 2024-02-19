@@ -23,6 +23,10 @@ class EVF_Field_File_Upload extends EVF_Form_Fields {
 		$this->order  = 40;
 		$this->group  = 'advanced';
 		$this->is_pro = true;
+		$this->links  = array(
+			'image_id' => '',
+			'vedio_id' => 'KZSNCmoRkN4',
+		);
 
 		parent::__construct();
 	}

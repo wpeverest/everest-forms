@@ -21,7 +21,7 @@ jQuery( function( $ ) {
 		field_upgrade: function( e ) {
 			e.preventDefault();
 
-			evf_upgrade_actions.upgrade_modal( $( this ).data( 'feature' ) ? $( this ).data( 'feature' ) : $( this ).text() + ' field' );
+			evf_upgrade_actions.upgrade_modal( $( this ).data( 'feature' ) ? $( this ).data( 'feature' ) : $( this ).text() + ' field', $( this ).data( 'links' ) );
 		},
 		evf_upgrade_addon:function(e){
 			e.preventDefault();
@@ -85,15 +85,32 @@ jQuery( function( $ ) {
 				}
 			})
 		},
-		upgrade_modal: function( feature ) {
+		upgrade_modal: function( feature, links = '' ) {
 			var message = evf_upgrade.upgrade_message.replace( /%name%/g, feature );
+			var boxWidth = '565px';
+			if(feature === 'Multiple selection'){
+					links = {
+					'image_id':'',
+					'vedio_id':evf_upgrade.vedio_links.dropdown
+				}
+			}
+			if('' !== links) {
+				const {image_id, vedio_id} = links;
+				boxWidth = '665px';
 
+				if(vedio_id !== '') {
+					var html = '<div><iframe width="600px" height="300px" frameborder="0" src="https://www.youtube.com/embed/'+vedio_id+'" rel="1" allowfullscreen></iframe></div><br>';
+				}else{
+					var html = '<div width="420" height="315"> <img src="'+image_id+'" /></div>';
+				}
+				message = html + message;
+			}
 			$.alert({
 				title: feature + ' ' + evf_upgrade.upgrade_title,
 				icon: 'dashicons dashicons-lock',
 				content: message,
 				type: 'red',
-				boxWidth: '565px',
+				boxWidth: boxWidth,
 				buttons: {
 					confirm: {
 						text: evf_upgrade.upgrade_button,
