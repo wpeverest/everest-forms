@@ -24,6 +24,10 @@ class EVF_Field_Credit_Card extends EVF_Form_Fields {
 		$this->group  = 'payment';
 		$this->is_pro = true;
 		$this->plan   = 'plus professional agency themegrill-agency';
+		$this->links  = array(
+			'image_id' => '',
+			'vedio_id' => 'ermR7iHtWEc',
+		);
 
 		parent::__construct();
 	}

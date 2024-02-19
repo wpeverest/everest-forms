@@ -88,6 +88,7 @@ class EVF_AJAX {
 			'install_extension'       => false,
 			'integration_connect'     => false,
 			'new_email_add'           => false,
+			'email_duplicate'         => false,
 			'integration_disconnect'  => false,
 			'rated'                   => false,
 			'review_dismiss'          => false,
@@ -643,10 +644,38 @@ class EVF_AJAX {
 		}
 
 		$connection_id = 'connection_' . uniqid();
-
+		$preview_url   = add_query_arg(
+			array(
+				'evf_email_preview' => $connection_id,
+				'form_id'           => isset( $_POST['id'] ) ? absint( $_POST['id'] ) : 0,
+			),
+			home_url()
+		);
 		wp_send_json_success(
 			array(
 				'connection_id' => $connection_id,
+				'preview_url'   => $preview_url,
+			)
+		);
+	}
+
+	/**
+	 * AJAX Email Duplicate.
+	 */
+	public static function email_duplicate() {
+		check_ajax_referer( 'process-ajax-nonce', 'security' );
+
+		// Check permissions.
+		if ( ! current_user_can( 'everest_forms_edit_forms' ) ) {
+			wp_die( -1 );
+		}
+
+		$connection_id = 'connection_' . uniqid();
+
+		wp_send_json_success(
+			array(
+				'connection_id'      => $connection_id,
+				'prev_connection_id' => isset( $_POST['prev_connection_id'] ) ? sanitize_text_field( wp_unslash( $_POST['prev_connection_id'] ) ) : '',
 			)
 		);
 	}
@@ -853,7 +882,7 @@ class EVF_AJAX {
 			foreach ( $pages as $page ) {
 				if ( 'page' === $page->post_type || 'post' === $page->post_type ) {
 					$page_title               = $page->post_title;
-					$page_guid                = get_permalink( $page->ID);
+					$page_guid                = get_permalink( $page->ID );
 					$page_list[ $page_title ] = $page_guid;
 				}
 			}

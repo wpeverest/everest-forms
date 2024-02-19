@@ -23,6 +23,10 @@ class EVF_Field_Phone extends EVF_Form_Fields {
 		$this->order  = 60;
 		$this->group  = 'advanced';
 		$this->is_pro = true;
+		$this->links  = array(
+			'image_id' => '',
+			'vedio_id' => 'sBa7R9Wp6Gk',
+		);
 
 		parent::__construct();
 	}

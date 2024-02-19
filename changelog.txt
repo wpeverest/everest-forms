@@ -1,5 +1,11 @@
 == Changelog ==
 
+= 2.0.7       - xx-xx-2023
+* Enhancement - Screenshot video on upgrade to pro popup.
+* Enhancement - Clone email form settings.
+* Feature     - Email preview.
+* Fix 		  - Critical error in entry file.
+
 = 2.0.6       - 26-12-2023
 * Upgraded    - Input mask library.
 * Fix		  - Empty values in entries for (select, checkbox, radio) fields when wordPress site is in another language.
