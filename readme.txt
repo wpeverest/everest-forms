@@ -4,7 +4,7 @@ Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.2
 Tested up to: 6.4
 Requires PHP: 7.2
-Stable tag: 2.0.6
+Stable tag: 2.0.7
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -417,10 +417,19 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 2.0.6       - xx-xx-2023
+= 2.0.7       - xx-xx-2023
+* Enhancement - Screenshot video on upgrade to pro popup.
+* Enhancement - Clone email form settings.
+* Feature     - Email preview.
+* Fix 		  - Critical error in entry file.
+* Fix         - Show values setting not displaying in select field.
+
+
+= 2.0.6       - 26-12-2023
 * Upgraded    - Input mask library.
 * Fix		  - Empty values in entries for (select, checkbox, radio) fields when wordPress site is in another language.
 * Fix         - XLSX export issue.
+* Fix 		  - PHP 8.2 dynamic properties are deprecated.
 * Feature 	  - Akismet integration.
 
 = 2.0.5       - 08-11-2023

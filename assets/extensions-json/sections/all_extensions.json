@@ -31,42 +31,27 @@
       ]
     },
     {
+      "title": "Custom Captcha",
+      "slug": "everest-forms-captcha",
+      "name": "Everest Forms Captcha",
+      "image": "extensions-json/sections/images/custom-captcha.png",
+      "excerpt": "Allows you to add custom questions or math captcha to your form and fight back against spam form submissions. It also adds a security layer to your website.",
+      "link": "https://everestforms.net/features/custom-captcha/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=captcha",
+      "plan": [
+        "personal",
+        "plus",
+        "professional",
+        "agency",
+        "themegrill agency"
+      ]
+    },
+    {
       "title": "Multi Part Forms",
       "slug": "everest-forms-multi-part",
       "name": "Everest Forms Multi Part",
       "image": "extensions-json/sections/images/multi-part-forms.png",
       "excerpt": "Allows you to easily break your long forms into multiple parts. It helps you to make a stepwise form instead of a long-form which adds rich user experience to your website.",
       "link": "https://everestforms.net/features/multi-step-forms/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=multi-part-forms",
-      "plan": [
-        "personal",
-        "plus",
-        "professional",
-        "agency",
-        "themegrill agency"
-      ]
-    },
-    {
-      "title": "Mailchimp",
-      "slug": "everest-forms-mailchimp",
-      "name": "Everest Forms Mailchimp",
-      "image": "extensions-json/sections/images/mailchimp.png",
-      "excerpt": "Allows your users to subscribe to Mailchimp through form submissions. Users filling up the forms can be directly added to your subscribers list in Mailchimp.",
-      "link": "https://everestforms.net/features/mailchimp/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=mailchimp",
-      "plan": [
-        "personal",
-        "plus",
-        "professional",
-        "agency",
-        "themegrill agency"
-      ]
-    },
-    {
-      "title": "ConvertKit",
-      "slug": "everest-forms-convertkit",
-      "name": "Everest Forms ConvertKit",
-      "image": "extensions-json/sections/images/convertkit.png",
-      "excerpt": "Allows you to efficiently grow your business by generating more leads with ConvertKit. It also helps increase automated emails for better lead generation.",
-      "link": "https://everestforms.net/features/convertkit/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=convertkit",
       "plan": [
         "personal",
         "plus",
@@ -91,12 +76,53 @@
       ]
     },
     {
-      "title": "Custom Captcha",
-      "slug": "everest-forms-captcha",
-      "name": "Everest Forms Captcha",
-      "image": "extensions-json/sections/images/custom-captcha.png",
-      "excerpt": "Allows you to add custom questions or math captcha to your form and fight back against spam form submissions. It also adds a security layer to your website.",
-      "link": "https://everestforms.net/features/custom-captcha/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=captcha",
+      "title": "Email Templates",
+      "slug": "everest-forms-email-templates",
+      "name": "Everest Forms Email Templates",
+      "image": "extensions-json/sections/images/email-templates.png",
+      "excerpt": "Allows you to make email design changes without coding. Powerful customizing panel with live preview helps you customize colors, fonts, spacing, background, alignment and more.",
+      "link": "https://everestforms.net/features/email-templates/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=email-templates",
+      "plan": [
+        "professional",
+        "agency",
+        "themegrill agency"
+      ]
+    },
+    {
+      "title": "Survey Polls and Quiz",
+      "slug": "everest-forms-survey-polls-quiz",
+      "name": "Everest Forms Survey, Polls and Quiz",
+      "image": "extensions-json/sections/images/survey-polls-quiz.png",
+      "excerpt": "Allows you to create an intuitive survey, poll and quiz forms easily. It also provides admin reporting for data-driven decisions and other aditional fields like Likert and Scale Rating.",
+      "link": "https://everestforms.net/features/surveys-polls-and-quiz/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=survey-polls-and-quiz",
+      "plan": [
+        "plus",
+        "professional",
+        "agency",
+        "themegrill agency"
+      ]
+    },
+    {
+      "title": "PayPal Standard",
+      "slug": "everest-forms-paypal-standard",
+      "name": "Everest Forms PayPal Standard",
+      "image": "extensions-json/sections/images/payment-paypal.png",
+      "excerpt": "Allows you to integrate online payment service to your e-commerce website. You can connect your Everest forms with PayPal to easily collect payments, donations, and online orders.",
+      "link": "https://everestforms.net/features/paypal-standard/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=paypal-standard",
+      "plan": [
+        "plus",
+        "professional",
+        "agency",
+        "themegrill agency"
+      ]
+    },
+    {
+      "title": "Mailchimp",
+      "slug": "everest-forms-mailchimp",
+      "name": "Everest Forms Mailchimp",
+      "image": "extensions-json/sections/images/mailchimp.png",
+      "excerpt": "Allows your users to subscribe to Mailchimp through form submissions. Users filling up the forms can be directly added to your subscribers list in Mailchimp.",
+      "link": "https://everestforms.net/features/mailchimp/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=mailchimp",
       "plan": [
         "personal",
         "plus",
@@ -106,54 +132,12 @@
       ]
     },
     {
-      "title": "Geolocation",
-      "slug": "everest-forms-geolocation",
-      "name": "Everest Forms Geolocation",
-      "image": "extensions-json/sections/images/geolocation.png",
-      "excerpt": "Allows you to collect precise location of your visitors and store their geolocation data like IP, Country, and Postal/Zip Code along with form submissions.",
-      "link": "https://everestforms.net/features/geolocation/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=geolocation",
-      "plan": [
-        "plus",
-        "professional",
-        "agency",
-        "themegrill agency"
-      ]
-    },
-    {
-      "title": "MailerLite",
-      "slug": "everest-forms-mailerlite",
-      "name": "Everest Forms MailerLite",
-      "image": "extensions-json/sections/images/mailerlite.png",
-      "excerpt": "Allows your users to subscribe to MailerLite through form submission via Everest Forms.",
-      "link": "https://everestforms.net/features/mailerlite/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=mailerlite",
-      "plan": [
-        "plus",
-        "professional",
-        "agency",
-        "themegrill agency"
-      ]
-    },
-    {
-      "title": "ActiveCampaign",
-      "slug": "everest-forms-activecampaign",
-      "name": "Everest Forms ActiveCampaign",
-      "image": "extensions-json/sections/images/activecampaign.png",
-      "excerpt": "Allows your users to subscribe to ActiveCampaign through form submission via Everest Forms.",
-      "link": "https://everestforms.net/features/activecampaign/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=mailerlite",
-      "plan": [
-        "plus",
-        "professional",
-        "agency",
-        "themegrill agency"
-      ]
-    },
-    {
-      "title": "Campaign Monitor",
-      "slug": "everest-forms-campaign-monitor",
-      "name": "Everest Forms Campaign Monitor",
-      "image": "extensions-json/sections/images/campaign-monitor.png",
-      "excerpt": "Allows your users to subscribe to Campaign Monitor through form submission via Everest Forms.",
-      "link": "https://everestforms.net/features/campaign-monitor/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=campaign-monitor",
+      "title": "User Registration",
+      "slug": "everest-forms-user-registration",
+      "name": "Everest Forms User Registration",
+      "image": "extensions-json/sections/images/user-registration.png",
+      "excerpt": "Allows you to create a custom WordPress user registration form instantly in few simple steps. You can add or remove input fields as per the style of your registration using this feature.",
+      "link": "https://everestforms.net/features/user-registration/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=user-registration",
       "plan": [
         "plus",
         "professional",
@@ -176,26 +160,51 @@
       ]
     },
     {
-      "title": "Survey Polls and Quiz",
-      "slug": "everest-forms-survey-polls-quiz",
-      "name": "Everest Forms Survey, Polls and Quiz",
-      "image": "extensions-json/sections/images/survey-polls-quiz.png",
-      "excerpt": "Allows you to create an intuitive survey, poll and quiz forms easily. It also provides admin reporting for data-driven decisions and other aditional fields like Likert and Scale Rating.",
-      "link": "https://everestforms.net/features/surveys-polls-and-quiz/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=survey-polls-and-quiz",
+      "title": "Save And Continue",
+      "slug": "everest-forms-save-and-continue",
+      "name": "Everest Forms Save And Continue",
+      "image": "extensions-json/sections/images/save-and-continue.jpg",
+      "excerpt": "Allows users to save their partially filled information and continue to work on it later. Users can opt to receive a link if they wish to continue later with the form",
+      "link": "https://everestforms.net/features/save-and-continue/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=save-and-continue",
       "plan": [
-        "plus",
         "professional",
         "agency",
         "themegrill agency"
       ]
     },
     {
-      "title": "User Registration",
-      "slug": "everest-forms-user-registration",
-      "name": "Everest Forms User Registration",
-      "image": "extensions-json/sections/images/user-registration.png",
-      "excerpt": "Allows you to create a custom WordPress user registration form instantly in few simple steps. You can add or remove input fields as per the style of your registration using this feature.",
-      "link": "https://everestforms.net/features/user-registration/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=user-registration",
+      "title": "Stripe",
+      "slug": "everest-forms-stripe",
+      "name": "Everest Forms Stripe",
+      "image": "extensions-json/sections/images/payment-stripe.png",
+      "excerpt": "Allows you to integrate online payment service to your e-commerce website. You can connect your Everest forms with Stripe to easily collect payments, donations, and online orders.",
+      "link": "https://everestforms.net/features/stripe/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=stripe",
+      "plan": [
+        "professional",
+        "agency",
+        "themegrill agency"
+      ]
+    },
+    {
+      "title": "Repeater Fields",
+      "slug": "everest-forms-repeater-fields",
+      "name": "Everest Forms Repeater Fields",
+      "image": "extensions-json/sections/images/repeater-fields.jpg",
+      "excerpt": "Repeater field add-on allows you to repeatedly add a set of form fields within your WordPress forms.",
+      "link": "https://everestforms.net/features/repeater-fields/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=repeater-fields",
+      "plan": [
+        "professional",
+        "agency",
+        "themegrill agency"
+      ]
+    },
+    {
+      "title": "Geolocation",
+      "slug": "everest-forms-geolocation",
+      "name": "Everest Forms Geolocation",
+      "image": "extensions-json/sections/images/geolocation.png",
+      "excerpt": "Allows you to collect precise location of your visitors and store their geolocation data like IP, Country, and Postal/Zip Code along with form submissions.",
+      "link": "https://everestforms.net/features/geolocation/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=geolocation",
       "plan": [
         "plus",
         "professional",
@@ -217,98 +226,6 @@
       ]
     },
     {
-      "title": "Post Submissions",
-      "slug": "everest-forms-post-submissions",
-      "name": "Everest Forms Post Submissions",
-      "image": "extensions-json/sections/images/post-submissions.png",
-      "excerpt": "Allows you to have user-submitted content. It also lets your users to submit their blogs posts from front-end without the hassle of logging into the admin dashboard.",
-      "link": "https://everestforms.net/features/post-submissions/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=post-submissions",
-      "plan": [
-        "professional",
-        "agency",
-        "themegrill agency"
-      ]
-    },
-    {
-      "title": "Email Templates",
-      "slug": "everest-forms-email-templates",
-      "name": "Everest Forms Email Templates",
-      "image": "extensions-json/sections/images/email-templates.png",
-      "excerpt": "Allows you to make email design changes without coding. Powerful customizing panel with live preview helps you customize colors, fonts, spacing, background, alignment and more.",
-      "link": "https://everestforms.net/features/email-templates/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=email-templates",
-      "plan": [
-        "professional",
-        "agency",
-        "themegrill agency"
-      ]
-    },
-    {
-      "title": "PayPal Standard",
-      "slug": "everest-forms-paypal-standard",
-      "name": "Everest Forms PayPal Standard",
-      "image": "extensions-json/sections/images/payment-paypal.png",
-      "excerpt": "Allows you to integrate online payment service to your e-commerce website. You can connect your Everest forms with PayPal to easily collect payments, donations, and online orders.",
-      "link": "https://everestforms.net/features/paypal-standard/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=paypal-standard",
-      "plan": [
-        "plus",
-        "professional",
-        "agency",
-        "themegrill agency"
-      ]
-    },
-    {
-      "title": "Stripe",
-      "slug": "everest-forms-stripe",
-      "name": "Everest Forms Stripe",
-      "image": "extensions-json/sections/images/payment-stripe.png",
-      "excerpt": "Allows you to integrate online payment service to your e-commerce website. You can connect your Everest forms with Stripe to easily collect payments, donations, and online orders.",
-      "link": "https://everestforms.net/features/stripe/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=stripe",
-      "plan": [
-        "professional",
-        "agency",
-        "themegrill agency"
-      ]
-    },
-    {
-      "title": "Zapier",
-      "slug": "everest-forms-zapier",
-      "name": "Everest Forms Zapier",
-      "image": "extensions-json/sections/images/zapier.png",
-      "excerpt": "Allows you to easily connect your forms with over 1500+ popular web applications without any hassle. It makes integrating forms and apps buttery-smooth.",
-      "link": "https://everestforms.net/features/zapier/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=zapier",
-      "plan": [
-        "professional",
-        "agency",
-        "themegrill agency"
-      ]
-    },
-    {
-      "title": "Save And Continue",
-      "slug": "everest-forms-save-and-continue",
-      "name": "Everest Forms Save And Continue",
-      "image": "extensions-json/sections/images/save-and-continue.jpg",
-      "excerpt": "Allows users to save their partially filled information and continue to work on it later. Users can opt to receive a link if they wish to continue later with the form",
-      "link": "https://everestforms.net/features/save-and-continue/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=save-and-continue",
-      "plan": [
-        "professional",
-        "agency",
-        "themegrill agency"
-      ]
-    },
-    {
-      "title": "Repeater Fields",
-      "slug": "everest-forms-repeater-fields",
-      "name": "Everest Forms Repeater Fields",
-      "image": "extensions-json/sections/images/repeater-fields.jpg",
-      "excerpt": "Repeater field add-on allows you to repeatedly add a set of form fields within your WordPress forms.",
-      "link": "https://everestforms.net/features/repeater-fields/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=repeater-fields",
-      "plan": [
-        "professional",
-        "agency",
-        "themegrill agency"
-      ]
-    },
-    {
       "title": "Calculations",
       "slug": "everest-forms-calculations",
       "name": "Everest Forms Calculations",
@@ -322,12 +239,68 @@
       ]
     },
     {
-      "title": "Razorpay",
-      "slug": "everest-forms-razorpay",
-      "name": "Everest Forms Razorpay",
-      "image": "extensions-json/sections/images/razorpay.png",
-      "excerpt": "Razor Pay add-on for Everest Forms allows you to accept/collect payment via your form all over India.",
-      "link": "https://everestforms.net/features/razorpay/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=razorpay",
+      "title": "ConvertKit",
+      "slug": "everest-forms-convertkit",
+      "name": "Everest Forms ConvertKit",
+      "image": "extensions-json/sections/images/convertkit.png",
+      "excerpt": "Allows you to efficiently grow your business by generating more leads with ConvertKit. It also helps increase automated emails for better lead generation.",
+      "link": "https://everestforms.net/features/convertkit/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=convertkit",
+      "plan": [
+        "personal",
+        "plus",
+        "professional",
+        "agency",
+        "themegrill agency"
+      ]
+    },
+    {
+      "title": "Post Submissions",
+      "slug": "everest-forms-post-submissions",
+      "name": "Everest Forms Post Submissions",
+      "image": "extensions-json/sections/images/post-submissions.png",
+      "excerpt": "Allows you to have user-submitted content. It also lets your users to submit their blogs posts from front-end without the hassle of logging into the admin dashboard.",
+      "link": "https://everestforms.net/features/post-submissions/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=post-submissions",
+      "plan": [
+        "professional",
+        "agency",
+        "themegrill agency"
+      ]
+    },
+    {
+      "title": "Conversational Forms",
+      "slug": "everest-forms-conversational-forms",
+      "name": "Everest Forms Conversational Forms",
+      "image": "extensions-json/sections/images/conversational-forms.png",
+      "excerpt": "Allow you to make your form submission more interactive. The Everest Forms Conversational Forms Add-on will assist you in modernizing your questionnaires, contact forms, and application forms. It enhances your form to the next level and beyond!",
+      "link": "https://everestforms.net/features/conversational-forms/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=conversational-forms",
+      "plan": [
+        "plus",
+        "professional",
+        "agency",
+        "themegrill agency"
+      ]
+    },
+    {
+      "title": "Frontend Listing",
+      "slug": "everest-forms-frontend-listing",
+      "name": "Everest Forms Frontend Listing",
+      "image": "extensions-json/sections/images/frontend-listing.png",
+      "excerpt": "The Frontend Listing add-on for Everest Forms allows you to list your entries in your site’s posts or pages. Visitors can view and check user entries of a particular form.",
+      "link": "https://everestforms.net/features/frontend-listing/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=frontend-listing",
+      "plan": [
+        "plus",
+        "professional",
+        "agency",
+        "themegrill agency"
+      ]
+    },
+    {
+      "title": "Zapier",
+      "slug": "everest-forms-zapier",
+      "name": "Everest Forms Zapier",
+      "image": "extensions-json/sections/images/zapier.png",
+      "excerpt": "Allows you to easily connect your forms with over 1500+ popular web applications without any hassle. It makes integrating forms and apps buttery-smooth.",
+      "link": "https://everestforms.net/features/zapier/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=zapier",
       "plan": [
         "professional",
         "agency",
@@ -348,6 +321,21 @@
       ]
     },
     {
+      "title": "Cloud Storage",
+      "slug": "everest-forms-cloud-storage",
+      "name": "Everest Forms Cloud Storage",
+      "image": "extensions-json/sections/images/cloud-storage.jpg",
+      "excerpt": "Everest Forms Cloud Storage add-on is a WordPress Cloud Storage integration plugin that allows you to easily send Everest Forms files directly to your Cloud Storage account. ",
+      "link": "https://everestforms.net/features/cloud-storage/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=cloud-storage",
+      "plan": [
+        "personal",
+        "plus",
+        "professional",
+        "agency",
+        "themegrill agency"
+      ]
+    },
+    {
       "title": "Coupons",
       "slug": "everest-forms-coupons",
       "name": "Everest Forms Coupons",
@@ -361,12 +349,134 @@
       ]
     },
     {
-      "title": "Frontend Listing",
-      "slug": "everest-forms-frontend-listing",
-      "name": "Everest Forms Frontend Listing",
-      "image": "extensions-json/sections/images/frontend-listing.png",
-      "excerpt": "The Frontend Listing add-on for Everest Forms allows you to list your entries in your site’s posts or pages. Visitors can view and check user entries of a particular form.",
-      "link": "https://everestforms.net/features/frontend-listing/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=frontend-listing",
+      "title": "Sendinblue",
+      "slug": "everest-forms-sendinblue",
+      "name": "Everest Forms Sendinblue",
+      "image": "extensions-json/sections/images/sendinblue.jpg",
+      "excerpt": "Allows your users to subscribe to Sendinblue through form submissions. Users filling up the forms can be directly added to your subscribers list in Sendinblue.",
+      "link": "https://everestforms.net/features/sendinblue/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=sendinblue",
+      "plan": [
+        "plus",
+        "professional",
+        "agency",
+        "themegrill agency"
+      ]
+    },
+    {
+      "title": "ActiveCampaign",
+      "slug": "everest-forms-activecampaign",
+      "name": "Everest Forms ActiveCampaign",
+      "image": "extensions-json/sections/images/activecampaign.png",
+      "excerpt": "Allows your users to subscribe to ActiveCampaign through form submission via Everest Forms.",
+      "link": "https://everestforms.net/features/activecampaign/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=mailerlite",
+      "plan": [
+        "plus",
+        "professional",
+        "agency",
+        "themegrill agency"
+      ]
+    },
+    {
+      "title": "MailerLite",
+      "slug": "everest-forms-mailerlite",
+      "name": "Everest Forms MailerLite",
+      "image": "extensions-json/sections/images/mailerlite.png",
+      "excerpt": "Allows your users to subscribe to MailerLite through form submission via Everest Forms.",
+      "link": "https://everestforms.net/features/mailerlite/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=mailerlite",
+      "plan": [
+        "plus",
+        "professional",
+        "agency",
+        "themegrill agency"
+      ]
+    },
+    {
+      "title": "Advanced Form Analytics",
+      "slug": "everest-forms-form-analytics",
+      "name": "Everest Forms Advanced Form Analytics",
+      "image": "extensions-json/sections/images/form-analytics.png",
+      "excerpt": "Track user interactions efficiently by monitoring impressions, conversions, abandonments, and bounce rate.",
+      "link": "https://everestforms.net/features/form-analytics/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=form-analytics",
+      "plan": [
+        "plus",
+        "professional",
+        "agency",
+        "themegrill agency"
+      ]
+    },
+    {
+      "title": "Campaign Monitor",
+      "slug": "everest-forms-campaign-monitor",
+      "name": "Everest Forms Campaign Monitor",
+      "image": "extensions-json/sections/images/campaign-monitor.png",
+      "excerpt": "Allows your users to subscribe to Campaign Monitor through form submission via Everest Forms.",
+      "link": "https://everestforms.net/features/campaign-monitor/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=campaign-monitor",
+      "plan": [
+        "plus",
+        "professional",
+        "agency",
+        "themegrill agency"
+      ]
+    },
+    {
+      "title": "Hubspot",
+      "slug": "everest-forms-hubspot",
+      "name": "Everest Forms Hubspot",
+      "image": "extensions-json/sections/images/hubspot.png",
+      "excerpt": "With the Everest Forms HubSpot add-On, you can smoothly integrate your lead generation forms with HubSpot.",
+      "link": "https://everestforms.net/features/hubspot/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=hubspot",
+      "plan": [
+        "professional",
+        "agency",
+        "themegrill agency"
+      ]
+    },
+    {
+      "title": "Salesforce",
+      "slug": "everest-forms-salesforce",
+      "name": "Everest Forms Salesforce",
+      "image": "extensions-json/sections/images/salesforce.jpg",
+      "excerpt": "Everest Forms Salesforce add-on is a WordPress Salesforce integration plugin that allows you to easily send Everest Forms entries directly to your Salesforce account. ",
+      "link": "https://everestforms.net/features/salesforce/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=salesforce",
+      "plan": [
+        "professional",
+        "agency",
+        "themegrill agency"
+      ]
+    },
+    {
+      "title": "Pipedrive",
+      "slug": "everest-forms-pipedrive",
+      "name": "Everest Forms Pipedrive",
+      "image": "extensions-json/sections/images/pipedrive.png",
+      "excerpt": "Everest Forms Pipedrive CRM add-on is a WordPress Pipedrive CRM integration plugin that allows you to easily send Everest Forms entries directly to your Pipedrive CRM account. ",
+      "link": "https://everestforms.net/features/pipedrive/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=pipedrive",
+      "plan": [
+        "professional",
+        "agency",
+        "themegrill agency"
+      ]
+    },
+    {
+      "title": "Authorize.Net",
+      "slug": "everest-forms-authorize-net",
+      "name": "Everest Forms Authorize.Net",
+      "image": "extensions-json/sections/images/authorize-net.png",
+      "excerpt": "Allows you to integrate online payment service to your e-commerce website. You can connect your Everest forms with Authorize.Net to easily collect payments, donations, and online orders.",
+      "link": "https://everestforms.net/features/authorize-net/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=authorize-net",
+      "plan": [
+        "professional",
+        "agency",
+        "themegrill agency"
+      ]
+    },
+    {
+      "title": "Constant Contact",
+      "slug": "everest-forms-constant-contact",
+      "name": "Everest Forms Constant Contact",
+      "image": "extensions-json/sections/images/constant-contact.jpg",
+      "excerpt": "Everest Forms Constant Contact add-on is a WordPress Constant Contact integration plugin that allows you to easily send Everest Forms entries directly to your Constant Contact account. ",
+      "link": "https://everestforms.net/features/constant-contact/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=constant-contact",
       "plan": [
         "plus",
         "professional",
@@ -389,25 +499,12 @@
       ]
     },
     {
-      "title": "Hubspot",
-      "slug": "everest-forms-hubspot",
-      "name": "Everest Forms Hubspot",
-      "image": "extensions-json/sections/images/hubspot.png",
-      "excerpt": "With the Everest Forms HubSpot add-On, you can smoothly integrate your lead generation forms with HubSpot.",
-      "link": "https://everestforms.net/features/hubspot/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=hubspot",
-      "plan": [
-        "professional",
-        "agency",
-        "themegrill agency"
-      ]
-    },
-    {
-      "title": "Pipedrive",
-      "slug": "everest-forms-pipedrive",
-      "name": "Everest Forms Pipedrive",
-      "image": "extensions-json/sections/images/pipedrive.png",
-      "excerpt": "Everest Forms Pipedrive CRM add-on is a WordPress Pipedrive CRM integration plugin that allows you to easily send Everest Forms entries directly to your Pipedrive CRM account. ",
-      "link": "https://everestforms.net/features/pipedrive/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=pipedrive",
+      "title": "Razorpay",
+      "slug": "everest-forms-razorpay",
+      "name": "Everest Forms Razorpay",
+      "image": "extensions-json/sections/images/razorpay.png",
+      "excerpt": "Razor Pay add-on for Everest Forms allows you to accept/collect payment via your form all over India.",
+      "link": "https://everestforms.net/features/razorpay/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=razorpay",
       "plan": [
         "professional",
         "agency",
@@ -428,109 +525,12 @@
       ]
     },
     {
-      "title": "Salesforce",
-      "slug": "everest-forms-salesforce",
-      "name": "Everest Forms Salesforce",
-      "image": "extensions-json/sections/images/salesforce.jpg",
-      "excerpt": "Everest Forms Salesforce add-on is a WordPress Salesforce integration plugin that allows you to easily send Everest Forms entries directly to your Salesforce account. ",
-      "link": "https://everestforms.net/features/salesforce/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=salesforce",
-      "plan": [
-        "professional",
-        "agency",
-        "themegrill agency"
-      ]
-    },
-    {
-      "title": "Constant Contact",
-      "slug": "everest-forms-constant-contact",
-      "name": "Everest Forms Constant Contact",
-      "image": "extensions-json/sections/images/constant-contact.jpg",
-      "excerpt": "Everest Forms Constant Contact add-on is a WordPress Constant Contact integration plugin that allows you to easily send Everest Forms entries directly to your Constant Contact account. ",
-      "link": "https://everestforms.net/features/constant-contact/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=constant-contact",
-      "plan": [
-        "plus",
-        "professional",
-        "agency",
-        "themegrill agency"
-      ]
-    },
-    {
-      "title": "Cloud Storage",
-      "slug": "everest-forms-cloud-storage",
-      "name": "Everest Forms Cloud Storage",
-      "image": "extensions-json/sections/images/cloud-storage.jpg",
-      "excerpt": "Everest Forms Cloud Storage add-on is a WordPress Cloud Storage integration plugin that allows you to easily send Everest Forms files directly to your Cloud Storage account. ",
-      "link": "https://everestforms.net/features/cloud-storage/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=cloud-storage",
-      "plan": [
-        "personal",
-        "plus",
-        "professional",
-        "agency",
-        "themegrill agency"
-      ]
-    },
-    {
       "title": "GetResponse",
       "slug": "everest-forms-getresponse",
       "name": "Everest Forms GetResponse",
       "image": "extensions-json/sections/images/getresponse.jpg",
       "excerpt": "Allows your users to subscribe to GetResponse through form submissions. Users filling up the forms can be directly added to your subscribers list in GetResponse.",
       "link": "https://everestforms.net/features/getresponse/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=getresponse",
-      "plan": [
-        "plus",
-        "professional",
-        "agency",
-        "themegrill agency"
-      ]
-    },
-    {
-      "title": "Sendinblue",
-      "slug": "everest-forms-sendinblue",
-      "name": "Everest Forms Sendinblue",
-      "image": "extensions-json/sections/images/sendinblue.jpg",
-      "excerpt": "Allows your users to subscribe to Sendinblue through form submissions. Users filling up the forms can be directly added to your subscribers list in Sendinblue.",
-      "link": "https://everestforms.net/features/sendinblue/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=sendinblue",
-      "plan": [
-        "plus",
-        "professional",
-        "agency",
-        "themegrill agency"
-      ]
-    },
-    {
-      "title": "Conversational Forms",
-      "slug": "everest-forms-conversational-forms",
-      "name": "Everest Forms Conversational Forms",
-      "image": "extensions-json/sections/images/conversational-forms.png",
-      "excerpt": "Allow you to make your form submission more interactive. The Everest Forms Conversational Forms Add-on will assist you in modernizing your questionnaires, contact forms, and application forms. It enhances your form to the next level and beyond!",
-      "link": "https://everestforms.net/features/conversational-forms/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=conversational-forms",
-      "plan": [
-        "plus",
-        "professional",
-        "agency",
-        "themegrill agency"
-      ]
-    },
-    {
-      "title": "Authorize.Net",
-      "slug": "everest-forms-authorize-net",
-      "name": "Everest Forms Authorize.Net",
-      "image": "extensions-json/sections/images/authorize-net.png",
-      "excerpt": "Allows you to integrate online payment service to your e-commerce website. You can connect your Everest forms with Authorize.Net to easily collect payments, donations, and online orders.",
-      "link": "https://everestforms.net/features/authorize-net/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=authorize-net",
-      "plan": [
-        "professional",
-        "agency",
-        "themegrill agency"
-      ]
-    },
-    {
-      "title": "Advanced Form Analytics",
-      "slug": "everest-forms-form-analytics",
-      "name": "Everest Forms Advanced Form Analytics",
-      "image": "extensions-json/sections/images/form-analytics.png",
-      "excerpt": "Track user interactions efficiently by monitoring impressions, conversions, abandonments, and bounce rate.",
-      "link": "https://everestforms.net/features/form-analytics/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=form-analytics",
       "plan": [
         "plus",
         "professional",

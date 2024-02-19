@@ -23,6 +23,10 @@ class EVF_Field_HTML extends EVF_Form_Fields {
 		$this->order  = 80;
 		$this->group  = 'advanced';
 		$this->is_pro = true;
+		$this->links  = array(
+			'image_id' => '',
+			'vedio_id' => 'vIjlLB0csJE',
+		);
 
 		parent::__construct();
 	}

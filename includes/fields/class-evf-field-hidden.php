@@ -23,6 +23,10 @@ class EVF_Field_Hidden extends EVF_Form_Fields {
 		$this->order  = 50;
 		$this->group  = 'advanced';
 		$this->is_pro = true;
+		$this->links  = array(
+			'image_id' => '',
+			'vedio_id' => '3kiY6gJhioU',
+		);
 
 		parent::__construct();
 	}
