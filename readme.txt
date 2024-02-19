@@ -423,6 +423,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Feature     - Email preview.
 * Fix 		  - Critical error in entry file.
 * Fix         - Show values setting not displaying in select field.
+* Fix         - Everest Forms query running in every pages.
 
 
 = 2.0.6       - 26-12-2023
