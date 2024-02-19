@@ -238,7 +238,8 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 		foreach ( $tags[1] as $tag ) {
 			foreach ( $fields as $field ) {
 				if ( ! empty( $field['cf7_name'] ) && $field['cf7_name'] === $tag ) {
-					$string = str_replace( '[' . $tag . ']', '{field_id="' . $field['id'] . '"}', $string );
+					$field_id = $this->get_field_id_for_smarttags( $field );
+					$string   = str_replace( '[' . $tag . ']', '{field_id="' . $field_id . '"}', $string );
 				}
 			}
 		}
@@ -324,7 +325,8 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 			if ( ! empty( $tag[1] ) ) {
 				foreach ( $fields as $field ) {
 					if ( ! empty( $field['cf7_name'] ) && $field['cf7_name'] === $tag[1] ) {
-						return '{field_id="' . $field['id'] . '"}';
+						$field_id = $this->get_field_id_for_smarttags( $field );
+						return '{field_id="' . $field_id . '"}';
 					}
 				}
 			}
@@ -465,6 +467,7 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 				}
 				if ( ! defined( 'EFP_VERSION' ) && '1.7.1' <= 'EFP_VERSION' && in_array( $cf7_field->basetype, $fields_pro_plan, true ) ) {
 					$upgrade_plan[] = $label;
+					continue;
 				}
 				if ( ! defined( 'EFP_VERSION' ) && '1.7.1' <= 'EFP_VERSION' && in_array( $cf7_field->basetype, $fields_pro_omit, true ) ) {
 					$upgrade_omit[] = $label;

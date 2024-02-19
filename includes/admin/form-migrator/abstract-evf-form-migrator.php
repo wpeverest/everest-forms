@@ -113,6 +113,32 @@ abstract class EVF_Admin_Form_Migrator {
 	abstract protected function is_installed();
 
 	/**
+	 * Modify the field id for smart tags.
+	 *
+	 * @since 2.0.6
+	 * @param [array] $field The field array.
+	 */
+	protected function get_field_id_for_smarttags( $field ) {
+		$field_id    = $field['id'];
+		$field_label = $field['label'];
+		if ( $field_id !== 'fullname' && $field_id !== 'email' && $field_id !== 'subject' && $field_id !== 'message' ) {
+			$field_label = preg_split( '/[\s\-\_]/', $field_label );
+			foreach ( $field_label as $key => $value ) {
+				if ( $key === 0 ) {
+					$field_label[ $key ] = strtolower( $value );
+				} else {
+					$field_label[ $key ] = ucfirst( $value );
+				}
+			}
+			$field_label = implode( '', $field_label );
+			$field_id    = $field_label . '_' . $field_id;
+		} else {
+			$field_id = $field_id;
+		}
+
+		return $field_id;
+	}
+	/**
 	 * Tracks the successful import of a form, allowing future alerts for attempts to
 	 * import a form that has already been imported.
 	 *
@@ -141,6 +167,9 @@ abstract class EVF_Admin_Form_Migrator {
 	 * @param array $upgrade_omit  No field alternative in EVF.
 	 */
 	protected function import_form( $form, $unsupported = array(), $upgrade_plan = array(), $upgrade_omit = array() ) {
+		if ( empty( $form ) || ! current_user_can( 'everest_forms_create_forms' ) ) {
+			return false;
+		}
 
 		$form_id = wp_insert_post(
 			array(

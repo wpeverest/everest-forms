@@ -124,8 +124,8 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 		foreach ( $tags[1] as $tag ) {
 			foreach ( $fields as $field ) {
 				if ( ! empty( $field['wpf_name'] ) && $field['wpf_name'] == $tag ) {
-					$field_label = strtolower( preg_replace( '/\s+/', '', $field['label'] ) );
-					$string      = str_replace( '{field_id="' . $tag . '"}', '{field_id="' . $field_label . '_' . $field['id'] . '"}', $string );
+					$field_id = $this->get_field_id_for_smarttags( $field );
+					$string   = str_replace( '{field_id="' . $tag . '"}', '{field_id="' . $field_id . '"}', $string );
 				}
 			}
 		}
@@ -292,7 +292,7 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 							'id'                     => $field_id,
 							'type'                   => $type,
 							'label'                  => $wpf_field['label'],
-							'meta-key'               => $wpf_field['id'],
+							'meta-key'               => $type . '-' . $wpf_field['id'],
 							'description'            => $wpf_field['description'],
 							'required'               => isset( $wpf_field['required'] ) ? $wpf_field['required'] : '0',
 							'required_field_message_setting' => 'global',
@@ -369,7 +369,7 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 							'id'                       => $field_id,
 							'type'                     => $type,
 							'label'                    => $wpf_field['label'],
-							'meta-key'                 => $wpf_field['id'],
+							'meta-key'                 => $type . '-' . $wpf_field['id'],
 							'description'              => $wpf_field['description'],
 							'required'                 => isset( $wpf_field['required'] ) ? $wpf_field['required'] : '0',
 							'required_field_message_setting' => 'global',
@@ -408,7 +408,7 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 							'id'                     => $field_id,
 							'type'                   => $type,
 							'label'                  => $wpf_field['label'],
-							'meta-key'               => $wpf_field['id'],
+							'meta-key'               => $type . '-' . $wpf_field['id'],
 							'choices'                => $evf_choices,
 							'description'            => $wpf_field['description'],
 							'label_hide'             => isset( $wpf_field['label_hide'] ) ? $wpf_field['label_hide'] : '0',
@@ -443,7 +443,7 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 							'id'                     => $field_id,
 							'type'                   => $type,
 							'label'                  => $wpf_field['label'],
-							'meta-key'               => $wpf_field['id'],
+							'meta-key'               => $type . '-' . $wpf_field['id'],
 							'description'            => $wpf_field['description'],
 							'required'               => isset( $wpf_field['required'] ) ? $wpf_field['required'] : '0',
 							'required_field_message_setting' => 'global',
@@ -467,7 +467,7 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 							'id'                     => $field_id,
 							'type'                   => $type,
 							'label'                  => $wpf_field['label'],
-							'meta-key'               => $wpf_field['id'],
+							'meta-key'               => $type . '-' . $wpf_field['id'],
 							'description'            => $wpf_field['description'],
 							'required'               => isset( $wpf_field['required'] ) ? $wpf_field['required'] : '0',
 							'required_field_message_setting' => 'global',
@@ -495,7 +495,7 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 							'id'                     => $field_id,
 							'type'                   => $type,
 							'label'                  => $wpf_field['label'],
-							'meta-key'               => $wpf_field['id'],
+							'meta-key'               => $type . '-' . $wpf_field['id'],
 							'datetime_format'        => $wpf_field['format'],
 							'datetime_style'         => 'datepicker' === $wpf_field['date_type'] ? 'picker' : $wpf_field['date_type'],
 							'description'            => $wpf_field['description'],
@@ -530,7 +530,7 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 							'id'                     => $field_id,
 							'type'                   => $type,
 							'label'                  => $wpf_field['label'],
-							'meta-key'               => $wpf_field['id'],
+							'meta-key'               => $type . '-' . $wpf_field['id'],
 							'description'            => $wpf_field['description'],
 							'required'               => isset( $wpf_field['required'] ) ? $wpf_field['required'] : '0',
 							'required_field_message_setting' => 'global',
