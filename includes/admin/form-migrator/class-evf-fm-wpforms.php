@@ -102,6 +102,54 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 
 		return $forms;
 	}
+
+	/**
+	 * Replace 3rd-party form provider tags/shortcodes with our own Smart Tags.
+	 *
+	 * @since 2.0.6
+	 *
+	 * @param string $string Text to look for Smart Tags in.
+	 * @param array  $fields List of fields to process Smart Tags in.
+	 *
+	 * @return string
+	 */
+	private function get_smarttags( $string, $fields = array() ) {
+
+		preg_match_all( '/\{field_id=\"([^\"]*)\"\}/', $string, $tags );
+
+		if ( empty( $tags[1] ) ) {
+			return $string;
+		}
+		// Process form-tags and mail-tags.
+		foreach ( $tags[1] as $tag ) {
+			foreach ( $fields as $field ) {
+				if ( ! empty( $field['wpf_name'] ) && $field['wpf_name'] == $tag ) {
+					$field_label = strtolower( preg_replace( '/\s+/', '', $field['label'] ) );
+					$string      = str_replace( '{field_id="' . $tag . '"}', '{field_id="' . $field_label . '_' . $field['id'] . '"}', $string );
+				}
+			}
+		}
+
+		// Process wpforms tags that we can map with EVF alternatives.
+		$string = str_replace(
+			array(
+				'{user_ip}',
+				'{page_title}',
+				'{user_first_name}',
+				'{user_last_name}',
+			),
+			array(
+				'{user_ip_address}',
+				'{post_title}',
+				'{first_name}',
+				'{last_name}',
+			),
+			$string
+		);
+
+		return $string;
+	}
+
 	/**
 	 * Mapping the form setting.
 	 *
@@ -116,20 +164,20 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 				'connection_1' => array(
 					'enable_email_notification' => $wpf_settings['notification_enable'],
 					'connection_name'           => esc_html__( 'Admin Notification', 'everest-forms' ),
-					'evf_to_email'              => $wpf_settings['notifications'][1]['email'],
-					'evf_from_name'             => $wpf_settings['notifications'][1]['sender_name'],
-					'evf_from_email'            => $wpf_settings['notifications'][1]['sender_address'],
-					'evf_reply_to'              => $wpf_settings['notifications'][1]['replyto'],
-					'evf_email_subject'         => $wpf_settings['notifications'][1]['subject'],
-					'evf_email_message'         => $wpf_settings['notifications'][1]['message'],
+					'evf_to_email'              => $this->get_smarttags( $wpf_settings['notifications'][1]['email'], $form['form_fields'] ),
+					'evf_from_name'             => $this->get_smarttags( $wpf_settings['notifications'][1]['sender_name'], $form['form_fields'] ),
+					'evf_from_email'            => $this->get_smarttags( $wpf_settings['notifications'][1]['sender_address'], $form['form_fields'] ),
+					'evf_reply_to'              => $this->get_smarttags( $wpf_settings['notifications'][1]['replyto'], $form['form_fields'] ),
+					'evf_email_subject'         => $this->get_smarttags( $wpf_settings['notifications'][1]['subject'], $form['form_fields'] ),
+					'evf_email_message'         => $this->get_smarttags( $wpf_settings['notifications'][1]['message'], $form['form_fields'] ),
 				),
 			),
 			'form_title'                         => $wpf_settings['form_title'],
 			'form_description'                   => $wpf_settings['form_desc'],
 			'form_disable_message'               => esc_html__( 'This form is disabled.', 'everest-forms' ),
-			'successful_form_submission_message' => $wpf_settings['confirmations'][1]['message'],
+			'successful_form_submission_message' => strip_tags( $wpf_settings['confirmations'][1]['message'], '' ),
 			'submission_message_scroll'          => $wpf_settings['confirmations'][1]['message_scroll'],
-			'redirect_to'                        => 'message' === $wpf_settings['confirmations'][1]['type'] ? 'same' : $wpf_settings['confirmations'][1]['type'],
+			'redirect_to'                        => 'message' === $wpf_settings['confirmations'][1]['type'] ? 'same' : ( 'page' === $wpf_settings['confirmations'][1]['type'] ? 'custom_page' : ( 'redirect' === $wpf_settings['confirmations'][1]['type'] ? 'external_url' : $wpf_settings['confirmations'][1]['type'] ) ),
 			'custom_page'                        => $wpf_settings['confirmations'][1]['page'],
 			'external_url'                       => $wpf_settings['confirmations'][1]['redirect'],
 			'enable_redirect_query_string'       => 0,
@@ -192,8 +240,6 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 				'form_fields'   => array(),
 				'settings'      => array(),
 			);
-			// Settings.
-			$form = apply_filters( 'evf_fm_' . $this->slug . '_form_after_settings_mapping', $this->get_form_settings( $form, $wpf_settings, $wpf_form_id ), $wpf_form_id, $wpf_form );
 
 			// Mapping Fields.
 			if ( empty( $wpf_fields ) ) {
@@ -217,6 +263,8 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 				}
 				if ( ! defined( 'EFP_VERSION' ) && '1.7.1' <= 'EFP_VERSION' && in_array( $wpf_field['type'], $fields_pro_plan, true ) ) {
 					$upgrade_plan[] = $wpf_field['label'];
+
+					continue;
 				}
 				if ( ! defined( 'EFP_VERSION' ) && '1.7.1' <= 'EFP_VERSION' && in_array( $wpf_field['type'], $fields_pro_omit, true ) ) {
 					$upgrade_omit[] = $wpf_field['label'];
@@ -256,7 +304,7 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 							'limit_mode'             => $wpf_field['limit_mode'],
 							'min_length_count'       => '1',
 							'min_length_mode'        => 'characters',
-							'default_value'          => $wpf_field['default_value'],
+							'default_value'          => $this->get_smarttags( $wpf_field['default_value'] ),
 							'css'                    => $wpf_field['css'],
 							'input_mask'             => isset( $wpf_field['input_mask'] ) ? $wpf_field['input_mask'] : '',
 							'regex_value'            => '',
@@ -329,7 +377,7 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 							'placeholder'              => $wpf_field['placeholder'],
 							'confirmation_placeholder' => $wpf_field['confirmation_placeholder'],
 							'label_hide'               => isset( $wpf_field['label_hide'] ) ? $wpf_field['label_hide'] : '0',
-							'default_value'            => $wpf_field['default_value'],
+							'default_value'            => $this->get_smarttags( $wpf_field['default_value'] ),
 							'css'                      => $wpf_field['css'],
 							'regex_value'              => '',
 							'regex_message'            => esc_html__( 'Please provide a valid value for this field.', 'everest-forms' ),
@@ -405,7 +453,7 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 							'max_value'              => '',
 							'placeholder'            => $wpf_field['placeholder'],
 							'label_hide'             => isset( $wpf_field['label_hide'] ) ? $wpf_field['label_hide'] : '0',
-							'default_value'          => $wpf_field['default_value'],
+							'default_value'          => $this->get_smarttags( $wpf_field['default_value'] ),
 							'css'                    => $wpf_field['css'],
 							'regex_value'            => '',
 							'regex_message'          => esc_html__( 'Please provide a valid value for this field.', 'everest-forms' ),
@@ -489,7 +537,7 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 							'required-field-message' => '',
 							'placeholder'            => $wpf_field['placeholder'],
 							'label_hide'             => isset( $wpf_field['label_hide'] ) ? $wpf_field['label_hide'] : '0',
-							'default_value'          => $wpf_field['default_value'],
+							'default_value'          => $this->get_smarttags( $wpf_field['default_value'] ),
 							'css'                    => $wpf_field['css'],
 							'regex_value'            => '',
 							'regex_message'          => esc_html__( 'Please provide a valid value for this field.', 'everest-forms' ),
@@ -501,6 +549,9 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 				}
 			}
 			$form = apply_filters( 'evf_fm_' . $this->slug . '_form_after_fields_mapping', $form, $wpf_form_id, $wpf_form );
+
+			// Form Settings mapping.
+			$form = apply_filters( 'evf_fm_' . $this->slug . '_form_after_settings_mapping', $this->get_form_settings( $form, $wpf_settings, $wpf_form_id ), $wpf_form_id, $wpf_form );
 
 			$response = $this->import_form( $form, $unsupported, $upgrade_plan, $upgrade_omit );
 
