@@ -173,13 +173,7 @@ abstract class EVF_Admin_Form_Migrator {
 		}
 
 		$form_id = array_search( $form['settings']['imported_from']['form_id'], $imported_form_list );
-		if ( false === $form_id ) {
-			// $form_id = wp_insert_post(
-			// array(
-			// 'post_status' => 'publish',
-			// 'post_type'   => 'everest_form',
-			// )
-			// );
+		if ( ! $form_id ) {
 			$form_id = evf()->form->create( $form['settings']['form_title'] );
 
 			if ( empty( $form_id ) || is_wp_error( $form_id ) ) {
