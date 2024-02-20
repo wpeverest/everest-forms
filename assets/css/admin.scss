@@ -5503,7 +5503,10 @@
 							padding: 12px;
 						}
 						td{
-							width: 150px;
+							.evf-fm-import-actions{
+								display: flex;
+							}
+							width: 600px;
 							padding: 12px;
 							text-align:center;
 							.evf-fm-import-single{
@@ -5512,6 +5515,20 @@
 								border-radius: 4px;;
 								border:none;
 								&:hover{
+									background-color: #7e3bd0;
+									color: #fff;
+									border: none;
+									cursor: pointer;
+								}
+							}
+							.evf-fm-import-entry{
+								padding:8px;
+								background-color: #b5facd;
+								border-radius: 4px;;
+								border:none;
+								display: inline;
+								margin-left: 8px;
+								&:not(:disabled):hover{
 									background-color: #7e3bd0;
 									color: #fff;
 									border: none;
