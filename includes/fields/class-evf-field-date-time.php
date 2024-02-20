@@ -1147,7 +1147,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	 */
 	public static function get_form_fields( $form_id ) {
 		$text_field_name_option_list = array(
-			'' => __( '---Select Field---', 'everest-forms-pro' ),
+			'' => __( '---Select Field---', 'everest-forms' ),
 		);
 		if ( ! empty( $form_id ) && 'none' !== $form_id ) {
 			$form       = json_decode( get_post_field( 'post_content', $form_id ) );
