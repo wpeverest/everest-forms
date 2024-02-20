@@ -671,11 +671,21 @@ class EVF_AJAX {
 		}
 
 		$connection_id = 'connection_' . uniqid();
+		$preview_url   = '';
+		$preview_url   = add_query_arg(
+			array(
+				'evf_email_preview' => $connection_id,
+				'form_id'           => isset( $_POST['id'] ) ? absint( $_POST['id'] ) : 0,
+				'preview_url'       => $preview_url,
+			),
+			home_url()
+		);
 
 		wp_send_json_success(
 			array(
 				'connection_id'      => $connection_id,
 				'prev_connection_id' => isset( $_POST['prev_connection_id'] ) ? sanitize_text_field( wp_unslash( $_POST['prev_connection_id'] ) ) : '',
+				'preview_url'        => $preview_url,
 			)
 		);
 	}

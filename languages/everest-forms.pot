@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-02-20T07:41:01+01:00\n"
+"POT-Creation-Date: 2024-02-20T12:51:12+01:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: everest-forms\n"
@@ -3149,64 +3149,64 @@ msgid "Unable to connect to the filesystem. Please confirm your credentials."
 msgstr ""
 
 #: includes/class-evf-ajax.php:627
-#: includes/class-evf-ajax.php:698
+#: includes/class-evf-ajax.php:708
 msgid "Missing data"
 msgstr ""
 
-#: includes/class-evf-ajax.php:714
+#: includes/class-evf-ajax.php:724
 msgid "Connection missing"
 msgstr ""
 
 #. translators: %s: from address
-#: includes/class-evf-ajax.php:844
+#: includes/class-evf-ajax.php:854
 msgid "Test email from %s"
 msgstr ""
 
-#: includes/class-evf-ajax.php:849
+#: includes/class-evf-ajax.php:859
 msgid "Congratulations,"
 msgstr ""
 
-#: includes/class-evf-ajax.php:850
+#: includes/class-evf-ajax.php:860
 msgid "Your test email has been received successfully."
 msgstr ""
 
-#: includes/class-evf-ajax.php:851
+#: includes/class-evf-ajax.php:861
 msgid "We thank you for trying out Everest Forms and joining our mission to make sure you get your emails delivered."
 msgstr ""
 
-#: includes/class-evf-ajax.php:852
+#: includes/class-evf-ajax.php:862
 msgid "Regards,"
 msgstr ""
 
-#: includes/class-evf-ajax.php:853
+#: includes/class-evf-ajax.php:863
 msgid "Everest Forms Team"
 msgstr ""
 
-#: includes/class-evf-ajax.php:857
+#: includes/class-evf-ajax.php:867
 msgid "Test email was sent successfully! Please check your inbox to make sure it is delivered."
 msgstr ""
 
-#: includes/class-evf-ajax.php:859
+#: includes/class-evf-ajax.php:869
 msgid "Test email was unsuccessful! Something went wrong."
 msgstr ""
 
-#: includes/class-evf-ajax.php:918
+#: includes/class-evf-ajax.php:928
 msgid "Please select at least one date time."
 msgstr ""
 
-#: includes/class-evf-ajax.php:941
+#: includes/class-evf-ajax.php:951
 msgid "This slot is already booked. Please choose other slot"
 msgstr ""
 
-#: includes/class-evf-ajax.php:947
+#: includes/class-evf-ajax.php:957
 msgid "This slot is not booked."
 msgstr ""
 
-#: includes/class-evf-ajax.php:954
+#: includes/class-evf-ajax.php:964
 msgid "Something went wrong."
 msgstr ""
 
-#: includes/class-evf-ajax.php:978
+#: includes/class-evf-ajax.php:988
 msgid "Activated successfully"
 msgstr ""
 
