@@ -269,8 +269,8 @@ class EVF_Admin_Assets {
 				'everest-forms-admin',
 				'everest_forms_admin_form_migrator',
 				array(
-					'evf_fm_dismiss_notice_nonce' 	=> wp_create_nonce( 'evf_fm_dismiss_notice_nonce' ),
-					'ajax_url'          			=> admin_url( 'admin-ajax.php', 'relative' ),
+					'evf_fm_dismiss_notice_nonce' => wp_create_nonce( 'evf_fm_dismiss_notice_nonce' ),
+					'ajax_url'                    => admin_url( 'admin-ajax.php', 'relative' ),
 				)
 			);
 		}
@@ -333,11 +333,19 @@ class EVF_Admin_Assets {
 				'evf-admin-tools',
 				'everest_forms_admin_tools',
 				array(
+					'ajax_url'                    => admin_url( 'admin-ajax.php' ),
+					'delete_log_confirmation'     => esc_js( esc_html__( 'Are you sure you want to delete this log?', 'everest-forms' ) ),
+					'delete_all_log_confirmation' => esc_js( esc_html__( 'Are you sure you want to delete all logs?', 'everest-forms' ) ),
+				)
+			);
+			wp_localize_script(
+				'evf-admin-tools',
+				'everest_forms_form_migrator',
+				array(
 					'ajax_url'                           => admin_url( 'admin-ajax.php' ),
 					'evf_form_migrator_forms_list_nonce' => wp_create_nonce( 'evf_form_migrator_forms_list_nonce' ),
-					'evf_form_migrator_nonce' 			 => wp_create_nonce( 'evf_form_migrator_nonce' ),
-					'delete_log_confirmation'            => esc_js( esc_html__( 'Are you sure you want to delete this log?', 'everest-forms' ) ),
-					'delete_all_log_confirmation'        => esc_js( esc_html__( 'Are you sure you want to delete all logs?', 'everest-forms' ) ),
+					'evf_form_migrator_nonce'            => wp_create_nonce( 'evf_form_migrator_nonce' ),
+					'evf_form_entry_migrator_nonce'      => wp_create_nonce( 'evf_form_entry_migrator_nonce' ),
 				)
 			);
 		}

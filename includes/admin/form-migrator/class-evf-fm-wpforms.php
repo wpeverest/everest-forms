@@ -199,7 +199,7 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 			'submit_button_text'                 => $wpf_settings['submit_text'],
 			'submit_button_processing_text'      => $wpf_settings['submit_text_processing'],
 			'submit_button_class'                => $wpf_settings['submit_class'],
-			'ajax_form_submission'               => $wpf_settings['ajax_submit'],
+			'ajax_form_submission'               => isset( $wpf_settings['ajax_submit'] ) ? $wpf_settings['ajax_submit'] : '0',
 			'disabled_entries'                   => isset( $wpf_settings['store_spam_entries'] ) ? $wpf_settings['store_spam_entries'] : '0',
 			'honeypot'                           => '1',
 			'akismet'                            => isset( $wpf_settings['akismet'] ) ? $wpf_settings['akismet'] : '0',

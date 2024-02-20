@@ -149,11 +149,11 @@ abstract class EVF_Admin_Form_Migrator {
 	 */
 	protected function track_import( $source_id, $evf_forms_id ) {
 
-		$imported = get_option( 'evf_forms_imported', array() );
+		$imported = get_option( 'evf_fm_' . $this->slug . '_imported_form_list', array() );
 
-		$imported[ $this->slug ][ $evf_forms_id ] = $source_id;
+		$imported[ $evf_forms_id ] = $source_id;
 
-		update_option( 'evf_forms_imported', $imported, false );
+		update_option( 'evf_fm_' . $this->slug . '_imported_form_list', $imported, false );
 	}
 
 	/**
@@ -167,27 +167,31 @@ abstract class EVF_Admin_Form_Migrator {
 	 * @param array $upgrade_omit  No field alternative in EVF.
 	 */
 	protected function import_form( $form, $unsupported = array(), $upgrade_plan = array(), $upgrade_omit = array() ) {
-		if ( empty( $form ) || ! current_user_can( 'everest_forms_create_forms' ) ) {
+		$imported_form_list = get_option( 'evf_fm_' . $this->slug . '_imported_form_list', array() );
+		if ( empty( $form ) ) {
 			return false;
 		}
 
-		$form_id = wp_insert_post(
-			array(
-				'post_status' => 'publish',
-				'post_type'   => 'everest_form',
-			)
-		);
+		$form_id = array_search( $form['settings']['imported_from']['form_id'], $imported_form_list );
+		if ( false === $form_id ) {
+			// $form_id = wp_insert_post(
+			// array(
+			// 'post_status' => 'publish',
+			// 'post_type'   => 'everest_form',
+			// )
+			// );
+			$form_id = evf()->form->create( $form['settings']['form_title'] );
 
-		if ( empty( $form_id ) || is_wp_error( $form_id ) ) {
-			wp_send_json_success(
-				array(
-					'error' => true,
-					'name'  => sanitize_text_field( $form['settings']['form_title'] ),
-					'msg'   => esc_html__( 'There was an error while creating a new form.', 'everest-forms' ),
-				)
-			);
+			if ( empty( $form_id ) || is_wp_error( $form_id ) ) {
+				wp_send_json_success(
+					array(
+						'error' => true,
+						'name'  => sanitize_text_field( $form['settings']['form_title'] ),
+						'msg'   => esc_html__( 'There was an error while creating a new form.', 'everest-forms' ),
+					)
+				);
+			}
 		}
-
 		$form['id']       = $form_id;
 		$form['field_id'] = count( $form['form_fields'] ) + 1;
 
