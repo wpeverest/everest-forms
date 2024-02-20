@@ -99,11 +99,13 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 						if ( preg_match( '/connection_/', $connection_id ) ) {
 							$connection_name = ! empty( $connection_data['connection_name'] ) ? $connection_data['connection_name'] : '';
 							if ( 'connection_1' !== $connection_id ) {
-								$remove_class    = 'email-remove';
-								$duplicate_class = 'email-duplicate';
+								$remove_class    = 'everest-forms-email-remove';
+								$duplicate_class = 'everest-forms-email-duplicate';
+								$preview_class   = 'everest-forms-email-preview';
 							} else {
-								$remove_class    = 'email-default-remove';
-								$duplicate_class = 'email-default-duplicate';
+								$remove_class    = 'everest-forms-email-default-remove';
+								$duplicate_class = 'everest-forms-email-default-duplicate';
+								$preview_class   = 'everest-forms-email-preview';
 							}
 							if ( isset( $email['enable_email_notification'] ) && '0' === $email['enable_email_notification'] ) {
 								$email_status = isset( $email['enable_email_notification'] ) ? $email['enable_email_notification'] : '1';
@@ -140,7 +142,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 											)
 										);
 										?>
-											<a class="<?php echo esc_url( $preview_class ); ?>" target="__blank" data-connection-id="<?php echo esc_attr( $connection_id ); ?>" href="<?php echo esc_url( $preview_url ); ?>">
+											<a class="<?php echo esc_attr( $preview_class ); ?>" target="__blank" data-connection-id="<?php echo esc_attr( $connection_id ); ?>" href="<?php echo esc_url( $preview_url ); ?>">
 												<span class="<?php echo esc_attr( $preview_class ); ?>">
 												<svg  xmlns="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/1999/svg"
 												viewBox="0 0 442.04 442.04" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g>
