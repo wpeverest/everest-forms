@@ -1942,10 +1942,10 @@ abstract class EVF_Form_Fields {
 				);
 				break;
 			case 'google_calendar_for_appt_sched_option':
-				$appt_sched_enable_google_calendar_toggle = '<div class="everest-forms-border-container everest-forms-appt-sched-google-calendar-advanced">';
-				$appt_sched_enable_google_calendar_toggle .='<h4 class="everest-forms-border-container-title">' . esc_html__( 'Appointment Scheduling', 'everest-forms' ) . '</h4>'; // phpcs:ignore WordPress.Security.NonceVerification
+				$appt_sched_enable_google_calendar_toggle       = '<div class="everest-forms-border-container everest-forms-appt-sched-google-calendar-advanced">';
+				$appt_sched_enable_google_calendar_toggle      .= '<h4 class="everest-forms-border-container-title">' . esc_html__( 'Appointment Scheduling', 'everest-forms' ) . '</h4>'; // phpcs:ignore WordPress.Security.NonceVerification
 				$appt_sched_enable_google_calendar_toggle_value = isset( $field['appt_sched_enable_google_calendar_advanced'] ) ? $field['appt_sched_enable_google_calendar_advanced'] : false;
-				$appt_sched_enable_google_calendar_toggle       .= '<div class="input-group-col-2">';
+				$appt_sched_enable_google_calendar_toggle      .= '<div class="input-group-col-2">';
 				$appt_sched_enable_google_calendar_toggle      .= $this->field_element(
 					'toggle',
 					$field,
@@ -1968,7 +1968,7 @@ abstract class EVF_Form_Fields {
 				$form_id                  = isset( $_GET['form_id'] ) ? sanitize_text_field( wp_unslash( $_GET['form_id'] ) ) : '';
 				$is_google_section_hidden = ! evf_string_to_bool( $appt_sched_enable_google_calendar_toggle_value ) ? 'everest-forms-hidden' : '';
 
-				$appt_sched_google_calendar_title_field_title = '<div class="everest-form-appt-sched-google-event-section ' . $is_google_section_hidden . '">';
+				$appt_sched_google_calendar_title_field_title  = '<div class="everest-form-appt-sched-google-event-section ' . $is_google_section_hidden . '">';
 				$appt_sched_google_calendar_title_field_title .= $this->field_element(
 					'label',
 					$field,
@@ -1979,7 +1979,7 @@ abstract class EVF_Form_Fields {
 					),
 					false
 				);
-				$appt_sched_google_calendar_event_title_field = $this->field_element(
+				$appt_sched_google_calendar_event_title_field  = $this->field_element(
 					'select',
 					$field,
 					array(
@@ -1993,7 +1993,7 @@ abstract class EVF_Form_Fields {
 					),
 					false
 				);
-				$appt_sched_google_calendar_title_field_desc  = $this->field_element(
+				$appt_sched_google_calendar_title_field_desc   = $this->field_element(
 					'label',
 					$field,
 					array(
@@ -2003,7 +2003,7 @@ abstract class EVF_Form_Fields {
 					),
 					false
 				);
-				$appt_sched_google_calendar_event_desc_field  = $this->field_element(
+				$appt_sched_google_calendar_event_desc_field   = $this->field_element(
 					'select',
 					$field,
 					array(
@@ -2017,10 +2017,10 @@ abstract class EVF_Form_Fields {
 					),
 					false
 				);
-				$appt_sched_google_calendar_event_desc_field .='</div></div>';
+				$appt_sched_google_calendar_event_desc_field  .= '</div></div>';
 				$args = array(
 					'slug'    => 'appt_sched_enable_google_calendar_advanced_setting',
-					'content' => $appt_sched_enable_google_calendar_toggle.$appt_sched_google_calendar_title_field_title . $appt_sched_google_calendar_event_title_field . $appt_sched_google_calendar_title_field_desc . $appt_sched_google_calendar_event_desc_field,
+					'content' => $appt_sched_enable_google_calendar_toggle . $appt_sched_google_calendar_title_field_title . $appt_sched_google_calendar_event_title_field . $appt_sched_google_calendar_title_field_desc . $appt_sched_google_calendar_event_desc_field,
 				);
 				$this->field_element( 'row', $field, $args, $echo );
 				break;
