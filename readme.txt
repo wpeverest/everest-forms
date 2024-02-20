@@ -417,13 +417,14 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 2.0.7       - xx-xx-2023
+= 2.0.7       - xx-xx-2024
 * Enhancement - Screenshot video on upgrade to pro popup.
 * Enhancement - Clone email form settings.
 * Feature     - Email preview.
 * Fix 		  - Critical error in entry file.
 * Fix         - Show values setting not displaying in select field.
 * Fix         - Everest Forms query running in every pages.
+* Fix         - Minimum character translation issue.
 * Dev         - Compatibility for Google calendar integration.
 
 
