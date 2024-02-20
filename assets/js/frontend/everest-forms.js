@@ -31,6 +31,7 @@ jQuery( function ( $ ) {
 			this.init_enhanced_select();
 			this.checkUncheckAllcheckbox();
 			this.validateMinimumWordLength();
+			this.validateMinimumcharacterLength();
 
 			// Inline validation.
 			this.$everest_form.on( 'input validate change', '.input-text, select, input:checkbox, input:radio', this.validate_field );
@@ -772,6 +773,24 @@ jQuery( function ( $ ) {
 
 				jQuery( '#'+event.id ).each( function() {
 					jQuery( this ).rules( 'add', { minWordLength: [minWords] });
+				});
+
+			} );
+		},
+		validateMinimumcharacterLength: function() {
+			Array.prototype.slice.call( document.querySelectorAll( '.everest-forms-min-characters-length-enabled' ) ).map( function( event ) {
+				var minCharacters    = parseInt( event.dataset.textMinLength, 10 ) || 0;
+
+				// Add the custom validation method.
+				jQuery.validator.addMethod( 'minCharacterLength',
+					function(value, element, params) {
+						var charCount = value.length;
+						return charCount >= params[0];
+					}, everest_forms_params.il8n_min_character_length_err_msg
+				);
+
+				jQuery( '#'+event.id ).each( function() {
+					jQuery( this ).rules( 'add', { minCharacterLength: [minCharacters] });
 				});
 
 			} );
