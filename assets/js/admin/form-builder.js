@@ -3240,6 +3240,52 @@ jQuery( function ( $ ) {
 			$( this ).parent().parent().parent().next().next( '.everest-forms-min-max-date-range-option' ).addClass( 'everest-forms-hidden' );
 		}
 	});
+	/**
+	 * Real-time updates for Google Calendar.
+	 *
+	 * @since 2.0.6
+	 */
+	$(document).on( 'change', '.appt-sched-google-calendar-advanced', function(e) {
+		var $this = $( this );
+		if ( ! $this.is( ':checked' ) ) {
+			$( '.everest-form-appt-sched-google-event-section' ).addClass( 'everest-forms-hidden' );
+		} else {
+			$( '.everest-form-appt-sched-google-event-section' ).removeClass( 'everest-forms-hidden' );
+		}
+	});
+	/**
+	 * Real-time updates the field for google calendar when we drag the new field on builder.
+	 *
+	 * @since 2.0.6
+	 */
+	$(document).on('focus', '.appt-sched-google-calendar-event-title-field', function(e){
+		var selectedItems = $('.evf-admin-field-wrapper').find('.everest-forms-field');
+		appt_sched_event_title_field_list($(this),selectedItems);
+	});
+	$(document).on('focus', '.appt-sched-google-calendar-event-desc-field', function(e){
+		var selectedItems = $('.evf-admin-field-wrapper').find('.everest-forms-field');
+		appt_sched_event_title_field_list($(this),selectedItems);
+	});
+	/**
+	 * Function to updates google event title when we drag the new field on builder.
+	 *
+	 * @since 2.0.6
+	 */
+	function appt_sched_event_title_field_list($this, selectedItems){
+		var html ='<option value=""> -- Select Field -- </option>';
+		const allowedField = ['first-name', 'last-name', 'text', 'textarea'];
+			$.each(selectedItems,function(index,element) {
+				var fieldType = $(element).data('field-type');
+				if(allowedField.includes(fieldType)){
+					var content = $(element).find('.label-title');
+					var label = $(content).find('.text').text();
+					var fieldName = $(element).data('field-id');
+
+					html += "<option value="+fieldName+">"+label+"</option>";
+				}
+			});
+		$($this).html(html);
+	}
 
 	function get_all_available_field( allowed_field, type , el ) {
 		var all_fields_without_email = [];

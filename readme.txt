@@ -424,6 +424,8 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Fix 		  - Critical error in entry file.
 * Fix         - Show values setting not displaying in select field.
 * Fix         - Everest Forms query running in every pages.
+* Dev         - Compatibility for Google calendar integration.
+
 
 
 = 2.0.6       - 26-12-2023
