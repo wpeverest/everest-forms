@@ -100,7 +100,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 							$connection_name = ! empty( $connection_data['connection_name'] ) ? $connection_data['connection_name'] : '';
 							if ( 'connection_1' !== $connection_id ) {
 								$remove_class    = 'everest-forms-email-remove';
-								$duplicate_class = 'everest-forms-email-duplicate';
+								$duplicate_class = 'everest-forms-duplicate-email';
 								$preview_class   = 'everest-forms-email-preview';
 							} else {
 								$remove_class    = 'everest-forms-email-default-remove';
