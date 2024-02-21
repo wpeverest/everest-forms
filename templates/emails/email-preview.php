@@ -27,13 +27,15 @@ defined( 'ABSPATH' ) || exit;
 			 * @return array email preview message.
 			 */
 			function form_data() {
-				$form_data     = array();
-				$connection_id = '';
+				$form_data = array();
 
 				if ( ! empty( $_GET['form_id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-					$connection_id         = isset( $_GET['evf_email_preview'] ) ? $_GET['evf_email_preview'] : '';
-					$form_data             = evf()->form->get( absint( $_GET['form_id'] ), array( 'content_only' => true ) ); // phpcs:ignore WordPress.Security.NonceVerification
-					$email_preview_message = $form_data['settings']['email'][ "$connection_id" ]['evf_email_message'];
+					$connection_id = isset( $_GET['evf_email_preview'] ) ? $_GET['evf_email_preview'] : '';
+					$form_data     = evf()->form->get( absint( $_GET['form_id'] ), array( 'content_only' => true ) ); // phpcs:ignore WordPress.Security.NonceVerification
+
+					if ( isset( $form_data['settings']['email'][ "$connection_id" ] ) && isset( $form_data['settings']['email'][ "$connection_id" ]['evf_email_message'] ) ) {
+						$email_preview_message = $form_data['settings']['email'][ "$connection_id" ]['evf_email_message'];
+					}
 				}
 
 				return $form_data;
