@@ -27,7 +27,8 @@ defined( 'ABSPATH' ) || exit;
 			 * @return array email preview message.
 			 */
 			function form_data() {
-				$form_data = array();
+				$form_data     = array();
+				$connection_id = '';
 
 				if ( ! empty( $_GET['form_id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 					$connection_id         = isset( $_GET['evf_email_preview'] ) ? $_GET['evf_email_preview'] : '';
