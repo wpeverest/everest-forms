@@ -45,7 +45,7 @@
 		 	$(document).on('click', '.everest-forms-email-remove', function(e) {
 		 		EverestFormsEmail.removeAccount(this, e);
 		 	});
-		 	$(document).on('click', '.email-default-remove', function(e) {
+		 	$(document).on('click', '.everest-forms-email-default-remove', function(e) {
 		 		EverestFormsEmail.removeDefaultAccount(this, e);
 		 	});
 		 	$(document).on('input', '.everest-forms-email-name input', function(e) {
@@ -258,7 +258,7 @@
 						'</div>' +
 						'<span class="evf-vertical-divider"></span>' +
 						'<a href="#">' +
-							'<span class="email-remove">' +
+							'<span class="everest-forms-email-remove">' +
 							'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">' +
 								'<path fill-rule="evenodd" d="M9.293 3.293A1 1 0 0 1 10 3h4a1 1 0 0 1 1 1v1H9V4a1 1 0 0 1 .293-.707ZM7 5V4a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1h4a1 1 0 1 1 0 2h-1v13a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V7H3a1 1 0 1 1 0-2h4Zm1 2h10v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7h2Zm2 3a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0v-6a1 1 0 0 1 1-1Zm5 7v-6a1 1 0 1 0-2 0v6a1 1 0 1 0 2 0Z" clip-rule="evenodd"/>' +
 							'</svg></span>' +
@@ -547,7 +547,7 @@
 					   '</div>' +
 					   '<span class="evf-vertical-divider"></span>' +
 					   '<a href="#">' +
-						   '<span class="email-remove">' +
+						   '<span class="everest-forms-email-remove">' +
 						   '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">' +
 							   '<path fill-rule="evenodd" d="M9.293 3.293A1 1 0 0 1 10 3h4a1 1 0 0 1 1 1v1H9V4a1 1 0 0 1 .293-.707ZM7 5V4a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1h4a1 1 0 1 1 0 2h-1v13a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V7H3a1 1 0 1 1 0-2h4Zm1 2h10v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7h2Zm2 3a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0v-6a1 1 0 0 1 1-1Zm5 7v-6a1 1 0 1 0-2 0v6a1 1 0 1 0 2 0Z" clip-rule="evenodd"/>' +
 						   '</svg></span>' +
