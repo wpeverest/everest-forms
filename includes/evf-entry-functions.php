@@ -132,12 +132,6 @@ function evf_get_entry_statuses( $form_data = array() ) {
  */
 function evf_search_entries( $args ) {
 	global $wpdb;
-	$screen    = get_current_screen();
-	$screen_id = $screen ? $screen->id : '';
-
-	if ( ! in_array( $screen_id, evf_get_screen_ids(), true ) ) {
-		return array();
-	}
 
 	$args = wp_parse_args(
 		$args,

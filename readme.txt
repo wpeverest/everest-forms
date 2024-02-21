@@ -423,7 +423,6 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Feature     - Email preview.
 * Fix 		  - Critical error in entry file.
 * Fix         - Show values setting not displaying in select field.
-* Fix         - Everest Forms query running in every pages.
 * Fix         - Minimum character translation issue.
 * Dev         - Compatibility for Google calendar integration.
 
