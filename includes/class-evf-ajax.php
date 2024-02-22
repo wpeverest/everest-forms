@@ -1166,15 +1166,30 @@ class EVF_AJAX {
 				);
 			}
 
-			$form_data = evf()->form->get(
-				absint( $form_id ),
-				array(
-					'content_only' => true,
-				)
-			);
+			$migrated_form_list = get_option( 'evf_fm_' . $form_slug . '_imported_form_list', array() );
+			$evf_form_id        = array_search( $form_id, $migrated_form_list );
+
+			if ( ! $evf_form_id ) {
+				wp_send_json_error(
+					array(
+						'message' => esc_html__( 'Please migrate the form before importing the entry', 'everest-forms' ),
+					)
+				);
+			}
+			// Creating the form instance and getting the form list.
+			$class_name = 'EVF_Fm_' . ucfirst( trim( str_replace( '-', '', $form_slug ) ) );
+
+			if ( ! class_exists( $class_name ) ) {
+				$except_message = sprintf( '<b><i>%s</i></b> %s', $class_name, esc_html__( 'does not exist.' ) );
+				throw new Exception( $except_message );
+			}
+			// Create the instance of class.
+			$form_instance = new $class_name();
+			$evf_entries   = $form_instance->migrate_entry( $evf_form_id, $form_id );
+
 			wp_send_json_success(
 				array(
-					'message' => $form_data,
+					'message' => $evf_entries,
 				)
 			);
 		} catch ( Exception $e ) {

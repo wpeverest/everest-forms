@@ -190,7 +190,9 @@ abstract class EVF_Admin_Form_Migrator {
 		$form['field_id'] = count( $form['form_fields'] ) + 1;
 
 		// Update the form with all our compiled data.
-		$form_id     = evf()->form->update( $form['id'], $form );
+		$form_id = evf()->form->update( $form['id'], $form );
+		// Updating the post meta to track the migrated forms.
+		update_post_meta( $form_id, 'evf_fm_imported_from', $form['settings']['imported_from'] );
 		$form_styles = get_option( 'everest_forms_styles', array() );
 		$logger      = evf_get_logger();
 		$logger->info(

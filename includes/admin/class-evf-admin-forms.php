@@ -203,12 +203,16 @@ class EVF_Admin_Forms {
 		if ( empty( $form ) ) {
 			return;
 		}
+		$imported_from = get_post_meta( $form_id, 'evf_fm_imported_from' );
 
-		if ( ! isset( $form['settings']['imported_from']['form_from'] ) || ! isset( $form['settings']['imported_from']['form_id'] ) ) {
+		if ( empty( $imported_from ) ) {
 			return;
 		}
-		$form_slug             = $form['settings']['imported_from']['form_from'];
-		$imported_from_form_id = $form['settings']['imported_from']['form_id'];
+		if ( ! isset( $imported_from[0]['form_from'] ) || ! isset( $imported_from[0]['form_from'] ) ) {
+			return;
+		}
+		$form_slug             = $imported_from[0]['form_from'];
+		$imported_from_form_id = $imported_from[0]['form_id'];
 		$imported_form_list    = get_option( 'evf_fm_' . $form_slug . '_imported_form_list', array() );
 
 		$is_form_imported = array_search( $imported_from_form_id, $imported_form_list );

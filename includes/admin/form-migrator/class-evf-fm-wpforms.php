@@ -571,6 +571,133 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 		}
 		return $wpf_forms_data;
 	}
+	/**
+	 * Migrate the entry.
+	 *
+	 * @since 2.0.6
+	 *
+	 * @param int $evf_form_id The everest form ID.
+	 * @param int $form_id The importer form ID.
+	 */
+	public function migrate_entry( $evf_form_id, $form_id ) {
+		global $wpdb;
+		$form_data = evf()->form->get(
+			absint( $evf_form_id ),
+			array(
+				'content_only' => true,
+			)
+		);
+
+		$evf_form_fields  = $form_data['form_fields'];
+		$evf_form_entries = array();
+		// $evf_form_entries = evf_get_entries_by_form_id( $evf_form_id, '', '', true );
+		$args        = array(
+			'form_id' => $form_id,
+		);
+		$submissions = wpforms()->entry->get_entries( $args );
+		$entries     = array();
+		if ( ! $submissions || ! is_array( $submissions ) ) {
+			return $evf_form_entries;
+		}
+		foreach ( $submissions as $submission ) {
+			$fields = \json_decode( $submission->fields, true );
+			if ( ! $fields ) {
+				continue;
+			}
+			$entries = array();
+			foreach ( $fields as $field_id => $field ) {
+				$entry     = array();
+				$meta_key  = $field['type'] . '-' . $field_id;
+				$field_key = '';
+				foreach ( $evf_form_fields as $key => $form_field ) {
+					if ( $form_field['meta-key'] === $meta_key ) {
+						$field_key = $key;
+					}
+				}
+				if ( '' !== $field_key ) {
+					$field_type     = $evf_form_fields[ $field_key ]['type'];
+					$field_name     = $evf_form_fields[ $field_key ]['label'];
+					$field_meta_key = $evf_form_fields[ $field_key ]['meta-key'];
+					switch ( $field_type ) {
+
+						case 'checkbox':
+							$choice_label = array();
+							foreach ( $evf_form_fields[ $field_key ]['choices'] as $choice ) {
+								$choice_label[] = $choice['label'];
+							}
+							$entry['id']        = $field_key;
+							$entry['type']      = $field_type;
+							$entry['value']     = array(
+								'name'  => $field_name,
+								'type'  => $field_type,
+								'label' => $choice_label,
+							);
+							$entry['meta-key']  = $field_meta_key;
+							$entry['value_raw'] = wp_json_encode( $field['value_raw'] );
+							break;
+						case 'radio':
+							$entry['id']        = $field_key;
+							$entry['type']      = $field_type;
+							$entry['value']     = array(
+								'name'  => $field_name,
+								'type'  => $field_type,
+								'label' => $field['value'],
+							);
+							$entry['value_raw'] = wp_json_encode( $field['value_raw'] );
+							$entry['meta-key']  = $field_meta_key;
+
+							break;
+
+						case 'select':
+							$entry['id']        = $field_key;
+							$entry['type']      = $field_type;
+							$entry['meta-key']  = $field_meta_key;
+							$entry['name']      = $field_name;
+							$entry['value']     = array( wp_json_encode( $field['value'] ) );
+							$entry['value_raw'] = array( wp_json_encode( $field['value_raw'] ) );
+
+							break;
+
+						default:
+							$entry['name']     = $field_name;
+							$entry['type']     = $field_type;
+							$entry['meta-key'] = $field_meta_key;
+							$entry['id']       = $field_key;
+							$entry['value']    = $field['value'];
+							break;
+					}
+				}
+				if ( empty( $entry ) ) {
+					continue;
+				}
+				error_log( print_r( $entry, true ) );
+				$entry_list[ $field_key ] = $entry;
+			}
+			$entries['user_id']         = $submission->user_id;
+			$entries['user_device']     = 'Google Chrome/Windows/Desktop';
+			$entries['user_ip_address'] = $submission->ip_address;
+			$entries['form_id']         = $evf_form_id;
+			$entries['referer']         = 'ghjk';
+			$entries['fields']          = wp_json_encode( $entry_list );
+			$entries['token']           = null;
+			$entries['status']          = 'publish';
+			$entries['viewed']          = $submission->viewed;
+			$entries['starred']         = $submission->starred;
+			$entries['date_created']    = $submission->date;
+
+			$result = $wpdb->insert( $wpdb->prefix . 'evf_entries', $entries );
+			if ( is_wp_error( $result ) || ! $result ) {
+				$evf_form_entries[ $submission->entry_id ] = false;
+				continue;
+			}
+
+			$entry_id = $wpdb->insert_id;
+
+			$evf_form_entries[ $submission->entry_id ] = $entry_id;
+		}
+
+		return $evf_form_entries;
+	}
 }
 
 new EVF_Fm_Wpforms();
