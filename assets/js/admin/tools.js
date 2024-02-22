@@ -219,7 +219,6 @@ jQuery(function ($) {
 				form_id: formID,
 				security: everest_forms_form_migrator.evf_form_entry_migrator_nonce,
 			};
-			console.log(data);
 			$.ajax({
 				url: everest_forms_form_migrator.ajax_url,
 				type: "POST",
@@ -234,7 +233,21 @@ jQuery(function ($) {
 				success: function (res) {
 					$(".everest-froms-import_notice").remove();
 					$(".evf-loading").remove();
-					console.log(res);
+					var message_string = "";
+					if (true === res.success) {
+						message_string =
+							'<div id="message" class="updated inline everest-froms-import_notice"><p><strong>' +
+							res.data.message +
+							"</strong></p></div>";
+					} else {
+						message_string =
+							'<div id="message" class="error inline everest-froms-import_notice"><p><strong>' +
+							res.data.message +
+							"</strong></p></div>";
+					}
+					$(document)
+						.find("#evf-fm-forms-list-container")
+						.prepend(message_string);
 				},
 			});
 		});

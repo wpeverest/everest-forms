@@ -251,16 +251,14 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 			}
 			$wpf_form_name         = $wpf_form->post_title;
 			$wpf_form_post_content = json_decode( $wpf_form->post_content, true );
-			// error_log( print_r( $wpf_form_post_content, true ) );
-			// exit;
-			$wpf_fields         = isset( $wpf_form_post_content['fields'] ) ? $wpf_form_post_content['fields'] : '';
-			$wpf_settings       = isset( $wpf_form_post_content['settings'] ) ? $wpf_form_post_content['settings'] : '';
-			$fields_pro_plan    = array( 'number-slider' );
-			$fields_pro_omit    = array();
-			$fields_unsupported = array();
-			$upgrade_plan       = array();
-			$upgrade_omit       = array();
-			$unsupported        = array();
+			$wpf_fields            = isset( $wpf_form_post_content['fields'] ) ? $wpf_form_post_content['fields'] : '';
+			$wpf_settings          = isset( $wpf_form_post_content['settings'] ) ? $wpf_form_post_content['settings'] : '';
+			$fields_pro_plan       = array( 'number-slider' );
+			$fields_pro_omit       = array();
+			$fields_unsupported    = array();
+			$upgrade_plan          = array();
+			$upgrade_omit          = array();
+			$unsupported           = array();
 
 			$form = array(
 				'id'            => '',
@@ -597,7 +595,6 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 	 * @param int $form_id The importer form ID.
 	 */
 	public function migrate_entry( $evf_form_id, $form_id ) {
-		global $wpdb;
 		$form_data = evf()->form->get(
 			absint( $evf_form_id ),
 			array(
@@ -607,90 +604,115 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 
 		$evf_form_fields  = $form_data['form_fields'];
 		$evf_form_entries = array();
-		// $evf_form_entries = evf_get_entries_by_form_id( $evf_form_id, '', '', true );
-		$args        = array(
+		$args             = array(
 			'form_id' => $form_id,
 		);
+
 		$submissions = wpforms()->entry->get_entries( $args );
 		$entries     = array();
+
 		if ( ! $submissions || ! is_array( $submissions ) ) {
 			return $evf_form_entries;
 		}
+
 		foreach ( $submissions as $submission ) {
 			$fields = \json_decode( $submission->fields, true );
 			if ( ! $fields ) {
 				continue;
 			}
-			$entries = array();
+			$entry_list = array();
 			foreach ( $fields as $field_id => $field ) {
-				$entry     = array();
-				$meta_key  = $field['type'] . '-' . $field_id;
-				$field_key = '';
+				if ( 'name' === $field['type'] ) {
+					$meta_keys = array(
+						'first_' . $field_id,
+						'middle_' . $field_id,
+						'last_' . $field_id,
+					);
+				} else {
+					$meta_keys = array( $field['type'] . '-' . $field_id );
+				}
+				$field_keys = array();
+
 				foreach ( $evf_form_fields as $key => $form_field ) {
-					if ( $form_field['meta-key'] === $meta_key ) {
-						$field_key = $key;
+					if ( in_array( $form_field['meta-key'], $meta_keys, true ) ) {
+						$field_keys[] = $key;
 					}
 				}
-				if ( '' !== $field_key ) {
-					$field_type     = $evf_form_fields[ $field_key ]['type'];
-					$field_name     = $evf_form_fields[ $field_key ]['label'];
-					$field_meta_key = $evf_form_fields[ $field_key ]['meta-key'];
-					switch ( $field_type ) {
+				if ( ! empty( $field_keys ) ) {
+					foreach ( $field_keys as $field_key ) {
+						$entry = array();
 
-						case 'checkbox':
-							$choice_label = array();
-							foreach ( $evf_form_fields[ $field_key ]['choices'] as $choice ) {
-								$choice_label[] = $choice['label'];
-							}
-							$entry['id']        = $field_key;
-							$entry['type']      = $field_type;
-							$entry['value']     = array(
-								'name'  => $field_name,
-								'type'  => $field_type,
-								'label' => $choice_label,
-							);
-							$entry['meta_key']  = $field_meta_key;
-							$entry['value_raw'] = wp_json_encode( $field['value_raw'] );
-							break;
-						case 'radio':
-							$entry['id']        = $field_key;
-							$entry['type']      = $field_type;
-							$entry['value']     = array(
-								'name'  => $field_name,
-								'type'  => $field_type,
-								'label' => $field['value'],
-							);
-							$entry['value_raw'] = wp_json_encode( $field['value_raw'] );
-							$entry['meta_key']  = $field_meta_key;
+						$field_type     = $evf_form_fields[ $field_key ]['type'];
+						$field_name     = $evf_form_fields[ $field_key ]['label'];
+						$field_meta_key = $evf_form_fields[ $field_key ]['meta-key'];
+						switch ( $field_type ) {
 
-							break;
+							case 'first-name':
+							case 'last-name':
+								$format_arr        = explode( '_', $evf_form_fields[ $field_key ]['meta-key'] );
+								$format            = $format_arr[0];
+								$entry['id']       = $field_key;
+								$entry['type']     = $field_type;
+								$entry['meta_key'] = $field_meta_key;
+								$entry['value']    = $field[ $format ];
+								$entry['name']     = $field_name;
+								break;
+							case 'checkbox':
+								$choice_label = array();
+								foreach ( $evf_form_fields[ $field_key ]['choices'] as $choice ) {
+									$choice_label[] = $choice['label'];
+								}
+								$entry['id']        = $field_key;
+								$entry['type']      = $field_type;
+								$entry['value']     = array(
+									'name'  => $field_name,
+									'type'  => $field_type,
+									'label' => $choice_label,
+								);
+								$entry['meta_key']  = $field_meta_key;
+								$entry['value_raw'] = wp_json_encode( $field['value_raw'] );
+								break;
+							case 'radio':
+								$entry['id']        = $field_key;
+								$entry['type']      = $field_type;
+								$entry['value']     = array(
+									'name'  => $field_name,
+									'type'  => $field_type,
+									'label' => $field['value'],
+								);
+								$entry['value_raw'] = wp_json_encode( $field['value_raw'] );
+								$entry['meta_key']  = $field_meta_key;
 
-						case 'select':
-							$entry['id']        = $field_key;
-							$entry['type']      = $field_type;
-							$entry['meta_key']  = $field_meta_key;
-							$entry['name']      = $field_name;
-							$entry['value']     = array( wp_json_encode( $field['value'] ) );
-							$entry['value_raw'] = array( wp_json_encode( $field['value_raw'] ) );
+								break;
 
-							break;
+							case 'select':
+								$entry['id']        = $field_key;
+								$entry['type']      = $field_type;
+								$entry['meta_key']  = $field_meta_key;
+								$entry['name']      = $field_name;
+								$entry['value']     = array( wp_json_encode( $field['value'] ) );
+								$entry['value_raw'] = array( wp_json_encode( $field['value_raw'] ) );
 
-						default:
-							$entry['name']     = $field_name;
-							$entry['type']     = $field_type;
-							$entry['meta_key'] = $field_meta_key;
-							$entry['id']       = $field_key;
-							$entry['value']    = $field['value'];
-							break;
+								break;
+
+							default:
+								$entry['name']     = $field_name;
+								$entry['type']     = $field_type;
+								$entry['meta_key'] = $field_meta_key;
+								$entry['id']       = $field_key;
+								$entry['value']    = $field['value'];
+								break;
+						}
+						if ( empty( $entry ) ) {
+							continue;
+						}
+						$entry_list[ $field_key ] = $entry;
 					}
 				}
-				if ( empty( $entry ) ) {
-					continue;
-				}
-				$entry_list[ $field_key ] = $entry;
 			}
- 			$entries['user_id']         = $submission->user_id;
-			$entries['user_device']     = $this->get_browser_detail( $submission->user_agent );
+
+			$entries['user_id']         = $submission->user_id;
+			$entries['user_device']     = '';
 			$entries['user_ip_address'] = $submission->ip_address;
 			$entries['form_id']         = $evf_form_id;
 			$entries['referer']         = '';
