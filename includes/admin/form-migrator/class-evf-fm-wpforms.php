@@ -172,7 +172,24 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 
 		return $notification_settings;
 	}
+	/**
+	 * Conver the browser details.
+	 *
+	 * @since 2.0.6
+	 * @param [string] $user_agent The user agent from wpforms's entry.
+	 */
+	private function get_browser_detail( $user_agent ) {
+		$browser_info   = get_browser( $user_agent, true );
+		$modified_agent = '';
+		if ( $browser_info !== false ) {
+			$browser     = $browser_info['browser'] ?? 'Unknown Browser';
+			$platform    = $browser_info['platform'] ?? 'Unknown Platform';
+			$device_type = $browser_info['device_type'] ?? 'Unknown Device Type';
 
+			$agent = $browser . '/' . $platform . '/' . $device_type;
+		}
+		return $modified_agent;
+	}
 	/**
 	 * Mapping the form setting.
 	 *
@@ -632,7 +649,7 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 								'type'  => $field_type,
 								'label' => $choice_label,
 							);
-							$entry['meta-key']  = $field_meta_key;
+							$entry['meta_key']  = $field_meta_key;
 							$entry['value_raw'] = wp_json_encode( $field['value_raw'] );
 							break;
 						case 'radio':
@@ -644,14 +661,14 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 								'label' => $field['value'],
 							);
 							$entry['value_raw'] = wp_json_encode( $field['value_raw'] );
-							$entry['meta-key']  = $field_meta_key;
+							$entry['meta_key']  = $field_meta_key;
 
 							break;
 
 						case 'select':
 							$entry['id']        = $field_key;
 							$entry['type']      = $field_type;
-							$entry['meta-key']  = $field_meta_key;
+							$entry['meta_key']  = $field_meta_key;
 							$entry['name']      = $field_name;
 							$entry['value']     = array( wp_json_encode( $field['value'] ) );
 							$entry['value_raw'] = array( wp_json_encode( $field['value_raw'] ) );
@@ -661,7 +678,7 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 						default:
 							$entry['name']     = $field_name;
 							$entry['type']     = $field_type;
-							$entry['meta-key'] = $field_meta_key;
+							$entry['meta_key'] = $field_meta_key;
 							$entry['id']       = $field_key;
 							$entry['value']    = $field['value'];
 							break;
@@ -670,14 +687,13 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 				if ( empty( $entry ) ) {
 					continue;
 				}
-				error_log( print_r( $entry, true ) );
 				$entry_list[ $field_key ] = $entry;
 			}
-			$entries['user_id']         = $submission->user_id;
-			$entries['user_device']     = 'Google Chrome/Windows/Desktop';
+ 			$entries['user_id']         = $submission->user_id;
+			$entries['user_device']     = $this->get_browser_detail( $submission->user_agent );
 			$entries['user_ip_address'] = $submission->ip_address;
 			$entries['form_id']         = $evf_form_id;
-			$entries['referer']         = 'ghjk';
+			$entries['referer']         = '';
 			$entries['fields']          = wp_json_encode( $entry_list );
 			$entries['token']           = null;
 			$entries['status']          = 'publish';
@@ -685,13 +701,7 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 			$entries['starred']         = $submission->starred;
 			$entries['date_created']    = $submission->date;
 
-			$result = $wpdb->insert( $wpdb->prefix . 'evf_entries', $entries );
-			if ( is_wp_error( $result ) || ! $result ) {
-				$evf_form_entries[ $submission->entry_id ] = false;
-				continue;
-			}
-
-			$entry_id = $wpdb->insert_id;
+			$entry_id = $this->save_migrated_entry( $entries, $entry_list, $form_data );
 
 			$evf_form_entries[ $submission->entry_id ] = $entry_id;
 		}

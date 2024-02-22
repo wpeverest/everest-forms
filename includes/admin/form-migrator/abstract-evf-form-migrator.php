@@ -266,6 +266,65 @@ abstract class EVF_Admin_Form_Migrator {
 		<?php
 	}
 	/**
+	 * Save the migrated entry.
+	 *
+	 * @since 2.0.6
+	 * @param [array] $entries The entries.
+	 * @param [array] $entry_list The entry list with value.
+	 * @param [array] $form_data The form data list.
+	 */
+	protected function save_migrated_entry( $entries, $entry_list = array(), $form_data = array() ) {
+		global $wpdb;
+		$result = $wpdb->insert( $wpdb->prefix . 'evf_entries', $entries );
+		if ( is_wp_error( $result ) || ! $result ) {
+			return false;
+		}
+
+			$entry_id = $wpdb->insert_id;
+			// Create meta data.
+		if ( $entry_id ) {
+			foreach ( $entry_list as $field ) {
+				error_log( print_r( $field, true ) );
+				$field = apply_filters( 'everest_forms_entry_save_fields', $field, $form_data, $entry_id );
+				// Add only whitelisted fields to entry meta.
+				if ( in_array( $field['type'], array( 'html', 'title' ), true ) ) {
+					continue;
+				}
+
+				// If empty file is supplied, don't store their data nor send email.
+				if ( in_array( $field['type'], array( 'image-upload', 'file-upload' ), true ) ) {
+
+					// BW compatibility for previous file uploader.
+					if ( isset( $field['value']['file_url'] ) && '' === $field['value']['file_url'] ) {
+						continue;
+					}
+				}
+
+				// If empty label is provided for choice field, don't store their data nor send email.
+				if ( in_array( $field['type'], array( 'radio', 'payment-multiple' ), true ) ) {
+					if ( isset( $field['value']['label'] ) && '' === $field['value']['label'] ) {
+						continue;
+					}
+				} elseif ( in_array( $field['type'], array( 'checkbox', 'payment-checkbox' ), true ) ) {
+					if ( isset( $field['value']['label'] ) && ( empty( $field['value']['label'] ) || '' === current( $field['value']['label'] ) ) ) {
+						continue;
+					}
+				}
+
+				if ( isset( $field['meta_key'], $field['value'] ) && '' !== $field['value'] ) {
+					$entry_metadata = array(
+						'entry_id'   => $entry_id,
+						'meta_key'   => sanitize_key( $field['meta_key'] ),
+						'meta_value' => maybe_serialize( $field['value'] ), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value
+					);
+					// Insert entry meta.
+					$wpdb->insert( $wpdb->prefix . 'evf_entrymeta', $entry_metadata );
+				}
+			}
+		}
+		return $entry_id;
+	}
+	/**
 	 * If the prompt is dismissed
 	 *
 	 * @since 2.0.6
