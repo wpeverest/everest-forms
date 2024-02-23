@@ -57,7 +57,7 @@ class EVF_Settings_Reporting extends EVF_Settings_Page {
 						'Daily'   => esc_html__( 'Daily', 'everest-forms' ),
 						'Weekly'  => esc_html__( 'Weekly', 'everest-forms' ),
 						'Monthly' => esc_html__( 'Monthly', 'everest-forms' ),
-						'yearly'  => esc_html__( 'Yearly', 'everest-forms' ),
+						'Yearly'  => esc_html__( 'Yearly', 'everest-forms' ),
 					),
 					'id'       => 'everest_forms_entries_reporting_frequency',
 					'default'  => esc_html__( 'Weekly', 'everest-forms' ),

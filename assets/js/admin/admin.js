@@ -14,6 +14,18 @@
 		});
 	});
 
+	// Check the frequency for routine report email.
+	$(document).on('change', '#everest_forms_entries_reporting_frequency', function () {
+		var everest_forms_entries_reporting_frequency = $('#everest_forms_entries_reporting_frequency').val();
+
+		if('Weekly' !== everest_forms_entries_reporting_frequency){
+			$('#everest_forms_entries_reporting_day').closest('tr').hide();
+		}else{
+			$('#everest_forms_entries_reporting_day').closest('tr').show();
+		}
+
+	});
+
 
 	// Enable Perfect Scrollbar.
 	$( document ).on( 'init_perfect_scrollbar', function() {
