@@ -1153,7 +1153,13 @@ class EVF_AJAX {
 	public static function form_entry_migrator() {
 		try {
 			check_ajax_referer( 'evf_form_entry_migrator_nonce', 'security' );
-
+			if ( ! wpforms()->is_pro() ) {
+				wp_send_json_error(
+					array(
+						'message' => esc_html__( 'Entries not available in WPForms Lite.', 'everest-forms' ),
+					)
+				);
+			}
 			$form_id   = isset( $_POST['form_id'] ) ? sanitize_text_field( $_POST['form_id'] ) : '';
 			$form_slug = isset( $_POST['form_slug'] ) ? sanitize_text_field( $_POST['form_slug'] ) : '';
 
