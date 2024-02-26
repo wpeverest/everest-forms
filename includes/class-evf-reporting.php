@@ -25,9 +25,11 @@ class EVF_Reporting {
 	 *
 	 * @since 2.0.7
 	 */
-	public function schedule_entries_report_email() {
-		$evf_report_cron = new EVF_Cron();
-		// $evf_report_cron->schedule_events(); // here the code for clearing cron jobs must be included.
+	public function evf_schedule_entries_report_email() {
+
+		// Clearing the existing statistics routine email this needs to be done in case the scheduling is changed)
+		$evf_report_cron = new EVF_Report_Cron();
+		$evf_report_cron->evf_schedule_clear_all();
 
 		// Check if the routine emailing for form entries is enabled or not.
 		$everest_forms_enable_routine_entries_reporting = get_option( 'everest_forms_enable_entries_reporting' );

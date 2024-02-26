@@ -61,22 +61,12 @@ class EVF_Report_Cron {
 		foreach ( $evf_scheduled_events as $timestamp => $cron ) {
 
 			// If this is not a WS Form data source hook, skip it
-			if ( ! isset( $cron['evf_report_schedule'] ) ) {
-				continue; }
-
-				// Check the contents of the scheduled event
-			// foreach ( $cron['evf_report_schedule'] as $cron_element_id => $cron_element ) {
-
-			// if ( ! isset( $cron_element['args'] ) ) {
-			// continue 2; }
-			// if ( ! isset( $cron_element['args']['evf_report_id'] ) ) {
-			// continue 2; }
-			// if ( $cron_element['args']['evf_report_id'] != $evf_report_id ) {
-			// continue 2; }
-			// }
+			if ( ! isset( $cron['everest_forms_stats_report_schedule'] ) ) {
+				continue;
+			}
 
 			// Delete this scheduled event
-			unset( $evf_scheduled_events[ $timestamp ]['evf_report_schedule'] );
+			unset( $evf_scheduled_events[ $timestamp ]['everest_forms_stats_report_schedule'] );
 
 			// If this time stamp is now empty, delete it in its entirety
 			if ( empty( $evf_scheduled_events[ $timestamp ] ) ) {
@@ -221,7 +211,6 @@ class EVF_Report_Cron {
 		$evf_report_form_lists = get_option( 'everest_forms_reporting_form_lists', '' );
 		foreach ( $evf_report_form_lists as $evf_report_forms => $evf_report_id ) {
 			$evf_report_id_count = $wpdb->get_results( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}evf_entries WHERE form_id = %d ", $evf_report_id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			error_log( print_r( $evf_report_id_count, true ) );
 		}
 
 		// Process each form
@@ -232,8 +221,8 @@ class EVF_Report_Cron {
 
 			// Get data
 			$data = self::report_form_statistics_get_data_process(
-				self::get_utc_time_from( $evf_report_offset_from ),
-				self::get_utc_time_to( $evf_report_offset_to )
+				self::evf_get_utc_time_from( $evf_report_offset_from ),
+				self::evf_get_utc_time_to( $evf_report_offset_to )
 			);
 
 			// Check for saves (used for formatting the table)
@@ -355,8 +344,8 @@ class EVF_Report_Cron {
 		$evf_report_email_message .= sprintf(
 			'<p><strong>%s:</strong> %s to %s</a>',
 			__( 'Date Range', 'ws-form' ),
-			self::get_utc_time_from( $evf_report_offset_from, $evf_date_format, true ),
-			self::get_utc_time_to( $evf_report_offset_to, $evf_date_format, true )
+			self::evf_get_utc_time_from( $evf_report_offset_from, $evf_date_format, true ),
+			self::evf_get_utc_time_to( $evf_report_offset_to, $evf_date_format, true )
 		);
 
 		// Get data
