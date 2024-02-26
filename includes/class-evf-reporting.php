@@ -29,7 +29,7 @@ class EVF_Reporting {
 
 		// Clearing the existing statistics routine email this needs to be done in case the scheduling is changed)
 		$evf_report_cron = new EVF_Report_Cron();
-		$evf_report_cron->evf_schedule_clear_all();
+		add_action( 'evf_schedule_clear_all', array( $evf_report_cron, 'evf_schedule_clear_all' ) );
 
 		// Check if the routine emailing for form entries is enabled or not.
 		$everest_forms_enable_routine_entries_reporting = get_option( 'everest_forms_enable_entries_reporting' );
