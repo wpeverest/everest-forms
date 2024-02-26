@@ -47,19 +47,13 @@ class EVF_Cron {
 		// Adds once a week in to the existing schedules.
 		$schedules['evf_weekly'] = array(
 			'interval' => \WEEK_IN_SECONDS,
-			'display'  => esc_html__( 'Email entries summary once a day', 'everest-forms' ),
+			'display'  => esc_html__( 'Email entries summary once a week', 'everest-forms' ),
 		);
 
 		// Adds once a month in the existing schedules.
 		$schedules['evf_monthly'] = array(
 			'interval' => \MONTH_IN_SECONDS,
 			'display'  => esc_html__( 'Email entries summary once a month', 'everest-forms' ),
-		);
-
-		// Adds once a year in the existing schedules.
-		$schedules['evf_monthly'] = array(
-			'interval' => \YEAR_IN_SECONDS,
-			'display'  => esc_html__( 'Email entries summary once a year', 'everest-forms' ),
 		);
 
 		return $schedules;

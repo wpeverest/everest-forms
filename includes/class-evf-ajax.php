@@ -82,31 +82,33 @@ class EVF_AJAX {
 	 */
 	public static function add_ajax_events() {
 		$ajax_events = array(
-			'save_form'               => false,
-			'create_form'             => false,
-			'get_next_id'             => false,
-			'install_extension'       => false,
-			'integration_connect'     => false,
-			'new_email_add'           => false,
-			'integration_disconnect'  => false,
-			'rated'                   => false,
-			'review_dismiss'          => false,
-			'survey_dismiss'          => false,
-			'allow_usage_dismiss'     => false,
-			'php_notice_dismiss'      => false,
-			'enabled_form'            => false,
-			'import_form_action'      => false,
-			'template_licence_check'  => false,
-			'template_activate_addon' => false,
-			'ajax_form_submission'    => true,
-			'send_test_email'         => false,
-			'locate_form_action'      => false,
-			'slot_booking'            => true,
-			'active_addons'           => false,
-			'get_local_font_url'      => true,
+			'save_form'                      => false,
+			'create_form'                    => false,
+			'get_next_id'                    => false,
+			'install_extension'              => false,
+			'integration_connect'            => false,
+			'new_email_add'                  => false,
+			'integration_disconnect'         => false,
+			'rated'                          => false,
+			'review_dismiss'                 => false,
+			'survey_dismiss'                 => false,
+			'allow_usage_dismiss'            => false,
+			'php_notice_dismiss'             => false,
+			'enabled_form'                   => false,
+			'import_form_action'             => false,
+			'template_licence_check'         => false,
+			'template_activate_addon'        => false,
+			'ajax_form_submission'           => true,
+			'send_test_email'                => false,
+			'locate_form_action'             => false,
+			'slot_booking'                   => true,
+			'active_addons'                  => false,
+			'get_local_font_url'             => true,
+			'send_routine_report_test_email' => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
+
 			add_action( 'wp_ajax_everest_forms_' . $ajax_event, array( __CLASS__, $ajax_event ) );
 
 			if ( $nopriv ) {
@@ -824,6 +826,93 @@ class EVF_AJAX {
 				__( 'Everest Forms Team', 'everest-forms' )
 			);
 			$status  = wp_mail( $email, $subject, $message, $header );
+			if ( $status ) {
+				wp_send_json_success( array( 'message' => __( 'Test email was sent successfully! Please check your inbox to make sure it is delivered.', 'everest-forms' ) ) );
+			} else {
+				wp_send_json_error( array( 'message' => __( 'Test email was unsuccessful! Something went wrong.', 'everest-forms' ) ) );
+			}
+		} catch ( Exception $e ) {
+			wp_send_json_error(
+				array(
+					'message' => $e->getMessage(),
+				)
+			);
+		}
+	}
+
+	/**
+	 * Send stat routine test email.
+	 */
+	public static function send_routine_report_test_email() {
+		try {
+			check_ajax_referer( 'process-ajax-nonce', 'security' );
+			$from                                = esc_attr( get_bloginfo( 'name', 'display' ) );
+			$email                               = ! empty( get_option( 'everest_forms_email_send_to' ) ) ? get_option( 'everest_forms_email_send_to' ) : wp_unslash( $_POST['email'] );
+			$evf_routine_report_frequency        = get_option( 'everest_forms_entries_reporting_frequency' );
+			$evf_routine_report_day              = get_option( 'everest_forms_entries_reporting_day' );
+			$evf_routine_entries_reporting_email = get_option( 'everest_forms_entries_reporting_email' );
+			$subject                             = ! empty( get_option( 'everest_forms_entries_reporting_subject' ) ) ? get_option( 'everest_forms_entries_reporting_subject' ) : 'Test email from ' . $from;
+			$evf_routine_reporting_send_to       = get_option( 'everest_forms_email_send_to' );
+			$evf_routine_reporting_forms         = get_option( 'everest_forms_reporting_form_lists' );
+			$evf_routine_reporting_test_email    = get_option( 'everest_forms_routine_report_send_email_test_to' );
+
+			switch ( $evf_routine_report_frequency ) {
+				case 'Daily':
+					$evf_routine_reporting_timeframe = esc_html__( 'Daily Report', 'everest-forms' );
+					break;
+
+				case 'Weekly':
+					switch ( $evf_routine_report_day ) {
+						case 'tuesday':
+							$evf_routine_reporting_timeframe = esc_html__( 'Weekly report from last tuesday', 'everest-forms' );
+							break;
+
+						case 'wednesday':
+							$evf_routine_reporting_timeframe = esc_html__( 'Weekly report from last wednesay', 'everest-forms' );
+							break;
+
+						case 'thursday':
+							$evf_routine_reporting_timeframe = esc_html__( 'Weekly report from last thursday', 'everest-forms' );
+							break;
+
+						case 'friday':
+							$evf_routine_reporting_timeframe = esc_html__( 'Weekly report from last friday', 'everest-forms' );
+							break;
+
+						case 'saturday':
+							$evf_routine_reporting_timeframe = esc_html__( 'Weekly report from last saturday', 'everest-forms' );
+							break;
+
+						default:
+							$evf_routine_reporting_timeframe = esc_html__( 'Weekly report from last monday', 'everest-forms' );
+							break;
+					}
+					break;
+
+				case 'Monthly':
+					$evf_routine_reporting_timeframe = esc_html__( 'Monthly report from last month', 'everest-forms' );
+					break;
+			}
+			/* translators: %s: from address */
+			$subject = 'Everest Form: ' . sprintf( esc_html__( $subject, 'everest-forms' ) );
+			$header  = "Reply-To: {{from}} \r\n";
+			$header .= 'Content-Type: text/html; charset=UTF-8';
+			$message = sprintf(
+				'
+			%s <br/> %s <br/> %s <br/> %s <br/> %s <br/> %s <br/>',
+				__( 'Congratulations, ' ),
+				__( 'Here is the entries summary for your following forms for ', 'everest_forms' ),
+				__( $evf_routine_reporting_timeframe ),
+				__( 'This is just the demo email', 'everest-forms' ),
+				__( 'Regards,', 'everest-forms' ),
+				__( 'Everest Forms Team', 'everest-forms' )
+			);
+
+			error_log( print_r( $email, true ) );
+			error_log( print_r( $subject, true ) );
+			error_log( print_r( $header, true ) );
+			error_log( print_r( $message, true ) );
+			$status = wp_mail( $email, $subject, $message, $header );
 			if ( $status ) {
 				wp_send_json_success( array( 'message' => __( 'Test email was sent successfully! Please check your inbox to make sure it is delivered.', 'everest-forms' ) ) );
 			} else {

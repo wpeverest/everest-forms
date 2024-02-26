@@ -57,7 +57,6 @@ class EVF_Settings_Reporting extends EVF_Settings_Page {
 						'Daily'   => esc_html__( 'Daily', 'everest-forms' ),
 						'Weekly'  => esc_html__( 'Weekly', 'everest-forms' ),
 						'Monthly' => esc_html__( 'Monthly', 'everest-forms' ),
-						'Yearly'  => esc_html__( 'Yearly', 'everest-forms' ),
 					),
 					'id'       => 'everest_forms_entries_reporting_frequency',
 					'default'  => esc_html__( 'Weekly', 'everest-forms' ),
@@ -107,13 +106,13 @@ class EVF_Settings_Reporting extends EVF_Settings_Page {
 				array(
 					'title'    => __( 'Send Test Email', 'everest-forms' ),
 					'desc'     => __( 'Click to send test email.', 'everest-forms' ),
-					'id'       => 'everest_forms_email_test',
+					'id'       => 'everest_forms_send_routine_report_test_email',
 					'type'     => 'link',
 					'buttons'  => array(
 						array(
 							'title' => __( 'Send Test Email', 'everest-forms' ),
 							'href'  => 'javascript:;',
-							'class' => 'everest_forms_send_email_test',
+							'class' => 'everest_forms_send_routine_report_test_email',
 						),
 					),
 					'desc_tip' => true,
@@ -124,7 +123,7 @@ class EVF_Settings_Reporting extends EVF_Settings_Page {
 					'desc'     => esc_html__( 'Name of the forms to send the weekly report', 'everest-forms' ),
 					'desc_tip' => true,
 					'type'     => 'multiselect',
-					'options'  => evf_get_all_forms( true, false ),
+					'options'  => ! is_null( evf_get_all_forms() ) ? evf_get_all_forms() : '',
 					'class'    => 'evf-enhanced-select',
 				),
 				array(
