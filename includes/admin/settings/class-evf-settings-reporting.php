@@ -33,7 +33,8 @@ class EVF_Settings_Reporting extends EVF_Settings_Page {
 	 * @return array
 	 */
 	public function get_settings() {
-		$settings = apply_filters(
+		$evf_form_lists = evf_get_all_forms( true, false );
+		$settings       = apply_filters(
 			'everest_forms_reporting_settings',
 			array(
 				array(
@@ -123,7 +124,7 @@ class EVF_Settings_Reporting extends EVF_Settings_Page {
 					'desc'     => esc_html__( 'Name of the forms to send the weekly report', 'everest-forms' ),
 					'desc_tip' => true,
 					'type'     => 'multiselect',
-					'options'  => ! is_null( evf_get_all_forms() ) ? evf_get_all_forms() : '',
+					'options'  => $evf_form_lists,
 					'class'    => 'evf-enhanced-select',
 				),
 				array(
