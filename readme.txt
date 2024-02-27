@@ -4,7 +4,7 @@ Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.2
 Tested up to: 6.4
 Requires PHP: 7.2
-Stable tag: 2.0.7
+Stable tag: 2.0.5
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -336,7 +336,7 @@ Everest Forms has a long list of top-notch features, making it the best WordPres
 
 == Review (Testimonial) ==
 
->_Excellent plugin and best support service_
+>__Excellent plugin and best support service__
 > Possibly the best form plugin: intuitive, simple, robust, efficient, …
 We have the PRO version and we detected an incident that they resolved in less than 48 hours.
 - By @innobask
@@ -425,8 +425,6 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Fix         - Show values setting not displaying in select field.
 * Fix         - Minimum character translation issue.
 * Dev         - Compatibility for Google calendar integration.
-
-
 
 = 2.0.6       - 26-12-2023
 * Upgraded    - Input mask library.
