@@ -2141,41 +2141,102 @@
 						var $title          		= '<h4>Embed in Page</h4>'
 
 						var modelContent 			= '';
-						var $message    			= '<span>We can help embed your form with just a few clicks!</span><div class="everest-forms-show-exist-page"></div>';
-						var $selectExistingPage		= '<div class="everest_forms_hide_container"><button class="everest-forms-btn everest-forms-select-existing-page">Select Existing Page</button>';
-						var $createNewPage			= '<button class="everest-forms-btn everest-forms-create-new-page">Create New Page</button></div>';
+						var $message    			= '<div class="everest_forms_hide_container"><p>We can help embed your form with just a few clicks!</p>';
+						var $selectExistingPage		= '<button class="everest-forms-btn everest-forms-select-existing-page">Select Existing Page</button>';
+						var $createNewPage			= '<button class="everest-forms-btn everest-forms-create-new-page">Create New Page</button></div><div class="everest-forms-show-exist-page"></div>';
 						modelContent				= $message + $selectExistingPage + $createNewPage;
 
-						$.confirm({
+						$.alert({
 							title   : $title,
 							content : modelContent,
 							type    : 'blue',
 							onContentReady: function () {
 
 								//when clicked on 'Select Existing Page' button
-								$(".everest-forms-select-existing-page").click(function () {
+								$( ".everest-forms-select-existing-page" ).click(function () {
 
-									$(".everest_forms_hide_container").hide();
-										var $selectStart	= '<div class="everest-forms-select-existing-post-container"><select>';
-										var $option			= '';
+									$( ".everest_forms_hide_container" ).hide();
+										var $selectStart	= '<div class="everest-forms-select-existing-post-container"><p>Select the page you would like to embed your form in.</p><select name="everest-forms-select-existing-page-name" id="everest-forms-select-existing-page-name">';
+										var $option			= '<option disabled selected>Select Page</option>';
 
 										response.data.forEach(page => {
-											$option += '<option>'+page.post_title+'</option>';
+											$option += '<option data-id="' + page.ID + '" value="' + page.ID + '">' + page.post_title + '</option>';
 										});
 
-										var $selectEnd		= '</select>';
-										var $backBtn 		= '<div style="cursor:pointer" class="everest-forms-show-container">Back</div></div>'
+										var $selectEnd		= '</select><button class="everest-forms-lets-go-btn" style="cursor:pointer">Lets Go!</button>';
+										var $backBtn 		= '<div style="cursor:pointer" class="everest-forms-show-container">Go Back</div></div>'
 
 										modelContent = $selectStart + $option + $selectEnd + $backBtn;
 
-										$(".everest-forms-show-exist-page").append(modelContent);
+										$( ".everest-forms-show-exist-page" ).append( modelContent );
 
-										$(".everest-forms-show-container").click(function(){
-											$(".everest_forms_hide_container").show();
-											$(".everest-forms-select-existing-post-container").remove();
+										$( ".everest-forms-show-container" ).click(function(){
+											$( ".everest_forms_hide_container" ).show();
+											$( ".everest-forms-select-existing-post-container" ).remove();
+										})
+
+										//When page is selected
+										$( ".everest-forms-select-existing-post-container" ).change(function(){
+											var $pageId 	= $(this).find(":selected").val()
+
+											$( ".everest-forms-lets-go-btn" ).click(function(){
+												var data = {
+													'action'	: 'everest_forms_goto_edit_page',
+													security	: evf_data.evf_goto_edit_page,
+													'page_id'	: $pageId,
+												}
+												$.ajax({
+													url : evf_data.ajax_url,
+													type: 'POST',
+													data: data,
+													success: function( response ){
+														if ( response.success ) {
+															window.location = response.data
+														}
+													}
+												})
+											})
 										})
 
 								});
+
+								//when click on 'Create New Page' button
+								$( ".everest-forms-create-new-page" ).click(function(){
+									$( ".everest_forms_hide_container" ).hide();
+
+									var $title		= '<div class="everest-forms-select-existing-post-container"><p>What would you like to call the new page?</p>';
+									var $pageName 	= '<div><input type="text" name="page_title"/>';
+									var $goBtn 		= '<button class="everest-forms-lets-go-btn" style="cursor:pointer">Lets Go!</button></div>';
+									var $backBtn 		= '<div style="cursor:pointer" class="everest-forms-show-container">Go Back</div></div>'
+
+									modelContent = $title + $pageName + $goBtn + $backBtn;
+									$(" .everest-forms-show-exist-page" ).append( modelContent );
+
+									$( ".everest-forms-show-container" ).click(function(){
+										$( ".everest_forms_hide_container" ).show();
+										$( ".everest-forms-select-existing-post-container" ).remove();
+									})
+
+									$( ".everest-forms-lets-go-btn" ).click(function(){
+										var $pageTitle = $( "[name='page_title']" ).val();
+
+										var data = {
+											'action'	: 'everest_forms_goto_edit_page',
+											security	: evf_data.evf_goto_edit_page,
+											page_title	: $pageTitle,
+										}
+										$.ajax({
+											url		: evf_data.ajax_url,
+											type	: 'POST',
+											data	: data,
+											success	: function( response ){
+												if ( response.success ) {
+													window.location = response.data
+												}
+											}
+										})
+									})
+								})
 							}
 						})
 					}

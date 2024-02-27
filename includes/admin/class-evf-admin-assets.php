@@ -138,6 +138,7 @@ class EVF_Admin_Assets {
 					'evf_add_row_nonce'            => wp_create_nonce( 'everest_forms_add_row' ),
 					'evf_save_form'                => wp_create_nonce( 'everest_forms_save_form' ),
 					'evf_embed_form'               => wp_create_nonce( 'everest_forms_embed_form' ),
+					'evf_goto_edit_page'           => wp_create_nonce( 'everest_forms_goto_edit_page' ),
 					'evf_get_next_id'              => wp_create_nonce( 'everest_forms_get_next_id' ),
 					'evf_enabled_form'             => wp_create_nonce( 'everest_forms_enabled_form' ),
 					'form_id'                      => isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0, // phpcs:ignore WordPress.Security.NonceVerification

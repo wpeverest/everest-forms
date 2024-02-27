@@ -19,6 +19,8 @@ class EVF_AJAX {
 	public static function init() {
 		add_action( 'init', array( __CLASS__, 'define_ajax' ), 0 );
 		add_action( 'template_redirect', array( __CLASS__, 'do_evf_ajax' ), 0 );
+		add_filter( 'default_title', array( __CLASS__, 'embed_page_title' ), 10, 2 );
+		add_filter( 'default_content', array( __CLASS__, 'embed_page_content' ), 10, 2 );
 		self::add_ajax_events();
 	}
 
@@ -106,6 +108,7 @@ class EVF_AJAX {
 			'active_addons'           => false,
 			'get_local_font_url'      => true,
 			'embed_form'              => false,
+			'goto_edit_page'          => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -1026,6 +1029,101 @@ class EVF_AJAX {
 		$pages = get_pages( $args );
 
 		wp_send_json_success( $pages );
+	}
+
+	/**
+	 * Get page edit link
+	 *
+	 * @since 0
+	 */
+	public static function goto_edit_page() {
+		check_ajax_referer( 'everest_forms_goto_edit_page', 'security' );
+
+		$page_id = empty( $_POST['page_id'] ) ? 0 : sanitize_text_field( absint( $_POST['page_id'] ) );
+
+		if ( empty( $page_id ) ) {
+			$url  = add_query_arg( 'post_type', 'page', admin_url( 'post-new.php' ) );
+			$meta = array(
+				'embed_page'       => 0,
+				'embed_page_title' => ! empty( $_POST['page_title'] ) ? sanitize_text_field( wp_unslash( $_POST['page_title'] ) ) : '',
+			);
+		} else {
+			$url = get_edit_post_link( $page_id, '' );
+		}
+
+		self::set_meta( $meta );
+
+		wp_send_json_success( $url );
+	}
+
+	/**
+	 * Set default title for the new page.
+	 *
+	 * @since 0
+	 *
+	 * @param string   $post_title Default post title.
+	 * @param \WP_Post $post       Post object.
+	 */
+	public static function embed_page_title( $post_title, $post ) {
+
+		$meta = self::get_meta();
+
+		self::delete_meta();
+
+		return empty( $meta['embed_page_title'] ) ? $post_title : $meta['embed_page_title'];
+	}
+
+	/**
+	 * Embed the form to the new page.
+	 *
+	 * @param string   $post_content Default post content.
+	 * @param \WP_Post $post         Post object.
+	 */
+	public static function embed_page_content( $post_content, $post ) {
+		$meta = self::get_meta();
+
+		$form_id = ! empty( $meta['form_id'] ) ? $meta['form_id'] : 0;
+		$page_id = ! empty( $meta['embed_page'] ) ? $meta['embed_page'] : 0;
+
+		if ( ! empty( $page_id ) || empty( $form_id ) ) {
+			return $post_content;
+		}
+
+		if ( wpforms_is_gutenberg_active() ) {
+			$pattern = '<!-- wp:wpforms/form-selector {"formId":"%d"} /-->';
+		} else {
+			$pattern = '[wpforms id="%d" title="false" description="false"]';
+		}
+
+		return sprintf( $pattern, absint( $form_id ) );
+	}
+
+	/**
+	 * Set user's embed meta data.
+	 *
+	 * @param array $data Data array to set.
+	 */
+	public static function set_meta( $data ) {
+
+		update_user_meta( get_current_user_id(), 'everest_forms_form_embed_wizard', $data );
+	}
+
+	/**
+	 * Get user's embed meta data.
+	 *
+	 * @return array User's embed meta data.
+	 */
+	public static function get_meta() {
+
+		return get_user_meta( get_current_user_id(), 'everest_forms_form_embed_wizard', true );
+	}
+
+	/**
+	 * Delete user's embed meta data.
+	 */
+	public static function delete_meta() {
+
+		delete_user_meta( get_current_user_id(), 'everest_forms_form_embed_wizard' );
 	}
 }
 
