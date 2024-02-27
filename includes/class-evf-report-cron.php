@@ -29,7 +29,15 @@ class EVF_Report_Cron {
 		// }
 	}
 
-	// Schedule - Add
+	/**
+	 * Function to add email schedule task.
+	 *
+	 * @since 2.0.7
+	 *
+	 * @param  string $evf_recurrence.
+	 * @param  bool   $evf_report_next_run.
+	 * @return void.
+	 */
 	public function evf_schedule_add( $evf_recurrence, $evf_report_next_run = false ) {
 
 		if ( $evf_report_next_run === false ) {
@@ -46,7 +54,13 @@ class EVF_Report_Cron {
 		}
 	}
 
-	// Schedule - Clear all for report
+
+	/**
+	 * Clears all the scheduled task need to be done when plugin is deactivated and the setting is changed.
+	 *
+	 * @since 2.0.7
+	 * @return void.
+	 */
 	public function evf_schedule_clear_all() {
 
 		$evf_scheduled_events = _get_cron_array();
@@ -77,12 +91,21 @@ class EVF_Report_Cron {
 		_set_cron_array( $evf_scheduled_events );
 	}
 
-	// Deactivate
+	/**
+	 * Handles the schedule on deactivation.
+	 *
+	 * @since 2.0.7
+	 */
 	public function deactivate() {
 		self::evf_schedule_clear_all();
 	}
 
-	// Formats the cell while sending the email in table format
+	/**
+	 * Formats the cell while sending the email in table format.
+	 *
+	 * @param int $evf_stat_input.
+	 * @return the formatted $evf_stat_input.
+	 */
 	public function evf_stat_format_cell( $evf_stat_input ) {
 
 		if ( $evf_stat_input === 0 ) {
@@ -95,7 +118,14 @@ class EVF_Report_Cron {
 		}
 	}
 
-			// Get UTC time from
+	/**
+	 * Get UTC time from.
+	 *
+	 * @param string $evf_entries_report_summary_offset.
+	 * @param string $evf_format.
+	 * @param bool   $evf_display.
+	 * @return date time in UTC format.
+	 */
 	public function evf_get_utc_time_from( $evf_entries_report_summary_offset, $evf_format = 'Y-m-d H:i:s', $evf_display = false ) {
 
 		// Get local time midnight today
@@ -115,7 +145,14 @@ class EVF_Report_Cron {
 		}
 	}
 
-	// Get GMT time to
+	/**
+	 * Get GMT time to
+	 *
+	 * @param string $evf_entries_report_summary_offset.
+	 * @param string $evf_format.
+	 * @param bool   $evf_display.
+	 * @return date time in GMT format.
+	 */
 	public function evf_get_utc_time_to( $evf_entries_report_summary_offset, $evf_format = 'Y-m-d H:i:s', $evf_display = false ) {
 
 		// Get local time 23:59:59 today
@@ -135,8 +172,12 @@ class EVF_Report_Cron {
 		}
 	}
 
-
-	// Schedule form statistics report email
+	/**
+	 * Schedule form statistics report email
+	 *
+	 * @since 2.0.7
+	 * @return void.
+	 */
 	public function evf_report_form_statistics_schedule() {
 
 		// Clear from report schedule (we need to do this in case the scheduling is changed)
@@ -208,7 +249,16 @@ class EVF_Report_Cron {
 			$this->evf_schedule_add( $evf_recurrence, $evf_report_next_run );
 		}
 	}
-	// Get counts for form statistics report
+
+	/**
+	 * Get counts for form statistics report
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  string $offset_from
+	 * @param  string $offset_to
+	 * @return array $evf_stat_data_output
+	 */
 	public function evf_report_form_statistics_get_data( $offset_from, $offset_to ) {
 
 		global $wpdb;
@@ -218,91 +268,36 @@ class EVF_Report_Cron {
 		$evf_stat_end            = self::evf_get_utc_time_to( $offset_to, $evf_date_format, true );
 		$evf_stat_selected_forms = get_option( 'everest_forms_reporting_form_lists', array() );
 		foreach ( $evf_stat_selected_forms as $evf_stat_selected_form ) {
-			$sql = $wpdb->get_results(
+			$evf_stat_data_output = $wpdb->get_results(
 				$wpdb->prepare(
 					"SELECT
-					wp_posts.post_title,
-					wp_evf_entries.form_id,
-					SUM(wp_evf_entries.viewed) AS Viewed,
-					SUM(wp_evf_entries.starred) AS Starred
+					{$wpdb->prefix}posts.post_title,
+					{$wpdb->prefix}evf_entries.form_id,
+					SUM({$wpdb->prefix}evf_entries.viewed) AS Viewed,
+					SUM({$wpdb->prefix}evf_entries.starred) AS Starred
 				FROM
-					wp_posts
+				{$wpdb->prefix}posts
 				INNER JOIN
-					wp_evf_entries ON wp_posts.id = wp_evf_entries.form_id
+				{$wpdb->prefix}evf_entries ON {$wpdb->prefix}posts.id = {$wpdb->prefix}evf_entries.form_id
 				WHERE
-					wp_evf_entries.date_created BETWEEN '$evf_stat_start' AND '$evf_stat_end'
+				{$wpdb->prefix}evf_entries.date_created BETWEEN '%1s' AND '%2s'
 				GROUP BY
-				 wp_evf_entries.form_id"
+				{$wpdb->prefix}evf_entries.form_id",
+					$evf_stat_start,
+					$evf_stat_end
 				)
 			);
-			// $evf_report_display_forms[] = $sql;
 			break;
 		}
-		// error_log(print_r($sql, true));
-		// die();
-		return $sql;
+		return $evf_stat_data_output;
 	}
 
-	// Get report form statistics data - By time
-	public function evf_report_form_statistics_get_data_process( $time_from_utc = false, $time_to_utc = false ) {
-
-		global $wpdb;
-
-		$where_sql   = '';
-		$where_array = array();
-
-		// Form ID
-		if ( $this->form_id > 0 ) {
-			$where_array[] = sprintf( 'form_id = %u', $this->form_id ); }
-
-		// Time from
-		if ( $time_from_utc !== false ) {
-			$where_array[] = sprintf( 'date_added >= \'%s\'', date( 'Y-m-d H:i:s', $time_from_utc ) ); }
-
-		// Time to
-		if ( $time_to_utc !== false ) {
-			$where_array[] = sprintf( 'date_added < \'%s\'', date( 'Y-m-d H:i:s', $time_to_utc ) ); }
-
-		// Build WHERE SQL
-		if ( count( $where_array ) > 0 ) {
-
-			$where_sql = ' WHERE ' . implode( ' AND ', $where_array );
-		}
-
-		// Get form stat data
-		$sql = sprintf(
-			"SELECT date_added, count_view, count_save, count_submit FROM {$this->table_name}%s;",
-			$where_sql
-		);
-
-		$form_stats = $wpdb->get_results( $sql );
-
-		// Build form stat array
-		$count_view_total   = 0;
-		$count_save_total   = 0;
-		$count_submit_total = 0;
-
-		if ( ! is_null( $form_stats ) ) {
-
-			foreach ( $form_stats as $form_stat ) {
-
-				// Totals
-				$count_view_total   += $form_stat->count_view;
-				$count_save_total   += $form_stat->count_save;
-				$count_submit_total += $form_stat->count_submit;
-			}
-		}
-
-		return array(
-
-			'count_view_total'   => $count_view_total,
-			'count_save_total'   => $count_save_total,
-			'count_submit_total' => $count_submit_total,
-		);
-	}
-
-
-	// Report stat data
+	/**
+	 * Report stat data.
+	 *
+	 * @since 2.0.7
+	 * @return void.
+	 */
 	public function evf_report_form_statistics_send() {
 
 		// Get options
@@ -352,7 +347,7 @@ class EVF_Report_Cron {
 		}
 
 		$evf_stat_message = sprintf(
-			'<div class="evf_stat_body"><p><strong>%s:</strong> <a href="%s" target="_blank">%s</a>',
+			'<div><p><strong>%s:</strong> <a href="%s" target="_blank">%s</a>',
 			__( 'Routine Statistics Report for ', 'everest-forms' ),
 			get_site_url(),
 			esc_html( get_bloginfo( 'name' ) )
@@ -371,12 +366,12 @@ class EVF_Report_Cron {
 				self::evf_get_utc_time_to( $evf_report_offset_to, $date_format, true )
 			);
 
-			$evf_stat_message .= '<table class="table-evf-report">';
+			$evf_stat_message .= '<table border style="text-align:center; margin:auto; width:70%">';
 
 			// Table head
-			$evf_stat_message .= '<thead>';
+			$evf_stat_message .= '<thead style="background:#7e3bd0; color:#fff; font-size:1rem;">';
 			$evf_stat_message .= sprintf(
-				'<tr><th>%1$s</th><th class="evf_center">%2$s</th><th class="evf_center">%3$s</th></tr>',
+				'<tr><th>%1$s</th><th>%2$s</th><th>%3$s</th></tr>',
 				esc_html__( 'Form', 'everest-forms' ),
 				esc_html__( 'Views', 'everest-forms' ),
 				esc_html__( 'Starred', 'everest-forms' ),
@@ -393,20 +388,21 @@ class EVF_Report_Cron {
 			$evf_viewed_total   = wp_list_pluck( $evf_report_form_statistics_data, 'Viewed' );
 			$evf_starred_total  = wp_list_pluck( $evf_report_form_statistics_data, 'Starred' );
 
-			error_log( count( $evf_viewed_total ) );
+			foreach ( $evf_report_form_statistics_data as $evf_form_stat_data ) {
+				$evf_stat_message .= sprintf(
+					'<tr><td>%1$s</td><td>%2$s</td><td>%3$s</td></tr>',
+					esc_html__( $evf_form_stat_data->post_title, 'everest-forms' ),
+					self::evf_stat_format_cell( $evf_form_stat_data->Viewed ),
+					self::evf_stat_format_cell( $evf_form_stat_data->Starred ),
+				);
+			}
 
-			$evf_stat_message .= sprintf(
-				'<tr><td>%1$s</td><td class="right">%2$s</td><td class="right">%3$s</td></tr>',
-				esc_html__( $evf_stat_form_name, 'everest-forms' ),
-				self::evf_stat_format_cell( $evf_viewed_total ),
-				self::evf_stat_format_cell( $evf_starred_total ),
-			);
 			$evf_stat_message .= '</tbody>';
 
 			// EFV Stat Report Table footer
-			$evf_stat_message .= '<tfoot>';
+			$evf_stat_message .= '<tfoot style="background:#7e3bd0; color:#fff; font-size:1rem;">';
 			$evf_stat_message .= sprintf(
-				'<tr><th class="evf_report_right">%1$s</th><th class="evf_report_right">%2$s</th><th class="evf__report_right">%3$s</th></tr>',
+				'<tr><th>%1$s</th><th>%2$s</th><th>%3$s</th></tr>',
 				esc_html__( 'Totals Counts', 'everest-forms' ),
 				self::evf_stat_format_cell( count( $evf_viewed_total ) ),
 				self::evf_stat_format_cell( count( $evf_starred_total ) ),
@@ -417,26 +413,14 @@ class EVF_Report_Cron {
 			$evf_stat_message .= '</div>';
 		}
 
-		// Build email footer
-		$evf_stat_message .= sprintf(
-			'%s <a href="https://everestforms.net/">%s</a>',
-			/* translators: %1$s = Everest Forms */
-			sprintf(
-				esc_html__( 'The stat report email was sent by %s.', 'everest-forms' ),
-				get_bloginfo( 'name' )
-			),
-			__( 'Learn more', 'everest-forms' )
-		);
-
-		error_log( 'Message' );
-		error_log( print_r( $evf_stat_message, true ) );
-
 		$evf_stat_email = get_option( 'everest_forms_entries_reporting_email' );
 		if ( '' === $evf_stat_email && empty( $evf_stat_email ) ) {
 			$evf_stat_email = get_bloginfo( 'admin_email' );
 		}
 
-		wp_mail( $evf_stat_email, $evf_stat_subject, $evf_stat_message, $evf_headers );
+		// Sending the stat email.
+		$evf_send_stat_email = new EVF_Emails();
+		$evf_send_stat_email->send( $evf_stat_email, $evf_stat_subject, $evf_stat_message, '', '' );
 	}
 }
 
