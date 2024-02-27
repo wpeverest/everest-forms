@@ -336,7 +336,7 @@ Everest Forms has a long list of top-notch features, making it the best WordPres
 
 == Review (Testimonial) ==
 
->__Excellent plugin and best support service__
+>_Excellent plugin and best support service_
 > Possibly the best form plugin: intuitive, simple, robust, efficient, …
 We have the PRO version and we detected an incident that they resolved in less than 48 hours.
 - By @innobask
