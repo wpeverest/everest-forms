@@ -105,6 +105,7 @@ class EVF_AJAX {
 			'slot_booking'            => true,
 			'active_addons'           => false,
 			'get_local_font_url'      => true,
+			'embed_form'              => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -1009,6 +1010,22 @@ class EVF_AJAX {
 		}
 
 		return wp_send_json_success( $font_url );
+	}
+
+	/**
+	 * Function everest_forms_embed_form is used to get total pages
+	 *
+	 * @since 0
+	 */
+	public static function embed_form() {
+		check_ajax_referer( 'everest_forms_embed_form', 'security' );
+		$args  = array(
+			'post_status' => 'publish',
+			'post_type'   => 'page',
+		);
+		$pages = get_pages( $args );
+
+		wp_send_json_success( $pages );
 	}
 }
 

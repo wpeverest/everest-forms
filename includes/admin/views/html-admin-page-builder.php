@@ -111,6 +111,7 @@ $preview_link = add_query_arg(
 					</button>
 				</div>
 				<a class="everest-forms-btn everest-forms-preview-button" href="<?php echo esc_url( $preview_link ); ?>" rel="bookmark" target="_blank"><?php esc_html_e( 'Preview', 'everest-forms' ); ?></a>
+				<button name="embed_form" class="everest-forms-btn everest-forms-embed-button" type="button" value="<?php esc_attr_e( 'Embed', 'everest-forms' ); ?>"><?php esc_html_e( 'Embed', 'everest-forms' ); ?></button>
 				<button name="save_form" class="everest-forms-btn everest-forms-save-button" type="button" value="<?php esc_attr_e( 'Save', 'everest-forms' ); ?>"><?php esc_html_e( 'Save', 'everest-forms' ); ?></button>
 			</div>
 		</div>

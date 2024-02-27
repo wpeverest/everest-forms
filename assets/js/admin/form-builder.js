@@ -433,6 +433,7 @@
 			EVFPanelBuilder.bindFieldDeleteWithKeyEvent();
 			EVFPanelBuilder.bindCloneField();
 			EVFPanelBuilder.bindSaveOption();
+			EVFPanelBuilder.bindEmbedOption();
 			EVFPanelBuilder.bindSaveOptionWithKeyEvent();
 			EVFPanelBuilder.bindOpenShortcutKeysModalWithKeyEvent();
 			EVFPanelBuilder.bindAddNewRow();
@@ -2117,6 +2118,71 @@
 				});
 			});
 		},
+		bindEmbedOption: function () {
+            $( 'body' ).on( 'click', '.everest-forms-embed-button', function () {
+				var data = {
+					'action' 	: 'everest_forms_embed_form',
+					security	: evf_data.evf_embed_form,
+				};
+				var $this = $(this);
+				$.ajax({
+					url: evf_data.ajax_url,
+					data: data,
+					type: 'POST',
+					beforeSend: function () {
+						$this.addClass( 'processing' );
+						$this.find( '.loading-dot' ).remove();
+						$this.append( '<span class="loading-dot"></span>' );
+					},
+					success: function(response){
+						$this.removeClass( 'processing' );
+						$this.find( '.loading-dot' ).remove();
+
+						var $title          		= '<h4>Embed in Page</h4>'
+
+						var modelContent 			= '';
+						var $message    			= '<span>We can help embed your form with just a few clicks!</span><div class="everest-forms-show-exist-page"></div>';
+						var $selectExistingPage		= '<div class="everest_forms_hide_container"><button class="everest-forms-btn everest-forms-select-existing-page">Select Existing Page</button>';
+						var $createNewPage			= '<button class="everest-forms-btn everest-forms-create-new-page">Create New Page</button></div>';
+						modelContent				= $message + $selectExistingPage + $createNewPage;
+
+						$.confirm({
+							title   : $title,
+							content : modelContent,
+							type    : 'blue',
+							onContentReady: function () {
+
+								//when clicked on 'Select Existing Page' button
+								$(".everest-forms-select-existing-page").click(function () {
+
+									$(".everest_forms_hide_container").hide();
+										var $selectStart	= '<div class="everest-forms-select-existing-post-container"><select>';
+										var $option			= '';
+
+										response.data.forEach(page => {
+											$option += '<option>'+page.post_title+'</option>';
+										});
+
+										var $selectEnd		= '</select>';
+										var $backBtn 		= '<div style="cursor:pointer" class="everest-forms-show-container">Back</div></div>'
+
+										modelContent = $selectStart + $option + $selectEnd + $backBtn;
+
+										$(".everest-forms-show-exist-page").append(modelContent);
+
+										$(".everest-forms-show-container").click(function(){
+											$(".everest_forms_hide_container").show();
+											$(".everest-forms-select-existing-post-container").remove();
+										})
+
+								});
+							}
+						})
+					}
+				})
+
+            });
+        },
 		bindSaveOptionWithKeyEvent:function() {
 			$('body').on("keydown", function (e) {
 				if (e.ctrlKey || e.metaKey) {
