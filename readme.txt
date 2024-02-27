@@ -4,7 +4,7 @@ Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.2
 Tested up to: 6.4
 Requires PHP: 7.2
-Stable tag: 2.0.5
+Stable tag: 2.0.7
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -35,6 +35,8 @@ Effortlessly create online forms in WordPress using the simple drag and drop for
 Simply select the field type you need from the options provided, drag it to your desired location on the form, and drop it into place. Customize the field with proper label, placeholder, options, conditional logic, and more. Re-arrange the fields if necessary.
 
 Build simple contact forms to advanced multi-column forms, multi-step forms, conversational forms, payment forms, calculator forms, and more. Everest Forms makes form-building quick and easy for everyone, regardless of coding experience.
+
+[youtube https://www.youtube.com/watch?v=4aX6zW9kjY0]
 
 = Ready to Use Pre-Built Form Templates =
 
@@ -162,7 +164,7 @@ Everest Forms is loaded with all the crucial form field elements required for cr
     * Credit Card
     * Total
 
-###  Why Everest Forms is the Best Form Builder from the Rest?
+==Why Everest Forms is the Best Form Builder from the Rest?==
 Everest Forms has a long list of top-notch features, making it the best WordPress form builder plugin known so far. Below we've listed those features:
 
 * **User-friendly Interface and Beautiful:** Large part of WordPress users today are non-tech savvy. So, we believe that creating a form shouldn't be hefty. Everest Forms aims to provide a working interface that isn't only user-friendly but beautiful as well.
@@ -425,6 +427,8 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Fix         - Show values setting not displaying in select field.
 * Fix         - Minimum character translation issue.
 * Dev         - Compatibility for Google calendar integration.
+
+
 
 = 2.0.6       - 26-12-2023
 * Upgraded    - Input mask library.
