@@ -162,7 +162,7 @@ Everest Forms is loaded with all the crucial form field elements required for cr
     * Credit Card
     * Total
 
-==Why Everest Forms is the Best Form Builder from the Rest?==
+###  Why Everest Forms is the Best Form Builder from the Rest?
 Everest Forms has a long list of top-notch features, making it the best WordPress form builder plugin known so far. Below we've listed those features:
 
 * **User-friendly Interface and Beautiful:** Large part of WordPress users today are non-tech savvy. So, we believe that creating a form shouldn't be hefty. Everest Forms aims to provide a working interface that isn't only user-friendly but beautiful as well.
