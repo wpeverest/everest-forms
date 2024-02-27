@@ -17,8 +17,39 @@ class EVF_Reporting {
 	 */
 	public function __construct() {
 		add_action( 'init', array( $this, 'evf_schedule_entries_report_email' ) );
+		add_action( 'everest_forms_settings_saved', array( $this, 'evf_cron_schedule_clearer' ) );
+		add_action( 'everest_forms_stats_report_schedule', array( $this, 'evf_schedule_run' ), 10, 2 );
 	}
 
+	public function evf_cron_schedule_clearer() {
+		$evf_report_cron = new EVF_Report_Cron();
+		$evf_report_cron->evf_schedule_clear_all();
+	}
+
+	/**
+	 * Function for implementing cron job for reporting.
+	 *
+	 * @since 2.0.7
+	 *
+	 * @return void.
+	 */
+	public function evf_schedule_run() {
+
+		$evf_report_cron = new EVF_Report_Cron();
+		$evf_report_cron->evf_report_form_statistics_send();
+				// Send
+		// If frequency is monthly, then we'll reschedue to ensure we hit monthly exactly (wp_cron doesn't support 1 month)
+		// $evf_report_frequency = get_option( 'everest_forms_entries_reporting_frequency', 'Weekly' );
+
+		// if ( $evf_report_frequency === 'Monthly' ) {
+
+		// Clear schedule
+		// $this->evf_schedule_clear_all();
+
+		// Reschedule
+		// $this->evf_report_form_statistics_schedule();
+		// }
+	}
 
 	/**
 	 * Schedule the entries reporting routine email.
@@ -29,7 +60,7 @@ class EVF_Reporting {
 
 		// Clearing the existing statistics routine email this needs to be done in case the scheduling is changed)
 		$evf_report_cron = new EVF_Report_Cron();
-		add_action( 'evf_schedule_clear_all', array( $evf_report_cron, 'evf_schedule_clear_all' ) );
+		// add_action( 'evf_schedule_clear_all', array( $evf_report_cron, 'evf_schedule_clear_all' ) );
 
 		// Check if the routine emailing for form entries is enabled or not.
 		$everest_forms_enable_routine_entries_reporting = get_option( 'everest_forms_enable_entries_reporting' );

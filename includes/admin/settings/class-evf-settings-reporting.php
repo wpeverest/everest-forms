@@ -33,7 +33,7 @@ class EVF_Settings_Reporting extends EVF_Settings_Page {
 	 * @return array
 	 */
 	public function get_settings() {
-		$evf_form_lists = evf_get_all_forms( true, false );
+		$evf_form_lists = evf_get_all_forms();
 		$settings       = apply_filters(
 			'everest_forms_reporting_settings',
 			array(

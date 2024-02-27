@@ -3,9 +3,6 @@
 class EVF_Report_Cron {
 
 	public function __construct() {
-
-		// Report cron processes
-		add_action( 'everest_forms_stats_report_schedule', array( $this, 'evf_schedule_run' ), 10, 2 );
 	}
 
 	/**
@@ -19,18 +16,17 @@ class EVF_Report_Cron {
 				// Send
 				self::evf_report_form_statistics_send();
 
-				// If frequency is monthly, then we'll reschedue to ensure we hit monthly exactly (wp_cron doesn't support 1 month)
-				$evf_report_frequency = get_option( 'everest_forms_entries_reporting_frequency', 'Weekly' );
+		// If frequency is monthly, then we'll reschedue to ensure we hit monthly exactly (wp_cron doesn't support 1 month)
+		// $evf_report_frequency = get_option( 'everest_forms_entries_reporting_frequency', 'Weekly' );
 
-		if ( $evf_report_frequency === 'Monthly' ) {
+		// if ( $evf_report_frequency === 'Monthly' ) {
 
-			// Clear schedule
-			$this->evf_schedule_clear_all();
+		// Clear schedule
+		// $this->evf_schedule_clear_all();
 
-			// Reschedule
-			$this->evf_report_form_statistics_schedule();
-		}
-
+		// Reschedule
+		// $this->evf_report_form_statistics_schedule();
+		// }
 	}
 
 	// Schedule - Add
@@ -44,8 +40,10 @@ class EVF_Report_Cron {
 		if ( ! isset( $evf_schedules[ $evf_recurrence ] ) ) {
 			return; }
 
-		// Schedule event for data source
-		wp_schedule_event( $evf_report_next_run, $evf_recurrence, 'everest_forms_stats_report_schedule' );
+			// Schedule event for data source
+		if ( ! wp_next_scheduled( 'everest_forms_stats_report_schedule' ) ) {
+			wp_schedule_event( $evf_report_next_run, $evf_recurrence, 'everest_forms_stats_report_schedule' );
+		}
 	}
 
 	// Schedule - Clear all for report
@@ -354,7 +352,7 @@ class EVF_Report_Cron {
 		}
 
 		$evf_stat_message = sprintf(
-			'<div class="evf_stat_body" style="height: 100%;margin: 0;padding: 0;width: 100%;background-color: #e9eaec;"><p><strong>%s:</strong> <a href="%s" target="_blank">%s</a>',
+			'<div class="evf_stat_body"><p><strong>%s:</strong> <a href="%s" target="_blank">%s</a>',
 			__( 'Routine Statistics Report for ', 'everest-forms' ),
 			get_site_url(),
 			esc_html( get_bloginfo( 'name' ) )
