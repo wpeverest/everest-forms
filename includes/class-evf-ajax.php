@@ -1048,8 +1048,13 @@ class EVF_AJAX {
 				'embed_page_title' => ! empty( $_POST['page_title'] ) ? sanitize_text_field( wp_unslash( $_POST['page_title'] ) ) : '',
 			);
 		} else {
-			$url = get_edit_post_link( $page_id, '' );
+			$url  = get_edit_post_link( $page_id, '' );
+			$meta = array(
+				'embed_page' => $page_id,
+			);
 		}
+
+		$meta['form_id'] = ! empty( $_POST['form_id'] ) ? absint( $_POST['form_id'] ) : 0;
 
 		self::set_meta( $meta );
 
@@ -1088,12 +1093,7 @@ class EVF_AJAX {
 		if ( ! empty( $page_id ) || empty( $form_id ) ) {
 			return $post_content;
 		}
-
-		if ( wpforms_is_gutenberg_active() ) {
-			$pattern = '<!-- wp:wpforms/form-selector {"formId":"%d"} /-->';
-		} else {
-			$pattern = '[wpforms id="%d" title="false" description="false"]';
-		}
+		$pattern = '[everest_form id="%d"]';
 
 		return sprintf( $pattern, absint( $form_id ) );
 	}
@@ -1105,7 +1105,7 @@ class EVF_AJAX {
 	 */
 	public static function set_meta( $data ) {
 
-		update_user_meta( get_current_user_id(), 'everest_forms_form_embed_wizard', $data );
+		update_user_meta( get_current_user_id(), 'everest_forms_form_embed', $data );
 	}
 
 	/**
@@ -1115,7 +1115,7 @@ class EVF_AJAX {
 	 */
 	public static function get_meta() {
 
-		return get_user_meta( get_current_user_id(), 'everest_forms_form_embed_wizard', true );
+		return get_user_meta( get_current_user_id(), 'everest_forms_form_embed', true );
 	}
 
 	/**
@@ -1123,7 +1123,7 @@ class EVF_AJAX {
 	 */
 	public static function delete_meta() {
 
-		delete_user_meta( get_current_user_id(), 'everest_forms_form_embed_wizard' );
+		delete_user_meta( get_current_user_id(), 'everest_forms_form_embed' );
 	}
 }
 

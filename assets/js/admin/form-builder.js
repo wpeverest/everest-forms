@@ -2151,6 +2151,7 @@
 							content : modelContent,
 							type    : 'blue',
 							onContentReady: function () {
+								var $formId		= $(".everest-forms-embed-button").attr('data-form_id');
 
 								//when clicked on 'Select Existing Page' button
 								$( ".everest-forms-select-existing-page" ).click(function () {
@@ -2184,6 +2185,7 @@
 													'action'	: 'everest_forms_goto_edit_page',
 													security	: evf_data.evf_goto_edit_page,
 													'page_id'	: $pageId,
+													'form_id'	: $formId,
 												}
 												$.ajax({
 													url : evf_data.ajax_url,
@@ -2224,6 +2226,7 @@
 											'action'	: 'everest_forms_goto_edit_page',
 											security	: evf_data.evf_goto_edit_page,
 											page_title	: $pageTitle,
+											'form_id'	: $formId,
 										}
 										$.ajax({
 											url		: evf_data.ajax_url,
