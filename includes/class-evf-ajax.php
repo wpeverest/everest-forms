@@ -19,8 +19,6 @@ class EVF_AJAX {
 	public static function init() {
 		add_action( 'init', array( __CLASS__, 'define_ajax' ), 0 );
 		add_action( 'template_redirect', array( __CLASS__, 'do_evf_ajax' ), 0 );
-		add_filter( 'default_title', array( __CLASS__, 'embed_page_title' ), 10, 2 );
-		add_filter( 'default_content', array( __CLASS__, 'embed_page_content' ), 10, 2 );
 		self::add_ajax_events();
 	}
 
@@ -1055,75 +1053,9 @@ class EVF_AJAX {
 		}
 
 		$meta['form_id'] = ! empty( $_POST['form_id'] ) ? absint( $_POST['form_id'] ) : 0;
-
-		self::set_meta( $meta );
+		EVF_Admin_Embed_Wizard::set_meta( $meta );
 
 		wp_send_json_success( $url );
-	}
-
-	/**
-	 * Set default title for the new page.
-	 *
-	 * @since 0
-	 *
-	 * @param string   $post_title Default post title.
-	 * @param \WP_Post $post       Post object.
-	 */
-	public static function embed_page_title( $post_title, $post ) {
-
-		$meta = self::get_meta();
-
-		self::delete_meta();
-
-		return empty( $meta['embed_page_title'] ) ? $post_title : $meta['embed_page_title'];
-	}
-
-	/**
-	 * Embed the form to the new page.
-	 *
-	 * @param string   $post_content Default post content.
-	 * @param \WP_Post $post         Post object.
-	 */
-	public static function embed_page_content( $post_content, $post ) {
-		$meta = self::get_meta();
-
-		$form_id = ! empty( $meta['form_id'] ) ? $meta['form_id'] : 0;
-		$page_id = ! empty( $meta['embed_page'] ) ? $meta['embed_page'] : 0;
-
-		if ( ! empty( $page_id ) || empty( $form_id ) ) {
-			return $post_content;
-		}
-		$pattern = '[everest_form id="%d"]';
-
-		return sprintf( $pattern, absint( $form_id ) );
-	}
-
-	/**
-	 * Set user's embed meta data.
-	 *
-	 * @param array $data Data array to set.
-	 */
-	public static function set_meta( $data ) {
-
-		update_user_meta( get_current_user_id(), 'everest_forms_form_embed', $data );
-	}
-
-	/**
-	 * Get user's embed meta data.
-	 *
-	 * @return array User's embed meta data.
-	 */
-	public static function get_meta() {
-
-		return get_user_meta( get_current_user_id(), 'everest_forms_form_embed', true );
-	}
-
-	/**
-	 * Delete user's embed meta data.
-	 */
-	public static function delete_meta() {
-
-		delete_user_meta( get_current_user_id(), 'everest_forms_form_embed' );
 	}
 }
 
