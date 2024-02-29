@@ -103,7 +103,11 @@ class EVF_Form_Block {
 			);
 		}
 
+<<<<<<< Updated upstream
 		$action_page = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : ''; //phpcs:ignore WordPress.Security.NonceVerification
+=======
+		$action_page = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : ''; //phpcs:ignore WordPress.Security.NonceVerification.Recommended,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+>>>>>>> Stashed changes
 
 		if ( 'edit' === $action_page ) {
 			wp_enqueue_script( 'everest-forms-shortcode-embed-form' );

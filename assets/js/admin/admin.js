@@ -447,4 +447,22 @@
 		}, 2000);
 	});
 
+	$( "#everest_forms_search_addons" ).keyup( function (){
+		var searchTerm = $(this).val();
+
+		data = {
+			'action'		: 'everest_forms_search_addons',
+			'security'		: everest_forms_admin.evf_search_addons,
+			'searchTerm'	: searchTerm,
+		}
+		$.ajax({
+			url: everest_forms_admin.ajax_url,
+			type: 'GET',
+			data: data,
+			success: function(response){
+
+			}
+		})
+	})
+
 })( jQuery, everest_forms_admin );

@@ -249,6 +249,7 @@ class EVF_Admin_Assets {
 				'everest_forms_admin',
 				array(
 					'ajax_import_nonce'             => wp_create_nonce( 'process-import-ajax-nonce' ),
+					'evf_search_addons'             => wp_create_nonce( 'everest_forms_search_addons' ),
 					'ajax_url'                      => admin_url( 'admin-ajax.php', 'relative' ),
 					'i18n_field_meta_key_error'     => esc_html__( 'Please enter in meta key with alphanumeric characters, dashes and underscores.', 'everest-forms' ),
 					'i18n_field_min_value_greater'  => esc_html__( 'Minimum value is greater than Maximum value.', 'everest-forms' ),
