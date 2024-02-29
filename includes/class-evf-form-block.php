@@ -111,7 +111,7 @@ class EVF_Form_Block {
 			);
 		}
 
-		$action_page = isset( $_GET['action'] ) ? _sanitize_text_fields( wp_unslash( $_GET['action'] ) ) : '';
+		$action_page = isset( $_GET['action'] ) ? sanitize_text_fields( wp_unslash( $_GET['action'] ) ) : ''; //phpcs:ignore WordPress.Security.NonceVerification.Recommended,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
 		if ( 'edit' === $action_page ) {
 			wp_enqueue_script( 'everest-forms-shortcode-embed-form' );
