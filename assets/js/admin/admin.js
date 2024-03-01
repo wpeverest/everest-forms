@@ -447,9 +447,12 @@
 		}, 2000);
 	});
 
-	$( "#everest_forms_search_addons" ).keyup( function (){
-		var searchTerm = $(this).val();
-
+	$( "#everest_forms_search_addons" ).on( 'keyup change', function (){
+		var searchTerm = $( this ).val();
+		if ( searchTerm.length === 0 ) {
+			$('.the-list').show();
+			return;
+		}
 		data = {
 			'action'		: 'everest_forms_search_addons',
 			'security'		: everest_forms_admin.evf_search_addons,
@@ -461,6 +464,10 @@
 			data: data,
 			success: function(response){
 
+				if (response.success) {
+					$('.the-list').hide();
+
+				}
 			}
 		})
 	})
