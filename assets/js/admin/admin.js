@@ -447,29 +447,26 @@
 		}, 2000);
 	});
 
-	$( "#everest_forms_search_addons" ).on( 'keyup change', function (){
-		var searchTerm = $( this ).val();
+	//Search Functionality on addons page
+	$( "#everest_forms_search_addons" ).on( 'input', function (){
+		var searchTerm = $( this ).val().toLowerCase();
+		var $plugin = $( ".plugin-name" );
+
 		if ( searchTerm.length === 0 ) {
-			$('.the-list').show();
+			$plugin.parent().parent().parent().parent().css("display", "block");
 			return;
 		}
-		data = {
-			'action'		: 'everest_forms_search_addons',
-			'security'		: everest_forms_admin.evf_search_addons,
-			'searchTerm'	: searchTerm,
-		}
-		$.ajax({
-			url: everest_forms_admin.ajax_url,
-			type: 'GET',
-			data: data,
-			success: function(response){
 
-				if (response.success) {
-					$('.the-list').hide();
-
-				}
+		for ( let index = 0; index < $plugin.length; index++ ) {
+			var $pluginName = $plugin.eq(index).text().toLowerCase();
+			if ( $pluginName.indexOf( searchTerm ) >= 0) {
+				$plugin.eq( index ).parent().parent().parent().parent().css("display", "block");
+				$('.plugin-card:nth-child(odd)').css('clear', 'none');
+			}else{
+				$plugin.eq( index ).parent().parent().parent().parent().css("display", "none");
+				 $('.plugin-card:nth-child(odd)').css('clear', 'none');
 			}
-		})
+		}
 	})
 
 })( jQuery, everest_forms_admin );

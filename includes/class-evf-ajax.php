@@ -107,7 +107,6 @@ class EVF_AJAX {
 			'get_local_font_url'      => true,
 			'embed_form'              => false,
 			'goto_edit_page'          => false,
-			'search_addons'           => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -1057,32 +1056,6 @@ class EVF_AJAX {
 		EVF_Admin_Embed_Wizard::set_meta( $meta );
 
 		wp_send_json_success( $url );
-	}
-
-	/**
-	 * Search addons
-	 *
-	 * @since 0
-	 */
-	public static function search_addons() {
-		check_ajax_referer( 'everest_forms_search_addons', 'security' );
-
-		$search_term = strtolower( sanitize_text_field( wp_unslash( (string) $_GET['searchTerm'] ) ) ); //phpcs:ignore
-
-		$extension_data         = EVF_Admin_Addons::get_extension_data();
-		$decoded_extension_data = json_decode( wp_json_encode( $extension_data ), true );
-
-		$addons = array();
-
-		foreach ( $decoded_extension_data as $addon ) {
-			$title = strtolower( $addon['title'] );
-
-			if ( false !== strpos( $title, $search_term ) ) {
-				array_push( $addons, $addon );
-			}
-		}
-
-		wp_send_json_success( $addons );
 	}
 }
 
