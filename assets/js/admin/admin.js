@@ -447,26 +447,17 @@
 		}, 2000);
 	});
 
-	//Search Functionality on addons page
-	$( "#everest_forms_search_addons" ).on( 'input', function (){
-		var searchTerm = $( this ).val().toLowerCase();
-		var $plugin = $( ".plugin-name" );
 
-		if ( searchTerm.length === 0 ) {
-			$plugin.parent().parent().parent().parent().css("display", "block");
-			return;
-		}
+	$(document).ready(function(){
+		$("#everest_forms_search_addons").on("keyup search", function() {
+		  var value = $(this).val().toLowerCase();
+		  $(".the-list .plugin-card").filter(function() {
+			$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+		  });
+		});
+	  });
 
-		for ( let index = 0; index < $plugin.length; index++ ) {
-			var $pluginName = $plugin.eq(index).text().toLowerCase();
-			if ( $pluginName.indexOf( searchTerm ) >= 0) {
-				$plugin.eq( index ).parent().parent().parent().parent().css("display", "block");
-				$('.plugin-card:nth-child(odd)').css('clear', 'none');
-			}else{
-				$plugin.eq( index ).parent().parent().parent().parent().css("display", "none");
-				 $('.plugin-card:nth-child(odd)').css('clear', 'none');
-			}
-		}
-	})
+
+
 
 })( jQuery, everest_forms_admin );
