@@ -1,5 +1,9 @@
 == Changelog ==
 
+
+= 2.0.8       - xx-xx-2024
+* Fix - Restrict font_url for unauthorized users and allow only certain font_url.
+
 = 2.0.7       - 22-02-2024
 * Enhancement - Screenshot video on upgrade to pro popup.
 * Enhancement - Clone email form settings.

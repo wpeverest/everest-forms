@@ -104,7 +104,7 @@ class EVF_AJAX {
 			'locate_form_action'      => false,
 			'slot_booking'            => true,
 			'active_addons'           => false,
-			'get_local_font_url'      => true,
+			'get_local_font_url'      => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -1003,6 +1003,14 @@ class EVF_AJAX {
 	 */
 	public static function get_local_font_url() {
 		$font_url = isset( $_POST['font_url'] ) ? sanitize_text_field( wp_unslash( $_POST['font_url'] ) ) : ''; //phpcs:ignore WordPress.Security.NonceVerification
+
+		$allowed_urls = array(
+			'https://fonts.googleapis.com',
+		);
+
+		if ( ! in_array( $font_url, $allowed_urls ) ) {
+			return;
+		}
 
 		if ( str_contains( $font_url, 'https://fonts.googleapis.com' ) ) {
 			$font_url = evf_maybe_get_local_font_url( $font_url );
