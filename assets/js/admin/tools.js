@@ -183,6 +183,20 @@ jQuery(function ($) {
 					$(".evf-loading").remove();
 					var message_string = "";
 					if (true === res.success) {
+						var formDatas = res.data.form_data;
+						$.each(formDatas, function (formId, formData) {
+							if (formData !== false) {
+								var entryButton = $(
+									'button[data-form-id="' + formId + '"]'
+								);
+								var importedNotice = $(
+									'p[data-form-id="' + formId + '"]'
+								);
+
+								$(entryButton).prop("disabled", false);
+								$(importedNotice).text("Yes");
+							}
+						});
 						message_string =
 							'<div id="message" class="updated inline everest-froms-import_notice"><p><strong>' +
 							res.data.message +
@@ -217,7 +231,8 @@ jQuery(function ($) {
 				action: "everest_forms_form_entry_migrator",
 				form_slug: formSlug,
 				form_id: formID,
-				security: everest_forms_form_migrator.evf_form_entry_migrator_nonce,
+				security:
+					everest_forms_form_migrator.evf_form_entry_migrator_nonce,
 			};
 			$.ajax({
 				url: everest_forms_form_migrator.ajax_url,

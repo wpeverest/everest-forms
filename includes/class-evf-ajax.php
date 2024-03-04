@@ -1027,7 +1027,7 @@ class EVF_AJAX {
 					$is_imported   = false;
 					$imported_text = esc_html__( 'No', 'everest-forms' );
 				}
-				$forms_list_table .= '<tr id="evf-fm-row-' . esc_attr( $row ) . '" class="evf-fm-row ' . esc_attr( $hidden ) . '"><td><input class="evf-fm-select-single" type="checkbox" name="fm_select_single_form_' . esc_attr( $form_id ) . '" data-form-id="' . esc_attr( $form_id ) . '" /></td><td>' . esc_html__( $form_name, 'everest-forms' ) . '</td><td><p class="evf-fm-imported">' . esc_attr( $imported_text ) . '<p></td>';
+				$forms_list_table .= '<tr id="evf-fm-row-' . esc_attr( $row ) . '" class="evf-fm-row ' . esc_attr( $hidden ) . '"><td><input class="evf-fm-select-single" type="checkbox" name="fm_select_single_form_' . esc_attr( $form_id ) . '" data-form-id="' . esc_attr( $form_id ) . '" /></td><td>' . esc_html__( $form_name, 'everest-forms' ) . '</td><td><p class="evf-fm-imported" data-form-id="' . esc_attr( $form_id ) . '">' . esc_attr( $imported_text ) . '<p></td>';
 				$forms_list_table .= '<td>';
 				$forms_list_table .= '<div class="evf-fm-import-actions"><button class="evf-fm-import-single" data-form-id="' . esc_attr( $form_id ) . '">' . esc_html( 'Import Form' ) . '</button>';
 				if ( 'contact-form-7' !== $form_slug ) {
