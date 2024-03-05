@@ -5,6 +5,11 @@
  * @package EverestForms/Admin/Tool/System Info Settings
  */
 
+ defined( 'ABSPATH' ) || exit;
+
+if ( ! class_exists( 'WP_Debug_Data' ) ) {
+	require_once ABSPATH . 'wp-admin/includes/class-wp-debug-data.php';
+}
 ?>
 <div class="everest-forms-import-form">
 	<table>
@@ -189,7 +194,7 @@
 			if ( ! empty( $plugin_lists ) ) {
 				foreach ( $plugin_lists as $plugin_slug => $plugin_data ) {
 					if ( isset( $plugin_data['product_name'] ) && isset( $plugin_data['product_version'] ) ) {
-						echo esc_html( $plugin_data['product_name'] ) . ' (' . esc_html( $plugin_data['product_version'] ) . ')';
+						echo esc_html( $plugin_data['product_name'] ) . ' (' . esc_html( $plugin_data['product_version'] ) . ')' . '<br>';
 					}
 				}
 			} else {
@@ -294,13 +299,13 @@
 			<th><?php esc_html_e( 'Max Allowed Packet', 'everest-forms' ); ?></th>
 			<td>
 				<?php
-					$db         = new mysqli( 'localhost', 'root', '', 'WordPress' );
-					$maxp       = $db->query( 'SELECT @@global.max_allowed_packet' )->fetch_array();
-					$maxp_bytes = (int) $maxp[0];
-					$maxp_mb    = $maxp_bytes / 1024 / 1024;
-
-					echo esc_html( $maxp_mb ) . ' MB';
-				?>
+						$max_packet_size_bytes = $info['wp-database']['fields']['max_allowed_packet'] = array(
+							'label' => __( 'Max allowed packet size' ),
+							'value' => WP_Debug_Data::get_mysql_var( 'max_allowed_packet' ),
+						);
+						$maxp_mb               = isset( $max_packet_size_bytes['value'] ) ? $max_packet_size_bytes['value'] / 1024 / 1024 : '';
+						echo esc_html( $maxp_mb ) . ' MB';
+						?>
 			</td>
 		</tr>
 	</table>
