@@ -83,43 +83,28 @@ jQuery(function ($) {
 		});
 
 		$(document).on("click", ".evf-fm-page", function () {
-			$(".evf-fm-page").each(function () {
-				if ($(this).hasClass("evf-fm-btn-active")) {
-					$(this).removeClass("evf-fm-btn-active");
-				}
-			});
-
-			$(this).addClass("evf-fm-btn-active");
-			var formTable = $(this)
-				.closest(".evf-fm-pagination")
-				.prev(".evf-fm-forms-table");
-
-			(totalPage = $(this)
-				.closest(".evf-fm-pagination")
-				.data("total-page")),
-				(fmCeil = $(this)
-					.closest(".evf-fm-pagination")
-					.data("fm-ceil")),
-				(formPerPage = $(this)
-					.closest(".evf-fm-pagination")
-					.data("form-per-page")),
-				(currentPage = $(this).data("page")),
-				(start = currentPage + 1),
-				(end = currentPage + formPerPage),
-				(formRows = $(document).find(".evf-fm-row"));
-			$.each(formRows, function (index, formRow) {
-				if (!$(formRow).hasClass("evf-fm-hide-row")) {
-					$(formRow).addClass("evf-fm-hide-row");
-				}
-			});
-			for (start; start <= end; start++) {
-				$(formTable)
-					.find("#evf-fm-row-" + start)
-					.removeClass("evf-fm-hide-row");
-				$(formTable)
-					.find("#evf-fm-row-" + start)
-					.removeClass("evf-fm-show-row");
+			if ($(this).hasClass("evf-fm-btn-active")) {
+				return;
 			}
+
+			$(".evf-fm-page").removeClass("evf-fm-btn-active");
+			$(this).addClass("evf-fm-btn-active");
+
+			var formTable = $(document).find(".evf-fm-forms-table");
+
+			var formPerPage = $(this)
+				.closest(".evf-fm-pagination")
+				.data("form-per-page");
+			var currentPage = $(this).data("page");
+
+			var start = (currentPage - 1) * formPerPage + 1;
+			var end = start + formPerPage - 1;
+
+			var formRows = formTable.find(".evf-fm-row");
+
+			formRows.addClass("evf-fm-hide-row");
+
+			formRows.slice(start - 1, end).removeClass("evf-fm-hide-row");
 		});
 
 		//Import Single form.
