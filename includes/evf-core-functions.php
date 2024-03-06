@@ -1132,6 +1132,7 @@ function evf_get_random_string( $length = 10 ) {
  * @return array of form data.
  */
 function evf_get_all_forms( $skip_disabled_entries = false, $check_disable_storing_entry_info = true ) {
+
 	$forms    = array();
 	$form_ids = wp_parse_id_list(
 		evf()->form->get_multiple(
@@ -4890,5 +4891,78 @@ if( ! function_exists( 'evf_current_url' ) ) {
 		$url .= wp_unslash( $_SERVER['REQUEST_URI'] );
 
 		return esc_url_raw( $url );
+	}
+}
+
+if ( ! function_exists( 'evf_process_all_fields_smart_tag' ) ) {
+	/**
+	 * Return email content wrapped in email template if {all_fields} is there in email content
+	 *
+	 * @since 2.0.5
+	 * @param string $email_content Email Content.
+	 * @return string
+	 */
+	function evf_process_all_fields_smart_tag( $email_content ) {
+
+		$email_content  = '<div class="evf-all-fields-smart-tag-email-body" background-color: #ebebeb;">';
+		$email_content .= '<table border="0" cellpadding="0" cellspacing="0" width="100%" style="min-width:100%;border-collapse:collapse background:#cccccc" >';
+		$email_content .= '<tbody>';
+		$email_content .= '<tr>';
+		$email_content .= '<td valign="top">';
+		$email_content .= '<table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" style="min-width:100%;border-collapse:collapse" class="mcnTextContentContainer">';
+		$email_content .= '<tbody>';
+		$email_content .= '<tr>';
+		$email_content .= '<td valign = "top" class = "mcnTextContent">';
+		$email_content .= "<table align = 'left' border = '0' cellpadding = '0' cellspacing = '0' width = '100%' style = 'display:block;min-width:100%;border-collapse:collapse;width:100%'>";
+		$email_content .= '<tbody>';
+		$email_content .= '<tr>';
+		$email_content .= "<td style = 'color:#333333;padding-top:20px;padding-bottom:3px'><strong>Name</strong></td>";
+		$email_content .= '</tr>';
+		$email_content .= '<tr>';
+		$email_content .= "<td style = 'color:#555555;padding-top:3px;padding-bottom:20px'>Demo Name</td>";
+		$email_content .= '</tr>';
+		$email_content .= '</tbody>';
+		$email_content .= '</table>';
+		$email_content .= "<table align = 'left' border = '0' cellpadding = '0' cellspacing = '0' width = '100%' style = 'border-top:1px solid #dddddd;display:block;min-width:100%;border-collapse:collapse;width:100%'>";
+		$email_content .= '<tbody>';
+		$email_content .= '<tr>';
+		$email_content .= "<td style = 'color:#333333;padding-top:20px;padding-bottom:3px'> <strong>Email</strong><tr / td >";
+		$email_content .= '</tr>';
+		$email_content .= '<tr>';
+		$email_content .= "<td style = 'color:#555555;padding-top:3px;padding-bottom:20px' > <a href = '#' target = '_blank'>Demo Email</a></td>";
+		$email_content .= '</tr>';
+		$email_content .= '</tbody>';
+		$email_content .= '</table>';
+		$email_content .= "<table align = 'left' border = '0' cellpadding = '0' cellspacing = '0' width = '100%' style = 'border-top:1px solid #dddddd;display:block;min-width:100%;border-collapse:collapse;width:100%'>";
+		$email_content .= '<tbody>';
+		$email_content .= '<tr>';
+		$email_content .= "<td style = 'color:#333333;padding-top:20px;padding-bottom:3px'><strong>Email Subject</strong></td>";
+		$email_content .= '</tr>';
+		$email_content .= '<tr>';
+		$email_content .= "<td style = 'color:#555555;padding-top:3px;padding-bottom:20px'>Demo Email Subject</td>";
+		$email_content .= '</tr>';
+		$email_content .= '</tbody>';
+		$email_content .= '</table>';
+		$email_content .= "<table align = 'left' border = '0' cellpadding = '0' cellspacing = '0' width = '100%' style = 'border-top:1px solid #dddddd;display:block;min-width:100%;border-collapse:collapse;width:100%'>";
+		$email_content .= '<tbody>';
+		$email_content .= '<tr>';
+		$email_content .= "<td style = 'color:#333333;padding-top:20px;padding-bottom:3px'><strong>Email Message</strong></td>";
+		$email_content .= '</tr>';
+		$email_content .= '<tr>';
+		$email_content .= "<td style = 'color:#555555;padding-top:3px;padding-bottom:20px'>Demo Email Message</td>";
+		$email_content .= '</tr>';
+		$email_content .= '</tbody>';
+		$email_content .= '</table>';
+		$email_content .= '</td>';
+		$email_content .= '</tr>';
+		$email_content .= '</tbody>';
+		$email_content .= '</table>';
+		$email_content .= '</td>';
+		$email_content .= '</tr>';
+		$email_content .= '</tbody>';
+		$email_content .= '</table>';
+		$email_content .= '</div>';
+
+		return $email_content;
 	}
 }

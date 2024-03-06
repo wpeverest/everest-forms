@@ -18,6 +18,8 @@ defined( 'ABSPATH' ) || exit;
 		<a href="<?php echo esc_url( $refresh_url ); ?>" class="page-title-action"><?php esc_html_e( 'Refresh Add-ons', 'everest-forms' ); ?></a>
 	<?php endif; ?>
 
+	<input style="float: right;" id="everest_forms_search_addons" name="everest_forms_search_addons" type="search" placeholder="search addons...">
+
 	<hr class="wp-header-end">
 	<h2 class="screen-reader-text"><?php esc_html_e( 'Filter add-ons list', 'everest-forms' ); ?></h2>
 

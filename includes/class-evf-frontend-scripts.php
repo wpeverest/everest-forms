@@ -238,7 +238,7 @@ class EVF_Frontend_Scripts {
 		self::register_styles();
 
 		// Enqueue dashicons.
-		wp_enqueue_style( 'dashicons' );
+		// wp_enqueue_style( 'dashicons' );
 
 		// CSS Styles.
 		$enqueue_styles = self::get_styles();
@@ -300,6 +300,7 @@ class EVF_Frontend_Scripts {
 					'mailcheck_domains'                    => array_map( 'sanitize_text_field', (array) apply_filters( 'everest_forms_mailcheck_domains', array() ) ),
 					'mailcheck_toplevel_domains'           => array_map( 'sanitize_text_field', (array) apply_filters( 'everest_forms_mailcheck_toplevel_domains', array( 'dev' ) ) ),
 					'il8n_min_word_length_err_msg'         => esc_html__( 'Please enter at least {0} words.', 'everest-forms' ),
+					'il8n_min_character_length_err_msg'    => esc_html__( 'Please enter at least {0} characters.', 'everest-forms' ),
 				);
 				break;
 			case 'everest-forms-text-limit':

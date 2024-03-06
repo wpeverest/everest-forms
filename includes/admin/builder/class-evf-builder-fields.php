@@ -121,10 +121,11 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 					<div class="evf-registered-buttons">
 						<?php
 						foreach ( $form_field as $field ) :
-							$field_plan = isset( $field->plan ) ? $field->plan : '';
-							$addon_slug = isset( $field->addon ) ? $field->addon : '';
+							$field_plan  = isset( $field->plan ) ? $field->plan : '';
+							$addon_slug  = isset( $field->addon ) ? $field->addon : '';
+							$field_links = isset( $field->links ) ? json_encode( $field->links ) : '';
 							?>
-							<button type="button" id="everest-forms-add-fields-<?php echo esc_attr( $field->type ); ?>" class="evf-registered-item <?php echo sanitize_html_class( $field->class ); ?>" data-field-type="<?php echo esc_attr( $field->type ); ?>" data-field-plan="<?php echo esc_attr( $field_plan ); ?>" data-addon-slug="<?php echo esc_attr( $addon_slug ); ?>">
+							<button type="button" id="everest-forms-add-fields-<?php echo esc_attr( $field->type ); ?>" class="evf-registered-item <?php echo sanitize_html_class( $field->class ); ?>" data-field-type="<?php echo esc_attr( $field->type ); ?>" data-field-plan="<?php echo esc_attr( $field_plan ); ?>" data-addon-slug="<?php echo esc_attr( $addon_slug ); ?>" data-links="<?php echo esc_attr( $field_links ); ?>">
 								<?php if ( isset( $field->icon ) ) : ?>
 									<i class="<?php echo esc_attr( $field->icon ); ?>"></i>
 								<?php endif; ?>
@@ -181,7 +182,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		$fields    = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
 		$structure = isset( $form_data['structure'] ) ? $form_data['structure'] : array( 'row_1' => array() );
 		$row_ids   = array_map(
-			function( $row_id ) {
+			function ( $row_id ) {
 				return str_replace( 'row_', '', $row_id );
 			},
 			array_keys( $structure )
@@ -269,7 +270,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			echo '<small>' . esc_html__( 'Select the type of row', 'everest-forms' ) . '</small>';
 			echo '<div class="clear"></div>';
 
-			for ( $grid_active = 1; $grid_active <= $total_grid; $grid_active ++ ) {
+			for ( $grid_active = 1; $grid_active <= $total_grid; $grid_active++ ) {
 				$class = 'evf-grid-selector';
 
 				if ( $grid_active === $active_grid ) {
@@ -282,7 +283,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 				$width  = ( 100 - $gaps ) / $grid_active;
 				$margin = ( $gaps / $grid_active ) / 2;
 
-				for ( $row_icon = 1; $row_icon <= $grid_active; $row_icon ++ ) {
+				for ( $row_icon = 1; $row_icon <= $grid_active; $row_icon++ ) {
 					echo '<span style="width:' . (float) $width . '%; margin-left:' . (float) $margin . '%; margin-right:' . (float) $margin . '%"></span>';
 				}
 
@@ -294,7 +295,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			echo '<div class="clear evf-clear"></div>';
 
 			$grid_class = 'evf-admin-grid evf-grid-' . ( $active_grid );
-			for ( $grid_start = 1; $grid_start <= $active_grid; $grid_start ++ ) {
+			for ( $grid_start = 1; $grid_start <= $active_grid; $grid_start++ ) {
 				echo '<div class="' . esc_attr( $grid_class ) . ' " data-grid-id="' . absint( $grid_start ) . '">';
 				$grid_fields = isset( $row_grid[ 'grid_' . $grid_start ] ) && is_array( $row_grid[ 'grid_' . $grid_start ] ) ? $row_grid[ 'grid_' . $grid_start ] : array();
 				foreach ( $grid_fields as $field_id ) {

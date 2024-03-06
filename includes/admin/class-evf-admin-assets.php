@@ -137,6 +137,8 @@ class EVF_Admin_Assets {
 					'evf_field_drop_nonce'         => wp_create_nonce( 'everest_forms_field_drop' ),
 					'evf_add_row_nonce'            => wp_create_nonce( 'everest_forms_add_row' ),
 					'evf_save_form'                => wp_create_nonce( 'everest_forms_save_form' ),
+					'evf_embed_form'               => wp_create_nonce( 'everest_forms_embed_form' ),
+					'evf_goto_edit_page'           => wp_create_nonce( 'everest_forms_goto_edit_page' ),
 					'evf_get_next_id'              => wp_create_nonce( 'everest_forms_get_next_id' ),
 					'evf_enabled_form'             => wp_create_nonce( 'everest_forms_enabled_form' ),
 					'form_id'                      => isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0, // phpcs:ignore WordPress.Security.NonceVerification
@@ -150,7 +152,7 @@ class EVF_Admin_Assets {
 					'i18n_close'                   => esc_html__( 'Close', 'everest-forms' ),
 					'i18n_cancel'                  => esc_html__( 'Cancel', 'everest-forms' ),
 					'i18n_row_locked'              => esc_html__( 'Row Locked', 'everest-forms' ),
-					'i18n_row_locked_msg'          => esc_html__( 'Single row cannot be deleted.', 'everest-forms' ),
+					'i18n_single_row_locked_msg'   => esc_html__( 'Single row cannot be deleted.', 'everest-forms' ),
 					'i18n_field_locked'            => esc_html__( 'Field Locked', 'everest-forms' ),
 					'i18n_field_locked_msg'        => esc_html__( 'This field cannot be deleted or duplicated.', 'everest-forms' ),
 					'i18n_row_locked_msg'          => esc_html__( 'This row cannot be deleted or duplicated.', 'everest-forms' ),
@@ -210,6 +212,9 @@ class EVF_Admin_Assets {
 				'upgrade_plan_title'           => esc_html__( 'is a Premium Addon', 'everest-forms' ),
 				'upgrade_plan_message'         => esc_html__( 'This addon requires premium plan. Please upgrade to the Premium plan to unlock all these awesome field.', 'everest-forms' ),
 				'upgrade_plan_button'          => esc_html__( 'Upgrade Plan', 'everest-forms' ),
+				'vedio_links'                  => array(
+					'dropdown' => 'kDYAKElqNtM',
+				),
 
 			)
 		);
@@ -244,6 +249,7 @@ class EVF_Admin_Assets {
 				'everest_forms_admin',
 				array(
 					'ajax_import_nonce'             => wp_create_nonce( 'process-import-ajax-nonce' ),
+					'evf_search_addons'             => wp_create_nonce( 'everest_forms_search_addons' ),
 					'ajax_url'                      => admin_url( 'admin-ajax.php', 'relative' ),
 					'i18n_field_meta_key_error'     => esc_html__( 'Please enter in meta key with alphanumeric characters, dashes and underscores.', 'everest-forms' ),
 					'i18n_field_min_value_greater'  => esc_html__( 'Minimum value is greater than Maximum value.', 'everest-forms' ),

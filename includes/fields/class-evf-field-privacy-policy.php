@@ -23,6 +23,10 @@ class EVF_Field_Privacy_Policy extends EVF_Form_Fields {
 		$this->order  = 150;
 		$this->group  = 'advanced';
 		$this->is_pro = true;
+		$this->links  = array(
+			'image_id' => '',
+			'vedio_id' => 'eiPAWx5IDKU',
+		);
 
 		parent::__construct();
 	}

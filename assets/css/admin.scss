@@ -2060,6 +2060,31 @@
 					 }
 				 }
 
+				 .everest-forms-embed-button {
+					margin-left: 6px;
+					vertical-align: middle;
+					background: #f4f4f4;
+
+					&:active {
+						color: #494d50;
+					}
+
+					&:focus {
+						box-shadow: none;
+					}
+
+					&:hover {
+						background: rgba(255, 255, 255, 0.9);
+					}
+
+					&.processing {
+						font-size: 0;
+						height: 36px;
+						background: transparent;
+						border: 1px solid #ffffff;
+					}
+				 }
+
 				 .everest-forms-save-button {
 					 min-width: 75px;
 					 cursor: pointer;
@@ -7135,23 +7160,138 @@
  .jconfirm-scrollpane {
 	.jconfirm-row {
 		.jconfirm-box {
+			border-top: 0 !important;
 			padding: 20px !important;
 
 			div {
 				&.jconfirm-title-c {
+					padding-bottom: 6px;
+
 					.jconfirm-title {
 						line-height: 32px;
+
+						h4 {
+							margin: 0;
+						}
 					}
 				}
 			}
 
 			.jconfirm-buttons {
 				padding: 0 !important;
+				display: none !important;
 
 				button {
 					&.btn-confirm {
 						margin: 0;
 						// background-color: $everestforms;
+					}
+				}
+			}
+
+			.jconfirm-content {
+				&-pane {
+					margin-bottom: 6px !important;
+				}
+
+				.everest_forms_hide_container {
+					> p {
+						padding-left: 20px;
+						padding-right: 20px;
+					}
+
+					.everest-forms-btn {
+						background: #8c5aca;
+						color: $color-white;
+						font-weight: 500;
+						transition: all .3s ease-in-out;
+
+						&:hover {
+							background: #a869f6;
+						}
+
+						&:focus {
+							box-shadow: none;
+						}
+						
+						&.everest-forms-select-existing-page {
+							margin-right: 10px;
+						}
+						
+						&.everest-forms-create-new-page {
+							margin-left: 10px;
+						}
+					}
+				}
+
+				.everest-forms-show-exist-page {
+					select {
+						width: 70%;
+						height: 35px;
+						padding-left: 10px;
+						border-color: #d5d5d5;
+						color: #383838;
+
+						&:focus {
+							box-shadow: none;
+							border-color: #8c5aca;
+						}
+					}
+
+					.everest-forms-lets-go-btn {
+						background: #8c5aca;
+						color: #fff;
+						font-weight: 500;
+						border: 1px solid #8c5aca;
+						padding: 6px 16px;
+						border-radius: 4px;
+						vertical-align: middle;
+						margin-left: 10px;
+						transition: all .3s ease-in-out;
+
+						&:hover {
+							background: #a869f6;
+							border-color: #a869f6;
+						}
+					}
+
+					.everest-forms-show-container {
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						gap: 2px;
+						margin-top: 12px;
+						font-size: 14px;
+						text-decoration: underline;
+						color: #494949;
+						transition: all .3s ease-in-out;
+
+						&:hover {
+							color: #383838;
+						}
+
+						&::before {
+							content: "";
+							background-image: url('../images/icons/embed-back-icon.svg');
+							background-repeat: no-repeat;
+							background-position: center;
+							background-size: 100%;
+							display: block;
+							width: 18px;
+							height: 18px;
+							margin-top: 2px;
+						}
+					}
+				}
+
+				.everest-forms-select-existing-post-container {
+					input[type="text"] {
+						width: 70%;
+						padding: 3px 12px;
+
+						&:focus {
+							border-color: #8c5aca;
+						}
 					}
 				}
 			}
