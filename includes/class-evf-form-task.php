@@ -1019,7 +1019,6 @@ class EVF_Form_Task {
 			return new WP_Error( 'no-form-id', __( 'No form ID was found.', 'everest-forms' ) );
 		}
 
-		error_log(print_r($entry_data, true));
 		// Create entry.
 		$success = $wpdb->insert( $wpdb->prefix . 'evf_entries', $entry_data );
 
