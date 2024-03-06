@@ -1002,9 +1002,19 @@ class EVF_AJAX {
 
 	/**
 	 * Download the provided font and return the url for font file.
+	 *
+	 * @since 2.0.8
 	 */
 	public static function get_local_font_url() {
 		$font_url = isset( $_POST['font_url'] ) ? sanitize_text_field( wp_unslash( $_POST['font_url'] ) ) : ''; //phpcs:ignore WordPress.Security.NonceVerification
+
+		$allowed_urls = array(
+			'https://fonts.googleapis.com',
+		);
+
+		if ( ! in_array( $font_url, $allowed_urls ) ) {
+			return;
+		}
 
 		if ( str_contains( $font_url, 'https://fonts.googleapis.com' ) ) {
 			$font_url = evf_maybe_get_local_font_url( $font_url );
@@ -1016,7 +1026,7 @@ class EVF_AJAX {
 	/**
 	 * Function everest_forms_embed_form is used to get total pages
 	 *
-	 * @since 0
+	 * @since 2.0.8
 	 */
 	public static function embed_form() {
 		check_ajax_referer( 'everest_forms_embed_form', 'security' );
@@ -1032,7 +1042,7 @@ class EVF_AJAX {
 	/**
 	 * Get page edit link
 	 *
-	 * @since 0
+	 * @since 2.0.8
 	 */
 	public static function goto_edit_page() {
 		check_ajax_referer( 'everest_forms_goto_edit_page', 'security' );
