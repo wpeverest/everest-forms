@@ -722,3 +722,146 @@ div.evf-gutenberg-form-selector .evf-frontend-row button[type='submit']:disabled
 .amp-form-submit-success .evf-field-container,
 .amp-form-submit-success .evf-submit-container {
   display: none; }
+
+/* For shortcode embed */
+@keyframes everest-forms-heartbeat {
+  0% {
+    box-shadow: 0 0 0 0 rgba(140, 90, 202, 0.6); }
+  100% {
+    box-shadow: 0 0 0 10px rgba(223, 119, 57, 0); } }
+
+span.everest-forms-shortcode-form-embed-dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 50%;
+  background-color: #8c5aca;
+  animation: everest-forms-heartbeat 1.5s infinite !important;
+  margin: 3px 10px; }
+
+.wp-editor-tools span.everest-forms-shortcode-form-embed-dot {
+  margin-top: 9px; }
+
+.everest-forms-shortcode-form-embed-theme-tooltip {
+  display: none; }
+
+.everest-forms-shortcode-form-embed-theme.tooltipster-sidetip {
+  z-index: 100100 !important; }
+
+.everest-forms-shortcode-form-embed-theme.tooltipster-sidetip.tooltipster-top .tooltipster-box {
+  margin-bottom: 18px; }
+
+.everest-forms-shortcode-form-embed-theme.tooltipster-sidetip.tooltipster-top .tooltipster-arrow {
+  bottom: 8px; }
+
+.everest-forms-shortcode-form-embed-theme.tooltipster-sidetip.tooltipster-top .tooltipster-arrow-background {
+  top: 0; }
+
+.everest-forms-shortcode-form-embed-theme.tooltipster-sidetip.tooltipster-right .tooltipster-box {
+  margin-right: 18px; }
+
+.everest-forms-shortcode-form-embed-theme.tooltipster-sidetip.tooltipster-right .tooltipster-arrow {
+  right: 8px; }
+
+.everest-forms-shortcode-form-embed-theme.tooltipster-sidetip .tooltipster-box {
+  max-width: 260px;
+  background: white;
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.25);
+  -webkit-box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.25); }
+
+.everest-forms-shortcode-form-embed-theme.tooltipster-sidetip .tooltipster-box .tooltipster-content {
+  color: #444444;
+  padding: 16px 20px 18px;
+  text-align: center; }
+  .everest-forms-shortcode-form-embed-theme.tooltipster-sidetip .tooltipster-box .tooltipster-content div *:first-child {
+    margin-top: 0 !important; }
+  .everest-forms-shortcode-form-embed-theme.tooltipster-sidetip .tooltipster-box .tooltipster-content h3 {
+    font-size: 16px;
+    letter-spacing: 0px;
+    line-height: 18px;
+    margin: 0;
+    color: #23282C; }
+  .everest-forms-shortcode-form-embed-theme.tooltipster-sidetip .tooltipster-box .tooltipster-content p {
+    font-size: 14px;
+    letter-spacing: 0px;
+    line-height: 18px;
+    margin: 10px 0 0;
+    color: #444444; }
+  .everest-forms-shortcode-form-embed-theme.tooltipster-sidetip .tooltipster-box .tooltipster-content a {
+    color: #1D7BAC; }
+  .everest-forms-shortcode-form-embed-theme.tooltipster-sidetip .tooltipster-box .tooltipster-content .everest-forms-shortcode-form-embed-theme-done-btn {
+    border-radius: 3px;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    box-shadow: none;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0px;
+    padding: 7px 18px;
+    border: none;
+    background-color: #8c5aca;
+    color: #ffffff;
+    display: block;
+    margin: 15px auto 0; }
+    .everest-forms-shortcode-form-embed-theme.tooltipster-sidetip .tooltipster-box .tooltipster-content .everest-forms-shortcode-form-embed-theme-done-btn:hover {
+      background-color: #8c5aca; }
+    .everest-forms-shortcode-form-embed-theme.tooltipster-sidetip .tooltipster-box .tooltipster-content .everest-forms-shortcode-form-embed-theme-done-btn:disabled {
+      cursor: default;
+      opacity: 0.5; }
+      .everest-forms-shortcode-form-embed-theme.tooltipster-sidetip .tooltipster-box .tooltipster-content .everest-forms-shortcode-form-embed-theme-done-btn:disabled:hover {
+        background-color: #8c5aca; }
+
+.everest-forms-shortcode-form-embed-theme.tooltipster-sidetip .tooltipster-arrow-border {
+  border: none; }
+
+.everest-forms-shortcode-form-embed-theme.tooltipster-sidetip .tooltipster-top .tooltipster-arrow-background {
+  border-top-color: white; }
+
+.everest-forms-shortcode-form-embed-theme.tooltipster-sidetip .tooltipster-right .tooltipster-arrow-background {
+  border-left-color: white; }
+
+.everest-forms-shortcode-form-embed-theme.tooltipster-sidetip .tooltipster-bottom .tooltipster-arrow-background {
+  border-bottom-color: white; }
+
+.block-editor-page .edit-post-layout .components-notice-list > div {
+  padding-right: 50px; }
+
+.block-editor-page .everest-forms-shortcode-form-embed-dot {
+  position: absolute;
+  top: 75px;
+  right: 20px;
+  z-index: 9999; }
+
+.block-editor-page .everest-forms-shortcode-form-embed-theme {
+  width: 260px !important;
+  z-index: 99980 !important;
+  margin-top: 5px; }
+  .block-editor-page .everest-forms-shortcode-form-embed-theme .tooltipster-box {
+    margin-top: 10px; }
+  .block-editor-page .everest-forms-shortcode-form-embed-theme .everest-forms-shortcode-form-embed-theme-tooltips-red-arrow {
+    position: absolute;
+    display: block;
+    width: 15px;
+    height: 42px;
+    top: -65px;
+    right: 145px;
+    background-image: url(../images/icons/red-arrow.svg);
+    background-size: 15px 42px;
+    background-repeat: no-repeat; }
+
+.block-editor-page.is-fullscreen-mode .edit-post-layout .components-notice-list > div {
+  padding-right: 125px; }
+
+.block-editor-page.is-fullscreen-mode .everest-forms-shortcode-form-embed-dot {
+  right: 75px; }
+
+.block-editor-page.is-fullscreen-mode .everest-forms-shortcode-form-embed-theme .everest-forms-shortcode-form-embed-theme-tooltips-red-arrow {
+  right: 105px; }
