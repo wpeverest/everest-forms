@@ -988,6 +988,11 @@ class EVF_Form_Task {
 		$referer     = ! empty( $_SERVER['HTTP_REFERER'] ) ? esc_url_raw( wp_unslash( $_SERVER['HTTP_REFERER'] ) ) : '';
 		$entry_id    = false;
 		$status      = isset( $entry['evf_spam_status'] ) ? $entry['evf_spam_status'] : 'publish';
+		$admin_approval_entries = get_option('everest_forms_admin_approval_entries_enable','no');
+
+		if('yes' === $admin_approval_entries){
+			$status = 'draft';
+		}
 
 		// GDPR enhancements - If user details are disabled globally discard the IP and UA.
 		if ( 'yes' === get_option( 'everest_forms_disable_user_details' ) ) {
@@ -1014,6 +1019,7 @@ class EVF_Form_Task {
 			return new WP_Error( 'no-form-id', __( 'No form ID was found.', 'everest-forms' ) );
 		}
 
+		error_log(print_r($entry_data, true));
 		// Create entry.
 		$success = $wpdb->insert( $wpdb->prefix . 'evf_entries', $entry_data );
 
