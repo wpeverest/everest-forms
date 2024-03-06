@@ -190,9 +190,9 @@ class EVF_Admin_Forms {
 	 *
 	 * @param [int]    $form_id The form ID.
 	 * @param [string] $previous_status The previous status.
-	 * @since 2.0.6
+	 * @since 2.0.8
 	 */
-	public function remove_post_from_import_tracker( $form_id, $previouos_status ) {
+	public function remove_post_from_import_tracker( $form_id, $previous_status ) {
 		$form = evf()->form->get(
 			absint( $form_id ),
 			array(

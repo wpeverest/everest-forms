@@ -3,7 +3,7 @@
  * EverestForms Form Migrator Class
  *
  * @package EverestForms\Admin
- * @since   2.0.6
+ * @since   2.0.8
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -15,7 +15,7 @@ abstract class EVF_Admin_Form_Migrator {
 	/**
 	 * Importer name.
 	 *
-	 * @since 2.0.6
+	 * @since 2.0.8
 	 *
 	 * @var string
 	 */
@@ -24,7 +24,7 @@ abstract class EVF_Admin_Form_Migrator {
 	/**
 	 * Importer name in slug format.
 	 *
-	 * @since 2.0.6
+	 * @since 2.0.8
 	 *
 	 * @var string
 	 */
@@ -33,7 +33,7 @@ abstract class EVF_Admin_Form_Migrator {
 	/**
 	 * Importer plugin path.
 	 *
-	 * @since 2.0.6
+	 * @since 2.0.8
 	 *
 	 * @var string
 	 */
@@ -42,7 +42,7 @@ abstract class EVF_Admin_Form_Migrator {
 	/**
 	 * Primary class constructor.
 	 *
-	 * @since 2.0.6
+	 * @since 2.0.8
 	 */
 	public function __construct() {
 
@@ -52,14 +52,14 @@ abstract class EVF_Admin_Form_Migrator {
 	/**
 	 * Undocumented function
 	 *
-	 * @since 2.0.6
+	 * @since 2.0.8
 	 */
 	abstract public function init();
 
 	/**
 	 * Add to list of registered importers.
 	 *
-	 * @since 2.0.6
+	 * @since 2.0.8
 	 *
 	 * @param array $importers List of supported importers.
 	 *
@@ -97,7 +97,7 @@ abstract class EVF_Admin_Form_Migrator {
 	/**
 	 * If the importer source is available.
 	 *
-	 * @since 2.0.6
+	 * @since 2.0.8
 	 *
 	 * @return bool
 	 */
@@ -106,7 +106,7 @@ abstract class EVF_Admin_Form_Migrator {
 	/**
 	 * Check is the plugin installed or not.
 	 *
-	 * @since 2.0.6
+	 * @since 2.0.8
 	 *
 	 * @return bool
 	 */
@@ -115,16 +115,16 @@ abstract class EVF_Admin_Form_Migrator {
 	/**
 	 * Modify the field id for smart tags.
 	 *
-	 * @since 2.0.6
+	 * @since 2.0.8
 	 * @param [array] $field The field array.
 	 */
 	protected function get_field_id_for_smarttags( $field ) {
 		$field_id    = $field['id'];
 		$field_label = $field['label'];
-		if ( $field_id !== 'fullname' && $field_id !== 'email' && $field_id !== 'subject' && $field_id !== 'message' ) {
+		if ( 'fullname' !== $field_id && 'email' !== $field_id && 'subject' !== $field_id && 'message' !== $field_id ) {
 			$field_label = preg_split( '/[\s\-\_]/', $field_label );
 			foreach ( $field_label as $key => $value ) {
-				if ( $key === 0 ) {
+				if ( 0 === $key ) {
 					$field_label[ $key ] = strtolower( $value );
 				} else {
 					$field_label[ $key ] = ucfirst( $value );
@@ -142,7 +142,7 @@ abstract class EVF_Admin_Form_Migrator {
 	 * Tracks the successful import of a form, allowing future alerts for attempts to
 	 * import a form that has already been imported.
 	 *
-	 * @since 2.0.6
+	 * @since 2.0.8
 	 *
 	 * @param int $source_id      Imported plugin form ID.
 	 * @param int $evf_forms_id   Form ID.
@@ -159,7 +159,7 @@ abstract class EVF_Admin_Form_Migrator {
 	/**
 	 * Import the new form to the database and return AJAX data.
 	 *
-	 * @since 2.0.6
+	 * @since 2.0.8
 	 *
 	 * @param array $form          Form to import.
 	 * @param array $unsupported   List of unsupported fields.
@@ -237,7 +237,7 @@ abstract class EVF_Admin_Form_Migrator {
 	/**
 	 * Show form migrator notice in admin area of everest form if the plugin found
 	 *
-	 * @since 2.0.6
+	 * @since 2.0.8
 	 *
 	 * @return void
 	 */
@@ -258,7 +258,7 @@ abstract class EVF_Admin_Form_Migrator {
 			<div class="notice notice-info is-dismissible evf-fm-notice">
 				<p><?php printf( wp_kses_post( 'Hey, it seems that you have <strong>%s</strong> installed. Are you interested in <strong>migrating</strong> your forms to Everest Form?', 'everest-forms' ), wp_kses_post( $this->name ) ); ?></p>
 				<p>
-					<a href="<?php printf( admin_url( 'admin.php?page=evf-tools&tab=form_migrator' ) ); ?>" class="button button-primary evf-fm-<?php echo esc_attr( $this->slug ); ?>" id="evf-fm-<?php echo esc_attr( $this->slug ); ?>"><?php esc_html_e( 'Form Migrator', 'everest-forms' ); ?></a>
+					<a href="<?php printf( esc_url( admin_url( 'admin.php?page=evf-tools&tab=form_migrator' ) ) ); ?>" class="button button-primary evf-fm-<?php echo esc_attr( $this->slug ); ?>" id="evf-fm-<?php echo esc_attr( $this->slug ); ?>"><?php esc_html_e( 'Form Migrator', 'everest-forms' ); ?></a>
 					<a href="#" class="button evf-fm-dismiss-notice" data-option-id="evf_fm_dismiss_xnotice_<?php echo esc_attr( $this->slug ); ?>" id="evf-fm-dimiss-<?php echo esc_attr( $this->slug ); ?>"><?php esc_html_e( 'No Thanks', 'everest-forms' ); ?></a>
 					<a href="<?php printf( esc_url( 'https://docs.everestforms.net/' ) ); ?>" target="_blank" class="button evf-fm-<?php echo esc_attr( $this->slug ); ?>" id="evf-fm-dimiss-<?php echo esc_attr( $this->slug ); ?>"><?php esc_html_e( 'For More', 'everest-forms' ); ?></a>
 				</p>
@@ -268,7 +268,7 @@ abstract class EVF_Admin_Form_Migrator {
 	/**
 	 * Save the migrated entry.
 	 *
-	 * @since 2.0.6
+	 * @since 2.0.8
 	 * @param [array] $entries The entries.
 	 * @param [array] $entry_list The entry list with value.
 	 * @param [array] $form_data The form data list.
@@ -327,7 +327,7 @@ abstract class EVF_Admin_Form_Migrator {
 	/**
 	 * If the prompt is dismissed
 	 *
-	 * @since 2.0.6
+	 * @since 2.0.8
 	 *
 	 * @return bool
 	 */
