@@ -5,6 +5,7 @@
 * Fix         - Restrict font_url for unauthorized users and allow only certain font_url.
 * Enhancement - Search functionality on Addons page.
 * Feature     - Embedded shortcode directly in page through builder.
+* Feature     - Form migrator for WPForms and Contact Forms 7.
 
 = 2.0.7       - 22-02-2024
 * Enhancement - Screenshot video on upgrade to pro popup.

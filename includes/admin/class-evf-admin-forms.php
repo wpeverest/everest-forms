@@ -20,6 +20,7 @@ class EVF_Admin_Forms {
 		add_action( 'admin_init', array( $this, 'actions' ) );
 		add_action( 'deleted_post', array( $this, 'delete_entries' ) );
 		add_filter( 'wp_untrash_post_status', array( $this, 'untrash_form_status' ), 10, 2 );
+		add_action( 'trashed_post', array( $this, 'remove_post_from_import_tracker' ), 10, 2 );
 	}
 
 	/**
@@ -119,7 +120,7 @@ class EVF_Admin_Forms {
 
 		foreach ( $form_ids as $form_id ) {
 			if ( wp_delete_post( $form_id, true ) ) {
-				$count ++;
+				++$count;
 			}
 		}
 
@@ -183,6 +184,45 @@ class EVF_Admin_Forms {
 	 */
 	public function untrash_form_status( $new_status, $post_id ) {
 		return current_user_can( 'everest_forms_edit_forms', $post_id ) ? 'publish' : $new_status;
+	}
+	/**
+	 * Remove the post from form migrator import tracker.
+	 *
+	 * @param [int]    $form_id The form ID.
+	 * @param [string] $previous_status The previous status.
+	 * @since 2.0.8
+	 */
+	public function remove_post_from_import_tracker( $form_id, $previous_status ) {
+		$form = evf()->form->get(
+			absint( $form_id ),
+			array(
+				'content_only' => true,
+			)
+		);
+
+		if ( empty( $form ) ) {
+			return;
+		}
+		$imported_from = get_post_meta( $form_id, 'evf_fm_imported_from' );
+
+		if ( empty( $imported_from ) ) {
+			return;
+		}
+		if ( ! isset( $imported_from[0]['form_from'] ) || ! isset( $imported_from[0]['form_from'] ) ) {
+			return;
+		}
+		$form_slug             = $imported_from[0]['form_from'];
+		$imported_from_form_id = $imported_from[0]['form_id'];
+		$imported_form_list    = get_option( 'evf_fm_' . $form_slug . '_imported_form_list', array() );
+
+		$is_form_imported = array_search( $imported_from_form_id, $imported_form_list );
+
+		if ( ! $is_form_imported ) {
+			return;
+		}
+
+		unset( $imported_form_list[ $is_form_imported ] );
+		update_option( 'evf_fm_' . $form_slug . '_imported_form_list', $imported_form_list );
 	}
 }
 

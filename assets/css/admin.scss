@@ -5426,7 +5426,8 @@
 	*/
  .evf-tools-export-entries,
  .everest-forms-import-form,
- .everest-forms-export-form {
+ .everest-forms-export-form,
+ .everest-forms-form-migrator {
 	 background: $color-white;
 	 max-width: 700px;
 	 padding: 20px;
@@ -5498,6 +5499,110 @@
 		 padding-top: 20px;
 		 text-align: right;
 		 border-top: 2px solid $color_gray-more-lighten;
+	 }
+	 .evf-fm-wrapper{
+		.evf-fm-form-list-container{
+			.evf-fm-forms-table-wrapper{
+				h4{
+					margin: 0;
+					font-size: 16px;
+					padding-top: 16px;
+					padding-bottom: 16px;
+				}
+				table, th, td {
+					border-collapse: collapse;
+				  }
+
+				table{
+					tr{
+					border-bottom: 2px solid #e9ebf1;
+					&.evf-fm-hide-row{
+						display: none;
+					}
+					&.evf-fm-show-row{
+						display: none;
+					}
+
+						th{
+							width: 150px;
+							padding: 12px;
+						}
+						td{
+							.evf-fm-import-actions{
+								display: flex;
+							}
+							width: 600px;
+							padding: 12px;
+							text-align:center;
+							.evf-fm-import-single{
+								padding:8px;
+								background-color: #e9ebf1;
+								border-radius: 4px;;
+								border:none;
+								&:hover{
+									background-color: #7e3bd0;
+									color: #fff;
+									border: none;
+									cursor: pointer;
+								}
+							}
+							.evf-fm-import-entry{
+								padding:8px;
+								background-color: #b5facd;
+								border-radius: 4px;;
+								border:none;
+								display: inline;
+								margin-left: 8px;
+								&:not(:disabled):hover{
+									background-color: #7e3bd0;
+									color: #fff;
+									border: none;
+									cursor: pointer;
+								}
+							}
+						}
+					}
+				}
+				.evf-fm-pagination{
+					padding-top:16px;
+					button{
+						margin: 2px;
+						cursor: pointer;
+						&:hover{
+							background-color: #7e3bd0;
+							color: #fff;
+							border: none;
+						}
+						&.evf-fm-btn-active{
+							background-color: #7e3bd0;
+							color: #fff;
+							border: none;
+						}
+					}
+				}
+				.evf-fm-import-selected-wrapper{
+					display: flex;
+					flex-direction: row;
+					justify-content: space-between;
+					margin-left: 15px;
+					margin-right: 100px;
+				}
+				.evf-fm-import-selected-btn{
+					margin-top: 16px;
+					padding:8px;
+					background-color: #e9ebf1;
+					border-radius: 4px;;
+					border:none;
+					align-items: right;
+					&:hover{
+						background-color: #7e3bd0;
+						color: #fff;
+						border: none;
+						cursor: pointer;
+					}
+				}
+			}
+		}
 	 }
  }
 

@@ -17,21 +17,45 @@ class EVF_Admin_Tools {
 	 * Handles output of the reports page in admin.
 	 */
 	public static function output() {
-		include_once dirname( __FILE__ ) . '/views/html-admin-page-tools.php';
+		include_once __DIR__ . '/views/html-admin-page-tools.php';
 	}
 
 	/**
 	 * Show the import page.
 	 */
 	public static function import() {
-		include_once dirname( __FILE__ ) . '/views/html-admin-page-import.php';
+		include_once __DIR__ . '/views/html-admin-page-import.php';
 	}
 
 	/**
 	 * Show the export page.
 	 */
 	public static function export() {
-		include_once dirname( __FILE__ ) . '/views/html-admin-page-export.php';
+		include_once __DIR__ . '/views/html-admin-page-export.php';
+	}
+	/**
+	 * Show the Form migrator page.
+	 *
+	 * @since 2.0.6
+	 */
+	public static function form_migrator() {
+		// Form object list.
+		$forms_object = array(
+			'contactform7' => class_exists( 'EVF_Fm_Contactform7' ) ? new EVF_Fm_Contactform7() : '',
+			'wpforms'      => class_exists( 'EVF_Fm_wpforms' ) ? new EVF_Fm_Wpforms() : '',
+		);
+		// Forms status.
+		$forms_status = array();
+		foreach ( $forms_object as $form_id => $form_obj ) {
+			$forms_status[] = $form_obj->register( array() );
+			// For dismiss the notification.
+			if ( ! $form_obj->is_dimissed() ) {
+				$option_id = 'evf_fm_dismiss_xnotice_' . $form_obj->slug;
+				update_option( $option_id, true );
+			}
+		}
+
+		include_once __DIR__ . '/views/html-admin-page-form-migrator.php';
 	}
 
 	/**
@@ -195,5 +219,4 @@ class EVF_Admin_Tools {
 		wp_safe_redirect( esc_url_raw( admin_url( 'admin.php?page=evf-tools&tab=logs' ) ) );
 		exit();
 	}
-
 }
