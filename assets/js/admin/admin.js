@@ -447,4 +447,37 @@
 		}, 2000);
 	});
 
+	// Search functionality in addon.
+	$(document).ready(function(){
+		$("#everest_forms_search_addons").on("keyup search", function() {
+			var value = $(this).val().toLowerCase();
+			var matchFound = false;
+
+			$(".the-list .plugin-card").each(function() {
+				var $card = $(this);
+				var text = $card.text().toLowerCase();
+
+				if (text.indexOf(value) > -1) {
+					$card.show();
+					matchFound = true;
+				} else {
+					$card.hide();
+				}
+			});
+
+			if (!matchFound) {
+				$(".refresh").hide();
+				$("#evf_addon_no_result_found").remove();
+				$(".refresh").after('<p id="evf_addon_no_result_found">No Result Found</p>');
+			} else {
+				$(".refresh").show();
+				$("#evf_addon_no_result_found").hide();
+			}
+		});
+	});
+
+
+
+
+
 })( jQuery, everest_forms_admin );

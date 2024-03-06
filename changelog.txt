@@ -2,7 +2,9 @@
 
 
 = 2.0.8       - xx-xx-2024
-* Fix - Restrict font_url for unauthorized users and allow only certain font_url.
+* Fix         - Restrict font_url for unauthorized users and allow only certain font_url.
+* Enhancement - Search functionality on Addons page.
+* Feature     - Embedded shortcode directly in page through builder.
 
 = 2.0.7       - 22-02-2024
 * Enhancement - Screenshot video on upgrade to pro popup.

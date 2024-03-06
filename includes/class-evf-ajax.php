@@ -104,7 +104,9 @@ class EVF_AJAX {
 			'locate_form_action'      => false,
 			'slot_booking'            => true,
 			'active_addons'           => false,
-			'get_local_font_url'      => false,
+			'get_local_font_url'      => true,
+			'embed_form'              => false,
+			'goto_edit_page'          => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -1000,6 +1002,8 @@ class EVF_AJAX {
 
 	/**
 	 * Download the provided font and return the url for font file.
+	 *
+	 * @since 2.0.8
 	 */
 	public static function get_local_font_url() {
 		$font_url = isset( $_POST['font_url'] ) ? sanitize_text_field( wp_unslash( $_POST['font_url'] ) ) : ''; //phpcs:ignore WordPress.Security.NonceVerification
@@ -1017,6 +1021,51 @@ class EVF_AJAX {
 		}
 
 		return wp_send_json_success( $font_url );
+	}
+
+	/**
+	 * Function everest_forms_embed_form is used to get total pages
+	 *
+	 * @since 2.0.8
+	 */
+	public static function embed_form() {
+		check_ajax_referer( 'everest_forms_embed_form', 'security' );
+		$args  = array(
+			'post_status' => 'publish',
+			'post_type'   => 'page',
+		);
+		$pages = get_pages( $args );
+
+		wp_send_json_success( $pages );
+	}
+
+	/**
+	 * Get page edit link
+	 *
+	 * @since 2.0.8
+	 */
+	public static function goto_edit_page() {
+		check_ajax_referer( 'everest_forms_goto_edit_page', 'security' );
+
+		$page_id = empty( $_POST['page_id'] ) ? 0 : sanitize_text_field( absint( $_POST['page_id'] ) );
+
+		if ( empty( $page_id ) ) {
+			$url  = add_query_arg( 'post_type', 'page', admin_url( 'post-new.php' ) );
+			$meta = array(
+				'embed_page'       => 0,
+				'embed_page_title' => ! empty( $_POST['page_title'] ) ? sanitize_text_field( wp_unslash( $_POST['page_title'] ) ) : '',
+			);
+		} else {
+			$url  = get_edit_post_link( $page_id, '' );
+			$meta = array(
+				'embed_page' => $page_id,
+			);
+		}
+
+		$meta['form_id'] = ! empty( $_POST['form_id'] ) ? absint( $_POST['form_id'] ) : 0;
+		EVF_Admin_Embed_Wizard::set_meta( $meta );
+
+		wp_send_json_success( $url );
 	}
 }
 
