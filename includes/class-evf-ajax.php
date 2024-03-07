@@ -1126,7 +1126,6 @@ class EVF_AJAX {
 	public static function form_migrator() {
 		try {
 			check_ajax_referer( 'evf_form_migrator_nonce', 'security' );
-			lg( $_POST );
 			$form_slug = isset( $_POST['form_slug'] ) ? sanitize_text_field( wp_unslash( $_POST['form_slug'] ) ) : '';
 			$form_ids  = isset( $_POST['form_ids'] ) ? wp_unslash( $_POST['form_ids'] ) : ''; //phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 			if ( '' === $form_ids ) {
