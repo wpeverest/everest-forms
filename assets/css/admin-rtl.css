@@ -9961,8 +9961,7 @@ img.ui-datepicker-trigger {
       .jconfirm-scrollpane .jconfirm-row .jconfirm-box div.jconfirm-title-c .jconfirm-title h4 {
         margin: 0; }
   .jconfirm-scrollpane .jconfirm-row .jconfirm-box .jconfirm-buttons {
-    padding: 0 !important;
-    display: none !important; }
+    padding: 0 !important; }
     .jconfirm-scrollpane .jconfirm-row .jconfirm-box .jconfirm-buttons button.btn-confirm {
       margin: 0; }
   .jconfirm-scrollpane .jconfirm-row .jconfirm-box .jconfirm-content-pane {

@@ -7179,7 +7179,6 @@
 
 			.jconfirm-buttons {
 				padding: 0 !important;
-				display: none !important;
 
 				button {
 					&.btn-confirm {
@@ -7213,11 +7212,11 @@
 						&:focus {
 							box-shadow: none;
 						}
-						
+
 						&.everest-forms-select-existing-page {
 							margin-right: 10px;
 						}
-						
+
 						&.everest-forms-create-new-page {
 							margin-left: 10px;
 						}
