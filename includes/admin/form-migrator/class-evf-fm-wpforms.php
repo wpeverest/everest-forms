@@ -717,11 +717,13 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 			$entries['form_id']         = $evf_form_id;
 			$entries['referer']         = '';
 			$entries['fields']          = wp_json_encode( $entry_list );
-			$entries['token']           = null;
-			$entries['status']          = 'publish';
-			$entries['viewed']          = $submission->viewed;
-			$entries['starred']         = $submission->starred;
-			$entries['date_created']    = $submission->date;
+			if ( $this->check_token_column() ) {
+				$entries['token'] = null;
+			}
+			$entries['status']       = 'publish';
+			$entries['viewed']       = $submission->viewed;
+			$entries['starred']      = $submission->starred;
+			$entries['date_created'] = $submission->date;
 
 			$entry_id = $this->save_migrated_entry( $entries, $entry_list, $form_data );
 
@@ -729,6 +731,13 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 		}
 
 		return $evf_form_entries;
+	}
+	/**
+	 * Function to check the token.
+	 * It exists only if the save and continue addon in use.
+	 */
+	public function check_token_column() {
+		return defined( 'EVF_SAVE_AND_CONTINUE_VERSION' );
 	}
 }
 
