@@ -558,6 +558,18 @@ class EVF_Form_Task {
 		$is_global_pdf_download_enabled = 'yes' === get_option( 'everest_forms_pdf_download_after_submit', 'no' ) || '1' === get_option( 'everest_forms_pdf_download_after_submit', 'no' );
 		$should_allow_pdf_download      = $is_pdf_submission_enabled ? $is_pdf_download_after_submit : $is_global_pdf_download_enabled;
 
+		$is_preview_confirmation = isset( $this->form_data['settings']['preview_confirmation'] ) ? $this->form_data['settings']['preview_confirmation'] : 0;
+
+		// show preview of form after submission.
+		if ( '1' === $is_preview_confirmation ) {
+			$preview_confirmation = '';
+			$preview_style        = isset( $this->form_data['settings']['preview_confirmation_select'] ) ? $this->form_data['settings']['preview_confirmation_select'] : 'basic';
+
+			$preview_confirmation = apply_filters( 'everest_forms_preview_confirmation', $preview_confirmation, $this->form_data, $entry, $preview_style );
+
+			evf_add_notice( $preview_confirmation, 'report' );
+		}
+
 		if ( defined( 'EVF_PDF_SUBMISSION_VERSION' ) && $should_allow_pdf_download ) {
 			global $__everest_form_id;
 			global $__everest_form_entry_id;
