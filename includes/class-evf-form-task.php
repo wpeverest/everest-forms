@@ -980,17 +980,19 @@ class EVF_Form_Task {
 
 		do_action( 'everest_forms_process_entry_save', $fields, $entry, $form_id, $form_data );
 
-		$fields      = apply_filters( 'everest_forms_entry_save_data', $fields, $entry, $form_data );
-		$browser     = evf_get_browser();
-		$user_ip     = evf_get_ip_address();
-		$user_device = evf_get_user_device();
-		$user_agent  = $browser['name'] . '/' . $browser['platform'] . '/' . $user_device;
-		$referer     = ! empty( $_SERVER['HTTP_REFERER'] ) ? esc_url_raw( wp_unslash( $_SERVER['HTTP_REFERER'] ) ) : '';
-		$entry_id    = false;
-		$status      = isset( $entry['evf_spam_status'] ) ? $entry['evf_spam_status'] : 'publish';
-		$admin_approval_entries = get_option('everest_forms_admin_approval_entries_enable','no');
+		$fields                          = apply_filters( 'everest_forms_entry_save_data', $fields, $entry, $form_data );
+		$browser                         = evf_get_browser();
+		$user_ip                         = evf_get_ip_address();
+		$user_device                     = evf_get_user_device();
+		$user_agent                      = $browser['name'] . '/' . $browser['platform'] . '/' . $user_device;
+		$referer                         = ! empty( $_SERVER['HTTP_REFERER'] ) ? esc_url_raw( wp_unslash( $_SERVER['HTTP_REFERER'] ) ) : '';
+		$entry_id                        = false;
+		$status                          = isset( $entry['evf_spam_status'] ) ? $entry['evf_spam_status'] : 'publish';
+		$admin_approval_entries          = get_option( 'everest_forms_admin_approval_entries_enable', 'no' );
+		$settings                        = $this->form_data['settings'];
+		$evf_form_admin_approval_entries = isset( $settings['enable_admin_approval_entries'] ) ? $settings['enable_admin_approval_entries'] : '0';
 
-		if('yes' === $admin_approval_entries){
+		if ( 'yes' === $admin_approval_entries && '1' === $evf_form_admin_approval_entries ) {
 			$status = 'draft';
 		}
 
