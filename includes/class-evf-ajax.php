@@ -1032,7 +1032,7 @@ class EVF_AJAX {
 		try {
 			check_ajax_referer( 'evf_form_migrator_forms_list_nonce', 'security' );
 
-			$form_slug = isset( $_POST['form_slug'] ) ? sanitize_text_field( $_POST['form_slug'] ) : '';
+			$form_slug = isset( $_POST['form_slug'] ) ? sanitize_text_field( wp_unslash( $_POST['form_slug'] ) ) : '';
 			if ( '' === $form_slug ) {
 				wp_send_json_error(
 					array(
@@ -1045,7 +1045,7 @@ class EVF_AJAX {
 			$class_name = 'EVF_Fm_' . ucfirst( trim( str_replace( '-', '', $form_slug ) ) );
 
 			if ( ! class_exists( $class_name ) ) {
-				$except_message = sprintf( '<b><i>%s</i></b> %s', $class_name, esc_html__( 'does not exist.' ) );
+				$except_message = sprintf( '<b><i>%s</i></b> %s', $class_name, esc_html__( 'does not exist.', 'everest-forms' ) );
 				throw new Exception( $except_message );
 			}
 
@@ -1121,14 +1121,14 @@ class EVF_AJAX {
 	/**
 	 * Form migrator.
 	 *
-	 * @since 2.0.6
+	 * @since 2.0.8
 	 */
 	public static function form_migrator() {
 		try {
 			check_ajax_referer( 'evf_form_migrator_nonce', 'security' );
 
-			$form_slug = isset( $_POST['form_slug'] ) ? sanitize_text_field( $_POST['form_slug'] ) : '';
-			$form_ids  = isset( $_POST['form_ids'] ) ? $_POST['form_ids'] : '';
+			$form_slug = isset( $_POST['form_slug'] ) ? sanitize_text_field( wp_unslash( $_POST['form_slug'] ) ) : '';
+			$form_ids  = isset( $_POST['form_ids'] ) ? sanitize_text_field( wp_unslash( $_POST['form_ids'] ) ) : '';
 			if ( '' === $form_ids ) {
 				wp_send_json_error(
 					array(
@@ -1173,7 +1173,7 @@ class EVF_AJAX {
 	/**
 	 * Dismiss Form migrator notice.
 	 *
-	 * @since 2.0.6
+	 * @since 2.0.8
 	 */
 	public static function fm_dismiss_notice() {
 		try {
@@ -1198,7 +1198,7 @@ class EVF_AJAX {
 	/**
 	 * Form entry migrator.
 	 *
-	 * @since 2.0.6
+	 * @since 2.0.8
 	 */
 	public static function form_entry_migrator() {
 		try {
@@ -1210,8 +1210,8 @@ class EVF_AJAX {
 					)
 				);
 			}
-			$form_id   = isset( $_POST['form_id'] ) ? sanitize_text_field( $_POST['form_id'] ) : '';
-			$form_slug = isset( $_POST['form_slug'] ) ? sanitize_text_field( $_POST['form_slug'] ) : '';
+			$form_id   = isset( $_POST['form_id'] ) ? sanitize_text_field( wp_unslash( $_POST['form_id'] ) ) : '';
+			$form_slug = isset( $_POST['form_slug'] ) ? sanitize_text_field( wp_unslash( $_POST['form_slug'] ) ) : '';
 
 			if ( empty( $form_id ) || empty( $form_slug ) ) {
 
