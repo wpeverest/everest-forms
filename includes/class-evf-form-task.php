@@ -62,6 +62,9 @@ class EVF_Form_Task {
 		add_action( 'wp', array( $this, 'listen_task' ) );
 		add_filter( 'everest_forms_field_properties', array( $this, 'load_previous_field_value' ), 99, 3 );
 		add_action( 'everest_forms_complete_entry_save', array( $this, 'update_slot_booking_value' ), 10, 5 );
+		add_action('everest_forms_complete_entry_save', array($this, 'evf_set_approval_status'),10, 2);
+		add_action( 'admin_init', array( $this, 'evf_admin_approve_entry' ), 10, 2 );
+		add_action( 'admin_init', array( $this, 'evf_admin_deny_entry' ) );
 	}
 
 	/**
@@ -1316,5 +1319,97 @@ class EVF_Form_Task {
 		$entry_data['content'] = implode( ' ', $entry_content );
 
 		return $entry_data;
+	}
+
+	/**
+	 * Verify the token and approve the entry if the token matches.
+	 *
+	 * @since 2.0.8
+	 * @return void
+	 */
+	public static function evf_admin_approve_entry() {
+		if ( ! isset( $_GET['evf_admin_approval_entry_token'] ) || empty( $_GET['evf_admin_approval_entry_token'] ) ) {
+			return;
+		}
+
+		if ( current_user_can( 'edit_users' ) ) {
+			global $wpdb;
+			$evf_admin_approve_entry_token_raw = sanitize_text_field( wp_unslash( $_GET['evf_admin_approval_entry_token']) );
+
+			$evf_admin_approval_entry_enable = get_option( 'everest_forms_admin_approval_entries_enable', 'no' );
+			$evf_admin_form_id               = isset( $_GET['form_id'] ) ? $_GET['form_id'] : '';
+			$evf_admin_entry_id              = isset( $_GET['entry_id'] ) ? $_GET['entry_id'] : '';
+			$evf_entry_redirect_url          = admin_url() . 'admin.php?page=evf-entries&form_id=' . $evf_admin_form_id . '&view-entry=' . $evf_admin_entry_id;
+			$evf_admin_entry_saved_token = get_option('everest_forms_admin_entry_approval_token', array());
+
+			if ( 'yes' === $evf_admin_approval_entry_enable ) {
+				$evf_admin_approval_entry_token = $_GET['evf_admin_approval_entry_token'];
+				if ( in_array($evf_admin_approve_entry_token_raw, $evf_admin_entry_saved_token) ) {
+					$evf_admin_approval_approved                 = $wpdb->query( $wpdb->prepare("UPDATE {$wpdb->prefix}evf_entries SET status = %s WHERE entry_id = %s ", 'publish', $evf_admin_entry_id) );
+					wp_redirect( $evf_entry_redirect_url );
+				}
+			}
+		}
+	}
+
+	/**
+	 * Verify the token and deny the entry if the token matches.
+	 *
+	 * @since 2.0.8
+	 * @return void
+	 */
+	public static function evf_admin_deny_entry() {
+		if ( ! isset( $_GET['evf_admin_denial_entry_token'] ) || empty( $_GET['evf_admin_denial_entry_token'] ) ) {
+			return;
+		}
+
+		if ( current_user_can( 'edit_users' ) ) {
+			global $wpdb;
+
+			$evf_admin_approve_entry_token_raw = sanitize_text_field( wp_unslash( $_GET['evf_admin_denial_entry_token']) );
+			$evf_admin_approval_entry_enable = get_option( 'everest_forms_admin_approval_entries_enable', 'no' );
+			$evf_admin_form_id               = isset( $_GET['form_id'] ) ? $_GET['form_id'] : '';
+			$evf_admin_entry_id              = isset( $_GET['entry_id'] ) ? $_GET['entry_id'] : '';
+			$evf_entry_redirect_url          = admin_url() . 'admin.php?page=evf-entries&form_id=' . $evf_admin_form_id . '&view-entry=' . $evf_admin_entry_id;
+			$evf_admin_entry_saved_token = get_option('everest_forms_admin_entry_approval_token', array());
+
+			if ( 'yes' === $evf_admin_approval_entry_enable ) {
+				$evf_admin_denial_entry_token = $_GET['evf_admin_denial_entry_token'];
+				if ( in_array($evf_admin_approve_entry_token_raw, $evf_admin_entry_saved_token) ) {
+					$evf_admin_approval_denied                  = $wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->prefix}evf_entries SET status = %s WHERE entry_id = %s ", 'denied', $evf_admin_entry_id  ) );
+					wp_redirect( $evf_entry_redirect_url );
+				}
+			}
+		}
+	}
+
+	/**
+	 * Set the entry approval token of the entry and update it to the options table in database.
+	 *
+	 * @param array $form_data Form field data.
+	 * @param int   $entry_id Entry ID.
+	 *
+	 * @since 2.0.8
+	 *
+	 * @return void.
+	 */
+	public function evf_set_approval_status( $entry_id, $form_data ) {
+		$evf_admin_approval_token_list  = array();
+		$form_id                        = isset( $form_data['id'] ) ? $form_id['id'] : '';
+		$evf_admin_entry_enable         = get_option( 'everest_forms_admin_approval_entries_enable', 'no' );
+		$evf_admin_entry_approval_token = get_option( 'everest_forms_admin_entry_approval_token', array() );
+		$evf_approval_key = 'approval_token_'.$entry_id;
+
+		// Checks if admin approval entry is enabled.
+		if ( ! isset( $evf_admin_entry_enable ) ) {
+			return;
+		} else {
+			$token = evf_get_random_string(20);
+			$evf_approval_token = array(
+				$evf_approval_key => $token,
+			);
+			$evf_new_token = array_merge( $evf_admin_entry_approval_token, $evf_approval_token );
+			update_option( 'everest_forms_admin_entry_approval_token', $evf_new_token );
+		}
 	}
 }
