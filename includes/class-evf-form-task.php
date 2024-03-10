@@ -562,12 +562,9 @@ class EVF_Form_Task {
 
 		// show preview of form after submission.
 		if ( '1' === $is_preview_confirmation ) {
-			$preview_confirmation = '';
-			$preview_style        = isset( $this->form_data['settings']['preview_confirmation_select'] ) ? $this->form_data['settings']['preview_confirmation_select'] : 'basic';
+			$preview_style = isset( $this->form_data['settings']['preview_confirmation_select'] ) ? $this->form_data['settings']['preview_confirmation_select'] : 'basic';
 
-			$preview_confirmation = apply_filters( 'everest_forms_preview_confirmation', $preview_confirmation, $this->form_data, $entry, $preview_style );
-
-			evf_add_notice( $preview_confirmation, 'report' );
+			do_action( 'everest_forms_preview_confirmation', $this->form_data, $entry, $preview_style );
 		}
 
 		if ( defined( 'EVF_PDF_SUBMISSION_VERSION' ) && $should_allow_pdf_download ) {

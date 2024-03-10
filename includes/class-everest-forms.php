@@ -290,7 +290,7 @@ final class EverestForms {
 		/**
 		 * Preview Confirmation Class
 		 */
-		include_once EVF_ABSPATH . 'includes/class-evf-admin-preview-confirmation.php';
+		include_once EVF_ABSPATH . 'includes/admin/class-evf-admin-preview-confirmation.php';
 
 		/**
 		 * Elementor classes.
