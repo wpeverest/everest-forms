@@ -40,10 +40,9 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		$sections = apply_filters(
 			'everest_forms_builder_settings_section',
 			array(
-				'general'      => esc_html__( 'General', 'everest-forms' ),
-				'email'        => esc_html__( 'Email', 'everest-forms' ),
-				'confirmation' => esc_html__( 'Confirmations', 'everest-forms' ),
-				'security'     => esc_html__( 'Anti-Spam and Security', 'everest-forms' ),
+				'general'  => esc_html__( 'General', 'everest-forms' ),
+				'email'    => esc_html__( 'Email', 'everest-forms' ),
+				'security' => esc_html__( 'Anti-Spam and Security', 'everest-forms' ),
 			),
 			$this->form_data
 		);
@@ -682,43 +681,6 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 
 				endforeach;
 
-				echo '</div>';
-
-				// --------------------------------------------------------------------//
-				// Preview Confirmation
-				// --------------------------------------------------------------------//
-				echo '<div class="evf-content-section evf-content-confirmation-settings">';
-				echo '<div class="evf-content-section-title">';
-				esc_html_e( 'Confirmations', 'everest-forms' );
-				echo '</div>';
-				everest_forms_panel_field(
-					'toggle',
-					'settings',
-					'preview_confirmation',
-					$this->form_data,
-					esc_html__( 'Show entry preview after confirmation', 'everest-forms' ),
-					array(
-						'tooltip' => esc_html__( 'Show entry preview after confirmation', 'everest-forms' ),
-					)
-				);
-
-				everest_forms_panel_field(
-					'select',
-					'settings',
-					'preview_confirmation_select',
-					$this->form_data,
-					esc_html__( 'Preview type', 'everest-forms' ),
-					array(
-						'default' => 'same',
-						/* translators: %1$s - general settings docs url */
-						'tooltip' => esc_html__( 'Choose preview style type.', 'everest-forms' ),
-						'options' => array(
-							'basic'   => esc_html__( 'Basic', 'everest-forms' ),
-							'table'   => esc_html__( 'Table', 'everest-forms' ),
-							'compact' => esc_html__( 'Compact', 'everest-forms' ),
-						),
-					)
-				);
 				echo '</div>';
 
 				// --------------------------------------------------------------------//
