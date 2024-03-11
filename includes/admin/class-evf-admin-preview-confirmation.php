@@ -76,14 +76,16 @@ class EVF_Admin_Preview_Confirmation {
 
 		foreach ( $form_data['form_fields'] as $id => $data ) {
 
-			if ( ! isset( $entry['form_fields'] ) ) {
-				continue;
-			}
 			$form_field_type = $form_data['form_fields'][ $id ]['type'];
 
-			$signature = apply_filters( 'everest_forms_field_exporter_' . $form_field_type, $form_fields[ $id ], 'pdf-export' );
+			$signature = apply_filters( 'everest_forms_field_exporter_' . $form_field_type, $form_fields[ $id ] );
 
 			$output .= '<div class="everest_forms_preview_confirmation_row_title_' . $preview_style . '">' . $data['label'] . ': ';
+
+			if ( ! isset( $entry['form_fields'] ) && 'image-upload' === $form_fields[ $id ]['type'] ) {
+				$output .= '<a href="' . $form_fields[ $id ]['value'] . '" rel="noopener noreferrer" target="_blank"><img src="' . $form_fields[ $id ]['value'] . '" style="width:200px;" /></a>';
+				continue;
+			}
 			if ( 'basic' === $preview_style ) {
 				$output .= '</div>';
 
