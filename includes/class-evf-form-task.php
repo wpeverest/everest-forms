@@ -564,7 +564,7 @@ class EVF_Form_Task {
 		if ( '1' === $is_preview_confirmation ) {
 			$preview_style = isset( $this->form_data['settings']['preview_confirmation_select'] ) ? $this->form_data['settings']['preview_confirmation_select'] : 'basic';
 
-			do_action( 'everest_forms_preview_confirmation', $this->form_data, $entry, $this->form_fields, $preview_style );
+			do_action( 'everest_forms_preview_confirmation', $this->form_data, $this->form_fields, $preview_style );
 		}
 
 		if ( defined( 'EVF_PDF_SUBMISSION_VERSION' ) && $should_allow_pdf_download ) {

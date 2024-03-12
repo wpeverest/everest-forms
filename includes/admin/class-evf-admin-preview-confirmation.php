@@ -21,7 +21,7 @@ class EVF_Admin_Preview_Confirmation {
 	 * @since 2.0.8
 	 */
 	public static function init() {
-		add_action( 'everest_forms_preview_confirmation', array( __CLASS__, 'preview_confirmation' ), 20, 4 );
+		add_action( 'everest_forms_preview_confirmation', array( __CLASS__, 'preview_confirmation' ), 20, 3 );
 		add_filter( 'everest_forms_notice_types', array( __CLASS__, 'add_notice' ) );
 	}
 
@@ -36,100 +36,46 @@ class EVF_Admin_Preview_Confirmation {
 	}
 
 	/**
-	 * Likert output
-	 *
-	 * @since 0
-	 *
-	 * @param  [array]  $form_data Form Data.
-	 * @param  [array]  $entry Entry Data.
-	 * @param  [string] $id Id for entry and form data.
-	 */
-	public static function likert_output( $form_data, $entry, $id ) {
-		$output = '';
-
-		$i = 0;
-		foreach ( $form_data['form_fields'][ $id ]['likert_rows'] as $key => $question ) {
-			$output .= '<div class="class="everest_forms_preview_confirmation_likert_question"> ' . $question . '</div>';
-			if ( array_key_exists( $key, $entry['form_fields'][ $id ] ) ) {
-				$output .= '<div class="everest_forms_preview_confirmation_likert_answer">' . $form_data['form_fields'][ $id ]['likert_columns'][ $entry['form_fields'][ $id ][ $key ] ] . '</div>';
-			} else {
-				$output .= '<div class="everest_forms_preview_confirmation_likert_answer">No Answer</div>';
-			}
-		}
-
-		return $output;
-	}
-
-	/**
 	 * Show preview confirmation after form submission.
 	 *
 	 * @since 2.0.8
 	 *
 	 * @param  [array]  $form_data   Form Data.
-	 * @param  [array]  $entry Entry.
 	 * @param [array]  $form_fields Form Fields.
 	 * @param [string] $preview_style Preview Style.
 	 */
-	public static function preview_confirmation( $form_data, $entry, $form_fields, $preview_style ) {
+	public static function preview_confirmation( $form_data, $form_fields, $preview_style ) {
 		$output  = '';
 		$output .= '<div class="everest_forms_preview_confirmation_' . $preview_style . '">';
-
+		$exclude = array(
+			'captcha',
+			'password',
+		);
 		foreach ( $form_data['form_fields'] as $id => $data ) {
+			if ( in_array( $data['type'], $exclude, true ) ) {
+				continue;
+			}
+			if ( 'image-upload' !== $form_fields[ $id ]['type'] ) {
+				if ( has_filter( "everest_forms_field_exporter_{$form_fields[ $id ]['type']}" ) ) {
+					$formatted_string = apply_filters( "everest_forms_field_exporter_{$form_fields[ $id ]['type']}", $form_fields[ $id ] );
 
-			$form_field_type = $form_data['form_fields'][ $id ]['type'];
-
-			$signature = apply_filters( 'everest_forms_field_exporter_' . $form_field_type, $form_fields[ $id ] );
-
-			$output .= '<div class="everest_forms_preview_confirmation_row_title_' . $preview_style . '">' . $data['label'] . ': ';
-
-			if ( ! isset( $entry['form_fields'] ) && 'image-upload' === $form_fields[ $id ]['type'] ) {
+					if ( false === $formatted_string['value'] ) {
+						$formatted_string['value'] = esc_html__( '(Empty)', 'everest-forms' );
+					}
+				}
+			} else {
+				$output .= '<div class="everest_forms_preview_confirmation_' . $preview_style . '_label">' . $form_fields[ $id ]['name'] . ': </div>';
 				$output .= '<a href="' . $form_fields[ $id ]['value'] . '" rel="noopener noreferrer" target="_blank"><img src="' . $form_fields[ $id ]['value'] . '" style="width:200px;" /></a>';
 				continue;
 			}
+
+			$close_div = 'basic' === $preview_style ? '' : '</div>';
 			if ( 'basic' === $preview_style ) {
-				$output .= '</div>';
-
-				if ( is_array( $entry['form_fields'][ $id ] ) ) {
-
-					if ( 'likert' === $form_field_type ) {
-						$output .= self::likert_output( $form_data, $entry, $id );
-					}
-
-					if ( 'checkbox' === $form_field_type ) {
-						$output .= '<div class="everest_forms_preview_confirmation_row_data_' . $preview_style . '">';
-						foreach ( $entry['form_fields'][ $id ] as $value ) {
-							$output .= $value . '</div>';
-						}
-					}
-					if ( 'signature' === $form_field_type ) {
-						$output .= '<div>' . $signature['value'] . '</div>';
-					}
-				} else {
-					$output .= '<div class="everest_forms_preview_confirmation_row_data_' . $preview_style . '">' . $entry['form_fields'][ $id ] . '</div>';
-				}
+				$output .= '<div class="everest_forms_preview_confirmation_' . $preview_style . '_label">' . $formatted_string['label'] . ' : ' . $close_div;
+				$output .= $formatted_string['value'] . '</div>';
 			} else {
-				if ( is_array( $entry['form_fields'][ $id ] ) ) {
-
-					$entry_count = count( $entry['form_fields'][ $id ] );
-					if ( 'likert' === $form_field_type ) {
-						$output .= self::likert_output( $form_data, $entry, $id );
-					}
-					if ( 'checkbox' === $form_field_type ) {
-						foreach ( $entry['form_fields'][ $id ] as $value ) {
-							--$entry_count;
-							$output .= $value;
-							if ( $entry_count > 0 ) {
-								$output .= ', ';
-							}
-						}
-						$output .= '</d>';
-					}
-					if ( 'signature' === $form_field_type ) {
-						$output .= $signature['value'] . '</div>';
-					}
-				} else {
-					$output .= $entry['form_fields'][ $id ] . '</div>';
-				}
+				$output .= '<div class="everest_forms_preview_confirmation_' . $preview_style . '_label">' . $formatted_string['label'] . ' : ' . $close_div;
+				$output .= '<div class="everest_forms_preview_confirmation_' . $preview_style . '_value">' . $formatted_string['value'] . '</div>';
 			}
 		}
 		$output .= '</div>';

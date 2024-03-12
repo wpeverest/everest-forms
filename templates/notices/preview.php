@@ -1,6 +1,6 @@
 <?php
 /**
- * Preview entry after form submission
+ * Preview confirmation entry after form submission
  *
  * This template can be overridden by copying it to yourtheme/everest-forms/notices/notice.php.
  *
@@ -18,8 +18,53 @@
 defined( 'ABSPATH' ) || exit;
 ?>
 
-<?php if ( $messages ) : ?>
-	<?php foreach ( $messages as $message ) : ?>
-		<div class="everest-forms-preview"><?php echo wp_kses_post( $message ); ?></div>
+<?php
+if ( $messages ) :
+	$allowed_tags = array(
+		'table' => array(
+			'border'      => array(),
+			'cellpadding' => array(),
+			'cellspacing' => array(),
+			'style'       => array(),
+		),
+		'tr'    => array(),
+		'td'    => array(
+			'colspan' => array(),
+			'rowspan' => array(),
+			'style'   => array(),
+			'class'   => array(),
+		),
+		'th'    => array(
+			'colspan' => array(),
+			'rowspan' => array(),
+			'style'   => array(),
+			'class'   => array(),
+		),
+		'a'     => array(
+			'id'    => true,
+			'href'  => true,
+			'title' => true,
+		),
+		'style' => array(
+			'type' => array(),
+		),
+		'div'   => array(
+			'id'    => array(),
+			'class' => array(),
+		),
+		'img'   => array(
+			'src'   => true,
+			'class' => array(),
+			'style' => array(
+				'type' => array(),
+			),
+		),
+		'br'    => true,
+	);
+	?>
+	<?php
+	foreach ( $messages as $message ) :
+		?>
+		<div class="everest-forms-preview"><?php echo wp_kses( $message, $allowed_tags ); ?></div>
 	<?php endforeach; ?>
 <?php endif; ?>
