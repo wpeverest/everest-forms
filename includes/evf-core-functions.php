@@ -1174,8 +1174,8 @@ function evf_get_all_forms( $skip_disabled_entries = false, $check_disable_stori
  * @return string
  */
 function evf_get_meta_key_field_option( $field ) {
-	if (isset($field['type']) && isset($field['label'])) {
-		switch ($field['type']) {
+	if ( isset( $field['type'] ) && isset( $field['label'] ) ) {
+		switch ( $field['type'] ) {
 			case 'select':
 				$field['label'] = 'Dropdown';
 				break;
@@ -4839,7 +4839,7 @@ if ( ! function_exists( 'evf_maybe_get_local_font_url' ) ) {
 	}
 }
 
-if( ! function_exists( 'evf_is_akismet_configured' ) ) {
+if ( ! function_exists( 'evf_is_akismet_configured' ) ) {
 
 	/**
 	 * Has the Akismet plugin been configured wih a valid API key?
@@ -4850,18 +4850,18 @@ if( ! function_exists( 'evf_is_akismet_configured' ) ) {
 	 */
 	function evf_is_akismet_configured() {
 
-		if (! is_plugin_active( 'akismet/akismet.php' ) ) {
+		if ( ! is_plugin_active( 'akismet/akismet.php' ) ) {
 			return false;
 		}
 
-		require_once( WP_PLUGIN_DIR . '/akismet/akismet.php' );
+		require_once WP_PLUGIN_DIR . '/akismet/akismet.php';
 
 		$akismet_instance = new Akismet();
 		// Akismet will only allow an API key to be saved if it is a valid key.
 		// We can assume that if there is an API key saved, it is valid.
 		$api_key = $akismet_instance->get_api_key();
 
-		if(! empty( $api_key ) ) {
+		if ( ! empty( $api_key ) ) {
 			return true;
 		}
 
@@ -4869,7 +4869,7 @@ if( ! function_exists( 'evf_is_akismet_configured' ) ) {
 	}
 }
 
-if( ! function_exists( 'evf_current_url' ) ) {
+if ( ! function_exists( 'evf_current_url' ) ) {
 	/**
 	 * Get the current URL.
 	 *
@@ -4964,5 +4964,37 @@ if ( ! function_exists( 'evf_process_all_fields_smart_tag' ) ) {
 		$email_content .= '</div>';
 
 		return $email_content;
+	}
+}
+
+add_action( 'everest_forms_init', 'evf_check_addons_update' );
+
+if ( ! function_exists( 'evf_check_addons_update' ) ) {
+
+	/**
+	 * Manually check for addons update.
+	 */
+	function evf_check_addons_update() {
+		if ( class_exists( 'EVF_Plugin_Updater' ) ) {
+
+			$plugins_to_check = array();
+
+			if ( class_exists( 'EverestForms_Pro' ) && is_plugin_active( 'everest-forms-pro/everest-forms-pro.php' ) && defined( 'EFP_PLUGIN_FILE' ) && defined( 'EFP_VERSION' ) ) {
+				$plugins_to_check['EverestForms_Pro'] = array(
+					'plugin'  => 'everest-forms-pro/everest-forms-pro.php',
+					'file'    => EFP_PLUGIN_FILE,
+					'id'      => 3441,
+					'version' => EFP_VERSION,
+				);
+			}
+
+			$current = get_site_transient( 'update_plugins' );
+
+			foreach ( $plugins_to_check as $class_name => $plugin_data ) {
+				if ( ! isset( $current->response[ $plugin_data['plugin'] ] ) ) {
+					\EVF_Plugin_Updater::updates( $plugin_data['file'], $plugin_data['id'], $plugin_data['version'] );
+				}
+			}
+		}
 	}
 }
