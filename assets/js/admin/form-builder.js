@@ -2125,6 +2125,7 @@
 					security	: evf_data.evf_embed_form,
 				};
 				var $this = $(this);
+
 				$.ajax({
 					url: evf_data.ajax_url,
 					data: data,
@@ -2152,7 +2153,7 @@
 							type    : 'blue',
 							onContentReady: function () {
 								var $formId		= $(".everest-forms-embed-button").attr('data-form_id');
-
+								$(".jconfirm-buttons").hide();
 								//when clicked on 'Select Existing Page' button
 								$( ".everest-forms-select-existing-page" ).click(function () {
 
