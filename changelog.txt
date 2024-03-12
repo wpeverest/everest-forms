@@ -1,7 +1,7 @@
 == Changelog ==
 
 
-= 2.0.8       - xx-xx-2024
+= 2.0.8       - 12-03-2024
 * Fix         - Restrict font_url for unauthorized users and allow only certain font_url.
 * Enhancement - Search functionality on Addons page.
 * Feature     - Embedded shortcode directly in page through builder.

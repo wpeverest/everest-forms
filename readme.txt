@@ -4,7 +4,7 @@ Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.2
 Tested up to: 6.4
 Requires PHP: 7.2
-Stable tag: 2.0.7
+Stable tag: 2.0.8
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -292,6 +292,12 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
+= 2.0.8       - 12-03-2024
+* Fix         - Restrict font_url for unauthorized users and allow only certain font_url.
+* Enhancement - Search functionality on Addons page.
+* Feature     - Embedded shortcode directly in page through builder.
+* Feature     - Form migrator for WPForms and Contact Forms 7.
+
 = 2.0.7       - 22-02-2024
 * Enhancement - Screenshot video on upgrade to pro popup.
 * Enhancement - Clone email form settings.
@@ -300,8 +306,6 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Fix         - Show values setting not displaying in select field.
 * Fix         - Minimum character translation issue.
 * Dev         - Compatibility for Google calendar integration.
-
-
 
 = 2.0.6       - 26-12-2023
 * Upgraded    - Input mask library.
