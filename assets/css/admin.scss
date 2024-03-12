@@ -991,6 +991,9 @@
 						 &.export::before {
 							 content: '\e02f';
 						 }
+						 &.form_migrator::before {
+							content: '\e916';
+						}
 						 &.permission::before {
 							 content: '\e030';
 						 }
