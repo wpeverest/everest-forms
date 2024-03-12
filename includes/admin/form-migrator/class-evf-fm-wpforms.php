@@ -430,12 +430,18 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 								$evf_choices[] = $evf_choice;
 							}
 						}
+						// To manage static meta key issue in our plugin.
+						if ( 'select' === $type ) {
+							$compatible_meta_key = 'dropdown_';
+						} else {
+							$compatible_meta_key = $type;
+						}
 
 						$form['form_fields'][ $field_id ] = array(
 							'id'                     => $field_id,
 							'type'                   => $type,
 							'label'                  => $wpf_field['label'],
-							'meta-key'               => $type . '-' . $wpf_field['id'],
+							'meta-key'               => $compatible_meta_key . '-' . $wpf_field['id'],
 							'choices'                => $evf_choices,
 							'description'            => $wpf_field['description'],
 							'label_hide'             => isset( $wpf_field['label_hide'] ) ? $wpf_field['label_hide'] : '0',
@@ -628,6 +634,10 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 						'middle_' . $field_id,
 						'last_' . $field_id,
 					);
+				} elseif ( 'select' === $field['type'] ) {
+					$meta_keys = array( 'dropdown_' . '-' . $field_id );
+				} elseif ( 'number-slider' === $field['type'] ) {
+					$meta_keys = array( 'range-slider' . '-' . $field_id );
 				} else {
 					$meta_keys = array( $field['type'] . '-' . $field_id );
 				}
@@ -690,8 +700,8 @@ class EVF_Fm_Wpforms extends EVF_Admin_Form_Migrator {
 								$entry['type']      = $field_type;
 								$entry['meta_key']  = $field_meta_key;
 								$entry['name']      = $field_name;
-								$entry['value']     = array( wp_json_encode( $field['value'] ) );
-								$entry['value_raw'] = array( wp_json_encode( $field['value_raw'] ) );
+								$entry['value']     = array( $field['value'] );
+								$entry['value_raw'] = array( $field['value_raw'] );
 
 								break;
 
