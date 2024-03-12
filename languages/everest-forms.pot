@@ -2,16 +2,16 @@
 # This file is distributed under the same license as the Everest Forms plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Everest Forms 2.0.7\n"
+"Project-Id-Version: Everest Forms 2.0.8\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/everest-forms\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-03-06T03:28:42+01:00\n"
+"POT-Creation-Date: 2024-03-12T13:00:14+01:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.8.1\n"
+"X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: everest-forms\n"
 
 #. Plugin Name of the plugin
@@ -737,7 +737,7 @@ msgstr ""
 #: includes/admin/builder/class-evf-builder-fields.php:361
 #: includes/admin/builder/class-evf-builder-settings.php:25
 #: includes/admin/class-evf-admin-menus.php:249
-#: includes/class-evf-install.php:717
+#: includes/class-evf-install.php:719
 msgid "Settings"
 msgstr ""
 
@@ -2078,7 +2078,7 @@ msgstr ""
 
 #: includes/admin/class-evf-admin-import-export.php:131
 #: includes/admin/class-evf-admin-import-export.php:157
-#: includes/class-evf-ajax.php:1154
+#: includes/class-evf-ajax.php:1152
 msgid "View Form"
 msgstr ""
 
@@ -2092,7 +2092,7 @@ msgid "Tools"
 msgstr ""
 
 #: includes/admin/class-evf-admin-menus.php:135
-#: includes/class-evf-install.php:733
+#: includes/class-evf-install.php:735
 msgid "Docs"
 msgstr ""
 
@@ -2323,8 +2323,8 @@ msgstr ""
 #: includes/admin/form-migrator/class-evf-fm-wpforms.php:338
 #: includes/admin/form-migrator/class-evf-fm-wpforms.php:380
 #: includes/admin/form-migrator/class-evf-fm-wpforms.php:410
-#: includes/admin/form-migrator/class-evf-fm-wpforms.php:486
-#: includes/admin/form-migrator/class-evf-fm-wpforms.php:570
+#: includes/admin/form-migrator/class-evf-fm-wpforms.php:492
+#: includes/admin/form-migrator/class-evf-fm-wpforms.php:576
 msgid "Please provide a valid value for this field."
 msgstr ""
 
@@ -3007,7 +3007,7 @@ msgid "There are currently no logs to view."
 msgstr ""
 
 #: includes/admin/views/html-admin-page-tools.php:14
-#: includes/class-evf-ajax.php:1067
+#: includes/class-evf-ajax.php:1066
 msgid "Import"
 msgstr ""
 
@@ -3305,63 +3305,67 @@ msgstr ""
 msgid "Activated successfully"
 msgstr ""
 
-#: includes/class-evf-ajax.php:1040
+#: includes/class-evf-ajax.php:1039
 msgid "Missing form slug !"
 msgstr ""
 
-#: includes/class-evf-ajax.php:1069
+#: includes/class-evf-ajax.php:1048
+msgid "does not exist."
+msgstr ""
+
+#: includes/class-evf-ajax.php:1068
 msgid "Form\tName"
 msgstr ""
 
-#: includes/class-evf-ajax.php:1069
+#: includes/class-evf-ajax.php:1068
 msgid "Imported"
 msgstr ""
 
-#: includes/class-evf-ajax.php:1076
+#: includes/class-evf-ajax.php:1075
 msgid "Yes"
 msgstr ""
 
-#: includes/class-evf-ajax.php:1079
+#: includes/class-evf-ajax.php:1078
 msgid "No"
 msgstr ""
 
-#: includes/class-evf-ajax.php:1136
+#: includes/class-evf-ajax.php:1134
 msgid "Missing Form ID !!!"
 msgstr ""
 
-#: includes/class-evf-ajax.php:1154
+#: includes/class-evf-ajax.php:1152
 msgid "Imported Successfully."
 msgstr ""
 
-#: includes/class-evf-ajax.php:1161
+#: includes/class-evf-ajax.php:1159
 msgid "Imported Successfully"
 msgstr ""
 
-#: includes/class-evf-ajax.php:1188
+#: includes/class-evf-ajax.php:1186
 msgid "Updated !"
 msgstr ""
 
-#: includes/class-evf-ajax.php:1210
+#: includes/class-evf-ajax.php:1208
 msgid "Entries not available in WPForms Lite."
 msgstr ""
 
-#: includes/class-evf-ajax.php:1221
+#: includes/class-evf-ajax.php:1219
 msgid "Invalid Request !!"
 msgstr ""
 
-#: includes/class-evf-ajax.php:1232
+#: includes/class-evf-ajax.php:1230
 msgid "Please migrate the form before importing the entry"
 msgstr ""
 
-#: includes/class-evf-ajax.php:1258
+#: includes/class-evf-ajax.php:1256
 msgid "All entries are migrated successfully!!"
 msgstr ""
 
-#: includes/class-evf-ajax.php:1264
+#: includes/class-evf-ajax.php:1262
 msgid "Entry migration failed!!"
 msgstr ""
 
-#: includes/class-evf-ajax.php:1270
+#: includes/class-evf-ajax.php:1268
 msgid "Only some entries are migrated successfully!!"
 msgstr ""
 
@@ -3557,28 +3561,28 @@ msgstr ""
 msgid "Click here to download your pdf submission"
 msgstr ""
 
-#: includes/class-evf-install.php:307
+#: includes/class-evf-install.php:309
 msgid "Monthly"
 msgstr ""
 
-#: includes/class-evf-install.php:600
+#: includes/class-evf-install.php:602
 #: includes/templates/contact.php:12
 msgid "Contact Form"
 msgstr ""
 
-#: includes/class-evf-install.php:717
+#: includes/class-evf-install.php:719
 msgid "View Everest Forms Settings"
 msgstr ""
 
-#: includes/class-evf-install.php:733
+#: includes/class-evf-install.php:735
 msgid "View Everest Forms documentation"
 msgstr ""
 
-#: includes/class-evf-install.php:734
+#: includes/class-evf-install.php:736
 msgid "Visit free customer support"
 msgstr ""
 
-#: includes/class-evf-install.php:734
+#: includes/class-evf-install.php:736
 msgid "Free support"
 msgstr ""
 
