@@ -1,10 +1,10 @@
-=== Everest Forms – Build Contact Forms, Surveys, Polls, Application Forms, and more with Ease! ===
+=== Everest Forms – Build Contact Forms, Surveys, Polls, Quizzes, Newsletter & Application Forms, and Many More with Ease! ===
 Contributors: WPEverest
 Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.2
 Tested up to: 6.4
 Requires PHP: 7.2
-Stable tag: 2.0.8
+Stable tag: 2.0.8.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -12,7 +12,7 @@ Fast, Lightweight & Secure Contact Form plugin. Beautiful & Responsive Pre-Built
 
 == Description ==
 
-= The Best & Most User-Friendly WordPress Form Builder =
+= Everest Forms - The Most User-Friendly WordPress Form Builder! =
 
 👉 [Give a Try](https://demo.tastewp.com/everest-forms) (Clicking this link creates a demo where you can test Everest Forms.)
 
@@ -24,7 +24,7 @@ No time to create forms from scratch? No worries! Choose from beautifully design
 
 👉 [All features](https://everestforms.net/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) | 👉 [Demo](http://demo.wpeverest.com/everest-forms/) | 👉 [Documentation](https://docs.everestforms.net/)
 
-👉 [Try Everest Forms Premium ](https://everestforms.demoswp.net/?utm_source=wporg&utm_medium=link&utm_campaign=ur-upgrade-to-pro)
+👉 [Test Everest Forms Premium for Free](https://everestforms.demoswp.net/?utm_source=wporg&utm_medium=link&utm_campaign=ur-upgrade-to-pro)
 
 == Create Pro-Level Forms with Everest Forms' Awesome Features ==
 
@@ -192,8 +192,8 @@ And there’s more we haven’t listed here.
 * [Conditional Form](https://demo.wpeverest.com/everest-forms/conditional-form/)
 * Poll Form
 * Signature Form
-* Donation Form
-* Medical Appointment Form
+* [Donation Form](https://demo.wpeverest.com/everest-forms/donation-form/)
+* [Medical Appointment Form](https://demo.wpeverest.com/everest-forms/medical-appointment-form/)
 * Newsletter Signup Form
 
 👉 [Explore all pre-built Everest Forms demos](https://demo.wpeverest.com/everest-forms/).
@@ -202,40 +202,40 @@ And there’s more we haven’t listed here.
 * [Watch our video tutorials](https://www.youtube.com/@EverestForms)
 * [Follow our getting started documentation](https://docs.everestforms.net/docs/how-to-create-a-form-with-everest-forms/)
 
-### Hands-On Everest Forms Tutorials for Your Ease
-* [How to Create a WordPress Contact Form: Ultimate Guide for Beginners](https://wpeverest.com/blog/create-wordpress-contact-form/)
-* [How to Customize WordPress Contact Forms Styles without coding: Ultimate Guide for Beginners](https://wpeverest.com/blog/customize-wordpress-forms-styles/)
-* [How to Prevent Contact Form spam in WordPress: Ultimate Guide for Beginners](https://wpeverest.com/blog/block-contact-form-spam-wordpress/)
-* [How to Create a WordPress Online Booking Form for Hotels?](https://wpeverest.com/blog/wordpress-online-booking-form/)
-* [How to Create a Job Application Form in WordPress?](https://wpeverest.com/blog/how-to-create-a-job-application-form-in-wordpress/)
-* [How to Create a Donation Form in WordPress?](https://wpeverest.com/blog/how-to-create-a-donation-form-in-wordpress/)
-* [How to Create a WordPress Multi-step Form: A Beginner’s Guide](https://wpeverest.com/blog/wordpress-multi-step-form/)
-* [How to Accept E Signatures with WordPress Forms?](https://wpeverest.com/blog/wordpress-e-signature-plugin/)
-* [How to Add a Payment Option with WordPress Forms?](https://wpeverest.com/blog/wordpress-form-payment-option-paypal/)
-* [How to Export Form Entries to CSV File in WordPress?](https://wpeverest.com/blog/export-wordpress-form-entries/)
-* [How to Convert WordPress Form Submission to PDF?](https://wpeverest.com/blog/convert-wordpress-form-submissions-to-pdf/)
-* [How to create GDPR Compliant Forms](https://wpeverest.com/blog/how-to-create-gdpr-compliant-forms/#everest-forms)
+### Step-by-Step Everest Forms Tutorials for a Headstart
+* [How to Create Contact Form in WordPress?](https://everestforms.net/blog/create-wordpress-contact-form/)
+* [How to Customize Contact Form Styles in WordPress? (With Zero Coding)](https://themegrill.com/blog/how-to-customize-contact-form-in-wordpress/)
+* [How to Prevent Contact Form Spam in WordPress? (Easy Guide)](https://everestforms.net/blog/block-contact-form-spam-wordpress/)
+* [How to Create a WordPress Online Booking Form for Hotels?](https://everestforms.net/blog/wordpress-online-booking-form/)
+* [How to Create a Job Application Form in WordPress?](https://everestforms.net/blog/how-to-create-a-job-application-form-in-wordpress/)
+* [How to Create a Donation Form in WordPress?](https://everestforms.net/blog/how-to-create-a-donation-form-in-wordpress/)
+* [How to Create a WordPress Multi-step Form: A Beginner’s Guide](hhttps://everestforms.net/blog/create-multi-step-form-in-wordpress/)
+* [How to Create a WordPress PayPal Payment Form?](https://everestforms.net/blog/wordpress-form-payment-option-paypal/)
+* [How to Export Form Entries to CSV File in WordPress?](https://everestforms.net/blog/export-wordpress-form-entries/)
+* [How to Convert WordPress Form Submission to PDF?](https://everestforms.net/blog/convert-wordpress-form-submissions-to-pdf/)
 
 ==Get in Touch with us  ==
 
-👉 [Facebook Group](https://www.facebook.com/groups/themegrill)
+👉 [Facebook Group](https://www.facebook.com/groups/everestforms)
 
 👉 [Twitter](https://twitter.com/everestforms)
 
 👉 [Youtube](https://www.youtube.com/@EverestForms)
 
 ==Explore More Products from Our Team==
-Love Everest Forms? If you do, then you should check out more WordPress themes and plugins from us.
+Love Everest Forms? Why not check out more WordPress themes and plugins from us?
 
 * [Masteriyo](https://masteriyo.com/) - A Powerful and Easy WordPress LMS Plugin. 
 
 * [User Registration](https://wpuserregistration.com/) - #1 Best WordPress User Registration Plugin.
 
-* [Gutenberg Blocks by BlockArt](https://wordpress.org/plugins/blockart-blocks/) - Free Gutenberg Custom Blocks Plugin.
+* [BlockArt Blocks](https://wpblockart.com/blockart-blocks/) - Free Gutenberg Custom Blocks Plugin.
 
-* [Zakra](https://wordpress.org/themes/zakra/) - Best WordPress Multipurpose Theme Powering 60K+ Websites.
+* [Magazine Blocks](https://wpblockart.com/magazine-blocks/) - Gutenberg Blocks Plugin to Build Magazine-style Sites.
 
-* [ThemeGrill](https://themegrill.com/wordpress-themes/free/) - Beautiful Free WordPress Themes.
+* [Zakra](https://zakratheme.com/) - Best WordPress Multipurpose Theme Powering 60K+ Websites.
+
+* [ThemeGrill](https://themegrill.com/) - Beautiful Free WordPress Themes.
 
 
 == Installation ==
@@ -291,6 +291,9 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 
 == Changelog ==
+
+= 2.0.8.1     - 13-03-2024
+* Fix         - Add block Notification issue.
 
 = 2.0.8       - 12-03-2024
 * Fix         - Restrict font_url for unauthorized users and allow only certain font_url.
