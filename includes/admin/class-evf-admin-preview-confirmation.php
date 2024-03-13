@@ -83,4 +83,5 @@ class EVF_Admin_Preview_Confirmation {
 		evf_add_notice( $output, 'preview' );
 	}
 }
+
 EVF_Admin_Preview_Confirmation::init();
