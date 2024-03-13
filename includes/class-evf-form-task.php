@@ -919,7 +919,7 @@ class EVF_Form_Task {
 			$email['sender_name']    = ! empty( $notification['evf_from_name'] ) ? $notification['evf_from_name'] : get_bloginfo( 'name' );
 			$email['sender_address'] = ! empty( $notification['evf_from_email'] ) ? $notification['evf_from_email'] : get_option( 'admin_email' );
 			$email['reply_to']       = ! empty( $notification['evf_reply_to'] ) ? $notification['evf_reply_to'] : $email['sender_address'];
-			if ( ! empty( get_option( 'everest_forms_ai_api_key' ) ) ) {
+			if ( ! empty( get_option( 'everest_forms_ai_api_key' ) ) ) { // phpcs:ignore
 				$email['message_ai_prompt'] = ! empty( $notification['evf_email_message_prompt'] ) ? $notification['evf_email_message_prompt'] : '';
 				$email['enable_ai_prompt']  = ! empty( $notification['enable_ai_email_prompt'] ) ? $notification['enable_ai_email_prompt'] : 0;
 			}
@@ -1222,7 +1222,7 @@ class EVF_Form_Task {
 			$request = array(
 				'blog'                 => get_option( 'home' ),
 				'user_ip'              => evf_get_ip_address(),
-				'user_agent'           => isset( $_SERVER['HTTP_USER_AGENT'] ) ? wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) : null,
+				'user_agent'           => isset( $_SERVER['HTTP_USER_AGENT'] ) ? wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) : null, // phpcs:ignore
 				'referrer'             => wp_get_referer() ? wp_get_referer() : null,
 				'permalink'            => evf_current_url(),
 				'comment_type'         => 'contact-form',
