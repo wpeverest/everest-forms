@@ -5,13 +5,13 @@
  * @package EverestForms/Admin/Tool/System Info Settings
  */
 
- defined( 'ABSPATH' ) || exit;
-
+defined( 'ABSPATH' ) || exit;
 if ( ! class_exists( 'WP_Debug_Data' ) ) {
 	require_once ABSPATH . 'wp-admin/includes/class-wp-debug-data.php';
 }
 ?>
-<div class="everest-forms-import-form">
+<div class="everest-forms-system-info-setting">
+<button class="everest-forms-system-info-setting-copy"><?php esc_html_e( 'Copy Setting', 'everest-forms' ); ?></button>
 	<table>
 	<?php
 	$license_key = get_option( 'everest-forms-pro_license_key' );
@@ -299,8 +299,9 @@ if ( ! class_exists( 'WP_Debug_Data' ) ) {
 			<th><?php esc_html_e( 'Max Allowed Packet', 'everest-forms' ); ?></th>
 			<td>
 				<?php
-						$max_packet_size_bytes = $info['wp-database']['fields']['max_allowed_packet'] = array(
-							'label' => __( 'Max allowed packet size' ),
+						$max_packet_size_bytes = $info['wp-database']['fields']['max_allowed_packet'] =
+						array(
+							'label' => __( 'Max allowed packet size', 'everest-forms' ),
 							'value' => WP_Debug_Data::get_mysql_var( 'max_allowed_packet' ),
 						);
 						$maxp_mb               = isset( $max_packet_size_bytes['value'] ) ? $max_packet_size_bytes['value'] / 1024 / 1024 : '';

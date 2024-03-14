@@ -7873,3 +7873,33 @@
 		}
 	}
 }
+
+
+// Everest Forms system info settings.
+.everest-forms-system-info-setting {
+	table {
+	  width: 100%;
+	  border-collapse: collapse;
+	  th, td {
+		padding: 10px;
+		border: 1px solid #ddd;
+		text-align: left;
+		font-size: 14px;
+	  }
+	  th {
+		background-color: #f2f2f2;
+		font-weight: bold;
+	  }
+	  tr:nth-child(even) {
+		background-color: #f9f9f9;
+	  }
+	  tr:hover {
+		background-color: #f2f2f2;
+	  }
+	  th, td {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	  }
+	}
+  }

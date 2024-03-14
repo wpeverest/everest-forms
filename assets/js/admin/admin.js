@@ -443,4 +443,14 @@
 		}, 2000);
 	});
 
+	$('.everest-forms-system-info-setting-copy').on('click', function() {
+		var table = $('.everest-forms-system-info-setting table')[0];
+		var range = document.createRange();
+		range.selectNode(table);
+		window.getSelection().removeAllRanges();
+		window.getSelection().addRange(range);
+		document.execCommand('copy');
+		window.getSelection().removeAllRanges();
+	  });
+
 })( jQuery, everest_forms_admin );
