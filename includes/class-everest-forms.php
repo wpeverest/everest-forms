@@ -269,6 +269,7 @@ final class EverestForms {
 		include_once EVF_ABSPATH . 'includes/abstracts/class-evf-deprecated-hooks.php';
 		include_once EVF_ABSPATH . 'includes/abstracts/class-evf-session.php';
 		include_once EVF_ABSPATH . 'includes/abstracts/class-evf-form-fields.php';
+		include_once EVF_ABSPATH . 'includes/abstracts/class-evf-form-fields-upload.php';
 
 		/**
 		 * Core classes.

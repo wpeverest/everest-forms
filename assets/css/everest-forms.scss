@@ -77,6 +77,184 @@
 		}
 	}
 
+	/*Everest forms uploader styles.*/
+	.everest-forms-uploader {
+		cursor: pointer;
+		padding: 20px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+		text-align: center;
+		border: 1px dashed $color_gray-light;
+
+		span {
+			display: block;
+			color: $color_gray-base;
+
+			&.everest-forms-upload-hint {
+				color: $color_gray-light;
+				font-size: 14px;
+			}
+		}
+
+		& + input.dropzone-input {
+			display: none;
+		}
+
+		.dz-message {
+			flex: 0 0 100%;
+			width: 100%;
+
+			svg {
+				margin-bottom: 10px;
+				background: $color_gray-light-skin;
+				height: 48px;
+				width: 48px;
+				padding: 8px;
+				border-radius: 4px;
+			}
+
+			&.hide {
+				display: none;
+			}
+		}
+
+		.dz-preview {
+			flex: 0 0 100%;
+			width: 100%;
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			margin-bottom: 20px;
+			border-bottom: 1px solid $color_gray-more-lighten;
+			padding-bottom: 20px;
+
+			.dz-image {
+				width: 64px;
+				height: 64px;
+				background: $color_gray-light-skin;
+				flex: 0 0 64px;
+				margin-right: 15px;
+				border-radius: 3px;
+				overflow: hidden;
+			}
+
+			.dz-details {
+				text-align: left;
+				font-size: 14px;
+				flex: 1;
+
+				.dz-size {
+					color: $color_gray-base;
+				}
+
+				.dz-filename {
+					span {
+						color: $color_gray-light;
+					}
+				}
+			}
+
+			.dz-progress {
+				background: $color_gray-more-lighten;
+				border-radius: 2px;
+				height: 4px;
+				width: 100%;
+				margin-left: 80px;
+				order: 4;
+
+				.dz-upload {
+					background-color: $green;
+					border-radius: 2px;
+					height: 4px;
+					transition: all 0.25s ease 0s;
+				}
+			}
+
+			.dz-error-message {
+				font-size: 14px;
+				flex: 0 0 100%;
+				width: 100%;
+				text-align: left;
+				margin-left: 80px;
+				order: 5;
+
+				span {
+					color: $red;
+				}
+			}
+
+			.dz-success-mark,
+			.dz-error-mark {
+				display: none;
+			}
+
+			.dz-remove {
+				font-size: 0;
+				position: relative;
+				height: 28px;
+				width: 28px;
+				display: inline-flex;
+				margin-left: auto;
+				order: 3;
+				border-radius: 14px;
+				border: 2px solid $color_gray-light;
+
+				&::before,
+				&::after {
+					content: "";
+					height: 14px;
+					width: 2px;
+					display: block;
+					background: $color_gray-light;
+					position: absolute;
+					top: 50%;
+					left: 0;
+					right: 0;
+					margin: 0 auto;
+				}
+
+				&::before {
+					transform: translateY(-50%) rotate(45deg);
+				}
+
+				&::after {
+					transform: translateY(-50%) rotate(-45deg);
+				}
+			}
+
+			&.dz-processing {
+				.dz-progress {
+					display: block;
+				}
+			}
+
+			&.dz-complete {
+				.dz-progress {
+					display: none;
+				}
+			}
+
+			&.dz-error {
+				.dz-remove {
+					border-color: $red;
+
+					&::before,
+					&::after {
+						background: $red;
+					}
+				}
+			}
+
+			&:last-child {
+				border-bottom: 0;
+				padding-bottom: 0;
+				margin-bottom: 0;
+			}
+		}
+	}
+
 	label {
 		display: block;
 		line-height: 1.7;
