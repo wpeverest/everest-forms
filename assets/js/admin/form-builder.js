@@ -2928,12 +2928,11 @@
 		},
 
 		oneTimeDraggableField: function( dragged_field_id, field_type ){
-			var single_draggable_fields = evf_data.form_one_time_draggable_fields;
-			var dragged_field_type = field_type;
-			var dragged_field_id = $('#everest-forms-add-fields-' + field_type);
-			if ($.inArray(dragged_field_type, single_draggable_fields) >= 0 ){
-				dragged_field_id.addClass('upgrade-modal');
-				dragged_field_id.addClass('evf-one-time-draggable-field');
+			var singleDraggableFields = evf_data.form_one_time_draggable_fields;
+			var draggedFieldElement = $('#everest-forms-add-fields-' + field_type);
+
+			if (singleDraggableFields.length > 0 && $.inArray(field_type, singleDraggableFields) >= 0 && draggedFieldElement.length) {
+				draggedFieldElement.addClass('upgrade-modal evf-one-time-draggable-field');
 			}
 
 		},
