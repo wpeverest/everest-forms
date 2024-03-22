@@ -1921,6 +1921,7 @@
 									$( '.evf-panel-fields-button' ).trigger( 'click' );
 									$field.fadeOut( 'slow', function () {
 										var removed_el_id = $field.attr('data-field-id');
+										var field_type = $field.attr('data-field-type');
 										$( document.body ).trigger( 'evf_before_field_deleted', [ removed_el_id] );
 										$field.remove();
 										option_field.remove();
@@ -1931,6 +1932,7 @@
 										EVFPanelBuilder.conditionalLogicRemoveField(removed_el_id);
 										EVFPanelBuilder.conditionalLogicRemoveFieldIntegration(removed_el_id);
 										EVFPanelBuilder.paymentFieldRemoveFromQuantity(removed_el_id);
+									    EVFPanelBuilder.oneTimeDraggableRemoveField(field_type);
 									});
 								}
 							},
@@ -2727,12 +2729,14 @@
 					$( document.body ).trigger( 'init_tooltips' );
 					$( document.body ).trigger( 'init_field_options_toggle' );
 					$( document.body ).trigger( 'evf_after_field_append', [dragged_el_id] );
-
 					// Conditional logic append rules.
 					EVFPanelBuilder.conditionalLogicAppendField( dragged_el_id );
 					EVFPanelBuilder.conditionalLogicAppendFieldIntegration( dragged_el_id );
 					EVFPanelBuilder.paymentFieldAppendToQuantity( dragged_el_id );
 					EVFPanelBuilder.paymentFieldAppendToDropdown( dragged_field_id, field_type );
+
+					//One Time draggable.
+					EVFPanelBuilder.oneTimeDraggableField( dragged_field_id, field_type );
 
 					// Initialization Datepickers.
 					EVFPanelBuilder.init_datepickers();
@@ -2923,6 +2927,17 @@
 			}
 		},
 
+		oneTimeDraggableField: function( dragged_field_id, field_type ){
+			var single_draggable_fields = evf_data.form_one_time_draggable_fields;
+			var dragged_field_type = field_type;
+			var dragged_field_id = $('#everest-forms-add-fields-' + field_type);
+			if ($.inArray(dragged_field_type, single_draggable_fields) >= 0 ){
+				dragged_field_id.addClass('upgrade-modal');
+				dragged_field_id.addClass('evf-one-time-draggable-field');
+			}
+
+		},
+
 		conditionalLogicAppendFieldIntegration: function( id ){
 			var dragged_el = $('#' + id);
 			var dragged_index = dragged_el.index();
@@ -2992,6 +3007,14 @@
 
 		paymentFieldRemoveFromQuantity: function( id ) {
 			$('.everest-forms-field-option-row-map_field select option[value = ' +id +' ]').remove();
+		},
+
+		oneTimeDraggableRemoveField : function (field_type ) {
+			var dragged_field_id = $('#everest-forms-add-fields-' + field_type);
+			if (dragged_field_id.hasClass('evf-one-time-draggable-field')) {
+				dragged_field_id.removeClass('upgrade-modal');
+				dragged_field_id.removeClass('evf-one-time-draggable-field');
+			}
 		},
 
 		bindFieldSettings: function () {

@@ -4998,3 +4998,17 @@ if ( ! function_exists( 'evf_check_addons_update' ) ) {
 		}
 	}
 }
+
+/**
+ * Get one time draggable fields fields.
+ *
+ * @return array
+ */
+function evf_get_one_time_draggable_fields() {
+	return apply_filters(
+		'everest_forms_one_time_draggable_form_fields',
+		array(
+			'file-upload',
+		)
+	);
+}
