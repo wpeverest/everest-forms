@@ -19,6 +19,70 @@ class EVF_Admin_Dashboard {
 	public static function page_output() {
 		if ( ! empty( $_GET['page'] ) && 'everest-forms-dashboard' === $_GET['page'] ) { //phpcs:ignore WordPress.Security.NonceVerification
 			wp_enqueue_script( 'evf-dashboard-script', EVF()->plugin_url() . '/dist/dashboard.min.js', array('wp-element','react', 'react-dom' ), EVF()->version, true );
+			if ( ! function_exists( 'get_plugins' ) ) {
+				require_once ABSPATH . 'wp-admin/includes/plugin.php';
+			}
+			if ( ! function_exists( 'wp_get_themes' ) ) {
+				require_once ABSPATH . 'wp-admin/includes/theme.php';
+			}
+			$installed_plugin_slugs = array_keys( get_plugins() );
+			$allowed_plugin_slugs   = array(
+				'user-registration/user-registration.php',
+				'blockart-blocks/blockart.php',
+				'learning-management-system/lms.php',
+				'magazine-blocks/magazine-blocks.php',
+			);
+
+			$installed_theme_slugs = array_keys( wp_get_themes() );
+			$current_theme         = get_stylesheet();
+
+			wp_localize_script(
+				'evf-dashboard-script',
+				'_EVF_DASHBOARD_',
+				array(
+					'adminURL'             => esc_url( admin_url() ),
+					'settingsURL'          => esc_url( admin_url( '/admin.php?page=evf-settings' ) ),
+					'siteURL'              => esc_url( home_url( '/' ) ),
+					'liveDemoURL'          => esc_url_raw( 'https://everestforms.demoswp.net/' ),
+					'assetsURL'            => esc_url( EVF()->plugin_url() . '/assets/' ),
+					'urRestApiNonce'       => wp_create_nonce( 'wp_rest' ),
+					'newFormURL'           => esc_url( admin_url( '/admin.php?page=evf-builder&create-form=1' ) ),
+					'allFormsURL'          => esc_url( admin_url( '/admin.php?page=evf-builder' ) ),
+					'restURL'              => rest_url(),
+					'version'              => EVF()->version,
+					'isPro'                => is_plugin_active( 'everest-forms-pro/everest-forms-pro.php' ),
+					'licensePlan'          => evf_get_license_plan(),
+					'licenseActivationURL' => esc_url_raw( admin_url( '#' ) ),
+					'utmCampaign'          => EVF()->utm_campaign,
+					'upgradeURL'           => esc_url_raw( 'https://everestforms.net/pricing/?utm_campaign=' . EVF()->utm_campaign ),
+					'plugins'              => array_reduce(
+						$allowed_plugin_slugs,
+						function ( $acc, $curr ) use ( $installed_plugin_slugs ) {
+							if ( in_array( $curr, $installed_plugin_slugs, true ) ) {
+
+								if ( is_plugin_active( $curr ) ) {
+									$acc[ $curr ] = 'active';
+								} else {
+									$acc[ $curr ] = 'inactive';
+								}
+							} else {
+								$acc[ $curr ] = 'not-installed';
+							}
+							return $acc;
+						},
+						array()
+					),
+					'themes'               => array(
+						'zakra'    => strpos( $current_theme, 'zakra' ) !== false ? 'active' : (
+							in_array( 'zakra', $installed_theme_slugs, true ) ? 'inactive' : 'not-installed'
+						),
+						'colormag' => strpos( $current_theme, 'colormag' ) !== false || strpos( $current_theme, 'colormag-pro' ) !== false ? 'active' : (
+							in_array( 'colormag', $installed_theme_slugs, true ) || in_array( 'colormag-pro', $installed_theme_slugs, true ) ? 'inactive' : 'not-installed'
+						),
+					),
+				)
+			);
+
 			ob_start();
 			self::dashboard_page_body();
 			self::dashboard_page_footer();

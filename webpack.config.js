@@ -27,6 +27,14 @@ const webpackConfig = {
 				test: /.js$/,
 				loader: "babel-loader",
 				exclude: /node_modules/
+			},
+			{
+				test: /\.(png|svg|jpg|jpeg|gif|webp)$/i,
+				use: [
+					{
+						loader: 'file-loader',
+					},
+				],
 			}
 		]
 	}
