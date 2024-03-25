@@ -2,7 +2,7 @@ import React from 'react'
 import { HashRouter } from 'react-router-dom'
 import { Container, ChakraProvider } from '@chakra-ui/react'
 import Theme from './Theme/Theme'
-import AppRouter from './router/AppRouter'
+import Router from './Router/Router'
 import { Header } from './components'
 
 const App = () => {
@@ -11,7 +11,7 @@ const App = () => {
 			<ChakraProvider theme={Theme}>
 				<Header />
 				<Container maxW='container.xl'>
-					<AppRouter />
+					<Router />
 				</Container>
 			</ChakraProvider>
 		</HashRouter>
