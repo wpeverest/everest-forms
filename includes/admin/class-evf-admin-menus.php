@@ -24,6 +24,7 @@ class EVF_Admin_Menus {
 	public function __construct() {
 		// Add menus.
 		add_action( 'admin_menu', array( $this, 'admin_menu' ), 9 );
+		add_action( 'admin_menu', array( $this, 'dashboard_menu' ), 9 );
 		add_action( 'admin_menu', array( $this, 'builder_menu' ), 20 );
 		add_action( 'admin_menu', array( $this, 'entries_menu' ), 30 );
 		add_action( 'admin_menu', array( $this, 'settings_menu' ), 50 );
@@ -151,6 +152,23 @@ class EVF_Admin_Menus {
 		add_menu_page( esc_html__( 'Everest Forms', 'everest-forms' ), esc_html__( 'Everest Forms', 'everest-forms' ), 'manage_everest_forms', 'everest-forms', null, self::get_icon_svg(), '55.5' );
 	}
 
+	/**
+	* Add dashboard sub menu.
+	*/
+	public function dashboard_menu()   {
+		add_submenu_page(
+			'everest-forms',
+			__( 'Everest Forms Dashboard', 'everest-forms' ),
+			__( 'Dashboard', 'everest-forms' ),
+			'manage_everest_forms',
+			'everest-forms-dashboard',
+			array(
+				$this,
+				'dashboard_page',
+			),
+			-1
+		);
+	}
 	/**
 	 * Add menu items.
 	 */
@@ -405,6 +423,13 @@ class EVF_Admin_Menus {
 		}
 
 		return $status;
+	}
+
+	/**
+	 * Init the settings page.
+	 */
+	public function dashboard_page() {
+		EVF_Admin_Dashboard::page_output();
 	}
 
 	/**

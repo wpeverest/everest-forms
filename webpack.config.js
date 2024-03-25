@@ -1,16 +1,23 @@
 /**
  * External dependencies
  */
-const path = require("path");
+const { resolve } = require('path');
 const NODE_ENV = process.env.NODE_ENV || "development";
 
 const webpackConfig = {
 	mode: NODE_ENV,
 	entry: {
-		"form-block": "./assets/js/admin/gutenberg/form-block.js"
+		"form-block": resolve(
+			process.cwd(),
+			'/assets/js/admin/gutenberg/form-block.js',
+		),
+		"dashboard": resolve(
+			process.cwd(),
+			'/src/dashboard/index.js',
+		),
 	},
 	output: {
-		path: path.resolve(__dirname, "assets/js/admin/gutenberg"),
+		path: resolve(process.cwd(), 'dist'),
 		filename: "[name].min.js",
 		libraryTarget: "this"
 	},
