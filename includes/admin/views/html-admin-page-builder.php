@@ -90,7 +90,7 @@ $preview_link = add_query_arg(
 		<div class="everest-forms-nav-wrapper clearfix">
 			<nav class="nav-tab-wrapper evf-nav-tab-wrapper">
 				<div class="everest-forms-logo">
-							<img src="<?php echo esc_url( plugin_dir_url( EVF_PLUGIN_FILE )  . 'assets/images/everest-forms-logo.png'  ); ?>" alt="<?php esc_attr_e( 'Everest Forms logo', 'everest-forms' ); ?>">
+					<img src="<?php echo esc_url( plugin_dir_url( EVF_PLUGIN_FILE )  . 'assets/images/everest-forms-logo.png'  ); ?>" alt="<?php esc_attr_e( 'Everest Forms logo', 'everest-forms' ); ?>">
 				</div>
 				<?php
 				foreach ( $tabs as $slug => $tab ) { // phpcs:ignore WordPress.WP.GlobalVariablesOverride

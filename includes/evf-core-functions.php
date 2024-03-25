@@ -4892,3 +4892,294 @@ if( ! function_exists( 'evf_current_url' ) ) {
 		return esc_url_raw( $url );
 	}
 }
+
+function evf_get_utc_time_to( $evf_entries_report_summary_offset, $evf_format = 'Y-m-d H:i:s', $evf_display = false ) {
+
+	// Get local time 23:59:59 today
+	$evf_time_to_local = wp_date( 'Y-m-d 23:59:59' );
+	$evf_format        = 'Y-m-d H:i:s';
+
+	// Get local time to
+	$evf_time_to_offset = strtotime( $evf_entries_report_summary_offset, strtotime( $evf_time_to_local ) );
+
+	if ( $evf_display ) {
+
+		return date( $evf_format, $evf_time_to_offset );
+
+	} else {
+
+		return strtotime( get_gmt_from_date( date( $evf_format, $evf_time_to_offset ) ) );
+	}
+}
+
+function evf_get_utc_time_from( $evf_entries_report_summary_offset, $evf_format = 'Y-m-d H:i:s', $evf_display = false ) {
+
+	// Get local time midnight today
+	$evf_time_from_local = wp_date( 'Y-m-d 00:00:00' );
+	$evf_format          = 'Y-m-d H:i:s';
+
+
+	// Get local time from
+	$evf_time_from_offset = strtotime( $evf_entries_report_summary_offset, strtotime( $evf_time_from_local ) );
+
+	if ( $evf_display ) {
+
+		return date( $evf_format, $evf_time_from_offset );
+
+	} else {
+
+		return strtotime( get_gmt_from_date( date( $evf_format, $evf_time_from_offset ) ) );
+	}
+}
+
+// function evf_report_form_statistics_send() {
+
+// 	// Get options
+// 	$evf_report_frequency   = get_option( 'everest_forms_entries_reporting_frequency', 'Weekly' );
+// 	$evf_report_offset_from = '';
+// 	$evf_report_email_to    = '';
+// 	$evf_date_format        = '';
+// 	$evf_report_offset_to   = '';
+
+// 	// Set everest forms reporting frequency specific variables
+// 	switch ( $evf_report_frequency ) {
+
+// 		case 'Daily':
+// 			$evf_report_email_title = __( 'Everest Forms Daily Entries Statistics Report', 'everest-froms' );
+// 			$evf_report_offset_from = '-1 days';
+// 			$evf_report_offset_to   = '-1 day';
+// 			break;
+
+// 		case 'Weekly':
+// 			$evf_report_email_title = __( 'Everest Forms Weekly Entries Statistics Report', 'everest-forms' );
+// 			$evf_report_offset_from = '-8 days';
+// 			$evf_report_offset_to   = '-1 day';
+// 			break;
+
+// 		case 'Monthly':
+// 			$evf_report_email_title = __( 'Everest Forms Monthly Entries Statistics Report', 'everest-forms' );
+// 			$evf_report_offset_from = '-1 month -1 day';
+// 			$evf_report_offset_to   = '-1 day';
+// 			break;
+// 	}
+
+// 	// Build date range
+// 	$date_format = get_option( 'date_format' );
+
+// 	// Get Stat data
+// 	$evf_report_form_statistics_data = self::evf_report_form_statistics_get_data( $evf_report_offset_from, $evf_report_offset_to );
+
+// 	// $evf_form_stat_count = array_sum( array_map( 'count', $evf_report_form_statistics_data ) );
+// 	$evf_form_stat_count = count( $evf_report_form_statistics_data );
+
+// 	$evf_headers = array( 'Content-Type: text/html; charset=UTF-8' );
+
+// 	$evf_stat_subject = get_option( 'everest_forms_entries_reporting_subject' );
+
+// 	if ( '' === $evf_stat_subject ) {
+// 		$evf_stat_subject = esc_html__( 'Everest Forms - Entries summary statistics', 'everest-forms' );
+// 	}
+
+// 	$evf_stat_message = sprintf(
+// 		'<div><p><strong>%s:</strong> <a href="%s" target="_blank">%s</a>',
+// 		__( 'Routine Statistics Report for ', 'everest-forms' ),
+// 		get_site_url(),
+// 		esc_html( get_bloginfo( 'name' ) )
+// 	);
+
+// 	if ( $evf_form_stat_count < 0 ) {
+// 		$evf_stat_message .= sprintf(
+// 			'<p>%s</p>',
+// 			esc_html__( 'No forms are selected for the stat report', 'everest-forms' )
+// 		);
+// 	} else {
+// 		$evf_stat_message .= sprintf(
+// 			'<p>%s<strong>%s</strong> to <strong>%s</strong></p>',
+// 			__( 'Your scheduled report for form entries from ', 'everest-forms' ),
+// 			self::evf_get_utc_time_from( $evf_report_offset_from, $date_format, true ),
+// 			self::evf_get_utc_time_to( $evf_report_offset_to, $date_format, true )
+// 		);
+
+// 		$evf_stat_message .= '<table border style="text-align:center; margin:auto; width:70%">';
+
+// 		// Table head
+// 		$evf_stat_message .= '<thead style="background:#7e3bd0; color:#fff; font-size:1rem;">';
+// 		$evf_stat_message .= sprintf(
+// 			'<tr><th>%1$s</th><th>%2$s</th><th>%3$s</th></tr>',
+// 			esc_html__( 'Form', 'everest-forms' ),
+// 			esc_html__( 'Views', 'everest-forms' ),
+// 			esc_html__( 'Starred', 'everest-forms' ),
+// 		);
+// 		$evf_stat_message .= '</thead>';
+
+// 		$evf_stat_form_name = '';
+// 		$evf_viewed_total   = 0;
+// 		$evf_starred_total  = 0;
+
+// 		// Table body
+// 		$evf_stat_message  .= '<tbody>';
+// 		$evf_stat_form_name = wp_list_pluck( $evf_report_form_statistics_data, 'post_title' );
+// 		$evf_viewed_total   = wp_list_pluck( $evf_report_form_statistics_data, 'Viewed' );
+// 		$evf_starred_total  = wp_list_pluck( $evf_report_form_statistics_data, 'Starred' );
+
+// 		foreach ( $evf_report_form_statistics_data as $evf_form_stat_data ) {
+// 			$evf_stat_message .= sprintf(
+// 				'<tr><td>%1$s</td><td>%2$s</td><td>%3$s</td></tr>',
+// 				esc_html__( $evf_form_stat_data->post_title, 'everest-forms' ),
+// 				self::evf_stat_format_cell( $evf_form_stat_data->Viewed ),
+// 				self::evf_stat_format_cell( $evf_form_stat_data->Starred ),
+// 			);
+// 		}
+
+// 		$evf_stat_message .= '</tbody>';
+
+// 		// EFV Stat Report Table footer
+// 		$evf_stat_message .= '<tfoot style="background:#7e3bd0; color:#fff; font-size:1rem;">';
+// 		$evf_stat_message .= sprintf(
+// 			'<tr><th>%1$s</th><th>%2$s</th><th>%3$s</th></tr>',
+// 			esc_html__( 'Totals Counts', 'everest-forms' ),
+// 			self::evf_stat_format_cell( count( $evf_viewed_total ) ),
+// 			self::evf_stat_format_cell( count( $evf_starred_total ) ),
+// 		);
+// 		$evf_stat_message .= '</tfoot>';
+
+// 		$evf_stat_message .= '</table>';
+// 		$evf_stat_message .= '</div>';
+// 	}
+
+// 	$evf_stat_email = get_option( 'everest_forms_entries_reporting_email' );
+// 	if ( '' === $evf_stat_email && empty( $evf_stat_email ) ) {
+// 		$evf_stat_email = get_bloginfo( 'admin_email' );
+// 	}
+
+// 	// Sending the stat email.
+// 	$evf_send_stat_email = new EVF_Emails();
+// 	$evf_send_stat_email->send( $evf_stat_email, $evf_stat_subject, $evf_stat_message, '', '' );
+// }
+
+function evf_summary_start_offset_time(){
+	// Get options
+	$evf_report_frequency   = get_option( 'everest_forms_entries_reporting_frequency', 'Weekly' );
+	$evf_report_offset_from = '';
+	$evf_report_email_to    = '';
+	$evf_date_format        = '';
+	$evf_report_offset_to   = '';
+
+	// Set everest forms reporting frequency specific variables
+	switch ( $evf_report_frequency ) {
+
+		case 'Daily':
+			$evf_report_email_title = __( 'Everest Forms Daily Entries Statistics Report', 'everest-froms' );
+			$evf_report_offset_from = '-1 days';
+			break;
+
+		case 'Weekly':
+			$evf_report_email_title = __( 'Everest Forms Weekly Entries Statistics Report', 'everest-forms' );
+			$evf_report_offset_from = '-8 days';
+			break;
+
+		case 'Monthly':
+			$evf_report_email_title = __( 'Everest Forms Monthly Entries Statistics Report', 'everest-forms' );
+			$evf_report_offset_from = '-1 month -1 day';
+			break;
+	}
+
+	// Build date range
+	$date_format = get_option( 'date_format' );
+
+	$start_time = evf_get_utc_time_from( $evf_report_offset_from, $date_format, true );
+	return $start_time;
+}
+
+function evf_summary_end_offset_time(){
+	// Get options
+	$evf_report_frequency   = get_option( 'everest_forms_entries_reporting_frequency', 'Weekly' );
+	$evf_report_offset_from = '';
+	$evf_report_email_to    = '';
+	$evf_date_format        = '';
+	$evf_report_offset_to   = '';
+
+	// Set everest forms reporting frequency specific variables
+	switch ( $evf_report_frequency ) {
+
+		case 'Daily':
+			$evf_report_email_title = __( 'Everest Forms Daily Entries Statistics Report', 'everest-froms' );
+			$evf_report_offset_to   = '-1 day';
+			break;
+
+		case 'Weekly':
+			$evf_report_email_title = __( 'Everest Forms Weekly Entries Statistics Report', 'everest-forms' );
+			$evf_report_offset_to   = '-1 day';
+			break;
+
+		case 'Monthly':
+			$evf_report_email_title = __( 'Everest Forms Monthly Entries Statistics Report', 'everest-forms' );
+			$evf_report_offset_to   = '-1 day';
+			break;
+	}
+
+	// Build date range
+	$date_format = get_option( 'date_format' );
+
+	$end_time = evf_get_utc_time_to( $evf_report_offset_to, $date_format, true );
+
+	return $end_time;
+}
+
+function evf_entries_summaries() {
+	// Get options
+	$evf_report_frequency   = get_option( 'everest_forms_entries_reporting_frequency', 'Weekly' );
+	$offset_from = '';
+	$offset_to = '';
+
+	// Set everest forms reporting frequency specific variables
+	switch ( $evf_report_frequency ) {
+
+		case 'Daily':
+			$evf_report_email_title = __( 'Everest Forms Daily Entries Statistics Report', 'everest-froms' );
+			$offset_from = '-1 days';
+			$offset_to   = '-1 day';
+			break;
+
+		case 'Weekly':
+			$evf_report_email_title = __( 'Everest Forms Weekly Entries Statistics Report', 'everest-forms' );
+			$evf_report_email_titleoffset_from = '-8 days';
+			$offset_to   = '-1 day';
+			break;
+
+		case 'Monthly':
+			$evf_report_email_title = __( 'Everest Forms Monthly Entries Statistics Report', 'everest-forms' );
+			$offset_from = '-1 month -1 day';
+			$offset_to   = '-1 day';
+			break;
+	}
+
+	global $wpdb;
+
+	$evf_date_format         = 'Y-m-d H:i:s';
+	$evf_stat_start          = evf_get_utc_time_from( $offset_from, $evf_date_format, true );
+	$evf_stat_end            = evf_get_utc_time_to( $offset_to, $evf_date_format, true );
+	$evf_stat_selected_forms = get_option( 'everest_forms_reporting_form_lists', array() );
+	foreach ( $evf_stat_selected_forms as $evf_stat_selected_form ) {
+		$evf_stat_data_output = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT
+				{$wpdb->prefix}posts.post_title,
+				{$wpdb->prefix}evf_entries.form_id,
+				COUNT(form_id) AS entries_count
+			FROM
+			{$wpdb->prefix}posts
+			INNER JOIN
+			{$wpdb->prefix}evf_entries ON {$wpdb->prefix}posts.id = {$wpdb->prefix}evf_entries.form_id
+			WHERE
+			{$wpdb->prefix}evf_entries.date_created BETWEEN '%1s' AND '%2s'
+			GROUP BY
+			{$wpdb->prefix}evf_entries.form_id",
+				$evf_stat_start,
+				$evf_stat_end
+			)
+		);
+		break;
+	}
+	return $evf_stat_data_output;
+}

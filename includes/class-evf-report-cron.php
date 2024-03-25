@@ -13,20 +13,8 @@ class EVF_Report_Cron {
 	 * @return void.
 	 */
 	public function evf_schedule_run() {
-				// Send
-				self::evf_report_form_statistics_send();
-
-		// If frequency is monthly, then we'll reschedue to ensure we hit monthly exactly (wp_cron doesn't support 1 month)
-		// $evf_report_frequency = get_option( 'everest_forms_entries_reporting_frequency', 'Weekly' );
-
-		// if ( $evf_report_frequency === 'Monthly' ) {
-
-		// Clear schedule
-		// $this->evf_schedule_clear_all();
-
-		// Reschedule
-		// $this->evf_report_form_statistics_schedule();
-		// }
+		// Send
+		self::evf_report_form_statistics_send();
 	}
 
 	/**
