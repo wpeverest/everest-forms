@@ -80,6 +80,7 @@
     "@chakra-ui/react": "2.8.2",
     "@emotion/react": "11.11.4",
     "@emotion/styled": "11.11.0",
+    "@wordpress/api-fetch": "6.51.0",
     "@wordpress/i18n": "4.54.0",
     "file-loader": "6.2.0",
     "framer-motion": "11.0.20",
