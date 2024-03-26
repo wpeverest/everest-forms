@@ -33,11 +33,17 @@ jQuery( function ( $ ) {
 			this.validateMinimumWordLength();
 
 			// Inline validation.
-			this.$everest_form.on('input click validate change', '.input-text, select, input:checkbox, input:radio', this.validate_field, function() {
-				$('.input-text').addClass('evf-field-active');
+			this.$everest_form.on( 'input validate change', '.input-text, select, input:checkbox, input:radio', this.validate_field );
+
+			//Add the active class in the fields.
+			this.$everest_form.on('focusin', '.input-text, select, input[type="checkbox"], input[type="radio"]', function() {
+				$(this).addClass('everest-forms-field-active');
+			}).on('focusout', '.input-text, select, input[type="checkbox"], input[type="radio"]', function() {
+				$(this).removeClass('everest-forms-field-active');
 			});
 
-			// Notify plugins that the core was loaded.
+
+
 			$( document.body ).trigger( 'everest_forms_loaded' );
 		},
 		init_inputMask: function() {
