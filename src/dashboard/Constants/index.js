@@ -1,28 +1,28 @@
 import { __ } from '@wordpress/i18n'
 
-const { isPro } = typeof _UR_DASHBOARD_ !== 'undefined' && _UR_DASHBOARD_
+const { isPro } = typeof _EVF_DASHBOARD_ !== 'undefined' && _EVF_DASHBOARD_
 
 let ROUTES = [
 	{
 		route: '/',
-		label: __('Dashboard', 'user-registration')
+		label: __('Dashboard', 'everest-forms')
 	},
 	{
 		route: '/features',
-		label: __('All Features', 'user-registration')
+		label: __('All Features', 'everest-forms')
 	},
 	{
 		route: '/settings',
-		label: __('Settings', 'user-registration')
+		label: __('Settings', 'everest-forms')
 	},
 
 	{
 		route: '/help',
-		label: __('Help', 'user-registration')
+		label: __('Help', 'everest-forms')
 	},
 	{
 		route: '/products',
-		label: __('Other Products', 'user-registration')
+		label: __('Other Products', 'everest-forms')
 	}
 ]
 
@@ -31,7 +31,7 @@ if (!isPro) {
 		...ROUTES.slice(0, 4),
 		{
 			route: '/free-vs-pro',
-			label: __('Free vs Pro', 'user-registration')
+			label: __('Free vs Pro', 'everest-forms')
 		},
 		...ROUTES.slice(4)
 	]
