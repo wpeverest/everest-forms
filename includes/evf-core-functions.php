@@ -5143,7 +5143,7 @@ function evf_entries_summaries() {
 
 		case 'Weekly':
 			$evf_report_email_title = __( 'Everest Forms Weekly Entries Statistics Report', 'everest-forms' );
-			$evf_report_email_titleoffset_from = '-8 days';
+			$offset_from = '-8 days';
 			$offset_to   = '-1 day';
 			break;
 
@@ -5160,6 +5160,7 @@ function evf_entries_summaries() {
 	$evf_stat_start          = evf_get_utc_time_from( $offset_from, $evf_date_format, true );
 	$evf_stat_end            = evf_get_utc_time_to( $offset_to, $evf_date_format, true );
 	$evf_stat_selected_forms = get_option( 'everest_forms_reporting_form_lists', array() );
+	$evf_stat_data_output = '';
 	foreach ( $evf_stat_selected_forms as $evf_stat_selected_form ) {
 		$evf_stat_data_output = $wpdb->get_results(
 			$wpdb->prepare(

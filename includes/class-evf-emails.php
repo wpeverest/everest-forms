@@ -287,8 +287,8 @@ class EVF_Emails {
 			do_action( 'everest_forms_summary_email_body', $this );
 
 			evf_get_template( 'emails/summary-email-footer-' . $this->get_template() . '.php' );
-			//Hooks inot the summary email footer.
-			do_action('everest_forms_summary_email_footer', $this);
+			// Hooks inot the summary email footer.
+			do_action( 'everest_forms_summary_email_footer', $this );
 		} else {
 			evf_get_template( 'emails/header-' . $this->get_template() . '.php' );
 
@@ -298,7 +298,7 @@ class EVF_Emails {
 			evf_get_template( 'emails/body-' . $this->get_template() . '.php' );
 
 			// Hooks into the email body.
-			 do_action( 'everest_forms_email_body', $this );
+			do_action( 'everest_forms_email_body', $this );
 
 			evf_get_template( 'emails/footer-' . $this->get_template() . '.php' );
 

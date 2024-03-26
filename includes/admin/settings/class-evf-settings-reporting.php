@@ -85,14 +85,14 @@ class EVF_Settings_Reporting extends EVF_Settings_Page {
 					'title'    => esc_html__( 'Email To', 'everest-forms' ),
 					'desc_tip' => esc_html__( 'Email address to send the routine report' ),
 					'id'       => 'everest_forms_entries_reporting_email',
-					'default'  => '',
+					'default'  => '{admin_email}',
 					'type'     => 'text',
 				),
 				array(
 					'title'    => esc_html__( 'Email Subject', 'everest-forms' ),
 					'desc_tip' => esc_html__( 'Email subject while sending the routine report' ),
 					'id'       => 'everest_forms_entries_reporting_subject',
-					'default'  => '',
+					'default'  => esc_html__( 'Everest Forms - Entries summary statistics', 'everest - forms' ),
 					'type'     => 'text',
 				),
 				array(
