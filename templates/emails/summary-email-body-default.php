@@ -88,12 +88,12 @@ switch ( $evf_summary_frequency ) {
 				<?php
 				foreach ( $evf_conversion_data as $evf_conversion ) {
 					?>
-					<td> <?php echo $evf_conversion->submitted_count; ?> </td>
-					<td> <?php echo $evf_conversion->total_count; ?> </td>
-					<td> <?php echo $evf_conversion->conversion_rate; ?> </td>
-					<td> <?php echo $evf_conversion->abandoned_count; ?> </td>
-					<td> <?php echo $evf_conversion->abandonment_rate; ?> </td>
-					<td> <?php echo $evf_conversion->bounce_rate; ?> </td>
+					<td> <?php esc_html_e( $evf_conversion->submitted_count, 'everest-forms' ); ?> </td>
+					<td> <?php esc_html_e( $evf_conversion->total_count, 'everest-forms' ); ?> </td>
+					<td> <?php esc_html_e( $evf_conversion->conversion_rate, 'everest-forms' ); ?> </td>
+					<td> <?php esc_html_e( $evf_conversion->abandoned_count, 'everest-forms' ); ?> </td>
+					<td> <?php esc_html_e( $evf_conversion->abandonment_rate, 'everest-forms' ); ?> </td>
+					<td> <?php esc_html_e( $evf_conversion->bounce_rate, 'everest-forms' ); ?> </td>
 					<?php
 				}
 				?>
@@ -116,8 +116,8 @@ switch ( $evf_summary_frequency ) {
 	<tbody style="display:block;">
 				<?php foreach ( $evf_entries_data as $evf_entry_data ) { ?>
 		<tr style="display:flex; justify-content:space-between; color:#000; padding:1rem">
-			<td><?php echo $evf_entry_data->post_title; ?></td>
-			<td><?php echo $evf_entry_data->entries_count; ?></td>
+			<td><?php esc_html_e( $evf_entry_data->post_title, 'everest-forms' ); ?></td>
+			<td><?php esc_html_e( $evf_entry_data->entries_count, 'everest-forms' ); ?></td>
 		</tr>
 		<?php } ?>
 	</tbody>
@@ -127,14 +127,18 @@ switch ( $evf_summary_frequency ) {
 		<br/>
 		<p style="color:#8f8f8f; display:inline-flex; margin-bottom:2rem;">
 				<?php
-				esc_html_e(
-					'Business growth with Everest Forms.
+				$everest_forms_anyltics_marketing_text = apply_filters(
+					'everest_forms_anyltics_marketing_text',
+					esc_html__(
+						'Business growth with Everest Forms.
 		 With the Advanced Form Analytics addon, you can efficiently track user engagement on your forms
 		 by monitoring conversions, impressions, bounce rates, and abandonments on a simplified graph.
 		 Then, observe user behavior and fine-tune your forms for high lead conversion. Don\'t miss out on valuable
 		 opportunities to enhance your conversion rates and push your business forward. ',
-					'everst-forms'
-				)
+						'everst-forms'
+					)
+				);
+				echo $everest_forms_anyltics_marketing_text;
 				?>
 		</p>
 		<a style="background:#7545bb; color:#fff; text-decoration:none; padding:0.8rem 1.5rem; border-radius:4px;" href="<?php echo esc_url( 'https://docs.everestforms.net/docs/form-analytics/' ); ?>"><?php esc_html_e( 'Learn More', 'everest-forms' ); ?></a>
