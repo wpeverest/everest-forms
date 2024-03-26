@@ -93,7 +93,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 	 * @since 1.3.0
 	 */
 	public function remove_file() {
-		$default_error = esc_html__( 'Something went wrong while removing the file.', 'everest-forms-pro' );
+		$default_error = esc_html__( 'Something went wrong while removing the file.', 'everest-forms' );
 
 		$validated_form_field = $this->ajax_validate_form_field();
 		if ( empty( $validated_form_field ) ) {
@@ -125,7 +125,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 	 * @since 1.3.0
 	 */
 	public function upload_file() {
-		$default_error = esc_html__( 'Something went wrong, please try again.', 'everest-forms-pro' );
+		$default_error = esc_html__( 'Something went wrong, please try again.', 'everest-forms' );
 
 		$validated_form_field = $this->ajax_validate_form_field();
 		if ( empty( $validated_form_field ) ) {
@@ -133,7 +133,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 		}
 
 		if ( empty( $_FILES['file'] ) ) {
-			wp_send_json_error( esc_html__( 'No file was uploaded', 'everest-forms-pro' ) );
+			wp_send_json_error( esc_html__( 'No file was uploaded', 'everest-forms' ) );
 		}
 
 		if ( isset( $_FILES['file']['error'] ) && UPLOAD_ERR_OK !== $_FILES['file']['error'] ) {
@@ -232,7 +232,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			$upload_error_message = $this->get_upload_validation_errors( $error );
 			if ( is_string( $upload_error_message ) ) {
 				/* translators: %s - error text. */
-				$errors[] = sprintf( esc_html__( 'File upload error. %s', 'everest-forms-pro' ), $upload_error_message );
+				$errors[] = sprintf( esc_html__( 'File upload error. %s', 'everest-forms' ), $upload_error_message );
 			}
 		}
 
@@ -244,7 +244,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 				if ( $file['size'] > $max_size ) {
 					$errors[] = sprintf(
 						/* translators: %s: max upload size */
-						esc_html__( 'File exceeds max size allowed (%s).', 'everest-forms-pro' ),
+						esc_html__( 'File exceeds max size allowed (%s).', 'everest-forms' ),
 						evf_size_to_megabytes( $max_size )
 					);
 				}
@@ -253,12 +253,12 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 
 		// Make sure file has an extension first.
 		if ( empty( $ext ) ) {
-			$errors[] = esc_html__( 'File must have an extension.', 'everest-forms-pro' );
+			$errors[] = esc_html__( 'File must have an extension.', 'everest-forms' );
 		}
 
 		// Validate extension against all allowed values.
 		if ( ! in_array( $ext, $this->get_extensions(), true ) ) {
-			$errors[] = esc_html__( 'File type is not allowed.', 'everest-forms-pro' );
+			$errors[] = esc_html__( 'File type is not allowed.', 'everest-forms' );
 		}
 
 		/*
@@ -275,7 +275,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			$proper_filename = empty( $wp_filetype['proper_filename'] ) ? '' : $wp_filetype['proper_filename'];
 
 			if ( $proper_filename || ! $ext || ! $type ) {
-				$errors[] = esc_html__( 'File type is not allowed.', 'everest-forms-pro' );
+				$errors[] = esc_html__( 'File type is not allowed.', 'everest-forms' );
 			}
 		}
 
@@ -458,8 +458,8 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			$field,
 			array(
 				'slug'    => 'extensions',
-				'value'   => esc_html__( 'Allowed File Extensions', 'everest-forms-pro' ),
-				'tooltip' => esc_html__( 'Enter the extensions you would like to allow, comma separated.', 'everest-forms-pro' ),
+				'value'   => esc_html__( 'Allowed File Extensions', 'everest-forms' ),
+				'tooltip' => esc_html__( 'Enter the extensions you would like to allow, comma separated.', 'everest-forms' ),
 			),
 			false
 		);
@@ -491,8 +491,8 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			$field,
 			array(
 				'slug'    => 'upload_message',
-				'value'   => esc_html__( 'File Upload Message', 'everest-forms-pro' ),
-				'tooltip' => esc_html__( 'Enter text to be displayed as file upload message', 'everest-forms-pro' ),
+				'value'   => esc_html__( 'File Upload Message', 'everest-forms' ),
+				'tooltip' => esc_html__( 'Enter text to be displayed as file upload message', 'everest-forms' ),
 			),
 			false
 		);
@@ -501,7 +501,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			$field,
 			array(
 				'slug'  => 'upload_message',
-				'value' => ! empty( $field['upload_message'] ) ? $field['upload_message'] : esc_html( sprintf( _n( 'Drop your file here or click here to upload', 'Drop your files here or click here to upload', (int) $max_file_number, 'everest-forms-pro' ), (int) $max_file_number ) ),
+				'value' => ! empty( $field['upload_message'] ) ? $field['upload_message'] : esc_html( sprintf( _n( 'Drop your file here or click here to upload', 'Drop your files here or click here to upload', (int) $max_file_number, 'everest-forms' ), (int) $max_file_number ) ),
 			),
 			false
 		);
@@ -524,8 +524,8 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			$field,
 			array(
 				'slug'    => 'limit_message',
-				'value'   => esc_html__( 'Upload Limit Message', 'everest-forms-pro' ),
-				'tooltip' => esc_html__( 'Enter text to be displayed as file upload limit message', 'everest-forms-pro' ),
+				'value'   => esc_html__( 'Upload Limit Message', 'everest-forms' ),
+				'tooltip' => esc_html__( 'Enter text to be displayed as file upload limit message', 'everest-forms' ),
 			),
 			false
 		);
@@ -535,7 +535,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			array(
 				'slug'  => 'limit_message',
 				/* translators: 1: Number of Files */
-				'value' => ! empty( $field['limit_message'] ) ? $field['limit_message'] : sprintf( __( 'You can upload up to %s files.', 'everest-forms-pro' ), (int) $max_file_number ),
+				'value' => ! empty( $field['limit_message'] ) ? $field['limit_message'] : sprintf( __( 'You can upload up to %s files.', 'everest-forms' ), (int) $max_file_number ),
 			),
 			false
 		);
@@ -558,9 +558,9 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			$field,
 			array(
 				'slug'    => 'max_size',
-				'value'   => esc_html__( 'Max File Size', 'everest-forms-pro' ),
+				'value'   => esc_html__( 'Max File Size', 'everest-forms' ),
 				/* translators: %s - max upload size. */
-				'tooltip' => sprintf( esc_html__( 'Enter the max file size, in megabytes, to allow. If left blank, the value defaults to the maximum size the server allows which is %s.', 'everest-forms-pro' ), evf_max_upload() ),
+				'tooltip' => sprintf( esc_html__( 'Enter the max file size, in megabytes, to allow. If left blank, the value defaults to the maximum size the server allows which is %s.', 'everest-forms' ), evf_max_upload() ),
 			),
 			false
 		);
@@ -586,27 +586,31 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 	 * @param array $field Field data.
 	 */
 	public function max_file_number( $field ) {
-		$lbl  = $this->field_element(
+
+		$licensed                 = ( false === evf_get_license_plan() ) ? false : true;
+		$upgradable_feature_class = ( true === $licensed ) ? '' : 'evf-one-time-draggable-field';
+
+		$lbl = $this->field_element(
 			'label',
 			$field,
 			array(
 				'slug'    => 'max_file_number',
-				'value'   => esc_html__( 'Maximum number limit on uploads', 'everest-forms-pro' ),
-				'tooltip' => sprintf( esc_html__( 'Enter the number of files you wish the user to upload.', 'everest-forms-pro' ) ),
+				'value'   => esc_html__( 'Maximum number limit on uploads', 'everest-forms' ),
+				'tooltip' => sprintf( esc_html__( 'Enter the number of files you wish the user to upload.', 'everest-forms' ) ),
 			),
 			true
 		);
-		$fld  = $this->field_element(
+		$fld = $this->field_element(
 			'text',
 			$field,
 			array(
 				'slug'    => 'max_file_number',
 				'type'    => 'number',
 				'min'     => '1',
-				'class'   => 'evf-max-file-number',
-				'value'   => ! empty( $field['max_file_number'] ) ? $field['max_file_number'] : 1,
-				'desc'    => esc_html__( 'Maximum number limit on uploads', 'everest-forms-pro' ),
-				'tooltip' => esc_html__( 'Enter the number of files you wish the user to upload.', 'everest-forms-pro' ),
+				'class'   => 'evf-max-file-number ' . $upgradable_feature_class . ' ',
+				'value'   => $max_file_number = ( true === $licensed && ! empty( $field['max_file_number'] ) ) ? $field['max_file_number'] : 1,
+				'desc'    => esc_html__( 'Maximum number limit on uploads', 'everest-forms' ),
+				'tooltip' => esc_html__( 'Enter the number of files you wish the user to upload.', 'everest-forms' ),
 			),
 			false
 		);
@@ -629,8 +633,8 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			array(
 				'slug'    => 'media_library',
 				'value'   => ! empty( $field['media_library'] ) ? 1 : '',
-				'desc'    => esc_html__( 'Store file in WordPress Media Library', 'everest-forms-pro' ),
-				'tooltip' => esc_html__( 'Check this option to store the final uploaded file in the WordPress Media Library', 'everest-forms-pro' ),
+				'desc'    => esc_html__( 'Store file in WordPress Media Library', 'everest-forms' ),
+				'tooltip' => esc_html__( 'Check this option to store the final uploaded file in the WordPress Media Library', 'everest-forms' ),
 			),
 			false
 		);
@@ -727,7 +731,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			$value = maybe_unserialize( $field_val );
 
 			if ( isset( $value['type'] ) && in_array( $value['type'], array( 'image-upload', 'file-upload' ), true ) ) {
-				$val = empty( $value['file_url'] ) ? '<em>' . esc_html__( '(empty)', 'everest-forms-pro' ) . '</em>' : $val;
+				$val = empty( $value['file_url'] ) ? '<em>' . esc_html__( '(empty)', 'everest-forms' ) . '</em>' : $val;
 			}
 
 			if ( isset( $value['type'], $value['file_url'] ) && $value['type'] === $this->type ) {
@@ -824,9 +828,9 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 		$this->field_preview_option( 'label', $field );
 
 		$max_file_number = ! empty( $field['max_file_number'] ) ? max( 1, absint( $field['max_file_number'] ) ) : 1;
-		$upload_message  = isset( $field['upload_message'] ) ? $field['upload_message'] : esc_html( sprintf( _n( 'Drop your file here or click here to upload', 'Drop your files here or click here to upload', (int) $max_file_number, 'everest-forms-pro' ), (int) $max_file_number ) );
+		$upload_message  = isset( $field['upload_message'] ) ? $field['upload_message'] : esc_html( sprintf( _n( 'Drop your file here or click here to upload', 'Drop your files here or click here to upload', (int) $max_file_number, 'everest-forms' ), (int) $max_file_number ) );
 		/* translators: 1: Number of Files */
-		$limit_message = isset( $field['limit_message'] ) ? $field['limit_message'] : sprintf( __( 'You can upload up to %s files.', 'everest-forms-pro' ), (int) $max_file_number );
+		$limit_message = isset( $field['limit_message'] ) ? $field['limit_message'] : sprintf( __( 'You can upload up to %s files.', 'everest-forms' ), (int) $max_file_number );
 
 		// Primary input.
 		?>
@@ -870,9 +874,9 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 		$max_file_number   = isset( $field['max_file_number'] ) ? $field['max_file_number'] : 1;
 		$max_file_number   = max( 1, absint( $max_file_number ) );
 		$post_max_size     = wp_max_upload_size();
-		$upload_message    = isset( $field['upload_message'] ) ? $field['upload_message'] : esc_html( sprintf( _n( 'Drop your file here or click here to upload', 'Drop your files here or click here to upload', (int) $max_file_number, 'everest-forms-pro' ), (int) $max_file_number ) );
+		$upload_message    = isset( $field['upload_message'] ) ? $field['upload_message'] : esc_html( sprintf( _n( 'Drop your file here or click here to upload', 'Drop your files here or click here to upload', (int) $max_file_number, 'everest-forms' ), (int) $max_file_number ) );
 		/* translators: 1: Number of Files */
-		$limit_message = isset( $field['limit_message'] ) ? $field['limit_message'] : sprintf( __( 'You can upload up to %s files.', 'everest-forms-pro' ), (int) $max_file_number );
+		$limit_message = isset( $field['limit_message'] ) ? $field['limit_message'] : sprintf( __( 'You can upload up to %s files.', 'everest-forms' ), (int) $max_file_number );
 		?>
 		<div class="everest-forms-uploader"
 			data-field-id="<?php echo esc_attr( $field_id ); ?>"
@@ -1058,7 +1062,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 		$file_path    = $file['path'];
 
 		if ( 1 === $this->form_data['settings']['dropbox_enabled'] && ! file_exists( $file_path ) ) {
-			evf()->task->errors[ $this->form_id ][ $this->field_id ] = __( 'Something went wrong while uploading file,Please try again', 'everest-forms-pro' );
+			evf()->task->errors[ $this->form_id ][ $this->field_id ] = __( 'Something went wrong while uploading file,Please try again', 'everest-forms' );
 			update_option( 'evf_validation_error', 'yes' );
 		}
 

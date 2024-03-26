@@ -137,6 +137,7 @@
  * Main EverestForms styles
  */
 .everest-forms {
+  /*Everest forms uploader styles.*/
   /**
 	 * Notices.
 	 */ }
@@ -194,6 +195,121 @@
       height: 4px;
       background: #4bce61;
       border-radius: 2px; }
+  .everest-forms .everest-forms-uploader {
+    cursor: pointer;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    border: 1px dashed #8e98a2; }
+    .everest-forms .everest-forms-uploader span {
+      display: block;
+      color: #494d50; }
+      .everest-forms .everest-forms-uploader span.everest-forms-upload-hint {
+        color: #8e98a2;
+        font-size: 14px; }
+    .everest-forms .everest-forms-uploader + input.dropzone-input {
+      display: none; }
+    .everest-forms .everest-forms-uploader .dz-message {
+      flex: 0 0 100%;
+      width: 100%; }
+      .everest-forms .everest-forms-uploader .dz-message svg {
+        margin-bottom: 10px;
+        background: #f6f7f9;
+        height: 48px;
+        width: 48px;
+        padding: 8px;
+        border-radius: 4px; }
+      .everest-forms .everest-forms-uploader .dz-message.hide {
+        display: none; }
+    .everest-forms .everest-forms-uploader .dz-preview {
+      flex: 0 0 100%;
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #e9ebf1;
+      padding-bottom: 20px; }
+      .everest-forms .everest-forms-uploader .dz-preview .dz-image {
+        width: 64px;
+        height: 64px;
+        background: #f6f7f9;
+        flex: 0 0 64px;
+        margin-right: 15px;
+        border-radius: 3px;
+        overflow: hidden; }
+      .everest-forms .everest-forms-uploader .dz-preview .dz-details {
+        text-align: left;
+        font-size: 14px;
+        flex: 1; }
+        .everest-forms .everest-forms-uploader .dz-preview .dz-details .dz-size {
+          color: #494d50; }
+        .everest-forms .everest-forms-uploader .dz-preview .dz-details .dz-filename span {
+          color: #8e98a2; }
+      .everest-forms .everest-forms-uploader .dz-preview .dz-progress {
+        background: #e9ebf1;
+        border-radius: 2px;
+        height: 4px;
+        width: 100%;
+        margin-left: 80px;
+        order: 4; }
+        .everest-forms .everest-forms-uploader .dz-preview .dz-progress .dz-upload {
+          background-color: #4bce61;
+          border-radius: 2px;
+          height: 4px;
+          transition: all 0.25s ease 0s; }
+      .everest-forms .everest-forms-uploader .dz-preview .dz-error-message {
+        font-size: 14px;
+        flex: 0 0 100%;
+        width: 100%;
+        text-align: left;
+        margin-left: 80px;
+        order: 5; }
+        .everest-forms .everest-forms-uploader .dz-preview .dz-error-message span {
+          color: #fa5252; }
+      .everest-forms .everest-forms-uploader .dz-preview .dz-success-mark,
+      .everest-forms .everest-forms-uploader .dz-preview .dz-error-mark {
+        display: none; }
+      .everest-forms .everest-forms-uploader .dz-preview .dz-remove {
+        font-size: 0;
+        position: relative;
+        height: 28px;
+        width: 28px;
+        display: inline-flex;
+        margin-left: auto;
+        order: 3;
+        border-radius: 14px;
+        border: 2px solid #8e98a2; }
+        .everest-forms .everest-forms-uploader .dz-preview .dz-remove::before, .everest-forms .everest-forms-uploader .dz-preview .dz-remove::after {
+          content: "";
+          height: 14px;
+          width: 2px;
+          display: block;
+          background: #8e98a2;
+          position: absolute;
+          top: 50%;
+          left: 0;
+          right: 0;
+          margin: 0 auto; }
+        .everest-forms .everest-forms-uploader .dz-preview .dz-remove::before {
+          transform: translateY(-50%) rotate(45deg); }
+        .everest-forms .everest-forms-uploader .dz-preview .dz-remove::after {
+          transform: translateY(-50%) rotate(-45deg); }
+      .everest-forms .everest-forms-uploader .dz-preview.dz-processing .dz-progress {
+        display: block; }
+      .everest-forms .everest-forms-uploader .dz-preview.dz-complete .dz-progress {
+        display: none; }
+      .everest-forms .everest-forms-uploader .dz-preview.dz-error .dz-remove {
+        border-color: #fa5252; }
+        .everest-forms .everest-forms-uploader .dz-preview.dz-error .dz-remove::before, .everest-forms .everest-forms-uploader .dz-preview.dz-error .dz-remove::after {
+          background: #fa5252; }
+      .everest-forms .everest-forms-uploader .dz-preview:last-child {
+        border-bottom: 0;
+        padding-bottom: 0;
+        margin-bottom: 0; }
   .everest-forms label {
     display: block;
     line-height: 1.7;

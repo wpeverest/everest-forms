@@ -2932,7 +2932,7 @@
 			var draggedFieldElement = $('#everest-forms-add-fields-' + field_type);
 
 			if (singleDraggableFields.length > 0 && $.inArray(field_type, singleDraggableFields) >= 0 && draggedFieldElement.length) {
-				draggedFieldElement.addClass('upgrade-modal evf-one-time-draggable-field');
+				draggedFieldElement.addClass('evf-one-time-draggable-field');
 			}
 
 		},
