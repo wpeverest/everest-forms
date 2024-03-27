@@ -23,6 +23,10 @@ class EVF_Field_Range_Slider extends EVF_Form_Fields {
 		$this->order  = 140;
 		$this->group  = 'advanced';
 		$this->is_pro = true;
+		$this->links  = array(
+			'image_id' => '',
+			'vedio_id' => 'y_lsIjL7_lE',
+		);
 
 		parent::__construct();
 	}

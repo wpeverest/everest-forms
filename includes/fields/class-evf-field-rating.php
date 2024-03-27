@@ -23,6 +23,10 @@ class EVF_Field_Rating extends EVF_Form_Fields {
 		$this->order  = 10;
 		$this->group  = 'survey';
 		$this->is_pro = true;
+		$this->links  = array(
+			'image_id' => '',
+			'vedio_id' => 'Aa8uxCP6U4Q',
+		);
 
 		parent::__construct();
 	}

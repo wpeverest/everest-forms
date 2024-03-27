@@ -76,6 +76,14 @@ class EVF_Form_Block {
 			defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( evf()->plugin_path() . '/assets/css/everest-forms.css' ) : EVF_VERSION
 		);
 
+		wp_register_script(
+			'everest-forms-shortcode-embed-form',
+			evf()->plugin_url() . '/assets/js/admin/gutenberg/shortcode-form-embed.js',
+			array( 'wp-blocks', 'wp-element', 'wp-i18n', 'wp-components', 'wp-dom-ready', 'wp-edit-post', 'jquery', 'jquery-blockui', 'jquery-ui-sortable', 'jquery-ui-widget', 'jquery-ui-core', 'tooltipster', 'wp-color-picker', 'perfect-scrollbar' ),
+			defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( evf()->plugin_path() . '/assets/js/admin/gutenberg/shortcode-form-embed.js' ) : EVF_VERSION,
+			true
+		);
+
 		if ( defined( 'EFP_PLUGIN_FILE' ) ) {
 			wp_register_script(
 				'everest-forms-block-editor',
@@ -84,6 +92,7 @@ class EVF_Form_Block {
 				defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( plugin_dir_path( EFP_PLUGIN_FILE ) . '/assets/js/admin/gutenberg/form-block.min.js' ) : EFP_VERSION,
 				true
 			);
+
 		} else {
 			wp_register_script(
 				'everest-forms-block-editor',
@@ -92,6 +101,12 @@ class EVF_Form_Block {
 				defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( evf()->plugin_path() . '/assets/js/admin/gutenberg/form-block.min.js' ) : EVF_VERSION,
 				true
 			);
+		}
+
+		$action_page = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : ''; //phpcs:ignore WordPress.Security.NonceVerification.Recommended,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+
+		if ( 'edit' === $action_page ) {
+			wp_enqueue_script( 'everest-forms-shortcode-embed-form' );
 		}
 
 		$form_block_data = array(

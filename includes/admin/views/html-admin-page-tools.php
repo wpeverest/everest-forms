@@ -11,9 +11,10 @@ defined( 'ABSPATH' ) || exit;
 $tabs        = apply_filters(
 	'everest_forms_admin_status_tabs',
 	array(
-		'import'  => __( 'Import', 'everest-forms' ),
-		'export'  => __( 'Export', 'everest-forms' ),
-		'setting' => __( 'Setting', 'everest-forms' ),
+		'import'        => __( 'Import', 'everest-forms' ),
+		'export'        => __( 'Export', 'everest-forms' ),
+		'form_migrator' => __( 'Form Migrator', 'everest-forms' ),
+		'system_info'   => __( 'System Info', 'everest-forms' ),
 	)
 );
 $current_tab = ! empty( $_REQUEST['tab'] ) ? sanitize_title( wp_unslash( $_REQUEST['tab'] ) ) : 'import'; // phpcs:ignore WordPress.Security.NonceVerification
@@ -44,8 +45,11 @@ if ( 'yes' === get_option( 'everest_forms_enable_log', 'no' ) ) {
 			case 'export':
 				EVF_Admin_Tools::export();
 				break;
-			case 'setting':
+			case 'system_info':
 				EVF_Admin_Tools::setting();
+				break;
+			case 'form_migrator':
+				EVF_Admin_Tools::form_migrator();
 				break;
 			default:
 				if ( array_key_exists( $current_tab, $tabs ) && has_action( 'everest_forms_admin_status_content_' . $current_tab ) ) {
@@ -56,5 +60,5 @@ if ( 'yes' === get_option( 'everest_forms_enable_log', 'no' ) ) {
 				break;
 		}
 		?>
-	</div>
-</div>
+		</div>
+		</div>

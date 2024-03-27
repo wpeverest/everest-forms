@@ -25,6 +25,10 @@ class EVF_Field_Yes_No extends EVF_Form_Fields {
 		$this->is_pro = true;
 		$this->plan   = 'plus professional agency themegrill-agency';
 		$this->addon  = 'everest-forms-survey-polls-quiz';
+		$this->links  = array(
+			'image_id' => '',
+			'vedio_id' => 'dyg3tFTJ4j4',
+		);
 
 		parent::__construct();
 	}
