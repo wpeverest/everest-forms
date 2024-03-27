@@ -1,5 +1,7 @@
 == Changelog ==
 
+= 2.0.9       - xx-xx-2024
+* Feature     - System Information.
 
 = 2.0.8.1     - 13-03-2024
 * Fix         - Add block Notification issue.
