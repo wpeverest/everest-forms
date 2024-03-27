@@ -194,7 +194,7 @@ if ( ! class_exists( 'WP_Debug_Data' ) ) {
 			if ( ! empty( $plugin_lists ) ) {
 				foreach ( $plugin_lists as $plugin_slug => $plugin_data ) {
 					if ( isset( $plugin_data['product_name'] ) && isset( $plugin_data['product_version'] ) ) {
-						echo esc_html( $plugin_data['product_name'] ) . ' (' . esc_html( $plugin_data['product_version'] ) . ')' . '<br>';
+						echo esc_html( $plugin_data['product_name'] . ' (' . $plugin_data['product_version'] . ')' ) . '<br>';
 					}
 				}
 			} else {
@@ -299,13 +299,16 @@ if ( ! class_exists( 'WP_Debug_Data' ) ) {
 			<th><?php esc_html_e( 'Max Allowed Packet', 'everest-forms' ); ?></th>
 			<td>
 				<?php
-						$max_packet_size_bytes = $info['wp-database']['fields']['max_allowed_packet'] =
-						array(
+						$max_packet_size_bytes = array(
 							'label' => __( 'Max allowed packet size', 'everest-forms' ),
 							'value' => WP_Debug_Data::get_mysql_var( 'max_allowed_packet' ),
 						);
-						$maxp_mb               = isset( $max_packet_size_bytes['value'] ) ? $max_packet_size_bytes['value'] / 1024 / 1024 : '';
+
+						$info['wp-database']['fields']['max_allowed_packet'] = $max_packet_size_bytes;
+
+						$maxp_mb = isset( $max_packet_size_bytes['value'] ) ? $max_packet_size_bytes['value'] / 1024 / 1024 : '';
 						echo esc_html( $maxp_mb ) . ' MB';
+
 						?>
 			</td>
 		</tr>
