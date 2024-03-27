@@ -50,6 +50,22 @@ switch ( $evf_summary_frequency ) {
 	justify-content: space-between;
 	padding: 1rem;
 }
+
+table.evf_entries_conversion_summary{
+	text-wrap:nowrap;
+}
+
+.evf_entries_conversion_summary tr:nth-child(even) {
+	background: #f6f3fa;
+}
+
+table.evf_entries_conversion_summary td {
+	padding: 1rem;
+}
+
+thead.evf_entry_summary_thead th{
+	padding:1rem;
+}
 </style>
 
 <div class="everest-forms-message-text">
@@ -66,62 +82,63 @@ switch ( $evf_summary_frequency ) {
 
 		<?php
 		if ( defined( 'EVF_FORM_ANALYTICS_VERSION' ) ) {
-			foreach ( $evf_entries_data as $evf_entry_datas ) {
-				$date_format         = get_option( 'date_format' );
-				$from_time           = evf_get_utc_time_from( $offset_from, 'Y-m-d h:i:s', true );
-				$to_time             = evf_get_utc_time_to( $offset_to, 'Y-m-d h:i:s', true );
-				$evf_conversion_data = evf_fa_get_forms_summary( $evf_entry_datas->form_id );
-				?>
+			?>
 				<div class="evf_entries_summary" style="overflow-x: auto;">
-				<table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" style="solid #dddddd; display:block;min-width: 100%;border-collapse: collapse;width:100%; display:table; padding-bottom:2rem" class = "evf_entries_conversion_summary_table">
-		<tr style="display:flex; justify-content:space-between; paddiing:1rem">
-			<th><?php esc_html_e( 'Form Name', 'everest-forms' ); ?></th>
-			<th><?php esc_html_e( 'Impressions', 'everest-forms' ); ?></th>
-			<th><?php esc_html_e( 'Conversions', 'everest-forms' ); ?></th>
-			<th><?php esc_html_e( 'Conersion Rate', 'everest-forms' ); ?></th>
-			<th><?php esc_html_e( 'Abandonments', 'everest-forms' ); ?></th>
-			<th><?php esc_html_e( 'Abandonment Rate', 'everest-forms' ); ?></th>
-			<th><?php esc_html_e( 'Bounce Rate', 'everest-forms' ); ?></th>
-		</tr>
-		<tr style="display:flex; justify-content:space-between; color:#000; padding:1rem">
-			<td><?php echo $evf_entry_datas->post_title; ?></td>
-				<?php
-				foreach ( $evf_conversion_data as $evf_conversion ) {
-					?>
-						<td> <?php echo esc_html( $evf_conversion->submitted_count ); ?> </td>
-						<td> <?php echo esc_html( $evf_conversion->total_count ); ?> </td>
-						<td> <?php echo esc_html( $evf_conversion->conversion_rate ); ?> </td>
-						<td> <?php echo esc_html( $evf_conversion->abandoned_count ); ?> </td>
-						<td> <?php echo esc_html( $evf_conversion->abandonment_rate ); ?> </td>
-						<td> <?php echo esc_html( $evf_conversion->bounce_rate ); ?> </td>
-					<?php
-				}
-				?>
-		</tr>
-</table>
-</divc
-					<?php
-			}
+				<table border="0" cellpadding="0" cellspacing="0" width="100%" style="solid #dddddd; display:block;min-width: 100%;border-collapse: collapse;width:100%; display:table; padding-bottom:2rem; text-align:center" class = "evf_entries_conversion_summary">
+					<thead class="evf_entry_summary_thead" style="background:#7e3bd0; color:#fff; padding:1rem;">
+						<tr>
+							<th style="text-align:left;"><?php esc_html_e( 'Form Name', 'everest-forms' ); ?></th>
+							<th><?php esc_html_e( 'Impressions', 'everest-forms' ); ?></th>
+							<th><?php esc_html_e( 'Conversions', 'everest-forms' ); ?></th>
+							<th><?php esc_html_e( 'Conversion Rate', 'everest-forms' ); ?></th>
+							<th><?php esc_html_e( 'Abandonments', 'everest-forms' ); ?></th>
+							<th><?php esc_html_e( 'Abandonment Rate', 'everest-forms' ); ?></th>
+							<th><?php esc_html_e( 'Bounce Rate', 'everest-forms' ); ?></th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php
+						foreach ( $evf_entries_data as $evf_entry_data ) {
+							$evf_entries_conversion = evf_fa_get_forms_summary( $evf_entry_data->form_id );
+							foreach ( $evf_entries_conversion as $evf_entry_conversion ) {
+								?>
+								<tr>
+									<td style="text-align:left;"><?php echo esc_html( $evf_entry_data->post_title ); ?></td>
+									<td><?php echo esc_html( $evf_entry_conversion->submitted_count ); ?></td>
+									<td><?php echo esc_html( $evf_entry_conversion->total_count ); ?></td>
+									<td><?php echo esc_html( $evf_entry_conversion->conversion_rate ); ?></td>
+									<td><?php echo esc_html( $evf_entry_conversion->abandoned_count ); ?></td>
+									<td><?php echo esc_html( $evf_entry_conversion->abandonment_rate ); ?></td>
+									<td><?php echo esc_html( $evf_entry_conversion->bounce_rate ); ?></td>
+								</tr>
+								<?php
+							}
+						}
+						?>
+					</tbody>
+				</table>
+				</div>
+								<?php
 		} else {
 
 			?>
 
-<table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" style="solid #dddddd; display:block;min-width: 100%;border-collapse: collapse;width:100%; display:table; padding-bottom:2rem" class = "evf_entries_summary_table">
-		<thead style="display:block; background:#7e3bd0; color:#fff; padding:1rem;">
-		<tr style="display:flex; justify-content:space-between; paddiing:1rem">
-			<th><?php esc_html_e( 'Form Name', 'everest-forms' ); ?></th>
-			<th><?php esc_html_e( 'Entries', 'everest-forms' ); ?></th>
-		</tr>
-		</thead>
-	<tbody style="display:block;">
-				<?php foreach ( $evf_entries_data as $evf_entry_data ) { ?>
-		<tr style="display:flex; justify-content:space-between; color:#000; padding:1rem">
-			<td><?php echo esc_html( $evf_entry_data->post_title ); ?></td>
-			<td><?php echo esc_html( $evf_entry_data->entries_count ); ?></td>
-		</tr>
-		<?php } ?>
-	</tbody>
-</table>
+		<table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" style="solid #dddddd; display:block;min-width: 100%;border-collapse: collapse;width:100%; display:table; padding-bottom:2rem" class = "evf_entries_summary_table">
+				<thead style="display:block; background:#7e3bd0; color:#fff; padding:1rem;">
+				<tr style="display:flex; justify-content:space-between; paddiing:1rem">
+					<th><?php esc_html_e( 'Form Name', 'everest-forms' ); ?></th>
+					<th><?php esc_html_e( 'Entries', 'everest-forms' ); ?></th>
+				</tr>
+				</thead>
+			<tbody style="display:block;">
+								<?php foreach ( $evf_entries_data as $evf_entry_data ) { ?>
+				<tr style="display:flex; justify-content:space-between; color:#000; padding:1rem">
+					<td><?php echo esc_html( $evf_entry_data->post_title ); ?></td>
+					<td><?php echo esc_html( $evf_entry_data->entries_count ); ?></td>
+				</tr>
+				<?php } ?>
+			</tbody>
+		</table>
 		<div class="evf_advanced_form_analytics_text" style="background:#fafafa; text-align:center; display:inline-block; padding:2rem; margin-top:2rem">
 		<h4 style="color:#383838"><?php esc_html_e( 'More Details on Conversion rates', 'everest-forms' ); ?></h4>
 		<br/>
