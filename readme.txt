@@ -294,6 +294,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 = 2.0.9       - xx-xx-2024
 * Feature     - System Information.
+* Tweak        - Filter introduced for template hierarchy.
 
 = 2.0.8.1     - 13-03-2024
 * Fix         - Add block Notification issue.
