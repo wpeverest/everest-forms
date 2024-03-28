@@ -3511,6 +3511,8 @@ jQuery( function ( $ ) {
 		if ( 'ai-fields' === type ) {
 			var aiFields = [
 				"text",
+				"select",
+				"radio",
 			];
 			$(document).find('.everest-forms-field').each(function() {
 				if( aiFields.includes($(this).attr('data-field-type')) && $(el).parents('.everest-forms-field-option-row-ai_chatbot_input').attr('data-field-id') !== $(this).attr('data-field-id')) {
