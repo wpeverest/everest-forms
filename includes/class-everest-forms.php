@@ -288,6 +288,11 @@ final class EverestForms {
 		include_once EVF_ABSPATH . 'includes/class-evf-privacy.php';
 
 		/**
+		 * Preview Confirmation Class
+		 */
+		include_once EVF_ABSPATH . 'includes/admin/class-evf-admin-preview-confirmation.php';
+
+		/**
 		 * Elementor classes.
 		 */
 		if ( class_exists( '\Elementor\Plugin' ) ) {
