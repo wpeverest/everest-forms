@@ -363,7 +363,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 			$status_name               = $status->name;
 			$num_posts[ $status_name ] = count( evf()->form->get_multiple( array( 'post_status' => $status_name ) ) );
 
-			if ( ! in_array( $status_name, array( 'publish', 'draft', 'pending', 'trash', 'future', 'private', 'auto-draft' ), true ) || empty( $num_posts[ $status_name ] ) ) {
+			if ( ! in_array( $status_name, array( 'publish', 'draft', 'pending', 'trash', 'future', 'private', 'auto-draft', 'approved', 'denied' ), true ) || empty( $num_posts[ $status_name ] ) ) {
 				continue;
 			}
 
@@ -466,7 +466,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 			case 'trash':
 				foreach ( $form_ids as $form_id ) {
 					if ( wp_trash_post( $form_id ) ) {
-						$count ++;
+						++$count;
 					}
 				}
 
@@ -481,7 +481,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 			case 'untrash':
 				foreach ( $form_ids as $form_id ) {
 					if ( wp_untrash_post( $form_id ) ) {
-						$count ++;
+						++$count;
 					}
 				}
 
@@ -496,7 +496,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 			case 'delete':
 				foreach ( $form_ids as $form_id ) {
 					if ( wp_delete_post( $form_id, true ) ) {
-						$count ++;
+						++$count;
 					}
 				}
 

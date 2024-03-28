@@ -206,6 +206,12 @@ function evf_search_entries( $args ) {
 			$query[] = $wpdb->prepare( 'AND `status` != %s AND `viewed` = 0', 'trash' );
 		} elseif ( 'starred' === $args['status'] ) {
 			$query[] = $wpdb->prepare( 'AND `status` != %s AND `starred` = 1', 'trash' );
+		} elseif ( 'pending' === $args['status'] ) {
+			$query[] = $wpdb->prepare( 'AND `status` = %s', 'pending' );
+		} elseif ( 'approved' === $args['status'] ) {
+			$query[] = $wpdb->prepare( 'AND `status` = %s', 'approved' );
+		} elseif ( 'denied' === $args['status'] ) {
+			$query[] = $wpdb->prepare( 'AND `status` = %s', 'denied' );
 		} else {
 			$query[] = $wpdb->prepare( 'AND `status` = %s', $args['status'] );
 		}

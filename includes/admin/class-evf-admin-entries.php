@@ -329,6 +329,26 @@ class EVF_Admin_Entries {
 				array( '%d' ),
 				array( '%d' )
 			);
+		} elseif ( 'approved' === $status ) {
+			$update = $wpdb->update(
+				$wpdb->prefix . 'evf_entries',
+				array(
+					'status' => 'publish',
+				),
+				array( 'entry_id' => $entry_id ),
+				array( '%s' ),
+				array( '%d' )
+			);
+		} elseif ( 'denied' === $status ) {
+			$update = $wpdb->update(
+				$wpdb->prefix . 'evf_entries',
+				array(
+					'status' => $status,
+				),
+				array( 'entry_id' => $entry_id ),
+				array( '%s' ),
+				array( '%d' )
+			);
 		} else {
 			$entry = evf_get_entry( $entry_id );
 
