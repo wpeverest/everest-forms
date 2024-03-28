@@ -93,7 +93,7 @@ Plus, you get full access to all the styles and customization options that Eleme
 ==Integration with Email Marketing and CRM Services==
 Collect leads through your WordPress forms and run your email marketing campaigns effortlessly.
 
-*  [MailChimp](https://everestforms.net/features/mailchimp/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)
+*   [MailChimp](https://everestforms.net/features/mailchimp/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)
 *   [ConvertKit](https://everestforms.net/features/convertkit/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)
 *   [MailerLite](https://everestforms.net/features/mailerlite/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)
 *   [ActiveCampaign](https://everestforms.net/features/activecampaign/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)
@@ -293,8 +293,9 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 == Changelog ==
 
 = 2.0.9       - xx-xx-2024
-* Feature     - System Information.
-* Tweak        - Filter introduced for template hierarchy.
+* Feature     - System information.
+* Enhancement - Date field formats.
+* Tweak       - Filter introduced for template hierarchy.
 
 = 2.0.8.1     - 13-03-2024
 * Fix         - Add block Notification issue.
