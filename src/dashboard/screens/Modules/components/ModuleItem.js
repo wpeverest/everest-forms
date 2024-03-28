@@ -21,7 +21,7 @@ import React, { useState, useEffect, useContext } from "react";
 /**
  *  Internal Dependencies
  */
-// import { activateModule, deactivateModule } from "./modules-api";
+import { activateModule, deactivateModule } from "./modules-api";
 import DashboardContext from "./../../../context/DashboardContext";
 import { actionTypes } from "./../../../reducers/DashboardReducer";
 
@@ -140,10 +140,7 @@ const ModuleItem = (props) => {
 		if (isPro) {
 			setModuleEnabled(true);
 			if (licensePlan) {
-				const requiredPlan = licensePlan.item_plan.replace(
-					" lifetime",
-					""
-				);
+				const requiredPlan = licensePlan;
 
 				if (data.plan && data.plan.includes(requiredPlan.trim())) {
 					setRequirementFulfilled(true);
@@ -207,6 +204,7 @@ const ModuleItem = (props) => {
 			>
 				<Image
 					src={assetsURL + image}
+					h={200}
 					borderTopRightRadius="sm"
 					borderTopLeftRadius="sm"
 					w="full"

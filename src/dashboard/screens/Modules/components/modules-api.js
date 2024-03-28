@@ -7,6 +7,8 @@ const { evfRestApiNonce, restURL } =
 const base = restURL + "everest-forms/v1/";
 const urls = {
 	modules: base + "modules",
+	activateModule: base + "modules/activate",
+	deactivateModule: base + "modules/deactivate",
 };
 
 export const getAllModules = async() => {
@@ -15,6 +17,35 @@ export const getAllModules = async() => {
 		method: "get",
 		headers: {
 			"X-WP-Nonce": evfRestApiNonce,
+		},
+	}).then((res) => res);
+};
+
+export const activateModule = async(slug, name, type) => {
+	return apiFetch({
+		path: urls.activateModule,
+		method: "POST",
+		headers: {
+			"X-WP-Nonce": evfRestApiNonce,
+		},
+		data: {
+			slug: slug,
+			name: name,
+			type: type,
+		},
+	}).then((res) => res);
+};
+
+export const deactivateModule = async(slug, type) => {
+	return apiFetch({
+		path: `${urls.deactivateModule}`,
+		method: "POST",
+		headers: {
+			"X-WP-Nonce": evfRestApiNonce,
+		},
+		data: {
+			slug: slug,
+			type: type,
 		},
 	}).then((res) => res);
 };

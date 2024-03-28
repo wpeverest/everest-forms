@@ -254,7 +254,7 @@ const Modules = () => {
 									}}
 									_selected={{
 										color: "white",
-										bg: "#2563EB",
+										bg: "#7e3bd0",
 										marginBottom: "0px",
 										boxShadow: "none",
 									}}
@@ -273,7 +273,7 @@ const Modules = () => {
 									}}
 									_selected={{
 										color: "white",
-										bg: "#2563EB",
+										bg: "#7e3bd0",
 										marginBottom: "0px",
 										boxShadow: "none",
 									}}
@@ -296,7 +296,7 @@ const Modules = () => {
 									}}
 									_selected={{
 										color: "white",
-										bg: "#2563EB",
+										bg: "#7e3bd0",
 										marginBottom: "0px",
 										boxShadow: "none",
 									}}
