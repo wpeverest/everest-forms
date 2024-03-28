@@ -333,7 +333,7 @@ class EVF_Admin_Entries {
 			$update = $wpdb->update(
 				$wpdb->prefix . 'evf_entries',
 				array(
-					'status' => $status,
+					'status' => 'publish',
 				),
 				array( 'entry_id' => $entry_id ),
 				array( '%s' ),

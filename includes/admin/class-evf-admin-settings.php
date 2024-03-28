@@ -429,17 +429,15 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						?>
 							<tr valign="top">
 							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?></label>
 							</th>
 							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
-							<?php echo wp_kses_post( $description ); ?>
 							<?php
 							$arguments                  = array(
 								'media_buttons'    => false,
 								'tinymce'          => false,
 								'textarea_rows'    => get_option( 'default_post_edit_rows', 10 ),
 								'editor_class'     => 'everest_forms_tinymce_class',
-								'tinymce'          => false,
 								'textarea_content' => true,
 								'teeny'            => true,
 							);
@@ -451,6 +449,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 							wp_editor( $content, $id, $arguments );
 							$output = ob_get_clean();
 							echo wp_kses_post( $output );
+							echo '<em>' . wp_kses_post( $description ) . '</em>';
 							?>
 							</td>
 						</tr>
