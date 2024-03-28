@@ -3,7 +3,7 @@
  * EverestForms Reporting Settings
  *
  * @package EverestForms\Admin
- * @version 1.0.0
+ * @version 2.0.9
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -19,6 +19,8 @@ class EVF_Settings_Reporting extends EVF_Settings_Page {
 
 	/**
 	 * Constructor.
+	 *
+	 * @since 2.0.9
 	 */
 	public function __construct() {
 		$this->id    = 'reporting';
@@ -30,6 +32,7 @@ class EVF_Settings_Reporting extends EVF_Settings_Page {
 	/**
 	 * Get settings array.
 	 *
+	 * @since 2.0.9
 	 * @return array
 	 */
 	public function get_settings() {
@@ -139,6 +142,8 @@ class EVF_Settings_Reporting extends EVF_Settings_Page {
 
 	/**
 	 * Save settings.
+	 *
+	 * @since 2.0.9
 	 */
 	public function save() {
 		$settings = $this->get_settings();

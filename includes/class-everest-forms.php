@@ -63,6 +63,8 @@ final class EverestForms {
 	/**
 	 * The reporting handler instance.
 	 *
+	 * @since 2.0.9
+	 * 
 	 * @var EVF_Reporting
 	 */
 	public $reporting;

@@ -8,9 +8,7 @@ class EVF_Report_Cron {
 	/**
 	 * Function for implementing cron job for reporting.
 	 *
-	 * @since 2.0.7
-	 *
-	 * @return void.
+	 * @since 2.0.9
 	 */
 	public function evf_schedule_run() {
 		// Send
@@ -169,8 +167,7 @@ class EVF_Report_Cron {
 	/**
 	 * Report stat data.
 	 *
-	 * @since 2.0.7
-	 * @return void.
+	 * @since 2.0.9
 	 */
 	public function evf_report_form_statistics_send() {
 		$evf_headers = array( 'Content-Type: text/html; charset=UTF-8' );

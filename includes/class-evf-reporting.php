@@ -3,6 +3,7 @@
  * Routine entries reporting functionality.
  *
  * @package EverestForms\Classes
+ * @since 2.0.9
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -14,6 +15,8 @@ class EVF_Reporting {
 
 	/**
 	 * Constructor.
+	 *
+	 * @since 2.0.9
 	 */
 	public function __construct() {
 		add_action( 'init', array( $this, 'evf_schedule_entries_report_email' ) );
@@ -21,17 +24,20 @@ class EVF_Reporting {
 		add_action( 'everest_forms_stats_report_schedule', array( $this, 'evf_schedule_run' ), 10, 2 );
 	}
 
+	/**
+	 * Clears the scheduled events.
+	 *
+	 * @since 2.0.9
+	 */
 	public function evf_cron_schedule_clearer() {
 		$evf_report_cron = new EVF_Report_Cron();
 		$evf_report_cron->evf_schedule_clear_all();
 	}
 
 	/**
-	 * Function for implementing cron job for reporting.
+	 * Runs the scheduling events.
 	 *
-	 * @since 2.0.7
-	 *
-	 * @return void.
+	 * @since 2.0.9
 	 */
 	public function evf_schedule_run() {
 
@@ -42,7 +48,7 @@ class EVF_Reporting {
 	/**
 	 * Schedule the entries reporting routine email.
 	 *
-	 * @since 2.0.7
+	 * @since 2.0.9
 	 */
 	public function evf_schedule_entries_report_email() {
 

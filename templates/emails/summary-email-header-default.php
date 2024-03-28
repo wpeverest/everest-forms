@@ -252,7 +252,15 @@ $background_color = '#e9eaec';
 </head>
 <body style="height: 100%;margin: 0;padding: 0;width: 100%;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: <?php echo esc_attr( $background_color ); ?>;">
 <div class="everest-forms-logo" style="text-align:center">
-	<img src="<?php echo esc_url( plugin_dir_url( EVF_PLUGIN_FILE ) . 'assets/images/evf-white-bg-logo.png' ); ?>" alt="<?php esc_attr_e( 'Everest Forms logo', 'everest-forms' ); ?>" style="width:8%; margin-top:6rem;">
+		<?php
+			/**
+			 * Modifies the header logo for the reporting email.
+			 *
+			 * @since 2.0.9
+			 */
+			$reporting_header_logo = apply_filters( 'everest_forms_reporting_header_logo', plugin_dir_url( EVF_PLUGIN_FILE ) . 'assets/images/evf-white-bg-logo.png' );
+		?>
+	<img src="<?php echo esc_url( $reporting_header_logo ); ?>" alt="<?php esc_attr_e( 'Everest Forms logo', 'everest-forms' ); ?>" style="width:8%; margin-top:6rem;">
 </div>
 	<!-- Don't forget to run final template through http://templates.mailchimp.com/resources/inline-css/ -->
 	<center>

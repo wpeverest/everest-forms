@@ -41,7 +41,15 @@ $font_family      = "'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-s
 				</tr>
 			</table>
 			<div class="everest-forms-footer-logo">
-			<img src="<?php echo esc_url( plugin_dir_url( EVF_PLUGIN_FILE ) . 'assets/images/Everest-forms-horizontal-Logo.png' ); ?>" alt="<?php esc_attr_e( 'Everest Forms logo', 'everest-forms' ); ?>" style="width:20%">
+				<?php
+				/**
+				 * Modifies the footer logo for the summary report email.
+				 *
+				 * @since 2.0.9.
+				 */
+				$footer_image_url = apply_filters( 'everest_forms_report_footer_logo', plugin_dir_url( EVF_PLUGIN_FILE ) . 'assets/images/Everest-forms-horizontal-Logo.png' );
+				?>
+			<img src="<?php echo esc_url( $footer_image_url ); ?>" alt="<?php esc_attr_e( 'Repoting  footer logo', 'everest-forms' ); ?>" style="width:20%">
 			</div>
 
 			<?php

@@ -1173,8 +1173,8 @@ function evf_get_all_forms( $skip_disabled_entries = false, $check_disable_stori
  * @return string
  */
 function evf_get_meta_key_field_option( $field ) {
-	if (isset($field['type']) && isset($field['label'])) {
-		switch ($field['type']) {
+	if ( isset( $field['type'] ) && isset( $field['label'] ) ) {
+		switch ( $field['type'] ) {
 			case 'select':
 				$field['label'] = 'Dropdown';
 				break;
@@ -4838,7 +4838,7 @@ if ( ! function_exists( 'evf_maybe_get_local_font_url' ) ) {
 	}
 }
 
-if( ! function_exists( 'evf_is_akismet_configured' ) ) {
+if ( ! function_exists( 'evf_is_akismet_configured' ) ) {
 
 	/**
 	 * Has the Akismet plugin been configured wih a valid API key?
@@ -4849,18 +4849,18 @@ if( ! function_exists( 'evf_is_akismet_configured' ) ) {
 	 */
 	function evf_is_akismet_configured() {
 
-		if (! is_plugin_active( 'akismet/akismet.php' ) ) {
+		if ( ! is_plugin_active( 'akismet/akismet.php' ) ) {
 			return false;
 		}
 
-		require_once( WP_PLUGIN_DIR . '/akismet/akismet.php' );
+		require_once WP_PLUGIN_DIR . '/akismet/akismet.php';
 
 		$akismet_instance = new Akismet();
 		// Akismet will only allow an API key to be saved if it is a valid key.
 		// We can assume that if there is an API key saved, it is valid.
 		$api_key = $akismet_instance->get_api_key();
 
-		if(! empty( $api_key ) ) {
+		if ( ! empty( $api_key ) ) {
 			return true;
 		}
 
@@ -4868,7 +4868,7 @@ if( ! function_exists( 'evf_is_akismet_configured' ) ) {
 	}
 }
 
-if( ! function_exists( 'evf_current_url' ) ) {
+if ( ! function_exists( 'evf_current_url' ) ) {
 	/**
 	 * Get the current URL.
 	 *
@@ -4919,7 +4919,7 @@ function evf_get_utc_time_to( $evf_entries_report_summary_offset, $evf_format = 
 }
 
 /**
- * Function to extarct the start time in UTC format.
+ * Extarcts the start time in UTC format.
  *
  * @since 2.0.9
  * @return datetime start_time in utc format.
@@ -4929,7 +4929,6 @@ function evf_get_utc_time_from( $evf_entries_report_summary_offset, $evf_format 
 	// Get local time midnight today
 	$evf_time_from_local = wp_date( 'Y-m-d 00:00:00' );
 	$evf_format          = 'Y-m-d H:i:s';
-
 
 	// Get local time from
 	$evf_time_from_offset = strtotime( $evf_entries_report_summary_offset, strtotime( $evf_time_from_local ) );
@@ -4945,12 +4944,12 @@ function evf_get_utc_time_from( $evf_entries_report_summary_offset, $evf_format 
 }
 
 /**
- * Function to extract the start offset time according to the duration.
+ * Extracts the start offset time according to the duration.
  *
  * @since 2.0.9
  * @return datetime $starttime.
  */
-function evf_summary_start_offset_time(){
+function evf_summary_start_offset_time() {
 	// Get options
 	$evf_report_frequency   = get_option( 'everest_forms_entries_reporting_frequency', 'Weekly' );
 	$evf_report_offset_from = '';
@@ -4985,12 +4984,12 @@ function evf_summary_start_offset_time(){
 }
 
 /**
- * Function to extract the end offset time according to the duration.
+ * Extracts the end offset time according to the duration.
  *
  * @since 2.0.9
  * @return datetime $end_time.
  */
-function evf_summary_end_offset_time(){
+function evf_summary_end_offset_time() {
 	// Get options
 	$evf_report_frequency   = get_option( 'everest_forms_entries_reporting_frequency', 'Weekly' );
 	$evf_report_offset_from = '';
@@ -5065,7 +5064,7 @@ function evf_entries_summaries() {
 	$evf_stat_start          = evf_get_utc_time_from( $offset_from, $evf_date_format, true );
 	$evf_stat_end            = evf_get_utc_time_to( $offset_to, $evf_date_format, true );
 	$evf_stat_selected_forms = get_option( 'everest_forms_reporting_form_lists', array() );
-	$evf_stat_data_output = '';
+	$evf_stat_data_output    = '';
 	foreach ( $evf_stat_selected_forms as $evf_stat_selected_form ) {
 		$evf_stat_data_output = $wpdb->get_results(
 			$wpdb->prepare(

@@ -842,6 +842,8 @@ class EVF_AJAX {
 
 	/**
 	 * Send stat routine test email.
+	 *
+	 * @since 2.0.9
 	 */
 	public static function send_routine_report_test_email() {
 		try {
@@ -942,7 +944,7 @@ class EVF_AJAX {
 			foreach ( $pages as $page ) {
 				if ( 'page' === $page->post_type || 'post' === $page->post_type ) {
 					$page_title               = $page->post_title;
-					$page_guid                = get_permalink( $page->ID);
+					$page_guid                = get_permalink( $page->ID );
 					$page_list[ $page_title ] = $page_guid;
 				}
 			}
