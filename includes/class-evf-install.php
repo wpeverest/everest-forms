@@ -88,7 +88,9 @@ class EVF_Install {
 		add_action( 'init', array( __CLASS__, 'init_background_updater' ), 5 );
 		add_action( 'admin_init', array( __CLASS__, 'install_actions' ) );
 		add_filter( 'map_meta_cap', array( __CLASS__, 'filter_map_meta_cap' ), 10, 4 );
-		add_filter( 'plugin_action_links_' . EVF_PLUGIN_BASENAME, array( __CLASS__, 'plugin_action_links' ) );
+		if ( defined( 'EVF_PLUGIN_BASENAME' ) ) {
+			add_filter( 'plugin_action_links_' . EVF_PLUGIN_BASENAME, array( __CLASS__, 'plugin_action_links' ) );
+		}
 		add_filter( 'plugin_row_meta', array( __CLASS__, 'plugin_row_meta' ), 10, 2 );
 		add_filter( 'wpmu_drop_tables', array( __CLASS__, 'wpmu_drop_tables' ) );
 		add_filter( 'cron_schedules', array( __CLASS__, 'cron_schedules' ) );
@@ -98,7 +100,7 @@ class EVF_Install {
 	 * Init background updates
 	 */
 	public static function init_background_updater() {
-		include_once dirname( __FILE__ ) . '/class-evf-background-updater.php';
+		include_once __DIR__ . '/class-evf-background-updater.php';
 		self::$background_updater = new EVF_Background_Updater();
 	}
 
@@ -172,7 +174,7 @@ class EVF_Install {
 	 * Reset any notices added to admin.
 	 */
 	private static function remove_admin_notices() {
-		include_once dirname( __FILE__ ) . '/admin/class-evf-admin-notices.php';
+		include_once __DIR__ . '/admin/class-evf-admin-notices.php';
 		EVF_Admin_Notices::remove_all_notices();
 	}
 
@@ -326,7 +328,7 @@ class EVF_Install {
 	 */
 	private static function create_options() {
 		// Include settings so that we can run through defaults.
-		include_once dirname( __FILE__ ) . '/admin/class-evf-admin-settings.php';
+		include_once __DIR__ . '/admin/class-evf-admin-settings.php';
 
 		$settings = EVF_Admin_Settings::get_settings_pages();
 
@@ -592,7 +594,7 @@ class EVF_Install {
 		$forms_count = wp_count_posts( 'everest_form' );
 
 		if ( empty( $forms_count->publish ) ) {
-			include_once dirname( __FILE__ ) . '/templates/contact.php';
+			include_once __DIR__ . '/templates/contact.php';
 
 			// Create a form.
 			$form_id = wp_insert_post(

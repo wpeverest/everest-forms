@@ -90,7 +90,7 @@ $preview_link = add_query_arg(
 		<div class="everest-forms-nav-wrapper clearfix">
 			<nav class="nav-tab-wrapper evf-nav-tab-wrapper">
 				<div class="everest-forms-logo">
-							<img src="<?php echo esc_url( plugin_dir_url( EVF_PLUGIN_FILE )  . 'assets/images/everest-forms-logo.png'  ); ?>" alt="<?php esc_attr_e( 'Everest Forms logo', 'everest-forms' ); ?>">
+							<img src="<?php echo esc_url( plugin_dir_url( EVF_PLUGIN_FILE ) . 'assets/images/everest-forms-logo.png' ); ?>" alt="<?php esc_attr_e( 'Everest Forms logo', 'everest-forms' ); ?>">
 				</div>
 				<?php
 				foreach ( $tabs as $slug => $tab ) { // phpcs:ignore WordPress.WP.GlobalVariablesOverride
@@ -111,6 +111,7 @@ $preview_link = add_query_arg(
 					</button>
 				</div>
 				<a class="everest-forms-btn everest-forms-preview-button" href="<?php echo esc_url( $preview_link ); ?>" rel="bookmark" target="_blank"><?php esc_html_e( 'Preview', 'everest-forms' ); ?></a>
+				<button name="embed_form" data-form_id="<?php echo esc_html( isset( $_GET['form_id'] ) ? absint( sanitize_text_field( wp_unslash( $_GET['form_id'] ) ) ) : 0 ); ?>" class="everest-forms-btn everest-forms-embed-button" type="button" value="<?php esc_attr_e( 'Embed', 'everest-forms' ); ?>"><?php esc_html_e( 'Embed', 'everest-forms' ); ?></button>
 				<button name="save_form" class="everest-forms-btn everest-forms-save-button" type="button" value="<?php esc_attr_e( 'Save', 'everest-forms' ); ?>"><?php esc_html_e( 'Save', 'everest-forms' ); ?></button>
 			</div>
 		</div>
