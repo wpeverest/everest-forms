@@ -423,7 +423,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						<?php
 						break;
 
-						// timyMCE
+					// timyMCE.
 					case 'tinymce':
 						$option_value = $value['value'];
 						?>
@@ -435,22 +435,22 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 							<?php echo wp_kses_post( $description ); ?>
 							<?php
 							$arguments                  = array(
-								'media_buttons' => false,
-								'tinymce'       => false,
-								'textarea_rows' => get_option( 'default_post_edit_rows', 10 ),
-								'editor_class'  => 'everest_forms_tinymce_class',
-								'tinymce' => false,
+								'media_buttons'    => false,
+								'tinymce'          => false,
+								'textarea_rows'    => get_option( 'default_post_edit_rows', 10 ),
+								'editor_class'     => 'everest_forms_tinymce_class',
+								'tinymce'          => false,
 								'textarea_content' => true,
-								'teeny' => true,
+								'teeny'            => true,
 							);
 							$arguments['textarea_name'] = $value['id'];
 							$arguments['teeny']         = true;
 							$id                         = $value['id'];
-							$content =  html_entity_decode($option_value);
+							$content                    = html_entity_decode( $option_value );
 							ob_start();
 							wp_editor( $content, $id, $arguments );
 							$output = ob_get_clean();
-							echo $output;
+							echo wp_kses_post( $output );
 							?>
 							</td>
 						</tr>

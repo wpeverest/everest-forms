@@ -251,9 +251,11 @@ if ( false !== $entry_index ) {
 									<?php endif; ?>
 
 									<?php
-									if ( ! empty( $entry->status ) ) : {
-									}
-									?>
+									if ( ! empty( $entry->status ) ) :
+										{
+
+										}
+										?>
 										<p class="everest-forms-entry-status">
 											<span class="dashicons dashicons-category"></span>
 											<?php esc_html_e( 'Status:', 'everest-forms' ); ?>

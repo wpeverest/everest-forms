@@ -1324,8 +1324,7 @@ class EVF_Form_Task {
 	/**
 	 * Verify the token and approve the entry if the token matches.
 	 *
-	 * @since 2.0.8
-	 * @return void
+	 * @since 2.0.9
 	 */
 	public static function evf_admin_approve_entry() {
 		if ( ! isset( $_GET['evf_admin_approval_entry_token'] ) || empty( $_GET['evf_admin_approval_entry_token'] ) ) {
@@ -1355,8 +1354,7 @@ class EVF_Form_Task {
 	/**
 	 * Verify the token and deny the entry if the token matches.
 	 *
-	 * @since 2.0.8
-	 * @return void
+	 * @since 2.0.9
 	 */
 	public static function evf_admin_deny_entry() {
 		if ( ! isset( $_GET['evf_admin_denial_entry_token'] ) || empty( $_GET['evf_admin_denial_entry_token'] ) ) {
@@ -1389,9 +1387,7 @@ class EVF_Form_Task {
 	 * @param array $form_data Form field data.
 	 * @param int   $entry_id Entry ID.
 	 *
-	 * @since 2.0.8
-	 *
-	 * @return void.
+	 * @since 2.0.9
 	 */
 	public function evf_set_approval_status( $entry_id, $form_data ) {
 		$evf_admin_approval_token_list  = array();
