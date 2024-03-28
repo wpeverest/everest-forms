@@ -1288,7 +1288,9 @@ class EVF_Form_Task {
 			if ( ! in_array( $field_type, $field_type_allowlist, true ) ) {
 				continue;
 			}
-
+			if( ! isset( $entry['form_fields'][ $key ] ) ) {
+				continue;
+			}
 			$field_content = is_array( $entry['form_fields'][ $key ] ) ? implode( ' ', $entry['form_fields'][ $key ] ) : $entry['form_fields'][ $key ];
 
 			if ( ! isset( $entry_data[ $field_type ] ) && in_array( $field_type, array( 'first-name', 'last-name', 'email', 'url' ), true ) ) {

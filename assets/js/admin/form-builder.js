@@ -433,6 +433,7 @@
 			EVFPanelBuilder.bindFieldDeleteWithKeyEvent();
 			EVFPanelBuilder.bindCloneField();
 			EVFPanelBuilder.bindSaveOption();
+			EVFPanelBuilder.bindEmbedOption();
 			EVFPanelBuilder.bindSaveOptionWithKeyEvent();
 			EVFPanelBuilder.bindOpenShortcutKeysModalWithKeyEvent();
 			EVFPanelBuilder.bindAddNewRow();
@@ -1535,7 +1536,7 @@
 				if ( total_rows < 2 ) {
 					$.alert({
 						title: evf_data.i18n_row_locked,
-						content: evf_data.i18n_row_locked_msg,
+						content: evf_data.i18n_single_row_locked_msg,
 						icon: 'dashicons dashicons-info',
 						type: 'blue',
 						buttons : {
@@ -2117,6 +2118,136 @@
 				});
 			});
 		},
+		bindEmbedOption: function () {
+            $( 'body' ).on( 'click', '.everest-forms-embed-button', function () {
+				var data = {
+					'action' 	: 'everest_forms_embed_form',
+					security	: evf_data.evf_embed_form,
+				};
+				var $this = $(this);
+
+				$.ajax({
+					url: evf_data.ajax_url,
+					data: data,
+					type: 'POST',
+					beforeSend: function () {
+						$this.addClass( 'processing' );
+						$this.find( '.loading-dot' ).remove();
+						$this.append( '<span class="loading-dot"></span>' );
+					},
+					success: function(response){
+						$this.removeClass( 'processing' );
+						$this.find( '.loading-dot' ).remove();
+
+						var $title          		= '<h4>Embed in Page</h4>'
+
+						var modelContent 			= '';
+						var $message    			= '<div class="everest_forms_hide_container"><p>We can help embed your form with just a few clicks!</p>';
+						var $selectExistingPage		= '<button class="everest-forms-btn everest-forms-select-existing-page">Select Existing Page</button>';
+						var $createNewPage			= '<button class="everest-forms-btn everest-forms-create-new-page">Create New Page</button></div><div class="everest-forms-show-exist-page"></div>';
+						modelContent				= $message + $selectExistingPage + $createNewPage;
+
+						$.alert({
+							title   : $title,
+							content : modelContent,
+							type    : 'blue',
+							onContentReady: function () {
+								var $formId		= $(".everest-forms-embed-button").attr('data-form_id');
+								$(".jconfirm-buttons").hide();
+								//when clicked on 'Select Existing Page' button
+								$( ".everest-forms-select-existing-page" ).click(function () {
+
+									$( ".everest_forms_hide_container" ).hide();
+										var $selectStart	= '<div class="everest-forms-select-existing-post-container"><p>Select the page you would like to embed your form in.</p><select name="everest-forms-select-existing-page-name" id="everest-forms-select-existing-page-name">';
+										var $option			= '<option disabled selected>Select Page</option>';
+
+										response.data.forEach(page => {
+											$option += '<option data-id="' + page.ID + '" value="' + page.ID + '">' + page.post_title + '</option>';
+										});
+
+										var $selectEnd		= '</select><button class="everest-forms-lets-go-btn" style="cursor:pointer">Lets Go!</button>';
+										var $backBtn 		= '<div style="cursor:pointer" class="everest-forms-show-container">Go Back</div></div>'
+
+										modelContent = $selectStart + $option + $selectEnd + $backBtn;
+
+										$( ".everest-forms-show-exist-page" ).append( modelContent );
+
+										$( ".everest-forms-show-container" ).click(function(){
+											$( ".everest_forms_hide_container" ).show();
+											$( ".everest-forms-select-existing-post-container" ).remove();
+										})
+
+										//When page is selected
+										$( ".everest-forms-select-existing-post-container" ).change(function(){
+											var $pageId 	= $(this).find(":selected").val()
+
+											$( ".everest-forms-lets-go-btn" ).click(function(){
+												var data = {
+													'action'	: 'everest_forms_goto_edit_page',
+													security	: evf_data.evf_goto_edit_page,
+													'page_id'	: $pageId,
+													'form_id'	: $formId,
+												}
+												$.ajax({
+													url : evf_data.ajax_url,
+													type: 'POST',
+													data: data,
+													success: function( response ){
+														if ( response.success ) {
+															window.location = response.data
+														}
+													}
+												})
+											})
+										})
+
+								});
+
+								//when click on 'Create New Page' button
+								$( ".everest-forms-create-new-page" ).click(function(){
+									$( ".everest_forms_hide_container" ).hide();
+
+									var $title		= '<div class="everest-forms-select-existing-post-container"><p>What would you like to call the new page?</p>';
+									var $pageName 	= '<div><input type="text" name="page_title"/>';
+									var $goBtn 		= '<button class="everest-forms-lets-go-btn" style="cursor:pointer">Lets Go!</button></div>';
+									var $backBtn 		= '<div style="cursor:pointer" class="everest-forms-show-container">Go Back</div></div>'
+
+									modelContent = $title + $pageName + $goBtn + $backBtn;
+									$(" .everest-forms-show-exist-page" ).append( modelContent );
+
+									$( ".everest-forms-show-container" ).click(function(){
+										$( ".everest_forms_hide_container" ).show();
+										$( ".everest-forms-select-existing-post-container" ).remove();
+									})
+
+									$( ".everest-forms-lets-go-btn" ).click(function(){
+										var $pageTitle = $( "[name='page_title']" ).val();
+
+										var data = {
+											'action'	: 'everest_forms_goto_edit_page',
+											security	: evf_data.evf_goto_edit_page,
+											page_title	: $pageTitle,
+											'form_id'	: $formId,
+										}
+										$.ajax({
+											url		: evf_data.ajax_url,
+											type	: 'POST',
+											data	: data,
+											success	: function( response ){
+												if ( response.success ) {
+													window.location = response.data
+												}
+											}
+										})
+									})
+								})
+							}
+						})
+					}
+				})
+
+            });
+        },
 		bindSaveOptionWithKeyEvent:function() {
 			$('body').on("keydown", function (e) {
 				if (e.ctrlKey || e.metaKey) {
@@ -3240,6 +3371,52 @@ jQuery( function ( $ ) {
 			$( this ).parent().parent().parent().next().next( '.everest-forms-min-max-date-range-option' ).addClass( 'everest-forms-hidden' );
 		}
 	});
+	/**
+	 * Real-time updates for Google Calendar.
+	 *
+	 * @since 2.0.6
+	 */
+	$(document).on( 'change', '.appt-sched-google-calendar-advanced', function(e) {
+		var $this = $( this );
+		if ( ! $this.is( ':checked' ) ) {
+			$( '.everest-form-appt-sched-google-event-section' ).addClass( 'everest-forms-hidden' );
+		} else {
+			$( '.everest-form-appt-sched-google-event-section' ).removeClass( 'everest-forms-hidden' );
+		}
+	});
+	/**
+	 * Real-time updates the field for google calendar when we drag the new field on builder.
+	 *
+	 * @since 2.0.6
+	 */
+	$(document).on('focus', '.appt-sched-google-calendar-event-title-field', function(e){
+		var selectedItems = $('.evf-admin-field-wrapper').find('.everest-forms-field');
+		appt_sched_event_title_field_list($(this),selectedItems);
+	});
+	$(document).on('focus', '.appt-sched-google-calendar-event-desc-field', function(e){
+		var selectedItems = $('.evf-admin-field-wrapper').find('.everest-forms-field');
+		appt_sched_event_title_field_list($(this),selectedItems);
+	});
+	/**
+	 * Function to updates google event title when we drag the new field on builder.
+	 *
+	 * @since 2.0.6
+	 */
+	function appt_sched_event_title_field_list($this, selectedItems){
+		var html ='<option value=""> -- Select Field -- </option>';
+		const allowedField = ['first-name', 'last-name', 'text', 'textarea'];
+			$.each(selectedItems,function(index,element) {
+				var fieldType = $(element).data('field-type');
+				if(allowedField.includes(fieldType)){
+					var content = $(element).find('.label-title');
+					var label = $(content).find('.text').text();
+					var fieldName = $(element).data('field-id');
+
+					html += "<option value="+fieldName+">"+label+"</option>";
+				}
+			});
+		$($this).html(html);
+	}
 
 	function get_all_available_field( allowed_field, type , el ) {
 		var all_fields_without_email = [];

@@ -23,7 +23,10 @@ class EVF_Field_Address extends EVF_Form_Fields {
 		$this->order  = 110;
 		$this->group  = 'advanced';
 		$this->is_pro = true;
-
+		$this->links  = array(
+			'image_id' => '',
+			'vedio_id' => 'NmxJd98Ao_0',
+		);
 		parent::__construct();
 	}
 }

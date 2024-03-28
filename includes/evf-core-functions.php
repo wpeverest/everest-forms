@@ -1132,6 +1132,7 @@ function evf_get_random_string( $length = 10 ) {
  * @return array of form data.
  */
 function evf_get_all_forms( $skip_disabled_entries = false, $check_disable_storing_entry_info = true ) {
+
 	$forms    = array();
 	$form_ids = wp_parse_id_list(
 		evf()->form->get_multiple(
@@ -1173,8 +1174,8 @@ function evf_get_all_forms( $skip_disabled_entries = false, $check_disable_stori
  * @return string
  */
 function evf_get_meta_key_field_option( $field ) {
-	if (isset($field['type']) && isset($field['label'])) {
-		switch ($field['type']) {
+	if ( isset( $field['type'] ) && isset( $field['label'] ) ) {
+		switch ( $field['type'] ) {
 			case 'select':
 				$field['label'] = 'Dropdown';
 				break;
@@ -4838,7 +4839,7 @@ if ( ! function_exists( 'evf_maybe_get_local_font_url' ) ) {
 	}
 }
 
-if( ! function_exists( 'evf_is_akismet_configured' ) ) {
+if ( ! function_exists( 'evf_is_akismet_configured' ) ) {
 
 	/**
 	 * Has the Akismet plugin been configured wih a valid API key?
@@ -4849,18 +4850,18 @@ if( ! function_exists( 'evf_is_akismet_configured' ) ) {
 	 */
 	function evf_is_akismet_configured() {
 
-		if (! is_plugin_active( 'akismet/akismet.php' ) ) {
+		if ( ! is_plugin_active( 'akismet/akismet.php' ) ) {
 			return false;
 		}
 
-		require_once( WP_PLUGIN_DIR . '/akismet/akismet.php' );
+		require_once WP_PLUGIN_DIR . '/akismet/akismet.php';
 
 		$akismet_instance = new Akismet();
 		// Akismet will only allow an API key to be saved if it is a valid key.
 		// We can assume that if there is an API key saved, it is valid.
 		$api_key = $akismet_instance->get_api_key();
 
-		if(! empty( $api_key ) ) {
+		if ( ! empty( $api_key ) ) {
 			return true;
 		}
 
@@ -4868,7 +4869,7 @@ if( ! function_exists( 'evf_is_akismet_configured' ) ) {
 	}
 }
 
-if( ! function_exists( 'evf_current_url' ) ) {
+if ( ! function_exists( 'evf_current_url' ) ) {
 	/**
 	 * Get the current URL.
 	 *
@@ -4890,5 +4891,110 @@ if( ! function_exists( 'evf_current_url' ) ) {
 		$url .= wp_unslash( $_SERVER['REQUEST_URI'] );
 
 		return esc_url_raw( $url );
+	}
+}
+
+if ( ! function_exists( 'evf_process_all_fields_smart_tag' ) ) {
+	/**
+	 * Return email content wrapped in email template if {all_fields} is there in email content
+	 *
+	 * @since 2.0.5
+	 * @param string $email_content Email Content.
+	 * @return string
+	 */
+	function evf_process_all_fields_smart_tag( $email_content ) {
+
+		$email_content  = '<div class="evf-all-fields-smart-tag-email-body" background-color: #ebebeb;">';
+		$email_content .= '<table border="0" cellpadding="0" cellspacing="0" width="100%" style="min-width:100%;border-collapse:collapse background:#cccccc" >';
+		$email_content .= '<tbody>';
+		$email_content .= '<tr>';
+		$email_content .= '<td valign="top">';
+		$email_content .= '<table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" style="min-width:100%;border-collapse:collapse" class="mcnTextContentContainer">';
+		$email_content .= '<tbody>';
+		$email_content .= '<tr>';
+		$email_content .= '<td valign = "top" class = "mcnTextContent">';
+		$email_content .= "<table align = 'left' border = '0' cellpadding = '0' cellspacing = '0' width = '100%' style = 'display:block;min-width:100%;border-collapse:collapse;width:100%'>";
+		$email_content .= '<tbody>';
+		$email_content .= '<tr>';
+		$email_content .= "<td style = 'color:#333333;padding-top:20px;padding-bottom:3px'><strong>Name</strong></td>";
+		$email_content .= '</tr>';
+		$email_content .= '<tr>';
+		$email_content .= "<td style = 'color:#555555;padding-top:3px;padding-bottom:20px'>Demo Name</td>";
+		$email_content .= '</tr>';
+		$email_content .= '</tbody>';
+		$email_content .= '</table>';
+		$email_content .= "<table align = 'left' border = '0' cellpadding = '0' cellspacing = '0' width = '100%' style = 'border-top:1px solid #dddddd;display:block;min-width:100%;border-collapse:collapse;width:100%'>";
+		$email_content .= '<tbody>';
+		$email_content .= '<tr>';
+		$email_content .= "<td style = 'color:#333333;padding-top:20px;padding-bottom:3px'> <strong>Email</strong><tr / td >";
+		$email_content .= '</tr>';
+		$email_content .= '<tr>';
+		$email_content .= "<td style = 'color:#555555;padding-top:3px;padding-bottom:20px' > <a href = '#' target = '_blank'>Demo Email</a></td>";
+		$email_content .= '</tr>';
+		$email_content .= '</tbody>';
+		$email_content .= '</table>';
+		$email_content .= "<table align = 'left' border = '0' cellpadding = '0' cellspacing = '0' width = '100%' style = 'border-top:1px solid #dddddd;display:block;min-width:100%;border-collapse:collapse;width:100%'>";
+		$email_content .= '<tbody>';
+		$email_content .= '<tr>';
+		$email_content .= "<td style = 'color:#333333;padding-top:20px;padding-bottom:3px'><strong>Email Subject</strong></td>";
+		$email_content .= '</tr>';
+		$email_content .= '<tr>';
+		$email_content .= "<td style = 'color:#555555;padding-top:3px;padding-bottom:20px'>Demo Email Subject</td>";
+		$email_content .= '</tr>';
+		$email_content .= '</tbody>';
+		$email_content .= '</table>';
+		$email_content .= "<table align = 'left' border = '0' cellpadding = '0' cellspacing = '0' width = '100%' style = 'border-top:1px solid #dddddd;display:block;min-width:100%;border-collapse:collapse;width:100%'>";
+		$email_content .= '<tbody>';
+		$email_content .= '<tr>';
+		$email_content .= "<td style = 'color:#333333;padding-top:20px;padding-bottom:3px'><strong>Email Message</strong></td>";
+		$email_content .= '</tr>';
+		$email_content .= '<tr>';
+		$email_content .= "<td style = 'color:#555555;padding-top:3px;padding-bottom:20px'>Demo Email Message</td>";
+		$email_content .= '</tr>';
+		$email_content .= '</tbody>';
+		$email_content .= '</table>';
+		$email_content .= '</td>';
+		$email_content .= '</tr>';
+		$email_content .= '</tbody>';
+		$email_content .= '</table>';
+		$email_content .= '</td>';
+		$email_content .= '</tr>';
+		$email_content .= '</tbody>';
+		$email_content .= '</table>';
+		$email_content .= '</div>';
+
+		return $email_content;
+	}
+}
+
+add_action( 'everest_forms_init', 'evf_check_addons_update' );
+
+if ( ! function_exists( 'evf_check_addons_update' ) ) {
+
+	/**
+	 * Manually check for addons update.
+	 */
+	function evf_check_addons_update() {
+		if ( class_exists( 'EVF_Plugin_Updater' ) ) {
+
+			$plugins_to_check = array();
+
+			if ( class_exists( 'EverestForms_Pro' ) && is_plugin_active( 'everest-forms-pro/everest-forms-pro.php' ) && defined( 'EFP_PLUGIN_FILE' ) && defined( 'EFP_VERSION' ) ) {
+				$plugins_to_check['EverestForms_Pro'] = array(
+					'plugin'  => 'everest-forms-pro/everest-forms-pro.php',
+					'file'    => EFP_PLUGIN_FILE,
+					'id'      => 3441,
+					'version' => EFP_VERSION,
+				);
+			}
+
+			$current = get_site_transient( 'update_plugins' );
+
+			foreach ( $plugins_to_check as $class_name => $plugin_data ) {
+				if ( ! isset( $current->response[ $plugin_data['plugin'] ] ) ) {
+					\EVF_Plugin_Updater::updates( $plugin_data['file'], $plugin_data['id'], $plugin_data['version'] );
+				}
+			}
+		}
 	}
 }

@@ -23,6 +23,10 @@ class EVF_Field_Country extends EVF_Form_Fields {
 		$this->order  = 120;
 		$this->group  = 'advanced';
 		$this->is_pro = true;
+		$this->links  = array(
+			'image_id' => '',
+			'vedio_id' => 'tfCVoVTZ-as',
+		);
 
 		parent::__construct();
 	}
