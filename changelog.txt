@@ -3,6 +3,7 @@
 = 2.0.9       - xx-xx-2024
 * Feature     - System information.
 * Enhancement - Date field formats.
+* Enhancement - Appended active class to active input field.
 * Tweak       - Filter introduced for template hierarchy.
 
 
