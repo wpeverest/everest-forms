@@ -9,7 +9,7 @@ import { sprintf, __ } from "@wordpress/i18n";
 /**
  *  Internal Dependencies
  */
-import { DashboardContext } from "./../../context/DashboardContext";
+import DashboardContext from "./../../context/DashboardContext";
 import { actionTypes } from "./../../reducers/DashboardReducer";
 
 const UsePluginInstallActivate = ({

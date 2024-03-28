@@ -14,7 +14,7 @@ import {
 	Settings,
 	Modules,
 	FreeVsPro
-} from '../screens'
+} from './../screens'
 
 const Router = () => {
 	/* global _EVF_DASHBOARD_ */

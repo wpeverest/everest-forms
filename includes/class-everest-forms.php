@@ -288,6 +288,11 @@ final class EverestForms {
 		include_once EVF_ABSPATH . 'includes/class-evf-privacy.php';
 
 		/**
+		 * Rest api classes.
+		 */
+		include_once EVF_ABSPATH  . 'includes/RestApi/class-evf-rest-api.php';
+
+		/**
 		 * Elementor classes.
 		 */
 		if ( class_exists( '\Elementor\Plugin' ) ) {

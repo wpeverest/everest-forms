@@ -45,7 +45,7 @@ class EVF_Admin_Dashboard {
 					'siteURL'              => esc_url( home_url( '/' ) ),
 					'liveDemoURL'          => esc_url_raw( 'https://everestforms.demoswp.net/' ),
 					'assetsURL'            => esc_url( EVF()->plugin_url() . '/assets/' ),
-					'urRestApiNonce'       => wp_create_nonce( 'wp_rest' ),
+					'evfRestApiNonce'       => wp_create_nonce( 'wp_rest' ),
 					'newFormURL'           => esc_url( admin_url( '/admin.php?page=evf-builder&create-form=1' ) ),
 					'allFormsURL'          => esc_url( admin_url( '/admin.php?page=evf-builder' ) ),
 					'restURL'              => rest_url(),
