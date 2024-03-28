@@ -996,7 +996,6 @@ class EVF_Form_Task {
 		$evf_form_admin_approval_entries = isset( $settings['enable_admin_approval_entries'] ) ? $settings['enable_admin_approval_entries'] : '0';
 
 		if ( 'yes' === $admin_approval_entries && '1' === $evf_form_admin_approval_entries ) {
-			lg( $settings['enable_admin_approval_entries'] );
 			$status = 'pending';
 		}
 
