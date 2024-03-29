@@ -411,7 +411,8 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		$class         = empty( $_REQUEST['status'] ) ? ' class="current"' : ''; // phpcs:ignore WordPress.Security.NonceVerification
 
 		/* translators: %s: count */
-		$status_links['all']  = "<a href='admin.php?page=evf-entries&amp;form_id=$this->form_id'$class>" . sprintf( _nx( 'All <span class="count">(%s)</span>', 'All <span class="count">(%s)</span>', $total_entries, 'entries', 'everest-forms' ), number_format_i18n( $total_entries ) ) . '</a>';
+		$status_links['all'] = "<a href='admin.php?page=evf-entries&amp;form_id=$this->form_id'$class>" . sprintf( _nx( 'All <span class="count">(%s)</span>', 'All <span class="count">(%s)</span>', $total_entries, 'entries', 'everest-forms' ), number_format_i18n( $total_entries ) ) . '</a>';
+		/* translators: %s: count */
 		$status_links['spam'] = "<a href='admin.php?page=evf-entries&amp;form_id=$this->form_id &amp;status=spam'$class>" . sprintf( _nx( 'Spam <span class="count">(%s)</span>', 'Spam <span class="count">(%s)</span>', $spam_entries, 'entries', 'everest-forms' ), number_format_i18n( $spam_entries ) ) . '</a>';
 
 		foreach ( $statuses as $status_name ) {

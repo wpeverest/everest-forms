@@ -1333,16 +1333,16 @@ class EVF_Form_Task {
 
 		if ( current_user_can( 'edit_users' ) ) {
 			global $wpdb;
-			$evf_admin_approve_entry_token_raw = sanitize_text_field( wp_unslash( $_GET['evf_admin_approval_entry_token'] ) );
+			$evf_admin_approve_entry_token_raw = sanitize_text_field( wp_unslash( $_GET['evf_admin_approval_entry_token'] ) ); // phpcs:ignore WordPress.Security.NonceVerification
 
 			$evf_admin_approval_entry_enable = get_option( 'everest_forms_admin_approval_entries_enable', 'no' );
-			$evf_admin_form_id               = isset( $_GET['form_id'] ) ? $_GET['form_id'] : '';
-			$evf_admin_entry_id              = isset( $_GET['entry_id'] ) ? $_GET['entry_id'] : '';
+			$evf_admin_form_id               = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification
+			$evf_admin_entry_id              = isset( $_GET['entry_id'] ) ? absint( $_GET['entry_id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification
 			$evf_entry_redirect_url          = admin_url() . 'admin.php?page=evf-entries&form_id=' . $evf_admin_form_id . '&view-entry=' . $evf_admin_entry_id;
 			$evf_admin_entry_saved_token     = get_option( 'everest_forms_admin_entry_approval_token', array() );
 
 			if ( 'yes' === $evf_admin_approval_entry_enable ) {
-				$evf_admin_approval_entry_token = $_GET['evf_admin_approval_entry_token'];
+				$evf_admin_approval_entry_token = isset( $_GET['evf_admin_approval_entry_token'] ) ? sanitize_text_field( wp_unslash( $_GET['evf_admin_approval_entry_token'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification
 				if ( in_array( $evf_admin_approve_entry_token_raw, $evf_admin_entry_saved_token ) ) {
 					$evf_admin_approval_approved = $wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->prefix}evf_entries SET status = %s WHERE entry_id = %s ", 'approved', $evf_admin_entry_id ) );
 					wp_redirect( $evf_entry_redirect_url );
@@ -1364,15 +1364,16 @@ class EVF_Form_Task {
 		if ( current_user_can( 'edit_users' ) ) {
 			global $wpdb;
 
-			$evf_admin_approve_entry_token_raw = sanitize_text_field( wp_unslash( $_GET['evf_admin_denial_entry_token'] ) );
+			$evf_admin_approve_entry_token_raw = isset( $_GET['evf_admin_denial_entry_token'] ) ? sanitize_text_field( wp_unslash( $_GET['evf_admin_denial_entry_token'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification
 			$evf_admin_approval_entry_enable   = get_option( 'everest_forms_admin_approval_entries_enable', 'no' );
-			$evf_admin_form_id                 = isset( $_GET['form_id'] ) ? $_GET['form_id'] : '';
-			$evf_admin_entry_id                = isset( $_GET['entry_id'] ) ? $_GET['entry_id'] : '';
+			$evf_admin_form_id                 = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification
+			$evf_admin_entry_id                = isset( $_GET['entry_id'] ) ? absint( $_GET['entry_id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification
 			$evf_entry_redirect_url            = admin_url() . 'admin.php?page=evf-entries&form_id=' . $evf_admin_form_id . '&view-entry=' . $evf_admin_entry_id;
 			$evf_admin_entry_saved_token       = get_option( 'everest_forms_admin_entry_approval_token', array() );
 
 			if ( 'yes' === $evf_admin_approval_entry_enable ) {
-				$evf_admin_denial_entry_token = $_GET['evf_admin_denial_entry_token'];
+
+				$evf_admin_denial_entry_token = isset( $_GET['evf_admin_denial_entry_token'] ) ? sanitize_text_field( wp_unslash( $_GET['evf_admin_denial_entry_token'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification
 				if ( in_array( $evf_admin_approve_entry_token_raw, $evf_admin_entry_saved_token ) ) {
 					$evf_admin_approval_denied = $wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->prefix}evf_entries SET status = %s WHERE entry_id = %s ", 'denied', $evf_admin_entry_id ) );
 					wp_redirect( $evf_entry_redirect_url );
@@ -1384,8 +1385,8 @@ class EVF_Form_Task {
 	/**
 	 * Set the entry approval token of the entry and update it to the options table in database.
 	 *
-	 * @param array $form_data Form field data.
 	 * @param int   $entry_id Entry ID.
+	 * @param array $form_data Form field data.
 	 *
 	 * @since 2.0.9
 	 */
