@@ -63,12 +63,20 @@ class EVF_Admin_Preview_Confirmation {
 						$formatted_string['value'] = esc_html__( '(Empty)', 'everest-forms' );
 					}
 				}
+			} elseif ( empty( $form_fields[ $id ]['value'] ) ) {
+					$formatted_string['value'] = esc_html__( '(Empty)', 'everest-forms' );
+			} elseif ( 'basic' === $preview_style ) {
+					$output .= '<div class="everest_forms_preview_confirmation_' . $preview_style . '_label">' . $form_fields[ $id ]['name'] . '<a href="' . $form_fields[ $id ]['value'] . '" rel="noopener noreferrer" target="_blank"><img src="' . $form_fields[ $id ]['value'] . '" style="width:200px;" /></a></div>';
+				continue;
 			} else {
 				$output .= '<div class="everest_forms_preview_confirmation_' . $preview_style . '_label">' . $form_fields[ $id ]['name'] . ': </div>';
-				$output .= '<a href="' . $form_fields[ $id ]['value'] . '" rel="noopener noreferrer" target="_blank"><img src="' . $form_fields[ $id ]['value'] . '" style="width:200px;" /></a>';
+				$output .= '<div class="everest_forms_preview_confirmation_' . $preview_style . '_value"><a href="' . $form_fields[ $id ]['value'] . '" rel="noopener noreferrer" target="_blank"><img src="' . $form_fields[ $id ]['value'] . '" style="width:200px;" /></a></div>';
 				continue;
 			}
 
+			if ( 'select' === $form_fields[ $id ]['type'] ) {
+				$formatted_string = str_replace( '<br>', '', $formatted_string );
+			}
 			$close_div = 'basic' === $preview_style ? '' : '</div>';
 			if ( 'basic' === $preview_style ) {
 				$output .= '<div class="everest_forms_preview_confirmation_' . $preview_style . '_label">' . $formatted_string['label'] . ' : ' . $close_div;
