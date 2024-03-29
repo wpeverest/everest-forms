@@ -700,7 +700,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					$this->form_data,
 					esc_html__( 'Show entry preview after form submission', 'everest-forms' ),
 					array(
-						'tooltip' => esc_html__( 'Show entry preview after confirmation', 'everest-forms' ),
+						'tooltip' => esc_html__( 'Show entry preview after form submission', 'everest-forms' ),
 					)
 				);
 
