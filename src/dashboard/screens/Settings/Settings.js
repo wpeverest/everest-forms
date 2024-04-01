@@ -1,9 +1,12 @@
-import React from 'react'
+import { useEffect } from "react";
 
-const Settings = () => {
-  return (
-	<div>Settings</div>
-  )
-}
+const Settings = ({ to }) => {
+	useEffect(() => {
+		window.open(to);
+		window.history.back();
+	}, [to]);
 
-export default Settings
+	return null;
+};
+
+export default Settings;
