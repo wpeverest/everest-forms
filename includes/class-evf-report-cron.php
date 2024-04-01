@@ -1,7 +1,24 @@
 <?php
+/**
+ * Entries Summary report
+ *
+ * Sends the entries summary report the routine basis.
+ *
+ * @package EverestForms\Classes
+ * @version 2.0.9
+ */
 
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * EverestForms Entries Summary Class.
+ */
 class EVF_Report_Cron {
-
+	/**
+	 * EVF_Report_Cron Constructor
+	 *
+	 * @since 2.0.9
+	 */
 	public function __construct() {
 	}
 
@@ -11,7 +28,6 @@ class EVF_Report_Cron {
 	 * @since 2.0.9
 	 */
 	public function evf_schedule_run() {
-		// Send
 		self::evf_report_form_statistics_send();
 	}
 
@@ -20,23 +36,23 @@ class EVF_Report_Cron {
 	 *
 	 * @since 2.0.7
 	 *
-	 * @param  string $evf_recurrence.
-	 * @param  bool   $evf_report_next_run.
+	 * @param  string $evf_recurrence The recurrence time frame for the events.
+	 * @param  bool   $evf_report_next_run The time for running event.
 	 * @return void.
 	 */
 	public function evf_schedule_add( $evf_recurrence, $evf_report_next_run = false ) {
 
-		if ( $evf_report_next_run === false ) {
+		if ( false === $evf_report_next_run ) {
 			$evf_report_next_run = time(); }
 
-		// Only add if recurrence valid
+		// Only add if recurrence valid.
 		$evf_schedules = wp_get_schedules();
 		if ( ! isset( $evf_schedules[ $evf_recurrence ] ) ) {
 			return; }
 
-		// Schedule event for data source
+		// Schedule event for data source.
 		if ( ! wp_next_scheduled( 'everest_forms_stats_report_schedule' ) ) {
-			wp_schedule_event( $evf_report_next_run, $evf_recurrence, 'everest_forms_stats_report_schedule' );
+			wp_schedule_event( time(), $evf_recurrence, 'everest_forms_stats_report_schedule' );
 		}
 	}
 
@@ -51,29 +67,29 @@ class EVF_Report_Cron {
 
 		$evf_scheduled_events = _get_cron_array();
 
-		// If there are no scheduled events, return
+		// If there are no scheduled events, return.
 		if ( empty( $evf_scheduled_events ) ) {
 			return; }
 
-		// Run through each scheduled event
+		// Run through each scheduled event.
 		foreach ( $evf_scheduled_events as $timestamp => $cron ) {
 
-			// Check the cron foe everest forms report scheduling. Skips it if not of Everest forms
+			// Check the cron foe everest forms report scheduling. Skips it if not of Everest forms.
 			if ( ! isset( $cron['everest_forms_stats_report_schedule'] ) ) {
 				continue;
 			}
 
-			// Delete this scheduled event
+			// Delete this scheduled event.
 			unset( $evf_scheduled_events[ $timestamp ]['everest_forms_stats_report_schedule'] );
 
-			// If this time stamp is now empty, delete it in its entirety
+			// If this time stamp is now empty, delete it in its entirety.
 			if ( empty( $evf_scheduled_events[ $timestamp ] ) ) {
 
 				unset( $evf_scheduled_events[ $timestamp ] );
 			}
 		}
 
-		// Save the scheduled events back
+		// Save the scheduled events back.
 		_set_cron_array( $evf_scheduled_events );
 	}
 
@@ -94,7 +110,7 @@ class EVF_Report_Cron {
 	 */
 	public function evf_report_form_statistics_schedule() {
 
-		// Clear from report schedule (we need to do this in case the scheduling is changed)
+		// Clear from report schedule (we need to do this in case the scheduling is changed).
 		$this->evf_schedule_clear_all( 'everest_forms_stats_report_schedule' );
 
 		// Check if the routine emailing for form entries is enabled or not.
@@ -111,7 +127,7 @@ class EVF_Report_Cron {
 
 				case 'Daily':
 					$evf_entries_report_summary_offset = '+1 day';
-					$evf_recurrence                    = 'evf_daily';
+					$evf_recurrence                    = 'daily';
 					break;
 
 				case 'Weekly':
@@ -141,25 +157,25 @@ class EVF_Report_Cron {
 							$evf_entries_report_summary_offset = 'next monday';
 					}
 
-					$evf_recurrence = 'evf_weekly';
+					$evf_recurrence = 'weekly';
 					break;
 
 				case 'Monthly':
 					$evf_entries_report_summary_offset = 'first day of next month';
-					$evf_recurrence                    = 'evf_monthly';
+					$evf_recurrence                    = 'monthly';
 					break;
 			}
 
-			// Get midnight time of offset
-			$evf_midnight_time_offset = date( 'Y-m-d 00:00:00', strtotime( $evf_entries_report_summary_offset ) );
+			// Get midnight time of offset.
+			$evf_midnight_time_offset = gmdate( 'Y-m-d 00:00:00', strtotime( $evf_entries_report_summary_offset ) );
 
-			// Get UTC time of offset
+			// Get UTC time of offset.
 			$evf_midnight_time_offset_utc = get_gmt_from_date( $evf_midnight_time_offset );
 
-			// Get next run
+			// Get next run.
 			$evf_report_next_run = strtotime( $evf_midnight_time_offset_utc . ' +6 hours' );
 
-			// Add to report schedule
+			// Add to report schedule.
 			$this->evf_schedule_add( $evf_recurrence, $evf_report_next_run );
 		}
 	}
@@ -179,7 +195,7 @@ class EVF_Report_Cron {
 		}
 
 		$evf_stat_email = get_option( 'everest_forms_entries_reporting_email' );
-		if ( $evf_stat_email === '{admin_email}' ) {
+		if ( '{admin_email}' === $evf_stat_email ) {
 			$evf_stat_email = str_replace( $evf_stat_email, '{admin_email}', get_bloginfo( 'admin_email' ) );
 		}
 		if ( '' === $evf_stat_email && empty( $evf_stat_email ) ) {

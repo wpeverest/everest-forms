@@ -40,7 +40,6 @@ class EVF_Reporting {
 	 * @since 2.0.9
 	 */
 	public function evf_schedule_run() {
-
 		$evf_report_cron = new EVF_Report_Cron();
 		$evf_report_cron->evf_report_form_statistics_send();
 	}
@@ -52,7 +51,7 @@ class EVF_Reporting {
 	 */
 	public function evf_schedule_entries_report_email() {
 
-		// Clearing the existing statistics routine email this needs to be done in case the scheduling is changed)
+		// Clearing the existing statistics routine email this needs to be done in case the scheduling is changed).
 		$evf_report_cron = new EVF_Report_Cron();
 
 		// Check if the routine emailing for form entries is enabled or not.
@@ -69,7 +68,7 @@ class EVF_Reporting {
 
 				case 'Daily':
 					$evf_entries_report_summary_offset = '+1 day';
-					$evf_recurrence                    = 'evf_daily';
+					$evf_recurrence                    = 'daily';
 					break;
 
 				case 'Weekly':
@@ -99,25 +98,25 @@ class EVF_Reporting {
 							$evf_entries_report_summary_offset = 'next monday';
 					}
 
-					$evf_recurrence = 'evf_weekly';
+					$evf_recurrence = 'weekly';
 					break;
 
 				case 'Monthly':
 					$evf_entries_report_summary_offset = 'first day of next month';
-					$evf_recurrence                    = 'evf_monthly';
+					$evf_recurrence                    = 'monthly';
 					break;
 			}
 
-			// Get midnight time of offset
-			$evf_midnight_time_offset = date( 'Y-m-d 00:00:00', strtotime( $evf_entries_report_summary_offset ) );
+			// Get midnight time of offset.
+			$evf_midnight_time_offset = gmdate( 'Y-m-d 00:00:00', strtotime( $evf_entries_report_summary_offset ) );
 
-			// Get UTC time of offset
+			// Get UTC time of offset.
 			$evf_midnight_time_offset_utc = get_gmt_from_date( $evf_midnight_time_offset );
 
-			// Get next run
+			// Get next run.
 			$evf_report_next_run = strtotime( $evf_midnight_time_offset_utc . ' +6 hours' );
 
-			// Add to report schedule
+			// Add to report schedule.
 			$evf_report_cron->evf_schedule_add( $evf_recurrence, $evf_report_next_run );
 		}
 	}
