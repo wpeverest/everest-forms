@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
 	Box,
 	Container,
@@ -17,9 +17,20 @@ import {
 	useToast,
 } from "@chakra-ui/react";
 import { __ } from "@wordpress/i18n";
-import { getAllModules } from "./components/modules-api";
+import {
+	getAllModules,
+	bulkActivateModules,
+	bulkDeactivateModules,
+} from "./components/modules-api";
 import ModuleBody from "./components/ModuleBody";
 import AddonsSkeleton from "./../../skeleton/AddonsSkeleton/AddonsSkeleton";
+import { useOnType } from "use-ontype";
+import { Search } from "./../../components/Icon/Icon";
+import { isEmpty } from "./../../utils/utils";
+import dashboardReducer, {
+	actionTypes,
+} from "./../../reducers/DashboardReducer";
+import DashboardContext from "./../../context/DashboardContext";
 
 const Modules = () => {
 	const toast = useToast();
@@ -31,28 +42,45 @@ const Modules = () => {
 	const [isPerformingBulkAction, setIsPerformingBulkAction] = useState(false);
 	const [bulkAction, setBulkAction] = useState("");
 	const [modulesLoaded, setModulesLoaded] = useState(false);
+	const [{ allModules }, dashboardReducer] = useContext(DashboardContext);
 
 	useEffect(() => {
-		getAllModules()
-			.then((data) => {
-				console.log(data);
-				if (data.success) {
-					setModules((prevModules) => {
-						if (
-							JSON.stringify(prevModules) !==
-							JSON.stringify(data.modules_lists)
-						) {
-							return data.modules_lists;
+		if (!modulesLoaded) {
+			getAllModules()
+				.then((data) => {
+					if (data.success) {
+						dashboardReducer({
+							type: actionTypes.GET_ALL_MODULES,
+							allModules: data.modules_lists,
+						});
+
+						if (tabIndex === 1) {
+							var feature_lists = [];
+							data.modules_lists.map((module) => {
+								if (module.type === "feature") {
+									feature_lists.push(module);
+								}
+							});
+							setModules(feature_lists);
+						} else if (tabIndex === 2) {
+							var addon_lists = [];
+							data.modules_lists.map((module) => {
+								if (module.type === "addon") {
+									addon_lists.push(module);
+								}
+							});
+							setModules(addon_lists);
 						} else {
-							return prevModules;
+							setModules(data.modules_lists);
 						}
-					});
-				}
-			})
-			.catch((error) => {
-				setError(error.message);
-			});
-	}, []);
+						setModulesLoaded(true);
+					}
+				})
+				.catch((error) => {
+					setError(error.message);
+				});
+		}
+	}, [tabIndex, modules, modulesLoaded, isPerformingBulkAction]);
 
 	useEffect(() => {
 		if (error !== null) {
@@ -127,11 +155,54 @@ const Modules = () => {
 				});
 		}
 	};
-	const Search = () => {};
-	const onSearchInput = () => {};
+	const onSearchInput = useOnType(
+		{
+			onTypeStart: (val) => {
+				setIsSearching(true);
+			},
+			onTypeFinish: (val) => {
+				if (isEmpty(val)) {
+					setModulesLoaded(false);
+				} else {
+					var searchedData = {};
+
+					if (tabIndex === 1) {
+						searchedData = modules?.filter(
+							(module) =>
+								module.type === "feature" &&
+								module.title
+									.toLowerCase()
+									.includes(val.toLowerCase())
+						);
+					} else if (tabIndex === 2) {
+						searchedData = modules?.filter(
+							(module) =>
+								module.type === "addon" &&
+								module.title
+									.toLowerCase()
+									.includes(val.toLowerCase())
+						);
+					} else {
+						searchedData = modules?.filter((module) =>
+							module.title
+								.toLowerCase()
+								.includes(val.toLowerCase())
+						);
+					}
+					if (!isEmpty(searchedData)) {
+						setModules(searchedData);
+						setModulesLoaded(true);
+					} else {
+						setModulesLoaded(false);
+					}
+				}
+				setIsSearching(false);
+			},
+		},
+		800
+	);
 
 	const parseDate = (dateString) => {
-		console.log(dateString);
 		const [day, month, year] = dateString.split("/").map(Number);
 		return new Date(year, month - 1, day);
 	};

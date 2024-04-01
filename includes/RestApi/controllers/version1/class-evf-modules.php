@@ -62,6 +62,25 @@ class EVF_Modules {
 				'permission_callback' => array( __CLASS__, 'check_admin_plugin_activation_permissions' ),
 			)
 		);
+
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/bulk-activate',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( __CLASS__, 'bulk_activate_modules' ),
+				'permission_callback' => array( __CLASS__, 'check_admin_plugin_activation_permissions' ),
+			)
+		);
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/bulk-deactivate',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( __CLASS__, 'bulk_deactivate_modules' ),
+				'permission_callback' => array( __CLASS__, 'check_admin_plugin_activation_permissions' ),
+			)
+		);
 	}
 
 	/**
@@ -149,7 +168,7 @@ class EVF_Modules {
 		if ( 'addon' === $type ) {
 			$status = self::install_addons( $slug, $name, $plugin );
 		} else {
-			$status = self::ur_enable_feature( $request['slug'] );
+			$status = self::enable_feature( $request['slug'] );
 		}
 
 		if ( isset( $status['success'] ) && ! $status['success'] ) {
@@ -321,9 +340,9 @@ class EVF_Modules {
 
 		if ( 'addon' === $type ) {
 			$slug   = $slug . '/' . $slug . '.php';
-			$status = self::ur_deactivate_addon( $slug );
+			$status = self::deactivate_addon( $slug );
 		} else {
-			$status = self::ur_disable_feature( $slug );
+			$status = self::disable_feature( $slug );
 		}
 
 		if ( isset( $status['success'] ) && ! $status['success'] ) {
@@ -354,11 +373,183 @@ class EVF_Modules {
 	 *
 	 * @return WP_Error|WP_REST_Response
 	 */
-	public static function ur_deactivate_addon( $slug ) {
+	public static function deactivate_addon( $slug ) {
 		deactivate_plugins( $slug );
 		$active_plugins = get_option( 'active_plugins', array() );
 
 		return in_array( $slug, $active_plugins, true ) ? array( 'success' => false ) : array( 'success' => true );
+	}
+	/**
+	 * Bulk Activate modules.
+	 *
+	 * @since 2.0.8.1
+	 *
+	 * @param WP_REST_Request $request Full details about the request.
+	 *
+	 * @return WP_Error|WP_REST_Response
+	 */
+	public static function bulk_activate_modules( $request ) {
+
+		if ( ! isset( $request['moduleData'] ) || empty( $request['moduleData'] ) ) {
+
+			return new \WP_REST_Response(
+				array(
+					'success' => false,
+					'message' => esc_html__( 'Please select addons to activate', 'everest-forms' ),
+				),
+				400
+			);
+		}
+
+		$feature_slugs = array();
+		$addon_slugs   = array();
+
+		foreach ( $request['moduleData'] as $slug => $addon ) {
+			if ( 'addon' === $addon['type'] ) {
+				array_push( $addon_slugs, $addon );
+			} else {
+				$feature_slugs[ $slug ] = $addon['name'];
+			}
+		}
+
+		$failed_modules = array();
+
+		if ( ! empty( $addon_slugs ) ) {
+			$failed_modules = array_merge( $failed_modules, self::bulk_install_addons( $addon_slugs ) );
+		}
+
+		if ( ! empty( $feature_slugs ) ) {
+			$failed_modules = array_merge( $failed_modules, self::bulk_enable_feature( $feature_slugs ) );
+		}
+
+		if ( count( $failed_modules ) > 0 ) {
+				return new \WP_REST_Response(
+					array(
+						'success' => false,
+						/* translators: 1: Failed Addon Names */
+						'message' => sprintf( __( '%1$s activation failed. Please try again sometime later.', 'everest-forms' ), implode( ', ', $failed_modules ) ),
+					),
+					400
+				);
+		} else {
+			return new \WP_REST_Response(
+				array(
+					'success' => true,
+					'message' => __( 'All of the selected modules have been activated successfully.', 'everest-forms' ),
+				),
+				200
+			);
+		}
+	}
+	/**
+	 * Bulk Deactivate Modules.
+	 *
+	 * @since 2.0.8.1
+	 *
+	 * @param WP_REST_Request $request Full details about the request.
+	 *
+	 * @return WP_Error|WP_REST_Response
+	 */
+	public static function bulk_deactivate_modules( $request ) {
+
+		if ( ! isset( $request['moduleData'] ) || empty( $request['moduleData'] ) ) {
+
+			return new \WP_REST_Response(
+				array(
+					'success' => false,
+					'message' => esc_html__( 'Please select a module to deactivate', 'everest-forms' ),
+				),
+				400
+			);
+		}
+
+		$feature_slugs = array();
+		$addon_slugs   = array();
+
+		foreach ( $request['moduleData'] as $slug => $module ) {
+			if ( isset( $module['type'] ) && 'addon' === $module['type'] ) {
+				array_push( $addon_slugs, $module['slug'] );
+			} else {
+				array_push( $feature_slugs, $slug );
+			}
+		}
+
+		$deactivated_count = 0;
+
+		if ( ! empty( $addon_slugs ) ) {
+			$deactivated_count += count( self::bulk_deactivate_addon( $addon_slugs ) );
+		}
+
+		if ( ! empty( $feature_slugs ) ) {
+			$deactivated_count += self::bulk_disable_feature( $feature_slugs );
+		}
+
+		if ( count( $request['moduleData'] ) === $deactivated_count ) {
+			return new \WP_REST_Response(
+				array(
+					'success' => true,
+					'message' => esc_html__( 'All of the selected modules have been deactivated.', 'everest-forms' ),
+				),
+				200
+			);
+		} else {
+			return new \WP_REST_Response(
+				array(
+					'success' => false,
+					'message' => esc_html__( 'Some of the selected modules may not have been deactivated. Please try again later', 'everest-forms' ),
+				),
+				400
+			);
+		}
+	}
+	/**
+	 * Handler for installing bulk extension.
+	 *
+	 * @since 2.0.8.1
+	 *
+	 * @param array $addon_data Datas of addons to activate.
+	 *
+	 * @see Plugin_Upgrader
+	 *
+	 * @global WP_Filesystem_Base $wp_filesystem Subclass
+	 */
+	public static function bulk_install_addons( $addon_data ) {
+
+		$failed_addon = array();
+
+		foreach ( $addon_data as $addon ) {
+			$slug        = isset( $addon['name'] ) ? sanitize_key( wp_unslash( $addon['name'] ) ) : '';
+			$plugin_slug = isset( $addon['slug'] ) ? sanitize_text_field( $addon['slug'] ) : '';
+			$name        = isset( $addon['name'] ) ? sanitize_text_field( $addon['name'] ) : '';
+			$plugin      = plugin_basename( sanitize_text_field( $plugin_slug ) );
+			$status      = array(
+				'install' => 'plugin',
+				'slug'    => $slug,
+			);
+			$status      = self::install_individual_addon( $slug, $plugin, $name, $status );
+
+			if ( isset( $status['success'] ) && ! $status['success'] ) {
+				array_push( $failed_addon, $name );
+				continue;
+			}
+		}
+
+		return $failed_addon;
+	}
+	/**
+	 * Bulk Deactivate addons.
+	 *
+	 * @since 2.0.8.1
+	 *
+	 * @param array $addon_slugs Slugs of the addons to deactivate.
+	 */
+	public static function bulk_deactivate_addon( $addon_slugs ) {
+
+		deactivate_plugins( $addon_slugs );
+
+		$active_plugins = get_option( 'active_plugins', array() );
+
+		return array_diff( $addon_slugs, $active_plugins );
 	}
 	/**
 	 * Check if a given request has access to update a setting

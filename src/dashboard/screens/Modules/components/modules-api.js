@@ -9,9 +9,11 @@ const urls = {
 	modules: base + "modules",
 	activateModule: base + "modules/activate",
 	deactivateModule: base + "modules/deactivate",
+	bulkActivateModules: base + "modules/bulk-activate",
+	bulkDeactivateModules: base + "modules/bulk-deactivate",
 };
 
-export const getAllModules = async() => {
+export const getAllModules = async () => {
 	return apiFetch({
 		path: `${urls.modules}`,
 		method: "get",
@@ -21,7 +23,7 @@ export const getAllModules = async() => {
 	}).then((res) => res);
 };
 
-export const activateModule = async(slug, name, type) => {
+export const activateModule = async (slug, name, type) => {
 	return apiFetch({
 		path: urls.activateModule,
 		method: "POST",
@@ -36,7 +38,7 @@ export const activateModule = async(slug, name, type) => {
 	}).then((res) => res);
 };
 
-export const deactivateModule = async(slug, type) => {
+export const deactivateModule = async (slug, type) => {
 	return apiFetch({
 		path: `${urls.deactivateModule}`,
 		method: "POST",
@@ -46,6 +48,31 @@ export const deactivateModule = async(slug, type) => {
 		data: {
 			slug: slug,
 			type: type,
+		},
+	}).then((res) => res);
+};
+export const bulkActivateModules = async (moduleData) => {
+	return apiFetch({
+		path: urls.bulkActivateModules,
+		method: "POST",
+		headers: {
+			"X-WP-Nonce": evfRestApiNonce,
+		},
+		data: {
+			moduleData: moduleData,
+		},
+	}).then((res) => res);
+};
+
+export const bulkDeactivateModules = async (moduleData) => {
+	return apiFetch({
+		path: urls.bulkDeactivateModules,
+		method: "POST",
+		headers: {
+			"X-WP-Nonce": evfRestApiNonce,
+		},
+		data: {
+			moduleData: moduleData,
 		},
 	}).then((res) => res);
 };
