@@ -468,6 +468,23 @@
 			$('input[name="' + field_name + '"]').val($el.val());
 		}, 2000);
 	});
+	$('.everest-forms-system-info-setting-copy').tooltipster({
+		content: 'Copied',
+		trigger: 'click',
+		theme: 'tooltipster-noir',
+		interactive: true,
+		functionBefore: function(instance, helper) {
+			var table = $('.everest-forms-system-info-setting table')[0];
+			var range = document.createRange();
+			range.selectNode(table);
+			window.getSelection().removeAllRanges();
+			window.getSelection().addRange(range);
+			document.execCommand('copy');
+			window.getSelection().removeAllRanges();
+		}
+	});
+
+
 
 	// Search functionality in addon.
 	$(document).ready(function(){

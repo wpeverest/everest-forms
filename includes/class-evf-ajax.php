@@ -1320,11 +1320,16 @@ class EVF_AJAX {
 				'embed_page' => $page_id,
 			);
 		}
-
+		$page_url        = add_query_arg(
+			array(
+				'form' => 'everest-forms',
+			),
+			esc_url_raw( $url )
+		);
 		$meta['form_id'] = ! empty( $_POST['form_id'] ) ? absint( $_POST['form_id'] ) : 0;
 		EVF_Admin_Embed_Wizard::set_meta( $meta );
 
-		wp_send_json_success( $url );
+		wp_send_json_success( $page_url );
 	}
 }
 

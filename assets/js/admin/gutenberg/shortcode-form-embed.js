@@ -1,5 +1,9 @@
 jQuery(document).ready(function($){
-
+	var url      = window.location.href;
+	var containsEverestForms = url.includes("form=everest-forms");
+	if (! containsEverestForms ) {
+			return;
+	}
 
 	var $dot = $( '<span class="everest-forms-shortcode-form-embed-dot">&nbsp;</span>' ),
 	anchor = isGutenberg() ? '.block-editor .edit-post-header' : '';
@@ -48,4 +52,5 @@ jQuery(document).ready(function($){
 
 		return typeof wp !== 'undefined' && Object.prototype.hasOwnProperty.call( wp, 'blocks' );
 	}
+
 })
