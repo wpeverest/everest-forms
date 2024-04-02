@@ -36,8 +36,9 @@ class EVF_Settings_Reporting extends EVF_Settings_Page {
 	 * @return array
 	 */
 	public function get_settings() {
-		$evf_form_lists = evf_get_all_forms();
-		$settings       = apply_filters(
+		$evf_form_lists    = evf_get_all_forms();
+		$evf_summary_email = get_option( 'everest_forms_email_send_to', '' );
+		$settings          = apply_filters(
 			'everest_forms_reporting_settings',
 			array(
 				array(
@@ -50,7 +51,7 @@ class EVF_Settings_Reporting extends EVF_Settings_Page {
 					'title'    => esc_html__( 'Enable Entries Statistics Reporting', 'everest-forms' ),
 					'desc'     => esc_html__( 'Enable to send the entries statistics reporting email on routine basis.', 'everest-forms' ),
 					'id'       => 'everest_forms_enable_entries_reporting',
-					'default'  => 'yes',
+					'default'  => 'no',
 					'type'     => 'toggle',
 					'desc_tip' => true,
 				),
@@ -86,16 +87,16 @@ class EVF_Settings_Reporting extends EVF_Settings_Page {
 				),
 				array(
 					'title'    => esc_html__( 'Email To', 'everest-forms' ),
-					'desc_tip' => esc_html__( 'Email address to send the routine report' ),
+					'desc_tip' => esc_html__( 'Email address to send the routine report', 'everest-forms' ),
 					'id'       => 'everest_forms_entries_reporting_email',
 					'default'  => '{admin_email}',
 					'type'     => 'text',
 				),
 				array(
 					'title'    => esc_html__( 'Email Subject', 'everest-forms' ),
-					'desc_tip' => esc_html__( 'Email subject while sending the routine report' ),
+					'desc_tip' => esc_html__( 'Email subject while sending the routine report', 'everest-forms' ),
 					'id'       => 'everest_forms_entries_reporting_subject',
-					'default'  => esc_html__( 'Everest Forms - Entries summary statistics', 'everest - forms' ),
+					'default'  => esc_html__( 'Everest Forms - Entries summary statistics', 'everest-forms' ),
 					'type'     => 'text',
 				),
 				array(
@@ -104,7 +105,7 @@ class EVF_Settings_Reporting extends EVF_Settings_Page {
 					'id'          => 'everest_forms_email_send_to',
 					'type'        => 'email',
 					'placeholder' => 'eg. testemail@gmail.com',
-					'value'       => get_option( 'everest_forms_email_send_to', '' ) ? esc_attr( get_option( 'everest_forms_email_send_to', '' ) ) : esc_attr( get_bloginfo( 'admin_email' ) ),
+					'value'       => ! empty( $evf_summary_email ) ? esc_attr( $evf_summary_email ) : esc_attr( get_bloginfo( 'admin_email' ) ),
 					'desc_tip'    => true,
 				),
 				array(
@@ -127,7 +128,7 @@ class EVF_Settings_Reporting extends EVF_Settings_Page {
 					'desc'     => esc_html__( 'Name of the forms to send the weekly report', 'everest-forms' ),
 					'desc_tip' => true,
 					'type'     => 'multiselect',
-					'options'  => $evf_form_lists,
+					'options'  => ! empty( $evf_form_lists ) ? $evf_form_lists : array(),
 					'class'    => 'evf-enhanced-select',
 				),
 				array(
