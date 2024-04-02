@@ -849,72 +849,56 @@ class EVF_AJAX {
 		try {
 			check_ajax_referer( 'process-ajax-nonce', 'security' );
 			$from                                = esc_attr( get_bloginfo( 'name', 'display' ) );
-			$email                               = ! empty( get_option( 'everest_forms_email_send_to' ) ) ? get_option( 'everest_forms_email_send_to' ) : wp_unslash( $_POST['email'] );
+			$email                               = esc_attr( get_bloginfo( 'admin_email' ) );
 			$evf_routine_report_frequency        = get_option( 'everest_forms_entries_reporting_frequency' );
 			$evf_routine_report_day              = get_option( 'everest_forms_entries_reporting_day' );
 			$evf_routine_entries_reporting_email = get_option( 'everest_forms_entries_reporting_email' );
-			$subject                             = ! empty( get_option( 'everest_forms_entries_reporting_subject' ) ) ? get_option( 'everest_forms_entries_reporting_subject' ) : 'Test email from ' . $from;
+			$subject                             = get_option( 'everest_forms_entries_reporting_subject', 'Test email from ' . $from );
 			$evf_routine_reporting_send_to       = get_option( 'everest_forms_email_send_to' );
 			$evf_routine_reporting_forms         = get_option( 'everest_forms_reporting_form_lists' );
 			$evf_routine_reporting_test_email    = get_option( 'everest_forms_routine_report_send_email_test_to' );
 
 			switch ( $evf_routine_report_frequency ) {
 				case 'Daily':
-					$evf_routine_reporting_timeframe = esc_html__( 'Daily Report', 'everest-forms' );
+					$evf_summary_duration = esc_html__( 'in the past week', 'everest-forms' );
 					break;
 
 				case 'Weekly':
-					switch ( $evf_routine_report_day ) {
-						case 'tuesday':
-							$evf_routine_reporting_timeframe = esc_html__( 'Weekly report from last tuesday', 'everest-forms' );
-							break;
-
-						case 'wednesday':
-							$evf_routine_reporting_timeframe = esc_html__( 'Weekly report from last wednesay', 'everest-forms' );
-							break;
-
-						case 'thursday':
-							$evf_routine_reporting_timeframe = esc_html__( 'Weekly report from last thursday', 'everest-forms' );
-							break;
-
-						case 'friday':
-							$evf_routine_reporting_timeframe = esc_html__( 'Weekly report from last friday', 'everest-forms' );
-							break;
-
-						case 'saturday':
-							$evf_routine_reporting_timeframe = esc_html__( 'Weekly report from last saturday', 'everest-forms' );
-							break;
-
-						default:
-							$evf_routine_reporting_timeframe = esc_html__( 'Weekly report from last monday', 'everest-forms' );
-							break;
-					}
+					$evf_summary_duration = esc_html__( 'yesterday', 'everest-forms' );
 					break;
 
 				case 'Monthly':
-					$evf_routine_reporting_timeframe = esc_html__( 'Monthly report from last month', 'everest-forms' );
+					$evf_routinevf_summary_duratione_reporting_timeframe = esc_html__( 'in the past month', 'everest-forms' );
 					break;
 			}
 			/* translators: %s: from address */
-			$subject = 'Everest Form: ' . sprintf( esc_html__( $subject, 'everest-forms' ) );
-			$header  = "Reply-To: {{from}} \r\n";
-			$header .= 'Content-Type: text/html; charset=UTF-8';
-			$message = sprintf(
-				'
-			%s <br/> %s <br/> %s <br/> %s <br/> %s <br/> %s <br/>',
-				__( 'Congratulations, ' ),
-				__( 'Here is the entries summary for your following forms for ', 'everest_forms' ),
-				__( $evf_routine_reporting_timeframe ),
-				__( 'This is just the demo email', 'everest-forms' ),
-				__( 'Regards,', 'everest-forms' ),
-				__( 'Everest Forms Team', 'everest-forms' )
-			);
+			$subject  = 'Everest Form: ' . sprintf( esc_html__( $subject, 'everest-forms' ) );
+			$header   = "Reply-To: {{from}} \r\n";
+			$header  .= 'Content-Type: text/html; charset=UTF-8';
+			$message  = '<div class="everest-forms-message-text">';
+			$message .= '<h3 style="text-align:center; color: #ffc107;">' . esc_html( 'PS. This is just the sample data' ) . '</h3>';
+			$message .= '<p><strong>' . esc_html__( 'Hi there!', 'everest-forms' ) . ' 👋</strong></p>';
+			$message .= '<p>' . esc_html__( 'Let\'s see how your forms performed ' . $evf_summary_duration . '.', 'everest-forms' ) . '</p>';
+			$message .= '<br/>';
+			$message .= '<p><strong>' . esc_html__( 'Forms Stats', 'everest-forms' ) . '</strong></p>';
+			$message .= '<table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" style="solid #dddddd; display:block;min-width: 100%;border-collapse: collapse;width:100%; display:table; padding-bottom:2rem" class="evf_entries_summary_table">';
+			$message .= '<thead style="display:block; background:#7e3bd0; color:#fff; padding:1rem;">';
+			$message .= '<tr style="display:flex; justify-content:space-between; paddiing:1rem">';
+			$message .= '<th>' . esc_html__( 'Form Name', 'everest-forms' ) . '</th>';
+			$message .= '<th>' . esc_html__( 'Entries', 'everest-forms' ) . '</th>';
+			$message .= '</tr>';
+			$message .= '</thead>';
+			$message .= '<tbody style="display:block;">';
+			$message .= '<tr style="display:flex; justify-content:space-between; color:#000; padding:1rem">';
+			$message .= '<td>' . esc_html( 'Sample Contact Form' ) . '</td>';
+			$message .= '<td>' . esc_html( '10' ) . '</td>';
+			$message .= '</tr>';
+			$message .= '</tbody>';
+			$message .= '</table>';
+			$message .= '</div>';
 
-			error_log( print_r( $email, true ) );
-			error_log( print_r( $subject, true ) );
-			error_log( print_r( $header, true ) );
-			error_log( print_r( $message, true ) );
 			$status = wp_mail( $email, $subject, $message, $header );
+
 			if ( $status ) {
 				wp_send_json_success( array( 'message' => __( 'Test email was sent successfully! Please check your inbox to make sure it is delivered.', 'everest-forms' ) ) );
 			} else {
