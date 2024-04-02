@@ -294,6 +294,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 = 2.0.9       - xx-xx-2024
 * Feature     - System information.
+* Feature 	  - Show entry preview after form submission.
 * Enhancement - Date field formats.
 * Enhancement - Appended active class to active input field.
 * Tweak       - Filter introduced for template hierarchy.
