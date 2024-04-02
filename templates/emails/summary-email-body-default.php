@@ -74,7 +74,7 @@ thead.evf_entry_summary_thead th{
 	<br/>
 	<?php
 		$evf_entries_data = evf_entries_summaries();
-	if ( '' === $evf_entries_data ) {
+	if ( '' === $evf_entries_data || count( $evf_entries_data ) <= 0 ) {
 		echo '<p>' . esc_html__( 'Sorry, there are no forms to display the statistics.', 'everest-forms' ) . '</p>';
 	} else {
 		?>
@@ -99,17 +99,17 @@ thead.evf_entry_summary_thead th{
 					<tbody>
 						<?php
 						foreach ( $evf_entries_data as $evf_entry_data ) {
-							$evf_entries_conversion = evf_fa_get_forms_summary( $evf_entry_data->form_id );
+							$evf_entries_conversion = ! is_null( evf_fa_get_forms_summary( $evf_entry_data->form_id ) ) ? evf_fa_get_forms_summary( $evf_entry_data->form_id ) : array();
 							foreach ( $evf_entries_conversion as $evf_entry_conversion ) {
 								?>
 								<tr>
 									<td style="text-align:left;"><?php echo esc_html( $evf_entry_data->post_title ); ?></td>
-									<td><?php echo esc_html( $evf_entry_conversion->submitted_count ); ?></td>
-									<td><?php echo esc_html( $evf_entry_conversion->total_count ); ?></td>
-									<td><?php echo esc_html( $evf_entry_conversion->conversion_rate ); ?></td>
-									<td><?php echo esc_html( $evf_entry_conversion->abandoned_count ); ?></td>
-									<td><?php echo esc_html( $evf_entry_conversion->abandonment_rate ); ?></td>
-									<td><?php echo esc_html( $evf_entry_conversion->bounce_rate ); ?></td>
+									<td><?php echo isset( $evf_entry_conversion->submitted_count ) ? esc_html( $evf_entry_conversion->submitted_count ) : esc_html( '0' ); ?></td>
+									<td><?php echo isset( $evf_entry_conversion->total_count ) ? esc_html( $evf_entry_conversion->total_count ) : esc_html( '0' ); ?></td>
+									<td><?php echo isset( $evf_entry_conversion->conversion_rate ) ? esc_html( $evf_entry_conversion->conversion_rate ) . '%' : esc_html( '0' ); ?></td>
+									<td><?php echo isset( $evf_entry_conversion->abandoned_count ) ? esc_html( $evf_entry_conversion->abandoned_count ) : esc_html( '0' ); ?></td>
+									<td><?php echo isset( $evf_entry_conversion->abandonment_rate ) ? esc_html( $evf_entry_conversion->abandonment_rate ) . '%' : esc_html( '0' ); ?></td>
+									<td><?php echo isset( $evf_entry_conversion->bounce_rate ) ? esc_html( $evf_entry_conversion->bounce_rate ) . '%' : esc_html( '0' ); ?></td>
 								</tr>
 								<?php
 							}
@@ -119,10 +119,6 @@ thead.evf_entry_summary_thead th{
 				</table>
 				</div>
 								<?php
-		} elseif ( count( $evf_entries_data ) <= 0 ) {
-			?>
-			<p><?php echo esc_html__( 'Sorry, no entries found', 'everest-forms' ); ?></p>
-			<?php
 		} else {
 			?>
 
