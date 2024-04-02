@@ -82,7 +82,6 @@ class EVF_AJAX {
 	 */
 	public static function add_ajax_events() {
 		$ajax_events = array(
-<<<<<<< HEAD
 			'save_form'                      => false,
 			'create_form'                    => false,
 			'get_next_id'                    => false,
@@ -106,36 +105,6 @@ class EVF_AJAX {
 			'active_addons'                  => false,
 			'get_local_font_url'             => true,
 			'send_routine_report_test_email' => false,
-=======
-			'save_form'                => false,
-			'create_form'              => false,
-			'get_next_id'              => false,
-			'install_extension'        => false,
-			'integration_connect'      => false,
-			'new_email_add'            => false,
-			'integration_disconnect'   => false,
-			'rated'                    => false,
-			'review_dismiss'           => false,
-			'survey_dismiss'           => false,
-			'allow_usage_dismiss'      => false,
-			'php_notice_dismiss'       => false,
-			'enabled_form'             => false,
-			'import_form_action'       => false,
-			'template_licence_check'   => false,
-			'template_activate_addon'  => false,
-			'ajax_form_submission'     => true,
-			'send_test_email'          => false,
-			'locate_form_action'       => false,
-			'slot_booking'             => true,
-			'active_addons'            => false,
-			'get_local_font_url'       => false,
-			'form_migrator_forms_list' => false,
-			'form_migrator'            => false,
-			'fm_dismiss_notice'        => false,
-			'form_entry_migrator'      => false,
-			'embed_form'               => false,
-			'goto_edit_page'           => false,
->>>>>>> develop
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
