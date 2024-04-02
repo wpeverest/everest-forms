@@ -70,7 +70,7 @@ thead.evf_entry_summary_thead th{
 
 <div class="everest-forms-message-text">
 	<p><strong><?php esc_html_e( 'Hi there! ', 'everest-forms' ); ?> 👋</strong></p>
-	<p><?php esc_html_e( 'Let\'s see how your forms performed ' . $evf_summary_duration . ' .', 'everst-forms' ); ?></p>
+	<p><?php esc_html_e( 'Let\'s see how your forms performed ' . $evf_summary_duration . ' .', 'everest-forms' ); ?></p>
 	<br/>
 	<?php
 		$evf_entries_data = evf_entries_summaries();
@@ -119,8 +119,11 @@ thead.evf_entry_summary_thead th{
 				</table>
 				</div>
 								<?php
+		} elseif ( count( $evf_entries_data ) <= 0 ) {
+			?>
+			<p><?php echo esc_html__( 'Sorry, no entries found', 'everest-forms' ); ?></p>
+			<?php
 		} else {
-
 			?>
 
 		<table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" style="solid #dddddd; display:block;min-width: 100%;border-collapse: collapse;width:100%; display:table; padding-bottom:2rem" class = "evf_entries_summary_table">
@@ -131,11 +134,11 @@ thead.evf_entry_summary_thead th{
 				</tr>
 				</thead>
 			<tbody style="display:block;">
-								<?php foreach ( $evf_entries_data as $evf_entry_data ) { ?>
-				<tr style="display:flex; justify-content:space-between; color:#000; padding:1rem">
-					<td><?php echo esc_html( $evf_entry_data->post_title ); ?></td>
-					<td><?php echo esc_html( $evf_entry_data->entries_count ); ?></td>
-				</tr>
+				<?php foreach ( $evf_entries_data as $evf_entry_data ) { ?>
+					<tr style="display:flex; justify-content:space-between; color:#000; padding:1rem">
+						<td><?php echo esc_html( $evf_entry_data->post_title ); ?></td>
+						<td><?php echo esc_html( $evf_entry_data->entries_count ); ?></td>
+					</tr>
 				<?php } ?>
 			</tbody>
 		</table>
@@ -144,24 +147,26 @@ thead.evf_entry_summary_thead th{
 		<br/>
 		<p style="color:#8f8f8f; display:inline-flex; margin-bottom:2rem;">
 				<?php
-				$everest_forms_anyltics_marketing_text = apply_filters(
-					'everest_forms_anyltics_marketing_text',
-					esc_html__(
-						'Business growth with Everest Forms.
+				echo esc_html(
+					apply_filters(
+						'everest_forms_analytics_marketing_text',
+						__(
+							'Business growth with Everest Forms.
 		 With the Advanced Form Analytics addon, you can efficiently track user engagement on your forms
 		 by monitoring conversions, impressions, bounce rates, and abandonments on a simplified graph.
 		 Then, observe user behavior and fine-tune your forms for high lead conversion. Don\'t miss out on valuable
 		 opportunities to enhance your conversion rates and push your business forward. ',
-						'everst-forms'
+							'everest-forms'
+						)
 					)
 				);
-				echo $everest_forms_anyltics_marketing_text;
 				?>
 		</p>
 		<a style="background:#7545bb; color:#fff; text-decoration:none; padding:0.8rem 1.5rem; border-radius:4px;" href="<?php echo esc_url( 'https://docs.everestforms.net/docs/form-analytics/' ); ?>"><?php esc_html_e( 'Learn More', 'everest-forms' ); ?></a>
 	</div>
 </div>
 				<?php
+
 		}
 	}
 	?>
