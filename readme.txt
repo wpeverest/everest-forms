@@ -298,6 +298,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Feature     - Admin approval entries.
 * Enhancement - Date field formats.
 * Enhancement - Appended active class to active input field.
+* Fix 		  - Everest Forms conflict with WordPress Customizer.
 * Tweak       - Filter introduced for template hierarchy.
 
 = 2.0.8.1     - 13-03-2024
