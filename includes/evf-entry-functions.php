@@ -67,7 +67,21 @@ function evf_get_entry( $id, $with_fields = false, $args = array() ) {
 			wp_cache_add( $id, $results, 'evf-entrymeta' );
 		}
 
-		$entry->meta = wp_list_pluck( $results, 'meta_value', 'meta_key' );
+		if ( $entry && is_object( $entry ) ) {
+			if ( ! empty( $results ) && is_array( $results ) ) {
+				$entry->meta = wp_list_pluck( $results, 'meta_value', 'meta_key' );
+			} else {
+				$entry->meta = array();
+			}
+		} else {
+			$logger = evf_get_logger();
+			$logger->critical(
+				$entry . PHP_EOL,
+				array(
+					'source' => 'fatal-errors',
+				)
+			);
+		}
 	}
 
 	return 0 !== $entry ? $entry : null;
@@ -192,6 +206,12 @@ function evf_search_entries( $args ) {
 			$query[] = $wpdb->prepare( 'AND `status` != %s AND `viewed` = 0', 'trash' );
 		} elseif ( 'starred' === $args['status'] ) {
 			$query[] = $wpdb->prepare( 'AND `status` != %s AND `starred` = 1', 'trash' );
+		} elseif ( 'pending' === $args['status'] ) {
+			$query[] = $wpdb->prepare( 'AND `status` = %s', 'pending' );
+		} elseif ( 'approved' === $args['status'] ) {
+			$query[] = $wpdb->prepare( 'AND `status` = %s', 'approved' );
+		} elseif ( 'denied' === $args['status'] ) {
+			$query[] = $wpdb->prepare( 'AND `status` = %s', 'denied' );
 		} else {
 			$query[] = $wpdb->prepare( 'AND `status` = %s', $args['status'] );
 		}

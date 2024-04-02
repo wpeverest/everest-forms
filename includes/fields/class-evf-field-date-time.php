@@ -186,6 +186,10 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 						'F j, Y' => date_i18n( 'F j, Y' ) . ' (F j, Y)',
 						'm/d/Y'  => date_i18n( 'm/d/Y' ) . ' (m/d/Y)',
 						'd/m/Y'  => date_i18n( 'd/m/Y' ) . ' (d/m/Y)',
+						'Y.m.d'  => date_i18n( 'Y.m.d' ) . ' (Y.m.d)',
+						'F,Y'    => date_i18n( 'F,Y' ) . ' (F,Y)',
+						'm.d.y'  => date_i18n( 'm.d.y' ) . ' (m.d.y)',
+						'm-d-y'  => date_i18n( 'm-d-y' ) . ' (m-d-y)',
 					),
 				),
 				false
@@ -885,7 +889,6 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 
 			echo '</div>';
 		}
-
 	}
 
 	/**
@@ -918,7 +921,6 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				}
 			}
 		}
-
 	}
 
 	/**
@@ -1141,5 +1143,26 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 		}
 
 		return $properties;
+	}
+	/**
+	 * Form's field list for google calendar.
+	 *
+	 * @param int $form_id form id.
+	 */
+	public static function get_form_fields( $form_id ) {
+		$text_field_name_option_list = array(
+			'' => __( '---Select Field---', 'everest-forms' ),
+		);
+		if ( ! empty( $form_id ) && 'none' !== $form_id ) {
+			$form       = json_decode( get_post_field( 'post_content', $form_id ) );
+			$text_field = apply_filters( 'evf_support_field_type_for_google_event', array( 'first-name', 'last-name', 'text', 'textarea' ) );
+			$form_arr   = isset( $form->form_fields ) ? (array) $form->form_fields : array();
+			foreach ( $form_arr as $key => $value ) {
+				if ( in_array( $value->type, $text_field, true ) ) {
+					$text_field_name_option_list[ $key ] = $value->label;
+				}
+			}
+		}
+		return $text_field_name_option_list;
 	}
 }

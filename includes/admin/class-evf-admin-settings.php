@@ -424,6 +424,39 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						<?php
 						break;
 
+					// timyMCE.
+					case 'tinymce':
+						$option_value = $value['value'];
+						?>
+							<tr valign="top">
+							<th scope="row" class="titledesc">
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?></label>
+							</th>
+							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
+							<?php
+							$arguments                  = array(
+								'media_buttons'    => false,
+								'tinymce'          => false,
+								'textarea_rows'    => get_option( 'default_post_edit_rows', 10 ),
+								'editor_class'     => 'everest_forms_tinymce_class',
+								'textarea_content' => true,
+								'teeny'            => true,
+							);
+							$arguments['textarea_name'] = $value['id'];
+							$arguments['teeny']         = true;
+							$id                         = $value['id'];
+							$content                    = html_entity_decode( $option_value );
+							ob_start();
+							wp_editor( $content, $id, $arguments );
+							$output = ob_get_clean();
+							echo wp_kses_post( $output );
+							echo '<em>' . wp_kses_post( $description ) . '</em>';
+							?>
+							</td>
+						</tr>
+
+						<?php
+						break;
 					// Select boxes.
 					case 'select':
 					case 'multiselect':
@@ -878,6 +911,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						$value = '1' === $raw_value || 'yes' === $raw_value ? 'yes' : 'no';
 						break;
 					case 'textarea':
+					case 'tinymce':
 						$value = wp_kses_post( trim( $raw_value ) );
 						break;
 					case 'select':

@@ -21,7 +21,7 @@ final class EverestForms {
 	 *
 	 * @var string
 	 */
-	public $version = '2.0.6';
+	public $version = '2.0.8.1';
 
 	/**
 	 * The single instance of the class.
@@ -286,6 +286,7 @@ final class EverestForms {
 		include_once EVF_ABSPATH . 'includes/class-evf-post-types.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-install.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-ajax.php';
+		include_once EVF_ABSPATH . 'includes/class-evf-ajax.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-emails.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-form-block.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-integrations.php';
@@ -296,6 +297,11 @@ final class EverestForms {
 		include_once EVF_ABSPATH . 'includes/class-evf-privacy.php';
 
 		/**
+		 * Preview Confirmation Class
+		 */
+		include_once EVF_ABSPATH . 'includes/admin/class-evf-admin-preview-confirmation.php';
+
+		/**
 		 * Elementor classes.
 		 */
 		if ( class_exists( '\Elementor\Plugin' ) ) {
@@ -304,6 +310,7 @@ final class EverestForms {
 
 		if ( $this->is_request( 'admin' ) ) {
 			include_once EVF_ABSPATH . 'includes/admin/class-evf-admin.php';
+			include_once EVF_ABSPATH . 'includes/admin/class-evf-admin-embed-wizard.php';
 		}
 
 		if ( $this->is_request( 'frontend' ) ) {

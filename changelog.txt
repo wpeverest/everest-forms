@@ -1,5 +1,32 @@
 == Changelog ==
 
+= 2.0.9       - xx-xx-2024
+* Feature     - System information.
+* Feature 	  - Show entry preview after form submission.
+* Feature     - Admin approval entries.
+* Enhancement - Date field formats.
+* Enhancement - Appended active class to active input field.
+* Tweak       - Filter introduced for template hierarchy.
+
+
+= 2.0.8.1     - 13-03-2024
+* Fix         - Add block Notification issue.
+
+= 2.0.8       - 12-03-2024
+* Fix         - Restrict font_url for unauthorized users and allow only certain font_url.
+* Enhancement - Search functionality on Addons page.
+* Feature     - Embedded shortcode directly in page through builder.
+* Feature     - Form migrator for WPForms and Contact Forms 7.
+
+= 2.0.7       - 22-02-2024
+* Enhancement - Screenshot video on upgrade to pro popup.
+* Enhancement - Clone email form settings.
+* Feature     - Email preview.
+* Fix 		  - Critical error in entry file.
+* Fix         - Show values setting not displaying in select field.
+* Fix         - Minimum character translation issue.
+* Dev         - Compatibility for Google calendar integration.
+
 = 2.0.6       - 26-12-2023
 * Upgraded    - Input mask library.
 * Fix		  - Empty values in entries for (select, checkbox, radio) fields when wordPress site is in another language.

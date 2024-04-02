@@ -280,6 +280,10 @@
 		$( '.evf-content-email-settings-inner .tooltipstered' ).tooltipster( 'destroy' );
 	});
 
+	$( document ).on( 'click', '.everest-forms-email-duplicate', function() {
+		$( '.evf-content-email-settings-inner .tooltipstered' ).tooltipster( 'destroy' );
+	});
+
 	// Tooltips
 	$( document.body ).trigger( 'init_tooltips' );
 
@@ -455,6 +459,28 @@
 
 		})
 	});
+	//Dismiss the form migrator notice.
+	$('.evf-fm-dismiss-notice').on('click', function(e){
+		e.preventDefault();
+		var optionId = $(this).data('option-id');
+		var data = {
+			'action':'everest_forms_fm_dismiss_notice',
+			'option_id':optionId,
+			'security':everest_forms_admin_form_migrator.evf_fm_dismiss_notice_nonce,
+		}
+
+		$.ajax({
+			url: everest_forms_admin_form_migrator.ajax_url,
+			type:"POST",
+			dataType:'JSON',
+			data:data,
+			success:function(res){
+				if(res.success){
+					$('.evf-fm-notice').hide();
+				}
+			}
+		})
+	});
 	$( '.evf-smart-phone-field' ).each( function( i, el ) {
 		var $el = $( el );
 		var field_name     = $el.attr( 'name' );
@@ -462,5 +488,55 @@
 			$('input[name="' + field_name + '"]').val($el.val());
 		}, 2000);
 	});
+	$('.everest-forms-system-info-setting-copy').tooltipster({
+		content: 'Copied',
+		trigger: 'click',
+		theme: 'tooltipster-noir',
+		interactive: true,
+		functionBefore: function(instance, helper) {
+			var table = $('.everest-forms-system-info-setting table')[0];
+			var range = document.createRange();
+			range.selectNode(table);
+			window.getSelection().removeAllRanges();
+			window.getSelection().addRange(range);
+			document.execCommand('copy');
+			window.getSelection().removeAllRanges();
+		}
+	});
+
+
+
+	// Search functionality in addon.
+	$(document).ready(function(){
+		$("#everest_forms_search_addons").on("keyup search", function() {
+			var value = $(this).val().toLowerCase();
+			var matchFound = false;
+
+			$(".the-list .plugin-card").each(function() {
+				var $card = $(this);
+				var text = $card.text().toLowerCase();
+
+				if (text.indexOf(value) > -1) {
+					$card.show();
+					matchFound = true;
+				} else {
+					$card.hide();
+				}
+			});
+
+			if (!matchFound) {
+				$(".refresh").hide();
+				$("#evf_addon_no_result_found").remove();
+				$(".refresh").after('<p id="evf_addon_no_result_found">No Result Found</p>');
+			} else {
+				$(".refresh").show();
+				$("#evf_addon_no_result_found").hide();
+			}
+		});
+	});
+
+
+
+
 
 })( jQuery, everest_forms_admin );

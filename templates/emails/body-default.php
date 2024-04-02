@@ -18,6 +18,32 @@
  */
 
 defined( 'ABSPATH' ) || exit;
+if ( isset( $_GET['evf_email_preview'] ) ) :
+	?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style>
+		.evf-email-template-title {
+			text-align: center;
+			margin: 2rem 0;
+		}
 
+		.evf-email-template-title__info{
+			text-align: center;
+			color: #ffcc00 !important;
+		}
+	</style>
+</head>
+<body>
+	<h1 class='evf-email-template-title' >Email Preview Template</h1>
+	<hr style = 'margin:2rem 0'/>
+	<p class='evf-email-template-title__info'><strong><?php esc_html_e( 'Please note that these data are only for reference purpose.', 'everest - forms' ); ?></strong></p>
+</body>
+</html>
+	<?php
+endif;
 ?>
 {email}
