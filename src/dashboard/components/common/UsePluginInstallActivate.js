@@ -21,9 +21,8 @@ const UsePluginInstallActivate = ({
 }) => {
 	const toast = useToast();
 	const [{ pluginsStatus }, dispatch] = useContext(DashboardContext);
-
-	/* global _UR_DASHBOARD_ */
-	const { urRestApiNonce, restURL } =
+	/* global _EVF_DASHBOARD_ */
+	const { evfRestApiNonce, restURL } =
 		typeof _EVF_DASHBOARD_ !== "undefined" && _EVF_DASHBOARD_;
 
 	const successCallback = (closeFunction) => {
@@ -45,7 +44,7 @@ const UsePluginInstallActivate = ({
 				path: restURL + `wp/v2/plugins/${slug}`,
 				method: "POST",
 				headers: {
-					"X-WP-Nonce": urRestApiNonce,
+					"X-WP-Nonce": evfRestApiNonce,
 				},
 				data: {
 					plugin: file.replace(".php", ""),
@@ -96,7 +95,7 @@ const UsePluginInstallActivate = ({
 				path: restURL + "wp/v2/plugins",
 				method: "POST",
 				headers: {
-					"X-WP-Nonce": urRestApiNonce,
+					"X-WP-Nonce": evfRestApiNonce,
 				},
 				data: {
 					slug: slug,
