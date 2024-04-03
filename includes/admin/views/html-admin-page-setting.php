@@ -15,7 +15,7 @@ if ( ! class_exists( 'WP_Debug_Data' ) ) {
 	<table>
 	<?php
 	$license_key = get_option( 'everest-forms-pro_license_key' );
-	if ( is_plugin_active( 'everest-forms-pro/everest-forms-pro.php' ) ) {
+	if ( defined( 'EFP_PLUGIN_FILE' ) && is_plugin_active( 'everest-forms-pro/everest-forms-pro.php' ) ) {
 		?>
 		<tr>
 			<th colspan="2">
@@ -150,6 +150,7 @@ if ( ! class_exists( 'WP_Debug_Data' ) ) {
 		<tr>
 		<th>
 		<?php
+			$plugin_file    = WP_PLUGIN_DIR . '/everest-forms/everest-forms.php';
 			$require_wp     = get_plugin_data( $plugin_file, array( 'RequiresWP' => 'Requires WP' ) );
 			$min_version_wp = $require_wp['RequiresWP'];
 			esc_html_e( 'Version', 'everest-forms' );

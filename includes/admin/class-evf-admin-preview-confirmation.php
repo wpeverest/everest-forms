@@ -45,6 +45,7 @@ class EVF_Admin_Preview_Confirmation {
 	 * @param [string] $preview_style Preview Style.
 	 */
 	public static function preview_confirmation( $form_data, $form_fields, $preview_style ) {
+
 		$output  = '';
 		$output .= '<div class="everest_forms_preview_confirmation_' . $preview_style . '">';
 		$exclude = array(
@@ -86,9 +87,13 @@ class EVF_Admin_Preview_Confirmation {
 				$output .= '<div class="everest_forms_preview_confirmation_' . $preview_style . '_value">' . $formatted_string['value'] . '</div>';
 			}
 		}
-		$output .= '</div>';
-
-		evf_add_notice( $output, 'preview' );
+		$output              .= '</div>';
+		$ajax_form_submission = isset( $form_data['settings']['ajax_form_submission'] ) ? $form_data['settings']['ajax_form_submission'] : 0;
+		if ( $ajax_form_submission ) {
+			return $output;
+		} else {
+			evf_add_notice( $output, 'preview' );
+		}
 	}
 }
 
