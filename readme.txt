@@ -292,7 +292,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 2.0.9       - xx-xx-2024
+= 2.0.9       - 04-04-2024
 * Feature     - System information.
 * Feature 	  - Show entry preview after form submission.
 * Feature     - Admin approval entries.
