@@ -84,6 +84,14 @@ final class EverestForms {
 	public $integrations = null;
 
 	/**
+	 * UTM Campaign.
+	 *
+	 * @since 2.0.8.1
+	 * @var string
+	 */
+	public $utm_campaign = 'lite-version';
+
+	/**
 	 * Array of deprecated hook handlers.
 	 *
 	 * @var array of EVF_Deprecated_Hooks

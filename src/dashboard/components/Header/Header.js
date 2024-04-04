@@ -117,15 +117,25 @@ const Header = () => {
 							</IntersectObserver>
 						</Stack>
 						<Stack direction="row" align="center" spacing="12px">
-							<Tag
-								variant="outline"
-								colorScheme="primary"
-								borderRadius="xl"
-								bgColor="#F8FAFF"
-								fontSize="xs"
+							<Tooltip
+								label={sprintf(
+									__(
+										"You are currently using Everest Forms %s",
+										"everest-forms"
+									),
+									(isPro && "Pro ") + "v" + version
+								)}
 							>
-								V{version}
-							</Tag>
+								<Tag
+									variant="outline"
+									colorScheme="primary"
+									borderRadius="xl"
+									bgColor="#F8FAFF"
+									fontSize="xs"
+								>
+									{"v" + version}
+								</Tag>
+							</Tooltip>
 							<Center height="18px">
 								<Divider orientation="vertical" />
 							</Center>
@@ -135,7 +145,10 @@ const Header = () => {
 									fontSize="12px"
 									height="18px"
 									w="85px"
-									href={upgradeURL}
+									href={
+										upgradeURL +
+										"&utm_source=dashboard-header&utm_medium=top-menu-link"
+									}
 									isExternal
 								>
 									{__("Upgrade To Pro", "everest-forms")}
