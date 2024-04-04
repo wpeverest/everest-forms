@@ -34,6 +34,7 @@ class EVF_REST_API {
 	 */
 	public static function init() {
 		include __DIR__ . '/controllers/version1/class-evf-modules.php';
+		include __DIR__ . '/controllers/version1/class-evf-changelog.php';
 		add_action( 'rest_api_init', array( __CLASS__, 'register_rest_routes' ) );
 	}
 
@@ -85,6 +86,8 @@ class EVF_REST_API {
 	protected static function get_v1_rest_classes() {
 		return array(
 			'modules'         => 'EVF_Modules',
+			'changelog'       => 'EVF_Changelog',
+
 		);
 	}
 }
