@@ -9,8 +9,8 @@ let ROUTES = [
 		label: __("Dashboard", "everest-forms"),
 	},
 	{
-		route: "/features",
-		label: __("All Features", "everest-forms"),
+		route: "/addons",
+		label: __("Addons", "everest-forms"),
 	},
 	{
 		route: "/settings",

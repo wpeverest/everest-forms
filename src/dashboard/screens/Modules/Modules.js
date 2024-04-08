@@ -296,7 +296,7 @@ const Modules = () => {
 							</option>
 						</Select>
 
-						<Tabs
+						{/* <Tabs
 							index={tabIndex}
 							onChange={(index) => {
 								setIsSearching(true);
@@ -325,7 +325,7 @@ const Modules = () => {
 									}}
 									_selected={{
 										color: "white",
-										bg: "#7e3bd0",
+										bg: "#2563EB",
 										marginBottom: "0px",
 										boxShadow: "none",
 									}}
@@ -344,7 +344,7 @@ const Modules = () => {
 									}}
 									_selected={{
 										color: "white",
-										bg: "#7e3bd0",
+										bg: "#2563EB",
 										marginBottom: "0px",
 										boxShadow: "none",
 									}}
@@ -367,7 +367,7 @@ const Modules = () => {
 									}}
 									_selected={{
 										color: "white",
-										bg: "#7e3bd0",
+										bg: "#2563EB",
 										marginBottom: "0px",
 										boxShadow: "none",
 									}}
@@ -378,7 +378,7 @@ const Modules = () => {
 									{__("Addons", "everest-forms")}
 								</Tab>
 							</TabList>
-						</Tabs>
+						</Tabs> */}
 
 						<Box display="flex" gap="8px">
 							<Select

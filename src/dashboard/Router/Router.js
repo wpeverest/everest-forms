@@ -24,7 +24,7 @@ const Router = () => {
 		<Routes>
 			<Route path='/' element={<Dashboard />} />
 			<Route path='/settings' element={<Settings to={settingsURL} />} />
-			<Route path='/features' element={<Modules />} />
+			<Route path='/addons' element={<Modules />} />
 			{!isPro && <Route path='/free-vs-pro' element={<FreeVsPro />} />}
 			<Route path='/help' element={<Help />} />
 			<Route path='*' element={<Dashboard />} />

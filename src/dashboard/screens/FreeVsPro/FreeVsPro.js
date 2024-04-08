@@ -404,7 +404,7 @@ const FreeVsPro = () => {
 						fontSize="14px"
 						key={tableContent.type}
 					>
-						<Thead bgColor="#7e3bd0">
+						<Thead bgColor="#2563EB">
 							<Tr border="1px solid #F4F4F4" alignItems="center">
 								<Th w="50%" color="white">
 									{tableContent.title}

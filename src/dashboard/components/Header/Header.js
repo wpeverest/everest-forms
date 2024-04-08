@@ -141,7 +141,7 @@ const Header = () => {
 							</Center>
 							{!isPro && (
 								<Link
-									color="#7e3bd0"
+									color="#2563EB"
 									fontSize="12px"
 									height="18px"
 									w="85px"
