@@ -1,0 +1,32 @@
+{
+  "$schema": "https://schemas.wp.org/block-json/1.1",
+  "apiVersion": 3,
+  "name": "everest-forms/form-selector",
+  "version": "1.0.0",
+  "title": "Everest Form",
+  "category": "everest-forms",
+  "description": "Select and display one of your forms.",
+  "keywords": ["everest forms"],
+  "textdomain": "everest-forms",
+  "example": {
+    "attributes": {}
+  },
+  "supports": {
+    "className": false,
+    "customClassName": false,
+    "reusable": false
+  },
+  "attributes": {
+    "formId": {
+			"type": "string"
+		},
+		"displayTitle": {
+			"type": "boolean"
+		},
+		"displayDescription": {
+			"type": "boolean"
+		}
+  },
+  "editorScript": "everest-forms-blocks-editor",
+  "editorStyle": "everest-forms-blocks-editor"
+}
