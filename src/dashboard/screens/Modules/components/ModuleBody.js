@@ -43,7 +43,7 @@ const ModuleBody = ({
 		buttonText: __("Upgrade to Pro", "everest-forms"),
 		upgradeURL:
 			upgradeURL +
-			"&utm_source=dashboard-all-features&utm_medium=upgrade-popup",
+			"&utm_source=dashboard-addons&utm_medium=upgrade-popup",
 	});
 	const handleCheckedChange = (slug, checked, name, type) => {
 		var selectedModules = { ...selectedModuleData };
