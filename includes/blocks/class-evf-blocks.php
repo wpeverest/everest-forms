@@ -45,11 +45,13 @@ class EVF_Blocks {
 	 */
 	public function enqueue_block_editor_assets() {
 		wp_register_style(
-			'everest-forms-block-editor',
+			'everest-forms-block-editor-style',
 			evf()->plugin_url() . '/assets/css/everest-forms.css',
 			array( 'wp-edit-blocks' ),
 			defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( evf()->plugin_path() . '/assets/css/everest-forms.css' ) : EVF_VERSION
 		);
+
+		wp_enqueue_style( 'everest-forms-block-editor-style' );
 
 		wp_register_script(
 			'everest-forms-block-editor',
@@ -61,6 +63,7 @@ class EVF_Blocks {
 		$form_block_data = array(
 			'evfRestApiNonce' => wp_create_nonce( 'wp_rest' ),
 			'restURL'         => rest_url(),
+			'forms'           => evf()->form->get_multiple( array( 'order' => 'DESC' ) ),
 		);
 		wp_localize_script( 'everest-forms-block-editor', '_EVF_BLOCKS_', $form_block_data );
 		wp_enqueue_script( 'everest-forms-block-editor' );
@@ -80,6 +83,7 @@ class EVF_Blocks {
 				array(
 					'slug'  => 'everest-forms',
 					'title' => esc_html__( 'Everest Forms', 'everest-forms' ),
+					'icon'  => 'editor-table',
 				),
 			),
 			$block_categories

@@ -1,0 +1,28 @@
+import React from "react";
+import { chakra, forwardRef } from "@chakra-ui/react";
+import { createElement } from "@wordpress/element";
+
+export const EverestFormIcon = createElement(
+	"svg",
+	{ width: 24, height: 24, viewBox: "0 0 24 24" },
+	createElement("path", {
+		fill: "#7e3bd0",
+		d: "M18.1 4h-3.8l1.2 2h3.9zM20.6 8h-3.9l1.2 2h3.9zM20.6 18H5.8L12 7.9l2.5 4.1H12l-1.2 2h7.3L12 4.1 2.2 20h19.6z",
+	}),
+);
+export const ContactForm = (props) => (
+	<chakra.svg
+		xmlns="http://www.w3.org/2000/svg"
+		viewBox="0 0 24 24"
+		fill="#475BB2"
+		h="6"
+		w="6"
+		{...props}
+	>
+		<path
+			fillRule="evenodd"
+			d="M9.455 2a1.818 1.818 0 0 0-1.819 1.818h-.909A2.727 2.727 0 0 0 4 6.545v12.728A2.727 2.727 0 0 0 6.727 22h10.91a2.727 2.727 0 0 0 2.727-2.727V6.545a2.727 2.727 0 0 0-2.728-2.727h-.909A1.818 1.818 0 0 0 14.91 2H9.455Zm7.272 3.636a1.818 1.818 0 0 1-1.818 1.819H9.455a1.818 1.818 0 0 1-1.819-1.819h-.909a.91.91 0 0 0-.909.91v12.727a.91.91 0 0 0 .91.909h10.908a.91.91 0 0 0 .91-.91V6.546a.91.91 0 0 0-.91-.909h-.909Zm-7.272-.909v.91h5.454v-1.82H9.455v.91Zm-1.819 6.364a.91.91 0 0 1 .91-.91h7.272a.91.91 0 1 1 0 1.819H8.545a.91.91 0 0 1-.909-.91Zm.91 3.636a.91.91 0 1 0 0 1.819h7.272a.91.91 0 0 0 0-1.819H8.545Z"
+			clipRule="evenodd"
+		></path>
+	</chakra.svg>
+);

@@ -6,27 +6,28 @@
   "title": "Everest Form",
   "category": "everest-forms",
   "description": "Select and display one of your forms.",
-  "keywords": ["everest forms"],
+  "keywords": [
+    "everest forms"
+  ],
   "textdomain": "everest-forms",
   "example": {
     "attributes": {}
   },
-  "supports": {
-    "className": false,
-    "customClassName": false,
-    "reusable": false
-  },
+  "supports": {},
   "attributes": {
     "formId": {
-			"type": "string"
-		},
-		"displayTitle": {
-			"type": "boolean"
-		},
-		"displayDescription": {
-			"type": "boolean"
-		}
+      "type": "string",
+      "default": ""
+    },
+    "displayTitle": {
+      "type": "boolean",
+      "default": false
+    },
+    "displayDescription": {
+      "type": "boolean",
+      "default": false
+    }
   },
-  "editorScript": "everest-forms-blocks-editor",
+  "editorScript": "everest-forms-block-editor-style",
   "editorStyle": "everest-forms-blocks-editor"
 }
