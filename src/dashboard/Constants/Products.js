@@ -64,7 +64,8 @@ export const PLUGINS = [
 			'everest-forms',
 		),
 		logo: Icon.UR,
-	},,
+		liveDemoURL: "https://userregistration.demoswp.net/",
+	},
 	{
 		label: "Magazine Blocks",
 		slug: "magazine-blocks/magazine-blocks.php",

@@ -34,13 +34,13 @@ import {
 const { newFormURL, allFormsURL, utmCampaign } =
 	typeof _EVF_DASHBOARD_ !== "undefined" && _EVF_DASHBOARD_;
 export const supportURL =
-	"https://wpeverest.com/support/?utm_source=dashboard-help&utm_medium=support-button&utm_campaign=" +
+	"https://everestforms.net/support/?utm_source=dashboard-help&utm_medium=support-button&utm_campaign=" +
 	utmCampaign;
 export const helpURL =
 	"https://docs.everestforms.net/?utm_source=dashboard-help&utm_medium=help-button&utm_campaign=" +
 	utmCampaign;
 export const featureRequestURL =
-	"https://wpeverest.com/wordpress-plugins/everest-forms/feature-request/?utm_source=dashboard-help&utm_medium=sidebar-link&utm_campaign=" +
+	"https://everestforms.net/feature-requests/?utm_source=dashboard-help&utm_medium=sidebar-link&utm_campaign=" +
 	utmCampaign;
 
 const Help = () => {

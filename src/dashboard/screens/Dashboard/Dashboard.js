@@ -32,7 +32,10 @@ const Dashboard = () => {
       utmCampaign,
     featureRequestURL =
       "https://everestforms.net/feature-requests/?utm_source=dashboard-dashboard&utm_medium=sidebar-link&utm_campaign=" +
+      utmCampaign,
+	  supportURL ="https://everestforms.net/support/?utm_source=dashboard-dashboard&utm_medium=sidebar-link&utm_campaign=" +
       utmCampaign;
+
   return (
     <Grid
       my="8"
@@ -180,7 +183,7 @@ const Dashboard = () => {
           <Link
             color="var(--chakra-colors-primary-500) !important"
             textDecor="underline"
-            href="https://everestforms.net/support/"
+            href={supportURL}
             isExternal
           >
             {__("Create a Ticket", "everest-forms")}
