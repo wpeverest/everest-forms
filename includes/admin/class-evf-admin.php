@@ -163,7 +163,7 @@ class EVF_Admin {
 
 			if ( $do_redirect ) {
 				delete_transient( '_evf_activation_redirect' );
-				wp_safe_redirect( admin_url( 'index.php?page=evf-dashboard' ) );
+				wp_safe_redirect( admin_url( 'admin.php?page=evf-dashboard' ) );
 				exit;
 			}
 		}
