@@ -48,16 +48,15 @@ class EVF_Blocks {
 			'everest-forms-block-editor-style',
 			evf()->plugin_url() . '/assets/css/everest-forms.css',
 			array( 'wp-edit-blocks' ),
-			defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( evf()->plugin_path() . '/assets/css/everest-forms.css' ) : EVF_VERSION
+			evf()->version
 		);
-
 		wp_enqueue_style( 'everest-forms-block-editor-style' );
 		$enqueue_script = array( 'wp-blocks', 'wp-element', 'wp-i18n', 'wp-editor', 'wp-components', 'react', 'react-dom' );
 		wp_register_script(
 			'everest-forms-block-editor',
 			evf()->plugin_url() . '/dist/blocks.min.js',
 			$enqueue_script,
-			defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( evf()->plugin_path() . '/dist/blocks.min.js' ) : EVF_VERSION,
+			evf()->version,
 			true
 		);
 		$form_block_data = array(

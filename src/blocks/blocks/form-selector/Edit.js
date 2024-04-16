@@ -1,17 +1,5 @@
 import React from "react";
-import {
-	Image,
-	Box,
-	Heading,
-	Center,
-	Card,
-	CardBody,
-	Text,
-	Stack,
-	Container,
-	ChakraProvider,
-	Badge,
-} from "@chakra-ui/react";
+import { Box, ChakraProvider } from "@chakra-ui/react";
 import {
 	SelectControl,
 	ToggleControl,
@@ -20,9 +8,10 @@ import {
 } from "@wordpress/components";
 import { InspectorControls, useBlockProps } from "@wordpress/block-editor";
 import { __ } from "@wordpress/i18n";
-import apiFetch from "@wordpress/api-fetch";
-import { EverestForm, ContactForm } from "./../../components/Icon";
 import { createElement } from "@wordpress/element";
+const ServerSideRender = wp.serverSideRender
+	? wp.serverSideRender
+	: wp.components.ServerSideRender;
 const EverestFormIcon = createElement(
 	"svg",
 	{ width: 24, height: 24, viewBox: "0 0 24 24" },
@@ -56,32 +45,6 @@ const Edit = (props) => {
 	};
 	return (
 		<>
-			<InspectorControls key="evf-gutenberg-form-selector-inspector-controls">
-				<PanelBody title={__("Everest Forms", "everest-forms")}>
-					<SelectControl
-						label={__("Select a Form", "everest-forms")}
-						value={formId}
-						options={[
-							{
-								label: __("Select a Form", "everest-forms"),
-								value: "",
-							},
-							...formOptions,
-						]}
-						onChange={selectForm}
-					/>
-					<ToggleControl
-						label={__("Show Title", "everest-forms")}
-						checked={displayTitle}
-						onChange={toggleDisplayTitle}
-					/>
-					<ToggleControl
-						label={__("Show Description", "everest-forms")}
-						checked={displayDescription}
-						onChange={toggleDisplayDescription}
-					/>
-				</PanelBody>
-			</InspectorControls>
 			<ChakraProvider>
 				<Box
 					{...useProps}
@@ -90,44 +53,65 @@ const Edit = (props) => {
 					borderRadius="lg"
 					p={2}
 				>
-					<Card>
-						<CardBody>
-							<Center>
-								<Heading as="h3" ml={5}>
-									{__("Everest Forms", "everest-forms")}
-								</Heading>
-							</Center>
-							<Center>
-								<Stack spacing="3">
-									<Text fontSize="sm" as="i">
-										{__(
-											"Select a form name to display one of your form.",
+					<InspectorControls key="evf-gutenberg-form-selector-inspector-controls">
+						<PanelBody title={__("Everest Forms", "everest-forms")}>
+							<SelectControl
+								label={__("Select a Form", "everest-forms")}
+								value={formId}
+								options={[
+									{
+										label: __(
+											"Select a Form",
 											"everest-forms",
-										)}
-									</Text>
-								</Stack>
-							</Center>
-							<Center>
-								<Box w="sm" m="4">
-									<SelectControl
-										key="evf-gutenberg-everest-form-selector-select-control"
-										value={formId}
-										options={[
-											{
-												label: __(
-													"Select a Form",
-													"everest-forms",
-												),
-												value: "",
-											},
-											...formOptions,
-										]}
-										onChange={selectForm}
-									/>
-								</Box>
-							</Center>
-						</CardBody>
-					</Card>
+										),
+										value: "",
+									},
+									...formOptions,
+								]}
+								onChange={selectForm}
+							/>
+							<ToggleControl
+								label={__("Show Title", "everest-forms")}
+								checked={displayTitle}
+								onChange={toggleDisplayTitle}
+							/>
+							<ToggleControl
+								label={__("Show Description", "everest-forms")}
+								checked={displayDescription}
+								onChange={toggleDisplayDescription}
+							/>
+						</PanelBody>
+					</InspectorControls>
+					{formId ? (
+						<ServerSideRender
+							key="evf-gutenberg-form-selector-server-side-renderer"
+							block="everest-forms/form-selector"
+							attributes={props.attributes}
+						/>
+					) : (
+						<Placeholder
+							key="evf-gutenberg-form-selector-wrap"
+							icon={EverestFormIcon}
+							instructions={__("Everest Forms", "everest-forms")}
+							className="everest-form-gutenberg-form-selector-wrap evf-test"
+						>
+							<SelectControl
+								key="evf-gutenberg-form-selector-select-control"
+								value={formId}
+								options={[
+									{
+										label: __(
+											"Select a form",
+											"everest-forms",
+										),
+										value: "",
+									},
+									...formOptions,
+								]}
+								onChange={selectForm}
+							/>
+						</Placeholder>
+					)}
 				</Box>
 			</ChakraProvider>
 		</>
