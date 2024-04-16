@@ -111,9 +111,9 @@ class EVF_Modules {
 				$addon->status = 'not-installed';
 			}
 
-			if ( in_array( 'personal', $addon->plan ) ) {
+			if ( in_array( 'personal', $addon->plan, true ) ) {
 				$addon->required_plan = __( 'Personal', 'everest-forms' );
-			} elseif ( in_array( 'plus', $addon->plan ) ) {
+			} elseif ( in_array( 'plus', $addon->plan, true ) ) {
 				$addon->required_plan = __( 'Plus', 'everest-forms' );
 			} else {
 				$addon->required_plan = __( 'Professional', 'everest-forms' );
@@ -122,7 +122,6 @@ class EVF_Modules {
 			$addon->type          = 'addon';
 			$addons_lists[ $key ] = $addon;
 		}
-
 
 		return new \WP_REST_Response(
 			array(
@@ -143,7 +142,6 @@ class EVF_Modules {
 	 * @return WP_Error|WP_REST_Response
 	 */
 	public static function activate_module( $request ) {
-
 		if ( ! isset( $request['slug'] ) || empty( trim( $request['slug'] ) ) ) { //phpcs:ignore
 
 			return new \WP_REST_Response(
@@ -191,18 +189,18 @@ class EVF_Modules {
 		}
 	}
 		/**
-	 * Handler for installing or activating a addon.
-	 *
-	 * @since 2.0.8.1
-	 *
-	 * @param string $slug Slug of the addon to install/activate.
-	 * @param string $name Name of the addon to install/activate.
-	 * @param string $plugin Basename of the addon to install/activate.
-	 *
-	 * @see Plugin_Upgrader
-	 *
-	 * @global WP_Filesystem_Base $wp_filesystem Subclass
-	 */
+		 * Handler for installing or activating a addon.
+		 *
+		 * @since 2.0.8.1
+		 *
+		 * @param string $slug Slug of the addon to install/activate.
+		 * @param string $name Name of the addon to install/activate.
+		 * @param string $plugin Basename of the addon to install/activate.
+		 *
+		 * @see Plugin_Upgrader
+		 *
+		 * @global WP_Filesystem_Base $wp_filesystem Subclass
+		 */
 	public static function install_addons( $slug, $name, $plugin ) {
 
 		$status = array(
@@ -252,16 +250,32 @@ class EVF_Modules {
 				return $status;
 			}
 		}
+		if ( 'aicontactform' === $slug && ! evf_get_license_plan() ) {
+			$args = array(
+				'slug'   => 'ai-contact-form',
+				'fields' => array(
+					'name'          => true,
+					'version'       => true,
+					'author'        => true,
+					'download_link' => true,
+					'last_updated'  => true,
+					'homepage'      => true,
+					'sections'      => true,
+					'description'   => true,
+				),
+			);
+			$api  = plugins_api( 'plugin_information', $args );
+		} else {
 
-		$api = json_decode(
-			EVF_Updater_Key_API::version(
-				array(
-					'license'   => get_option( 'everest-forms-pro_license_key' ),
-					'item_name' => ! empty( $name ) ? sanitize_text_field( wp_unslash( $name ) ) : '',
+			$api = json_decode(
+				EVF_Updater_Key_API::version(
+					array(
+						'license'   => get_option( 'everest-forms-pro_license_key' ),
+						'item_name' => ! empty( $name ) ? sanitize_text_field( wp_unslash( $name ) ) : '',
+					)
 				)
-			)
-		);
-		error_log(print_r($api, true));
+			);
+		}
 		if ( is_wp_error( $api ) ) {
 			$status['success']      = false;
 			$status['errorMessage'] = $api['msg'];
