@@ -1,9 +1,7 @@
 import React from 'react'
 
 const Save = () => {
-  return (
-	<div>Save</div>
-  )
+  return null
 }
 
 export default Save

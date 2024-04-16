@@ -52,11 +52,11 @@ class EVF_Blocks {
 		);
 
 		wp_enqueue_style( 'everest-forms-block-editor-style' );
-
+		$enqueue_script = array( 'wp-blocks', 'wp-element', 'wp-i18n', 'wp-editor', 'wp-components', 'react', 'react-dom' );
 		wp_register_script(
 			'everest-forms-block-editor',
 			evf()->plugin_url() . '/dist/blocks.min.js',
-			array( 'wp-blocks', 'wp-element', 'wp-i18n', 'wp-components' ),
+			$enqueue_script,
 			defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( evf()->plugin_path() . '/dist/blocks.min.js' ) : EVF_VERSION,
 			true
 		);
