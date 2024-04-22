@@ -16,20 +16,30 @@ if ( ! $tab_exists ) {
 }
 ?>
 <div class="wrap everest-forms">
-	<?php if ( 'integration' !== $current_tab ) : ?>
+<?php if ( 'integration' !== $current_tab ) : ?>
 	<form method="<?php echo esc_attr( apply_filters( 'everest_forms_settings_form_method_tab_' . $current_tab, 'post' ) ); ?>" id="mainform" action="" enctype="multipart/form-data">
 	<?php endif; ?>
-		<nav class="nav-tab-wrapper evf-nav-tab-wrapper">
-			<?php
-			foreach ( $tabs as $slug => $label ) {
-				echo '<a href="' . esc_html( admin_url( 'admin.php?page=evf-settings&tab=' . esc_attr( $slug ) ) ) . '" class="nav-tab ' . ( $current_tab === $slug ? 'nav-tab-active' : '' ) . '"><span class="evf-nav-icon ' . esc_attr( $slug ) . '"></span>' . esc_html( $label ) . '</a>';
-			}
+	<h1 class="screen-reader-text"><?php echo esc_html( $current_tab_label ); ?></h1>
+	<div class="everest-forms-settings">
+		<header class="everest-forms-header">
+			<div class="everest-forms-header--top">
+				<div class="everest-forms-header--top-logo">
+					<img src="" alt="">
+				</div>
+			</div>
+			<div class="everest-forms-header--nav">
+				<nav class="nav-tab-wrapper evf-nav-tab-wrapper">
+					<?php
+					foreach ( $tabs as $slug => $label ) {
+						echo '<a href="' . esc_html( admin_url( 'admin.php?page=evf-settings&tab=' . esc_attr( $slug ) ) ) . '" class="nav-tab ' . ( $current_tab === $slug ? 'nav-tab-active' : '' ) . '"><span class="evf-nav-icon ' . esc_attr( $slug ) . '"></span>' . esc_html( $label ) . '</a>';
+					}
 
-			do_action( 'everest_forms_settings_tabs' );
-			?>
-		</nav>
-		<div class="everest-forms-settings">
-			<h1 class="screen-reader-text"><?php echo esc_html( $current_tab_label ); ?></h1>
+					do_action( 'everest_forms_settings_tabs' );
+					?>
+				</nav>
+			</div>
+		</header>
+		<div class="everest-forms-settings-container">
 			<?php
 				do_action( 'everest_forms_sections_' . $current_tab );
 
@@ -45,6 +55,7 @@ if ( ! $tab_exists ) {
 			</p>
 		</div>
 	<?php if ( 'integration' !== $current_tab ) : ?>
+	</div>
 	</form>
 	<?php endif; ?>
 </div>
