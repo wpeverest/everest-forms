@@ -86,6 +86,7 @@ class EVF_Fields {
 				'EVF_Field_Email',
 				'EVF_Field_URL',
 				'EVF_Field_Date_Time',
+				'EVF_Field_Recaptcha',
 				'EVF_Field_AI',
 			)
 		);
