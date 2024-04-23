@@ -88,6 +88,7 @@ class EVF_Fields {
 				'EVF_Field_Date_Time',
 				'EVF_Field_Recaptcha',
 				'EVF_Field_Hcaptcha',
+				'EVF_Field_Turnstile',
 				'EVF_Field_AI',
 			)
 		);
