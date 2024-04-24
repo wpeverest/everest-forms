@@ -1,8 +1,17 @@
 import { registerBlockType } from "@wordpress/blocks";
 import { applyFilters } from "@wordpress/hooks";
 import * as formSelector from "./form-selector";
+import * as frontendListing from "./frontend-listing";
+
+/* global _EVF_BLOCKS_ */
+const {isFrontendListingActive,isPro } =
+typeof _EVF_BLOCKS_ !== "undefined" && _EVF_BLOCKS_;
 
 let blocks = [formSelector];
+
+if(isPro && isFrontendListingActive){
+	blocks.push(frontendListing);
+}
 blocks = applyFilters('everest-forms.blocks', blocks);
 
 /**

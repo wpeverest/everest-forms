@@ -59,11 +59,15 @@ class EVF_Blocks {
 			evf()->version,
 			true
 		);
+
 		$form_block_data = array(
-			'evfRestApiNonce' => wp_create_nonce( 'wp_rest' ),
-			'restURL'         => rest_url(),
-			'forms'           => evf()->form->get_multiple( array( 'order' => 'DESC' ) ),
+			'evfRestApiNonce'         => wp_create_nonce( 'wp_rest' ),
+			'restURL'                 => rest_url(),
+			'forms'                   => evf()->form->get_multiple( array( 'order' => 'DESC' ) ),
+			'isPro'                   => defined( 'EFP_VERSION' ) && version_compare( EFP_VERSION, '1.7.3', '>=' ) ? true : false,
+			'isFrontendListingActive' => defined( 'EVF_FRONTEND_LISTING_VERSION' ) && version_compare( EVF_FRONTEND_LISTING_VERSION, '1.0.1', '>=' ) ? true : false,
 		);
+
 		wp_localize_script( 'everest-forms-block-editor', '_EVF_BLOCKS_', $form_block_data );
 		wp_enqueue_script( 'everest-forms-block-editor' );
 	}
