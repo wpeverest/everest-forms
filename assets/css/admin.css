@@ -4561,6 +4561,9 @@ button.everest-forms-btn {
     -o-animation: rotating 1s linear infinite;
     animation: rotating 1s linear infinite; }
 
+.everest_forms_tinymce_class {
+  width: 100% !important; }
+
 /**
 	* Grid Styles
 	**/
@@ -10671,3 +10674,46 @@ img.ui-datepicker-trigger {
 
 .evf-akismet .evf-akismet-warning .evf-akismet-warning-label {
   color: #ffcc00; }
+
+.everest-forms {
+  position: relative; }
+
+.everest-forms-system-info-setting {
+  margin-top: 40px; }
+  .everest-forms-system-info-setting-copy {
+    position: absolute;
+    top: 18px;
+    right: 24px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: 0;
+    font-size: 14px;
+    line-height: 22px;
+    font-weight: 500;
+    cursor: pointer; }
+  .everest-forms-system-info-setting table {
+    width: 100%;
+    border-collapse: collapse; }
+    .everest-forms-system-info-setting table th,
+    .everest-forms-system-info-setting table td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: left;
+      font-size: 14px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis; }
+    .everest-forms-system-info-setting table th {
+      background: #f2f2f2;
+      font-weight: 600; }
+    .everest-forms-system-info-setting table tr:nth-child(even) {
+      background: #f9f9f9; }
+    .everest-forms-system-info-setting table tr:hover {
+      background: #f2f2f2; }
+    .everest-forms-system-info-setting table tr th[colspan="2"] {
+      background: #8c3eeb;
+      color: #fff;
+      font-size: 15px;
+      line-height: 23px;
+      font-weight: 500;
+      letter-spacing: 0.2px; }

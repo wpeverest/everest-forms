@@ -2,16 +2,16 @@
 # This file is distributed under the same license as the Everest Forms plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Everest Forms 2.0.8.1\n"
+"Project-Id-Version: Everest Forms 2.0.9\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/everest-forms\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-03-13T09:31:50+01:00\n"
+"POT-Creation-Date: 2024-04-04T03:13:07+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.10.0\n"
+"X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: everest-forms\n"
 
 #. Plugin Name of the plugin
@@ -23,7 +23,7 @@ msgstr ""
 #: includes/class-evf-post-types.php:44
 #: includes/class-evf-post-types.php:111
 #: includes/class-evf-privacy.php:31
-#: includes/elementor/class-evf-elementor.php:66
+#: includes/elementor/class-evf-elementor.php:65
 #: includes/elementor/class-evf-widget.php:43
 msgid "Everest Forms"
 msgstr ""
@@ -847,13 +847,13 @@ msgid "Delete Repeater"
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:43
-#: includes/admin/builder/class-evf-builder-settings.php:182
+#: includes/admin/builder/class-evf-builder-settings.php:183
 #: includes/admin/settings/class-evf-settings-general.php:25
 msgid "General"
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:44
-#: includes/admin/builder/class-evf-builder-settings.php:457
+#: includes/admin/builder/class-evf-builder-settings.php:361
 #: includes/admin/settings/class-evf-settings-email.php:25
 #: includes/admin/settings/class-evf-settings-validation.php:64
 #: includes/class-evf-smart-tags.php:119
@@ -864,153 +864,101 @@ msgid "Email"
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:45
-#: includes/admin/builder/class-evf-builder-settings.php:690
+#: includes/admin/builder/class-evf-builder-settings.php:595
+msgid "Confirmations"
+msgstr ""
+
+#: includes/admin/builder/class-evf-builder-settings.php:46
+#: includes/admin/builder/class-evf-builder-settings.php:730
 msgid "Anti-Spam and Security"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:81
-#: includes/admin/builder/class-evf-builder-settings.php:417
-#: includes/admin/builder/class-evf-builder-settings.php:479
+#: includes/admin/builder/class-evf-builder-settings.php:82
+#: includes/admin/builder/class-evf-builder-settings.php:321
+#: includes/admin/builder/class-evf-builder-settings.php:383
 #: includes/admin/form-migrator/class-evf-fm-contactform7.php:374
 #: includes/admin/form-migrator/class-evf-fm-wpforms.php:163
-#: includes/class-evf-form-task.php:879
+#: includes/class-evf-form-task.php:895
 #: includes/evf-update-functions.php:140
 #: includes/templates/contact.php:71
 msgid "Admin Notification"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:90
+#: includes/admin/builder/class-evf-builder-settings.php:91
 msgid "Add New Email"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:94
+#: includes/admin/builder/class-evf-builder-settings.php:95
 msgid "Email Notifications"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:189
+#: includes/admin/builder/class-evf-builder-settings.php:190
 #: includes/class-evf-smart-tags.php:43
 msgid "Form Name"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:192
+#: includes/admin/builder/class-evf-builder-settings.php:193
 msgid "Give a name to this form"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:200
+#: includes/admin/builder/class-evf-builder-settings.php:201
 msgid "Form description"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:204
+#: includes/admin/builder/class-evf-builder-settings.php:205
 msgid "Give the description to this form"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:212
+#: includes/admin/builder/class-evf-builder-settings.php:213
 msgid "Form disabled message"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:215
+#: includes/admin/builder/class-evf-builder-settings.php:216
 #: includes/admin/form-migrator/class-evf-fm-contactform7.php:401
 #: includes/admin/form-migrator/class-evf-fm-wpforms.php:206
-#: includes/class-evf-form-task.php:160
+#: includes/class-evf-form-task.php:163
 #: includes/shortcodes/class-evf-shortcode-form.php:904
 msgid "This form is disabled."
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:216
+#: includes/admin/builder/class-evf-builder-settings.php:217
 msgid "Message that shows up if the form is disabled."
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:224
-msgid "Successful form submission message"
-msgstr ""
-
-#: includes/admin/builder/class-evf-builder-settings.php:227
-#: includes/admin/form-migrator/class-evf-fm-contactform7.php:402
-msgid "Thanks for contacting us! We will be in touch with you shortly"
-msgstr ""
-
-#. translators: %1$s - general settings docs url
-#: includes/admin/builder/class-evf-builder-settings.php:229
-msgid "Success message that shows up after submitting form. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
-msgstr ""
-
-#: includes/admin/builder/class-evf-builder-settings.php:237
-msgid "Automatically scroll to the submission message"
-msgstr ""
-
-#: includes/admin/builder/class-evf-builder-settings.php:243
-msgid "Submission Redirection"
-msgstr ""
-
-#: includes/admin/builder/class-evf-builder-settings.php:250
-msgid "Redirect To"
-msgstr ""
-
-#. translators: %1$s - general settings docs url
-#: includes/admin/builder/class-evf-builder-settings.php:254
-msgid "Choose where to redirect after form submission. <a href=\"%s\" target=\"_blank\">Learn More</a>"
-msgstr ""
-
-#: includes/admin/builder/class-evf-builder-settings.php:256
-msgid "Same Page"
-msgstr ""
-
-#: includes/admin/builder/class-evf-builder-settings.php:257
-#: includes/admin/builder/class-evf-builder-settings.php:268
-msgid "Custom Page"
-msgstr ""
-
-#: includes/admin/builder/class-evf-builder-settings.php:258
-#: includes/admin/builder/class-evf-builder-settings.php:280
-msgid "External URL"
-msgstr ""
-
-#: includes/admin/builder/class-evf-builder-settings.php:291
-msgid " Append Query String"
-msgstr ""
-
-#: includes/admin/builder/class-evf-builder-settings.php:302
-msgid "Query String"
-msgstr ""
-
-#: includes/admin/builder/class-evf-builder-settings.php:310
-msgid "Example: firstname= {field_id=\"name_ys0GeZISRs-1\"}&email={field_id=\"email_LbH5NxasXM-2\"}"
-msgstr ""
-
-#: includes/admin/builder/class-evf-builder-settings.php:322
+#: includes/admin/builder/class-evf-builder-settings.php:226
 msgid "Layout Design"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:325
+#: includes/admin/builder/class-evf-builder-settings.php:229
 msgid "Choose design template for the Form"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:327
+#: includes/admin/builder/class-evf-builder-settings.php:231
 msgid "Default"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:328
+#: includes/admin/builder/class-evf-builder-settings.php:232
 msgid "Classic Layout"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:337
+#: includes/admin/builder/class-evf-builder-settings.php:241
 msgid "Form Class"
 msgstr ""
 
 #. translators: %1$s - general settings docs url
-#: includes/admin/builder/class-evf-builder-settings.php:341
+#: includes/admin/builder/class-evf-builder-settings.php:245
 msgid "Enter CSS class names for the form wrapper. Multiple class names should be separated with spaces. <a href=\"%s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:347
+#: includes/admin/builder/class-evf-builder-settings.php:251
 msgid "Submit Button"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:353
+#: includes/admin/builder/class-evf-builder-settings.php:257
 msgid "Submit button text"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:355
+#: includes/admin/builder/class-evf-builder-settings.php:259
 #: includes/admin/form-migrator/class-evf-fm-contactform7.php:411
 #: includes/class-evf-frontend-scripts.php:286
 #: includes/class-evf-frontend-scripts.php:316
@@ -1019,280 +967,362 @@ msgstr ""
 msgid "Submit"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:356
+#: includes/admin/builder/class-evf-builder-settings.php:260
 msgid "Enter desired text for submit button."
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:364
+#: includes/admin/builder/class-evf-builder-settings.php:268
 msgid "Submit button processing text"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:366
+#: includes/admin/builder/class-evf-builder-settings.php:270
 #: includes/shortcodes/class-evf-shortcode-form.php:109
 #: includes/shortcodes/class-evf-shortcode-form.php:152
 msgid "Processing&hellip;"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:367
+#: includes/admin/builder/class-evf-builder-settings.php:271
 msgid "Enter the submit button text that you would like the button to display while the form submission is processing."
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:375
+#: includes/admin/builder/class-evf-builder-settings.php:279
 msgid "Submit button class"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:378
+#: includes/admin/builder/class-evf-builder-settings.php:282
 msgid "Enter CSS class names for submit button. Multiple class names should be separated with spaces."
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:389
+#: includes/admin/builder/class-evf-builder-settings.php:293
 msgid "Enable Ajax Form Submission"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:392
+#: includes/admin/builder/class-evf-builder-settings.php:296
 msgid "Enables form submission without reloading the page."
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:400
+#: includes/admin/builder/class-evf-builder-settings.php:304
 msgid "Disable storing entry information"
 msgstr ""
 
 #. translators: %1$s - general settings docs url
-#: includes/admin/builder/class-evf-builder-settings.php:404
+#: includes/admin/builder/class-evf-builder-settings.php:308
 msgid "Disable storing form entries. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
 #. translators: %s: Form Name
-#: includes/admin/builder/class-evf-builder-settings.php:423
-#: includes/admin/builder/class-evf-builder-settings.php:602
+#: includes/admin/builder/class-evf-builder-settings.php:327
+#: includes/admin/builder/class-evf-builder-settings.php:506
 #: includes/templates/contact.php:77
 msgid "New Form Entry %s"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:434
+#: includes/admin/builder/class-evf-builder-settings.php:338
 #: includes/evf-update-functions.php:156
 msgid "User Notification"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:459
+#: includes/admin/builder/class-evf-builder-settings.php:363
 msgid "Click me to enable email settings"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:491
+#: includes/admin/builder/class-evf-builder-settings.php:395
 msgid "To Address"
 msgstr ""
 
 #. translators: %1$s - general settings docs url
-#: includes/admin/builder/class-evf-builder-settings.php:495
+#: includes/admin/builder/class-evf-builder-settings.php:399
 msgid "Enter the recipient's email address (comma separated) to receive form entry notifications. <a href=\"%s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:510
+#: includes/admin/builder/class-evf-builder-settings.php:414
 msgid "Cc Address"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:513
+#: includes/admin/builder/class-evf-builder-settings.php:417
 msgid "Enter Cc recipient's email address (comma separated) to receive form entry notifications."
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:527
+#: includes/admin/builder/class-evf-builder-settings.php:431
 msgid "Bcc Address"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:530
+#: includes/admin/builder/class-evf-builder-settings.php:434
 msgid "Enter Bcc recipient's email address (comma separated) to receive form entry notifications."
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:545
+#: includes/admin/builder/class-evf-builder-settings.php:449
 msgid "From Name"
 msgstr ""
 
 #. translators: %1$s - general settings docs url
-#: includes/admin/builder/class-evf-builder-settings.php:549
+#: includes/admin/builder/class-evf-builder-settings.php:453
 msgid "Enter the From Name to be displayed in Email. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:563
+#: includes/admin/builder/class-evf-builder-settings.php:467
 msgid "From Address"
 msgstr ""
 
 #. translators: %1$s - general settings docs url
-#: includes/admin/builder/class-evf-builder-settings.php:567
+#: includes/admin/builder/class-evf-builder-settings.php:471
 msgid "Enter the Email address from which you want to send Email. <a href=\"%s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:581
+#: includes/admin/builder/class-evf-builder-settings.php:485
 msgid "Reply To"
 msgstr ""
 
 #. translators: %1$s - general settings docs url
-#: includes/admin/builder/class-evf-builder-settings.php:585
+#: includes/admin/builder/class-evf-builder-settings.php:489
 msgid "Enter the reply to email address where you want the email to be received when this email is replied. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:599
+#: includes/admin/builder/class-evf-builder-settings.php:503
 msgid "Email Subject"
 msgstr ""
 
 #. translators: %1$s - General Settings docs url
-#: includes/admin/builder/class-evf-builder-settings.php:604
+#: includes/admin/builder/class-evf-builder-settings.php:508
 msgid "Enter the subject of the email. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:623
+#: includes/admin/builder/class-evf-builder-settings.php:527
 msgid "Enable Email Prompt"
 msgstr ""
 
 #. translators: %1$s - email message prompt doc url
-#: includes/admin/builder/class-evf-builder-settings.php:628
+#: includes/admin/builder/class-evf-builder-settings.php:532
 msgid "Check this option to enable the email message prompt. <a href=\"%s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:638
+#: includes/admin/builder/class-evf-builder-settings.php:542
 msgid "Email Message Prompt"
 msgstr ""
 
 #. translators: %1$s - general settings docs url
-#: includes/admin/builder/class-evf-builder-settings.php:643
+#: includes/admin/builder/class-evf-builder-settings.php:547
 msgid "Enter the email message prompt. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:661
+#: includes/admin/builder/class-evf-builder-settings.php:565
 msgid "Email Message"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:663
+#: includes/admin/builder/class-evf-builder-settings.php:567
 #: templates/emails/email-preview.php:58
 msgid "{all_fields}"
 msgstr ""
 
 #. translators: %1$s - general settings docs url
-#: includes/admin/builder/class-evf-builder-settings.php:665
+#: includes/admin/builder/class-evf-builder-settings.php:569
 msgid "Enter the message of the email. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
 #. translators: %s - all fields smart tag.
-#: includes/admin/builder/class-evf-builder-settings.php:673
+#: includes/admin/builder/class-evf-builder-settings.php:577
 msgid "To display all form fields, use the %s Smart Tag."
 msgstr ""
 
 #. translators: %s - all fields smart tag.
-#: includes/admin/builder/class-evf-builder-settings.php:673
+#: includes/admin/builder/class-evf-builder-settings.php:577
 msgid "To display all form fields, use the %1$s Smart Tag. Use %2$s Smart Tag for AI-generated emails"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:692
+#: includes/admin/builder/class-evf-builder-settings.php:603
+msgid "Successful form submission message"
+msgstr ""
+
+#: includes/admin/builder/class-evf-builder-settings.php:606
+#: includes/admin/form-migrator/class-evf-fm-contactform7.php:402
+msgid "Thanks for contacting us! We will be in touch with you shortly"
+msgstr ""
+
+#. translators: %1$s - general settings docs url
+#: includes/admin/builder/class-evf-builder-settings.php:608
+msgid "Success message that shows up after submitting form. <a href=\"%1$s\" target=\"_blank\">Learn More</a>"
+msgstr ""
+
+#: includes/admin/builder/class-evf-builder-settings.php:616
+msgid "Automatically scroll to the submission message"
+msgstr ""
+
+#: includes/admin/builder/class-evf-builder-settings.php:622
+msgid "Submission Redirection"
+msgstr ""
+
+#: includes/admin/builder/class-evf-builder-settings.php:629
+msgid "Redirect To"
+msgstr ""
+
+#. translators: %1$s - general settings docs url
+#: includes/admin/builder/class-evf-builder-settings.php:633
+msgid "Choose where to redirect after form submission. <a href=\"%s\" target=\"_blank\">Learn More</a>"
+msgstr ""
+
+#: includes/admin/builder/class-evf-builder-settings.php:635
+msgid "Same Page"
+msgstr ""
+
+#: includes/admin/builder/class-evf-builder-settings.php:636
+#: includes/admin/builder/class-evf-builder-settings.php:647
+msgid "Custom Page"
+msgstr ""
+
+#: includes/admin/builder/class-evf-builder-settings.php:637
+#: includes/admin/builder/class-evf-builder-settings.php:659
+msgid "External URL"
+msgstr ""
+
+#: includes/admin/builder/class-evf-builder-settings.php:670
+msgid " Append Query String"
+msgstr ""
+
+#: includes/admin/builder/class-evf-builder-settings.php:681
+msgid "Query String"
+msgstr ""
+
+#: includes/admin/builder/class-evf-builder-settings.php:689
+msgid "Example: firstname= {field_id=\"name_ys0GeZISRs-1\"}&email={field_id=\"email_LbH5NxasXM-2\"}"
+msgstr ""
+
+#: includes/admin/builder/class-evf-builder-settings.php:701
+#: includes/admin/builder/class-evf-builder-settings.php:703
+msgid "Show entry preview after form submission"
+msgstr ""
+
+#: includes/admin/builder/class-evf-builder-settings.php:712
+msgid "Preview type"
+msgstr ""
+
+#: includes/admin/builder/class-evf-builder-settings.php:715
+msgid "Choose preview style type."
+msgstr ""
+
+#: includes/admin/builder/class-evf-builder-settings.php:717
+msgid "Basic"
+msgstr ""
+
+#: includes/admin/builder/class-evf-builder-settings.php:718
+msgid "Table"
+msgstr ""
+
+#: includes/admin/builder/class-evf-builder-settings.php:719
+msgid "Compact"
+msgstr ""
+
+#: includes/admin/builder/class-evf-builder-settings.php:732
 msgid "Honeypot"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:698
+#: includes/admin/builder/class-evf-builder-settings.php:738
 msgid "Enable anti-spam honeypot"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:710
+#: includes/admin/builder/class-evf-builder-settings.php:750
 msgid "Akismet"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:716
+#: includes/admin/builder/class-evf-builder-settings.php:756
 msgid "Enable Akismet anti-spam protection"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:726
-#: includes/admin/builder/class-evf-builder-settings.php:728
-#: includes/admin/builder/class-evf-builder-settings.php:730
+#: includes/admin/builder/class-evf-builder-settings.php:766
+#: includes/admin/builder/class-evf-builder-settings.php:768
+#: includes/admin/builder/class-evf-builder-settings.php:770
 msgid "Warning:- "
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:726
-#: includes/admin/builder/class-evf-builder-settings.php:728
-#: includes/admin/builder/class-evf-builder-settings.php:730
+#: includes/admin/builder/class-evf-builder-settings.php:766
+#: includes/admin/builder/class-evf-builder-settings.php:768
+#: includes/admin/builder/class-evf-builder-settings.php:770
 msgid " This feature is inactive because Akismet plugin "
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:726
+#: includes/admin/builder/class-evf-builder-settings.php:766
 msgid "has not been installed."
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:726
-#: includes/admin/builder/class-evf-builder-settings.php:728
-#: includes/admin/builder/class-evf-builder-settings.php:730
+#: includes/admin/builder/class-evf-builder-settings.php:766
+#: includes/admin/builder/class-evf-builder-settings.php:768
+#: includes/admin/builder/class-evf-builder-settings.php:770
 msgid "  For more"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:728
+#: includes/admin/builder/class-evf-builder-settings.php:768
 msgid "has not been activated."
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:730
+#: includes/admin/builder/class-evf-builder-settings.php:770
 msgid "has not been properly configured."
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:738
+#: includes/admin/builder/class-evf-builder-settings.php:778
 msgid "Protection type"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:741
+#: includes/admin/builder/class-evf-builder-settings.php:781
 msgid "Please select the protection type. Choosing 'Mark as Spam' allows the submission but marks the entry as spam, while selecting 'Make the form submission as failed' will prevent the form submission."
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:743
+#: includes/admin/builder/class-evf-builder-settings.php:783
 msgid "Make the form submission as failed"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:744
+#: includes/admin/builder/class-evf-builder-settings.php:784
 msgid "Mark as Spam"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:765
+#: includes/admin/builder/class-evf-builder-settings.php:805
 msgid "Enable Google reCAPTCHA v2"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:769
+#: includes/admin/builder/class-evf-builder-settings.php:809
 msgid "Enable Google reCAPTCHA v3"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:773
+#: includes/admin/builder/class-evf-builder-settings.php:813
 msgid "Enable hCaptcha"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:777
+#: includes/admin/builder/class-evf-builder-settings.php:817
 msgid "Enable Cloudflare Turnstile"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:780
+#: includes/admin/builder/class-evf-builder-settings.php:820
 msgid "Enable Google Invisible reCAPTCHA v2"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:782
+#: includes/admin/builder/class-evf-builder-settings.php:822
 #: includes/fields/class-evf-field-captcha.php:20
 msgid "Captcha"
 msgstr ""
 
 #. translators: %1$s - general settings docs url
-#: includes/admin/builder/class-evf-builder-settings.php:793
+#: includes/admin/builder/class-evf-builder-settings.php:833
 msgid "Enable reCaptcha. Make sure the site key and secret key is set in settings page. <a href=\"%s\" target=\"_blank\">Learn More</a>"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:815
-#: includes/admin/builder/class-evf-builder-settings.php:832
+#: includes/admin/builder/class-evf-builder-settings.php:855
+#: includes/admin/builder/class-evf-builder-settings.php:872
 msgid "Custom CSS and JS"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:834
-#: includes/admin/builder/class-evf-builder-settings.php:850
+#: includes/admin/builder/class-evf-builder-settings.php:874
+#: includes/admin/builder/class-evf-builder-settings.php:890
 msgid "Custom CSS"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:840
+#: includes/admin/builder/class-evf-builder-settings.php:880
 msgid "Enable Custom CSS"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:853
-#: includes/admin/builder/class-evf-builder-settings.php:869
+#: includes/admin/builder/class-evf-builder-settings.php:893
+#: includes/admin/builder/class-evf-builder-settings.php:909
 msgid "Custom JS"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:859
+#: includes/admin/builder/class-evf-builder-settings.php:899
 msgid "Enable Custom JS"
 msgstr ""
 
@@ -1765,7 +1795,7 @@ msgid "Field"
 msgstr ""
 
 #: includes/admin/class-evf-admin-entries-table-list.php:319
-#: includes/admin/views/html-admin-page-entries-view.php:250
+#: includes/admin/views/html-admin-page-entries-view.php:249
 #: includes/admin/views/html-admin-page-tools-logs.php:36
 msgid "View"
 msgstr ""
@@ -1786,7 +1816,7 @@ msgid "Restore form entry from trash"
 msgstr ""
 
 #: includes/admin/class-evf-admin-entries-table-list.php:350
-#: includes/admin/class-evf-admin-entries-table-list.php:444
+#: includes/admin/class-evf-admin-entries-table-list.php:445
 #: includes/admin/class-evf-admin-forms-table-list.php:181
 #: includes/admin/class-evf-admin-forms-table-list.php:436
 msgid "Restore"
@@ -1798,7 +1828,7 @@ msgid "Delete form entry permanently"
 msgstr ""
 
 #: includes/admin/class-evf-admin-entries-table-list.php:366
-#: includes/admin/class-evf-admin-entries-table-list.php:445
+#: includes/admin/class-evf-admin-entries-table-list.php:446
 msgid "Delete Permanently"
 msgstr ""
 
@@ -1810,68 +1840,69 @@ msgid_plural "All <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:415
+#. translators: %s: count
+#: includes/admin/class-evf-admin-entries-table-list.php:416
 msgctxt "entries"
 msgid "Spam <span class=\"count\">(%s)</span>"
 msgid_plural "Spam <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:449
+#: includes/admin/class-evf-admin-entries-table-list.php:450
 msgid "Move to Trash"
 msgstr ""
 
 #. translators: %d: number of entries, %s: entries status
-#: includes/admin/class-evf-admin-entries-table-list.php:495
+#: includes/admin/class-evf-admin-entries-table-list.php:496
 msgid "%1$d entry successfully %2$s."
 msgid_plural "%1$d entries successfully %2$s."
 msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d: number of entries, %s: entries status
-#: includes/admin/class-evf-admin-entries-table-list.php:511
+#: includes/admin/class-evf-admin-entries-table-list.php:512
 msgid "%1$d entry successfully marked as %2$s."
 msgid_plural "%1$d entries successfully marked as %2$s."
 msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d: number of entries
-#: includes/admin/class-evf-admin-entries-table-list.php:526
+#: includes/admin/class-evf-admin-entries-table-list.php:535
 msgid "%d entry moved to the Trash."
 msgid_plural "%d entries moved to the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d: number of entries
-#: includes/admin/class-evf-admin-entries-table-list.php:541
+#: includes/admin/class-evf-admin-entries-table-list.php:550
 msgid "%d entry restored from the Trash."
 msgid_plural "%d entries restored from the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d: number of entries
-#: includes/admin/class-evf-admin-entries-table-list.php:556
+#: includes/admin/class-evf-admin-entries-table-list.php:565
 #: includes/admin/class-evf-admin-entries.php:251
 msgid "%d entry permanently deleted."
 msgid_plural "%d entries permanently deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:585
+#: includes/admin/class-evf-admin-entries-table-list.php:594
 #: includes/admin/class-evf-admin-entries.php:90
 msgid "Filter"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:589
+#: includes/admin/class-evf-admin-entries-table-list.php:598
 msgid "Export CSV"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:594
+#: includes/admin/class-evf-admin-entries-table-list.php:603
 #: includes/admin/class-evf-admin-forms-table-list.php:524
 msgid "Empty Trash"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:608
+#: includes/admin/class-evf-admin-entries-table-list.php:617
 msgid "Filter by form"
 msgstr ""
 
@@ -1896,7 +1927,7 @@ msgid "Create your first form!"
 msgstr ""
 
 #. translators: %d - New form entries count.
-#: includes/admin/class-evf-admin-entries.php:388
+#: includes/admin/class-evf-admin-entries.php:408
 msgid "%d new entry since you last checked."
 msgid_plural "%d new entries since you last checked."
 msgstr[0] ""
@@ -2008,7 +2039,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: includes/admin/class-evf-admin-forms-table-list.php:444
-#: includes/admin/views/html-admin-page-entries-view.php:270
+#: includes/admin/views/html-admin-page-entries-view.php:274
 msgid "Move to trash"
 msgstr ""
 
@@ -2058,8 +2089,8 @@ msgstr ""
 
 #: includes/admin/class-evf-admin-import-export.php:34
 #: includes/admin/class-evf-admin-notices.php:124
-#: includes/admin/class-evf-admin-tools.php:194
-#: includes/admin/class-evf-admin-tools.php:211
+#: includes/admin/class-evf-admin-tools.php:202
+#: includes/admin/class-evf-admin-tools.php:219
 msgid "Action failed. Please refresh the page and retry."
 msgstr ""
 
@@ -2137,6 +2168,11 @@ msgstr ""
 msgid "You don&#8217;t have permission to do this."
 msgstr ""
 
+#: includes/admin/class-evf-admin-preview-confirmation.php:64
+#: includes/admin/class-evf-admin-preview-confirmation.php:68
+msgid "(Empty)"
+msgstr ""
+
 #: includes/admin/class-evf-admin-settings.php:75
 msgid "Your settings have been saved."
 msgstr ""
@@ -2157,26 +2193,26 @@ msgstr ""
 msgid "Background Image"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:699
+#: includes/admin/class-evf-admin-settings.php:732
 msgid "Select a page&hellip;"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:708
+#: includes/admin/class-evf-admin-settings.php:741
 #: includes/evf-formatting-functions.php:576
 msgid "Day(s)"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:709
+#: includes/admin/class-evf-admin-settings.php:742
 #: includes/evf-formatting-functions.php:577
 msgid "Week(s)"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:710
+#: includes/admin/class-evf-admin-settings.php:743
 #: includes/evf-formatting-functions.php:578
 msgid "Month(s)"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:711
+#: includes/admin/class-evf-admin-settings.php:744
 #: includes/evf-formatting-functions.php:579
 msgid "Year(s)"
 msgstr ""
@@ -2560,6 +2596,7 @@ msgid "Please enter your secret key for your Cloudflare Turnstile. <a href=\"%1$
 msgstr ""
 
 #: includes/admin/settings/class-evf-settings-recaptcha.php:196
+#: includes/admin/views/html-admin-page-setting.php:179
 msgid "Theme"
 msgstr ""
 
@@ -2709,7 +2746,7 @@ msgstr ""
 
 #: includes/admin/views/html-admin-page-addons.php:81
 #: includes/admin/views/html-admin-page-addons.php:162
-#: includes/admin/views/html-admin-page-entries-view.php:257
+#: includes/admin/views/html-admin-page-entries-view.php:261
 msgid "Status:"
 msgstr ""
 
@@ -2819,44 +2856,44 @@ msgstr ""
 msgid "Field ID"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:178
+#: includes/admin/views/html-admin-page-entries-view.php:177
 msgid "Empty"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:195
+#: includes/admin/views/html-admin-page-entries-view.php:194
 msgid "Entry Details"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:201
+#: includes/admin/views/html-admin-page-entries-view.php:200
 msgid "Entry ID:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:207
+#: includes/admin/views/html-admin-page-entries-view.php:206
 msgid "Submitted:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:208
-#: includes/admin/views/html-admin-page-entries-view.php:215
+#: includes/admin/views/html-admin-page-entries-view.php:207
+#: includes/admin/views/html-admin-page-entries-view.php:214
 msgid "M j, Y @ g:ia"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:214
+#: includes/admin/views/html-admin-page-entries-view.php:213
 msgid "Modified:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:223
+#: includes/admin/views/html-admin-page-entries-view.php:222
 msgid "User:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:241
+#: includes/admin/views/html-admin-page-entries-view.php:240
 msgid "User IP:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:249
+#: includes/admin/views/html-admin-page-entries-view.php:248
 msgid "Referer Link:"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-entries-view.php:258
+#: includes/admin/views/html-admin-page-entries-view.php:262
 msgid "Completed"
 msgstr ""
 
@@ -2915,6 +2952,7 @@ msgid "All"
 msgstr ""
 
 #: includes/admin/views/html-admin-page-form-templates.php:33
+#: includes/admin/views/html-admin-page-setting.php:62
 msgid "Free"
 msgstr ""
 
@@ -2989,6 +3027,150 @@ msgstr ""
 msgid "Import Form"
 msgstr ""
 
+#: includes/admin/views/html-admin-page-setting.php:14
+msgid "Copy Setting"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-setting.php:27
+msgid "Everest Form Pro"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-setting.php:35
+#: includes/admin/views/html-admin-page-setting.php:123
+#: includes/admin/views/html-admin-page-setting.php:156
+#: includes/admin/views/html-admin-page-setting.php:226
+#: includes/admin/views/html-admin-page-setting.php:291
+msgid "Version"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-setting.php:53
+msgid "Edition"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-setting.php:59
+msgid "PRO"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-setting.php:68
+msgid "License Key"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-setting.php:74
+msgid "Licensed"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-setting.php:77
+msgid "Unlicensed"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-setting.php:83
+msgid "License Activated"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-setting.php:89
+#: includes/class-evf-ajax.php:1075
+msgid "Yes"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-setting.php:92
+#: includes/class-evf-ajax.php:1078
+msgid "No"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-setting.php:98
+msgid "License Expires"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-setting.php:106
+msgid "-"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-setting.php:117
+msgid "Everest Form"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-setting.php:146
+msgid "WordPress"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-setting.php:167
+msgid "MultiSite Enabled"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-setting.php:171
+msgid "Home URL"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-setting.php:175
+#: includes/class-evf-smart-tags.php:35
+msgid "Site URL"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-setting.php:189
+msgid "Plugins"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-setting.php:202
+msgid "No plugin lists available."
+msgstr ""
+
+#: includes/admin/views/html-admin-page-setting.php:208
+#: includes/admin/views/html-admin-page-setting.php:249
+msgid "Max Upload Size"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-setting.php:219
+msgid "PHP"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-setting.php:237
+msgid "Default Timezone"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-setting.php:241
+msgid "Max Execution Time"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-setting.php:245
+msgid "Memory Limit"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-setting.php:253
+msgid "Max Input Variables"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-setting.php:257
+msgid "SMTP Hostname"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-setting.php:261
+msgid "SMTP Port"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-setting.php:266
+msgid "Web Server"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-setting.php:269
+msgid "Name"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-setting.php:278
+msgid "IP"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-setting.php:288
+msgid "MySQL"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-setting.php:300
+msgid "Max Allowed Packet"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-setting.php:304
+msgid "Max allowed packet size"
+msgstr ""
+
 #: includes/admin/views/html-admin-page-tools-logs.php:17
 msgid "Delete all logs"
 msgstr ""
@@ -3011,7 +3193,11 @@ msgstr ""
 msgid "Import"
 msgstr ""
 
-#: includes/admin/views/html-admin-page-tools.php:22
+#: includes/admin/views/html-admin-page-tools.php:17
+msgid "System Info"
+msgstr ""
+
+#: includes/admin/views/html-admin-page-tools.php:23
 msgid "Logs"
 msgstr ""
 
@@ -3321,14 +3507,6 @@ msgstr ""
 msgid "Imported"
 msgstr ""
 
-#: includes/class-evf-ajax.php:1075
-msgid "Yes"
-msgstr ""
-
-#: includes/class-evf-ajax.php:1078
-msgid "No"
-msgstr ""
-
 #: includes/class-evf-ajax.php:1134
 msgid "Missing Form ID !!!"
 msgstr ""
@@ -3450,86 +3628,86 @@ msgstr ""
 msgid "Popup Size"
 msgstr ""
 
-#: includes/class-evf-form-task.php:92
-#: includes/class-evf-form-task.php:553
+#: includes/class-evf-form-task.php:95
+#: includes/class-evf-form-task.php:556
 #: includes/shortcodes/class-evf-shortcode-form.php:972
 #: includes/templates/contact.php:61
 msgid "Thanks for contacting us! We will be in touch with you shortly."
 msgstr ""
 
-#: includes/class-evf-form-task.php:139
+#: includes/class-evf-form-task.php:142
 msgid "We were unable to process your form, please try again."
 msgstr ""
 
-#: includes/class-evf-form-task.php:149
+#: includes/class-evf-form-task.php:152
 msgid "Invalid form. Please check again."
 msgstr ""
 
-#: includes/class-evf-form-task.php:176
+#: includes/class-evf-form-task.php:179
 msgid "Everest Forms Process Before."
 msgstr ""
 
-#: includes/class-evf-form-task.php:181
+#: includes/class-evf-form-task.php:184
 msgid "Everest Forms Process Before Form ID."
 msgstr ""
 
-#: includes/class-evf-form-task.php:258
-#: includes/class-evf-form-task.php:398
-#: includes/class-evf-form-task.php:491
+#: includes/class-evf-form-task.php:261
+#: includes/class-evf-form-task.php:401
+#: includes/class-evf-form-task.php:494
 msgid "Form has not been submitted, please see the errors below."
 msgstr ""
 
-#: includes/class-evf-form-task.php:261
+#: includes/class-evf-form-task.php:264
 msgid "Form has not been submitted."
 msgstr ""
 
-#: includes/class-evf-form-task.php:293
+#: includes/class-evf-form-task.php:296
 msgid "hCaptcha verification failed, please try again later."
 msgstr ""
 
-#: includes/class-evf-form-task.php:295
+#: includes/class-evf-form-task.php:298
 msgid "Cloudflare Turnstile verification failed, please try again later."
 msgstr ""
 
-#: includes/class-evf-form-task.php:297
+#: includes/class-evf-form-task.php:300
 msgid "Google reCAPTCHA verification failed, please try again later."
 msgstr ""
 
-#: includes/class-evf-form-task.php:410
+#: includes/class-evf-form-task.php:413
 msgid "Everest Forms honeypot field triggered."
 msgstr ""
 
-#: includes/class-evf-form-task.php:494
+#: includes/class-evf-form-task.php:497
 msgid "Form has not been submitted"
 msgstr ""
 
-#: includes/class-evf-form-task.php:503
+#: includes/class-evf-form-task.php:506
 msgid "Entry Added to Database."
 msgstr ""
 
-#: includes/class-evf-form-task.php:512
+#: includes/class-evf-form-task.php:515
 msgid "Sent Email Notification."
 msgstr ""
 
-#: includes/class-evf-form-task.php:529
+#: includes/class-evf-form-task.php:532
 msgid "Everest Forms Process Completed."
 msgstr ""
 
-#: includes/class-evf-form-task.php:589
+#: includes/class-evf-form-task.php:605
 #: templates/notices/success.php:69
 msgid "Download your form submission in PDF format"
 msgstr ""
 
 #. translators: %s - form name.
-#: includes/class-evf-form-task.php:907
+#: includes/class-evf-form-task.php:923
 msgid "New %s Entry"
 msgstr ""
 
-#: includes/class-evf-form-task.php:1014
+#: includes/class-evf-form-task.php:1037
 msgid "No form ID was found."
 msgstr ""
 
-#: includes/class-evf-form-task.php:1021
+#: includes/class-evf-form-task.php:1044
 msgid "Could not create an entry"
 msgstr ""
 
@@ -3833,10 +4011,6 @@ msgstr ""
 msgid "Site Name"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:35
-msgid "Site URL"
-msgstr ""
-
 #: includes/class-evf-smart-tags.php:36
 msgid "Page Title"
 msgstr ""
@@ -4042,7 +4216,7 @@ msgid "Edit Form"
 msgstr ""
 
 #. translators: %s - Form name.
-#: includes/class-evf-template-loader.php:217
+#: includes/class-evf-template-loader.php:218
 msgid "%s &ndash; Preview"
 msgstr ""
 
@@ -12809,7 +12983,7 @@ msgid "Select a format for the date field."
 msgstr ""
 
 #: includes/fields/class-evf-field-date-time.php:88
-#: includes/fields/class-evf-field-date-time.php:489
+#: includes/fields/class-evf-field-date-time.php:493
 msgid "Time"
 msgstr ""
 
@@ -12846,162 +13020,162 @@ msgstr ""
 msgid "Choose a desire date format to display."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:195
+#: includes/fields/class-evf-field-date-time.php:199
 msgid "Clear"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:201
+#: includes/fields/class-evf-field-date-time.php:205
 msgid "Disable Dates"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:202
+#: includes/fields/class-evf-field-date-time.php:206
 msgid "Select which dates you want to disable."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:227
+#: includes/fields/class-evf-field-date-time.php:231
 msgid "Date Mode"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:228
+#: includes/fields/class-evf-field-date-time.php:232
 msgid "Select your desire date mode."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:243
+#: includes/fields/class-evf-field-date-time.php:247
 msgid "Date Localization"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:244
+#: includes/fields/class-evf-field-date-time.php:248
 msgid "Choose a desire date localization to display."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:325
+#: includes/fields/class-evf-field-date-time.php:329
 msgid "Timezone"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:326
+#: includes/fields/class-evf-field-date-time.php:330
 msgid "Choose a desired timezone to save datetime in."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:348
+#: includes/fields/class-evf-field-date-time.php:352
 msgid "Default to current date."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:349
+#: includes/fields/class-evf-field-date-time.php:353
 msgid "Check this option to set current date as default."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:360
+#: includes/fields/class-evf-field-date-time.php:364
 msgid "Disable the past date"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:361
+#: includes/fields/class-evf-field-date-time.php:365
 msgid "Check this option to disable the past date"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:372
+#: includes/fields/class-evf-field-date-time.php:376
 msgid "Enable Min Max date."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:373
+#: includes/fields/class-evf-field-date-time.php:377
 msgid "Check this option to set min max date."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:383
-#: includes/fields/class-evf-field-date-time.php:439
+#: includes/fields/class-evf-field-date-time.php:387
+#: includes/fields/class-evf-field-date-time.php:443
 msgid "Minimum Date"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:384
+#: includes/fields/class-evf-field-date-time.php:388
 msgid "Select minium date."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:405
-#: includes/fields/class-evf-field-date-time.php:462
+#: includes/fields/class-evf-field-date-time.php:409
+#: includes/fields/class-evf-field-date-time.php:466
 msgid "Maximum Date"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:406
+#: includes/fields/class-evf-field-date-time.php:410
 msgid "Select maximum date."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:428
+#: includes/fields/class-evf-field-date-time.php:432
 msgid "Enable Custom Input"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:429
+#: includes/fields/class-evf-field-date-time.php:433
 msgid "Check this option to set date range 'x' days after today."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:440
-#: includes/fields/class-evf-field-date-time.php:463
+#: includes/fields/class-evf-field-date-time.php:444
+#: includes/fields/class-evf-field-date-time.php:467
 msgid "Number of days after today or before for negative numbers. Example: today or +14 days or -5 days."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:496
+#: includes/fields/class-evf-field-date-time.php:500
 msgid "Time interval and format"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:497
+#: includes/fields/class-evf-field-date-time.php:501
 msgid "Choose time interval and format to display."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:511
+#: includes/fields/class-evf-field-date-time.php:515
 msgid "15 minutes"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:512
+#: includes/fields/class-evf-field-date-time.php:516
 msgid "30 minutes"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:513
+#: includes/fields/class-evf-field-date-time.php:517
 msgid "1 hour"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:526
+#: includes/fields/class-evf-field-date-time.php:530
 msgid "12 H"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:527
+#: includes/fields/class-evf-field-date-time.php:531
 msgid "24 H"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:592
+#: includes/fields/class-evf-field-date-time.php:596
 msgid "Enable Min Max Time."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:593
+#: includes/fields/class-evf-field-date-time.php:597
 msgid "Check this option to set min max time."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:604
+#: includes/fields/class-evf-field-date-time.php:608
 msgid "Minimum Time"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:605
+#: includes/fields/class-evf-field-date-time.php:609
 msgid "Select minium time."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:615
+#: includes/fields/class-evf-field-date-time.php:619
 msgid "Maximum Time"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:616
+#: includes/fields/class-evf-field-date-time.php:620
 msgid "Select maximum time."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:628
+#: includes/fields/class-evf-field-date-time.php:632
 msgid "Slot Booking"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:635
+#: includes/fields/class-evf-field-date-time.php:639
 msgid "Enable Slot Booking"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:637
+#: includes/fields/class-evf-field-date-time.php:641
 msgid "Enable to use date/time field as slot booking."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:1150
+#: includes/fields/class-evf-field-date-time.php:1154
 msgid "---Select Field---"
 msgstr ""
 

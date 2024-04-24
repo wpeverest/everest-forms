@@ -80,7 +80,8 @@ class EVF_Template_Loader {
 	 * @return array
 	 */
 	public static function template_include( $templates ) {
-		return array( 'page.php', 'single.php', 'index.php' );
+		$templates = apply_filters( 'everest_forms_templates_includes', array( 'page.php', 'single.php', 'index.php' ), $templates );
+		return $templates;
 	}
 
 	/**

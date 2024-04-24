@@ -21,7 +21,7 @@ final class EverestForms {
 	 *
 	 * @var string
 	 */
-	public $version = '2.0.8.1';
+	public $version = '2.0.9';
 
 	/**
 	 * The single instance of the class.
@@ -288,6 +288,11 @@ final class EverestForms {
 		include_once EVF_ABSPATH . 'includes/class-evf-deprecated-filter-hooks.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-forms-features.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-privacy.php';
+
+		/**
+		 * Preview Confirmation Class
+		 */
+		include_once EVF_ABSPATH . 'includes/admin/class-evf-admin-preview-confirmation.php';
 
 		/**
 		 * Elementor classes.

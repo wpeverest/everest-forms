@@ -59,6 +59,14 @@ class EVF_Admin_Tools {
 	}
 
 	/**
+	 * Show the setting page.
+	 */
+	public static function setting() {
+		include_once __DIR__ . '/views/html-admin-page-setting.php';
+	}
+
+
+	/**
 	 * Show the logs page.
 	 */
 	public static function status_logs() {
