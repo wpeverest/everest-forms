@@ -29,13 +29,23 @@ if ( ! $tab_exists ) {
 			</div>
 			<div class="everest-forms-header--nav">
 				<nav class="nav-tab-wrapper evf-nav-tab-wrapper">
-					<?php
-					foreach ( $tabs as $slug => $label ) {
-						echo '<a href="' . esc_html( admin_url( 'admin.php?page=evf-settings&tab=' . esc_attr( $slug ) ) ) . '" class="nav-tab  evf-nav__link' . ( $current_tab === $slug ? 'nav-tab-active' : '' ) . '"><span class="evf-nav-icon ' . esc_attr( $slug ) . '"></span>' . esc_html( $label ) . '</a>';
-					}
-
-					do_action( 'everest_forms_settings_tabs' );
+				<?php
+				foreach ( $tabs as $slug => $label ) {
 					?>
+							<a href="<?php echo esc_url( admin_url( 'admin.php?page=evf-settings&tab=' . $slug ) ); ?>" class="nav-tab evf-nav__link <?php echo ( $current_tab === $slug ? 'nav-tab-active is-active' : '' ); ?>">
+								<span class="evf-nav__link-icon">
+							<?php echo evf_file_get_contents( '/assets/images/settings-icons/' . $slug . '.svg' ); //phpcs:ignore ?>
+								</span>
+								<span class="evf-nav__link-label">
+									<p>
+								<?php echo esc_html( $label ); ?>
+									</p>
+								</span>
+							</a>
+							<?php
+				}
+						do_action( 'user_registration_settings_tabs' );
+				?>
 				</nav>
 			</div>
 		</header>
