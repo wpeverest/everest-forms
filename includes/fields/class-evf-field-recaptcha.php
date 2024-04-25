@@ -78,7 +78,7 @@ class EVF_Field_Recaptcha extends \EVF_Form_Fields {
 			$secret_key = get_option( 'everest_forms_recaptcha_v3_secret_key' );
 		}
 
-		if ( ! $site_key || ! $secret_key ) {
+		if ( isset( $site_key, $secret_key ) && ( ! $site_key || ! $secret_key ) ) {
 			return;
 		}
 
