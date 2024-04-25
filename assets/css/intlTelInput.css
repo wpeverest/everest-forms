@@ -1,0 +1,218 @@
+body, div.evf-container .everest-form {
+	@import 'sprite';
+}
+body .iti, div.evf-container .everest-form .iti {
+	position: relative;
+	display: inline-block;
+}
+body .iti *, div.evf-container .everest-form .iti * {
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+}
+body .iti__hide, div.evf-container .everest-form .iti__hide {
+	display: none;
+}
+body .iti__v-hide, div.evf-container .everest-form .iti__v-hide {
+	visibility: hidden;
+}
+body .iti input, div.evf-container .everest-form .iti input, body .iti input[type='text'], div.evf-container .everest-form .iti input[type='text'], body .iti input[type='tel'], div.evf-container .everest-form .iti input[type='tel'] {
+	position: relative;
+	z-index: 0;
+	margin-top: 0 !important;
+	margin-bottom: 0 !important;
+	padding-right: 36px;
+	margin-right: 0;
+}
+body .iti__flag-container, div.evf-container .everest-form .iti__flag-container {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	padding: 1px;
+}
+body .iti__selected-flag, div.evf-container .everest-form .iti__selected-flag {
+	z-index: 1;
+	outline: none;
+	position: relative;
+	display: flex;
+	align-items: center;
+	height: 100%;
+	padding: 0 6px 0 8px;
+}
+body .iti__arrow, div.evf-container .everest-form .iti__arrow {
+	margin-left: 6px;
+	width: 0;
+	height: 0;
+	border-left: 3px solid transparent;
+	border-right: 3px solid transparent;
+	border-top: 4px solid #555;
+}
+body .iti__arrow--up, div.evf-container .everest-form .iti__arrow--up {
+	border-top: none;
+	border-bottom: 4px solid #555;
+}
+body .iti__country-list, div.evf-container .everest-form .iti__country-list {
+	position: absolute;
+	z-index: 20;
+	list-style: none;
+	text-align: left;
+	padding: 0;
+	margin: 0 0 0 -1px;
+	box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+	background-color: #fff !important;
+	border: 1px solid #ccc;
+	white-space: nowrap;
+	max-height: 200px;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+}
+body .iti__country-list--dropup, div.evf-container .everest-form .iti__country-list--dropup {
+	bottom: 100%;
+	margin-bottom: -1px;
+}
+@media (max-width: 600px) {
+	body .iti__country-list, div.evf-container .everest-form .iti__country-list {
+		max-width: 90vw;
+   }
+}
+body .iti__flag-box, div.evf-container .everest-form .iti__flag-box {
+	display: inline-block;
+	width: 20px;
+}
+body .iti__divider, div.evf-container .everest-form .iti__divider {
+	margin: 0 !important;
+	border-bottom: 1px solid #ccc !important;
+}
+body .iti__country, div.evf-container .everest-form .iti__country {
+	padding: 5px 10px;
+	outline: none;
+}
+body .iti__dial-code, div.evf-container .everest-form .iti__dial-code {
+	color: #999;
+	vertical-align: baseline;
+	line-height: 1;
+}
+body .iti__country.iti__highlight, div.evf-container .everest-form .iti__country.iti__highlight {
+	background-color: rgba(0, 0, 0, 0.05) !important;
+}
+body .iti__flag-box, div.evf-container .everest-form .iti__flag-box, body .iti__country-name, div.evf-container .everest-form .iti__country-name {
+	vertical-align: middle;
+	line-height: 1;
+}
+body .iti__flag-box, div.evf-container .everest-form .iti__flag-box, body .iti__country-name, div.evf-container .everest-form .iti__country-name {
+	margin-right: 10px;
+}
+body .iti--allow-dropdown input, div.evf-container .everest-form .iti--allow-dropdown input, body .iti--separate-dial-code input, div.evf-container .everest-form .iti--separate-dial-code input, body .iti--allow-dropdown input[type='text'], div.evf-container .everest-form .iti--allow-dropdown input[type='text'], body .iti--separate-dial-code input[type='text'], div.evf-container .everest-form .iti--separate-dial-code input[type='text'], body .iti--allow-dropdown input[type='tel'], div.evf-container .everest-form .iti--allow-dropdown input[type='tel'], body .iti--separate-dial-code input[type='tel'], div.evf-container .everest-form .iti--separate-dial-code input[type='tel'] {
+	padding-right: 6px;
+	padding-left: 52px;
+	margin-left: 0;
+}
+body .iti--allow-dropdown .iti__flag-container, div.evf-container .everest-form .iti--allow-dropdown .iti__flag-container, body .iti--separate-dial-code .iti__flag-container, div.evf-container .everest-form .iti--separate-dial-code .iti__flag-container {
+	right: auto;
+	left: 0;
+}
+body .iti--allow-dropdown .iti__flag-container:hover, div.evf-container .everest-form .iti--allow-dropdown .iti__flag-container:hover {
+	cursor: pointer;
+}
+body .iti--allow-dropdown .iti__flag-container:hover .iti__selected-flag, div.evf-container .everest-form .iti--allow-dropdown .iti__flag-container:hover .iti__selected-flag {
+	background-color: rgba(0, 0, 0, 0.05);
+}
+body .iti--allow-dropdown input[disabled] + .iti__flag-container:hover, div.evf-container .everest-form .iti--allow-dropdown input[disabled] + .iti__flag-container:hover, body .iti--allow-dropdown input[readonly] + .iti__flag-container:hover, div.evf-container .everest-form .iti--allow-dropdown input[readonly] + .iti__flag-container:hover {
+	cursor: default;
+}
+body .iti--allow-dropdown input[disabled] + .iti__flag-container:hover .iti__selected-flag, div.evf-container .everest-form .iti--allow-dropdown input[disabled] + .iti__flag-container:hover .iti__selected-flag, body .iti--allow-dropdown input[readonly] + .iti__flag-container:hover .iti__selected-flag, div.evf-container .everest-form .iti--allow-dropdown input[readonly] + .iti__flag-container:hover .iti__selected-flag {
+	background-color: transparent;
+}
+body .iti--separate-dial-code .iti__selected-flag, div.evf-container .everest-form .iti--separate-dial-code .iti__selected-flag {
+	background-color: rgba(0, 0, 0, 0.05);
+}
+body .iti--separate-dial-code .iti__selected-dial-code, div.evf-container .everest-form .iti--separate-dial-code .iti__selected-dial-code {
+	margin-left: 6px;
+}
+body .iti--container, div.evf-container .everest-form .iti--container {
+	position: absolute;
+	top: -1000px;
+	left: -1000px;
+	z-index: 1060;
+	padding: 1px;
+}
+body .iti--container:hover, div.evf-container .everest-form .iti--container:hover {
+	cursor: pointer;
+}
+body .iti__flag, div.evf-container .everest-form .iti__flag {
+	height: 15px;
+	box-shadow: 0 0 1px 0 #888;
+	background-image: url("../images/intl-tel-input-flags.png");
+	background-repeat: no-repeat;
+	background-color: #dbdbdb;
+	background-position: 20px 0;
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+	body .iti__flag, div.evf-container .everest-form .iti__flag {
+		background-image: url("../images/intl-tel-input-flags@2x.png");
+   }
+}
+body .iti__flag.iti__np, div.evf-container .everest-form .iti__flag.iti__np {
+	background-color: transparent;
+}
+/* Overrides for mobile popup. Note: .iti-mobile class is applied on the body only if the page loaded initially on mobile but not when the browser window was resized. */
+.iti-mobile .iti--container {
+	top: 30px;
+	bottom: 30px;
+	left: 30px;
+	right: 30px;
+	position: fixed;
+}
+.iti-mobile .iti__country-list {
+	max-height: 100%;
+	width: 100%;
+}
+.iti-mobile .iti__country {
+	padding: 10px;
+	line-height: 1.5em;
+}
+body.rtl .intl-tel-input input, body.rtl div.evf-container .everest-form .intl-tel-input input, body.rtl .intl-tel-input input[type='text'], body.rtl div.evf-container .everest-form .intl-tel-input input[type='text'], body.rtl .intl-tel-input input[type='tel'], body.rtl div.evf-container .everest-form .intl-tel-input input[type='tel'] {
+	padding-right: 0;
+	padding-left: 36px;
+}
+body.rtl .intl-tel-input .flag-container, body.rtl div.evf-container .everest-form .intl-tel-input .flag-container {
+	right: auto;
+	left: 0;
+}
+body.rtl .intl-tel-input .selected-flag, body.rtl div.evf-container .everest-form .intl-tel-input .selected-flag {
+	padding-right: 8px;
+	padding-left: 6px;
+}
+body.rtl .intl-tel-input .selected-flag .iti-arrow, body.rtl div.evf-container .everest-form .intl-tel-input .selected-flag .iti-arrow {
+	margin-right: 6px;
+	margin-left: 0;
+}
+body.rtl .intl-tel-input .country-list, body.rtl div.evf-container .everest-form .intl-tel-input .country-list {
+	text-align: right;
+}
+body.rtl .intl-tel-input .country-list .flag-box, body.rtl div.evf-container .everest-form .intl-tel-input .country-list .flag-box, body.rtl .intl-tel-input .country-list .country-name, body.rtl div.evf-container .everest-form .intl-tel-input .country-list .country-name {
+	margin-right: 0;
+	margin-left: 6px;
+}
+body.rtl .intl-tel-input .country-list .country-name, body.rtl div.evf-container .everest-form .intl-tel-input .country-list .country-name {
+	unicode-bidi: embed;
+	direction: rtl;
+}
+body.rtl .intl-tel-input.allow-dropdown input, body.rtl div.evf-container .everest-form .intl-tel-input.allow-dropdown input, body.rtl .intl-tel-input.separate-dial-code input, body.rtl div.evf-container .everest-form .intl-tel-input.separate-dial-code input, body.rtl .intl-tel-input.allow-dropdown input[type='text'], body.rtl div.evf-container .everest-form .intl-tel-input.allow-dropdown input[type='text'], body.rtl .intl-tel-input.separate-dial-code input[type='text'], body.rtl div.evf-container .everest-form .intl-tel-input.separate-dial-code input[type='text'], body.rtl .intl-tel-input.allow-dropdown input[type='tel'], body.rtl div.evf-container .everest-form .intl-tel-input.allow-dropdown input[type='tel'], body.rtl .intl-tel-input.separate-dial-code input[type='tel'], body.rtl div.evf-container .everest-form .intl-tel-input.separate-dial-code input[type='tel'] {
+	padding-right: 52px;
+	padding-left: 6px;
+}
+body.rtl .intl-tel-input.allow-dropdown .flag-container, body.rtl div.evf-container .everest-form .intl-tel-input.allow-dropdown .flag-container, body.rtl .intl-tel-input.separate-dial-code .flag-container, body.rtl div.evf-container .everest-form .intl-tel-input.separate-dial-code .flag-container {
+	right: 0;
+	left: auto;
+}
+body .iti--allow-dropdown, div.evf-container .everest-form .iti--allow-dropdown {
+	width: 100%;
+}
+body .iti .iti__country, div.evf-container .everest-form .iti .iti__country {
+	padding: 5px 10px !important;
+	margin: 0 !important;
+}
+body .iti--allow-dropdown input, div.evf-container .everest-form .iti--allow-dropdown input, body .iti--separate-dial-code input, div.evf-container .everest-form .iti--separate-dial-code input, body .iti--allow-dropdown input[type='text'], div.evf-container .everest-form .iti--allow-dropdown input[type='text'], body .iti--separate-dial-code input[type='text'], div.evf-container .everest-form .iti--separate-dial-code input[type='text'], body .iti--allow-dropdown input[type='tel'], div.evf-container .everest-form .iti--allow-dropdown input[type='tel'], body .iti--separate-dial-code input[type='tel'], div.evf-container .everest-form .iti--separate-dial-code input[type='tel'] {
+	padding-left: 52px !important;
+}
