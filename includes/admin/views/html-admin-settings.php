@@ -44,8 +44,13 @@ if ( ! $tab_exists ) {
 							</a>
 							<?php
 				}
-						do_action( 'user_registration_settings_tabs' );
+						do_action( 'everest_forms_settings_tabs' );
 				?>
+				<button id="evf-settings-collapse" class="nav-tab evf-nav__link">
+							<span class="evf-nav-icon">
+								<img src="<?php echo esc_url( evf()->plugin_url() . '/assets/images/icons/collapse-line.svg' ); ?>" alt="">
+							</span>
+				</button>
 				</nav>
 			</div>
 		</header>
