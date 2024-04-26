@@ -861,7 +861,6 @@ jQuery( function ( $ ) {
 			inputOptions.initialCountry = 'yes' === everest_forms_params.disable_user_details && countryCode ? countryCode : 'auto';
 
 			$( '.evf-smart-phone-field' ).each( function( i, el ) {
-				console.log(el);
 				var $el = $( el );
 
 				// Hidden input allows to include country code into submitted data.

@@ -134,6 +134,10 @@
 					$( '#everest-forms-field-option-' + dragged_field_id ).find( '.evf-privacy-policy-consent-message' ).val( consent_message );
 					$( '.everest-forms-field-options #everest-forms-field-option-row-' + dragged_field_id + '-required' ).find( 'input' ).click();
 				}
+
+				if ( 'country' === field_type ) {
+					$('#everest-forms-field-option-row-'+ dragged_field_id +'-default').find('select.evf-select2-multiple > option').prop('selected', true);
+				}
 			});
 		},
 
