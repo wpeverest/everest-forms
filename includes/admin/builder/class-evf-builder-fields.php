@@ -262,12 +262,13 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			);
 			$structure   = array_merge( $structure, $new_row );
 		}
+
 		foreach ( $structure as $row_id => $row_data ) {
 			$row         = str_replace( 'row_', '', $row_id );
 			$row_grid    = isset( $form_data['structure'][ 'row_' . $row ] ) ? $form_data['structure'][ 'row_' . $row ] : array();
 			$form_grid   = apply_filters( 'everest_forms_default_form_grid', 4 );
 			$total_grid  = $form_grid;
-			$active_grid = count( $row_grid ) > 0 ? count( $row_grid ) : 1;
+			$active_grid = ( count( $row_grid ) > 0 ) ? count( $row_grid ) : ( isset( $this->form_data['settings']['recaptcha_support'] ) && '1' === $this->form_data['settings']['recaptcha_support'] ? 1 : 2 );
 			$active_grid = $active_grid > $total_grid ? $total_grid : $active_grid;
 
 			/**
