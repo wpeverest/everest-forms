@@ -8539,6 +8539,34 @@
 									}
 								}
 							}
+
+							&.forminp-link {
+								.everest_forms_send_email_test {
+									border-radius: 4px;
+									border: 1px solid #e1e1e1;
+									background: #F6F7F7;
+									padding: 10px 12px;
+									color: #383838;
+									font-size: 14px;
+									font-weight: 400;
+									line-height: 14px;
+									display: flex;
+									align-items: center;
+									justify-content: center;
+									gap: 6px;
+									width: max-content;
+
+									&::after {
+										content: "";
+										background-image: url();
+										background-repeat: no-repeat;
+										background-size: 100%;
+										background-position: center;
+										width: 14px;
+										height: 14px;
+									}
+								}
+							}
 						}
 					}
 				}
