@@ -584,7 +584,6 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 									<ul>
 									<?php
 									foreach ( $value['options'] as $key => $val ) {
-										lg( $val );
 										?>
 										<li>
 										<input
