@@ -584,6 +584,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 									<ul>
 									<?php
 									foreach ( $value['options'] as $key => $val ) {
+										lg( $val );
 										?>
 										<li>
 										<input
@@ -592,7 +593,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 												type="radio"
 												style="<?php echo esc_attr( $value['css'] ); ?>"
 												class="<?php echo esc_attr( $value['class'] ); ?>"
-												id="evf-global-settings-html-template"
+												id="evf-global-settings-<?php echo esc_attr( str_replace( ' ', '-', strtolower( $val['name'] ) ) ); ?>"
 												<?php
 												if ( ! empty( $value['custom_attributes'] ) && is_array( $value['custom_attributes'] ) ) {
 													foreach ( $value['custom_attributes'] as $attribute => $attribute_value ) {
@@ -602,7 +603,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 												?>
 												<?php checked( $key, $option_value ); ?>
 												/>
-												<label  class="evf-global-settings-html-template">
+												<label for="evf-global-settings-<?php echo esc_attr( str_replace( ' ', '-', strtolower( $val['name'] ) ) ); ?>">
 												<img src="<?php echo esc_html( $val['image'] ); ?>">
 												<?php echo esc_html( $val['name'] ); ?>
 												</label>
