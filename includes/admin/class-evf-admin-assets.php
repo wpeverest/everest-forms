@@ -206,6 +206,8 @@ class EVF_Admin_Assets {
 				'upgrade_url'                  => apply_filters( 'everest_forms_upgrade_url', 'https://everestforms.net/pricing/?utm_source=premium-fields&utm_medium=modal-button&utm_campaign=evf-upgrade-to-pro' ),
 				'enable_stripe_title'          => esc_html__( 'Please enable Stripe', 'everest-forms' ),
 				'enable_stripe_message'        => esc_html__( 'Enable Stripe Payment gateway in payments section to use this field.', 'everest-forms' ),
+				'recaptcha_title'              => esc_html__( 'reCaptcha', 'everest-forms' ),
+				'recaptcha_api_key_message'    => esc_html__( 'Please enter a reCaptcha key on Everest Forms>Captcha>reCaptcha.', 'everest-forms' ),
 				'enable_authorize_net_title'   => esc_html__( 'Please enable Authorize.Net', 'everest-forms' ),
 				'enable_authorize_net_message' => esc_html__( 'Enable Authorize.Net Payment gateway in payments section to use this field.', 'everest-forms' ),
 				'evf_install_and_active_nonce' => wp_create_nonce( 'install_and_active_nonce' ),

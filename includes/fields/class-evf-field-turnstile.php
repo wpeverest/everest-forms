@@ -17,10 +17,14 @@ class EVF_Field_Turnstile extends \EVF_Form_Fields {
 	 * Constructor.
 	 */
 	public function __construct() {
+		$site_key       = get_option( 'everest_forms_recaptcha_turnstile_site_key' );
+		$secret_key     = get_option( 'everest_forms_recaptcha_turnstile_secret_key' );
+		$class          = ( empty( $site_key ) || empty( $secret_key ) ) ? 'captcha_empty_key_validate' : '';
 		$this->name     = esc_html__( 'Turnstile', 'everest-forms' );
 		$this->type     = 'turnstile';
 		$this->icon     = 'evf-icon evf-icon-turnstile';
 		$this->order    = 243;
+		$this->class    = $class;
 		$this->group    = 'advanced';
 		$this->settings = array(
 			'basic-options' => array(

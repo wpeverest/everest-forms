@@ -17,10 +17,14 @@ class EVF_Field_Hcaptcha extends \EVF_Form_Fields {
 	 * Constructor.
 	 */
 	public function __construct() {
+		$site_key       = get_option( 'everest_forms_recaptcha_hcaptcha_site_key' );
+		$secret_key     = get_option( 'everest_forms_recaptcha_hcaptcha_secret_key' );
+		$class          = ( empty( $site_key ) || empty( $secret_key ) ) ? 'captcha_empty_key_validate' : '';
 		$this->name     = esc_html__( 'hCaptcha', 'everest-forms' );
 		$this->type     = 'hcaptcha';
 		$this->icon     = 'evf-icon evf-icon-hcaptcha';
 		$this->order    = 242;
+		$this->class    = $class;
 		$this->group    = 'advanced';
 		$this->settings = array(
 			'basic-options' => array(
