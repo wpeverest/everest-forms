@@ -34,6 +34,7 @@ jQuery( function ( $ ) {
 			this.validateMinimumcharacterLength();
 			this.loadPhoneField();
 			this.loadCountryFlags();
+			this.ratingInit();
 
 
 			// Inline validation.
@@ -947,6 +948,34 @@ jQuery( function ( $ ) {
 			}
 			return $( '<div class="iti__flag-box"><div class="iti__flag iti__' + country.id.toLowerCase() + '"></div></div><span class="iti__country-name">' + country.text + '</span>' );
 		},
+		ratingInit:function(){
+			// Rating field: hover effect.
+			$( '.everest-forms-field-rating' ).hover(
+				function() {
+					$( this ).parent().find( '.everest-forms-field-rating' ).removeClass( 'selected hover' );
+					$( this ).prevAll().addBack().addClass( 'hover' );
+				},
+				function() {
+					$( this ).parent().find( '.everest-forms-field-rating' ).removeClass( 'selected hover' );
+					$( this ).parent().find( 'input:checked' ).parent().prevAll().addBack().addClass( 'selected' );
+				}
+			);
+
+			// Rating field: toggle.
+			$( document ).on( 'change', '.everest-forms-field-rating input', function() {
+				var $this  = $( this ),
+					$wrap  = $this.closest( '.everest-forms-field-rating-container' ),
+					$items = $wrap.find( '.everest-forms-field-rating' );
+
+				$items.removeClass( 'hover selected' );
+				$this.parent().prevAll().addBack().addClass( 'selected' );
+			} );
+
+			// Rating field: preselect the selected rating.
+			$( document ).ready( function () {
+				$( '.everest-forms-field-rating input:checked' ).trigger( 'change' );
+			} );
+		}
 	};
 
 	everest_forms.init();

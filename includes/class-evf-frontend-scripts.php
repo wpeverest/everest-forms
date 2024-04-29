@@ -320,6 +320,7 @@ class EVF_Frontend_Scripts {
 					'il8n_min_character_length_err_msg'    => esc_html__( 'Please enter at least {0} characters.', 'everest-forms' ),
 					'plugin_url'                           => plugin_dir_url( EVF_PLUGIN_FILE ),
 					'i18n_messages_phone'                  => get_option( 'everest_forms_phone_validation', __( 'Please enter a valid phone number.', 'everest-forms' ) ),
+					'i18n_field_rating_greater_than_max_value_error' => esc_html__( 'Please enter in a value less than 100.', 'everest-forms' ),
 				);
 				break;
 			case 'everest-forms-text-limit':

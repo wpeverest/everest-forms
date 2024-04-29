@@ -139,6 +139,71 @@
 					$('#everest-forms-field-option-row-'+ dragged_field_id +'-default').find('select.evf-select2-multiple > option').prop('selected', true);
 				}
 			});
+
+			// Rating point validation error tips.
+			$( document.body )
+
+				.on( 'blur', '.evf-number-of-stars[type=number]', function() {
+					$( '.evf_error_tip' ).fadeOut( '100', function() { $( this ).remove(); } );
+				})
+
+				.on( 'change click', '.evf-number-of-stars[type=number]', function(e) {
+					var number_of_stars = parseInt( $( this ).val(), 10 );
+
+					if ( number_of_stars > 100 ) {
+						$( this ).val('100');
+						EVFPanelBuilder.livePreviewNumberOfRating( $( this) );
+					}
+				})
+
+				.on( 'keyup click', '.evf-number-of-stars[type=number]', function() {
+					var number_of_stars = parseInt( $( this ).val(), 10 );
+
+					if ( number_of_stars > 100 ) {
+						$( document.body ).triggerHandler( 'evf_add_error_tip', [ $( this ), 'i18n_field_rating_greater_than_max_value_error', evf_data ] );
+					} else {
+						$( document.body ).triggerHandler( 'evf_remove_error_tip', [ $( this ), 'i18n_field_rating_greater_than_max_value_error' ] );
+					}
+				});
+
+			// Live effect for Rating field Number of Stars option.
+			$( document ).on( 'keyup mouseup', '.everest-forms-field-option-row-number_of_stars input', function() {
+				EVFPanelBuilder.livePreviewNumberOfRating( this );
+			});
+
+			// Live effect for Rating field icon option.
+			$( document ).on( 'change', '.everest-forms-field-option-row-rating-icon input[type=radio]', function() {
+
+				var $this      = $( this ),
+					value      = $this.val(),
+					id         = $this.parent().data( 'field-id' ),
+					icon_color = $( '#everest-forms-field-'+id +' .rating-icon' ).find('svg').first().css('fill');
+					$icons     = $( '#everest-forms-field-'+id +' .rating-icon' ),
+					iconClass  = '<svg width="32" height="32" viewBox="0 0 32 32" style="fill:' + icon_color + '"><path d="M20.33 11.45L16 2.69l-4.33 8.76L2 12.86l7 6.82-1.65 9.64L16 24.77l8.65 4.55L23 19.68l7-6.82-9.67-1.41z"/></svg>';
+					if ( 'heart' === value ) {
+						iconClass = '<svg width="32" height="32" viewBox="0 0 32 32" style="fill:' + icon_color + '"><path d="M27.66 16.94L16 28 4.34 16.94a7.31 7.31 0 0 1 0-10.72A8.21 8.21 0 0 1 10 4a6.5 6.5 0 0 1 5 2l1 1s.88-.89 1-1a6.5 6.5 0 0 1 5-2 8.21 8.21 0 0 1 5.66 2.22 7.31 7.31 0 0 1 0 10.72z"/></svg>';
+					} else if ( 'thumb' === value ) {
+						iconClass = '<svg width="32" height="32" viewBox="0 0 32 32" style="fill:' + icon_color + '"><path d="M30 14.88a3.42 3.42 0 0 0-3.36-3.36h-4.85l.14-.42a2.42 2.42 0 0 1 .2-.39c.08-.14.14-.24.17-.31.21-.4.37-.72.48-1a7.39 7.39 0 0 0 .33-1.05A5.71 5.71 0 0 0 23 4a3.48 3.48 0 0 0-3-2 1.61 1.61 0 0 0-1.43.89C18.34 3.13 17 7 17 7a5.44 5.44 0 0 1-1 2c-.57.75-2.6 3-3.2 3.71s-1.05 1-1.33 1C10 13.74 10 15.71 10 16v9c0 .3 0 2.2 1.52 2.2a12.7 12.7 0 0 1 2.76.77A15.6 15.6 0 0 0 21 30a8.9 8.9 0 0 0 5.74-1.92C30 25 30 15.88 30 14.88zM5 14a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0v-7a3 3 0 0 0-3-3zm0 11a1 1 0 1 1 1-1 1 1 0 0 1-1 1z"/></svg>';
+					} else if ( 'smiley' === value ) {
+						iconClass = '<svg width="32" height="32" viewBox="0 0 32 32" style="fill:' + icon_color + '"><path d="M16 2a14 14 0 1 0 14 14A14 14 0 0 0 16 2zm4 8a2 2 0 1 1-2 2 2 2 0 0 1 2-2zm-8 0a2 2 0 1 1-2 2 2 2 0 0 1 2-2zm4 14a9.23 9.23 0 0 1-8.16-4.89l1.32-.71a7.76 7.76 0 0 0 13.68 0l1.32.71A9.23 9.23 0 0 1 16 24z"/></svg>';
+					} else if ( 'bulb' === value ) {
+						iconClass = '<svg width="32" height="32" viewBox="0 0 32 32" style="fill:' + icon_color + '"><path d="M16 2.25A9.76 9.76 0 0 0 6.25 12c0 3.21 2 5.68 3.52 7.48A6.28 6.28 0 0 1 11.25 23a.76.76 0 0 0 .75.75h8a.74.74 0 0 0 .74-.64 10 10 0 0 1 1.53-3.69c.24-.35.49-.7.75-1.06 1.28-1.77 2.73-3.79 2.73-6.36A9.76 9.76 0 0 0 16 2.25zM20 25.25h-8a.75.75 0 0 0 0 1.5h8a.75.75 0 0 0 0-1.5zM19 28.25h-6a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5z"/></svg>';
+					}
+
+				$icons.html( iconClass );
+			});
+
+			// Live effect for Rating field icon color option.
+			$( '.everest-forms-field-option-row-icon_color input.colorpicker' ).wpColorPicker({
+				change: function( event ) {
+					var $this     = $( this ),
+						value     = $this.val(),
+						id        = $this.closest( '.everest-forms-field-option-row' ).data( 'field-id' ),
+						$icons    = $( '#everest-forms-field-'+id +' .rating-icon svg' );
+
+					$icons.css( 'fill', value );
+				}
+			});
 		},
 
 		/**
@@ -3330,6 +3395,21 @@
 		process_new_lines: function( text ) {
 			//Ref: https://stackoverflow.com/questions/1144783/how-to-replace-all-occurrences-of-a-string
 			return text.split( '\n' ).join( '<br/>' );
+		},
+		livePreviewNumberOfRating : function( el ) {
+			var $this  = $( el ),
+			value  = $this.val();
+			if( value.length == 0 || value <= 0){
+				value = 1 ;
+			}
+			var id    = $this.parent().data( 'field-id' ),
+				icons = $( '#everest-forms-field-'+id +' .rating-icon' ).first();
+			if ( value <= 100 ) {
+				$( '#everest-forms-field-'+id +' .rating-icon' ).remove();
+				for ( var $i = 1; $i <= value; $i++ ) {
+					$( '#everest-forms-field-'+id +'').append( icons.clone() );
+				}
+			}
 		},
 
 	};
