@@ -111,11 +111,12 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 				),
 				array(
 					'title'      => esc_html__( 'Invisible reCAPTCHA', 'everest-forms' ),
-					'type'       => 'checkbox',
+					'type'       => 'toggle',
 					'desc'       => esc_html__( 'Enable Invisible reCAPTCHA.', 'everest-forms' ),
 					'id'         => 'everest_forms_recaptcha_v2_invisible',
 					'is_visible' => 'v2' === $recaptcha_type,
 					'default'    => 'no',
+					'desc_tip' => true,
 				),
 				array(
 					'title'      => esc_html__( 'Site Key', 'everest-forms' ),
