@@ -66,6 +66,12 @@ class EVF_Frontend_Scripts {
 					'version' => EVF_VERSION,
 					'has_rtl' => false,
 				),
+				'everest-forms-survey-polls-quiz-style' => array(
+					'src'     => self::get_asset_url( 'assets/css/evf-survey-polls-quiz.css' ),
+					'deps'    => array(),
+					'version' => EVF_VERSION,
+					'has_rtl' => false,
+				),
 			)
 		);
 	}

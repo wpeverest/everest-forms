@@ -87,6 +87,12 @@ class EVF_Admin_Assets {
 		wp_register_script( 'evf-template-controller', evf()->plugin_url() . '/assets/js/admin/form-template-controller' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true );
 		wp_register_script( 'flatpickr', evf()->plugin_url() . '/assets/js/flatpickr/flatpickr' . $suffix . '.js', array( 'jquery' ), '4.6.3', true );
 		wp_register_script( 'evf-file-uploader', evf()->plugin_url() . '/assets/js/admin/evf-file-uploader' . $suffix . '.js', array(), EVF_VERSION, true );
+		// Register admin scripts for survey fields.
+		wp_register_script( 'everest-forms-survey-polls-quiz-builder', evf()->plugin_url() . "/assets/js/admin/everest-forms-survey-polls-quiz-builder{$suffix}.js", array( 'jquery', 'wp-util', 'underscore', 'jquery-ui-sortable' ), EVF_VERSION, true );
+		wp_register_script( 'random-color', evf()->plugin_url() . "/assets/js/admin/randomColor{$suffix}.js", array(), EVF_VERSION, true );
+		wp_register_script( 'chart', evf()->plugin_url() . "/assets/js/admin/chart{$suffix}.js", array(), EVF_VERSION, true );
+		wp_register_script( 'print_this', evf()->plugin_url() . "/assets/js/admin/printThis{$suffix}.min.js", array(), EVF_VERSION, true );
+		wp_register_script( 'progress_bar', evf()->plugin_url() . "/assets/js/admin/progressbar{$suffix}.js", array(), EVF_VERSION, true );
 		wp_localize_script(
 			'evf-file-uploader',
 			'evf_file_uploader',
@@ -333,6 +339,30 @@ class EVF_Admin_Assets {
 					)
 				);
 			}
+		}
+
+		if ( in_array( $screen_id, evf_get_screen_ids(), true ) ) {
+			wp_enqueue_style( 'everest-forms-survey-polls-quiz-admin' );
+			wp_enqueue_script( 'everest-forms-survey-polls-quiz-builder' );
+			wp_enqueue_script( 'random-color' );
+			wp_enqueue_script( 'chart' );
+			wp_enqueue_script( 'progress_bar' );
+			wp_enqueue_script( 'print_this' );
+			wp_localize_script(
+				'everest-forms-survey-polls-quiz-builder',
+				'everest_forms_survey_polls_quiz_builder',
+				array(
+					'ajax_url'                           => admin_url( 'admin-ajax.php', 'relative' ),
+					'admin_url'                          => admin_url(),
+					'ajax_nonce'                         => wp_create_nonce( 'process-ajax-nonce' ),
+					'i18n_field_less_than_highest_point_error' => esc_html__( 'Please enter in a value less than the highest rating point.', 'everest-forms' ),
+					'i18n_field_greater_than_lowest_point_error' => esc_html__( 'Please enter in a value greater than the lowest rating point.', 'everest-forms' ),
+					'i18n_field_lowest_rating_lower_than_min_value_error' => esc_html__( 'Please enter in a value greater or equal to 0.', 'everest-forms' ),
+					'i18n_field_highest_rating_greater_than_max_value_error' => esc_html__( 'Please enter in a value less than 100.', 'everest-forms' ),
+					'i18n_field_from_score_greater_than_to_score' => esc_html__( 'Please enter in a value greater than From Score.', 'everest-forms' ),
+					'i18n_field_to_score_is_empty_error' => esc_html__( 'Please enter in a value to add more feedback.', 'everest-forms' ),
+				)
+			);
 		}
 
 		// Tools page.

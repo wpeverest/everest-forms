@@ -8332,3 +8332,885 @@ img.ui-datepicker-trigger {
 		}
 	}
 }
+#everest-forms-builder {
+	.everest-forms-options {
+		padding-left: 20px;
+	}
+
+	.evf-tab-content {
+		.evf-quiz-section {
+			.enable-quiz-head {
+				background: #f8f9fa;
+				margin-left: -20px;
+				margin-top: -20px;
+				margin-right: -20px;
+				padding: 20px 20px 0;
+				border-bottom: 1px solid #e0e3e6;
+
+				label {
+					font-size: 14px;
+				}
+			}
+
+			.evf-quiz-reporting {
+				.everest-forms-panel-field-radio {
+					.row {
+						display: flex;
+						align-items: center;
+						margin-bottom: 10px;
+
+						input {
+							margin: 0 4px 0 0;
+						}
+
+						label {
+							margin-bottom: 0;
+						}
+					}
+				}
+			}
+
+			.evf-quiz-settings {
+				padding-left: 20px;
+
+				.everest-forms-overall-feedback {
+					max-width: 800px;
+					border: 1px solid transparent;
+
+					&.feedback-enabled {
+						margin-top: 5px;
+						margin-left: -20px;
+						margin-bottom: 20px;
+						padding: 0 20px 20px;
+						border-radius: 4px;
+						border: 1px solid $color_gray-lighten;
+					}
+
+					> div > label {
+						padding: 0 10px;
+						margin: 0 0 10px -10px;
+						background: $color-white;
+						display: inline-block;
+						transform: translateY(-50%);
+					}
+
+					.everest-forms-panel-field {
+						margin-bottom: 0;
+					}
+
+					.everest-forms-options {
+						padding-left: 0;
+					}
+
+					.overall-feedback-option {
+						.evf-form-group {
+							padding: 20px;
+							position: relative;
+							margin-bottom: 20px;
+							border-radius: 4px;
+							border: 1px solid $color_gray-lighten;
+							background-color: adjust-color(
+								$color_gray-light-skin,
+								$saturation: +1%,
+								$lightness: +1%
+							);
+
+							input {
+								&.score_from {
+									pointer-events: none;
+									background-color: $color_gray-light-skin;
+								}
+							}
+
+							.evf-disabled {
+								cursor: not-allowed;
+
+								input {
+									pointer-events: none;
+									background-color: $color_gray-light-skin;
+								}
+							}
+
+							.feedback-label-group {
+								flex: 1;
+								display: flex;
+								margin-bottom: 15px;
+
+								.feedback-input-group {
+									flex: 1;
+									margin-right: 15px;
+
+									label {
+										margin-bottom: 6px;
+									}
+
+									.feedback-input-value {
+										display: flex;
+										align-items: center;
+										position: relative;
+
+										input {
+											padding-right: 30px;
+										}
+
+										span {
+											width: 30px;
+											height: 30px;
+											display: flex;
+											align-items: center;
+											justify-content: center;
+											position: absolute;
+											right: 0;
+											background: $color_gray-more-lighten;
+											border: 1px solid
+												$color-gray-lighten;
+											border-radius: 0 4px 4px 0;
+										}
+									}
+
+									&:last-child {
+										margin-right: 0;
+									}
+								}
+							}
+
+							.remove_feedback {
+								cursor: pointer;
+								position: absolute;
+								top: 3px;
+								right: 3px;
+								color: $color_gray-base;
+
+								&:hover {
+									color: $red;
+								}
+							}
+						}
+
+						.add_feedback {
+							display: block;
+							text-align: right;
+							margin-left: auto;
+						}
+					}
+				}
+			}
+		}
+
+		// Likert-table and Scale rating table
+		table {
+			&.everest-forms-likert-table,
+			&.everest-froms-likert-field-preview,
+			&.everest-forms-scale-rating-table {
+				input {
+					display: none;
+				}
+
+				label {
+					margin-bottom: 0;
+				}
+			}
+
+			// Likert-table
+			&.everest-forms-likert-table,
+			&.everest-froms-likert-field-preview {
+				background: $color-white;
+				width: 100%;
+				overflow: hidden;
+				margin-bottom: 5px;
+				border: 1px solid $color_gray-lighten;
+
+				input,
+				select {
+					border-color: $color_gray-lighten;
+				}
+
+				label {
+					&::before {
+						height: 16px;
+						width: 16px;
+						content: "";
+						border: 1px solid $color_gray-lighten;
+						display: block;
+						margin: 0 auto;
+					}
+				}
+
+				input[type="radio"] {
+					+ label {
+						&::before {
+							border-radius: 50%;
+						}
+					}
+				}
+
+				select {
+					height: 20px;
+					width: 70px;
+					opacity: 0.6;
+					font-size: 12px;
+				}
+
+				th,
+				td {
+					padding: 10px;
+					height: 42px;
+					word-break: break-word;
+				}
+
+				th {
+					font-size: 12px;
+					font-weight: 400;
+					text-align: center;
+				}
+
+				thead {
+					th {
+						background: $color_gray-light-skin;
+						border-bottom: 1px solid $color_gray-lighten;
+					}
+				}
+
+				tbody {
+					tr {
+						text-align: left;
+
+						th {
+							text-align: left;
+						}
+
+						td {
+							text-align: center;
+
+							&:last-child {
+								border-right: none;
+							}
+						}
+
+						&:nth-child(even) {
+							th,
+							td {
+								background: $color_gray-light-skin;
+							}
+						}
+					}
+				}
+			}
+
+			// Scale rating table
+			&.everest-forms-scale-rating-table {
+				width: 100%;
+				table-layout: fixed;
+
+				thead {
+					tr {
+						th {
+							font-size: 12px;
+							font-weight: 400;
+							padding-bottom: 10px;
+
+							.lowest-rating {
+								float: left;
+							}
+
+							.highest-rating {
+								float: right;
+							}
+						}
+					}
+				}
+
+				tbody {
+					tr {
+						td {
+							border: 1px solid $color_gray-lighten;
+							height: 40px;
+							border-right: none;
+							background: $color_gray-light-skin;
+							text-align: center;
+
+							&:last-child {
+								border-right: 1px solid $color_gray-lighten;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+.evf-survey-choices {
+	&[data-choice-type="drop_down_choices"] {
+		input[type="text"] {
+			width: 74%;
+		}
+	}
+}
+
+// Quiz
+.evf-correct-answers {
+	li {
+		margin-bottom: 10px;
+	}
+}
+
+/**
+ * Analytic Table Dashboard
+ */
+.evf-survey-loader {
+	display: block;
+	padding: 70px;
+	background: $color-white;
+	box-shadow: 0 1px 5px rgba(51, 56, 64, 0.1);
+
+	.evf-loading.evf-loading-active {
+		margin: 0 auto;
+		float: none;
+		display: block;
+	}
+}
+
+.everest-forms-single-survey-container {
+	border-top: 1px solid $color_gray-lighten;
+	margin: 20px 0;
+
+	.everest-forms-survey-block {
+		margin-right: 0;
+		margin-top: 25px;
+	}
+
+	.survey-block-chart-content {
+		.survey-block-chart-overview {
+			max-height: 329px;
+		}
+	}
+
+	.everest-forms-survey-summary {
+		max-height: 455px;
+		overflow-x: hidden;
+		overflow-y: auto;
+	}
+}
+
+.full-survey-entries-header {
+	padding: 20px 0;
+	margin-bottom: 35px;
+	border-bottom: 1px solid $color_gray-lighten;
+
+	select {
+		height: 36px;
+		padding: 0 10px;
+		font-size: 16px;
+		font-weight: 600;
+		border-radius: 3px;
+	}
+
+	.everest-forms-btn {
+		vertical-align: middle;
+	}
+}
+
+.everest-forms-survey-block {
+	padding: 20px;
+	background: $color-white;
+	margin-right: 20px;
+	margin-bottom: 30px;
+	border-radius: 8px;
+	box-shadow: 0 1px 5px rgba(51, 56, 64, 0.1);
+	position: relative;
+
+	.everest-forms-survey-header {
+		margin-top: 0;
+
+		.everest-forms-survey-selection {
+			label {
+				top: -35px;
+				position: absolute;
+				padding: 5px 10px;
+				border-radius: 3px;
+				background: $color-white;
+				box-shadow: 0 2px 2px rgba(159, 175, 199, 0.6);
+			}
+		}
+	}
+
+	&.evf-empty-data {
+		display: flex;
+		align-items: center;
+
+		.evf-icon-circle {
+			padding: 20px;
+			background: transparentize($color_gray-lighten, 0.75);
+			display: inline-flex;
+			border-radius: 50%;
+			margin-right: 20px;
+
+			svg {
+				height: 64px;
+				width: 64px;
+				fill: $color_gray-base;
+			}
+		}
+	}
+}
+
+.everest-forms-survey-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin: 35px 0 20px;
+
+	.everest-forms-survey-selection {
+		display: flex;
+		align-items: center;
+		position: relative;
+
+		.form-header-name {
+			margin-right: 15px;
+		}
+
+		.survey-type-select {
+			position: relative;
+			margin-right: 15px;
+
+			label {
+				left: 0;
+				right: 0;
+				top: -22px;
+				position: absolute;
+				text-align: center;
+				font-style: italic;
+			}
+
+			select {
+				&.survey-type {
+					margin: 0;
+					height: 36px;
+					padding: 0 5px;
+					font-size: 14px;
+					min-width: 170px;
+					border-radius: 3px;
+					font-weight: normal;
+				}
+			}
+		}
+
+		.evf-analytic-button {
+			margin-left: 15px;
+		}
+
+		.survey-type {
+			margin: 10px 0 0;
+			font-size: 16px;
+			box-shadow: none;
+			font-weight: 600;
+		}
+	}
+
+	.evf-analytic-action-nav {
+		ul {
+			margin: 0;
+			display: flex;
+
+			li {
+				margin-bottom: 0;
+				margin-right: 15px;
+
+				&:last-child {
+					margin-right: 0;
+				}
+			}
+		}
+	}
+}
+
+.box-wrap {
+	background: $color-white;
+	display: flex;
+	justify-content: space-between;
+	border: 1px solid $color_gray-lighten;
+	border-radius: 8px;
+}
+
+.survey-block-average-overview {
+	display: flex;
+	flex-wrap: wrap;
+
+	.box-wrap {
+		flex: 1;
+		align-items: center;
+		margin: 0 10px 20px;
+
+		&:first-child {
+			margin-left: 0;
+		}
+
+		&:last-child {
+			margin-right: 0;
+		}
+	}
+
+	.response-detail {
+		color: $color_gray-light;
+		display: flex;
+		flex-direction: column;
+		font-size: 16px;
+		padding: 20px;
+
+		strong {
+			font-size: 36px;
+			line-height: 1;
+			margin-bottom: 5px;
+			color: $color_gray-dark;
+		}
+	}
+
+	.icon-thumbnail {
+		padding: 20px;
+		display: flex;
+		border-left: 1px solid $color_gray-lighten;
+
+		svg {
+			height: 48px;
+			width: 48px;
+			fill: $everestforms;
+			border-radius: 4px;
+			background: transparentize($everestforms, 0.85);
+			padding: 10px;
+		}
+	}
+}
+
+.survey-block-chart-content {
+	width: 60%;
+	padding: 0 20px;
+	border-right: 1px solid $color_gray-lighten;
+
+	.chart-tab-action {
+		padding: 15px 0;
+		text-align: right;
+		border-bottom: 1px solid $color_gray-lighten;
+
+		button {
+			width: 35px;
+			height: 35px;
+			border: none;
+			line-height: 1;
+			cursor: pointer;
+			margin-left: 10px;
+			border-radius: 4px;
+			background: $color_gray-more-lighten;
+			transition: all 0.25s ease 0s;
+
+			&.current-tab-active,
+			&:hover {
+				color: $color-white;
+				background: $everestforms;
+
+				svg {
+					fill: $color-white;
+				}
+			}
+
+			svg {
+				width: 20px;
+				height: 20px;
+				fill: $color_gray-normal;
+				transition: all 0.25s ease 0s;
+			}
+		}
+	}
+
+	.survey-block-chart-overview {
+		height: 370px;
+		padding: 50px 0;
+		background: $color-white;
+	}
+}
+
+.everest-forms-survey-summary {
+	flex: 1;
+	padding: 20px;
+	overflow: auto;
+
+	table {
+		width: 100%;
+		border-spacing: 0;
+		border-radius: 4px;
+		border: 1px solid $color_gray-lighten;
+
+		th,
+		td {
+			padding: 10px;
+		}
+
+		thead {
+			th {
+				background: $color_gray-light-skin;
+				border-bottom: 1px solid $color_gray-lighten;
+
+				&:first-child {
+					text-align: left;
+					border-radius: 4px 0 0 0;
+				}
+
+				&:last-child {
+					text-align: right;
+					border-radius: 0 4px 0 0;
+				}
+			}
+		}
+
+		tbody {
+			tr {
+				&:nth-child(even) {
+					th,
+					td {
+						background: $color_gray-light-skin;
+					}
+				}
+
+				td {
+					&:last-child {
+						text-align: right;
+					}
+				}
+			}
+		}
+
+		&.evf-likert-chart-table {
+			th,
+			td {
+				text-align: center;
+			}
+
+			thead {
+				th {
+					&:last-child {
+						text-align: center;
+					}
+				}
+			}
+
+			tbody {
+				tr {
+					td {
+						&:last-child {
+							text-align: center;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.summary-chart-wrapper {
+		width: 100%;
+		border-spacing: 0;
+		border-radius: 4px;
+		border: 1px solid $color_gray-lighten;
+
+		.summary-chart-header {
+			background: $color_gray-light-skin;
+			border-bottom: 1px solid $color_gray-lighten;
+			border-radius: 4px 4px 0 0;
+			margin: 0;
+			padding: 15px 10px;
+			font-size: 14px;
+		}
+
+		.summary-chart-body {
+			display: flex;
+			flex-wrap: wrap;
+
+			.survey-chart-row {
+				flex: 1;
+				padding: 15px 5px;
+				position: relative;
+				text-align: center;
+
+				&:first-child {
+					flex: 100%;
+					border-bottom: 1px solid $color_gray-lighten;
+					padding: 30px;
+
+					.survey-chart-column {
+						&:last-child {
+							font-size: 22px;
+							color: $everestforms;
+							margin-top: 10px;
+						}
+					}
+				}
+
+				svg {
+					width: 200px !important;
+					margin: 0 auto;
+				}
+
+				.progressbar-text {
+					font-size: 28px;
+					font-weight: 600;
+					position: absolute;
+				}
+
+				.survey-chart-column {
+					margin: 5px 0;
+					font-size: 14px;
+					font-weight: 600;
+				}
+			}
+		}
+	}
+
+	/**
+	 * Star Rating Table
+	**/
+	.approx-rating-result {
+		padding: 20px;
+		margin: 10px 0;
+
+		.approx-rating-label {
+			font-size: 48px;
+			line-height: 1;
+			margin-bottom: 10px;
+		}
+
+		.total-reviews {
+			font-size: 16px;
+			font-weight: 600;
+			color: $color_gray-base;
+		}
+	}
+
+	.summary-chart-rating {
+		margin: 0 20px;
+		padding: 20px 0;
+		border-top: 1px solid $color_gray-lighten;
+
+		.survey-chart-row {
+			margin-bottom: 15px;
+
+			.survey-chart-column {
+				display: flex;
+				justify-content: space-between;
+
+				&:first-child {
+					margin-bottom: 5px;
+				}
+
+				.rating-progress {
+					flex: 1;
+					height: 5px;
+					display: flex;
+					overflow: hidden;
+					background-color: $color_gray-lighten;
+					border-radius: 3px;
+
+					.progress-bar {
+						display: flex;
+						flex-direction: column;
+						justify-content: center;
+						color: $color-white;
+						text-align: center;
+						white-space: nowrap;
+						background-color: $everestforms;
+						transition: width 0.6s ease;
+					}
+				}
+			}
+		}
+	}
+
+	&::-webkit-scrollbar {
+		width: 8px;
+	}
+
+	&::-webkit-scrollbar-track {
+		background: $color_gray-more-lighten;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background: transparentize($color_gray-normal, 0.5);
+		border-radius: 4px;
+	}
+
+	&::-webkit-scrollbar-thumb:hover {
+		background: transparentize($color_gray-normal, 0.25);
+	}
+}
+
+/**
+ * quiz entry
+ */
+#everest-forms-entry-fields:not(.postbox) {
+	.correct_answer {
+		background-color: rgba(0, 255, 43, 0.1);
+		padding: 7px;
+	}
+
+	.wrong_answer {
+		background-color: rgba(255, 0, 0, 0.1);
+		padding: 7px;
+	}
+
+	table {
+		tbody {
+			th {
+				display: flex;
+				justify-content: space-between;
+			}
+
+			tr {
+				td {
+					span {
+						margin-bottom: 7px;
+
+						&:last-child {
+							margin-bottom: 0;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+/**
+ * Yes/No field.
+ */
+.everest-forms-field {
+	.yes-no-preview {
+		display: flex;
+		column-gap: 24px;
+
+		&.text-only {
+			input {
+				text-align: center;
+				width: 80px;
+				padding: 8px 0;
+				border: none;
+				outline: 1px solid;
+
+				&:nth-child(1) {
+					outline-color: #008000;
+					background-color: #eeffee;
+				}
+
+				&:nth-child(2) {
+					outline-color: #fa5252;
+					background-color: #fff1f1;
+				}
+			}
+		}
+
+		&.icon-text {
+			.yes-no-icon {
+				display: inline-flex;
+				column-gap: 16px;
+				align-items: center;
+			}
+		}
+	}
+}
