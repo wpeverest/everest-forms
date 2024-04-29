@@ -352,7 +352,6 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		$css .= ! empty( $field['input_columns'] ) && '3' === $field['input_columns'] ? ' everest-forms-list-3-columns' : '';
 		$css .= ! empty( $field['input_columns'] ) && 'inline' === $field['input_columns'] ? ' everest-forms-list-inline' : '';
 		$css  = apply_filters( 'everest_forms_field_preview_class', $css, $field );
-		lg( $field );
 		printf( '<div class="everest-forms-field everest-forms-field-%1$s %2$s" id="everest-forms-field-%3$s" data-field-id="%3$s" data-field-type="%4$s">', esc_attr( $field['type'] ), esc_attr( $css ), esc_attr( $field['id'] ), esc_attr( $field['type'] ) );
 		printf( '<div class="evf-field-action">' );
 		if ( 'repeater-fields' !== $field['type'] ) {

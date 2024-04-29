@@ -233,4 +233,33 @@
         });
     });
 
+	// Handles collapse of side menu.
+	$("#evf-settings-collapse").on("click", function (e) {
+		e.preventDefault();
+
+		if ($(this).hasClass("close")) {
+			$(this).closest("header").addClass("collapsed");
+			$(this).removeClass("close").addClass("open");
+			setStorageValue("evf-settings-navCollapsed", true); // set to localStorage
+		} else {
+			$(this).closest("header").removeClass("collapsed");
+			$(this).removeClass("open").addClass("close");
+			localStorage.removeItem("evf-settings-navCollapsed"); // remove from localStorage
+		}
+	});
+
+	// Persist the collapsable state through page reload
+	var isNavCollapsed =
+		getStorageValue("evf-settings-navCollapsed") === true
+			? "collapsed"
+			: "not-collapsed";
+	if (isNavCollapsed == "collapsed") {
+		$(".everest-forms-header").addClass("collapsed");
+		$("#evf-settings-collapse").removeClass("close").addClass("open");
+	} else {
+		$(".everest-forms-header").removeClass("collapsed");
+		$("#evf-settings-collapse").removeClass("open").addClass("close");
+	}
+
+
 })( jQuery, everest_forms_settings_params );
