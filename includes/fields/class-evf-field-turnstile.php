@@ -1,15 +1,15 @@
 <?php
 /**
- * Hidden text field
+ * Cloudfare Turnstile field
  *
- * @package EverestForms_Pro\Fields
+ * @package EverestForms\Fields
  * @since   1.0.0
  */
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * EVF_Field_Hidden Class.
+ * EVF_Field_Turnstile Class.
  */
 class EVF_Field_Turnstile extends \EVF_Form_Fields {
 
@@ -17,14 +17,11 @@ class EVF_Field_Turnstile extends \EVF_Form_Fields {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$site_key       = get_option( 'everest_forms_recaptcha_turnstile_site_key' );
-		$secret_key     = get_option( 'everest_forms_recaptcha_turnstile_secret_key' );
-		$class          = ( empty( $site_key ) || empty( $secret_key ) ) ? 'captcha_empty_key_validate' : '';
 		$this->name     = esc_html__( 'Turnstile', 'everest-forms' );
 		$this->type     = 'turnstile';
 		$this->icon     = 'evf-icon evf-icon-turnstile';
 		$this->order    = 243;
-		$this->class    = $class;
+		$this->class    = $this->get_turnstile_class();
 		$this->group    = 'advanced';
 		$this->settings = array(
 			'basic-options' => array(
@@ -38,7 +35,17 @@ class EVF_Field_Turnstile extends \EVF_Form_Fields {
 		parent::__construct();
 	}
 
+	/**
+	 * Get Turnstile class.
+	 *
+	 * @return string
+	 */
+	private function get_turnstile_class() {
+		$site_key   = get_option( 'everest_forms_recaptcha_turnstile_site_key' );
+		$secret_key = get_option( 'everest_forms_recaptcha_turnstile_secret_key' );
 
+		return ( empty( $site_key ) || empty( $secret_key ) ) ? 'turnstile_empty_key_validate' : '';
+	}
 
 	/**
 	 * Field preview inside the builder.
@@ -70,38 +77,29 @@ class EVF_Field_Turnstile extends \EVF_Form_Fields {
 	public function field_display( $field, $field_atts, $form_data ) {
 		$site_key   = get_option( 'everest_forms_recaptcha_turnstile_site_key' );
 		$secret_key = get_option( 'everest_forms_recaptcha_turnstile_secret_key' );
-		$theme      = get_option( 'everest_forms_recaptcha_turnstile_theme' );
-		$lang       = get_option( 'everest_forms_recaptcha_recaptcha_language', 'en-GB' );
 
 		if ( ! $site_key || ! $secret_key ) {
 			return;
 		}
-			$form_id = isset( $form_data['id'] ) ? absint( $form_data['id'] ) : 0;
-			$visible = ! empty( self::$parts[ $form_id ] ) ? 'style="display:none;"' : '';
-			$data    = apply_filters(
-				'everest_forms_frontend_recaptcha',
-				array(
-					'sitekey' => trim( sanitize_text_field( $site_key ) ),
-				),
-				$form_data
-			);
 
-			// Load reCAPTCHA support if form supports it.
-			$form_id = isset( $form_data['id'] ) ? absint( $form_data['id'] ) : 0;
-			$visible = ! empty( self::$parts[ $form_id ] ) ? 'style="display:none;"' : '';
-			$data    = apply_filters(
-				'everest_forms_frontend_recaptcha',
-				array(
-					'sitekey' => trim( sanitize_text_field( $site_key ) ),
-				),
-				$form_data
-			);
+		$form_id = isset( $form_data['id'] ) ? absint( $form_data['id'] ) : 0;
+		$visible = ! empty( self::$parts[ $form_id ] ) ? 'style="display:none;"' : '';
+		$data    = apply_filters(
+			'everest_forms_frontend_recaptcha',
+			array(
+				'sitekey' => trim( sanitize_text_field( $site_key ) ),
+			),
+			$form_data
+		);
 
-			// Load reCAPTCHA support if form supports it.
+		// Load reCAPTCHA support if form supports it.
 		if ( $site_key && $secret_key ) {
-				$recaptcha_api     = apply_filters( 'everest_forms_frontend_recaptcha_url', 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=EVFTurnstileLoad&render=explicit', 'turnstile', $form_id );
-				$recaptcha_inline  = 'var EVFTurnstileLoad = function(){jQuery(".g-recaptcha").each(function(index, el){var recaptchaID =  turnstile.render(el,{theme:"' . $theme . '",language:"' . $lang . '",callback:function(){EVFRecaptchaCallback(el);}},true);jQuery(el).attr( "data-recaptcha-id", recaptchaID);});};';
-				$recaptcha_inline .= 'var EVFRecaptchaCallback = function(el){jQuery(el).parent().find(".evf-recaptcha-hidden").val("1").trigger("change").valid();};';
+			$theme = get_option( 'everest_forms_recaptcha_turnstile_theme' );
+			$lang  = get_option( 'everest_forms_recaptcha_recaptcha_language', 'en-GB' );
+
+			$recaptcha_api     = apply_filters( 'everest_forms_frontend_recaptcha_url', 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=EVFTurnstileLoad&render=explicit', 'turnstile', $form_id );
+			$recaptcha_inline  = 'var EVFTurnstileLoad = function(){jQuery(".g-recaptcha").each(function(index, el){var recaptchaID =  turnstile.render(el,{theme:"' . $theme . '",language:"' . $lang . '",callback:function(){EVFRecaptchaCallback(el);}},true);jQuery(el).attr( "data-recaptcha-id", recaptchaID);});};';
+			$recaptcha_inline .= 'var EVFRecaptchaCallback = function(el){jQuery(el).parent().find(".evf-recaptcha-hidden").val("1").trigger("change").valid();};';
 
 			// Enqueue reCaptcha scripts.
 			wp_enqueue_script(
