@@ -8,6 +8,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $tab_exists        = isset( $tabs[ $current_tab ] ) || has_action( 'everest_forms_sections_' . $current_tab ) || has_action( 'everest_forms_settings_' . $current_tab );
+$current_tab_label = isset( $tabs[ $current_tab ] ) ? $tabs[ $current_tab ] : '';
 if ( ! $tab_exists ) {
 	wp_safe_redirect( admin_url( 'admin.php?page=evf-settings' ) );
 	exit;

@@ -236,7 +236,6 @@
 	// Handles collapse of side menu.
 	$("#evf-settings-collapse").on("click", function (e) {
 		e.preventDefault();
-
 		if ($(this).hasClass("close")) {
 			$(this).closest("header").addClass("collapsed");
 			$(this).removeClass("close").addClass("open");
@@ -249,16 +248,48 @@
 	});
 
 	// Persist the collapsable state through page reload
+
 	var isNavCollapsed =
 		getStorageValue("evf-settings-navCollapsed") === true
 			? "collapsed"
 			: "not-collapsed";
+			getStorageValue("evf-settings-navCollapsed");
 	if (isNavCollapsed == "collapsed") {
 		$(".everest-forms-header").addClass("collapsed");
 		$("#evf-settings-collapse").removeClass("close").addClass("open");
 	} else {
 		$(".everest-forms-header").removeClass("collapsed");
 		$("#evf-settings-collapse").removeClass("open").addClass("close");
+	}
+
+	// Set localStorage with expiry
+	function setStorageValue(key, value) {
+		var current = new Date();
+
+		var data = {
+			value: value,
+			expiry: current.getTime() + 86400000, // 1day of expiry time
+		};
+
+		localStorage.setItem(key, JSON.stringify(data));
+	}
+
+	// Get localStorage with expiry
+	function getStorageValue(key) {
+		var item = localStorage.getItem(key);
+
+		if (!item) {
+			return false;
+		}
+
+		var data = JSON.parse(item);
+		var current = new Date();
+
+		if (current.getTime() > data.expiry) {
+			localStorage.removeItem(key);
+			return false;
+		}
+		return true;
 	}
 
 
