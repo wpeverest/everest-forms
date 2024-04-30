@@ -434,6 +434,7 @@
 			EVFPanelBuilder.bindCloneField();
 			EVFPanelBuilder.bindSaveOption();
 			EVFPanelBuilder.bindEmbedOption();
+			EVFPanelBuilder.bindPreviewConfirmation();
 			EVFPanelBuilder.bindSaveOptionWithKeyEvent();
 			EVFPanelBuilder.bindOpenShortcutKeysModalWithKeyEvent();
 			EVFPanelBuilder.bindAddNewRow();
@@ -2248,6 +2249,20 @@
 
             });
         },
+		bindPreviewConfirmation: function () {
+			if ($( '#everest-forms-panel-field-settings-preview_confirmation' ).prop( 'checked' )) {
+				$( '#everest-forms-panel-field-settings-preview_confirmation_select-wrap' ).show();
+			}else{
+				$( '#everest-forms-panel-field-settings-preview_confirmation_select-wrap' ).hide();
+			}
+			$( '#everest-forms-panel-field-settings-preview_confirmation' ).on( 'change', function() {
+				  if ( $( this ).prop( 'checked' ) ) {
+					$( '#everest-forms-panel-field-settings-preview_confirmation_select-wrap' ).show();
+				} else {
+					$( '#everest-forms-panel-field-settings-preview_confirmation_select-wrap' ).hide();
+				}
+			})
+		},
 		bindSaveOptionWithKeyEvent:function() {
 			$('body').on("keydown", function (e) {
 				if (e.ctrlKey || e.metaKey) {
@@ -3511,6 +3526,8 @@ jQuery( function ( $ ) {
 		if ( 'ai-fields' === type ) {
 			var aiFields = [
 				"text",
+				"select",
+				"radio",
 			];
 			$(document).find('.everest-forms-field').each(function() {
 				if( aiFields.includes($(this).attr('data-field-type')) && $(el).parents('.everest-forms-field-option-row-ai_chatbot_input').attr('data-field-id') !== $(this).attr('data-field-id')) {

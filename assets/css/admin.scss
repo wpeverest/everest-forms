@@ -67,6 +67,11 @@
 	 }
  }
 
+ //tinymce full-width
+ .everest_forms_tinymce_class{
+	width: 100% !important;
+ }
+
  /**
 	* Grid Styles
 	**/
@@ -8120,3 +8125,68 @@
 		}
 	}
 }
+
+
+// Everest Forms system info settings.
+.everest-forms {
+	position: relative;
+}
+
+.everest-forms-system-info-setting {
+	margin-top: 40px;
+
+	&-copy {
+		position: absolute;
+		top: 18px;
+		right: 24px;
+		padding: 8px 16px;
+		border-radius: 4px;
+		border: 0;
+		font-size: 14px;
+		line-height: 22px;
+		font-weight: 500;
+		cursor: pointer;
+	}
+
+	table {
+	  width: 100%;
+	  border-collapse: collapse;
+
+	  th,
+	  td {
+		padding: 10px;
+		border: 1px solid #ddd;
+		text-align: left;
+		font-size: 14px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	  }
+
+	  th {
+		background: #f2f2f2;
+		font-weight: 600;
+	  }
+
+	  tr {
+		&:nth-child(even) {
+			background: #f9f9f9;
+		}
+
+		&:hover {
+			background: #f2f2f2;
+		}
+
+		th {
+			&[colspan="2"] {
+				background: #8c3eeb;
+				color: #fff;
+				font-size: 15px;
+				line-height: 23px;
+				font-weight: 500;
+				letter-spacing: 0.2px;
+			}
+		}
+	  }
+	}
+  }
