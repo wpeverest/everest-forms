@@ -439,7 +439,7 @@ final class EverestForms {
 	 * @return string
 	 */
 	public function ajax_url() {
-		return admin_url( 'admin-ajax.php', 'relative' );
+		 return admin_url( 'admin-ajax.php', 'relative' );
 	}
 
 	/**
