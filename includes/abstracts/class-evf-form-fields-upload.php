@@ -47,6 +47,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 	 * @param array $atts Shortcode attributes.
 	 */
 	public function load_assets( $atts ) {
+		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		wp_register_script( 'dropzone', plugins_url( "/assets/js/dropzone/dropzone{$suffix}.js", EVF_PLUGIN_FILE ), array( 'jquery' ), '5.5.0', true );
 		wp_register_script( 'everest-forms-file-upload', plugins_url( "/assets/js/frontend/everest-forms-file-upload{$suffix}.js", EVF_PLUGIN_FILE ), array( 'dropzone', 'wp-util' ), EVF_VERSION, true );
 		wp_localize_script(
