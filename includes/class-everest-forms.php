@@ -61,6 +61,15 @@ final class EverestForms {
 	public $smart_tags;
 
 	/**
+	 * The reporting handler instance.
+	 *
+	 * @since 2.0.9
+	 * 
+	 * @var EVF_Reporting
+	 */
+	public $reporting;
+
+	/**
 	 * The entry data handler instance.
 	 *
 	 * @var EVF_Entry_Handler
@@ -391,6 +400,7 @@ final class EverestForms {
 		$this->form       = new EVF_Form_Handler();
 		$this->task       = new EVF_Form_Task();
 		$this->smart_tags = new EVF_Smart_Tags();
+		$this->reporting  = new EVF_Reporting();
 	}
 
 	/**
