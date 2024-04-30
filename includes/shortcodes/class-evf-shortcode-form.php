@@ -1218,7 +1218,6 @@ class EVF_Shortcode_Form {
 
 		if ( isset( $settings['evf-enable-custom-js'] ) && evf_string_to_bool( $settings['evf-enable-custom-js'] ) ) {
 			$custom_js = isset( $settings['evf-custom-js'] ) ? wp_specialchars_decode( wp_kses_decode_entities( $settings['evf-custom-js'] ) ) : '';
-			lg( $custom_js );
 			if ( ! empty( $custom_js ) ) {
 				$custom_js = sprintf(
 					'( function( $ ) {
