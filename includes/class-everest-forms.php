@@ -84,6 +84,14 @@ final class EverestForms {
 	public $integrations = null;
 
 	/**
+	 * UTM Campaign.
+	 *
+	 * @since 2.0.8.1
+	 * @var string
+	 */
+	public $utm_campaign = 'lite-version';
+
+	/**
 	 * Array of deprecated hook handlers.
 	 *
 	 * @var array of EVF_Deprecated_Hooks
@@ -286,6 +294,11 @@ final class EverestForms {
 		include_once EVF_ABSPATH . 'includes/class-evf-deprecated-filter-hooks.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-forms-features.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-privacy.php';
+
+		/**
+		 * Rest api classes.
+		 */
+		include_once EVF_ABSPATH . 'includes/RestApi/class-evf-rest-api.php';
 
 		/**
 		 * Preview Confirmation Class
