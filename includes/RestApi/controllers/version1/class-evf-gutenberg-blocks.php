@@ -38,7 +38,7 @@ class EVF_Gutenberg_Blocks {
 	public function register_routes() {
 		register_rest_route(
 			$this->namespace,
-			'/' . $this->rest_base . '/fronend-listing-list',
+			'/' . $this->rest_base . '/frontend-listing-list',
 			array(
 				'methods'             => 'GET',
 				'callback'            => array( __CLASS__, 'evf_get_fronend_listing_list' ),
@@ -55,7 +55,7 @@ class EVF_Gutenberg_Blocks {
 	 */
 	public static function evf_get_fronend_listing_list() {
 		$args           = array(
-			'post_type'   => 'evf_frontend_listings',
+			'post_type'   => 'ef_frontend_listings',
 			'post_status' => 'public',
 		);
 		$frontend_lists = get_posts( $args );

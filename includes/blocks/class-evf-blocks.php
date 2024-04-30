@@ -37,6 +37,7 @@ class EVF_Blocks {
 	private function includes() {
 		include_once EVF_ABSPATH . 'includes/blocks/block-types/class-evf-blocks-abstract.php';
 		include_once EVF_ABSPATH . 'includes/blocks/block-types/class-evf-blocks-form-selector.php';
+		include_once EVF_ABSPATH . 'includes/blocks/block-types/class-evf-blocks-frontend-listing.php';
 	}
 	/**
 	 * Enqueue Block Editor Assets.
@@ -86,7 +87,6 @@ class EVF_Blocks {
 				array(
 					'slug'  => 'everest-forms',
 					'title' => esc_html__( 'Everest Forms', 'everest-forms' ),
-					'icon'  => 'editor-table',
 				),
 			),
 			$block_categories
@@ -110,11 +110,17 @@ class EVF_Blocks {
 	 * @return AbstractBlock[]
 	 */
 	private function get_block_types() {
+		$is_pro                    = defined( 'EFP_VERSION' ) && version_compare( EFP_VERSION, '1.7.3', '>=' ) ? true : false;
+		$is_frontendlisting_active = defined( 'EVF_FRONTEND_LISTING_VERSION' ) && version_compare( EVF_FRONTEND_LISTING_VERSION, '1.0.1', '>=' ) ? true : false;
+		$class                     = array(
+			EVF_Blocks_Form_Selector::class, //phpcs:ignore;
+		);
+		if ( $is_pro && $is_frontendlisting_active ) {
+			$class[]= EVF_Blocks_Frontend_Listing::class; //phpcs:ignore;
+		}
 		return apply_filters(
 			'everest_forms_block_types',
-			array(
-				EVF_Blocks_Form_Selector::class, //phpcs:ignore;
-			)
+			$class
 		);
 	}
 }

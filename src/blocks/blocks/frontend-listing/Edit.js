@@ -32,7 +32,7 @@ const Edit = (props) => {
 					const res = await apiFetch({
 						path:
 							restURL +
-							"everest-form/v1/gutenberg-blocks/fronend-listing-list",
+							"everest-forms/v1/gutenberg-blocks/frontend-listing-list",
 						method: "GET",
 						headers: {
 							"X-WP-Nonce": evfRestApiNonce,
@@ -49,9 +49,9 @@ const Edit = (props) => {
 
 		fetchData();
 	}, []);
-	const formOptions =  Object.keys(frontendList).map((value) => ({
-		value: value.ID,
-		label: value.post_title,
+	const frontendOptions = Object.keys(frontendList).map((index) => ({
+		value: Number(index),
+		label: frontendList[index],
 	}));
 	const selectList = (id) => {
 		setAttributes({ id: id });
@@ -67,7 +67,7 @@ const Edit = (props) => {
 					borderRadius="lg"
 					p={2}
 				>
-					<InspectorControls key="evf-gutenberg-form-selector-inspector-controls">
+					<InspectorControls key="evf-gutenberg-frontend-listing-inspector-controls">
 						<PanelBody title={__("Everest Forms Frontend Listing", "everest-forms")}>
 							<SelectControl
 								label={__("Select a Frontend List", "everest-forms")}
@@ -80,27 +80,21 @@ const Edit = (props) => {
 										),
 										value: "",
 									},
-									...formOptions,
+									...frontendOptions,
 								]}
 								onChange={selectList}
 							/>
 						</PanelBody>
 					</InspectorControls>
-					{id ? (
-						<ServerSideRender
-							key="evf-gutenberg-form-selector-server-side-renderer"
-							block="everest-forms/form-selector"
-							attributes={props.attributes}
-						/>
-					) : (
+
 						<Placeholder
-							key="evf-gutenberg-form-selector-wrap"
+							key="evf-gutenberg-frontend-listing-wrap"
 							icon={EverestFormIcon}
 							instructions={__("Everest Forms Fronend Listing", "everest-forms")}
-							className="everest-form-gutenberg-form-selector-wrap evf-test"
+							className="everest-form-gutenberg-frontend-listing-wrap evf-test"
 						>
 							<SelectControl
-								key="evf-gutenberg-form-selector-select-control"
+								key="evf-gutenberg-frontend-listing-select-control"
 								value={id}
 								options={[
 									{
@@ -110,12 +104,11 @@ const Edit = (props) => {
 										),
 										value: "",
 									},
-									...formOptions,
+									...frontendOptions,
 								]}
 								onChange={selectList}
 							/>
 						</Placeholder>
-					)}
 				</Box>
 			</ChakraProvider>
 		</>
