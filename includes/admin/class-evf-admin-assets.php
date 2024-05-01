@@ -226,6 +226,7 @@ class EVF_Admin_Assets {
 			wp_enqueue_script( 'evf-enhanced-select' );
 			wp_enqueue_script( 'jquery-ui-sortable' );
 			wp_enqueue_script( 'jquery-ui-autocomplete' );
+			wp_enqueue_script( 'evf-upgrade' );
 
 			wp_localize_script(
 				'everest-forms-email-admin',
