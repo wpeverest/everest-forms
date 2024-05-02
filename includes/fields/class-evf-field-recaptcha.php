@@ -54,7 +54,8 @@ class EVF_Field_Recaptcha extends \EVF_Form_Fields {
 			$site_key   = get_option( 'everest_forms_recaptcha_v3_site_key' );
 			$secret_key = get_option( 'everest_forms_recaptcha_v3_secret_key' );
 		}
-		return ( empty( $site_key ) || empty( $secret_key ) ) ? 'recaptcha_empty_key_validate' : '';
+		return empty( $site_key ) || empty( $secret_key ) || ( 'v2' !== $recaptcha_type && 'v3' !== $recaptcha_type ) ? 'recaptcha_empty_key_validate' : '';
+
 	}
 
 

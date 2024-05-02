@@ -41,10 +41,10 @@ class EVF_Field_Turnstile extends \EVF_Form_Fields {
 	 * @return string
 	 */
 	private function get_turnstile_class() {
-		$site_key   = get_option( 'everest_forms_recaptcha_turnstile_site_key' );
-		$secret_key = get_option( 'everest_forms_recaptcha_turnstile_secret_key' );
-
-		return ( empty( $site_key ) || empty( $secret_key ) ) ? 'turnstile_empty_key_validate' : '';
+		$site_key       = get_option( 'everest_forms_recaptcha_turnstile_site_key' );
+		$secret_key     = get_option( 'everest_forms_recaptcha_turnstile_secret_key' );
+		$recaptcha_type = get_option( 'everest_forms_recaptcha_type', 'v2' );
+		return ( empty( $site_key ) || empty( $secret_key ) || 'turnstile' !== $recaptcha_type ) ? 'turnstile_empty_key_validate' : '';
 	}
 
 	/**
