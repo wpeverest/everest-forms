@@ -146,6 +146,9 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		$fields         = isset( $this->form_data['form_fields'] ) ? $this->form_data['form_fields'] : array();
 		$recaptcha_type = get_option( 'everest_forms_recaptcha_type', 'v2' );
 		if ( isset( $this->form_data['settings']['recaptcha_support'] ) && '1' === $this->form_data['settings']['recaptcha_support'] ) {
+			if ( 'v2' === $recaptcha_type || 'v3' === $recaptcha_type ) {
+				$recaptcha_type = 'recaptcha';
+			}
 			$fields['IWX5HFxv2j-18'] = array(
 				'id'       => 'IWX5HFxv2j-18',
 				'type'     => $recaptcha_type,
@@ -325,6 +328,9 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 				) : array() );
 				$recaptcha_type = get_option( 'everest_forms_recaptcha_type', 'v2' );
 				if ( isset( $this->form_data['settings']['recaptcha_support'] ) && '1' === $this->form_data['settings']['recaptcha_support'] ) {
+					if ( 'v2' === $recaptcha_type || 'v3' === $recaptcha_type ) {
+						$recaptcha_type = 'recaptcha';
+					}
 					$fields['IWX5HFxv2j-18'] = array(
 						'id'       => 'IWX5HFxv2j-18',
 						'type'     => $recaptcha_type,
