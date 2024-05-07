@@ -405,7 +405,7 @@ jQuery( function ( $ ) {
 				return $checked.length <= choiceLimit;
 			}, function( params, element ) {
 				var	choiceLimit = parseInt( $( element ).closest( 'ul' ).attr( 'data-choice-limit' ) || 0, 10 );
-				return everest_forms.i18n_messages_check_limit.replace( '{#}', choiceLimit );
+				return everest_forms_params.i18n_messages_check_limit.replace( '{#}', choiceLimit );
 			} );
 
 			$.validator.addMethod( 'phone-field', function( value, element ) {
@@ -413,7 +413,7 @@ jQuery( function ( $ ) {
 					return false;
 				}
 				return this.optional( element ) || value.replace( /[^\d]/g, '' ).length > 0;
-			}, everest_forms.i18n_messages_phone );
+			}, everest_forms_params.i18n_messages_phone );
 
 			// Validate Smart Phone Field.
 			if ( 'undefined' !== typeof $.fn.intlTelInput ) {
@@ -422,7 +422,7 @@ jQuery( function ( $ ) {
 						return false;
 					}
 					return this.optional( element ) || $( element ).intlTelInput( 'isValidNumber' );
-				}, everest_forms.i18n_messages_phone );
+				}, everest_forms_params.i18n_messages_phone );
 			}
 
 			this.$everest_form.each( function() {
