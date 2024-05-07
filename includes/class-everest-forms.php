@@ -21,7 +21,7 @@ final class EverestForms {
 	 *
 	 * @var string
 	 */
-	public $version = '2.0.9';
+	public $version = '3.0.0';
 
 	/**
 	 * The single instance of the class.
@@ -286,7 +286,7 @@ final class EverestForms {
 		include_once EVF_ABSPATH . 'includes/abstracts/class-evf-deprecated-hooks.php';
 		include_once EVF_ABSPATH . 'includes/abstracts/class-evf-session.php';
 		include_once EVF_ABSPATH . 'includes/abstracts/class-evf-form-fields.php';
-		if ( ( defined( 'EFP_VERSION' ) && version_compare( EFP_VERSION, '1.7.5', '>=' ) ) || ( ! defined( 'EFP_VERSION' ) && version_compare( EVF_VERSION, '2.0.9', '>=' ) ) ) {
+		if ( ( defined( 'EFP_VERSION' ) && version_compare( EFP_VERSION, '1.7.5', '>=' ) ) || ( ! defined( 'EFP_VERSION' ) && version_compare( EVF_VERSION, '3.0.0', '>=' ) ) ) {
 			include_once EVF_ABSPATH . 'includes/abstracts/class-evf-form-fields-upload.php';
 		}
 		/**
