@@ -289,9 +289,8 @@ class EVF_Form_Task {
 					$secret_key = get_option( 'everest_forms_recaptcha_turnstile_secret_key' );
 					$theme_mode = get_option( 'everest_forms_recaptcha_turnstile_theme' );
 				}
-
+				$recaptcha_verified = false;
 				foreach ( (array) $this->form_data['form_fields'] as $field ) {
-					$field_type = isset( $field['type'] ) ? $field['type'] : '';
 					$field_type = isset( $field['type'] ) ? $field['type'] : '';
 					$captcha    = array( 'recaptcha', 'hcaptcha', 'turnstile' );
 					if ( ! empty( $site_key ) && ! empty( $secret_key ) && isset( $this->form_data['settings']['recaptcha_support'] ) && '1' === $this->form_data['settings']['recaptcha_support'] &&
@@ -350,6 +349,9 @@ class EVF_Form_Task {
 								return $this->errors;
 							}
 						}
+
+						 $recaptcha_verified = true;
+						 break;
 					}
 				}
 			}
