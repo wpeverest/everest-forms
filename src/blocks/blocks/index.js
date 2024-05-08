@@ -2,17 +2,21 @@ import { registerBlockType } from "@wordpress/blocks";
 import { applyFilters } from "@wordpress/hooks";
 import * as formSelector from "./form-selector";
 import * as frontendListing from "./frontend-listing";
+import * as UserLogin from "./user-login";
 
 /* global _EVF_BLOCKS_ */
-const {isFrontendListingActive,isPro } =
-typeof _EVF_BLOCKS_ !== "undefined" && _EVF_BLOCKS_;
+const { isFrontendListingActive, isUserRegistrationActive, isPro } =
+	typeof _EVF_BLOCKS_ !== "undefined" && _EVF_BLOCKS_;
 
 let blocks = [formSelector];
 
-if(isPro && isFrontendListingActive){
+if (isPro && isFrontendListingActive) {
 	blocks.push(frontendListing);
 }
-blocks = applyFilters('everest-forms.blocks', blocks);
+if (isPro && isUserRegistrationActive) {
+	blocks.push(UserLogin);
+}
+blocks = applyFilters("everest-forms.blocks", blocks);
 
 /**
  * The function "registerBlocks" iterates over an array of blocks and calls the

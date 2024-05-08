@@ -38,6 +38,7 @@ class EVF_Blocks {
 		include_once EVF_ABSPATH . 'includes/blocks/block-types/class-evf-blocks-abstract.php';
 		include_once EVF_ABSPATH . 'includes/blocks/block-types/class-evf-blocks-form-selector.php';
 		include_once EVF_ABSPATH . 'includes/blocks/block-types/class-evf-blocks-frontend-listing.php';
+		include_once EVF_ABSPATH . 'includes/blocks/block-types/class-evf-blocks-user-login.php';
 	}
 	/**
 	 * Enqueue Block Editor Assets.
@@ -62,11 +63,12 @@ class EVF_Blocks {
 		);
 
 		$form_block_data = array(
-			'evfRestApiNonce'         => wp_create_nonce( 'wp_rest' ),
-			'restURL'                 => rest_url(),
-			'forms'                   => evf()->form->get_multiple( array( 'order' => 'DESC' ) ),
-			'isPro'                   => defined( 'EFP_VERSION' ) && version_compare( EFP_VERSION, '1.7.3', '>=' ) ? true : false,
-			'isFrontendListingActive' => defined( 'EVF_FRONTEND_LISTING_VERSION' ) && version_compare( EVF_FRONTEND_LISTING_VERSION, '1.0.1', '>=' ) ? true : false,
+			'evfRestApiNonce'          => wp_create_nonce( 'wp_rest' ),
+			'restURL'                  => rest_url(),
+			'forms'                    => evf()->form->get_multiple( array( 'order' => 'DESC' ) ),
+			'isPro'                    => defined( 'EFP_VERSION' ) && version_compare( EFP_VERSION, '1.7.3', '>=' ) ? true : false,
+			'isFrontendListingActive'  => defined( 'EVF_FRONTEND_LISTING_VERSION' ) && version_compare( EVF_FRONTEND_LISTING_VERSION, '1.0.0', '>=' ) ? true : false,
+			'isUserRegistrationActive' => defined( 'EVF_USER_REGISTRATION_VERSION' ) && version_compare( EVF_USER_REGISTRATION_VERSION, '1.1.3', '>=' ) ? true : false,
 		);
 
 		wp_localize_script( 'everest-forms-block-editor', '_EVF_BLOCKS_', $form_block_data );
@@ -110,13 +112,17 @@ class EVF_Blocks {
 	 * @return AbstractBlock[]
 	 */
 	private function get_block_types() {
-		$is_pro                    = defined( 'EFP_VERSION' ) && version_compare( EFP_VERSION, '1.7.3', '>=' ) ? true : false;
-		$is_frontendlisting_active = defined( 'EVF_FRONTEND_LISTING_VERSION' ) && version_compare( EVF_FRONTEND_LISTING_VERSION, '1.0.1', '>=' ) ? true : false;
-		$class                     = array(
+		$is_pro                     = defined( 'EFP_VERSION' ) && version_compare( EFP_VERSION, '1.7.3', '>=' ) ? true : false;
+		$is_frontendlisting_active  = defined( 'EVF_FRONTEND_LISTING_VERSION' ) && version_compare( EVF_FRONTEND_LISTING_VERSION, '1.0.0', '>=' ) ? true : false;
+		$is_use_registration_active = defined( 'EVF_USER_REGISTRATION_VERSION' ) && version_compare( EVF_USER_REGISTRATION_VERSION, '1.1.3', '>=' ) ? true : false;
+		$class                      = array(
 			EVF_Blocks_Form_Selector::class, //phpcs:ignore;
 		);
 		if ( $is_pro && $is_frontendlisting_active ) {
 			$class[]= EVF_Blocks_Frontend_Listing::class; //phpcs:ignore;
+		}
+		if ( $is_pro && $is_use_registration_active ) {
+			$class[]= EVF_Blocks_User_Login::class; //phpcs:ignore;
 		}
 		return apply_filters(
 			'everest_forms_block_types',
