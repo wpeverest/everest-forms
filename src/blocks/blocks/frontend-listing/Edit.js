@@ -67,15 +67,15 @@ const Edit = (props) => {
 					borderRadius="lg"
 					p={2}
 				>
-					<InspectorControls key="evf-gutenberg-frontend-listing-inspector-controls">
-						<PanelBody title={__("Everest Forms Frontend Listing", "everest-forms")}>
+					<InspectorControls key="evf-gutenberg-form-selector-inspector-controls">
+						<PanelBody title={__("Everest Forms", "everest-forms")}>
 							<SelectControl
-								label={__("Select a Frontend List", "everest-forms")}
+								label={__("Select list", "everest-forms")}
 								value={id}
 								options={[
 									{
 										label: __(
-											"Select a list",
+											"Select list",
 											"everest-forms",
 										),
 										value: "",
@@ -86,20 +86,19 @@ const Edit = (props) => {
 							/>
 						</PanelBody>
 					</InspectorControls>
-
 						<Placeholder
-							key="evf-gutenberg-frontend-listing-wrap"
+							key="evf-gutenberg-form-selector-wrap"
 							icon={EverestFormIcon}
-							instructions={__("Everest Forms Fronend Listing", "everest-forms")}
-							className="everest-form-gutenberg-frontend-listing-wrap evf-test"
+							instructions={__("Everest Form Frontend Listing", "everest-forms")}
+							className="everest-form-gutenberg-form-selector-wrap evf-test"
 						>
 							<SelectControl
-								key="evf-gutenberg-frontend-listing-select-control"
+								key="evf-gutenberg-form-selector-select-control"
 								value={id}
 								options={[
 									{
 										label: __(
-											"Select a list",
+											"Select list",
 											"everest-forms",
 										),
 										value: "",
