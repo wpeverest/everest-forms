@@ -53,6 +53,44 @@ const ShortcodesLists = ({ setIsListViewerOpen }) => {
 			],
 		},
 		{
+			id: "[everest_forms_user_login]",
+			description: __(
+				"Display the login form for user who are created by using user registration addons.",
+				"everest-forms"
+			),
+			params: [
+				{
+					param_name: "redirect_url",
+					param_description: __(
+						"Redirect URL after login.",
+						"everest-forms"
+					),
+					required:false
+				},
+				{
+					param_name: "recaptcha",
+					param_description: __(
+						"Enable the recaptcha.",
+						"everest-forms"
+					),
+					required:false
+				},
+			],
+			example: [
+				{
+					example_name: '[everest_forms_user_login redirect_url="sample_page" recaptcha="true"]',
+					example_description: __(
+						"Display the login form with recaptcha and redirect to sample page after login.",
+						"everest-forms"
+					),
+				},
+			],
+			requires: __(
+				"Requires Everest Forms Pro and User registration Addon to be activated.",
+				"everest-forms"
+			),
+		},
+		{
 			id: "[everest_forms_frontend_list]",
 			description: __(
 				"Displays member directories in the front end.",
