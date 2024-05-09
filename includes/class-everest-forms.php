@@ -298,7 +298,6 @@ final class EverestForms {
 		include_once EVF_ABSPATH . 'includes/class-evf-ajax.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-ajax.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-emails.php';
-		include_once EVF_ABSPATH . 'includes/class-evf-form-block.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-integrations.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-cache-helper.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-deprecated-action-hooks.php';
@@ -306,6 +305,10 @@ final class EverestForms {
 		include_once EVF_ABSPATH . 'includes/class-evf-forms-features.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-privacy.php';
 
+		/**
+		 * Everest forms blocks class.
+		 */
+		include_once EVF_ABSPATH . 'includes/blocks/class-evf-blocks.php';
 		/**
 		 * Rest api classes.
 		 */
