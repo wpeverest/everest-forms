@@ -88,19 +88,19 @@
 
 	// Show/hide based on reCAPTCHA type.
 	$( 'input#everest_forms_recaptcha_type' ).change( function() {
-		var recaptcha_v2_site_key             = $( '#everest_forms_recaptcha_v2_site_key' ).parents( 'tr' ).eq( 0 ),
-			recaptcha_v2_secret_key           = $( '#everest_forms_recaptcha_v2_secret_key' ).parents( 'tr' ).eq( 0 ),
-			recaptcha_v2_invisible_site_key   = $( '#everest_forms_recaptcha_v2_invisible_site_key' ).parents( 'tr' ).eq( 0 ),
-			recaptcha_v2_invisible_secret_key = $( '#everest_forms_recaptcha_v2_invisible_secret_key' ).parents( 'tr' ).eq( 0 ),
-			recaptcha_v2_invisible            = $( '#everest_forms_recaptcha_v2_invisible' ).parents( 'tr' ).eq( 0 ),
-			recaptcha_v3_site_key             = $( '#everest_forms_recaptcha_v3_site_key' ).parents( 'tr' ).eq( 0 ),
-			recaptcha_v3_secret_key           = $( '#everest_forms_recaptcha_v3_secret_key' ).parents( 'tr' ).eq( 0 );
-			recaptcha_v3_threshold_score      = $( '#everest_forms_recaptcha_v3_threshold_score' ).parents( 'tr' ).eq( 0 );
-			hcaptcha_site_key            	  = $( '#everest_forms_recaptcha_hcaptcha_site_key' ).parents( 'tr' ).eq( 0 ),
-			hcaptcha_secret_key               = $( '#everest_forms_recaptcha_hcaptcha_secret_key' ).parents( 'tr' ).eq( 0 );
-			turnstile_site_key 				  = $( '#everest_forms_recaptcha_turnstile_site_key' ).parents( 'tr' ).eq( 0 ),
-			turnstile_secret_key              = $( '#everest_forms_recaptcha_turnstile_secret_key' ).parents( 'tr' ).eq( 0 );
-			turnstile_theme                   = $( '#everest_forms_recaptcha_turnstile_theme' ).parents( 'tr' ).eq( 0 );
+		var recaptcha_v2_site_key             = $( '#everest_forms_recaptcha_v2_site_key' ).closest('.everest-forms-global-settings'),
+			recaptcha_v2_secret_key           = $( '#everest_forms_recaptcha_v2_secret_key' ).closest('.everest-forms-global-settings'),
+			recaptcha_v2_invisible_site_key   = $( '#everest_forms_recaptcha_v2_invisible_site_key' ).closest('.everest-forms-global-settings'),
+			recaptcha_v2_invisible_secret_key = $( '#everest_forms_recaptcha_v2_invisible_secret_key' ).closest('.everest-forms-global-settings'),
+			recaptcha_v2_invisible            = $( '#everest_forms_recaptcha_v2_invisible' ).closest('.everest-forms-global-settings'),
+			recaptcha_v3_site_key             = $( '#everest_forms_recaptcha_v3_site_key' ).closest('.everest-forms-global-settings'),
+			recaptcha_v3_secret_key           = $( '#everest_forms_recaptcha_v3_secret_key' ).closest('.everest-forms-global-settings');
+			recaptcha_v3_threshold_score      = $( '#everest_forms_recaptcha_v3_threshold_score' ).closest('.everest-forms-global-settings');
+			hcaptcha_site_key            	  = $( '#everest_forms_recaptcha_hcaptcha_site_key' ).closest('.everest-forms-global-settings'),
+			hcaptcha_secret_key               = $( '#everest_forms_recaptcha_hcaptcha_secret_key' ).closest('.everest-forms-global-settings');
+			turnstile_site_key 				  = $( '#everest_forms_recaptcha_turnstile_site_key' ).closest('.everest-forms-global-settings'),
+			turnstile_secret_key              = $( '#everest_forms_recaptcha_turnstile_secret_key' ).closest('.everest-forms-global-settings');
+			turnstile_theme                   = $( '#everest_forms_recaptcha_turnstile_theme' ).closest('.everest-forms-global-settings');
 
 			if ( $( this ).is( ':checked' ) ) {
 				if ( 'v2' === $( this ).val() ) {
@@ -175,15 +175,15 @@
 
 	$( 'input#everest_forms_recaptcha_v2_invisible' ).change( function() {
 		if ( $( this ).is( ':checked' ) ) {
-			$( '#everest_forms_recaptcha_v2_site_key' ).parents( 'tr' ).eq( 0 ).hide();
-			$( '#everest_forms_recaptcha_v2_secret_key' ).parents( 'tr' ).eq( 0 ).hide();
-			$( '#everest_forms_recaptcha_v2_invisible_site_key' ).parents( 'tr' ).eq( 0 ).show();
-			$( '#everest_forms_recaptcha_v2_invisible_secret_key' ).parents( 'tr' ).eq( 0 ).show();
+			$( '#everest_forms_recaptcha_v2_site_key' ).closest('.everest-forms-global-settings').hide();
+			$( '#everest_forms_recaptcha_v2_secret_key' ).closest('.everest-forms-global-settings').hide();
+			$( '#everest_forms_recaptcha_v2_invisible_site_key' ).closest('.everest-forms-global-settings').show();
+			$( '#everest_forms_recaptcha_v2_invisible_secret_key' ).closest('.everest-forms-global-settings').show();
 		} else {
-			$( '#everest_forms_recaptcha_v2_site_key' ).parents( 'tr' ).eq( 0 ).show();
-			$( '#everest_forms_recaptcha_v2_secret_key' ).parents( 'tr' ).eq( 0 ).show();
-			$( '#everest_forms_recaptcha_v2_invisible_site_key' ).parents( 'tr' ).eq( 0 ).hide();
-			$( '#everest_forms_recaptcha_v2_invisible_secret_key' ).parents( 'tr' ).eq( 0 ).hide();
+			$( '#everest_forms_recaptcha_v2_site_key' ).closest('.everest-forms-global-settings').show();
+			$( '#everest_forms_recaptcha_v2_secret_key' ).closest('.everest-forms-global-settings').show();
+			$( '#everest_forms_recaptcha_v2_invisible_site_key' ).closest('.everest-forms-global-settings').hide();
+			$( '#everest_forms_recaptcha_v2_invisible_secret_key' ).closest('.everest-forms-global-settings').hide();
 		}
 	});
 
@@ -278,5 +278,65 @@
 				},
 			});
 		});
+		
+	// Handles collapse of side menu.
+	$("#evf-settings-collapse").on("click", function (e) {
+		e.preventDefault();
+		if ($(this).hasClass("close")) {
+			$(this).closest("header").addClass("collapsed");
+			$(this).removeClass("close").addClass("open");
+			setStorageValue("evf-settings-navCollapsed", true); // set to localStorage
+		} else {
+			$(this).closest("header").removeClass("collapsed");
+			$(this).removeClass("open").addClass("close");
+			localStorage.removeItem("evf-settings-navCollapsed"); // remove from localStorage
+		}
+	});
+
+	// Persist the collapsable state through page reload
+
+	var isNavCollapsed =
+		getStorageValue("evf-settings-navCollapsed") === true
+			? "collapsed"
+			: "not-collapsed";
+			getStorageValue("evf-settings-navCollapsed");
+	if (isNavCollapsed == "collapsed") {
+		$(".everest-forms-header").addClass("collapsed");
+		$("#evf-settings-collapse").removeClass("close").addClass("open");
+	} else {
+		$(".everest-forms-header").removeClass("collapsed");
+		$("#evf-settings-collapse").removeClass("open").addClass("close");
+	}
+
+	// Set localStorage with expiry
+	function setStorageValue(key, value) {
+		var current = new Date();
+
+		var data = {
+			value: value,
+			expiry: current.getTime() + 86400000, // 1day of expiry time
+		};
+
+		localStorage.setItem(key, JSON.stringify(data));
+	}
+
+	// Get localStorage with expiry
+	function getStorageValue(key) {
+		var item = localStorage.getItem(key);
+
+		if (!item) {
+			return false;
+		}
+
+		var data = JSON.parse(item);
+		var current = new Date();
+
+		if (current.getTime() > data.expiry) {
+			localStorage.removeItem(key);
+			return false;
+		}
+		return true;
+	}
+
 
 })( jQuery, everest_forms_settings_params );

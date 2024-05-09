@@ -65,7 +65,8 @@ class EVF_Settings_Email extends EVF_Settings_Page {
 					'desc_tip' => esc_html__( 'Email addresses for Cc and Bcc can be applied from the form notification settings.', 'everest-forms' ),
 					'id'       => 'everest_forms_enable_email_copies',
 					'default'  => 'no',
-					'type'     => 'checkbox',
+					'type'     => 'toggle',
+					'desc_tip' => true,
 				),
 				array(
 					'title'       => esc_html__( 'Send Test Email To', 'everest-forms' ),
