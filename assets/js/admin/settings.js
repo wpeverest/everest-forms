@@ -233,4 +233,50 @@
         });
     });
 
+		// Send Routine Report Test Email.
+		$(".everest_forms_send_routine_report_test_email").on("click", function(e) {
+			e.preventDefault();
+			let email = $("#everest_forms_email_send_to").val();
+			let data = {
+				action: "everest_forms_send_routine_report_test_email",
+				email: email,
+				security: evf_email_params.ajax_email_nonce,
+			};
+			$.ajax({
+				url: evf_email_params.ajax_url,
+				data: data,
+				type: "post",
+				beforeSend: function() {
+					var spinner = '<i class="evf-loading evf-loading-active"></i>';
+					$(".everest_forms_send_email_test")
+						.closest(".everest_forms_send_email_test")
+						.append(spinner);
+					$(".everest-froms-send_test_email_notice").remove();
+				},
+				complete: function(response) {
+					var message_string = "";
+
+					$(".everest_forms_send_email_test")
+						.closest(".everest_forms_send_email_test")
+						.find(".evf-loading")
+						.remove();
+					$(".everest-froms-send_test_email_notice").remove();
+					if (true === response.responseJSON.success) {
+						$("#everest_forms_email_send_to").val("");
+						message_string =
+							'<div id="message" class="updated inline everest-froms-send_test_email_notice"><p><strong>' +
+							response.responseJSON.data.message +
+							"</strong></p></div>";
+					} else {
+						message_string =
+							'<div id="message" class="error inline everest-froms-send_test_email_notice"><p><strong>' +
+							response.responseJSON.data.message +
+							"</strong></p></div>";
+					}
+
+					$(".everest-forms-settings").find("h2").after(message_string);
+				},
+			});
+		});
+
 })( jQuery, everest_forms_settings_params );

@@ -174,7 +174,7 @@
       "title": "Save And Continue",
       "slug": "everest-forms-save-and-continue",
       "name": "Everest Forms Save And Continue",
-      "image": "extensions-json/sections/images/save-and-continue.jpg",
+      "image": "extensions-json/sections/images/save-and-continue.png",
       "excerpt": "Allows users to save their partially filled information and continue to work on it later. Users can opt to receive a link if they wish to continue later with the form",
       "link": "https://everestforms.net/features/save-and-continue/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=save-and-continue",
       "released_date": "16/09/2021",
@@ -202,7 +202,7 @@
       "title": "Repeater Fields",
       "slug": "everest-forms-repeater-fields",
       "name": "Everest Forms Repeater Fields",
-      "image": "extensions-json/sections/images/repeater-fields.jpg",
+      "image": "extensions-json/sections/images/repeater-fields.png",
       "excerpt": "Repeater field add-on allows you to repeatedly add a set of form fields within your WordPress forms.",
       "link": "https://everestforms.net/features/repeater-fields/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=repeater-fields",
       "released_date": "26/10/2021",
@@ -347,7 +347,7 @@
       "title": "Cloud Storage",
       "slug": "everest-forms-cloud-storage",
       "name": "Everest Forms Cloud Storage",
-      "image": "extensions-json/sections/images/cloud-storage.jpg",
+      "image": "extensions-json/sections/images/cloud-storage.png",
       "excerpt": "Everest Forms Cloud Storage add-on is a WordPress Cloud Storage integration plugin that allows you to easily send Everest Forms files directly to your Cloud Storage account. ",
       "link": "https://everestforms.net/features/cloud-storage/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=cloud-storage",
       "released_date": "31/08/2022",
@@ -377,7 +377,7 @@
       "title": "Sendinblue",
       "slug": "everest-forms-sendinblue",
       "name": "Everest Forms Sendinblue",
-      "image": "extensions-json/sections/images/sendinblue.jpg",
+      "image": "extensions-json/sections/images/sendinblue.png",
       "excerpt": "Allows your users to subscribe to Sendinblue through form submissions. Users filling up the forms can be directly added to your subscribers list in Sendinblue.",
       "link": "https://everestforms.net/features/sendinblue/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=sendinblue",
       "released_date": "26/09/2022",
@@ -466,7 +466,7 @@
       "title": "Salesforce",
       "slug": "everest-forms-salesforce",
       "name": "Everest Forms Salesforce",
-      "image": "extensions-json/sections/images/salesforce.jpg",
+      "image": "extensions-json/sections/images/salesforce.png",
       "excerpt": "Everest Forms Salesforce add-on is a WordPress Salesforce integration plugin that allows you to easily send Everest Forms entries directly to your Salesforce account. ",
       "link": "https://everestforms.net/features/salesforce/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=salesforce",
       "released_date": "31/08/2022",
@@ -508,7 +508,7 @@
       "title": "Constant Contact",
       "slug": "everest-forms-constant-contact",
       "name": "Everest Forms Constant Contact",
-      "image": "extensions-json/sections/images/constant-contact.jpg",
+      "image": "extensions-json/sections/images/constant-contact.png",
       "excerpt": "Everest Forms Constant Contact add-on is a WordPress Constant Contact integration plugin that allows you to easily send Everest Forms entries directly to your Constant Contact account. ",
       "link": "https://everestforms.net/features/constant-contact/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=constant-contact",
       "released_date": "31/08/2022",
@@ -566,7 +566,7 @@
       "title": "GetResponse",
       "slug": "everest-forms-getresponse",
       "name": "Everest Forms GetResponse",
-      "image": "extensions-json/sections/images/getresponse.jpg",
+      "image": "extensions-json/sections/images/getresponse.png",
       "excerpt": "Allows your users to subscribe to GetResponse through form submissions. Users filling up the forms can be directly added to your subscribers list in GetResponse.",
       "link": "https://everestforms.net/features/getresponse/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=getresponse",
       "released_date": "26/09/2022",
@@ -574,6 +574,98 @@
         "plus",
         "professional",
         "agency",
+        "themegrill agency"
+      ]
+    }
+  ],
+  "features": [
+    {
+      "title": "Trello",
+      "slug": "everest-forms-trello",
+      "name": "Everest Forms- Trello",
+      "image": "extensions-json/sections/images/trello.webp",
+      "excerpt": "All it takes are boards, lists, and cards to get a clear view of who’s doing what and what needs to get done.",
+      "link": "https://everestforms.net/features/trello/?utm_source=dashboard-all-features&utm_medium=utm_medium=card-documentation-link&utm_campaign=evf-upgrade-to-pro&utm_content=trello",
+      "released_date": "20/05/2024",
+      "plan": [
+        "personal",
+        "plus",
+        "professional",
+        "themegrill agency"
+      ]
+    },
+    {
+      "title": "iContact",
+      "slug": "everest-forms-icontact",
+      "name": "Everest Forms- iContact",
+      "image": "extensions-json/sections/images/icontact.webp",
+      "excerpt": "Easy-to-use tools help user grow their audience, design beautiful emails, personalize their messages and automate their communications.",
+      "link": "https://everestforms.net/features/icontact/?utm_source=dashboard-all-features&utm_medium=utm_medium=card-documentation-link&utm_campaign=evf-upgrade-to-pro&utm_content=icontact",
+      "released_date": "20/05/2024",
+      "plan": [
+        "personal",
+        "plus",
+        "professional",
+        "themegrill agency"
+      ]
+    },
+    {
+      "title": "Woocommerce",
+      "slug": "everest-forms-woocommerce",
+      "name": "Everest Forms- Woocommerce",
+      "image": "extensions-json/sections/images/woocommerce.webp",
+      "excerpt": "Makes adding custom fields to your WooCommerce product page simpler. With an easy-to-add extra product options quickly.",
+      "link": "https://everestforms.net/features/woocommerce/?utm_source=dashboard-all-features&utm_medium=utm_medium=card-documentation-link&utm_campaign=evf-upgrade-to-pro&utm_content=woocommerce",
+      "released_date": "20/05/2024",
+      "plan": [
+        "personal",
+        "plus",
+        "professional",
+        "themegrill agency"
+      ]
+    },
+    {
+      "title": "Moosend",
+      "slug": "everest-forms-moosend",
+      "name": "Everest Forms- Moosend",
+      "image": "extensions-json/sections/images/moosend.webp",
+      "excerpt": "The simplest and most modern solution to deliver email marketing and automation experiences that drive real revenue growth.",
+      "link": "https://everestforms.net/features/moosend/?utm_source=dashboard-all-features&utm_medium=utm_medium=card-documentation-link&utm_campaign=evf-upgrade-to-pro&utm_content=moosend",
+      "released_date": "20/05/2024",
+      "plan": [
+        "personal",
+        "plus",
+        "professional",
+        "themegrill agency"
+      ]
+    },
+    {
+      "title": "Mailpoet",
+      "slug": "everest-forms-mailpoet",
+      "name": "Everest Forms- Mailpoet",
+      "image": "extensions-json/sections/images/mailpoet.webp",
+      "excerpt": "Send beautiful emails that reach inboxes every time, and create loyal subscribers.",
+      "link": "https://everestforms.net/features/mailpoet/?utm_source=dashboard-all-features&utm_medium=utm_medium=card-documentation-link&utm_campaign=evf-upgrade-to-pro&utm_content=mailpoet",
+      "released_date": "20/05/2024",
+      "plan": [
+        "personal",
+        "plus",
+        "professional",
+        "themegrill agency"
+      ]
+    },
+    {
+      "title": "OnePageCRM",
+      "slug": "everest-forms-onepagecrm",
+      "name": "Everest Forms- Mailpoet",
+      "image": "extensions-json/sections/images/onepagecrm.webp",
+      "excerpt": "Send beautiful emails that reach inboxes every time, and create loyal subscribers.",
+      "link": "https://everestforms.net/features/onepagecrm/?utm_source=dashboard-all-features&utm_medium=utm_medium=card-documentation-link&utm_campaign=evf-upgrade-to-pro&utm_content=onepagecrm",
+      "released_date": "20/05/2024",
+      "plan": [
+        "personal",
+        "plus",
+        "professional",
         "themegrill agency"
       ]
     }

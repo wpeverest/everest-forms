@@ -14,6 +14,26 @@
 		});
 	});
 
+	// Function to handle changes in the reporting frequency while sending the entries stat report.
+	$(document).ready(function () {
+		function handleReportingFrequencyChange() {
+			var everest_forms_entries_reporting_frequency = $('#everest_forms_entries_reporting_frequency').val();
+
+			if ('Weekly' !== everest_forms_entries_reporting_frequency) {
+				$('#everest_forms_entries_reporting_day').closest('tr').hide();
+			} else {
+				$('#everest_forms_entries_reporting_day').closest('tr').show();
+			}
+		}
+
+		// Execute the function on page load
+		handleReportingFrequencyChange();
+
+		// Add an event listener for changes and on the click in the reporting frequency
+		$(document).on('change click', '#everest_forms_entries_reporting_frequency', handleReportingFrequencyChange);
+	});
+
+
 
 	// Enable Perfect Scrollbar.
 	$( document ).on( 'init_perfect_scrollbar', function() {
@@ -468,6 +488,23 @@
 			$('input[name="' + field_name + '"]').val($el.val());
 		}, 2000);
 	});
+	$('.everest-forms-system-info-setting-copy').tooltipster({
+		content: 'Copied',
+		trigger: 'click',
+		theme: 'tooltipster-noir',
+		interactive: true,
+		functionBefore: function(instance, helper) {
+			var table = $('.everest-forms-system-info-setting table')[0];
+			var range = document.createRange();
+			range.selectNode(table);
+			window.getSelection().removeAllRanges();
+			window.getSelection().addRange(range);
+			document.execCommand('copy');
+			window.getSelection().removeAllRanges();
+		}
+	});
+
+
 
 	// Search functionality in addon.
 	$(document).ready(function(){

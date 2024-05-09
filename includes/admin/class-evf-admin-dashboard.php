@@ -17,8 +17,11 @@ class EVF_Admin_Dashboard {
 	 * Handles output of the reports page in admin.
 	 */
 	public static function page_output() {
-		if ( ! empty( $_GET['page'] ) && 'everest-forms-dashboard' === $_GET['page'] ) { //phpcs:ignore WordPress.Security.NonceVerification
-			wp_enqueue_script( 'evf-dashboard-script', EVF()->plugin_url() . '/dist/dashboard.min.js', array('wp-element','react', 'react-dom' ), EVF()->version, true );
+		if ( ! is_admin_bar_showing() || ! current_user_can( 'manage_everest_forms' ) ) {
+			return;
+		}
+		if ( ! empty( $_GET['page'] ) && 'evf-dashboard' === $_GET['page'] ) { //phpcs:ignore WordPress.Security.NonceVerification
+			wp_enqueue_script( 'evf-dashboard-script', EVF()->plugin_url() . '/dist/dashboard.min.js', array( 'wp-element', 'react', 'react-dom' ), EVF()->version, true );
 			if ( ! function_exists( 'get_plugins' ) ) {
 				require_once ABSPATH . 'wp-admin/includes/plugin.php';
 			}
@@ -45,7 +48,7 @@ class EVF_Admin_Dashboard {
 					'siteURL'              => esc_url( home_url( '/' ) ),
 					'liveDemoURL'          => esc_url_raw( 'https://everestforms.demoswp.net/' ),
 					'assetsURL'            => esc_url( EVF()->plugin_url() . '/assets/' ),
-					'evfRestApiNonce'       => wp_create_nonce( 'wp_rest' ),
+					'evfRestApiNonce'      => wp_create_nonce( 'wp_rest' ),
 					'newFormURL'           => esc_url( admin_url( '/admin.php?page=evf-builder&create-form=1' ) ),
 					'allFormsURL'          => esc_url( admin_url( '/admin.php?page=evf-builder' ) ),
 					'restURL'              => rest_url(),

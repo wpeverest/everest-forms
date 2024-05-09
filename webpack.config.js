@@ -9,13 +9,9 @@ const NODE_ENV = process.env.NODE_ENV || "development";
 const webpackConfig = {
 	mode: NODE_ENV,
 	entry: {
-		// "form-block": resolve(
-		// 	process.cwd(),
-		// 	'/assets/js/admin/gutenberg/form-block.js',
-		// ),
 		"dashboard": resolve(
 			process.cwd(),
-			'/src/dashboard/index.js',
+			'./src/dashboard/index.js',
 		),
 		"blocks": resolve(
 			process.cwd(),

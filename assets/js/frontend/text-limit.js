@@ -11,7 +11,7 @@ jQuery( function() {
 	 * TextLimitHandler class.
 	 */
 	var TextLimitHandler = function() {
-		self = this;
+		var self = this;
 
 		// Limit by characters.
 		Array.prototype.slice.call( document.querySelectorAll( '.everest-forms-limit-characters-enabled' ) ).map( function( event ) {

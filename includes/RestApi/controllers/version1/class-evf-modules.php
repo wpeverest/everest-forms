@@ -2,7 +2,7 @@
 /**
  * Modules controller class.
  *
- * @since 2.0.8.1
+ * @since 3.0.0
  *
  * @package  EverestFroms/Classes
  */
@@ -30,7 +30,7 @@ class EVF_Modules {
 	/**
 	 * Register routes.
 	 *
-	 * @since 2.0.8.1
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */
@@ -86,11 +86,25 @@ class EVF_Modules {
 	/**
 	 * Get Addons Lists.
 	 *
-	 * @since 2.0.8.1
+	 * @since 3.0.0
 	 *
 	 * @return array Module lists.
 	 */
 	public static function get_modules() {
+		$features_lists = self::get_extensions_features_data();
+
+		$enabled_features = get_option( 'everest_forms_enabled_features', array() );
+		foreach ( $features_lists as $key => $feature ) {
+			if ( in_array( $feature->slug, $enabled_features, true ) ) {
+				$feature->status = 'active';
+			} else {
+				$feature->status = 'inactive';
+			}
+			$feature->link          = $feature->link . '&utm_campaign=' . EVF()->utm_campaign;
+			$feature->type          = 'feature';
+			$features_lists[ $key ] = $feature;
+		}
+
 		// Get Addons Lists.
 		$addons_lists = EVF_Admin_Addons::get_extension_data();
 
@@ -111,9 +125,9 @@ class EVF_Modules {
 				$addon->status = 'not-installed';
 			}
 
-			if ( in_array( 'personal', $addon->plan ) ) {
+			if ( in_array( 'personal', $addon->plan, true ) ) {
 				$addon->required_plan = __( 'Personal', 'everest-forms' );
-			} elseif ( in_array( 'plus', $addon->plan ) ) {
+			} elseif ( in_array( 'plus', $addon->plan, true ) ) {
 				$addon->required_plan = __( 'Plus', 'everest-forms' );
 			} else {
 				$addon->required_plan = __( 'Professional', 'everest-forms' );
@@ -123,11 +137,12 @@ class EVF_Modules {
 			$addons_lists[ $key ] = $addon;
 		}
 
+		$modules_lists = array_merge( $features_lists, $addons_lists );
 
 		return new \WP_REST_Response(
 			array(
 				'success'       => true,
-				'modules_lists' => $addons_lists,
+				'modules_lists' => $modules_lists,
 			),
 			200
 		);
@@ -136,14 +151,13 @@ class EVF_Modules {
 	/**
 	 * Active a module.
 	 *
-	 * @since 2.0.8.1
+	 * @since 3.0.0
 	 *
 	 * @param WP_REST_Request $request Full details about the request.
 	 *
 	 * @return WP_Error|WP_REST_Response
 	 */
 	public static function activate_module( $request ) {
-
 		if ( ! isset( $request['slug'] ) || empty( trim( $request['slug'] ) ) ) { //phpcs:ignore
 
 			return new \WP_REST_Response(
@@ -191,18 +205,18 @@ class EVF_Modules {
 		}
 	}
 		/**
-	 * Handler for installing or activating a addon.
-	 *
-	 * @since 2.0.8.1
-	 *
-	 * @param string $slug Slug of the addon to install/activate.
-	 * @param string $name Name of the addon to install/activate.
-	 * @param string $plugin Basename of the addon to install/activate.
-	 *
-	 * @see Plugin_Upgrader
-	 *
-	 * @global WP_Filesystem_Base $wp_filesystem Subclass
-	 */
+		 * Handler for installing or activating a addon.
+		 *
+		 * @since 3.0.0
+		 *
+		 * @param string $slug Slug of the addon to install/activate.
+		 * @param string $name Name of the addon to install/activate.
+		 * @param string $plugin Basename of the addon to install/activate.
+		 *
+		 * @see Plugin_Upgrader
+		 *
+		 * @global WP_Filesystem_Base $wp_filesystem Subclass
+		 */
 	public static function install_addons( $slug, $name, $plugin ) {
 
 		$status = array(
@@ -215,9 +229,28 @@ class EVF_Modules {
 		return $status;
 	}
 	/**
+	 * Enable a feature.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $slug Slug of the feature to enable.
+	 *
+	 * @return WP_Error|WP_REST_Response
+	 */
+	public static function enable_feature( $slug ) {
+
+		// Logic to enable Feature.
+		$enabled_features = get_option( 'everest_forms_enabled_features', array() );
+		array_push( $enabled_features, $slug );
+		update_option( 'everest_forms_enabled_features', $enabled_features );
+
+		return array( 'success' => true );
+	}
+
+	/**
 	 * Handler for installing a extension.
 	 *
-	 * @since 2.0.8.1
+	 * @since 3.0.0
 	 *
 	 * @param string $slug Slug of the addon to install.
 	 * @param string $plugin Plugin file of the addon to install.
@@ -252,16 +285,32 @@ class EVF_Modules {
 				return $status;
 			}
 		}
+		if ( 'aicontactform' === $slug && ! evf_get_license_plan() ) {
+			$args = array(
+				'slug'   => 'ai-contact-form',
+				'fields' => array(
+					'name'          => true,
+					'version'       => true,
+					'author'        => true,
+					'download_link' => true,
+					'last_updated'  => true,
+					'homepage'      => true,
+					'sections'      => true,
+					'description'   => true,
+				),
+			);
+			$api  = plugins_api( 'plugin_information', $args );
+		} else {
 
-		$api = json_decode(
-			EVF_Updater_Key_API::version(
-				array(
-					'license'   => get_option( 'everest-forms-pro_license_key' ),
-					'item_name' => ! empty( $name ) ? sanitize_text_field( wp_unslash( $name ) ) : '',
+			$api = json_decode(
+				EVF_Updater_Key_API::version(
+					array(
+						'license'   => get_option( 'everest-forms-pro_license_key' ),
+						'item_name' => ! empty( $name ) ? sanitize_text_field( wp_unslash( $name ) ) : '',
+					)
 				)
-			)
-		);
-		error_log(print_r($api, true));
+			);
+		}
 		if ( is_wp_error( $api ) ) {
 			$status['success']      = false;
 			$status['errorMessage'] = $api['msg'];
@@ -315,7 +364,7 @@ class EVF_Modules {
 	/**
 	 * Deactive a module.
 	 *
-	 * @since 2.0.8.1
+	 * @since 3.0.0
 	 *
 	 * @param WP_REST_Request $request Full details about the request.
 	 *
@@ -367,7 +416,7 @@ class EVF_Modules {
 	/**
 	 * Deactive a addon.
 	 *
-	 * @since 2.0.8.1
+	 * @since 3.0.0
 	 *
 	 * @param string $slug Slug of the addon to deactivate.
 	 *
@@ -380,9 +429,28 @@ class EVF_Modules {
 		return in_array( $slug, $active_plugins, true ) ? array( 'success' => false ) : array( 'success' => true );
 	}
 	/**
+	 * Disable a feature.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $slug Slug of the feature to disable.
+	 *
+	 * @return WP_Error|WP_REST_Response
+	 */
+	public static function disable_feature( $slug ) {
+
+		// Logic to disable Feature.
+		$enabled_features = get_option( 'everest_forms_enabled_features', array() );
+		$enabled_features = array_values( array_diff( $enabled_features, array( $slug ) ) );
+		update_option( 'everest_forms_enabled_features', $enabled_features );
+
+		return in_array( $slug, $enabled_features, true ) ? array( 'success' => false ) : array( 'success' => true );
+	}
+
+	/**
 	 * Bulk Activate modules.
 	 *
-	 * @since 2.0.8.1
+	 * @since 3.0.0
 	 *
 	 * @param WP_REST_Request $request Full details about the request.
 	 *
@@ -444,7 +512,7 @@ class EVF_Modules {
 	/**
 	 * Bulk Deactivate Modules.
 	 *
-	 * @since 2.0.8.1
+	 * @since 3.0.0
 	 *
 	 * @param WP_REST_Request $request Full details about the request.
 	 *
@@ -505,7 +573,7 @@ class EVF_Modules {
 	/**
 	 * Handler for installing bulk extension.
 	 *
-	 * @since 2.0.8.1
+	 * @since 3.0.0
 	 *
 	 * @param array $addon_data Datas of addons to activate.
 	 *
@@ -537,9 +605,30 @@ class EVF_Modules {
 		return $failed_addon;
 	}
 	/**
+	 * Bulk enable features.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param array $feature_data Data of the features to enable.
+	 */
+	public static function bulk_enable_feature( $feature_data ) {
+		$failed_to_enable = array(); // Add Names of failed feature enable process.
+
+		// Logic to enable Feature.
+		$enabled_features = get_option( 'everest_forms_enabled_features', array() );
+
+		foreach ( $feature_data as $slug => $name ) {
+			array_push( $enabled_features, $slug );
+		}
+
+		update_option( 'everest_forms_enabled_features', $enabled_features );
+
+		return $failed_to_enable;
+	}
+	/**
 	 * Bulk Deactivate addons.
 	 *
-	 * @since 2.0.8.1
+	 * @since 3.0.0
 	 *
 	 * @param array $addon_slugs Slugs of the addons to deactivate.
 	 */
@@ -550,6 +639,41 @@ class EVF_Modules {
 		$active_plugins = get_option( 'active_plugins', array() );
 
 		return array_diff( $addon_slugs, $active_plugins );
+	}
+
+	/**
+	 * Bulk disable features.
+	 *
+	 * @since 3.2.0
+	 *
+	 * @param array $feature_slugs Slugs of the features to disable.
+	 */
+	public static function bulk_disable_feature( $feature_slugs ) {
+
+		// Logic to enable Feature.
+		$enabled_features = get_option( 'everest_forms_enabled_features', array() );
+		$enabled_features = array_values( array_diff( $enabled_features, $feature_slugs ) );
+		update_option( 'everest_forms_enabled_features', $enabled_features );
+
+		return count( $feature_slugs );
+	}
+
+	/**
+	 * Get section content for the extensions screen.
+	 *
+	 * @return array
+	 */
+	public static function get_extensions_features_data() {
+		$extension_data = get_transient( 'evf_extensions_feature_section_list' );
+		if ( false === $extension_data ) {
+			$extension_data = evf_get_json_file_contents( 'assets/extensions-json/sections/all_extensions.json' );
+
+			if ( ! empty( $extension_data->features ) ) {
+				set_transient( 'evf_extensions_feature_section_list', $extension_data, WEEK_IN_SECONDS );
+			}
+		}
+
+		return apply_filters( 'everest_forms_extensions_features_section_data', $extension_data->features );
 	}
 	/**
 	 * Check if a given request has access to update a setting

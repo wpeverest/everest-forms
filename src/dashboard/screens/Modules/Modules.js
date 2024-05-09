@@ -296,7 +296,7 @@ const Modules = () => {
 							</option>
 						</Select>
 
-						{/* <Tabs
+						<Tabs
 							index={tabIndex}
 							onChange={(index) => {
 								setIsSearching(true);
@@ -378,7 +378,7 @@ const Modules = () => {
 									{__("Addons", "everest-forms")}
 								</Tab>
 							</TabList>
-						</Tabs> */}
+						</Tabs>
 
 						<Box display="flex" gap="8px">
 							<Select

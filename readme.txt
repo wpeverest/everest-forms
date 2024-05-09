@@ -2,9 +2,9 @@
 Contributors: WPEverest
 Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.2
-Tested up to: 6.4
+Tested up to: 6.5
 Requires PHP: 7.2
-Stable tag: 2.0.8.1
+Stable tag: 2.0.9
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -93,7 +93,7 @@ Plus, you get full access to all the styles and customization options that Eleme
 ==Integration with Email Marketing and CRM Services==
 Collect leads through your WordPress forms and run your email marketing campaigns effortlessly.
 
-*  [MailChimp](https://everestforms.net/features/mailchimp/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)
+*   [MailChimp](https://everestforms.net/features/mailchimp/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)
 *   [ConvertKit](https://everestforms.net/features/convertkit/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)
 *   [MailerLite](https://everestforms.net/features/mailerlite/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)
 *   [ActiveCampaign](https://everestforms.net/features/activecampaign/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)
@@ -291,6 +291,15 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 
 == Changelog ==
+
+= 2.0.9       - 04-04-2024
+* Feature     - System information.
+* Feature 	  - Show entry preview after form submission.
+* Feature     - Admin approval entries.
+* Enhancement - Date field formats.
+* Enhancement - Appended active class to active input field.
+* Fix 		  - Everest Forms conflict with WordPress Customizer.
+* Tweak       - Filter introduced for template hierarchy.
 
 = 2.0.8.1     - 13-03-2024
 * Fix         - Add block Notification issue.

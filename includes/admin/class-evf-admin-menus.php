@@ -76,11 +76,11 @@ class EVF_Admin_Menus {
 
 		$wp_admin_bar->add_menu(
 			array(
-				'id'    => 'everest-forms-menu',
+				'id'     => 'everest-forms-menu',
 				'parent' => null,
 				'group'  => null,
-				'title' => 'Everest Forms', // you can use img tag with image link. it will show the image icon Instead of the title.
-				'href'  => admin_url( 'admin.php?page=evf-builder' ),
+				'title'  => 'Everest Forms', // you can use img tag with image link. it will show the image icon Instead of the title.
+				'href'   => admin_url( 'admin.php?page=evf-builder' ),
 			)
 		);
 
@@ -122,9 +122,9 @@ class EVF_Admin_Menus {
 
 		$href = add_query_arg(
 			array(
-				'utm_medium'   => 'admin-bar',
-				'utm_source'   => 'WordPress',
-				'utm_content'  => 'Documentation',
+				'utm_medium'  => 'admin-bar',
+				'utm_source'  => 'WordPress',
+				'utm_content' => 'Documentation',
 			),
 			'https://docs.everestforms.net/'
 		);
@@ -153,15 +153,15 @@ class EVF_Admin_Menus {
 	}
 
 	/**
-	* Add dashboard sub menu.
-	*/
-	public function dashboard_menu()   {
+	 * Add dashboard sub menu.
+	 */
+	public function dashboard_menu() {
 		add_submenu_page(
 			'everest-forms',
 			__( 'Everest Forms Dashboard', 'everest-forms' ),
 			__( 'Dashboard', 'everest-forms' ),
 			'manage_everest_forms',
-			'everest-forms-dashboard',
+			'evf-dashboard',
 			array(
 				$this,
 				'dashboard_page',
@@ -326,7 +326,7 @@ class EVF_Admin_Menus {
 	 * Addons menu item.
 	 */
 	public function addons_menu() {
-		add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Add-ons', 'everest-forms' ), esc_html__( 'Add-ons', 'everest-forms' ), 'manage_everest_forms', 'evf-addons', array( $this, 'addons_page' ) );
+		add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Add-ons', 'everest-forms' ), esc_html__( 'Add-ons', 'everest-forms' ), 'manage_everest_forms', esc_url_raw( admin_url( 'admin.php?page=evf-dashboard#/addons' ) ) );
 	}
 
 	/**
@@ -458,13 +458,6 @@ class EVF_Admin_Menus {
 	 */
 	public function tools_page() {
 		EVF_Admin_Tools::output();
-	}
-
-	/**
-	 * Init the addons page.
-	 */
-	public function addons_page() {
-		EVF_Admin_Addons::output();
 	}
 }
 

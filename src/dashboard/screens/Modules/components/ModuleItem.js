@@ -151,9 +151,18 @@ const ModuleItem = (props) => {
 			} else {
 				setLicenseActivated(false);
 				setModuleEnabled(false);
+				if(data.slug=='ai-contact-form'){
+					setModuleEnabled(true);
+				}else{
+					setModuleEnabled(false);
+				}
 			}
 		} else {
-			setModuleEnabled(false);
+			if(data.slug=='ai-contact-form'){
+				setModuleEnabled(true);
+			}else{
+				setModuleEnabled(false);
+			}
 		}
 	}, [data, upgradeModal]);
 
@@ -204,7 +213,6 @@ const ModuleItem = (props) => {
 			>
 				<Image
 					src={assetsURL + image}
-					h={200}
 					borderTopRightRadius="sm"
 					borderTopLeftRadius="sm"
 					w="full"
@@ -221,7 +229,7 @@ const ModuleItem = (props) => {
 					p="5px"
 					m="5px"
 				>
-					{data.required_plan ? data.required_plan : "Pro"}
+					{data.required_plan ? data.slug === 'ai-contact-form' ? 'Free' : data.required_plan  : "Pro"}
 				</Badge>
 				<Box p="6">
 					<Stack direction="column" spacing="4">

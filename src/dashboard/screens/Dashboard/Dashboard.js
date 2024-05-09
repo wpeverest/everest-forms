@@ -31,8 +31,11 @@ const Dashboard = () => {
       "https://docs.everestforms.net/?utm_source=dashboard-dashboard&utm_medium=sidebar-link&utm_campaign=" +
       utmCampaign,
     featureRequestURL =
-      "https://wpeverest.com/wordpress-plugins/everest-forms/feature-request/?utm_source=dashboard-dashboard&utm_medium=sidebar-link&utm_campaign=" +
+      "https://everestforms.net/feature-requests/?utm_source=dashboard-dashboard&utm_medium=sidebar-link&utm_campaign=" +
+      utmCampaign,
+	  supportURL ="https://everestforms.net/support/?utm_source=dashboard-dashboard&utm_medium=sidebar-link&utm_campaign=" +
       utmCampaign;
+
   return (
     <Grid
       my="8"
@@ -180,7 +183,7 @@ const Dashboard = () => {
           <Link
             color="var(--chakra-colors-primary-500) !important"
             textDecor="underline"
-            href="https://wordpress.org/support/plugin/everest-forms/#new-topic-0"
+            href={supportURL}
             isExternal
           >
             {__("Create a Ticket", "everest-forms")}
