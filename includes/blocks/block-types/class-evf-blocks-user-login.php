@@ -26,8 +26,8 @@ class EVF_Blocks_User_Login extends EVF_Blocks_Abstract {
 	 */
 	protected function build_html( $content ) {
 		$attr         = $this->attributes;
-		$redirect_url = ! empty( $attr['redirect_url'] ) ? absint( $attr['redirect_url'] ) : '';
-		$recaptcha    = ! empty( $attr['recaptcha'] ) ? absint( $attr['recaptcha'] ) : false;
+		$redirect_url = isset( $attr['redirect_url'] ) ? sanitize_text_field( $attr['redirect_url'] ) : '';
+		$recaptcha    = isset( $attr['recaptcha'] ) ? sanitize_text_field( $attr['recaptcha'] ) : false;
 		$params       = array();
 		if ( ! empty( $redirect_url ) ) {
 			$params['redirect_url'] = $redirect_url;
