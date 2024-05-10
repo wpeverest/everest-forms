@@ -5205,6 +5205,17 @@ if ( ! function_exists( 'evf_check_addons_update' ) ) {
 					'id'      => 3441,
 					'version' => EFP_VERSION,
 				);
+
+			}
+
+			if ( class_exists( 'EverestForms_Survey_Polls_Quiz' ) && is_plugin_active( 'everest-forms-survey-polls-quiz/everest-forms-survey-polls-quiz.php' ) && defined( 'EVF_SURVEY_POLLS_QUIZ_PLUGIN_FILE' ) && defined( 'EVF_SURVEY_POLLS_QUIZ_VERSION' ) ) {
+				$plugins_to_check['EverestForms_Survey_Polls_Quiz'] = array(
+					'plugin'  => 'everest-forms-survey-polls-quiz/everest-forms-survey-polls-quiz.php',
+					'file'    => EVF_SURVEY_POLLS_QUIZ_PLUGIN_FILE,
+					'id'      => 16165,
+					'version' => EVF_SURVEY_POLLS_QUIZ_VERSION,
+				);
+
 			}
 
 			$current = get_site_transient( 'update_plugins' );
