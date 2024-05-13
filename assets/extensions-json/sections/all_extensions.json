@@ -584,7 +584,7 @@
       "slug": "everest-forms-trello",
       "name": "Everest Forms- Trello",
       "image": "extensions-json/sections/images/trello.webp",
-      "excerpt": "All it takes are boards, lists, and cards to get a clear view of who’s doing what and what needs to get done.",
+      "excerpt": "Connect your Everest Forms data to your Trello accounts. Use Trello API to link Everest Forms with Trello, syncing your website's form submissions with Trello tasks.",
       "link": "https://everestforms.net/features/trello/?utm_source=dashboard-all-features&utm_medium=utm_medium=card-documentation-link&utm_campaign=evf-upgrade-to-pro&utm_content=trello",
       "released_date": "20/05/2024",
       "plan": [
@@ -599,7 +599,7 @@
       "slug": "everest-forms-icontact",
       "name": "Everest Forms- iContact",
       "image": "extensions-json/sections/images/icontact.webp",
-      "excerpt": "Easy-to-use tools help user grow their audience, design beautiful emails, personalize their messages and automate their communications.",
+      "excerpt": "Allows you to directly send entry info from Everest Forms to your iContact account. iContact assists in growing your audience with personalized, automated messages, driving leads, and product sales.",
       "link": "https://everestforms.net/features/icontact/?utm_source=dashboard-all-features&utm_medium=utm_medium=card-documentation-link&utm_campaign=evf-upgrade-to-pro&utm_content=icontact",
       "released_date": "20/05/2024",
       "plan": [
@@ -614,7 +614,7 @@
       "slug": "everest-forms-woocommerce",
       "name": "Everest Forms- Woocommerce",
       "image": "extensions-json/sections/images/woocommerce.webp",
-      "excerpt": "Makes adding custom fields to your WooCommerce product page simpler. With an easy-to-add extra product options quickly.",
+      "excerpt": "With WooCommerce for Everest Forms, you can add personalized form fields to WooCommerce product page on your website.",
       "link": "https://everestforms.net/features/woocommerce/?utm_source=dashboard-all-features&utm_medium=utm_medium=card-documentation-link&utm_campaign=evf-upgrade-to-pro&utm_content=woocommerce",
       "released_date": "20/05/2024",
       "plan": [
@@ -629,7 +629,7 @@
       "slug": "everest-forms-moosend",
       "name": "Everest Forms- Moosend",
       "image": "extensions-json/sections/images/moosend.webp",
-      "excerpt": "The simplest and most modern solution to deliver email marketing and automation experiences that drive real revenue growth.",
+      "excerpt": "Allows you to connect Everest Forms entries with Moosend account via their API to improve outreach and boost revenue through email marketing.",
       "link": "https://everestforms.net/features/moosend/?utm_source=dashboard-all-features&utm_medium=utm_medium=card-documentation-link&utm_campaign=evf-upgrade-to-pro&utm_content=moosend",
       "released_date": "20/05/2024",
       "plan": [
@@ -644,7 +644,7 @@
       "slug": "everest-forms-mailpoet",
       "name": "Everest Forms- Mailpoet",
       "image": "extensions-json/sections/images/mailpoet.webp",
-      "excerpt": "Send beautiful emails that reach inboxes every time, and create loyal subscribers.",
+      "excerpt": "Allows you to combine MailPoet with Everest Forms for enhanced email marketing efforts. Access over 50 pre-designed email templates for effective email marketing and lead conversion.",
       "link": "https://everestforms.net/features/mailpoet/?utm_source=dashboard-all-features&utm_medium=utm_medium=card-documentation-link&utm_campaign=evf-upgrade-to-pro&utm_content=mailpoet",
       "released_date": "20/05/2024",
       "plan": [
@@ -659,7 +659,7 @@
       "slug": "everest-forms-onepagecrm",
       "name": "Everest Forms- Mailpoet",
       "image": "extensions-json/sections/images/onepagecrm.webp",
-      "excerpt": "Send beautiful emails that reach inboxes every time, and create loyal subscribers.",
+      "excerpt": "OnePageCRM for Everest Forms helps you to easily send Everest Forms entries directly to your OnePageCRM customer relation account.",
       "link": "https://everestforms.net/features/onepagecrm/?utm_source=dashboard-all-features&utm_medium=utm_medium=card-documentation-link&utm_campaign=evf-upgrade-to-pro&utm_content=onepagecrm",
       "released_date": "20/05/2024",
       "plan": [
