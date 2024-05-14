@@ -54,7 +54,7 @@ const IntersectObserver = ({ children, routes }) => {
 	);
 
 	useEffect(() => {
-		if (!ref.current) return;
+		if (!ref.current || !ref.current.children) return;
 		const observer = new IntersectionObserver(
 			(entries) => {
 				const updatedEntries = {};

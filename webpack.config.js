@@ -4,7 +4,7 @@
 const { resolve } = require('path');
 const path = require("path");
 const CopyPlugin = require("copy-webpack-plugin");
-const NODE_ENV = process.env.NODE_ENV || "development";
+const NODE_ENV = process.env.NODE_ENV || "development" || "production";
 
 const webpackConfig = {
 	mode: NODE_ENV,
