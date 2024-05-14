@@ -1132,7 +1132,7 @@ function evf_get_random_string( $length = 10 ) {
  * @return array of form data.
  */
 function evf_get_all_forms( $skip_disabled_entries = false, $check_disable_storing_entry_info = true ) {
-
+	if(is_null(evf()->form)
 	$forms    = array();
 	$form_ids = wp_parse_id_list(
 		evf()->form->get_multiple(
@@ -5531,7 +5531,7 @@ if ( ! function_exists( 'evf_check_addons_update' ) ) {
 					'version' => EVF_ZAPIER_VERSION,
 				);
 			}
-			
+
 			if ( class_exists( 'EverestForms\\Zoho\\Zoho' ) && is_plugin_active( 'everest-forms-zoho/everest-forms-zoho.php' ) && defined( 'EVF_ZAPIER_PLUGIN_FILE' ) && defined( 'EVF_ZOHO_VERSION' ) ) {
 				$plugins_to_check['EverestForms\\Zoho\\Zoho'] = array(
 					'plugin'  => 'everest-forms-zoho/everest-forms-zoho.php',
