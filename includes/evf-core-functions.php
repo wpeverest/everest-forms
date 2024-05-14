@@ -1132,7 +1132,9 @@ function evf_get_random_string( $length = 10 ) {
  * @return array of form data.
  */
 function evf_get_all_forms( $skip_disabled_entries = false, $check_disable_storing_entry_info = true ) {
-	if(is_null(evf()->form)
+	if ( is_null( evf()->form ) ) {
+		return array();
+	}
 	$forms    = array();
 	$form_ids = wp_parse_id_list(
 		evf()->form->get_multiple(
