@@ -18,7 +18,7 @@ const Changelog = () => {
 		typeof _EVF_DASHBOARD_ !== "undefined" && _EVF_DASHBOARD_;
 
 	const [changelogParsed, setChangelogParsed] = useState(false);
-	const [changelogs, setChangelogs] = useState({});
+	const [changelogs, setChangelogs] = useState([]);
 
 	/**
 	 *  Fetrch changelogs on component load.

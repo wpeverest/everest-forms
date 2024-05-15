@@ -47,11 +47,12 @@ class EVF_Blocks {
 	 */
 	public function enqueue_block_editor_assets() {
 		wp_register_style(
-			'everest-forms-block-editor',
+			'everest-forms-block-editor-style',
 			evf()->plugin_url() . '/assets/css/everest-forms.css',
 			array( 'wp-edit-blocks' ),
 			evf()->version
 		);
+		wp_enqueue_style( 'everest-forms-block-editor-style' );
 		$enqueue_script = array( 'wp-blocks', 'wp-element', 'wp-i18n', 'wp-editor', 'wp-components', 'react', 'react-dom' );
 		wp_register_script(
 			'everest-forms-block-editor',
