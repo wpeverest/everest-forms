@@ -38,7 +38,7 @@ const Changelog = () => {
 				}
 			});
 		}
-	}, []);
+	}, [changelogParsed]);
 	if (!changelogParsed) {
 		return <ChangelogSkeleton />;
 	}
