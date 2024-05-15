@@ -54,7 +54,7 @@ const Changelog = () => {
 						<Text>{changelog.date}</Text>
 					</HStack>
 					<Box>
-						{Object.entries(changelog.changes).map(
+						{Object.entries(changelog.changes)?.map(
 							([tag, changes], i) => (
 								<Box
 									key={`${changelog.version}${tag}${i}`}
@@ -89,7 +89,7 @@ const Changelog = () => {
 										{tag}
 									</Tag>
 									<Box pt="10px">
-										{changes.map((change, j) => (
+										{changes?.map((change, j) => (
 											<Text
 												key={`${changelog.version}${tag}${i}${j}`}
 												pl="10"
