@@ -577,5 +577,97 @@
         "themegrill agency"
       ]
     }
+  ],
+  "features": [
+    {
+      "title": "Trello",
+      "slug": "everest-forms-trello",
+      "name": "Everest Forms- Trello",
+      "image": "extensions-json/sections/images/trello.webp",
+      "excerpt": "All it takes are boards, lists, and cards to get a clear view of who’s doing what and what needs to get done.",
+      "link": "https://everestforms.net/features/trello/?utm_source=dashboard-all-features&utm_medium=utm_medium=card-documentation-link&utm_campaign=evf-upgrade-to-pro&utm_content=trello",
+      "released_date": "20/05/2024",
+      "plan": [
+        "personal",
+        "plus",
+        "professional",
+        "themegrill agency"
+      ]
+    },
+    {
+      "title": "iContact",
+      "slug": "everest-forms-icontact",
+      "name": "Everest Forms- iContact",
+      "image": "extensions-json/sections/images/icontact.webp",
+      "excerpt": "Easy-to-use tools help user grow their audience, design beautiful emails, personalize their messages and automate their communications.",
+      "link": "https://everestforms.net/features/icontact/?utm_source=dashboard-all-features&utm_medium=utm_medium=card-documentation-link&utm_campaign=evf-upgrade-to-pro&utm_content=icontact",
+      "released_date": "20/05/2024",
+      "plan": [
+        "personal",
+        "plus",
+        "professional",
+        "themegrill agency"
+      ]
+    },
+    {
+      "title": "Woocommerce",
+      "slug": "everest-forms-woocommerce",
+      "name": "Everest Forms- Woocommerce",
+      "image": "extensions-json/sections/images/woocommerce.webp",
+      "excerpt": "Makes adding custom fields to your WooCommerce product page simpler. With an easy-to-add extra product options quickly.",
+      "link": "https://everestforms.net/features/woocommerce/?utm_source=dashboard-all-features&utm_medium=utm_medium=card-documentation-link&utm_campaign=evf-upgrade-to-pro&utm_content=woocommerce",
+      "released_date": "20/05/2024",
+      "plan": [
+        "personal",
+        "plus",
+        "professional",
+        "themegrill agency"
+      ]
+    },
+    {
+      "title": "Moosend",
+      "slug": "everest-forms-moosend",
+      "name": "Everest Forms- Moosend",
+      "image": "extensions-json/sections/images/moosend.webp",
+      "excerpt": "The simplest and most modern solution to deliver email marketing and automation experiences that drive real revenue growth.",
+      "link": "https://everestforms.net/features/moosend/?utm_source=dashboard-all-features&utm_medium=utm_medium=card-documentation-link&utm_campaign=evf-upgrade-to-pro&utm_content=moosend",
+      "released_date": "20/05/2024",
+      "plan": [
+        "personal",
+        "plus",
+        "professional",
+        "themegrill agency"
+      ]
+    },
+    {
+      "title": "Mailpoet",
+      "slug": "everest-forms-mailpoet",
+      "name": "Everest Forms- Mailpoet",
+      "image": "extensions-json/sections/images/mailpoet.webp",
+      "excerpt": "Send beautiful emails that reach inboxes every time, and create loyal subscribers.",
+      "link": "https://everestforms.net/features/mailpoet/?utm_source=dashboard-all-features&utm_medium=utm_medium=card-documentation-link&utm_campaign=evf-upgrade-to-pro&utm_content=mailpoet",
+      "released_date": "20/05/2024",
+      "plan": [
+        "personal",
+        "plus",
+        "professional",
+        "themegrill agency"
+      ]
+    },
+    {
+      "title": "OnePageCRM",
+      "slug": "everest-forms-onepagecrm",
+      "name": "Everest Forms- Mailpoet",
+      "image": "extensions-json/sections/images/onepagecrm.webp",
+      "excerpt": "Send beautiful emails that reach inboxes every time, and create loyal subscribers.",
+      "link": "https://everestforms.net/features/onepagecrm/?utm_source=dashboard-all-features&utm_medium=utm_medium=card-documentation-link&utm_campaign=evf-upgrade-to-pro&utm_content=onepagecrm",
+      "released_date": "20/05/2024",
+      "plan": [
+        "personal",
+        "plus",
+        "professional",
+        "themegrill agency"
+      ]
+    }
   ]
 }

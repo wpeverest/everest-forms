@@ -4894,9 +4894,228 @@ if ( ! function_exists( 'evf_current_url' ) ) {
 	}
 }
 
+if ( ! function_exists( 'evf_get_utc_time_to' ) ) {
+	/**
+	 * Formats the end time in UTC format.
+	 *
+	 * @since 2.0.9
+	 *
+	 * @param string $evf_entries_report_summary_offset Time offest to be formatted in UTC time.
+	 * @param string $evf_format DateTime format for UTC time.
+	 * @param bool   $evf_display Display the time.
+	 *
+	 * @return datetime end_time in UTC format.
+	 */
+	function evf_get_utc_time_to( $evf_entries_report_summary_offset, $evf_format = 'Y-m-d H:i:s', $evf_display = false ) {
+
+		// Get local time 23:59:59 today.
+		$evf_time_to_local = wp_date( 'Y-m-d 23:59:59' );
+		$evf_format        = 'Y-m-d H:i:s';
+
+		// Get local time to.
+		$evf_time_to_offset = strtotime( $evf_entries_report_summary_offset, strtotime( $evf_time_to_local ) );
+
+		if ( $evf_display ) {
+
+			return gmdate( $evf_format, $evf_time_to_offset );
+
+		} else {
+
+			return strtotime( get_gmt_from_date( gmdate( $evf_format, $evf_time_to_offset ) ) );
+		}
+	}
+}
+
+
+if ( ! function_exists( 'evf_get_utc_time_from' ) ) {
+	/**
+	 * Extarcts the start time in UTC format.
+	 *
+	 * @since 2.0.9
+	 *
+	 * @param string $evf_entries_report_summary_offset Start time to be formated in UTC format.
+	 * @param string $evf_format DateTime format for start time.
+	 * @param bool   $evf_display To hide or display the time.
+	 *
+	 * @return datetime start_time in utc format.
+	 */
+	function evf_get_utc_time_from( $evf_entries_report_summary_offset, $evf_format = 'Y-m-d H:i:s', $evf_display = false ) {
+
+		// Get local time midnight today.
+		$evf_time_from_local = wp_date( 'Y-m-d 00:00:00' );
+		$evf_format          = 'Y-m-d H:i:s';
+
+		// Get local time from.
+		$evf_time_from_offset = strtotime( $evf_entries_report_summary_offset, strtotime( $evf_time_from_local ) );
+
+		if ( $evf_display ) {
+
+			return gmdate( $evf_format, $evf_time_from_offset );
+
+		} else {
+
+			return strtotime( get_gmt_from_date( gmdate( $evf_format, $evf_time_from_offset ) ) );
+		}
+	}
+}
+
+
+if ( ! function_exists( 'evf_summary_start_offset_time' ) ) {
+	/**
+	 * Extracts the start offset time according to the duration.
+	 *
+	 * @since 2.0.9
+	 * @return datetime $starttime.
+	 */
+	function evf_summary_start_offset_time() {
+		// Get options.
+		$evf_report_frequency   = get_option( 'everest_forms_entries_reporting_frequency', 'Weekly' );
+		$evf_report_offset_from = '';
+		$evf_report_email_to    = '';
+		$evf_date_format        = '';
+		$evf_report_offset_to   = '';
+
+		// Set everest forms reporting frequency specific variables.
+		switch ( $evf_report_frequency ) {
+
+			case 'Daily':
+				$evf_report_email_title = __( 'Everest Forms Daily Entries Statistics Report', 'everest-forms' );
+				$evf_report_offset_from = '-1 days';
+				break;
+
+			case 'Weekly':
+				$evf_report_email_title = __( 'Everest Forms Weekly Entries Statistics Report', 'everest-forms' );
+				$evf_report_offset_from = '-8 days';
+				break;
+
+			case 'Monthly':
+				$evf_report_email_title = __( 'Everest Forms Monthly Entries Statistics Report', 'everest-forms' );
+				$evf_report_offset_from = '-1 month -1 day';
+				break;
+		}
+
+		// Build date range.
+		$date_format = get_option( 'date_format' );
+
+		$start_time = evf_get_utc_time_from( $evf_report_offset_from, $date_format, true );
+		return $start_time;
+	}
+}
+
+if ( ! function_exists( 'evf_summary_end_offset_time' ) ) {
+	/**
+	 * Extracts the end offset time according to the duration.
+	 *
+	 * @since 2.0.9
+	 * @return datetime $end_time.
+	 */
+	function evf_summary_end_offset_time() {
+		// Get options.
+		$evf_report_frequency   = get_option( 'everest_forms_entries_reporting_frequency', 'Weekly' );
+		$evf_report_offset_from = '';
+		$evf_report_email_to    = '';
+		$evf_date_format        = '';
+		$evf_report_offset_to   = '';
+
+		// Set everest forms reporting frequency specific variables.
+		switch ( $evf_report_frequency ) {
+
+			case 'Daily':
+				$evf_report_email_title = __( 'Everest Forms Daily Entries Statistics Report', 'everest-forms' );
+				$evf_report_offset_to   = '-1 day';
+				break;
+
+			case 'Weekly':
+				$evf_report_email_title = __( 'Everest Forms Weekly Entries Statistics Report', 'everest-forms' );
+				$evf_report_offset_to   = '-1 day';
+				break;
+
+			case 'Monthly':
+				$evf_report_email_title = __( 'Everest Forms Monthly Entries Statistics Report', 'everest-forms' );
+				$evf_report_offset_to   = '-1 day';
+				break;
+		}
+
+		// Build date range.
+		$date_format = get_option( 'date_format' );
+
+		$end_time = evf_get_utc_time_to( $evf_report_offset_to, $date_format, true );
+
+		return $end_time;
+	}
+}
+
+
+if ( ! function_exists( 'evf_entries_summaries' ) ) {
+	/**
+	 * Function to extract the entries summary from the database.
+	 *
+	 * @since 2.0.9.
+	 * @return array $evf_stat_data_output Statistics data from the database as an output.
+	 */
+	function evf_entries_summaries() {
+		// Get options.
+		$evf_report_frequency = get_option( 'everest_forms_entries_reporting_frequency', 'Weekly' );
+		$offset_from          = '';
+		$offset_to            = '';
+
+		// Set everest forms reporting frequency specific variables.
+		switch ( $evf_report_frequency ) {
+
+			case 'Daily':
+				$evf_report_email_title = __( 'Everest Forms Daily Entries Statistics Report', 'everest-forms' );
+				$offset_from            = '-1 days';
+				$offset_to              = '-1 day';
+				break;
+
+			case 'Weekly':
+				$evf_report_email_title = __( 'Everest Forms Weekly Entries Statistics Report', 'everest-forms' );
+				$offset_from            = '-8 days';
+				$offset_to              = '-1 day';
+				break;
+
+			case 'Monthly':
+				$evf_report_email_title = __( 'Everest Forms Monthly Entries Statistics Report', 'everest-forms' );
+				$offset_from            = '-1 month -1 day';
+				$offset_to              = '-1 day';
+				break;
+		}
+
+		global $wpdb;
+
+		$evf_date_format         = 'Y-m-d H:i:s';
+		$evf_stat_start          = evf_get_utc_time_from( $offset_from, $evf_date_format, true );
+		$evf_stat_end            = evf_get_utc_time_to( $offset_to, $evf_date_format, true );
+		$evf_stat_selected_forms = get_option( 'everest_forms_reporting_form_lists', array() );
+		$evf_stat_data_output    = '';
+		foreach ( $evf_stat_selected_forms as $evf_stat_selected_form ) {
+			$evf_stat_data_output = $wpdb->get_results(
+				$wpdb->prepare(
+					"SELECT
+				{$wpdb->prefix}posts.post_title,
+				{$wpdb->prefix}evf_entries.form_id,
+				COUNT(form_id) AS entries_count
+			FROM
+			{$wpdb->prefix}posts
+			INNER JOIN
+			{$wpdb->prefix}evf_entries ON {$wpdb->prefix}posts.id = {$wpdb->prefix}evf_entries.form_id
+			WHERE
+			{$wpdb->prefix}evf_entries.date_created BETWEEN '%1s' AND '%2s'
+			GROUP BY
+			{$wpdb->prefix}evf_entries.form_id",
+					$evf_stat_start,
+					$evf_stat_end
+				)
+			);
+			break;
+		}
+		return $evf_stat_data_output;
+	}
+}
+
 if ( ! function_exists( 'evf_process_all_fields_smart_tag' ) ) {
 	/**
-	 * Return email content wrapped in email template if {all_fields} is there in email content
+	 * Return email content wrapped in email template if {all_fields} is there in email content.
 	 *
 	 * @since 2.0.5
 	 * @param string $email_content Email Content.
@@ -4997,4 +5216,18 @@ if ( ! function_exists( 'evf_check_addons_update' ) ) {
 			}
 		}
 	}
+}
+
+/**
+ * Get one time draggable fields fields.
+ *
+ * @return array
+ */
+function evf_get_one_time_draggable_fields() {
+	return apply_filters(
+		'everest_forms_one_time_draggable_form_fields',
+		array(
+			'file-upload',
+		)
+	);
 }
