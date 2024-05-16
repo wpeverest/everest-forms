@@ -834,6 +834,7 @@ class EVF_Shortcode_Form {
 	 */
 	public static function output( $atts ) {
 		wp_enqueue_script( 'everest-forms' );
+		wp_enqueue_script( 'everest-forms-survey-polls-quiz-script' );
 
 		// Load jQuery flatpickr libraries. https://github.com/flatpickr/flatpickr.
 		if ( evf_is_field_exists( $atts['id'], 'date-time' ) ) {
@@ -1184,7 +1185,7 @@ class EVF_Shortcode_Form {
 
 		if ( ! did_action( 'wp_head' ) ) {
 			$hook = 'wp_head';
-		} else if ( ! did_action( 'wp_footer' ) ) {
+		} elseif ( ! did_action( 'wp_footer' ) ) {
 			$hook = 'wp_footer';
 		}
 

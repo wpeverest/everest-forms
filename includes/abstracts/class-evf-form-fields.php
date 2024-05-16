@@ -2297,6 +2297,7 @@ abstract class EVF_Form_Fields {
 	 * @since 1.0.0
 	 */
 	public function field_new() {
+
 		// Run a security check.
 		check_ajax_referer( 'everest_forms_field_drop', 'security' );
 
@@ -2314,6 +2315,11 @@ abstract class EVF_Form_Fields {
 		if ( ! isset( $_POST['field_type'] ) || empty( $_POST['field_type'] ) ) {
 			die( esc_html__( 'No field type found', 'everest-forms' ) );
 		}
+
+		$licensed = ( false === evf_get_license_plan() ) ? false : true;
+		if ( false === $licensed && 'file-upload' === $_POST['field_type'] ) {
+			update_option( 'everest_forms_one_time_draggable_field', true );
+		} 
 
 		// Grab field data.
 		$field_args     = ! empty( $_POST['defaults'] ) && is_array( $_POST['defaults'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['defaults'] ) ) : array();
