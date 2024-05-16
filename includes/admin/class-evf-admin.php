@@ -97,6 +97,9 @@ class EVF_Admin {
 					check_admin_referer( 'deactivate-plugin_' . $plugin );
 
 					deactivate_plugins( $plugin );
+					$evf_stats_report_cron = new EVF_Report_Cron();
+					$evf_stats_report_cron->deactivate();
+
 				}
 			}
 

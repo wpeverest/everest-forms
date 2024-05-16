@@ -38,6 +38,24 @@ class EVF_Cron {
 			'display'  => __( 'Every 15 days', 'everest-forms' ),
 		);
 
+		// Adds once in a day to the existing schedules.
+		$schedules['evf_daily'] = array(
+			'interval' => \DAY_IN_SECONDS,
+			'display'  => esc_html__( 'Email entries summary once a day', 'everest-forms' ),
+		);
+
+		// Adds once a week in to the existing schedules.
+		$schedules['evf_weekly'] = array(
+			'interval' => \WEEK_IN_SECONDS,
+			'display'  => esc_html__( 'Email entries summary once a week', 'everest-forms' ),
+		);
+
+		// Adds once a month in the existing schedules.
+		$schedules['evf_monthly'] = array(
+			'interval' => \MONTH_IN_SECONDS,
+			'display'  => esc_html__( 'Email entries summary once a month', 'everest-forms' ),
+		);
+
 		return $schedules;
 	}
 
@@ -60,7 +78,6 @@ class EVF_Cron {
 			wp_schedule_event( time(), 'biweekly', 'everest_forms_biweekly_scheduled_events' );
 		}
 	}
-
 }
 
 $everest_forms_cron = new EVF_Cron();
