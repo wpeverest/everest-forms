@@ -89,7 +89,7 @@ class EVF_Form_Block {
 				'everest-forms-block-editor',
 				plugins_url( '/assets/js/admin/gutenberg/form-block.min.js', EFP_PLUGIN_FILE ),
 				array( 'wp-blocks', 'wp-element', 'wp-i18n', 'wp-components' ),
-				defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( plugin_dir_path( EFP_PLUGIN_FILE ) . '/assets/js/admin/gutenberg/form-block.min.js' ) : EFP_VERSION,
+				defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( plugin_dir_path( EFP_PLUGIN_FILE ) . '/dist/form-block.min.js' ) : EFP_VERSION,
 				true
 			);
 
@@ -98,7 +98,7 @@ class EVF_Form_Block {
 				'everest-forms-block-editor',
 				evf()->plugin_url() . '/assets/js/admin/gutenberg/form-block.min.js',
 				array( 'wp-blocks', 'wp-element', 'wp-i18n', 'wp-components' ),
-				defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( evf()->plugin_path() . '/assets/js/admin/gutenberg/form-block.min.js' ) : EVF_VERSION,
+				defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( evf()->plugin_path() . '/dist/form-block.min.js' ) : EVF_VERSION,
 				true
 			);
 		}

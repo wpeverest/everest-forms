@@ -29,10 +29,10 @@
   },
   "devDependencies": {
     "@babel/core": "7.23.2",
+    "@babel/eslint-parser": "7.22.15",
     "@wordpress/babel-preset-default": "6.5.1",
     "@wordpress/browserslist-config": "4.1.1",
     "autoprefixer": "10.4.16",
-    "@babel/eslint-parser": "7.22.15",
     "babel-loader": "8.2.5",
     "babel-plugin-transform-react-jsx": "6.24.1",
     "babel-preset-env": "1.7.0",
@@ -77,6 +77,18 @@
     ]
   },
   "dependencies": {
-    "grunt-cli": "1.4.3"
+    "@chakra-ui/react": "2.8.2",
+    "@emotion/react": "11.11.4",
+    "@emotion/styled": "11.11.0",
+    "@wordpress/api-fetch": "6.51.0",
+    "@wordpress/i18n": "4.54.0",
+    "file-loader": "6.2.0",
+    "framer-motion": "11.0.20",
+    "grunt-cli": "1.4.3",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-grid-system": "8.2.0",
+    "react-router-dom": "6.22.3",
+    "use-ontype": "1.2.4"
   }
 }
