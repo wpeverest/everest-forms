@@ -35,6 +35,8 @@ class EVF_REST_API {
 	public static function init() {
 		include __DIR__ . '/controllers/version1/class-evf-modules.php';
 		include __DIR__ . '/controllers/version1/class-evf-changelog.php';
+		include __DIR__ . '/controllers/version1/class-evf-gutenberg-blocks.php';
+
 		add_action( 'rest_api_init', array( __CLASS__, 'register_rest_routes' ) );
 	}
 
@@ -59,7 +61,7 @@ class EVF_REST_API {
 	 *
 	 * @return array List of Classes.
 	 */
-	protected static function get_rest_classes()  {
+	protected static function get_rest_classes() {
 		/**
 		 * Filters rest API controller classes.
 		 *
@@ -85,9 +87,9 @@ class EVF_REST_API {
 	 */
 	protected static function get_v1_rest_classes() {
 		return array(
-			'modules'         => 'EVF_Modules',
-			'changelog'       => 'EVF_Changelog',
-
+			'modules'          => 'EVF_Modules',
+			'changelog'        => 'EVF_Changelog',
+			'gutenberg-blocks' => 'EVF_Gutenberg_Blocks',
 		);
 	}
 }
