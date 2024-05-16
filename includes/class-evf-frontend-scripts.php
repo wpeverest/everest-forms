@@ -64,6 +64,7 @@ class EVF_Frontend_Scripts {
 					'src'     => self::get_asset_url( 'assets/css/intlTelInput/intlTelInput.css' ),
 					'deps'    => array(),
 					'version' => EVF_VERSION,
+					'media'   => 'all',
 					'has_rtl' => false,
 				),
 			)
