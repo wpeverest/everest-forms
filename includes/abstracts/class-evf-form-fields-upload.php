@@ -32,6 +32,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 		add_filter( 'everest_forms_email_file_attachments', array( $this, 'send_file_as_email_attachment' ), 99, 6 );
 		add_filter( 'everest_forms_email_file_attachments', array( $this, 'send_csv_file_as_email_attachment' ), 100, 6 );
 		add_action( 'everest_forms_remove_attachments_after_send_email', array( $this, 'remove_csv_file_after_email_send' ), 10, 6 );
+		add_action( 'everest_forms_woocommerce_js', array( $this, 'load_assets' ) );
 
 		if ( is_callable( array( $this, 'field_properties' ) ) ) {
 			add_filter( 'everest_forms_field_properties_' . $this->type, array( $this, 'field_properties' ), 5, 3 );

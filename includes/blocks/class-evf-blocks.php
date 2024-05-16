@@ -61,7 +61,13 @@ class EVF_Blocks {
 			evf()->version,
 			true
 		);
-
+		wp_register_script(
+			'everest-forms-shortcode-embed-form',
+			evf()->plugin_url() . '/assets/js/admin/shortcode-form-embed.js',
+			array( 'wp-blocks', 'wp-element', 'wp-i18n', 'wp-components', 'wp-dom-ready', 'wp-edit-post', 'jquery', 'jquery-blockui', 'jquery-ui-sortable', 'jquery-ui-widget', 'jquery-ui-core', 'tooltipster', 'wp-color-picker', 'perfect-scrollbar' ),
+			defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( evf()->plugin_path() . '/assets/js/admin/gutenberg/shortcode-form-embed.js' ) : EVF_VERSION,
+			true
+		);
 		$form_block_data = array(
 			'evfRestApiNonce'          => wp_create_nonce( 'wp_rest' ),
 			'restURL'                  => rest_url(),
@@ -72,6 +78,11 @@ class EVF_Blocks {
 		);
 
 		wp_localize_script( 'everest-forms-block-editor', '_EVF_BLOCKS_', $form_block_data );
+		$action_page = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : ''; //phpcs:ignore WordPress.Security.NonceVerification.Recommended,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+
+		if ( 'edit' === $action_page ) {
+			wp_enqueue_script( 'everest-forms-shortcode-embed-form' );
+		}
 		wp_enqueue_script( 'everest-forms-block-editor' );
 	}
 
