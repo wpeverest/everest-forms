@@ -2,9 +2,9 @@
 Contributors: WPEverest
 Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.2
-Tested up to: 6.5
+Tested up to: 6.5.3
 Requires PHP: 7.2
-Stable tag: 2.0.9
+Stable tag: 3.0.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -291,6 +291,15 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 
 == Changelog ==
+
+= 3.0.0       - xx-xx-2024
+* Feature     - Dashboard page.​
+* Feature     - Email scheduling in daily, weekly or monthly for the progress data of form.​
+* Enhancement - Captcha field.​
+* Enhancement - Gutenberg block.​
+* Enhancement - Global Setting Design. ​
+* Enhancement - Move everest form pro fields into free.​
+* Fix         - Custom JS issue with html special character.
 
 = 2.0.9       - 04-04-2024
 * Feature     - System information.
