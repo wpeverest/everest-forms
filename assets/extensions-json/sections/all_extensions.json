@@ -7,6 +7,7 @@
       "image": "extensions-json/sections/images/ai.png",
       "excerpt": "Add AI capabilities like interactive chatbox, AI generated email notifications, and more to your forms.",
       "link": "https://everestforms.net/features/ai-contact-form/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=ai-contact-form",
+      "released_date": "23/11/2023",
       "plan": [
         "personal",
         "plus",
@@ -22,6 +23,7 @@
       "image": "extensions-json/sections/images/style-customizer.png",
       "excerpt": "Allows you to make design changes without coding. Powerful customizing panel with live preview helps you customize colors, fonts, spacing, background, alignment and more.",
       "link": "https://everestforms.net/features/style-customizer/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=style-customizer",
+      "released_date": "22/03/2019",
       "plan": [
         "personal",
         "plus",
@@ -37,6 +39,7 @@
       "image": "extensions-json/sections/images/custom-captcha.png",
       "excerpt": "Allows you to add custom questions or math captcha to your form and fight back against spam form submissions. It also adds a security layer to your website.",
       "link": "https://everestforms.net/features/custom-captcha/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=captcha",
+      "released_date": "16/07/2019",
       "plan": [
         "personal",
         "plus",
@@ -52,6 +55,7 @@
       "image": "extensions-json/sections/images/multi-part-forms.png",
       "excerpt": "Allows you to easily break your long forms into multiple parts. It helps you to make a stepwise form instead of a long-form which adds rich user experience to your website.",
       "link": "https://everestforms.net/features/multi-step-forms/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=multi-part-forms",
+      "released_date": "31/10/2018",
       "plan": [
         "personal",
         "plus",
@@ -67,6 +71,7 @@
       "image": "extensions-json/sections/images/pdf-submission.png",
       "excerpt": "Allows you to generate digital PDF documents of any form submission to export them. It also lets you to send a PDF copy of the form submission via email attachment.",
       "link": "https://everestforms.net/features/pdf-form-submission/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=pdf-form-submission",
+      "released_date": "10/09/2018",
       "plan": [
         "personal",
         "plus",
@@ -82,6 +87,7 @@
       "image": "extensions-json/sections/images/email-templates.png",
       "excerpt": "Allows you to make email design changes without coding. Powerful customizing panel with live preview helps you customize colors, fonts, spacing, background, alignment and more.",
       "link": "https://everestforms.net/features/email-templates/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=email-templates",
+      "released_date": "23/09/2022",
       "plan": [
         "professional",
         "agency",
@@ -95,6 +101,7 @@
       "image": "extensions-json/sections/images/survey-polls-quiz.png",
       "excerpt": "Allows you to create an intuitive survey, poll and quiz forms easily. It also provides admin reporting for data-driven decisions and other aditional fields like Likert and Scale Rating.",
       "link": "https://everestforms.net/features/surveys-polls-and-quiz/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=survey-polls-and-quiz",
+      "released_date": "22/03/2019",
       "plan": [
         "plus",
         "professional",
@@ -109,6 +116,7 @@
       "image": "extensions-json/sections/images/payment-paypal.png",
       "excerpt": "Allows you to integrate online payment service to your e-commerce website. You can connect your Everest forms with PayPal to easily collect payments, donations, and online orders.",
       "link": "https://everestforms.net/features/paypal-standard/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=paypal-standard",
+      "released_date": "10/09/2018",
       "plan": [
         "plus",
         "professional",
@@ -123,6 +131,7 @@
       "image": "extensions-json/sections/images/mailchimp.png",
       "excerpt": "Allows your users to subscribe to Mailchimp through form submissions. Users filling up the forms can be directly added to your subscribers list in Mailchimp.",
       "link": "https://everestforms.net/features/mailchimp/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=mailchimp",
+      "released_date": "10/08/2018",
       "plan": [
         "personal",
         "plus",
@@ -138,6 +147,7 @@
       "image": "extensions-json/sections/images/user-registration.png",
       "excerpt": "Allows you to create a custom WordPress user registration form instantly in few simple steps. You can add or remove input fields as per the style of your registration using this feature.",
       "link": "https://everestforms.net/features/user-registration/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=user-registration",
+      "released_date": "16/07/2019",
       "plan": [
         "plus",
         "professional",
@@ -152,6 +162,7 @@
       "image": "extensions-json/sections/images/google-sheets.png",
       "excerpt": "Allows you to send form submission data to Google Sheets spreadsheets.",
       "link": "https://everestforms.net/features/google-sheets/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=google-sheets",
+      "released_date": "29/03/2022",
       "plan": [
         "plus",
         "professional",
@@ -163,9 +174,10 @@
       "title": "Save And Continue",
       "slug": "everest-forms-save-and-continue",
       "name": "Everest Forms Save And Continue",
-      "image": "extensions-json/sections/images/save-and-continue.jpg",
+      "image": "extensions-json/sections/images/save-and-continue.png",
       "excerpt": "Allows users to save their partially filled information and continue to work on it later. Users can opt to receive a link if they wish to continue later with the form",
       "link": "https://everestforms.net/features/save-and-continue/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=save-and-continue",
+      "released_date": "16/09/2021",
       "plan": [
         "professional",
         "agency",
@@ -179,6 +191,7 @@
       "image": "extensions-json/sections/images/payment-stripe.png",
       "excerpt": "Allows you to integrate online payment service to your e-commerce website. You can connect your Everest forms with Stripe to easily collect payments, donations, and online orders.",
       "link": "https://everestforms.net/features/stripe/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=stripe",
+      "released_date": "04/04/2019",
       "plan": [
         "professional",
         "agency",
@@ -189,9 +202,10 @@
       "title": "Repeater Fields",
       "slug": "everest-forms-repeater-fields",
       "name": "Everest Forms Repeater Fields",
-      "image": "extensions-json/sections/images/repeater-fields.jpg",
+      "image": "extensions-json/sections/images/repeater-fields.png",
       "excerpt": "Repeater field add-on allows you to repeatedly add a set of form fields within your WordPress forms.",
       "link": "https://everestforms.net/features/repeater-fields/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=repeater-fields",
+      "released_date": "26/10/2021",
       "plan": [
         "professional",
         "agency",
@@ -205,6 +219,7 @@
       "image": "extensions-json/sections/images/geolocation.png",
       "excerpt": "Allows you to collect precise location of your visitors and store their geolocation data like IP, Country, and Postal/Zip Code along with form submissions.",
       "link": "https://everestforms.net/features/geolocation/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=geolocation",
+      "released_date": "15/09/2018",
       "plan": [
         "plus",
         "professional",
@@ -219,6 +234,7 @@
       "image": "extensions-json/sections/images/form-restriction.png",
       "excerpt": "Allows you to easily control and restrict by limiting entries, scheduling submission dates, password protection for the form submissions.",
       "link": "https://everestforms.net/features/form-restriction/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=form-restriction",
+      "released_date": "15/07/2020",
       "plan": [
         "professional",
         "agency",
@@ -232,6 +248,7 @@
       "image": "extensions-json/sections/images/calculations.png",
       "excerpt": "Calculations add-on allows you to perform calculations on the number/range fields within the form.",
       "link": "https://everestforms.net/features/calculations/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=calculations",
+      "released_date": "29/03/2022",
       "plan": [
         "professional",
         "agency",
@@ -245,6 +262,7 @@
       "image": "extensions-json/sections/images/convertkit.png",
       "excerpt": "Allows you to efficiently grow your business by generating more leads with ConvertKit. It also helps increase automated emails for better lead generation.",
       "link": "https://everestforms.net/features/convertkit/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=convertkit",
+      "released_date": "10/08/2018",
       "plan": [
         "personal",
         "plus",
@@ -260,6 +278,7 @@
       "image": "extensions-json/sections/images/post-submissions.png",
       "excerpt": "Allows you to have user-submitted content. It also lets your users to submit their blogs posts from front-end without the hassle of logging into the admin dashboard.",
       "link": "https://everestforms.net/features/post-submissions/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=post-submissions",
+      "released_date": "16/07/2019",
       "plan": [
         "professional",
         "agency",
@@ -273,6 +292,7 @@
       "image": "extensions-json/sections/images/conversational-forms.png",
       "excerpt": "Allow you to make your form submission more interactive. The Everest Forms Conversational Forms Add-on will assist you in modernizing your questionnaires, contact forms, and application forms. It enhances your form to the next level and beyond!",
       "link": "https://everestforms.net/features/conversational-forms/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=conversational-forms",
+      "released_date": "18/10/2022",
       "plan": [
         "plus",
         "professional",
@@ -287,6 +307,7 @@
       "image": "extensions-json/sections/images/frontend-listing.png",
       "excerpt": "The Frontend Listing add-on for Everest Forms allows you to list your entries in your site’s posts or pages. Visitors can view and check user entries of a particular form.",
       "link": "https://everestforms.net/features/frontend-listing/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=frontend-listing",
+      "released_date": "15/06/2022",
       "plan": [
         "plus",
         "professional",
@@ -301,6 +322,7 @@
       "image": "extensions-json/sections/images/zapier.png",
       "excerpt": "Allows you to easily connect your forms with over 1500+ popular web applications without any hassle. It makes integrating forms and apps buttery-smooth.",
       "link": "https://everestforms.net/features/zapier/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=zapier",
+      "released_date": "02/05/2019",
       "plan": [
         "professional",
         "agency",
@@ -314,6 +336,7 @@
       "image": "extensions-json/sections/images/sms-notifications.png",
       "excerpt": "Using the Everest Forms SMS Notifications Add-on, you can now easily configure any online form to receive an SMS notification when a form is being submitted.",
       "link": "https://everestforms.net/features/sms-notifications/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=sms-notifications",
+      "released_date": "19/05/2022",
       "plan": [
         "professional",
         "agency",
@@ -324,9 +347,10 @@
       "title": "Cloud Storage",
       "slug": "everest-forms-cloud-storage",
       "name": "Everest Forms Cloud Storage",
-      "image": "extensions-json/sections/images/cloud-storage.jpg",
+      "image": "extensions-json/sections/images/cloud-storage.png",
       "excerpt": "Everest Forms Cloud Storage add-on is a WordPress Cloud Storage integration plugin that allows you to easily send Everest Forms files directly to your Cloud Storage account. ",
       "link": "https://everestforms.net/features/cloud-storage/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=cloud-storage",
+      "released_date": "31/08/2022",
       "plan": [
         "personal",
         "plus",
@@ -342,6 +366,7 @@
       "image": "extensions-json/sections/images/coupons.png",
       "excerpt": "With the Everest Forms Coupon add-on, you can quickly create or add a coupon code on a form to encourage users to purchase the products.",
       "link": "https://everestforms.net/features/coupons/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=coupons",
+      "released_date": "23/09/2020",
       "plan": [
         "professional",
         "agency",
@@ -352,9 +377,10 @@
       "title": "Sendinblue",
       "slug": "everest-forms-sendinblue",
       "name": "Everest Forms Sendinblue",
-      "image": "extensions-json/sections/images/sendinblue.jpg",
+      "image": "extensions-json/sections/images/sendinblue.png",
       "excerpt": "Allows your users to subscribe to Sendinblue through form submissions. Users filling up the forms can be directly added to your subscribers list in Sendinblue.",
       "link": "https://everestforms.net/features/sendinblue/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=sendinblue",
+      "released_date": "26/09/2022",
       "plan": [
         "plus",
         "professional",
@@ -369,6 +395,7 @@
       "image": "extensions-json/sections/images/activecampaign.png",
       "excerpt": "Allows your users to subscribe to ActiveCampaign through form submission via Everest Forms.",
       "link": "https://everestforms.net/features/activecampaign/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=mailerlite",
+      "released_date": "15/07/2020",
       "plan": [
         "plus",
         "professional",
@@ -383,6 +410,7 @@
       "image": "extensions-json/sections/images/mailerlite.png",
       "excerpt": "Allows your users to subscribe to MailerLite through form submission via Everest Forms.",
       "link": "https://everestforms.net/features/mailerlite/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=mailerlite",
+      "released_date": "15/07/2020",
       "plan": [
         "plus",
         "professional",
@@ -397,6 +425,7 @@
       "image": "extensions-json/sections/images/form-analytics.png",
       "excerpt": "Track user interactions efficiently by monitoring impressions, conversions, abandonments, and bounce rate.",
       "link": "https://everestforms.net/features/form-analytics/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=form-analytics",
+      "released_date": "30/08/2023",
       "plan": [
         "plus",
         "professional",
@@ -411,6 +440,7 @@
       "image": "extensions-json/sections/images/campaign-monitor.png",
       "excerpt": "Allows your users to subscribe to Campaign Monitor through form submission via Everest Forms.",
       "link": "https://everestforms.net/features/campaign-monitor/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=campaign-monitor",
+      "released_date": "16/10/2020",
       "plan": [
         "plus",
         "professional",
@@ -425,6 +455,7 @@
       "image": "extensions-json/sections/images/hubspot.png",
       "excerpt": "With the Everest Forms HubSpot add-On, you can smoothly integrate your lead generation forms with HubSpot.",
       "link": "https://everestforms.net/features/hubspot/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=hubspot",
+      "released_date": "26/09/2022 ",
       "plan": [
         "professional",
         "agency",
@@ -435,9 +466,10 @@
       "title": "Salesforce",
       "slug": "everest-forms-salesforce",
       "name": "Everest Forms Salesforce",
-      "image": "extensions-json/sections/images/salesforce.jpg",
+      "image": "extensions-json/sections/images/salesforce.png",
       "excerpt": "Everest Forms Salesforce add-on is a WordPress Salesforce integration plugin that allows you to easily send Everest Forms entries directly to your Salesforce account. ",
       "link": "https://everestforms.net/features/salesforce/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=salesforce",
+      "released_date": "31/08/2022",
       "plan": [
         "professional",
         "agency",
@@ -451,6 +483,7 @@
       "image": "extensions-json/sections/images/pipedrive.png",
       "excerpt": "Everest Forms Pipedrive CRM add-on is a WordPress Pipedrive CRM integration plugin that allows you to easily send Everest Forms entries directly to your Pipedrive CRM account. ",
       "link": "https://everestforms.net/features/pipedrive/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=pipedrive",
+      "released_date": "15/06/2022",
       "plan": [
         "professional",
         "agency",
@@ -464,6 +497,7 @@
       "image": "extensions-json/sections/images/authorize-net.png",
       "excerpt": "Allows you to integrate online payment service to your e-commerce website. You can connect your Everest forms with Authorize.Net to easily collect payments, donations, and online orders.",
       "link": "https://everestforms.net/features/authorize-net/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=authorize-net",
+      "released_date": "14/06/2023",
       "plan": [
         "professional",
         "agency",
@@ -474,9 +508,10 @@
       "title": "Constant Contact",
       "slug": "everest-forms-constant-contact",
       "name": "Everest Forms Constant Contact",
-      "image": "extensions-json/sections/images/constant-contact.jpg",
+      "image": "extensions-json/sections/images/constant-contact.png",
       "excerpt": "Everest Forms Constant Contact add-on is a WordPress Constant Contact integration plugin that allows you to easily send Everest Forms entries directly to your Constant Contact account. ",
       "link": "https://everestforms.net/features/constant-contact/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=constant-contact",
+      "released_date": "31/08/2022",
       "plan": [
         "plus",
         "professional",
@@ -491,6 +526,7 @@
       "image": "extensions-json/sections/images/drip.png",
       "excerpt": "With the Everest Forms Drip add-on, you can effortlessly create an unlimited number of newsletter signup forms and connect them to Drip.",
       "link": "https://everestforms.net/features/drip/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=drip",
+      "released_date": "15/06/2022",
       "plan": [
         "plus",
         "professional",
@@ -505,6 +541,7 @@
       "image": "extensions-json/sections/images/razorpay.png",
       "excerpt": "Razor Pay add-on for Everest Forms allows you to accept/collect payment via your form all over India.",
       "link": "https://everestforms.net/features/razorpay/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=razorpay",
+      "released_date": "19/05/2022",
       "plan": [
         "professional",
         "agency",
@@ -518,6 +555,7 @@
       "image": "extensions-json/sections/images/zoho.png",
       "excerpt": "Everest Forms Zoho CRM add-on is a WordPress Zoho CRM integration plugin that allows you to easily send Everest Forms entries directly to your Zoho CRM account. ",
       "link": "https://everestforms.net/features/zoho-crm/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=zoho-crm",
+      "released_date": "19/07/2022",
       "plan": [
         "professional",
         "agency",
@@ -528,13 +566,106 @@
       "title": "GetResponse",
       "slug": "everest-forms-getresponse",
       "name": "Everest Forms GetResponse",
-      "image": "extensions-json/sections/images/getresponse.jpg",
+      "image": "extensions-json/sections/images/getresponse.png",
       "excerpt": "Allows your users to subscribe to GetResponse through form submissions. Users filling up the forms can be directly added to your subscribers list in GetResponse.",
       "link": "https://everestforms.net/features/getresponse/?utm_source=addons-page&utm_medium=banner&utm_campaign=evf-upgrade-to-pro&utm_content=getresponse",
+      "released_date": "26/09/2022",
       "plan": [
         "plus",
         "professional",
         "agency",
+        "themegrill agency"
+      ]
+    }
+  ],
+  "features": [
+    {
+      "title": "Trello",
+      "slug": "everest-forms-trello",
+      "name": "Everest Forms- Trello",
+      "image": "extensions-json/sections/images/trello.png",
+      "excerpt": "All it takes are boards, lists, and cards to get a clear view of who’s doing what and what needs to get done.",
+      "link": "https://everestforms.net/features/trello/?utm_source=dashboard-all-features&utm_medium=utm_medium=card-documentation-link&utm_campaign=evf-upgrade-to-pro&utm_content=trello",
+      "released_date": "20/05/2024",
+      "plan": [
+        "personal",
+        "plus",
+        "professional",
+        "themegrill agency"
+      ]
+    },
+    {
+      "title": "iContact",
+      "slug": "everest-forms-icontact",
+      "name": "Everest Forms- iContact",
+      "image": "extensions-json/sections/images/icontact.png",
+      "excerpt": "Easy-to-use tools help user grow their audience, design beautiful emails, personalize their messages and automate their communications.",
+      "link": "https://everestforms.net/features/icontact/?utm_source=dashboard-all-features&utm_medium=utm_medium=card-documentation-link&utm_campaign=evf-upgrade-to-pro&utm_content=icontact",
+      "released_date": "20/05/2024",
+      "plan": [
+        "personal",
+        "plus",
+        "professional",
+        "themegrill agency"
+      ]
+    },
+    {
+      "title": "Woocommerce",
+      "slug": "everest-forms-woocommerce",
+      "name": "Everest Forms- Woocommerce",
+      "image": "extensions-json/sections/images/woocommerece.png",
+      "excerpt": "Makes adding custom fields to your WooCommerce product page simpler. With an easy-to-add extra product options quickly.",
+      "link": "https://everestforms.net/features/woocommerce/?utm_source=dashboard-all-features&utm_medium=utm_medium=card-documentation-link&utm_campaign=evf-upgrade-to-pro&utm_content=woocommerce",
+      "released_date": "20/05/2024",
+      "plan": [
+        "personal",
+        "plus",
+        "professional",
+        "themegrill agency"
+      ]
+    },
+    {
+      "title": "Moosend",
+      "slug": "everest-forms-moosend",
+      "name": "Everest Forms- Moosend",
+      "image": "extensions-json/sections/images/moosend.png",
+      "excerpt": "The simplest and most modern solution to deliver email marketing and automation experiences that drive real revenue growth.",
+      "link": "https://everestforms.net/features/moosend/?utm_source=dashboard-all-features&utm_medium=utm_medium=card-documentation-link&utm_campaign=evf-upgrade-to-pro&utm_content=moosend",
+      "released_date": "20/05/2024",
+      "plan": [
+        "personal",
+        "plus",
+        "professional",
+        "themegrill agency"
+      ]
+    },
+    {
+      "title": "Mailpoet",
+      "slug": "everest-forms-mailpoet",
+      "name": "Everest Forms- Mailpoet",
+      "image": "extensions-json/sections/images/mailpoet.png",
+      "excerpt": "Send beautiful emails that reach inboxes every time, and create loyal subscribers.",
+      "link": "https://everestforms.net/features/mailpoet/?utm_source=dashboard-all-features&utm_medium=utm_medium=card-documentation-link&utm_campaign=evf-upgrade-to-pro&utm_content=mailpoet",
+      "released_date": "20/05/2024",
+      "plan": [
+        "personal",
+        "plus",
+        "professional",
+        "themegrill agency"
+      ]
+    },
+    {
+      "title": "OnePageCRM",
+      "slug": "everest-forms-onepagecrm",
+      "name": "Everest Forms- Mailpoet",
+      "image": "extensions-json/sections/images/onepagecrm.png",
+      "excerpt": "Send beautiful emails that reach inboxes every time, and create loyal subscribers.",
+      "link": "https://everestforms.net/features/onepagecrm/?utm_source=dashboard-all-features&utm_medium=utm_medium=card-documentation-link&utm_campaign=evf-upgrade-to-pro&utm_content=onepagecrm",
+      "released_date": "20/05/2024",
+      "plan": [
+        "personal",
+        "plus",
+        "professional",
         "themegrill agency"
       ]
     }
