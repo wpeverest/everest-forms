@@ -2538,6 +2538,9 @@ p.search-box {
 						}
 
 						//  &.evf-upgrade-addon,
+						&.recaptcha_empty_key_validate,
+						&.turnstile_empty_key_validate,
+						&.hcaptcha_empty_key_validate,
 						&.enable-stripe-model,
 						&.enable-authorize-net-model {
 							opacity: 0.45;

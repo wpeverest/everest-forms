@@ -13,6 +13,9 @@ jQuery( function( $ ) {
 			$( document.body ).on( 'click dragstart', '.evf-upgradable-feature, .everest-forms-btn-group span.upgrade-modal', this.feature_upgrade );
 			$( document.body ).on( 'click dragstart', '.evf-one-time-draggable-field, .evf-registered-item.evf-one-time-draggable-field', this.evf_one_time_draggable_field );
 			$( document.body ).on( 'click ', '.everest-forms-integrations[data-action="upgrade"]', this.integration_upgrade );
+			$( document.body ).on( 'click dragstart', '.evf-registered-item.recaptcha_empty_key_validate', this.recaptcha_empty_key_validate );
+			$( document.body ).on( 'click dragstart', '.evf-registered-item.hcaptcha_empty_key_validate', this.hcaptcha_empty_key_validate );
+			$( document.body ).on( 'click dragstart', '.evf-registered-item.turnstile_empty_key_validate', this.turnstile_empty_key_validate );
 
 		},
 		integration_upgrade: function( e ) {
@@ -194,6 +197,55 @@ jQuery( function( $ ) {
 			$.alert({
 				title: evf_upgrade.evf_one_time_draggable_title,
 				content: evf_upgrade.evf_one_time_draggable_message,
+				icon: 'dashicons dashicons-info',
+				type: 'blue',
+				buttons : {
+					confirm : {
+						text: evf_data.i18n_close,
+						btnClass: 'btn-confirm',
+						keys: ['enter']
+					}
+				}
+			});
+		},
+
+		recaptcha_empty_key_validate: function( e ) {
+			e.preventDefault();
+			$.alert({
+				title: evf_upgrade.recaptcha_title,
+				content: evf_upgrade.recaptcha_api_key_message,
+				icon: 'dashicons dashicons-info',
+				type: 'blue',
+				buttons : {
+					confirm : {
+						text: evf_data.i18n_close,
+						btnClass: 'btn-confirm',
+						keys: ['enter']
+					}
+				}
+			});
+		},
+		hcaptcha_empty_key_validate: function( e ) {
+			e.preventDefault();
+			$.alert({
+				title: evf_upgrade.hcaptcha_title,
+				content: evf_upgrade.hcaptcha_api_key_message,
+				icon: 'dashicons dashicons-info',
+				type: 'blue',
+				buttons : {
+					confirm : {
+						text: evf_data.i18n_close,
+						btnClass: 'btn-confirm',
+						keys: ['enter']
+					}
+				}
+			});
+		},
+		turnstile_empty_key_validate: function( e ) {
+			e.preventDefault();
+			$.alert({
+				title: evf_upgrade.turnstile_title,
+				content: evf_upgrade.turnstile_api_key_message,
 				icon: 'dashicons dashicons-info',
 				type: 'blue',
 				buttons : {
