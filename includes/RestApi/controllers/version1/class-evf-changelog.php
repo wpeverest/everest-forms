@@ -73,7 +73,7 @@ class EVF_Changelog {
 	 * @return \WP_Error|string
 	 */
 	protected function read_changelog() {
-		$raw_changelog = evf_file_get_contents( 'changelog.txt' );
+		$raw_changelog = evf_file_get_contents( 'readme.txt' );
 		if ( ! $raw_changelog ) {
 			return new \WP_Error( 'changelog_read_error', esc_html__( 'Failed to read changelog.', 'everest-forms' ) );
 		}
