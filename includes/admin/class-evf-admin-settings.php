@@ -194,6 +194,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 		 * @param array[] $options Opens array to output.
 		 */
 		public static function output_fields( $options ) {
+			$settings = '';
 			foreach ( $options as $value ) {
 				if ( ! isset( $value['type'] ) ) {
 					continue;
@@ -249,12 +250,14 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 					// Section Titles.
 					case 'title':
 						if ( ! empty( $value['title'] ) ) {
-							echo '<h2>' . esc_html( $value['title'] ) . '</h2>';
+							echo '<div class="everest-forms-options-header">
+   					 				<div class="everest-forms-options-header--top"><h3>' . esc_html( $value['title'] ) . '.</h3></div>
+								 </div>';
 						}
 						if ( ! empty( $value['desc'] ) ) {
 							echo wp_kses_post( wpautop( wptexturize( $value['desc'] ) ) );
 						}
-						echo '<table class="form-table">' . "\n\n";
+						echo '<div class="everest-forms-card">' . "\n\n";
 						if ( ! empty( $value['id'] ) ) {
 							do_action( 'everest_forms_settings_' . sanitize_title( $value['id'] ) );
 						}
@@ -265,7 +268,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						if ( ! empty( $value['id'] ) ) {
 							do_action( 'everest_forms_settings_' . sanitize_title( $value['id'] ) . '_end' );
 						}
-						echo '</table>';
+						echo '</div>';
 						if ( ! empty( $value['id'] ) ) {
 							do_action( 'everest_forms_settings_' . sanitize_title( $value['id'] ) . '_after' );
 						}
@@ -296,29 +299,27 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 							$option_value = $value['default'];
 						}
 
-						?><tr valign="top" class="<?php echo esc_attr( implode( ' ', $visibility_class ) ); ?>">
-							<th scope="row" class="titledesc">
+						?><div class="everest-forms-global-settings <?php echo esc_attr( implode( ' ', $visibility_class ) ); ?>">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
-							</th>
-							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
-								<input
-									name="<?php echo esc_attr( $value['id'] ); ?>"
-									id="<?php echo esc_attr( $value['id'] ); ?>"
-									type="<?php echo esc_attr( $value['type'] ); ?>"
-									style="<?php echo esc_attr( $value['css'] ); ?>"
-									value="<?php echo esc_attr( $option_value ); ?>"
-									class="<?php echo esc_attr( $value['class'] ); ?>"
-									placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
-									<?php
-									if ( ! empty( $value['custom_attributes'] ) && is_array( $value['custom_attributes'] ) ) {
-										foreach ( $value['custom_attributes'] as $attribute => $attribute_value ) {
-											echo esc_attr( $attribute ) . '="' . esc_attr( $attribute_value ) . '"';
+									<div class="everest-forms-global-settings--field forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
+									<input
+										name="<?php echo esc_attr( $value['id'] ); ?>"
+										id="<?php echo esc_attr( $value['id'] ); ?>"
+										type="<?php echo esc_attr( $value['type'] ); ?>"
+										style="<?php echo esc_attr( $value['css'] ); ?>"
+										value="<?php echo esc_attr( $option_value ); ?>"
+										class="<?php echo esc_attr( $value['class'] ); ?>"
+										placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
+										<?php
+										if ( ! empty( $value['custom_attributes'] ) && is_array( $value['custom_attributes'] ) ) {
+											foreach ( $value['custom_attributes'] as $attribute => $attribute_value ) {
+												echo esc_attr( $attribute ) . '="' . esc_attr( $attribute_value ) . '"';
+											}
 										}
-									}
-									?>
-									/><?php echo esc_html( $value['suffix'] ); ?> <?php echo wp_kses_post( $description ); ?>
-							</td>
-						</tr>
+										?>
+										/><?php echo esc_html( $value['suffix'] ); ?> <?php echo wp_kses_post( $description ); ?>
+								</div>
+							</div>
 						<?php
 						break;
 					case 'image':
@@ -339,11 +340,9 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						}
 
 						?>
-						<tr valign="top">
-							<th scope="row" class="titledesc">
+						<div class="everest-forms-global-settings <?php echo esc_attr( implode( ' ', $visibility_class ) ); ?>">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
-							</th>
-							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
+								<div class="everest-forms-global-settings--field forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
 							<img src="<?php echo esc_attr( $option_value ); ?>" alt="<?php echo esc_attr( $alt_text ); ?>" class="evf-image-uploader <?php echo empty( $option_value ) ? 'everest-forms-hidden' : ''; ?>" height="100" width="auto">
 							<button type="button" class="evf-image-uploader evf-button button-secondary" <?php echo empty( $option_value ) ? '' : 'style="display:none"'; ?> ><?php echo esc_html( $upload_text ); ?></button>
 							<input
@@ -352,6 +351,8 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 								value="<?php echo esc_attr( $option_value ); ?>"
 								type="hidden"
 							>
+							</div>
+						</div>
 						<?php
 						// Adding scripts.
 						wp_enqueue_script( 'jquery' );
@@ -363,11 +364,9 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						$option_value = $value['value'];
 
 						?>
-						<tr valign="top">
-							<th scope="row" class="titledesc">
+						<div class="everest-forms-global-settings <?php echo esc_attr( implode( ' ', $visibility_class ) ); ?>">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
-							</th>
-							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">&lrm;
+								<div class="everest-forms-global-settings--field forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
 								<span class="colorpickpreview" style="background: <?php echo esc_attr( $option_value ); ?>">&nbsp;</span>
 								<input
 									name="<?php echo esc_attr( $value['id'] ); ?>"
@@ -387,8 +386,8 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 									?>
 									/>&lrm; <?php echo wp_kses_post( $description ); ?>
 									<div id="colorPickerDiv_<?php echo esc_attr( $value['id'] ); ?>" class="colorpickdiv" style="z-index: 100;background:#eee;border:1px solid #ccc;position:absolute;display:none;"></div>
-							</td>
-						</tr>
+							</div>
+						</div>
 						<?php
 						break;
 
@@ -397,11 +396,9 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						$option_value = $value['value'];
 
 						?>
-						<tr valign="top">
-							<th scope="row" class="titledesc">
+					<div class="everest-forms-global-settings <?php echo esc_attr( implode( ' ', $visibility_class ) ); ?>">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
-							</th>
-							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
+								<div class="everest-forms-global-settings--field forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
 								<?php echo wp_kses_post( $description ); ?>
 
 								<textarea
@@ -418,8 +415,8 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 									}
 									?>
 									><?php echo esc_textarea( $option_value ); ?></textarea>
-							</td>
-						</tr>
+								</div>
+					</div>
 						<?php
 						break;
 
@@ -427,11 +424,9 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 					case 'tinymce':
 						$option_value = $value['value'];
 						?>
-							<tr valign="top">
-							<th scope="row" class="titledesc">
+							<div class="everest-forms-global-settings <?php echo esc_attr( implode( ' ', $visibility_class ) ); ?>">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?></label>
-							</th>
-							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
+								<div class="everest-forms-global-settings--field forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
 							<?php
 							$arguments                  = array(
 								'media_buttons'    => false,
@@ -451,8 +446,8 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 							echo wp_kses_post( $output );
 							echo '<em>' . wp_kses_post( $description ) . '</em>';
 							?>
-							</td>
-						</tr>
+							</div>
+						</div>
 
 						<?php
 						break;
@@ -462,11 +457,9 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						$option_value = $value['value'];
 
 						?>
-						<tr valign="top">
-							<th scope="row" class="titledesc">
+						<div class="everest-forms-global-settings">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
-							</th>
-							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
+								<div class="everest-forms-global-settings--field forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
 								<select
 									name="<?php echo esc_attr( $value['id'] ); ?><?php echo ( 'multiselect' === $value['type'] ) ? '[]' : ''; ?>"
 									id="<?php echo esc_attr( $value['id'] ); ?>"
@@ -500,8 +493,8 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 									}
 									?>
 								</select> <?php echo wp_kses_post( $description ); ?>
-							</td>
-						</tr>
+								</div>
+						</div>
 						<?php
 						break;
 
@@ -510,11 +503,9 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						$option_value = $value['value'];
 
 						?>
-						<tr valign="top">
-							<th scope="row" class="titledesc">
+							<div class="everest-forms-global-settings">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
-							</th>
-							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
+								<div class="everest-forms-global-settings--field forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
 								<fieldset>
 									<?php echo wp_kses_post( $description ); ?>
 									<ul class="<?php echo esc_attr( $value['class'] ); ?>">
@@ -544,8 +535,8 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 									?>
 									</ul>
 								</fieldset>
-							</td>
-						</tr>
+								</div>
+							</div>
 						<?php
 						break;
 
@@ -557,11 +548,9 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 							$option_value = $value['default'];
 						}
 						?>
-						<tr valign="top">
-							<th scope="row" class="titledesc">
+							<div class="everest-forms-global-settings">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
-							</th>
-							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
+								<div class="everest-forms-global-settings--field forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
 								<?php echo wp_kses_post( $description ); ?>
 								<div class="evf-toggle-section">
 									<span class="everest-forms-toggle-form">
@@ -577,8 +566,9 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 										<span class="slider round"></span>
 									</span>
 								</div>
-							</td>
-						</tr>
+								</div>
+							</div>
+
 						<?php
 						break;
 
@@ -587,25 +577,22 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						$option_value = $value['value'];
 
 						?>
-						<tr valign="top">
-							<th scope="row" class="titledesc">
+						<div class="everest-forms-global-settings">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
-							</th>
-							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
+								<div class="everest-forms-global-settings--field forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
 								<fieldset>
 									<ul>
 									<?php
 									foreach ( $value['options'] as $key => $val ) {
 										?>
 										<li>
-											<label>
-												<img src="<?php echo esc_html( $val['image'] ); ?>">
-												<input
+										<input
 												name="<?php echo esc_attr( $value['id'] ); ?>"
 												value="<?php echo esc_attr( $key ); ?>"
 												type="radio"
 												style="<?php echo esc_attr( $value['css'] ); ?>"
 												class="<?php echo esc_attr( $value['class'] ); ?>"
+												id="evf-global-settings-<?php echo esc_attr( str_replace( ' ', '-', strtolower( $val['name'] ) ) ); ?>"
 												<?php
 												if ( ! empty( $value['custom_attributes'] ) && is_array( $value['custom_attributes'] ) ) {
 													foreach ( $value['custom_attributes'] as $attribute => $attribute_value ) {
@@ -615,7 +602,10 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 												?>
 												<?php checked( $key, $option_value ); ?>
 												/>
-												<?php echo esc_html( $val['name'] ); ?></label>
+												<label for="evf-global-settings-<?php echo esc_attr( str_replace( ' ', '-', strtolower( $val['name'] ) ) ); ?>">
+												<img src="<?php echo esc_html( $val['image'] ); ?>">
+												<?php echo esc_html( $val['name'] ); ?>
+												</label>
 										</li>
 										<?php
 									}
@@ -623,8 +613,8 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 									</ul>
 									<?php echo wp_kses_post( $description ); ?>
 								</fieldset>
-							</td>
-						</tr>
+							</div>
+						</div>
 						<?php
 						break;
 
@@ -654,9 +644,9 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 
 						if ( ! isset( $value['checkboxgroup'] ) || 'start' === $value['checkboxgroup'] ) {
 							?>
-								<tr valign="top" class="<?php echo esc_attr( implode( ' ', $visibility_class ) ); ?>">
-									<th scope="row" class="titledesc"><?php echo esc_html( $value['title'] ); ?></th>
-									<td class="forminp forminp-checkbox">
+								<div class="everest-forms-global-settings <?php echo esc_attr( implode( ' ', $visibility_class ) ); ?>">
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
+									<div class="everest-forms-global-settings--field">
 										<fieldset>
 							<?php
 						} else {
@@ -695,8 +685,8 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						if ( ! isset( $value['checkboxgroup'] ) || 'end' === $value['checkboxgroup'] ) {
 							?>
 										</fieldset>
-									</td>
-								</tr>
+									</div>
+								</div>
 							<?php
 						} else {
 							?>
@@ -724,14 +714,12 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						}
 
 						?>
-						<tr valign="top" class="single_select_page">
-							<th scope="row" class="titledesc">
+						<div class="everest-forms-global-settings single_select_page"">
 								<label><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
-							</th>
-							<td class="forminp">
-								<?php echo wp_kses_post( str_replace( ' id=', " data-placeholder='" . esc_attr__( 'Select a page&hellip;', 'everest-forms' ) . "' style='" . $value['css'] . "' class='" . $value['class'] . "' id=", wp_dropdown_pages( $args ) ) ); ?> <?php echo wp_kses_post( $description ); ?>
-							</td>
-						</tr>
+								<div class="everest-forms-global-settings--field forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
+									<?php echo wp_kses_post( str_replace( ' id=', " data-placeholder='" . esc_attr__( 'Select a page&hellip;', 'everest-forms' ) . "' style='" . $value['css'] . "' class='" . $value['class'] . "' id=", wp_dropdown_pages( $args ) ) ); ?> <?php echo wp_kses_post( $description ); ?>
+								</div>
+						</div>
 						<?php
 						break;
 
@@ -745,11 +733,9 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						);
 						$option_value = evf_parse_relative_date_option( $value['value'] );
 						?>
-						<tr valign="top">
-							<th scope="row" class="titledesc">
+					<div class="everest-forms-global-settings">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
-							</th>
-							<td class="forminp">
+								<div class="everest-forms-global-settings--field forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
 							<input
 									name="<?php echo esc_attr( $value['id'] ); ?>[number]"
 									id="<?php echo esc_attr( $value['id'] ); ?>"
@@ -775,18 +761,16 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 									}
 									?>
 								</select> <?php echo ( $description ) ? wp_kses_post( $description ) : ''; ?>
-							</td>
-						</tr>
+							</div>
+						</div>
 						<?php
 						break;
 					// For anchor tag.
 					case 'link':
 						?>
-						<tr valign="top">
-							<th scope="row" class="titledesc">
+					<div class="everest-forms-global-settings">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
-							</th>
-							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
+								<div class="everest-forms-global-settings--field forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
 								<?php
 								if ( isset( $value['buttons'] ) && is_array( $value['buttons'] ) ) {
 									foreach ( $value['buttons'] as $button ) {
@@ -808,8 +792,8 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 								}
 								?>
 								<?php echo esc_html( $value['suffix'] ); ?> <?php echo wp_kses_post( $description ); ?>
-							</td>
-						</tr>
+								</div>
+						</div>
 						<?php
 						break;
 

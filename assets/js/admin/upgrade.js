@@ -1,6 +1,5 @@
 /* global evf_upgrade, evf_data */
 jQuery( function( $ ) {
-
 	/**
 	 * Upgrade actions.
 	 */
@@ -13,15 +12,19 @@ jQuery( function( $ ) {
 			$( document.body ).on( 'click dragstart', '.everest-forms-field-option-row.upgrade-modal', this.feature_upgrade );
 			$( document.body ).on( 'click dragstart', '.evf-upgradable-feature, .everest-forms-btn-group span.upgrade-modal', this.feature_upgrade );
 			$( document.body ).on( 'click dragstart', '.evf-one-time-draggable-field, .evf-registered-item.evf-one-time-draggable-field', this.evf_one_time_draggable_field );
+			$( document.body ).on( 'click ', '.everest-forms-integrations[data-action="upgrade"]', this.integration_upgrade );
+
+		},
+		integration_upgrade: function( e ) {
+			e.preventDefault();
+			evf_upgrade_actions.upgrade_integration( $(this).find('h3').text(), $( this ).data( 'links' ) );
 		},
 		feature_upgrade: function( e ) {
 			e.preventDefault();
-
 			evf_upgrade_actions.upgrade_modal( $( this ).data( 'feature' ) ? $( this ).data( 'feature' ) : $( this ).text() );
 		},
 		field_upgrade: function( e ) {
 			e.preventDefault();
-
 			evf_upgrade_actions.upgrade_modal( $( this ).data( 'feature' ) ? $( this ).data( 'feature' ) : $( this ).text() + ' field', $( this ).data( 'links' ) );
 		},
 		evf_upgrade_addon:function(e){
@@ -126,6 +129,33 @@ jQuery( function( $ ) {
 					}
 				}
 			});
+		},
+		upgrade_integration: function( name = '',links = '' ) {
+			var message = evf_upgrade.upgrade_message.replace( /%name%/g, name );
+			boxWidth = '1000px';
+			var html = '<div><iframe width="900px" height="600px" frameborder="0" src="https://www.youtube.com/embed/'+links+'" rel="1" allowfullscreen></iframe></div><br>';
+			message = html + message;
+			$.alert({
+				title: name + ' ' + evf_upgrade.upgrade_title,
+				icon: 'dashicons dashicons-lock',
+				content: message,
+				type: 'red',
+				boxWidth: boxWidth,
+				buttons: {
+					confirm: {
+						text: evf_upgrade.upgrade_button,
+						btnClass: 'btn-confirm',
+						keys: ['enter'],
+						action: function () {
+							window.open( evf_upgrade.upgrade_url, '_blank' );
+						}
+					},
+					cancel: {
+						text: ''
+					}
+				}
+			});
+
 		},
 		enable_stripe_model: function( e ) {
 			e.preventDefault();
