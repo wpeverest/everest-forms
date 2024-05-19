@@ -72,10 +72,18 @@ class EVF_Field_Recaptcha extends \EVF_Form_Fields {
 		$this->field_preview_option( 'label', $field );
 
 		// Default value.
-		$default_value = isset( $field['default_value'] ) && ! empty( $field['default_value'] ) ? $field['default_value'] : '';
-
+		$default_value       = isset( $field['default_value'] ) && ! empty( $field['default_value'] ) ? $field['default_value'] : '';
+		$recaptcha_type      = get_option( 'everest_forms_recaptcha_type', 'v2' );
+		$invisible_recaptcha = get_option( 'everest_forms_recaptcha_v2_invisible', 'no' );
+		if ( 'v2' === $recaptcha_type && 'no' === $invisible_recaptcha ) {
+			$image_url = plugins_url( 'assets/images/captcha/reCAPTCHA.png', EVF_PLUGIN_FILE );
+		} elseif ( ( 'v2' === $recaptcha_type && 'yes' === $invisible_recaptcha ) || 'v3' === $recaptcha_type ) {
+			$image_url = plugins_url( 'assets/images/captcha/google-v3-reCAPTCHA.png', EVF_PLUGIN_FILE );
+		}
+		lg( $image_url );
 		// Primary input.
-		echo '<input type="text" value="' . esc_attr( $default_value ) . '" class="widefat" disabled>';
+		echo '<img src="' . esc_url( $image_url ) . '" class="widefat" disabled />';
+
 	}
 
 	/**
