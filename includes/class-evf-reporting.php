@@ -49,7 +49,7 @@ class EVF_Reporting {
 	 *
 	 * @since 2.0.9
 	 */
-	public function evf_schedule_entries_report_email() {
+	public static function evf_schedule_entries_report_email() {
 
 		// Clearing the existing statistics routine email this needs to be done in case the scheduling is changed).
 		$evf_report_cron = new EVF_Report_Cron();
