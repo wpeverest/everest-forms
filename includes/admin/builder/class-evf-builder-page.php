@@ -134,13 +134,37 @@ if ( ! class_exists( 'EVF_Builder_Page', false ) ) :
 			$class  = '';
 			$class .= 'default' === $slug ? ' default' : '';
 			$class .= ! empty( $icon ) ? ' icon' : '';
+			if ( ! defined( 'EFP_PLUGIN_FILE' ) ) {
+				$pro_addons = array(
+					'webhook'            => esc_html__( 'WebHook', 'everest-forms' ),
+					'form_restriction'   => esc_html__( 'Form Restriction', 'everest-forms' ),
+					'multi_part'         => esc_html__( 'Multi Part', 'everest-forms' ),
+					'pdf_submission'     => esc_html__( 'PDF Submission', 'everest-forms' ),
+					'post_submission'    => esc_html__( 'Post Submission', 'everest-forms' ),
+					'save_and_continue'  => esc_html__( 'Save and Continue', 'everest-forms' ),
+					'survey_polls_quiz'  => esc_html__( 'Survey,Polls,Quiz', 'everest-forms' ),
+					'user_registration'  => esc_html__( 'User Registration', 'everest-forms' ),
+					'conversation_forms' => esc_html__( 'Conversation Forms', 'everest-forms' ),
+					'sms_notifications'  => esc_html__( 'SMS Notifications', 'everest-forms' ),
+				);
+			} else {
+				$pro_addons = array();
+			}
+			$is_pro_addon  = array_key_exists( $slug, $pro_addons );
+			$upgrade_class = $is_pro_addon ? 'upgrade-addons-settings' : '';
+			$pro_icon      = plugins_url( 'assets/images/icons/evf-pro-icon.png', EVF_PLUGIN_FILE );
+			$icon_url      = $is_pro_addon ? $pro_icon : '';
 
-			echo '<a href="#" class="evf-panel-tab evf-' . esc_attr( $container_name ) . '-panel everest-forms-panel-sidebar-section everest-forms-panel-sidebar-section-' . esc_attr( $slug ) . esc_attr( $class ) . '" data-section="' . esc_attr( $slug ) . '">';
+			echo '<a href="#" class="evf-panel-tab evf-' . esc_attr( $container_name ) . '-panel everest-forms-panel-sidebar-section everest-forms-panel-sidebar-section-' . esc_attr( $slug ) . esc_attr( $class ) . ' ' . esc_attr( $upgrade_class ) . '" data-section="' . esc_attr( $slug ) . '">';
 			if ( ! empty( $icon ) ) {
 				echo '<figure class="logo"><img src="' . esc_url( $icon ) . '"></figure>';
 			}
 			echo esc_html( $name );
-			echo '<i class="dashicons dashicons-arrow-right-alt2 everest-forms-toggle-arrow"></i>';
+			if ( ! empty( $icon_url ) ) {
+				echo '<i class="dashicons" style="background-image: url(' . esc_url( $icon_url ) . '); background-size: cover; display: inline-block;  color: #ccd1d6;"></i>';
+			} else {
+				echo '<i class="dashicons dashicons-arrow-right-alt2 everest-forms-toggle-arrow"></i>';
+			}
 			echo '</a>';
 		}
 

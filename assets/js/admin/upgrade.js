@@ -17,7 +17,12 @@ jQuery( function( $ ) {
 			$( document.body ).on( 'click dragstart', '.evf-registered-item.hcaptcha_empty_key_validate', this.hcaptcha_empty_key_validate );
 			$( document.body ).on( 'click dragstart', '.evf-registered-item.turnstile_empty_key_validate', this.turnstile_empty_key_validate );
 			$( document.body ).on( 'click dragstart', '.evf-registered-item.turnstile_empty_key_validate', this.turnstile_empty_key_validate );
+			$( document.body ).on( 'click ', '.upgrade-addons-settings', this.feature_upgrade );
 
+		},
+		integration_upgrade: function( e ) {
+			e.preventDefault();
+			evf_upgrade_actions.form_setting_upgrade( $(this).find('h3').text(), $( this ).data( 'links' ) );
 		},
 		integration_upgrade: function( e ) {
 			e.preventDefault();
