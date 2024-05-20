@@ -588,10 +588,6 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 	 * @param array $field Field data.
 	 */
 	public function max_file_number( $field ) {
-
-		$licensed                 = ( false === evf_get_license_plan() ) ? false : true;
-		$upgradable_feature_class = ( true === $licensed ) ? '' : 'evf-one-time-draggable-field';
-
 		$lbl = $this->field_element(
 			'label',
 			$field,
@@ -609,7 +605,6 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 				'slug'    => 'max_file_number',
 				'type'    => 'number',
 				'min'     => '1',
-				'class'   => 'evf-max-file-number ' . $upgradable_feature_class . ' ',
 				'value'   => $max_file_number = ( true === $licensed && ! empty( $field['max_file_number'] ) ) ? $field['max_file_number'] : 1,
 				'desc'    => esc_html__( 'Maximum number limit on uploads', 'everest-forms' ),
 				'tooltip' => esc_html__( 'Enter the number of files you wish the user to upload.', 'everest-forms' ),

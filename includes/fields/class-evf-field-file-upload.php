@@ -17,18 +17,10 @@ class EVF_Field_File_Upload extends EVF_Form_Fields_Upload {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$licensed         = ( false === evf_get_license_plan() ) ? false : true;
-		$one_time_dragged = get_option( 'everest_forms_one_time_draggable_field', false );
-		if ( true === $licensed ) {
-			delete_option( 'everest_forms_one_time_draggable_field' );
-		}
-		$upgradable_feature_class = ( true === $licensed && false === $one_time_dragged ) ? ' ' : 'evf-one-time-draggable-field';
-
 		$this->name     = esc_html__( 'File Upload', 'everest-forms' );
 		$this->type     = 'file-upload';
 		$this->icon     = 'evf-icon evf-icon-file-upload';
 		$this->order    = 40;
-		$this->class    = $upgradable_feature_class;
 		$this->group    = 'advanced';
 		$this->settings = array(
 			'basic-options'    => array(

@@ -196,7 +196,8 @@ class EVF_Admin_Assets {
 						)
 					) : '',
 					'form_one_time_draggable_fields'      => evf_get_one_time_draggable_fields(),
-					'i18n_privacy_policy_consent_message' => esc_html__( 'I allow this website to collect and store the submitted data.', 'everest-forms-pro' ),
+					'i18n_privacy_policy_consent_message' => esc_html__( 'I allow this website to collect and store the submitted data.', 'everest-forms' ),
+					'is_pro'                              => ( ! defined( 'EFP_PLUGIN_FILE' ) ) ? false : true,
 				)
 			)
 		);
