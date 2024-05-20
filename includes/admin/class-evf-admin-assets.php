@@ -353,7 +353,7 @@ class EVF_Admin_Assets {
 			wp_enqueue_style( 'everest-forms-survey-polls-quiz-admin' );
 			wp_enqueue_script( 'everest-forms-survey-polls-quiz-builder' );
 			wp_enqueue_script( 'random-color' );
-			wp_enqueue_script( 'chart' );
+			// wp_enqueue_script( 'chart' ); //for future use.
 			wp_enqueue_script( 'progress_bar' );
 			wp_enqueue_script( 'print_this' );
 			wp_localize_script(
