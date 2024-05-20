@@ -18,11 +18,10 @@
 	$(document).ready(function () {
 		function handleReportingFrequencyChange() {
 			var everest_forms_entries_reporting_frequency = $('#everest_forms_entries_reporting_frequency').val();
-
-			if ('Weekly' !== everest_forms_entries_reporting_frequency) {
-				$('#everest_forms_entries_reporting_day').closest('tr').hide();
+				if ('Weekly' !== everest_forms_entries_reporting_frequency) {
+				$('#everest_forms_entries_reporting_day').closest('.everest-forms-global-settings').hide();
 			} else {
-				$('#everest_forms_entries_reporting_day').closest('tr').show();
+				$('#everest_forms_entries_reporting_day').closest('.everest-forms-global-settings').show();
 			}
 		}
 

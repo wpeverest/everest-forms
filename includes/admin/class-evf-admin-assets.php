@@ -196,7 +196,8 @@ class EVF_Admin_Assets {
 						)
 					) : '',
 					'form_one_time_draggable_fields'      => evf_get_one_time_draggable_fields(),
-					'i18n_privacy_policy_consent_message' => esc_html__( 'I allow this website to collect and store the submitted data.', 'everest-forms-pro' ),
+					'i18n_privacy_policy_consent_message' => esc_html__( 'I allow this website to collect and store the submitted data.', 'everest-forms' ),
+					'is_pro'                              => ( ! defined( 'EFP_PLUGIN_FILE' ) ) ? false : true,
 				)
 			)
 		);
@@ -352,7 +353,7 @@ class EVF_Admin_Assets {
 			wp_enqueue_style( 'everest-forms-survey-polls-quiz-admin' );
 			wp_enqueue_script( 'everest-forms-survey-polls-quiz-builder' );
 			wp_enqueue_script( 'random-color' );
-			wp_enqueue_script( 'chart' );
+			// wp_enqueue_script( 'chart' ); //for future use.
 			wp_enqueue_script( 'progress_bar' );
 			wp_enqueue_script( 'print_this' );
 			wp_localize_script(

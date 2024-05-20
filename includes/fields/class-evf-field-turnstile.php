@@ -61,8 +61,9 @@ class EVF_Field_Turnstile extends \EVF_Form_Fields {
 		// Default value.
 		$default_value = isset( $field['default_value'] ) && ! empty( $field['default_value'] ) ? $field['default_value'] : '';
 
+		$image_url = plugins_url( 'assets/images/captcha/turnstile.png', EVF_PLUGIN_FILE );
 		// Primary input.
-		echo '<input type="text" value="' . esc_attr( $default_value ) . '" class="widefat" disabled>';
+		echo '<img src="' . esc_url( $image_url ) . '" class="widefat" disabled />';
 	}
 
 	/**

@@ -71,6 +71,15 @@
 			});
 
 
+
+				if ( $( '#everest-forms-builder' ).find('.everest-forms-field-file-upload').length > 0 ) {
+					if(!(evf_data.is_pro)){
+						$('#everest-forms-add-fields-file-upload').addClass('evf-one-time-draggable-field');
+					}
+				}
+
+
+
 			if ( ! $( 'evf-panel-payments-button a' ).hasClass( 'active' ) ) {
 				$( '#everest-forms-panel-payments' ).find( '.everest-forms-panel-sidebar a' ).first().addClass( 'active' );
 				$( '.everest-forms-panel-content' ).find( '.evf-payment-setting-content' ).first().addClass( 'active' );
