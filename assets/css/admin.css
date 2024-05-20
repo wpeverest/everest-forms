@@ -11716,3 +11716,27 @@ img.ui-datepicker-trigger {
       transition: all .3s ease-in-out; }
       .everest-forms .everest-forms-settings .submit .everest-forms-btn:hover {
         background: #9159e3; }
+
+everest-forms-field-option-row-rating-icon .everest-forms-rating-icon-container {
+  display: flex;
+  flex-wrap: wrap; }
+  everest-forms-field-option-row-rating-icon .everest-forms-rating-icon-container label {
+    flex: 1;
+    padding: 4px;
+    display: flex;
+    justify-content: center;
+    background: #e9ebf1;
+    border: 1px solid #cdd0d8; }
+  everest-forms-field-option-row-rating-icon .everest-forms-rating-icon-container input[type="radio"] {
+    display: none; }
+  everest-forms-field-option-row-rating-icon .everest-forms-rating-icon-container svg {
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+    fill: #63717f; }
+  everest-forms-field-option-row-rating-icon .everest-forms-rating-icon-container input:checked + label {
+    color: #fff;
+    background: #7e3bd0;
+    border-color: #7e3bd0; }
+    everest-forms-field-option-row-rating-icon .everest-forms-rating-icon-container input:checked + label svg {
+      fill: #fff; }
