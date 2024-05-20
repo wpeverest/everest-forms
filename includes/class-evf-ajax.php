@@ -911,7 +911,7 @@ class EVF_AJAX {
 					break;
 
 				case 'Monthly':
-					$evf_routinevf_summary_duratione_reporting_timeframe = esc_html__( 'in the past month', 'everest-forms' );
+					$evf_summary_duration = esc_html__( 'in the past month', 'everest-forms' );
 					break;
 			}
 			/* translators: %s: from address */
