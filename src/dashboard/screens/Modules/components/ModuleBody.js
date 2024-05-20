@@ -34,7 +34,7 @@ const ModuleBody = ({
 	selectedModuleData,
 }) => {
 	/* global _EVF_DASHBOARD_ */
-	const { upgradeURL, licenseActivationURL } =
+	const { upgradeURL, licenseActivationURL, licensePlan, isPro } =
 		typeof _EVF_DASHBOARD_ !== "undefined" && _EVF_DASHBOARD_;
 	const [{ upgradeModal }, dispatch] = useContext(DashboardContext);
 	const [upgradeContent, setUpgradeContent] = useState({
@@ -66,58 +66,45 @@ const ModuleBody = ({
 		const upgradeContentRef = { ...upgradeContent };
 
 		if (upgradeModal.enable) {
-			if (upgradeModal.type === "pro") {
+			if (!isPro) {
 				upgradeContentRef.title = __(
 					"Everest Froms Pro Required",
 					"everest-forms"
 				);
 				upgradeContentRef.body = sprintf(
 					__(
-						"%s requires Everest Froms Pro to be activated. Please upgrade to a premium plan and unlock this addon",
+						"%s requires Everest Froms Pro to be activated. Please upgrade to a premium plan and unlock this %s.",
 						"everest-forms"
 					),
-					upgradeModal.moduleName
+					upgradeModal.moduleName,
+					upgradeModal.moduleType
 				);
-			} else if (upgradeModal.type === "license") {
-				upgradeContentRef.title = __(
-					"License Activation Required",
-					"everest-forms"
-				);
-				upgradeContentRef.body = sprintf(
-					__(
-						"Please activate license of Everest Froms Pro plugin in order to use %s",
+			} else {
+				if ( !licensePlan) {
+					upgradeContentRef.title = __(
+						"License Activation Required",
 						"everest-forms"
-					),
-					upgradeModal.moduleName
-				);
-				upgradeContentRef.buttonText = sprintf(
-					__("Activate License", "everest-forms"),
-					upgradeModal.moduleName
-				);
-				upgradeContentRef.buttonText = upgradeContentRef.buttonText =
-					sprintf(
+					);
+					upgradeContentRef.body = sprintf(
+						__(
+							"Please activate license of Everest Froms Pro plugin in order to use %s",
+							"everest-forms"
+						),
+						upgradeModal.moduleName
+					);
+					upgradeContentRef.buttonText = sprintf(
 						__("Activate License", "everest-forms"),
 						upgradeModal.moduleName
 					);
-				upgradeContentRef.upgradeURL = licenseActivationURL;
-			} else {
-				upgradeContentRef.title = __(
-					"License Upgrade Required",
-					"everest-forms"
-				);
-				upgradeContentRef.body = sprintf(
-					__(
-						"%s is only available in the plus plan and above. Please upgrade to a plus plan and above to unlock this addon",
-						"everest-forms"
-					),
-					upgradeModal.moduleName
-				);
-				upgradeContentRef.buttonText = sprintf(
-					__("Upgrade Plan", "everest-forms"),
-					upgradeModal.moduleName
-				);
-			}
+					upgradeContentRef.buttonText = upgradeContentRef.buttonText =
+						sprintf(
+							__("Activate License", "everest-forms"),
+							upgradeModal.moduleName
+						);
+					upgradeContentRef.upgradeURL = licenseActivationURL;
+				}
 
+			}
 			setUpgradeContent(upgradeContentRef);
 		}
 	}, [upgradeModal]);

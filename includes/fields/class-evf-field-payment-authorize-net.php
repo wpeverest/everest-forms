@@ -23,7 +23,7 @@ class EVF_Field_Payment_Authorize_Net extends EVF_Form_Fields {
 		$this->order  = 230;
 		$this->group  = 'payment';
 		$this->is_pro = true;
-		$this->plan   = 'professional agency themegrill-agency';
+		$this->plan   = 'personal agency themegrill-agency';
 		$this->addon  = 'everest-forms-authorize-net';
 		$this->links  = array(
 			'image_id' => '',
