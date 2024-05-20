@@ -126,11 +126,7 @@ class EVF_Modules {
 			}
 
 			if ( in_array( 'personal', $addon->plan, true ) ) {
-				$addon->required_plan = __( 'Personal', 'everest-forms' );
-			} elseif ( in_array( 'plus', $addon->plan, true ) ) {
-				$addon->required_plan = __( 'Plus', 'everest-forms' );
-			} else {
-				$addon->required_plan = __( 'Professional', 'everest-forms' );
+				$addon->required_plan = __( 'Pro', 'everest-forms' );
 			}
 			$addon->link          = $addon->link . '&utm_campaign=' . EVF()->utm_campaign;
 			$addon->type          = 'addon';

@@ -216,11 +216,11 @@
                     .remove();
                 $(".everest-froms-send_test_email_notice").remove();
                 if (true === response.responseJSON.success) {
-                    $("#everest_forms_email_send_to").val("");
                     message_string =
                         '<div id="message" class="updated inline everest-froms-send_test_email_notice"><p><strong>' +
                         response.responseJSON.data.message +
                         "</strong></p></div>";
+					$(".everest-forms-options-header").append(message_string);
                 } else {
                     message_string =
                         '<div id="message" class="error inline everest-froms-send_test_email_notice"><p><strong>' +
@@ -321,11 +321,11 @@
 						.remove();
 					$(".everest-froms-send_test_email_notice").remove();
 					if (true === response.responseJSON.success) {
-						$("#everest_forms_email_send_to").val("");
 						message_string =
 							'<div id="message" class="updated inline everest-froms-send_test_email_notice"><p><strong>' +
 							response.responseJSON.data.message +
 							"</strong></p></div>";
+							$(".everest-forms-options-header").append(message_string);
 					} else {
 						message_string =
 							'<div id="message" class="error inline everest-froms-send_test_email_notice"><p><strong>' +

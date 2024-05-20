@@ -27,9 +27,7 @@ class EVF_Report_Cron {
 	 *
 	 * @since 2.0.9
 	 */
-	public function evf_schedule_run() {
-		self::evf_report_form_statistics_send();
-	}
+
 
 	/**
 	 * Function to add email schedule task.
@@ -41,19 +39,52 @@ class EVF_Report_Cron {
 	 * @return void.
 	 */
 	public function evf_schedule_add( $evf_recurrence, $evf_report_next_run = false ) {
-
 		if ( false === $evf_report_next_run ) {
-			$evf_report_next_run = time(); }
-
-		// Only add if recurrence valid.
-		$evf_schedules = wp_get_schedules();
-		if ( ! isset( $evf_schedules[ $evf_recurrence ] ) ) {
-			return; }
-
-		// Schedule event for data source.
-		if ( ! wp_next_scheduled( 'everest_forms_stats_report_schedule' ) ) {
-			wp_schedule_event( time(), $evf_recurrence, 'everest_forms_stats_report_schedule' );
+			$evf_report_next_run = time();
 		}
+		$evf_weekly_day = get_option( 'everest_forms_entries_reporting_day' );
+		if ( ! wp_next_scheduled( 'everest_forms_stats_report_schedule' ) ) {
+			switch ( $evf_recurrence ) {
+				case 'daily':
+					$next_run_time = strtotime( '+1 day', $evf_report_next_run );
+					break;
+				case 'weekly':
+					// Schedule event weekly .
+					switch ( $evf_weekly_day ) {
+						case 'sunday':
+							$next_run_time = strtotime( 'next Sunday', $evf_report_next_run );
+							break;
+						case 'monday':
+							$next_run_time = strtotime( 'next Monday', $evf_report_next_run );
+							break;
+						case 'tuesday':
+							$next_run_time = strtotime( 'next Tuesday', $evf_report_next_run );
+							break;
+						case 'wednesday':
+							$next_run_time = strtotime( 'next Wednesday', $evf_report_next_run );
+							break;
+						case 'thursday':
+							$next_run_time = strtotime( 'next Thursday', $evf_report_next_run );
+							break;
+						case 'friday':
+							$next_run_time = strtotime( 'next Friday', $evf_report_next_run );
+							break;
+						case 'saturday':
+							$next_run_time = strtotime( 'next Saturday', $evf_report_next_run );
+							break;
+						default:
+							return;
+					}
+					break;
+				case 'monthly':
+					$next_run_time = strtotime( '+30 days', $evf_report_next_run );
+					break;
+				default:
+					return;
+			}
+			wp_schedule_event( $next_run_time, $evf_recurrence, 'everest_forms_stats_report_schedule' );
+		}
+
 	}
 
 
@@ -205,6 +236,7 @@ class EVF_Report_Cron {
 		// Sending the stat email.
 		$evf_stat_message    = '';
 		$evf_send_stat_email = new EVF_Emails();
+		$test                = EVF_Reporting::evf_schedule_entries_report_email();
 		$evf_send_stat_email->send( $evf_stat_email, $evf_stat_subject, $evf_stat_message, '', '' );
 	}
 }

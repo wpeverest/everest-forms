@@ -168,7 +168,7 @@ const ModuleItem = (props) => {
 
 	const handleBoxClick = () => {
 		const upgradeModalRef = { ...upgradeModal };
-		upgradeModalRef.moduleType = "module";
+		upgradeModalRef.moduleType = data.type;
 		upgradeModalRef.moduleName = data.name;
 
 		if (!isPro) {
@@ -322,7 +322,7 @@ const ModuleItem = (props) => {
 						color: "white",
 						textDecoration: "none",
 					}}
-					onClick={handleModuleAction}
+					onClick={moduleEnabled ? handleModuleAction : handleBoxClick}
 					isLoading={
 						isPerformingAction ||
 						(selectedModuleData.hasOwnProperty(slug) &&

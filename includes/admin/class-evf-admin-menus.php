@@ -326,7 +326,7 @@ class EVF_Admin_Menus {
 	 * Addons menu item.
 	 */
 	public function addons_menu() {
-		add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Add-ons', 'everest-forms' ), esc_html__( 'Add-ons', 'everest-forms' ), 'manage_everest_forms', esc_url_raw( admin_url( 'admin.php?page=evf-dashboard#/addons' ) ) );
+		add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Add-ons', 'everest-forms' ), esc_html__( 'Add-ons', 'everest-forms' ), 'manage_everest_forms', esc_url_raw( admin_url( 'admin.php?page=evf-dashboard#/features' ) ) );
 	}
 
 	/**
