@@ -39,6 +39,9 @@ if ( ! $tab_exists ) {
 									<p>
 								<?php echo esc_html( $label ); ?>
 									</p>
+									<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+										<path stroke="#383838" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 18 6-6-6-6"/>
+									</svg>
 								</span>
 							</a>
 							<?php
