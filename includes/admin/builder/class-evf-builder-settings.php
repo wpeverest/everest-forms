@@ -806,7 +806,21 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 	public function add_custom_css_js_section( $arr, $form_data ) {
 
 		$arr['custom-css-js'] = esc_html__( 'Custom CSS and JS', 'everest-forms' );
-
+		if ( ! defined( 'EFP_PLUGIN_FILE' ) ) {
+			$pro_addons = array(
+				'webhook'            => esc_html__( 'WebHook', 'everest-forms' ),
+				'form_restriction'   => esc_html__( 'Form Restriction', 'everest-forms' ),
+				'multi_part'         => esc_html__( 'Multi Part', 'everest-forms' ),
+				'pdf_submission'     => esc_html__( 'PDF Submission', 'everest-forms' ),
+				'post_submission'    => esc_html__( 'Post Submission', 'everest-forms' ),
+				'save_and_continue'  => esc_html__( 'Save and COntinue', 'everest-forms' ),
+				'survey_polls_quiz'  => esc_html__( 'Survey,Polls,Quiz', 'everest-forms' ),
+				'user_registration'  => esc_html__( 'User Registration', 'everest-forms' ),
+				'conversation_forms' => esc_html__( 'Conversation Forms', 'everest-forms' ),
+				'sms_notifications'  => esc_html__( 'SMS Notifications', 'everest-forms' ),
+			);
+			$arr        = array_merge( $arr, $pro_addons );
+		}
 		return $arr;
 	}
 

@@ -1514,6 +1514,10 @@
 
 		bindFormSettings: function () {
 			$( 'body' ).on( 'click', '.evf-setting-panel', function( e ) {
+				if ($(this).hasClass('upgrade-addons-settings')) {
+					return;
+				}
+
 				var data_setting_section = $(this).attr('data-section');
 				$('.evf-setting-panel').removeClass('active');
 				$('.everest-forms-active-email').removeClass('active');

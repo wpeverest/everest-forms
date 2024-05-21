@@ -1562,10 +1562,20 @@ function evf_get_license_plan() {
 				set_transient( 'evf_pro_license_plan', $license_data, WEEK_IN_SECONDS );
 			}
 		}
-		return isset( $license_data->item_plan ) ? trim( str_replace( 'everest forms', '', str_replace( 'lifetime', '', str_replace( '-lifetime', '', strtolower( $license_data->item_plan ) ) ) ) ) : false;
+		return evf_handle_license_plan_compatibility( isset( $license_data->item_plan ) ? trim( str_replace( 'everest forms', '', str_replace( 'lifetime', '', str_replace( '-lifetime', '', strtolower( $license_data->item_plan ) ) ) ) ) : false );
 	}
 
 	return false;
+}
+
+/** To handle the backward compatibility for those user who is still using the plus and professional plan license key.
+*
+* @since 3.0.0
+* @param $license_plan License plan.
+*/
+function evf_handle_license_plan_compatibility( $license_plan ) {
+	$license_plan = ( 'plus' === $license_plan || 'professional' === $license_plan ) ? 'personal' : $license_plan;
+	return $license_plan;
 }
 
 /**

@@ -17,11 +17,18 @@ jQuery( function( $ ) {
 			$( document.body ).on( 'click dragstart', '.evf-registered-item.hcaptcha_empty_key_validate', this.hcaptcha_empty_key_validate );
 			$( document.body ).on( 'click dragstart', '.evf-registered-item.turnstile_empty_key_validate', this.turnstile_empty_key_validate );
 			$( document.body ).on( 'click dragstart', '.evf-registered-item.turnstile_empty_key_validate', this.turnstile_empty_key_validate );
+			$( document.body ).on( 'click ', '.upgrade-addons-settings', this.integration_upgrade );
 
 		},
+
 		integration_upgrade: function( e ) {
 			e.preventDefault();
-			evf_upgrade_actions.upgrade_integration( $(this).find('h3').text(), $( this ).data( 'links' ) );
+			if(''=== $(this).find('h3').text()){
+				var name = $( this ).text();
+			} else {
+				var name = $(this).find('h3').text();
+			}
+			evf_upgrade_actions.upgrade_integration( name , $( this ).data( 'links' ) );
 		},
 		feature_upgrade: function( e ) {
 			e.preventDefault();
@@ -135,6 +142,7 @@ jQuery( function( $ ) {
 			});
 		},
 		upgrade_integration: function( name = '',links = '' ) {
+
 			var message = evf_upgrade.upgrade_message.replace( /%name%/g, name );
 			boxWidth = '1000px';
 			var html = '<div><iframe width="900px" height="600px" frameborder="0" src="https://www.youtube.com/embed/'+links+'" rel="1" allowfullscreen></iframe></div><br>';

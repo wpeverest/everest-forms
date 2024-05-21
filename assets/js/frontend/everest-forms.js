@@ -413,7 +413,7 @@ jQuery( function ( $ ) {
 					return false;
 				}
 				return this.optional( element ) || value.replace( /[^\d]/g, '' ).length > 0;
-			}, everest_forms.i18n_messages_phone );
+			}, everest_forms_params.i18n_messages_phone );
 
 			// Validate Smart Phone Field.
 			if ( 'undefined' !== typeof $.fn.intlTelInput ) {
@@ -422,7 +422,7 @@ jQuery( function ( $ ) {
 						return false;
 					}
 					return this.optional( element ) || $( element ).intlTelInput( 'isValidNumber' );
-				}, everest_forms.i18n_messages_phone );
+				}, everest_forms_params.i18n_messages_phone );
 			}
 
 			this.$everest_form.each( function() {
