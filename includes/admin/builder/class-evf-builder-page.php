@@ -136,26 +136,59 @@ if ( ! class_exists( 'EVF_Builder_Page', false ) ) :
 			$class .= ! empty( $icon ) ? ' icon' : '';
 			if ( ! defined( 'EFP_PLUGIN_FILE' ) ) {
 				$pro_addons = array(
-					'webhook'            => esc_html__( 'WebHook', 'everest-forms' ),
-					'form_restriction'   => esc_html__( 'Form Restriction', 'everest-forms' ),
-					'multi_part'         => esc_html__( 'Multi Part', 'everest-forms' ),
-					'pdf_submission'     => esc_html__( 'PDF Submission', 'everest-forms' ),
-					'post_submission'    => esc_html__( 'Post Submission', 'everest-forms' ),
-					'save_and_continue'  => esc_html__( 'Save and Continue', 'everest-forms' ),
-					'survey_polls_quiz'  => esc_html__( 'Survey,Polls,Quiz', 'everest-forms' ),
-					'user_registration'  => esc_html__( 'User Registration', 'everest-forms' ),
-					'conversation_forms' => esc_html__( 'Conversation Forms', 'everest-forms' ),
-					'sms_notifications'  => esc_html__( 'SMS Notifications', 'everest-forms' ),
+					'webhook'            => array(
+						'id'   => '0DQPfQgrWM8',
+						'name' => esc_html__( 'WebHook', 'everest-forms' ),
+					),
+					'form_restriction'   => array(
+						'id'   => 'Q1-dja7m3Sc',
+						'name' => esc_html__( 'Form Restriction', 'everest-forms' ),
+					),
+					'multi_part'         => array(
+						'id'   => 'qVpDzAx-_4A',
+						'name' => esc_html__( 'Multi Part', 'everest-forms' ),
+					),
+					'pdf_submission'     => array(
+						'id'   => '37CtaxJzYis',
+						'name' => esc_html__( 'PDF Submission', 'everest-forms' ),
+					),
+					'post_submission'    => array(
+						'id'   => 'gTtewu4DpCo',
+						'name' => esc_html__( 'Post Submission', 'everest-forms' ),
+					),
+					'save_and_continue'  => array(
+						'id'   => '4xxEi0rSB20',
+						'name' => esc_html__( 'Save and Continue', 'everest-forms' ),
+					),
+					'survey_polls_quiz'  => array(
+						'id'   => 'i1vR-YmaBOg',
+						'name' => esc_html__( 'Survey,Polls,Quiz', 'everest-forms' ),
+					),
+					'user_registration'  => array(
+						'id'   => 'MEyuznG2Tok',
+						'name' => esc_html__( 'User Registration', 'everest-forms' ),
+					),
+					'conversation_forms' => array(
+						'id'   => 'XO38b8Lp19s',
+						'name' => esc_html__( 'Conversation Forms', 'everest-forms' ),
+					),
+					'sms_notifications'  => array(
+						'id'   => 'tz4UKBX9WxM',
+						'name' => esc_html__( 'SMS Notifications', 'everest-forms' ),
+					),
 				);
+
 			} else {
 				$pro_addons = array();
 			}
+
 			$is_pro_addon  = array_key_exists( $slug, $pro_addons );
 			$upgrade_class = $is_pro_addon ? 'upgrade-addons-settings' : '';
 			$pro_icon      = plugins_url( 'assets/images/icons/evf-pro-icon.png', EVF_PLUGIN_FILE );
 			$icon_url      = $is_pro_addon ? $pro_icon : '';
+			$evf_video     = $is_pro_addon ? isset( $pro_addons[ $slug ]['id'] ) ? $pro_addons[ $slug ]['id'] : '' : '';
 
-			echo '<a href="#" class="evf-panel-tab evf-' . esc_attr( $container_name ) . '-panel everest-forms-panel-sidebar-section everest-forms-panel-sidebar-section-' . esc_attr( $slug ) . esc_attr( $class ) . ' ' . esc_attr( $upgrade_class ) . '" data-section="' . esc_attr( $slug ) . '">';
+			echo '<a href="#" class="evf-panel-tab evf-' . esc_attr( $container_name ) . '-panel everest-forms-panel-sidebar-section everest-forms-panel-sidebar-section-' . esc_attr( $slug ) . esc_attr( $class ) . ' ' . esc_attr( $upgrade_class ) . '" data-section="' . esc_attr( $slug ) . '" " data-links="' . esc_attr( $evf_video ) . '" >';
 			if ( ! empty( $icon ) ) {
 				echo '<figure class="logo"><img src="' . esc_url( $icon ) . '"></figure>';
 			}
