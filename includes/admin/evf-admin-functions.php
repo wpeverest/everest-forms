@@ -472,8 +472,10 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 			break;
 		case 'image':
 			if ( '' !== $value ) {
-				$headers = get_headers( $value, 1 );
-				if ( strpos( $headers['Content-Type'], 'image/' ) === false ) {
+				$headers      = get_headers( $value, 1 );
+				$content_type = is_array( $headers['Content-Type'] ) ? implode( ' ', $headers['Content-Type'] ) : $headers['Content-Type'];
+
+				if ( strpos( $content_type, 'image/' ) === false ) {
 					$value = '';
 				}
 			}
