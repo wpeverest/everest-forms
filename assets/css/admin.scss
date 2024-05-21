@@ -5188,9 +5188,9 @@ p.search-box {
 
 		.everest-forms-integrations {
 			border-radius: 3px;
-			background: $color-white;
-			border: 1px solid #ced4da;
-			padding: 10px 20px;
+			background: #FBFAFC;
+			border: 1px solid #EEE8F7;
+			padding: 16px 20px;
 			display: flex;
 			flex-wrap: wrap;
 			align-items: center;
@@ -5201,6 +5201,7 @@ p.search-box {
 				display: flex;
 				flex: 1;
 				align-items: center;
+				gap: 16px;
 
 				.integration-status {
 					position: relative;
@@ -5209,7 +5210,6 @@ p.search-box {
 						width: 20px;
 						height: 20px;
 						display: block;
-						margin-right: 20px;
 						position: relative;
 						border-radius: 3px;
 						border: 1px solid #ced4da;
@@ -5242,6 +5242,7 @@ p.search-box {
 				.integration-detail {
 					display: flex;
 					align-items: center;
+					gap: 16px;
 
 					.logo {
 						width: 50px;
@@ -5249,10 +5250,12 @@ p.search-box {
 						flex: 0 0 50px;
 						display: flex;
 						overflow: hidden;
-						margin: 0 20px 0 0;
-						border-radius: 4px;
 						align-items: center;
-						border: 1px solid #ced4da;
+						padding: 2px;
+						border-radius: 2px;
+						border: 1px solid #edeff7;
+						background: #ffffff;
+						margin: 0;
 
 						img {
 							width: 100%;
@@ -5278,7 +5281,7 @@ p.search-box {
 						h3,
 						p {
 							margin-top: 0;
-							margin-bottom: 7px;
+							margin-bottom: 0;
 						}
 					}
 				}
