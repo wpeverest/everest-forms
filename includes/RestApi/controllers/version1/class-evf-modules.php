@@ -282,18 +282,27 @@ class EVF_Modules {
 				return $status;
 			}
 		}
-		if ( 'aicontactform' === $slug && ! evf_get_license_plan() ) {
+
+		if ( 'aicontactform' === $slug && ! evf_string_to_bool( evf_get_license_plan() ) ) {
 			$args = array(
 				'slug'   => 'ai-contact-form',
 				'fields' => array(
-					'name'          => true,
-					'version'       => true,
-					'author'        => true,
-					'download_link' => true,
-					'last_updated'  => true,
-					'homepage'      => true,
-					'sections'      => true,
-					'description'   => true,
+					'short_description' => true,
+					'sections'          => true,
+					'requires'          => true,
+					'tested'            => true,
+					'rating'            => true,
+					'downloaded'        => true,
+					'last_updated'      => true,
+					'added'             => true,
+					'tags'              => true,
+					'homepage'          => true,
+					'donate_link'       => true,
+					'reviews'           => true,
+					'download_link'     => true,
+					'screenshots'       => true,
+					'active_installs'   => true,
+					'version'           => true,
 				),
 			);
 			$api  = plugins_api( 'plugin_information', $args );
