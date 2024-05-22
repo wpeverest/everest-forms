@@ -8381,9 +8381,9 @@ p.search-box {
 
 .everest-forms .everest-forms-integrations-connection .everest-forms-integrations {
   border-radius: 3px;
-  background: #fff;
-  border: 1px solid #ced4da;
-  padding: 10px 20px;
+  background: #FBFAFC;
+  border: 1px solid #EEE8F7;
+  padding: 16px 20px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -8399,7 +8399,6 @@ p.search-box {
         width: 20px;
         height: 20px;
         display: block;
-        margin-left: 20px;
         position: relative;
         border-radius: 3px;
         border: 1px solid #ced4da; }
@@ -8422,17 +8421,20 @@ p.search-box {
           transform: translateY(-50%); }
     .everest-forms .everest-forms-integrations-connection .everest-forms-integrations .integration-header-info .integration-detail {
       display: flex;
-      align-items: center; }
+      align-items: center;
+      gap: 16px; }
       .everest-forms .everest-forms-integrations-connection .everest-forms-integrations .integration-header-info .integration-detail .logo {
         width: 50px;
         height: 50px;
         flex: 0 0 50px;
         display: flex;
         overflow: hidden;
-        margin: 0 0 0 20px;
-        border-radius: 4px;
         align-items: center;
-        border: 1px solid #ced4da; }
+        padding: 2px;
+        border-radius: 2px;
+        border: 1px solid #edeff7;
+        background: #ffffff;
+        margin: 0; }
         .everest-forms .everest-forms-integrations-connection .everest-forms-integrations .integration-header-info .integration-detail .logo img {
           width: 100%;
           display: block; }
@@ -8447,7 +8449,7 @@ p.search-box {
         .everest-forms .everest-forms-integrations-connection .everest-forms-integrations .integration-header-info .integration-detail .integration-info h3,
         .everest-forms .everest-forms-integrations-connection .everest-forms-integrations .integration-header-info .integration-detail .integration-info p {
           margin-top: 0;
-          margin-bottom: 7px; }
+          margin-bottom: 0; }
   .everest-forms .everest-forms-integrations-connection .everest-forms-integrations .integartion-action {
     flex-wrap: wrap;
     display: flex;
