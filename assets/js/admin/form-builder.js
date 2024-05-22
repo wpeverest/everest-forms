@@ -71,6 +71,15 @@
 			});
 
 
+
+				if ( $( '#everest-forms-builder' ).find('.everest-forms-field-file-upload').length > 0 ) {
+					if(!(evf_data.is_pro)){
+						$('#everest-forms-add-fields-file-upload').addClass('evf-one-time-draggable-field');
+					}
+				}
+
+
+
 			if ( ! $( 'evf-panel-payments-button a' ).hasClass( 'active' ) ) {
 				$( '#everest-forms-panel-payments' ).find( '.everest-forms-panel-sidebar a' ).first().addClass( 'active' );
 				$( '.everest-forms-panel-content' ).find( '.evf-payment-setting-content' ).first().addClass( 'active' );
@@ -123,6 +132,87 @@
 					$( document.body ).trigger( 'adjust_builder_width' );
 				}, 250 );
 			}).trigger( 'resize' );
+
+			EVFPanelBuilder.bindPrivacyPolicyActions();
+			$( document.body ).on( 'evf_field_drop_complete', function( e, field_type, dragged_field_id ) {
+
+				// Set defaults in privacy policy field.
+				if ( 'privacy-policy' === field_type ) {
+					var consent_message = evf_data.i18n_privacy_policy_consent_message;
+					$( '#everest-forms-field-' + dragged_field_id ).find( '.evf-privacy-policy-consent-message' ).html( consent_message );
+					$( '#everest-forms-field-option-' + dragged_field_id ).find( '.evf-privacy-policy-consent-message' ).val( consent_message );
+					$( '.everest-forms-field-options #everest-forms-field-option-row-' + dragged_field_id + '-required' ).find( 'input' ).click();
+				}
+
+				if ( 'country' === field_type ) {
+					$('#everest-forms-field-option-row-'+ dragged_field_id +'-default').find('select.evf-select2-multiple > option').prop('selected', true);
+				}
+			});
+
+			// Rating point validation error tips.
+			$( document.body )
+
+				.on( 'blur', '.evf-number-of-stars[type=number]', function() {
+					$( '.evf_error_tip' ).fadeOut( '100', function() { $( this ).remove(); } );
+				})
+
+				.on( 'change click', '.evf-number-of-stars[type=number]', function(e) {
+					var number_of_stars = parseInt( $( this ).val(), 10 );
+
+					if ( number_of_stars > 100 ) {
+						$( this ).val('100');
+						EVFPanelBuilder.livePreviewNumberOfRating( $( this) );
+					}
+				})
+
+				.on( 'keyup click', '.evf-number-of-stars[type=number]', function() {
+					var number_of_stars = parseInt( $( this ).val(), 10 );
+
+					if ( number_of_stars > 100 ) {
+						$( document.body ).triggerHandler( 'evf_add_error_tip', [ $( this ), 'i18n_field_rating_greater_than_max_value_error', evf_data ] );
+					} else {
+						$( document.body ).triggerHandler( 'evf_remove_error_tip', [ $( this ), 'i18n_field_rating_greater_than_max_value_error' ] );
+					}
+				});
+
+			// Live effect for Rating field Number of Stars option.
+			$( document ).on( 'keyup mouseup', '.everest-forms-field-option-row-number_of_stars input', function() {
+				EVFPanelBuilder.livePreviewNumberOfRating( this );
+			});
+
+			// Live effect for Rating field icon option.
+			$( document ).on( 'change', '.everest-forms-field-option-row-rating-icon input[type=radio]', function() {
+
+				var $this      = $( this ),
+					value      = $this.val(),
+					id         = $this.parent().data( 'field-id' ),
+					icon_color = $( '#everest-forms-field-'+id +' .rating-icon' ).find('svg').first().css('fill');
+					$icons     = $( '#everest-forms-field-'+id +' .rating-icon' ),
+					iconClass  = '<svg width="32" height="32" viewBox="0 0 32 32" style="fill:' + icon_color + '"><path d="M20.33 11.45L16 2.69l-4.33 8.76L2 12.86l7 6.82-1.65 9.64L16 24.77l8.65 4.55L23 19.68l7-6.82-9.67-1.41z"/></svg>';
+					if ( 'heart' === value ) {
+						iconClass = '<svg width="32" height="32" viewBox="0 0 32 32" style="fill:' + icon_color + '"><path d="M27.66 16.94L16 28 4.34 16.94a7.31 7.31 0 0 1 0-10.72A8.21 8.21 0 0 1 10 4a6.5 6.5 0 0 1 5 2l1 1s.88-.89 1-1a6.5 6.5 0 0 1 5-2 8.21 8.21 0 0 1 5.66 2.22 7.31 7.31 0 0 1 0 10.72z"/></svg>';
+					} else if ( 'thumb' === value ) {
+						iconClass = '<svg width="32" height="32" viewBox="0 0 32 32" style="fill:' + icon_color + '"><path d="M30 14.88a3.42 3.42 0 0 0-3.36-3.36h-4.85l.14-.42a2.42 2.42 0 0 1 .2-.39c.08-.14.14-.24.17-.31.21-.4.37-.72.48-1a7.39 7.39 0 0 0 .33-1.05A5.71 5.71 0 0 0 23 4a3.48 3.48 0 0 0-3-2 1.61 1.61 0 0 0-1.43.89C18.34 3.13 17 7 17 7a5.44 5.44 0 0 1-1 2c-.57.75-2.6 3-3.2 3.71s-1.05 1-1.33 1C10 13.74 10 15.71 10 16v9c0 .3 0 2.2 1.52 2.2a12.7 12.7 0 0 1 2.76.77A15.6 15.6 0 0 0 21 30a8.9 8.9 0 0 0 5.74-1.92C30 25 30 15.88 30 14.88zM5 14a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0v-7a3 3 0 0 0-3-3zm0 11a1 1 0 1 1 1-1 1 1 0 0 1-1 1z"/></svg>';
+					} else if ( 'smiley' === value ) {
+						iconClass = '<svg width="32" height="32" viewBox="0 0 32 32" style="fill:' + icon_color + '"><path d="M16 2a14 14 0 1 0 14 14A14 14 0 0 0 16 2zm4 8a2 2 0 1 1-2 2 2 2 0 0 1 2-2zm-8 0a2 2 0 1 1-2 2 2 2 0 0 1 2-2zm4 14a9.23 9.23 0 0 1-8.16-4.89l1.32-.71a7.76 7.76 0 0 0 13.68 0l1.32.71A9.23 9.23 0 0 1 16 24z"/></svg>';
+					} else if ( 'bulb' === value ) {
+						iconClass = '<svg width="32" height="32" viewBox="0 0 32 32" style="fill:' + icon_color + '"><path d="M16 2.25A9.76 9.76 0 0 0 6.25 12c0 3.21 2 5.68 3.52 7.48A6.28 6.28 0 0 1 11.25 23a.76.76 0 0 0 .75.75h8a.74.74 0 0 0 .74-.64 10 10 0 0 1 1.53-3.69c.24-.35.49-.7.75-1.06 1.28-1.77 2.73-3.79 2.73-6.36A9.76 9.76 0 0 0 16 2.25zM20 25.25h-8a.75.75 0 0 0 0 1.5h8a.75.75 0 0 0 0-1.5zM19 28.25h-6a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5z"/></svg>';
+					}
+
+				$icons.html( iconClass );
+			});
+
+			// Live effect for Rating field icon color option.
+			$( '.everest-forms-field-option-row-icon_color input.colorpicker' ).wpColorPicker({
+				change: function( event ) {
+					var $this     = $( this ),
+						value     = $this.val(),
+						id        = $this.closest( '.everest-forms-field-option-row' ).data( 'field-id' ),
+						$icons    = $( '#everest-forms-field-'+id +' .rating-icon svg' );
+
+					$icons.css( 'fill', value );
+				}
+			});
 		},
 
 		/**
@@ -1424,6 +1514,10 @@
 
 		bindFormSettings: function () {
 			$( 'body' ).on( 'click', '.evf-setting-panel', function( e ) {
+				if ($(this).hasClass('upgrade-addons-settings')) {
+					return;
+				}
+
 				var data_setting_section = $(this).attr('data-section');
 				$('.evf-setting-panel').removeClass('active');
 				$('.everest-forms-active-email').removeClass('active');
@@ -1922,6 +2016,7 @@
 									$( '.evf-panel-fields-button' ).trigger( 'click' );
 									$field.fadeOut( 'slow', function () {
 										var removed_el_id = $field.attr('data-field-id');
+										var field_type = $field.attr('data-field-type');
 										$( document.body ).trigger( 'evf_before_field_deleted', [ removed_el_id] );
 										$field.remove();
 										option_field.remove();
@@ -1932,6 +2027,7 @@
 										EVFPanelBuilder.conditionalLogicRemoveField(removed_el_id);
 										EVFPanelBuilder.conditionalLogicRemoveFieldIntegration(removed_el_id);
 										EVFPanelBuilder.paymentFieldRemoveFromQuantity(removed_el_id);
+									    EVFPanelBuilder.oneTimeDraggableRemoveField(field_type);
 									});
 								}
 							},
@@ -2742,12 +2838,14 @@
 					$( document.body ).trigger( 'init_tooltips' );
 					$( document.body ).trigger( 'init_field_options_toggle' );
 					$( document.body ).trigger( 'evf_after_field_append', [dragged_el_id] );
-
 					// Conditional logic append rules.
 					EVFPanelBuilder.conditionalLogicAppendField( dragged_el_id );
 					EVFPanelBuilder.conditionalLogicAppendFieldIntegration( dragged_el_id );
 					EVFPanelBuilder.paymentFieldAppendToQuantity( dragged_el_id );
 					EVFPanelBuilder.paymentFieldAppendToDropdown( dragged_field_id, field_type );
+
+					//One Time draggable.
+					EVFPanelBuilder.oneTimeDraggableField( dragged_field_id, field_type );
 
 					// Initialization Datepickers.
 					EVFPanelBuilder.init_datepickers();
@@ -2938,6 +3036,16 @@
 			}
 		},
 
+		oneTimeDraggableField: function( dragged_field_id, field_type ){
+			var singleDraggableFields = evf_data.form_one_time_draggable_fields;
+			var draggedFieldElement = $('#everest-forms-add-fields-' + field_type);
+
+			if (singleDraggableFields.length > 0 && $.inArray(field_type, singleDraggableFields) >= 0 && draggedFieldElement.length) {
+				draggedFieldElement.addClass('evf-one-time-draggable-field');
+			}
+
+		},
+
 		conditionalLogicAppendFieldIntegration: function( id ){
 			var dragged_el = $('#' + id);
 			var dragged_index = dragged_el.index();
@@ -3007,6 +3115,14 @@
 
 		paymentFieldRemoveFromQuantity: function( id ) {
 			$('.everest-forms-field-option-row-map_field select option[value = ' +id +' ]').remove();
+		},
+
+		oneTimeDraggableRemoveField : function (field_type ) {
+			var dragged_field_id = $('#everest-forms-add-fields-' + field_type);
+			if (dragged_field_id.hasClass('evf-one-time-draggable-field')) {
+				dragged_field_id.removeClass('upgrade-modal');
+				dragged_field_id.removeClass('evf-one-time-draggable-field');
+			}
 		},
 
 		bindFieldSettings: function () {
@@ -3087,7 +3203,228 @@
 			}else{
 				$(document).find('.everest-forms-akismet-protection-type').hide();
 			}
-		}
+		},
+		bindPrivacyPolicyActions: function() {
+			// Consent message change handler.
+			$( document.body ).on( 'input', '.everest-forms-field-option .evf-privacy-policy-consent-message', function ( e ) {
+				var new_message = EVFPanelBuilder.processSyntaxes( $( this ).val() );
+
+				// Update with the new processed consent message.
+				$( '.everest-forms-field.active' ).find( '.evf-privacy-policy-consent-message' ).html( new_message );
+			});
+
+			// Local page add handler.
+			$( document.body ).on( 'click', '.everest-forms-field-option .evf-add-local-privacy-policy-page', function ( e ) {
+				var new_message = $( '.everest-forms-field-option:visible .evf-privacy-policy-consent-message' ).val(),
+					selected_page_id = $( '.everest-forms-field-option:visible .evf-select-local-privacy-policy-page' ).val(),
+					selected_page_title = $( '.everest-forms-field-option:visible .evf-select-local-privacy-policy-page option:selected' ).html();
+
+				// Append a hyperlink syntax containing the selected page to the consent message.
+				if ( selected_page_id ) {
+					new_message += '[' + selected_page_title + '](?page_id=' + selected_page_id + ')';
+
+					// Update with the new consent message.
+					$( '.everest-forms-field-option:visible .evf-privacy-policy-consent-message' ).val( new_message );
+					new_message = EVFPanelBuilder.processSyntaxes( new_message );
+					$( '.everest-forms-field.active' ).find( '.evf-privacy-policy-consent-message' ).html( new_message );
+				}
+			});
+
+			// Custom page add handler.
+			$( document.body ).on( 'click', '.everest-forms-field-option .evf-privacy-policy-add-custom-url', function ( e ) {
+				var new_message = $( '.everest-forms-field-option:visible .evf-privacy-policy-consent-message' ).val(),
+					label = $( '.everest-forms-field-option:visible .evf-privacy-policy-custom-link-label' ).val().trim(),
+					url = $( '.everest-forms-field-option:visible .evf-privacy-policy-custom-link-url' ).val().trim();
+
+				// Prepend `http` protocol in the url.
+				if ( url.search( 'http' ) < 0 ) {
+					url = 'http://' + url;
+				}
+
+				// Append a hyperlink syntax containing the custom URL to the consent message.
+				if ( '' !== url ) {
+					new_message += '[' + label + '](' + url + ')';
+
+					// Update with the new consent message.
+					$( '.everest-forms-field-option:visible .evf-privacy-policy-consent-message' ).val( new_message );
+					new_message = EVFPanelBuilder.processSyntaxes( new_message );
+					$( '.everest-forms-field.active' ).find( '.evf-privacy-policy-consent-message' ).html( new_message );
+
+					// Empty the input fields.
+					$( '.everest-forms-field-option:visible .evf-privacy-policy-custom-link-label' ).val( '' );
+					$( '.everest-forms-field-option:visible .evf-privacy-policy-custom-link-url' ).val( '' );
+				}
+			});
+		},
+		/**
+		 * Process syntaxes in a text.
+		 *
+		 * @since 1.7.0
+		 *
+		 * @param {string} text Text to be processed.
+		 * @param {bool}   escape_html Whether to escape all the htmls before processing or not.
+		 *
+		 * @return {string} Processed text.
+		 */
+		processSyntaxes: function( text ) {
+			text = text.replace( /^\s+/g, '' );
+			text = EVFPanelBuilder.processHyperlinkSyntax( text );
+			text = EVFPanelBuilder.process_italic_syntax( text );
+			text = EVFPanelBuilder.process_bold_syntax( text );
+			text = EVFPanelBuilder.process_underline_syntax( text );
+			text = EVFPanelBuilder.process_new_lines( text );
+			return text;
+		},
+
+		/**
+		 * Process hyperlink syntaxes in a text.
+		 * The syntax used for hyperlink is: [Link Label](Link URL)
+		 * Example: [Google Search Page](https://google.com)
+		 *
+		 * @since 1.7.0
+		 *
+		 * @param {string} text Text to process.
+		 *
+		 * @return {string} Processed text.
+		 */
+		processHyperlinkSyntax: function( text ) {
+			var regex = new RegExp( /(\[[^\[\]]*\])(\([^\(\)]*\))/g );
+
+			// Process all the hyperlink syntax.
+			while ( matches = regex.exec( text ) ) {
+				var matched_string = matches[0];
+				var label          = matches[1];
+				var link           = matches[2];
+
+				// Trim brackets.
+				label = label.substring( 1, label.length - 1 );
+				link = link.substring( 1, link.length - 1 );
+
+				// Proceed only if label or link is not empty.
+				if ( '' !== label || '' !== link ) {
+
+					// Use hash(#) if the link is empty.
+					if ( '' === link ) {
+						link = '#';
+					}
+
+					// Use link as label if it's empty.
+					if ( '' === label ) {
+						label = link;
+					}
+
+					// Insert hyperlink html.
+					var html = '<a href="' + link + '">' + label + '</a>';
+					text = text.replace( matched_string, html );
+				} else {
+					// If both label and link are empty then replace it with empty string.
+					text = text.replace( matched_string, '' );
+				}
+			}
+			return text;
+		},
+
+		/**
+		 * Process italic syntaxes in a text.
+		 * The syntax used for italic text is: `text`
+		 * Just wrap the text with back tick characters. To escape a backtick insert a backslash(\) before the character like "\`".
+		 *
+		 * @since 1.7.0
+		 *
+		 * @param {string} text Text to process.
+		 *
+		 * @return {string} Processed text.
+		 */
+		process_italic_syntax: function( text ) {
+			var regex = new RegExp( /`[^`]+`/g );
+			text = text.split( '\\`' ).join( '<&&&&&>' ); // To preserve an escaped special character '`'.
+
+			while ( matches = regex.exec( text ) ) {
+				var matched_string = matches[0];
+				var label = matched_string.trim().substring( 1, matched_string.length - 1 );
+				var html = '<i>' + label + '</i>';
+				text = text.replace( matched_string, html );
+			}
+			return text.split( '<&&&&&>' ).join( '`' );
+		},
+
+		/**
+		 * Process bold syntaxes in a text.
+		 * The syntax used for bold text is: *text*
+		 * Just wrap the text with asterisk characters. To escape an asterisk insert a backslash(\) before the character like "\*".
+		 *
+		 * @since 1.7.0
+		 *
+		 * @param {string} text Text to process.
+		 *
+		 * @return {string} Processed text.
+		 */
+		process_bold_syntax: function( text ) {
+			var regex = new RegExp( /\*[^*]+\*/g );
+			text = text.split( '\\*' ).join( '<&&&&&>' ); // To preserve an escaped special character '*'.
+
+			while ( matches = regex.exec( text ) ) {
+				var matched_string = matches[0];
+				var label = matched_string.trim().substring( 1, matched_string.length - 1 );
+				var html = '<b>' + label + '</b>';
+				text = text.replace( matched_string, html );
+			}
+			return text.split( '<&&&&&>' ).join( '*' );
+		},
+
+		/**
+		 * Process underline syntaxes in a text.
+		 * The syntax used for bold text is: __text__
+		 * Wrap the text with double underscore characters. To escape an underscore insert a backslash(\) before the character like "\_".
+		 *
+		 * @since 1.7.0
+		 *
+		 * @param {string} text Text to process.
+		 *
+		 * @return {string} Processed text.
+		 */
+		process_underline_syntax: function( text ) {
+			var regex = new RegExp( /__[^_]+__/g );
+			text = text.split( '\\_' ).join( '<&&&&&>' ); // To preserve an escaped special character '_'.
+
+			while ( matches = regex.exec( text ) ) {
+				var matched_string = matches[0];
+				var label = matched_string.trim().substring( 2, matched_string.length - 2 );
+				var html = '<u>' + label + '</u>';
+				text = text.replace( matched_string, html );
+			}
+			return text.split( '<&&&&&>' ).join( '_' );
+		},
+
+		/**
+		 * It replaces `\n` characters with `<br/>` tag because new line `\n` character is not supported in html.
+		 *
+		 * @since 1.7.0
+		 *
+		 * @param {string} text
+		 *
+		 * @return {string} Processed text.
+		 */
+		process_new_lines: function( text ) {
+			//Ref: https://stackoverflow.com/questions/1144783/how-to-replace-all-occurrences-of-a-string
+			return text.split( '\n' ).join( '<br/>' );
+		},
+		livePreviewNumberOfRating : function( el ) {
+			var $this  = $( el ),
+			value  = $this.val();
+			if( value.length == 0 || value <= 0){
+				value = 1 ;
+			}
+			var id    = $this.parent().data( 'field-id' ),
+				icons = $( '#everest-forms-field-'+id +' .rating-icon' ).first();
+			if ( value <= 100 ) {
+				$( '#everest-forms-field-'+id +' .rating-icon' ).remove();
+				for ( var $i = 1; $i <= value; $i++ ) {
+					$( '#everest-forms-field-'+id +'').append( icons.clone() );
+				}
+			}
+		},
+
 	};
 
 	EVFPanelBuilder.init();

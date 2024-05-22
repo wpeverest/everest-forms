@@ -87,6 +87,12 @@ class EVF_Admin_Assets {
 		wp_register_script( 'evf-template-controller', evf()->plugin_url() . '/assets/js/admin/form-template-controller' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true );
 		wp_register_script( 'flatpickr', evf()->plugin_url() . '/assets/js/flatpickr/flatpickr' . $suffix . '.js', array( 'jquery' ), '4.6.3', true );
 		wp_register_script( 'evf-file-uploader', evf()->plugin_url() . '/assets/js/admin/evf-file-uploader' . $suffix . '.js', array(), EVF_VERSION, true );
+		// Register admin scripts for survey fields.
+		wp_register_script( 'everest-forms-survey-polls-quiz-builder', evf()->plugin_url() . "/assets/js/admin/everest-forms-survey-polls-quiz-builder{$suffix}.js", array( 'jquery', 'wp-util', 'underscore', 'jquery-ui-sortable' ), EVF_VERSION, true );
+		wp_register_script( 'random-color', evf()->plugin_url() . "/assets/js/admin/randomColor{$suffix}.js", array(), EVF_VERSION, true );
+		wp_register_script( 'chart', evf()->plugin_url() . "/assets/js/admin/chart{$suffix}.js", array(), EVF_VERSION, true );
+		wp_register_script( 'print_this', evf()->plugin_url() . "/assets/js/admin/printThis{$suffix}.min.js", array(), EVF_VERSION, true );
+		wp_register_script( 'progress_bar', evf()->plugin_url() . "/assets/js/admin/progressbar{$suffix}.js", array(), EVF_VERSION, true );
 		wp_localize_script(
 			'evf-file-uploader',
 			'evf_file_uploader',
@@ -131,56 +137,56 @@ class EVF_Admin_Assets {
 			apply_filters(
 				'everest_forms_builder_strings',
 				array(
-					'post_id'                      => isset( $post->ID ) ? $post->ID : '',
-					'ajax_url'                     => admin_url( 'admin-ajax.php' ),
-					'tab'                          => isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : '', // phpcs:ignore WordPress.Security.NonceVerification.
-					'evf_field_drop_nonce'         => wp_create_nonce( 'everest_forms_field_drop' ),
-					'evf_add_row_nonce'            => wp_create_nonce( 'everest_forms_add_row' ),
-					'evf_save_form'                => wp_create_nonce( 'everest_forms_save_form' ),
-					'evf_embed_form'               => wp_create_nonce( 'everest_forms_embed_form' ),
-					'evf_goto_edit_page'           => wp_create_nonce( 'everest_forms_goto_edit_page' ),
-					'evf_get_next_id'              => wp_create_nonce( 'everest_forms_get_next_id' ),
-					'evf_enabled_form'             => wp_create_nonce( 'everest_forms_enabled_form' ),
-					'form_id'                      => isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0, // phpcs:ignore WordPress.Security.NonceVerification
-					'field'                        => esc_html__( 'field', 'everest-forms' ),
-					'i18n_ok'                      => esc_html__( 'OK', 'everest-forms' ),
-					'i18n_installing'              => esc_html__( 'Installing', 'everest-forms' ),
-					'i18n_activating'              => esc_html__( 'Activating', 'everest-forms' ),
-					'i18n_install_activate'        => esc_html__( 'Install & Activate', 'everest-forms' ),
-					'i18n_install_only'            => esc_html__( 'Activate Plugins', 'everest-forms' ),
-					'i18n_copy'                    => esc_html__( '(copy)', 'everest-forms' ),
-					'i18n_close'                   => esc_html__( 'Close', 'everest-forms' ),
-					'i18n_cancel'                  => esc_html__( 'Cancel', 'everest-forms' ),
-					'i18n_row_locked'              => esc_html__( 'Row Locked', 'everest-forms' ),
-					'i18n_single_row_locked_msg'   => esc_html__( 'Single row cannot be deleted.', 'everest-forms' ),
-					'i18n_field_locked'            => esc_html__( 'Field Locked', 'everest-forms' ),
-					'i18n_field_locked_msg'        => esc_html__( 'This field cannot be deleted or duplicated.', 'everest-forms' ),
-					'i18n_row_locked_msg'          => esc_html__( 'This row cannot be deleted or duplicated.', 'everest-forms' ),
-					'i18n_field_error_choice'      => esc_html__( 'This item must contain at least one choice.', 'everest-forms' ),
-					'i18n_delete_row_confirm'      => esc_html__( 'Are you sure you want to delete this row?', 'everest-forms' ),
-					'i18n_delete_field_confirm'    => esc_html__( 'Are you sure you want to delete this field?', 'everest-forms' ),
-					'i18n_duplicate_field_confirm' => esc_html__( 'Are you sure you want to duplicate this field?', 'everest-forms' ),
-					'i18n_duplicate_row_confirm'   => esc_html__( 'Are you sure you want to duplicate this row?', 'everest-forms' ),
-					'i18n_email_disable_message'   => esc_html__( 'Turn on Email settings to manage your email notification.', 'everest-forms' ),
-					'i18n_upload_image_title'      => esc_html__( 'Choose an image', 'everest-forms' ),
-					'i18n_upload_image_button'     => esc_html__( 'Use Image', 'everest-forms' ),
-					'i18n_upload_image_remove'     => esc_html__( 'Remove Image', 'everest-forms' ),
-					'i18n_field_title_empty'       => esc_html__( 'Empty Form Name', 'everest-forms' ),
-					'i18n_shortcut_key_title'      => esc_html__( 'keyboard Shortcut Keys', 'everest-forms' ),
-					'i18n_shortcut_keys'           => array(
+					'post_id'                             => isset( $post->ID ) ? $post->ID : '',
+					'ajax_url'                            => admin_url( 'admin-ajax.php' ),
+					'tab'                                 => isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : '', // phpcs:ignore WordPress.Security.NonceVerification.
+					'evf_field_drop_nonce'                => wp_create_nonce( 'everest_forms_field_drop' ),
+					'evf_add_row_nonce'                   => wp_create_nonce( 'everest_forms_add_row' ),
+					'evf_save_form'                       => wp_create_nonce( 'everest_forms_save_form' ),
+					'evf_embed_form'                      => wp_create_nonce( 'everest_forms_embed_form' ),
+					'evf_goto_edit_page'                  => wp_create_nonce( 'everest_forms_goto_edit_page' ),
+					'evf_get_next_id'                     => wp_create_nonce( 'everest_forms_get_next_id' ),
+					'evf_enabled_form'                    => wp_create_nonce( 'everest_forms_enabled_form' ),
+					'form_id'                             => isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0, // phpcs:ignore WordPress.Security.NonceVerification
+					'field'                               => esc_html__( 'field', 'everest-forms' ),
+					'i18n_ok'                             => esc_html__( 'OK', 'everest-forms' ),
+					'i18n_installing'                     => esc_html__( 'Installing', 'everest-forms' ),
+					'i18n_activating'                     => esc_html__( 'Activating', 'everest-forms' ),
+					'i18n_install_activate'               => esc_html__( 'Install & Activate', 'everest-forms' ),
+					'i18n_install_only'                   => esc_html__( 'Activate Plugins', 'everest-forms' ),
+					'i18n_copy'                           => esc_html__( '(copy)', 'everest-forms' ),
+					'i18n_close'                          => esc_html__( 'Close', 'everest-forms' ),
+					'i18n_cancel'                         => esc_html__( 'Cancel', 'everest-forms' ),
+					'i18n_row_locked'                     => esc_html__( 'Row Locked', 'everest-forms' ),
+					'i18n_single_row_locked_msg'          => esc_html__( 'Single row cannot be deleted.', 'everest-forms' ),
+					'i18n_field_locked'                   => esc_html__( 'Field Locked', 'everest-forms' ),
+					'i18n_field_locked_msg'               => esc_html__( 'This field cannot be deleted or duplicated.', 'everest-forms' ),
+					'i18n_row_locked_msg'                 => esc_html__( 'This row cannot be deleted or duplicated.', 'everest-forms' ),
+					'i18n_field_error_choice'             => esc_html__( 'This item must contain at least one choice.', 'everest-forms' ),
+					'i18n_delete_row_confirm'             => esc_html__( 'Are you sure you want to delete this row?', 'everest-forms' ),
+					'i18n_delete_field_confirm'           => esc_html__( 'Are you sure you want to delete this field?', 'everest-forms' ),
+					'i18n_duplicate_field_confirm'        => esc_html__( 'Are you sure you want to duplicate this field?', 'everest-forms' ),
+					'i18n_duplicate_row_confirm'          => esc_html__( 'Are you sure you want to duplicate this row?', 'everest-forms' ),
+					'i18n_email_disable_message'          => esc_html__( 'Turn on Email settings to manage your email notification.', 'everest-forms' ),
+					'i18n_upload_image_title'             => esc_html__( 'Choose an image', 'everest-forms' ),
+					'i18n_upload_image_button'            => esc_html__( 'Use Image', 'everest-forms' ),
+					'i18n_upload_image_remove'            => esc_html__( 'Remove Image', 'everest-forms' ),
+					'i18n_field_title_empty'              => esc_html__( 'Empty Form Name', 'everest-forms' ),
+					'i18n_shortcut_key_title'             => esc_html__( 'keyboard Shortcut Keys', 'everest-forms' ),
+					'i18n_shortcut_keys'                  => array(
 						'Ctrl+S' => esc_html__( 'Save Builder', 'everest-forms' ),
 						'Ctrl+W' => esc_html__( 'Close Builder', 'everest-forms' ),
 						'Ctrl+P' => esc_html__( 'Preview Form', 'everest-forms' ),
 						'Ctrl+E' => esc_html__( 'Go to Entries', 'everest-forms' ),
 						'Ctrl+H' => esc_html__( 'Open Help', 'everest-forms' ),
 					),
-					'i18n_field_title_payload'     => esc_html__( 'Form name can\'t be empty.', 'everest-forms' ),
-					'email_fields'                 => evf_get_all_email_fields_by_form_id( isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0 ), // phpcs:ignore WordPress.Security.NonceVerification
-					'all_fields'                   => evf_get_all_form_fields_by_form_id( isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0 ), // phpcs:ignore WordPress.Security.NonceVerification
-					'smart_tags_other'             => evf()->smart_tags->other_smart_tags(),
-					'regex_expression_lists'       => evf()->smart_tags->regex_expression_lists(),
-					'entries_url'                  => ! empty( $_GET['form_id'] ) ? esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . absint( $_GET['form_id'] ) ) ) : '', // phpcs:ignore WordPress.Security.NonceVerification
-					'preview_url'                  => ! empty( $_GET['form_id'] ) ? esc_url( // phpcs:ignore WordPress.Security.NonceVerification
+					'i18n_field_title_payload'            => esc_html__( 'Form name can\'t be empty.', 'everest-forms' ),
+					'email_fields'                        => evf_get_all_email_fields_by_form_id( isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0 ), // phpcs:ignore WordPress.Security.NonceVerification
+					'all_fields'                          => evf_get_all_form_fields_by_form_id( isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0 ), // phpcs:ignore WordPress.Security.NonceVerification
+					'smart_tags_other'                    => evf()->smart_tags->other_smart_tags(),
+					'regex_expression_lists'              => evf()->smart_tags->regex_expression_lists(),
+					'entries_url'                         => ! empty( $_GET['form_id'] ) ? esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . absint( $_GET['form_id'] ) ) ) : '', // phpcs:ignore WordPress.Security.NonceVerification
+					'preview_url'                         => ! empty( $_GET['form_id'] ) ? esc_url( // phpcs:ignore WordPress.Security.NonceVerification
 						add_query_arg(
 							array(
 								'form_id'     => absint( $_GET['form_id'] ), // phpcs:ignore WordPress.Security.NonceVerification
@@ -189,6 +195,9 @@ class EVF_Admin_Assets {
 							home_url()
 						)
 					) : '',
+					'form_one_time_draggable_fields'      => evf_get_one_time_draggable_fields(),
+					'i18n_privacy_policy_consent_message' => esc_html__( 'I allow this website to collect and store the submitted data.', 'everest-forms' ),
+					'is_pro'                              => ( ! defined( 'EFP_PLUGIN_FILE' ) ) ? false : true,
 				)
 			)
 		);
@@ -199,22 +208,30 @@ class EVF_Admin_Assets {
 			'evf-upgrade',
 			'evf_upgrade',
 			array(
-				'ajax_url'                     => admin_url( 'admin-ajax.php' ),
-				'upgrade_title'                => esc_html__( 'is a PRO Feature', 'everest-forms' ),
-				'upgrade_message'              => esc_html__( 'We\'re sorry, the %name% is not available on your plan.<br>Please upgrade to the PRO plan to unlock all these awesome features.', 'everest-forms' ),
-				'upgrade_button'               => esc_html__( 'Upgrade to PRO', 'everest-forms' ),
-				'upgrade_url'                  => apply_filters( 'everest_forms_upgrade_url', 'https://everestforms.net/pricing/?utm_source=premium-fields&utm_medium=modal-button&utm_campaign=evf-upgrade-to-pro' ),
-				'enable_stripe_title'          => esc_html__( 'Please enable Stripe', 'everest-forms' ),
-				'enable_stripe_message'        => esc_html__( 'Enable Stripe Payment gateway in payments section to use this field.', 'everest-forms' ),
-				'enable_authorize_net_title'   => esc_html__( 'Please enable Authorize.Net', 'everest-forms' ),
-				'enable_authorize_net_message' => esc_html__( 'Enable Authorize.Net Payment gateway in payments section to use this field.', 'everest-forms' ),
-				'evf_install_and_active_nonce' => wp_create_nonce( 'install_and_active_nonce' ),
-				'upgrade_plan_title'           => esc_html__( 'is a Premium Addon', 'everest-forms' ),
-				'upgrade_plan_message'         => esc_html__( 'This addon requires premium plan. Please upgrade to the Premium plan to unlock all these awesome field.', 'everest-forms' ),
-				'upgrade_plan_button'          => esc_html__( 'Upgrade Plan', 'everest-forms' ),
-				'vedio_links'                  => array(
+				'ajax_url'                       => admin_url( 'admin-ajax.php' ),
+				'upgrade_title'                  => esc_html__( 'is a PRO Feature', 'everest-forms' ),
+				'upgrade_message'                => esc_html__( 'We\'re sorry, the %name% is not available on your plan.<br>Please upgrade to the PRO plan to unlock all these awesome features.', 'everest-forms' ),
+				'upgrade_button'                 => esc_html__( 'Upgrade to PRO', 'everest-forms' ),
+				'upgrade_url'                    => apply_filters( 'everest_forms_upgrade_url', 'https://everestforms.net/pricing/?utm_source=builder-settings&utm_medium=premium-form-settings-popup&utm_campaign=' . evf()->utm_campaign ),
+				'enable_stripe_title'            => esc_html__( 'Please enable Stripe', 'everest-forms' ),
+				'recaptcha_title'                => esc_html__( 'reCaptcha', 'everest-forms' ),
+				'recaptcha_api_key_message'      => esc_html__( 'Please enter a reCaptcha key on Everest Forms>Captcha>reCaptcha.', 'everest-forms' ),
+				'hcaptcha_title'                 => esc_html__( 'hCaptcha', 'everest-forms' ),
+				'hcaptcha_api_key_message'       => esc_html__( 'Please enter a hCaptcha key on Everest Forms>Captcha>hCaptcha.', 'everest-forms' ),
+				'turnstile_title'                => esc_html__( ' Cloudflare Turnstile', 'everest-forms' ),
+				'turnstile_api_key_message'      => esc_html__( 'Please enter a  Cloudflare Turnstile key on Everest Forms>Captcha>Cloudflare Turnstile.', 'everest-forms' ),
+				'enable_stripe_message'          => esc_html__( 'Enable Stripe Payment gateway in payments section to use this field.', 'everest-forms' ),
+				'enable_authorize_net_title'     => esc_html__( 'Please enable Authorize.Net', 'everest-forms' ),
+				'enable_authorize_net_message'   => esc_html__( 'Enable Authorize.Net Payment gateway in payments section to use this field.', 'everest-forms' ),
+				'evf_install_and_active_nonce'   => wp_create_nonce( 'install_and_active_nonce' ),
+				'upgrade_plan_title'             => esc_html__( 'is a Premium Addon', 'everest-forms' ),
+				'upgrade_plan_message'           => esc_html__( 'This addon requires premium plan. Please upgrade to the Premium plan to unlock all these awesome field.', 'everest-forms' ),
+				'upgrade_plan_button'            => esc_html__( 'Upgrade Plan', 'everest-forms' ),
+				'vedio_links'                    => array(
 					'dropdown' => 'kDYAKElqNtM',
 				),
+				'evf_one_time_draggable_title'   => esc_html__( 'File upload', 'everest-forms' ),
+				'evf_one_time_draggable_message' => esc_html__( 'field can only be used once. To use it multiple times, please upgrade to the pro version.', 'everest-forms' ),
 
 			)
 		);
@@ -226,6 +243,7 @@ class EVF_Admin_Assets {
 			wp_enqueue_script( 'evf-enhanced-select' );
 			wp_enqueue_script( 'jquery-ui-sortable' );
 			wp_enqueue_script( 'jquery-ui-autocomplete' );
+			wp_enqueue_script( 'evf-upgrade' );
 
 			wp_localize_script(
 				'everest-forms-email-admin',
@@ -307,7 +325,7 @@ class EVF_Admin_Assets {
 						'template_licence_check_nonce' => wp_create_nonce( 'everest_forms_template_licence_check' ),
 						'i18n_form_name'               => esc_html__( 'Give it a name.', 'everest-forms' ),
 						'i18n_form_error_name'         => esc_html__( 'You must provide a Form name', 'everest-forms' ),
-						'upgrade_url'                  => apply_filters( 'everest_forms_upgrade_url', 'https://everestforms.net/pricing/?utm_source=form-template&utm_medium=button&utm_campaign=evf-upgrade-to-pro' ),
+						'upgrade_url'                  => apply_filters( 'everest_forms_upgrade_url', 'https://everestforms.net/pricing/?utm_source=form-template&utm_medium=button&utm_campaign=' . evf()->utm_campaign ),
 						'upgrade_button'               => esc_html__( 'Upgrade Plan', 'everest-forms' ),
 						'upgrade_message'              => esc_html__( 'This template requires premium addons. Please upgrade to the Premium plan to unlock all these awesome Templates.', 'everest-forms' ),
 						'upgrade_title'                => esc_html__( 'is a Premium Template', 'everest-forms' ),
@@ -329,6 +347,30 @@ class EVF_Admin_Assets {
 					)
 				);
 			}
+		}
+
+		if ( in_array( $screen_id, evf_get_screen_ids(), true ) ) {
+			wp_enqueue_style( 'everest-forms-survey-polls-quiz-admin' );
+			wp_enqueue_script( 'everest-forms-survey-polls-quiz-builder' );
+			wp_enqueue_script( 'random-color' );
+			// wp_enqueue_script( 'chart' ); //for future use.
+			wp_enqueue_script( 'progress_bar' );
+			wp_enqueue_script( 'print_this' );
+			wp_localize_script(
+				'everest-forms-survey-polls-quiz-builder',
+				'everest_forms_survey_polls_quiz_builder',
+				array(
+					'ajax_url'                           => admin_url( 'admin-ajax.php', 'relative' ),
+					'admin_url'                          => admin_url(),
+					'ajax_nonce'                         => wp_create_nonce( 'process-ajax-nonce' ),
+					'i18n_field_less_than_highest_point_error' => esc_html__( 'Please enter in a value less than the highest rating point.', 'everest-forms' ),
+					'i18n_field_greater_than_lowest_point_error' => esc_html__( 'Please enter in a value greater than the lowest rating point.', 'everest-forms' ),
+					'i18n_field_lowest_rating_lower_than_min_value_error' => esc_html__( 'Please enter in a value greater or equal to 0.', 'everest-forms' ),
+					'i18n_field_highest_rating_greater_than_max_value_error' => esc_html__( 'Please enter in a value less than 100.', 'everest-forms' ),
+					'i18n_field_from_score_greater_than_to_score' => esc_html__( 'Please enter in a value greater than From Score.', 'everest-forms' ),
+					'i18n_field_to_score_is_empty_error' => esc_html__( 'Please enter in a value to add more feedback.', 'everest-forms' ),
+				)
+			);
 		}
 
 		// Tools page.

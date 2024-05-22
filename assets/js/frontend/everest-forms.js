@@ -32,6 +32,10 @@ jQuery( function ( $ ) {
 			this.checkUncheckAllcheckbox();
 			this.validateMinimumWordLength();
 			this.validateMinimumcharacterLength();
+			this.loadPhoneField();
+			this.loadCountryFlags();
+			this.ratingInit();
+
 
 			// Inline validation.
 			this.$everest_form.on( 'input validate change', '.input-text, select, input:checkbox, input:radio', this.validate_field );
@@ -401,8 +405,25 @@ jQuery( function ( $ ) {
 				return $checked.length <= choiceLimit;
 			}, function( params, element ) {
 				var	choiceLimit = parseInt( $( element ).closest( 'ul' ).attr( 'data-choice-limit' ) || 0, 10 );
-				return everest_forms_params.i18n_messages_check_limit.replace( '{#}', choiceLimit );
+				return everest_forms.i18n_messages_check_limit.replace( '{#}', choiceLimit );
 			} );
+
+			$.validator.addMethod( 'phone-field', function( value, element ) {
+				if ( value.match( /[^\d()\-+\s]/ ) ) {
+					return false;
+				}
+				return this.optional( element ) || value.replace( /[^\d]/g, '' ).length > 0;
+			}, everest_forms_params.i18n_messages_phone );
+
+			// Validate Smart Phone Field.
+			if ( 'undefined' !== typeof $.fn.intlTelInput ) {
+				$.validator.addMethod( 'smart-phone-field', function( value, element ) {
+					if ( value.match( /[^\d()\-+\s]/ ) ) {
+						return false;
+					}
+					return this.optional( element ) || $( element ).intlTelInput( 'isValidNumber' );
+				}, everest_forms_params.i18n_messages_phone );
+			}
 
 			this.$everest_form.each( function() {
 				var $this = $( this );
@@ -803,6 +824,158 @@ jQuery( function ( $ ) {
 
 			} );
 		},
+		/**
+		 * Load phone field.
+		 *
+		 * @since 1.2.9
+		 */
+		loadPhoneField: function() {
+			var inputOptions = {};
+
+			// Only continue if intlTelInput library exists.
+			if ( typeof $.fn.intlTelInput === 'undefined' ) {
+				return false;
+			}
+
+			// Determine the country by IP if storing user details is enabled.
+			if ( 'yes' !== everest_forms_params.disable_user_details ) {
+				inputOptions.geoIpLookup = everest_forms.currentIpToCountry;
+			}
+
+			// Try an alternative solution if storing user details is disabled.
+			if ( 'yes' === everest_forms_params.disable_user_details ) {
+				var lang = this.getFirstBrowserLanguage(),
+					countryCode = lang.indexOf( '-' ) > -1 ? lang.split( '-' ).pop() : '';
+			}
+
+			// Make sure the library recognizes browser country code to avoid console error.
+			if ( countryCode ) {
+				var countryData = window.intlTelInputGlobals.getCountryData();
+
+				countryData = countryData.filter( function( country ) {
+					return country.iso2 === countryCode.toLowerCase();
+				} );
+				countryCode = countryData.length ? countryCode : '';
+			}
+
+			// Set default country.
+			inputOptions.initialCountry = 'yes' === everest_forms_params.disable_user_details && countryCode ? countryCode : 'auto';
+
+			$( '.evf-smart-phone-field' ).each( function( i, el ) {
+				var $el = $( el );
+
+				// Hidden input allows to include country code into submitted data.
+				inputOptions.hiddenInput = $el.closest( '.evf-field-phone' ).data( 'field-id' );
+				inputOptions.utilsScript = everest_forms_params.plugin_url + 'assets/js/intlTelInput/utils.js';
+
+				$el.intlTelInput( inputOptions );
+
+				// Change name of the phone field.
+				var field_name     = $el.attr( 'name' ),
+					field_new_name = field_name + '[phone_field]';
+
+				$el.attr( 'name', field_new_name );
+				$el.blur( function() {
+					if ( $el.intlTelInput( 'isValidNumber' ) ) {
+						$el.siblings( 'input[type="hidden"]' ).val( $el.intlTelInput( 'getNumber' ) );
+					}
+				} );
+			} );
+		},
+		/**
+		 * Asynchronously fetches country code using current IP
+		 * and executes a callback with the relevant country code.
+		 *
+		 * @since 1.2.9
+		 *
+		 * @param {Function} callback Executes once the fetch is completed.
+		 */
+		currentIpToCountry: function( callback ) {
+			$.get( 'https://ipapi.co/json' ).always( function( resp ) {
+				var countryCode = ( resp && resp.country ) ? resp.country : '';
+
+				if ( ! countryCode ) {
+					var lang = everest_forms_pro.getFirstBrowserLanguage();
+					countryCode = lang.indexOf( '-' ) > -1 ? lang.split( '-' ).pop() : '';
+				}
+
+				callback( countryCode );
+			} );
+		},
+		loadCountryFlags: function() {
+			// Only continue if SelectWoo library exists.
+			if ( 'undefined' !== typeof $.fn.selectWoo ) {
+				$.fn.selectWoo.amd.define( 'evfCountrySelectionAdapter', [
+					'select2/utils',
+					'select2/selection/single',
+				], function ( Utils, SingleSelection ) {
+					var adapter = SingleSelection;
+					adapter.prototype.update = function ( data ) {
+						if ( 0 === data.length ) {
+							this.clear();
+							return;
+						}
+						var selection = data[0];
+						var $rendered = this.$selection.find( '.select2-selection__rendered' );
+						var formatted = this.display( selection, $rendered );
+						$rendered.empty().append( formatted );
+						$rendered.prop( 'title', selection.title || selection.text );
+					};
+					return adapter;
+				} );
+
+				$( 'select.evf-country-flag-selector:visible' ).each( function() {
+					var select2_args = $.extend({
+						placeholder: $( this ).attr( 'placeholder' ) || '',
+						selectionAdapter: $.fn.selectWoo.amd.require( 'evfCountrySelectionAdapter' ),
+						templateResult: everest_forms.getFormattedCountryFlags,
+						templateSelection: everest_forms.getFormattedCountryFlags,
+					}, getEnhancedSelectFormatString() );
+
+					$( this ).selectWoo( select2_args );
+				});
+			}
+		},
+
+		/**
+		 * Get formatted country flags.
+		 *
+		 * @param {object} country Country object.
+		 */
+		getFormattedCountryFlags: function( country ) {
+			if ( ! country.id ) {
+				return country.text;
+			}
+			return $( '<div class="iti__flag-box"><div class="iti__flag iti__' + country.id.toLowerCase() + '"></div></div><span class="iti__country-name">' + country.text + '</span>' );
+		},
+		ratingInit:function(){
+			// Rating field: hover effect.
+			$( '.everest-forms-field-rating' ).hover(
+				function() {
+					$( this ).parent().find( '.everest-forms-field-rating' ).removeClass( 'selected hover' );
+					$( this ).prevAll().addBack().addClass( 'hover' );
+				},
+				function() {
+					$( this ).parent().find( '.everest-forms-field-rating' ).removeClass( 'selected hover' );
+					$( this ).parent().find( 'input:checked' ).parent().prevAll().addBack().addClass( 'selected' );
+				}
+			);
+
+			// Rating field: toggle.
+			$( document ).on( 'change', '.everest-forms-field-rating input', function() {
+				var $this  = $( this ),
+					$wrap  = $this.closest( '.everest-forms-field-rating-container' ),
+					$items = $wrap.find( '.everest-forms-field-rating' );
+
+				$items.removeClass( 'hover selected' );
+				$this.parent().prevAll().addBack().addClass( 'selected' );
+			} );
+
+			// Rating field: preselect the selected rating.
+			$( document ).ready( function () {
+				$( '.everest-forms-field-rating input:checked' ).trigger( 'change' );
+			} );
+		}
 	};
 
 	everest_forms.init();

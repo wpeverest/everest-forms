@@ -60,6 +60,13 @@ class EVF_Frontend_Scripts {
 					'media'   => 'all',
 					'has_rtl' => true,
 				),
+				'jquery-intl-tel-input' => array(
+					'src'     => self::get_asset_url( 'assets/css/intlTelInput/intlTelInput.css' ),
+					'deps'    => array(),
+					'version' => EVF_VERSION,
+					'media'   => 'all',
+					'has_rtl' => false,
+				),
 			)
 		);
 	}
@@ -155,44 +162,54 @@ class EVF_Frontend_Scripts {
 
 		$suffix           = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		$register_scripts = array(
-			'inputmask'                     => array(
+			'inputmask'                              => array(
 				'src'     => self::get_asset_url( 'assets/js/inputmask/jquery.inputmask.bundle' . $suffix . '.js' ),
 				'deps'    => array( 'jquery' ),
 				'version' => '4.0.0-beta.58',
 			),
-			'flatpickr'                     => array(
+			'flatpickr'                              => array(
 				'src'     => self::get_asset_url( 'assets/js/flatpickr/flatpickr' . $suffix . '.js' ),
 				'deps'    => array( 'jquery' ),
 				'version' => '4.6.3',
 			),
-			'mailcheck'                     => array(
+			'mailcheck'                              => array(
 				'src'     => self::get_asset_url( 'assets/js/mailcheck/mailcheck' . $suffix . '.js' ),
 				'deps'    => array( 'jquery' ),
 				'version' => '1.1.2',
 			),
-			'selectWoo'                     => array(
+			'selectWoo'                              => array(
 				'src'     => self::get_asset_url( 'assets/js/selectWoo/selectWoo.full' . $suffix . '.js' ),
 				'deps'    => array( 'jquery' ),
 				'version' => '1.0.8',
 			),
-			'jquery-validate'               => array(
+			'jquery-intl-tel-input'                  => array(
+				'src'     => self::get_asset_url( '/assets/js/intlTelInput/jquery.intlTelInput' . $suffix . '.js ' ),
+				'deps'    => array( 'jquery' ),
+				'version' => '16.0.7',
+			),
+			'jquery-validate'                        => array(
 				'src'     => self::get_asset_url( 'assets/js/jquery-validate/jquery.validate' . $suffix . '.js' ),
 				'deps'    => array( 'jquery' ),
 				'version' => '1.19.2',
 			),
-			'everest-forms'                 => array(
+			'everest-forms'                          => array(
 				'src'     => self::get_asset_url( 'assets/js/frontend/everest-forms' . $suffix . '.js' ),
-				'deps'    => array( 'jquery', 'inputmask', 'jquery-validate' ),
+				'deps'    => array( 'jquery', 'inputmask', 'jquery-validate', 'jquery-intl-tel-input', 'selectWoo' ),
 				'version' => EVF_VERSION,
 			),
-			'everest-forms-text-limit'      => array(
+			'everest-forms-text-limit'               => array(
 				'src'     => self::get_asset_url( 'assets/js/frontend/text-limit' . $suffix . '.js' ),
 				'deps'    => array(),
 				'version' => EVF_VERSION,
 			),
-			'everest-forms-ajax-submission' => array(
+			'everest-forms-ajax-submission'          => array(
 				'src'     => self::get_asset_url( 'assets/js/frontend/ajax-submission' . $suffix . '.js' ),
 				'deps'    => array( 'jquery', 'inputmask', 'jquery-validate' ),
+				'version' => EVF_VERSION,
+			),
+			'everest-forms-survey-polls-quiz-script' => array(
+				'src'     => self::get_asset_url( 'assets/js/frontend/everest-forms-survey-polls-quiz' . $suffix . '.js' ),
+				'deps'    => array(),
 				'version' => EVF_VERSION,
 			),
 		);
@@ -206,14 +223,20 @@ class EVF_Frontend_Scripts {
 	 */
 	private static function register_styles() {
 		$register_styles = array(
-			'evf_select2' => array(
+			'evf_select2'           => array(
 				'src'     => self::get_asset_url( 'assets/css/select2.css' ),
 				'deps'    => array(),
 				'version' => EVF_VERSION,
 				'has_rtl' => false,
 			),
-			'flatpickr'   => array(
+			'flatpickr'             => array(
 				'src'     => self::get_asset_url( 'assets/css/flatpickr.css' ),
+				'deps'    => array(),
+				'version' => EVF_VERSION,
+				'has_rtl' => false,
+			),
+			'jquery-intl-tel-input' => array(
+				'src'     => self::get_asset_url( 'assets/css/intlTelInput.css' ),
 				'deps'    => array(),
 				'version' => EVF_VERSION,
 				'has_rtl' => false,
@@ -301,6 +324,9 @@ class EVF_Frontend_Scripts {
 					'mailcheck_toplevel_domains'           => array_map( 'sanitize_text_field', (array) apply_filters( 'everest_forms_mailcheck_toplevel_domains', array( 'dev' ) ) ),
 					'il8n_min_word_length_err_msg'         => esc_html__( 'Please enter at least {0} words.', 'everest-forms' ),
 					'il8n_min_character_length_err_msg'    => esc_html__( 'Please enter at least {0} characters.', 'everest-forms' ),
+					'plugin_url'                           => plugin_dir_url( EVF_PLUGIN_FILE ),
+					'i18n_messages_phone'                  => get_option( 'everest_forms_phone_validation', __( 'Please enter a valid phone number.', 'everest-forms' ) ),
+					'i18n_field_rating_greater_than_max_value_error' => esc_html__( 'Please enter in a value less than 100.', 'everest-forms' ),
 				);
 				break;
 			case 'everest-forms-text-limit':
@@ -317,6 +343,13 @@ class EVF_Frontend_Scripts {
 					'error'               => esc_html__( 'Something went wrong while making an AJAX submission', 'everest-forms' ),
 					'required'            => esc_html__( 'This field is required.', 'everest-forms' ),
 					'pdf_download'        => esc_html__( 'Click here to download your pdf submission', 'everest-forms' ),
+				);
+				break;
+			case 'everest-forms-survey-polls-quiz-script':
+				$params = array(
+					'ajax_url'   => admin_url( 'admin-ajax.php', 'relative' ),
+					'ajax_nonce' => wp_create_nonce( 'process-ajax-nonce' ),
+					'form_id'    => isset( $_GET['form_id'] ) ? wp_unslash( $_GET['form_id'] ) : '', // WPCS: CSRF ok, input var ok, sanitization ok.
 				);
 				break;
 			default:

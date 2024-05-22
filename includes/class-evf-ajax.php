@@ -82,34 +82,35 @@ class EVF_AJAX {
 	 */
 	public static function add_ajax_events() {
 		$ajax_events = array(
-			'save_form'                => false,
-			'create_form'              => false,
-			'get_next_id'              => false,
-			'install_extension'        => false,
-			'integration_connect'      => false,
-			'new_email_add'            => false,
-			'integration_disconnect'   => false,
-			'rated'                    => false,
-			'review_dismiss'           => false,
-			'survey_dismiss'           => false,
-			'allow_usage_dismiss'      => false,
-			'php_notice_dismiss'       => false,
-			'enabled_form'             => false,
-			'import_form_action'       => false,
-			'template_licence_check'   => false,
-			'template_activate_addon'  => false,
-			'ajax_form_submission'     => true,
-			'send_test_email'          => false,
-			'locate_form_action'       => false,
-			'slot_booking'             => true,
-			'active_addons'            => false,
-			'get_local_font_url'       => false,
-			'form_migrator_forms_list' => false,
-			'form_migrator'            => false,
-			'fm_dismiss_notice'        => false,
-			'form_entry_migrator'      => false,
-			'embed_form'               => false,
-			'goto_edit_page'           => false,
+			'save_form'                      => false,
+			'create_form'                    => false,
+			'get_next_id'                    => false,
+			'install_extension'              => false,
+			'integration_connect'            => false,
+			'new_email_add'                  => false,
+			'integration_disconnect'         => false,
+			'rated'                          => false,
+			'review_dismiss'                 => false,
+			'survey_dismiss'                 => false,
+			'allow_usage_dismiss'            => false,
+			'php_notice_dismiss'             => false,
+			'enabled_form'                   => false,
+			'import_form_action'             => false,
+			'template_licence_check'         => false,
+			'template_activate_addon'        => false,
+			'ajax_form_submission'           => true,
+			'send_test_email'                => false,
+			'locate_form_action'             => false,
+			'slot_booking'                   => true,
+			'active_addons'                  => false,
+			'get_local_font_url'             => false,
+			'form_migrator_forms_list'       => false,
+			'form_migrator'                  => false,
+			'fm_dismiss_notice'              => false,
+			'form_entry_migrator'            => false,
+			'embed_form'                     => false,
+			'goto_edit_page'                 => false,
+			'send_routine_report_test_email' => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -311,7 +312,7 @@ class EVF_AJAX {
 					evf_string_translation( $data['id'], $field['id'], $field['label'] );
 				}
 
-				if ( empty( $field['meta-key'] ) && ! in_array( $field['type'], array( 'html', 'title', 'captcha', 'divider', 'reset' ), true ) ) {
+				if ( empty( $field['meta-key'] ) && ! in_array( $field['type'], array( 'html', 'title', 'captcha', 'divider', 'reset', 'recaptcha', 'hcaptcha', 'turnstile' ), true ) ) {
 					$empty_meta_data[] = $field['label'];
 				}
 			}
@@ -868,6 +869,79 @@ class EVF_AJAX {
 				__( 'Everest Forms Team', 'everest-forms' )
 			);
 			$status  = wp_mail( $email, $subject, $message, $header );
+			if ( $status ) {
+				wp_send_json_success( array( 'message' => __( 'Test email was sent successfully! Please check your inbox to make sure it is delivered.', 'everest-forms' ) ) );
+			} else {
+				wp_send_json_error( array( 'message' => __( 'Test email was unsuccessful! Something went wrong.', 'everest-forms' ) ) );
+			}
+		} catch ( Exception $e ) {
+			wp_send_json_error(
+				array(
+					'message' => $e->getMessage(),
+				)
+			);
+		}
+	}
+
+	/**
+	 * Send stat routine test email.
+	 *
+	 * @since 2.0.9
+	 */
+	public static function send_routine_report_test_email() {
+		try {
+			check_ajax_referer( 'process-ajax-nonce', 'security' );
+			$from                                = esc_attr( get_bloginfo( 'name', 'display' ) );
+			$email                               = esc_attr( get_bloginfo( 'admin_email' ) );
+			$evf_routine_report_frequency        = get_option( 'everest_forms_entries_reporting_frequency' );
+			$evf_routine_report_day              = get_option( 'everest_forms_entries_reporting_day' );
+			$evf_routine_entries_reporting_email = get_option( 'everest_forms_entries_reporting_email' );
+			$subject                             = get_option( 'everest_forms_entries_reporting_subject', 'Test email from ' . $from );
+			$evf_routine_reporting_send_to       = get_option( 'everest_forms_email_send_to' );
+			$evf_routine_reporting_forms         = get_option( 'everest_forms_reporting_form_lists' );
+			$evf_routine_reporting_test_email    = get_option( 'everest_forms_routine_report_send_email_test_to' );
+
+			switch ( $evf_routine_report_frequency ) {
+				case 'Daily':
+					$evf_summary_duration = esc_html__( 'in the past week', 'everest-forms' );
+					break;
+
+				case 'Weekly':
+					$evf_summary_duration = esc_html__( 'yesterday', 'everest-forms' );
+					break;
+
+				case 'Monthly':
+					$evf_summary_duration = esc_html__( 'in the past month', 'everest-forms' );
+					break;
+			}
+			/* translators: %s: from address */
+			$subject  = 'Everest Form: ' . sprintf( esc_html__( $subject, 'everest-forms' ) );
+			$header   = "Reply-To: {{from}} \r\n";
+			$header  .= 'Content-Type: text/html; charset=UTF-8';
+			$message  = '<div class="everest-forms-message-text">';
+			$message .= '<h3 style="text-align:center; color: #ffc107;">' . esc_html( 'PS. This is just the sample data' ) . '</h3>';
+			$message .= '<p><strong>' . esc_html__( 'Hi there!', 'everest-forms' ) . ' 👋</strong></p>';
+			$message .= '<p>' . esc_html__( 'Let\'s see how your forms performed ' . $evf_summary_duration . '.', 'everest-forms' ) . '</p>';
+			$message .= '<br/>';
+			$message .= '<p><strong>' . esc_html__( 'Forms Stats', 'everest-forms' ) . '</strong></p>';
+			$message .= '<table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" style="solid #dddddd; display:block;min-width: 100%;border-collapse: collapse;width:100%; display:table; padding-bottom:2rem" class="evf_entries_summary_table">';
+			$message .= '<thead style="display:block; background:#7e3bd0; color:#fff; padding:1rem;">';
+			$message .= '<tr style="display:flex; justify-content:space-between; paddiing:1rem">';
+			$message .= '<th>' . esc_html__( 'Form Name', 'everest-forms' ) . '</th>';
+			$message .= '<th>' . esc_html__( 'Entries', 'everest-forms' ) . '</th>';
+			$message .= '</tr>';
+			$message .= '</thead>';
+			$message .= '<tbody style="display:block;">';
+			$message .= '<tr style="display:flex; justify-content:space-between; color:#000; padding:1rem">';
+			$message .= '<td>' . esc_html( 'Sample Contact Form' ) . '</td>';
+			$message .= '<td>' . esc_html( '10' ) . '</td>';
+			$message .= '</tr>';
+			$message .= '</tbody>';
+			$message .= '</table>';
+			$message .= '</div>';
+
+			$status = wp_mail( $email, $subject, $message, $header );
+
 			if ( $status ) {
 				wp_send_json_success( array( 'message' => __( 'Test email was sent successfully! Please check your inbox to make sure it is delivered.', 'everest-forms' ) ) );
 			} else {

@@ -24,6 +24,7 @@ class EVF_Admin_Menus {
 	public function __construct() {
 		// Add menus.
 		add_action( 'admin_menu', array( $this, 'admin_menu' ), 9 );
+		add_action( 'admin_menu', array( $this, 'dashboard_menu' ), 9 );
 		add_action( 'admin_menu', array( $this, 'builder_menu' ), 20 );
 		add_action( 'admin_menu', array( $this, 'entries_menu' ), 30 );
 		add_action( 'admin_menu', array( $this, 'settings_menu' ), 50 );
@@ -75,11 +76,11 @@ class EVF_Admin_Menus {
 
 		$wp_admin_bar->add_menu(
 			array(
-				'id'    => 'everest-forms-menu',
+				'id'     => 'everest-forms-menu',
 				'parent' => null,
 				'group'  => null,
-				'title' => 'Everest Forms', // you can use img tag with image link. it will show the image icon Instead of the title.
-				'href'  => admin_url( 'admin.php?page=evf-builder' ),
+				'title'  => 'Everest Forms', // you can use img tag with image link. it will show the image icon Instead of the title.
+				'href'   => admin_url( 'admin.php?page=evf-builder' ),
 			)
 		);
 
@@ -121,9 +122,9 @@ class EVF_Admin_Menus {
 
 		$href = add_query_arg(
 			array(
-				'utm_medium'   => 'admin-bar',
-				'utm_source'   => 'WordPress',
-				'utm_content'  => 'Documentation',
+				'utm_medium'  => 'admin-bar',
+				'utm_source'  => 'WordPress',
+				'utm_content' => 'Documentation',
 			),
 			'https://docs.everestforms.net/'
 		);
@@ -151,6 +152,23 @@ class EVF_Admin_Menus {
 		add_menu_page( esc_html__( 'Everest Forms', 'everest-forms' ), esc_html__( 'Everest Forms', 'everest-forms' ), 'manage_everest_forms', 'everest-forms', null, self::get_icon_svg(), '55.5' );
 	}
 
+	/**
+	 * Add dashboard sub menu.
+	 */
+	public function dashboard_menu() {
+		add_submenu_page(
+			'everest-forms',
+			__( 'Everest Forms Dashboard', 'everest-forms' ),
+			__( 'Dashboard', 'everest-forms' ),
+			'manage_everest_forms',
+			'evf-dashboard',
+			array(
+				$this,
+				'dashboard_page',
+			),
+			-1
+		);
+	}
 	/**
 	 * Add menu items.
 	 */
@@ -296,11 +314,11 @@ class EVF_Admin_Menus {
 			'everest-forms',
 			esc_html__( 'Everest Forms Upgrade to Pro', 'everest-forms' ),
 			sprintf(
-				'<span style="color:#FF8C39; font-weight: 600;"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: bottom;" ><rect x="0.5" y="0.5" width="19" height="19" rx="2.5" fill="#FF8C39" stroke="#FF8C39"/><path d="M10 5L13 13H7L10 5Z" fill="#EFEFEF"/><path fill="white" fill-rule="evenodd" d="M5 7L5.71429 13H14.2857L15 7L10 11.125L5 7ZM14.2857 13.5714H5.71427V15H14.2857V13.5714Z" clip-rule="evenodd"/></svg><span style="margin-left:5px;">%s</span></span>',
+				'<span style="color:#FF8C39; display:flex; font-weight: 600;"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: bottom;" ><rect x="0.5" y="0.5" width="19" height="19" rx="2.5" fill="#FF8C39" stroke="#FF8C39"/><path d="M10 5L13 13H7L10 5Z" fill="#EFEFEF"/><path fill="white" fill-rule="evenodd" d="M5 7L5.71429 13H14.2857L15 7L10 11.125L5 7ZM14.2857 13.5714H5.71427V15H14.2857V13.5714Z" clip-rule="evenodd"/></svg><span style="margin-left:5px;">%s</span></span>',
 				esc_html__( 'Upgrade to Pro', 'everest-forms' )
 			),
 			'manage_everest_forms',
-			esc_url_raw( 'https://everestforms.net/pricing/' )
+			esc_url_raw( 'https://everestforms.net/pricing/?utm_source=evf-upgrade-to-pro-submenu&utm_medium=upgrade-link&utm_campaign=' . EVF()->utm_campaign )
 		);
 	}
 
@@ -308,7 +326,7 @@ class EVF_Admin_Menus {
 	 * Addons menu item.
 	 */
 	public function addons_menu() {
-		add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Add-ons', 'everest-forms' ), esc_html__( 'Add-ons', 'everest-forms' ), 'manage_everest_forms', 'evf-addons', array( $this, 'addons_page' ) );
+		add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Add-ons', 'everest-forms' ), esc_html__( 'Add-ons', 'everest-forms' ), 'manage_everest_forms', esc_url_raw( admin_url( 'admin.php?page=evf-dashboard#/features' ) ) );
 	}
 
 	/**
@@ -410,6 +428,13 @@ class EVF_Admin_Menus {
 	/**
 	 * Init the settings page.
 	 */
+	public function dashboard_page() {
+		EVF_Admin_Dashboard::page_output();
+	}
+
+	/**
+	 * Init the settings page.
+	 */
 	public function builder_page() {
 		EVF_Admin_Forms::page_output();
 	}
@@ -433,13 +458,6 @@ class EVF_Admin_Menus {
 	 */
 	public function tools_page() {
 		EVF_Admin_Tools::output();
-	}
-
-	/**
-	 * Init the addons page.
-	 */
-	public function addons_page() {
-		EVF_Admin_Addons::output();
 	}
 }
 

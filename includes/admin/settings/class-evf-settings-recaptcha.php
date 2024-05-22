@@ -51,7 +51,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 					'title' => esc_html__( 'CAPTCHA Integration', 'everest-forms' ),
 					'type'  => 'title',
 					/* translators: %1$s - reCAPTCHA Integration Doc URL, %2$s - hCaptcha Integration Doc URL */
-					'desc'  => sprintf( __( 'Get detailed documentation on integrating <a href="%1$s" target="_blank">reCAPTCHA</a>, <a href="%2$s" target="_blank">hCaptcha</a> and <a href="%3$s" target="_blank">Cloudflare Turnstile</a> with Everest forms.', 'everest-forms' ), 'https://docs.everestforms.net/docs/how-to-integrate-google-recaptcha/', 'https://docs.everestforms.net/docs/how-to-integrate-hcaptcha/','https://docs.everestforms.net/docs/how-to-integrate-cloudflare-turnstile-with-the-everest-forms/' ),
+					'desc'  => sprintf( __( 'Get detailed documentation on integrating <a href="%1$s" target="_blank">reCAPTCHA</a>, <a href="%2$s" target="_blank">hCaptcha</a> and <a href="%3$s" target="_blank">Cloudflare Turnstile</a> with Everest forms.', 'everest-forms' ), 'https://docs.everestforms.net/docs/how-to-integrate-google-recaptcha/', 'https://docs.everestforms.net/docs/how-to-integrate-hcaptcha/', 'https://docs.everestforms.net/docs/how-to-integrate-cloudflare-turnstile-with-the-everest-forms/' ),
 					'id'    => 'integration_options',
 				),
 				array(
@@ -111,11 +111,12 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 				),
 				array(
 					'title'      => esc_html__( 'Invisible reCAPTCHA', 'everest-forms' ),
-					'type'       => 'checkbox',
+					'type'       => 'toggle',
 					'desc'       => esc_html__( 'Enable Invisible reCAPTCHA.', 'everest-forms' ),
 					'id'         => 'everest_forms_recaptcha_v2_invisible',
 					'is_visible' => 'v2' === $recaptcha_type,
 					'default'    => 'no',
+					'desc_tip'   => true,
 				),
 				array(
 					'title'      => esc_html__( 'Site Key', 'everest-forms' ),

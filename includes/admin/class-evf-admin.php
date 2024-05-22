@@ -51,8 +51,8 @@ class EVF_Admin {
 		// Setup/welcome.
 		if ( ! empty( $_GET['page'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			switch ( $_GET['page'] ) { // phpcs:ignore WordPress.Security.NonceVerification
-				case 'evf-welcome':
-					include_once __DIR__ . '/class-evf-admin-welcome.php';
+				case 'evf-dashboard':
+					include_once __DIR__ . '/class-evf-admin-dashboard.php';
 					break;
 			}
 		}
@@ -97,6 +97,9 @@ class EVF_Admin {
 					check_admin_referer( 'deactivate-plugin_' . $plugin );
 
 					deactivate_plugins( $plugin );
+					$evf_stats_report_cron = new EVF_Report_Cron();
+					$evf_stats_report_cron->deactivate();
+
 				}
 			}
 
@@ -131,7 +134,7 @@ class EVF_Admin {
 	}
 
 	/**
-	 * Handle redirects to setup/welcome page after install and updates.
+	 * Handle redirects to setup/dashboard page after install and updates.
 	 *
 	 * For setup wizard, transient must be present, the user must have access rights, and we must ignore the network/bulk plugin updaters.
 	 */
@@ -146,7 +149,7 @@ class EVF_Admin {
 		}
 
 		// Setup wizard redirect.
-		if ( get_transient( '_evf_activation_redirect' ) && apply_filters( 'everest_forms_show_welcome_page', true ) ) {
+		if ( get_transient( '_evf_activation_redirect' ) && apply_filters( 'everest_forms_show_dashboard_page', true ) ) {
 			$do_redirect  = true;
 			$current_page = isset( $_GET['page'] ) ? evf_clean( sanitize_text_field( wp_unslash( $_GET['page'] ) ) ) : false; // phpcs:ignore WordPress.Security.NonceVerification
 
@@ -156,14 +159,14 @@ class EVF_Admin {
 			}
 
 			// On these pages, or during these events, disable the redirect.
-			if ( 'evf-welcome' === $current_page || EVF_Admin_Notices::has_notice( 'install' ) || apply_filters( 'everest_forms_prevent_automatic_wizard_redirect', false ) || isset( $_GET['activate-multi'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			if ( 'evf-dashboard' === $current_page || EVF_Admin_Notices::has_notice( 'install' ) || apply_filters( 'everest_forms_prevent_automatic_wizard_redirect', false ) || isset( $_GET['activate-multi'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 				delete_transient( '_evf_activation_redirect' );
 				$do_redirect = false;
 			}
 
 			if ( $do_redirect ) {
 				delete_transient( '_evf_activation_redirect' );
-				wp_safe_redirect( admin_url( 'index.php?page=evf-welcome' ) );
+				wp_safe_redirect( admin_url( 'admin.php?page=evf-dashboard' ) );
 				exit;
 			}
 		}

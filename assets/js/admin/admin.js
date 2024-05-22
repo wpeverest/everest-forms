@@ -14,6 +14,25 @@
 		});
 	});
 
+	// Function to handle changes in the reporting frequency while sending the entries stat report.
+	$(document).ready(function () {
+		function handleReportingFrequencyChange() {
+			var everest_forms_entries_reporting_frequency = $('#everest_forms_entries_reporting_frequency').val();
+				if ('Weekly' !== everest_forms_entries_reporting_frequency) {
+				$('#everest_forms_entries_reporting_day').closest('.everest-forms-global-settings').hide();
+			} else {
+				$('#everest_forms_entries_reporting_day').closest('.everest-forms-global-settings').show();
+			}
+		}
+
+		// Execute the function on page load
+		handleReportingFrequencyChange();
+
+		// Add an event listener for changes and on the click in the reporting frequency
+		$(document).on('change click', '#everest_forms_entries_reporting_frequency', handleReportingFrequencyChange);
+	});
+
+
 
 	// Enable Perfect Scrollbar.
 	$( document ).on( 'init_perfect_scrollbar', function() {

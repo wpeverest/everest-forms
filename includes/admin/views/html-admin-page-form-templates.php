@@ -55,11 +55,7 @@ defined( 'ABSPATH' ) || exit;
 					$click_class   = '';
 					if ( ! in_array( 'free', $template->plan, true ) ) {
 						if ( in_array( 'personal', $template->plan, true ) ) {
-							$badge_text = esc_html( 'Personal' );
-						} elseif ( in_array( 'plus', $template->plan, true ) ) {
-							$badge_text = esc_html( 'Plus' );
-						} elseif ( in_array( 'professional', $template->plan, true ) ) {
-							$badge_text = esc_html( 'Professional' );
+							$badge_text = esc_html( 'Pro' );
 						} else {
 							$badge_text = esc_html( 'Agency' );
 						}

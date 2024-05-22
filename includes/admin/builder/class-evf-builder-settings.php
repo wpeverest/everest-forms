@@ -790,53 +790,6 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				do_action( 'everest_forms_inline_akismet_protection_type_settings', $this, 'akismet_protection_type', 'connection_1' );
 				echo '</div>';
 				echo '</div>';
-		if ( 'yes' === get_option( 'everest_forms_recaptcha_v2_invisible' ) ) {
-			$recaptcha_type   = get_option( 'everest_forms_recaptcha_type', 'v2' );
-			$recaptcha_key    = get_option( 'everest_forms_recaptcha_' . $recaptcha_type . '_invisible_site_key' );
-			$recaptcha_secret = get_option( 'everest_forms_recaptcha_' . $recaptcha_type . '_invisible_secret_key' );
-		} else {
-			$recaptcha_type   = get_option( 'everest_forms_recaptcha_type', 'v2' );
-			$recaptcha_key    = get_option( 'everest_forms_recaptcha_' . $recaptcha_type . '_site_key' );
-			$recaptcha_secret = get_option( 'everest_forms_recaptcha_' . $recaptcha_type . '_secret_key' );
-		}
-
-		switch ( $recaptcha_type ) {
-			case 'v2':
-				$recaptcha_label = esc_html__( 'Enable Google reCAPTCHA v2', 'everest-forms' );
-				break;
-
-			case 'v3':
-				$recaptcha_label = esc_html__( 'Enable Google reCAPTCHA v3', 'everest-forms' );
-				break;
-
-			case 'hcaptcha':
-				$recaptcha_label = esc_html__( 'Enable hCaptcha', 'everest-forms' );
-				break;
-
-			case 'turnstile':
-				$recaptcha_label = esc_html__( 'Enable Cloudflare Turnstile', 'everest-forms' );
-				break;
-		}
-				$recaptcha_label = 'yes' === get_option( 'everest_forms_recaptcha_v2_invisible' ) && 'v2' === $recaptcha_type ? esc_html__( 'Enable Google Invisible reCAPTCHA v2', 'everest-forms' ) : $recaptcha_label;
-		if ( ! empty( $recaptcha_key ) && ! empty( $recaptcha_secret ) ) {
-			echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'Captcha', 'everest-forms' ) . '</h4>';
-
-			everest_forms_panel_field(
-				'toggle',
-				'settings',
-				'recaptcha_support',
-				$this->form_data,
-				$recaptcha_label,
-				array(
-					'default' => '0',
-					/* translators: %1$s - general settings docs url */
-					'tooltip' => sprintf( esc_html__( 'Enable reCaptcha. Make sure the site key and secret key is set in settings page. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/how-to-integrate-google-recaptcha/#7-toc-title' ) ),
-				)
-			);
-
-			do_action( 'everest_forms_inline_captcha_settings', $this, 'captcha', 'connection_1' );
-			echo '</div>';
-		}
 				do_action( 'everest_forms_inline_security_settings', $this );
 				echo '</div>';
 
@@ -853,7 +806,21 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 	public function add_custom_css_js_section( $arr, $form_data ) {
 
 		$arr['custom-css-js'] = esc_html__( 'Custom CSS and JS', 'everest-forms' );
-
+		if ( ! defined( 'EFP_PLUGIN_FILE' ) ) {
+			$pro_addons = array(
+				'webhook'            => esc_html__( 'WebHook', 'everest-forms' ),
+				'form_restriction'   => esc_html__( 'Form Restriction', 'everest-forms' ),
+				'multi_part'         => esc_html__( 'Multi Part', 'everest-forms' ),
+				'pdf_submission'     => esc_html__( 'PDF Submission', 'everest-forms' ),
+				'post_submission'    => esc_html__( 'Post Submission', 'everest-forms' ),
+				'save_and_continue'  => esc_html__( 'Save and COntinue', 'everest-forms' ),
+				'survey_polls_quiz'  => esc_html__( 'Survey,Polls,Quiz', 'everest-forms' ),
+				'user_registration'  => esc_html__( 'User Registration', 'everest-forms' ),
+				'conversation_forms' => esc_html__( 'Conversation Forms', 'everest-forms' ),
+				'sms_notifications'  => esc_html__( 'SMS Notifications', 'everest-forms' ),
+			);
+			$arr        = array_merge( $arr, $pro_addons );
+		}
 		return $arr;
 	}
 

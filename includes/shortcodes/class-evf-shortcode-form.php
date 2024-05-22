@@ -834,6 +834,7 @@ class EVF_Shortcode_Form {
 	 */
 	public static function output( $atts ) {
 		wp_enqueue_script( 'everest-forms' );
+		wp_enqueue_script( 'everest-forms-survey-polls-quiz-script' );
 
 		// Load jQuery flatpickr libraries. https://github.com/flatpickr/flatpickr.
 		if ( evf_is_field_exists( $atts['id'], 'date-time' ) ) {
@@ -1184,7 +1185,7 @@ class EVF_Shortcode_Form {
 
 		if ( ! did_action( 'wp_head' ) ) {
 			$hook = 'wp_head';
-		} else if ( ! did_action( 'wp_footer' ) ) {
+		} elseif ( ! did_action( 'wp_footer' ) ) {
 			$hook = 'wp_footer';
 		}
 
@@ -1217,7 +1218,7 @@ class EVF_Shortcode_Form {
 		}
 
 		if ( isset( $settings['evf-enable-custom-js'] ) && evf_string_to_bool( $settings['evf-enable-custom-js'] ) ) {
-			$custom_js = isset( $settings['evf-custom-js'] ) ? $settings['evf-custom-js'] : '';
+			$custom_js = isset( $settings['evf-custom-js'] ) ? wp_specialchars_decode( wp_kses_decode_entities( $settings['evf-custom-js'] ) ) : '';
 			if ( ! empty( $custom_js ) ) {
 				$custom_js = sprintf(
 					'( function( $ ) {

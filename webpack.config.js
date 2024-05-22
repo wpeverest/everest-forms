@@ -1,16 +1,25 @@
 /**
  * External dependencies
  */
+const { resolve } = require('path');
 const path = require("path");
+const CopyPlugin = require("copy-webpack-plugin");
 const NODE_ENV = process.env.NODE_ENV || "development";
 
 const webpackConfig = {
 	mode: NODE_ENV,
 	entry: {
-		"form-block": "./assets/js/admin/gutenberg/form-block.js"
+		"dashboard": resolve(
+			process.cwd(),
+			'./src/dashboard/index.js',
+		),
+		"blocks": resolve(
+			process.cwd(),
+			'./src/blocks/index.js',
+		),
 	},
 	output: {
-		path: path.resolve(__dirname, "assets/js/admin/gutenberg"),
+		path: resolve(process.cwd(), 'dist'),
 		filename: "[name].min.js",
 		libraryTarget: "this"
 	},
@@ -20,9 +29,41 @@ const webpackConfig = {
 				test: /.js$/,
 				loader: "babel-loader",
 				exclude: /node_modules/
+			},
+			{
+				test: /\.(png|svg|jpg|jpeg|gif|webp)$/i,
+				use: [
+					{
+						loader: 'file-loader',
+					},
+				],
 			}
 		]
-	}
+	},
+	plugins: [
+		new CopyPlugin({
+			patterns: [
+				{
+					from: "./src/blocks/**/block.json",
+					to({ absoluteFilename }) {
+						return path.resolve(
+							__dirname,
+							"dist",
+							path.basename(path.dirname(absoluteFilename)),
+							"block.json",
+						);
+					},
+				},
+			],
+		}),
+	],
+	externals: {
+		"@wordpress/blocks": ["wp", "blocks"],
+		"@wordpress/components": ["wp", "components"],
+		"@wordpress/block-editor": ["wp", "blockEditor"],
+		"@wordpress/server-side-render": ["wp", "serverSideRender"],
+		react: ["React"],
+	},
 };
 
 if (webpackConfig.mode !== "production") {
