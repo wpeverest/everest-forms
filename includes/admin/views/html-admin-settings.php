@@ -23,7 +23,7 @@ if ( ! $tab_exists ) {
 		<header class="everest-forms-header">
 			<div class="everest-forms-header--top">
 				<div class="everest-forms-header--top-logo">
-				<img src="<?php echo esc_url( evf()->plugin_url() . '/assets/images/icons/evf-global-settings-logo.png' ); ?>" alt="">
+				<img src="<?php echo esc_url( evf()->plugin_url() . '/assets/images/icons/Everest-forms-Logo.png' ); ?>" alt="">
 				</div>
 			</div>
 			<div class="everest-forms-header--nav">

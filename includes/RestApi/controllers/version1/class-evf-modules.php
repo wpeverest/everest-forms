@@ -91,7 +91,8 @@ class EVF_Modules {
 	 * @return array Module lists.
 	 */
 	public static function get_modules() {
-		$features_lists = self::get_extensions_features_data();
+		$extension_data = self::get_extensions_data();
+		$features_lists = $extension_data->features;
 
 		$enabled_features = get_option( 'everest_forms_enabled_features', array() );
 		foreach ( $features_lists as $key => $feature ) {
@@ -106,7 +107,7 @@ class EVF_Modules {
 		}
 
 		// Get Addons Lists.
-		$addons_lists = EVF_Admin_Addons::get_extension_data();
+		$addons_lists = $extension_data->products;
 
 		if ( ! function_exists( 'get_plugins' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
@@ -281,18 +282,27 @@ class EVF_Modules {
 				return $status;
 			}
 		}
-		if ( 'aicontactform' === $slug && ! evf_get_license_plan() ) {
+
+		if ( 'aicontactform' === $slug && ! evf_string_to_bool( evf_get_license_plan() ) ) {
 			$args = array(
 				'slug'   => 'ai-contact-form',
 				'fields' => array(
-					'name'          => true,
-					'version'       => true,
-					'author'        => true,
-					'download_link' => true,
-					'last_updated'  => true,
-					'homepage'      => true,
-					'sections'      => true,
-					'description'   => true,
+					'short_description' => true,
+					'sections'          => true,
+					'requires'          => true,
+					'tested'            => true,
+					'rating'            => true,
+					'downloaded'        => true,
+					'last_updated'      => true,
+					'added'             => true,
+					'tags'              => true,
+					'homepage'          => true,
+					'donate_link'       => true,
+					'reviews'           => true,
+					'download_link'     => true,
+					'screenshots'       => true,
+					'active_installs'   => true,
+					'version'           => true,
 				),
 			);
 			$api  = plugins_api( 'plugin_information', $args );
@@ -659,17 +669,10 @@ class EVF_Modules {
 	 *
 	 * @return array
 	 */
-	public static function get_extensions_features_data() {
-		$extension_data = get_transient( 'evf_extensions_feature_section_list' );
-		if ( false === $extension_data ) {
-			$extension_data = evf_get_json_file_contents( 'assets/extensions-json/sections/all_extensions.json' );
+	public static function get_extensions_data() {
 
-			if ( ! empty( $extension_data->features ) ) {
-				set_transient( 'evf_extensions_feature_section_list', $extension_data, WEEK_IN_SECONDS );
-			}
-		}
-
-		return apply_filters( 'everest_forms_extensions_features_section_data', $extension_data->features );
+		$extension_data = evf_get_json_file_contents( 'assets/extensions-json/sections/all_extensions.json' );
+		return apply_filters( 'everest_forms_extensions_section_data', $extension_data );
 	}
 	/**
 	 * Check if a given request has access to update a setting

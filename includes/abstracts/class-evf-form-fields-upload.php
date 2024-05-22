@@ -605,7 +605,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 				'slug'    => 'max_file_number',
 				'type'    => 'number',
 				'min'     => '1',
-				'value'   => $max_file_number = ( ( defined( 'EFP_PLUGIN_FILE' ) )  && ! empty( $field['max_file_number'] ) ) ? $field['max_file_number'] : 1,
+				'value'   => $max_file_number = ( ( defined( 'EFP_PLUGIN_FILE' ) ) && ! empty( $field['max_file_number'] ) ) ? $field['max_file_number'] : 1,
 				'desc'    => esc_html__( 'Maximum number limit on uploads', 'everest-forms' ),
 				'tooltip' => esc_html__( 'Enter the number of files you wish the user to upload.', 'everest-forms' ),
 			),
@@ -1058,7 +1058,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 		$file['name'] = apply_filters( 'everest_forms_upload_file_name', sanitize_text_field( $file['name'] ), $field_label );
 		$file_path    = $file['path'];
 
-		if ( 1 === $this->form_data['settings']['dropbox_enabled'] && ! file_exists( $file_path ) ) {
+		if ( isset( $this->form_data['settings']['dropbox_enabled'] ) && 1 === $this->form_data['settings']['dropbox_enabled'] && ! file_exists( $file_path ) ) {
 			evf()->task->errors[ $this->form_id ][ $this->field_id ] = __( 'Something went wrong while uploading file,Please try again', 'everest-forms' );
 			update_option( 'evf_validation_error', 'yes' );
 		}
