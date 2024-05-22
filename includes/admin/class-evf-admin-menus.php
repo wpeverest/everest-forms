@@ -314,11 +314,11 @@ class EVF_Admin_Menus {
 			'everest-forms',
 			esc_html__( 'Everest Forms Upgrade to Pro', 'everest-forms' ),
 			sprintf(
-				'<span style="color:#FF8C39; font-weight: 600;"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: bottom;" ><rect x="0.5" y="0.5" width="19" height="19" rx="2.5" fill="#FF8C39" stroke="#FF8C39"/><path d="M10 5L13 13H7L10 5Z" fill="#EFEFEF"/><path fill="white" fill-rule="evenodd" d="M5 7L5.71429 13H14.2857L15 7L10 11.125L5 7ZM14.2857 13.5714H5.71427V15H14.2857V13.5714Z" clip-rule="evenodd"/></svg><span style="margin-left:5px;">%s</span></span>',
+				'<span style="color:#FF8C39; display:flex; font-weight: 600;"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: bottom;" ><rect x="0.5" y="0.5" width="19" height="19" rx="2.5" fill="#FF8C39" stroke="#FF8C39"/><path d="M10 5L13 13H7L10 5Z" fill="#EFEFEF"/><path fill="white" fill-rule="evenodd" d="M5 7L5.71429 13H14.2857L15 7L10 11.125L5 7ZM14.2857 13.5714H5.71427V15H14.2857V13.5714Z" clip-rule="evenodd"/></svg><span style="margin-left:5px;">%s</span></span>',
 				esc_html__( 'Upgrade to Pro', 'everest-forms' )
 			),
 			'manage_everest_forms',
-			esc_url_raw( 'https://everestforms.net/pricing/?utm_source=evf-submenu&utm_medium=upgrade-link&utm_campaign=' . EVF()->utm_campaign )
+			esc_url_raw( 'https://everestforms.net/pricing/?utm_source=evf-upgrade-to-pro-submenu&utm_medium=upgrade-link&utm_campaign=' . EVF()->utm_campaign )
 		);
 	}
 
