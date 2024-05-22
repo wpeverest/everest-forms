@@ -3774,6 +3774,11 @@
 					 label {
 						 cursor: all-scroll;
 					 }
+
+					 img {
+						width: 280px;
+						height: auto;
+					 }
 				 }
 
 				 .file-uploader {
@@ -5201,6 +5206,7 @@
 				 display: flex;
 				 flex: 1;
 				 align-items: center;
+				 gap: 16px;
 
 				 .integration-status {
 					 position: relative;
@@ -5263,8 +5269,6 @@
 					 }
 
 					 .integration-info {
-						 margin-right: 20px;
-
 						 a {
 							 display: inline-block;
 
@@ -9294,15 +9298,11 @@
    .everest-forms_page_evf-settings {
 	   .everest-forms {
 		   padding: 20px;
-		   // form {
-		   // 	padding: 20px;
-		   // }
 	   }
    }
    .everest-forms {
 		   .everest-forms-settings {
-			   padding: 12px !important;
-			   border-radius: 16px;
+			   padding: 0 !important;
 			   background: #ffffff;
 			   box-shadow: 0px 6px 26px 0px rgba(10, 10, 10, .08);
 
@@ -9310,10 +9310,10 @@
 				   display: flex;
 				   flex-direction: column;
 				   gap: 32px;
-				   border-radius: 10px;
-				   background: rgba(246, 243, 250, .8);
-				   padding: 32px 16px 20px;
-				   width: 280px;
+				   background: #FAFAFC;
+				   border-right: 1px solid #EDEDED;
+				   padding: 32px 0 20px;
+				   width: 300px;
 				   max-width: 100%;
 
 				   &--top {
@@ -9342,9 +9342,7 @@
 							   padding: 14px;
 							   align-items: center;
 							   gap: 16px;
-							   border-radius: 10px;
 							   transition: all .3s ease-in-out;
-							   margin-bottom: 4px;
 
 							   &-icon {
 								   display: flex;
