@@ -1047,27 +1047,27 @@
 				 // 	 background-color: adjust-color($everestforms, $saturation: -4%, $lightness: -4%);
 				 //  }
 
-				 &::before {
-					 content: "";
-					 background: #8c3eeb;
-					 position: absolute;
-					 z-index: -1;
-					 width: 100%;
-					 height: 100%;
-					 top: 0;
-					 left: 0;
-					 opacity: 0;
-					 border-radius: 0 0 7px 7px;
-					 transition: all 0.3s ease-in-out;
-				 }
+				//  &::before {
+				// 	 content: "";
+				// 	 background: #8c3eeb;
+				// 	 position: absolute;
+				// 	 z-index: -1;
+				// 	 width: 100%;
+				// 	 height: 100%;
+				// 	 top: 0;
+				// 	 left: 0;
+				// 	 opacity: 0;
+				// 	 border-radius: 0 0 7px 7px;
+				// 	 transition: all 0.3s ease-in-out;
+				//  }
 
-				 &:hover,
-				 &.nav-tab-active {
-					 &::before {
-						 top: -7px;
-						 opacity: 1;
-					 }
-				 }
+				//  &:hover,
+				//  &.nav-tab-active {
+				// 	 &::before {
+				// 		 top: -7px;
+				// 		 opacity: 1;
+				// 	 }
+				//  }
 			 }
 		 }
 
@@ -9309,7 +9309,6 @@
 			   .everest-forms-header {
 				   display: flex;
 				   flex-direction: column;
-				   gap: 32px;
 				   background: #FAFAFC;
 				   border-right: 1px solid #EDEDED;
 				   padding: 32px 0 20px;
@@ -9318,6 +9317,8 @@
 
 				   &--top {
 					   text-align: center;
+					   padding-bottom: 30px;
+					   border-bottom: 1px solid #ededed;
 
 					   &-logo {
 						   img {
@@ -9332,17 +9333,44 @@
 					   .evf-nav-tab-wrapper {
 						   display: flex;
 						   flex-direction: column;
+						   gap: 1px;
 						   background: transparent;
 						   position: relative;
 						   height: 100%;
+						   overflow: unset !important;
 
 						   .evf-nav__link {
 							   width: 100%;
 							   display: flex;
-							   padding: 14px;
+							   padding: 16px 20px;
 							   align-items: center;
 							   gap: 16px;
+							   border-bottom: 1px solid #EDEDED;							   
 							   transition: all .3s ease-in-out;
+
+							   &::before {
+									content: "";
+									background: #7545BB;
+									width: 4px;
+									height: 100%;
+									position: absolute;
+									top: 0;
+									left: 0;
+									opacity: 0;
+									transition: all .3s ease-in-out;
+							   }
+
+							   &::after {
+								content: "";
+								background: #fff;
+								width: 8px;
+								height: 100%;
+								position: absolute;
+								top: 0;
+								right: -4px;
+								opacity: 0;
+								transition: all .3s ease-in-out;
+							   }
 
 							   &-icon {
 								   display: flex;
@@ -9361,40 +9389,65 @@
 							   }
 
 							   &-label {
-								   > p {
-									   margin: 0;
-									   font-size: 15px;
-									   font-weight: 500;
-									   line-height: 21px;
-									   color: #4e4e4e;
-									   transition: all .3s ease-in-out;
-								   }
+								display: flex;
+								align-items: center;
+								width: 100%;
+
+									> p {
+										width: 100%;
+										margin: 0;
+										font-size: 15px;
+										font-weight: 500;
+										line-height: 21px;
+										color: #4e4e4e;
+										transition: all .3s ease-in-out;
+									}
+
+									svg {
+										width: 20px;
+										height: 20px;
+									}
 							   }
 
 							   &:hover,
 							   &.nav-tab-active {
-								   background: #7545BB;
+									background: #ffffff;
 
 								   &::before {
-									   content: none;
+									   opacity: 1;
 								   }
 
 								   .evf-nav__link {
 									   &-icon {
 										   svg {
 											   path {
-												   fill: #ffffff;
+													fill: #7545BB;
 											   }
 										   }
 									   }
 
 									   &-label {
 										   > p {
-											   color: #ffffff;
+											   color: #7545BB;
+										   }
+
+										   svg {
+											path {
+													stroke: #7545BB;
+												}
 										   }
 									   }
 								   }
 							   }
+
+							   &.nav-tab-active {
+								background: #ffffff;
+
+									&::before,
+									&::after {
+										opacity: 1;
+									}
+						   		}
 						   }
 
 						   #evf-settings-collapse {
@@ -9464,8 +9517,30 @@
 					   margin-bottom: 32px;
 
 					   &--top {
-						   padding-bottom: 16px;
-						   border-bottom: 1px solid #eee8f7;
+							display: flex;
+							align-items: center;
+						   	padding-bottom: 16px;
+						   	border-bottom: 1px solid #eee8f7;
+
+							.evf-forms-options-header-header--top-icon {
+								display: flex;
+								align-items: center;
+								justify-content: center;
+								width: 40px;
+								height: 40px;
+								border-radius: 4px;
+								background: #EEE8F7;
+								margin-right: 16px;
+
+								svg {
+									width: 20px;
+									height: 20px;
+
+									path {
+										fill: #7545BB;
+									}
+								}
+							}
 
 						   h3 {
 							   margin: 0;
