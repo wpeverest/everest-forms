@@ -286,7 +286,8 @@ final class EverestForms {
 		include_once EVF_ABSPATH . 'includes/abstracts/class-evf-deprecated-hooks.php';
 		include_once EVF_ABSPATH . 'includes/abstracts/class-evf-session.php';
 		include_once EVF_ABSPATH . 'includes/abstracts/class-evf-form-fields.php';
-		if ( version_compare( EFP_VERSION, '1.7.5', '>=' ) ) {
+
+		if ( ( defined( 'EFP_VERSION' ) && version_compare( EFP_VERSION, '1.7.5', '>=' ) ) || ( defined( 'EVF_VERSION' ) && version_compare( EVF_VERSION, '3.0.0', '>=' ) && ! defined( 'EFP_VERSION' ) ) ) {
 			include_once EVF_ABSPATH . 'includes/abstracts/class-evf-form-fields-upload.php';
 		}
 		/**
