@@ -251,10 +251,16 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 					// Section Titles.
 					case 'title':
 						if ( ! empty( $value['title'] ) ) {
-							$tabs = apply_filters( 'everest_forms_settings_tabs_array', array() );
+							$tabs        = apply_filters( 'everest_forms_settings_tabs_array', array() );
+							$current_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : '';
+							$tabs_array  = array();
+							if ( isset( $tabs[ $current_tab ] ) ) {
+								$tabs_array[ $current_tab ] = $tabs_array[ $current_tab ];
+							}
+
 							echo '<div class="everest-forms-options-header">
 							<div class="everest-forms-options-header--top">';
-							foreach ( $tabs as $icon_key => $icon_value ) {
+							foreach ( $tabs_array as $icon_key => $icon_value ) {
 								echo '<span class="evf-forms-options-header-header--top-icon">' . evf_file_get_contents( '/assets/images/settings-icons/' . $icon_key . '.svg' ) . '</span>'; //phpcs:ignore
 							}
 							echo '<h3>' . esc_html( $value['title'] ) . '</h3>
