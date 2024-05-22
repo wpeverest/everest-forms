@@ -23,7 +23,7 @@ if ( ! $tab_exists ) {
 		<header class="everest-forms-header">
 			<div class="everest-forms-header--top">
 				<div class="everest-forms-header--top-logo">
-				<img src="<?php echo esc_url( evf()->plugin_url() . '/assets/images/icons/evf-global-settings-logo.png' ); ?>" alt="">
+				<img src="<?php echo esc_url( evf()->plugin_url() . '/assets/images/icons/Everest-forms-Logo.png' ); ?>" alt="">
 				</div>
 			</div>
 			<div class="everest-forms-header--nav">
@@ -39,6 +39,9 @@ if ( ! $tab_exists ) {
 									<p>
 								<?php echo esc_html( $label ); ?>
 									</p>
+									<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+										<path stroke="#383838" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 18 6-6-6-6"/>
+									</svg>
 								</span>
 							</a>
 							<?php
