@@ -9345,7 +9345,8 @@
 							   padding: 16px 20px;
 							   align-items: center;
 							   gap: 16px;
-							   border-bottom: 1px solid #EDEDED;							   
+							   border-bottom: 1px solid #EDEDED;		
+							   position: relative;					   
 							   transition: all .3s ease-in-out;
 
 							   &::before {
@@ -9452,11 +9453,20 @@
 
 						   #evf-settings-collapse {
 							   margin: 0;
-							   padding: 12px;
+							   padding: 16px 20px;
 							   background: transparent;
 							   border: 1px solid transparent;
 							   cursor: pointer;
 							   transition: all .3s ease-in-out;
+
+							   &::before,
+							   &::after {
+								content: none;
+							   }
+
+							   .evf-nav__link-label {
+									line-height: 21px;
+							   }
 
 							   .evf-nav-icon {
 								   display: flex;
@@ -9485,18 +9495,24 @@
 				   }
 
 				   &.collapsed {
-					   width: 80px;
+					   width: 60px;
 
 					   .everest-forms-header--top {
 						   &-logo {
 							   img {
-								   max-height: 50px;
+									margin-left: 16px;
+								   	max-height: 50px;
 							   }
 						   }
 					   }
 
 					   .everest-forms-header--nav {
 						   .evf-nav-tab-wrapper {
+								.evf-nav__link {
+									&-label {
+										opacity: 0;
+									}
+								}
 							   #evf-settings-collapse {
 								   .evf-nav-icon {
 									   img {
@@ -9510,7 +9526,7 @@
 			   }
 
 			   .everest-forms-settings-container {
-				   padding: 24px 20px 52px 36px;
+				   padding: 26px 20px 52px 32px;
 				   box-shadow: none;
 
 				   .everest-forms-options-header {
@@ -9519,7 +9535,7 @@
 					   &--top {
 							display: flex;
 							align-items: center;
-						   	padding-bottom: 16px;
+						   	padding-bottom: 24px;
 						   	border-bottom: 1px solid #eee8f7;
 
 							.evf-forms-options-header-header--top-icon {
