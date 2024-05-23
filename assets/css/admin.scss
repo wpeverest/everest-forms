@@ -2805,6 +2805,10 @@
 						 position: relative;
 						 transition: all 0.3s ease-in-out;
 
+						 &.upgrade-addons-settings {
+							opacity: .4;
+						 }
+
 						 &::before {
 							 content: "";
 							 background: #7545bb;
@@ -5201,6 +5205,10 @@
 			 align-items: center;
 			 justify-content: space-between;
 			 margin-bottom: 10px;
+
+			 &[data-action="upgrade"] {
+				opacity: .4;
+			 }
 
 			 .integration-header-info {
 				 display: flex;
