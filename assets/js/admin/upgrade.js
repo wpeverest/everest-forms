@@ -159,7 +159,7 @@ jQuery( function( $ ) {
 						btnClass: 'btn-confirm',
 						keys: ['enter'],
 						action: function () {
-							window.open( evf_upgrade.upgrade_url, '_blank' );
+							window.open( evf_upgrade.upgrade_integration_url, '_blank' );
 						}
 					},
 					cancel: {
