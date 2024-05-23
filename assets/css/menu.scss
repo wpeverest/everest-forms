@@ -352,4 +352,11 @@
 	&lookup::before {
         content: '\e914';
     }
+	&turnstile,
+	&recaptcha,
+	&hcaptcha {
+		&::before {
+			content: '\e917';
+		}
+	}
 }
