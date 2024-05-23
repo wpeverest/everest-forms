@@ -381,3 +381,6 @@
 
 .evf-icon-lookup::before {
   content: '\e914'; }
+
+.evf-icon-turnstile::before, .evf-icon-recaptcha::before, .evf-icon-hcaptcha::before {
+  content: '\e917'; }

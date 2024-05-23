@@ -292,7 +292,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 3.0.0       - xx-xx-2024
+= 3.0.0       - 23-05-2024
 * Feature     - Dashboard page.​
 * Feature     - Email scheduling in daily, weekly or monthly for the progress data of form.​
 * Enhancement - Captcha field.​

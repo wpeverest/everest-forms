@@ -6674,6 +6674,8 @@ p.search-box {
         border-bottom: 1px solid #cdd0d8;
         position: relative;
         transition: all 0.3s ease-in-out; }
+        .everest-forms_page_evf-builder #everest-forms-builder .evf-tab-content .everest-forms-panel .everest-forms-panel-sidebar .evf-panel-tab.upgrade-addons-settings {
+          opacity: .4; }
         .everest-forms_page_evf-builder #everest-forms-builder .evf-tab-content .everest-forms-panel .everest-forms-panel-sidebar .evf-panel-tab::before {
           content: "";
           background: #7545bb;
@@ -8368,6 +8370,8 @@ p.search-box {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 10px; }
+  .everest-forms .everest-forms-integrations-connection .everest-forms-integrations[data-action="upgrade"] {
+    opacity: .4; }
   .everest-forms .everest-forms-integrations-connection .everest-forms-integrations .integration-header-info {
     display: flex;
     flex: 1;
