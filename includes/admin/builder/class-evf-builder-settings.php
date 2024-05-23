@@ -813,7 +813,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				'multi_part'         => esc_html__( 'Multi Part', 'everest-forms' ),
 				'pdf_submission'     => esc_html__( 'PDF Submission', 'everest-forms' ),
 				'post_submission'    => esc_html__( 'Post Submission', 'everest-forms' ),
-				'save_and_continue'  => esc_html__( 'Save and COntinue', 'everest-forms' ),
+				'save_and_continue'  => esc_html__( 'Save and Continue', 'everest-forms' ),
 				'survey_polls_quiz'  => esc_html__( 'Survey,Polls,Quiz', 'everest-forms' ),
 				'user_registration'  => esc_html__( 'User Registration', 'everest-forms' ),
 				'conversation_forms' => esc_html__( 'Conversation Forms', 'everest-forms' ),

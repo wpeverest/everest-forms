@@ -56,6 +56,7 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 	 */
 	protected function output_integrations( $integrations ) {
 		?>
+		<span class="evf-forms-options-header-header--top-icon"><?php echo evf_file_get_contents( '/assets/images/settings-icons/integration.svg' ); //phpcs:ignore ?></span>
 		<h2><?php esc_html_e( 'Integrations', 'everest-forms' ); ?></h2>
 		<div class="everest-forms-integrations-connection">
 			<?php foreach ( $integrations as $integration ) : ?>
@@ -84,13 +85,6 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 				</div>
 			<?php endforeach; ?>
 		</div>
-		<?php if ( ! defined( 'EFP_PLUGIN_FILE' ) ) { ?>
-		<div class="everest-forms-integrations-cta">
-			<h2><?php esc_html_e( 'We have More Integration', 'everest-forms' ); ?></h2>
-			<p><?php esc_html_e( 'test', 'everest-forms' ); ?></p>
-			<a href="https://everestforms.net/features/#general" target="_blank" class="everest-forms-cta-button">Go to</a>
-		</div>
-		<?php } ?>
 		<?php
 	}
 }

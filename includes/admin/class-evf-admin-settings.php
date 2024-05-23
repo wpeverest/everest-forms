@@ -255,7 +255,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 							$current_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : '';
 							$tabs_array  = array();
 							if ( isset( $tabs[ $current_tab ] ) ) {
-								$tabs_array[ $current_tab ] = $tabs_array[ $current_tab ];
+								$tabs_array[ $current_tab ] = isset( $tabs_array[ $current_tab ] ) ? $tabs_array[ $current_tab ] : array();
 							}
 
 							echo '<div class="everest-forms-options-header">
