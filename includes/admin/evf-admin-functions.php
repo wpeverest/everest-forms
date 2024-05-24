@@ -192,6 +192,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 	$default     = isset( $args['default'] ) ? $args['default'] : '';
 	$tinymce     = isset( $args['tinymce'] ) ? $args['tinymce'] : '';
 	$placeholder = ! empty( $args['placeholder'] ) ? esc_attr( $args['placeholder'] ) : '';
+	$min_value   = ! empty( $args['min_value'] ) ? esc_attr( $args['min_value'] ) : '';
 	$data_attr   = '';
 	$output      = '';
 
@@ -239,13 +240,14 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 		case 'number':
 		case 'text':
 			$output = sprintf(
-				'<input type="%s" id="everest-forms-panel-field-%s-%s" name="%s" value="%s" placeholder="%s" class="widefat %s" %s %s>',
+				'<input type="%s" id="everest-forms-panel-field-%s-%s" name="%s" value="%s" placeholder="%s" min=%d class="widefat %s" %s %s>',
 				$option,
 				sanitize_html_class( $panel_id ),
 				sanitize_html_class( $field ),
 				$field_name,
 				esc_attr( $value ),
 				$placeholder,
+				$min_value,
 				$input_class,
 				$data_attr,
 				$custom_attributes

@@ -790,6 +790,43 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				do_action( 'everest_forms_inline_akismet_protection_type_settings', $this, 'akismet_protection_type', 'connection_1' );
 				echo '</div>';
 				echo '</div>';
+
+				/**
+				* Minimum time for form submission.
+				*
+				* @since 3.0.1
+				*/
+				echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'Minimum time for form submission', 'everest-forms' ) . '</h4>';
+				everest_forms_panel_field(
+					'toggle',
+					'settings',
+					'form_submission_min_waiting_time',
+					$this->form_data,
+					esc_html__( 'Enable minimum waiting time for form submission', 'everest-forms' ),
+					array(
+						'default' => '0',
+					)
+				);
+
+				echo '<div class="everest-forms-border-container everest-forms-form-submission-minimum-waiting-time">';
+				everest_forms_panel_field(
+					'number',
+					'settings',
+					'form_submission_min_waiting_time_input',
+					$this->form_data,
+					esc_html__( 'Form submission minimum waiting time (In seconds)', 'everest-forms' ),
+					array(
+						'default'   => '',
+						'tooltip'   => esc_html__( 'Enter the minimum time waiting time for form submission.', 'everest-forms' ),
+						'min_value' => 0,
+					)
+				);
+
+				do_action( 'everest_forms_inline_form_submission_min_waiting_time_settings', $this, 'form_submission_min_waiting_time', 'connection_1' );
+
+				do_action( 'everest_forms_inline_form_submission_min_waiting_time_section_settings', $this, 'form_submission_min_waiting_time_section', 'connection_1' );
+				echo '<div>';
+				echo '</div>';
 				do_action( 'everest_forms_inline_security_settings', $this );
 				echo '</div>';
 
