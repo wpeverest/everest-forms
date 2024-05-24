@@ -542,6 +542,7 @@
 			EVFPanelBuilder.init_datepickers();
 			EVFPanelBuilder.bindBulkOptionActions();
 			EVFPanelBuilder.bindAkismetInit();
+			EVFPanelBuilder.bindFormSubmissionMinWaitingTime();
 
 			// Fields Panel.
 			EVFPanelBuilder.bindUIActionsFields();
@@ -3204,6 +3205,32 @@
 				$(document).find('.everest-forms-akismet-protection-type').hide();
 			}
 		},
+
+		/**
+		 * Form Submission minimum waiting time.
+		 *
+		 * @since 3.0.2
+		 */
+		bindFormSubmissionMinWaitingTime:function(){
+			var submissionWaitingTimeEnabler = $(document).find('#everest-forms-panel-field-settings-form_submission_min_waiting_time');
+			EVFPanelBuilder.formSubmissionMinTimeToggler(submissionWaitingTimeEnabler);
+			$(document).on('change', '#everest-forms-panel-field-settings-form_submission_min_waiting_time', function(){
+				EVFPanelBuilder.formSubmissionMinTimeToggler($(this));
+			})
+		},
+		/**
+		 * Form Submission waiting time Toggler.
+		 *
+		 * @param {object} submissionWaitingTimeEnabler
+		 */
+		formSubmissionMinTimeToggler:function(submissionWaitingTimeEnabler){
+			if($(submissionWaitingTimeEnabler).is(':checked')){
+				$(document).find('.everest-forms-form-submission-minimum-waiting-time').show();
+			}else{
+				$(document).find('.everest-forms-form-submission-minimum-waiting-time').hide();
+			}
+		},
+
 		bindPrivacyPolicyActions: function() {
 			// Consent message change handler.
 			$( document.body ).on( 'input', '.everest-forms-field-option .evf-privacy-policy-consent-message', function ( e ) {

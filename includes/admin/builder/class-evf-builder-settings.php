@@ -805,6 +805,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					esc_html__( 'Enable minimum waiting time for form submission', 'everest-forms' ),
 					array(
 						'default' => '0',
+						'tooltip' => esc_html__( 'Prevents the form submission before the specified time', 'everest-forms' ),
 					)
 				);
 
