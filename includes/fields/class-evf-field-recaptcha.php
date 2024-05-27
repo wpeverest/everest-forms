@@ -81,7 +81,7 @@ class EVF_Field_Recaptcha extends \EVF_Form_Fields {
 			$image_url = plugins_url( 'assets/images/captcha/google-v3-reCAPTCHA.png', EVF_PLUGIN_FILE );
 		}
 		// Primary input.
-		echo '<img src="' . esc_url( $image_url ) . '" class="widefat" disabled />';
+		echo '<img src="' . esc_url( isset( $image_url ) ? $image_url : '' ) . '" class="widefat" disabled />';
 
 	}
 
