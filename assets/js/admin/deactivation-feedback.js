@@ -41,8 +41,8 @@ jQuery(function ($) {
 
 			$('input.evf-deactivate-feedback-input').on( 'click', function() {
 				var $this = $(this);
-				var inputTextBox = $('input[name="reason_other"]');
-				if ( 'other' === $this.val() ) {
+				var inputTextBox =  $('input[name="reason_' + $this.val() + '"]');
+			    if ('other' === $this.val() || 'feature_unavailable' === $this.val() || 'complex_to_use' === $this.val()) {
 					inputTextBox.attr('required', 'required')
 				} else {
 					inputTextBox.removeAttr('required');
