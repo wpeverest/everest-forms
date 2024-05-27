@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 3.0.0.1      - 27-05-2024
+* Fix          - Form builder loading when recaptcha is enabled.
+* Tweak        - Captcha name change to math captcha.
+
+
 = 3.0.0       - 23-05-2024
 * Feature     - Dashboard page.​
 * Feature     - Email scheduling in daily, weekly or monthly for the progress data of form.​
