@@ -849,7 +849,8 @@ class EVF_Shortcode_Form {
 
 		self::add_custom_css_js( $atts['id'] );
 
-		if ( ! isset( $_SESSION['start_time'] ) && ! empty( $atts ) ) {
+		if ( ! isset( $_SESSION ) && ! empty( $atts ) ) {
+			session_start();
 			$_SESSION['start_time'] = time();
 		}
 
