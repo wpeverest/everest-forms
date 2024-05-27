@@ -65,6 +65,8 @@ class EVF_Form_Task {
 		add_action( 'everest_forms_complete_entry_save', array( $this, 'evf_set_approval_status' ), 10, 2 );
 		add_action( 'admin_init', array( $this, 'evf_admin_approve_entry' ), 10, 2 );
 		add_action( 'admin_init', array( $this, 'evf_admin_deny_entry' ) );
+		// Form Submission Waiting Time.
+		add_filter( 'everest_forms_process_initial_errors', array( $this, 'form_submission_waiting_time' ), 10, 2 );
 	}
 
 	/**
@@ -1430,6 +1432,34 @@ class EVF_Form_Task {
 			);
 			$evf_new_token      = array_merge( $evf_admin_entry_approval_token, $evf_approval_token );
 			update_option( 'everest_forms_admin_entry_approval_token', $evf_new_token );
+		}
+	}
+
+	/**
+	 * Prevents form submission before the specified duration.
+	 *
+	 * @param array  $errors    Form submit errors.
+	 * @param object $form_data   An object containing settings for the form.
+	 */
+	public function form_submission_waiting_time( $errors, $form_data ) {
+		$form_submission_waiting_time_enable = isset( $form_data['settings']['form_submission_min_waiting_time'] ) ? $form_data['settings']['form_submission_min_waiting_time'] : '';
+		$submission_duration                 = $form_data['settings']['form_submission_min_waiting_time_input'];
+
+		if ( '1' === $form_submission_waiting_time_enable && 0 <= absint( $submission_duration ) ) {
+			$atts              = $form_data['id'];
+			$time_after_submit = time();
+
+			session_start();
+			$time_before_submit = $_SESSION['start_time'];
+
+			$form_submission_err_msg = sprintf( esc_html__( 'Please wait few seconds, security checkup is being executed', 'everest-forms' ) );
+
+			if ( $time_after_submit - $time_before_submit < $submission_duration ) {
+				$form_id                      = ! empty( $form_data['id'] ) ? $form_data['id'] : 0;
+				$errors[ $form_id ]['header'] = $form_submission_err_msg;
+			}
+			unset( $_SESSION['start_time'] );
+			return $errors;
 		}
 	}
 }
