@@ -851,7 +851,8 @@ class EVF_Shortcode_Form {
 
 		if ( ! isset( $_SESSION ) && ! empty( $atts ) ) {
 			session_start();
-			$_SESSION['start_time'] = time();
+			$session_key              = 'start_time_' . $atts['id'];
+			$_SESSION[ $session_key ] = time();
 		}
 
 		$atts = shortcode_atts(
