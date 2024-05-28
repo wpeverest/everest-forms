@@ -27,3 +27,38 @@ defined( 'ABSPATH' ) || exit;
 		<?php wp_nonce_field( 'everest_forms_import_nonce', 'everest-forms-import-nonce' ); ?>
 	</div>
 </div>
+<div class="everest-forms-import-form">
+	<h3><?php esc_html_e( 'Import Entries', 'everest-forms' ); ?></h3>
+	<div class="evf-form-and-csv-upload">
+	<p><?php esc_html_e( 'Select form to import the entries.', 'everest-forms' ); ?></p>
+	<?php
+		$forms = evf_get_all_forms( false );
+			echo "<select class='evf-enhanced-select' style='min-width: 350px;' name='form_id' id='everest-forms-import-entries'>";
+	if ( ! empty( $forms ) ) {
+		foreach ( $forms as $id => $form ) {
+			echo "<option value='" . $id . "'>" . $form . '</option>';
+		}
+	} else {
+		echo '<option value="">' . esc_html__( 'No form found', 'everest-forms' ) . '</option>';
+	}
+		echo '</select>';
+	?>
+	<p><?php esc_html_e( 'Select csv file to import the entries.', 'everest-forms' ); ?></p>
+
+	<div class="everest-forms-file-upload">
+	<input type="file" name="file" id="everest-forms-import-csv" <?php esc_attr_e( 'files selected', 'everest-forms' ); ?>" accept=".csv" />
+		<label for="everest-forms-import"><span class="everest-forms-btn dashicons dashicons-upload"><?php esc_html_e( 'Choose File', 'everest-forms' ); ?></span><span id="import-file-name-entry"><?php esc_html_e( 'No file selected', 'everest-forms' ); ?></span></label>
+	</div>
+	<p class="description">
+		<i class="dashicons dashicons-info"></i>
+		<?php
+		/* translators: %s: File format */
+		printf( esc_html__( 'Only %s file is allowed.', 'everest-forms' ), '<strong>CSV</strong>' );
+		?>
+	</p>
+	<div class="publishing-action">
+		<button type="submit" class="everest-forms-btn everest-forms-btn-primary everest_forms_import_entries" name="everest-forms-import-entries"><?php esc_html_e( 'Map CSV', 'everest-forms' ); ?></button>
+		<?php wp_nonce_field( 'everest_forms_import_nonce', 'everest-forms-import-nonce' ); ?>
+	</div>
+</div>
+</div>

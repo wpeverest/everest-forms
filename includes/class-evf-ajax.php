@@ -111,6 +111,8 @@ class EVF_AJAX {
 			'embed_form'                     => false,
 			'goto_edit_page'                 => false,
 			'send_routine_report_test_email' => false,
+			'map_csv'                        => false,
+			'import_entries'                 => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -1405,6 +1407,131 @@ class EVF_AJAX {
 
 		wp_send_json_success( $page_url );
 	}
+
+	public static function map_csv() {
+		check_ajax_referer( 'evf-import-entries', 'security' );
+
+		if ( empty( $_FILES ) ) {
+			wp_send_json_error(
+				array(
+					'message' => 'Please upload csv file.',
+				)
+			);
+		}
+
+		$form_fields = evf_get_form_fields( $_POST['form_id'] );
+
+		$csv_header = self::get_csv_header( $_FILES );
+
+		$output  = '';
+		$output .= '<div class="evf-map-entries-to-form">';
+		$output .= '<form id="evf-import-entries-form">';
+		$output .= '<p>' . esc_html__( 'Map CSV fields to Form fields.', 'everest-forms' ) . '</p>';
+		$output .= '<div class ="evf-form-fields-and-csv-fields" style="display: flex;">';
+		$output .= '<div class="evf-form-fields" style="width: 50%;">';
+		$output .= '<h4>' . esc_html__( 'Form Fields', 'everest-forms' ) . '</h4>';
+		$output .= '</div>';
+		$output .= '<div class="evf-csv-fields" style="width: 50%;">';
+		$output .= '<h4>' . esc_html__( 'CSV Fields', 'everest-forms' ) . '</h4>';
+		$output .= '</div>';
+		$output .= '</div>';
+		$output .= '<div class = "evf-map-entries-to-form-wrapper" style="display: flex;">';
+		$output .= '<div class="evf-form-fields" style="width: 50%;">';
+		$output .= '<select name="map-entries-to-form" class="evf-form-fields-csv" style="min-width: 90%;">';
+
+		if ( ! empty( $form_fields ) ) {
+			foreach ( $form_fields as $key => $value ) {
+				$output .= '<option value="' . esc_attr( $key ) . '">' . esc_html( $value['label'] ) . '</option>';
+			}
+		} else {
+			$output .= '<option value="">' . esc_html__( 'No form fields', 'everest-forms' ) . '</option>';
+		}
+
+		$output .= '</select>';
+		$output .= '</div>';
+		$output .= '<div class="evf-csv-fields" style="width: 50%;">';
+		$output .= '<select name="map-entries-to-csv" style="min-width: 90%;">';
+
+		if ( ! empty( $csv_header ) ) {
+			foreach ( $csv_header as $value ) {
+				$output .= '<option value="' . $value . '">' . esc_html__( $value, 'everest-forms' ) . '</option>';
+			}
+		} else {
+			$output .= '<option value="">' . esc_html__( 'No csv fields', 'everest-forms' ) . '</option>';
+		}
+
+		$output .= '</select>';
+		$output .= '</div>';
+		$output .= '<span class="actions" style="display: flex; align-items: center; justify-content: space-between;"><a class="evf-add-clone" href="#" style="text-decoration: none;"><i class="dashicons dashicons-plus"></i></a><a class="evf-remove-clone everest-forms-hidden" href="#" style="text-decoration: none;"><i class="dashicons dashicons-minus"></i></a></span>';
+		$output .= '</div>';
+		$output .= '<input type="hidden" name="form_id" value="' . esc_attr( $_POST['form_id'] ) . '">';
+		$output .= '<input type="submit" class="everest-forms-btn everest-forms-btn-primary evf-import-entries-btn" value="' . esc_html__( 'Import Entries', 'everest-forms' ) . '">';
+		$output .= '</form>';
+		$output .= '</div>';
+
+		wp_send_json_success(
+			array(
+				'html' => $output,
+			)
+		);
+	}
+
+	public static function get_csv_header( $csv_data ) {
+
+		if ( ! isset( $csv_data['csvfile'] ) ) {
+			wp_send_json_error(
+				array(
+					'message' => 'Please upload csv file.',
+				)
+			);
+		}
+
+		$file_extension = strtolower( pathinfo( $csv_data['csvfile']['name'], PATHINFO_EXTENSION ) );
+
+		if ( 'csv' != $file_extension ) {
+			wp_send_json_error(
+				array(
+					'message' => 'File must be a CSV file.',
+				)
+			);
+		}
+
+		if ( ! function_exists( 'wp_handle_upload' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+		}
+
+		$upload_dir = wp_upload_dir();
+		$filename   = 'import_entries_data.csv';
+		$csv_url    = $upload_dir['basedir'] . $upload_dir['subdir'] . '/' . $filename;
+		lg( $csv_url );
+
+		if ( ! empty( $csv_url ) && file_exists( $csv_url ) ) {
+			@unlink( $csv_url );
+		}
+
+		$csv_file   = $csv_data['csvfile']['tmp_name'];
+		$data       = file_get_contents( $csv_file );
+		$data_array = explode( "\n", $data );
+
+		$upload_file = move_uploaded_file( $csv_data['csvfile']['tmp_name'], $csv_url );
+
+		if ( empty( $data_array[0] ) ) {
+			wp_send_json_error(
+				array(
+					'message' => 'CSV file doesn\'t contain any data.',
+				)
+			);
+		}
+		return explode( ',', $data_array[0] );
+	}
+
+	public static function import_entries() {
+		check_ajax_referer( 'evf-import-entries', 'security' );
+
+		lg( $_POST );
+		wp_send_json_success( array( 'data' => $_POST ) );
+	}
+
 }
 
 EVF_AJAX::init();
