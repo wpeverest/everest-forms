@@ -14,6 +14,8 @@ import {
 	Text,
 	Link,
 	SimpleGrid,
+	Input,
+	VStack,
 } from "@chakra-ui/react";
 import { sprintf, __ } from "@wordpress/i18n";
 
@@ -44,6 +46,7 @@ const ModuleBody = ({
 		upgradeURL:
 			upgradeURL +
 			"&utm_source=dashboard-addons&utm_medium=upgrade-popup",
+		licenseActivationPlaceholder: __("License key","everest-forms"),
 	});
 	const handleCheckedChange = (slug, checked, name, type) => {
 		var selectedModules = { ...selectedModuleData };
@@ -96,11 +99,10 @@ const ModuleBody = ({
 						__("Activate License", "everest-forms"),
 						upgradeModal.moduleName
 					);
-					upgradeContentRef.buttonText = upgradeContentRef.buttonText =
-						sprintf(
-							__("Activate License", "everest-forms"),
-							upgradeModal.moduleName
-						);
+					upgradeContentRef.licenseActivationPlaceholder = sprintf(
+						__("Enter your license key", "everest-forms"),
+						upgradeModal.moduleName
+					);
 					upgradeContentRef.upgradeURL = licenseActivationURL;
 				}
 
@@ -151,6 +153,10 @@ const ModuleBody = ({
 								{upgradeContent.body}
 							</Text>
 							<ModalFooter paddingBottom="0px" w="400px">
+							<VStack
+								width="100%"
+							>
+							<Input placeholder={upgradeContent.licenseActivationPlaceholder}/>
 								<Button
 									as={Link}
 									colorScheme="primary"
@@ -163,6 +169,7 @@ const ModuleBody = ({
 								>
 									{upgradeContent.buttonText}
 								</Button>
+								</VStack>
 							</ModalFooter>
 						</ModalContent>
 					</Modal>
