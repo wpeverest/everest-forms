@@ -12,7 +12,6 @@ import {
 	ModalFooter,
 	Button,
 	Text,
-	Link,
 	SimpleGrid,
 	Input,
 	VStack,
@@ -28,6 +27,7 @@ import DashboardContext from "./../../../context/DashboardContext";
 import { Lock } from "./../../../components/Icon/Icon";
 import ModuleItem from "./ModuleItem";
 import AddonsSkeleton from "./../../../skeleton/AddonsSkeleton/AddonsSkeleton";
+import { activateLicense } from "./modules-api";
 
 const ModuleBody = ({
 	isPerformingBulkAction,
@@ -48,6 +48,15 @@ const ModuleBody = ({
 			"&utm_source=dashboard-addons&utm_medium=upgrade-popup",
 		licenseActivationPlaceholder: __("License key","everest-forms"),
 	});
+
+	const [licenseActivationKey, setLicenseKey] = useState('');
+	const [licenseActivationValidationMessage, setLicenseValidationMessage] = useState('');
+	const [licenseValidationStatus, setLicenseValidationStatus] = useState('');
+
+	const handleActivationKeyChange = (event) => {
+		setLicenseKey(event.target.value);
+	};
+
 	const handleCheckedChange = (slug, checked, name, type) => {
 		var selectedModules = { ...selectedModuleData };
 
@@ -120,6 +129,33 @@ const ModuleBody = ({
 		});
 	};
 
+	const licenseActivation = () => {
+		if('' === licenseActivationKey){
+			setLicenseValidationMessage(sprintf(__('Please plugin activation license key','everest-forms')));
+			setLicenseValidationStatus(true);
+		} else{
+			setLicenseValidationMessage('');
+			setLicenseValidationStatus(false);
+
+			activateLicense(licenseActivationKey)
+			.then((data) => {
+				if (data.success) {
+					toast({
+						title: data.message,
+						status: "success",
+						duration: 3000,
+					});
+				} else {
+					toast({
+						title: data.message,
+						status: "error",
+						duration: 3000,
+					});
+				}
+			});
+		}
+	};
+
 	return (
 		<>
 			<Tabs>
@@ -156,19 +192,20 @@ const ModuleBody = ({
 							<VStack
 								width="100%"
 							>
-							<Input placeholder={upgradeContent.licenseActivationPlaceholder}/>
+							<Input
+								placeholder={upgradeContent.licenseActivationPlaceholder}
+								onChange = {handleActivationKeyChange}
+							/>
 								<Button
-									as={Link}
 									colorScheme="primary"
-									href={upgradeContent.upgradeURL}
 									color="white !important"
 									textDecor="none !important"
-									isExternal
-									onClick={updateUpgradeModal}
+									onClick={licenseActivation}
 									w="100%"
 								>
 									{upgradeContent.buttonText}
 								</Button>
+								{licenseActivationValidationMessage &&  <Text fontSize='md' color='red'>{licenseActivationValidationMessage}</Text>}
 								</VStack>
 							</ModalFooter>
 						</ModalContent>
