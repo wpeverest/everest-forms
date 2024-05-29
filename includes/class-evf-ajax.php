@@ -1503,7 +1503,6 @@ class EVF_AJAX {
 		$upload_dir = wp_upload_dir();
 		$filename   = 'import_entries_data.csv';
 		$csv_url    = $upload_dir['basedir'] . $upload_dir['subdir'] . '/' . $filename;
-		lg( $csv_url );
 
 		if ( ! empty( $csv_url ) && file_exists( $csv_url ) ) {
 			@unlink( $csv_url );
@@ -1522,14 +1521,80 @@ class EVF_AJAX {
 				)
 			);
 		}
+
 		return explode( ',', $data_array[0] );
 	}
 
 	public static function import_entries() {
 		check_ajax_referer( 'evf-import-entries', 'security' );
 
-		lg( $_POST );
+		$map_fields_array = array();
+
+		foreach ( $_POST['data'] as $key => $map_fields ) {
+			if ( $key === count( $_POST['data'] ) - 1 ) {
+				$map_fields_array['form_id'] = $map_fields['value'];
+				continue;
+			}
+
+			if ( $key % 2 != 0 ) {
+				continue;
+			}
+
+			$map_fields_array[ $key ] = array(
+				'field_id'       => $map_fields['value'],
+				'map_csv_column' => $_POST['data'][ ++$key ]['value'],
+			);
+		}
+
+		$upload_dir = wp_upload_dir();
+		$filename   = 'import_entries_data.csv';
+		$csv_url    = $upload_dir['basedir'] . $upload_dir['subdir'] . '/' . $filename;
+
+		if ( ! empty( $csv_url ) && file_exists( $csv_url ) ) {
+			// include_once EVF_ABSPATH . 'includes/class-evf-background-process-import-entries.php';
+			$csv_file = fopen( $csv_url, 'r' );
+			$row      = 0;
+			while ( ( $row_data = fgetcsv( $csv_file, 0, ',' ) ) !== false ) {
+				// $row_data['import_entries'] = true;
+				// $background_process         = new EVF_Background_Process_Import_Entries();
+				// $background_process->push_to_queue( $row_data );
+				if ( strlen( implode( $row_data ) ) != 0 ) {
+					if ( 0 === $row ) {
+						update_option( 'everest_forms_csv_titles', $row_data );
+					} else {
+						// $row_data['row_id'] = $row;
+						self::import_entry_to_form( $row_data, $map_fields_array );
+					}
+					$row++;
+				}
+			}
+			// fclose( $csv_file );
+			// unlink( $csv_url );
+			// $background_process->save()->dispatch();
+		}
+
 		wp_send_json_success( array( 'data' => $_POST ) );
+	}
+
+	public static function import_entry_to_form( $data, $map_fields_array ) {
+		$evf_fields       = evf_get_form_fields( $map_fields_array['form_id'] );
+		$csv_column_title = get_option( 'everest_forms_csv_titles' );
+		$entry            = array();
+
+		foreach ( $map_fields_array as $value ) {
+			if ( is_array( $value ) ) {
+				if ( isset( $evf_fields[ $value['field_id'] ] ) ) {
+					$key                         = array_search( trim( $value['map_csv_column'] ), $csv_column_title );
+					$entry[ $value['field_id'] ] = array(
+						'name'     => $evf_fields[ $value['field_id'] ]['label'],
+						'value'    => $data[ $key ],
+						'id'       => $value['field_id'],
+						'type'     => $evf_fields[ $value['field_id'] ]['type'],
+						'meta-key' => $evf_fields[ $value['field_id'] ]['meta-key'],
+					);
+				}
+			}
+		}
 	}
 
 }
