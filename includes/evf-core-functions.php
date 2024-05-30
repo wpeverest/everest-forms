@@ -1132,7 +1132,7 @@ function evf_get_random_string( $length = 10 ) {
  * @return array of form data.
  */
 function evf_get_all_forms( $skip_disabled_entries = false, $check_disable_storing_entry_info = true ) {
-	if( is_null( evf()->form ) ) {
+	if ( is_null( evf()->form ) ) {
 		return array();
 	}
 	$forms    = array();
@@ -1569,10 +1569,10 @@ function evf_get_license_plan() {
 }
 
 /** To handle the backward compatibility for those user who is still using the plus and professional plan license key.
-*
-* @since 3.0.0
-* @param $license_plan License plan.
-*/
+ *
+ * @since 3.0.0
+ * @param $license_plan License plan.
+ */
 function evf_handle_license_plan_compatibility( $license_plan ) {
 	$license_plan = ( 'plus' === $license_plan || 'professional' === $license_plan ) ? 'personal' : $license_plan;
 	return $license_plan;
@@ -5516,12 +5516,12 @@ if ( ! function_exists( 'evf_check_addons_update' ) ) {
 				);
 			}
 
-			if ( class_exists( 'EverestForms_Style_Customizer' ) && is_plugin_active( 'everest-forms-style-customizer/everest-forms-style-customizer.php' ) && defined( 'EVF_STYLE_CUSTOMIZER_PLUGIN_FILE' ) && defined( 'EVF_STYLE_CUSTOMIZER_VERSION' ) ) {
+			if ( class_exists( 'EverestForms_Style_Customizer' ) && is_plugin_active( 'everest-forms-style-customizer/everest-forms-style-customizer.php' ) && defined( 'EVF_STYLE_CUSTOMIZER_PLUGIN_FILE' ) && defined( 'EVF_VERSION' ) ) {
 				$plugins_to_check['EverestForms_Style_Customizer'] = array(
 					'plugin'  => 'everest-forms-style-customizer/everest-forms-style-customizer.php',
 					'file'    => EVF_STYLE_CUSTOMIZER_PLUGIN_FILE,
 					'id'      => 16166,
-					'version' => EVF_STYLE_CUSTOMIZER_VERSION,
+					'version' => EVF_VERSION,
 				);
 			}
 

@@ -343,6 +343,18 @@ final class EverestForms {
 		include_once EVF_ABSPATH . 'includes/stats/class-evf-stats.php';
 
 		/**
+		 * Addons
+		 */
+
+		// Include the main EverestForms_Style_Customizer class.
+		if ( ! class_exists( 'EverestForms_Style_Customizer' ) ) {
+			include_once EVF_ABSPATH . 'includes/addons/StyleCustomizer/includes/class-everest-forms-style-customizer.php';
+			// Initialize the plugin.
+			add_action( 'plugins_loaded', array( 'EverestForms_Style_Customizer', 'get_instance' ), 5 );
+
+		}
+
+		/**
 		 * External Libraries
 		 *
 		 * @return void
