@@ -32,23 +32,23 @@ defined( 'ABSPATH' ) || exit;
 	<div class="evf-form-and-csv-upload">
 		<?php
 			$forms = evf_get_all_forms( false );
-			if( empty( $forms ) ){
-				echo '<div id="message" class="error inline everest-froms-import_notice"><p><strong>You must have form to import entries.</strong></p></div>';
-			}
+		if ( empty( $forms ) ) {
+			echo '<div id="message" class="error inline everest-froms-import_notice"><p><strong>You must have form to import entries.</strong></p></div>';
+		}
 		?>
 	<p><?php esc_html_e( 'Select form to import the entries.', 'everest-forms' ); ?></p>
 	<?php
-		if ( empty( $forms ) ) {
-			echo "<select class='evf-enhanced-select' style='min-width: 350px;' name='form_id' id='everest-forms-import-entries'>";
-			echo '<option value="">' . esc_html__( 'No form found', 'everest-forms' ) . '</option>';
-			echo '</select>';
-			return;
-		} else {
-			echo "<select class='evf-enhanced-select' style='min-width: 350px;' name='form_id' id='everest-forms-import-entries'>";
-			foreach ( $forms as $id => $form ) {
-				echo "<option value='" . $id . "'>" . $form . '</option>';
-			}
-			echo '</select>';
+	if ( empty( $forms ) ) {
+		echo "<select class='evf-enhanced-select' style='min-width: 350px;' name='form_id' id='everest-forms-import-entries'>";
+		echo '<option value="">' . esc_html__( 'No form found', 'everest-forms' ) . '</option>';
+		echo '</select>';
+		return;
+	} else {
+		echo "<select class='evf-enhanced-select' style='min-width: 350px;' name='form_id' id='everest-forms-import-entries'>";
+		foreach ( $forms as $form_id => $form_name ) {
+			echo "<option value='" . esc_attr( $form_id ) . "'>" . esc_html( $form_name ) . '</option>';
+		}
+		echo '</select>';
 	}
 	?>
 	<p><?php esc_html_e( 'Select csv file to import the entries.', 'everest-forms' ); ?></p>

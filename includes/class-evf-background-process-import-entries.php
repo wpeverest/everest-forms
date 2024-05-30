@@ -22,19 +22,11 @@ if ( ! class_exists( 'WP_Background_Process', false ) ) {
 class EVF_Background_Process_Import_Entries extends WP_Background_Process {
 
 	/**
+	 * Action Name.
+	 *
 	 * @var string
 	 */
 	protected $action = 'evf_import_entries';
-
-
-	/**
-	 * Constructor.
-	 *
-	 * @since 3.0.0
-	 */
-	public function __construct() {
-		parent::__construct();
-	}
 
 	/**
 	 * Perform task with queued item.
@@ -47,23 +39,11 @@ class EVF_Background_Process_Import_Entries extends WP_Background_Process {
 	 * @since 3.0.0
 	 *
 	 * @param mixed $item Queue item to iterate over.
-	 *
 	 */
 	protected function task( $item ) {
 		// Actions to perform.
 		self::import_entry_to_form( $item );
 		return false;
-	}
-
-	/**
-	 * Dispatch updater.
-	 *
-	 * Updater will still run via cron job if this fails for any reason.
-	 *
-	 * @since 3.0.0
-	 */
-	public function dispatch() {
-		parent::dispatch();
 	}
 
 	/**
@@ -81,23 +61,11 @@ class EVF_Background_Process_Import_Entries extends WP_Background_Process {
 	 * Is the updater running?
 	 *
 	 * @since 3.0.0
-	 *
 	 */
 	public function is_updating() {
 		return false === $this->is_queue_empty();
 	}
 
-	/**
-	 * Complete
-	 *
-	 * @since 3.0.0
-	 *
-	 * Override if applicable, but ensure that the below actions are
-	 * performed, or, call parent::complete().
-	 */
-	protected function complete() {
-		parent::complete();
-	}
 
 	/**
 	 * Imports an entry to a form.
@@ -118,7 +86,7 @@ class EVF_Background_Process_Import_Entries extends WP_Background_Process {
 		foreach ( $map_fields_array as $value ) {
 			if ( is_array( $value ) ) {
 				if ( isset( $evf_fields[ $value['field_id'] ] ) ) {
-					$key                              = array_search( trim( $value['map_csv_column'] ), $csv_column_title );
+					$key                              = array_search( trim( $value['map_csv_column'] ), $csv_column_title, true );
 					$entry_data[ $value['field_id'] ] = array(
 						'id'       => sanitize_text_field( wp_unslash( $value['field_id'] ) ),
 						'type'     => sanitize_text_field( wp_unslash( $evf_fields[ $value['field_id'] ]['type'] ) ),
@@ -140,7 +108,7 @@ class EVF_Background_Process_Import_Entries extends WP_Background_Process {
 			$entry['status']          = 'publish';
 			$entry['viewed']          = 0;
 			$entry['starred']         = 0;
-			$entry['date_created']    = date( 'Y-m-d H:i:s' );
+			$entry['date_created']    = gmdate( 'Y-m-d H:i:s' );
 			self::save_entry( $entry, $entry_data );
 		}
 	}
