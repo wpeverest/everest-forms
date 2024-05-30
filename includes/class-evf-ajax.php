@@ -14,12 +14,29 @@ defined( 'ABSPATH' ) || exit;
 class EVF_AJAX {
 
 	/**
+	 * Background update class.
+	 *
+	 * @var object
+	 */
+	private static $background_process;
+
+	/**
 	 * Hook in ajax handlers.
 	 */
 	public static function init() {
 		add_action( 'init', array( __CLASS__, 'define_ajax' ), 0 );
 		add_action( 'template_redirect', array( __CLASS__, 'do_evf_ajax' ), 0 );
 		self::add_ajax_events();
+		add_action( 'init', array( __CLASS__, 'init_background_process' ), 5 );
+	}
+
+	/**
+	 * Init background process.
+	 */
+	public static function init_background_process() {
+		include_once EVF_ABSPATH . 'includes/class-evf-background-process-import-entries.php';
+
+		self::$background_process = new \EVF_Background_Process_Import_Entries();
 	}
 
 	/**
@@ -1408,6 +1425,11 @@ class EVF_AJAX {
 		wp_send_json_success( $page_url );
 	}
 
+	/**
+	 * Map csv fields with form fields.
+	 *
+	 * @since 3.0.0
+	 */
 	public static function map_csv() {
 		check_ajax_referer( 'evf-import-entries', 'security' );
 
@@ -1465,7 +1487,7 @@ class EVF_AJAX {
 		$output .= '<span class="actions" style="display: flex; align-items: center; justify-content: space-between;"><a class="evf-add-clone" href="#" style="text-decoration: none;"><i class="dashicons dashicons-plus"></i></a><a class="evf-remove-clone everest-forms-hidden" href="#" style="text-decoration: none;"><i class="dashicons dashicons-minus"></i></a></span>';
 		$output .= '</div>';
 		$output .= '<input type="hidden" name="form_id" value="' . esc_attr( $_POST['form_id'] ) . '">';
-		$output .= '<input type="submit" class="everest-forms-btn everest-forms-btn-primary evf-import-entries-btn" value="' . esc_html__( 'Import Entries', 'everest-forms' ) . '">';
+		$output .= '<span class="evf_import_entries_btn"><input type="submit" class="everest-forms-btn everest-forms-btn-primary evf-import-entries-btn" value="' . esc_html__( 'Import Entries', 'everest-forms' ) . '"></span>';
 		$output .= '</form>';
 		$output .= '</div>';
 
@@ -1476,6 +1498,17 @@ class EVF_AJAX {
 		);
 	}
 
+	/**
+	 * Retrieves the header of a CSV file.
+	 *
+	 * The function reads the contents of the CSV file, splits it into an array of lines, and retrieves
+	 * the first line, which represents the header of the CSV file. It then sends a JSON success
+	 * response with the header as an array of values.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param array $csv_data The CSV data containing the file to be processed.
+	 */
 	public static function get_csv_header( $csv_data ) {
 
 		if ( ! isset( $csv_data['csvfile'] ) ) {
@@ -1526,115 +1559,66 @@ class EVF_AJAX {
 	}
 
 	public static function import_entries() {
-		check_ajax_referer( 'evf-import-entries', 'security' );
+		try{
+			check_ajax_referer( 'evf-import-entries', 'security' );
 
-		$map_fields_array = array();
+			$map_fields_array = array();
 
-		foreach ( $_POST['data'] as $key => $map_fields ) {
-			if ( $key === count( $_POST['data'] ) - 1 ) {
-				$map_fields_array['form_id'] = $map_fields['value'];
-				continue;
+			foreach ( $_POST['data'] as $key => $map_fields ) {
+				if ( $key === count( $_POST['data'] ) - 1 ) {
+					$map_fields_array['form_id'] = $map_fields['value'];
+					continue;
+				}
+
+				if ( $key % 2 != 0 ) {
+					continue;
+				}
+
+				$map_fields_array[ $key ] = array(
+					'field_id'       => $map_fields['value'],
+					'map_csv_column' => $_POST['data'][ ++$key ]['value'],
+				);
 			}
 
-			if ( $key % 2 != 0 ) {
-				continue;
+			$upload_dir = wp_upload_dir();
+			$filename   = 'import_entries_data.csv';
+			$csv_url    = $upload_dir['basedir'] . $upload_dir['subdir'] . '/' . $filename;
+
+			if ( ! empty( $csv_url ) && file_exists( $csv_url ) ) {
+				$csv_file = fopen( $csv_url, 'r' );
+				$row      = 0;
+				update_option( 'everest_forms_mapping_fields_array', $map_fields_array );
+				while ( ( $row_data = fgetcsv( $csv_file, 0, ',' ) ) !== false ) {
+					if ( strlen( implode( $row_data ) ) != 0 ) {
+						if ( 0 === $row ) {
+							update_option( 'everest_forms_csv_titles', $row_data );
+						} else {
+							self::$background_process->push_to_queue( $row_data );
+						}
+						$row++;
+					}
+				}
+				fclose( $csv_file );
+				unlink( $csv_url );
+				self::$background_process->save()->dispatch();
 			}
 
-			$map_fields_array[ $key ] = array(
-				'field_id'       => $map_fields['value'],
-				'map_csv_column' => $_POST['data'][ ++$key ]['value'],
+			wp_send_json_success(
+				array(
+					'message'     => 'Entries imported successfully. Please check imported entries.',
+					'entry_link'  => admin_url( 'admin.php?page=evf-entries&form_id=' . $map_fields_array['form_id'] ),
+					'button_text' => 'View Entries',
+				)
 			);
 		}
-
-		$upload_dir = wp_upload_dir();
-		$filename   = 'import_entries_data.csv';
-		$csv_url    = $upload_dir['basedir'] . $upload_dir['subdir'] . '/' . $filename;
-
-		if ( ! empty( $csv_url ) && file_exists( $csv_url ) ) {
-			// include_once EVF_ABSPATH . 'includes/class-evf-background-process-import-entries.php';
-			$csv_file = fopen( $csv_url, 'r' );
-			$row      = 0;
-			while ( ( $row_data = fgetcsv( $csv_file, 0, ',' ) ) !== false ) {
-				// $row_data['import_entries'] = true;
-				// $background_process         = new EVF_Background_Process_Import_Entries();
-				// $background_process->push_to_queue( $row_data );
-				if ( strlen( implode( $row_data ) ) != 0 ) {
-					if ( 0 === $row ) {
-						update_option( 'everest_forms_csv_titles', $row_data );
-					} else {
-						// $row_data['row_id'] = $row;
-						self::import_entry_to_form( $row_data, $map_fields_array );
-					}
-					$row++;
-				}
-			}
-			// fclose( $csv_file );
-			// unlink( $csv_url );
-			// $background_process->save()->dispatch();
+		catch( Exception $e ) {
+			wp_send_json_error(
+				array(
+					'message' => $e->getMessage(),
+				)
+			);
 		}
-
-		wp_send_json_success( array( 'data' => $_POST ) );
-	}
-
-	public static function import_entry_to_form( $data, $map_fields_array ) {
-		$evf_fields       = evf_get_form_fields( $map_fields_array['form_id'] );
-		$csv_column_title = get_option( 'everest_forms_csv_titles' );
-		$entry_data       = array();
-		$entry            = array();
-
-		foreach ( $map_fields_array as $value ) {
-			if ( is_array( $value ) ) {
-				if ( isset( $evf_fields[ $value['field_id'] ] ) ) {
-					$key                              = array_search( trim( $value['map_csv_column'] ), $csv_column_title );
-					$entry_data[ $value['field_id'] ] = array(
-						'id'       => sanitize_text_field( wp_unslash( $value['field_id'] ) ),
-						'type'     => sanitize_text_field( wp_unslash( $evf_fields[ $value['field_id'] ]['type'] ) ),
-						'meta_key' => $evf_fields[ $value['field_id'] ]['meta-key'],
-						'value'    => sanitize_text_field( wp_unslash( $data[ $key ] ) ),
-						'name'     => sanitize_text_field( wp_unslash( $evf_fields[ $value['field_id'] ]['label'] ) ),
-					);
-				}
-			}
-		}
-
-		if ( ! empty( $entry_data ) ) {
-			$entry['user_id']         = get_current_user_id();
-			$entry['user_device']     = '';
-			$entry['user_ip_address'] = '';
-			$entry['form_id']         = $map_fields_array['form_id'];
-			$entry['referer']         = '';
-			$entry['fields']          = wp_json_encode( $entry_data );
-			$entry['status']          = 'publish';
-			$entry['viewed']          = 0;
-			$entry['starred']         = 0;
-			$entry['date_created']    = date( 'Y-m-d H:i:s' );
-			self::save_entry( $entry, $entry_data );
-		}
-	}
-
-	public static function save_entry( $entry, $entry_data ) {
-		global $wpdb;
-
-		$result = $wpdb->insert( $wpdb->prefix . 'evf_entries', $entry );
-		if ( is_wp_error( $result ) || ! $result ) {
-			return false;
-		}
-
-		$entry_id = $wpdb->insert_id;
-
-		if ( ! empty( $entry_id ) ) {
-			$entry_meta = array();
-			foreach ( $entry_data as $key => $data ) {
-				$entry_meta = array(
-					'entry_id'   => $entry_id,
-					'meta_key'   => $data['meta_key'],
-					'meta_value' => maybe_serialize( $data['value'] ),
-				);
-				$wpdb->insert( $wpdb->prefix . 'evf_entrymeta', $entry_meta );
-			}
-		}
-	}
-
+}
 }
 
 EVF_AJAX::init();

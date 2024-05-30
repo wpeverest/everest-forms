@@ -37,8 +37,7 @@
 						$( '.everest-froms-import_notice' ).remove();
 					},
 					success : function ( response ) {
-						console.log(response);
-						$( '.everest_forms_import_entries' ).closest( '.everest_forms_import_entries' ).find( '.evf-loading' ).remove();
+						$( '.everest_forms_import_entries' ).find( '.evf-loading' ).remove();
 						$( '.everest-froms-import_notice' ).remove();
 
 						if ( true === response.success ) {
@@ -68,7 +67,7 @@
 							message_string = '<div id="message" class="error inline everest-froms-import_notice"><p><strong>' + response.data.message + '</strong></p></div>';
 						}
 
-						$( '.everest-forms-import-form' ).find( 'h3' ).after( message_string );
+						$( '.everest-forms-import-entries-wrapper' ).find( 'h3' ).after( message_string );
 					}
 
 				})
@@ -94,14 +93,27 @@
 					security	: evf_import_entries_obj.nonce,
 
 				}
-				console.log(form_data);
 
 				$.ajax({
 					url : evf_import_entries_obj.ajax_url,
 					type : 'POST',
 					data : form_data,
+					beforeSend : function() {
+						var spinner = '<i class="evf-loading evf-loading-active"></i>';
+						$( '.evf_import_entries_btn' ).append( spinner );
+						$( '.everest-froms-import_notice' ).remove();
+					},
 					success : function ( response ) {
-						console.log(response);
+						$( '.evf_import_entries_btn' ).find( '.evf-loading' ).remove();
+						if( true === response.success ) {
+							$( '.evf-form-and-csv-upload' ).empty();
+							message_string = '<div id="message" class="updated inline everest-froms-import_notice"><p><strong>' + response.data.message + '</strong></p></div>';
+							message_string += '<a href="' + response.data.entry_link + '" class="button button-primary" target="_blank">' + response.data.button_text + '</a>'
+							$( '.everest-forms-import-entries-wrapper' ).find( 'h3' ).after( message_string );
+						}else{
+							message_string += '<div id="message" class="error inline everest-froms-import_notice"><p><strong>' + response.data.message + '</strong></p></div>'
+							$( '.everest-forms-import-entries-wrapper' ).find( 'h3' ).after( message_string );
+						}
 					}
 				})
 			})

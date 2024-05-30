@@ -5527,6 +5527,7 @@
 	 */
  .evf-tools-export-entries,
  .everest-forms-import-form,
+ .everest-forms-import-entries-wrapper,
  .everest-forms-export-form,
  .everest-forms-form-migrator {
 	 background: $color-white;
@@ -9353,8 +9354,8 @@
 							   padding: 16px 20px;
 							   align-items: center;
 							   gap: 16px;
-							   border-bottom: 1px solid #EDEDED;		
-							   position: relative;					   
+							   border-bottom: 1px solid #EDEDED;
+							   position: relative;
 							   transition: all .3s ease-in-out;
 
 							   &::before {
