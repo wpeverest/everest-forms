@@ -405,7 +405,7 @@ jQuery( function ( $ ) {
 				return $checked.length <= choiceLimit;
 			}, function( params, element ) {
 				var	choiceLimit = parseInt( $( element ).closest( 'ul' ).attr( 'data-choice-limit' ) || 0, 10 );
-				return everest_forms.i18n_messages_check_limit.replace( '{#}', choiceLimit );
+				return everest_forms_params.i18n_messages_check_limit.replace( '{#}', choiceLimit );
 			} );
 
 			$.validator.addMethod( 'phone-field', function( value, element ) {
