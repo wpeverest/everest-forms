@@ -1441,7 +1441,7 @@ class EVF_AJAX {
 			);
 		}
 
-		$form_fields = evf_get_form_fields( $_POST['form_id'] );
+		$form_fields = evf_get_form_fields( sanitize_text_field( wp_unslash( $_POST['form_id'] ) ) ); //phpcs:ignore
 
 		$csv_header = self::get_csv_header( $_FILES );
 
@@ -1476,7 +1476,7 @@ class EVF_AJAX {
 
 		if ( ! empty( $csv_header ) ) {
 			foreach ( $csv_header as $value ) {
-				$output .= '<option value="' . $value . '">' . esc_html__( $value, 'everest-forms' ) . '</option>';
+				$output .= '<option value="' . $value . '">' . esc_html( $value ) . '</option>';
 			}
 		} else {
 			$output .= '<option value="">' . esc_html__( 'No csv fields', 'everest-forms' ) . '</option>';
@@ -1558,8 +1558,19 @@ class EVF_AJAX {
 		return explode( ',', $data_array[0] );
 	}
 
+	/**
+	 * Import entries from the CSV file and process them in the background.
+	 *
+	 * This function checks the AJAX referer and retrieves the mapping fields array from the POST data.
+	 * It then reads the CSV file and processes each row, updating the options and pushing the data to the background process queue.
+	 * Finally, it sends a JSON success response with a message and a link to the imported entries.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @throws Exception If an error occurs during the import process.
+	 */
 	public static function import_entries() {
-		try{
+		try {
 			check_ajax_referer( 'evf-import-entries', 'security' );
 
 			$map_fields_array = array();
@@ -1610,15 +1621,14 @@ class EVF_AJAX {
 					'button_text' => 'View Entries',
 				)
 			);
-		}
-		catch( Exception $e ) {
+		} catch ( Exception $e ) {
 			wp_send_json_error(
 				array(
 					'message' => $e->getMessage(),
 				)
 			);
 		}
-}
+	}
 }
 
 EVF_AJAX::init();
