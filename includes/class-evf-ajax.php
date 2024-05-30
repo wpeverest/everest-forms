@@ -1579,20 +1579,58 @@ class EVF_AJAX {
 	public static function import_entry_to_form( $data, $map_fields_array ) {
 		$evf_fields       = evf_get_form_fields( $map_fields_array['form_id'] );
 		$csv_column_title = get_option( 'everest_forms_csv_titles' );
+		$entry_data       = array();
 		$entry            = array();
 
 		foreach ( $map_fields_array as $value ) {
 			if ( is_array( $value ) ) {
 				if ( isset( $evf_fields[ $value['field_id'] ] ) ) {
-					$key                         = array_search( trim( $value['map_csv_column'] ), $csv_column_title );
-					$entry[ $value['field_id'] ] = array(
-						'name'     => $evf_fields[ $value['field_id'] ]['label'],
-						'value'    => $data[ $key ],
-						'id'       => $value['field_id'],
-						'type'     => $evf_fields[ $value['field_id'] ]['type'],
-						'meta-key' => $evf_fields[ $value['field_id'] ]['meta-key'],
+					$key                              = array_search( trim( $value['map_csv_column'] ), $csv_column_title );
+					$entry_data[ $value['field_id'] ] = array(
+						'id'       => sanitize_text_field( wp_unslash( $value['field_id'] ) ),
+						'type'     => sanitize_text_field( wp_unslash( $evf_fields[ $value['field_id'] ]['type'] ) ),
+						'meta_key' => $evf_fields[ $value['field_id'] ]['meta-key'],
+						'value'    => sanitize_text_field( wp_unslash( $data[ $key ] ) ),
+						'name'     => sanitize_text_field( wp_unslash( $evf_fields[ $value['field_id'] ]['label'] ) ),
 					);
 				}
+			}
+		}
+
+		if ( ! empty( $entry_data ) ) {
+			$entry['user_id']         = get_current_user_id();
+			$entry['user_device']     = '';
+			$entry['user_ip_address'] = '';
+			$entry['form_id']         = $map_fields_array['form_id'];
+			$entry['referer']         = '';
+			$entry['fields']          = wp_json_encode( $entry_data );
+			$entry['status']          = 'publish';
+			$entry['viewed']          = 0;
+			$entry['starred']         = 0;
+			$entry['date_created']    = date( 'Y-m-d H:i:s' );
+			self::save_entry( $entry, $entry_data );
+		}
+	}
+
+	public static function save_entry( $entry, $entry_data ) {
+		global $wpdb;
+
+		$result = $wpdb->insert( $wpdb->prefix . 'evf_entries', $entry );
+		if ( is_wp_error( $result ) || ! $result ) {
+			return false;
+		}
+
+		$entry_id = $wpdb->insert_id;
+
+		if ( ! empty( $entry_id ) ) {
+			$entry_meta = array();
+			foreach ( $entry_data as $key => $data ) {
+				$entry_meta = array(
+					'entry_id'   => $entry_id,
+					'meta_key'   => $data['meta_key'],
+					'meta_value' => maybe_serialize( $data['value'] ),
+				);
+				$wpdb->insert( $wpdb->prefix . 'evf_entrymeta', $entry_meta );
 			}
 		}
 	}
