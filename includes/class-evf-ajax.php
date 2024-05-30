@@ -1441,7 +1441,8 @@ class EVF_AJAX {
 			);
 		}
 
-		$form_fields = evf_get_form_fields( sanitize_text_field( wp_unslash( $_POST['form_id'] ) ) ); //phpcs:ignore
+		$form_id     = isset( $_POST['form_id'] ) ? absint( $_POST['form_id'] ) : 0; //phpcs:ignore
+		$form_fields = evf_get_form_fields( $form_id );
 
 		$csv_header = self::get_csv_header( $_FILES );
 
@@ -1486,7 +1487,7 @@ class EVF_AJAX {
 		$output .= '</div>';
 		$output .= '<span class="actions" style="display: flex; align-items: center; justify-content: space-between;"><a class="evf-add-clone" href="#" style="text-decoration: none;"><i class="dashicons dashicons-plus"></i></a><a class="evf-remove-clone everest-forms-hidden" href="#" style="text-decoration: none;"><i class="dashicons dashicons-minus"></i></a></span>';
 		$output .= '</div>';
-		$output .= '<input type="hidden" name="form_id" value="' . esc_attr( $_POST['form_id'] ) . '">';
+		$output .= '<input type="hidden" name="form_id" value="' . esc_attr( $form_id ) . '">';
 		$output .= '<span class="evf_import_entries_btn"><input type="submit" class="everest-forms-btn everest-forms-btn-primary evf-import-entries-btn" value="' . esc_html__( 'Import Entries', 'everest-forms' ) . '"></span>';
 		$output .= '</form>';
 		$output .= '</div>';
@@ -1575,8 +1576,16 @@ class EVF_AJAX {
 
 			$map_fields_array = array();
 
-			foreach ( $_POST['data'] as $key => $map_fields ) {
-				if ( $key === count( $_POST['data'] ) - 1 ) {
+			if ( ! isset( $_POST['data'] ) ) {
+				wp_send_json_error(
+					array(
+						'message' => 'Something went wrong. Please try again.',
+					)
+				);
+			}
+
+			foreach ( sanitize_text_field( wp_unslash( $_POST['data'] ) ) as $key => $map_fields ) { //phpcs:ignore
+				if ( $key === count( sanitize_text_field( wp_unslash( $_POST['data'] ) ) ) - 1 ) { //phpcs:ignore
 					$map_fields_array['form_id'] = $map_fields['value'];
 					continue;
 				}
@@ -1587,7 +1596,7 @@ class EVF_AJAX {
 
 				$map_fields_array[ $key ] = array(
 					'field_id'       => $map_fields['value'],
-					'map_csv_column' => $_POST['data'][ ++$key ]['value'],
+					'map_csv_column' => sanitize_text_field( wp_unslash( $_POST['data'][ ++$key ]['value'] ) ),
 				);
 			}
 
