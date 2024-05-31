@@ -14,7 +14,9 @@ import {
 	Text,
 	SimpleGrid,
 	Input,
+	Link,
 	VStack,
+	useToast,
 } from "@chakra-ui/react";
 import { sprintf, __ } from "@wordpress/i18n";
 
@@ -49,13 +51,16 @@ const ModuleBody = ({
 		licenseActivationPlaceholder: __("License key","everest-forms"),
 	});
 
+	const toast = useToast();
+
 	const [licenseActivationKey, setLicenseKey] = useState('');
 	const [licenseActivationValidationMessage, setLicenseValidationMessage] = useState('');
-	const [licenseValidationStatus, setLicenseValidationStatus] = useState('');
 
 	const handleActivationKeyChange = (event) => {
 		setLicenseKey(event.target.value);
 	};
+
+	const [licenseValidationStatus, setLicenseValidationStatus] = useState('');
 
 	const handleCheckedChange = (slug, checked, name, type) => {
 		var selectedModules = { ...selectedModuleData };
@@ -139,19 +144,25 @@ const ModuleBody = ({
 
 			activateLicense(licenseActivationKey)
 			.then((data) => {
-				if (data.success) {
+				if (data.code === 200) {
 					toast({
 						title: data.message,
 						status: "success",
 						duration: 3000,
 					});
-				} else {
+				} else if( data.code === 400 ) {
 					toast({
 						title: data.message,
 						status: "error",
 						duration: 3000,
 					});
 				}
+			}).catch((e) => {
+					toast({
+						title: e.message,
+						status: "error",
+						duration: 3000,
+					});
 			});
 		}
 	};
@@ -192,20 +203,27 @@ const ModuleBody = ({
 							<VStack
 								width="100%"
 							>
-							<Input
-								placeholder={upgradeContent.licenseActivationPlaceholder}
-								onChange = {handleActivationKeyChange}
-							/>
+							{isPro && (
+								<Input
+									placeholder={upgradeContent.licenseActivationPlaceholder}
+									onChange={handleActivationKeyChange}
+								/>
+							)}
 								<Button
 									colorScheme="primary"
 									color="white !important"
 									textDecor="none !important"
 									onClick={licenseActivation}
 									w="100%"
+									as={!isPro ? Link : ''}
+									href={!isPro ? upgradeContent.upgradeURL : ''}
+									isExternal
 								>
 									{upgradeContent.buttonText}
 								</Button>
-								{licenseActivationValidationMessage &&  <Text fontSize='md' color='red'>{licenseActivationValidationMessage}</Text>}
+								{isPro && licenseActivationValidationMessage && (
+									<Text fontSize='md' color='red'>{licenseActivationValidationMessage}</Text>
+								)}
 								</VStack>
 							</ModalFooter>
 						</ModalContent>
