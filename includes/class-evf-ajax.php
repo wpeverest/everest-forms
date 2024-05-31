@@ -1584,9 +1584,19 @@ class EVF_AJAX {
 				);
 			}
 
-			foreach ( sanitize_text_field( wp_unslash( $_POST['data'] ) ) as $key => $map_fields ) { //phpcs:ignore
-				if ( $key === count( sanitize_text_field( wp_unslash( $_POST['data'] ) ) ) - 1 ) { //phpcs:ignore
-					$map_fields_array['form_id'] = $map_fields['value'];
+			$data = ! empty( $_POST['data'] ) ? $_POST['data'] : array();
+
+			if ( empty( $data ) ) {
+				wp_send_json_error(
+					array(
+						'message' => 'Something went wrong. Please try again.',
+					)
+				);
+			}
+
+			foreach ( $data as $key => $map_fields ) {
+				if ( $key === count( $data ) - 1 ) {
+					$map_fields_array['form_id'] = sanitize_text_field( wp_unslash( $map_fields['value'] ) ); //phpcs:ignore
 					continue;
 				}
 
@@ -1595,8 +1605,8 @@ class EVF_AJAX {
 				}
 
 				$map_fields_array[ $key ] = array(
-					'field_id'       => $map_fields['value'],
-					'map_csv_column' => sanitize_text_field( wp_unslash( $_POST['data'][ ++$key ]['value'] ) ),
+					'field_id'       => sanitize_text_field( wp_unslash( $map_fields['value'] ) ), //phpcs:ignore
+					'map_csv_column' => sanitize_text_field( wp_unslash( $data[ ++$key ]['value'] ) ), //phpcs:ignore
 				);
 			}
 
