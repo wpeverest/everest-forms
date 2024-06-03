@@ -303,18 +303,17 @@ const ModuleItem = (props) => {
 						{__("Live Demo", "everest-forms")}
 					</Link>
 				</HStack>
-				<Switch
-					isChecked= {moduleEnabled && 'active'=== moduleStatus ? true: false}
-					onChange = {moduleEnabled ? handleModuleAction : handleBoxClick}
-				/>
-				<Button
-					colorScheme={
-						moduleEnabled
-							? "active" === moduleStatus
-								? "red"
-								: "green"
-							: "primary"
-					}
+
+				{(moduleEnabled) && (
+					<Switch
+						isChecked= {'active'=== moduleStatus ? true: false}
+						onChange = {moduleEnabled ? handleModuleAction : handleBoxClick}
+					/>
+				)}
+
+				{(!moduleEnabled) &&(
+					<Button
+					colorScheme={"primary"}
 					size="sm"
 					fontSize="xs"
 					borderRadius="base"
@@ -334,10 +333,9 @@ const ModuleItem = (props) => {
 							isPerformingBulkAction)
 					}
 				>
-					{moduleEnabled
-						? "active" === moduleStatus
-						: __("Upgrade Plan", "everest-forms")}
+					{__("Upgrade Plan", "everest-forms")}
 				</Button>
+			)}
 			</Box>
 		</Box>
 	);
