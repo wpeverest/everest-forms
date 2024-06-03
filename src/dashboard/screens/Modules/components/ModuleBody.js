@@ -62,6 +62,8 @@ const ModuleBody = ({
 
 	const [licenseValidationStatus, setLicenseValidationStatus] = useState('');
 
+	const [isLicenseActivation, setLicenseActivation] = useState(false);
+
 	const handleCheckedChange = (slug, checked, name, type) => {
 		var selectedModules = { ...selectedModuleData };
 
@@ -135,21 +137,26 @@ const ModuleBody = ({
 	};
 
 	const licenseActivation = () => {
-		if('' === licenseActivationKey){
+		if( '' === licenseActivationKey ){
 			setLicenseValidationMessage(sprintf(__('Please plugin activation license key','everest-forms')));
 			setLicenseValidationStatus(true);
-		} else{
+		} else if( licenseActivationKey.length < 32 ){
+			setLicenseValidationMessage(sprintf(__('Please enter the valid license key','everest-forms')));
+			setLicenseValidationStatus(true);
+		} else {
 			setLicenseValidationMessage('');
 			setLicenseValidationStatus(false);
-
+			setLicenseActivation(true);
 			activateLicense(licenseActivationKey)
 			.then((data) => {
+				setLicenseActivation(true);
 				if (data.code === 200) {
 					toast({
 						title: data.message,
 						status: "success",
 						duration: 3000,
 					});
+					setLicenseActivation(false);
 				} else if( data.code === 400 ) {
 					toast({
 						title: data.message,
@@ -163,6 +170,8 @@ const ModuleBody = ({
 						status: "error",
 						duration: 3000,
 					});
+			}).finally(() => {
+				setLicenseActivation(false);
 			});
 		}
 	};
@@ -218,6 +227,7 @@ const ModuleBody = ({
 									as={!isPro ? Link : ''}
 									href={!isPro ? upgradeContent.upgradeURL : ''}
 									isExternal
+									isLoading = {isLicenseActivation}
 								>
 									{upgradeContent.buttonText}
 								</Button>
