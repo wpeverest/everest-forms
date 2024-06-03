@@ -14,6 +14,7 @@ import {
 	Button,
 	Divider,
 	HStack,
+	Switch
 } from "@chakra-ui/react";
 import { __ } from "@wordpress/i18n";
 import React, { useState, useEffect, useContext } from "react";
@@ -302,6 +303,10 @@ const ModuleItem = (props) => {
 						{__("Live Demo", "everest-forms")}
 					</Link>
 				</HStack>
+				<Switch
+					isChecked= {moduleEnabled && 'active'=== moduleStatus ? true: false}
+					onChange = {moduleEnabled ? handleModuleAction : handleBoxClick}
+				/>
 				<Button
 					colorScheme={
 						moduleEnabled
@@ -331,8 +336,6 @@ const ModuleItem = (props) => {
 				>
 					{moduleEnabled
 						? "active" === moduleStatus
-							? __("Deactivate", "everest-forms")
-							: __("Activate", "everest-forms")
 						: __("Upgrade Plan", "everest-forms")}
 				</Button>
 			</Box>
