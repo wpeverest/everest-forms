@@ -64,6 +64,8 @@ const ModuleBody = ({
 
 	const [isLicenseActivation, setLicenseActivation] = useState(false);
 
+	const [reloadPage, setReloadPage] = useState(false);
+
 	const handleCheckedChange = (slug, checked, name, type) => {
 		var selectedModules = { ...selectedModuleData };
 
@@ -127,6 +129,13 @@ const ModuleBody = ({
 		}
 	}, [upgradeModal]);
 
+	useEffect(() => {
+		if(reloadPage){
+			window.location.reload();
+			setReloadPage(false);
+		}
+	},[reloadPage]);
+
 	const updateUpgradeModal = () => {
 		const upgradeModalRef = { ...upgradeModal };
 		upgradeModalRef.enable = false;
@@ -147,6 +156,7 @@ const ModuleBody = ({
 			setLicenseValidationMessage('');
 			setLicenseValidationStatus(false);
 			setLicenseActivation(true);
+
 			activateLicense(licenseActivationKey)
 			.then((data) => {
 				setLicenseActivation(true);
@@ -157,6 +167,7 @@ const ModuleBody = ({
 						duration: 3000,
 					});
 					setLicenseActivation(false);
+					setReloadPage(true);
 				} else if( data.code === 400 ) {
 					toast({
 						title: data.message,
