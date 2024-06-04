@@ -14,8 +14,10 @@ import {
 	Button,
 	Divider,
 	HStack,
-	Switch
+	Switch,
+	IconButton,
 } from "@chakra-ui/react";
+import { SettingsIcon } from "@chakra-ui/icons";
 import { __ } from "@wordpress/i18n";
 import React, { useState, useEffect, useContext } from "react";
 
@@ -28,7 +30,7 @@ import { actionTypes } from "./../../../reducers/DashboardReducer";
 
 const ModuleItem = (props) => {
 	/* global _EVF_DASHBOARD_ */
-	const { assetsURL, liveDemoURL, isPro, licensePlan } =
+	const { assetsURL, liveDemoURL, isPro, licensePlan, adminURL } =
 		typeof _EVF_DASHBOARD_ !== "undefined" && _EVF_DASHBOARD_;
 	const [{ upgradeModal }, dispatch] = useContext(DashboardContext);
 	const [requirementFulfilled, setRequirementFulfilled] = useState(false);
@@ -57,6 +59,7 @@ const ModuleItem = (props) => {
 	} = data;
 	const [moduleStatus, setModuleStatus] = useState(status);
 	const [isPerformingAction, setIsPerformingAction] = useState(false);
+	const [moduleSettingsURL, setModuleSettingsURL] = useState('');
 
 	const handleModuleAction = () => {
 		setIsPerformingAction(true);
@@ -191,6 +194,11 @@ const ModuleItem = (props) => {
 		});
 	};
 
+	const handleModuleSettingsURL = () => {
+		var settingsURL = adminURL + data.setting_url
+		window.location.replace(settingsURL)
+	}
+
 	return (
 		<Box
 			overflow="hidden"
@@ -308,8 +316,16 @@ const ModuleItem = (props) => {
 					<Switch
 						isChecked= {'active'=== moduleStatus ? true: false}
 						onChange = {moduleEnabled ? handleModuleAction : handleBoxClick}
+						colorScheme="green"
 					/>
 				)}
+
+				<IconButton
+				aria-label='Call Segun'
+				size='md'
+				icon={<SettingsIcon />}
+				onClick = {handleModuleSettingsURL}
+				/>
 
 				{(!moduleEnabled) &&(
 					<Button

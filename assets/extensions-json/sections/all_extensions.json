@@ -12,7 +12,8 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=ai"
     },
     {
       "title": "Style Customizer",
@@ -68,7 +69,8 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url" : "admin.php?page=evf-settings&tab=pdf-submission"
     },
     {
       "title": "Email Templates",
@@ -124,7 +126,8 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=mailchimp"
     },
     {
       "title": "User Registration",
@@ -152,7 +155,8 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=google_sheets"
     },
     {
       "title": "Save And Continue",
@@ -180,7 +184,8 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=payment"
     },
     {
       "title": "Repeater Fields",
@@ -208,7 +213,8 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=geolocation"
     },
     {
       "title": "Form Restriction",
@@ -250,7 +256,8 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=convertkit"
     },
     {
       "title": "Post Submissions",
@@ -376,7 +383,8 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=activecampaign"
     },
     {
       "title": "MailerLite",
@@ -404,7 +412,8 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=analytics"
     },
     {
       "title": "Campaign Monitor",
@@ -418,7 +427,8 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=campaign_monitor"
     },
     {
       "title": "Hubspot",
@@ -432,7 +442,8 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=hubspot"
     },
     {
       "title": "Salesforce",
@@ -446,7 +457,8 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=hubspot"
     },
     {
       "title": "Pipedrive",
@@ -460,7 +472,8 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=pipedrive"
     },
     {
       "title": "Authorize.Net",
@@ -474,7 +487,8 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=payment"
     },
     {
       "title": "Constant Contact",
@@ -488,7 +502,8 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=constant_contact"
     },
     {
       "title": "Drip",
@@ -502,7 +517,8 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=drip"
     },
     {
       "title": "Razorpay",
@@ -516,7 +532,8 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=payment"
     },
     {
       "title": "Zoho",
@@ -530,7 +547,8 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=zoho"
     },
     {
       "title": "GetResponse",
@@ -544,7 +562,8 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=getresponse"
     }
   ],
   "features": [
@@ -560,7 +579,8 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=trello"
     },
     {
       "title": "iContact",
@@ -574,7 +594,8 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=icontact"
     },
     {
       "title": "Woocommerce",
@@ -602,7 +623,8 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=moosend"
     },
     {
       "title": "Mailpoet",
@@ -616,7 +638,8 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=mailpoet"
     },
     {
       "title": "OnePageCRM",
@@ -630,7 +653,8 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=onepagecrm"
     }
   ]
 }
