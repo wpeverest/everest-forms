@@ -16,6 +16,7 @@ import {
 	HStack,
 	Switch,
 	IconButton,
+	Icon
 } from "@chakra-ui/react";
 import { SettingsIcon } from "@chakra-ui/icons";
 import { __ } from "@wordpress/i18n";
@@ -36,6 +37,8 @@ const ModuleItem = (props) => {
 	const [requirementFulfilled, setRequirementFulfilled] = useState(false);
 	const [licenseActivated, setLicenseActivated] = useState(false);
 	const [moduleEnabled, setModuleEnabled] = useState(false);
+
+	const overlayColor = "#1a202c";
 
 	const {
 		data,
@@ -220,12 +223,59 @@ const ModuleItem = (props) => {
 					!moduleEnabled && handleBoxClick();
 				}}
 			>
-				<Image
-					src={assetsURL + image}
-					borderTopRightRadius="sm"
-					borderTopLeftRadius="sm"
-					w="full"
-				/>
+
+			<Box
+				position="relative"
+				display="inline-block"
+				_hover={{
+					"& .demo-video__holder": {
+					opacity: "0.7"
+					},
+					"& .demo-player": {
+					opacity: "1"
+					}
+				}}
+			>
+
+      		<Box
+				className="demo-video__holder"
+				position="absolute"
+				top="0"
+				left="0"
+				width="100%"
+				height="100%"
+				backgroundColor={overlayColor}
+				opacity="0"
+				transition="opacity 0.3s ease"
+			/>
+      		<Image
+				src={assetsURL + image}
+				borderTopRightRadius="sm"
+				borderTopLeftRadius="sm"
+				w="full"
+			/>
+
+			{data.demo_video_url !== "" && (
+				<Icon
+					className="demo-player"
+					color="white"
+					boxSize={12}
+					position="absolute"
+					top="50%"
+					left="50%"
+					transform="translate(-50%, -50%)"
+					opacity="0"
+					transition="opacity 0.3s ease"
+				>
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+					<path fill="white" d="M0 0h24v24H0z"/>
+					<path d="M20 5v14H4V5h16m0-2H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z"/>
+					<path d="M9 16V8l7 4-7 4z"/>
+				</svg>
+				</Icon>
+			)}
+
+			</Box>
 				<Badge
 					backgroundColor="black"
 					color="white"
