@@ -312,6 +312,16 @@ const ModuleItem = (props) => {
 					</Link>
 				</HStack>
 
+				{moduleEnabled && (
+					((data.setting_url !== "" && moduleStatus === "active") && (
+					  <IconButton
+						size='md'
+						icon={<SettingsIcon />}
+						onClick={handleModuleSettingsURL}
+					  />
+					))
+				  )}
+
 				{(moduleEnabled) && (
 					<Switch
 						isChecked= {'active'=== moduleStatus ? true: false}
@@ -320,12 +330,6 @@ const ModuleItem = (props) => {
 					/>
 				)}
 
-				<IconButton
-				aria-label='Call Segun'
-				size='md'
-				icon={<SettingsIcon />}
-				onClick = {handleModuleSettingsURL}
-				/>
 
 				{(!moduleEnabled) &&(
 					<Button
