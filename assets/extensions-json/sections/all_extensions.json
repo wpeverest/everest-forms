@@ -30,7 +30,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/watch?v=PEK-FBU8gP0&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/PEK-FBU8gP0"
     },
     {
       "title": "Custom Captcha",
@@ -46,7 +46,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/watch?v=obScswjZ24Q&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/obScswjZ24Q"
     },
     {
       "title": "Multi Part Forms",
@@ -62,7 +62,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/watch?v=qVpDzAx-_4A&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/qVpDzAx-_4A"
     },
     {
       "title": "PDF Form Submission",
@@ -78,7 +78,7 @@
         "themegrill agency"
       ],
       "setting_url" : "admin.php?page=evf-settings&tab=pdf-submission",
-      "demo_video_url": "https://www.youtube.com/watch?v=37CtaxJzYis&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/37CtaxJzYis"
     },
     {
       "title": "Email Templates",
@@ -94,7 +94,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/watch?v=Cp2aL7IkAXc&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/Cp2aL7IkAXc"
     },
     {
       "title": "Survey Polls and Quiz",
@@ -110,7 +110,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/watch?v=i1vR-YmaBOg&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/i1vR-YmaBOg"
     },
     {
       "title": "PayPal Standard",
@@ -126,7 +126,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/watch?v=pcwPjCt7N2I&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/pcwPjCt7N2I"
     },
     {
       "title": "Mailchimp",
@@ -142,7 +142,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=mailchimp",
-      "demo_video_url": "https://www.youtube.com/watch?v=FhFsHdAIXwE&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/FhFsHdAIXwE"
     },
     {
       "title": "User Registration",
@@ -158,7 +158,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/watch?v=MEyuznG2Tok&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/MEyuznG2Tok"
     },
     {
       "title": "Google Sheets",
@@ -174,7 +174,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=google_sheets",
-      "demo_video_url": "https://www.youtube.com/watch?v=tvS6Y_rNBfs&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/tvS6Y_rNBfs"
     },
     {
       "title": "Save And Continue",
@@ -190,7 +190,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/watch?v=4xxEi0rSB20&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/4xxEi0rSB20"
     },
     {
       "title": "Stripe",
@@ -206,7 +206,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=payment",
-      "demo_video_url": "https://www.youtube.com/watch?v=wZXnaxLxdz4&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/wZXnaxLxdz4"
     },
     {
       "title": "Repeater Fields",
@@ -222,7 +222,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/watch?v=W2lc02Ge-FU&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/W2lc02Ge-FU"
     },
     {
       "title": "Geolocation",
@@ -238,7 +238,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=geolocation",
-      "demo_video_url": "https://www.youtube.com/watch?v=j02yG57GA20&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/j02yG57GA20"
     },
     {
       "title": "Form Restriction",
@@ -254,7 +254,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/watch?v=Q1-dja7m3Sc&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/Q1-dja7m3Sc"
     },
     {
       "title": "Calculations",
@@ -270,7 +270,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/watch?v=WCsHC7NQ2QQ&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/WCsHC7NQ2QQ"
     },
     {
       "title": "ConvertKit",
@@ -286,7 +286,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=convertkit",
-      "demo_video_url": "https://www.youtube.com/watch?v=GvqPVCK7Ws8&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/GvqPVCK7Ws8"
     },
     {
       "title": "Post Submissions",
@@ -302,7 +302,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/watch?v=gTtewu4DpCo&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/gTtewu4DpCo"
     },
     {
       "title": "Conversational Forms",
@@ -318,7 +318,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/watch?v=XO38b8Lp19s&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/XO38b8Lp19s"
     },
     {
       "title": "Frontend Listing",
@@ -350,7 +350,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/watch?v=t7NRAPZCbYg&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/t7NRAPZCbYg"
     },
     {
       "title": "SMS Notifications",
@@ -366,7 +366,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/watch?v=tz4UKBX9WxM&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/tz4UKBX9WxM"
 
     },
     {
@@ -383,7 +383,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/watch?v=yXE4ydYfkic&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/yXE4ydYfkic"
     },
     {
       "title": "Coupons",
@@ -399,7 +399,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/watch?v=GSYQIiyntW0&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/GSYQIiyntW0"
     },
     {
       "title": "Sendinblue",
@@ -415,7 +415,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/watch?v=NRRDY1ag6Sk&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/NRRDY1ag6Sk"
     },
     {
       "title": "ActiveCampaign",
@@ -431,7 +431,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=activecampaign",
-      "demo_video_url": "https://www.youtube.com/watch?v=6b9q89cUMzE&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/6b9q89cUMzE"
     },
     {
       "title": "MailerLite",
@@ -447,7 +447,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/watch?v=CpqVgycDx_8&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/CpqVgycDx_8"
     },
     {
       "title": "Advanced Form Analytics",
@@ -463,7 +463,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=analytics",
-      "demo_video_url": "https://www.youtube.com/watch?v=BCT7c8EmQfg&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/BCT7c8EmQfg"
     },
     {
       "title": "Campaign Monitor",
@@ -479,7 +479,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=campaign_monitor",
-      "demo_video_url": "https://www.youtube.com/watch?v=GBJMxmCurzw&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/GBJMxmCurzw"
     },
     {
       "title": "Hubspot",
@@ -495,7 +495,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=hubspot",
-      "demo_video_url": "https://www.youtube.com/watch?v=mOhJkZpBMPY&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/mOhJkZpBMPY"
     },
     {
       "title": "Salesforce",
@@ -511,7 +511,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=salesforce",
-      "demo_video_url": "https://www.youtube.com/watch?v=1VsyUu4NAhk&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/1VsyUu4NAhk"
     },
     {
       "title": "Pipedrive",
@@ -527,7 +527,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=pipedrive",
-      "demo_video_url": "https://www.youtube.com/watch?v=wJPX0EJ2OiI&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/wJPX0EJ2OiI"
     },
     {
       "title": "Authorize.Net",
@@ -543,7 +543,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=payment",
-      "demo_video_url": "https://www.youtube.com/watch?v=a5EcKjwWD1A&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/a5EcKjwWD1A"
     },
     {
       "title": "Constant Contact",
@@ -559,7 +559,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=constant_contact",
-      "demo_video_url": "https://www.youtube.com/watch?v=dCeW1GW6-YI&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/dCeW1GW6-YI"
     },
     {
       "title": "Drip",
@@ -575,7 +575,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=drip",
-      "demo_video_url": "https://www.youtube.com/watch?v=ODRxkfX6y9Q&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/ODRxkfX6y9Q"
     },
     {
       "title": "Razorpay",
@@ -591,7 +591,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=payment",
-      "demo_video_url": "https://www.youtube.com/watch?v=2Og6b1JXDWs&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/2Og6b1JXDWs"
     },
     {
       "title": "Zoho",
@@ -607,7 +607,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=zoho",
-      "demo_video_url": "https://www.youtube.com/watch?v=sfHFiUIHpg0&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/sfHFiUIHpg0"
     },
     {
       "title": "GetResponse",
@@ -623,7 +623,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=getresponse",
-      "demo_video_url": "https://www.youtube.com/watch?v=Jhq1dOFXV-I&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/Jhq1dOFXV-I"
     }
   ],
   "features": [
@@ -641,7 +641,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=trello",
-      "demo_video_url": "https://www.youtube.com/watch?v=9ouI1v9KScY&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/9ouI1v9KScY"
     },
     {
       "title": "iContact",
@@ -657,7 +657,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=icontact",
-      "demo_video_url": "https://www.youtube.com/watch?v=Lqdh-LujsUA&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/Lqdh-LujsUA"
     },
     {
       "title": "Woocommerce",
@@ -673,7 +673,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/watch?v=TeZK82kxiLk&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/TeZK82kxiLk"
     },
     {
       "title": "Moosend",
@@ -689,7 +689,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=moosend",
-      "demo_video_url": "https://www.youtube.com/watch?v=xeTf9YP9cpM&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/xeTf9YP9cpM"
     },
     {
       "title": "Mailpoet",
@@ -705,7 +705,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=mailpoet",
-      "demo_video_url": "https://www.youtube.com/watch?v=yFf3loV_azY&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/yFf3loV_azY"
     },
     {
       "title": "OnePageCRM",
@@ -721,7 +721,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=onepagecrm",
-      "demo_video_url": "https://www.youtube.com/watch?v=42EUj-Dlnr0&ab_channel=EverestForms"
+      "demo_video_url": "https://www.youtube.com/embed/42EUj-Dlnr0"
     }
   ]
 }
