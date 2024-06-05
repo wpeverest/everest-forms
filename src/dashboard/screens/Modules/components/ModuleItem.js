@@ -16,11 +16,20 @@ import {
 	HStack,
 	Switch,
 	IconButton,
-	Icon
+	Modal,
+	Tooltip,
+	ModalCloseButton,
+	ModalContent,
+	ModalOverlay,
+	ModalHeader,
+	Spinner,
+	useDisclosure,
 } from "@chakra-ui/react";
 import { SettingsIcon } from "@chakra-ui/icons";
 import { __ } from "@wordpress/i18n";
 import React, { useState, useEffect, useContext } from "react";
+import YouTubePlayer from 'react-player/youtube';
+import { FaInfoCircle, FaPlayCircle } from 'react-icons/fa';
 
 /**
  *  Internal Dependencies
@@ -38,7 +47,11 @@ const ModuleItem = (props) => {
 	const [licenseActivated, setLicenseActivated] = useState(false);
 	const [moduleEnabled, setModuleEnabled] = useState(false);
 
-	const overlayColor = "#1a202c";
+	const [showPlayVideoButton, setShowPlayVideoButton] = useState(false);
+	const [thumbnailVideoPlaying, setThumbnailVideoPlaying] = useState(false);
+
+	const [thumbnailVideoLoading, setThumbnailVideoLoading] = useState(true);
+	const { isOpen, onOpen, onClose } = useDisclosure()
 
 	const {
 		data,
@@ -59,10 +72,13 @@ const ModuleItem = (props) => {
 		status,
 		required_plan,
 		type,
+		demo_video_url,
+		setting_url
 	} = data;
 	const [moduleStatus, setModuleStatus] = useState(status);
 	const [isPerformingAction, setIsPerformingAction] = useState(false);
 	const [moduleSettingsURL, setModuleSettingsURL] = useState('');
+
 
 	const handleModuleAction = () => {
 		setIsPerformingAction(true);
@@ -173,6 +189,13 @@ const ModuleItem = (props) => {
 		}
 	}, [data, upgradeModal]);
 
+	useEffect(() => {
+		if (thumbnailVideoPlaying) {
+			console.log(showPlayVideoButton)
+			setShowPlayVideoButton(false);
+		}
+	}, [thumbnailVideoPlaying]);
+
 	const handleBoxClick = () => {
 		const upgradeModalRef = { ...upgradeModal };
 		upgradeModalRef.moduleType = data.type;
@@ -198,7 +221,7 @@ const ModuleItem = (props) => {
 	};
 
 	const handleModuleSettingsURL = () => {
-		var settingsURL = adminURL + data.setting_url
+		var settingsURL = adminURL + setting_url
 		window.location.replace(settingsURL)
 	}
 
@@ -226,53 +249,75 @@ const ModuleItem = (props) => {
 
 			<Box
 				position="relative"
-				display="inline-block"
-				_hover={{
-					"& .demo-video__holder": {
-					opacity: "0.7"
-					},
-					"& .demo-player": {
-					opacity: "1"
-					}
-				}}
+				borderTopRightRadius="sm"
+				borderTopLeftRadius="sm"
+				overflow="hidden"
+				onMouseLeave={() => demo_video_url && setShowPlayVideoButton(false)}
 			>
 
-      		<Box
-				className="demo-video__holder"
-				position="absolute"
-				top="0"
-				left="0"
-				width="100%"
-				height="100%"
-				backgroundColor={overlayColor}
-				opacity="0"
-				transition="opacity 0.3s ease"
-			/>
+			{((demo_video_url && !thumbnailVideoPlaying) || !demo_video_url) && (
       		<Image
 				src={assetsURL + image}
 				borderTopRightRadius="sm"
 				borderTopLeftRadius="sm"
 				w="full"
+				onMouseOver={() => demo_video_url && setShowPlayVideoButton(true)}
 			/>
+			)}
 
-			{data.demo_video_url !== "" && (
-				<Icon
-					className="demo-player"
-					color="white"
-					boxSize={12}
-					position="absolute"
-					top="50%"
-					left="50%"
-					transform="translate(-50%, -50%)"
-					opacity="0"
-					transition="opacity 0.3s ease"
+			{console.log("testing-2132aAS")}
+			{thumbnailVideoPlaying && (
+				<Modal isOpen={true} onClose={() => setThumbnailVideoPlaying(false)} size="3xl">
+				<ModalOverlay />
+				<ModalContent px={4} pb={4}>
+				<ModalHeader textAlign="center">{title}</ModalHeader>
+				<ModalCloseButton/>
+				<YouTubePlayer
+					url={'https://www.youtube.com/embed/'+demo_video_url}
+					playing={true}
+					width={'100%'}
+					controls
+				/>
+				{thumbnailVideoLoading && (
+					<Box
+						position={'absolute'}
+						top={'50%'}
+						left={'50%'}
+						transform={'translate(-50%, -50%)'}
+					>
+						<Spinner size={'lg'} />
+					</Box>
+				)}
+				</ModalContent>
+				</Modal>
+			)}
+
+			{showPlayVideoButton && (
+				<Box
+					pos="absolute"
+					top={0}
+					left={0}
+					right={0}
+					bottom={0}
+					bg="black"
+					opacity={0.7}
+					display="flex"
+					alignItems="center"
+					justifyContent="center"
+					borderTopStartRadius={10}
+					borderTopEndRadius={10}
 				>
-				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-					<path fill="white" d="M0 0h24v24H0z"/>
-					<path d="M20 5v14H4V5h16m0-2H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z"/>
-					<path d="M9 16V8l7 4-7 4z"/>
-				</svg>
-				</Icon>
+					<Tooltip label={__('Play Video', 'learning-management-system')}>
+						<span>
+							<FaPlayCircle
+								color="white"
+								size={50}
+								cursor={'pointer'}
+								onClick={() => setThumbnailVideoPlaying(true)}
+							/>
+						</span>
+					</Tooltip>
+				</Box>
 			)}
 
 			</Box>
@@ -363,7 +408,7 @@ const ModuleItem = (props) => {
 				</HStack>
 
 				{moduleEnabled && (
-					((data.setting_url !== "" && moduleStatus === "active") && (
+					((setting_url !== "" && moduleStatus === "active") && (
 					  <IconButton
 						size='md'
 						icon={<SettingsIcon />}

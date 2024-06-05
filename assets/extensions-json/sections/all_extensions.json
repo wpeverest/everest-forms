@@ -30,7 +30,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/embed/PEK-FBU8gP0"
+      "demo_video_url": "PEK-FBU8gP0"
     },
     {
       "title": "Custom Captcha",
@@ -46,7 +46,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/embed/obScswjZ24Q"
+      "demo_video_url": "obScswjZ24Q"
     },
     {
       "title": "Multi Part Forms",
@@ -62,7 +62,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/embed/qVpDzAx-_4A"
+      "demo_video_url": "qVpDzAx-_4A"
     },
     {
       "title": "PDF Form Submission",
@@ -78,7 +78,7 @@
         "themegrill agency"
       ],
       "setting_url" : "admin.php?page=evf-settings&tab=pdf-submission",
-      "demo_video_url": "https://www.youtube.com/embed/37CtaxJzYis"
+      "demo_video_url": "37CtaxJzYis"
     },
     {
       "title": "Email Templates",
@@ -94,7 +94,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/embed/Cp2aL7IkAXc"
+      "demo_video_url": "Cp2aL7IkAXc"
     },
     {
       "title": "Survey Polls and Quiz",
@@ -110,7 +110,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/embed/i1vR-YmaBOg"
+      "demo_video_url": "i1vR-YmaBOg"
     },
     {
       "title": "PayPal Standard",
@@ -126,7 +126,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/embed/pcwPjCt7N2I"
+      "demo_video_url": "pcwPjCt7N2I"
     },
     {
       "title": "Mailchimp",
@@ -142,7 +142,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=mailchimp",
-      "demo_video_url": "https://www.youtube.com/embed/FhFsHdAIXwE"
+      "demo_video_url": "FhFsHdAIXwE"
     },
     {
       "title": "User Registration",
@@ -158,7 +158,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/embed/MEyuznG2Tok"
+      "demo_video_url": "MEyuznG2Tok"
     },
     {
       "title": "Google Sheets",
@@ -174,7 +174,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=google_sheets",
-      "demo_video_url": "https://www.youtube.com/embed/tvS6Y_rNBfs"
+      "demo_video_url": "tvS6Y_rNBfs"
     },
     {
       "title": "Save And Continue",
@@ -190,7 +190,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/embed/4xxEi0rSB20"
+      "demo_video_url": "4xxEi0rSB20"
     },
     {
       "title": "Stripe",
@@ -206,7 +206,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=payment",
-      "demo_video_url": "https://www.youtube.com/embed/wZXnaxLxdz4"
+      "demo_video_url": "wZXnaxLxdz4"
     },
     {
       "title": "Repeater Fields",
@@ -222,7 +222,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/embed/W2lc02Ge-FU"
+      "demo_video_url": "W2lc02Ge-FU"
     },
     {
       "title": "Geolocation",
@@ -238,7 +238,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=geolocation",
-      "demo_video_url": "https://www.youtube.com/embed/j02yG57GA20"
+      "demo_video_url": "j02yG57GA20"
     },
     {
       "title": "Form Restriction",
@@ -254,7 +254,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/embed/Q1-dja7m3Sc"
+      "demo_video_url": "Q1-dja7m3Sc"
     },
     {
       "title": "Calculations",
@@ -270,7 +270,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/embed/WCsHC7NQ2QQ"
+      "demo_video_url": "WCsHC7NQ2QQ"
     },
     {
       "title": "ConvertKit",
@@ -286,7 +286,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=convertkit",
-      "demo_video_url": "https://www.youtube.com/embed/GvqPVCK7Ws8"
+      "demo_video_url": "GvqPVCK7Ws8"
     },
     {
       "title": "Post Submissions",
@@ -302,7 +302,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/embed/gTtewu4DpCo"
+      "demo_video_url": "gTtewu4DpCo"
     },
     {
       "title": "Conversational Forms",
@@ -318,7 +318,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/embed/XO38b8Lp19s"
+      "demo_video_url": "XO38b8Lp19s"
     },
     {
       "title": "Frontend Listing",
@@ -350,7 +350,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/embed/t7NRAPZCbYg"
+      "demo_video_url": "t7NRAPZCbYg"
     },
     {
       "title": "SMS Notifications",
@@ -366,7 +366,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/embed/tz4UKBX9WxM"
+      "demo_video_url": "tz4UKBX9WxM"
 
     },
     {
@@ -383,7 +383,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/embed/yXE4ydYfkic"
+      "demo_video_url": "yXE4ydYfkic"
     },
     {
       "title": "Coupons",
@@ -399,7 +399,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/embed/GSYQIiyntW0"
+      "demo_video_url": "GSYQIiyntW0"
     },
     {
       "title": "Sendinblue",
@@ -415,7 +415,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/embed/NRRDY1ag6Sk"
+      "demo_video_url": "NRRDY1ag6Sk"
     },
     {
       "title": "ActiveCampaign",
@@ -431,7 +431,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=activecampaign",
-      "demo_video_url": "https://www.youtube.com/embed/6b9q89cUMzE"
+      "demo_video_url": "6b9q89cUMzE"
     },
     {
       "title": "MailerLite",
@@ -447,7 +447,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/embed/CpqVgycDx_8"
+      "demo_video_url": "CpqVgycDx_8"
     },
     {
       "title": "Advanced Form Analytics",
@@ -463,7 +463,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=analytics",
-      "demo_video_url": "https://www.youtube.com/embed/BCT7c8EmQfg"
+      "demo_video_url": "BCT7c8EmQfg"
     },
     {
       "title": "Campaign Monitor",
@@ -479,7 +479,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=campaign_monitor",
-      "demo_video_url": "https://www.youtube.com/embed/GBJMxmCurzw"
+      "demo_video_url": "GBJMxmCurzw"
     },
     {
       "title": "Hubspot",
@@ -495,7 +495,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=hubspot",
-      "demo_video_url": "https://www.youtube.com/embed/mOhJkZpBMPY"
+      "demo_video_url": "mOhJkZpBMPY"
     },
     {
       "title": "Salesforce",
@@ -511,7 +511,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=salesforce",
-      "demo_video_url": "https://www.youtube.com/embed/1VsyUu4NAhk"
+      "demo_video_url": "1VsyUu4NAhk"
     },
     {
       "title": "Pipedrive",
@@ -527,7 +527,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=pipedrive",
-      "demo_video_url": "https://www.youtube.com/embed/wJPX0EJ2OiI"
+      "demo_video_url": "wJPX0EJ2OiI"
     },
     {
       "title": "Authorize.Net",
@@ -543,7 +543,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=payment",
-      "demo_video_url": "https://www.youtube.com/embed/a5EcKjwWD1A"
+      "demo_video_url": "a5EcKjwWD1A"
     },
     {
       "title": "Constant Contact",
@@ -559,7 +559,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=constant_contact",
-      "demo_video_url": "https://www.youtube.com/embed/dCeW1GW6-YI"
+      "demo_video_url": "dCeW1GW6-YI"
     },
     {
       "title": "Drip",
@@ -575,7 +575,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=drip",
-      "demo_video_url": "https://www.youtube.com/embed/ODRxkfX6y9Q"
+      "demo_video_url": "ODRxkfX6y9Q"
     },
     {
       "title": "Razorpay",
@@ -591,7 +591,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=payment",
-      "demo_video_url": "https://www.youtube.com/embed/2Og6b1JXDWs"
+      "demo_video_url": "2Og6b1JXDWs"
     },
     {
       "title": "Zoho",
@@ -607,7 +607,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=zoho",
-      "demo_video_url": "https://www.youtube.com/embed/sfHFiUIHpg0"
+      "demo_video_url": "sfHFiUIHpg0"
     },
     {
       "title": "GetResponse",
@@ -623,7 +623,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=getresponse",
-      "demo_video_url": "https://www.youtube.com/embed/Jhq1dOFXV-I"
+      "demo_video_url": "Jhq1dOFXV-I"
     }
   ],
   "features": [
@@ -641,7 +641,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=trello",
-      "demo_video_url": "https://www.youtube.com/embed/9ouI1v9KScY"
+      "demo_video_url": "9ouI1v9KScY"
     },
     {
       "title": "iContact",
@@ -657,7 +657,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=icontact",
-      "demo_video_url": "https://www.youtube.com/embed/Lqdh-LujsUA"
+      "demo_video_url": "Lqdh-LujsUA"
     },
     {
       "title": "Woocommerce",
@@ -673,7 +673,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-      "demo_video_url": "https://www.youtube.com/embed/TeZK82kxiLk"
+      "demo_video_url": "TeZK82kxiLk"
     },
     {
       "title": "Moosend",
@@ -689,7 +689,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=moosend",
-      "demo_video_url": "https://www.youtube.com/embed/xeTf9YP9cpM"
+      "demo_video_url": "xeTf9YP9cpM"
     },
     {
       "title": "Mailpoet",
@@ -705,7 +705,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=mailpoet",
-      "demo_video_url": "https://www.youtube.com/embed/yFf3loV_azY"
+      "demo_video_url": "yFf3loV_azY"
     },
     {
       "title": "OnePageCRM",
@@ -721,7 +721,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=onepagecrm",
-      "demo_video_url": "https://www.youtube.com/embed/42EUj-Dlnr0"
+      "demo_video_url": "42EUj-Dlnr0"
     }
   ]
 }
