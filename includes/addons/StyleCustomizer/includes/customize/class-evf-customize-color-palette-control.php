@@ -34,9 +34,27 @@ class EVF_Customize_Color_Palette_Control extends WP_Customize_Control {
 		parent::to_json();
 		$this->json['default'] = $this->setting->default;
 		$this->json['id']      = $this->id;
-		$this->json['value']   = $this->value();
 		$this->json['link']    = $this->get_link();
 		$this->json['choices'] = $this->choices;
+
+		$this->json['inputAttrs'] = '';
+		foreach ( $this->input_attrs as $attr => $value ) {
+			$this->json['inputAttrs'] .= $attr . '="' . esc_attr( $value ) . '" ';
+		}
+
+		$value               = $this->value();
+		$this->json['value'] = array();
+		if ( is_array( $value ) ) {
+			foreach ( $this->value() as $key => $value ) {
+				if ( is_numeric( $key ) ) {
+					$this->json['value'][ $value ] = true;
+				} else {
+					$this->json['value'][ $key ] = $value;
+				}
+			}
+		} elseif ( ! empty( $value ) ) {
+			$this->json['value'] = array( $value => true );
+		}
 	}
 
 	/**
@@ -48,22 +66,25 @@ class EVF_Customize_Color_Palette_Control extends WP_Customize_Control {
 	 * Render a JS template for control display.
 	 */
 	protected function content_template() {
+
 		?>
 		<label>
+
 			<# if ( data.label ) { #><span class="customize-control-title">{{{ data.label }}}</span><# } #>
 			<# if ( data.description ) { #><span class="description customize-control-description">{{{ data.description }}}</span><# } #>
 		</label>
 		<ul class="color-palette">
-			<# Object.keys( data.choices ).forEach( function( key ) { #>
-				<li class="color-palette-item">
-					<label class="color-palette-label" title="{{{data.choices[key].name}}}" for="color-palette-{{{data.id}}}-{{{key}}}">
-						<input id="color-palette-{{{data.id}}}-{{{key}}}" type="checkbox" name="color-palette-{{{data.id}}}" value="{{{data.choices[key].color}}}" {{{data.link}}} {{{ (data.value[key])? 'checked="checked"' : '' }}} />
-						<span class="color-palette-color" style="background-color:{{{data.choices[key].color}}};"></span>
-					</label>
-					<span class="tooltip">{{{data.choices[key].name}}}</span>
-				</li>
-			<# } ); #>
+		<# Object.keys( data.choices ).forEach( function( key ) { #>
+			<li class="color-palette-item">
+				<label class="color-palette-label" title="{{{data.choices[key].name}}}" for="color-palette-{{{data.id}}}-{{{key}}}">
+					<input id="color-palette-{{{data.id}}}-{{{key}}}" type="checkbox" name="color-palette-{{{data.id}}}" value={{{data.choices[key].color}}} data-key = "{{{key}}}" {{{ ( data.value[key]!=undefined && data.value[key] == true ) ? 'checked="checked"' : '' }}}/>
+					<span class="color-palette-color" style="background-color:{{{data.choices[key].color}}};"></span>
+				</label>
+				<span class="tooltip">{{{data.choices[key].name}}}</span>
+			</li>
+		<# } ); #>
 		</ul>
+		<input class="color-palette-hidden-value" type="hidden" {{{ data.link }}} >
 		<?php
 	}
 }

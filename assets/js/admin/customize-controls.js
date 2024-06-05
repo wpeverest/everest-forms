@@ -313,41 +313,57 @@
 	} );
 
 
-	/**
- * A color palette control.
- *
- * @class    wp.customize.ColorPaletteControl
- * @augments wp.customize.Control
- */
-api.ColorPaletteControl = api.Control.extend({
 
-    /**
-     * Initialize behaviors.
-     *
-     * @returns {void}
-     */
-    ready: function ready() {
-        var control = this,
-            $container = control.container;
+	api.ColorPaletteControl = api.Control.extend({
+		ready: function() {
+			var control = this;
 
-        $container.on('change', 'input[type="radio"]', function () {
-            control.saveValue($(this).val());
-        });
-    },
+			// Handle changes to the color palette checkboxes
+			control.container.on('change', 'input[type="checkbox"]', function() {
+				var key = $(this).data('key');
+				var value = $(this).is(':checked');
+				control.saveValue(key, value);
+			});
 
-    /**
-     * Saves the value.
-     */
-    saveValue: function (value) {
+			// Toggle all checkboxes with one click
+			control.container.on('click', '.color-palette-label', function() {
+				var isChecked = $(this).find('input[type="checkbox"]').is(':checked');
+				control.container.find('input[type="checkbox"]').prop('checked', !isChecked).change();
+			});
+		},
+		saveValue: function(property, value) {
+			var control = this;
+			var val = control.setting.get();
 
-        var control = this,
-            input = control.container.find('.color-palette-hidden-value'),
-            val = value;
+			// Ensure val is an object
+			if (typeof val !== 'object') {
+				val = {};
+			}
 
-        jQuery(input).val(val).trigger('change');
-     ;
-    }
-});
+			if (value) {
+				val[property] = control.params.choices[property].color;
+			} else {
+				delete val[property];
+			}
+
+			// Extract only the checked values
+			var checkedValues = {};
+			Object.keys(val).forEach(function(key) {
+				if (val[key]) {
+					checkedValues[key] = val[key];
+				}
+			});
+			console.log(checkedValues);
+			control.setting.set(checkedValues);
+		}
+	});
+
+
+
+
+
+
+
 
 
 
@@ -543,13 +559,37 @@ api.ColorPaletteControl = api.Control.extend({
 						} else {
 							values = JSON.parse( values );
 						}
-
+						console.log(values);
 						$input.val( new_value ).trigger("change");
 
 						$.each(values, function (index, value) {
 							$container
 								.find(
 									'.image-checkbox-wrapper input[value="' +
+										index +
+										'"]'
+								)
+								.prop("checked", value);
+						});
+						break;
+					case "evf-color-palette":
+						var $input = $container.find(
+							".color-palette-hidden-value"
+						);
+
+						var new_value = values;
+						if ( 'string' !== typeof new_value ) {
+							new_value = JSON.stringify( values );
+						} else {
+							values = JSON.parse( values );
+						}
+
+						$input.val( new_value ).trigger("change");
+
+						$.each(values, function (index, value) {
+							$container
+								.find(
+									'.color-palette-wrapper input[value="' +
 										index +
 										'"]'
 								)

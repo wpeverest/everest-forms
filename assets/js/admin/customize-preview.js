@@ -2155,20 +2155,28 @@
 
 
 
-		wp.customize( settings + '[color_palette][color]', function( value ) {
-			value.bind( function( newval ) {
-				var checkboxes = container.find('.color-palette-item input[type="checkbox"]');
-				var checkedValues = [];
-
-				checkboxes.each(function() {
-					if ($(this).is(':checked')) {
-						checkedValues.push($(this).val());
-					}
+		(function(checkedValues) {
+			wp.customize(settings + '[color_palette][color]', function(value) {
+				value.bind(function(newval) {
+					Object.keys(newval).forEach(function(key) {
+						if (newval[key]) {
+							checkedValues[key] = newval[key];
+						} else {
+							delete checkedValues[key];
+						}
+					});
+					// console.log(checkedValues);
 				});
-
-				console.log(checkedValues);
 			});
-		});
+		})(checkedValues);
+
+
+
+
+
+
+
+
 
 
 
