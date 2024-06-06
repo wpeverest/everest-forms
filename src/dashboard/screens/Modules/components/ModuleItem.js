@@ -191,7 +191,6 @@ const ModuleItem = (props) => {
 
 	useEffect(() => {
 		if (thumbnailVideoPlaying) {
-			console.log(showPlayVideoButton)
 			setShowPlayVideoButton(false);
 		}
 	}, [thumbnailVideoPlaying]);
@@ -256,16 +255,21 @@ const ModuleItem = (props) => {
 			>
 
 			{((demo_video_url && !thumbnailVideoPlaying) || !demo_video_url) && (
-      		<Image
-				src={assetsURL + image}
-				borderTopRightRadius="sm"
-				borderTopLeftRadius="sm"
-				w="full"
-				onMouseOver={() => demo_video_url && setShowPlayVideoButton(true)}
-			/>
+				<Image
+					src={assetsURL + image}
+					borderTopRightRadius="sm"
+					borderTopLeftRadius="sm"
+					w="full"
+					onMouseOver={() =>
+							{if (moduleEnabled && demo_video_url) {
+								setShowPlayVideoButton(true);
+							}
+						}
+					}
+				/>
 			)}
 
-			{console.log("testing-2132aAS")}
+
 			{thumbnailVideoPlaying && (
 				<Modal isOpen={true} onClose={() => setThumbnailVideoPlaying(false)} size="3xl">
 				<ModalOverlay />
