@@ -94,6 +94,7 @@
     "file-loader": "6.2.0",
     "framer-motion": "11.0.20",
     "grunt-cli": "1.4.3",
+    "lodash.debounce": "4.0.8",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-grid-system": "8.2.0",

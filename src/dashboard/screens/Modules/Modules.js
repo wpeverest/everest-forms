@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import {
 	Box,
 	Container,
@@ -15,6 +15,7 @@ import {
 	Input,
 	FormControl,
 	useToast,
+	Text
 } from "@chakra-ui/react";
 import { __ } from "@wordpress/i18n";
 import {
@@ -31,6 +32,7 @@ import dashboardReducer, {
 	actionTypes,
 } from "./../../reducers/DashboardReducer";
 import DashboardContext from "./../../context/DashboardContext";
+import { debounce } from "lodash";
 
 const Modules = () => {
 	const toast = useToast();
@@ -43,6 +45,8 @@ const Modules = () => {
 	const [bulkAction, setBulkAction] = useState("");
 	const [modulesLoaded, setModulesLoaded] = useState(false);
 	const [{ allModules }, dashboardReducer] = useContext(DashboardContext);
+	const [searchItem, setSearchItem] = useState('');
+	const [noItemFound, setNoItemFound] = useState(false);
 
 	useEffect(() => {
 		if (!modulesLoaded) {
@@ -155,52 +159,51 @@ const Modules = () => {
 				});
 		}
 	};
-	const onSearchInput = useOnType(
-		{
-			onTypeStart: (val) => {
-				setIsSearching(true);
-			},
-			onTypeFinish: (val) => {
-				if (isEmpty(val)) {
-					setModulesLoaded(false);
-				} else {
-					var searchedData = {};
 
-					if (tabIndex === 1) {
-						searchedData = modules?.filter(
-							(module) =>
-								module.type === "feature" &&
-								module.title
-									.toLowerCase()
-									.includes(val.toLowerCase())
-						);
-					} else if (tabIndex === 2) {
-						searchedData = modules?.filter(
-							(module) =>
-								module.type === "addon" &&
-								module.title
-									.toLowerCase()
-									.includes(val.toLowerCase())
-						);
-					} else {
-						searchedData = modules?.filter((module) =>
-							module.title
-								.toLowerCase()
-								.includes(val.toLowerCase())
-						);
-					}
-					if (!isEmpty(searchedData)) {
-						setModules(searchedData);
-						setModulesLoaded(true);
-					} else {
-						setModulesLoaded(false);
-					}
-				}
-				setIsSearching(false);
-			},
-		},
-		800
-	);
+	const debounceSearch = debounce((val) => {
+        setIsSearching(true);
+
+        if (!val) {
+            setModulesLoaded(false);
+            setIsSearching(false);
+            return;
+        }
+
+        let searchedData = [];
+
+        if (tabIndex === 1) {
+            searchedData = modules?.filter(
+                (module) => module.type === "feature" && module.title.toLowerCase().includes(val.toLowerCase())
+            );
+        } else if (tabIndex === 2) {
+            searchedData = modules?.filter(
+                (module) => module.type === "addon" && module.title.toLowerCase().includes(val.toLowerCase())
+            );
+        } else {
+            searchedData = modules?.filter((module) => module.title.toLowerCase().includes(val.toLowerCase()));
+        }
+
+        if (searchedData.length > 0) {
+            setModules(searchedData);
+            setModulesLoaded(true);
+			setNoItemFound(false)
+        } else {
+            setModulesLoaded(false);
+			setNoItemFound(true);
+        }
+
+        setIsSearching(false);
+    }, 800);
+
+    const onSearchInput = (val, modules, setModules, setModulesLoaded, setIsSearching, tabIndex) => {
+        debounceSearch(val);
+    };
+
+	const handleSearchInputChange = (e) => {
+		const val = e.target.value;
+        setSearchItem(val);
+        onSearchInput(val, modules, setModules, setModulesLoaded, setIsSearching, tabIndex);
+    };
 
 	const parseDate = (dateString) => {
 		const [day, month, year] = dateString.split("/").map(Number);
@@ -436,7 +439,7 @@ const Modules = () => {
 										"everest-forms"
 									)}
 									paddingLeft="32px !important"
-									{...onSearchInput}
+									value={searchItem} onChange={handleSearchInputChange}
 								/>
 							</InputGroup>
 						</FormControl>
@@ -444,52 +447,53 @@ const Modules = () => {
 				</Stack>
 			</Container>
 			<Container maxW="container.xl">
-				{isSearching ? (
+			{
+				isSearching ? (
 					<AddonsSkeleton />
 				) : (
-					<Box>
-						<Tabs index={tabIndex}>
-							<TabPanels>
-								<TabPanel>
-									<ModuleBody
-										isPerformingBulkAction={
-											isPerformingBulkAction
-										}
-										filteredAddons={modules}
-										setSelectedModuleData={
-											setSelectedModuleData
-										}
-										selectedModuleData={selectedModuleData}
-									/>
-								</TabPanel>
-								<TabPanel>
-									<ModuleBody
-										isPerformingBulkAction={
-											isPerformingBulkAction
-										}
-										filteredAddons={modules}
-										setSelectedModuleData={
-											setSelectedModuleData
-										}
-										selectedModuleData={selectedModuleData}
-									/>
-								</TabPanel>
-								<TabPanel>
-									<ModuleBody
-										isPerformingBulkAction={
-											isPerformingBulkAction
-										}
-										filteredAddons={modules}
-										setSelectedModuleData={
-											setSelectedModuleData
-										}
-										selectedModuleData={selectedModuleData}
-									/>
-								</TabPanel>
-							</TabPanels>
-						</Tabs>
-					</Box>
-				)}
+					noItemFound ? (
+						<Text
+							align="center"
+							fontSize="1.2rem"
+							bg="red"
+							color="white"
+							p={4}
+							m={4}
+						>{sprintf(__('Sorry, No modules found','everest-forms'))}</Text>
+					) : (
+						<Box>
+							<Tabs index={tabIndex}>
+								<TabPanels>
+									<TabPanel>
+										<ModuleBody
+											isPerformingBulkAction={isPerformingBulkAction}
+											filteredAddons={modules}
+											setSelectedModuleData={setSelectedModuleData}
+											selectedModuleData={selectedModuleData}
+										/>
+									</TabPanel>
+									<TabPanel>
+										<ModuleBody
+											isPerformingBulkAction={isPerformingBulkAction}
+											filteredAddons={modules}
+											setSelectedModuleData={setSelectedModuleData}
+											selectedModuleData={selectedModuleData}
+										/>
+									</TabPanel>
+									<TabPanel>
+										<ModuleBody
+											isPerformingBulkAction={isPerformingBulkAction}
+											filteredAddons={modules}
+											setSelectedModuleData={setSelectedModuleData}
+											selectedModuleData={selectedModuleData}
+										/>
+									</TabPanel>
+								</TabPanels>
+							</Tabs>
+						</Box>
+					)
+				)
+			}
 			</Container>
 		</Box>
 	);
