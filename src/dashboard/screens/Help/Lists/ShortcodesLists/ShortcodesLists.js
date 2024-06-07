@@ -16,6 +16,7 @@ import {
 	Td,
 	Tr,
 	Thead,
+	HStack,
 } from "@chakra-ui/react";
 import { __ } from "@wordpress/i18n";
 
@@ -123,6 +124,8 @@ const ShortcodesLists = ({ setIsListViewerOpen }) => {
 	];
 	const [isAccordionOpen, setIsAccordionOpen] = useState({});
 
+	const [hasCopiedShortcode, setCopiedShortcode] = useState(false);
+
 	useEffect(() => {
 		const accordionOpener = { ...isAccordionOpen };
 		ShortcodeList.map((shortcode) => {
@@ -137,6 +140,14 @@ const ShortcodesLists = ({ setIsListViewerOpen }) => {
 			[shortcode_id]: !isAccordionOpen[shortcode_id],
 		});
 	};
+
+	const handleShortcodeCopy = (copied_shortcode) => {
+		if(navigator.clipboard){
+			navigator.clipboard.writeText(copied_shortcode)
+			.then(() => setCopiedShortcode(true))
+			console.log(copied_shortcode)
+		}
+	}
 
 	return (
 		<Stack
@@ -192,11 +203,20 @@ const ShortcodesLists = ({ setIsListViewerOpen }) => {
 							>
 								{shortcode.id}
 							</Box>
-							{isAccordionOpen[shortcode.id] ? (
-								<Minus h="5" w="5" />
-							) : (
-								<Add h="5" w="5" />
-							)}
+							<Box
+								textAlign="right"
+							>
+								<HStack>
+									<Button colorScheme="teal" onClick={handleShortcodeCopy(shortcode.id)}>
+										{hasCopiedShortcode ? (__('Copied', 'everest-forms')) : (__('Copy','everest-forms'))}
+									</Button>
+									{isAccordionOpen[shortcode.id] ? (
+										<Minus h="5" w="5" />
+									) : (
+										<Add h="5" w="5" />
+									)}
+								</HStack>
+							</Box>
 						</AccordionButton>
 						<AccordionPanel
 							pb={4}
