@@ -17,8 +17,13 @@ import {
 	Tr,
 	Thead,
 	HStack,
+	IconButton,
+	useClipboard,
+	useToast
 } from "@chakra-ui/react";
 import { __ } from "@wordpress/i18n";
+
+import { CopyIcon } from '@chakra-ui/icons';
 
 /**
  *  Internal Dependencies
@@ -124,7 +129,11 @@ const ShortcodesLists = ({ setIsListViewerOpen }) => {
 	];
 	const [isAccordionOpen, setIsAccordionOpen] = useState({});
 
-	const [hasCopiedShortcode, setCopiedShortcode] = useState(false);
+	const [isShortcodeCopied, setShortcodeCopied] = useState({});
+
+	const { onCopy, hasCopied } = useClipboard()
+
+	const toast = useToast()
 
 	useEffect(() => {
 		const accordionOpener = { ...isAccordionOpen };
@@ -134,6 +143,14 @@ const ShortcodesLists = ({ setIsListViewerOpen }) => {
 		setIsAccordionOpen(accordionOpener);
 	}, []);
 
+	useEffect(() => {
+		const shortcodeAccordion = { ...isShortcodeCopied };
+		ShortcodeList.map((shortcode) => {
+			shortcodeAccordion[shortcode.id] = false;
+		});
+		setShortcodeCopied(shortcodeAccordion);
+	}, []);
+
 	const handleAccordionToggle = (shortcode_id) => {
 		setIsAccordionOpen({
 			...isAccordionOpen,
@@ -141,13 +158,24 @@ const ShortcodesLists = ({ setIsListViewerOpen }) => {
 		});
 	};
 
-	const handleShortcodeCopy = (copied_shortcode) => {
-		if(navigator.clipboard){
-			navigator.clipboard.writeText(copied_shortcode)
-			.then(() => setCopiedShortcode(true))
-			console.log(copied_shortcode)
+	const handleCopyClick = (shortcode_id, event) => {
+		try {
+		  const textField = document.createElement('textarea');
+		  textField.innerText = shortcode_id;
+		  document.body.appendChild(textField);
+		  textField.select();
+		  document.execCommand('copy');
+		  textField.remove();
+		  onCopy();
+		  setShortcodeCopied({
+			...isShortcodeCopied,
+			[shortcode_id]: !isShortcodeCopied[shortcode_id],
+		});
+		  event.stopPropagation();
+		} catch (error) {
+		  console.error("Error copying shortcode:", error);
 		}
-	}
+	  };
 
 	return (
 		<Stack
@@ -207,9 +235,18 @@ const ShortcodesLists = ({ setIsListViewerOpen }) => {
 								textAlign="right"
 							>
 								<HStack>
-									<Button colorScheme="teal" onClick={handleShortcodeCopy(shortcode.id)}>
-										{hasCopiedShortcode ? (__('Copied', 'everest-forms')) : (__('Copy','everest-forms'))}
-									</Button>
+									<IconButton
+										size='md'
+										icon = {<CopyIcon />}
+										onClick={(event) => handleCopyClick(shortcode.id, event)}
+									/>
+									{hasCopied && isShortcodeCopied[shortcode.id] ?
+										toast({
+											title: (__('Shortcode copied successfully', 'everest-forms')),
+											status: "success",
+											duration: 2000,
+										}) : ''
+									}
 									{isAccordionOpen[shortcode.id] ? (
 										<Minus h="5" w="5" />
 									) : (
