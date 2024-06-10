@@ -18,6 +18,7 @@ import {
 	Thead,
 	HStack,
 	IconButton,
+	Tooltip,
 	useClipboard,
 	useToast
 } from "@chakra-ui/react";
@@ -144,12 +145,12 @@ const ShortcodesLists = ({ setIsListViewerOpen }) => {
 	}, []);
 
 	useEffect(() => {
-		const shortcodeAccordion = { ...isShortcodeCopied };
+		const shortcodeAccordion = isShortcodeCopied;
 		ShortcodeList.map((shortcode) => {
 			shortcodeAccordion[shortcode.id] = false;
 		});
 		setShortcodeCopied(shortcodeAccordion);
-	}, []);
+	}, [isShortcodeCopied]);
 
 	const handleAccordionToggle = (shortcode_id) => {
 		setIsAccordionOpen({
@@ -241,11 +242,11 @@ const ShortcodesLists = ({ setIsListViewerOpen }) => {
 										onClick={(event) => handleCopyClick(shortcode.id, event)}
 									/>
 									{hasCopied && isShortcodeCopied[shortcode.id] ?
-										toast({
-											title: (__('Shortcode copied successfully', 'everest-forms')),
-											status: "success",
-											duration: 2000,
-										}) : ''
+										<Tooltip
+											hasArrow={true}
+											closeDelay = {2000}
+										>
+										{__('Copied!','everest-forms')}</Tooltip> : ''
 									}
 									{isAccordionOpen[shortcode.id] ? (
 										<Minus h="5" w="5" />
