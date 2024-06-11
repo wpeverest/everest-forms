@@ -159,35 +159,41 @@ jQuery( function( $ ) {
 								return;
 							}
 
-							//resets the form
+							//Resets the form fields.
 							formTuple.trigger( 'reset' );
-							//makes the button enabled
+							//Makes the submit button enabled.
 							btn.attr( 'disabled', false ).html( everest_forms_ajax_submission_params.submit );
-							//removes perviously existing notice
+							//Removes perviously existing notice.
 							formTuple.closest( '.everest-forms' ).find( '.everest-forms-notice' ).remove();
 
 							if( "top" === message_display_location ){
 								formTuple.closest( '.everest-forms' ).prepend( '<div class="everest-forms-notice everest-forms-notice--success" role="alert">'+ xhr.data.message + pdf_download_message + '</div>' ).focus();
-								formTuple.closest( '.everest-forms' ).append( quiz_reporting + preview_confirmation ).focus();
+								formTuple.closest( '.everest-forms' ).append( quiz_reporting + preview_confirmation );
 							}
 
-							else if( "bottom" === message_display_location ){
-								formTuple.closest('.everest-forms').append('<div class="everest-forms-notice everest-forms-notice--success" role="alert">'+ xhr.data.message + pdf_download_message + '</div>'  + quiz_reporting + preview_confirmation ).focus();
+							else if ( "bottom" === message_display_location ){
+								formTuple.closest('.everest-forms').append(	'<div class="everest-forms-notice everest-forms-notice--success" role="alert">'+ xhr.data.message + pdf_download_message + '</div>'  + quiz_reporting + preview_confirmation ).focus();
 							}
 
-							else if ( "replace" === message_display_location) {
+							else if ( "replace" === message_display_location ) {
 								formTuple.closest( '.everest-forms' ).html( '<div class="everest-forms-notice everest-forms-notice--success" role="alert">' + xhr.data.message + pdf_download_message + '</div>' + quiz_reporting + preview_confirmation  ).focus();
 							}
 
-							else if("popup" === message_display_location) {
-								formTuple.closest('.everest-forms').append('<div class="everest-forms-notice everest-forms-notice--success" role="alert" style="z-index:2; display:flex;justify-content: space-between; padding-right:10px ;position: absolute ; top:500px ; left:50%; width:50%; transform: translate(-50%,-50%); "><div class="everest-forms-notice--success-message" >'  + xhr.data.message + pdf_download_message + '</div><div class="everest-forms-notice--success-close-button" style="top:0 ; right:0; padding-left : 10px; width:20px; cursor:pointer;">x</div></div>' + quiz_reporting + preview_confirmation).focus();
+							else if ( "popup" === message_display_location ) {
+								formTuple.closest( '.everest-forms' ).prepend( '<div class="everest-forms-notice everest-forms-notice--success" role="alert" style="z-index:2; display:flex;justify-content: space-between; padding-right:10px ;position: fixed ;  left:50%; width:40%; transform: translate(-50%,-50%);"><div class="everest-forms-notice--success-message" >'  + xhr.data.message + pdf_download_message + '</div><div id= "everest-forms-notice--success-message-close-button" class="everest-forms-notice--success-close-button" style="top:0 ; right:0; padding-left : 10px; width:20px; cursor:pointer;">x</div></div>' ).focus();
 
+								//Appends quiz reportings and preview below form.
+								formTuple.closest( '.everest-forms' ).append( quiz_reporting + preview_confirmation );
+
+								//Removes the message on click of 'x' button.
+								jQuery( document ).on( 'click' ,"#everest-forms-notice--success-message-close-button" ,
+									function (){
+										formTuple.closest( '.everest-forms' ).find( '.everest-forms-notice' ).remove();
+									}
+								);
 							}
 
-							localStorage.removeItem(formTuple.attr('id'));
-
-
-
+							localStorage.removeItem( formTuple.attr( 'id' ) ) ;
 
 							// Trigger for form submission success.
 							var event = new CustomEvent("everest_forms_ajax_submission_success", {
