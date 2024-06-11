@@ -117,6 +117,7 @@ jQuery( function( $ ) {
 							let pdf_download_message = '';
 							let quiz_reporting = '';
 							let preview_confirmation = '';
+							let message_display_location = '';
 							if(xhr.data.form_id !== undefined && xhr.data.entry_id !== undefined && xhr.data.pdf_download == true){
 								pdf_download_message = '<br><small><a href="/?page=evf-entries-pdf&form_id='+ xhr.data.form_id+'&entry_id='+xhr.data.entry_id+'">' + xhr.data.pdf_download_message + '</a></small>';
 							}
@@ -128,6 +129,9 @@ jQuery( function( $ ) {
 								preview_confirmation = xhr.data.preview_confirmation;
 							}
 
+							if( xhr.data.message_display_location !== undefined ){
+								message_display_location = xhr.data.message_display_location;
+							}
 
 							var paymentMethod = formTuple.find( ".everest-forms-stripe-gateways-tabs .evf-tab" ).has( 'a.active' ).data( 'gateway' );
 
@@ -154,9 +158,36 @@ jQuery( function( $ ) {
 								formTuple.trigger( 'evf_process_payment', xhr.data );
 								return;
 							}
+
+							//resets the form
 							formTuple.trigger( 'reset' );
-							formTuple.closest( '.everest-forms' ).html( '<div class="everest-forms-notice everest-forms-notice--success" role="alert">' + xhr.data.message + pdf_download_message + '</div>' + quiz_reporting + preview_confirmation ).focus();
+							//makes the button enabled
+							btn.attr( 'disabled', false ).html( everest_forms_ajax_submission_params.submit );
+							//removes perviously existing notice
+							formTuple.closest( '.everest-forms' ).find( '.everest-forms-notice' ).remove();
+
+							if( "top" === message_display_location ){
+								formTuple.closest( '.everest-forms' ).prepend( '<div class="everest-forms-notice everest-forms-notice--success" role="alert">'+ xhr.data.message + pdf_download_message + '</div>' ).focus();
+								formTuple.closest( '.everest-forms' ).append( quiz_reporting + preview_confirmation ).focus();
+							}
+
+							else if( "bottom" === message_display_location ){
+								formTuple.closest('.everest-forms').append('<div class="everest-forms-notice everest-forms-notice--success" role="alert">'+ xhr.data.message + pdf_download_message + '</div>'  + quiz_reporting + preview_confirmation ).focus();
+							}
+
+							else if ( "replace" === message_display_location) {
+								formTuple.closest( '.everest-forms' ).html( '<div class="everest-forms-notice everest-forms-notice--success" role="alert">' + xhr.data.message + pdf_download_message + '</div>' + quiz_reporting + preview_confirmation  ).focus();
+							}
+
+							else if("popup" === message_display_location) {
+								formTuple.closest('.everest-forms').append('<div class="everest-forms-notice everest-forms-notice--success" role="alert" style="z-index:2; display:flex;justify-content: space-between; padding-right:10px ;position: absolute ; top:500px ; left:50%; width:50%; transform: translate(-50%,-50%); "><div class="everest-forms-notice--success-message" >'  + xhr.data.message + pdf_download_message + '</div><div class="everest-forms-notice--success-close-button" style="top:0 ; right:0; padding-left : 10px; width:20px; cursor:pointer;">x</div></div>' + quiz_reporting + preview_confirmation).focus();
+
+							}
+
 							localStorage.removeItem(formTuple.attr('id'));
+
+
+
 
 							// Trigger for form submission success.
 							var event = new CustomEvent("everest_forms_ajax_submission_success", {
