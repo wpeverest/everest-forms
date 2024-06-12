@@ -175,7 +175,7 @@ jQuery( function( $ ) {
 								formTuple.closest('.everest-forms').append(	'<div class="everest-forms-notice everest-forms-notice--success" role="alert">'+ xhr.data.message + pdf_download_message + '</div>'  + quiz_reporting + preview_confirmation ).focus();
 							}
 
-							else if ( "replace" === message_display_location ) {
+							else if ( "hide" === message_display_location ) {
 								formTuple.closest( '.everest-forms' ).html( '<div class="everest-forms-notice everest-forms-notice--success" role="alert">' + xhr.data.message + pdf_download_message + '</div>' + quiz_reporting + preview_confirmation  ).focus();
 							}
 

@@ -615,11 +615,11 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					$this->form_data,
 					esc_html__( 'Success message display location', 'everest-forms' ),
 					array(
-						'default' => 'replace',
+						'default' => 'hide',
 						/* translators: %1$s - general settings docs url */
 						'tooltip' => sprintf( esc_html__( 'Choose where to display success message. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/confirmations/' ) ),
 						'options' => array(
-							'replace' => esc_html__( 'Replace form', 'everest-forms' ),
+							'hide' => esc_html__( 'Hide form', 'everest-forms' ),
 							'top'     => esc_html__( 'Top', 'everest-forms' ),
 							'bottom'  => esc_html__( 'Bottom', 'everest-forms' ),
 							'popup'   => esc_html__( 'Popup', 'everest-forms' ),
