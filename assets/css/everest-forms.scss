@@ -890,6 +890,35 @@
 			content: "\f147";
 		}
 	}
+	.everest-forms-notice--success-message-popup-bg {
+		z-index:98;
+		position : fixed;
+		background: rgba(0, 0, 0, 0.5);
+		height:100%;
+		width:100%;
+		top:0;
+		left:0px;
+
+	}
+
+	.everest-forms-notice--success-popup {
+		z-index:99;
+		display:flex;
+		justify-content: space-between;
+		padding-right:10px ;
+		position: fixed ;
+		left:50%;
+		width:40%;
+		transform: translate(-50%,-50%);
+
+		.everest-forms-notice--success-popup-close-button {
+			top:0 ;
+			right:0;
+			padding-left : 10px;
+			width:20px;
+			cursor:pointer;
+		}
+	}
 
 	.everest-forms-notice--warning {
 		background-color: $orange;

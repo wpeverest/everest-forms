@@ -180,15 +180,16 @@ jQuery( function( $ ) {
 							}
 
 							else if ( "popup" === message_display_location ) {
-								formTuple.closest( '.everest-forms' ).prepend( '<div class="everest-forms-notice everest-forms-notice--success" role="alert" style="z-index:2; display:flex;justify-content: space-between; padding-right:10px ;position: fixed ;  left:50%; width:40%; transform: translate(-50%,-50%);"><div class="everest-forms-notice--success-message" >'  + xhr.data.message + pdf_download_message + '</div><div id= "everest-forms-notice--success-message-close-button" class="everest-forms-notice--success-close-button" style="top:0 ; right:0; padding-left : 10px; width:20px; cursor:pointer;">x</div></div>' ).focus();
+								formTuple.closest( '.everest-forms' ).prepend( '<div class="everest-forms-notice--success-message-popup-bg" ></div><div class="everest-forms-notice everest-forms-notice--success everest-forms-notice--success-popup" role="alert" ><div class="everest-forms-notice--success-message" >'  + xhr.data.message + pdf_download_message + '</div><div id= "everest-forms-notice--success-message-popup-close-button" class="everest-forms-notice--success-popup-close-button">x</div></div>' ).focus();
 
 								//Appends quiz reportings and preview below form.
 								formTuple.closest( '.everest-forms' ).append( quiz_reporting + preview_confirmation );
 
 								//Removes the message on click of 'x' button.
-								jQuery( document ).on( 'click' ,"#everest-forms-notice--success-message-close-button" ,
+								jQuery( document ).on( 'click' ,"#everest-forms-notice--success-message-popup-close-button" ,
 									function (){
 										formTuple.closest( '.everest-forms' ).find( '.everest-forms-notice' ).remove();
+										formTuple.closest( '.everest-forms' ).find( '.everest-forms-notice--success-message-popup-bg' ).remove();
 									}
 								);
 							}
