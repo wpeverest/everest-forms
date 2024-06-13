@@ -530,7 +530,7 @@ class EVF_Field_Likert extends EVF_Form_Fields {
 			<thead>
 				<tr>
 					<?php
-					echo '<th style="width:20%;"></th>';
+					echo '<td class="evf-td-head" style="width:20%;"></td>';
 					foreach ( $field['likert_columns'] as $column_key => $column ) {
 						printf(
 							'<th style="width:%d%%;">%s</th>',
