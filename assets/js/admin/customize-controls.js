@@ -335,7 +335,7 @@
 			var control = this;
 			var val = control.setting.get();
 
-			// Ensure val is an object
+
 			if (typeof val !== 'object') {
 				val = {};
 			}
@@ -346,15 +346,8 @@
 				delete val[property];
 			}
 
-			// Extract only the checked values
-			var checkedValues = {};
-			Object.keys(val).forEach(function(key) {
-				if (val[key]) {
-					checkedValues[key] = val[key];
-				}
-			});
-			console.log(checkedValues);
-			control.setting.set(checkedValues);
+
+			control.setting.set(val);
 		}
 	});
 

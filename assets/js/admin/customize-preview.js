@@ -10,8 +10,11 @@
 		button = container.find('.evf-submit-container button, .evf-submit-container input[type=submit], .evf-submit-container input[type="reset"], .everest-forms-part button' ),
 		controls_wrapper = $( parent.document ).find( '#customize-controls' ),
 		preview_buttons = controls_wrapper.find( '#customize-footer-actions .devices button' );
+		color_palette = controls_wrapper.find( '.color-palette-item' );
+
 		control_selector = 'customize-control-everest_forms_styles-' + data.form_id + '-',
 		dimension_directions = ['top', 'right', 'bottom', 'left'];
+
 
 	/**
 	 * Add Google font link into header.
@@ -2155,20 +2158,6 @@
 
 
 
-		(function(checkedValues) {
-			wp.customize(settings + '[color_palette][color]', function(value) {
-				value.bind(function(newval) {
-					Object.keys(newval).forEach(function(key) {
-						if (newval[key]) {
-							checkedValues[key] = newval[key];
-						} else {
-							delete checkedValues[key];
-						}
-					});
-					// console.log(checkedValues);
-				});
-			});
-		})(checkedValues);
 
 
 

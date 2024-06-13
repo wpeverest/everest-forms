@@ -350,7 +350,6 @@ class EVF_Style_Customizer_API {
 	 */
 	public function add_customize_controls( $wp_customize ) {
 		$controls = apply_filters( 'everest_forms_style_customizer_controls', array(), $this );
-		lg( $controls );
 		// Include custom customize controls.
 		require_once dirname( __FILE__ ) . '/customize/class-evf-customize-color-control.php';
 		require_once dirname( __FILE__ ) . '/customize/class-evf-customize-toggle-control.php';
