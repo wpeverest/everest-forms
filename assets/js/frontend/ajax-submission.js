@@ -76,7 +76,7 @@ jQuery( function( $ ) {
 
 					if ( errors.length > 0 ) {
 						$( [document.documentElement, document.body] ).animate({
-							scrollTop: errors.last().offset().top
+							scrollTop: errors.last().offset().top-100
 						}, 800 );
 						return;
 					}
@@ -295,9 +295,11 @@ jQuery( function( $ ) {
 					})
 					.always( function( xhr ) {
 						var redirect_url = ( xhr.data && xhr.data.redirect_url ) ? xhr.data.redirect_url : '';
-						if ( ! redirect_url && $( '.everest-forms-notice' ).length ) {
+
+						var should_scroll_to_message = ( xhr.data && xhr.data.submission_message_scroll ) ? xhr.data.submission_message_scroll : 1 ;
+						if ( (! redirect_url && $( '.everest-forms-notice' ).length ) && 1 == should_scroll_to_message) {
 							$( [document.documentElement, document.body] ).animate({
-								scrollTop: $( '.everest-forms-notice' ).offset().top
+								scrollTop: $( '.everest-forms-notice' ).offset().top - 100
 							}, 800 );
 						}
 					});

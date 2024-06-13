@@ -596,12 +596,12 @@ class EVF_Form_Task {
 		$this->form_data['settings']['redirect_to'] = '0' === $this->form_data['settings']['redirect_to'] ? 'same' : $this->form_data['settings']['redirect_to'];
 
 		if ( '1' === $ajax_form_submission ) {
-			$response_data['message']                  = $message;
-			$response_data['response']                 = 'success';
-			$response_data['form_id']                  = $form_id;
-			$response_data['entry_id']                 = $entry_id;
-			$response_data['message_display_location'] = isset( $this->form_data['settings']['successful_form_submission_message_display_location'] ) && 'null' !== $this->form_data['settings']['successful_form_submission_message_display_location'] ? $this->form_data['settings']['successful_form_submission_message_display_location'] : 'hide';
-
+			$response_data['message']                   = $message;
+			$response_data['response']                  = 'success';
+			$response_data['form_id']                   = $form_id;
+			$response_data['entry_id']                  = $entry_id;
+			$response_data['message_display_location']  = isset( $this->form_data['settings']['successful_form_submission_message_display_location'] ) && 'null' !== $this->form_data['settings']['successful_form_submission_message_display_location'] ? $this->form_data['settings']['successful_form_submission_message_display_location'] : 'hide';
+			$response_data['submission_message_scroll'] = isset( $this->form_data['settings']['submission_message_scroll'] ) && 'null' !== $this->form_data['settings']['submission_message_scroll'] ? $this->form_data['settings']['submission_message_scroll'] : '1';
 			if ( defined( 'EVF_PDF_SUBMISSION_VERSION' ) && ( 'yes' === get_option( 'everest_forms_pdf_download_after_submit', 'no' ) || ( isset( $pdf_submission['everest_forms_pdf_download_after_submit'] ) && 'yes' === $pdf_submission['everest_forms_pdf_download_after_submit'] ) ) ) {
 				$response_data['pdf_download'] = true;
 				$pdf_download_message          = get_option( 'everest_forms_pdf_custom_download_text', '' );
