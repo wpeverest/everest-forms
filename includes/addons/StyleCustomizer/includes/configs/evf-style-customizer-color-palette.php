@@ -37,7 +37,7 @@ add_filter( 'everest_forms_style_customizer_sections', 'evf_style_customizer_col
  */
 function evf_style_customizer_color_palette_controls( $controls, $customize ) {
 	$color_palettes = array(
-		'blueberry'  => array(
+		array(
 			'label'  => esc_html__( 'Blueberry', 'everest-forms' ),
 			'colors' => array(
 				'form_background'   => '#ffffff',
@@ -48,7 +48,7 @@ function evf_style_customizer_color_palette_controls( $controls, $customize ) {
 				'button_background' => '#3951a5',
 			),
 		),
-		'autumn'     => array(
+		array(
 			'label'  => esc_html__( 'Autumn', 'everest-forms' ),
 			'colors' => array(
 				'form_background'   => '#f7f7f7',
@@ -59,7 +59,7 @@ function evf_style_customizer_color_palette_controls( $controls, $customize ) {
 				'button_background' => '#2691d9',
 			),
 		),
-		'blackberry' => array(
+		array(
 			'label'  => esc_html__( 'Blackberry', 'everest-forms' ),
 			'colors' => array(
 				'form_background'   => '#cccccc',
@@ -72,7 +72,7 @@ function evf_style_customizer_color_palette_controls( $controls, $customize ) {
 		),
 	);
 
-	foreach ( $color_palettes as $palette_key => $palette ) {
+	foreach ( $color_palettes as $index => $palette ) {
 		$colors_with_values = array();
 		foreach ( $palette['colors'] as $color_name => $color_value ) {
 			$colors_with_values[] = array(
@@ -81,7 +81,7 @@ function evf_style_customizer_color_palette_controls( $controls, $customize ) {
 			);
 		}
 
-		$controls['color_palette'][ $palette_key ] = array(
+		$controls['color_palette'][ 'color_' . $index ] = array(
 			'setting' => array(
 				'default'           => $palette['colors'],
 				'sanitize_callback' => 'sanitize_text_field',

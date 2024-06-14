@@ -10,10 +10,79 @@
 		button = container.find('.evf-submit-container button, .evf-submit-container input[type=submit], .evf-submit-container input[type="reset"], .everest-forms-part button' ),
 		controls_wrapper = $( parent.document ).find( '#customize-controls' ),
 		preview_buttons = controls_wrapper.find( '#customize-footer-actions .devices button' );
-		color_palette = controls_wrapper.find( '.color-palette-item' );
-
 		control_selector = 'customize-control-everest_forms_styles-' + data.form_id + '-',
 		dimension_directions = ['top', 'right', 'bottom', 'left'];
+
+		for (let i = 1; i <= 100; i++) {
+			let settingName = settings + '[color_palette][color_' + i + ']';
+			wp.customize(settingName, function(value) {
+				controls_wrapper.find('.color-palette-item input[type="checkbox"]').on('change', function() {
+					var paletteKey = $(this).data('key');
+					var checked = $(this).is(':checked');
+					var hiddenInput = $(this).closest('.customize-control').find('.color-palette-hidden-value');
+					var value = JSON.parse(hiddenInput.val() || '{}');
+					value[paletteKey] = checked;
+					hiddenInput.val(JSON.stringify(value)).trigger('change');
+					console.log(value);
+					// updatePreview(value);
+				});
+
+				// Update the preview area function
+				function updatePreview(value) {
+					$.each(value, function(key, checked) {
+						var color = $('input[data-key="' + key + '"]').val();
+						if (checked) {
+							switch (key) {
+								case 'form_background':
+									$('.form-preview').css('background-color', color);
+									break;
+								case 'field_background':
+									$('.form-preview .field').css('background-color', color);
+									break;
+								case 'field_sublabel':
+									$('.form-preview .field-sublabel').css('color', color);
+									break;
+								case 'field_label':
+									$('.form-preview .field-label').css('color', color);
+									break;
+								case 'button_text':
+									$('.form-preview .button').css('color', color);
+									break;
+								case 'button_background':
+									$('.form-preview .button').css('background-color', color);
+									break;
+							}
+						} else {
+							// Reset to default styles if unchecked
+							switch (key) {
+								case 'form_background':
+									$('.form-preview').css('background-color', '');
+									break;
+								case 'field_background':
+									$('.form-preview .field').css('background-color', '');
+									break;
+								case 'field_sublabel':
+									$('.form-preview .field-sublabel').css('color', '');
+									break;
+								case 'field_label':
+									$('.form-preview .field-label').css('color', '');
+									break;
+								case 'button_text':
+									$('.form-preview .button').css('color', '');
+									break;
+								case 'button_background':
+									$('.form-preview .button').css('background-color', '');
+									break;
+							}
+						}
+					});
+				}
+			});
+		}
+
+
+
+
 
 
 	/**
