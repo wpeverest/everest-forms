@@ -549,6 +549,20 @@
   ],
   "features": [
     {
+      "title": "Square",
+      "slug": "everest-forms-square",
+      "name": "Everest Forms- Square",
+      "image": "extensions-json/sections/images/trello.webp",
+      "excerpt": "Connect your Everest Forms data to your Trello accounts. Use Trello API to link Everest Forms with Trello, syncing your website's form submissions with Trello tasks.",
+      "link": "https://docs.everestforms.net/docs/trello/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
+      "released_date": "20/05/2024",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ]
+    },
+    {
       "title": "Trello",
       "slug": "everest-forms-trello",
       "name": "Everest Forms- Trello",
