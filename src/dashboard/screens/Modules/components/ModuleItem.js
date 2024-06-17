@@ -414,7 +414,7 @@ const ModuleItem = (props) => {
 				{moduleEnabled && (
 					((setting_url !== "" && moduleStatus === "active") && (
 					  <IconButton
-						size='lg'
+						size='sm'
 						icon={<SettingsIcon />}
 						onClick={handleModuleSettingsURL}
 					  />
