@@ -631,6 +631,20 @@
         "agency",
         "themegrill agency"
       ]
+    },
+    {
+      "title": "Verifone(2Checkout)",
+      "slug": "everest-forms-verifone",
+      "name": "Everest Forms- Verifone",
+      "image": "extensions-json/sections/images/onepagecrm.webp",
+      "excerpt": "OnePageCRM for Everest Forms helps you to easily send Everest Forms entries directly to your OnePageCRM customer relation account.",
+      "link": "https://docs.everestforms.net/docs/onepagecrm/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
+      "released_date": "20/05/2024",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ]
     }
   ]
 }
