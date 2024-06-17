@@ -107,6 +107,7 @@ class EVF_AJAX {
 			'form_migrator_forms_list'       => false,
 			'form_migrator'                  => false,
 			'fm_dismiss_notice'              => false,
+			'email_duplicate'                => false,
 			'form_entry_migrator'            => false,
 			'embed_form'                     => false,
 			'goto_edit_page'                 => false,
