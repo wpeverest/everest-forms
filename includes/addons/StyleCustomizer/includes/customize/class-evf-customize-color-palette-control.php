@@ -21,13 +21,6 @@ class EVF_Customize_Color_Palette_Control extends WP_Customize_Control {
 	public $type = 'evf-color-palette';
 
 	/**
-	 * Display label.
-	 *
-	 * @var bool
-	 */
-	public $display_label = false;
-
-	/**
 	 * Refresh the parameters passed to the JavaScript via JSON.
 	 */
 	public function to_json() {
@@ -66,10 +59,8 @@ class EVF_Customize_Color_Palette_Control extends WP_Customize_Control {
 	 * Render a JS template for control display.
 	 */
 	protected function content_template() {
-
 		?>
 		<label>
-
 			<# if ( data.label ) { #><span class="customize-control-title">{{{ data.label }}}</span><# } #>
 			<# if ( data.description ) { #><span class="description customize-control-description">{{{ data.description }}}</span><# } #>
 		</label>

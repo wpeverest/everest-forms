@@ -313,51 +313,38 @@
 	} );
 
 
-
 	api.ColorPaletteControl = api.Control.extend({
-		ready: function() {
-			var control = this;
+        ready: function() {
+            var control = this;
 
-			// Handle changes to the color palette checkboxes
-			control.container.on('change', 'input[type="checkbox"]', function() {
-				var key = $(this).data('key');
-				var value = $(this).is(':checked');
-				control.saveValue(key, value);
-			});
+            // Handle changes to the color palette checkboxes
+            control.container.on('change', 'input[type="checkbox"]', function() {
+                var key = $(this).data('key');
+                var value = $(this).is(':checked');
+                control.saveValue(key, value);
+            });
 
-			control.container.on('click', '.color-palette-label', function() {
-				var isChecked = $(this).find('input[type="checkbox"]').is(':checked');
-				control.container.find('input[type="checkbox"]').prop('checked', !isChecked).change();
-			});
-		},
-		saveValue: function(property, value) {
-			console.log(property, value);
-// 			var control = this;
-// 			var val = control.setting.get();
+            // Check all checkboxes when the label is clicked
+            control.container.on('click', '.color-palette-label', function() {
+                control.container.find('input[type="checkbox"]').each(function() {
+                    if (!$(this).is(':checked')) {
+                        $(this).prop('checked', true).change();
+                    }
+                });
+            });
+        },
+        saveValue: function(property, value) {
+            var control = this;
+            var val = control.setting.get();
 
+            if (typeof val !== 'object') {
+                val = {};
+            }
 
-// 			if (typeof val !== 'object') {
-// 				val = {};
-// 			}
-
-// 			if (value) {
-// 				val[property] = control.params.choices[property].color;
-// 			} else {
-// 				delete val[property];
-// 			}
-
-// console.log(val);
-// 			control.setting.set(val);
-		}
-	});
-
-
-
-
-
-
-
-
+            val[property] = value;
+            control.setting.set(val);
+        }
+    });
 
 
 	api.controlConstructor = $.extend(

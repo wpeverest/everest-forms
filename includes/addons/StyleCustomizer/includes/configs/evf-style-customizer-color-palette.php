@@ -9,7 +9,7 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Add everest forms button customizer sections
+ * Add Everest Forms button customizer sections
  *
  * @param array $sections Array of sections.
  */
@@ -30,7 +30,7 @@ add_filter( 'everest_forms_style_customizer_sections', 'evf_style_customizer_col
 
 
 /**
- * Add everest forms style customizer controls.
+ * Add Everest Forms style customizer controls.
  *
  * @param array                    $controls  Array of controls.
  * @param EVF_Style_Customizer_API $customize EVF_Style_Customizer_API instance.
@@ -75,7 +75,7 @@ function evf_style_customizer_color_palette_controls( $controls, $customize ) {
 	foreach ( $color_palettes as $index => $palette ) {
 		$colors_with_values = array();
 		foreach ( $palette['colors'] as $color_name => $color_value ) {
-		
+
 			$colors_with_values[] = array(
 				'name'       => $color_name . ' (' . $color_value . ')',
 				'color'      => $color_value,

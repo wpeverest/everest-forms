@@ -13,17 +13,35 @@
 		control_selector = 'customize-control-everest_forms_styles-' + data.form_id + '-',
 		dimension_directions = ['top', 'right', 'bottom', 'left'];
 
-		for (let i = 1; i <= 100; i++) {
-			let settingName = settings + '[color_palette][color_' + i + ']';
-			wp.customize(settingName, function(value) {
-				controls_wrapper.find('.color-palette-item input[type="checkbox"]').on('change', function() {
+		// color palette.
+		controls_wrapper.find('.color-palette-item input[type="checkbox"]').on('change', function() {
+            var parentLi = $(this).closest('.customize-control-evf-color-palette');
+            parentLi.find('input[type="checkbox"]:checked').each(function() {
+                var color = $(this).val();
+                var dataKey = $(this).data('key');
+				switch (dataKey) {
+                    case 'form_background':
+						container.css( 'background-color', color );
+                        break;
+                    case 'field_background':
+                        field_container.css( 'background-color', color );
+                        break;
+					case 'field_sublabel':
+						field_sub_label.css( 'color', color );
+						break;
+					case 'field_label':
+						field_label.css( 'color', color );
+						break;
+					case 'button_text':
+						button.css( 'color', color );
+						break;
+					case 'button_background':
+						button.css( 'background-color', color );
+						break;
 
-				});
-
-			});
-		}
-
-
+                }
+            });
+        });
 
 
 
