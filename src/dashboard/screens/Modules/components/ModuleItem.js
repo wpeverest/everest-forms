@@ -221,7 +221,7 @@ const ModuleItem = (props) => {
 
 	const handleModuleSettingsURL = () => {
 		var settingsURL = adminURL + setting_url
-		window.location.replace(settingsURL)
+		window.open(settingsURL, '_blank');
 	}
 
 	return (
