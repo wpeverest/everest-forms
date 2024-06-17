@@ -133,6 +133,7 @@ const ShortcodesLists = ({ setIsListViewerOpen }) => {
 	const [isShortcodeCopied, setShortcodeCopied] = useState({});
 
 	const { onCopy, hasCopied } = useClipboard()
+	const [isExampleShortcodeCopied, setIsExampleShortcodeCopied] = useState(false);
 
 	const toast = useToast()
 
@@ -177,6 +178,25 @@ const ShortcodesLists = ({ setIsListViewerOpen }) => {
 		  console.error("Error copying shortcode:", error);
 		}
 	  };
+
+	const handleExampleShortcodeCopy = (example_name) => {
+		try {
+			const textField = document.createElement('textarea');
+			textField.innerText = example_name;
+			document.body.appendChild(textField);
+			textField.select();
+			document.execCommand('copy');
+			textField.remove();
+			onCopy();
+			setIsExampleShortcodeCopied(true);
+			event.stopPropagation();
+			setTimeout(() => {
+				setIsExampleShortcodeCopied(false);
+			  }, 1000);
+		  } catch (error) {
+			console.error("Error copying shortcode:", error);
+		  }
+		};
 
 	return (
 		<Stack
@@ -407,7 +427,25 @@ const ShortcodesLists = ({ setIsListViewerOpen }) => {
 															>
 																{example_name}
 															</Box>
-														</Td>
+															</Td>
+															<Td>
+																{example_name =='[everest_forms_user_login redirect_url="sample_page" recaptcha="true"]' &&
+																	<Box>
+																		<IconButton
+																		size='md'
+																		icon = {<CopyIcon />}
+																		onClick={(event) => handleExampleShortcodeCopy(example_name, event)}
+																		/>
+																		{isExampleShortcodeCopied ?
+																			<Tooltip
+																				hasArrow={true}
+																				closeDelay = {1000}
+																			>
+																			{__('Copied!','everest-forms')}</Tooltip> : ''
+																		}
+																	</Box>
+																}
+															</Td>
 													</Tr>
 													<Tr>
 														<Td
