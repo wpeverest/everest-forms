@@ -458,7 +458,10 @@ const Modules = () => {
 							bg="red"
 							color="white"
 							p={4}
-							m={4}
+							m="5rem auto 0"
+							width="60%"
+							borderRadius="10px"
+							fontWeight="bold"
 						>{sprintf(__('Sorry, No modules found','everest-forms'))}</Text>
 					) : (
 						<Box>

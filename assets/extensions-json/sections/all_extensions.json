@@ -365,7 +365,7 @@
         "agency",
         "themegrill agency"
       ],
-      "setting_url": "",
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=sms_notifications",
       "demo_video_url": "tz4UKBX9WxM"
 
     },
@@ -414,7 +414,7 @@
         "agency",
         "themegrill agency"
       ],
-      "setting_url": "",
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=sendinblue",
       "demo_video_url": "NRRDY1ag6Sk"
     },
     {
@@ -446,7 +446,7 @@
         "agency",
         "themegrill agency"
       ],
-      "setting_url": "",
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=mailerlite",
       "demo_video_url": "CpqVgycDx_8"
     },
     {
