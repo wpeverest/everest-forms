@@ -325,29 +325,29 @@
 				control.saveValue(key, value);
 			});
 
-			// Toggle all checkboxes with one click
 			control.container.on('click', '.color-palette-label', function() {
 				var isChecked = $(this).find('input[type="checkbox"]').is(':checked');
 				control.container.find('input[type="checkbox"]').prop('checked', !isChecked).change();
 			});
 		},
 		saveValue: function(property, value) {
-			var control = this;
-			var val = control.setting.get();
+			console.log(property, value);
+// 			var control = this;
+// 			var val = control.setting.get();
 
 
-			if (typeof val !== 'object') {
-				val = {};
-			}
+// 			if (typeof val !== 'object') {
+// 				val = {};
+// 			}
 
-			if (value) {
-				val[property] = control.params.choices[property].color;
-			} else {
-				delete val[property];
-			}
+// 			if (value) {
+// 				val[property] = control.params.choices[property].color;
+// 			} else {
+// 				delete val[property];
+// 			}
 
-
-			control.setting.set(val);
+// console.log(val);
+// 			control.setting.set(val);
 		}
 	});
 

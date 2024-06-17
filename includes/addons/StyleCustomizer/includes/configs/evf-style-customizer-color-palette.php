@@ -75,9 +75,11 @@ function evf_style_customizer_color_palette_controls( $controls, $customize ) {
 	foreach ( $color_palettes as $index => $palette ) {
 		$colors_with_values = array();
 		foreach ( $palette['colors'] as $color_name => $color_value ) {
+		
 			$colors_with_values[] = array(
-				'name'  => $color_name . ' (' . $color_value . ')',
-				'color' => $color_value,
+				'name'       => $color_name . ' (' . $color_value . ')',
+				'color'      => $color_value,
+				'color_name' => $color_name,
 			);
 		}
 

@@ -77,7 +77,7 @@ class EVF_Customize_Color_Palette_Control extends WP_Customize_Control {
 		<# Object.keys( data.choices ).forEach( function( key ) { #>
 			<li class="color-palette-item">
 				<label class="color-palette-label" title="{{{data.choices[key].name}}}" for="color-palette-{{{data.id}}}-{{{key}}}">
-					<input id="color-palette-{{{data.id}}}-{{{key}}}" type="checkbox" name="color-palette-{{{data.id}}}" value={{{data.choices[key].color}}} data-key = "{{{key}}}" {{{ ( data.value[key]!=undefined && data.value[key] == true ) ? 'checked="checked"' : '' }}}/>
+					<input id="color-palette-{{{data.id}}}-{{{key}}}" type="checkbox" name="color-palette-{{{data.id}}}" value={{{data.choices[key].color}}} data-key = "{{{data.choices[key].color_name}}}" {{{ ( data.value[key]!=undefined && data.value[key] == true ) ? 'checked="checked"' : '' }}}/>
 					<span class="color-palette-color" style="background-color:{{{data.choices[key].color}}};"></span>
 				</label>
 				<span class="tooltip">{{{data.choices[key].name}}}</span>
