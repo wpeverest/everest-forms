@@ -47,7 +47,7 @@ class EVF_Admin_Addons {
 			}
 		}
 
-		return apply_filters( 'everest_forms_extensions_section_data', $extension_data->products );
+		return apply_filters( 'everest_forms_extensions_section_data', $extension_data );
 	}
 
 	/**

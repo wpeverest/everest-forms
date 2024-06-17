@@ -511,9 +511,10 @@ class EVF_AJAX {
 			);
 		}
 
-		$slug   = sanitize_key( wp_unslash( $_POST['slug'] ) );
-		$plugin = plugin_basename( sanitize_text_field( wp_unslash( $_POST['slug'] . '/' . $_POST['slug'] . '.php' ) ) );
-		$status = array(
+		$is_feature = sanitize_key( wp_unslash( $_POST['is_feature'] ) );
+		$slug       = sanitize_key( wp_unslash( $_POST['slug'] ) );
+		$plugin     = plugin_basename( sanitize_text_field( wp_unslash( $_POST['slug'] . '/' . $_POST['slug'] . '.php' ) ) );
+		$status     = array(
 			'install' => 'plugin',
 			'slug'    => sanitize_key( wp_unslash( $_POST['slug'] ) ),
 		);
@@ -541,6 +542,19 @@ class EVF_AJAX {
 				}
 
 				wp_send_json_success( $status );
+			}
+		} else {
+			if ( $is_feature ) {
+				$status['pluginName'] = sanitize_text_field( wp_unslash( $_POST['name'] ) );
+				$status['plugin']     = $slug;
+
+				if ( current_user_can( 'activate_plugin' ) ) {
+					$enabled_features   = get_option( 'everest_forms_enabled_features', array() );
+					$enabled_features[] = $slug;
+					update_option( 'everest_forms_enabled_features', $enabled_features );
+
+					wp_send_json_success( $status );
+				}
 			}
 		}
 
