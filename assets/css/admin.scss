@@ -2542,7 +2542,8 @@
 						 &.turnstile_empty_key_validate,
 						 &.hcaptcha_empty_key_validate,
 						 &.enable-stripe-model,
-						 &.enable-authorize-net-model {
+						 &.enable-authorize-net-model,
+						 &.enable-verifone-model {
 							 opacity: 0.45;
 
 							 &:hover {
@@ -9353,8 +9354,8 @@
 							   padding: 16px 20px;
 							   align-items: center;
 							   gap: 16px;
-							   border-bottom: 1px solid #EDEDED;		
-							   position: relative;					   
+							   border-bottom: 1px solid #EDEDED;
+							   position: relative;
 							   transition: all .3s ease-in-out;
 
 							   &::before {
