@@ -602,6 +602,15 @@ class EVF_Form_Task {
 			$response_data['entry_id']                  = $entry_id;
 			$response_data['message_display_location']  = isset( $settings['successful_form_submission_message_display_location'] ) && 'null' !== $settings['successful_form_submission_message_display_location'] ? $settings['successful_form_submission_message_display_location'] : 'hide';
 			$response_data['submission_message_scroll'] = isset( $settings['submission_message_scroll'] ) && 'null' !== $settings['submission_message_scroll'] ? $this->form_data['settings']['submission_message_scroll'] : '1';
+
+			//Sending images required for popup.
+			if ( 'popup' === $response_data['message_display_location'] ) {
+				$response_data['image_url'] = array(
+					'green_check' => plugins_url( 'assets/images/green-check-success.svg', EVF_PLUGIN_FILE ),
+					'close_btn'   => plugins_url( 'assets/images/popup-close-button.svg', EVF_PLUGIN_FILE ),
+				);
+			}
+
 			if ( defined( 'EVF_PDF_SUBMISSION_VERSION' ) && ( 'yes' === get_option( 'everest_forms_pdf_download_after_submit', 'no' ) || ( isset( $pdf_submission['everest_forms_pdf_download_after_submit'] ) && 'yes' === $pdf_submission['everest_forms_pdf_download_after_submit'] ) ) ) {
 				$response_data['pdf_download'] = true;
 				$pdf_download_message          = get_option( 'everest_forms_pdf_custom_download_text', '' );
