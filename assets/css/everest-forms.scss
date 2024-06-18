@@ -890,33 +890,81 @@
 			content: "\f147";
 		}
 	}
-	.everest-forms-notice--success-message-popup-bg {
-		z-index:98;
-		position : fixed;
+	.everest-forms-success-message-popup-bg {
+		// z-index:98;
 		background: rgba(0, 0, 0, 0.5);
-		height:100%;
-		width:100%;
-		top:0;
-		left:0px;
+		max-width: 100vw;
+		height: 100vh;
+		position: fixed;
+		width: 100%;
+		left: 50%;
+		top: 0;
+		transform: translate(-50%);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background-size: calc(10 * 2px) calc(10 * 2px);
 
-	}
+		.everest-forms-success-message-popup {
+			z-index:99999;
+			background-color: #FFFFFF;
+			width: Fixed (386px);
+			height: auto;
+			padding: 54px 20px 54px 20px;
+			gap: 24px;
+			background: #ffffff;
+			padding: 40px;
+			border-radius: 8px;
+			width: 640px;
+			display: flex;
+			flex-direction: column;
 
-	.everest-forms-notice--success-popup {
-		z-index:99;
-		display:flex;
-		justify-content: space-between;
-		padding-right:10px ;
-		position: fixed ;
-		left:50%;
-		width:40%;
-		transform: translate(-50%,-50%);
+			.everest-forms-success-message-popup-top{
+				color: white;
+				padding: 13px var(--default-padding);
+				display: flex;
+				align-items: center;
+				justify-content: flex-end;
+				cursor: default;
+				user-select: none;
+				// z-index: 1;
 
-		.everest-forms-notice--success-popup-close-button {
-			top:0 ;
-			right:0;
-			padding-left : 10px;
-			width:20px;
-			cursor:pointer;
+				.everest-forms-success-popup-close-button {
+					cursor: pointer;
+					width: 16px;
+					height: 16px;
+					padding: 0;
+					margin: 0;
+					color: #000000;
+				}
+			}
+
+			.everest-forms-success-message-popup-logo {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				padding: 0;
+			}
+			.everest-forms-success-message-popup-text {
+				display: flex;
+				justify-content: center;
+				flex-direction: column;
+
+				.everest-forms-success-message-popup-text-status{
+					font-family: Inter;
+					font-size: 24px;
+					font-weight: 500;
+					line-height: 36px;
+					text-align: center;
+				}
+				.everest-forms-success-message-popup-text-message{
+					font-family: Inter;
+					font-size: 15px;
+					font-weight: 400;
+					line-height: 26px;
+					text-align: center;
+				}
+				}
 		}
 	}
 
