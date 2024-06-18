@@ -906,19 +906,18 @@
 		background-size: calc(10 * 2px) calc(10 * 2px);
 
 		.everest-forms-success-message-popup {
-			z-index:999;
-			background-color: #FFFFFF;
-			width: Fixed (386px);
+			z-index:  99999 !important;
 			height: auto;
-			padding: 54px 20px 54px 20px;
 			gap: 24px;
 			background: #ffffff;
-			padding: 40px;
 			border-radius: 8px;
-			width: 640px;
+			width: 386px;
 			display: flex;
 			flex-direction: column;
+			user-select: none;
   			transition: all ease-in-out .8s;
+			padding: 20px 20px 54px 20px;
+
 
 			.everest-forms-success-message-popup-top{
 				color: white;
@@ -928,7 +927,6 @@
 				justify-content: flex-end;
 				cursor: default;
 				user-select: none;
-				// z-index: 1;
 
 				.everest-forms-success-popup-close-button {
 					cursor: pointer;
@@ -950,6 +948,14 @@
 				display: flex;
 				justify-content: center;
 				flex-direction: column;
+				width: 346px;
+   				height: 96px;
+				width: 100%;
+				max-width: 346px;
+				height: auto; 
+    			max-height: 96px;
+				gap: 8px;
+				opacity: 0px;
 
 				.everest-forms-success-message-popup-text-status{
 					font-family: Inter;
