@@ -180,16 +180,16 @@ jQuery( function( $ ) {
 							}
 
 							else if ( "popup" === message_display_location ) {
-								formTuple.closest( '.everest-forms' ).prepend( '<div class="everest-forms-notice--success-message-popup-bg" ></div><div class="everest-forms-notice everest-forms-notice--success everest-forms-notice--success-popup" role="alert" ><div class="everest-forms-notice--success-message" >'  + xhr.data.message + pdf_download_message + '</div><div id= "everest-forms-notice--success-message-popup-close-button" class="everest-forms-notice--success-popup-close-button">x</div></div>' ).focus();
+								formTuple.closest( '.everest-forms' ).prepend( '<div class="everest-forms-success-message-popup-bg"><div class="everest-forms-success-message-popup"><div class="everest-forms-success-message-popup-top"><span id="everest-forms-success-popup-close-button" class="everest-forms-success-popup-close-button"><img src="'+ xhr.data.image_url.close_btn + '" alt="X" /></span></span></div><div class="everest-forms-success-message-popup-logo"><img src="' + xhr.data.image_url.green_check + '" alt="LOGO"/></div><div class="everest-forms-success-message-popup-text" ><div class="everest-forms-success-message-popup-text-status">'+ xhr.data.response.charAt(0).toUpperCase() + xhr.data.response.substr(1) + '!</div><div class="everest-forms-success-message-popup-text-message">' + xhr.data.message + '</div></div></div>' ).focus();
 
 								//Appends quiz reportings and preview below form.
 								formTuple.closest( '.everest-forms' ).append( quiz_reporting + preview_confirmation );
 
 								//Removes the message on click of 'x' button.
-								jQuery( document ).on( 'click' ,"#everest-forms-notice--success-message-popup-close-button" ,
+								jQuery( document ).on( 'click' ,"#everest-forms-success-popup-close-button" ,
 									function (){
-										formTuple.closest( '.everest-forms' ).find( '.everest-forms-notice' ).remove();
-										formTuple.closest( '.everest-forms' ).find( '.everest-forms-notice--success-message-popup-bg' ).remove();
+										formTuple.closest( '.everest-forms' ).find( '.everest-forms-success-message-popup' ).remove();
+										formTuple.closest( '.everest-forms' ).find( '.everest-forms-success-message-popup-bg' ).remove();
 									}
 								);
 							}

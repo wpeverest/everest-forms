@@ -918,6 +918,7 @@
 			width: 640px;
 			display: flex;
 			flex-direction: column;
+  			transition: all ease-in-out .8s;
 
 			.everest-forms-success-message-popup-top{
 				color: white;
