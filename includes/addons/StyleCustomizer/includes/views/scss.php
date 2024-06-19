@@ -9,21 +9,21 @@
 defined( 'ABSPATH' ) || exit;
 
 // Get values.
-$styles             = get_option( 'everest_forms_styles' );
+$styles = get_option( 'everest_forms_styles' );
 if ( isset( $styles[ $form_id ] ) && is_array( $styles[ $form_id ] ) ) {
-    $styles[ $form_id ] = array_map(
-        function( $styles ) {
-            if ( is_array( $styles ) ) {
-                return array_filter( $styles );
-            } else {
-                return $styles;
-            }
-        },
-        $styles[ $form_id ]
-    );
+	$styles[ $form_id ] = array_map(
+		function( $styles ) {
+			if ( is_array( $styles ) ) {
+				return array_filter( $styles );
+			} else {
+				return $styles;
+			}
+		},
+		$styles[ $form_id ]
+	);
 }
 
-$styles[ $form_id ] = is_array($styles[ $form_id ]) ? array_filter($styles[ $form_id ]) : array();
+$styles[ $form_id ] = is_array( $styles[ $form_id ] ) ? array_filter( $styles[ $form_id ] ) : array();
 $values             = array_replace_recursive( $defaults, $styles[ $form_id ] ); // phpcs:ignore PHPCompatibility.PHP.NewFunctions.array_replace_recursiveFound
 // Search for JSON formatted values and convert it to array format.
 foreach ( $values as $key => $styles ) {
@@ -55,6 +55,19 @@ $font_styles_default = array(
 
 // Radio/checkbox separator type.
 $radio_checkbox_seperator_type = defined( 'EVF_VERSION' ) && version_compare( EVF_VERSION, '1.6.0', '<' ) ? array( 'margin', 'padding' ) : array( 'margin' );
+$color_palette                 = isset( $values['color_palette'] ) ? $values['color_palette'] : array();
+foreach ( $color_palette as $color_key => $color_values ) {
+	echo "
+    .form-$color_key {
+        --form-background: {$color_values['form_background']};
+        --field-background: {$color_values['field_background']};
+        --field-sublabel: {$color_values['field_sublabel']};
+        --field-label: {$color_values['field_label']};
+        --button-text: {$color_values['button_text']};s
+        --button-background: {$color_values['button_background']};
+    }
+    ";
+}
 ?>
 
 // Form Wrapper variables.

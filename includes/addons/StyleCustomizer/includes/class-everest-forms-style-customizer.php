@@ -29,29 +29,16 @@ if ( ! class_exists( 'EverestForms_Style_Customizer' ) ) {
 		 */
 		private function __construct() {
 
-			// Load plugin text domain.
-			add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
-
-			// Checks with Everest Forms Pro is installed.
-			if ( defined( 'EVF_VERSION' ) && version_compare( EVF_VERSION, '1.7.2', '>=' ) ) {
-				// Checks with Everest Forms Pro is installed.
-				if ( defined( 'EFP_VERSION' ) && version_compare( EFP_VERSION, '1.3.6', '>=' ) ) {
 					$this->configs();
 					$this->includes();
 
 					// Hooks.
-					add_action( 'everest_forms_init', array( $this, 'plugin_updater' ) );
 					add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 					add_action( 'everest_forms_shortcode_scripts', array( $this, 'enqueue_shortcode_scripts' ) );
 					add_action( 'everest_forms_builder_content_fields', array( $this, 'output_form_designer' ) );
 					add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ), 20, 2 );
 					add_action( 'everest_form_elemntor_style', array( $this, 'evf_elementor' ), 10, 1 );
-				} else {
-					add_action( 'admin_notices', array( $this, 'everest_forms_pro_missing_notice' ) );
-				}
-			} else {
-				add_action( 'admin_notices', array( $this, 'everest_forms_missing_notice' ) );
-			}
+
 		}
 
 		/**
@@ -67,21 +54,6 @@ if ( ! class_exists( 'EverestForms_Style_Customizer' ) ) {
 			return self::$instance;
 		}
 
-		/**
-		 * Load Localisation files.
-		 *
-		 * Note: the first-loaded translation file overrides any following ones if the same translation is present.
-		 *
-		 * Locales found in:
-		 *      - WP_LANG_DIR/everest-forms/everest-forms-LOCALE.mo
-		 *      - WP_LANG_DIR/plugins/everest-forms-LOCALE.mo
-		 */
-		public function load_plugin_textdomain() {
-			$locale = apply_filters( 'plugin_locale', get_locale(), 'everest-forms' );
-
-			load_textdomain( 'everest-forms', WP_LANG_DIR . '/everest-forms/everest-forms-' . $locale . '.mo' );
-			load_plugin_textdomain( 'everest-forms', false, plugin_basename( dirname( EVF_PLUGIN_FILE ) ) . '/languages' );
-		}
 
 		/**
 		 * Configs.
@@ -137,14 +109,6 @@ if ( ! class_exists( 'EverestForms_Style_Customizer' ) ) {
 			return $customizer_url;
 		}
 
-		/**
-		 * Plugin Updater.
-		 */
-		public function plugin_updater() {
-			if ( class_exists( 'EVF_Plugin_Updater' ) ) {
-				EVF_Plugin_Updater::updates( EVF_PLUGIN_FILE, 16166, EVF_VERSION );
-			}
-		}
 
 		/**
 		 * Enqueue scripts.
@@ -199,40 +163,6 @@ if ( ! class_exists( 'EverestForms_Style_Customizer' ) ) {
 			<?php
 		}
 
-		/**
-		 * Display row meta in the Plugins list table.
-		 *
-		 * @param  array  $plugin_meta Plugin Row Meta.
-		 * @param  string $plugin_file Plugin Base file.
-		 * @return array
-		 */
-		public function plugin_row_meta( $plugin_meta, $plugin_file ) {
-			if ( plugin_basename( EVF_PLUGIN_FILE ) === $plugin_file ) {
-				$new_plugin_meta = array(
-					'docs' => '<a href="' . esc_url( 'https://docs.everestforms.net/docs/style-customizer/' ) . '" aria-label="' . esc_attr__( 'View Everest Forms Style Customizer documentation', 'everest-forms' ) . '">' . esc_html__( 'Docs', 'everest-forms' ) . '</a>',
-				);
-
-				return array_merge( $plugin_meta, $new_plugin_meta );
-			}
-
-			return (array) $plugin_meta;
-		}
-
-		/**
-		 * Everest Forms fallback notice.
-		 */
-		public function everest_forms_missing_notice() {
-			/* translators: %s: everest-forms version */
-			echo '<div class="error notice is-dismissible"><p>' . sprintf( esc_html__( 'Everest Forms - Style Customizer requires at least %s or later to work!', 'everest-forms' ), '<a href="https://everestforms.net/" target="_blank">' . esc_html__( 'Everest Forms 1.7.1', 'everest-forms' ) . '</a>' ) . '</p></div>';
-		}
-
-		/**
-		 * Everest Forms Pro fallback notice.
-		 */
-		public function everest_forms_pro_missing_notice() {
-			/* translators: %s: everest-forms-pro version */
-			echo '<div class="error notice is-dismissible"><p>' . sprintf( esc_html__( 'Everest Forms - Style Customizer depends on the last version of %s or later to work!', 'everest-forms' ), '<a href="https://everestforms.net/" target="_blank">' . esc_html__( 'Everest Forms Pro 1.3.6', 'everest-forms' ) . '</a>' ) . '</p></div>';
-		}
 
 		/**
 		 * Register controls for Pro.

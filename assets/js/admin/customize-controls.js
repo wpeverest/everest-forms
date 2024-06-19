@@ -308,47 +308,46 @@
 			val = Object.assign({}, val);
 
 			jQuery( input ).val( JSON.stringify( val ) ).trigger( 'change' );
+
 			control.setting.set( val );
 		}
 	} );
 
 
 	api.ColorPaletteControl = api.Control.extend({
-        ready: function() {
-            var control = this;
+		ready: function() {
+			var control = this;
 
-            // Handle changes to the color palette checkboxes
-            control.container.on('change', 'input[type="checkbox"]', function() {
-                var key = $(this).data('key');
-                var value = $(this).is(':checked');
-                control.saveValue(key, value);
-            });
+			control.container.on('change', 'input[type="checkbox"]', function() {
+				var key = $(this).data('key');
+				var value = $(this).is(':checked');
+				control.saveValue(key, value);
+			});
 
-            // Check all checkboxes when the label is clicked
-            control.container.on('click', '.color-palette-label', function() {
-                control.container.find('input[type="checkbox"]').each(function() {
-                    if (!$(this).is(':checked')) {
-                        $(this).prop('checked', true).change();
-                    }
-                });
-            });
-        },
-        saveValue: function(property, value) {
-            var control = this;
-            var val = control.setting.get();
+			control.container.on('click', '.color-palette-label', function() {
+				control.container.find('input[type="checkbox"]').prop('checked', true).change();
+			});
+		},
+		saveValue: function(property, value) {
+			var control = this;
+			var input   = control.container.find('.color-palette-hidden-value' );
+			var val = control.setting.get();
 
-            if (typeof val !== 'object') {
-                val = {};
-            }
+			if (typeof val !== 'object') {
+				val = {};
+			}
 
-            val[property] = value;
-            control.setting.set(val);
-        }
-    });
+			val[property] = value;
+			jQuery( input ).val( JSON.stringify( val ) ).trigger( 'change' );
+			control.setting.set(val);
+		}
+	});
+
 
 
 	api.controlConstructor = $.extend(
 		api.controlConstructor, {
+			'evf-color_palette': api.ColorPaletteControl,
 			'evf-color': api.ColorControl,
 			'evf-toggle': api.ToggleControl,
 			'evf-slider': api.SliderControl,
@@ -356,8 +355,8 @@
 			'evf-dimension': api.DimensionControl,
 			'evf-background': api.BackgroundControl,
 			'evf-image_checkbox': api.ImageCheckboxControl,
-			'evf-background_image': api.BackgroundImageControl,
-			'evf-color-palette': api.ColorPaletteControl
+			'evf-background_image': api.BackgroundImageControl
+
 		}
 	);
 

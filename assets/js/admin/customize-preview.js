@@ -15,7 +15,7 @@
 
 		// color palette.
 		controls_wrapper.find('.color-palette-item input[type="checkbox"]').on('change', function() {
-            var parentLi = $(this).closest('.customize-control-evf-color-palette');
+            var parentLi = $(this).closest('.customize-control-evf-color_palette');
             parentLi.find('input[type="checkbox"]:checked').each(function() {
                 var color = $(this).val();
                 var dataKey = $(this).data('key');
@@ -24,7 +24,7 @@
 						container.css( 'background-color', color );
                         break;
                     case 'field_background':
-                        field_container.css( 'background-color', color );
+                        field_container.css( 'color', color );
                         break;
 					case 'field_sublabel':
 						field_sub_label.css( 'color', color );

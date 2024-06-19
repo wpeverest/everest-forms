@@ -18,7 +18,7 @@ class EVF_Customize_Color_Palette_Control extends WP_Customize_Control {
 	 *
 	 * @var string
 	 */
-	public $type = 'evf-color-palette';
+	public $type = 'evf-color_palette';
 
 	/**
 	 * Refresh the parameters passed to the JavaScript via JSON.
