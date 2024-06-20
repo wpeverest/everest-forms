@@ -23,24 +23,6 @@
 					var $value =  $(this).val();
 					$(this).val($value.replace(/<\s*script/gi, '').replace(/\s+on\w+\s*=/gi, ' '));
 				});
-
-				$( document ).on( 'change', '#everest-forms-panel-field-square-enable_square', function(){
-					if ( true === $("#everest-forms-panel-field-square-enable_square").prop('checked') ) {
-						$(".evf-square-gateway-recurring, .evf-square-gateway-conditional").show();
-					} else {
-						$(".evf-square-gateway-recurring, .evf-square-gateway-conditional").hide();
-					}
-
-				});
-
-				$( document ).on( 'change', '#everest-forms-panel-field-square-recurring', function(){
-					console.log('hello');
-					if ( true === $("#everest-forms-panel-field-square-recurring").prop('checked') ) {
-						$(".evf--square-recurring-content").show();
-					} else {
-						$(".evf--square-recurring-content").hide();
-					}
-				} )
 		 	});
 
 			$( document ).ready( function( $ ) {
