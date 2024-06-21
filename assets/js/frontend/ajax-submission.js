@@ -26,6 +26,19 @@ jQuery( function( $ ) {
 						return false;
 					}
 
+					//For square payment credit card validation.
+					var squareMsgContainer = formTuple.find(".everest-forms-gateway[data-gateway='square']").find('.sq-card-message-error');
+					if ( squareMsgContainer.length > 0 ) {
+						var squareErrorMsg = squareMsgContainer.text();
+						$( document ).ready( function() {
+							$( '#card-errors' ).html( squareErrorMsg ).show();
+							$( '.evf-submit' ).text( 'Submit' );
+							$( '.evf-submit' ).attr( 'disabled', false);
+						});
+						formTuple.trigger( 'focusout' ).trigger( 'change' ).trigger( 'submit' );
+						return false;
+					}
+
 					if ( typeof tinyMCE !== 'undefined' ) {
 						tinyMCE.triggerSave();
 					}
