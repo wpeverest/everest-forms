@@ -9311,8 +9311,18 @@
    .everest-forms {
 		   .everest-forms-settings {
 			   padding: 0 !important;
-			   background: #ffffff;
-			   box-shadow: 0px 6px 26px 0px rgba(10, 10, 10, .08);
+			   gap: 24px;
+			   background: transparent;
+			//    box-shadow: 0px 6px 26px 0px rgba(10, 10, 10, .08);
+
+			   &-wrapper {
+					box-shadow: 0px 6px 26px 0px rgba(10, 10, 10, .08);
+					background: #ffffff;
+					flex: 1;
+					display: flex;
+			   }
+
+
 
 			   .everest-forms-header {
 				   display: flex;
@@ -9891,6 +9901,73 @@
 					   line-height: 24px;
 					   margin-bottom: 20px;
 				   }
+			   }
+
+			   &-premium {
+					&-sidebar {
+						max-width: 300px;
+						padding: 18px 10px 26px 10px;
+
+						h2 {
+							color: #222222;
+							font-size: 18px;
+							font-weight: 600;
+							line-height: 140%;
+							margin: 0;
+							padding-bottom: 16px;
+							margin-bottom: 20px;
+							border-bottom: 1px solid #EEE8F7;
+						}
+
+						p {
+							margin: 0;
+							color: #383838;
+							font-size: 15px;
+							font-style: normal;
+							font-weight: 400;
+							line-height: 24px;
+						}
+
+						h3 {
+							color: #383838;
+							font-size: 16px;
+							font-weight: 600;
+							line-height: 24px;
+							margin-top: 20px;
+							margin-bottom: 12px;
+						}
+
+						ul {
+							margin: 0;
+							margin-bottom: 16px;
+							display: flex;
+							flex-direction: column;
+							gap: 12px;
+
+							li {
+								color: #383838;
+								font-size: 15px;
+								font-weight: 400;
+								line-height: 23px;
+								margin-bottom: 0;
+								padding-left: 26px;
+								position: relative;
+
+								&::before {
+									content: "";
+									background-image: url("../images/icons/premium-list-check-icon.svg");
+									background-repeat: no-repeat;
+									background-position: center;
+									background-size: 100%;
+									width: 18px;
+									height: 18px;
+									position: absolute;
+									left: 0;
+									top: 2px;
+								}
+							}
+						}
+					}
 			   }
 
 			   .submit {
