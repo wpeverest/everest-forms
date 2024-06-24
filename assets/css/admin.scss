@@ -9959,3 +9959,16 @@
 		}
 	}
 }
+
+// WordPress main sidebar is closed, builder Sidebar Collapse Button Design Fix
+.folded {
+	#evf-collapse {
+		&.open {
+			left: 36px !important;
+		}
+
+		&.close {
+			left: 435px !important;
+		}
+	}
+}
