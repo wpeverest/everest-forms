@@ -60,6 +60,7 @@ if ( ! $tab_exists ) {
 			</div>
 		</header>
 		<div class="everest-forms-settings-container">
+			<div class="everest-forms-settings-main">
 			<?php
 				do_action( 'everest_forms_sections_' . $current_tab );
 
@@ -73,6 +74,34 @@ if ( ! $tab_exists ) {
 				<?php endif; ?>
 				<?php wp_nonce_field( 'everest-forms-settings' ); ?>
 			</p>
+			</div>
+			<div class="everest-forms-settings-premium-sidebar">
+			<?php
+			$allowed_html = array(
+				'h2'  => array(),
+				'p'   => array(),
+				'h3'  => array(),
+				'ul'  => array(),
+				'li'  => array(),
+				'!--' => array(),
+			);
+
+			$content = '<h2>Get Even More from Everest Forms with the Premium Plan</h2>
+			<p>The free version of Everest Forms is just the beginning of something special. With our Pro plugin, you can get everything your website needs in terms of form building and integration.</p>
+			<h3>Premium Benefits:</h3>
+			<ul>
+				<li>Custom registration forms with username and password</li>
+				<li>Growing library of pre-built form templates</li>
+				<!-- Add other benefits -->
+			</ul>
+			<p>To enjoy all the benefits of Everest Forms Pro...</p>';
+
+			echo wp_kses( $content, $allowed_html );
+			?>
+
+
+
+			</div>
 		</div>
 	<?php if ( 'integration' !== $current_tab ) : ?>
 	</div>
