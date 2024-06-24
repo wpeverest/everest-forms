@@ -37,6 +37,7 @@ import { debounce } from "lodash";
 const Modules = () => {
 	const toast = useToast();
 	const [modules, setModules] = useState([]);
+	const [originalModules, setOriginalModules] = useState([]);
 	const [error, setError] = useState(null);
 	const [selectedModuleData, setSelectedModuleData] = useState("");
 	const [isSearching, setIsSearching] = useState(false);
@@ -44,47 +45,45 @@ const Modules = () => {
 	const [isPerformingBulkAction, setIsPerformingBulkAction] = useState(false);
 	const [bulkAction, setBulkAction] = useState("");
 	const [modulesLoaded, setModulesLoaded] = useState(false);
-	const [{ allModules }, dashboardReducer] = useContext(DashboardContext);
+	const [{ allModules }, dispatch] = useContext(DashboardContext);
 	const [searchItem, setSearchItem] = useState('');
 	const [noItemFound, setNoItemFound] = useState(false);
 
-	useEffect(() => {
-		if (!modulesLoaded) {
-			getAllModules()
-				.then((data) => {
-					if (data.success) {
-						dashboardReducer({
-							type: actionTypes.GET_ALL_MODULES,
-							allModules: data.modules_lists,
-						});
+	const fetchModules = useCallback(() => {
+		getAllModules()
+			.then((data) => {
+				if (data.success) {
+					dispatch({
+						type: actionTypes.GET_ALL_MODULES,
+						allModules: data.modules_lists,
+					});
 
-						if (tabIndex === 1) {
-							var feature_lists = [];
-							data.modules_lists.map((module) => {
-								if (module.type === "feature") {
-									feature_lists.push(module);
-								}
-							});
-							setModules(feature_lists);
-						} else if (tabIndex === 2) {
-							var addon_lists = [];
-							data.modules_lists.map((module) => {
-								if (module.type === "addon") {
-									addon_lists.push(module);
-								}
-							});
-							setModules(addon_lists);
-						} else {
-							setModules(data.modules_lists);
-						}
-						setModulesLoaded(true);
-					}
-				})
-				.catch((error) => {
-					setError(error.message);
-				});
+					setOriginalModules(data.modules_lists);
+					filterModules(data.modules_lists);
+					setModulesLoaded(true);
+				}
+			})
+			.catch((error) => {
+				setError(error.message);
+			});
+	}, [dispatch]);
+
+	const filterModules = (modules) => {
+		let filteredModules = modules;
+
+		if (tabIndex === 1) {
+			filteredModules = modules.filter(module => module.type === "feature");
+		} else if (tabIndex === 2) {
+			filteredModules = modules.filter(module => module.type === "addon");
 		}
-	}, [tabIndex, modules, modulesLoaded, isPerformingBulkAction]);
+
+		setModules(filteredModules);
+		setModulesLoaded(true);
+	};
+
+	useEffect(() => {
+		fetchModules();
+	}, [fetchModules]);
 
 	useEffect(() => {
 		if (error !== null) {
@@ -96,114 +95,78 @@ const Modules = () => {
 		}
 	}, [error]);
 
+	useEffect(() => {
+		filterModules(originalModules);
+	}, [tabIndex]);
+
 	const handleBulkActions = () => {
 		setIsPerformingBulkAction(true);
 
-		if (bulkAction === "activate") {
-			bulkActivateModules(selectedModuleData)
-				.then((data) => {
-					if (data.success) {
-						toast({
-							title: data.message,
-							status: "success",
-							duration: 3000,
-						});
-					} else {
-						toast({
-							title: data.message,
-							status: "error",
-							duration: 3000,
-						});
-					}
-				})
-				.catch((e) => {
-					toast({
-						title: e.message,
-						status: "error",
-						duration: 3000,
-					});
-				})
-				.finally(() => {
-					setModulesLoaded(false);
-					setIsPerformingBulkAction(false);
-					setSelectedModuleData({});
+		const actionFunction = bulkAction === "activate" ? bulkActivateModules : bulkDeactivateModules;
+
+		actionFunction(selectedModuleData)
+			.then((data) => {
+				toast({
+					title: data.message,
+					status: data.success ? "success" : "error",
+					duration: 3000,
 				});
-		} else if (bulkAction === "deactivate") {
-			bulkDeactivateModules(selectedModuleData)
-				.then((data) => {
-					if (data.success) {
-						toast({
-							title: data.message,
-							status: "success",
-							duration: 3000,
-						});
-					} else {
-						toast({
-							title: data.message,
-							status: "error",
-							duration: 3000,
-						});
-					}
-				})
-				.catch((e) => {
-					toast({
-						title: e.message,
-						status: "error",
-						duration: 3000,
-					});
-				})
-				.finally(() => {
-					setModulesLoaded(false);
-					setIsPerformingBulkAction(false);
-					setSelectedModuleData({});
+			})
+			.catch((e) => {
+				toast({
+					title: e.message,
+					status: "error",
+					duration: 3000,
 				});
-		}
+			})
+			.finally(() => {
+				setModulesLoaded(false);
+				setIsPerformingBulkAction(false);
+				setSelectedModuleData({});
+			});
 	};
 
 	const debounceSearch = debounce((val) => {
-        setIsSearching(true);
+		setIsSearching(true);
 
-        if (!val) {
-            setModulesLoaded(false);
-            setIsSearching(false);
-            return;
-        }
+		if (!val) {
+			filterModules(originalModules);
+			setIsSearching(false);
+			return;
+		}
 
-        let searchedData = [];
+		let searchedData = [];
 
-        if (tabIndex === 1) {
-            searchedData = modules?.filter(
-                (module) => module.type === "feature" && module.title.toLowerCase().includes(val.toLowerCase())
-            );
-        } else if (tabIndex === 2) {
-            searchedData = modules?.filter(
-                (module) => module.type === "addon" && module.title.toLowerCase().includes(val.toLowerCase())
-            );
-        } else {
-            searchedData = modules?.filter((module) => module.title.toLowerCase().includes(val.toLowerCase()));
-        }
+		if (tabIndex === 1) {
+			searchedData = originalModules.filter(
+				(module) => module.type === "feature" && module.title.toLowerCase().includes(val.toLowerCase())
+			);
+		} else if (tabIndex === 2) {
+			searchedData = originalModules.filter(
+				(module) => module.type === "addon" && module.title.toLowerCase().includes(val.toLowerCase())
+			);
+		} else {
+			searchedData = originalModules.filter((module) => module.title.toLowerCase().includes(val.toLowerCase()));
+		}
 
-        if (searchedData.length > 0) {
-            setModules(searchedData);
-            setModulesLoaded(true);
-			setNoItemFound(false)
-        } else {
-            setModulesLoaded(false);
+		if (searchedData.length > 0) {
+			setModules(searchedData);
+			setModulesLoaded(true);
+			setNoItemFound(false);
+		} else {
+			setModules([]);
+			setModulesLoaded(false);
 			setNoItemFound(true);
-        }
+		}
 
-        setIsSearching(false);
-    }, 800);
-
-    const onSearchInput = (val, modules, setModules, setModulesLoaded, setIsSearching, tabIndex) => {
-        debounceSearch(val);
-    };
+		setIsSearching(false);
+	}, 800);
 
 	const handleSearchInputChange = (e) => {
 		const val = e.target.value;
-        setSearchItem(val);
-        onSearchInput(val, modules, setModules, setModulesLoaded, setIsSearching, tabIndex);
-    };
+		setSearchItem(val);
+		debounceSearch(val);
+	};
 
 	const parseDate = (dateString) => {
 		const [day, month, year] = dateString.split("/").map(Number);
@@ -302,84 +265,13 @@ const Modules = () => {
 						<Tabs
 							index={tabIndex}
 							onChange={(index) => {
-								setIsSearching(true);
 								setTabIndex(index);
-								setModulesLoaded(false);
-								new Promise(function (resolve, reject) {
-									setTimeout(resolve, 1000);
-								}).then(function () {
-									setIsSearching(false);
-								});
 							}}
 						>
-							<TabList
-								borderBottom="0px"
-								border="1px solid #DFDFE0"
-								borderRadius="4px"
-							>
-								<Tab
-									fontSize="14px"
-									borderRadius="4px 0 0 4px"
-									style={{
-										boxSizing: "border-box",
-									}}
-									_focus={{
-										boxShadow: "none",
-									}}
-									_selected={{
-										color: "white",
-										bg: "#2563EB",
-										marginBottom: "0px",
-										boxShadow: "none",
-									}}
-									boxShadow="none !important"
-									transition="none !important"
-								>
-									{__("All", "everest-forms")}
-								</Tab>
-								<Tab
-									fontSize="14px"
-									style={{
-										boxSizing: "border-box",
-									}}
-									_focus={{
-										boxShadow: "none",
-									}}
-									_selected={{
-										color: "white",
-										bg: "#2563EB",
-										marginBottom: "0px",
-										boxShadow: "none",
-									}}
-									boxShadow="none !important"
-									borderRight="1px solid #E9E9E9"
-									borderLeft="1px solid #E9E9E9"
-									marginLeft="0px !important"
-									transition="none !important"
-								>
-									{__("Features", "everest-forms")}
-								</Tab>
-								<Tab
-									fontSize="14px"
-									style={{
-										boxSizing: "border-box",
-									}}
-									borderRadius="0 4px 4px 0"
-									_focus={{
-										boxShadow: "none",
-									}}
-									_selected={{
-										color: "white",
-										bg: "#2563EB",
-										marginBottom: "0px",
-										boxShadow: "none",
-									}}
-									marginLeft="0px !important"
-									boxShadow="none !important"
-									transition="none !important"
-								>
-									{__("Addons", "everest-forms")}
-								</Tab>
+							<TabList>
+								<Tab>{__("All Modules", "everest-forms")}</Tab>
+								<Tab>{__("Features", "everest-forms")}</Tab>
+								<Tab>{__("Addons", "everest-forms")}</Tab>
 							</TabList>
 						</Tabs>
 
@@ -447,56 +339,56 @@ const Modules = () => {
 				</Stack>
 			</Container>
 			<Container maxW="container.xl">
-			{
-				isSearching ? (
-					<AddonsSkeleton />
-				) : (
-					noItemFound ? (
-						<Text
-							align="center"
-							fontSize="1.2rem"
-							bg="red"
-							color="white"
-							p={4}
-							m="5rem auto 0"
-							width="60%"
-							borderRadius="10px"
-							fontWeight="bold"
-						>{sprintf(__('Sorry, No modules found','everest-forms'))}</Text>
+				{
+					isSearching ? (
+						<AddonsSkeleton />
 					) : (
-						<Box>
-							<Tabs index={tabIndex}>
-								<TabPanels>
-									<TabPanel>
-										<ModuleBody
-											isPerformingBulkAction={isPerformingBulkAction}
-											filteredAddons={modules}
-											setSelectedModuleData={setSelectedModuleData}
-											selectedModuleData={selectedModuleData}
-										/>
-									</TabPanel>
-									<TabPanel>
-										<ModuleBody
-											isPerformingBulkAction={isPerformingBulkAction}
-											filteredAddons={modules}
-											setSelectedModuleData={setSelectedModuleData}
-											selectedModuleData={selectedModuleData}
-										/>
-									</TabPanel>
-									<TabPanel>
-										<ModuleBody
-											isPerformingBulkAction={isPerformingBulkAction}
-											filteredAddons={modules}
-											setSelectedModuleData={setSelectedModuleData}
-											selectedModuleData={selectedModuleData}
-										/>
-									</TabPanel>
-								</TabPanels>
-							</Tabs>
-						</Box>
+						noItemFound ? (
+							<Text
+								align="center"
+								fontSize="1.2rem"
+								bg="red"
+								color="white"
+								p={4}
+								m="5rem auto 0"
+								width="60%"
+								borderRadius="10px"
+								fontWeight="bold"
+							>{sprintf(__('Sorry, No modules found','everest-forms'))}</Text>
+						) : (
+							<Box>
+								<Tabs index={tabIndex}>
+									<TabPanels>
+										<TabPanel>
+											<ModuleBody
+												isPerformingBulkAction={isPerformingBulkAction}
+												filteredAddons={modules}
+												setSelectedModuleData={setSelectedModuleData}
+												selectedModuleData={selectedModuleData}
+											/>
+										</TabPanel>
+										<TabPanel>
+											<ModuleBody
+												isPerformingBulkAction={isPerformingBulkAction}
+												filteredAddons={modules}
+												setSelectedModuleData={setSelectedModuleData}
+												selectedModuleData={selectedModuleData}
+											/>
+										</TabPanel>
+										<TabPanel>
+											<ModuleBody
+												isPerformingBulkAction={isPerformingBulkAction}
+												filteredAddons={modules}
+												setSelectedModuleData={setSelectedModuleData}
+												selectedModuleData={selectedModuleData}
+											/>
+										</TabPanel>
+									</TabPanels>
+								</Tabs>
+							</Box>
+						)
 					)
-				)
-			}
+				}
 			</Container>
 		</Box>
 	);
