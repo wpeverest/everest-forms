@@ -40,7 +40,7 @@ import { actionTypes } from "./../../../reducers/DashboardReducer";
 
 const ModuleItem = (props) => {
 	/* global _EVF_DASHBOARD_ */
-	const { assetsURL, liveDemoURL, isPro, licensePlan, adminURL } =
+	const { assetsURL, liveDemoURL, isPro, licensePlan, adminURL, upgradeURL } =
 		typeof _EVF_DASHBOARD_ !== "undefined" && _EVF_DASHBOARD_;
 	const [{ upgradeModal }, dispatch] = useContext(DashboardContext);
 	const [requirementFulfilled, setRequirementFulfilled] = useState(false);
@@ -201,8 +201,8 @@ const ModuleItem = (props) => {
 		upgradeModalRef.moduleName = data.name;
 
 		if (!isPro) {
-			upgradeModalRef.type = "pro";
-			upgradeModalRef.enable = true;
+			const plan_upgrade_url = upgradeURL + '&utm_source=dashboard-all-feature&utm_medium=upgrade-plan-button'
+			window.open(plan_upgrade_url,'_blank');
 		} else if (isPro && !licenseActivated) {
 			upgradeModalRef.type = "license";
 			upgradeModalRef.enable = true;
