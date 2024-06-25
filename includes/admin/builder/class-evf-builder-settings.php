@@ -818,7 +818,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					$this->form_data,
 					esc_html__( 'Form submission minimum waiting time (In seconds)', 'everest-forms' ),
 					array(
-						'default'   => '',
+						'default'   => '5',
 						'tooltip'   => esc_html__( 'Enter the minimum time waiting time for form submission.', 'everest-forms' ),
 						'min_value' => 0,
 					)
