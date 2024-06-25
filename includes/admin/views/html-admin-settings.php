@@ -66,7 +66,7 @@ if ( ! $tab_exists ) {
 					<div class="everest-forms-toggle-wrapper">
 						<div class="evf-toggle-section">
 							<span class="everest-forms-toggle-form">
-								<input type="checkbox" name="everest_forms_enable_log" id="everest_forms_enable_log" style="" class="" value="yes">
+								<input type="checkbox" name="everest_forms_enable_log" id="everest-forms-enable-premium-sidebar" style="" class="" value="yes">
 								<span class="slider round"></span>
 							</span>
 						</div>
@@ -91,7 +91,7 @@ if ( ! $tab_exists ) {
 		</div>
 		</div>
 
-		<div class="everest-forms-settings-premium-sidebar">
+		<div class="everest-forms-settings-premium-sidebar" id="everest-forms-settings-premium-sidebar">
 			<?php
 			$allowed_html = array(
 				'h2'  => array(),
@@ -110,7 +110,8 @@ if ( ! $tab_exists ) {
 				<li>Growing library of pre-built form templates</li>
 				<!-- Add other benefits -->
 			</ul>
-			<p>To enjoy all the benefits of Everest Forms Pro...</p>';
+			<p>To enjoy all the benefits of Everest Forms Pro...</p>
+			<a href="https://everestforms.net/pricing/" class="everest-forms-premium-sidebar-button">Get the Everest Forms Pro</a>';
 
 			echo wp_kses( $content, $allowed_html );
 			?>

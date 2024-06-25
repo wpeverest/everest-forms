@@ -32,6 +32,29 @@
 		$(document).on('change click', '#everest_forms_entries_reporting_frequency', handleReportingFrequencyChange);
 	});
 
+	// Function to handle changes in the premium sidebar.
+	$(document).ready(function () {
+		function handlePremiumSidebar() {
+			var isCheckboxChecked = $('#everest-forms-enable-premium-sidebar').is(':checked');
+			localStorage.setItem('isPremiumSidebarEnabled', isCheckboxChecked);
+
+			if (isCheckboxChecked) {
+				$('#everest-forms-settings-premium-sidebar').show();
+			} else {
+				$('#everest-forms-settings-premium-sidebar').hide();
+			}
+		}
+
+		var isPremiumSidebarEnabled = localStorage.getItem('isPremiumSidebarEnabled') === 'true';
+		$('#everest-forms-enable-premium-sidebar').prop('checked', isPremiumSidebarEnabled);
+		handlePremiumSidebar();
+
+		$(document).on('change click', '#everest-forms-enable-premium-sidebar', handlePremiumSidebar);
+	});
+
+
+
+
 
 
 	// Enable Perfect Scrollbar.
