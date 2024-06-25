@@ -1179,7 +1179,7 @@ class EVF_AJAX {
 			$forms_list_table .= '</div>';
 			wp_send_json_success(
 				array(
-					'message'          => esc_html( 'All Forms List', 'everest-forms' ),
+					'message'          => esc_html__( 'All Forms List', 'everest-forms' ),
 					'forms_list_table' => $forms_list_table,
 				)
 			);
@@ -1214,7 +1214,7 @@ class EVF_AJAX {
 			$class_name = 'EVF_Fm_' . ucfirst( trim( str_replace( '-', '', $form_slug ) ) );
 
 			if ( ! class_exists( $class_name ) ) {
-				$except_message = sprintf( '<b><i>%s</i></b> %s', $class_name, esc_html__( 'does not exist.' ) );
+				$except_message = sprintf( '<b><i>%s</i></b> %s', $class_name, esc_html__( 'does not exist.', 'everest-forms' ) );
 				throw new Exception( $except_message );
 			}
 			// Create the instance of class.
@@ -1253,7 +1253,7 @@ class EVF_AJAX {
 		try {
 			check_ajax_referer( 'evf_fm_dismiss_notice_nonce', 'security' );
 
-			$option_id = isset( $_POST['option_id'] ) ? sanitize_text_field( $_POST['option_id'] ) : '';
+			$option_id = isset( $_POST['option_id'] ) ? sanitize_text_field( $_POST['option_id'] ) : ''; //phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 			update_option( $option_id, true );
 
 			wp_send_json_success(
