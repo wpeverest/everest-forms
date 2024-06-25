@@ -1121,7 +1121,7 @@ class EVF_AJAX {
 	 *
 	 * @since 2.0.8
 	 *
-	 * @throws Exception
+	 * @throws Exception If there is an error.
 	 */
 	public static function form_migrator_forms_list() {
 		try {
@@ -1218,7 +1218,7 @@ class EVF_AJAX {
 	 *
 	 * @since 2.0.8
 	 *
-	 * @throws Exception
+	 * @throws Exception If there is an error.
 	 */
 	public static function form_migrator() {
 		try {
@@ -1296,7 +1296,7 @@ class EVF_AJAX {
 	 *
 	 * @since 2.0.8
 	 *
-	 * @throws Exception
+	 * @throws Exception If there is an error.
 	 */
 	public static function form_entry_migrator() {
 		try {
@@ -1590,7 +1590,7 @@ class EVF_AJAX {
 				);
 			}
 
-			$data = ! empty( $_POST['data'] ) ? $_POST['data'] : array();
+			$data = ! empty( $_POST['data'] ) ? $_POST['data'] : array(); //phpcs:ignore
 
 			if ( empty( $data ) ) {
 				wp_send_json_error(
@@ -1601,12 +1601,12 @@ class EVF_AJAX {
 			}
 
 			foreach ( $data as $key => $map_fields ) {
-				if ( $key === count( $data ) - 1 ) {
+				if ( count( $data ) - 1 === $key ) {
 					$map_fields_array['form_id'] = sanitize_text_field( wp_unslash( $map_fields['value'] ) ); //phpcs:ignore
 					continue;
 				}
 
-				if ( $key % 2 != 0 ) {
+				if ( 0 != $key % 2 ) {
 					continue;
 				}
 
