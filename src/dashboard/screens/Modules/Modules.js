@@ -66,7 +66,8 @@ const Modules = () => {
 			.catch((error) => {
 				setError(error.message);
 			});
-	}, [dispatch]);
+	}, [dispatch, tabIndex]);
+
 
 	const filterModules = (modules) => {
 		let filteredModules = modules;
@@ -97,7 +98,8 @@ const Modules = () => {
 
 	useEffect(() => {
 		filterModules(originalModules);
-	}, [tabIndex]);
+	}, [tabIndex, originalModules]);
+
 
 	const handleBulkActions = () => {
 		setIsPerformingBulkAction(true);
@@ -120,11 +122,13 @@ const Modules = () => {
 				});
 			})
 			.finally(() => {
-				setModulesLoaded(false);
 				setIsPerformingBulkAction(false);
 				setSelectedModuleData({});
+				fetchModules();
 			});
 	};
+
+
 
 	const debounceSearch = debounce((val) => {
 		setIsSearching(true);

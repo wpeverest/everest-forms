@@ -147,7 +147,7 @@ const ModuleBody = ({
 
 	const licenseActivation = () => {
 		if( '' === licenseActivationKey ){
-			setLicenseValidationMessage(sprintf(__('Please plugin activation license key','everest-forms')));
+			setLicenseValidationMessage(sprintf(__('Please enter your plugin activation license key','everest-forms')));
 			setLicenseValidationStatus(true);
 		} else if( licenseActivationKey.length < 32 ){
 			setLicenseValidationMessage(sprintf(__('Please enter the valid license key','everest-forms')));

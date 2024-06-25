@@ -281,7 +281,10 @@ const ModuleItem = (props) => {
 					playing={true}
 					width={'100%'}
 					controls
+					onReady={() => setThumbnailVideoLoading(false)}
+					onBufferEnd={() => setThumbnailVideoLoading(false)}
 				/>
+
 				{thumbnailVideoLoading && (
 					<Box
 						position={'absolute'}
@@ -311,13 +314,16 @@ const ModuleItem = (props) => {
 					borderTopStartRadius={10}
 					borderTopEndRadius={10}
 				>
-					<Tooltip label={__('Play Video', 'learning-management-system')}>
+					<Tooltip label={__('Play Video', 'everest-forms')}>
 						<span>
 							<FaPlayCircle
 								color="white"
 								size={50}
 								cursor={'pointer'}
-								onClick={() => setThumbnailVideoPlaying(true)}
+								onClick={() => {
+									setThumbnailVideoPlaying(true);
+									setThumbnailVideoLoading(true);
+								}}
 							/>
 						</span>
 					</Tooltip>
