@@ -797,7 +797,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				*
 				* @since 3.0.1
 				*/
-				echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'Minimum time for form submission', 'everest-forms' ) . '</h4>';
+				echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'Waiting time for form submission', 'everest-forms' ) . '</h4>';
 				everest_forms_panel_field(
 					'toggle',
 					'settings',
