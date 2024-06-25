@@ -86,7 +86,7 @@ class EVF_Background_Process_Import_Entries extends WP_Background_Process {
 		foreach ( $map_fields_array as $value ) {
 			if ( is_array( $value ) ) {
 				if ( isset( $evf_fields[ $value['field_id'] ] ) ) {
-					$key                              = array_search( trim( $value['map_csv_column'] ), $csv_column_title, true );
+					$key                              = array_search( trim( str_replace( '"', '', $value['map_csv_column'] ) ), $csv_column_title, true );
 					$entry_data[ $value['field_id'] ] = array(
 						'id'       => sanitize_text_field( wp_unslash( $value['field_id'] ) ),
 						'type'     => sanitize_text_field( wp_unslash( $evf_fields[ $value['field_id'] ]['type'] ) ),

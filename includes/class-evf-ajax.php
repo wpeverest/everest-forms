@@ -1483,7 +1483,7 @@ class EVF_AJAX {
 
 		if ( ! empty( $csv_header ) ) {
 			foreach ( $csv_header as $value ) {
-				$output .= '<option value="' . $value . '">' . esc_html( $value ) . '</option>';
+				$output .= '<option value="' . esc_attr( $value ) . '">' . esc_html( $value ) . '</option>';
 			}
 		} else {
 			$output .= '<option value="">' . esc_html__( 'No csv fields', 'everest-forms' ) . '</option>';
@@ -1641,7 +1641,7 @@ class EVF_AJAX {
 
 			wp_send_json_success(
 				array(
-					'message'     => 'Entries imported successfully. Please check imported entries.',
+					'message'     => 'Your data is currently being imported in the background. Please check the imported entries shortly.',
 					'entry_link'  => admin_url( 'admin.php?page=evf-entries&form_id=' . $map_fields_array['form_id'] ),
 					'button_text' => 'View Entries',
 				)
