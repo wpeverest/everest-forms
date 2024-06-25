@@ -934,13 +934,13 @@ class EVF_AJAX {
 					break;
 			}
 			/* translators: %s: from address */
-			$subject  = 'Everest Form: ' . sprintf( esc_html__( $subject, 'everest-forms' ) );
+			$subject  = 'Everest Form: ' . sprintf( esc_html( $subject ) );
 			$header   = "Reply-To: {{from}} \r\n";
 			$header  .= 'Content-Type: text/html; charset=UTF-8';
 			$message  = '<div class="everest-forms-message-text">';
 			$message .= '<h3 style="text-align:center; color: #ffc107;">' . esc_html( 'PS. This is just the sample data' ) . '</h3>';
 			$message .= '<p><strong>' . esc_html__( 'Hi there!', 'everest-forms' ) . ' 👋</strong></p>';
-			$message .= '<p>' . esc_html__( 'Let\'s see how your forms performed ' . $evf_summary_duration . '.', 'everest-forms' ) . '</p>';
+			$message .= '<p>' . esc_html( "Let's see how your forms performed " . $evf_summary_duration . '.' ) . '</p>';
 			$message .= '<br/>';
 			$message .= '<p><strong>' . esc_html__( 'Forms Stats', 'everest-forms' ) . '</strong></p>';
 			$message .= '<table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" style="solid #dddddd; display:block;min-width: 100%;border-collapse: collapse;width:100%; display:table; padding-bottom:2rem" class="evf_entries_summary_table">';
@@ -1120,6 +1120,8 @@ class EVF_AJAX {
 	 * Forms list for form migrator.
 	 *
 	 * @since 2.0.8
+	 *
+	 * @throws Exception
 	 */
 	public static function form_migrator_forms_list() {
 		try {
@@ -1158,7 +1160,7 @@ class EVF_AJAX {
 			$forms_list_table  = '<div class="evf-fm-forms-table-wrapper">';
 			$forms_list_table .= '<h4>' . sprintf( '%s %s', esc_html__( 'Import', 'everest-forms' ), $form_instance->name ) . '</h4>';
 			$forms_list_table .= '<table class="evf-fm-forms-table" data-form-slug="' . esc_attr( $form_slug ) . '">';
-			$forms_list_table .= '<tr class="evf-th-title"><th><input id="evf-fm-select-all" type="checkbox" name="fm_select_all_form" /></th><th>' . esc_html__( 'Form	Name', 'everest-forms' ) . '</th><th>' . esc_html__( 'Imported', 'everest-forms' ) . '</th><th>' . esc_html__( 'Action' ) . '</th></tr>';
+			$forms_list_table .= '<tr class="evf-th-title"><th><input id="evf-fm-select-all" type="checkbox" name="fm_select_all_form" /></th><th>' . esc_html__( 'Form	Name', 'everest-forms' ) . '</th><th>' . esc_html__( 'Imported', 'everest-forms' ) . '</th><th>' . esc_html__( 'Action', 'everest-forms' ) . '</th></tr>';
 			$hidden            = '';
 			$imported          = get_option( 'evf_fm_' . $form_slug . '_imported_form_list', array() );
 			foreach ( $forms_list as $form_id => $form_name ) {
@@ -1170,7 +1172,7 @@ class EVF_AJAX {
 					$is_imported   = false;
 					$imported_text = esc_html__( 'No', 'everest-forms' );
 				}
-				$forms_list_table .= '<tr id="evf-fm-row-' . esc_attr( $row ) . '" class="evf-fm-row ' . esc_attr( $hidden ) . '"><td><input class="evf-fm-select-single" type="checkbox" name="fm_select_single_form_' . esc_attr( $form_id ) . '" data-form-id="' . esc_attr( $form_id ) . '" /></td><td>' . esc_html__( $form_name, 'everest-forms' ) . '</td><td><p class="evf-fm-imported" data-form-id="' . esc_attr( $form_id ) . '">' . esc_attr( $imported_text ) . '<p></td>';
+				$forms_list_table .= '<tr id="evf-fm-row-' . esc_attr( $row ) . '" class="evf-fm-row ' . esc_attr( $hidden ) . '"><td><input class="evf-fm-select-single" type="checkbox" name="fm_select_single_form_' . esc_attr( $form_id ) . '" data-form-id="' . esc_attr( $form_id ) . '" /></td><td>' . esc_html( $form_name ) . '</td><td><p class="evf-fm-imported" data-form-id="' . esc_attr( $form_id ) . '">' . esc_attr( $imported_text ) . '<p></td>';
 				$forms_list_table .= '<td>';
 				$forms_list_table .= '<div class="evf-fm-import-actions"><button class="evf-fm-import-single" data-form-id="' . esc_attr( $form_id ) . '">' . esc_html( 'Import Form' ) . '</button>';
 				if ( 'contact-form-7' !== $form_slug ) {
@@ -1215,6 +1217,8 @@ class EVF_AJAX {
 	 * Form migrator.
 	 *
 	 * @since 2.0.8
+	 *
+	 * @throws Exception
 	 */
 	public static function form_migrator() {
 		try {
@@ -1232,7 +1236,7 @@ class EVF_AJAX {
 			$class_name = 'EVF_Fm_' . ucfirst( trim( str_replace( '-', '', $form_slug ) ) );
 
 			if ( ! class_exists( $class_name ) ) {
-				$except_message = sprintf( '<b><i>%s</i></b> %s', $class_name, esc_html__( 'does not exist.' ) );
+				$except_message = sprintf( '<b><i>%s</i></b> %s', $class_name, esc_html__( 'does not exist.', 'everest-forms' ) );
 				throw new Exception( $except_message );
 			}
 			// Create the instance of class.
@@ -1271,7 +1275,7 @@ class EVF_AJAX {
 		try {
 			check_ajax_referer( 'evf_fm_dismiss_notice_nonce', 'security' );
 
-			$option_id = isset( $_POST['option_id'] ) ? sanitize_text_field( $_POST['option_id'] ) : '';
+			$option_id = isset( $_POST['option_id'] ) ? sanitize_text_field( wp_unslash( $_POST['option_id'] ) ) : '';//phpcs:ignore WordPress.Security.
 			update_option( $option_id, true );
 
 			wp_send_json_success(
@@ -1291,6 +1295,8 @@ class EVF_AJAX {
 	 * Form entry migrator.
 	 *
 	 * @since 2.0.8
+	 *
+	 * @throws Exception
 	 */
 	public static function form_entry_migrator() {
 		try {
@@ -1328,7 +1334,7 @@ class EVF_AJAX {
 			$class_name = 'EVF_Fm_' . ucfirst( trim( str_replace( '-', '', $form_slug ) ) );
 
 			if ( ! class_exists( $class_name ) ) {
-				$except_message = sprintf( '<b><i>%s</i></b> %s', $class_name, esc_html__( 'does not exist.' ) );
+				$except_message = sprintf( '<b><i>%s</i></b> %s', $class_name, esc_html__( 'does not exist.', 'everest-forms' ) );
 				throw new Exception( $except_message );
 			}
 			// Create the instance of class.
