@@ -63,12 +63,16 @@ if ( ! $tab_exists ) {
 
 			<div class="everest-forms-settings-container">
 				<div class="everest-forms-settings-main">
-				<label class="everest-forms-sidebar-toggle">
-					<input type="checkbox" class="everest-forms-sidebar-checkbox">
-						<div class="everest-forms-sidebar-toggle-switch">
-							<div class="everest-forms-sidebar-toggle-switch-handle"></div>
+					<div class="everest-forms-toggle-wrapper">
+						<div class="evf-toggle-section">
+							<span class="everest-forms-toggle-form">
+								<input type="checkbox" name="everest_forms_enable_log" id="everest_forms_enable_log" style="" class="" value="yes">
+								<span class="slider round"></span>
+							</span>
 						</div>
-					</label>
+						<span class="everest-forms-toggle-text">Hide Sidebar</span>
+
+					</div>
 				<?php
 					do_action( 'everest_forms_sections_' . $current_tab );
 
