@@ -810,8 +810,64 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						</div>
 								<?php
 						break;
+					case 'input_test_button':
+						$option_value     = $value['value'];
+						$visibility_class = array();
 
-							// Default: run an action.
+						if ( isset( $value['is_visible'] ) ) {
+							$visibility_class[] = $value['is_visible'] ? 'everest-forms-visible' : 'everest-forms-hidden';
+						}
+
+						if ( empty( $option_value ) ) {
+							$option_value = $value['default'];
+						}
+
+						?>
+						<div class="everest-forms-global-settings <?php echo esc_attr( implode( ' ', $visibility_class ) ); ?>">
+								<label for="<?php echo esc_attr( $value['input_id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
+									<div class="everest-forms-global-settings--field forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
+									<input
+										name="<?php echo esc_attr( $value['input_id'] ); ?>"
+										id="<?php echo esc_attr( $value['input_id'] ); ?>"
+										type="<?php echo esc_attr( $value['input_type'] ); ?>"
+										style="<?php echo esc_attr( $value['input_css'] ); ?>"
+										value="<?php echo esc_attr( $option_value ); ?>"
+										class="<?php echo esc_attr( $value['class'] ); ?>"
+										placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
+										<?php
+										if ( ! empty( $value['custom_attributes'] ) && is_array( $value['custom_attributes'] ) ) {
+											foreach ( $value['custom_attributes'] as $attribute => $attribute_value ) {
+												echo esc_attr( $attribute ) . '="' . esc_attr( $attribute_value ) . '"';
+											}
+										}
+										?>
+										/><?php echo esc_html( $value['suffix'] ); ?> <?php echo wp_kses_post( $description ); ?>
+								<?php
+								if ( isset( $value['buttons'] ) && is_array( $value['buttons'] ) ) {
+									foreach ( $value['buttons'] as $button ) {
+										?>
+										<a href="<?php echo esc_url( $button['href'] ); ?>" class="button <?php echo esc_attr( $button['class'] ); ?>"
+										style="<?php echo esc_attr( $value['button_css'] ); ?>"
+										<?php
+										if ( ! empty( $value['custom_attributes'] ) && is_array( $value['custom_attributes'] ) ) {
+											foreach ( $value['custom_attributes'] as $attribute => $attribute_value ) {
+												echo esc_attr( $attribute ) . '="' . esc_attr( $attribute_value ) . '"';
+											}
+										}
+										?>
+										>
+											<?php echo esc_html( $button['title'] ); ?>
+										</a>
+										<?php
+									}
+								}
+								?>
+								<?php echo esc_html( $value['suffix'] ); ?> <?php echo wp_kses_post( $description ); ?>
+								</div>
+								</div>
+							<?php
+						break;
+					// Default: run an action.
 					default:
 						do_action( 'everest_forms_admin_field_' . $value['type'], $value );
 						break;
