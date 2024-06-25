@@ -39,9 +39,9 @@
 			localStorage.setItem('isPremiumSidebarEnabled', isCheckboxChecked);
 
 			if (isCheckboxChecked) {
-				$('#everest-forms-settings-premium-sidebar').show();
+				$('#everest-forms-settings-premium-sidebar').addClass('everest-forms-hidden');
 			} else {
-				$('#everest-forms-settings-premium-sidebar').hide();
+				$('#everest-forms-settings-premium-sidebar').removeClass('everest-forms-hidden');
 			}
 		}
 

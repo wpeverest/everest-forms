@@ -94,6 +94,10 @@ if ( ! $tab_exists ) {
 		<div class="everest-forms-settings-premium-sidebar" id="everest-forms-settings-premium-sidebar">
 			<?php
 			$allowed_html = array(
+				'a'   => array(
+					'href'   => array(),
+					'target' => array(),
+				),
 				'h2'  => array(),
 				'p'   => array(),
 				'h3'  => array(),
