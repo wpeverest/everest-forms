@@ -126,7 +126,7 @@ function evf_create_page( $slug, $option = '', $page_title = '', $page_content =
  */
 function everest_forms_admin_fields( $options ) {
 	if ( ! class_exists( 'EVF_Admin_Settings', false ) ) {
-		include dirname( __FILE__ ) . '/class-evf-admin-settings.php';
+		include __DIR__ . '/class-evf-admin-settings.php';
 	}
 
 	EVF_Admin_Settings::output_fields( $options );
@@ -140,7 +140,7 @@ function everest_forms_admin_fields( $options ) {
  */
 function everest_forms_update_options( $options, $data = null ) {
 	if ( ! class_exists( 'EVF_Admin_Settings', false ) ) {
-		include dirname( __FILE__ ) . '/class-evf-admin-settings.php';
+		include __DIR__ . '/class-evf-admin-settings.php';
 	}
 
 	EVF_Admin_Settings::save_fields( $options, $data );
@@ -156,7 +156,7 @@ function everest_forms_update_options( $options, $data = null ) {
  */
 function everest_forms_settings_get_option( $option_name, $default = '' ) {
 	if ( ! class_exists( 'EVF_Admin_Settings', false ) ) {
-		include dirname( __FILE__ ) . '/class-evf-admin-settings.php';
+		include __DIR__ . '/class-evf-admin-settings.php';
 	}
 
 	return EVF_Admin_Settings::get_option( $option_name, $default );
@@ -351,7 +351,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 					$output .= sprintf( ' <i class="dashicons dashicons-editor-help everest-forms-help-tooltip" title="%s"></i>', esc_attr( $item['tooltip'] ) );
 				}
 				$output .= '</label></span>';
-				$x ++;
+				$x++;
 			}
 			break;
 

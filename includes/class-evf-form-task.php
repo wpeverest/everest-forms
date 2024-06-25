@@ -1452,7 +1452,7 @@ class EVF_Form_Task {
 			session_start();
 			$form_id            = ! empty( $form_data['id'] ) ? $form_data['id'] : 0;
 			$session_key        = 'start_time_' . $form_id;
-			$time_before_submit = $_SESSION[ $session_key ];
+			$time_before_submit = $session_value = isset( $_SESSION[ $session_key ] ) ? esc_html( $_SESSION[ $session_key ] ) : '';
 
 			$form_submission_err_msg = sprintf( esc_html__( 'Please wait few seconds, security checkup is being executed', 'everest-forms' ) );
 

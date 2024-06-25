@@ -1163,9 +1163,7 @@ class EVF_Shortcode_Form {
 	 *  @return $url
 	 */
 	public static function evf_recaptcha_language( $url ) {
-
 		return esc_url_raw( add_query_arg( array( 'hl' => get_option( 'everest_forms_recaptcha_recaptcha_language', 'en-GB' ) ), $url ) );
-
 	}
 
 	/**
