@@ -63,6 +63,12 @@ if ( ! $tab_exists ) {
 
 			<div class="everest-forms-settings-container">
 				<div class="everest-forms-settings-main">
+				<label class="everest-forms-sidebar-toggle">
+					<input type="checkbox" class="everest-forms-sidebar-checkbox">
+						<div class="everest-forms-sidebar-toggle-switch">
+							<div class="everest-forms-sidebar-toggle-switch-handle"></div>
+						</div>
+					</label>
 				<?php
 					do_action( 'everest_forms_sections_' . $current_tab );
 
@@ -77,7 +83,7 @@ if ( ! $tab_exists ) {
 					<?php wp_nonce_field( 'everest-forms-settings' ); ?>
 				</p>
 			</div>
-			
+
 		</div>
 		</div>
 
@@ -105,11 +111,8 @@ if ( ! $tab_exists ) {
 			echo wp_kses( $content, $allowed_html );
 			?>
 
-
-
 			</div>
 
-		
 	<?php if ( 'integration' !== $current_tab ) : ?>
 	</div>
 	</form>
