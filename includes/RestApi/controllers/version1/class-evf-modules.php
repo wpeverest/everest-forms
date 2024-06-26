@@ -611,7 +611,7 @@ class EVF_Modules {
 			);
 			$status      = self::install_individual_addon( $slug, $plugin, $name, $status );
 
-			if ( isset( $status['success'] ) && ! $status['success'] ) {
+			if ( isset( $status['success'] ) && '' === $status['success'] ) {
 				array_push( $failed_addon, $name );
 				continue;
 			}
