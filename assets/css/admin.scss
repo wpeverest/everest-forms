@@ -9928,6 +9928,7 @@
 
 			   &-premium {
 					&-sidebar {
+						position: unset;
 						max-width: 300px;
 						padding: 18px 10px 26px 10px;
 
@@ -9989,6 +9990,35 @@
 									top: 2px;
 								}
 							}
+						}
+
+						a {
+							border-radius: 3px;
+							border: 1px solid #7545BB;
+							background: #7545BB;
+							padding: 10px 16px;
+							display: block;
+							color: #ffffff;
+							font-size: 14px;
+							font-style: normal;
+							font-weight: 500;
+							line-height: 24px;
+							text-decoration: none;
+							letter-spacing: .05px;
+							width: max-content;
+							margin: 20px 0;
+							transition: all .3s;
+
+							&:hover {
+								background: #9159e3;
+								border-color: #9159e3;
+							}
+						}
+
+						&.everest-forms-hidden {
+							position: absolute;
+							z-index: -1;
+							display: unset;
 						}
 					}
 			   }

@@ -115,7 +115,8 @@ if ( ! $tab_exists ) {
 				<!-- Add other benefits -->
 			</ul>
 			<p>To enjoy all the benefits of Everest Forms Pro...</p>
-			<a href="https://everestforms.net/pricing/" class="everest-forms-premium-sidebar-button">Get the Everest Forms Pro</a>';
+			<a href="https://everestforms.net/pricing/" class="everest-forms-premium-sidebar-button">Get the Everest Forms Pro</a>
+			<p>Thank you for choosing Everest Forms 😊</p>';
 
 			echo wp_kses( $content, $allowed_html );
 			?>
