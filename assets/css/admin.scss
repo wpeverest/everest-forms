@@ -9617,6 +9617,24 @@
 						   &--field {
 							   flex: 1;
 
+							   &.forminp-input_test_button {
+									@media screen and (max-width: 782px) {
+										display: flex;
+										flex-direction: column;
+										gap: 12px;
+
+										input[type="email"] {
+											width: 100%;
+											margin-right: 0 !important;
+										}
+
+										.button.everest_forms_send_email_test {
+											margin-bottom: 0;
+											width: max-content;
+										}
+									}
+							   }
+
 							   fieldset {
 								   > label {
 									   font-size: 14px;
