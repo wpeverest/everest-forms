@@ -9306,6 +9306,7 @@
    .everest-forms_page_evf-settings {
 	   .everest-forms {
 		   padding: 20px;
+		   overflow: hidden;
 	   }
    }
    .everest-forms {
@@ -9329,6 +9330,7 @@
 				   padding: 32px 0 20px;
 				   width: 300px;
 				   max-width: 100%;
+				   transition: all .3s;
 
 				   &--top {
 					   text-align: center;
@@ -9506,6 +9508,12 @@
 								   }
 							   }
 						   }
+
+						   .ps__rail {
+								&-x {
+									display: none;	
+								}
+						   }
 					   }
 				   }
 
@@ -9541,7 +9549,7 @@
 			   }
 
 			   .everest-forms-settings-container {
-				   padding: 26px 20px 52px 32px;
+				   padding: 32px 20px 52px 32px;
 				   box-shadow: none;
 
 				   .everest-forms-settings-main {
@@ -9928,9 +9936,10 @@
 
 			   &-premium {
 					&-sidebar {
-						position: unset;
-						max-width: 300px;
+						width: 300px;
+						max-width: 100%;
 						padding: 18px 10px 26px 10px;
+						transition: all .3s;
 
 						h2 {
 							color: #222222;
@@ -10016,8 +10025,7 @@
 						}
 
 						&.everest-forms-hidden {
-							position: absolute;
-							z-index: -1;
+							margin-right: -325px;
 							display: unset;
 						}
 					}
