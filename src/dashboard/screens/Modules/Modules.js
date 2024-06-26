@@ -358,7 +358,18 @@ const Modules = () => {
 								width="60%"
 								borderRadius="10px"
 								fontWeight="bold"
-							>{sprintf(__('Sorry, No modules found','everest-forms'))}</Text>
+							>
+								{(() => {
+									switch (tabIndex) {
+										case 1:
+											return __("Sorry, No features found", "everest-forms");
+										case 2:
+											return __("Sorry, No addons found", "everest-forms");
+										default:
+											return __("Sorry, No modules found", "everest-forms");
+									}
+								})()}
+							</Text>
 						) : (
 							<Box>
 								<Tabs index={tabIndex}>
