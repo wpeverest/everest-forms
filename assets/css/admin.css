@@ -11783,3 +11783,9 @@ everest-forms-field-option-row-rating-icon .everest-forms-rating-icon-container 
     border-color: #7e3bd0; }
     everest-forms-field-option-row-rating-icon .everest-forms-rating-icon-container input:checked + label svg {
       fill: #fff; }
+
+.folded #evf-collapse.open {
+  left: 36px !important; }
+
+.folded #evf-collapse.close {
+  left: 435px !important; }
