@@ -34,10 +34,11 @@
 
 	// Function to handle changes in the premium sidebar.
 	$(document).ready(function () {
+		// Function to handle checkbox change and localStorage
 		function handlePremiumSidebar() {
 			var isCheckboxChecked = $('#everest-forms-enable-premium-sidebar').is(':checked');
 			localStorage.setItem('isPremiumSidebarEnabled', isCheckboxChecked);
-
+			document.cookie = 'isPremiumSidebarEnabled=' + isCheckboxChecked + '; path=/;';
 			if (isCheckboxChecked) {
 				$('#everest-forms-settings-premium-sidebar').addClass('everest-forms-hidden');
 			} else {
@@ -47,10 +48,18 @@
 
 		var isPremiumSidebarEnabled = localStorage.getItem('isPremiumSidebarEnabled') === 'true';
 		$('#everest-forms-enable-premium-sidebar').prop('checked', isPremiumSidebarEnabled);
-		handlePremiumSidebar();
 
-		$(document).on('change click', '#everest-forms-enable-premium-sidebar', handlePremiumSidebar);
+
+		if (isPremiumSidebarEnabled) {
+			$('#everest-forms-settings-premium-sidebar').addClass('everest-forms-hidden');
+		} else {
+			$('#everest-forms-settings-premium-sidebar').removeClass('everest-forms-hidden');
+		}
+		handlePremiumSidebar();
+		$(document).on('change', '#everest-forms-enable-premium-sidebar', handlePremiumSidebar);
 	});
+
+
 
 
 
