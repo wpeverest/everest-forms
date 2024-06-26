@@ -59,6 +59,7 @@ const ModuleItem = (props) => {
 		onCheckedChange,
 		isPerformingBulkAction,
 		selectedModuleData,
+
 	} = props;
 	const toast = useToast();
 	const {
@@ -201,7 +202,7 @@ const ModuleItem = (props) => {
 		upgradeModalRef.moduleName = data.name;
 
 		if (!isPro) {
-			const plan_upgrade_url = upgradeURL + '&utm_source=dashboard-all-feature&utm_medium=upgrade-plan-button'
+			const plan_upgrade_url = upgradeURL + '&utm_source=dashboard-all-feature&utm_medium=dashboard-upgrade-plan'
 			window.open(plan_upgrade_url,'_blank');
 		} else if (isPro && !licenseActivated) {
 			upgradeModalRef.type = "license";
@@ -241,9 +242,6 @@ const ModuleItem = (props) => {
 				position="relative"
 				overflow="visible"
 				opacity={moduleEnabled ? 1 : 0.7}
-				onClick={() => {
-					!moduleEnabled && handleBoxClick();
-				}}
 			>
 
 			<Box
@@ -261,7 +259,7 @@ const ModuleItem = (props) => {
 					borderTopLeftRadius="sm"
 					w="full"
 					onMouseOver={() =>
-							{if (moduleEnabled && demo_video_url) {
+							{if (demo_video_url) {
 								setShowPlayVideoButton(true);
 							}
 						}

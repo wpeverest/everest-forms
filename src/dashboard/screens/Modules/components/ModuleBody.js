@@ -36,6 +36,7 @@ const ModuleBody = ({
 	filteredAddons,
 	setSelectedModuleData,
 	selectedModuleData,
+	setReloadPage
 }) => {
 	/* global _EVF_DASHBOARD_ */
 	const { upgradeURL, licenseActivationURL, licensePlan, isPro } =
@@ -63,8 +64,6 @@ const ModuleBody = ({
 	const [licenseValidationStatus, setLicenseValidationStatus] = useState('');
 
 	const [isLicenseActivation, setLicenseActivation] = useState(false);
-
-	const [reloadPage, setReloadPage] = useState(false);
 
 	const handleCheckedChange = (slug, checked, name, type) => {
 		var selectedModules = { ...selectedModuleData };
@@ -128,13 +127,6 @@ const ModuleBody = ({
 			setUpgradeContent(upgradeContentRef);
 		}
 	}, [upgradeModal]);
-
-	useEffect(() => {
-		if(reloadPage){
-			window.location.reload();
-			setReloadPage(false);
-		}
-	},[reloadPage]);
 
 	const updateUpgradeModal = () => {
 		const upgradeModalRef = { ...upgradeModal };
