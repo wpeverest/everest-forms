@@ -61,8 +61,7 @@ class EVF_Settings_Email extends EVF_Settings_Page {
 				),
 				array(
 					'title'    => esc_html__( 'Enable copies', 'everest-forms' ),
-					'desc'     => esc_html__( 'Enable the use of Cc and Bcc email addresses', 'everest-forms' ),
-					'desc_tip' => esc_html__( 'Email addresses for Cc and Bcc can be applied from the form notification settings.', 'everest-forms' ),
+					'desc'     => esc_html__( 'Email addresses for Cc and Bcc can be applied from the form notification settings.', 'everest-forms' ),
 					'id'       => 'everest_forms_enable_email_copies',
 					'default'  => 'no',
 					'type'     => 'toggle',
@@ -75,7 +74,6 @@ class EVF_Settings_Email extends EVF_Settings_Page {
 					'placeholder' => 'eg. testemail@gmail.com',
 					'input_type'  => 'email',
 					'value'       => get_option( 'everest_forms_email_send_to', '' ) ? esc_attr( get_option( 'everest_forms_email_send_to', '' ) ) : esc_attr( get_bloginfo( 'admin_email' ) ),
-					'desc_tip'    => true,
 					'button_id'   => 'everest_forms_email_test',
 					'type'        => 'input_test_button',
 					'input_css'   => 'margin-right:0.5rem',

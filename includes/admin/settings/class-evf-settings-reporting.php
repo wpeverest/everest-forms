@@ -107,7 +107,6 @@ class EVF_Settings_Reporting extends EVF_Settings_Page {
 					'input_css'   => 'margin-right:0.5rem',
 					'placeholder' => 'eg. testemail@gmail.com',
 					'value'       => ! empty( $evf_summary_email ) ? esc_attr( $evf_summary_email ) : esc_attr( get_bloginfo( 'admin_email' ) ),
-					'desc_tip'    => true,
 					'button_id'   => 'everest_forms_send_routine_report_test_email',
 					'type'        => 'input_test_button',
 					'buttons'     => array(
