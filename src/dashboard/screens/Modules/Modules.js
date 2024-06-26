@@ -48,7 +48,6 @@ const Modules = () => {
 	const [{ allModules }, dispatch] = useContext(DashboardContext);
 	const [searchItem, setSearchItem] = useState('');
 	const [noItemFound, setNoItemFound] = useState(false);
-	const [reloadPage, setReloadPage] = useState(false);
 
 	const fetchModules = useCallback(() => {
 		getAllModules()
@@ -85,7 +84,7 @@ const Modules = () => {
 
 	useEffect(() => {
 		fetchModules();
-	}, [fetchModules, reloadPage]);
+	}, [fetchModules]);
 
 	useEffect(() => {
 		if (error !== null) {
@@ -381,7 +380,6 @@ const Modules = () => {
 												filteredAddons={modules}
 												setSelectedModuleData={setSelectedModuleData}
 												selectedModuleData={selectedModuleData}
-												setReloadPage={setReloadPage}
 											/>
 										</TabPanel>
 										<TabPanel>
