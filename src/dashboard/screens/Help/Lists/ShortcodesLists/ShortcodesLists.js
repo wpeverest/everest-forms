@@ -162,17 +162,27 @@ const ShortcodesLists = ({ setIsListViewerOpen }) => {
 
 	const handleCopyClick = (shortcode_id, event) => {
 		try {
+		  let copiedText = shortcode_id;
+		  if (shortcode_id === "[everest_form]") {
+			copiedText = `[everest_form id=""]`;
+		  } else if (shortcode_id === "[everest_forms_frontend_list]") {
+			copiedText = `[everest_forms_frontend_list id=""]`;
+		  }
+
 		  const textField = document.createElement('textarea');
-		  textField.innerText = shortcode_id;
+		  textField.innerText = copiedText;
 		  document.body.appendChild(textField);
 		  textField.select();
 		  document.execCommand('copy');
 		  textField.remove();
+
 		  onCopy();
+
 		  setShortcodeCopied({
 			...isShortcodeCopied,
 			[shortcode_id]: !isShortcodeCopied[shortcode_id],
-		});
+		  });
+
 		  event.stopPropagation();
 		} catch (error) {
 		  console.error("Error copying shortcode:", error);
