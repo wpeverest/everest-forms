@@ -77,11 +77,15 @@ class EVF_Background_Process_Import_Entries extends WP_Background_Process {
 	 * @param array $data The data to import the entry from.
 	 */
 	public static function import_entry_to_form( $data ) {
-		$map_fields_array = get_option( 'everest_forms_mapping_fields_array' );
-		$csv_column_title = get_option( 'everest_forms_csv_titles' );
-		$evf_fields       = evf_get_form_fields( $map_fields_array['form_id'] );
+		$map_fields_array = get_option( 'everest_forms_mapping_fields_array', array() );
+		$csv_column_title = get_option( 'everest_forms_csv_titles', array() );
+		$evf_fields       = ! empty( $map_fields_array ) ? evf_get_form_fields( $map_fields_array['form_id'] ) : array();
 		$entry_data       = array();
 		$entry            = array();
+
+		if ( empty( $evf_fields ) ) {
+			return;
+		}
 
 		foreach ( $map_fields_array as $value ) {
 			if ( is_array( $value ) ) {
@@ -128,6 +132,7 @@ class EVF_Background_Process_Import_Entries extends WP_Background_Process {
 		global $wpdb;
 
 		$result = $wpdb->insert( $wpdb->prefix . 'evf_entries', $entry );
+
 		if ( is_wp_error( $result ) || ! $result ) {
 			return false;
 		}
@@ -145,5 +150,18 @@ class EVF_Background_Process_Import_Entries extends WP_Background_Process {
 				$wpdb->insert( $wpdb->prefix . 'evf_entrymeta', $entry_meta );
 			}
 		}
+	}
+
+
+	/**
+	 * Complete
+	 *
+	 * Override if applicable, but ensure that the below actions are
+	 * performed, or, call parent::complete().
+	 */
+	protected function complete() {
+		delete_option( 'everest_forms_mapping_fields_array' );
+		delete_option( 'everest_forms_csv_titles' );
+		parent::complete();
 	}
 }

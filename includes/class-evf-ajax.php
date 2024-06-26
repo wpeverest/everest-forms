@@ -940,7 +940,7 @@ class EVF_AJAX {
 			$message  = '<div class="everest-forms-message-text">';
 			$message .= '<h3 style="text-align:center; color: #ffc107;">' . esc_html( 'PS. This is just the sample data' ) . '</h3>';
 			$message .= '<p><strong>' . esc_html__( 'Hi there!', 'everest-forms' ) . ' 👋</strong></p>';
-			$message .= '<p>' . esc_html( "Let's see how your forms performed " . $evf_summary_duration . '.' ) . '</p>';
+			$message .= '<p>' . esc_html__( 'Let\'s see how your forms performed ' . $evf_summary_duration . '.', 'everest-forms' ) . '</p>';
 			$message .= '<br/>';
 			$message .= '<p><strong>' . esc_html__( 'Forms Stats', 'everest-forms' ) . '</strong></p>';
 			$message .= '<table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" style="solid #dddddd; display:block;min-width: 100%;border-collapse: collapse;width:100%; display:table; padding-bottom:2rem" class="evf_entries_summary_table">';
@@ -1172,7 +1172,7 @@ class EVF_AJAX {
 					$is_imported   = false;
 					$imported_text = esc_html__( 'No', 'everest-forms' );
 				}
-				$forms_list_table .= '<tr id="evf-fm-row-' . esc_attr( $row ) . '" class="evf-fm-row ' . esc_attr( $hidden ) . '"><td><input class="evf-fm-select-single" type="checkbox" name="fm_select_single_form_' . esc_attr( $form_id ) . '" data-form-id="' . esc_attr( $form_id ) . '" /></td><td>' . esc_html( $form_name ) . '</td><td><p class="evf-fm-imported" data-form-id="' . esc_attr( $form_id ) . '">' . esc_attr( $imported_text ) . '<p></td>';
+				$forms_list_table .= '<tr id="evf-fm-row-' . esc_attr( $row ) . '" class="evf-fm-row ' . esc_attr( $hidden ) . '"><td><input class="evf-fm-select-single" type="checkbox" name="fm_select_single_form_' . esc_attr( $form_id ) . '" data-form-id="' . esc_attr( $form_id ) . '" /></td><td>' . esc_html__( $form_name, 'everest-forms' ) . '</td><td><p class="evf-fm-imported" data-form-id="' . esc_attr( $form_id ) . '">' . esc_attr( $imported_text ) . '<p></td>';
 				$forms_list_table .= '<td>';
 				$forms_list_table .= '<div class="evf-fm-import-actions"><button class="evf-fm-import-single" data-form-id="' . esc_attr( $form_id ) . '">' . esc_html( 'Import Form' ) . '</button>';
 				if ( 'contact-form-7' !== $form_slug ) {
@@ -1275,7 +1275,7 @@ class EVF_AJAX {
 		try {
 			check_ajax_referer( 'evf_fm_dismiss_notice_nonce', 'security' );
 
-			$option_id = isset( $_POST['option_id'] ) ? sanitize_text_field( wp_unslash( $_POST['option_id'] ) ) : '';//phpcs:ignore WordPress.Security.
+			$option_id = isset( $_POST['option_id'] ) ? sanitize_text_field( wp_unslash( $_POST['option_id'] ) ) : '';//phpcs:ignore
 			update_option( $option_id, true );
 
 			wp_send_json_success(
@@ -1483,7 +1483,7 @@ class EVF_AJAX {
 
 		if ( ! empty( $csv_header ) ) {
 			foreach ( $csv_header as $value ) {
-				$output .= '<option value="' . esc_attr( $value ) . '">' . esc_html( $value ) . '</option>';
+				$output .= '<option value="' . esc_attr( $value ) . '">' . esc_html( str_replace( '"', '', $value ) ) . '</option>';
 			}
 		} else {
 			$output .= '<option value="">' . esc_html__( 'No csv fields', 'everest-forms' ) . '</option>';
@@ -1636,7 +1636,8 @@ class EVF_AJAX {
 				}
 				fclose( $csv_file );
 				unlink( $csv_url );
-				self::$background_process->save()->dispatch();
+				$test = self::$background_process->save()->dispatch();
+				lg( $test );
 			}
 
 			wp_send_json_success(
