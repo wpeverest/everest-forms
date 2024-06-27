@@ -204,12 +204,9 @@ const Modules = () => {
 			case "desc":
 				setData(
 					[...data].sort(
-						(secondAddonInContext, firstAddonInContext) =>
-							secondAddonInContext.title.localeCompare(
-								firstAddonInContext.title
-							)
+					  (firstAddon, secondAddon) => secondAddon.title.localeCompare(firstAddon.title)
 					)
-				);
+				  );
 				break;
 			default:
 				setModulesLoaded(false);
