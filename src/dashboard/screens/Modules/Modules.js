@@ -25,9 +25,7 @@ import {
 } from "./components/modules-api";
 import ModuleBody from "./components/ModuleBody";
 import AddonsSkeleton from "./../../skeleton/AddonsSkeleton/AddonsSkeleton";
-import { useOnType } from "use-ontype";
 import { Search } from "./../../components/Icon/Icon";
-import { isEmpty } from "./../../utils/utils";
 import dashboardReducer, {
 	actionTypes,
 } from "./../../reducers/DashboardReducer";
@@ -68,7 +66,6 @@ const Modules = () => {
 			});
 	}, [dispatch, tabIndex]);
 
-
 	const filterModules = (modules) => {
 		let filteredModules = modules;
 
@@ -100,7 +97,6 @@ const Modules = () => {
 		filterModules(originalModules);
 	}, [tabIndex, originalModules]);
 
-
 	const handleBulkActions = () => {
 		setIsPerformingBulkAction(true);
 
@@ -127,8 +123,6 @@ const Modules = () => {
 				fetchModules();
 			});
 	};
-
-
 
 	const debounceSearch = debounce((val) => {
 		setIsSearching(true);
@@ -210,7 +204,7 @@ const Modules = () => {
 			case "desc":
 				setData(
 					[...data].sort(
-						(firstAddonInContext, secondAddonInContext) =>
+						(secondAddonInContext, firstAddonInContext) =>
 							secondAddonInContext.title.localeCompare(
 								firstAddonInContext.title
 							)
@@ -273,9 +267,21 @@ const Modules = () => {
 							}}
 						>
 							<TabList>
-								<Tab>{__("All Modules", "everest-forms")}</Tab>
-								<Tab>{__("Features", "everest-forms")}</Tab>
-								<Tab>{__("Addons", "everest-forms")}</Tab>
+								<Tab
+									onClick={() => handleSearchInputChange({ target: { value: searchItem } })}
+								>
+									{__("All Modules", "everest-forms")}
+								</Tab>
+								<Tab
+									onClick={() => handleSearchInputChange({ target: { value: searchItem } })}
+								>
+									{__("Features", "everest-forms")}
+								</Tab>
+								<Tab
+									onClick={() => handleSearchInputChange({ target: { value: searchItem } })}
+								>
+									{__("Addons", "everest-forms")}
+								</Tab>
 							</TabList>
 						</Tabs>
 
