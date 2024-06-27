@@ -6,6 +6,10 @@
  * @since   1.0.0
  */
 
+if ( ! session_id() ) {
+	session_start();
+}
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -1442,6 +1446,7 @@ class EVF_Form_Task {
 	 * @param object $form_data   An object containing settings for the form.
 	 */
 	public function form_submission_waiting_time( $errors, $form_data ) {
+
 		$form_submission_waiting_time_enable = isset( $form_data['settings']['form_submission_min_waiting_time'] ) ? $form_data['settings']['form_submission_min_waiting_time'] : '';
 		$submission_duration                 = $form_data['settings']['form_submission_min_waiting_time_input'];
 
@@ -1449,7 +1454,6 @@ class EVF_Form_Task {
 			$atts              = $form_data['id'];
 			$time_after_submit = time();
 
-			session_start();
 			$form_id            = ! empty( $form_data['id'] ) ? $form_data['id'] : 0;
 			$session_key        = 'start_time_' . $form_id;
 			$time_before_submit = isset( $_SESSION[ $session_key ] ) ? esc_html( $_SESSION[ $session_key ] ) : '';
@@ -1463,7 +1467,7 @@ class EVF_Form_Task {
 				)
 			);
 
-			if ( $time_after_submit - $time_before_submit <= $submission_duration ) {
+			if ( $time_after_submit - $time_before_submit <= absint( $submission_duration ) * 100 ) {
 				$errors[ $form_id ]['header'] = $form_submission_err_msg;
 			}
 

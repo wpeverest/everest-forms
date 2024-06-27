@@ -8,6 +8,9 @@
  * @version 1.0.0
  * @since   1.3.2
  */
+if ( ! session_id() ) {
+	session_start();
+}
 
 defined( 'ABSPATH' ) || exit;
 
@@ -850,7 +853,7 @@ class EVF_Shortcode_Form {
 		self::add_custom_css_js( $atts['id'] );
 
 		if ( ! isset( $_SESSION ) && ! empty( $atts ) ) {
-			session_start();
+
 			$session_key              = 'start_time_' . $atts['id'];
 			$_SESSION[ $session_key ] = time();
 		}
