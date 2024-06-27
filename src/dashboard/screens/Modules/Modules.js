@@ -204,12 +204,23 @@ const Modules = () => {
 			case "desc":
 				setData(
 					[...data].sort(
-					  (firstAddon, secondAddon) => secondAddon.title.localeCompare(firstAddon.title)
+					  (firstAddonInContext, secondAddonInContext) => secondAddonInContext.title.localeCompare(firstAddonInContext.title)
 					)
 				  );
 				break;
 			default:
-				setModulesLoaded(false);
+				const sortedData = [...data].sort((firstAddonInContext, secondAddonInContext) => {
+					if ('popular_rank' in firstAddonInContext && 'popular_rank' in secondAddonInContext) {
+					  return firstAddonInContext.popular_rank - secondAddonInContext.popular_rank;
+					} else if ('popular_rank' in firstAddonInContext) {
+					  return -1;
+					} else if ('popular_rank' in secondAddonInContext) {
+					  return 1;
+					} else {
+					  return 0;
+					}
+				  });
+				setData(sortedData);
 		}
 	};
 
