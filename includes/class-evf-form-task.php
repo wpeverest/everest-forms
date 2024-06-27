@@ -1452,9 +1452,16 @@ class EVF_Form_Task {
 			session_start();
 			$form_id            = ! empty( $form_data['id'] ) ? $form_data['id'] : 0;
 			$session_key        = 'start_time_' . $form_id;
-			$time_before_submit = $session_value = isset( $_SESSION[ $session_key ] ) ? esc_html( $_SESSION[ $session_key ] ) : '';
+			$time_before_submit = isset( $_SESSION[ $session_key ] ) ? esc_html( $_SESSION[ $session_key ] ) : '';
 
-			$form_submission_err_msg = sprintf( esc_html__( 'Please wait few seconds, security checkup is being executed', 'everest-forms' ) );
+			$form_submission_err_msg = apply_filters(
+				'everest_forms_minimum_waiting_time_form_submission',
+				sprintf(
+					/* translators: %s - Minimum waiting duration */
+					esc_html__( 'Please wait %s seconds, security checkup is being executed', 'everest-forms' ),
+					$submission_duration
+				)
+			);
 
 			if ( $time_after_submit - $time_before_submit <= $submission_duration ) {
 				$errors[ $form_id ]['header'] = $form_submission_err_msg;
