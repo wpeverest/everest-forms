@@ -65,6 +65,7 @@ class EVF_Form_Task {
 		add_action( 'everest_forms_complete_entry_save', array( $this, 'evf_set_approval_status' ), 10, 2 );
 		add_action( 'admin_init', array( $this, 'evf_admin_approve_entry' ), 10, 2 );
 		add_action( 'admin_init', array( $this, 'evf_admin_deny_entry' ) );
+		add_action( 'everest_forms_after_success_message_display_location', array( $this, 'evf_success_message_display_location' ), 10, 3 );
 	}
 
 	/**
@@ -136,7 +137,6 @@ class EVF_Form_Task {
 			$this->ajax_err         = array();
 			$this->evf_notice_print = false;
 			$logger                 = evf_get_logger();
-
 			// Check nonce for form submission.
 			if ( empty( $_POST[ '_wpnonce' . $form_id ] ) || ! wp_verify_nonce( wp_unslash( sanitize_key( $_POST[ '_wpnonce' . $form_id ] ) ), 'everest-forms_process_submit' ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 				$this->errors[ $form_id ]['header'] = esc_html__( 'We were unable to process your form, please try again.', 'everest-forms' );
@@ -174,7 +174,6 @@ class EVF_Form_Task {
 			// Pre-process/validate hooks and filter. Data is not validated or cleaned yet so use with caution.
 			$entry                      = apply_filters( 'everest_forms_process_before_filter', $entry, $this->form_data );
 			$this->form_data['page_id'] = array_key_exists( 'post_id', $entry ) ? $entry['post_id'] : $form_id;
-
 			$logger->info(
 				__( 'Everest Forms Process Before.', 'everest-forms' ),
 				array( 'source' => 'form-submission' )
@@ -603,7 +602,7 @@ class EVF_Form_Task {
 			$response_data['message_display_location']  = isset( $settings['successful_form_submission_message_display_location'] ) && 'null' !== $settings['successful_form_submission_message_display_location'] ? $settings['successful_form_submission_message_display_location'] : 'hide';
 			$response_data['submission_message_scroll'] = isset( $settings['submission_message_scroll'] ) && 'null' !== $settings['submission_message_scroll'] ? $this->form_data['settings']['submission_message_scroll'] : '1';
 
-			//Sending images required for popup.
+			// Sending images required for popup.
 			if ( 'popup' === $response_data['message_display_location'] ) {
 				$response_data['image_url'] = array(
 					'green_check' => plugins_url( 'assets/images/green-check-success.svg', EVF_PLUGIN_FILE ),
@@ -659,7 +658,8 @@ class EVF_Form_Task {
 			$response_data = apply_filters( 'everest_forms_after_success_ajax_message', $response_data, $this->form_data, $entry );
 			return $response_data;
 		} elseif ( ( 'same' === $this->form_data['settings']['redirect_to'] && empty( $submission_redirection_process ) ) || ( ! empty( $submission_redirection_process ) && 'same_page' == $submission_redirection_process['redirect_to'] ) ) {
-				evf_add_notice( $message, 'success' );
+			$setting_data['message_display_location'] = isset( $settings['successful_form_submission_message_display_location'] ) && 'null' !== $settings['successful_form_submission_message_display_location'] ? $settings['successful_form_submission_message_display_location'] : 'hide';
+			do_action( 'everest_forms_after_success_message_display_location', $setting_data['message_display_location'], $message, $form_id );
 		}
 		$logger->info(
 			'Everest Forms After success Message.',
@@ -709,7 +709,7 @@ class EVF_Form_Task {
 	}
 
 	/**
-	 * Check the sucessful message.
+	 * Check the successful message.
 	 *
 	 * @param bool $status Message status.
 	 * @param int  $form_id Form ID.
@@ -1440,6 +1440,51 @@ class EVF_Form_Task {
 			);
 			$evf_new_token      = array_merge( $evf_admin_entry_approval_token, $evf_approval_token );
 			update_option( 'everest_forms_admin_entry_approval_token', $evf_new_token );
+		}
+	}
+
+	/**
+	 * Display confirmation message in different location as per the option provided in settings.
+	 *
+	 * @param int    $display_location Where message is displayed.
+	 * @param string $message Confirmation message to display.
+	 */
+	public function evf_success_message_display_location( $display_location, $message, $form_id ) {
+
+		// lg( $display_location );
+		if ( 'hide' === $display_location ) {
+			evf_add_notice( $message, 'success' );
+		} elseif ( 'top' === $display_location ) {
+
+			evf_add_notice( $message, 'success' );
+			add_action(
+				'everest_forms_before_template_part',
+				function () {
+					?>
+				<div>top</div>
+					<?php
+				do_action( 'everest_forms_frontend_output_success', $this->form_data );
+
+				}
+			);
+
+		} elseif ( 'bottom' === $display_location ) {
+			evf_add_notice( $message, 'success' );
+			add_action('test_test' , array('EVF_Shortcodes' , 'form'));
+
+			add_action(
+				'everest_forms_after_template_part',
+				function () {
+					?>
+				<div>bottom</div>
+					<?php
+				}
+			);
+			do_action('test_test' );
+
+
+		} elseif ( 'popup' === $display_location ) {
+			evf_add_notice( $message, 'success' );
 		}
 	}
 }
