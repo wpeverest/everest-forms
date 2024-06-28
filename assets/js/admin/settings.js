@@ -307,16 +307,16 @@
 				type: "post",
 				beforeSend: function() {
 					var spinner = '<i class="evf-loading evf-loading-active"></i>';
-					$(".everest_forms_send_email_test")
-						.closest(".everest_forms_send_email_test")
+					$(".everest_forms_send_routine_report_test_email")
+						.closest(".everest_forms_send_routine_report_test_email")
 						.append(spinner);
 					$(".everest-froms-send_test_email_notice").remove();
 				},
 				complete: function(response) {
 					var message_string = "";
 
-					$(".everest_forms_send_email_test")
-						.closest(".everest_forms_send_email_test")
+					$(".everest_forms_send_routine_report_test_email")
+						.closest(".everest_forms_send_routine_report_test_email")
 						.find(".evf-loading")
 						.remove();
 					$(".everest-froms-send_test_email_notice").remove();
