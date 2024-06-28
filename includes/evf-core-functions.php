@@ -5591,5 +5591,5 @@ function evf_get_next_key_array( $arr, $key ) {
 		$next_key = $keys[ $position + 1 ];
 	}
 
-	return isset($next_key) ? $next_key : "";
+	return isset( $next_key ) ? $next_key : "" ;
 }
