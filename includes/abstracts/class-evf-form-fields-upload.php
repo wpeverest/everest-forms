@@ -694,8 +694,12 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 							$output[ $meta_key ][] = esc_url( $file['value'] );
 						} elseif ( 'image-upload' === $field['type'] ) {
 							if ( 'email-html' === $context ) {
-								$output[ $meta_key ][] = sprintf(
-									'<a href="%1$s" rel="noopener noreferrer" target="_blank"><img src="%1$s" style="width:200px;" /></a>',
+								$output[ $meta_key ][] = apply_filters(
+									'everest_forms_image_value',
+									sprintf(
+										'<a href="%1$s" rel="noopener noreferrer" target="_blank"><img src="%1$s" style="width:200px;" /></a>',
+										esc_url( $file['value'] )
+									),
 									esc_url( $file['value'] )
 								);
 							} elseif ( 'entry-single' === $context ) {
