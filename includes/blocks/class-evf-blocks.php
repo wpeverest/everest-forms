@@ -65,7 +65,7 @@ class EVF_Blocks {
 			'everest-forms-shortcode-embed-form',
 			evf()->plugin_url() . '/assets/js/admin/shortcode-form-embed.js',
 			array( 'wp-blocks', 'wp-element', 'wp-i18n', 'wp-components', 'wp-dom-ready', 'wp-edit-post', 'jquery', 'jquery-blockui', 'jquery-ui-sortable', 'jquery-ui-widget', 'jquery-ui-core', 'tooltipster', 'wp-color-picker', 'perfect-scrollbar' ),
-			defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( evf()->plugin_path() . '/assets/js/admin/gutenberg/shortcode-form-embed.js' ) : EVF_VERSION,
+			defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( evf()->plugin_path() . '/assets/js/admin/shortcode-form-embed.js' ) : EVF_VERSION,
 			true
 		);
 		$form_block_data = array(
