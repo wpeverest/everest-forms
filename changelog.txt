@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 3.0.1        - xx-xx-2024
+* Enhancement  - Global Setting Premium Sidebar.
+
 = 3.0.0.1      - 27-05-2024
 * Fix          - Form builder loading when recaptcha is enabled.
 * Tweak        - Captcha name change to math captcha.
