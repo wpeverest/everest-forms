@@ -100,8 +100,8 @@ class EVF_Settings_Reporting extends EVF_Settings_Page {
 					'type'     => 'text',
 				),
 				array(
-					'title'       => esc_html__( 'Send Test Email To', 'everest-forms' ),
-					'desc'        => esc_html__( 'Enter the email address where the test email for the routine summary report will be sent.', 'everest-forms' ),
+					'title'       => esc_html__( 'Send Test Report', 'everest-forms' ),
+					'desc'        => esc_html__( 'Enter the email address to receive the test email for the routine summary report.', 'everest-forms' ),
 					'input_id'    => 'everest_forms_email_send_to',
 					'input_type'  => 'email',
 					'input_css'   => 'margin-right:0.5rem',
