@@ -1637,7 +1637,6 @@ class EVF_AJAX {
 				fclose( $csv_file );
 				unlink( $csv_url );
 				$test = self::$background_process->save()->dispatch();
-				lg( $test );
 			}
 
 			wp_send_json_success(
