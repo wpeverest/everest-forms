@@ -3,7 +3,8 @@
 = 3.0.1        - xx-xx-2024
 * Enhancement  - Global Setting Premium Sidebar.
 * Fix          - Block design all messed up when viewed in block editor.
-* Fix          - Wrong instruction on captcha
+* Fix          - Wrong instruction on captcha.
+* Fix          - Email template on email clone, save and continue forms.
 * Tweak        - Test email input and button design.
 
 = 3.0.0.1      - 27-05-2024
