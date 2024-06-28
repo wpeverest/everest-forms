@@ -32,7 +32,35 @@
 		$(document).on('change click', '#everest_forms_entries_reporting_frequency', handleReportingFrequencyChange);
 	});
 
+	// Function to handle changes in the premium sidebar.
+		$(document).ready(function () {
+			function handlePremiumSidebar() {
+				var isCheckboxChecked = $('#everest-forms-enable-premium-sidebar').is(':checked');
+				localStorage.setItem('isPremiumSidebarEnabled', isCheckboxChecked);
+				document.cookie = 'isPremiumSidebarEnabled=' + isCheckboxChecked + '; path=/;';
+				if (isCheckboxChecked) {
+					$('#everest-forms-settings-premium-sidebar').addClass('everest-forms-hidden');
+					$('.everest-forms-toggle-text').text('Show Sidebar');
+				} else {
+					$('#everest-forms-settings-premium-sidebar').removeClass('everest-forms-hidden');
+					$('.everest-forms-toggle-text').text('Hide Sidebar');
+				}
+			}
 
+			var isPremiumSidebarEnabled = localStorage.getItem('isPremiumSidebarEnabled') === 'true';
+			$('#everest-forms-enable-premium-sidebar').prop('checked', isPremiumSidebarEnabled);
+
+
+			if (isPremiumSidebarEnabled) {
+				$('#everest-forms-settings-premium-sidebar').addClass('everest-forms-hidden');
+				$('.everest-forms-toggle-text').text('Show Sidebar');
+			} else {
+				$('#everest-forms-settings-premium-sidebar').removeClass('everest-forms-hidden');
+				$('.everest-forms-toggle-text').text('Hide Sidebar');
+			}
+			handlePremiumSidebar();
+			$(document).on('change', '#everest-forms-enable-premium-sidebar', handlePremiumSidebar);
+		});
 
 	// Enable Perfect Scrollbar.
 	$( document ).on( 'init_perfect_scrollbar', function() {
