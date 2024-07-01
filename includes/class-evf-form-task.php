@@ -1451,11 +1451,9 @@ class EVF_Form_Task {
 	 */
 	public function evf_success_message_display_location( $display_location, $message, $form_id ) {
 
-		// lg( $display_location );
 		if ( 'hide' === $display_location ) {
 			evf_add_notice( $message, 'success' );
 		} elseif ( 'top' === $display_location ) {
-
 			evf_add_notice( $message, 'success' );
 			add_action(
 				'everest_forms_before_template_part',
@@ -1463,14 +1461,12 @@ class EVF_Form_Task {
 					?>
 				<div>top</div>
 					<?php
-				do_action( 'everest_forms_frontend_output_success', $this->form_data );
 
 				}
 			);
 
 		} elseif ( 'bottom' === $display_location ) {
 			evf_add_notice( $message, 'success' );
-			add_action('test_test' , array('EVF_Shortcodes' , 'form'));
 
 			add_action(
 				'everest_forms_after_template_part',
@@ -1480,8 +1476,6 @@ class EVF_Form_Task {
 					<?php
 				}
 			);
-			do_action('test_test' );
-
 
 		} elseif ( 'popup' === $display_location ) {
 			evf_add_notice( $message, 'success' );
