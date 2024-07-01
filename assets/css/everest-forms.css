@@ -1382,3 +1382,7 @@ span.everest-forms-shortcode-form-embed-dot {
     transform: scale(0.9); }
   100% {
     transform: scale(1); } }
+
+.evf-td-head {
+  background: #f6f7f8;
+  border-bottom: 1px solid #ced4da !important; }
