@@ -284,7 +284,6 @@ abstract class EVF_Admin_Form_Migrator {
 			// Create meta data.
 		if ( $entry_id ) {
 			foreach ( $entry_list as $field ) {
-				error_log( print_r( $field, true ) );
 				$field = apply_filters( 'everest_forms_entry_save_fields', $field, $form_data, $entry_id );
 				// Add only whitelisted fields to entry meta.
 				if ( in_array( $field['type'], array( 'html', 'title' ), true ) ) {

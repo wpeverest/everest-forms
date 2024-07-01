@@ -1,6 +1,7 @@
 == Changelog ==
 
 = 3.0.1        - xx-xx-2024
+  Feature 	   - Import entries in our form using csv file.
 * Enhancement  - Global Setting Premium Sidebar.
 * Fix          - Block design all messed up when viewed in block editor.
 * Fix          - Wrong instruction on captcha.
