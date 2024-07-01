@@ -1,14 +1,14 @@
 == Changelog ==
 
 = 3.0.1        - xx-xx-2024
-  Feature 	   - Import entries in our form using csv file.
+* Feature 	   - Import entries in our form using csv file.
 * Enhancement  - Global Setting Premium Sidebar.
-* Enhancement  - Dashboard page
+* Enhancement  - Dashboard page.
 * Fix          - Block design all messed up when viewed in block editor.
 * Fix          - Wrong instruction on captcha.
 * Fix          - Email template on email clone, save and continue forms.
 * Tweak        - Test email input and button design.
-* Tweak        - Added function to get next key in array
+* Tweak        - Added function to get next key in array.
 
 = 3.0.0.1      - 27-05-2024
 * Fix          - Form builder loading when recaptcha is enabled.

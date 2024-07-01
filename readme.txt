@@ -2,9 +2,9 @@
 Contributors: WPEverest
 Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.2
-Tested up to: 6.5.3
+Tested up to: 6.5.5
 Requires PHP: 7.2
-Stable tag: 3.0.0.1
+Stable tag: 3.0.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -307,6 +307,16 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 
 == Changelog ==
+
+= 3.0.1        - xx-xx-2024
+* Feature 	   - Import entries in our form using csv file.
+* Enhancement  - Global Setting Premium Sidebar.
+* Enhancement  - Dashboard page.
+* Fix          - Block design all messed up when viewed in block editor.
+* Fix          - Wrong instruction on captcha.
+* Fix          - Email template on email clone, save and continue forms.
+* Tweak        - Test email input and button design.
+* Tweak        - Added function to get next key in array.
 
 = 3.0.0.1      - 27-05-2024
 * Fix          - Form builder loading when recaptcha is enabled.
