@@ -51,7 +51,8 @@ const ModuleItem = (props) => {
 	const [thumbnailVideoPlaying, setThumbnailVideoPlaying] = useState(false);
 
 	const [thumbnailVideoLoading, setThumbnailVideoLoading] = useState(true);
-	const { isOpen, onOpen, onClose } = useDisclosure()
+	const { isOpen, onOpen, onClose } = useDisclosure();
+	const [isAddonActivating, setAddonActivated] = useState(false);
 
 	const {
 		data,
@@ -80,8 +81,8 @@ const ModuleItem = (props) => {
 	const [isPerformingAction, setIsPerformingAction] = useState(false);
 	const [moduleSettingsURL, setModuleSettingsURL] = useState('');
 
-
 	const handleModuleAction = () => {
+		setAddonActivated(true);
 		setIsPerformingAction(true);
 
 		if (moduleEnabled) {
@@ -91,6 +92,7 @@ const ModuleItem = (props) => {
 			) {
 				activateModule(slug, name, type)
 					.then((data) => {
+
 						if (data.success) {
 							toast({
 								title: data.message,
@@ -98,6 +100,7 @@ const ModuleItem = (props) => {
 								duration: 3000,
 							});
 							// window.location.reload();
+							setAddonActivated(false);
 							setModuleStatus("active");
 						} else {
 							toast({
@@ -105,6 +108,7 @@ const ModuleItem = (props) => {
 								status: "error",
 								duration: 3000,
 							});
+							setAddonActivated(false);
 							setModuleStatus("not-installed");
 						}
 					})
@@ -118,6 +122,7 @@ const ModuleItem = (props) => {
 					})
 					.finally(() => {
 						setIsPerformingAction(false);
+						setAddonActivated(false);
 					});
 			} else {
 				deactivateModule(slug, type)
@@ -140,6 +145,7 @@ const ModuleItem = (props) => {
 						}
 					})
 					.finally(() => {
+						setAddonActivated(false);
 						setIsPerformingAction(false);
 					});
 			}
@@ -425,13 +431,24 @@ const ModuleItem = (props) => {
 					))
 				  )}
 
-				{(moduleEnabled) && (
-					<Switch
-						isChecked= {'active'=== moduleStatus ? true: false}
-						onChange = {moduleEnabled ? handleModuleAction : handleBoxClick}
-						colorScheme="green"
-					/>
+			{moduleEnabled && (
+			<>
+				{isAddonActivating ? (
+					<Spinner
+					speed='0.50s'
+					emptyColor='gray.200'
+					color='blue.500'
+					size='md'
+				  />
+				) : (
+				<Switch
+					isChecked={moduleStatus === 'active'}
+					onChange={moduleEnabled ? handleModuleAction : handleBoxClick}
+					colorScheme="green"
+				/>
 				)}
+			</>
+			)}
 
 
 				{(!moduleEnabled) &&(

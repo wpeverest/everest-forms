@@ -204,7 +204,7 @@ class EVF_Modules {
 			return new \WP_REST_Response(
 				array(
 					'success' => true,
-					'message' => __( 'Module Activated Successfully', 'everest-forms' ),
+					'message' => __( 'Module activated successfully', 'everest-forms' ),
 				),
 				200
 			);
