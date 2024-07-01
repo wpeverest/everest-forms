@@ -90,7 +90,7 @@
       "name": "Everest Forms Email Templates",
       "image": "extensions-json/sections/images/email-templates.png",
       "excerpt": "Allows you to make email design changes without coding. Powerful customizing panel with live preview helps you customize colors, fonts, spacing, background, alignment and more.",
-      "link": "https://docs.everestforms.net/docs/email-templates/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "link": "https://docs.everestforms.net/docs/email-template/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "23/09/2022",
       "plan": [
         "personal",
@@ -107,7 +107,7 @@
       "name": "Everest Forms Survey, Polls and Quiz",
       "image": "extensions-json/sections/images/survey-polls-quiz.png",
       "excerpt": "Allows you to create an intuitive survey, poll and quiz forms easily. It also provides admin reporting for data-driven decisions and other aditional fields like Likert and Scale Rating.",
-      "link": "https://docs.everestforms.net/docs/surveys-polls-and-quiz/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "link": "https://docs.everestforms.net/docs/survey-polls-and-quiz/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "22/03/2019",
       "plan": [
         "personal",
@@ -379,7 +379,7 @@
       "name": "Everest Forms SMS Notifications",
       "image": "extensions-json/sections/images/sms-notifications.png",
       "excerpt": "Using the Everest Forms SMS Notifications Add-on, you can now easily configure any online form to receive an SMS notification when a form is being submitted.",
-      "link": "https://docs.everestforms.net/docs/sms-notifications/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "link": "https://docs.everestforms.net/docs/sms-notification/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "19/05/2022",
       "plan": [
         "personal",
