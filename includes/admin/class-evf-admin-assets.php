@@ -93,6 +93,7 @@ class EVF_Admin_Assets {
 		wp_register_script( 'chart', evf()->plugin_url() . "/assets/js/admin/chart{$suffix}.js", array(), EVF_VERSION, true );
 		wp_register_script( 'print_this', evf()->plugin_url() . "/assets/js/admin/printThis{$suffix}.min.js", array(), EVF_VERSION, true );
 		wp_register_script( 'progress_bar', evf()->plugin_url() . "/assets/js/admin/progressbar{$suffix}.js", array(), EVF_VERSION, true );
+		wp_register_script( 'evf-import-entries-form-csv', evf()->plugin_url() . '/assets/js/admin/tool-import-entries' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true );
 		wp_localize_script(
 			'evf-file-uploader',
 			'evf_file_uploader',
@@ -280,6 +281,15 @@ class EVF_Admin_Assets {
 			);
 
 			wp_localize_script(
+				'evf-import-entries-form-csv',
+				'evf_import_entries_obj ',
+				array(
+					'ajax_url' => admin_url( 'admin-ajax.php' ),
+					'nonce'    => wp_create_nonce( 'evf-import-entries' ),
+				)
+			);
+
+			wp_localize_script(
 				'everest-forms-admin',
 				'everest_forms_admin_locate',
 				array(
@@ -356,6 +366,7 @@ class EVF_Admin_Assets {
 			wp_enqueue_script( 'random-color' );
 			// wp_enqueue_script( 'chart' ); //for future use.
 			wp_enqueue_script( 'progress_bar' );
+			wp_enqueue_script( 'evf-import-entries-form-csv' );
 			wp_enqueue_script( 'print_this' );
 			wp_localize_script(
 				'everest-forms-survey-polls-quiz-builder',
