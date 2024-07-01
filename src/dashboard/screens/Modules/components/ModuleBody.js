@@ -130,7 +130,7 @@ const ModuleBody = ({
 
 	useEffect(() => {
 		if(reloadPage){
-			window.reload();
+			window.location.reload();
 			setReloadPage(false);
 		}
 	},[reloadPage]);
