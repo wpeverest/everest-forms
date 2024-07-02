@@ -42,8 +42,7 @@
 
 						if ( true === response.success ) {
 							message_string = '';
-							$( '.evf-form-and-csv-upload' ).empty().append( response.data.html );
-
+							$( '.evf-form-and-csv-upload' ).append( response.data.html );
 							$wrapper 		= $( '.evf-map-entries-to-form-wrapper' );
 							$( document ).on( 'click', '.evf-add-clone' , function( e ){
 								e.preventDefault();
@@ -66,7 +65,6 @@
 						}else{
 							message_string = '<div id="message" class="error inline everest-froms-import_notice"><p><strong>' + response.data.message + '</strong></p></div>';
 						}
-
 						$( '.everest-forms-import-entries-wrapper' ).find( 'h3' ).after( message_string );
 					}
 
@@ -105,11 +103,14 @@
 					},
 					success : function ( response ) {
 						$( '.evf_import_entries_btn' ).find( '.evf-loading' ).remove();
+
 						if( true === response.success ) {
-							$( '.evf-form-and-csv-upload' ).empty();
-							message_string = '<div id="message" class="updated inline everest-froms-import_notice"><p><strong>' + response.data.message + '</strong></p></div>';
-							message_string += '<a href="' + response.data.entry_link + '" class="button button-primary" target="_blank">' + response.data.button_text + '</a>'
+							message_string = '<div id="message" class="updated inline everest-froms-import_notice"><p><strong>' + response.data.message + '</strong></p><a href="' + response.data.entry_link + '" class="button button-primary" target="_blank">' + response.data.button_text + '</a></div>';
 							$( '.everest-forms-import-entries-wrapper' ).find( 'h3' ).after( message_string );
+							$( '#everest-forms-import' ).val( '' );
+							$( '#everest-forms-import-csv' ).val('');
+							$('#import-file-name-entry').html('No files selected');
+							$('.evf-map-entries-to-form').remove();
 						}else{
 							message_string += '<div id="message" class="error inline everest-froms-import_notice"><p><strong>' + response.data.message + '</strong></p></div>'
 							$( '.everest-forms-import-entries-wrapper' ).find( 'h3' ).after( message_string );
