@@ -23,6 +23,7 @@ const webpackConfig = {
 		filename: "[name].min.js",
 		libraryTarget: "this"
 	},
+	devtool: NODE_ENV ? false: "source-map",
 	module: {
 		rules: [
 			{
