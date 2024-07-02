@@ -833,6 +833,9 @@ class EVF_Shortcode_Form {
 	 * @param array $atts Attributes.
 	 */
 	public static function output( $atts ) {
+		error_log("here in  EVF_shortcode_form output functoin");
+		// error_log(print_r($atts  , true));
+
 		wp_enqueue_script( 'everest-forms' );
 		wp_enqueue_script( 'everest-forms-survey-polls-quiz-script' );
 

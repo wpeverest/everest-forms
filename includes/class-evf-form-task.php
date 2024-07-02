@@ -1458,7 +1458,11 @@ class EVF_Form_Task {
 			add_action(
 				'everest_forms_before_template_part',
 				function () {
-					?>
+					$atts = array( 'id' => 49 );
+					$a = EVF_Shortcode_Form::output($atts);
+					error_log(print_r($a  , true));
+
+?>
 				<div>top</div>
 					<?php
 

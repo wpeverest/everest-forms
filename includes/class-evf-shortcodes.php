@@ -25,6 +25,7 @@ class EVF_Shortcodes {
 
 		foreach ( $shortcodes as $shortcode => $function ) {
 			add_shortcode( apply_filters( "{$shortcode}_shortcode_tag", $shortcode ), $function );
+			error_log(print_r($function  , true));
 		}
 	}
 
@@ -64,6 +65,8 @@ class EVF_Shortcodes {
 	 * @return string
 	 */
 	public static function form( $atts ) {
+		// error_log(print_r($atts  , true));
+
 		return self::shortcode_wrapper( array( 'EVF_Shortcode_Form', 'output' ), $atts );
 	}
 
