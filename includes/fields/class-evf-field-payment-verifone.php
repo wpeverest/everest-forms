@@ -17,7 +17,7 @@ class EVF_Field_Payment_Verifone extends EVF_Form_Fields {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->name   = esc_html__( '(2Checkout)Verifone', 'everest-forms' );
+		$this->name   = esc_html__( '(Verifone', 'everest-forms' );
 		$this->type   = 'verifone';
 		$this->icon   = 'evf-icon evf-icon-payment';
 		$this->order  = 232;
