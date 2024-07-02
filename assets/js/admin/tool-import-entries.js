@@ -43,6 +43,7 @@
 						if ( true === response.success ) {
 							message_string = '';
 							$( '.evf-form-and-csv-upload' ).append( response.data.html );
+							$( '.publishing-action' ).hide();
 							$wrapper 		= $( '.evf-map-entries-to-form-wrapper' );
 							$( document ).on( 'click', '.evf-add-clone' , function( e ){
 								e.preventDefault();
@@ -110,6 +111,7 @@
 							$( '#everest-forms-import' ).val( '' );
 							$( '#everest-forms-import-csv' ).val('');
 							$('#import-file-name-entry').html('No files selected');
+							$( '.publishing-action' ).show();
 							$('.evf-map-entries-to-form').remove();
 						}else{
 							message_string += '<div id="message" class="error inline everest-froms-import_notice"><p><strong>' + response.data.message + '</strong></p></div>'
