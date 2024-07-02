@@ -9323,6 +9323,25 @@
 					display: flex;
 			   }
 
+			   &-main {
+				&:has(#message) {
+					.everest-forms-toggle-wrapper {
+						top: 76px;
+					}
+				}
+			   }
+
+			   .everest-forms-settings-container {
+					#message {
+						border: 1px solid #e6e6e6;
+						border-left-width: 4px;
+						border-left-color: #00a32a;
+						box-shadow: unset;
+						margin-top: 0;
+						margin-bottom: 20px;
+					}
+				}
+
 			   .everest-forms-header {
 				   display: flex;
 				   flex-direction: column;
