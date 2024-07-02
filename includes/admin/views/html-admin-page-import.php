@@ -30,6 +30,7 @@ defined( 'ABSPATH' ) || exit;
 <div class="everest-forms-import-entries-wrapper">
 	<h3><?php esc_html_e( 'Import Entries', 'everest-forms' ); ?></h3>
 	<div class="evf-form-and-csv-upload">
+		<div class="everest-forms-upload-csv-container">
 		<?php
 			$forms = evf_get_all_forms( false );
 		if ( empty( $forms ) ) {
@@ -67,6 +68,7 @@ defined( 'ABSPATH' ) || exit;
 	<div class="publishing-action">
 		<button type="submit" class="everest-forms-btn everest-forms-btn-primary everest_forms_import_entries" name="everest-forms-import-entries"><?php esc_html_e( 'Map CSV', 'everest-forms' ); ?></button>
 		<?php wp_nonce_field( 'everest_forms_import_nonce', 'everest-forms-import-nonce' ); ?>
+	</div>
 	</div>
 </div>
 </div>
