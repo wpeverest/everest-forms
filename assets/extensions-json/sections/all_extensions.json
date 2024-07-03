@@ -12,7 +12,9 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=ai",
+      "demo_video_url": "2Hs_dwpyJ54"
     },
     {
       "title": "Style Customizer",
@@ -26,7 +28,10 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "",
+      "demo_video_url": "PEK-FBU8gP0",
+      "popular_rank": 1
     },
     {
       "title": "Custom Captcha",
@@ -40,7 +45,10 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "",
+      "demo_video_url": "obScswjZ24Q",
+      "popular_rank": 2
     },
     {
       "title": "Multi Part Forms",
@@ -54,7 +62,10 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "",
+      "demo_video_url": "qVpDzAx-_4A",
+      "popular_rank": 3
     },
     {
       "title": "PDF Form Submission",
@@ -68,7 +79,10 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url" : "admin.php?page=evf-settings&tab=pdf-submission",
+      "demo_video_url": "37CtaxJzYis",
+      "popular_rank": 4
     },
     {
       "title": "Email Templates",
@@ -76,13 +90,16 @@
       "name": "Everest Forms Email Templates",
       "image": "extensions-json/sections/images/email-templates.png",
       "excerpt": "Allows you to make email design changes without coding. Powerful customizing panel with live preview helps you customize colors, fonts, spacing, background, alignment and more.",
-      "link": "https://docs.everestforms.net/docs/email-templates/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "link": "https://docs.everestforms.net/docs/email-template/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "23/09/2022",
       "plan": [
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "",
+      "demo_video_url": "Cp2aL7IkAXc",
+      "popular_rank": 5
     },
     {
       "title": "Survey Polls and Quiz",
@@ -90,13 +107,16 @@
       "name": "Everest Forms Survey, Polls and Quiz",
       "image": "extensions-json/sections/images/survey-polls-quiz.png",
       "excerpt": "Allows you to create an intuitive survey, poll and quiz forms easily. It also provides admin reporting for data-driven decisions and other aditional fields like Likert and Scale Rating.",
-      "link": "https://docs.everestforms.net/docs/surveys-polls-and-quiz/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "link": "https://docs.everestforms.net/docs/survey-polls-and-quiz/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "22/03/2019",
       "plan": [
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "",
+      "demo_video_url": "i1vR-YmaBOg",
+      "popular_rank": 7
     },
     {
       "title": "PayPal Standard",
@@ -110,7 +130,10 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "",
+      "demo_video_url": "pcwPjCt7N2I",
+      "popular_rank": 8
     },
     {
       "title": "Mailchimp",
@@ -124,7 +147,10 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=mailchimp",
+      "demo_video_url": "FhFsHdAIXwE",
+      "popular_rank": 6
     },
     {
       "title": "User Registration",
@@ -138,7 +164,10 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "",
+      "demo_video_url": "MEyuznG2Tok",
+      "popular_rank": 12
     },
     {
       "title": "Google Sheets",
@@ -152,7 +181,10 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=google_sheets",
+      "demo_video_url": "tvS6Y_rNBfs",
+      "popular_rank": 9
     },
     {
       "title": "Save And Continue",
@@ -166,7 +198,10 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "",
+      "demo_video_url": "4xxEi0rSB20",
+      "popular_rank": 11
     },
     {
       "title": "Stripe",
@@ -180,7 +215,10 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=payment",
+      "demo_video_url": "wZXnaxLxdz4",
+      "popular_rank": 14
     },
     {
       "title": "Repeater Fields",
@@ -194,7 +232,10 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "",
+      "demo_video_url": "W2lc02Ge-FU",
+      "popular_rank": 10
     },
     {
       "title": "Geolocation",
@@ -208,7 +249,10 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=geolocation",
+      "demo_video_url": "j02yG57GA20",
+      "popular_rank": 13
     },
     {
       "title": "Form Restriction",
@@ -222,7 +266,10 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "",
+      "demo_video_url": "Q1-dja7m3Sc",
+      "popular_rank": 15
     },
     {
       "title": "Calculations",
@@ -236,7 +283,10 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "",
+      "demo_video_url": "WCsHC7NQ2QQ",
+      "popular_rank": 16
     },
     {
       "title": "ConvertKit",
@@ -250,7 +300,10 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=convertkit",
+      "demo_video_url": "GvqPVCK7Ws8",
+      "popular_rank": 17
     },
     {
       "title": "Post Submissions",
@@ -264,7 +317,10 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "",
+      "demo_video_url": "gTtewu4DpCo",
+      "popular_rank": 18
     },
     {
       "title": "Conversational Forms",
@@ -278,7 +334,10 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "",
+      "demo_video_url": "XO38b8Lp19s",
+      "popular_rank": 21
     },
     {
       "title": "Frontend Listing",
@@ -292,7 +351,10 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "",
+      "demo_video_url": "LBNuyo4lpTY",
+      "popular_rank": 20
     },
     {
       "title": "Zapier",
@@ -306,7 +368,10 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "",
+      "demo_video_url": "t7NRAPZCbYg",
+      "popular_rank": 19
     },
     {
       "title": "SMS Notifications",
@@ -314,13 +379,17 @@
       "name": "Everest Forms SMS Notifications",
       "image": "extensions-json/sections/images/sms-notifications.png",
       "excerpt": "Using the Everest Forms SMS Notifications Add-on, you can now easily configure any online form to receive an SMS notification when a form is being submitted.",
-      "link": "https://docs.everestforms.net/docs/sms-notifications/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "link": "https://docs.everestforms.net/docs/sms-notification/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "19/05/2022",
       "plan": [
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=sms_notifications",
+      "demo_video_url": "tz4UKBX9WxM",
+      "popular_rank": 22
+
     },
     {
       "title": "Cloud Storage",
@@ -334,7 +403,10 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "",
+      "demo_video_url": "yXE4ydYfkic",
+      "popular_rank": 23
     },
     {
       "title": "Coupons",
@@ -348,7 +420,10 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "",
+      "demo_video_url": "GSYQIiyntW0",
+      "popular_rank": 24
     },
     {
       "title": "Sendinblue",
@@ -362,7 +437,10 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=sendinblue",
+      "demo_video_url": "NRRDY1ag6Sk",
+      "popular_rank": 26
     },
     {
       "title": "ActiveCampaign",
@@ -376,7 +454,10 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=activecampaign",
+      "demo_video_url": "6b9q89cUMzE",
+      "popular_rank": 25
     },
     {
       "title": "MailerLite",
@@ -390,7 +471,10 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=mailerlite",
+      "demo_video_url": "CpqVgycDx_8",
+      "popular_rank": 27
     },
     {
       "title": "Advanced Form Analytics",
@@ -404,7 +488,9 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=analytics",
+      "demo_video_url": "BCT7c8EmQfg"
     },
     {
       "title": "Campaign Monitor",
@@ -418,7 +504,10 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=campaign_monitor",
+      "demo_video_url": "GBJMxmCurzw",
+      "popular_rank": 29
     },
     {
       "title": "Hubspot",
@@ -432,7 +521,10 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=hubspot",
+      "demo_video_url": "mOhJkZpBMPY",
+      "popular_rank": 28
     },
     {
       "title": "Salesforce",
@@ -446,7 +538,10 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=salesforce",
+      "demo_video_url": "1VsyUu4NAhk",
+      "popular_rank": 30
     },
     {
       "title": "Pipedrive",
@@ -460,7 +555,10 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=pipedrive",
+      "demo_video_url": "wJPX0EJ2OiI",
+      "popular_rank": 32
     },
     {
       "title": "Authorize.Net",
@@ -474,7 +572,10 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=payment",
+      "demo_video_url": "a5EcKjwWD1A",
+      "popular_rank": 31
     },
     {
       "title": "Constant Contact",
@@ -488,7 +589,10 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=constant_contact",
+      "demo_video_url": "dCeW1GW6-YI",
+      "popular_rank": 33
     },
     {
       "title": "Drip",
@@ -502,7 +606,10 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=drip",
+      "demo_video_url": "ODRxkfX6y9Q",
+      "popular_rank": 35
     },
     {
       "title": "Razorpay",
@@ -516,7 +623,10 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=payment",
+      "demo_video_url": "2Og6b1JXDWs",
+      "popular_rank": 36
     },
     {
       "title": "Zoho",
@@ -530,7 +640,10 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=zoho",
+      "demo_video_url": "sfHFiUIHpg0",
+      "popular_rank": 34
     },
     {
       "title": "GetResponse",
@@ -544,7 +657,10 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=getresponse",
+      "demo_video_url": "Jhq1dOFXV-I",
+      "popular_rank": 37
     }
   ],
   "features": [
@@ -560,7 +676,9 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=trello",
+      "demo_video_url": "9ouI1v9KScY"
     },
     {
       "title": "iContact",
@@ -574,7 +692,9 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=icontact",
+      "demo_video_url": "Lqdh-LujsUA"
     },
     {
       "title": "Woocommerce",
@@ -588,7 +708,9 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "",
+      "demo_video_url": "TeZK82kxiLk"
     },
     {
       "title": "Moosend",
@@ -602,7 +724,9 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=moosend",
+      "demo_video_url": "xeTf9YP9cpM"
     },
     {
       "title": "Mailpoet",
@@ -616,7 +740,9 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=mailpoet",
+      "demo_video_url": "yFf3loV_azY"
     },
     {
       "title": "OnePageCRM",
@@ -630,7 +756,9 @@
         "personal",
         "agency",
         "themegrill agency"
-      ]
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=onepagecrm",
+      "demo_video_url": "42EUj-Dlnr0"
     }
   ]
 }

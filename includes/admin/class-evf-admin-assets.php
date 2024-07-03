@@ -93,6 +93,7 @@ class EVF_Admin_Assets {
 		wp_register_script( 'chart', evf()->plugin_url() . "/assets/js/admin/chart{$suffix}.js", array(), EVF_VERSION, true );
 		wp_register_script( 'print_this', evf()->plugin_url() . "/assets/js/admin/printThis{$suffix}.min.js", array(), EVF_VERSION, true );
 		wp_register_script( 'progress_bar', evf()->plugin_url() . "/assets/js/admin/progressbar{$suffix}.js", array(), EVF_VERSION, true );
+		wp_register_script( 'evf-import-entries-form-csv', evf()->plugin_url() . '/assets/js/admin/tool-import-entries' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true );
 		wp_localize_script(
 			'evf-file-uploader',
 			'evf_file_uploader',
@@ -216,11 +217,11 @@ class EVF_Admin_Assets {
 				'upgrade_integration_url'        => apply_filters( 'everest_forms_upgrade_integration_url', 'https://everestforms.net/pricing/?utm_source=builder-settings&utm_medium=premium-form-settings-popup&utm_campaign=' . evf()->utm_campaign ),
 				'enable_stripe_title'            => esc_html__( 'Please enable Stripe', 'everest-forms' ),
 				'recaptcha_title'                => esc_html__( 'reCaptcha', 'everest-forms' ),
-				'recaptcha_api_key_message'      => esc_html__( 'Please enter a reCaptcha key on Everest Forms>Captcha>reCaptcha.', 'everest-forms' ),
+				'recaptcha_api_key_message'      => esc_html__( 'Please enter a reCaptcha key on Everest Forms>Settings>Captcha>reCaptcha.', 'everest-forms' ),
 				'hcaptcha_title'                 => esc_html__( 'hCaptcha', 'everest-forms' ),
-				'hcaptcha_api_key_message'       => esc_html__( 'Please enter a hCaptcha key on Everest Forms>Captcha>hCaptcha.', 'everest-forms' ),
+				'hcaptcha_api_key_message'       => esc_html__( 'Please enter a hCaptcha key on Everest Forms>Settings>Captcha>hCaptcha.', 'everest-forms' ),
 				'turnstile_title'                => esc_html__( ' Cloudflare Turnstile', 'everest-forms' ),
-				'turnstile_api_key_message'      => esc_html__( 'Please enter a  Cloudflare Turnstile key on Everest Forms>Captcha>Cloudflare Turnstile.', 'everest-forms' ),
+				'turnstile_api_key_message'      => esc_html__( 'Please enter a  Cloudflare Turnstile key on Everest Forms>Settings>Captcha>Cloudflare Turnstile.', 'everest-forms' ),
 				'enable_stripe_message'          => esc_html__( 'Enable Stripe Payment gateway in payments section to use this field.', 'everest-forms' ),
 				'enable_authorize_net_title'     => esc_html__( 'Please enable Authorize.Net', 'everest-forms' ),
 				'enable_authorize_net_message'   => esc_html__( 'Enable Authorize.Net Payment gateway in payments section to use this field.', 'everest-forms' ),
@@ -276,6 +277,15 @@ class EVF_Admin_Assets {
 					'i18n_field_def_value_greater'  => esc_html__( 'Default value is greater than Maximum value.', 'everest-forms' ),
 					'i18n_field_def_value_smaller'  => esc_html__( 'Default value is smaller than Minimum value.', 'everest-forms' ),
 					'i18n_form_export_action_error' => esc_html__( 'Please select a form which you want to export.', 'everest-forms' ),
+				)
+			);
+
+			wp_localize_script(
+				'evf-import-entries-form-csv',
+				'evf_import_entries_obj ',
+				array(
+					'ajax_url' => admin_url( 'admin-ajax.php' ),
+					'nonce'    => wp_create_nonce( 'evf-import-entries' ),
 				)
 			);
 
@@ -356,6 +366,7 @@ class EVF_Admin_Assets {
 			wp_enqueue_script( 'random-color' );
 			// wp_enqueue_script( 'chart' ); //for future use.
 			wp_enqueue_script( 'progress_bar' );
+			wp_enqueue_script( 'evf-import-entries-form-csv' );
 			wp_enqueue_script( 'print_this' );
 			wp_localize_script(
 				'everest-forms-survey-polls-quiz-builder',
