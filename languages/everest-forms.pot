@@ -9,9 +9,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-07-03T05:19:28+00:00\n"
+"POT-Creation-Date: 2024-07-03T12:21:14+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.7.1\n"
+"X-Generator: WP-CLI 2.9.0\n"
 "X-Domain: everest-forms\n"
 
 #. Plugin Name of the plugin
@@ -121,8 +121,8 @@ msgid "Enter text to be displayed as file upload message"
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields-upload.php:506
-#: includes/abstracts/class-evf-form-fields-upload.php:832
-#: includes/abstracts/class-evf-form-fields-upload.php:878
+#: includes/abstracts/class-evf-form-fields-upload.php:864
+#: includes/abstracts/class-evf-form-fields-upload.php:910
 #: includes/admin/form-migrator/class-evf-fm-contactform7.php:769
 msgid "Drop your file here or click here to upload"
 msgid_plural "Drop your files here or click here to upload"
@@ -139,8 +139,8 @@ msgstr ""
 
 #. translators: 1: Number of Files
 #: includes/abstracts/class-evf-form-fields-upload.php:540
-#: includes/abstracts/class-evf-form-fields-upload.php:834
-#: includes/abstracts/class-evf-form-fields-upload.php:880
+#: includes/abstracts/class-evf-form-fields-upload.php:866
+#: includes/abstracts/class-evf-form-fields-upload.php:912
 msgid "You can upload up to %s files."
 msgstr ""
 
@@ -171,14 +171,14 @@ msgstr ""
 msgid "Check this option to store the final uploaded file in the WordPress Media Library"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:735
+#: includes/abstracts/class-evf-form-fields-upload.php:767
 #: includes/abstracts/class-evf-form-fields.php:2123
 #: includes/class-evf-emails.php:463
 #: includes/class-evf-emails.php:579
 msgid "(empty)"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:1066
+#: includes/abstracts/class-evf-form-fields-upload.php:1098
 msgid "Something went wrong while uploading file,Please try again"
 msgstr ""
 
