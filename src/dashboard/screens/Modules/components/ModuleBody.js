@@ -12,8 +12,11 @@ import {
 	ModalFooter,
 	Button,
 	Text,
-	Link,
 	SimpleGrid,
+	Input,
+	Link,
+	VStack,
+	useToast,
 } from "@chakra-ui/react";
 import { sprintf, __ } from "@wordpress/i18n";
 
@@ -26,6 +29,7 @@ import DashboardContext from "./../../../context/DashboardContext";
 import { Lock } from "./../../../components/Icon/Icon";
 import ModuleItem from "./ModuleItem";
 import AddonsSkeleton from "./../../../skeleton/AddonsSkeleton/AddonsSkeleton";
+import { activateLicense } from "./modules-api";
 
 const ModuleBody = ({
 	isPerformingBulkAction,
@@ -44,7 +48,23 @@ const ModuleBody = ({
 		upgradeURL:
 			upgradeURL +
 			"&utm_source=dashboard-addons&utm_medium=upgrade-popup",
+		licenseActivationPlaceholder: __("License key","everest-forms"),
 	});
+
+	const toast = useToast();
+
+	const [licenseActivationKey, setLicenseKey] = useState('');
+	const [licenseActivationValidationMessage, setLicenseValidationMessage] = useState('');
+	const [reloadPage, setReloadPage] = useState(false);
+
+	const handleActivationKeyChange = (event) => {
+		setLicenseKey(event.target.value);
+	};
+
+	const [licenseValidationStatus, setLicenseValidationStatus] = useState('');
+
+	const [isLicenseActivation, setLicenseActivation] = useState(false);
+
 	const handleCheckedChange = (slug, checked, name, type) => {
 		var selectedModules = { ...selectedModuleData };
 
@@ -96,11 +116,10 @@ const ModuleBody = ({
 						__("Activate License", "everest-forms"),
 						upgradeModal.moduleName
 					);
-					upgradeContentRef.buttonText = upgradeContentRef.buttonText =
-						sprintf(
-							__("Activate License", "everest-forms"),
-							upgradeModal.moduleName
-						);
+					upgradeContentRef.licenseActivationPlaceholder = sprintf(
+						__("Enter your license key", "everest-forms"),
+						upgradeModal.moduleName
+					);
 					upgradeContentRef.upgradeURL = licenseActivationURL;
 				}
 
@@ -109,6 +128,13 @@ const ModuleBody = ({
 		}
 	}, [upgradeModal]);
 
+	useEffect(() => {
+		if(reloadPage){
+			window.location.reload();
+			setReloadPage(false);
+		}
+	},[reloadPage]);
+
 	const updateUpgradeModal = () => {
 		const upgradeModalRef = { ...upgradeModal };
 		upgradeModalRef.enable = false;
@@ -116,6 +142,48 @@ const ModuleBody = ({
 			type: actionTypes.GET_UPGRADE_MODAL,
 			upgradeModal: upgradeModalRef,
 		});
+	};
+
+	const licenseActivation = () => {
+		if( '' === licenseActivationKey ){
+			setLicenseValidationMessage(sprintf(__('Please enter your plugin activation license key','everest-forms')));
+			setLicenseValidationStatus(true);
+		} else if( licenseActivationKey.length < 32 ){
+			setLicenseValidationMessage(sprintf(__('Please enter the valid license key','everest-forms')));
+			setLicenseValidationStatus(true);
+		} else {
+			setLicenseValidationMessage('');
+			setLicenseValidationStatus(false);
+			setLicenseActivation(true);
+
+			activateLicense(licenseActivationKey)
+			.then((data) => {
+				setLicenseActivation(true);
+				if (data.code === 200) {
+					toast({
+						title: data.message,
+						status: "success",
+						duration: 3000,
+					});
+					setLicenseActivation(false);
+					setReloadPage(true);
+				} else if( data.code === 400 ) {
+					toast({
+						title: data.message,
+						status: "error",
+						duration: 3000,
+					});
+				}
+			}).catch((e) => {
+					toast({
+						title: e.message,
+						status: "error",
+						duration: 3000,
+					});
+			}).finally(() => {
+				setLicenseActivation(false);
+			});
+		}
 	};
 
 	return (
@@ -151,18 +219,32 @@ const ModuleBody = ({
 								{upgradeContent.body}
 							</Text>
 							<ModalFooter paddingBottom="0px" w="400px">
+							<VStack
+								width="100%"
+							>
+							{isPro && (
+								<Input
+									placeholder={upgradeContent.licenseActivationPlaceholder}
+									onChange={handleActivationKeyChange}
+								/>
+							)}
 								<Button
-									as={Link}
 									colorScheme="primary"
-									href={upgradeContent.upgradeURL}
 									color="white !important"
 									textDecor="none !important"
-									isExternal
-									onClick={updateUpgradeModal}
+									onClick={licenseActivation}
 									w="100%"
+									as={!isPro ? Link : ''}
+									href={!isPro ? upgradeContent.upgradeURL : ''}
+									isExternal
+									isLoading = {isLicenseActivation}
 								>
 									{upgradeContent.buttonText}
 								</Button>
+								{isPro && licenseActivationValidationMessage && (
+									<Text fontSize='md' color='red'>{licenseActivationValidationMessage}</Text>
+								)}
+								</VStack>
 							</ModalFooter>
 						</ModalContent>
 					</Modal>

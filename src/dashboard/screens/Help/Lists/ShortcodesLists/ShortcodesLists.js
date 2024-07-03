@@ -16,8 +16,15 @@ import {
 	Td,
 	Tr,
 	Thead,
+	HStack,
+	IconButton,
+	Tooltip,
+	useClipboard,
+	useToast
 } from "@chakra-ui/react";
 import { __ } from "@wordpress/i18n";
+
+import { CopyIcon } from '@chakra-ui/icons';
 
 /**
  *  Internal Dependencies
@@ -123,6 +130,13 @@ const ShortcodesLists = ({ setIsListViewerOpen }) => {
 	];
 	const [isAccordionOpen, setIsAccordionOpen] = useState({});
 
+	const [isShortcodeCopied, setShortcodeCopied] = useState({});
+
+	const { onCopy, hasCopied } = useClipboard()
+	const [isExampleShortcodeCopied, setIsExampleShortcodeCopied] = useState(false);
+
+	const toast = useToast()
+
 	useEffect(() => {
 		const accordionOpener = { ...isAccordionOpen };
 		ShortcodeList.map((shortcode) => {
@@ -131,12 +145,68 @@ const ShortcodesLists = ({ setIsListViewerOpen }) => {
 		setIsAccordionOpen(accordionOpener);
 	}, []);
 
+	useEffect(() => {
+		const shortcodeAccordion = isShortcodeCopied;
+		ShortcodeList.map((shortcode) => {
+			shortcodeAccordion[shortcode.id] = false;
+		});
+		setShortcodeCopied(shortcodeAccordion);
+	}, [isShortcodeCopied]);
+
 	const handleAccordionToggle = (shortcode_id) => {
 		setIsAccordionOpen({
 			...isAccordionOpen,
 			[shortcode_id]: !isAccordionOpen[shortcode_id],
 		});
 	};
+
+	const handleCopyClick = (shortcode_id, event) => {
+		try {
+		  let copiedText = shortcode_id;
+		  if (shortcode_id === "[everest_form]") {
+			copiedText = `[everest_form id=""]`;
+		  } else if (shortcode_id === "[everest_forms_frontend_list]") {
+			copiedText = `[everest_forms_frontend_list id=""]`;
+		  }
+
+		  const textField = document.createElement('textarea');
+		  textField.innerText = copiedText;
+		  document.body.appendChild(textField);
+		  textField.select();
+		  document.execCommand('copy');
+		  textField.remove();
+
+		  onCopy();
+
+		  setShortcodeCopied({
+			...isShortcodeCopied,
+			[shortcode_id]: !isShortcodeCopied[shortcode_id],
+		  });
+
+		  event.stopPropagation();
+		} catch (error) {
+		  console.error("Error copying shortcode:", error);
+		}
+	  };
+
+	const handleExampleShortcodeCopy = (example_name) => {
+		try {
+			const textField = document.createElement('textarea');
+			textField.innerText = example_name;
+			document.body.appendChild(textField);
+			textField.select();
+			document.execCommand('copy');
+			textField.remove();
+			onCopy();
+			setIsExampleShortcodeCopied(true);
+			event.stopPropagation();
+			setTimeout(() => {
+				setIsExampleShortcodeCopied(false);
+			  }, 1000);
+		  } catch (error) {
+			console.error("Error copying shortcode:", error);
+		  }
+		};
 
 	return (
 		<Stack
@@ -192,11 +262,29 @@ const ShortcodesLists = ({ setIsListViewerOpen }) => {
 							>
 								{shortcode.id}
 							</Box>
-							{isAccordionOpen[shortcode.id] ? (
-								<Minus h="5" w="5" />
-							) : (
-								<Add h="5" w="5" />
-							)}
+							<Box
+								textAlign="right"
+							>
+								<HStack>
+									<IconButton
+										size='md'
+										icon = {<CopyIcon />}
+										onClick={(event) => handleCopyClick(shortcode.id, event)}
+									/>
+									{hasCopied && isShortcodeCopied[shortcode.id] ?
+										<Tooltip
+											hasArrow={true}
+											closeDelay = {2000}
+										>
+										{__('Copied!','everest-forms')}</Tooltip> : ''
+									}
+									{isAccordionOpen[shortcode.id] ? (
+										<Minus h="5" w="5" />
+									) : (
+										<Add h="5" w="5" />
+									)}
+								</HStack>
+							</Box>
 						</AccordionButton>
 						<AccordionPanel
 							pb={4}
@@ -349,7 +437,25 @@ const ShortcodesLists = ({ setIsListViewerOpen }) => {
 															>
 																{example_name}
 															</Box>
-														</Td>
+															</Td>
+															<Td>
+																{example_name =='[everest_forms_user_login redirect_url="sample_page" recaptcha="true"]' &&
+																	<Box>
+																		<IconButton
+																		size='md'
+																		icon = {<CopyIcon />}
+																		onClick={(event) => handleExampleShortcodeCopy(example_name, event)}
+																		/>
+																		{isExampleShortcodeCopied ?
+																			<Tooltip
+																				hasArrow={true}
+																				closeDelay = {1000}
+																			>
+																			{__('Copied!','everest-forms')}</Tooltip> : ''
+																		}
+																	</Box>
+																}
+															</Td>
 													</Tr>
 													<Tr>
 														<Td
