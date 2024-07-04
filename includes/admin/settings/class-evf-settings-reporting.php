@@ -100,27 +100,23 @@ class EVF_Settings_Reporting extends EVF_Settings_Page {
 					'type'     => 'text',
 				),
 				array(
-					'title'       => esc_html__( 'Send Test Email To', 'everest-forms' ),
-					'desc'        => esc_html__( 'Enter email address where test email will be sent.', 'everest-forms' ),
-					'id'          => 'everest_forms_email_send_to',
-					'type'        => 'email',
+					'title'       => esc_html__( 'Send Test Report', 'everest-forms' ),
+					'desc'        => esc_html__( 'Enter the email address to receive the test email for the routine summary report.', 'everest-forms' ),
+					'input_id'    => 'everest_forms_email_send_to',
+					'input_type'  => 'email',
+					'input_css'   => 'margin-right:0.5rem',
 					'placeholder' => 'eg. testemail@gmail.com',
 					'value'       => ! empty( $evf_summary_email ) ? esc_attr( $evf_summary_email ) : esc_attr( get_bloginfo( 'admin_email' ) ),
-					'desc_tip'    => true,
-				),
-				array(
-					'title'    => __( 'Send Test Email', 'everest-forms' ),
-					'desc'     => __( 'Click to send test email.', 'everest-forms' ),
-					'id'       => 'everest_forms_send_routine_report_test_email',
-					'type'     => 'link',
-					'buttons'  => array(
+					'button_id'   => 'everest_forms_send_routine_report_test_email',
+					'type'        => 'input_test_button',
+					'buttons'     => array(
 						array(
 							'title' => __( 'Send Test Email', 'everest-forms' ),
 							'href'  => 'javascript:;',
 							'class' => 'everest_forms_send_routine_report_test_email',
 						),
 					),
-					'desc_tip' => true,
+					'desc_tip'    => true,
 				),
 				array(
 					'title'    => esc_html__( 'Report Form Lists', 'everest-forms' ),
