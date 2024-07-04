@@ -759,6 +759,20 @@
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=onepagecrm",
       "demo_video_url": "42EUj-Dlnr0"
+    },
+    {
+      "title": "Landing Pages",
+      "slug": "everest-forms-landingpages",
+      "name": "Everest Forms- LandingPages",
+      "image": "extensions-json/sections/images/onepagecrm.webp",
+      "excerpt": "OnePageCRM for Everest Forms helps you to easily send Everest Forms entries directly to your OnePageCRM customer relation account.",
+      "link": "https://docs.everestforms.net/docs/landingpages/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
+      "released_date": "20/05/2024",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ]
     }
   ]
 }
