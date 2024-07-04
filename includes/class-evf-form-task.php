@@ -65,7 +65,9 @@ class EVF_Form_Task {
 		add_action( 'everest_forms_complete_entry_save', array( $this, 'evf_set_approval_status' ), 10, 2 );
 		add_action( 'admin_init', array( $this, 'evf_admin_approve_entry' ), 10, 2 );
 		add_action( 'admin_init', array( $this, 'evf_admin_deny_entry' ) );
-		add_action( 'everest_forms_after_success_message_display_location', array( $this, 'evf_success_message_display_location' ), 10, 3 );
+		// add_action( 'everest_forms_after_success_message_display_location', array( $this, 'evf_success_message_display_location' ), 10, 3 );
+		add_action( 'everest_forms_before_template_part' , array($this , 'evf_success_message_display_location') , 10, 5);
+		add_action( 'everest_forms_after_template_part' , array($this , 'evf_success_message_display_location') , 10, 5);
 	}
 
 	/**
@@ -110,7 +112,6 @@ class EVF_Form_Task {
 		if ( ! empty( $this->errors[ $form_id ]['footer'] ) ) {
 			$message .= ' ' . $this->errors[ $form_id ]['footer'];
 		}
-
 		wp_send_json(
 			array(
 				'message' => $message,
@@ -349,8 +350,8 @@ class EVF_Form_Task {
 							}
 						}
 
-						 $recaptcha_verified = true;
-						 break;
+						$recaptcha_verified = true;
+						break;
 					}
 				}
 			}
@@ -659,7 +660,18 @@ class EVF_Form_Task {
 			return $response_data;
 		} elseif ( ( 'same' === $this->form_data['settings']['redirect_to'] && empty( $submission_redirection_process ) ) || ( ! empty( $submission_redirection_process ) && 'same_page' == $submission_redirection_process['redirect_to'] ) ) {
 			$setting_data['message_display_location'] = isset( $settings['successful_form_submission_message_display_location'] ) && 'null' !== $settings['successful_form_submission_message_display_location'] ? $settings['successful_form_submission_message_display_location'] : 'hide';
+
+			// error_log(print_r($this->form_data , true));
+			// error_log(print_r($this->form_fields , true));
+
+			// $atts = array( 'id' => 32 );
+			// EVF_Shortcode_Form::view( $atts );		}
+			evf_add_notice( $message, 'success' );
 			do_action( 'everest_forms_after_success_message_display_location', $setting_data['message_display_location'], $message, $form_id );
+
+			// ?>
+
+			// <?php
 		}
 		$logger->info(
 			'Everest Forms After success Message.',
@@ -1442,43 +1454,118 @@ class EVF_Form_Task {
 			update_option( 'everest_forms_admin_entry_approval_token', $evf_new_token );
 		}
 	}
-
+static $call = 1;
 	/**
 	 * Display confirmation message in different location as per the option provided in settings.
 	 *
-	 * @param int    $display_location Where message is displayed.
+	 * @param int    $display_location where message is displayed.
 	 * @param string $message Confirmation message to display.
 	 */
-	public function evf_success_message_display_location( $display_location, $message, $form_id ) {
+	public function evf_success_message_display_location( $template_name, $template_path,$located , $args , $where) {
+		$display_location = $this->form_data['settings']['successful_form_submission_message_display_location'] ;
+		$settings = $this->form_data['settings'];
+		$message = isset( $settings['successful_form_submission_message'] ) ? $settings['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
+
+		// error_log( print_r( $form_id, true ) );
+
+		// $thm = evf()->form->get($form_id);
+		// error_log( print_r( $thm, true ) );
 
 		if ( 'hide' === $display_location ) {
 			evf_add_notice( $message, 'success' );
 		} elseif ( 'top' === $display_location ) {
-			evf_add_notice( $message, 'success' );
-			add_action(
-				'everest_forms_before_template_part',
-				function () {
-					$atts = array( 'id' => 49 );
-					$a = EVF_Shortcode_Form::output($atts);
-					error_log(print_r($a  , true));
+			
+				// trying method 1:
+						// error_log(print_r($this->form_data , true));
+						// EVF_Shortcode_Form::view( $atts );
 
-?>
-				<div>top</div>
-					<?php
+				// 2:
+						// echo '<form>';
+						// echo '<div class="evf-field-container">';
+						// do_action('everest_forms_frontend_output' , $this->form_data , 'title1234' , 'description' , []);
+						// echo '</form>';
+				//3 :
+				// 	$form_atts = apply_filters( 'everest_forms_frontend_form_atts', $form_atts, $form_data );
+				// 	// Begin to build the output.
+				// 	do_action( 'everest_forms_frontend_output_container_before', $form_data, $form );
 
-				}
-			);
+				// 	printf( '<div class="evf-container %s" id="evf-%d">', esc_attr( $classes ), absint( $form_id ) );
+
+				// 	do_action( 'everest_forms_frontend_output_form_before', $form_data, $form, $errors );
+				// echo '<form ' . evf_html_attributes( $form_atts['id'], $form_atts['class'], $form_atts['data'], $form_atts['atts'] ) . '>';
+				// if ( evf_is_amp() ) {
+				// 	$state = array(
+				// 		'submitting' => false,
+				// 	);
+				// 	printf(
+				// 		'<amp-state id="%s"><script type="application/json">%s</script></amp-state>',
+				// 		self::get_form_amp_state_id( $form_id ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				// 		wp_json_encode( $state )
+				// 	);
+				// }
+				// do_action( 'everest_forms_frontend_output', $form_data, $title, $description, $errors );
+
+				// echo '</form>';
+
+				// 4:
+			// add_action(
+			// 	'everest_forms_before_template_part',
+			// 	function ( $template_name, $template_path, $located, $args  , $form_id) {
+			// 		// this check makes sure form is rendered for success notice only
+					if ( 'notices/success.php' === $template_name ) {
+
+						// error_log(print_r($template_name , true));
+			// 			$atts = array( 'id' => 32  , 'title' => "hello");
+
+			// 	//6:
+			// 			// if(! empty( $form_id ) ){
+							// EVF_Shortcode_Form::view( $atts );
+			// 				$this -> listen_task();
+			// 			// }
+
+			// 	// 5:
+			// 			// do_action('everest_forms_frontend_output' , $this->form_data , 'title1234' , 'description' , []);
+
+
+					}
+			// 	},
+			// 	10,
+			// 	5
+			// );
+
+
+			// 5:
+			$form_id = isset(  $_POST['everest_forms']['id']  ) &&  ! empty( $_POST['everest_forms']['id'] ) ? absint( $_POST['everest_forms']['id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification
+			error_log(print_r($template_name , true));
+
+			// error_log(print_r($this->form_data , true));
+			error_log(print_r($form_id , true));
+			if( 'notices/success.php' === $template_name && 'before_template_part' === $where ){
+				// error_log("here now");
+				// error_log(print_r($template_name , true));
+
+				EVF_Shortcode_Form::output( ['id' => 32] );
+
+			}
+
+			// EVF_Shortcode_Form::view( $atts );
 
 		} elseif ( 'bottom' === $display_location ) {
 			evf_add_notice( $message, 'success' );
+			do_action('everest_forms_frontend_output' , $this->form_data , 'title1234' , 'description' , []);
 
 			add_action(
 				'everest_forms_after_template_part',
-				function () {
-					?>
-				<div>bottom</div>
-					<?php
-				}
+				function ( $template_name, $template_path, $located, $args ) {
+					// this check makes sure form is rendered for success notice only
+					if ( 'notices/success.php' === $template_name ) {
+						?>
+				<div>bottom of message</div>
+						<?php
+					}
+				},
+				10,
+				4
 			);
 
 		} elseif ( 'popup' === $display_location ) {

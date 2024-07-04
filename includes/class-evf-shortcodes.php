@@ -25,7 +25,7 @@ class EVF_Shortcodes {
 
 		foreach ( $shortcodes as $shortcode => $function ) {
 			add_shortcode( apply_filters( "{$shortcode}_shortcode_tag", $shortcode ), $function );
-			error_log(print_r($function  , true));
+			// error_log(print_r($function  , true));
 		}
 	}
 
