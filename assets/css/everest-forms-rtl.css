@@ -136,21 +136,28 @@
 /**
  * Main EverestForms styles
  */
-.everest-forms {
+.everest-forms,
+.wp-block-everest-forms-form-selector {
   /*Everest forms uploader styles.*/
   /**
 	 * Notices.
 	 */ }
   .everest-forms *,
   .everest-forms *::before,
-  .everest-forms *::after {
+  .everest-forms *::after,
+  .wp-block-everest-forms-form-selector *,
+  .wp-block-everest-forms-form-selector *::before,
+  .wp-block-everest-forms-form-selector *::after {
     outline: none;
     box-sizing: border-box; }
-  .everest-forms ul {
+  .everest-forms ul,
+  .wp-block-everest-forms-form-selector ul {
     margin-right: 0; }
-  .everest-forms .blockUI.blockOverlay {
+  .everest-forms .blockUI.blockOverlay,
+  .wp-block-everest-forms-form-selector .blockUI.blockOverlay {
     position: relative; }
-    .everest-forms .blockUI.blockOverlay::before {
+    .everest-forms .blockUI.blockOverlay::before,
+    .wp-block-everest-forms-form-selector .blockUI.blockOverlay::before {
       height: 1em;
       width: 1em;
       display: block;
@@ -166,11 +173,13 @@
       text-align: center;
       font-size: 2em;
       color: rgba(0, 0, 0, 0.75); }
-  .everest-forms .clear {
+  .everest-forms .clear,
+  .wp-block-everest-forms-form-selector .clear {
     height: auto;
     width: auto;
     visibility: visible; }
-  .everest-forms .loader::before {
+  .everest-forms .loader::before,
+  .wp-block-everest-forms-form-selector .loader::before {
     height: 1em;
     width: 1em;
     display: block;
@@ -186,16 +195,20 @@
     text-align: center;
     font-size: 2em;
     color: rgba(0, 0, 0, 0.75); }
-  .everest-forms .evf-container {
+  .everest-forms .evf-container,
+  .wp-block-everest-forms-form-selector .evf-container {
     margin-bottom: 30px; }
-  .everest-forms .everest-forms-progress-bar {
+  .everest-forms .everest-forms-progress-bar,
+  .wp-block-everest-forms-form-selector .everest-forms-progress-bar {
     background: #cdd0d8;
     border-radius: 2px; }
-    .everest-forms .everest-forms-progress-bar .everest-forms-progress-bar-indicator {
+    .everest-forms .everest-forms-progress-bar .everest-forms-progress-bar-indicator,
+    .wp-block-everest-forms-form-selector .everest-forms-progress-bar .everest-forms-progress-bar-indicator {
       height: 4px;
       background: #4bce61;
       border-radius: 2px; }
-  .everest-forms .everest-forms-uploader {
+  .everest-forms .everest-forms-uploader,
+  .wp-block-everest-forms-form-selector .everest-forms-uploader {
     cursor: pointer;
     padding: 20px;
     display: flex;
@@ -204,27 +217,34 @@
     flex-direction: column;
     text-align: center;
     border: 1px dashed #8e98a2; }
-    .everest-forms .everest-forms-uploader span {
+    .everest-forms .everest-forms-uploader span,
+    .wp-block-everest-forms-form-selector .everest-forms-uploader span {
       display: block;
       color: #494d50; }
-      .everest-forms .everest-forms-uploader span.everest-forms-upload-hint {
+      .everest-forms .everest-forms-uploader span.everest-forms-upload-hint,
+      .wp-block-everest-forms-form-selector .everest-forms-uploader span.everest-forms-upload-hint {
         color: #8e98a2;
         font-size: 14px; }
-    .everest-forms .everest-forms-uploader + input.dropzone-input {
+    .everest-forms .everest-forms-uploader + input.dropzone-input,
+    .wp-block-everest-forms-form-selector .everest-forms-uploader + input.dropzone-input {
       display: none; }
-    .everest-forms .everest-forms-uploader .dz-message {
+    .everest-forms .everest-forms-uploader .dz-message,
+    .wp-block-everest-forms-form-selector .everest-forms-uploader .dz-message {
       flex: 0 0 100%;
       width: 100%; }
-      .everest-forms .everest-forms-uploader .dz-message svg {
+      .everest-forms .everest-forms-uploader .dz-message svg,
+      .wp-block-everest-forms-form-selector .everest-forms-uploader .dz-message svg {
         margin-bottom: 10px;
         background: #f6f7f9;
         height: 48px;
         width: 48px;
         padding: 8px;
         border-radius: 4px; }
-      .everest-forms .everest-forms-uploader .dz-message.hide {
+      .everest-forms .everest-forms-uploader .dz-message.hide,
+      .wp-block-everest-forms-form-selector .everest-forms-uploader .dz-message.hide {
         display: none; }
-    .everest-forms .everest-forms-uploader .dz-preview {
+    .everest-forms .everest-forms-uploader .dz-preview,
+    .wp-block-everest-forms-form-selector .everest-forms-uploader .dz-preview {
       flex: 0 0 100%;
       width: 100%;
       display: flex;
@@ -233,7 +253,8 @@
       margin-bottom: 20px;
       border-bottom: 1px solid #e9ebf1;
       padding-bottom: 20px; }
-      .everest-forms .everest-forms-uploader .dz-preview .dz-image {
+      .everest-forms .everest-forms-uploader .dz-preview .dz-image,
+      .wp-block-everest-forms-form-selector .everest-forms-uploader .dz-preview .dz-image {
         width: 64px;
         height: 64px;
         background: #f6f7f9;
@@ -241,39 +262,49 @@
         margin-left: 15px;
         border-radius: 3px;
         overflow: hidden; }
-      .everest-forms .everest-forms-uploader .dz-preview .dz-details {
+      .everest-forms .everest-forms-uploader .dz-preview .dz-details,
+      .wp-block-everest-forms-form-selector .everest-forms-uploader .dz-preview .dz-details {
         text-align: right;
         font-size: 14px;
         flex: 1; }
-        .everest-forms .everest-forms-uploader .dz-preview .dz-details .dz-size {
+        .everest-forms .everest-forms-uploader .dz-preview .dz-details .dz-size,
+        .wp-block-everest-forms-form-selector .everest-forms-uploader .dz-preview .dz-details .dz-size {
           color: #494d50; }
-        .everest-forms .everest-forms-uploader .dz-preview .dz-details .dz-filename span {
+        .everest-forms .everest-forms-uploader .dz-preview .dz-details .dz-filename span,
+        .wp-block-everest-forms-form-selector .everest-forms-uploader .dz-preview .dz-details .dz-filename span {
           color: #8e98a2; }
-      .everest-forms .everest-forms-uploader .dz-preview .dz-progress {
+      .everest-forms .everest-forms-uploader .dz-preview .dz-progress,
+      .wp-block-everest-forms-form-selector .everest-forms-uploader .dz-preview .dz-progress {
         background: #e9ebf1;
         border-radius: 2px;
         height: 4px;
         width: 100%;
         margin-right: 80px;
         order: 4; }
-        .everest-forms .everest-forms-uploader .dz-preview .dz-progress .dz-upload {
+        .everest-forms .everest-forms-uploader .dz-preview .dz-progress .dz-upload,
+        .wp-block-everest-forms-form-selector .everest-forms-uploader .dz-preview .dz-progress .dz-upload {
           background-color: #4bce61;
           border-radius: 2px;
           height: 4px;
           transition: all 0.25s ease 0s; }
-      .everest-forms .everest-forms-uploader .dz-preview .dz-error-message {
+      .everest-forms .everest-forms-uploader .dz-preview .dz-error-message,
+      .wp-block-everest-forms-form-selector .everest-forms-uploader .dz-preview .dz-error-message {
         font-size: 14px;
         flex: 0 0 100%;
         width: 100%;
         text-align: right;
         margin-right: 80px;
         order: 5; }
-        .everest-forms .everest-forms-uploader .dz-preview .dz-error-message span {
+        .everest-forms .everest-forms-uploader .dz-preview .dz-error-message span,
+        .wp-block-everest-forms-form-selector .everest-forms-uploader .dz-preview .dz-error-message span {
           color: #fa5252; }
       .everest-forms .everest-forms-uploader .dz-preview .dz-success-mark,
-      .everest-forms .everest-forms-uploader .dz-preview .dz-error-mark {
+      .everest-forms .everest-forms-uploader .dz-preview .dz-error-mark,
+      .wp-block-everest-forms-form-selector .everest-forms-uploader .dz-preview .dz-success-mark,
+      .wp-block-everest-forms-form-selector .everest-forms-uploader .dz-preview .dz-error-mark {
         display: none; }
-      .everest-forms .everest-forms-uploader .dz-preview .dz-remove {
+      .everest-forms .everest-forms-uploader .dz-preview .dz-remove,
+      .wp-block-everest-forms-form-selector .everest-forms-uploader .dz-preview .dz-remove {
         font-size: 0;
         position: relative;
         height: 28px;
@@ -283,7 +314,9 @@
         order: 3;
         border-radius: 14px;
         border: 2px solid #8e98a2; }
-        .everest-forms .everest-forms-uploader .dz-preview .dz-remove::before, .everest-forms .everest-forms-uploader .dz-preview .dz-remove::after {
+        .everest-forms .everest-forms-uploader .dz-preview .dz-remove::before, .everest-forms .everest-forms-uploader .dz-preview .dz-remove::after,
+        .wp-block-everest-forms-form-selector .everest-forms-uploader .dz-preview .dz-remove::before,
+        .wp-block-everest-forms-form-selector .everest-forms-uploader .dz-preview .dz-remove::after {
           content: "";
           height: 14px;
           width: 2px;
@@ -294,44 +327,58 @@
           right: 0;
           left: 0;
           margin: 0 auto; }
-        .everest-forms .everest-forms-uploader .dz-preview .dz-remove::before {
+        .everest-forms .everest-forms-uploader .dz-preview .dz-remove::before,
+        .wp-block-everest-forms-form-selector .everest-forms-uploader .dz-preview .dz-remove::before {
           transform: translateY(-50%) rotate(-45deg); }
-        .everest-forms .everest-forms-uploader .dz-preview .dz-remove::after {
+        .everest-forms .everest-forms-uploader .dz-preview .dz-remove::after,
+        .wp-block-everest-forms-form-selector .everest-forms-uploader .dz-preview .dz-remove::after {
           transform: translateY(-50%) rotate(45deg); }
-      .everest-forms .everest-forms-uploader .dz-preview.dz-processing .dz-progress {
+      .everest-forms .everest-forms-uploader .dz-preview.dz-processing .dz-progress,
+      .wp-block-everest-forms-form-selector .everest-forms-uploader .dz-preview.dz-processing .dz-progress {
         display: block; }
-      .everest-forms .everest-forms-uploader .dz-preview.dz-complete .dz-progress {
+      .everest-forms .everest-forms-uploader .dz-preview.dz-complete .dz-progress,
+      .wp-block-everest-forms-form-selector .everest-forms-uploader .dz-preview.dz-complete .dz-progress {
         display: none; }
-      .everest-forms .everest-forms-uploader .dz-preview.dz-error .dz-remove {
+      .everest-forms .everest-forms-uploader .dz-preview.dz-error .dz-remove,
+      .wp-block-everest-forms-form-selector .everest-forms-uploader .dz-preview.dz-error .dz-remove {
         border-color: #fa5252; }
-        .everest-forms .everest-forms-uploader .dz-preview.dz-error .dz-remove::before, .everest-forms .everest-forms-uploader .dz-preview.dz-error .dz-remove::after {
+        .everest-forms .everest-forms-uploader .dz-preview.dz-error .dz-remove::before, .everest-forms .everest-forms-uploader .dz-preview.dz-error .dz-remove::after,
+        .wp-block-everest-forms-form-selector .everest-forms-uploader .dz-preview.dz-error .dz-remove::before,
+        .wp-block-everest-forms-form-selector .everest-forms-uploader .dz-preview.dz-error .dz-remove::after {
           background: #fa5252; }
-      .everest-forms .everest-forms-uploader .dz-preview:last-child {
+      .everest-forms .everest-forms-uploader .dz-preview:last-child,
+      .wp-block-everest-forms-form-selector .everest-forms-uploader .dz-preview:last-child {
         border-bottom: 0;
         padding-bottom: 0;
         margin-bottom: 0; }
-  .everest-forms label {
+  .everest-forms label,
+  .wp-block-everest-forms-form-selector label {
     display: block;
     line-height: 1.7;
     margin: 0 0 10px 0;
     color: #494d50;
     font-size: 14px; }
-    .everest-forms label .required {
+    .everest-forms label .required,
+    .wp-block-everest-forms-form-selector label .required {
       color: #fa5252;
       font-weight: 700;
       border: 0 !important;
       text-decoration: none; }
-    .everest-forms label.evf-field-label {
+    .everest-forms label.evf-field-label,
+    .wp-block-everest-forms-form-selector label.evf-field-label {
       font-weight: 600; }
-    .everest-forms label.evf-error {
+    .everest-forms label.evf-error,
+    .wp-block-everest-forms-form-selector label.evf-error {
       color: #fa5252;
       font-weight: 400; }
-    .everest-forms label.everest-forms-field-sublabel {
+    .everest-forms label.everest-forms-field-sublabel,
+    .wp-block-everest-forms-form-selector label.everest-forms-field-sublabel {
       font-size: 12px;
       font-weight: 400;
       line-height: 1.5;
       margin: 0 0 10px 0; }
-    .everest-forms label.evf-privacy-policy-consent-message {
+    .everest-forms label.evf-privacy-policy-consent-message,
+    .wp-block-everest-forms-form-selector label.evf-privacy-policy-consent-message {
       display: inline;
       margin-bottom: 0; }
   .everest-forms input[type="text"],
@@ -353,7 +400,27 @@
   .everest-forms select,
   .everest-forms textarea,
   .everest-forms .StripeElement,
-  .everest-forms canvas.evf-signature-canvas {
+  .everest-forms canvas.evf-signature-canvas,
+  .wp-block-everest-forms-form-selector input[type="text"],
+  .wp-block-everest-forms-form-selector input[type="date"],
+  .wp-block-everest-forms-form-selector input[type="date"],
+  .wp-block-everest-forms-form-selector input[type="datetime-local"],
+  .wp-block-everest-forms-form-selector input[type="email"],
+  .wp-block-everest-forms-form-selector input[type="file"],
+  .wp-block-everest-forms-form-selector input[type="image"],
+  .wp-block-everest-forms-form-selector input[type="month"],
+  .wp-block-everest-forms-form-selector input[type="number"],
+  .wp-block-everest-forms-form-selector input[type="password"],
+  .wp-block-everest-forms-form-selector input[type="range"],
+  .wp-block-everest-forms-form-selector input[type="search"],
+  .wp-block-everest-forms-form-selector input[type="tel"],
+  .wp-block-everest-forms-form-selector input[type="time"],
+  .wp-block-everest-forms-form-selector input[type="url"],
+  .wp-block-everest-forms-form-selector input[type="week"],
+  .wp-block-everest-forms-form-selector select,
+  .wp-block-everest-forms-form-selector textarea,
+  .wp-block-everest-forms-form-selector .StripeElement,
+  .wp-block-everest-forms-form-selector canvas.evf-signature-canvas {
     width: 100%;
     height: auto;
     font-size: 14px;
@@ -367,211 +434,361 @@
     margin-left: 0; }
   .everest-forms input[type="checkbox"]::after, .everest-forms input[type="checkbox"]::before,
   .everest-forms input[type="radio"]::after,
-  .everest-forms input[type="radio"]::before {
+  .everest-forms input[type="radio"]::before,
+  .wp-block-everest-forms-form-selector input[type="checkbox"]::after,
+  .wp-block-everest-forms-form-selector input[type="checkbox"]::before,
+  .wp-block-everest-forms-form-selector input[type="radio"]::after,
+  .wp-block-everest-forms-form-selector input[type="radio"]::before {
     display: none; }
   .everest-forms input[type="checkbox"]:checked::before,
-  .everest-forms input[type="radio"]:checked::before {
+  .everest-forms input[type="radio"]:checked::before,
+  .wp-block-everest-forms-form-selector input[type="checkbox"]:checked::before,
+  .wp-block-everest-forms-form-selector input[type="radio"]:checked::before {
     display: none; }
-  .everest-forms select {
+  .everest-forms select,
+  .wp-block-everest-forms-form-selector select {
     background-image: none; }
-  .everest-forms .select2-container {
+  .everest-forms .select2-container,
+  .wp-block-everest-forms-form-selector .select2-container {
     margin-bottom: 10px; }
-    .everest-forms .select2-container .select2-selection.select2-selection--single {
+    .everest-forms .select2-container .select2-selection.select2-selection--single,
+    .wp-block-everest-forms-form-selector .select2-container .select2-selection.select2-selection--single {
       height: auto; }
-    .everest-forms .select2-container .select2-selection.select2-selection--multiple .select2-selection__rendered {
+    .everest-forms .select2-container .select2-selection.select2-selection--multiple .select2-selection__rendered,
+    .wp-block-everest-forms-form-selector .select2-container .select2-selection.select2-selection--multiple .select2-selection__rendered {
       display: block; }
-      .everest-forms .select2-container .select2-selection.select2-selection--multiple .select2-selection__rendered li {
+      .everest-forms .select2-container .select2-selection.select2-selection--multiple .select2-selection__rendered li,
+      .wp-block-everest-forms-form-selector .select2-container .select2-selection.select2-selection--multiple .select2-selection__rendered li {
         margin: 4px 0; }
-        .everest-forms .select2-container .select2-selection.select2-selection--multiple .select2-selection__rendered li .select2-search__field {
+        .everest-forms .select2-container .select2-selection.select2-selection--multiple .select2-selection__rendered li .select2-search__field,
+        .wp-block-everest-forms-form-selector .select2-container .select2-selection.select2-selection--multiple .select2-selection__rendered li .select2-search__field {
           padding-right: 4px; }
-      .everest-forms .select2-container .select2-selection.select2-selection--multiple .select2-selection__rendered .select2-selection__choice {
+      .everest-forms .select2-container .select2-selection.select2-selection--multiple .select2-selection__rendered .select2-selection__choice,
+      .wp-block-everest-forms-form-selector .select2-container .select2-selection.select2-selection--multiple .select2-selection__rendered .select2-selection__choice {
         margin-left: 4px; }
   .everest-forms input:focus,
-  .everest-forms textarea:focus {
+  .everest-forms textarea:focus,
+  .wp-block-everest-forms-form-selector input:focus,
+  .wp-block-everest-forms-form-selector textarea:focus {
     outline: none;
     border: 1px solid #0095ff; }
-  .everest-forms .everest-form::after {
+  .everest-forms .everest-form::after,
+  .wp-block-everest-forms-form-selector .everest-form::after {
     content: "";
     clear: both;
     display: table; }
-  .everest-forms .everest-forms-field-row::before, .everest-forms .everest-forms-field-row::after {
+  .everest-forms .everest-forms-field-row::before, .everest-forms .everest-forms-field-row::after,
+  .wp-block-everest-forms-form-selector .everest-forms-field-row::before,
+  .wp-block-everest-forms-form-selector .everest-forms-field-row::after {
     content: "";
     clear: both;
     display: table; }
-  .everest-forms .everest-forms-field-row:last-child .everest-forms-field-sublabel {
+  .everest-forms .everest-forms-field-row:last-child .everest-forms-field-sublabel,
+  .wp-block-everest-forms-form-selector .everest-forms-field-row:last-child .everest-forms-field-sublabel {
     margin-bottom: 0; }
-  .everest-forms .evf-title-container .everest-forms--title {
+  .everest-forms .evf-title-container .everest-forms--title,
+  .wp-block-everest-forms-form-selector .evf-title-container .everest-forms--title {
     font-size: 26px;
     margin: 0 0 10px 0; }
-  .everest-forms .evf-title-container .everest-forms--description {
+  .everest-forms .evf-title-container .everest-forms--description,
+  .wp-block-everest-forms-form-selector .evf-title-container .everest-forms--description {
     margin: 0 0 10px 0; }
   .everest-forms .evf-field-container,
   .everest-forms .evf-honeypot-container,
-  .everest-forms .evf-submit-container {
+  .everest-forms .evf-submit-container,
+  .wp-block-everest-forms-form-selector .evf-field-container,
+  .wp-block-everest-forms-form-selector .evf-honeypot-container,
+  .wp-block-everest-forms-form-selector .evf-submit-container {
     padding-right: 15px;
     padding-left: 15px; }
-  .everest-forms .evf-field-container .evf-frontend-row:not(.wp-list-table) {
+  .everest-forms .evf-field-container .evf-frontend-row:not(.wp-list-table),
+  .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row:not(.wp-list-table) {
     display: flex;
     flex-wrap: wrap;
     margin-right: -15px;
     margin-left: -15px; }
-    .everest-forms .evf-field-container .evf-frontend-row:not(.wp-list-table) select {
+    .everest-forms .evf-field-container .evf-frontend-row:not(.wp-list-table) select,
+    .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row:not(.wp-list-table) select {
       appearance: menulist; }
-  .everest-forms .evf-field-container .evf-frontend-row .everest-forms-one-half {
+  .everest-forms .evf-field-container .evf-frontend-row .everest-forms-one-half,
+  .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .everest-forms-one-half {
     width: 48%;
     float: right;
     margin-right: 4%; }
-    .everest-forms .evf-field-container .evf-frontend-row .everest-forms-one-half:first-child {
+    .everest-forms .evf-field-container .evf-frontend-row .everest-forms-one-half:first-child,
+    .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .everest-forms-one-half:first-child {
       margin-right: 0; }
-  .everest-forms .evf-field-container .evf-frontend-row .everest-forms-first {
+  .everest-forms .evf-field-container .evf-frontend-row .everest-forms-first,
+  .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .everest-forms-first {
     margin-right: 0; }
-  .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid {
+  .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid,
+  .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid {
     width: 100%;
     padding-right: 15px;
     padding-left: 15px; }
-    .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field {
+    .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field,
+    .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field {
       display: block;
       margin-bottom: 10px; }
-      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-hidden {
+      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-hidden,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-hidden {
         display: none; }
       .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field .evf-label-hide,
-      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field .everest-forms-sublabel-hide {
+      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field .everest-forms-sublabel-hide,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field .evf-label-hide,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field .everest-forms-sublabel-hide {
         display: none; }
-      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field .validate-required canvas.evf-signature-canvas {
+      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field .validate-required canvas.evf-signature-canvas,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field .validate-required canvas.evf-signature-canvas {
         border-color: #fa5252; }
-      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field ul:not(.select2-selection__rendered) {
+      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field ul:not(.select2-selection__rendered),
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field ul:not(.select2-selection__rendered) {
         margin-bottom: 10px;
         padding: 0;
         list-style: none; }
-        .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field ul:not(.select2-selection__rendered) li {
+        .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field ul:not(.select2-selection__rendered) li,
+        .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field ul:not(.select2-selection__rendered) li {
           margin: 0;
           display: block; }
           .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field ul:not(.select2-selection__rendered) li label,
-          .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field ul:not(.select2-selection__rendered) li input {
+          .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field ul:not(.select2-selection__rendered) li input,
+          .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field ul:not(.select2-selection__rendered) li label,
+          .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field ul:not(.select2-selection__rendered) li input {
             margin: 0; }
           .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field ul:not(.select2-selection__rendered) li input[type="checkbox"],
-          .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field ul:not(.select2-selection__rendered) li input[type="radio"] {
+          .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field ul:not(.select2-selection__rendered) li input[type="radio"],
+          .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field ul:not(.select2-selection__rendered) li input[type="checkbox"],
+          .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field ul:not(.select2-selection__rendered) li input[type="radio"] {
             padding: 0;
             margin-top: 4px;
             margin-left: 8px;
             width: 20px; }
-      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-title h3 {
+      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-title h3,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-title h3 {
         margin: 25px 0;
         font-size: 16px;
         line-height: 1.5; }
-      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.everest-forms-invalid > label {
+      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.everest-forms-invalid > label,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.everest-forms-invalid > label {
         color: #fa5252; }
       .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.everest-forms-invalid .select2-container,
       .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.everest-forms-invalid input.evf-error,
       .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.everest-forms-invalid select.evf-error,
       .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.everest-forms-invalid textarea,
-      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.everest-forms-invalid .evf-signature-canvas {
+      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.everest-forms-invalid .evf-signature-canvas,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.everest-forms-invalid .select2-container,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.everest-forms-invalid input.evf-error,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.everest-forms-invalid select.evf-error,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.everest-forms-invalid textarea,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.everest-forms-invalid .evf-signature-canvas {
         border-color: #fa5252; }
-      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.everest-forms-invalid input.evf-error {
+      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.everest-forms-invalid input.evf-error,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.everest-forms-invalid input.evf-error {
         border-color: #fa5252; }
-        .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.everest-forms-invalid input.evf-error ~ .everest-forms-field-sublabel {
+        .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.everest-forms-invalid input.evf-error ~ .everest-forms-field-sublabel,
+        .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.everest-forms-invalid input.evf-error ~ .everest-forms-field-sublabel {
           color: #fa5252; }
       .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.everest-forms-validated select,
       .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.everest-forms-validated textarea,
       .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.everest-forms-validated input.input-text,
       .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.everest-forms-validated .select2-container,
-      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.everest-forms-validated .evf-signature-canvas {
+      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.everest-forms-validated .evf-signature-canvas,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.everest-forms-validated select,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.everest-forms-validated textarea,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.everest-forms-validated input.input-text,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.everest-forms-validated .select2-container,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.everest-forms-validated .evf-signature-canvas {
         border-color: #4bce61; }
-      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field ::-webkit-input-placeholder {
+      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field ::-webkit-input-placeholder,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field ::-webkit-input-placeholder {
         line-height: normal; }
-      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field :-moz-placeholder {
+      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field :-moz-placeholder,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field :-moz-placeholder {
         line-height: normal; }
-      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field :-ms-input-placeholder {
+      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field :-ms-input-placeholder,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field :-ms-input-placeholder {
         line-height: normal; }
-      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio ul li, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox ul li, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple ul li, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox ul li {
+      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio ul li, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox ul li, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple ul li, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox ul li,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio ul li,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox ul li,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple ul li,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox ul li {
         display: flex;
         margin-bottom: 5px;
         flex-wrap: wrap; }
-        .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio ul li.everest-forms-image-choices-item input, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox ul li.everest-forms-image-choices-item input, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple ul li.everest-forms-image-choices-item input, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox ul li.everest-forms-image-choices-item input {
+        .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio ul li.everest-forms-image-choices-item input, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox ul li.everest-forms-image-choices-item input, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple ul li.everest-forms-image-choices-item input, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox ul li.everest-forms-image-choices-item input,
+        .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio ul li.everest-forms-image-choices-item input,
+        .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox ul li.everest-forms-image-choices-item input,
+        .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple ul li.everest-forms-image-choices-item input,
+        .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox ul li.everest-forms-image-choices-item input {
           margin-top: 0; }
-        .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio ul li .everest-forms-field-label-inline, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox ul li .everest-forms-field-label-inline, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple ul li .everest-forms-field-label-inline, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox ul li .everest-forms-field-label-inline {
+        .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio ul li .everest-forms-field-label-inline, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox ul li .everest-forms-field-label-inline, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple ul li .everest-forms-field-label-inline, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox ul li .everest-forms-field-label-inline,
+        .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio ul li .everest-forms-field-label-inline,
+        .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox ul li .everest-forms-field-label-inline,
+        .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple ul li .everest-forms-field-label-inline,
+        .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox ul li .everest-forms-field-label-inline {
           width: calc(100% - 28px); }
-        .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio ul li.everest-forms-image-choices-item .everest-forms-field-label-inline, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox ul li.everest-forms-image-choices-item .everest-forms-field-label-inline, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple ul li.everest-forms-image-choices-item .everest-forms-field-label-inline, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox ul li.everest-forms-image-choices-item .everest-forms-field-label-inline {
+        .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio ul li.everest-forms-image-choices-item .everest-forms-field-label-inline, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox ul li.everest-forms-image-choices-item .everest-forms-field-label-inline, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple ul li.everest-forms-image-choices-item .everest-forms-field-label-inline, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox ul li.everest-forms-image-choices-item .everest-forms-field-label-inline,
+        .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio ul li.everest-forms-image-choices-item .everest-forms-field-label-inline,
+        .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox ul li.everest-forms-image-choices-item .everest-forms-field-label-inline,
+        .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple ul li.everest-forms-image-choices-item .everest-forms-field-label-inline,
+        .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox ul li.everest-forms-image-choices-item .everest-forms-field-label-inline {
           width: 100%;
           display: flex;
           flex-wrap: wrap; }
-        .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio ul li .everest-forms-image-choices-image, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox ul li .everest-forms-image-choices-image, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple ul li .everest-forms-image-choices-image, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox ul li .everest-forms-image-choices-image {
+        .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio ul li .everest-forms-image-choices-image, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox ul li .everest-forms-image-choices-image, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple ul li .everest-forms-image-choices-image, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox ul li .everest-forms-image-choices-image,
+        .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio ul li .everest-forms-image-choices-image,
+        .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox ul li .everest-forms-image-choices-image,
+        .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple ul li .everest-forms-image-choices-image,
+        .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox ul li .everest-forms-image-choices-image {
           margin-left: 10px; }
-      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio ul.everest-forms-image-choices label, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox ul.everest-forms-image-choices label, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple ul.everest-forms-image-choices label, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox ul.everest-forms-image-choices label {
+      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio ul.everest-forms-image-choices label, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox ul.everest-forms-image-choices label, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple ul.everest-forms-image-choices label, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox ul.everest-forms-image-choices label,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio ul.everest-forms-image-choices label,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox ul.everest-forms-image-choices label,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple ul.everest-forms-image-choices label,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox ul.everest-forms-image-choices label {
         cursor: pointer; }
-      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio.everest-forms-list-inline ul li, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox.everest-forms-list-inline ul li, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple.everest-forms-list-inline ul li, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox.everest-forms-list-inline ul li {
+      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio.everest-forms-list-inline ul li, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox.everest-forms-list-inline ul li, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple.everest-forms-list-inline ul li, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox.everest-forms-list-inline ul li,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio.everest-forms-list-inline ul li,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox.everest-forms-list-inline ul li,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple.everest-forms-list-inline ul li,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox.everest-forms-list-inline ul li {
         vertical-align: top;
         display: inline-flex;
         margin-left: 20px; }
-      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio.everest-forms-list-2-columns ul, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio.everest-forms-list-3-columns ul, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox.everest-forms-list-2-columns ul, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox.everest-forms-list-3-columns ul, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple.everest-forms-list-2-columns ul, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple.everest-forms-list-3-columns ul, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox.everest-forms-list-2-columns ul, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox.everest-forms-list-3-columns ul {
+      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio.everest-forms-list-2-columns ul, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio.everest-forms-list-3-columns ul, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox.everest-forms-list-2-columns ul, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox.everest-forms-list-3-columns ul, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple.everest-forms-list-2-columns ul, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple.everest-forms-list-3-columns ul, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox.everest-forms-list-2-columns ul, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox.everest-forms-list-3-columns ul,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio.everest-forms-list-2-columns ul,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio.everest-forms-list-3-columns ul,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox.everest-forms-list-2-columns ul,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox.everest-forms-list-3-columns ul,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple.everest-forms-list-2-columns ul,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple.everest-forms-list-3-columns ul,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox.everest-forms-list-2-columns ul,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox.everest-forms-list-3-columns ul {
         display: flex;
         flex-wrap: wrap;
         margin-right: -15px;
         margin-left: -15px; }
-        .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio.everest-forms-list-2-columns ul li, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio.everest-forms-list-3-columns ul li, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox.everest-forms-list-2-columns ul li, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox.everest-forms-list-3-columns ul li, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple.everest-forms-list-2-columns ul li, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple.everest-forms-list-3-columns ul li, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox.everest-forms-list-2-columns ul li, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox.everest-forms-list-3-columns ul li {
+        .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio.everest-forms-list-2-columns ul li, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio.everest-forms-list-3-columns ul li, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox.everest-forms-list-2-columns ul li, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox.everest-forms-list-3-columns ul li, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple.everest-forms-list-2-columns ul li, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple.everest-forms-list-3-columns ul li, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox.everest-forms-list-2-columns ul li, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox.everest-forms-list-3-columns ul li,
+        .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio.everest-forms-list-2-columns ul li,
+        .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio.everest-forms-list-3-columns ul li,
+        .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox.everest-forms-list-2-columns ul li,
+        .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox.everest-forms-list-3-columns ul li,
+        .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple.everest-forms-list-2-columns ul li,
+        .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple.everest-forms-list-3-columns ul li,
+        .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox.everest-forms-list-2-columns ul li,
+        .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox.everest-forms-list-3-columns ul li {
           width: 100%;
           padding-right: 15px;
           padding-left: 15px; }
-          .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio.everest-forms-list-2-columns ul li .everest-forms-image-choices-image, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio.everest-forms-list-3-columns ul li .everest-forms-image-choices-image, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox.everest-forms-list-2-columns ul li .everest-forms-image-choices-image, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox.everest-forms-list-3-columns ul li .everest-forms-image-choices-image, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple.everest-forms-list-2-columns ul li .everest-forms-image-choices-image, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple.everest-forms-list-3-columns ul li .everest-forms-image-choices-image, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox.everest-forms-list-2-columns ul li .everest-forms-image-choices-image, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox.everest-forms-list-3-columns ul li .everest-forms-image-choices-image {
+          .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio.everest-forms-list-2-columns ul li .everest-forms-image-choices-image, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio.everest-forms-list-3-columns ul li .everest-forms-image-choices-image, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox.everest-forms-list-2-columns ul li .everest-forms-image-choices-image, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox.everest-forms-list-3-columns ul li .everest-forms-image-choices-image, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple.everest-forms-list-2-columns ul li .everest-forms-image-choices-image, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple.everest-forms-list-3-columns ul li .everest-forms-image-choices-image, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox.everest-forms-list-2-columns ul li .everest-forms-image-choices-image, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox.everest-forms-list-3-columns ul li .everest-forms-image-choices-image,
+          .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio.everest-forms-list-2-columns ul li .everest-forms-image-choices-image,
+          .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio.everest-forms-list-3-columns ul li .everest-forms-image-choices-image,
+          .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox.everest-forms-list-2-columns ul li .everest-forms-image-choices-image,
+          .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox.everest-forms-list-3-columns ul li .everest-forms-image-choices-image,
+          .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple.everest-forms-list-2-columns ul li .everest-forms-image-choices-image,
+          .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple.everest-forms-list-3-columns ul li .everest-forms-image-choices-image,
+          .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox.everest-forms-list-2-columns ul li .everest-forms-image-choices-image,
+          .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox.everest-forms-list-3-columns ul li .everest-forms-image-choices-image {
             margin-bottom: 10px; }
       @media (min-width: 768px) {
-        .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio.everest-forms-list-2-columns li, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox.everest-forms-list-2-columns li, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple.everest-forms-list-2-columns li, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox.everest-forms-list-2-columns li {
+        .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio.everest-forms-list-2-columns li, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox.everest-forms-list-2-columns li, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple.everest-forms-list-2-columns li, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox.everest-forms-list-2-columns li,
+        .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio.everest-forms-list-2-columns li,
+        .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox.everest-forms-list-2-columns li,
+        .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple.everest-forms-list-2-columns li,
+        .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox.everest-forms-list-2-columns li {
           flex: 0 0 50%;
           max-width: 50%; }
-          .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio.everest-forms-list-2-columns li:nth-child(1n + 3), .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox.everest-forms-list-2-columns li:nth-child(1n + 3), .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple.everest-forms-list-2-columns li:nth-child(1n + 3), .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox.everest-forms-list-2-columns li:nth-child(1n + 3) {
+          .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio.everest-forms-list-2-columns li:nth-child(1n + 3), .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox.everest-forms-list-2-columns li:nth-child(1n + 3), .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple.everest-forms-list-2-columns li:nth-child(1n + 3), .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox.everest-forms-list-2-columns li:nth-child(1n + 3),
+          .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio.everest-forms-list-2-columns li:nth-child(1n + 3),
+          .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox.everest-forms-list-2-columns li:nth-child(1n + 3),
+          .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple.everest-forms-list-2-columns li:nth-child(1n + 3),
+          .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox.everest-forms-list-2-columns li:nth-child(1n + 3) {
             margin-top: 10px; } }
     @media screen and (min-width: 768px) and (max-width: 768px) {
-      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio.everest-forms-list-2-columns li:nth-child(1n + 3), .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox.everest-forms-list-2-columns li:nth-child(1n + 3), .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple.everest-forms-list-2-columns li:nth-child(1n + 3), .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox.everest-forms-list-2-columns li:nth-child(1n + 3) {
+      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio.everest-forms-list-2-columns li:nth-child(1n + 3), .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox.everest-forms-list-2-columns li:nth-child(1n + 3), .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple.everest-forms-list-2-columns li:nth-child(1n + 3), .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox.everest-forms-list-2-columns li:nth-child(1n + 3),
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio.everest-forms-list-2-columns li:nth-child(1n + 3),
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox.everest-forms-list-2-columns li:nth-child(1n + 3),
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple.everest-forms-list-2-columns li:nth-child(1n + 3),
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox.everest-forms-list-2-columns li:nth-child(1n + 3) {
         margin-top: 0; } }
       @media (min-width: 768px) {
-        .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio.everest-forms-list-3-columns li, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox.everest-forms-list-3-columns li, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple.everest-forms-list-3-columns li, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox.everest-forms-list-3-columns li {
+        .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio.everest-forms-list-3-columns li, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox.everest-forms-list-3-columns li, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple.everest-forms-list-3-columns li, .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox.everest-forms-list-3-columns li,
+        .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio.everest-forms-list-3-columns li,
+        .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox.everest-forms-list-3-columns li,
+        .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple.everest-forms-list-3-columns li,
+        .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox.everest-forms-list-3-columns li {
           flex: 0 0 33.33333%;
           max-width: 33.33333%; }
-          .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio.everest-forms-list-3-columns li:nth-child(1n + 4), .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox.everest-forms-list-3-columns li:nth-child(1n + 4), .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple.everest-forms-list-3-columns li:nth-child(1n + 4), .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox.everest-forms-list-3-columns li:nth-child(1n + 4) {
+          .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio.everest-forms-list-3-columns li:nth-child(1n + 4), .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox.everest-forms-list-3-columns li:nth-child(1n + 4), .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple.everest-forms-list-3-columns li:nth-child(1n + 4), .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox.everest-forms-list-3-columns li:nth-child(1n + 4),
+          .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-radio.everest-forms-list-3-columns li:nth-child(1n + 4),
+          .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-checkbox.everest-forms-list-3-columns li:nth-child(1n + 4),
+          .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-multiple.everest-forms-list-3-columns li:nth-child(1n + 4),
+          .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-payment-checkbox.everest-forms-list-3-columns li:nth-child(1n + 4) {
             margin-top: 10px; } }
-      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-captcha .everest-forms-captcha-equation {
+      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-captcha .everest-forms-captcha-equation,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-captcha .everest-forms-captcha-equation {
         font-size: 16px; }
-      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-captcha .everest-forms-captcha-question {
+      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-captcha .everest-forms-captcha-question,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-captcha .everest-forms-captcha-question {
         margin: 0 0 4px 0; }
-      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-captcha .everest-forms-captcha-math input {
+      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-captcha .everest-forms-captcha-math input,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field.evf-field-captcha .everest-forms-captcha-math input {
         width: 70px;
         margin: 0 5px 0 0;
         display: inline-block;
         vertical-align: inherit; }
-      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field .iti.iti--allow-dropdown + .evf-error {
+      .everest-forms .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field .iti.iti--allow-dropdown + .evf-error,
+      .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-frontend-grid .evf-field .iti.iti--allow-dropdown + .evf-error {
         margin-top: 10px; }
-  .everest-forms .evf-field-container .evf-frontend-row .evf-grid-1 {
+  .everest-forms .evf-field-container .evf-frontend-row .evf-grid-1,
+  .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-grid-1 {
     width: 100%; }
-  .everest-forms .evf-field-container .evf-frontend-row .evf-grid-2 {
+  .everest-forms .evf-field-container .evf-frontend-row .evf-grid-2,
+  .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-grid-2 {
     width: 50%; }
-  .everest-forms .evf-field-container .evf-frontend-row .evf-grid-3 {
+  .everest-forms .evf-field-container .evf-frontend-row .evf-grid-3,
+  .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-grid-3 {
     width: 33.33%; }
-  .everest-forms .evf-field-container .evf-frontend-row .evf-grid-4 {
+  .everest-forms .evf-field-container .evf-frontend-row .evf-grid-4,
+  .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-grid-4 {
     width: 25%; }
-  .everest-forms .evf-field-container .evf-frontend-row input[type="checkbox"], .everest-forms .evf-field-container .evf-frontend-row input[type="radio"] {
+  .everest-forms .evf-field-container .evf-frontend-row input[type="checkbox"], .everest-forms .evf-field-container .evf-frontend-row input[type="radio"],
+  .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row input[type="checkbox"],
+  .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row input[type="radio"] {
     box-shadow: none; }
-  .everest-forms .evf-field-container .evf-frontend-row input[type="checkbox"] {
+  .everest-forms .evf-field-container .evf-frontend-row input[type="checkbox"],
+  .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row input[type="checkbox"] {
     appearance: checkbox; }
-  .everest-forms .evf-field-container .evf-frontend-row input[type="radio"] {
+  .everest-forms .evf-field-container .evf-frontend-row input[type="radio"],
+  .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row input[type="radio"] {
     appearance: radio; }
-  .everest-forms .evf-field-container .evf-frontend-row input[type="checkbox"]:checked {
+  .everest-forms .evf-field-container .evf-frontend-row input[type="checkbox"]:checked,
+  .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row input[type="checkbox"]:checked {
     background-color: #0095ff; }
-    .everest-forms .evf-field-container .evf-frontend-row input[type="checkbox"]:checked::before {
+    .everest-forms .evf-field-container .evf-frontend-row input[type="checkbox"]:checked::before,
+    .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row input[type="checkbox"]:checked::before {
       color: #fff;
       background-color: transparent; }
-  .everest-forms .evf-field-container .evf-frontend-row input[type="radio"]:checked::before {
+  .everest-forms .evf-field-container .evf-frontend-row input[type="radio"]:checked::before,
+  .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row input[type="radio"]:checked::before {
     background-color: #0095ff; }
-  .everest-forms .evf-field-container .evf-frontend-row input::placeholder {
+  .everest-forms .evf-field-container .evf-frontend-row input::placeholder,
+  .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row input::placeholder {
     color: #8e98a2; }
-  .everest-forms .evf-field-container .evf-frontend-row textarea {
+  .everest-forms .evf-field-container .evf-frontend-row textarea,
+  .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row textarea {
     width: 100%;
     max-width: 100%;
     min-width: 100%;
     height: 120px; }
-    .everest-forms .evf-field-container .evf-frontend-row textarea::placeholder {
+    .everest-forms .evf-field-container .evf-frontend-row textarea::placeholder,
+    .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row textarea::placeholder {
       color: #8e98a2; }
   .everest-forms .evf-field-container .evf-frontend-row .evf-field-description,
-  .everest-forms .evf-field-container .evf-frontend-row .everest-forms-field-limit-text {
+  .everest-forms .evf-field-container .evf-frontend-row .everest-forms-field-limit-text,
+  .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .evf-field-description,
+  .wp-block-everest-forms-form-selector .evf-field-container .evf-frontend-row .everest-forms-field-limit-text {
     line-height: 1.7;
     margin-bottom: 10px;
     font-size: 14px; }
@@ -579,7 +796,12 @@
   .everest-forms button[type="submit"],
   .everest-forms a.button:not(.button-large),
   .everest-forms button.button:not(.button-large),
-  .everest-forms .everest-forms-part-button {
+  .everest-forms .everest-forms-part-button,
+  .wp-block-everest-forms-form-selector input[type="submit"],
+  .wp-block-everest-forms-form-selector button[type="submit"],
+  .wp-block-everest-forms-form-selector a.button:not(.button-large),
+  .wp-block-everest-forms-form-selector button.button:not(.button-large),
+  .wp-block-everest-forms-form-selector .everest-forms-part-button {
     color: #555;
     height: auto;
     cursor: pointer;
@@ -600,7 +822,17 @@
     .everest-forms button.button:not(.button-large):hover,
     .everest-forms button.button:not(.button-large):active,
     .everest-forms .everest-forms-part-button:hover,
-    .everest-forms .everest-forms-part-button:active {
+    .everest-forms .everest-forms-part-button:active,
+    .wp-block-everest-forms-form-selector input[type="submit"]:hover,
+    .wp-block-everest-forms-form-selector input[type="submit"]:active,
+    .wp-block-everest-forms-form-selector button[type="submit"]:hover,
+    .wp-block-everest-forms-form-selector button[type="submit"]:active,
+    .wp-block-everest-forms-form-selector a.button:not(.button-large):hover,
+    .wp-block-everest-forms-form-selector a.button:not(.button-large):active,
+    .wp-block-everest-forms-form-selector button.button:not(.button-large):hover,
+    .wp-block-everest-forms-form-selector button.button:not(.button-large):active,
+    .wp-block-everest-forms-form-selector .everest-forms-part-button:hover,
+    .wp-block-everest-forms-form-selector .everest-forms-part-button:active {
       outline: none;
       color: #23282d;
       background-color: #eee; }
@@ -608,25 +840,42 @@
     .everest-forms button[type="submit"]:disabled,
     .everest-forms a.button:not(.button-large):disabled,
     .everest-forms button.button:not(.button-large):disabled,
-    .everest-forms .everest-forms-part-button:disabled {
+    .everest-forms .everest-forms-part-button:disabled,
+    .wp-block-everest-forms-form-selector input[type="submit"]:disabled,
+    .wp-block-everest-forms-form-selector button[type="submit"]:disabled,
+    .wp-block-everest-forms-form-selector a.button:not(.button-large):disabled,
+    .wp-block-everest-forms-form-selector button.button:not(.button-large):disabled,
+    .wp-block-everest-forms-form-selector .everest-forms-part-button:disabled {
       opacity: 0.5;
       cursor: not-allowed; }
       .everest-forms input[type="submit"]:disabled:hover,
       .everest-forms button[type="submit"]:disabled:hover,
       .everest-forms a.button:not(.button-large):disabled:hover,
       .everest-forms button.button:not(.button-large):disabled:hover,
-      .everest-forms .everest-forms-part-button:disabled:hover {
+      .everest-forms .everest-forms-part-button:disabled:hover,
+      .wp-block-everest-forms-form-selector input[type="submit"]:disabled:hover,
+      .wp-block-everest-forms-form-selector button[type="submit"]:disabled:hover,
+      .wp-block-everest-forms-form-selector a.button:not(.button-large):disabled:hover,
+      .wp-block-everest-forms-form-selector button.button:not(.button-large):disabled:hover,
+      .wp-block-everest-forms-form-selector .everest-forms-part-button:disabled:hover {
         color: #555;
         background-color: #f7f7f7; }
-  .everest-forms .layout-two label {
+  .everest-forms .layout-two label,
+  .wp-block-everest-forms-form-selector .layout-two label {
     margin-bottom: 0; }
   .everest-forms .layout-two .evf-field-checkbox label,
-  .everest-forms .layout-two .evf-field-radio label {
+  .everest-forms .layout-two .evf-field-radio label,
+  .wp-block-everest-forms-form-selector .layout-two .evf-field-checkbox label,
+  .wp-block-everest-forms-form-selector .layout-two .evf-field-radio label {
     margin-bottom: 20px; }
   .everest-forms .layout-two input,
   .everest-forms .layout-two select,
   .everest-forms .layout-two textarea,
-  .everest-forms .layout-two canvas.evf-signature-canvas {
+  .everest-forms .layout-two canvas.evf-signature-canvas,
+  .wp-block-everest-forms-form-selector .layout-two input,
+  .wp-block-everest-forms-form-selector .layout-two select,
+  .wp-block-everest-forms-form-selector .layout-two textarea,
+  .wp-block-everest-forms-form-selector .layout-two canvas.evf-signature-canvas {
     border-radius: 0;
     border-top: none transparent;
     border-left: none transparent;
@@ -636,14 +885,20 @@
     .everest-forms .layout-two input:focus,
     .everest-forms .layout-two select:focus,
     .everest-forms .layout-two textarea:focus,
-    .everest-forms .layout-two canvas.evf-signature-canvas:focus {
+    .everest-forms .layout-two canvas.evf-signature-canvas:focus,
+    .wp-block-everest-forms-form-selector .layout-two input:focus,
+    .wp-block-everest-forms-form-selector .layout-two select:focus,
+    .wp-block-everest-forms-form-selector .layout-two textarea:focus,
+    .wp-block-everest-forms-form-selector .layout-two canvas.evf-signature-canvas:focus {
       outline: none;
       border-top: none transparent;
       border-left: none transparent;
       border-right: none transparent; }
-  .everest-forms .layout-two textarea {
+  .everest-forms .layout-two textarea,
+  .wp-block-everest-forms-form-selector .layout-two textarea {
     height: 100px; }
-  .everest-forms .everest-forms-notice {
+  .everest-forms .everest-forms-notice,
+  .wp-block-everest-forms-form-selector .everest-forms-notice {
     padding: 1em 3em;
     margin: 0 0 2em;
     position: relative;
@@ -651,42 +906,55 @@
     color: #fff;
     border-radius: 5px;
     *zoom: 1; }
-    .everest-forms .everest-forms-notice::before, .everest-forms .everest-forms-notice::after {
+    .everest-forms .everest-forms-notice::before, .everest-forms .everest-forms-notice::after,
+    .wp-block-everest-forms-form-selector .everest-forms-notice::before,
+    .wp-block-everest-forms-form-selector .everest-forms-notice::after {
       content: ' ';
       display: table; }
-    .everest-forms .everest-forms-notice::after {
+    .everest-forms .everest-forms-notice::after,
+    .wp-block-everest-forms-form-selector .everest-forms-notice::after {
       clear: both; }
-    .everest-forms .everest-forms-notice::before {
+    .everest-forms .everest-forms-notice::before,
+    .wp-block-everest-forms-form-selector .everest-forms-notice::before {
       font-family: dashicons;
       content: "\f348";
       position: absolute;
       top: 1em;
       right: 1.5em;
       color: inherit; }
-    .everest-forms .everest-forms-notice .button {
+    .everest-forms .everest-forms-notice .button,
+    .wp-block-everest-forms-form-selector .everest-forms-notice .button {
       float: left; }
-    .everest-forms .everest-forms-notice p {
+    .everest-forms .everest-forms-notice p,
+    .wp-block-everest-forms-form-selector .everest-forms-notice p {
       margin-bottom: 0; }
-    .everest-forms .everest-forms-notice a {
+    .everest-forms .everest-forms-notice a,
+    .wp-block-everest-forms-form-selector .everest-forms-notice a {
       color: #fff; }
-    .everest-forms .everest-forms-notice li {
+    .everest-forms .everest-forms-notice li,
+    .wp-block-everest-forms-form-selector .everest-forms-notice li {
       list-style: none outside !important;
       padding-right: 0 !important;
       margin-right: 0 !important; }
-    .everest-forms .everest-forms-notice.everst-forms-form-disable-notice {
+    .everest-forms .everest-forms-notice.everst-forms-form-disable-notice,
+    .wp-block-everest-forms-form-selector .everest-forms-notice.everst-forms-form-disable-notice {
       color: #494d50;
       background: #fffbf0;
       border: 1px solid #f4d071; }
-  .everest-forms .everest-forms-notice--info {
+  .everest-forms .everest-forms-notice--info,
+  .wp-block-everest-forms-form-selector .everest-forms-notice--info {
     padding: 1em 1.6em;
     color: #494d50;
     background: #f0f9ff;
     border: 1px solid #71bdf4; }
-    .everest-forms .everest-forms-notice--info::before {
+    .everest-forms .everest-forms-notice--info::before,
+    .wp-block-everest-forms-form-selector .everest-forms-notice--info::before {
       visibility: hidden; }
-    .everest-forms .everest-forms-notice--info .everest-forms-notice--actions {
+    .everest-forms .everest-forms-notice--info .everest-forms-notice--actions,
+    .wp-block-everest-forms-form-selector .everest-forms-notice--info .everest-forms-notice--actions {
       margin-top: 10px; }
-      .everest-forms .everest-forms-notice--info .everest-forms-notice--actions a.button {
+      .everest-forms .everest-forms-notice--info .everest-forms-notice--actions a.button,
+      .wp-block-everest-forms-form-selector .everest-forms-notice--info .everest-forms-notice--actions a.button {
         float: right;
         line-height: 1;
         cursor: pointer;
@@ -698,43 +966,67 @@
         background-image: none;
         color: #494d50;
         background-color: #f6f7f9; }
-        .everest-forms .everest-forms-notice--info .everest-forms-notice--actions a.button:focus {
+        .everest-forms .everest-forms-notice--info .everest-forms-notice--actions a.button:focus,
+        .wp-block-everest-forms-form-selector .everest-forms-notice--info .everest-forms-notice--actions a.button:focus {
           outline: none; }
-  .everest-forms .everest-forms-notice--success {
+  .everest-forms .everest-forms-notice--success,
+  .wp-block-everest-forms-form-selector .everest-forms-notice--success {
     background-color: #4bce61; }
-    .everest-forms .everest-forms-notice--success::before {
+    .everest-forms .everest-forms-notice--success::before,
+    .wp-block-everest-forms-form-selector .everest-forms-notice--success::before {
       content: "\f147"; }
-  .everest-forms .everest-forms-notice--warning {
+  .everest-forms .everest-forms-notice--warning,
+  .wp-block-everest-forms-form-selector .everest-forms-notice--warning {
     background-color: #ffba00; }
-  .everest-forms .everest-forms-notice--error {
+  .everest-forms .everest-forms-notice--error,
+  .wp-block-everest-forms-form-selector .everest-forms-notice--error {
     background-color: #fa5252; }
-    .everest-forms .everest-forms-notice--error::before {
+    .everest-forms .everest-forms-notice--error::before,
+    .wp-block-everest-forms-form-selector .everest-forms-notice--error::before {
       content: "\f534";
       color: inherit; }
-    .everest-forms .everest-forms-notice--error .everest-forms-notice-list {
+    .everest-forms .everest-forms-notice--error .everest-forms-notice-list,
+    .wp-block-everest-forms-form-selector .everest-forms-notice--error .everest-forms-notice-list {
       margin: 0;
       list-style: none outside; }
-      .everest-forms .everest-forms-notice--error .everest-forms-notice-list .everest-forms-notice-list__item {
+      .everest-forms .everest-forms-notice--error .everest-forms-notice-list .everest-forms-notice-list__item,
+      .wp-block-everest-forms-form-selector .everest-forms-notice--error .everest-forms-notice-list .everest-forms-notice-list__item {
         margin-bottom: 0.5em; }
-      .everest-forms .everest-forms-notice--error .everest-forms-notice-list .everest-forms-notice-list__item:last-child {
+      .everest-forms .everest-forms-notice--error .everest-forms-notice-list .everest-forms-notice-list__item:last-child,
+      .wp-block-everest-forms-form-selector .everest-forms-notice--error .everest-forms-notice-list .everest-forms-notice-list__item:last-child {
         margin-bottom: 0; }
 
 /**
  * Gutenberg Block
  */
-.edit-post-visual-editor .everest-form-gutenberg-form-selector-wrap {
+.wp-block-everest-forms-form-selector .everest-form-gutenberg-form-selector-wrap,
+.wp-block-everest-forms-form-selector .everest-form-gutenberg-form-selector-wrap,
+.wp-block-everest-forms-frontend-listing .everest-form-gutenberg-form-selector-wrap,
+.wp-block-everest-forms-frontend-listing .everest-form-gutenberg-form-selector-wrap {
   align-items: center; }
-  .edit-post-visual-editor .everest-form-gutenberg-form-selector-wrap .components-placeholder__label {
+  .wp-block-everest-forms-form-selector .everest-form-gutenberg-form-selector-wrap .components-placeholder__label,
+  .wp-block-everest-forms-form-selector .everest-form-gutenberg-form-selector-wrap .components-placeholder__label,
+  .wp-block-everest-forms-frontend-listing .everest-form-gutenberg-form-selector-wrap .components-placeholder__label,
+  .wp-block-everest-forms-frontend-listing .everest-form-gutenberg-form-selector-wrap .components-placeholder__label {
     margin-bottom: 0; }
-    .edit-post-visual-editor .everest-form-gutenberg-form-selector-wrap .components-placeholder__label svg {
+    .wp-block-everest-forms-form-selector .everest-form-gutenberg-form-selector-wrap .components-placeholder__label svg,
+    .wp-block-everest-forms-form-selector .everest-form-gutenberg-form-selector-wrap .components-placeholder__label svg,
+    .wp-block-everest-forms-frontend-listing .everest-form-gutenberg-form-selector-wrap .components-placeholder__label svg,
+    .wp-block-everest-forms-frontend-listing .everest-form-gutenberg-form-selector-wrap .components-placeholder__label svg {
       width: 75px;
       height: 75px;
       color: #7e3bd0; }
-  .edit-post-visual-editor .everest-form-gutenberg-form-selector-wrap .components-placeholder__instructions {
+  .wp-block-everest-forms-form-selector .everest-form-gutenberg-form-selector-wrap .components-placeholder__instructions,
+  .wp-block-everest-forms-form-selector .everest-form-gutenberg-form-selector-wrap .components-placeholder__instructions,
+  .wp-block-everest-forms-frontend-listing .everest-form-gutenberg-form-selector-wrap .components-placeholder__instructions,
+  .wp-block-everest-forms-frontend-listing .everest-form-gutenberg-form-selector-wrap .components-placeholder__instructions {
     color: #23282d;
     font-size: 1.3em;
     font-weight: 600; }
-  .edit-post-visual-editor .everest-form-gutenberg-form-selector-wrap .components-placeholder__fieldset .components-base-control {
+  .wp-block-everest-forms-form-selector .everest-form-gutenberg-form-selector-wrap .components-placeholder__fieldset .components-base-control,
+  .wp-block-everest-forms-form-selector .everest-form-gutenberg-form-selector-wrap .components-placeholder__fieldset .components-base-control,
+  .wp-block-everest-forms-frontend-listing .everest-form-gutenberg-form-selector-wrap .components-placeholder__fieldset .components-base-control,
+  .wp-block-everest-forms-frontend-listing .everest-form-gutenberg-form-selector-wrap .components-placeholder__fieldset .components-base-control {
     width: 100%;
     text-align: center; }
 
@@ -1382,3 +1674,7 @@ span.everest-forms-shortcode-form-embed-dot {
     transform: scale(0.9); }
   100% {
     transform: scale(1); } }
+
+.evf-td-head {
+  background: #f6f7f8;
+  border-bottom: 1px solid #ced4da !important; }

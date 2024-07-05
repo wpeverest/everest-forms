@@ -29,5 +29,5 @@
     }
   },
   "editorScript": "everest-forms-block-editor",
-  "editorStyle": "everest-forms-blocks-editor-style"
+  "editorStyle": "everest-forms-block-editor"
 }

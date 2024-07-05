@@ -350,10 +350,14 @@ class EVF_Emails {
 		$message = apply_filters( 'everest_forms_entry_email__message', str_replace( '{entry_id}', absint( $this->entry_id ), $message ), $this );
 
 		// Email Template Enabled or not checked.
-		$email_template_included = ! empty( $this->form_data['settings']['email'][ $connection_id ]['choose_template'] ) ? true : false;
+		$email_template_included                   = ! empty( $this->form_data['settings']['email'][ $connection_id ]['choose_template'] ) ? true : false;
+		$save_and_continue_email_template_included = ! empty( $this->form_data['settings']['email']['connection_save_and_continue']['choose_template'] ) ? true : false;
+		$save_and_continue_enabled                 = ! empty( $this->form_data['settings']['email']['connection_save_and_continue']['enable_email_notification'] ) ? true : false;
 
 		if ( $email_template_included && true === $this->html ) {
 			$message = apply_filters( 'everest_forms_email_template_message', $message, $this, $connection_id );
+		} elseif ( ( $save_and_continue_email_template_included && true === $this->html ) && ( true === $save_and_continue_enabled ) ) {
+			$message = apply_filters( 'everest_forms_email_template_message', $message, $this, 'connection_save_and_continue' );
 		} else {
 			$message = $this->build_email( $message );
 		}

@@ -261,7 +261,7 @@ class EVF_Frontend_Scripts {
 		self::register_styles();
 
 		// Enqueue dashicons.
-		// wp_enqueue_style( 'dashicons' );
+		wp_enqueue_style( 'dashicons' );
 
 		// CSS Styles.
 		$enqueue_styles = self::get_styles();

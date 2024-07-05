@@ -8581,6 +8581,7 @@ p.search-box {
 	 */
 .evf-tools-export-entries,
 .everest-forms-import-form,
+.everest-forms-import-entries-wrapper,
 .everest-forms-export-form,
 .everest-forms-form-migrator {
   background: #fff;
@@ -8591,6 +8592,7 @@ p.search-box {
   border-radius: 4px; }
   .evf-tools-export-entries h3,
   .everest-forms-import-form h3,
+  .everest-forms-import-entries-wrapper h3,
   .everest-forms-export-form h3,
   .everest-forms-form-migrator h3 {
     margin: 0;
@@ -8599,21 +8601,25 @@ p.search-box {
     border-bottom: 2px solid #e9ebf1; }
   .evf-tools-export-entries p,
   .everest-forms-import-form p,
+  .everest-forms-import-entries-wrapper p,
   .everest-forms-export-form p,
   .everest-forms-form-migrator p {
     font-size: 14px; }
   .evf-tools-export-entries select,
   .everest-forms-import-form select,
+  .everest-forms-import-entries-wrapper select,
   .everest-forms-export-form select,
   .everest-forms-form-migrator select {
     margin: 1em 0; }
   .evf-tools-export-entries .description,
   .everest-forms-import-form .description,
+  .everest-forms-import-entries-wrapper .description,
   .everest-forms-export-form .description,
   .everest-forms-form-migrator .description {
     margin-bottom: 16px; }
     .evf-tools-export-entries .description .dashicons,
     .everest-forms-import-form .description .dashicons,
+    .everest-forms-import-entries-wrapper .description .dashicons,
     .everest-forms-export-form .description .dashicons,
     .everest-forms-form-migrator .description .dashicons {
       width: 16px;
@@ -8624,6 +8630,7 @@ p.search-box {
       margin-bottom: 3px; }
   .evf-tools-export-entries .everest-forms-file-upload,
   .everest-forms-import-form .everest-forms-file-upload,
+  .everest-forms-import-entries-wrapper .everest-forms-file-upload,
   .everest-forms-export-form .everest-forms-file-upload,
   .everest-forms-form-migrator .everest-forms-file-upload {
     margin: 1em 0;
@@ -8631,6 +8638,7 @@ p.search-box {
     z-index: 1; }
     .evf-tools-export-entries .everest-forms-file-upload input,
     .everest-forms-import-form .everest-forms-file-upload input,
+    .everest-forms-import-entries-wrapper .everest-forms-file-upload input,
     .everest-forms-export-form .everest-forms-file-upload input,
     .everest-forms-form-migrator .everest-forms-file-upload input {
       opacity: 0;
@@ -8639,6 +8647,7 @@ p.search-box {
       height: 46px; }
     .evf-tools-export-entries .everest-forms-file-upload label,
     .everest-forms-import-form .everest-forms-file-upload label,
+    .everest-forms-import-entries-wrapper .everest-forms-file-upload label,
     .everest-forms-export-form .everest-forms-file-upload label,
     .everest-forms-form-migrator .everest-forms-file-upload label {
       display: inline-block;
@@ -8651,6 +8660,7 @@ p.search-box {
       z-index: -1; }
     .evf-tools-export-entries .everest-forms-file-upload .everest-forms-btn,
     .everest-forms-import-form .everest-forms-file-upload .everest-forms-btn,
+    .everest-forms-import-entries-wrapper .everest-forms-file-upload .everest-forms-btn,
     .everest-forms-export-form .everest-forms-file-upload .everest-forms-btn,
     .everest-forms-form-migrator .everest-forms-file-upload .everest-forms-btn {
       width: auto;
@@ -8660,6 +8670,7 @@ p.search-box {
       vertical-align: middle; }
   .evf-tools-export-entries .publishing-action,
   .everest-forms-import-form .publishing-action,
+  .everest-forms-import-entries-wrapper .publishing-action,
   .everest-forms-export-form .publishing-action,
   .everest-forms-form-migrator .publishing-action {
     padding-top: 20px;
@@ -8667,6 +8678,7 @@ p.search-box {
     border-top: 2px solid #e9ebf1; }
   .evf-tools-export-entries .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper h4,
   .everest-forms-import-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper h4,
+  .everest-forms-import-entries-wrapper .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper h4,
   .everest-forms-export-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper h4,
   .everest-forms-form-migrator .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper h4 {
     margin: 0;
@@ -8679,6 +8691,9 @@ p.search-box {
   .everest-forms-import-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table,
   .everest-forms-import-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper th,
   .everest-forms-import-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper td,
+  .everest-forms-import-entries-wrapper .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table,
+  .everest-forms-import-entries-wrapper .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper th,
+  .everest-forms-import-entries-wrapper .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper td,
   .everest-forms-export-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table,
   .everest-forms-export-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper th,
   .everest-forms-export-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper td,
@@ -8688,27 +8703,32 @@ p.search-box {
     border-collapse: collapse; }
   .evf-tools-export-entries .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr,
   .everest-forms-import-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr,
+  .everest-forms-import-entries-wrapper .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr,
   .everest-forms-export-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr,
   .everest-forms-form-migrator .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr {
     border-bottom: 2px solid #e9ebf1; }
     .evf-tools-export-entries .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr.evf-fm-hide-row,
     .everest-forms-import-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr.evf-fm-hide-row,
+    .everest-forms-import-entries-wrapper .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr.evf-fm-hide-row,
     .everest-forms-export-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr.evf-fm-hide-row,
     .everest-forms-form-migrator .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr.evf-fm-hide-row {
       display: none; }
     .evf-tools-export-entries .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr.evf-fm-show-row,
     .everest-forms-import-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr.evf-fm-show-row,
+    .everest-forms-import-entries-wrapper .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr.evf-fm-show-row,
     .everest-forms-export-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr.evf-fm-show-row,
     .everest-forms-form-migrator .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr.evf-fm-show-row {
       display: none; }
     .evf-tools-export-entries .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr th,
     .everest-forms-import-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr th,
+    .everest-forms-import-entries-wrapper .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr th,
     .everest-forms-export-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr th,
     .everest-forms-form-migrator .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr th {
       width: 150px;
       padding: 12px; }
     .evf-tools-export-entries .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr td,
     .everest-forms-import-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr td,
+    .everest-forms-import-entries-wrapper .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr td,
     .everest-forms-export-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr td,
     .everest-forms-form-migrator .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr td {
       width: 600px;
@@ -8716,11 +8736,13 @@ p.search-box {
       text-align: center; }
       .evf-tools-export-entries .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr td .evf-fm-import-actions,
       .everest-forms-import-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr td .evf-fm-import-actions,
+      .everest-forms-import-entries-wrapper .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr td .evf-fm-import-actions,
       .everest-forms-export-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr td .evf-fm-import-actions,
       .everest-forms-form-migrator .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr td .evf-fm-import-actions {
         display: flex; }
       .evf-tools-export-entries .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr td .evf-fm-import-single,
       .everest-forms-import-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr td .evf-fm-import-single,
+      .everest-forms-import-entries-wrapper .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr td .evf-fm-import-single,
       .everest-forms-export-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr td .evf-fm-import-single,
       .everest-forms-form-migrator .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr td .evf-fm-import-single {
         padding: 8px;
@@ -8729,6 +8751,7 @@ p.search-box {
         border: none; }
         .evf-tools-export-entries .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr td .evf-fm-import-single:hover,
         .everest-forms-import-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr td .evf-fm-import-single:hover,
+        .everest-forms-import-entries-wrapper .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr td .evf-fm-import-single:hover,
         .everest-forms-export-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr td .evf-fm-import-single:hover,
         .everest-forms-form-migrator .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr td .evf-fm-import-single:hover {
           background-color: #7e3bd0;
@@ -8737,6 +8760,7 @@ p.search-box {
           cursor: pointer; }
       .evf-tools-export-entries .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr td .evf-fm-import-entry,
       .everest-forms-import-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr td .evf-fm-import-entry,
+      .everest-forms-import-entries-wrapper .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr td .evf-fm-import-entry,
       .everest-forms-export-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr td .evf-fm-import-entry,
       .everest-forms-form-migrator .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr td .evf-fm-import-entry {
         padding: 8px;
@@ -8747,6 +8771,7 @@ p.search-box {
         margin-right: 8px; }
         .evf-tools-export-entries .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr td .evf-fm-import-entry:not(:disabled):hover,
         .everest-forms-import-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr td .evf-fm-import-entry:not(:disabled):hover,
+        .everest-forms-import-entries-wrapper .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr td .evf-fm-import-entry:not(:disabled):hover,
         .everest-forms-export-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr td .evf-fm-import-entry:not(:disabled):hover,
         .everest-forms-form-migrator .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper table tr td .evf-fm-import-entry:not(:disabled):hover {
           background-color: #7e3bd0;
@@ -8755,17 +8780,20 @@ p.search-box {
           cursor: pointer; }
   .evf-tools-export-entries .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper .evf-fm-pagination,
   .everest-forms-import-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper .evf-fm-pagination,
+  .everest-forms-import-entries-wrapper .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper .evf-fm-pagination,
   .everest-forms-export-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper .evf-fm-pagination,
   .everest-forms-form-migrator .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper .evf-fm-pagination {
     padding-top: 16px; }
     .evf-tools-export-entries .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper .evf-fm-pagination button,
     .everest-forms-import-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper .evf-fm-pagination button,
+    .everest-forms-import-entries-wrapper .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper .evf-fm-pagination button,
     .everest-forms-export-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper .evf-fm-pagination button,
     .everest-forms-form-migrator .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper .evf-fm-pagination button {
       margin: 2px;
       cursor: pointer; }
       .evf-tools-export-entries .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper .evf-fm-pagination button:hover,
       .everest-forms-import-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper .evf-fm-pagination button:hover,
+      .everest-forms-import-entries-wrapper .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper .evf-fm-pagination button:hover,
       .everest-forms-export-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper .evf-fm-pagination button:hover,
       .everest-forms-form-migrator .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper .evf-fm-pagination button:hover {
         background-color: #7e3bd0;
@@ -8773,6 +8801,7 @@ p.search-box {
         border: none; }
       .evf-tools-export-entries .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper .evf-fm-pagination button.evf-fm-btn-active,
       .everest-forms-import-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper .evf-fm-pagination button.evf-fm-btn-active,
+      .everest-forms-import-entries-wrapper .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper .evf-fm-pagination button.evf-fm-btn-active,
       .everest-forms-export-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper .evf-fm-pagination button.evf-fm-btn-active,
       .everest-forms-form-migrator .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper .evf-fm-pagination button.evf-fm-btn-active {
         background-color: #7e3bd0;
@@ -8780,6 +8809,7 @@ p.search-box {
         border: none; }
   .evf-tools-export-entries .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper .evf-fm-import-selected-wrapper,
   .everest-forms-import-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper .evf-fm-import-selected-wrapper,
+  .everest-forms-import-entries-wrapper .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper .evf-fm-import-selected-wrapper,
   .everest-forms-export-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper .evf-fm-import-selected-wrapper,
   .everest-forms-form-migrator .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper .evf-fm-import-selected-wrapper {
     display: flex;
@@ -8789,6 +8819,7 @@ p.search-box {
     margin-left: 100px; }
   .evf-tools-export-entries .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper .evf-fm-import-selected-btn,
   .everest-forms-import-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper .evf-fm-import-selected-btn,
+  .everest-forms-import-entries-wrapper .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper .evf-fm-import-selected-btn,
   .everest-forms-export-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper .evf-fm-import-selected-btn,
   .everest-forms-form-migrator .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper .evf-fm-import-selected-btn {
     margin-top: 16px;
@@ -8799,6 +8830,7 @@ p.search-box {
     align-items: right; }
     .evf-tools-export-entries .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper .evf-fm-import-selected-btn:hover,
     .everest-forms-import-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper .evf-fm-import-selected-btn:hover,
+    .everest-forms-import-entries-wrapper .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper .evf-fm-import-selected-btn:hover,
     .everest-forms-export-form .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper .evf-fm-import-selected-btn:hover,
     .everest-forms-form-migrator .evf-fm-wrapper .evf-fm-form-list-container .evf-fm-forms-table-wrapper .evf-fm-import-selected-btn:hover {
       background-color: #7e3bd0;
@@ -11385,12 +11417,27 @@ img.ui-datepicker-trigger {
   padding-bottom: 25px; }
 
 .everest-forms_page_evf-settings .everest-forms {
-  padding: 20px; }
+  padding: 20px;
+  overflow: hidden; }
 
 .everest-forms .everest-forms-settings {
   padding: 0 !important;
-  background: #ffffff;
-  box-shadow: 0px 6px 26px 0px rgba(10, 10, 10, 0.08); }
+  gap: 24px;
+  background: transparent; }
+  .everest-forms .everest-forms-settings-wrapper {
+    box-shadow: 0px 6px 26px 0px rgba(10, 10, 10, 0.08);
+    background: #ffffff;
+    flex: 1;
+    display: flex; }
+  .everest-forms .everest-forms-settings-main:has(#message) .everest-forms-toggle-wrapper {
+    top: 76px; }
+  .everest-forms .everest-forms-settings .everest-forms-settings-container #message {
+    border: 1px solid #e6e6e6;
+    border-right-width: 4px;
+    border-right-color: #00a32a;
+    box-shadow: unset;
+    margin-top: 0;
+    margin-bottom: 20px; }
   .everest-forms .everest-forms-settings .everest-forms-header {
     display: flex;
     flex-direction: column;
@@ -11398,7 +11445,8 @@ img.ui-datepicker-trigger {
     border-left: 1px solid #EDEDED;
     padding: 32px 0 20px;
     width: 300px;
-    max-width: 100%; }
+    max-width: 100%;
+    transition: all .3s; }
     .everest-forms .everest-forms-settings .everest-forms-header--top {
       text-align: center;
       padding-bottom: 30px;
@@ -11507,6 +11555,8 @@ img.ui-datepicker-trigger {
             color: #ffffff; }
             .everest-forms .everest-forms-settings .everest-forms-header--nav .evf-nav-tab-wrapper #evf-settings-collapse:hover .evf-nav-icon img {
               filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(7487%) hue-rotate(137deg) brightness(89%) contrast(114%); }
+        .everest-forms .everest-forms-settings .everest-forms-header--nav .evf-nav-tab-wrapper .ps__rail-x {
+          display: none; }
     .everest-forms .everest-forms-settings .everest-forms-header.collapsed {
       width: 60px; }
       .everest-forms .everest-forms-settings .everest-forms-header.collapsed .everest-forms-header--top-logo img {
@@ -11517,8 +11567,24 @@ img.ui-datepicker-trigger {
       .everest-forms .everest-forms-settings .everest-forms-header.collapsed .everest-forms-header--nav .evf-nav-tab-wrapper #evf-settings-collapse .evf-nav-icon img {
         transform: rotate(-180deg); }
   .everest-forms .everest-forms-settings .everest-forms-settings-container {
-    padding: 26px 32px 52px 20px;
+    padding: 32px 32px 52px 20px;
     box-shadow: none; }
+    .everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-settings-main {
+      position: relative; }
+      .everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-settings-main .everest-forms-toggle-wrapper {
+        position: absolute;
+        left: 0;
+        top: 6px;
+        display: flex;
+        align-items: center;
+        gap: 6px; }
+        .everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-settings-main .everest-forms-toggle-wrapper .evf-toggle-section .everest-forms-toggle-form {
+          margin: 0; }
+        .everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-settings-main .everest-forms-toggle-wrapper .everest-forms-toggle-text {
+          font-size: 14px;
+          line-height: 24px;
+          color: #383838;
+          font-weight: 500; }
     .everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-options-header {
       margin-bottom: 32px; }
       .everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-options-header--top {
@@ -11575,6 +11641,17 @@ img.ui-datepicker-trigger {
               color: #999999; }
         .everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-card .everest-forms-global-settings--field {
           flex: 1; }
+          @media screen and (max-width: 782px) {
+            .everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-card .everest-forms-global-settings--field.forminp-input_test_button {
+              display: flex;
+              flex-direction: column;
+              gap: 12px; }
+              .everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-card .everest-forms-global-settings--field.forminp-input_test_button input[type="email"] {
+                width: 100%;
+                margin-left: 0 !important; }
+              .everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-card .everest-forms-global-settings--field.forminp-input_test_button .button.everest_forms_send_email_test {
+                margin-bottom: 0;
+                width: max-content; } }
           .everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-card .everest-forms-global-settings--field fieldset > label {
             font-size: 14px;
             line-height: 22px;
@@ -11744,6 +11821,81 @@ img.ui-datepicker-trigger {
       font-size: 14px;
       line-height: 24px;
       margin-bottom: 20px; }
+  .everest-forms .everest-forms-settings-premium-sidebar {
+    width: 300px;
+    max-width: 100%;
+    padding: 18px 10px 26px 10px;
+    transition: all .3s; }
+    .everest-forms .everest-forms-settings-premium-sidebar h2 {
+      color: #222222;
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 140%;
+      margin: 0;
+      padding-bottom: 16px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #EEE8F7; }
+    .everest-forms .everest-forms-settings-premium-sidebar p {
+      margin: 0;
+      color: #383838;
+      font-size: 15px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 24px; }
+    .everest-forms .everest-forms-settings-premium-sidebar h3 {
+      color: #383838;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 24px;
+      margin-top: 20px;
+      margin-bottom: 12px; }
+    .everest-forms .everest-forms-settings-premium-sidebar ul {
+      margin: 0;
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px; }
+      .everest-forms .everest-forms-settings-premium-sidebar ul li {
+        color: #383838;
+        font-size: 15px;
+        font-weight: 400;
+        line-height: 23px;
+        margin-bottom: 0;
+        padding-right: 26px;
+        position: relative; }
+        .everest-forms .everest-forms-settings-premium-sidebar ul li::before {
+          content: "";
+          background-image: url("../images/icons/premium-list-check-icon.svg");
+          background-repeat: no-repeat;
+          background-position: center;
+          background-size: 100%;
+          width: 18px;
+          height: 18px;
+          position: absolute;
+          right: 0;
+          top: 2px; }
+    .everest-forms .everest-forms-settings-premium-sidebar a {
+      border-radius: 3px;
+      border: 1px solid #7545BB;
+      background: #7545BB;
+      padding: 10px 16px;
+      display: block;
+      color: #ffffff;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 24px;
+      text-decoration: none;
+      letter-spacing: .05px;
+      width: max-content;
+      margin: 20px 0;
+      transition: all .3s; }
+      .everest-forms .everest-forms-settings-premium-sidebar a:hover {
+        background: #9159e3;
+        border-color: #9159e3; }
+    .everest-forms .everest-forms-settings-premium-sidebar.everest-forms-hidden {
+      margin-left: -325px;
+      display: unset; }
   .everest-forms .everest-forms-settings .submit {
     margin: 0;
     padding: 0;
@@ -11783,3 +11935,9 @@ everest-forms-field-option-row-rating-icon .everest-forms-rating-icon-container 
     border-color: #7e3bd0; }
     everest-forms-field-option-row-rating-icon .everest-forms-rating-icon-container input:checked + label svg {
       fill: #fff; }
+
+.folded #evf-collapse.open {
+  right: 36px !important; }
+
+.folded #evf-collapse.close {
+  right: 435px !important; }

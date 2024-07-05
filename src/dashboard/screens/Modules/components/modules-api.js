@@ -11,6 +11,7 @@ const urls = {
 	deactivateModule: base + "modules/deactivate",
 	bulkActivateModules: base + "modules/bulk-activate",
 	bulkDeactivateModules: base + "modules/bulk-deactivate",
+	activateLicense: base + "modules/activate-license",
 };
 
 export const getAllModules = async () => {
@@ -73,6 +74,19 @@ export const bulkDeactivateModules = async (moduleData) => {
 		},
 		data: {
 			moduleData: moduleData,
+		},
+	}).then((res) => res);
+};
+
+export const activateLicense = async (licenseActivationKey) => {
+	return await apiFetch({
+		path: urls.activateLicense,
+		method: "POST",
+		headers: {
+			"X-WP-Nonce": evfRestApiNonce,
+		},
+		data: {
+			licenseActivationKey: licenseActivationKey,
 		},
 	}).then((res) => res);
 };
