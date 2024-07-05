@@ -18,7 +18,7 @@ class EVF_Field_Payment_Square extends \EVF_Form_Fields {
 	 */
 	public function __construct() {
 
-		$this->name   = esc_html__( 'Square', 'everest-forms-pro' );
+		$this->name   = esc_html__( 'Square', 'everest-forms' );
 		$this->type   = 'square-payment';
 		$this->icon   = 'evf-icon evf-icon-payment';
 		$this->order  = 231;
