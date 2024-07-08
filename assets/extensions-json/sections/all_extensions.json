@@ -747,7 +747,7 @@
     {
       "title": "OnePageCRM",
       "slug": "everest-forms-onepagecrm",
-      "name": "Everest Forms- Mailpoet",
+      "name": "Everest Forms- OnePageCRM",
       "image": "extensions-json/sections/images/onepagecrm.webp",
       "excerpt": "OnePageCRM for Everest Forms helps you to easily send Everest Forms entries directly to your OnePageCRM customer relation account.",
       "link": "https://docs.everestforms.net/docs/onepagecrm/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
@@ -759,6 +759,22 @@
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=onepagecrm",
       "demo_video_url": "42EUj-Dlnr0"
+    },
+    {
+      "title": "Salesflare",
+      "slug": "everest-forms-salesflare",
+      "name": "Everest Forms- Salesflare",
+      "image": "extensions-json/sections/images/onepagecrm.webp",
+      "excerpt": "OnePageCRM for Everest Forms helps you to easily send Everest Forms entries directly to your OnePageCRM customer relation account.",
+      "link": "https://docs.everestforms.net/docs/salesflare/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
+      "released_date": "20/05/2024",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=salesflare",
+      "demo_video_url": ""
     }
   ]
 }
