@@ -747,8 +747,8 @@
       "title": "Brevo",
       "slug": "everest-forms-brevo",
       "name": "Everest Forms Brevo",
-      "image": "extensions-json/sections/images/brevo.png",
-      "excerpt": "Allows your users to subscribe to Sendinblue through form submissions. Users filling up the forms can be directly added to your subscribers list in Sendinblue.",
+      "image": "extensions-json/sections/images/brevo.webp",
+      "excerpt": "Newsletters, SMTP, marketing automation and all your CRM tools in one place with Brevo integration (formerly Sendinblue) for Everest Form.",
       "link": "https://docs.everestforms.net/docs/sendinblue/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "26/09/2022",
       "plan": [
