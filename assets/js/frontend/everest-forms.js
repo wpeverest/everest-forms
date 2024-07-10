@@ -35,6 +35,7 @@ jQuery( function ( $ ) {
 			this.loadPhoneField();
 			this.loadCountryFlags();
 			this.ratingInit();
+			this.FormSubmissionWaitingTime();
 
 
 			// Inline validation.
@@ -597,6 +598,7 @@ jQuery( function ( $ ) {
 							var	recaptchaID = $submit.get( 0 ).recaptchaID;
 							var  razorpayForms = $form.find( "[data-gateway='razorpay']" );
 							var stripeForms = $form.find( "[data-gateway*='stripe']" );
+
 						// Process form.
 						if ( processText ) {
 							$submit.text( processText ).prop( 'disabled', true );
@@ -948,6 +950,21 @@ jQuery( function ( $ ) {
 			}
 			return $( '<div class="iti__flag-box"><div class="iti__flag iti__' + country.id.toLowerCase() + '"></div></div><span class="iti__country-name">' + country.text + '</span>' );
 		},
+
+		FormSubmissionWaitingTime: function(){
+			$ (document).ready( function() {
+				var form_settings = everest_forms_params.form_settings['settings'];
+				var wait_form_submission_status = form_settings['form_submission_min_waiting_time'];
+				var form_submission_duration = form_settings['form_submission_min_waiting_time_input'];
+
+				if( (wait_form_submission_status === '1') ){
+					$('#evf_submission_start_time').val(Date.now());
+				} else {
+					return '';
+				}
+			});
+		},
+
 		ratingInit:function(){
 			// Rating field: hover effect.
 			$( '.everest-forms-field-rating' ).hover(

@@ -8,9 +8,6 @@
  * @version 1.0.0
  * @since   1.3.2
  */
-if ( ! session_id() ) {
-	session_start();
-}
 
 defined( 'ABSPATH' ) || exit;
 
@@ -54,6 +51,9 @@ class EVF_Shortcode_Form {
 
 		// reCaptcha Language.
 		add_filter( 'everest_forms_frontend_recaptcha_url', array( __CLASS__, 'evf_recaptcha_language' ), 10, 1 );
+
+		// Enable for submission waiting time.
+		add_filter( 'everest_forms_display_fields_before', array( 'EVF_Shortcode_Form', 'evf_form_submission_waiting_time' ) );
 	}
 
 	/**
@@ -852,12 +852,6 @@ class EVF_Shortcode_Form {
 
 		self::add_custom_css_js( $atts['id'] );
 
-		if ( ! isset( $_SESSION ) && ! empty( $atts ) ) {
-
-			$session_key              = 'start_time_' . $atts['id'];
-			$_SESSION[ $session_key ] = time();
-		}
-
 		$atts = shortcode_atts(
 			array(
 				'id'          => false,
@@ -1250,6 +1244,24 @@ class EVF_Shortcode_Form {
 				wp_add_inline_script( 'evf-custom', $custom_js );
 				wp_enqueue_script( 'evf-custom' );
 			}
+		}
+	}
+
+	/**
+	 * Function to enable the minimum form submission waiting time.
+	 *
+	 * @since 3.0.2
+	 *
+	 * @param array $form_data Form Data.
+	 */
+	public static function evf_form_submission_waiting_time( $form_data ) {
+		$form_submission_waiting_time_enable = isset( $form_data['settings']['form_submission_min_waiting_time'] ) ? $form_data['settings']['form_submission_min_waiting_time'] : '';
+		$submission_duration                 = isset( $form_data['settings']['form_submission_min_waiting_time_input'] ) ? $form_data['settings']['form_submission_min_waiting_time_input'] : '';
+
+		if ( '1' === $form_submission_waiting_time_enable ) {
+			echo "<input type='hidden' id='evf_submission_start_time' name='evf_submission_start_time'/>";
+		} else {
+			return '';
 		}
 	}
 }
