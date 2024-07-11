@@ -953,24 +953,42 @@ jQuery( function ( $ ) {
 		},
 
 		FormSubmissionWaitingTime: function(){
-			$ (document).ready( function() {
+			$(document).ready(function() {
 				var form_settings = everest_forms_params.form_settings['settings'];
 				var wait_form_submission_status = form_settings['form_submission_min_waiting_time'];
 
-				if( (wait_form_submission_status === '1') ){
+				if (wait_form_submission_status === '1') {
 					$('#evf_submission_start_time').val(Date.now());
-						var display = $('#evf_submission_duration');
-						if (display.length) {
-							var duration = parseInt(display.data('duration'), 10);
-							var timer = duration;
-							var interval = setInterval(function() {
-								display.text(timer);
-								if (--timer < 0) {
-									clearInterval(interval);
-									$('#evf_submission_duration').parent().remove();
-								}
-							}, 1000);
-						}
+
+					// Create a MutationObserver to observe changes in the DOM.
+					var observer = new MutationObserver(function(mutations) {
+						mutations.forEach(function(mutation) {
+							if (mutation.addedNodes.length > 0) {
+								$(mutation.addedNodes).each(function() {
+									var display = $('#evf_submission_duration');
+									if (display.length) {
+										var duration = parseInt(display.data('duration'), 10);
+										var timer = duration;
+										var interval = setInterval(function() {
+											display.text(timer);
+											if (--timer < 0) {
+												clearInterval(interval);
+												$('#evf_submission_duration').parent().remove();
+											}
+										}, 1000);
+
+										// Once the element is found, disconnect the observer.
+										observer.disconnect();
+									}
+								});
+							}
+						});
+					});
+
+					// Start observing the target node for configured mutations.
+					var targetNode = document.body;
+					var config = { childList: true, subtree: true };
+					observer.observe(targetNode, config);
 				} else {
 					return '';
 				}
