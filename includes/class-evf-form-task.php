@@ -65,8 +65,6 @@ class EVF_Form_Task {
 		add_action( 'everest_forms_complete_entry_save', array( $this, 'evf_set_approval_status' ), 10, 2 );
 		add_action( 'admin_init', array( $this, 'evf_admin_approve_entry' ), 10, 2 );
 		add_action( 'admin_init', array( $this, 'evf_admin_deny_entry' ) );
-		// Form Submission Waiting Time.
-		add_filter( 'everest_forms_process_initial_errors', array( $this, 'form_submission_waiting_time' ), 10, 2 );
 	}
 
 	/**
@@ -359,6 +357,18 @@ class EVF_Form_Task {
 			}
 			// Initial error check.
 			$errors = apply_filters( 'everest_forms_process_initial_errors', $this->errors, $this->form_data );
+
+			// Minimum time to submit check.
+			$min_submit_time = $this->form_submission_waiting_time( $this->errors, $this->form_data );
+			if ( isset( $min_submit_time[ $form_id ]['header'] ) && ! empty( $min_submit_time ) ) {
+				$this->errors[ $form_id ]['header'] = $min_submit_time[ $form_id ]['header'];
+				$logger->error(
+					$min_submit_time[ $form_id ]['header'],
+					array( 'source' => 'Minimum time to submit' )
+				);
+				return $this->errors;
+			}
+
 			if ( isset( $_POST['__amp_form_verify'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
 				if ( empty( $errors[ $form_id ] ) ) {
 					wp_send_json( array(), 200 );
@@ -1452,15 +1462,14 @@ class EVF_Form_Task {
 
 			$waiting_time = absint( $submission_time ) - absint( $evf_submission_start_time );
 			$form_id      = ! empty( $form_data['id'] ) ? $form_data['id'] : 0;
-			?>
 
-			<?php
 			if ( absint( $submission_time ) - absint( $evf_submission_start_time ) <= absint( $submission_duration ) * 1000 ) {
 				$form_submission_err_msg = apply_filters(
 					'everest_forms_minimum_waiting_time_form_submission',
 					sprintf(
-						"%s <span id = 'evf_submission_duration'>%s</span> %s",
+						"%s <span id='evf_submission_duration' data-duration='%s'>%s</span> %s",
 						esc_html__( 'Please wait', 'everest-forms' ),
+						$submission_duration,
 						$submission_duration,
 						esc_html__( 'seconds, security checkup is being executed.', 'everest-forms' )
 					)
@@ -1472,4 +1481,6 @@ class EVF_Form_Task {
 			return $errors;
 		}
 	}
+
+
 }
