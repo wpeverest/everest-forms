@@ -759,6 +759,22 @@
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=onepagecrm",
       "demo_video_url": "42EUj-Dlnr0"
+    },
+    {
+      "title": "Mollie",
+      "slug": "everest-forms-mollie",
+      "name": "Everest Forms Mollie",
+      "image": "extensions-json/sections/images/payment-stripe.png",
+      "excerpt": "Allows you to integrate online payment service to your e-commerce website. You can connect your Everest forms with Stripe to easily collect payments, donations, and online orders.",
+      "link": "https://docs.everestforms.net/docs/mollie/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "04/04/2019",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=payment",
+      "demo_video_url": "wZXnaxLxdz4"
     }
   ]
 }
