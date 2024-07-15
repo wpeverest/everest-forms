@@ -389,7 +389,6 @@
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=sms_notifications",
       "demo_video_url": "tz4UKBX9WxM",
       "popular_rank": 22
-
     },
     {
       "title": "Cloud Storage",
@@ -644,23 +643,6 @@
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=zoho",
       "demo_video_url": "sfHFiUIHpg0",
       "popular_rank": 34
-    },
-    {
-      "title": "GetResponse",
-      "slug": "everest-forms-getresponse",
-      "name": "Everest Forms GetResponse",
-      "image": "extensions-json/sections/images/getresponse.png",
-      "excerpt": "Allows your users to subscribe to GetResponse through form submissions. Users filling up the forms can be directly added to your subscribers list in GetResponse.",
-      "link": "https://docs.everestforms.net/docs/getresponse/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-      "released_date": "26/09/2022",
-      "plan": [
-        "personal",
-        "agency",
-        "themegrill agency"
-      ],
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=getresponse",
-      "demo_video_url": "Jhq1dOFXV-I",
-      "popular_rank": 37
     }
   ],
   "features": [
@@ -759,6 +741,22 @@
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=onepagecrm",
       "demo_video_url": "42EUj-Dlnr0"
+    },
+    {
+      "title": "GetResponse",
+      "slug": "everest-forms-getresponse",
+      "name": "Everest Forms GetResponse",
+      "image": "extensions-json/sections/images/getresponse.png",
+      "excerpt": "Allows your users to subscribe to GetResponse through form submissions. Users filling up the forms can be directly added to your subscribers list in GetResponse.",
+      "link": "https://docs.everestforms.net/docs/getresponse/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "26/09/2022",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=getresponse",
+      "demo_video_url": "Jhq1dOFXV-I"
     }
   ]
 }
