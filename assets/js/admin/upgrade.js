@@ -9,6 +9,7 @@ jQuery( function( $ ) {
 			$( document.body ).on( 'click dragstart', '.evf-registered-item.evf-upgrade-addon', this.evf_upgrade_addon );
 			$( document.body ).on( 'click dragstart', '.evf-registered-item.enable-stripe-model', this.enable_stripe_model );
 			$( document.body ).on( 'click dragstart', '.evf-registered-item.enable-authorize-net-model', this.enable_authorize_net_model );
+			$( document.body ).on( 'click dragstart', '.evf-registered-item.enable-mollie-model', this.enable_mollie_model );
 			$( document.body ).on( 'click dragstart', '.everest-forms-field-option-row.upgrade-modal', this.feature_upgrade );
 			$( document.body ).on( 'click dragstart', '.evf-upgradable-feature, .everest-forms-btn-group span.upgrade-modal', this.feature_upgrade );
 			$( document.body ).on( 'click dragstart', '.evf-one-time-draggable-field, .evf-registered-item.evf-one-time-draggable-field', this.evf_one_time_draggable_field );
@@ -189,6 +190,22 @@ jQuery( function( $ ) {
 			$.alert({
 				title: evf_upgrade.enable_authorize_net_title,
 				content: evf_upgrade.enable_authorize_net_message,
+				icon: 'dashicons dashicons-info',
+				type: 'blue',
+				buttons : {
+					confirm : {
+						text: evf_data.i18n_close,
+						btnClass: 'btn-confirm',
+						keys: ['enter']
+					}
+				}
+			});
+		},
+		enable_mollie_model: function( e ) {
+			e.preventDefault();
+			$.alert({
+				title: evf_upgrade.enable_mollie_title,
+				content: evf_upgrade.enable_mollie_message,
 				icon: 'dashicons dashicons-info',
 				type: 'blue',
 				buttons : {
