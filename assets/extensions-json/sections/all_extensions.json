@@ -289,23 +289,6 @@
       "popular_rank": 16
     },
     {
-      "title": "ConvertKit",
-      "slug": "everest-forms-convertkit",
-      "name": "Everest Forms ConvertKit",
-      "image": "extensions-json/sections/images/convertkit.png",
-      "excerpt": "Allows you to efficiently grow your business by generating more leads with ConvertKit. It also helps increase automated emails for better lead generation.",
-      "link": "https://docs.everestforms.net/docs/convertkit/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-      "released_date": "10/08/2018",
-      "plan": [
-        "personal",
-        "agency",
-        "themegrill agency"
-      ],
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=convertkit",
-      "demo_video_url": "GvqPVCK7Ws8",
-      "popular_rank": 17
-    },
-    {
       "title": "Post Submissions",
       "slug": "everest-forms-post-submissions",
       "name": "Everest Forms Post Submissions",
@@ -759,6 +742,23 @@
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=onepagecrm",
       "demo_video_url": "42EUj-Dlnr0"
+    },
+    {
+      "title": "ConvertKit",
+      "slug": "everest-forms-convertkit",
+      "name": "Everest Forms ConvertKit",
+      "image": "extensions-json/sections/images/convertkit.png",
+      "excerpt": "Allows you to efficiently grow your business by generating more leads with ConvertKit. It also helps increase automated emails for better lead generation.",
+      "link": "https://docs.everestforms.net/docs/convertkit/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "10/08/2018",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=convertkit",
+      "demo_video_url": "GvqPVCK7Ws8",
+      "popular_rank": 17
     }
   ]
 }
