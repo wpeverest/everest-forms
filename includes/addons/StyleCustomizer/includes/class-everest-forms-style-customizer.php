@@ -36,7 +36,6 @@ if ( ! class_exists( 'EverestForms_Style_Customizer' ) ) {
 					add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 					add_action( 'everest_forms_shortcode_scripts', array( $this, 'enqueue_shortcode_scripts' ) );
 					add_action( 'everest_forms_builder_content_fields', array( $this, 'output_form_designer' ) );
-					add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ), 20, 2 );
 					add_action( 'everest_form_elemntor_style', array( $this, 'evf_elementor' ), 10, 1 );
 
 		}

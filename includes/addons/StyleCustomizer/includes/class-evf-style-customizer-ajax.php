@@ -21,7 +21,38 @@ final class EVF_Style_Customizer_Ajax {
 	public function __construct() {
 		add_action( 'wp_ajax_save_template', array( $this, 'save_template' ) );
 		add_action( 'wp_ajax_delete_template', array( $this, 'delete_template' ) );
+		add_action( 'wp_ajax_save_custom_color_palette', array( $this, 'evf_save_custom_color_palette' ) );
+
 	}
+
+	/**
+	 * Handle AJAX request to save custom color palette.
+	 */
+	public function evf_save_custom_color_palette() {
+		$nonce = isset( $_POST['_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_nonce'] ) ) : '';
+
+		if ( ! wp_verify_nonce( $nonce, 'color_palette' ) ) {
+			wp_send_json_error( __( 'Nonce error. Please refresh the page.', 'everest-forms' ) );
+			exit;
+		}
+
+		$label  = isset( $_POST['label'] ) ? sanitize_text_field( $_POST['label'] ) : '';
+		$colors = isset( $_POST['colors'] ) ? $_POST['colors'] : array();
+
+		$color_palettes = get_option( 'custom_color_palettes', array() );
+
+		$color_palettes[] = array(
+			'label'  => $label,
+			'colors' => $colors,
+		);
+
+		lg( $color_palettes );
+		update_option( 'custom_color_palettes', $color_palettes );
+
+
+	wp_send_json_success( 'Color palette saved successfully!' );
+	}
+
 
 	/**
 	 * Save styles as a template.

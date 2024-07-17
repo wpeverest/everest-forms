@@ -174,7 +174,11 @@ function evf_style_customizer_color_palette_controls( $controls, $customize ) {
 		),
 
 	);
-	$color_palettes = array_merge( $color_palettes, $pro_palette );
+	$custom_palette = get_option( 'custom_color_palettes', array() );
+	lg( $custom_palette );
+	$color_palettes = array_merge( $custom_palette, $color_palettes, $pro_palette );
+
+	lg( $custom_palette );
 	foreach ( $color_palettes as $index => $palette ) {
 		$colors_with_values = array();
 		foreach ( $palette['colors'] as $color_name => $color_value ) {

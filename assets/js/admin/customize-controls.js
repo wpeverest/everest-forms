@@ -327,10 +327,16 @@
 			control.container.on('click', '.color-palette-label', function() {
 				control.container.find('input[type="checkbox"]').prop('checked', true).change();
 			});
+
+			// Show the edit interface
+			control.container.on('click', '.color-palette-edit-icon', function() {
+				control.showEditInterface();
+			});
 		},
+
 		saveValue: function(property, value) {
 			var control = this;
-			var input   = control.container.find('.color-palette-hidden-value' );
+			var input = control.container.find('.color-palette-hidden-value');
 			var val = control.setting.get();
 
 			if (typeof val !== 'object') {
@@ -338,10 +344,85 @@
 			}
 
 			val[property] = value;
-			jQuery( input ).val( JSON.stringify( val ) ).trigger( 'change' );
+			jQuery(input).val(JSON.stringify(val)).trigger('change');
 			control.setting.set(val);
+		},
+
+		showEditInterface: function() {
+			var control = this;
+			var editInterfaceHtml = '<div class="color-palette-edit-interface">' +
+				'<input type="text" class="color-palette-name-input" value="' + control.params.label + '" />' + // Input field for editing the palette name
+				'<div class="color-palette-items">';
+
+			// Loop through each color choice
+			Object.keys(control.params.choices).forEach(function(key) {
+				editInterfaceHtml += '<div class="color-palette-edit-item">' +
+					'<label for="color-edit-' + control.params.id + '-' + key + '">' +
+					control.params.choices[key].name +
+					'</label>' +
+					'<input id="color-edit-' + control.params.id + '-' + key + '" type="text" value="' +
+					control.params.choices[key].color + '" class="color-picker"/>' +
+					'</div>';
+			});
+
+			editInterfaceHtml += '</div>' +
+				'<button class="color-palette-save-button">Save</button>' +
+				'</div>';
+
+			// Append the edit interface to the control container
+			control.container.find('.color-palette-edit-interface').remove(); // Remove any existing edit interface
+			control.container.append(editInterfaceHtml);
+
+			// Initialize color pickers
+			control.container.find('.color-picker').wpColorPicker();
+
+			// Handle save button click
+			control.container.on('click', '.color-palette-save-button', function() {
+				control.saveEditedColors();
+			});
+
+			// Handle palette name change
+			control.container.find('.color-palette-name-input').on('change', function() {
+				var newName = $(this).val();
+				control.params.label = newName;
+				control.showEditInterface(); // Re-render the edit interface with the updated name
+			});
+		},
+
+		saveEditedColors: function() {
+			var control = this;
+			var editedColors = {};
+
+			control.container.find('.color-palette-edit-item').each(function() {
+				var key = $(this).find('label').text().trim().toLowerCase().replace(/color\s+.*/, ''); // Convert label text to key format'
+				var color = $(this).find('.color-picker').val();
+				editedColors[key] = color;
+			});
+
+			// Update the control's value
+			control.setting.set(editedColors);
+			control.container.find('.color-palette-hidden-value').val(JSON.stringify(editedColors)).trigger('change');
+
+
+				// AJAX request to save custom colors
+				$.post(_evfCustomizeControlsL10n.ajax_url, {
+					action: 'save_custom_color_palette',
+					form_id: _evfCustomizeControlsL10n.form_id,
+					_nonce: _evfCustomizeControlsL10n.color_palette_nonce,
+					colors: editedColors,
+					label: control.params.label
+				}).done(function(response) {
+					console.log('Colors saved successfully:', response);
+				}).fail(function(error) {
+					console.error('Error saving colors:', error);
+				});
+
+			// Remove the edit interface after saving
+			control.container.find('.color-palette-edit-interface').remove();
 		}
 	});
+
+
 
 
 
