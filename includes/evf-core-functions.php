@@ -124,12 +124,18 @@ function evf_get_template( $template_name, $args = array(), $template_path = '',
 		}
 		extract( $args ); // @codingStandardsIgnoreLine
 	}
+	// error_log(print_r("is core funciton before template? ? "  , true));
+	$form_id = isset($_POST['everest_forms']['id']) && !empty($_POST['everest_forms']['id']) ? $_POST['everest_forms']['id'] : '';
+	// error_log("ereer");
+	// error_log( print_r( $form_id, true ) );
+	// error_log("pereer");
 
-	do_action( 'everest_forms_before_template_part', $action_args['template_name'], $action_args['template_path'], $action_args['located'], $action_args['args'] );
+
+	do_action( 'everest_forms_before_template_part', $action_args['template_name'], $action_args['template_path'], $action_args['located'], $action_args['args']  , 'before_template_part');
 
 	include $action_args['located'];
 
-	do_action( 'everest_forms_after_template_part', $action_args['template_name'], $action_args['template_path'], $action_args['located'], $action_args['args'] );
+	do_action( 'everest_forms_after_template_part', $action_args['template_name'], $action_args['template_path'], $action_args['located'], $action_args['args']   , 'after_template_part');
 }
 
 /**

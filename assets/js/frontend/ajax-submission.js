@@ -76,7 +76,7 @@ jQuery( function( $ ) {
 
 					if ( errors.length > 0 ) {
 						$( [document.documentElement, document.body] ).animate({
-							scrollTop: errors.last().offset().top
+							scrollTop: errors.last().offset().top-100
 						}, 800 );
 						return;
 					}
@@ -117,6 +117,7 @@ jQuery( function( $ ) {
 							let pdf_download_message = '';
 							let quiz_reporting = '';
 							let preview_confirmation = '';
+							let message_display_location = '';
 							if(xhr.data.form_id !== undefined && xhr.data.entry_id !== undefined && xhr.data.pdf_download == true){
 								pdf_download_message = '<br><small><a href="/?page=evf-entries-pdf&form_id='+ xhr.data.form_id+'&entry_id='+xhr.data.entry_id+'">' + xhr.data.pdf_download_message + '</a></small>';
 							}
@@ -128,6 +129,9 @@ jQuery( function( $ ) {
 								preview_confirmation = xhr.data.preview_confirmation;
 							}
 
+							if( xhr.data.message_display_location !== undefined ){
+								message_display_location = xhr.data.message_display_location;
+							}
 
 							var paymentMethod = formTuple.find( ".everest-forms-stripe-gateways-tabs .evf-tab" ).has( 'a.active' ).data( 'gateway' );
 
@@ -154,9 +158,43 @@ jQuery( function( $ ) {
 								formTuple.trigger( 'evf_process_payment', xhr.data );
 								return;
 							}
+
+							//Resets the form fields.
 							formTuple.trigger( 'reset' );
-							formTuple.closest( '.everest-forms' ).html( '<div class="everest-forms-notice everest-forms-notice--success" role="alert">' + xhr.data.message + pdf_download_message + '</div>' + quiz_reporting + preview_confirmation ).focus();
-							localStorage.removeItem(formTuple.attr('id'));
+							//Makes the submit button enabled.
+							btn.attr( 'disabled', false ).html( everest_forms_ajax_submission_params.submit );
+							//Removes perviously existing notice.
+							formTuple.closest( '.everest-forms' ).find( '.everest-forms-notice' ).remove();
+
+							if( "top" === message_display_location ){
+								formTuple.closest( '.everest-forms' ).prepend( '<div class="everest-forms-notice everest-forms-notice--success" role="alert">'+ xhr.data.message + pdf_download_message + '</div>' ).focus();
+								formTuple.closest( '.everest-forms' ).append( quiz_reporting + preview_confirmation );
+							}
+
+							else if ( "bottom" === message_display_location ){
+								formTuple.closest('.everest-forms').append(	'<div class="everest-forms-notice everest-forms-notice--success" role="alert">'+ xhr.data.message + pdf_download_message + '</div>'  + quiz_reporting + preview_confirmation ).focus();
+							}
+
+							else if ( "hide" === message_display_location ) {
+								formTuple.closest( '.everest-forms' ).html( '<div class="everest-forms-notice everest-forms-notice--success" role="alert">' + xhr.data.message + pdf_download_message + '</div>' + quiz_reporting + preview_confirmation  ).focus();
+							}
+
+							else if ( "popup" === message_display_location ) {
+								formTuple.closest( '.everest-forms' ).prepend( '<div class="everest-forms-success-message-popup-bg"><div class="everest-forms-success-message-popup"><div class="everest-forms-success-message-popup-top"><span id="everest-forms-success-popup-close-button" class="everest-forms-success-popup-close-button"><img src="'+ xhr.data.image_url.close_btn + '" alt="X" /></span></span></div><div class="everest-forms-success-message-popup-logo"><img src="' + xhr.data.image_url.green_check + '" alt="LOGO"/></div><div class="everest-forms-success-message-popup-text" ><div class="everest-forms-success-message-popup-text-status">'+ xhr.data.response.charAt(0).toUpperCase() + xhr.data.response.substr(1) + '!</div><div class="everest-forms-success-message-popup-text-message">' + xhr.data.message + '</div></div></div>' ).focus();
+
+								//Appends quiz reportings and preview below form.
+								formTuple.closest( '.everest-forms' ).append( quiz_reporting + preview_confirmation );
+
+								//Removes the message on click of 'x' button.
+								jQuery( document ).on( 'click' ,"#everest-forms-success-popup-close-button" ,
+									function (){
+										formTuple.closest( '.everest-forms' ).find( '.everest-forms-success-message-popup' ).remove();
+										formTuple.closest( '.everest-forms' ).find( '.everest-forms-success-message-popup-bg' ).remove();
+									}
+								);
+							}
+
+							localStorage.removeItem( formTuple.attr( 'id' ) ) ;
 
 							// Trigger for form submission success.
 							var event = new CustomEvent("everest_forms_ajax_submission_success", {
@@ -257,9 +295,11 @@ jQuery( function( $ ) {
 					})
 					.always( function( xhr ) {
 						var redirect_url = ( xhr.data && xhr.data.redirect_url ) ? xhr.data.redirect_url : '';
-						if ( ! redirect_url && $( '.everest-forms-notice' ).length ) {
+
+						var should_scroll_to_message = ( xhr.data && xhr.data.submission_message_scroll ) ? xhr.data.submission_message_scroll : 1 ;
+						if ( (! redirect_url && $( '.everest-forms-notice' ).length ) && 1 == should_scroll_to_message) {
 							$( [document.documentElement, document.body] ).animate({
-								scrollTop: $( '.everest-forms-notice' ).offset().top
+								scrollTop: $( '.everest-forms-notice' ).offset().top - 100
 							}, 800 );
 						}
 					});

@@ -833,6 +833,9 @@ class EVF_Shortcode_Form {
 	 * @param array $atts Attributes.
 	 */
 	public static function output( $atts ) {
+		// error_log("here in  EVF_shortcode_form output functoin");
+		// error_log(print_r($atts  , true));
+
 		wp_enqueue_script( 'everest-forms' );
 		wp_enqueue_script( 'everest-forms-survey-polls-quiz-script' );
 
@@ -875,7 +878,8 @@ class EVF_Shortcode_Form {
 	 *
 	 * @param array $atts Attributes.
 	 */
-	private static function view( $atts ) {
+	public static function view( $atts ) {
+		echo "here";
 		$id          = isset( $atts['id'] ) ? $atts['id'] : false;
 		$title       = isset( $atts['title'] ) ? $atts['title'] : false;
 		$description = isset( $atts['description'] ) ? $atts['description'] : false;
@@ -1147,6 +1151,7 @@ class EVF_Shortcode_Form {
 		if ( is_super_admin() ) {
 			evf_debug_data( $form_data );
 		}
+		echo "there";
 	}
 
 	/**
