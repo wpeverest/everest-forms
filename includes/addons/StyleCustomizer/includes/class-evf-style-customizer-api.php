@@ -407,6 +407,7 @@ class EVF_Style_Customizer_API {
 					// Add a core or custom customize controls.
 					if ( class_exists( $control_data['control']['type'] ) ) {
 						$wp_customize->register_control_type( $control_data['control']['type'] );
+
 						$wp_customize->add_control( new $control_data['control']['type']( $wp_customize, $control_id, $control_args ) );
 					} elseif ( isset( $control_data['control']['type'] ) ) {
 						$control_args['type'] = $control_data['control']['type'];

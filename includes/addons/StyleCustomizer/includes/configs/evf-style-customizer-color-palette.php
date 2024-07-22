@@ -175,10 +175,16 @@ function evf_style_customizer_color_palette_controls( $controls, $customize ) {
 
 	);
 	$custom_palette = get_option( 'custom_color_palettes', array() );
-	lg( $custom_palette );
-	$color_palettes = array_merge( $custom_palette, $color_palettes, $pro_palette );
 
-	lg( $custom_palette );
+	// Filter out any entries where the 'colors' array is empty
+	$custom_palette = array_filter(
+		$custom_palette,
+		function( $palette ) {
+			return ! empty( $palette['colors'] );
+		}
+	);
+
+	$color_palettes = array_merge( $custom_palette, $color_palettes, $pro_palette );
 	foreach ( $color_palettes as $index => $palette ) {
 		$colors_with_values = array();
 		foreach ( $palette['colors'] as $color_name => $color_value ) {

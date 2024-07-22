@@ -39,19 +39,30 @@ final class EVF_Style_Customizer_Ajax {
 		$label  = isset( $_POST['label'] ) ? sanitize_text_field( $_POST['label'] ) : '';
 		$colors = isset( $_POST['colors'] ) ? $_POST['colors'] : array();
 
+		if ( empty( $colors ) ) {
+			wp_send_json_error( __( 'Colors array is empty.', 'everest-forms' ) );
+			exit;
+		}
+
 		$color_palettes = get_option( 'custom_color_palettes', array() );
+
+		$color_palettes = array_filter(
+			$color_palettes,
+			function( $palette ) {
+				return ! empty( $palette['colors'] );
+			}
+		);
 
 		$color_palettes[] = array(
 			'label'  => $label,
 			'colors' => $colors,
 		);
 
-		lg( $color_palettes );
 		update_option( 'custom_color_palettes', $color_palettes );
 
-
-	wp_send_json_success( 'Color palette saved successfully!' );
+		wp_send_json_success( 'Color palette saved successfully!' );
 	}
+
 
 
 	/**

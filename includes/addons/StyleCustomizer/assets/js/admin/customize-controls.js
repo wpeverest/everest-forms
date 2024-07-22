@@ -516,6 +516,30 @@
 								.prop("checked", value);
 						});
 						break;
+						case "evf-color":
+						var $input = $container.find(
+							".image-checkbox-hidden-value"
+						);
+
+						var new_value = values;
+						if ( 'string' !== typeof new_value ) {
+							new_value = JSON.stringify( values );
+						} else {
+							values = JSON.parse( values );
+						}
+
+						$input.val( new_value ).trigger("change");
+
+						$.each(values, function (index, value) {
+							$container
+								.find(
+									'.image-checkbox-wrapper input[value="' +
+										index +
+										'"]'
+								)
+								.prop("checked", value);
+						});
+						break;
 					case "evf-dimension":
 						var selected_device = $container
 							.find(
