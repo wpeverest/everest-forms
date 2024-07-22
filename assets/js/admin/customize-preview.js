@@ -184,8 +184,45 @@
 	wp.customize( settings + '[template]', function( value ) {
 		value.bind( function( newval ) {
 			controls_wrapper.find( '.control-section-evf-templates' ).find( '.customize-template-name' ).text( data.templates[ newval ] );
+			// controls_wrapper.find('input[name="image-radio-everest_forms_styles[563][template]"]').parent().hover(function() {
+
+			// });
 		} );
 	} );
+
+	//Show the clone template on hover
+	$(document).ready(function() {
+		controls_wrapper.find('input[name="image-radio-everest_forms_styles[563][template]"]').parent().hover(function() {
+			var $img = $(this).find('img');
+			var $clone = $img.clone().addClass('everest-forms-clone-image');
+			$(".everest-forms").append($clone);
+			$clone.css({
+				'position': 'absolute',
+				'left': 0,
+				'top': '50%',
+				'opacity': 0,
+				'transform': 'translateY(-50%)',
+				'transition': 'opacity 0.3s, transform 0.3s',
+				'z-index': 1000
+			});
+
+			setTimeout(function() {
+				$clone.css({
+					'opacity': 1,
+					'transform': 'scale(1)'
+				});
+			}, 0);
+		}, function() {
+			var $clone = $(".everest-forms").find('.everest-forms-clone-image');
+			$clone.css({
+				'opacity': 0
+			});
+			setTimeout(function() {
+				  $clone.remove();
+			}, 300);
+		});
+	});
+
 
 	/* Form Wrapper start */
 
