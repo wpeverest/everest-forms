@@ -349,7 +349,7 @@ class EVF_Frontend_Scripts {
 				$params = array(
 					'ajax_url'   => admin_url( 'admin-ajax.php', 'relative' ),
 					'ajax_nonce' => wp_create_nonce( 'process-ajax-nonce' ),
-					'form_id'    => isset( $_GET['form_id'] ) ? wp_unslash( $_GET['form_id'] ) : '', // WPCS: CSRF ok, input var ok, sanitization ok.
+					'form_id'    => isset( $_GET['form_id'] ) ? wp_unslash( $_GET['form_id'] ) : '', //phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.Recommended
 				);
 				break;
 			default:
