@@ -764,7 +764,7 @@
       "title": "Mollie",
       "slug": "everest-forms-mollie",
       "name": "Everest Forms Mollie",
-      "image": "extensions-json/sections/images/payment-stripe.png",
+      "image": "extensions-json/sections/images/mollie.webp",
       "excerpt": "Allows you to integrate online payment service to your e-commerce website. You can connect your Everest forms with Stripe to easily collect payments, donations, and online orders.",
       "link": "https://docs.everestforms.net/docs/mollie/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "04/04/2019",
