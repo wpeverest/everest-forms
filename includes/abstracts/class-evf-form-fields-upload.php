@@ -515,6 +515,39 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 	}
 
 	/**
+	 * Get the custom file name
+	 *
+	 * @param array $field Field data.
+	 */
+	public function file_name( $field ) {
+		$lbl  = $this->field_element(
+			'label',
+			$field,
+			array(
+				'slug'    => 'file_name',
+				'value'   => esc_html__( 'Name of the file', 'everest-forms' ),
+				'tooltip' => esc_html__( 'Enter text to be displayed as file name.', 'everest-forms' ),
+			),
+			false
+		);
+		$fld  = $this->field_element(
+			'text',
+			$field,
+			array(
+				'slug'  => 'file_name',
+				'value' => ! empty( $field['file_name'] ) ? $field['file_name'] : esc_html( 'CustomFileName', 'everest-forms' ),
+			),
+			false
+		);
+		$args = array(
+			'slug'    => 'file_name',
+			'content' => $lbl . $fld,
+		);
+
+		$this->field_element( 'row', $field, $args );
+	}
+
+	/**
 	 * Limit message field option.
 	 *
 	 * @param array $field Field data.
