@@ -515,17 +515,17 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 	}
 
 	/**
-	 * Get the custom file name
+	 * Get the custom user defined file name
 	 *
 	 * @param array $field Field data.
 	 */
-	public function file_name( $field ) {
+	public function custom_file_name( $field ) {
 		$lbl  = $this->field_element(
 			'label',
 			$field,
 			array(
-				'slug'    => 'file_name',
-				'value'   => esc_html__( 'Name of the file', 'everest-forms' ),
+				'slug'    => 'custom_file_name',
+				'value'   => esc_html__( 'File name', 'everest-forms' ),
 				'tooltip' => esc_html__( 'Enter text to be displayed as file name.', 'everest-forms' ),
 			),
 			false
@@ -534,13 +534,46 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			'text',
 			$field,
 			array(
-				'slug'  => 'file_name',
-				'value' => ! empty( $field['file_name'] ) ? $field['file_name'] : esc_html( 'CustomFileName', 'everest-forms' ),
+				'slug'  => 'custom_file_name',
+				'value' => ! empty( $field['custom_file_name'] ) ? $field['custom_file_name'] : esc_html( 'mycustompdffile', 'everest-forms' ),
 			),
 			false
 		);
 		$args = array(
-			'slug'    => 'file_name',
+			'slug'    => 'custom_file_name',
+			'content' => $lbl . $fld,
+		);
+
+		$this->field_element( 'row', $field, $args );
+	}
+
+	/**
+	 * Creates file name by using fields of the pdf file
+	 *
+	 * @param array $field Field data.
+	 */
+	public function custom_tag_file_name( $field ) {
+		$lbl = $this->field_element(
+			'label',
+			$field,
+			array(
+				'slug'    => 'custom_tag_file_name',
+				'value'   => esc_html__( 'File name based on field tags', 'everest-forms' ),
+				'tooltip' => esc_html__( 'Enter the tags which represents the fields of the form and uses the field value as file name.', 'everest-forms' ),
+			)
+		);
+
+		$fld = $this->field_element(
+			'text',
+			$field,
+			array(
+				'slug'  => 'custom_tag_file_name',
+				'value' => ! empty( $field['custom_tag_file_name'] ) ? $field['custom_tag_file_name'] : '', // probably need to put the first tag present
+			)
+		);
+
+		$args = array(
+			'slug'    => 'custom_tag_file_name',
 			'content' => $lbl . $fld,
 		);
 
