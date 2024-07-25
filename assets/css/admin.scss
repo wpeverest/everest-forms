@@ -5527,6 +5527,7 @@
 	 */
  .evf-tools-export-entries,
  .everest-forms-import-form,
+ .everest-forms-import-entries-wrapper,
  .everest-forms-export-form,
  .everest-forms-form-migrator {
 	 background: $color-white;
@@ -9306,13 +9307,40 @@
    .everest-forms_page_evf-settings {
 	   .everest-forms {
 		   padding: 20px;
+		   overflow: hidden;
 	   }
    }
    .everest-forms {
 		   .everest-forms-settings {
 			   padding: 0 !important;
-			   background: #ffffff;
-			   box-shadow: 0px 6px 26px 0px rgba(10, 10, 10, .08);
+			   gap: 24px;
+			   background: transparent;
+
+			   &-wrapper {
+					box-shadow: 0px 6px 26px 0px rgba(10, 10, 10, .08);
+					background: #ffffff;
+					flex: 1;
+					display: flex;
+			   }
+
+			   &-main {
+				&:has(#message) {
+					.everest-forms-toggle-wrapper {
+						top: 76px;
+					}
+				}
+			   }
+
+			   .everest-forms-settings-container {
+					#message {
+						border: 1px solid #e6e6e6;
+						border-left-width: 4px;
+						border-left-color: #00a32a;
+						box-shadow: unset;
+						margin-top: 0;
+						margin-bottom: 20px;
+					}
+				}
 
 			   .everest-forms-header {
 				   display: flex;
@@ -9322,6 +9350,7 @@
 				   padding: 32px 0 20px;
 				   width: 300px;
 				   max-width: 100%;
+				   transition: all .3s;
 
 				   &--top {
 					   text-align: center;
@@ -9353,8 +9382,8 @@
 							   padding: 16px 20px;
 							   align-items: center;
 							   gap: 16px;
-							   border-bottom: 1px solid #EDEDED;		
-							   position: relative;					   
+							   border-bottom: 1px solid #EDEDED;
+							   position: relative;
 							   transition: all .3s ease-in-out;
 
 							   &::before {
@@ -9499,6 +9528,12 @@
 								   }
 							   }
 						   }
+
+						   .ps__rail {
+								&-x {
+									display: none;	
+								}
+						   }
 					   }
 				   }
 
@@ -9534,8 +9569,34 @@
 			   }
 
 			   .everest-forms-settings-container {
-				   padding: 26px 20px 52px 32px;
+				   padding: 32px 20px 52px 32px;
 				   box-shadow: none;
+
+				   .everest-forms-settings-main {
+						position: relative;
+
+						.everest-forms-toggle-wrapper {
+							position: absolute;
+							right: 0;
+							top: 6px;
+							display: flex;
+							align-items: center;
+							gap: 6px;
+							
+							.evf-toggle-section {
+								.everest-forms-toggle-form {
+									margin: 0;
+								}
+							}
+							
+							.everest-forms-toggle-text {
+								font-size: 14px;
+								line-height: 24px;
+								color: #383838;
+								font-weight: 500;
+							}
+						}
+				   }
 
 				   .everest-forms-options-header {
 					   margin-bottom: 32px;
@@ -9616,6 +9677,24 @@
 
 						   &--field {
 							   flex: 1;
+
+							   &.forminp-input_test_button {
+									@media screen and (max-width: 782px) {
+										display: flex;
+										flex-direction: column;
+										gap: 12px;
+
+										input[type="email"] {
+											width: 100%;
+											margin-right: 0 !important;
+										}
+
+										.button.everest_forms_send_email_test {
+											margin-bottom: 0;
+											width: max-content;
+										}
+									}
+							   }
 
 							   fieldset {
 								   > label {
@@ -9893,6 +9972,103 @@
 				   }
 			   }
 
+			   &-premium {
+					&-sidebar {
+						width: 300px;
+						max-width: 100%;
+						padding: 18px 10px 26px 10px;
+						transition: all .3s;
+
+						h2 {
+							color: #222222;
+							font-size: 18px;
+							font-weight: 600;
+							line-height: 140%;
+							margin: 0;
+							padding-bottom: 16px;
+							margin-bottom: 20px;
+							border-bottom: 1px solid #EEE8F7;
+						}
+
+						p {
+							margin: 0;
+							color: #383838;
+							font-size: 15px;
+							font-style: normal;
+							font-weight: 400;
+							line-height: 24px;
+						}
+
+						h3 {
+							color: #383838;
+							font-size: 16px;
+							font-weight: 600;
+							line-height: 24px;
+							margin-top: 20px;
+							margin-bottom: 12px;
+						}
+
+						ul {
+							margin: 0;
+							margin-bottom: 16px;
+							display: flex;
+							flex-direction: column;
+							gap: 12px;
+
+							li {
+								color: #383838;
+								font-size: 15px;
+								font-weight: 400;
+								line-height: 23px;
+								margin-bottom: 0;
+								padding-left: 26px;
+								position: relative;
+
+								&::before {
+									content: "";
+									background-image: url("../images/icons/premium-list-check-icon.svg");
+									background-repeat: no-repeat;
+									background-position: center;
+									background-size: 100%;
+									width: 18px;
+									height: 18px;
+									position: absolute;
+									left: 0;
+									top: 2px;
+								}
+							}
+						}
+
+						a {
+							border-radius: 3px;
+							border: 1px solid #7545BB;
+							background: #7545BB;
+							padding: 10px 16px;
+							display: block;
+							color: #ffffff;
+							font-size: 14px;
+							font-style: normal;
+							font-weight: 500;
+							line-height: 24px;
+							text-decoration: none;
+							letter-spacing: .05px;
+							width: max-content;
+							margin: 20px 0;
+							transition: all .3s;
+
+							&:hover {
+								background: #9159e3;
+								border-color: #9159e3;
+							}
+						}
+
+						&.everest-forms-hidden {
+							margin-right: -325px;
+							display: unset;
+						}
+					}
+			   }
+
 			   .submit {
 				   margin: 0;
 				   padding: 0;
@@ -9956,6 +10132,19 @@
 					fill: $color-white;
 				}
 			}
+		}
+	}
+}
+
+// WordPress main sidebar is closed, builder Sidebar Collapse Button Design Fix
+.folded {
+	#evf-collapse {
+		&.open {
+			left: 36px !important;
+		}
+
+		&.close {
+			left: 435px !important;
 		}
 	}
 }

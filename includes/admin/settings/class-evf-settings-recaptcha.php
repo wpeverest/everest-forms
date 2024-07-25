@@ -142,7 +142,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 					'title'      => esc_html__( 'Site Key', 'everest-forms' ),
 					'type'       => 'text',
 					/* translators: %1$s - Google reCAPTCHA docs url */
-					'desc'       => sprintf( esc_html__( 'Please enter your site key for your hCaptcha. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/how-to-integrate-google-recaptcha/' ) ),
+					'desc'       => sprintf( esc_html__( 'Please enter your site key for your hCaptcha. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/how-to-integrate-hcaptcha/' ) ),
 					'is_visible' => 'hcaptcha' === $recaptcha_type,
 					'id'         => 'everest_forms_recaptcha_hcaptcha_site_key',
 					'default'    => '',
@@ -152,7 +152,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 					'title'      => esc_html__( 'Secret Key', 'everest-forms' ),
 					'type'       => 'text',
 					/* translators: %1$s - Google reCAPTCHA docs url */
-					'desc'       => sprintf( esc_html__( 'Please enter your secret key for your hCaptcha. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/how-to-integrate-google-recaptcha/' ) ),
+					'desc'       => sprintf( esc_html__( 'Please enter your secret key for your hCaptcha. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/how-to-integrate-hcaptcha/' ) ),
 					'id'         => 'everest_forms_recaptcha_hcaptcha_secret_key',
 					'is_visible' => 'hcaptcha' === $recaptcha_type,
 					'default'    => '',
@@ -177,7 +177,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 					'title'      => esc_html__( 'Site Key', 'everest-forms' ),
 					'type'       => 'text',
 					/* translators: %1$s - Cloudflare Turnstile docs url */
-					'desc'       => sprintf( esc_html__( 'Please enter your site key for your Cloudflare Trunstile. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/how-to-integrate-google-recaptcha/' ) ),
+					'desc'       => sprintf( esc_html__( 'Please enter your site key for your Cloudflare Trunstile. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/how-to-integrate-cloudflare-turnstile-with-the-everest-forms/' ) ),
 					'is_visible' => 'turnstile' === $recaptcha_type,
 					'id'         => 'everest_forms_recaptcha_turnstile_site_key',
 					'default'    => '',
@@ -187,7 +187,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 					'title'      => esc_html__( 'Secret Key', 'everest-forms' ),
 					'type'       => 'text',
 					/* translators: %1$s - Cloudflare Trunstile docs url */
-					'desc'       => sprintf( esc_html__( 'Please enter your secret key for your Cloudflare Turnstile. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/how-to-integrate-google-recaptcha/' ) ),
+					'desc'       => sprintf( esc_html__( 'Please enter your secret key for your Cloudflare Turnstile. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/how-to-integrate-cloudflare-turnstile-with-the-everest-forms/' ) ),
 					'id'         => 'everest_forms_recaptcha_turnstile_secret_key',
 					'is_visible' => 'turnstile' === $recaptcha_type,
 					'default'    => '',

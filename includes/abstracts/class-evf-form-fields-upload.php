@@ -656,6 +656,38 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 		$entry_id = false;
 		$uploads  = wp_upload_dir();
 
+		if ( 'evffl-display-popup' === $context ) {
+			foreach ( $form_data['form_fields'] as $fields_data ) {
+				if ( $field_val['meta-key'] === $fields_data['meta-key'] ) {
+					if ( 'image-upload' === $fields_data['type'] ) {
+						$val = '';
+						foreach ( $field_val['field_value']['value_raw'] as $key => $value ) {
+							$val .= '<a href="' . esc_url( $value['value'] ) . '" target="_blank"><img src="' . esc_url( $value['value'] ) . '" style="width:200px;" /></a>';
+						}
+						return $val;
+					}
+					if ( 'file-upload' === $fields_data['type'] ) {
+						$count = count( $field_val['field_value']['value_raw'] );
+						$val   = '';
+						if ( $count > 1 ) {
+							foreach ( $field_val['field_value']['value_raw'] as $key => $value ) {
+								if ( 1 === $count ) {
+									$val .= '<a href="' . esc_url( $value['value'] ) . '" target="_blank">' . $value['name'] . '</a>';
+								} else {
+									$val .= '<a href="' . esc_url( $value['value'] ) . '" target="_blank">' . $value['name'] . '</a>, ';
+
+								}
+								--$count;
+							}
+						} else {
+							$val .= '<a href="' . esc_url( $field_val['value'] ) . '" target="_blank">' . $field_val['field_value']['value_raw'][0]['name'] . '</a>';
+						}
+						return $val;
+					}
+				}
+			}
+		}
+
 		if ( isset( $_GET['view-entry'] ) && 'entry-single' === $context ) { // phpcs:ignore WordPress.Security.NonceVerification
 			$entry_id = absint( $_GET['view-entry'] ); // phpcs:ignore WordPress.Security.NonceVerification
 			$meta_key = array_search( $val, $form_data, true );
@@ -694,8 +726,12 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 							$output[ $meta_key ][] = esc_url( $file['value'] );
 						} elseif ( 'image-upload' === $field['type'] ) {
 							if ( 'email-html' === $context ) {
-								$output[ $meta_key ][] = sprintf(
-									'<a href="%1$s" rel="noopener noreferrer" target="_blank"><img src="%1$s" style="width:200px;" /></a>',
+								$output[ $meta_key ][] = apply_filters(
+									'everest_forms_image_value',
+									sprintf(
+										'<a href="%1$s" rel="noopener noreferrer" target="_blank"><img src="%1$s" style="width:200px;" /></a>',
+										esc_url( $file['value'] )
+									),
 									esc_url( $file['value'] )
 								);
 							} elseif ( 'entry-single' === $context ) {

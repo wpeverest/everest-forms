@@ -14,12 +14,29 @@ defined( 'ABSPATH' ) || exit;
 class EVF_AJAX {
 
 	/**
+	 * Background update class.
+	 *
+	 * @var object
+	 */
+	private static $background_process;
+
+	/**
 	 * Hook in ajax handlers.
 	 */
 	public static function init() {
 		add_action( 'init', array( __CLASS__, 'define_ajax' ), 0 );
 		add_action( 'template_redirect', array( __CLASS__, 'do_evf_ajax' ), 0 );
 		self::add_ajax_events();
+		add_action( 'init', array( __CLASS__, 'init_background_process' ), 5 );
+	}
+
+	/**
+	 * Init background process.
+	 */
+	public static function init_background_process() {
+		include_once EVF_ABSPATH . 'includes/class-evf-background-process-import-entries.php';
+
+		self::$background_process = new \EVF_Background_Process_Import_Entries();
 	}
 
 	/**
@@ -107,10 +124,13 @@ class EVF_AJAX {
 			'form_migrator_forms_list'       => false,
 			'form_migrator'                  => false,
 			'fm_dismiss_notice'              => false,
+			'email_duplicate'                => false,
 			'form_entry_migrator'            => false,
 			'embed_form'                     => false,
 			'goto_edit_page'                 => false,
 			'send_routine_report_test_email' => false,
+			'map_csv'                        => false,
+			'import_entries'                 => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -915,7 +935,7 @@ class EVF_AJAX {
 					break;
 			}
 			/* translators: %s: from address */
-			$subject  = 'Everest Form: ' . sprintf( esc_html__( $subject, 'everest-forms' ) );
+			$subject  = 'Everest Form: ' . sprintf( esc_html( $subject ) );
 			$header   = "Reply-To: {{from}} \r\n";
 			$header  .= 'Content-Type: text/html; charset=UTF-8';
 			$message  = '<div class="everest-forms-message-text">';
@@ -1101,6 +1121,8 @@ class EVF_AJAX {
 	 * Forms list for form migrator.
 	 *
 	 * @since 2.0.8
+	 *
+	 * @throws Exception If there is an error.
 	 */
 	public static function form_migrator_forms_list() {
 		try {
@@ -1139,7 +1161,7 @@ class EVF_AJAX {
 			$forms_list_table  = '<div class="evf-fm-forms-table-wrapper">';
 			$forms_list_table .= '<h4>' . sprintf( '%s %s', esc_html__( 'Import', 'everest-forms' ), $form_instance->name ) . '</h4>';
 			$forms_list_table .= '<table class="evf-fm-forms-table" data-form-slug="' . esc_attr( $form_slug ) . '">';
-			$forms_list_table .= '<tr class="evf-th-title"><th><input id="evf-fm-select-all" type="checkbox" name="fm_select_all_form" /></th><th>' . esc_html__( 'Form	Name', 'everest-forms' ) . '</th><th>' . esc_html__( 'Imported', 'everest-forms' ) . '</th><th>' . esc_html__( 'Action' ) . '</th></tr>';
+			$forms_list_table .= '<tr class="evf-th-title"><th><input id="evf-fm-select-all" type="checkbox" name="fm_select_all_form" /></th><th>' . esc_html__( 'Form	Name', 'everest-forms' ) . '</th><th>' . esc_html__( 'Imported', 'everest-forms' ) . '</th><th>' . esc_html__( 'Action', 'everest-forms' ) . '</th></tr>';
 			$hidden            = '';
 			$imported          = get_option( 'evf_fm_' . $form_slug . '_imported_form_list', array() );
 			foreach ( $forms_list as $form_id => $form_name ) {
@@ -1178,7 +1200,7 @@ class EVF_AJAX {
 			$forms_list_table .= '</div>';
 			wp_send_json_success(
 				array(
-					'message'          => esc_html( 'All Forms List', 'everest-forms' ),
+					'message'          => esc_html__( 'All Forms List', 'everest-forms' ),
 					'forms_list_table' => $forms_list_table,
 				)
 			);
@@ -1196,6 +1218,8 @@ class EVF_AJAX {
 	 * Form migrator.
 	 *
 	 * @since 2.0.8
+	 *
+	 * @throws Exception If there is an error.
 	 */
 	public static function form_migrator() {
 		try {
@@ -1213,7 +1237,7 @@ class EVF_AJAX {
 			$class_name = 'EVF_Fm_' . ucfirst( trim( str_replace( '-', '', $form_slug ) ) );
 
 			if ( ! class_exists( $class_name ) ) {
-				$except_message = sprintf( '<b><i>%s</i></b> %s', $class_name, esc_html__( 'does not exist.' ) );
+				$except_message = sprintf( '<b><i>%s</i></b> %s', $class_name, esc_html__( 'does not exist.', 'everest-forms' ) );
 				throw new Exception( $except_message );
 			}
 			// Create the instance of class.
@@ -1251,8 +1275,7 @@ class EVF_AJAX {
 	public static function fm_dismiss_notice() {
 		try {
 			check_ajax_referer( 'evf_fm_dismiss_notice_nonce', 'security' );
-
-			$option_id = isset( $_POST['option_id'] ) ? sanitize_text_field( $_POST['option_id'] ) : '';
+			$option_id = isset( $_POST['option_id'] ) ? sanitize_text_field( $_POST['option_id'] ) : ''; //phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 			update_option( $option_id, true );
 
 			wp_send_json_success(
@@ -1272,6 +1295,8 @@ class EVF_AJAX {
 	 * Form entry migrator.
 	 *
 	 * @since 2.0.8
+	 *
+	 * @throws Exception If there is an error.
 	 */
 	public static function form_entry_migrator() {
 		try {
@@ -1309,7 +1334,7 @@ class EVF_AJAX {
 			$class_name = 'EVF_Fm_' . ucfirst( trim( str_replace( '-', '', $form_slug ) ) );
 
 			if ( ! class_exists( $class_name ) ) {
-				$except_message = sprintf( '<b><i>%s</i></b> %s', $class_name, esc_html__( 'does not exist.' ) );
+				$except_message = sprintf( '<b><i>%s</i></b> %s', $class_name, esc_html__( 'does not exist.', 'everest-forms' ) );
 				throw new Exception( $except_message );
 			}
 			// Create the instance of class.
@@ -1404,6 +1429,230 @@ class EVF_AJAX {
 		EVF_Admin_Embed_Wizard::set_meta( $meta );
 
 		wp_send_json_success( $page_url );
+	}
+
+	/**
+	 * Map csv fields with form fields.
+	 *
+	 * @since 3.0.0
+	 */
+	public static function map_csv() {
+		check_ajax_referer( 'evf-import-entries', 'security' );
+
+		if ( empty( $_FILES ) ) {
+			wp_send_json_error(
+				array(
+					'message' => 'Please upload csv file.',
+				)
+			);
+		}
+
+		$form_id     = isset( $_POST['form_id'] ) ? absint( $_POST['form_id'] ) : 0; //phpcs:ignore
+		$form_fields = evf_get_form_fields( $form_id );
+
+		$csv_header = self::get_csv_header( $_FILES );
+
+		$output  = '';
+		$output .= '<div class="evf-map-entries-to-form">';
+		$output .= '<form id="evf-import-entries-form">';
+		$output .= '<p>' . esc_html__( 'Map CSV fields to Form fields.', 'everest-forms' ) . '</p>';
+		$output .= '<div class ="evf-form-fields-and-csv-fields" style="display: flex;">';
+		$output .= '<div class="evf-form-fields" style="width: 50%;">';
+		$output .= '<h4>' . esc_html__( 'Form Fields', 'everest-forms' ) . '</h4>';
+		$output .= '</div>';
+		$output .= '<div class="evf-csv-fields" style="width: 50%;">';
+		$output .= '<h4>' . esc_html__( 'CSV Fields', 'everest-forms' ) . '</h4>';
+		$output .= '</div>';
+		$output .= '</div>';
+		$output .= '<div class = "evf-map-entries-to-form-wrapper" style="display: flex;">';
+		$output .= '<div class="evf-form-fields" style="width: 50%;">';
+		$output .= '<select name="map-entries-to-form" class="evf-form-fields-csv" style="min-width: 90%;">';
+
+		if ( ! empty( $form_fields ) ) {
+			foreach ( $form_fields as $key => $value ) {
+				$output .= '<option value="' . esc_attr( $key ) . '">' . esc_html( $value['label'] ) . '</option>';
+			}
+		} else {
+			$output .= '<option value="">' . esc_html__( 'No form fields', 'everest-forms' ) . '</option>';
+		}
+
+		$output .= '</select>';
+		$output .= '</div>';
+		$output .= '<div class="evf-csv-fields" style="width: 50%;">';
+		$output .= '<select name="map-entries-to-csv" style="min-width: 90%;">';
+
+		if ( ! empty( $csv_header ) ) {
+			foreach ( $csv_header as $value ) {
+				$output .= '<option value="' . esc_attr( $value ) . '">' . esc_html( str_replace( '"', '', $value ) ) . '</option>';
+			}
+		} else {
+			$output .= '<option value="">' . esc_html__( 'No csv fields', 'everest-forms' ) . '</option>';
+		}
+
+		$output .= '</select>';
+		$output .= '</div>';
+		$output .= '<span class="actions" style="display: flex; align-items: center; justify-content: space-between;"><a class="evf-add-clone" href="#" style="text-decoration: none;"><i class="dashicons dashicons-plus"></i></a><a class="evf-remove-clone everest-forms-hidden" href="#" style="text-decoration: none;"><i class="dashicons dashicons-minus"></i></a></span>';
+		$output .= '</div>';
+		$output .= '<input type="hidden" name="form_id" value="' . esc_attr( $form_id ) . '">';
+		$output .= '<span class="evf_import_entries_btn"><input type="submit" class="everest-forms-btn everest-forms-btn-primary evf-import-entries-btn" value="' . esc_html__( 'Import Entries', 'everest-forms' ) . '"></span>';
+		$output .= '</form>';
+		$output .= '</div>';
+
+		wp_send_json_success(
+			array(
+				'html' => $output,
+			)
+		);
+	}
+
+	/**
+	 * Retrieves the header of a CSV file.
+	 *
+	 * The function reads the contents of the CSV file, splits it into an array of lines, and retrieves
+	 * the first line, which represents the header of the CSV file. It then sends a JSON success
+	 * response with the header as an array of values.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param array $csv_data The CSV data containing the file to be processed.
+	 */
+	public static function get_csv_header( $csv_data ) {
+
+		if ( ! isset( $csv_data['csvfile'] ) ) {
+			wp_send_json_error(
+				array(
+					'message' => 'Please upload csv file.',
+				)
+			);
+		}
+
+		$file_extension = strtolower( pathinfo( $csv_data['csvfile']['name'], PATHINFO_EXTENSION ) );
+
+		if ( 'csv' != $file_extension ) {
+			wp_send_json_error(
+				array(
+					'message' => 'File must be a CSV file.',
+				)
+			);
+		}
+
+		if ( ! function_exists( 'wp_handle_upload' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+		}
+
+		$upload_dir = wp_upload_dir();
+		$filename   = 'import_entries_data.csv';
+		$csv_url    = $upload_dir['basedir'] . $upload_dir['subdir'] . '/' . $filename;
+
+		if ( ! empty( $csv_url ) && file_exists( $csv_url ) ) {
+			@unlink( $csv_url );
+		}
+
+		$csv_file   = $csv_data['csvfile']['tmp_name'];
+		$data       = file_get_contents( $csv_file );
+		$data_array = explode( "\n", $data );
+
+		$upload_file = move_uploaded_file( $csv_data['csvfile']['tmp_name'], $csv_url );
+
+		if ( empty( $data_array[0] ) ) {
+			wp_send_json_error(
+				array(
+					'message' => 'CSV file doesn\'t contain any data.',
+				)
+			);
+		}
+
+		return explode( ',', $data_array[0] );
+	}
+
+	/**
+	 * Import entries from the CSV file and process them in the background.
+	 *
+	 * This function checks the AJAX referer and retrieves the mapping fields array from the POST data.
+	 * It then reads the CSV file and processes each row, updating the options and pushing the data to the background process queue.
+	 * Finally, it sends a JSON success response with a message and a link to the imported entries.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @throws Exception If an error occurs during the import process.
+	 */
+	public static function import_entries() {
+		try {
+			check_ajax_referer( 'evf-import-entries', 'security' );
+
+			$map_fields_array = array();
+
+			if ( ! isset( $_POST['data'] ) ) {
+				wp_send_json_error(
+					array(
+						'message' => 'Something went wrong. Please try again.',
+					)
+				);
+			}
+
+			$data = ! empty( $_POST['data'] ) ? $_POST['data'] : array(); //phpcs:ignore
+
+			if ( empty( $data ) ) {
+				wp_send_json_error(
+					array(
+						'message' => 'Something went wrong. Please try again.',
+					)
+				);
+			}
+
+			foreach ( $data as $key => $map_fields ) {
+				if ( count( $data ) - 1 === $key ) {
+					$map_fields_array['form_id'] = sanitize_text_field( wp_unslash( $map_fields['value'] ) ); //phpcs:ignore
+					continue;
+				}
+
+				if ( 0 != $key % 2 ) {
+					continue;
+				}
+
+				$map_fields_array[ $key ] = array(
+					'field_id'       => sanitize_text_field( wp_unslash( $map_fields['value'] ) ), //phpcs:ignore
+					'map_csv_column' => sanitize_text_field( wp_unslash( $data[ ++$key ]['value'] ) ), //phpcs:ignore
+				);
+			}
+
+			$upload_dir = wp_upload_dir();
+			$filename   = 'import_entries_data.csv';
+			$csv_url    = $upload_dir['basedir'] . $upload_dir['subdir'] . '/' . $filename;
+
+			if ( ! empty( $csv_url ) && file_exists( $csv_url ) ) {
+				$csv_file = fopen( $csv_url, 'r' );
+				$row      = 0;
+				update_option( 'everest_forms_mapping_fields_array', $map_fields_array );
+				while ( ( $row_data = fgetcsv( $csv_file, 0, ',' ) ) !== false ) {
+					if ( strlen( implode( $row_data ) ) != 0 ) {
+						if ( 0 === $row ) {
+							update_option( 'everest_forms_csv_titles', $row_data );
+						} else {
+							self::$background_process->push_to_queue( $row_data );
+						}
+						$row++;
+					}
+				}
+				fclose( $csv_file );
+				unlink( $csv_url );
+				$test = self::$background_process->save()->dispatch();
+			}
+
+			wp_send_json_success(
+				array(
+					'message'     => 'Your data is currently being imported in the background. Please check the imported entries shortly.',
+					'entry_link'  => admin_url( 'admin.php?page=evf-entries&form_id=' . $map_fields_array['form_id'] ),
+					'button_text' => 'View Entries',
+				)
+			);
+		} catch ( Exception $e ) {
+			wp_send_json_error(
+				array(
+					'message' => $e->getMessage(),
+				)
+			);
+		}
 	}
 }
 

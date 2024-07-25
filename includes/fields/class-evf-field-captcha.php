@@ -17,10 +17,10 @@ class EVF_Field_Captcha extends EVF_Form_Fields {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->name   = esc_html__( 'Captcha', 'everest-forms' );
+		$this->name   = esc_html__( 'Math Captcha', 'everest-forms' );
 		$this->type   = 'captcha';
 		$this->icon   = 'evf-icon evf-icon-captcha';
-		$this->order  = 160;
+		$this->order  = 255;
 		$this->group  = 'advanced';
 		$this->is_pro = true;
 		$this->plan   = 'personal agency themegrill-agency';

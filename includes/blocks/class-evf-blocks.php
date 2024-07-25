@@ -47,12 +47,12 @@ class EVF_Blocks {
 	 */
 	public function enqueue_block_editor_assets() {
 		wp_register_style(
-			'everest-forms-block-editor-style',
+			'everest-forms-block-editor',
 			evf()->plugin_url() . '/assets/css/everest-forms.css',
 			array( 'wp-edit-blocks' ),
 			evf()->version
 		);
-		wp_enqueue_style( 'everest-forms-block-editor-style' );
+		wp_enqueue_style( 'everest-forms-block-editor' );
 		$enqueue_script = array( 'wp-blocks', 'wp-element', 'wp-i18n', 'wp-editor', 'wp-components', 'react', 'react-dom' );
 		wp_register_script(
 			'everest-forms-block-editor',
@@ -65,7 +65,7 @@ class EVF_Blocks {
 			'everest-forms-shortcode-embed-form',
 			evf()->plugin_url() . '/assets/js/admin/shortcode-form-embed.js',
 			array( 'wp-blocks', 'wp-element', 'wp-i18n', 'wp-components', 'wp-dom-ready', 'wp-edit-post', 'jquery', 'jquery-blockui', 'jquery-ui-sortable', 'jquery-ui-widget', 'jquery-ui-core', 'tooltipster', 'wp-color-picker', 'perfect-scrollbar' ),
-			defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( evf()->plugin_path() . '/assets/js/admin/gutenberg/shortcode-form-embed.js' ) : EVF_VERSION,
+			defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( evf()->plugin_path() . '/assets/js/admin/shortcode-form-embed.js' ) : EVF_VERSION,
 			true
 		);
 		$form_block_data = array(

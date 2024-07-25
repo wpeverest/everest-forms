@@ -35,18 +35,17 @@
 /**
  * Main EverestForms styles
  */
-.everest-forms {
+.everest-forms,
+.wp-block-everest-forms-form-selector {
 	*,
 	*::before,
 	*::after {
 		outline: none;
 		box-sizing: border-box;
 	}
-
 	ul {
 		margin-left: 0;
 	}
-
 	.blockUI.blockOverlay {
 		position: relative;
 		@include loader();
@@ -921,7 +920,9 @@
  * Gutenberg Block
  */
 
-.edit-post-visual-editor {
+.wp-block-everest-forms-form-selector,
+.wp-block-everest-forms-frontend-listing {
+	.everest-form-gutenberg-form-selector-wrap,
 	.everest-form-gutenberg-form-selector-wrap {
 		align-items: center;
 
@@ -1952,4 +1953,9 @@ $background-color_1: #f9f9f9;
 	100% {
 		transform: scale(1);
 	}
+}
+
+.evf-td-head{
+	background: #f6f7f8;
+    border-bottom: 1px solid #ced4da !important;
 }
