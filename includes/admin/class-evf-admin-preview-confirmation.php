@@ -83,7 +83,7 @@ class EVF_Admin_Preview_Confirmation {
 				$formatted_string = str_replace( '<br>', '', $formatted_string );
 			}
 
-			$label = $formatted_string['label'];
+			$label = isset( $formatted_string['label'] ) ? $formatted_string['label'] : '';
 
 			if ( in_array( $label, $labels ) && empty( $formatted_string['value'] ) ) {
 				continue; // Skip fields with duplicate labels and empty values
