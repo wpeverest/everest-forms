@@ -35,7 +35,7 @@ jQuery( function ( $ ) {
 			this.loadPhoneField();
 			this.loadCountryFlags();
 			this.ratingInit();
-
+			this.FormSubmissionWaitingTime();
 
 			// Inline validation.
 			this.$everest_form.on( 'input validate change', '.input-text, select, input:checkbox, input:radio', this.validate_field );
@@ -46,6 +46,8 @@ jQuery( function ( $ ) {
 			}).on('focusout', '.input-text, select, input[type="checkbox"], input[type="radio"]', function() {
 				$(this).removeClass('everest-forms-field-active');
 			});
+
+	;
 
 
 
@@ -597,6 +599,7 @@ jQuery( function ( $ ) {
 							var	recaptchaID = $submit.get( 0 ).recaptchaID;
 							var  razorpayForms = $form.find( "[data-gateway='razorpay']" );
 							var stripeForms = $form.find( "[data-gateway*='stripe']" );
+
 						// Process form.
 						if ( processText ) {
 							$submit.text( processText ).prop( 'disabled', true );
@@ -948,7 +951,50 @@ jQuery( function ( $ ) {
 			}
 			return $( '<div class="iti__flag-box"><div class="iti__flag iti__' + country.id.toLowerCase() + '"></div></div><span class="iti__country-name">' + country.text + '</span>' );
 		},
-		
+
+		FormSubmissionWaitingTime: function(){
+			$(document).ready(function() {
+				var form_settings = everest_forms_params.form_settings['settings'];
+				var wait_form_submission_status = form_settings['form_submission_min_waiting_time'];
+
+				if (wait_form_submission_status === '1') {
+					$('#evf_submission_start_time').val(Date.now());
+
+					// Create a MutationObserver to observe changes in the DOM.
+					var observer = new MutationObserver(function(mutations) {
+						mutations.forEach(function(mutation) {
+							if (mutation.addedNodes.length > 0) {
+								$(mutation.addedNodes).each(function() {
+									var display = $('#evf_submission_duration');
+									if (display.length) {
+										var duration = parseInt(display.data('duration'), 10);
+										var timer = duration;
+										var interval = setInterval(function() {
+											display.text(timer);
+											if (--timer < 0) {
+												clearInterval(interval);
+												$('#evf_submission_duration').parent().remove();
+											}
+										}, 1000);
+
+										// Once the element is found, disconnect the observer.
+										observer.disconnect();
+									}
+								});
+							}
+						});
+					});
+
+					// Start observing the target node for configured mutations.
+					var targetNode = document.body;
+					var config = { childList: true, subtree: true };
+					observer.observe(targetNode, config);
+				} else {
+					return '';
+				}
+			});
+		},
+
 		getFirstBrowserLanguage: function() {
 			var nav = window.navigator,
 				browserLanguagePropertyKeys = [ 'language', 'browserLanguage', 'systemLanguage', 'userLanguage' ],
