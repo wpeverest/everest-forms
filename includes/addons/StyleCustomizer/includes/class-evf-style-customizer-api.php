@@ -517,7 +517,10 @@ class EVF_Style_Customizer_API {
 		// Register control scripts.
 		wp_register_style( 'selectWoo', EVF()->plugin_url() . '/assets/css/select2.css', array(), EVF_VERSION );
 		wp_register_script( 'selectWoo', EVF()->plugin_url() . "/assets/js/selectWoo/selectWoo.full{$suffix}.js", array( 'jquery' ), '1.0.4', true );
-
+		wp_register_style( 'jquery-confirm', evf()->plugin_url() . '/assets/css/jquery-confirm/jquery-confirm.min.css', array(), '3.3.0' );
+		wp_register_script( 'jquery-confirm', evf()->plugin_url() . "/assets/js/jquery-confirm/jquery-confirm{$suffix}.js", array( 'jquery' ), '3.3.0', true );
+		wp_enqueue_script('jquery-confirm');
+		wp_enqueue_style('jquery-confirm');
 		// Enqueue controls scripts.
 		wp_enqueue_style( 'everest-forms-customize-controls', plugins_url( '/assets/css/customize-controls.css', EVF_PLUGIN_FILE ), array(), EVF_VERSION );
 		wp_enqueue_script( 'everest-forms-customize-controls', plugins_url( "/assets/js/admin/customize-controls{$suffix}.js", EVF_PLUGIN_FILE ), array( 'jquery' ), EVF_VERSION, true );
