@@ -792,7 +792,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				echo '</div>';
 				do_action( 'everest_forms_inline_security_settings', $this );
 
-								/**
+				/**
 				* Minimum time for form submission.
 				*
 				* @since 3.0.1
@@ -827,7 +827,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				do_action( 'everest_forms_inline_form_submission_min_waiting_time_settings', $this, 'form_submission_min_waiting_time', 'connection_1' );
 
 				do_action( 'everest_forms_inline_form_submission_min_waiting_time_section_settings', $this, 'form_submission_min_waiting_time_section', 'connection_1' );
-				echo '<div>';
+				echo '</div>';
 				echo '</div>';
 				echo '</div>';
 
