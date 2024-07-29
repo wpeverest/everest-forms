@@ -32,7 +32,7 @@
     "spatie/phpunit-watcher": "1.8.3",
     "psr/container": "1.0.0",
     "jolicode/jolinotif": "2.3.0",
-    "vlucas/phpdotenv": "5.4.1",
+    "vlucas/phpdotenv": "5.6.1",
     "wp-cli/db-command": "2.0.19",
     "wp-cli/i18n-command": "2.2.13",
     "wp-phpunit/wp-phpunit": "5.8.2",
