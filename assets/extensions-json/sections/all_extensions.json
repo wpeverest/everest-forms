@@ -561,23 +561,6 @@
       "popular_rank": 31
     },
     {
-      "title": "Constant Contact",
-      "slug": "everest-forms-constant-contact",
-      "name": "Everest Forms Constant Contact",
-      "image": "extensions-json/sections/images/constant-contact.png",
-      "excerpt": "Everest Forms Constant Contact add-on is a WordPress Constant Contact integration plugin that allows you to easily send Everest Forms entries directly to your Constant Contact account. ",
-      "link": "https://docs.everestforms.net/docs/constant-contact/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-      "released_date": "31/08/2022",
-      "plan": [
-        "personal",
-        "agency",
-        "themegrill agency"
-      ],
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=constant_contact",
-      "demo_video_url": "dCeW1GW6-YI",
-      "popular_rank": 33
-    },
-    {
       "title": "Drip",
       "slug": "everest-forms-drip",
       "name": "Everest Forms Drip",
@@ -759,6 +742,23 @@
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=sendinblue",
       "demo_video_url": "NRRDY1ag6Sk",
       "popular_rank": 26
+    },
+    {
+      "title": "Constant Contact",
+      "slug": "everest-forms-constant-contact",
+      "name": "Everest Forms Constant Contact",
+      "image": "extensions-json/sections/images/constant-contact.png",
+      "excerpt": "Everest Forms Constant Contact add-on is a WordPress Constant Contact integration plugin that allows you to easily send Everest Forms entries directly to your Constant Contact account. ",
+      "link": "https://docs.everestforms.net/docs/constant-contact/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "31/08/2022",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=constant_contact",
+      "demo_video_url": "dCeW1GW6-YI",
+      "popular_rank": 33
     }
   ]
 }
