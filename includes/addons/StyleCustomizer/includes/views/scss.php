@@ -55,19 +55,6 @@ $font_styles_default = array(
 
 // Radio/checkbox separator type.
 $radio_checkbox_seperator_type = defined( 'EVF_VERSION' ) && version_compare( EVF_VERSION, '1.6.0', '<' ) ? array( 'margin', 'padding' ) : array( 'margin' );
-$color_palette                 = isset( $values['color_palette'] ) ? $values['color_palette'] : array();
-foreach ( $color_palette as $color_key => $color_values ) {
-	echo "
-    .form-$color_key {
-        --form-background: {$color_values['form_background']};
-        --field-background: {$color_values['field_background']};
-        --field-sublabel: {$color_values['field_sublabel']};
-        --field-label: {$color_values['field_label']};
-        --button-text: {$color_values['button_text']};s
-        --button-background: {$color_values['button_background']};
-    }
-    ";
-}
 ?>
 
 // Form Wrapper variables.
