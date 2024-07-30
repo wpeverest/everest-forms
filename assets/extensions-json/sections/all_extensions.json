@@ -765,7 +765,7 @@
       "slug": "everest-forms-telegram",
       "name": "Everest Forms Telegram",
       "image": "extensions-json/sections/images/telegram.webp",
-      "excerpt": "Connect newsletters, SMTP, marketing automation, and all your CRM tools in one place with Brevo integration (formerly Sendinblue) for Everest Forms.",
+      "excerpt": "Telegram integration for Everest Forms! Easily integrate this popular messaging platform with Everest Forms to offer your users a smooth and efficient interaction experience.",
       "link": "https://docs.everestforms.net/docs/telegram/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "26/09/2022",
       "plan": [
