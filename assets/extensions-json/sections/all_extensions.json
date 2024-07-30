@@ -527,23 +527,6 @@
       "popular_rank": 30
     },
     {
-      "title": "Pipedrive",
-      "slug": "everest-forms-pipedrive",
-      "name": "Everest Forms Pipedrive",
-      "image": "extensions-json/sections/images/pipedrive.png",
-      "excerpt": "Everest Forms Pipedrive CRM add-on is a WordPress Pipedrive CRM integration plugin that allows you to easily send Everest Forms entries directly to your Pipedrive CRM account. ",
-      "link": "https://docs.everestforms.net/docs/pipedrive/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-      "released_date": "15/06/2022",
-      "plan": [
-        "personal",
-        "agency",
-        "themegrill agency"
-      ],
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=pipedrive",
-      "demo_video_url": "wJPX0EJ2OiI",
-      "popular_rank": 32
-    },
-    {
       "title": "Authorize.Net",
       "slug": "everest-forms-authorize-net",
       "name": "Everest Forms Authorize.Net",
@@ -759,6 +742,23 @@
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=constant_contact",
       "demo_video_url": "dCeW1GW6-YI",
       "popular_rank": 33
+    },
+    {
+      "title": "Pipedrive",
+      "slug": "everest-forms-pipedrive",
+      "name": "Everest Forms Pipedrive",
+      "image": "extensions-json/sections/images/pipedrive.png",
+      "excerpt": "Everest Forms Pipedrive CRM add-on is a WordPress Pipedrive CRM integration plugin that allows you to easily send Everest Forms entries directly to your Pipedrive CRM account. ",
+      "link": "https://docs.everestforms.net/docs/pipedrive/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "15/06/2022",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=pipedrive",
+      "demo_video_url": "wJPX0EJ2OiI",
+      "popular_rank": 32
     }
   ]
 }
