@@ -312,6 +312,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Feature 	   - Enable minimum time for form submission.
 * Dev          - Transaction Table.
 * Dev 		   - ConvertKit Compatibility.
+* Dev          - GetResponse compatibility.
 * Dev 	       - Brevo module compatibility.
 * Dev 	       - Drip module  compatibility.
 
