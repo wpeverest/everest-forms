@@ -426,23 +426,6 @@
       "popular_rank": 24
     },
     {
-      "title": "Sendinblue",
-      "slug": "everest-forms-sendinblue",
-      "name": "Everest Forms Sendinblue",
-      "image": "extensions-json/sections/images/sendinblue.png",
-      "excerpt": "Allows your users to subscribe to Sendinblue through form submissions. Users filling up the forms can be directly added to your subscribers list in Sendinblue.",
-      "link": "https://docs.everestforms.net/docs/sendinblue/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-      "released_date": "26/09/2022",
-      "plan": [
-        "personal",
-        "agency",
-        "themegrill agency"
-      ],
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=sendinblue",
-      "demo_video_url": "NRRDY1ag6Sk",
-      "popular_rank": 26
-    },
-    {
       "title": "ActiveCampaign",
       "slug": "everest-forms-activecampaign",
       "name": "Everest Forms ActiveCampaign",
@@ -759,6 +742,40 @@
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=onepagecrm",
       "demo_video_url": "42EUj-Dlnr0"
+    },
+    {
+      "title": "Brevo",
+      "slug": "everest-forms-brevo",
+      "name": "Everest Forms Brevo",
+      "image": "extensions-json/sections/images/brevo.webp",
+      "excerpt": "Connect newsletters, SMTP, marketing automation, and all your CRM tools in one place with Brevo integration (formerly Sendinblue) for Everest Forms.",
+      "link": "https://docs.everestforms.net/docs/sendinblue/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "26/09/2022",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=sendinblue",
+      "demo_video_url": "NRRDY1ag6Sk",
+      "popular_rank": 26
+    },
+    {
+      "title": "Drip",
+      "slug": "everest-forms-drip",
+      "name": "Everest Forms Drip",
+      "image": "extensions-json/sections/images/drip.png",
+      "excerpt": "With the Everest Forms Drip add-on, you can effortlessly create an unlimited number of newsletter signup forms and connect them to Drip.",
+      "link": "https://docs.everestforms.net/docs/drip/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "15/06/2022",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=drip",
+      "demo_video_url": "ODRxkfX6y9Q",
+      "popular_rank": 35
     }
   ]
 }
