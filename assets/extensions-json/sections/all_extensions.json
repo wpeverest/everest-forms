@@ -289,23 +289,6 @@
       "popular_rank": 16
     },
     {
-      "title": "ConvertKit",
-      "slug": "everest-forms-convertkit",
-      "name": "Everest Forms ConvertKit",
-      "image": "extensions-json/sections/images/convertkit.png",
-      "excerpt": "Allows you to efficiently grow your business by generating more leads with ConvertKit. It also helps increase automated emails for better lead generation.",
-      "link": "https://docs.everestforms.net/docs/convertkit/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-      "released_date": "10/08/2018",
-      "plan": [
-        "personal",
-        "agency",
-        "themegrill agency"
-      ],
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=convertkit",
-      "demo_video_url": "GvqPVCK7Ws8",
-      "popular_rank": 17
-    },
-    {
       "title": "Post Submissions",
       "slug": "everest-forms-post-submissions",
       "name": "Everest Forms Post Submissions",
@@ -423,23 +406,6 @@
       "setting_url": "",
       "demo_video_url": "GSYQIiyntW0",
       "popular_rank": 24
-    },
-    {
-      "title": "Sendinblue",
-      "slug": "everest-forms-sendinblue",
-      "name": "Everest Forms Sendinblue",
-      "image": "extensions-json/sections/images/sendinblue.png",
-      "excerpt": "Allows your users to subscribe to Sendinblue through form submissions. Users filling up the forms can be directly added to your subscribers list in Sendinblue.",
-      "link": "https://docs.everestforms.net/docs/sendinblue/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-      "released_date": "26/09/2022",
-      "plan": [
-        "personal",
-        "agency",
-        "themegrill agency"
-      ],
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=sendinblue",
-      "demo_video_url": "NRRDY1ag6Sk",
-      "popular_rank": 26
     },
     {
       "title": "ActiveCampaign",
@@ -741,6 +707,57 @@
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=onepagecrm",
       "demo_video_url": "42EUj-Dlnr0"
+    },
+    {
+      "title": "Brevo",
+      "slug": "everest-forms-brevo",
+      "name": "Everest Forms Brevo",
+      "image": "extensions-json/sections/images/brevo.webp",
+      "excerpt": "Connect newsletters, SMTP, marketing automation, and all your CRM tools in one place with Brevo integration (formerly Sendinblue) for Everest Forms.",
+      "link": "https://docs.everestforms.net/docs/sendinblue/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "26/09/2022",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=sendinblue",
+      "demo_video_url": "NRRDY1ag6Sk",
+      "popular_rank": 26
+    },
+    {
+      "title": "Drip",
+      "slug": "everest-forms-drip",
+      "name": "Everest Forms Drip",
+      "image": "extensions-json/sections/images/drip.png",
+      "excerpt": "With the Everest Forms Drip add-on, you can effortlessly create an unlimited number of newsletter signup forms and connect them to Drip.",
+      "link": "https://docs.everestforms.net/docs/drip/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "15/06/2022",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=drip",
+      "demo_video_url": "ODRxkfX6y9Q",
+      "popular_rank": 35
+    },
+    {
+      "title": "ConvertKit",
+      "slug": "everest-forms-convertkit",
+      "name": "Everest Forms ConvertKit",
+      "image": "extensions-json/sections/images/convertkit.png",
+      "excerpt": "Allows you to efficiently grow your business by generating more leads with ConvertKit. It also helps increase automated emails for better lead generation.",
+      "link": "https://docs.everestforms.net/docs/convertkit/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "10/08/2018",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=convertkit",
+      "demo_video_url": "GvqPVCK7Ws8",
+      "popular_rank": 17
     },
     {
       "title": "GetResponse",

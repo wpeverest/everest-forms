@@ -93,7 +93,7 @@ class EVF_Form_Task {
 
 		$settings        = $this->form_data['settings'];
 		$success_message = isset( $settings['successful_form_submission_message'] ) ? $settings['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
-			// Send 400 Bad Request when there are errors.
+		// Send 400 Bad Request when there are errors.
 		if ( empty( $this->errors[ $form_id ] ) ) {
 			wp_send_json(
 				array(
@@ -357,6 +357,18 @@ class EVF_Form_Task {
 			}
 			// Initial error check.
 			$errors = apply_filters( 'everest_forms_process_initial_errors', $this->errors, $this->form_data );
+
+			// Minimum time to submit check.
+			$min_submit_time = $this->form_submission_waiting_time( $this->errors, $this->form_data );
+			if ( isset( $min_submit_time[ $form_id ]['header'] ) && ! empty( $min_submit_time ) ) {
+				$this->errors[ $form_id ]['header'] = $min_submit_time[ $form_id ]['header'];
+				$logger->error(
+					$min_submit_time[ $form_id ]['header'],
+					array( 'source' => 'Minimum time to submit' )
+				);
+				return $this->errors;
+			}
+
 			if ( isset( $_POST['__amp_form_verify'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
 				if ( empty( $errors[ $form_id ] ) ) {
 					wp_send_json( array(), 200 );
@@ -649,7 +661,7 @@ class EVF_Form_Task {
 			$response_data = apply_filters( 'everest_forms_after_success_ajax_message', $response_data, $this->form_data, $entry );
 			return $response_data;
 		} elseif ( ( 'same' === $this->form_data['settings']['redirect_to'] && empty( $submission_redirection_process ) ) || ( ! empty( $submission_redirection_process ) && 'same_page' == $submission_redirection_process['redirect_to'] ) ) {
-				evf_add_notice( $message, 'success' );
+			evf_add_notice( $message, 'success' );
 		}
 		$logger->info(
 			'Everest Forms After success Message.',
@@ -974,7 +986,7 @@ class EVF_Form_Task {
 				$emails->send( trim( $address ), $email['subject'], $email['message'], '', $connection_id );
 			}
 
-		endforeach;
+			endforeach;
 		if ( isset( $attachment ) ) {
 			do_action( 'everest_forms_remove_attachments_after_send_email', $attachment, $fields, $form_data, 'entry-email', $connection_id, $entry_id );
 		}
@@ -1207,7 +1219,7 @@ class EVF_Form_Task {
 				}
 			}
 		} elseif ( ! is_array( $data ) ) {
-				$properties['inputs']['primary']['attr']['value'] = esc_attr( $data );
+			$properties['inputs']['primary']['attr']['value'] = esc_attr( $data );
 		}
 		return $properties;
 	}
@@ -1432,4 +1444,43 @@ class EVF_Form_Task {
 			update_option( 'everest_forms_admin_entry_approval_token', $evf_new_token );
 		}
 	}
+
+	/**
+	 * Prevents form submission before the specified duration.
+	 *
+	 * @param array  $errors    Form submit errors.
+	 * @param object $form_data   An object containing settings for the form.
+	 */
+	public function form_submission_waiting_time( $errors, $form_data ) {
+		$form_submission_waiting_time_enable = isset( $form_data['settings']['form_submission_min_waiting_time'] ) ? $form_data['settings']['form_submission_min_waiting_time'] : '';
+		$submission_duration                 = $form_data['settings']['form_submission_min_waiting_time_input'];
+
+		if ( '1' === $form_submission_waiting_time_enable && 0 <= absint( $submission_duration ) ) {
+			$evf_submission_start_time = isset( $_POST['evf_submission_start_time'] ) ? sanitize_text_field( wp_unslash( $_POST['evf_submission_start_time'] ) ) : ''; //phpcs:ignore WordPress.Security.NonceVerification
+			$atts                      = $form_data['id'];
+			$submission_time           = time() * 1000;
+
+			$waiting_time = absint( $submission_time ) - absint( $evf_submission_start_time );
+			$form_id      = ! empty( $form_data['id'] ) ? $form_data['id'] : 0;
+
+			if ( absint( $submission_time ) - absint( $evf_submission_start_time ) <= absint( $submission_duration ) * 1000 ) {
+				$form_submission_err_msg = apply_filters(
+					'everest_forms_minimum_waiting_time_form_submission',
+					sprintf(
+						"%s <span id='evf_submission_duration' data-duration='%s'>%s</span> %s",
+						esc_html__( 'Please wait', 'everest-forms' ),
+						$submission_duration,
+						$submission_duration,
+						esc_html__( 'seconds, security checkup is being executed.', 'everest-forms' )
+					)
+				);
+
+				$errors[ $form_id ]['header'] = $form_submission_err_msg;
+			}
+
+			return $errors;
+		}
+	}
+
+
 }
