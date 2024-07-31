@@ -759,6 +759,23 @@
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=sendinblue",
       "demo_video_url": "NRRDY1ag6Sk",
       "popular_rank": 26
+    },
+    {
+      "title": "Drip",
+      "slug": "everest-forms-drip",
+      "name": "Everest Forms Drip",
+      "image": "extensions-json/sections/images/drip.png",
+      "excerpt": "With the Everest Forms Drip add-on, you can effortlessly create an unlimited number of newsletter signup forms and connect them to Drip.",
+      "link": "https://docs.everestforms.net/docs/drip/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "15/06/2022",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=drip",
+      "demo_video_url": "ODRxkfX6y9Q",
+      "popular_rank": 35
     }
   ]
 }
