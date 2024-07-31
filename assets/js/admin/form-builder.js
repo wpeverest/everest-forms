@@ -203,16 +203,18 @@
 			});
 
 			// Live effect for Rating field icon color option.
-			$( '.everest-forms-field-option-row-icon_color input.colorpicker' ).wpColorPicker({
-				change: function( event ) {
-					var $this     = $( this ),
-						value     = $this.val(),
-						id        = $this.closest( '.everest-forms-field-option-row' ).data( 'field-id' ),
-						$icons    = $( '#everest-forms-field-'+id +' .rating-icon svg' );
+			$( document ).ready( function( $ ) {
+				$( '.everest-forms-field-option-row-icon_color input.colorpicker' ).wpColorPicker({
+					change: function( event ) {
+						var $this     = $( this ),
+							value     = $this.val(),
+							id        = $this.closest( '.everest-forms-field-option-row' ).data( 'field-id' ),
+							$icons    = $( '#everest-forms-field-'+id +' .rating-icon svg' );
 
-					$icons.css( 'fill', value );
-				}
-			});
+						$icons.css( 'fill', value );
+					}
+				});
+		});
 		},
 
 		/**
@@ -3904,13 +3906,10 @@ jQuery( function ( $ ) {
 
 jQuery(function ($) {
 	$(document).ready(function () {
-
-		/**
-		 * Custom CSS
-		 */
+		// Custom CSS
 		const customCssElement = $('#everest-forms-panel-field-settings-evf-custom-css');
-		var cssEditor = wp.CodeMirror.fromTextArea(customCssElement[0],
-			{
+		if (customCssElement.length && typeof wp.CodeMirror !== 'undefined') {
+			var cssEditor = wp.CodeMirror.fromTextArea(customCssElement[0], {
 				"indentUnit": 2,
 				"indentWithTabs": true,
 				"inputStyle": "contenteditable",
@@ -3943,14 +3942,12 @@ jQuery(function ($) {
 			cssEditor.on('change', function () {
 				customCssElement.html(cssEditor.getValue().replace(/<\s*script/gi, '').replace(/\s+on\w+\s*=/gi, ' '));
 			});
+		}
 
-
-		/**
-		 * Custom JS
-		 */
+		// Custom JS
 		const customJsElement = $('#everest-forms-panel-field-settings-evf-custom-js');
-		var jsEditor = wp.CodeMirror.fromTextArea(customJsElement[0],
-			{
+		if (customJsElement.length && typeof wp.CodeMirror !== 'undefined') {
+			var jsEditor = wp.CodeMirror.fromTextArea(customJsElement[0], {
 				"indentUnit": 2,
 				"indentWithTabs": true,
 				"inputStyle": "contenteditable",
@@ -3982,6 +3979,7 @@ jQuery(function ($) {
 			jsEditor.on('change', function () {
 				customJsElement.html(jsEditor.getValue().replace(/<\s*script/gi, '').replace(/\s+on\w+\s*=/gi, ' '));
 			});
+		}
 
 		$('#everest-forms-panel-field-settings-evf-enable-custom-css, #everest-forms-panel-field-settings-evf-enable-custom-js').on('change', e => {
 			showHideEditors();
@@ -3989,9 +3987,7 @@ jQuery(function ($) {
 
 		showHideEditors();
 
-		/**
-		 * Show/Hide the custom css and js input boxes based on the enabled/disabled state.
-		 */
+		// Show/Hide the custom CSS and JS input boxes based on the enabled/disabled state.
 		function showHideEditors() {
 			if ($('#everest-forms-panel-field-settings-evf-enable-custom-css').is(':checked')) {
 				$('#everest-forms-panel-field-settings-evf-custom-css-wrap').show(500);
@@ -4006,4 +4002,5 @@ jQuery(function ($) {
 			}
 		}
 	});
+
 });
