@@ -199,7 +199,7 @@ function evf_style_customizer_color_palette_controls( $controls, $customize ) {
 		$controls['color_palette'][ 'color_' . $index ] = array(
 			'setting' => array(
 				'default'           => $palette['colors'],
-				'sanitize_callback' => 'sanitize_text_field',
+				'sanitize_callback' => '',
 				'transport'         => 'postMessage',
 			),
 			'control' => array(

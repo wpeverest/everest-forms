@@ -232,7 +232,7 @@ class EVF_Style_Customizer_API {
 		$styles = get_option( 'evf_style_templates' );
 
 		if ( empty( $styles ) ) {
-			$styles_raw = file_get_contents( plugins_url( '/assets/wp-json/default-templates.json', EVF_PLUGIN_FILE ) );
+			$styles_raw = evf_file_get_contents( '/includes/addons/StyleCustomizer/assets/wp-json/default-templates.json' );
 
 			if ( $styles_raw ) {
 				update_option( 'evf_style_templates', $styles_raw );
@@ -380,6 +380,7 @@ class EVF_Style_Customizer_API {
 					// Add a customize settings.
 					if ( ! empty( $control_data['setting'] ) ) {
 						$control_args['setting'] = $control_id;
+
 						$this->add_customize_setting( $wp_customize, $control_id, $control_data['setting'] );
 						$this->defaults[ $type ][ $control_key ] = $wp_customize->get_setting( $control_id )->default;
 					} elseif ( ! empty( $control_data['settings'] ) ) {
@@ -519,8 +520,8 @@ class EVF_Style_Customizer_API {
 		wp_register_script( 'selectWoo', EVF()->plugin_url() . "/assets/js/selectWoo/selectWoo.full{$suffix}.js", array( 'jquery' ), '1.0.4', true );
 		wp_register_style( 'jquery-confirm', evf()->plugin_url() . '/assets/css/jquery-confirm/jquery-confirm.min.css', array(), '3.3.0' );
 		wp_register_script( 'jquery-confirm', evf()->plugin_url() . "/assets/js/jquery-confirm/jquery-confirm{$suffix}.js", array( 'jquery' ), '3.3.0', true );
-		wp_enqueue_script('jquery-confirm');
-		wp_enqueue_style('jquery-confirm');
+		wp_enqueue_script( 'jquery-confirm' );
+		wp_enqueue_style( 'jquery-confirm' );
 		// Enqueue controls scripts.
 		wp_enqueue_style( 'everest-forms-customize-controls', plugins_url( '/assets/css/customize-controls.css', EVF_PLUGIN_FILE ), array(), EVF_VERSION );
 		wp_enqueue_script( 'everest-forms-customize-controls', plugins_url( "/assets/js/admin/customize-controls{$suffix}.js", EVF_PLUGIN_FILE ), array( 'jquery' ), EVF_VERSION, true );

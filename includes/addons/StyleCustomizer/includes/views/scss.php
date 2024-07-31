@@ -668,7 +668,16 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 				<?php endforeach; ?>
 			}
 
-			&.layout-two {
+			&.layout-two,
+			&.layout-three,
+			&.layout-four,
+			&.layout-five,
+			&.layout-six,
+			&.layout-seven,
+			&.layout-eight,
+			&.layout-nine,
+			&.layout-ten,
+			&.layout-eleven {
 				input[type='text'],
 				input[type='email'],
 				input[type='number'],

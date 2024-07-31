@@ -34,7 +34,7 @@ class EVF_Customize_Color_Palette_Control extends WP_Customize_Control {
 		foreach ( $this->input_attrs as $attr => $value ) {
 			$this->json['inputAttrs'] .= $attr . '="' . esc_attr( $value ) . '" ';
 		}
-	
+
 		$value               = $this->value();
 		$this->json['value'] = array();
 		if ( is_array( $value ) ) {

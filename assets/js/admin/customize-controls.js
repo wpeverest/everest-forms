@@ -325,6 +325,14 @@
                 control.saveValue(key, value);
             });
 
+			   control.container.on('click', '.color-palette-label', function() {
+                control.container.find('input[type="checkbox"]').each(function() {
+                    if (!$(this).is(':checked')) {
+                        $(this).prop('checked', true).change();
+                    }
+                });
+            });
+
             // Event listener for edit icon
             control.container.on('click', '.color-palette-edit-icon', function () {
                 control.showEditInterface();
@@ -563,87 +571,9 @@
 		api.control( 'everest_forms_styles[' + data.form_id + '][template]', function( control ) {
 			control.elements[0].bind( function( newval ) {
 				handleTemplate( newval );
-				render_save_template();
 			} );
 		} );
-		/**
-		 * Render fields to create style templates.
-		 */
-		var render_save_template = function () {
-			var contentHtml = `
-				<div class="form-group" style="max-width: 378px;">
-						<label for="template-name">Name</label>
-					<input type="text" class="form-control" id="everest-forms-new-template-name" placeholder="Template Name" style="width: 100%;">
-				</div>`;
-			$.confirm({
-				title: 'Create Template',
-				content: contentHtml,
-				buttons: {
-					cancel: {
-						text: 'Cancel',
-						action: function () {
-						}
-					},
-					confirm: {
-						text: 'Confirm',
-						action: function () {
-							if ("disabled" === $("#save.save").attr("disabled")) {
-								send_save_template_request( this );
-							} else {
-								alert(
-									"Please save the unsaved changes to create the template."
-								);
-							}
-						}
-					}
 
-				},
-				onOpenBefore: function () {
-					$('.jconfirm-box').css({
-						'width': '400px',
-						'max-width': '100%'
-					});
-				}
-			});
-
-		};
-
-
-		/**
-		 * Send post ajax request to save template.
-		 */
-		var send_save_template_request = function ( el ) {
-			var template_name_el = $("#everest-forms-new-template-name");
-			var template_name = template_name_el.val();
-
-			if (template_name.length) {
-				$.post(_evfCustomizeControlsL10n.ajax_url, {
-					action: "save_template",
-					name: template_name,
-					form_id: _evfCustomizeControlsL10n.form_id,
-					_nonce: _evfCustomizeControlsL10n.save_nonce,
-				}).done(function (response) {
-
-
-					if ( response.success ) {
-						api.control(
-							"everest_forms_styles[" + data.form_id + "][template]",
-							function (control) {
-								control.setting.set( response.data.template_id );
-								api.previewer.save();
-								api.bind( 'saved', function() {
-									location.reload();
-								});
-							}
-						);
-					} else {
-						alert( response.data.message );
-					}
-				});
-			} else {
-				alert("Please provide a suitable template name and try again.");
-			}
-		};
 
 		var handleTemplate = function (template) {
 			var setting_link = 'everest_forms_styles[' + data.form_id + ']';
@@ -773,6 +703,95 @@
 
 		$(function () {
 
+				/**
+			 * Render fields to create style templates.
+			 */
+				var render_save_template = function () {
+					var form_id = _evfCustomizeControlsL10n.form_id;
+					var templates_box = $(
+						"#customize-control-everest_forms_styles-" +
+							form_id +
+							"-template"
+					);
+					var save_template_container = $(
+						"<div id='everest-forms-save-template-container'></div>"
+					);
+
+					save_template_container.append(
+						$(
+							'<span class="customize-control-title">Create Style Template</span>'
+						)
+					);
+					save_template_container.append(
+						$(
+							'<span class="description customize-control-description">Create a new style template from current styles.</span>'
+						)
+					);
+					save_template_container.append(
+						$(
+							"<input type='text' id='everest-forms-new-template-name' placeholder='Template Name' />"
+						)
+					);
+					save_template_container.append(
+						$(
+							"<div><button class='button button-primary' id='everest-forms-save-template-button'>Create</button></div>"
+						)
+					);
+
+					templates_box.before(save_template_container);
+					var save_template_btn = save_template_container.find("div button");
+
+					save_template_btn.bind("click", function (e) {
+						e.preventDefault();
+						e.stopPropagation();
+
+						if ("disabled" === $("#save.save").attr("disabled")) {
+							send_save_template_request( this );
+						} else {
+							alert(
+								"Please save the unsaved changes to create the template."
+							);
+						}
+					});
+				};
+
+
+				/**
+				 * Send post ajax request to save template.
+				 */
+				var send_save_template_request = function ( el ) {
+					var template_name_el = $("#everest-forms-new-template-name");
+					var template_name = template_name_el.val();
+
+					if (template_name.length) {
+						$.post(_evfCustomizeControlsL10n.ajax_url, {
+							action: "save_template",
+							name: template_name,
+							form_id: _evfCustomizeControlsL10n.form_id,
+							_nonce: _evfCustomizeControlsL10n.save_nonce,
+						}).done(function (response) {
+
+
+							if ( response.success ) {
+								api.control(
+									"everest_forms_styles[" + data.form_id + "][template]",
+									function (control) {
+										control.setting.set( response.data.template_id );
+										api.previewer.save();
+										api.bind( 'saved', function() {
+											location.reload();
+										});
+									}
+								);
+							} else {
+								alert( response.data.message );
+							}
+						});
+					} else {
+						alert("Please provide a suitable template name and try again.");
+					}
+				};
+
 			/**
 			 * Add delete icon to templates.
 			 */
@@ -790,7 +809,7 @@
 				templates.each(function() {
 					var $this = $(this);
 
-					if ( ! ( ['default', 'layout-two'].includes( $this.find('input').val() ) ) ) {
+					if ( ! ( ['default', 'layout-two','layout-three','layout-four','layout-five','layout-six','layout-seven','layout-eight','layout-nine','layout-ten','layout-eleven'].includes( $this.find('input').val() ) ) ) {
 						var custom_delete_btn = delete_btn.clone().hide();
 
 						custom_delete_btn.bind( 'click', function() {
@@ -832,7 +851,7 @@
 					});
 				}
 			}
-
+			render_save_template();
 			add_delete_template_icon();
 		});
 	})
