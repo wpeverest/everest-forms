@@ -47,11 +47,7 @@ class EVF_Admin_Addons {
 			}
 		}
 
-		if ( EVF_VERSION >= '3.0.1' && EFP_VERSION >= '1.7.6' ) {
-			return apply_filters( 'everest_forms_extensions_section_data', $extension_data );
-		} else {
-			return apply_filters( 'everest_forms_extensions_section_data', $extension_data->products );
-		}
+		return apply_filters( 'everest_forms_extensions_section_data', $extension_data->products );
 	}
 
 	/**
