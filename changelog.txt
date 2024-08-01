@@ -1,5 +1,14 @@
 == Changelog ==
 
+= 3.0.2        - xx-xx-2024
+* Feature 	   - Enable minimum time for form submission.
+* Dev          - Transaction Table.
+* Dev 		   - Salesflare into Module.
+* Dev 		   - ConvertKit Compatibility.
+* Dev          - GetResponse compatibility.
+* Dev 	       - Brevo module compatibility.
+* Dev 	       - Drip module  compatibility.
+
 = 3.0.1        - 03-07-2024
 * Feature 	   - Import entries in our form using csv file.
 * Enhancement  - Global Setting Premium Sidebar.
