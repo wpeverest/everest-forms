@@ -319,6 +319,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Dev 	       - Brevo module compatibility.
 * Dev 	       - Drip module  compatibility.
 * Dev          - Telegram integration compatibility.
+* Dev          - Constant contact and PipeDrive compatibility.
 
 = 3.0.1        - 03-07-2024
 * Feature 	   - Import entries in our form using csv file.
