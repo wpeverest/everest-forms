@@ -311,6 +311,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 = 3.0.2        - xx-xx-2024
 * Feature 	   - Enable minimum time for form submission.
 * Dev          - Transaction Table.
+* Dev 		   - Salesflare into Module.
 * Dev 		   - ConvertKit Compatibility.
 * Dev          - GetResponse compatibility.
 * Dev 	       - Brevo module compatibility.
