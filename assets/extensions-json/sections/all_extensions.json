@@ -709,6 +709,22 @@
       "demo_video_url": "42EUj-Dlnr0"
     },
     {
+      "title": "Telegram",
+      "slug": "everest-forms-telegram",
+      "name": "Everest Forms Telegram",
+      "image": "extensions-json/sections/images/telegram.webp",
+      "excerpt": "Telegram integration for Everest Forms! Easily integrate this popular messaging platform with Everest Forms to offer your users a smooth and efficient interaction experience.",
+      "link": "https://docs.everestforms.net/docs/telegram/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "xx/xx/2024",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=telegram",
+      "demo_video_url": ""
+    },
+    {
       "title": "Brevo",
       "slug": "everest-forms-brevo",
       "name": "Everest Forms Brevo",
