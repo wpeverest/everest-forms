@@ -350,8 +350,8 @@ class EVF_Form_Task {
 							}
 						}
 
-						 $recaptcha_verified = true;
-						 break;
+						$recaptcha_verified = true;
+						break;
 					}
 				}
 			}
@@ -1453,7 +1453,7 @@ class EVF_Form_Task {
 	 */
 	public function form_submission_waiting_time( $errors, $form_data ) {
 		$form_submission_waiting_time_enable = isset( $form_data['settings']['form_submission_min_waiting_time'] ) ? $form_data['settings']['form_submission_min_waiting_time'] : '';
-		$submission_duration                 = $form_data['settings']['form_submission_min_waiting_time_input'];
+		$submission_duration                 = isset( $form_data['settings']['form_submission_min_waiting_time_input'] ) ? $form_data['settings']['form_submission_min_waiting_time_input'] : '';
 
 		if ( '1' === $form_submission_waiting_time_enable && 0 <= absint( $submission_duration ) ) {
 			$evf_submission_start_time = isset( $_POST['evf_submission_start_time'] ) ? sanitize_text_field( wp_unslash( $_POST['evf_submission_start_time'] ) ) : ''; //phpcs:ignore WordPress.Security.NonceVerification
@@ -1481,6 +1481,4 @@ class EVF_Form_Task {
 			return $errors;
 		}
 	}
-
-
 }

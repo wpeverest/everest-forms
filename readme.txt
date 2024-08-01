@@ -310,10 +310,14 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 = 3.0.2        - xx-xx-2024
 * Feature 	   - Enable minimum time for form submission.
+* Feature      - Delete option in Header logo in PDF Submission.
 * Dev          - Transaction Table.
+* Dev 		   - Salesflare into Module.
 * Dev 		   - ConvertKit Compatibility.
+* Dev          - GetResponse compatibility.
 * Dev 	       - Brevo module compatibility.
 * Dev 	       - Drip module  compatibility.
+* Dev          - Telegram integration compatibility.
 
 = 3.0.1        - 03-07-2024
 * Feature 	   - Import entries in our form using csv file.

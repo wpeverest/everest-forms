@@ -372,7 +372,6 @@
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=sms_notifications",
       "demo_video_url": "tz4UKBX9WxM",
       "popular_rank": 22
-
     },
     {
       "title": "Cloud Storage",
@@ -610,23 +609,6 @@
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=zoho",
       "demo_video_url": "sfHFiUIHpg0",
       "popular_rank": 34
-    },
-    {
-      "title": "GetResponse",
-      "slug": "everest-forms-getresponse",
-      "name": "Everest Forms GetResponse",
-      "image": "extensions-json/sections/images/getresponse.png",
-      "excerpt": "Allows your users to subscribe to GetResponse through form submissions. Users filling up the forms can be directly added to your subscribers list in GetResponse.",
-      "link": "https://docs.everestforms.net/docs/getresponse/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-      "released_date": "26/09/2022",
-      "plan": [
-        "personal",
-        "agency",
-        "themegrill agency"
-      ],
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=getresponse",
-      "demo_video_url": "Jhq1dOFXV-I",
-      "popular_rank": 37
     }
   ],
   "features": [
@@ -713,7 +695,7 @@
     {
       "title": "OnePageCRM",
       "slug": "everest-forms-onepagecrm",
-      "name": "Everest Forms- Mailpoet",
+      "name": "Everest Forms- OnePageCRM",
       "image": "extensions-json/sections/images/onepagecrm.webp",
       "excerpt": "OnePageCRM for Everest Forms helps you to easily send Everest Forms entries directly to your OnePageCRM customer relation account.",
       "link": "https://docs.everestforms.net/docs/onepagecrm/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
@@ -725,6 +707,22 @@
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=onepagecrm",
       "demo_video_url": "42EUj-Dlnr0"
+    },
+    {
+      "title": "Telegram",
+      "slug": "everest-forms-telegram",
+      "name": "Everest Forms Telegram",
+      "image": "extensions-json/sections/images/telegram.webp",
+      "excerpt": "Telegram integration for Everest Forms! Easily integrate this popular messaging platform with Everest Forms to offer your users a smooth and efficient interaction experience.",
+      "link": "https://docs.everestforms.net/docs/telegram/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "xx/xx/2024",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=telegram",
+      "demo_video_url": ""
     },
     {
       "title": "Brevo",
@@ -776,6 +774,38 @@
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=convertkit",
       "demo_video_url": "GvqPVCK7Ws8",
       "popular_rank": 17
+    },
+    {
+      "title": "GetResponse",
+      "slug": "everest-forms-getresponse",
+      "name": "Everest Forms GetResponse",
+      "image": "extensions-json/sections/images/getresponse.png",
+      "excerpt": "Allows your users to subscribe to GetResponse through form submissions. Users filling up the forms can be directly added to your subscribers list in GetResponse.",
+      "link": "https://docs.everestforms.net/docs/getresponse/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "26/09/2022",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=getresponse",
+      "demo_video_url": "Jhq1dOFXV-I"
+    },
+    {
+      "title": "Salesflare",
+      "slug": "everest-forms-salesflare",
+      "name": "Everest Forms- Salesflare",
+      "image": "extensions-json/sections/images/Salesflare.webp",
+      "excerpt": "Boost your B2B business efficiency with Salesflare's simple and powerful CRM solution, now fully integrated with Everest Forms.",
+      "link": "https://docs.everestforms.net/docs/salesflare/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
+      "released_date": "20/05/2024",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=salesflare",
+      "demo_video_url": ""
     }
   ]
 }
