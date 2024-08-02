@@ -2542,7 +2542,8 @@
 						 &.turnstile_empty_key_validate,
 						 &.hcaptcha_empty_key_validate,
 						 &.enable-stripe-model,
-						 &.enable-authorize-net-model {
+						 &.enable-authorize-net-model,
+						 &.enable-square-model{
 							 opacity: 0.45;
 
 							 &:hover {
@@ -9273,6 +9274,7 @@
 		   &--field {
 			 flex: 2;
 		   }
+
 		 }
 	   }
 
@@ -9531,7 +9533,7 @@
 
 						   .ps__rail {
 								&-x {
-									display: none;	
+									display: none;
 								}
 						   }
 					   }
@@ -9582,13 +9584,13 @@
 							display: flex;
 							align-items: center;
 							gap: 6px;
-							
+
 							.evf-toggle-section {
 								.everest-forms-toggle-form {
 									margin: 0;
 								}
 							}
-							
+
 							.everest-forms-toggle-text {
 								font-size: 14px;
 								line-height: 24px;
@@ -9695,6 +9697,8 @@
 										}
 									}
 							   }
+
+
 
 							   fieldset {
 								   > label {
@@ -9958,6 +9962,74 @@
 										   width: 14px;
 										   height: 14px;
 									   }
+								   }
+								   .everest-forms-custom-image-delete , .evf-image-container {
+
+										object-fit: cover;
+										display: inline-flex;
+										position: relative;
+										border-radius: 8px;
+										height: 100px;
+										width: auto;
+										overflow: hidden;
+										object-fit: cover;
+										object-position: center;
+										margin:auto;
+										display: inline-flex;
+										position: relative;
+										justify-content: center;
+										cursor: pointer;
+										user-select: none;
+
+										i {
+											display: none;
+										}
+
+										&:hover {
+											&::before {
+												content: "";
+												background: #000;
+												position: absolute;
+												width: 100%;
+												height: 100%;
+												opacity: 0.6;
+											}
+
+											i {
+												position: absolute;
+												display: contents;
+
+												&:hover {
+													&::before,
+													&::after {
+														transform: translate(-50%, -50%) scale(1.1);
+													}
+												}
+
+												&::before {
+													content: "";
+													background: #d52626;
+													width: 42px;
+													height: 42px;
+													position: absolute;
+													border-radius: 50%;
+													top: 50%;
+													left: 50%;
+													transform: translate(-50%, -50%);
+												}
+
+												&::after {
+													content: "\e907";
+													position: absolute;
+													font-size: 22px;
+													color: #fff;
+													top: 50%;
+													left: 50%;
+													transform: translate(-50%, -50%);
+												}
+											}
+										}
+
 								   }
 							   }
 						   }

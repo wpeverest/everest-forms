@@ -51,6 +51,9 @@ class EVF_Shortcode_Form {
 
 		// reCaptcha Language.
 		add_filter( 'everest_forms_frontend_recaptcha_url', array( __CLASS__, 'evf_recaptcha_language' ), 10, 1 );
+
+		// Enable for submission waiting time.
+		add_filter( 'everest_forms_display_fields_before', array( 'EVF_Shortcode_Form', 'evf_form_submission_waiting_time' ) );
 	}
 
 	/**
@@ -903,7 +906,7 @@ class EVF_Shortcode_Form {
 		$form_enabled    = isset( $form_data['form_enabled'] ) ? absint( $form_data['form_enabled'] ) : 1;
 		$kff_enabled     = isset( $settings['keyboard_friendly_form'] ) ? absint( $settings['keyboard_friendly_form'] ) : 0;
 		$disable_message = isset( $form_data['settings']['form_disable_message'] ) ? evf_string_translation( $form_data['id'], 'form_disable_message', $form_data['settings']['form_disable_message'] ) : __( 'This form is disabled.', 'everest-forms' );
-		if ( isset( $form_data['payments']['stripe']['enable_stripe'] ) && '1' === $form_data['payments']['stripe']['enable_stripe'] ) {
+		if ( ( isset( $form_data['payments']['stripe']['enable_stripe'] ) && '1' === $form_data['payments']['stripe']['enable_stripe'] ) || ( isset( $form_data['payments']['square']['enable_square'] ) && '1' === $form_data['payments']['square']['enable_square'] ) ) {
 			$ajax_form_submission = isset( $settings['ajax_form_submission'] ) ? 1 : 0;
 		} else {
 			$ajax_form_submission = isset( $settings['ajax_form_submission'] ) ? $settings['ajax_form_submission'] : 0;
@@ -1157,9 +1160,7 @@ class EVF_Shortcode_Form {
 	 *  @return $url
 	 */
 	public static function evf_recaptcha_language( $url ) {
-
 		return esc_url_raw( add_query_arg( array( 'hl' => get_option( 'everest_forms_recaptcha_recaptcha_language', 'en-GB' ) ), $url ) );
-
 	}
 
 	/**
@@ -1243,6 +1244,24 @@ class EVF_Shortcode_Form {
 				wp_add_inline_script( 'evf-custom', $custom_js );
 				wp_enqueue_script( 'evf-custom' );
 			}
+		}
+	}
+
+	/**
+	 * Function to enable the minimum form submission waiting time.
+	 *
+	 * @since 3.0.2
+	 *
+	 * @param array $form_data Form Data.
+	 */
+	public static function evf_form_submission_waiting_time( $form_data ) {
+		$form_submission_waiting_time_enable = isset( $form_data['settings']['form_submission_min_waiting_time'] ) ? $form_data['settings']['form_submission_min_waiting_time'] : '';
+		$submission_duration                 = isset( $form_data['settings']['form_submission_min_waiting_time_input'] ) ? $form_data['settings']['form_submission_min_waiting_time_input'] : '';
+
+		if ( '1' === $form_submission_waiting_time_enable ) {
+			echo "<input type='hidden' id='evf_submission_start_time' name='evf_submission_start_time'/>";
+		} else {
+			return '';
 		}
 	}
 }
