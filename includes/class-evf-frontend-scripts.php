@@ -182,14 +182,14 @@ class EVF_Frontend_Scripts {
 				'deps'    => array( 'jquery' ),
 				'version' => '1.0.8',
 			),
-			'jquery-intl-tel-input'                  => array(
-				'src'     => self::get_asset_url( '/assets/js/intlTelInput/jquery.intlTelInput' . $suffix . '.js ' ),
-				'deps'    => array( 'jquery' ),
+			'jquery-intl-tel-input' => array(
+				'src'     => self::get_asset_url('/assets/js/intlTelInput/jquery.intlTelInput' . $suffix . '.js'),
+				'deps'    => array('jquery'),
 				'version' => '16.0.7',
 			),
-			'jquery-validate'                        => array(
-				'src'     => self::get_asset_url( 'assets/js/jquery-validate/jquery.validate' . $suffix . '.js' ),
-				'deps'    => array( 'jquery' ),
+			'jquery-validate' => array(
+				'src'     => self::get_asset_url('assets/js/jquery-validate/jquery.validate' . $suffix . '.js'),
+				'deps'    => array('jquery'),
 				'version' => '1.19.2',
 			),
 			'everest-forms'                          => array(
@@ -327,6 +327,7 @@ class EVF_Frontend_Scripts {
 					'plugin_url'                           => plugin_dir_url( EVF_PLUGIN_FILE ),
 					'i18n_messages_phone'                  => get_option( 'everest_forms_phone_validation', __( 'Please enter a valid phone number.', 'everest-forms' ) ),
 					'i18n_field_rating_greater_than_max_value_error' => esc_html__( 'Please enter in a value less than 100.', 'everest-forms' ),
+					'form_settings'                        => isset( $_GET['form_id'] ) ? evf()->form->get( absint( $_GET['form_id'] ), array( 'content_only' => true ) ) : 0,
 				);
 				break;
 			case 'everest-forms-text-limit':
