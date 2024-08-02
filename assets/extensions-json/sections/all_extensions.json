@@ -136,23 +136,6 @@
       "popular_rank": 8
     },
     {
-      "title": "Mailchimp",
-      "slug": "everest-forms-mailchimp",
-      "name": "Everest Forms Mailchimp",
-      "image": "extensions-json/sections/images/mailchimp.png",
-      "excerpt": "Allows your users to subscribe to Mailchimp through form submissions. Users filling up the forms can be directly added to your subscribers list in Mailchimp.",
-      "link": "https://docs.everestforms.net/docs/mailchimp/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-      "released_date": "10/08/2018",
-      "plan": [
-        "personal",
-        "agency",
-        "themegrill agency"
-      ],
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=mailchimp",
-      "demo_video_url": "FhFsHdAIXwE",
-      "popular_rank": 6
-    },
-    {
       "title": "User Registration",
       "slug": "everest-forms-user-registration",
       "name": "Everest Forms User Registration",
@@ -423,23 +406,6 @@
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=activecampaign",
       "demo_video_url": "6b9q89cUMzE",
       "popular_rank": 25
-    },
-    {
-      "title": "MailerLite",
-      "slug": "everest-forms-mailerlite",
-      "name": "Everest Forms MailerLite",
-      "image": "extensions-json/sections/images/mailerlite.png",
-      "excerpt": "Allows your users to subscribe to MailerLite through form submission via Everest Forms.",
-      "link": "https://docs.everestforms.net/docs/mailerlite/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-      "released_date": "15/07/2020",
-      "plan": [
-        "personal",
-        "agency",
-        "themegrill agency"
-      ],
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=mailerlite",
-      "demo_video_url": "CpqVgycDx_8",
-      "popular_rank": 27
     },
     {
       "title": "Advanced Form Analytics",
@@ -838,6 +804,40 @@
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=airtable",
       "demo_video_url": ""
+    },
+    {
+      "title": "MailerLite",
+      "slug": "everest-forms-mailerlite",
+      "name": "Everest Forms MailerLite",
+      "image": "extensions-json/sections/images/mailerlite.png",
+      "excerpt": "Allows your users to subscribe to MailerLite through form submission via Everest Forms.",
+      "link": "https://docs.everestforms.net/docs/mailerlite/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "15/07/2020",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=mailerlite",
+      "demo_video_url": "CpqVgycDx_8",
+      "popular_rank": 27
+    },
+    {
+      "title": "Mailchimp",
+      "slug": "everest-forms-mailchimp",
+      "name": "Everest Forms Mailchimp",
+      "image": "extensions-json/sections/images/mailchimp.png",
+      "excerpt": "Allows your users to subscribe to Mailchimp through form submissions. Users filling up the forms can be directly added to your subscribers list in Mailchimp.",
+      "link": "https://docs.everestforms.net/docs/mailchimp/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "10/08/2018",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=mailchimp",
+      "demo_video_url": "FhFsHdAIXwE",
+      "popular_rank": 6
     }
   ]
 }

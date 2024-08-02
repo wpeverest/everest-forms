@@ -14,6 +14,7 @@
 * Dev 	       - Drip module  compatibility.
 * Dev          - Telegram integration compatibility.
 * Dev          - Constant contact and PipeDrive compatibility.
+* Dev          - Mailchimp and Mailerlite compatibility.
 
 = 3.0.1        - 03-07-2024
 * Feature 	   - Import entries in our form using csv file.
