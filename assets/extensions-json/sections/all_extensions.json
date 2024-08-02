@@ -838,6 +838,22 @@
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=mailchimp",
       "demo_video_url": "FhFsHdAIXwE",
       "popular_rank": 6
+    },
+    {
+      "title": "Mollie",
+      "slug": "everest-forms-mollie",
+      "name": "Everest Forms Mollie",
+      "image": "extensions-json/sections/images/mollie.webp",
+      "excerpt": "Strengthen your payment options with Mollie Pay! Seamlessly integrate this powerful payment gateway to offer your users a smooth and secure transaction experience.",
+      "link": "https://docs.everestforms.net/docs/mollie/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "xx/xx/2024",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=payment",
+      "demo_video_url": ""
     }
   ]
 }

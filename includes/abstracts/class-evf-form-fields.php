@@ -2319,7 +2319,7 @@ abstract class EVF_Form_Fields {
 		$licensed = ( false === evf_get_license_plan() ) ? false : true;
 		if ( false === $licensed && 'file-upload' === $_POST['field_type'] ) {
 			update_option( 'everest_forms_one_time_draggable_field', true );
-		} 
+		}
 
 		// Grab field data.
 		$field_args     = ! empty( $_POST['defaults'] ) && is_array( $_POST['defaults'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['defaults'] ) ) : array();
