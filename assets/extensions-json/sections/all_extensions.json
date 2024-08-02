@@ -822,6 +822,22 @@
       ],
       "setting_url": "admin.php?page=evf-settings&tab=payment",
       "demo_video_url": ""
+    },
+    {
+      "title": "Airtable",
+      "slug": "everest-forms-airtable",
+      "name": "Everest Forms- Airtable",
+      "image": "extensions-json/sections/images/Airtable.png",
+      "excerpt": "OnePageCRM for Everest Forms helps you to easily send Everest Forms entries directly to your OnePageCRM customer relation account.",
+      "link": "https://docs.everestforms.net/docs/onepagecrm/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
+      "released_date": "xx/xx/2024",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=airtable",
+      "demo_video_url": ""
     }
   ]
 }

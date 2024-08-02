@@ -314,6 +314,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Enhancement  - Custom file name field settings.
 * Dev          - Square Payment.
 * Dev          - Transaction Table.
+* Dev          - Airtable Compatibility.
 * Dev 		   - Salesflare into Module.
 * Dev 		   - ConvertKit Compatibility.
 * Dev          - GetResponse compatibility.
