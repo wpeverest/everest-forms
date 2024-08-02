@@ -23,8 +23,6 @@
 					var $value =  $(this).val();
 					$(this).val($value.replace(/<\s*script/gi, '').replace(/\s+on\w+\s*=/gi, ' '));
 				});
-
-
 		 	});
 
 			$( document ).ready( function( $ ) {

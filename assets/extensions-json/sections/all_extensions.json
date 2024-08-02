@@ -806,6 +806,22 @@
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=pipedrive",
       "demo_video_url": "wJPX0EJ2OiI",
       "popular_rank": 32
+    },
+    {
+      "title": "Square",
+      "slug": "everest-forms-square",
+      "name": "Everest Forms - Square",
+      "image": "extensions-json/sections/images/square-payment.png",
+      "excerpt": "Connect your Everest Forms data to your Trello accounts. Use Trello API to link Everest Forms with Trello, syncing your website's form submissions with Trello tasks.",
+      "link": "https://docs.everestforms.net/docs/trello/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
+      "released_date": "20/05/2024",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=payment",
+      "demo_video_url": ""
     }
   ]
 }

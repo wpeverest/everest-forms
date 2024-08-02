@@ -312,6 +312,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Feature 	   - Enable minimum time for form submission.
 * Feature      - Delete option in Header logo in PDF Submission.
 * Enhancement  - Custom file name field settings.
+* Dev          - Square Payment.
 * Dev          - Transaction Table.
 * Dev 		   - Salesflare into Module.
 * Dev 		   - ConvertKit Compatibility.
