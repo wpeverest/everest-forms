@@ -176,6 +176,10 @@ if ( ! class_exists( 'EVF_Builder_Page', false ) ) :
 						'id'   => 'tz4UKBX9WxM',
 						'name' => esc_html__( 'SMS Notifications', 'everest-forms' ),
 					),
+					'telegram'           => array(
+						'id'   => '',
+						'name' => esc_html__( 'Telegram', 'everest-forms' ),
+					),
 				);
 
 			} else {

@@ -136,23 +136,6 @@
       "popular_rank": 8
     },
     {
-      "title": "Mailchimp",
-      "slug": "everest-forms-mailchimp",
-      "name": "Everest Forms Mailchimp",
-      "image": "extensions-json/sections/images/mailchimp.png",
-      "excerpt": "Allows your users to subscribe to Mailchimp through form submissions. Users filling up the forms can be directly added to your subscribers list in Mailchimp.",
-      "link": "https://docs.everestforms.net/docs/mailchimp/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-      "released_date": "10/08/2018",
-      "plan": [
-        "personal",
-        "agency",
-        "themegrill agency"
-      ],
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=mailchimp",
-      "demo_video_url": "FhFsHdAIXwE",
-      "popular_rank": 6
-    },
-    {
       "title": "User Registration",
       "slug": "everest-forms-user-registration",
       "name": "Everest Forms User Registration",
@@ -289,23 +272,6 @@
       "popular_rank": 16
     },
     {
-      "title": "ConvertKit",
-      "slug": "everest-forms-convertkit",
-      "name": "Everest Forms ConvertKit",
-      "image": "extensions-json/sections/images/convertkit.png",
-      "excerpt": "Allows you to efficiently grow your business by generating more leads with ConvertKit. It also helps increase automated emails for better lead generation.",
-      "link": "https://docs.everestforms.net/docs/convertkit/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-      "released_date": "10/08/2018",
-      "plan": [
-        "personal",
-        "agency",
-        "themegrill agency"
-      ],
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=convertkit",
-      "demo_video_url": "GvqPVCK7Ws8",
-      "popular_rank": 17
-    },
-    {
       "title": "Post Submissions",
       "slug": "everest-forms-post-submissions",
       "name": "Everest Forms Post Submissions",
@@ -389,7 +355,6 @@
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=sms_notifications",
       "demo_video_url": "tz4UKBX9WxM",
       "popular_rank": 22
-
     },
     {
       "title": "Cloud Storage",
@@ -426,23 +391,6 @@
       "popular_rank": 24
     },
     {
-      "title": "Sendinblue",
-      "slug": "everest-forms-sendinblue",
-      "name": "Everest Forms Sendinblue",
-      "image": "extensions-json/sections/images/sendinblue.png",
-      "excerpt": "Allows your users to subscribe to Sendinblue through form submissions. Users filling up the forms can be directly added to your subscribers list in Sendinblue.",
-      "link": "https://docs.everestforms.net/docs/sendinblue/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-      "released_date": "26/09/2022",
-      "plan": [
-        "personal",
-        "agency",
-        "themegrill agency"
-      ],
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=sendinblue",
-      "demo_video_url": "NRRDY1ag6Sk",
-      "popular_rank": 26
-    },
-    {
       "title": "ActiveCampaign",
       "slug": "everest-forms-activecampaign",
       "name": "Everest Forms ActiveCampaign",
@@ -458,23 +406,6 @@
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=activecampaign",
       "demo_video_url": "6b9q89cUMzE",
       "popular_rank": 25
-    },
-    {
-      "title": "MailerLite",
-      "slug": "everest-forms-mailerlite",
-      "name": "Everest Forms MailerLite",
-      "image": "extensions-json/sections/images/mailerlite.png",
-      "excerpt": "Allows your users to subscribe to MailerLite through form submission via Everest Forms.",
-      "link": "https://docs.everestforms.net/docs/mailerlite/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-      "released_date": "15/07/2020",
-      "plan": [
-        "personal",
-        "agency",
-        "themegrill agency"
-      ],
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=mailerlite",
-      "demo_video_url": "CpqVgycDx_8",
-      "popular_rank": 27
     },
     {
       "title": "Advanced Form Analytics",
@@ -544,23 +475,6 @@
       "popular_rank": 30
     },
     {
-      "title": "Pipedrive",
-      "slug": "everest-forms-pipedrive",
-      "name": "Everest Forms Pipedrive",
-      "image": "extensions-json/sections/images/pipedrive.png",
-      "excerpt": "Everest Forms Pipedrive CRM add-on is a WordPress Pipedrive CRM integration plugin that allows you to easily send Everest Forms entries directly to your Pipedrive CRM account. ",
-      "link": "https://docs.everestforms.net/docs/pipedrive/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-      "released_date": "15/06/2022",
-      "plan": [
-        "personal",
-        "agency",
-        "themegrill agency"
-      ],
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=pipedrive",
-      "demo_video_url": "wJPX0EJ2OiI",
-      "popular_rank": 32
-    },
-    {
       "title": "Authorize.Net",
       "slug": "everest-forms-authorize-net",
       "name": "Everest Forms Authorize.Net",
@@ -576,23 +490,6 @@
       "setting_url": "admin.php?page=evf-settings&tab=payment",
       "demo_video_url": "a5EcKjwWD1A",
       "popular_rank": 31
-    },
-    {
-      "title": "Constant Contact",
-      "slug": "everest-forms-constant-contact",
-      "name": "Everest Forms Constant Contact",
-      "image": "extensions-json/sections/images/constant-contact.png",
-      "excerpt": "Everest Forms Constant Contact add-on is a WordPress Constant Contact integration plugin that allows you to easily send Everest Forms entries directly to your Constant Contact account. ",
-      "link": "https://docs.everestforms.net/docs/constant-contact/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-      "released_date": "31/08/2022",
-      "plan": [
-        "personal",
-        "agency",
-        "themegrill agency"
-      ],
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=constant_contact",
-      "demo_video_url": "dCeW1GW6-YI",
-      "popular_rank": 33
     },
     {
       "title": "Drip",
@@ -644,23 +541,6 @@
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=zoho",
       "demo_video_url": "sfHFiUIHpg0",
       "popular_rank": 34
-    },
-    {
-      "title": "GetResponse",
-      "slug": "everest-forms-getresponse",
-      "name": "Everest Forms GetResponse",
-      "image": "extensions-json/sections/images/getresponse.png",
-      "excerpt": "Allows your users to subscribe to GetResponse through form submissions. Users filling up the forms can be directly added to your subscribers list in GetResponse.",
-      "link": "https://docs.everestforms.net/docs/getresponse/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-      "released_date": "26/09/2022",
-      "plan": [
-        "personal",
-        "agency",
-        "themegrill agency"
-      ],
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=getresponse",
-      "demo_video_url": "Jhq1dOFXV-I",
-      "popular_rank": 37
     }
   ],
   "features": [
@@ -747,7 +627,7 @@
     {
       "title": "OnePageCRM",
       "slug": "everest-forms-onepagecrm",
-      "name": "Everest Forms- Mailpoet",
+      "name": "Everest Forms- OnePageCRM",
       "image": "extensions-json/sections/images/onepagecrm.webp",
       "excerpt": "OnePageCRM for Everest Forms helps you to easily send Everest Forms entries directly to your OnePageCRM customer relation account.",
       "link": "https://docs.everestforms.net/docs/onepagecrm/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
@@ -761,20 +641,219 @@
       "demo_video_url": "42EUj-Dlnr0"
     },
     {
-      "title": "Mollie",
-      "slug": "everest-forms-mollie",
-      "name": "Everest Forms Mollie",
-      "image": "extensions-json/sections/images/mollie.webp",
-      "excerpt": "Strengthen your payment options with Mollie Pay! Seamlessly integrate this powerful payment gateway to offer your users a smooth and secure transaction experience.",
-      "link": "https://docs.everestforms.net/docs/mollie/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-      "released_date": "04/04/2019",
+      "title": "Telegram",
+      "slug": "everest-forms-telegram",
+      "name": "Everest Forms Telegram",
+      "image": "extensions-json/sections/images/telegram.webp",
+      "excerpt": "Telegram integration for Everest Forms! Easily integrate this popular messaging platform with Everest Forms to offer your users a smooth and efficient interaction experience.",
+      "link": "https://docs.everestforms.net/docs/telegram/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "xx/xx/2024",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=telegram",
+      "demo_video_url": ""
+    },
+    {
+      "title": "Brevo",
+      "slug": "everest-forms-brevo",
+      "name": "Everest Forms Brevo",
+      "image": "extensions-json/sections/images/brevo.webp",
+      "excerpt": "Connect newsletters, SMTP, marketing automation, and all your CRM tools in one place with Brevo integration (formerly Sendinblue) for Everest Forms.",
+      "link": "https://docs.everestforms.net/docs/sendinblue/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "26/09/2022",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=sendinblue",
+      "demo_video_url": "NRRDY1ag6Sk",
+      "popular_rank": 26
+    },
+    {
+      "title": "Drip",
+      "slug": "everest-forms-drip",
+      "name": "Everest Forms Drip",
+      "image": "extensions-json/sections/images/drip.png",
+      "excerpt": "With the Everest Forms Drip add-on, you can effortlessly create an unlimited number of newsletter signup forms and connect them to Drip.",
+      "link": "https://docs.everestforms.net/docs/drip/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "15/06/2022",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=drip",
+      "demo_video_url": "ODRxkfX6y9Q",
+      "popular_rank": 35
+    },
+    {
+      "title": "ConvertKit",
+      "slug": "everest-forms-convertkit",
+      "name": "Everest Forms ConvertKit",
+      "image": "extensions-json/sections/images/convertkit.png",
+      "excerpt": "Allows you to efficiently grow your business by generating more leads with ConvertKit. It also helps increase automated emails for better lead generation.",
+      "link": "https://docs.everestforms.net/docs/convertkit/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "10/08/2018",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=convertkit",
+      "demo_video_url": "GvqPVCK7Ws8",
+      "popular_rank": 17
+    },
+    {
+      "title": "GetResponse",
+      "slug": "everest-forms-getresponse",
+      "name": "Everest Forms GetResponse",
+      "image": "extensions-json/sections/images/getresponse.png",
+      "excerpt": "Allows your users to subscribe to GetResponse through form submissions. Users filling up the forms can be directly added to your subscribers list in GetResponse.",
+      "link": "https://docs.everestforms.net/docs/getresponse/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "26/09/2022",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=getresponse",
+      "demo_video_url": "Jhq1dOFXV-I"
+    },
+    {
+      "title": "Salesflare",
+      "slug": "everest-forms-salesflare",
+      "name": "Everest Forms- Salesflare",
+      "image": "extensions-json/sections/images/Salesflare.webp",
+      "excerpt": "Boost your B2B business efficiency with Salesflare's simple and powerful CRM solution, now fully integrated with Everest Forms.",
+      "link": "https://docs.everestforms.net/docs/salesflare/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
+      "released_date": "20/05/2024",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=salesflare",
+      "demo_video_url": ""
+    },
+    {
+      "title": "Constant Contact",
+      "slug": "everest-forms-constant-contact",
+      "name": "Everest Forms Constant Contact",
+      "image": "extensions-json/sections/images/constant-contact.png",
+      "excerpt": "Everest Forms Constant Contact add-on is a WordPress Constant Contact integration plugin that allows you to easily send Everest Forms entries directly to your Constant Contact account. ",
+      "link": "https://docs.everestforms.net/docs/constant-contact/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "31/08/2022",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=constant_contact",
+      "demo_video_url": "dCeW1GW6-YI",
+      "popular_rank": 33
+    },
+    {
+      "title": "Pipedrive",
+      "slug": "everest-forms-pipedrive",
+      "name": "Everest Forms Pipedrive",
+      "image": "extensions-json/sections/images/pipedrive.png",
+      "excerpt": "Everest Forms Pipedrive CRM add-on is a WordPress Pipedrive CRM integration plugin that allows you to easily send Everest Forms entries directly to your Pipedrive CRM account. ",
+      "link": "https://docs.everestforms.net/docs/pipedrive/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "15/06/2022",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=pipedrive",
+      "demo_video_url": "wJPX0EJ2OiI",
+      "popular_rank": 32
+    },
+    {
+      "title": "Square",
+      "slug": "everest-forms-square",
+      "name": "Everest Forms - Square",
+      "image": "extensions-json/sections/images/square-payment.png",
+      "excerpt": "Connect your Everest Forms data to your Trello accounts. Use Trello API to link Everest Forms with Trello, syncing your website's form submissions with Trello tasks.",
+      "link": "https://docs.everestforms.net/docs/trello/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
+      "released_date": "20/05/2024",
       "plan": [
         "personal",
         "agency",
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=payment",
-      "demo_video_url": "wZXnaxLxdz4"
+      "demo_video_url": ""
+    },
+    {
+      "title": "Airtable",
+      "slug": "everest-forms-airtable",
+      "name": "Everest Forms- Airtable",
+      "image": "extensions-json/sections/images/Airtable.png",
+      "excerpt": "OnePageCRM for Everest Forms helps you to easily send Everest Forms entries directly to your OnePageCRM customer relation account.",
+      "link": "https://docs.everestforms.net/docs/onepagecrm/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
+      "released_date": "xx/xx/2024",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=airtable",
+      "demo_video_url": ""
+    },
+    {
+      "title": "MailerLite",
+      "slug": "everest-forms-mailerlite",
+      "name": "Everest Forms MailerLite",
+      "image": "extensions-json/sections/images/mailerlite.png",
+      "excerpt": "Allows your users to subscribe to MailerLite through form submission via Everest Forms.",
+      "link": "https://docs.everestforms.net/docs/mailerlite/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "15/07/2020",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=mailerlite",
+      "demo_video_url": "CpqVgycDx_8",
+      "popular_rank": 27
+    },
+    {
+      "title": "Mailchimp",
+      "slug": "everest-forms-mailchimp",
+      "name": "Everest Forms Mailchimp",
+      "image": "extensions-json/sections/images/mailchimp.png",
+      "excerpt": "Allows your users to subscribe to Mailchimp through form submissions. Users filling up the forms can be directly added to your subscribers list in Mailchimp.",
+      "link": "https://docs.everestforms.net/docs/mailchimp/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "10/08/2018",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=mailchimp",
+      "demo_video_url": "FhFsHdAIXwE",
+      "popular_rank": 6
+    },
+    {
+      "title": "Mollie",
+      "slug": "everest-forms-mollie",
+      "name": "Everest Forms Mollie",
+      "image": "extensions-json/sections/images/mollie.webp",
+      "excerpt": "Strengthen your payment options with Mollie Pay! Seamlessly integrate this powerful payment gateway to offer your users a smooth and secure transaction experience.",
+      "link": "https://docs.everestforms.net/docs/mollie/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "xx/xx/2024",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=payment",
+      "demo_video_url": ""
     }
   ]
 }

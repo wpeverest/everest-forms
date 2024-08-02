@@ -2,9 +2,9 @@
 Contributors: WPEverest
 Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.2
-Tested up to: 6.5.5
+Tested up to: 6.6.1
 Requires PHP: 7.2
-Stable tag: 3.0.1
+Stable tag: 3.0.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -307,6 +307,23 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 
 == Changelog ==
+
+= 3.0.2        - xx-xx-2024
+* Feature 	   - Enable minimum time for form submission.
+* Feature      - Delete option in Header logo in PDF Submission.
+* Enhancement  - Custom file name field settings.
+* Dev          - Mollie Payment.
+* Dev          - Square Payment.
+* Dev          - Transaction Table.
+* Dev          - Airtable Compatibility.
+* Dev 		   - Salesflare into Module.
+* Dev 		   - ConvertKit Compatibility.
+* Dev          - GetResponse compatibility.
+* Dev 	       - Brevo module compatibility.
+* Dev 	       - Drip module  compatibility.
+* Dev          - Telegram integration compatibility.
+* Dev          - Constant contact and PipeDrive compatibility.
+* Dev          - Mailchimp and Mailerlite compatibility.
 
 = 3.0.1        - 03-07-2024
 * Feature 	   - Import entries in our form using csv file.
