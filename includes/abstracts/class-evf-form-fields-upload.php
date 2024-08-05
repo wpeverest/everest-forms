@@ -536,7 +536,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			$field,
 			array(
 				'slug'  => 'custom_file_name',
-				'value' => ! empty( $field['custom_file_name'] ) ? $field['custom_file_name'] : esc_html( 'mycustompdffile', 'everest-forms' ),
+				'value' => ! empty( $field['custom_file_name'] ) ? $field['custom_file_name'] : '',
 			),
 			false
 		);
