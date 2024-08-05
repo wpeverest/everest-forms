@@ -1467,7 +1467,7 @@ class EVF_Form_Task {
 				/**
 				 * Filter to modify the waiting time message content.
 				 *
-				 * @since 3.0.9
+				 * @since 3.0.2
 				 */
 				$form_submission_err_msg = apply_filters(
 					'everest_forms_minimum_waiting_time_form_submission',
