@@ -952,32 +952,41 @@ jQuery( function ( $ ) {
 			return $( '<div class="iti__flag-box"><div class="iti__flag iti__' + country.id.toLowerCase() + '"></div></div><span class="iti__country-name">' + country.text + '</span>' );
 		},
 
-		FormSubmissionWaitingTime: function(){
+		FormSubmissionWaitingTime: function() {
 			$(document).ready(function() {
 				var form_settings = everest_forms_params.form_settings['settings'];
-				var wait_form_submission_status = form_settings['form_submission_min_waiting_time'];
+				var ajax_submission = form_settings['ajax_form_submission'] === '1';
+				var wait_form_submission_status = form_settings['form_submission_min_waiting_time'] === '1';
 
-				if (wait_form_submission_status === '1') {
-					$('#evf_submission_start_time').val(Date.now());
+				if (!wait_form_submission_status) {
+					return '';
+				}
 
-					// Create a MutationObserver to observe changes in the DOM.
+				$('#evf_submission_start_time').val(Date.now());
+
+				var startTimer = function() {
+					var display = $('#evf_submission_duration');
+					if (display.length) {
+						var duration = parseInt(display.data('duration'), 10);
+						var timer = duration;
+						var interval = setInterval(function() {
+							display.text(timer);
+							if (--timer < 0) {
+								clearInterval(interval);
+								display.parent().remove();
+							}
+						}, 1000);
+					}
+				};
+
+				if (ajax_submission) {
+					// Create a MutationObserver to handle dynamic content.
 					var observer = new MutationObserver(function(mutations) {
 						mutations.forEach(function(mutation) {
 							if (mutation.addedNodes.length > 0) {
 								$(mutation.addedNodes).each(function() {
-									var display = $('#evf_submission_duration');
-									if (display.length) {
-										var duration = parseInt(display.data('duration'), 10);
-										var timer = duration;
-										var interval = setInterval(function() {
-											display.text(timer);
-											if (--timer < 0) {
-												clearInterval(interval);
-												$('#evf_submission_duration').parent().remove();
-											}
-										}, 1000);
-
-										// Once the element is found, disconnect the observer.
+									if ($('#evf_submission_duration').length) {
+										startTimer();
 										observer.disconnect();
 									}
 								});
@@ -985,15 +994,15 @@ jQuery( function ( $ ) {
 						});
 					});
 
-					// Start observing the target node for configured mutations.
 					var targetNode = document.body;
 					var config = { childList: true, subtree: true };
 					observer.observe(targetNode, config);
 				} else {
-					return '';
+					startTimer();
 				}
 			});
 		},
+
 
 		getFirstBrowserLanguage: function() {
 			var nav = window.navigator,

@@ -1455,7 +1455,7 @@ class EVF_Form_Task {
 		$form_submission_waiting_time_enable = isset( $form_data['settings']['form_submission_min_waiting_time'] ) ? $form_data['settings']['form_submission_min_waiting_time'] : '';
 		$submission_duration                 = isset( $form_data['settings']['form_submission_min_waiting_time_input'] ) ? $form_data['settings']['form_submission_min_waiting_time_input'] : '';
 
-		if ( '1' === $form_submission_waiting_time_enable && 0 <= absint( $submission_duration ) ) {
+		if ( isset( $form_submission_waiting_time_enable ) && '1' === $form_submission_waiting_time_enable && 0 <= absint( $submission_duration ) ) {
 			$evf_submission_start_time = isset( $_POST['evf_submission_start_time'] ) ? sanitize_text_field( wp_unslash( $_POST['evf_submission_start_time'] ) ) : ''; //phpcs:ignore WordPress.Security.NonceVerification
 			$atts                      = $form_data['id'];
 			$submission_time           = time() * 1000;
@@ -1464,6 +1464,11 @@ class EVF_Form_Task {
 			$form_id      = ! empty( $form_data['id'] ) ? $form_data['id'] : 0;
 
 			if ( absint( $submission_time ) - absint( $evf_submission_start_time ) <= absint( $submission_duration ) * 1000 ) {
+				/**
+				 * Filter to modify the waiting time message content.
+				 *
+				 * @since 3.0.9
+				 */
 				$form_submission_err_msg = apply_filters(
 					'everest_forms_minimum_waiting_time_form_submission',
 					sprintf(
