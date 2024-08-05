@@ -1460,6 +1460,9 @@ class EVF_Form_Task {
 			$atts                      = $form_data['id'];
 			$submission_time           = time() * 1000;
 
+			if ( $submission_duration <= 0 ) {
+				$submission_duration = 1;
+			}
 			$waiting_time = absint( $submission_time ) - absint( $evf_submission_start_time );
 			$form_id      = ! empty( $form_data['id'] ) ? $form_data['id'] : 0;
 
