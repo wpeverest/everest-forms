@@ -854,6 +854,22 @@
       ],
       "setting_url": "admin.php?page=evf-settings&tab=payment",
       "demo_video_url": ""
+    },
+    {
+      "title": "Landing Pages",
+      "slug": "everest-forms-landingpages",
+      "name": "Everest Forms- LandingPages",
+      "image": "extensions-json/sections/images/LandingPage.webp",
+      "excerpt": "Present your landing page as a form without going through the hassle of shortcodes and repetitive designing. A simple click, and that’s all you must do!",
+      "link": "https://docs.everestforms.net/docs/landingpages/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
+      "released_date": "20/05/2024",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "",
+       "demo_video_url": ""
     }
   ]
 }
