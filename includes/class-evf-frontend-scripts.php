@@ -327,7 +327,6 @@ class EVF_Frontend_Scripts {
 					'plugin_url'                           => plugin_dir_url( EVF_PLUGIN_FILE ),
 					'i18n_messages_phone'                  => get_option( 'everest_forms_phone_validation', __( 'Please enter a valid phone number.', 'everest-forms' ) ),
 					'i18n_field_rating_greater_than_max_value_error' => esc_html__( 'Please enter in a value less than 100.', 'everest-forms' ),
-					'form_settings'                        => isset( $_GET['form_id'] ) ? evf()->form->get( absint( $_GET['form_id'] ), array( 'content_only' => true ) ) : 0,
 				);
 				break;
 			case 'everest-forms-text-limit':

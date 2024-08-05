@@ -954,11 +954,9 @@ jQuery( function ( $ ) {
 
 		FormSubmissionWaitingTime: function() {
 			$(document).ready(function() {
-				var form_settings = everest_forms_params.form_settings['settings'];
-				var ajax_submission = form_settings['ajax_form_submission'] === '1';
-				var wait_form_submission_status = form_settings['form_submission_min_waiting_time'] === '1';
+				var ajax_submission = $('.everest-form').data('ajax_submission');
 
-				if (!wait_form_submission_status) {
+				if ($('#evf_submission_start_time').length<0) {
 					return '';
 				}
 
@@ -979,7 +977,7 @@ jQuery( function ( $ ) {
 					}
 				};
 
-				if (ajax_submission) {
+				if (ajax_submission === 1) {
 					// Create a MutationObserver to handle dynamic content.
 					var observer = new MutationObserver(function(mutations) {
 						mutations.forEach(function(mutation) {
