@@ -103,10 +103,12 @@ class EVF_Form_Handler {
 			$args['author__not_in'] = $user_id;
 		}
 
-		if ( isset( $args['cap'] ) && ( 'everest_forms_view_conversational_forms' !== $args['cap'] && 'everest_forms_pro_view_landing_page' !== $args['cap'] ) ) {
-			 $args['post__in'] = array( 0 );
+		if ( ! current_user_can( 'everest_forms_view_forms' ) && ! current_user_can( 'everest_forms_view_others_forms' ) ) {
+			if ( isset( $args['cap'] ) && ( 'everest_forms_view_conversational_forms' !== $args['cap'] && 'everest_forms_pro_view_landing_page' !== $args['cap'] ) ) {
+				 $args['post__in'] = array( 0 );
+			}
 		}
-
+		
 		// For cache lets unset the cap args.
 		unset( $args['cap'] );
 
