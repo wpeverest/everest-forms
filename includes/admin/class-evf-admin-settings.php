@@ -355,16 +355,19 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 
 						?>
 						<div class="everest-forms-global-settings <?php echo esc_attr( implode( ' ', $visibility_class ) ); ?>">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
-								<div class="everest-forms-global-settings--field forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
-							<img src="<?php echo esc_attr( $option_value ); ?>" alt="<?php echo esc_attr( $alt_text ); ?>" class="evf-image-uploader <?php echo empty( $option_value ) ? 'everest-forms-hidden' : ''; ?>" height="100" width="auto">
-							<button type="button" class="evf-image-uploader evf-button button-secondary" <?php echo empty( $option_value ) ? '' : 'style="display:none"'; ?> ><?php echo esc_html( $upload_text ); ?></button>
-							<input
-								name="<?php echo esc_attr( $value['id'] ); ?>"
-								id="<?php echo esc_attr( $value['id'] ); ?>"
-								value="<?php echo esc_attr( $option_value ); ?>"
-								type="hidden"
-							>
+							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
+							<div class="everest-forms-global-settings--field forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
+								<div class="evf-image-container " <?php echo empty( $option_value ) ? 'style=display:none' : ''; ?> >
+									<i class="evf-icon evf-icon-delete" ></i>
+									<img src="<?php echo esc_attr( $option_value ); ?>" alt="<?php echo esc_attr( $alt_text ); ?>" class="evf-button-form-image-delete <?php echo empty( $option_value ) ? 'everest-forms-hidden' : ''; ?>" height="100" width="auto">
+								</div>
+								<button type="button" class="evf-button-for-image-upload evf-button button-secondary" <?php echo empty( $option_value ) ? '' : 'style="display:none"'; ?> ><?php echo esc_html( $upload_text ); ?></button>
+								<input
+									name="<?php echo esc_attr( $value['id'] ); ?>"
+									id="<?php echo esc_attr( $value['id'] ); ?>"
+									value="<?php echo esc_attr( $option_value ); ?>"
+									type="hidden"
+								>
 							</div>
 						</div>
 								<?php

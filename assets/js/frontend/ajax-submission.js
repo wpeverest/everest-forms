@@ -26,6 +26,19 @@ jQuery( function( $ ) {
 						return false;
 					}
 
+					//For square payment credit card validation.
+					var squareMsgContainer = formTuple.find(".everest-forms-gateway[data-gateway='square']").find('.sq-card-message-error');
+					if ( squareMsgContainer.length > 0 ) {
+						var squareErrorMsg = squareMsgContainer.text();
+						$( document ).ready( function() {
+							$( '#card-errors' ).html( squareErrorMsg ).show();
+							$( '.evf-submit' ).text( 'Submit' );
+							$( '.evf-submit' ).attr( 'disabled', false);
+						});
+						formTuple.trigger( 'focusout' ).trigger( 'change' ).trigger( 'submit' );
+						return false;
+					}
+
 					if ( typeof tinyMCE !== 'undefined' ) {
 						tinyMCE.triggerSave();
 					}
@@ -154,6 +167,11 @@ jQuery( function( $ ) {
 								formTuple.trigger( 'evf_process_payment', xhr.data );
 								return;
 							}
+							if( 'square' === formTuple.find( ".everest-forms-gateway[data-gateway='square']" ).data('gateway') ){
+								formTuple.trigger( 'everest_forms_frontend_payment_before_success_message', xhr.data );
+								return;
+							}
+
 							formTuple.trigger( 'reset' );
 							formTuple.closest( '.everest-forms' ).html( '<div class="everest-forms-notice everest-forms-notice--success" role="alert">' + xhr.data.message + pdf_download_message + '</div>' + quiz_reporting + preview_confirmation ).focus();
 							localStorage.removeItem(formTuple.attr('id'));

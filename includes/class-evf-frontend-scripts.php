@@ -183,7 +183,7 @@ class EVF_Frontend_Scripts {
 				'version' => '1.0.8',
 			),
 			'jquery-intl-tel-input'                  => array(
-				'src'     => self::get_asset_url( '/assets/js/intlTelInput/jquery.intlTelInput' . $suffix . '.js ' ),
+				'src'     => self::get_asset_url( '/assets/js/intlTelInput/jquery.intlTelInput' . $suffix . '.js' ),
 				'deps'    => array( 'jquery' ),
 				'version' => '16.0.7',
 			),
@@ -349,7 +349,7 @@ class EVF_Frontend_Scripts {
 				$params = array(
 					'ajax_url'   => admin_url( 'admin-ajax.php', 'relative' ),
 					'ajax_nonce' => wp_create_nonce( 'process-ajax-nonce' ),
-					'form_id'    => isset( $_GET['form_id'] ) ? wp_unslash( $_GET['form_id'] ) : '', // WPCS: CSRF ok, input var ok, sanitization ok.
+					'form_id'    => isset( $_GET['form_id'] ) ? wp_unslash( $_GET['form_id'] ) : '', //phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.Recommended
 				);
 				break;
 			default:

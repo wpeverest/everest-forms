@@ -791,6 +791,44 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				echo '</div>';
 				echo '</div>';
 				do_action( 'everest_forms_inline_security_settings', $this );
+
+				/**
+				* Minimum time for form submission.
+				*
+				* @since 3.0.1
+				*/
+				echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'Waiting time for form submission', 'everest-forms' ) . '</h4>';
+				everest_forms_panel_field(
+					'toggle',
+					'settings',
+					'form_submission_min_waiting_time',
+					$this->form_data,
+					esc_html__( 'Enable minimum waiting time for form submission', 'everest-forms' ),
+					array(
+						'default' => '0',
+						'tooltip' => esc_html__( 'Prevents the form submission before the specified time', 'everest-forms' ),
+					)
+				);
+
+				echo '<div class="everest-forms-border-container everest-forms-form-submission-minimum-waiting-time">';
+				everest_forms_panel_field(
+					'number',
+					'settings',
+					'form_submission_min_waiting_time_input',
+					$this->form_data,
+					esc_html__( 'Form submission minimum waiting time (In seconds)', 'everest-forms' ),
+					array(
+						'default'   => '5',
+						'tooltip'   => esc_html__( 'Enter the minimum time waiting time for form submission.', 'everest-forms' ),
+						'min_value' => 1,
+					)
+				);
+
+				do_action( 'everest_forms_inline_form_submission_min_waiting_time_settings', $this, 'form_submission_min_waiting_time', 'connection_1' );
+
+				do_action( 'everest_forms_inline_form_submission_min_waiting_time_section_settings', $this, 'form_submission_min_waiting_time_section', 'connection_1' );
+				echo '</div>';
+				echo '</div>';
 				echo '</div>';
 
 				do_action( 'everest_forms_settings_panel_content', $this );
@@ -818,6 +856,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				'user_registration'  => esc_html__( 'User Registration', 'everest-forms' ),
 				'conversation_forms' => esc_html__( 'Conversation Forms', 'everest-forms' ),
 				'sms_notifications'  => esc_html__( 'SMS Notifications', 'everest-forms' ),
+				'telegram'           => esc_html__( 'Telegram', 'everest-forms' ),
 			);
 			$arr        = array_merge( $arr, $pro_addons );
 		}

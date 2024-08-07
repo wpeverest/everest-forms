@@ -9,6 +9,12 @@ jQuery( function( $ ) {
 			$( document.body ).on( 'click dragstart', '.evf-registered-item.evf-upgrade-addon', this.evf_upgrade_addon );
 			$( document.body ).on( 'click dragstart', '.evf-registered-item.enable-stripe-model', this.enable_stripe_model );
 			$( document.body ).on( 'click dragstart', '.evf-registered-item.enable-authorize-net-model', this.enable_authorize_net_model );
+			$( document.body ).on( 'click dragstart', '.evf-registered-item.everest-forms-pro-is_square_install', this.install_square_addon_notice );
+
+			if( 0 === $( document.body ).find('.evf-registered-item.everest-forms-pro-is_square_install').length ){
+				$( document.body ).on( 'click dragstart', '.evf-registered-item.enable-square-model', this.enable_square_model );
+			}
+
 			$( document.body ).on( 'click dragstart', '.everest-forms-field-option-row.upgrade-modal', this.feature_upgrade );
 			$( document.body ).on( 'click dragstart', '.evf-upgradable-feature, .everest-forms-btn-group span.upgrade-modal', this.feature_upgrade );
 			$( document.body ).on( 'click dragstart', '.evf-one-time-draggable-field, .evf-registered-item.evf-one-time-draggable-field', this.evf_one_time_draggable_field );
@@ -199,6 +205,41 @@ jQuery( function( $ ) {
 					}
 				}
 			});
+		},
+		enable_square_model : function ( e ){
+			e.preventDefault();
+			$.alert({
+				title: evf_upgrade.enable_square_title,
+				content: evf_upgrade.enable_square_message,
+				icon: 'dashicons dashicons-info',
+				type: 'blue',
+				buttons : {
+					confirm : {
+						text: evf_data.i18n_close,
+						btnClass: 'btn-confirm',
+						keys: ['enter']
+					}
+				}
+			});
+		},
+		install_square_addon_notice: function ( e ){
+			e.preventDefault();
+			console.log(evf_upgrade.admin_url);
+
+			$.alert({
+				title: 'Activate Square',
+				content: 'Please go to <a href="' + evf_upgrade.admin_url + 'admin.php?page=evf-dashboard#/features" target="__blank">Dashboard</a> to active Square.',
+				icon: 'dashicons dashicons-info',
+				type: 'blue',
+				buttons : {
+					confirm : {
+						text: evf_data.i18n_close,
+						btnClass: 'btn-confirm',
+						keys: ['enter']
+					}
+				}
+			});
+
 		},
 		evf_one_time_draggable_field: function( e ){
 			e.preventDefault();

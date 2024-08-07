@@ -158,11 +158,12 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 		$this->field_id   = $validated_form_field['field_id'];
 		$this->field_data = $this->form_data['form_fields'][ $this->field_id ];
 
-		$error     = empty( $_FILES['file']['error'] ) ? UPLOAD_ERR_OK : intval( $_FILES['file']['error'] );
-		$path      = $_FILES['file']['tmp_name']; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
-		$name      = sanitize_file_name( wp_unslash( $_FILES['file']['name'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
-		$extension = strtolower( pathinfo( $name, PATHINFO_EXTENSION ) );
-		$errors    = $this->ajax_validate( $error, $extension, $path, $name );
+		$error        = empty( $_FILES['file']['error'] ) ? UPLOAD_ERR_OK : intval( $_FILES['file']['error'] );
+		$path         = $_FILES['file']['tmp_name']; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
+		$name         = sanitize_file_name( wp_unslash( $_FILES['file']['name'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
+		$extension    = strtolower( pathinfo( $name, PATHINFO_EXTENSION ) );
+		$errors       = $this->ajax_validate( $error, $extension, $path, $name );
+		$name_of_file = isset( $this->field_data['custom_file_name'] ) ? sanitize_file_name( $this->field_data['custom_file_name'] ) . '_' . uniqid( '', true ) . '.' . $extension : sanitize_file_name( wp_unslash( $_FILES['file']['name'] ) );  // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 
 		if ( count( $errors ) ) {
 			wp_send_json_error( implode( ',', $errors ), 400 );
@@ -182,7 +183,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 		wp_send_json_success(
 			array(
 				'file' => pathinfo( $tmp, PATHINFO_FILENAME ) . '.' . pathinfo( $tmp, PATHINFO_EXTENSION ),
-				'name' => $name,
+				'name' => $name_of_file,
 			)
 		);
 	}
@@ -511,6 +512,39 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			'slug'    => 'upload_message',
 			'content' => $lbl . $fld,
 		);
+		$this->field_element( 'row', $field, $args );
+	}
+
+	/**
+	 * Get the custom user defined file name
+	 *
+	 * @param array $field Field data.
+	 */
+	public function custom_file_name( $field ) {
+		$lbl  = $this->field_element(
+			'label',
+			$field,
+			array(
+				'slug'    => 'custom_file_name',
+				'value'   => esc_html__( 'Custom File Name', 'everest-forms' ),
+				'tooltip' => esc_html__( 'Enter text to be displayed as file name.', 'everest-forms' ),
+			),
+			false
+		);
+		$fld  = $this->field_element(
+			'text',
+			$field,
+			array(
+				'slug'  => 'custom_file_name',
+				'value' => ! empty( $field['custom_file_name'] ) ? $field['custom_file_name'] : '',
+			),
+			false
+		);
+		$args = array(
+			'slug'    => 'custom_file_name',
+			'content' => $lbl . $fld,
+		);
+
 		$this->field_element( 'row', $field, $args );
 	}
 

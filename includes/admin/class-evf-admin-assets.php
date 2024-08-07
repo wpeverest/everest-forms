@@ -225,10 +225,13 @@ class EVF_Admin_Assets {
 				'enable_stripe_message'          => esc_html__( 'Enable Stripe Payment gateway in payments section to use this field.', 'everest-forms' ),
 				'enable_authorize_net_title'     => esc_html__( 'Please enable Authorize.Net', 'everest-forms' ),
 				'enable_authorize_net_message'   => esc_html__( 'Enable Authorize.Net Payment gateway in payments section to use this field.', 'everest-forms' ),
+				'enable_square_title'            => esc_html( 'Please enable Square', 'everest-forms' ),
+				'enable_square_message'          => esc_html__( 'Enable Square Payment gateway in payments section to use this field.', 'everest-forms' ),
 				'evf_install_and_active_nonce'   => wp_create_nonce( 'install_and_active_nonce' ),
 				'upgrade_plan_title'             => esc_html__( 'is a Premium Addon', 'everest-forms' ),
 				'upgrade_plan_message'           => esc_html__( 'This addon requires premium plan. Please upgrade to the Premium plan to unlock all these awesome field.', 'everest-forms' ),
 				'upgrade_plan_button'            => esc_html__( 'Upgrade Plan', 'everest-forms' ),
+				'admin_url'                      => admin_url(),
 				'vedio_links'                    => array(
 					'dropdown' => 'kDYAKElqNtM',
 				),

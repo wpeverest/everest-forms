@@ -51,6 +51,7 @@ class EVF_Forms_Features {
 			'EVF_Field_Payment_Total',
 			'EVF_Field_Payment_Subtotal',
 			'EVF_Field_Payment_Coupon',
+			'EVF_Field_Payment_Square',
 			'EVF_Field_Credit_Card',
 			'EVF_Field_Payment_Authorize_Net',
 			'EVF_Field_Rating',
@@ -60,6 +61,7 @@ class EVF_Forms_Features {
 			'EVF_Field_Color',
 			'EVF_Field_Reset',
 			'EVF_Field_Lookup',
+
 		);
 
 		return array_merge( $fields, $pro_fields );

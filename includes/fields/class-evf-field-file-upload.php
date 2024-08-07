@@ -30,6 +30,7 @@ class EVF_Field_File_Upload extends EVF_Form_Fields_Upload {
 					'description',
 					'upload_message',
 					'limit_message',
+					'custom_file_name',
 					'extensions',
 					'max_size',
 					'max_file_number',

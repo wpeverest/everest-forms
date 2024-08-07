@@ -124,6 +124,7 @@ jQuery(function ($) {
 						page: pagenow,
 						name: $itemRow.data("name"),
 						slug: $itemRow.data("slug"),
+						is_feature : $itemRow.data('is_feature')
 					},
 				});
 			});
@@ -509,6 +510,7 @@ jQuery(function ($) {
 					page: pagenow,
 					name: $(event).data("name"),
 					slug: $(event).data("slug"),
+					is_feature : $( event ).data( 'is_feature' )
 				},
 			});
 

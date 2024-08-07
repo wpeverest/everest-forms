@@ -6516,9 +6516,11 @@ p.search-box {
           margin: 0 auto; }
         .everest-forms_page_evf-builder #everest-forms-builder .evf-tab-content .everest-forms-panel .everest-forms-panel-sidebar .evf-registered-item.evf-upgrade-addon {
           cursor: not-allowed; }
-        .everest-forms_page_evf-builder #everest-forms-builder .evf-tab-content .everest-forms-panel .everest-forms-panel-sidebar .evf-registered-item.recaptcha_empty_key_validate, .everest-forms_page_evf-builder #everest-forms-builder .evf-tab-content .everest-forms-panel .everest-forms-panel-sidebar .evf-registered-item.turnstile_empty_key_validate, .everest-forms_page_evf-builder #everest-forms-builder .evf-tab-content .everest-forms-panel .everest-forms-panel-sidebar .evf-registered-item.hcaptcha_empty_key_validate, .everest-forms_page_evf-builder #everest-forms-builder .evf-tab-content .everest-forms-panel .everest-forms-panel-sidebar .evf-registered-item.enable-stripe-model, .everest-forms_page_evf-builder #everest-forms-builder .evf-tab-content .everest-forms-panel .everest-forms-panel-sidebar .evf-registered-item.enable-authorize-net-model {
+        .everest-forms_page_evf-builder #everest-forms-builder .evf-tab-content .everest-forms-panel .everest-forms-panel-sidebar .evf-registered-item.recaptcha_empty_key_validate, .everest-forms_page_evf-builder #everest-forms-builder .evf-tab-content .everest-forms-panel .everest-forms-panel-sidebar .evf-registered-item.turnstile_empty_key_validate, .everest-forms_page_evf-builder #everest-forms-builder .evf-tab-content .everest-forms-panel .everest-forms-panel-sidebar .evf-registered-item.hcaptcha_empty_key_validate, .everest-forms_page_evf-builder #everest-forms-builder .evf-tab-content .everest-forms-panel .everest-forms-panel-sidebar .evf-registered-item.enable-stripe-model, .everest-forms_page_evf-builder #everest-forms-builder .evf-tab-content .everest-forms-panel .everest-forms-panel-sidebar .evf-registered-item.enable-authorize-net-model,
+        .everest-forms_page_evf-builder #everest-forms-builder .evf-tab-content .everest-forms-panel .everest-forms-panel-sidebar .evf-registered-item.enable-mollie-model .everest-forms_page_evf-builder #everest-forms-builder .evf-tab-content .everest-forms-panel .everest-forms-panel-sidebar .evf-registered-item.enable-square-model {
           opacity: 0.45; }
-          .everest-forms_page_evf-builder #everest-forms-builder .evf-tab-content .everest-forms-panel .everest-forms-panel-sidebar .evf-registered-item.recaptcha_empty_key_validate:hover, .everest-forms_page_evf-builder #everest-forms-builder .evf-tab-content .everest-forms-panel .everest-forms-panel-sidebar .evf-registered-item.turnstile_empty_key_validate:hover, .everest-forms_page_evf-builder #everest-forms-builder .evf-tab-content .everest-forms-panel .everest-forms-panel-sidebar .evf-registered-item.hcaptcha_empty_key_validate:hover, .everest-forms_page_evf-builder #everest-forms-builder .evf-tab-content .everest-forms-panel .everest-forms-panel-sidebar .evf-registered-item.enable-stripe-model:hover, .everest-forms_page_evf-builder #everest-forms-builder .evf-tab-content .everest-forms-panel .everest-forms-panel-sidebar .evf-registered-item.enable-authorize-net-model:hover {
+          .everest-forms_page_evf-builder #everest-forms-builder .evf-tab-content .everest-forms-panel .everest-forms-panel-sidebar .evf-registered-item.recaptcha_empty_key_validate:hover, .everest-forms_page_evf-builder #everest-forms-builder .evf-tab-content .everest-forms-panel .everest-forms-panel-sidebar .evf-registered-item.turnstile_empty_key_validate:hover, .everest-forms_page_evf-builder #everest-forms-builder .evf-tab-content .everest-forms-panel .everest-forms-panel-sidebar .evf-registered-item.hcaptcha_empty_key_validate:hover, .everest-forms_page_evf-builder #everest-forms-builder .evf-tab-content .everest-forms-panel .everest-forms-panel-sidebar .evf-registered-item.enable-stripe-model:hover, .everest-forms_page_evf-builder #everest-forms-builder .evf-tab-content .everest-forms-panel .everest-forms-panel-sidebar .evf-registered-item.enable-authorize-net-model:hover,
+          .everest-forms_page_evf-builder #everest-forms-builder .evf-tab-content .everest-forms-panel .everest-forms-panel-sidebar .evf-registered-item.enable-mollie-model .everest-forms_page_evf-builder #everest-forms-builder .evf-tab-content .everest-forms-panel .everest-forms-panel-sidebar .evf-registered-item.enable-square-model:hover {
             opacity: 1;
             color: #8C64C6;
             border-color: #8C64C6;
@@ -11816,6 +11818,54 @@ img.ui-datepicker-trigger {
               background-position: center;
               width: 14px;
               height: 14px; }
+          .everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-card .everest-forms-global-settings--field.forminp-image .everest-forms-custom-image-delete, .everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-card .everest-forms-global-settings--field.forminp-image .evf-image-container {
+            object-fit: cover;
+            display: inline-flex;
+            position: relative;
+            border-radius: 8px;
+            height: 100px;
+            width: auto;
+            overflow: hidden;
+            object-fit: cover;
+            object-position: center;
+            margin: auto;
+            display: inline-flex;
+            position: relative;
+            justify-content: center;
+            cursor: pointer;
+            user-select: none; }
+            .everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-card .everest-forms-global-settings--field.forminp-image .everest-forms-custom-image-delete i, .everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-card .everest-forms-global-settings--field.forminp-image .evf-image-container i {
+              display: none; }
+            .everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-card .everest-forms-global-settings--field.forminp-image .everest-forms-custom-image-delete:hover::before, .everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-card .everest-forms-global-settings--field.forminp-image .evf-image-container:hover::before {
+              content: "";
+              background: #000;
+              position: absolute;
+              width: 100%;
+              height: 100%;
+              opacity: 0.6; }
+            .everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-card .everest-forms-global-settings--field.forminp-image .everest-forms-custom-image-delete:hover i, .everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-card .everest-forms-global-settings--field.forminp-image .evf-image-container:hover i {
+              position: absolute;
+              display: contents; }
+              .everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-card .everest-forms-global-settings--field.forminp-image .everest-forms-custom-image-delete:hover i:hover::before, .everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-card .everest-forms-global-settings--field.forminp-image .everest-forms-custom-image-delete:hover i:hover::after, .everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-card .everest-forms-global-settings--field.forminp-image .evf-image-container:hover i:hover::before, .everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-card .everest-forms-global-settings--field.forminp-image .evf-image-container:hover i:hover::after {
+                transform: translate(50%, -50%) scale(1.1); }
+              .everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-card .everest-forms-global-settings--field.forminp-image .everest-forms-custom-image-delete:hover i::before, .everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-card .everest-forms-global-settings--field.forminp-image .evf-image-container:hover i::before {
+                content: "";
+                background: #d52626;
+                width: 42px;
+                height: 42px;
+                position: absolute;
+                border-radius: 50%;
+                top: 50%;
+                right: 50%;
+                transform: translate(50%, -50%); }
+              .everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-card .everest-forms-global-settings--field.forminp-image .everest-forms-custom-image-delete:hover i::after, .everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-card .everest-forms-global-settings--field.forminp-image .evf-image-container:hover i::after {
+                content: "\e907";
+                position: absolute;
+                font-size: 22px;
+                color: #fff;
+                top: 50%;
+                right: 50%;
+                transform: translate(50%, -50%); }
     .everest-forms .everest-forms-settings .everest-forms-settings-container > p {
       margin: 0;
       font-size: 14px;
