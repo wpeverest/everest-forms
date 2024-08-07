@@ -630,7 +630,7 @@
       "image": "extensions-json/sections/images/telegram.webp",
       "excerpt": "Telegram integration for Everest Forms! Easily integrate this popular messaging platform with Everest Forms to offer your users a smooth and efficient interaction experience.",
       "link": "https://docs.everestforms.net/docs/telegram/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-      "released_date": "xx/xx/2024",
+      "released_date": "07/08/2024",
       "plan": [
         "personal",
         "agency",
@@ -653,7 +653,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=sendinblue",
-      "demo_video_url": "NRRDY1ag6Sk",
+      "demo_video_url": "d2Ujl82OJuA",
       "popular_rank": 26
     },
     {
@@ -670,7 +670,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=drip",
-      "demo_video_url": "ODRxkfX6y9Q",
+      "demo_video_url": "4BBKgRelpgE",
       "popular_rank": 35
     },
     {
@@ -704,7 +704,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=getresponse",
-      "demo_video_url": "Jhq1dOFXV-I"
+      "demo_video_url": "bXrjALmtADw"
     },
     {
       "title": "Salesflare",
@@ -713,7 +713,7 @@
       "image": "extensions-json/sections/images/Salesflare.webp",
       "excerpt": "Boost your B2B business efficiency with Salesflare's simple and powerful CRM solution, now fully integrated with Everest Forms.",
       "link": "https://docs.everestforms.net/docs/salesflare/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
-      "released_date": "20/05/2024",
+      "released_date": "07/08/2024",
       "plan": [
         "personal",
         "agency",
@@ -753,7 +753,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=pipedrive",
-      "demo_video_url": "wJPX0EJ2OiI",
+      "demo_video_url": "84cGKj07g4g",
       "popular_rank": 32
     },
     {
@@ -762,8 +762,8 @@
       "name": "Everest Forms - Square",
       "image": "extensions-json/sections/images/square-payment.png",
       "excerpt": "Connect your Everest Forms data to your Trello accounts. Use Trello API to link Everest Forms with Trello, syncing your website's form submissions with Trello tasks.",
-      "link": "https://docs.everestforms.net/docs/trello/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
-      "released_date": "20/05/2024",
+      "link": "https://docs.everestforms.net/docs/square/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
+      "released_date": "07/08/2024",
       "plan": [
         "personal",
         "agency",
@@ -778,8 +778,8 @@
       "name": "Everest Forms- Airtable",
       "image": "extensions-json/sections/images/Airtable.png",
       "excerpt": "OnePageCRM for Everest Forms helps you to easily send Everest Forms entries directly to your OnePageCRM customer relation account.",
-      "link": "https://docs.everestforms.net/docs/onepagecrm/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
-      "released_date": "xx/xx/2024",
+      "link": "https://docs.everestforms.net/docs/airtable/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
+      "released_date": "07/08/2024",
       "plan": [
         "personal",
         "agency",
@@ -802,7 +802,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=mailerlite",
-      "demo_video_url": "CpqVgycDx_8",
+      "demo_video_url": "JqdNsPFKg5o",
       "popular_rank": 27
     },
     {
@@ -829,7 +829,7 @@
       "image": "extensions-json/sections/images/mollie.webp",
       "excerpt": "Strengthen your payment options with Mollie Pay! Seamlessly integrate this powerful payment gateway to offer your users a smooth and secure transaction experience.",
       "link": "https://docs.everestforms.net/docs/mollie/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-      "released_date": "xx/xx/2024",
+      "released_date": "07/08/2024",
       "plan": [
         "personal",
         "agency",
@@ -845,7 +845,7 @@
       "image": "extensions-json/sections/images/LandingPage.webp",
       "excerpt": "Present your landing page as a form without going through the hassle of shortcodes and repetitive designing. A simple click, and that’s all you must do!",
       "link": "https://docs.everestforms.net/docs/landingpages/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
-      "released_date": "20/05/2024",
+      "released_date": "07/08/2024",
       "plan": [
         "personal",
         "agency",

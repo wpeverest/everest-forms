@@ -308,10 +308,11 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 3.0.2        - xx-xx-2024
+= 3.0.2        - 07-08-2024
 * Feature 	   - Enable minimum time for form submission.
 * Feature      - Delete option in Header logo in PDF Submission.
 * Enhancement  - Custom file name field settings.
+* Fix		   - Escaping issue in Yes/No Field.
 * Dev          - Mollie Payment.
 * Dev          - Square Payment.
 * Dev          - Transaction Table.
