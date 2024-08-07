@@ -761,7 +761,7 @@
       "slug": "everest-forms-square",
       "name": "Everest Forms - Square",
       "image": "extensions-json/sections/images/square-payment.png",
-      "excerpt": "Connect your Everest Forms data to your Trello accounts. Use Trello API to link Everest Forms with Trello, syncing your website's form submissions with Trello tasks.",
+      "excerpt": "Integrate your WordPress forms with our Square addon to unlock the ability to collect payments online securely and without any hassle.",
       "link": "https://docs.everestforms.net/docs/square/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
       "released_date": "07/08/2024",
       "plan": [
@@ -777,7 +777,7 @@
       "slug": "everest-forms-airtable",
       "name": "Everest Forms- Airtable",
       "image": "extensions-json/sections/images/Airtable.png",
-      "excerpt": "OnePageCRM for Everest Forms helps you to easily send Everest Forms entries directly to your OnePageCRM customer relation account.",
+      "excerpt": "Automate data storage from your WordPress forms directly into your Airtable database, ensuring seamless lead capture and more efficient follow-up.",
       "link": "https://docs.everestforms.net/docs/airtable/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
       "released_date": "07/08/2024",
       "plan": [

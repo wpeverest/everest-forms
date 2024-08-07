@@ -1003,6 +1003,9 @@
 						 &.form_migrator::before {
 							 content: "\e916";
 						 }
+						 &.payment_log::before {
+							content: "\e918";
+						}
 						 &.permission::before {
 							 content: "\e030";
 						 }
