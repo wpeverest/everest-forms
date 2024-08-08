@@ -57,6 +57,12 @@ if ( 'yes' === get_option( 'everest_forms_enable_log', 'no' ) ) {
 				}
 				\EVFP_Admin_Tools::payment_log();
 				break;
+			case 'api_logs':
+				if ( ! class_exists( 'EVFP_Admin_Tools' ) ) {
+					return;
+				}
+				\EVFP_Admin_Tools::api_logs();
+				break;
 			default:
 				if ( array_key_exists( $current_tab, $tabs ) && has_action( 'everest_forms_admin_status_content_' . $current_tab ) ) {
 					do_action( 'everest_forms_admin_status_content_' . $current_tab );
