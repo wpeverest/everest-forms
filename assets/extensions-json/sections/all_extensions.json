@@ -255,23 +255,6 @@
       "popular_rank": 15
     },
     {
-      "title": "Calculations",
-      "slug": "everest-forms-calculations",
-      "name": "Everest Forms Calculations",
-      "image": "extensions-json/sections/images/calculations.png",
-      "excerpt": "Calculations add-on allows you to perform calculations on the number/range fields within the form.",
-      "link": "https://docs.everestforms.net/docs/calculations/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-      "released_date": "29/03/2022",
-      "plan": [
-        "personal",
-        "agency",
-        "themegrill agency"
-      ],
-      "setting_url": "",
-      "demo_video_url": "WCsHC7NQ2QQ",
-      "popular_rank": 16
-    },
-    {
       "title": "Post Submissions",
       "slug": "everest-forms-post-submissions",
       "name": "Everest Forms Post Submissions",
@@ -853,6 +836,23 @@
       ],
       "setting_url": "",
        "demo_video_url": ""
+    },
+    {
+      "title": "Calculations",
+      "slug": "everest-forms-calculations",
+      "name": "Everest Forms Calculations",
+      "image": "extensions-json/sections/images/calculations.png",
+      "excerpt": "Calculations add-on allows you to perform calculations on the number/range fields within the form.",
+      "link": "https://docs.everestforms.net/docs/calculations/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "29/03/2022",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "",
+      "demo_video_url": "WCsHC7NQ2QQ",
+      "popular_rank": 16
     }
   ]
 }
