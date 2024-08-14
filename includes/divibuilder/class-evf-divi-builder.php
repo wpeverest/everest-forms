@@ -14,14 +14,14 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since xx.xx.xx
  */
-class EVF_Divi_Module extends \ET_Builder_Module {
+class EVF_Divi_Builder extends \ET_Builder_Module {
 	/**
 	 * Module slug.
 	 *
 	 * @since xx.xx.xx
 	 * @var string
 	 */
-	public $slug = 'everest_forms_module';
+	public $slug = 'everest_forms_divi_builder';
 
 	/**
 	 * Whether module support visual builder. e.g `on` or `off`.
@@ -46,6 +46,8 @@ class EVF_Divi_Module extends \ET_Builder_Module {
 				),
 			),
 		);
+
+		add_action( 'wp_enqueue_scripts', array( $this, 'load_divi_builder_scripts' ) );
 	}
 
 	/**
@@ -57,15 +59,16 @@ class EVF_Divi_Module extends \ET_Builder_Module {
 	 */
 	public function get_fields() {
 
-		$forms  = evf_get_all_forms();
+		$forms = evf_get_all_forms();
+
 		$fields = array(
 			'form_id'    => array(
-				'label'           => esc_html__( 'Form', 'everest-forms' ),
+				'label'           => esc_html__( 'Select Form', 'everest-forms' ),
 				'type'            => 'select',
 				'option_category' => 'basic_option',
 				'toggle_slug'     => 'main_content',
 				'options'         => $forms,
-				'default'         => '0',
+				'default'         => '5',
 			),
 			'show_title' => array(
 				'label'           => esc_html__( 'Show Title', 'everest-forms' ),
@@ -113,15 +116,40 @@ class EVF_Divi_Module extends \ET_Builder_Module {
 	/**
 	 * Render the module on frontend.
 	 *
-	 * @since 0
+	 * @since xx.xx.xx
 	 *
 	 * @param  array  $unprocessed_props Array of unprocessed Properties.
 	 * @param  string $content Contents being processed from the prop.
 	 * @param  string $render_slug The slug of rendering module for rendering output.
+	 *
+	 * @return string HTMl content for rendering.
 	 */
 	public function render( $unprocessed_props, $content, $render_slug ) {
+		$form_id = isset( $this->props['form_id'] ) ? $this->props['form_id'] : '5';
 
+		$divi_shortcode = sprintf( "[everest_form id='%s']", $form_id );
+		$output         = sprintf( "<div class = '%s'>", 'everest-forms-divi-builder' );
+		$output        .= do_shortcode( $divi_shortcode );
+		$output        .= sprintf( '</div>' );
+
+		return $output;
+	}
+
+	/**
+	 * Function to enqueue the divi builder JS.
+	 *
+	 * @since xx.xx.xx
+	 */
+	public function load_divi_builder_scripts() {
+		wp_enqueue_script( 'everest-forms-divi-builder' );
+		$enqueue_script = array( 'wp-element', 'react', 'react-dom' );
+		wp_register_script(
+			'everest-forms-divi-builder',
+			evf()->plugin_url() . '/dist/divibuilder.min.js',
+			$enqueue_script,
+			evf()->version,
+			true
+		);
 	}
 }
-
- new EVF_Divi_Module();
+new EVF_Divi_Builder();

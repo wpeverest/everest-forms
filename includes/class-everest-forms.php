@@ -164,7 +164,7 @@ final class EverestForms {
 		$this->init_hooks();
 		add_action( 'plugins_loaded', array( $this, 'objects' ), 1 );
 
-		add_action( 'et_builder_ready', array( $this, 'everest_form_register_builder_ready' ) );
+		add_action( 'et_builder_ready', array( $this, 'everest_form_register_divi_builder' ) );
 
 		do_action( 'everest_forms_loaded' );
 	}
@@ -494,11 +494,11 @@ final class EverestForms {
 	 *
 	 * @since xx.xx.xx
 	 */
-	public function everest_form_register_builder_ready() {
+	public function everest_form_register_divi_builder() {
 		if ( ! class_exists( 'ET_Builder_Module' ) ) {
 			return;
 		}
 
-		include_once EVF_ABSPATH . 'includes/divi/class-evf-divi-module.php';
+		include_once EVF_ABSPATH . 'includes/divibuilder/class-evf-divi-builder.php';
 	}
 }

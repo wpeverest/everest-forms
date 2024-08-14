@@ -17,6 +17,10 @@ const webpackConfig = {
 			process.cwd(),
 			'./src/blocks/index.js',
 		),
+		"divibuilder": resolve(
+			process.cwd(),
+			'./src/divibuilder/index.jsx',
+		),
 	},
 	output: {
 		path: resolve(process.cwd(), 'dist'),
@@ -27,7 +31,7 @@ const webpackConfig = {
 	module: {
 		rules: [
 			{
-				test: /.js$/,
+				test: /\.(js|jsx|ts|tsx)$/,
 				loader: "babel-loader",
 				exclude: /node_modules/
 			},
@@ -64,6 +68,9 @@ const webpackConfig = {
 		"@wordpress/block-editor": ["wp", "blockEditor"],
 		"@wordpress/server-side-render": ["wp", "serverSideRender"],
 		react: ["React"],
+	},
+	resolve: {
+		extensions: ['.js', '.jsx', '.ts', '.tsx'],
 	},
 };
 
