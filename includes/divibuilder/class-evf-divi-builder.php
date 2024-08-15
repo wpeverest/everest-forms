@@ -59,7 +59,9 @@ class EVF_Divi_Builder extends \ET_Builder_Module {
 	 */
 	public function get_fields() {
 
-		$forms = evf_get_all_forms();
+		$forms        = evf_get_all_forms();
+		$default_form = array( esc_html__( 'Select Form', 'everest-forms' ) );
+		$forms        = $default_form + $forms;
 
 		$fields = array(
 			'form_id'    => array(
@@ -125,7 +127,14 @@ class EVF_Divi_Builder extends \ET_Builder_Module {
 	 * @return string HTMl content for rendering.
 	 */
 	public function render( $unprocessed_props, $content, $render_slug ) {
-		$form_id = isset( $this->props['form_id'] ) ? $this->props['form_id'] : '5';
+		$form_id = isset( $this->props['form_id'] ) ? $this->props['form_id'] : '0';
+
+		if ( '0' === $form_id ) {
+			$empty_output  = sprintf( "<div class='everest-forms-divi-empty-form' style='text-align:center'>" );
+			$empty_output .= sprintf( "<img src='%s'/>", plugin_dir_url( EVF_PLUGIN_FILE ) . 'assets/images/icons/Everest-forms-Logo.png' );
+			$empty_output .= sprintf( '</div>' );
+			return $empty_output;
+		}
 
 		$divi_shortcode = sprintf( "[everest_form id='%s']", $form_id );
 		$output         = sprintf( "<div class = '%s'>", 'everest-forms-divi-builder' );
