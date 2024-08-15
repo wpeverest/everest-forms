@@ -321,6 +321,9 @@ class EVF_Admin_Assets {
 
 			wp_enqueue_script( 'wp-codemirror' );
 			wp_enqueue_style( 'wp-codemirror' );
+			// Enqueue additional scripts for hints if not included by default
+			wp_enqueue_script( 'codemirror-hint', 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/show-hint.min.js', array( 'wp-codemirror' ), '5.65.2', true );
+			wp_enqueue_style( 'codemirror-hint-css', 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/show-hint.min.css', array( 'wp-codemirror' ), '5.65.2' );
 
 			// De-register scripts.
 			wp_dequeue_script( 'colorpick' );
