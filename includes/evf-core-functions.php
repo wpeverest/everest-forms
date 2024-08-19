@@ -5593,3 +5593,21 @@ function evf_get_next_key_array( $arr, $key ) {
 
 	return isset( $next_key ) ? $next_key : '' ;
 }
+
+
+add_action( 'admin_head', function() {
+	$js = <<<JS
+const isSidebarEnabled = localStorage.getItem( 'isPremiumSidebarEnabled' );
+const interval = setInterval( () => {
+	if ( document.body ) {
+		clearInterval(interval);
+		if ('true' === isSidebarEnabled) {
+			document.body.classList.add( 'evf-premium-sidebar-show' );
+		} else {
+			document.body.classList.add( 'evf-premium-sidebar-hidden' );
+		}
+	}
+}, 1 );
+JS;
+	wp_print_inline_script_tag( $js );
+} );

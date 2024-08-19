@@ -46,19 +46,6 @@
 					$('.everest-forms-toggle-text').text('Hide Sidebar');
 				}
 			}
-
-			// var isPremiumSidebarEnabled = localStorage.getItem('isPremiumSidebarEnabled') === 'true';
-			// $('#everest-forms-enable-premium-sidebar').prop('checked', isPremiumSidebarEnabled);
-
-
-			// if (isPremiumSidebarEnabled) {
-			// 	$('#everest-forms-settings-premium-sidebar').addClass('everest-forms-hidden');
-			// 	$('.everest-forms-toggle-text').text('Show Sidebar');
-			// } else {
-			// 	$('#everest-forms-settings-premium-sidebar').removeClass('everest-forms-hidden');
-			// 	$('.everest-forms-toggle-text').text('Hide Sidebar');
-			// }
-			// handlePremiumSidebar();
 			$(document).on('change', '#everest-forms-enable-premium-sidebar', handlePremiumSidebar);
 		});
 
