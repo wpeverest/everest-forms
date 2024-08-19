@@ -39,26 +39,26 @@
 				localStorage.setItem('isPremiumSidebarEnabled', isCheckboxChecked);
 				document.cookie = 'isPremiumSidebarEnabled=' + isCheckboxChecked + '; path=/;';
 				if (isCheckboxChecked) {
-					$('#everest-forms-settings-premium-sidebar').addClass('everest-forms-hidden');
+					$('body').removeClass('evf-premium-sidebar-hidden').addClass('evf-premium-sidebar-show');
 					$('.everest-forms-toggle-text').text('Show Sidebar');
 				} else {
-					$('#everest-forms-settings-premium-sidebar').removeClass('everest-forms-hidden');
+					$('body').removeClass('evf-premium-sidebar-show').addClass('evf-premium-sidebar-hidden');
 					$('.everest-forms-toggle-text').text('Hide Sidebar');
 				}
 			}
 
-			var isPremiumSidebarEnabled = localStorage.getItem('isPremiumSidebarEnabled') === 'true';
-			$('#everest-forms-enable-premium-sidebar').prop('checked', isPremiumSidebarEnabled);
+			// var isPremiumSidebarEnabled = localStorage.getItem('isPremiumSidebarEnabled') === 'true';
+			// $('#everest-forms-enable-premium-sidebar').prop('checked', isPremiumSidebarEnabled);
 
 
-			if (isPremiumSidebarEnabled) {
-				$('#everest-forms-settings-premium-sidebar').addClass('everest-forms-hidden');
-				$('.everest-forms-toggle-text').text('Show Sidebar');
-			} else {
-				$('#everest-forms-settings-premium-sidebar').removeClass('everest-forms-hidden');
-				$('.everest-forms-toggle-text').text('Hide Sidebar');
-			}
-			handlePremiumSidebar();
+			// if (isPremiumSidebarEnabled) {
+			// 	$('#everest-forms-settings-premium-sidebar').addClass('everest-forms-hidden');
+			// 	$('.everest-forms-toggle-text').text('Show Sidebar');
+			// } else {
+			// 	$('#everest-forms-settings-premium-sidebar').removeClass('everest-forms-hidden');
+			// 	$('.everest-forms-toggle-text').text('Hide Sidebar');
+			// }
+			// handlePremiumSidebar();
 			$(document).on('change', '#everest-forms-enable-premium-sidebar', handlePremiumSidebar);
 		});
 

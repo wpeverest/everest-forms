@@ -40,3 +40,20 @@ function evf() {
 
 // Global for backwards compatibility.
 $GLOBALS['everest-forms'] = evf();
+
+add_action( 'admin_head', function() {
+	$js = <<<JS
+const isSidebarEnabled = localStorage.getItem( 'isPremiumSidebarEnabled' );
+const interval = setInterval( () => {
+	if ( document.body ) {		
+		clearInterval(interval);
+		if ('true' === isSidebarEnabled) {
+			document.body.classList.add( 'evf-premium-sidebar-show' );
+		} else {
+			document.body.classList.add( 'evf-premium-sidebar-hidden' );
+		}
+	}
+}, 1 );
+JS;
+	wp_print_inline_script_tag( $js );
+} );

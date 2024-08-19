@@ -9270,6 +9270,12 @@
 		   align-items: center;
 		   margin-bottom: 10px;
 
+		   @media screen and (max-width: 1260px) {
+			flex-direction: column;
+			gap: 8px;
+			align-items: flex-start;
+		   }
+
 		   label {
 			 flex: 1;
 			 font-weight: bold;
@@ -9277,6 +9283,7 @@
 
 		   &--field {
 			 flex: 2;
+			 width: 100%;
 		   }
 
 		 }
@@ -9357,6 +9364,10 @@
 				   width: 300px;
 				   max-width: 100%;
 				   transition: all .3s;
+
+				   @media screen and (max-width: 1300px) {
+					width: 220px;
+				   }
 
 				   &--top {
 					   text-align: center;
@@ -9730,8 +9741,13 @@
 								   .everest-forms-recaptcha-type {
 									   margin: 0;
 									   display: flex;
+									   flex-wrap: wrap;
 									   align-items: center;
 									   gap: 24px;
+
+									   @media screen and (max-width: 1260px) {
+										gap: 16px;
+									   }
 
 									   li {
 										   margin-bottom: 0;
@@ -10050,10 +10066,10 @@
 
 			   &-premium {
 					&-sidebar {
-						width: 300px;
-						max-width: 100%;
-						padding: 18px 10px 26px 10px;
-						transition: all .3s;
+						// width: 300px;
+						// max-width: 100%;
+						// padding: 18px 10px 26px 10px;
+						// transition: all .3s;
 
 						h2 {
 							color: #222222;
@@ -10139,8 +10155,8 @@
 						}
 
 						&.everest-forms-hidden {
-							margin-right: -325px;
-							display: unset;
+							// margin-right: -325px;
+							// display: unset;
 						}
 					}
 			   }
@@ -10221,6 +10237,26 @@
 
 		&.close {
 			left: 435px !important;
+		}
+	}
+}
+
+
+body {
+	&.evf-premium-sidebar-hidden {
+		.everest-forms-settings-premium-sidebar {
+			margin-right: -885px;
+			display: unset;
+		}
+	}
+
+	&.evf-premium-sidebar-show {
+		.everest-forms-settings-premium-sidebar {
+			display: block;
+			width: 300px;
+			max-width: 100%;
+			padding: 18px 10px 26px 10px;
+			transition: all .3s;
 		}
 	}
 }
