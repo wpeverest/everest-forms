@@ -227,14 +227,14 @@
 	/* Form Wrapper start */
 
 	// Form Wrapper: width
-	wp.customize( settings + '[wrapper][width]', function( value ) {
+	wp.customize( settings + '[form_container][width]', function( value ) {
 		value.bind( function( newval ) {
 			container.css( 'width', newval + '%' );
 		} );
 	} );
 
 	// Form Wrapper: font_family
-	wp.customize( settings + '[wrapper][font_family]', function( value ) {
+	wp.customize( settings + '[font][font_family]', function( value ) {
 		value.bind( function( newval ) {
 			if ( '' === newval ) {
 				container.css( 'font-family', 'inherit' );
@@ -248,38 +248,38 @@
 	} );
 
 	// Form Wrapper: background_color
-	wp.customize( settings + '[wrapper][background_color]', function( value ) {
+	wp.customize( settings + '[form_container][background_color]', function( value ) {
 		value.bind( function( newval ) {
 			container.css( 'background-color', newval );
 		} );
 	} );
 
 	// Form Wrapper: background_image
-	wp.customize( settings + '[wrapper][opacity]', function( value ) {
+	wp.customize( settings + '[form_container][opacity]', function( value ) {
 		value.bind( function( newval ) {
 			container.css( 'opacity', newval );
 		} );
 	} );
 
 	// Form Wrapper: Opacity
-	wp.customize( settings + '[wrapper][background_image]', function( value ) {
+	wp.customize( settings + '[form_container][background_image]', function( value ) {
 		value.bind( function( newval ) {
 			container.css( 'background-image', 'url(' + newval + ')' );
 		} );
 	} );
 
 	// Form Wrapper: background_size
-	wp.customize( settings + '[wrapper][background_size]', function( value ) {
+	wp.customize( settings + '[form_container][background_size]', function( value ) {
 		value.bind( function( newval ) {
 			container.css( 'background-size', newval );
 		} );
 	} );
 
 	// Form Wrapper: background_position_x
-	wp.customize( settings + '[wrapper][background_position_x]', function( value ) {
+	wp.customize( settings + '[form_container][background_position_x]', function( value ) {
 		value.bind( function( newval ) {
 			var position = newval;
-			wp.customize( settings + '[wrapper][background_position_y]', function( value ) {
+			wp.customize( settings + '[form_container][background_position_y]', function( value ) {
 				position += ' ' + value.get();
 			} );
 			container.css( 'background-position', position );
@@ -287,10 +287,10 @@
 	} );
 
 	// Form Wrapper: background_position_y
-	wp.customize( settings + '[wrapper][background_position_y]', function( value ) {
+	wp.customize( settings + '[form_container][background_position_y]', function( value ) {
 		value.bind( function( newval ) {
 			var position = '';
-			wp.customize( settings + '[wrapper][background_position_x]', function( value ) {
+			wp.customize( settings + '[form_container][background_position_x]', function( value ) {
 				position += value.get();
 			} );
 			position += ' ' + newval;
@@ -299,17 +299,17 @@
 	} );
 
 	// Form Wrapper: background_repeat
-	wp.customize( settings + '[wrapper][background_repeat]', function( value ) {
+	wp.customize( settings + '[form_container][background_repeat]', function( value ) {
 		value.bind( function( newval ) {
 			container.css( 'background-repeat', newval );
 		} );
 	} );
 
 	// Form Wrapper: background_attachment
-	wp.customize( settings + '[wrapper][background_attachment]', function( value ) {
+	wp.customize( settings + '[form_container][background_attachment]', function( value ) {
 		value.bind( function( newval ) {
 			container.css( 'background-attachment', newval );
-		} );	wp.customize( settings + '[wrapper][background_color]', function( value ) {
+		} );	wp.customize( settings + '[form_container][background_color]', function( value ) {
 			value.bind( function( newval ) {
 				container.css( 'background-color', newval );
 			} );
@@ -318,18 +318,18 @@
 	} );
 
 	// Form Wrapper: border_type
-	wp.customize( settings + '[wrapper][border_type]', function( value ) {
+	wp.customize( settings + '[form_container][border_type]', function( value ) {
 		value.bind( function( newval ) {
 			container.css( 'border-style', newval );
 
-			wp.customize( settings + '[wrapper][border_color]', function( value ) {
+			wp.customize( settings + '[form_container][border_color]', function( value ) {
 				container.css( 'border-color', value.get() );
 			} );
 		} );
 	} );
 
 	// Form Wrapper: border_width
-	wp.customize( settings + '[wrapper][border_width]', function( value ) {
+	wp.customize( settings + '[form_container][border_width]', function( value ) {
 		value.bind( function( newval ) {
 			var default_unit = 'px';
 
@@ -346,14 +346,14 @@
 	} );
 
 	// Form Wrapper: border_color
-	wp.customize( settings + '[wrapper][border_color]', function( value ) {
+	wp.customize( settings + '[form_container][border_color]', function( value ) {
 		value.bind( function( newval ) {
 			container.css( 'border-color', newval );
 		} );
 	} );
 
 	// Form Wrapper: border_radius
-	wp.customize( settings + '[wrapper][border_radius]', function( value ) {
+	wp.customize( settings + '[form_container][border_radius]', function( value ) {
 		value.bind( function( newval ) {
 			if ( typeof newval != 'object' ) {
 				newval = JSON.parse( newval );
@@ -381,7 +381,7 @@
 	} );
 
 	// Form Wrapper: margin
-	wp.customize( settings + '[wrapper][margin]', function( value ) {
+	wp.customize( settings + '[form_container][margin]', function( value ) {
 		preview_buttons.on( 'click', function() {
 			var control_value = value.get();
 			var active_responsive_device = $(this).data('device');
@@ -409,7 +409,7 @@
 	} );
 
 	// Form Wrapper: padding
-	wp.customize( settings + '[wrapper][padding]', function( value ) {
+	wp.customize( settings + '[form_container][padding]', function( value ) {
 		preview_buttons.on( 'click', function() {
 			var control_value = value.get();
 			var active_responsive_device = $(this).data('device');

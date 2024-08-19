@@ -448,7 +448,7 @@
 	$( function() {
 
 		// Control visibility for default controls.
-		$.each( ['wrapper', 'field_styles', 'checkbox_radio_styles', 'button', 'success_message', 'error_message', 'validation_message'], function( i, type ) {
+		$.each( ['font','form_container','field_styles', 'checkbox_radio_styles', 'button', 'success_message', 'error_message', 'validation_message','typography'], function( i, type ) {
 			$.each( {
 				'border_type': {
 					controls: [ 'border_width', 'border_color' ],
@@ -459,13 +459,37 @@
 					callback: function( to ) { return 'default' !== to; },
 				},
 				'background_image': {
-					controls: [ 'background_preset', 'background_position', 'background_size', 'background_repeat', 'background_attachment' ],
+					controls: [ 'background_preset', 'background_position', 'background_size', 'background_repeat', 'background_attachment','opacity' ],
 					callback: function( to ) { return !! to; }
 				},
 				'show_submission_message': {
-					controls: [ 'font_size', 'font_style', 'text_alignment', 'font_color', 'background_color', 'border_type', 'border_width', 'border_color', 'border_radius'  ],
+					controls: [ 'font_size', 'font_style', 'text_alignment'],
 					callback: function( to ) { return !! to; }
-				}
+				},
+				'field_labels' : {
+					controls: [ 'field_labels_font_size','field_labels_font_color','field_labels_font_style','field_labels_text_alignment','field_labels_line_height','field_labels_margin','field_labels_padding'],
+					callback: function( to ) { return !! to; }
+				},
+				'field_sublabels' : {
+					controls: [ 'field_sublabels_font_size','field_sublabels_font_color','field_sublabels_font_style','field_sublabels_text_alignment','field_sublabels_line_height','field_sublabels_margin','field_sublabels_padding'],
+					callback: function( to ) { return !! to; }
+				},
+				'field_descriprtion' : {
+					controls: [ 'field_description_font_size','field_description_font_color','field_description_font_style','field_description_text_alignment','field_description_line_height','field_description_margin','field_description_padding'],
+					callback: function( to ) { return !! to; }
+				},
+				'file_upload' : {
+					controls: [ 'file_upload_font_size','file_upload_font_color','file_upload_font_style','file_upload_background_color','file_upload_icon_background_color','file_upload_icon_color','file_upload_border_type','file_upload_border_width','file_upload_border_radius','file_upload_text_alignment','file_upload_line_height','file_upload_margin','file_upload_padding'],
+					callback: function( to ) { return !! to; }
+				},
+				'checkbox_radio' : {
+					controls: [ 'checkbox_radio_font_size','checkbox_radio_font_color','checkbox_radio_font_style','checkbox_radio_text_alignment','checkbox_radio_line_height','checkbox_radio_margin','checkbox_radio_padding','checkbox_radio_alignment','checkbox_radio_size','checkbox_radio_color','checkbox_radio_checked_color'],
+					callback: function( to ) { return !! to; }
+				},
+				'button' : {
+					controls: [ 'button_font_size','button_font_color','button_font_style','button_text_alignment','button_line_height','button_margin','button_padding','button_border_radius','button_border_hover_color','button_border_color','button_border_width','button_border_type','button_alignment','button_hover_background_color','button_hover_font_color','button_background_color'],
+					callback: function( to ) { return !! to; }
+				},
 			}, function( settingId, o ) {
 				api( 'everest_forms_styles[' + data.form_id + '][' + type + '][' + settingId + ']', function( setting ) {
 					$.each( o.controls, function( i, controlId ) {
@@ -482,7 +506,7 @@
 			} );
 		} );
 
-		api.control( 'everest_forms_styles[' + data.form_id + '][wrapper][background_preset]', function( control ) {
+		api.control( 'everest_forms_styles[' + data.form_id + '][form_container][background_preset]', function( control ) {
 			var visibility, defaultValues, values, toggleVisibility, updateSettings, preset;
 
 			visibility = { // position, size, repeat, attachment
@@ -511,7 +535,7 @@
 			// @todo These should actually toggle the active state, but without the preview overriding the state in data.activeControls.
 			toggleVisibility = function( preset ) {
 				_.each( [ 'background_position', 'background_size', 'background_repeat', 'background_attachment' ], function( i, controlId ) {
-					var control = api.control( 'everest_forms_styles[' + data.form_id + '][wrapper][' + controlId + ']' );
+					var control = api.control( 'everest_forms_styles[' + data.form_id + '][form_container][' + controlId + ']' );
 					if ( control ) {
 						control.container.toggle( visibility[ preset ][ i ] );
 					}
@@ -520,7 +544,7 @@
 
 			updateSettings = function( preset ) {
 				_.each( [ 'background_position_x', 'background_position_y', 'background_size', 'background_repeat', 'background_attachment' ], function( settingId, i ) {
-					var setting = api( 'everest_forms_styles[' + data.form_id + '][wrapper][' + settingId + ']' );
+					var setting = api( 'everest_forms_styles[' + data.form_id + '][form_container][' + settingId + ']' );
 					if ( setting ) {
 						setting.set( values[ preset ][ i ] );
 					}
@@ -538,8 +562,8 @@
 			} );
 		} );
 
-		api.control( 'everest_forms_styles[' + data.form_id + '][wrapper][background_repeat]', function( control ) {
-			control.elements[0].unsync( api( 'everest_forms_styles[' + data.form_id + '][wrapper][background_repeat]' ) );
+		api.control( 'everest_forms_styles[' + data.form_id + '][form_container][background_repeat]', function( control ) {
+			control.elements[0].unsync( api( 'everest_forms_styles[' + data.form_id + '][form_container][background_repeat]' ) );
 
 			control.element = new api.Element( control.container.find( 'input' ) );
 			control.element.set( 'no-repeat' !== control.setting() );
@@ -553,8 +577,8 @@
 			} );
 		} );
 
-		api.control( 'everest_forms_styles[' + data.form_id + '][wrapper][background_attachment]', function( control ) {
-			control.elements[0].unsync( api( 'everest_forms_styles[' + data.form_id + '][wrapper][background_attachment]' ) );
+		api.control( 'everest_forms_styles[' + data.form_id + '][form_container][background_attachment]', function( control ) {
+			control.elements[0].unsync( api( 'everest_forms_styles[' + data.form_id + '][form_container][background_attachment]' ) );
 
 			control.element = new api.Element( control.container.find( 'input' ) );
 			control.element.set( 'fixed' !== control.setting() );

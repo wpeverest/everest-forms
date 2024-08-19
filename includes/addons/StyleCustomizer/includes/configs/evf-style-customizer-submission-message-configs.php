@@ -89,7 +89,7 @@ function evf_style_customizer_submission_message_controls( $controls ) {
 					'default' => false,
 				),
 				'control' => array(
-					'label'   => esc_html__( 'Show message for customize', 'everest-forms' ),
+					'label'   => esc_html__( 'Typography', 'everest-forms' ),
 					'section' => 'everest_forms_submission_' . $section_name,
 					'type'    => 'EVF_Customize_Toggle_Control',
 				),

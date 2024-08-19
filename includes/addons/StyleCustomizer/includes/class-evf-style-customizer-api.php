@@ -430,31 +430,31 @@ class EVF_Style_Customizer_API {
 	 * @return string|WP_Error Background value or validation error.
 	 */
 	public function _sanitize_background_setting( $value, $setting ) {
-		if ( 'everest_forms_styles[' . $this->form_id . '][wrapper][background_repeat]' === $setting->id ) {
+		if ( 'everest_forms_styles[' . $this->form_id . '][form_container][background_repeat]' === $setting->id ) {
 			if ( ! in_array( $value, array( 'repeat-x', 'repeat-y', 'repeat', 'no-repeat' ), true ) ) {
 				return new WP_Error( 'invalid_value', esc_html__( 'Invalid value for background repeat.', 'everest-forms' ) );
 			}
-		} elseif ( 'everest_forms_styles[' . $this->form_id . '][wrapper][background_attachment]' === $setting->id ) {
+		} elseif ( 'everest_forms_styles[' . $this->form_id . '][form_container][background_attachment]' === $setting->id ) {
 			if ( ! in_array( $value, array( 'fixed', 'scroll' ), true ) ) {
 				return new WP_Error( 'invalid_value', esc_html__( 'Invalid value for background attachment.', 'everest-forms' ) );
 			}
-		} elseif ( 'everest_forms_styles[' . $this->form_id . '][wrapper][background_position_x]' === $setting->id ) {
+		} elseif ( 'everest_forms_styles[' . $this->form_id . '][form_container][background_position_x]' === $setting->id ) {
 			if ( ! in_array( $value, array( 'left', 'center', 'right' ), true ) ) {
 				return new WP_Error( 'invalid_value', esc_html__( 'Invalid value for background position X.', 'everest-forms' ) );
 			}
-		} elseif ( 'everest_forms_styles[' . $this->form_id . '][wrapper][background_position_y]' === $setting->id ) {
+		} elseif ( 'everest_forms_styles[' . $this->form_id . '][form_container][background_position_y]' === $setting->id ) {
 			if ( ! in_array( $value, array( 'top', 'center', 'bottom' ), true ) ) {
 				return new WP_Error( 'invalid_value', esc_html__( 'Invalid value for background position Y.', 'everest-forms' ) );
 			}
-		} elseif ( 'everest_forms_styles[' . $this->form_id . '][wrapper][background_size]' === $setting->id ) {
+		} elseif ( 'everest_forms_styles[' . $this->form_id . '][form_container][background_size]' === $setting->id ) {
 			if ( ! in_array( $value, array( 'auto', 'contain', 'cover' ), true ) ) {
 				return new WP_Error( 'invalid_value', esc_html__( 'Invalid value for background size.', 'everest-forms' ) );
 			}
-		} elseif ( 'everest_forms_styles[' . $this->form_id . '][wrapper][background_preset]' === $setting->id ) {
+		} elseif ( 'everest_forms_styles[' . $this->form_id . '][form_container][background_preset]' === $setting->id ) {
 			if ( ! in_array( $value, array( 'default', 'fill', 'fit', 'repeat', 'custom' ), true ) ) {
 				return new WP_Error( 'invalid_value', esc_html__( 'Invalid value for background size.', 'everest-forms' ) );
 			}
-		} elseif ( 'everest_forms_styles[' . $this->form_id . '][wrapper][background_image]' === $setting->id ) {
+		} elseif ( 'everest_forms_styles[' . $this->form_id . '][form_container][background_image]' === $setting->id ) {
 			$value = empty( $value ) ? '' : esc_url_raw( $value );
 		} else {
 			return new WP_Error( 'unrecognized_setting', esc_html__( 'Unrecognized background setting.', 'everest-forms' ) );

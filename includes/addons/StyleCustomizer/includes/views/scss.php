@@ -10,6 +10,7 @@ defined( 'ABSPATH' ) || exit;
 
 // Get values.
 $styles = get_option( 'everest_forms_styles' );
+
 if ( isset( $styles[ $form_id ] ) && is_array( $styles[ $form_id ] ) ) {
 	$styles[ $form_id ] = array_map(
 		function( $styles ) {
@@ -58,9 +59,9 @@ $radio_checkbox_seperator_type = defined( 'EVF_VERSION' ) && version_compare( EV
 ?>
 
 // Form Wrapper variables.
-$wrapper_width: <?php echo absint( $values['wrapper']['width'] ); ?>;
-$wrapper_border_type: <?php echo evf_clean( $values['wrapper']['border_type'] ); ?>;
-$wrapper_border_color: <?php echo evf_clean( $values['wrapper']['border_color'] ); ?>;
+$wrapper_width: <?php echo absint( $values['form_container']['width'] ); ?>;
+$wrapper_border_type: <?php echo evf_clean( $values['form_container']['border_type'] ); ?>;
+$wrapper_border_color: <?php echo evf_clean( $values['form_container']['border_color'] ); ?>;
 
 // Field label variables.
 $field_label_font_color: <?php echo evf_clean( $values['field_label']['font_color'] ); ?>;
@@ -175,43 +176,43 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 
 		&.evf-container {
 			width: $wrapper_width + '%';
-			<?php if ( '' !== $values['wrapper']['font_family'] ) : ?>
-				font-family: <?php echo evf_clean( $values['wrapper']['font_family'] ); ?>;
+			<?php if ( '' !== $values['form_container']['font_family'] ) : ?>
+				font-family: <?php echo evf_clean( $values['form_container']['font_family'] ); ?>;
 			<?php endif; ?>
-			<?php if ( '#ffffff' !== $values['wrapper']['background_color'] ) : ?>
-				background-color: <?php echo evf_clean( $values['wrapper']['background_color'] ); ?>;
+			<?php if ( '#ffffff' !== $values['form_container']['background_color'] ) : ?>
+				background-color: <?php echo evf_clean( $values['form_container']['background_color'] ); ?>;
 			<?php endif; ?>
-			<?php if ( ! empty( $values['wrapper']['background_image'] ) ) : ?>
-				<?php printf( "background-image: url('%s');", esc_url( $values['wrapper']['background_image'] ) ); ?>
-				<?php if ( '' !== $values['wrapper']['background_size'] ) : ?>
-					background-size: <?php echo evf_clean( $values['wrapper']['background_size'] ); ?>;
+			<?php if ( ! empty( $values['form_container']['background_image'] ) ) : ?>
+				<?php printf( "background-image: url('%s');", esc_url( $values['form_container']['background_image'] ) ); ?>
+				<?php if ( '' !== $values['form_container']['background_size'] ) : ?>
+					background-size: <?php echo evf_clean( $values['form_container']['background_size'] ); ?>;
 				<?php endif; ?>
-				<?php if ( '' !== $values['wrapper']['opacity'] ) : ?>
-					opacity: <?php echo evf_clean( $values['wrapper']['opacity'] ); ?>;
+				<?php if ( '' !== $values['form_container']['opacity'] ) : ?>
+					opacity: <?php echo evf_clean( $values['form_container']['opacity'] ); ?>;
 				<?php endif; ?>
-				<?php if ( isset( $values['wrapper']['background_position_x'], $values['wrapper']['background_position_y'] ) ) : ?>
-					<?php printf( 'background-position: %s %s;', evf_clean( $values['wrapper']['background_position_x'] ), evf_clean( $values['wrapper']['background_position_y'] ) ); ?>
+				<?php if ( isset( $values['form_container']['background_position_x'], $values['form_container']['background_position_y'] ) ) : ?>
+					<?php printf( 'background-position: %s %s;', evf_clean( $values['form_container']['background_position_x'] ), evf_clean( $values['form_container']['background_position_y'] ) ); ?>
 				<?php endif; ?>
 				<?php foreach ( array( 'background_repeat', 'background_attachment' ) as $background_prop ) : ?>
-					<?php if ( '' !== $values['wrapper'][ $background_prop ] ) : ?>
-						<?php printf( '%s: %s;', str_replace( '_', '-', $background_prop ), evf_clean( $values['wrapper'][ $background_prop ] ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					<?php if ( '' !== $values['form_container'][ $background_prop ] ) : ?>
+						<?php printf( '%s: %s;', str_replace( '_', '-', $background_prop ), evf_clean( $values['form_container'][ $background_prop ] ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					<?php endif; ?>
 				<?php endforeach; ?>
 			<?php endif; ?>
-			<?php if ( isset( $values['wrapper']['border_type'] ) ) : ?>
+			<?php if ( isset( $values['form_container']['border_type'] ) ) : ?>
 				border-style: $wrapper_border_type;
-				<?php if ( 'none' !== $values['wrapper']['border_type'] ) : ?>
+				<?php if ( 'none' !== $values['form_container']['border_type'] ) : ?>
 					border-color: $wrapper_border_color;
-					<?php printf( '@include border-width(%s);', evf_sanitize_dimension_unit( $values['wrapper']['border_width'], 'px' ) ); ?>
+					<?php printf( '@include border-width(%s);', evf_sanitize_dimension_unit( $values['form_container']['border_width'], 'px' ) ); ?>
 				<?php endif; ?>
 			<?php endif; ?>
 			<?php foreach ( $values['wrapper']['border_radius'] as $prop => $value ) : ?>
 				<?php if ( 'unit' !== $prop && ! empty( $value ) ) : ?>
-					<?php printf( '@include border-%s-radius(%s);', $prop, evf_clean( $value . $values['wrapper']['border_radius']['unit'] ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					<?php printf( '@include border-%s-radius(%s);', $prop, evf_clean( $value . $values['form_container']['border_radius']['unit'] ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				<?php endif; ?>
 			<?php endforeach; ?>
 			<?php foreach ( array( 'margin', 'padding' ) as $separator_type ) : ?>
-				<?php foreach ( $values['wrapper'][ $separator_type ] as $device => $value ) : ?>
+				<?php foreach ( $values['form_container'][ $separator_type ] as $device => $value ) : ?>
 					<?php if ( in_array( $device, array( 'desktop', 'tablet', 'mobille' ), true ) ) : ?>
 						<?php printf( '@include responsive-media(%s, %s, %s);', $separator_type, $device, evf_sanitize_dimension_unit( $value, 'px' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					<?php endif; ?>

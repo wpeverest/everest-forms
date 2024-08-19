@@ -732,3 +732,24 @@
         }
     }
 }
+
+/* Custom styles for accordion effect */
+.accordion-toggle {
+    cursor: pointer;
+    display: block;
+    background: #f1f1f1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+
+.accordion-content {
+    display: none;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+    background: #fff;
+}
+
+.accordion-content.active {
+    display: block;
+}

@@ -58,8 +58,9 @@ if ( ! class_exists( 'EverestForms_Style_Customizer' ) ) {
 		 * Configs.
 		 */
 		private function configs() {
-			require_once __DIR__ . '/configs/evf-style-customizer-color-palette.php';
 			require_once __DIR__ . '/configs/evf-style-customizer-form-wrapper-configs.php';
+			require_once __DIR__ . '/configs/evf-style-customizer-typography-configs.php';
+			require_once __DIR__ . '/configs/evf-style-customizer-color-palette.php';
 			require_once __DIR__ . '/configs/evf-style-customizer-field-label-configs.php';
 			require_once __DIR__ . '/configs/evf-style-customizer-field-sublabel-configs.php';
 			require_once __DIR__ . '/configs/evf-style-customizer-field-description-configs.php';
