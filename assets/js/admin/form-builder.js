@@ -3886,10 +3886,19 @@ jQuery( function ( $ ) {
 				"range-slider",
 				"payment-checkbox",
 				"payment-multiple",
+				"select",
+				"payment-total",
+				"radio",
+				'first-name',
+				'text',
+				'last-name',
+				'email',
+				// 'date-time'
 			];
 			$(document).find('.everest-forms-field').each(function() {
+				$fieldId = $(this).attr('data-field-id').split("-");
 				if( calculations.includes($(this).attr('data-field-type')) && $(el).parents('.everest-forms-field-option-row-calculation_field').attr('data-field-id') !== $(this).attr('data-field-id')) {
-					$(el).parent().find('.evf-smart-tag-lists .calculations').append('<li class = "smart-tag-field" data-type="field" data-field_id="'+$(this).attr('data-field-id')+'">'+$(this).find('.label-title .text').text()+'</li>');
+					$(el).parent().find('.evf-smart-tag-lists .calculations').append('<li class = "smart-tag-field" data-type="field" data-field_id="'+ $fieldId[1] +'">'+$(this).find('.label-title .text').text()+'</li>');
 				}
 			})
 		}
