@@ -55,7 +55,7 @@ $font_styles_default = array(
 );
 
 // Radio/checkbox separator type.
-$radio_checkbox_seperator_type = defined( 'EVF_VERSION' ) && version_compare( EVF_VERSION, '1.6.0', '<' ) ? array( 'margin', 'padding' ) : array( 'margin' );
+$radio_checkbox_seperator_type = defined( 'EVF_VERSION' ) && version_compare( EVF_VERSION, '1.6.0', '<' ) ? array( 'field_styles_margin', 'field_styles_padding' ) : array( 'field_styles_margin' );
 ?>
 
 // Form Wrapper variables.
@@ -64,63 +64,63 @@ $wrapper_border_type: <?php echo evf_clean( $values['form_container']['border_ty
 $wrapper_border_color: <?php echo evf_clean( $values['form_container']['border_color'] ); ?>;
 
 // Field label variables.
-$field_label_font_color: <?php echo evf_clean( $values['field_label']['font_color'] ); ?>;
-$field_label_font_size: <?php echo evf_clean( $values['field_label']['font_size'] ); ?>;
-$field_label_line_height: <?php echo evf_clean( $values['field_label']['line_height'] ); ?>;
-$field_label_text_alignment: <?php echo evf_clean( $values['field_label']['text_alignment'] ); ?>;
+$field_label_font_color: <?php echo evf_clean( $values['typography']['field_labels_font_color'] ); ?>;
+$field_label_font_size: <?php echo evf_clean( $values['typography']['field_labels_font_size'] ); ?>;
+$field_label_line_height: <?php echo evf_clean( $values['typography']['field_labels_line_height'] ); ?>;
+$field_label_text_alignment: <?php echo evf_clean( $values['typography']['field_labels_text_alignment'] ); ?>;
 
 // Field sublabel variables.
-$field_sublabel_font_color: <?php echo evf_clean( $values['field_sublabel']['font_color'] ); ?>;
-$field_sublabel_font_size: <?php echo evf_clean( $values['field_sublabel']['font_size'] ); ?>;
-$field_sublabel_line_height: <?php echo evf_clean( $values['field_sublabel']['line_height'] ); ?>;
-$field_sublabel_text_alignment: <?php echo evf_clean( $values['field_sublabel']['text_alignment'] ); ?>;
+$field_sublabel_font_color: <?php echo evf_clean( $values['typography']['field_sublabels_font_color'] ); ?>;
+$field_sublabel_font_size: <?php echo evf_clean( $values['typography']['field_sublabels_font_size'] ); ?>;
+$field_sublabel_line_height: <?php echo evf_clean( $values['typography']['field_sublabels_line_height'] ); ?>;
+$field_sublabel_text_alignment: <?php echo evf_clean( $values['typography']['field_sublabels_text_alignment'] ); ?>;
 
 // Field description variables.
-$field_description_font_color: <?php echo evf_clean( $values['field_description']['font_color'] ); ?>;
-$field_description_font_size: <?php echo evf_clean( $values['field_description']['font_size'] ); ?>;
-$field_description_line_height: <?php echo evf_clean( $values['field_description']['line_height'] ); ?>;
-$field_description_text_alignment: <?php echo evf_clean( $values['field_description']['text_alignment'] ); ?>;
+$field_description_font_color: <?php echo evf_clean( $values['typography']['field_description_font_color'] ); ?>;
+$field_description_font_size: <?php echo evf_clean( $values['typography']['field_description_font_size'] ); ?>;
+$field_description_line_height: <?php echo evf_clean( $values['typography']['field_description_line_height'] ); ?>;
+$field_description_text_alignment: <?php echo evf_clean( $values['typography']['field_description_text_alignment'] ); ?>;
 
 // Field styles variables.
-$field_styles_font_color: <?php echo evf_clean( $values['field_styles']['font_color'] ); ?>;
-$field_styles_placeholder_font_color: <?php echo evf_clean( $values['field_styles']['placeholder_font_color'] ); ?>;
-$field_styles_font_size: <?php echo evf_clean( $values['field_styles']['font_size'] ); ?>;
-$field_styles_alignment: <?php echo evf_clean( $values['field_styles']['alignment'] ); ?>;
+$field_styles_font_color: <?php echo evf_clean( $values['typography']['field_styles_font_color'] ); ?>;
+$field_styles_placeholder_font_color: <?php echo evf_clean( $values['typography']['field_styles_placeholder_font_color'] ); ?>;
+$field_styles_font_size: <?php echo evf_clean( $values['typography']['field_styles_font_size'] ); ?>;
+$field_styles_alignment: <?php echo evf_clean( $values['typography']['field_styles_alignment'] ); ?>;
 $field_styles_border_type: <?php echo evf_clean( $values['field_styles']['border_type'] ); ?>;
-$field_styles_border_color: <?php echo evf_clean( $values['field_styles']['border_color'] ); ?>;
-$field_styles_border_focus_color: <?php echo evf_clean( $values['field_styles']['border_focus_color'] ); ?>;
+$field_styles_border_color: <?php echo evf_clean( $values['typography']['field_styles_border_color'] ); ?>;
+$field_styles_border_focus_color: <?php echo evf_clean( $values['typography']['field_styles_border_focus_color'] ); ?>;
 
 // File Uploads styles variables.
-$file_upload_styles_font_color: <?php echo evf_clean( $values['file_upload_styles']['font_color'] ); ?>;
-$file_upload_styles_font_size: <?php echo evf_clean( $values['file_upload_styles']['font_size'] ); ?>;
+$file_upload_styles_font_color: <?php echo evf_clean( $values['typography']['file_upload_font_color'] ); ?>;
+$file_upload_styles_font_size: <?php echo evf_clean( $values['typography']['file_upload_font_size'] ); ?>;
 $file_upload_styles_border_type: <?php echo evf_clean( $values['file_upload_styles']['border_type'] ); ?>;
-$file_upload_styles_border_color: <?php echo evf_clean( $values['file_upload_styles']['border_color'] ); ?>;
-$file_upload_styles_icon_color: <?php echo evf_clean( $values['file_upload_styles']['icon_color'] ); ?>;
+$file_upload_styles_border_color: <?php echo evf_clean( $values['typography']['file_upload_border_color'] ); ?>;
+$file_upload_styles_icon_color: <?php echo evf_clean( $values['typography']['file_upload_icon_color'] ); ?>;
 
 // Field Checkbox and Radio variables.
-$radio_checkbox_styles_alignment: <?php echo evf_clean( $values['checkbox_radio_styles']['alignment'] ); ?>;
-$radio_checkbox_styles__font_size: <?php echo evf_clean( $values['checkbox_radio_styles']['font_size'] ); ?>;
-$radio_checkbox_styles__font_color: <?php echo evf_clean( $values['checkbox_radio_styles']['font_color'] ); ?>;
-$radio_checkbox_styles__size: <?php echo evf_clean( $values['checkbox_radio_styles']['size'] ); ?>;
-$radio_checkbox_styles_color: <?php echo evf_clean( $values['checkbox_radio_styles']['color'] ); ?>;
-$radio_checkbox_styles_checked_color: <?php echo evf_clean( $values['checkbox_radio_styles']['checked_color'] ); ?>;
+$radio_checkbox_styles_alignment: <?php echo evf_clean( $values['typography']['checkbox_radio_alignment'] ); ?>;
+$radio_checkbox_styles__font_size: <?php echo evf_clean( $values['typography']['checkbox_radio_font_size'] ); ?>;
+$radio_checkbox_styles__font_color: <?php echo evf_clean( $values['typography']['checkbox_radio_font_color'] ); ?>;
+$radio_checkbox_styles__size: <?php echo evf_clean( $values['typography']['checkbox_radio_font_size'] ); ?>;
+$radio_checkbox_styles_color: <?php echo evf_clean( $values['typography']['checkbox_radio_color'] ); ?>;
+$radio_checkbox_styles_checked_color: <?php echo evf_clean( $values['typography']['checkbox_radio_checked_color'] ); ?>;
 
 // Section Title styles variables.
-$section_title_font_size: <?php echo evf_clean( $values['section_title']['font_size'] ); ?>;
-$section_title_font_color: <?php echo evf_clean( $values['section_title']['font_color'] ); ?>;
-$section_title_alignment: <?php echo evf_clean( $values['section_title']['text_alignment'] ); ?>;
-$section_title_line_height: <?php echo evf_clean( $values['section_title']['line_height'] ); ?>;
+$section_title_font_size: <?php echo evf_clean( $values['typography']['section_title_font_size'] ); ?>;
+$section_title_font_color: <?php echo evf_clean( $values['typography']['section_title_font_color'] ); ?>;
+$section_title_alignment: <?php echo evf_clean( $values['typography']['section_title_text_alignment'] ); ?>;
+$section_title_line_height: <?php echo evf_clean( $values['typography']['section_title_line_height'] ); ?>;
 
 // Button styles variables.
-$button_font_color: <?php echo evf_clean( $values['button']['font_color'] ); ?>;
-$button_hover_font_color: <?php echo evf_clean( $values['button']['hover_font_color'] ); ?>;
-$button_font_size: <?php echo evf_clean( $values['button']['font_size'] ); ?>;
-$button_line_height: <?php echo evf_clean( $values['button']['line_height'] ); ?>;
+$button_font_color: <?php echo evf_clean( $values['typography']['button_font_color'] ); ?>;
+$button_hover_font_color: <?php echo evf_clean( $values['typography']['button_hover_font_color'] ); ?>;
+$button_font_size: <?php echo evf_clean( $values['typography']['button_font_size'] ); ?>;
+$button_line_height: <?php echo evf_clean( $values['typography']['button_line_height'] ); ?>;
 $button_border_type: <?php echo evf_clean( $values['button']['border_type'] ); ?>;
-$button_border_color: <?php echo evf_clean( $values['button']['border_color'] ); ?>;
-$button_border_hover_color: <?php echo evf_clean( $values['button']['border_hover_color'] ); ?>;
-$button_background_color: <?php echo evf_clean( $values['button']['background_color'] ); ?>;
-$button_hover_background_color: <?php echo evf_clean( $values['button']['hover_background_color'] ); ?>;
+$button_border_color: <?php echo evf_clean( $values['typography']['button_border_hover_color'] ); ?>;
+$button_border_hover_color: <?php echo evf_clean( $values['typography']['button_border_hover_color'] ); ?>;
+$button_background_color: <?php echo evf_clean( $values['typography']['button_background_color'] ); ?>;
+$button_hover_background_color: <?php echo evf_clean( $values['typography']['button_hover_background_color'] ); ?>;
 
 // Success Message styles variables.
 $success_message_font_size: <?php echo evf_clean( $values['success_message']['font_size'] ); ?>;
@@ -176,8 +176,12 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 
 		&.evf-container {
 			width: $wrapper_width + '%';
-			<?php if ( '' !== $values['form_container']['font_family'] ) : ?>
-				font-family: <?php echo evf_clean( $values['form_container']['font_family'] ); ?>;
+			<?php if ( '' !== $values['font']['font_family'] ) : ?>
+				font-family:
+				<?php
+					echo evf_clean( $values['font']['font_family'] );
+				?>
+					;
 			<?php endif; ?>
 			<?php if ( '#ffffff' !== $values['form_container']['background_color'] ) : ?>
 				background-color: <?php echo evf_clean( $values['form_container']['background_color'] ); ?>;
@@ -206,7 +210,7 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 					<?php printf( '@include border-width(%s);', evf_sanitize_dimension_unit( $values['form_container']['border_width'], 'px' ) ); ?>
 				<?php endif; ?>
 			<?php endif; ?>
-			<?php foreach ( $values['wrapper']['border_radius'] as $prop => $value ) : ?>
+			<?php foreach ( $values['form_container']['border_radius'] as $prop => $value ) : ?>
 				<?php if ( 'unit' !== $prop && ! empty( $value ) ) : ?>
 					<?php printf( '@include border-%s-radius(%s);', $prop, evf_clean( $value . $values['form_container']['border_radius']['unit'] ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				<?php endif; ?>
@@ -225,8 +229,8 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 					font-size: $field_label_font_size + 'px';
 					line-height: $field_label_line_height;
 					text-align: $field_label_text_alignment;
-					<?php foreach ( array( 'margin', 'padding' ) as $separator_type ) : ?>
-						<?php foreach ( $values['field_label'][ $separator_type ] as $device => $value ) : ?>
+					<?php foreach ( array( 'field_labels_margin', 'field_labels_padding' ) as $separator_type ) : ?>
+						<?php foreach ( $values['typography'][ $separator_type ] as $device => $value ) : ?>
 							<?php if ( in_array( $device, array( 'desktop', 'tablet', 'mobille' ), true ) ) : ?>
 								<?php printf( '@include responsive-media(%s, %s, %s);', $separator_type, $device, evf_sanitize_dimension_unit( $value, 'px' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 							<?php endif; ?>
@@ -235,7 +239,7 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 
 					.evf-label {
 						<?php foreach ( $font_styles as $prop => $value ) : ?>
-							<?php if ( 'yes' === evf_bool_to_string( $values['field_label']['font_style'][ $value ] ) ) : ?>
+							<?php if ( 'yes' === evf_bool_to_string( $values['typography']['field_labels_font_style'][ $value ] ) ) : ?>
 								<?php printf( '%s: %s;', $prop, evf_clean( $value ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 							<?php else : ?>
 								<?php printf( '%s: %s;', $prop, evf_clean( $font_styles_default[ $prop ] ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
@@ -250,12 +254,12 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 					line-height: $field_sublabel_line_height;
 					text-align: $field_sublabel_text_alignment;
 					<?php foreach ( $font_styles as $prop => $value ) : ?>
-						<?php if ( 'yes' === evf_bool_to_string( $values['field_sublabel']['font_style'][ $value ] ) ) : ?>
+						<?php if ( 'yes' === evf_bool_to_string( $values['typography']['field_sublabels_font_style'][ $value ] ) ) : ?>
 							<?php printf( '%s: %s;', $prop, evf_clean( $value ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						<?php endif; ?>
 					<?php endforeach; ?>
-					<?php foreach ( array( 'margin', 'padding' ) as $separator_type ) : ?>
-						<?php foreach ( $values['field_sublabel'][ $separator_type ] as $device => $value ) : ?>
+					<?php foreach ( array( 'field_sublabels_margin', 'field_sublabels_padding' ) as $separator_type ) : ?>
+						<?php foreach ( $values['typography'][ $separator_type ] as $device => $value ) : ?>
 							<?php if ( in_array( $device, array( 'desktop', 'tablet', 'mobille' ), true ) ) : ?>
 								<?php printf( '@include responsive-media(%s, %s, %s);', $separator_type, $device, evf_sanitize_dimension_unit( $value, 'px' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 							<?php endif; ?>
@@ -283,11 +287,11 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 				color: $field_styles_font_color;
 				text-align: $field_styles_alignment;
 				font-size: $field_styles_font_size + 'px';
-				<?php if ( '' !== $values['field_styles']['background_color'] ) : ?>
-					background-color: <?php echo evf_clean( $values['field_styles']['background_color'] ); ?>;
+				<?php if ( '' !== $values['typography']['field_styles_background_color'] ) : ?>
+					background-color: <?php echo evf_clean( $values['typography']['field_styles_background_color'] ); ?>;
 				<?php endif; ?>
 				<?php foreach ( $font_styles as $prop => $value ) : ?>
-					<?php if ( 'yes' === evf_bool_to_string( $values['field_styles']['font_style'][ $value ] ) ) : ?>
+					<?php if ( 'yes' === evf_bool_to_string( $values['typography']['field_styles_font_style'][ $value ] ) ) : ?>
 						<?php printf( '%s: %s;', $prop, evf_clean( $value ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					<?php endif; ?>
 				<?php endforeach; ?>
@@ -303,8 +307,8 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 						<?php printf( '@include border-%s-radius(%s);', $prop, evf_clean( $value . $values['field_styles']['border_radius']['unit'] ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					<?php endif; ?>
 				<?php endforeach; ?>
-				<?php foreach ( array( 'margin', 'padding' ) as $separator_type ) : ?>
-					<?php foreach ( $values['field_styles'][ $separator_type ] as $device => $value ) : ?>
+				<?php foreach ( array( 'field_styles_margin', 'field_styles_padding' ) as $separator_type ) : ?>
+					<?php foreach ( $values['typography'][ $separator_type ] as $device => $value ) : ?>
 						<?php if ( in_array( $device, array( 'desktop', 'tablet', 'mobille' ), true ) ) : ?>
 							<?php printf( '@include responsive-media(%s, %s, %s);', $separator_type, $device, evf_sanitize_dimension_unit( $value, 'px' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						<?php endif; ?>
@@ -314,7 +318,7 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 				&::placeholder {
 					color: $field_styles_placeholder_font_color;
 					<?php foreach ( $font_styles as $prop => $value ) : ?>
-						<?php if ( 'yes' === evf_bool_to_string( $values['field_styles']['font_style'][ $value ] ) ) : ?>
+						<?php if ( 'yes' === evf_bool_to_string( $values['typography']['field_styles_font_style'][ $value ] ) ) : ?>
 							<?php printf( '%s: %s;', $prop, evf_clean( $value ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						<?php endif; ?>
 					<?php endforeach; ?>
@@ -328,8 +332,8 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 			}
 
 			.everest-forms-uploader {
-				<?php if ( '#ffffff' !== $values['file_upload_styles']['background_color'] ) : ?>
-					background-color: <?php echo evf_clean( $values['file_upload_styles']['background_color'] ); ?>;
+				<?php if ( '#ffffff' !== $values['typography']['file_upload_background_color'] ) : ?>
+					background-color: <?php echo evf_clean( $values['typography']['file_upload_background_color'] ); ?>;
 				<?php endif; ?>
 				<?php if ( isset( $values['file_upload_styles']['border_type'] ) ) : ?>
 					border-style: $file_upload_styles_border_type;
@@ -343,8 +347,8 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 						<?php printf( '@include border-%s-radius(%s);', $prop, evf_clean( $value . $values['file_upload_styles']['border_radius']['unit'] ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					<?php endif; ?>
 				<?php endforeach; ?>
-				<?php foreach ( array( 'margin', 'padding' ) as $separator_type ) : ?>
-					<?php foreach ( $values['file_upload_styles'][ $separator_type ] as $device => $value ) : ?>
+				<?php foreach ( array( 'file_upload_margin', 'file_upload_padding' ) as $separator_type ) : ?>
+					<?php foreach ( $values['typography'][ $separator_type ] as $device => $value ) : ?>
 						<?php if ( in_array( $device, array( 'desktop', 'tablet', 'mobille' ), true ) ) : ?>
 							<?php printf( '@include responsive-media(%s, %s, %s);', $separator_type, $device, evf_sanitize_dimension_unit( $value, 'px' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						<?php endif; ?>
@@ -366,8 +370,8 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 
 				.dz-message {
 					> svg {
-						<?php if ( '#ffffff' !== $values['file_upload_styles']['icon_background_color'] ) : ?>
-							background-color: <?php echo evf_clean( $values['file_upload_styles']['icon_background_color'] ); ?>;
+						<?php if ( '#ffffff' !== $values['typography']['file_upload_icon_background_color'] ) : ?>
+							background-color: <?php echo evf_clean( $values['typography']['file_upload_icon_background_color'] ); ?>;
 						<?php endif; ?>
 						fill: $file_upload_styles_icon_color;
 					}
@@ -380,12 +384,12 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 				text-align: $field_styles_alignment;
 				font-size: $field_styles_font_size + 'px';
 				<?php foreach ( $font_styles as $prop => $value ) : ?>
-					<?php if ( 'yes' === evf_bool_to_string( $values['field_styles']['font_style'][ $value ] ) ) : ?>
+					<?php if ( 'yes' === evf_bool_to_string( $values['typography']['field_styles_font_style'][ $value ] ) ) : ?>
 						<?php printf( '%s: %s;', $prop, evf_clean( $value ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					<?php endif; ?>
 				<?php endforeach; ?>
-				<?php foreach ( array( 'margin' ) as $separator_type ) : ?>
-					<?php foreach ( $values['field_styles'][ $separator_type ] as $device => $value ) : ?>
+				<?php foreach ( array( 'field_styles_margin', 'field_styles_padding' ) as $separator_type ) : ?>
+					<?php foreach ( $values['typography'][ $separator_type ] as $device => $value ) : ?>
 						<?php if ( in_array( $device, array( 'desktop', 'tablet', 'mobille' ), true ) ) : ?>
 							<?php printf( '@include responsive-media(%s, %s, %s);', $separator_type, $device, evf_sanitize_dimension_unit( $value, 'px' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						<?php endif; ?>
@@ -427,7 +431,7 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 					li {
 						text-align: $radio_checkbox_styles_alignment;
 						<?php foreach ( $radio_checkbox_seperator_type as $separator_type ) : ?>
-							<?php foreach ( $values['checkbox_radio_styles'][ $separator_type ] as $device => $value ) : ?>
+							<?php foreach ( $values['typography'][ $separator_type ] as $device => $value ) : ?>
 								<?php if ( in_array( $device, array( 'desktop', 'tablet', 'mobille' ), true ) ) : ?>
 									<?php
 									if ( 'margin' === $separator_type && ( isset( $values['checkbox_radio_styles']['inline_style'] ) && 'two_columns' === $values['checkbox_radio_styles']['inline_style'] ) ) {
@@ -440,10 +444,10 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 							<?php endforeach; ?>
 						<?php endforeach; ?>
 
-						input[type="radio"] {
+						<!-- input[type="radio"] {
 							border-radius: 50%;
-							<?php if ( 'default' === $values['checkbox_radio_styles']['style_variation'] ) { ?>
-							<?php } elseif ( 'outline' === $values['checkbox_radio_styles']['style_variation'] ) { ?>
+							<?php // if ( 'default' === $values['checkbox_radio_styles']['style_variation'] ) { ?>
+							<?php // } elseif ( 'outline' === $values['checkbox_radio_styles']['style_variation'] ) { ?>
 								&:checked {
 									&::before {
 										width: 50%;
@@ -451,7 +455,7 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 										background: $radio_checkbox_styles_checked_color;
 									}
 								}
-							<?php } elseif ( 'filled' === $values['checkbox_radio_styles']['style_variation'] ) { ?>
+							<?php // } elseif ( 'filled' === $values['checkbox_radio_styles']['style_variation'] ) { ?>
 								&:checked {
 									&::before {
 										width: 50%;
@@ -459,18 +463,18 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 										background: #fff;
 									}
 								}
-							<?php } ?>
-						}
+							<?php // } ?>
+						} -->
 
 						label {
 							flex: 1;
 						}
 					}
 				}
-				input[type='checkbox'],
+				<!-- input[type='checkbox'],
 				input[type='radio'] {
-					<?php if ( 'default' === $values['checkbox_radio_styles']['style_variation'] ) { ?>
-					<?php } elseif ( 'outline' === $values['checkbox_radio_styles']['style_variation'] ) { ?>
+					<?php // if ( 'default' === $values['checkbox_radio_styles']['style_variation'] ) { ?>
+					<?php // } elseif ( 'outline' === $values['checkbox_radio_styles']['style_variation'] ) { ?>
 						width : $radio_checkbox_styles__size + 'px';
 						height : $radio_checkbox_styles__size + 'px';
 						display : inline-flex;
@@ -488,7 +492,7 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 							}
 						}
 
-					<?php } elseif ( 'filled' === $values['checkbox_radio_styles']['style_variation'] ) { ?>
+					<?php // } elseif ( 'filled' === $values['checkbox_radio_styles']['style_variation'] ) { ?>
 						width : $radio_checkbox_styles__size + 'px';
 						height : $radio_checkbox_styles__size + 'px';
 						display : inline-flex;
@@ -505,22 +509,22 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 								height: 50%;
 							}
 						}
-					<?php } ?>
+					<?php // } ?> -->
 
 					+ label {
 						font-size: $radio_checkbox_styles__font_size + 'px';
 						color: $radio_checkbox_styles__font_color;
-						<?php foreach ( $font_styles as $prop => $value ) : ?>
-							<?php if ( 'yes' === evf_bool_to_string( $values['checkbox_radio_styles']['font_style'][ $value ] ) ) : ?>
-								<?php printf( '%s: %s;', $prop, evf_clean( $value ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-							<?php endif; ?>
-						<?php endforeach; ?>
+						<?php // foreach ( $font_styles as $prop => $value ) : ?>
+							<?php // if ( 'yes' === evf_bool_to_string( $values['typography']['checkbox_radio_font_style'][ $value ] ) ) : ?>
+								<?php // printf( '%s: %s;', $prop, evf_clean( $value ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+							<?php // endif; ?>
+						<?php // endforeach; ?>
 					}
 				}
 
-				input[type="checkbox"] {
-					<?php if ( 'default' === $values['checkbox_radio_styles']['style_variation'] ) { ?>
-					<?php } elseif ( 'outline' === $values['checkbox_radio_styles']['style_variation'] ) { ?>
+				<!-- input[type="checkbox"] {
+					<?php // if ( 'default' === $values['checkbox_radio_styles']['style_variation'] ) { ?>
+					<?php // } elseif ( 'outline' === $values['checkbox_radio_styles']['style_variation'] ) { ?>
 						&:checked {
 
 							&::before {
@@ -531,7 +535,7 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 								margin-top: -12%;
 							}
 						}
-					<?php } elseif ( 'filled' === $values['checkbox_radio_styles']['style_variation'] ) { ?>
+					<?php // } elseif ( 'filled' === $values['checkbox_radio_styles']['style_variation'] ) { ?>
 						&:checked {
 
 							&::before {
@@ -542,8 +546,8 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 								margin-top: -12%;
 							}
 						}
-					<?php } ?>
-				}
+					<?php // } ?>
+				} -->
 
 			}
 
@@ -551,14 +555,14 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 				color: $field_description_font_color;
 				font-size: $field_description_font_size + 'px';
 				<?php foreach ( $font_styles as $prop => $value ) : ?>
-					<?php if ( 'yes' === evf_bool_to_string( $values['field_description']['font_style'][ $value ] ) ) : ?>
+					<?php if ( 'yes' === evf_bool_to_string( $values['typography']['field_description_font_style'][ $value ] ) ) : ?>
 						<?php printf( '%s: %s;', $prop, evf_clean( $value ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					<?php endif; ?>
 				<?php endforeach; ?>
 				text-align: $field_description_text_alignment;
 				line-height: $field_description_line_height;
-				<?php foreach ( array( 'margin', 'padding' ) as $separator_type ) : ?>
-					<?php foreach ( $values['field_description'][ $separator_type ] as $device => $value ) : ?>
+				<?php foreach ( array( 'field_description_margin', 'field_description_padding' ) as $separator_type ) : ?>
+					<?php foreach ( $values['typography'][ $separator_type ] as $device => $value ) : ?>
 						<?php if ( in_array( $device, array( 'desktop', 'tablet', 'mobille' ), true ) ) : ?>
 							<?php printf( '@include responsive-media(%s, %s, %s);', $separator_type, $device, evf_sanitize_dimension_unit( $value, 'px' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						<?php endif; ?>
@@ -567,20 +571,20 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 			}
 
 			.evf-field-title h3 {
-				<?php if ( '' !== $values['wrapper']['font_family'] ) : ?>
-					font-family: <?php echo evf_clean( $values['wrapper']['font_family'] ); ?>;
+				<?php if ( '' !== $values['font']['font_family'] ) : ?>
+					font-family: <?php echo evf_clean( $values['font']['font_family'] ); ?>;
 				<?php endif; ?>
 				font-size: $section_title_font_size + 'px';
 				color: $section_title_font_color;
 				text-align: $section_title_alignment;
 				line-height: $section_title_line_height;
 				<?php foreach ( $font_styles as $prop => $value ) : ?>
-					<?php if ( 'yes' === evf_bool_to_string( $values['section_title']['font_style'][ $value ] ) ) : ?>
+					<?php if ( 'yes' === evf_bool_to_string( $values['typography']['section_title_font_style'][ $value ] ) ) : ?>
 						<?php printf( '%s: %s;', $prop, evf_clean( $value ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					<?php endif; ?>
 				<?php endforeach; ?>
-				<?php foreach ( array( 'margin', 'padding' ) as $separator_type ) : ?>
-					<?php foreach ( $values['section_title'][ $separator_type ] as $device => $value ) : ?>
+				<?php foreach ( array( 'section_title_margin', 'section_title_padding' ) as $separator_type ) : ?>
+					<?php foreach ( $values['typography'][ $separator_type ] as $device => $value ) : ?>
 						<?php if ( in_array( $device, array( 'desktop', 'tablet', 'mobille' ), true ) ) : ?>
 							<?php printf( '@include responsive-media(%s, %s, %s);', $separator_type, $device, evf_sanitize_dimension_unit( $value, 'px' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						<?php endif; ?>
@@ -598,7 +602,7 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 					line-height: $button_line_height;
 					background-color: $button_background_color;
 					<?php foreach ( $font_styles as $prop => $value ) : ?>
-						<?php if ( 'yes' === evf_bool_to_string( $values['button']['font_style'][ $value ] ) ) : ?>
+						<?php if ( 'yes' === evf_bool_to_string( $values['typography']['button_font_style'][ $value ] ) ) : ?>
 							<?php printf( '%s: %s;', $prop, evf_clean( $value ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						<?php endif; ?>
 					<?php endforeach; ?>
@@ -614,8 +618,8 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 							<?php printf( '@include border-%s-radius(%s);', $prop, evf_clean( $value . $values['button']['border_radius']['unit'] ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						<?php endif; ?>
 					<?php endforeach; ?>
-					<?php foreach ( array( 'margin', 'padding' ) as $type ) : // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited ?>
-						<?php foreach ( $values['button'][ $type ] as $device => $value ) : ?>
+					<?php foreach ( array( 'button_margin', 'button_padding' ) as $type ) : // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited ?>
+						<?php foreach ( $values['typography'][ $type ] as $device => $value ) : ?>
 							<?php if ( in_array( $device, array( 'desktop', 'tablet', 'mobille' ), true ) ) : ?>
 								<?php printf( '@include responsive-media(%s, %s, %s);', $type, $device, evf_sanitize_dimension_unit( $value, 'px' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 							<?php endif; ?>
@@ -636,8 +640,8 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 			.evf-submit-container {
 				&:not(.everest-forms-multi-part-actions) {
 					display: block;
-					<?php if ( isset( $values['button']['alignment'] ) && ! ( isset( $form_data['settings']['enable_multi_part'] ) && evf_string_to_bool( $form_data['settings']['enable_multi_part'] ) ) ) : ?>
-					text-align: <?php echo evf_clean( $values['button']['alignment'] ); ?>;
+					<?php if ( isset( $values['typography']['button_alignment'] ) && ! ( isset( $form_data['settings']['enable_multi_part'] ) && evf_string_to_bool( $form_data['settings']['enable_multi_part'] ) ) ) : ?>
+					text-align: <?php echo evf_clean( $values['typography']['button_alignment'] ); ?>;
 					<?php endif; ?>
 				}
 			}

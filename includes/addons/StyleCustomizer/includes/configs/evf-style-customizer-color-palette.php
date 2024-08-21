@@ -176,7 +176,6 @@ function evf_style_customizer_color_palette_controls( $controls, $customize ) {
 	);
 	$custom_palette = get_option( 'custom_color_palettes', array() );
 
-	// Filter out any entries where the 'colors' array is empty
 	$custom_palette = array_filter(
 		$custom_palette,
 		function( $palette ) {

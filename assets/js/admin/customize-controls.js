@@ -451,7 +451,7 @@
 		$.each( ['font','form_container','field_styles', 'checkbox_radio_styles', 'button', 'success_message', 'error_message', 'validation_message','typography'], function( i, type ) {
 			$.each( {
 				'border_type': {
-					controls: [ 'border_width', 'border_color' ],
+					controls: [ 'border_width', 'border_radius' ],
 					callback: function( to ) { return 'none' !== to; }
 				},
 				'style_variation': {
@@ -474,12 +474,12 @@
 					controls: [ 'field_sublabels_font_size','field_sublabels_font_color','field_sublabels_font_style','field_sublabels_text_alignment','field_sublabels_line_height','field_sublabels_margin','field_sublabels_padding'],
 					callback: function( to ) { return !! to; }
 				},
-				'field_descriprtion' : {
+				'field_description' : {
 					controls: [ 'field_description_font_size','field_description_font_color','field_description_font_style','field_description_text_alignment','field_description_line_height','field_description_margin','field_description_padding'],
 					callback: function( to ) { return !! to; }
 				},
 				'file_upload' : {
-					controls: [ 'file_upload_font_size','file_upload_font_color','file_upload_font_style','file_upload_background_color','file_upload_icon_background_color','file_upload_icon_color','file_upload_border_type','file_upload_border_width','file_upload_border_radius','file_upload_text_alignment','file_upload_line_height','file_upload_margin','file_upload_padding'],
+					controls: [ 'file_upload_font_size','file_upload_font_color','file_upload_font_style','file_upload_background_color','file_upload_icon_background_color','file_upload_icon_color','file_upload_border_color','file_upload_text_alignment','file_upload_line_height','file_upload_margin','file_upload_padding'],
 					callback: function( to ) { return !! to; }
 				},
 				'checkbox_radio' : {
@@ -487,7 +487,15 @@
 					callback: function( to ) { return !! to; }
 				},
 				'button' : {
-					controls: [ 'button_font_size','button_font_color','button_font_style','button_text_alignment','button_line_height','button_margin','button_padding','button_border_radius','button_border_hover_color','button_border_color','button_border_width','button_border_type','button_alignment','button_hover_background_color','button_hover_font_color','button_background_color'],
+					controls: [ 'button_font_size','button_font_color','button_font_style','button_text_alignment','button_line_height','button_margin','button_padding','button_border_hover_color','button_border_color','button_alignment','button_hover_background_color','button_hover_font_color','button_background_color'],
+					callback: function( to ) { return !! to; }
+				},
+				'field_styles' : {
+					controls: [ 'field_styles_font_size','field_styles_font_color','field_styles_font_style','field_styles_alignment','field_styles_border_width','field_styles_border_focus_color','field_styles_border_radius','field_styles_background_color','field_styles_margin','field_styles_padding','field_styles_border_type','field_styles_placeholder_font_color','field_styles_border_color'],
+					callback: function( to ) { return !! to; }
+				},
+				'section_title' : {
+					controls: [ 'section_title_font_size','section_title_font_color','section_title_font_style','section_title_text_alignment','section_title_line_height','section_title_margin','section_title_padding'],
 					callback: function( to ) { return !! to; }
 				},
 			}, function( settingId, o ) {
