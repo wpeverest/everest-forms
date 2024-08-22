@@ -70,6 +70,7 @@ class EVF_Style_Customizer_API {
 
 			// Compile SASS to load on frontend.
 			add_action( 'customize_save_after', array( $this, 'save_after' ) );
+			// add_filter( 'customize_save_response', array( $this, 'modify_customized_data' ), 10, 2 );
 		}
 
 		// Delete specific styles on form delete.
@@ -80,6 +81,8 @@ class EVF_Style_Customizer_API {
 		add_action( 'everest_forms_import_form', array( $this, 'create_styles' ), 10, 4 );
 		add_action( 'everest_forms_create_form', array( $this, 'create_styles' ), 10, 4 );
 	}
+
+
 
 	/**
 	 * Change publish button text to save.
@@ -364,6 +367,7 @@ class EVF_Style_Customizer_API {
 		if ( ! empty( $controls ) ) {
 			foreach ( $controls as $type => $controls_data ) {
 				foreach ( $controls_data as $control_key => $control_data ) {
+
 					$control_id = 'everest_forms_styles[' . $this->form_id . '][' . $type . '][' . $control_key . ']';
 
 					// Control args.
@@ -408,7 +412,6 @@ class EVF_Style_Customizer_API {
 					// Add a core or custom customize controls.
 					if ( class_exists( $control_data['control']['type'] ) ) {
 						$wp_customize->register_control_type( $control_data['control']['type'] );
-
 						$wp_customize->add_control( new $control_data['control']['type']( $wp_customize, $control_id, $control_args ) );
 					} elseif ( isset( $control_data['control']['type'] ) ) {
 						$control_args['type'] = $control_data['control']['type'];
@@ -541,6 +544,54 @@ class EVF_Style_Customizer_API {
 		);
 	}
 
+	public function modify_customized_data( $response, $wp_customize ) {
+
+		$customized_data = get_option( 'everest_forms_styles', array() );
+
+		$highest_color_key  = '';
+		$highest_number     = -1;
+		$highest_identifier = '';
+
+		foreach ( $customized_data as $identifier => $settings ) {
+			if ( isset( $settings['color_palette'] ) && is_array( $settings['color_palette'] ) ) {
+				foreach ( $settings['color_palette'] as $color_key => $color_value ) {
+					if ( preg_match( '/^color_(\d+)$/', $color_key, $matches ) ) {
+						$number = intval( $matches[1] );
+
+						if ( $number > $highest_number ) {
+							$highest_number     = $number;
+							$highest_color_key  = $color_key;
+							$highest_identifier = $identifier;
+						}
+					}
+				}
+			}
+		}
+
+		$new_customized_data = array();
+		foreach ( $customized_data as $identifier => $settings ) {
+			if ( isset( $settings['color_palette'] ) && is_array( $settings['color_palette'] ) ) {
+				$new_customized_data[ $identifier ] = array(
+					'color_palette' => array(),
+				);
+
+				foreach ( $settings['color_palette'] as $color_key => $color_value ) {
+					if ( $color_key === $highest_color_key ) {
+						$new_customized_data[ $identifier ]['color_palette'][ $color_key ] = $color_value;
+					}
+				}
+			} else {
+
+				$new_customized_data[ $identifier ] = $settings;
+			}
+		}
+
+		update_option( 'everest_forms_styles', $new_customized_data );
+
+		return $response;
+	}
+
+
 	/**
 	 * Save the styles data.
 	 */
@@ -550,8 +601,7 @@ class EVF_Style_Customizer_API {
 		}
 
 		$save       = false;
-		$customized = json_decode( wp_unslash( $_REQUEST['customized'] ), true ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-
+		$customized = json_decode( wp_unslash( $_REQUEST['customized'] ), true ); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitiz
 		// Check if valid to compile and update css.
 		foreach ( array_keys( $customized ) as $setting_id ) {
 			if ( false !== strpos( $setting_id, 'everest_forms_styles[' . $this->form_id . ']' ) ) {
