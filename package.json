@@ -28,6 +28,7 @@
     "test-unit-php": "wp-env run phpunit 'phpunit --configuration=/var/www/html/wp-content/plugins/everest-forms/phpunit.xml.dist --verbose'"
   },
   "devDependencies": {
+    "@babel/preset-typescript": "7.23.3",
     "@babel/core": "7.25.2",
     "@babel/eslint-parser": "7.25.1",
     "@types/wordpress__block-editor": "^11.5.11",
@@ -101,6 +102,13 @@
     "react-icons": "5.2.1",
     "react-player": "2.16.0",
     "react-router-dom": "6.22.3",
-    "use-ontype": "1.2.4"
+    "@tanstack/react-query": "^4.36.1",
+    "@types/node": "20.10.5",
+    "@types/react": "18.2.45",
+    "@types/react-beautiful-dnd": "13.1.7",
+    "@types/react-color": "3.0.10",
+    "@types/react-datepicker": "4.19.4",
+    "@types/react-dom": "18.2.18",
+    "@types/react-select": "5.0.1"
   }
 }
