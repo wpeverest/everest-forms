@@ -86,6 +86,15 @@ class EVF_Admin_Form_Templates {
 	public static function load_template_view() {
 		echo "<div id='evf-templates'></div>";
 		wp_register_script( 'evf-templates', plugins_url( 'dist/templates.min.js', EVF_PLUGIN_FILE ), array( 'wp-element', 'react', 'react-dom', 'wp-api-fetch', 'wp-i18n', 'wp-blocks' ), EVF_VERSION, true );
+		wp_localize_script(
+			'evf-templates',
+			'evf_templates_script',
+			array(
+				'security' => wp_create_nonce( 'wp_rest' ),
+				'restURL'  => rest_url(),
+			)
+		);
 		wp_enqueue_script( 'evf-templates' );
 	}
+
 }
