@@ -858,9 +858,9 @@
       "title": "Aweber",
       "slug": "everest-forms-aweber",
       "name": "Everest Forms- Aweber",
-      "image": "extensions-json/sections/images/LandingPage.webp",
+      "image": "extensions-json/sections/images/aweber.webp",
       "excerpt": "Present your landing page as a form without going through the hassle of shortcodes and repetitive designing. A simple click, and that’s all you must do!",
-      "link": "https://docs.everestforms.net/docs/landingpages/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
+      "link": "https://docs.everestforms.net/docs/aweber/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
       "released_date": "xx/xx/xxxx",
       "plan": [
         "personal",
