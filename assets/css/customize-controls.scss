@@ -753,3 +753,100 @@
 .accordion-content.active {
     display: block;
 }
+
+
+/*---------------------------------------------------------------
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+------------ Style Customizer ReVamp Design CSS -----------------
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+---------------------------------------------------------------*/
+$customizerPrimaryColor: #1D4ED8;
+$whiteColor: #FFFFFF;
+$toggleDefaultColor: #9CA3AF;
+$inputBorderColor: #CCCCCC;
+
+#customize-controls {
+	#customize-theme-controls {
+		#sub-accordion-section-everest_forms_general_font {
+			li {
+				&.customize-control {
+					padding: 16px;
+					margin-bottom: 12px;							   
+					
+					label {
+						justify-content: space-between;
+						align-items: center;
+						
+						.customize-control-title {
+							margin-bottom: 0;
+							color: #444;
+							font-size: 14px;
+							font-weight: 400;
+							line-height: 18px;
+							text-transform: capitalize;
+						}
+
+						.switch {
+							width: 30px;
+							height: 16px;
+							top: 0;
+							border: 0;
+							background: $toggleDefaultColor;
+
+							&::after {
+								width: 12px;
+								height: 12px;
+								left: 2px;
+								background: $whiteColor;
+							}
+
+							&-content {
+								&::before,
+								&::after {
+									content: none;
+								}
+							}
+						}
+					}
+				
+					input:checked {
+						+ .switch {
+							background: $customizerPrimaryColor;
+							border-color: $customizerPrimaryColor;
+
+							&::after {
+								right: 14px;
+								left: unset;
+							}
+						}
+					}  
+					
+					&.customize-control-evf-select2 {
+						.customize-control-title {
+							margin-bottom: 8px;
+						}
+						
+						select {
+							height: 38px;
+							border-radius: 2px;
+							border-color: $inputBorderColor;
+							
+							&:focus {
+								border-color: $customizerPrimaryColor;
+							}
+						}
+					} 
+				}
+			} 
+		}
+	}
+}
