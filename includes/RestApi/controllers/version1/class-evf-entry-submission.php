@@ -87,6 +87,17 @@ class EVF_Entry_Submission {
 			);
 		}
 		$form_data = apply_filters( 'everest_forms_process_before_form_data', evf_decode( $form->post_content ), $entry );
+
+		if ( isset( $form_data['form_enabled'] ) && ! $form_data['form_enabled'] ) {
+			return new \WP_REST_Response(
+				array(
+					'message' => esc_html__( 'Form is disalbed!', 'everest-forms' ),
+					'data'    => $entry,
+				),
+				400
+			);
+		}
+
 		if ( empty( $form_data['form_fields'] ) ) {
 			return new \WP_REST_Response(
 				array(
@@ -96,6 +107,7 @@ class EVF_Entry_Submission {
 				400
 			);
 		}
+
 		if ( isset( $form_data['settings']['disabled_entries'] ) && '1' === $form_data['settings']['disabled_entries'] ) {
 			return new \WP_REST_Response(
 				array(
