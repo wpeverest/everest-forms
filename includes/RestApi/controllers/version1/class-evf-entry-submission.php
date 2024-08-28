@@ -55,22 +55,60 @@ class EVF_Entry_Submission {
 	public static function save_entry( $request ) {
 		global $wpdb;
 
-		$entry       = $request->get_params();
+		$entry = $request->get_params();
+		if ( empty( $entry['form_fields'] ) ) {
+			return new \WP_REST_Response(
+				array(
+					'message' => esc_html__( 'No entry data found!', 'everest-forms' ),
+					'data'    => $entry,
+				),
+				400
+			);
+		}
+
+		$form_id = isset( $entry['id'] ) ? absint( $entry['id'] ) : 0;
+		if ( empty( $form_id ) ) {
+			return new \WP_REST_Response(
+				array(
+					'message' => esc_html__( 'Form id is missing!', 'everest-forms' ),
+					'data'    => $entry,
+				),
+				400
+			);
+		}
+		$form = evf()->form->get( $form_id );
+		if ( empty( $form ) ) {
+			return new \WP_REST_Response(
+				array(
+					'message' => esc_html__( 'Form is not found!', 'everest-forms' ),
+					'data'    => $entry,
+				),
+				400
+			);
+		}
+		$form_data = apply_filters( 'everest_forms_process_before_form_data', evf_decode( $form->post_content ), $entry );
+		if ( empty( $form_data['form_fields'] ) ) {
+			return new \WP_REST_Response(
+				array(
+					'message' => esc_html__( 'Form is empty!', 'everest-forms' ),
+					'data'    => $entry,
+				),
+				400
+			);
+		}
+		if ( isset( $form_data['settings']['disabled_entries'] ) && '1' === $form_data['settings']['disabled_entries'] ) {
+			return new \WP_REST_Response(
+				array(
+					'message' => esc_html__( 'Save entris is enable! Please disable to save the entry.', 'everest-forms' ),
+					'data'    => $entry,
+				),
+				400
+			);
+		}
 		$errors      = array();
 		$form_fields = array();
-		$form_id     = absint( $entry['id'] );
-		$form        = evf()->form->get( $form_id );
+		$entry       = apply_filters( 'everest_forms_process_before_save_entry', $entry, $form_data );
 
-		$form_data = apply_filters( 'everest_forms_process_before_form_data', evf_decode( $form->post_content ), $entry );
-
-		$entry = apply_filters( 'everest_forms_process_before_filter', $entry, $form_data );
-
-		$logger = evf_get_logger();
-
-		$logger->info(
-			__( 'Everest Forms Process Before.', 'everest-forms' ),
-			array( 'source' => 'form-submission' )
-		);
 		$form_data['entry'] = $entry;
 
 		// Validate fields.
