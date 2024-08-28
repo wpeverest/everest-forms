@@ -123,17 +123,45 @@ class EVF_Entry_Submission {
 
 		$form_data['entry'] = $entry;
 
-		// Validate fields.
 		foreach ( $entry['form_fields'] as $field_id => $field_value ) {
 			if ( array_key_exists( $field_id, $form_data['form_fields'] ) ) {
-				$form_fields[ $field_id ] = array(
-					'name'     => $form_data['form_fields'][ $field_id ]['label'],
-					'value'    => $field_value,
-					'id'       => $field_id,
-					'type'     => $form_data['form_fields'][ $field_id ]['type'],
-					'meta_key' => $form_data['form_fields'][ $field_id ]['meta-key'],
-				);
+				$field_type = $form_data['form_fields'][ $field_id ]['type'];
+				if ( 'signature' === $field_type ) {
+					$field_submit = isset( $field_value['signature_image'] ) ? $field_value['signature_image'] : '';
+				}
+
+				$exclude = array( 'title', 'html', 'captcha', 'image-upload', 'file-upload', 'divider', 'reset', 'recaptcha', 'hcaptcha', 'turnstile' );
+
+				if ( ! in_array( $field_type, $exclude, true ) ) {
+					$form_fields[ $field_id ] = array(
+						'name'     => sanitize_text_field( $form_data['form_fields'][ $field_id ]['label'] ),
+						'value'    => $field_value,
+						'id'       => $field_id,
+						'type'     => $field_type,
+						'meta_key' => $form_data['form_fields'][ $field_id ]['meta-key'],
+					);
+				}
 			}
+		}
+		// Validate fields.
+		foreach ( $form_data['form_fields'] as $field ) {
+			$field_id   = $field['id'];
+			$field_type = $field['type'];
+
+			$field_value = isset( $entry['form_fields'][ $field_id ] ) ? $entry['form_fields'][ $field_id ] : '';
+			do_action( "everest_forms_process_validate_{$field_type}", $field_id, $field_value, $form_data, $field_type );
+
+		}
+
+		$errors = evf()->task->errors[ $form_data['id'] ];
+		if ( ! empty( $errors ) ) {
+			return new \WP_REST_Response(
+				array(
+					'message' => esc_html__( 'Error found!!', 'everest-forms' ),
+					'errors'  => $errors,
+				),
+				400
+			);
 		}
 
 		$task_instance = new EVF_Form_Task();
