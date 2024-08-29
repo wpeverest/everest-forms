@@ -562,7 +562,7 @@
 		});
 	});
 	//Rest api settings.
-	if($('#everest_forms_enable_restapi').checked){
+	if($('#everest_forms_enable_restapi').is(":checked")){
 		$(document).find('.evf-restapi-key-wrapper').show();
 	}else {
 		$(document).find('.evf-restapi-key-wrapper').hide();
