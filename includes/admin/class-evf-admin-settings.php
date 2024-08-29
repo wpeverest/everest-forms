@@ -874,7 +874,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						$key = $value['value'];
 
 						?>
-						<div class="everest-forms-global-settings">
+						<div class="everest-forms-global-settings evf-restapi-key-wrapper">
 							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
 							<div class="everest-forms-global-settings--field forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>" style="display:flex; gap:2px" >
 							<?php echo wp_kses_post( $description ); ?>
@@ -885,7 +885,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 										name="<?php echo esc_attr( $value['id'] ); ?>"
 										style="<?php echo esc_attr( $value['css'] ); ?> "
 										class="<?php echo esc_attr( $value['class'] ); ?>"
-										value="<?php echo esc_attr( generate_api_key() ); ?>"
+										value="<?php echo esc_attr( $key ); ?>"
 										readonly
 									/>
 									<div>
@@ -893,7 +893,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 									if ( '' === $key ) {
 										echo '<button type="button" class="everest-forms-btn everest-forms-btn-primary  everest-forms-generate-api-key">generate</button>';
 									} else {
-										echo '<button class="everest-forms-btn everest-forms-btn-primary  everest-forms-generate-api-key">regenerate</button>';
+										echo '<button type="button" class="everest-forms-btn everest-forms-btn-primary  everest-forms-generate-api-key">regenerate</button>';
 									}
 									?>
 									</div>

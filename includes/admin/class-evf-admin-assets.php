@@ -305,6 +305,15 @@ class EVF_Admin_Assets {
 
 			wp_localize_script(
 				'everest-forms-admin',
+				'everest_forms_admin_generate_restapi_key',
+				array(
+					'ajax_restapi_key_nonce' => wp_create_nonce( 'process-restapi-api-ajax-nonce' ),
+					'ajax_url'               => admin_url( 'admin-ajax.php', 'relative' ),
+				)
+			);
+
+			wp_localize_script(
+				'everest-forms-admin',
 				'everest_forms_admin_form_migrator',
 				array(
 					'evf_fm_dismiss_notice_nonce' => wp_create_nonce( 'evf_fm_dismiss_notice_nonce' ),

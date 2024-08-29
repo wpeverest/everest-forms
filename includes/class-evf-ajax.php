@@ -131,6 +131,7 @@ class EVF_AJAX {
 			'send_routine_report_test_email' => false,
 			'map_csv'                        => false,
 			'import_entries'                 => false,
+			'generate_restapi_key'           => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -1646,6 +1647,24 @@ class EVF_AJAX {
 					'button_text' => 'View Entries',
 				)
 			);
+		} catch ( Exception $e ) {
+			wp_send_json_error(
+				array(
+					'message' => $e->getMessage(),
+				)
+			);
+		}
+	}
+	/**
+	 * Generate the restapi key
+	 *
+	 * @since xx.xx.xx
+	 */
+	public static function generate_restapi_key() {
+		try {
+			check_ajax_referer( 'process-restapi-api-ajax-nonce', 'security' );
+			$key = generate_api_key();
+			wp_send_json_success( $key );
 		} catch ( Exception $e ) {
 			wp_send_json_error(
 				array(
