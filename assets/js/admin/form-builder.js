@@ -3893,7 +3893,7 @@ jQuery( function ( $ ) {
 				'text',
 				'last-name',
 				'email',
-				// 'date-time'
+				'url'
 			];
 			$(document).find('.everest-forms-field').each(function() {
 				$fieldId = $(this).attr('data-field-id').split("-");
