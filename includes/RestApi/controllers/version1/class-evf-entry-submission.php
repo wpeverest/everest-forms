@@ -140,6 +140,43 @@ class EVF_Entry_Submission {
 						'type'     => $field_type,
 						'meta_key' => $form_data['form_fields'][ $field_id ]['meta-key'],
 					);
+
+					if ( 'checkbox' === $field_type ) {
+						$form_fields[ $field_id ]['value']     = array(
+							'name'  => sanitize_text_field( $form_data['form_fields'][ $field_id ]['label'] ),
+							'type'  => $field_type,
+							'label' => $field_value,
+						);
+						$form_fields[ $field_id ]['value_raw'] = $field_value;
+					}
+
+					if ( 'likert' === $field_type ) {
+						$likert_rows    = $form_data['form_fields'][ $field_id ]['likert_rows'];
+						$likert_columns = $form_data['form_fields'][ $field_id ]['likert_columns'];
+						$combined_value = '';
+						foreach ( $field_value as $key => $value ) {
+							if ( array_key_exists( $key, $likert_rows ) ) {
+
+								$combined_value .= "$likert_rows[$key]:\n";
+							}
+							if ( array_key_exists( $key, $likert_columns ) ) {
+
+								$combined_value .= "$likert_columns[$key]:\n";
+							}
+						}
+						$form_fields[ $field_id ]['value'] = $combined_value;
+					}
+
+					if ( 'address' === $field_type ) {
+						$form_fields[ $field_id ]['value'] = implode( '\n', $field_value );
+					}
+
+					if ( 'country' === $field_type ) {
+						$form_fields[ $field_id ]['value'] = array(
+							'type'         => $field_type,
+							'country_code' => $field_value,
+						);
+					}
 				}
 			}
 		}
@@ -153,7 +190,8 @@ class EVF_Entry_Submission {
 
 		}
 
-		$errors = evf()->task->errors[ $form_data['id'] ];
+		$errors = isset( evf()->task->errors[ $form_data['id'] ] ) ? evf()->task->errors[ $form_data['id'] ] : array();
+
 		if ( ! empty( $errors ) ) {
 			return new \WP_REST_Response(
 				array(
