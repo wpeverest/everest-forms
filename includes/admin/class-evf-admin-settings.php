@@ -870,6 +870,37 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 								</div>
 							<?php
 						break;
+					case 'restapi_key':
+						$key = $value['value'];
+
+						?>
+						<div class="everest-forms-global-settings">
+							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
+							<div class="everest-forms-global-settings--field forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>" style="display:flex; gap:2px" >
+							<?php echo wp_kses_post( $description ); ?>
+									<input
+										type="text"
+										style=""
+										id="<?php echo esc_attr( $value['id'] ); ?>"
+										name="<?php echo esc_attr( $value['id'] ); ?>"
+										style="<?php echo esc_attr( $value['css'] ); ?> "
+										class="<?php echo esc_attr( $value['class'] ); ?>"
+										value="<?php echo esc_attr( generate_api_key() ); ?>"
+										readonly
+									/>
+									<div>
+									<?php
+									if ( '' === $key ) {
+										echo '<button type="button" class="everest-forms-btn everest-forms-btn-primary  everest-forms-generate-api-key">generate</button>';
+									} else {
+										echo '<button class="everest-forms-btn everest-forms-btn-primary  everest-forms-generate-api-key">regenerate</button>';
+									}
+									?>
+									</div>
+							</div>
+						</div>
+						<?php
+						break;
 					// Default: run an action.
 					default:
 						do_action( 'everest_forms_admin_field_' . $value['type'], $value );
