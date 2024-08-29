@@ -884,8 +884,10 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 										id="<?php echo esc_attr( $value['id'] ); ?>"
 										name="<?php echo esc_attr( $value['id'] ); ?>"
 										style="<?php echo esc_attr( $value['css'] ); ?> "
-										class="<?php echo esc_attr( $value['class'] ); ?>"
+										class="<?php echo esc_attr( $value['class'] ); ?> help_tip tooltipstered"
 										value="<?php echo esc_attr( $key ); ?>"
+										data-tip="Copy ApiKey"
+										data-copied="Copied!"
 										readonly
 									/>
 									<div>

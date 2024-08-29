@@ -575,6 +575,19 @@
 			$(document).find('.evf-restapi-key-wrapper').hide();
 		}
 	});
+	$('#everest_forms_restapi_keys').on('click', function(e){
+		evfClearClipboard();
+		evfSetClipboard( $( this ).val(), $( this ) );
+		e.preventDefault();
+	}).on('aftercopy', function() {
+		$( this ).tooltipster( 'content', $( this ).attr( 'data-copied' ) ).trigger( 'mouseenter' ).on( 'mouseleave', function() {
+			var $this = $( this );
+
+			setTimeout( function() {
+				$this.tooltipster( 'content', $this.attr( 'data-tip' ) );
+			}, 5000 );
+		} );
+	});
 	$('.everest-forms-generate-api-key, .everest-forms-regenerate-api-key').on('click', function(){
 		let data = {
 			action: "everest_forms_generate_restapi_key",
