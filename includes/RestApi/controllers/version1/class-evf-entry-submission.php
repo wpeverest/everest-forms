@@ -220,6 +220,45 @@ class EVF_Entry_Submission {
 	 * @return WP_Error|bool
 	 */
 	public static function check_admin_permissions( $request ) {
-		return true;
+		$api_key         = get_option( 'everest_forms_restapi_keys' );
+		$enable_rest_api = get_option( 'everest_forms_enable_restapi', false );
+		if ( ! evf_string_to_bool( $enable_rest_api ) ) {
+			return new \WP_Error(
+				'unauthorized',
+				esc_html__( 'Contact your administrator to enable REST API access', 'everest-forms' ),
+				array( 'status' => 401 )
+			);
+		}
+
+		$headers = $request->get_headers();
+
+		if ( ! isset( $headers['api_key'] ) ) {
+			return new \WP_Error(
+				'unauthorized',
+				esc_html__( 'Missing api key!', 'everest-forms' ),
+				array( 'status' => 401 )
+			);
+		}
+		if ( empty( $headers['api_key'] ) ) {
+			return new \WP_Error(
+				'unauthorized',
+				esc_html__( 'Empty api key!', 'everest-forms' ),
+				array( 'status' => 401 )
+			);
+		}
+
+		if ( $headers['api_key'] === $api_key ) {
+			return true;
+		} else {
+
+			return new \WP_Error(
+				'unauthorized',
+				esc_html__( 'Unauthorized api key.', 'everest-forms' ),
+				array( 'status' => 401 )
+			);
+		}
+
+		return false;
+
 	}
 }
