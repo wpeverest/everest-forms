@@ -103,10 +103,6 @@ const Main = () => {
 
   return (
     <Box>
-      <Flex justifyContent="space-between" mb={4}>
-        <Button colorScheme="purple">Add New Form</Button>
-        <Button variant="outline">Refresh Templates</Button>
-      </Flex>
       <Flex>
         <Box mr={4}>
           <Sidebar

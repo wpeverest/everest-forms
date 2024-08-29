@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from "react";
-import { Box, VStack, HStack, Text, Spacer, Input } from "@chakra-ui/react";
+import { Box, VStack, HStack, Text, Spacer, Input,InputLeftElement,InputGroup } from "@chakra-ui/react";
+import { FaSearch } from 'react-icons/fa';
 import debounce from "lodash.debounce";
 
 interface SidebarProps {
@@ -22,18 +23,22 @@ const Sidebar: React.FC<SidebarProps> = ({ categories, onCategorySelect, onSearc
   // Handle search input change
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setSearchTerm(value); // Update local searchTerm
-    debouncedSearchChange(value); // Trigger debounced search
+    setSearchTerm(value);
+    debouncedSearchChange(value);
   };
 
   return (
-    <Box width="200px">
+    <Box>
+    <InputGroup mb={4}>
+      <InputLeftElement pointerEvents="none">
+        <FaSearch color="gray.300" />
+      </InputLeftElement>
       <Input
         placeholder="Search Templates"
-        mb={4}
         value={searchTerm}
         onChange={handleSearchChange}
       />
+    </InputGroup>
       <VStack align="stretch" spacing={2}>
         {categories.map((category) => (
           <HStack

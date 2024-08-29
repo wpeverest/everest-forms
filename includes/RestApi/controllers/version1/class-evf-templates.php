@@ -45,6 +45,15 @@ class Everest_Forms_Template_Section_Data {
 				'permission_callback' => array( $this, 'check_admin_permissions' ),
 			)
 		);
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/create',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'create_templates' ),
+				'permission_callback' => array( $this, 'check_admin_permissions' ),
+			)
+		);
 	}
 
 	/**
@@ -75,6 +84,71 @@ class Everest_Forms_Template_Section_Data {
 		$extension_data = evf_get_json_file_contents( 'assets/templates-json/templates.json' );
 		return apply_filters( 'everest_forms_templates_section_data', $extension_data );
 	}
+
+	/**
+	 * Create a Template.
+	 *
+	 * @since x.x.x
+	 * @param WP_REST_Request $request Full data about the request.
+	 * @return WP_REST_Request|WP_Error
+	 */
+	public function create_templates( WP_REST_Request $request ) {
+		// Retrieve and sanitize parameters.
+		$title = sanitize_text_field( wp_unslash( $request->get_param( 'title' ) ) );
+		$slug  = sanitize_text_field( wp_unslash( $request->get_param( 'slug' ) ) );
+
+		// Check if the title parameter is empty.
+		if ( empty( $title ) ) {
+			return new WP_Error(
+				'invalid_template_name',
+				__( 'The template name is required and cannot be empty.', 'everest-forms' ),
+				array( 'status' => 400 )
+			);
+		}
+
+		// Ensure the slug is also not empty (optional check based on your needs).
+		if ( empty( $slug ) ) {
+			return new WP_Error(
+				'invalid_template_slug',
+				__( 'The template slug is required and cannot be empty.', 'everest-forms' ),
+				array( 'status' => 400 )
+			);
+		}
+
+		// Create the form using the title and slug.
+		$form_id = evf()->form->create( $title, $slug );
+
+		// Check if form creation was successful.
+		if ( $form_id ) {
+			$data = array(
+				'id'       => $form_id,
+				'redirect' => add_query_arg(
+					array(
+						'tab'     => 'fields',
+						'form_id' => $form_id,
+					),
+					admin_url( 'admin.php?page=evf-builder' )
+				),
+			);
+
+			return new \WP_REST_Response(
+				array(
+					'success' => true,
+					'data'    => $data,
+				),
+				200
+			);
+		} else {
+			// Handle the case where form creation failed.
+			return new WP_Error(
+				'form_creation_failed',
+				__( 'Something went wrong, please try again later.', 'everest-forms' ),
+				array( 'status' => 500 )
+			);
+		}
+	}
+
+
 
 	/**
 	 * Check if a given request has access.
