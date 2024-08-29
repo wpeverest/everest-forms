@@ -11996,3 +11996,6 @@ everest-forms-field-option-row-rating-icon .everest-forms-rating-icon-container 
 
 .folded #evf-collapse.close {
   left: 435px !important; }
+
+#everest-forms-dashboard {
+  background-color: #FAFAFC; }
