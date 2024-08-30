@@ -974,6 +974,8 @@ function evf_html_attributes( $id = '', $class = array(), $datas = array(), $att
 	$id    = trim( $id );
 	$parts = array();
 
+	$is_edit_entry = isset( $_GET['edit-entry'] ) && ! empty( sanitize_text_field( wp_unslash( $_GET['edit-entry'] ) ) ) ? true : false;
+
 	if ( ! empty( $id ) ) {
 		$id = sanitize_html_class( $id );
 		if ( ! empty( $id ) ) {
@@ -984,6 +986,10 @@ function evf_html_attributes( $id = '', $class = array(), $datas = array(), $att
 	if ( ! empty( $class ) ) {
 		$class = evf_sanitize_classes( $class, true );
 		if ( ! empty( $class ) ) {
+			// While editing hidden field should be visible.
+			if( $is_edit_entry ){
+				$class   = str_replace( "evf-field-hidden", "", $class );
+			}
 			$parts[] = 'class="' . $class . '"';
 		}
 	}
@@ -994,7 +1000,6 @@ function evf_html_attributes( $id = '', $class = array(), $datas = array(), $att
 		}
 	}
 
-	$is_edit_entry = isset( $_GET['edit-entry'] ) && ! empty( sanitize_text_field( wp_unslash( $_GET['edit-entry'] ) ) ) ? true : false;
 	if ( ! empty( $atts ) ) {
 		foreach ( $atts as $att => $val ) {
 			if ( '0' === $val || ! empty( $val ) ) {
@@ -1004,6 +1009,7 @@ function evf_html_attributes( $id = '', $class = array(), $datas = array(), $att
 				} else {
 					$escaped_att = sanitize_html_class( $att );
 				}
+				// While editing, fields must be visible even if they are hidden.
 				if ( 'style' == $escaped_att && $is_edit_entry ) {
 					$parts[] = 'style = "display: block"';
 				} else {
