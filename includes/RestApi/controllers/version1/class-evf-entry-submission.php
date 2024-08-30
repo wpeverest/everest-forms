@@ -164,7 +164,13 @@ class EVF_Entry_Submission {
 								$combined_value .= "$likert_columns[$key]:\n";
 							}
 						}
-						$form_fields[ $field_id ]['value'] = $combined_value;
+						$form_fields[ $field_id ]['value']     = $combined_value;
+						$form_fields[ $field_id ]['value_raw'] = $field_value;
+					}
+					if ( 'wysiwyg' === $field_type ) {
+						$form_fields[ $field_id ]['value']     = wp_strip_all_tags( $field_value );
+						$form_fields[ $field_id ]['value_raw'] = $field_value;
+
 					}
 
 					if ( 'address' === $field_type ) {
