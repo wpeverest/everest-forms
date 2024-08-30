@@ -994,6 +994,7 @@ function evf_html_attributes( $id = '', $class = array(), $datas = array(), $att
 		}
 	}
 
+	$is_edit_entry = isset( $_GET['edit-entry'] ) && ! empty( sanitize_text_field( wp_unslash( $_GET['edit-entry'] ) ) ) ? true : false;
 	if ( ! empty( $atts ) ) {
 		foreach ( $atts as $att => $val ) {
 			if ( '0' === $val || ! empty( $val ) ) {
@@ -1003,7 +1004,11 @@ function evf_html_attributes( $id = '', $class = array(), $datas = array(), $att
 				} else {
 					$escaped_att = sanitize_html_class( $att );
 				}
-				$parts[] = $escaped_att . '="' . esc_attr( $val ) . '"';
+				if ( 'style' == $escaped_att && $is_edit_entry ) {
+					$parts[] = 'style = "display: block"';
+				} else {
+					$parts[] = $escaped_att . '="' . esc_attr( $val ) . '"';
+				}
 			}
 		}
 	}
