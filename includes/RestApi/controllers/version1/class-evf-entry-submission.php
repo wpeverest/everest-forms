@@ -255,8 +255,6 @@ class EVF_Entry_Submission {
 				array( 'status' => 401 )
 			);
 		}
-		error_log( print_r( $headers['api_key'][0], true ) );
-		error_log( print_r( $api_key, true ) );
 		if ( $headers['api_key'][0] === $api_key ) {
 			return true;
 		} else {
