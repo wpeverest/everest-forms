@@ -164,8 +164,6 @@ final class EverestForms {
 		$this->init_hooks();
 		add_action( 'plugins_loaded', array( $this, 'objects' ), 1 );
 
-		add_action( 'et_builder_ready', array( $this, 'everest_form_register_divi_builder' ) );
-
 		do_action( 'everest_forms_loaded' );
 	}
 
@@ -182,6 +180,7 @@ final class EverestForms {
 		add_action( 'init', array( $this, 'form_fields' ), 0 );
 		add_action( 'init', array( 'EVF_Shortcodes', 'init' ), 0 );
 		add_action( 'switch_blog', array( $this, 'wpdb_table_fix' ), 0 );
+		add_action( 'et_builder_ready', array( $this, 'everest_form_register_divi_builder' ) );
 	}
 
 	/**
