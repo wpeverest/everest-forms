@@ -179,7 +179,7 @@ class EVF_Entry_Submission {
 					}
 
 					if ( 'address' === $field_type ) {
-						$form_fields[ $field_id ]['value'] = implode( '\n', $field_value );
+						$form_fields[ $field_id ]['value'] = implode( " \n ", $field_value );
 					}
 
 					if ( 'country' === $field_type ) {
