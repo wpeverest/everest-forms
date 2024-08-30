@@ -41,8 +41,8 @@ class EVF_Entry_Submission {
 			'/' . $this->rest_base . '/save',
 			array(
 				'methods'             => 'POST',
-				'callback'            => array( __CLASS__, 'save_entry' ),
-				'permission_callback' => array( __CLASS__, 'check_admin_permissions' ),
+				'callback'            => array( $this, 'save_entry' ),
+				'permission_callback' => array( $this, 'check_permissions' ),
 			)
 		);
 	}
@@ -52,7 +52,7 @@ class EVF_Entry_Submission {
 	 * @since xx.xx.xx
 	 * @param WP_REST_Request $request Full data about the request.
 	 */
-	public static function save_entry( $request ) {
+	public function save_entry( $request ) {
 		global $wpdb;
 
 		$entry = $request->get_params();
@@ -67,6 +67,7 @@ class EVF_Entry_Submission {
 		}
 
 		$form_id = isset( $entry['id'] ) ? absint( $entry['id'] ) : 0;
+
 		if ( empty( $form_id ) ) {
 			return new \WP_REST_Response(
 				array(
@@ -76,7 +77,9 @@ class EVF_Entry_Submission {
 				400
 			);
 		}
+
 		$form = evf()->form->get( $form_id );
+
 		if ( empty( $form ) ) {
 			return new \WP_REST_Response(
 				array(
@@ -86,6 +89,7 @@ class EVF_Entry_Submission {
 				400
 			);
 		}
+
 		$form_data = apply_filters( 'everest_forms_process_before_form_data', evf_decode( $form->post_content ), $entry );
 
 		if ( isset( $form_data['form_enabled'] ) && ! $form_data['form_enabled'] ) {
@@ -117,6 +121,7 @@ class EVF_Entry_Submission {
 				400
 			);
 		}
+
 		$errors      = array();
 		$form_fields = array();
 		$entry       = apply_filters( 'everest_forms_process_before_save_entry', $entry, $form_data );
@@ -220,6 +225,7 @@ class EVF_Entry_Submission {
 		if ( $entry_id && apply_filters( 'everest_forms_allow_send_email_after_restapi_save_entry', false ) ) {
 			$task_instance->entry_email( $form_fields, $entry, $form_data, $entry_id, 'entry' );
 		}
+
 		return new \WP_REST_Response(
 			array(
 				'entry_id' => $entry_id,
@@ -234,13 +240,23 @@ class EVF_Entry_Submission {
 	 * @param WP_REST_Request $request Full data about the request.
 	 * @return WP_Error|bool
 	 */
-	public static function check_admin_permissions( $request ) {
-		$api_key         = get_option( 'everest_forms_restapi_keys' );
+	public function check_permissions( $request ) {
 		$enable_rest_api = get_option( 'everest_forms_enable_restapi', false );
+
 		if ( ! evf_string_to_bool( $enable_rest_api ) ) {
 			return new \WP_Error(
 				'unauthorized',
 				esc_html__( 'Contact your administrator to enable REST API access', 'everest-forms' ),
+				array( 'status' => 401 )
+			);
+		}
+
+		$api_key = get_option( 'everest_forms_restapi_keys', '' );
+
+		if ( '' === $api_key ) {
+			return new \WP_Error(
+				'unauthorized',
+				esc_html__( 'Contact your administrator to generate the api key.', 'everest-forms' ),
 				array( 'status' => 401 )
 			);
 		}
@@ -254,25 +270,23 @@ class EVF_Entry_Submission {
 				array( 'status' => 401 )
 			);
 		}
-		if ( empty( $headers['api_key'][0] ) ) {
+
+		if ( ! isset( $headers['api_key'][0] ) || empty( $headers['api_key'][0] ) ) {
 			return new \WP_Error(
 				'unauthorized',
 				esc_html__( 'Empty api key!', 'everest-forms' ),
 				array( 'status' => 401 )
 			);
 		}
+
 		if ( $headers['api_key'][0] === $api_key ) {
 			return true;
-		} else {
-
-			return new \WP_Error(
-				'unauthorized',
-				esc_html__( 'Unauthorized api key.', 'everest-forms' ),
-				array( 'status' => 401 )
-			);
 		}
 
-		return false;
-
+		return new \WP_Error(
+			'unauthorized',
+			esc_html__( 'Unauthorized api key.', 'everest-forms' ),
+			array( 'status' => 401 )
+		);
 	}
 }
