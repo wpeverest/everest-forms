@@ -204,7 +204,16 @@ class EVF_Entry_Submission {
 
 		$task_instance = new EVF_Form_Task();
 		$entry_id      = $task_instance->entry_save( $form_fields, $entry, $form_data['id'], $form_data );
-
+		/**
+		 * Allow to send the email after save entry using rest api.
+		 *
+		 * @since xx.xx.xx
+		 *
+		 * @param boolean  $allow The allow value.
+		 */
+		if ( $entry_id && apply_filters( 'everest_forms_allow_send_email_after_restapi_save_entry', false ) ) {
+			$task_instance->entry_email( $form_fields, $entry, $form_data, $entry_id, 'entry' );
+		}
 		return new \WP_REST_Response(
 			array(
 				'entry_id' => $entry_id,
@@ -239,15 +248,16 @@ class EVF_Entry_Submission {
 				array( 'status' => 401 )
 			);
 		}
-		if ( empty( $headers['api_key'] ) ) {
+		if ( empty( $headers['api_key'][0] ) ) {
 			return new \WP_Error(
 				'unauthorized',
 				esc_html__( 'Empty api key!', 'everest-forms' ),
 				array( 'status' => 401 )
 			);
 		}
-
-		if ( $headers['api_key'] === $api_key ) {
+		error_log( print_r( $headers['api_key'][0], true ) );
+		error_log( print_r( $api_key, true ) );
+		if ( $headers['api_key'][0] === $api_key ) {
 			return true;
 		} else {
 
