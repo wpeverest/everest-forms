@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   ChakraProvider,
   Box,
@@ -12,7 +12,6 @@ import {
   Button,
   Icon,
   Divider,
-  Stack,
 } from "@chakra-ui/react";
 import Main from "./components/Main";
 
@@ -27,6 +26,14 @@ const CustomIcon = (props) => (
 );
 
 const App = () => {
+  const [selectedTab, setSelectedTab] = useState<string>("All");
+
+  // Handle tab changes
+  const handleTabChange = (index: number) => {
+    const filters = ["All", "Free", "Premium"];
+    setSelectedTab(filters[index]);
+  };
+
   return (
     <ChakraProvider>
       <Box margin={10} boxShadow="md">
@@ -40,7 +47,7 @@ const App = () => {
           <Button colorScheme="purple" variant="outline">
             Refresh Templates
           </Button>
-          <Tabs variant="unstyled" ml="auto">
+          <Tabs variant="unstyled" ml="auto" onChange={handleTabChange}>
             <TabList>
               {["All", "Free", "Premium"].map((label) => (
                 <Tab
@@ -72,7 +79,7 @@ const App = () => {
           </VStack>
 
           {/* Content component */}
-          <Main />
+          <Main filter={selectedTab} />
         </Box>
       </Box>
     </ChakraProvider>
