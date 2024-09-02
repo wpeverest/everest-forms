@@ -185,7 +185,7 @@ class Everest_Forms_Plugin_Status {
 		foreach ( $addon_data as $addon ) {
 			$slug   = isset( $addon['slug'] ) ? sanitize_key( wp_unslash( $addon['slug'] ) ) : '';
 			$name   = isset( $addon['name'] ) ? sanitize_text_field( $addon['name'] ) : '';
-			$plugin = plugin_basename( WP_PLUGIN_DIR . '/' . $slug . '/' . $slug . '.php' ); // Adjust path as needed
+			$plugin = plugin_basename( WP_PLUGIN_DIR . '/' . $slug . '/' . $slug . '.php' );
 			$status = array(
 				'install' => 'plugin',
 				'slug'    => $slug,
@@ -247,7 +247,7 @@ class Everest_Forms_Plugin_Status {
 	 * @global WP_Filesystem_Base $wp_filesystem Subclass
 	 */
 	public static function install_individual_addon( $slug, $plugin, $name, $status ) {
-		require_once ABSPATH . 'wp-admin/includes/file.php';
+		require_once ABSPATH . '/wp-admin/includes/file.php';
 		include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
 		include_once ABSPATH . 'wp-admin/includes/plugin-install.php';
 
@@ -266,19 +266,98 @@ class Everest_Forms_Plugin_Status {
 					return $status;
 				}
 				$status['success'] = true;
-				$status['message'] = __( 'Addon activated successfully', 'everest-forms' );
-			} else {
-				$status['success'] = true;
-				$status['message'] = __( 'Addon is already active.', 'everest-forms' );
+				$status['message'] = __( 'Addons activated successfully', 'everest-forms' );
+				return $status;
 			}
-			return $status;
+		}
+
+		if ( 'aicontactform' === $slug && ! evf_string_to_bool( evf_get_license_plan() ) ) {
+			$args = array(
+				'slug'   => 'ai-contact-form',
+				'fields' => array(
+					'short_description' => true,
+					'sections'          => true,
+					'requires'          => true,
+					'tested'            => true,
+					'rating'            => true,
+					'downloaded'        => true,
+					'last_updated'      => true,
+					'added'             => true,
+					'tags'              => true,
+					'homepage'          => true,
+					'donate_link'       => true,
+					'reviews'           => true,
+					'download_link'     => true,
+					'screenshots'       => true,
+					'active_installs'   => true,
+					'version'           => true,
+				),
+			);
+			$api  = plugins_api( 'plugin_information', $args );
 		} else {
-			$status['success'] = false;
-			$status['message'] = __( 'Addon file not found.', 'everest-forms' );
+			lg( get_option( 'everest-forms-pro_license_key' ) );
+			lg( $name );
+			$api = json_decode(
+				EVF_Updater_Key_API::version(
+					array(
+						'license'   => get_option( 'everest-forms-pro_license_key' ),
+						'item_name' => ! empty( $name ) ? sanitize_text_field( wp_unslash( $name ) ) : '',
+					)
+				)
+			);
+		}
+
+		if ( is_wp_error( $api ) ) {
+			$status['success']      = false;
+			$status['errorMessage'] = $api['msg'];
 			return $status;
 		}
-	}
 
+		$status['pluginName'] = $api->name;
+
+		$skin     = new WP_Ajax_Upgrader_Skin();
+		$upgrader = new Plugin_Upgrader( $skin );
+		$result   = $upgrader->install( $api->download_link );
+
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			$status['debug'] = $skin->get_upgrade_messages();
+		}
+
+		if ( is_wp_error( $result ) ) {
+			$status['success']      = false;
+			$status['errorCode']    = $result->get_error_code();
+			$status['errorMessage'] = $result->get_error_message();
+			return $status;
+		} elseif ( is_wp_error( $skin->result ) ) {
+			$status['success']      = false;
+			$status['errorCode']    = $skin->result->get_error_code();
+			$status['errorMessage'] = $skin->result->get_error_message();
+			return $status;
+		} elseif ( $skin->get_errors()->get_error_code() ) {
+			$status['success']      = false;
+			$status['errorMessage'] = $skin->get_error_messages();
+			return $status;
+		} elseif ( is_null( $result ) ) {
+			global $wp_filesystem;
+			$status['success']      = false;
+			$status['errorCode']    = 'unable_to_connect_to_filesystem';
+			$status['errorMessage'] = esc_html__( 'Unable to connect to the filesystem. Please confirm your credentials.', 'everest-forms' );
+
+			// Pass through the error from WP_Filesystem if one was raised.
+			if ( $wp_filesystem instanceof WP_Filesystem_Base && is_wp_error( $wp_filesystem->errors ) && $wp_filesystem->errors->get_error_code() ) {
+				$status['errorMessage'] = esc_html( $wp_filesystem->errors->get_error_message() );
+			}
+			return $status;
+		}
+
+		$api->version   = isset( $api->new_version ) ? $api->new_version : '';
+		$install_status = install_plugin_install_status( $api );
+		activate_plugin( $plugin );
+		$status['success'] = true;
+		$status['message'] = __( 'Addon installed Successfully', 'everest-forms' );
+		return $status;
+
+	}
 
 	/**
 	 * Retrieve addons data.

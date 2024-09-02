@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useMemo } from "react";
-import { Box, Flex, Spinner } from "@chakra-ui/react";
+import { Box, Flex, Spinner, useBreakpointValue } from "@chakra-ui/react";
 import Sidebar from "./Sidebar";
 import TemplateList from "./TemplateList";
 import { useQuery } from '@tanstack/react-query';
@@ -67,6 +67,8 @@ const Main: React.FC<{ filter: string }> = ({ filter }) => {
         setState(prevState => ({ ...prevState, searchTerm }));
     }, []);
 
+    const sidebarWidth = useBreakpointValue({ base: "100%", md: "250px" });
+
     if (isLoading) return (
         <Flex justify="center" align="center" height="100vh">
             <Spinner size="xl" />
@@ -76,8 +78,8 @@ const Main: React.FC<{ filter: string }> = ({ filter }) => {
 
     return (
         <Box>
-            <Flex>
-                <Box mr={4}>
+            <Flex direction={{ base: "column", md: "row" }}>
+                <Box width={sidebarWidth} mr={{ base: 0, md: 4 }} mb={{ base: 4, md: 0 }}>
                     <Sidebar
                         categories={categories}
                         onCategorySelect={handleCategorySelect}

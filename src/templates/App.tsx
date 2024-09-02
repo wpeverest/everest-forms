@@ -42,6 +42,7 @@ const TabFilters = ({ onTabChange }) => {
               borderBottom: "2px solid",
               borderColor: "purple.500",
             }}
+            fontSize={{ base: "sm", md: "md" }} // Responsive font size
           >
             {label}
           </Tab>
@@ -69,12 +70,20 @@ const App = () => {
 
   return (
     <ChakraProvider>
-      <Box margin={10} boxShadow="md">
+      <Box margin={{ base: 4, md: 6, lg: 10 }} boxShadow="md">
         {/* Header Section with white background */}
-        <HStack spacing={4} align="center" mb={5} bg="white" p={4} boxShadow="sm">
-          <CustomIcon boxSize={6} />
-          <Divider orientation="vertical" height="24px" />
-          <Text fontSize="lg" fontWeight="bold">
+        <HStack
+          spacing={{ base: 2, md: 4 }}
+          align="center"
+          mb={5}
+          bg="white"
+          p={{ base: 3, md: 4 }}
+          boxShadow="sm"
+          direction={{ base: "column", md: "row" }} // Stack items vertically on smaller screens
+        >
+          <CustomIcon boxSize={{ base: 5, md: 6 }} />
+          <Divider orientation="vertical" height={{ base: "16px", md: "24px" }} />
+          <Text fontSize={{ base: "md", md: "lg" }} fontWeight="bold">
             {__("Add New Form", "everest-forms")}
           </Text>
           <Button colorScheme="purple" variant="outline" onClick={handleRefreshTemplates}>
@@ -84,12 +93,12 @@ const App = () => {
         </HStack>
 
         {/* Main Content Area */}
-        <Box bg="white" p={5} rounded="md" boxShadow="sm">
+        <Box bg="white" p={{ base: 3, md: 5 }} rounded="md" boxShadow="sm">
           <VStack align="start" spacing={4}>
-            <Heading as="h1" size="md" m={0}>
+            <Heading as="h1" size={{ base: "sm", md: "md" }} m={0}>
               {__("Select a Template", "everest-forms")}
             </Heading>
-            <Text fontSize="md" color="gray.600">
+            <Text fontSize={{ base: "sm", md: "md" }} color="gray.600">
               {__(
                 "To get started quickly, you can pick from our ready-made templates, begin with a blank form, or design your own.",
                 "everest-forms"

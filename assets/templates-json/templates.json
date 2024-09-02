@@ -31,8 +31,6 @@
           "preview_link": "https://demo.wpeverest.com/everest-forms/donation-form/",
           "imageUrl": "https://plus.unsplash.com/premium_photo-1722077701586-a81474ac7289?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
           "addons": {
-            "everest-forms-pro": "Everest Forms Pro",
-            "everest-forms-paypal-standard": "Everest Forms Paypal Standard",
             "everest-forms-stripe": "Everest Forms Stripe"
           },
           "isPro": true,

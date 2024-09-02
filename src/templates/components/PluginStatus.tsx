@@ -4,9 +4,6 @@ import {
   Button,
   useToast,
   Spinner,
-  Checkbox,
-  HStack,
-  VStack,
   Box,
   Text,
   Table,
@@ -14,8 +11,8 @@ import {
   Tr,
   Td,
   Icon,
-  Flex,
   Divider,
+  VStack,
 } from "@chakra-ui/react";
 import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
 import { templatesScriptData } from "../utils/global";
@@ -39,7 +36,9 @@ const PluginStatus: React.FC<PluginStatusProps> = ({
 }) => {
   const [pluginStatuses, setPluginStatuses] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
-  const [currentPlugin, setCurrentPlugin] = useState<string | null>(null);
+  const [installInProgress, setInstallInProgress] = useState(false);
+  const [installComplete, setInstallComplete] = useState(false);
+  const [buttonLabel, setButtonLabel] = useState("");
   const toast = useToast();
 
   useEffect(() => {
@@ -55,6 +54,7 @@ const PluginStatus: React.FC<PluginStatusProps> = ({
 
         if (response.success) {
           setPluginStatuses(response.plugin_status);
+          updateButtonLabel(response.plugin_status);
         } else {
           throw new Error("Invalid response format");
         }
@@ -75,137 +75,158 @@ const PluginStatus: React.FC<PluginStatusProps> = ({
     fetchPluginStatus();
   }, [toast]);
 
-  const allActive = requiredPlugins.every(
-    (plugin) => pluginStatuses[plugin.key] === "active"
-  );
-  const anyNotInstalled = requiredPlugins.some(
-    (plugin) => pluginStatuses[plugin.key] === "not-installed"
-  );
-  const anyInactive = requiredPlugins.some(
-    (plugin) => pluginStatuses[plugin.key] === "inactive"
-  );
+  const updateButtonLabel = (statuses: Record<string, string>) => {
+    const allActive = requiredPlugins.every(
+      (plugin) => statuses[plugin.key] === "active"
+    );
+    const anyNotInstalled = requiredPlugins.some(
+      (plugin) => statuses[plugin.key] === "not-installed"
+    );
+    const anyInactive = requiredPlugins.some(
+      (plugin) => statuses[plugin.key] === "inactive"
+    );
 
-  const buttonLabel = allActive
-    ? "Continue"
-    : anyNotInstalled
-    ? "Install & Activate"
-    : anyInactive
-    ? "Activate and Continue"
-    : "Continue";
+    if (allActive) {
+      setButtonLabel("Continue");
+      setInstallComplete(true);
+    } else if (anyNotInstalled) {
+      setButtonLabel("Install & Activate");
+      setInstallComplete(false);
+    } else if (anyInactive) {
+      setButtonLabel("Activate and Continue");
+      setInstallComplete(false);
+    } else {
+      setButtonLabel("Continue");
+      setInstallComplete(false);
+    }
+  };
 
   const handleButtonClick = async () => {
-    if (anyInactive || anyNotInstalled) {
-      setLoading(true);
-      for (const plugin of requiredPlugins) {
-        setCurrentPlugin(plugin.key);
-        try {
-          const response = (await apiFetch({
-            path: `${restURL}everest-forms/v1/plugin/activate`,
-            method: "POST",
-            body: JSON.stringify({
-              moduleData: [
-                {
-                  slug: plugin.key,
-                  type: pluginStatuses[plugin.key] === "not-installed" ? "addon" : "addon",
-                },
-              ],
-            }),
-            headers: {
-              "Content-Type": "application/json",
-              "X-WP-Nonce": security,
-            },
-          })) as PluginStatusResponse;
+    if (installComplete) {
+      // If the installation and activation are complete, just proceed
+      onActivateAndContinue();
+    } else {
+      // If installation and activation are not complete
+      const anyNotInstalled = requiredPlugins.some(
+        (plugin) => pluginStatuses[plugin.key] === "not-installed"
+      );
+      const anyInactive = requiredPlugins.some(
+        (plugin) => pluginStatuses[plugin.key] === "inactive"
+      );
 
-          if (response.success) {
-            setPluginStatuses((prevStatuses) => ({
-              ...prevStatuses,
-              [plugin.key]: "active",
-            }));
-          } else {
+      if (anyInactive || anyNotInstalled) {
+        setLoading(true);
+        setInstallInProgress(true);
+
+        for (const plugin of requiredPlugins) {
+          try {
+            const response = (await apiFetch({
+              path: `${restURL}everest-forms/v1/plugin/activate`,
+              method: "POST",
+              body: JSON.stringify({
+                moduleData: [
+                  {
+                    name: plugin.value,
+                    slug: plugin.key,
+                    type: pluginStatuses[plugin.key] === "not-installed" ? "addon" : "addon",
+                  },
+                ],
+              }),
+              headers: {
+                "Content-Type": "application/json",
+                "X-WP-Nonce": security,
+              },
+            })) as PluginStatusResponse;
+
+            if (response.success) {
+              setPluginStatuses((prevStatuses) => ({
+                ...prevStatuses,
+                [plugin.key]: "active",
+              }));
+            } else {
+              setPluginStatuses((prevStatuses) => ({
+                ...prevStatuses,
+                [plugin.key]: "error",
+              }));
+            }
+          } catch (error) {
+            console.error("Error activating plugin:", error);
             setPluginStatuses((prevStatuses) => ({
               ...prevStatuses,
               [plugin.key]: "error",
             }));
+            toast({
+              title: "Error",
+              description: `Unable to activate ${plugin.value}.`,
+              status: "error",
+              position: "bottom-right",
+              duration: 5000,
+              isClosable: true,
+              variant: "subtle",
+            });
           }
-        } catch (error) {
-          console.error("Error activating plugin:", error);
-          setPluginStatuses((prevStatuses) => ({
-            ...prevStatuses,
-            [plugin.key]: "error",
-          }));
-          toast({
-            title: "Error",
-            description: `Unable to activate ${plugin.value}.`,
-            status: "error",
-            position: "bottom-right",
-            duration: 5000,
-            isClosable: true,
-            variant: "subtle",
-          });
         }
+        setLoading(false);
+        setInstallInProgress(false);
+        setInstallComplete(true);
+		setButtonLabel("Continue");
+        toast({
+          title: "Success",
+          description: "All required plugins installed and activated successfully.",
+          status: "success",
+          position: "bottom-right",
+          duration: 5000,
+          isClosable: true,
+          variant: "subtle",
+        });
+      } else {
+        onActivateAndContinue();
       }
-      setLoading(false);
-      setCurrentPlugin(null);
-      toast({
-        title: "Success",
-        description: "All required plugins activated successfully.",
-        status: "success",
-        position: "bottom-right",
-        duration: 5000,
-        isClosable: true,
-        variant: "subtle",
-      });
-      onActivateAndContinue();
-    } else {
-      onActivateAndContinue();
     }
   };
 
-
-
- return (
+  return (
     <VStack spacing={4} align="stretch">
-	 {
-		requiredPlugins?.length && <>
-		<Divider color={"gray.200"} mb={0}/>
-		<Text my={0} fontSize={16}color={"gray.700"} >This form template requires the following addons:</Text>
-      <Box borderWidth="1px" borderRadius="md" overflow="hidden" w="100%">
-        <Table variant="simple">
-          <Tbody>
-            {requiredPlugins.map((plugin) => (
-              <Tr key={plugin.key}>
-                <Td>{plugin.value}</Td>
-                <Td textAlign="right">
-                  {pluginStatuses[plugin.key] === "active" ? (
-                    <Icon as={CheckCircleIcon} color="green" />
-                  ) : pluginStatuses[plugin.key] === "inactive" ||
-                    pluginStatuses[plugin.key] === "not-installed" ? (
-                    <Icon as={WarningIcon} color="yellow" />
-                  ) : (
-                    <Spinner size="sm" />
-                  )}
-                </Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </Box>
-		</>
-	 }
-        <Button
-
-		marginLeft={"auto"}
-          onClick={handleButtonClick}
-          colorScheme="purple"
-          size="md"
-          isLoading={loading}
-          loadingText="Activating..."
-        >
-          {buttonLabel}
-        </Button>
+      {requiredPlugins?.length > 0 && (
+        <>
+          <Divider color={"gray.200"} mb={0} />
+          <Text my={0} fontSize={16} color={"gray.700"}>
+            This form template requires the following addons:
+          </Text>
+          <Box borderWidth="1px" borderRadius="md" overflow="hidden" w="100%">
+            <Table variant="simple">
+              <Tbody>
+                {requiredPlugins.map((plugin) => (
+                  <Tr key={plugin.key}>
+                    <Td>{plugin.value}</Td>
+                    <Td textAlign="right">
+                      {pluginStatuses[plugin.key] === "active" ? (
+                        <Icon as={CheckCircleIcon} color="green" />
+                      ) : pluginStatuses[plugin.key] === "inactive" ||
+                        pluginStatuses[plugin.key] === "not-installed" ? (
+                        <Icon as={WarningIcon} color="yellow" />
+                      ) : (
+                        <Spinner size="sm" />
+                      )}
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </Box>
+        </>
+      )}
+      <Button
+        marginLeft={"auto"}
+        onClick={handleButtonClick}
+        colorScheme="purple"
+        size="md"
+        isLoading={loading}
+        isDisabled={installInProgress}
+      >
+        {buttonLabel}
+      </Button>
     </VStack>
-
-
   );
 };
 
