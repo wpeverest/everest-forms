@@ -15,6 +15,7 @@ import {
   Td,
   Icon,
   Flex,
+  Divider,
 } from "@chakra-ui/react";
 import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
 import { templatesScriptData } from "../utils/global";
@@ -89,7 +90,7 @@ const PluginStatus: React.FC<PluginStatusProps> = ({
     : anyNotInstalled
     ? "Install & Activate"
     : anyInactive
-    ? "Activate"
+    ? "Activate and Continue"
     : "Continue";
 
   const handleButtonClick = async () => {
@@ -160,8 +161,14 @@ const PluginStatus: React.FC<PluginStatusProps> = ({
     }
   };
 
-  return (
+
+
+ return (
     <VStack spacing={4} align="stretch">
+	 {
+		requiredPlugins?.length && <>
+		<Divider color={"gray.200"} mb={0}/>
+		<Text my={0} fontSize={16}color={"gray.700"} >This form template requires the following addons:</Text>
       <Box borderWidth="1px" borderRadius="md" overflow="hidden" w="100%">
         <Table variant="simple">
           <Tbody>
@@ -170,10 +177,10 @@ const PluginStatus: React.FC<PluginStatusProps> = ({
                 <Td>{plugin.value}</Td>
                 <Td textAlign="right">
                   {pluginStatuses[plugin.key] === "active" ? (
-                    <Icon as={CheckCircleIcon} color="green.500" />
+                    <Icon as={CheckCircleIcon} color="green" />
                   ) : pluginStatuses[plugin.key] === "inactive" ||
                     pluginStatuses[plugin.key] === "not-installed" ? (
-                    <Icon as={WarningIcon} color="yellow.500" />
+                    <Icon as={WarningIcon} color="yellow" />
                   ) : (
                     <Spinner size="sm" />
                   )}
@@ -183,8 +190,11 @@ const PluginStatus: React.FC<PluginStatusProps> = ({
           </Tbody>
         </Table>
       </Box>
-      <Flex justifyContent="flex-end" w="100%">
+		</>
+	 }
         <Button
+
+		marginLeft={"auto"}
           onClick={handleButtonClick}
           colorScheme="purple"
           size="md"
@@ -193,8 +203,9 @@ const PluginStatus: React.FC<PluginStatusProps> = ({
         >
           {buttonLabel}
         </Button>
-      </Flex>
     </VStack>
+
+
   );
 };
 

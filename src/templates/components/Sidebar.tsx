@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { Box, VStack, HStack, Text, Spacer, Input,InputLeftElement,InputGroup } from "@chakra-ui/react";
+import { Box, VStack, HStack, Text, Spacer, Input, InputLeftElement, InputGroup } from "@chakra-ui/react";
 import { FaSearch } from 'react-icons/fa';
 import debounce from "lodash.debounce";
 
@@ -9,47 +9,54 @@ interface SidebarProps {
   onSearchChange: (searchTerm: string) => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ categories, onCategorySelect, onSearchChange }) => {
+const Sidebar: React.FC<SidebarProps> = React.memo(({ categories, onCategorySelect, onSearchChange }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
 
-  // Debounced search function
   const debouncedSearchChange = useCallback(
     debounce((value: string) => {
-      onSearchChange(value); // Call the parent function with the debounced value
+      onSearchChange(value);
     }, 300),
     [onSearchChange]
   );
 
-  // Handle search input change
+
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchTerm(value);
     debouncedSearchChange(value);
   };
 
+
+  const favorites = categories.find(cat => cat.name === 'Favorites');
+
+
+  const orderedCategories = favorites && favorites.count > 0
+    ? [favorites, ...categories.filter(cat => cat.name !== 'Favorites')]
+    : categories;
+
   return (
     <Box>
-    <InputGroup mb={4}>
-      <InputLeftElement pointerEvents="none">
-        <FaSearch color="gray.300" />
-      </InputLeftElement>
-      <Input
-        placeholder="Search Templates"
-        value={searchTerm}
-        onChange={handleSearchChange}
-      />
-    </InputGroup>
+      <InputGroup mb={4}>
+        <InputLeftElement pointerEvents="none">
+          <FaSearch color="gray.300" />
+        </InputLeftElement>
+        <Input
+          placeholder="Search Templates"
+          value={searchTerm}
+          onChange={handleSearchChange}
+        />
+      </InputGroup>
       <VStack align="stretch" spacing={2}>
-        {categories.map((category) => (
+        {orderedCategories.map((category) => (
           <HStack
             key={category.name}
-            p={2}
+            p="3px"
             _hover={{ bg: "gray.100" }}
             borderRadius="md"
             cursor="pointer"
             onClick={() => onCategorySelect(category.name)}
           >
-            <Text>{category.name}</Text>
+            <Text fontWeight="semibold">{category.name}</Text>
             <Spacer />
             <Text color="gray.500">{category.count}</Text>
           </HStack>
@@ -57,6 +64,6 @@ const Sidebar: React.FC<SidebarProps> = ({ categories, onCategorySelect, onSearc
       </VStack>
     </Box>
   );
-};
+});
 
 export default Sidebar;

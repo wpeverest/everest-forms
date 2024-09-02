@@ -180,26 +180,28 @@ class Everest_Forms_Plugin_Status {
 		 * @global WP_Filesystem_Base $wp_filesystem Subclass
 		 */
 	public static function bulk_install_addons( $addon_data ) {
+		$failed_addons = array();
 
-		$failed_addon = array();
 		foreach ( $addon_data as $addon ) {
-			$slug        = isset( $addon['slug'] ) ? sanitize_key( wp_unslash( $addon['slug'] ) ) : '';
-			$plugin_slug = isset( $addon['slug'] ) ? sanitize_key( $addon['slug'] ) : '';
-			$name        = isset( $addon['name'] ) ? sanitize_text_field( $addon['name'] ) : '';
-			$status      = array(
+			$slug   = isset( $addon['slug'] ) ? sanitize_key( wp_unslash( $addon['slug'] ) ) : '';
+			$name   = isset( $addon['name'] ) ? sanitize_text_field( $addon['name'] ) : '';
+			$plugin = plugin_basename( WP_PLUGIN_DIR . '/' . $slug . '/' . $slug . '.php' ); // Adjust path as needed
+			$status = array(
 				'install' => 'plugin',
 				'slug'    => $slug,
 			);
 
 			$status = self::install_individual_addon( $slug, $plugin, $name, $status );
 
-			if ( isset( $status['success'] ) && '' === $status['success'] ) {
-				array_push( $failed_addon, $name );
-				continue;
+			if ( isset( $status['success'] ) && ! $status['success'] ) {
+				$failed_addons[] = array(
+					'name'    => $name,
+					'message' => $status['message'],
+				);
 			}
 		}
 
-		return $failed_addon;
+		return $failed_addons;
 	}
 
 		/**
@@ -264,7 +266,7 @@ class Everest_Forms_Plugin_Status {
 					return $status;
 				}
 				$status['success'] = true;
-				$status['message'] = __( 'Addons activated successfully', 'everest-forms' );
+				$status['message'] = __( 'Addon activated successfully', 'everest-forms' );
 			} else {
 				$status['success'] = true;
 				$status['message'] = __( 'Addon is already active.', 'everest-forms' );
@@ -287,7 +289,6 @@ class Everest_Forms_Plugin_Status {
 	 */
 	public static function get_addons_data() {
 		$addons_data = evf_get_json_file_contents( 'assets/extensions-json/sections/all_extensions.json' );
-		lg( $addons_data );
 
 		$new_product = (object) array(
 			'products' => array(

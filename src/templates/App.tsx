@@ -1,17 +1,18 @@
-import React, { useState } from "react";
+import { __ } from '@wordpress/i18n';
+import React, { useState, useMemo } from "react";
 import {
   ChakraProvider,
   Box,
-  VStack,
-  Heading,
-  Text,
   HStack,
+  Text,
+  Tabs,
   TabList,
   Tab,
-  Tabs,
   Button,
   Icon,
   Divider,
+  VStack,
+  Heading,
 } from "@chakra-ui/react";
 import Main from "./components/Main";
 
@@ -25,13 +26,45 @@ const CustomIcon = (props) => (
   </Icon>
 );
 
+// Extracted component for tab filters
+const TabFilters = ({ onTabChange }) => {
+  const filters = useMemo(() => [__("All", "everest-forms"), __("Free", "everest-forms"), __("Premium", "everest-forms")], []);
+
+  return (
+    <Tabs variant="unstyled" ml="auto" onChange={onTabChange}>
+      <TabList>
+        {filters.map((label) => (
+          <Tab
+            key={label}
+            _selected={{
+              color: "purple.500",
+              fontWeight: "bold",
+              borderBottom: "2px solid",
+              borderColor: "purple.500",
+            }}
+          >
+            {label}
+          </Tab>
+        ))}
+      </TabList>
+    </Tabs>
+  );
+};
+
 const App = () => {
-  const [selectedTab, setSelectedTab] = useState<string>("All");
+  const [selectedTab, setSelectedTab] = useState<string>(__("All", "everest-forms"));
 
   // Handle tab changes
   const handleTabChange = (index: number) => {
-    const filters = ["All", "Free", "Premium"];
+    const filters = [__("All", "everest-forms"), __("Free", "everest-forms"), __("Premium", "everest-forms")];
     setSelectedTab(filters[index]);
+  };
+
+  // Handle refresh button click
+  const handleRefreshTemplates = () => {
+    const url = new URL(window.location.href);
+    url.searchParams.set('refresh', Date.now());
+    window.location.href = url.toString();
   };
 
   return (
@@ -42,43 +75,27 @@ const App = () => {
           <CustomIcon boxSize={6} />
           <Divider orientation="vertical" height="24px" />
           <Text fontSize="lg" fontWeight="bold">
-            Add New Form
+            {__("Add New Form", "everest-forms")}
           </Text>
-          <Button colorScheme="purple" variant="outline">
-            Refresh Templates
+          <Button colorScheme="purple" variant="outline" onClick={handleRefreshTemplates}>
+            {__("Refresh Templates", "everest-forms")}
           </Button>
-          <Tabs variant="unstyled" ml="auto" onChange={handleTabChange}>
-            <TabList>
-              {["All", "Free", "Premium"].map((label) => (
-                <Tab
-                  key={label}
-                  _selected={{
-                    color: "purple.500",
-                    fontWeight: "bold",
-                    borderBottom: "2px solid",
-                    borderColor: "purple.500",
-                  }}
-                >
-                  {label}
-                </Tab>
-              ))}
-            </TabList>
-          </Tabs>
+          <TabFilters onTabChange={handleTabChange} />
         </HStack>
 
         {/* Main Content Area */}
         <Box bg="white" p={5} rounded="md" boxShadow="sm">
           <VStack align="start" spacing={4}>
-            {/* Heading with margin bottom */}
             <Heading as="h1" size="md" m={0}>
-              Select a Template
+              {__("Select a Template", "everest-forms")}
             </Heading>
             <Text fontSize="md" color="gray.600">
-              To get started quickly, you can pick from our ready-made templates, begin with a blank form, or design your own.
+              {__(
+                "To get started quickly, you can pick from our ready-made templates, begin with a blank form, or design your own.",
+                "everest-forms"
+              )}
             </Text>
           </VStack>
-
-          {/* Content component */}
           <Main filter={selectedTab} />
         </Box>
       </Box>

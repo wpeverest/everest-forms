@@ -1,131 +1,95 @@
-import React, { useState, useEffect } from "react";
-import { Box, Flex } from "@chakra-ui/react";
+import React, { useState, useCallback, useMemo } from "react";
+import { Box, Flex, Spinner } from "@chakra-ui/react";
 import Sidebar from "./Sidebar";
 import TemplateList from "./TemplateList";
+import { useQuery } from '@tanstack/react-query';
 import apiFetch from "@wordpress/api-fetch";
 import { templatesScriptData } from "../utils/global";
+import { __ } from '@wordpress/i18n';
 
 const { restURL, security } = templatesScriptData;
 
-interface Category {
-  name: string;
-  count: number;
-}
-
-interface Template {
-  title: string;
-  slug: string;
-  imageUrl: string;
-  description: string;
-  isPro: boolean;
-  categories: string[];
-}
-
-interface ApiResponse {
-  templates: { category: string; templates: Template[] }[];
-}
-
-interface MainProps {
-  filter: string;
-}
-
-const Main: React.FC<MainProps> = ({ filter }) => {
-  const [selectedCategory, setSelectedCategory] = useState<string>("All Forms");
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [templates, setTemplates] = useState<Template[]>([]);
-  const [filteredTemplates, setFilteredTemplates] = useState<Template[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [searchTerm, setSearchTerm] = useState<string>("");
-
-  // Handle category selection
-  const handleCategorySelect = (category: string) => {
-    setSelectedCategory(category);
-  };
-
-  // Handle search input change
-  const handleSearchChange = (term: string) => {
-    setSearchTerm(term);
-  };
-
-  // Fetch data from API
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setIsLoading(true);
-
-        const response = (await apiFetch({
-          path: `${restURL}everest-forms/v1/templates`,
-          method: "GET",
-          headers: {
+const fetchTemplates = async () => {
+    const response = (await apiFetch({
+        path: `${restURL}everest-forms/v1/templates`,
+        method: "GET",
+        headers: {
             "X-WP-Nonce": security,
-          },
-        })) as ApiResponse;
+        },
+    })) as { templates: { category: string; templates: Template[] }[] };
 
-        if (response && Array.isArray(response.templates)) {
-          const allTemplates = response.templates.flatMap((category) => category.templates);
-          setTemplates(allTemplates);
+    if (response && Array.isArray(response.templates)) {
+        const allTemplates = response.templates.flatMap((category) => category.templates);
+        return allTemplates;
+    } else {
+        throw new Error(__("Unexpected response format.", "everest-forms"));
+    }
+};
 
-          // Create unique category list
-          const categoriesSet = new Set<string>();
-          allTemplates.forEach(template => {
+const Main: React.FC<{ filter: string }> = ({ filter }) => {
+    const [state, setState] = useState({
+        selectedCategory: __("All Forms", "everest-forms"),
+        searchTerm: ""
+    });
+
+    const { selectedCategory, searchTerm } = state;
+
+    const { data: templates = [], isLoading, error } = useQuery(['templates'], fetchTemplates);
+
+    const categories = useMemo(() => {
+        const categoriesSet = new Set<string>();
+        templates.forEach(template => {
             template.categories.forEach(category => categoriesSet.add(category));
-          });
+        });
 
-          const categoriesList = Array.from(categoriesSet).map((category) => ({
-            name: category,
-            count: allTemplates.filter(template => template.categories.includes(category)).length,
-          }));
+        return [
+            { name: __("All Forms", "everest-forms"), count: templates.length },
+            ...Array.from(categoriesSet).map((category) => ({
+                name: category,
+                count: templates.filter(template => template.categories.includes(category)).length,
+            }))
+        ];
+    }, [templates]);
 
-          setCategories([{ name: "All Forms", count: allTemplates.length }, ...categoriesList]);
-        } else {
-          throw new Error("Unexpected response format.");
-        }
-      } catch (error) {
-        setError("Failed to load templates. Please try again later.");
-        console.error("Error fetching templates:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    const filteredTemplates = useMemo(() => {
+        return templates.filter(template =>
+            (selectedCategory === __("All Forms", "everest-forms") || template.categories.includes(selectedCategory)) &&
+            template.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
+            (filter === "All" || (filter === "Free" && !template.isPro) || (filter === "Premium" && template.isPro))
+        );
+    }, [selectedCategory, searchTerm, templates, filter]);
 
-    fetchData();
-  }, []);
+    const handleCategorySelect = useCallback((category) => {
+        setState(prevState => ({ ...prevState, selectedCategory: category }));
+    }, []);
 
-  // Filter templates based on selected category, search term, and filter type
-  useEffect(() => {
-    const result = templates.filter(template =>
-      (selectedCategory === "All Forms" || template.categories.includes(selectedCategory)) &&
-      template.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      (filter === "All" || (filter === "Free" && !template.isPro) || (filter === "Premium" && template.isPro))
+    const handleSearchChange = useCallback((searchTerm) => {
+        setState(prevState => ({ ...prevState, searchTerm }));
+    }, []);
+
+    if (isLoading) return (
+        <Flex justify="center" align="center" height="100vh">
+            <Spinner size="xl" />
+        </Flex>
     );
-    setFilteredTemplates(result);
-  }, [selectedCategory, searchTerm, templates, filter]);
+    if (error) return <div>{(error as Error).message}</div>;
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>{error}</div>;
-  }
-
-  return (
-    <Box>
-      <Flex>
-        <Box mr={4}>
-          <Sidebar
-            categories={categories}
-            onCategorySelect={handleCategorySelect}
-            onSearchChange={handleSearchChange}
-          />
+    return (
+        <Box>
+            <Flex>
+                <Box mr={4}>
+                    <Sidebar
+                        categories={categories}
+                        onCategorySelect={handleCategorySelect}
+                        onSearchChange={handleSearchChange}
+                    />
+                </Box>
+                <Box flex={1}>
+                    <TemplateList selectedCategory={selectedCategory} templates={filteredTemplates} />
+                </Box>
+            </Flex>
         </Box>
-        <Box flex={1}>
-          <TemplateList selectedCategory={selectedCategory} templates={filteredTemplates} />
-        </Box>
-      </Flex>
-    </Box>
-  );
+    );
 };
 
 export default Main;

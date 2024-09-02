@@ -28,9 +28,9 @@
     "test-unit-php": "wp-env run phpunit 'phpunit --configuration=/var/www/html/wp-content/plugins/everest-forms/phpunit.xml.dist --verbose'"
   },
   "devDependencies": {
-    "@babel/preset-typescript": "7.23.3",
     "@babel/core": "7.25.2",
     "@babel/eslint-parser": "7.25.1",
+    "@babel/preset-typescript": "7.23.3",
     "@types/wordpress__block-editor": "^11.5.11",
     "@wordpress/babel-preset-default": "6.5.1",
     "@wordpress/block-editor": "^12.12.0",
@@ -89,6 +89,15 @@
     "@chakra-ui/react": "2.8.2",
     "@emotion/react": "11.11.4",
     "@emotion/styled": "11.11.0",
+    "@tanstack/react-query": "4.36.1",
+    "@tanstack/react-query-devtools": "5.53.2",
+    "@types/node": "20.10.5",
+    "@types/react": "18.2.45",
+    "@types/react-beautiful-dnd": "13.1.7",
+    "@types/react-color": "3.0.10",
+    "@types/react-datepicker": "4.19.4",
+    "@types/react-dom": "18.2.18",
+    "@types/react-select": "5.0.1",
     "@wordpress/api-fetch": "6.51.0",
     "@wordpress/data": "^9.22.0",
     "@wordpress/i18n": "4.54.0",
@@ -101,14 +110,6 @@
     "react-grid-system": "8.2.0",
     "react-icons": "5.2.1",
     "react-player": "2.16.0",
-    "react-router-dom": "6.22.3",
-    "@tanstack/react-query": "^4.36.1",
-    "@types/node": "20.10.5",
-    "@types/react": "18.2.45",
-    "@types/react-beautiful-dnd": "13.1.7",
-    "@types/react-color": "3.0.10",
-    "@types/react-datepicker": "4.19.4",
-    "@types/react-dom": "18.2.18",
-    "@types/react-select": "5.0.1"
+    "react-router-dom": "6.22.3"
   }
 }
