@@ -86,8 +86,8 @@
   "dependencies": {
     "@chakra-ui/icons": "^2.0.17",
     "@chakra-ui/react": "2.8.2",
-    "@emotion/react": "11.11.4",
-    "@emotion/styled": "11.11.0",
+    "@emotion/react": "11.13.3",
+    "@emotion/styled": "11.13.0",
     "@wordpress/api-fetch": "6.51.0",
     "@wordpress/data": "^9.22.0",
     "@wordpress/i18n": "4.54.0",
