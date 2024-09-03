@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { Box, VStack, HStack, Text, Spacer, Input, InputLeftElement, InputGroup } from "@chakra-ui/react";
+import { Box, VStack, HStack, Text, Spacer, Input, InputLeftElement, InputGroup,Badge } from "@chakra-ui/react";
 import { FaSearch } from 'react-icons/fa';
 import debounce from "lodash.debounce";
 
@@ -58,7 +58,7 @@ const Sidebar: React.FC<SidebarProps> = React.memo(({ categories, onCategorySele
           >
             <Text fontWeight="semibold">{category.name}</Text>
             <Spacer />
-            <Text color="gray.500">{category.count}</Text>
+            <Badge color="gray.500">{category.count}</Badge>
           </HStack>
         ))}
       </VStack>

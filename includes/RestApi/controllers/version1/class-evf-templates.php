@@ -118,24 +118,51 @@ class Everest_Forms_Template_Section_Data {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function get_templates_data() {
-		$template_data = self::get_templates_data_list();
 
-		if ( empty( $template_data ) ) {
-			return new WP_Error( 'no_templates', __( 'No templates found', 'everest-forms' ), array( 'status' => 404 ) );
+		$template_url = 'https://d3m99fsxk070py.cloudfront.net/';
+
+		$template_json_url = $template_url . 'templates1.json';
+
+		try {
+			$response = wp_remote_get( $template_json_url );
+
+			if ( is_wp_error( $response ) ) {
+				return new WP_Error( 'http_request_failed', __( 'Failed to fetch templates.', 'everest-forms' ) );
+			}
+
+			$content_json  = wp_remote_retrieve_body( $response );
+			$template_data = json_decode( $content_json );
+
+			if ( empty( $template_data ) ) {
+				return new WP_Error( 'no_templates', __( 'No templates found.', 'everest-forms' ), array( 'status' => 404 ) );
+			}
+		} catch ( Exception $e ) {
+			return new WP_Error( 'exception_occurred', __( 'An error occurred while fetching templates.', 'everest-forms' ), array( 'status' => 500 ) );
 		}
 
-		$user_id = get_current_user_id();
-		if ( $user_id ) {
-			$user_favorites = get_option( 'user_favorites', array() );
-			$favorite_slugs = isset( $user_favorites[ $user_id ] ) ? $user_favorites[ $user_id ] : array();
+		$folder_path = untrailingslashit( plugin_dir_path( EVF_PLUGIN_FILE ) . '/assets/images/templates' );
 
-			foreach ( $template_data as $templates ) {
-				foreach ( $templates as $template ) {
-					foreach ( $template->templates as $key => $temp ) {
-						if ( in_array( $temp->slug, $favorite_slugs ) ) {
-							if ( ! in_array( 'Favorites', $temp->categories ) ) {
-								array_unshift( $temp->categories, 'Favorites' );
-							}
+		foreach ( $template_data as $templates ) {
+			foreach ( $templates as $template ) {
+				foreach ( $template->templates as $temp ) {
+					$image_url      = isset( $temp->image ) ? $temp->image : ( $template_url . 'images/' . $temp->slug . '.png' );
+					$temp->imageUrl = $image_url;
+
+					$temp_name     = explode( '/', $image_url );
+					$relative_path = $folder_path . '/' . end( $temp_name );
+					$exists        = file_exists( $relative_path );
+
+					if ( $exists ) {
+						$temp->imageUrl = untrailingslashit( plugin_dir_url( EVF_PLUGIN_FILE ) ) . '/assets/images/templates/' . $temp->slug . '.png';
+					}
+
+					$user_id = get_current_user_id();
+					if ( $user_id ) {
+						$user_favorites = get_option( 'user_favorites', array() );
+						$favorite_slugs = isset( $user_favorites[ $user_id ] ) ? $user_favorites[ $user_id ] : array();
+
+						if ( in_array( $temp->slug, $favorite_slugs ) && ! in_array( 'Favorites', $temp->categories ) ) {
+							array_unshift( $temp->categories, 'Favorites' );
 						}
 					}
 				}
@@ -144,6 +171,7 @@ class Everest_Forms_Template_Section_Data {
 
 		return rest_ensure_response( $template_data );
 	}
+
 
 
 	/**

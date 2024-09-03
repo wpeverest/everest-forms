@@ -144,7 +144,7 @@ class EVF_Modules {
 		}
 
 		$modules_lists = array_merge( $features_lists, $addons_lists );
-
+		lg( $modules_lists );
 		return new \WP_REST_Response(
 			array(
 				'success'       => true,
@@ -325,7 +325,6 @@ class EVF_Modules {
 				)
 			);
 		}
-
 
 		if ( is_wp_error( $api ) ) {
 			$status['success']      = false;
