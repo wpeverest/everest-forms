@@ -92,7 +92,7 @@
     "@wordpress/data": "^9.22.0",
     "@wordpress/i18n": "4.54.0",
     "file-loader": "6.2.0",
-    "framer-motion": "11.0.20",
+    "framer-motion": "11.5.2",
     "grunt-cli": "1.4.3",
     "lodash.debounce": "4.0.8",
     "react": "18.2.0",
