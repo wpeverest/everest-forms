@@ -6,7 +6,27 @@
 	api.bind( 'ready', function() {
 		$( '#customize-info' ).find( '.panel-title.site-title' ).text( data.panelTitle );
 		$( '#customize-info' ).find( '.customize-panel-description:first' ).text( data.panelDescription );
-		$('#customize-controls').addClass('everest-forms-style-wrapper');
+		$('#customize-controls').addClass('wpeverest-customizer-style');
+
+		function getQueryParam(param) {
+			var queryString = window.location.search.substring(1);
+			var params = new URLSearchParams(queryString);
+			return params.get(param);
+		}
+
+
+		var formId = getQueryParam('form_id');
+
+		if (formId) {
+
+			var marginSelector = '#customize-control-everest_forms_styles-' + formId + '-form_container-margin';
+			var paddingSelector = '#customize-control-everest_forms_styles-' + formId + '-form_container-padding';
+
+			setTimeout(function() {
+				$(marginSelector + ', ' + paddingSelector).closest('li').wrapAll('<ul class="everest-forms-customize-option-wrapper everest-forms-margin_padding_option"></ul>');
+			}, 300);
+		}
+
 	} );
 
 	/**
