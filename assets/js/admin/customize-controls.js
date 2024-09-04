@@ -6,6 +6,7 @@
 	api.bind( 'ready', function() {
 		$( '#customize-info' ).find( '.panel-title.site-title' ).text( data.panelTitle );
 		$( '#customize-info' ).find( '.customize-panel-description:first' ).text( data.panelDescription );
+		$('#customize-controls').addClass('everest-forms-style-wrapper');
 	} );
 
 	/**
