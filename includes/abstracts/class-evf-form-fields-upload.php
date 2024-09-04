@@ -1342,7 +1342,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 						unlink( $meta_value );
 					}
 
-					if ( isset( $meta_value['type'] ) && 'file-upload' === $meta_value['type'] && isset( $meta_value['value_raw'] ) ) {
+					if ( isset( $meta_value['type'] ) && ( 'file-upload' === $meta_value['type'] && isset( $meta_value['value_raw'] ) || 'image-upload' === $meta_value['type'] && isset( $meta_value['value_raw'] ) ) ) {
 						foreach ( $meta_value['value_raw'] as $file_data ) {
 							if ( isset( $file_data['value'] ) ) {
 								$file_url = $file_data['value'];
@@ -1430,7 +1430,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 					if ( file_exists( $meta_value ) ) {
 						$entry_files[] = $meta_value;
 					}
-				} elseif ( isset( $meta_value['type'] ) && 'file-upload' === $meta_value['type'] && isset( $meta_value['value_raw'] ) ) {
+				} elseif ( isset( $meta_value['type'] ) && ( 'file-upload' === $meta_value['type'] && isset( $meta_value['value_raw'] ) || 'image-upload' === $meta_value['type'] && isset( $meta_value['value_raw'] ) ) ) {
 					foreach ( $meta_value['value_raw'] as $file_data ) {
 						if ( isset( $file_data['value'] ) ) {
 							$file_url      = $file_data['value'];
