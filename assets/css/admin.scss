@@ -1006,6 +1006,9 @@
 						 &.payment_log::before {
 							content: "\e918";
 						}
+						&.api_logs::before {
+							content: "\e919";
+						}
 						 &.permission::before {
 							 content: "\e030";
 						 }
