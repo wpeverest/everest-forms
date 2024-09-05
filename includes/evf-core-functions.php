@@ -5604,3 +5604,40 @@ function evf_get_next_key_array( $arr, $key ) {
 
 	return isset( $next_key ) ? $next_key : '' ;
 }
+
+
+add_action( 'wp_mail_failed', 'evf_email_send_failed_handler', 1 );
+
+if ( ! function_exists( 'evf_email_send_failed_handler' ) ) {
+
+	/**
+	 * Handle errors fetch mechanism when mail send failed.
+	 *
+	 * @param object $error_instance WP_Error message instance.
+	 */
+	function evf_email_send_failed_handler( $error_instance ) {
+		$error_message = '';
+		$decoded_message = json_decode( $error_instance->get_error_message() );
+
+		if ( json_last_error() === JSON_ERROR_NONE && ! empty( $decoded_message ) ) {
+			/* translators: %s: Status Log URL */
+			$error_message = wp_kses_post( sprintf( __( 'Please check the `evf_mail_errors` log under <a target="_blank" href="%s"> Logs </a> section.', 'everest-forms' ), admin_url( 'admin.php?page=evf-tools&tab=logs' ) ) );
+		} else {
+			$error_message = $error_instance->get_error_message();
+		}
+
+		evf_get_logger()->info(
+			$error_message,
+			array( 'source' => 'evf_mail_errors' )
+		);
+
+		if ( ! empty( $error_message ) ) {
+			add_filter(
+				'everest_forms_email_send_failed_message',
+				function ( $msg ) use ( $error_message ) {
+					return $error_message;
+				}
+			);
+		}
+	}
+}
