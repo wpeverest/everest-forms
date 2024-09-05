@@ -974,7 +974,7 @@ function evf_html_attributes( $id = '', $class = array(), $datas = array(), $att
 	$id    = trim( $id );
 	$parts = array();
 
-	$is_edit_entry = isset( $_GET['edit-entry'] ) && !  sanitize_text_field( wp_unslash( empty( $_GET['edit-entry'] ) ) ) ? true : false;
+	$is_edit_entry = isset( $_GET['edit-entry'] ) && ! sanitize_text_field( wp_unslash( empty( $_GET['edit-entry'] ) ) ) ? true : false;
 
 	if ( ! empty( $id ) ) {
 		$id = sanitize_html_class( $id );
@@ -987,7 +987,7 @@ function evf_html_attributes( $id = '', $class = array(), $datas = array(), $att
 		$class = evf_sanitize_classes( $class, true );
 		if ( ! empty( $class ) ) {
 			// While editing hidden field should be visible.
-			if( $is_edit_entry ) {
+			if ( $is_edit_entry ) {
 				$class   = str_replace( 'evf-field-hidden', '', $class );
 			}
 			$parts[] = 'class="' . $class . '"';
