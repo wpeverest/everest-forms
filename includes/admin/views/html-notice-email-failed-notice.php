@@ -13,10 +13,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div class="notice notice-warning is-dismissible" id="everest-forms-email-failed-notice">
 	<p>
 		<strong><?php esc_html_e( 'Everest Forms Email Send Error', 'everest-forms' ); ?></strong><br/>
-		<?php esc_html_e( 'The last email sent from the User Registration Plugin was not delivered to the user.', 'everest-forms' ); ?>
+		<?php esc_html_e( 'The last email sent from the Everest Forms Plugin was not delivered to the user.', 'everest-forms' ); ?>
 	</p>
-	<p style="border-left: 2px solid #72aee6; background: #F0FFFF; padding: 10px;">
-		<?php esc_html_e( ''.$error_message.'', 'everest-forms' ); ?>
+	<p style="border-left: 2px solid #72aee6; background: #F0FFFF; padding: 10px;">\
+		/* translators: %s: Error Message*/
+		<?php echo esc_html( sprintf( __( '%s', 'everest-forms' ), $error_message ) ); ?>
 	</p>
 	<br/>
 	<p>

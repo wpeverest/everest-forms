@@ -831,6 +831,10 @@ class EVF_AJAX {
 		wp_die();
 	}
 
+
+	/**
+	 * Triggered when clicking the email failed notice.
+	 */
 	public static function email_failed_notice_dismiss() {
 		check_ajax_referer( 'email_failed_nonce', '_wpnonce' );
 
