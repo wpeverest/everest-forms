@@ -4,7 +4,7 @@ Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.2
 Tested up to: 6.6.1
 Requires PHP: 7.2
-Stable tag: 3.0.2
+Stable tag: 3.0.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -307,6 +307,11 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 
 == Changelog ==
+
+= 3.0.3        - xx-xx-2024
+* Fix          - Premium sidebar deisgn issue.
+* Tweak        - Hidden field editable compatibility.
+* Tweak        - Catch mail send error.
 
 = 3.0.2        - 07-08-2024
 * Feature 	   - Enable minimum time for form submission.
