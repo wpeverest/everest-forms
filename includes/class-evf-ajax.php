@@ -308,6 +308,11 @@ class EVF_AJAX {
 			array( 'source' => 'form-save' )
 		);
 		$empty_meta_data = array();
+
+		// Calculation backward compatibility.
+		$old_calculation_format = 0;
+		$new_calculation_format = 0;
+
 		if ( ! empty( $data['form_fields'] ) ) {
 			foreach ( $data['form_fields'] as $field_key => $field ) {
 				if ( ! empty( $field['label'] ) ) {
@@ -335,6 +340,24 @@ class EVF_AJAX {
 				if ( empty( $field['meta-key'] ) && ! in_array( $field['type'], array( 'html', 'title', 'captcha', 'divider', 'reset', 'recaptcha', 'hcaptcha', 'turnstile' ), true ) ) {
 					$empty_meta_data[] = $field['label'];
 				}
+
+				if ( isset( $field['enable_calculation'] ) && ! empty( $field['enable_calculation'] ) ) {
+					if ( isset( $field['calculation_field'] ) && ! empty( $field['calculation_field'] ) ) {
+						$formula             = stripslashes( $field['calculation_field'] );
+						$old_formula_pattern = '/\{field_id="([^"]+)"\}/';
+						preg_match_all( $old_formula_pattern, $formula, $matches );
+
+						if ( ! empty( $matches[0] ) ) {
+							++$old_calculation_format;
+						}
+
+						$new_formula_pattern = '/\$FIELD_(\d+)/';
+						preg_match_all( $new_formula_pattern, $formula, $new_matches );
+						if ( ! empty( $new_matches[0] ) ) {
+							++$new_calculation_format;
+						}
+					}
+				}
 			}
 
 			if ( ! empty( $empty_meta_data ) ) {
@@ -347,6 +370,20 @@ class EVF_AJAX {
 						'errorTitle'   => esc_html__( 'Meta Key missing', 'everest-forms' ),
 						/* translators: %s: empty meta data */
 						'errorMessage' => sprintf( esc_html__( 'Please add Meta key for fields: %s', 'everest-forms' ), '<strong>' . implode( ', ', $empty_meta_data ) . '</strong>' ),
+					)
+				);
+			}
+
+			if ( ! empty( $old_calculation_format ) && ! empty( $new_calculation_format ) ) {
+				$logger->error(
+					__( 'Need calculation formula to update.', 'everest-forms' ),
+					array( 'source' => 'form-save' )
+				);
+				wp_send_json_error(
+					array(
+						'errorTitle'   => esc_html__( 'Need calculation formula to update.', 'everest-forms' ),
+						/* translators: %s: empty meta data */
+						'errorMessage' => sprintf( esc_html__( 'Please update all formula.', 'everest-forms' ) ),
 					)
 				);
 			}
