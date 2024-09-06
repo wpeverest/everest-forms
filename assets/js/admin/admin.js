@@ -585,8 +585,47 @@
 			}
 		});
 	});
+	//Rest api settings.
+	if($('#everest_forms_enable_restapi').is(":checked")){
+		$(document).find('.evf-restapi-key-wrapper').show();
+	}else {
+		$(document).find('.evf-restapi-key-wrapper').hide();
+	}
+	$('#everest_forms_enable_restapi').on('click', function(e){
+		const {checked} = e.target;
+		if(checked) {
+			$(document).find('.evf-restapi-key-wrapper').show();
+		}else {
+			$(document).find('.evf-restapi-key-wrapper').hide();
+		}
+	});
+	$('#everest_forms_restapi_keys').on('click', function(e){
+		evfClearClipboard();
+		evfSetClipboard( $( this ).val(), $( this ) );
+		e.preventDefault();
+	}).on('aftercopy', function() {
+		$( this ).tooltipster( 'content', $( this ).attr( 'data-copied' ) ).trigger( 'mouseenter' ).on( 'mouseleave', function() {
+			var $this = $( this );
 
-
+			setTimeout( function() {
+				$this.tooltipster( 'content', $this.attr( 'data-tip' ) );
+			}, 5000 );
+		} );
+	});
+	$('.everest-forms-generate-api-key, .everest-forms-regenerate-api-key').on('click', function(){
+		let data = {
+			action: "everest_forms_generate_restapi_key",
+			security: everest_forms_admin_generate_restapi_key.ajax_restapi_key_nonce,
+		};
+		$.ajax({
+			url: everest_forms_admin_generate_restapi_key.ajax_url,
+			type: "post",
+			data:data,
+			success:(res)=>{
+				$(document).find('#everest_forms_restapi_keys').val(res.data);
+			}
+		})
+	});
 
 
 
