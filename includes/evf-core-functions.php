@@ -974,6 +974,8 @@ function evf_html_attributes( $id = '', $class = array(), $datas = array(), $att
 	$id    = trim( $id );
 	$parts = array();
 
+	$is_edit_entry = isset( $_GET['edit-entry'] ) && ! sanitize_text_field( wp_unslash( empty( $_GET['edit-entry'] ) ) ) ? true : false;
+
 	if ( ! empty( $id ) ) {
 		$id = sanitize_html_class( $id );
 		if ( ! empty( $id ) ) {
@@ -984,6 +986,10 @@ function evf_html_attributes( $id = '', $class = array(), $datas = array(), $att
 	if ( ! empty( $class ) ) {
 		$class = evf_sanitize_classes( $class, true );
 		if ( ! empty( $class ) ) {
+			// While editing hidden field should be visible.
+			if ( $is_edit_entry ) {
+				$class   = str_replace( 'evf-field-hidden', '', $class );
+			}
 			$parts[] = 'class="' . $class . '"';
 		}
 	}
@@ -1003,7 +1009,12 @@ function evf_html_attributes( $id = '', $class = array(), $datas = array(), $att
 				} else {
 					$escaped_att = sanitize_html_class( $att );
 				}
-				$parts[] = $escaped_att . '="' . esc_attr( $val ) . '"';
+				// While editing, fields must be visible even if they are hidden.
+				if ( 'style' == $escaped_att && $is_edit_entry ) {
+					$parts[] = 'style = "display: block"';
+				} else {
+					$parts[] = $escaped_att . '="' . esc_attr( $val ) . '"';
+				}
 			}
 		}
 	}
@@ -5603,4 +5614,40 @@ function generate_api_key( $string = 'evf_restapi', $length = 32 ) {
 	$key = bin2hex( random_bytes( $length ) );
 
     return $key;
+}
+
+add_action( 'wp_mail_failed', 'evf_email_send_failed_handler', 1 );
+
+if ( ! function_exists( 'evf_email_send_failed_handler' ) ) {
+
+	/**
+	 * Handle errors fetch mechanism when mail send failed.
+	 *
+	 * @param object $error_instance WP_Error message instance.
+	 */
+	function evf_email_send_failed_handler( $error_instance ) {
+		$error_message = '';
+		$decoded_message = json_decode( $error_instance->get_error_message() );
+
+		if ( json_last_error() === JSON_ERROR_NONE && ! empty( $decoded_message ) ) {
+			/* translators: %s: Status Log URL */
+			$error_message = wp_kses_post( sprintf( __( 'Please check the `evf_mail_errors` log under <a target="_blank" href="%s"> Logs </a> section.', 'everest-forms' ), admin_url( 'admin.php?page=evf-tools&tab=logs' ) ) );
+		} else {
+			$error_message = $error_instance->get_error_message();
+		}
+
+		evf_get_logger()->info(
+			$error_message,
+			array( 'source' => 'evf_mail_errors' )
+		);
+
+		if ( ! empty( $error_message ) ) {
+			add_filter(
+				'everest_forms_email_send_failed_message',
+				function ( $msg ) use ( $error_message ) {
+					return $error_message;
+				}
+			);
+		}
+	}
 }

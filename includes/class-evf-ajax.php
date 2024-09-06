@@ -111,6 +111,7 @@ class EVF_AJAX {
 			'survey_dismiss'                 => false,
 			'allow_usage_dismiss'            => false,
 			'php_notice_dismiss'             => false,
+			'email_failed_notice_dismiss'    => false,
 			'enabled_form'                   => false,
 			'import_form_action'             => false,
 			'template_licence_check'         => false,
@@ -828,6 +829,20 @@ class EVF_AJAX {
 
 		update_option( 'everest_forms_php_deprecated_notice_last_prompt_date', $current_date );
 		update_option( 'everest_forms_php_deprecated_notice_prompt_count', ++$prompt_count );
+		wp_die();
+	}
+
+
+	/**
+	 * Triggered when clicking the email failed notice.
+	 */
+	public static function email_failed_notice_dismiss() {
+		check_ajax_referer( 'email_failed_nonce', '_wpnonce' );
+
+		if ( ! current_user_can( 'manage_everest_forms' ) ) {
+			wp_die( -1 );
+		}
+		update_option( 'everest_forms_email_send_notice_dismiss', true );
 		wp_die();
 	}
 

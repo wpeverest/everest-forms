@@ -367,6 +367,19 @@ class EVF_Emails {
 		// Let's do this.
 		$sent = wp_mail( $to, $subject, $message, $this->get_headers(), $this->attachments );
 
+		if ( ! $sent ) {
+			$error_message = apply_filters( 'everest_forms_email_send_failed_message', '' );
+			$failed_data  = get_transient( 'everest_forms_mail_send_failed_count' );
+			$failed_count = $failed_data && isset( $failed_data['failed_count'] ) ? $failed_data['failed_count'] : 0;
+			++$failed_count;
+			set_transient(
+				'everest_forms_mail_send_failed_count',
+				array(
+					'failed_count'  => $failed_count,
+					'error_message' => $error_message,
+				)
+			);
+		}
 		// Hooks after the email is sent.
 		do_action( 'everest_forms_email_send_after', $this );
 
