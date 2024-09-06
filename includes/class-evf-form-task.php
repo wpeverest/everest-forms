@@ -1025,7 +1025,7 @@ class EVF_Form_Task {
 		$entry_id                        = false;
 		$status                          = isset( $entry['evf_spam_status'] ) ? $entry['evf_spam_status'] : 'publish';
 		$admin_approval_entries          = get_option( 'everest_forms_admin_approval_entries_enable', 'no' );
-		$settings                        = $this->form_data['settings'];
+		$settings                        = isset( $form_data['settings'] ) ? $form_data['settings'] : array();
 		$evf_form_admin_approval_entries = isset( $settings['enable_admin_approval_entries'] ) ? $settings['enable_admin_approval_entries'] : '0';
 
 		if ( 'yes' === $admin_approval_entries && '1' === $evf_form_admin_approval_entries ) {
