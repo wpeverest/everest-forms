@@ -309,6 +309,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 == Changelog ==
 
 = 3.0.3        - xx-xx-2024
+* Fix          - Premium sidebar deisgn issue.
 * Tweak        - Hidden field editable compatibility.
 * Tweak        - Catch mail send error.
 
