@@ -31,6 +31,7 @@ class EVF_Admin_Notices {
 		'survey'          => 'survey_notice',
 		'allow_usage'     => 'allow_usage_notice',
 		'php_deprecation' => 'php_deprecation_notice',
+		'email_failed'    => 'email_failed_notice',
 	);
 
 	/**
@@ -84,6 +85,7 @@ class EVF_Admin_Notices {
 		self::add_notice( 'survey' );
 		self::add_notice( 'allow_usage' );
 		self::add_notice( 'php_deprecation' );
+		self::add_notice( 'email_failed' );
 	}
 
 	/**
@@ -340,6 +342,23 @@ class EVF_Admin_Notices {
 			}
 		}
 	}
+
+	/**
+	 * Email Failed  Notice
+	 */
+	public static function email_failed_notice() {
+		$failed_data   = get_transient( 'everest_forms_mail_send_failed_count' );
+		$failed_count  = isset( $failed_data['failed_count'] ) ? $failed_data['failed_count'] : 0;
+		$error_message = isset( $failed_data['error_message'] ) ? $failed_data['error_message'] : '';
+		$show_notice   = $failed_count > 5 ? true : false;
+		if ( $show_notice ) {
+			$is_dismissed = get_option( 'everest_forms_email_send_notice_dismiss', false );
+		}
+		if ( $show_notice && ! $is_dismissed ) {
+			include 'views/html-notice-email-failed-notice.php';
+		}
+	}
+
 
 	/**
 	 * Remove non-EverestForms notices from EverestForms pages.
