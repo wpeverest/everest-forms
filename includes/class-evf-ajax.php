@@ -312,6 +312,7 @@ class EVF_AJAX {
 		// Calculation backward compatibility.
 		$old_calculation_format = 0;
 		$new_calculation_format = 0;
+		$not_supported_operator = 0;
 
 		if ( ! empty( $data['form_fields'] ) ) {
 			foreach ( $data['form_fields'] as $field_key => $field ) {
@@ -351,6 +352,12 @@ class EVF_AJAX {
 							++$old_calculation_format;
 						}
 
+						preg_match_all( '/\^/', $formula, $operator );
+
+						if ( ! empty( $operator[0] ) ) {
+							++$not_supported_operator;
+						}
+
 						$new_formula_pattern = '/\$FIELD_(\d+)/';
 						preg_match_all( $new_formula_pattern, $formula, $new_matches );
 						if ( ! empty( $new_matches[0] ) ) {
@@ -384,6 +391,20 @@ class EVF_AJAX {
 						'errorTitle'   => esc_html__( 'Need calculation formula to update.', 'everest-forms' ),
 						/* translators: %s: empty meta data */
 						'errorMessage' => sprintf( esc_html__( 'Please update all formula.', 'everest-forms' ) ),
+					)
+				);
+			}
+
+			if ( ! empty( $not_supported_operator ) && ! empty( $new_calculation_format ) ) {
+				$logger->error(
+					__( 'Not supported operator.', 'everest-forms' ),
+					array( 'source' => 'form-save' )
+				);
+				wp_send_json_error(
+					array(
+						'errorTitle'   => esc_html__( 'Not supported operator.', 'everest-forms' ),
+						/* translators: %s: empty meta data */
+						'errorMessage' => sprintf( esc_html__( '^ operator is not used in latest version. use pow( $FIELD_1, 3 )', 'everest-forms' ) ),
 					)
 				);
 			}
