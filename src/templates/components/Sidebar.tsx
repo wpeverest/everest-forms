@@ -1,15 +1,16 @@
 import React, { useState, useCallback } from "react";
-import { Box, VStack, HStack, Text, Spacer, Input, InputLeftElement, InputGroup,Badge } from "@chakra-ui/react";
+import { Box, VStack, HStack, Text, Spacer, Input, InputLeftElement, InputGroup, Badge } from "@chakra-ui/react";
 import { FaSearch } from 'react-icons/fa';
 import debounce from "lodash.debounce";
-
+import { __ } from '@wordpress/i18n';
 interface SidebarProps {
   categories: { name: string; count: number }[];
+  selectedCategory: string;
   onCategorySelect: (category: string) => void;
   onSearchChange: (searchTerm: string) => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = React.memo(({ categories, onCategorySelect, onSearchChange }) => {
+const Sidebar: React.FC<SidebarProps> = React.memo(({ categories, selectedCategory, onCategorySelect, onSearchChange }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
 
   const debouncedSearchChange = useCallback(
@@ -19,16 +20,13 @@ const Sidebar: React.FC<SidebarProps> = React.memo(({ categories, onCategorySele
     [onSearchChange]
   );
 
-
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchTerm(value);
     debouncedSearchChange(value);
   };
 
-
   const favorites = categories.find(cat => cat.name === 'Favorites');
-
 
   const orderedCategories = favorites && favorites.count > 0
     ? [favorites, ...categories.filter(cat => cat.name !== 'Favorites')]
@@ -41,7 +39,7 @@ const Sidebar: React.FC<SidebarProps> = React.memo(({ categories, onCategorySele
           <FaSearch color="gray.300" />
         </InputLeftElement>
         <Input
-          placeholder="Search Templates"
+          placeholder={__("Search Templates", "everest-forms")}
           value={searchTerm}
           onChange={handleSearchChange}
         />
@@ -54,6 +52,7 @@ const Sidebar: React.FC<SidebarProps> = React.memo(({ categories, onCategorySele
             _hover={{ bg: "gray.100" }}
             borderRadius="md"
             cursor="pointer"
+            bg={selectedCategory === category.name ? "gray.200" : "transparent"}
             onClick={() => onCategorySelect(category.name)}
           >
             <Text fontWeight="semibold">{category.name}</Text>

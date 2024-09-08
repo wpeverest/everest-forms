@@ -294,7 +294,6 @@ const TemplateList: React.FC<TemplateListProps> = ({ selectedCategory, templates
 					  </Box>
 					)}
 
-					{/* Template Title and Description */}
 					<VStack spacing={2}>
 					  <Text fontWeight="bold" fontSize="16px">
 						{template.title}

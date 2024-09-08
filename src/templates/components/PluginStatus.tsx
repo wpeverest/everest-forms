@@ -16,6 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
 import { templatesScriptData } from "../utils/global";
+import { __, sprintf } from '@wordpress/i18n';
 
 interface PluginStatusProps {
   requiredPlugins: { key: string; value: string }[];
@@ -56,13 +57,20 @@ const PluginStatus: React.FC<PluginStatusProps> = ({
           setPluginStatuses(response.plugin_status);
           updateButtonLabel(response.plugin_status);
         } else {
-          throw new Error("Invalid response format");
+		  toast({
+			title:__("Error", "everest-forms"),
+			description: __("Invalid response format.","everest-forms"),
+			status: "error",
+			position: "bottom-right",
+			duration: 5000,
+			isClosable: true,
+			variant: "subtle",
+		  });
         }
       } catch (error) {
-        console.error("Error fetching plugin status:", error);
         toast({
-          title: "Error",
-          description: "Unable to check plugin status.",
+          title: __("Error", "everest-forms"),
+          description: __("Unable to check plugin status.","everest-forms"),
           status: "error",
           position: "bottom-right",
           duration: 5000,
@@ -87,26 +95,24 @@ const PluginStatus: React.FC<PluginStatusProps> = ({
     );
 
     if (allActive) {
-      setButtonLabel("Continue");
+      setButtonLabel(__("Continue","everest-forms"));
       setInstallComplete(true);
     } else if (anyNotInstalled) {
-      setButtonLabel("Install & Activate");
+      setButtonLabel(__("Install & Activate","everest-forms"));
       setInstallComplete(false);
     } else if (anyInactive) {
-      setButtonLabel("Activate and Continue");
+      setButtonLabel(__("Activate and Continue","everest-forms"));
       setInstallComplete(false);
     } else {
-      setButtonLabel("Continue");
+		setButtonLabel(__("Continue","everest-forms"));
       setInstallComplete(false);
     }
   };
 
   const handleButtonClick = async () => {
     if (installComplete) {
-      // If the installation and activation are complete, just proceed
       onActivateAndContinue();
     } else {
-      // If installation and activation are not complete
       const anyNotInstalled = requiredPlugins.some(
         (plugin) => pluginStatuses[plugin.key] === "not-installed"
       );
@@ -157,8 +163,10 @@ const PluginStatus: React.FC<PluginStatusProps> = ({
             }));
             toast({
               title: "Error",
-              description: `Unable to activate ${plugin.value}.`,
-              status: "error",
+              description: sprintf(
+				__("Unable to activate %s.", "everest-forms"),
+				plugin.value
+			  ),
               position: "bottom-right",
               duration: 5000,
               isClosable: true,
@@ -171,8 +179,8 @@ const PluginStatus: React.FC<PluginStatusProps> = ({
         setInstallComplete(true);
 		setButtonLabel("Continue");
         toast({
-          title: "Success",
-          description: "All required plugins installed and activated successfully.",
+          title: __("Success","everest-forms"),
+          description: __("All required plugins installed and activated successfully.","everest-forms"),
           status: "success",
           position: "bottom-right",
           duration: 5000,

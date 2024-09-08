@@ -59,9 +59,9 @@ const Main: React.FC<{ filter: string }> = ({ filter }) => {
         );
     }, [selectedCategory, searchTerm, templates, filter]);
 
-    const handleCategorySelect = useCallback((category) => {
-        setState(prevState => ({ ...prevState, selectedCategory: category }));
-    }, []);
+		const handleCategorySelect = useCallback((category) => {
+			setState(prevState => ({ ...prevState, selectedCategory: category }));
+		}, []);
 
     const handleSearchChange = useCallback((searchTerm) => {
         setState(prevState => ({ ...prevState, searchTerm }));
@@ -82,6 +82,7 @@ const Main: React.FC<{ filter: string }> = ({ filter }) => {
                 <Box width={sidebarWidth} mr={{ base: 0, md: 4 }} mb={{ base: 4, md: 0 }}>
                     <Sidebar
                         categories={categories}
+						selectedCategory={state.selectedCategory}
                         onCategorySelect={handleCategorySelect}
                         onSearchChange={handleSearchChange}
                     />

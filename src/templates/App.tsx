@@ -16,8 +16,7 @@ import {
 } from "@chakra-ui/react";
 import Main from "./components/Main";
 
-// Define Custom Icon
-const CustomIcon = (props) => (
+const EVFIcon = (props) => (
   <Icon viewBox="0 0 24 24" {...props}>
     <path
       fill="#7e3bd0"
@@ -26,7 +25,6 @@ const CustomIcon = (props) => (
   </Icon>
 );
 
-// Extracted component for tab filters
 const TabFilters = ({ onTabChange }) => {
   const filters = useMemo(() => [__("All", "everest-forms"), __("Free", "everest-forms"), __("Premium", "everest-forms")], []);
 
@@ -42,7 +40,8 @@ const TabFilters = ({ onTabChange }) => {
               borderBottom: "2px solid",
               borderColor: "purple.500",
             }}
-            fontSize={{ base: "sm", md: "md" }} // Responsive font size
+            fontSize={{ base: "sm", md: "md", lg: "lg" }}
+            px={{ base: 1, md: 2 }} // Add horizontal padding to tabs
           >
             {label}
           </Tab>
@@ -64,41 +63,47 @@ const App = () => {
   // Handle refresh button click
   const handleRefreshTemplates = () => {
     const url = new URL(window.location.href);
-    url.searchParams.set('refresh', Date.now());
+    url.searchParams.set('refresh', Date.now().toString());
     window.location.href = url.toString();
   };
 
   return (
     <ChakraProvider>
       <Box margin={{ base: 4, md: 6, lg: 10 }} boxShadow="md">
-        {/* Header Section with white background */}
         <HStack
-          spacing={{ base: 2, md: 4 }}
+          spacing={{ base: 4, md: 6 }} // Adjust spacing
           align="center"
           mb={5}
           bg="white"
           p={{ base: 3, md: 4 }}
           boxShadow="sm"
-          direction={{ base: "column", md: "row" }} // Stack items vertically on smaller screens
+          direction={{ base: "column", md: "row" }}
         >
-          <CustomIcon boxSize={{ base: 5, md: 6 }} />
-          <Divider orientation="vertical" height={{ base: "16px", md: "24px" }} />
-          <Text fontSize={{ base: "md", md: "lg" }} fontWeight="bold">
+          <EVFIcon boxSize={{ base: 5, md: 6, lg: 7 }} />
+          <Divider orientation="vertical" height={{ base: "16px", md: "24px", lg: "32px" }} />
+          <Text fontSize={{ base: "md", md: "lg", lg: "xl" }} fontWeight="bold" textAlign={{ base: "center", md: "left" }}>
             {__("Add New Form", "everest-forms")}
           </Text>
-          <Button colorScheme="purple" variant="outline" onClick={handleRefreshTemplates}>
+          <Button
+            colorScheme="purple"
+            variant="outline"
+            onClick={handleRefreshTemplates}
+            size={{ base: "sm", md: "md", lg: "lg" }}
+            width={{ base: "full", md: "auto" }}
+            display={{ base: "none", md: "inline-flex" }} // Hide button on small screens
+          >
             {__("Refresh Templates", "everest-forms")}
           </Button>
           <TabFilters onTabChange={handleTabChange} />
         </HStack>
 
         {/* Main Content Area */}
-        <Box bg="white" p={{ base: 3, md: 5 }} rounded="md" boxShadow="sm">
+        <Box bg="white" p={{ base: 3, md: 5, lg: 6 }} rounded="md" boxShadow="sm">
           <VStack align="start" spacing={4}>
-            <Heading as="h1" size={{ base: "sm", md: "md" }} m={0}>
+            <Heading as="h1" size={{ base: "md", md: "lg", lg: "xl" }} m={0}>
               {__("Select a Template", "everest-forms")}
             </Heading>
-            <Text fontSize={{ base: "sm", md: "md" }} color="gray.600">
+            <Text fontSize={{ base: "sm", md: "md", lg: "lg" }} color="gray.600">
               {__(
                 "To get started quickly, you can pick from our ready-made templates, begin with a blank form, or design your own.",
                 "everest-forms"
@@ -113,3 +118,4 @@ const App = () => {
 };
 
 export default App;
+	
