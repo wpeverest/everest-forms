@@ -144,7 +144,7 @@ class EVF_Modules {
 		}
 
 		$modules_lists = array_merge( $features_lists, $addons_lists );
-
+		lg( $modules_lists );
 		return new \WP_REST_Response(
 			array(
 				'success'       => true,
@@ -316,7 +316,6 @@ class EVF_Modules {
 			);
 			$api  = plugins_api( 'plugin_information', $args );
 		} else {
-
 			$api = json_decode(
 				EVF_Updater_Key_API::version(
 					array(
@@ -326,6 +325,7 @@ class EVF_Modules {
 				)
 			);
 		}
+
 		if ( is_wp_error( $api ) ) {
 			$status['success']      = false;
 			$status['errorMessage'] = $api['msg'];
