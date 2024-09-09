@@ -676,7 +676,7 @@ class EVF_Field_Address extends EVF_Form_Fields {
 				'state'    => array(
 					'attr'     => array(
 						'name'        => "everest_forms[form_fields][{$field_id}][state]",
-						'value'       => ! empty( $field['state_default'] ) ? apply_filters( 'everest_forms_process_smart_tags', $field['state_default'], $form_data ) : '',
+						'value'       => ! empty( $field['state_default'] ) ? apply_filters( 'everest_forms_process_smart_tags', $field['state_default'], $form_data ) : apply_filters( 'everest_forms_state_default_value', '' ),
 						'placeholder' => ! empty( $field['state_placeholder'] ) ? $field['state_placeholder'] : '',
 					),
 					'block'    => array(

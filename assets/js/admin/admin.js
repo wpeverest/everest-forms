@@ -28,6 +28,8 @@
 		// Execute the function on page load
 		handleReportingFrequencyChange();
 
+		disableFormChangeModal();
+
 		// Add an event listener for changes and on the click in the reporting frequency
 		$(document).on('change click', '#everest_forms_entries_reporting_frequency', handleReportingFrequencyChange);
 	});
@@ -39,28 +41,50 @@
 				localStorage.setItem('isPremiumSidebarEnabled', isCheckboxChecked);
 				document.cookie = 'isPremiumSidebarEnabled=' + isCheckboxChecked + '; path=/;';
 				if (isCheckboxChecked) {
-					$('#everest-forms-settings-premium-sidebar').addClass('everest-forms-hidden');
+					$('body').removeClass('evf-premium-sidebar-hidden').addClass('evf-premium-sidebar-show');
 					$('.everest-forms-toggle-text').text('Show Sidebar');
 				} else {
-					$('#everest-forms-settings-premium-sidebar').removeClass('everest-forms-hidden');
+					$('body').removeClass('evf-premium-sidebar-show').addClass('evf-premium-sidebar-hidden');
 					$('.everest-forms-toggle-text').text('Hide Sidebar');
 				}
 			}
-
-			var isPremiumSidebarEnabled = localStorage.getItem('isPremiumSidebarEnabled') === 'true';
-			$('#everest-forms-enable-premium-sidebar').prop('checked', isPremiumSidebarEnabled);
-
-
-			if (isPremiumSidebarEnabled) {
-				$('#everest-forms-settings-premium-sidebar').addClass('everest-forms-hidden');
-				$('.everest-forms-toggle-text').text('Show Sidebar');
-			} else {
-				$('#everest-forms-settings-premium-sidebar').removeClass('everest-forms-hidden');
-				$('.everest-forms-toggle-text').text('Hide Sidebar');
-			}
-			handlePremiumSidebar();
 			$(document).on('change', '#everest-forms-enable-premium-sidebar', handlePremiumSidebar);
+
 		});
+
+	/**
+	 * Disable leave page before saving changes modal when hid/show sidebar is clicked.
+	 */
+	function disableFormChangeModal() {
+
+		var form = $(".everest-forms").find("form")[0];
+		
+
+		var formChanged = false;
+
+		$(form).on("change", function (event) {
+			if (event.target.name !== "everest-forms-enable-premium-sidebar") {
+				formChanged = true;
+			}
+		});
+
+		var skipBeforeUnloadPopup = false;
+		$(form).on("submit", function () {
+			skipBeforeUnloadPopup = true;
+		});
+		$(form).find(".evf-nav__link").on('click',function(){
+			skipBeforeUnloadPopup = true;
+		});
+
+		$(window).on("beforeunload", function (event) {
+			if (formChanged && !skipBeforeUnloadPopup) {
+				event.preventDefault();
+				event.returnValue = "";
+			} else {
+				event.stopImmediatePropagation();
+			}
+		});
+	}
 
 	// Enable Perfect Scrollbar.
 	$( document ).on( 'init_perfect_scrollbar', function() {
@@ -561,8 +585,47 @@
 			}
 		});
 	});
+	//Rest api settings.
+	if($('#everest_forms_enable_restapi').is(":checked")){
+		$(document).find('.evf-restapi-key-wrapper').show();
+	}else {
+		$(document).find('.evf-restapi-key-wrapper').hide();
+	}
+	$('#everest_forms_enable_restapi').on('click', function(e){
+		const {checked} = e.target;
+		if(checked) {
+			$(document).find('.evf-restapi-key-wrapper').show();
+		}else {
+			$(document).find('.evf-restapi-key-wrapper').hide();
+		}
+	});
+	$('#everest_forms_restapi_keys').on('click', function(e){
+		evfClearClipboard();
+		evfSetClipboard( $( this ).val(), $( this ) );
+		e.preventDefault();
+	}).on('aftercopy', function() {
+		$( this ).tooltipster( 'content', $( this ).attr( 'data-copied' ) ).trigger( 'mouseenter' ).on( 'mouseleave', function() {
+			var $this = $( this );
 
-
+			setTimeout( function() {
+				$this.tooltipster( 'content', $this.attr( 'data-tip' ) );
+			}, 5000 );
+		} );
+	});
+	$('.everest-forms-generate-api-key, .everest-forms-regenerate-api-key').on('click', function(){
+		let data = {
+			action: "everest_forms_generate_restapi_key",
+			security: everest_forms_admin_generate_restapi_key.ajax_restapi_key_nonce,
+		};
+		$.ajax({
+			url: everest_forms_admin_generate_restapi_key.ajax_url,
+			type: "post",
+			data:data,
+			success:(res)=>{
+				$(document).find('#everest_forms_restapi_keys').val(res.data);
+			}
+		})
+	});
 
 
 

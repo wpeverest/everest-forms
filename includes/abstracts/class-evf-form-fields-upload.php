@@ -1287,10 +1287,15 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 	public function send_file_as_email_attachment( $attachment, $entry, $form_data, $context, $connection_id, $entry_id ) {
 
 		$file_email_attachments = isset( $form_data['settings']['email'][ $connection_id ]['file-email-attachments'] ) ? $form_data['settings']['email'][ $connection_id ]['file-email-attachments'] : 0;
-		if ( '1' !== $file_email_attachments ) {
+		if ( isset( $form_data['settings']['disabled_entries'] ) && '1' === $form_data['settings']['disabled_entries'] ) {
+			$attachment = $this->attach_entry_files_upload( $entry );
+		}
+
+		if ( '1' === $file_email_attachments ) {
+			$attachment = array_unique( array_merge( (array) $attachment, $this->attach_entry_files( $entry_id ) ) );
 			return $attachment;
 		}
-		$attachment = array_unique( array_merge( (array) $attachment, $this->attach_entry_files( $entry_id ) ) );
+
 		return $attachment;
 	}
 
@@ -1325,22 +1330,52 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 	 * @param integer $entry_id      Entry id for the form.
 	 */
 	public function remove_csv_file_after_email_send( $attachment, $entry, $form_data, $context, $connection_id, $entry_id ) {
+
+		if ( isset( $form_data['settings']['disabled_entries'] ) && '1' === $form_data['settings']['disabled_entries'] ) {
+			if ( ! empty( $entry ) && is_array( $entry ) ) {
+				foreach ( $entry as $meta_key => $meta_value ) {
+					if ( empty( $meta_value ) ) {
+						continue;
+					}
+
+					if ( preg_match( '/signature_/', $meta_key ) && file_exists( $meta_value ) ) {
+						unlink( $meta_value );
+					}
+
+					if ( isset( $meta_value['type'] ) && ( 'file-upload' === $meta_value['type'] && isset( $meta_value['value_raw'] ) || 'image-upload' === $meta_value['type'] && isset( $meta_value['value_raw'] ) ) ) {
+						foreach ( $meta_value['value_raw'] as $file_data ) {
+							if ( isset( $file_data['value'] ) ) {
+								$file_url = $file_data['value'];
+
+								$uploaded_file = ABSPATH . preg_replace( '/.*wp-content/', 'wp-content', wp_parse_url( $file_url, PHP_URL_PATH ) );
+								if ( file_exists( $uploaded_file ) ) {
+									unlink( $uploaded_file );
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
 		if ( ! $entry_id ) {
 			return;
 		}
 
+		$file_email_attachments     = isset( $form_data['settings']['email'][ $connection_id ]['file-email-attachments'] ) ? $form_data['settings']['email'][ $connection_id ]['file-email-attachments'] : 0;
 		$csv_file_email_attachments = isset( $form_data['settings']['email'][ $connection_id ]['csv-file-email-attachments'] ) ? $form_data['settings']['email'][ $connection_id ]['csv-file-email-attachments'] : 0;
 		$csv_file_email_attachments = apply_filters( 'everest_forms_change_csv_attachments', $csv_file_email_attachments );
 
 		if ( '1' === $csv_file_email_attachments ) {
-			$get_entry  = evf_get_entry( $entry_id, 'meta' );
 			$upload_dir = WP_CONTENT_DIR . '/uploads/Everes-Froms-Entries-CSV-file/';
-			$csv_path   = $upload_dir . 'Entry data-' . $get_entry->entry_id . '.csv';
+			$csv_path   = $upload_dir . 'Entry data-' . $entry_id . '.csv';
 			if ( file_exists( $csv_path ) ) {
 				unlink( $csv_path );
 			}
 		}
+
 	}
+
 	/**
 	 * Attach the entry file.
 	 *
@@ -1376,6 +1411,43 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 
 		return $entry_files;
 	}
+
+	/**
+	 * Attach the entry file.
+	 *
+	 * @param int $entry Entry for which file should be attached.
+	 */
+	public function attach_entry_files_upload( $entry ) {
+		$entry_files = array();
+
+		if ( ! empty( $entry ) && is_array( $entry ) ) {
+			foreach ( $entry as $meta_key => $meta_value ) {
+				if ( empty( $meta_value ) ) {
+					continue;
+				}
+
+				if ( preg_match( '/signature_/', $meta_key ) ) {
+					if ( file_exists( $meta_value ) ) {
+						$entry_files[] = $meta_value;
+					}
+				} elseif ( isset( $meta_value['type'] ) && ( 'file-upload' === $meta_value['type'] && isset( $meta_value['value_raw'] ) || 'image-upload' === $meta_value['type'] && isset( $meta_value['value_raw'] ) ) ) {
+					foreach ( $meta_value['value_raw'] as $file_data ) {
+						if ( isset( $file_data['value'] ) ) {
+							$file_url      = $file_data['value'];
+							$uploaded_file = ABSPATH . preg_replace( '/.*wp-content/', 'wp-content', wp_parse_url( $file_url, PHP_URL_PATH ) );
+
+							if ( ! in_array( $uploaded_file, $entry_files ) && file_exists( $uploaded_file ) ) {
+								$entry_files[] = $uploaded_file;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return $entry_files;
+	}
+
 
 	/**
 	 * Attach the csv file.
