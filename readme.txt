@@ -309,9 +309,13 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 == Changelog ==
 
 = 3.0.3        - xx-xx-2024
-* Fix          - Premium sidebar deisgn issue.
+* Feature      - Add new templates.
+* Fix          - Premium sidebar design issue.
 * Tweak        - Hidden field editable compatibility.
 * Tweak        - Catch mail send error.
+* Dev          - Aweber integration.
+
+
 
 = 3.0.2        - 07-08-2024
 * Feature 	   - Enable minimum time for form submission.
