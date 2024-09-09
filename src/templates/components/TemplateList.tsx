@@ -238,7 +238,7 @@ const TemplateList: React.FC<TemplateListProps> = ({ selectedCategory, templates
 							textTransform="uppercase"
 							boxShadow="sm"
 						  >
-							Pro
+							{__("Pro", "everest-forms")}
 						  </Badge>
 						)}
 
