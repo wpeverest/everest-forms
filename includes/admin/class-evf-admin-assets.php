@@ -72,7 +72,7 @@ class EVF_Admin_Assets {
 		$suffix    = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
 		// Register scripts.
-		wp_register_script( 'everest-forms-admin', evf()->plugin_url() . '/assets/js/admin/admin' . $suffix . '.js', array( 'jquery', 'jquery-blockui', 'jquery-ui-sortable', 'jquery-ui-widget', 'jquery-ui-core', 'tooltipster', 'wp-color-picker', 'perfect-scrollbar' ), EVF_VERSION, true );
+		wp_register_script( 'everest-forms-admin', evf()->plugin_url() . '/assets/js/admin/admin' . $suffix . '.js', array( 'jquery', 'jquery-blockui', 'jquery-ui-sortable', 'jquery-ui-widget', 'jquery-ui-core', 'tooltipster', 'wp-color-picker', 'perfect-scrollbar', 'evf-clipboard' ), EVF_VERSION, true );
 		wp_register_script( 'everest-forms-extensions', evf()->plugin_url() . '/assets/js/admin/extensions' . $suffix . '.js', array( 'jquery', 'updates', 'wp-i18n' ), EVF_VERSION, true );
 		wp_register_script( 'everest-forms-email-admin', evf()->plugin_url() . '/assets/js/admin/evf-admin-email' . $suffix . '.js', array( 'jquery', 'jquery-blockui', 'jquery-ui-sortable', 'jquery-ui-widget', 'jquery-ui-core', 'tooltipster', 'wp-color-picker', 'perfect-scrollbar' ), EVF_VERSION, true );
 		wp_register_script( 'everest-forms-editor', evf()->plugin_url() . '/assets/js/admin/editor' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true );
@@ -300,6 +300,15 @@ class EVF_Admin_Assets {
 					'ajax_url'          => admin_url( 'admin-ajax.php', 'relative' ),
 					'form_found_error'  => esc_html__( 'Form not found in content', 'everest-forms' ),
 					'form_found'        => esc_html__( 'Form found in page:', 'everest-forms' ),
+				)
+			);
+
+			wp_localize_script(
+				'everest-forms-admin',
+				'everest_forms_admin_generate_restapi_key',
+				array(
+					'ajax_restapi_key_nonce' => wp_create_nonce( 'process-restapi-api-ajax-nonce' ),
+					'ajax_url'               => admin_url( 'admin-ajax.php', 'relative' ),
 				)
 			);
 
