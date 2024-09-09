@@ -1,12 +1,5 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App";
-(function () {
-	const container = document.getElementById("everest-forms-divi-builder");
-	if (!container) return;
+import EverestFormsModule from './modules/EverestFormsModule';
 
-	const root = ReactDOM.createRoot(container);
-	if (root) {
-		root.render(<App />);
-	}
-})();
+jQuery(window).on('et_builder_api_ready', (_, API) => {
+	API.registerModules([EverestFormsModule]);
+});

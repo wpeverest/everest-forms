@@ -3,7 +3,6 @@
  * Everest Forms Divi Module File.
  *
  * @package EverestForms\Divi
- *
  * @since xx.xx.xx
  */
 
@@ -32,7 +31,15 @@ class EVF_Divi_Builder extends \ET_Builder_Module {
 	public $vb_support = 'on';
 
 	/**
-	 * Divi builder init function
+	 * List of controls to allow module customization.
+	 *
+	 * @since 1.6.13
+	 * @var array
+	 */
+	protected $setting_controls = array();
+
+	/**
+	 * Divi builder init function.
 	 *
 	 * @since xx.xx.xx
 	 */
@@ -48,13 +55,40 @@ class EVF_Divi_Builder extends \ET_Builder_Module {
 		);
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'load_divi_builder_scripts' ) );
+
+		// Computed controls.
+		$this->add_computed_control(
+			'__rendered_evf_forms',
+			'rendered_evf_forms',
+			array( 'form_id' )
+		);
+	}
+
+	/**
+	 * Add a computed control.
+	 *
+	 * @since 1.6.13
+	 * @param string $name
+	 * @param string $callback_static_method
+	 * @param array  $dependency_props
+	 */
+	public function add_computed_control( $name, $callback_static_method, $dependency_props = array() ) {
+		if ( empty( $name ) || empty( $callback_static_method ) || ! is_string( $callback_static_method ) ) {
+			return;
+		}
+
+		$this->setting_controls[ $name ] = array(
+			'type'                => 'computed',
+			'computed_callback'   => array( static::class, $callback_static_method ),
+			'computed_depends_on' => $dependency_props,
+			'computed_minimum'    => $dependency_props,
+		);
 	}
 
 	/**
 	 * Displays the Module setting fields.
 	 *
 	 * @since xx.xx.xx
-	 *
 	 * @return array $fields Array of settings fields.
 	 */
 	public function get_fields() {
@@ -102,7 +136,7 @@ class EVF_Divi_Builder extends \ET_Builder_Module {
 	 * @since xx.xx.xx
 	 */
 	public function get_advanced_fields_config() {
-		$advanced_fields = array(
+		return array(
 			'link_options' => false,
 			'text'         => false,
 			'borders'      => false,
@@ -111,46 +145,55 @@ class EVF_Divi_Builder extends \ET_Builder_Module {
 			'filters'      => false,
 			'fonts'        => false,
 		);
+	}
 
-		return $advanced_fields;
+	/**
+	 * Renders the Everest Form in Visual Builder and Frontend.
+	 *
+	 * @since xx.xx.xx
+	 * @param array $props Module properties.
+	 * @return string HTML output.
+	 */
+	public static function rendered_evf_forms( $props = array() ) {
+		$form_id = isset( $props['form_id'] ) ? $props['form_id'] : '0';
+
+		// Check if we are in the Divi Visual Builder
+		if ( et_fb_enabled() ) {
+			return "<div class='everest-forms-divi-preview'>" . esc_html__( 'Everest Forms Preview', 'everest-forms' ) . '</div>';
+		}
+
+		if ( '0' === $form_id ) {
+			return "<div class='everest-forms-divi-empty-form' style='text-align:center'><img src='" . plugin_dir_url( EVF_PLUGIN_FILE ) . 'assets/images/icons/Everest-forms-Logo.png' . "'/></div>";
+		}
+
+		// Render the form via shortcode in the frontend.
+		$divi_shortcode = sprintf( "[everest_form id='%s']", $form_id );
+		$output         = "<div class='everest-forms-divi-builder'>";
+		$output        .= do_shortcode( $divi_shortcode );
+		$output        .= '</div>';
+
+		return $output;
 	}
 
 	/**
 	 * Render the module on frontend.
 	 *
 	 * @since xx.xx.xx
-	 *
-	 * @param  array  $unprocessed_props Array of unprocessed Properties.
-	 * @param  string $content Contents being processed from the prop.
-	 * @param  string $render_slug The slug of rendering module for rendering output.
-	 *
-	 * @return string HTMl content for rendering.
+	 * @param array  $unprocessed_props Array of unprocessed Properties.
+	 * @param string $content Contents being processed from the prop.
+	 * @param string $render_slug The slug of rendering module for rendering output.
+	 * @return string HTML content for rendering.
 	 */
 	public function render( $unprocessed_props, $content, $render_slug ) {
-		$form_id = isset( $this->props['form_id'] ) ? $this->props['form_id'] : '0';
-
-		if ( '0' === $form_id ) {
-			$empty_output  = sprintf( "<div class='everest-forms-divi-empty-form' style='text-align:center'>" );
-			$empty_output .= sprintf( "<img src='%s'/>", plugin_dir_url( EVF_PLUGIN_FILE ) . 'assets/images/icons/Everest-forms-Logo.png' );
-			$empty_output .= sprintf( '</div>' );
-			return $empty_output;
-		}
-
-		$divi_shortcode = sprintf( "[everest_form id='%s']", $form_id );
-		$output         = sprintf( "<div class = '%s'>", 'everest-forms-divi-builder' );
-		$output        .= do_shortcode( $divi_shortcode );
-		$output        .= sprintf( '</div>' );
-
-		return $output;
+		return $this->_render_module_wrapper( static::rendered_evf_forms( $this->props ), $render_slug );
 	}
 
 	/**
-	 * Function to enqueue the divi builder JS.
+	 * Enqueue Divi Builder JavaScript.
 	 *
 	 * @since xx.xx.xx
 	 */
 	public function load_divi_builder_scripts() {
-		wp_enqueue_script( 'everest-forms-divi-builder' );
 		$enqueue_script = array( 'wp-element', 'react', 'react-dom' );
 		wp_register_script(
 			'everest-forms-divi-builder',
@@ -159,6 +202,9 @@ class EVF_Divi_Builder extends \ET_Builder_Module {
 			evf()->version,
 			true
 		);
+		wp_enqueue_script( 'everest-forms-divi-builder' );
 	}
 }
+
+// Initialize the module.
 new EVF_Divi_Builder();
