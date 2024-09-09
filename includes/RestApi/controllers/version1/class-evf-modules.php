@@ -144,7 +144,7 @@ class EVF_Modules {
 		}
 
 		$modules_lists = array_merge( $features_lists, $addons_lists );
-		lg( $modules_lists );
+
 		return new \WP_REST_Response(
 			array(
 				'success'       => true,
