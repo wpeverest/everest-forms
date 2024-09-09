@@ -44,6 +44,10 @@ class EVF_Admin_Assets {
 		wp_style_add_data( 'everest-forms-admin', 'rtl', 'replace' );
 		wp_style_add_data( 'everest-forms-admin-menu', 'rtl', 'replace' );
 
+		// Show hint in codemirror.
+		wp_enqueue_style( 'wp-codemirror' );
+		wp_enqueue_style( 'codemirror-hint-css', evf()->plugin_url() . '/assets/css/code-mirror/show-hint.min.css', array( 'wp-codemirror' ), EVF_VERSION );
+
 		// Sitewide menu CSS.
 		wp_enqueue_style( 'everest-forms-admin-menu' );
 
@@ -329,7 +333,8 @@ class EVF_Admin_Assets {
 			wp_enqueue_script( 'evf-form-builder' );
 
 			wp_enqueue_script( 'wp-codemirror' );
-			wp_enqueue_style( 'wp-codemirror' );
+			// Enqueue additional scripts for hints if not included by default
+			wp_enqueue_script( 'codemirror-hint', evf()->plugin_url() . '/assets/js/code-mirror/show-hint' . $suffix . '.js', array( 'wp-codemirror' ), EVF_VERSION, true );
 
 			// De-register scripts.
 			wp_dequeue_script( 'colorpick' );

@@ -3618,12 +3618,19 @@ jQuery( function ( $ ) {
 
 	$( document.body ).on('click', '.smart-tag-field', function(e) {
 
-		var field_id    = $( this ).data('field_id'),
-            field_label = $( this ).text(),
-            type        = $( this ).data('type'),
-			$parent     = $ ( this ).parent().parent().parent(),
-			$input      = $parent.find('input[type=text]'),
-			$textarea   = $parent.find('textarea');
+		var field_id    			= $( this ).data('field_id'),
+            field_label 			= $( this ).text(),
+            type        			= $( this ).data('type'),
+			$parent     			= $ ( this ).parent().parent().parent(),
+			$input      			= $parent.find('input[type=text]'),
+			$textarea   			= $parent.find('textarea'),
+			$calculationCodeMirror	= $parent.find( '.CodeMirror');
+
+		//Return when calculation smart tag is clicked because we use codeMirror
+		if( 0 != $calculationCodeMirror.length ){
+			return;
+		}
+
 		if ( field_id !== 'fullname' && field_id !== 'email' && field_id !== 'subject' && field_id !== 'message' && 'other' !== type ) {
 			field_label = field_label.split(/[\s-_]/);
 		    for(var i = 0 ; i < field_label.length ; i++){
@@ -3879,10 +3886,19 @@ jQuery( function ( $ ) {
 				"range-slider",
 				"payment-checkbox",
 				"payment-multiple",
+				"select",
+				"payment-total",
+				"radio",
+				'first-name',
+				'text',
+				'last-name',
+				'email',
+				'url'
 			];
 			$(document).find('.everest-forms-field').each(function() {
+				$fieldId = $(this).attr('data-field-id').split("-");
 				if( calculations.includes($(this).attr('data-field-type')) && $(el).parents('.everest-forms-field-option-row-calculation_field').attr('data-field-id') !== $(this).attr('data-field-id')) {
-					$(el).parent().find('.evf-smart-tag-lists .calculations').append('<li class = "smart-tag-field" data-type="field" data-field_id="'+$(this).attr('data-field-id')+'">'+$(this).find('.label-title .text').text()+'</li>');
+					$(el).parent().find('.evf-smart-tag-lists .calculations').append('<li class = "smart-tag-field" data-type="field" data-field_id="'+ $fieldId[1] +'">'+$(this).find('.label-title .text').text()+'</li>');
 				}
 			})
 		}

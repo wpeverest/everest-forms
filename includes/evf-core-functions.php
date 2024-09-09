@@ -4556,6 +4556,8 @@ function evf_sanitize_builder( $post_data = array() ) {
 			$value = esc_url_raw( $data->value );
 		} elseif ( preg_match( '/evf_email_message/', $data->name ) || preg_match( '/telegram_message/', $data->name )) {
 			$value = wp_kses_post( $data->value );
+		} elseif ( preg_match('/calculation_field/', $data->name) ) {
+			$value = wp_kses_post( $data->value );
 		} else {
 			$value = sanitize_text_field( $data->value );
 		}
