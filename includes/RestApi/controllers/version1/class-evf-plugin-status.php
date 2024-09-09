@@ -2,7 +2,7 @@
 /**
  *  Plugin Status Data Controller.
  *
- * @since x.x.x
+ * @since 3.0.3
  *
  * @package EverestForms/Classes
  */
@@ -31,7 +31,7 @@ class Everest_Forms_Plugin_Status {
 	/**
 	 * Register routes.
 	 *
-	 * @since x.x.x
+	 * @since 3.0.3
 	 *
 	 * @return void
 	 */
@@ -60,7 +60,7 @@ class Everest_Forms_Plugin_Status {
 		/**
 		 * Get Plugin Status.
 		 *
-		 * @since x.x.x
+		 * @since 3.0.3
 		 *
 		 * @return WP_REST_Response|WP_Error
 		 */
@@ -362,7 +362,7 @@ class Everest_Forms_Plugin_Status {
 	/**
 	 * Retrieve addons data.
 	 *
-	 * @since x.x.x
+	 * @since 3.0.3
 	 *
 	 * @return object
 	 */
@@ -408,7 +408,7 @@ class Everest_Forms_Plugin_Status {
 	/**
 	 * Check if a given request has access.
 	 *
-	 * @since x.x.x
+	 * @since 3.0.3
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
 	 * @return WP_Error|bool

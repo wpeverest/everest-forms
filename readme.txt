@@ -310,12 +310,16 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 = 3.0.3        - xx-xx-2024
 * Feature      - Add new templates.
+* Feature      - Entry submission RestApi.
+* Enhancement  - Send file directly as an attachment.
 * Fix          - Premium sidebar design issue.
 * Tweak        - Hidden field editable compatibility.
 * Tweak        - Catch mail send error.
+* Tweak        - Filter added to state default value.
+* Tweak        - Background color of dashboard.
 * Dev          - Aweber integration.
-
-
+* Dev          - Calculation Module.
+* Dev          - Feature api log table.
 
 = 3.0.2        - 07-08-2024
 * Feature 	   - Enable minimum time for form submission.

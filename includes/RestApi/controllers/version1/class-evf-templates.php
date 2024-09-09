@@ -2,7 +2,7 @@
 /**
  * Template Section Data Controller.
  *
- * @since x.x.x
+ * @since 3.0.3
  *
  * @package EverestForms/Classes
  */
@@ -31,7 +31,7 @@ class Everest_Forms_Template_Section_Data {
 	/**
 	 * Register routes.
 	 *
-	 * @since x.x.x
+	 * @since 3.0.3
 	 *
 	 * @return void
 	 */
@@ -69,7 +69,7 @@ class Everest_Forms_Template_Section_Data {
 	/**
 	 * Add or Remove templates from favourites.
 	 *
-	 * @since x.x.x
+	 * @since 3.0.3
 	 * @param WP_REST_Request $request Full data about the request.
 	 * @return WP_REST_Request|WP_Error
 	 */
@@ -113,7 +113,7 @@ class Everest_Forms_Template_Section_Data {
 	/**
 	 * Get Template Lists.
 	 *
-	 * @since x.x.x
+	 * @since 3.0.3
 	 *
 	 * @return WP_REST_Response|WP_Error
 	 */
@@ -177,7 +177,7 @@ class Everest_Forms_Template_Section_Data {
 	/**
 	 * Get Templates Data List.
 	 *
-	 * @since x.x.x
+	 * @since 3.0.3
 	 *
 	 * @return array
 	 */
@@ -189,7 +189,7 @@ class Everest_Forms_Template_Section_Data {
 	/**
 	 * Create a Template.
 	 *
-	 * @since x.x.x
+	 * @since 3.0.3
 	 * @param WP_REST_Request $request Full data about the request.
 	 * @return WP_REST_Request|WP_Error
 	 */
@@ -254,7 +254,7 @@ class Everest_Forms_Template_Section_Data {
 	/**
 	 * Check if a given request has access.
 	 *
-	 * @since x.x.x
+	 * @since 3.0.3
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
 	 * @return WP_Error|bool
