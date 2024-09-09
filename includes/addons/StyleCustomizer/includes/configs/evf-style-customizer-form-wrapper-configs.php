@@ -182,6 +182,71 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 				),
 			),
 		),
+		'border_width'  => array(
+			'setting' => array(
+				'default' => array(
+					'top'    => 1,
+					'right'  => 1,
+					'bottom' => 1,
+					'left'   => 1,
+				),
+			),
+			'control' => array(
+				'label'       => esc_html__( 'Border Width', 'everest-forms' ),
+				'description' => esc_html__( 'This is a form button border width.', 'everest-forms' ),
+				'section'     => 'everest_forms_general_form_container',
+				'type'        => 'EVF_Customize_Dimension_Control',
+				'input_attrs' => array(
+					'min' => 0,
+				),
+				'custom_args' => array(
+					'anchor'     => true,
+					'input_type' => 'number',
+				),
+			),
+		),
+		'border_color'          => array(
+			'setting' => array(
+				'default' => '#969696',
+			),
+			'control' => array(
+				'label'       => esc_html__( 'Border Color', 'everest-forms' ),
+				'description' => esc_html__( 'This is a form border color.', 'everest-forms' ),
+				'section'     => 'everest_forms_general_form_container',
+				'type'        => 'EVF_Customize_Color_Control',
+				'custom_args' => array(
+					'alpha' => true,
+				),
+			),
+		),
+		'border_radius'         => array(
+			'setting' => array(
+				'default' => array(
+					'top'    => 0,
+					'right'  => 0,
+					'bottom' => 0,
+					'left'   => 0,
+					'unit'   => 'px',
+				),
+			),
+			'control' => array(
+				'label'       => esc_html__( 'Border Radius', 'everest-forms' ),
+				'description' => esc_html__( 'This is a form border radius.', 'everest-forms' ),
+				'section'     => 'everest_forms_general_form_container',
+				'type'        => 'EVF_Customize_Dimension_Control',
+				'input_attrs' => array(
+					'min' => 0,
+				),
+				'custom_args' => array(
+					'anchor'       => true,
+					'input_type'   => 'number',
+					'unit_choices' => array(
+						'px' => esc_attr__( 'PX', 'everest-forms' ),
+						'%'  => esc_attr__( '%', 'everest-forms' ),
+					),
+				),
+			),
+		),
 		'background_image'      => array(
 			'setting' => array(
 				'default'           => get_theme_support( 'custom-background', 'default-image' ),
@@ -285,48 +350,6 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 					'min'  => 0.0,
 					'max'  => 1.0,
 					'step' => 0.1,
-				),
-			),
-		),
-		'border_color'          => array(
-			'setting' => array(
-				'default' => '#969696',
-			),
-			'control' => array(
-				'label'       => esc_html__( 'Border Color', 'everest-forms' ),
-				'description' => esc_html__( 'This is a form border color.', 'everest-forms' ),
-				'section'     => 'everest_forms_general_form_container',
-				'type'        => 'EVF_Customize_Color_Control',
-				'custom_args' => array(
-					'alpha' => true,
-				),
-			),
-		),
-		'border_radius'         => array(
-			'setting' => array(
-				'default' => array(
-					'top'    => 0,
-					'right'  => 0,
-					'bottom' => 0,
-					'left'   => 0,
-					'unit'   => 'px',
-				),
-			),
-			'control' => array(
-				'label'       => esc_html__( 'Border Radius', 'everest-forms' ),
-				'description' => esc_html__( 'This is a form border radius.', 'everest-forms' ),
-				'section'     => 'everest_forms_general_form_container',
-				'type'        => 'EVF_Customize_Dimension_Control',
-				'input_attrs' => array(
-					'min' => 0,
-				),
-				'custom_args' => array(
-					'anchor'       => true,
-					'input_type'   => 'number',
-					'unit_choices' => array(
-						'px' => esc_attr__( 'PX', 'everest-forms' ),
-						'%'  => esc_attr__( '%', 'everest-forms' ),
-					),
 				),
 			),
 		),

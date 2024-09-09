@@ -21,10 +21,18 @@
 
 			var marginSelector = '#customize-control-everest_forms_styles-' + formId + '-form_container-margin';
 			var paddingSelector = '#customize-control-everest_forms_styles-' + formId + '-form_container-padding';
+			var boderSelector =  '#customize-control-everest_forms_styles-' + formId + '-form_container-border_type';
+			var fieldLabelSelectorstart =  '#customize-control-everest_forms_styles-' + formId + '-typography-field_labels_font_size';
+			var fieldLabelSelectorend =  '#customize-control-everest_forms_styles-' + formId + '-typography-field_labels_padding';
 
 			setTimeout(function() {
-				$(marginSelector + ', ' + paddingSelector).closest('li').wrapAll('<ul class="everest-forms-customize-option-wrapper everest-forms-margin_padding_option"></ul>');
+				$( marginSelector ).addClass('everest-forms-customize-option-wrapper everest-forms-margin_option');
+				$( paddingSelector ).addClass('everest-forms-customize-option-wrapper everest-forms-padding_option');
+				$( boderSelector ).addClass('everest-forms-customize-option-wrapper everest-forms-border_option');
+				$(fieldLabelSelectorstart + ', ' + fieldLabelSelectorend).wrapAll('<ul class="everest-forms-customize-option-wrapper everest-forms-margin_padding_option"></ul>');
+				console.log($(fieldLabelSelectorstart + ', ' + fieldLabelSelectorend));
 			}, 300);
+			
 		}
 
 	} );
@@ -472,7 +480,7 @@
 		$.each( ['font','form_container','field_styles', 'checkbox_radio_styles', 'button', 'success_message', 'error_message', 'validation_message','typography'], function( i, type ) {
 			$.each( {
 				'border_type': {
-					controls: [ 'border_width', 'border_radius' ],
+					controls: [ 'border_width', 'border_radius','border_color' ],
 					callback: function( to ) { return 'none' !== to; }
 				},
 				'style_variation': {
@@ -524,6 +532,8 @@
 					$.each( o.controls, function( i, controlId ) {
 						api.control( 'everest_forms_styles[' + data.form_id + '][' + type + '][' + controlId + ']', function( control ) {
 							var visibility = function( to ) {
+								console.log();
+								control.container.wrapAll("<ul class='test'></ul>");
 								control.container.toggle( o.callback( to ) );
 							};
 
@@ -703,7 +713,7 @@
 						}
 
 						$input.val( new_value ).trigger("change");
-					console.log(values);
+			
 						$.each(values, function (index, value) {
 							$container
 								.find(
