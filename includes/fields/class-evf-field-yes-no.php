@@ -477,36 +477,35 @@ class EVF_Field_Yes_No extends EVF_Form_Fields {
 		$yes_no         = $primary['yes_no'];
 		$yes_value      = esc_attr( $yes_no['yes_value'] );
 		$no_value       = esc_attr( $yes_no['no_value'] );
-		$yes_icon_color = esc_attr( $yes_no['yes_icon_color'] );
-		$no_icon_color  = esc_attr( $yes_no['no_icon_color'] );
+		$yes_icon_color = $yes_no['yes_icon_color'];
+		$no_icon_color  = $yes_no['no_icon_color'];
 		$yes_icon       = $this->get_icon_svg( 'yes', $yes_icon_color );
 		$no_icon        = $this->get_icon_svg( 'no', $no_icon_color );
-		$yes_label      = esc_html( $yes_no['yes_label'] );
-		$no_label       = esc_html( $yes_no['no_label'] );
-		$field_style    = esc_attr( $yes_no['field_style'] );
+		$yes_label      = $yes_no['yes_label'];
+		$no_label       = $yes_no['no_label'];
+		$field_style    = $yes_no['field_style'];
 
 		echo '<div id="evf-' . absint( $form_data['id'] ) . '-field_' . esc_attr( $field['id'] ) . '" class="everest-forms-field-yes-no-container">';
 
-		printf(
-			'<label class="everest-forms-field-yes-no yes" for="everest-forms-%d-field_%s_1">',
-			absint( $form_data['id'] ),
-			esc_attr( $field['id'] )
-		);
+			printf(
+				'<label class="everest-forms-field-yes-no yes" for="everest-forms-%d-field_%s_1">',
+				absint( $form_data['id'] ),
+				esc_attr( $field['id'] )
+			);
 
-		// Primary field.
-		$primary['id'] = sprintf(
-			'everest-forms-%d-field_%s_1',
-			absint( $form_data['id'] ),
-			esc_attr( $field['id'] )
-		);
+			// Primary field.
+			$primary['id'] = sprintf(
+				'everest-forms-%d-field_%s_1',
+				absint( $form_data['id'] ),
+				$field['id']
+			);
 
-		$primary['attr']['value']      = esc_attr( $yes_value );
-		$primary['attr']['aria-label'] = esc_attr( $yes_value );
+			$primary['attr']['value']      = esc_attr( $yes_value );
 
 		if ( 'with_icon' === $field_style ) {
 			printf(
 				'<input type="radio" %s %s>',
-				evf_html_attributes( esc_attr( $primary['id'] ), esc_attr( $primary['class'] ), esc_attr( $primary['data'] ), esc_attr( $primary['attr'] ) ),
+				evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ),
 				esc_attr( $primary['required'] )
 			);
 
@@ -514,14 +513,14 @@ class EVF_Field_Yes_No extends EVF_Form_Fields {
 		} elseif ( 'with_text' === $field_style ) {
 			printf(
 				'<input type="radio" %s %s>',
-				evf_html_attributes( esc_attr( $primary['id'] ), esc_attr( $primary['class'] ), esc_attr( $primary['data'] ), esc_attr( $primary['attr'] ) ),
+				evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ),
 				esc_attr( $primary['required'] )
 			);
 			printf( '<label for="%s">%s</label>', esc_attr( $primary['id'] ), esc_html( $yes_label ) );
 		} elseif ( 'with_icon_text' === $field_style ) {
 			printf(
 				'<input type="radio" %s %s>',
-				evf_html_attributes( esc_attr( $primary['id'] ), esc_attr( $primary['class'] ), esc_attr( $primary['data'] ), esc_attr( $primary['attr'] ) ),
+				evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ),
 				esc_attr( $primary['required'] )
 			);
 
@@ -529,28 +528,28 @@ class EVF_Field_Yes_No extends EVF_Form_Fields {
 			printf( '<label for="%s">%s</label>', esc_attr( $primary['id'] ), esc_html( $yes_label ) );
 		}
 
-		echo '</label>';
+			echo '</label>';
 
-		printf(
-			'<label class="everest-forms-field-yes-no no" for="everest-forms-%d-field_%s_0">',
-			absint( $form_data['id'] ),
-			esc_attr( $field['id'] )
-		);
+			printf(
+				'<label class="everest-forms-field-yes-no no" for="everest-forms-%d-field_%s_0">',
+				absint( $form_data['id'] ),
+				esc_attr( $field['id'] )
+			);
 
-		// Secondary field.
-		$primary['id'] = sprintf(
-			'everest-forms-%d-field_%s_0',
-			absint( $form_data['id'] ),
-			esc_attr( $field['id'] )
-		);
+			// Primary field.
+			$primary['id'] = sprintf(
+				'everest-forms-%d-field_%s_0',
+				absint( $form_data['id'] ),
+				$field['id']
+			);
 
-		$primary['attr']['value']      = esc_js( $no_value );
-		$primary['attr']['aria-label'] = esc_js( $no_value );
+			$primary['attr']['value']      = esc_js( $no_value );
+
 
 		if ( 'with_icon' === $field_style ) {
 			printf(
 				'<input type="radio" %s %s>',
-				evf_html_attributes( esc_attr( $primary['id'] ), esc_attr( $primary['class'] ), esc_attr( $primary['data'] ), esc_attr( $primary['attr'] ) ),
+				evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ),
 				esc_attr( $primary['required'] )
 			);
 
@@ -558,14 +557,14 @@ class EVF_Field_Yes_No extends EVF_Form_Fields {
 		} elseif ( 'with_text' === $field_style ) {
 			printf(
 				'<input type="radio" %s %s>',
-				evf_html_attributes( esc_attr( $primary['id'] ), esc_attr( $primary['class'] ), esc_attr( $primary['data'] ), esc_attr( $primary['attr'] ) ),
+				evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ),
 				esc_attr( $primary['required'] )
 			);
 			printf( '<label for="%s">%s</label>', esc_attr( $primary['id'] ), esc_html( $no_label ) );
 		} elseif ( 'with_icon_text' === $field_style ) {
 			printf(
 				'<input type="radio" %s %s>',
-				evf_html_attributes( esc_attr( $primary['id'] ), esc_attr( $primary['class'] ), esc_attr( $primary['data'] ), esc_attr( $primary['attr'] ) ),
+				evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ),
 				esc_attr( $primary['required'] )
 			);
 
@@ -573,9 +572,10 @@ class EVF_Field_Yes_No extends EVF_Form_Fields {
 			printf( '<label for="%s">%s</label>', esc_attr( $primary['id'] ), esc_html( $no_label ) );
 		}
 
-		echo '</label>';
+			echo '</label>';
 		echo '</div>';
 	}
+
 
 
 
