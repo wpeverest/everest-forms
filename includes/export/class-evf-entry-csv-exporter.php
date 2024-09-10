@@ -80,13 +80,18 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 		if ( ! empty( $form_data['form_fields'] ) ) {
 			foreach ( $form_data['form_fields'] as $field ) {
 				if ( ! in_array( $field['type'], array( 'html', 'title', 'captcha', 'divider' ), true ) ) {
-					$columns[ $field['id'] ] = evf_clean( $field['label'] );
-				}
-				switch ( $field['type'] ) {
-					case 'likert':
-						error_log(print_r($field['label'], true));
-						$columns[ $field['id'] ] =  implode( ' | ', $field['likert_rows'] );
-						break;
+					switch ( $field['type'] ) {
+						case 'likert':
+							$field_id = $field['id'];
+							foreach ( $field['likert_rows'] as $key => $col_row ) {
+								$col_row_key             = "$field_id-likeart-$key";
+								$columns[ $col_row_key ] = $col_row;
+							}
+							break;
+						default:
+							$columns[ $field['id'] ] = evf_clean( $field['label'] );
+							break;
+					}
 				}
 			}
 		}
@@ -273,12 +278,17 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 	 * @return array
 	 */
 	protected function generate_row_data( $entry ) {
-
 		$columns = $this->get_column_names();
 		$row     = array();
 		$fields  = json_decode( $entry->fields, true );
 		foreach ( $columns as $column_id => $column_name ) {
 			$column_id = strstr( $column_id, ':' ) ? current( explode( ':', $column_id ) ) : $column_id;
+			$position  = strpos( $column_id, '-likeart-' );
+
+			if ( $position !== false ) {
+				$column_id = substr( $column_id, 0, $position );
+			}
+
 			$value     = '';
 			$raw_value = '';
 
@@ -387,7 +397,7 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 								$selected_likert[] = $likert_columns[ $likert_key ];
 							}
 						}
-						$value = implode( ' | ', $selected_likert );
+						$value = $selected_likert;
 						break;
 					default:
 						$value = apply_filters( 'everest_forms_html_field_value', $fields[ $column_id ]['value'], $fields[ $column_id ], $entry, 'export-csv' );
@@ -398,8 +408,15 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 				$value     = $this->{"get_column_value_{$column_id}"}( $entry );
 				$raw_value = $value;
 			}
-			$column_type       = $this->get_entry_type( $column_id, $entry );
-			$row[ $column_id ] = apply_filters( 'everest_forms_format_csv_field_data', preg_match( '/textarea/', $column_type ) ? sanitize_textarea_field( $value ) : sanitize_text_field( $value ), $raw_value, $column_id, $column_name, $columns, $entry );
+			$column_type = $this->get_entry_type( $column_id, $entry );
+			if ( is_array( $value ) && isset( $fields[ $column_id ], $fields[ $column_id ]['type'] ) && in_array( $fields[ $column_id ]['type'], array( 'likert' ), true ) ) {
+				foreach ( $value as $key => $val ) {
+					$col_row_key         = "$column_id-likert-$key";
+					$row[ $col_row_key ] = $val;
+				}
+			} else {
+				$row[ $column_id ] = apply_filters( 'everest_forms_format_csv_field_data', preg_match( '/textarea/', $column_type ) ? sanitize_textarea_field( $value ) : $value, $raw_value, $column_id, $column_name, $columns, $entry );
+			}
 			if ( empty( $this->request_data ) ) {
 				$row['status'] = (
 				isset( $entry->meta['status'] ) && ! empty( $entry->meta['status'] )
