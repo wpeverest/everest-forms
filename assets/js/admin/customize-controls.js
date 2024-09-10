@@ -21,18 +21,20 @@
 
 			var marginSelector = '#customize-control-everest_forms_styles-' + formId + '-form_container-margin';
 			var paddingSelector = '#customize-control-everest_forms_styles-' + formId + '-form_container-padding';
-			var boderSelector =  '#customize-control-everest_forms_styles-' + formId + '-form_container-border_type';
-			var fieldLabelSelectorstart =  '#customize-control-everest_forms_styles-' + formId + '-typography-field_labels_font_size';
-			var fieldLabelSelectorend =  '#customize-control-everest_forms_styles-' + formId + '-typography-field_labels_padding';
+			var borderSelector = '#customize-control-everest_forms_styles-' + formId + '-form_container-border_type';
+			var fieldLabelSelectorStart = '#customize-control-everest_forms_styles-' + formId + '-typography-field_labels_font_size';
+			var fieldLabelSelectorEnd = '#customize-control-everest_forms_styles-' + formId + '-typography-field_labels_padding';
+			var subfieldLabelSelectorStart = '#customize-control-everest_forms_styles-' + formId + '-typography-field_sublabels_font_size';
+			var subfieldLabelSelectorEnd = '#customize-control-everest_forms_styles-' + formId + '-typography-field_sublabels_padding';
 
 			setTimeout(function() {
-				$( marginSelector ).addClass('everest-forms-customize-option-wrapper everest-forms-margin_option');
-				$( paddingSelector ).addClass('everest-forms-customize-option-wrapper everest-forms-padding_option');
-				$( boderSelector ).addClass('everest-forms-customize-option-wrapper everest-forms-border_option');
-				$(fieldLabelSelectorstart + ', ' + fieldLabelSelectorend).wrapAll('<ul class="everest-forms-customize-option-wrapper everest-forms-margin_padding_option"></ul>');
-				console.log($(fieldLabelSelectorstart + ', ' + fieldLabelSelectorend));
-			}, 300);
-			
+				$(marginSelector).addClass('everest-forms-customize-option-wrapper everest-forms-margin_option');
+				$(paddingSelector).addClass('everest-forms-customize-option-wrapper everest-forms-padding_option');
+				$(borderSelector).addClass('everest-forms-customize-option-wrapper everest-forms-border_option');
+				$(fieldLabelSelectorStart).nextUntil(fieldLabelSelectorEnd).addBack().add(fieldLabelSelectorEnd).wrapAll('<ul class="wpeverest-typography-wrapper "></ul>');
+				$(subfieldLabelSelectorStart).nextUntil(subfieldLabelSelectorEnd).addBack().add(subfieldLabelSelectorEnd).wrapAll('<ul class="wpeverest-typography-wrapper "></ul>');
+			}, 3000);
+
 		}
 
 	} );
@@ -532,8 +534,6 @@
 					$.each( o.controls, function( i, controlId ) {
 						api.control( 'everest_forms_styles[' + data.form_id + '][' + type + '][' + controlId + ']', function( control ) {
 							var visibility = function( to ) {
-								console.log();
-								control.container.wrapAll("<ul class='test'></ul>");
 								control.container.toggle( o.callback( to ) );
 							};
 
@@ -713,7 +713,7 @@
 						}
 
 						$input.val( new_value ).trigger("change");
-			
+
 						$.each(values, function (index, value) {
 							$container
 								.find(
