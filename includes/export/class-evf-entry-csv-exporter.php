@@ -82,6 +82,12 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 				if ( ! in_array( $field['type'], array( 'html', 'title', 'captcha', 'divider' ), true ) ) {
 					$columns[ $field['id'] ] = evf_clean( $field['label'] );
 				}
+				switch ( $field['type'] ) {
+					case 'likert':
+						error_log(print_r($field['label'], true));
+						$columns[ $field['id'] ] =  implode( ' | ', $field['likert_rows'] );
+						break;
+				}
 			}
 		}
 
@@ -367,6 +373,21 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 								$value .= $val . ' ,';
 							}
 						}
+						break;
+					case 'likert':
+						$form            = evf()->form->get( $entry->form_id );
+						$form_data       = evf_decode( $form->post_content );
+						$form_fields     = $form_data['form_fields'];
+						$form_field      = '';
+						$selected_likert = array();
+						if ( array_key_exists( $column_id, $form_fields ) ) {
+							$form_field     = $form_fields[ $column_id ];
+							$likert_columns = $form_field['likert_columns'];
+							foreach ( $fields[ $column_id ]['value_raw'] as $likert_key ) {
+								$selected_likert[] = $likert_columns[ $likert_key ];
+							}
+						}
+						$value = implode( ' | ', $selected_likert );
 						break;
 					default:
 						$value = apply_filters( 'everest_forms_html_field_value', $fields[ $column_id ]['value'], $fields[ $column_id ], $entry, 'export-csv' );
