@@ -40,7 +40,7 @@ class Everest_Forms_Template_Section_Data {
 			$this->namespace,
 			'/' . $this->rest_base,
 			array(
-				'methods'             => WP_REST_Server::READABLE,
+				'methods'             => 'GET',
 				'callback'            => array( $this, 'get_templates_data' ),
 				'permission_callback' => array( $this, 'check_admin_permissions' ),
 			)
@@ -117,27 +117,43 @@ class Everest_Forms_Template_Section_Data {
 	 *
 	 * @return WP_REST_Response|WP_Error
 	 */
-	public function get_templates_data() {
+	public function get_templates_data( WP_REST_Request $request ) {
 
-		$template_url = 'https://d3m99fsxk070py.cloudfront.net/';
+		$headers      = $request->get_headers( 'cookie' );
+		$url          = isset( $headers['referer'][0] ) ? $headers['referer'][0] : '';
+		$parsed_url   = parse_url( $url );
+		$query_string = isset( $parsed_url['query'] ) ? $parsed_url['query'] : '';
+		$query_params = array();
+		parse_str( $query_string, $query_params );
+		if ( isset( $query_params['refresh'] ) ) {
+			delete_transient( 'everest_forms_templates_data' );
+		}
+		$template_url      = 'https://d3m99fsxk070py.cloudfront.net/';
+		$template_json_url = $template_url . 'templates12.json';
+		$transient_key     = 'everest_forms_templates_data';
+		$cache_expiration  = DAY_IN_SECONDS;
 
-		$template_json_url = $template_url . 'templates1.json';
+		$template_data = get_transient( $transient_key );
 
-		try {
-			$response = wp_remote_get( $template_json_url );
+		if ( false === $template_data ) {
+			try {
+				$response = wp_remote_get( $template_json_url );
 
-			if ( is_wp_error( $response ) ) {
-				return new WP_Error( 'http_request_failed', __( 'Failed to fetch templates.', 'everest-forms' ) );
+				if ( is_wp_error( $response ) ) {
+					return new WP_Error( 'http_request_failed', __( 'Failed to fetch templates.', 'everest-forms' ) );
+				}
+
+				$content_json  = wp_remote_retrieve_body( $response );
+				$template_data = json_decode( $content_json );
+
+				if ( empty( $template_data ) ) {
+					return new WP_Error( 'no_templates', __( 'No templates found.', 'everest-forms' ), array( 'status' => 404 ) );
+				}
+
+				set_transient( $transient_key, $template_data, $cache_expiration );
+			} catch ( Exception $e ) {
+				return new WP_Error( 'exception_occurred', __( 'An error occurred while fetching templates.', 'everest-forms' ), array( 'status' => 500 ) );
 			}
-
-			$content_json  = wp_remote_retrieve_body( $response );
-			$template_data = json_decode( $content_json );
-
-			if ( empty( $template_data ) ) {
-				return new WP_Error( 'no_templates', __( 'No templates found.', 'everest-forms' ), array( 'status' => 404 ) );
-			}
-		} catch ( Exception $e ) {
-			return new WP_Error( 'exception_occurred', __( 'An error occurred while fetching templates.', 'everest-forms' ), array( 'status' => 500 ) );
 		}
 
 		$folder_path = untrailingslashit( plugin_dir_path( EVF_PLUGIN_FILE ) . '/assets/images/templates' );
@@ -171,6 +187,7 @@ class Everest_Forms_Template_Section_Data {
 
 		return rest_ensure_response( $template_data );
 	}
+
 
 
 
