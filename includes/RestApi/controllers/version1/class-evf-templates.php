@@ -129,7 +129,7 @@ class Everest_Forms_Template_Section_Data {
 			delete_transient( 'everest_forms_templates_data' );
 		}
 		$template_url      = 'https://d3m99fsxk070py.cloudfront.net/';
-		$template_json_url = $template_url . 'templates12.json';
+		$template_json_url = $template_url . 'templates1.json';
 		$transient_key     = 'everest_forms_templates_data';
 		$cache_expiration  = DAY_IN_SECONDS;
 

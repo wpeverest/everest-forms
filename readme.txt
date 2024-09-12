@@ -308,11 +308,13 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 3.0.3        - xx-xx-2024
+= 3.0.3        - 12-09-2024
 * Feature      - Add new templates.
 * Feature      - Entry submission RestApi.
 * Enhancement  - Send file directly as an attachment.
 * Fix          - Premium sidebar design issue.
+* Fix          - Escaping issue in Yes/No field.
+* Dev 		   - Calculation module.
 * Tweak        - Hidden field editable compatibility.
 * Tweak        - Catch mail send error.
 * Tweak        - Filter added to state default value.
