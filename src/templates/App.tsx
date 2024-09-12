@@ -69,28 +69,31 @@ const App = () => {
 
   return (
     <ChakraProvider>
-      <Box margin={{ base: 4, md: 6, lg: 10 }} boxShadow="md">
+      <Box bg="white" margin="20px" padding="0px 24px 50px" boxShadow="0px 4px 50px rgba(0, 0, 0, 0.06)">
         <HStack
-          spacing={{ base: 4, md: 6 }} // Adjust spacing
+          spacing={{ base: 4, md: 6 }}
           align="center"
-          mb={5}
-          bg="white"
-          p={{ base: 3, md: 4 }}
-          boxShadow="sm"
+          mb={0}
+		  borderBottom="1px solid #CDD0D8"
+         padding="20px 10px"
           direction={{ base: "column", md: "row" }}
         >
-          <EVFIcon boxSize={{ base: 5, md: 6, lg: 7 }} />
-          <Divider orientation="vertical" height={{ base: "16px", md: "24px", lg: "32px" }} />
-          <Text fontSize={{ base: "md", md: "lg", lg: "xl" }} fontWeight="bold" textAlign={{ base: "center", md: "left" }}>
+          <EVFIcon boxSize="12" />
+          <Divider orientation="vertical" height="40px" borderColor="#CDD0D8" />
+          <Text fontSize="18px" fontWeight="semibold" lineHeight="26px" color="#383838" textAlign={{ base: "center", md: "left" }} margin="0px">
             {__("Add New Form", "everest-forms")}
           </Text>
           <Button
             colorScheme="purple"
             variant="outline"
             onClick={handleRefreshTemplates}
-            size={{ base: "sm", md: "md", lg: "lg" }}
             width={{ base: "full", md: "auto" }}
-            display={{ base: "none", md: "inline-flex" }} // Hide button on small screens
+            display={{ base: "none", md: "inline-flex" }}
+			fontSize= "15px"
+			lineHeight="20px"
+			padding="8px 16px"
+			height="auto"
+			borderRadius="4px"
           >
             {__("Refresh Templates", "everest-forms")}
           </Button>
@@ -98,12 +101,12 @@ const App = () => {
         </HStack>
 
         {/* Main Content Area */}
-        <Box bg="white" p={{ base: 3, md: 5, lg: 6 }} rounded="md" boxShadow="sm">
-          <VStack align="start" spacing={4}>
-            <Heading as="h1" size={{ base: "md", md: "lg", lg: "xl" }} m={0}>
+        <Box bg="white" >
+          <VStack align="start" padding="20px 0px 32px"  gap="12px">
+            <Heading as="h1" fontSize="24px"lineHeight="34px" letterSpacing="0.4px" fontWeight="semibold" m={0}>
               {__("Select a Template", "everest-forms")}
             </Heading>
-            <Text fontSize={{ base: "sm", md: "md", lg: "lg" }} color="gray.600">
+            <Text fontSize="14px" lineHeight="24px" color="#4D4D4D" fontWeight="400" margin="0px" >
               {__(
                 "To get started quickly, you can pick from our ready-made templates, begin with a blank form, or design your own.",
                 "everest-forms"
@@ -118,4 +121,3 @@ const App = () => {
 };
 
 export default App;
-	

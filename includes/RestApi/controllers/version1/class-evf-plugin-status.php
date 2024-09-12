@@ -186,6 +186,9 @@ class Everest_Forms_Plugin_Status {
 			$slug   = isset( $addon['slug'] ) ? sanitize_key( wp_unslash( $addon['slug'] ) ) : '';
 			$name   = isset( $addon['name'] ) ? sanitize_text_field( $addon['name'] ) : '';
 			$plugin = plugin_basename( WP_PLUGIN_DIR . '/' . $slug . '/' . $slug . '.php' );
+			if ( is_plugin_active( $plugin ) ) {
+				continue;
+			}
 			$status = array(
 				'install' => 'plugin',
 				'slug'    => $slug,
@@ -250,7 +253,6 @@ class Everest_Forms_Plugin_Status {
 		require_once ABSPATH . '/wp-admin/includes/file.php';
 		include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
 		include_once ABSPATH . 'wp-admin/includes/plugin-install.php';
-
 		if ( file_exists( WP_PLUGIN_DIR . '/' . $plugin ) ) {
 			$plugin_data          = get_plugin_data( WP_PLUGIN_DIR . '/' . $plugin );
 			$status['plugin']     = $plugin;
@@ -295,8 +297,6 @@ class Everest_Forms_Plugin_Status {
 			);
 			$api  = plugins_api( 'plugin_information', $args );
 		} else {
-			lg( get_option( 'everest-forms-pro_license_key' ) );
-			lg( $name );
 			$api = json_decode(
 				EVF_Updater_Key_API::version(
 					array(
@@ -314,7 +314,6 @@ class Everest_Forms_Plugin_Status {
 		}
 
 		$status['pluginName'] = $api->name;
-
 		$skin     = new WP_Ajax_Upgrader_Skin();
 		$upgrader = new Plugin_Upgrader( $skin );
 		$result   = $upgrader->install( $api->download_link );

@@ -87,6 +87,12 @@ const Main: React.FC<{ filter: string }> = ({ filter }) => {
                         onSearchChange={handleSearchChange}
                     />
                 </Box>
+				<Box
+				width="1px"
+				bg="linear-gradient(90deg, #CDD0D8 0%, rgba(255, 255, 255, 0) 158.04%)"
+				mx="4"
+				marginRight="28px"
+				/>
                 <Box flex={1}>
                     <TemplateList selectedCategory={selectedCategory} templates={filteredTemplates} />
                 </Box>
