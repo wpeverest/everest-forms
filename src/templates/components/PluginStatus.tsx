@@ -150,7 +150,6 @@ const PluginStatus: React.FC<PluginStatusProps> = ({
 				[plugin.key]: "active",
 			  }));
 
-			  // Store the last success message
 			  finalMessage = response.message || __("Plugin activated successfully.", "everest-forms");
 
 			} else {
@@ -159,7 +158,6 @@ const PluginStatus: React.FC<PluginStatusProps> = ({
 				[plugin.key]: "error",
 			  }));
 
-			  // Store the last error message
 			  finalMessage = response.message || sprintf(
 				__("Failed to activate plugin: %s.", "everest-forms"),
 				plugin.value
@@ -185,7 +183,7 @@ const PluginStatus: React.FC<PluginStatusProps> = ({
 		setButtonLabel("Continue");
 
 		toast({
-		  title: __("Result", "everest-forms"),
+		  title: __("Success", "everest-forms"),
 		  description: finalMessage,
 		  status: "success",
 		  position: "bottom-right",

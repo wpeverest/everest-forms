@@ -55,6 +55,15 @@ class Everest_Forms_Plugin_Status {
 				'permission_callback' => array( $this, 'check_admin_permissions' ),
 			)
 		);
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/upgrade',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'plugin_upgrade' ),
+				'permission_callback' => array( $this, 'check_admin_permissions' ),
+			)
+		);
 	}
 
 		/**
@@ -98,11 +107,37 @@ class Everest_Forms_Plugin_Status {
 		);
 	}
 
+	/**
+	 * plugin Upgrade
+	 *
+	 * @since 3.0.3
+	 *
+	 * @param WP_REST_Request $request Full details about the request.
+	 *
+	 * @return WP_Error|WP_REST_Response
+	 */
+	public function plugin_upgrade( $request ) {
+
+		$required_plugins = $request->get_param( 'requiredPlugins' );
+		$license_key      = get_option( 'everest-forms-pro_license_key' );
+		$plugin_status    = array();
+		$plugin_to_check  = 'everest-forms-pro';
+		if ( in_array( $plugin_to_check, $required_plugins ) ) {
+			if ( $license_key && is_plugin_active( 'everest-forms-pro/everest-forms-pro.php' ) ) {
+				$plugin_status = true;
+			} else {
+				$plugin_status = false;
+			}
+		}
+		return new WP_REST_Response( array( 'plugin_status' => $plugin_status ), 200 );
+	}
+
+
 
 		/**
 		 * Bulk Activate modules.
 		 *
-		 * @since 3.0.0
+		 * @since 3.0.3
 		 *
 		 * @param WP_REST_Request $request Full details about the request.
 		 *
@@ -171,7 +206,7 @@ class Everest_Forms_Plugin_Status {
 		/**
 		 * Handler for installing bulk extension.
 		 *
-		 * @since 3.0.0
+		 * @since 3.0.3
 		 *
 		 * @param array $addon_data Datas of addons to activate.
 		 *
@@ -210,7 +245,7 @@ class Everest_Forms_Plugin_Status {
 		/**
 		 * Bulk enable features.
 		 *
-		 * @since 3.0.0
+		 * @since 3.0.3
 		 *
 		 * @param array $feature_data Data of the features to enable.
 		 */
@@ -238,7 +273,7 @@ class Everest_Forms_Plugin_Status {
 	/**
 	 * Handler for installing a extension.
 	 *
-	 * @since 3.0.0
+	 * @since 3.0.3
 	 *
 	 * @param string $slug Slug of the addon to install.
 	 * @param string $plugin Plugin file of the addon to install.
@@ -314,9 +349,9 @@ class Everest_Forms_Plugin_Status {
 		}
 
 		$status['pluginName'] = $api->name;
-		$skin     = new WP_Ajax_Upgrader_Skin();
-		$upgrader = new Plugin_Upgrader( $skin );
-		$result   = $upgrader->install( $api->download_link );
+		$skin                 = new WP_Ajax_Upgrader_Skin();
+		$upgrader             = new Plugin_Upgrader( $skin );
+		$result               = $upgrader->install( $api->download_link );
 
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 			$status['debug'] = $skin->get_upgrade_messages();
