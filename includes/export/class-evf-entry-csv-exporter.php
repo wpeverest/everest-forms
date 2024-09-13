@@ -84,7 +84,7 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 						case 'likert':
 							$field_id = $field['id'];
 							foreach ( $field['likert_rows'] as $key => $col_row ) {
-								$col_row_key             = "$field_id-likeart-$key";
+								$col_row_key             = "$field_id-likert-$key";
 								$columns[ $col_row_key ] = $col_row;
 							}
 							break;
@@ -283,7 +283,7 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 		$fields  = json_decode( $entry->fields, true );
 		foreach ( $columns as $column_id => $column_name ) {
 			$column_id = strstr( $column_id, ':' ) ? current( explode( ':', $column_id ) ) : $column_id;
-			$position  = strpos( $column_id, '-likeart-' );
+			$position  = strpos( $column_id, '-likert-' );
 
 			if ( $position !== false ) {
 				$column_id = substr( $column_id, 0, $position );
