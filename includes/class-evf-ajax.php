@@ -385,14 +385,14 @@ class EVF_AJAX {
 
 			if ( ! empty( $old_calculation_format ) && ! empty( $new_calculation_format ) ) {
 				$logger->error(
-					__( 'Need calculation formula to update.', 'everest-forms' ),
+					__( 'Formula update error.', 'everest-forms' ),
 					array( 'source' => 'form-save' )
 				);
 				wp_send_json_error(
 					array(
-						'errorTitle'   => esc_html__( 'Need calculation formula to update.', 'everest-forms' ),
+						'errorTitle'   => esc_html__( 'Heads Up!', 'everest-forms' ),
 						/* translators: %s: empty meta data */
-						'errorMessage' => sprintf( esc_html__( 'Please update all formula.', 'everest-forms' ) ),
+						'errorMessage' => sprintf( esc_html__( 'Seems like your formula is not up to date. We suggest you update your formula.', 'everest-forms' ) ),
 					)
 				);
 			}
@@ -404,9 +404,9 @@ class EVF_AJAX {
 				);
 				wp_send_json_error(
 					array(
-						'errorTitle'   => esc_html__( 'Not supported operator.', 'everest-forms' ),
+						'errorTitle'   => esc_html__( 'Heads Up!', 'everest-forms' ),
 						/* translators: %s: empty meta data */
-						'errorMessage' => sprintf( esc_html__( '^ operator is not used in latest version. use pow( $FIELD_1, 3 )', 'everest-forms' ) ),
+						'errorMessage' => sprintf( esc_html__( 'The ^ sign is now replaced with pow(). Please update accordingly. Tip: pow(a,b) = a^b', 'everest-forms' ) ),
 					)
 				);
 			}

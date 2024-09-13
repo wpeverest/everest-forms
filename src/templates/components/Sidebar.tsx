@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { Box, VStack, HStack, Text, Spacer, Input, InputLeftElement, InputGroup, Badge } from "@chakra-ui/react";
+import { Box, VStack, HStack, Text, Spacer, Input, InputLeftElement, InputGroup, Badge, CardHeader,CardFooter,Button,Card,Heading } from "@chakra-ui/react";
 import { FaSearch } from 'react-icons/fa';
 import debounce from "lodash.debounce";
 import { __ } from '@wordpress/i18n';
@@ -34,9 +34,9 @@ const Sidebar: React.FC<SidebarProps> = React.memo(({ categories, selectedCatego
 
   return (
     <Box>
-      <InputGroup mb={4}>
-        <InputLeftElement pointerEvents="none">
-          <FaSearch color="gray.300" />
+      <InputGroup mb="26px">
+        <InputLeftElement pointerEvents="none" padding="15px 10px" borderRadius="8px" borderColor="#B0B0B0">
+          <FaSearch width="16px" height="16px" color="#737373" />
         </InputLeftElement>
         <Input
           placeholder={__("Search Templates", "everest-forms")}
@@ -44,22 +44,58 @@ const Sidebar: React.FC<SidebarProps> = React.memo(({ categories, selectedCatego
           onChange={handleSearchChange}
         />
       </InputGroup>
-      <VStack align="stretch" spacing={2}>
+      <VStack align="stretch" gap="2px">
         {orderedCategories.map((category) => (
           <HStack
             key={category.name}
-            p="3px"
-            _hover={{ bg: "gray.100" }}
+            p="12px"
+            _hover={{
+				bg: "#F7F4FB",
+				"& > .badge": {
+				  bg: selectedCategory === category.name ? "#FFFFFF" : "#FFFFFF"
+			}
+			}}
             borderRadius="md"
             cursor="pointer"
-            bg={selectedCategory === category.name ? "gray.200" : "transparent"}
+
+            bg={selectedCategory === category.name ? "#F7F4FB" : "transparent"}
             onClick={() => onCategorySelect(category.name)}
           >
-            <Text fontWeight="semibold">{category.name}</Text>
+            <Text color={selectedCategory === category.name ? "#7545BB" : ""} fontWeight="semibold" margin="0px">{category.name}</Text>
             <Spacer />
-            <Badge color="gray.500">{category.count}</Badge>
+            <Badge  className="badge" display="flex" alignItems="center" justifyContent="center" width="32px" height="32px" padding="0px" borderRadius="8px" color={selectedCategory === category.name ? "#7545BB" : ""} bg={selectedCategory === category.name ? "white" : "#F2F2F2"} >{category.count}</Badge>
           </HStack>
         ))}
+		<Card
+				align='center'
+				bg="linear-gradient(90.62deg, rgba(76, 21, 155, 0.7) 0.2%, rgba(76, 21, 155, 0.7) 0.21%, rgba(140, 100, 198, 0.7) 99.25%)"
+				padding="40px 24px"
+				marginTop="26px"
+				>
+				<CardHeader padding="0px">
+					<Heading fontSize="18px" color="white" lineHeight="28px" padding="0px" margin="0px 0px 20px" textAlign="center">
+					{__("Can't Find The Form Template You Need?", "everest-forms")}
+					</Heading>
+				</CardHeader>
+				<CardFooter padding="0" width="100%">
+				<a
+						href="https://everestforms.net/request-template"
+						target="_blank"
+						rel="noopener noreferrer"
+						style={{ width: "inherit" }}
+						>
+					<Button
+						backgroundColor="#FFFFFF"
+						color="#7545BB"
+						padding="12px 10px"
+						borderRadius="4px"
+						width="inherit"
+					>
+						{__("Request Template","everest-forms")}
+					</Button>
+					</a>
+				</CardFooter>
+				</Card>
       </VStack>
     </Box>
   );

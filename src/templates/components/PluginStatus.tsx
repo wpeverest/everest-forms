@@ -108,90 +108,97 @@ const PluginStatus: React.FC<PluginStatusProps> = ({
       setInstallComplete(false);
     }
   };
-
   const handleButtonClick = async () => {
-    if (installComplete) {
-      onActivateAndContinue();
-    } else {
-      const anyNotInstalled = requiredPlugins.some(
-        (plugin) => pluginStatuses[plugin.key] === "not-installed"
-      );
-      const anyInactive = requiredPlugins.some(
-        (plugin) => pluginStatuses[plugin.key] === "inactive"
-      );
+	if (installComplete) {
+	  onActivateAndContinue();
+	} else {
+	  const anyNotInstalled = requiredPlugins.some(
+		(plugin) => pluginStatuses[plugin.key] === "not-installed"
+	  );
+	  const anyInactive = requiredPlugins.some(
+		(plugin) => pluginStatuses[plugin.key] === "inactive"
+	  );
 
-      if (anyInactive || anyNotInstalled) {
-        setLoading(true);
-        setInstallInProgress(true);
+	  if (anyInactive || anyNotInstalled) {
+		setLoading(true);
+		setInstallInProgress(true);
 
-        for (const plugin of requiredPlugins) {
-          try {
-            const response = (await apiFetch({
-              path: `${restURL}everest-forms/v1/plugin/activate`,
-              method: "POST",
-              body: JSON.stringify({
-                moduleData: [
-                  {
-                    name: plugin.value,
-                    slug: plugin.key,
-                    type: pluginStatuses[plugin.key] === "not-installed" ? "addon" : "addon",
-                  },
-                ],
-              }),
-              headers: {
-                "Content-Type": "application/json",
-                "X-WP-Nonce": security,
-              },
-            })) as PluginStatusResponse;
+		let finalMessage = "";
+		for (const plugin of requiredPlugins) {
+		  try {
+			const response = (await apiFetch({
+			  path: `${restURL}everest-forms/v1/plugin/activate`,
+			  method: "POST",
+			  body: JSON.stringify({
+				moduleData: [
+				  {
+					name: plugin.value,
+					slug: plugin.key,
+					type: pluginStatuses[plugin.key] === "not-installed" ? "addon" : "addon",
+				  },
+				],
+			  }),
+			  headers: {
+				"Content-Type": "application/json",
+				"X-WP-Nonce": security,
+			  },
+			})) as PluginStatusResponse;
 
-            if (response.success) {
-              setPluginStatuses((prevStatuses) => ({
-                ...prevStatuses,
-                [plugin.key]: "active",
-              }));
-            } else {
-              setPluginStatuses((prevStatuses) => ({
-                ...prevStatuses,
-                [plugin.key]: "error",
-              }));
-            }
-          } catch (error) {
-            console.error("Error activating plugin:", error);
-            setPluginStatuses((prevStatuses) => ({
-              ...prevStatuses,
-              [plugin.key]: "error",
-            }));
-            toast({
-              title: "Error",
-              description: sprintf(
-				__("Unable to activate %s.", "everest-forms"),
+			if (response.success) {
+			  setPluginStatuses((prevStatuses) => ({
+				...prevStatuses,
+				[plugin.key]: "active",
+			  }));
+
+			  // Store the last success message
+			  finalMessage = response.message || __("Plugin activated successfully.", "everest-forms");
+
+			} else {
+			  setPluginStatuses((prevStatuses) => ({
+				...prevStatuses,
+				[plugin.key]: "error",
+			  }));
+
+			  // Store the last error message
+			  finalMessage = response.message || sprintf(
+				__("Failed to activate plugin: %s.", "everest-forms"),
 				plugin.value
-			  ),
-              position: "bottom-right",
-              duration: 5000,
-              isClosable: true,
-              variant: "subtle",
-            });
-          }
-        }
-        setLoading(false);
-        setInstallInProgress(false);
-        setInstallComplete(true);
+			  );
+			}
+		  } catch (error) {
+			setPluginStatuses((prevStatuses) => ({
+			  ...prevStatuses,
+			  [plugin.key]: "error",
+			}));
+
+			// Store the error message for catch block
+			finalMessage = sprintf(
+			  __("Unable to activate %s.", "everest-forms"),
+			  plugin.value
+			);
+		  }
+		}
+
+		setLoading(false);
+		setInstallInProgress(false);
+		setInstallComplete(true);
 		setButtonLabel("Continue");
-        toast({
-          title: __("Success","everest-forms"),
-          description: __("All required plugins installed and activated successfully.","everest-forms"),
-          status: "success",
-          position: "bottom-right",
-          duration: 5000,
-          isClosable: true,
-          variant: "subtle",
-        });
-      } else {
-        onActivateAndContinue();
-      }
-    }
+
+		toast({
+		  title: __("Result", "everest-forms"),
+		  description: finalMessage,
+		  status: "success",
+		  position: "bottom-right",
+		  duration: 5000,
+		  isClosable: true,
+		  variant: "subtle",
+		});
+	  } else {
+		onActivateAndContinue();
+	  }
+	}
   };
+
 
   return (
     <VStack spacing={4} align="stretch">
@@ -224,16 +231,18 @@ const PluginStatus: React.FC<PluginStatusProps> = ({
           </Box>
         </>
       )}
-      <Button
-        marginLeft={"auto"}
-        onClick={handleButtonClick}
-        colorScheme="purple"
-        size="md"
-        isLoading={loading}
-        isDisabled={installInProgress}
-      >
-        {buttonLabel}
-      </Button>
+      {buttonLabel && (
+		<Button
+			marginLeft={"auto"}
+			onClick={handleButtonClick}
+			colorScheme="purple"
+			size="md"
+			isLoading={loading}
+			isDisabled={installInProgress}
+		>
+			{buttonLabel}
+		</Button>
+		)}
     </VStack>
   );
 };

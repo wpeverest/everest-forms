@@ -190,53 +190,74 @@ const TemplateList: React.FC<TemplateListProps> = ({ selectedCategory, templates
   }));
 
 
+
   return (
     <Box>
+	 <Heading  as="h3" fontSize="18px" lineHeight="26px" letterSpacing="0.4px" fontWeight="semibold" m="0px 0px 32px" color="#26262E" borderBottom="1px solid #CDD0D8" paddingBottom="12px">
+              {selectedCategory}
+    </Heading>
 		{
 			templates?.length ?  (
 				<SimpleGrid columns={[1, 2, 3, 4]} spacing={6}>
 				{templates.map((template) => (
+
 				  <Box
 					key={template.slug}
-					borderWidth={1}
-					borderRadius="md"
+					borderWidth= "2px"
+					borderRadius="8px"
+					borderColor="#F6F4FA"
 					overflow="hidden"
 					position="relative"
 					onMouseOver={() => setHoverCardId(template.id)}
 					onMouseLeave={() => setHoverCardId(null)}
-					boxShadow="sm"
 					textAlign="center"
 					bg="white"
 					p={0}
-					_hover={{ boxShadow: "lg" }}
+					transition="all .3s"
+					_hover={{ boxShadow: "0px 5px 24px rgba(58, 34, 93, 0.12)" }}
 				  >
-					<Center mb={4}>
+					<Center mb={0}>
 					  <Box
 						position="relative"
-						height="300px"
 						width="100%"
 						display="flex"
 						justifyContent="center"
 						alignItems="center"
-						bg="gray.100"
-						borderRadius="md"
+						bg="#F7F4FB"
+						pt="80px"
+						height="250px"
+						borderRadius="4px 4px 0px 0px"
 						overflow="hidden"
-					  >
-						<Image src={template.imageUrl} alt={template.title} objectFit="contain" />
+						transition="all .3s"
+						 _hover={{
+							"::before": {
+							  content: '""',
+							  position: "absolute",
+							  width: "100%",
+							  height: "100%",
+							  bg: "rgba(0, 0, 0, 0.5)",
+							  top: "50%",
+							  left: "50%",
+							  transform: "translate(-50%, -50%)",
+							  zIndex: 1
+							}
+						 }}
 
-						{/* Pro Badge */}
+					  >
+						<Image boxShadow="0px 3px 12px rgba(58, 34, 93, 0.12)" src={template.imageUrl} alt={template.title} objectFit="contain" />
+
 						{template.isPro && (
 						  <Badge
-							colorScheme="green"
+							bg="#4BCE61"
+							color="white"
 							position="absolute"
-							top="243px"
-  							right="15px"
-							borderRadius="md"
-							fontSize="0.75em"
-							p={1}
-							px={2}
-							textTransform="uppercase"
-							boxShadow="sm"
+							bottom="12px"
+  							right="12px"
+							borderRadius="4px"
+							fontSize="12px"
+							p="2px 6px"
+							textTransform="capitalize"
+							zIndex="2"
 						  >
 							{__("Pro", "everest-forms")}
 						  </Badge>
@@ -272,7 +293,6 @@ const TemplateList: React.FC<TemplateListProps> = ({ selectedCategory, templates
 					  </Box>
 					</Center>
 
-					{/* Favorite Icon */}
 					{hoverCardId === template.id && (
 					  <Box
 						as="button"
@@ -294,11 +314,11 @@ const TemplateList: React.FC<TemplateListProps> = ({ selectedCategory, templates
 					  </Box>
 					)}
 
-					<VStack spacing={2}>
-					  <Text fontWeight="bold" fontSize="16px">
-						{template.title}
-					  </Text>
-					  <Text fontSize="14px" fontWeight="400" color="gray.600">
+					<VStack padding="16px">
+					  <Heading width="100%" textAlign="left" fontWeight="bold" fontSize="16px" margin="0px">
+					  {template.title}
+					</Heading>
+					  <Text textAlign="left"  margin="0px" fontSize="14px" fontWeight="400" color="gray.600">
 						{template.description}
 					  </Text>
 					</VStack>
@@ -339,15 +359,16 @@ const TemplateList: React.FC<TemplateListProps> = ({ selectedCategory, templates
 		  </Box>
 		)}
 
-      <Modal isCentered isOpen={isOpen} onClose={onClose} size="xl">
+      <Modal isCentered isOpen={isOpen} onClose={onClose} size="xl" >
 	  <ModalOverlay />
-        <ModalContent>
-          <ModalHeader textAlign="center">
+        <ModalContent  borderRadius="8px" padding="40px">
+          <ModalHeader padding="0px" textAlign="left" fontSize="20px" lineHeight="28px" color="#26262E">
             {__("Uplift your form experience to the next level.","everest-forms")}
           </ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Box mb={4} padding={2}>
+          <ModalCloseButton top="12px" right="12px" />
+          <ModalBody padding="0px" marginTop="16px">
+            <Box mb="20px" padding="0px">
+			<Text margin="0px 0px 6px" fontSize="16px" lineHeight="29px">{__("Give it a name","everest-forms")}</Text>
               <Input
 			  width={"full"}
                 value={formTemplateName}
@@ -357,7 +378,7 @@ const TemplateList: React.FC<TemplateListProps> = ({ selectedCategory, templates
               />
             </Box>
 
-            <Box overflow="hidden" mb={4} padding={2}>
+            <Box overflow="hidden" mb="0px" padding="0px">
               <PluginStatus requiredPlugins={requiredPlugins} onActivateAndContinue={handleFormTemplateSave} />
             </Box>
           </ModalBody>
