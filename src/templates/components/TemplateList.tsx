@@ -19,16 +19,17 @@ import {
   useToast,
   HStack,
   Icon,
-  DarkMode,
   Heading,
   Center,
+  ModalFooter,
+  Spacer,
 } from "@chakra-ui/react";
 import apiFetch from "@wordpress/api-fetch";
 import { templatesScriptData } from "../utils/global";
 import PluginStatus from "./PluginStatus";
 import { FaHeart } from "react-icons/fa";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { __, _x } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import notFoundImage from "../images/not-found-image.png";
 import { CiPlay1 } from "react-icons/ci";
 import { IoEyeOutline } from "react-icons/io5";
@@ -52,6 +53,15 @@ interface TemplateListProps {
 
 const { restURL, security } = templatesScriptData;
 
+const LockIcon = (props) => (
+	<Icon viewBox="0 0 24 24" {...props}>
+	<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 54 54">
+ 	 <rect width="54" height="54" fill="#FA5252" rx="27"/>
+  	<path fill="#fff" d="M34 22.334h-1.166v-1.167A5.84 5.84 0 0 0 27 15.334a5.84 5.84 0 0 0-5.833 5.833v1.167H20a2.333 2.333 0 0 0-2.333 2.333v11.667A2.333 2.333 0 0 0 20 38.667h14a2.333 2.333 0 0 0 2.334-2.333V24.667A2.333 2.333 0 0 0 34 22.334Zm-10.5-1.167c0-1.93 1.57-3.5 3.5-3.5s3.5 1.57 3.5 3.5v1.167h-7v-1.167Zm4.667 10.177v2.657h-2.333v-2.657a2.323 2.323 0 0 1-.484-3.66 2.333 2.333 0 0 1 3.984 1.65c0 .861-.473 1.605-1.167 2.01Z"/>
+	</svg>
+	</Icon>
+  );
+
 interface CreateTemplateResponse {
   success: boolean;
   data?: {
@@ -71,18 +81,57 @@ const TemplateList: React.FC<TemplateListProps> = ({ selectedCategory, templates
   const [favorites, setFavorites] = useState<string[]>([]);
   const toast = useToast();
   const queryClient = useQueryClient();
+  const [isPluginModalOpen, setIsPluginModalOpen] = useState(false);
 
-  const handleTemplateClick = (template: Template) => {
-    setSelectedTemplateSlug(template.slug);
-    setPreviewTemplate(template);
-    setFormTemplateName(template.title);
-    onOpen();
+
+  const openModal = () => onOpen();
+  const closeModal = () => onClose();
+  const openPluginModal = () => setIsPluginModalOpen(true);
+  const closePluginModal = () => setIsPluginModalOpen(false);
+
+  const handleTemplateClick = async (template: Template) => {
+    const requiredPlugins = template.addons ? Object.keys(template.addons) : [];
+
+    try {
+      const response = await apiFetch({
+        path: `${restURL}everest-forms/v1/plugin/upgrade`,
+        method: "POST",
+        body: JSON.stringify({ requiredPlugins }),
+        headers: {
+          "Content-Type": "application/json",
+          "X-WP-Nonce": security,
+        },
+      });
+
+      const { plugin_status } = response as { plugin_status: Record<string, string> };
+
+      if (!plugin_status) {
+        setFormTemplateName(template.title);
+        openPluginModal();
+        return;
+      }
+
+      setSelectedTemplateSlug(template.slug);
+      setPreviewTemplate(template);
+      setFormTemplateName(template.title);
+      openModal();
+    } catch (error) {
+      toast({
+        title: __("Error", "everest-forms"),
+        description: __("An error occurred while checking the plugin status. Please try again.", "everest-forms"),
+        status: "error",
+        position: "bottom-right",
+        duration: 5000,
+        isClosable: true,
+        variant: "subtle",
+      });
+    }
   };
 
   const handleFormTemplateSave = async () => {
     if (!formTemplateName) {
       toast({
-		title: __("Form name required", "everest-forms"),
+        title: __("Form name required", "everest-forms"),
         description: __("Please provide a name for your form.", "everest-forms"),
         status: "warning",
         position: "bottom-right",
@@ -111,18 +160,18 @@ const TemplateList: React.FC<TemplateListProps> = ({ selectedCategory, templates
         window.location.href = response.data.redirect;
       } else {
         toast({
-			title: __("Error", "everest-forms"),
-			description: response.message || __("Failed to create form template.", "everest-forms"),
-			status: "error",
-			position: "bottom-right",
-			duration: 5000,
-			isClosable: true,
-			variant: "subtle",
+          title: __("Error", "everest-forms"),
+          description: response.message || __("Failed to create form template.", "everest-forms"),
+          status: "error",
+          position: "bottom-right",
+          duration: 5000,
+          isClosable: true,
+          variant: "subtle",
         });
       }
     } catch (error) {
       toast({
-		title: __("Error", "everest-forms"),
+        title: __("Error", "everest-forms"),
         description: __("An error occurred while creating the form template.", "everest-forms"),
         status: "error",
         position: "bottom-right",
@@ -157,22 +206,22 @@ const TemplateList: React.FC<TemplateListProps> = ({ selectedCategory, templates
       return newFavorites;
     },
     {
-      onError: (error) => {
+      onError: () => {
         toast({
-			title: __("Error", "everest-forms"),
-			description: __("An error occurred while updating favorites.", "everest-forms"),
-			status: "error",
-			position: "bottom-right",
-			duration: 5000,
-			isClosable: true,
-			variant: "subtle",
+          title: __("Error", "everest-forms"),
+          description: __("An error occurred while updating favorites.", "everest-forms"),
+          status: "error",
+          position: "bottom-right",
+          duration: 5000,
+          isClosable: true,
+          variant: "subtle",
         });
       },
       onSuccess: (newFavorites) => {
-        queryClient.invalidateQueries({ queryKey: ['templates'] });
+        queryClient.invalidateQueries(['templates']);
         setFavorites(newFavorites);
         queryClient.invalidateQueries(['favorites']);
-      }
+      },
     }
   );
 
@@ -189,177 +238,209 @@ const TemplateList: React.FC<TemplateListProps> = ({ selectedCategory, templates
     value: addon.value,
   }));
 
-
-
   return (
     <Box>
-	 <Heading  as="h3" fontSize="18px" lineHeight="26px" letterSpacing="0.4px" fontWeight="semibold" m="0px 0px 32px" color="#26262E" borderBottom="1px solid #CDD0D8" paddingBottom="12px">
-              {selectedCategory}
-    </Heading>
-		{
-			templates?.length ?  (
-				<SimpleGrid columns={[1, 2, 3, 4]} spacing={6}>
-				{templates.map((template) => (
+      <Heading
+        as="h3"
+        fontSize="18px"
+        lineHeight="26px"
+        letterSpacing="0.4px"
+        fontWeight="semibold"
+        m="0px 0px 32px"
+        color="#26262E"
+        borderBottom="1px solid #CDD0D8"
+        paddingBottom="12px"
+      >
+        {selectedCategory}
+      </Heading>
+      {templates?.length ? (
+        <SimpleGrid columns={[1, 2, 3, 4]} spacing={6}>
+          {templates.map((template) => (
+            <Box
+              key={template.slug}
+              borderWidth="2px"
+              borderRadius="8px"
+              borderColor="#F6F4FA"
+              overflow="hidden"
+              position="relative"
+              onMouseOver={() => setHoverCardId(template.id)}
+              onMouseLeave={() => setHoverCardId(null)}
+              textAlign="center"
+              bg="white"
+              p={0}
+              transition="all .3s"
+              _hover={{ boxShadow: "0px 5px 24px rgba(58, 34, 93, 0.12)" }}
+            >
+              <Center mb={0}>
+                <Box
+                  position="relative"
+                  width="100%"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  bg="#F7F4FB"
+                  pt="80px"
+                  height="250px"
+                  borderRadius="4px 4px 0px 0px"
+                  overflow="hidden"
+                  transition="all .3s"
+                  _hover={{
+                    "::before": {
+                      content: '""',
+                      position: "absolute",
+                      width: "100%",
+                      height: "100%",
+                      bg: "rgba(0, 0, 0, 0.5)",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                      zIndex: 1,
+                    },
+                  }}
+                >
+                  <Image
+                    boxShadow="0px 3px 12px rgba(58, 34, 93, 0.12)"
+                    src={template.imageUrl}
+                    alt={template.title}
+                    objectFit="contain"
+                  />
 
-				  <Box
-					key={template.slug}
-					borderWidth= "2px"
-					borderRadius="8px"
-					borderColor="#F6F4FA"
-					overflow="hidden"
-					position="relative"
-					onMouseOver={() => setHoverCardId(template.id)}
-					onMouseLeave={() => setHoverCardId(null)}
-					textAlign="center"
-					bg="white"
-					p={0}
-					transition="all .3s"
-					_hover={{ boxShadow: "0px 5px 24px rgba(58, 34, 93, 0.12)" }}
-				  >
-					<Center mb={0}>
-					  <Box
-						position="relative"
-						width="100%"
-						display="flex"
-						justifyContent="center"
-						alignItems="center"
-						bg="#F7F4FB"
-						pt="80px"
-						height="250px"
-						borderRadius="4px 4px 0px 0px"
-						overflow="hidden"
-						transition="all .3s"
-						 _hover={{
-							"::before": {
-							  content: '""',
-							  position: "absolute",
-							  width: "100%",
-							  height: "100%",
-							  bg: "rgba(0, 0, 0, 0.5)",
-							  top: "50%",
-							  left: "50%",
-							  transform: "translate(-50%, -50%)",
-							  zIndex: 1
-							}
-						 }}
+                  {template.isPro && (
+                    <Badge
+                      bg="#4BCE61"
+                      color="white"
+                      position="absolute"
+                      bottom="12px"
+                      right="12px"
+                      borderRadius="4px"
+                      fontSize="12px"
+                      p="2px 6px"
+                      textTransform="capitalize"
+                      zIndex="2"
+                    >
+                      {__("Pro", "everest-forms")}
+                    </Badge>
+                  )}
 
-					  >
-						<Image boxShadow="0px 3px 12px rgba(58, 34, 93, 0.12)" src={template.imageUrl} alt={template.title} objectFit="contain" />
+                  {/* Hover Buttons */}
+                  {hoverCardId === template.id && (
+                    <VStack
+                      spacing={4}
+                      position="absolute"
+                      top="50%"
+                      left="50%"
+                      transform="translate(-50%, -50%)"
+                      zIndex={2}
+                    >
+                      <Button leftIcon={<CiPlay1 />} colorScheme="purple" onClick={() => handleTemplateClick(template)}>
+                        {__("Get Started", "everest-forms")}
+                      </Button>
+                      {template.preview_link && (
+                        <Button
+                          leftIcon={<IoEyeOutline />}
+                          color="white"
+                          variant="outline"
+                          onClick={() => window.open(template.preview_link, "_blank")}
+                          _hover={{ color: "black", bg: "white" }}
+                        >
+                          {__("Preview", "everest-forms")}
+                        </Button>
+                      )}
+                    </VStack>
+                  )}
+                </Box>
+              </Center>
 
-						{template.isPro && (
-						  <Badge
-							bg="#4BCE61"
-							color="white"
-							position="absolute"
-							bottom="12px"
-  							right="12px"
-							borderRadius="4px"
-							fontSize="12px"
-							p="2px 6px"
-							textTransform="capitalize"
-							zIndex="2"
-						  >
-							{__("Pro", "everest-forms")}
-						  </Badge>
-						)}
+              {hoverCardId === template.id && (
+                <Box
+                  as="button"
+                  onClick={() => handleFavoriteToggle(template.slug)}
+                  aria-label={`Toggle favorite for ${template.title}`}
+                  position="absolute"
+                  top={2}
+                  right={2}
+                  zIndex={3}
+                  bg="transparent"
+                  border="none"
+                  _hover={{ color: "red.600" }}
+                >
+                  <Icon
+                    as={FaHeart}
+                    boxSize={6}
+                    color={favorites.includes(template.slug) ? "red" : "gray"}
+                  />
+                </Box>
+              )}
 
-						{/* Hover Buttons */}
-						{hoverCardId === template.id && (
-							 <VStack
-							spacing={4}
-							position="absolute"
-							top="50%"
-							left="50%"
-							transform="translate(-50%, -50%)"
-							zIndex={2}
-						  >
-							<Button leftIcon={<CiPlay1 />} colorScheme="purple" onClick={() => handleTemplateClick(template)}>
-							  {__("Get Started", "everest-forms")}
-							</Button>
-							{template.preview_link && (
-							  <Button
-							  leftIcon={<IoEyeOutline />}
-								color="white"
-								variant="outline"
-								onClick={() => window.open(template.preview_link, "_blank")}
-								_hover={{ color: "black", bg: "white" }}
-							  >
-								{__("Preview", "everest-forms")}
-							  </Button>
-							)}
-						  </VStack>
+              <VStack padding="16px">
+                <Heading width="100%" textAlign="left" fontWeight="bold" fontSize="16px" margin="0px">
+                  {template.title}
+                </Heading>
+                <Text textAlign="left" margin="0px" fontSize="14px" fontWeight="400" color="gray.600">
+                  {template.description}
+                </Text>
+              </VStack>
+            </Box>
+          ))}
+        </SimpleGrid>
+      ) : (
+        <Box
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+          height="80vh"
+          width="100%"
+        >
+          <Image
+            src={notFoundImage}
+            alt={__("Not Found", "everest-forms")}
+            boxSize="300px"
+            objectFit="cover"
+          />
+          <Text mt={4} fontSize="lg" fontWeight="bold" textAlign="center">
+            {__("No Templates Found", "everest-forms")}
+          </Text>
+          <Text margin={0} fontSize="sm" textAlign="center" color="gray.600">
+            {__("Sorry, we didn't find any templates that match your criteria", "everest-forms")}
+          </Text>
+        </Box>
+      )}
+			<Modal isCentered isOpen={isPluginModalOpen} onClose={closePluginModal} size="lg">
+			<ModalOverlay />
+			<ModalContent borderRadius="8px" padding="20px">
+				<ModalHeader padding="0px" textAlign="center" fontSize="20px" lineHeight="28px" color="#26262E">
+				<LockIcon  boxSize={10} />
+				<Heading  as="h2" margin="10px 0px 0px 0px" fontSize="20px" lineHeight="28px" fontWeight="bold">
+  					{sprintf(__("%s is a Premium Template", "everest-forms"), formTemplateName)}
+				</Heading>
+				</ModalHeader>
+				<ModalCloseButton top="12px" right="12px" />
+				<ModalBody padding="0px" marginTop="16px" textAlign="center">
+				<Text margin="0px" fontSize="16px" lineHeight="24px" mb="20px">
+					{__("This template requires premium addons. Please upgrade to the Premium to unlock all these awesome templates.", "everest-forms")}
+				</Text>
+				</ModalBody>
+				<ModalFooter justifyContent="flex-end" padding="0px">
+				<Button variant="ghost" onClick={closePluginModal}>
+					{__("OK", "everest-forms")}
+				</Button>
+				<a
+						href="https://everestforms.net/pricing/?utm_source=form-template&utm_medium=premium-form-templates-popup&utm_campaign=lite-version"
+						target="_blank"
+						rel="noopener noreferrer"
+						style={{ width: "inherit" }}
+						>
+				<Button colorScheme="blue" ml={3}>
+					{__("Upgrade Plan", "everest-forms")}
+				</Button>
+				</a>
+				</ModalFooter>
+			</ModalContent>
+			</Modal>
 
-						)}
-					  </Box>
-					</Center>
 
-					{hoverCardId === template.id && (
-					  <Box
-						as="button"
-						onClick={() => handleFavoriteToggle(template.slug)}
-						aria-label={`Toggle favorite for ${template.title}`}
-						position="absolute"
-						top={2}
-						right={2}
-						zIndex={3}
-						bg="transparent"
-						border="none"
-						_hover={{ color: "red.600" }}
-					  >
-						<Icon
-						  as={FaHeart}
-						  boxSize={6}
-						  color={template.categories.includes("Favorites") ? "red" : "gray"}
-						/>
-					  </Box>
-					)}
-
-					<VStack padding="16px">
-					  <Heading width="100%" textAlign="left" fontWeight="bold" fontSize="16px" margin="0px">
-					  {template.title}
-					</Heading>
-					  <Text textAlign="left"  margin="0px" fontSize="14px" fontWeight="400" color="gray.600">
-						{template.description}
-					  </Text>
-					</VStack>
-				  </Box>
-				))}
-			  </SimpleGrid>
-		) : (
-			<Box
-			display="flex"
-			flexDirection="column"
-			justifyContent="center"
-			alignItems="center"
-			height="80vh"
-			width="100%"
-		  >
-			<Image
-			  src={notFoundImage}
-			  alt={__("Not Found", "everest-forms")}
-			  boxSize="300px"
-			  objectFit="cover"
-			/>
-			<Text
-			  mt={4}
-			  fontSize="lg"
-			  fontWeight="bold"
-			  textAlign="center"
-			>
-			  {__("No Templates Found", "everest-forms")}
-			</Text>
-			<Text
-			  margin={0}
-			  fontSize="sm"
-			  textAlign="center"
-			  color= "grey"
-			>
-			  {__("Sorry, we didn't find any templates that match your criteria", "everest-forms")}
-			</Text>
-		  </Box>
-		)}
-
-      <Modal isCentered isOpen={isOpen} onClose={onClose} size="xl" >
+	  <Modal isCentered isOpen={isOpen} onClose={onClose} size="xl" >
 	  <ModalOverlay />
         <ModalContent  borderRadius="8px" padding="40px">
           <ModalHeader padding="0px" textAlign="left" fontSize="20px" lineHeight="28px" color="#26262E">
