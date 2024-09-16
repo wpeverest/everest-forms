@@ -393,8 +393,15 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 						if ( array_key_exists( $column_id, $form_fields ) ) {
 							$form_field     = $form_fields[ $column_id ];
 							$likert_columns = $form_field['likert_columns'];
-							foreach ( $fields[ $column_id ]['value_raw'] as $likert_key ) {
-								$selected_likert[] = $likert_columns[ $likert_key ];
+							$likert_rows    = $form_field['likert_rows'];
+							if ( ! empty( $fields[ $column_id ]['value_raw'] ) ) {
+								foreach ( $fields[ $column_id ]['value_raw'] as $likert_key ) {
+									$selected_likert[] = $likert_columns[ $likert_key ];
+								}
+							} else {
+								foreach ( $likert_rows as $likert_rows ) {
+									$selected_likert[] = '';
+								}
 							}
 						}
 						$value = $selected_likert;
